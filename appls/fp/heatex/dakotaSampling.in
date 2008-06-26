@@ -1,0 +1,48 @@
+# DAKOTA INPUT FILE - dakota.in, for 'uq1DFem' application
+
+strategy,
+	single_method
+	graphics
+	tabular_graphics_data
+
+method,
+        nond_sampling,
+	  samples = 1 seed = 1833
+          sample_type random
+          num_response_levels = 6 5 5
+          response_levels = 46. 47. 48. 49. 50. 51.
+	  		    -.1 -.05 0. .05 .1
+			    50. 75. 100. 125. 150.
+
+model,
+	single
+
+variables,
+	continuous_state = 8
+	  csv_initial_state  =    100.       20   0.01 0.576 0.987 40.1 71.6 104.3
+	  csv_descriptors    = 'cTerm' 'numDiv'   'X0'  'X1'  'X2' 'U0' 'U1'  'U2'
+	normal_uncertain = 1
+	  nuv_means          =   1000.
+	  nuv_std_deviations =    200.
+	  nuv_descriptors    = 'fTerm'
+        uniform_uncertain = 1
+          uuv_lower_bounds   =    -0.1
+          uuv_upper_bounds   =     0.1
+          uuv_descriptors    = 'gTerm'
+        gamma_uncertain = 1
+          gauv_alphas        =      1.
+          gauv_betas         =    100.
+          gauv_descriptors   = 'hTerm'
+
+interface,
+	system
+        analysis_driver = '/h2/prudenci/svn/pecos/uq/fp/trunk/appls/fpApplDriver'
+        parameters_file = 'fromDakota.in'
+	results_file    = 'toDakota.out'
+	file_tag
+	file_save
+
+responses,
+	num_response_functions = 3
+	no_gradients
+	no_hessians

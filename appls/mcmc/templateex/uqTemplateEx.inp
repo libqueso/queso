@@ -1,0 +1,40 @@
+###############################################
+# UQ Environment
+###############################################
+# uqEnv_help      = anything
+uqEnv_verbosity = 2
+
+###############################################
+# UQ Parameter Space
+###############################################
+# uqParamSpace_help      = anything
+uqParamSpace_dim       = 4
+uqParamSpace_inputFile = uqTemplateEx.par
+
+###############################################
+# UQ Output Space
+###############################################
+# uqOutputSpace_help = anything
+uqOutputSpace_dim  = 1
+
+###############################################
+# UQ DRAM Markov Chain Generator
+###############################################
+# uqDRAM_MCG_help               = anything
+uqDRAM_MCG_sizesOfChains      = 5000
+uqDRAM_MCG_lrUpdateSigma2     = 0
+uqDRAM_MCG_lrSigma2Priors     = 1.
+uqDRAM_MCG_lrSigma2Accuracies = 0.
+uqDRAM_MCG_lrNumbersOfObs     = 0
+uqDRAM_MCG_numExtraStages     = 0
+uqDRAM_MCG_stageScales        = 5. 4. 3.
+uqDRAM_MCG_initialNonAdaptInt = 0
+uqDRAM_MCG_adaptInterval      = 0
+uqDRAM_MCG_sd                 = 1.44
+uqDRAM_MCG_epsilon            = 1.e-5
+uqDRAM_MCG_namesOfOutputFiles = uqTemplateExOutput.m
+
+###############################################
+# UQ Other Inputs
+###############################################
+unknownOption = 97

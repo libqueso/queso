@@ -1,0 +1,2 @@
+#!/bin/sh
+/h2/prudenci/svn/pecos/uq/fp/trunk/appls/uq1DFem_gsl --fpDakotaDriven $1 $2
