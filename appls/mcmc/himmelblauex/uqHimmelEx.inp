@@ -26,19 +26,19 @@ uqOutputSpace_dim  = 1
 ###############################################
 # UQ DRAM Markov Chain Generator
 ###############################################
-# uqDRAM_MCG_help               = anything
-uqDRAM_MCG_sizesOfChains      = 1000
-uqDRAM_MCG_lrUpdateSigma2     = 1
-uqDRAM_MCG_lrSigma2Priors     = 2.1876e-08
-uqDRAM_MCG_lrSigma2Accuracies = 1.
-uqDRAM_MCG_lrNumbersOfObs     = 23
-uqDRAM_MCG_numExtraStages     = 0
-uqDRAM_MCG_stageScales        = 5. 4. 3.
-uqDRAM_MCG_initialNonAdaptInt = 0
-uqDRAM_MCG_adaptInterval      = 0
-uqDRAM_MCG_sd                 = 1.44
-uqDRAM_MCG_epsilon            = 1.e-5
-uqDRAM_MCG_namesOfOutputFiles = uqHimmelExOutput.m
+# uqDRAM_help                       = anything
+uqDRAM_mh_sizesOfChains           = 1000
+uqDRAM_mh_lrUpdateSigma2          = 1
+uqDRAM_mh_lrSigma2Priors          = 2.1876e-08
+uqDRAM_mh_lrSigma2Accuracies      = 1.
+uqDRAM_mh_lrNumbersOfObs          = 23
+uqDRAM_dr_maxNumberOfExtraStages  = 1
+uqDRAM_dr_scalesForExtraStages    = 5. 4. 3.
+uqDRAM_am_initialNonAdaptInterval = 0
+uqDRAM_am_adaptInterval           = 0
+uqDRAM_am_sd                      = 1.44
+uqDRAM_am_epsilon                 = 1.e-5
+uqDRAM_mh_namesOfOutputFiles      = uqHimmelExOutput.m
 
 ###############################################
 # UQ Other Inputs

@@ -98,7 +98,7 @@ uqVectorClass::env() const
 }
 
 void
-uqVectorClass::setPrintHorizontally(bool value)
+uqVectorClass::setPrintHorizontally(bool value) const
 {
   m_printHorizontally = value;
   return;

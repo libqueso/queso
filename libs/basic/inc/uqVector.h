@@ -20,9 +20,9 @@ public:
   uqVectorClass& operator+=(const uqVectorClass& rhs);
   uqVectorClass& operator-=(const uqVectorClass& rhs);
 
-    const uqEnvironmentClass& env                 () const;
-          void                setPrintHorizontally(bool value);
-          bool                getPrintHorizontally() const;
+    const uqEnvironmentClass& env                 ()           const;
+          void                setPrintHorizontally(bool value) const; // Yes, 'const'
+          bool                getPrintHorizontally()           const;
 
   virtual unsigned int        size                () const = 0;
   virtual void                cwSet               (double value) = 0;
@@ -35,7 +35,7 @@ protected:
   virtual void                copy                (const uqVectorClass& src);
 
   const uqEnvironmentClass& m_env;
-  bool m_printHorizontally;
+  mutable bool m_printHorizontally;
 };
 
 #endif // __UQ_VECTOR_H__
