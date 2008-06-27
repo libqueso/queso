@@ -6,7 +6,7 @@
 #include <uqEnvironment.h>
 #include <uqGslMatrix.h>
 #include <uqGslVector.h>
-#include <uq_defines.h>
+#include <uqDefines.h>
 #include <iostream>
 
 class uq1DScalarElementClass

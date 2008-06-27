@@ -7,12 +7,12 @@ INC_PATHS = \
 	-I../../../libs/basic/inc \
 	-I../../../libs/fp/inc \
 	-I../inc \
-	-I/h2/prudenci/Installations/Boost_1_35_0/include/boost-1_35
+	-I$(BOOST_INCLUDE_PATH_FOR_PECOS_TOOLKIT)
 LIB_PATHS = \
 	-L../../../libs/basic/lib \
 	-L../../../libs/fp/lib \
 	-L../lib \
-	-L/h2/prudenci/Installations/Boost_1_35_0/lib
+	-L$(BOOST_LIB_PATH_FOR_PECOS_TOOLKIT)
 LIBS = \
 	-luq_fp_any \
 	-luq_basic_$(UQBT) \

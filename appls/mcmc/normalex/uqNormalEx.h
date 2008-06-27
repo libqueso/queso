@@ -1,12 +1,12 @@
 #ifndef __UQ_NORMAL_EX_H__
 #define __UQ_NORMAL_EX_H__
 
-#include <uqAnyAppl.h>
+#include <uqApplRoutines.h>
 #include <uqParamSpace.h>
 #include <uqOutputSpace.h>
 #include <uqDRAM_MarkovChainGenerator.h>
 #include <uqCovCond.h>
-#include <uq_defines.h>
+#include <uqDefines.h>
 #include <math.h>
 #include <iostream>
 

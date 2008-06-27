@@ -1,7 +1,7 @@
 #include <uqMiscellaneous.h>
 #include <gsl/gsl_randist.h>
 #include <math.h>
-#include <uq_defines.h>
+#include <uqDefines.h>
 
 void
 uqMiscReadDoublesFromString(

@@ -1,7 +1,6 @@
 clear all;
-path(path,'/h2/prudenci/DownloadedPackages/mcmc02Jun2008/code');
-path(path,'/h2/prudenci/DownloadedPackages/mcmc02Jun2008/examples');
-path(path,'/h2/prudenci/svn/pecos/uq/trunk/appls/mcmc/himmelblauex');
+path(path,getenv('MCMC_TOOLBOX_PATH_FOR_PECOS_TOOLKIT'));
+path(path,pwd);
 uqHimmelExOutput;
 
 figure(1); clf

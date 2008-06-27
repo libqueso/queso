@@ -1,5 +1,5 @@
 #include <uqMatrix.h>
-#include <uq_defines.h>
+#include <uqDefines.h>
 
 uqMatrixClass::uqMatrixClass()
   :

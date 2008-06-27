@@ -1,6 +1,6 @@
 #include <uqTrilinosVector.h>
 #include <Epetra_MpiComm.h>
-#include <uq_defines.h>
+#include <uqDefines.h>
 
 uqTrilinosVectorClass::uqTrilinosVectorClass(const Epetra_Map& map)
   :

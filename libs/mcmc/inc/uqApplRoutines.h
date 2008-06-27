@@ -1,5 +1,5 @@
-#ifndef __UQ_ANY_APPL_H__
-#define __UQ_ANY_APPL_H__
+#ifndef __UQ_APPL_ROUTINES_H__
+#define __UQ_APPL_ROUTINES_H__
 
 #include <uqEnvironment.h>
 
@@ -69,4 +69,4 @@ struct uq_M2lLikelihoodFunction_Class {
     return uqAppl_M2lLikelihoodFunction_Routine<V,M>(paramValues, functionDataPtr, resultValues);
   }
 };
-#endif // __UQ_ANY_APPL_H__
+#endif // __UQ_APPL_ROUTINES_H__

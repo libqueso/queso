@@ -2,7 +2,7 @@
 #define __UQ_1D_LOCAL_DOFS_H__
 
 #include <iostream>
-#include <uq_defines.h>
+#include <uqDefines.h>
 
 enum uqLocalDofPositionEnum {
   UQ_INTERNAL_LOCAL_DOF_POS = 0,

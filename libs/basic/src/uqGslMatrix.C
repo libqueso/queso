@@ -1,6 +1,6 @@
 #include <uqGslMatrix.h>
 #include <uqGslVector.h>
-#include <uq_defines.h>
+#include <uqDefines.h>
 #include <gsl/gsl_linalg.h>
 
 uqGslMatrixClass::uqGslMatrixClass()

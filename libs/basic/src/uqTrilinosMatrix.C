@@ -1,7 +1,7 @@
 #include <uqTrilinosMatrix.h>
 #include <uqTrilinosVector.h>
 #include <Epetra_MpiComm.h>
-#include <uq_defines.h>
+#include <uqDefines.h>
 
 uqTrilinosMatrixClass::uqTrilinosMatrixClass(
   const Epetra_Map& map,

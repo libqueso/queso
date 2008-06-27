@@ -33,6 +33,7 @@ uqDRAM_am_adaptInterval           = 0
 uqDRAM_am_sd                      = 1.44
 uqDRAM_am_epsilon                 = 1.e-5
 uqDRAM_mh_namesOfOutputFiles      = uqNormalExOutput.m
+uqDRAM_mh_chainDisplayPeriod      = 500
 
 ###############################################
 # UQ Other Inputs

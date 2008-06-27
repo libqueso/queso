@@ -1,7 +1,7 @@
 #include <uq1DProblem.h>
 #include <uqGslMatrix.h>
 #include <uqGslVector.h>
-#include <uq_defines.h>
+#include <uqDefines.h>
 
 uq1DProblemClass::uq1DProblemClass(
   const uqEnvironmentClass& env,

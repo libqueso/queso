@@ -1,5 +1,5 @@
 #include <uqGslVector.h>
-#include <uq_defines.h>
+#include <uqDefines.h>
 #include <gsl/gsl_sort_vector.h>
 #include <math.h>
 

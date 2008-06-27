@@ -13,11 +13,11 @@ INC_PATHS = \
 	-I. \
 	-I../../../libs/basic/inc \
 	-I../../../libs/mcmc/inc \
-	-I/h2/prudenci/Installations/Boost_1_35_0/include/boost-1_35
+	-I$(BOOST_INCLUDE_PATH_FOR_PECOS_TOOLKIT)
 LIB_PATHS = \
 	-L../../../libs/basic/lib \
 	-L../../../libs/mcmc/lib \
-	-L/h2/prudenci/Installations/Boost_1_35_0/lib
+	-L$(BOOST_LIB_PATH_FOR_PECOS_TOOLKIT)
 LIBS = \
 	-luq_basic_$(UQBT) \
 	-luq_basic_any \
@@ -34,15 +34,15 @@ DEFINES = \
 INC_PATHS = \
 	-I. \
 	-I../../../inc \
-	-I/opt/openmpi-gnu/gnu/1.2.4/include \
-	-I/h2/prudenci/Installations/Trilinos_8_0_7/include \
-	-I/h2/prudenci/Installations/Boost_1_35_0/include/boost-1_35
+	-I$(MPI_INCLUDE_PATH_FOR_PECOS_TOOLKIT) \
+	-I$(TRILINOS_INCLUDE_PATH_FOR_PECOS_TOOLKIT) \
+	-I$(BOOST_INCLUDE_PATH_FOR_PECOS_TOOLKIT)
 
 LIB_PATHS = \
 	-L../../../lib \
-	-L/opt/openmpi-gnu/gnu/1.2.4/lib \
-	-L/h2/prudenci/Installations/Trilinos_8_0_7/lib
-	-L/h2/prudenci/Installations/Boost_1_35_0/lib
+	-L$(MPI_LIB_PATH_FOR_PECOS_TOOLKIT) \
+	-L$(TRILINOS_LIB_PATH_FOR_PECOS_TOOLKIT) \
+	-L$(BOOST_LIB_PATH_FOR_PECOS_TOOLKIT)
 
 LIBS = \
 	-luq_basic_$(UQBT) \

@@ -157,9 +157,9 @@ double observationsOfSomeParameters[] = {
   120.0000,   0.0265,  14.6887,  10.0000
 };
 
-#include <uqAnyAppl.h>
+#include <uqApplRoutines.h>
 #include <uqDRAM_MarkovChainGenerator.h>
-#include <uq_defines.h>
+#include <uqDefines.h>
 #ifdef __APPL_USES_GSL__
 #include <uqGslOdeSolver.h>
 int uqGslAlgaeExStateDot(double t, const double currentState[], double stateDot[], void* infoForComputingStateDot);

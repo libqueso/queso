@@ -1,5 +1,5 @@
 #include <uqGslOdeSolver.h>
-#include <uq_defines.h>
+#include <uqDefines.h>
 
 uqGslOdeSolverClass::uqGslOdeSolverClass(
   const std::string& solverType,

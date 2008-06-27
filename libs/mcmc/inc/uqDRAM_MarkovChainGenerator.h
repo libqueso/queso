@@ -17,12 +17,14 @@
 #define UQ_DRAM_MCG_AM_SD_ODV                      1.
 #define UQ_DRAM_MCG_AM_EPSILON_ODV                 1.e-5
 #define UQ_DRAM_MCG_MH_OUTPUT_FILE_NAME_ODV        "."
+#define UQ_DRAM_MCG_MH_CHAIN_DISPLAY_PERIOD_ODV    500
 
 #include <uqParamSpace.h>
 #include <uqStateSpace.h>
 #include <uqOutputSpace.h>
 #include <uqCandidate.h>
 #include <uqMiscellaneous.h>
+#include <uqChainStats.h>
 #include <fstream>
 
 template <class V, class M>
@@ -105,6 +107,7 @@ private:
   double                    m_sd;
   double                    m_epsilon;
   std::vector<std::string>  m_namesOfOutputFiles;
+  unsigned int              m_chainDisplayPeriod;
   gsl_rng*                  m_rng;
 
   std::vector<      M*>     m_lowerCholProposalCovMatrices;
@@ -157,6 +160,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::uqDRAM_MarkovChainGeneratorClass(
   m_sd                           (UQ_DRAM_MCG_AM_SD_ODV),
   m_epsilon                      (UQ_DRAM_MCG_AM_EPSILON_ODV),
   m_namesOfOutputFiles           (1,UQ_DRAM_MCG_MH_OUTPUT_FILE_NAME_ODV),
+  m_chainDisplayPeriod           (UQ_DRAM_MCG_MH_CHAIN_DISPLAY_PERIOD_ODV),
   m_rng                          (NULL),
   m_lowerCholProposalCovMatrices (1,NULL),
   m_proposalCovMatrices          (1,NULL),
@@ -302,6 +306,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::defineMyOptions(
     ("uqDRAM_am_sd",                      po::value<double      >()->default_value(UQ_DRAM_MCG_AM_SD_ODV                     ), "'am' sd"                                                )
     ("uqDRAM_am_epsilon",                 po::value<double      >()->default_value(UQ_DRAM_MCG_AM_EPSILON_ODV                ), "'am' epsilon"                                           )
     ("uqDRAM_mh_namesOfOutputFiles",      po::value<std::string >()->default_value(UQ_DRAM_MCG_MH_OUTPUT_FILE_NAME_ODV       ), "'mh' name(s) of output file(s)"                         )
+    ("uqDRAM_mh_chainDisplayPeriod",      po::value<unsigned int>()->default_value(UQ_DRAM_MCG_MH_CHAIN_DISPLAY_PERIOD_ODV   ), "'mh' period of message display during chain generation" )
   ;
 
   return;
@@ -444,6 +449,10 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::getMyOptionValues(
                         "size of array for 'outputFileNames' is not equal to size of array for 'chainSizes'");
   }
 
+  if (m_env.allOptionsMap().count("uqDRAM_mh_chainDisplayPeriod")) {
+    m_chainDisplayPeriod = m_env.allOptionsMap()["uqDRAM_mh_chainDisplayPeriod"].as<unsigned int>();
+  }
+
   return;
 }
 
@@ -506,6 +515,10 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains(
                       m_env.rank(),
                       "uqDRAM_MarkovChainGeneratorClass<V,M>::writeChainInfoOut()",
                       "improper writeChainInfoOut() return");
+
+    if (m_env.rank() == 0) {
+      std::cout << std::endl;
+    }
   }
 
   //if (m_env.rank() == 0) std::cout << "Leaving uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains()"
@@ -635,6 +648,13 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
   const M*     mahalanobisMatrix,
   bool         applyMahalanobisInvert)
 {
+  if (m_env.rank() == 0) {
+    std::cout << "Generating chain of id " << chainId
+              << ", with "                 << m_sizesOfChains[chainId]
+              << " positions..."
+              << std::endl;
+  }
+
   int iRC = UQ_OK_RC;
 
   bool   outOfBounds = m_paramSpace.outOfBounds(valuesOf1stPosition);
@@ -879,11 +899,53 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
         }
       }
     }
+
+    if ((m_chainDisplayPeriod                     > 0) && 
+        (((positionId+1) % m_chainDisplayPeriod) == 0)) {
+      if (m_env.rank() == 0) {
+        std::cout << "Finished generating " << positionId+1
+                  << " positions"
+                  << std::endl;
+      }
+    }
   } // end chain loop
+
+  V* chainMean = m_paramSpace.newVector();
+  V* chainStd  = m_paramSpace.newVector();
+  uqChainStats(m_chain,
+               *chainMean,
+               *chainStd);
+
+  if (m_env.rank() == 0) {
+    std::cout << "Finished generating the chain of id " << chainId
+              << ". Its statistics are:";
+    char line[512];
+
+    sprintf(line,"\n%s%4s%s%9s%s",
+	    "Parameter",
+            " ",
+            "Mean",
+            " ",
+            "Std");
+    std::cout << line;
+
+    for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
+      sprintf(line,"\n%8.8s%2s%11.4e%2s%11.4e",
+              m_paramSpace.parameter(i).name().c_str(),
+              " ",
+	      (*chainMean)[i],
+              " ",
+              (*chainStd)[i]);
+      std::cout << line;
+    }
+    std::cout << std::endl;
+  }
 
   //****************************************************
   // Release memory before leaving routine
   //****************************************************
+  if (chainStd      ) delete chainStd;
+  if (chainMean     ) delete chainMean;
   if (gaussianVector) delete gaussianVector;
   if (tmpParamValues) delete tmpParamValues;
 
@@ -1036,7 +1098,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::updateCovMatrix(
                         "uqDRAM_MarkovChainGeneratorClass<V,M>::updateCovMatrix()",
                         "'subChain.size()' should be >= 2");
     }
-  
+
     double doubleSubChainSize = (double) subChain.size();
     lastSubMean = m_paramSpace.newVector();
     for (unsigned int i = 0; i < subChain.size(); ++i) {
@@ -1103,8 +1165,21 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::writeChainInfoOut(
 {
   int iRC = UQ_OK_RC;
 
-  if (m_namesOfOutputFiles[chainId] == ".") return iRC;
+  if (m_namesOfOutputFiles[chainId] == ".") {
+    if (m_env.rank() == 0) {
+      std::cout << "No info written out for chain of id " << chainId
+                << std::endl;
+    }
+    return iRC;
+  }
 
+  if (m_env.rank() == 0) {
+    std::cout << "Writing out info about the chain of id " << chainId
+              << " into file '"                            << m_namesOfOutputFiles[chainId]
+              << "'..."
+              << std::endl;
+  }
+  
   // Open file
   std::ofstream ofs(m_namesOfOutputFiles[chainId].c_str(), std::ofstream::out | std::ofstream::trunc);
   UQ_TEST_MACRO((ofs && ofs.is_open()) == false,
@@ -1240,6 +1315,11 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::writeChainInfoOut(
   // Close file
   ofs.close();
 
+  if (m_env.rank() == 0) {
+    std::cout << "Finished writing out info about the chain of id " << chainId
+              << std::endl;
+  }
+
   return iRC;
 }
 
@@ -1284,6 +1364,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::print(std::ostream& os) const
   for (unsigned int i = 0; i < m_namesOfOutputFiles.size(); ++i) {
     os << m_namesOfOutputFiles[i] << " ";
   }
+  os << "\nm_chainDisplayPeriod = " << m_chainDisplayPeriod;
   os << std::endl;
 
   return;

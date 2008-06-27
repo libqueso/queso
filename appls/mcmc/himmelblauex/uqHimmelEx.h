@@ -27,9 +27,9 @@ double observationsOfA[] = {
   501.00,  0.003715
 };
 
-#include <uqAnyAppl.h>
+#include <uqApplRoutines.h>
 #include <uqDRAM_MarkovChainGenerator.h>
-#include <uq_defines.h>
+#include <uqDefines.h>
 #ifdef __APPL_USES_GSL__
 #include <uqGslOdeSolver.h>
 int uqGslHimmelExStateDot(double t, const double currentState[], double stateDot[], void* infoForComputingStateDot);

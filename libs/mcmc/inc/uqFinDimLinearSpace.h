@@ -5,7 +5,7 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
-#include <uq_defines.h>
+#include <uqDefines.h>
 
 template <class V, class M>
 class uqFinDimLinearSpaceClass

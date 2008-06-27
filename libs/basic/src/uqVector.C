@@ -1,5 +1,5 @@
 #include <uqVector.h>
-#include <uq_defines.h>
+#include <uqDefines.h>
 
 uqVectorClass::uqVectorClass()
   :

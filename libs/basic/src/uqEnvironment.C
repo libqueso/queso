@@ -1,5 +1,5 @@
 #include <uqEnvironment.h>
-#include <uq_defines.h>
+#include <uqDefines.h>
 
 #define UQ_CURRENT_VERSION "0.0.1"
 

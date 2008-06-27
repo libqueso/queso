@@ -12,7 +12,7 @@ DEFINES = \
 INC_PATHS = \
 	-I../../basic/inc \
 	-I../inc \
-	-I/h2/prudenci/Installations/Boost_1_35_0/include/boost-1_35
+	-I$(BOOST_INCLUDE_PATH_FOR_PECOS_TOOLKIT)
 
 else
 
@@ -21,9 +21,9 @@ DEFINES = \
 INC_PATHS = \
 	-I../../basic/inc \
 	-I../inc \
-	-I/h2/prudenci/Installations/Boost_1_35_0/include/boost-1_35 \
-	-I/opt/openmpi-gnu/gnu/1.2.4/include \
-	-I/h2/prudenci/Installations/Trilinos_8_0_7/include
+	-I$(MPI_INCLUDE_PATH_FOR_PECOS_TOOLKIT) \
+	-I$(TRILINOS_INCLUDE_PATH_FOR_PECOS_TOOLKIT) \
+	-I$(BOOST_INCLUDE_PATH_FOR_PECOS_TOOLKIT)
 
 endif
 
