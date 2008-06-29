@@ -157,9 +157,8 @@ double observationsOfSomeParameters[] = {
   120.0000,   0.0265,  14.6887,  10.0000
 };
 
-#include <uqApplRoutines.h>
 #include <uqDRAM_MarkovChainGenerator.h>
-#include <uqDefines.h>
+#include <uqPrediction.h>
 #ifdef __APPL_USES_GSL__
 #include <uqGslOdeSolver.h>
 int uqGslAlgaeExStateDot(double t, const double currentState[], double stateDot[], void* infoForComputingStateDot);
@@ -274,12 +273,21 @@ uqAppl(const uqEnvironmentClass& env)
                      NULL, // use default prior() routine
                      (void *) &uqAppl_M2lLikelihoodFunction_Data);
 
+  uq_StateEvolutionFunction_Class<V,M> uq_StateEvolutionFunction_Obj;
+  uqPrediction(mcg.chain(),
+               mcg.lrSigma2Chain(),
+               500,
+               uq_StateEvolutionFunction_Obj,
+               (void *) &uqAppl_M2lLikelihoodFunction_Data, // Yes, use 'Likelihood' data type as well
+               mcg.outputFileName());
+
   //*****************************************************
   // Release memory before leaving routine.
   //*****************************************************
   for (unsigned int i = 0; i < observedEvolutionOfAZPConcentrations.size(); ++i) {
-    if (observedEvolutionOfAZPConcentrations[i] != NULL) delete observedEvolutionOfAZPConcentrations[i];
+    if (observedEvolutionOfAZPConcentrations[i]) delete observedEvolutionOfAZPConcentrations[i];
   }
+  observedEvolutionOfAZPConcentrations.clear();
 
   if (env.rank() == 0) std::cout << "Finishing run of 'uqAlgaeEx' example"
                                  << std::endl;
@@ -293,14 +301,14 @@ uqAppl_M2lPriorFunction_Routine(const V& paramValues, const void* functionDataPt
 {
   UQ_FATAL_TEST_MACRO(true,
                       paramValues.env().rank(),
-                      "uqAppl_M2lPriorFunction_Routine()",
-                      "should not be here, since application is using the default prior() routine provided by ICES UQ library");
+                      "uqAppl_M2lPriorFunction_Routine(), in uqAlgaeEx.h",
+                      "should not be here, since application is using the default prior() routine provided by PECOS toolkit");
   return 0.;
 }
 
 template<class V, class M>
 void
-uqAppl_M2lLikelihoodFunction_Routine(const V& paramValues, const void* functionDataPtr, V& resultValues)
+uqAppl_StateEvolutionFunction_Routine(const V& paramValues, const void* functionDataPtr, std::vector<V*>& states)
 {
   const std::vector<double>& instantsOfAZPObservations            = *((uqAppl_M2lLikelihoodFunction_DataType<V,M> *) functionDataPtr)->instantsOfAZPObservations;
   const std::vector<V*>&     observedEvolutionOfAZPConcentrations = *((uqAppl_M2lLikelihoodFunction_DataType<V,M> *) functionDataPtr)->observedEvolutionOfAZPConcentrations;
@@ -329,7 +337,7 @@ uqAppl_M2lLikelihoodFunction_Routine(const V& paramValues, const void* functionD
   uqAppl_StateDotFunction_Data.evolutionOfPin = &evolutionOfPin;
 
   //if (initialConcentrations.env().rank() == 0) {
-  //  std::cout << "In uqAppl_M2lLikelihoodFunction_Routine():"
+  //  std::cout << "In uqAppl_StateEvolutionFunction_Routine():"
   //            << "\n A0    = " << initialConcentrations[0]
   //            << "\n Z0    = " << initialConcentrations[1]
   //            << "\n P0    = " << initialConcentrations[2]
@@ -337,12 +345,11 @@ uqAppl_M2lLikelihoodFunction_Routine(const V& paramValues, const void* functionD
   //            << "\n rhoA  = " << uqAppl_StateDotFunction_Data.rhoA
   //            << "\n rhoZ  = " << uqAppl_StateDotFunction_Data.rhoZ
   //            << "\n k     = " << uqAppl_StateDotFunction_Data.k
-  //           << "\n alpha = " << uqAppl_StateDotFunction_Data.alpha
+  //            << "\n alpha = " << uqAppl_StateDotFunction_Data.alpha
   //            << "\n th    = " << uqAppl_StateDotFunction_Data.th
   //            << "\n"
   //            << std::endl;
-
-    //std::cout << "In uqAppl_M2lLikelihoodFunction_Routine():"
+    //std::cout << "In uqAppl_StateEvolutionFunction_Routine():"
     //          << " information on QpV, Pin, T"
     //          << std::endl;
     //for (unsigned int i = 0; i < evolutionOfQpV.size(); ++i) {
@@ -355,7 +362,6 @@ uqAppl_M2lLikelihoodFunction_Routine(const V& paramValues, const void* functionD
     //std::cout << std::endl;
   //}
 
-  std::vector<V*> computedEvolutionOfConcentrations(0,NULL);
 #ifdef __APPL_USES_GSL__
   gslOdeSolver.solveODE(uqGslAlgaeExStateDot,
                         NULL,
@@ -363,23 +369,35 @@ uqAppl_M2lLikelihoodFunction_Routine(const V& paramValues, const void* functionD
                         initialConcentrations,
                         (void *)&uqAppl_StateDotFunction_Data, // data for stateDot computations
                         1.e-1,                                 // suggested time step
-                        computedEvolutionOfConcentrations);
+                        states);
 #endif
 #ifdef __APPL_USES_TRILINOS__
   UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
                     paramValue.env().rank(),
-                    "uqAppl_M2lLikelihoodFunction_Routine()",
+                    "uqAppl_StateEvolutionFunction_Routine()",
                     "not yet implemented with Trilinos");
 #endif
   //if (initialConcentrations.env().rank() == 0) {
-  //  std::cout << "In uqAppl_M2lLikelihoodFunction_Routine()" << std::endl;
+  //  std::cout << "In uqAppl_StateEvolutionFunction_Routine()" << std::endl;
   //  for (unsigned int i = 0; i < instantsOfAZPObservations.size(); ++i) {
   //    std::cout << "  for t = " << instantsOfAZPObservations[i]
-  //              << ", state = " << *(computedEvolutionOfConcentrations[i])
+  //              << ", state = " << *(states[i])
   //              << std::endl;
   //  }
   //}
 
+  return;
+}
+
+template<class V, class M>
+void
+uqAppl_M2lLikelihoodFunction_Routine(const V& paramValues, const void* functionDataPtr, V& resultValues)
+{
+  std::vector<V*> computedEvolutionOfConcentrations(0,NULL);
+  uqAppl_StateEvolutionFunction_Routine<V,M>(paramValues, functionDataPtr, computedEvolutionOfConcentrations);
+
+  const std::vector<double>& instantsOfAZPObservations = *((uqAppl_M2lLikelihoodFunction_DataType<V,M> *) functionDataPtr)->instantsOfAZPObservations;
+  const std::vector<V*>&     observedEvolutionOfAZPConcentrations = *((uqAppl_M2lLikelihoodFunction_DataType<V,M> *) functionDataPtr)->observedEvolutionOfAZPConcentrations;
   resultValues[0] = 0.;
   resultValues[1] = 0.;
   resultValues[2] = 0.;
@@ -390,8 +408,9 @@ uqAppl_M2lLikelihoodFunction_Routine(const V& paramValues, const void* functionD
   }
 
   for (unsigned int i = 0; i < computedEvolutionOfConcentrations.size(); ++i) {
-    if (computedEvolutionOfConcentrations[i] != NULL) delete computedEvolutionOfConcentrations[i];
+    if (computedEvolutionOfConcentrations[i]) delete computedEvolutionOfConcentrations[i];
   }
+  computedEvolutionOfConcentrations.clear();
 
   return;
 }

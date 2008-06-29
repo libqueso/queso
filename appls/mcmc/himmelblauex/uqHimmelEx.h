@@ -27,9 +27,7 @@ double observationsOfA[] = {
   501.00,  0.003715
 };
 
-#include <uqApplRoutines.h>
 #include <uqDRAM_MarkovChainGenerator.h>
-#include <uqDefines.h>
 #ifdef __APPL_USES_GSL__
 #include <uqGslOdeSolver.h>
 int uqGslHimmelExStateDot(double t, const double currentState[], double stateDot[], void* infoForComputingStateDot);
@@ -131,8 +129,9 @@ uqAppl(const uqEnvironmentClass& env)
   // Release memory before leaving routine.
   //*****************************************************
   for (unsigned int i = 0; i < observedEvolutionOfAConcentration.size(); ++i) {
-    if (observedEvolutionOfAConcentration[i] != NULL) delete observedEvolutionOfAConcentration[i];
+    if (observedEvolutionOfAConcentration[i]) delete observedEvolutionOfAConcentration[i];
   }
+  observedEvolutionOfAConcentration.clear();
   delete initialConcentrations;
 
   if (env.rank() == 0) std::cout << "Finishing run of 'uqHimmelEx' example"
@@ -148,7 +147,7 @@ uqAppl_M2lPriorFunction_Routine(const V& paramValues, const void* functionDataPt
   UQ_FATAL_TEST_MACRO(true,
                       paramValues.env().rank(),
                       "uqAppl_M2lPriorFunction_Routine()",
-                      "should not be here, since application is using the default prior() routine provided by ICES UQ library");
+                      "should not be here, since application is using the default prior() routine provided by PECOS toolkit");
   return 0.;
 }
 
@@ -197,8 +196,9 @@ uqAppl_M2lLikelihoodFunction_Routine(const V& paramValues, const void* functionD
   }
 
   for (unsigned int i = 0; i < computedEvolutionOfConcentrations.size(); ++i) {
-    if (computedEvolutionOfConcentrations[i] != NULL) delete computedEvolutionOfConcentrations[i];
+    if (computedEvolutionOfConcentrations[i]) delete computedEvolutionOfConcentrations[i];
   }
+  computedEvolutionOfConcentrations.clear();
 
   return;
 }

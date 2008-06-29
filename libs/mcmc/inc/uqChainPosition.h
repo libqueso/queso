@@ -1,25 +1,25 @@
-#ifndef __UQ_CANDIDATE_H__
-#define __UQ_CANDIDATE_H__
+#ifndef __UQ_CHAIN_POSITION_H__
+#define __UQ_CHAIN_POSITION_H__
 
 #include <uqParameter.h>
 #include <uqEnvironment.h>
 
 template <class V>
-class uqCandidateClass
+class uqChainPositionClass
 {
 public:
-  uqCandidateClass(const uqEnvironmentClass& env);
-  uqCandidateClass(const uqEnvironmentClass& env,
-                   const V& paramValues,
-                   bool     outOfBounds,
-                   double   m2lPrior,
-                   const V& m2lLikelihoodResults,
-                   const V& lrSigma2,
-                   double   logPosterior);
-  uqCandidateClass(const uqCandidateClass<V>& rhs);
- ~uqCandidateClass();
+  uqChainPositionClass(const uqEnvironmentClass& env);
+  uqChainPositionClass(const uqEnvironmentClass& env,
+                       const V& paramValues,
+                       bool     outOfBounds,
+                       double   m2lPrior,
+                       const V& m2lLikelihoodResults,
+                       const V& lrSigma2,
+                       double   logPosterior);
+  uqChainPositionClass(const uqChainPositionClass<V>& rhs);
+ ~uqChainPositionClass();
 
-  uqCandidateClass<V>& operator= (const uqCandidateClass<V>& rhs);
+  uqChainPositionClass<V>& operator= (const uqChainPositionClass<V>& rhs);
 
   const V& paramValues  () const;
   bool     outOfBounds  () const;
@@ -48,7 +48,7 @@ private:
 };
 
 template <class V>
-uqCandidateClass<V>::uqCandidateClass(const uqEnvironmentClass& env)
+uqChainPositionClass<V>::uqChainPositionClass(const uqEnvironmentClass& env)
   :
   m_env                 (env),
   m_paramValues         (NULL),
@@ -61,7 +61,7 @@ uqCandidateClass<V>::uqCandidateClass(const uqEnvironmentClass& env)
 }
 
 template <class V>
-uqCandidateClass<V>::uqCandidateClass(
+uqChainPositionClass<V>::uqChainPositionClass(
   const uqEnvironmentClass& env,
   const V& paramValues,
   bool     outOfBounds,
@@ -81,7 +81,7 @@ uqCandidateClass<V>::uqCandidateClass(
 }
 
 template <class V>
-uqCandidateClass<V>::uqCandidateClass(const uqCandidateClass<V>& rhs)
+uqChainPositionClass<V>::uqChainPositionClass(const uqChainPositionClass<V>& rhs)
   :
   m_env                 (rhs.m_env                         ),
   m_paramValues         (new V(*rhs.m_paramValues)         ),
@@ -94,7 +94,7 @@ uqCandidateClass<V>::uqCandidateClass(const uqCandidateClass<V>& rhs)
 }
 
 template <class V>
-uqCandidateClass<V>::~uqCandidateClass()
+uqChainPositionClass<V>::~uqChainPositionClass()
 {
   if (m_lrSigma2)             delete m_lrSigma2;
   if (m_m2lLikelihoodResults) delete m_m2lLikelihoodResults;
@@ -102,8 +102,8 @@ uqCandidateClass<V>::~uqCandidateClass()
 }
 
 template <class V>
-uqCandidateClass<V>&
-uqCandidateClass<V>::operator=(const uqCandidateClass<V>& rhs)
+uqChainPositionClass<V>&
+uqChainPositionClass<V>::operator=(const uqChainPositionClass<V>& rhs)
 {
   if (m_paramValues == NULL) m_paramValues = new V(*rhs.m_paramValues);
   else                      *m_paramValues = *rhs.m_paramValues;
@@ -120,53 +120,53 @@ uqCandidateClass<V>::operator=(const uqCandidateClass<V>& rhs)
 
 template <class V>
 const V&
-uqCandidateClass<V>::paramValues() const
+uqChainPositionClass<V>::paramValues() const
 {
   UQ_FATAL_TEST_MACRO((m_paramValues == NULL),
                       m_env.rank(),
-                      "uqCandidateClass<V>::paramValues()",
+                      "uqChainPositionClass<V>::paramValues()",
                       "m_paramValues is NULL");
   return *m_paramValues;
 }
 
 template <class V>
 bool
-uqCandidateClass<V>::outOfBounds() const
+uqChainPositionClass<V>::outOfBounds() const
 {
   return m_outOfBounds;
 }
 
 template <class V>
 double
-uqCandidateClass<V>::m2lPrior() const
+uqChainPositionClass<V>::m2lPrior() const
 {
   return m_m2lPrior;
 }
 
 template <class V>
 const V&    
-uqCandidateClass<V>::m2lLikelihood() const
+uqChainPositionClass<V>::m2lLikelihood() const
 {
   return *m_m2lLikelihoodResults;
 }
 
 template <class V>
 const V&
-uqCandidateClass<V>::lrSigma2() const
+uqChainPositionClass<V>::lrSigma2() const
 {
   return *m_lrSigma2;
 }
 
 template <class V>
 double
-uqCandidateClass<V>::logPosterior() const
+uqChainPositionClass<V>::logPosterior() const
 {
   return m_logPosterior;
 }
 
 template <class V>
 void
-uqCandidateClass<V>::set(
+uqChainPositionClass<V>::set(
   const V& paramValues,
   bool     outOfBounds,
   double   m2lPrior,
@@ -188,11 +188,11 @@ uqCandidateClass<V>::set(
 }
 
 template <class V>
-std::ostream& operator<<(std::ostream& os, const uqCandidateClass<V>& obj)
+std::ostream& operator<<(std::ostream& os, const uqChainPositionClass<V>& obj)
 {
   obj.print(os);
 
   return os;
 }
 
-#endif // __UQ_CANDIDATE_H__
+#endif // __UQ_CHAIN_POSITION_H__

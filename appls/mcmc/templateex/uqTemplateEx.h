@@ -1,14 +1,7 @@
 #ifndef __UQ_TEMPLATE_EX_H__
 #define __UQ_TEMPLATE_EX_H__
 
-#include <uqApplRoutines.h>
-#include <uqParamSpace.h>
-#include <uqOutputSpace.h>
 #include <uqDRAM_MarkovChainGenerator.h>
-#include <uqCovCond.h>
-#include <uqDefines.h>
-#include <math.h>
-#include <iostream>
 
 template<class V, class M>
 struct
@@ -104,6 +97,11 @@ double uqAppl_M2lPriorFunction_Routine(const V& paramValues, const void* functio
 {
   const V& v1 = *((uqAppl_M2lPriorFunction_DataType<V,M> *) functionDataPtr)->maybeYouNeedAVector;
   const M& m1 = *((uqAppl_M2lPriorFunction_DataType<V,M> *) functionDataPtr)->maybeYouNeedAMatrix;
+
+  UQ_FATAL_TEST_MACRO(true,
+                      paramValues.env().rank(),
+                      "uqAppl_M2lPriorFunction_Routine(), in uqTemplateEx.h",
+                      "should not be here, since application is using the default prior() routine provided by PECOS toolkit");
 
   return (m1 * v1).sumOfComponents();
 }

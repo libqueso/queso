@@ -19,10 +19,11 @@
 #define UQ_DRAM_MCG_MH_OUTPUT_FILE_NAME_ODV        "."
 #define UQ_DRAM_MCG_MH_CHAIN_DISPLAY_PERIOD_ODV    500
 
+#include <uqPriorAndLikelihoodInterfaces.h>
 #include <uqParamSpace.h>
 #include <uqStateSpace.h>
 #include <uqOutputSpace.h>
-#include <uqCandidate.h>
+#include <uqChainPosition.h>
 #include <uqMiscellaneous.h>
 #include <uqChainStats.h>
 #include <fstream>
@@ -45,7 +46,10 @@ public:
                                    const M* mahalanobisMatrix = NULL,
                                    bool     applyMahalanobisInvert = true);
   void print                      (std::ostream& os) const;
-  const std::vector<const V*>& chain() const;
+
+  const std::vector<const V*>& chain         () const;
+  const std::vector<const V*>& lrSigma2Chain () const;
+  const std::string&           outputFileName() const;
 
 private:
   void   resetChainAndRelatedInfo();
@@ -66,14 +70,14 @@ private:
                                   const M*     mahalanobisMatrix = NULL,
                                   bool         applyMahalanobisInvert = true) const;
 
-  double logProposal             (const uqCandidateClass<V>& x,
-                                  const uqCandidateClass<V>& y,
-                                  unsigned int               idOfMatrix);
-  double logProposal             (const std::vector<uqCandidateClass<V>*>& inputPositions);
-  double alpha                   (const uqCandidateClass<V>& x,
-                                  const uqCandidateClass<V>& y,
+  double logProposal             (const uqChainPositionClass<V>& x,
+                                  const uqChainPositionClass<V>& y,
+                                  unsigned int                   idOfProposalCovMatrix);
+  double logProposal             (const std::vector<uqChainPositionClass<V>*>& inputPositions);
+  double alpha                   (const uqChainPositionClass<V>& x,
+                                  const uqChainPositionClass<V>& y,
                                   double* alphaQuotientPtr = NULL);
-  double alpha                   (const std::vector<uqCandidateClass<V>*>& inputPositions);
+  double alpha                   (const std::vector<uqChainPositionClass<V>*>& inputPositions);
   bool   acceptAlpha             (double alpha);
   void   updateCovMatrices       ();
   void   updateCovMatrix         (const std::vector<V*>& subChain,
@@ -108,7 +112,6 @@ private:
   double                    m_epsilon;
   std::vector<std::string>  m_namesOfOutputFiles;
   unsigned int              m_chainDisplayPeriod;
-  gsl_rng*                  m_rng;
 
   std::vector<      M*>     m_lowerCholProposalCovMatrices;
   std::vector<      M*>     m_proposalCovMatrices;
@@ -161,7 +164,6 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::uqDRAM_MarkovChainGeneratorClass(
   m_epsilon                      (UQ_DRAM_MCG_AM_EPSILON_ODV),
   m_namesOfOutputFiles           (1,UQ_DRAM_MCG_MH_OUTPUT_FILE_NAME_ODV),
   m_chainDisplayPeriod           (UQ_DRAM_MCG_MH_CHAIN_DISPLAY_PERIOD_ODV),
-  m_rng                          (NULL),
   m_lowerCholProposalCovMatrices (1,NULL),
   m_proposalCovMatrices          (1,NULL),
 #ifdef UQ_DRAM_MCG_REQUIRES_INVERTED_COV_MATRICES
@@ -198,12 +200,6 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::uqDRAM_MarkovChainGeneratorClass(
                                    << "\n" << *this
                                    << std::endl;
 
-  m_rng = gsl_rng_alloc(gsl_rng_ranlxd2);
-  UQ_FATAL_TEST_MACRO((m_rng == NULL),
-                      m_env.rank(),
-                      "uqDRAM_MarkovChainGeneratorClass<V,M>::constructor()",
-                      "null m_rng");
-
   //std::cout << "Leaving uqDRAM_MarkovChainGeneratorClass<V,M>::constructor()"
   //          << std::endl;
 }
@@ -216,7 +212,6 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::~uqDRAM_MarkovChainGeneratorClass()
 
   resetChainAndRelatedInfo();
 
-  if (m_rng                    ) gsl_rng_free(m_rng);
   if (m_lrNumbersOfObservations) delete m_lrNumbersOfObservations;
   if (m_lrSigma2Accuracies     ) delete m_lrSigma2Accuracies;
   if (m_lrSigma2Priors         ) delete m_lrSigma2Priors;
@@ -667,17 +662,17 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
   m_m2lLikelihoodFunction_Obj(valuesOf1stPosition, m2lLikelihoodFunction_DataPtr, *m2lLikelihoodResults);
   V      lrSigma2(*m_lrSigma2Priors);
   double logPosterior         = -0.5 * ( m2lPrior + (*m2lLikelihoodResults/lrSigma2).sumOfComponents() );
-  uqCandidateClass<V> currentPosition(m_env,
-                                      valuesOf1stPosition,
-                                      outOfBounds,
-                                      m2lPrior,
-                                      *m2lLikelihoodResults,
-                                      lrSigma2,
-                                      logPosterior);
+  uqChainPositionClass<V> currentPosition(m_env,
+                                          valuesOf1stPosition,
+                                          outOfBounds,
+                                          m2lPrior,
+                                          *m2lLikelihoodResults,
+                                          lrSigma2,
+                                          logPosterior);
 
   V* gaussianVector = m_paramSpace.newVector();
   V* tmpParamValues = m_paramSpace.newVector();
-  uqCandidateClass<V> currentCandidate(m_env);
+  uqChainPositionClass<V> currentCandidate(m_env);
 
   //****************************************************
   // Begin chain loop from positionId = 1
@@ -702,7 +697,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
     //****************************************************
     // Loop: generate new parameters
     //****************************************************
-    gaussianVector->cwSetGaussian(m_rng,0.,1.);
+    gaussianVector->cwSetGaussian(m_env.rng(),0.,1.);
 
     *tmpParamValues = currentPosition.paramValues() + *(m_lowerCholProposalCovMatrices[stageId]) * *gaussianVector;
     outOfBounds     = m_paramSpace.outOfBounds(*tmpParamValues);
@@ -751,14 +746,14 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
     // Loop: delayed rejection
     //****************************************************
     if ((accept == false) && (outOfBounds == false) && (m_maxNumberOfExtraStages > 0)) {
-      std::vector<uqCandidateClass<V>*> positions(stageId+2,NULL);
-      positions[0] = new uqCandidateClass<V>(currentPosition);
-      positions[1] = new uqCandidateClass<V>(currentCandidate);
+      std::vector<uqChainPositionClass<V>*> positions(stageId+2,NULL);
+      positions[0] = new uqChainPositionClass<V>(currentPosition);
+      positions[1] = new uqChainPositionClass<V>(currentCandidate);
 
       while ((accept == false) && (stageId < m_maxNumberOfExtraStages)) {
         stageId++;
 
-        gaussianVector->cwSetGaussian(m_rng,0.,1.);
+        gaussianVector->cwSetGaussian(m_env.rng(),0.,1.);
 
         *tmpParamValues = currentPosition.paramValues() + *(m_lowerCholProposalCovMatrices[stageId]) * *gaussianVector;
         outOfBounds   = m_paramSpace.outOfBounds(*tmpParamValues);
@@ -779,7 +774,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
                              lrSigma2,
                              logPosterior);
 
-        positions.push_back(new uqCandidateClass<V>(currentCandidate));
+        positions.push_back(new uqChainPositionClass<V>(currentCandidate));
         accept = acceptAlpha(this->alpha(positions));
       } // while
     }
@@ -802,7 +797,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
       for (unsigned int i = 0; i < lrSigma2.size(); ++i) {
         double term1 = 0.5*(double)( (*m_lrSigma2Accuracies)[i] + (*m_lrNumbersOfObservations)[i] );
         double term2 = 2./ (double)( (*m_lrSigma2Accuracies)[i] * (*m_lrSigma2Priors)[i] + (*m_lrChain[positionId])[i] );
-        lrSigma2[i] = 1./uqMiscGammar(term1,term2,m_rng);
+        lrSigma2[i] = 1./uqMiscGammar(term1,term2,m_env.rng());
         //if (m_env.rank() == 0) {
         //  std::cout << "In uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain()"
         //            << ": for chain position of id = "     << positionId
@@ -955,22 +950,22 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
 template <class V, class M>
 double
 uqDRAM_MarkovChainGeneratorClass<V,M>::logProposal(
-  const uqCandidateClass<V>& x,
-  const uqCandidateClass<V>& y,
-  unsigned int               idOfMatrix)
+  const uqChainPositionClass<V>& x,
+  const uqChainPositionClass<V>& y,
+  unsigned int                   idOfProposalCovMatrix)
 {
   V diffVec(y.paramValues() - x.paramValues());
 #ifdef UQ_DRAM_MCG_REQUIRES_INVERTED_COV_MATRICES
-  double value = -0.5 * scalarProduct(diffVec, *(m_proposalPrecMatrices[idOfMatrix]) * diffVec);
+  double value = -0.5 * scalarProduct(diffVec, *(m_proposalPrecMatrices[idOfProposalCovMatrix]) * diffVec);
 #else
-  double value = -0.5 * scalarProduct(diffVec, m_proposalCovMatrices[idOfMatrix]->invertMultiply(diffVec));
+  double value = -0.5 * scalarProduct(diffVec, m_proposalCovMatrices[idOfProposalCovMatrix]->invertMultiply(diffVec));
 #endif
   return value;
 }
 
 template <class V, class M>
 double
-uqDRAM_MarkovChainGeneratorClass<V,M>::logProposal(const std::vector<uqCandidateClass<V>*>& inputPositions)
+uqDRAM_MarkovChainGeneratorClass<V,M>::logProposal(const std::vector<uqChainPositionClass<V>*>& inputPositions)
 {
   unsigned int inputSize = inputPositions.size();
   UQ_FATAL_TEST_MACRO((inputSize < 2),
@@ -986,9 +981,9 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::logProposal(const std::vector<uqCandidate
 template <class V, class M>
 double
 uqDRAM_MarkovChainGeneratorClass<V,M>::alpha(
-  const uqCandidateClass<V>& x,
-  const uqCandidateClass<V>& y,
-  double* alphaQuotientPtr)
+  const uqChainPositionClass<V>& x,
+  const uqChainPositionClass<V>& y,
+  double*                        alphaQuotientPtr)
 {
   double alphaQuotient = 0.;
   if ((x.outOfBounds() == false) &&
@@ -1011,7 +1006,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::alpha(
 
 template <class V, class M>
 double
-uqDRAM_MarkovChainGeneratorClass<V,M>::alpha(const std::vector<uqCandidateClass<V>*>& inputPositions)
+uqDRAM_MarkovChainGeneratorClass<V,M>::alpha(const std::vector<uqChainPositionClass<V>*>& inputPositions)
 {
   unsigned int inputSize = inputPositions.size();
   UQ_FATAL_TEST_MACRO((inputSize < 2),
@@ -1028,8 +1023,8 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::alpha(const std::vector<uqCandidateClass<
                                          *(inputPositions[inputSize - 1]));
 
   // Prepare two vectors of positions
-  std::vector<uqCandidateClass<V>*>         positions(inputSize,NULL);
-  std::vector<uqCandidateClass<V>*> backwardPositions(inputSize,NULL);
+  std::vector<uqChainPositionClass<V>*>         positions(inputSize,NULL);
+  std::vector<uqChainPositionClass<V>*> backwardPositions(inputSize,NULL);
   for (unsigned int i = 0; i < inputSize; ++i) {
             positions[i] = inputPositions[i];
     backwardPositions[i] = inputPositions[inputSize-i-1];
@@ -1073,10 +1068,10 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::acceptAlpha(double alpha)
 {
   bool result = false;
 
-  if      (alpha <= 0.                    ) result = false;
-  else if (alpha >= 1.                    ) result = true;
-  else if (alpha >= gsl_rng_uniform(m_rng)) result = true;
-  else                                      result = false;
+  if      (alpha <= 0.                          ) result = false;
+  else if (alpha >= 1.                          ) result = true;
+  else if (alpha >= gsl_rng_uniform(m_env.rng())) result = true;
+  else                                            result = false;
 
   return result;
 }
@@ -1092,12 +1087,10 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::updateCovMatrix(
   if ((lastSubChainSize     == 0   ) &&
       (lastSubMean          == NULL) &&
       (lastAdaptedCovMatrix == NULL)) {
-    if (subChain.size() < 2) {
-      UQ_FATAL_RC_MACRO(UQ_INVALID_INPUT_PARAMETER_RC,
+    UQ_FATAL_TEST_MACRO(subChain.size() < 2,
                         m_env.rank(),
                         "uqDRAM_MarkovChainGeneratorClass<V,M>::updateCovMatrix()",
                         "'subChain.size()' should be >= 2");
-    }
 
     double doubleSubChainSize = (double) subChain.size();
     lastSubMean = m_paramSpace.newVector();
@@ -1107,34 +1100,25 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::updateCovMatrix(
     *lastSubMean /= doubleSubChainSize;
 
     lastAdaptedCovMatrix = m_paramSpace.newMatrix();
-
-    M* tmpMatrix = new M(matrixProduct(*lastSubMean,*lastSubMean));
-    *lastAdaptedCovMatrix += *tmpMatrix;
-    delete tmpMatrix;
-    *lastAdaptedCovMatrix *= doubleSubChainSize;
-
+    *lastAdaptedCovMatrix = doubleSubChainSize * matrixProduct(*lastSubMean,*lastSubMean);
     for (unsigned int i = 0; i < subChain.size(); ++i) {
-      tmpMatrix = new M(matrixProduct(*(subChain[i]),*(subChain[i])));
-      *lastAdaptedCovMatrix += *tmpMatrix;
-      delete tmpMatrix;
+      *lastAdaptedCovMatrix += matrixProduct(*(subChain[i]),*(subChain[i]));
     }
     *lastAdaptedCovMatrix /= (doubleSubChainSize - 1.); // That is why size must be >= 2
   }
   else if ((lastSubChainSize     >  0   ) &&
            (lastSubMean          != NULL) &&
            (lastAdaptedCovMatrix != NULL)) {
-    if (subChain.size() < 1) {
-      UQ_FATAL_RC_MACRO(UQ_INVALID_INPUT_PARAMETER_RC,
+    UQ_FATAL_TEST_MACRO(subChain.size() < 1,
                         m_env.rank(),
                         "uqDRAM_MarkovChainGeneratorClass<V,M>::updateCovMatrix()",
                         "'subChain.size()' should be >= 1");
-    }
   }
   else {
-    UQ_FATAL_RC_MACRO(UQ_INVALID_INPUT_PARAMETER_RC,
-                      m_env.rank(),
-                      "uqDRAM_MarkovChainGeneratorClass<V,M>::updateCovMatrix()",
-                      "'lastSubChainSize', 'lastSubMean' and 'lastAdaptedCovMatrix' are incompatible with each other");
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.rank(),
+                        "uqDRAM_MarkovChainGeneratorClass<V,M>::updateCovMatrix()",
+                        "'lastSubChainSize', 'lastSubMean' and 'lastAdaptedCovMatrix' are incompatible with each other");
   }
 
   return;
@@ -1149,7 +1133,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::gammar(
 {
   for (unsigned int i = 0; i < mat.numRows(); ++i) {
     for (unsigned int j = 0; j < mat.numCols(); ++j) {
-      mat(i,j) = uqMiscGammar(a,b,m_rng);
+      mat(i,j) = uqMiscGammar(a,b,m_env.rng());
     }
   }
 
@@ -1328,6 +1312,20 @@ const std::vector<const V*>&
 uqDRAM_MarkovChainGeneratorClass<V,M>::chain() const
 {
   return m_chain;
+}
+
+template <class V, class M>
+const std::vector<const V*>&
+uqDRAM_MarkovChainGeneratorClass<V,M>::lrSigma2Chain() const
+{
+  return m_lrSigma2Chain;
+}
+
+template <class V, class M>
+const std::string&
+uqDRAM_MarkovChainGeneratorClass<V,M>::outputFileName() const
+{
+  return m_namesOfOutputFiles[m_chain.size()-1];
 }
 
 template <class V, class M>

@@ -1,7 +1,7 @@
 #include <uqEnvironment.h>
 #include <uqDefines.h>
 
-#define UQ_CURRENT_VERSION "0.0.1"
+#define PECOS_TOOLKIT_CURRENT_VERSION "0.1"
 
 uqEnvOptionsStruct::uqEnvOptionsStruct(
   unsigned int verbosity)
@@ -29,7 +29,8 @@ uqEnvironmentClass::uqEnvironmentClass()
   m_allOptionsDesc  (NULL),
   m_envOptionsDesc  (NULL),
   m_allOptionsMap   (NULL),
-  m_verbosity       (UQ_ENV_VERBOSITY_DEFAULT_VALUE)
+  m_verbosity       (UQ_ENV_VERBOSITY_DEFAULT_VALUE),
+  m_rng             (NULL)
 {
   commonConstructor();
 }
@@ -51,7 +52,8 @@ uqEnvironmentClass::uqEnvironmentClass(
   m_allOptionsDesc  (NULL),
   m_envOptionsDesc  (NULL),
   m_allOptionsMap   (NULL),
-  m_verbosity       (UQ_ENV_VERBOSITY_DEFAULT_VALUE)
+  m_verbosity       (UQ_ENV_VERBOSITY_DEFAULT_VALUE),
+  m_rng             (NULL)
 {
   //////////////////////////////////////////////////
   // Initialize MPI
@@ -75,7 +77,8 @@ uqEnvironmentClass::uqEnvironmentClass(
   m_allOptionsDesc  (NULL),
   m_envOptionsDesc  (NULL),
   m_allOptionsMap   (NULL),
-  m_verbosity       (options.m_verbosity)
+  m_verbosity       (options.m_verbosity),
+  m_rng             (NULL)
 {
   commonConstructor();
 }
@@ -89,14 +92,20 @@ uqEnvironmentClass::commonConstructor()
   m_commSize = m_comm->Size();
 #endif
 
-  //if (m_rank == 0) std::cout << "Entering uqEnvironmentClass::constructor()"
+  //if (m_rank == 0) std::cout << "Entering uqEnvironmentClass::commonConstructor()"
   //                           << std::endl;
 
   if (m_rank == 0) std::cout << "\n================================="
-                             << "\n ICES UQ library, version " << UQ_CURRENT_VERSION
+                             << "\n PECOS toolkit, version " << PECOS_TOOLKIT_CURRENT_VERSION
                              << "\n================================="
                              << "\n"
                              << std::endl;
+
+  m_rng = gsl_rng_alloc(gsl_rng_ranlxd2);
+  UQ_FATAL_TEST_MACRO((m_rng == NULL),
+                      m_rank,
+                      "uqEnvironmentClass::commonConstructor()",
+                      "null m_rng");
 
   m_allOptionsMap  = new po::variables_map();
   m_allOptionsDesc = new po::options_description("Allowed options");
@@ -108,7 +117,7 @@ uqEnvironmentClass::commonConstructor()
   scanInputFileForMyOptions(*m_envOptionsDesc);
   getMyOptionValues        (*m_envOptionsDesc);
 
-  //if (m_rank == 0) std::cout << "Leaving uqEnvironmentClass::constructor()"
+  //if (m_rank == 0) std::cout << "Leaving uqEnvironmentClass::commonConstructor()"
   //                           << std::endl;
 
   return;
@@ -169,7 +178,7 @@ uqEnvironmentClass::readEventualInputFile()
 
   if (displayHelpMessageAndExit) {
     if (m_rank == 0) std::cout << "\nThis is a help message of the UQ library."
-                               << "\nAn UQ application using the ICES UQ library shall be executed by typing"
+                               << "\nAn UQ application using the PECOS toolkit shall be executed by typing"
                                << "\n  '<eventual mpi commands and options> <uqApplication> -i <uqInputFile>'"
                                << "\nin the command line."
                                << "\n"
@@ -198,6 +207,7 @@ uqEnvironmentClass::uqEnvironmentClass(const uqEnvironmentClass& obj)
   m_envOptionsDesc = NULL;
   m_allOptionsMap  = obj.m_allOptionsMap;
   m_verbosity      = obj.m_verbosity;
+  m_rng            = obj.m_rng;
 }
 
 uqEnvironmentClass::~uqEnvironmentClass()
@@ -210,6 +220,8 @@ uqEnvironmentClass::~uqEnvironmentClass()
     delete m_envOptionsDesc;
     delete m_allOptionsDesc;
   }
+
+  if (m_rng) gsl_rng_free(m_rng);
 
   //if (m_rank == 0) std::cout << "Leaving uqEnvironmentClass::destructor()"
   //                           << std::endl;
@@ -238,6 +250,7 @@ uqEnvironmentClass::operator= (const uqEnvironmentClass& rhs)
   m_rank      = rhs.m_rank;
   m_commSize  = rhs.m_commSize;
   m_verbosity = rhs.m_verbosity;
+  m_rng       = rhs.m_rng;
 
   return *this;
 }
@@ -337,6 +350,12 @@ unsigned int
 uqEnvironmentClass::verbosity() const
 {
   return m_verbosity;
+}
+
+gsl_rng*
+uqEnvironmentClass::rng() const
+{
+  return m_rng;
 }
 
 bool

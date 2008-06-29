@@ -11,6 +11,7 @@ DEFINES = \
 	-D__APPL_USES_GSL__ -D__UQ_USES_GSL__
 INC_PATHS = \
 	-I. \
+	-I../inc \
 	-I../../../libs/basic/inc \
 	-I../../../libs/mcmc/inc \
 	-I$(BOOST_INCLUDE_PATH_FOR_PECOS_TOOLKIT)

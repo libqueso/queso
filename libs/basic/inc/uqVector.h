@@ -2,7 +2,6 @@
 #define __UQ_VECTOR_H__
 
 #include <uqEnvironment.h>
-#include <gsl/gsl_rng.h>
 #include <gsl/gsl_randist.h>
 #include <iostream>
 

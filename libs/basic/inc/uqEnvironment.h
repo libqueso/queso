@@ -9,6 +9,8 @@
 #include <Epetra_MpiComm.h>
 #endif
 
+#include <gsl/gsl_rng.h>
+
 #include <boost/program_options.hpp>
 namespace po = boost::program_options;
 #include <iostream>
@@ -39,6 +41,7 @@ public:
         po::variables_map&       allOptionsMap            () const;
         void                     scanInputFileForMyOptions(const po::options_description& optionsDesc) const;
         unsigned int             verbosity                () const;
+        gsl_rng*                 rng                      () const;
         bool                     isThereInputFile         () const;
         void                     print                    (std::ostream& os) const;
 
@@ -62,6 +65,7 @@ private:
   po::options_description* m_envOptionsDesc;
   po::variables_map*       m_allOptionsMap;
   unsigned int             m_verbosity;
+  gsl_rng*                 m_rng;
 };
 
 std::ostream& operator<<(std::ostream& os, const uqEnvironmentClass& obj);

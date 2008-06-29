@@ -1,4 +1,5 @@
 #include <uqAlgaeEx.h>
+#include <uqApplRoutines.h>
 #include <uqGslMatrix.h>
 
 int main(int argc, char* argv[])
