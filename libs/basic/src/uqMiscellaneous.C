@@ -113,6 +113,22 @@ uqMiscReadWordsFromString(
   return;
 }
 
+void
+uqMiscExtractDoubleFromString(
+  std::string& inputString,
+  double&      outputDouble)
+{
+  return;
+}
+
+void
+uqMiscExtractWordFromString(
+  std::string& inputString,
+  std::string& outputWord)
+{
+  return;
+}
+
 double
 uqMiscGammar(
   double   a,

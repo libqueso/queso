@@ -36,9 +36,13 @@ protected:
           void                    defineMyOptions           (po::options_description& optionsDesc) const;
           void                    getMyOptionValues         (po::options_description& optionsDesc);
           void                    readParamsFromFile        (std::string& paramFileName);
-          void                    readTermFromFile          (std::ifstream& ifs,
+          int                     readTermFromFile          (std::ifstream& ifs,
                                                              std::string&   termString,
                                                              double*        termValue);
+          int                     readCharsFromFile         (std::ifstream& ifs,
+                                                             std::string&   termString,
+                                                             double*        termValue,
+                                                             bool&          endOfLineAchieved);
           void                    resetValues               ();
           void                    createInitialValues       () const; // See template specialization
           void                    createMinValues           () const; // See template specialization
@@ -169,35 +173,48 @@ void
 uqParamSpaceClass<V,M>::readParamsFromFile(std::string& paramFileName)
 {
   unsigned int maxCharsPerLine = 512;
-  unsigned int numHeaderLines  = 2;
 
   std::ifstream ifs(paramFileName.c_str());
 
-  unsigned int numParameters = std::count(std::istreambuf_iterator<char>(ifs),
-                                          std::istreambuf_iterator<char>(),
-                                          '\n');
-  UQ_FATAL_TEST_MACRO((numParameters < numHeaderLines),
+  // Determine number of lines
+  unsigned int numLines = std::count(std::istreambuf_iterator<char>(ifs),
+                                     std::istreambuf_iterator<char>(),
+                                     '\n');
+
+  // Determine number of parameters
+  int iRC;
+  ifs.seekg(0,std::ios_base::beg);
+  unsigned int lineId = 0;
+  unsigned int numParameters = 0;
+  std::string tempString;
+  while ((lineId < numLines) && (ifs.eof() == false)) {
+    iRC = readTermFromFile(ifs,tempString,NULL);
+    UQ_FATAL_TEST_MACRO(iRC,
+                        m_env.rank(),
+                        "uqParamSpaceClass<V,M>::constructor()",
+                        "failed reading during the determination of the number of parameters");
+    if (tempString[0] != '#') numParameters++;
+    lineId++;
+  }
+  UQ_FATAL_TEST_MACRO(lineId != numLines,
                       m_env.rank(),
                       "uqParamSpaceClass<V,M>::constructor()",
-                      "too small number of lines in the parameter input file");
-  numParameters -= numHeaderLines;
-  //std::cout << "Parameter input file '" << paramFileName
-  //          << "' specifies "           << numParameters
-  //          << " parameters."
-  //          << std::endl;
-  m_parameters.resize(numParameters,NULL);
-
-  UQ_FATAL_TEST_MACRO(m_dim != m_parameters.size(),
+                      "the first number of lines read is nonconsistent");
+  UQ_FATAL_TEST_MACRO(m_dim != numParameters,
                       m_env.rank(),
                       "uqParamSpaceClass<V,M>::constructor()",
                       "number of parameters in parameter input file does not match dimension passed in the main input file");
 
-  ifs.seekg(0,std::ios_base::beg);
-  for (unsigned int i = 0; i < numHeaderLines; ++i) {
-    ifs.ignore(maxCharsPerLine,'\n');
-  }
+  std::cout << "Parameter input file '" << paramFileName
+            << "' has "                 << numLines
+            << " lines and specifies "  << numParameters
+            << " parameters."
+            << std::endl;
+  m_parameters.resize(numParameters,NULL);
 
   // Read file until End Of File character is reached
+  ifs.seekg(0,std::ios_base::beg);
+  lineId = 0;
   unsigned int paramId = 0;
   std::string  paramName         ("");
   std::string  initialValueString("");
@@ -210,15 +227,75 @@ uqParamSpaceClass<V,M>::readParamsFromFile(std::string& paramFileName)
   double       maxValue;
   double       priorMu;
   double       priorSigma;
-  while ((paramId < numParameters) && (ifs.eof() == false)) {
-    // Default behaviour of a stream is to read until the space character is reached
-    //ifs >> paramName >> initialValue >> minValue >> maxValue >> priorMu >> priorSigma;
-    readTermFromFile(ifs,paramName,         NULL         );
-    readTermFromFile(ifs,initialValueString,&initialValue);
-    readTermFromFile(ifs,minValueString,    &minValue    );
-    readTermFromFile(ifs,maxValueString,    &maxValue    );
-    readTermFromFile(ifs,priorMuString,     &priorMu     );
-    readTermFromFile(ifs,priorSigmaString,  &priorSigma  );
+  while ((lineId < numLines) && (ifs.eof() == false)) {
+    //std::cout << "Beginning read of line (in parameter input file) of id = " << lineId << std::endl;
+    bool endOfLineAchieved = false;
+
+    UQ_FATAL_TEST_MACRO(paramId >= m_parameters.size(),
+                        m_env.rank(),
+                        "uqParamSpaceClass<V,M>::constructor()",
+                        "paramId got too large during reading of parameter input file");
+
+    iRC = readCharsFromFile(ifs, paramName, NULL, endOfLineAchieved);
+    UQ_FATAL_TEST_MACRO(iRC,
+                        m_env.rank(),
+                        "uqParamSpaceClass<V,M>::constructor()",
+                        "failed reading a parameter name during the parameters reading loop");
+
+    lineId++;
+    if (paramName[0] == '#') {
+      if (!endOfLineAchieved) ifs.ignore(maxCharsPerLine,'\n');
+      continue;
+    }
+    UQ_FATAL_TEST_MACRO(endOfLineAchieved,
+                        m_env.rank(),
+                        "uqParamSpaceClass<V,M>::constructor()",
+                        "failed to provide information beyond parameter name during the parameters reading loop");
+
+    iRC = readCharsFromFile(ifs, initialValueString, &initialValue, endOfLineAchieved);
+    UQ_FATAL_TEST_MACRO(iRC,
+                        m_env.rank(),
+                        "uqParamSpaceClass<V,M>::constructor()",
+                        "failed reading an initial value during the parameters reading loop");
+
+    minValue   = -INFINITY;
+    maxValue   = INFINITY;
+    priorMu    = nan("");
+    priorSigma = INFINITY;
+
+    if (!endOfLineAchieved) {
+      iRC = readCharsFromFile(ifs, minValueString, &minValue, endOfLineAchieved);
+      UQ_FATAL_TEST_MACRO(iRC,
+                          m_env.rank(),
+                          "uqParamSpaceClass<V,M>::constructor()",
+                          "failed reading a minimal value during the parameters reading loop");
+    }
+
+    if (!endOfLineAchieved) {
+      iRC = readCharsFromFile(ifs, maxValueString, &maxValue, endOfLineAchieved);
+      UQ_FATAL_TEST_MACRO(iRC,
+                          m_env.rank(),
+                          "uqParamSpaceClass<V,M>::constructor()",
+                          "failed reading a maximum value during the parameters reading loop");
+    }
+
+    if (!endOfLineAchieved) {
+      iRC = readCharsFromFile(ifs, priorMuString, &priorMu, endOfLineAchieved);
+      UQ_FATAL_TEST_MACRO(iRC,
+                          m_env.rank(),
+                          "uqParamSpaceClass<V,M>::constructor()",
+                          "failed reading a prior mu value during the parameters reading loop");
+    }
+
+    if (!endOfLineAchieved) {
+      iRC = readCharsFromFile(ifs, priorSigmaString, &priorSigma, endOfLineAchieved);
+      UQ_FATAL_TEST_MACRO(iRC,
+                          m_env.rank(),
+                          "uqParamSpaceClass<V,M>::constructor()",
+                          "failed reading a prior sigma value during the parameters reading loop");
+    }
+
+    if (!endOfLineAchieved) ifs.ignore(maxCharsPerLine,'\n');
     //std::cout << "Just read, for paramId = " << paramId
     //          << ": paramName = "    << paramName
     //          << ", initialValue = " << initialValue
@@ -234,43 +311,109 @@ uqParamSpaceClass<V,M>::readParamsFromFile(std::string& paramFileName)
                  maxValue,
                  priorMu,
                  priorSigma);
-    ifs.ignore(maxCharsPerLine,'\n');
     paramId++;
   }
 
-  UQ_FATAL_TEST_MACRO((paramId != numParameters),
+  UQ_FATAL_TEST_MACRO(lineId != numLines,
                       m_env.rank(),
                       "uqParamSpaceClass<V,M>::constructor()",
-                      "the number of lines just read is nonconsistent");
+                      "the second number of lines read is nonconsistent");
+  UQ_FATAL_TEST_MACRO(paramId != m_parameters.size(),
+                      m_env.rank(),
+                      "uqParamSpaceClass<V,M>::constructor()",
+                      "the number of parameters just read is nonconsistent");
 
   return;
 }
 
 template <class V, class M>
-void
+int
 uqParamSpaceClass<V,M>::readTermFromFile(
   std::ifstream& ifs,
   std::string&   termString,
   double*        termValue)
 {
+  int iRC = UQ_OK_RC;
+
   ifs >> termString;
-  UQ_FATAL_TEST_MACRO((ifs.rdstate() & std::ifstream::failbit),
-                      m_env.rank(),
-                      "uqParamSpaceClass<V,M>::readTermFromFile()",
-                      "failed");
-  if (termValue) {
+  if ((ifs.rdstate() & std::ifstream::failbit)) {
+    iRC = UQ_FAILED_READING_FILE_RC;
+  }
+  else if (termValue) {
     if (termString == std::string("inf")) {
       *termValue = INFINITY;
     }
     else if (termString == std::string("-inf")) {
       *termValue = -INFINITY;
     }
+    else if (termString == std::string("nan")) {
+      *termValue = nan("");
+    }
     else {
       *termValue = strtod(termString.c_str(),NULL);
     }
   }
+  //if (!iRC) std::cout << "Read termString = " << termString << std::endl;
 
-  return;
+  return iRC;
+}
+
+template <class V, class M>
+int
+uqParamSpaceClass<V,M>::readCharsFromFile(
+  std::ifstream& ifs,
+  std::string&   termString,
+  double*        termValue,
+  bool&          endOfLineAchieved)
+{
+  int iRC = UQ_OK_RC;
+  endOfLineAchieved = false;
+
+  char c = ' ';
+  while (c == ' ') {
+    ifs.get(c);
+    if ((ifs.rdstate() & std::ifstream::failbit)) {
+      iRC = UQ_FAILED_READING_FILE_RC;
+      break;
+    }
+  };
+
+  char term[512];
+  unsigned int pos = 0;
+
+  if (!iRC) {
+    while ((pos < 512) && (c != '\n') && (c != '\0') && (c != ' ')) {
+      term[pos++] = c;
+      if ((ifs.rdstate() & std::ifstream::failbit)) {
+        iRC = UQ_FAILED_READING_FILE_RC;
+        break;
+      }
+      ifs.get(c);
+    };
+  }
+
+  if (!iRC) {
+    if (c == '\n') endOfLineAchieved = true;
+    term[pos] = '\0';
+    termString = term;
+    //std::cout << "Read chars = " << termString << std::endl;
+    if (termValue) {
+      if (termString == std::string("inf")) {
+        *termValue = INFINITY;
+      }
+      else if (termString == std::string("-inf")) {
+        *termValue = -INFINITY;
+      }
+      else if (termString == std::string("nan")) {
+        *termValue = nan("");
+      }
+      else {
+        *termValue = strtod(termString.c_str(),NULL);
+      }
+    }
+  }
+
+  return iRC;
 }
 
 template <class V, class M>

@@ -183,12 +183,17 @@ int
 uqGslMatrixClass::chol()
 {
   int iRC;
+  //std::cout << "Calling gsl_linalg_cholesky_decomp()..." << std::endl;
+  gsl_error_handler_t* oldHandler;
+  oldHandler = gsl_set_error_handler_off();
   iRC = gsl_linalg_cholesky_decomp(m_mat);
+  gsl_set_error_handler(oldHandler);
+  //std::cout << "Returned from gsl_linalg_cholesky_decomp() with iRC = " << iRC << std::endl;
   UQ_RC_MACRO(iRC, // Yes, *not* a fatal check on RC
               m_env.rank(),
               "uqGslMatrixClass::chol()",
               "matrix is not positive definite",
-              UQ_MATRIX_IS_NOT_POS_DEFINITE);
+              UQ_MATRIX_IS_NOT_POS_DEFINITE_RC);
 
   return iRC;
 }
@@ -430,6 +435,13 @@ uqGslMatrixClass operator*(const uqGslMatrixClass& m1, const uqGslMatrixClass& m
   }
 
   return mat;
+}
+
+uqGslMatrixClass operator+(const uqGslMatrixClass& m1, const uqGslMatrixClass& m2)
+{
+  uqGslMatrixClass answer(m1);
+  answer += m2;
+  return answer;
 }
 
 uqGslMatrixClass matrixProduct(const uqGslVectorClass& v1, const uqGslVectorClass& v2)

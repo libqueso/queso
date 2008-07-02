@@ -10,13 +10,14 @@ int uqMyRank();
 #define UQ_INVALID_DOF_ID   UINT_MAX
 #define UQ_INVALID_NODE_ID  UINT_MAX
 
-#define UQ_OK_RC                         0
-#define UQ_INCOMPLETE_IMPLEMENTATION_RC -1
-#define UQ_INVALID_INPUT_PARAMETER_RC   -2
-#define UQ_INVALID_INTERNAL_RESULT_RC   -3
-#define UQ_INVALID_INTERNAL_STATE_RC    -4
-#define UQ_FAILED_TO_OPEN_FILE_RC       -5
-#define UQ_MATRIX_IS_NOT_POS_DEFINITE   -6
+#define UQ_OK_RC                          0
+#define UQ_INCOMPLETE_IMPLEMENTATION_RC  -1
+#define UQ_INVALID_INPUT_PARAMETER_RC    -2
+#define UQ_INVALID_INTERNAL_RESULT_RC    -3
+#define UQ_INVALID_INTERNAL_STATE_RC     -4
+#define UQ_FAILED_TO_OPEN_FILE_RC        -5
+#define UQ_MATRIX_IS_NOT_POS_DEFINITE_RC -6
+#define UQ_FAILED_READING_FILE_RC        -7
 
 #define UQ_RC_MACRO(iRC,givenRank,where,what,retValue) \
   if (iRC) {                                           \

@@ -4,10 +4,14 @@
 #include <gsl/gsl_rng.h>
 #include <vector>
 
-void   uqMiscReadDoublesFromString (const std::string&   inputString,
-                                    std::vector<double>& outputDoubles);
-void   uqMiscReadWordsFromString   (const std::string&        inputString,
-                                    std::vector<std::string>& outputWords);
+void   uqMiscReadDoublesFromString  (const std::string&   inputString,
+                                     std::vector<double>& outputDoubles);
+void   uqMiscReadWordsFromString    (const std::string&        inputString,
+                                     std::vector<std::string>& outputWords);
+void   uqMiscExtractDoubleFromString(std::string& inputString,
+                                     double&      outputDouble);
+void   uqMiscExtractWordFromString  (std::string& inputString,
+                                     std::string& outputWord);
 double uqMiscGammar                (double   a,
                                     double   b,
                                     gsl_rng* rng);

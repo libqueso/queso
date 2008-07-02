@@ -81,9 +81,10 @@ private:
   bool   acceptAlpha             (double alpha);
   void   updateCovMatrices       ();
   void   updateCovMatrix         (const std::vector<V*>& subChain,
-                                  double&                lastSubChainSize,
-                                  V*&                    lastSubMean,
-                                  M*&                    lastAdaptedCovMatrix);
+                                  unsigned int           idOfFirstPositionInSubChain,
+                                  double&                lastChainSize,
+                                  V&                     lastMean,
+                                  M&                     lastAdaptedCovMatrix);
   void   gammar                  (double a,
                                   double b,
                                   M&     mat);
@@ -126,8 +127,8 @@ private:
   std::vector<double>       m_alphaQuotients;
   unsigned int              m_numRejections;
   unsigned int              m_numOutOfBounds;
-  double                    m_lastSubChainSize;
-  V*                        m_lastSubMean;
+  double                    m_lastChainSize;
+  V*                        m_lastMean;
   M*                        m_lastAdaptedCovMatrix;
 };
 
@@ -176,8 +177,8 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::uqDRAM_MarkovChainGeneratorClass(
   m_alphaQuotients               (0,0.),
   m_numRejections                (0),
   m_numOutOfBounds               (0),
-  m_lastSubChainSize             (0),
-  m_lastSubMean                  (NULL),
+  m_lastChainSize                (0),
+  m_lastMean                     (NULL),
   m_lastAdaptedCovMatrix         (NULL)
 {
   if (m_useDefaultM2lPriorFunction) {
@@ -232,8 +233,8 @@ void
 uqDRAM_MarkovChainGeneratorClass<V,M>::resetChainAndRelatedInfo()
 {
   if (m_lastAdaptedCovMatrix) delete m_lastAdaptedCovMatrix;
-  if (m_lastSubMean)          delete m_lastSubMean;
-  m_lastSubChainSize = 0;
+  if (m_lastMean)             delete m_lastMean;
+  m_lastChainSize = 0;
   m_numOutOfBounds   = 0;
   m_numRejections    = 0;
   m_alphaQuotients.clear();
@@ -745,10 +746,10 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
     //****************************************************
     // Loop: delayed rejection
     //****************************************************
+    std::vector<uqChainPositionClass<V>*> drPositions(stageId+2,NULL);
     if ((accept == false) && (outOfBounds == false) && (m_maxNumberOfExtraStages > 0)) {
-      std::vector<uqChainPositionClass<V>*> positions(stageId+2,NULL);
-      positions[0] = new uqChainPositionClass<V>(currentPosition);
-      positions[1] = new uqChainPositionClass<V>(currentCandidate);
+      drPositions[0] = new uqChainPositionClass<V>(currentPosition);
+      drPositions[1] = new uqChainPositionClass<V>(currentCandidate);
 
       while ((accept == false) && (stageId < m_maxNumberOfExtraStages)) {
         stageId++;
@@ -774,9 +775,13 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
                              lrSigma2,
                              logPosterior);
 
-        positions.push_back(new uqChainPositionClass<V>(currentCandidate));
-        accept = acceptAlpha(this->alpha(positions));
+        drPositions.push_back(new uqChainPositionClass<V>(currentCandidate));
+        accept = acceptAlpha(this->alpha(drPositions));
       } // while
+    } // end of 'delayed rejection' logic
+
+    for (unsigned int i = 0; i < drPositions.size(); ++i) {
+      if (drPositions[i]) delete drPositions[i];
     }
 
     //****************************************************
@@ -785,7 +790,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
     if (accept) {
       m_chain[positionId]   = m_paramSpace.uqFinDimLinearSpaceClass<V,M>::newVector(currentCandidate.paramValues());
       m_lrChain[positionId] = m_outputSpace.newVector(currentCandidate.m2lLikelihood());
-      currentPosition  = currentCandidate;
+      currentPosition = currentCandidate;
     }
     else {
       m_chain[positionId]   = m_paramSpace.uqFinDimLinearSpaceClass<V,M>::newVector(currentPosition.paramValues());
@@ -821,10 +826,12 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
     m_lrSigma2Chain[positionId] = m_outputSpace.newVector(lrSigma2);
 
     //****************************************************
-    // Loop: adaptation of covariance matrix
+    // Loop: adaptive Metropolis (adaptation of covariance matrix)
     //****************************************************
-    if (m_adaptInterval > 0) {
+    if ((m_initialNonAdaptInterval > 0) &&
+        (m_adaptInterval           > 0)) {
       // Now might be the moment to adapt
+      unsigned int idOfFirstPositionInSubChain = 0;
       std::vector<V*> subChain(0,NULL);
 
       // Check if now is indeed the moment to adapt
@@ -832,39 +839,72 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
         // Do nothing
       }
       else if (positionId == m_initialNonAdaptInterval) {
-        subChain.resize(m_initialNonAdaptInterval,NULL);
-        for (unsigned int i = 0; i < subChain.size(); ++i) {
-          subChain[i] = new V(*(m_chain[i]));
-        }
+        idOfFirstPositionInSubChain = 0;
+        subChain.resize(m_initialNonAdaptInterval+1,NULL);
+        m_lastMean             = m_paramSpace.newVector();
+        m_lastAdaptedCovMatrix = m_paramSpace.newMatrix();
       }
       else {
-        unsigned int deltaInterval = positionId - m_initialNonAdaptInterval;
-        if ((deltaInterval % m_adaptInterval) == 0) {
+        unsigned int interval = positionId - m_initialNonAdaptInterval;
+        if ((interval % m_adaptInterval) == 0) {
+          idOfFirstPositionInSubChain = positionId - m_adaptInterval;
           subChain.resize(m_adaptInterval,NULL);
-          for (unsigned int i = 0; i < subChain.size(); ++i) {
-            subChain[i] = new V(*(m_chain[m_chain.size()-subChain.size()+i]));
-          }
         }
       }
 
       // If now is indeed the moment to adapt, then do it!
       if (subChain.size() > 0) {
+        for (unsigned int i = 0; i < subChain.size(); ++i) {
+          subChain[i] = new V(*(m_chain[idOfFirstPositionInSubChain+i]));
+        }
         updateCovMatrix(subChain,
-                        m_lastSubChainSize,
-                        m_lastSubMean,
-                        m_lastAdaptedCovMatrix);
+			idOfFirstPositionInSubChain,
+                        m_lastChainSize,
+                        *m_lastMean,
+                        *m_lastAdaptedCovMatrix);
 
         bool tmpCholIsPositiveDefinite = false;
         M tmpChol(*m_lastAdaptedCovMatrix);
+        //if (m_env.rank() == 0) {
+        //  std::cout << "DRAM: chainId = " << chainId
+        //            << ", positionId = "  << positionId
+        //            << ": 'am' calling first tmpChol.chol()"
+        //            << std::endl;
+        //}
         iRC = tmpChol.chol();
+        //if (m_env.rank() == 0) {
+        //  std::cout << "DRAM: chainId = " << chainId
+        //            << ", positionId = "  << positionId
+        //            << ": 'am' got first tmpChol.chol() with iRC = " << iRC
+        //            << std::endl;
+        //}
         if (iRC) {
+          UQ_FATAL_TEST_MACRO(iRC != UQ_MATRIX_IS_NOT_POS_DEFINITE_RC,
+                              m_env.rank(),
+                              "uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain()",
+                              "invalid iRC returned from first chol()");
           // Matrix is not positive definite
-          tmpChol  = *m_lastAdaptedCovMatrix;
           M* tmpI = m_paramSpace.newDiagMatrix(m_epsilon);
-          tmpChol += *tmpI;
+          tmpChol = *m_lastAdaptedCovMatrix + *tmpI;
           delete tmpI;
+          //if (m_env.rank() == 0) {
+          //  std::cout << "DRAM: chainId = " << chainId
+          //            << ", positionId = "  << positionId
+          //            << ": 'am' calling second tmpChol.chol()"
+          //            << std::endl;
+          //}
           iRC = tmpChol.chol();
+          //if (m_env.rank() == 0) {
+          //  std::cout << "DRAM: chainId = " << chainId
+          //            << ", positionId = "  << positionId
+          //            << ": 'am' got second tmpChol.chol() with iRC = " << iRC
+          //            << std::endl;
+          //}
           if (iRC) {
+            UQ_FATAL_TEST_MACRO(iRC != UQ_MATRIX_IS_NOT_POS_DEFINITE_RC,
+                                m_env.rank(),
+                                "uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain()",
+                                "invalid iRC returned from second chol()");
             // Do nothing
           }
           else {
@@ -893,7 +933,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
           if (subChain[i]) delete subChain[i];
         }
       }
-    }
+    } // End of 'adaptive Metropolis' logic
 
     if ((m_chainDisplayPeriod                     > 0) && 
         (((positionId+1) % m_chainDisplayPeriod) == 0)) {
@@ -913,9 +953,12 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
 
   if (m_env.rank() == 0) {
     std::cout << "Finished generating the chain of id " << chainId
-              << ". Its statistics are:";
+              << ". Chain statistics are:";
+    std::cout << "\n  Rejection percentage = " << 100. * (double) m_numRejections/(double) m_chain.size()
+              << " %";
+    std::cout << "\n   Outbound percentage = " << 100. * (double) m_numOutOfBounds/(double) m_chain.size()
+              << " %";
     char line[512];
-
     sprintf(line,"\n%s%4s%s%9s%s",
 	    "Parameter",
             " ",
@@ -1080,46 +1123,52 @@ template <class V, class M>
 void
 uqDRAM_MarkovChainGeneratorClass<V,M>::updateCovMatrix(
   const std::vector<V*>& subChain,
-  double&                lastSubChainSize,
-  V*&                    lastSubMean,
-  M*&                    lastAdaptedCovMatrix)
+  unsigned int           idOfFirstPositionInSubChain,
+  double&                lastChainSize,
+  V&                     lastMean,
+  M&                     lastAdaptedCovMatrix)
 {
-  if ((lastSubChainSize     == 0   ) &&
-      (lastSubMean          == NULL) &&
-      (lastAdaptedCovMatrix == NULL)) {
+  double doubleSubChainSize = (double) subChain.size();
+  if (lastChainSize == 0) {
     UQ_FATAL_TEST_MACRO(subChain.size() < 2,
                         m_env.rank(),
                         "uqDRAM_MarkovChainGeneratorClass<V,M>::updateCovMatrix()",
                         "'subChain.size()' should be >= 2");
 
-    double doubleSubChainSize = (double) subChain.size();
-    lastSubMean = m_paramSpace.newVector();
+    lastMean.cwSet(0.);
+    double ratio = 1./doubleSubChainSize;
     for (unsigned int i = 0; i < subChain.size(); ++i) {
-      *lastSubMean += *(subChain[i]);
+      lastMean += ratio * *(subChain[i]);
     }
-    *lastSubMean /= doubleSubChainSize;
 
-    lastAdaptedCovMatrix = m_paramSpace.newMatrix();
-    *lastAdaptedCovMatrix = doubleSubChainSize * matrixProduct(*lastSubMean,*lastSubMean);
+    lastAdaptedCovMatrix = -doubleSubChainSize * matrixProduct(lastMean,lastMean);
     for (unsigned int i = 0; i < subChain.size(); ++i) {
-      *lastAdaptedCovMatrix += matrixProduct(*(subChain[i]),*(subChain[i]));
+      lastAdaptedCovMatrix += matrixProduct(*(subChain[i]),*(subChain[i]));
     }
-    *lastAdaptedCovMatrix /= (doubleSubChainSize - 1.); // That is why size must be >= 2
+    lastAdaptedCovMatrix /= (doubleSubChainSize - 1.); // That is why subChain size must be >= 2
   }
-  else if ((lastSubChainSize     >  0   ) &&
-           (lastSubMean          != NULL) &&
-           (lastAdaptedCovMatrix != NULL)) {
+  else {
     UQ_FATAL_TEST_MACRO(subChain.size() < 1,
                         m_env.rank(),
                         "uqDRAM_MarkovChainGeneratorClass<V,M>::updateCovMatrix()",
                         "'subChain.size()' should be >= 1");
-  }
-  else {
-    UQ_FATAL_TEST_MACRO(true,
+
+    UQ_FATAL_TEST_MACRO(idOfFirstPositionInSubChain < 1,
                         m_env.rank(),
                         "uqDRAM_MarkovChainGeneratorClass<V,M>::updateCovMatrix()",
-                        "'lastSubChainSize', 'lastSubMean' and 'lastAdaptedCovMatrix' are incompatible with each other");
+                        "'idOfFirstPositionInSubChain' should be >= 1");
+
+    for (unsigned int i = 0; i < subChain.size(); ++i) {
+      double doubleCurrentId  = (double) (idOfFirstPositionInSubChain+i);
+      V diffVec(*(subChain[i]) - lastMean);
+
+      double ratio1         = (1. - 1./doubleCurrentId); // That is why idOfFirstPositionInSubChain must be >= 1
+      double ratio2         = (1./(1.+doubleCurrentId));
+      lastAdaptedCovMatrix  = ratio1 * lastAdaptedCovMatrix + ratio2 * matrixProduct(diffVec,diffVec);
+      lastMean             += ratio2 * diffVec;
+    } 
   }
+  lastChainSize += doubleSubChainSize;
 
   return;
 }
