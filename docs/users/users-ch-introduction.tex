@@ -2,5 +2,86 @@
 \thispagestyle{headings}
 \markboth{Chapter \ref{ch-int}: Introduction}{Chapter \ref{ch-int}: Introduction}
 
-The PECOS toolkit ...
-The biggest deficiency in the free software community today is not in the software $-$ it is the lack of good free documentation that we can include with the free software.
+The PECOS toolkit is a collection of algortihms, libraries and executables designed for prediciting quantities of interest along with the quantification of the uncertanties on these predicitions.
+It is designed for flexibility, easiness of use and easiness of extension.
+Its software design follows an object-oriented approach and
+its code is written over C++ and MPI.
+It can run over uniprocessor or multiprocessor environments.
+
+Suppose we are studying a system that evolves from instant $t=0$ until instant $t=T$ and
+that is described by:
+\begin{itemize}
+\item its bounded physical domain $\Omega\subset\mathbb{R}^3$, with positions being designated by $\mathbf{x}\in\Omega$,
+%\item $n_{\alpha}$ parameters $\alpha_i,~0\leqslant i\leqslant n_{\alpha}-1$, with known probability density functions $\pi_i(\alpha_i)$,
+\item $n_{\theta}$ parameters $\theta_i,~0\leqslant i\leqslant n_{\theta}-1$, with unknown probability density functions,
+\item $n_{s}$ state variables $s_i,~0\leqslant i\leqslant n_{s}-1$,
+\item equations dictating how the domain, the parameters and the state evolve with time at each position $\mathbf{x}\in\Omega$, and
+\item $n_{y}$ output quantities $y_i,~0\leqslant i\leqslant n_{y}-1$.
+\end{itemize}
+A parameter might designate a coefficient, an initial condition or a boundary condition.
+An output quantity $y_i$ might vary from the extremum of being a quantity at a specific position $\mathbf{x}\in\Omega$ at a specific instant $0< t\leqslant T$
+until the extremum of being a quantity history throughout the whole domain $\Omega$ during the whole interval $[0,T]$.
+Also, each $y_i$ might be a function of any combination of parameters and state variables.
+Let us denote:
+\begin{eqnarray*}
+%\boldsymbol{\alpha} & = & (\alpha_0,\ldots,\alpha_{n_\alpha-1}), \\
+\boldsymbol{\theta} & = & (\theta_0,\ldots,\theta_{n_\theta-1}), \\
+\mathbf{s}          & = & (s_0,     \ldots,s_{n_s-1}          ), \\
+\mathbf{y}          & = & (y_0,     \ldots,y_{n_y-1}          ).
+\end{eqnarray*}
+Figure \ref{fig-model} summarizes what has been discussed so far.
+
+\begin{figure}
+\caption{Generic model of a system which evolves from time $t=0$ until time $t=T$.}\label{fig-model}
+\end{figure}
+
+Finally, suppose as well that
+\begin{itemize}
+\item there are $n_{y}$ observations $y_{i,\tiny{obs}}$, one for each of the output quantities,
+\item the output quantities $y_{i,\tiny{obs}}$ are realizations of independent random variables,
+\item there is a prior joint probability density function $\pi_{\tiny{prior}}(\boldsymbol\theta)$, and that
+\item there are $n_{y}$ likelihood functions $\ell_i(y_{i,\tiny{obs}}|\boldsymbol\theta)$, one for each output quantity.
+\end{itemize}
+and let us also denote
+\begin{equation*}
+\mathbf{y}_{\tiny{obs}} = (y_{0,\tiny{obs}}\ldots,y_{n_y-1,\tiny{obs}}).
+\end{equation*}
+By Baye's theorem of inverse problems \cite{KaSo05} we know that the posterior joint probability density function $\pi_{\tiny{posterior}}(\boldsymbol\theta)$ is given by
+\begin{equation}
+\pi_{\tiny{posterior}}(\boldsymbol\theta) = \frac{\pi_{\tiny{prior}}(\boldsymbol\theta)\prod_{i=0}^{n_y-1}\ell_i(y_{i,\tiny{obs}}|\boldsymbol\theta)}{\pi(\mathbf{y}_{\tiny{obs}})}.
+\end{equation}
+Since the joint probability density function $\pi(\boldsymbol\theta,\mathbf{y}_{\tiny{obs}})$ is not assumed to be known, that is, we do not have the quantity
+\begin{equation*}
+\pi(\mathbf{y}_{\tiny{obs}})\triangleq\int_{\mathbb{R}^{n_\theta}}\pi(\boldsymbol\theta,\mathbf{y}_{\tiny{obs}})~d\boldsymbol{\theta},
+\end{equation*}
+we can compute $\pi_{\tiny{posterior}}(\boldsymbol\theta)$ only up to a multiplicative constant.
+But that is ok for the purpose of generating a chain
+\begin{equation}
+\{\boldsymbol{\theta}^{(0)},\boldsymbol{\theta}^{(1)},\ldots,\boldsymbol{\theta}^{(m)},\ldots\}
+\end{equation}
+of parameters according to the target joint probability density function $\pi_{\tiny{posterior}}(\boldsymbol\theta)$.
+The generation of such chains is precisely at the heart of the so called Markov Chain Monte Carlo (MCMC) methods.
+Once a Markov chain is generated, one can
+sample parameters from the chain and
+run the simulation of the system for each selected sample in order to
+collect statistical information of any desired quantities of interest.
+
+%Each quantity of interest (QOD) might be a scalar or a vector, and that is why we use the bold notation for each $\mathbf{y}_i$.
+%Different vector QODs might have different sizes.
+%Now suppose we apply a discretization in space and time. 
+%All parameters and state variables become vectors after the space discretization,
+%that is, we now have: 
+%\begin{itemize}
+%\item $n_{\alpha}$ deterministic vector parameters $\boldsymbol{\alpha}_i,~0\leqslant i\leqslant n_{\alpha}-1$,
+%\item $n_{\theta}$ stochastic vector parameters $\boldsymbol{\theta}_i,~0\leqslant i\leqslant n_{\theta}-1$, and
+%\item $n_{s}$ state vector variables $\mathbb{s}_i,~0\leqslant i\leqslant n_{s}-1$.
+%\end{itemize}
+%We set $t^{0}=0$ and choose a first initial time step $\triangle t^{0}>0$ and apply a numerical algorithm as follows:
+%\begin{itemize}
+%\item
+%\end{itemize}
+%Figure \ref{fig-model-alg} combines the discretized model with algorithm steps.
+%
+%\begin{figure}\label{fig-model-alg}
+%\caption{Generic model of a system which evolves from time $t=0$ until time $t=T$.}
+%\end{figure}
