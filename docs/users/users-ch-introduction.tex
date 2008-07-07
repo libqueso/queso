@@ -2,86 +2,316 @@
 \thispagestyle{headings}
 \markboth{Chapter \ref{ch-int}: Introduction}{Chapter \ref{ch-int}: Introduction}
 
-The PECOS toolkit is a collection of algortihms, libraries and executables designed for prediciting quantities of interest along with the quantification of the uncertanties on these predicitions.
-It is designed for flexibility, easiness of use and easiness of extension.
-Its software design follows an object-oriented approach and
-its code is written over C++ and MPI.
-It can run over uniprocessor or multiprocessor environments.
+Suppose we want to predict some quantities of interest related to a system that
+has a ``black-box'' model with
+some stochastic input parameters and
+some stochastic output quantities.
+If the probability distributions of the input parameters are known, then we ``just'' need to
+(1) explore these probability distributions and (2) propagate the uncertainties through the model.
+However, it is common that we do not have a detailed quantitative knowledge of the input probability distributions to start with,
+but rather just a vague idea (prior knowledge) of what they should be, augmented by some experimental data on the output quantities.
+We then need first to solve an statistical inverse problem through a Bayesian approach, obtaining a more realistic representation
+(posterior knowledge) of the input probability distributions before we can proceed to the steps (1) and (2) outlined before.
 
-Suppose we are studying a system that evolves from instant $t=0$ until instant $t=T$ and
-that is described by:
+The purpose of this chapter is to introduce the main concepts and results necessary for
+a more formal treatment of the prediction problem.
+%The remainder of the Introduction is structured as follows.
+Section \ref{sc-intro-prelim} reviews basic concepts on random variables, while
+Section \ref{sc-intro-qoi} presents a first mathematical model of a system, as well as the applicability of Bayes' theorem to our prediction problem.
+The chapter finishes with the presentation of a more detailed model of a system in Section \ref{sc-intro-detail}.
+
+\section{Preliminary Definitions and Results}\label{sc-intro-prelim}
+
+Throughout this manual we will assume that all random variables (r.v.) and random processes are defined over the same probability space $(\Omega,U,P)$ where:
 \begin{itemize}
-\item its bounded physical domain $\Omega\subset\mathbb{R}^3$, with positions being designated by $\mathbf{x}\in\Omega$,
-%\item $n_{\alpha}$ parameters $\alpha_i,~0\leqslant i\leqslant n_{\alpha}-1$, with known probability density functions $\pi_i(\alpha_i)$,
-\item $n_{\theta}$ parameters $\theta_i,~0\leqslant i\leqslant n_{\theta}-1$, with unknown probability density functions,
-\item $n_{s}$ state variables $s_i,~0\leqslant i\leqslant n_{s}-1$,
-\item equations dictating how the domain, the parameters and the state evolve with time at each position $\mathbf{x}\in\Omega$, and
-\item $n_{y}$ output quantities $y_i,~0\leqslant i\leqslant n_{y}-1$.
+\item $\Omega$ is the set of sample points $\omega$,
+\item $U$, also called set of events, is a $\sigma$-algebra of subsets of $\Omega$, and
+\item $P:U\rightarrow[0,1]$ is a the probability measure.
 \end{itemize}
-A parameter might designate a coefficient, an initial condition or a boundary condition.
-An output quantity $y_i$ might vary from the extremum of being a quantity at a specific position $\mathbf{x}\in\Omega$ at a specific instant $0< t\leqslant T$
-until the extremum of being a quantity history throughout the whole domain $\Omega$ during the whole interval $[0,T]$.
-Also, each $y_i$ might be a function of any combination of parameters and state variables.
-Let us denote:
+We will follow the usual notation of designating
+scalar r.v. $Y:\Omega\rightarrow\mathbb{R}$ and
+vector r.v. $\mathbf{Y}:\Omega\rightarrow\mathbb{R}^n$
+by capital letters,
+and their realizations $y=Y(\omega)$ and $\mathbf{y}=\mathbf{Y}(\omega)$ by lowercase letters.
+We will consider $\mathbb{R}$ and $\mathbb{R}^n$ equipped with the Borel $\sigma-$algebra $\mathfrak{B}$ and its measure.
+
+We now briefly define some concepts related to a scalar r.v. $Y:\Omega\rightarrow\mathbb{R}$:
 \begin{eqnarray*}
-%\boldsymbol{\alpha} & = & (\alpha_0,\ldots,\alpha_{n_\alpha-1}), \\
-\boldsymbol{\theta} & = & (\theta_0,\ldots,\theta_{n_\theta-1}), \\
-\mathbf{s}          & = & (s_0,     \ldots,s_{n_s-1}          ), \\
-\mathbf{y}          & = & (y_0,     \ldots,y_{n_y-1}          ).
+\mbox{probability distribution of }                      Y: & P_Y:  \mathbb{R}\rightarrow[0,1], & P_Y(B) = P(Y^{-1}(B)),       \\
+\mbox{probability density (function), if it exists, of } Y: & \pi_Y:\mathbb{R}\rightarrow[0,1], & P_Y(B) = \int_B \pi_Y(y)~dy, \\
+\mbox{distribution (function) of }                       Y: & F_Y:  \mathbb{R}\rightarrow[0,1], & F_Y(y) = P_Y(Y\leqslant y).
 \end{eqnarray*}
-Figure \ref{fig-model} summarizes what has been discussed so far.
+In the case of a vector r.v. $\mathbf{Y}:\Omega\rightarrow\mathbb{R}^n$, $\mathbf{Y}=(Y_0,\ldots,Y_{n-1})$,
+with each $Y_i:\Omega\rightarrow\mathbb{R}$ being a r.v. itself,$i=0,\ldots,n-1$, the respective definitions are:
+\begin{eqnarray*}
+ & P_{\mathbf{Y}}:  \mathbb{R}^n\rightarrow[0,1], & P_{\mathbf{Y}}(B_0,\ldots,B_{n-1}) = P(Y_0^{-1}(B_0)\cap\ldots\cap Y_{n-1}^{-1}(B_{n-1})), \\
+ & \pi_{\mathbf{Y}}:\mathbb{R}^n\rightarrow[0,1], & P_{\mathbf{Y}}(\mathbf{B}) = \int_B \pi_{\mathbf{Y}}(\mathbf{y})~d\mathbf{y}, \\
+ & F_{\mathbf{Y}}:  \mathbb{R}^n\rightarrow[0,1], & F_{\mathbf{Y}}(\mathbf{y}) = P_{\mathbf{Y}}(\mathbf{Y}\leqslant\mathbf{y}),
+\end{eqnarray*}
+where $\mathbf{Y}\leqslant\mathbf{y}$ should be interpreted in a componentwise way.
+When a distinction between a scalar and a vector r.v. is not important, we will not use bold symbols, that is, we will simply use notations $Y$, $P_Y$ etc.
+Figure \ref{fig-rv-diagram} depicts the relationship between the main entities mentioned so far.
 
 \begin{figure}
-\caption{Generic model of a system which evolves from time $t=0$ until time $t=T$.}\label{fig-model}
+\[
+\begin{CD}
+U      @>P>> [0,1] \\
+@.     @AA\text{$P_Y$}A \\
+\Omega @>Y>> \mathbb{R}^n
+\end{CD}
+\]
+\caption{Relationship between the concepts of
+sample space $\Omega$,
+$\sigma$-algebra $U$,
+probability measure $P$,
+r.v. $Y$ and
+probability distribution $P_Y$.}
+\label{fig-rv-diagram}
 \end{figure}
 
-Finally, suppose as well that
-\begin{itemize}
-\item there are $n_{y}$ observations $y_{i,\tiny{obs}}$, one for each of the output quantities,
-\item the output quantities $y_{i,\tiny{obs}}$ are realizations of independent random variables,
-\item there is a prior joint probability density function $\pi_{\tiny{prior}}(\boldsymbol\theta)$, and that
-\item there are $n_{y}$ likelihood functions $\ell_i(y_{i,\tiny{obs}}|\boldsymbol\theta)$, one for each output quantity.
-\end{itemize}
-and let us also denote
+A r.v. is called absolutely continuous if its probability distribution is absolutely continuous w.r.t. the Lebesgue measure, that is,
 \begin{equation*}
-\mathbf{y}_{\tiny{obs}} = (y_{0,\tiny{obs}}\ldots,y_{n_y-1,\tiny{obs}}).
+m(B) = 0 \Rightarrow P_Y(B) = 0.
 \end{equation*}
-By Baye's theorem of inverse problems \cite{KaSo05} we know that the posterior joint probability density function $\pi_{\tiny{posterior}}(\boldsymbol\theta)$ is given by
-\begin{equation}
-\pi_{\tiny{posterior}}(\boldsymbol\theta) = \frac{\pi_{\tiny{prior}}(\boldsymbol\theta)\prod_{i=0}^{n_y-1}\ell_i(y_{i,\tiny{obs}}|\boldsymbol\theta)}{\pi(\mathbf{y}_{\tiny{obs}})}.
+The Radon-Nikodym theorem \cite{KaSo05} states that
+\begin{equation}\label{eq-radon-nik}
+Y\mbox{ is a absolutely continuous r.v. }\Rightarrow\mbox{ its probability density }\pi_Y(\cdot)\mbox{ exists}.
 \end{equation}
-Since the joint probability density function $\pi(\boldsymbol\theta,\mathbf{y}_{\tiny{obs}})$ is not assumed to be known, that is, we do not have the quantity
-\begin{equation*}
-\pi(\mathbf{y}_{\tiny{obs}})\triangleq\int_{\mathbb{R}^{n_\theta}}\pi(\boldsymbol\theta,\mathbf{y}_{\tiny{obs}})~d\boldsymbol{\theta},
-\end{equation*}
-we can compute $\pi_{\tiny{posterior}}(\boldsymbol\theta)$ only up to a multiplicative constant.
-But that is ok for the purpose of generating a chain
-\begin{equation}
-\{\boldsymbol{\theta}^{(0)},\boldsymbol{\theta}^{(1)},\ldots,\boldsymbol{\theta}^{(m)},\ldots\}
-\end{equation}
-of parameters according to the target joint probability density function $\pi_{\tiny{posterior}}(\boldsymbol\theta)$.
-The generation of such chains is precisely at the heart of the so called Markov Chain Monte Carlo (MCMC) methods.
-Once a Markov chain is generated, one can
-sample parameters from the chain and
-run the simulation of the system for each selected sample in order to
-collect statistical information of any desired quantities of interest.
 
-%Each quantity of interest (QOD) might be a scalar or a vector, and that is why we use the bold notation for each $\mathbf{y}_i$.
-%Different vector QODs might have different sizes.
-%Now suppose we apply a discretization in space and time. 
-%All parameters and state variables become vectors after the space discretization,
-%that is, we now have: 
-%\begin{itemize}
-%\item $n_{\alpha}$ deterministic vector parameters $\boldsymbol{\alpha}_i,~0\leqslant i\leqslant n_{\alpha}-1$,
-%\item $n_{\theta}$ stochastic vector parameters $\boldsymbol{\theta}_i,~0\leqslant i\leqslant n_{\theta}-1$, and
-%\item $n_{s}$ state vector variables $\mathbb{s}_i,~0\leqslant i\leqslant n_{s}-1$.
-%\end{itemize}
-%We set $t^{0}=0$ and choose a first initial time step $\triangle t^{0}>0$ and apply a numerical algorithm as follows:
-%\begin{itemize}
-%\item
-%\end{itemize}
-%Figure \ref{fig-model-alg} combines the discretized model with algorithm steps.
+Given two r.v. $\mathbf{Y}_1\in\mathbb{R}^{n_1}$ and $\mathbf{Y}_2\in\mathbb{R}^{n_2}$,
+their joint probability distribution and probability density (if it exists) are defined as
+\begin{eqnarray*}
+P_{\mathbf{Y}_1\mathbf{Y}_2}:\mathbb{R}^{n_1}\times\mathbb{R}^{n_2}\rightarrow[0,1],~
+P_{\mathbf{Y}_1\mathbf{Y}_2}(B_1,B_2)
+& = &
+P(\mathbf{Y}_1^{-1}(B_1)\cap\mathbf{Y}_2^{-1}(B_2)), \\
+\pi_{\mathbf{Y}_1\mathbf{Y}_2}:\mathbb{R}^{n_1}\times\mathbb{R}^{n_2}\rightarrow[0,1],~
+P_{\mathbf{Y}_1\mathbf{Y}_2}(B_1,B_2)
+& = &
+\int_{B_1}\int_{B_2}\pi_{\mathbf{Y}_1\mathbf{Y}_2}(\mathbf{y}_1,\mathbf{y}_2)~d\mathbf{y}_2\mathbf{y}_1.
+\end{eqnarray*}
+It is worth mentioning that, in the case of a vector r.v. $\mathbf{Y}=(Y_0,\ldots,Y_{n-1})$,
+the concept of probability distribution of $\mathbf{Y}$ is the same as
+the concept of joint probability distribution among its components $Y_0,\ldots,Y_{n-1}$.
 %
-%\begin{figure}\label{fig-model-alg}
-%\caption{Generic model of a system which evolves from time $t=0$ until time $t=T$.}
-%\end{figure}
+
+The marginal probability distribution and the marginal probability density (if it exists) of $\mathbf{Y}_1$ are defined as
+\begin{eqnarray*}
+P_{m\mathbf{Y}_1}:\mathbb{R}^{n_1}\rightarrow[0,1],~
+P_{m\mathbf{Y}_1}(B_1)
+& = &
+P_{\mathbf{Y}_1\mathbf{Y}_2}(B_1,\mathbb{R}^{n_2}), \\
+\pi_{m\mathbf{Y}_1}:\mathbb{R}^{n_1}\rightarrow[0,1],~
+P_{m\mathbf{Y}_1}(B_1)
+& = &
+\int_{B_1}\pi_{m\mathbf{Y}_1}(\mathbf{y}_1)~d\mathbf{y}_1.
+\end{eqnarray*}
+%
+If $\pi_{\mathbf{Y}_1\mathbf{Y}_2}(\cdot,\cdot)$ exists then
+\begin{equation*}
+\pi_{m\mathbf{Y}_1}(\mathbf{y}_1)
+=
+\int_{\mathbb{R}^{n_2}}\pi_{\mathbf{Y}_1\mathbf{Y}_2}(\mathbf{y}_1,\mathbf{y}_2)~d\mathbf{y}_2.
+\end{equation*}
+%
+If $B_2\subset\mathbb{R}^{n_2}$ is such that $P_{m\mathbf{Y}_2}(B_2)>0$, then the
+conditional probability distribution of $\mathbf{Y}_1$ (conditioned) on $B_2$ is defined as
+\begin{equation*}
+P_{c\mathbf{Y}_1}:\mathbb{R}^{n_1}\rightarrow[0,1],~
+P_{c\mathbf{Y}_1}(B_1|B_2)
+=
+\frac
+{P_{\mathbf{Y}_1\mathbf{Y}_2}(B_1,B_2)}
+{P_{m\mathbf{Y}_2}(B_2)}.
+\end{equation*}
+%
+If $\pi_{\mathbf{Y}_1\mathbf{Y}_2}(\cdot,\cdot)$ exists and $\mathbf{y}_2$ is such that $\pi_{m\mathbf{Y}_2}(\mathbf{y}_2)>0$, then the
+conditional probability density of $\mathbf{Y}_1$ (conditioned) on $\mathbf{Y}_2=\mathbf{y}_2$ is defined as
+\begin{equation*}
+\pi_{c\mathbf{Y}_1}:\mathbb{R}^{n_1}\rightarrow[0,1],~
+\pi_{c\mathbf{Y}_1}(\mathbf{y}_1|\mathbf{y}_2)
+=
+\frac
+{\pi_{\mathbf{Y}_1\mathbf{Y}_2}(\mathbf{y}_1,\mathbf{y}_2)}
+{\pi_{m\mathbf{Y}_2}(\mathbf{y}_2)}.
+\end{equation*}
+
+The Bayes Theorem \cite{KaSo05} states that
+if $P_{cY_1}(\cdot|B_2)$ and $P_{cY_2}(\cdot|B_1)$ exist then
+\begin{equation}\label{eq-Bayes-1}
+P_{Y_1Y_2}(B_1,B_2) = P_{cY_1}(B_1|B_2)P_{mY_2}(B_2) = P_{cY_2}(B_2|B_1)P_{mY_1}(B_1).
+\end{equation}
+If $\pi_{Y_1Y_2}(\cdot,\cdot)$, $\pi_{cY_1}(\cdot|y_2)$ and $\pi_{cY_2}(\cdot|y_1)$ exist then
+\begin{equation}\label{eq-Bayes-2}
+\pi_{Y_1Y_2}(y_1,y_2) = \pi_{cY_1}(y_1|y_2)\pi_{mY_2}(y_2) = \pi_{cY_2}(y_2|y_1)\pi_{mY_1}(y_1).
+\end{equation}
+
+Two r.v. $Y_1$ and $Y_2$ are considered independent if
+\begin{equation*}
+P_{Y_1Y_2}(B_1,B_2) = P_{Y_1}(B_1)P_{Y_2}(B_2).
+\end{equation*}
+for all Borel sets $B_j$.
+If $Y_1$ and $Y_2$ are independent r.v. and
+their probability densities $\pi_{Y_1}$ and $\pi_{Y_2}$ exist,
+then $\pi{Y_1Y_2}$ exists and is given by
+\begin{equation*}
+\pi_{\mathbf{Y}_1\mathbf{Y}_2}(y_1,y_2) = \pi_{Y_1}(y_1)\pi_{Y_2}(y_2),
+\end{equation*}
+for all points $y_j$.
+
+Two r.v. $Y_1$ and $Y_2$ are considered conditionally independent w.r.t. a third r.v. $\Theta$ if
+\begin{equation*}
+P_{cY_1Y_2}(B_1,B_2|B_3) = P_{cY_1}(B_1|B_3)P_{cY_2}(B_2|B_3).
+\end{equation*}
+for all Borel sets $B_j$.
+
+%And the usual abuses of notation will also be applied:
+%\begin{equation*}
+%P(B\subset\mathbb{R})\equiv P_Y(B\subset\mathbb{R}).
+%\end{equation*}
+
+\section{Predicting Quantities of Interest of a System}\label{sc-intro-qoi}
+
+Suppose we are studying a system model that has
+some stochastic input parameters and some stochastic output quantities.
+Each input parameter and each output quantity might be a r.v. or a random process
+(i.e., associates a r.v. to each position in a region of space and/or to each instant in a time interval).
+An input parameter might designate a coefficient, a forcing term, an initial condition or a boundary condition.
+An output quantity might be a function of any combination of parameters or eventual extra variables necessary for the system description, e.g.,
+the state variables presented in Section \ref{sc-intro-detail}.
+
+If the system needs random processes for its description, we first apply space and/or time discretizations to it. 
+If only r.v. originally suffice for the system description, then a discretization task is not necessary for the explanations that follow.
+We then have a system with
+\begin{itemize}
+\item $n_{\theta}$ input parameters, which are the r.v. $\Theta_i:\Omega\rightarrow\mathbb{R}^{n_i}$, $n_i\in\mathbb{Z}_+^*$, $0\leqslant i\leqslant n_{\theta}-1$,
+\item $m_{y}$ output quantities, which are the r.v. $Y_j:\Omega\rightarrow\mathbb{R}^{m_j}$, $m_j\in\mathbb{Z}_+^*$, $0\leqslant i\leqslant m_{y}-1$,
+\end{itemize}
+where $\mathbb{Z}_+^*$ designates the set of strictly positive integers.
+Figure \ref{fig-black-box} summarizes this ``black-box'' system description.
+
+\begin{figure}
+\caption{A generic ``black-box'' system description.}
+\label{fig-black-box}
+\end{figure}
+
+We will assume that we do not have a detailed quantitative description of the input parameters, so that we will need to solve an statistical inverse problem
+in order to obtain such distributions. 
+We will suppose that
+\begin{itemize}
+\item there are $m_{y}$ observations $y_{i,obs}$, one for each of the output quantities,
+\end{itemize}
+and use the notations
+\begin{eqnarray*}
+\boldsymbol{\Theta} & =      & (\Theta_0,\ldots,\Theta_{n_\theta-1}), \\
+\mathbf{Y}          & =      & (Y_0,     \ldots,Y_{m_y-1}          ), \\
+\mathbf{y}_{obs}    & =      & (y_{0,obs}\ldots,y_{m_y-1,obs}      ), \\
+N_{\theta}          & =      & \sum_{i=0}^{n_{\theta}-1}n_i,          \\
+M_y                 & =      & \sum_{j=0}^{m_y       -1}m_j,          \\
+R_{\theta}          & =      & \mbox{input subset of }\mathbb{R}^{N_{\theta}}\mbox{ used for model exploration}.
+%\tilde{M}_{y,j}       & =      & \sum_{\substack{ k=0\\ k\neq j}}^{m_y-1} m_k,  \\
+%\tilde{\mathbf{Y}}_j  & \equiv & (Y_0,\ldots,Y_{j-1},Y_{j+1},\ldots,Y_{m_y-1}), \\
+%d\tilde{\mathbf{y}}_j & \equiv & dy_0\ldots dy_{j-1}dy_{j+1}\ldots dy_{m_y-1}.
+\end{eqnarray*}
+%\begin{eqnarray*}
+%\pi_{mY_j}(y_j)       & =      & \int_{\mathbb{R}^{N_{\theta}}\times\mathbb{R}^{\tilde{M}_{y,j}}}\pi_{\boldsymbol{\Theta}\mathbf{Y}}(\boldsymbol{\theta},\mathbf{y})~d\tilde{\mathbf{y}}_j~d\boldsymbol{\theta}.
+%\end{eqnarray*}
+
+In order to be able to solve the statistical inverse problem, we will make the hypothesis that
+\begin{equation}\label{eq-hyp-jpd}
+\mbox{the joint probability density }\pi_{\boldsymbol{\Theta}\mathbf{Y}}:\mathbb{R}^{N_0}\times\mathbb{R}^{M_y}\rightarrow[0,1]\mbox{ exists},
+\end{equation}
+\begin{equation}\label{eq-hyp-obs-mp}
+\mbox{the marginal probability density }\pi_{m\mathbf{Y}}(\mathbf{y}_{obs})\neq 0,
+\end{equation}
+and
+\begin{equation}\label{eq-hyp-theta-mp}
+\mbox{the marginal probability density }\pi_{m\boldsymbol{\Theta}}(\boldsymbol{\theta})\neq 0\quad\forall\boldsymbol\theta\in R_{\theta}.
+\end{equation}
+We emphasize that although we are assuming the existence of
+$\pi_{\boldsymbol{\Theta}\mathbf{Y}}$ and
+$\pi_{m\mathbf{Y}}(\mathbf{y}_{obs})$,
+we will not need to know how to compute them.
+Then,
+\begin{equation*}
+\mbox{the conditional probability }\pi_{c\boldsymbol\Theta}(\boldsymbol\theta|\mathbf{y}_{obs})\mbox{ exists }\forall\boldsymbol\theta\in\mathbb{R}^{N_\theta}
+\end{equation*}
+and
+\begin{equation*}
+\mbox{the conditional probability }\pi_{c\mathbf{Y}}(\mathbf{y}_{obs}|\boldsymbol\theta)\mbox{ exists }\forall\boldsymbol\theta\in R_{\theta},
+\end{equation*}
+that is, by Bayes theorem \eqref{eq-Bayes-2} we can claim that
+\begin{equation*}
+\pi_{c\boldsymbol\Theta}(\boldsymbol\theta|\mathbf{y}_{obs})
+=
+\frac
+{\pi_{m\boldsymbol{\Theta}}(\boldsymbol{\theta})~\pi_{c\mathbf{Y}}(\mathbf{y}_{obs}|\boldsymbol\theta)}
+{\pi_{m\mathbf{Y}}(\mathbf{y}_{obs})}
+\quad\forall\boldsymbol\theta\in R_{\theta}.
+\end{equation*}
+This last equation defines the solution of the statistical inverse problem. In the literature terminology it is written as
+\begin{equation}\label{eq-sol-sip}
+\pi_{posterior}(\boldsymbol\theta)
+=
+\frac
+{\pi_{prior}(\boldsymbol{\theta})~\ell(\mathbf{y}_{obs}|\boldsymbol\theta)}
+{\pi_{m\mathbf{Y}}(\mathbf{y}_{obs})},
+\end{equation}
+where $\ell(\cdot|\cdot)$ stands for ``likelihood''.
+However, although we can claim the existence of the solution of the statistical inverse problem,
+we are still not able to compute it, since the terms on the r.h.s. in \eqref{eq-sol-sip} are not yet known.
+We then assume that
+\begin{equation}\label{eq-hyp-prior-known}
+\mbox{the prior probability density }\pi_{prior}(\boldsymbol{\theta})\mbox{ is known }\quad\forall\boldsymbol\theta\in R_{\theta},
+\end{equation}
+\begin{equation}\label{eq-hyp-conditional-independence}
+\mbox{the r.v. }\mathbf{Y}_i,~i=0,\ldots,m_y-1,\mbox{ are conditionally independent w.r.t. }\boldsymbol\theta,\quad\forall\boldsymbol\theta\in R_{\theta},
+\end{equation}
+and
+\begin{equation}\label{eq-hyp-l-known}
+\mbox{each individual likelihood }\ell_i(y_{i,obs}|\boldsymbol\theta),~i=0,\ldots,m_y-1,\mbox{ is known }\quad\forall\boldsymbol\theta\in R_{\theta}.
+\end{equation}
+Although we cannot compute $\pi_{posterior}(\boldsymbol\theta)$,
+since we do not have $\pi_{m\mathbf{Y}}(\mathbf{y}_{obs})$,
+we can at least compute the quantity
+\begin{equation}\label{eq-posterior-up2a-constant}
+\tilde{\pi}(\boldsymbol\theta) =
+{\pi_{prior}(\boldsymbol\theta)\prod_{i=0}^{m_y-1}\ell_i(y_{i,obs}|\boldsymbol\theta)},
+\end{equation}
+that is, we can at least compute the posterior joint probability density function up to a multiplicative constant.
+The importance of such computation is that there exist
+appropriate chain generation methods that are proved to have their limiting distributions equal 
+to the target distribution $\pi_{posterior}(\boldsymbol\theta)$ as long as the target distribution is supplied
+up to a multiplicative constant, such as \eqref{eq-posterior-up2a-constant}, for instance.
+The generation of such chains is precisely at the heart of the so called Markov Chain Monte Carlo (MCMC) methods,
+discussed in Chapter \ref{ch-mcmc}.
+
+Once a chain
+\begin{equation}\label{eq-markov-chain}
+\{\boldsymbol{\theta}^{(0)},\boldsymbol{\theta}^{(1)},\ldots\}
+\end{equation}
+is (approximately) generated according to $\pi_{posterior}(\boldsymbol\theta)$, one can
+sample parameters from the chain,
+run the simulation of the system for each selected sample and
+collect statistical information for any desired quantities of interest.
+
+\section{A More Detailed System Description}\label{sc-intro-detail}
+
+The generic ``black-box'' system description of Section \ref{sc-intro-qoi} is flexible enough to model many different situations. Indeed, the system might:
+\begin{itemize}
+\item be at steady-state regime, or evolve with time, from instant $t=0$ until instant $t=T$,
+\item be a physical system over a bounded physical domain $D\subset\mathbb{R}^3$,
+\item need $n_{s}$ state variables $s_i$ for its description, $0\leqslant i\leqslant n_{s}-1$, and
+\item have equations dictating how the domain and/or the values of the parameters and/or the state values vary with time $t$ and/or space position $\mathbf{x}\in D$.
+\end{itemize}
+We will denote
+\begin{equation*}
+\mathbf{s} = (s_0,\ldots,s_{n_s-1}).
+\end{equation*}
+
+\begin{figure}
+\caption{Generic model of a system with state $\mathbf{s}(t,\mathbf{x}) = (s_0(t,\mathbf{x}),\ldots,s_{n_s-1}(t,\mathbf{x}))$
+evolving from instant $t=0$ until instant $t=T$
+over positions $\mathbf{x}\in D\subset\mathbb{R}^3$.}
+\label{fig-state-model}
+\end{figure}

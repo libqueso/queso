@@ -9,7 +9,193 @@ Section \ref{sc-dram-examples} describes the examples available in the toolkit.
 
 \section{The DRAM Algorithm}\label{sc-dram-alg}
 
+\begin{sidewaystable}
+\begin{tabular}{|c||c|c||c|c||c|c|}
+\hline
+ Initial    & \multicolumn{2}{c||}{Metropolis-Hastings (``MH'')} & \multicolumn{2}{c||}{Delayed Rejection (``DR'')} & \multicolumn{2}{c|}{Adaptive Metropolis (``AM'')} \\
+\cline{2-7}
+ Position   & candidate     & next position             & candidate     & next position           & candidate     & next position            \\
+(iteration) &               &                           & (stage)       &                         &               &                          \\
+\hline
+\hline
+            &               &                           &               &                         &               &                          \\
+\cline{4-5}
+            &               &                           &               &                         &               &                          \\
+\cline{4-5}
+            &               &                           & $\vdots$      & $\vdots$                &               &                          \\
+\cline{4-5}
+            &               &                  & \multicolumn{2}{l||}{until candidate accepted}   &               &                          \\
+            &               &                  & \multicolumn{2}{l||}{or maximum stages achieved} &               &                          \\
+\hline
+\hline
+            &               &                           &               &                         &               &                          \\
+\cline{4-5}
+            &               &                           &               &                         &               &                          \\
+\cline{4-5}
+            &               &                           & $\vdots$      & $\vdots$                &               &                          \\
+\cline{4-5}
+            &               &                  & \multicolumn{2}{l||}{until candidate accepted}   &               &                          \\
+            &               &                  & \multicolumn{2}{l||}{or maximum stages achieved} &               &                          \\
+\hline
+\hline
+$\vdots$    & $\vdots$      & $\vdots$                  & $\vdots$      & $\vdots$                & $\vdots$      & $\vdots$                 \\
+\hline
+\hline
+            &               &                           &               &                         &               &                          \\
+\cline{4-5}
+            &               &                           & $\vdots$      & $\vdots$                &               &                          \\
+\hline
+\hline
+            &               &                           &               &                         &               &                          \\
+\cline{4-5}
+            &               &                           & $\vdots$      & $\vdots$                &               &                          \\
+\hline
+\hline
+$\vdots$    & $\vdots$      & $\vdots$                  & $\vdots$      & $\vdots$                & $\vdots$      & $\vdots$                 \\
+\hline
+\hline
+            &               &                           &               &                         &               &                          \\
+\cline{4-5}
+            &               &                           & $\vdots$      & $\vdots$                &               &                          \\
+\hline
+\hline
+            &               &                           &               &                         &               &                          \\
+\cline{4-5}
+            &               &                           & $\vdots$      & $\vdots$                &               &                          \\
+\hline
+\hline
+$\vdots$    & $\vdots$      & $\vdots$                  & $\vdots$      & $\vdots$                & $\vdots$      & $\vdots$                 \\
+\hline
+\end{tabular}
+\caption{Overview of three algorithms for the generation of a Markov chain 
+$\{\boldsymbol{\theta}^{(0)},\boldsymbol{\theta}^{(1)},\ldots\}$
+: Metropolis-Hastings, Delayed Rejection and Adaptive Metropolis.
+Detailed explanations are given in Section \ref{sc-dram-alg}.}
+\label{tab-dram}
+\end{sidewaystable}
+
 \section{How to Use DRAM}\label{sc-dram-how-to-use}
+
+In order to use the DRAM implementation of the PECOS toolkit, the steps are:
+\begin{itemize}
+\item {prepare your executable (let us call it ``myappl''):
+\begin{itemize}
+\item execute ``cd uq/appls/mcmc/'';
+\item execute ``cp -R template myappl'';
+\item execute ``cd myappl'';
+\item change ``template'' and ``Template'' to ``myappl'' and ``Myappl'' in all files, including the file ``Makefile'';
+\item code your prior function, if necessary (there is a default prior in the PECOS library);
+\item code your likelihood function, which returns a vector of values, each value correspond to the likelihood of a specific output quantity, as explained in Section \ref{sc-intro-qoi}, page \pageref{sc-intro-qoi};
+\item execute ``make myappl'';
+\end{itemize}
+}
+\item prepare a file describing the input parameters; let us call it ``myappl.par''; all input parameters are assumed to be scalar r.v.; see Figure \ref{fig-dram-par-file-ex}; 
+\item prepare an input file setting the algorithm options; let us call it ``myappl.inp''; see Figure \ref{fig-dram-input-file-ex} and Table \ref{tab-dram-map};
+\item execute ``./myappl -i myappl.inp''.
+\end{itemize}
+
+\begin{figure}
+\begin{verbatim}
+# This the file of input parameters for "myappl".
+# Lines that begin with the character `#' are considered comment lines.
+# Each line that is not a comment line is treated as corresponding to an
+# input parameter.
+# From left to right, the entries in each input parameter line correspond to:
+# --> parameter name (mandatory)
+# --> initial value (mandatory)
+# --> minimum value (optional; default value to "-inf")
+# --> maximum value (optional; default value to "inf")
+# --> expectation (optional; default value to "nan")
+# --> variance (optional; default value to "inf")
+Theta_0 0. -inf inf
+Theta_1 0. -inf inf 0. inf
+Theta_2 0. -inf inf
+Theta_3 0. -inf inf 0. inf
+# Comment lines can appear anywhere in the file.
+# The total number of input parameter lines (4 in this example) must match
+# the entry "uqParamSpace_dim" in the input file.
+\end{verbatim}
+\caption{Example of a file of input parameters for the generation of a Markov Chain}
+\label{fig-dram-par-file-ex}
+\end{figure}
+
+\begin{figure}
+\begin{verbatim}
+###############################################
+# UQ Parameter Space
+###############################################
+uqParamSpace_dim       = 4
+uqParamSpace_inputFile = uqNormalEx.par
+
+###############################################
+# UQ Output Space
+###############################################
+uqOutputSpace_dim  = 1
+
+###############################################
+# UQ DRAM Markov Chain Generator
+###############################################
+uqDRAM_mh_sizesOfChains           = 5000
+uqDRAM_mh_lrUpdateSigma2          = 0
+uqDRAM_mh_lrSigma2Priors          = 1.
+uqDRAM_mh_lrSigma2Accuracies      = 0.
+uqDRAM_mh_lrNumbersOfObs          = 0
+uqDRAM_dr_maxNumberOfExtraStages  = 0
+uqDRAM_dr_scalesForExtraStages    = 5. 4. 3.
+uqDRAM_am_initialNonAdaptInterval = 0
+uqDRAM_am_adaptInterval           = 0
+uqDRAM_am_sd                      = 1.44
+uqDRAM_am_epsilon                 = 1.e-5
+uqDRAM_mh_namesOfOutputFiles      = uqNormalExOutput.m
+uqDRAM_mh_chainDisplayPeriod      = 500
+\end{verbatim}
+\caption{Example of an input file for the generation of a Markov Chain}
+\label{fig-dram-input-file-ex}
+\end{figure}
+
+\begin{table}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\multicolumn{1}{|c|}{Option Name}        & Explanation       & \multicolumn{2}{c|}{Definition} \\
+\cline{3-4}
+                                         &                   & Equation    & Page              \\
+\hline
+\verb=uqParamSpace_dim=                  &                   &             &                   \\
+\hline
+\verb=uqParamSpace_inputFile=            &                   &             &                   \\
+\hline
+\verb=uqOutputSpace_dim=                 &                   &             &                   \\
+\hline
+\verb=uqDRAM_mh_sizesOfChains=           &                   &             &                   \\
+\hline
+\verb=uqDRAM_mh_lrUpdateSigma2=          &                   &             &                   \\
+\hline
+\verb=uqDRAM_mh_lrSigma2Priors=          &                   &             &                   \\
+\hline
+\verb=uqDRAM_mh_lrSigma2Accuracies=      &                   &             &                   \\
+\hline
+\verb=uqDRAM_mh_lrNumbersOfObs=          &                   &             &                   \\
+\hline
+\verb=uqDRAM_dr_maxNumberOfExtraStages=  &                   &             &                   \\
+\hline
+\verb=uqDRAM_dr_scalesForExtraStages=    &                   &             &                   \\
+\hline
+\verb=uqDRAM_am_initialNonAdaptInterval= &                   &             &                   \\
+\hline
+\verb=uqDRAM_am_adaptInterval=           &                   &             &                   \\
+\hline
+\verb=uqDRAM_am_sd=                      &                   &             &                   \\
+\hline
+\verb=uqDRAM_am_epsilon=                 &                   &             &                   \\
+\hline
+\verb=uqDRAM_mh_namesOfOutputFiles=      &                   &             &                   \\
+\hline
+\verb=uqDRAM_mh_chainDisplayPeriod=      &                   &             &                   \\
+\hline
+\end{tabular}
+\caption{Mapping between DRAM options in the input file of Figure \ref{fig-dram-input-file-ex} and the mathematical terms explained in Sections \ref{sc-intro-qoi} and \ref{sc-dram-alg}.}
+\label{tab-dram-map}
+\end{table}
 
 \section{Examples Provided}\label{sc-dram-examples}
 

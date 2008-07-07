@@ -17,6 +17,9 @@ OBJS_ANY = uq1DScalarElement.o \
 
 all:	libuq_fp_all
 
+all_docs:
+	doxygen uqLibsFpSrc.dox
+
 echo_num_proc:
 	@echo 'UQBT = ' $(UQBT)
 

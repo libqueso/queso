@@ -46,6 +46,9 @@ OBJS_tri = uqTrilinosVector.o \
 
 all:	libuq_basic_all
 
+all_docs:
+	doxygen uqLibsBasicSrc.dox
+
 echo_num_proc:
 	@echo 'UQBT = ' $(UQBT)
 

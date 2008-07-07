@@ -1,3 +1,22 @@
+/* uq/libs/mcmc/inc/uqDRAM_MarkovChainGenerator.h
+ *
+ * Copyright (C) 2008 The PECOS Team, http://www.ices.utexas.edu/centers/pecos
+
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or (at
+ * your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
+
 #ifndef __UQ_DRAM_MCG_H__
 #define __UQ_DRAM_MCG_H__
 
@@ -28,15 +47,17 @@
 #include <uqChainStats.h>
 #include <fstream>
 
+/*! A templated class that generates a Markov chain using the DRAM algorithm.
+ */
 template <class V, class M>
 class uqDRAM_MarkovChainGeneratorClass
 {
 public:
-  uqDRAM_MarkovChainGeneratorClass(const uqEnvironmentClass&                  env,
-                                   const uqParamSpaceClass<V,M>&              paramSpace,
-                                   const uqFinDimLinearSpaceClass<V,M>&       outputSpace,
-                                         uq_M2lPriorFunction_Class<V,M>*      m2lPriorFunction_ObjPtr,
-                                         uq_M2lLikelihoodFunction_Class<V,M>& m2lLikelihoodFunction_Obj);
+  uqDRAM_MarkovChainGeneratorClass(const uqEnvironmentClass&                  env,                        /*! The PECOS toolkit environment. */
+                                   const uqParamSpaceClass<V,M>&              paramSpace,                 /*! The parameter space.           */
+                                   const uqFinDimLinearSpaceClass<V,M>&       outputSpace,                /*! The output space.              */
+                                         uq_M2lPriorFunction_Class<V,M>*      m2lPriorFunction_ObjPtr,    /*! -2*ln(prior())                 */
+                                         uq_M2lLikelihoodFunction_Class<V,M>& m2lLikelihoodFunction_Obj); /*! -2*ln(likelihood())            */
  ~uqDRAM_MarkovChainGeneratorClass();
 
   void generateChains             (const M* proposalCovMatrix,

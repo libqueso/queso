@@ -52,8 +52,12 @@ clean_all: echo_num_proc clean_obj
 
 clean_obj:
 	rm -f ../inc/*~
+	rm -rf ../inc/html
 	rm -f *~
 	rm -f *.o
+
+all_docs:
+	doxygen uqLibsMcmcSrc.dox
 
 libuq_mcmc_all: libuq_mcmc_any libuq_mcmc_specific
 

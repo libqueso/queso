@@ -10,7 +10,7 @@ all:	all_mcmc all_fp
 echo_basic_type:
 	@echo 'UQBT = ' $(UQBT)
 
-clean_all: echo_basic_type clean_mcmc clean_fp clean_exec
+clean_all: echo_basic_type clean_mcmc clean_fp clean_docs clean_exec
 
 clean_mcmc:
 	cd mcmc; make clean_all UQBT=$(UQBT)
@@ -18,8 +18,16 @@ clean_mcmc:
 clean_fp:
 	cd fp; make clean_all UQBT=$(UQBT)
 
+clean_docs:
+	rm -rf html
+
 clean_exec:
 	rm -f *~
+
+all_docs:
+	doxygen uqAppls.dox
+	cd mcmc; make all_docs
+	cd fp; make all_docs
 
 all_mcmc:
 	cd mcmc; make UQBT=$(UQBT)

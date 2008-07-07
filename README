@@ -1,0 +1,53 @@
+The PECOS Toolkit for Predictive Engineering
+============================================
+
+This is the PECOS Toolkit for Predictive Engineering,
+a collection of algorithms, libraries and executables aimed for
+the validation of a model and
+the prediction of quantities of interest from such model
+along with the quantification of their uncertainties.
+It is designed for flexibility, portability, easiness of use and easiness of extension.
+Its software design follows an object-oriented approach and
+its code is written on C++ and over MPI.
+It can run over uniprocessor or multiprocessor environments.
+
+The PECOS toolkit is a free software. You can redistribute it and/or modify it under
+the terms of the GNU General Public License.
+
+The GNU General Public License does not permit this software to be
+redistributed in proprietary programs.
+
+This toolkit is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Availability
+============
+
+The current stable version of the toolkit is always available from http://www.ices.utexas.edu/centers/pecos
+
+Installation
+============
+
+See the Users' Manual under uq/docs/
+
+More information about GSL
+==========================
+
+The project homepage is http://www.ices.utexas.edu/centers/pecos
+
+Reporting Bugs
+==============
+
+If you find a bug please report it to pecos-maint@ices.utexas.edu
+
+All bug reports should include:
+
+       The version number of GSL, and where you obtained it.
+       The hardware and operating system
+       The compiler used, including version number and compilation options
+       A description of the bug behaviour
+       A short program which reproducibly exercises the bug
+
+Any errors or omissions in the manual can also be reported to the
+same address.
