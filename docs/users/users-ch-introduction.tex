@@ -10,7 +10,7 @@ If the probability distributions of the input parameters are known, then we ``ju
 (1) explore these probability distributions and (2) propagate the uncertainties through the model.
 However, it is common that we do not have a detailed quantitative knowledge of the input probability distributions to start with,
 but rather just a vague idea (prior knowledge) of what they should be, augmented by some experimental data on the output quantities.
-We then need first to solve an statistical inverse problem through a Bayesian approach, obtaining a more realistic representation
+We then need first to solve a statistical inverse problem through a Bayesian approach, obtaining a more realistic representation
 (posterior knowledge) of the input probability distributions before we can proceed to the steps (1) and (2) outlined before.
 
 The purpose of this chapter is to introduce the main concepts and results necessary for
@@ -22,52 +22,98 @@ The chapter finishes with the presentation of a more detailed model of a system 
 
 \section{Preliminary Definitions and Results}\label{sc-intro-prelim}
 
-Throughout this manual we will assume that all random variables (r.v.) and random processes are defined over the same probability space $(\Omega,U,P)$ where:
-\begin{itemize}
-\item $\Omega$ is the set of sample points $\omega$,
-\item $U$, also called set of events, is a $\sigma$-algebra of subsets of $\Omega$, and
-\item $P:U\rightarrow[0,1]$ is a the probability measure.
-\end{itemize}
-We will follow the usual notation of designating
-scalar r.v. $Y:\Omega\rightarrow\mathbb{R}$ and
-vector r.v. $\mathbf{Y}:\Omega\rightarrow\mathbb{R}^n$
-by capital letters,
-and their realizations $y=Y(\omega)$ and $\mathbf{y}=\mathbf{Y}(\omega)$ by lowercase letters.
-We will consider $\mathbb{R}$ and $\mathbb{R}^n$ equipped with the Borel $\sigma-$algebra $\mathfrak{B}$ and its measure.
+This section is based primarily on references \cite{Du05} and \cite{JaPr04}.
+
+\subsection{Basic Concepts}\label{subsc-intro-prelim-basic}
+
+Let $\Omega$ be an abstract set. A nonempty collection $U$ of subsets of $\Omega$ is called a {\it $\sigma$-algebra} of $\Omega$ if it satisfies
+\[
+\begin{array}{rlcl}
+ (i) & B\in U                                          & \Rightarrow & B^c\in U\mbox{ and} \\
+(ii) & B_i\in U\mbox{ is a countable sequence of sets} & \Rightarrow & \cup_iB_i\in U.
+\end{array}
+\]
+Such pair $(\Omega,U)$ is called a {\it measurable space}.
+
+A function $\mu:U\rightarrow\mathbb{R}$ satisfying
+\[
+\begin{array}{rl}
+  (i) & \mu(\emptyset) = 0, \\
+ (ii) & \mu(B)\geqslant 0\quad\forall B\in U\mbox{ and} \\
+(iii) & B_i\in U\mbox{ is a countable sequence of disjoint sets}~\Rightarrow~\mu(\cup_iB_i)=\sum_i \mu(B_i)
+\end{array}
+\]
+is called a {\it measure} on $(\Omega,U)$. If $\mu(\Omega)=1$ then $\mu$ is called a {\it probability measure} on $(\Omega,U)$.
+
+Let now $(S,\mathcal{S})$ be another measurable space.
+A function $Y:\Omega\rightarrow S$ is called a {\it measurable map} relative to the $\sigma$-algebras $U$ and $\mathcal{S}$ if
+\begin{equation*}
+Y^{-1}(B)\equiv\{\omega: Y(\omega)\in B\}\in U\quad\forall B\in\mathcal{S}.
+\end{equation*}
+
+Let $(\Omega,U)$ be a measurable space and $P:U\rightarrow [0,1]$ be a probability measure.
+We call the triple $(\Omega,U,P)$ a {\it probability space}.
+In the contexts of probability spaces,
+$\Omega$ is referred to as the set of {\it outcomes or samples points},
+$U$ is referred to as the set of {\it events} and
+a measurable map $Y:\Omega\rightarrow S$ relative to the $\sigma$-algebras $U$ and $\mathcal{S}$ is referred to as a ($U$ measurable) {\it random variable} (r.v.).
+The probability distribution $P_Y:\mathcal{S}\rightarrow [0,1]$ of the $U$ measurable r.v. $Y$ is the probability measuse on $(S,\mathcal{S})$ defined by
+\begin{equation*}
+P_Y(B) = P(Y^{-1}(B))\quad\forall B\in\mathcal{S}.
+\end{equation*}
+Figure \ref{fig-rv-diagram} depicts the relationship between the main entities mentioned so far.
+
+\begin{figure}[h]
+\[
+\begin{CD}
+\Omega   @>Y>> S           \\
+\cap     @.    \cap        \\
+U        @.    \mathcal{S} \\
+@VP VV         @VVP_Y V    \\
+[0,1]    @.    [0,1]
+\end{CD}
+\]
+\caption{Relationship between the concepts of
+measurable spaces $(\Omega,U)$ and $(S,\mathcal{S})$,
+probability space $(\Omega,U,P)$ with
+space $\Omega$ of outcomes or sample points,
+space $U$ of events and
+probability measure $P$,
+$U$ measurable r.v. $Y$ and
+probability distribution $P_Y$ of the r.v. $Y$.}
+\label{fig-rv-diagram}
+\end{figure}
+
+\subsection{$\mathbb{R}^n$ Valued Random Variables}
+
+Throughout this manual we will assume that all r.v. are defined over the same probability space $(\Omega,U,P)$.
+Also, unless otherwise specified, all r.v. will be assumed to have
+$(S,\mathcal{S})=(\mathbb{R}^n,\mathfrak{B}(\mathbb{R}^n))$,
+where $\mathfrak{B}(\mathbb{R}^n)$ is the Borel $\sigma$-algebra of $\mathbb{R}^n$.
+We will follow the usual notation of
+$Y:\Omega\rightarrow\mathbb{R}$ for scalar r.v.,
+$\mathbf{Y}:\Omega\rightarrow\mathbb{R}^n$ for vector r.v.,
+and $y=Y(\omega)$ and $\mathbf{y}=\mathbf{Y}(\omega)$ for their realizations.
 
 We now briefly define some concepts related to a scalar r.v. $Y:\Omega\rightarrow\mathbb{R}$:
 \begin{eqnarray*}
-\mbox{probability distribution of }                      Y: & P_Y:  \mathbb{R}\rightarrow[0,1], & P_Y(B) = P(Y^{-1}(B)),       \\
-\mbox{probability density (function), if it exists, of } Y: & \pi_Y:\mathbb{R}\rightarrow[0,1], & P_Y(B) = \int_B \pi_Y(y)~dy, \\
-\mbox{distribution (function) of }                       Y: & F_Y:  \mathbb{R}\rightarrow[0,1], & F_Y(y) = P_Y(Y\leqslant y).
+\mbox{probability distribution of }                      Y: & P_Y:  \mathfrak{B}(\mathbb{R})\rightarrow [0,1], & P_Y(B) = P(Y^{-1}(B)),       \\
+\mbox{probability density (function), if it exists, of } Y: & \pi_Y:             \mathbb{R} \rightarrow [0,1], & P_Y(B) = \int_B \pi_Y(y)~dy, \\
+\mbox{distribution (function) of }                       Y: & F_Y:               \mathbb{R} \rightarrow [0,1], & F_Y(y) = P_Y(Y\leqslant y).
 \end{eqnarray*}
 In the case of a vector r.v. $\mathbf{Y}:\Omega\rightarrow\mathbb{R}^n$, $\mathbf{Y}=(Y_0,\ldots,Y_{n-1})$,
 with each $Y_i:\Omega\rightarrow\mathbb{R}$ being a r.v. itself,$i=0,\ldots,n-1$, the respective definitions are:
 \begin{eqnarray*}
- & P_{\mathbf{Y}}:  \mathbb{R}^n\rightarrow[0,1], & P_{\mathbf{Y}}(B_0,\ldots,B_{n-1}) = P(Y_0^{-1}(B_0)\cap\ldots\cap Y_{n-1}^{-1}(B_{n-1})), \\
- & \pi_{\mathbf{Y}}:\mathbb{R}^n\rightarrow[0,1], & P_{\mathbf{Y}}(\mathbf{B}) = \int_B \pi_{\mathbf{Y}}(\mathbf{y})~d\mathbf{y}, \\
- & F_{\mathbf{Y}}:  \mathbb{R}^n\rightarrow[0,1], & F_{\mathbf{Y}}(\mathbf{y}) = P_{\mathbf{Y}}(\mathbf{Y}\leqslant\mathbf{y}),
+ & P_{\mathbf{Y}}:  \mathfrak{B}(\mathbb{R}^n)\rightarrow [0,1], & P_{\mathbf{Y}}(B_0,\ldots,B_{n-1}) = P(Y_0^{-1}(B_0)\cap\ldots\cap Y_{n-1}^{-1}(B_{n-1})), \\
+ & \pi_{\mathbf{Y}}:             \mathbb{R}^n \rightarrow [0,1], & P_{\mathbf{Y}}(\mathbf{B}) = \int_B \pi_{\mathbf{Y}}(\mathbf{y})~d\mathbf{y}, \\
+ & F_{\mathbf{Y}}:               \mathbb{R}^n \rightarrow [0,1], & F_{\mathbf{Y}}(\mathbf{y}) = P_{\mathbf{Y}}(\mathbf{Y}\leqslant\mathbf{y}),
 \end{eqnarray*}
 where $\mathbf{Y}\leqslant\mathbf{y}$ should be interpreted in a componentwise way.
 When a distinction between a scalar and a vector r.v. is not important, we will not use bold symbols, that is, we will simply use notations $Y$, $P_Y$ etc.
-Figure \ref{fig-rv-diagram} depicts the relationship between the main entities mentioned so far.
-
-\begin{figure}
-\[
-\begin{CD}
-U      @>P>> [0,1] \\
-@.     @AA\text{$P_Y$}A \\
-\Omega @>Y>> \mathbb{R}^n
-\end{CD}
-\]
-\caption{Relationship between the concepts of
-sample space $\Omega$,
-$\sigma$-algebra $U$,
-probability measure $P$,
-r.v. $Y$ and
-probability distribution $P_Y$.}
-\label{fig-rv-diagram}
-\end{figure}
+%Also, we will abuse notation by writing
+%\begin{equation*}
+%P_Y:  \mathbb{R}^n\rightarrow [0,1].
+%\end{equation*}
 
 A r.v. is called absolutely continuous if its probability distribution is absolutely continuous w.r.t. the Lebesgue measure, that is,
 \begin{equation*}
@@ -78,30 +124,33 @@ The Radon-Nikodym theorem \cite{KaSo05} states that
 Y\mbox{ is a absolutely continuous r.v. }\Rightarrow\mbox{ its probability density }\pi_Y(\cdot)\mbox{ exists}.
 \end{equation}
 
-Given two r.v. $\mathbf{Y}_1\in\mathbb{R}^{n_1}$ and $\mathbf{Y}_2\in\mathbb{R}^{n_2}$,
+\subsection{Joint Probabilities}
+
+Given two r.v. $\mathbf{Y}_1:\Omega\rightarrow\mathbb{R}^{n_1}$ and $\mathbf{Y}_2:\Omega\rightarrow\mathbb{R}^{n_2}$,
 their joint probability distribution and probability density (if it exists) are defined as
 \begin{eqnarray*}
-P_{\mathbf{Y}_1\mathbf{Y}_2}:\mathbb{R}^{n_1}\times\mathbb{R}^{n_2}\rightarrow[0,1],~
+P_{\mathbf{Y}_1\mathbf{Y}_2}:\mathfrak{B}(\mathbb{R}^{n_1})\times\mathfrak{B}(\mathbb{R}^{n_2})\rightarrow [0,1],~
 P_{\mathbf{Y}_1\mathbf{Y}_2}(B_1,B_2)
 & = &
 P(\mathbf{Y}_1^{-1}(B_1)\cap\mathbf{Y}_2^{-1}(B_2)), \\
-\pi_{\mathbf{Y}_1\mathbf{Y}_2}:\mathbb{R}^{n_1}\times\mathbb{R}^{n_2}\rightarrow[0,1],~
+\pi_{\mathbf{Y}_1\mathbf{Y}_2}:\mathbb{R}^{n_1}\times\mathbb{R}^{n_2}\rightarrow [0,1],~
 P_{\mathbf{Y}_1\mathbf{Y}_2}(B_1,B_2)
 & = &
-\int_{B_1}\int_{B_2}\pi_{\mathbf{Y}_1\mathbf{Y}_2}(\mathbf{y}_1,\mathbf{y}_2)~d\mathbf{y}_2\mathbf{y}_1.
+\int_{B_1}\int_{B_2}\pi_{\mathbf{Y}_1\mathbf{Y}_2}(\mathbf{y}_1,\mathbf{y}_2)~d\mathbf{y}_2~d\mathbf{y}_1.
 \end{eqnarray*}
 It is worth mentioning that, in the case of a vector r.v. $\mathbf{Y}=(Y_0,\ldots,Y_{n-1})$,
 the concept of probability distribution of $\mathbf{Y}$ is the same as
 the concept of joint probability distribution among its components $Y_0,\ldots,Y_{n-1}$.
-%
+
+\subsection{Marginal Probabilities}
 
 The marginal probability distribution and the marginal probability density (if it exists) of $\mathbf{Y}_1$ are defined as
 \begin{eqnarray*}
-P_{m\mathbf{Y}_1}:\mathbb{R}^{n_1}\rightarrow[0,1],~
+P_{m\mathbf{Y}_1}:\mathfrak{B}(\mathbb{R}^{n_1})\rightarrow [0,1],~
 P_{m\mathbf{Y}_1}(B_1)
 & = &
 P_{\mathbf{Y}_1\mathbf{Y}_2}(B_1,\mathbb{R}^{n_2}), \\
-\pi_{m\mathbf{Y}_1}:\mathbb{R}^{n_1}\rightarrow[0,1],~
+\pi_{m\mathbf{Y}_1}:\mathbb{R}^{n_1}\rightarrow [0,1],~
 P_{m\mathbf{Y}_1}(B_1)
 & = &
 \int_{B_1}\pi_{m\mathbf{Y}_1}(\mathbf{y}_1)~d\mathbf{y}_1.
@@ -113,11 +162,13 @@ If $\pi_{\mathbf{Y}_1\mathbf{Y}_2}(\cdot,\cdot)$ exists then
 =
 \int_{\mathbb{R}^{n_2}}\pi_{\mathbf{Y}_1\mathbf{Y}_2}(\mathbf{y}_1,\mathbf{y}_2)~d\mathbf{y}_2.
 \end{equation*}
-%
-If $B_2\subset\mathbb{R}^{n_2}$ is such that $P_{m\mathbf{Y}_2}(B_2)>0$, then the
+
+\subsection{Conditional Probabilities}
+
+If $B_2\in\mathfrak{B}(\mathbb{R}^{n_2})$ is such that $P_{m\mathbf{Y}_2}(B_2)>0$, then the
 conditional probability distribution of $\mathbf{Y}_1$ (conditioned) on $B_2$ is defined as
 \begin{equation*}
-P_{c\mathbf{Y}_1}:\mathbb{R}^{n_1}\rightarrow[0,1],~
+P_{c\mathbf{Y}_1}:\mathfrak{B}(\mathbb{R}^{n_1})\rightarrow [0,1],~
 P_{c\mathbf{Y}_1}(B_1|B_2)
 =
 \frac
@@ -128,13 +179,15 @@ P_{c\mathbf{Y}_1}(B_1|B_2)
 If $\pi_{\mathbf{Y}_1\mathbf{Y}_2}(\cdot,\cdot)$ exists and $\mathbf{y}_2$ is such that $\pi_{m\mathbf{Y}_2}(\mathbf{y}_2)>0$, then the
 conditional probability density of $\mathbf{Y}_1$ (conditioned) on $\mathbf{Y}_2=\mathbf{y}_2$ is defined as
 \begin{equation*}
-\pi_{c\mathbf{Y}_1}:\mathbb{R}^{n_1}\rightarrow[0,1],~
+\pi_{c\mathbf{Y}_1}:\mathbb{R}^{n_1}\rightarrow [0,1],~
 \pi_{c\mathbf{Y}_1}(\mathbf{y}_1|\mathbf{y}_2)
 =
 \frac
 {\pi_{\mathbf{Y}_1\mathbf{Y}_2}(\mathbf{y}_1,\mathbf{y}_2)}
 {\pi_{m\mathbf{Y}_2}(\mathbf{y}_2)}.
 \end{equation*}
+
+\subsection{Bayes Theorem}
 
 The Bayes Theorem \cite{KaSo05} states that
 if $P_{cY_1}(\cdot|B_2)$ and $P_{cY_2}(\cdot|B_1)$ exist then
@@ -145,6 +198,8 @@ If $\pi_{Y_1Y_2}(\cdot,\cdot)$, $\pi_{cY_1}(\cdot|y_2)$ and $\pi_{cY_2}(\cdot|y_
 \begin{equation}\label{eq-Bayes-2}
 \pi_{Y_1Y_2}(y_1,y_2) = \pi_{cY_1}(y_1|y_2)\pi_{mY_2}(y_2) = \pi_{cY_2}(y_2|y_1)\pi_{mY_1}(y_1).
 \end{equation}
+
+\subsection{Independence}
 
 Two r.v. $Y_1$ and $Y_2$ are considered independent if
 \begin{equation*}
@@ -164,11 +219,6 @@ Two r.v. $Y_1$ and $Y_2$ are considered conditionally independent w.r.t. a third
 P_{cY_1Y_2}(B_1,B_2|B_3) = P_{cY_1}(B_1|B_3)P_{cY_2}(B_2|B_3).
 \end{equation*}
 for all Borel sets $B_j$.
-
-%And the usual abuses of notation will also be applied:
-%\begin{equation*}
-%P(B\subset\mathbb{R})\equiv P_Y(B\subset\mathbb{R}).
-%\end{equation*}
 
 \section{Predicting Quantities of Interest of a System}\label{sc-intro-qoi}
 
@@ -190,12 +240,12 @@ We then have a system with
 where $\mathbb{Z}_+^*$ designates the set of strictly positive integers.
 Figure \ref{fig-black-box} summarizes this ``black-box'' system description.
 
-\begin{figure}
+\begin{figure}[h]
 \caption{A generic ``black-box'' system description.}
 \label{fig-black-box}
 \end{figure}
 
-We will assume that we do not have a detailed quantitative description of the input parameters, so that we will need to solve an statistical inverse problem
+We will assume that we do not have a detailed quantitative description of the distributions of the input parameters, so that we will need to solve a statistical inverse problem
 in order to obtain such distributions. 
 We will suppose that
 \begin{itemize}
@@ -219,7 +269,7 @@ R_{\theta}          & =      & \mbox{input subset of }\mathbb{R}^{N_{\theta}}\mb
 
 In order to be able to solve the statistical inverse problem, we will make the hypothesis that
 \begin{equation}\label{eq-hyp-jpd}
-\mbox{the joint probability density }\pi_{\boldsymbol{\Theta}\mathbf{Y}}:\mathbb{R}^{N_0}\times\mathbb{R}^{M_y}\rightarrow[0,1]\mbox{ exists},
+\mbox{the joint probability density }\pi_{\boldsymbol{\Theta}\mathbf{Y}}:\mathbb{R}^{N_0}\times\mathbb{R}^{M_y}\rightarrow [0,1]\mbox{ exists},
 \end{equation}
 \begin{equation}\label{eq-hyp-obs-mp}
 \mbox{the marginal probability density }\pi_{m\mathbf{Y}}(\mathbf{y}_{obs})\neq 0,
@@ -262,14 +312,14 @@ However, although we can claim the existence of the solution of the statistical 
 we are still not able to compute it, since the terms on the r.h.s. in \eqref{eq-sol-sip} are not yet known.
 We then assume that
 \begin{equation}\label{eq-hyp-prior-known}
-\mbox{the prior probability density }\pi_{prior}(\boldsymbol{\theta})\mbox{ is known }\quad\forall\boldsymbol\theta\in R_{\theta},
+\mbox{the prior probability density }\pi_{prior}(\boldsymbol{\theta}),~\boldsymbol\theta\in R_{\theta},\mbox{ is known},
 \end{equation}
 \begin{equation}\label{eq-hyp-conditional-independence}
 \mbox{the r.v. }\mathbf{Y}_i,~i=0,\ldots,m_y-1,\mbox{ are conditionally independent w.r.t. }\boldsymbol\theta,\quad\forall\boldsymbol\theta\in R_{\theta},
 \end{equation}
 and
 \begin{equation}\label{eq-hyp-l-known}
-\mbox{each individual likelihood }\ell_i(y_{i,obs}|\boldsymbol\theta),~i=0,\ldots,m_y-1,\mbox{ is known }\quad\forall\boldsymbol\theta\in R_{\theta}.
+\mbox{each individual likelihood }\ell_i(y_{i,obs}|\boldsymbol\theta),~i=0,\ldots,m_y-1,~\boldsymbol\theta\in R_{\theta},\mbox{ is known}.
 \end{equation}
 Although we cannot compute $\pi_{posterior}(\boldsymbol\theta)$,
 since we do not have $\pi_{m\mathbf{Y}}(\mathbf{y}_{obs})$,
@@ -283,8 +333,8 @@ The importance of such computation is that there exist
 appropriate chain generation methods that are proved to have their limiting distributions equal 
 to the target distribution $\pi_{posterior}(\boldsymbol\theta)$ as long as the target distribution is supplied
 up to a multiplicative constant, such as \eqref{eq-posterior-up2a-constant}, for instance.
-The generation of such chains is precisely at the heart of the so called Markov Chain Monte Carlo (MCMC) methods,
-discussed in Chapter \ref{ch-mcmc}.
+The generation of such chains is precisely at the heart of the so called Markov Chain Monte Carlo (MCMC) methods
+an is further discussed in Chapter \ref{ch-gmc}.
 
 Once a chain
 \begin{equation}\label{eq-markov-chain}
@@ -309,7 +359,7 @@ We will denote
 \mathbf{s} = (s_0,\ldots,s_{n_s-1}).
 \end{equation*}
 
-\begin{figure}
+\begin{figure}[h]
 \caption{Generic model of a system with state $\mathbf{s}(t,\mathbf{x}) = (s_0(t,\mathbf{x}),\ldots,s_{n_s-1}(t,\mathbf{x}))$
 evolving from instant $t=0$ until instant $t=T$
 over positions $\mathbf{x}\in D\subset\mathbb{R}^3$.}

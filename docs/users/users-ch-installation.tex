@@ -52,11 +52,24 @@ Also, if you wish to run the Sandia's DAKOTA Toolkit \cite{dakota} with the appl
 \item add ``$<$WORK\_DIR$>$/uq/appls/fp/heatex'' to your PATH.
 \end{itemize}
 
+If you want to generate documentation, just run
+\begin{itemize}
+\item cd $<$WORK\_DIR$>$/uq
+\item make all\_docs
+\end{itemize}
+These commands will generate:
+\begin{itemize}
+\item the User's Manual in pdf format at $<$WORK\_DIR$>$/uq/docs/users,
+\item the Developer's Manual in pdf format at $<$WORK\_DIR$>$/uq/docs/developers, and
+\item ./html/ subdirectories containing lower-level code documentation throughout the PECOS toolkit directory.
+\end{itemize}
+The user is able to navigate through the lower-level code documentation by pointing a web browser to $<$WORK\_DIR$>$/uq/html/index.html.
+
 \section{Directory Tree Overview}
 
 Under the directory ``$<$WORK\_DIR$>$/uq/'' there are three subdirectories:
 \begin{itemize}
-\item uq/docs/, which contains the User's Manual,
+\item uq/docs/, which contains the User's Manual and the Developer's Manual,
 \item {uq/appls/, which contains examples of applications for
 \begin{itemize}
 \item MCMC methods (uq/appls/mcmc/) and
@@ -66,6 +79,6 @@ Under the directory ``$<$WORK\_DIR$>$/uq/'' there are three subdirectories:
 \item uq/libs/, which contains the libraries used by the applications under uq/appls/.
 \end{itemize}
 
-The examples for MCMC methods are explained in Setion \ref{sc-dram-examples}.
+The examples for MCMC methods are explained in Setion \ref{sc-gmc-dram-examples}.
 The examples for forward propagation are explained in Section \ref{sc-fp-examples}.
 The libraries under uq/libs are explained in the Developer's Manual.
