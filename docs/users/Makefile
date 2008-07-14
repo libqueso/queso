@@ -15,7 +15,10 @@ clean_texs:
 clean_exec:
 	rm -f *~
 
-all_texs:
+OBJS_convert = black_box.eps \
+	black_state.eps
+
+all_texs: $(OBJS_convert)
 	latex users.tex
 	latex users.tex
 	bibtex users
@@ -23,3 +26,8 @@ all_texs:
 	latex users.tex
 	dvips -t letter users.dvi -o users.ps
 	ps2pdf users.ps users.pdf
+
+.SUFFIXES: .eps .png
+
+%.eps: %.png
+	convert $< $(basename $<).eps
