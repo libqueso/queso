@@ -9,9 +9,6 @@ Metropolis-Hastings (MH),
 Delayed Rejection (DR),
 Adaptive Metropolis (AM) and
 DRAM algorithms.
-Section \ref{sc-mcmc-how-to-use-dram} explains how to to develop your own application using the DRAM capabilities of the PECOS Toolkit, while
-Section \ref{sc-mcmc-dram-examples} describes the examples available in the toolkit.
-The chapter ends at Section \ref{sc-mcmc-planned-features} with a brief list of planned features for next toolkit versions w.r.t. Markov Chain Monte Carlo methods.
 
 \section{Markov Chains}\label{sc-mcmc-markov-chains}
 
@@ -212,7 +209,7 @@ a sub-$\sigma$-algebra $\mathcal{F}$,
 we define,
 for any given $B\in\mathfrak{B}(\mathbb{R}^n)$,
 \begin{equation}\label{eq-cond-prob-wrt-algebra}
-P_{\mathbf{Y}}(B|\mathcal{F}) = E[\mathbf{1}_{\mathbf{Y}\in B}|\mathcal{F}].
+P_{\mathbf{Y}|\mathcal{F}}(B|\mathcal{F}) = E[\mathbf{1}_{\mathbf{Y}\in B}|\mathcal{F}].
 \end{equation}
 
 Some properties of conditional expectations are:
@@ -255,7 +252,7 @@ and
 We can interpret the properties just listed by grasping the intuitive idea of a $\sigma$-algebra $\mathcal{F}$ in the context of r.v.'s.
 Let us say that the outcome $\omega$ of a performed random experiment is unknown. Instead, for each $A\in\mathcal{F}$ we are told if $\omega\in A$.
 In this scenario, more sets in $\mathcal{F}$ means more information to us for determining $\omega$ and might mean more information to us for determining the value $\mathbf{Y}(\omega)$ of a r.v..
-Result \eqref{eq-cond-expec-know-Y}, for instance, establishes that if $\mathbf{Y}$ is $\mathcal{F}$-measurable, the information in $\mathcal{F}$ is enough to determine the value $\mathbf{Y}(\omega)$,
+Result \eqref{eq-cond-expec-know-Y}, for instance, establishes that if $\mathbf{Y}$ is $\mathcal{F}$-measurable then the information in $\mathcal{F}$ is enough to determine the value $\mathbf{Y}(\omega)$,
 although the information might not be enough to determine $\omega$ itself.
 On the other extreme, result \eqref{eq-cond-expec-know-nothing} establishes that an independent $\sigma$-algebra is useless for the determination of $\mathbf{Y}(\omega)$.
 As a particular case, the trivial $\sigma$-algebra provides no information.
@@ -298,7 +295,7 @@ From now on we will assume $U=U_k$ and $\mathcal{F}_k\subseteq U$ for all $k$.
 By definition, a sequence $\{\mathbf{Y}_k\}$ of r.v.'s is said to be a Markov Chain, or to possess the Markov property, w.r.t. a filtration $\{\mathcal{F}_k\}$,
 if $\{\mathbf{Y}_k\}$ is adapted to $\{\mathcal{F}_k\}$ and
 \begin{equation}\label{eq-markov-chain-general-def-1}
-P_{\mathbf{Y}_{k+1}}(B|\mathcal{F}_k) = P_{\mathbf{Y}_{k+1}}(B|\sigma(\mathbf{Y}_k))\quad\forall B\in\mathcal{S}.
+P_{\mathbf{Y}_{k+1}|\mathcal{F}_k}(B|\mathcal{F}_k) = P_{\mathbf{Y}_{k+1}}(B|\sigma(\mathbf{Y}_k))\quad\forall B\in\mathcal{S}.
 \end{equation}
 It should be noted that, according to $\eqref{eq-cond-prob-wrt-algebra}$, $\eqref{eq-markov-chain-general-def-1}$ is an equality between r.v.'s.
 Intuitively, it establishes that given the present, represented by $\sigma(\mathbf{Y}_k)$,
@@ -307,7 +304,7 @@ the rest of the past is irrelevant for predicting $\mathbf{Y}_{k+1}$.
 It can be proved \cite{Du05} that $\{\mathbf{Y}_k\}$ is a Markov Chain w.r.t. a filtration $\{\mathcal{F}_k\}$ iff
 there exist transition probabilities $Q_k:S\times\mathcal{S}\rightarrow [0,1]$ such that
 \begin{equation}\label{eq-markov-chain-general-def-2}
-P_{\mathbf{Y}_{k+1}}(B|\mathcal{F}_k) = \mathbf{Q}_k(\mathbf{Y}_k,B)\quad\forall B\in\mathcal{S},
+P_{\mathbf{Y}_{k+1}|\mathcal{F}_k}(B|\mathcal{F}_k) = \mathbf{Q}_k(\mathbf{Y}_k,B)\quad\forall B\in\mathcal{S},
 \end{equation}
 where, for any arbitrarily fixed $B\in\mathcal{S}$, $\mathbf{Q}_k(\mathbf{Y}_k,B):\Omega\rightarrow [0,1]$ is the r.v. defined by
 \begin{equation*}
@@ -347,11 +344,8 @@ Q_k(
 \mathbf{y}_{k+1}
 )
 \quad\forall
-\mathbf{y}_i\in S,~0\leqslant i\leqslant k+1,
+\mathbf{y}_i\in S,~0\leqslant i\leqslant k+1.
 \end{equation}
-where
-$P_{\mathbf{Y}_{k+1}}(\cdot|\ldots)$ now means a real value on both equations,
-instead of a r.v. as in \eqref{eq-markov-chain-general-def-1} and \eqref{eq-markov-chain-general-def-2}.
 
 If $(S,\mathcal{S})=(\mathbb{R}^n,\mathfrak{B}(\mathbb{R}^n))$, then \eqref{eq-markov-chain-general-def-1} and \eqref{eq-markov-chain-general-def-2} can be replaced by
 \begin{equation}\label{eq-markov-chain-R-def-1}
@@ -384,11 +378,8 @@ B_0
 \mathbf{y},B_{k+1}
 )~d\mathbf{y}
 \quad\forall
-B_i\in\mathcal{S},~0\leqslant i\leqslant k+1,
+B_i\in\mathcal{S},~0\leqslant i\leqslant k+1.
 \end{equation}
-where, again,
-$P_{\mathbf{Y}_{k+1}}(\cdot|\ldots)$ now means a real value on both equations,
-instead of a r.v. as in \eqref{eq-markov-chain-general-def-1} and \eqref{eq-markov-chain-general-def-2}.
 
 If $(S,\mathcal{S})=(\mathbb{R}^n,\mathfrak{B}(\mathbb{R}^n))$ and
 the r.v.'s are absolutely continuous, i.e., their probability distributions can be expressed in terms of probability densities,
@@ -425,10 +416,14 @@ dQ_k(
 \mathbf{y}_{k+1},
 )
 \quad\forall
-\mathbf{y}_i\in S,~0\leqslant i\leqslant k+1,
+\mathbf{y}_i\in S,~0\leqslant i\leqslant k+1.
 \end{equation}
-where, once more,
-$P_{\mathbf{Y}_{k+1}}(\cdot|\ldots)$ now means a real value on both equations,
+
+It should be noted that in {\it all} equations
+\eqref{eq-markov-chain-countable-def-1}
+-
+\eqref{eq-markov-chain-Rac-def-2}
+$P_{\mathbf{Y}_{k+1}}(\cdot|\ldots)$ now means a real value
 instead of a r.v. as in \eqref{eq-markov-chain-general-def-1} and \eqref{eq-markov-chain-general-def-2}.
 
 \subsection{Transition Probability Kernel}
@@ -441,11 +436,11 @@ if $Q$ can be expressed by
 Q(x,B) = \int_B {K}(x,y)~dy \quad\forall (x,B)\in S\times\mathcal{S}.
 \end{equation*}
 Clearly, a transition probability kernel needs to satisfy
-\begin{equation*}
+\begin{equation}\label{eq-kernel-necessary-cond}
 \int_S {K}(x,y)~dy=1.
-\end{equation*}
+\end{equation}
 
-So, going back to the last case analysed in the last subsection,
+So, by definition of a kernel, 
 if $(S,\mathcal{S})=(\mathbb{R}^n,\mathfrak{B}(\mathbb{R}^n))$ and
 the r.v.'s are absolutely continuous,
 then
@@ -467,11 +462,40 @@ K_k(
 \mathbf{y}_i\in S,~0\leqslant i\leqslant k+1.
 \end{equation}
 
+In the context of finite state spaces, similarly as one can interpret the probability distribution as a ``probability density'',
+the concept of transition probability is already enough, in the sense that it already plays the role of a transition probability kernel.
+Nonetheless, for the case of finite state spaces we will replace \eqref{eq-markov-chain-countable-def-2} by
+\begin{equation}\label{eq-markov-chain-finite-def-3}
+P_{\mathbf{Y}_{k+1}}(
+\{j\}
+|
+\{i\},
+\ldots,
+\{\mathbf{y}_0\}
+)
+=
+K(i,j)
+\quad\forall
+i,j,\mathbf{y}_l\in S,~0\leqslant l\leqslant k-1.
+\end{equation}
+
+Let there be $N\times N$ values $K(i,j)\geqslant 0,~1\leqslant i,j\leqslant N$.
+In order to form a transition probability kernel with such values, for the case of a finite state space $S$ of size $N$, it suffices that
+\begin{equation}\label{eq-kernel-finite-suff-cond}
+\sum_{j=1}^N K(i,j) = \sum_{j\in S}K(i,j) = 1.
+\end{equation}
+The correspondence between \eqref{eq-kernel-finite-suff-cond} and \eqref{eq-kernel-necessary-cond} is clear.
+
 \subsection{Homogeneous Markov Chains}
 
 A Markov Chain is said to be {\it homogeneous} if the transition probabilities do not depend on $k$.
 From now on, unless stated otherwise,
 we will assume that a Markov Chain is homogeneous with transition probability $Q:S\times\mathcal{S}\rightarrow [0,1]$.
+
+\subsection{The Propagation of a Transition Probability}
+$~$\\
+
+\subsection{Finite State Spaces}
 
 In this subsection we will give a simple example exploring the concepts of transition probability kernel and homogeneity.
 Let us assume a finite state space with $N>0$ possible elements.
@@ -531,21 +555,21 @@ Clearly, $P_{Y_{k+1}}$ is a measure, since
 \begin{equation*}
 \sum_{j=1}^{N}P_{Y_{k+1}}(j) = \sum_{j=1}^{N}\sum_{i=1}^{N}P_{Y_k}(i){K}_{ij} = \sum_{i=1}^{N}P_{Y_k}(i)\sum_{j=1}^{N}{K}_{ij} = \sum_{i=1}^{N}P_{Y_k}(i) = 1.
 \end{equation*}
-If we represent $P_{Y_k}$ as a row vector, then
+If we represent $P_{Y_k}$ as a vector in $\mathbb{R}^N$, then
 \begin{equation}\label{eq-markov-recursive-relation-finite}
-P_{Y_{k+1}}  = P_{Y_k}K,\quad k\geqslant 0,
+P_{Y_{k+1}}^T = P_{Y_k}^TK,\quad k\geqslant 0,
 \end{equation}
 and
-\begin{equation*}
-P_{Y_k}  = P_{Y_0}{K}^k,\quad k\geqslant 0.
-\end{equation*}
+\begin{equation}\label{eq-markov-Kk}
+P_{Y_k}^T = P_{Y_0}^T{K}^k,\quad k\geqslant 0.
+\end{equation}
 
 It can be proved that the chain
 \begin{equation*}
 \{Y_0,Y_1,\ldots\}
 \end{equation*}
 constructed in this way is a homogeneous Markov Chain
-w.r.t. the filtration $\{\mathcal{F}_{k+1}\}$ with $\mathcal{F}_{k+1}=\sigma(Y_0,Y_1,\ldots,Y_{k+1})$ and
+w.r.t. the filtration $\{\mathcal{F}_k\}$ with $\mathcal{F}_k=\sigma(Y_0,Y_1,\ldots,Y_k)$ and
 with transition probability kernerl given by the matrix $K$.
 
 For any general Markov Chain, the probability measure $P_{X_0}$ is called the {\it initial distribution} of the chain.
@@ -578,25 +602,35 @@ P_{Y_{k+1}}(B) = \int_{y\in S}dP_{Y_k}(y)~Q(y,B),\quad\forall B\in\mathcal{S},~k
 
 \subsection{Stationary Distributions and Irreducible Aperiodic Chains}
 
-A probability distribution $M:S\rightarrow [0,1]$ is said to be stationary w.r.t. a transition probability $Q$ if
+For the case of finite state spaces,
+a probability measure (i.e., distribution) $M:S\rightarrow [0,1]$ is said to be stationary w.r.t. a transition probability kernel $K$ if
 \begin{equation*}
-M(B) = \int_{y\in S}dM(y)~Q(y,B),\quad\forall B\in\mathcal{S}.
+M = MK,
 \end{equation*}
+that is,
+\begin{equation}\label{eq-stationary-finite-distribution}
+M(j) = \sum_{i\in S}M(i)~K(i,j),\quad\forall j\in S.
+\end{equation}
 
-A probability density $\pi_M:S\rightarrow [0,1]$ is said to be stationary w.r.t. a transition probability kernel $K$ if
+For the case of $(S,\mathcal{S})=(\mathbb{R}^n,\mathfrak{B}(\mathbb{R}^n)$,
+a probability density $\pi_M:S\rightarrow [0,1]$ is said to be stationary w.r.t. a transition probability kernel $K$ if
 \begin{equation}\label{eq-stationary-density}
 \pi_M(z) = \int_{S}\pi_M(y)~K(y,z)~dy,\quad\forall z\in S.
 \end{equation}
 
-For the case of finite state spaces, stationarity for a distribution means
+Simililarly to the correspondence between \eqref{eq-kernel-finite-suff-cond} and \eqref{eq-kernel-necessary-cond},
+the correspondence between \eqref{eq-stationary-finite-distribution} and \eqref{eq-stationary-density} is clear.
+
+For a general measurable space $(S,\mathcal{S})$,
+a probability measure $M:S\rightarrow [0,1]$ is said to be stationary w.r.t. a transition probability $Q$ if
 \begin{equation*}
-M = MK.
+M(B) = \int_{y\in S}dM(y)~Q(y,B),\quad\forall B\in\mathcal{S}.
 \end{equation*}
 
 \subsection{Limit Density of a Transition Probabiliy Kernel}
 $~$\\
 
-\subsection{Ergodic Sequences}
+\subsection{Ergodic Sequences and Mixing}
 
 To be explained in future versions of the documentation.
 
@@ -608,7 +642,7 @@ Covariance matrices will be explicitly mentioned during the presentation of the 
 \section{The Realization of A Markov Chain}\label{sc-mcmc-realization-of-a-markov-chain}
 
 In this Section \ref{sc-mcmc-realization-of-a-markov-chain}
-we will use upper indices to indicate r.v.'s and their realizations, e.g. $y^{(k)}$ and $Y^{(k)}$.
+we will use upper indices to indicate r.v.'s and their realizations, e.g. $\mathbf{y}^{(k)}$ and $\mathbf{Y}^{(k)}$.
 
 In what follows we also assume that
 we are given
@@ -616,17 +650,17 @@ we are given
 \mbox{a target probability density }\pi_{\mbox{target}}:\mathbf{R}^n\rightarrow [0,1],
 \end{equation}
 \begin{equation}\label{eq-y0}
-\mbox{a relization }y^{(0)}\mbox{ of a r.v. }Y^{(0)}:\Omega\rightarrow\mathbb{R}^n,
+\mbox{a relization }\mathbf{y}^{(0)}\mbox{ of a r.v. }\mathbf{Y}^{(0)}:\Omega\rightarrow\mathbb{R}^n,
 \end{equation}
 \begin{equation}\label{eq-q1}
 \mbox{a proposal kernel (see Subsection \ref{subsc-proposal-kernel}) }q_1:\mathbb{R}^n\times \mathbb{R}^n\rightarrow [0,1]\mbox{ and}
 \end{equation}
 \begin{equation}\label{eq-n-chain}
-\mbox{an integer }N_{\mbox{chain}}\geqslant 1,
+\mbox{an integer }n_{\mbox{chain}}\geqslant 1,
 \end{equation}
 and that
 we want to construct a {\it realization} of
-a homogeneous Markov chain of size $N_{\mbox{chain}}$ with a transition probability kernel $K:\mathbb{R}^n\rightarrow [0,1]$
+a homogeneous Markov chain of size $n_{\mbox{chain}}$ with a transition probability kernel $K:\mathbb{R}^n\rightarrow [0,1]$
 such that the limit density of $K$ is $\pi_{\mbox{target}}$.
 An example of a target is the density equal (up to a multiplicative constant) to the posterior density discussed
 at the end of Section \ref{sc-intro-qoi}.
@@ -649,20 +683,20 @@ we recursively define
 \end{equation}
 by setting
 \begin{equation*}
-\alpha_1(y,c^{(1)}) = \mbox{ min}
+\alpha_1(\mathbf{y},\mathbf{c}^{(1)}) = \mbox{ min}
 \left\{
 1,\frac
-{\pi(c^{(1)})q_1(c^{(1)},y)}
-{\pi(y)q_1(y,c^{(1)})}
+{\pi(\mathbf{c}^{(1)})q_1(\mathbf{c}^{(1)},\mathbf{y})}
+{\pi(\mathbf{y})q_1(\mathbf{y},\mathbf{c}^{(1)})}
 \right\},
 \end{equation*}
 and, for $i>1$,
 \begin{equation*}
-\alpha_i(y,c^{(1)},\ldots,c^{(i)}) = \mbox{ min}
+\alpha_i(\mathbf{y},\mathbf{c}^{(1)},\ldots,\mathbf{c}^{(i)}) = \mbox{ min}
 \left\{
 1,\frac
-{\pi(c^{(i)})}
-{\pi(y)}
+{\pi(\mathbf{c}^{(i)})}
+{\pi(\mathbf{y})}
 \cdot q_{\mbox{fraction}}
 \cdot \alpha_{\mbox{fraction}}
 \right\}.
@@ -672,43 +706,43 @@ the expressions $q_{\mbox{fraction}}$ and $\alpha_{\mbox{fraction}}$ are given b
 \begin{equation*}
 q_{\mbox{fraction}}=
 \frac
-{q_1(c^{(i)},c^{(i-1)})}
-{q_1(y,c^{(1)})}
+{q_1(\mathbf{c}^{(i)},\mathbf{c}^{(i-1)})}
+{q_1(\mathbf{y},\mathbf{c}^{(1)})}
 \frac
-{q_2(c^{(i)},c^{(i-1)},c^{(i-2)})}
-{q_2(y,c^{(1)},c^{(2)})}
+{q_2(\mathbf{c}^{(i)},\mathbf{c}^{(i-1)},\mathbf{c}^{(i-2)})}
+{q_2(\mathbf{y},\mathbf{c}^{(1)},\mathbf{c}^{(2)})}
 \ldots
 \frac
-{q_i(c^{(i)},c^{(i-1)},\ldots,c^{(1)},y)}
-{q_i(y,c^{(1)},\ldots,c^{(i-1)},c^{(i)})}
+{q_i(\mathbf{c}^{(i)},\mathbf{c}^{(i-1)},\ldots,\mathbf{c}^{(1)},\mathbf{y})}
+{q_i(\mathbf{y},\mathbf{c}^{(1)},\ldots,\mathbf{c}^{(i-1)},\mathbf{c}^{(i)})}
 \end{equation*}
 and
 \begin{equation*}
 \alpha_{\mbox{fraction}}=
 \frac
-{[1-\alpha_1(c^{(i)},c^{(i-1)})]}
-{[1-\alpha_1(y,c^{(1)})]}
+{[1-\alpha_1(\mathbf{c}^{(i)},\mathbf{c}^{(i-1)})]}
+{[1-\alpha_1(\mathbf{y},\mathbf{c}^{(1)})]}
 \frac
-{[1-\alpha_2(c^{(i)},c^{(i-1)},c^{(i-2)})]}
-{[1-\alpha_2(y,c^{(1)},c^{(2)})]}
+{[1-\alpha_2(\mathbf{c}^{(i)},\mathbf{c}^{(i-1)},\mathbf{c}^{(i-2)})]}
+{[1-\alpha_2(\mathbf{y},\mathbf{c}^{(1)},\mathbf{c}^{(2)})]}
 \ldots
 \frac
-{[1-\alpha_{i-1}(c^{(i)},c^{(i-1)},\ldots,c^{(1)})]}
-{[1-\alpha_{i-1}(y,c^{(1)},\ldots,c^{(i-1)})]}.
+{[1-\alpha_{i-1}(\mathbf{c}^{(i)},\mathbf{c}^{(i-1)},\ldots,\mathbf{c}^{(1)})]}
+{[1-\alpha_{i-1}(\mathbf{y},\mathbf{c}^{(1)},\ldots,\mathbf{c}^{(i-1)})]}.
 \end{equation*}
-It should be emphasized that $y$ does {\it not} appear on the numerator of $\alpha_{\mbox{fraction}}$.
+It should be emphasized that $\mathbf{y}$ does {\it not} appear on the numerator of $\alpha_{\mbox{fraction}}$.
 
 \subsection{The Metropolis-Hastings (MH) Algorithm}%\label{subsc-mcmc-mh-alg}
 
 The Metropolis-Hastings algorithm proceeds as follows:
 \begin{enumerate}
-\item for ($k=0$; $k < (N_{\mbox{chain}}-1)$; ++$k$) \{
-\item $\quad$/* Perform $(k+1)$-th iteration in order to obtain $y^{(k+1)}$ */
-\item $\quad$generate a candidate $c$ from $q_1(y^{(k)},\cdot)$;
-\item $\quad$compute the acceptance ratio $\alpha=\alpha_1(y^{(k)},c)$ (see \eqref{eq-alphas});
+\item for ($k=0$; $k < (n_{\mbox{chain}}-1)$; ++$k$) \{
+\item $\quad$/* Perform $(k+1)$-th iteration in order to obtain $\mathbf{y}^{(k+1)}$ */
+\item $\quad$generate a candidate $\mathbf{c}$ from $q_1(\mathbf{y}^{(k)},\cdot)$;
+\item $\quad$compute the acceptance ratio $\alpha=\alpha_1(\mathbf{y}^{(k)},\mathbf{c})$ (see \eqref{eq-alphas});
 \item $\quad$draw $t$ from the uniform distribution on $[0,1]$;
-\item $\quad$if ($t\leqslant \alpha$) $y^{(k+1)}=c$;
-\item $\quad$else $y^{(k+1)}=y^{(k)}$;
+\item $\quad$if ($t\leqslant \alpha$) $\mathbf{y}^{(k+1)}=\mathbf{c}$;
+\item $\quad$else $\mathbf{y}^{(k+1)}=\mathbf{y}^{(k)}$;
 \item \} /* end for */.
 \end{enumerate}
 
@@ -716,31 +750,31 @@ The Metropolis-Hastings algorithm proceeds as follows:
 
 Given
 \begin{equation}\label{eq-Ne}
-N_e\geqslant 1
+n_e\geqslant 1
 \end{equation}
-extra proposal kernels $q_i:S\times S\rightarrow [0,1]$, $i=2,\ldots,N_e+1$,
+extra proposal kernels $q_i:S\times S\rightarrow [0,1]$, $i=2,\ldots,n_e+1$,
 the Delayed Rejection algorithm proceeds as follows:
 \begin{enumerate}
-\item for ($k=0$; $k < (N_{\mbox{chain}}-1)$; ++$k$) \{
-\item $\quad$/* Perform $(k+1)$-th iteration in order to obtain $y^{(k+1)}$ */
-\item $\quad$generate a candidate $c^{(1)}$ from $q_1(y^{(k)},\cdot)$;
-\item $\quad$compute the acceptance ratio $\alpha=\alpha_1(y^{(k)},c^{(1)})$ (see \eqref{eq-alphas});
+\item for ($k=0$; $k < (n_{\mbox{chain}}-1)$; ++$k$) \{
+\item $\quad$/* Perform $(k+1)$-th iteration in order to obtain $\mathbf{y}^{(k+1)}$ */
+\item $\quad$generate a candidate $\mathbf{c}^{(1)}$ from $q_1(\mathbf{y}^{(k)},\cdot)$;
+\item $\quad$compute the acceptance ratio $\alpha=\alpha_1(\mathbf{y}^{(k)},\mathbf{c}^{(1)})$ (see \eqref{eq-alphas});
 \item $\quad$draw $t$ from the uniform distribution on $[0,1]$;
 \item $\quad$accept = false; $i=1$;
-\item $\quad$if ($t\leqslant \alpha$) \{ $y^{(k+1)}=c^{(i)}$; accept = true; \}
-\item $\quad$else while ((accept == false) \&\& ($i\leqslant N_e$)) \{
-\item $\quad\quad$/* Extra stages trying extra candidates $c^{(2)},c^{(3)},\ldots,c^{(N_e+1)}$ (maximum) */
-\item $\quad\quad$generate a candidate $c^{(i+1)}$ from $q_i(y^{(k)},c^{(1)},\ldots,c^{(i)})$;
-\item $\quad\quad$compute the acceptance ratio $\alpha=\alpha_i(y^{(k)},c^{(1)},\ldots,c^{(i)})$ (see \eqref{eq-alphas});
+\item $\quad$if ($t\leqslant \alpha$) \{ $\mathbf{y}^{(k+1)}=\mathbf{c}^{(i)}$; accept = true; \}
+\item $\quad$else while ((accept == false) \&\& ($i\leqslant n_e$)) \{
+\item $\quad\quad$/* Extra stages trying extra candidates $\mathbf{c}^{(2)},\mathbf{c}^{(3)},\ldots,\mathbf{c}^{(n_e+1)}$ (maximum) */
+\item $\quad\quad$generate a candidate $\mathbf{c}^{(i+1)}$ from $q_i(\mathbf{y}^{(k)},\mathbf{c}^{(1)},\ldots,\mathbf{c}^{(i)})$;
+\item $\quad\quad$compute the acceptance ratio $\alpha=\alpha_i(\mathbf{y}^{(k)},\mathbf{c}^{(1)},\ldots,\mathbf{c}^{(i)})$ (see \eqref{eq-alphas});
 \item $\quad\quad$draw $t$ from the uniform distribution on $[0,1]$;
-\item $\quad\quad$if ($t\leqslant \alpha$) \{ $y^{(k+1)}=c^{(i)}$; accept = true; \}
+\item $\quad\quad$if ($t\leqslant \alpha$) \{ $\mathbf{y}^{(k+1)}=\mathbf{c}^{(i)}$; accept = true; \}
 \item $\quad\quad$$i\leftarrow i+1$;
 \item $\quad$\} /* end while */
-\item $\quad$if (accept == false) $y^{(k+1)}=y^{(k)}$;
+\item $\quad$if (accept == false) $\mathbf{y}^{(k+1)}=\mathbf{y}^{(k)}$;
 \item \} /* end for */.
 \end{enumerate}
 So, if a rejection happens, the algorithm yet tries to find a suitable canditate under the same $(k+1)$-th iteration.
-If $N_e=0$ then the DR algorithm becomes the MH algorithm of the previous subsection.
+If $n_e=0$ then the DR algorithm becomes the MH algorithm of the previous subsection.
 
 \subsection{The Adaptive Metropolis (AM) Algorithm}\label{subsc-mcmc-am-alg}
 Given
@@ -757,21 +791,21 @@ Given
 \mbox{an integer }t_0>0,
 \end{equation}
 \begin{equation}\label{eq-n0}
-\mbox{an integer }n_0>0,
+\mbox{an integer }p_0>0,
 \end{equation}
-and, for $k > 0$ and any vectors $y^{(0)},y^{(1)},\ldots,y^{(k)}$, the expression
+and, for $k > 0$ and any vectors $\mathbf{y}^{(0)},\mathbf{y}^{(1)},\ldots,\mathbf{y}^{(k)}$, the expression
 \begin{equation}\label{eq-emperical-cov}
-\mbox{Cov}(y^{(0)},y^{(1)},\ldots,y^{(k)})\equiv,
+\mbox{Cov}(\mathbf{y}^{(0)},\mathbf{y}^{(1)},\ldots,\mathbf{y}^{(k)})\equiv,
 \end{equation}
 the Adaptive Metropolis algorithm proceeds as follows:
 \begin{enumerate}
-\item for ($k=0$; $k < (N_{\mbox{chain}}-1)$; ++$k$) \{
-\item $\quad$/* Perform $(k+1)$-th iteration in order to obtain $y^{(k+1)}$ */
-\item $\quad$generate a candidate $c$ from $q_1(y^{(k)},\cdot)$;
-\item $\quad$compute the acceptance ratio $\alpha=\alpha_1(y^{(k)},c)$ (see \eqref{eq-alphas});
+\item for ($k=0$; $k < (n_{\mbox{chain}}-1)$; ++$k$) \{
+\item $\quad$/* Perform $(k+1)$-th iteration in order to obtain $\mathbf{y}^{(k+1)}$ */
+\item $\quad$generate a candidate $\mathbf{c}$ from $q_1(\mathbf{y}^{(k)},\cdot)$;
+\item $\quad$compute the acceptance ratio $\alpha=\alpha_1(\mathbf{y}^{(k)},\mathbf{c})$ (see \eqref{eq-alphas});
 \item $\quad$draw $t$ from the uniform distribution on $[0,1]$;
-\item $\quad$if ($t\leqslant \alpha$) $y^{(k+1)}=c$;
-\item $\quad$else $y^{(k+1)}=y^{(k)}$;
+\item $\quad$if ($t\leqslant \alpha$) $\mathbf{y}^{(k+1)}=\mathbf{c}$;
+\item $\quad$else $\mathbf{y}^{(k+1)}=\mathbf{y}^{(k)}$;
 \item \} /* end for */.
 \end{enumerate}
 
@@ -784,9 +818,9 @@ the Adaptive Metropolis algorithm proceeds as follows:
 (iteration)          &                         &                                         & (stage)                &                                                 &                  &                                         \\
 \hline
 \hline
-$y^{(0)}$       & $c$ w/ $q$              & $y^{(0)}$ or $c$ w/ $\alpha_1$       & $c^{(1)}$ w/ $q_1$     & $y^{(0)}$ or $c^{(1)}$ w/ $\alpha_1$       & $c$ w/ $g_0$     & $y^{(0)}$ or $c$ w/ $\alpha_1$       \\
+$\mathbf{y}^{(0)}$       & $\mathbf{c}$ w/ $q$              & $\mathbf{y}^{(0)}$ or $\mathbf{c}$ w/ $\alpha_1$       & $\mathbf{c}^{(1)}$ w/ $q_1$     & $\mathbf{y}^{(0)}$ or $\mathbf{c}^{(1)}$ w/ $\alpha_1$       & $\mathbf{c}$ w/ $g_0$     & $\mathbf{y}^{(0)}$ or $\mathbf{c}$ w/ $\alpha_1$       \\
 \cline{4-5}
-                     &                         &                                         & $c^{(2)}$ w/ $q_2$     & $y^{(0)}$ or $c^{(2)}$ w/ $\alpha_2$       &                  &                                         \\
+                     &                         &                                         & $\mathbf{c}^{(2)}$ w/ $q_2$     & $\mathbf{y}^{(0)}$ or $\mathbf{c}^{(2)}$ w/ $\alpha_2$       &                  &                                         \\
 \cline{4-5}
                      &                         &                                         & $\vdots$               & $\vdots$                                        &                  &                                         \\
 \cline{4-5}
@@ -794,9 +828,9 @@ $y^{(0)}$       & $c$ w/ $q$              & $y^{(0)}$ or $c$ w/ $\alpha_1$      
                      &                         &                                         & \multicolumn{2}{l||}{or maximum stages achieved}                         &                  &                                         \\
 \hline 
 \hline
-$y^{(1)}$       & $c$ w/ $q$              & $y^{(1)}$ or $c$ w/ $\alpha_1$       & $c^{(1)}$ w/ $q_1$     & $y^{(1)}$ or $c^{(1)}$ w/ $\alpha_1$       & $c$ w/ $g_0$     & $y^{(1)}$ or $c$ w/ $\alpha_1$       \\
+$\mathbf{y}^{(1)}$       & $\mathbf{c}$ w/ $q$              & $\mathbf{y}^{(1)}$ or $\mathbf{c}$ w/ $\alpha_1$       & $\mathbf{c}^{(1)}$ w/ $q_1$     & $\mathbf{y}^{(1)}$ or $\mathbf{c}^{(1)}$ w/ $\alpha_1$       & $\mathbf{c}$ w/ $g_0$     & $\mathbf{y}^{(1)}$ or $\mathbf{c}$ w/ $\alpha_1$       \\
 \cline{4-5}
-                     &                         &                                         & $c^{(2)}$ w/ $q_2$     & $y^{(1)}$ or $c^{(2)}$ w/ $\alpha_2$       &                  &                                         \\
+                     &                         &                                         & $\mathbf{c}^{(2)}$ w/ $q_2$     & $\mathbf{y}^{(1)}$ or $\mathbf{c}^{(2)}$ w/ $\alpha_2$       &                  &                                         \\
 \cline{4-5}
                      &                         &                                         & $\vdots$               & $\vdots$                                        &                  &                                         \\
 \cline{4-5}
@@ -807,20 +841,12 @@ $y^{(1)}$       & $c$ w/ $q$              & $y^{(1)}$ or $c$ w/ $\alpha_1$      
 $\vdots$             & $\vdots$                & $\vdots$                                & $\vdots$               & $\vdots$                                        & $\vdots$         & $\vdots$                                \\
 \hline
 \hline
-$y^{(t_0)}$     & $c$ w/ $q$              & $y^{(t_0)}$ or $c$ w/ $\alpha_1$     & $c^{(1)}$ w/ $q_1$     & $y^{(t_0)}$ or $c^{(1)}$ w/ $\alpha_1$     & $c$ w/ $g_1$     & $y^{(t_0)}$ or $c$ w/ $\alpha_1$     \\
+$\mathbf{y}^{(t_0)}$     & $\mathbf{c}$ w/ $q$              & $\mathbf{y}^{(t_0)}$ or $\mathbf{c}$ w/ $\alpha_1$     & $\mathbf{c}^{(1)}$ w/ $q_1$     & $\mathbf{y}^{(t_0)}$ or $\mathbf{c}^{(1)}$ w/ $\alpha_1$     & $\mathbf{c}$ w/ $g_1$     & $\mathbf{y}^{(t_0)}$ or $\mathbf{c}$ w/ $\alpha_1$     \\
 \cline{4-5}
                      &                         &                                         & $\vdots$               & $\vdots$                                        &                  &                                         \\
 \hline
 \hline
-$y^{(t_0+1)}$   & $c$ w/ $q$              & $y^{(t_0+1)}$ or $c$ w/ $\alpha_1$   & $c^{(2)}$ w/ $q_1$     & $y^{(t_0+1)}$ or $c^{(1)}$ w/ $\alpha_1$   & $c$ w/ $g_1$     & $y^{(t_0+1)}$ or $c$ w/ $\alpha_1$   \\
-\cline{4-5}
-                     &                         &                                         & $\vdots$               & $\vdots$                                        &                  &                                         \\
-\hline
-\hline
-$\vdots$             & $\vdots$                & $\vdots$                                & $\vdots$               & $\vdots$                                        & $\vdots$         & $\vdots$                                \\
-\hline
-\hline
-$y^{(t_0+n_0)}$ & $c$ w/ $q$              & $y^{(t_0+n_0)}$ or $c$ w/ $\alpha_1$ & $c^{(2)}$ w/ $q_1$     & $y^{(t_0+n_0)}$ or $c^{(1)}$ w/ $\alpha_1$ & $c$ w/ $g_2$     & $y^{(t_0+n_0)}$ or $c$ w/ $\alpha_1$ \\
+$\mathbf{y}^{(t_0+1)}$   & $\mathbf{c}$ w/ $q$              & $\mathbf{y}^{(t_0+1)}$ or $\mathbf{c}$ w/ $\alpha_1$   & $\mathbf{c}^{(2)}$ w/ $q_1$     & $\mathbf{y}^{(t_0+1)}$ or $\mathbf{c}^{(1)}$ w/ $\alpha_1$   & $\mathbf{c}$ w/ $g_1$     & $\mathbf{y}^{(t_0+1)}$ or $\mathbf{c}$ w/ $\alpha_1$   \\
 \cline{4-5}
                      &                         &                                         & $\vdots$               & $\vdots$                                        &                  &                                         \\
 \hline
@@ -828,7 +854,15 @@ $y^{(t_0+n_0)}$ & $c$ w/ $q$              & $y^{(t_0+n_0)}$ or $c$ w/ $\alpha_1$
 $\vdots$             & $\vdots$                & $\vdots$                                & $\vdots$               & $\vdots$                                        & $\vdots$         & $\vdots$                                \\
 \hline
 \hline
-$y^{(t_0+2n_0)}$& $c$ w/ $q$              & $y^{(t_0+2n_0)}$ or $c$ w/ $\alpha_1$& $c^{(2)}$ w/ $q_1$     & $y^{(t_0+2n_0)}$ or $c^{(1)}$ w/ $\alpha_1$& $c$ w/ $g_3$     & $y^{(t_0+2n_0)}$ or $c$ w/ $\alpha_1$\\
+$\mathbf{y}^{(t_0+p_0)}$ & $\mathbf{c}$ w/ $q$              & $\mathbf{y}^{(t_0+p_0)}$ or $\mathbf{c}$ w/ $\alpha_1$ & $\mathbf{c}^{(2)}$ w/ $q_1$     & $\mathbf{y}^{(t_0+p_0)}$ or $\mathbf{c}^{(1)}$ w/ $\alpha_1$ & $\mathbf{c}$ w/ $g_2$     & $\mathbf{y}^{(t_0+p_0)}$ or $\mathbf{c}$ w/ $\alpha_1$ \\
+\cline{4-5}
+                     &                         &                                         & $\vdots$               & $\vdots$                                        &                  &                                         \\
+\hline
+\hline
+$\vdots$             & $\vdots$                & $\vdots$                                & $\vdots$               & $\vdots$                                        & $\vdots$         & $\vdots$                                \\
+\hline
+\hline
+$\mathbf{y}^{(t_0+2p_0)}$& $\mathbf{c}$ w/ $q$              & $\mathbf{y}^{(t_0+2p_0)}$ or $\mathbf{c}$ w/ $\alpha_1$& $\mathbf{c}^{(2)}$ w/ $q_1$     & $\mathbf{y}^{(t_0+2p_0)}$ or $\mathbf{c}^{(1)}$ w/ $\alpha_1$& $\mathbf{c}$ w/ $g_3$     & $\mathbf{y}^{(t_0+2p_0)}$ or $\mathbf{c}$ w/ $\alpha_1$\\
 \cline{4-5}
                      &                         &                                         & $\vdots$               & $\vdots$                                        &                  &                                         \\
 \hline
@@ -837,7 +871,7 @@ $\vdots$             & $\vdots$                & $\vdots$                       
 \hline
 \end{tabular}
 \caption{Overview of three algorithms for the generation of a {\it realization} of a Markov chain 
-$\{y^{(0)},y^{(1)},\ldots\}$
+$\{\mathbf{y}^{(0)},\mathbf{y}^{(1)},\ldots\}$
 : Metropolis-Hastings, Delayed Rejection and Adaptive Metropolis.
 Detailed explanations are given in Section \ref{sc-mcmc-realization-of-a-markov-chain}.
 }
@@ -847,158 +881,41 @@ Detailed explanations are given in Section \ref{sc-mcmc-realization-of-a-markov-
 \subsection{The DRAM Algorithm}%\label{subsc-mcmc-dram-alg}
 $~$\\
 
-\section{How to Use DRAM}\label{sc-mcmc-how-to-use-dram}
+\subsection{Chain Statistics}\label{subsc-mcmc-chain-stats}
 
-In order to use the DRAM implementation of the PECOS Toolkit, one needs to take the following steps:
-\begin{itemize}
-\item {prepare your executable (let us call it ``myappl''):
-\begin{itemize}
-\item execute ``cd uq/appls/mcmc/'';
-\item execute ``cp -R template myappl'';
-\item execute ``cd myappl'';
-\item change ``template'' and ``Template'' to ``myappl'' and ``Myappl'' in all files, including the file ``Makefile'';
-\item code your prior function, if necessary (there is a default prior in the PECOS library);
-\item code your likelihood function, which returns a vector of values, each value correspond to the likelihood of a specific output quantity, as explained in Section \ref{sc-intro-qoi}, page \pageref{sc-intro-qoi};
-\item execute ``make myappl'';
-\end{itemize}
-}
-\item prepare a file describing the input parameters; let us call it ``myappl.par''; all input parameters are assumed to be scalar r.v.'s; see Figure \ref{fig-dram-par-file-ex}; 
-\item prepare an input file setting the algorithm options; let us call it ``myappl.inp''; see Figure \ref{fig-dram-input-file-ex} and Table \ref{tab-dram-map};
-\item execute ``./myappl -i myappl.inp''.
-\end{itemize}
+Convergence Diagnostics.
 
-\begin{figure}[h]
-\begin{verbatim}
-# This is the file of input parameters for "myappl".
-# Tha name of this file must match the entry "uqParamSpace_inputFile" in
-# the input file.
-# Lines that begin with the character `#' are considered comment lines.
-# Each line that is not a comment line is treated as representing an input
-# parameter.
-# From left to right, the entries in each input parameter line correspond to:
-# --> parameter name (mandatory)
-# --> initial value (mandatory)
-# --> minimum value (optional; default value to "-inf")
-# --> maximum value (optional; default value to "inf")
-# --> expectation (optional; default value to "nan")
-# --> variance (optional; default value to "inf")
-Theta_0 0. -inf
-# Comment lines can appear anywhere in the file.
-Theta_1 0. -inf inf 0. inf
-Theta_2 0.
-Theta_3 0. -inf inf 0. inf
-# The total number of input parameter lines (4 in this example) must match
-# the entry "uqParamSpace_dim" in the input file.
-\end{verbatim}
-\caption{Example of a file of input parameters for the generation of a Markov Chain.
-}
-\label{fig-dram-par-file-ex}
-\end{figure}
+Transient phase/bias.
 
-\begin{figure}[h]
-\begin{verbatim}
-###############################################
-# UQ Parameter Space
-###############################################
-uqParamSpace_dim       = 4
-uqParamSpace_inputFile = uqNormalEx.par
+Equilibrium phase/autocorrelation.
 
-###############################################
-# UQ Output Space
-###############################################
-uqOutputSpace_dim  = 1
-
-###############################################
-# UQ DRAM Markov Chain Generator
-###############################################
-uqDRAM_mh_sizesOfChains           = 5000
-uqDRAM_mh_lrUpdateSigma2          = 0
-uqDRAM_mh_lrSigma2Priors          = 1.
-uqDRAM_mh_lrSigma2Accuracies      = 0.
-uqDRAM_mh_lrNumbersOfObs          = 0
-uqDRAM_dr_maxNumberOfExtraStages  = 0
-uqDRAM_dr_scalesForExtraStages    = 5. 4. 3.
-uqDRAM_am_initialNonAdaptInterval = 0
-uqDRAM_am_adaptInterval           = 0
-uqDRAM_am_sd                      = 1.44
-uqDRAM_am_epsilon                 = 1.e-5
-uqDRAM_mh_namesOfOutputFiles      = uqNormalExOutput.m
-uqDRAM_mh_chainDisplayPeriod      = 500
-\end{verbatim}
-\caption{Example of an input file for the generation of a Markov Chain.
-}
-\label{fig-dram-input-file-ex}
-\end{figure}
-
-\begin{sidewaystable}
-\begin{tabular}{|l|c|c|c|c|}
-\hline
-\multicolumn{1}{|c|}{Option Name}        & Explanation       & Default Value & \multicolumn{2}{c|}{Definition} \\
-\cline{4-5}
-                                         &                   &               & Equation    & Page              \\
-\hline
-\verb=uqParamSpace_dim=                  &                   &               &             &                   \\
-\hline
-\verb=uqParamSpace_inputFile=            &                   &               &             &                   \\
-\hline
-\verb=uqOutputSpace_dim=                 &                   &               &             &                   \\
-\hline
-\verb=uqDRAM_mh_sizesOfChains=           &                   &               &             &                   \\
-\hline
-\verb=uqDRAM_mh_lrUpdateSigma2=          &                   &               &             &                   \\
-\hline
-\verb=uqDRAM_mh_lrSigma2Priors=          &                   &               &             &                   \\
-\hline
-\verb=uqDRAM_mh_lrSigma2Accuracies=      &                   &               &             &                   \\
-\hline
-\verb=uqDRAM_mh_lrNumbersOfObs=          &                   &               &             &                   \\
-\hline
-\verb=uqDRAM_dr_maxNumberOfExtraStages=  &                   &               &             &                   \\
-\hline
-\verb=uqDRAM_dr_scalesForExtraStages=    &                   &               &             &                   \\
-\hline
-\verb=uqDRAM_am_initialNonAdaptInterval= &                   &               &             &                   \\
-\hline
-\verb=uqDRAM_am_adaptInterval=           &                   &               &             &                   \\
-\hline
-\verb=uqDRAM_am_sd=                      &                   &               &             &                   \\
-\hline
-\verb=uqDRAM_am_epsilon=                 &                   &               &             &                   \\
-\hline
-\verb=uqDRAM_mh_namesOfOutputFiles=      &                   &               &             &                   \\
-\hline
-\verb=uqDRAM_mh_chainDisplayPeriod=      &                   &               &             &                   \\
-\hline
-\end{tabular}
-\caption{Mapping between DRAM options in the input file of Figure \ref{fig-dram-input-file-ex} and the mathematical terms explained in Sections \ref{sc-intro-qoi} and \ref{sc-mcmc-realization-of-a-markov-chain}.
-}
-\label{tab-dram-map}
-\end{sidewaystable}
-
-\section{Examples Provided}\label{sc-mcmc-dram-examples}
-
-Three examples related to DRAM are provided: normal target distribution, chemical reactions and algae.
-They are discussed in Subsections \ref{subsc-mcmc-dram-normal-ex}, \ref{subsc-mcmc-dram-himmel-ex} and \ref{subsc-mcmc-dram-algae-ex} respectively.
-
-\subsection{Normal Target Distribution}\label{subsc-mcmc-dram-normal-ex}
-
-To be explained in future versions of the documentation.
-
-\subsection{Chemical Reactions}\label{subsc-mcmc-dram-himmel-ex}
-
-To be explained in future versions of the documentation.
-
-\subsection{Algae}\label{subsc-mcmc-dram-algae-ex}
-
-\section{Planned Features for Next Releases}\label{sc-mcmc-planned-features}
-With respect to Markov Chain Monte Carlo methods, the following features are planned for the next versions of the PECOS Toolkit for Predictive Engineering:
-\begin{enumerate}
-\item compute prediction with the chain of the algae example,
-\item capability of running over parallel environments using Trilinos,
-\item integration with the DAKOTA Toolkit,
-\item chain convergence tests \cite{BrRo98},
-\item capability of running over parallel environments using PETSc,
-\item hyperprior models,
-\item algorithms for multimodal distributions,
-\item Gibbs sampler.
-\end{enumerate}
+After computing a chain with the user requested $n_{\mbox{chain}}$ samples, the toolkit display the following values,
+which will be explained shortly afterwards:
+\begin{equation}\label{eq-dram-chain-stats-r}
+\mbox{r}(\theta_i) = 0,
+\end{equation}
+%
+\begin{equation}\label{eq-dram-chain-stats-b}
+\mbox{b}(\theta_i) = 0,
+\end{equation}
+%
+\begin{equation}\label{eq-dram-chain-stats-mean}
+\langle\theta_i\rangle = 0,
+\end{equation}
+%
+\begin{equation}\label{eq-dram-chain-stats-var}
+\mbox{v}(\theta_i) = 0,
+\end{equation}
+%
+\begin{equation}\label{eq-dram-chain-stats-bm}
+\sigma_{\mbox{bm}}(\theta_i) = 0,
+\end{equation}
+%
+\begin{equation}\label{eq-dram-chain-stats-z}
+\mbox{z}(\theta_i) = 0,
+\end{equation}
+and
+\begin{equation}\label{eq-dram-chain-stats-tau-int}
+\tau_{\mbox{int}}(\theta_i) = 0,
+\end{equation}
+where

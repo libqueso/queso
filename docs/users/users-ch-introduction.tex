@@ -291,10 +291,12 @@ the state variables presented in Section \ref{sc-intro-detail}.
 If the system needs random processes for its description, we first apply space and/or time discretizations to it. 
 If only r.v. originally suffice for the system description, then a discretization task is not necessary for the explanations that follow.
 We then have a system with
-\begin{itemize}
-\item $n_{\theta}$ input parameters, which are the r.v. $\Theta_i:\Omega\rightarrow\mathbb{R}^{n_i}$, $n_i\in\mathbb{Z}_+^*$, $0\leqslant i\leqslant n_{\theta}-1$,
-\item $m_{y}$ output quantities, which are the r.v. $Y_j:\Omega\rightarrow\mathbb{R}^{m_j}$, $m_j\in\mathbb{Z}_+^*$, $0\leqslant i\leqslant m_{y}-1$,
-\end{itemize}
+\begin{equation}\label{eq-n-theta}
+n_{\theta}\mbox{ input parameters, which are the r.v. }\Theta_i:\Omega\rightarrow\mathbb{R}^{n_i},~n_i\in\mathbb{Z}_+^*,~0\leqslant i\leqslant n_{\theta}-1,
+\end{equation}
+\begin{equation}\label{eq-m-y}
+m_{y}\mbox{ output quantities, which are the r.v. }Y_j:\Omega\rightarrow\mathbb{R}^{m_j},~m_j\in\mathbb{Z}_+^*,~0\leqslant i\leqslant m_{y}-1,
+\end{equation}
 where $\mathbb{Z}_+^*$ designates the set of strictly positive integers.
 Figure \ref{fig-black-box} summarizes this ``black-box'' system description.
 
@@ -311,7 +313,7 @@ We will assume that we do not have a detailed quantitative description of the di
 in order to obtain such distributions. 
 We will suppose that
 \begin{itemize}
-\item there are $m_{y}$ observations $y_{i,obs}$, one for each of the output quantities,
+\item there are $m_{y}$ observations $y_{j,obs}\in\mathbb{R}^{m_j}$, one for each of the output quantities,
 \end{itemize}
 and use the notations
 \begin{eqnarray*}
@@ -377,18 +379,18 @@ We then assume that
 \mbox{the prior probability density }\pi_{prior}(\boldsymbol{\theta}),~\boldsymbol\theta\in R_{\theta},\mbox{ is known},
 \end{equation}
 \begin{equation}\label{eq-hyp-conditional-independence}
-\mbox{the r.v. }\mathbf{Y}_i,~i=0,\ldots,m_y-1,\mbox{ are conditionally independent w.r.t. }\boldsymbol\theta,\quad\forall\boldsymbol\theta\in R_{\theta},
+\mbox{the r.v. }\mathbf{Y}_j,~j=0,\ldots,m_y-1,\mbox{ are conditionally independent w.r.t. }\boldsymbol\theta,\quad\forall\boldsymbol\theta\in R_{\theta},
 \end{equation}
 and
 \begin{equation}\label{eq-hyp-l-known}
-\mbox{each individual likelihood }\ell_i(y_{i,obs}|\boldsymbol\theta),~i=0,\ldots,m_y-1,~\boldsymbol\theta\in R_{\theta},\mbox{ is known}.
+\mbox{each individual likelihood }\ell_j(y_{j,obs}|\boldsymbol\theta),~j=0,\ldots,m_y-1,~\boldsymbol\theta\in R_{\theta},\mbox{ is known}.
 \end{equation}
 Although we cannot compute $\pi_{posterior}(\boldsymbol\theta)$,
 since we do not have $\pi_{m\mathbf{Y}}(\mathbf{y}_{obs})$,
 we can at least compute the quantity
 \begin{equation}\label{eq-posterior-up2a-constant}
 \tilde{\pi}(\boldsymbol\theta) =
-{\pi_{prior}(\boldsymbol\theta)\prod_{i=0}^{m_y-1}\ell_i(y_{i,obs}|\boldsymbol\theta)},
+{\pi_{prior}(\boldsymbol\theta)\prod_{j=0}^{m_y-1}\ell_j(y_{j,obs}|\boldsymbol\theta)},
 \end{equation}
 that is, we can at least compute the posterior joint probability density function up to a multiplicative constant.
 The importance of such computation is that there exist
