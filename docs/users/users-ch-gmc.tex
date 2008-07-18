@@ -1,0 +1,639 @@
+\chapter{Generating Markov Chains With the PECOS Toolkit}\label{ch-gmc}
+\thispagestyle{headings}
+\markboth{Chapter \ref{ch-gmc}: Generating Markov Chains with the PECOS Toolkit}{Chapter \ref{ch-gmc}: Generating Markov Chains With the PECOS Toolkit}
+
+Section \ref{sc-gmc-seven-steps} explains how to develop your own application using the DRAM capabilities of the PECOS Toolkit, while
+Section \ref{sc-gmc-dram-examples} describes the examples available in the toolkit.
+The chapter ends at Section \ref{sc-gmc-planned-features} with a brief list of planned features for next toolkit versions w.r.t. Markov Chain Monte Carlo methods.
+
+\section{Seven Steps}\label{sc-gmc-seven-steps}
+
+The process of developing an application (let us call it ``newexample'') 
+that uses the DRAM implementation of the PECOS Toolkit involves the following seven steps:
+\begin{enumerate}
+\item prepare a file describing the {\it system input parameters}; let us call it ``newexample.par''; see Subsection \ref{subsc-gmc-seven-steps-sys-input-params};
+\item create your {\it code directory}; let us call it ``uq/appls/mcmc/newexample''; See Subsection \ref{subsc-gmc-seven-steps-myexample};
+\item if necessary, compute your {\it proposal covariance matrix} for the $q_1(\cdot,\cdot)$ proposal transition probability kernel; the PECOS library will internally compute a default covariance matrix if the user does not supply one; see Subsection \ref{subsc-gmc-seven-steps-proposal-cov-matrix-for-q1};
+\item if necessary, code your {\it prior function}; there is a default prior in the PECOS library; see Subsection \ref{subsc-gmc-seven-steps-prior-code};
+\item code your {\it likelihood function}, which returns a vector of values, each value corresponding to the likelihood of a specific output quantity, as explained in Section \ref{sc-intro-qoi}, page \pageref{sc-intro-qoi}; see Subsection \ref{subsc-gmc-seven-steps-likelihood-code};
+\item {\it compile} your code; see Subsection \ref{subsc-gmc-seven-steps-compile};
+\item prepare an input file setting the {\it algorithm parameters}; let us call it ``newexample.inp''; see Subsection \ref{subsc-gmc-seven-steps-alg-params}.
+\end{enumerate}
+Finally, {\it run} your application by executing ``./newexample -i newexample.inp''.
+
+\subsection{File Describing System Input Parameters}\label{subsc-gmc-seven-steps-sys-input-params}
+
+{\it All system input parameters are assumed to be scalar r.v.'s} (that is, $n_i=1,~i=0,1,\ldots,n_{\text{sip}}-1$, according to the terminology of Section \ref{sc-intro-qoi}), and
+have to be specified in a file.
+This file describing system input parameters contains a lot of prior information as well.
+It is treated by the PECOS Toolkit as having either parameter lines or comment lines.
+Comment lines are all those that begin with the character ``\#'', otherwise they are treated as parameter lines.
+Comment lines can appear anywhere in the line.
+Each parameter line is related to one input parameter.
+The first parameter line specifies the input parameter $\theta_0$,
+the second parameter line specifies the input parameter $\theta_1$,
+and so on.
+Let us ``$i$'' denote the index for the input parameter $\theta_i$.
+From left to right, each parameter line shall contain the following fields separated by black space(s):
+\begin{itemize}
+\item name of $\theta_i$, without spaces: this field is mandatory;
+\item $\theta_i^{(0)}$, the component value on the initial sample of the chain: this field is also mandatory;
+\item $\theta_{i,\text{min}}$, the minimum value allowed for this component during chain generation, otherwise the candidate position is rejected: this field is optional and its default value is ``-inf'';
+\item $\theta_{i,\text{max}}$, the maximum value allowed for this component during chain generation, otherwise the candidate position is rejected: this field is optional and its default value is ``inf'';
+\item $E_{\text{prior}}[\theta_i]$, the expected value of the input parameter; this field is optional and the default value is ``nan'';
+\item $V_{\text{prior}}[\theta_i]$, the variance of the input parameter; this field is optional and the default value is ``inf''.
+\end{itemize}
+If a parameter line is improperly set, the code will exit with a failure message.
+An example of an input file is shown in Figure \ref{fig-dram-par-file-ex}.
+
+\begin{figure}[h!]
+\begin{verbatim}
+# This is the file of system input parameters for "newexample".
+# Tha name of this file must match the entry "uqParamSpace_inputFile" in
+# the input file.
+# Lines that begin with the character `#' are considered comment lines.
+# Each line that is not a comment line is treated as representing an input
+# parameter.
+# From left to right, the entries in each input parameter line correspond to:
+# --> parameter name (mandatory)
+# --> initial value (mandatory)
+# --> minimum value (optional; default value to "-inf")
+# --> maximum value (optional; default value to "inf")
+# --> expectation (optional; default value to "nan")
+# --> variance (optional; default value to "inf")
+Theta_0 0. -inf
+# Comment lines can appear anywhere in the file.
+Theta_1 0. -inf inf 0. inf
+Theta_2 0.
+Theta_3 0. -inf inf 0. inf
+# The total number of input parameter lines (4 in this example) must match
+# the entry "uqParamSpace_dim" in the input file.
+\end{verbatim}
+\caption{Example of the specification of system input parameters for the generation of a Markov chain by the PECOS Toolkit.
+}
+\label{fig-dram-par-file-ex}
+\end{figure}
+
+\subsection{Creating Your Code Directory}\label{subsc-gmc-seven-steps-myexample}
+
+\begin{itemize}
+\item execute ``uq/appls/mcmc/newexample'';
+\item execute ``cp -R template newexample'';
+\item execute ``cd newexample'';
+\item change ``template'' and ``Template'' to ``newexample'' and ``newexample'' in all files, including the file ``Makefile''.
+\end{itemize}
+
+\subsection{The Proposal Covariance Matrix for $q_1(\cdot,\cdot)$}\label{subsc-gmc-seven-steps-proposal-cov-matrix-for-q1}
+$~$\\
+
+\subsection{Code for the Prior Fucntion}\label{subsc-gmc-seven-steps-prior-code}
+
+The user might need to specify a prior probability density $\pi_{\text{prior}}(\boldsymbol{\theta})$
+by passing to the PECOS Toolkit the address of a routine that computes
+\begin{equation}\label{eq-m2l-prior}
+-2~ln~
+\left[
+\pi_{\text{prior}}(\boldsymbol{\theta}).
+\right]
+\end{equation}
+But the user specficication of a prior density is not mandatory, since the toolkit provides a default prior density given by
+\begin{equation*}
+\pi_{\text{prior,default}}(\boldsymbol{\theta}) =
+e^{
+\left\{
+-\frac{1}{2}
+(\boldsymbol{\theta}-E_{\text{prior}}[\boldsymbol{\theta}])^T
+~C_{\text{prior}}^{-1}~
+(\boldsymbol{\theta}-E_{\text{prior}}[\boldsymbol{\theta}])
+\right\}
+},
+\end{equation*}
+where the default covariance matrix $C_{\text{prior}}$ is the $n_{\text{sip}}\times n_{\text{sip}}$ diagonal matrix given by
+\begin{equation}\label{eq-default-prior-cov-matrix}
+C_{\text{prior}} =
+\left[
+\begin{array}{cccccc}
+V_{\text{prior}}[\theta_0] & 0                          & 0                          & \ldots & 0                                           & 0      \\
+0                          & V_{\text{prior}}[\theta_1] & 0                          & \ldots & 0                                           & 0      \\
+0                          & 0                          & V_{\text{prior}}[\theta_2] & \ldots & 0                                           & 0      \\
+\vdots                     & \vdots                     & \vdots                     & \ddots & \vdots                                      & \vdots \\
+0                          & 0                          & 0                          & \ldots & V_{\text{prior}}[\theta_{n_{\text{sip}}-2}] & 0      \\
+0                          & 0                          & 0                          & \ldots & 0                                           & V_{\text{prior}}[\theta_{n_{\text{sip}}-1}] \\
+\end{array}
+\right].
+\end{equation}
+In fact, in the spirit of \eqref{eq-m2l-prior}, the PECOS default prior routine computes
+\begin{equation*}
+(\boldsymbol{\theta}-E_{\text{prior}}[\boldsymbol{\theta}])^T
+~C_{\text{prior}}^{-1}~
+(\boldsymbol{\theta}-E_{\text{prior}}[\boldsymbol{\theta}]).
+\end{equation*}
+It should be noted that the values of $E_{\text{prior}}[\theta_i]$ and $V_{\text{prior}}[\theta_i]$, $i=0,1,\ldots,n_{\text{sip}}-1$, are passed in the file of system input parameters described in Subsection \ref{subsc-gmc-seven-steps-sys-input-params}.
+
+\subsection{Code for the Likelihood Function}\label{subsc-gmc-seven-steps-likelihood-code}
+
+The user must specify all likelihood densities $\ell_j(\mathbf{y}_{j,\text{obs}}|\boldsymbol{\theta})$, $j=0,1,\ldots,m_{\text{obs}}-1$,
+by passing to the PECOS Toolkit the address of a routine that computes a vector $\mathbf{L}=(L_0,L_1,\ldots,L_{m_{\text{obs}}-1})\in\mathbb{R}^{m_{\text{obs}}}$  given by
+\begin{equation}\label{eq-m2l-likelihood}
+L_j = -2~ln~
+\left[
+\ell_j(\mathbf{y}_{j,\text{obs}}|\boldsymbol{\theta})
+\right].
+\end{equation}
+The PECOS algorithm then computes
+\begin{equation*}
+\sum_{j=0}^{m_{\text{obs}}-1}~\frac{L_j}{V_{\text{prior}}[\ell_j(\cdot)]}
+\end{equation*}
+
+\subsection{Compiling Your Code}\label{subsc-gmc-seven-steps-compile}
+
+Here you just need to execute ``make newexample''.
+
+\subsection{File Describing Algorithm Parameters}\label{subsc-gmc-seven-steps-alg-params}
+
+See Table \ref{tab-dram-map}.
+
+\begin{sidewaystable}[h]
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\multicolumn{1}{|c|}{Option Name}        & Option Symbol or                  & \multicolumn{2}{c|}{Definition}                                                                 & Default Value \\
+\cline{3-4}
+                                         & Explanation                       & Equation or                                  & Page                                             &               \\
+                                         &                                   & Section                                      &                                                  &               \\
+\hline
+\verb=uqParamSpace_dim=                  & $n_{\text{sip}}$                  & \eqref{eq-n-sip}                             & \pageref{eq-n-sip}                               &               \\
+\hline
+\verb=uqParamSpace_inputFile=            & A file name                       & \ref{subsc-gmc-seven-steps-sys-input-params} & \pageref{subsc-gmc-seven-steps-sys-input-params} &               \\
+\hline
+\verb=uqOutputSpace_dim=                 & $m_{\text{obs}}$                  & \eqref{eq-m-obs}                             & \pageref{eq-m-obs}                               &               \\
+\hline
+\verb=uqDRAM_mh_sizesOfChains=           & $n_{\text{chain}}$                & \eqref{eq-n-chain}                           & \pageref{eq-n-chain}                             &               \\
+\hline
+\verb=uqDRAM_dr_maxNumberOfExtraStages=  & $n_e$                             & \eqref{eq-ne}                                & \pageref{eq-ne}                                  &               \\
+\hline
+\verb=uqDRAM_dr_scalesForExtraStages=    & $\gamma_l$'s                      &                                              &                                                  &               \\
+\hline
+\verb=uqDRAM_am_initialNonAdaptInterval= & $t_0$                             & \eqref{eq-t0}                                & \pageref{eq-t0}                                  &               \\
+\hline
+\verb=uqDRAM_am_adaptInterval=           & $p_0$                             & \eqref{eq-p0}                                & \pageref{eq-p0}                                  &               \\
+\hline
+\verb=uqDRAM_am_eta=                     & $\eta$                            & \eqref{eq-eta}                               & \pageref{eq-eta}                                 &               \\
+\hline
+\verb=uqDRAM_am_epsilon=                 & $\epsilon$                        & \eqref{eq-epsilon}                           & \pageref{eq-epsilon}                             &               \\
+\hline
+\verb=uqDRAM_mh_lrSigma2Priors=          & $V_{\text{prior}}[\ell_j(\cdot)]$ &                                              &                                                  &               \\
+\hline
+\verb=uqDRAM_mh_lrUpdateSigma2=          & A boolean                         &                                              &                                                  &               \\
+\hline
+\verb=uqDRAM_mh_lrSigma2Accuracies=      & $a_j$'s                           &                                              &                                                  &               \\
+\hline
+\verb=uqDRAM_mh_lrNumbersOfObs=          & $m_j$'s                           &                                              &                                                  &               \\
+\hline
+\verb=uqDRAM_mh_namesOfOutputFiles=      & A file name                       &                                              &                                                  &               \\
+\hline
+\verb=uqDRAM_mh_chainDisplayPeriod=      & An integer                        &                                              &                                                  &               \\
+\hline
+\end{tabular}
+\caption{Mapping between DRAM algorithm parameters in the input file of Figure \ref{fig-dram-input-file-ex} and the mathematical terms explained in Sections \ref{sc-intro-qoi} and \ref{sc-rmc-algs}.
+}
+\label{tab-dram-map}
+\end{center}
+\end{sidewaystable}
+
+See Figure \ref{fig-dram-input-file-ex}.
+
+\begin{figure}[h!]
+\begin{verbatim}
+###############################################
+# UQ Parameter Space
+###############################################
+uqParamSpace_dim       = 4
+uqParamSpace_inputFile = uqNormalEx.par
+
+###############################################
+# UQ Output Space
+###############################################
+uqOutputSpace_dim  = 1
+
+###############################################
+# UQ DRAM Markov Chain Generator
+###############################################
+uqDRAM_mh_sizesOfChains           = 5000
+uqDRAM_mh_lrUpdateSigma2          = 0
+uqDRAM_mh_lrSigma2Priors          = 1.
+uqDRAM_mh_lrSigma2Accuracies      = 0.
+uqDRAM_mh_lrNumbersOfObs          = 0
+uqDRAM_dr_maxNumberOfExtraStages  = 0
+uqDRAM_dr_scalesForExtraStages    = 5. 4. 3.
+uqDRAM_am_initialNonAdaptInterval = 0
+uqDRAM_am_adaptInterval           = 0
+uqDRAM_am_sd                      = 1.44
+uqDRAM_am_epsilon                 = 1.e-5
+uqDRAM_mh_namesOfOutputFiles      = uqNormalExOutput.m
+uqDRAM_mh_chainDisplayPeriod      = 500
+\end{verbatim}
+\caption{Example of an input file for the generation of a Markov Chain.
+}
+\label{fig-dram-input-file-ex}
+\end{figure}
+
+\section{Output Data}
+$~$\\
+
+\section{Examples Provided}\label{sc-gmc-dram-examples}
+
+Three examples related to DRAM are provided: normal target distribution, chemical reactions and algae.
+They are discussed in Subsections \ref{subsc-gmc-dram-normal-ex}, \ref{subsc-gmc-dram-chem-ex} and \ref{subsc-gmc-dram-algae-ex} respectively.
+
+\subsection{Normal Target Distribution}\label{subsc-gmc-dram-normal-ex}
+
+To be explained in future versions of the documentation.
+
+See Table \ref{tab-dram-normal-ex-sys-input-params}.
+
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+ $i$      & Name of $\theta_i$ & $\theta_i^{(0)}$ & $\theta_{i,\text{min}}$ & $\theta_{i,\text{max}}$ & $E_{\text{prior}}[\theta_i]$ & $V_{\text{prior}}[\theta_i]$ \\
+\hline
+\hline
+ $0$      & Param\_1           & $0.$             & $-\infty$               & $+\infty$               & $0.$                         & $+\infty$                    \\
+\hline
+ $1$      & Param\_2           & $0.$             & $-\infty$               & $+\infty$               & $0.$                         & $+\infty$                    \\
+\hline
+ $2$      & Param\_3           & $0.$             & $-\infty$               & $+\infty$               & $0.$                         & $+\infty$                    \\
+\hline
+ $3$      & Param\_4           & $0.$             & $-\infty$               & $+\infty$               & $0.$                         & $+\infty$                    \\
+\hline
+\end{tabular}
+\caption{Normal target distribution example (Subsection \ref{subsc-gmc-dram-normal-ex}):
+information on $n_{\text{sip}}=4$ system input parameters $\theta_i$, $0\leqslant i\leqslant n_{\text{sip}}-1$.
+Each $\theta_i$ is a scalar r.v.. All system input parameters jointly form the vector r.v. $\boldsymbol{\Theta}=(\theta_0,\theta_1,\ldots,\theta_{n_{\text{sip}}-1})$.
+}
+\label{tab-dram-normal-ex-sys-input-params}
+\end{center}
+\end{table}
+
+See Table \ref{tab-dram-normal-ex-alg-params}.
+
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Option                                            & \multicolumn{4}{c|}{Algorithm}                               \\
+\cline{2-5}
+                                                  & ~~MH~~            & ~~DR~~       & ~~AM~~       & DRAM       \\
+\hline
+\hline
+$n_{\text{sip}}$                                  &                   &              &              &            \\
+\hline
+$m_{\text{obs}}$                                  &                   &              &              &            \\
+\hline
+$n_{\text{chain}}$                                &                   &              &              &            \\
+\hline
+\hline
+$n_e$                                             &                   &              &              &            \\
+\hline
+$\gamma_l$,
+$0\leqslant l\leqslant n_e-1$                     &                   &              &              &            \\
+\hline
+\hline
+$t_0$                                             &                   &              &              &            \\
+\hline
+$p_0$                                             &                   &              &              &            \\
+\hline
+$\eta$                                            &                   &              &              &            \\
+\hline
+$\epsilon$                                        &                   &              &              &            \\
+\hline
+\hline
+$V_{\text{prior}}[\ell_j(\cdot)]$,
+$0\leqslant j\leqslant m_{\text{obs}}-1$          & 1.                & 1.           & 1.           & 1.         \\
+\hline
+Update $V^{(k)}[\ell_j(\cdot)]$ for $k>0$?        & No                & No           & No           & No         \\
+\hline
+Values of $m_j$                                   & $-$               & $-$          & $-$          & $-$        \\
+\hline
+Values of $a_{\ell_j}$                            & $-$               & $-$          & $-$          & $-$        \\
+\hline
+\end{tabular}
+\caption{Normal target distribution example (Subsection \ref{subsc-gmc-dram-normal-ex}):
+algorithm parameters used.
+}
+\label{tab-dram-normal-ex-alg-params}
+\end{center}
+\end{table}
+
+See Table \ref{tab-dram-normal-ex-results-1}.
+
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+Method & Run      & $\text{rej}$           & $\text{oor}$           & $i$ & $\langle\theta_i\rangle$ & $\sigma_{\text{bm}}(\theta_i)$ & $\text{gew}(\theta_i)$ & $\tau_{\text{int}}(\theta_i)$ \\
+       & Time (s) &                        &                        &     &                          &                                &                        &                               \\
+\hline
+\hline
+       &          &                        &                        & $0$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $1$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $2$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $3$ &                          &                                &                        &                               \\
+\hline
+\hline
+       &          &                        &                        & $0$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $1$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $2$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $3$ &                          &                                &                        &                               \\
+\hline
+\hline
+       &          &                        &                        & $0$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $1$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $2$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $3$ &                          &                                &                        &                               \\
+\hline
+\hline
+       &          &                        &                        & $0$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $1$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $2$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $3$ &                          &                                &                        &                               \\
+\hline
+\end{tabular}
+\caption{Normal target distribution example (Subsection \ref{subsc-gmc-dram-normal-ex}):
+results from the first chain, with $n_{\text{chain}}=1001$ samples,
+for each of the $n_{\text{sip}}=4$ parameters $\theta_i$, $0\leqslant i\leqslant n_{\text{sip}}-1$.
+}
+\label{tab-dram-normal-ex-results-1}
+\end{center}
+\end{table}
+
+See Table \ref{tab-dram-normal-ex-results-2}.
+
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+Method & Run      & $\text{rej}$           & $\text{oor}$           & $i$ & $\langle\theta_i\rangle$ & $\sigma_{\text{bm}}(\theta_i)$ & $\text{gew}(\theta_i)$ & $\tau_{\text{int}}(\theta_i)$ \\
+       & Time (s) &                        &                        &     &                          &                                &                        &                               \\
+\hline
+\hline
+       &          &                        &                        & $0$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $1$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $2$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $3$ &                          &                                &                        &                               \\
+\hline
+\hline
+       &          &                        &                        & $0$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $1$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $2$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $3$ &                          &                                &                        &                               \\
+\hline
+\hline
+       &          &                        &                        & $0$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $1$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $2$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $3$ &                          &                                &                        &                               \\
+\hline
+\hline
+       &          &                        &                        & $0$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $1$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $2$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $3$ &                          &                                &                        &                               \\
+\hline
+\end{tabular}
+\caption{Normal target distribution example (Subsection \ref{subsc-gmc-dram-normal-ex}):
+results from the second chain, with $n_{\text{chain}}=5001$ samples,
+for each of the $n_{\text{sip}}=4$ parameters $\theta_i$, $0\leqslant i\leqslant n_{\text{sip}}-1$.
+}
+\label{tab-dram-normal-ex-results-2}
+\end{center}
+\end{table}
+
+\subsection{Chemical Reactions}\label{subsc-gmc-dram-chem-ex}
+
+To be explained in future versions of the documentation.
+
+See Table \ref{tab-dram-chem-ex-sys-input-params}.
+
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+ $i$      & Name of $\theta_i$ & $\theta_i^{(0)}$ & $\theta_{i,\text{min}}$ & $\theta_{i,\text{max}}$ & $E_{\text{prior}}[\theta_i]$ & $V_{\text{prior}}[\theta_i]$ \\
+\hline
+\hline
+ $0$      & Param\_1           & $0.$             & $-\infty$               & $+\infty$               & $0.$          & $+\infty$     \\
+\hline
+ $1$      & Param\_2           & $0.$             & $-\infty$               & $+\infty$               & $0.$          & $+\infty$     \\
+\hline
+ $2$      & Param\_3           & $0.$             & $-\infty$               & $+\infty$               & $0.$          & $+\infty$     \\
+\hline
+ $3$      & Param\_4           & $0.$             & $-\infty$               & $+\infty$               & $0.$          & $+\infty$     \\
+\hline
+\end{tabular}
+\caption{Chemical reactions example (Subsection \ref{subsc-gmc-dram-chem-ex}):
+information on $n_{\text{sip}}=4$ system input parameters $\theta_i$, $0\leqslant i\leqslant n_{\text{sip}}-1$.
+Each $\theta_i$ is a scalar r.v.. All system input parameters jointly form the vector r.v. $\boldsymbol{\Theta}=(\theta_0,\theta_1,\ldots,\theta_{n_{\text{sip}}-1})$.
+}
+\label{tab-dram-chem-ex-sys-input-params}
+\end{center}
+\end{table}
+
+See Table \ref{tab-dram-chem-ex-alg-params}.
+
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Option                                            & \multicolumn{4}{c|}{Algorithm}                               \\
+\cline{2-5}
+                                                  & ~~MH~~            & ~~DR~~       & ~~AM~~       & DRAM       \\
+\hline
+\hline
+$n_{\text{sip}}$                                  &                   &              &              &            \\
+\hline
+$m_{\text{obs}}$                                  &                   &              &              &            \\
+\hline
+$n_{\text{chain}}$                                &                   &              &              &            \\
+\hline
+\hline
+$n_e$                                             &                   &              &              &            \\
+\hline
+$\gamma_l$,
+$0\leqslant l\leqslant n_e-1$                     &                   &              &              &            \\
+\hline
+\hline
+$t_0$                                             &                   &              &              &            \\
+\hline
+$p_0$                                             &                   &              &              &            \\
+\hline
+$\eta$                                            &                   &              &              &            \\
+\hline
+$\epsilon$                                        &                   &              &              &            \\
+\hline
+\hline
+$V_{\text{prior}}[\ell_j(\cdot)]$,
+$0\leqslant j\leqslant m_{\text{obs}}-1$          & 1.                & 1.           & 1.           & 1.         \\
+\hline
+Update $V^{(k)}[\ell_j(\cdot)]$ for $k>0$?        & No                & No           & No           & No         \\
+\hline
+Values of $m_j$                                   & $-$               & $-$          & $-$          & $-$        \\
+\hline
+Values of $a_{\ell_j}$                            & $-$               & $-$          & $-$          & $-$        \\
+\hline
+\end{tabular}
+\caption{Chemical reactions example (Subsection \ref{subsc-gmc-dram-chem-ex}):
+algorithm parameters used.
+}
+\label{tab-dram-chem-ex-alg-params}
+\end{center}
+\end{table}
+
+See Table \ref{tab-dram-chem-ex-results-1}.
+
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+Method & Run      & $\text{rej}$           & $\text{oor}$           & $i$ & $\langle\theta_i\rangle$ & $\sigma_{\text{bm}}(\theta_i)$ & $\text{gew}(\theta_i)$ & $\tau_{\text{int}}(\theta_i)$ \\
+       & Time (s) &                        &                        &     &                          &                                &                        &                               \\
+\hline
+\hline
+       &          &                        &                        & $0$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $1$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $2$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $3$ &                          &                                &                        &                               \\
+\hline
+\hline
+       &          &                        &                        & $0$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $1$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $2$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $3$ &                          &                                &                        &                               \\
+\hline
+\hline
+       &          &                        &                        & $0$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $1$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $2$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $3$ &                          &                                &                        &                               \\
+\hline
+\hline
+       &          &                        &                        & $0$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $1$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $2$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $3$ &                          &                                &                        &                               \\
+\hline
+\end{tabular}
+\caption{Chemical reactions example (Subsection \ref{subsc-gmc-dram-chem-ex}):
+results from the first chain, with $n_{\text{chain}}=1001$ samples,
+for each of the $n_{\text{sip}}=4$ parameters $\theta_i$, $0\leqslant i\leqslant n_{\text{sip}}-1$.
+}
+\label{tab-dram-chem-ex-results-1}
+\end{center}
+\end{table}
+
+See Table \ref{tab-dram-chem-ex-results-2}.
+
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+Method & Run      & $\text{rej}$           & $\text{oor}$           & $i$ & $\langle\theta_i\rangle$ & $\sigma_{\text{bm}}(\theta_i)$ & $\text{gew}(\theta_i)$ & $\tau_{\text{int}}(\theta_i)$ \\
+       & Time (s) &                        &                        &     &                          &                                &                        &                               \\
+\hline
+\hline
+       &          &                        &                        & $0$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $1$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $2$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $3$ &                          &                                &                        &                               \\
+\hline
+\hline
+       &          &                        &                        & $0$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $1$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $2$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $3$ &                          &                                &                        &                               \\
+\hline
+\hline
+       &          &                        &                        & $0$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $1$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $2$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $3$ &                          &                                &                        &                               \\
+\hline
+\hline
+       &          &                        &                        & $0$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $1$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $2$ &                          &                                &                        &                               \\
+\cline{5-9}
+       &          &                        &                        & $3$ &                          &                                &                        &                               \\
+\hline
+\end{tabular}
+\caption{Chemical reactions example (Subsection \ref{subsc-gmc-dram-chem-ex}):
+results from the second chain, with $n_{\text{chain}}=5001$ samples,
+for each of the $n_{\text{sip}}=4$ parameters $\theta_i$, $0\leqslant i\leqslant n_{\text{sip}}-1$.
+}
+\label{tab-dram-chem-ex-results-2}
+\end{center}
+\end{table}
+
+\subsection{Algae}\label{subsc-gmc-dram-algae-ex}
+
+\section{Planned Features for Next Releases}\label{sc-gmc-planned-features}
+With respect to Markov Chain Monte Carlo methods, the following features are planned for the next versions of the PECOS Toolkit for Predictive Engineering:
+\begin{enumerate}
+\item compute prediction with the chain of the algae example,
+\item capability of running over parallel environments using Trilinos,
+\item integration with the DAKOTA Toolkit,
+\item chain convergence tests \cite{BrRo98},
+\item capability of running over parallel environments using PETSc,
+\item hyperprior models,
+\item algorithms for multimodal distributions,
+\item Gibbs sampler.
+\end{enumerate}
+ 
