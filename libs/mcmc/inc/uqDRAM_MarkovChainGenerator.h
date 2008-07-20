@@ -45,6 +45,7 @@
 #include <uqChainPosition.h>
 #include <uqMiscellaneous.h>
 #include <uqChainStats.h>
+#include <sys/time.h>
 #include <fstream>
 
 /*! A templated class that generates a Markov chain using the DRAM algorithm.
@@ -146,6 +147,7 @@ private:
   std::vector<const V*>     m_lrChain;       // lr = likelihood results
   std::vector<const V*>     m_lrSigma2Chain; // lr = likelihood results
   std::vector<double>       m_alphaQuotients;
+  double                    m_chainRunTime;
   unsigned int              m_numRejections;
   unsigned int              m_numOutOfBounds;
   double                    m_lastChainSize;
@@ -196,6 +198,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::uqDRAM_MarkovChainGeneratorClass(
   m_lrChain                      (0,NULL),
   m_lrSigma2Chain                (0,NULL),
   m_alphaQuotients               (0,0.),
+  m_chainRunTime                 (0.),
   m_numRejections                (0),
   m_numOutOfBounds               (0),
   m_lastChainSize                (0),
@@ -257,6 +260,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::resetChainAndRelatedInfo()
   if (m_lastMean)             delete m_lastMean;
   m_lastChainSize = 0;
   m_numOutOfBounds   = 0;
+  m_chainRunTime     = 0.;
   m_numRejections    = 0;
   m_alphaQuotients.clear();
   for (unsigned int i = 0; i < m_lrSigma2Chain.size(); ++i) {
@@ -675,6 +679,9 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
 
   int iRC = UQ_OK_RC;
 
+  struct timeval timeval0;
+  iRC = gettimeofday(&timeval0, NULL);
+
   bool   outOfBounds = m_paramSpace.outOfBounds(valuesOf1stPosition);
   UQ_FATAL_TEST_MACRO(outOfBounds,
                       m_env.rank(),
@@ -974,6 +981,14 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
     }
   } // end chain loop
 
+  struct timeval timevalNow;
+  iRC = gettimeofday(&timevalNow, NULL);
+
+  m_chainRunTime  = (double) (timevalNow.tv_sec  - timeval0.tv_sec );
+  m_chainRunTime *= 1.e+6;
+  m_chainRunTime += (double) (timevalNow.tv_usec - timeval0.tv_usec);
+  m_chainRunTime *= 1.e-6;
+
   V* chainMean = m_paramSpace.newVector();
   V* chainStd  = m_paramSpace.newVector();
   uqChainStats(m_chain,
@@ -983,6 +998,8 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
   if (m_env.rank() == 0) {
     std::cout << "Finished generating the chain of id " << chainId
               << ". Chain statistics are:";
+    std::cout << "\n  Run time             = " << m_chainRunTime
+              << " seconds";
     std::cout << "\n  Rejection percentage = " << 100. * (double) m_numRejections/(double) m_chain.size()
               << " %";
     std::cout << "\n   Outbound percentage = " << 100. * (double) m_numOutOfBounds/(double) m_chain.size()
@@ -1366,6 +1383,11 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::writeChainInfoOut(
 
   // Write number of rejections
   ofs << "resultsCpp.rejected = "  << (double) m_numRejections/(double) m_chain.size()
+      << ";\n"
+      << std::endl;
+
+  // Write number of rejections
+  ofs << "resultsCpp.simutime = "  << (double) m_chainRunTime
       << ";\n"
       << std::endl;
 

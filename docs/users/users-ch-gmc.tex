@@ -32,13 +32,17 @@ Finally, {\it run} your application by executing ``./newexample -i newexample.in
 
 \subsection{Create a File Describing the System Input Parameters}\label{subsc-gmc-eight-steps-sys-input-params}
 
-{\it All system input parameters are assumed to be scalar r.v.'s} (that is, $n_i=1,~i=1,2,\ldots,n_{\text{sip}}$, according to the terminology of Section \ref{sc-intro-qoi}), and
-have to be specified in a file.
+The system input parameters need to be specified in a file.
+{\it All system input parameters are assumed to be scalar r.v.'s}. That is, according to the terminology of Section \ref{sc-intro-qoi}), $n_i=1,~i=1,2,\ldots,n_{\text{sip}}$ and
+\begin{equation*}
+N_{\text{siq}} \equiv \sum_{i=1}^{n_{\text{siq}}}n_i = \sum_{i=1}^{n_{\text{siq}}}1 \equiv n_{\text{siq}}.
+\end{equation*}
+
 This file describing system input parameters contains a lot of prior information as well.
 It is treated by the PECOS Toolkit as having either data lines or comment lines.
 Comment lines are all those that begin with the character ``\#'', otherwise they are treated as data lines.
 Comment lines can appear anywhere in the line.
-Each data line is related to one input parameter.
+Each data line is related to one input parameter (in fact, that is the reason for $n_i=1$). 
 The first data line specifies the input parameter $\theta_1$,
 the second data line specifies the input parameter $\theta_2$,
 and so on.
@@ -256,14 +260,14 @@ See Table \ref{tab-dram-map}.
 \hline
 \verb=uqDRAM_am_epsilon=                 & $\epsilon$                          & \eqref{eq-epsilon}                           & \pageref{eq-epsilon}                             &               \\
 \hline
-\verb=uqDRAM_mh_lrSigma2Priors=          & $V_{\text{prior}}[\ell_j(\cdot)]$'s &                                              &                                                  &               \\
-\hline
+%\verb=uqDRAM_mh_lrSigma2Priors=          & $V_{\text{prior}}[\ell_j(\cdot)]$'s &                                              &                                                  &               \\
+%\hline
 \verb=uqDRAM_mh_lrUpdateSigma2=          & A boolean                           &                                              &                                                  &               \\
 \hline
-\verb=uqDRAM_mh_lrSigma2Accuracies=      & $a_j$'s                             &                                              &                                                  &               \\
-\hline
-\verb=uqDRAM_mh_lrNumbersOfObs=          & $m_j$'s                             &                                              &                                                  &               \\
-\hline
+%\verb=uqDRAM_mh_lrSigma2Accuracies=      & $a_j$'s                             &                                              &                                                  &               \\
+%\hline
+%\verb=uqDRAM_mh_lrNumbersOfObs=          & ${\tilde{n}}_j$'s                   &                                              &                                                  &               \\
+%\hline
 \verb=uqDRAM_mh_namesOfOutputFiles=      & File names                          &                                              &                                                  &               \\
 \hline
 \verb=uqDRAM_mh_chainDisplayPeriod=      & An integer                          &                                              &                                                  &               \\
@@ -576,10 +580,9 @@ and
 \Theta_3:\Omega\rightarrow\mathbb{R}^{n_3},\text{ with }n_3=1\text{ and }\Theta_3=k_3.
 \end{equation*}
 
-Let us follow the eight steps listed on the beggining of Section \ref{sc-gmc-eight-steps}.
-Regarding step 1,
+Let us follow the {\it eight steps} listed on the beggining of Section \ref{sc-gmc-eight-steps}.
+Regarding {\it step 1},
 the only prior information we have is that all three reaction coefficients should be positive.
-
 As initial guess we choose
 \begin{equation}\label{eq-dram-chem-initial-guess}
 \boldsymbol{\theta}^{(0)} = \underset{\boldsymbol{\theta}\in\mathbb{R}^3}{\text{min}}~\mathcal{F}(\boldsymbol{\theta}),
@@ -626,7 +629,7 @@ All system input parameters jointly form the vector r.v. $\boldsymbol{\Theta}=(\
 \end{center}
 \end{table}
 
-Regarding step 3, the description of the output quantities, let us first discuss all concentrations $A$, $B$, $C$, $D$ and $E$, which are possible output quantities.
+Regarding {\it step 2}, the description of the output quantities, let us first discuss all concentrations $A$, $B$, $C$, $D$ and $E$, which are possible output quantities.
 These concentrations are in fact random processes, that is, for each instant $t>0$ the concentrations can be treated as r.v.'s, e.g.
 \begin{equation*}
 A(t):\Omega\rightarrow\mathbb{R},\quad\forall~t\geqslant 0.
@@ -799,10 +802,10 @@ while the output vector r.v. of the system is $\mathbf{Y}:\Omega\rightarrow\math
 = 
 \left(
 \begin{array}{c}
-\mathbf{y}_{1,1}(\omega) \\
-\mathbf{y}_{1,2}(\omega) \\
+\mathbf{Y}_{1,1}(\omega) \\
+\mathbf{Y}_{1,2}(\omega) \\
 \vdots                   \\
-\mathbf{y}_{1,23}(\omega)
+\mathbf{Y}_{1,23}(\omega)
 \end{array}
 \right)
 = 
@@ -811,7 +814,7 @@ while the output vector r.v. of the system is $\mathbf{Y}:\Omega\rightarrow\math
 A(t_1) \\
 A(t_2) \\
 \vdots \\
-A(t_3)
+A(t_23)
 \end{array}
 \right).
 \end{equation*}
@@ -819,9 +822,9 @@ A(t_3)
 \clearpage
 \subsection{Obtaining Posterior Distributions}
 
-Let us also consider step 3, creation of directory, to be done.
+Let us also consider {\it step 3}, creation of directory, to be done.
 
-For step 4
+For {\it step 4}
 we use the default prior provided by the toolkit.
 That is, according to Section \ref{subsc-gmc-eight-steps-prior-code}
 and the data in Table \ref{tab-dram-chem-ex-sys-input-params}, we are effectively using a prior function given by
@@ -829,34 +832,35 @@ and the data in Table \ref{tab-dram-chem-ex-sys-input-params}, we are effectivel
 \pi_{\text{prior}} = 1.
 \end{equation*}
 
-For the Gaussian proposal $q_1(\cdot,\cdot)$, step 5,
-we use the default covariance matrix computed by the toolkit.
+For the Gaussian proposal $q_1(\cdot,\cdot)$, {\it step 5},
+we decide to use the default covariance matrix computed by the toolkit.
 That is, according to Section \ref{subsc-gmc-eight-steps-proposal-cov-matrix-for-q1}
-and the data in Table \ref{tab-dram-chem-ex-sys-input-params}, we are effectively using a Gaussian proposal given by
+and the data in Table \ref{tab-dram-chem-ex-sys-input-params}, the toolkit will use a Gaussian proposal given by
 \begin{equation*}
 q_1(\boldsymbol{\theta}^{(k)},\mathbf{c}) = e^
 {
 \{
 -\frac{1}{2}
 [\mathbf{c}-\boldsymbol{\theta}^{(k)}]^T
-~C_1^{(-1)}~
+~C_{1,\text{default}}^{(-1)}~
 [\mathbf{c}-\boldsymbol{\theta}^{(k)}]
 \}
 }
 \end{equation*}
-where $C_1$ is computed internally by the toolkit and values
+where the default covariance matrix
 \begin{equation*}
-C_1 =
+C_{1,\text{default}} =
 \left[
 \begin{array}{ccc}
 \left(\dfrac{14.4019}{20}\right)^2 & 0                                 &                                  0 \\
                                  0 & \left(\dfrac{1.5663}{20}\right)^2 &                                  0 \\
                                  0 &                                 0 & \left(\dfrac{14.4019}{20}\right)^2
 \end{array}
-\right].
+\right]
 \end{equation*}
+is internally computed by the toolkit.
 
-Regarding step 6,
+Regarding {\it step 6},
 we use the likelihood function
 \begin{equation*}
 \ell_1(\mathbf{y}_{1,\text{obs}}|\boldsymbol{\theta}^{(k)}) = e^
@@ -867,16 +871,16 @@ we use the likelihood function
 \frac{1}{V^{(k)}[\ell_1(\cdot)]}
 [\mathbf{y}_{1,\text{obs}}-m_1(\boldsymbol{\theta}^{(k)})]
 \}
-},
+}
 \end{equation*}
-and choose to request the toolkit to update variance $V^{(k)}[\ell_1(\cdot)]$ related to the measurement error as the chain is computed.
+and choose to request the toolkit to update the variance $V^{(k)}[\ell_1(\cdot)]$, related to the measurement error, as the chain is computed.
 The toolkit update procedure 
 was explained in the previous Subsection \ref{subsc-gmc-dram-chem-ex-prob-statement}.
-The term $m_1(\boldsymbol{\theta})$ in the likelihood function represents the simulated realization $\mathbf{y}_1=m_1(\boldsymbol{\theta})$ of the system output quantity $\mathbf{Y}_1$.
+The term $m_1(\boldsymbol{\theta})$ in the likelihood expression represents the simulated realization $\mathbf{y}_1=m_1(\boldsymbol{\theta})$ of the system output quantity (a vector r.v.) $\mathbf{Y}_1$.
 
 Given all this information,
-we compile the code (step 7) and
-compute the posterior distributions of $k_1$, $k_2$ and $k_3$ with algorithms MH, DR, AM and DRAM using the options (step 8)
+we compile the code ({\it step 7}) and
+compute the posterior distributions of $k_1$, $k_2$ and $k_3$ with algorithms MH, DR, AM and DRAM using the options ({\it step 8})
 presented in Table \ref{tab-dram-chem-ex-alg-params}.
 
 \begin{table}[h!]
@@ -890,26 +894,26 @@ $n_{\text{sip}}$                                  & \multicolumn{4}{c|}{$3$}    
 \hline
 $n_{\text{soq}}$                                  & \multicolumn{4}{c|}{$1$}                                     \\
 \hline
-$n_{\text{chain}}$                                & \multicolumn{4}{c|}{$1001,~5001$}                            \\
+$n_{\text{chain}}$'s                              & \multicolumn{4}{c|}{$1001,~5001$}                            \\
 \hline
 Update $V^{(k)}[\ell_j(\cdot)]$ for $k>0$?        & \multicolumn{4}{c|}{Yes}                                     \\
 \hline
 \hline
 $-$                                               & ~~MH~~            & ~~DR~~       & ~~AM~~       & DRAM       \\
 \hline
-$n_e$                                             &                   &              &              &            \\
+$n_e$                                             & $0$               & $1$          & $0$          & $1$        \\
 \hline
 $\gamma_l$,
-$1\leqslant l\leqslant n_e$                       &                   &              &              &            \\
+$1\leqslant l\leqslant n_e$                       & $-$               & $5$          & $-$          & $5$        \\
 \hline
 \hline
-$t_0$                                             &                   &              &              &            \\
+$t_0$                                             & $0$               & $0$          & $100$        & $100$      \\
 \hline
-$p_0$                                             &                   &              &              &            \\
+$p_0$                                             & $-$               & $-$          & $100$        & $100$      \\
 \hline
-$\eta$                                            &                   &              &              &            \\
+$\eta$                                            & $-$               & $-$          & $1.96$       & $1.96$     \\
 \hline
-$\epsilon$                                        &                   &              &              &            \\
+$\epsilon$                                        & $-$               & $-$          & $10^{-5}$    & $10^{-5}$  \\
 \hline
 \end{tabular}
 \caption{Chemical reactions example (Section \ref{sc-gmc-dram-chem-ex}):
@@ -1021,10 +1025,11 @@ See Figure \ref{fig-dram-chem-ex-prediction}.
 
 \begin{figure}[h!]
 \begin{center}
-%\includegraphics[scale=1.00,clip=true,viewport=0.5in 0.2in 11.5in 8.5in]{himmelAobs.eps}
+\includegraphics[scale=1.00,clip=true,viewport=0.5in 0.2in 11.5in 8.5in]{himmelAcomp.eps}
 \end{center}
 \caption{Chemical reactions example (Section \ref{sc-gmc-dram-chem-ex}):
-prediction of all concentrations, obtained with the mean of the chain of 5001 positions obtained with DRAM.
+prediction of all concentrations, obtained with the mean of the (second) chain of 5001 positions obtained with DRAM
+after the (first) chain of 1001 positions.
 }
 \label{fig-dram-chem-ex-prediction}
 \end{figure}
@@ -1036,36 +1041,39 @@ See Table \ref{tab-dram-chem-ex-comparison}.
 
 \begin{table}[h!]
 \begin{center}
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|c|r|r|r|r|}
 \hline
-Method & \multicolumn{2}{c|}{Run Time (s)} & \multicolumn{2}{c|}{$\text{rej}$} & $i$ & \multicolumn{2}{c|}{$\langle\theta_i\rangle$} & \multicolumn{2}{c|}{$\text{gew}(\theta_i)$} & \multicolumn{2}{c|}{$\tau_{\text{int}}(\theta_i)$} \\
-\cline{2-5}\cline{7-12}
-       & Kit            & Box              & Kit           & Box               &     & Kit                  & Box                    & Kit                 & Box                   & Kit                     & Box                      \\
+Method & \multicolumn{2}{c|}{Time (s)}     & \multicolumn{2}{c|}{$\text{rej}$} & $i$ & \multicolumn{2}{c|}{$\langle\theta_i\rangle$} & \multicolumn{2}{c|}{$\tau_{\text{int}}(\theta_i)$} \\
+\cline{2-5}\cline{7-10}
+       & Kit            & Box              & Kit           & Box               &     & \multicolumn{1}{c|}{Kit} & \multicolumn{1}{c|}{Box} & \multicolumn{1}{c|}{Kit} & \multicolumn{1}{c|}{Box} \\
 \hline
 \hline
-       &                &                  &               &                   & $1$ &                      &                        &                     &                       &                         &                          \\
-\cline{6-12}
-MH     &                &                  &               &                   & $2$ &                      &                        &                     &                       &                         &                          \\
-\cline{6-12}
-       &                &                  &               &                   & $3$ &                      &                        &                     &                       &                         &                          \\
+       &                &                  &               &                   & $1$ & $14.4370$            & $14.4373$              &                         & $13.6276$                \\
+\cline{6-10}
+MH     & 0.2            & 6.3              & 75.1\%        & 73.3\%            & $2$ &  $1.5657$            &  $1.5695$              &                         & $21.7045$                \\
+\cline{6-10}
+       &                &                  &               &                   & $3$ &  $0.2920$            &  $0.2907$              &                         & $18.8677$                \\
 \hline
-       &                &                  &               &                   & $1$ &                      &                        &                     &                       &                         &                          \\
-\cline{6-12}
-DR     &                &                  &               &                   & $2$ &                      &                        &                     &                       &                         &                          \\
-\cline{6-12}
-       &                &                  &               &                   & $3$ &                      &                        &                     &                       &                         &                          \\
 \hline
-       &                &                  &               &                   & $1$ &                      &                        &                     &                       &                         &                          \\
-\cline{6-12}
-AM     &                &                  &               &                   & $2$ &                      &                        &                     &                       &                         &                          \\
-\cline{6-12}
-       &                &                  &               &                   & $3$ &                      &                        &                     &                       &                         &                          \\
+       &                &                  &               &                   & $1$ & $14.3200$            & $14.4838$              &                         & $21.3289$                \\
+\cline{6-10}
+DR     & 0.4            & 10.8             & 19.9\%        & 18.9\%            & $2$ &  $1.5788$            &  $1.5669$              &                         & $11.5423$                \\
+\cline{6-10}
+       &                &                  &               &                   & $3$ &  $0.2879$            &  $0.2909$              &                         & $22.9126$                \\
 \hline
-       &                &                  &               &                   & $1$ &                      &                        &                     &                       &                         &                          \\
-\cline{6-12}
-DRAM   &                &                  &               &                   & $2$ &                      &                        &                     &                       &                         &                          \\
-\cline{6-12}
-       &                &                  &               &                   & $3$ &                      &                        &                     &                       &                         &                          \\
+\hline
+       &                &                  &               &                   & $1$ & $14.4630$            & $14.5372$              &                         &  $8.9563$                \\
+\cline{6-10}
+AM     & 0.2            & 6.4              & 69.8\%        & 68.0\%            & $2$ &  $1.5677$            &  $1.5637$              &                         & $12.4557$                \\
+\cline{6-10}
+       &                &                  &               &                   & $3$ &  $0.2892$            &  $0.2897$              &                         & $14.6620$                \\
+\hline
+\hline
+       &                &                  &               &                   & $1$ & $14.4990$            & $14.4142$              &                         & $13.1899$                \\
+\cline{6-10}
+DRAM   & 0.4            & 10.7             & 21.1\%        & 18.9\%            & $2$ &  $1.5646$            &  $1.5630$              &                         &  $6.4202$                \\
+\cline{6-10}
+       &                &                  &               &                   & $3$ &  $0.2923$            &  $0.2918$              &                         &  $9.2101$                \\
 \hline
 \end{tabular}
 \caption{Chemical reactions example (Section \ref{sc-gmc-dram-chem-ex}):
@@ -1077,13 +1085,17 @@ comparison between the PECOS Toolkit (``kit'') and the MCMC Matlab Toolbox (``bo
 
 See Figures
 \ref{fig-dram-chem-ex-comparison-MH-theta1-chain1},
+\ref{fig-dram-chem-ex-comparison-MH-theta1-chain1-2d},
 \ref{fig-dram-chem-ex-comparison-DR-theta1-chain1},
-\ref{fig-dram-chem-ex-comparison-AM-theta1-chain1} and
-\ref{fig-dram-chem-ex-comparison-DRAM-theta1-chain1}.
+\ref{fig-dram-chem-ex-comparison-DR-theta1-chain1-2d},
+\ref{fig-dram-chem-ex-comparison-AM-theta1-chain1},
+\ref{fig-dram-chem-ex-comparison-AM-theta1-chain1-2d},
+\ref{fig-dram-chem-ex-comparison-DRAM-theta1-chain1} and
+\ref{fig-dram-chem-ex-comparison-DRAM-theta1-chain1-2d}.
 
 \begin{figure}[h!]
 \begin{center}
-%\includegraphics[scale=1.00,clip=true,viewport=0.5in 0.2in 11.5in 8.5in]{himmelAobs.eps}
+\includegraphics[scale=1.00,clip=true,viewport=0.5in 0.2in 11.5in 8.5in]{himmel_compMH_chain1.eps}
 \end{center}
 \caption{Chemical reactions example (Section \ref{sc-gmc-dram-chem-ex}):
 visual comparison between the MH algorithm results from the PECOS Toolkit (``kit'') and the MCMC Matlab Toolbox (``box'', \cite{mcmctool}), w.r.t. to the 1001 values of $\theta_1$ from the first chain generated by MH.
@@ -1093,7 +1105,17 @@ visual comparison between the MH algorithm results from the PECOS Toolkit (``kit
 
 \begin{figure}[h!]
 \begin{center}
-%\includegraphics[scale=1.00,clip=true,viewport=0.5in 0.2in 11.5in 8.5in]{himmelAobs.eps}
+\includegraphics[scale=1.00,clip=true,viewport=0.5in 0.2in 11.5in 8.5in]{himmel_compMH_chain1_2d.eps}
+\end{center}
+\caption{Chemical reactions example (Section \ref{sc-gmc-dram-chem-ex}):
+visual comparison between the MH algorithm results from the PECOS Toolkit (``kit'') and the MCMC Matlab Toolbox (``box'', \cite{mcmctool}), w.r.t. to the 1001 values of $\theta_1$ and $\theta_2$ from the first chain generated by MH.
+}
+\label{fig-dram-chem-ex-comparison-MH-theta1-chain1-2d}
+\end{figure}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=1.00,clip=true,viewport=0.5in 0.2in 11.5in 8.5in]{himmel_compDR_chain1.eps}
 \end{center}
 \caption{Chemical reactions example (Section \ref{sc-gmc-dram-chem-ex}):
 visual comparison between the DR algorithm results from the PECOS Toolkit (``kit'') and the MCMC Matlab Toolbox (``box'', \cite{mcmctool}), w.r.t. to the 1001 values of $\theta_1$ from the first chain generated by DR.
@@ -1103,7 +1125,17 @@ visual comparison between the DR algorithm results from the PECOS Toolkit (``kit
 
 \begin{figure}[h!]
 \begin{center}
-%\includegraphics[scale=1.00,clip=true,viewport=0.5in 0.2in 11.5in 8.5in]{himmelAobs.eps}
+\includegraphics[scale=1.00,clip=true,viewport=0.5in 0.2in 11.5in 8.5in]{himmel_compDR_chain1_2d.eps}
+\end{center}
+\caption{Chemical reactions example (Section \ref{sc-gmc-dram-chem-ex}):
+visual comparison between the DR algorithm results from the PECOS Toolkit (``kit'') and the MCMC Matlab Toolbox (``box'', \cite{mcmctool}), w.r.t. to the 1001 values of $\theta_1$ and $\theta_2$ from the first chain generated by DR.
+}
+\label{fig-dram-chem-ex-comparison-DR-theta1-chain1-2d}
+\end{figure}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=1.00,clip=true,viewport=0.5in 0.2in 11.5in 8.5in]{himmel_compAM_chain1.eps}
 \end{center}
 \caption{Chemical reactions example (Section \ref{sc-gmc-dram-chem-ex}):
 visual comparison between the AM algorithm results from the PECOS Toolkit (``kit'') and the MCMC Matlab Toolbox (``box'', \cite{mcmctool}), w.r.t. to the 1001 values of $\theta_1$ from the first chain generated by AM.
@@ -1113,12 +1145,32 @@ visual comparison between the AM algorithm results from the PECOS Toolkit (``kit
 
 \begin{figure}[h!]
 \begin{center}
-%\includegraphics[scale=1.00,clip=true,viewport=0.5in 0.2in 11.5in 8.5in]{himmelAobs.eps}
+\includegraphics[scale=1.00,clip=true,viewport=0.5in 0.2in 11.5in 8.5in]{himmel_compAM_chain1_2d.eps}
+\end{center}
+\caption{Chemical reactions example (Section \ref{sc-gmc-dram-chem-ex}):
+visual comparison between the AM algorithm results from the PECOS Toolkit (``kit'') and the MCMC Matlab Toolbox (``box'', \cite{mcmctool}), w.r.t. to the 1001 values of $\theta_1$ and $\theta_2$ from the first chain generated by AM.
+}
+\label{fig-dram-chem-ex-comparison-AM-theta1-chain1-2d}
+\end{figure}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=1.00,clip=true,viewport=0.5in 0.2in 11.5in 8.5in]{himmel_compDRAM_chain1.eps}
 \end{center}
 \caption{Chemical reactions example (Section \ref{sc-gmc-dram-chem-ex}):
 visual comparison between the DRAM algorithm results from the PECOS Toolkit (``kit'') and the MCMC Matlab Toolbox (``box'', \cite{mcmctool}), w.r.t. to the 1001 values of $\theta_1$ from the first chain generated by DRAM.
 }
 \label{fig-dram-chem-ex-comparison-DRAM-theta1-chain1}
+\end{figure}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=1.00,clip=true,viewport=0.5in 0.2in 11.5in 8.5in]{himmel_compDRAM_chain1_2d.eps}
+\end{center}
+\caption{Chemical reactions example (Section \ref{sc-gmc-dram-chem-ex}):
+visual comparison between the DRAM algorithm results from the PECOS Toolkit (``kit'') and the MCMC Matlab Toolbox (``box'', \cite{mcmctool}), w.r.t. to the 1001 values of $\theta_1$ and $\theta_2$ from the first chain generated by DRAM.
+}
+\label{fig-dram-chem-ex-comparison-DRAM-theta1-chain1-2d}
 \end{figure}
 
 \clearpage
