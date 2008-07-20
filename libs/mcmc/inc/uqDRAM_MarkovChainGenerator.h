@@ -563,6 +563,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::prepareForNextChain(
       if ((sigma == INFINITY) ||
           (sigma == NAN     )) {
         (*tmpVec)[i] = pow( fabs(m_paramInitials[i])*0.05,2. );
+        if ( (*tmpVec)[i] == 0 ) (*tmpVec)[i] = 1.;
       }
       else if (sigma == 0.) {
         (*tmpVec)[i] = 1.;
@@ -742,7 +743,10 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
                          logPosterior);
 
     bool accept = false;
-    if (outOfBounds == false) {
+    if (outOfBounds) {
+      m_alphaQuotients[positionId] = 0.;
+    }
+    else {
       accept = acceptAlpha(this->alpha(currentPosition,currentCandidate,&m_alphaQuotients[positionId]));
     }
 #if 0 // For debug only
