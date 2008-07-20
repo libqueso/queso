@@ -96,8 +96,8 @@ uqOutputSpaceClass<V,M>::defineMyOptions(
   po::options_description& optionsDesc) const
 {
   m_optionsDesc->add_options()
-    ("uqOutputSpace_help",                                              "produce help message for UQ PS")
-    ("uqOutputSpace_dim",  po::value<unsigned int>()->default_value(0), "Space dimension"               )
+    ("uqOutputSpace_help",                                               "produce help message for UQ PS"    )
+    ("uqOutputSpace_n_soq", po::value<unsigned int>()->default_value(0), "number of system output quantities")
   ;
 
   return;
@@ -112,9 +112,9 @@ uqOutputSpaceClass<V,M>::getMyOptionValues(po::options_description& optionsDesc)
               << std::endl;
   }
 
-  if (m_env.allOptionsMap().count("uqOutputSpace_dim")) {
+  if (m_env.allOptionsMap().count("uqOutputSpace_n_soq")) {
     const po::variables_map& tmpMap = m_env.allOptionsMap();
-    m_dim = tmpMap["uqOutputSpace_dim"].as<unsigned int>();
+    m_dim = tmpMap["uqOutputSpace_n_soq"].as<unsigned int>();
   }
 
   return;

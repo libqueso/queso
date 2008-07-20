@@ -3,6 +3,13 @@ path(path,getenv('MCMC_TOOLBOX_PATH_FOR_PECOS_TOOLKIT'));
 path(path,pwd);
 uqHimmelExOutput;
 
+clf;
+[chainsize,npar]=size(chainCpp);
+x = 1:chainSize;
+plot(x',chainCpp(:,1),'.');
+
+waitforbuttonpress;
+
 figure(1); clf
 mcmcplot(chainCpp,[],resultsCpp.names,'chainpanel')
 subplot(2,2,4)
@@ -43,5 +50,21 @@ figure(2); clf
 [t,y] = ode45(@himmelode,linspace(0,600),data.y0,[],mean(chainCpp));
 plot(data.ydata(:,1),data.ydata(:,2),'s',t,y,'-')
 ylim([0,0.021])
-legend('Aobs','A','B','C','D','E',0)
-title('Data and fitted model')
+legend('Observed A','Predicted A','Predicted B','Predicted C','Predicted D','Predicted E',0)
+print -dpng himmelAcomp.png;
+title('Observed data and predicted results with the mean of the chain')
+
+%modelfun = @(d,th) tempf(d,th);
+%nsample = 500;
+%out = mcmcpred(resultsCpp,chainCpp,s2chainCpp,data.ydata(:,1),modelfun,nsample);
+%figure
+%mcmcpredplot(out);
+%hold on
+%for i=1:3
+%  subplot(3,1,i)
+%  hold on
+%  plot(data.ydata(:,1),data.ydata(:,i+1),'s'); 
+%  ylabel(''); title(data.ylabels(i+1));
+%  hold off
+%end
+%xlabel('days');

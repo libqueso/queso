@@ -2,16 +2,16 @@
 \thispagestyle{headings}
 \markboth{Chapter \ref{ch-rmc}: The Realization of a Markov Chain}{Chapter \ref{ch-rmc}: The Realization of a Markov Chain}
 
-The PECOS Toolkit currently implements the DRAM algorithm \cite{HaLaMiSa06} for the generation of a Markov chain.
 In this chapter we detail the
 Metropolis-Hastings (MH),
 Delayed Rejection (DR),
 Adaptive Metropolis (AM) and
 DRAM algorithms.
 
-While we indicated r.v.'s and their realizations by $\boldsymbol{\theta}^{(k)}$ and $\boldsymbol{\theta}^{(k)}$ in Chapter \ref{ch-mcmc},
-in this chapter we will primarily use supper scripts and the greek letter $\theta$ to indicate r.v.'s and their realizations, e.g. $\boldsymbol{\theta}^{(k)}$ and $\boldsymbol{\Theta}^{(k)}$.
-Sub scripts will refer to components of $\boldsymbol{\theta}^{(k)}\in\mathbb{R}^m$. In this way, we return to the initial terminology used in Chapter \ref{ch-int}.
+While we indicated r.v.'s and their realizations by $\mathbf{Y}_k$ and $\mathbf{y}_k$ in Chapter \ref{ch-mcmc},
+in this chapter we will primarily use supper scripts and the greek letter $\theta$ to indicate r.v.'s and their realizations, e.g. $\boldsymbol{\Theta}^{(k)}$ and $\boldsymbol{\theta}^{(k)}$.
+Sub scripts will refer to components $\theta_i^{(k)}$ of $\boldsymbol{\theta}^{(k)}\in\mathbb{R}^m$.
+In this way, we return to the initial terminology used in Chapter \ref{ch-int}.
 
 \section{Preliminary Definitions}
 
@@ -113,10 +113,14 @@ The Metropolis-Hastings algorithm proceeds as follows:
 \item for ($k=0$; $k < (n_{\text{chain}}-1)$; ++$k$) \{
 \item $\quad$/* Perform $(k+1)$-th iteration in order to obtain $\boldsymbol{\theta}^{(k+1)}$ */
 \item $\quad$generate a candidate $\mathbf{c}$ from $q_1(\boldsymbol{\theta}^{(k)},\cdot)$;
-\item $\quad$compute the acceptance ratio $\alpha=\alpha_1(\boldsymbol{\theta}^{(k)},\mathbf{c})$ (see \eqref{eq-alphas});
-\item $\quad$draw $t$ from the uniform distribution on $[0,1]$;
-\item $\quad$if ($t\leqslant \alpha$) $\boldsymbol{\theta}^{(k+1)}=\mathbf{c}$;
-\item $\quad$else $\boldsymbol{\theta}^{(k+1)}=\boldsymbol{\theta}^{(k)}$;
+\item $\quad$accept = false;
+\item $\quad$outOfBounds = ($\theta_i < \theta_{i,\text{min}}$ or $\theta_{i,\text{max}} < \theta_i$ for some $i$);
+\item $\quad$if (outOfBounds == false) \{
+\item $\quad\quad$compute the acceptance ratio $\alpha=\alpha_1(\boldsymbol{\theta}^{(k)},\mathbf{c})$ (see \eqref{eq-alphas});
+\item $\quad\quad$draw $t$ from the uniform distribution on $[0,1]$;
+\item $\quad\quad$if ($t\leqslant \alpha$) \{ $\boldsymbol{\theta}^{(k+1)}=\mathbf{c}$; accept = true; \}
+\item $\quad$\}
+\item $\quad$if (accept == false) $\boldsymbol{\theta}^{(k+1)}=\boldsymbol{\theta}^{(k)}$;
 \item \} /* end for */.
 \end{enumerate}
 
@@ -132,18 +136,21 @@ the Delayed Rejection algorithm proceeds as follows:
 \item for ($k=0$; $k < (n_{\text{chain}}-1)$; ++$k$) \{
 \item $\quad$/* Perform $(k+1)$-th iteration in order to obtain $\boldsymbol{\theta}^{(k+1)}$ */
 \item $\quad$generate a candidate $\mathbf{c}^{(1)}$ from $q_1(\boldsymbol{\theta}^{(k)},\cdot)$;
-\item $\quad$compute the acceptance ratio $\alpha=\alpha_1(\boldsymbol{\theta}^{(k)},\mathbf{c}^{(1)})$ (see \eqref{eq-alphas});
-\item $\quad$draw $t$ from the uniform distribution on $[0,1]$;
-\item $\quad$accept = false; $i=1$;
-\item $\quad$if ($t\leqslant \alpha$) \{ $\boldsymbol{\theta}^{(k+1)}=\mathbf{c}^{(i)}$; accept = true; \}
-\item $\quad$else while ((accept == false) \&\& ($i\leqslant n_e$)) \{
-\item $\quad\quad$/* Extra stages trying extra candidates $\mathbf{c}^{(2)},\mathbf{c}^{(3)},\ldots,\mathbf{c}^{(n_e+1)}$ (maximum) */
-\item $\quad\quad$generate a candidate $\mathbf{c}^{(i+1)}$ from $q_i(\boldsymbol{\theta}^{(k)},\mathbf{c}^{(1)},\ldots,\mathbf{c}^{(i)})$;
-\item $\quad\quad$compute the acceptance ratio $\alpha=\alpha_i(\boldsymbol{\theta}^{(k)},\mathbf{c}^{(1)},\ldots,\mathbf{c}^{(i)})$ (see \eqref{eq-alphas});
+\item $\quad$accept = false; $s=1$; /* ``s'' stands for ``stage id'' */
+\item $\quad$outOfBounds = ($\theta_i < \theta_{i,\text{min}}$ or $\theta_{i,\text{max}} < \theta_i$ for some $i$);
+\item $\quad$if (outOfBounds == false) \{
+\item $\quad\quad$compute the acceptance ratio $\alpha=\alpha_1(\boldsymbol{\theta}^{(k)},\mathbf{c}^{(1)})$ (see \eqref{eq-alphas});
 \item $\quad\quad$draw $t$ from the uniform distribution on $[0,1]$;
-\item $\quad\quad$if ($t\leqslant \alpha$) \{ $\boldsymbol{\theta}^{(k+1)}=\mathbf{c}^{(i)}$; accept = true; \}
-\item $\quad\quad$$i\leftarrow i+1$;
-\item $\quad$\} /* end while */
+\item $\quad\quad$if ($t\leqslant \alpha$) \{ $\boldsymbol{\theta}^{(k+1)}=\mathbf{c}^{(s)}$; accept = true; \}
+\item $\quad\quad$else while ((accept == false) \&\& ($i\leqslant n_e$)) \{
+\item $\quad\quad\quad$/* Extra stages trying extra candidates $\mathbf{c}^{(2)},\mathbf{c}^{(3)},\ldots,\mathbf{c}^{(n_e+1)}$ (maximum) */
+\item $\quad\quad\quad$generate a candidate $\mathbf{c}^{(s+1)}$ from $q_i(\boldsymbol{\theta}^{(k)},\mathbf{c}^{(1)},\ldots,\mathbf{c}^{(s)})$;
+\item $\quad\quad\quad$compute the acceptance ratio $\alpha=\alpha_i(\boldsymbol{\theta}^{(k)},\mathbf{c}^{(1)},\ldots,\mathbf{c}^{(s)})$ (see \eqref{eq-alphas});
+\item $\quad\quad\quad$draw $t$ from the uniform distribution on $[0,1]$;
+\item $\quad\quad\quad$if ($t\leqslant \alpha$) \{ $\boldsymbol{\theta}^{(k+1)}=\mathbf{c}^{(s)}$; accept = true; \}
+\item $\quad\quad\quad$$i\leftarrow i+1$;
+\item $\quad\quad$\} /* end while */
+\item $\quad$\}
 \item $\quad$if (accept == false) $\boldsymbol{\theta}^{(k+1)}=\boldsymbol{\theta}^{(k)}$;
 \item \} /* end for */.
 \end{enumerate}
@@ -261,14 +268,16 @@ To be explained in future versions of the documentation.
 
 \section{Chain Statistics}\label{sc-rmc-chain-stats}
 
-After the generation of a chain
+After the realization
 \begin{equation}\label{eq-markov-chain-2}
 \{\boldsymbol{\theta}^{(0)},\boldsymbol{\theta}^{(1)},\ldots\,\boldsymbol{\theta}^{(n_{\text{chain}}-1)}\}
 \end{equation}
-has been generated, many different statistical evaluations can be performed over each parameter chain
+of a chain,
+many different statistical evaluations can be performed over the parameter sequence
 \begin{equation}\label{eq-markov-chains-for-each-specific-parameter}
-\{{\theta}_i^{(0)},{\theta}_i^{(1)},\ldots,{\theta}_i^{(n_{\text{chain}}-1)}\},~0\leqslant i\leqslant n_{\text{sip}}-1.
+\{{\theta}_i^{(0)},{\theta}_i^{(1)},\ldots,{\theta}_i^{(n_{\text{chain}}-1)}\},
 \end{equation}
+for each parameter $1\leqslant i\leqslant n_{\text{sip}}$.
 
 \subsection{Rejections}
 
@@ -280,7 +289,7 @@ has been generated, many different statistical evaluations can be performed over
 
 Transient phase/bias.
 
-Equilibrium phase/autocorrelation.
+Equilibrium phase/autocorrelation \cite{BrRo98} \cite{So96}.
 
 \subsection{Kernel Density Estimators}
 

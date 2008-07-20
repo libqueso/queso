@@ -16,7 +16,9 @@ clean_exec:
 	rm -f *~
 
 OBJS_convert = black_box.eps \
-	black_state.eps
+	black_state.eps \
+	black_box3.eps \
+	himmelAobs.eps
 
 all_texs: $(OBJS_convert)
 	latex users.tex

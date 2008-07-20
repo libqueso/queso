@@ -21,7 +21,7 @@ uqStateSpace_dim  = 5
 # UQ Output Space
 ###############################################
 # uqOutputSpace_help = anything
-uqOutputSpace_dim  = 1
+uqOutputSpace_n_soq = 1
 
 ###############################################
 # UQ DRAM Markov Chain Generator
@@ -32,11 +32,11 @@ uqDRAM_mh_lrUpdateSigma2          = 1
 uqDRAM_mh_lrSigma2Priors          = 2.1876e-08
 uqDRAM_mh_lrSigma2Accuracies      = 1.
 uqDRAM_mh_lrNumbersOfObs          = 23
-uqDRAM_dr_maxNumberOfExtraStages  = 1
+uqDRAM_dr_maxNumberOfExtraStages  = 0
 uqDRAM_dr_scalesForExtraStages    = 5. 4. 3.
-uqDRAM_am_initialNonAdaptInterval = 1
+uqDRAM_am_initialNonAdaptInterval = 0
 uqDRAM_am_adaptInterval           = 1
-uqDRAM_am_sd                      = 1.44
+uqDRAM_am_eta                     = 1.44
 uqDRAM_am_epsilon                 = 1.e-5
 uqDRAM_mh_namesOfOutputFiles      = uqHimmelExOutput.m
 uqDRAM_mh_chainDisplayPeriod      = 500

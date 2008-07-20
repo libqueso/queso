@@ -1,8 +1,8 @@
 \documentclass[12pt,letterpaper,twoside,onecolumn,portrait,leqno]{book}
 \bibliographystyle{plain}
 \usepackage{amssymb,amsfonts,amsmath,amscd,amsthm}
-\usepackage[draft]{graphicx}
-%\usepackage{graphicx}
+%\usepackage[draft]{graphicx}
+\usepackage{graphicx}
 \usepackage[dvips]{epsfig}
 \usepackage{rotating}
 
@@ -27,6 +27,9 @@
 \pagestyle{headings}
 \markright{}
 \pagenumbering{roman}
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
 
 \include{users-cover}
 

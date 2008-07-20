@@ -33,7 +33,7 @@
 #define UQ_DRAM_MCG_DR_SCALES_FOR_EXTRA_STAGES_ODV "1."
 #define UQ_DRAM_MCG_AM_INIT_NON_ADAPT_INT_ODV      0
 #define UQ_DRAM_MCG_AM_ADAPT_INTERVAL_ODV          0
-#define UQ_DRAM_MCG_AM_SD_ODV                      1.
+#define UQ_DRAM_MCG_AM_ETA_ODV                     1.
 #define UQ_DRAM_MCG_AM_EPSILON_ODV                 1.e-5
 #define UQ_DRAM_MCG_MH_OUTPUT_FILE_NAME_ODV        "."
 #define UQ_DRAM_MCG_MH_CHAIN_DISPLAY_PERIOD_ODV    500
@@ -130,7 +130,7 @@ private:
   std::vector<double>       m_scalesForCovMProposals;
   unsigned int              m_initialNonAdaptInterval;
   unsigned int              m_adaptInterval;
-  double                    m_sd;
+  double                    m_eta;
   double                    m_epsilon;
   std::vector<std::string>  m_namesOfOutputFiles;
   unsigned int              m_chainDisplayPeriod;
@@ -182,7 +182,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::uqDRAM_MarkovChainGeneratorClass(
   m_scalesForCovMProposals       (0,0.),
   m_initialNonAdaptInterval      (UQ_DRAM_MCG_AM_INIT_NON_ADAPT_INT_ODV),
   m_adaptInterval                (UQ_DRAM_MCG_AM_ADAPT_INTERVAL_ODV),
-  m_sd                           (UQ_DRAM_MCG_AM_SD_ODV),
+  m_eta                          (UQ_DRAM_MCG_AM_ETA_ODV),
   m_epsilon                      (UQ_DRAM_MCG_AM_EPSILON_ODV),
   m_namesOfOutputFiles           (1,UQ_DRAM_MCG_MH_OUTPUT_FILE_NAME_ODV),
   m_chainDisplayPeriod           (UQ_DRAM_MCG_MH_CHAIN_DISPLAY_PERIOD_ODV),
@@ -211,8 +211,8 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::uqDRAM_MarkovChainGeneratorClass(
   m_lrSigma2Accuracies->cwSet     (strtod(UQ_DRAM_MCG_MH_LR_SIGMA2_ACCURACIES_ODV,NULL));
   m_lrNumbersOfObservations->cwSet(strtod(UQ_DRAM_MCG_MH_LR_NUMBERS_OF_OBS_ODV   ,NULL));
 
-  //std::cout << "Entering uqDRAM_MarkovChainGeneratorClass<V,M>::constructor()"
-  //          << std::endl;
+  std::cout << "Entering uqDRAM_MarkovChainGeneratorClass<V,M>::constructor()"
+            << std::endl;
 
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
@@ -222,8 +222,8 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::uqDRAM_MarkovChainGeneratorClass(
                                    << "\n" << *this
                                    << std::endl;
 
-  //std::cout << "Leaving uqDRAM_MarkovChainGeneratorClass<V,M>::constructor()"
-  //          << std::endl;
+  std::cout << "Leaving uqDRAM_MarkovChainGeneratorClass<V,M>::constructor()"
+            << std::endl;
 }
 
 template <class V, class M>
@@ -320,7 +320,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::defineMyOptions(
     ("uqDRAM_dr_scalesForExtraStages",    po::value<std::string >()->default_value(UQ_DRAM_MCG_DR_SCALES_FOR_EXTRA_STAGES_ODV), "'dr' scales for proposal cov matrices from 2nd stage on")
     ("uqDRAM_am_initialNonAdaptInterval", po::value<unsigned int>()->default_value(UQ_DRAM_MCG_AM_INIT_NON_ADAPT_INT_ODV     ), "'am' initial non adaptation interval"                   )
     ("uqDRAM_am_adaptInterval",           po::value<unsigned int>()->default_value(UQ_DRAM_MCG_AM_ADAPT_INTERVAL_ODV         ), "'am' adaptation interval"                               )
-    ("uqDRAM_am_sd",                      po::value<double      >()->default_value(UQ_DRAM_MCG_AM_SD_ODV                     ), "'am' sd"                                                )
+    ("uqDRAM_am_eta",                     po::value<double      >()->default_value(UQ_DRAM_MCG_AM_ETA_ODV                    ), "'am' eta"                                               )
     ("uqDRAM_am_epsilon",                 po::value<double      >()->default_value(UQ_DRAM_MCG_AM_EPSILON_ODV                ), "'am' epsilon"                                           )
     ("uqDRAM_mh_namesOfOutputFiles",      po::value<std::string >()->default_value(UQ_DRAM_MCG_MH_OUTPUT_FILE_NAME_ODV       ), "'mh' name(s) of output file(s)"                         )
     ("uqDRAM_mh_chainDisplayPeriod",      po::value<unsigned int>()->default_value(UQ_DRAM_MCG_MH_CHAIN_DISPLAY_PERIOD_ODV   ), "'mh' period of message display during chain generation" )
@@ -447,8 +447,8 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::getMyOptionValues(
     m_adaptInterval = m_env.allOptionsMap()["uqDRAM_am_adaptInterval"].as<unsigned int>();
   }
 
-  if (m_env.allOptionsMap().count("uqDRAM_am_sd")) {
-    m_sd = m_env.allOptionsMap()["uqDRAM_am_sd"].as<double>();
+  if (m_env.allOptionsMap().count("uqDRAM_am_eta")) {
+    m_eta = m_env.allOptionsMap()["uqDRAM_am_eta"].as<double>();
   }
 
   if (m_env.allOptionsMap().count("uqDRAM_am_epsilon")) {
@@ -741,8 +741,10 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
                          lrSigma2,
                          logPosterior);
 
-    bool accept = acceptAlpha(this->alpha(currentPosition,currentCandidate,&m_alphaQuotients[positionId]));
-
+    bool accept = false;
+    if (outOfBounds == false) {
+      accept = acceptAlpha(this->alpha(currentPosition,currentCandidate,&m_alphaQuotients[positionId]));
+    }
 #if 0 // For debug only
     if (m_env.rank() == 0) std::cout << "In uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain()"
                                      << ": for chain position of id = " << positionId
@@ -797,7 +799,9 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
                              logPosterior);
 
         drPositions.push_back(new uqChainPositionClass<V>(currentCandidate));
-        accept = acceptAlpha(this->alpha(drPositions));
+        if (outOfBounds == false) {
+          accept = acceptAlpha(this->alpha(drPositions));
+        }
       } // while
     } // end of 'delayed rejection' logic
 
@@ -905,9 +909,9 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
                               "uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain()",
                               "invalid iRC returned from first chol()");
           // Matrix is not positive definite
-          M* tmpI = m_paramSpace.newDiagMatrix(m_epsilon);
-          tmpChol = *m_lastAdaptedCovMatrix + *tmpI;
-          delete tmpI;
+          M* tmpDiag = m_paramSpace.newDiagMatrix(m_epsilon);
+          tmpChol = *m_lastAdaptedCovMatrix + *tmpDiag;
+          delete tmpDiag;
           //if (m_env.rank() == 0) {
           //  std::cout << "DRAM: chainId = " << chainId
           //            << ", positionId = "  << positionId
@@ -937,7 +941,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
         }
         if (tmpCholIsPositiveDefinite) {
           *(m_lowerCholProposalCovMatrices[0]) = tmpChol;
-          *(m_lowerCholProposalCovMatrices[0]) *= sqrt(m_sd);
+          *(m_lowerCholProposalCovMatrices[0]) *= sqrt(m_eta);
           m_lowerCholProposalCovMatrices[0]->zeroUpper(false);
 
 #ifdef UQ_DRAM_MCG_REQUIRES_INVERTED_COV_MATRICES
@@ -1426,7 +1430,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::print(std::ostream& os) const
   }
   os << "\nm_initialNonAdaptInterval = " << m_initialNonAdaptInterval
      << "\nm_adaptInterval = "           << m_adaptInterval
-     << "\nm_sd = "                      << m_sd
+     << "\nm_eta = "                     << m_eta
      << "\nm_epsilon = "                 << m_epsilon;
   os << "\nm_namesOfOutputFiles = ";
   for (unsigned int i = 0; i < m_namesOfOutputFiles.size(); ++i) {
