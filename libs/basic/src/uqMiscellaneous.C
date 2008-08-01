@@ -1,5 +1,6 @@
 #include <uqMiscellaneous.h>
 #include <gsl/gsl_randist.h>
+#include <sys/time.h>
 #include <math.h>
 #include <uqDefines.h>
 
@@ -159,6 +160,23 @@ uqMiscGammar(
     }
     result = b*d*w;
   }
+
+  return result;
+}
+
+double
+uqMiscGetEllapsedSeconds(struct timeval *timeval0)
+{
+  double result = 0.;
+
+  int iRC;
+  struct timeval timevalNow;
+  iRC = gettimeofday(&timevalNow, NULL);
+
+  result  = (double) (timevalNow.tv_sec  - timeval0->tv_sec );
+  result *= 1.e+6;
+  result += (double) (timevalNow.tv_usec - timeval0->tv_usec);
+  result *= 1.e-6;
 
   return result;
 }

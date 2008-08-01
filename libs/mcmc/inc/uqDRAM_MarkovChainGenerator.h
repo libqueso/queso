@@ -1,7 +1,7 @@
 /* uq/libs/mcmc/inc/uqDRAM_MarkovChainGenerator.h
  *
- * Copyright (C) 2008 The PECOS Team, http://www.ices.utexas.edu/centers/pecos
-
+ * Copyright (C) 2008 The PECOS Team, http://pecos.ices.utexas.edu
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or (at
@@ -44,7 +44,8 @@
 #include <uqOutputSpace.h>
 #include <uqChainPosition.h>
 #include <uqMiscellaneous.h>
-#include <uqChainStats.h>
+#include <uqSequenceStatistics.h>
+#include <uqMatrixOfStuff.h>
 #include <sys/time.h>
 #include <fstream>
 
@@ -135,6 +136,16 @@ private:
   double                    m_epsilon;
   std::vector<std::string>  m_namesOfOutputFiles;
   unsigned int              m_chainDisplayPeriod;
+  std::vector<unsigned int> m_initialPosForCorrs;
+  std::vector<unsigned int> m_lagsForCorrs;
+  std::vector<unsigned int> m_initialPosForBMM;
+  std::vector<unsigned int> m_lengthsForBMM;
+  std::vector<unsigned int> m_initialPosForPSD;
+  std::vector<unsigned int> m_lengthsForPSD;
+  double                    m_hopSizeRatioForPSD;
+  std::vector<unsigned int> m_initialPosForGeweke;
+  double                    m_ratioNaForGeweke;
+  double                    m_ratioNbForGeweke;
 
   std::vector<      M*>     m_lowerCholProposalCovMatrices;
   std::vector<      M*>     m_proposalCovMatrices;
@@ -188,6 +199,16 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::uqDRAM_MarkovChainGeneratorClass(
   m_epsilon                      (UQ_DRAM_MCG_AM_EPSILON_ODV),
   m_namesOfOutputFiles           (1,UQ_DRAM_MCG_MH_OUTPUT_FILE_NAME_ODV),
   m_chainDisplayPeriod           (UQ_DRAM_MCG_MH_CHAIN_DISPLAY_PERIOD_ODV),
+  m_initialPosForCorrs           (0,0),
+  m_lagsForCorrs                 (0,0),
+  m_initialPosForBMM             (0,0),
+  m_lengthsForBMM                (0,0),
+  m_initialPosForPSD             (0,0),
+  m_lengthsForPSD                (0,0),
+  m_hopSizeRatioForPSD           (1.),
+  m_initialPosForGeweke          (0,0),
+  m_ratioNaForGeweke             (0.),
+  m_ratioNbForGeweke             (0.),
   m_lowerCholProposalCovMatrices (1,NULL),
   m_proposalCovMatrices          (1,NULL),
 #ifdef UQ_DRAM_MCG_REQUIRES_INVERTED_COV_MATRICES
@@ -214,6 +235,54 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::uqDRAM_MarkovChainGeneratorClass(
   m_lrSigma2Accuracies->cwSet     (strtod(UQ_DRAM_MCG_MH_LR_SIGMA2_ACCURACIES_ODV,NULL));
   m_lrNumbersOfObservations->cwSet(strtod(UQ_DRAM_MCG_MH_LR_NUMBERS_OF_OBS_ODV   ,NULL));
 
+  m_initialPosForCorrs.resize(5);
+  m_initialPosForCorrs[0] =  1000;
+  m_initialPosForCorrs[1] =  5000;
+  m_initialPosForCorrs[2] = 10000;
+  m_initialPosForCorrs[3] = 15000;
+  m_initialPosForCorrs[4] = 20000;
+
+  m_lagsForCorrs.resize(10);
+  m_lagsForCorrs[0] = 1;
+  m_lagsForCorrs[1] = 2;
+  m_lagsForCorrs[2] = 3;
+  m_lagsForCorrs[3] = 4;
+  m_lagsForCorrs[4] = 5;
+  m_lagsForCorrs[5] = 10;
+  m_lagsForCorrs[6] = 15;
+  m_lagsForCorrs[7] = 20;
+  m_lagsForCorrs[8] = 25;
+  m_lagsForCorrs[9] = 30;
+
+  m_initialPosForBMM.resize(5);
+  m_initialPosForBMM[0] =  1000;
+  m_initialPosForBMM[1] =  5000;
+  m_initialPosForBMM[2] = 10000;
+  m_initialPosForBMM[3] = 15000;
+  m_initialPosForBMM[4] = 20000;
+
+  m_lengthsForBMM.resize(5);
+  m_lengthsForBMM[0] =  100;
+  m_lengthsForBMM[1] =  200;
+  m_lengthsForBMM[2] =  500;
+  m_lengthsForBMM[3] = 1000;
+  m_lengthsForBMM[4] = 5000;
+
+  m_initialPosForPSD.resize(1);
+  m_initialPosForPSD[0] = 20000;
+
+  m_lengthsForPSD.resize(1);
+  m_lengthsForPSD[0] = 5000;
+  m_hopSizeRatioForPSD = .5;
+
+  m_initialPosForGeweke.resize(4);
+  m_initialPosForGeweke[0] =  5000;
+  m_initialPosForGeweke[1] = 10000;
+  m_initialPosForGeweke[2] = 15000;
+  m_initialPosForGeweke[3] = 20000;
+  m_ratioNaForGeweke = .1;
+  m_ratioNbForGeweke = .5;
+
   std::cout << "Entering uqDRAM_MarkovChainGeneratorClass<V,M>::constructor()"
             << std::endl;
 
@@ -236,6 +305,14 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::~uqDRAM_MarkovChainGeneratorClass()
   //          << std::endl;
 
   resetChainAndRelatedInfo();
+
+  m_initialPosForGeweke.clear();
+  m_lengthsForPSD.clear();
+  m_initialPosForPSD.clear();
+  m_lengthsForBMM.clear();
+  m_initialPosForBMM.clear();
+  m_lagsForCorrs.clear();
+  m_initialPosForCorrs.clear();
 
   if (m_lrNumbersOfObservations) delete m_lrNumbersOfObservations;
   if (m_lrSigma2Accuracies     ) delete m_lrSigma2Accuracies;
@@ -981,20 +1058,10 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
     }
   } // end chain loop
 
-  struct timeval timevalNow;
-  iRC = gettimeofday(&timevalNow, NULL);
-
-  m_chainRunTime  = (double) (timevalNow.tv_sec  - timeval0.tv_sec );
-  m_chainRunTime *= 1.e+6;
-  m_chainRunTime += (double) (timevalNow.tv_usec - timeval0.tv_usec);
-  m_chainRunTime *= 1.e-6;
-
-  V* chainMean = m_paramSpace.newVector();
-  V* chainStd  = m_paramSpace.newVector();
-  uqChainStats(m_chain,
-               *chainMean,
-               *chainStd);
-
+  //****************************************************
+  // Print basic statistics
+  //****************************************************
+  m_chainRunTime = uqMiscGetEllapsedSeconds(&timeval0);
   if (m_env.rank() == 0) {
     std::cout << "Finished generating the chain of id " << chainId
               << ". Chain statistics are:";
@@ -1004,34 +1071,228 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
               << " %";
     std::cout << "\n   Outbound percentage = " << 100. * (double) m_numOutOfBounds/(double) m_chain.size()
               << " %";
+    std::cout << std::endl;
+  }
+
+  //****************************************************
+  // Compute mean, sample std, population std
+  //****************************************************
+  V* chainMean = m_paramSpace.newVector();
+  uqSequenceMean(m_chain,
+                 0,
+                 m_chain.size(),
+                 *chainMean);
+
+  V* chainSampleVariance = m_paramSpace.newVector();
+  uqSequenceSampleVariance(m_chain,
+                           0,
+                           m_chain.size(),
+                           *chainMean,
+                           *chainSampleVariance);
+
+  V* chainPopulationVariance = m_paramSpace.newVector();
+  uqSequencePopulationVariance(m_chain,
+                               0,
+                               m_chain.size(),
+                               *chainMean,
+                               *chainPopulationVariance);
+
+  if (m_env.rank() == 0) {
+    std::cout << "\nMean, sample std, population std"
+              << std::endl;
     char line[512];
-    sprintf(line,"\n%s%4s%s%9s%s",
+    sprintf(line,"%s%4s%s%9s%s%9s%s",
 	    "Parameter",
             " ",
             "Mean",
             " ",
-            "Std");
+            "SampleStd",
+            " ",
+            "Popul.Std");
     std::cout << line;
 
     for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
-      sprintf(line,"\n%8.8s%2s%11.4e%2s%11.4e",
+      sprintf(line,"\n%8.8s%2s%11.4e%2s%11.4e%2s%11.4e",
               m_paramSpace.parameter(i).name().c_str(),
               " ",
 	      (*chainMean)[i],
               " ",
-              (*chainStd)[i]);
+              sqrt((*chainSampleVariance)[i]),
+              " ",
+              sqrt((*chainPopulationVariance)[i]));
       std::cout << line;
     }
     std::cout << std::endl;
   }
 
   //****************************************************
+  // Compute autocorrelation coefficients
+  //****************************************************
+  if ((m_initialPosForCorrs.size() > 0) &&
+      (m_lagsForCorrs.size()       > 0)) { 
+    uqMatrixOfStuff<V> matrixOfAutoCorrs(m_initialPosForCorrs.size(),m_lagsForCorrs.size());
+    for (unsigned int i = 0; i < matrixOfAutoCorrs.numRows(); ++i) {
+      for (unsigned int j = 0; j < matrixOfAutoCorrs.numCols(); ++j) {
+        matrixOfAutoCorrs.setLocation(i,j,m_paramSpace.newVector());
+      }
+    }
+    uqSequenceAutoCorrelations(m_chain,
+                               m_initialPosForCorrs,
+                               m_lagsForCorrs,
+                               matrixOfAutoCorrs);
+
+    if (m_env.rank() == 0) {
+      for (unsigned int initialPosId = 0; initialPosId < m_initialPosForCorrs.size(); initialPosId++) {
+        std::cout << "\nEstimated correlation coefficients, for subchain beggining at position " << m_initialPosForCorrs[initialPosId]
+                  << " (each column corresponds to a different lag)"
+                  << std::endl;
+
+        char line[512];
+        sprintf(line,"%s",
+	        "Parameter");
+        std::cout << line;
+        for (unsigned int lagId = 0; lagId < m_lagsForCorrs.size(); lagId++) {
+          sprintf(line,"%9s%3d",
+                  " ",
+                  m_lagsForCorrs[lagId]);
+          std::cout << line;
+        }
+
+        for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
+          sprintf(line,"\n%8.8s",
+                  m_paramSpace.parameter(i).name().c_str());
+          std::cout << line;
+          for (unsigned int lagId = 0; lagId < m_lagsForCorrs.size(); lagId++) {
+            sprintf(line,"%2s%11.4e",
+                    " ",
+	            matrixOfAutoCorrs(initialPosId,lagId)[i]);
+            std::cout << line;
+          }
+        }
+        std::cout << std::endl;
+      }
+    }
+  }
+
+  //****************************************************
+  // Compute variance of sample mean through the 'batch means method' (BMM)
+  //****************************************************
+  if ((m_initialPosForBMM.size() > 0) &&
+      (m_lengthsForBMM.size()    > 0)) { 
+    uqMatrixOfStuff<V> matrixOfBMM(m_initialPosForBMM.size(),m_lengthsForBMM.size());
+    for (unsigned int i = 0; i < matrixOfBMM.numRows(); ++i) {
+      for (unsigned int j = 0; j < matrixOfBMM.numCols(); ++j) {
+        matrixOfBMM.setLocation(i,j,m_paramSpace.newVector());
+      }
+    }
+    uqSequenceBMM(m_chain,
+                  m_initialPosForBMM,
+                  m_lengthsForBMM,
+                  matrixOfBMM);
+
+    if (m_env.rank() == 0) {
+      for (unsigned int initialPosId = 0; initialPosId < m_initialPosForBMM.size(); initialPosId++) {
+        std::cout << "\nEstimated covariances of sample mean, through batch means method, for subchain beggining at position " << m_initialPosForBMM[initialPosId]
+                  << " (each column corresponds to a batch length)"
+                  << std::endl;
+
+        char line[512];
+        sprintf(line,"%s",
+                "Parameter");
+        std::cout << line;
+        for (unsigned int batchLengthId = 0; batchLengthId < m_lengthsForBMM.size(); batchLengthId++) {
+          sprintf(line,"%9s%3d",
+                  " ",
+                  m_lengthsForBMM[batchLengthId]);
+          std::cout << line;
+        }
+
+        for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
+          sprintf(line,"\n%8.8s",
+                  m_paramSpace.parameter(i).name().c_str());
+          std::cout << line;
+          for (unsigned int batchLengthId = 0; batchLengthId < m_lengthsForBMM.size(); batchLengthId++) {
+            sprintf(line,"%2s%11.4e",
+                    " ",
+                    matrixOfBMM(initialPosId,batchLengthId)[i]);
+            std::cout << line;
+          }
+        }
+        std::cout << std::endl;
+      }
+    }
+  }
+
+  //****************************************************
+  // Compute power spectral density (PSD) of chain at zero frequency
+  //****************************************************
+  if ((m_initialPosForPSD.size() > 0) &&
+      (m_lengthsForPSD.size()    > 0)) { 
+    uqMatrixOfStuff<V> matrixOfPSDAtZero(m_initialPosForPSD.size(),m_lengthsForPSD.size());
+    for (unsigned int i = 0; i < matrixOfPSDAtZero.numRows(); ++i) {
+      for (unsigned int j = 0; j < matrixOfPSDAtZero.numCols(); ++j) {
+        matrixOfPSDAtZero.setLocation(i,j,m_paramSpace.newVector());
+      }
+    }
+    uqSequencePSD(m_chain,
+                  m_initialPosForPSD,
+                  m_lengthsForPSD,
+                  m_hopSizeRatioForPSD,
+                  matrixOfPSDAtZero);
+
+    if (m_env.rank() == 0) {
+      for (unsigned int initialPosId = 0; initialPosId < m_initialPosForPSD.size(); initialPosId++) {
+        std::cout << "\nEstimated covariances of sample mean, through psd (fft), for subchain beggining at position " << m_initialPosForPSD[initialPosId]
+                  << " (each column corresponds to a batch length)"
+                  << std::endl;
+
+        char line[512];
+        sprintf(line,"%s",
+                "Parameter");
+        std::cout << line;
+        for (unsigned int fftLengthId = 0; fftLengthId < m_lengthsForPSD.size(); fftLengthId++) {
+          sprintf(line,"%9s%3d",
+                  " ",
+                  m_lengthsForPSD[fftLengthId]);
+          std::cout << line;
+        }
+
+        for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
+          sprintf(line,"\n%8.8s",
+                  m_paramSpace.parameter(i).name().c_str());
+          std::cout << line;
+          for (unsigned int fftLengthId = 0; fftLengthId < m_lengthsForPSD.size(); fftLengthId++) {
+            sprintf(line,"%2s%11.4e",
+                    " ",
+                    matrixOfPSDAtZero(initialPosId,fftLengthId)[i]);
+            std::cout << line;
+          }
+        }
+        std::cout << std::endl;
+      }
+    }
+  }
+
+  //****************************************************
+  // Compute Geweke
+  //****************************************************
+  if (m_initialPosForGeweke.size() > 0) {
+    std::vector<double> vectorOfGeweke(m_initialPosForGeweke.size(),999.);
+    uqSequenceGeweke(m_chain,
+                     m_initialPosForGeweke,
+                     m_ratioNaForGeweke,
+                     m_ratioNbForGeweke,
+                     vectorOfGeweke);
+  }
+
+  //****************************************************
   // Release memory before leaving routine
   //****************************************************
-  if (chainStd      ) delete chainStd;
-  if (chainMean     ) delete chainMean;
-  if (gaussianVector) delete gaussianVector;
-  if (tmpParamValues) delete tmpParamValues;
+  if (chainPopulationVariance) delete chainPopulationVariance;
+  if (chainSampleVariance    ) delete chainSampleVariance;
+  if (chainMean              ) delete chainMean;
+  if (gaussianVector         ) delete gaussianVector;
+  if (tmpParamValues         ) delete tmpParamValues;
 
   return iRC;
 }
@@ -1387,7 +1648,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::writeChainInfoOut(
       << std::endl;
 
   // Write number of rejections
-  ofs << "resultsCpp.simutime = "  << (double) m_chainRunTime
+  ofs << "resultsCpp.simutime = "  << m_chainRunTime
       << ";\n"
       << std::endl;
 

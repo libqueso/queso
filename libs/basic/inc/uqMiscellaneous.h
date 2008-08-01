@@ -31,8 +31,10 @@ void   uqMiscExtractDoubleFromString(std::string& inputString,
                                      double&      outputDouble);
 void   uqMiscExtractWordFromString  (std::string& inputString,
                                      std::string& outputWord);
-double uqMiscGammar                (double   a,
-                                    double   b,
-                                    gsl_rng* rng);
+double uqMiscGammar                 (double   a,
+                                     double   b,
+                                     gsl_rng* rng);
+double uqMiscGetEllapsedSeconds     (struct timeval *timeval0);
+
 
 #endif // __UQ_MISCELLANEOUS_H__

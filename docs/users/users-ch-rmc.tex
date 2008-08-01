@@ -193,13 +193,13 @@ the Adaptive Metropolis algorithm proceeds as follows:
 \begin{sidewaystable}[h]
 \begin{tabular}{|c||c|c||c|c||c|c|}
 \hline
- Initial             & \multicolumn{2}{c||}{Metropolis-Hastings (``MH'')}                & \multicolumn{2}{c||}{Delayed Rejection (``DR'')}                         & \multicolumn{2}{c|}{Adaptive Metropolis (``AM'')}          \\
+ Position to         & \multicolumn{2}{c||}{Metropolis-Hastings (``MH'')}                & \multicolumn{2}{c||}{Delayed Rejection (``DR'')}                         & \multicolumn{2}{c|}{Adaptive Metropolis (``AM'')}          \\
 \cline{2-7}
- Position            & candidate               & next position                           & candidate              & next position                                   & candidate        & next position                           \\
+ be computed         & candidate               & resulting position                      & candidate              & resulting position                              & candidate        & resulting position                      \\
 (iteration)          &                         &                                         & (stage)                &                                                 &                  &                                         \\
 \hline
 \hline
-$\boldsymbol{\theta}^{(0)}$       & $\mathbf{c}$ w/ $q$              & $\boldsymbol{\theta}^{(0)}$ or $\mathbf{c}$ w/ $\alpha_1$       & $\mathbf{c}^{(1)}$ w/ $q_1$     & $\boldsymbol{\theta}^{(0)}$ or $\mathbf{c}^{(1)}$ w/ $\alpha_1$       & $\mathbf{c}$ w/ $g_0$     & $\boldsymbol{\theta}^{(0)}$ or $\mathbf{c}$ w/ $\alpha_1$       \\
+$\boldsymbol{\theta}^{(1)}$       & $\mathbf{c}$ w/ $q$              & $\boldsymbol{\theta}^{(0)}$ or $\mathbf{c}$ w/ $\alpha_1$       & $\mathbf{c}^{(1)}$ w/ $q_1$     & $\boldsymbol{\theta}^{(0)}$ or $\mathbf{c}^{(1)}$ w/ $\alpha_1$       & $\mathbf{c}$ w/ $g_0$     & $\boldsymbol{\theta}^{(0)}$ or $\mathbf{c}$ w/ $\alpha_1$       \\
 \cline{4-5}
                      &                         &                                         & $\mathbf{c}^{(2)}$ w/ $q_2$     & $\boldsymbol{\theta}^{(0)}$ or $\mathbf{c}^{(2)}$ w/ $\alpha_2$       &                  &                                         \\
 \cline{4-5}
@@ -209,7 +209,7 @@ $\boldsymbol{\theta}^{(0)}$       & $\mathbf{c}$ w/ $q$              & $\boldsym
                      &                         &                                         & \multicolumn{2}{l||}{or maximum stages achieved}                         &                  &                                         \\
 \hline 
 \hline
-$\boldsymbol{\theta}^{(1)}$       & $\mathbf{c}$ w/ $q$              & $\boldsymbol{\theta}^{(1)}$ or $\mathbf{c}$ w/ $\alpha_1$       & $\mathbf{c}^{(1)}$ w/ $q_1$     & $\boldsymbol{\theta}^{(1)}$ or $\mathbf{c}^{(1)}$ w/ $\alpha_1$       & $\mathbf{c}$ w/ $g_0$     & $\boldsymbol{\theta}^{(1)}$ or $\mathbf{c}$ w/ $\alpha_1$       \\
+$\boldsymbol{\theta}^{(2)}$       & $\mathbf{c}$ w/ $q$              & $\boldsymbol{\theta}^{(1)}$ or $\mathbf{c}$ w/ $\alpha_1$       & $\mathbf{c}^{(1)}$ w/ $q_1$     & $\boldsymbol{\theta}^{(1)}$ or $\mathbf{c}^{(1)}$ w/ $\alpha_1$       & $\mathbf{c}$ w/ $g_0$     & $\boldsymbol{\theta}^{(1)}$ or $\mathbf{c}$ w/ $\alpha_1$       \\
 \cline{4-5}
                      &                         &                                         & $\mathbf{c}^{(2)}$ w/ $q_2$     & $\boldsymbol{\theta}^{(1)}$ or $\mathbf{c}^{(2)}$ w/ $\alpha_2$       &                  &                                         \\
 \cline{4-5}
@@ -222,20 +222,12 @@ $\boldsymbol{\theta}^{(1)}$       & $\mathbf{c}$ w/ $q$              & $\boldsym
 $\vdots$             & $\vdots$                & $\vdots$                                & $\vdots$               & $\vdots$                                        & $\vdots$         & $\vdots$                                \\
 \hline
 \hline
-$\boldsymbol{\theta}^{(t_0)}$     & $\mathbf{c}$ w/ $q$              & $\boldsymbol{\theta}^{(t_0)}$ or $\mathbf{c}$ w/ $\alpha_1$     & $\mathbf{c}^{(1)}$ w/ $q_1$     & $\boldsymbol{\theta}^{(t_0)}$ or $\mathbf{c}^{(1)}$ w/ $\alpha_1$     & $\mathbf{c}$ w/ $g_1$     & $\boldsymbol{\theta}^{(t_0)}$ or $\mathbf{c}$ w/ $\alpha_1$     \\
+$\boldsymbol{\theta}^{(t_0)}$     & $\mathbf{c}$ w/ $q$              & $\boldsymbol{\theta}^{(t_0-1)}$ or $\mathbf{c}$ w/ $\alpha_1$     & $\mathbf{c}^{(1)}$ w/ $q_1$     & $\boldsymbol{\theta}^{(t_0-1)}$ or $\mathbf{c}^{(1)}$ w/ $\alpha_1$     & $\mathbf{c}$ w/ $g_0$     & $\boldsymbol{\theta}^{(t_0-1)}$ or $\mathbf{c}$ w/ $\alpha_1$     \\
 \cline{4-5}
                      &                         &                                         & $\vdots$               & $\vdots$                                        &                  &                                         \\
 \hline
 \hline
-$\boldsymbol{\theta}^{(t_0+1)}$   & $\mathbf{c}$ w/ $q$              & $\boldsymbol{\theta}^{(t_0+1)}$ or $\mathbf{c}$ w/ $\alpha_1$   & $\mathbf{c}^{(2)}$ w/ $q_1$     & $\boldsymbol{\theta}^{(t_0+1)}$ or $\mathbf{c}^{(1)}$ w/ $\alpha_1$   & $\mathbf{c}$ w/ $g_1$     & $\boldsymbol{\theta}^{(t_0+1)}$ or $\mathbf{c}$ w/ $\alpha_1$   \\
-\cline{4-5}
-                     &                         &                                         & $\vdots$               & $\vdots$                                        &                  &                                         \\
-\hline
-\hline
-$\vdots$             & $\vdots$                & $\vdots$                                & $\vdots$               & $\vdots$                                        & $\vdots$         & $\vdots$                                \\
-\hline
-\hline
-$\boldsymbol{\theta}^{(t_0+p_0)}$ & $\mathbf{c}$ w/ $q$              & $\boldsymbol{\theta}^{(t_0+p_0)}$ or $\mathbf{c}$ w/ $\alpha_1$ & $\mathbf{c}^{(2)}$ w/ $q_1$     & $\boldsymbol{\theta}^{(t_0+p_0)}$ or $\mathbf{c}^{(1)}$ w/ $\alpha_1$ & $\mathbf{c}$ w/ $g_2$     & $\boldsymbol{\theta}^{(t_0+p_0)}$ or $\mathbf{c}$ w/ $\alpha_1$ \\
+$\boldsymbol{\theta}^{(t_0+1)}$   & $\mathbf{c}$ w/ $q$              & $\boldsymbol{\theta}^{(t_0)}$ or $\mathbf{c}$ w/ $\alpha_1$   & $\mathbf{c}^{(2)}$ w/ $q_1$     & $\boldsymbol{\theta}^{(t_0)}$ or $\mathbf{c}^{(1)}$ w/ $\alpha_1$   & $\mathbf{c}$ w/ $g_{t_0+1}$     & $\boldsymbol{\theta}^{(t_0)}$ or $\mathbf{c}$ w/ $\alpha_1$   \\
 \cline{4-5}
                      &                         &                                         & $\vdots$               & $\vdots$                                        &                  &                                         \\
 \hline
@@ -243,7 +235,15 @@ $\boldsymbol{\theta}^{(t_0+p_0)}$ & $\mathbf{c}$ w/ $q$              & $\boldsym
 $\vdots$             & $\vdots$                & $\vdots$                                & $\vdots$               & $\vdots$                                        & $\vdots$         & $\vdots$                                \\
 \hline
 \hline
-$\boldsymbol{\theta}^{(t_0+2p_0)}$& $\mathbf{c}$ w/ $q$              & $\boldsymbol{\theta}^{(t_0+2p_0)}$ or $\mathbf{c}$ w/ $\alpha_1$& $\mathbf{c}^{(2)}$ w/ $q_1$     & $\boldsymbol{\theta}^{(t_0+2p_0)}$ or $\mathbf{c}^{(1)}$ w/ $\alpha_1$& $\mathbf{c}$ w/ $g_3$     & $\boldsymbol{\theta}^{(t_0+2p_0)}$ or $\mathbf{c}$ w/ $\alpha_1$\\
+$\boldsymbol{\theta}^{(t_0+p_0+1)}$ & $\mathbf{c}$ w/ $q$              & $\boldsymbol{\theta}^{(t_0+p_0)}$ or $\mathbf{c}$ w/ $\alpha_1$ & $\mathbf{c}^{(2)}$ w/ $q_1$     & $\boldsymbol{\theta}^{(t_0+p_0)}$ or $\mathbf{c}^{(1)}$ w/ $\alpha_1$ & $\mathbf{c}$ w/ $g_{t_0+p_0+1}$     & $\boldsymbol{\theta}^{(t_0+p_0)}$ or $\mathbf{c}$ w/ $\alpha_1$ \\
+\cline{4-5}
+                     &                         &                                         & $\vdots$               & $\vdots$                                        &                  &                                         \\
+\hline
+\hline
+$\vdots$             & $\vdots$                & $\vdots$                                & $\vdots$               & $\vdots$                                        & $\vdots$         & $\vdots$                                \\
+\hline
+\hline
+$\boldsymbol{\theta}^{(t_0+2p_0+1)}$& $\mathbf{c}$ w/ $q$              & $\boldsymbol{\theta}^{(t_0+2p_0)}$ or $\mathbf{c}$ w/ $\alpha_1$& $\mathbf{c}^{(2)}$ w/ $q_1$     & $\boldsymbol{\theta}^{(t_0+2p_0)}$ or $\mathbf{c}^{(1)}$ w/ $\alpha_1$& $\mathbf{c}$ w/ $g_{t_0+2p_0+1}$     & $\boldsymbol{\theta}^{(t_0+2p_0)}$ or $\mathbf{c}$ w/ $\alpha_1$\\
 \cline{4-5}
                      &                         &                                         & $\vdots$               & $\vdots$                                        &                  &                                         \\
 \hline
