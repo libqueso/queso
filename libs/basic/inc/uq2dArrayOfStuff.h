@@ -1,4 +1,4 @@
-/* uq/libs/basic/inc/uqMatrixOfStuff.h
+/* uq/libs/basic/inc/uq2dArrayOfStuff.h
  *
  * Copyright (C) 2008 The PECOS Team, http://queso.ices.utexas.edu
  *
@@ -17,15 +17,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef __UQ_MATRIX_OF_STUFF_H__
-#define __UQ_MATRIX_OF_STUFF_H__
+#ifndef __UQ_2D_ARRAY_OF_STUFF_H__
+#define __UQ_2D_ARRAY_OF_STUFF_H__
 
 template <class T>
-class uqMatrixOfStuff
+class uq2dArrayOfStuff
 {
 public:
-  uqMatrixOfStuff(unsigned int numRows, unsigned int numCols);
- ~uqMatrixOfStuff();
+  uq2dArrayOfStuff(unsigned int numRows, unsigned int numCols);
+ ~uq2dArrayOfStuff();
 
   const unsigned int numRows    ()                                 const;
   const unsigned int numCols    ()                                 const;
@@ -41,7 +41,7 @@ private:
 };
 
 template <class T>
-uqMatrixOfStuff<T>::uqMatrixOfStuff(
+uq2dArrayOfStuff<T>::uq2dArrayOfStuff(
   unsigned int numRows,
   unsigned int numCols)
   :
@@ -55,7 +55,7 @@ uqMatrixOfStuff<T>::uqMatrixOfStuff(
 }
 
 template <class T>
-uqMatrixOfStuff<T>::~uqMatrixOfStuff()
+uq2dArrayOfStuff<T>::~uq2dArrayOfStuff()
 {
   for (unsigned int i = 0; i < m_numRows; ++i) {
     for (unsigned int j = 0; j < m_numCols; ++j) {
@@ -67,21 +67,21 @@ uqMatrixOfStuff<T>::~uqMatrixOfStuff()
 
 template <class T>
 const unsigned int
-uqMatrixOfStuff<T>::numRows() const
+uq2dArrayOfStuff<T>::numRows() const
 {
   return m_numRows;
 }
 
 template <class T>
 const unsigned int
-uqMatrixOfStuff<T>::numCols() const
+uq2dArrayOfStuff<T>::numCols() const
 {
   return m_numCols;
 }
 
 template <class T>
 void
-uqMatrixOfStuff<T>::setLocation(unsigned int i, unsigned int j, T* info)
+uq2dArrayOfStuff<T>::setLocation(unsigned int i, unsigned int j, T* info)
 {
   (*(m_data[i]))[j] = info;
   return;
@@ -89,16 +89,16 @@ uqMatrixOfStuff<T>::setLocation(unsigned int i, unsigned int j, T* info)
 
 template <class T>
 T&
-uqMatrixOfStuff<T>::operator()(unsigned int i, unsigned int j)
+uq2dArrayOfStuff<T>::operator()(unsigned int i, unsigned int j)
 {
   return *(*(m_data[i]))[j];
 }
 
 template <class T>
 const T&
-uqMatrixOfStuff<T>::operator()(unsigned int i, unsigned int j) const
+uq2dArrayOfStuff<T>::operator()(unsigned int i, unsigned int j) const
 {
   return *(*(m_data[i]))[j];
 }
-#endif // __UQ_MATRIX_OF_STUFF_H__
+#endif // __UQ_2D_ARRAY_OF_STUFF_H__
 

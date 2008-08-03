@@ -180,3 +180,11 @@ uqMiscGetEllapsedSeconds(struct timeval *timeval0)
 
   return result;
 }
+
+double uqMiscHammingWindow(unsigned int N, unsigned int j)
+{
+  double angle = 2.*M_PI*((double) j)/((double) N);
+  double result = 0.54 - 0.46*cos(angle);
+
+  return result;
+}

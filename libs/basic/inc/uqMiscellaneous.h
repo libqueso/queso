@@ -36,5 +36,16 @@ double uqMiscGammar                 (double   a,
                                      gsl_rng* rng);
 double uqMiscGetEllapsedSeconds     (struct timeval *timeval0);
 
+double uqMiscHammingWindow          (unsigned int N, unsigned int j);
+
+template <class V>
+void
+uqMiscComputePositionsInsideIntervals(V                minValues,
+                                      V                maxValues,
+                                      unsigned int     numberOfIntervals,
+                                      std::vector<V*>& positions)
+{
+  return;
+}
 
 #endif // __UQ_MISCELLANEOUS_H__
