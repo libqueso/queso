@@ -38,13 +38,32 @@ double uqMiscGetEllapsedSeconds     (struct timeval *timeval0);
 
 double uqMiscHammingWindow          (unsigned int N, unsigned int j);
 
+double uqMiscGaussianDensity        (double x, double mu, double sigma);
+
 template <class V>
 void
-uqMiscComputePositionsInsideIntervals(V                minValues,
-                                      V                maxValues,
-                                      unsigned int     numberOfIntervals,
-                                      std::vector<V*>& positions)
+uqMiscComputePositionsBetweenMinMax(V                minValues,
+                                    V                maxValues,
+                                    std::vector<V*>& positions)
 {
+  double factor = 0.5;
+  switch (positions.size()) {
+    case 0:
+      // Do nothing
+    break;
+
+    case 1:
+      positions[0] = new V((1. - factor) * minValues + factor * maxValues);
+    break;
+
+    default:
+      for (unsigned int i = 0; i < positions.size(); ++i) {
+        factor = ((double) i)/(((double) positions.size()) - 1.);
+        positions[i] = new V((1. - factor) * minValues + factor * maxValues);
+      }
+    break;
+  }
+
   return;
 }
 

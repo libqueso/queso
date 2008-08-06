@@ -119,11 +119,15 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
   // Step 4 of 4: Generate chains.
   //              In MATLAB, one should then run uqHimmelEx.m,
-  //              which calls 'mcmcplot.m'.
   //******************************************************
   mcg.generateChains(NULL, // compute proposal cov matrix internally
                      NULL, // use default prior() routine
                      (void *) &uqAppl_M2lLikelihoodFunction_Data);
+
+  //******************************************************
+  // Step 5 of 5: Compute distribution of quantity of interest
+  //******************************************************
+  //mcg.computeQoiDistribution(NULL, // compute proposal cov matrix internally
 
   //*****************************************************
   // Release memory before leaving routine.

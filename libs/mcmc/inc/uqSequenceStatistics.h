@@ -317,14 +317,14 @@ uqScalarSequencePSD(
   std::vector<double>&       psdData) // [dataSize x 1] vector
 {
   psdData.clear();
-  unsigned int fullDataSize = data.size();
+  unsigned int dataSize = data.size();
 
-  double tmp = ((double) fullDataSize)/(( ((double) numBlocks) - 1. )*hopSizeRatio + 1.);
+  double tmp = ((double) dataSize)/(( ((double) numBlocks) - 1. )*hopSizeRatio + 1.);
   unsigned int blockSize = (unsigned int) tmp;
   unsigned int hopSize   = (unsigned int) ( ((double) blockSize) * hopSizeRatio );
-  tmp = ((double) fullDataSize) - ( ((double) numBlocks) - 1.) * ((double) hopSize) - ((double) blockSize);
+  tmp = ((double) dataSize) - ( ((double) numBlocks) - 1.) * ((double) hopSize) - ((double) blockSize);
   //unsigned int numberOfDiscardedDataElements = (unsigned int) tmp;
-  //std::cout << "N = "         << fullDataSize
+  //std::cout << "N = "         << dataSize
   //          << ", #Blocks = " << numBlocks
   //          << ", R = "       << hopSize
   //          << ", B = "       << blockSize
@@ -341,10 +341,10 @@ uqScalarSequencePSD(
   double fractionalPart = tmp - ((double) ((unsigned int) tmp));
   if (fractionalPart > 0.) tmp += (1. - fractionalPart);
   unsigned int fftSize = (unsigned int) pow(2.,tmp);
-  std::cout << "fractionalPart = " << fractionalPart
-            << ", B = "            << blockSize
-            << ", fftSize = "      << fftSize
-            << std::endl;
+  //std::cout << "fractionalPart = " << fractionalPart
+  //          << ", B = "            << blockSize
+  //          << ", fftSize = "      << fftSize
+  //          << std::endl;
 
   gsl_fft_real_workspace*        wkSpace;
   gsl_fft_real_wavetable*        wvTable;
@@ -363,7 +363,7 @@ uqScalarSequencePSD(
     // Fill block using window on full data
     for (unsigned int j = 0; j < blockSize; ++j) {
       unsigned int dataPos = j+blockId*hopSize;
-      UQ_FATAL_TEST_MACRO(dataPos >= fullDataSize,
+      UQ_FATAL_TEST_MACRO(dataPos >= dataSize,
                           UQ_UNAVAILABLE_RANK,
                           "uqScalarSequencePSD()",
                           "too large position to be accessed in data");
@@ -422,20 +422,12 @@ uqVectorSequencePSD(
   uq2dArrayOfStuff<V>&             _2dArrayOfPSDAtZero) // [numOfPos x numOfBlocks] matrix
 {
   for (unsigned int initialPosId = 0; initialPosId < initialPositions.size(); initialPosId++) {
-    unsigned int fullDataSize = sequence.size() - initialPositions[initialPosId];
-    std::vector<double> data(fullDataSize,0.);
-
-    gsl_fft_real_workspace*        wkSpace;
-    gsl_fft_real_wavetable*        wvTable;
-    //gsl_fft_halfcomplex_wavetable* hc;
-
-    wkSpace = gsl_fft_real_workspace_alloc       (fullDataSize);
-    wvTable = gsl_fft_real_wavetable_alloc       (fullDataSize);
-    //hc      = gsl_fft_halfcomplex_wavetable_alloc(fullDataSize);
+    unsigned int dataSize = sequence.size() - initialPositions[initialPosId];
+    std::vector<double> data(dataSize,0.);
 
     unsigned int numParams = sequence[0]->size();
     for (unsigned int i = 0; i < numParams; ++i) {
-      for (unsigned int j = 0; j < fullDataSize; ++j) {
+      for (unsigned int j = 0; j < dataSize; ++j) {
 	data[j] = (*(sequence[initialPositions[initialPosId]+j]))[i];
       }
       for (unsigned int numsOfBlocksId = 0; numsOfBlocksId < numsOfBlocks.size(); numsOfBlocksId++) {
@@ -449,10 +441,6 @@ uqVectorSequencePSD(
 	std::cout << "psdData[0] = " << psdData[0] << std::endl;
       } // for 'numsOfBlocksId'
     } // for 'i'
-
-    //gsl_fft_halfcomplex_wavetable_free(hc);
-    gsl_fft_real_wavetable_free       (wvTable);
-    gsl_fft_real_workspace_free       (wkSpace);
   }
 
   return;
@@ -521,7 +509,7 @@ uqVectorSequenceGeweke(
     double doubleDataSizeA = (double) dataSizeA;
     double doubleDataSizeB = (double) dataSizeB;
     for (unsigned int i = 0; i < numParams; ++i) {
-      (*(vectorOfGeweke[initialPosId]))[i] = (meanB[i] + meanA[i])/sqrt(psdAtZeroA[i]/doubleDataSizeA + psdAtZeroB[i]/doubleDataSizeB);
+      (*(vectorOfGeweke[initialPosId]))[i] = (meanA[i] - meanB[i])/sqrt(psdAtZeroA[i]/doubleDataSizeA + psdAtZeroB[i]/doubleDataSizeB);
     }
   }
 
@@ -536,11 +524,11 @@ uqVectorSequenceMinMax(
   V&                           mins,
   V&                           maxs)
 {
-  unsigned int fullDataSize = sequence.size() - initialPos;
+  unsigned int dataSize = sequence.size() - initialPos;
   unsigned int numParams = sequence[0]->size();
-  std::vector<double> data(fullDataSize,0.);
+  std::vector<double> data(dataSize,0.);
   for (unsigned int i = 0; i < numParams; ++i) {
-    for (unsigned int j = 0; j < fullDataSize; ++j) {
+    for (unsigned int j = 0; j < dataSize; ++j) {
       data[j] = (*(sequence[initialPos+j]))[i];
     }
     std::vector<double>::iterator pos;
@@ -558,13 +546,32 @@ uqScalarSequenceHistogram(
   const std::vector<double>& data,
   double                     minHorizontalValue,
   double                     maxHorizontalValue,
+  std::vector<double>&       centers,
   std::vector<double>&       bins)
 {
+  UQ_FATAL_TEST_MACRO(centers.size() != bins.size(),
+                      UQ_UNAVAILABLE_RANK,
+                      "uqScalarSequenceHistogram()",
+                      "vectors 'centers' and 'bins' have different sizes");
+
+  UQ_FATAL_TEST_MACRO(bins.size() < 3,
+                      UQ_UNAVAILABLE_RANK,
+                      "uqScalarSequenceHistogram()",
+                      "number of 'bins' is too small: should be at least 3");
+
   for (unsigned int j = 0; j < bins.size(); ++j) {
+    centers[j] = 0;
     bins[j] = 0;
   }
 
-  double horizontalDelta = (maxHorizontalValue - minHorizontalValue)/((double) bins.size());
+  double horizontalDelta = (maxHorizontalValue - minHorizontalValue)/(((double) bins.size()) - 2.);
+
+  double minCenter = minHorizontalValue - horizontalDelta/2.;
+  double maxCenter = maxHorizontalValue + horizontalDelta/2.;
+  for (unsigned int j = 0; j < centers.size(); ++j) {
+    double factor = ((double) j)/(((double) centers.size()) - 1.);
+    centers[j] = (1. - factor) * minCenter + factor * maxCenter;
+  }
 
   unsigned int dataSize = data.size();
   for (unsigned int j = 0; j < dataSize; ++j) {
@@ -589,30 +596,41 @@ void
 uqVectorSequenceHistogram(
   const std::vector<const V*>& sequence,
   unsigned int                 initialPosition,
+  unsigned int                 spacing,
   const V&                     minHorizontalValues,
   const V&                     maxHorizontalValues,
+  std::vector<V*>&             centersForAllBins,
   std::vector<V*>&             binsForAllParams)
 {
+  UQ_FATAL_TEST_MACRO(centersForAllBins.size() != binsForAllParams.size(),
+                      sequence[0]->env().rank(),
+                      "uqVectorSequenceHistogram<V>()",
+                      "vectors 'centers' and 'bins' have different sizes");
+
   for (unsigned int j = 0; j < binsForAllParams.size(); ++j) {
-    binsForAllParams[j] = new V(*(sequence[0]));
+    centersForAllBins[j] = new V(*(sequence[0]));
+    binsForAllParams [j] = new V(*(sequence[0]));
   }
 
-  unsigned int fullDataSize = sequence.size() - initialPosition;
+  unsigned int dataSize = sequence.size() - initialPosition;
   unsigned int numParams = sequence[0]->size();
   for (unsigned int i = 0; i < numParams; ++i) {
-    std::vector<double> data(fullDataSize,0.);
-    for (unsigned int j = 0; j < fullDataSize; ++j) {
+    std::vector<double> data(dataSize,0.);
+    for (unsigned int j = 0; j < dataSize; ++j) {
       data[j] = (*(sequence[initialPosition+j]))[i];
     }
 
-    std::vector<double> bins(binsForAllParams.size(),0.);
+    std::vector<double> centers(centersForAllBins.size(),0.);
+    std::vector<double> bins   (binsForAllParams.size(), 0.);
     uqScalarSequenceHistogram(data,
                               minHorizontalValues[i],
                               maxHorizontalValues[i],
+                              centers,
                               bins);
 
     for (unsigned int j = 0; j < bins.size(); ++j) {
-      (*(binsForAllParams[j]))[i] = bins[j];
+      (*(centersForAllBins[j]))[i] = centers[j];
+      (*(binsForAllParams [j]))[i] = bins[j];
     }
   }
 
@@ -626,21 +644,26 @@ uqVectorSequenceSort(
   unsigned int                 initialPosition,
   std::vector<V*>&             sortedSequence)
 {
+  UQ_FATAL_TEST_MACRO((sequence.size() - initialPosition) != sortedSequence.size(),
+                      sequence[0]->env().rank(),
+                      "uqVectorSequenceSort<V>()",
+                      "incompatible sizes between vectors 'sequence' and 'sortedSequence'");
+
   for (unsigned int j = 0; j < sortedSequence.size(); ++j) {
     sortedSequence[j] = new V(*(sequence[0]));
   }
 
-  unsigned int fullDataSize = sequence.size() - initialPosition;
+  unsigned int dataSize = sequence.size() - initialPosition;
   unsigned int numParams = sequence[0]->size();
-  std::vector<double> data(fullDataSize,0.);
+  std::vector<double> data(dataSize,0.);
   for (unsigned int i = 0; i < numParams; ++i) {
-    for (unsigned int j = 0; j < fullDataSize; ++j) {
+    for (unsigned int j = 0; j < dataSize; ++j) {
       data[j] = (*(sequence[initialPosition+j]))[i];
     }
 
     std::sort(data.begin(), data.end());
 
-    for (unsigned int j = 0; j < fullDataSize; ++j) {
+    for (unsigned int j = 0; j < dataSize; ++j) {
       (*(sortedSequence[j]))[i] = data[j];
     }
   }
@@ -653,25 +676,26 @@ void
 uqVectorSequenceInterQuantileRange(
   const std::vector<const V*>& sequence,
   unsigned int                 initialPosition,
+  unsigned int                 spacing,
   V&                           iqrs)
 {
-  unsigned int fullDataSize = sequence.size() - initialPosition;
+  unsigned int dataSize = sequence.size() - initialPosition;
 
-  std::vector<V*> sortedSequence(fullDataSize,NULL);
+  std::vector<V*> sortedSequence(dataSize,NULL);
   uqVectorSequenceSort(sequence,
                        initialPosition,
                        sortedSequence);
 
-  unsigned int pos1 = (unsigned int) ( (((double) fullDataSize) + 1.)*1./4. - 1. );
-  unsigned int pos3 = (unsigned int) ( (((double) fullDataSize) + 1.)*3./4. - 1. );
+  unsigned int pos1 = (unsigned int) ( (((double) dataSize) + 1.)*1./4. - 1. );
+  unsigned int pos3 = (unsigned int) ( (((double) dataSize) + 1.)*3./4. - 1. );
 
-  double fraction1 = (((double) fullDataSize) + 1.)*1./4. - 1. - ((double) pos1);
-  double fraction3 = (((double) fullDataSize) + 1.)*3./4. - 1. - ((double) pos3);
+  double fraction1 = (((double) dataSize) + 1.)*1./4. - 1. - ((double) pos1);
+  double fraction3 = (((double) dataSize) + 1.)*3./4. - 1. - ((double) pos3);
 
   unsigned int numParams = sequence[0]->size();
   for (unsigned int i = 0; i < numParams; ++i) {
-    double value1 = (1.-fraction1) * (*sortedSequence[initialPosition+pos1])[i] + fraction1 * (*sortedSequence[initialPosition+pos1+1])[i];
-    double value3 = (1.-fraction3) * (*sortedSequence[initialPosition+pos1])[i] + fraction3 * (*sortedSequence[initialPosition+pos3+1])[i];
+    double value1 = (1.-fraction1) * (*sortedSequence[pos1])[i] + fraction1 * (*sortedSequence[pos1+1])[i];
+    double value3 = (1.-fraction3) * (*sortedSequence[pos3])[i] + fraction3 * (*sortedSequence[pos3+1])[i];
     iqrs[i] = value3 - value1;
   }
 
@@ -683,35 +707,32 @@ void
 uqVectorSequenceScaleForKDE(
   const std::vector<const V*>& sequence,
   unsigned int                 initialPosition,
+  unsigned int                 spacing,
+  const V&                     iqrs,
   V&                           scales)
 {
-  unsigned int fullDataSize = sequence.size() - initialPosition;
-
-  V iqrs(*(sequence[0]));
-  uqVectorSequenceInterQuantileRange(sequence,
-                                     initialPosition,
-                                     iqrs);
+  unsigned int dataSize = sequence.size() - initialPosition;
 
   V mean(*(sequence[0]));
   uqVectorSequenceMean(sequence,
                        initialPosition,
-                       fullDataSize,
+                       dataSize,
                        mean);
 
   V sampleVariance(*(sequence[0]));
   uqVectorSequenceSampleVariance(sequence,
                                  initialPosition,
-                                 fullDataSize,
+                                 dataSize,
                                  mean,
                                  sampleVariance);
 
   unsigned int numParams = sequence[0]->size();
   for (unsigned int i = 0; i < numParams; ++i) {
     if (iqrs[i] <= 0.) {
-      scales[i] = 1.06*sqrt(sampleVariance[i])/pow(fullDataSize,1./5.);
+      scales[i] = 1.06*sqrt(sampleVariance[i])/pow(dataSize,1./5.);
     }
     else {
-      scales[i] = 1.06*std::min(sqrt(sampleVariance[i]),iqrs[i]/1.34)/pow(fullDataSize,1./5.);
+      scales[i] = 1.06*std::min(sqrt(sampleVariance[i]),iqrs[i]/1.34)/pow(dataSize,1./5.);
     }
   }
 
@@ -723,10 +744,32 @@ void
 uqVectorSequenceGaussianKDE(
   const std::vector<const V*>& sequence,
   unsigned int                 initialPosition,
-  const std::vector<V*>&       horizontalValues,
+  unsigned int                 spacing,
+  const std::vector<V*>&       evaluationPositions,
   const V&                     scales,
-  std::vector<V*>              densityValues)
+  std::vector<V*>&             densityValues)
 {
+  unsigned int dataSize = sequence.size() - initialPosition;
+  unsigned int numEstimationsPerParam = evaluationPositions.size();
+
+  for (unsigned int j = 0; j < numEstimationsPerParam; ++j) {
+    densityValues[j] = new V(*(sequence[0]));
+  }
+
+  unsigned int numParams = sequence[0]->size();
+  for (unsigned int i = 0; i < numParams; ++i) {
+    double scaleInv = 1./scales[i];
+    for (unsigned int j = 0; j < numEstimationsPerParam; ++j) {
+      double x = (*(evaluationPositions[j]))[i];
+      double value = 0.;
+      for (unsigned int k = 0; k < dataSize; ++k) {
+        double xk = (*(sequence[initialPosition+k]))[i];
+        value += uqMiscGaussianDensity((x-xk)*scaleInv,0.,1.);
+      }
+      (*(densityValues[j]))[i] = scaleInv * (value/(double) numEstimationsPerParam);
+    }
+  }
+
   return;
 }
 #endif // __UQ_SEQUENCE_STATISTICS_H__

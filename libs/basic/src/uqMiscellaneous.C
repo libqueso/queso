@@ -188,3 +188,11 @@ double uqMiscHammingWindow(unsigned int N, unsigned int j)
 
   return result;
 }
+
+double uqMiscGaussianDensity(double x, double mu, double sigma)
+{
+  double sigma2 = sigma*sigma;
+  double diff   = x-mu;
+
+  return (1./sqrt(2*M_PI*sigma2))*exp(-.5*diff*diff/sigma2);
+}
