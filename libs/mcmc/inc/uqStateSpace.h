@@ -27,7 +27,8 @@ class uqStateSpaceClass : public uqFinDimLinearSpaceClass<V,M>
 {
 public:
            uqStateSpaceClass();
-           uqStateSpaceClass(const uqEnvironmentClass& env);
+           uqStateSpaceClass(const uqEnvironmentClass& env,
+                             const char*               prefix);
   virtual ~uqStateSpaceClass();
 
           unsigned int            dim                       () const;
@@ -40,6 +41,8 @@ protected:
   po::options_description* m_optionsDesc;
 
   using uqFinDimLinearSpaceClass<V,M>::m_env;
+  std::string m_option_help;
+  std::string m_option_dim;
   using uqFinDimLinearSpaceClass<V,M>::m_dim;
 };
 
@@ -56,13 +59,17 @@ uqStateSpaceClass<V,M>::uqStateSpaceClass()
 
 template <class V, class M>
 uqStateSpaceClass<V,M>::uqStateSpaceClass(
-  const uqEnvironmentClass& env)
+  const uqEnvironmentClass& env,
+  const char*               prefix)
   :
-  uqFinDimLinearSpaceClass<V,M>(env),
+  uqFinDimLinearSpaceClass<V,M>(env,prefix),
   m_optionsDesc                (NULL)
 {
   //std::cout << "Entering uqStateSpaceClass<V,M>::constructor()"
   //          << std::endl;
+
+  m_option_help = uqFinDimLinearSpaceClass<V,M>::m_prefix + "stateSpace_help";
+  m_option_dim  = uqFinDimLinearSpaceClass<V,M>::m_prefix + "stateSpace_dim";
 
   m_optionsDesc = new po::options_description("State space options");
   defineMyOptions                (*m_optionsDesc);
@@ -96,8 +103,8 @@ uqStateSpaceClass<V,M>::defineMyOptions(
   po::options_description& optionsDesc) const
 {
   m_optionsDesc->add_options()
-    ("uqStateSpace_help",                                              "produce help message for UQ PS")
-    ("uqStateSpace_dim",  po::value<unsigned int>()->default_value(0), "Space dimension"               )
+    (m_option_help.c_str(),                                              "produce help message for UQ state space")
+    (m_option_dim.c_str(),  po::value<unsigned int>()->default_value(0), "Space dimension"                        )
   ;
 
   return;
@@ -107,14 +114,14 @@ template <class V, class M>
 void
 uqStateSpaceClass<V,M>::getMyOptionValues(po::options_description& optionsDesc)
 {
-  if (m_env.allOptionsMap().count("uqStateSpace_help")) {
+  if (m_env.allOptionsMap().count(m_option_help.c_str())) {
     std::cout << optionsDesc
               << std::endl;
   }
 
-  if (m_env.allOptionsMap().count("uqStateSpace_dim")) {
+  if (m_env.allOptionsMap().count(m_option_dim.c_str())) {
     const po::variables_map& tmpMap = m_env.allOptionsMap();
-    m_dim = tmpMap["uqStateSpace_dim"].as<unsigned int>();
+    m_dim = tmpMap[m_option_dim.c_str()].as<unsigned int>();
   }
 
   return;

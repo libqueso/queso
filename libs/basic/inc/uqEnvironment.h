@@ -23,6 +23,7 @@
 #undef UQ_USES_COMMAND_LINE_OPTIONS
 
 #define UQ_ENV_VERBOSITY_DEFAULT_VALUE 0
+#define UQ_ENV_SEED_DEFAULT_VALUE      0
 
 #ifdef __UQ_USES_TRILINOS__
 #include <Epetra_MpiComm.h>
@@ -36,10 +37,12 @@ namespace po = boost::program_options;
 #include <fstream>
 
 struct uqEnvOptionsStruct {
-  uqEnvOptionsStruct(unsigned int verbosity);
+  uqEnvOptionsStruct(unsigned int verbosity,
+                     int          seed);
  ~uqEnvOptionsStruct();
 
   unsigned int m_verbosity;
+  int          m_seed;
 };
 
 class uqEnvironmentClass {
@@ -84,6 +87,7 @@ private:
   po::options_description* m_envOptionsDesc;
   po::variables_map*       m_allOptionsMap;
   unsigned int             m_verbosity;
+  int                      m_seed;
   gsl_rng*                 m_rng;
 };
 

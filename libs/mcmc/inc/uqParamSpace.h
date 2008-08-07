@@ -28,7 +28,8 @@ class uqParamSpaceClass : public uqFinDimLinearSpaceClass<V,M>
 {
 public:
            uqParamSpaceClass();
-           uqParamSpaceClass(const uqEnvironmentClass& env);
+           uqParamSpaceClass(const uqEnvironmentClass& env,
+                             const char*               prefix);
   virtual ~uqParamSpaceClass();
 
           unsigned int            dim                       () const;
@@ -80,6 +81,9 @@ protected:
   mutable V*                     m_priorSigmaValues;
 
   using uqFinDimLinearSpaceClass<V,M>::m_env;
+  std::string m_option_help;
+  std::string m_option_dim;
+  std::string m_option_specificationFile;
   using uqFinDimLinearSpaceClass<V,M>::m_dim;
 };
 
@@ -96,9 +100,10 @@ uqParamSpaceClass<V,M>::uqParamSpaceClass()
 
 template <class V, class M>
 uqParamSpaceClass<V,M>::uqParamSpaceClass(
-  const uqEnvironmentClass& env)
+  const uqEnvironmentClass& env,
+  const char*               prefix)
   :
-  uqFinDimLinearSpaceClass<V,M>(env),
+  uqFinDimLinearSpaceClass<V,M>(env,prefix),
   m_optionsDesc                (NULL),
   m_parameters                 (0,NULL),
   m_dummyParameter             ("NonExistentYet",0.),
@@ -111,13 +116,17 @@ uqParamSpaceClass<V,M>::uqParamSpaceClass(
   //std::cout << "Entering uqParamSpaceClass<V,M>::constructor()"
   //          << std::endl;
 
+  m_option_help              = uqFinDimLinearSpaceClass<V,M>::m_prefix + "paramSpace_help";
+  m_option_dim               = uqFinDimLinearSpaceClass<V,M>::m_prefix + "paramSpace_dim";
+  m_option_specificationFile = uqFinDimLinearSpaceClass<V,M>::m_prefix + "paramSpace_specificationFile";
+
   m_optionsDesc = new po::options_description("Parameter space options");
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
 
   if (m_env.rank() == 0) std::cout << "After getting option values, state of uqParamSpaceClass object is:"
-                                   << "\ndimension = " << m_parameters.size()
+                                   << "\n" << uqFinDimLinearSpaceClass<V,M>::m_prefix << "dimension = " << m_parameters.size()
                                    << "\n"
                                    << std::endl;
 
@@ -152,9 +161,9 @@ uqParamSpaceClass<V,M>::defineMyOptions(
   po::options_description& optionsDesc) const
 {
   m_optionsDesc->add_options()
-    ("uqParamSpace_help",                                                   "produce help message for UQ PS"                 )
-    ("uqParamSpace_dim",       po::value<unsigned int>()->default_value(0), "Space dimension"                                )
-    ("uqParamSpace_inputFile", po::value<std::string>()->default_value(""), "File with definition and data of all parameters")
+    (m_option_help.c_str(),                                                           "produce help message for UQ parameter space"                 )
+    (m_option_dim.c_str(),               po::value<unsigned int>()->default_value(0), "Space dimension"                                             )
+    (m_option_specificationFile.c_str(), po::value<std::string>()->default_value(""), "File with the specification of all parameters to be inferred")
   ;
 
   return;
@@ -164,22 +173,22 @@ template <class V, class M>
 void
 uqParamSpaceClass<V,M>::getMyOptionValues(po::options_description& optionsDesc)
 {
-  if (m_env.allOptionsMap().count("uqParamSpace_help")) {
+  if (m_env.allOptionsMap().count(m_option_help.c_str())) {
     std::cout << optionsDesc
               << std::endl;
   }
 
-  if (m_env.allOptionsMap().count("uqParamSpace_dim")) {
+  if (m_env.allOptionsMap().count(m_option_dim.c_str())) {
     const po::variables_map& tmpMap = m_env.allOptionsMap();
-    m_dim = tmpMap["uqParamSpace_dim"].as<unsigned int>();
+    m_dim = tmpMap[m_option_dim.c_str()].as<unsigned int>();
   }
 
-  // Read parameter input file only if 0 dimension was passed to constructor
+  // Read parameter specification file only if 0 dimension was passed to constructor
   if (m_parameters.size() == 0) {
     std::string paramFileName("");
-    if (m_env.allOptionsMap().count("uqParamSpace_inputFile")) {
+    if (m_env.allOptionsMap().count(m_option_specificationFile.c_str())) {
       const po::variables_map& tmpMap = m_env.allOptionsMap();
-      paramFileName = tmpMap["uqParamSpace_inputFile"].as<std::string>();
+      paramFileName = tmpMap[m_option_specificationFile.c_str()].as<std::string>();
       readParamsFromFile(paramFileName);
     }
   }
@@ -222,11 +231,11 @@ uqParamSpaceClass<V,M>::readParamsFromFile(std::string& paramFileName)
   UQ_FATAL_TEST_MACRO(m_dim != numParameters,
                       m_env.rank(),
                       "uqParamSpaceClass<V,M>::constructor()",
-                      "number of parameters in parameter input file does not match dimension passed in the main input file");
+                      "number of parameters in parameter specification file does not match dimension passed in the main input file");
 
-  std::cout << "Parameter input file '" << paramFileName
-            << "' has "                 << numLines
-            << " lines and specifies "  << numParameters
+  std::cout << "Parameter specification file '" << paramFileName
+            << "' has "                         << numLines
+            << " lines and specifies "          << numParameters
             << " parameters."
             << std::endl;
   m_parameters.resize(numParameters,NULL);
@@ -247,13 +256,13 @@ uqParamSpaceClass<V,M>::readParamsFromFile(std::string& paramFileName)
   double       priorMu;
   double       priorSigma;
   while ((lineId < numLines) && (ifs.eof() == false)) {
-    //std::cout << "Beginning read of line (in parameter input file) of id = " << lineId << std::endl;
+    //std::cout << "Beginning read of line (in parameter specification file) of id = " << lineId << std::endl;
     bool endOfLineAchieved = false;
 
     UQ_FATAL_TEST_MACRO(paramId >= m_parameters.size(),
                         m_env.rank(),
                         "uqParamSpaceClass<V,M>::constructor()",
-                        "paramId got too large during reading of parameter input file");
+                        "paramId got too large during reading of parameter specification file");
 
     iRC = readCharsFromFile(ifs, paramName, NULL, endOfLineAchieved);
     UQ_FATAL_TEST_MACRO(iRC,

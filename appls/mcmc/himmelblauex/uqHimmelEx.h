@@ -68,14 +68,15 @@ uqAppl(const uqEnvironmentClass& env)
   // Step 1 of 4: Define the finite dimensional linear spaces.
   //              Define the Markov chain generator.
   //*****************************************************
-  uqParamSpaceClass<V,M>  paramSpace (env);
-  uqStateSpaceClass<V,M>  stateSpace (env);
-  uqOutputSpaceClass<V,M> outputSpace(env);
+  uqParamSpaceClass<V,M>  calParamSpace (env,"cal");
+  uqStateSpaceClass<V,M>  calStateSpace (env,"cal");
+  uqOutputSpaceClass<V,M> calOutputSpace(env,"cal");
 
   uq_M2lLikelihoodFunction_Class<V,M> uq_M2lLikelihoodFunction_Obj;
   uqDRAM_MarkovChainGeneratorClass<V,M> mcg(env,
-                                            paramSpace,
-                                            outputSpace,
+                                            "cal",
+                                            calParamSpace,
+                                            calOutputSpace,
                                             NULL, // use default prior() routine
                                             uq_M2lLikelihoodFunction_Obj);
 
@@ -93,11 +94,11 @@ uqAppl(const uqEnvironmentClass& env)
   std::vector<V*>     observedEvolutionOfAConcentration(23,NULL);
   for (unsigned int i = 0; i < 23; ++i) {
     instantsOfAObservations[i]                 = observationsOfA[2*i+0];
-    observedEvolutionOfAConcentration[i]       = stateSpace.newVector();
+    observedEvolutionOfAConcentration[i]       = calStateSpace.newVector();
     (*observedEvolutionOfAConcentration[i])[0] = observationsOfA[2*i+1];
   }
 
-  V* initialConcentrations = stateSpace.newVector();
+  V* initialConcentrations = calStateSpace.newVector();
   (*initialConcentrations)[0] = 0.02090;    // A0
   (*initialConcentrations)[1] = 0.02090/3.; // B0
   (*initialConcentrations)[2] = 0.;         // C0
@@ -105,7 +106,7 @@ uqAppl(const uqEnvironmentClass& env)
   (*initialConcentrations)[4] = 0.;         // E0
 
 #ifdef __APPL_USES_GSL__
-  uqGslOdeSolverClass gslOdeSolver("45",stateSpace.dim());
+  uqGslOdeSolverClass gslOdeSolver("45",calStateSpace.dim());
 #endif
 
   uqAppl_M2lLikelihoodFunction_DataType<V,M> uqAppl_M2lLikelihoodFunction_Data;

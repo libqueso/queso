@@ -26,20 +26,20 @@ uqOutputSpace_n_soq = 1
 ###############################################
 # UQ DRAM Markov Chain Generator
 ###############################################
-# uqDRAM_help                       = anything
-uqDRAM_mh_sizesOfChains           = 100001
-uqDRAM_mh_lrUpdateSigma2          = 1
-uqDRAM_mh_lrSigma2Priors          = 2.1876e-08
-uqDRAM_mh_lrSigma2Accuracies      = 1.
-uqDRAM_mh_lrNumbersOfObs          = 23
-uqDRAM_dr_maxNumberOfExtraStages  = 1
-uqDRAM_dr_scalesForExtraStages    = 5. 4. 3.
-uqDRAM_am_initialNonAdaptInterval = 100
-uqDRAM_am_adaptInterval           = 100
-uqDRAM_am_eta                     = 1.92
-uqDRAM_am_epsilon                 = 1.e-5
-uqDRAM_mh_namesOfOutputFiles      = uqHimmelExOutput.m
-uqDRAM_mh_chainDisplayPeriod      = 5000
+# cal_MCMC_help                       = anything
+cal_MCMC_mh_sizesOfChains           = 100001
+cal_MCMC_mh_lrUpdateSigma2          = 1
+cal_MCMC_mh_lrSigma2Priors          = 2.1876e-08
+cal_MCMC_mh_lrSigma2Accuracies      = 1.
+cal_MCMC_mh_lrNumbersOfObs          = 23
+cal_MCMC_dr_maxNumberOfExtraStages  = 1
+cal_MCMC_dr_scalesForExtraStages    = 5. 4. 3.
+cal_MCMC_am_initialNonAdaptInterval = 100
+cal_MCMC_am_adaptInterval           = 100
+cal_MCMC_am_eta                     = 1.92
+cal_MCMC_am_epsilon                 = 1.e-5
+cal_MCMC_mh_namesOfOutputFiles      = uqHimmelExOutput.m
+cal_MCMC_mh_chainDisplayPeriod      = 5000
 
 ###############################################
 # UQ Other Inputs

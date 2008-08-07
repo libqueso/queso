@@ -31,7 +31,8 @@ class uqFinDimLinearSpaceClass
 {
 public:
            uqFinDimLinearSpaceClass();
-           uqFinDimLinearSpaceClass(const uqEnvironmentClass& env);
+           uqFinDimLinearSpaceClass(const uqEnvironmentClass& env,
+                                    const char*               prefix);
   virtual ~uqFinDimLinearSpaceClass();
 
   virtual unsigned int      dim                       ()                 const = 0;
@@ -45,6 +46,7 @@ public:
 
 protected:
   const uqEnvironmentClass& m_env;
+  std::string               m_prefix;
   unsigned int              m_dim;
 };
 
@@ -61,13 +63,21 @@ uqFinDimLinearSpaceClass<V,M>::uqFinDimLinearSpaceClass()
 
 template <class V, class M>
 uqFinDimLinearSpaceClass<V,M>::uqFinDimLinearSpaceClass(
-  const uqEnvironmentClass& env)
+  const uqEnvironmentClass& env,
+  const char*               prefix)
   :
-  m_env(env),
-  m_dim(0)
+  m_env   (env),
+  m_prefix(""),
+  m_dim   (0)
 {
   //std::cout << "Entering uqFinDimLinearSpaceClass<V,M>::constructor()"
   //          << std::endl;
+
+  if ((prefix         != NULL) && 
+      (strlen(prefix) != 0   )) {
+    std::string tmpString(prefix);
+    m_prefix = tmpString + "_";
+  }
 
   //std::cout << "Leaving uqFinDimLinearSpaceClass<V,M>::constructor()"
   //          << std::endl;

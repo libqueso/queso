@@ -4,9 +4,11 @@
 #define PECOS_TOOLKIT_CURRENT_VERSION "0.1"
 
 uqEnvOptionsStruct::uqEnvOptionsStruct(
-  unsigned int verbosity)
+  unsigned int verbosity,
+  int          seed)
   :
-  m_verbosity(verbosity)
+  m_verbosity(verbosity),
+  m_seed     (seed)
 {
 }
 
@@ -30,6 +32,7 @@ uqEnvironmentClass::uqEnvironmentClass()
   m_envOptionsDesc  (NULL),
   m_allOptionsMap   (NULL),
   m_verbosity       (UQ_ENV_VERBOSITY_DEFAULT_VALUE),
+  m_seed            (UQ_ENV_SEED_DEFAULT_VALUE),
   m_rng             (NULL)
 {
   commonConstructor();
@@ -53,6 +56,7 @@ uqEnvironmentClass::uqEnvironmentClass(
   m_envOptionsDesc  (NULL),
   m_allOptionsMap   (NULL),
   m_verbosity       (UQ_ENV_VERBOSITY_DEFAULT_VALUE),
+  m_seed            (UQ_ENV_SEED_DEFAULT_VALUE),
   m_rng             (NULL)
 {
   //////////////////////////////////////////////////
@@ -78,6 +82,7 @@ uqEnvironmentClass::uqEnvironmentClass(
   m_envOptionsDesc  (NULL),
   m_allOptionsMap   (NULL),
   m_verbosity       (options.m_verbosity),
+  m_seed            (options.m_seed),
   m_rng             (NULL)
 {
   commonConstructor();
@@ -207,6 +212,7 @@ uqEnvironmentClass::uqEnvironmentClass(const uqEnvironmentClass& obj)
   m_envOptionsDesc = NULL;
   m_allOptionsMap  = obj.m_allOptionsMap;
   m_verbosity      = obj.m_verbosity;
+  m_seed           = obj.m_seed;
   m_rng            = obj.m_rng;
 }
 
@@ -250,6 +256,7 @@ uqEnvironmentClass::operator= (const uqEnvironmentClass& rhs)
   m_rank      = rhs.m_rank;
   m_commSize  = rhs.m_commSize;
   m_verbosity = rhs.m_verbosity;
+  m_seed      = rhs.m_seed;
   m_rng       = rhs.m_rng;
 
   return *this;
@@ -292,6 +299,7 @@ uqEnvironmentClass::defineMyOptions(po::options_description& options) const
   options.add_options()
     ("uqEnv_help", "produce help message for uq environment")
     ("uqEnv_verbosity", po::value<unsigned int>()->default_value(UQ_ENV_VERBOSITY_DEFAULT_VALUE), "set verbosity")
+    ("uqEnv_seed",      po::value<int         >()->default_value(UQ_ENV_SEED_DEFAULT_VALUE),      "set seed"     )
   ;
 
   return;
@@ -337,6 +345,10 @@ uqEnvironmentClass::getMyOptionValues(po::options_description& optionsDesc)
     m_verbosity = (*m_allOptionsMap)["uqEnv_verbosity"].as<unsigned int>();
   }
 
+  if (m_allOptionsMap->count("uqEnv_seed")) {
+    m_seed = (*m_allOptionsMap)["uqEnv_seed"].as<int>();
+  }
+
   if (m_verbosity >= 1) {
     if (m_rank == 0) std::cout << "After getting option values, state of uqEnvironmentClass object is:"
                                << "\n" << *this
@@ -368,6 +380,7 @@ void
 uqEnvironmentClass::print(std::ostream& os) const
 {
   os << "m_verbosity = " << m_verbosity
+     << "\nm_seed = "    << m_seed
      << std::endl;
   return;
 }

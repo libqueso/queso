@@ -27,7 +27,8 @@ class uqOutputSpaceClass : public uqFinDimLinearSpaceClass<V,M>
 {
 public:
            uqOutputSpaceClass();
-           uqOutputSpaceClass(const uqEnvironmentClass& env);
+           uqOutputSpaceClass(const uqEnvironmentClass& env,
+                              const char*               prefix);
   virtual ~uqOutputSpaceClass();
 
           unsigned int            dim                       () const;
@@ -37,9 +38,13 @@ protected:
           void                    defineMyOptions           (po::options_description& optionsDesc) const;
           void                    getMyOptionValues         (po::options_description& optionsDesc);
 
-  po::options_description* m_optionsDesc;
+  po::options_description*        m_optionsDesc;
+  //std::vector<uqObservableClass*> m_observables; // FIXME: will need to be a parallel vector in case of a very large number of parameters
 
   using uqFinDimLinearSpaceClass<V,M>::m_env;
+  std::string m_option_help;
+  std::string m_option_numSubSpaces;
+  std::string m_option_specificationFile;
   using uqFinDimLinearSpaceClass<V,M>::m_dim;
 };
 
@@ -56,13 +61,18 @@ uqOutputSpaceClass<V,M>::uqOutputSpaceClass()
 
 template <class V, class M>
 uqOutputSpaceClass<V,M>::uqOutputSpaceClass(
-  const uqEnvironmentClass& env)
+  const uqEnvironmentClass& env,
+  const char*               prefix)
   :
-  uqFinDimLinearSpaceClass<V,M>(env),
+  uqFinDimLinearSpaceClass<V,M>(env,prefix),
   m_optionsDesc                (NULL)
 {
   //std::cout << "Entering uqOutputSpaceClass<V,M>::constructor()"
   //          << std::endl;
+
+  m_option_help              = uqFinDimLinearSpaceClass<V,M>::m_prefix + "outputSpace_help";
+  m_option_numSubSpaces      = uqFinDimLinearSpaceClass<V,M>::m_prefix + "outputSpace_numSubSpaces";
+  m_option_specificationFile = uqFinDimLinearSpaceClass<V,M>::m_prefix + "outputSpace_specificationFile";
 
   m_optionsDesc = new po::options_description("Output space options");
   defineMyOptions                (*m_optionsDesc);
@@ -96,8 +106,9 @@ uqOutputSpaceClass<V,M>::defineMyOptions(
   po::options_description& optionsDesc) const
 {
   m_optionsDesc->add_options()
-    ("uqOutputSpace_help",                                               "produce help message for UQ PS"    )
-    ("uqOutputSpace_n_soq", po::value<unsigned int>()->default_value(0), "number of system output quantities")
+    (m_option_help.c_str(),                                                           "produce help message for UQ observable space"                 )
+    (m_option_numSubSpaces.c_str(), po::value<unsigned int>()->default_value(0),      "number of quantity subspaces (vectors of output quantities)"  )
+    (m_option_specificationFile.c_str(), po::value<std::string>()->default_value(""), "File with the specification of all observables to be computed")
   ;
 
   return;
@@ -107,15 +118,25 @@ template <class V, class M>
 void
 uqOutputSpaceClass<V,M>::getMyOptionValues(po::options_description& optionsDesc)
 {
-  if (m_env.allOptionsMap().count("uqOutputSpace_help")) {
+  if (m_env.allOptionsMap().count(m_option_help.c_str())) {
     std::cout << optionsDesc
               << std::endl;
   }
 
-  if (m_env.allOptionsMap().count("uqOutputSpace_n_soq")) {
+  if (m_env.allOptionsMap().count(m_option_numSubSpaces.c_str())) {
     const po::variables_map& tmpMap = m_env.allOptionsMap();
-    m_dim = tmpMap["uqOutputSpace_n_soq"].as<unsigned int>();
+    m_dim = tmpMap[m_option_numSubSpaces.c_str()].as<unsigned int>();
   }
+
+  // Read observable specification file only if 0 dimension was passed to constructor
+  //if (m_observables.size() == 0) {
+    std::string observableFileName("");
+    if (m_env.allOptionsMap().count(m_option_specificationFile.c_str())) {
+      const po::variables_map& tmpMap = m_env.allOptionsMap();
+      observableFileName = tmpMap[m_option_specificationFile.c_str()].as<std::string>();
+      //readObservablesFromFile(observableFileName);
+    }
+  //}
 
   return;
 }
