@@ -28,7 +28,7 @@ LIBS = \
 	-luq_mcmc_any \
 	-lgsl \
 	-lgslcblas \
-	-lboost_program_options-gcc42-mt-1_35
+	-lboost_program_options-gcc41-mt-1_35
 
 else
 
@@ -59,7 +59,7 @@ LIBS = \
 	-lgsl \
 	-lgslcblas \
 	-lblas \
-	-lboost_program_options-gcc42-mt-1_35
+	-lboost_program_options-gcc41-mt-1_35
 
 endif
 

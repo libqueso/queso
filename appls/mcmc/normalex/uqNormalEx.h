@@ -31,13 +31,14 @@ uqAppl(const uqEnvironmentClass& env)
   // Step 1 of 4: Define the finite dimensional linear spaces.
   //              Define the Markov chain generator.
   //******************************************************
-  uqParamSpaceClass <V,M> paramSpace (env);
-  uqOutputSpaceClass<V,M> outputSpace(env);
+  uqParamSpaceClass <V,M> calParamSpace (env,"cal");
+  uqOutputSpaceClass<V,M> calOutputSpace(env,"cal");
 
   uq_M2lLikelihoodFunction_Class<V,M> uq_M2lLikelihoodFunction_Obj;
   uqDRAM_MarkovChainGeneratorClass<V,M> mcg(env,
-                                            paramSpace,
-                                            outputSpace,
+                                            "cal",
+                                            calParamSpace,
+                                            calOutputSpace,
                                             NULL, // use default prior() routine
                                             uq_M2lLikelihoodFunction_Obj);
 
@@ -45,21 +46,21 @@ uqAppl(const uqEnvironmentClass& env)
   // Step 2 of 4: Compute the proposal covariance matrix.
   //******************************************************
   double condNumber = 100.0;
-  V* direction = paramSpace.newVector();
+  V* direction = calParamSpace.newVector();
   direction->cwSet(1.);
-  M* precMatrix = paramSpace.newMatrix();
-  M* covMatrix  = paramSpace.newMatrix();
+  M* precMatrix = calParamSpace.newMatrix();
+  M* covMatrix  = calParamSpace.newMatrix();
   uqCovCond(condNumber,*direction,*covMatrix,*precMatrix);
   delete direction;
 
   M proposalCovMatrix(*covMatrix);
-  proposalCovMatrix *= (2.4*2.4/(double) paramSpace.dim());
+  proposalCovMatrix *= (2.4*2.4/(double) calParamSpace.dim());
 
   //******************************************************
   // Step 3 of 4: Prepare the data to be passed to
   //              uqAppl_M2lLikelihoodFunction_Routine().
   //******************************************************
-  V paramInitials(paramSpace.initialValues());
+  V paramInitials(calParamSpace.initialValues());
 
   uqAppl_M2lLikelihoodFunction_DataType<V,M> uqAppl_M2lLikelihoodFunction_Data;
   uqAppl_M2lLikelihoodFunction_Data.paramInitials     = &paramInitials;

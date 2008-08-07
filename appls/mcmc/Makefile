@@ -5,12 +5,12 @@ else
 override UQBT = tri
 endif
 
-all:	all_normal all_himmel all_algae all_template
+all:	all_normal all_himmel all_algae all_etc
 
 echo_basic_type:
 	@echo 'UQBT = ' $(UQBT)
 
-clean_all: echo_basic_type clean_normal clean_himmel clean_algae clean_template clean_exec
+clean_all: echo_basic_type clean_normal clean_himmel clean_algae clean_etc clean_exec
 
 clean_normal:
 	cd normalex; make clean_all UQBT=$(UQBT)
@@ -21,8 +21,8 @@ clean_himmel:
 clean_algae:
 	cd algaeex; make clean_all UQBT=$(UQBT)
 
-clean_template:
-	cd templateex; make clean_all UQBT=$(UQBT)
+clean_etc:
+	cd etc; make clean_all UQBT=$(UQBT)
 
 clean_exec:
 	rm -f *~
@@ -36,5 +36,5 @@ all_himmel:
 all_algae:
 	cd algaeex; make UQBT=$(UQBT)
 
-all_template:
-	cd templateex; make UQBT=$(UQBT)
+all_etc:
+	cd etc; make UQBT=$(UQBT)

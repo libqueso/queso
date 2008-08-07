@@ -209,14 +209,15 @@ uqAppl(const uqEnvironmentClass& env)
   // Step 1 of 4: Define the finite dimensional linear spaces.
   //              Define the Markov chain generator.
   //*****************************************************
-  uqParamSpaceClass <V,M> paramSpace (env);
-  uqStateSpaceClass <V,M> stateSpace (env);
-  uqOutputSpaceClass<V,M> outputSpace(env);
+  uqParamSpaceClass <V,M> calParamSpace (env,"cal");
+  uqStateSpaceClass <V,M> calStateSpace (env,"cal");
+  uqOutputSpaceClass<V,M> calOutputSpace(env,"cal");
 
   uq_M2lLikelihoodFunction_Class<V,M> uq_M2lLikelihoodFunction_Obj;
   uqDRAM_MarkovChainGeneratorClass<V,M> mcg(env,
-                                            paramSpace,
-                                            outputSpace,
+                                            "cal",
+                                            calParamSpace,
+                                            calOutputSpace,
                                             NULL,  // use default prior() routine
                                             uq_M2lLikelihoodFunction_Obj);
 
@@ -235,7 +236,7 @@ uqAppl(const uqEnvironmentClass& env)
   std::vector<V*>     observedEvolutionOfAZPConcentrations(30,NULL);
   for (unsigned int i = 0; i < 30; ++i) {
     instantsOfAZPObservations[i]                  = observationsOfAZP[4*i+0];
-    observedEvolutionOfAZPConcentrations[i]       = stateSpace.newVector();
+    observedEvolutionOfAZPConcentrations[i]       = calStateSpace.newVector();
     (*observedEvolutionOfAZPConcentrations[i])[0] = observationsOfAZP[4*i+1];
     (*observedEvolutionOfAZPConcentrations[i])[1] = observationsOfAZP[4*i+2];
     (*observedEvolutionOfAZPConcentrations[i])[2] = observationsOfAZP[4*i+3];
@@ -251,7 +252,7 @@ uqAppl(const uqEnvironmentClass& env)
   }
 
 #ifdef __APPL_USES_GSL__
-  uqGslOdeSolverClass gslOdeSolver("gear2",stateSpace.dim());
+  uqGslOdeSolverClass gslOdeSolver("gear2",calStateSpace.dim());
 #endif
 
   uqAppl_M2lLikelihoodFunction_DataType<V,M> uqAppl_M2lLikelihoodFunction_Data;
