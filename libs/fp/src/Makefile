@@ -2,7 +2,9 @@ override UQBT = gsl
 
 INC_PATHS = \
 	-I../inc \
-	-I../../basic/inc
+	-I../../basic/inc \
+	-I$(BOOST_INCLUDE_PATH_FOR_PECOS_TOOLKIT) \
+	-I$(GSL_INCLUDE_PATH_FOR_PECOS_TOOLKIT)
 
 AR = ar
 ARFLAGS = -rv

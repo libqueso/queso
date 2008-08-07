@@ -7,12 +7,14 @@ INC_PATHS = \
 	-I../../../libs/basic/inc \
 	-I../../../libs/fp/inc \
 	-I../inc \
-	-I$(BOOST_INCLUDE_PATH_FOR_PECOS_TOOLKIT)
+	-I$(BOOST_INCLUDE_PATH_FOR_PECOS_TOOLKIT) \
+	-I$(GSL_INCLUDE_PATH_FOR_PECOS_TOOLKIT)
 LIB_PATHS = \
 	-L../../../libs/basic/lib \
 	-L../../../libs/fp/lib \
 	-L../lib \
-	-L$(BOOST_LIB_PATH_FOR_PECOS_TOOLKIT)
+	-L$(BOOST_LIB_PATH_FOR_PECOS_TOOLKIT) \
+	-L$(GSL_LIB_PATH_FOR_PECOS_TOOLKIT)
 LIBS = \
 	-luq_fp_any \
 	-luq_basic_$(UQBT) \
@@ -20,7 +22,7 @@ LIBS = \
 	-luq_fp_any \
 	-lgsl \
 	-lgslcblas \
-	-lboost_program_options-gcc41-mt-1_35
+	-lboost_program_options-$(COMPILER_SPEC_IN_BOOST_LIB_NAME)-mt-1_35
 
 CXX = g++
 CXXFLAGS = -Wall -c

@@ -233,7 +233,7 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
   // The initial concentrations are also treated as parameters
   std::vector<double> instantsOfAZPObservations           (30,0.);
-  std::vector<V*>     observedEvolutionOfAZPConcentrations(30,NULL);
+  std::vector<V*>     observedEvolutionOfAZPConcentrations(30);//,NULL);
   for (unsigned int i = 0; i < 30; ++i) {
     instantsOfAZPObservations[i]                  = observationsOfAZP[4*i+0];
     observedEvolutionOfAZPConcentrations[i]       = calStateSpace.newVector();
@@ -394,7 +394,7 @@ template<class V, class M>
 void
 uqAppl_M2lLikelihoodFunction_Routine(const V& paramValues, const void* functionDataPtr, V& resultValues)
 {
-  std::vector<V*> computedEvolutionOfConcentrations(0,NULL);
+  std::vector<V*> computedEvolutionOfConcentrations(0);//,NULL);
   uqAppl_StateEvolutionFunction_Routine<V,M>(paramValues, functionDataPtr, computedEvolutionOfConcentrations);
 
   const std::vector<double>& instantsOfAZPObservations = *((uqAppl_M2lLikelihoodFunction_DataType<V,M> *) functionDataPtr)->instantsOfAZPObservations;

@@ -14,11 +14,13 @@ INC_PATHS = \
 	-I../inc \
 	-I../../../libs/basic/inc \
 	-I../../../libs/mcmc/inc \
-	-I$(BOOST_INCLUDE_PATH_FOR_PECOS_TOOLKIT)
+	-I$(BOOST_INCLUDE_PATH_FOR_PECOS_TOOLKIT) \
+	-I$(GSL_INCLUDE_PATH_FOR_PECOS_TOOLKIT)
 LIB_PATHS = \
 	-L../../../libs/basic/lib \
 	-L../../../libs/mcmc/lib \
-	-L$(BOOST_LIB_PATH_FOR_PECOS_TOOLKIT)
+	-L$(BOOST_LIB_PATH_FOR_PECOS_TOOLKIT) \
+	-L$(GSL_LIB_PATH_FOR_PECOS_TOOLKIT)
 LIBS = \
 	-luq_basic_$(UQBT) \
 	-luq_basic_any \
@@ -26,7 +28,7 @@ LIBS = \
 	-luq_mcmc_any \
 	-lgsl \
 	-lgslcblas \
-	-lboost_program_options-gcc41-mt-1_35
+	-lboost_program_options-$(COMPILER_SPEC_IN_BOOST_LIB_NAME)-mt-1_35
 
 else
 
@@ -37,13 +39,15 @@ INC_PATHS = \
 	-I../../../inc \
 	-I$(MPI_INCLUDE_PATH_FOR_PECOS_TOOLKIT) \
 	-I$(TRILINOS_INCLUDE_PATH_FOR_PECOS_TOOLKIT) \
-	-I$(BOOST_INCLUDE_PATH_FOR_PECOS_TOOLKIT)
+	-I$(BOOST_INCLUDE_PATH_FOR_PECOS_TOOLKIT) \
+	-I$(GSL_INCLUDE_PATH_FOR_PECOS_TOOLKIT)
 
 LIB_PATHS = \
 	-L../../../lib \
 	-L$(MPI_LIB_PATH_FOR_PECOS_TOOLKIT) \
 	-L$(TRILINOS_LIB_PATH_FOR_PECOS_TOOLKIT) \
-	-L$(BOOST_LIB_PATH_FOR_PECOS_TOOLKIT)
+	-L$(BOOST_LIB_PATH_FOR_PECOS_TOOLKIT) \
+	-L$(GSL_LIB_PATH_FOR_PECOS_TOOLKIT)
 
 LIBS = \
 	-luq_basic_$(UQBT) \
@@ -55,7 +59,7 @@ LIBS = \
 	-lgsl \
 	-lgslcblas \
 	-lblas \
-	-lboost_program_options-gcc41-mt-1_35
+	-lboost_program_options-$(COMPILER_SPEC_IN_BOOST_LIB_NAME)-mt-1_35
 
 endif
 

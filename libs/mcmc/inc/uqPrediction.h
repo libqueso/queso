@@ -42,7 +42,7 @@ uqPrediction(
     sampleIds[i] = (unsigned int) ( ceil(gsl_rng_uniform(rng) * chain.size()) - 1. );
   }
 
-  std::vector<V*> computedStateEvolution(0,NULL);
+  std::vector<V*> computedStateEvolution(0);//,NULL);
   const V* parameters;
   for (unsigned int i = 0; i < sampleIds.size(); ++i) {
     parameters = chain[sampleIds[i]];
@@ -80,7 +80,7 @@ end
   % s2chain = [chain size, num output variables]
 
   for iisample = 1:nsample;
-    theta(parind) = chain(isample(iisample),:)';
+//theta(parind) = chain(isample(iisample),:)';
     th  = theta(local==0|local==i);
     y   = feval(modelfun,datai,th,varargin{:});
     ysave(iisample,:,:) = y;

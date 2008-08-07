@@ -8,9 +8,9 @@ uq1DScalarElementClass::uq1DScalarElementClass(
         unsigned int        order)
   :
   m_env             (env),
-  m_nodes           (2,NULL),
+  m_nodes           (2),//,NULL),
   m_order           (order),
-  m_localDofs       (numDofs(),NULL),
+  m_localDofs       (numDofs()),//,NULL),
   m_integrationOrder(2),
   m_w               (numIntegrationPoints(),0.),
   m_bcc             (numIntegrationPoints(),0.)
