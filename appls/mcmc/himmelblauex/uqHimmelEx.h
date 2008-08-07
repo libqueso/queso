@@ -91,7 +91,7 @@ uqAppl(const uqEnvironmentClass& env)
   //              uqAppl_M2lLikelihoodFunction_Routine().
   //******************************************************
   std::vector<double> instantsOfAObservations          (23,0.);
-  std::vector<V*>     observedEvolutionOfAConcentration(23,NULL);
+  std::vector<V*>     observedEvolutionOfAConcentration(23);//,NULL);
   for (unsigned int i = 0; i < 23; ++i) {
     instantsOfAObservations[i]                 = observationsOfA[2*i+0];
     observedEvolutionOfAConcentration[i]       = calStateSpace.newVector();
@@ -170,7 +170,7 @@ uqAppl_M2lLikelihoodFunction_Routine(const V& paramValues, const void* functionD
   uqAppl_StateDotFunction_DataType<V,M> uqAppl_StateDotFunction_Data;
   uqAppl_StateDotFunction_Data.concentrationRates = &paramValues;
 
-  std::vector<V*> computedEvolutionOfConcentrations(0,NULL);
+  std::vector<V*> computedEvolutionOfConcentrations(0);//,NULL);
 #ifdef __APPL_USES_GSL__
   gslOdeSolver.solveODE(uqGslHimmelExStateDot,
                         NULL,

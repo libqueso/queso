@@ -22,6 +22,7 @@
 
 #include <uqFinDimLinearSpace.h>
 #include <uqParameter.h>
+#include <vector>
 
 template <class V, class M>
 class uqParamSpaceClass : public uqFinDimLinearSpaceClass<V,M>
@@ -105,7 +106,7 @@ uqParamSpaceClass<V,M>::uqParamSpaceClass(
   :
   uqFinDimLinearSpaceClass<V,M>(env,prefix),
   m_optionsDesc                (NULL),
-  m_parameters                 (0,NULL),
+  m_parameters                 (0),//,NULL),
   m_dummyParameter             ("NonExistentYet",0.),
   m_initialValues              (NULL),
   m_minValues                  (NULL),
