@@ -39,10 +39,10 @@ protected:
           void                    getMyOptionValues         (po::options_description& optionsDesc);
 
   po::options_description* m_optionsDesc;
-
-  using uqFinDimLinearSpaceClass<V,M>::m_env;
   std::string m_option_help;
   std::string m_option_dim;
+
+  using uqFinDimLinearSpaceClass<V,M>::m_env;
   using uqFinDimLinearSpaceClass<V,M>::m_dim;
 };
 

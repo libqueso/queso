@@ -64,9 +64,9 @@ public:
   uqDRAM_MarkovChainGeneratorClass(const uqEnvironmentClass&                  env,                        /*! The QUESO toolkit environment.   */
                                    const char*                                prefix,                     /*! Prefix for the validation phase. */
                                    const uqParamSpaceClass<V,M>&              paramSpace,                 /*! The parameter space.             */
-                                   const uqFinDimLinearSpaceClass<V,M>&       outputSpace,                /*! The output space.                */
-                                         uq_M2lPriorFunction_Class<V,M>*      m2lPriorFunction_ObjPtr,    /*! -2*ln(prior())                   */
-                                         uq_M2lLikelihoodFunction_Class<V,M>& m2lLikelihoodFunction_Obj); /*! -2*ln(likelihood())              */
+                                   const uqOutputSpaceClass<V,M>&             outputSpace,                /*! The output space.                */
+                                         tmp_M2lPriorFunction_Class<V,M>&      m2lPriorFunction_Obj,       /*! -2*ln(prior())                   */
+                                         tmp_M2lLikelihoodFunction_Class<V,M>& m2lLikelihoodFunction_Obj); /*! -2*ln(likelihood())              */
  ~uqDRAM_MarkovChainGeneratorClass();
 
   void generateChains             (const M* proposalCovMatrix,
@@ -83,7 +83,7 @@ public:
 
 private:
   void   resetChainAndRelatedInfo();
-  double computeM2lPrior         (const V& paramValues, const void* functionDataPtr);
+  //double computeM2lPrior         (const V& paramValues, const void* functionDataPtr);
   void   defineMyOptions         (po::options_description& optionsDesc) const;
   void   getMyOptionValues       (po::options_description& optionsDesc);
 
@@ -122,13 +122,12 @@ private:
   const uqEnvironmentClass&                  m_env;
         std::string                          m_prefix;
   const uqParamSpaceClass<V,M>&              m_paramSpace;
-  const uqFinDimLinearSpaceClass<V,M>&       m_outputSpace;
-        uq_M2lPriorFunction_Class<V,M>*      m_m2lPriorFunction_ObjPtr;
-        uq_M2lLikelihoodFunction_Class<V,M>& m_m2lLikelihoodFunction_Obj;
+  const uqOutputSpaceClass<V,M>&             m_outputSpace;
+        tmp_M2lPriorFunction_Class<V,M>&      m_m2lPriorFunction_Obj;
+        tmp_M2lLikelihoodFunction_Class<V,M>& m_m2lLikelihoodFunction_Obj;
 
   std::string m_option_help;
   std::string m_option_mh_sizesOfChains;
-  std::string m_option_mh_lrUpdateSigma2;
   std::string m_option_mh_lrSigma2Priors;
   std::string m_option_mh_lrSigma2Accuracies;
   std::string m_option_mh_lrNumbersOfObs;
@@ -159,13 +158,10 @@ private:
   std::string m_option_computeKDEs;
   std::string m_option_numberOfEvaluationPosForKDEs;
 
-  bool                      m_useDefaultM2lPriorFunction;
-  uqDefault_M2lPriorFunction_DataType<V,M> m_defaultM2lPriorFunction_Data;
   V                         m_paramInitials;
   bool                      m_proposalIsSymmetric;
   po::options_description*  m_optionsDesc;
   std::vector<unsigned int> m_sizesOfChains;
-  bool                      m_lrUpdateSigma2; // lr = Likelihood Results
   V*                        m_lrSigma2Priors;
   V*                        m_lrSigma2Accuracies;
   V*                        m_lrNumbersOfObservations;
@@ -232,22 +228,20 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::uqDRAM_MarkovChainGeneratorClass(
   const uqEnvironmentClass&                  env,
   const char*                                prefix,
   const uqParamSpaceClass<V,M>&              paramSpace,
-  const uqFinDimLinearSpaceClass<V,M>&       outputSpace,
-        uq_M2lPriorFunction_Class<V,M>*      m2lPriorFunction_ObjPtr,
-        uq_M2lLikelihoodFunction_Class<V,M>& m2lLikelihoodFunction_Obj)
+  const uqOutputSpaceClass<V,M>&             outputSpace,
+        tmp_M2lPriorFunction_Class<V,M>&      m2lPriorFunction_Obj,
+        tmp_M2lLikelihoodFunction_Class<V,M>& m2lLikelihoodFunction_Obj)
   :
   m_env                          (env),
   m_prefix                       (""),
   m_paramSpace                   (paramSpace),
   m_outputSpace                  (outputSpace),
-  m_m2lPriorFunction_ObjPtr      (m2lPriorFunction_ObjPtr),
+  m_m2lPriorFunction_Obj         (m2lPriorFunction_Obj),
   m_m2lLikelihoodFunction_Obj    (m2lLikelihoodFunction_Obj),
-  m_useDefaultM2lPriorFunction   (m2lPriorFunction_ObjPtr == NULL),
   m_paramInitials                (m_paramSpace.initialValues()),
   m_proposalIsSymmetric          (true),
   m_optionsDesc                  (new po::options_description("Markov chain Monte Carlo options")),
   m_sizesOfChains                (1,(unsigned int) strtod(UQ_MCMC_MH_CHAIN_SIZE_ODV,NULL)),
-  m_lrUpdateSigma2               (UQ_MCMC_MH_LR_UPDATE_SIGMA2_ODV),
   m_lrSigma2Priors               (m_outputSpace.newVector()),
   m_lrSigma2Accuracies           (m_outputSpace.newVector()),
   m_lrNumbersOfObservations      (m_outputSpace.newVector()),
@@ -311,7 +305,6 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::uqDRAM_MarkovChainGeneratorClass(
 
   m_option_help                         = m_prefix + "MCMC_help";
   m_option_mh_sizesOfChains             = m_prefix + "MCMC_mh_sizesOfChains";
-  m_option_mh_lrUpdateSigma2            = m_prefix + "MCMC_mh_lrUpdateSigma2";
   m_option_mh_lrSigma2Priors            = m_prefix + "MCMC_mh_lrSigma2Priors";
   m_option_mh_lrSigma2Accuracies        = m_prefix + "MCMC_mh_lrSigma2Accuracies";
   m_option_mh_lrNumbersOfObs            = m_prefix + "MCMC_mh_lrNumbersOfObs";
@@ -342,11 +335,6 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::uqDRAM_MarkovChainGeneratorClass(
   m_option_computeKDEs                  = m_prefix + "MCMC_computeKDEs";
   m_option_numberOfEvaluationPosForKDEs = m_prefix + "MCMC_numberOfEvaluationPositionsForKDEs";
 
-  if (m_useDefaultM2lPriorFunction) {
-    m_m2lPriorFunction_ObjPtr = new uq_M2lPriorFunction_Class<V,M>();
-    m_defaultM2lPriorFunction_Data.paramPriorMus    = new V(m_paramSpace.priorMuValues   ());
-    m_defaultM2lPriorFunction_Data.paramPriorSigmas = new V(m_paramSpace.priorSigmaValues());
-  }
   m_lrSigma2Priors->cwSet         (strtod(UQ_MCMC_MH_LR_SIGMA2_PRIORS_ODV    ,NULL));
   m_lrSigma2Accuracies->cwSet     (strtod(UQ_MCMC_MH_LR_SIGMA2_ACCURACIES_ODV,NULL));
   m_lrNumbersOfObservations->cwSet(strtod(UQ_MCMC_MH_LR_NUMBERS_OF_OBS_ODV   ,NULL));
@@ -463,12 +451,6 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::~uqDRAM_MarkovChainGeneratorClass()
   if (m_lrSigma2Priors         ) delete m_lrSigma2Priors;
   if (m_optionsDesc            ) delete m_optionsDesc;
 
-  if (m_useDefaultM2lPriorFunction) {
-    delete m_m2lPriorFunction_ObjPtr;
-    delete m_defaultM2lPriorFunction_Data.paramPriorMus;
-    delete m_defaultM2lPriorFunction_Data.paramPriorSigmas;
-  }
-
   //std::cout << "Leaving uqDRAM_MarkovChainGeneratorClass<V,M>::destructor()"
   //          << std::endl;
 }
@@ -513,23 +495,6 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::resetChainAndRelatedInfo()
 }
 
 template <class V, class M>
-double
-uqDRAM_MarkovChainGeneratorClass<V,M>::computeM2lPrior(
-  const V&    paramValues,
-  const void* functionDataPtr)
-{
-  double value = 0.;
-  if (m_useDefaultM2lPriorFunction) {
-    value = (*m_m2lPriorFunction_ObjPtr)(paramValues, (void *) &m_defaultM2lPriorFunction_Data, true);
-  }
-  else {
-    value = (*m_m2lPriorFunction_ObjPtr)(paramValues, functionDataPtr, false);
-  }
-
-  return value;
-}
-
-template <class V, class M>
 void
 uqDRAM_MarkovChainGeneratorClass<V,M>::defineMyOptions(
   po::options_description& optionsDesc) const
@@ -537,7 +502,6 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::defineMyOptions(
   optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                                           "produce help message for DRAM Markov chain generator"   )
     (m_option_mh_sizesOfChains.c_str(),             po::value<std::string >()->default_value(UQ_MCMC_MH_CHAIN_SIZE_ODV             ), "'mh' size(s) of chain(s)"                               )
-    (m_option_mh_lrUpdateSigma2.c_str(),            po::value<bool        >()->default_value(UQ_MCMC_MH_LR_UPDATE_SIGMA2_ODV       ), "'mh' update the sigma2 of likelihood results"           )
     (m_option_mh_lrSigma2Priors.c_str(),            po::value<std::string >()->default_value(UQ_MCMC_MH_LR_SIGMA2_PRIORS_ODV       ), "'mh' priors of sigma2 on likelihood results"            )
     (m_option_mh_lrSigma2Accuracies.c_str(),        po::value<std::string >()->default_value(UQ_MCMC_MH_LR_SIGMA2_ACCURACIES_ODV   ), "'mh' accuracies of sigma2 on likelihood results"        )
     (m_option_mh_lrNumbersOfObs.c_str(),            po::value<std::string >()->default_value(UQ_MCMC_MH_LR_NUMBERS_OF_OBS_ODV      ), "'mh' numbers of observations for likelihood results"    )
@@ -604,10 +568,6 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::getMyOptionValues(
     for (unsigned int i = 0; i < inputDoubles.size(); ++i) {
       m_sizesOfChains[i] = (unsigned int) inputDoubles[i];
     }
-  }
-
-  if (m_env.allOptionsMap().count(m_option_mh_lrUpdateSigma2.c_str())) {
-    m_lrUpdateSigma2 = m_env.allOptionsMap()[m_option_mh_lrUpdateSigma2.c_str()].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_mh_lrSigma2Priors.c_str())) {
@@ -962,7 +922,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
                       m_env.rank(),
                       "uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains()",
                       "paramInitials should not be out of bound");
-  double m2lPrior             = computeM2lPrior(valuesOf1stPosition, m2lPriorFunction_DataPtr);
+  double m2lPrior             = m_m2lPriorFunction_Obj(valuesOf1stPosition, m2lPriorFunction_DataPtr);
   V*     m2lLikelihoodResults = m_outputSpace.newVector();
   m_m2lLikelihoodFunction_Obj(valuesOf1stPosition, m2lLikelihoodFunction_DataPtr, *m2lLikelihoodResults);
   V      lrSigma2(*m_lrSigma2Priors);
@@ -1013,7 +973,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
       logPosterior  = -INFINITY;
     }
     else {
-      m2lPrior      = computeM2lPrior(*tmpParamValues, m2lPriorFunction_DataPtr);
+      m2lPrior      = m_m2lPriorFunction_Obj(*tmpParamValues, m2lPriorFunction_DataPtr);
       m_m2lLikelihoodFunction_Obj(*tmpParamValues, m2lLikelihoodFunction_DataPtr, *m2lLikelihoodResults);
       logPosterior  = -0.5 * ( m2lPrior + (*m2lLikelihoodResults/lrSigma2).sumOfComponents() );
     }
@@ -1073,7 +1033,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
           logPosterior  = -INFINITY;
         }
         else {
-          m2lPrior      = computeM2lPrior(*tmpParamValues, m2lPriorFunction_DataPtr);
+          m2lPrior      = m_m2lPriorFunction_Obj(*tmpParamValues, m2lPriorFunction_DataPtr);
           m_m2lLikelihoodFunction_Obj(*tmpParamValues, m2lLikelihoodFunction_DataPtr, *m2lLikelihoodResults);
           logPosterior  = -0.5 * ( m2lPrior + (*m2lLikelihoodResults/lrSigma2).sumOfComponents() );
         }
@@ -1109,7 +1069,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
       m_numRejections++;
     }
 
-    if (m_lrUpdateSigma2) {
+    if (m_outputSpace.updateVariance()) {
       for (unsigned int i = 0; i < lrSigma2.size(); ++i) {
         double term1 = 0.5*(double)( (*m_lrSigma2Accuracies)[i] + (*m_lrNumbersOfObservations)[i] );
         double term2 = 2./ (double)( (*m_lrSigma2Accuracies)[i] * (*m_lrSigma2Priors)[i] + (*m_lrChain[positionId])[i] );
@@ -1691,7 +1651,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::alpha(
   if ((x.outOfBounds() == false) &&
       (y.outOfBounds() == false)) {
     double yLogPosteriorToUse = y.logPosterior();
-    if (m_lrUpdateSigma2) {
+    if (m_outputSpace.updateVariance()) {
       yLogPosteriorToUse = -0.5 * ( y.m2lPrior() + (y.m2lLikelihood()/x.lrSigma2()).sumOfComponents() );
     }
     if (m_proposalIsSymmetric) {
@@ -1754,7 +1714,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::alpha(const std::vector<uqChainPositionCl
   }
 
   double numeratorLogPosteriorToUse = backwardPositions[0]->logPosterior();
-  if (m_lrUpdateSigma2) {
+  if (m_outputSpace.updateVariance()) {
     numeratorLogPosteriorToUse = -0.5 * ( backwardPositions[0]->m2lPrior() + (backwardPositions[0]->m2lLikelihood()/positions[0]->lrSigma2()).sumOfComponents() );
   }
   logNumerator   += numeratorLogPosteriorToUse;
@@ -2126,8 +2086,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::print(std::ostream& os) const
   for (unsigned int i = 0; i < m_sizesOfChains.size(); ++i) {
     os << m_sizesOfChains[i] << " ";
   }
-  os << "\n" << m_option_mh_lrUpdateSigma2 << " = " << m_lrUpdateSigma2
-     << "\n" << m_option_mh_lrSigma2Priors << " = ";
+  os << "\n" << m_option_mh_lrSigma2Priors << " = ";
   for (unsigned int i = 0; i < m_lrSigma2Priors->size(); ++i) {
     os << (*m_lrSigma2Priors)[i] << " ";
   }

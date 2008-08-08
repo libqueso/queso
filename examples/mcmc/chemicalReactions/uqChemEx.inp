@@ -2,52 +2,52 @@
 # UQ Environment
 ###############################################
 uqEnv_help      = anything
-uqEnv_verbosity = 2
-uqEnv_seed      = -1
+uqEnv_verbosity = 5
+uqEnv_seed      = 539724
 
 ###############################################
 # UQ Parameter Space
 ###############################################
-cal_paramSpace_help              = anything
-cal_paramSpace_dim               = 3
-cal_paramSpace_specificationFile = uqChemEx.par
+calib_paramSpace_help              = anything
+calib_paramSpace_dim               = 3
+calib_paramSpace_specificationFile = uqChemEx.par
 
 ###############################################
 # UQ State Space
 ###############################################
-cal_stateSpace_help = anything
-cal_stateSpace_dim  = 5
+calib_stateSpace_help = anything
+calib_stateSpace_dim  = 5
 
 ###############################################
 # UQ Output Space
 ###############################################
-cal_outputSpace_help              = anything
-cal_outputSpace_numSubSpaces      = 1
-cal_outputSpace_specificationFile = uqChemEx.out
+calib_outputSpace_help              = anything
+calib_outputSpace_numSubSpaces      = 1
+calib_outputSpace_specificationFile = uqChemEx.out
 
 ###############################################
 # UQ DRAM Markov Chain Generator
 ###############################################
-cal_MCMC_help                       = anything
-cal_MCMC_mh_sizesOfChains           = 100001
-cal_MCMC_mh_lrUpdateSigma2          = 1
-cal_MCMC_mh_lrSigma2Priors          = 2.1876e-08
-cal_MCMC_mh_lrSigma2Accuracies      = 1.
-cal_MCMC_mh_lrNumbersOfObs          = 23
-cal_MCMC_dr_maxNumberOfExtraStages  = 1
-cal_MCMC_dr_scalesForExtraStages    = 5. 4. 3.
-cal_MCMC_am_initialNonAdaptInterval = 100
-cal_MCMC_am_adaptInterval           = 100
-cal_MCMC_am_eta                     = 1.92
-cal_MCMC_am_epsilon                 = 1.e-5
-cal_MCMC_mh_namesOfOutputFiles      = uqChemExOutput.m
-cal_MCMC_mh_chainDisplayPeriod      = 5000
-cal_MCMC_runBMM                     = 1
-cal_MCMC_computePSDs                = 1
-cal_MCMC_computeGewekeCoefficients  = 1
-cal_MCMC_computeCorrelations        = 1
-cal_MCMC_computeHistograms          = 1
-cal_MCMC_computeKDEs                = 1
+calib_MCMC_help                       = anything
+calib_MCMC_mh_sizesOfChains           = 100001
+calib_MCMC_mh_lrUpdateSigma2          = 1
+calib_MCMC_mh_lrSigma2Priors          = 2.1876e-08
+calib_MCMC_mh_lrSigma2Accuracies      = 1.
+calib_MCMC_mh_lrNumbersOfObs          = 23
+calib_MCMC_dr_maxNumberOfExtraStages  = 1
+calib_MCMC_dr_scalesForExtraStages    = 5. 4. 3.
+calib_MCMC_am_initialNonAdaptInterval = 100
+calib_MCMC_am_adaptInterval           = 100
+calib_MCMC_am_eta                     = 1.92
+calib_MCMC_am_epsilon                 = 1.e-5
+calib_MCMC_mh_namesOfOutputFiles      = uqChemExOutput.m
+calib_MCMC_mh_chainDisplayPeriod      = 5000
+calib_MCMC_runBMM                     = 1
+calib_MCMC_computePSDs                = 1
+calib_MCMC_computeGewekeCoefficients  = 1
+calib_MCMC_computeCorrelations        = 1
+calib_MCMC_computeHistograms          = 1
+calib_MCMC_computeKDEs                = 1
 
 ###############################################
 # UQ Other Inputs

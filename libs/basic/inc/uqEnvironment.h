@@ -36,6 +36,8 @@ namespace po = boost::program_options;
 #include <iostream>
 #include <fstream>
 
+extern unsigned long int gsl_rng_default_seed;
+
 struct uqEnvOptionsStruct {
   uqEnvOptionsStruct(unsigned int verbosity,
                      int          seed);

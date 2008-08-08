@@ -72,6 +72,9 @@ protected:
           void                    createPriorSigmaValues    () const; // See template specialization
 
   po::options_description*       m_optionsDesc;
+  std::string m_option_help;
+  std::string m_option_dim;
+  std::string m_option_specificationFile;
 
   std::vector<uqParameterClass*> m_parameters; // FIXME: will need to be a parallel vector in case of a very large number of parameters
   uqParameterClass               m_dummyParameter;
@@ -82,9 +85,6 @@ protected:
   mutable V*                     m_priorSigmaValues;
 
   using uqFinDimLinearSpaceClass<V,M>::m_env;
-  std::string m_option_help;
-  std::string m_option_dim;
-  std::string m_option_specificationFile;
   using uqFinDimLinearSpaceClass<V,M>::m_dim;
 };
 

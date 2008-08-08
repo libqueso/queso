@@ -1,5 +1,7 @@
 #include <uqEnvironment.h>
 #include <uqDefines.h>
+#include <sys/time.h>
+#include <gsl/gsl_randist.h>
 
 #define QUESO_TOOLKIT_MCMC_TOOL_CURRENT_VERSION "0.1"
 
@@ -97,20 +99,16 @@ uqEnvironmentClass::commonConstructor()
   m_commSize = m_comm->Size();
 #endif
 
-  //if (m_rank == 0) std::cout << "Entering uqEnvironmentClass::commonConstructor()"
-  //                           << std::endl;
+  if ((this->verbosity() >= 5) && (this->rank() == 0)) {
+    std::cout << "Entering uqEnvironmentClass::commonConstructor()"
+              << std::endl;
+  }
 
   if (m_rank == 0) std::cout << "\n================================="
                              << "\n QUESO toolkit, MCMC tool, version " << QUESO_TOOLKIT_MCMC_TOOL_CURRENT_VERSION
                              << "\n================================="
                              << "\n"
                              << std::endl;
-
-  m_rng = gsl_rng_alloc(gsl_rng_ranlxd2);
-  UQ_FATAL_TEST_MACRO((m_rng == NULL),
-                      m_rank,
-                      "uqEnvironmentClass::commonConstructor()",
-                      "null m_rng");
 
   m_allOptionsMap  = new po::variables_map();
   m_allOptionsDesc = new po::options_description("Allowed options");
@@ -122,8 +120,35 @@ uqEnvironmentClass::commonConstructor()
   scanInputFileForMyOptions(*m_envOptionsDesc);
   getMyOptionValues        (*m_envOptionsDesc);
 
-  //if (m_rank == 0) std::cout << "Leaving uqEnvironmentClass::commonConstructor()"
-  //                           << std::endl;
+  if (m_seed >= 0) {
+    gsl_rng_default_seed = (unsigned long int) m_seed;
+  }
+  else {
+    int iRC;
+    struct timeval timevalNow;
+    iRC = gettimeofday(&timevalNow, NULL);
+    gsl_rng_default_seed = (unsigned long int) timevalNow.tv_usec;
+  }
+
+  m_rng = gsl_rng_alloc(gsl_rng_ranlxd2);
+  UQ_FATAL_TEST_MACRO((m_rng == NULL),
+                      m_rank,
+                      "uqEnvironmentClass::commonConstructor()",
+                      "null m_rng");
+
+  if ((this->verbosity() >= 5) && (this->rank() == 0)) {
+    std::cout << "In uqEnvironmentClass::commonConstructor():"
+              << "\n  m_seed = "                                              << m_seed
+              << "\n  internal seed = "                                       << gsl_rng_default_seed
+              << "\n  first generated sample from uniform distribution = "    << gsl_rng_uniform(m_rng)
+              << "\n  first generated sample from std normal distribution = " << gsl_ran_gaussian(m_rng,1.)
+              << std::endl;
+  }
+
+  if ((this->verbosity() >= 5) && (this->rank() == 0)) {
+    std::cout << "Leaving uqEnvironmentClass::commonConstructor()"
+              << std::endl;
+  }
 
   return;
 }

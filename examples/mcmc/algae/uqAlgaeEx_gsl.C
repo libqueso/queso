@@ -23,28 +23,28 @@ int main(int argc, char* argv[])
 }
 
 int
-uqGslAlgaeExStateDot( // Compute state dot = dConcentrations/dt
+calib_StateDotFunction_Routine_gsl( // Compute state dot = dConcentrations/dt
   double       t,
   const double currentState[],           // current concentrations
   double       stateDot[],               // dConcentrations/dt
   void*        infoForComputingStateDot) // concentration rates
 {
-  double muMax = ((uqAppl_StateDotFunction_DataType<uqGslVectorClass,uqGslMatrixClass> *)infoForComputingStateDot)->muMax;
-  double rhoA  = ((uqAppl_StateDotFunction_DataType<uqGslVectorClass,uqGslMatrixClass> *)infoForComputingStateDot)->rhoA;
-  double rhoZ  = ((uqAppl_StateDotFunction_DataType<uqGslVectorClass,uqGslMatrixClass> *)infoForComputingStateDot)->rhoZ;
-  double k     = ((uqAppl_StateDotFunction_DataType<uqGslVectorClass,uqGslMatrixClass> *)infoForComputingStateDot)->k;
-  double alpha = ((uqAppl_StateDotFunction_DataType<uqGslVectorClass,uqGslMatrixClass> *)infoForComputingStateDot)->alpha;
-  double th    = ((uqAppl_StateDotFunction_DataType<uqGslVectorClass,uqGslMatrixClass> *)infoForComputingStateDot)->th;
+  double muMax = ((calib_StateDotFunction_DataType<uqGslVectorClass,uqGslMatrixClass> *)infoForComputingStateDot)->muMax;
+  double rhoA  = ((calib_StateDotFunction_DataType<uqGslVectorClass,uqGslMatrixClass> *)infoForComputingStateDot)->rhoA;
+  double rhoZ  = ((calib_StateDotFunction_DataType<uqGslVectorClass,uqGslMatrixClass> *)infoForComputingStateDot)->rhoZ;
+  double k     = ((calib_StateDotFunction_DataType<uqGslVectorClass,uqGslMatrixClass> *)infoForComputingStateDot)->k;
+  double alpha = ((calib_StateDotFunction_DataType<uqGslVectorClass,uqGslMatrixClass> *)infoForComputingStateDot)->alpha;
+  double th    = ((calib_StateDotFunction_DataType<uqGslVectorClass,uqGslMatrixClass> *)infoForComputingStateDot)->th;
 
-  const std::vector<double>& evolutionOfQpV = *((uqAppl_StateDotFunction_DataType<uqGslVectorClass,uqGslMatrixClass> *)infoForComputingStateDot)->evolutionOfQpV;
-  const std::vector<double>& evolutionOfT   = *((uqAppl_StateDotFunction_DataType<uqGslVectorClass,uqGslMatrixClass> *)infoForComputingStateDot)->evolutionOfT;
-  const std::vector<double>& evolutionOfPin = *((uqAppl_StateDotFunction_DataType<uqGslVectorClass,uqGslMatrixClass> *)infoForComputingStateDot)->evolutionOfPin;
+  const std::vector<double>& evolutionOfQpV = *((calib_StateDotFunction_DataType<uqGslVectorClass,uqGslMatrixClass> *)infoForComputingStateDot)->evolutionOfQpV;
+  const std::vector<double>& evolutionOfT   = *((calib_StateDotFunction_DataType<uqGslVectorClass,uqGslMatrixClass> *)infoForComputingStateDot)->evolutionOfT;
+  const std::vector<double>& evolutionOfPin = *((calib_StateDotFunction_DataType<uqGslVectorClass,uqGslMatrixClass> *)infoForComputingStateDot)->evolutionOfPin;
 
   bool bRC = ((evolutionOfQpV.size() == evolutionOfPin.size()) &&
               (evolutionOfQpV.size() == evolutionOfT.size()  ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       UQ_UNAVAILABLE_RANK,
-                      "uqGslAlgaeExStateDot()",
+                      "calib_StateDotFunction_Routine_gsl()",
                       "evolution arrays are not all of the same size");
 
   // E.g.: if t == 0.  then instantIndex = 0
@@ -56,7 +56,7 @@ uqGslAlgaeExStateDot( // Compute state dot = dConcentrations/dt
   //std::cout << "t = " << t << ", instantIndex = " << instantIndex << std::endl;
   UQ_FATAL_TEST_MACRO(instantIndex >= evolutionOfQpV.size(),
                       UQ_UNAVAILABLE_RANK,
-                      "uqGslAlgaeExStateDot()",
+                      "calib_StateDotFunction_Routine_gsl()",
                       "instantIndex is too big, that is, requested instant 't' is incompatible with available data");
 
   double qpv  = evolutionOfQpV[instantIndex];
@@ -73,7 +73,7 @@ uqGslAlgaeExStateDot( // Compute state dot = dConcentrations/dt
   stateDot[1] = alpha*Z*A - rhoZ*Z;
   stateDot[2] = -qpv*(P-pin) + (rhoA-mu)*A + rhoZ*Z;
 
-  //std::cout << "In uqGslAlgaeExStateDot():"
+  //std::cout << "In calib_StateDotFunction_Routine_gsl():"
   //          << "\n t     = " << t
   //          << "\n A     = " << A
   //          << "\n Z     = " << Z

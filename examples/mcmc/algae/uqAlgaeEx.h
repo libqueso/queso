@@ -159,28 +159,33 @@ double observationsOfSomeParameters[] = {
 
 #include <uqDRAM_MarkovChainGenerator.h>
 #include <uqPrediction.h>
+
+//********************************************************
+// The prior routine: provided by user and called by the MCMC tool.
+// --> This application is using the default prior() routine provided by the MCMC tool.
+//********************************************************
+template<class V, class M>
+double
+calib_PriorFunction_Routine(const V& paramValues, const void* functionDataPtr)
+{
+  UQ_FATAL_TEST_MACRO(true,
+                      paramValues.env().rank(),
+                      "calib_PriorFunction_Routine(), in uqAlgaeEx.h",
+                      "should not be here, since application is using the default prior() routine provided by PECOS toolkit");
+  return 0.;
+}
+
+//********************************************************
+// The stateDot routine: provided by user and called by the likelihood routine.
+//********************************************************
 #ifdef __APPL_USES_GSL__
 #include <uqGslOdeSolver.h>
-int uqGslAlgaeExStateDot(double t, const double currentState[], double stateDot[], void* infoForComputingStateDot);
+int calib_StateDotFunction_Routine_gsl(double t, const double currentState[], double stateDot[], void* infoForComputingStateDot);
 #endif
 
 template<class V, class M>
 struct
-uqAppl_M2lLikelihoodFunction_DataType
-{
-  const std::vector<double>* instantsOfAZPObservations;
-  const std::vector<V*>*     observedEvolutionOfAZPConcentrations;
-  const std::vector<double>* evolutionOfQpV;
-  const std::vector<double>* evolutionOfT;
-  const std::vector<double>* evolutionOfPin;
-#ifdef __APPL_USES_GSL__
-  uqGslOdeSolverClass*       gslOdeSolver;
-#endif
-};
-
-template<class V, class M>
-struct
-uqAppl_StateDotFunction_DataType
+calib_StateDotFunction_DataType
 {
   double                     muMax;
   double                     rhoA;
@@ -193,6 +198,154 @@ uqAppl_StateDotFunction_DataType
   const std::vector<double>* evolutionOfPin;
 };
 
+//********************************************************
+// The likelihood routine: provided by user and called by the MCMC tool.
+//********************************************************
+template<class V, class M>
+struct
+calib_LikelihoodFunction_DataType
+{
+  const std::vector<double>* instantsOfAZPObservations;
+  const std::vector<V*>*     observedEvolutionOfAZPConcentrations;
+  const std::vector<double>* evolutionOfQpV;
+  const std::vector<double>* evolutionOfT;
+  const std::vector<double>* evolutionOfPin;
+#ifdef __APPL_USES_GSL__
+  uqGslOdeSolverClass*       gslOdeSolver;
+#endif
+};
+
+template<class V, class M>
+void
+calib_StateEvolutionFunction_Routine(const V& paramValues, const void* functionDataPtr, std::vector<V*>& states)
+{
+  const std::vector<double>& instantsOfAZPObservations            = *((calib_LikelihoodFunction_DataType<V,M> *) functionDataPtr)->instantsOfAZPObservations;
+  const std::vector<V*>&     observedEvolutionOfAZPConcentrations = *((calib_LikelihoodFunction_DataType<V,M> *) functionDataPtr)->observedEvolutionOfAZPConcentrations;
+  const std::vector<double>& evolutionOfQpV                       = *((calib_LikelihoodFunction_DataType<V,M> *) functionDataPtr)->evolutionOfQpV;
+  const std::vector<double>& evolutionOfT                         = *((calib_LikelihoodFunction_DataType<V,M> *) functionDataPtr)->evolutionOfT;
+  const std::vector<double>& evolutionOfPin                       = *((calib_LikelihoodFunction_DataType<V,M> *) functionDataPtr)->evolutionOfPin;
+#ifdef __APPL_USES_GSL__
+  uqGslOdeSolverClass&       gslOdeSolver                         = *((calib_LikelihoodFunction_DataType<V,M> *) functionDataPtr)->gslOdeSolver;
+#endif
+
+  // The initial concentrations are also unknown and treated as extra parameters
+  V initialConcentrations(*observedEvolutionOfAZPConcentrations[0]);
+  initialConcentrations[0] = paramValues[6];
+  initialConcentrations[1] = paramValues[7];
+  initialConcentrations[2] = paramValues[8];
+
+  calib_StateDotFunction_DataType<V,M> calib_StateDotFunction_Data;
+  calib_StateDotFunction_Data.muMax          = paramValues[0];
+  calib_StateDotFunction_Data.rhoA           = paramValues[1];
+  calib_StateDotFunction_Data.rhoZ           = paramValues[2];
+  calib_StateDotFunction_Data.k              = paramValues[3];
+  calib_StateDotFunction_Data.alpha          = paramValues[4];
+  calib_StateDotFunction_Data.th             = paramValues[5];
+  calib_StateDotFunction_Data.evolutionOfQpV = &evolutionOfQpV;
+  calib_StateDotFunction_Data.evolutionOfT   = &evolutionOfT;
+  calib_StateDotFunction_Data.evolutionOfPin = &evolutionOfPin;
+
+  //if (initialConcentrations.env().rank() == 0) {
+  //  std::cout << "In calib_StateEvolutionFunction_Routine():"
+  //            << "\n A0    = " << initialConcentrations[0]
+  //            << "\n Z0    = " << initialConcentrations[1]
+  //            << "\n P0    = " << initialConcentrations[2]
+  //            << "\n muMax = " << calib_StateDotFunction_Data.muMax
+  //            << "\n rhoA  = " << calib_StateDotFunction_Data.rhoA
+  //            << "\n rhoZ  = " << calib_StateDotFunction_Data.rhoZ
+  //            << "\n k     = " << calib_StateDotFunction_Data.k
+  //            << "\n alpha = " << calib_StateDotFunction_Data.alpha
+  //            << "\n th    = " << calib_StateDotFunction_Data.th
+  //            << "\n"
+  //            << std::endl;
+    //std::cout << "In calib_StateEvolutionFunction_Routine():"
+    //          << " information on QpV, Pin, T"
+    //          << std::endl;
+    //for (unsigned int i = 0; i < evolutionOfQpV.size(); ++i) {
+    //  std::cout << i                 << " "
+    //            << evolutionOfQpV[i] << " "
+    //            << evolutionOfT  [i] << " "
+    //            << evolutionOfPin[i]
+    //            << std::endl;
+    //}
+    //std::cout << std::endl;
+  //}
+
+#ifdef __APPL_USES_GSL__
+  gslOdeSolver.solveODE(calib_StateDotFunction_Routine_gsl,
+                        NULL,
+                        instantsOfAZPObservations,
+                        initialConcentrations,
+                        (void *)&calib_StateDotFunction_Data, // data for stateDot computations
+                        1.e-1,                                 // suggested time step
+                        states);
+#endif
+#ifdef __APPL_USES_TRILINOS__
+  UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
+                    paramValue.env().rank(),
+                    "calib_StateEvolutionFunction_Routine()",
+                    "not yet implemented with Trilinos");
+#endif
+  //if (initialConcentrations.env().rank() == 0) {
+  //  std::cout << "In calib_StateEvolutionFunction_Routine()" << std::endl;
+  //  for (unsigned int i = 0; i < instantsOfAZPObservations.size(); ++i) {
+  //    std::cout << "  for t = " << instantsOfAZPObservations[i]
+  //              << ", state = " << *(states[i])
+  //              << std::endl;
+  //  }
+  //}
+
+  return;
+}
+
+template<class V, class M>
+void
+calib_LikelihoodFunction_Routine(const V& paramValues, const void* functionDataPtr, V& resultValues)
+{
+  std::vector<V*> computedEvolutionOfConcentrations(0);//,NULL);
+  calib_StateEvolutionFunction_Routine<V,M>(paramValues, functionDataPtr, computedEvolutionOfConcentrations);
+
+  const std::vector<double>& instantsOfAZPObservations = *((calib_LikelihoodFunction_DataType<V,M> *) functionDataPtr)->instantsOfAZPObservations;
+  const std::vector<V*>&     observedEvolutionOfAZPConcentrations = *((calib_LikelihoodFunction_DataType<V,M> *) functionDataPtr)->observedEvolutionOfAZPConcentrations;
+  resultValues[0] = 0.;
+  resultValues[1] = 0.;
+  resultValues[2] = 0.;
+  for (unsigned int i = 0; i < instantsOfAZPObservations.size(); ++i) {
+    resultValues[0] += pow( (*computedEvolutionOfConcentrations[i])[0] - (*observedEvolutionOfAZPConcentrations[i])[0],2. );
+    resultValues[1] += pow( (*computedEvolutionOfConcentrations[i])[1] - (*observedEvolutionOfAZPConcentrations[i])[1],2. );
+    resultValues[2] += pow( (*computedEvolutionOfConcentrations[i])[2] - (*observedEvolutionOfAZPConcentrations[i])[2],2. );
+  }
+
+  for (unsigned int i = 0; i < computedEvolutionOfConcentrations.size(); ++i) {
+    if (computedEvolutionOfConcentrations[i]) delete computedEvolutionOfConcentrations[i];
+  }
+  computedEvolutionOfConcentrations.clear();
+
+  return;
+}
+
+//********************************************************
+// The QoI prediction routine: provided by user and called by the prediction tool.
+//********************************************************
+template<class V, class M>
+struct
+calib_QoIPredictionFunction_DataType
+{
+  const std::vector<void*>* nothingYet;
+};
+
+template<class V, class M>
+void
+calib_QoIPredictionFunction_Routine(const V& paramValues, const void* functionDataPtr, std::vector<V*>& predictions)
+{
+  // Nothing yet
+
+  return;
+}
+
+//********************************************************
+// The MCMC driving routine: called by main()
+//********************************************************
 template<class V, class M>
 void 
 uqAppl(const uqEnvironmentClass& env)
@@ -207,19 +360,21 @@ uqAppl(const uqEnvironmentClass& env)
 
   //*****************************************************
   // Step 1 of 4: Define the finite dimensional linear spaces.
+  //              Define the -2*ln[prior] and -2*ln[likelihood] function objects
   //              Define the Markov chain generator.
   //*****************************************************
-  uqParamSpaceClass <V,M> calParamSpace (env,"cal");
-  uqStateSpaceClass <V,M> calStateSpace (env,"cal");
-  uqOutputSpaceClass<V,M> calOutputSpace(env,"cal");
+  uqParamSpaceClass <V,M> calib_ParamSpace (env,"calib");
+  uqStateSpaceClass <V,M> calib_StateSpace (env,"calib");
+  uqOutputSpaceClass<V,M> calib_OutputSpace(env,"calib");
 
-  uq_M2lLikelihoodFunction_Class<V,M> uq_M2lLikelihoodFunction_Obj;
+  tmp_M2lPriorFunction_Class<V,M>      calib_PriorFunction_Obj     (uqDefault_M2lPriorFunction_Routine<V,M>); // use default prior() routine
+  tmp_M2lLikelihoodFunction_Class<V,M> calib_LikelihoodFunction_Obj(calib_LikelihoodFunction_Routine<V,M>);
   uqDRAM_MarkovChainGeneratorClass<V,M> mcg(env,
-                                            "cal",
-                                            calParamSpace,
-                                            calOutputSpace,
-                                            NULL,  // use default prior() routine
-                                            uq_M2lLikelihoodFunction_Obj);
+                                            "calib",
+                                            calib_ParamSpace,
+                                            calib_OutputSpace,
+                                            calib_PriorFunction_Obj,
+                                            calib_LikelihoodFunction_Obj);
 
   //******************************************************
   // Step 2 of 4: Compute the proposal covariance matrix.
@@ -229,14 +384,21 @@ uqAppl(const uqEnvironmentClass& env)
 
   //******************************************************
   // Step 3 of 4: Prepare the data to be passed to
-  //              uqAppl_M2lLikelihoodFunction_Routine().
+  //              calib_PriorFunction_Routine() and
+  //              calib_LikelihoodFunction_Routine().
   //******************************************************
+  uqDefault_M2lPriorFunction_DataType<V,M> calib_PriorFunction_Data; // use default prior() routine
+  V calib_ParamPriorMus   (calib_ParamSpace.priorMuValues   ());
+  V calib_ParamPriorSigmas(calib_ParamSpace.priorSigmaValues());
+  calib_PriorFunction_Data.paramPriorMus    = &calib_ParamPriorMus;
+  calib_PriorFunction_Data.paramPriorSigmas = &calib_ParamPriorSigmas;
+
   // The initial concentrations are also treated as parameters
   std::vector<double> instantsOfAZPObservations           (30,0.);
   std::vector<V*>     observedEvolutionOfAZPConcentrations(30);//,NULL);
   for (unsigned int i = 0; i < 30; ++i) {
     instantsOfAZPObservations[i]                  = observationsOfAZP[4*i+0];
-    observedEvolutionOfAZPConcentrations[i]       = calStateSpace.newVector();
+    observedEvolutionOfAZPConcentrations[i]       = calib_StateSpace.newVector();
     (*observedEvolutionOfAZPConcentrations[i])[0] = observationsOfAZP[4*i+1];
     (*observedEvolutionOfAZPConcentrations[i])[1] = observationsOfAZP[4*i+2];
     (*observedEvolutionOfAZPConcentrations[i])[2] = observationsOfAZP[4*i+3];
@@ -252,17 +414,17 @@ uqAppl(const uqEnvironmentClass& env)
   }
 
 #ifdef __APPL_USES_GSL__
-  uqGslOdeSolverClass gslOdeSolver("gear2",calStateSpace.dim());
+  uqGslOdeSolverClass gslOdeSolver("gear2",calib_StateSpace.dim());
 #endif
 
-  uqAppl_M2lLikelihoodFunction_DataType<V,M> uqAppl_M2lLikelihoodFunction_Data;
-  uqAppl_M2lLikelihoodFunction_Data.instantsOfAZPObservations            = &instantsOfAZPObservations;
-  uqAppl_M2lLikelihoodFunction_Data.observedEvolutionOfAZPConcentrations = &observedEvolutionOfAZPConcentrations;
-  uqAppl_M2lLikelihoodFunction_Data.evolutionOfQpV                       = &evolutionOfQpV;
-  uqAppl_M2lLikelihoodFunction_Data.evolutionOfT                         = &evolutionOfT;
-  uqAppl_M2lLikelihoodFunction_Data.evolutionOfPin                       = &evolutionOfPin;
+  calib_LikelihoodFunction_DataType<V,M> calib_LikelihoodFunction_Data;
+  calib_LikelihoodFunction_Data.instantsOfAZPObservations            = &instantsOfAZPObservations;
+  calib_LikelihoodFunction_Data.observedEvolutionOfAZPConcentrations = &observedEvolutionOfAZPConcentrations;
+  calib_LikelihoodFunction_Data.evolutionOfQpV                       = &evolutionOfQpV;
+  calib_LikelihoodFunction_Data.evolutionOfT                         = &evolutionOfT;
+  calib_LikelihoodFunction_Data.evolutionOfPin                       = &evolutionOfPin;
 #ifdef __APPL_USES_GSL__
-  uqAppl_M2lLikelihoodFunction_Data.gslOdeSolver                         = &gslOdeSolver;
+  calib_LikelihoodFunction_Data.gslOdeSolver                         = &gslOdeSolver;
 #endif
 
   //******************************************************
@@ -271,15 +433,16 @@ uqAppl(const uqEnvironmentClass& env)
   //              which calls 'mcmcplot.m'.
   //******************************************************
   mcg.generateChains(NULL, // compute proposal cov matrix internally
-                     NULL, // use default prior() routine
-                     (void *) &uqAppl_M2lLikelihoodFunction_Data);
+                     (void *) &calib_PriorFunction_Data,
+                     (void *) &calib_LikelihoodFunction_Data);
 
-  uq_StateEvolutionFunction_Class<V,M> uq_StateEvolutionFunction_Obj;
+  calib_QoIPredictionFunction_DataType<V,M> calib_QoIPredictionFunction_Data;
+  tmp_QoIPredictionFunction_Class<V,M>      calib_QoIPredictionFunction_Obj(calib_QoIPredictionFunction_Routine<V,M>);
   uqPrediction(mcg.chain(),
                mcg.lrSigma2Chain(),
                500,
-               uq_StateEvolutionFunction_Obj,
-               (void *) &uqAppl_M2lLikelihoodFunction_Data, // Yes, use 'Likelihood' data type as well
+               calib_QoIPredictionFunction_Obj,
+               (void *) &calib_QoIPredictionFunction_Data, // Yes, use 'Likelihood' data type as well
                mcg.outputFileName());
 
   //*****************************************************
@@ -292,126 +455,6 @@ uqAppl(const uqEnvironmentClass& env)
 
   if (env.rank() == 0) std::cout << "Finishing run of 'uqAlgaeEx' example"
                                  << std::endl;
-
-  return;
-}
-
-template<class V, class M>
-double
-uqAppl_M2lPriorFunction_Routine(const V& paramValues, const void* functionDataPtr)
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      paramValues.env().rank(),
-                      "uqAppl_M2lPriorFunction_Routine(), in uqAlgaeEx.h",
-                      "should not be here, since application is using the default prior() routine provided by PECOS toolkit");
-  return 0.;
-}
-
-template<class V, class M>
-void
-uqAppl_StateEvolutionFunction_Routine(const V& paramValues, const void* functionDataPtr, std::vector<V*>& states)
-{
-  const std::vector<double>& instantsOfAZPObservations            = *((uqAppl_M2lLikelihoodFunction_DataType<V,M> *) functionDataPtr)->instantsOfAZPObservations;
-  const std::vector<V*>&     observedEvolutionOfAZPConcentrations = *((uqAppl_M2lLikelihoodFunction_DataType<V,M> *) functionDataPtr)->observedEvolutionOfAZPConcentrations;
-  const std::vector<double>& evolutionOfQpV                       = *((uqAppl_M2lLikelihoodFunction_DataType<V,M> *) functionDataPtr)->evolutionOfQpV;
-  const std::vector<double>& evolutionOfT                         = *((uqAppl_M2lLikelihoodFunction_DataType<V,M> *) functionDataPtr)->evolutionOfT;
-  const std::vector<double>& evolutionOfPin                       = *((uqAppl_M2lLikelihoodFunction_DataType<V,M> *) functionDataPtr)->evolutionOfPin;
-#ifdef __APPL_USES_GSL__
-  uqGslOdeSolverClass&       gslOdeSolver                         = *((uqAppl_M2lLikelihoodFunction_DataType<V,M> *) functionDataPtr)->gslOdeSolver;
-#endif
-
-  // The initial concentrations are also unknown and treated as extra parameters
-  V initialConcentrations(*observedEvolutionOfAZPConcentrations[0]);
-  initialConcentrations[0] = paramValues[6];
-  initialConcentrations[1] = paramValues[7];
-  initialConcentrations[2] = paramValues[8];
-
-  uqAppl_StateDotFunction_DataType<V,M> uqAppl_StateDotFunction_Data;
-  uqAppl_StateDotFunction_Data.muMax          = paramValues[0];
-  uqAppl_StateDotFunction_Data.rhoA           = paramValues[1];
-  uqAppl_StateDotFunction_Data.rhoZ           = paramValues[2];
-  uqAppl_StateDotFunction_Data.k              = paramValues[3];
-  uqAppl_StateDotFunction_Data.alpha          = paramValues[4];
-  uqAppl_StateDotFunction_Data.th             = paramValues[5];
-  uqAppl_StateDotFunction_Data.evolutionOfQpV = &evolutionOfQpV;
-  uqAppl_StateDotFunction_Data.evolutionOfT   = &evolutionOfT;
-  uqAppl_StateDotFunction_Data.evolutionOfPin = &evolutionOfPin;
-
-  //if (initialConcentrations.env().rank() == 0) {
-  //  std::cout << "In uqAppl_StateEvolutionFunction_Routine():"
-  //            << "\n A0    = " << initialConcentrations[0]
-  //            << "\n Z0    = " << initialConcentrations[1]
-  //            << "\n P0    = " << initialConcentrations[2]
-  //            << "\n muMax = " << uqAppl_StateDotFunction_Data.muMax
-  //            << "\n rhoA  = " << uqAppl_StateDotFunction_Data.rhoA
-  //            << "\n rhoZ  = " << uqAppl_StateDotFunction_Data.rhoZ
-  //            << "\n k     = " << uqAppl_StateDotFunction_Data.k
-  //            << "\n alpha = " << uqAppl_StateDotFunction_Data.alpha
-  //            << "\n th    = " << uqAppl_StateDotFunction_Data.th
-  //            << "\n"
-  //            << std::endl;
-    //std::cout << "In uqAppl_StateEvolutionFunction_Routine():"
-    //          << " information on QpV, Pin, T"
-    //          << std::endl;
-    //for (unsigned int i = 0; i < evolutionOfQpV.size(); ++i) {
-    //  std::cout << i                 << " "
-    //            << evolutionOfQpV[i] << " "
-    //            << evolutionOfT  [i] << " "
-    //            << evolutionOfPin[i]
-    //            << std::endl;
-    //}
-    //std::cout << std::endl;
-  //}
-
-#ifdef __APPL_USES_GSL__
-  gslOdeSolver.solveODE(uqGslAlgaeExStateDot,
-                        NULL,
-                        instantsOfAZPObservations,
-                        initialConcentrations,
-                        (void *)&uqAppl_StateDotFunction_Data, // data for stateDot computations
-                        1.e-1,                                 // suggested time step
-                        states);
-#endif
-#ifdef __APPL_USES_TRILINOS__
-  UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
-                    paramValue.env().rank(),
-                    "uqAppl_StateEvolutionFunction_Routine()",
-                    "not yet implemented with Trilinos");
-#endif
-  //if (initialConcentrations.env().rank() == 0) {
-  //  std::cout << "In uqAppl_StateEvolutionFunction_Routine()" << std::endl;
-  //  for (unsigned int i = 0; i < instantsOfAZPObservations.size(); ++i) {
-  //    std::cout << "  for t = " << instantsOfAZPObservations[i]
-  //              << ", state = " << *(states[i])
-  //              << std::endl;
-  //  }
-  //}
-
-  return;
-}
-
-template<class V, class M>
-void
-uqAppl_M2lLikelihoodFunction_Routine(const V& paramValues, const void* functionDataPtr, V& resultValues)
-{
-  std::vector<V*> computedEvolutionOfConcentrations(0);//,NULL);
-  uqAppl_StateEvolutionFunction_Routine<V,M>(paramValues, functionDataPtr, computedEvolutionOfConcentrations);
-
-  const std::vector<double>& instantsOfAZPObservations = *((uqAppl_M2lLikelihoodFunction_DataType<V,M> *) functionDataPtr)->instantsOfAZPObservations;
-  const std::vector<V*>&     observedEvolutionOfAZPConcentrations = *((uqAppl_M2lLikelihoodFunction_DataType<V,M> *) functionDataPtr)->observedEvolutionOfAZPConcentrations;
-  resultValues[0] = 0.;
-  resultValues[1] = 0.;
-  resultValues[2] = 0.;
-  for (unsigned int i = 0; i < instantsOfAZPObservations.size(); ++i) {
-    resultValues[0] += pow( (*computedEvolutionOfConcentrations[i])[0] - (*observedEvolutionOfAZPConcentrations[i])[0],2. );
-    resultValues[1] += pow( (*computedEvolutionOfConcentrations[i])[1] - (*observedEvolutionOfAZPConcentrations[i])[1],2. );
-    resultValues[2] += pow( (*computedEvolutionOfConcentrations[i])[2] - (*observedEvolutionOfAZPConcentrations[i])[2],2. );
-  }
-
-  for (unsigned int i = 0; i < computedEvolutionOfConcentrations.size(); ++i) {
-    if (computedEvolutionOfConcentrations[i]) delete computedEvolutionOfConcentrations[i];
-  }
-  computedEvolutionOfConcentrations.clear();
 
   return;
 }

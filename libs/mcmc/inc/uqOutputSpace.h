@@ -31,6 +31,7 @@ public:
                               const char*               prefix);
   virtual ~uqOutputSpaceClass();
 
+          bool                    updateVariance            () const;
           unsigned int            dim                       () const;
   virtual void                    print                     (std::ostream& os) const;
 
@@ -39,12 +40,15 @@ protected:
           void                    getMyOptionValues         (po::options_description& optionsDesc);
 
   po::options_description*        m_optionsDesc;
+  std::string m_option_help;
+  std::string m_option_updateVariance;
+  std::string m_option_numSubSpaces;
+  std::string m_option_specificationFile;
+
   //std::vector<uqObservableClass*> m_observables; // FIXME: will need to be a parallel vector in case of a very large number of parameters
 
   using uqFinDimLinearSpaceClass<V,M>::m_env;
-  std::string m_option_help;
-  std::string m_option_numSubSpaces;
-  std::string m_option_specificationFile;
+  bool  m_updateVariance;
   using uqFinDimLinearSpaceClass<V,M>::m_dim;
 };
 
@@ -67,10 +71,13 @@ uqOutputSpaceClass<V,M>::uqOutputSpaceClass(
   uqFinDimLinearSpaceClass<V,M>(env,prefix),
   m_optionsDesc                (NULL)
 {
-  //std::cout << "Entering uqOutputSpaceClass<V,M>::constructor()"
-  //          << std::endl;
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Entering uqOutputSpaceClass<V,M>::constructor()"
+              << std::endl;
+  }
 
   m_option_help              = uqFinDimLinearSpaceClass<V,M>::m_prefix + "outputSpace_help";
+  m_option_updateVariance    = uqFinDimLinearSpaceClass<V,M>::m_prefix + "outputSpace_updateVariance";
   m_option_numSubSpaces      = uqFinDimLinearSpaceClass<V,M>::m_prefix + "outputSpace_numSubSpaces";
   m_option_specificationFile = uqFinDimLinearSpaceClass<V,M>::m_prefix + "outputSpace_specificationFile";
 
@@ -84,8 +91,10 @@ uqOutputSpaceClass<V,M>::uqOutputSpaceClass(
                                    << "\n" << *this
                                    << std::endl;
 
-  //std::cout << "Leaving uqOutputSpaceClass<V,M>::constructor()"
-  //          << std::endl;
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Leaving uqOutputSpaceClass<V,M>::constructor()"
+              << std::endl;
+  }
 }
 
 template <class V, class M>
@@ -106,9 +115,10 @@ uqOutputSpaceClass<V,M>::defineMyOptions(
   po::options_description& optionsDesc) const
 {
   m_optionsDesc->add_options()
-    (m_option_help.c_str(),                                                           "produce help message for UQ observable space"                 )
-    (m_option_numSubSpaces.c_str(), po::value<unsigned int>()->default_value(0),      "number of quantity subspaces (vectors of output quantities)"  )
-    (m_option_specificationFile.c_str(), po::value<std::string>()->default_value(""), "File with the specification of all observables to be computed")
+    (m_option_help.c_str(),                                                            "produce help message for UQ observable space"                 )
+    (m_option_updateVariance.c_str(),    po::value<bool        >()->default_value(0),  "update variance of likelihood results"                        )
+    (m_option_numSubSpaces.c_str(),      po::value<unsigned int>()->default_value(0),  "number of quantity subspaces (vectors of output quantities)"  )
+    (m_option_specificationFile.c_str(), po::value<std::string >()->default_value(""), "File with the specification of all observables to be computed")
   ;
 
   return;
@@ -121,6 +131,11 @@ uqOutputSpaceClass<V,M>::getMyOptionValues(po::options_description& optionsDesc)
   if (m_env.allOptionsMap().count(m_option_help.c_str())) {
     std::cout << optionsDesc
               << std::endl;
+  }
+
+  if (m_env.allOptionsMap().count(m_option_updateVariance.c_str())) {
+    const po::variables_map& tmpMap = m_env.allOptionsMap();
+    m_updateVariance = tmpMap[m_option_updateVariance.c_str()].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_numSubSpaces.c_str())) {
@@ -142,6 +157,13 @@ uqOutputSpaceClass<V,M>::getMyOptionValues(po::options_description& optionsDesc)
 }
 
 template <class V, class M>
+bool
+uqOutputSpaceClass<V,M>::updateVariance() const
+{
+  return m_updateVariance;
+}
+
+template <class V, class M>
 unsigned int
 uqOutputSpaceClass<V,M>::dim() const
 {
@@ -152,7 +174,8 @@ template <class V, class M>
 void
 uqOutputSpaceClass<V,M>::print(std::ostream& os) const
 {
-  os << uqFinDimLinearSpaceClass<V,M>::m_prefix << "dim = " << m_dim
+  os <<         uqFinDimLinearSpaceClass<V,M>::m_prefix << "updateVariance = " << m_updateVariance
+     << "\n" << uqFinDimLinearSpaceClass<V,M>::m_prefix << "numSubspaces = "   << m_dim
      << std::endl;
 
   return;
