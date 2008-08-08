@@ -1,4 +1,4 @@
-#include <uqHimmelEx.h>
+#include <uqChemEx.h>
 #include <uqApplRoutines.h>
 #include <uqGslMatrix.h>
 
@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
 }
 
 int
-uqGslHimmelExStateDot( // Compute state dot = dConcentrations/dt
+uqGslChemExStateDot( // Compute state dot = dConcentrations/dt
   double       t,
   const double currentState[],           // current concentrations
   double       stateDot[],               // dConcentrations/dt

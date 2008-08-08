@@ -76,9 +76,9 @@ uqStateSpaceClass<V,M>::uqStateSpaceClass(
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
 
-  if (m_env.rank() == 0) std::cout << "After getting option values, state of uqStateSpaceClass object is:"
-                                   << "\ndimension = " << m_dim
-                                   << "\n"
+  if (m_env.rank() == 0) std::cout << "After getting values of options with prefix '" <<  uqFinDimLinearSpaceClass<V,M>::m_prefix
+                                   << "', state of uqStateSpaceClass object is:"
+                                   << "\n" << *this
                                    << std::endl;
 
   //std::cout << "Leaving uqStateSpaceClass<V,M>::constructor()"
@@ -138,7 +138,7 @@ template <class V, class M>
 void
 uqStateSpaceClass<V,M>::print(std::ostream& os) const
 {
-  os << "m_dim = " << m_dim
+  os <<  uqFinDimLinearSpaceClass<V,M>::m_prefix << "dim = " << m_dim
      << std::endl;
 
   return;

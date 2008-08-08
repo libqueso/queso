@@ -1,4 +1,4 @@
-#include <uqHimmelEx.h>
+#include <uqChemEx.h>
 #include <uqTrilinosMatrix.h>
 
 int main(int argc, char* argv[])

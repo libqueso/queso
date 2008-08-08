@@ -1,7 +1,7 @@
 #include <uqEnvironment.h>
 #include <uqDefines.h>
 
-#define PECOS_TOOLKIT_CURRENT_VERSION "0.1"
+#define QUESO_TOOLKIT_MCMC_TOOL_CURRENT_VERSION "0.1"
 
 uqEnvOptionsStruct::uqEnvOptionsStruct(
   unsigned int verbosity,
@@ -101,7 +101,7 @@ uqEnvironmentClass::commonConstructor()
   //                           << std::endl;
 
   if (m_rank == 0) std::cout << "\n================================="
-                             << "\n PECOS toolkit, version " << PECOS_TOOLKIT_CURRENT_VERSION
+                             << "\n QUESO toolkit, MCMC tool, version " << QUESO_TOOLKIT_MCMC_TOOL_CURRENT_VERSION
                              << "\n================================="
                              << "\n"
                              << std::endl;
@@ -183,7 +183,7 @@ uqEnvironmentClass::readEventualInputFile()
 
   if (displayHelpMessageAndExit) {
     if (m_rank == 0) std::cout << "\nThis is a help message of the UQ library."
-                               << "\nAn UQ application using the PECOS toolkit shall be executed by typing"
+                               << "\nAn UQ application using the MCMC tool ot the QUESO toolkit shall be executed by typing"
                                << "\n  '<eventual mpi commands and options> <uqApplication> -i <uqInputFile>'"
                                << "\nin the command line."
                                << "\n"

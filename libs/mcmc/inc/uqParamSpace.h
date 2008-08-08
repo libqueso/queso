@@ -114,8 +114,10 @@ uqParamSpaceClass<V,M>::uqParamSpaceClass(
   m_priorMuValues              (NULL),
   m_priorSigmaValues           (NULL)
 {
-  //std::cout << "Entering uqParamSpaceClass<V,M>::constructor()"
-  //          << std::endl;
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Entering uqParamSpaceClass<V,M>::constructor()"
+              << std::endl;
+  }
 
   m_option_help              = uqFinDimLinearSpaceClass<V,M>::m_prefix + "paramSpace_help";
   m_option_dim               = uqFinDimLinearSpaceClass<V,M>::m_prefix + "paramSpace_dim";
@@ -126,13 +128,15 @@ uqParamSpaceClass<V,M>::uqParamSpaceClass(
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
 
-  if (m_env.rank() == 0) std::cout << "After getting option values, state of uqParamSpaceClass object is:"
-                                   << "\n" << uqFinDimLinearSpaceClass<V,M>::m_prefix << "dimension = " << m_parameters.size()
-                                   << "\n"
+  if (m_env.rank() == 0) std::cout << "After getting values of options with prefix '" << uqFinDimLinearSpaceClass<V,M>::m_prefix
+                                   << "', state of uqParamSpaceClass object is:"
+                                   << "\n" << *this
                                    << std::endl;
 
-  //std::cout << "Leaving uqParamSpaceClass<V,M>::constructor()"
-  //          << std::endl;
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Leaving uqParamSpaceClass<V,M>::constructor()"
+              << std::endl;
+  }
 }
 
 template <class V, class M>
@@ -174,6 +178,11 @@ template <class V, class M>
 void
 uqParamSpaceClass<V,M>::getMyOptionValues(po::options_description& optionsDesc)
 {
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Entering uqParamSpaceClass<V,M>::getMyOptionValues()"
+              << std::endl;
+  }
+
   if (m_env.allOptionsMap().count(m_option_help.c_str())) {
     std::cout << optionsDesc
               << std::endl;
@@ -192,6 +201,11 @@ uqParamSpaceClass<V,M>::getMyOptionValues(po::options_description& optionsDesc)
       paramFileName = tmpMap[m_option_specificationFile.c_str()].as<std::string>();
       readParamsFromFile(paramFileName);
     }
+  }
+
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Leaving uqParamSpaceClass<V,M>::getMyOptionValues()"
+              << std::endl;
   }
 
   return;
@@ -583,7 +597,8 @@ template <class V, class M>
 void
 uqParamSpaceClass<V,M>::print(std::ostream& os) const
 {
-  os << "m_dim = " << m_dim
+  os << uqFinDimLinearSpaceClass<V,M>::m_prefix << "dim = " << m_dim
+     << "\nParameters are:"
      << std::endl;
   for (unsigned int i = 0; i < this->dim(); ++i) {
     os << i << " ";

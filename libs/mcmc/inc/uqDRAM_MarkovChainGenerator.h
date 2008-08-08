@@ -259,29 +259,29 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::uqDRAM_MarkovChainGeneratorClass(
   m_epsilon                      (UQ_MCMC_AM_EPSILON_ODV),
   m_namesOfOutputFiles           (1,UQ_MCMC_MH_OUTPUT_FILE_NAME_ODV),
   m_chainDisplayPeriod           (UQ_MCMC_MH_CHAIN_DISPLAY_PERIOD_ODV),
-  m_runBMM                       (false),
+  m_runBMM                       (UQ_MCMC_RUN_BMM_ODV),
   m_initialPosForBMM             (0),//,0),
   m_lengthsForBMM                (0),//,0),
-  m_computePSDs                  (false),
+  m_computePSDs                  (UQ_MCMC_COMPUTE_PSDS_ODV),
   m_initialPosForPSD             (0),//,0),
   m_numBlocksForPSD              (0),//,0),
   m_hopSizeRatioForPSD           (1.),
-  m_computeGewekeCoefs           (false),
+  m_computeGewekeCoefs           (UQ_MCMC_COMPUTE_GEWEKE_COEFS_ODV),
   m_initialPosForGeweke          (0),//,0),
   m_ratioNaForGeweke             (0.),
   m_ratioNbForGeweke             (0.),
-  m_computeCorrelations          (false),
+  m_computeCorrelations          (UQ_MCMC_COMPUTE_CORRELATIONS_ODV),
   m_initialPosForCorrs           (0),//,0),
   m_lagsForCorrs                 (0),//,0),
   m_initialPosForUncorrelation   (0),
   m_spacingForUncorrelation      (0),
   m_minPositionsForStatistics    (m_paramSpace.newVector()),
   m_maxPositionsForStatistics    (m_paramSpace.newVector()),
-  m_computeHistograms            (false),
+  m_computeHistograms            (UQ_MCMC_COMPUTE_HISTOGRAMS_ODV),
   m_numberOfInternalBinsForHists (0),
   m_centersForAllHistogramBins   (0),//,NULL),
   m_histogramBinsForAllParams    (0),//,NULL),
-  m_computeKDEs                  (false),
+  m_computeKDEs                  (UQ_MCMC_COMPUTE_KDES_ODV),
   m_numberOfEvaluationPosForKDEs (0),
   m_evaluationPositionsForKDEs   (0),//,NULL),
   m_scalesForKDEs                (m_paramSpace.newVector()),
@@ -417,7 +417,8 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::uqDRAM_MarkovChainGeneratorClass(
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
 
-  if (m_env.rank() == 0) std::cout << "After getting option values, state of uqDRAM_MarkovChainGeneratorClass object is:"
+  if (m_env.rank() == 0) std::cout << "After getting values of options with prefix '" << m_prefix
+                                   << "', state of uqDRAM_MarkovChainGeneratorClass object is:"
                                    << "\n" << *this
                                    << std::endl;
 
@@ -548,7 +549,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::defineMyOptions(
     (m_option_am_epsilon.c_str(),                   po::value<double      >()->default_value(UQ_MCMC_AM_EPSILON_ODV                ), "'am' epsilon"                                           )
     (m_option_mh_namesOfOutputFiles.c_str(),        po::value<std::string >()->default_value(UQ_MCMC_MH_OUTPUT_FILE_NAME_ODV       ), "'mh' name(s) of output file(s)"                         )
     (m_option_mh_chainDisplayPeriod.c_str(),        po::value<unsigned int>()->default_value(UQ_MCMC_MH_CHAIN_DISPLAY_PERIOD_ODV   ), "'mh' period of message display during chain generation" )
-    (m_option_runBMM.c_str(),                       po::value<bool        >()->default_value(UQ_MCMC_RUN_BMM_ODV                   ), "compute sample variance with batch means method"        )
+    (m_option_runBMM.c_str(),                       po::value<bool        >()->default_value(UQ_MCMC_RUN_BMM_ODV                   ), "compute variance of sample mean with batch means method")
 #if 0
     (m_option_initialPosForBMM.c_str(),             po::value<            >()->default_value(), "")
     (m_option_lengthsForBMM.c_str(),                po::value<            >()->default_value(), "")
@@ -722,6 +723,30 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::getMyOptionValues(
 
   if (m_env.allOptionsMap().count(m_option_mh_chainDisplayPeriod.c_str())) {
     m_chainDisplayPeriod = m_env.allOptionsMap()[m_option_mh_chainDisplayPeriod.c_str()].as<unsigned int>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_runBMM.c_str())) {
+    m_runBMM = m_env.allOptionsMap()[m_option_runBMM.c_str()].as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_computePSDs.c_str())) {
+    m_computePSDs = m_env.allOptionsMap()[m_option_computePSDs.c_str()].as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_computeGewekeCoefs.c_str())) {
+    m_computeGewekeCoefs = m_env.allOptionsMap()[m_option_computeGewekeCoefs.c_str()].as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_computeCorrelations.c_str())) {
+    m_computeCorrelations = m_env.allOptionsMap()[m_option_computeCorrelations.c_str()].as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_computeHistograms.c_str())) {
+    m_computeHistograms = m_env.allOptionsMap()[m_option_computeHistograms.c_str()].as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_computeKDEs.c_str())) {
+    m_computeKDEs = m_env.allOptionsMap()[m_option_computeKDEs.c_str()].as<bool>();
   }
 
   return;
@@ -2097,37 +2122,43 @@ template <class V, class M>
 void
 uqDRAM_MarkovChainGeneratorClass<V,M>::print(std::ostream& os) const
 {
-  os << m_prefix << "sizesOfChains = ";
+  os << m_option_mh_sizesOfChains << " = ";
   for (unsigned int i = 0; i < m_sizesOfChains.size(); ++i) {
     os << m_sizesOfChains[i] << " ";
   }
-  os << "\n" << m_prefix << "lrUpdateSigma2 = " << m_lrUpdateSigma2
-     << "\n" << m_prefix << "lrSigma2Priors = ";
+  os << "\n" << m_option_mh_lrUpdateSigma2 << " = " << m_lrUpdateSigma2
+     << "\n" << m_option_mh_lrSigma2Priors << " = ";
   for (unsigned int i = 0; i < m_lrSigma2Priors->size(); ++i) {
     os << (*m_lrSigma2Priors)[i] << " ";
   }
-  os << "\n" << m_prefix << "lrSigma2Accuracies = ";
+  os << "\n" << m_option_mh_lrSigma2Accuracies << " = ";
   for (unsigned int i = 0; i < m_lrSigma2Accuracies->size(); ++i) {
     os << (*m_lrSigma2Accuracies)[i] << " ";
   }
-  os << "\n" << m_prefix << "lrNumbersOfObservations = ";
+  os << "\n" << m_option_mh_lrNumbersOfObs << " = ";
   for (unsigned int i = 0; i < m_lrNumbersOfObservations->size(); ++i) {
     os << (*m_lrNumbersOfObservations)[i] << " ";
   }
-  os << "\n" << m_prefix << "maxNumberOfExtraStages = " << m_maxNumberOfExtraStages
-     << "\n" << m_prefix << "scalesForCovMProposals = ";
+  os << "\n" << m_option_dr_maxNumberOfExtraStages << " = " << m_maxNumberOfExtraStages
+     << "\n" << m_option_dr_scalesForExtraStages << " = ";
   for (unsigned int i = 0; i < m_scalesForCovMProposals.size(); ++i) {
     os << m_scalesForCovMProposals[i] << " ";
   }
-  os << "\n" << m_prefix << "initialNonAdaptInterval = " << m_initialNonAdaptInterval
-     << "\n" << m_prefix << "adaptInterval = "           << m_adaptInterval
-     << "\n" << m_prefix << "eta = "                     << m_eta
-     << "\n" << m_prefix << "epsilon = "                 << m_epsilon;
-  os << "\n" << m_prefix << "namesOfOutputFiles = ";
+  os << "\n" << m_option_am_initialNonAdaptInterval << " = " << m_initialNonAdaptInterval
+     << "\n" << m_option_am_adaptInterval           << " = " << m_adaptInterval
+     << "\n" << m_option_am_eta                     << " = " << m_eta
+     << "\n" << m_option_am_epsilon                 << " = " << m_epsilon;
+  os << "\n" << m_option_mh_namesOfOutputFiles << " = ";
   for (unsigned int i = 0; i < m_namesOfOutputFiles.size(); ++i) {
     os << m_namesOfOutputFiles[i] << " ";
   }
-  os << "\n" << m_prefix << "chainDisplayPeriod = " << m_chainDisplayPeriod;
+  os << "\n" << m_option_mh_chainDisplayPeriod  << " = " << m_chainDisplayPeriod;
+  os << "\n" << m_option_runBMM              << " = " << m_runBMM;
+  os << "\n" << m_option_computePSDs         << " = " << m_computePSDs;
+  os << "\n" << m_option_computeGewekeCoefs  << " = " << m_computeGewekeCoefs;
+  os << "\n" << m_option_computeCorrelations << " = " << m_computeCorrelations;
+  os << "\n" << m_option_computeHistograms   << " = " << m_computeHistograms;
+  os << "\n" << m_option_computeKDEs         << " = " << m_computeKDEs;
   os << std::endl;
 
   return;

@@ -1,21 +1,21 @@
 clear all;
 path(path,getenv('MCMC_TOOLBOX_PATH_FOR_PECOS_TOOLKIT'));
 path(path,pwd);
-uqHimmelExOutput;
+uqChemExOutput;
 
 %clf;
-%[chainsize,npar]=size(chainCpp);
+%[chainsize,npar]=size(queso_cal_chain);
 %x = (1:chainSize)';%'
-%plot(x,chainCpp(:,1),'.');
+%plot(x,queso_cal_chain(:,1),'.');
 %waitforbuttonpress;
 
 %figure(1); clf
-%mcmcplot(chainCpp,[],resultsCpp.names,'chainpanel')
+%mcmcplot(queso_cal_chain,[],queso_cal_results.names,'chainpanel')
 %subplot(2,2,4)
-%mcmcplot(sqrt(s2chainCpp),[],[],'dens',2)
+%mcmcplot(sqrt(s2queso_cal_chain),[],[],'dens',2)
 %title('error std')
 
-%chainstats(chainCpp,resultsCpp);
+%chainstats(queso_cal_chain,queso_cal_results);
 
 data.ydata = [
             0     0.02090
@@ -47,18 +47,18 @@ data.y0 = [0.02090;0.02090/3;0;0;0];
 
 %figure(2);
 clf;
-[t,y] = ode45(@himmelode,linspace(0,600),data.y0,[],mean(chainCpp));
+[t,y] = ode45(@himmelode,linspace(0,600),data.y0,[],mean(queso_cal_chain));
 plot(data.ydata(:,1),data.ydata(:,2),'s',t,y,'-')
 ylim([0,0.021])
 legend('Observed A','Predicted A','Predicted B','Predicted C','Predicted D','Predicted E',0)
 xlabel('t (min)');
 ylabel('A (moles/liter)');
-print -dpng himmelAcomp.png;
+print -dpng chemAcomp.png;
 title('Observed data and predicted results with the mean of the chain')
 
 %modelfun = @(d,th) tempf(d,th);
 %nsample = 500;
-%out = mcmcpred(resultsCpp,chainCpp,s2chainCpp,data.ydata(:,1),modelfun,nsample);
+%out = mcmcpred(queso_cal_results,queso_cal_chain,s2queso_cal_chain,data.ydata(:,1),modelfun,nsample);
 %figure
 %mcmcpredplot(out);
 %hold on

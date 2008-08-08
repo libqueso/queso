@@ -1,32 +1,34 @@
 ###############################################
 # UQ Environment
 ###############################################
-# uqEnv_help      = anything
+uqEnv_help      = anything
 uqEnv_verbosity = 2
+uqEnv_seed      = -1
 
 ###############################################
 # UQ Parameter Space
 ###############################################
-# uqParamSpace_help      = anything
-uqParamSpace_dim       = 3
-uqParamSpace_inputFile = uqHimmelEx.par
+cal_paramSpace_help              = anything
+cal_paramSpace_dim               = 3
+cal_paramSpace_specificationFile = uqChemEx.par
 
 ###############################################
 # UQ State Space
 ###############################################
-# uqStateSpace_help = anything
-uqStateSpace_dim  = 5
+cal_stateSpace_help = anything
+cal_stateSpace_dim  = 5
 
 ###############################################
 # UQ Output Space
 ###############################################
-# uqOutputSpace_help = anything
-uqOutputSpace_n_soq = 1
+cal_outputSpace_help              = anything
+cal_outputSpace_numSubSpaces      = 1
+cal_outputSpace_specificationFile = uqChemEx.out
 
 ###############################################
 # UQ DRAM Markov Chain Generator
 ###############################################
-# cal_MCMC_help                       = anything
+cal_MCMC_help                       = anything
 cal_MCMC_mh_sizesOfChains           = 100001
 cal_MCMC_mh_lrUpdateSigma2          = 1
 cal_MCMC_mh_lrSigma2Priors          = 2.1876e-08
@@ -38,8 +40,14 @@ cal_MCMC_am_initialNonAdaptInterval = 100
 cal_MCMC_am_adaptInterval           = 100
 cal_MCMC_am_eta                     = 1.92
 cal_MCMC_am_epsilon                 = 1.e-5
-cal_MCMC_mh_namesOfOutputFiles      = uqHimmelExOutput.m
+cal_MCMC_mh_namesOfOutputFiles      = uqChemExOutput.m
 cal_MCMC_mh_chainDisplayPeriod      = 5000
+cal_MCMC_runBMM                     = 1
+cal_MCMC_computePSDs                = 1
+cal_MCMC_computeGewekeCoefficients  = 1
+cal_MCMC_computeCorrelations        = 1
+cal_MCMC_computeHistograms          = 1
+cal_MCMC_computeKDEs                = 1
 
 ###############################################
 # UQ Other Inputs

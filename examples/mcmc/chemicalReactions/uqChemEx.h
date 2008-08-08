@@ -30,7 +30,7 @@ double observationsOfA[] = {
 #include <uqDRAM_MarkovChainGenerator.h>
 #ifdef __APPL_USES_GSL__
 #include <uqGslOdeSolver.h>
-int uqGslHimmelExStateDot(double t, const double currentState[], double stateDot[], void* infoForComputingStateDot);
+int uqGslChemExStateDot(double t, const double currentState[], double stateDot[], void* infoForComputingStateDot);
 #endif
 
 template<class V, class M>
@@ -56,7 +56,7 @@ template<class V, class M>
 void 
 uqAppl(const uqEnvironmentClass& env)
 {
-  if (env.rank() == 0) std::cout << "Beginning run of 'uqHimmelEx' example\n"
+  if (env.rank() == 0) std::cout << "Beginning run of 'uqChemEx' example\n"
                                  << std::endl;
 
   UQ_FATAL_TEST_MACRO(env.isThereInputFile() == false,
@@ -119,7 +119,7 @@ uqAppl(const uqEnvironmentClass& env)
 
   //******************************************************
   // Step 4 of 4: Generate chains.
-  //              In MATLAB, one should then run uqHimmelEx.m,
+  //              In MATLAB, one should then run uqChemEx.m,
   //******************************************************
   mcg.generateChains(NULL, // compute proposal cov matrix internally
                      NULL, // use default prior() routine
@@ -139,7 +139,7 @@ uqAppl(const uqEnvironmentClass& env)
   observedEvolutionOfAConcentration.clear();
   delete initialConcentrations;
 
-  if (env.rank() == 0) std::cout << "Finishing run of 'uqHimmelEx' example"
+  if (env.rank() == 0) std::cout << "Finishing run of 'uqChemEx' example"
                                  << std::endl;
 
   return;
@@ -172,7 +172,7 @@ uqAppl_M2lLikelihoodFunction_Routine(const V& paramValues, const void* functionD
 
   std::vector<V*> computedEvolutionOfConcentrations(0);//,NULL);
 #ifdef __APPL_USES_GSL__
-  gslOdeSolver.solveODE(uqGslHimmelExStateDot,
+  gslOdeSolver.solveODE(uqGslChemExStateDot,
                         NULL,
                         instantsOfAObservations,
                         initialConcentrations,
