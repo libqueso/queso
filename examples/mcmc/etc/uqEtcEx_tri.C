@@ -1,4 +1,4 @@
-/* uq/examples/mcmc/etc/uqEtcEx_gsl.C
+/* uq/examples/mcmc/etc/uqEtcEx_tri.C
  *
  * Copyright (C) 2008 The PECOS Team, http://queso.ices.utexas.edu
  *
@@ -17,26 +17,27 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <uqEtc.h>
-#include <uqApplRoutines.h>
-#include <uqGslMatrix.h>
+#include <uqEtcEx.h>
+#include <uqTrilinosMatrix.h>
 
 int main(int argc, char* argv[])
 {
   //************************************************
   // Initialize environment
   //************************************************
+  MPI_Init(&argc,&argv);
   uqEnvironmentClass* env = new uqEnvironmentClass(argc,argv);
 
   //************************************************
   // Call application
   //************************************************
-  uqAppl<uqGslVectorClass,uqGslMatrixClass>(*env);
+  uqAppl<uqTrilinosVectorClass,uqTrilinosMatrixClass>(*env);
 
   //************************************************
   // Finalize environment
   //************************************************
   delete env;
+  MPI_Finalize();
 
   return 0;
 }

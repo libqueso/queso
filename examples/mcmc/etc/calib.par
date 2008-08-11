@@ -1,5 +1,5 @@
 #
-# Name[P_i]  P_i^{(0)}  Min[P_i]  Max[P_i]  E[P_i]  V[P_i]
+# Name[P_i]  P_i^{(0)}  Min[P_i]  Max[P_i]  E[P_i]  \sigma[P_i]
 ParamName_1  0.         -inf      inf       0.      inf
 ParamName_2  0.         -inf      inf       0.      inf
 ParamName_3  0.         -inf      inf       0.      inf

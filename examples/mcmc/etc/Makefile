@@ -79,7 +79,7 @@ endif
 CXX = g++
 CXXFLAGS = -Wall -c
 
-all:	uqEtc
+all:	uqEtcEx
 
 echo_basic_type:
 	@echo 'UQBT = ' $(UQBT)
@@ -93,10 +93,10 @@ clean_lib:
 clean_exec:
 	rm -f *~
 	rm -f *.o
-	rm -f uqEtc_$(UQBT)
+	rm -f uqEtcEx_$(UQBT)
 
-uqEtc: libs uqEtc_$(UQBT).o
-	$(CXX) $(LIB_PATHS) uqEtc_$(UQBT).o -o uqEtc_$(UQBT) $(LIBS)
+uqEtcEx: libs uqEtcEx_$(UQBT).o
+	$(CXX) $(LIB_PATHS) uqEtcEx_$(UQBT).o -o uqEtcEx_$(UQBT) $(LIBS)
 
 libs:
 	cd ../../../libs/basic/src; make libuq_basic_all UQBT=$(UQBT)
