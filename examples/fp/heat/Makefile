@@ -1,5 +1,18 @@
 override UQBT = gsl
 
+ifeq ($(BOOST_INCLUDE_PATH_FOR_MCMC_TOOL),)
+override BOOST_INCLUDE_PATH_FOR_MCMC_TOOL = .
+endif
+ifeq ($(GSL_INCLUDE_PATH_FOR_MCMC_TOOL),)
+override GSL_INCLUDE_PATH_FOR_MCMC_TOOL = .
+endif
+ifeq ($(BOOST_LIB_PATH_FOR_MCMC_TOOL),)
+override BOOST_LIB_PATH_FOR_MCMC_TOOL = .
+endif
+ifeq ($(GSL_LIB_PATH_FOR_MCMC_TOOL),)
+override GSL_LIB_PATH_FOR_MCMC_TOOL = .
+endif
+
 DEFINES = \
 	-D__EXAMPLE_USES_GSL__
 INC_PATHS = \
@@ -7,14 +20,14 @@ INC_PATHS = \
 	-I../../../libs/basic/inc \
 	-I../../../libs/fp/inc \
 	-I../inc \
-	-I$(BOOST_INCLUDE_PATH_FOR_PECOS_TOOLKIT) \
-	-I$(GSL_INCLUDE_PATH_FOR_PECOS_TOOLKIT)
+	-I$(BOOST_INCLUDE_PATH_FOR_MCMC_TOOL) \
+	-I$(GSL_INCLUDE_PATH_FOR_MCMC_TOOL)
 LIB_PATHS = \
 	-L../../../libs/basic/lib \
 	-L../../../libs/fp/lib \
 	-L../lib \
-	-L$(BOOST_LIB_PATH_FOR_PECOS_TOOLKIT) \
-	-L$(GSL_LIB_PATH_FOR_PECOS_TOOLKIT)
+	-L$(BOOST_LIB_PATH_FOR_MCMC_TOOL) \
+	-L$(GSL_LIB_PATH_FOR_MCMC_TOOL)
 LIBS = \
 	-luq_fp_any \
 	-luq_basic_$(UQBT) \
