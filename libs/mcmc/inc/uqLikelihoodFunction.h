@@ -36,7 +36,7 @@ class uq_LikelihoodFunction_BaseClass {
 public:
   uq_LikelihoodFunction_BaseClass(void (*functionPtr)(const V& paramValues, const void* functionDataPtr, V& likelihoodValues),
                                  const void* functionDataPtr);
- ~uq_LikelihoodFunction_BaseClass();
+  virtual ~uq_LikelihoodFunction_BaseClass();
   virtual void computeActualLikelihoods  (const V& paramValues, V& likelihoodValues) const = 0;
   virtual void computeMinus2LnLikelihoods(const V& paramValues, V& likelihoodValues) const = 0;
   virtual void computeMisfits            (const V& paramValues, V& likelihoodValues) const = 0;

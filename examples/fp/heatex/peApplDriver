@@ -1,2 +1,0 @@
-#!/bin/sh
-uq1DFem_gsl --peDakotaDriven $1 $2

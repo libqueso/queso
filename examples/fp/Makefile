@@ -13,10 +13,10 @@ echo_basic_type:
 clean_all: echo_basic_type clean_heat clean_exec
 
 clean_heat:
-	cd heatex; make clean_all UQBT=$(UQBT)
+	cd heat; make clean_all UQBT=$(UQBT)
 
 clean_exec:
 	rm -f *~
 
 all_heat:
-	cd heatex; make UQBT=$(UQBT)
+	cd heat; make UQBT=$(UQBT)

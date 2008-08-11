@@ -35,7 +35,7 @@ class uq_ProbDensity_BaseClass {
 public:
   uq_ProbDensity_BaseClass(double (*routinePtr)(const V& paramValues, const void* routineDataPtr),
                            const void* routineDataPtr);
- ~uq_ProbDensity_BaseClass();
+  virtual ~uq_ProbDensity_BaseClass();
   virtual double actualDensity  (const V& paramValues) const = 0;
   virtual double minus2LnDensity(const V& paramValues) const = 0;
 

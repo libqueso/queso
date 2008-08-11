@@ -93,9 +93,9 @@ uqObservableSpaceClass<V,M>::uqObservableSpaceClass(
   uqFinDimLinearSpaceClass<V,M>(env,prefix),
   m_optionsDesc                (NULL),
   m_observables                (0),//,NULL),
-  m_dummyObservable            ("NonExistentYet",0.),
+  m_dummyObservable            ("NonExistentYet",0),
   m_updateVariances            (false),
-  m_numbersOfObservations      (NULL),
+  m_numbersOfObservations      (0),
   m_priorVariances             (NULL),
   m_varianceAccuracies         (NULL)
 {

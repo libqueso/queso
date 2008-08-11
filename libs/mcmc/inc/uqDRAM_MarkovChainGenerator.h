@@ -1,6 +1,6 @@
 /* uq/libs/mcmc/inc/uqDRAM_MarkovChainGenerator.h
  *
- * Copyright (C) 2008 The PECOS Team, http://pecos.ices.utexas.edu
+ * Copyright (C) 2008 The PECOS Team, http://queso.ices.utexas.edu
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1758,7 +1758,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::writeChainInfoOut(
   ofs << "];\n";
 
   // Write m_lrChain
-  ofs << "queso_" << m_prefix << "sschain = [";
+  ofs << "queso_" << m_prefix << "lrChain = [";
   for (unsigned int i = 0; i < m_lrChain.size(); ++i) {
     ofs << *(m_lrChain[i])
         << std::endl;
@@ -1766,7 +1766,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::writeChainInfoOut(
   ofs << "];\n";
 
   // Write m_lrSigma2Chain
-  ofs << "queso_" << m_prefix << "s2chain = [";
+  ofs << "queso_" << m_prefix << "lrVarianceChain = [";
   for (unsigned int i = 0; i < m_lrSigma2Chain.size(); ++i) {
     ofs << *(m_lrSigma2Chain[i])
         << std::endl;
@@ -1782,7 +1782,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::writeChainInfoOut(
   ofs << "];\n";
 
   // Write names of parameters
-  ofs << "queso_" << m_prefix << "results.names = {";
+  ofs << "queso_" << m_prefix << "paramNames = {";
   m_paramSpace.printParameterNames(ofs,false);
   ofs << "};\n";
 
@@ -1814,11 +1814,13 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::writeChainInfoOut(
       << "];\n";
 
   // Write prior sigma values
-  ofs << "queso_" << m_prefix << "priorSigValues = ["
+  ofs << "queso_" << m_prefix << "priorSigmaValues = ["
       << m_paramSpace.priorSigmaValues()
       << "];\n";
 
-  ofs << "queso_" << m_prefix << "results.prior = [queso_priorMeanValues',queso_priorSigValues'];\n";
+#if 0
+  ofs << "queso_" << m_prefix << "results.prior = [queso_priorMeanValues',queso_priorSigmaValues'];\n";
+#endif
 
   // Write param lower bounds
   ofs << "queso_" << m_prefix << "low = ["
@@ -1830,6 +1832,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::writeChainInfoOut(
       << m_paramSpace.maxValues()
       << "];\n";
 
+#if 0
   ofs << "queso_" << m_prefix << "results.limits = [queso_low',queso_upp'];\n";
 
   // Write out data for mcmcpred.m
@@ -1862,19 +1865,20 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::writeChainInfoOut(
         << *mahalanobisMatrix
         << "];\n";
   }
+#endif
 
   // Write number of rejections
-  ofs << "queso_" << m_prefix << "results.rejected = "  << (double) m_numRejections/(double) m_chain.size()
+  ofs << "queso_" << m_prefix << "rejected = "  << (double) m_numRejections/(double) m_chain.size()
       << ";\n"
       << std::endl;
 
   // Write number of rejections
-  ofs << "queso_" << m_prefix << "results.simutime = "  << m_chainRunTime
+  ofs << "queso_" << m_prefix << "runTime = "  << m_chainRunTime
       << ";\n"
       << std::endl;
 
   // Write number of outbounds
-  ofs << "queso_" << m_prefix << "results.ulrejected = " << (double) m_numOutOfBounds/(double) m_chain.size()
+  ofs << "queso_" << m_prefix << "outbounds = " << (double) m_numOutOfBounds/(double) m_chain.size()
       << ";\n"
       << std::endl;
 
@@ -2027,26 +2031,4 @@ std::ostream& operator<<(std::ostream& os, const uqDRAM_MarkovChainGeneratorClas
 
   return os;
 }
-// Possible comparisons between Mcmc++ and Mcmc matlab toolbox
-
-// semilogy([1:1000],alphaQuotientsCpp,'*');         
-// hold                                      
-// semilogy([1:1000],results.alphaQuotients,'r.');
-
-// mean(alphaQuotientsCpp)
-// mean(results.alphaQuotients)
-
-// semilogy([1:1000],s2chainCpp,'.');    
-// hold                              
-// semilogy([1:1000],s2chain,'r.');    
-
-// mean(s2chainCpp)
-// mean(s2chain)   
-
-// [zCpp,pCpp] = geweke(chainCpp)
-// [z,p] = geweke(chain)
-
-// tauCpp = iact(chainCpp)
-// tau = iact(chain)
-
 #endif // __UQ_DRAM_MCG_H__
