@@ -23,22 +23,29 @@
 #include <gsl/gsl_rng.h>
 #include <vector>
 
-void   uqMiscReadDoublesFromString  (const std::string&   inputString,
-                                     std::vector<double>& outputDoubles);
-void   uqMiscReadWordsFromString    (const std::string&        inputString,
-                                     std::vector<std::string>& outputWords);
-void   uqMiscExtractDoubleFromString(std::string& inputString,
-                                     double&      outputDouble);
-void   uqMiscExtractWordFromString  (std::string& inputString,
-                                     std::string& outputWord);
-double uqMiscGammar                 (double   a,
-                                     double   b,
-                                     gsl_rng* rng);
-double uqMiscGetEllapsedSeconds     (struct timeval *timeval0);
+void   uqMiscReadDoublesFromString      (const std::string&   inputString,
+                                         std::vector<double>& outputDoubles);
+void   uqMiscReadWordsFromString        (const std::string&        inputString,
+                                         std::vector<std::string>& outputWords);
+void   uqMiscExtractDoubleFromString    (std::string& inputString,
+                                         double&      outputDouble);
+void   uqMiscExtractWordFromString      (std::string& inputString,
+                                         std::string& outputWord);
+int    uqMiscReadStringAndDoubleFromFile(std::ifstream& ifs,
+                                         std::string&   termString,
+                                         double*        termValue);
+int    uqMiscReadCharsAndDoubleFromFile (std::ifstream& ifs,
+                                         std::string&   termString,
+                                         double*        termValue,
+                                         bool&          endOfLineAchieved);
+double uqMiscGammar                     (double   a,
+                                         double   b,
+                                         gsl_rng* rng);
+double uqMiscGetEllapsedSeconds         (struct timeval *timeval0);
 
-double uqMiscHammingWindow          (unsigned int N, unsigned int j);
+double uqMiscHammingWindow              (unsigned int N, unsigned int j);
 
-double uqMiscGaussianDensity        (double x, double mu, double sigma);
+double uqMiscGaussianDensity            (double x, double mu, double sigma);
 
 template <class V>
 void

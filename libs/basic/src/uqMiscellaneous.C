@@ -3,6 +3,8 @@
 #include <sys/time.h>
 #include <math.h>
 #include <uqDefines.h>
+#include <iostream>
+#include <fstream>
 
 void
 uqMiscReadDoublesFromString(
@@ -128,6 +130,94 @@ uqMiscExtractWordFromString(
   std::string& outputWord)
 {
   return;
+}
+
+int
+uqMiscReadStringAndDoubleFromFile(
+  std::ifstream& ifs,
+  std::string&   termString,
+  double*        termValue)
+{
+  int iRC = UQ_OK_RC;
+
+  ifs >> termString;
+  if ((ifs.rdstate() & std::ifstream::failbit)) {
+    iRC = UQ_FAILED_READING_FILE_RC;
+  }
+  else if (termValue) {
+    if (termString == std::string("inf")) {
+      *termValue = INFINITY;
+    }
+    else if (termString == std::string("-inf")) {
+      *termValue = -INFINITY;
+    }
+    else if (termString == std::string("nan")) {
+      *termValue = nan("");
+    }
+    else {
+      *termValue = strtod(termString.c_str(),NULL);
+    }
+  }
+  //if (!iRC) std::cout << "Read termString = " << termString << std::endl;
+
+  return iRC;
+}
+
+int
+uqMiscReadCharsAndDoubleFromFile(
+  std::ifstream& ifs,
+  std::string&   termString,
+  double*        termValue,
+  bool&          endOfLineAchieved)
+{
+  int iRC = UQ_OK_RC;
+  endOfLineAchieved = false;
+
+  char c = ' ';
+  while (c == ' ') {
+    ifs.get(c);
+    if ((ifs.rdstate() & std::ifstream::failbit)) {
+      iRC = UQ_FAILED_READING_FILE_RC;
+      break;
+    }
+  };
+
+  char term[512];
+  unsigned int pos = 0;
+
+  if (!iRC) {
+    while ((pos < 512) && (c != '\n') && (c != '\0') && (c != ' ')) {
+      term[pos++] = c;
+      if ((ifs.rdstate() & std::ifstream::failbit)) {
+        iRC = UQ_FAILED_READING_FILE_RC;
+        break;
+      }
+      ifs.get(c);
+    };
+  }
+
+  if (!iRC) {
+    if (c == '\n') endOfLineAchieved = true;
+    term[pos] = '\0';
+    termString = term;
+    //std::cout << "Read chars = " << termString << std::endl;
+    if (termValue) {
+      if (termString == std::string("inf")) {
+        *termValue = INFINITY;
+      }
+      else if (termString == std::string("-inf")) {
+        *termValue = -INFINITY;
+      }
+      else if (termString == std::string("nan")) {
+        *termValue = nan("");
+      }
+      else {
+        *termValue = strtod(termString.c_str(),NULL);
+      }
+    }
+  }
+
+  return iRC;
 }
 
 double

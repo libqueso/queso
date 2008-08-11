@@ -1,7 +1,7 @@
 /* uq/libs/mcmc/inc/uqParamSpace.h
  *
  * Copyright (C) 2008 The PECOS Team, http://www.ices.utexas.edu/centers/pecos
-
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or (at
@@ -21,6 +21,7 @@
 #define __UQ_PARAM_SPACE_H__
 
 #include <uqFinDimLinearSpace.h>
+#include <uqMiscellaneous.h>
 #include <uqParameter.h>
 #include <vector>
 
@@ -56,14 +57,7 @@ public:
 protected:
           void                    defineMyOptions           (po::options_description& optionsDesc) const;
           void                    getMyOptionValues         (po::options_description& optionsDesc);
-          void                    readParamsFromFile        (std::string& paramFileName);
-          int                     readTermFromFile          (std::ifstream& ifs,
-                                                             std::string&   termString,
-                                                             double*        termValue);
-          int                     readCharsFromFile         (std::ifstream& ifs,
-                                                             std::string&   termString,
-                                                             double*        termValue,
-                                                             bool&          endOfLineAchieved);
+          void                    readParametersFromSpecFile(std::string& specFileName);
           void                    resetValues               ();
           void                    createInitialValues       () const; // See template specialization
           void                    createMinValues           () const; // See template specialization
@@ -195,11 +189,11 @@ uqParamSpaceClass<V,M>::getMyOptionValues(po::options_description& optionsDesc)
 
   // Read parameter specification file only if 0 dimension was passed to constructor
   if (m_parameters.size() == 0) {
-    std::string paramFileName("");
+    std::string specFileName("");
     if (m_env.allOptionsMap().count(m_option_specificationFile.c_str())) {
       const po::variables_map& tmpMap = m_env.allOptionsMap();
-      paramFileName = tmpMap[m_option_specificationFile.c_str()].as<std::string>();
-      readParamsFromFile(paramFileName);
+      specFileName = tmpMap[m_option_specificationFile.c_str()].as<std::string>();
+      readParametersFromSpecFile(specFileName);
     }
   }
 
@@ -213,11 +207,11 @@ uqParamSpaceClass<V,M>::getMyOptionValues(po::options_description& optionsDesc)
 
 template <class V, class M>
 void
-uqParamSpaceClass<V,M>::readParamsFromFile(std::string& paramFileName)
+uqParamSpaceClass<V,M>::readParametersFromSpecFile(std::string& specFileName)
 {
   unsigned int maxCharsPerLine = 512;
 
-  std::ifstream ifs(paramFileName.c_str());
+  std::ifstream ifs(specFileName.c_str());
 
   // Determine number of lines
   unsigned int numLines = std::count(std::istreambuf_iterator<char>(ifs),
@@ -231,7 +225,7 @@ uqParamSpaceClass<V,M>::readParamsFromFile(std::string& paramFileName)
   unsigned int numParameters = 0;
   std::string tempString;
   while ((lineId < numLines) && (ifs.eof() == false)) {
-    iRC = readTermFromFile(ifs,tempString,NULL);
+    iRC = uqMiscReadStringAndDoubleFromFile(ifs,tempString,NULL);
     UQ_FATAL_TEST_MACRO(iRC,
                         m_env.rank(),
                         "uqParamSpaceClass<V,M>::constructor()",
@@ -248,7 +242,7 @@ uqParamSpaceClass<V,M>::readParamsFromFile(std::string& paramFileName)
                       "uqParamSpaceClass<V,M>::constructor()",
                       "number of parameters in parameter specification file does not match dimension passed in the main input file");
 
-  std::cout << "Parameter specification file '" << paramFileName
+  std::cout << "Parameter specification file '" << specFileName
             << "' has "                         << numLines
             << " lines and specifies "          << numParameters
             << " parameters."
@@ -279,7 +273,7 @@ uqParamSpaceClass<V,M>::readParamsFromFile(std::string& paramFileName)
                         "uqParamSpaceClass<V,M>::constructor()",
                         "paramId got too large during reading of parameter specification file");
 
-    iRC = readCharsFromFile(ifs, paramName, NULL, endOfLineAchieved);
+    iRC = uqMiscReadCharsAndDoubleFromFile(ifs, paramName, NULL, endOfLineAchieved);
     UQ_FATAL_TEST_MACRO(iRC,
                         m_env.rank(),
                         "uqParamSpaceClass<V,M>::constructor()",
@@ -295,7 +289,7 @@ uqParamSpaceClass<V,M>::readParamsFromFile(std::string& paramFileName)
                         "uqParamSpaceClass<V,M>::constructor()",
                         "failed to provide information beyond parameter name during the parameters reading loop");
 
-    iRC = readCharsFromFile(ifs, initialValueString, &initialValue, endOfLineAchieved);
+    iRC = uqMiscReadCharsAndDoubleFromFile(ifs, initialValueString, &initialValue, endOfLineAchieved);
     UQ_FATAL_TEST_MACRO(iRC,
                         m_env.rank(),
                         "uqParamSpaceClass<V,M>::constructor()",
@@ -307,7 +301,7 @@ uqParamSpaceClass<V,M>::readParamsFromFile(std::string& paramFileName)
     priorSigma = INFINITY;
 
     if (!endOfLineAchieved) {
-      iRC = readCharsFromFile(ifs, minValueString, &minValue, endOfLineAchieved);
+      iRC = uqMiscReadCharsAndDoubleFromFile(ifs, minValueString, &minValue, endOfLineAchieved);
       UQ_FATAL_TEST_MACRO(iRC,
                           m_env.rank(),
                           "uqParamSpaceClass<V,M>::constructor()",
@@ -315,7 +309,7 @@ uqParamSpaceClass<V,M>::readParamsFromFile(std::string& paramFileName)
     }
 
     if (!endOfLineAchieved) {
-      iRC = readCharsFromFile(ifs, maxValueString, &maxValue, endOfLineAchieved);
+      iRC = uqMiscReadCharsAndDoubleFromFile(ifs, maxValueString, &maxValue, endOfLineAchieved);
       UQ_FATAL_TEST_MACRO(iRC,
                           m_env.rank(),
                           "uqParamSpaceClass<V,M>::constructor()",
@@ -323,7 +317,7 @@ uqParamSpaceClass<V,M>::readParamsFromFile(std::string& paramFileName)
     }
 
     if (!endOfLineAchieved) {
-      iRC = readCharsFromFile(ifs, priorMuString, &priorMu, endOfLineAchieved);
+      iRC = uqMiscReadCharsAndDoubleFromFile(ifs, priorMuString, &priorMu, endOfLineAchieved);
       UQ_FATAL_TEST_MACRO(iRC,
                           m_env.rank(),
                           "uqParamSpaceClass<V,M>::constructor()",
@@ -331,7 +325,7 @@ uqParamSpaceClass<V,M>::readParamsFromFile(std::string& paramFileName)
     }
 
     if (!endOfLineAchieved) {
-      iRC = readCharsFromFile(ifs, priorSigmaString, &priorSigma, endOfLineAchieved);
+      iRC = uqMiscReadCharsAndDoubleFromFile(ifs, priorSigmaString, &priorSigma, endOfLineAchieved);
       UQ_FATAL_TEST_MACRO(iRC,
                           m_env.rank(),
                           "uqParamSpaceClass<V,M>::constructor()",
@@ -370,96 +364,6 @@ uqParamSpaceClass<V,M>::readParamsFromFile(std::string& paramFileName)
 }
 
 template <class V, class M>
-int
-uqParamSpaceClass<V,M>::readTermFromFile(
-  std::ifstream& ifs,
-  std::string&   termString,
-  double*        termValue)
-{
-  int iRC = UQ_OK_RC;
-
-  ifs >> termString;
-  if ((ifs.rdstate() & std::ifstream::failbit)) {
-    iRC = UQ_FAILED_READING_FILE_RC;
-  }
-  else if (termValue) {
-    if (termString == std::string("inf")) {
-      *termValue = INFINITY;
-    }
-    else if (termString == std::string("-inf")) {
-      *termValue = -INFINITY;
-    }
-    else if (termString == std::string("nan")) {
-      *termValue = nan("");
-    }
-    else {
-      *termValue = strtod(termString.c_str(),NULL);
-    }
-  }
-  //if (!iRC) std::cout << "Read termString = " << termString << std::endl;
-
-  return iRC;
-}
-
-template <class V, class M>
-int
-uqParamSpaceClass<V,M>::readCharsFromFile(
-  std::ifstream& ifs,
-  std::string&   termString,
-  double*        termValue,
-  bool&          endOfLineAchieved)
-{
-  int iRC = UQ_OK_RC;
-  endOfLineAchieved = false;
-
-  char c = ' ';
-  while (c == ' ') {
-    ifs.get(c);
-    if ((ifs.rdstate() & std::ifstream::failbit)) {
-      iRC = UQ_FAILED_READING_FILE_RC;
-      break;
-    }
-  };
-
-  char term[512];
-  unsigned int pos = 0;
-
-  if (!iRC) {
-    while ((pos < 512) && (c != '\n') && (c != '\0') && (c != ' ')) {
-      term[pos++] = c;
-      if ((ifs.rdstate() & std::ifstream::failbit)) {
-        iRC = UQ_FAILED_READING_FILE_RC;
-        break;
-      }
-      ifs.get(c);
-    };
-  }
-
-  if (!iRC) {
-    if (c == '\n') endOfLineAchieved = true;
-    term[pos] = '\0';
-    termString = term;
-    //std::cout << "Read chars = " << termString << std::endl;
-    if (termValue) {
-      if (termString == std::string("inf")) {
-        *termValue = INFINITY;
-      }
-      else if (termString == std::string("-inf")) {
-        *termValue = -INFINITY;
-      }
-      else if (termString == std::string("nan")) {
-        *termValue = nan("");
-      }
-      else {
-        *termValue = strtod(termString.c_str(),NULL);
-      }
-    }
-  }
-
-  return iRC;
-}
-
-template <class V, class M>
 unsigned int
 uqParamSpaceClass<V,M>::dim() const
 {
@@ -486,7 +390,7 @@ uqParamSpaceClass<V,M>::setParameter(
                 m_env.rank(),
                 "uqParamSpaceClass<V,M>::setParameter()",
                 "paramId is too big",
-                UQ_INVALID_INPUT_PARAMETER_RC);
+                UQ_INVALID_PARAMETER_SPEC_RC);
 
   if (m_parameters[paramId] == NULL) {
     m_parameters[paramId] = new uqParameterClass(name,
@@ -506,7 +410,7 @@ uqParamSpaceClass<V,M>::setParameter(
   }
 
   // These values cannot be trusted anymore
-  // They need to updated
+  // They need to be updated
   // They will be updated the next time they are requested
   resetValues();
 

@@ -23,13 +23,13 @@ int main(int argc, char* argv[])
 }
 
 int
-calib_StateDotFunction_Routine_gsl( // Compute state dot = dConcentrations/dt
+calib_StateDotRoutine_gsl( // Compute state dot = dConcentrations/dt
   double       t,
   const double currentState[],           // current concentrations
   double       stateDot[],               // dConcentrations/dt
   void*        infoForComputingStateDot) // concentration rates
 {
-  const uqGslVectorClass* k = ((calib_StateDotFunction_DataType<uqGslVectorClass,uqGslMatrixClass> *)infoForComputingStateDot)->concentrationRates;
+  const uqGslVectorClass* k = ((calib_StateDotRoutine_DataType<uqGslVectorClass,uqGslMatrixClass> *)infoForComputingStateDot)->concentrationRates;
 
   double k1 = (*k)[0];
   double k2 = (*k)[1];

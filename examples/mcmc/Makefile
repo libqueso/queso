@@ -38,3 +38,8 @@ all_algae:
 
 all_etc:
 	cd etc; make UQBT=$(UQBT)
+
+create_example:
+	@echo 'NAME OF EXAMPLE =' $(EXAMPLE_NAME)
+	mkdir $(EXAMPLE_NAME)
+	cp etc/Makefile $(EXAMPLE_NAME)

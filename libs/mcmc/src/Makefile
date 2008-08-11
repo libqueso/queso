@@ -5,6 +5,13 @@ else
 override UQBT = tri
 endif
 
+ifeq ($(BOOST_INCLUDE_PATH_FOR_MCMC_TOOL),)
+override BOOST_INCLUDE_PATH_FOR_MCMC_TOOL = .
+endif
+ifeq ($(GSL_INCLUDE_PATH_FOR_MCMC_TOOL),)
+override GSL_INCLUDE_PATH_FOR_MCMC_TOOL = .
+endif
+
 ifeq ($(UQBT),gsl)
 
 DEFINES = \
@@ -12,8 +19,8 @@ DEFINES = \
 INC_PATHS = \
 	-I../../basic/inc \
 	-I../inc \
-	-I$(BOOST_INCLUDE_PATH_FOR_PECOS_TOOLKIT) \
-	-I$(GSL_INCLUDE_PATH_FOR_PECOS_TOOLKIT)
+	-I$(BOOST_INCLUDE_PATH_FOR_MCMC_TOOL) \
+	-I$(GSL_INCLUDE_PATH_FOR_MCMC_TOOL)
 
 else
 
@@ -22,10 +29,10 @@ DEFINES = \
 INC_PATHS = \
 	-I../../basic/inc \
 	-I../inc \
-	-I$(MPI_INCLUDE_PATH_FOR_PECOS_TOOLKIT) \
-	-I$(TRILINOS_INCLUDE_PATH_FOR_PECOS_TOOLKIT) \
-	-I$(BOOST_INCLUDE_PATH_FOR_PECOS_TOOLKIT) \
-	-I$(GSL_INCLUDE_PATH_FOR_PECOS_TOOLKIT)
+	-I$(MPI_INCLUDE_PATH_FOR_MCMC_TOOL) \
+	-I$(TRILINOS_INCLUDE_PATH_FOR_MCMC_TOOL) \
+	-I$(BOOST_INCLUDE_PATH_FOR_MCMC_TOOL) \
+	-I$(GSL_INCLUDE_PATH_FOR_MCMC_TOOL)
 
 endif
 
@@ -34,9 +41,11 @@ ARFLAGS = -rv
 CXX = g++
 CXXFLAGS = -Wall -c
 
-OBJS_ANY = uqParameter.o
+OBJS_ANY = uqParameter.o \
+	uqObservable.o
 
 OBJS_gsl = uqGslParamSpace.o \
+	uqGslObservableSpace.o \
 	uqGslFinDimLinearSpace.o
 
 OBJS_tri = uqTrilinosVector.o \

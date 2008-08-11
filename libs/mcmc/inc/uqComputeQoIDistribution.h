@@ -1,7 +1,7 @@
-/* uq/libs/mcmc/inc/uqPrediction.h
+/* uq/libs/mcmc/inc/uqComputeQoIDistribution.h
  *
  * Copyright (C) 2008 The PECOS Team, http://www.ices.utexas.edu/centers/pecos
-
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or (at
@@ -17,19 +17,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef __UQ_PREDICTION_H__
-#define __UQ_PREDICTION_H__
+#ifndef __UQ_COMPUTE_QOI_DISTRIBUTION_H__
+#define __UQ_COMPUTE_QOI_DISTRIBUTION_H__
 
-#include <uqPriorAndLikelihoodInterfaces.h>
+#include <uqQoIPrediction.h>
 
 template<class V, class M>
 void
-uqPrediction(
+uqComputeQoIDistribution(
   const std::vector<const V*>&         chain,
   const std::vector<const V*>&         lrSigma2Chain,
   unsigned int                         numberOfSamples,
-  tmp_QoIPredictionFunction_Class<V,M>& qoIPredictionFunction_Obj,
-  const void*                          functionDataPtr,
+  uq_QoIPredictionFunction_Class<V,M>& qoIPredictionFunction_Obj,
   const std::string&                   outputFileName)
 {
   std::vector<unsigned int> sampleIds(0,0);
@@ -48,7 +47,7 @@ uqPrediction(
   const V* parameters;
   for (unsigned int i = 0; i < sampleIds.size(); ++i) {
     parameters = chain[sampleIds[i]];
-    qoIPredictionFunction_Obj(*parameters,functionDataPtr,predictions);
+    qoIPredictionFunction_Obj(*parameters,predictions);
 
     std::vector<V*> perturbedPredicitions(predictions.size(),NULL);
     unsigned int numTimeSteps  = predictions.size();
@@ -102,4 +101,4 @@ out.data = data;
 
   return;
 }
-#endif // __UQ_PREDICTION_H__
+#endif // __UQ_COMPUTE_QOI_DISTRIBUTION_H__
