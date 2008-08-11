@@ -1,0 +1,2 @@
+#!/bin/sh
+uqHeatEx_gsl --fpDakotaDriven $1 $2
