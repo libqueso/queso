@@ -176,6 +176,7 @@ double observationsOfSomeParameters[] = {
   120.0000,   0.0265,  14.6887,  10.0000
 };
 
+#include <uqStateSpace.h>
 #include <uqDRAM_MarkovChainGenerator.h>
 #include <uqDefaultPrior.h>
 #include <uqComputeQoIDistribution.h>

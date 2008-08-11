@@ -46,6 +46,7 @@ double observationsOfA[] = {
   501.00,  0.003715
 };
 
+#include <uqStateSpace.h>
 #include <uqDRAM_MarkovChainGenerator.h>
 #include <uqDefaultPrior.h>
 #include <uqComputeQoIDistribution.h>

@@ -28,7 +28,6 @@ clean_exec:
 
 all_docs:
 	doxygen uq.dox
-#	cd docs; make
 	cd libs; make all_docs
 #	cd examples; make all_docs
 

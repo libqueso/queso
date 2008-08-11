@@ -20,6 +20,7 @@
 #ifndef __UQ_ETC_EX_H__
 #define __UQ_ETC_EX_H__
 
+#include <uqStateSpace.h>
 #include <uqDRAM_MarkovChainGenerator.h>
 #include <uqDefaultPrior.h>
 

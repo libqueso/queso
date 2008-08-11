@@ -43,7 +43,7 @@
 #include <uqProbDensity.h>
 #include <uqLikelihoodFunction.h>
 #include <uqParamSpace.h>
-#include <uqStateSpace.h>
+//#include <uqStateSpace.h>
 #include <uqObservableSpace.h>
 #include <uqChainPosition.h>
 #include <uqMiscellaneous.h>
