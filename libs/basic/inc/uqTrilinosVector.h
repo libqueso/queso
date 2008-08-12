@@ -21,47 +21,61 @@
 #define __UQ_TRILINOS_VECTOR_H__
 
 #include <uqVector.h>
-#include <Epetra_Vector.h>
+//#include <Epetra_Vector.h>
+#include <Epetra_SerialDenseMatrix.h>
 
 class uqTrilinosVectorClass : public uqVectorClass
 {
 public:
-  uqTrilinosVectorClass(const Epetra_Map& map);
-  uqTrilinosVectorClass(const Epetra_Map& map, double d1, double d2); // MATLAB linspace
+  uqTrilinosVectorClass();
+  uqTrilinosVectorClass(const uqEnvironmentClass& env, const Epetra_Map& map);
+  uqTrilinosVectorClass(const uqEnvironmentClass& env, const Epetra_Map& map, double d1, double d2, unsigned int size); // MATLAB linspace
+  uqTrilinosVectorClass(const uqTrilinosVectorClass& v,                       double d1, double d2, unsigned int size); // MATLAB linspace
   uqTrilinosVectorClass(const uqTrilinosVectorClass& y);
  ~uqTrilinosVectorClass();
 
   uqTrilinosVectorClass& operator= (const uqTrilinosVectorClass& rhs);
   uqTrilinosVectorClass& operator*=(double a);
   uqTrilinosVectorClass& operator/=(double a);
+  uqTrilinosVectorClass& operator*=(const uqTrilinosVectorClass& rhs);
+  uqTrilinosVectorClass& operator/=(const uqTrilinosVectorClass& rhs);
   uqTrilinosVectorClass& operator+=(const uqTrilinosVectorClass& rhs);
   uqTrilinosVectorClass& operator-=(const uqTrilinosVectorClass& rhs);
+                 double& operator[](unsigned int i);
+           const double& operator[](unsigned int i) const;
 
-  int            rank            () const;
   unsigned int   size            () const;
-  double         tranposeMultiply(const uqVectorClass& y) const;
-  double         get             (unsigned int i) const;
-  void           set             (unsigned int i, double value);
-  void           set             (double value);
-  void           invert          ();
+  double         norm2Sq         () const;
+  double         norm2           () const;
+  double         sumOfComponents () const;
+  void           cwSet           (double value);
+  void           cwSetGaussian   (gsl_rng* rng, double mean, double stdDev);
+  void           cwInvert        ();
   void           sort            ();
   void           print           (std::ostream& os) const;
 
   bool           atLeastOneComponentSmallerThan(const uqTrilinosVectorClass& rhs) const;
   bool           atLeastOneComponentBiggerThan (const uqTrilinosVectorClass& rhs) const;
-  Epetra_Vector* data            () const;
-
-private:
+  //Epetra_Vector* data          () const;
+  Epetra_SerialDenseMatrix* data () const;
   const Epetra_Map& map          () const;
 
-  void           copy            (const uqTrilinosVectorClass& src);
-  void           scale           (double a);
-  void           add             (const uqTrilinosVectorClass& y);
-  void           sub             (const uqTrilinosVectorClass& y);
+private:
 
-  Epetra_Vector* m_vec;
+  void           copy            (const uqTrilinosVectorClass& src);
+
+  const Epetra_Map&         m_map;
+  //Epetra_Vector*          m_vec;
+  Epetra_SerialDenseMatrix* m_vec;
 };
 
-std::ostream& operator<<(std::ostream& os, const uqTrilinosVectorClass& obj);
+uqTrilinosVectorClass operator/    (const double a,                 const uqTrilinosVectorClass& x  );
+uqTrilinosVectorClass operator/    (const uqTrilinosVectorClass& x, const uqTrilinosVectorClass& y  );
+uqTrilinosVectorClass operator*    (const double a,                 const uqTrilinosVectorClass& x  );
+uqTrilinosVectorClass operator*    (const uqTrilinosVectorClass& x, const uqTrilinosVectorClass& y  );
+double                scalarProduct(const uqTrilinosVectorClass& x, const uqTrilinosVectorClass& y  );
+uqTrilinosVectorClass operator+    (const uqTrilinosVectorClass& x, const uqTrilinosVectorClass& y  );
+uqTrilinosVectorClass operator-    (const uqTrilinosVectorClass& x, const uqTrilinosVectorClass& y  );
+std::ostream&         operator<<   (std::ostream& os,               const uqTrilinosVectorClass& obj);
 
 #endif // __UQ_TRILINOS_VECTOR_H__

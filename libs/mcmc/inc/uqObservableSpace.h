@@ -412,6 +412,26 @@ uqObservableSpaceClass<V,M>::varianceAccuracies() const
   return *m_varianceAccuracies;
 }
 
+template<class V, class M>
+void
+  uqObservableSpaceClass<V,M>::printObservableNames(std::ostream& os, bool printHorizontally) const
+{
+  if (printHorizontally) { 
+    for (unsigned int i = 0; i < this->dim(); ++i) {
+      os << "'" << this->observable(i).name() << "'"
+         << " ";
+    }
+  }
+  else {
+    for (unsigned int i = 0; i < this->dim(); ++i) {
+      os << "'" << this->observable(i).name() << "'"
+         << std::endl;
+    }
+  }
+
+  return;
+}
+
 template <class V, class M>
 void
 uqObservableSpaceClass<V,M>::print(std::ostream& os) const

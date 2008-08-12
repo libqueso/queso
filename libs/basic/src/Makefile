@@ -11,6 +11,12 @@ endif
 ifeq ($(GSL_INCLUDE_PATH_FOR_MCMC_TOOL),)
 override GSL_INCLUDE_PATH_FOR_MCMC_TOOL = .
 endif
+ifeq ($(MPI_INCLUDE_PATH_FOR_MCMC_TOOL),)
+override MPI_INCLUDE_PATH_FOR_MCMC_TOOL = .
+endif
+ifeq ($(TRILINOS_INCLUDE_PATH_FOR_MCMC_TOOL),)
+override TRILINOS_INCLUDE_PATH_FOR_MCMC_TOOL = .
+endif
 
 ifeq ($(UQBT),gsl)
 
@@ -50,8 +56,7 @@ OBJS_gsl = uqGslVector.o \
 	uqGslOdeSolver.o
 
 OBJS_tri = uqTrilinosVector.o \
-	uqTrilinosMatrix.o \
-	uqTrilinosParamSpace.o
+	uqTrilinosMatrix.o
 
 all:	libuq_basic_all
 

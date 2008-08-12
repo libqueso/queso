@@ -303,7 +303,7 @@ calib_StateEvolutionRoutine(const V& paramValues, const void* functionDataPtr, s
 #endif
 #ifdef __APPL_USES_TRILINOS__
   UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
-                    paramValue.env().rank(),
+                    paramValues.env().rank(),
                     "calib_StateEvolutionRoutine()",
                     "not yet implemented with Trilinos");
 #endif

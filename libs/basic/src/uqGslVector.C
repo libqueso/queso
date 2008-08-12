@@ -59,6 +59,22 @@ uqGslVectorClass::uqGslVectorClass(const uqEnvironmentClass& env, double d1, dou
   }
 }
 
+uqGslVectorClass::uqGslVectorClass(const uqGslVectorClass& v, double d1, double d2, unsigned int size)
+  :
+  uqVectorClass(v.env()),
+  m_vec(gsl_vector_calloc(size))
+{
+  UQ_FATAL_TEST_MACRO((m_vec == NULL),
+                      m_env.rank(),
+                      "uqGslVectorClass::constructor(), linspace",
+                      "null vector generated");
+
+  for (unsigned int i = 0; i < size; ++i) {
+    double alpha = (double) i / ((double) size - 1.);
+    (*this)[i] = (1.-alpha)*d1 + alpha*d2;
+  }
+}
+
 uqGslVectorClass::uqGslVectorClass(const uqGslVectorClass& v)
   :
   uqVectorClass(v.env()),

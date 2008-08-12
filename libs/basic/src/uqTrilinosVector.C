@@ -21,10 +21,23 @@
 #include <Epetra_MpiComm.h>
 #include <uqDefines.h>
 
-uqTrilinosVectorClass::uqTrilinosVectorClass(const Epetra_Map& map)
+uqTrilinosVectorClass::uqTrilinosVectorClass()
   :
   uqVectorClass(),
-  m_vec(new Epetra_Vector(map,true))
+  m_map        (*(new Epetra_Map( 1,0,*(new Epetra_MpiComm(MPI_COMM_WORLD)) ) ))
+{
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.rank(),
+                      "uqTrilinosVectorClass::constructor(), default",
+                      "should not be used by user");
+}
+
+uqTrilinosVectorClass::uqTrilinosVectorClass(const uqEnvironmentClass& env, const Epetra_Map& map)
+  :
+  uqVectorClass(env),
+  m_map        (map),
+  //m_vec      (new Epetra_Vector(map,true))
+  m_vec        (new Epetra_SerialDenseMatrix(map.NumGlobalElements(),1))
 {
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
                       m_env.rank(),
@@ -32,10 +45,30 @@ uqTrilinosVectorClass::uqTrilinosVectorClass(const Epetra_Map& map)
                       "null vector generated");
 }
 
-uqTrilinosVectorClass::uqTrilinosVectorClass(const Epetra_Map& map, double d1, double d2)
+uqTrilinosVectorClass::uqTrilinosVectorClass(const uqEnvironmentClass& env, const Epetra_Map& map, double d1, double d2, unsigned int size)
   :
-  uqVectorClass(),
-  m_vec(new Epetra_Vector(map,true))
+  uqVectorClass(env),
+  m_map        (map),
+  //m_vec      (new Epetra_Vector(map,true))
+  m_vec        (new Epetra_SerialDenseMatrix(map.NumGlobalElements(),1))
+{
+  UQ_FATAL_TEST_MACRO((m_vec == NULL),
+                      m_env.rank(),
+                      "uqTrilinosVectorClass::constructor(), linspace",
+                      "null vector generated");
+
+  UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
+                    m_env.rank(),
+                    "uqTrilinosVectorClass::constructor(), linspace",
+                    "failed");
+}
+
+uqTrilinosVectorClass::uqTrilinosVectorClass(const uqTrilinosVectorClass& v, double d1, double d2, unsigned int size)
+  :
+  uqVectorClass(v.env()),
+  m_map        (v.map()),
+  //m_vec      (new Epetra_Vector(v.map(),true))
+  m_vec        (new Epetra_SerialDenseMatrix(v.map().NumGlobalElements(),1))
 {
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
                       m_env.rank(),
@@ -50,8 +83,10 @@ uqTrilinosVectorClass::uqTrilinosVectorClass(const Epetra_Map& map, double d1, d
 
 uqTrilinosVectorClass::uqTrilinosVectorClass(const uqTrilinosVectorClass& v)
   :
-  uqVectorClass(),
-  m_vec(new Epetra_Vector(v.map(),true))
+  uqVectorClass(v.env()),
+  m_map        (v.map()),
+  //m_vec      (new Epetra_Vector(v.map(),true))
+  m_vec        (new Epetra_SerialDenseMatrix(v.map().NumGlobalElements(),1))
 {
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
                       m_env.rank(),
@@ -76,29 +111,57 @@ uqTrilinosVectorClass::operator=(const uqTrilinosVectorClass& obj)
 uqTrilinosVectorClass&
 uqTrilinosVectorClass::operator*=(double a)
 {
-  this->scale(a);
+  UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
+                    m_env.rank(),
+                    "uqTrilinosVectorClass::operator*=()",
+                    "failed");
   return *this;
 }
 
 uqTrilinosVectorClass&
 uqTrilinosVectorClass::operator/=(double a)
 {
-  this->scale(1./a);
+  UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
+                    m_env.rank(),
+                    "uqTrilinosVectorClass::operator/=()",
+                    "failed");
+  return *this;
+}
+
+uqTrilinosVectorClass&
+uqTrilinosVectorClass::operator*=(const uqTrilinosVectorClass& rhs)
+{
+  return *this;
+}
+
+uqTrilinosVectorClass&
+uqTrilinosVectorClass::operator/=(const uqTrilinosVectorClass& rhs)
+{
   return *this;
 }
 
 uqTrilinosVectorClass&
 uqTrilinosVectorClass::operator+=(const uqTrilinosVectorClass& rhs)
 {
-  this->add(rhs);
   return *this;
 }
 
 uqTrilinosVectorClass&
 uqTrilinosVectorClass::operator-=(const uqTrilinosVectorClass& rhs)
 {
-  this->sub(rhs);
   return *this;
+}
+
+double&
+uqTrilinosVectorClass::operator[](unsigned int i)
+{
+  return (*m_vec)(i,0);
+}
+
+const double&
+uqTrilinosVectorClass::operator[](unsigned int i) const
+{
+  return (*m_vec)(i,0);
 }
 
 void
@@ -110,12 +173,6 @@ uqTrilinosVectorClass::copy(const uqTrilinosVectorClass& src)
                     "failed");
 
   return;
-}
-
-int
-uqTrilinosVectorClass::rank() const
-{
-  return m_vec->Map().Comm().MyPID();
 }
 
 unsigned int
@@ -130,27 +187,27 @@ uqTrilinosVectorClass::size() const
 }
 
 double
-uqTrilinosVectorClass::tranposeMultiply(const uqVectorClass& y) const
+uqTrilinosVectorClass::norm2Sq() const
 {
-  UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
-                    m_env.rank(),
-                    "uqTrilinosVectorClass::tranposeMultiply()",
-                    "failed");
   return 0.;
 }
 
 double
-uqTrilinosVectorClass::get(unsigned int i) const
+uqTrilinosVectorClass::norm2() const
 {
-  UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
-                    m_env.rank(),
-                    "uqTrilinosVectorClass::get()",
-                    "failed");
   return 0.;
 }
 
+double
+uqTrilinosVectorClass::sumOfComponents() const
+{
+  double result = 0.;
+
+  return result;
+}
+
 void
-uqTrilinosVectorClass::set(unsigned int i, double value)
+uqTrilinosVectorClass::cwSet(double value)
 {
   UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
                     m_env.rank(),
@@ -160,47 +217,13 @@ uqTrilinosVectorClass::set(unsigned int i, double value)
 }
 
 void
-uqTrilinosVectorClass::set(double value)
+uqTrilinosVectorClass::cwSetGaussian(gsl_rng* rng, double mean, double stdDev)
 {
-  UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
-                    m_env.rank(),
-                    "uqTrilinosVectorClass::set()",
-                    "failed");
   return;
 }
 
 void
-uqTrilinosVectorClass::scale(double a)
-{
-  UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
-                    m_env.rank(),
-                    "uqTrilinosVectorClass::scale()",
-                    "failed");
-  return;
-}
-
-void
-uqTrilinosVectorClass::add(const uqTrilinosVectorClass& y)
-{
-  UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
-                    m_env.rank(),
-                    "uqTrilinosVectorClass::add()",
-                    "failed");
-  return;
-}
-
-void
-uqTrilinosVectorClass::sub(const uqTrilinosVectorClass& y)
-{
-  UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
-                    m_env.rank(),
-                    "uqTrilinosVectorClass::sub()",
-                    "failed");
-  return;
-}
-
-void
-uqTrilinosVectorClass::invert()
+uqTrilinosVectorClass::cwInvert()
 {
   UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
                     m_env.rank(),
@@ -229,13 +252,8 @@ uqTrilinosVectorClass::print(std::ostream& os) const
   return;
 }
 
-const Epetra_Map&
-uqTrilinosVectorClass::map() const
-{
-  return (const Epetra_Map&) (m_vec->Map());
-}
-
-Epetra_Vector*
+//Epetra_Vector*
+Epetra_SerialDenseMatrix*
 uqTrilinosVectorClass::data() const
 {
   return m_vec;
@@ -274,3 +292,83 @@ operator<<(std::ostream& os, const uqTrilinosVectorClass& obj)
 
   return os;
 }
+
+uqTrilinosVectorClass operator/(const double a, const uqTrilinosVectorClass& x)
+{
+  uqTrilinosVectorClass answer(x);
+  answer.cwInvert();
+  answer *= a;
+
+  return answer;
+}
+
+uqTrilinosVectorClass operator/(const uqTrilinosVectorClass& x, const uqTrilinosVectorClass& y)
+{
+  uqTrilinosVectorClass answer(x);
+  answer /= y;
+
+  return answer;
+}
+
+uqTrilinosVectorClass operator*(const double a, const uqTrilinosVectorClass& x)
+{
+  uqTrilinosVectorClass answer(x);
+  answer *= a;
+
+  return answer;
+}
+
+uqTrilinosVectorClass operator*(const uqTrilinosVectorClass& x, const uqTrilinosVectorClass& y)
+{
+  uqTrilinosVectorClass answer(x);
+  answer *= y;
+
+  return answer;
+}
+
+double scalarProduct(const uqTrilinosVectorClass& x, const uqTrilinosVectorClass& y)
+{
+  unsigned int size1 = x.size();
+  unsigned int size2 = y.size();
+  UQ_FATAL_TEST_MACRO((size1 != size2),
+                      x.env().rank(),
+                      "scalarProduct()",
+                      "different sizes of x and y");
+
+  double result = 0.;
+  //for (unsigned int i = 0; i < size1; ++i) {
+  //  result += x[i]*y[i];
+  //}
+
+  return result;
+}
+
+uqTrilinosVectorClass operator+(const uqTrilinosVectorClass& x, const uqTrilinosVectorClass& y)
+{
+  uqTrilinosVectorClass answer(x);
+  answer += y;
+
+  return answer;
+}
+
+uqTrilinosVectorClass operator-(const uqTrilinosVectorClass& x, const uqTrilinosVectorClass& y)
+{
+  uqTrilinosVectorClass answer(x);
+  answer -= y;
+
+  return answer;
+}
+
+const Epetra_Map&
+uqTrilinosVectorClass::map() const
+{
+  return m_map;
+  //return (const Epetra_Map&) (m_vec->Map());
+}
+#if 0
+int
+uqTrilinosVectorClass::rank() const
+{
+  return m_vec->Map().Comm().MyPID();
+}
+#endif

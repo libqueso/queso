@@ -19,6 +19,7 @@
 
 #include <uqTrilinosParamSpace.h>
 
+#if 0
 uqTrilinosParamSpaceClass::uqTrilinosParamSpaceClass(const Epetra_MpiComm& comm, unsigned int dimension)
   :
   uqParamSpaceClass<uqTrilinosVectorClass,uqTrilinosMatrixClass>(dimension),
@@ -56,54 +57,64 @@ uqTrilinosParamSpaceClass::newMatrix() const
 {
   return new uqTrilinosMatrixClass(*m_map,this->dim());
 }
+#endif
 
+template<>
 void
-uqTrilinosParamSpaceClass::createInitialValues() const
+uqParamSpaceClass<uqTrilinosVectorClass,uqTrilinosMatrixClass>::createInitialValues() const
 {
   return;
 }
 
+template<>
 void
-uqTrilinosParamSpaceClass::createMinValues() const
+uqParamSpaceClass<uqTrilinosVectorClass,uqTrilinosMatrixClass>::createMinValues() const
 {
   return;
 }
 
+template<>
 void
-uqTrilinosParamSpaceClass::createMaxValues() const
+uqParamSpaceClass<uqTrilinosVectorClass,uqTrilinosMatrixClass>::createMaxValues() const
 {
   return;
 }
 
+template<>
 void
-uqTrilinosParamSpaceClass::createPriorMuValues() const
+uqParamSpaceClass<uqTrilinosVectorClass,uqTrilinosMatrixClass>::createPriorMuValues() const
 {
   return;
 }
 
+template<>
 void
-uqTrilinosParamSpaceClass::createPriorSigmaValues() const
+uqParamSpaceClass<uqTrilinosVectorClass,uqTrilinosMatrixClass>::createPriorSigmaValues() const
 {
   return;
 }
 
+template<>
 void
-uqTrilinosParamSpaceClass::print(std::ostream& os) const
+uqParamSpaceClass<uqTrilinosVectorClass,uqTrilinosMatrixClass>::print(std::ostream& os) const
 {
   return;
 }
 
+#if 0
+template<>
 const Epetra_Map&
-uqTrilinosParamSpaceClass::map() const
+uqParamSpaceClass<uqTrilinosVectorClass,uqTrilinosMatrixClass>::map() const
 {
  return *m_map;
 }
 
 std::ostream&
-operator<<(std::ostream& os, const uqTrilinosParamSpaceClass& space)
+operator<<(std::ostream& os, const uqParamSpaceClass& space)
 {
   space.uqParamSpaceClass<uqTrilinosVectorClass,uqTrilinosMatrixClass>::print(os);
   space.print(os);
 
   return os;
 }
+#endif

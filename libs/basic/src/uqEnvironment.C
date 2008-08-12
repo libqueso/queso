@@ -115,7 +115,7 @@ uqEnvironmentClass::commonConstructor()
 #ifdef __UQ_USES_TRILINOS__
   m_comm     = new Epetra_MpiComm(MPI_COMM_WORLD);
   m_rank     = m_comm->MyPID();
-  m_commSize = m_comm->Size();
+  m_commSize = m_comm->NumProc();
 #endif
 
   if ((this->verbosity() >= 5) && (this->rank() == 0)) {
@@ -322,6 +322,14 @@ uqEnvironmentClass::barrier() const
 #endif
   return;
 }
+
+#ifdef __UQ_USES_TRILINOS__
+const Epetra_MpiComm&
+uqEnvironmentClass::comm() const
+{
+  return *m_comm;
+}
+#endif
 
 #ifdef UQ_USES_COMMAND_LINE_OPTIONS
 const po::options_description&

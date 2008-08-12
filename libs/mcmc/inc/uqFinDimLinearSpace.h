@@ -35,19 +35,26 @@ public:
                                     const char*               prefix);
   virtual ~uqFinDimLinearSpaceClass();
 
-  virtual unsigned int      dim                       ()                 const = 0;
-          V*                newVector                 ()                 const; // See template specialization
-          V*                newVector                 (const V& v)       const;
-          M*                newMatrix                 ()                 const; // See template specialization
-          M*                newDiagMatrix             (const V& v)       const;
-          M*                newDiagMatrix             (double diagValue) const; // See template specialization
+#ifdef __UQ_USES_TRILINOS__
+          void              constructMap ();
+          const Epetra_Map& map          () const;
+#endif
+  virtual unsigned int      dim          ()                 const = 0;
+          V*                newVector    ()                 const; // See template specialization
+          V*                newVector    (const V& v)       const;
+          M*                newMatrix    ()                 const; // See template specialization
+          M*                newDiagMatrix(const V& v)       const;
+          M*                newDiagMatrix(double diagValue) const; // See template specialization
 
-  virtual void              print                     (std::ostream& os) const;
+  virtual void              print        (std::ostream& os) const;
 
 protected:
   const uqEnvironmentClass& m_env;
   std::string               m_prefix;
   unsigned int              m_dim;
+#ifdef __UQ_USES_TRILINOS__
+  const Epetra_Map*         m_map;
+#endif
 };
 
 template <class V, class M>
@@ -69,6 +76,10 @@ uqFinDimLinearSpaceClass<V,M>::uqFinDimLinearSpaceClass(
   m_env   (env),
   m_prefix(""),
   m_dim   (0)
+#ifdef __UQ_USES_TRILINOS__
+  ,
+    m_map   (NULL) // It will be instantiated in derived class after 'm_dim' is set in derived class
+#endif
 {
   //std::cout << "Entering uqFinDimLinearSpaceClass<V,M>::constructor()"
   //          << std::endl;
@@ -89,9 +100,30 @@ uqFinDimLinearSpaceClass<V,M>::~uqFinDimLinearSpaceClass()
   //std::cout << "Entering uqFinDimLinearSpaceClass<V,M>::destructor()"
   //          << std::endl;
 
+#ifdef __UQ_USES_TRILINOS__
+  if (m_map != NULL) delete m_map;
+#endif
+
   //std::cout << "Leaving uqFinDimLinearSpaceClass<V,M>::destructor()"
   //          << std::endl;
 }
+
+#ifdef __UQ_USES_TRILINOS__
+template <class V, class M>
+void
+uqFinDimLinearSpaceClass<V,M>::constructMap()
+{
+  m_map = new Epetra_Map(m_dim,0,m_env.comm());
+  return;
+}
+
+template <class V, class M>
+const Epetra_Map&
+uqFinDimLinearSpaceClass<V,M>::map() const
+{
+  return *m_map;
+}
+#endif
 
 template <class V, class M>
 unsigned int

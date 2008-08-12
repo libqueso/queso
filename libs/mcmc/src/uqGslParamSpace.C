@@ -84,7 +84,7 @@ uqParamSpaceClass<uqGslVectorClass,uqGslMatrixClass>::createPriorSigmaValues() c
 
   return;
 }
-
+#if 0
 template<>
 void
 uqParamSpaceClass<uqGslVectorClass,uqGslMatrixClass>::printParameterNames(std::ostream& os, bool printHorizontally) const
@@ -104,3 +104,4 @@ uqParamSpaceClass<uqGslVectorClass,uqGslMatrixClass>::printParameterNames(std::o
 
   return;
 }
+#endif

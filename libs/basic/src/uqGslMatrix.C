@@ -68,6 +68,26 @@ uqGslMatrixClass::uqGslMatrixClass(
   }
 }
 
+uqGslMatrixClass::uqGslMatrixClass(
+  const uqGslVectorClass& v,
+  unsigned int dim,
+  double diagValue)
+  :
+  uqMatrixClass(v.env()),
+  m_mat        (gsl_matrix_calloc(dim,dim)),
+  m_LU         (NULL),
+  m_permutation(NULL)
+{
+  UQ_FATAL_TEST_MACRO((m_mat == NULL),
+                      m_env.rank(),
+                      "uqGslMatrixClass::constructor(), eye",
+                      "null matrix generated");
+
+  for (unsigned int i = 0; i < dim; ++i) {
+    (*this)(i,i) = diagValue;
+  }
+}
+
 uqGslMatrixClass::uqGslMatrixClass(const uqGslVectorClass& v)
   :
   uqMatrixClass(v.env()),

@@ -29,6 +29,7 @@ public:
   uqGslVectorClass();
   uqGslVectorClass(const uqEnvironmentClass& env, unsigned int size);
   uqGslVectorClass(const uqEnvironmentClass& env, double d1, double d2, unsigned int size); // MATLAB linspace
+  uqGslVectorClass(const uqGslVectorClass&     v, double d1, double d2, unsigned int size); // MATLAB linspace
   uqGslVectorClass(const uqGslVectorClass& y);
  ~uqGslVectorClass();
 

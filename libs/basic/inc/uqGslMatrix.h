@@ -35,9 +35,10 @@ public:
   uqGslMatrixClass(const uqEnvironmentClass& env,
                    unsigned int dim,
                    double diagValue = 0.); // MATLAB eye
-
+  uqGslMatrixClass(const uqGslVectorClass& v,
+                   unsigned int dim,
+                   double diagValue = 0.); // MATLAB eye
   uqGslMatrixClass(const uqGslVectorClass& v); // MATLAB diag
-
   uqGslMatrixClass(const uqGslMatrixClass& B);
  ~uqGslMatrixClass();
 

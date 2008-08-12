@@ -48,9 +48,9 @@ OBJS_gsl = uqGslParamSpace.o \
 	uqGslObservableSpace.o \
 	uqGslFinDimLinearSpace.o
 
-OBJS_tri = uqTrilinosVector.o \
-	uqTrilinosMatrix.o \
-	uqTrilinosParamSpace.o
+OBJS_tri = uqTrilinosParamSpace.o \
+	uqTrilinosObservableSpace.o \
+	uqTrilinosFinDimLinearSpace.o
 
 all:	libuq_mcmc_all
 

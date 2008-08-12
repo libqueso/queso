@@ -49,14 +49,17 @@ DEFINES = \
 	-D__APPL_USES_TRILINOS__ -D__UQ_USES_TRILINOS__
 INC_PATHS = \
 	-I. \
-	-I../../../inc \
+	-I../inc \
+	-I../../../libs/basic/inc \
+	-I../../../libs/mcmc/inc \
 	-I$(MPI_INCLUDE_PATH_FOR_MCMC_TOOL) \
 	-I$(TRILINOS_INCLUDE_PATH_FOR_MCMC_TOOL) \
 	-I$(BOOST_INCLUDE_PATH_FOR_MCMC_TOOL) \
 	-I$(GSL_INCLUDE_PATH_FOR_MCMC_TOOL)
 
 LIB_PATHS = \
-	-L../../../lib \
+	-L../../../libs/basic/lib \
+	-L../../../libs/mcmc/lib \
 	-L$(MPI_LIB_PATH_FOR_MCMC_TOOL) \
 	-L$(TRILINOS_LIB_PATH_FOR_MCMC_TOOL) \
 	-L$(BOOST_LIB_PATH_FOR_MCMC_TOOL) \
@@ -65,6 +68,8 @@ LIB_PATHS = \
 LIBS = \
 	-luq_basic_$(UQBT) \
 	-luq_basic_any \
+	-luq_mcmc_$(UQBT) \
+	-luq_mcmc_any \
 	-lepetra \
 	-lteuchos \
 	-lmpi_cxx \

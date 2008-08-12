@@ -21,20 +21,27 @@
 #define __UQ_TRILINOS_MATRIX_H__
 
 #include <uqMatrix.h>
-#include <Epetra_CrsMatrix.h>
+#include <Epetra_SerialDenseMatrix.h>
+//#include <Epetra_CrsMatrix.h>
+#include <uqTrilinosVector.h>
+
 
 class uqTrilinosMatrixClass : public uqMatrixClass
 {
 public:
-  uqTrilinosMatrixClass(const Epetra_Map& map,
-                        unsigned int      numCols);
-  uqTrilinosMatrixClass(const Epetra_Map& map,
-                        unsigned int      dim,
-                        double            diagValue); // MATLAB eye
-  uqTrilinosMatrixClass(const uqVectorClass* v,
-                        bool                 invert = false); // MATLAB diag or diag_inv
-  uqTrilinosMatrixClass(const uqVectorClass* v1,
-                        const uqVectorClass* v2); // vv2mat
+  uqTrilinosMatrixClass();
+  uqTrilinosMatrixClass(const uqEnvironmentClass& env,
+                        const Epetra_Map&         map,
+                        unsigned int              numCols);
+
+  uqTrilinosMatrixClass(const uqEnvironmentClass& env,
+                        const Epetra_Map&         map,
+                        unsigned int              dim,
+                        double                    diagValue); // MATLAB eye
+  uqTrilinosMatrixClass(const uqTrilinosVectorClass& v,
+                        unsigned int                 dim,
+                        double                       diagValue); // MATLAB eye
+  uqTrilinosMatrixClass(const uqTrilinosVectorClass& v); // MATLAB diag
   uqTrilinosMatrixClass(const uqTrilinosMatrixClass& B);
  ~uqTrilinosMatrixClass();
 
@@ -43,32 +50,37 @@ public:
   uqTrilinosMatrixClass& operator/=(double a);
   uqTrilinosMatrixClass& operator+=(const uqTrilinosMatrixClass& rhs);
   uqTrilinosMatrixClass& operator-=(const uqTrilinosMatrixClass& rhs);
+                 double& operator()(unsigned int i, unsigned int j);
+           const double& operator()(unsigned int i, unsigned int j) const;
 
-  int            rank      () const;
-  unsigned int   numRows   () const;
-  unsigned int   numCols   () const;
-  double         get       (unsigned int i, unsigned int j) const;
-  void           set       (unsigned int i, unsigned int j, double value);
-  int            chol      ();
-  void           zeroLower (bool includeDiagonal = false);
-  void           zeroUpper (bool includeDiagonal = false);
-  uqMatrixClass* multiply  (const uqMatrixClass* m2) const;
-  uqMatrixClass* transpose () const;
-  uqVectorClass* multiply  (const uqVectorClass* x) const;
-
-  void           print     (std::ostream& os) const;
+  unsigned int          numRows       () const;
+  unsigned int          numCols       () const;
+  int                   chol          ();
+  void                  zeroLower     (bool includeDiagonal = false);
+  void                  zeroUpper     (bool includeDiagonal = false);
+  uqTrilinosMatrixClass transpose     () const;
+  uqTrilinosVectorClass multiply      (const uqTrilinosVectorClass& x) const;
+  uqTrilinosVectorClass invertMultiply(const uqTrilinosVectorClass& b) const;
+  void                  invertMultiply(const uqTrilinosVectorClass& b, uqTrilinosVectorClass& x) const;
+  void                  print         (std::ostream& os) const;
+  const Epetra_Map&     map() const;
 
 private:
-  const Epetra_Map& map() const;
 
-  void           copy      (const uqTrilinosMatrixClass* src);
-  void           scale     (double alpha);
-  void           add       (const uqTrilinosMatrixClass* B);
-  void           sub       (const uqTrilinosMatrixClass* B);
+  void                  copy          (const uqTrilinosMatrixClass& src);
+  void                  multiply      (const uqTrilinosVectorClass& x, uqTrilinosVectorClass& y) const;
 
-  Epetra_CrsMatrix* m_mat;
+  const Epetra_Map&         m_map;
+  //Epetra_CrsMatrix*       m_mat;
+  Epetra_SerialDenseMatrix* m_mat;
 };
 
-std::ostream& operator<<(std::ostream& os, const uqTrilinosMatrixClass& obj);
+uqTrilinosMatrixClass operator*    (double a,                         const uqTrilinosMatrixClass& mat);
+uqTrilinosVectorClass operator*    (const uqTrilinosMatrixClass& mat, const uqTrilinosVectorClass& vec);
+uqTrilinosMatrixClass operator*    (const uqTrilinosMatrixClass& m1,  const uqTrilinosMatrixClass& m2 );
+uqTrilinosMatrixClass operator+    (const uqTrilinosMatrixClass& m1,  const uqTrilinosMatrixClass& m2 );
+uqTrilinosMatrixClass matrixProduct(const uqTrilinosVectorClass& v1,  const uqTrilinosVectorClass& v2 );
+uqTrilinosMatrixClass diagScaling  (const uqTrilinosVectorClass& vec, const uqTrilinosMatrixClass& mat);
+std::ostream&         operator<<   (std::ostream& os,                 const uqTrilinosMatrixClass& obj);
 
 #endif // __UQ_TRILINOS_MATRIX_H__

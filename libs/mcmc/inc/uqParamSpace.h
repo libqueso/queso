@@ -122,6 +122,11 @@ uqParamSpaceClass<V,M>::uqParamSpaceClass(
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
 
+#ifdef __UQ_USES_TRILINOS__
+  // Now that 'm_dim' has been set, construct Trilinos map
+  this->constructMap();
+#endif
+
   if (m_env.rank() == 0) std::cout << "After getting values of options with prefix '" << uqFinDimLinearSpaceClass<V,M>::m_prefix
                                    << "', state of uqParamSpaceClass object is:"
                                    << "\n" << *this
@@ -495,6 +500,26 @@ uqParamSpaceClass<V,M>::outOfBounds(const V& v) const
   }
 
   return result;
+}
+
+template<class V, class M>
+void
+  uqParamSpaceClass<V,M>::printParameterNames(std::ostream& os, bool printHorizontally) const
+{
+  if (printHorizontally) { 
+    for (unsigned int i = 0; i < this->dim(); ++i) {
+      os << "'" << this->parameter(i).name() << "'"
+         << " ";
+    }
+  }
+  else {
+    for (unsigned int i = 0; i < this->dim(); ++i) {
+      os << "'" << this->parameter(i).name() << "'"
+         << std::endl;
+    }
+  }
+
+  return;
 }
 
 template <class V, class M>

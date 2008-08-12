@@ -59,6 +59,9 @@ public:
 
         int                      rank                     () const;
         void                     barrier                  () const;
+#ifdef __UQ_USES_TRILINOS__
+        const Epetra_MpiComm&    comm                     () const; 
+#endif
 #ifdef UQ_USES_COMMAND_LINE_OPTIONS
   const po::options_description& allOptionsDesc           () const;
 #endif
