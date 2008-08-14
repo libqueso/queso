@@ -34,7 +34,7 @@ public:
                               const char*               prefix);
   virtual ~uqObservableSpaceClass();
 
-          bool                     updateVariances            () const;
+          bool                     shouldVariancesBeUpdated   () const;
           unsigned int             dim                        () const;
           int                      setObservable              (unsigned int       observableId,
                                                                const std::string& name,
@@ -139,7 +139,7 @@ uqObservableSpaceClass<V,M>::~uqObservableSpaceClass()
 
 template <class V, class M>
 bool
-uqObservableSpaceClass<V,M>::updateVariances() const
+uqObservableSpaceClass<V,M>::shouldVariancesBeUpdated() const
 {
   return m_updateVariances;
 }

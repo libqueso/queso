@@ -273,7 +273,7 @@ uqAppl(const uqEnvironmentClass& env)
   uq_QoIPredictionFunction_Class<V,M> calib_QoIPredictionFunction_Obj(calib_QoIPredictionRoutine<V,M>,
                                                                       (void *) &calib_QoIPredictionRoutine_Data);
   uqComputeQoIDistribution(mcg.chain(),
-                           mcg.lrSigma2Chain(),
+                           mcg.lrVarianceChain(),
                            500,
                            calib_QoIPredictionFunction_Obj,
                            mcg.outputFileName());

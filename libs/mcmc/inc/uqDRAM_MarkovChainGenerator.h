@@ -72,9 +72,10 @@ public:
                                    bool     applyMahalanobisInvert = true);
   void print                      (std::ostream& os) const;
 
-  const std::vector<const V*>& chain         () const;
-  const std::vector<const V*>& lrSigma2Chain () const;
-  const std::string&           outputFileName() const;
+  const std::vector<const V*>& chain          () const;
+  const std::vector<const V*>& misfitChain    () const;
+  const std::vector<const V*>& lrVarianceChain() const;
+  const std::string&           outputFileName () const;
 
 private:
   void   resetChainAndRelatedInfo();
@@ -147,6 +148,7 @@ private:
   std::string m_option_computeKDEs;
   std::string m_option_numberOfEvaluationPosForKDEs;
 
+  bool                      m_likelihoodObjComputesMisfits;
   V                         m_paramInitials;
   bool                      m_proposalIsSymmetric;
   po::options_description*  m_optionsDesc;
@@ -195,8 +197,9 @@ private:
 #endif
 
   std::vector<const V*>     m_chain;
-  std::vector<const V*>     m_lrChain;       // lr = likelihood results
-  std::vector<const V*>     m_lrSigma2Chain; // lr = likelihood results
+  std::vector<const V*>     m_misfitChain;     // Sum of squares of differences between model and experiments: computed by user supplied likelihood obj
+  std::vector<const V*>     m_lrVarianceChain; // lr = likelihood results
+  std::vector<const V*>     m_lrChain;         // lr = likelihood results
   std::vector<double>       m_alphaQuotients;
   double                    m_chainRunTime;
   unsigned int              m_numRejections;
@@ -224,6 +227,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::uqDRAM_MarkovChainGeneratorClass(
   m_observableSpace              (observableSpace),
   m_m2lPriorProbDensity_Obj      (m2lPriorProbDensity_Obj),
   m_m2lLikelihoodFunction_Obj    (m2lLikelihoodFunction_Obj),
+  m_likelihoodObjComputesMisfits (dynamic_cast<const uq_MisfitLikelihoodFunction_Class<V,M>*>(&m2lLikelihoodFunction_Obj) != NULL),
   m_paramInitials                (m_paramSpace.initialValues()),
   m_proposalIsSymmetric          (true),
   m_optionsDesc                  (new po::options_description("Markov chain Monte Carlo options")),
@@ -270,8 +274,9 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::uqDRAM_MarkovChainGeneratorClass(
   m_proposalPrecMatrices         (1),//,NULL),
 #endif
   m_chain                        (0),//,NULL),
+  m_misfitChain                  (0),//,NULL),
+  m_lrVarianceChain              (0),//,NULL),
   m_lrChain                      (0),//,NULL),
-  m_lrSigma2Chain                (0),//,NULL),
   m_alphaQuotients               (0),//,0.),
   m_chainRunTime                 (0.),
   m_numRejections                (0),
@@ -439,11 +444,14 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::resetChainAndRelatedInfo()
   m_chainRunTime     = 0.;
   m_numRejections    = 0;
   m_alphaQuotients.clear();
-  for (unsigned int i = 0; i < m_lrSigma2Chain.size(); ++i) {
-    if (m_lrSigma2Chain[i]) delete m_lrSigma2Chain[i];
-  }
   for (unsigned int i = 0; i < m_lrChain.size(); ++i) {
     if (m_lrChain[i]) delete m_lrChain[i];
+  }
+  for (unsigned int i = 0; i < m_lrVarianceChain.size(); ++i) {
+    if (m_lrVarianceChain[i]) delete m_lrVarianceChain[i];
+  }
+  for (unsigned int i = 0; i < m_misfitChain.size(); ++i) {
+    if (m_misfitChain[i]) delete m_misfitChain[i];
   }
   for (unsigned int i = 0; i < m_chain.size(); ++i) {
     if (m_chain[i]) delete m_chain[i];
@@ -828,17 +836,27 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
                       m_env.rank(),
                       "uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains()",
                       "paramInitials should not be out of bound");
-  double m2lPrior             = m_m2lPriorProbDensity_Obj.minus2LnDensity(valuesOf1stPosition);
-  V*     m2lLikelihoodResults = m_observableSpace.newVector();
-  m_m2lLikelihoodFunction_Obj.computeMisfits(valuesOf1stPosition, *m2lLikelihoodResults);
-  V      lrSigma2(m_observableSpace.priorVariances());
-  double logPosterior         = -0.5 * ( m2lPrior + (*m2lLikelihoodResults/lrSigma2).sumOfComponents() );
+  double m2lPrior            = m_m2lPriorProbDensity_Obj.minus2LnDensity(valuesOf1stPosition);
+  V*     m2lLikelihoodVector = m_observableSpace.newVector();
+  V*     misfitVector        = m_observableSpace.newVector();
+  V      lrVarianceVector(m_observableSpace.priorVariances());
+  if (m_likelihoodObjComputesMisfits) {
+    m_m2lLikelihoodFunction_Obj.computeMisfits(valuesOf1stPosition, *misfitVector);
+    *m2lLikelihoodVector = *misfitVector/lrVarianceVector;
+  }
+  else {
+    m_m2lLikelihoodFunction_Obj.computeMinus2LnLikelihoods(valuesOf1stPosition, *m2lLikelihoodVector);
+  }
+  double m2lLikelihoodScalar  = m2lLikelihoodVector->sumOfComponents();
+  double logPosterior = 0.;
+  logPosterior = -0.5 * ( m2lPrior + m2lLikelihoodScalar );
   uqChainPositionClass<V> currentPosition(m_env,
                                           valuesOf1stPosition,
                                           outOfBounds,
                                           m2lPrior,
-                                          *m2lLikelihoodResults,
-                                          lrSigma2,
+                                          *misfitVector,
+                                          lrVarianceVector,
+                                          *m2lLikelihoodVector,
                                           logPosterior);
 
   V* gaussianVector = m_paramSpace.newVector();
@@ -848,15 +866,17 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
   //****************************************************
   // Begin chain loop from positionId = 1
   //****************************************************
-  m_chain.resize         (m_sizesOfChains[chainId],NULL); 
-  m_lrChain.resize       (m_sizesOfChains[chainId],NULL); 
-  m_lrSigma2Chain.resize (m_sizesOfChains[chainId],NULL); 
-  m_alphaQuotients.resize(m_sizesOfChains[chainId],0.);
+  m_chain.resize          (m_sizesOfChains[chainId],NULL); 
+  m_misfitChain.resize    (m_sizesOfChains[chainId],NULL); 
+  m_lrVarianceChain.resize(m_sizesOfChains[chainId],NULL); 
+  m_lrChain.resize        (m_sizesOfChains[chainId],NULL); 
+  m_alphaQuotients.resize (m_sizesOfChains[chainId],0.);
 
-  m_chain         [0] = m_paramSpace.uqFinDimLinearSpaceClass<V,M>::newVector(currentPosition.paramValues());
-  m_lrSigma2Chain [0] = m_observableSpace.newVector(lrSigma2);
-  m_lrChain       [0] = m_observableSpace.newVector(currentPosition.m2lLikelihood());
-  m_alphaQuotients[0] = 1.;
+  m_chain          [0] = m_paramSpace.uqFinDimLinearSpaceClass<V,M>::newVector(currentPosition.paramValues());
+  m_misfitChain    [0] = m_observableSpace.newVector(*misfitVector);
+  m_lrVarianceChain[0] = m_observableSpace.newVector(lrVarianceVector);
+  m_lrChain        [0] = m_observableSpace.newVector(currentPosition.m2lLikelihoodVector());
+  m_alphaQuotients [0] = 1.;
 
   for (unsigned int positionId = 1; positionId < m_sizesOfChains[chainId]; ++positionId) {
     //if (m_env.rank() == 0) std::cout << "In uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain()"
@@ -875,19 +895,27 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
     if (outOfBounds) {
       m_numOutOfBounds++;
       m2lPrior      = 0.;
-      m2lLikelihoodResults->cwSet(INFINITY);
+      m2lLikelihoodVector->cwSet(INFINITY);
       logPosterior  = -INFINITY;
     }
     else {
       m2lPrior      = m_m2lPriorProbDensity_Obj.minus2LnDensity(*tmpParamValues);
-      m_m2lLikelihoodFunction_Obj.computeMisfits(*tmpParamValues, *m2lLikelihoodResults);
-      logPosterior  = -0.5 * ( m2lPrior + (*m2lLikelihoodResults/lrSigma2).sumOfComponents() );
+      if (m_likelihoodObjComputesMisfits) {
+        m_m2lLikelihoodFunction_Obj.computeMisfits(*tmpParamValues, *misfitVector);
+        *m2lLikelihoodVector = *misfitVector/lrVarianceVector;
+      }
+      else {
+        m_m2lLikelihoodFunction_Obj.computeMinus2LnLikelihoods(*tmpParamValues, *m2lLikelihoodVector);
+      }
+      m2lLikelihoodScalar = m2lLikelihoodVector->sumOfComponents();
+      logPosterior  = -0.5 * ( m2lPrior + m2lLikelihoodScalar );
     }
     currentCandidate.set(*tmpParamValues,
                          outOfBounds,
                          m2lPrior,
-                         *m2lLikelihoodResults,
-                         lrSigma2,
+                         *misfitVector,
+                         lrVarianceVector,
+                         *m2lLikelihoodVector,
                          logPosterior);
 
     bool accept = false;
@@ -895,7 +923,14 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
       m_alphaQuotients[positionId] = 0.;
     }
     else {
-      accept = acceptAlpha(this->alpha(currentPosition,currentCandidate,&m_alphaQuotients[positionId]));
+      double alpha = this->alpha(currentPosition,currentCandidate,&m_alphaQuotients[positionId]);
+#if 0 // For debug only
+      if (m_env.rank() == 0) std::cout << "In uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain()"
+                                       << ": for chain position of id = " << positionId
+                                       << ", alpha = " << alpha
+                                       << std::endl;
+#endif
+      accept = acceptAlpha(alpha);
     }
 #if 0 // For debug only
     if (m_env.rank() == 0) std::cout << "In uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain()"
@@ -908,13 +943,19 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
     if (m_env.rank() == 0) std::cout << "In uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain()"
                                      << ": for chain position of id = " << positionId
                                      << ", outOfBounds = "              << outOfBounds
-                                     << ", curM2lPrior = "              << currentPosition.m2lPrior()
-                                     << ", curM2lLikelihood = "         << currentPosition.m2lLikelihood()
-                                     << ", canM2lPrior = "              << currentCandidate.m2lPrior()
-                                     << ", canM2lLikelihoodResults = "  << currentCandidate.m2lLikelihood()
-                                     << ", canLrSigma2 = "              << currentCandidate.lrSigma2()
-                                     << ", canLogPosterior = "          << currentCandidate.logPosterior()
-                                     << ", accept = "                   << accept
+                                     << "\n curM2lPrior = "             << currentPosition.m2lPrior()
+                                     << "\n curMisfitVector = "         << currentPosition.misfitVector()
+                                     << "\n curLrVarianceVector = "     << currentPosition.lrVarianceVector()
+                                     << "\n curM2lLikelihoodVector = "  << currentPosition.m2lLikelihoodVector()
+                                     << "\n curLogPosterior = "         << currentPosition.logPosterior()
+                                     << "\n"
+                                     << "\n canM2lPrior = "             << currentCandidate.m2lPrior()
+                                     << "\n canMisfitVector = "         << currentCandidate.misfitVector()
+                                     << "\n canLrVarianceVector = "     << currentCandidate.lrVarianceVector()
+                                     << "\n canM2lLikelihoodVector = "  << currentCandidate.m2lLikelihoodVector()
+                                     << "\n canLogPosterior = "         << currentCandidate.logPosterior()
+                                     << "\n"
+                                     << "\n accept = "                  << accept
                                      << std::endl;
 #endif
 
@@ -935,24 +976,40 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
         outOfBounds   = m_paramSpace.outOfBounds(*tmpParamValues);
         if (outOfBounds) {
           m2lPrior      = 0.;
-          m2lLikelihoodResults->cwSet(INFINITY);
+          m2lLikelihoodVector->cwSet(INFINITY);
           logPosterior  = -INFINITY;
         }
         else {
           m2lPrior      = m_m2lPriorProbDensity_Obj.minus2LnDensity(*tmpParamValues);
-          m_m2lLikelihoodFunction_Obj.computeMisfits(*tmpParamValues, *m2lLikelihoodResults);
-          logPosterior  = -0.5 * ( m2lPrior + (*m2lLikelihoodResults/lrSigma2).sumOfComponents() );
+          if (m_likelihoodObjComputesMisfits) {
+            m_m2lLikelihoodFunction_Obj.computeMisfits(*tmpParamValues, *misfitVector);
+            *m2lLikelihoodVector = *misfitVector/lrVarianceVector;
+          }
+          else {
+            m_m2lLikelihoodFunction_Obj.computeMinus2LnLikelihoods(*tmpParamValues, *m2lLikelihoodVector);
+          }
+          m2lLikelihoodScalar = m2lLikelihoodVector->sumOfComponents();
+          logPosterior  = -0.5 * ( m2lPrior + m2lLikelihoodScalar );
         }
         currentCandidate.set(*tmpParamValues,
                              outOfBounds,
                              m2lPrior,
-                             *m2lLikelihoodResults,
-                             lrSigma2,
+                             *misfitVector,
+                             lrVarianceVector,
+                             *m2lLikelihoodVector,
                              logPosterior);
 
         drPositions.push_back(new uqChainPositionClass<V>(currentCandidate));
         if (outOfBounds == false) {
-          accept = acceptAlpha(this->alpha(drPositions));
+          double alpha = this->alpha(drPositions);
+#if 0 // For debug only
+          if (m_env.rank() == 0) std::cout << "In uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain()"
+                                           << ": for chain position of id = " << positionId
+                                           << " and stageId = " << stageId
+                                           << ", alpha = " << alpha
+                                           << std::endl;
+#endif
+          accept = acceptAlpha(alpha);
         }
       } // while
     } // end of 'delayed rejection' logic
@@ -965,31 +1022,36 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
     // Loop: update chain
     //****************************************************
     if (accept) {
-      m_chain[positionId]   = m_paramSpace.uqFinDimLinearSpaceClass<V,M>::newVector(currentCandidate.paramValues());
-      m_lrChain[positionId] = m_observableSpace.newVector(currentCandidate.m2lLikelihood());
+      m_chain[positionId]       = m_paramSpace.uqFinDimLinearSpaceClass<V,M>::newVector(currentCandidate.paramValues());
+      m_misfitChain[positionId] = m_observableSpace.newVector(currentCandidate.misfitVector());
+      //m_lrVarianceChain[positionId] is updated below, after the update of 'lrVarianceVector'
+      m_lrChain[positionId]     = m_observableSpace.newVector(currentCandidate.m2lLikelihoodVector());
       currentPosition = currentCandidate;
     }
     else {
-      m_chain[positionId]   = m_paramSpace.uqFinDimLinearSpaceClass<V,M>::newVector(currentPosition.paramValues());
-      m_lrChain[positionId] = m_observableSpace.newVector(currentPosition.m2lLikelihood());
+      m_chain[positionId]       = m_paramSpace.uqFinDimLinearSpaceClass<V,M>::newVector(currentPosition.paramValues());
+      m_misfitChain[positionId] = m_observableSpace.newVector(currentPosition.misfitVector());
+      //m_lrVarianceChain[positionId] is updated below, after the update of 'lrVarianceVector'
+      m_lrChain[positionId]     = m_observableSpace.newVector(currentPosition.m2lLikelihoodVector());
       m_numRejections++;
     }
 
-    if (m_observableSpace.updateVariances()) {
+    if (m_likelihoodObjComputesMisfits &&
+        m_observableSpace.shouldVariancesBeUpdated()) {
       V numbersOfObs (m_observableSpace.numbersOfObservations());
       V varAccuracies(m_observableSpace.varianceAccuracies()   );
       V priorVars    (m_observableSpace.priorVariances()       );
-      for (unsigned int i = 0; i < lrSigma2.size(); ++i) {
-        double term1 = 0.5*( varAccuracies[i] + numbersOfObs[i]                            );
-        double term2 =  2./( varAccuracies[i] * priorVars[i] + (*m_lrChain[positionId])[i] );
-        lrSigma2[i] = 1./uqMiscGammar(term1,term2,m_env.rng());
+      for (unsigned int i = 0; i < lrVarianceVector.size(); ++i) {
+        double term1 = 0.5*( varAccuracies[i] + numbersOfObs[i]                                );
+        double term2 =  2./( varAccuracies[i] * priorVars[i] + (*m_misfitChain[positionId])[i] );
+        lrVarianceVector[i] = 1./uqMiscGammar(term1,term2,m_env.rng());
         //if (m_env.rank() == 0) {
         //  std::cout << "In uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain()"
         //            << ": for chain position of id = "     << positionId
-        //            << ", (*m_lrSigma2Accuracies) = "      << (*m_lrSigma2Accuracies)
-        //            << ", (*m_lrNumbersOfObservations) = " << (*m_lrNumbersOfObservations)
-        //            << ", (*m_lrSigma2Priors) = "          << (*m_lrSigma2Priors)
-        //            << ", (*m_lrChain[positionId]) = "     << (*m_lrChain[positionId])
+        //            << ", numbersOfObs = "                 << numbersOfObs
+        //            << ", varAccuracies = "                << varAccuracies
+        //            << ", priorVars = "                    << priorVars
+        //            << ", (*m_misfitChain[positionId]) = " << (*m_misfitChain[positionId])
         //            << ", term1 = "                        << term1
         //            << ", term2 = "                        << term2
         //            << std::endl;
@@ -997,13 +1059,13 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
       }
       //if (m_env.rank() == 0) {
       //  std::cout << "In uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain()"
-      //            << ": for chain position of id = " << positionId
-      //            << ", lrSigma2 changed from "      << *(m_lrSigma2Chain[positionId])
-      //            << " to "                          << lrSigma2
+      //            << ": for chain position of id = "    << positionId
+      //            << ", lrVarianceVector changed from " << *(m_lrVarianceChain[positionId])
+      //            << " to "                             << lrVarianceVector
       //            << std::endl;
       //}
     }
-    m_lrSigma2Chain[positionId] = m_observableSpace.newVector(lrSigma2);
+    m_lrVarianceChain[positionId] = m_observableSpace.newVector(lrVarianceVector);
 
     //****************************************************
     // Loop: adaptive Metropolis (adaptation of covariance matrix)
@@ -1407,8 +1469,10 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
   //****************************************************
   // Compute MIN and MAX: for histograms and KDE
   //****************************************************
+  unsigned int initialPosForUncorrelation = m_initialPosForUncorrelation;
+  if (initialPosForUncorrelation >= m_chain.size()) initialPosForUncorrelation = m_chain.size() - 1;
   uqVectorSequenceMinMax(m_chain,
-                         m_initialPosForUncorrelation,
+                         initialPosForUncorrelation,
                          *m_minPositionsForStatistics,
                          *m_maxPositionsForStatistics);
 
@@ -1428,7 +1492,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
     m_centersForAllHistogramBins.resize(m_numberOfInternalBinsForHists+2,NULL);
     m_histogramBinsForAllParams.resize (m_numberOfInternalBinsForHists+2,NULL);
     uqVectorSequenceHistogram(m_chain,
-                              m_initialPosForUncorrelation,
+                              initialPosForUncorrelation,
                               m_spacingForUncorrelation,
                               *m_minPositionsForStatistics,
                               *m_maxPositionsForStatistics,
@@ -1453,11 +1517,11 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
 
     V iqrs(*(m_chain[0]));
     uqVectorSequenceInterQuantileRange(m_chain,
-                                       m_initialPosForUncorrelation,
+                                       initialPosForUncorrelation,
                                        m_spacingForUncorrelation,
                                        iqrs);
     if (m_env.rank() == 0) {
-      std::cout << "\nComputed min values, max values and inter quantile ranges, for subchain beggining at position " << m_initialPosForUncorrelation
+      std::cout << "\nComputed min values, max values and inter quantile ranges, for subchain beggining at position " << initialPosForUncorrelation
                   << std::endl;
 
       char line[512];
@@ -1492,14 +1556,14 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
     }
 
     uqVectorSequenceScaleForKDE(m_chain,
-                                m_initialPosForUncorrelation,
+                                initialPosForUncorrelation,
                                 m_spacingForUncorrelation,
                                 iqrs,
                                 *m_scalesForKDEs);
 
     m_densityValuesFromGaussianKDE.resize(m_numberOfEvaluationPosForKDEs,NULL);
     uqVectorSequenceGaussianKDE(m_chain,
-                                m_initialPosForUncorrelation,
+                                initialPosForUncorrelation,
                                 m_spacingForUncorrelation,
                                 m_evaluationPositionsForKDEs,
                                 *m_scalesForKDEs,
@@ -1513,6 +1577,8 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
   if (chainSampleVariance    ) delete chainSampleVariance;
   if (chainMean              ) delete chainMean;
   if (gaussianVector         ) delete gaussianVector;
+  if (misfitVector           ) delete misfitVector;
+  if (m2lLikelihoodVector    ) delete m2lLikelihoodVector;
   if (tmpParamValues         ) delete tmpParamValues;
 
   return iRC;
@@ -1560,8 +1626,10 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::alpha(
   if ((x.outOfBounds() == false) &&
       (y.outOfBounds() == false)) {
     double yLogPosteriorToUse = y.logPosterior();
-    if (m_observableSpace.updateVariances()) {
-      yLogPosteriorToUse = -0.5 * ( y.m2lPrior() + (y.m2lLikelihood()/x.lrSigma2()).sumOfComponents() );
+    if (m_likelihoodObjComputesMisfits &&
+        m_observableSpace.shouldVariancesBeUpdated()) {
+      // Divide the misfitVector of 'y' by the lrVarianceVector of 'x'
+      yLogPosteriorToUse = -0.5 * ( y.m2lPrior() + (y.misfitVector()/x.lrVarianceVector()).sumOfComponents() );
     }
     if (m_proposalIsSymmetric) {
       alphaQuotient = exp(yLogPosteriorToUse - x.logPosterior());
@@ -1623,8 +1691,11 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::alpha(const std::vector<uqChainPositionCl
   }
 
   double numeratorLogPosteriorToUse = backwardPositions[0]->logPosterior();
-  if (m_observableSpace.updateVariances()) {
-    numeratorLogPosteriorToUse = -0.5 * ( backwardPositions[0]->m2lPrior() + (backwardPositions[0]->m2lLikelihood()/positions[0]->lrSigma2()).sumOfComponents() );
+  if (m_likelihoodObjComputesMisfits &&
+      m_observableSpace.shouldVariancesBeUpdated()) {
+    // Divide the misfitVector of 'back[0]' by the lrVarianceVector of 'pos[0]'
+    numeratorLogPosteriorToUse = -0.5 * ( backwardPositions[0]->m2lPrior() +
+      (backwardPositions[0]->misfitVector()/positions[0]->lrVarianceVector()).sumOfComponents() );
   }
   logNumerator   += numeratorLogPosteriorToUse;
   logDenominator += positions[0]->logPosterior();
@@ -1757,18 +1828,26 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::writeChainInfoOut(
   }
   ofs << "];\n";
 
-  // Write m_lrChain
-  ofs << "queso_" << m_prefix << "lrChain = [";
-  for (unsigned int i = 0; i < m_lrChain.size(); ++i) {
-    ofs << *(m_lrChain[i])
+  // Write m_misfitChain
+  ofs << "queso_" << m_prefix << "misfitChain = [";
+  for (unsigned int i = 0; i < m_misfitChain.size(); ++i) {
+    ofs << *(m_misfitChain[i])
         << std::endl;
   }
   ofs << "];\n";
 
-  // Write m_lrSigma2Chain
+  // Write m_lrVarianceChain
   ofs << "queso_" << m_prefix << "lrVarianceChain = [";
-  for (unsigned int i = 0; i < m_lrSigma2Chain.size(); ++i) {
-    ofs << *(m_lrSigma2Chain[i])
+  for (unsigned int i = 0; i < m_lrVarianceChain.size(); ++i) {
+    ofs << *(m_lrVarianceChain[i])
+        << std::endl;
+  }
+  ofs << "];\n";
+
+  // Write m_lrChain
+  ofs << "queso_" << m_prefix << "lrChain = [";
+  for (unsigned int i = 0; i < m_lrChain.size(); ++i) {
+    ofs << *(m_lrChain[i])
         << std::endl;
   }
   ofs << "];\n";
@@ -1823,12 +1902,12 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::writeChainInfoOut(
 #endif
 
   // Write param lower bounds
-  ofs << "queso_" << m_prefix << "low = ["
+  ofs << "queso_" << m_prefix << "minValues = ["
       << m_paramSpace.minValues()
       << "];\n";
 
   // Write param upper bounds
-  ofs << "queso_" << m_prefix << "upp = ["
+  ofs << "queso_" << m_prefix << "maxValues = ["
       << m_paramSpace.maxValues()
       << "];\n";
 
@@ -1868,7 +1947,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::writeChainInfoOut(
 #endif
 
   // Write number of rejections
-  ofs << "queso_" << m_prefix << "rejected = "  << (double) m_numRejections/(double) m_chain.size()
+  ofs << "queso_" << m_prefix << "rejected = "  << (double) m_numRejections/(double) (m_chain.size()-1)
       << ";\n"
       << std::endl;
 
@@ -1979,9 +2058,16 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::chain() const
 
 template <class V, class M>
 const std::vector<const V*>&
-uqDRAM_MarkovChainGeneratorClass<V,M>::lrSigma2Chain() const
+uqDRAM_MarkovChainGeneratorClass<V,M>::misfitChain() const
 {
-  return m_lrSigma2Chain;
+  return m_misfitChain;
+}
+
+template <class V, class M>
+const std::vector<const V*>&
+uqDRAM_MarkovChainGeneratorClass<V,M>::lrVarianceChain() const
+{
+  return m_lrVarianceChain;
 }
 
 template <class V, class M>
@@ -2019,6 +2105,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::print(std::ostream& os) const
   os << "\n" << m_option_computeCorrelations << " = " << m_computeCorrelations;
   os << "\n" << m_option_computeHistograms   << " = " << m_computeHistograms;
   os << "\n" << m_option_computeKDEs         << " = " << m_computeKDEs;
+  os << "\n" << "(internal variable) m_likelihoodObjComputesMisfits = " << m_likelihoodObjComputesMisfits;
   os << std::endl;
 
   return;

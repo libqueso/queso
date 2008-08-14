@@ -39,12 +39,12 @@ calib_MCMC_am_eta                     = 1.92
 calib_MCMC_am_epsilon                 = 1.e-5
 calib_MCMC_mh_namesOfOutputFiles      = calibOutput.m
 calib_MCMC_mh_chainDisplayPeriod      = 5000
-calib_MCMC_runBMM                     = 1
-calib_MCMC_computePSDs                = 1
-calib_MCMC_computeGewekeCoefficients  = 1
-calib_MCMC_computeCorrelations        = 1
-calib_MCMC_computeHistograms          = 1
-calib_MCMC_computeKDEs                = 1
+calib_MCMC_runBMM                     = 0
+calib_MCMC_computePSDs                = 0
+calib_MCMC_computeGewekeCoefficients  = 0
+calib_MCMC_computeCorrelations        = 0
+calib_MCMC_computeHistograms          = 0
+calib_MCMC_computeKDEs                = 0
 
 ###############################################
 # Other Inputs

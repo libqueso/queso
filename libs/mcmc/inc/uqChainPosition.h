@@ -32,50 +32,55 @@ public:
                        const V& paramValues,
                        bool     outOfBounds,
                        double   m2lPrior,
-                       const V& m2lLikelihoodResults,
-                       const V& lrSigma2,
+                       const V& misfitVector,
+                       const V& lrVarianceVector,
+                       const V& m2lLikelihoodVector,
                        double   logPosterior);
   uqChainPositionClass(const uqChainPositionClass<V>& rhs);
  ~uqChainPositionClass();
 
   uqChainPositionClass<V>& operator= (const uqChainPositionClass<V>& rhs);
 
-  const V& paramValues  () const;
-  bool     outOfBounds  () const;
-  double   m2lPrior     () const;
-  const V& m2lLikelihood() const;
-  const V& lrSigma2     () const;
-  double   logPosterior () const;
+  const V& paramValues        () const;
+  bool     outOfBounds        () const;
+  double   m2lPrior           () const;
+  const V& misfitVector       () const;
+  const V& lrVarianceVector   () const;
+  const V& m2lLikelihoodVector() const;
+  double   logPosterior       () const;
 
-  void     set          (const V& paramValues,
-                         bool     outOfBounds,
-                         double   m2lPrior,
-                         const V& m2lLikelihoodResults,
-                         const V& lrSigma2,
-                         double   logPosterior);
+  void     set                (const V& paramValues,
+                               bool     outOfBounds,
+                               double   m2lPrior,
+                               const V& misfitVector,
+                               const V& lrVarianceVector,
+                               const V& m2lLikelihoodVector,
+                               double   logPosterior);
 
-  void     print        (std::ostream& os) const;
+  void     print              (std::ostream& os) const;
 
 private:
   const uqEnvironmentClass& m_env;
   V*     m_paramValues;
   bool   m_outOfBounds;
   double m_m2lPrior;
-  V*     m_m2lLikelihoodResults;
-  V*     m_lrSigma2;
+  V*     m_misfitVector;
+  V*     m_lrVarianceVector;
+  V*     m_m2lLikelihoodVector;
   double m_logPosterior;
 };
 
 template <class V>
 uqChainPositionClass<V>::uqChainPositionClass(const uqEnvironmentClass& env)
   :
-  m_env                 (env),
-  m_paramValues         (NULL),
-  m_outOfBounds         (false),
-  m_m2lPrior            (0.),
-  m_m2lLikelihoodResults(NULL),
-  m_lrSigma2            (NULL),
-  m_logPosterior        (0.)
+  m_env                (env),
+  m_paramValues        (NULL),
+  m_outOfBounds        (false),
+  m_m2lPrior           (0.),
+  m_misfitVector       (NULL),
+  m_lrVarianceVector   (NULL),
+  m_m2lLikelihoodVector(NULL),
+  m_logPosterior       (0.)
 {
 }
 
@@ -85,39 +90,43 @@ uqChainPositionClass<V>::uqChainPositionClass(
   const V& paramValues,
   bool     outOfBounds,
   double   m2lPrior,
-  const V& m2lLikelihoodResults,
-  const V& lrSigma2,
+  const V& misfitVector,
+  const V& lrVarianceVector,
+  const V& m2lLikelihoodVector,
   double   logPosterior)
   :
-  m_env                 (env),
-  m_paramValues         (new V(paramValues)),
-  m_outOfBounds         (outOfBounds),
-  m_m2lPrior            (m2lPrior),
-  m_m2lLikelihoodResults(new V(m2lLikelihoodResults)),
-  m_lrSigma2            (new V(lrSigma2)),
-  m_logPosterior        (logPosterior)
+  m_env                (env),
+  m_paramValues        (new V(paramValues)),
+  m_outOfBounds        (outOfBounds),
+  m_m2lPrior           (m2lPrior),
+  m_misfitVector       (new V(misfitVector)),
+  m_lrVarianceVector   (new V(lrVarianceVector)),
+  m_m2lLikelihoodVector(new V(m2lLikelihoodVector)),
+  m_logPosterior       (logPosterior)
 {
 }
 
 template <class V>
 uqChainPositionClass<V>::uqChainPositionClass(const uqChainPositionClass<V>& rhs)
   :
-  m_env                 (rhs.m_env                         ),
-  m_paramValues         (new V(*rhs.m_paramValues)         ),
-  m_outOfBounds         (rhs.m_outOfBounds                 ),
-  m_m2lPrior            (rhs.m_m2lPrior                    ),
-  m_m2lLikelihoodResults(new V(*rhs.m_m2lLikelihoodResults)),
-  m_lrSigma2            (new V(*rhs.m_lrSigma2)            ),
-  m_logPosterior        (rhs.m_logPosterior                )
+  m_env                (rhs.m_env                        ),
+  m_paramValues        (new V(*rhs.m_paramValues)        ),
+  m_outOfBounds        (rhs.m_outOfBounds                ),
+  m_m2lPrior           (rhs.m_m2lPrior                   ),
+  m_misfitVector       (new V(*rhs.m_misfitVector)       ),
+  m_lrVarianceVector   (new V(*rhs.m_lrVarianceVector)   ),
+  m_m2lLikelihoodVector(new V(*rhs.m_m2lLikelihoodVector)),
+  m_logPosterior       (rhs.m_logPosterior               )
 {
 }
 
 template <class V>
 uqChainPositionClass<V>::~uqChainPositionClass()
 {
-  if (m_lrSigma2)             delete m_lrSigma2;
-  if (m_m2lLikelihoodResults) delete m_m2lLikelihoodResults;
-  if (m_paramValues)          delete m_paramValues;
+  if (m_m2lLikelihoodVector) delete m_m2lLikelihoodVector;
+  if (m_lrVarianceVector)    delete m_lrVarianceVector;
+  if (m_misfitVector)        delete m_misfitVector;
+  if (m_paramValues)         delete m_paramValues;
 }
 
 template <class V>
@@ -128,10 +137,12 @@ uqChainPositionClass<V>::operator=(const uqChainPositionClass<V>& rhs)
   else                      *m_paramValues = *rhs.m_paramValues;
   m_outOfBounds   = rhs.m_outOfBounds;
   m_m2lPrior      = rhs.m_m2lPrior;
-  if (m_m2lLikelihoodResults == NULL) m_m2lLikelihoodResults = new V(*rhs.m_m2lLikelihoodResults);
-  else                               *m_m2lLikelihoodResults = *rhs.m_m2lLikelihoodResults;
-  if (m_lrSigma2             == NULL) m_lrSigma2             = new V(*rhs.m_lrSigma2);
-  else                               *m_lrSigma2             = *rhs.m_lrSigma2;
+  if (m_misfitVector          == NULL) m_misfitVector        = new V(*rhs.m_misfitVector);
+  else                                *m_misfitVector        = *rhs.m_misfitVector;
+  if (m_lrVarianceVector      == NULL) m_lrVarianceVector    = new V(*rhs.m_lrVarianceVector);
+  else                                *m_lrVarianceVector    = *rhs.m_lrVarianceVector;
+  if (m_m2lLikelihoodVector   == NULL) m_m2lLikelihoodVector = new V(*rhs.m_m2lLikelihoodVector);
+  else                                *m_m2lLikelihoodVector = *rhs.m_m2lLikelihoodVector;
   m_logPosterior  = rhs.m_logPosterior;
 
   return *this;
@@ -164,16 +175,23 @@ uqChainPositionClass<V>::m2lPrior() const
 
 template <class V>
 const V&    
-uqChainPositionClass<V>::m2lLikelihood() const
+uqChainPositionClass<V>::misfitVector() const
 {
-  return *m_m2lLikelihoodResults;
+  return *m_misfitVector;
 }
 
 template <class V>
 const V&
-uqChainPositionClass<V>::lrSigma2() const
+uqChainPositionClass<V>::lrVarianceVector() const
 {
-  return *m_lrSigma2;
+  return *m_lrVarianceVector;
+}
+
+template <class V>
+const V&    
+uqChainPositionClass<V>::m2lLikelihoodVector() const
+{
+  return *m_m2lLikelihoodVector;
 }
 
 template <class V>
@@ -189,18 +207,21 @@ uqChainPositionClass<V>::set(
   const V& paramValues,
   bool     outOfBounds,
   double   m2lPrior,
-  const V& m2lLikelihoodResults,
-  const V& lrSigma2,
+  const V& misfitVector,
+  const V& lrVarianceVector,
+  const V& m2lLikelihoodVector,
   double   logPosterior)
 {
   if (m_paramValues == NULL) m_paramValues = new V(paramValues);
   else                      *m_paramValues = paramValues;
   m_outOfBounds   = outOfBounds;
   m_m2lPrior      = m2lPrior;
-  if (m_m2lLikelihoodResults == NULL) m_m2lLikelihoodResults = new V(m2lLikelihoodResults);
-  else                               *m_m2lLikelihoodResults = m2lLikelihoodResults;
-  if (m_lrSigma2             == NULL) m_lrSigma2             = new V(lrSigma2);
-  else                               *m_lrSigma2             = lrSigma2;
+  if (m_m2lLikelihoodVector == NULL) m_m2lLikelihoodVector  = new V(m2lLikelihoodVector);
+  else                               *m_m2lLikelihoodVector = m2lLikelihoodVector;
+  if (m_lrVarianceVector    == NULL) m_lrVarianceVector     = new V(lrVarianceVector);
+  else                               *m_lrVarianceVector    = lrVarianceVector;
+  if (m_misfitVector        == NULL) m_misfitVector         = new V(misfitVector);
+  else                               *m_misfitVector        = misfitVector;
   m_logPosterior  = logPosterior;
 
   return;
