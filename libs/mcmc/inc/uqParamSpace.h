@@ -235,17 +235,26 @@ uqParamSpaceClass<V,M>::readParametersFromSpecFile(std::string& specFileName)
                         m_env.rank(),
                         "uqParamSpaceClass<V,M>::constructor()",
                         "failed reading during the determination of the number of parameters");
+    //std::cout << "lineId = "           << lineId
+    //          << ", numObservables = " << numObservables
+    //          << ", tempString = "     << tempString
+    //          << std::endl;
     if (tempString[0] != '#') numParameters++;
     lineId++;
+    ifs.ignore(maxCharsPerLine,'\n');
   }
   UQ_FATAL_TEST_MACRO(lineId != numLines,
                       m_env.rank(),
                       "uqParamSpaceClass<V,M>::constructor()",
                       "the first number of lines read is nonconsistent");
-  UQ_FATAL_TEST_MACRO(m_dim != numParameters,
-                      m_env.rank(),
-                      "uqParamSpaceClass<V,M>::constructor()",
-                      "number of parameters in parameter specification file does not match dimension passed in the main input file");
+  if (m_dim != numParameters) {
+    char errorExplanation[512];
+    sprintf(errorExplanation,"number of parameters (%d) in parameter specification file does not match dimension (%d) passed in the main input file",numParameters,m_dim);
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.rank(),
+                        "uqParamSpaceClass<V,M>::constructor()",
+                        errorExplanation);
+  }
 
   std::cout << "Parameter specification file '" << specFileName
             << "' has "                         << numLines
@@ -273,11 +282,6 @@ uqParamSpaceClass<V,M>::readParametersFromSpecFile(std::string& specFileName)
     //std::cout << "Beginning read of line (in parameter specification file) of id = " << lineId << std::endl;
     bool endOfLineAchieved = false;
 
-    UQ_FATAL_TEST_MACRO(paramId >= m_parameters.size(),
-                        m_env.rank(),
-                        "uqParamSpaceClass<V,M>::constructor()",
-                        "paramId got too large during reading of parameter specification file");
-
     iRC = uqMiscReadCharsAndDoubleFromFile(ifs, paramName, NULL, endOfLineAchieved);
     UQ_FATAL_TEST_MACRO(iRC,
                         m_env.rank(),
@@ -293,6 +297,16 @@ uqParamSpaceClass<V,M>::readParametersFromSpecFile(std::string& specFileName)
                         m_env.rank(),
                         "uqParamSpaceClass<V,M>::constructor()",
                         "failed to provide information beyond parameter name during the parameters reading loop");
+
+    // Check 'paramId' before setting one more parameter
+    if (paramId >= m_parameters.size()) {
+      char errorExplanation[512];
+      sprintf(errorExplanation,"paramId (%d) got too large during reading of parameter specification file",paramId);
+      UQ_FATAL_TEST_MACRO(true,
+                          m_env.rank(),
+                          "uqParamSpaceClass<V,M>::constructor()",
+                          errorExplanation);
+    }
 
     iRC = uqMiscReadCharsAndDoubleFromFile(ifs, initialValueString, &initialValue, endOfLineAchieved);
     UQ_FATAL_TEST_MACRO(iRC,

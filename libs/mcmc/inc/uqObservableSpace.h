@@ -223,21 +223,30 @@ uqObservableSpaceClass<V,M>::readObservablesFromSpecFile(std::string& specFileNa
                         m_env.rank(),
                         "uqObservableSpaceClass<V,M>::constructor()",
                         "failed reading during the determination of the number of observables");
+    //std::cout << "lineId = "           << lineId
+    //          << ", numObservables = " << numObservables
+    //          << ", tempString = "     << tempString
+    //          << std::endl;
     if (tempString[0] != '#') numObservables++;
     lineId++;
+    ifs.ignore(maxCharsPerLine,'\n');
   }
   UQ_FATAL_TEST_MACRO(lineId != numLines,
                       m_env.rank(),
                       "uqObservableSpaceClass<V,M>::constructor()",
                       "the first number of lines read is nonconsistent");
-  UQ_FATAL_TEST_MACRO(m_dim != numObservables,
-                      m_env.rank(),
-                      "uqObservableSpaceClass<V,M>::constructor()",
-                      "number of observables in observable specification file does not match dimension passed in the main input file");
+  if (m_dim != numObservables) {
+    char errorExplanation[512];
+    sprintf(errorExplanation,"number of observables (%d) in observable specification file does not match dimension (%d) passed in the main input file",numObservables,m_dim);
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.rank(),
+                        "uqObservableSpaceClass<V,M>::constructor()",
+                        errorExplanation);
+  }
 
   std::cout << "Observable specification file '" << specFileName
-            << "' has "                         << numLines
-            << " lines and specifies "          << numObservables
+            << "' has "                          << numLines
+            << " lines and specifies "           << numObservables
             << " observables."
             << std::endl;
   m_observables.resize(numObservables,NULL);
@@ -257,11 +266,6 @@ uqObservableSpaceClass<V,M>::readObservablesFromSpecFile(std::string& specFileNa
     //std::cout << "Beginning read of line (in observable specification file) of id = " << lineId << std::endl;
     bool endOfLineAchieved = false;
 
-    UQ_FATAL_TEST_MACRO(observableId >= m_observables.size(),
-                        m_env.rank(),
-                        "uqObservableSpaceClass<V,M>::constructor()",
-                        "observableId got too large during reading of observable specification file");
-
     iRC = uqMiscReadCharsAndDoubleFromFile(ifs, observableName, NULL, endOfLineAchieved);
     UQ_FATAL_TEST_MACRO(iRC,
                         m_env.rank(),
@@ -277,6 +281,16 @@ uqObservableSpaceClass<V,M>::readObservablesFromSpecFile(std::string& specFileNa
                         m_env.rank(),
                         "uqObservableSpaceClass<V,M>::constructor()",
                         "failed to provide information beyond observable name during the observables reading loop");
+
+    // Check 'observableId' before setting one more observable
+    if (observableId >= m_observables.size()) {
+      char errorExplanation[512];
+      sprintf(errorExplanation,"observableId (%d) got too large during reading of observable specification file",observableId);
+      UQ_FATAL_TEST_MACRO(true,
+                          m_env.rank(),
+                          "uqObservableSpaceClass<V,M>::constructor()",
+                          errorExplanation);
+    }
 
     double tmpDouble;
     iRC = uqMiscReadCharsAndDoubleFromFile(ifs, numberOfObservationsString, &tmpDouble, endOfLineAchieved);

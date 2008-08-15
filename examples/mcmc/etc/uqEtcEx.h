@@ -1,6 +1,6 @@
 /* uq/examples/mcmc/etc/uqEtcEx.h
  *
- * Copyright (C) 2008 The PECOS Team, http://queso.ices.utexas.edu
+ * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 #ifndef __UQ_ETC_EX_H__
 #define __UQ_ETC_EX_H__
 
-#include <uqStateSpace.h>
+//#include <uqStateSpace.h>
 #include <uqDRAM_MarkovChainGenerator.h>
 #include <uqDefaultPrior.h>
 
@@ -55,19 +55,38 @@ double calib_M2lPriorRoutine(const V& paramValues, const void* functionDataPtr)
 //********************************************************
 template<class V, class M>
 struct
-calib_MisfitLikelihoodRoutine_DataType
+calib_CompleteLikelihoodRoutine_DataType
 {
   const V* aVectorForInstance;
   const M* aMatrixForInstance;
 };
 
 template<class V, class M>
-void calib_MisfitLikelihoodRoutine(const V& paramValues, const void* functionDataPtr, V& resultValues)
+void calib_CompleteLikelihoodRoutine(const V& paramValues, const void* functionDataPtr, V& resultValues)
 {
-  const V& v1 = *((calib_MisfitLikelihoodRoutine_DataType<V,M> *) functionDataPtr)->aVectorForInstance;
-  const M& m1 = *((calib_MisfitLikelihoodRoutine_DataType<V,M> *) functionDataPtr)->aMatrixForInstance;
+  const V& v1 = *((calib_CompleteLikelihoodRoutine_DataType<V,M> *) functionDataPtr)->aVectorForInstance;
+  const M& m1 = *((calib_CompleteLikelihoodRoutine_DataType<V,M> *) functionDataPtr)->aMatrixForInstance;
 
-  resultValues[0] = (m1 * v1).norm2Sq();
+  const V& v2 = *((calib_CompleteLikelihoodRoutine_DataType<V,M> *) functionDataPtr)->aVectorForInstance;
+  const M& m2 = *((calib_CompleteLikelihoodRoutine_DataType<V,M> *) functionDataPtr)->aMatrixForInstance;
+
+  V misfit(resultValues);
+  misfit[0] = (m1 * v1).norm2Sq();
+  misfit[1] = (m2 * v2).norm2Sq();
+
+  V sigma(resultValues);
+  sigma[0] = 1.;
+  sigma[1] = .34;
+
+  V minus2LogLikelihood(resultValues);
+  minus2LogLikelihood = misfit/sigma;
+
+  // The MCMC library will always expect the value [-2. * ln(Likelihood)], so this routine should use this line below
+  resultValues = minus2LogLikelihood;
+
+  // If, however, you really need to return the Likelihood(s), then use this line below
+  //resultsValues[0] = exp(-.5*minus2LogLikelihood[0]);
+  //resultsValues[1] = exp(-.5*minus2LogLikelihood[1]);
 
   return;
 }
@@ -120,13 +139,14 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
   // Step 3 of 6: Define the likelihood prob. density function object: just misfits
   //******************************************************
-  calib_MisfitLikelihoodRoutine_DataType<V,M> calib_MisfitLikelihoodRoutine_Data;
+  calib_CompleteLikelihoodRoutine_DataType<V,M> calib_CompleteLikelihoodRoutine_Data;
   V calib_ParamInitials(calib_ParamSpace.initialValues());
-  calib_MisfitLikelihoodRoutine_Data.aVectorForInstance = &calib_ParamInitials;
-  calib_MisfitLikelihoodRoutine_Data.aMatrixForInstance = NULL;
+  calib_CompleteLikelihoodRoutine_Data.aVectorForInstance = &calib_ParamInitials;
+  calib_CompleteLikelihoodRoutine_Data.aMatrixForInstance = NULL;
 
-  uq_MisfitLikelihoodFunction_Class<V,M> calib_MisfitLikelihoodFunction_Obj(calib_MisfitLikelihoodRoutine<V,M>,
-                                                                            (void *) &calib_MisfitLikelihoodRoutine_Data);
+  uq_CompleteLikelihoodFunction_Class<V,M> calib_CompleteLikelihoodFunction_Obj(calib_CompleteLikelihoodRoutine<V,M>,
+                                                                                (void *) &calib_CompleteLikelihoodRoutine_Data,
+                                                                                true); // the routine computes [-2.*ln(Likelihood)]
 
   //******************************************************
   // Step 4 of 6: Define the Markov chain generator.
@@ -136,7 +156,7 @@ uqAppl(const uqEnvironmentClass& env)
                                             calib_ParamSpace,
                                             calib_ObservableSpace,
                                             calib_M2lPriorProbDensity_Obj,
-                                            calib_MisfitLikelihoodFunction_Obj);
+                                            calib_CompleteLikelihoodFunction_Obj);
 
   //******************************************************
   // Step 5 of 6: Compute the proposal covariance matrix.

@@ -26,7 +26,7 @@ template<class V, class M>
 void
 uqComputeQoIDistribution(
   const std::vector<const V*>&         chain,
-  const std::vector<const V*>&         lrSigma2Chain,
+  const std::vector<const V*>&         misfitVarianceChain,
   unsigned int                         numberOfSamples,
   uq_QoIPredictionFunction_Class<V,M>& qoIPredictionFunction_Obj,
   const std::string&                   outputFileName)
@@ -52,11 +52,11 @@ uqComputeQoIDistribution(
     std::vector<V*> perturbedPredicitions(predictions.size(),NULL);
     unsigned int numTimeSteps  = predictions.size();
     unsigned int paramSpaceDim = predictions[0]->size();
-    V            lrStdDev(*lrSigma2Chain[sampleIds[i]]);
+    V            misfitStdDev(*misfitVarianceChain[sampleIds[i]]);
     for (unsigned int j = 0; j < numTimeSteps; ++j) {
       perturbedPredicitions[j] = new V(*predictions[j]);
       for (unsigned int k = 0; k < paramSpaceDim; ++k) {
-        (*perturbedPredicitions[j])[k] = gsl_ran_gaussian(rng,lrStdDev[k]);
+        (*perturbedPredicitions[j])[k] = gsl_ran_gaussian(rng,misfitStdDev[k]);
       }
     }
 

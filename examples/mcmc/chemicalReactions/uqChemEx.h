@@ -143,6 +143,7 @@ calib_MisfitLikelihoodRoutine(const V& paramValues, const void* functionDataPtr,
   for (unsigned int i = 0; i < instantsOfAObservations.size(); ++i) {
     resultValues[0] += pow( (*computedEvolutionOfConcentrations[i])[0] - (*observedEvolutionOfAConcentration[i])[0],2. );
   }
+  //resultValues[0] /= 2.1876e-08; // in case "uq_CompleteLikelihoodFunction_Class<V,M>" is used below in uqAppl() routine
 
   for (unsigned int i = 0; i < computedEvolutionOfConcentrations.size(); ++i) {
     if (computedEvolutionOfConcentrations[i]) delete computedEvolutionOfConcentrations[i];
@@ -241,6 +242,7 @@ uqAppl(const uqEnvironmentClass& env)
 
   uq_MisfitLikelihoodFunction_Class<V,M> calib_MisfitLikelihoodFunction_Obj(calib_MisfitLikelihoodRoutine<V,M>,
                                                                             (void *) &calib_MisfitLikelihoodRoutine_Data);
+                                                                            //true); // in case "uq_CompleteLikelihoodFunction_Class<V,M>" is used
 
   //******************************************************
   // Step 4 of 6: Define the Markov chain generator.
@@ -273,7 +275,7 @@ uqAppl(const uqEnvironmentClass& env)
   uq_QoIPredictionFunction_Class<V,M> calib_QoIPredictionFunction_Obj(calib_QoIPredictionRoutine<V,M>,
                                                                       (void *) &calib_QoIPredictionRoutine_Data);
   uqComputeQoIDistribution(mcg.chain(),
-                           mcg.lrVarianceChain(),
+                           mcg.misfitVarianceChain(),
                            500,
                            calib_QoIPredictionFunction_Obj,
                            mcg.outputFileName());
