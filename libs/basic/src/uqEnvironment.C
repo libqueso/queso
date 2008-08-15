@@ -22,7 +22,9 @@
 #include <sys/time.h>
 #include <gsl/gsl_randist.h>
 
-#define QUESO_TOOLKIT_MCMC_TOOL_CURRENT_VERSION "0.1"
+// Version "0.1" on "Aug/11/2008"
+#define QUESO_TOOLKIT_MCMC_TOOL_CURRENT_VERSION "0.11"
+#define QUESO_TOOLKIT_MCMC_TOOL_RELEASE_DATE    "Aug/15/2008"
 
 uqEnvOptionsStruct::uqEnvOptionsStruct(
   unsigned int verbosity,
@@ -124,7 +126,7 @@ uqEnvironmentClass::commonConstructor()
   }
 
   if (m_rank == 0) std::cout << "\n================================="
-                             << "\n QUESO toolkit, MCMC tool, version " << QUESO_TOOLKIT_MCMC_TOOL_CURRENT_VERSION
+                             << "\n QUESO toolkit, MCMC tool, version " << QUESO_TOOLKIT_MCMC_TOOL_CURRENT_VERSION << ", released on " << QUESO_TOOLKIT_MCMC_TOOL_RELEASE_DATE
                              << "\n================================="
                              << "\n"
                              << std::endl;
