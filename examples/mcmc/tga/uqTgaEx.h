@@ -20,6 +20,20 @@
 #ifndef __UQ_TGA_EX_H__
 #define __UQ_TGA_EX_H__
 
+double observationsOfTemperatureAndRelativeMass[] = {
+  673.034, 0.965855,
+  682.003, 0.951549,
+  690.985, 0.925048,
+  699.979, 0.886353,
+  708.989, 0.830585,
+  718.02,  0.755306,
+  727.089, 0.641003,
+  735.96,  0.475474,
+  744.904, 0.236777,
+  754.062, 0.032234,
+  763.049, 0.000855448
+};
+
 //#include <uqStateSpace.h>
 #include <uqDRAM_MarkovChainGenerator.h>
 #include <uqDefaultPrior.h>
@@ -30,28 +44,25 @@
 
 //********************************************************
 // The prior routine: provided by user and called by the MCMC tool.
-// --> The application can use the default prior() routine provided by the MCMC tool.
+// --> This application uses the default prior() routine provided by the MCMC tool.
 //********************************************************
 template<class V, class M>
 struct
 calib_M2lPriorRoutine_DataType
 {
-  const V* maybeYouNeedAVector;
-  const M* maybeYouNeedAMatrix;
+  const V* nothing1;
+  const M* nothing2;
 };
 
 template<class V, class M>
 double calib_M2lPriorRoutine(const V& paramValues, const void* functionDataPtr)
 {
-  const V& v1 = *((calib_M2lPriorRoutine_DataType<V,M> *) functionDataPtr)->maybeYouNeedAVector;
-  const M& m1 = *((calib_M2lPriorRoutine_DataType<V,M> *) functionDataPtr)->maybeYouNeedAMatrix;
-
   UQ_FATAL_TEST_MACRO(true,
                       paramValues.env().rank(),
                       "calib_M2lPriorRoutine(), in uqTgaEx.h",
                       "should not be here, since application is using the default prior() routine provided by PECOS toolkit");
 
-  return (m1 * v1).sumOfComponents();
+  return 0.;
 }
 
 //********************************************************
@@ -60,8 +71,12 @@ double calib_M2lPriorRoutine(const V& paramValues, const void* functionDataPtr)
 int func(double t, const double Mass[], double f[], void *info)
 {
   double* params = (double *)info;
-  double A = params[0],E = params[1],beta = params[2];
+  double A    = params[0];
+  double E    = params[1];
+  double beta = params[2];
+
   f[0] = -A*Mass[0]*exp(-E/(R_CONSTANT*t))/beta;
+
   return GSL_SUCCESS;
 }
 
@@ -69,107 +84,73 @@ template<class V, class M>
 struct
 calib_CompleteLikelihoodRoutine_DataType
 {
-  const V* aVectorForInstance;
-  const M* aMatrixForInstance;
+  double               beta1;
+  double               variance1;
+  std::vector<double>* Te1; // temperatures
+  std::vector<double>* Me1; // relative masses
 };
 
 template<class V, class M>
 void calib_CompleteLikelihoodRoutine(const V& paramValues, const void* functionDataPtr, V& resultValues)
 {
-#if 0
-  const V& v1 = *((calib_CompleteLikelihoodRoutine_DataType<V,M> *) functionDataPtr)->aVectorForInstance;
-  const M& m1 = *((calib_CompleteLikelihoodRoutine_DataType<V,M> *) functionDataPtr)->aMatrixForInstance;
+  double A = paramValues[0];
+  double E = paramValues[1];
+  double beta1             =  ((calib_CompleteLikelihoodRoutine_DataType<V,M> *) functionDataPtr)->beta1;
+  double variance1         =  ((calib_CompleteLikelihoodRoutine_DataType<V,M> *) functionDataPtr)->variance1;
+  const std::vector<double>& Te1 = *((calib_CompleteLikelihoodRoutine_DataType<V,M> *) functionDataPtr)->Te1;
+  const std::vector<double>& Me1 = *((calib_CompleteLikelihoodRoutine_DataType<V,M> *) functionDataPtr)->Me1;
+  std::vector<double> Mt1(Me1.size(),0.);
 
-  const V& v2 = *((calib_CompleteLikelihoodRoutine_DataType<V,M> *) functionDataPtr)->aVectorForInstance;
-  const M& m2 = *((calib_CompleteLikelihoodRoutine_DataType<V,M> *) functionDataPtr)->aMatrixForInstance;
-
-  V misfit(resultValues);
-  misfit[0] = (m1 * v1).norm2Sq();
-  misfit[1] = (m2 * v2).norm2Sq();
-
-  V sigma(resultValues);
-  sigma[0] = 1.;
-  sigma[1] = .34;
-
-  V minus2LogLikelihood(resultValues);
-  minus2LogLikelihood = misfit/sigma;
-
-  // The MCMC library will always expect the value [-2. * ln(Likelihood)], so this routine should use this line below
-  resultValues = minus2LogLikelihood;
-
-  // If, however, you really need to return the Likelihood(s), then use this line below
-  //resultsValues[0] = exp(-.5*minus2LogLikelihood[0]);
-  //resultsValues[1] = exp(-.5*minus2LogLikelihood[1]);
-#endif
-  double E2=0.;
-  double A,E,beta,te[11],Me[11],Mt[11];
-  int num_data;
-  FILE *inp;
-
-  inp = fopen("global.dat","r");
-  fscanf(inp,"%lf %lf %lf",&A,&E,&beta);    /* read kinetic parameters */
-  A = paramValues[0];
-  E = paramValues[1];
-	
-  beta/=60.;	/* Convert heating rate to K/s */
-  
-  double params[]={A,E,beta};
+  double params[]={A,E,beta1};
       	
-  // read experimental data
-  int i=0;
-  int status;
-  while (1){
-    status = fscanf(inp,"%lf %lf",&te[i],&Me[i]);
-    if (status == EOF) break;
-    i++;
-  }
-  num_data = i;
-  fclose(inp);
-	
   // integration
-  const gsl_odeiv_step_type * T = gsl_odeiv_step_gear1;
-	
-  gsl_odeiv_step *s = gsl_odeiv_step_alloc(T,1);
-  gsl_odeiv_control *c = gsl_odeiv_control_y_new(1e-6,0.0);
-  gsl_odeiv_evolve *e = gsl_odeiv_evolve_alloc(1);
-	
-  gsl_odeiv_system sys = {func, NULL, 1, (void *)params}; 
+  const gsl_odeiv_step_type *T   = gsl_odeiv_step_rkf45; //gear1;
+        gsl_odeiv_step      *s   = gsl_odeiv_step_alloc(T,1);
+        gsl_odeiv_control   *c   = gsl_odeiv_control_y_new(1e-6,0.0);
+        gsl_odeiv_evolve    *e   = gsl_odeiv_evolve_alloc(1);
+        gsl_odeiv_system     sys = {func, NULL, 1, (void *)params}; 
 	
   double t = 0.1, t1 = 800.;
   double h = 1e-3;
   double Mass[1];
-         Mass[0]=1.;
+  Mass[0]=1.;
   
-  i=0;
-  double t_old=0., M_old[1];
+  unsigned int i = 0;
+  double t_old = 0.;
+  double M_old[1];
   M_old[0]=1.;
 	
-  while (t < t1){
+  double misfit1=0.;
+  //unsigned int loopSize = 0;
+  while (t < t1) {
     int status = gsl_odeiv_evolve_apply(e, c, s, &sys, &t, t1, &h, Mass);
-		
-    if (status != GSL_SUCCESS) break;
-			
+    UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
+                        paramValues.env().rank(),
+                        "calib_CompleteLikelihoodRoutine()",
+                        "gsl_odeiv_evolve_apply() failed");
     //printf("%6.1lf %10.4lf\n",t,Mass[0]);
+    //loopSize++;
 		
-    if ( (t >= te[i]) && (t_old <= te[i]) ) {
-      Mt[i] = (te[i]-t_old)*(Mass[0]-M_old[0])/(t-t_old) + M_old[0];
-      E2+=(Me[i]-Mt[i])*(Me[i]-Mt[i]);
-      //printf("%i %lf %lf %lf %lf\n",i,te[i],Me[i],Mt[i],E2);
+    while ( (t_old <= Te1[i]) && (Te1[i] <= t) ) {
+      Mt1[i] = (Te1[i]-t_old)*(Mass[0]-M_old[0])/(t-t_old) + M_old[0];
+      misfit1 += (Me1[i]-Mt1[i])*(Me1[i]-Mt1[i]);
+      //printf("%i %lf %lf %lf %lf\n",i,Te1[i],Me1[i],Mt1[i],misfit1);
       i++;
     }
 		
     t_old=t;
     M_old[0]=Mass[0];
   }
-  resultValues[0] = E2/1.0e-5;
+  resultValues[0] = misfit1/variance1;
 	
-  printf("For A = %g, E = %g, and beta = %.3lf\n",A,E,beta);
-  printf("the sum of squared errors is %lf.",E2);
-  printf("\n");
+  //printf("loopSize = %d\n",loopSize);
+  if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
+    printf("For A = %g, E = %g, and beta1 = %.3lf, misfit1 = %lf and likelihood1 = %lf.\n",A,E,beta1,misfit1,resultValues[0]);
+  }
 
-  gsl_odeiv_evolve_free(e);
+  gsl_odeiv_evolve_free (e);
   gsl_odeiv_control_free(c);
-  gsl_odeiv_step_free(s);
+  gsl_odeiv_step_free   (s);
 
   return;
 }
@@ -200,15 +181,6 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
   // Step 2 of 6: Define the prior prob. density function object: -2*ln[prior]
   //******************************************************
-#if 0 // You might need to use your own prior function
-  calib_M2lPriorRoutine_DataType<V,M> calib_M2lPriorRoutine_Data;
-  V calib_ParamPriorSigmas(calib_ParamSpace.priorSigmaValues());
-  calib_M2lPriorRoutine_Data.maybeYouNeedAVector = &calib_ParamPriorSigmas;
-  calib_M2lPriorRoutine_Data.maybeYouNeedAMatrix = NULL;
-
-  uq_M2lProbDensity_Class<V,M> calib_M2lPriorProbDensity_Obj(calib_M2lPriorRoutine<V,M>,
-                                                             (void *) &calib_M2lPriorRoutine_Data);
-#else // Or you might want to use the default prior function provided by the MCMC tool
   uqDefault_M2lPriorRoutine_DataType<V,M> calib_M2lPriorRoutine_Data; // use default prior() routine
   V calib_ParamPriorMus   (calib_ParamSpace.priorMuValues   ());
   V calib_ParamPriorSigmas(calib_ParamSpace.priorSigmaValues());
@@ -217,16 +189,49 @@ uqAppl(const uqEnvironmentClass& env)
 
   uq_M2lProbDensity_Class<V,M> calib_M2lPriorProbDensity_Obj(uqDefault_M2lPriorRoutine<V,M>, // use default prior() routine
                                                              (void *) &calib_M2lPriorRoutine_Data);
-#endif
 
   //******************************************************
   // Step 3 of 6: Define the likelihood prob. density function object: just misfits
   //******************************************************
-  calib_CompleteLikelihoodRoutine_DataType<V,M> calib_CompleteLikelihoodRoutine_Data;
-  V calib_ParamInitials(calib_ParamSpace.initialValues());
-  calib_CompleteLikelihoodRoutine_Data.aVectorForInstance = &calib_ParamInitials;
-  calib_CompleteLikelihoodRoutine_Data.aMatrixForInstance = NULL;
 
+  // Open input file on experimental data
+  FILE *inp;
+  inp = fopen("global.dat","r");
+
+  // Read kinetic parameters and convert heating rate to K/s
+  double tmpA, tmpE, beta1, variance1;
+  fscanf(inp,"%lf %lf %lf %lf",&tmpA,&tmpE,&beta1,&variance1);
+  beta1 /= 60.;
+  
+  // Read experimental data
+  std::vector<double> Te1(11,0.);
+  std::vector<double> Me1(11,0.);
+
+  unsigned int numObservations = 0;
+  double tmpTe;
+  double tmpMe;
+  while (fscanf(inp,"%lf %lf",&tmpTe,&tmpMe) != EOF) {
+    UQ_FATAL_TEST_MACRO((numObservations >= Te1.size()),
+                        env.rank(),
+                        "uqAppl(), in uqTgaEx.h",
+                        "input file has too many observations");
+    Te1[numObservations] = tmpTe;
+    Me1[numObservations] = tmpMe;
+    numObservations++;
+  }
+  UQ_FATAL_TEST_MACRO((numObservations != Te1.size()),
+                      env.rank(),
+                      "uqAppl(), in uqTgaEx.h",
+                      "input file has a smaller number of observations than expected");
+
+  // Close input file on experimental data
+  fclose(inp);
+
+  calib_CompleteLikelihoodRoutine_DataType<V,M> calib_CompleteLikelihoodRoutine_Data;
+  calib_CompleteLikelihoodRoutine_Data.beta1     = beta1;
+  calib_CompleteLikelihoodRoutine_Data.variance1 = variance1;
+  calib_CompleteLikelihoodRoutine_Data.Te1       = &Te1; // temperatures
+  calib_CompleteLikelihoodRoutine_Data.Me1       = &Me1; // relative masses
   uq_CompleteLikelihoodFunction_Class<V,M> calib_CompleteLikelihoodFunction_Obj(calib_CompleteLikelihoodRoutine<V,M>,
                                                                                 (void *) &calib_CompleteLikelihoodRoutine_Data,
                                                                                 true); // the routine computes [-2.*ln(Likelihood)]
@@ -247,6 +252,11 @@ uqAppl(const uqEnvironmentClass& env)
   // Proposal covariance matrix will be computed internally
   // by the Markov chain generator.
   M* proposalCovMatrix = NULL;
+  //M* proposalCovMatrix = calib_ParamSpace.newMatrix();
+  //(*proposalCovMatrix)(0,0) = 1.65122e+10;
+  //(*proposalCovMatrix)(0,1) = 0.;
+  //(*proposalCovMatrix)(1,0) = 0.;
+  //(*proposalCovMatrix)(1,1) = 9.70225e+04;
 
   //******************************************************
   // Step 6 of 6: Generate chains.

@@ -9,12 +9,12 @@ override LOWERCASE_EXAMPLE_NAME=$(n1)
 override MIXED_EXAMPLE_NAME=$(n2)
 override CAPITAL_EXAMPLE_NAME=$(n3)
 
-all:	all_normal all_chem all_algae all_etc
+all:	all_normal all_chem all_algae all_tga all_etc
 
 echo_basic_type:
 	@echo 'UQBT = ' $(UQBT)
 
-clean_all: echo_basic_type clean_normal clean_chem clean_algae clean_etc clean_exec
+clean_all: echo_basic_type clean_normal clean_chem clean_algae clean_tga clean_etc clean_exec
 
 clean_normal:
 	cd normal; make clean_all UQBT=$(UQBT)
@@ -24,6 +24,9 @@ clean_chem:
 
 clean_algae:
 	cd algae; make clean_all UQBT=$(UQBT)
+
+clean_tga:
+	cd tga; make clean_all UQBT=$(UQBT)
 
 clean_etc:
 	cd etc; make clean_all UQBT=$(UQBT)
@@ -39,6 +42,9 @@ all_chem:
 
 all_algae:
 	cd algae; make UQBT=$(UQBT)
+
+all_tga:
+	cd tga; make UQBT=$(UQBT)
 
 all_etc:
 	cd etc; make UQBT=$(UQBT)

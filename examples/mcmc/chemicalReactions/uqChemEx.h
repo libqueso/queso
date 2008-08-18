@@ -121,7 +121,7 @@ calib_MisfitLikelihoodRoutine(const V& paramValues, const void* functionDataPtr,
                         instantsOfAObservations,
                         initialConcentrations,
                         (void *)&calib_StateDotRoutine_Data, // concentration rates
-                        1.e-1,                                // suggested time step
+                        1.e-1,                               // suggested time step
                         computedEvolutionOfConcentrations);
 #endif
 #ifdef __APPL_USES_TRILINOS__
