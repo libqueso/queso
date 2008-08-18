@@ -1,0 +1,46 @@
+###############################################
+# UQ Environment
+###############################################
+#uqEnv_help      = anything
+uqEnv_verbosity = 2
+uqEnv_seed      = 0
+
+###############################################
+# Calibration Parameter Space
+###############################################
+#calib_paramSpace_help              = anything
+calib_paramSpace_dim               = 2
+calib_paramSpace_specificationFile = calib.par
+
+###############################################
+# Calibration State Space
+###############################################
+#calib_stateSpace_help = anything
+#calib_stateSpace_dim  = 5
+
+###############################################
+# Calibration Observable Space
+###############################################
+#calib_observableSpace_help              = anything
+calib_observableSpace_updateVariances   = 1
+calib_observableSpace_numSubSpaces      = 1
+calib_observableSpace_specificationFile = calib.obs
+
+###############################################
+# Calibration DRAM Markov Chain Generator
+###############################################
+#calib_MCMC_help                       = anything
+calib_MCMC_mh_sizesOfChains           = 51
+calib_MCMC_dr_maxNumberOfExtraStages  = 1
+calib_MCMC_dr_scalesForExtraStages    = 5. 4. 3.
+calib_MCMC_am_initialNonAdaptInterval = 0
+calib_MCMC_am_adaptInterval           = 0
+calib_MCMC_am_sd                      = 1.44
+calib_MCMC_am_epsilon                 = 1.e-5
+calib_MCMC_mh_namesOfOutputFiles      = uqTgaOutput.m
+calib_MCMC_mh_chainDisplayPeriod      = 10
+
+###############################################
+# Calibration Other Inputs
+###############################################
+unknownOption = 97
