@@ -200,6 +200,9 @@ private:
   std::vector<const V*>     m_m2lLikelihoodChain;
   std::vector<double>       m_alphaQuotients;
   double                    m_chainRunTime;
+  double                    m_lhRunTime;
+  double                    m_drRunTime;
+  double                    m_amRunTime;
   unsigned int              m_numRejections;
   unsigned int              m_numOutOfBounds;
   double                    m_lastChainSize;
@@ -277,6 +280,9 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::uqDRAM_MarkovChainGeneratorClass(
   m_m2lLikelihoodChain           (0),//,NULL),
   m_alphaQuotients               (0),//,0.),
   m_chainRunTime                 (0.),
+  m_lhRunTime                    (0.),
+  m_drRunTime                    (0.),
+  m_amRunTime                    (0.), 
   m_numRejections                (0),
   m_numOutOfBounds               (0),
   m_lastChainSize                (0),
@@ -437,10 +443,13 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::resetChainAndRelatedInfo()
 {
   if (m_lastAdaptedCovMatrix) delete m_lastAdaptedCovMatrix;
   if (m_lastMean)             delete m_lastMean;
-  m_lastChainSize = 0;
-  m_numOutOfBounds   = 0;
-  m_chainRunTime     = 0.;
-  m_numRejections    = 0;
+  m_lastChainSize     = 0;
+  m_numOutOfBounds    = 0;
+  m_chainRunTime      = 0.;
+  m_lhRunTime         = 0.;
+  m_drRunTime         = 0.;
+  m_amRunTime         = 0.;
+  m_numRejections     = 0;
   m_alphaQuotients.clear();
   for (unsigned int i = 0; i < m_m2lLikelihoodChain.size(); ++i) {
     if (m_m2lLikelihoodChain[i]) delete m_m2lLikelihoodChain[i];
@@ -728,11 +737,18 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::prepareForNextChain(
     internalProposalCovMatrix = m_paramSpace.uqFinDimLinearSpaceClass<V,M>::newDiagMatrix(*tmpVec);
     delete tmpVec;
 
-    //if (m_env.rank() == 0) std::cout << "In uqDRAM_MarkovChainGeneratorClass<V,M>::prepareForNextChain()"
-    //                                 << ", contents of internally generated proposal cov matrix are:"
-    //                                 << std::endl;
-    //std::cout << *internalProposalCovMatrix;
-    //if (m_env.rank() == 0) std::cout << std::endl;
+    if (m_env.rank() == 0) std::cout << "In uqDRAM_MarkovChainGeneratorClass<V,M>::prepareForNextChain()"
+                                     << ", contents of internally generated proposal cov matrix are:"
+                                     << std::endl;
+    std::cout << *internalProposalCovMatrix;
+    if (m_env.rank() == 0) std::cout << std::endl;
+  }
+  else {
+    if (m_env.rank() == 0)  std::cout << "In uqDRAM_MarkovChainGeneratorClass<V,M>::prepareForNextChain()"
+                                      << "using suplied proposalCovMatrix, whose contents are:"
+                                      << std::endl;
+    std::cout << *internalProposalCovMatrix;
+    if (m_env.rank() == 0) std::cout << std::endl;
   }
 
   m_lowerCholProposalCovMatrices[0] = new M(*internalProposalCovMatrix); 
@@ -745,11 +761,11 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::prepareForNextChain(
 
   m_proposalCovMatrices[0] = new M(*internalProposalCovMatrix);
 
-  //if (m_env.rank() == 0) std::cout << "In uqDRAM_MarkovChainGeneratorClass<V,M>::prepareForNextChain()"
-  //                                 << ", m_lowerCholProposalCovMatrices[0] contents are:"
-  //                                 << std::endl;
-  //std::cout << *(m_lowerCholProposalCovMatrices[0]);
-  //if (m_env.rank() == 0) std::cout << std::endl;
+  if (m_env.rank() == 0) std::cout << "In uqDRAM_MarkovChainGeneratorClass<V,M>::prepareForNextChain()"
+                                   << ", m_lowerCholProposalCovMatrices[0] contents are:"
+                                   << std::endl;
+  std::cout << *(m_lowerCholProposalCovMatrices[0]);
+  if (m_env.rank() == 0) std::cout << std::endl;
 
 #ifdef UQ_DRAM_MCG_REQUIRES_INVERTED_COV_MATRICES
   const M* internalProposalPrecMatrix = proposalPrecMatrix;
@@ -826,8 +842,8 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
 
   int iRC = UQ_OK_RC;
 
-  struct timeval timeval0;
-  iRC = gettimeofday(&timeval0, NULL);
+  struct timeval timevalChain;
+  iRC = gettimeofday(&timevalChain, NULL);
 
   bool   outOfBounds = m_paramSpace.outOfBounds(valuesOf1stPosition);
   UQ_FATAL_TEST_MACRO(outOfBounds,
@@ -838,6 +854,9 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
   V*     m2lLikelihoodVector = m_observableSpace.newVector();
   V*     misfitVector        = m_observableSpace.newVector();
   V      misfitVarianceVector(m_observableSpace.priorVariances());
+
+  struct timeval timevalLH;
+  iRC = gettimeofday(&timevalLH, NULL);
   if (m_likelihoodObjComputesMisfits) {
     m_m2lLikelihoodFunction_Obj.computeMisfits(valuesOf1stPosition, *misfitVector);
     *m2lLikelihoodVector = *misfitVector/misfitVarianceVector;
@@ -845,6 +864,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
   else {
     m_m2lLikelihoodFunction_Obj.computeMinus2LnLikelihoods(valuesOf1stPosition, *m2lLikelihoodVector);
   }
+  m_lhRunTime += uqMiscGetEllapsedSeconds(&timevalLH);
   double m2lLikelihoodScalar  = m2lLikelihoodVector->sumOfComponents();
   double logPosterior = -0.5 * ( m2lPrior + m2lLikelihoodScalar );
   uqChainPositionClass<V> currentPosition(m_env,
@@ -919,18 +939,22 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
                          *m2lLikelihoodVector,
                          logPosterior);
 
+    if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
+      std::cout << "\n-----------------------------------------------------------\n"
+                << std::endl;
+    }
     bool accept = false;
     if (outOfBounds) {
       m_alphaQuotients[positionId] = 0.;
     }
     else {
       double alpha = this->alpha(currentPosition,currentCandidate,&m_alphaQuotients[positionId]);
-#if 0 // For debug only
-      if (m_env.rank() == 0) std::cout << "In uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain()"
-                                       << ": for chain position of id = " << positionId
-                                       << ", alpha = " << alpha
-                                       << std::endl;
-#endif
+      if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
+        std::cout << "In uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain()"
+                  << ": for chain position of id = " << positionId
+                  << ", alpha = " << alpha
+                  << std::endl;
+      }
       accept = acceptAlpha(alpha);
     }
     if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
@@ -960,12 +984,19 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
                                        << "\n accept = "                  << accept
                                        << std::endl;
     }
+    if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
+      std::cout << "\n-----------------------------------------------------------\n"
+                << std::endl;
+    }
 
     //****************************************************
     // Loop: delayed rejection
     //****************************************************
     std::vector<uqChainPositionClass<V>*> drPositions(stageId+2,NULL);
     if ((accept == false) && (outOfBounds == false) && (m_maxNumberOfExtraStages > 0)) {
+      struct timeval timevalDR;
+      iRC = gettimeofday(&timevalDR, NULL);
+
       drPositions[0] = new uqChainPositionClass<V>(currentPosition);
       drPositions[1] = new uqChainPositionClass<V>(currentCandidate);
 
@@ -1014,6 +1045,8 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
           accept = acceptAlpha(alpha);
         }
       } // while
+
+      m_drRunTime += uqMiscGetEllapsedSeconds(&timevalDR);
     } // end of 'delayed rejection' logic
 
     for (unsigned int i = 0; i < drPositions.size(); ++i) {
@@ -1079,6 +1112,9 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
     //****************************************************
     if ((m_initialNonAdaptInterval > 0) &&
         (m_adaptInterval           > 0)) {
+      struct timeval timevalAM;
+      iRC = gettimeofday(&timevalAM, NULL);
+
       // Now might be the moment to adapt
       unsigned int idOfFirstPositionInSubChain = 0;
       std::vector<V*> subChain(0);//,NULL);
@@ -1182,6 +1218,8 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
           if (subChain[i]) delete subChain[i];
         }
       }
+
+      m_amRunTime += uqMiscGetEllapsedSeconds(&timevalAM);
     } // End of 'adaptive Metropolis' logic
 
     if ((m_chainDisplayPeriod                     > 0) && 
@@ -1197,7 +1235,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
   //****************************************************
   // Print basic statistics
   //****************************************************
-  m_chainRunTime = uqMiscGetEllapsedSeconds(&timeval0);
+  m_chainRunTime = uqMiscGetEllapsedSeconds(&timevalChain);
   if (m_env.rank() == 0) {
     std::cout << "Finished generating the chain of id " << chainId
               << ". Chain statistics are:";
@@ -1630,8 +1668,10 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::alpha(
   double*                        alphaQuotientPtr)
 {
   double alphaQuotient = 0.;
-  if ((x.outOfBounds() == false) &&
-      (y.outOfBounds() == false)) {
+  bool xOutOfBounds = x.outOfBounds();
+  bool yOutOfBounds = y.outOfBounds();
+  if ((xOutOfBounds == false) &&
+      (yOutOfBounds == false)) {
     double yLogPosteriorToUse = y.logPosterior();
     if (m_likelihoodObjComputesMisfits &&
         m_observableSpace.shouldVariancesBeUpdated()) {
@@ -1640,10 +1680,26 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::alpha(
     }
     if (m_proposalIsSymmetric) {
       alphaQuotient = exp(yLogPosteriorToUse - x.logPosterior());
+      if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
+        std::cout << "In uqDRAM_MarkovChainGeneratorClass<V,M>::alpha()"
+                  << ": symmetric proposal case"
+                  << ", yLogPosteriorToUse = " << yLogPosteriorToUse
+                  << ", x.logPosterior() = "   << x.logPosterior()
+                  << ", alpha = "              << alphaQuotient
+                  << std::endl;
+      }
     }
     else {
       alphaQuotient = exp(yLogPosteriorToUse + logProposal(y,x,0) - x.logPosterior() - logProposal(x,y,0));
     }
+  }
+  else {
+      if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
+        std::cout << "In uqDRAM_MarkovChainGeneratorClass<V,M>::alpha()"
+                  << ": xOutOfBounds = " << xOutOfBounds
+                  << ", yOutOfBounds = " << yOutOfBounds
+                  << std::endl;
+      }
   }
   if (alphaQuotientPtr != NULL) *alphaQuotientPtr = alphaQuotient;
 
