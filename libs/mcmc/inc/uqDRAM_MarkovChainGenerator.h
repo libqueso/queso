@@ -32,6 +32,7 @@
 #define UQ_MCMC_AM_EPSILON_ODV                 1.e-5
 #define UQ_MCMC_MH_OUTPUT_FILE_NAME_ODV        "."
 #define UQ_MCMC_MH_CHAIN_DISPLAY_PERIOD_ODV    500
+#define UQ_MCMC_MH_MEASURE_RUN_TIMES_ODV       0
 #define UQ_MCMC_RUN_BMM_ODV                    0
 #define UQ_MCMC_COMPUTE_PSDS_ODV               0
 #define UQ_MCMC_COMPUTE_GEWEKE_COEFS_ODV       0
@@ -127,6 +128,7 @@ private:
   std::string m_option_am_epsilon;
   std::string m_option_mh_namesOfOutputFiles;
   std::string m_option_mh_chainDisplayPeriod;
+  std::string m_option_mh_measureRunTimes;
   std::string m_option_runBMM;
   std::string m_option_initialPosForBMM;
   std::string m_option_lengthsForBMM;
@@ -159,6 +161,7 @@ private:
   double                    m_epsilon;
   std::vector<std::string>  m_namesOfOutputFiles;
   unsigned int              m_chainDisplayPeriod;
+  bool                      m_measureRunTimes;
   bool                      m_runBMM;
   std::vector<unsigned int> m_initialPosForBMM;
   std::vector<unsigned int> m_lengthsForBMM;
@@ -200,7 +203,11 @@ private:
   std::vector<const V*>     m_m2lLikelihoodChain;
   std::vector<double>       m_alphaQuotients;
   double                    m_chainRunTime;
+  double                    m_candidateRunTime;
+  double                    m_priorRunTime;
   double                    m_lhRunTime;
+  double                    m_mhAlphaRunTime;
+  double                    m_drAlphaRunTime;
   double                    m_drRunTime;
   double                    m_amRunTime;
   unsigned int              m_numRejections;
@@ -241,6 +248,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::uqDRAM_MarkovChainGeneratorClass(
   m_epsilon                      (UQ_MCMC_AM_EPSILON_ODV),
   m_namesOfOutputFiles           (1,UQ_MCMC_MH_OUTPUT_FILE_NAME_ODV),
   m_chainDisplayPeriod           (UQ_MCMC_MH_CHAIN_DISPLAY_PERIOD_ODV),
+  m_measureRunTimes              (UQ_MCMC_MH_MEASURE_RUN_TIMES_ODV),
   m_runBMM                       (UQ_MCMC_RUN_BMM_ODV),
   m_initialPosForBMM             (0),//,0),
   m_lengthsForBMM                (0),//,0),
@@ -280,7 +288,11 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::uqDRAM_MarkovChainGeneratorClass(
   m_m2lLikelihoodChain           (0),//,NULL),
   m_alphaQuotients               (0),//,0.),
   m_chainRunTime                 (0.),
+  m_candidateRunTime             (0.),
+  m_priorRunTime                 (0.),
   m_lhRunTime                    (0.),
+  m_mhAlphaRunTime               (0.),
+  m_drAlphaRunTime               (0.),
   m_drRunTime                    (0.),
   m_amRunTime                    (0.), 
   m_numRejections                (0),
@@ -305,6 +317,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::uqDRAM_MarkovChainGeneratorClass(
   m_option_am_epsilon                   = m_prefix + "MCMC_am_epsilon";
   m_option_mh_namesOfOutputFiles        = m_prefix + "MCMC_mh_namesOfOutputFiles";
   m_option_mh_chainDisplayPeriod        = m_prefix + "MCMC_mh_chainDisplayPeriod";
+  m_option_mh_measureRunTimes           = m_prefix + "MCMC_mh_measureRunTimes";
   m_option_runBMM                       = m_prefix + "MCMC_runBMM";
   m_option_initialPosForBMM             = m_prefix + "MCMC_initialPositionsForBMM";
   m_option_lengthsForBMM                = m_prefix + "MCMC_lengthsForBMM";
@@ -446,7 +459,11 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::resetChainAndRelatedInfo()
   m_lastChainSize     = 0;
   m_numOutOfBounds    = 0;
   m_chainRunTime      = 0.;
+  m_candidateRunTime  = 0.;
+  m_priorRunTime      = 0.;
   m_lhRunTime         = 0.;
+  m_mhAlphaRunTime    = 0.;
+  m_drAlphaRunTime    = 0.;
   m_drRunTime         = 0.;
   m_amRunTime         = 0.;
   m_numRejections     = 0;
@@ -498,6 +515,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::defineMyOptions(
     (m_option_am_epsilon.c_str(),                   po::value<double      >()->default_value(UQ_MCMC_AM_EPSILON_ODV                ), "'am' epsilon"                                           )
     (m_option_mh_namesOfOutputFiles.c_str(),        po::value<std::string >()->default_value(UQ_MCMC_MH_OUTPUT_FILE_NAME_ODV       ), "'mh' name(s) of output file(s)"                         )
     (m_option_mh_chainDisplayPeriod.c_str(),        po::value<unsigned int>()->default_value(UQ_MCMC_MH_CHAIN_DISPLAY_PERIOD_ODV   ), "'mh' period of message display during chain generation" )
+    (m_option_mh_measureRunTimes.c_str(),           po::value<bool        >()->default_value(UQ_MCMC_MH_MEASURE_RUN_TIMES_ODV      ), "'mh' measure run times"                                 )
     (m_option_runBMM.c_str(),                       po::value<bool        >()->default_value(UQ_MCMC_RUN_BMM_ODV                   ), "compute variance of sample mean with batch means method")
 #if 0
     (m_option_initialPosForBMM.c_str(),             po::value<            >()->default_value(), "")
@@ -610,6 +628,10 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::getMyOptionValues(
 
   if (m_env.allOptionsMap().count(m_option_mh_chainDisplayPeriod.c_str())) {
     m_chainDisplayPeriod = m_env.allOptionsMap()[m_option_mh_chainDisplayPeriod.c_str()].as<unsigned int>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_mh_measureRunTimes.c_str())) {
+    m_measureRunTimes = m_env.allOptionsMap()[m_option_mh_measureRunTimes.c_str()].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_runBMM.c_str())) {
@@ -841,8 +863,15 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
   }
 
   int iRC = UQ_OK_RC;
-
   struct timeval timevalChain;
+  struct timeval timevalCandidate;
+  struct timeval timevalPrior;
+  struct timeval timevalLH;
+  struct timeval timevalMhAlpha;
+  struct timeval timevalDrAlpha;
+  struct timeval timevalDR;
+  struct timeval timevalAM;
+
   iRC = gettimeofday(&timevalChain, NULL);
 
   bool   outOfBounds = m_paramSpace.outOfBounds(valuesOf1stPosition);
@@ -850,13 +879,14 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
                       m_env.rank(),
                       "uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains()",
                       "paramInitials should not be out of bound");
+  if (m_measureRunTimes) iRC = gettimeofday(&timevalPrior, NULL);
   double m2lPrior            = m_m2lPriorProbDensity_Obj.minus2LnDensity(valuesOf1stPosition);
+  if (m_measureRunTimes) m_priorRunTime += uqMiscGetEllapsedSeconds(&timevalPrior);
   V*     m2lLikelihoodVector = m_observableSpace.newVector();
   V*     misfitVector        = m_observableSpace.newVector();
   V      misfitVarianceVector(m_observableSpace.priorVariances());
 
-  struct timeval timevalLH;
-  iRC = gettimeofday(&timevalLH, NULL);
+  if (m_measureRunTimes) iRC = gettimeofday(&timevalLH, NULL);
   if (m_likelihoodObjComputesMisfits) {
     m_m2lLikelihoodFunction_Obj.computeMisfits(valuesOf1stPosition, *misfitVector);
     *m2lLikelihoodVector = *misfitVector/misfitVarianceVector;
@@ -864,7 +894,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
   else {
     m_m2lLikelihoodFunction_Obj.computeMinus2LnLikelihoods(valuesOf1stPosition, *m2lLikelihoodVector);
   }
-  m_lhRunTime += uqMiscGetEllapsedSeconds(&timevalLH);
+  if (m_measureRunTimes) m_lhRunTime += uqMiscGetEllapsedSeconds(&timevalLH);
   double m2lLikelihoodScalar  = m2lLikelihoodVector->sumOfComponents();
   double logPosterior = -0.5 * ( m2lPrior + m2lLikelihoodScalar );
   uqChainPositionClass<V> currentPosition(m_env,
@@ -909,9 +939,11 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
     //****************************************************
     // Loop: generate new parameters
     //****************************************************
+    if (m_measureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
     gaussianVector->cwSetGaussian(m_env.rng(),0.,1.);
-
     *tmpParamValues = currentPosition.paramValues() + *(m_lowerCholProposalCovMatrices[stageId]) * *gaussianVector;
+    if (m_measureRunTimes) m_candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
+
     outOfBounds     = m_paramSpace.outOfBounds(*tmpParamValues);
     if (outOfBounds) {
       m_numOutOfBounds++;
@@ -920,7 +952,10 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
       logPosterior  = -INFINITY;
     }
     else {
+      if (m_measureRunTimes) iRC = gettimeofday(&timevalPrior, NULL);
       m2lPrior      = m_m2lPriorProbDensity_Obj.minus2LnDensity(*tmpParamValues);
+      if (m_measureRunTimes) m_priorRunTime += uqMiscGetEllapsedSeconds(&timevalPrior);
+      if (m_measureRunTimes) iRC = gettimeofday(&timevalLH, NULL);
       if (m_likelihoodObjComputesMisfits) {
         m_m2lLikelihoodFunction_Obj.computeMisfits(*tmpParamValues, *misfitVector);
         *m2lLikelihoodVector = *misfitVector/misfitVarianceVector;
@@ -928,6 +963,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
       else {
         m_m2lLikelihoodFunction_Obj.computeMinus2LnLikelihoods(*tmpParamValues, *m2lLikelihoodVector);
       }
+      if (m_measureRunTimes) m_lhRunTime += uqMiscGetEllapsedSeconds(&timevalLH);
       m2lLikelihoodScalar = m2lLikelihoodVector->sumOfComponents();
       logPosterior  = -0.5 * ( m2lPrior + m2lLikelihoodScalar );
     }
@@ -948,7 +984,9 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
       m_alphaQuotients[positionId] = 0.;
     }
     else {
+      if (m_measureRunTimes) iRC = gettimeofday(&timevalMhAlpha, NULL);
       double alpha = this->alpha(currentPosition,currentCandidate,&m_alphaQuotients[positionId]);
+      if (m_measureRunTimes) m_mhAlphaRunTime += uqMiscGetEllapsedSeconds(&timevalMhAlpha);
       if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
         std::cout << "In uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain()"
                   << ": for chain position of id = " << positionId
@@ -994,8 +1032,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
     //****************************************************
     std::vector<uqChainPositionClass<V>*> drPositions(stageId+2,NULL);
     if ((accept == false) && (outOfBounds == false) && (m_maxNumberOfExtraStages > 0)) {
-      struct timeval timevalDR;
-      iRC = gettimeofday(&timevalDR, NULL);
+      if (m_measureRunTimes) iRC = gettimeofday(&timevalDR, NULL);
 
       drPositions[0] = new uqChainPositionClass<V>(currentPosition);
       drPositions[1] = new uqChainPositionClass<V>(currentCandidate);
@@ -1003,9 +1040,11 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
       while ((accept == false) && (stageId < m_maxNumberOfExtraStages)) {
         stageId++;
 
+        if (m_measureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
         gaussianVector->cwSetGaussian(m_env.rng(),0.,1.);
-
         *tmpParamValues = currentPosition.paramValues() + *(m_lowerCholProposalCovMatrices[stageId]) * *gaussianVector;
+        if (m_measureRunTimes) m_candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
+
         outOfBounds   = m_paramSpace.outOfBounds(*tmpParamValues);
         if (outOfBounds) {
           m2lPrior      = 0.;
@@ -1013,7 +1052,10 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
           logPosterior  = -INFINITY;
         }
         else {
+          if (m_measureRunTimes) iRC = gettimeofday(&timevalPrior, NULL);
           m2lPrior      = m_m2lPriorProbDensity_Obj.minus2LnDensity(*tmpParamValues);
+          if (m_measureRunTimes) m_priorRunTime += uqMiscGetEllapsedSeconds(&timevalPrior);
+          if (m_measureRunTimes) iRC = gettimeofday(&timevalLH, NULL);
           if (m_likelihoodObjComputesMisfits) {
             m_m2lLikelihoodFunction_Obj.computeMisfits(*tmpParamValues, *misfitVector);
             *m2lLikelihoodVector = *misfitVector/misfitVarianceVector;
@@ -1021,6 +1063,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
           else {
             m_m2lLikelihoodFunction_Obj.computeMinus2LnLikelihoods(*tmpParamValues, *m2lLikelihoodVector);
           }
+          if (m_measureRunTimes) m_lhRunTime += uqMiscGetEllapsedSeconds(&timevalLH);
           m2lLikelihoodScalar = m2lLikelihoodVector->sumOfComponents();
           logPosterior  = -0.5 * ( m2lPrior + m2lLikelihoodScalar );
         }
@@ -1034,7 +1077,9 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
 
         drPositions.push_back(new uqChainPositionClass<V>(currentCandidate));
         if (outOfBounds == false) {
+          if (m_measureRunTimes) iRC = gettimeofday(&timevalDrAlpha, NULL);
           double alpha = this->alpha(drPositions);
+          if (m_measureRunTimes) m_drAlphaRunTime += uqMiscGetEllapsedSeconds(&timevalDrAlpha);
 #if 0 // For debug only
           if (m_env.rank() == 0) std::cout << "In uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain()"
                                            << ": for chain position of id = " << positionId
@@ -1046,7 +1091,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
         }
       } // while
 
-      m_drRunTime += uqMiscGetEllapsedSeconds(&timevalDR);
+      if (m_measureRunTimes) m_drRunTime += uqMiscGetEllapsedSeconds(&timevalDR);
     } // end of 'delayed rejection' logic
 
     for (unsigned int i = 0; i < drPositions.size(); ++i) {
@@ -1112,8 +1157,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
     //****************************************************
     if ((m_initialNonAdaptInterval > 0) &&
         (m_adaptInterval           > 0)) {
-      struct timeval timevalAM;
-      iRC = gettimeofday(&timevalAM, NULL);
+      if (m_measureRunTimes) iRC = gettimeofday(&timevalAM, NULL);
 
       // Now might be the moment to adapt
       unsigned int idOfFirstPositionInSubChain = 0;
@@ -1219,7 +1263,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
         }
       }
 
-      m_amRunTime += uqMiscGetEllapsedSeconds(&timevalAM);
+      if (m_measureRunTimes) m_amRunTime += uqMiscGetEllapsedSeconds(&timevalAM);
     } // End of 'adaptive Metropolis' logic
 
     if ((m_chainDisplayPeriod                     > 0) && 
@@ -1235,12 +1279,42 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
   //****************************************************
   // Print basic statistics
   //****************************************************
-  m_chainRunTime = uqMiscGetEllapsedSeconds(&timevalChain);
+  m_chainRunTime += uqMiscGetEllapsedSeconds(&timevalChain);
   if (m_env.rank() == 0) {
     std::cout << "Finished generating the chain of id " << chainId
               << ". Chain statistics are:";
-    std::cout << "\n  Run time             = " << m_chainRunTime
+    std::cout << "\n  Chain run time       = " << m_chainRunTime
               << " seconds";
+    if (m_measureRunTimes) {
+      std::cout << "\n\n Breaking of the chain run time:\n";
+      std::cout << "\n  Candidate run time   = " << m_candidateRunTime
+                << " seconds ("                  << 100.*m_candidateRunTime/m_chainRunTime
+                << "%)";
+      std::cout << "\n  Prior run time       = " << m_priorRunTime
+                << " seconds ("                  << 100.*m_priorRunTime/m_chainRunTime
+                << "%)";
+      std::cout << "\n  LH run time          = " << m_lhRunTime
+                << " seconds ("                  << 100.*m_lhRunTime/m_chainRunTime
+                << "%)";
+      std::cout << "\n  Mh alpha run time    = " << m_mhAlphaRunTime
+                << " seconds ("                  << 100.*m_mhAlphaRunTime/m_chainRunTime
+                << "%)";
+      std::cout << "\n  Dr alpha run time    = " << m_drAlphaRunTime
+                << " seconds ("                  << 100.*m_drAlphaRunTime/m_chainRunTime
+                << "%)";
+      std::cout << "\n----------------------   --------------";
+      double sumRunTime = m_candidateRunTime + m_priorRunTime + m_lhRunTime + m_mhAlphaRunTime + m_drAlphaRunTime;
+      std::cout << "\n  Sum                  = " << sumRunTime
+                << " seconds ("                  << 100.*sumRunTime/m_chainRunTime
+                << "%)";
+      std::cout << "\n\n Other run times:";
+      std::cout << "\n  DR run time          = " << m_drRunTime
+                << " seconds ("                  << 100.*m_drRunTime/m_chainRunTime
+                << "%)";
+      std::cout << "\n  AM run time          = " << m_amRunTime
+                << " seconds ("                  << 100.*m_amRunTime/m_chainRunTime
+                << "%)";
+    }
     std::cout << "\n  Rejection percentage = " << 100. * (double) m_numRejections/(double) m_chain.size()
               << " %";
     std::cout << "\n   Outbound percentage = " << 100. * (double) m_numOutOfBounds/(double) m_chain.size()
@@ -2017,7 +2091,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::writeChainInfoOut(
       << ";\n"
       << std::endl;
 
-  // Write number of rejections
+  // Write chain run time
   ofs << "queso_" << m_prefix << "runTime = "  << m_chainRunTime
       << ";\n"
       << std::endl;
@@ -2165,12 +2239,13 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::print(std::ostream& os) const
     os << m_namesOfOutputFiles[i] << " ";
   }
   os << "\n" << m_option_mh_chainDisplayPeriod  << " = " << m_chainDisplayPeriod;
-  os << "\n" << m_option_runBMM              << " = " << m_runBMM;
-  os << "\n" << m_option_computePSDs         << " = " << m_computePSDs;
-  os << "\n" << m_option_computeGewekeCoefs  << " = " << m_computeGewekeCoefs;
-  os << "\n" << m_option_computeCorrelations << " = " << m_computeCorrelations;
-  os << "\n" << m_option_computeHistograms   << " = " << m_computeHistograms;
-  os << "\n" << m_option_computeKDEs         << " = " << m_computeKDEs;
+  os << "\n" << m_option_mh_measureRunTimes     << " = " << m_measureRunTimes;
+  os << "\n" << m_option_runBMM                 << " = " << m_runBMM;
+  os << "\n" << m_option_computePSDs            << " = " << m_computePSDs;
+  os << "\n" << m_option_computeGewekeCoefs     << " = " << m_computeGewekeCoefs;
+  os << "\n" << m_option_computeCorrelations    << " = " << m_computeCorrelations;
+  os << "\n" << m_option_computeHistograms      << " = " << m_computeHistograms;
+  os << "\n" << m_option_computeKDEs            << " = " << m_computeKDEs;
   os << "\n" << "(internal variable) m_likelihoodObjComputesMisfits = " << m_likelihoodObjComputesMisfits;
   os << std::endl;
 

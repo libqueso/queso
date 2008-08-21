@@ -104,7 +104,7 @@ void calib_CompleteLikelihoodRoutine(const V& paramValues, const void* functionD
   double params[]={A,E,beta1};
       	
   // integration
-  const gsl_odeiv_step_type *T   = gsl_odeiv_step_rkf45; //gear1;
+  const gsl_odeiv_step_type *T   = gsl_odeiv_step_gear1; //kf45; //gear1;
         gsl_odeiv_step      *s   = gsl_odeiv_step_alloc(T,1);
         gsl_odeiv_control   *c   = gsl_odeiv_control_y_new(1e-6,0.0);
         gsl_odeiv_evolve    *e   = gsl_odeiv_evolve_alloc(1);
