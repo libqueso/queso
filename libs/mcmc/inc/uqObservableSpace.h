@@ -114,6 +114,9 @@ uqObservableSpaceClass<V,M>::uqObservableSpaceClass(
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
 
+  // Now that 'm_dim' has been set, construct Trilinos map
+  this->constructMap();
+
   if (m_env.rank() == 0) std::cout << "After getting values of options with prefix '" << uqFinDimLinearSpaceClass<V,M>::m_prefix
                                    << "', state of uqObservableSpaceClass object is:"
                                    << "\n" << *this
@@ -130,6 +133,14 @@ uqObservableSpaceClass<V,M>::~uqObservableSpaceClass()
 {
   //std::cout << "Entering uqObservableSpaceClass<V,M>::destructor()"
   //          << std::endl;
+
+  if (m_varianceAccuracies   ) delete m_varianceAccuracies;
+  if (m_priorVariances       ) delete m_priorVariances;
+  if (m_numbersOfObservations) delete m_numbersOfObservations;
+
+  for (unsigned int i = 0; i < m_observables.size(); ++i) {
+    if (m_observables[i]) delete m_observables[i];
+  }
 
   if (m_optionsDesc) delete m_optionsDesc;
 

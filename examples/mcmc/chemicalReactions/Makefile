@@ -27,20 +27,29 @@ INC_PATHS = \
 	-I../inc \
 	-I../../../libs/basic/inc \
 	-I../../../libs/mcmc/inc \
+	-I$(MPI_INCLUDE_PATH_FOR_MCMC_TOOL) \
+	-I$(TRILINOS_INCLUDE_PATH_FOR_MCMC_TOOL) \
 	-I$(BOOST_INCLUDE_PATH_FOR_MCMC_TOOL) \
 	-I$(GSL_INCLUDE_PATH_FOR_MCMC_TOOL)
 LIB_PATHS = \
 	-L../../../libs/basic/lib \
 	-L../../../libs/mcmc/lib \
+	-L$(MPI_LIB_PATH_FOR_MCMC_TOOL) \
+	-L$(TRILINOS_LIB_PATH_FOR_MCMC_TOOL) \
 	-L$(BOOST_LIB_PATH_FOR_MCMC_TOOL) \
 	-L$(GSL_LIB_PATH_FOR_MCMC_TOOL)
 LIBS = \
-	-luq_basic_$(UQBT) \
-	-luq_basic_any \
 	-luq_mcmc_$(UQBT) \
 	-luq_mcmc_any \
+	-luq_basic_$(UQBT) \
+	-luq_basic_any \
+	-lepetra \
+	-lteuchos \
+	-lmpi_cxx \
+	-lmpi \
 	-lgsl \
 	-lgslcblas \
+	-lblas \
 	-lboost_program_options-$(COMPILER_SPEC_IN_BOOST_LIB_NAME)-mt-1_35
 
 else
@@ -66,10 +75,10 @@ LIB_PATHS = \
 	-L$(GSL_LIB_PATH_FOR_MCMC_TOOL)
 
 LIBS = \
-	-luq_basic_$(UQBT) \
-	-luq_basic_any \
 	-luq_mcmc_$(UQBT) \
 	-luq_mcmc_any \
+	-luq_basic_$(UQBT) \
+	-luq_basic_any \
 	-lepetra \
 	-lteuchos \
 	-lmpi_cxx \
@@ -82,7 +91,7 @@ LIBS = \
 endif
 
 CXX = g++
-CXXFLAGS = -Wall -c
+CXXFLAGS = -Wall -c -g
 
 all:	uqChemEx
 

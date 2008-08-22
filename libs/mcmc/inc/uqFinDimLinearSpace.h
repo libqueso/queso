@@ -31,30 +31,30 @@ class uqFinDimLinearSpaceClass
 {
 public:
            uqFinDimLinearSpaceClass();
-           uqFinDimLinearSpaceClass(const uqEnvironmentClass& env,
+           uqFinDimLinearSpaceClass(const uqEnvironmentClass& env, // See template specialization
                                     const char*               prefix);
   virtual ~uqFinDimLinearSpaceClass();
 
-#ifdef __UQ_USES_TRILINOS__
-          void              constructMap ();
-          const Epetra_Map& map          () const;
-#endif
-  virtual unsigned int      dim          ()                 const = 0;
-          V*                newVector    ()                 const; // See template specialization
-          V*                newVector    (const V& v)       const;
-          M*                newMatrix    ()                 const; // See template specialization
-          M*                newDiagMatrix(const V& v)       const;
-          M*                newDiagMatrix(double diagValue) const; // See template specialization
+          void              instantiateZeroVector();                       // See template specialization
+          const Epetra_Map& map                  () const;
+  virtual unsigned int      dim                  ()                 const = 0;
+    const V&                zeroVector           ()                 const;
+          V*                newVector            ()                 const; // See template specialization
+          V*                newVector            (const V& v)       const;
+          M*                newMatrix            ()                 const; // See template specialization
+          M*                newDiagMatrix        (const V& v)       const;
+          M*                newDiagMatrix        (double diagValue) const; // See template specialization
 
-  virtual void              print        (std::ostream& os) const;
+  virtual void              print                (std::ostream& os) const;
 
 protected:
+          void              constructMap         ();
+
   const uqEnvironmentClass& m_env;
   std::string               m_prefix;
   unsigned int              m_dim;
-#ifdef __UQ_USES_TRILINOS__
   const Epetra_Map*         m_map;
-#endif
+  V*                        m_zeroVector;
 };
 
 template <class V, class M>
@@ -69,17 +69,15 @@ uqFinDimLinearSpaceClass<V,M>::uqFinDimLinearSpaceClass()
 }
 
 template <class V, class M>
-uqFinDimLinearSpaceClass<V,M>::uqFinDimLinearSpaceClass(
+    uqFinDimLinearSpaceClass<V,M>::uqFinDimLinearSpaceClass(
   const uqEnvironmentClass& env,
   const char*               prefix)
   :
-  m_env   (env),
-  m_prefix(""),
-  m_dim   (0)
-#ifdef __UQ_USES_TRILINOS__
-  ,
-    m_map   (NULL) // It will be instantiated in derived class after 'm_dim' is set in derived class
-#endif
+  m_env       (env),
+  m_prefix    (""),
+  m_dim       (0),
+  m_map       (NULL), // It will be instantiated in derived class after 'm_dim' is set in derived class
+  m_zeroVector(NULL)  // It will be instantiated in derived class after 'm_dim' is set in derived class
 {
   //std::cout << "Entering uqFinDimLinearSpaceClass<V,M>::constructor()"
   //          << std::endl;
@@ -100,18 +98,16 @@ uqFinDimLinearSpaceClass<V,M>::~uqFinDimLinearSpaceClass()
   //std::cout << "Entering uqFinDimLinearSpaceClass<V,M>::destructor()"
   //          << std::endl;
 
-#ifdef __UQ_USES_TRILINOS__
-  if (m_map != NULL) delete m_map;
-#endif
+  if (m_zeroVector != NULL) delete m_zeroVector;
+  if (m_map        != NULL) delete m_map;
 
   //std::cout << "Leaving uqFinDimLinearSpaceClass<V,M>::destructor()"
   //          << std::endl;
 }
 
-#ifdef __UQ_USES_TRILINOS__
 template <class V, class M>
 void
-uqFinDimLinearSpaceClass<V,M>::constructMap()
+uqFinDimLinearSpaceClass<V,M>::instantiateZeroVector()
 {
   m_map = new Epetra_Map(m_dim,0,m_env.comm());
   return;
@@ -121,9 +117,23 @@ template <class V, class M>
 const Epetra_Map&
 uqFinDimLinearSpaceClass<V,M>::map() const
 {
+  UQ_FATAL_TEST_MACRO(m_map == NULL,
+                      m_env.rank(),
+                      "uqFinDimLinearSpaceClass<V,M>::map()",
+                      "m_map is still NULL");
   return *m_map;
 }
-#endif
+
+template<class V, class M>
+const V&
+  uqFinDimLinearSpaceClass<V,M>::zeroVector() const
+{
+  UQ_FATAL_TEST_MACRO(m_zeroVector == NULL,
+                      m_env.rank(),
+                      "uqFinDimLinearSpaceClass<V,M>::zeroVector()",
+                      "m_zeroVector is still NULL");
+  return *m_zeroVector;
+}
 
 template <class V, class M>
 unsigned int
@@ -143,11 +153,21 @@ uqFinDimLinearSpaceClass<V,M>::newVector(const V& v) const
 
 template <class V, class M>
 M*
-  uqFinDimLinearSpaceClass<V,M>::newDiagMatrix(const V& v) const
+uqFinDimLinearSpaceClass<V,M>::newDiagMatrix(const V& v) const
 {
   if (v.size() != m_dim) return NULL;
 
   return new M(v);
+}
+
+template <class V, class M>
+void
+uqFinDimLinearSpaceClass<V,M>::constructMap()
+{
+  m_map = new Epetra_Map(m_dim,0,m_env.comm());
+  m_zeroVector = new V(m_env,*m_map);
+
+  return;
 }
 
 template <class V, class M>

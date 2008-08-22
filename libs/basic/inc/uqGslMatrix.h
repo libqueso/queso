@@ -30,14 +30,13 @@ class uqGslMatrixClass : public uqMatrixClass
 public:
   uqGslMatrixClass();
   uqGslMatrixClass(const uqEnvironmentClass& env,
-                   unsigned int numRows,
+                   const Epetra_Map& map,
                    unsigned int numCols);
   uqGslMatrixClass(const uqEnvironmentClass& env,
-                   unsigned int dim,
-                   double diagValue = 0.); // MATLAB eye
+                   const Epetra_Map& map,
+                   double diagValue); // MATLAB eye
   uqGslMatrixClass(const uqGslVectorClass& v,
-                   unsigned int dim,
-                   double diagValue = 0.); // MATLAB eye
+                   double diagValue); // MATLAB eye
   uqGslMatrixClass(const uqGslVectorClass& v); // MATLAB diag
   uqGslMatrixClass(const uqGslMatrixClass& B);
  ~uqGslMatrixClass();

@@ -32,10 +32,10 @@ uqGslVectorClass::uqGslVectorClass()
                       "should not be used by user");
 }
 
-uqGslVectorClass::uqGslVectorClass(const uqEnvironmentClass& env, unsigned int size)
+uqGslVectorClass::uqGslVectorClass(const uqEnvironmentClass& env, const Epetra_Map& map)
   :
-  uqVectorClass(env),
-  m_vec(gsl_vector_calloc(size))
+  uqVectorClass(env,map),
+  m_vec(gsl_vector_calloc(map.NumGlobalElements()))
 {
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
                       m_env.rank(),
@@ -43,41 +43,41 @@ uqGslVectorClass::uqGslVectorClass(const uqEnvironmentClass& env, unsigned int s
                       "null vector generated");
 }
 
-uqGslVectorClass::uqGslVectorClass(const uqEnvironmentClass& env, double d1, double d2, unsigned int size)
+uqGslVectorClass::uqGslVectorClass(const uqEnvironmentClass& env, double d1, double d2, const Epetra_Map& map)
   :
-  uqVectorClass(env),
-  m_vec(gsl_vector_calloc(size))
+  uqVectorClass(env,map),
+  m_vec(gsl_vector_calloc(map.NumGlobalElements()))
 {
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
                       m_env.rank(),
                       "uqGslVectorClass::constructor(), linspace",
                       "null vector generated");
 
-  for (unsigned int i = 0; i < size; ++i) {
-    double alpha = (double) i / ((double) size - 1.);
+  for (unsigned int i = 0; i < m_vec->size; ++i) {
+    double alpha = (double) i / ((double) m_vec->size - 1.);
     (*this)[i] = (1.-alpha)*d1 + alpha*d2;
   }
 }
 
-uqGslVectorClass::uqGslVectorClass(const uqGslVectorClass& v, double d1, double d2, unsigned int size)
+uqGslVectorClass::uqGslVectorClass(const uqGslVectorClass& v, double d1, double d2)
   :
-  uqVectorClass(v.env()),
-  m_vec(gsl_vector_calloc(size))
+  uqVectorClass(v.env(),v.map()),
+  m_vec(gsl_vector_calloc(v.size()))
 {
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
                       m_env.rank(),
                       "uqGslVectorClass::constructor(), linspace",
                       "null vector generated");
 
-  for (unsigned int i = 0; i < size; ++i) {
-    double alpha = (double) i / ((double) size - 1.);
+  for (unsigned int i = 0; i < m_vec->size; ++i) {
+    double alpha = (double) i / ((double) m_vec->size - 1.);
     (*this)[i] = (1.-alpha)*d1 + alpha*d2;
   }
 }
 
 uqGslVectorClass::uqGslVectorClass(const uqGslVectorClass& v)
   :
-  uqVectorClass(v.env()),
+  uqVectorClass(v.env(),v.map()),
   m_vec(gsl_vector_calloc(v.size()))
 {
   UQ_FATAL_TEST_MACRO((m_vec == NULL),

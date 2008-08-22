@@ -32,6 +32,7 @@ uq1DProblemClass::uq1DProblemClass(
   double h)
   :
   m_env        (env),
+  m_map        (NULL),
   m_a          (a),
   m_b          (b),
   m_c          (c),
@@ -60,6 +61,7 @@ uq1DProblemClass::~uq1DProblemClass()
   for (unsigned int i = 0; i < m_nodes.size(); ++i) {
     if (m_nodes[i]) delete m_nodes[i];
   }
+  if (m_map) delete m_map;
 }
 
 void
@@ -118,6 +120,7 @@ uq1DProblemClass::femSolve(
   for (unsigned int e = 0; e < m_numElements; ++e) {
     m_globalNumDofs += (m_elements[e]->numDofs()-1);
   }
+  m_map = new Epetra_Map(m_globalNumDofs,0,m_env.comm());
 
   //////////////////////////////////////////////////
   // Globally number all dofs in all elements
@@ -135,7 +138,7 @@ uq1DProblemClass::femSolve(
   //////////////////////////////////////////////////
   // Assemble matrices
   //////////////////////////////////////////////////
-  uqGslMatrixClass m_globalMatrix(m_env,m_globalNumDofs,m_globalNumDofs);
+  uqGslMatrixClass m_globalMatrix(m_env,*m_map,m_globalNumDofs);
   for (unsigned int e = 0; e < m_numElements; ++e) {
     uq1DScalarElementClass* elem = m_elements[e];
     elem->updateStiffnessMatrix(m_globalMatrix,
@@ -148,14 +151,14 @@ uq1DProblemClass::femSolve(
   //////////////////////////////////////////////////
   // Assemble rhs
   //////////////////////////////////////////////////
-  uqGslVectorClass m_globalRhs(m_env,m_globalNumDofs);
+  uqGslVectorClass m_globalRhs(m_env,*m_map);
   for (unsigned int e = 0; e < m_numElements; ++e) {
     uq1DScalarElementClass* elem = m_elements[e];
     elem->updateRhs(m_globalRhs,
                     m_f,
                     m_setOfDirichletNodeIds);
   }
-  uqGslVectorClass m_DirichletRhs(m_env,m_globalNumDofs);
+  uqGslVectorClass m_DirichletRhs(m_env,*m_map);
   m_DirichletRhs[0                ] = m_g;
   m_DirichletRhs[m_globalNumDofs-1] = m_h;
   m_globalRhs += m_DirichletRhs;
@@ -165,7 +168,7 @@ uq1DProblemClass::femSolve(
   //////////////////////////////////////////////////
   // Solve system of linear equations
   //////////////////////////////////////////////////
-  m_globalU = new uqGslVectorClass(m_env,m_globalNumDofs);
+  m_globalU = new uqGslVectorClass(m_env,*m_map);
   m_globalMatrix.invertMultiply(m_globalRhs, *m_globalU);
   //std::cout << "m_globalU = " << *m_globalU
   //          << std::endl;

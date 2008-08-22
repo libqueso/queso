@@ -24,7 +24,7 @@ template<>
 void
 uqParamSpaceClass<uqGslVectorClass,uqGslMatrixClass>::createInitialValues() const
 {
-  m_initialValues = new uqGslVectorClass(m_env,this->dim());
+  m_initialValues = new uqGslVectorClass(m_env,*m_map);
 
   for (unsigned int i = 0; i < m_parameters.size(); ++i) {
     if (m_parameters[i]) (*m_initialValues)[i] = m_parameters[i]->initialValue();
@@ -37,7 +37,7 @@ template<>
 void
 uqParamSpaceClass<uqGslVectorClass,uqGslMatrixClass>::createMinValues() const
 {
-  m_minValues = new uqGslVectorClass(m_env,this->dim());
+  m_minValues = new uqGslVectorClass(m_env,*m_map);
 
   for (unsigned int i = 0; i < m_parameters.size(); ++i) {
     if (m_parameters[i]) (*m_minValues)[i] = m_parameters[i]->minValue();
@@ -50,7 +50,7 @@ template<>
 void
 uqParamSpaceClass<uqGslVectorClass,uqGslMatrixClass>::createMaxValues() const
 {
-  m_maxValues = new uqGslVectorClass(m_env,this->dim());
+  m_maxValues = new uqGslVectorClass(m_env,*m_map);
 
   for (unsigned int i = 0; i < m_parameters.size(); ++i) {
     if (m_parameters[i]) (*m_maxValues)[i] = m_parameters[i]->maxValue();
@@ -63,7 +63,7 @@ template<>
 void
 uqParamSpaceClass<uqGslVectorClass,uqGslMatrixClass>::createPriorMuValues() const
 {
-  m_priorMuValues = new uqGslVectorClass(m_env,this->dim());
+  m_priorMuValues = new uqGslVectorClass(m_env,*m_map);
 
   for (unsigned int i = 0; i < m_parameters.size(); ++i) {
     if (m_parameters[i]) (*m_priorMuValues)[i] = m_parameters[i]->priorMu();
@@ -76,7 +76,7 @@ template<>
 void
 uqParamSpaceClass<uqGslVectorClass,uqGslMatrixClass>::createPriorSigmaValues() const
 {
-  m_priorSigmaValues = new uqGslVectorClass(m_env,this->dim());
+  m_priorSigmaValues = new uqGslVectorClass(m_env,*m_map);
 
   for (unsigned int i = 0; i < m_parameters.size(); ++i) {
     if (m_parameters[i]) (*m_priorSigmaValues)[i] = m_parameters[i]->priorSigma();

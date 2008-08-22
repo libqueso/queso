@@ -22,7 +22,8 @@
 
 uqVectorClass::uqVectorClass()
   :
-  m_env(*(new uqEnvironmentClass()))
+  m_env(*(new uqEnvironmentClass())                                    ),
+  m_map(*(new Epetra_Map( 1,0,*(new Epetra_MpiComm(MPI_COMM_WORLD)) ) ))
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.rank(),
@@ -30,16 +31,18 @@ uqVectorClass::uqVectorClass()
                       "should not be used by user");
 }
 
-uqVectorClass::uqVectorClass(const uqEnvironmentClass& env)
+uqVectorClass::uqVectorClass(const uqEnvironmentClass& env, const Epetra_Map& map)
   :
-  m_env(env),
+  m_env              (env),
+  m_map              (map),
   m_printHorizontally(true)
 {
 }
 
 uqVectorClass::uqVectorClass(const uqVectorClass& rhs)
   :
-  m_env(rhs.m_env)
+  m_env(rhs.m_env),
+  m_map(rhs.m_map)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
                       m_env.rank(),
@@ -54,7 +57,8 @@ uqVectorClass::~uqVectorClass()
 void
 uqVectorClass::copy(const uqVectorClass& src)
 {
-  //m_env               = env;
+  //m_env               = src.env;
+  //m_map               = src.map;
   m_printHorizontally = src.m_printHorizontally;
 
   return;
@@ -114,6 +118,12 @@ const uqEnvironmentClass&
 uqVectorClass::env() const
 {
   return m_env;
+}
+
+const Epetra_Map&
+uqVectorClass::map() const
+{
+  return m_map;
 }
 
 void

@@ -43,9 +43,7 @@ uqEnvironmentClass::uqEnvironmentClass()
   :
   m_argc            (0),
   m_argv            (NULL),
-#ifdef __UQ_USES_TRILINOS__
   m_comm            (NULL),
-#endif
   m_rank            (0),
   m_commSize        (1),
   m_argsWereProvided(false),
@@ -67,9 +65,7 @@ uqEnvironmentClass::uqEnvironmentClass(
   :
   m_argc            (argc),
   m_argv            (argv),
-#ifdef __UQ_USES_TRILINOS__
   m_comm            (NULL),
-#endif
   m_rank            (0),
   m_commSize        (1),
   m_argsWereProvided(true),
@@ -93,9 +89,7 @@ uqEnvironmentClass::uqEnvironmentClass(
   :
   m_argc            (0),
   m_argv            (NULL),
-#ifdef __UQ_USES_TRILINOS__
   m_comm            (NULL),
-#endif
   m_rank            (0),
   m_commSize        (1),
   m_argsWereProvided(false),
@@ -114,11 +108,9 @@ uqEnvironmentClass::uqEnvironmentClass(
 void
 uqEnvironmentClass::commonConstructor()
 {
-#ifdef __UQ_USES_TRILINOS__
   m_comm     = new Epetra_MpiComm(MPI_COMM_WORLD);
   m_rank     = m_comm->MyPID();
   m_commSize = m_comm->NumProc();
-#endif
 
   if ((this->verbosity() >= 5) && (this->rank() == 0)) {
     std::cout << "Entering uqEnvironmentClass::commonConstructor()"
@@ -249,9 +241,7 @@ uqEnvironmentClass::uqEnvironmentClass(const uqEnvironmentClass& obj)
 
   m_argc           = obj.m_argc;
   m_argv           = obj.m_argv;
-#ifdef __UQ_USES_TRILINOS__
-  m_comm           = NULL;
-#endif
+  m_comm           = obj.m_comm;
   m_rank           = obj.m_rank;
   m_commSize       = obj.m_commSize;
   m_allOptionsDesc = NULL;
@@ -281,9 +271,7 @@ uqEnvironmentClass::~uqEnvironmentClass()
   //////////////////////////////////////////////////
   // Finalize MPI
   //////////////////////////////////////////////////
-#ifdef __UQ_USES_TRILINOS__
-  if (m_comm)    delete m_comm;
-#endif
+  if (m_comm) delete m_comm;
 }
 
 uqEnvironmentClass&
@@ -296,9 +284,7 @@ uqEnvironmentClass::operator= (const uqEnvironmentClass& rhs)
 
   m_argc      = rhs.m_argc;
   m_argv      = rhs.m_argv;
-#ifdef __UQ_USES_TRILINOS__
   m_comm      = rhs.m_comm;
-#endif
   m_rank      = rhs.m_rank;
   m_commSize  = rhs.m_commSize;
   m_verbosity = rhs.m_verbosity;
@@ -317,21 +303,17 @@ uqEnvironmentClass::rank() const
 void
 uqEnvironmentClass::barrier() const
 {
-#ifdef __UQ_USES_TRILINOS__
   if (m_commSize > 1) {
     m_comm->Barrier();
   }
-#endif
   return;
 }
 
-#ifdef __UQ_USES_TRILINOS__
 const Epetra_MpiComm&
 uqEnvironmentClass::comm() const
 {
   return *m_comm;
 }
-#endif
 
 #ifdef UQ_USES_COMMAND_LINE_OPTIONS
 const po::options_description&

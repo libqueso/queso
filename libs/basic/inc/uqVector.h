@@ -21,6 +21,7 @@
 #define __UQ_VECTOR_H__
 
 #include <uqEnvironment.h>
+#include <Epetra_Map.h>
 #include <gsl/gsl_randist.h>
 #include <iostream>
 
@@ -28,7 +29,7 @@ class uqVectorClass
 {
 public:
            uqVectorClass();
-           uqVectorClass(const uqEnvironmentClass& env);
+           uqVectorClass(const uqEnvironmentClass& env, const Epetra_Map& map);
            uqVectorClass(const uqVectorClass& rhs);
   virtual ~uqVectorClass();
 
@@ -39,6 +40,7 @@ public:
   uqVectorClass& operator-=(const uqVectorClass& rhs);
 
     const uqEnvironmentClass& env                 ()           const;
+    const Epetra_Map&         map                 ()           const;
           void                setPrintHorizontally(bool value) const; // Yes, 'const'
           bool                getPrintHorizontally()           const;
 
@@ -53,6 +55,7 @@ protected:
   virtual void                copy                (const uqVectorClass& src);
 
   const uqEnvironmentClass& m_env;
+  const Epetra_Map&         m_map;
   mutable bool m_printHorizontally;
 };
 

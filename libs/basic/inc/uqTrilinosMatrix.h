@@ -36,10 +36,8 @@ public:
 
   uqTrilinosMatrixClass(const uqEnvironmentClass& env,
                         const Epetra_Map&         map,
-                        unsigned int              dim,
                         double                    diagValue); // MATLAB eye
   uqTrilinosMatrixClass(const uqTrilinosVectorClass& v,
-                        unsigned int                 dim,
                         double                       diagValue); // MATLAB eye
   uqTrilinosMatrixClass(const uqTrilinosVectorClass& v); // MATLAB diag
   uqTrilinosMatrixClass(const uqTrilinosMatrixClass& B);
@@ -63,14 +61,12 @@ public:
   uqTrilinosVectorClass invertMultiply(const uqTrilinosVectorClass& b) const;
   void                  invertMultiply(const uqTrilinosVectorClass& b, uqTrilinosVectorClass& x) const;
   void                  print         (std::ostream& os) const;
-  const Epetra_Map&     map() const;
 
 private:
 
   void                  copy          (const uqTrilinosMatrixClass& src);
   void                  multiply      (const uqTrilinosVectorClass& x, uqTrilinosVectorClass& y) const;
 
-  const Epetra_Map&         m_map;
   //Epetra_CrsMatrix*       m_mat;
   Epetra_SerialDenseMatrix* m_mat;
 };

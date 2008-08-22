@@ -24,19 +24,19 @@ template<>
 uqGslVectorClass*
 uqFinDimLinearSpaceClass<uqGslVectorClass,uqGslMatrixClass>::newVector() const
 {
-  return new uqGslVectorClass(m_env,this->dim());
+  return new uqGslVectorClass(m_env,*m_map);
 }
 
 template<>
 uqGslMatrixClass*
 uqFinDimLinearSpaceClass<uqGslVectorClass,uqGslMatrixClass>::newMatrix() const
 {
-  return new uqGslMatrixClass(m_env,this->dim(),this->dim());
+  return new uqGslMatrixClass(m_env,*m_map,this->dim());
 }
 
 template<>
 uqGslMatrixClass*
 uqFinDimLinearSpaceClass<uqGslVectorClass,uqGslMatrixClass>::newDiagMatrix(double diagValue) const
 {
-  return new uqGslMatrixClass(m_env,this->dim(),diagValue);
+  return new uqGslMatrixClass(m_env,*m_map,diagValue);
 }

@@ -64,7 +64,7 @@ private:
 
   void           copy            (const uqTrilinosVectorClass& src);
 
-  const Epetra_Map&         m_map;
+  //const Epetra_Map&       m_map;
   //Epetra_Vector*          m_vec;
   Epetra_SerialDenseMatrix* m_vec;
 };

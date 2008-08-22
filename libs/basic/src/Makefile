@@ -24,6 +24,8 @@ DEFINES = \
 	-D__UQ_USES_GSL__
 INC_PATHS = \
 	-I../inc \
+	-I$(MPI_INCLUDE_PATH_FOR_MCMC_TOOL) \
+	-I$(TRILINOS_INCLUDE_PATH_FOR_MCMC_TOOL) \
 	-I$(BOOST_INCLUDE_PATH_FOR_MCMC_TOOL) \
 	-I$(GSL_INCLUDE_PATH_FOR_MCMC_TOOL)
 
@@ -43,7 +45,7 @@ endif
 AR = ar
 ARFLAGS = -rv
 CXX = g++
-CXXFLAGS = -Wall -c
+CXXFLAGS = -Wall -c -g
 
 OBJS_ANY = uqEnvironment.o \
 	uqDefines.o \

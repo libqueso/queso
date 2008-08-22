@@ -34,11 +34,11 @@ uqGslMatrixClass::uqGslMatrixClass()
 
 uqGslMatrixClass::uqGslMatrixClass(
   const uqEnvironmentClass& env,
-  unsigned int numRows,
-  unsigned int numCols)
+  const Epetra_Map&         map,
+  unsigned int              numCols)
   :
-  uqMatrixClass(env),
-  m_mat        (gsl_matrix_calloc(numRows,numCols)),
+  uqMatrixClass(env,map),
+  m_mat        (gsl_matrix_calloc(map.NumGlobalElements(),numCols)),
   m_LU         (NULL),
   m_permutation(NULL)
 {
@@ -50,11 +50,11 @@ uqGslMatrixClass::uqGslMatrixClass(
  
 uqGslMatrixClass::uqGslMatrixClass(
   const uqEnvironmentClass& env,
-  unsigned int dim,
-  double diagValue)
+  const Epetra_Map&         map,
+  double                    diagValue)
   :
-  uqMatrixClass(env),
-  m_mat        (gsl_matrix_calloc(dim,dim)),
+  uqMatrixClass(env,map),
+  m_mat        (gsl_matrix_calloc(map.NumGlobalElements(),map.NumGlobalElements())),
   m_LU         (NULL),
   m_permutation(NULL)
 {
@@ -63,18 +63,17 @@ uqGslMatrixClass::uqGslMatrixClass(
                       "uqGslMatrixClass::constructor(), eye",
                       "null matrix generated");
 
-  for (unsigned int i = 0; i < dim; ++i) {
+  for (unsigned int i = 0; i < m_mat->size1; ++i) {
     (*this)(i,i) = diagValue;
   }
 }
 
 uqGslMatrixClass::uqGslMatrixClass(
   const uqGslVectorClass& v,
-  unsigned int dim,
-  double diagValue)
+  double                  diagValue)
   :
-  uqMatrixClass(v.env()),
-  m_mat        (gsl_matrix_calloc(dim,dim)),
+  uqMatrixClass(v.env(),v.map()),
+  m_mat        (gsl_matrix_calloc(v.size(),v.size())),
   m_LU         (NULL),
   m_permutation(NULL)
 {
@@ -83,14 +82,14 @@ uqGslMatrixClass::uqGslMatrixClass(
                       "uqGslMatrixClass::constructor(), eye",
                       "null matrix generated");
 
-  for (unsigned int i = 0; i < dim; ++i) {
+  for (unsigned int i = 0; i < m_mat->size1; ++i) {
     (*this)(i,i) = diagValue;
   }
 }
 
 uqGslMatrixClass::uqGslMatrixClass(const uqGslVectorClass& v)
   :
-  uqMatrixClass(v.env()),
+  uqMatrixClass(v.env(),v.map()),
   m_mat        (gsl_matrix_calloc(v.size(),v.size())),
   m_LU         (NULL),
   m_permutation(NULL)
@@ -108,7 +107,7 @@ uqGslMatrixClass::uqGslMatrixClass(const uqGslVectorClass& v)
 
 uqGslMatrixClass::uqGslMatrixClass(const uqGslMatrixClass& B)
   :
-  uqMatrixClass(B.env()),
+  uqMatrixClass(B.env(),B.map()),
   m_mat        (gsl_matrix_calloc(B.numRows(),B.numCols())),
   m_LU         (NULL),
   m_permutation(NULL)
@@ -291,7 +290,7 @@ uqGslMatrixClass::transpose () const
   unsigned int nRows = this->numRows();
   unsigned int nCols = this->numCols();
 
-  uqGslMatrixClass mat(m_env,nCols,nRows);
+  uqGslMatrixClass mat(m_env,m_map,nCols);
   for (unsigned int row = 0; row < nRows; ++row) {
     for (unsigned int col = 0; col < nCols; ++col) {
       mat(row,col) = (*this)(col,row);
@@ -310,7 +309,7 @@ uqGslMatrixClass::multiply(
                       "uqGslMatrixClass::multiply(), return vector",
                       "matrix and vector have incompatible sizes");
 
-  uqGslVectorClass y(m_env,this->numRows());
+  uqGslVectorClass y(m_env,m_map);
   this->multiply(x,y);
 
   return y;
@@ -353,7 +352,7 @@ uqGslMatrixClass::invertMultiply(
                       "uqGslMatrixClass::invertMultiply(), return vector",
                       "matrix and rhs have incompatible sizes");
 
-  uqGslVectorClass x(m_env,this->numRows());
+  uqGslVectorClass x(m_env,m_map);
   this->invertMultiply(b,x);
 
   return x;
@@ -460,7 +459,7 @@ uqGslMatrixClass operator*(const uqGslMatrixClass& m1, const uqGslMatrixClass& m
                       "uqGslMatrixClass operator*(matrix,matrix)",
                       "different sizes m1Cols and m2Rows");
 
-  uqGslMatrixClass mat(m1.env(),m1Rows,m2Cols);
+  uqGslMatrixClass mat(m1.env(),m1.map(),m2Cols);
 
   unsigned int commonSize = m1Cols;
   for (unsigned int row1 = 0; row1 < m1Rows; ++row1) {
@@ -487,7 +486,7 @@ uqGslMatrixClass matrixProduct(const uqGslVectorClass& v1, const uqGslVectorClas
 {
   unsigned int numRows = v1.size();
   unsigned int numCols = v2.size();
-  uqGslMatrixClass answer(v1.env(),numRows,numCols);
+  uqGslMatrixClass answer(v1.env(),v1.map(),numCols);
 
   for (unsigned int i = 0; i < numRows; ++i) {
     double value1 = v1[i];

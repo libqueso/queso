@@ -28,7 +28,7 @@ class uqMatrixClass
 {
 public:
            uqMatrixClass();
-           uqMatrixClass(const uqEnvironmentClass& env);
+           uqMatrixClass(const uqEnvironmentClass& env, const Epetra_Map& map);
            uqMatrixClass(const uqMatrixClass& rhs);
   virtual ~uqMatrixClass();
 
@@ -38,6 +38,7 @@ public:
   uqMatrixClass& operator-=(const uqMatrixClass& rhs);
 
   const uqEnvironmentClass& env() const;
+  const Epetra_Map&         map() const;
 
   virtual unsigned int   numRows       () const = 0;
   virtual unsigned int   numCols       () const = 0;
@@ -50,6 +51,7 @@ protected:
   virtual void           copy          (const uqMatrixClass& src);
 
   const uqEnvironmentClass& m_env;
+  const Epetra_Map&         m_map;
 };
 
 #endif // __UQ_MATRIX_H__

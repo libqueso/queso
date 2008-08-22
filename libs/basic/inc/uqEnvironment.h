@@ -25,12 +25,8 @@
 #define UQ_ENV_VERBOSITY_DEFAULT_VALUE 0
 #define UQ_ENV_SEED_DEFAULT_VALUE      0
 
-#ifdef __UQ_USES_TRILINOS__
 #include <Epetra_MpiComm.h>
-#endif
-
 #include <gsl/gsl_rng.h>
-
 #include <boost/program_options.hpp>
 namespace po = boost::program_options;
 #include <iostream>
@@ -59,9 +55,7 @@ public:
 
         int                      rank                     () const;
         void                     barrier                  () const;
-#ifdef __UQ_USES_TRILINOS__
         const Epetra_MpiComm&    comm                     () const; 
-#endif
 #ifdef UQ_USES_COMMAND_LINE_OPTIONS
   const po::options_description& allOptionsDesc           () const;
 #endif
@@ -80,9 +74,7 @@ private:
 
   int                      m_argc;
   char**                   m_argv;
-#ifdef __UQ_USES_TRILINOS__
   Epetra_MpiComm*          m_comm;
-#endif
   int                      m_rank;
   int                      m_commSize;
   bool                     m_argsWereProvided;

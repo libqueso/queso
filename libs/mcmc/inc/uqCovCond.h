@@ -34,13 +34,12 @@ uqCovCond(
   //          << std::endl;
 
   V v1(direction);
-  unsigned int size1 = v1.size();
   //std::cout << "In uqCovCond(), v1 contents are:"
   //          << std::endl
   //          << v1
   //          << std::endl;
 
-  V v2(direction/*.env()*/,condNumber,1.0,size1); // MATLAB linspace
+  V v2(direction,condNumber,1.0); // MATLAB linspace
   v2.cwInvert();
   v2.sort();
   //std::cout << "In uqCovCond(), v2 contents are:"
@@ -53,7 +52,7 @@ uqCovCond(
   else           v1[0] -= v1Norm2;
   double v1Norm2Sq = v1.norm2Sq();
 
-  M Z(direction/*.env()*/,size1,1.0);
+  M Z(direction,1.0);
   Z -= (2./v1Norm2Sq) * matrixProduct(v1,v1);
   //std::cout << "In uqCovCond(), Z contents are:"
   //          << std::endl

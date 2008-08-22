@@ -76,7 +76,7 @@ uq1DScalarElementClass::updateStiffnessMatrix(
   const std::set<unsigned int>& setOfDirichletNodeIds)
 {
   // The matrix below is always Gsl, since it is local
-  uqGslMatrixClass localMatrix(globalMatrix.env(),numDofs(),numDofs());
+  uqGslMatrixClass localMatrix(globalMatrix.env(),globalMatrix.map(),numDofs());
 
   // Compute local matrix
   for (unsigned int i = 0; i < numDofs(); ++i) {
@@ -122,7 +122,7 @@ uq1DScalarElementClass::updateRhs(
   const std::set<unsigned int>& setOfDirichletNodeIds)
 {
   // The vector below is always Gsl, since it is local
-  uqGslVectorClass localRhs(globalRhs.env(),numDofs());
+  uqGslVectorClass localRhs(globalRhs.env(),globalRhs.map());
 
   // Compute local rhs
   for (unsigned int i = 0; i < numDofs(); ++i) {

@@ -76,6 +76,9 @@ uqStateSpaceClass<V,M>::uqStateSpaceClass(
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
 
+  // Now that 'm_dim' has been set, construct Trilinos map
+  this->constructMap();
+
   if (m_env.rank() == 0) std::cout << "After getting values of options with prefix '" <<  uqFinDimLinearSpaceClass<V,M>::m_prefix
                                    << "', state of uqStateSpaceClass object is:"
                                    << "\n" << *this

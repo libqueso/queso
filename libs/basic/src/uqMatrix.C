@@ -22,7 +22,8 @@
 
 uqMatrixClass::uqMatrixClass()
   :
-  m_env(*(new uqEnvironmentClass()))
+  m_env(*(new uqEnvironmentClass())                                    ),
+  m_map(*(new Epetra_Map( 1,0,*(new Epetra_MpiComm(MPI_COMM_WORLD)) ) ))
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.rank(),
@@ -30,15 +31,17 @@ uqMatrixClass::uqMatrixClass()
                       "should not be used by user");
 }
 
-uqMatrixClass::uqMatrixClass(const uqEnvironmentClass& env)
+uqMatrixClass::uqMatrixClass(const uqEnvironmentClass& env, const Epetra_Map& map)
   :
-  m_env(env)
+  m_env(env),
+  m_map(map)
 {
 }
 
 uqMatrixClass::uqMatrixClass(const uqMatrixClass& rhs)
   :
-  m_env(rhs.m_env)
+  m_env(rhs.m_env),
+  m_map(rhs.m_map)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
                       m_env.rank(),
@@ -53,7 +56,8 @@ uqMatrixClass::~uqMatrixClass()
 void
 uqMatrixClass::copy(const uqMatrixClass& src)
 {
-  //m_env = env;
+  //m_env = src.env;
+  //m_map = src.map;
 
   return;
 }
@@ -102,4 +106,11 @@ const uqEnvironmentClass&
 uqMatrixClass::env() const
 {
   return m_env;
+}
+
+const Epetra_Map&
+uqMatrixClass::map() const
+{
+  return m_map;
+  //return (const Epetra_Map&) (m_mat->Map());
 }

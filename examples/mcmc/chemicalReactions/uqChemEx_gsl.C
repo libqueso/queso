@@ -26,6 +26,7 @@ int main(int argc, char* argv[])
   //************************************************
   // Initialize environment
   //************************************************
+  MPI_Init(&argc,&argv);
   uqEnvironmentClass* env = new uqEnvironmentClass(argc,argv);
 
   //************************************************
@@ -37,6 +38,7 @@ int main(int argc, char* argv[])
   // Finalize environment
   //************************************************
   delete env;
+  MPI_Finalize();
 
   return 0;
 }

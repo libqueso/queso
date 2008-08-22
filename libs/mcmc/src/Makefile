@@ -19,6 +19,8 @@ DEFINES = \
 INC_PATHS = \
 	-I../../basic/inc \
 	-I../inc \
+	-I$(MPI_INCLUDE_PATH_FOR_MCMC_TOOL) \
+	-I$(TRILINOS_INCLUDE_PATH_FOR_MCMC_TOOL) \
 	-I$(BOOST_INCLUDE_PATH_FOR_MCMC_TOOL) \
 	-I$(GSL_INCLUDE_PATH_FOR_MCMC_TOOL)
 
@@ -39,7 +41,7 @@ endif
 AR = ar
 ARFLAGS = -rv
 CXX = g++
-CXXFLAGS = -Wall -c
+CXXFLAGS = -Wall -c -g
 
 OBJS_ANY = uqParameter.o \
 	uqObservable.o

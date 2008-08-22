@@ -48,7 +48,6 @@ uqTrilinosMatrixClass::uqTrilinosMatrixClass(
 uqTrilinosMatrixClass::uqTrilinosMatrixClass(
   const uqEnvironmentClass& env,
   const Epetra_Map&         map,
-  unsigned int              dim,
   double                    diagValue)
   :
   uqMatrixClass(env),
@@ -58,7 +57,6 @@ uqTrilinosMatrixClass::uqTrilinosMatrixClass(
 
 uqTrilinosMatrixClass::uqTrilinosMatrixClass(
   const uqTrilinosVectorClass& v,
-  unsigned int                 dim,
   double                       diagValue)
   :
   uqMatrixClass(v.env()),
@@ -216,13 +214,6 @@ uqTrilinosMatrixClass::invertMultiply(
                       "solution and rhs have incompatible sizes");
 
   return;
-}
-
-const Epetra_Map&
-uqTrilinosMatrixClass::map() const
-{
-  return m_map;
-  //return (const Epetra_Map&) (m_mat->Map());
 }
 
 void

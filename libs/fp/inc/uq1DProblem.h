@@ -49,6 +49,7 @@ public:
 
 protected:
   const uqEnvironmentClass& m_env;
+  const Epetra_Map*         m_map;
   double m_a;
   double m_b;
   double m_c;

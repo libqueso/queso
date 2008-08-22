@@ -24,7 +24,7 @@ template<>
 void
 uqObservableSpaceClass<uqGslVectorClass,uqGslMatrixClass>::createNumbersOfObservations() const
 {
-  m_numbersOfObservations = new uqGslVectorClass(m_env,this->dim());
+  m_numbersOfObservations = new uqGslVectorClass(m_env,*m_map);
 
   for (unsigned int i = 0; i < m_observables.size(); ++i) {
     if (m_observables[i]) (*m_numbersOfObservations)[i] = (double) m_observables[i]->numberOfObservations();
@@ -37,7 +37,7 @@ template<>
 void
 uqObservableSpaceClass<uqGslVectorClass,uqGslMatrixClass>::createPriorVariances() const
 {
-  m_priorVariances = new uqGslVectorClass(m_env,this->dim());
+  m_priorVariances = new uqGslVectorClass(m_env,*m_map);
 
   for (unsigned int i = 0; i < m_observables.size(); ++i) {
     if (m_observables[i]) (*m_priorVariances)[i] = m_observables[i]->priorVariance();
@@ -50,7 +50,7 @@ template<>
 void
 uqObservableSpaceClass<uqGslVectorClass,uqGslMatrixClass>::createVarianceAccuracies() const
 {
-  m_varianceAccuracies = new uqGslVectorClass(m_env,this->dim());
+  m_varianceAccuracies = new uqGslVectorClass(m_env,*m_map);
 
   for (unsigned int i = 0; i < m_observables.size(); ++i) {
     if (m_observables[i]) (*m_varianceAccuracies)[i] = m_observables[i]->varianceAccuracy();
