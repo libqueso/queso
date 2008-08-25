@@ -22,8 +22,10 @@
 
 #undef UQ_USES_COMMAND_LINE_OPTIONS
 
-#define UQ_ENV_VERBOSITY_DEFAULT_VALUE 0
-#define UQ_ENV_SEED_DEFAULT_VALUE      0
+#define UQ_ENV_VERBOSITY_ODV        0
+#define UQ_ENV_SEED_ODV             0
+#define UQ_ENV_NUM_DEBUG_PARAMS_ODV 0
+#define UQ_ENV_DEBUG_PARAM_ODV      0.
 
 #include <Epetra_MpiComm.h>
 #include <gsl/gsl_rng.h>
@@ -39,8 +41,10 @@ struct uqEnvOptionsStruct {
                      int          seed);
  ~uqEnvOptionsStruct();
 
-  unsigned int m_verbosity;
-  int          m_seed;
+  unsigned int        m_verbosity;
+  int                 m_seed;
+  unsigned int        m_numDebugParams;
+  std::vector<double> m_debugParams;
 };
 
 class uqEnvironmentClass {
@@ -85,6 +89,8 @@ private:
   po::variables_map*       m_allOptionsMap;
   unsigned int             m_verbosity;
   int                      m_seed;
+  unsigned int             m_numDebugParams;
+  std::vector<double>      m_debugParams;
   gsl_rng*                 m_rng;
 };
 

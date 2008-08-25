@@ -704,7 +704,7 @@ uqVectorSequenceInterQuantileRange(
 
 template <class V>
 void
-uqVectorSequenceScaleForKDE(
+uqVectorSequenceScalesForKDE(
   const std::vector<const V*>& sequence,
   unsigned int                 initialPosition,
   unsigned int                 spacing,

@@ -30,8 +30,10 @@ uqEnvOptionsStruct::uqEnvOptionsStruct(
   unsigned int verbosity,
   int          seed)
   :
-  m_verbosity(verbosity),
-  m_seed     (seed)
+  m_verbosity     (verbosity),
+  m_seed          (seed),
+  m_numDebugParams(0),
+  m_debugParams   (0,0.)
 {
 }
 
@@ -52,8 +54,10 @@ uqEnvironmentClass::uqEnvironmentClass()
   m_allOptionsDesc  (NULL),
   m_envOptionsDesc  (NULL),
   m_allOptionsMap   (NULL),
-  m_verbosity       (UQ_ENV_VERBOSITY_DEFAULT_VALUE),
-  m_seed            (UQ_ENV_SEED_DEFAULT_VALUE),
+  m_verbosity       (UQ_ENV_VERBOSITY_ODV),
+  m_seed            (UQ_ENV_SEED_ODV),
+  m_numDebugParams  (UQ_ENV_NUM_DEBUG_PARAMS_ODV),
+  m_debugParams     (m_numDebugParams,0.),
   m_rng             (NULL)
 {
   commonConstructor();
@@ -74,8 +78,10 @@ uqEnvironmentClass::uqEnvironmentClass(
   m_allOptionsDesc  (NULL),
   m_envOptionsDesc  (NULL),
   m_allOptionsMap   (NULL),
-  m_verbosity       (UQ_ENV_VERBOSITY_DEFAULT_VALUE),
-  m_seed            (UQ_ENV_SEED_DEFAULT_VALUE),
+  m_verbosity       (UQ_ENV_VERBOSITY_ODV),
+  m_seed            (UQ_ENV_SEED_ODV),
+  m_numDebugParams  (UQ_ENV_NUM_DEBUG_PARAMS_ODV),
+  m_debugParams     (m_numDebugParams,0.),
   m_rng             (NULL)
 {
   //////////////////////////////////////////////////
@@ -100,6 +106,8 @@ uqEnvironmentClass::uqEnvironmentClass(
   m_allOptionsMap   (NULL),
   m_verbosity       (options.m_verbosity),
   m_seed            (options.m_seed),
+  m_numDebugParams  (options.m_numDebugParams),
+  m_debugParams     (options.m_debugParams),
   m_rng             (NULL)
 {
   commonConstructor();
@@ -249,6 +257,8 @@ uqEnvironmentClass::uqEnvironmentClass(const uqEnvironmentClass& obj)
   m_allOptionsMap  = obj.m_allOptionsMap;
   m_verbosity      = obj.m_verbosity;
   m_seed           = obj.m_seed;
+  m_numDebugParams = obj.m_numDebugParams;
+  m_debugParams    = obj.m_debugParams;
   m_rng            = obj.m_rng;
 }
 
@@ -282,14 +292,16 @@ uqEnvironmentClass::operator= (const uqEnvironmentClass& rhs)
                       "uqEnvironmentClass::operator=()",
                       "code should not execute through here");
 
-  m_argc      = rhs.m_argc;
-  m_argv      = rhs.m_argv;
-  m_comm      = rhs.m_comm;
-  m_rank      = rhs.m_rank;
-  m_commSize  = rhs.m_commSize;
-  m_verbosity = rhs.m_verbosity;
-  m_seed      = rhs.m_seed;
-  m_rng       = rhs.m_rng;
+  m_argc           = rhs.m_argc;
+  m_argv           = rhs.m_argv;
+  m_comm           = rhs.m_comm;
+  m_rank           = rhs.m_rank;
+  m_commSize       = rhs.m_commSize;
+  m_verbosity      = rhs.m_verbosity;
+  m_seed           = rhs.m_seed;
+  m_numDebugParams = rhs.m_numDebugParams;
+  m_debugParams    = rhs.m_debugParams;
+  m_rng            = rhs.m_rng;
 
   return *this;
 }
@@ -334,8 +346,9 @@ uqEnvironmentClass::defineMyOptions(po::options_description& options) const
 {
   options.add_options()
     ("uqEnv_help", "produce help message for uq environment")
-    ("uqEnv_verbosity", po::value<unsigned int>()->default_value(UQ_ENV_VERBOSITY_DEFAULT_VALUE), "set verbosity")
-    ("uqEnv_seed",      po::value<int         >()->default_value(UQ_ENV_SEED_DEFAULT_VALUE),      "set seed"     )
+    ("uqEnv_verbosity",      po::value<unsigned int>()->default_value(UQ_ENV_VERBOSITY_ODV),       "set verbosity"                 )
+    ("uqEnv_seed",           po::value<int         >()->default_value(UQ_ENV_SEED_ODV),            "set seed"                      )
+    //("uqEnv_numDebugParams", po::value<unsigned int>()->default_value(UQ_ENV_NUM_DEBUG_PARAMS_ODV),"set number of debug parameters")
   ;
 
   return;
@@ -385,6 +398,10 @@ uqEnvironmentClass::getMyOptionValues(po::options_description& optionsDesc)
     m_seed = (*m_allOptionsMap)["uqEnv_seed"].as<int>();
   }
 
+  //if (m_allOptionsMap->count("uqEnv_numDebugParams")) {
+  //  m_seed = (*m_allOptionsMap)["uqEnv_numDebugParams"].as<unsigned int>();
+  //}
+
   if (m_verbosity >= 1) {
     if (m_rank == 0) std::cout << "After getting option values, state of uqEnvironmentClass object is:"
                                << "\n" << *this
@@ -415,8 +432,9 @@ uqEnvironmentClass::isThereInputFile() const
 void
 uqEnvironmentClass::print(std::ostream& os) const
 {
-  os << "m_verbosity = " << m_verbosity
-     << "\nm_seed = "    << m_seed
+  os << "m_verbosity = "        << m_verbosity
+     << "\nm_seed = "           << m_seed
+    //<< "\nm_numDebugParams = " << m_numDebugParams
      << std::endl;
   return;
 }

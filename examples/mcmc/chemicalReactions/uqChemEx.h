@@ -274,11 +274,11 @@ uqAppl(const uqEnvironmentClass& env)
   calib_QoIPredictionRoutine_DataType<V,M> calib_QoIPredictionRoutine_Data;
   uq_QoIPredictionFunction_Class<V,M> calib_QoIPredictionFunction_Obj(calib_QoIPredictionRoutine<V,M>,
                                                                       (void *) &calib_QoIPredictionRoutine_Data);
-  uqComputeQoIDistribution(mcg.chain(),
-                           mcg.misfitVarianceChain(),
-                           500,
-                           calib_QoIPredictionFunction_Obj,
-                           mcg.outputFileName());
+  //uqComputeQoIDistribution(mcg.chain(),
+  //                         mcg.misfitVarianceChain(),
+  //                         500,
+  //                         calib_QoIPredictionFunction_Obj,
+  //                         mcg.outputFileName());
   }
 
   //*****************************************************

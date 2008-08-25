@@ -22,7 +22,6 @@ calib_stateSpace_dim  = 5
 # Calibration Observable Space
 ###############################################
 calib_observableSpace_help              = anything
-#calib_observableSpace_updateVariances   = 0
 calib_observableSpace_updateVariances   = 1
 calib_observableSpace_numSubSpaces      = 1
 calib_observableSpace_specificationFile = calib.obs
@@ -31,16 +30,20 @@ calib_observableSpace_specificationFile = calib.obs
 # Calibration DRAM Markov Chain Generator
 ###############################################
 calib_MCMC_help                       = anything
-calib_MCMC_mh_sizesOfChains           = 1000
+calib_MCMC_mh_sizesOfChains           = 10000001
 calib_MCMC_dr_maxNumberOfExtraStages  = 1
 calib_MCMC_dr_scalesForExtraStages    = 5. 4. 3.
 calib_MCMC_am_initialNonAdaptInterval = 100
 calib_MCMC_am_adaptInterval           = 0
 calib_MCMC_am_eta                     = 1.92
 calib_MCMC_am_epsilon                 = 1.e-5
+calib_MCMC_mh_generateUniqueChain     = 0
+calib_MCMC_mh_generateExtraChains     = 0
 #calib_MCMC_mh_namesOfOutputFiles      = calibOutput.m
 calib_MCMC_mh_namesOfOutputFiles      = .
 calib_MCMC_mh_chainDisplayPeriod      = 500000
+calib_MCMC_mh_measureRunTimes         = 1
+calib_MCMC_mh_generateWhiteNoise      = 1
 calib_MCMC_runBMM                     = 0
 calib_MCMC_computePSDs                = 0
 calib_MCMC_computeGewekeCoefficients  = 0
