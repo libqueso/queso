@@ -32,26 +32,14 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains1(
 
   V valuesOf1stPosition(m_paramInitials);
   int iRC = UQ_OK_RC;
-  if (m_generateWhiteNoise) {
-    for (unsigned int chainId = 0; chainId < m_sizesOfChains.size(); ++chainId) {
+  for (unsigned int chainId = 0; chainId < m_sizesOfChains.size(); ++chainId) {
+    if (m_generateWhiteNoise) {
       //****************************************************
       // Just generate white noise
       //****************************************************
       iRC = generateWhiteNoise1(chainId);
-
-      if (m_env.rank() == 0) {
-        std::cout << "\n"
-                  << "\n-----------------------------------------------------"
-                  << "\n Statistics on chain:"
-                  << "\n-----------------------------------------------------"
-                  << "\n"
-                  << std::endl;
-      }
-      computeStatistics1(m_chain1);
     }
-  }
-  else {
-    for (unsigned int chainId = 0; chainId < m_sizesOfChains.size(); ++chainId) {
+    else {
       //****************************************************
       // Initialize variables before chain1 loop
       //****************************************************
@@ -82,40 +70,82 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains1(
                         m_env.rank(),
                         "uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains1()",
                         "improper generateChain1() return");
+    }
 
-      //****************************************************
-      // Print statistics on the chain
-      //****************************************************
+    //****************************************************
+    // Open file      
+    //****************************************************
+    std::ofstream* ofs = NULL;
+    if (m_namesOfOutputFiles[chainId] == ".") {
       if (m_env.rank() == 0) {
-        std::cout << "\n"
-                  << "\n-----------------------------------------------------"
-                  << "\n Statistics on chain:"
-                  << "\n-----------------------------------------------------"
-                  << "\n"
+        std::cout << "No output file opened for chain1 of id " << chainId
                   << std::endl;
       }
-      computeStatistics1(m_chain1);
+    }
+    else {
+      if (m_env.rank() == 0) {
+        std::cout << "Opening output file for chain1 of id " << chainId
+                  << ", with name '"                         << m_namesOfOutputFiles[chainId]
+                  << "'..."
+                  << std::endl;
+      }
+
+      // Open file
+      ofs = new std::ofstream(m_namesOfOutputFiles[chainId].c_str(), std::ofstream::out | std::ofstream::trunc);
+      UQ_FATAL_TEST_MACRO((ofs && ofs->is_open()) == false,
+                          m_env.rank(),
+                          "uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain1()",
+                          "failed to open file");
+    }
+  
+    //****************************************************
+    // Print statistics on the chain
+    //****************************************************
+    if (m_env.rank() == 0) {
+      std::cout << "\n"
+                << "\n-----------------------------------------------------"
+                << "\n Statistics on chain:"
+                << "\n-----------------------------------------------------"
+                << "\n"
+                << std::endl;
+    }
+    computeStatistics1(m_chain1,ofs);
 #if 0
-      if (m_env.rank() == 0) {
-        std::cout << "\n"
-                  << "\n-----------------------------------------------------"
-                  << "\n Statistics on 'unique' chain:"
-                  << "\n-----------------------------------------------------"
-                  << "\n"
-                  << std::endl;
-      }
-      computeStatistics1(m_uniqueChain1);
+    if (m_env.rank() == 0) {
+      std::cout << "\n"
+                << "\n-----------------------------------------------------"
+                << "\n Statistics on 'unique' chain:"
+                << "\n-----------------------------------------------------"
+                << "\n"
+                << std::endl;
+    }
+    computeStatistics1(m_uniqueChain1);
 #endif
-      //****************************************************
-      // Write chain1 out
-      //****************************************************
-      iRC = writeChain1(chainId,
+
+    //****************************************************
+    // Write chain1 out
+    //****************************************************
+    if (ofs) {
+      iRC = writeChain1(*ofs,
                         mahalanobisMatrix,
                         applyMahalanobisInvert);
       UQ_FATAL_RC_MACRO(iRC,
                         m_env.rank(),
                         "uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains1()",
                         "improper writeChain1() return");
+    }
+
+    //****************************************************
+    // Close file      
+    //****************************************************
+    if (ofs) {
+      // Close file
+      ofs->close();
+
+      if (m_env.rank() == 0) {
+        std::cout << "Closed output file for chain1 of id " << chainId
+                  << std::endl;
+      }
     }
     if (m_env.rank() == 0) {
       std::cout << std::endl;
@@ -703,11 +733,23 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain1(
 template <class V, class M>
 void
 uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics1(
-  const std::vector<const V*>& chain1)
+  const std::vector<const V*>& chain1,
+  std::ofstream* passedOfs)
 {
   int iRC = UQ_OK_RC;
   struct timeval timevalTmp;
   double tmpRunTime;
+
+  // Set initial positions for the computation of chain statistics
+  std::vector<unsigned int> initialPosForStatistics(m_finalPercentsForStats.size(),0);
+  for (unsigned int i = 0; i < initialPosForStatistics.size(); ++i) {
+    initialPosForStatistics[i] = (unsigned int) ((1. - m_finalPercentsForStats[i]*0.01) * (double) chain1.size());
+  }
+  std::cout << "In uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics1(): initial positions for statistics =";
+  for (unsigned int i = 0; i < initialPosForStatistics.size(); ++i) {
+    std::cout << " " << initialPosForStatistics[i];
+  }
+  std::cout << std::endl;
 
   //****************************************************
   // Compute mean, sample std, population std
@@ -772,27 +814,37 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics1(
   //****************************************************
   // Compute variance of sample mean through the 'batch means method' (BMM)
   //****************************************************
-  if ((m_runBMM                     ) &&
-      (m_initialPosForBMM.size() > 0) &&
-      (m_lengthsForBMM.size()    > 0)) { 
+
+  if ((m_runBMM                          ) &&
+      (initialPosForStatistics.size() > 0)) {
+    std::cout << "In uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics1(): lengths for batchs in BMM =";
+    for (unsigned int i = 0; i < m_lengthsForBMM.size(); ++i) {
+      std::cout << " " << m_lengthsForBMM[i];
+    }
+    std::cout << std::endl;
+  }
+
+  if ((m_runBMM                          ) &&
+      (initialPosForStatistics.size() > 0) &&
+      (m_lengthsForBMM.size()         > 0)) { 
     if (m_env.rank() == 0) {
       std::cout << "\nComputing variance of sample mean through BMM..."
                 << std::endl;
     }
-    uq2dArrayOfStuff<V> _2dArrayOfBMM(m_initialPosForBMM.size(),m_lengthsForBMM.size());
+    uq2dArrayOfStuff<V> _2dArrayOfBMM(initialPosForStatistics.size(),m_lengthsForBMM.size());
     for (unsigned int i = 0; i < _2dArrayOfBMM.numRows(); ++i) {
       for (unsigned int j = 0; j < _2dArrayOfBMM.numCols(); ++j) {
         _2dArrayOfBMM.setLocation(i,j,m_paramSpace.newVector());
       }
     }
     uqVectorSequenceBMM(chain1,
-                        m_initialPosForBMM,
+                        initialPosForStatistics,
                         m_lengthsForBMM,
                         _2dArrayOfBMM);
 
     if (m_env.rank() == 0) {
-      for (unsigned int initialPosId = 0; initialPosId < m_initialPosForBMM.size(); initialPosId++) {
-        std::cout << "\nEstimated covariances of sample mean, through batch means method, for subchain beggining at position " << m_initialPosForBMM[initialPosId]
+      for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+        std::cout << "\nEstimated variances of sample mean, through batch means method, for subchain beggining at position " << initialPosForStatistics[initialPosId]
                   << " (each column corresponds to a batch length)"
                   << std::endl;
 
@@ -801,14 +853,14 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics1(
                 "Parameter");
         std::cout << line;
         for (unsigned int batchLengthId = 0; batchLengthId < m_lengthsForBMM.size(); batchLengthId++) {
-          sprintf(line,"%9s%3d",
+          sprintf(line,"%10s%3d",
                   " ",
                   m_lengthsForBMM[batchLengthId]);
           std::cout << line;
         }
 
         for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
-          sprintf(line,"\n%8.8s",
+          sprintf(line,"\n%9.9s",
                   m_paramSpace.parameter(i).name().c_str());
           std::cout << line;
           for (unsigned int batchLengthId = 0; batchLengthId < m_lengthsForBMM.size(); batchLengthId++) {
@@ -826,29 +878,29 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics1(
   //****************************************************
   // Compute power spectral density (PSD) of chain1 at zero frequency
   //****************************************************
-  if ((m_computePSDs                ) &&
-      (m_initialPosForPSD.size() > 0) &&
-      (m_numBlocksForPSD.size()  > 0)) { 
+  if ((m_computePSDs                     ) &&
+      (initialPosForStatistics.size() > 0) &&
+      (m_numBlocksForPSD.size()       > 0)) { 
     if (m_env.rank() == 0) {
       std::cout << "\nComputing PSD at frequency zero..."
                 << std::endl;
     }
-    uq2dArrayOfStuff<V> _2dArrayOfPSDAtZero(m_initialPosForPSD.size(),m_numBlocksForPSD.size());
+    uq2dArrayOfStuff<V> _2dArrayOfPSDAtZero(initialPosForStatistics.size(),m_numBlocksForPSD.size());
     for (unsigned int i = 0; i < _2dArrayOfPSDAtZero.numRows(); ++i) {
       for (unsigned int j = 0; j < _2dArrayOfPSDAtZero.numCols(); ++j) {
         _2dArrayOfPSDAtZero.setLocation(i,j,m_paramSpace.newVector());
       }
     }
     uqVectorSequencePSD(chain1,
-                        m_initialPosForPSD,
+                        initialPosForStatistics,
                         m_numBlocksForPSD,
                         m_hopSizeRatioForPSD,
                         _2dArrayOfPSDAtZero);
 
     if (m_env.rank() == 0) {
-      for (unsigned int initialPosId = 0; initialPosId < m_initialPosForPSD.size(); initialPosId++) {
-        double sizeForPSD = chain1.size() - m_initialPosForPSD[initialPosId];
-        std::cout << "\nEstimated covariances of sample mean, through psd (fft), for subchain beggining at position " << m_initialPosForPSD[initialPosId]
+      for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+        double sizeForPSD = chain1.size() - initialPosForStatistics[initialPosId];
+        std::cout << "\nEstimated variances of sample mean, through psd (fft), for subchain beggining at position " << initialPosForStatistics[initialPosId]
                   << ", so effective data size = " << sizeForPSD
                   << " (each column corresponds to a number of blocks)"
                   << std::endl;
@@ -858,14 +910,14 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics1(
                 "Parameter");
         std::cout << line;
         for (unsigned int numBlocksId = 0; numBlocksId < m_numBlocksForPSD.size(); numBlocksId++) {
-          sprintf(line,"%9s%3d",
+          sprintf(line,"%10s%3d",
                   " ",
                   m_numBlocksForPSD[numBlocksId]);
           std::cout << line;
         }
 
         for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
-          sprintf(line,"\n%8.8s",
+          sprintf(line,"\n%9.9s",
                   m_paramSpace.parameter(i).name().c_str());
           std::cout << line;
           for (unsigned int numBlocksId = 0; numBlocksId < m_numBlocksForPSD.size(); numBlocksId++) {
@@ -883,15 +935,16 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics1(
   //****************************************************
   // Compute Geweke
   //****************************************************
-  if ((m_computeGewekeCoefs            ) &&
-      (m_initialPosForGeweke.size() > 0)) {
+  if ((m_computeGewekeCoefs              ) &&
+      (initialPosForStatistics.size() > 0)) {
     if (m_env.rank() == 0) {
       std::cout << "\nComputing Geweke coefficients..."
                 << std::endl;
     }
-    std::vector<V*> vectorOfGeweke(m_initialPosForGeweke.size(),NULL);
+
+    std::vector<V*> vectorOfGeweke(initialPosForStatistics.size(),NULL);
     uqVectorSequenceGeweke(chain1,
-                           m_initialPosForGeweke,
+                           initialPosForStatistics,
                            m_ratioNaForGeweke,
                            m_ratioNbForGeweke,
                            vectorOfGeweke);
@@ -905,18 +958,18 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics1(
       sprintf(line,"%s",
               "Parameter");
       std::cout << line;
-      for (unsigned int initialPosId = 0; initialPosId < m_initialPosForGeweke.size(); initialPosId++) {
-        sprintf(line,"%9s%3d",
+      for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+        sprintf(line,"%10s%3d",
                 " ",
-                m_initialPosForGeweke[initialPosId]);
+                initialPosForStatistics[initialPosId]);
         std::cout << line;
       }
 
       for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
-        sprintf(line,"\n%8.8s",
+        sprintf(line,"\n%9.9s",
                 m_paramSpace.parameter(i).name().c_str());
         std::cout << line;
-        for (unsigned int initialPosId = 0; initialPosId < m_initialPosForGeweke.size(); initialPosId++) {
+        for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
           sprintf(line,"%2s%11.4e",
                   " ",
                   (*(vectorOfGeweke[initialPosId]))[i]);
@@ -930,9 +983,27 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics1(
   //****************************************************
   // Compute autocorrelation coefficients
   //****************************************************
-  if ((m_computeCorrelations          ) &&
-      (m_initialPosForCorrs.size() > 0) &&
-      (m_lagsForCorrs.size()       > 0)) { 
+
+  // Set lags for the computation of chain autocorrelations
+  std::vector<unsigned int> lagsForCorrs(m_numberOfLagsForCorrs,1);
+  if ((m_computeCorrelations             ) &&
+      (initialPosForStatistics.size() > 0)) {
+    for (unsigned int i = 1; i < lagsForCorrs.size(); ++i) {
+      lagsForCorrs[i] = m_secondLagForCorrs + (i-1)*m_lagSpacingForCorrs;
+    }
+
+    if ((m_printCorrs) && (m_env.rank() == 0)) {
+      std::cout << "In uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics1(): lags for autocorrelation =";
+      for (unsigned int i = 0; i < lagsForCorrs.size(); ++i) {
+        std::cout << " " << lagsForCorrs[i];
+      }
+      std::cout << std::endl;
+    }
+  }
+
+  if ((m_computeCorrelations             ) &&
+      (initialPosForStatistics.size() > 0) &&
+      (lagsForCorrs.size()            > 0)) { 
     tmpRunTime = 0.;
     iRC = gettimeofday(&timevalTmp, NULL);
 
@@ -940,20 +1011,39 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics1(
       std::cout << "\nComputing autocorrelation coefficients..."
                 << std::endl;
     }
-    uq2dArrayOfStuff<V> _2dArrayOfAutoCorrs(m_initialPosForCorrs.size(),m_lagsForCorrs.size());
+    uq2dArrayOfStuff<V> _2dArrayOfAutoCorrs(initialPosForStatistics.size(),lagsForCorrs.size());
     for (unsigned int i = 0; i < _2dArrayOfAutoCorrs.numRows(); ++i) {
       for (unsigned int j = 0; j < _2dArrayOfAutoCorrs.numCols(); ++j) {
         _2dArrayOfAutoCorrs.setLocation(i,j,m_paramSpace.newVector());
       }
     }
     uqVectorSequenceAutoCorrelations(chain1,
-                                     m_initialPosForCorrs,
-                                     m_lagsForCorrs,
+                                     initialPosForStatistics,
+                                     lagsForCorrs,
                                      _2dArrayOfAutoCorrs);
 
+    V estimatedVarianceOfSampleMean(m_paramSpace.zeroVector());
+    estimatedVarianceOfSampleMean.cwSet(1.);
+    for (unsigned int i = 0; i < 1; ++i) {
+      for (unsigned int j = 0; j < _2dArrayOfAutoCorrs.numCols(); ++j) {
+        double ratio = ((double) j)/((double) m_chain1.size());
+        estimatedVarianceOfSampleMean += 2.*(1.-ratio)*_2dArrayOfAutoCorrs(i,j);
+      }
+    }
+    estimatedVarianceOfSampleMean *= chainSampleVariance;
+    estimatedVarianceOfSampleMean /= (double) m_chain1.size();
     if (m_env.rank() == 0) {
-      for (unsigned int initialPosId = 0; initialPosId < m_initialPosForCorrs.size(); initialPosId++) {
-        std::cout << "\nEstimated autocorrelation coefficients, for subchain beggining at position " << m_initialPosForCorrs[initialPosId]
+      bool savedVectorPrintState = estimatedVarianceOfSampleMean.getPrintHorizontally();
+      estimatedVarianceOfSampleMean.setPrintHorizontally(false);
+      std::cout << "\nVariance of sample mean, estimated through autocorrelation:\n"
+                << estimatedVarianceOfSampleMean
+                << std::endl;
+      estimatedVarianceOfSampleMean.setPrintHorizontally(savedVectorPrintState);
+    }
+
+    if ((m_printCorrs) && (m_env.rank() == 0)) {
+      for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+        std::cout << "\nEstimated autocorrelation coefficients, for subchain beggining at position " << initialPosForStatistics[initialPosId]
                   << " (each column corresponds to a different lag)"
                   << std::endl;
 
@@ -961,18 +1051,18 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics1(
         sprintf(line,"%s",
 	        "Parameter");
         std::cout << line;
-        for (unsigned int lagId = 0; lagId < m_lagsForCorrs.size(); lagId++) {
-          sprintf(line,"%9s%3d",
+        for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
+          sprintf(line,"%10s%3d",
                   " ",
-                  m_lagsForCorrs[lagId]);
+                  lagsForCorrs[lagId]);
           std::cout << line;
         }
 
         for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
-          sprintf(line,"\n%8.8s",
+          sprintf(line,"\n%9.9s",
                   m_paramSpace.parameter(i).name().c_str());
           std::cout << line;
-          for (unsigned int lagId = 0; lagId < m_lagsForCorrs.size(); lagId++) {
+          for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
             sprintf(line,"%2s%11.4e",
                     " ",
 	            _2dArrayOfAutoCorrs(initialPosId,lagId)[i]);
@@ -989,6 +1079,38 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics1(
                 << " seconds"
                 << std::endl;
     }
+
+    // Write autocorrelations
+    if (m_writeCorrs && passedOfs) {
+      std::ofstream& ofs = *passedOfs;
+      ofs << "queso_" << m_prefix << "corrs_lags = zeros(" << 1
+          << ","                                           << lagsForCorrs.size()
+          << ");"
+          << std::endl;
+      for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
+        ofs << "queso_" << m_prefix << "corrs_lags(" << 1
+            << ","                                   << lagId+1
+            << ") = "                                << lagsForCorrs[lagId]
+            << ";"
+            << std::endl;
+      }
+
+      for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+        ofs << "queso_" << m_prefix << "corrs_ip" << initialPosForStatistics[initialPosId] << " = zeros(" << m_paramSpace.dim()
+            << ","      << lagsForCorrs.size()
+            << ");"
+            << std::endl;
+        for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
+          for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
+            ofs << "queso_" << m_prefix << "corrs_ip" << initialPosForStatistics[initialPosId] << "(" << i+1
+                << ","                                                                                << lagId+1
+                << ") = "                                                                             << _2dArrayOfAutoCorrs(initialPosId,lagId)[i]
+                << ";"
+                << std::endl;
+          }
+        }
+      }
+    } 
   }
 
   //****************************************************
@@ -1155,42 +1277,21 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::updateCovMatrix1(
 template <class V, class M>
 int
 uqDRAM_MarkovChainGeneratorClass<V,M>::writeChain1(
-  unsigned int chainId,
-  const M*     mahalanobisMatrix,
-  bool         applyMahalanobisInvert) const
+  std::ofstream& ofs,
+  const M*       mahalanobisMatrix,
+  bool           applyMahalanobisInvert) const
 {
   int iRC = UQ_OK_RC;
 
-  if (m_namesOfOutputFiles[chainId] == ".") {
-    if (m_env.rank() == 0) {
-      std::cout << "No info written out for chain1 of id " << chainId
-                << std::endl;
-    }
-    return iRC;
-  }
-
-  if (m_env.rank() == 0) {
-    std::cout << "Writing out info about the chain1 of id " << chainId
-              << " into file '"                             << m_namesOfOutputFiles[chainId]
-              << "'..."
-              << std::endl;
-  }
-  
-  // Open file
-  std::ofstream ofs(m_namesOfOutputFiles[chainId].c_str(), std::ofstream::out | std::ofstream::trunc);
-  UQ_TEST_MACRO((ofs && ofs.is_open()) == false,
-                m_env.rank(),
-                "uqDRAM_MarkovChainGeneratorClass<V,M>::writeChain1()",
-                "failed to open file'",
-                UQ_FAILED_TO_OPEN_FILE_RC);
-
   // Write m_chain1
+
   ofs << "queso_" << m_prefix << "chain = [";
   for (unsigned int i = 0; i < m_chain1.size(); ++i) {
     ofs << *(m_chain1[i])
         << std::endl;
   }
   ofs << "];\n";
+
 
   if (m_generateExtraChains) {
     if (m_likelihoodObjComputesMisfits) {
@@ -1233,8 +1334,8 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::writeChain1(
   m_paramSpace.printParameterNames(ofs,false);
   ofs << "};\n";
 
+  // Write mahalanobis distances
   if (mahalanobisMatrix != NULL) {
-    // Write mahalanobis distances
     V* diffVec = m_paramSpace.newVector();
     ofs << "queso_" << m_prefix << "d = [";
     if (applyMahalanobisInvert) {
@@ -1404,14 +1505,6 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::writeChain1(
             << std::endl;
       }
     }
-  }
-
-  // Close file
-  ofs.close();
-
-  if (m_env.rank() == 0) {
-    std::cout << "Finished writing out info about the chain1 of id " << chainId
-              << std::endl;
   }
 
   return iRC;

@@ -296,8 +296,8 @@ uqVectorSequenceBMM(
                                      batchMeans.size(),
                                      meanOfBatchMeans,
                                      _2dArrayOfBMM(initialPosId,batchLengthId));
-      //_2dArrayOfBMM(initialPosId,batchLengthId) /= (double) batchMeans.size(); // CHECK
-      _2dArrayOfBMM(initialPosId,batchLengthId) *= (double) (sequence.size() - initialPositions[initialPosId]); // CHECK
+      _2dArrayOfBMM(initialPosId,batchLengthId) /= (double) batchMeans.size(); // CHECK
+      //_2dArrayOfBMM(initialPosId,batchLengthId) *= (double) (sequence.size() - initialPositions[initialPosId]); // CHECK
 
       for (unsigned int batchId = 0; batchId < numberOfBatches; batchId++) {
         if (batchMeans[batchId] != NULL) delete batchMeans[batchId];
