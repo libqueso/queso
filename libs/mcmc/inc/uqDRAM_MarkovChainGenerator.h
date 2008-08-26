@@ -1191,6 +1191,20 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
                                    chainSampleVariance);
   }
 
+  if (m_env.rank() == 0) {
+    std::cout << "\nEstimated variance of sample mean for the whole chain, under independence assumption:"
+              << std::endl;
+  }
+  V estimatedVarianceOfSampleMean(chainSampleVariance);
+  estimatedVarianceOfSampleMean /= doubleChainSequenceSize;
+  bool savedVectorPrintState = estimatedVarianceOfSampleMean.getPrintHorizontally();
+  estimatedVarianceOfSampleMean.setPrintHorizontally(false);
+  std::cout << estimatedVarianceOfSampleMean;
+  estimatedVarianceOfSampleMean.setPrintHorizontally(savedVectorPrintState);
+  if (m_env.rank() == 0) {
+    std::cout << std::endl;
+  }
+
   V chainPopulationVariance(m_paramSpace.zeroVector());
   if (m_useChain2) {
     chain2.populationVariance(0,
@@ -1281,7 +1295,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
 
     if (m_env.rank() == 0) {
       for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
-        std::cout << "\nEstimated variances of sample mean, through batch means method, for subchain beggining at position " << initialPosForStatistics[initialPosId]
+        std::cout << "\nEstimated variance of sample mean, through batch means method, for subchain beggining at position " << initialPosForStatistics[initialPosId]
                   << " (each column corresponds to a batch length)"
                   << std::endl;
 
@@ -1356,7 +1370,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
     if (m_env.rank() == 0) {
       for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
         double sizeForPSD = doubleChainSequenceSize - (double) initialPosForStatistics[initialPosId];
-        std::cout << "\nEstimated variances of sample mean, through psd (fft), for subchain beggining at position " << initialPosForStatistics[initialPosId]
+        std::cout << "\nEstimated variance of sample mean, through psd (fft), for subchain beggining at position " << initialPosForStatistics[initialPosId]
                   << ", so effective data size = " << sizeForPSD
                   << " (each column corresponds to a number of blocks)"
                   << std::endl;
@@ -1510,7 +1524,10 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
                                        _2dArrayOfAutoCorrs);
     }
 
-    V estimatedVarianceOfSampleMean(m_paramSpace.zeroVector());
+    if (m_env.rank() == 0) {
+      std::cout << "\nEstimated variance of sample mean, through autocorrelation:"
+                << std::endl;
+    }
     estimatedVarianceOfSampleMean.cwSet(1.);
     for (unsigned int i = 0; i < 1; ++i) {
       for (unsigned int j = 0; j < _2dArrayOfAutoCorrs.numCols(); ++j) {
@@ -1520,13 +1537,12 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
     }
     estimatedVarianceOfSampleMean *= chainSampleVariance;
     estimatedVarianceOfSampleMean /= doubleChainSequenceSize;
+    savedVectorPrintState = estimatedVarianceOfSampleMean.getPrintHorizontally();
+    estimatedVarianceOfSampleMean.setPrintHorizontally(false);
+    std::cout << estimatedVarianceOfSampleMean;
+    estimatedVarianceOfSampleMean.setPrintHorizontally(savedVectorPrintState);
     if (m_env.rank() == 0) {
-      bool savedVectorPrintState = estimatedVarianceOfSampleMean.getPrintHorizontally();
-      estimatedVarianceOfSampleMean.setPrintHorizontally(false);
-      std::cout << "\nVariance of sample mean, estimated through autocorrelation:\n"
-                << estimatedVarianceOfSampleMean
-                << std::endl;
-      estimatedVarianceOfSampleMean.setPrintHorizontally(savedVectorPrintState);
+      std::cout << std::endl;
     }
 
     if ((m_corrPrint) && (m_env.rank() == 0)) {
