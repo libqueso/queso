@@ -45,26 +45,19 @@ calib_MCMC_mh_namesOfOutputFiles      = calibOutput.m
 calib_MCMC_mh_chainDisplayPeriod      = 10000
 calib_MCMC_mh_measureRunTimes         = 1
 calib_MCMC_mh_generateWhiteNoise      = 1
-#
-calib_MCMC_finalPercentsForStats      = 100.
-#
-calib_MCMC_runBMM                     = 1
-calib_MCMC_lengthsForBMM              = 50 100 200 500
-#
-calib_MCMC_computePSDs                = 1
-#
-calib_MCMC_computeGewekeCoefficients  = 0
-#
-calib_MCMC_computeCorrelations        = 1
-calib_MCMC_secondLagForCorrs          = 2
-calib_MCMC_lagSpacingForCorrs         = 1
-calib_MCMC_numberOfLagsForCorrs       = 10000
-calib_MCMC_printCorrs                 = 0
-calib_MCMC_writeCorrs                 = 0
-#
-calib_MCMC_computeHistograms          = 0
-#
-calib_MCMC_computeKDEs                = 0
+calib_MCMC_stats_finalPercentages     = 100.
+calib_MCMC_bmm_run                    = 1
+calib_MCMC_bmm_lengths                = 50 100 200 500
+calib_MCMC_psd_compute                = 1
+calib_MCMC_geweke_compute             = 1
+calib_MCMC_corr_compute               = 1
+calib_MCMC_corr_secondLag             = 2
+calib_MCMC_corr_lagSpacing            = 1
+calib_MCMC_corr_numberOfLags          = 100
+calib_MCMC_corr_print                 = 0
+calib_MCMC_corr_write                 = 0
+calib_MCMC_hist_compute               = 0
+calib_MCMC_kde_compute                = 0
 
 ###############################################
 # Other Inputs

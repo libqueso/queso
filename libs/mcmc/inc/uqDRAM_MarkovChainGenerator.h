@@ -37,19 +37,25 @@
 #define UQ_MCMC_MH_CHAIN_DISPLAY_PERIOD_ODV    500
 #define UQ_MCMC_MH_MEASURE_RUN_TIMES_ODV       0
 #define UQ_MCMC_MH_GENERATE_WHITE_NOISE_ODV    0
-#define UQ_MCMC_FINAL_PERCENTS_FOR_STATS_ODV   "100."
-#define UQ_MCMC_RUN_BMM_ODV                    0
-#define UQ_MCMC_LENGTHS_FOR_BMM_ODV            "0"
-#define UQ_MCMC_COMPUTE_PSDS_ODV               0
-#define UQ_MCMC_COMPUTE_GEWEKE_COEFS_ODV       0
-#define UQ_MCMC_COMPUTE_CORRELATIONS_ODV       0
-#define UQ_MCMC_SECOND_LAG_FOR_CORRS_ODV       0
-#define UQ_MCMC_LAG_SPACING_FOR_CORRS_ODV      0
-#define UQ_MCMC_PRINT_CORRS_ODV                0
-#define UQ_MCMC_WRITE_CORRS_ODV                0
-#define UQ_MCMC_NUMBER_OF_LAGS_FOR_CORRS_ODV   0
-#define UQ_MCMC_COMPUTE_HISTOGRAMS_ODV         0
-#define UQ_MCMC_COMPUTE_KDES_ODV               0
+#define UQ_MCMC_STATS_FINAL_PERCENTAGES_ODV    "100."
+#define UQ_MCMC_BMM_RUN_ODV                    0
+#define UQ_MCMC_BMM_LENGTHS_ODV                "0"
+#define UQ_MCMC_BMM_PRINT_ODV                  0
+#define UQ_MCMC_BMM_WRITE_ODV                  0
+#define UQ_MCMC_PSD_COMPUTE_ODV                0
+#define UQ_MCMC_PSD_PRINT_ODV                  0
+#define UQ_MCMC_PSD_WRITE_ODV                  0
+#define UQ_MCMC_GEWEKE_COMPUTE_ODV             0
+#define UQ_MCMC_GEWEKE_PRINT_ODV               0
+#define UQ_MCMC_GEWEKE_WRITE_ODV               0
+#define UQ_MCMC_CORR_COMPUTE_ODV               0
+#define UQ_MCMC_CORR_SECOND_LAG_ODV            0
+#define UQ_MCMC_CORR_LAG_SPACING_ODV           0
+#define UQ_MCMC_CORR_NUMBER_OF_LAGS_ODV        0
+#define UQ_MCMC_CORR_PRINT_ODV                 0
+#define UQ_MCMC_CORR_WRITE_ODV                 0
+#define UQ_MCMC_HIST_COMPUTE_ODV               0
+#define UQ_MCMC_KDE_COMPUTE_ODV                0
 
 #include <uqProbDensity.h>
 #include <uqLikelihoodFunction.h>
@@ -108,15 +114,11 @@ private:
                                   const M*     mahalanobisMatrix = NULL,
                                   bool         applyMahalanobisInvert = true);
   int    generateWhiteNoise1     (unsigned int chainId);
-  void   computeStatistics1      (const std::vector<const V*>& chain1, std::ofstream* passedOfs);
   void   updateCovMatrix1        (const std::vector<V*>& subChain1,
                                   unsigned int           idOfFirstPositionInSubChain,
                                   double&                lastChainSize,
                                   V&                     lastMean,
                                   M&                     lastAdaptedCovMatrix);
-  int    writeChain1             (std::ofstream& ofs,
-                                  const M*       mahalanobisMatrix = NULL,
-                                  bool           applyMahalanobisInvert = true) const;
 
   void   generateChains2         (const M* proposalCovMatrix,
                                   //const M* proposalPrecMatrix,
@@ -128,15 +130,11 @@ private:
                                   const M*     mahalanobisMatrix = NULL,
                                   bool         applyMahalanobisInvert = true);
   int    generateWhiteNoise2     (unsigned int chainId);
-  void   computeStatistics2      (const uqArrayOfSequencesClass<V>& chain2, std::ofstream* passedOfs);
   void   updateCovMatrix2        (const uqArrayOfSequencesClass<V>& subChain2,
                                   unsigned int                      idOfFirstPositionInSubChain,
                                   double&                           lastChainSize,
                                   V&                                lastMean,
                                   M&                                lastAdaptedCovMatrix);
-  int    writeChain2             (std::ofstream& ofs,
-                                  const M*       mahalanobisMatrix = NULL,
-                                  bool           applyMahalanobisInvert = true) const;
 
   double logProposal             (const uqChainPositionClass<V>& x,
                                   const uqChainPositionClass<V>& y,
@@ -151,6 +149,15 @@ private:
   //void   gammar                  (double a,
   //                                double b,
   //                                M&     mat);
+  void   computeStatistics       (const std::vector<const V*>&      chain1,
+                                  const uqArrayOfSequencesClass<V>& chain2,
+                                  std::ofstream*                    passedOfs);
+  int    writeChain              (const std::vector<const V*>&      chain1,
+                                  const uqArrayOfSequencesClass<V>& chain2,
+                                  std::ofstream&                    ofs,
+                                  const M*                          mahalanobisMatrix = NULL,
+                                  bool                              applyMahalanobisInvert = true) const;
+
 
   const uqEnvironmentClass&                   m_env;
         std::string                           m_prefix;
@@ -174,112 +181,123 @@ private:
   std::string m_option_mh_chainDisplayPeriod;
   std::string m_option_mh_measureRunTimes;
   std::string m_option_mh_generateWhiteNoise;
-  std::string m_option_finalPercentsForStats;
-  std::string m_option_runBMM;
-  std::string m_option_lengthsForBMM;
-  std::string m_option_computePSDs;
-  std::string m_option_numBlocksForPSD;
-  std::string m_option_hopSizeRatioForPSD;
-  std::string m_option_computeGewekeCoefs;
-  std::string m_option_ratioNaForGeweke;
-  std::string m_option_ratioNbForGeweke;
-  std::string m_option_computeCorrelations;
-  std::string m_option_secondLagForCorrs;
-  std::string m_option_lagSpacingForCorrs;
-  std::string m_option_numberOfLagsForCorrs;
-  std::string m_option_printCorrs;
-  std::string m_option_writeCorrs;
-  std::string m_option_computeHistograms;
-  std::string m_option_numberOfInternalBinsForHists;
-  std::string m_option_computeKDEs;
-  std::string m_option_numberOfEvaluationPosForKDEs;
+  std::string m_option_stats_finalPercentages;
+  std::string m_option_bmm_run;
+  std::string m_option_bmm_lengths;
+  std::string m_option_bmm_print;
+  std::string m_option_bmm_write;
+  std::string m_option_psd_compute;
+  std::string m_option_psd_numBlocks;
+  std::string m_option_psd_hopSizeRatio;
+  std::string m_option_psd_print;
+  std::string m_option_psd_write;
+  std::string m_option_geweke_compute;
+  std::string m_option_geweke_ratioNa;
+  std::string m_option_geweke_ratioNb;
+  std::string m_option_geweke_print;
+  std::string m_option_geweke_write;
+  std::string m_option_corr_compute;
+  std::string m_option_corr_secondLag;
+  std::string m_option_corr_lagSpacing;
+  std::string m_option_corr_numberOfLags;
+  std::string m_option_corr_print;
+  std::string m_option_corr_write;
+  std::string m_option_hist_compute;
+  std::string m_option_hist_numberOfInternalBins;
+  std::string m_option_kde_compute;
+  std::string m_option_kde_numberOfEvalPositions;
 
-  bool                         m_likelihoodObjComputesMisfits;
-  V                            m_paramInitials;
-  bool                         m_proposalIsSymmetric;
-  po::options_description*     m_optionsDesc;
-  std::vector<unsigned int>    m_sizesOfChains;
-  unsigned int                 m_maxNumberOfExtraStages;
-  std::vector<double>          m_scalesForCovMProposals;
-  unsigned int                 m_initialNonAdaptInterval;
-  unsigned int                 m_adaptInterval;
-  double                       m_eta;
-  double                       m_epsilon;
-  bool                         m_useChain2;
-  bool                         m_generateUniqueChain;
-  bool                         m_generateExtraChains;
-  std::vector<std::string>     m_namesOfOutputFiles;
-  unsigned int                 m_chainDisplayPeriod;
-  bool                         m_measureRunTimes;
-  bool                         m_generateWhiteNoise;
+  bool                       m_likelihoodObjComputesMisfits;
+  V                          m_paramInitials;
+  bool                       m_proposalIsSymmetric;
+  po::options_description*   m_optionsDesc;
+  std::vector<unsigned int>  m_sizesOfChains;
+  unsigned int               m_maxNumberOfExtraStages;
+  std::vector<double>        m_scalesForCovMProposals;
+  unsigned int               m_initialNonAdaptInterval;
+  unsigned int               m_adaptInterval;
+  double                     m_eta;
+  double                     m_epsilon;
+  bool                       m_useChain2;
+  bool                       m_generateUniqueChain;
+  bool                       m_generateExtraChains;
+  std::vector<std::string>   m_namesOfOutputFiles;
+  unsigned int               m_chainDisplayPeriod;
+  bool                       m_measureRunTimes;
+  bool                       m_generateWhiteNoise;
 
-  std::vector<double>          m_finalPercentsForStats;
-  bool                         m_runBMM;
-  std::vector<unsigned int>    m_lengthsForBMM;
-  bool                         m_printBMM;
-  bool                         m_writeBMM;
+  std::vector<double>        m_statsFinalPercentages;
 
-  bool                         m_computePSDs;
-  std::vector<unsigned int>    m_numBlocksForPSD;
-  double                       m_hopSizeRatioForPSD;
-  bool                         m_printPSD;
-  bool                         m_writePSD;
+  bool                       m_bmmRun;
+  std::vector<unsigned int>  m_bmmLengths;
+  bool                       m_bmmPrint;
+  bool                       m_bmmWrite;
 
-  bool                         m_computeGewekeCoefs;
-  double                       m_ratioNaForGeweke;
-  double                       m_ratioNbForGeweke;
+  bool                       m_psdCompute;
+  std::vector<unsigned int>  m_psdNumBlocks;
+  double                     m_psdHopSizeRatio;
+  bool                       m_psdPrint;
+  bool                       m_psdWrite;
 
-  bool                         m_computeCorrelations;
-  unsigned int                 m_secondLagForCorrs;
-  unsigned int                 m_lagSpacingForCorrs;
-  unsigned int                 m_numberOfLagsForCorrs;
-  bool                         m_printCorrs;
-  bool                         m_writeCorrs;
+  bool                       m_gewekeCompute;
+  double                     m_gewekeRatioNa;
+  double                     m_gewekeRatioNb;
+  bool                       m_gewekePrint;
+  bool                       m_gewekeWrite;
 
-  unsigned int                 m_initialPosForUncorrelation;   // set during run time
-  unsigned int                 m_spacingForUncorrelation;      // set during run time
-  V*                           m_minPositionsForStatistics;    // set during run time
-  V*                           m_maxPositionsForStatistics;    // set during run time
-  bool                         m_computeHistograms;
-  unsigned int                 m_numberOfInternalBinsForHists;
-  std::vector<V*>              m_centersForAllHistogramBins;   // set during run time
-  std::vector<V*>              m_histogramBinsForAllParams;    // set during run time
-  bool                         m_computeKDEs;
-  unsigned int                 m_numberOfEvaluationPosForKDEs;
-  std::vector<V*>              m_evaluationPositionsForKDEs;   // set during run time
-  V*                           m_scalesForKDEs;                // set during run time 
-  std::vector<V*>              m_densityValuesFromGaussianKDE; // set during run time
+  bool                       m_corrCompute;
+  unsigned int               m_corrSecondLag;
+  unsigned int               m_corrLagSpacing;
+  unsigned int               m_corrNumberOfLags;
+  bool                       m_corrPrint;
+  bool                       m_corrWrite;
 
-  std::vector<      M*>        m_lowerCholProposalCovMatrices;
-  std::vector<      M*>        m_proposalCovMatrices;
+  unsigned int               m_uncorrInitialPos;         // set during run time
+  unsigned int               m_uncorrSpacing;            // set during run time
+  V*                         m_statsMinPositions;        // set during run time
+  V*                         m_statsMaxPositions;        // set during run time
+
+  bool                       m_histCompute;
+  unsigned int               m_histNumberOfInternalBins;
+  std::vector<V*>            m_histCentersForAllBins;    // set during run time
+  std::vector<V*>            m_histBinsForAllParams;     // set during run time
+
+  bool                       m_kdeCompute;
+  unsigned int               m_kdeNumberOfEvalPositions;
+  std::vector<V*>            m_kdeEvalPositions;         // set during run time
+  V*                         m_kdeScales;                // set during run time 
+  std::vector<V*>            m_kdeGaussianDensityValues; // set during run time
+
+  std::vector<      M*>      m_lowerCholProposalCovMatrices;
+  std::vector<      M*>      m_proposalCovMatrices;
 #ifdef UQ_DRAM_MCG_REQUIRES_INVERTED_COV_MATRICES
-  std::vector<      M*>        m_upperCholProposalPrecMatrices;
-  std::vector<      M*>        m_proposalPrecMatrices;
+  std::vector<      M*>      m_upperCholProposalPrecMatrices;
+  std::vector<      M*>      m_proposalPrecMatrices;
 #endif
 
-  std::vector<const V*>        m_chain1;
-  std::vector<const V*>        m_uniqueChain1;
-  unsigned int                 m_uniqueChain1Pos;
-  uqArrayOfSequencesClass<V>   m_chain2;
-  uqArrayOfSequencesClass<V>   m_uniqueChain2;
-  unsigned int                 m_uniqueChain2Pos;
-  std::vector<const V*>        m_misfitChain;         // Sum of squares of differences between model and experiments: computed by user supplied likelihood obj
-  std::vector<const V*>        m_misfitVarianceChain;
-  std::vector<const V*>        m_m2lLikelihoodChain;
-  std::vector<double>          m_alphaQuotients;
-  double                       m_chainRunTime;
-  double                       m_candidateRunTime;
-  double                       m_priorRunTime;
-  double                       m_lhRunTime;
-  double                       m_mhAlphaRunTime;
-  double                       m_drAlphaRunTime;
-  double                       m_drRunTime;
-  double                       m_amRunTime;
-  unsigned int                 m_numRejections;
-  unsigned int                 m_numOutOfBounds;
-  double                       m_lastChainSize;
-  V*                           m_lastMean;
-  M*                           m_lastAdaptedCovMatrix;
+  std::vector<const V*>      m_chain1;
+  std::vector<const V*>      m_uniqueChain1;
+  unsigned int               m_uniqueChain1Pos;
+  uqArrayOfSequencesClass<V> m_chain2;
+  uqArrayOfSequencesClass<V> m_uniqueChain2;
+  unsigned int               m_uniqueChain2Pos;
+  std::vector<const V*>      m_misfitChain;         // Sum of squares of differences between model and experiments: computed by user supplied likelihood obj
+  std::vector<const V*>      m_misfitVarianceChain;
+  std::vector<const V*>      m_m2lLikelihoodChain;
+  std::vector<double>        m_alphaQuotients;
+  double                     m_chainRunTime;
+  double                     m_candidateRunTime;
+  double                     m_priorRunTime;
+  double                     m_lhRunTime;
+  double                     m_mhAlphaRunTime;
+  double                     m_drAlphaRunTime;
+  double                     m_drRunTime;
+  double                     m_amRunTime;
+  unsigned int               m_numRejections;
+  unsigned int               m_numOutOfBounds;
+  double                     m_lastChainSize;
+  V*                         m_lastMean;
+  M*                         m_lastAdaptedCovMatrix;
 };
 
 template <class V, class M>
@@ -321,34 +339,34 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::uqDRAM_MarkovChainGeneratorClass(
   m_chainDisplayPeriod           (UQ_MCMC_MH_CHAIN_DISPLAY_PERIOD_ODV),
   m_measureRunTimes              (UQ_MCMC_MH_MEASURE_RUN_TIMES_ODV),
   m_generateWhiteNoise           (UQ_MCMC_MH_GENERATE_WHITE_NOISE_ODV),
-  m_finalPercentsForStats        (0),//,0.),
-  m_runBMM                       (UQ_MCMC_RUN_BMM_ODV),
-  m_lengthsForBMM                (0),//,0),
-  m_computePSDs                  (UQ_MCMC_COMPUTE_PSDS_ODV),
-  m_numBlocksForPSD              (0),//,0),
-  m_hopSizeRatioForPSD           (1.),
-  m_computeGewekeCoefs           (UQ_MCMC_COMPUTE_GEWEKE_COEFS_ODV),
-  m_ratioNaForGeweke             (0.),
-  m_ratioNbForGeweke             (0.),
-  m_computeCorrelations          (UQ_MCMC_COMPUTE_CORRELATIONS_ODV),
-  m_secondLagForCorrs            (0),
-  m_lagSpacingForCorrs           (0),
-  m_numberOfLagsForCorrs         (0),
-  m_printCorrs                   (false),
-  m_writeCorrs                   (false),
-  m_initialPosForUncorrelation   (0),
-  m_spacingForUncorrelation      (0),
-  m_minPositionsForStatistics    (m_paramSpace.newVector()),
-  m_maxPositionsForStatistics    (m_paramSpace.newVector()),
-  m_computeHistograms            (UQ_MCMC_COMPUTE_HISTOGRAMS_ODV),
-  m_numberOfInternalBinsForHists (0),
-  m_centersForAllHistogramBins   (0),//,NULL),
-  m_histogramBinsForAllParams    (0),//,NULL),
-  m_computeKDEs                  (UQ_MCMC_COMPUTE_KDES_ODV),
-  m_numberOfEvaluationPosForKDEs (0),
-  m_evaluationPositionsForKDEs   (0),//,NULL),
-  m_scalesForKDEs                (m_paramSpace.newVector()),
-  m_densityValuesFromGaussianKDE (0),//,NULL),
+  m_statsFinalPercentages        (0),//,0.),
+  m_bmmRun                       (UQ_MCMC_BMM_RUN_ODV),
+  m_bmmLengths                   (0),//,0),
+  m_psdCompute                   (UQ_MCMC_PSD_COMPUTE_ODV),
+  m_psdNumBlocks                 (0),//,0),
+  m_psdHopSizeRatio              (1.),
+  m_gewekeCompute                (UQ_MCMC_GEWEKE_COMPUTE_ODV),
+  m_gewekeRatioNa                (0.),
+  m_gewekeRatioNb                (0.),
+  m_corrCompute                  (UQ_MCMC_CORR_COMPUTE_ODV),
+  m_corrSecondLag                (0),
+  m_corrLagSpacing               (0),
+  m_corrNumberOfLags             (0),
+  m_corrPrint                    (false),
+  m_corrWrite                    (false),
+  m_uncorrInitialPos             (0),
+  m_uncorrSpacing                (0),
+  m_statsMinPositions            (m_paramSpace.newVector()),
+  m_statsMaxPositions            (m_paramSpace.newVector()),
+  m_histCompute                  (UQ_MCMC_HIST_COMPUTE_ODV),
+  m_histNumberOfInternalBins     (0),
+  m_histCentersForAllBins        (0),//,NULL),
+  m_histBinsForAllParams         (0),//,NULL),
+  m_kdeCompute                   (UQ_MCMC_KDE_COMPUTE_ODV),
+  m_kdeNumberOfEvalPositions     (0),
+  m_kdeEvalPositions             (0),//,NULL),
+  m_kdeScales                    (m_paramSpace.newVector()),
+  m_kdeGaussianDensityValues     (0),//,NULL),
   m_lowerCholProposalCovMatrices (1),//,NULL),
   m_proposalCovMatrices          (1),//,NULL),
 #ifdef UQ_DRAM_MCG_REQUIRES_INVERTED_COV_MATRICES
@@ -388,55 +406,65 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::uqDRAM_MarkovChainGeneratorClass(
     m_prefix = tmpString + "_";
   }
 
-  m_option_help                         = m_prefix + "MCMC_help";
-  m_option_mh_sizesOfChains             = m_prefix + "MCMC_mh_sizesOfChains";
-  m_option_dr_maxNumberOfExtraStages    = m_prefix + "MCMC_dr_maxNumberOfExtraStages";
-  m_option_dr_scalesForExtraStages      = m_prefix + "MCMC_dr_scalesForExtraStages";
-  m_option_am_initialNonAdaptInterval   = m_prefix + "MCMC_am_initialNonAdaptInterval";
-  m_option_am_adaptInterval             = m_prefix + "MCMC_am_adaptInterval";
-  m_option_am_eta                       = m_prefix + "MCMC_am_eta";
-  m_option_am_epsilon                   = m_prefix + "MCMC_am_epsilon";
-  m_option_mh_useChain2                 = m_prefix + "MCMC_mh_useChain2";
-  m_option_mh_generateUniqueChain       = m_prefix + "MCMC_mh_generateUniqueChain";
-  m_option_mh_generateExtraChains       = m_prefix + "MCMC_mh_generateExtraChains";
-  m_option_mh_namesOfOutputFiles        = m_prefix + "MCMC_mh_namesOfOutputFiles";
-  m_option_mh_chainDisplayPeriod        = m_prefix + "MCMC_mh_chainDisplayPeriod";
-  m_option_mh_measureRunTimes           = m_prefix + "MCMC_mh_measureRunTimes";
-  m_option_mh_generateWhiteNoise        = m_prefix + "MCMC_mh_generateWhiteNoise";
-  m_option_finalPercentsForStats        = m_prefix + "MCMC_finalPercentsForStats";
-  m_option_runBMM                       = m_prefix + "MCMC_runBMM";
-  m_option_lengthsForBMM                = m_prefix + "MCMC_lengthsForBMM";
-  m_option_computePSDs                  = m_prefix + "MCMC_computePSDs";
-  m_option_numBlocksForPSD              = m_prefix + "MCMC_numBlocksForPSD";
-  m_option_hopSizeRatioForPSD           = m_prefix + "MCMC_hopSizeRatioForPSD";
-  m_option_computeGewekeCoefs           = m_prefix + "MCMC_computeGewekeCoefficients";
-  m_option_ratioNaForGeweke             = m_prefix + "MCMC_ratioNaForGeweke";
-  m_option_ratioNbForGeweke             = m_prefix + "MCMC_ratioNbForGeweke";
-  m_option_computeCorrelations          = m_prefix + "MCMC_computeCorrelations";
-  m_option_secondLagForCorrs            = m_prefix + "MCMC_secondLagForCorrs";
-  m_option_lagSpacingForCorrs           = m_prefix + "MCMC_lagSpacingForCorrs";
-  m_option_numberOfLagsForCorrs         = m_prefix + "MCMC_numberOfLagsForCorrs";
-  m_option_printCorrs                   = m_prefix + "MCMC_printCorrs";
-  m_option_writeCorrs                   = m_prefix + "MCMC_writeCorrs";
-  m_option_computeHistograms            = m_prefix + "MCMC_computeHistograms";
-  m_option_numberOfInternalBinsForHists = m_prefix + "MCMC_numberOfInternalBinsForHistograms";
-  m_option_computeKDEs                  = m_prefix + "MCMC_computeKDEs";
-  m_option_numberOfEvaluationPosForKDEs = m_prefix + "MCMC_numberOfEvaluationPositionsForKDEs";
+  m_option_help                       = m_prefix + "MCMC_help";
+  m_option_mh_sizesOfChains           = m_prefix + "MCMC_mh_sizesOfChains";
+  m_option_dr_maxNumberOfExtraStages  = m_prefix + "MCMC_dr_maxNumberOfExtraStages";
+  m_option_dr_scalesForExtraStages    = m_prefix + "MCMC_dr_scalesForExtraStages";
+  m_option_am_initialNonAdaptInterval = m_prefix + "MCMC_am_initialNonAdaptInterval";
+  m_option_am_adaptInterval           = m_prefix + "MCMC_am_adaptInterval";
+  m_option_am_eta                     = m_prefix + "MCMC_am_eta";
+  m_option_am_epsilon                 = m_prefix + "MCMC_am_epsilon";
+  m_option_mh_useChain2               = m_prefix + "MCMC_mh_useChain2";
+  m_option_mh_generateUniqueChain     = m_prefix + "MCMC_mh_generateUniqueChain";
+  m_option_mh_generateExtraChains     = m_prefix + "MCMC_mh_generateExtraChains";
+  m_option_mh_namesOfOutputFiles      = m_prefix + "MCMC_mh_namesOfOutputFiles";
+  m_option_mh_chainDisplayPeriod      = m_prefix + "MCMC_mh_chainDisplayPeriod";
+  m_option_mh_measureRunTimes         = m_prefix + "MCMC_mh_measureRunTimes";
+  m_option_mh_generateWhiteNoise      = m_prefix + "MCMC_mh_generateWhiteNoise";
 
-  m_numBlocksForPSD.resize(1);
-  m_numBlocksForPSD[0] = 8;
+  m_option_stats_finalPercentages     = m_prefix + "MCMC_stats_finalPercentages";
 
-  m_hopSizeRatioForPSD = .50;
+  m_option_bmm_run                    = m_prefix + "MCMC_bmm_run";
+  m_option_bmm_lengths                = m_prefix + "MCMC_bmm_lengths";
+  m_option_bmm_print                  = m_prefix + "MCMC_bmm_print";
+  m_option_bmm_write                  = m_prefix + "MCMC_bmm_write";
 
-  m_ratioNaForGeweke = .1;
-  m_ratioNbForGeweke = .5;
+  m_option_psd_compute                = m_prefix + "MCMC_psd_compute";
+  m_option_psd_numBlocks              = m_prefix + "MCMC_psd_numBlocks";
+  m_option_psd_hopSizeRatio           = m_prefix + "MCMC_psd_hopSizeRatio";
+  m_option_psd_print                  = m_prefix + "MCMC_psd_print";
+  m_option_psd_write                  = m_prefix + "MCMC_psd_write";
 
-  m_initialPosForUncorrelation   = 20000;
-  m_spacingForUncorrelation      = 50;
+  m_option_geweke_compute             = m_prefix + "MCMC_geweke_compute";
+  m_option_geweke_ratioNa             = m_prefix + "MCMC_geweke_ratioNa";
+  m_option_geweke_ratioNb             = m_prefix + "MCMC_geweke_ratioNb";
+  m_option_geweke_print               = m_prefix + "MCMC_geweke_print";
+  m_option_geweke_write               = m_prefix + "MCMC_geweke_write";
 
-  m_numberOfInternalBinsForHists = 100;
+  m_option_corr_compute               = m_prefix + "MCMC_corr_compute";
+  m_option_corr_secondLag             = m_prefix + "MCMC_corr_secondLag";
+  m_option_corr_lagSpacing            = m_prefix + "MCMC_corr_lagSpacing";
+  m_option_corr_numberOfLags          = m_prefix + "MCMC_corr_numberOfLags";
+  m_option_corr_print                 = m_prefix + "MCMC_corr_print";
+  m_option_corr_write                 = m_prefix + "MCMC_corr_write";
 
-  m_numberOfEvaluationPosForKDEs = 100;
+  m_option_hist_compute               = m_prefix + "MCMC_hist_compute";
+  m_option_hist_numberOfInternalBins  = m_prefix + "MCMC_hist_numberOfInternalBins";
+
+  m_option_kde_compute                = m_prefix + "MCMC_kde_compute";
+  m_option_kde_numberOfEvalPositions  = m_prefix + "MCMC_kde_numberOfEvalPositions";
+
+  m_psdNumBlocks.resize(1);
+  m_psdNumBlocks[0] = 8;
+
+  m_psdHopSizeRatio = .50;
+
+  m_gewekeRatioNa = .1;
+  m_gewekeRatioNb = .5;
+
+  m_histNumberOfInternalBins = 100;
+
+  m_kdeNumberOfEvalPositions = 100;
 
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
@@ -459,23 +487,23 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::~uqDRAM_MarkovChainGeneratorClass()
 
   resetChainAndRelatedInfo();
 
-  for (unsigned int i = 0; i < m_densityValuesFromGaussianKDE.size(); ++i) {
-    if (m_densityValuesFromGaussianKDE[i] != NULL) delete m_densityValuesFromGaussianKDE[i];
+  for (unsigned int i = 0; i < m_kdeGaussianDensityValues.size(); ++i) {
+    if (m_kdeGaussianDensityValues[i] != NULL) delete m_kdeGaussianDensityValues[i];
   }
-  if (m_scalesForKDEs != NULL) delete m_scalesForKDEs;
-  for (unsigned int i = 0; i < m_evaluationPositionsForKDEs.size(); ++i) {
-    if (m_evaluationPositionsForKDEs[i] != NULL) delete m_evaluationPositionsForKDEs[i];
+  if (m_kdeScales != NULL) delete m_kdeScales;
+  for (unsigned int i = 0; i < m_kdeEvalPositions.size(); ++i) {
+    if (m_kdeEvalPositions[i] != NULL) delete m_kdeEvalPositions[i];
   }
-  for (unsigned int i = 0; i < m_histogramBinsForAllParams.size(); ++i) {
-    if (m_histogramBinsForAllParams[i] != NULL) delete m_histogramBinsForAllParams[i];
+  for (unsigned int i = 0; i < m_histBinsForAllParams.size(); ++i) {
+    if (m_histBinsForAllParams[i] != NULL) delete m_histBinsForAllParams[i];
   }
-  for (unsigned int i = 0; i < m_centersForAllHistogramBins.size(); ++i) {
-    if (m_centersForAllHistogramBins[i] != NULL) delete m_centersForAllHistogramBins[i];
+  for (unsigned int i = 0; i < m_histCentersForAllBins.size(); ++i) {
+    if (m_histCentersForAllBins[i] != NULL) delete m_histCentersForAllBins[i];
   }
-  if (m_maxPositionsForStatistics != NULL) delete m_maxPositionsForStatistics;
-  if (m_minPositionsForStatistics != NULL) delete m_minPositionsForStatistics;
+  if (m_statsMaxPositions != NULL) delete m_statsMaxPositions;
+  if (m_statsMinPositions != NULL) delete m_statsMinPositions;
 
-  m_numBlocksForPSD.clear();
+  m_psdNumBlocks.clear();
 
   if (m_optionsDesc            ) delete m_optionsDesc;
 
@@ -549,46 +577,46 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::defineMyOptions(
 {
   optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                                           "produce help message for DRAM Markov chain generator"   )
-    (m_option_mh_sizesOfChains.c_str(),             po::value<std::string >()->default_value(UQ_MCMC_MH_CHAIN_SIZE_ODV             ), "'mh' size(s) of chain(s)"                               )
-    (m_option_dr_maxNumberOfExtraStages.c_str(),    po::value<unsigned int>()->default_value(UQ_MCMC_DR_MAX_NUM_EXTRA_STAGES_ODV   ), "'dr' maximum number of extra stages"                    )
-    (m_option_dr_scalesForExtraStages.c_str(),      po::value<std::string >()->default_value(UQ_MCMC_DR_SCALES_FOR_EXTRA_STAGES_ODV), "'dr' scales for proposal cov matrices from 2nd stage on")
-    (m_option_am_initialNonAdaptInterval.c_str(),   po::value<unsigned int>()->default_value(UQ_MCMC_AM_INIT_NON_ADAPT_INT_ODV     ), "'am' initial non adaptation interval"                   )
-    (m_option_am_adaptInterval.c_str(),             po::value<unsigned int>()->default_value(UQ_MCMC_AM_ADAPT_INTERVAL_ODV         ), "'am' adaptation interval"                               )
-    (m_option_am_eta.c_str(),                       po::value<double      >()->default_value(UQ_MCMC_AM_ETA_ODV                    ), "'am' eta"                                               )
-    (m_option_am_epsilon.c_str(),                   po::value<double      >()->default_value(UQ_MCMC_AM_EPSILON_ODV                ), "'am' epsilon"                                           )
-    (m_option_mh_useChain2.c_str(),                 po::value<bool        >()->default_value(UQ_MCMC_MH_USE_CHAIN2                 ), "'mh' use chain2"                                        )
-    (m_option_mh_generateUniqueChain.c_str(),       po::value<bool        >()->default_value(UQ_MCMC_MH_GENERATE_UNIQUE_CHAIN_ODV  ), "'mh' generate unique chain"                             )
-    (m_option_mh_generateExtraChains.c_str(),       po::value<bool        >()->default_value(UQ_MCMC_MH_GENERATE_EXTRA_CHAINS_ODV  ), "'mh' generate extra chains"                             )
-    (m_option_mh_namesOfOutputFiles.c_str(),        po::value<std::string >()->default_value(UQ_MCMC_MH_OUTPUT_FILE_NAME_ODV       ), "'mh' name(s) of output file(s)"                         )
-    (m_option_mh_chainDisplayPeriod.c_str(),        po::value<unsigned int>()->default_value(UQ_MCMC_MH_CHAIN_DISPLAY_PERIOD_ODV   ), "'mh' period of message display during chain generation" )
-    (m_option_mh_measureRunTimes.c_str(),           po::value<bool        >()->default_value(UQ_MCMC_MH_MEASURE_RUN_TIMES_ODV      ), "'mh' measure run times"                                 )
-    (m_option_mh_generateWhiteNoise.c_str(),        po::value<bool        >()->default_value(UQ_MCMC_MH_GENERATE_WHITE_NOISE_ODV   ), "'mh' generate white noise"                              )
-    (m_option_finalPercentsForStats.c_str(),        po::value<std::string >()->default_value(UQ_MCMC_FINAL_PERCENTS_FOR_STATS_ODV  ), "final percentages for computation of chain statistics"  )
-    (m_option_runBMM.c_str(),                       po::value<bool        >()->default_value(UQ_MCMC_RUN_BMM_ODV                   ), "compute variance of sample mean with batch means method")
-    (m_option_lengthsForBMM.c_str(),                po::value<std::string >()->default_value(UQ_MCMC_LENGTHS_FOR_BMM_ODV           ), "batch lenghts for BMM")
-    (m_option_computePSDs.c_str(),                  po::value<bool        >()->default_value(UQ_MCMC_COMPUTE_PSDS_ODV              ), "compute power spectral densities"                       )
+    (m_option_mh_sizesOfChains.c_str(),           po::value<std::string >()->default_value(UQ_MCMC_MH_CHAIN_SIZE_ODV             ), "'mh' size(s) of chain(s)"                               )
+    (m_option_dr_maxNumberOfExtraStages.c_str(),  po::value<unsigned int>()->default_value(UQ_MCMC_DR_MAX_NUM_EXTRA_STAGES_ODV   ), "'dr' maximum number of extra stages"                    )
+    (m_option_dr_scalesForExtraStages.c_str(),    po::value<std::string >()->default_value(UQ_MCMC_DR_SCALES_FOR_EXTRA_STAGES_ODV), "'dr' scales for proposal cov matrices from 2nd stage on")
+    (m_option_am_initialNonAdaptInterval.c_str(), po::value<unsigned int>()->default_value(UQ_MCMC_AM_INIT_NON_ADAPT_INT_ODV     ), "'am' initial non adaptation interval"                   )
+    (m_option_am_adaptInterval.c_str(),           po::value<unsigned int>()->default_value(UQ_MCMC_AM_ADAPT_INTERVAL_ODV         ), "'am' adaptation interval"                               )
+    (m_option_am_eta.c_str(),                     po::value<double      >()->default_value(UQ_MCMC_AM_ETA_ODV                    ), "'am' eta"                                               )
+    (m_option_am_epsilon.c_str(),                 po::value<double      >()->default_value(UQ_MCMC_AM_EPSILON_ODV                ), "'am' epsilon"                                           )
+    (m_option_mh_useChain2.c_str(),               po::value<bool        >()->default_value(UQ_MCMC_MH_USE_CHAIN2                 ), "'mh' use chain2"                                        )
+    (m_option_mh_generateUniqueChain.c_str(),     po::value<bool        >()->default_value(UQ_MCMC_MH_GENERATE_UNIQUE_CHAIN_ODV  ), "'mh' generate unique chain"                             )
+    (m_option_mh_generateExtraChains.c_str(),     po::value<bool        >()->default_value(UQ_MCMC_MH_GENERATE_EXTRA_CHAINS_ODV  ), "'mh' generate extra chains"                             )
+    (m_option_mh_namesOfOutputFiles.c_str(),      po::value<std::string >()->default_value(UQ_MCMC_MH_OUTPUT_FILE_NAME_ODV       ), "'mh' name(s) of output file(s)"                         )
+    (m_option_mh_chainDisplayPeriod.c_str(),      po::value<unsigned int>()->default_value(UQ_MCMC_MH_CHAIN_DISPLAY_PERIOD_ODV   ), "'mh' period of message display during chain generation" )
+    (m_option_mh_measureRunTimes.c_str(),         po::value<bool        >()->default_value(UQ_MCMC_MH_MEASURE_RUN_TIMES_ODV      ), "'mh' measure run times"                                 )
+    (m_option_mh_generateWhiteNoise.c_str(),      po::value<bool        >()->default_value(UQ_MCMC_MH_GENERATE_WHITE_NOISE_ODV   ), "'mh' generate white noise"                              )
+    (m_option_stats_finalPercentages.c_str(),     po::value<std::string >()->default_value(UQ_MCMC_STATS_FINAL_PERCENTAGES_ODV   ), "final percentages for computation of chain statistics"  )
+    (m_option_bmm_run.c_str(),                    po::value<bool        >()->default_value(UQ_MCMC_BMM_RUN_ODV                   ), "compute variance of sample mean with batch means method")
+    (m_option_bmm_lengths.c_str(),                po::value<std::string >()->default_value(UQ_MCMC_BMM_LENGTHS_ODV               ), "batch lenghts for BMM")
+    (m_option_psd_compute.c_str(),                po::value<bool        >()->default_value(UQ_MCMC_PSD_COMPUTE_ODV               ), "compute power spectral densities"                       )
 #if 0
-    (m_option_numBlocksForPSD.c_str(),              po::value<            >()->default_value(), "")
-    (m_option_hopSizeRatioForPSD.c_str(),           po::value<            >()->default_value(), "")
+    (m_option_psd_numBlocks.c_str(),              po::value<            >()->default_value(), "")
+    (m_option_psd_hopSizeRatio.c_str(),           po::value<            >()->default_value(), "")
 #endif
-    (m_option_computeGewekeCoefs.c_str(),           po::value<bool        >()->default_value(UQ_MCMC_COMPUTE_GEWEKE_COEFS_ODV      ), "compute Geweke coefficients"                            )
+    (m_option_geweke_compute.c_str(),             po::value<bool        >()->default_value(UQ_MCMC_GEWEKE_COMPUTE_ODV            ), "compute Geweke coefficients"                            )
 #if 0
-    (m_option_ratioNaForGeweke.c_str(),             po::value<            >()->default_value(), "")
-    (m_option_ratioNbForGeweke.c_str(),             po::value<            >()->default_value(), "")
+    (m_option_geweke_ratioNa.c_str(),             po::value<            >()->default_value(), "")
+    (m_option_geweke_ratioNb.c_str(),             po::value<            >()->default_value(), "")
 #endif
-    (m_option_computeCorrelations.c_str(),          po::value<bool        >()->default_value(UQ_MCMC_COMPUTE_CORRELATIONS_ODV      ), "compute correlations"                                   )
-    (m_option_secondLagForCorrs.c_str(),            po::value<unsigned int>()->default_value(UQ_MCMC_SECOND_LAG_FOR_CORRS_ODV      ), "second lag for computation of autocorrelations"         )
-    (m_option_lagSpacingForCorrs.c_str(),           po::value<unsigned int>()->default_value(UQ_MCMC_LAG_SPACING_FOR_CORRS_ODV     ), "lag spacing for computation of autocorrelations"        )
-    (m_option_numberOfLagsForCorrs.c_str(),         po::value<unsigned int>()->default_value(UQ_MCMC_NUMBER_OF_LAGS_FOR_CORRS_ODV  ), "number of lags for computation of autocorrelations"     )
-    (m_option_printCorrs.c_str(),                   po::value<bool        >()->default_value(UQ_MCMC_PRINT_CORRS_ODV               ), "print computed autocorrelations on the screen"          )
-    (m_option_writeCorrs.c_str(),                   po::value<bool        >()->default_value(UQ_MCMC_WRITE_CORRS_ODV               ), "write computed autocorrelations to the output file"     )
-    (m_option_computeHistograms.c_str(),            po::value<bool        >()->default_value(UQ_MCMC_COMPUTE_HISTOGRAMS_ODV        ), "compute histograms"                                     )
+    (m_option_corr_compute.c_str(),               po::value<bool        >()->default_value(UQ_MCMC_CORR_COMPUTE_ODV              ), "compute correlations"                                   )
+    (m_option_corr_secondLag.c_str(),             po::value<unsigned int>()->default_value(UQ_MCMC_CORR_SECOND_LAG_ODV           ), "second lag for computation of autocorrelations"         )
+    (m_option_corr_lagSpacing.c_str(),            po::value<unsigned int>()->default_value(UQ_MCMC_CORR_LAG_SPACING_ODV          ), "lag spacing for computation of autocorrelations"        )
+    (m_option_corr_numberOfLags.c_str(),          po::value<unsigned int>()->default_value(UQ_MCMC_CORR_NUMBER_OF_LAGS_ODV       ), "number of lags for computation of autocorrelations"     )
+    (m_option_corr_print.c_str(),                 po::value<bool        >()->default_value(UQ_MCMC_CORR_PRINT_ODV                ), "print computed autocorrelations on the screen"          )
+    (m_option_corr_write.c_str(),                 po::value<bool        >()->default_value(UQ_MCMC_CORR_WRITE_ODV                ), "write computed autocorrelations to the output file"     )
+    (m_option_hist_compute.c_str(),               po::value<bool        >()->default_value(UQ_MCMC_HIST_COMPUTE_ODV              ), "compute histograms"                                     )
 #if 0
-    (m_option_numberOfInternalBinsForHists.c_str(), po::value<            >()->default_value(), "")
+    (m_option_hist_numberOfInternalBins.c_str(),  po::value<            >()->default_value(), "")
 #endif
-    (m_option_computeKDEs.c_str(),                  po::value<bool        >()->default_value(UQ_MCMC_COMPUTE_KDES_ODV              ), "compute kernel density estimators"                      )
+    (m_option_kde_compute.c_str(),                po::value<bool        >()->default_value(UQ_MCMC_KDE_COMPUTE_ODV               ), "compute kernel density estimators"                      )
 #if 0
-    (m_option_numberOfEvaluationPosForKDEs.c_str(), po::value<            >()->default_value(), "")
+    (m_option_kde_numberOfEvalPositions.c_str(),  po::value<            >()->default_value(), "")
 #endif
   ;
 
@@ -699,8 +727,8 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::getMyOptionValues(
   }
 
   std::vector<double> tmpPercents(0,0.);
-  if (m_env.allOptionsMap().count(m_option_finalPercentsForStats.c_str())) {
-    std::string inputString = m_env.allOptionsMap()[m_option_finalPercentsForStats.c_str()].as<std::string>();
+  if (m_env.allOptionsMap().count(m_option_stats_finalPercentages.c_str())) {
+    std::string inputString = m_env.allOptionsMap()[m_option_stats_finalPercentages.c_str()].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpPercents);
     //std::cout << "In uqDRAM_MarkovChainGeneratorClass<V,M>::getMyOptionValues(): percents = ";
     //for (unsigned int i = 0; i < tmpPercents.size(); ++i) {
@@ -709,20 +737,20 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::getMyOptionValues(
     //std::cout << std::endl;
 
     if (tmpPercents.size() > 0) {
-      m_finalPercentsForStats.resize(tmpPercents.size(),0.);
-      for (unsigned int i = 0; i < m_finalPercentsForStats.size(); ++i) {
-        m_finalPercentsForStats[i] = tmpPercents[i];
+      m_statsFinalPercentages.resize(tmpPercents.size(),0.);
+      for (unsigned int i = 0; i < m_statsFinalPercentages.size(); ++i) {
+        m_statsFinalPercentages[i] = tmpPercents[i];
       }
     }
   }
 
-  if (m_env.allOptionsMap().count(m_option_runBMM.c_str())) {
-    m_runBMM = m_env.allOptionsMap()[m_option_runBMM.c_str()].as<bool>();
+  if (m_env.allOptionsMap().count(m_option_bmm_run.c_str())) {
+    m_bmmRun = m_env.allOptionsMap()[m_option_bmm_run.c_str()].as<bool>();
   }
   std::cout << "Aqui" << std::endl;
   std::vector<double> tmpLengths(0,0.);
-  if (m_env.allOptionsMap().count(m_option_lengthsForBMM.c_str())) {
-    std::string inputString = m_env.allOptionsMap()[m_option_lengthsForBMM.c_str()].as<std::string>();
+  if (m_env.allOptionsMap().count(m_option_bmm_lengths.c_str())) {
+    std::string inputString = m_env.allOptionsMap()[m_option_bmm_lengths.c_str()].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpLengths);
     //std::cout << "In uqDRAM_MarkovChainGeneratorClass<V,M>::getMyOptionValues(): lengths for BMM = ";
     //for (unsigned int i = 0; i < tmpLengths.size(); ++i) {
@@ -731,51 +759,51 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::getMyOptionValues(
     //std::cout << std::endl;
 
     if (tmpLengths.size() > 0) {
-      m_lengthsForBMM.resize(tmpLengths.size(),0);
-      for (unsigned int i = 0; i < m_lengthsForBMM.size(); ++i) {
-        m_lengthsForBMM[i] = (unsigned int) tmpLengths[i];
+      m_bmmLengths.resize(tmpLengths.size(),0);
+      for (unsigned int i = 0; i < m_bmmLengths.size(); ++i) {
+        m_bmmLengths[i] = (unsigned int) tmpLengths[i];
       }
     }
   }
 
-  if (m_env.allOptionsMap().count(m_option_computePSDs.c_str())) {
-    m_computePSDs = m_env.allOptionsMap()[m_option_computePSDs.c_str()].as<bool>();
+  if (m_env.allOptionsMap().count(m_option_psd_compute.c_str())) {
+    m_psdCompute = m_env.allOptionsMap()[m_option_psd_compute.c_str()].as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_computeGewekeCoefs.c_str())) {
-    m_computeGewekeCoefs = m_env.allOptionsMap()[m_option_computeGewekeCoefs.c_str()].as<bool>();
+  if (m_env.allOptionsMap().count(m_option_geweke_compute.c_str())) {
+    m_gewekeCompute = m_env.allOptionsMap()[m_option_geweke_compute.c_str()].as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_computeCorrelations.c_str())) {
-    m_computeCorrelations = m_env.allOptionsMap()[m_option_computeCorrelations.c_str()].as<bool>();
+  if (m_env.allOptionsMap().count(m_option_corr_compute.c_str())) {
+    m_corrCompute = m_env.allOptionsMap()[m_option_corr_compute.c_str()].as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_secondLagForCorrs.c_str())) {
-    m_secondLagForCorrs = m_env.allOptionsMap()[m_option_secondLagForCorrs.c_str()].as<unsigned int>();
+  if (m_env.allOptionsMap().count(m_option_corr_secondLag.c_str())) {
+    m_corrSecondLag = m_env.allOptionsMap()[m_option_corr_secondLag.c_str()].as<unsigned int>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_lagSpacingForCorrs.c_str())) {
-    m_lagSpacingForCorrs = m_env.allOptionsMap()[m_option_lagSpacingForCorrs.c_str()].as<unsigned int>();
+  if (m_env.allOptionsMap().count(m_option_corr_lagSpacing.c_str())) {
+    m_corrLagSpacing = m_env.allOptionsMap()[m_option_corr_lagSpacing.c_str()].as<unsigned int>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_numberOfLagsForCorrs.c_str())) {
-    m_numberOfLagsForCorrs = m_env.allOptionsMap()[m_option_numberOfLagsForCorrs.c_str()].as<unsigned int>();
+  if (m_env.allOptionsMap().count(m_option_corr_numberOfLags.c_str())) {
+    m_corrNumberOfLags = m_env.allOptionsMap()[m_option_corr_numberOfLags.c_str()].as<unsigned int>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_printCorrs.c_str())) {
-    m_printCorrs = m_env.allOptionsMap()[m_option_printCorrs.c_str()].as<bool>();
+  if (m_env.allOptionsMap().count(m_option_corr_print.c_str())) {
+    m_corrPrint = m_env.allOptionsMap()[m_option_corr_print.c_str()].as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_writeCorrs.c_str())) {
-    m_writeCorrs = m_env.allOptionsMap()[m_option_writeCorrs.c_str()].as<bool>();
+  if (m_env.allOptionsMap().count(m_option_corr_write.c_str())) {
+    m_corrWrite = m_env.allOptionsMap()[m_option_corr_write.c_str()].as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_computeHistograms.c_str())) {
-    m_computeHistograms = m_env.allOptionsMap()[m_option_computeHistograms.c_str()].as<bool>();
+  if (m_env.allOptionsMap().count(m_option_hist_compute.c_str())) {
+    m_histCompute = m_env.allOptionsMap()[m_option_hist_compute.c_str()].as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_computeKDEs.c_str())) {
-    m_computeKDEs = m_env.allOptionsMap()[m_option_computeKDEs.c_str()].as<bool>();
+  if (m_env.allOptionsMap().count(m_option_kde_compute.c_str())) {
+    m_kdeCompute = m_env.allOptionsMap()[m_option_kde_compute.c_str()].as<bool>();
   }
 
   return;
@@ -1091,6 +1119,974 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::acceptAlpha(double alpha)
 //  return mat;
 //}
 
+template <class V, class M>
+void
+uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
+  const std::vector<const V*>&      chain1,
+  const uqArrayOfSequencesClass<V>& chain2,
+  std::ofstream*                    passedOfs)
+{
+  int iRC = UQ_OK_RC;
+  struct timeval timevalTmp;
+  double tmpRunTime;
+
+  unsigned int intChainSequenceSize = 0;
+  double doubleChainSequenceSize    = 0.;
+  if (m_useChain2) {
+    intChainSequenceSize    =          chain2.sequenceSize();
+    doubleChainSequenceSize = (double) chain2.sequenceSize();
+  }
+  else {
+    intChainSequenceSize    =          chain1.size();
+    doubleChainSequenceSize = (double) chain1.size();
+  }
+
+  // Set initial positions for the computation of chain statistics
+  std::vector<unsigned int> initialPosForStatistics(m_statsFinalPercentages.size(),0);
+  for (unsigned int i = 0; i < initialPosForStatistics.size(); ++i) {
+    initialPosForStatistics[i] = (unsigned int) ((1. - m_statsFinalPercentages[i]*0.01) * doubleChainSequenceSize);
+  }
+  std::cout << "In uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(): initial positions for statistics =";
+  for (unsigned int i = 0; i < initialPosForStatistics.size(); ++i) {
+    std::cout << " " << initialPosForStatistics[i];
+  }
+  std::cout << std::endl;
+
+  //****************************************************
+  // Compute mean, sample std, population std
+  //****************************************************
+  tmpRunTime = 0.;
+  iRC = gettimeofday(&timevalTmp, NULL);
+  if (m_env.rank() == 0) {
+    std::cout << "\n-----------------------------------------------------"
+              << "\nComputing mean, sample variance and population variance"
+              << std::endl;
+  }
+
+  V chainMean(m_paramSpace.zeroVector());
+  if (m_useChain2) {
+    chain2.mean(0,
+                chain2.sequenceSize(),
+                chainMean);
+  }
+  else {
+    uqVectorSequenceMean(chain1,
+                         0,
+                         chain1.size(),
+                         chainMean);
+  }
+
+  V chainSampleVariance(m_paramSpace.zeroVector());
+  if (m_useChain2) {
+    chain2.sampleVariance(0,
+                          chain2.sequenceSize(),
+                          chainMean,
+                          chainSampleVariance);
+  }
+  else {
+    uqVectorSequenceSampleVariance(chain1,
+                                   0,
+                                   chain1.size(),
+                                   chainMean,
+                                   chainSampleVariance);
+  }
+
+  V chainPopulationVariance(m_paramSpace.zeroVector());
+  if (m_useChain2) {
+    chain2.populationVariance(0,
+                              chain2.sequenceSize(),
+                              chainMean,
+                              chainPopulationVariance);
+  }
+  else {
+    uqVectorSequencePopulationVariance(chain1,
+                                       0,
+                                       chain1.size(),
+                                       chainMean,
+                                       chainPopulationVariance);
+  }
+
+  tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
+  if (m_env.rank() == 0) {
+    std::cout << "Mean and variances took " << tmpRunTime
+              << " seconds"
+              << std::endl;
+  }
+
+  if (m_env.rank() == 0) {
+    std::cout << "\nMean, sample std, population std"
+              << std::endl;
+    char line[512];
+    sprintf(line,"%s%4s%s%9s%s%9s%s",
+	    "Parameter",
+            " ",
+            "Mean",
+            " ",
+            "SampleStd",
+            " ",
+            "Popul.Std");
+    std::cout << line;
+
+    for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
+      sprintf(line,"\n%8.8s%2s%11.4e%2s%11.4e%2s%11.4e",
+              m_paramSpace.parameter(i).name().c_str(),
+              " ",
+	      chainMean[i],
+              " ",
+              sqrt(chainSampleVariance[i]),
+              " ",
+              sqrt(chainPopulationVariance[i]));
+      std::cout << line;
+    }
+    std::cout << std::endl;
+  }
+
+  //****************************************************
+  // Compute variance of sample mean through the 'batch means method' (BMM)
+  //****************************************************
+  if ((m_bmmRun                          ) &&
+      (initialPosForStatistics.size() > 0) &&
+      (m_bmmLengths.size()         > 0)) { 
+    tmpRunTime = 0.;
+    iRC = gettimeofday(&timevalTmp, NULL);
+    if (m_env.rank() == 0) {
+      std::cout << "\n-----------------------------------------------------"
+                << "\nComputing variance of sample mean through BMM"
+                << std::endl;
+    }
+
+    std::cout << "In uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(): lengths for batchs in BMM =";
+    for (unsigned int i = 0; i < m_bmmLengths.size(); ++i) {
+      std::cout << " " << m_bmmLengths[i];
+    }
+    std::cout << std::endl;
+
+    uq2dArrayOfStuff<V> _2dArrayOfBMM(initialPosForStatistics.size(),m_bmmLengths.size());
+    for (unsigned int i = 0; i < _2dArrayOfBMM.numRows(); ++i) {
+      for (unsigned int j = 0; j < _2dArrayOfBMM.numCols(); ++j) {
+        _2dArrayOfBMM.setLocation(i,j,m_paramSpace.newVector());
+      }
+    }
+    if (m_useChain2) {
+      chain2.bmm(initialPosForStatistics,
+                 m_bmmLengths,
+                 _2dArrayOfBMM);
+    }
+    else {
+      uqVectorSequenceBMM(chain1,
+                          initialPosForStatistics,
+                          m_bmmLengths,
+                          _2dArrayOfBMM);
+    }
+
+    if (m_env.rank() == 0) {
+      for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+        std::cout << "\nEstimated variances of sample mean, through batch means method, for subchain beggining at position " << initialPosForStatistics[initialPosId]
+                  << " (each column corresponds to a batch length)"
+                  << std::endl;
+
+        char line[512];
+        sprintf(line,"%s",
+                "Parameter");
+        std::cout << line;
+        for (unsigned int batchLengthId = 0; batchLengthId < m_bmmLengths.size(); batchLengthId++) {
+          sprintf(line,"%10s%3d",
+                  " ",
+                  m_bmmLengths[batchLengthId]);
+          std::cout << line;
+        }
+
+        for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
+          sprintf(line,"\n%9.9s",
+                  m_paramSpace.parameter(i).name().c_str());
+          std::cout << line;
+          for (unsigned int batchLengthId = 0; batchLengthId < m_bmmLengths.size(); batchLengthId++) {
+            sprintf(line,"%2s%11.4e",
+                    " ",
+                    _2dArrayOfBMM(initialPosId,batchLengthId)[i]);
+            std::cout << line;
+          }
+        }
+        std::cout << std::endl;
+      }
+    }
+
+    tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
+    if (m_env.rank() == 0) {
+      std::cout << "Chain BMM took " << tmpRunTime
+                << " seconds"
+                << std::endl;
+    }
+  }
+
+  //****************************************************
+  // Compute power spectral density (PSD) of chain at zero frequency
+  //****************************************************
+  if ((m_psdCompute                      ) &&
+      (initialPosForStatistics.size() > 0) &&
+      (m_psdNumBlocks.size()       > 0)) { 
+    tmpRunTime = 0.;
+    iRC = gettimeofday(&timevalTmp, NULL);
+    if (m_env.rank() == 0) {
+      std::cout << "\n-----------------------------------------------------"
+                << "\nComputing variance of sample mean through PSD"
+                << std::endl;
+    }
+
+    uq2dArrayOfStuff<V> _2dArrayOfPSDAtZero(initialPosForStatistics.size(),m_psdNumBlocks.size());
+    for (unsigned int i = 0; i < _2dArrayOfPSDAtZero.numRows(); ++i) {
+      for (unsigned int j = 0; j < _2dArrayOfPSDAtZero.numCols(); ++j) {
+        _2dArrayOfPSDAtZero.setLocation(i,j,m_paramSpace.newVector());
+      }
+    }
+    if (m_useChain2) {
+      chain2.psd(initialPosForStatistics,
+                 m_psdNumBlocks,
+                 m_psdHopSizeRatio,
+                 _2dArrayOfPSDAtZero);
+    }
+    else {
+      uqVectorSequencePSD(chain1,
+                          initialPosForStatistics,
+                          m_psdNumBlocks,
+                          m_psdHopSizeRatio,
+                          _2dArrayOfPSDAtZero);
+    }
+
+    if (m_env.rank() == 0) {
+      for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+        double sizeForPSD = doubleChainSequenceSize - (double) initialPosForStatistics[initialPosId];
+        std::cout << "\nEstimated variances of sample mean, through psd (fft), for subchain beggining at position " << initialPosForStatistics[initialPosId]
+                  << ", so effective data size = " << sizeForPSD
+                  << " (each column corresponds to a number of blocks)"
+                  << std::endl;
+
+        char line[512];
+        sprintf(line,"%s",
+                "Parameter");
+        std::cout << line;
+        for (unsigned int numBlocksId = 0; numBlocksId < m_psdNumBlocks.size(); numBlocksId++) {
+          sprintf(line,"%10s%3d",
+                  " ",
+                  m_psdNumBlocks[numBlocksId]);
+          std::cout << line;
+        }
+
+        for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
+          sprintf(line,"\n%9.9s",
+                  m_paramSpace.parameter(i).name().c_str());
+          std::cout << line;
+          for (unsigned int numBlocksId = 0; numBlocksId < m_psdNumBlocks.size(); numBlocksId++) {
+            sprintf(line,"%2s%11.4e",
+                    " ",
+                    M_PI*_2dArrayOfPSDAtZero(initialPosId,numBlocksId)[i]/sizeForPSD); // CHECK
+            std::cout << line;
+          }
+        }
+        std::cout << std::endl;
+      }
+    }
+
+    tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
+    if (m_env.rank() == 0) {
+      std::cout << "Chain PSD took " << tmpRunTime
+                << " seconds"
+                << std::endl;
+    }
+  }
+
+  //****************************************************
+  // Compute Geweke
+  //****************************************************
+  if ((m_gewekeCompute                   ) &&
+      (initialPosForStatistics.size() > 0)) {
+    tmpRunTime = 0.;
+    iRC = gettimeofday(&timevalTmp, NULL);
+    if (m_env.rank() == 0) {
+      std::cout << "\n-----------------------------------------------------"
+                << "\nComputing Geweke coefficients"
+                << std::endl;
+    }
+
+    std::vector<V*> vectorOfGeweke(initialPosForStatistics.size(),NULL);
+    if (m_useChain2) {
+      chain2.geweke(initialPosForStatistics,
+                    m_gewekeRatioNa,
+                    m_gewekeRatioNb,
+                    vectorOfGeweke);
+    }
+    else {
+      uqVectorSequenceGeweke(chain1,
+                             initialPosForStatistics,
+                             m_gewekeRatioNa,
+                             m_gewekeRatioNb,
+                             vectorOfGeweke);
+    }
+
+    if (m_env.rank() == 0) {
+      std::cout << "\nComputed Geweke coefficients with 10% and 50% percentages"
+                  << " (each column corresponds to a different initial position on the full chain)"
+                  << std::endl;
+
+      char line[512];
+      sprintf(line,"%s",
+              "Parameter");
+      std::cout << line;
+      for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+        sprintf(line,"%10s%3d",
+                " ",
+                initialPosForStatistics[initialPosId]);
+        std::cout << line;
+      }
+
+      for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
+        sprintf(line,"\n%9.9s",
+                m_paramSpace.parameter(i).name().c_str());
+        std::cout << line;
+        for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+          sprintf(line,"%2s%11.4e",
+                  " ",
+                  (*(vectorOfGeweke[initialPosId]))[i]);
+          std::cout << line;
+        }
+      }
+      std::cout << std::endl;
+    }
+
+    tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
+    if (m_env.rank() == 0) {
+      std::cout << "Chain Geweke took " << tmpRunTime
+                << " seconds"
+                << std::endl;
+    }
+  }
+
+  //****************************************************
+  // Compute autocorrelation coefficients
+  //****************************************************
+  // Set lags for the computation of chain autocorrelations
+  std::vector<unsigned int> lagsForCorrs(m_corrNumberOfLags,1);
+  if ((m_corrCompute                     ) &&
+      (initialPosForStatistics.size() > 0)) {
+    for (unsigned int i = 1; i < lagsForCorrs.size(); ++i) {
+      lagsForCorrs[i] = m_corrSecondLag + (i-1)*m_corrLagSpacing;
+    }
+  }
+
+  if ((m_corrCompute                     ) &&
+      (initialPosForStatistics.size() > 0) &&
+      (lagsForCorrs.size()            > 0)) { 
+    tmpRunTime = 0.;
+    iRC = gettimeofday(&timevalTmp, NULL);
+    if (m_env.rank() == 0) {
+      std::cout << "\n-----------------------------------------------------"
+                << "\nComputing autocorrelation coefficients"
+                << std::endl;
+    }
+
+    if ((m_corrPrint) && (m_env.rank() == 0)) {
+      std::cout << "In uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(): lags for autocorrelation =";
+      for (unsigned int i = 0; i < lagsForCorrs.size(); ++i) {
+        std::cout << " " << lagsForCorrs[i];
+      }
+      std::cout << std::endl;
+    }
+
+    uq2dArrayOfStuff<V> _2dArrayOfAutoCorrs(initialPosForStatistics.size(),lagsForCorrs.size());
+    for (unsigned int i = 0; i < _2dArrayOfAutoCorrs.numRows(); ++i) {
+      for (unsigned int j = 0; j < _2dArrayOfAutoCorrs.numCols(); ++j) {
+        _2dArrayOfAutoCorrs.setLocation(i,j,m_paramSpace.newVector());
+      }
+    }
+    if (m_useChain2) {
+      chain2.autoCorrelations(initialPosForStatistics,
+                              lagsForCorrs,
+                              _2dArrayOfAutoCorrs);
+    }
+    else {
+      uqVectorSequenceAutoCorrelations(chain1,
+                                       initialPosForStatistics,
+                                       lagsForCorrs,
+                                       _2dArrayOfAutoCorrs);
+    }
+
+    V estimatedVarianceOfSampleMean(m_paramSpace.zeroVector());
+    estimatedVarianceOfSampleMean.cwSet(1.);
+    for (unsigned int i = 0; i < 1; ++i) {
+      for (unsigned int j = 0; j < _2dArrayOfAutoCorrs.numCols(); ++j) {
+        double ratio = ((double) j)/doubleChainSequenceSize;
+        estimatedVarianceOfSampleMean += 2.*(1.-ratio)*_2dArrayOfAutoCorrs(i,j);
+      }
+    }
+    estimatedVarianceOfSampleMean *= chainSampleVariance;
+    estimatedVarianceOfSampleMean /= doubleChainSequenceSize;
+    if (m_env.rank() == 0) {
+      bool savedVectorPrintState = estimatedVarianceOfSampleMean.getPrintHorizontally();
+      estimatedVarianceOfSampleMean.setPrintHorizontally(false);
+      std::cout << "\nVariance of sample mean, estimated through autocorrelation:\n"
+                << estimatedVarianceOfSampleMean
+                << std::endl;
+      estimatedVarianceOfSampleMean.setPrintHorizontally(savedVectorPrintState);
+    }
+
+    if ((m_corrPrint) && (m_env.rank() == 0)) {
+      for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+        std::cout << "\nEstimated autocorrelation coefficients, for subchain beggining at position " << initialPosForStatistics[initialPosId]
+                  << " (each column corresponds to a different lag)"
+                  << std::endl;
+
+        char line[512];
+        sprintf(line,"%s",
+	        "Parameter");
+        std::cout << line;
+        for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
+          sprintf(line,"%10s%3d",
+                  " ",
+                  lagsForCorrs[lagId]);
+          std::cout << line;
+        }
+
+        for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
+          sprintf(line,"\n%9.9s",
+                  m_paramSpace.parameter(i).name().c_str());
+          std::cout << line;
+          for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
+            sprintf(line,"%2s%11.4e",
+                    " ",
+	            _2dArrayOfAutoCorrs(initialPosId,lagId)[i]);
+            std::cout << line;
+          }
+        }
+        std::cout << std::endl;
+      }
+    }
+
+    tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
+    if (m_env.rank() == 0) {
+      std::cout << "Chain autocorrelation took " << tmpRunTime
+                << " seconds"
+                << std::endl;
+    }
+
+    // Write autocorrelations
+    if (m_corrWrite && passedOfs) {
+      std::ofstream& ofs = *passedOfs;
+      ofs << "queso_" << m_prefix << "corr_lags = zeros(" << 1
+          << ","                                           << lagsForCorrs.size()
+          << ");"
+          << std::endl;
+      for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
+        ofs << "queso_" << m_prefix << "corr_lags(" << 1
+            << ","                                   << lagId+1
+            << ") = "                                << lagsForCorrs[lagId]
+            << ";"
+            << std::endl;
+      }
+
+      for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+        ofs << "queso_" << m_prefix << "corr_ip" << initialPosForStatistics[initialPosId] << " = zeros(" << m_paramSpace.dim()
+            << ","      << lagsForCorrs.size()
+            << ");"
+            << std::endl;
+        for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
+          for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
+            ofs << "queso_" << m_prefix << "corr_ip" << initialPosForStatistics[initialPosId] << "(" << i+1
+                << ","                                                                                << lagId+1
+                << ") = "                                                                             << _2dArrayOfAutoCorrs(initialPosId,lagId)[i]
+                << ";"
+                << std::endl;
+          }
+        }
+      }
+    } 
+  }
+
+  //****************************************************
+  // Compute data related to uncorrelation
+  //****************************************************
+  m_uncorrInitialPos = 20000;
+  m_uncorrSpacing    = 50;
+
+  //****************************************************
+  // Compute MIN and MAX: for histograms and KDE
+  //****************************************************
+  tmpRunTime = 0.;
+  iRC = gettimeofday(&timevalTmp, NULL);
+  if (m_env.rank() == 0) {
+    std::cout << "\n-----------------------------------------------------"
+              << "\nComputing min and max for histograms and KDE"
+              << std::endl;
+  }
+
+  unsigned int uncorrInitialPos = m_uncorrInitialPos;
+  if (uncorrInitialPos >= intChainSequenceSize) uncorrInitialPos = intChainSequenceSize - 1;
+  if (m_useChain2) {
+    chain2.minMax(uncorrInitialPos,
+                  *m_statsMinPositions,
+                  *m_statsMaxPositions);
+  }
+  else {
+    uqVectorSequenceMinMax(chain1,
+                          uncorrInitialPos,
+                           *m_statsMinPositions,
+                           *m_statsMaxPositions);
+  }
+
+  tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
+  if (m_env.rank() == 0) {
+    std::cout << "Chain min and max took " << tmpRunTime
+              << " seconds"
+              << std::endl;
+  }
+
+  //****************************************************
+  // Compute histograms
+  //****************************************************
+  if ((m_histCompute                 ) &&
+      (m_histNumberOfInternalBins > 0)) {
+    tmpRunTime = 0.;
+    iRC = gettimeofday(&timevalTmp, NULL);
+    if (m_env.rank() == 0) {
+      std::cout << "\n-----------------------------------------------------"
+                << "\nComputing histograms"
+                << std::endl;
+    }
+
+    for (unsigned int i = 0; i < m_statsMaxPositions->size(); ++i) {
+      (*m_statsMaxPositions)[i] *= (1. + 1.e-15);
+    }
+
+    m_histCentersForAllBins.resize(m_histNumberOfInternalBins+2,NULL);
+    m_histBinsForAllParams.resize (m_histNumberOfInternalBins+2,NULL);
+    if (m_useChain2) {
+      chain2.histogram(uncorrInitialPos,
+                       m_uncorrSpacing,
+                       *m_statsMinPositions,
+                       *m_statsMaxPositions,
+                       m_histCentersForAllBins,
+                       m_histBinsForAllParams);
+    }
+    else {
+      uqVectorSequenceHistogram(chain1,
+                                uncorrInitialPos,
+                                m_uncorrSpacing,
+                                *m_statsMinPositions,
+                                *m_statsMaxPositions,
+                                m_histCentersForAllBins,
+                                m_histBinsForAllParams);
+    }
+
+    tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
+    if (m_env.rank() == 0) {
+      std::cout << "Chain histograms took " << tmpRunTime
+                << " seconds"
+                << std::endl;
+    }
+  }
+
+  //****************************************************
+  // Compute estimations of probability densities
+  //****************************************************
+  if ((m_kdeCompute                  ) &&
+      (m_kdeNumberOfEvalPositions > 0)) {
+    tmpRunTime = 0.;
+    iRC = gettimeofday(&timevalTmp, NULL);
+    if (m_env.rank() == 0) {
+      std::cout << "\n-----------------------------------------------------"
+                << "\nComputing KDE"
+                << std::endl;
+    }
+
+    m_kdeEvalPositions.resize(m_kdeNumberOfEvalPositions,NULL);
+    uqMiscComputePositionsBetweenMinMax(*m_statsMinPositions,
+                                        *m_statsMaxPositions,
+                                        m_kdeEvalPositions);
+
+    V iqrs(m_paramSpace.zeroVector());
+    if (m_useChain2) {
+      chain2.interQuantileRange(uncorrInitialPos,
+                                m_uncorrSpacing,
+                                iqrs);
+    }
+    else {
+      uqVectorSequenceInterQuantileRange(chain1,
+                                         uncorrInitialPos,
+                                         m_uncorrSpacing,
+                                         iqrs);
+    }
+
+    if (m_env.rank() == 0) {
+      std::cout << "\nComputed min values, max values and inter quantile ranges, for subchain beggining at position " << uncorrInitialPos
+                  << std::endl;
+
+      char line[512];
+      sprintf(line,"%s",
+              "Parameter");
+      std::cout << line;
+
+      sprintf(line,"%9s%s%9s%s%9s%s",
+              " ",
+              "min",
+              " ",
+              "max",
+              " ",
+              "iqr");
+      std::cout << line;
+
+      for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
+        sprintf(line,"\n%8.8s",
+                m_paramSpace.parameter(i).name().c_str());
+        std::cout << line;
+
+        sprintf(line,"%2s%11.4e%2s%11.4e%2s%11.4e",
+                " ",
+                (*m_statsMinPositions)[i],
+                " ",
+                (*m_statsMaxPositions)[i],
+                " ",
+                iqrs[i]);
+        std::cout << line;
+      }
+      std::cout << std::endl;
+    }
+
+    if (m_useChain2) {
+      chain2.scalesForKDE(uncorrInitialPos,
+                          m_uncorrSpacing,
+                          iqrs,
+                          *m_kdeScales);
+    }
+    else {
+      uqVectorSequenceScalesForKDE(chain1,
+                                   uncorrInitialPos,
+                                   m_uncorrSpacing,
+                                   iqrs,
+                                   *m_kdeScales);
+    }
+
+    m_kdeGaussianDensityValues.resize(m_kdeNumberOfEvalPositions,NULL);
+    if (m_useChain2) {
+      chain2.gaussianKDE(uncorrInitialPos,
+                         m_uncorrSpacing,
+                         m_kdeEvalPositions,
+                         *m_kdeScales,
+                         m_kdeGaussianDensityValues);
+    }
+    else {
+      uqVectorSequenceGaussianKDE(chain1,
+                                  uncorrInitialPos,
+                                  m_uncorrSpacing,
+                                  m_kdeEvalPositions,
+                                  *m_kdeScales,
+                                  m_kdeGaussianDensityValues);
+    }
+
+    tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
+    if (m_env.rank() == 0) {
+      std::cout << "Chain KDE took " << tmpRunTime
+                << " seconds"
+                << std::endl;
+    }
+  }
+
+  if (m_env.rank() == 0) {
+    std::cout << "\n-----------------------------------------------------"
+              << "\n"
+              << std::endl;
+  }
+
+  return;
+}
+
+template <class V, class M>
+int
+uqDRAM_MarkovChainGeneratorClass<V,M>::writeChain(
+  const std::vector<const V*>&      chain1,
+  const uqArrayOfSequencesClass<V>& chain2,
+  std::ofstream&                    ofs,
+  const M*                          mahalanobisMatrix,
+  bool                              applyMahalanobisInvert) const
+{
+  int iRC = UQ_OK_RC;
+
+  // Write chain
+  ofs << "queso_" << m_prefix << "chain = [";
+  if (m_useChain2) {
+    V tmpVec(m_paramSpace.zeroVector());
+    for (unsigned int i = 0; i < chain2.sequenceSize(); ++i) {
+      chain2.getPositionValues(i,tmpVec);
+      ofs << tmpVec
+          << std::endl;
+    }
+  }
+  else {
+    for (unsigned int i = 0; i < chain1.size(); ++i) {
+      ofs << *(chain1[i])
+          << std::endl;
+    }
+  }
+  ofs << "];\n";
+
+  if (m_generateExtraChains) {
+    if (m_likelihoodObjComputesMisfits) {
+      // Write m_misfitChain
+      ofs << "queso_" << m_prefix << "misfitChain = [";
+      for (unsigned int i = 0; i < m_misfitChain.size(); ++i) {
+        ofs << *(m_misfitChain[i])
+            << std::endl;
+      }
+      ofs << "];\n";
+
+      // Write m_misfitVarianceChain
+      ofs << "queso_" << m_prefix << "misfitVarianceChain = [";
+      for (unsigned int i = 0; i < m_misfitVarianceChain.size(); ++i) {
+        ofs << *(m_misfitVarianceChain[i])
+            << std::endl;
+      }
+      ofs << "];\n";
+    }
+
+    // Write m_m2lLikelihoodChain
+    ofs << "queso_" << m_prefix << "m2lLikelihoodChain = [";
+    for (unsigned int i = 0; i < m_m2lLikelihoodChain.size(); ++i) {
+      ofs << *(m_m2lLikelihoodChain[i])
+          << std::endl;
+    }
+    ofs << "];\n";
+
+    // Write m_alphaQuotients
+    ofs << "queso_" << m_prefix << "alphaQuotients = [";
+    for (unsigned int i = 0; i < m_alphaQuotients.size(); ++i) {
+      ofs << m_alphaQuotients[i]
+          << std::endl;
+    }
+    ofs << "];\n";
+  }
+
+  // Write names of parameters
+  ofs << "queso_" << m_prefix << "paramNames = {";
+  m_paramSpace.printParameterNames(ofs,false);
+  ofs << "};\n";
+
+  // Write mahalanobis distances
+  if (mahalanobisMatrix != NULL) {
+    V diffVec(m_paramSpace.zeroVector());
+    ofs << "queso_" << m_prefix << "d = [";
+    if (applyMahalanobisInvert) {
+      if (m_useChain2) {
+        V tmpVec(m_paramSpace.zeroVector());
+        V vec0(m_paramSpace.zeroVector());
+        chain2.getPositionValues(0,vec0);
+        for (unsigned int i = 0; i < chain2.sequenceSize(); ++i) {
+          chain2.getPositionValues(i,tmpVec);
+          diffVec = tmpVec - vec0;
+          ofs << scalarProduct(diffVec, mahalanobisMatrix->invertMultiply(diffVec))
+              << std::endl;
+        }
+      }
+      else {
+        for (unsigned int i = 0; i < chain1.size(); ++i) {
+          diffVec = *(chain1[i]) - *(chain1[0]);
+          ofs << scalarProduct(diffVec, mahalanobisMatrix->invertMultiply(diffVec))
+              << std::endl;
+        }
+      }
+    }
+    else {
+      if (m_useChain2) {
+        V tmpVec(m_paramSpace.zeroVector());
+        V vec0(m_paramSpace.zeroVector());
+        chain2.getPositionValues(0,vec0);
+        for (unsigned int i = 0; i < chain2.sequenceSize(); ++i) {
+          chain2.getPositionValues(i,tmpVec);
+          diffVec = tmpVec - vec0;
+          ofs << scalarProduct(diffVec, *mahalanobisMatrix * diffVec)
+              << std::endl;
+        }
+      }
+      else {
+        for (unsigned int i = 0; i < chain1.size(); ++i) {
+          diffVec = *(chain1[i]) - *(chain1[0]);
+          ofs << scalarProduct(diffVec, *mahalanobisMatrix * diffVec)
+              << std::endl;
+        }
+      }
+    }
+    ofs << "];\n";
+  }
+
+  // Write prior mean values
+  ofs << "queso_" << m_prefix << "priorMeanValues = ["
+      << m_paramSpace.priorMuValues()
+      << "];\n";
+
+  // Write prior sigma values
+  ofs << "queso_" << m_prefix << "priorSigmaValues = ["
+      << m_paramSpace.priorSigmaValues()
+      << "];\n";
+
+#if 0
+  ofs << "queso_" << m_prefix << "results.prior = [queso_priorMeanValues',queso_priorSigmaValues'];\n";
+#endif
+
+  // Write param lower bounds
+  ofs << "queso_" << m_prefix << "minValues = ["
+      << m_paramSpace.minValues()
+      << "];\n";
+
+  // Write param upper bounds
+  ofs << "queso_" << m_prefix << "maxValues = ["
+      << m_paramSpace.maxValues()
+      << "];\n";
+
+#if 0
+  ofs << "queso_" << m_prefix << "results.limits = [queso_low',queso_upp'];\n";
+
+  // Write out data for mcmcpred.m
+  ofs << "queso_" << m_prefix << "results.parind = ["; // FIXME
+  for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
+    ofs << i+1
+        << std::endl;
+  }
+  ofs << "];\n";
+
+  ofs << "queso_" << m_prefix << "results.local = [\n"; // FIXME
+  for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
+    ofs << " 0";
+    //<< std::endl;
+  }
+  ofs << "];\n";
+
+  if (m_useChain2) {
+  }
+  else {
+    bool savedVectorPrintState = chain1[chain1.size()-1]->getPrintHorizontally();
+    chain1[chain1.size()-1]->setPrintHorizontally(false);
+    ofs << "queso_" << m_prefix << "results.theta = ["
+        << *(chain1[chain1.size()-1])
+        << "];\n";
+    chain1[chain1.size()-1]->setPrintHorizontally(savedVectorPrintState);
+  }
+  
+  ofs << "queso_" << m_prefix << "results.nbatch = 1.;\n"; // FIXME
+
+  if (mahalanobisMatrix != NULL) {
+    // Write covMatrix
+    ofs << "queso_" << m_prefix << "mahalanobisMatrix = ["
+        << *mahalanobisMatrix
+        << "];\n";
+  }
+#endif
+
+  // Write number of rejections
+  if (m_useChain2) {
+    ofs << "queso_" << m_prefix << "rejected = "  << (double) m_numRejections/(double) (chain2.sequenceSize()-1)
+        << ";\n"
+        << std::endl;
+  }
+  else {
+    ofs << "queso_" << m_prefix << "rejected = "  << (double) m_numRejections/(double) (chain1.size()-1)
+        << ";\n"
+        << std::endl;
+  }
+
+  // Write chain run time
+  ofs << "queso_" << m_prefix << "runTime = "  << m_chainRunTime
+      << ";\n"
+      << std::endl;
+
+  // Write number of outbounds
+  if (m_useChain2) {
+    ofs << "queso_" << m_prefix << "outbounds = " << (double) m_numOutOfBounds/(double) chain2.sequenceSize()
+        << ";\n"
+        << std::endl;
+  }
+  else {
+    ofs << "queso_" << m_prefix << "outbounds = " << (double) m_numOutOfBounds/(double) chain1.size()
+        << ";\n"
+        << std::endl;
+  }
+
+  // Write histograms
+  if ((m_histCompute                 ) &&
+      (m_histNumberOfInternalBins > 0)) {
+    // plot(queso_centersOfHistBins(1,:)',queso_histBins(1,:)','r-');
+    ofs << "queso_" << m_prefix << "centersOfHistBins = zeros(" << m_paramSpace.dim()
+        << ","                                                  << m_histCentersForAllBins.size()
+        << ");"
+        << std::endl;
+    for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
+      for (unsigned int j = 0; j < m_histCentersForAllBins.size(); ++j) {
+         ofs << "queso_" << m_prefix << "centersOfHistBins(" << i+1
+             << ","                                          << j+1
+             << ") = "                                       << (*(m_histCentersForAllBins[j]))[i]
+             << ";"
+             << std::endl;
+      }
+    }
+
+    ofs << "queso_" << m_prefix << "histBins = zeros(" << m_paramSpace.dim()
+        << ","                       << m_histBinsForAllParams.size()
+        << ");"
+        << std::endl;
+    for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
+      for (unsigned int j = 0; j < m_histBinsForAllParams.size(); ++j) {
+         ofs << "queso_" << m_prefix << "histBins(" << i+1
+             << ","                                 << j+1
+             << ") = "                              << (*(m_histBinsForAllParams[j]))[i]
+             << ";"
+             << std::endl;
+      }
+    }
+  }
+
+  // Write estimations of probability densities
+  if ((m_kdeCompute                  ) &&
+      (m_kdeNumberOfEvalPositions > 0)) {
+    // hold
+    // plot(queso_evalPosForKDE(1,:)',7*queso_densFromGaussianKDE(1,:)','r-');
+    ofs << "queso_" << m_prefix << "evalPosForKDE = zeros(" << m_paramSpace.dim()
+        << ","                                              << m_kdeEvalPositions.size()
+        << ");"
+        << std::endl;
+    for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
+      for (unsigned int j = 0; j < m_kdeEvalPositions.size(); ++j) {
+        ofs << "queso_" << m_prefix << "evalPosForKDE(" << i+1
+            << ","                                      << j+1
+            << ") = "                                   << (*(m_kdeEvalPositions[j]))[i]
+            << ";"
+            << std::endl;
+      }
+    }
+
+    ofs << "queso_" << m_prefix << "scalesForKDE = zeros(" << m_paramSpace.dim()
+        << ");"
+        << std::endl;
+    for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
+      ofs << "queso_" << m_prefix << "scalesForKDE(" << i+1
+          << ") = "                                  << (*m_kdeScales)[i]
+          << ";"
+          << std::endl;
+    }
+
+    ofs << "queso_" << m_prefix << "densFromGaussianKDE = zeros(" << m_paramSpace.dim()
+        << ","                                                    << m_kdeGaussianDensityValues.size()
+        << ");"
+        << std::endl;
+    for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
+      for (unsigned int j = 0; j < m_kdeGaussianDensityValues.size(); ++j) {
+        ofs << "queso_" << m_prefix << "densFromGaussianKDE(" << i+1
+            << ","                                            << j+1
+            << ") = "                                         << (*(m_kdeGaussianDensityValues[j]))[i]
+            << ";"
+            << std::endl;
+      }
+    }
+  }
+
+  return iRC;
+}
+
 #if 0
 template <class V, class M>
 const std::vector<const V*>&
@@ -1148,24 +2144,25 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::print(std::ostream& os) const
   os << "\n" << m_option_mh_chainDisplayPeriod      << " = " << m_chainDisplayPeriod
      << "\n" << m_option_mh_measureRunTimes         << " = " << m_measureRunTimes
      << "\n" << m_option_mh_generateWhiteNoise      << " = " << m_generateWhiteNoise
-     << "\n" << m_option_finalPercentsForStats << " = ";
-  for (unsigned int i = 0; i < m_finalPercentsForStats.size(); ++i) {
-    os << m_finalPercentsForStats[i] << " ";
+     << "\n" << m_option_stats_finalPercentages << " = ";
+  for (unsigned int i = 0; i < m_statsFinalPercentages.size(); ++i) {
+    os << m_statsFinalPercentages[i] << " ";
   }
-  os << "\n" << m_option_runBMM                     << " = " << m_runBMM;
-  for (unsigned int i = 0; i < m_lengthsForBMM.size(); ++i) {
-    os << m_lengthsForBMM[i] << " ";
+  os << "\n" << m_option_bmm_run                    << " = " << m_bmmRun
+     << "\n" << m_option_bmm_lengths << " = ";
+  for (unsigned int i = 0; i < m_bmmLengths.size(); ++i) {
+    os << m_bmmLengths[i] << " ";
   }
-  os << "\n" << m_option_computePSDs                << " = " << m_computePSDs
-     << "\n" << m_option_computeGewekeCoefs         << " = " << m_computeGewekeCoefs
-     << "\n" << m_option_computeCorrelations        << " = " << m_computeCorrelations
-     << "\n" << m_option_secondLagForCorrs          << " = " << m_secondLagForCorrs
-     << "\n" << m_option_lagSpacingForCorrs         << " = " << m_lagSpacingForCorrs
-     << "\n" << m_option_numberOfLagsForCorrs       << " = " << m_numberOfLagsForCorrs
-     << "\n" << m_option_printCorrs                 << " = " << m_printCorrs
-     << "\n" << m_option_writeCorrs                 << " = " << m_writeCorrs
-     << "\n" << m_option_computeHistograms          << " = " << m_computeHistograms
-     << "\n" << m_option_computeKDEs                << " = " << m_computeKDEs
+  os << "\n" << m_option_psd_compute       << " = " << m_psdCompute
+     << "\n" << m_option_geweke_compute    << " = " << m_gewekeCompute
+     << "\n" << m_option_corr_compute      << " = " << m_corrCompute
+     << "\n" << m_option_corr_secondLag    << " = " << m_corrSecondLag
+     << "\n" << m_option_corr_lagSpacing   << " = " << m_corrLagSpacing
+     << "\n" << m_option_corr_numberOfLags << " = " << m_corrNumberOfLags
+     << "\n" << m_option_corr_print        << " = " << m_corrPrint
+     << "\n" << m_option_corr_write        << " = " << m_corrWrite
+     << "\n" << m_option_hist_compute      << " = " << m_histCompute
+     << "\n" << m_option_kde_compute       << " = " << m_kdeCompute
      << "\n" << "(internal variable) m_likelihoodObjComputesMisfits = " << m_likelihoodObjComputesMisfits
      << std::endl;
 

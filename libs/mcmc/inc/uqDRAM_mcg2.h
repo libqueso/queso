@@ -109,7 +109,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains2(
                 << "\n"
                 << std::endl;
     }
-    computeStatistics2(m_chain2,ofs);
+    computeStatistics(m_chain1,m_chain2,ofs);
 #if 0
     if (m_env.rank() == 0) {
       std::cout << "\n"
@@ -126,13 +126,15 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains2(
     // Write chain2 out
     //****************************************************
     if (ofs) {
-      iRC = writeChain2(*ofs,
-                        mahalanobisMatrix,
-                        applyMahalanobisInvert);
+      iRC = writeChain(m_chain1,
+                       m_chain2,
+                       *ofs,
+                       mahalanobisMatrix,
+                       applyMahalanobisInvert);
       UQ_FATAL_RC_MACRO(iRC,
                         m_env.rank(),
                         "uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains2()",
-                        "improper writeChain2() return");
+                        "improper writeChain() return");
     }
 
     //****************************************************
@@ -731,7 +733,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain2(
 
   return iRC;
 }
-
+#if 0
 template <class V, class M>
 void
 uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics2(
@@ -1209,7 +1211,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics2(
 
   return;
 }
-
+#endif
 template <class V, class M>
 void
 uqDRAM_MarkovChainGeneratorClass<V,M>::updateCovMatrix2(
@@ -1264,7 +1266,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::updateCovMatrix2(
 
   return;
 }
-
+#if 0
 template <class V, class M>
 int
 uqDRAM_MarkovChainGeneratorClass<V,M>::writeChain2(
@@ -1464,5 +1466,5 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::writeChain2(
 
   return iRC;
 }
-
+#endif
 #endif // __UQ_DRAM_MCG2_H__
