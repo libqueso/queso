@@ -76,7 +76,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains1(
     // Open file      
     //****************************************************
     std::ofstream* ofs = NULL;
-    if (m_namesOfOutputFiles[chainId] == ".") {
+    if (m_namesOfOutputFiles[chainId] == UQ_MCMC_NAME_FOR_NO_OUTPUT_FILE) {
       if (m_env.rank() == 0) {
         std::cout << "No output file opened for chain1 of id " << chainId
                   << std::endl;
@@ -91,7 +91,13 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains1(
       }
 
       // Open file
-      ofs = new std::ofstream(m_namesOfOutputFiles[chainId].c_str(), std::ofstream::out | std::ofstream::trunc);
+      ofs = new std::ofstream(m_namesOfOutputFiles[chainId].c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
+      if ((ofs            == NULL ) ||
+          (ofs->is_open() == false)) {
+        delete ofs;
+        ofs = new std::ofstream(m_namesOfOutputFiles[chainId].c_str(), std::ofstream::out | std::ofstream::trunc);
+      }
+
       UQ_FATAL_TEST_MACRO((ofs && ofs->is_open()) == false,
                           m_env.rank(),
                           "uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain1()",
@@ -109,7 +115,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains1(
                 << "\n"
                 << std::endl;
     }
-    computeStatistics(m_chain1,m_chain2,ofs);
+    computeStatistics(m_chain1,m_chain2,chainId,ofs);
 #if 0
     if (m_env.rank() == 0) {
       std::cout << "\n"
@@ -128,6 +134,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains1(
     if (ofs) {
       iRC = writeChain(m_chain1,
                        m_chain2,
+                       chainId,
                        *ofs,
                        mahalanobisMatrix,
                        applyMahalanobisInvert);
