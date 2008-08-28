@@ -9,7 +9,7 @@ uqEnv_seed      = 0
 # Calibration Parameter Space
 ###############################################
 #calib_paramSpace_help              = anything
-calib_paramSpace_dim               = 3
+calib_paramSpace_dim               = 1
 calib_paramSpace_specificationFile = calib.par
 
 ###############################################
@@ -30,36 +30,43 @@ calib_observableSpace_specificationFile = calib.obs
 # Calibration DRAM Markov Chain Generator
 ###############################################
 #calib_MCMC_help                       = anything
-calib_MCMC_chain_number               = 2
-calib_MCMC_chain_sizes                = 10001
+calib_MCMC_chain_type                 = 2
+calib_MCMC_chain_number               = 1
+#                                       16K   128K   2M      16M
+#calib_MCMC_chain_sizes                = 16384 131072 2097152 16777216
+calib_MCMC_chain_sizes                = 16384
 calib_MCMC_chain_use2                 = 0
-calib_MCMC_chain_generateUnique       = 0
 calib_MCMC_chain_generateExtra        = 0
-calib_MCMC_chain_computeAverages      = 0
-calib_MCMC_chain_computeFftOfAvgs     = 0
-calib_MCMC_chain_displayPeriod        = 5000
+calib_MCMC_chain_displayPeriod        = 0
 calib_MCMC_chain_measureRunTimes      = 1
-calib_MCMC_chain_write                = 0
+calib_MCMC_chain_write                = 1
+calib_MCMC_chain_computeStats         = 1
 calib_MCMC_chain_outputFileNames      = calib1.m
+calib_MCMC_uniqueChain_generate       = 0
+calib_MCMC_uniqueChain_write          = 0
+calib_MCMC_uniqueChain_computeStats   = 0
+#calib_MCMC_avgChain_compute           = 0
+calib_MCMC_avgChain_write             = 0
+calib_MCMC_avgChain_computeStats      = 0
 calib_MCMC_dr_maxNumberOfExtraStages  = 1
 calib_MCMC_dr_scalesForExtraStages    = 5. 4. 3.
 calib_MCMC_am_initialNonAdaptInterval = 100
 calib_MCMC_am_adaptInterval           = 0
 calib_MCMC_am_eta                     = 1.92
 calib_MCMC_am_epsilon                 = 1.e-5
-calib_MCMC_whiteNoise_generate        = 1
 calib_MCMC_stats_finalPercentages     = 100.
-calib_MCMC_bmm_run                    = 1
+calib_MCMC_bmm_run                    = 0
 calib_MCMC_bmm_lengths                = 50 100 200 500
+calib_MCMC_fft_compute                = 0
 calib_MCMC_psd_compute                = 1
 calib_MCMC_geweke_compute             = 1
-calib_MCMC_corr_computeViaDef         = 1
+calib_MCMC_corr_computeViaDef         = 0
 calib_MCMC_corr_computeViaFft         = 0
 calib_MCMC_corr_secondLag             = 2
 calib_MCMC_corr_lagSpacing            = 1
 calib_MCMC_corr_numberOfLags          = 200
-calib_MCMC_corr_print                 = 0
-calib_MCMC_corr_write                 = 1
+calib_MCMC_corr_display               = 0
+calib_MCMC_corr_write                 = 0
 calib_MCMC_hist_compute               = 0
 calib_MCMC_kde_compute                = 0
 

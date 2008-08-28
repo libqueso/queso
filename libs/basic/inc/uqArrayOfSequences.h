@@ -65,7 +65,7 @@ public:
         void         bmm               (const std::vector<unsigned int>& initialPositions,
                                         const std::vector<unsigned int>& batchLengths,
                                         uq2dArrayOfStuff<V>&             _2dArrayOfBMM) const; // [numOfPos x numOfLengths] matrix
-        void         psd               (const std::vector<unsigned int>& initialPositions,
+        void         psdAtZero         (const std::vector<unsigned int>& initialPositions,
                                         const std::vector<unsigned int>& numsOfBlocks,
                                         double                           hopSizeRatio,
                                         uq2dArrayOfStuff<V>&             _2dArrayOfPSDAtZero) const; // [numOfPos x numOfBlocks] matrix
@@ -540,7 +540,7 @@ uqArrayOfSequencesClass<V>::bmm(
 
 template <class V>
 void
-uqArrayOfSequencesClass<V>::psd(
+uqArrayOfSequencesClass<V>::psdAtZero(
   const std::vector<unsigned int>& initialPositions,
   const std::vector<unsigned int>& numsOfBlocks,
   double                           hopSizeRatio,

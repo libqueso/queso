@@ -32,8 +32,49 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains2(
 
   V valuesOf1stPosition(m_paramInitials);
   int iRC = UQ_OK_RC;
+
+  unsigned int chainSumId = 0;
+  uqArrayOfSequencesClass<V> chain2Sum(0,m_paramSpace.zeroVector());
+  if (m_avgChainCompute.size() > 0) {
+    // It is expected that all participating chains will have the same size.
+    // The code will check this assumption.
+    chain2Sum.resizeSequence(m_sizesOfChains[0]);
+  }
+
   for (unsigned int chainId = 0; chainId < m_sizesOfChains.size(); ++chainId) {
-    if (m_generateWhiteNoise) {
+    //****************************************************
+    // Open file      
+    //****************************************************
+    std::ofstream* ofs = NULL;
+    if (m_namesOfOutputFiles[chainId] == UQ_MCMC_NAME_FOR_NO_OUTPUT_FILE) {
+      if (m_env.rank() == 0) {
+        std::cout << "No output file opened for chain2 of id " << chainId
+                  << std::endl;
+      }
+    }
+    else {
+      if (m_env.rank() == 0) {
+        std::cout << "Opening output file for chain2 of id " << chainId
+                  << ", with name '"                         << m_namesOfOutputFiles[chainId]
+                  << "'..."
+                  << std::endl;
+      }
+
+      // Open file
+      ofs = new std::ofstream(m_namesOfOutputFiles[chainId].c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
+      if ((ofs            == NULL ) ||
+          (ofs->is_open() == false)) {
+        delete ofs;
+        ofs = new std::ofstream(m_namesOfOutputFiles[chainId].c_str(), std::ofstream::out | std::ofstream::trunc);
+      }
+ 
+      UQ_FATAL_TEST_MACRO((ofs && ofs->is_open()) == false,
+                          m_env.rank(),
+                          "uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain2()",
+                          "failed to open file");
+    }
+  
+    if (m_chainType == UQ_MCMC_WHITE_NOISE_CHAIN_TYPE) {
       //****************************************************
       // Just generate white noise
       //****************************************************
@@ -65,7 +106,8 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains2(
                            valuesOf1stPosition,
                            proposalCovMatrix,
                            mahalanobisMatrix,
-                           applyMahalanobisInvert);
+                           applyMahalanobisInvert,
+                           ofs);
       UQ_FATAL_RC_MACRO(iRC,
                         m_env.rank(),
                         "uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains2()",
@@ -73,65 +115,9 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains2(
     }
 
     //****************************************************
-    // Open file      
-    //****************************************************
-    std::ofstream* ofs = NULL;
-    if (m_namesOfOutputFiles[chainId] == ".") {
-      if (m_env.rank() == 0) {
-        std::cout << "No output file opened for chain2 of id " << chainId
-                  << std::endl;
-      }
-    }
-    else {
-      if (m_env.rank() == 0) {
-        std::cout << "Opening output file for chain2 of id " << chainId
-                  << ", with name '"                         << m_namesOfOutputFiles[chainId]
-                  << "'..."
-                  << std::endl;
-      }
-
-      // Open file
-      ofs = new std::ofstream(m_namesOfOutputFiles[chainId].c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
-      if ((ofs            == NULL ) ||
-          (ofs->is_open() == false)) {
-        delete ofs;
-        ofs = new std::ofstream(m_namesOfOutputFiles[chainId].c_str(), std::ofstream::out | std::ofstream::trunc);
-      }
-
-      UQ_FATAL_TEST_MACRO((ofs && ofs->is_open()) == false,
-                          m_env.rank(),
-                          "uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain2()",
-                          "failed to open file");
-    }
-  
-    //****************************************************
-    // Print statistics on the chain
-    //****************************************************
-    if (m_env.rank() == 0) {
-      std::cout << "\n"
-                << "\n-----------------------------------------------------"
-                << "\n Statistics on chain:"
-                << "\n-----------------------------------------------------"
-                << "\n"
-                << std::endl;
-    }
-    computeStatistics(m_chain1,m_chain2,chainId,ofs);
-#if 0
-    if (m_env.rank() == 0) {
-      std::cout << "\n"
-                << "\n-----------------------------------------------------"
-                << "\n Statistics on 'unique' chain:"
-                << "\n-----------------------------------------------------"
-                << "\n"
-                << std::endl;
-    }
-    computeStatistics2(m_uniqueChain2);
-#endif
-
-    //****************************************************
     // Write chain2 out
     //****************************************************
-    if (ofs) {
+    if (m_chainWrite && ofs) {
       iRC = writeChain(m_chain1,
                        m_chain2,
                        chainId,
@@ -142,6 +128,63 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains2(
                         m_env.rank(),
                         "uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains2()",
                         "improper writeChain() return");
+    }
+
+    //****************************************************
+    // Compute statistics on the chain
+    //****************************************************
+    if (m_chainComputeStatistics) {
+      if (m_env.rank() == 0) {
+        std::cout << "\n"
+                  << "\n-----------------------------------------------------"
+                  << "\n Statistics of chain of id " << chainId << ":"
+                  << "\n-----------------------------------------------------"
+                  << "\n"
+                  << std::endl;
+      }
+      computeStatistics(m_chain1,m_chain2,chainId,ofs);
+    }
+
+    //****************************************************
+    // Eventually:
+    // --> generate an unique chain
+    // --> write it
+    // --> compute its statistics
+    //****************************************************
+    if (m_uniqueChainGenerate) {
+      //m_uniqueChain2.erasePositions(m_uniqueChain2Pos,m_uniqueChain2.sequenceSize());
+
+      if (m_env.rank() == 0) {
+        std::cout << "\n"
+                  << "\n-----------------------------------------------------"
+                  << "\n Statistics on 'unique' chain:"
+                  << "\n-----------------------------------------------------"
+                  << "\n"
+                  << std::endl;
+      }
+      //computeStatistics1(m_uniqueChain2);
+    }
+
+    //****************************************************
+    // Eventually:
+    // --> compute an average chain
+    // --> write it
+    // --> compute its statistics
+    //****************************************************
+    if (m_avgChainCompute.size() > chainSumId) {
+      // Update m_chain2Sum
+
+      // Check if it is time to compute an average
+      if ((chainId+1) == m_avgChainCompute[chainSumId]) {
+        // Compute the average
+
+        // Write the computed average
+        
+        // Compute statistics on the average
+
+        // Prepare for eventual next chain average
+        chainSumId++;
+      }
     }
 
     //****************************************************
@@ -227,11 +270,12 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateWhiteNoise2(unsigned int chainId)
 template <class V, class M>
 int
 uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain2(
-  unsigned int chainId,
-  const V&     valuesOf1stPosition,
-  const M*     proposalCovMatrix,
-  const M*     mahalanobisMatrix,
-  bool         applyMahalanobisInvert)
+  unsigned int   chainId,
+  const V&       valuesOf1stPosition,
+  const M*       proposalCovMatrix,
+  const M*       mahalanobisMatrix,
+  bool           applyMahalanobisInvert,
+  std::ofstream* ofs)
 {
   if (m_env.rank() == 0) {
     std::cout << "Generating chain2 of id " << chainId
@@ -293,7 +337,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain2(
   // Begin chain2 loop from positionId = 1
   //****************************************************
   m_chain2.resizeSequence(m_sizesOfChains[chainId]); 
-  if (m_generateUniqueChain) m_uniqueChain2.resizeSequence(m_sizesOfChains[chainId]); 
+  if (m_uniqueChainGenerate) m_idsOfUniquePositions.resize(m_sizesOfChains[chainId],0);
   if (m_generateExtraChains) {
     if (m_likelihoodObjComputesMisfits) {
       m_misfitChain.resize        (m_sizesOfChains[chainId],NULL); 
@@ -303,8 +347,9 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain2(
     m_alphaQuotients.resize    (m_sizesOfChains[chainId],0.);
   }
 
+  unsigned int uniquePos = 0;
   m_chain2.setPositionValues(0,currentPosition.paramValues());
-  if (m_generateUniqueChain) m_uniqueChain2.setPositionValues(m_uniqueChain2Pos++,currentPosition.paramValues());
+  if (m_uniqueChainGenerate) m_idsOfUniquePositions[uniquePos++] = 0;
   if (m_generateExtraChains) {
     if (m_likelihoodObjComputesMisfits) {
       m_misfitChain        [0] = m_observableSpace.newVector(misfitVector);
@@ -496,7 +541,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain2(
     //****************************************************
     if (accept) {
       m_chain2.setPositionValues(positionId,currentCandidate.paramValues());
-      if (m_generateUniqueChain) m_uniqueChain2.setPositionValues(m_uniqueChain2Pos++,currentCandidate.paramValues());
+      if (m_uniqueChainGenerate) m_idsOfUniquePositions[uniquePos++] = positionId;
       if (m_generateExtraChains) {
         if (m_likelihoodObjComputesMisfits) {
           m_misfitChain[positionId] = m_observableSpace.newVector(currentCandidate.misfitVector());
@@ -675,24 +720,17 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain2(
     }
   } // end chain2 loop
 
-  if (m_generateUniqueChain) {
-    m_uniqueChain2.erasePositions(m_uniqueChain2Pos,m_uniqueChain2.sequenceSize());
-  }
-
   //****************************************************
   // Print basic information about the chain
   //****************************************************
   m_chainRunTime += uqMiscGetEllapsedSeconds(&timevalChain);
   if (m_env.rank() == 0) {
-    if (m_generateUniqueChain) {
-      std::cout << "Finished generating the chain2 of id " << chainId
-                << ", with "                               << m_uniqueChain2Pos
-                << " 'unique' positions (i.e., not counting repetitions due to rejections).";
-    }
-    else {
-      std::cout << "Finished generating the chain2 of id " << chainId
-                << ", with "                               << m_chain2.sequenceSize()
-                << " positions.";
+    std::cout << "Finished generating the chain2 of id " << chainId
+              << ", with "                               << m_chain2.sequenceSize()
+              << " positions.";
+    if (m_uniqueChainGenerate) {
+      std::cout << " and " << uniquePos
+                << " 'unique' positions (i.e., not counting repetitions due to rejections)";
     }
     std::cout << "\nSome information about this chain:"
               << "\n  Chain2 run time       = " << m_chainRunTime

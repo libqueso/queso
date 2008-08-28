@@ -323,15 +323,18 @@ uqScalarSequencePSD(
   unsigned int blockSize = (unsigned int) tmp;
   unsigned int hopSize   = (unsigned int) ( ((double) blockSize) * hopSizeRatio );
   tmp = ((double) dataSize) - ( ((double) numBlocks) - 1.) * ((double) hopSize) - ((double) blockSize);
-  //unsigned int numberOfDiscardedDataElements = (unsigned int) tmp;
-  //std::cout << "N = "         << dataSize
-  //          << ", #Blocks = " << numBlocks
-  //          << ", R = "       << hopSize
-  //          << ", B = "       << blockSize
-  //          << ", [(#Blocks - 1) * R + B] = "       << (numBlocks-1)*hopSize + blockSize
-  //          << ", numberOfDiscardedDataElements = " << numberOfDiscardedDataElements
-  ////        << ", tmp = "                           << tmp
-  //          << std::endl;
+#if 1
+  unsigned int numberOfDiscardedDataElements = (unsigned int) tmp;
+  std::cout << "N = "         << dataSize
+            << ", #Blocks = " << numBlocks
+            << ", R = "       << hopSize
+            << ", B = "       << blockSize
+            << ", overlap = " << blockSize - hopSize
+            << ", [(#Blocks - 1) * R + B] = "       << (numBlocks-1)*hopSize + blockSize
+            << ", numberOfDiscardedDataElements = " << numberOfDiscardedDataElements
+            << ", tmp = "                           << tmp
+            << std::endl;
+#endif
   UQ_FATAL_TEST_MACRO(tmp < 0.,
                       UQ_UNAVAILABLE_RANK,
                       "uqScalarSequencePSD()",
@@ -381,7 +384,7 @@ uqScalarSequencePSD(
     //          << std::endl;
 
     // Normalized spectral density: power per radians per sample
-    double factor = 1./((double) numBlocks*blockSize)/M_PI; // CHECK
+    double factor = 1./((double) numBlocks*blockSize); // /M_PI; // CHECK
     double realPartOfFFT = 0.;
     double imagPartOfFFT = 0.;
     for (unsigned int j = 0; j < psdData.size(); ++j) {
@@ -414,7 +417,7 @@ uqScalarSequencePSD(
 
 template <class V>
 void
-uqVectorSequencePSD(
+uqVectorSequencePSDAtZero(
   const std::vector<const V*>&     sequence,
   const std::vector<unsigned int>& initialPositions,
   const std::vector<unsigned int>& numsOfBlocks,
@@ -438,7 +441,11 @@ uqVectorSequencePSD(
                             hopSizeRatio,
                             psdData);
         _2dArrayOfPSDAtZero(initialPosId,numsOfBlocksId)[i] = psdData[0];
-	std::cout << "psdData[0] = " << psdData[0] << std::endl;
+	//std::cout << "psdData[0] = " << psdData[0] << std::endl;
+        std::cout << "psdData = zeros(" << psdData.size() << ",1);" << std::endl;
+        for (unsigned j = 0; j < psdData.size(); ++j) {
+    	  std::cout << "psdData(" << j+1 << ") = " << psdData[j] << ";" << std::endl;
+        }
       } // for 'numsOfBlocksId'
     } // for 'i'
   }
