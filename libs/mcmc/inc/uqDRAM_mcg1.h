@@ -32,6 +32,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains1(
 
   V valuesOf1stPosition(m_paramInitials);
   int iRC = UQ_OK_RC;
+  unsigned int chainSumId = 0;
   for (unsigned int chainId = 0; chainId < m_sizesOfChains.size(); ++chainId) {
     if (m_generateWhiteNoise) {
       //****************************************************
@@ -105,12 +106,28 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains1(
     }
   
     //****************************************************
-    // Print statistics on the chain
+    // Write chain1 out
+    //****************************************************
+    if (ofs) {
+      iRC = writeChain(m_chain1,
+                       m_chain2,
+                       chainId,
+                       *ofs,
+                       mahalanobisMatrix,
+                       applyMahalanobisInvert);
+      UQ_FATAL_RC_MACRO(iRC,
+                        m_env.rank(),
+                        "uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains1()",
+                        "improper writeChain() return");
+    }
+
+    //****************************************************
+    // Compute statistics on the chain
     //****************************************************
     if (m_env.rank() == 0) {
       std::cout << "\n"
                 << "\n-----------------------------------------------------"
-                << "\n Statistics on chain:"
+                << "\n Statistics of chain of id " << chainId << ":"
                 << "\n-----------------------------------------------------"
                 << "\n"
                 << std::endl;
@@ -128,20 +145,20 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains1(
     computeStatistics1(m_uniqueChain1);
 #endif
 
-    //****************************************************
-    // Write chain1 out
-    //****************************************************
-    if (ofs) {
-      iRC = writeChain(m_chain1,
-                       m_chain2,
-                       chainId,
-                       *ofs,
-                       mahalanobisMatrix,
-                       applyMahalanobisInvert);
-      UQ_FATAL_RC_MACRO(iRC,
-                        m_env.rank(),
-                        "uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains1()",
-                        "improper writeChain() return");
+    if (m_chainAvgsToCompute.size() > chainSumId) {
+      // Update m_chain1Sum
+
+      // Check if it is time to compute an average
+      if ((chainId+1) == m_chainAvgsToCompute[chainSumId]) {
+        // Compute the average
+
+        // Write the computed average
+        
+        // Compute statistics on the average
+
+        // Prepare for eventual next chain average
+        chainSumId++;
+      }
     }
 
     //****************************************************

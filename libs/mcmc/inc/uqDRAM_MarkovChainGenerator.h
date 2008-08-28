@@ -29,6 +29,8 @@
 #define UQ_MCMC_CHAIN_USE2_ODV                 0
 #define UQ_MCMC_CHAIN_GENERATE_UNIQUE_ODV      0
 #define UQ_MCMC_CHAIN_GENERATE_EXTRA_ODV       0
+#define UQ_MCMC_CHAIN_AVGS_TO_COMPUTE_ODV      "0"
+#define UQ_MCMC_CHAIN_COMPUTE_FFT_OF_AVGS_ODV  0
 #define UQ_MCMC_CHAIN_DISPLAY_PERIOD_ODV       500
 #define UQ_MCMC_CHAIN_MEASURE_RUN_TIMES_ODV    0
 #define UQ_MCMC_CHAIN_WRITE_ODV                0
@@ -51,7 +53,8 @@
 #define UQ_MCMC_GEWEKE_COMPUTE_ODV             0
 #define UQ_MCMC_GEWEKE_DISPLAY_ODV             0
 #define UQ_MCMC_GEWEKE_WRITE_ODV               0
-#define UQ_MCMC_CORR_COMPUTE_ODV               0
+#define UQ_MCMC_CORR_COMPUTE_VIA_DEF_ODV       0
+#define UQ_MCMC_CORR_COMPUTE_VIA_FFT_ODV       0
 #define UQ_MCMC_CORR_SECOND_LAG_ODV            0
 #define UQ_MCMC_CORR_LAG_SPACING_ODV           0
 #define UQ_MCMC_CORR_NUMBER_OF_LAGS_ODV        0
@@ -177,6 +180,8 @@ private:
   std::string m_option_chain_use2;
   std::string m_option_chain_generateUnique;
   std::string m_option_chain_generateExtra;
+  std::string m_option_chain_avgsToCompute;
+  std::string m_option_chain_computeFftOfAvgs;
   std::string m_option_chain_displayPeriod;
   std::string m_option_chain_measureRunTimes;
   std::string m_option_chain_write;
@@ -203,7 +208,8 @@ private:
   std::string m_option_geweke_ratioNb;
   std::string m_option_geweke_display;
   std::string m_option_geweke_write;
-  std::string m_option_corr_compute;
+  std::string m_option_corr_computeViaDef;
+  std::string m_option_corr_computeViaFft;
   std::string m_option_corr_secondLag;
   std::string m_option_corr_lagSpacing;
   std::string m_option_corr_numberOfLags;
@@ -229,6 +235,8 @@ private:
   bool                       m_useChain2;
   bool                       m_generateUniqueChain;
   bool                       m_generateExtraChains;
+  std::vector<unsigned int>  m_chainAvgsToCompute;
+  bool                       m_chainComputeFftOfAvgs;
   std::vector<std::string>   m_namesOfOutputFiles;
   unsigned int               m_chainDisplayPeriod;
   bool                       m_chainWrite;
@@ -254,7 +262,8 @@ private:
   bool                       m_gewekeDisplay;
   bool                       m_gewekeWrite;
 
-  bool                       m_corrCompute;
+  bool                       m_corrComputeViaDef;
+  bool                       m_corrComputeViaFft;
   unsigned int               m_corrSecondLag;
   unsigned int               m_corrLagSpacing;
   unsigned int               m_corrNumberOfLags;
@@ -287,9 +296,11 @@ private:
   std::vector<const V*>      m_chain1;
   std::vector<const V*>      m_uniqueChain1;
   unsigned int               m_uniqueChain1Pos;
+  std::vector<const V*>      m_chain1Sum;
   uqArrayOfSequencesClass<V> m_chain2;
   uqArrayOfSequencesClass<V> m_uniqueChain2;
   unsigned int               m_uniqueChain2Pos;
+  uqArrayOfSequencesClass<V> m_chain2Sum;
   std::vector<const V*>      m_misfitChain;         // Sum of squares of differences between model and experiments: computed by user supplied likelihood obj
   std::vector<const V*>      m_misfitVarianceChain;
   std::vector<const V*>      m_m2lLikelihoodChain;
@@ -345,6 +356,8 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::uqDRAM_MarkovChainGeneratorClass(
   m_useChain2                    (UQ_MCMC_CHAIN_USE2_ODV),
   m_generateUniqueChain          (UQ_MCMC_CHAIN_GENERATE_UNIQUE_ODV),
   m_generateExtraChains          (UQ_MCMC_CHAIN_GENERATE_EXTRA_ODV),
+  m_chainAvgsToCompute           (0),//,0.),
+  m_chainComputeFftOfAvgs        (UQ_MCMC_CHAIN_COMPUTE_FFT_OF_AVGS_ODV),
   m_namesOfOutputFiles           (1,UQ_MCMC_CHAIN_OUTPUT_FILE_NAMES_ODV),
   m_chainDisplayPeriod           (UQ_MCMC_CHAIN_DISPLAY_PERIOD_ODV),
   m_chainWrite                   (UQ_MCMC_CHAIN_WRITE_ODV),
@@ -359,7 +372,8 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::uqDRAM_MarkovChainGeneratorClass(
   m_gewekeCompute                (UQ_MCMC_GEWEKE_COMPUTE_ODV),
   m_gewekeRatioNa                (0.),
   m_gewekeRatioNb                (0.),
-  m_corrCompute                  (UQ_MCMC_CORR_COMPUTE_ODV),
+  m_corrComputeViaDef            (UQ_MCMC_CORR_COMPUTE_VIA_DEF_ODV),
+  m_corrComputeViaFft            (UQ_MCMC_CORR_COMPUTE_VIA_FFT_ODV),
   m_corrSecondLag                (0),
   m_corrLagSpacing               (0),
   m_corrNumberOfLags             (0),
@@ -387,9 +401,11 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::uqDRAM_MarkovChainGeneratorClass(
   m_chain1                       (0),//,NULL),
   m_uniqueChain1                 (0),//,NULL),
   m_uniqueChain1Pos              (0),
+  m_chain1Sum                    (0),//,NULL),
   m_chain2                       (0,m_paramSpace.zeroVector()),
   m_uniqueChain2                 (0,m_paramSpace.zeroVector()),
   m_uniqueChain2Pos              (0),
+  m_chain2Sum                    (0,m_paramSpace.zeroVector()),
   m_misfitChain                  (0),//,NULL),
   m_misfitVarianceChain          (0),//,NULL),
   m_m2lLikelihoodChain           (0),//,NULL),
@@ -424,6 +440,8 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::uqDRAM_MarkovChainGeneratorClass(
   m_option_chain_use2                 = m_prefix + "MCMC_chain_use2";
   m_option_chain_generateUnique       = m_prefix + "MCMC_chain_generateUnique";
   m_option_chain_generateExtra        = m_prefix + "MCMC_chain_generateExtra";
+  m_option_chain_avgsToCompute        = m_prefix + "MCMC_chain_avgsToCompute";
+  m_option_chain_computeFftOfAvgs     = m_prefix + "MCMC_chain_computeFftOfAvgs";
   m_option_chain_displayPeriod        = m_prefix + "MCMC_chain_displayPeriod";
   m_option_chain_measureRunTimes      = m_prefix + "MCMC_chain_measureRunTimes";
   m_option_chain_write                = m_prefix + "MCMC_chain_write";
@@ -458,7 +476,8 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::uqDRAM_MarkovChainGeneratorClass(
   m_option_geweke_display             = m_prefix + "MCMC_geweke_display";
   m_option_geweke_write               = m_prefix + "MCMC_geweke_write";
 
-  m_option_corr_compute               = m_prefix + "MCMC_corr_compute";
+  m_option_corr_computeViaDef         = m_prefix + "MCMC_corr_computeViaDef";
+  m_option_corr_computeViaFft         = m_prefix + "MCMC_corr_computeViaFft";
   m_option_corr_secondLag             = m_prefix + "MCMC_corr_secondLag";
   m_option_corr_lagSpacing            = m_prefix + "MCMC_corr_lagSpacing";
   m_option_corr_numberOfLags          = m_prefix + "MCMC_corr_numberOfLags";
@@ -556,9 +575,11 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::resetChainAndRelatedInfo()
     if (m_misfitChain[i]) delete m_misfitChain[i];
   }
 
+  // Don't need to reset m_chain2Sum
   m_uniqueChain2Pos = 0;
   //m_uniqueChain2.resetValues();
 
+  // Don't need to reset m_chain1Sum
   m_uniqueChain1Pos = 0;
   for (unsigned int i = 0; i < m_uniqueChain1.size(); ++i) {
     if (m_uniqueChain1[i]) delete m_uniqueChain1[i];
@@ -599,6 +620,8 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::defineMyOptions(
     (m_option_chain_use2.c_str(),                 po::value<bool        >()->default_value(UQ_MCMC_CHAIN_USE2_ODV                ), "use chain2"                                             )
     (m_option_chain_generateUnique.c_str(),       po::value<bool        >()->default_value(UQ_MCMC_CHAIN_GENERATE_UNIQUE_ODV     ), "generate unique chain"                                  )
     (m_option_chain_generateExtra.c_str(),        po::value<bool        >()->default_value(UQ_MCMC_CHAIN_GENERATE_EXTRA_ODV      ), "generate extra chains"                                  )
+    (m_option_chain_avgsToCompute.c_str(),        po::value<std::string >()->default_value(UQ_MCMC_CHAIN_AVGS_TO_COMPUTE_ODV     ), "compute averages of given amounts of chains"            )
+    (m_option_chain_computeFftOfAvgs.c_str(),     po::value<bool        >()->default_value(UQ_MCMC_CHAIN_COMPUTE_FFT_OF_AVGS_ODV ), "compute fft of the averages of chains"                  )
     (m_option_chain_displayPeriod.c_str(),        po::value<unsigned int>()->default_value(UQ_MCMC_CHAIN_DISPLAY_PERIOD_ODV      ), "period of message display during chain generation"      )
     (m_option_chain_measureRunTimes.c_str(),      po::value<bool        >()->default_value(UQ_MCMC_CHAIN_MEASURE_RUN_TIMES_ODV   ), "measure run times"                                      )
     (m_option_chain_write.c_str(),                po::value<bool        >()->default_value(UQ_MCMC_CHAIN_WRITE_ODV               ), "write chain values to the output file"                  )
@@ -623,7 +646,8 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::defineMyOptions(
     (m_option_geweke_ratioNa.c_str(),             po::value<            >()->default_value(), "")
     (m_option_geweke_ratioNb.c_str(),             po::value<            >()->default_value(), "")
 #endif
-    (m_option_corr_compute.c_str(),               po::value<bool        >()->default_value(UQ_MCMC_CORR_COMPUTE_ODV              ), "compute correlations"                                   )
+    (m_option_corr_computeViaDef.c_str(),         po::value<bool        >()->default_value(UQ_MCMC_CORR_COMPUTE_VIA_DEF_ODV      ), "compute correlations via definition"                    )
+    (m_option_corr_computeViaFft.c_str(),         po::value<bool        >()->default_value(UQ_MCMC_CORR_COMPUTE_VIA_FFT_ODV      ), "compute correlations via fft"                           )
     (m_option_corr_secondLag.c_str(),             po::value<unsigned int>()->default_value(UQ_MCMC_CORR_SECOND_LAG_ODV           ), "second lag for computation of autocorrelations"         )
     (m_option_corr_lagSpacing.c_str(),            po::value<unsigned int>()->default_value(UQ_MCMC_CORR_LAG_SPACING_ODV          ), "lag spacing for computation of autocorrelations"        )
     (m_option_corr_numberOfLags.c_str(),          po::value<unsigned int>()->default_value(UQ_MCMC_CORR_NUMBER_OF_LAGS_ODV       ), "number of lags for computation of autocorrelations"     )
@@ -735,6 +759,14 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::getMyOptionValues(
     m_generateExtraChains = m_env.allOptionsMap()[m_option_chain_generateExtra.c_str()].as<bool>();
   }
 
+  if (m_env.allOptionsMap().count(m_option_chain_avgsToCompute.c_str())) {
+    //m_chainAvgsToCompute = m_env.allOptionsMap()[m_option_chain_avgsToCompute.c_str()].as<bool>(); // FIX IT
+  }
+
+  if (m_env.allOptionsMap().count(m_option_chain_computeFftOfAvgs.c_str())) {
+    m_chainComputeFftOfAvgs = m_env.allOptionsMap()[m_option_chain_computeFftOfAvgs.c_str()].as<bool>();
+  }
+
   if (m_env.allOptionsMap().count(m_option_chain_outputFileNames.c_str())) {
     std::string inputString = m_env.allOptionsMap()[m_option_chain_outputFileNames.c_str()].as<std::string>();
     m_namesOfOutputFiles.clear();
@@ -811,8 +843,12 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::getMyOptionValues(
     m_gewekeCompute = m_env.allOptionsMap()[m_option_geweke_compute.c_str()].as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_corr_compute.c_str())) {
-    m_corrCompute = m_env.allOptionsMap()[m_option_corr_compute.c_str()].as<bool>();
+  if (m_env.allOptionsMap().count(m_option_corr_computeViaDef.c_str())) {
+    m_corrComputeViaDef = m_env.allOptionsMap()[m_option_corr_computeViaDef.c_str()].as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_corr_computeViaFft.c_str())) {
+    m_corrComputeViaFft = m_env.allOptionsMap()[m_option_corr_computeViaFft.c_str()].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_corr_secondLag.c_str())) {
@@ -1518,14 +1554,14 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
   //****************************************************
   // Set lags for the computation of chain autocorrelations
   std::vector<unsigned int> lagsForCorrs(m_corrNumberOfLags,1);
-  if ((m_corrCompute                     ) &&
+  if ((m_corrComputeViaDef               ) &&
       (initialPosForStatistics.size() > 0)) {
     for (unsigned int i = 1; i < lagsForCorrs.size(); ++i) {
       lagsForCorrs[i] = m_corrSecondLag + (i-1)*m_corrLagSpacing;
     }
   }
 
-  if ((m_corrCompute                     ) &&
+  if ((m_corrComputeViaDef               ) &&
       (initialPosForStatistics.size() > 0) &&
       (lagsForCorrs.size()            > 0)) { 
     tmpRunTime = 0.;
@@ -2170,7 +2206,7 @@ template <class V, class M>
 const std::string&
 uqDRAM_MarkovChainGeneratorClass<V,M>::outputFileName() const
 {
-  return m_namesOfOutputFiles[m_chain1.size()-1];
+  return m_namesOfOutputFiles[nothing yet];
 }
 #endif
 
@@ -2183,13 +2219,15 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::print(std::ostream& os) const
   for (unsigned int i = 0; i < m_sizesOfChains.size(); ++i) {
     os << m_sizesOfChains[i] << " ";
   }
-  os << "\n" << m_option_chain_use2            << " = " << m_useChain2
-     << "\n" << m_option_chain_generateUnique  << " = " << m_generateUniqueChain
-     << "\n" << m_option_chain_generateExtra   << " = " << m_generateExtraChains
-     << "\n" << m_option_chain_displayPeriod   << " = " << m_chainDisplayPeriod
-     << "\n" << m_option_chain_measureRunTimes << " = " << m_measureRunTimes
-     << "\n" << m_option_chain_write           << " = " << m_chainWrite
-     << "\n" << m_option_chain_outputFileNames << " = ";
+  os << "\n" << m_option_chain_use2             << " = " << m_useChain2
+     << "\n" << m_option_chain_generateUnique   << " = " << m_generateUniqueChain
+     << "\n" << m_option_chain_generateExtra    << " = " << m_generateExtraChains
+    //<< "\n" << m_option_chain_avgsToCompute    << " = " << m_chainAvgsToCompute // FIX IT
+     << "\n" << m_option_chain_computeFftOfAvgs << " = " << m_chainComputeFftOfAvgs
+     << "\n" << m_option_chain_displayPeriod    << " = " << m_chainDisplayPeriod
+     << "\n" << m_option_chain_measureRunTimes  << " = " << m_measureRunTimes
+     << "\n" << m_option_chain_write            << " = " << m_chainWrite
+     << "\n" << m_option_chain_outputFileNames  << " = ";
   for (unsigned int i = 0; i < m_namesOfOutputFiles.size(); ++i) {
     os << m_namesOfOutputFiles[i] << " ";
   }
@@ -2212,16 +2250,17 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::print(std::ostream& os) const
   for (unsigned int i = 0; i < m_bmmLengths.size(); ++i) {
     os << m_bmmLengths[i] << " ";
   }
-  os << "\n" << m_option_psd_compute       << " = " << m_psdCompute
-     << "\n" << m_option_geweke_compute    << " = " << m_gewekeCompute
-     << "\n" << m_option_corr_compute      << " = " << m_corrCompute
-     << "\n" << m_option_corr_secondLag    << " = " << m_corrSecondLag
-     << "\n" << m_option_corr_lagSpacing   << " = " << m_corrLagSpacing
-     << "\n" << m_option_corr_numberOfLags << " = " << m_corrNumberOfLags
-     << "\n" << m_option_corr_display      << " = " << m_corrDisplay
-     << "\n" << m_option_corr_write        << " = " << m_corrWrite
-     << "\n" << m_option_hist_compute      << " = " << m_histCompute
-     << "\n" << m_option_kde_compute       << " = " << m_kdeCompute
+  os << "\n" << m_option_psd_compute        << " = " << m_psdCompute
+     << "\n" << m_option_geweke_compute     << " = " << m_gewekeCompute
+     << "\n" << m_option_corr_computeViaDef << " = " << m_corrComputeViaDef
+     << "\n" << m_option_corr_computeViaFft << " = " << m_corrComputeViaFft
+     << "\n" << m_option_corr_secondLag     << " = " << m_corrSecondLag
+     << "\n" << m_option_corr_lagSpacing    << " = " << m_corrLagSpacing
+     << "\n" << m_option_corr_numberOfLags  << " = " << m_corrNumberOfLags
+     << "\n" << m_option_corr_display       << " = " << m_corrDisplay
+     << "\n" << m_option_corr_write         << " = " << m_corrWrite
+     << "\n" << m_option_hist_compute       << " = " << m_histCompute
+     << "\n" << m_option_kde_compute        << " = " << m_kdeCompute
      << "\n" << "(internal variable) m_likelihoodObjComputesMisfits = " << m_likelihoodObjComputesMisfits
      << std::endl;
 
