@@ -34,7 +34,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains1(
   int iRC = UQ_OK_RC;
 
   unsigned int chainSumId = 0;
-  std::vector<const V*> chain1Sum(0,NULL);
+  std::vector<const V*> chain1Sum(0);//,NULL);
   if (m_avgChainCompute.size() > 0) {
     // It is expected that all participating chains will have the same size.
     // The code will check this assumption.
@@ -85,7 +85,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains1(
       // Initialize variables before chain1 loop
       //****************************************************
       if (chainId > 0) {
-        valuesOf1stPosition = *(m_chain1[m_chain1.size()-1]);
+        valuesOf1stPosition = *(m_chain1[m_chain1.sequenceSize()-1]);
         resetChainAndRelatedInfo();
       }
 
@@ -152,7 +152,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains1(
     // --> compute its statistics
     //****************************************************
     if (m_uniqueChainGenerate) {
-      //chainPositionIteratorTypedef positionIterator = m_uniqueChain1.begin();
+      //chainVectorPositionIteratorTypedef positionIterator = m_uniqueChain1.begin();
       //std::advance(positionIterator,uniquePos);
       //m_uniqueChain1.erase(positionIterator,m_uniqueChain1.end());
       //UQ_FATAL_TEST_MACRO((uniquePos != m_uniqueChain1.size()),
@@ -235,9 +235,8 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateWhiteNoise1(unsigned int chainId)
 
   tmpRunTime = 0.;
   iRC = gettimeofday(&timevalTmp, NULL);
-  m_chain1.resize(m_sizesOfChains[chainId],NULL); 
-  std::vector<const V*>(m_chain1).swap(m_chain1);
-  for (unsigned int positionId = 0; positionId < m_chain1.size(); ++positionId) {
+  m_chain1.resizeSequence(m_sizesOfChains[chainId]); 
+  for (unsigned int positionId = 0; positionId < m_chain1.sequenceSize(); ++positionId) {
     gaussianVector.cwSetGaussian(m_env.rng(),0.,1.);
     m_chain1[positionId] = new V(gaussianVector);
 
@@ -328,7 +327,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain1(
   //****************************************************
   // Begin chain1 loop from positionId = 1
   //****************************************************
-  m_chain1.resize(m_sizesOfChains[chainId],NULL); 
+  m_chain1.resizeSequence(m_sizesOfChains[chainId]); 
   if (m_uniqueChainGenerate) m_idsOfUniquePositions.resize(m_sizesOfChains[chainId],0); 
   if (m_generateExtraChains) {
     if (m_likelihoodObjComputesMisfits) {
@@ -351,7 +350,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain1(
     m_alphaQuotients    [0] = 1.;
   }
 
-  for (unsigned int positionId = 1; positionId < m_chain1.size(); ++positionId) {
+  for (unsigned int positionId = 1; positionId < m_chain1.sequenceSize(); ++positionId) {
     //if (m_env.rank() == 0) std::cout << "In uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain1()"
     //                                 << ": beginning chain1 position of id = " << positionId
     //                                 << ", m_maxNumberOfExtraStages =  "       << m_maxNumberOfExtraStages
@@ -599,7 +598,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain1(
 
       // Now might be the moment to adapt
       unsigned int idOfFirstPositionInSubChain = 0;
-      std::vector<V*> subChain1(0);//,NULL);
+      uqSequenceOfVectorsClass<V> subChain1(0,m_paramSpace.zeroVector());
 
       // Check if now is indeed the moment to adapt
       if (positionId < m_initialNonAdaptInterval) {
@@ -607,7 +606,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain1(
       }
       else if (positionId == m_initialNonAdaptInterval) {
         idOfFirstPositionInSubChain = 0;
-        subChain1.resize(m_initialNonAdaptInterval+1,NULL);
+        subChain1.resizeSequence(m_initialNonAdaptInterval+1);
         m_lastMean             = m_paramSpace.newVector();
         m_lastAdaptedCovMatrix = m_paramSpace.newMatrix();
       }
@@ -615,13 +614,13 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain1(
         unsigned int interval = positionId - m_initialNonAdaptInterval;
         if ((interval % m_adaptInterval) == 0) {
           idOfFirstPositionInSubChain = positionId - m_adaptInterval;
-          subChain1.resize(m_adaptInterval,NULL);
+          subChain1.resizeSequence(m_adaptInterval);
         }
       }
 
       // If now is indeed the moment to adapt, then do it!
-      if (subChain1.size() > 0) {
-        for (unsigned int i = 0; i < subChain1.size(); ++i) {
+      if (subChain1.sequenceSize() > 0) {
+        for (unsigned int i = 0; i < subChain1.sequenceSize(); ++i) {
           subChain1[i] = new V(*(m_chain1[idOfFirstPositionInSubChain+i]));
         }
         updateCovMatrix1(subChain1,
@@ -696,9 +695,9 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain1(
           if (m_maxNumberOfExtraStages > 0) updateCovMatrices();
         }
 
-        for (unsigned int i = 0; i < subChain1.size(); ++i) {
-          if (subChain1[i]) delete subChain1[i];
-        }
+        //for (unsigned int i = 0; i < subChain1.sequenceSize(); ++i) {
+        //  if (subChain1[i]) delete subChain1[i];
+        //}
       }
 
       if (m_measureRunTimes) m_amRunTime += uqMiscGetEllapsedSeconds(&timevalAM);
@@ -720,7 +719,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain1(
   m_chainRunTime += uqMiscGetEllapsedSeconds(&timevalChain);
   if (m_env.rank() == 0) {
     std::cout << "Finished generating the chain1 of id " << chainId
-              << ", with "                               << m_chain1.size()
+              << ", with "                               << m_chain1.sequenceSize()
               << " positions";
     if (m_uniqueChainGenerate) {
       std::cout << " and " << uniquePos
@@ -759,9 +758,9 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain1(
                 << " seconds ("                  << 100.*m_amRunTime/m_chainRunTime
                 << "%)";
     }
-    std::cout << "\n  Rejection percentage = " << 100. * (double) m_numRejections/(double) m_chain1.size()
+    std::cout << "\n  Rejection percentage = " << 100. * (double) m_numRejections/(double) m_chain1.sequenceSize()
               << " %";
-    std::cout << "\n   Outbound percentage = " << 100. * (double) m_numOutOfBounds/(double) m_chain1.size()
+    std::cout << "\n   Outbound percentage = " << 100. * (double) m_numOutOfBounds/(double) m_chain1.sequenceSize()
               << " %";
     std::cout << std::endl;
   }
@@ -776,43 +775,43 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain1(
 template <class V, class M>
 void
 uqDRAM_MarkovChainGeneratorClass<V,M>::updateCovMatrix1(
-  const std::vector<V*>& subChain1,
-  unsigned int           idOfFirstPositionInSubChain,
-  double&                lastChainSize,
-  V&                     lastMean,
-  M&                     lastAdaptedCovMatrix)
+  const uqSequenceOfVectorsClass<V>& subChain1,
+  unsigned int                       idOfFirstPositionInSubChain,
+  double&                            lastChainSize,
+  V&                                 lastMean,
+  M&                                 lastAdaptedCovMatrix)
 {
-  double doubleSubChainSize = (double) subChain1.size();
+  double doubleSubChainSize = (double) subChain1.sequenceSize();
   if (lastChainSize == 0) {
-    UQ_FATAL_TEST_MACRO(subChain1.size() < 2,
+    UQ_FATAL_TEST_MACRO(subChain1.sequenceSize() < 2,
                         m_env.rank(),
                         "uqDRAM_MarkovChainGeneratorClass<V,M>::updateCovMatrix1()",
-                        "'subChain1.size()' should be >= 2");
+                        "'subChain1.sequenceSize()' should be >= 2");
 
     lastMean.cwSet(0.);
     double ratio = 1./doubleSubChainSize;
-    for (unsigned int i = 0; i < subChain1.size(); ++i) {
+    for (unsigned int i = 0; i < subChain1.sequenceSize(); ++i) {
       lastMean += ratio * *(subChain1[i]);
     }
 
     lastAdaptedCovMatrix = -doubleSubChainSize * matrixProduct(lastMean,lastMean);
-    for (unsigned int i = 0; i < subChain1.size(); ++i) {
+    for (unsigned int i = 0; i < subChain1.sequenceSize(); ++i) {
       lastAdaptedCovMatrix += matrixProduct(*(subChain1[i]),*(subChain1[i]));
     }
     lastAdaptedCovMatrix /= (doubleSubChainSize - 1.); // That is why subChain1 size must be >= 2
   }
   else {
-    UQ_FATAL_TEST_MACRO(subChain1.size() < 1,
+    UQ_FATAL_TEST_MACRO(subChain1.sequenceSize() < 1,
                         m_env.rank(),
                         "uqDRAM_MarkovChainGeneratorClass<V,M>::updateCovMatrix1()",
-                        "'subChain1.size()' should be >= 1");
+                        "'subChain1.sequenceSize()' should be >= 1");
 
     UQ_FATAL_TEST_MACRO(idOfFirstPositionInSubChain < 1,
                         m_env.rank(),
                         "uqDRAM_MarkovChainGeneratorClass<V,M>::updateCovMatrix1()",
                         "'idOfFirstPositionInSubChain' should be >= 1");
 
-    for (unsigned int i = 0; i < subChain1.size(); ++i) {
+    for (unsigned int i = 0; i < subChain1.sequenceSize(); ++i) {
       double doubleCurrentId  = (double) (idOfFirstPositionInSubChain+i);
       V diffVec(*(subChain1[i]) - lastMean);
 

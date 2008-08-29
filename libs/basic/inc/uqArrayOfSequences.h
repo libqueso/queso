@@ -30,7 +30,7 @@ template <class V>
 class uqArrayOfSequencesClass
 {
 public:
-  typedef typename std::vector<double>::iterator seqPositionIteratorTypedef;
+  typedef typename std::vector<double>::iterator seqScalarPositionIteratorTypedef;
   uqArrayOfSequencesClass(unsigned int sequenceSize, const V& vectorExample);
  ~uqArrayOfSequencesClass();
 
@@ -184,11 +184,11 @@ uqArrayOfSequencesClass<V>::erasePositions(unsigned int posBegin, unsigned int p
     for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
       ScalarSequenceType& seq = *(m_scalarSequences(i,0));
 
-      seqPositionIteratorTypedef positionIteratorBegin = seq.begin();
+      seqScalarPositionIteratorTypedef positionIteratorBegin = seq.begin();
       if (posBegin < seq.size()) std::advance(positionIteratorBegin,posBegin);
       else                       positionIteratorBegin = seq.end();
 
-      seqPositionIteratorTypedef positionIteratorEnd = seq.begin();
+      seqScalarPositionIteratorTypedef positionIteratorEnd = seq.begin();
       if (posEnd < seq.size()) std::advance(positionIteratorEnd,posEnd);
       else                     positionIteratorEnd = seq.end();
 
@@ -655,10 +655,10 @@ uqArrayOfSequencesClass<V>::minMax(
   unsigned int numParams = vectorSize();
   for (unsigned int i = 0; i < numParams; ++i) {
     ScalarSequenceType& seq = *(tmp->m_scalarSequences(i,0));
-    seqPositionIteratorTypedef positionIterator = seq.begin();
+    seqScalarPositionIteratorTypedef positionIterator = seq.begin();
     std::advance(positionIterator,initialPos);
 
-    seqPositionIteratorTypedef pos;
+    seqScalarPositionIteratorTypedef pos;
     pos = std::min_element(positionIterator, seq.end());
     mins[i] = *pos;
     pos = std::max_element(positionIterator, seq.end());
