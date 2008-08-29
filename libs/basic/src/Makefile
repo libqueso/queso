@@ -51,7 +51,8 @@ OBJS_ANY = uqEnvironment.o \
 	uqDefines.o \
 	uqVector.o \
 	uqMatrix.o \
-	uqMiscellaneous.o
+	uqMiscellaneous.o \
+	uqRealFft.o
 
 OBJS_gsl = uqGslVector.o \
 	uqGslMatrix.o \

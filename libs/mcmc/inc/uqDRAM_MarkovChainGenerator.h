@@ -1792,7 +1792,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
   }
 
   unsigned int uncorrInitialPos = m_uncorrInitialPos;
-  if (uncorrInitialPos >= intChainSequenceSize) uncorrInitialPos = intChainSequenceSize - 1;
+  if (uncorrInitialPos >= intChainSequenceSize) uncorrInitialPos = (unsigned int) (0.5*doubleChainSequenceSize);
   if (m_useChain2) {
     chain2.minMax(uncorrInitialPos,
                   *m_statsMinPositions,

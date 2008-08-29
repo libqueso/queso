@@ -22,15 +22,12 @@
 
 #include <EpetraExt_DistArray.h>
 #include <uq2dArrayOfStuff.h>
-#include <gsl/gsl_randist.h>
-
-typedef std::vector<double> ScalarSequenceType;
+#include <uqScalarSequence.h>
 
 template <class V>
 class uqArrayOfSequencesClass
 {
 public:
-  typedef typename std::vector<double>::iterator seqScalarPositionIteratorTypedef;
   uqArrayOfSequencesClass(unsigned int sequenceSize, const V& vectorExample);
  ~uqArrayOfSequencesClass();
 
@@ -97,9 +94,9 @@ public:
                                         const V&                         scales,
                                         std::vector<V*>&                 densityValues) const;
 private:
-  const uqEnvironmentClass&                 m_env;
-  V                                         m_vectorExample;
-  EpetraExt::DistArray<ScalarSequenceType*> m_scalarSequences;
+  const uqEnvironmentClass&                            m_env;
+  V                                                    m_vectorExample;
+  EpetraExt::DistArray<uqScalarSequenceClass<double>*> m_scalarSequences;
 };
 
 template <class V>
@@ -121,7 +118,7 @@ uqArrayOfSequencesClass<V>::uqArrayOfSequencesClass(
   //                                 << std::endl;
 
   for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
-    m_scalarSequences(i,0) = new ScalarSequenceType(sequenceSize,0.);
+    m_scalarSequences(i,0) = new uqScalarSequenceClass<double>(m_env,sequenceSize);
   }
 
   //if (m_env.rank() == 0) std::cout << "Leaving uqArrayOfSequencesClass<V>::constructor()"
@@ -142,7 +139,7 @@ uqArrayOfSequencesClass<V>::sequenceSize() const
 {
   uqArrayOfSequencesClass<V>* tmp = const_cast<uqArrayOfSequencesClass<V>*>(this);
 
-  return tmp->m_scalarSequences(0,0)->size();
+  return tmp->m_scalarSequences(0,0)->sequenceSize();
 }
 
 template <class V>
@@ -157,8 +154,7 @@ void
 uqArrayOfSequencesClass<V>::resizeSequence(unsigned int newSequenceSize)
 {
   for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
-    m_scalarSequences(i,0)->resize(newSequenceSize);
-    std::vector<double>(*(m_scalarSequences(i,0))).swap(*(m_scalarSequences(i,0)));
+    m_scalarSequences(i,0)->resizeSequence(newSequenceSize);
   }
 
   return;
@@ -168,10 +164,9 @@ template <class V>
 void
 uqArrayOfSequencesClass<V>::resetValues()
 {
-  //for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
-  //  m_scalarSequences(i,0)->resize(newSequenceSize);
-  //  std::vector<double>(*(m_scalarSequences(i,0))).swap(*(m_scalarSequences(i,0)));
-  //}
+  for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
+    m_scalarSequences(i,0)->resetValues();
+  }
 
   return;
 }
@@ -182,21 +177,8 @@ uqArrayOfSequencesClass<V>::erasePositions(unsigned int posBegin, unsigned int p
 {
   if (posBegin < this->sequenceSize()) {
     for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
-      ScalarSequenceType& seq = *(m_scalarSequences(i,0));
-
-      seqScalarPositionIteratorTypedef positionIteratorBegin = seq.begin();
-      if (posBegin < seq.size()) std::advance(positionIteratorBegin,posBegin);
-      else                       positionIteratorBegin = seq.end();
-
-      seqScalarPositionIteratorTypedef positionIteratorEnd = seq.begin();
-      if (posEnd < seq.size()) std::advance(positionIteratorEnd,posEnd);
-      else                     positionIteratorEnd = seq.end();
-
-      seq.erase(positionIteratorBegin,positionIteratorEnd);
-      UQ_FATAL_TEST_MACRO((posBegin != seq.size()),
-                          m_env.rank(),
-                          "uqArrayOfSequences<V>::erasePositions()",
-                          "posBegin != seq.size()");
+      uqScalarSequenceClass<double>& seq = *(m_scalarSequences(i,0));
+      seq.erasePositions(posBegin,posEnd);
     }
   }
 
@@ -220,7 +202,8 @@ void
 uqArrayOfSequencesClass<V>::setPositionValues(unsigned int positionId, const V& vector)
 {
   for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
-    (*(m_scalarSequences(i,0)))[positionId] = vector[i];
+    uqScalarSequenceClass<double>& seq = *(m_scalarSequences(i,0));
+    seq[positionId] = vector[i];
   }
 
   return;
@@ -231,20 +214,8 @@ void
 uqArrayOfSequencesClass<V>::setGaussian(gsl_rng* rng, const V& meanVec, const V& stdDevVec)
 {
   for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
-    ScalarSequenceType& seq = *(m_scalarSequences(i,0));
-    unsigned int maxJ = seq.size();
-    double mean = meanVec[i];
-    double stdDev = stdDevVec[i];
-    if (mean == 0) {
-      for (unsigned int j = 0; j < maxJ; ++j) {
-        seq[j] = gsl_ran_gaussian(rng,stdDev);
-      }
-    }
-    else {
-      for (unsigned int j = 0; j < maxJ; ++j) {
-        seq[j] = mean + gsl_ran_gaussian(rng,stdDev);
-      }
-    }
+    uqScalarSequenceClass<double>& seq = *(m_scalarSequences(i,0));
+    seq.setGaussian(rng,meanVec[i],stdDevVec[i]);
   }
   return;
 }
@@ -271,19 +242,11 @@ uqArrayOfSequencesClass<V>::mean(
                       "uqArrayOfSequencesClass<V>::mean()",
                       "incompatible sizes between mean vector and vectors in sequence");
 
-  unsigned int loopSize      = numPos;
-  unsigned int finalPosPlus1 = initialPos + loopSize;
-  double doubleLoopSize = (double) loopSize;
   mean.cwSet(0.);
-
   uqArrayOfSequencesClass<V>* tmp = const_cast<uqArrayOfSequencesClass<V>*>(this);
   for (unsigned int i = 0; i < mean.size(); ++i) {
-    const ScalarSequenceType& seq = *(tmp->m_scalarSequences(i,0));
-    double                    result = 0.;
-    for (unsigned int j = initialPos; j < finalPosPlus1; ++j) {
-      result += seq[j];
-    }
-    mean[i] = result/doubleLoopSize;
+    const uqScalarSequenceClass<double>& seq = *(tmp->m_scalarSequences(i,0));
+    mean[i] = seq.mean(initialPos, numPos);
   }
 
   return;
@@ -324,9 +287,9 @@ uqArrayOfSequencesClass<V>::sampleVariance(
 
   uqArrayOfSequencesClass<V>* tmp = const_cast<uqArrayOfSequencesClass<V>*>(this);
   for (unsigned int i = 0; i < sampleVariance.size(); ++i) {
-    const ScalarSequenceType& seq = *(tmp->m_scalarSequences(i,0));
-    double                    tmpMean = mean[i];
-    double                    result = 0.;
+    const uqScalarSequenceClass<double>& seq = *(tmp->m_scalarSequences(i,0));
+    double                               tmpMean = mean[i];
+    double                               result = 0.;
     for (unsigned int j = initialPos; j < finalPosPlus1; ++j) {
       double diff = seq[j] - tmpMean;
       result += diff*diff;
@@ -372,9 +335,9 @@ uqArrayOfSequencesClass<V>::populationVariance(
 
   uqArrayOfSequencesClass<V>* tmp = const_cast<uqArrayOfSequencesClass<V>*>(this);
   for (unsigned int i = 0; i < populVariance.size(); ++i) {
-    const ScalarSequenceType& seq = *(tmp->m_scalarSequences(i,0));
-    double                    tmpMean = mean[i];
-    double                    result = 0.;
+    const uqScalarSequenceClass<double>& seq = *(tmp->m_scalarSequences(i,0));
+    double                               tmpMean = mean[i];
+    double                               result = 0.;
     for (unsigned int j = initialPos; j < finalPosPlus1; ++j) {
       double diff = seq[j] - tmpMean;
       result += diff*diff;
@@ -427,7 +390,7 @@ uqArrayOfSequencesClass<V>::autoCovariance(
 
   uqArrayOfSequencesClass<V>* tmp = const_cast<uqArrayOfSequencesClass<V>*>(this);
   for (unsigned int i = 0; i < autoCov.size(); ++i) {
-    const ScalarSequenceType& seq = *(tmp->m_scalarSequences(i,0));
+    const uqScalarSequenceClass<double>& seq = *(tmp->m_scalarSequences(i,0));
     double meanValue = mean[i];
     double result = 0;
     for (unsigned int j = initialPos; j < finalPosPlus1; ++j) {
@@ -549,7 +512,7 @@ uqArrayOfSequencesClass<V>::psdAtZero(
 #if 0
   for (unsigned int initialPosId = 0; initialPosId < initialPositions.size(); initialPosId++) {
     unsigned int dataSize = sequence.size() - initialPositions[initialPosId];
-    std::vector<double> data(dataSize,0.);
+    uqScalarSequenceClass<double> data(dataSize,0.);
 
     unsigned int numParams = sequence[0]->size();
     for (unsigned int i = 0; i < numParams; ++i) {
@@ -559,10 +522,9 @@ uqArrayOfSequencesClass<V>::psdAtZero(
       for (unsigned int numsOfBlocksId = 0; numsOfBlocksId < numsOfBlocks.size(); numsOfBlocksId++) {
         unsigned int numBlocks = numsOfBlocks[numsOfBlocksId];
         std::vector<double> psdData(0,0.); // size will be determined by 'uqScalarSequencePSD()'
-        uqScalarSequencePSD(data,
-                            numBlocks,
-                            hopSizeRatio,
-                            psdData);
+        data.psd(numBlocks,
+                 hopSizeRatio,
+                 psdData);
         _2dArrayOfPSDAtZero(initialPosId,numsOfBlocksId)[i] = psdData[0];
 	std::cout << "psdData[0] = " << psdData[0] << std::endl;
       } // for 'numsOfBlocksId'
@@ -603,30 +565,28 @@ uqArrayOfSequencesClass<V>::geweke(
     unsigned int numParams = sequence[0]->size();
 
     V psdAtZeroA(*(sequence[0]));
-    std::vector<double> dataA(dataSizeA,0.);
+    uqScalarSequenceClass<double> dataA(dataSizeA,0.);
     for (unsigned int i = 0; i < numParams; ++i) {
       for (unsigned int j = 0; j < dataSizeA; ++j) {
 	dataA[j] = (*(sequence[initialPosA+j]))[i];
       }
       std::vector<double> psdData(0,0.);
-      uqScalarSequencePSD(dataA,
-                          8,  // numBlocks
-                          .5, // hopSizeRatio
-                          psdData);
+      dataA.psd(8,  // numBlocks
+                .5, // hopSizeRatio
+                psdData);
       psdAtZeroA[i] = psdData[0];
     } // for 'i'
 
     V psdAtZeroB(*(sequence[0]));
-    std::vector<double> dataB(dataSizeB,0.);
+    uqScalarSequenceClass<double> dataB(dataSizeB,0.);
     for (unsigned int i = 0; i < numParams; ++i) {
       for (unsigned int j = 0; j < dataSizeB; ++j) {
 	dataB[j] = (*(sequence[initialPosB+j]))[i];
       }
       std::vector<double> psdData(0,0.);
-      uqScalarSequencePSD(dataB,
-                          8,  // numBlocks
-                          .5, // hopSizeRatio
-                          psdData);
+      dataB.psd(8,  // numBlocks
+                .5, // hopSizeRatio
+                psdData);
       psdAtZeroB[i] = psdData[0];
     } // for 'i'
 
@@ -654,15 +614,8 @@ uqArrayOfSequencesClass<V>::minMax(
 
   unsigned int numParams = vectorSize();
   for (unsigned int i = 0; i < numParams; ++i) {
-    ScalarSequenceType& seq = *(tmp->m_scalarSequences(i,0));
-    seqScalarPositionIteratorTypedef positionIterator = seq.begin();
-    std::advance(positionIterator,initialPos);
-
-    seqScalarPositionIteratorTypedef pos;
-    pos = std::min_element(positionIterator, seq.end());
-    mins[i] = *pos;
-    pos = std::max_element(positionIterator, seq.end());
-    maxs[i] = *pos;
+    uqScalarSequenceClass<double>& seq = *(tmp->m_scalarSequences(i,0));
+    seq.minMax(initialPos,mins[i],maxs[i]);
   }
 
   return;
@@ -692,18 +645,17 @@ uqArrayOfSequencesClass<V>::histogram(
   unsigned int dataSize = sequence.size() - initialPosition;
   unsigned int numParams = sequence[0]->size();
   for (unsigned int i = 0; i < numParams; ++i) {
-    std::vector<double> data(dataSize,0.);
+    uqScalarSequenceClass<double> data(dataSize,0.);
     for (unsigned int j = 0; j < dataSize; ++j) {
       data[j] = (*(sequence[initialPosition+j]))[i];
     }
 
     std::vector<double> centers(centersForAllBins.size(),0.);
     std::vector<double> bins   (binsForAllParams.size(), 0.);
-    uqScalarSequenceHistogram(data,
-                              minHorizontalValues[i],
-                              maxHorizontalValues[i],
-                              centers,
-                              bins);
+    data.histogram(minHorizontalValues[i],
+                   maxHorizontalValues[i],
+                   centers,
+                   bins);
 
     for (unsigned int j = 0; j < bins.size(); ++j) {
       (*(centersForAllBins[j]))[i] = centers[j];
@@ -733,7 +685,7 @@ uqArrayOfSequencesClass<V>::sort(
 
   unsigned int dataSize = sequence.size() - initialPosition;
   unsigned int numParams = sequence[0]->size();
-  std::vector<double> data(dataSize,0.);
+  uqScalarSequenceClass<double> data(dataSize,0.);
   for (unsigned int i = 0; i < numParams; ++i) {
     for (unsigned int j = 0; j < dataSize; ++j) {
       data[j] = (*(sequence[initialPosition+j]))[i];

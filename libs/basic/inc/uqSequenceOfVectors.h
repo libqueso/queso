@@ -22,11 +22,7 @@
 
 #include <EpetraExt_DistArray.h>
 #include <uq2dArrayOfStuff.h>
-#include <gsl/gsl_randist.h>
-#include <gsl/gsl_fft_real.h>
-#include <gsl/gsl_fft_halfcomplex.h>
-
-//typedef std::vector<double> ScalarSequenceType;
+#include <uqScalarSequence.h>
 
 template <class V>
 class uqSequenceOfVectorsClass
@@ -67,6 +63,10 @@ public:
         void         bmm               (const std::vector<unsigned int>& initialPositions,
                                         const std::vector<unsigned int>& batchLengths,
                                         uq2dArrayOfStuff<V>&             _2dArrayOfBMM) const; // [numOfPos x numOfLengths] matrix
+        //void         fftAlloc          ();
+        //void         fftForward        (unsigned int fftSize);
+        //void         fftInverse        (unsigned int fftSize);
+        //void         fftFree           ();
         void         psdAtZero         (const std::vector<unsigned int>& initialPositions,
                                         const std::vector<unsigned int>& numsOfBlocks,
                                         double                           hopSizeRatio,
@@ -434,7 +434,7 @@ uqSequenceOfVectorsClass<V>::bmm(
   V covLag0OfBatchMeans(m_vectorExample);
   V covLag1OfBatchMeans(m_vectorExample);
 
-  V* tmpVector = new V(m_vectorExample); // In order to contour the fact that 'batchMeans' is a vector of 'const V*', but needs to be set first
+  V tmpVector(m_vectorExample); // In order to contour the fact that 'batchMeans' is a vector of 'const V*', but needs to be set first
   for (unsigned int initialPosId = 0; initialPosId < initialPositions.size(); initialPosId++) {
     for (unsigned int batchLengthId = 0; batchLengthId < batchLengths.size(); batchLengthId++) {
       unsigned int batchLength = batchLengths[batchLengthId];
@@ -444,8 +444,8 @@ uqSequenceOfVectorsClass<V>::bmm(
       for (unsigned int batchId = 0; batchId < numberOfBatches; batchId++) {
         this->mean(initialPositions[initialPosId] + batchId*batchLength,
                    batchLength,
-                   *tmpVector);
-        batchMeans[batchId] = new V(*tmpVector);
+                   tmpVector);
+        batchMeans[batchId] = new V(tmpVector);
       }
 
       batchMeans.mean(0,
@@ -468,121 +468,11 @@ uqSequenceOfVectorsClass<V>::bmm(
                                 batchMeans.sequenceSize(),
                                 meanOfBatchMeans,
                                 _2dArrayOfBMM(initialPosId,batchLengthId));
+
       _2dArrayOfBMM(initialPosId,batchLengthId) /= (double) batchMeans.sequenceSize(); // CHECK
       //_2dArrayOfBMM(initialPosId,batchLengthId) *= (double) (this->sequenceSize() - initialPositions[initialPosId]); // CHECK
-
-      for (unsigned int batchId = 0; batchId < numberOfBatches; batchId++) {
-        if (batchMeans[batchId] != NULL) delete batchMeans[batchId];
-      }
     }
   }
-  delete tmpVector;
-
-  return;
-}
-
-void
-uqScalarSequencePSD(
-  const std::vector<double>& data,
-  unsigned int               numBlocks,
-  double                     hopSizeRatio,
-  std::vector<double>&       psdData) // [dataSize x 1] vector
-{
-  psdData.clear();
-  unsigned int dataSize = data.size();
-
-  double tmp = ((double) dataSize)/(( ((double) numBlocks) - 1. )*hopSizeRatio + 1.);
-  unsigned int blockSize = (unsigned int) tmp;
-  unsigned int hopSize   = (unsigned int) ( ((double) blockSize) * hopSizeRatio );
-  tmp = ((double) dataSize) - ( ((double) numBlocks) - 1.) * ((double) hopSize) - ((double) blockSize);
-#if 1
-  unsigned int numberOfDiscardedDataElements = (unsigned int) tmp;
-  std::cout << "N = "         << dataSize
-            << ", #Blocks = " << numBlocks
-            << ", R = "       << hopSize
-            << ", B = "       << blockSize
-            << ", overlap = " << blockSize - hopSize
-            << ", [(#Blocks - 1) * R + B] = "       << (numBlocks-1)*hopSize + blockSize
-            << ", numberOfDiscardedDataElements = " << numberOfDiscardedDataElements
-            << ", tmp = "                           << tmp
-            << std::endl;
-#endif
-  UQ_FATAL_TEST_MACRO(tmp < 0.,
-                      UQ_UNAVAILABLE_RANK,
-                      "uqScalarSequencePSD()",
-                      "eventual extra space for last block should not be negative");
-
-  tmp = log((double) blockSize)/log(2.);
-  double fractionalPart = tmp - ((double) ((unsigned int) tmp));
-  if (fractionalPart > 0.) tmp += (1. - fractionalPart);
-  unsigned int fftSize = (unsigned int) pow(2.,tmp);
-  //std::cout << "fractionalPart = " << fractionalPart
-  //          << ", B = "            << blockSize
-  //          << ", fftSize = "      << fftSize
-  //          << std::endl;
-
-  gsl_fft_real_workspace*        wkSpace;
-  gsl_fft_real_wavetable*        wvTable;
-  //gsl_fft_halfcomplex_wavetable* hc;
-
-  wkSpace = gsl_fft_real_workspace_alloc       (fftSize);
-  wvTable = gsl_fft_real_wavetable_alloc       (fftSize);
-  //hc      = gsl_fft_halfcomplex_wavetable_alloc(fftSize);
-
-  unsigned int halfFFTSize = fftSize/2;
-  psdData.resize(1+halfFFTSize,0.);
-  for (unsigned int blockId = 0; blockId < numBlocks; blockId++) {
-    // Padding
-    std::vector<double> blockData(fftSize,0.);
-
-    // Fill block using window on full data
-    for (unsigned int j = 0; j < blockSize; ++j) {
-      unsigned int dataPos = j+blockId*hopSize;
-      UQ_FATAL_TEST_MACRO(dataPos >= dataSize,
-                          UQ_UNAVAILABLE_RANK,
-                          "uqScalarSequencePSD()",
-                          "too large position to be accessed in data");
-      blockData[j] = uqMiscHammingWindow(fftSize-1,j) * data[dataPos];
-    }
-
-    //double sumOfAllTerms = 0.;
-    //for (unsigned int j = 0; j < fftSize; ++j) {
-    //  sumOfAllTerms += blockData[j];
-    //}
-    gsl_fft_real_transform(&blockData[0],1,fftSize,wvTable,wkSpace);
-    //std::cout << "After FFT"
-    //          << ", sumOfAllTerms = "          << sumOfAllTerms
-    //          << ", sumOfAllTerms - dft[0] = " << sumOfAllTerms - blockData[0]
-    //          << std::endl;
-
-    // Normalized spectral density: power per radians per sample
-    double factor = 1./((double) numBlocks*blockSize); // /M_PI; // CHECK
-    double realPartOfFFT = 0.;
-    double imagPartOfFFT = 0.;
-    for (unsigned int j = 0; j < psdData.size(); ++j) {
-      if (j == 0) {
-        realPartOfFFT = blockData[j];
-        imagPartOfFFT = 0.;
-      }
-      else if (j < halfFFTSize) {
-        realPartOfFFT = blockData[j];
-        imagPartOfFFT = blockData[fftSize-j];
-      }
-      else if (j == halfFFTSize) {
-        realPartOfFFT = blockData[j];
-        imagPartOfFFT = 0.;
-      }
-      else {
-        realPartOfFFT =  blockData[fftSize-j];
-        imagPartOfFFT = -blockData[j];
-      }
-      psdData[j] += (realPartOfFFT*realPartOfFFT + imagPartOfFFT*imagPartOfFFT) * factor;
-    }
-  }
-
-  //gsl_fft_halfcomplex_wavetable_free(hc);
-  gsl_fft_real_wavetable_free       (wvTable);
-  gsl_fft_real_workspace_free       (wkSpace);
 
   return;
 }
@@ -597,7 +487,7 @@ uqSequenceOfVectorsClass<V>::psdAtZero(
 {
   for (unsigned int initialPosId = 0; initialPosId < initialPositions.size(); initialPosId++) {
     unsigned int dataSize = this->sequenceSize() - initialPositions[initialPosId];
-    std::vector<double> data(dataSize,0.);
+    uqScalarSequenceClass<double> data(m_env,dataSize);
 
     unsigned int numParams = vectorSize();
     for (unsigned int i = 0; i < numParams; ++i) {
@@ -607,16 +497,18 @@ uqSequenceOfVectorsClass<V>::psdAtZero(
       for (unsigned int numsOfBlocksId = 0; numsOfBlocksId < numsOfBlocks.size(); numsOfBlocksId++) {
         unsigned int numBlocks = numsOfBlocks[numsOfBlocksId];
         std::vector<double> psdData(0,0.); // size will be determined by 'uqScalarSequencePSD()'
-        uqScalarSequencePSD(data,
-                            numBlocks,
-                            hopSizeRatio,
-                            psdData);
+        data.psd(0,
+                 numBlocks,
+                 hopSizeRatio,
+                 psdData);
         _2dArrayOfPSDAtZero(initialPosId,numsOfBlocksId)[i] = psdData[0];
-	//std::cout << "psdData[0] = " << psdData[0] << std::endl;
-        std::cout << "psdData = zeros(" << psdData.size() << ",1);" << std::endl;
-        for (unsigned j = 0; j < psdData.size(); ++j) {
-    	  std::cout << "psdData(" << j+1 << ") = " << psdData[j] << ";" << std::endl;
-        }
+
+	std::cout << "psdData[0] = " << psdData[0] << std::endl;
+
+        //std::cout << "psdData = zeros(" << psdData.size() << ",1);" << std::endl;
+        //for (unsigned j = 0; j < psdData.size(); ++j) {
+    	//  std::cout << "psdData(" << j+1 << ") = " << psdData[j] << ";" << std::endl;
+        //}
       } // for 'numsOfBlocksId'
     } // for 'i'
   }
@@ -652,30 +544,30 @@ uqSequenceOfVectorsClass<V>::geweke(
     unsigned int numParams = vectorSize();
 
     V psdAtZeroA(m_vectorExample);
-    std::vector<double> dataA(dataSizeA,0.);
+    uqScalarSequenceClass<double> dataA(m_env,dataSizeA);
     for (unsigned int i = 0; i < numParams; ++i) {
       for (unsigned int j = 0; j < dataSizeA; ++j) {
 	dataA[j] = (*(m_seq[initialPosA+j]))[i];
       }
       std::vector<double> psdData(0,0.);
-      uqScalarSequencePSD(dataA,
-                          8,  // numBlocks
-                          .5, // hopSizeRatio
-                          psdData);
+      dataA.psd(0,
+                8,  // numBlocks
+                .5, // hopSizeRatio
+                psdData);
       psdAtZeroA[i] = psdData[0];
     } // for 'i'
 
     V psdAtZeroB(m_vectorExample);
-    std::vector<double> dataB(dataSizeB,0.);
+    uqScalarSequenceClass<double> dataB(m_env,dataSizeB);
     for (unsigned int i = 0; i < numParams; ++i) {
       for (unsigned int j = 0; j < dataSizeB; ++j) {
 	dataB[j] = (*(m_seq[initialPosB+j]))[i];
       }
       std::vector<double> psdData(0,0.);
-      uqScalarSequencePSD(dataB,
-                          8,  // numBlocks
-                          .5, // hopSizeRatio
-                          psdData);
+      dataB.psd(0,
+                8,  // numBlocks
+                .5, // hopSizeRatio
+                psdData);
       psdAtZeroB[i] = psdData[0];
     } // for 'i'
 
@@ -715,56 +607,6 @@ uqSequenceOfVectorsClass<V>::minMax(
   return;
 }
 
-void
-uqScalarSequenceHistogram(
-  const std::vector<double>& data,
-  double                     minHorizontalValue,
-  double                     maxHorizontalValue,
-  std::vector<double>&       centers,
-  std::vector<double>&       bins)
-{
-  UQ_FATAL_TEST_MACRO(centers.size() != bins.size(),
-                      UQ_UNAVAILABLE_RANK,
-                      "uqScalarSequenceHistogram()",
-                      "vectors 'centers' and 'bins' have different sizes");
-
-  UQ_FATAL_TEST_MACRO(bins.size() < 3,
-                      UQ_UNAVAILABLE_RANK,
-                      "uqScalarSequenceHistogram()",
-                      "number of 'bins' is too small: should be at least 3");
-
-  for (unsigned int j = 0; j < bins.size(); ++j) {
-    centers[j] = 0;
-    bins[j] = 0;
-  }
-
-  double horizontalDelta = (maxHorizontalValue - minHorizontalValue)/(((double) bins.size()) - 2.);
-
-  double minCenter = minHorizontalValue - horizontalDelta/2.;
-  double maxCenter = maxHorizontalValue + horizontalDelta/2.;
-  for (unsigned int j = 0; j < centers.size(); ++j) {
-    double factor = ((double) j)/(((double) centers.size()) - 1.);
-    centers[j] = (1. - factor) * minCenter + factor * maxCenter;
-  }
-
-  unsigned int dataSize = data.size();
-  for (unsigned int j = 0; j < dataSize; ++j) {
-    double value = data[j];
-    if (value < minHorizontalValue) {
-      bins[0]++;
-    }
-    else if (value >= maxHorizontalValue) {
-      bins[bins.size()-1]++;
-    }
-    else {
-      unsigned int index = 1 + (unsigned int) ((value - minHorizontalValue)/horizontalDelta);
-      bins[index]++;
-    }
-  }
-
-  return;
-}
-
 template <class V>
 void
 uqSequenceOfVectorsClass<V>::histogram(
@@ -788,22 +630,23 @@ uqSequenceOfVectorsClass<V>::histogram(
   unsigned int dataSize = this->sequenceSize() - initialPosition;
   unsigned int numParams = vectorSize();
   for (unsigned int i = 0; i < numParams; ++i) {
-    std::vector<double> data(dataSize,0.);
+    uqScalarSequenceClass<double> data(m_env,dataSize);
     for (unsigned int j = 0; j < dataSize; ++j) {
       data[j] = (*(m_seq[initialPosition+j]))[i];
     }
 
-    std::vector<double> centers(centersForAllBins.size(),0.);
-    std::vector<double> bins   (binsForAllParams.size(), 0.);
-    uqScalarSequenceHistogram(data,
-                              minHorizontalValues[i],
-                              maxHorizontalValues[i],
-                              centers,
-                              bins);
+    std::vector<double      > centers(centersForAllBins.size(),0.);
+    std::vector<unsigned int> bins   (binsForAllParams.size(), 0 );
+    data.histogram(0,
+                   1,
+                   minHorizontalValues[i],
+                   maxHorizontalValues[i],
+                   centers,
+                   bins);
 
     for (unsigned int j = 0; j < bins.size(); ++j) {
       (*(centersForAllBins[j]))[i] = centers[j];
-      (*(binsForAllParams [j]))[i] = bins[j];
+      (*(binsForAllParams [j]))[i] = (double) bins[j];
     }
   }
 
@@ -863,6 +706,17 @@ uqSequenceOfVectorsClass<V>::interQuantileRange(
   double fraction3 = (((double) dataSize) + 1.)*3./4. - 1. - ((double) pos3);
 
   unsigned int numParams = vectorSize();
+  //std::cout << "In uqSeqOfVecs::iqr()"
+  //          << ", initialPosition = " << initialPosition
+  //          << ", spacing = " << spacing
+  //          << ", this->sequenceSize() = " << this->sequenceSize()
+  //          << ", dataSize = " << dataSize
+  //          << ", sortedSequence.size() = " << sortedSequence.size()
+  //          << ", pos1 = " << pos1
+  //          << ", pos3 = " << pos3
+  //          << ", numParams = " << numParams
+  //          << ", iqrs.size() = " << iqrs.size()
+  //          << std::endl;
   for (unsigned int i = 0; i < numParams; ++i) {
     double value1 = (1.-fraction1) * (*sortedSequence[pos1])[i] + fraction1 * (*sortedSequence[pos1+1])[i];
     double value3 = (1.-fraction3) * (*sortedSequence[pos3])[i] + fraction3 * (*sortedSequence[pos3+1])[i];
