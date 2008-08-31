@@ -1,0 +1,286 @@
+
+=================================
+ QUESO toolkit, MCMC tool, version 0.11, released on Aug/15/2008
+=================================
+
+Environment options:
+  --uqEnv_help               produce help message for uq environment
+  --uqEnv_verbosity arg (=0) set verbosity
+  --uqEnv_seed arg (=0)      set seed
+
+After getting option values, state of uqEnvironmentClass object is:
+m_verbosity = 2
+m_seed = 0
+
+Beginning run of 'uqChemEx' example
+
+Parameter space options:
+  --calib_paramSpace_help                  produce help message for UQ 
+                                           parameter space
+  --calib_paramSpace_dim arg (=0)          Space dimension
+  --calib_paramSpace_specificationFile arg File with the specification of all 
+                                           parameters to be inferred
+
+Parameter specification file 'calib.par' has 5 lines and specifies 3 parameters.
+After getting values of options with prefix 'calib_', state of uqParamSpaceClass object is:
+calib_dim = 3
+Parameters are:
+0 k1 14.4019 0 inf 0 inf
+1 k2 1.5663 0 inf 0 inf
+2 k3 0.2904 0 inf 0 inf
+
+State space options:
+  --calib_stateSpace_help         produce help message for UQ state space
+  --calib_stateSpace_dim arg (=0) Space dimension
+
+After getting values of options with prefix 'calib_', state of uqStateSpaceClass object is:
+calib_dim = 5
+
+Observable space options:
+  --calib_observableSpace_help                     produce help message for UQ 
+                                                   observable space
+  --calib_observableSpace_updateVariances arg (=0) update variance of 
+                                                   likelihood results
+  --calib_observableSpace_numSubSpaces arg (=0)    number of vectors of 
+                                                   observable quantities
+  --calib_observableSpace_specificationFile arg    File with the specification 
+                                                   of all observables to be 
+                                                   computed
+
+Observable specification file 'calib.obs' has 3 lines and specifies 1 observables.
+After getting values of options with prefix 'calib_', state of uqObservableSpaceClass object is:
+calib_updateVariances = 1
+calib_numSubspaces = 1
+Observables are:
+0 A_observations 23 2.1876e-08 1
+
+Entering uqDRAM_MarkovChainGeneratorClass<V,M>::constructor()
+Markov chain Monte Carlo options:
+  --calib_MCMC_help                                     produce help message 
+                                                        for DRAM Markov chain 
+                                                        generator
+  --calib_MCMC_chain_type arg (=1)                      type of chain 
+                                                        (1=Markov, 2=White 
+                                                        noise)
+  --calib_MCMC_chain_number arg (=1)                    number of chain(s)
+  --calib_MCMC_chain_sizes arg (=100)                   size(s) of chain(s)
+  --calib_MCMC_chain_use2 arg (=0)                      use chain2
+  --calib_MCMC_chain_generateExtra arg (=0)             generate extra chains
+  --calib_MCMC_chain_displayPeriod arg (=500)           period of message 
+                                                        display during chain 
+                                                        generation
+  --calib_MCMC_chain_measureRunTimes arg (=0)           measure run times
+  --calib_MCMC_chain_write arg (=0)                     write chain values to 
+                                                        the output file
+  --calib_MCMC_chain_computeStats arg (=0)              compute statistics on 
+                                                        chain
+  --calib_MCMC_chain_outputFileNames arg (=.)           name(s) of output 
+                                                        file(s)
+  --calib_MCMC_uniqueChain_generate arg (=0)            generate unique chain
+  --calib_MCMC_uniqueChain_write arg (=0)               write unique chain
+  --calib_MCMC_uniqueChain_computeStats arg (=0)        compute statistics on 
+                                                        unique chain
+  --calib_MCMC_avgChain_compute arg (=0)                compute averages of 
+                                                        given amounts of chains
+  --calib_MCMC_avgChain_write arg (=0)                  write averages of 
+                                                        chains
+  --calib_MCMC_avgChain_computeStats arg (=0)           compute statistics on 
+                                                        the averages of chains
+  --calib_MCMC_dr_maxNumberOfExtraStages arg (=0)       'dr' maximum number of 
+                                                        extra stages
+  --calib_MCMC_dr_scalesForExtraStages arg (=1.)        'dr' scales for 
+                                                        proposal cov matrices 
+                                                        from 2nd stage on
+  --calib_MCMC_am_initialNonAdaptInterval arg (=0)      'am' initial non 
+                                                        adaptation interval
+  --calib_MCMC_am_adaptInterval arg (=0)                'am' adaptation 
+                                                        interval
+  --calib_MCMC_am_eta arg (=1)                          'am' eta
+  --calib_MCMC_am_epsilon arg (=1.0000000000000001e-05) 'am' epsilon
+  --calib_MCMC_stats_finalPercentages arg (=100.)       final percentages for 
+                                                        computation of chain 
+                                                        statistics
+  --calib_MCMC_bmm_run arg (=0)                         compute variance of 
+                                                        sample mean with batch 
+                                                        means method
+  --calib_MCMC_bmm_lengths arg (=0)                     batch lenghts for BMM
+  --calib_MCMC_fft_compute arg (=0)                     compute fft
+  --calib_MCMC_psd_compute arg (=0)                     compute power spectral 
+                                                        densities
+  --calib_MCMC_geweke_compute arg (=0)                  compute Geweke 
+                                                        coefficients
+  --calib_MCMC_corr_computeViaDef arg (=0)              compute correlations 
+                                                        via definition
+  --calib_MCMC_corr_computeViaFft arg (=0)              compute correlations 
+                                                        via fft
+  --calib_MCMC_corr_secondLag arg (=0)                  second lag for 
+                                                        computation of 
+                                                        autocorrelations
+  --calib_MCMC_corr_lagSpacing arg (=0)                 lag spacing for 
+                                                        computation of 
+                                                        autocorrelations
+  --calib_MCMC_corr_numberOfLags arg (=0)               number of lags for 
+                                                        computation of 
+                                                        autocorrelations
+  --calib_MCMC_corr_display arg (=0)                    print computed 
+                                                        autocorrelations on the
+                                                        screen
+  --calib_MCMC_corr_write arg (=0)                      write computed 
+                                                        autocorrelations to the
+                                                        output file
+  --calib_MCMC_hist_compute arg (=0)                    compute histograms
+  --calib_MCMC_kde_compute arg (=0)                     compute kernel density 
+                                                        estimators
+
+After getting values of options with prefix 'calib_', state of uqDRAM_MarkovChainGeneratorClass object is:
+calib_MCMC_chain_type = 1
+calib_MCMC_chain_number = 1
+calib_MCMC_chain_sizes = 16384 
+calib_MCMC_chain_use2 = 0
+calib_MCMC_chain_generateExtra = 0
+calib_MCMC_chain_displayPeriod = 5000
+calib_MCMC_chain_measureRunTimes = 0
+calib_MCMC_chain_write = 1
+calib_MCMC_chain_computeStats = 1
+calib_MCMC_chain_outputFileNames = . 
+calib_MCMC_uniqueChain_generate = 0
+calib_MCMC_uniqueChain_write = 0
+calib_MCMC_uniqueChain_computeStats = 0
+calib_MCMC_avgChain_compute = 0 
+calib_MCMC_avgChain_write = 0
+calib_MCMC_avgChain_computeStats = 0
+calib_MCMC_dr_maxNumberOfExtraStages = 1
+calib_MCMC_dr_scalesForExtraStages = 1 5 
+calib_MCMC_am_initialNonAdaptInterval = 100
+calib_MCMC_am_adaptInterval = 100
+calib_MCMC_am_eta = 1.92
+calib_MCMC_am_epsilon = 1e-05
+calib_MCMC_stats_finalPercentages = 100 
+calib_MCMC_bmm_run = 1
+calib_MCMC_bmm_lengths = 50 100 200 500 
+calib_MCMC_fft_compute = 0
+calib_MCMC_psd_compute = 1
+calib_MCMC_geweke_compute = 1
+calib_MCMC_corr_computeViaDef = 1
+calib_MCMC_corr_computeViaFft = 0
+calib_MCMC_corr_secondLag = 2
+calib_MCMC_corr_lagSpacing = 1
+calib_MCMC_corr_numberOfLags = 11
+calib_MCMC_corr_display = 1
+calib_MCMC_corr_write = 0
+calib_MCMC_hist_compute = 1
+calib_MCMC_kde_compute = 1
+(internal variable) m_likelihoodObjComputesMisfits = 1
+
+Leaving uqDRAM_MarkovChainGeneratorClass<V,M>::constructor()
+No output file opened for chain1 of id 0
+In uqDRAM_MarkovChainGeneratorClass<V,M>::prepareForNextChain(), contents of internally generated proposal cov matrix are:
+0.518537 0 0 
+0 0.00613324 0 
+0 0 0.00021083 
+
+In uqDRAM_MarkovChainGeneratorClass<V,M>::prepareForNextChain(), m_lowerCholProposalCovMatrices[0] contents are:
+0.720095 0 0 
+0 0.078315 0 
+0 0 0.01452 
+
+Generating chain1 of id 0, with 16384 positions...
+Finished generating 5000 positions
+Finished generating 10000 positions
+Finished generating 15000 positions
+Finished generating the chain1 of id 0, with 16384 positions
+Some information about this chain:
+  Chain1 run time       = 2.15771 seconds
+  Rejection percentage = 19.2444 %
+   Outbound percentage = 0 %
+
+
+-----------------------------------------------------
+ Statistics of chain of id 0:
+-----------------------------------------------------
+
+In uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(): initial positions for statistics = 0
+
+-----------------------------------------------------
+Computing mean, sample variance and population variance
+
+Estimated variance of sample mean for the whole chain, under independence assumption:
+3.07086e-05
+1.02848e-07
+1.23807e-08
+
+Mean and variances took 0.015539 seconds
+
+Mean, sample std, population std
+Parameter    Mean         SampleStd         Popul.Std
+      k1   1.4474e+01   7.0932e-01   7.0930e-01
+      k2   1.5654e+00   4.1050e-02   4.1048e-02
+      k3   2.9142e-01   1.4242e-02   1.4242e-02
+
+-----------------------------------------------------
+Computing variance of sample mean through BMM
+In uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(): lengths for batchs in BMM = 50 100 200 500
+
+Estimated variance of sample mean, through batch means method, for subchain beggining at position 0 (each column corresponds to a batch length)
+Parameter           50          100          200          500
+       k1   2.5809e-04   2.2614e-04   2.5246e-04   2.7515e-04
+       k2   8.4844e-07   8.9667e-07   9.2103e-07   1.1244e-06
+       k3   1.2141e-07   1.4007e-07   1.4131e-07   1.0510e-07
+Chain BMM took 0.02052 seconds
+
+-----------------------------------------------------
+Computing variance of sample mean through PSD
+psdData[0] = 268086
+psdData[0] = 3135.94
+psdData[0] = 108.618
+Chain PSD took 0.03157 seconds
+
+-----------------------------------------------------
+Computing Geweke coefficients
+
+Computed Geweke coefficients with 10% and 50% percentages (each column corresponds to a different initial position on the full chain)
+Parameter            0
+       k1  -2.5547e-05
+       k2  -3.6098e-03
+       k3   8.1105e-03
+Chain Geweke took 0.020442 seconds
+
+-----------------------------------------------------
+Computing autocorrelation coefficients
+In uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(): lags for autocorrelation = 1 2 3 4 5 6 7 8 9 10 11
+
+Estimated variance of sample mean, through autocorrelation:
+0.000270376
+8.68356e-07
+1.13354e-07
+
+
+Estimated autocorrelation coefficients, for subchain beggining at position 0 (each column corresponds to a different lag)
+Parameter            1            2            3            4            5            6            7            8            9           10           11
+       k1   8.1441e-01   6.6112e-01   5.3554e-01   4.4172e-01   3.5982e-01   2.9142e-01   2.3518e-01   1.9220e-01   1.5469e-01   1.2258e-01   9.3598e-02
+       k2   8.1523e-01   6.6344e-01   5.3312e-01   4.2621e-01   3.3833e-01   2.6532e-01   2.1109e-01   1.6464e-01   1.3010e-01   1.0079e-01   7.3277e-02
+       k3   8.1943e-01   6.7355e-01   5.4806e-01   4.5104e-01   3.6959e-01   3.0228e-01   2.5229e-01   2.0657e-01   1.7608e-01   1.4970e-01   1.2927e-01
+Chain autocorrelation took 0.100684 seconds
+
+-----------------------------------------------------
+Computing min and max for histograms and KDE
+Chain min and max took 0.006224 seconds
+
+-----------------------------------------------------
+Computing histograms
+Chain histograms took 0.006763 seconds
+
+-----------------------------------------------------
+Computing KDE
+
+Computed min values, max values and inter quantile ranges, for subchain beggining at position 8192
+Parameter         min         max         iqr
+      k1   1.2302e+01   1.7651e+01   9.0313e-01
+      k2   1.3965e+00   1.7823e+00   5.3664e-02
+      k3   2.2584e-01   3.4674e-01   1.8539e-02
+Chain KDE took 0.544168 seconds
+
+-----------------------------------------------------
+
+
+Finishing run of 'uqChemEx' example
