@@ -43,55 +43,59 @@ public:
   const T&           operator[]        (unsigned int positionId) const;
         T&           operator[]        (unsigned int positionId);
         void         setGaussian       (gsl_rng* rng, const T& mean, const T& stdDev);
-        T            mean              (unsigned int initialPos,
-                                        unsigned int numPos) const;
-        T            sampleVariance    (unsigned int initialPos,
-                                        unsigned int numPos,
-                                        const T&     mean) const;
-        T            populationVariance(unsigned int initialPos,
-                                        unsigned int numPos,
-                                        const T&     mean) const;
-        T            autoCovariance    (unsigned int initialPos,
-                                        unsigned int numPos,
-                                        const T&     mean,
-                                        unsigned int lag) const;
-        T            autoCorrelation   (unsigned int initialPosition,
-                                        unsigned int lag) const;
-        T            bmm               (unsigned int initialPosition,
-                                        unsigned int batchLength) const;
-        void         psd               (unsigned int               initialPosition,
+
+        T            mean              (unsigned int               initialPos,
+                                        unsigned int               numPos) const;
+        T            sampleVariance    (unsigned int               initialPos,
+                                        unsigned int               numPos,
+                                        const T&                   meanValue) const;
+        T            populationVariance(unsigned int               initialPos,
+                                        unsigned int               numPos,
+                                        const T&                   meanValue) const;
+        T            autoCovariance    (unsigned int               initialPos,
+                                        unsigned int               numPos,
+                                        const T&                   meanValue,
+                                        unsigned int               lag) const;
+        T            autoCorrelation   (unsigned int               initialPos,
+                                        unsigned int               numPos,
+                                        unsigned int               lag) const;
+        T            bmm               (unsigned int               initialPos,
+                                        unsigned int               batchLength) const;
+        void         psd               (unsigned int               initialPos,
                                         unsigned int               numBlocks,
                                         double                     hopSizeRatio,
-                                        std::vector<double>&       psdData) const;
-        T            geweke            (unsigned int               initialPosition,
+                                        std::vector<double>&       psdSequence) const;
+        T            geweke            (unsigned int               initialPos,
                                         double                     ratioNa,
                                         double                     ratioNb) const;
         void         minMax            (unsigned int               initialPos,
                                         T&                         minValue,
                                         T&                         maxValue) const;
-        void         histogram         (unsigned int               initialPosition,
+        void         histogram         (unsigned int               initialPos,
                                         unsigned int               spacing,
                                         const T&                   minHorizontalValue,
                                         const T&                   maxHorizontalValue,
                                         std::vector<T>&            centers,
                                         std::vector<unsigned int>& bins) const;
-#if 0
-        void         sort              (unsigned int               initialPosition,
+        void         sort              (unsigned int               initialPos,
                                         uqScalarSequenceClass<T>&  sortedSequence) const;
-        void         interQuantileRange(unsigned int               initialPosition,
+        T            interQuantileRange(unsigned int               initialPos,
+                                        unsigned int               spacing) const;
+        T            scaleForKDE       (unsigned int               initialPos,
                                         unsigned int               spacing,
-                                        T&                         iqrValue) const;
-        void         scalesForKDE      (unsigned int               initialPosition,
-                                        unsigned int               spacing,
-                                        const T&                   iqrsValue,
-                                        double&                    scaleValue) const;
-        void         gaussianKDE       (unsigned int               initialPosition,
+                                        const T&                   iqrsValue) const;
+        void         gaussianKDE       (unsigned int               initialPos,
                                         unsigned int               spacing,
                                         const std::vector<T>&      evaluationPositions,
                                         double                     scaleValue,
                                         std::vector<double>&       densityValues) const;
-#endif
+
 private:
+        void         extractScalarSeq  (unsigned int               initialPos,
+                                        unsigned int               spacing,
+                                        unsigned int               numPos,
+                                        uqScalarSequenceClass<T>&  scalarSeq) const;
+
   const uqEnvironmentClass& m_env;
   std::vector<T>            m_seq;
 };
@@ -102,7 +106,7 @@ uqScalarSequenceClass<T>::uqScalarSequenceClass(
         unsigned int        sequenceSize)
   :
   m_env(env),
-  m_seq(sequenceSize)
+  m_seq(sequenceSize,0.)
 {
 }
 
@@ -122,8 +126,10 @@ template <class T>
 void
 uqScalarSequenceClass<T>::resizeSequence(unsigned int newSequenceSize)
 {
-  m_seq.resize(newSequenceSize);
-  std::vector<T>(m_seq).swap(m_seq);
+  if (newSequenceSize != this->sequenceSize()) {
+    m_seq.resize(newSequenceSize,0.);
+    std::vector<T>(m_seq).swap(m_seq);
+  }
 
   return;
 }
@@ -132,6 +138,7 @@ template <class T>
 void
 uqScalarSequenceClass<T>::resetValues()
 {
+  // FIX IT
   return;
 }
 
@@ -139,19 +146,24 @@ template <class T>
 void
 uqScalarSequenceClass<T>::erasePositions(unsigned int posBegin, unsigned int posEnd)
 {
-  seqScalarPositionIteratorTypedef positionIteratorBegin = m_seq.begin();
-  if (posBegin < m_seq.size()) std::advance(positionIteratorBegin,posBegin);
-  else                         positionIteratorBegin = m_seq.end();
-
-  seqScalarPositionIteratorTypedef positionIteratorEnd = m_seq.begin();
-  if (posEnd < m_seq.size()) std::advance(positionIteratorEnd,posEnd);
-  else                       positionIteratorEnd = m_seq.end();
-
-  m_seq.erase(positionIteratorBegin,positionIteratorEnd);
-  UQ_FATAL_TEST_MACRO((posBegin != m_seq.size()),
+  UQ_FATAL_TEST_MACRO((posBegin > posEnd),
                       m_env.rank(),
                       "uqScalarSequences<V>::erasePositions()",
-                      "posBegin != m_seq.size()");
+                      "posBegin > posEnd");
+
+  seqScalarPositionIteratorTypedef positionIteratorBegin = m_seq.begin();
+  if (posBegin < this->sequenceSize()) std::advance(positionIteratorBegin,posBegin);
+  else                                 positionIteratorBegin = m_seq.end();
+
+  seqScalarPositionIteratorTypedef positionIteratorEnd = m_seq.begin();
+  if (posEnd < this->sequenceSize()) std::advance(positionIteratorEnd,posEnd);
+  else                               positionIteratorEnd = m_seq.end();
+
+  m_seq.erase(positionIteratorBegin,positionIteratorEnd);
+  UQ_FATAL_TEST_MACRO((posBegin != this->sequenceSize()),
+                      m_env.rank(),
+                      "uqScalarSequences<V>::erasePositions()",
+                      "posBegin != this->sequenceSize()");
 
   return;
 }
@@ -160,6 +172,11 @@ template <class T>
 const T&
 uqScalarSequenceClass<T>::operator[](unsigned int positionId) const
 {
+  UQ_FATAL_TEST_MACRO((positionId >= this->sequenceSize()),
+                      m_env.rank(),
+                      "uqScalarSequences<V>::operator[] const",
+                      "posBegin > posEnd");
+
   return m_seq[positionId];
 }
 
@@ -167,22 +184,27 @@ template <class T>
 T&
 uqScalarSequenceClass<T>::operator[](unsigned int positionId)
 {
+  UQ_FATAL_TEST_MACRO((positionId >= this->sequenceSize()),
+                      m_env.rank(),
+                      "uqScalarSequences<V>::operator[]",
+                      "posBegin > posEnd");
+
   return m_seq[positionId];
 }
 
 template <class T>
 void
-uqScalarSequenceClass<T>::setGaussian(gsl_rng* rng, const T& mean, const T& stdDev)
+uqScalarSequenceClass<T>::setGaussian(gsl_rng* rng, const T& meanValue, const T& stdDev)
 {
   unsigned int maxJ = this->sequenceSize();
-  if (mean == 0) {
+  if (meanValue == 0) {
     for (unsigned int j = 0; j < maxJ; ++j) {
       m_seq[j] = gsl_ran_gaussian(rng,stdDev);
     }
   }
   else {
     for (unsigned int j = 0; j < maxJ; ++j) {
-      m_seq[j] = mean + gsl_ran_gaussian(rng,stdDev);
+      m_seq[j] = meanValue + gsl_ran_gaussian(rng,stdDev);
     }
   }
 
@@ -195,15 +217,20 @@ uqScalarSequenceClass<T>::mean(
   unsigned int initialPos,
   unsigned int numPos) const
 {
-  unsigned int loopSize      = numPos;
-  unsigned int finalPosPlus1 = initialPos + loopSize;
+  bool bRC = ((0                     <  numPos                 ) &&
+              ((initialPos+numPos-1) <= (this->sequenceSize()-1)));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.rank(),
+                      "uqScalarSequenceClass<V>::mean()",
+                      "invalid initial position or number of positions");
 
-  double result = 0.;
+  unsigned int finalPosPlus1 = initialPos + numPos;
+  T tmpSum = 0.;
   for (unsigned int j = initialPos; j < finalPosPlus1; ++j) {
-    result += m_seq[j];
+    tmpSum += m_seq[j];
   }
 
-  return result/(double) loopSize;
+  return tmpSum/(T) numPos;
 }
 
 template <class T>
@@ -211,9 +238,27 @@ T
 uqScalarSequenceClass<T>::sampleVariance(
   unsigned int initialPos,
   unsigned int numPos,
-  const T&     mean) const
+  const T&     meanValue) const
 {
-  return;
+  bool bRC = ((0                     <  numPos                 ) &&
+              ((initialPos+numPos-1) <= (this->sequenceSize()-1)));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.rank(),
+                      "uqScalarSequenceClass<V>::sampleVariance()",
+                      "invalid initial position or number of positions");
+
+  unsigned int finalPosPlus1 = initialPos + numPos;
+  T diff;
+  T samValue = 0.;
+  for (unsigned int j = initialPos; j < finalPosPlus1; ++j) {
+    diff = m_seq[j] - meanValue;
+    samValue += diff*diff;
+  }
+
+  T doubleNumPos = (T) numPos;
+  samValue /= (doubleNumPos - 1.);
+
+  return samValue;
 }
 
 template <class T>
@@ -221,9 +266,26 @@ T
 uqScalarSequenceClass<T>::populationVariance(
   unsigned int initialPos,
   unsigned int numPos,
-  const T&     mean) const
+  const T&     meanValue) const
 {
-  return;
+  bool bRC = ((0                     <  numPos                 ) &&
+              ((initialPos+numPos-1) <= (this->sequenceSize()-1)));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.rank(),
+                      "uqScalarSequenceClass<V>::populationVariance()",
+                      "invalid initial position or number of positions");
+
+  unsigned int finalPosPlus1 = initialPos + numPos;
+  T diff;
+  T popValue = 0.;
+  for (unsigned int j = initialPos; j < finalPosPlus1; ++j) {
+    diff = m_seq[j] - meanValue;
+    popValue += diff*diff;
+  }
+
+  popValue /= (T) numPos;
+
+  return popValue;
 }
 
 template <class T>
@@ -231,39 +293,112 @@ T
 uqScalarSequenceClass<T>::autoCovariance(
   unsigned int initialPos,
   unsigned int numPos,
-  const T&     mean,
+  const T&     meanValue,
   unsigned int lag) const
 {
-  return;
+  bool bRC = ((0                     <  numPos                 ) &&
+              ((initialPos+numPos-1) <= (this->sequenceSize()-1)));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.rank(),
+                      "uqScalarSequence<V>::autoCovariance<V>()",
+                      "invalid initial position or number of positions");
+
+  UQ_FATAL_TEST_MACRO(numPos <=lag,
+                      m_env.rank(),
+                      "uqScalarSequence<V>::autoCovariance<V>()",
+                      "lag is too large");
+
+  unsigned int loopSize      = numPos - lag;
+  unsigned int finalPosPlus1 = initialPos + loopSize;
+  T diff1;
+  T diff2;
+  T covValue = 0.;
+  for (unsigned int j = initialPos; j < finalPosPlus1; ++j) {
+    diff1 = m_seq[j    ] - meanValue;
+    diff2 = m_seq[j+lag] - meanValue;
+    covValue += diff1*diff2;
+  }
+
+  covValue /= (T) loopSize;
+
+  return covValue;
 }
 
 template <class T>
 T
 uqScalarSequenceClass<T>::autoCorrelation(
-  unsigned int initialPosition,
+  unsigned int initialPos,
+  unsigned int numPos,
   unsigned int lag) const
 {
-  return;
+  bool bRC = ((0                     <  numPos                 ) &&
+              ((initialPos+numPos-1) <= (this->sequenceSize()-1)));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.rank(),
+                      "uqScalarSequence<V>::autoCorrelation<V>()",
+                      "invalid initial position or number of positions");
+
+  UQ_FATAL_TEST_MACRO(numPos <=lag,
+                      m_env.rank(),
+                      "uqScalarSequence<V>::autoCorrelation<V>()",
+                      "lag is too large");
+
+  T meanValue = this->mean(initialPos,
+                           numPos);
+
+  T covValueZero = this->autoCovariance(initialPos,
+                                        numPos,
+                                        meanValue,
+                                        0); // lag
+
+  T corrValue = this->autoCovariance(initialPos,
+                                     numPos,
+                                     meanValue,
+                                     lag);
+
+  return corrValue/covValueZero;
 }
 
 template <class T>
 T
 uqScalarSequenceClass<T>::bmm(
-  unsigned int initialPosition,
+  unsigned int initialPos,
   unsigned int batchLength) const
 {
-  return;
+  unsigned int numberOfBatches = (this->sequenceSize() - initialPos)/batchLength;
+  uqScalarSequenceClass<T> batchMeans(m_env,numberOfBatches);
+
+  for (unsigned int batchId = 0; batchId < numberOfBatches; batchId++) {
+    batchMeans[batchId] = this->mean(initialPos + batchId*batchLength,
+                                     batchLength);
+  }
+
+  T meanOfBatchMeans = batchMeans.mean(0,
+                                       batchMeans.sequenceSize());
+
+  //T covLag0OfBatchMeans = batchMeans.autoCovariance(0,
+  //                                                  batchMeans.sequenceSize(),
+  //                                                  meanOfBatchMeans,
+  //                                                  0); // lag
+
+  T bmmValue = batchMeans.sampleVariance(0,
+                                         batchMeans.sequenceSize(),
+                                         meanOfBatchMeans);
+
+  bmmValue /= (T) batchMeans.sequenceSize();           // CHECK
+//bmmValue *= (T) (this->sequenceSize() - initialPos); // CHECK
+
+  return bmmValue;
 }
 
 template <class T>
 void
 uqScalarSequenceClass<T>::psd(
-  unsigned int         initialPosition, // FIX IT
+  unsigned int         initialPos,
   unsigned int         numBlocks,
   double               hopSizeRatio,
-  std::vector<double>& psdData) const
+  std::vector<double>& psdSequence) const
 {
-  psdData.clear();
   unsigned int dataSize = this->sequenceSize();
 
   double tmp = ((double) dataSize)/(( ((double) numBlocks) - 1. )*hopSizeRatio + 1.);
@@ -300,14 +435,16 @@ uqScalarSequenceClass<T>::psd(
   std::vector<std::complex<double> > resultData(fftSize,std::complex<double>(0.,0.));
 
   unsigned int halfFFTSize = fftSize/2;
-  psdData.resize(1+halfFFTSize,0.);
+  psdSequence.clear();
+  psdSequence.resize(1+halfFFTSize,0.);
   for (unsigned int blockId = 0; blockId < numBlocks; blockId++) {
     // Padding
     std::vector<double> blockData(fftSize,0.);
 
     // Fill block using window on full data
+    unsigned int initialDataPos = blockId*hopSize;
     for (unsigned int j = 0; j < blockSize; ++j) {
-      unsigned int dataPos = j+blockId*hopSize;
+      unsigned int dataPos = initialDataPos + j;
       UQ_FATAL_TEST_MACRO(dataPos >= dataSize,
                           UQ_UNAVAILABLE_RANK,
                           "uqScalarSequenceClass<T>::psd()",
@@ -319,8 +456,8 @@ uqScalarSequenceClass<T>::psd(
 
     // Normalized spectral density: power per radians per sample
     double factor = 1./((double) numBlocks*blockSize); // /M_PI; // CHECK
-    for (unsigned int j = 0; j < psdData.size(); ++j) {
-      psdData[j] += norm(resultData[j]) * factor;
+    for (unsigned int j = 0; j < psdSequence.size(); ++j) {
+      psdSequence[j] += norm(resultData[j]) * factor;
     }
   }
 
@@ -330,11 +467,60 @@ uqScalarSequenceClass<T>::psd(
 template <class T>
 T
 uqScalarSequenceClass<T>::geweke(
-  unsigned int initialPosition,
+  unsigned int initialPos,
   double       ratioNa,
   double       ratioNb) const
 {
-  return;
+  double doubleFullDataSize = (double) (this->sequenceSize() - initialPos);
+  uqScalarSequenceClass<T> tmpSeq(m_env,0);
+  std::vector<double> psdSequence(0,0.);
+
+  unsigned int dataSizeA       = (unsigned int) (doubleFullDataSize * ratioNa);
+  double       doubleDataSizeA = (double) dataSizeA;
+  unsigned int initialPosA     = initialPos;
+  this->extractScalarSeq(initialPosA,
+                         1,
+                         dataSizeA,
+                         tmpSeq);
+  double meanA = tmpSeq.mean(0,
+                             dataSizeA);
+  tmpSeq.psd(0,
+             8,  // numBlocks
+             .5, // hopSizeRatio
+             psdSequence);
+  double psdA = psdSequence[0];
+
+  unsigned int dataSizeB       = (unsigned int) (doubleFullDataSize * ratioNb);
+  double       doubleDataSizeB = (double) dataSizeB;
+  unsigned int initialPosB     = this->sequenceSize() - dataSizeB;
+  this->extractScalarSeq(initialPosB,
+                         1,
+                         dataSizeB,
+                         tmpSeq);
+  double meanB = tmpSeq.mean(0,
+                             dataSizeB);
+  tmpSeq.psd(0,
+             8,  // numBlocks
+             .5, // hopSizeRatio
+             psdSequence);
+  double psdB = psdSequence[0];
+
+#if 0
+  if (m_env.rank() == 0) {
+    std::cout << "In uqScalarSequenceClass<T>::geweke()"
+              << ", before computation of gewCoef"
+              << ": meanA = "           << meanA
+              << ", psdA = "            << psdA
+              << ", doubleDataSizeA = " << doubleDataSizeA
+              << ", meanB = "           << meanB
+              << ", psdB = "            << psdB
+              << ", doubleDataSizeB = " << doubleDataSizeB
+              << std::endl;
+  }
+#endif
+  double gewCoef = (meanA - meanB)/sqrt(psdA/doubleDataSizeA + psdB/doubleDataSizeB);
+
+  return gewCoef;
 }
 
 template <class T>
@@ -359,7 +545,7 @@ uqScalarSequenceClass<T>::minMax(
 template <class T>
 void
 uqScalarSequenceClass<T>::histogram(
-  unsigned int               initialPosition,
+  unsigned int               initialPos,
   unsigned int               spacing,
   const T&                   minHorizontalValue,
   const T&                   maxHorizontalValue,
@@ -407,15 +593,100 @@ uqScalarSequenceClass<T>::histogram(
 
   return;
 }
+
+template <class T>
+void
+uqScalarSequenceClass<T>::sort(
+  unsigned int              initialPos,
+  uqScalarSequenceClass<T>& sortedSequence) const
+{
+  sortedSequence.resize(this->sequenceSize() - initialPos);
+#if 0
+  for (unsigned int j = 0; j < sortedSequence.size(); ++j) {
+    sortedSequence[j] = new V(m_vectorExample);
+  }
+
+  unsigned int dataSize = this->sequenceSize() - initialPos;
+  unsigned int numParams = vectorSize();
+  std::vector<double> data(dataSize,0.);
+  for (unsigned int i = 0; i < numParams; ++i) {
+    for (unsigned int j = 0; j < dataSize; ++j) {
+      data[j] = (*(m_seq[initialPos+j]))[i];
+    }
+
+    std::sort(data.begin(), data.end());
+
+    for (unsigned int j = 0; j < dataSize; ++j) {
+      (*(sortedSequence[j]))[i] = data[j];
+    }
+  }
+#endif
+  return;
+}
+
+template <class T>
+T
+uqScalarSequenceClass<T>::interQuantileRange(
+  unsigned int initialPos,
+  unsigned int spacing) const
+{
+  return 0.;
+}
+
+template <class T>
+T
+uqScalarSequenceClass<T>::scaleForKDE(
+  unsigned int initialPos,
+  unsigned int spacing,
+  const T&     iqrsValue) const
+{
+  return 0.;
+}
+
+template <class T>
+void
+uqScalarSequenceClass<T>::gaussianKDE(
+  unsigned int          initialPos,
+  unsigned int          spacing,
+  const std::vector<T>& evaluationPositions,
+  double                scaleValue,
+  std::vector<double>&  densityValues) const
+{
+  return;
+}
+
+template <class T>
+void
+uqScalarSequenceClass<T>::extractScalarSeq(
+  unsigned int              initialPos,
+  unsigned int              spacing,
+  unsigned int              numPos,
+  uqScalarSequenceClass<T>& scalarSeq) const
+{
+  scalarSeq.resizeSequence(numPos);
+  if (spacing == 1) {
+    for (unsigned int j = 0; j < numPos; ++j) {
+      scalarSeq[j] = m_seq[initialPos+j        ];
+    }
+  }
+  else {
+    for (unsigned int j = 0; j < numPos; ++j) {
+      scalarSeq[j] = m_seq[initialPos+j*spacing];
+    }
+  }
+
+  return;
+}
+
 #if 0
 void
 uqScalarSequencePSD(
   const std::vector<double>& data,
   unsigned int               numBlocks,
   double                     hopSizeRatio,
-  std::vector<double>&       psdData) // [dataSize x 1] vector
+  std::vector<double>&       psdSequence) // [dataSize x 1] vector
 {
-  psdData.clear();
+  psdSequence.clear();
   unsigned int dataSize = data.size();
 
   double tmp = ((double) dataSize)/(( ((double) numBlocks) - 1. )*hopSizeRatio + 1.);
@@ -457,7 +728,7 @@ uqScalarSequencePSD(
   //hc      = gsl_fft_halfcomplex_wavetable_alloc(fftSize);
 
   unsigned int halfFFTSize = fftSize/2;
-  psdData.resize(1+halfFFTSize,0.);
+  psdSequence.resize(1+halfFFTSize,0.);
   for (unsigned int blockId = 0; blockId < numBlocks; blockId++) {
     // Padding
     std::vector<double> blockData(fftSize,0.);
@@ -486,7 +757,7 @@ uqScalarSequencePSD(
     double factor = 1./((double) numBlocks*blockSize); // /M_PI; // CHECK
     double realPartOfFFT = 0.;
     double imagPartOfFFT = 0.;
-    for (unsigned int j = 0; j < psdData.size(); ++j) {
+    for (unsigned int j = 0; j < psdSequence.size(); ++j) {
       if (j == 0) {
         realPartOfFFT = blockData[j];
         imagPartOfFFT = 0.;
@@ -503,7 +774,7 @@ uqScalarSequencePSD(
         realPartOfFFT =  blockData[fftSize-j];
         imagPartOfFFT = -blockData[j];
       }
-      psdData[j] += (realPartOfFFT*realPartOfFFT + imagPartOfFFT*imagPartOfFFT) * factor;
+      psdSequence[j] += (realPartOfFFT*realPartOfFFT + imagPartOfFFT*imagPartOfFFT) * factor;
     }
   }
 

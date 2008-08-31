@@ -47,7 +47,10 @@ uqFftClass<double>::forward(
         std::vector<std::complex<double> >& result)
 {
   std::vector<double> internalData(data);
-  result.resize(m_fftSize,std::complex<double >(0.,0.));
+  //if (result.size() != m_fftSize) {
+    result.resize(m_fftSize,std::complex<double>(0.,0.));
+    std::vector<std::complex<double> >(result).swap(result);
+    //}
 
   //double sumOfAllTerms = 0.;
   //for (unsigned int j = 0; j < fftSize; ++j) {
