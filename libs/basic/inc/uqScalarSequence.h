@@ -318,7 +318,7 @@ uqScalarSequenceClass<T>::autoCovariance(
               (lag                 <  numPos              )); // lag should not be too large
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqScalarSequence<T>::autoCovariance()",
+                      "uqScalarSequenceClass<T>::autoCovariance()",
                       "invalid input data");
 
   unsigned int loopSize      = numPos - lag;
@@ -350,7 +350,7 @@ uqScalarSequenceClass<T>::autoCorrelation(
               (lag                 <  numPos              )); // lag should not be too large
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqScalarSequence<T>::autoCorrelation()",
+                      "uqScalarSequenceClass<T>::autoCorrelation()",
                       "invalid input data");
 
   T meanValue = this->mean(initialPos,
@@ -375,6 +375,13 @@ uqScalarSequenceClass<T>::bmm(
   unsigned int initialPos,
   unsigned int batchLength) const
 {
+  bool bRC = ((initialPos          <  this->sequenceSize()            ) &&
+              (batchLength         < (this->sequenceSize()-initialPos)));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.rank(),
+                      "uqScalarSequences<T>::bmm()",
+                      "invalid input data");
+
   unsigned int numberOfBatches = (this->sequenceSize() - initialPos)/batchLength;
   uqScalarSequenceClass<T> batchMeans(m_env,numberOfBatches);
 
@@ -409,7 +416,13 @@ uqScalarSequenceClass<T>::psd(
   double               hopSizeRatio,
   std::vector<double>& psdSequence) const
 {
-  unsigned int dataSize = this->sequenceSize();
+  bool bRC = (initialPos < this->sequenceSize());
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.rank(),
+                      "uqScalarSequenceClass<T>::psd()",
+                      "invalid input data");
+
+  unsigned int dataSize = this->sequenceSize() - initialPos;
 
   double tmp = ((double) dataSize)/(( ((double) numBlocks) - 1. )*hopSizeRatio + 1.);
   unsigned int blockSize = (unsigned int) tmp;
@@ -417,11 +430,12 @@ uqScalarSequenceClass<T>::psd(
   tmp = ((double) dataSize) - ( ((double) numBlocks) - 1.) * ((double) hopSize) - ((double) blockSize);
 #if 0
   unsigned int numberOfDiscardedDataElements = (unsigned int) tmp;
-  std::cout << "N = "         << dataSize
-            << ", #Blocks = " << numBlocks
-            << ", R = "       << hopSize
-            << ", B = "       << blockSize
-            << ", overlap = " << blockSize - hopSize
+  std::cout << "initialPos = " << initialPos
+            << ", N = "        << dataSize
+            << ", #Blocks = "  << numBlocks
+            << ", R = "        << hopSize
+            << ", B = "        << blockSize
+            << ", overlap = "  << blockSize - hopSize
             << ", [(#Blocks - 1) * R + B] = "       << (numBlocks-1)*hopSize + blockSize
             << ", numberOfDiscardedDataElements = " << numberOfDiscardedDataElements
             << ", tmp = "                           << tmp
@@ -452,7 +466,7 @@ uqScalarSequenceClass<T>::psd(
     std::vector<double> blockData(fftSize,0.);
 
     // Fill block using window on full data
-    unsigned int initialDataPos = blockId*hopSize;
+    unsigned int initialDataPos = initialPos + blockId*hopSize;
     for (unsigned int j = 0; j < blockSize; ++j) {
       unsigned int dataPos = initialDataPos + j;
       UQ_FATAL_TEST_MACRO(dataPos >= dataSize,

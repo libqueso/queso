@@ -24,6 +24,8 @@
 #include <uq2dArrayOfStuff.h>
 #include <uqScalarSequence.h>
 
+#define UQ_SEQ_VEC_USES_SCALAR_SEQ_CODE
+
 template <class V>
 class uqSequenceOfVectorsClass
 {
@@ -96,6 +98,9 @@ public:
                                         const std::vector<V*>&    evaluationPositions,
                                         const V&                  scales,
                                         std::vector<V*>&          densityValues) const;
+        void         write             (const std::string&        name,
+                                        std::ofstream&            ofs) const;
+
 private:
         void         extractScalarSeq  (unsigned int                   initialPos,
                                         unsigned int                   spacing,
@@ -167,7 +172,7 @@ uqSequenceOfVectorsClass<V>::resetValues(unsigned int initialPos, unsigned int n
               ((initialPos+numPos) <= this->sequenceSize()));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqSequenceOfVectors<T>::resetValues()",
+                      "uqSequenceOfVectorsClass<V>::resetValues()",
                       "invalid input data");
 
   for (unsigned int j = 0; j < numPos; ++j) {
@@ -189,7 +194,7 @@ uqSequenceOfVectorsClass<V>::erasePositions(unsigned int initialPos, unsigned in
               ((initialPos+numPos) <= this->sequenceSize()));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqSequenceOfVectors<V>::erasePositions()",
+                      "uqSequenceOfVectorsClass<V>::erasePositions()",
                       "invalid input data");
 
   for (unsigned int j = 0; j < numPos; ++j) {
@@ -263,7 +268,7 @@ uqSequenceOfVectorsClass<V>::mean(
                       "uqSequenceOfVectorsClass<V>::mean()",
                       "invalid input data");
 
-#if 1
+#ifdef UQ_SEQ_VEC_USES_SCALAR_SEQ_CODE
   uqScalarSequenceClass<double> data(m_env,0);
 
   unsigned int numParams = vectorSize();
@@ -308,7 +313,7 @@ uqSequenceOfVectorsClass<V>::sampleVariance(
                       "uqSequenceOfVectorsClass<V>::sampleVariance()",
                       "invalid input data");
 
-#if 1
+#ifdef UQ_SEQ_VEC_USES_SCALAR_SEQ_CODE
   uqScalarSequenceClass<double> data(m_env,0);
 
   unsigned int numParams = vectorSize();
@@ -359,7 +364,7 @@ uqSequenceOfVectorsClass<V>::populationVariance(
                       "uqSequenceOfVectorsClass<V>::populationVariance()",
                       "invalid input data");
 
-#if 1
+#ifdef UQ_SEQ_VEC_USES_SCALAR_SEQ_CODE
   uqScalarSequenceClass<double> data(m_env,0);
 
   unsigned int numParams = vectorSize();
@@ -409,10 +414,10 @@ uqSequenceOfVectorsClass<V>::autoCovariance(
               (this->vectorSize()  == covVec.size()       ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqSequenceOfVectors<V>::autoCovariance()",
+                      "uqSequenceOfVectorsClass<V>::autoCovariance()",
                       "invalid input data");
 
-#if 1
+#ifdef UQ_SEQ_VEC_USES_SCALAR_SEQ_CODE
   uqScalarSequenceClass<double> data(m_env,0);
 
   unsigned int numParams = vectorSize();
@@ -462,10 +467,10 @@ uqSequenceOfVectorsClass<V>::autoCorrelation(
               (this->vectorSize()  == corrVec.size()      ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqSequenceOfVectors<V>::autoCorrelation()",
+                      "uqSequenceOfVectorsClass<V>::autoCorrelation()",
                       "invalid input data");
 
-#if 1
+#ifdef UQ_SEQ_VEC_USES_SCALAR_SEQ_CODE
   uqScalarSequenceClass<double> data(m_env,0);
 
   unsigned int numParams = vectorSize();
@@ -509,6 +514,28 @@ uqSequenceOfVectorsClass<V>::bmm(
   unsigned int batchLength,
   V&           bmmVec) const
 {
+  bool bRC = ((initialPos          <  this->sequenceSize()            ) &&
+              (batchLength         < (this->sequenceSize()-initialPos)) &&
+              (this->vectorSize()  == bmmVec.size()                   ));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.rank(),
+                      "uqSequenceOfVectorsClass<V>::bmm()",
+                      "invalid input data");
+
+#ifdef UQ_SEQ_VEC_USES_SCALAR_SEQ_CODE
+  uqScalarSequenceClass<double> data(m_env,0);
+
+  unsigned int numParams = vectorSize();
+  for (unsigned int i = 0; i < numParams; ++i) {
+    this->extractScalarSeq(initialPos,
+                           1, // spacing
+                           this->sequenceSize()-initialPos,
+                           i,
+                           data);
+    bmmVec[i] = data.bmm(0,
+                         batchLength);
+  }
+#else
   V meanOfBatchMeans   (m_vectorExample);
   V covLag0OfBatchMeans(m_vectorExample);
   V covLag1OfBatchMeans(m_vectorExample);
@@ -547,6 +574,7 @@ uqSequenceOfVectorsClass<V>::bmm(
 
   bmmVec /= (double) batchMeans.sequenceSize(); // CHECK
 //bmmVec *= (double) (this->sequenceSize() - initialPos); // CHECK
+#endif
 
   return;
 }
@@ -559,6 +587,32 @@ uqSequenceOfVectorsClass<V>::psdAtZero(
   double       hopSizeRatio,
   V&           psdVec) const
 {
+  bool bRC = ((initialPos         <  this->sequenceSize()) &&
+              (this->vectorSize() == psdVec.size()       ));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.rank(),
+                      "uqSequenceOfVectorsClass<V>::psdAtZero()",
+                      "invalid input data");
+
+#ifdef UQ_SEQ_VEC_USES_SCALAR_SEQ_CODE
+  uqScalarSequenceClass<double> data(m_env,0);
+  std::vector<double> psdSequence(0,0.); // size will be determined by 'uqScalarSequencePSD()'
+
+  unsigned int numParams = vectorSize();
+  for (unsigned int i = 0; i < numParams; ++i) {
+    this->extractScalarSeq(initialPos,
+                           1, // spacing
+                           this->sequenceSize()-initialPos,
+                           i,
+                           data);
+    data.psd(0,
+             numBlocks,
+             hopSizeRatio,
+             psdSequence);
+    psdVec[i] = psdSequence[0];
+    std::cout << "psdSequence[0] = " << psdSequence[0] << std::endl;
+  }
+#else
   unsigned int dataSize = this->sequenceSize() - initialPos;
   uqScalarSequenceClass<double> data(m_env,dataSize);
   std::vector<double> psdSequence(0,0.); // size will be determined by 'uqScalarSequencePSD()'
@@ -581,6 +635,7 @@ uqSequenceOfVectorsClass<V>::psdAtZero(
     //  std::cout << "psdSequence(" << j+1 << ") = " << psdSequence[j] << ";" << std::endl;
     //}
   } // for 'i'
+#endif
 
   return;
 }
@@ -593,7 +648,7 @@ uqSequenceOfVectorsClass<V>::geweke(
   double       ratioNb,
   V&           gewVec) const
 {
-#if 1
+#ifdef UQ_SEQ_VEC_USES_SCALAR_SEQ_CODE
   unsigned int numPos = this->sequenceSize() - initialPos;
   uqScalarSequenceClass<double> data(m_env,0);
 
@@ -875,6 +930,28 @@ uqSequenceOfVectorsClass<V>::gaussianKDE(
       (*(densityValues[j]))[i] = scaleInv * (value/(double) numEstimationsPerParam);
     }
   }
+
+  return;
+}
+
+template <class V>
+void
+uqSequenceOfVectorsClass<V>::write(
+  const std::string& name,
+  std::ofstream&     ofs) const
+{
+  // Write chain
+  ofs << "queso_" << name << " = zeros(" << this->sequenceSize()
+      << ","                             << this->vectorSize()
+      << ");"
+      << std::endl;
+  ofs << "queso_" << name << " = [";
+  unsigned int chainSize = this->sequenceSize();
+  for (unsigned int j = 0; j < chainSize; ++j) {
+    ofs << *(m_seq[j])
+        << std::endl;
+  }
+  ofs << "];\n";
 
   return;
 }

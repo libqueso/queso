@@ -182,7 +182,7 @@ private:
                                   unsigned int&                      uncorrInitialPos,
                                   unsigned int&                      uncorrSpacing);
 
-  int    writeChain              (const uqSequenceOfVectorsClass<V>& chain1,
+  int    writeInfo               (const uqSequenceOfVectorsClass<V>& chain1,
                                   const uqArrayOfSequencesClass<V>&  chain2,
                                   unsigned int                       chainId,
                                   std::ofstream&                     ofs,
@@ -1515,6 +1515,14 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
   }
 
   //****************************************************
+  // Compute FFT of chain
+  //****************************************************
+
+  //****************************************************
+  // Compute power spectral density (PSD) of chain of first parameter only
+  //****************************************************
+
+  //****************************************************
   // Compute power spectral density (PSD) of chain at zero frequency
   //****************************************************
   if ((m_psdCompute                      ) &&
@@ -1723,7 +1731,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
                 << std::endl;
     }
 
-    if ((m_corrDisplay) && (m_env.rank() == 0)) {
+    if (m_corrDisplay && (m_env.rank() == 0)) {
       std::cout << "In uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(): lags for autocorrelation =";
       for (unsigned int i = 0; i < lagsForCorrs.size(); ++i) {
         std::cout << " " << lagsForCorrs[i];
@@ -1928,6 +1936,39 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
                 << " seconds"
                 << std::endl;
     }
+
+    // Write histograms
+    // plot(queso_centersOfHistBins(1,:)',queso_histBins(1,:)','r-');
+    if (passedOfs) {
+      std::ofstream& ofs = *passedOfs;
+      ofs << "queso_" << m_prefix << chainId << "_" << "centersOfHistBins = zeros(" << m_paramSpace.dim()
+          << ","                                                                    << m_histCentersForAllBins.size()
+          << ");"
+          << std::endl;
+      for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
+        for (unsigned int j = 0; j < m_histCentersForAllBins.size(); ++j) {
+           ofs << "queso_" << m_prefix << chainId << "_" << "centersOfHistBins(" << i+1
+               << ","                                                            << j+1
+               << ") = "                                                         << (*(m_histCentersForAllBins[j]))[i]
+               << ";"
+               << std::endl;
+        }
+      }
+
+      ofs << "queso_" << m_prefix << chainId << "_" << "histBins = zeros(" << m_paramSpace.dim()
+          << ","                                                           << m_histBinsForAllParams.size()
+          << ");"
+          << std::endl;
+      for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
+        for (unsigned int j = 0; j < m_histBinsForAllParams.size(); ++j) {
+           ofs << "queso_" << m_prefix << chainId << "_" << "histBins(" << i+1
+               << ","                                                   << j+1
+               << ") = "                                                << (*(m_histBinsForAllParams[j]))[i]
+               << ";"
+               << std::endl;
+        }
+      }
+    }
   }
 
   //****************************************************
@@ -2024,6 +2065,50 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
                 << " seconds"
                 << std::endl;
     }
+
+    // Write estimations of probability densities
+    // hold
+    // plot(queso_evalPosForKDE(1,:)',7*queso_densFromGaussianKDE(1,:)','r-');
+    if (passedOfs) {
+      std::ofstream& ofs = *passedOfs;
+      ofs << "queso_" << m_prefix << chainId << "_" << "evalPosForKDE = zeros(" << m_paramSpace.dim()
+          << ","                                                                << m_kdeEvalPositions.size()
+          << ");"
+          << std::endl;
+      for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
+        for (unsigned int j = 0; j < m_kdeEvalPositions.size(); ++j) {
+          ofs << "queso_" << m_prefix << chainId << "_" << "evalPosForKDE(" << i+1
+              << ","                                                        << j+1
+              << ") = "                                                     << (*(m_kdeEvalPositions[j]))[i]
+              << ";"
+              << std::endl;
+        }
+      }
+
+      ofs << "queso_" << m_prefix << chainId << "_" << "scalesForKDE = zeros(" << m_paramSpace.dim()
+          << ");"
+          << std::endl;
+      for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
+        ofs << "queso_" << m_prefix << chainId << "_" << "scalesForKDE(" << i+1
+            << ") = "                                                    << (*m_kdeScales)[i]
+            << ";"
+            << std::endl;
+      }
+
+      ofs << "queso_" << m_prefix << chainId << "_" << "densFromGaussianKDE = zeros(" << m_paramSpace.dim()
+          << ","                                                                      << m_kdeGaussianDensityValues.size()
+          << ");"
+          << std::endl;
+      for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
+        for (unsigned int j = 0; j < m_kdeGaussianDensityValues.size(); ++j) {
+          ofs << "queso_" << m_prefix << chainId << "_" << "densFromGaussianKDE(" << i+1
+              << ","                                                              << j+1
+              << ") = "                                                           << (*(m_kdeGaussianDensityValues[j]))[i]
+              << ";"
+              << std::endl;
+        }
+      }
+    }
   }
 
   if (m_env.rank() == 0) {
@@ -2037,7 +2122,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
 
 template <class V, class M>
 int
-uqDRAM_MarkovChainGeneratorClass<V,M>::writeChain(
+uqDRAM_MarkovChainGeneratorClass<V,M>::writeInfo(
   const uqSequenceOfVectorsClass<V>& chain1,
   const uqArrayOfSequencesClass<V>&  chain2,
   unsigned int                       chainId,
@@ -2047,40 +2132,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::writeChain(
 {
   int iRC = UQ_OK_RC;
 
-  unsigned int chainSize = 0;
-  unsigned int vectorSize = 0;
-  if (m_chainUse2) {
-    chainSize = chain2.sequenceSize();
-    vectorSize = chain2.vectorSize();
-  }
-  else {
-    chainSize = chain1.sequenceSize();
-    vectorSize = chain1.sequenceSize();
-  }
-
   if (m_chainWrite) {
-    // Write chain
-    ofs << "queso_" << m_prefix << chainId << "_" << "chain = zeros(" << chainSize 
-        << ","                                                        << vectorSize
-        << ");"
-        << std::endl;
-    ofs << "queso_" << m_prefix << chainId << "_" << "chain = [";
-    if (m_chainUse2) {
-      V tmpVec(m_paramSpace.zeroVector());
-      for (unsigned int i = 0; i < chain2.sequenceSize(); ++i) {
-        chain2.getPositionValues(i,tmpVec);
-        ofs << tmpVec
-            << std::endl;
-      }
-    }
-    else {
-      for (unsigned int i = 0; i < chain1.sequenceSize(); ++i) {
-        ofs << *(chain1[i])
-            << std::endl;
-      }
-    }
-    ofs << "];\n";
-
     if (m_chainGenerateExtra) {
       if (m_likelihoodObjComputesMisfits) {
         // Write m_misfitChain
@@ -2261,11 +2313,6 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::writeChain(
         << std::endl;
   }
 
-  // Write chain run time
-  ofs << "queso_" << m_prefix << chainId << "_" << "runTime = "  << m_chainRunTime
-      << ";\n"
-      << std::endl;
-
   // Write number of outbounds
   if (m_chainUse2) {
     ofs << "queso_" << m_prefix << chainId << "_" << "outbounds = " << (double) m_numOutOfBounds/(double) chain2.sequenceSize()
@@ -2278,82 +2325,10 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::writeChain(
         << std::endl;
   }
 
-  // Write histograms
-  if ((m_histCompute                 ) &&
-      (m_histNumberOfInternalBins > 0)) {
-    // plot(queso_centersOfHistBins(1,:)',queso_histBins(1,:)','r-');
-    ofs << "queso_" << m_prefix << chainId << "_" << "centersOfHistBins = zeros(" << m_paramSpace.dim()
-        << ","                                                                    << m_histCentersForAllBins.size()
-        << ");"
-        << std::endl;
-    for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
-      for (unsigned int j = 0; j < m_histCentersForAllBins.size(); ++j) {
-         ofs << "queso_" << m_prefix << chainId << "_" << "centersOfHistBins(" << i+1
-             << ","                                                            << j+1
-             << ") = "                                                         << (*(m_histCentersForAllBins[j]))[i]
-             << ";"
-             << std::endl;
-      }
-    }
-
-    ofs << "queso_" << m_prefix << chainId << "_" << "histBins = zeros(" << m_paramSpace.dim()
-        << ","                       << m_histBinsForAllParams.size()
-        << ");"
-        << std::endl;
-    for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
-      for (unsigned int j = 0; j < m_histBinsForAllParams.size(); ++j) {
-         ofs << "queso_" << m_prefix << chainId << "_" << "histBins(" << i+1
-             << ","                                 << j+1
-             << ") = "                              << (*(m_histBinsForAllParams[j]))[i]
-             << ";"
-             << std::endl;
-      }
-    }
-  }
-
-  // Write estimations of probability densities
-  if ((m_kdeCompute                  ) &&
-      (m_kdeNumberOfEvalPositions > 0)) {
-    // hold
-    // plot(queso_evalPosForKDE(1,:)',7*queso_densFromGaussianKDE(1,:)','r-');
-    ofs << "queso_" << m_prefix << chainId << "_" << "evalPosForKDE = zeros(" << m_paramSpace.dim()
-        << ","                                              << m_kdeEvalPositions.size()
-        << ");"
-        << std::endl;
-    for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
-      for (unsigned int j = 0; j < m_kdeEvalPositions.size(); ++j) {
-        ofs << "queso_" << m_prefix << chainId << "_" << "evalPosForKDE(" << i+1
-            << ","                                      << j+1
-            << ") = "                                   << (*(m_kdeEvalPositions[j]))[i]
-            << ";"
-            << std::endl;
-      }
-    }
-
-    ofs << "queso_" << m_prefix << chainId << "_" << "scalesForKDE = zeros(" << m_paramSpace.dim()
-        << ");"
-        << std::endl;
-    for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
-      ofs << "queso_" << m_prefix << chainId << "_" << "scalesForKDE(" << i+1
-          << ") = "                                  << (*m_kdeScales)[i]
-          << ";"
-          << std::endl;
-    }
-
-    ofs << "queso_" << m_prefix << chainId << "_" << "densFromGaussianKDE = zeros(" << m_paramSpace.dim()
-        << ","                                                    << m_kdeGaussianDensityValues.size()
-        << ");"
-        << std::endl;
-    for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
-      for (unsigned int j = 0; j < m_kdeGaussianDensityValues.size(); ++j) {
-        ofs << "queso_" << m_prefix << chainId << "_" << "densFromGaussianKDE(" << i+1
-            << ","                                            << j+1
-            << ") = "                                         << (*(m_kdeGaussianDensityValues[j]))[i]
-            << ";"
-            << std::endl;
-      }
-    }
-  }
+  // Write chain run time
+  ofs << "queso_" << m_prefix << chainId << "_" << "runTime = "  << m_chainRunTime
+      << ";\n"
+      << std::endl;
 
   return iRC;
 }

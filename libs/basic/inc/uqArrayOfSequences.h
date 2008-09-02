@@ -91,6 +91,9 @@ public:
                                         const std::vector<V*>&   evaluationPositions,
                                         const V&                 scales,
                                         std::vector<V*>&         densityValues) const;
+        void         write             (const std::string&       name,
+                                        std::ofstream&           ofs) const;
+
 private:
   const uqEnvironmentClass&                            m_env;
   V                                                    m_vectorExample;
@@ -797,5 +800,31 @@ uqArrayOfSequencesClass<V>::gaussianKDE(
 #endif
   return;
 }
+
+template <class V>
+void
+uqArrayOfSequencesClass<V>::write(
+  const std::string& name,
+  std::ofstream&     ofs) const
+{
+  // Write chain
+  ofs << "queso_" << name << " = zeros(" << this->sequenceSize()
+      << ","                             << this->vectorSize()
+      << ");"
+      << std::endl;
+  ofs << "queso_" << name << " = [";
+
+  V tmpVec(m_vectorExample);
+  unsigned int chainSize = this->sequenceSize();
+  for (unsigned int j = 0; j < chainSize; ++j) {
+    this->getPositionValues(j,tmpVec);
+    ofs << tmpVec
+        << std::endl;
+  }
+  ofs << "];\n";
+
+  return;
+}
+
 #endif // __UQ_ARRAY_OF_SEQUENCES_H__
 

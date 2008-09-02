@@ -118,16 +118,10 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains2(
     // Write chain2 out
     //****************************************************
     if (m_chainWrite && ofs) {
-      iRC = writeChain(m_chain1,
-                       m_chain2,
-                       chainId,
-                       *ofs,
-                       mahalanobisMatrix,
-                       applyMahalanobisInvert);
-      UQ_FATAL_RC_MACRO(iRC,
-                        m_env.rank(),
-                        "uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains2()",
-                        "improper writeChain() return");
+      char tmpChainId[10];
+      sprintf(tmpChainId,"%d",chainId);
+      const std::string& name = m_prefix + tmpChainId + "_chain";
+      m_chain2.write(name,*ofs);
     }
 
     //****************************************************
@@ -162,7 +156,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains2(
                   << "\n"
                   << std::endl;
       }
-      //computeStatistics1(m_uniqueChain2);
+      //computeStatistics(m_uniqueChain2);
     }
 
     //****************************************************
@@ -770,6 +764,19 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain2(
     std::cout << "\n   Outbound percentage = " << 100. * (double) m_numOutOfBounds/(double) m_chain2.sequenceSize()
               << " %";
     std::cout << std::endl;
+  }
+
+  if (ofs != NULL) {
+    iRC = writeInfo(m_chain1,
+                    m_chain2,
+                    chainId,
+                    *ofs,
+                    mahalanobisMatrix,
+                    applyMahalanobisInvert);
+    UQ_FATAL_RC_MACRO(iRC,
+                      m_env.rank(),
+                      "uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain2()",
+                      "improper writeInfo() return");
   }
 
   //****************************************************
