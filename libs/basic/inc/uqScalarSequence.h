@@ -38,10 +38,10 @@ public:
 
   const unsigned int sequenceSize      () const;
         void         resizeSequence    (unsigned int newSequenceSize);
-        void         resetValues       ();
-        void         erasePositions    (unsigned int posBegin, unsigned int posEnd);
-  const T&           operator[]        (unsigned int positionId) const;
-        T&           operator[]        (unsigned int positionId);
+        void         resetValues       (unsigned int initialPos, unsigned int numPos);
+        void         erasePositions    (unsigned int initialPos, unsigned int numPos);
+  const T&           operator[]        (unsigned int posId) const;
+        T&           operator[]        (unsigned int posId);
         void         setGaussian       (gsl_rng* rng, const T& mean, const T& stdDev);
 
         T            mean              (unsigned int               initialPos,
@@ -72,20 +72,17 @@ public:
                                         T&                         minValue,
                                         T&                         maxValue) const;
         void         histogram         (unsigned int               initialPos,
-                                        unsigned int               spacing,
                                         const T&                   minHorizontalValue,
                                         const T&                   maxHorizontalValue,
                                         std::vector<T>&            centers,
                                         std::vector<unsigned int>& bins) const;
         void         sort              (unsigned int               initialPos,
                                         uqScalarSequenceClass<T>&  sortedSequence) const;
-        T            interQuantileRange(unsigned int               initialPos,
-                                        unsigned int               spacing) const;
+        void         sort              ();
+        T            interQuantileRange(unsigned int               initialPos) const;
         T            scaleForKDE       (unsigned int               initialPos,
-                                        unsigned int               spacing,
                                         const T&                   iqrsValue) const;
         void         gaussianKDE       (unsigned int               initialPos,
-                                        unsigned int               spacing,
                                         const std::vector<T>&      evaluationPositions,
                                         double                     scaleValue,
                                         std::vector<double>&       densityValues) const;
@@ -136,60 +133,76 @@ uqScalarSequenceClass<T>::resizeSequence(unsigned int newSequenceSize)
 
 template <class T>
 void
-uqScalarSequenceClass<T>::resetValues()
+uqScalarSequenceClass<T>::resetValues(unsigned int initialPos, unsigned int numPos)
 {
-  // FIX IT
+  bool bRC = ((initialPos          <  this->sequenceSize()) &&
+              (0                   <  numPos              ) &&
+              ((initialPos+numPos) <= this->sequenceSize()));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.rank(),
+                      "uqScalarSequences<T>::resetValues()",
+                      "invalid input data");
+
+  for (unsigned int j = 0; j < numPos; ++j) {
+    m_seq[initialPos+j] = 0.;
+  }
+
   return;
 }
 
 template <class T>
 void
-uqScalarSequenceClass<T>::erasePositions(unsigned int posBegin, unsigned int posEnd)
+uqScalarSequenceClass<T>::erasePositions(unsigned int initialPos, unsigned int numPos)
 {
-  UQ_FATAL_TEST_MACRO((posBegin > posEnd),
+  bool bRC = ((initialPos          <  this->sequenceSize()) &&
+              (0                   <  numPos              ) &&
+              ((initialPos+numPos) <= this->sequenceSize()));
+  UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqScalarSequences<V>::erasePositions()",
-                      "posBegin > posEnd");
+                      "uqScalarSequences<T>::erasePositions()",
+                      "invalid input data");
 
-  seqScalarPositionIteratorTypedef positionIteratorBegin = m_seq.begin();
-  if (posBegin < this->sequenceSize()) std::advance(positionIteratorBegin,posBegin);
-  else                                 positionIteratorBegin = m_seq.end();
+  seqScalarPositionIteratorTypedef posIteratorBegin = m_seq.begin();
+  if (initialPos < this->sequenceSize()) std::advance(posIteratorBegin,initialPos);
+  else                                   posIteratorBegin = m_seq.end();
 
-  seqScalarPositionIteratorTypedef positionIteratorEnd = m_seq.begin();
-  if (posEnd < this->sequenceSize()) std::advance(positionIteratorEnd,posEnd);
-  else                               positionIteratorEnd = m_seq.end();
+  unsigned int posEnd = initialPos + numPos - 1;
+  seqScalarPositionIteratorTypedef posIteratorEnd = m_seq.begin();
+  if (posEnd < this->sequenceSize()) std::advance(posIteratorEnd,posEnd);
+  else                               posIteratorEnd = m_seq.end();
 
-  m_seq.erase(positionIteratorBegin,positionIteratorEnd);
-  UQ_FATAL_TEST_MACRO((posBegin != this->sequenceSize()),
+  unsigned int oldSequenceSize = this->sequenceSize();
+  m_seq.erase(posIteratorBegin,posIteratorEnd);
+  UQ_FATAL_TEST_MACRO((oldSequenceSize - numPos) != this->sequenceSize(),
                       m_env.rank(),
-                      "uqScalarSequences<V>::erasePositions()",
-                      "posBegin != this->sequenceSize()");
+                      "uqScalarSequences<T>::erasePositions()",
+                      "(oldSequenceSize - numPos) != this->sequenceSize()");
 
   return;
 }
 
 template <class T>
 const T&
-uqScalarSequenceClass<T>::operator[](unsigned int positionId) const
+uqScalarSequenceClass<T>::operator[](unsigned int posId) const
 {
-  UQ_FATAL_TEST_MACRO((positionId >= this->sequenceSize()),
+  UQ_FATAL_TEST_MACRO((posId >= this->sequenceSize()),
                       m_env.rank(),
-                      "uqScalarSequences<V>::operator[] const",
-                      "posBegin > posEnd");
+                      "uqScalarSequences<T>::operator[] const",
+                      "posId > sequenceSize()");
 
-  return m_seq[positionId];
+  return m_seq[posId];
 }
 
 template <class T>
 T&
-uqScalarSequenceClass<T>::operator[](unsigned int positionId)
+uqScalarSequenceClass<T>::operator[](unsigned int posId)
 {
-  UQ_FATAL_TEST_MACRO((positionId >= this->sequenceSize()),
+  UQ_FATAL_TEST_MACRO((posId >= this->sequenceSize()),
                       m_env.rank(),
-                      "uqScalarSequences<V>::operator[]",
-                      "posBegin > posEnd");
+                      "uqScalarSequences<T>::operator[]",
+                      "posId > sequenceSize()");
 
-  return m_seq[positionId];
+  return m_seq[posId];
 }
 
 template <class T>
@@ -217,12 +230,13 @@ uqScalarSequenceClass<T>::mean(
   unsigned int initialPos,
   unsigned int numPos) const
 {
-  bool bRC = ((0                     <  numPos                 ) &&
-              ((initialPos+numPos-1) <= (this->sequenceSize()-1)));
+  bool bRC = ((initialPos          <  this->sequenceSize()) &&
+              (0                   <  numPos              ) &&
+              ((initialPos+numPos) <= this->sequenceSize()));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqScalarSequenceClass<V>::mean()",
-                      "invalid initial position or number of positions");
+                      "uqScalarSequenceClass<T>::mean()",
+                      "invalid input data");
 
   unsigned int finalPosPlus1 = initialPos + numPos;
   T tmpSum = 0.;
@@ -240,12 +254,13 @@ uqScalarSequenceClass<T>::sampleVariance(
   unsigned int numPos,
   const T&     meanValue) const
 {
-  bool bRC = ((0                     <  numPos                 ) &&
-              ((initialPos+numPos-1) <= (this->sequenceSize()-1)));
+  bool bRC = ((initialPos          <  this->sequenceSize()) &&
+              (0                   <  numPos              ) &&
+              ((initialPos+numPos) <= this->sequenceSize()));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqScalarSequenceClass<V>::sampleVariance()",
-                      "invalid initial position or number of positions");
+                      "uqScalarSequenceClass<T>::sampleVariance()",
+                      "invalid input data");
 
   unsigned int finalPosPlus1 = initialPos + numPos;
   T diff;
@@ -268,12 +283,13 @@ uqScalarSequenceClass<T>::populationVariance(
   unsigned int numPos,
   const T&     meanValue) const
 {
-  bool bRC = ((0                     <  numPos                 ) &&
-              ((initialPos+numPos-1) <= (this->sequenceSize()-1)));
+  bool bRC = ((initialPos          <  this->sequenceSize()) &&
+              (0                   <  numPos              ) &&
+              ((initialPos+numPos) <= this->sequenceSize()));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqScalarSequenceClass<V>::populationVariance()",
-                      "invalid initial position or number of positions");
+                      "uqScalarSequenceClass<T>::populationVariance()",
+                      "invalid input data");
 
   unsigned int finalPosPlus1 = initialPos + numPos;
   T diff;
@@ -296,17 +312,14 @@ uqScalarSequenceClass<T>::autoCovariance(
   const T&     meanValue,
   unsigned int lag) const
 {
-  bool bRC = ((0                     <  numPos                 ) &&
-              ((initialPos+numPos-1) <= (this->sequenceSize()-1)));
+  bool bRC = ((initialPos          <  this->sequenceSize()) &&
+              (0                   <  numPos              ) &&
+              ((initialPos+numPos) <= this->sequenceSize()) &&
+              (lag                 <  numPos              )); // lag should not be too large
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqScalarSequence<V>::autoCovariance<V>()",
-                      "invalid initial position or number of positions");
-
-  UQ_FATAL_TEST_MACRO(numPos <=lag,
-                      m_env.rank(),
-                      "uqScalarSequence<V>::autoCovariance<V>()",
-                      "lag is too large");
+                      "uqScalarSequence<T>::autoCovariance()",
+                      "invalid input data");
 
   unsigned int loopSize      = numPos - lag;
   unsigned int finalPosPlus1 = initialPos + loopSize;
@@ -331,17 +344,14 @@ uqScalarSequenceClass<T>::autoCorrelation(
   unsigned int numPos,
   unsigned int lag) const
 {
-  bool bRC = ((0                     <  numPos                 ) &&
-              ((initialPos+numPos-1) <= (this->sequenceSize()-1)));
+  bool bRC = ((initialPos          <  this->sequenceSize()) &&
+              (0                   <  numPos              ) &&
+              ((initialPos+numPos) <= this->sequenceSize()) &&
+              (lag                 <  numPos              )); // lag should not be too large
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqScalarSequence<V>::autoCorrelation<V>()",
-                      "invalid initial position or number of positions");
-
-  UQ_FATAL_TEST_MACRO(numPos <=lag,
-                      m_env.rank(),
-                      "uqScalarSequence<V>::autoCorrelation<V>()",
-                      "lag is too large");
+                      "uqScalarSequence<T>::autoCorrelation()",
+                      "invalid input data");
 
   T meanValue = this->mean(initialPos,
                            numPos);
@@ -530,13 +540,13 @@ uqScalarSequenceClass<T>::minMax(
   T&           minValue,
   T&           maxValue) const
 {
-  seqScalarPositionConstIteratorTypedef positionIterator = m_seq.begin();
-  std::advance(positionIterator,initialPos);
+  seqScalarPositionConstIteratorTypedef posIterator = m_seq.begin();
+  std::advance(posIterator,initialPos);
 
   seqScalarPositionConstIteratorTypedef pos;
-  pos = std::min_element(positionIterator, m_seq.end());
+  pos = std::min_element(posIterator, m_seq.end());
   minValue = *pos;
-  pos = std::max_element(positionIterator, m_seq.end());
+  pos = std::max_element(posIterator, m_seq.end());
   maxValue = *pos;
 
   return;
@@ -546,7 +556,6 @@ template <class T>
 void
 uqScalarSequenceClass<T>::histogram(
   unsigned int               initialPos,
-  unsigned int               spacing,
   const T&                   minHorizontalValue,
   const T&                   maxHorizontalValue,
   std::vector<T>&            centers,
@@ -600,58 +609,104 @@ uqScalarSequenceClass<T>::sort(
   unsigned int              initialPos,
   uqScalarSequenceClass<T>& sortedSequence) const
 {
-  sortedSequence.resize(this->sequenceSize() - initialPos);
-#if 0
-  for (unsigned int j = 0; j < sortedSequence.size(); ++j) {
-    sortedSequence[j] = new V(m_vectorExample);
-  }
+  unsigned int numPos = this->sequenceSize() - initialPos;
+  sortedSequence.resize(numPos);
+  this->extractScalarSeq(initialPos,
+                         1,
+                         numPos,
+                         sortedSequence);
+  sortedSequence.sort();
 
-  unsigned int dataSize = this->sequenceSize() - initialPos;
-  unsigned int numParams = vectorSize();
-  std::vector<double> data(dataSize,0.);
-  for (unsigned int i = 0; i < numParams; ++i) {
-    for (unsigned int j = 0; j < dataSize; ++j) {
-      data[j] = (*(m_seq[initialPos+j]))[i];
-    }
+  return;
+}
 
-    std::sort(data.begin(), data.end());
-
-    for (unsigned int j = 0; j < dataSize; ++j) {
-      (*(sortedSequence[j]))[i] = data[j];
-    }
-  }
-#endif
+template <class T>
+void
+uqScalarSequenceClass<T>::sort()
+{
+  std::sort(m_seq.begin(), m_seq.end());
   return;
 }
 
 template <class T>
 T
-uqScalarSequenceClass<T>::interQuantileRange(
-  unsigned int initialPos,
-  unsigned int spacing) const
+uqScalarSequenceClass<T>::interQuantileRange(unsigned int initialPos) const
 {
-  return 0.;
+  unsigned int dataSize = this->sequenceSize() - initialPos;
+
+  uqScalarSequenceClass sortedSequence(m_env,0);
+  this->sort(initialPos,
+             sortedSequence);
+
+  unsigned int pos1 = (unsigned int) ( (((double) dataSize) + 1.)*1./4. - 1. );
+  unsigned int pos3 = (unsigned int) ( (((double) dataSize) + 1.)*3./4. - 1. );
+
+  double fraction1 = (((double) dataSize) + 1.)*1./4. - 1. - ((double) pos1);
+  double fraction3 = (((double) dataSize) + 1.)*3./4. - 1. - ((double) pos3);
+
+  //std::cout << "In uqScalarSequenceClass::interQuantileRange()"
+  //          << ", initialPos = "            << initialPos
+  //          << ", this->sequenceSize() = "  << this->sequenceSize()
+  //          << ", dataSize = "              << dataSize
+  //          << ", sortedSequence.size() = " << sortedSequence.size()
+  //          << ", pos1 = "                  << pos1
+  //          << ", pos3 = "                  << pos3
+  //          << std::endl;
+  T value1 = (1.-fraction1) * sortedSequence[pos1] + fraction1 * sortedSequence[pos1+1];
+  T value3 = (1.-fraction3) * sortedSequence[pos3] + fraction3 * sortedSequence[pos3+1];
+  T iqrsValue = value3 - value1;
+
+  return iqrsValue;
 }
 
 template <class T>
 T
 uqScalarSequenceClass<T>::scaleForKDE(
   unsigned int initialPos,
-  unsigned int spacing,
   const T&     iqrsValue) const
 {
-  return 0.;
+  unsigned int dataSize = this->sequenceSize() - initialPos;
+
+  T meanValue = this->mean(initialPos,
+                           dataSize);
+
+  T samValue = this->sampleVariance(initialPos,
+                                    dataSize,
+                                    meanValue);
+
+  T scaleValue;
+  if (iqrsValue <= 0.) {
+    scaleValue = 1.06*sqrt(samValue)/pow(dataSize,1./5.);
+   }
+  else {
+    scaleValue = 1.06*std::min(sqrt(samValue),iqrsValue/1.34)/pow(dataSize,1./5.);
+  }
+
+  return scaleValue;
 }
 
 template <class T>
 void
 uqScalarSequenceClass<T>::gaussianKDE(
   unsigned int          initialPos,
-  unsigned int          spacing,
   const std::vector<T>& evaluationPositions,
   double                scaleValue,
   std::vector<double>&  densityValues) const
 {
+  unsigned int dataSize = this->sequenceSize() - initialPos;
+  unsigned int numEstimations = evaluationPositions.size();
+
+  double scaleInv = 1./scaleValue;
+  for (unsigned int j = 0; j < numEstimations; ++j) {
+    double x = evaluationPositions[j];
+    double value = 0.;
+    for (unsigned int k = 0; k < dataSize; ++k) {
+      double xk = m_seq[initialPos+k];
+      value += uqMiscGaussianDensity((x-xk)*scaleInv,0.,1.);
+    }
+    densityValues[j] = scaleInv * (value/(double) numEstimations);
+  }
+
   return;
 }
 

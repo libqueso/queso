@@ -631,7 +631,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::resetChainAndRelatedInfo()
 
   m_idsOfUniquePositions.clear();
 
-  //for (unsigned int i = 0; i < m_chain1.sequenceSize(); ++i) {
+  //for (unsigned int i = 0; i < m_chain1.sequenceSize(); ++i) { // FIX IT
   //  if (m_chain1[i]) delete m_chain1[i];
   //}
 
@@ -1434,7 +1434,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
   //****************************************************
   if ((m_bmmRun                          ) &&
       (initialPosForStatistics.size() > 0) &&
-      (m_bmmLengths.size()         > 0)) { 
+      (m_bmmLengths.size()            > 0)) { 
     tmpRunTime = 0.;
     iRC = gettimeofday(&timevalTmp, NULL);
     if (m_env.rank() == 0) {
@@ -1743,16 +1743,16 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
       for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
         unsigned int lag = lagsForCorrs[lagId];
         if (m_chainUse2) {
-          chain2.autoCorrelations(initialPos,
-                                  chain2.sequenceSize()-initialPos,
-                                  lag,
-                                  corrVec);
+          chain2.autoCorrelation(initialPos,
+                                 chain2.sequenceSize()-initialPos,
+                                 lag,
+                                 corrVec);
         }
         else {
-          chain1.autoCorrelations(initialPos,
-                                  chain1.sequenceSize()-initialPos,
-                                  lag,
-                                  corrVec);
+          chain1.autoCorrelation(initialPos,
+                                 chain1.sequenceSize()-initialPos,
+                                 lag,
+                                 corrVec);
         }
         _2dArrayOfAutoCorrs(initialPosId,lagId) = corrVec;
       }
@@ -1909,7 +1909,6 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
     m_histBinsForAllParams.resize (m_histNumberOfInternalBins+2,NULL);
     if (m_chainUse2) {
       chain2.histogram(uncorrInitialPos,
-                       m_uncorrSpacing,
                        *m_statsMinPositions,
                        *m_statsMaxPositions,
                        m_histCentersForAllBins,
@@ -1917,7 +1916,6 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
     }
     else {
       chain1.histogram(uncorrInitialPos,
-                       m_uncorrSpacing,
                        *m_statsMinPositions,
                        *m_statsMaxPositions,
                        m_histCentersForAllBins,
@@ -1953,12 +1951,10 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
     V iqrs(m_paramSpace.zeroVector());
     if (m_chainUse2) {
       chain2.interQuantileRange(uncorrInitialPos,
-                                m_uncorrSpacing,
                                 iqrs);
     }
     else {
       chain1.interQuantileRange(uncorrInitialPos,
-                                m_uncorrSpacing,
                                 iqrs);
     }
 
@@ -1999,13 +1995,11 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
 
     if (m_chainUse2) {
       chain2.scalesForKDE(uncorrInitialPos,
-                          m_uncorrSpacing,
                           iqrs,
                           *m_kdeScales);
     }
     else {
       chain1.scalesForKDE(uncorrInitialPos,
-                          m_uncorrSpacing,
                           iqrs,
                           *m_kdeScales);
     }
@@ -2013,14 +2007,12 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
     m_kdeGaussianDensityValues.resize(m_kdeNumberOfEvalPositions,NULL);
     if (m_chainUse2) {
       chain2.gaussianKDE(uncorrInitialPos,
-                         m_uncorrSpacing,
                          m_kdeEvalPositions,
                          *m_kdeScales,
                          m_kdeGaussianDensityValues);
     }
     else {
       chain1.gaussianKDE(uncorrInitialPos,
-                         m_uncorrSpacing,
                          m_kdeEvalPositions,
                          *m_kdeScales,
                          m_kdeGaussianDensityValues);

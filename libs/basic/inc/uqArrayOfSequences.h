@@ -57,7 +57,7 @@ public:
                                         const V&                 meanVec,
                                         unsigned int             lag,
                                         V&                       covVec) const;
-        void         autoCorrelations  (unsigned int             initialPos,
+        void         autoCorrelation   (unsigned int             initialPos,
                                         unsigned int             numPos,
                                         unsigned int             lag,
                                         V&                       corrVec) const;
@@ -76,7 +76,6 @@ public:
                                         V&                       minVec,
                                         V&                       maxVec) const;
         void         histogram         (unsigned int             initialPos,
-                                        unsigned int             spacing,
                                         const V&                 minVec,
                                         const V&                 maxVec,
                                         std::vector<V*>&         centersForAllBins,
@@ -84,14 +83,11 @@ public:
         void         sort              (unsigned int             initialPos,
                                         uqArrayOfSequencesClass& sortedSequence) const;
         void         interQuantileRange(unsigned int             initialPos,
-                                        unsigned int             spacing,
                                         V&                       iqrs) const;
         void         scalesForKDE      (unsigned int             initialPos,
-                                        unsigned int             spacing,
                                         const V&                 iqrs,
                                         V&                       scales) const;
         void         gaussianKDE       (unsigned int             initialPos,
-                                        unsigned int             spacing,
                                         const std::vector<V*>&   evaluationPositions,
                                         const V&                 scales,
                                         std::vector<V*>&         densityValues) const;
@@ -155,8 +151,10 @@ template <class V>
 void
 uqArrayOfSequencesClass<V>::resizeSequence(unsigned int newSequenceSize)
 {
-  for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
-    m_scalarSequences(i,0)->resizeSequence(newSequenceSize);
+  if (newSequenceSize != this->sequenceSize()) {
+    for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
+      m_scalarSequences(i,0)->resizeSequence(newSequenceSize);
+    }
   }
 
   return;
@@ -408,7 +406,7 @@ uqArrayOfSequencesClass<V>::autoCovariance(
 
 template <class V>
 void
-uqArrayOfSequencesClass<V>::autoCorrelations(
+uqArrayOfSequencesClass<V>::autoCorrelation(
   unsigned int initialPos,
   unsigned int numPos,
   unsigned int lag,
@@ -623,7 +621,6 @@ template <class V>
 void
 uqArrayOfSequencesClass<V>::histogram(
   unsigned int     initialPos,
-  unsigned int     spacing,
   const V&         minVec,
   const V&         maxVec,
   std::vector<V*>& centersForAllBins,
@@ -704,7 +701,6 @@ template <class V>
 void
 uqArrayOfSequencesClass<V>::interQuantileRange(
   unsigned int initialPos,
-  unsigned int spacing,
   V&           iqrs) const
 {
 #if 0
@@ -735,7 +731,6 @@ template <class V>
 void
 uqArrayOfSequencesClass<V>::scalesForKDE(
   unsigned int initialPos,
-  unsigned int spacing,
   const V&     iqrs,
   V&           scales) const
 {
@@ -773,7 +768,6 @@ template <class V>
 void
 uqArrayOfSequencesClass<V>::gaussianKDE(
   unsigned int           initialPos,
-  unsigned int           spacing,
   const std::vector<V*>& evaluationPositions,
   const V&               scales,
   std::vector<V*>&       densityValues) const
