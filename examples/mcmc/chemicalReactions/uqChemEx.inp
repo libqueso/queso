@@ -43,31 +43,39 @@ calib_MCMC_chain_write                = 1
 calib_MCMC_chain_computeStats         = 1
 calib_MCMC_chain_filter               = 1
 calib_MCMC_chain_outputFileNames      = calib1.m
+
 calib_MCMC_uniqueChain_generate       = 0
 calib_MCMC_uniqueChain_write          = 0
 calib_MCMC_uniqueChain_computeStats   = 0
+
 #calib_MCMC_avgChain_compute           = 0
 calib_MCMC_avgChain_write             = 0
 calib_MCMC_avgChain_computeStats      = 0
+
 calib_MCMC_dr_maxNumberOfExtraStages  = 1
 calib_MCMC_dr_scalesForExtraStages    = 5. 4. 3.
 calib_MCMC_am_initialNonAdaptInterval = 100
 calib_MCMC_am_adaptInterval           = 0
 calib_MCMC_am_eta                     = 1.92
 calib_MCMC_am_epsilon                 = 1.e-5
+
 calib_MCMC_stats_finalPercentages     = 100.
 calib_MCMC_bmm_run                    = 0
 calib_MCMC_bmm_lengths                = 50 100 200 500
-calib_MCMC_fft_compute                = 0
-calib_MCMC_psd_compute                = 1
+calib_MCMC_fft_compute                = 1
+calib_MCMC_fft_write                  = 1
+calib_MCMC_psdAtZero_compute          = 1
+calib_MCMC_psdAtZero_display          = 1
+calib_MCMC_psdAtZero_write            = 1
 calib_MCMC_geweke_compute             = 1
-calib_MCMC_corr_computeViaDef         = 0
-calib_MCMC_corr_computeViaFft         = 0
+calib_MCMC_corr_computeViaDef         = 1
+calib_MCMC_corr_computeViaFft         = 1
 calib_MCMC_corr_secondLag             = 2
 calib_MCMC_corr_lagSpacing            = 1
 calib_MCMC_corr_numberOfLags          = 200
-calib_MCMC_corr_display               = 0
-calib_MCMC_corr_write                 = 0
+calib_MCMC_corr_display               = 1
+calib_MCMC_corr_write                 = 1
+
 calib_MCMC_filter_initialPos          = 0
 calib_MCMC_filter_spacing             = 0
 calib_MCMC_filter_write               = 1

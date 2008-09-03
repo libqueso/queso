@@ -42,20 +42,25 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains2(
   }
 
   for (unsigned int chainId = 0; chainId < m_chainSizes.size(); ++chainId) {
+    char tmpChainId[10];
+    sprintf(tmpChainId,"%d",chainId);
+    std::string chainName = "queso_" + m_prefix + tmpChainId + "_chain";
+    std::string prefixName = "queso_" + m_prefix + tmpChainId;
+
     //****************************************************
     // Open file      
     //****************************************************
     std::ofstream* ofs = NULL;
     if (m_chainOutputFileNames[chainId] == UQ_MCMC_NAME_FOR_NO_OUTPUT_FILE) {
       if (m_env.rank() == 0) {
-        std::cout << "No output file opened for chain2 of id " << chainId
+        std::cout << "No output file opened for chain loop id = " << chainId
                   << std::endl;
       }
     }
     else {
       if (m_env.rank() == 0) {
-        std::cout << "Opening output file for chain2 of id " << chainId
-                  << ", with name '"                         << m_chainOutputFileNames[chainId]
+        std::cout << "Opening output file '"  << m_chainOutputFileNames[chainId]
+                  << "' for chain loop id = " << chainId
                   << "'..."
                   << std::endl;
       }
@@ -70,7 +75,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains2(
  
       UQ_FATAL_TEST_MACRO((ofs && ofs->is_open()) == false,
                           m_env.rank(),
-                          "uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain2()",
+                          "uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains2()",
                           "failed to open file");
     }
   
@@ -78,7 +83,8 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains2(
       //****************************************************
       // Just generate white noise
       //****************************************************
-      iRC = generateWhiteNoise2(chainId);
+      iRC = generateWhiteNoise2(m_chainSizes[chainId],
+                                chainName);
     }
     else {
       //****************************************************
@@ -102,11 +108,13 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains2(
       //****************************************************
       // Generate chain
       //****************************************************
-      iRC = generateChain2(chainId,
+      iRC = generateChain2(m_chainSizes[chainId],
                            valuesOf1stPosition,
                            proposalCovMatrix,
                            mahalanobisMatrix,
                            applyMahalanobisInvert,
+                           chainName,
+                           prefixName,
                            ofs);
       UQ_FATAL_RC_MACRO(iRC,
                         m_env.rank(),
@@ -128,17 +136,9 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains2(
     // Compute statistics on the chain
     //****************************************************
     if (m_chainComputeStatistics) {
-      if (m_env.rank() == 0) {
-        std::cout << "\n"
-                  << "\n-----------------------------------------------------"
-                  << "\n Statistics of chain of id " << chainId << ":"
-                  << "\n-----------------------------------------------------"
-                  << "\n"
-                  << std::endl;
-      }
       computeStatistics(m_chain1,
                         m_chain2,
-                        chainId,
+                        chainName,
                         ofs);
     }
 
@@ -151,14 +151,6 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains2(
     if (m_uniqueChainGenerate) {
       //m_uniqueChain2.erasePositions(m_uniqueChain2Pos,m_uniqueChain2.sequenceSize());
 
-      if (m_env.rank() == 0) {
-        std::cout << "\n"
-                  << "\n-----------------------------------------------------"
-                  << "\n Statistics on 'unique' chain:"
-                  << "\n-----------------------------------------------------"
-                  << "\n"
-                  << std::endl;
-      }
       //computeStatistics(m_uniqueChain2);
     }
 
@@ -192,7 +184,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains2(
       ofs->close();
 
       if (m_env.rank() == 0) {
-        std::cout << "Closed output file for chain2 of id " << chainId
+        std::cout << "Closed output file for chain loop id = " << chainId
                   << std::endl;
       }
     }
@@ -209,11 +201,13 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains2(
 
 template <class V, class M>
 int
-uqDRAM_MarkovChainGeneratorClass<V,M>::generateWhiteNoise2(unsigned int chainId)
+uqDRAM_MarkovChainGeneratorClass<V,M>::generateWhiteNoise2(
+  unsigned int       chainSize,
+  const std::string& chainName)
 {
   if (m_env.rank() == 0) {
-    std::cout << "Generating white noise for chain2 of id " << chainId
-              << ", with "                                  << m_chainSizes[chainId]
+    std::cout << "Generating white noise for chain " << chainName
+              << ", with "                           << chainSize
               << " positions..."
               << std::endl;
   }
@@ -224,7 +218,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateWhiteNoise2(unsigned int chainId)
 
   tmpRunTime = 0.;
   iRC = gettimeofday(&timevalTmp, NULL);
-  m_chain2.resizeSequence(m_chainSizes[chainId]); 
+  m_chain2.resizeSequence(chainSize); 
   //double resizeTime = uqMiscGetEllapsedSeconds(&timevalTmp);
   //if (m_env.rank() == 0) {
   //  std::cout << "Chain2 resize took " << resizeTime
@@ -267,16 +261,18 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateWhiteNoise2(unsigned int chainId)
 template <class V, class M>
 int
 uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain2(
-  unsigned int   chainId,
-  const V&       valuesOf1stPosition,
-  const M*       proposalCovMatrix,
-  const M*       mahalanobisMatrix,
-  bool           applyMahalanobisInvert,
-  std::ofstream* passedOfs)
+  unsigned int       chainSize,
+  const V&           valuesOf1stPosition,
+  const M*           proposalCovMatrix,
+  const M*           mahalanobisMatrix,
+  bool               applyMahalanobisInvert,
+  const std::string& chainName,
+  const std::string& prefixName,
+  std::ofstream*     passedOfs)
 {
   if (m_env.rank() == 0) {
-    std::cout << "Generating chain2 of id " << chainId
-              << ", with "                  << m_chainSizes[chainId]
+    std::cout << "Generating chain " << chainName
+              << ", with "           << chainSize
               << " positions..."
               << std::endl;
   }
@@ -333,15 +329,15 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain2(
   //****************************************************
   // Begin chain2 loop from positionId = 1
   //****************************************************
-  m_chain2.resizeSequence(m_chainSizes[chainId]); 
-  if (m_uniqueChainGenerate) m_idsOfUniquePositions.resize(m_chainSizes[chainId],0);
+  m_chain2.resizeSequence(chainSize); 
+  if (m_uniqueChainGenerate) m_idsOfUniquePositions.resize(chainSize,0);
   if (m_chainGenerateExtra) {
     if (m_likelihoodObjComputesMisfits) {
-      m_misfitChain.resize        (m_chainSizes[chainId],NULL); 
-      m_misfitVarianceChain.resize(m_chainSizes[chainId],NULL); 
+      m_misfitChain.resize        (chainSize,NULL); 
+      m_misfitVarianceChain.resize(chainSize,NULL); 
     }
-    m_m2lLikelihoodChain.resize(m_chainSizes[chainId],NULL); 
-    m_alphaQuotients.resize    (m_chainSizes[chainId],0.);
+    m_m2lLikelihoodChain.resize(chainSize,NULL); 
+    m_alphaQuotients.resize    (chainSize,0.);
   }
 
   unsigned int uniquePos = 0;
@@ -722,8 +718,8 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain2(
   //****************************************************
   m_chainRunTime += uqMiscGetEllapsedSeconds(&timevalChain);
   if (m_env.rank() == 0) {
-    std::cout << "Finished generating the chain2 of id " << chainId
-              << ", with "                               << m_chain2.sequenceSize()
+    std::cout << "Finished generating the chain " << chainName
+              << ", with "                        << m_chain2.sequenceSize()
               << " positions.";
     if (m_uniqueChainGenerate) {
       std::cout << " and " << uniquePos
@@ -772,7 +768,8 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain2(
   if (m_chainWrite && passedOfs) {
     iRC = writeInfo(m_chain1,
                     m_chain2,
-                    chainId,
+                    chainName,
+                    prefixName,
                     *passedOfs,
                     mahalanobisMatrix,
                     applyMahalanobisInvert);

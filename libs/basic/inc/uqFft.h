@@ -22,7 +22,7 @@
 
 #include <uqEnvironment.h>
 #include <gsl/gsl_fft_real.h>
-#include <gsl/gsl_fft_halfcomplex.h>
+#include <gsl/gsl_fft_complex.h>
 #include <vector>
 #include <complex>
 
@@ -30,22 +30,28 @@ template <class T>
 class uqFftClass
 {
 public:
-  uqFftClass(const uqEnvironmentClass& env, unsigned int fftSize);
+  uqFftClass(const uqEnvironmentClass& env);
  ~uqFftClass();
 
   void forward(const std::vector<T>&                     data, 
+                     unsigned int                        fftSize,
                      std::vector<std::complex<double> >& result);
 
   void inverse(const std::vector<T>&                     data, 
+                     unsigned int                        fftSize,
                      std::vector<std::complex<double> >& result);
 
 private:
+  void allocTables(unsigned int fftSize);
+  void freeTables ();
+
   const uqEnvironmentClass& m_env;
   unsigned int              m_fftSize;
 
-  gsl_fft_real_workspace*        m_realWkSpace;
-  gsl_fft_real_wavetable*        m_realWvTable;
-  gsl_fft_halfcomplex_wavetable* m_hcWvTable;
+  gsl_fft_real_workspace*    m_realWkSpace;
+  gsl_fft_real_wavetable*    m_realWvTable;
+  gsl_fft_complex_workspace* m_complexWkSpace;
+  gsl_fft_complex_wavetable* m_complexWvTable;
 };
 
 #endif // __UQ_FFT_H__

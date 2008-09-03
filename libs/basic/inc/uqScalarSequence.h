@@ -1,4 +1,4 @@
-/* uq/libs/basic/inc/uqScalarSequence.h
+ /* uq/libs/basic/inc/uqScalarSequence.h
  *
  * Copyright (C) 2008 The PECOS Team, http://queso.ices.utexas.edu
  *
@@ -56,9 +56,13 @@ public:
                                         unsigned int               numPos,
                                         const T&                   meanValue,
                                         unsigned int               lag) const;
-        T            autoCorrelation   (unsigned int               initialPos,
+        T            autoCorrViaDef    (unsigned int               initialPos,
                                         unsigned int               numPos,
                                         unsigned int               lag) const;
+        void         autoCorrViaFft    (unsigned int               initialPos,
+                                        unsigned int               numPos,
+                                        unsigned int               maxLag,
+                                        std::vector<T>&            autoCorrs) const;
         T            bmm               (unsigned int               initialPos,
                                         unsigned int               batchLength) const;
         void         psd               (unsigned int               initialPos,
@@ -92,6 +96,10 @@ private:
                                         unsigned int               spacing,
                                         unsigned int               numPos,
                                         uqScalarSequenceClass<T>&  scalarSeq) const;
+        void         extractRawData    (unsigned int               initialPos,
+                                        unsigned int               spacing,
+                                        unsigned int               numPos,
+                                        std::vector<double>&       rawData) const;
 
   const uqEnvironmentClass& m_env;
   std::vector<T>            m_seq;
@@ -339,7 +347,7 @@ uqScalarSequenceClass<T>::autoCovariance(
 
 template <class T>
 T
-uqScalarSequenceClass<T>::autoCorrelation(
+uqScalarSequenceClass<T>::autoCorrViaDef(
   unsigned int initialPos,
   unsigned int numPos,
   unsigned int lag) const
@@ -350,7 +358,7 @@ uqScalarSequenceClass<T>::autoCorrelation(
               (lag                 <  numPos              )); // lag should not be too large
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqScalarSequenceClass<T>::autoCorrelation()",
+                      "uqScalarSequenceClass<T>::autoCorrViaDef()",
                       "invalid input data");
 
   T meanValue = this->mean(initialPos,
@@ -367,6 +375,46 @@ uqScalarSequenceClass<T>::autoCorrelation(
                                      lag);
 
   return corrValue/covValueZero;
+}
+
+template <class T>
+void
+uqScalarSequenceClass<T>::autoCorrViaFft(
+  unsigned int    initialPos,
+  unsigned int    numPos,
+  unsigned int    maxLag,
+  std::vector<T>& autoCorrs) const
+{
+  double tmp = log((double) maxLag)/log(2.);
+  double fractionalPart = tmp - ((double) ((unsigned int) tmp));
+  if (fractionalPart > 0.) tmp += (1. - fractionalPart);
+  unsigned int fftSize = (unsigned int) pow(2.,tmp+1.); // Yes, tmp+1
+
+  std::vector<double> rawData(numPos,0.);
+  std::vector<std::complex<double> > resultData(0,std::complex<double>(0.,0.));
+  uqFftClass<T> fftObj(m_env);
+
+  // Forward FFT
+  this->extractRawData(initialPos,
+                       1,      // spacing
+                       numPos,
+                       rawData);
+  rawData.resize(fftSize,0.);
+  fftObj.forward(rawData,fftSize,resultData);
+
+  // Inverse FFT
+  for (unsigned int j = 0; j < fftSize; ++j) {
+    rawData[j] = std::norm(resultData[j]);
+  }
+  fftObj.inverse(rawData,fftSize,resultData);
+
+  // Prepare return data
+  autoCorrs.resize(maxLag,0.);
+  for (unsigned int j = 0; j < maxLag; ++j) {
+    autoCorrs[j] = resultData[j].real()/((double) (numPos-j));
+  }
+
+  return;
 }
 
 template <class T>
@@ -455,8 +503,8 @@ uqScalarSequenceClass<T>::psd(
   //          << ", fftSize = "      << fftSize
   //          << std::endl;
 
-  uqFftClass<T> fftObj(m_env,fftSize);
-  std::vector<std::complex<double> > resultData(fftSize,std::complex<double>(0.,0.));
+  uqFftClass<T> fftObj(m_env);
+  std::vector<std::complex<double> > resultData(0,std::complex<double>(0.,0.));
 
   unsigned int halfFFTSize = fftSize/2;
   psdSequence.clear();
@@ -476,7 +524,7 @@ uqScalarSequenceClass<T>::psd(
       blockData[j] = uqMiscHammingWindow(fftSize-1,j) * m_seq[dataPos];
     }
 
-    fftObj.forward(blockData,resultData);
+    fftObj.forward(blockData,fftSize,resultData);
 
     // Normalized spectral density: power per radians per sample
     double factor = 1./((double) numBlocks*blockSize); // /M_PI; // CHECK
@@ -741,6 +789,29 @@ uqScalarSequenceClass<T>::extractScalarSeq(
   else {
     for (unsigned int j = 0; j < numPos; ++j) {
       scalarSeq[j] = m_seq[initialPos+j*spacing];
+    }
+  }
+
+  return;
+}
+
+template <class T>
+void
+uqScalarSequenceClass<T>::extractRawData(
+  unsigned int         initialPos,
+  unsigned int         spacing,
+  unsigned int         numPos,
+  std::vector<double>& rawData) const
+{
+  rawData.resize(numPos);
+  if (spacing == 1) {
+    for (unsigned int j = 0; j < numPos; ++j) {
+      rawData[j] = m_seq[initialPos+j        ];
+    }
+  }
+  else {
+    for (unsigned int j = 0; j < numPos; ++j) {
+      rawData[j] = m_seq[initialPos+j*spacing];
     }
   }
 

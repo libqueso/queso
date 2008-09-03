@@ -57,13 +57,21 @@ public:
                                         const V&                 meanVec,
                                         unsigned int             lag,
                                         V&                       covVec) const;
-        void         autoCorrelation   (unsigned int             initialPos,
+        void         autoCorrViaDef    (unsigned int             initialPos,
                                         unsigned int             numPos,
                                         unsigned int             lag,
                                         V&                       corrVec) const;
+        void         autoCorrViaFft    (unsigned int                     initialPos,
+                                        unsigned int                     numPos,
+                                        const std::vector<unsigned int>& lags,
+                                        std::vector<V*>&                 corrVecs) const;
         void         bmm               (unsigned int             initialPos,
                                         unsigned int             batchLength,
                                         V&                       bmmVec) const;
+        void         fftForward        (unsigned int                        initialPos,
+                                        unsigned int                        fftSize,
+                                        unsigned int                        paramId,
+                                        std::vector<std::complex<double> >& resultData) const;
         void         psdAtZero         (unsigned int             initialPos,
                                         unsigned int             numBlocks,
                                         double                   hopSizeRatio,
@@ -412,7 +420,7 @@ uqArrayOfSequencesClass<V>::autoCovariance(
 
 template <class V>
 void
-uqArrayOfSequencesClass<V>::autoCorrelation(
+uqArrayOfSequencesClass<V>::autoCorrViaDef(
   unsigned int initialPos,
   unsigned int numPos,
   unsigned int lag,
@@ -437,6 +445,17 @@ uqArrayOfSequencesClass<V>::autoCorrelation(
                        corrVec);
   corrVec /= subChainAutoCovarianceLag0; 
 
+  return;
+}
+
+template <class V>
+void
+uqArrayOfSequencesClass<V>::autoCorrViaFft(
+  unsigned int                     initialPos,
+  unsigned int                     numPos,
+  const std::vector<unsigned int>& lags,
+  std::vector<V*>&                 corrVecs) const
+{
   return;
 }
 
@@ -500,6 +519,17 @@ uqArrayOfSequencesClass<V>::bmm(
     }
   }
 #endif
+  return;
+}
+
+template <class V>
+void
+uqArrayOfSequencesClass<V>::fftForward(
+  unsigned int                        initialPos,
+  unsigned int                        fftSize,
+  unsigned int                        paramId,
+  std::vector<std::complex<double> >& resultData) const
+{
   return;
 }
 
@@ -816,15 +846,15 @@ uqArrayOfSequencesClass<V>::filter(
 template <class V>
 void
 uqArrayOfSequencesClass<V>::write(
-  const std::string& name,
+  const std::string& chainName,
   std::ofstream&     ofs) const
 {
   // Write chain
-  ofs << "queso_" << name << " = zeros(" << this->sequenceSize()
-      << ","                             << this->vectorSize()
+  ofs << chainName << " = zeros(" << this->sequenceSize()
+      << ","                      << this->vectorSize()
       << ");"
       << std::endl;
-  ofs << "queso_" << name << " = [";
+  ofs << chainName << " = [";
 
   V tmpVec(m_vectorExample);
   unsigned int chainSize = this->sequenceSize();

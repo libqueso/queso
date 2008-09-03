@@ -60,15 +60,22 @@ public:
                                         unsigned int              lag,
                                         V&                        covVec) const;
 
-        void         autoCorrelation   (unsigned int              initialPos,
+        void         autoCorrViaDef    (unsigned int              initialPos,
                                         unsigned int              numPos,
                                         unsigned int              lag,
                                         V&                        corrVec) const;
+        void         autoCorrViaFft    (unsigned int                     initialPos,
+                                        unsigned int                     numPos,
+                                        const std::vector<unsigned int>& lags,
+                                        std::vector<V*>&                 corrVecs) const;
         void         bmm               (unsigned int              initialPos,
                                         unsigned int              batchLength,
                                         V&                        bmmVec) const;
         //void         fftAlloc          ();
-        //void         fftForward        (unsigned int fftSize);
+        void         fftForward        (unsigned int                        initialPos,
+                                        unsigned int                        fftSize,
+                                        unsigned int                        paramId,
+                                        std::vector<std::complex<double> >& resultData) const;
         //void         fftInverse        (unsigned int fftSize);
         //void         fftFree           ();
         void         psdAtZero         (unsigned int              initialPos,
@@ -109,9 +116,15 @@ private:
                                         unsigned int                   numPos,
                                         unsigned int                   paramId,
                                         uqScalarSequenceClass<double>& scalarSeq) const;
-  const uqEnvironmentClass& m_env;
-  V                         m_vectorExample;
-  std::vector<const V*>     m_seq;
+        void         extractRawData    (unsigned int                   initialPos,
+                                        unsigned int                   spacing,
+                                        unsigned int                   numPos,
+                                        unsigned int                   paramId,
+                                        std::vector<double>&           rawData) const;
+  const uqEnvironmentClass&   m_env;
+  V                           m_vectorExample;
+  std::vector<const V*>       m_seq;
+  mutable uqFftClass<double>* m_fftObj;
 };
 
 template <class V>
@@ -121,7 +134,8 @@ uqSequenceOfVectorsClass<V>::uqSequenceOfVectorsClass(
   :
   m_env          (vectorExample.env()),
   m_vectorExample(vectorExample),
-  m_seq          (sequenceSize,NULL)
+  m_seq          (sequenceSize,NULL),
+  m_fftObj       (NULL)
 {
 
   //if (m_env.rank() == 0) std::cout << "Entering uqSequenceOfVectorsClass<V>::constructor()"
@@ -134,6 +148,7 @@ uqSequenceOfVectorsClass<V>::uqSequenceOfVectorsClass(
 template <class V>
 uqSequenceOfVectorsClass<V>::~uqSequenceOfVectorsClass()
 {
+  if (m_fftObj != NULL) delete m_fftObj;
   for (unsigned int i = 0; i < (unsigned int) m_seq.size(); ++i) {
     if (m_seq[i]) delete m_seq[i];
   }
@@ -456,7 +471,7 @@ uqSequenceOfVectorsClass<V>::autoCovariance(
 
 template <class V>
 void
-uqSequenceOfVectorsClass<V>::autoCorrelation(
+uqSequenceOfVectorsClass<V>::autoCorrViaDef(
   unsigned int initialPos,
   unsigned int numPos,
   unsigned int lag,
@@ -469,7 +484,7 @@ uqSequenceOfVectorsClass<V>::autoCorrelation(
               (this->vectorSize()  == corrVec.size()      ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqSequenceOfVectorsClass<V>::autoCorrelation()",
+                      "uqSequenceOfVectorsClass<V>::autoCorrViaDef()",
                       "invalid input data");
 
 #ifdef UQ_SEQ_VEC_USES_SCALAR_SEQ_CODE
@@ -482,9 +497,9 @@ uqSequenceOfVectorsClass<V>::autoCorrelation(
                            numPos,
                            i,
                            data);
-    corrVec[i] = data.autoCorrelation(0,
-                                      numPos,
-                                      lag);
+    corrVec[i] = data.autoCorrViaDef(0,
+                                     numPos,
+                                     lag);
   }
 #else
   V subChainMean              (m_vectorExample);
@@ -506,6 +521,46 @@ uqSequenceOfVectorsClass<V>::autoCorrelation(
                        corrVec);
   corrVec /= subChainAutoCovarianceLag0; 
 #endif
+  return;
+}
+
+template <class V>
+void
+uqSequenceOfVectorsClass<V>::autoCorrViaFft(
+  unsigned int                     initialPos,
+  unsigned int                     numPos,
+  const std::vector<unsigned int>& lags,
+  std::vector<V*>&                 corrVecs) const
+{
+  for (unsigned int j = lags.size(); j < corrVecs.size(); ++j) {
+    if (corrVecs[j] != NULL) delete corrVecs[j];
+  }
+  corrVecs.resize(lags.size(),NULL);
+  for (unsigned int j = 0;           j < corrVecs.size(); ++j) {
+    if (corrVecs[j] == NULL) corrVecs[j] = new V(m_vectorExample);
+  }
+
+  uqScalarSequenceClass<double> data(m_env,0);
+  unsigned int maxLag    = lags[lags.size()-1];
+  std::vector<double> autoCorrs(maxLag,0.);
+
+  unsigned int numParams = vectorSize();
+  for (unsigned int i = 0; i < numParams; ++i) {
+    this->extractScalarSeq(initialPos,
+                           1, // spacing
+                           numPos,
+                           i,
+                           data);
+    data.autoCorrViaFft(0,
+                        numPos,
+                        maxLag,
+                        autoCorrs);
+
+    for (unsigned int j = 0; j < lags.size(); ++j) {
+      (*(corrVecs[j]))[i] = autoCorrs[lags[j]];
+    }
+  }
+
   return;
 }
 
@@ -577,6 +632,38 @@ uqSequenceOfVectorsClass<V>::bmm(
   bmmVec /= (double) batchMeans.sequenceSize(); // CHECK
 //bmmVec *= (double) (this->sequenceSize() - initialPos); // CHECK
 #endif
+
+  return;
+}
+
+template <class V>
+void
+uqSequenceOfVectorsClass<V>::fftForward(
+  unsigned int                        initialPos,
+  unsigned int                        fftSize,
+  unsigned int                        paramId,
+  std::vector<std::complex<double> >& resultData) const
+{
+  bool bRC = ((initialPos           <  this->sequenceSize()) &&
+              (paramId              <  this->vectorSize()  ) &&
+              (0                    <  fftSize             ) &&
+              ((initialPos+fftSize) <= this->sequenceSize()) &&
+              (fftSize              <  this->sequenceSize()));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.rank(),
+                      "uqSequenceOfVectorsClass<V>::fftForward()",
+                      "invalid input data");
+
+  std::vector<double> rawData(fftSize,0.);
+  this->extractRawData(initialPos,
+                       1, // spacing
+                       fftSize,
+                       paramId,
+                       rawData);
+
+  if (m_fftObj == NULL) m_fftObj = new uqFftClass<double>(m_env);
+  m_fftObj->forward(rawData,fftSize,resultData);
+  // Don't need to delete m_fftObj now. Done at destructor
 
   return;
 }
@@ -939,15 +1026,15 @@ uqSequenceOfVectorsClass<V>::gaussianKDE(
 template <class V>
 void
 uqSequenceOfVectorsClass<V>::write(
-  const std::string& name,
+  const std::string& chainName,
   std::ofstream&     ofs) const
 {
   // Write chain
-  ofs << "queso_" << name << " = zeros(" << this->sequenceSize()
-      << ","                             << this->vectorSize()
+  ofs << chainName << " = zeros(" << this->sequenceSize()
+      << ","                      << this->vectorSize()
       << ");"
       << std::endl;
-  ofs << "queso_" << name << " = [";
+  ofs << chainName << " = [";
   unsigned int chainSize = this->sequenceSize();
   for (unsigned int j = 0; j < chainSize; ++j) {
     ofs << *(m_seq[j])
@@ -985,6 +1072,30 @@ uqSequenceOfVectorsClass<V>::extractScalarSeq(
   else {
     for (unsigned int j = 0; j < numPos; ++j) {
       scalarSeq[j] = (*(m_seq[initialPos+j*spacing]))[paramId];
+    }
+  }
+
+  return;
+}
+
+template <class V>
+void
+uqSequenceOfVectorsClass<V>::extractRawData(
+  unsigned int         initialPos,
+  unsigned int         spacing,
+  unsigned int         numPos,
+  unsigned int         paramId,
+  std::vector<double>& rawData) const
+{
+  rawData.resize(numPos);
+  if (spacing == 1) {
+    for (unsigned int j = 0; j < numPos; ++j) {
+      rawData[j] = (*(m_seq[initialPos+j        ]))[paramId];
+    }
+  }
+  else {
+    for (unsigned int j = 0; j < numPos; ++j) {
+      rawData[j] = (*(m_seq[initialPos+j*spacing]))[paramId];
     }
   }
 
