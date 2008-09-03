@@ -143,28 +143,35 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains1(
     }
 
     if (m_chainFilter) {
-#if 0
-      unsigned int uncorrInitialPos = m_uncorrInitialPos;
-      unsigned int uncorrSpacing    = m_uncorrSpacing;
-      if (uncorrSpacing == 0) {
-        computeUncorrelation(m_chain1,
-                             m_chain2,
-                             chainId,
-                             ofs,
-                             uncorrInitialPos,
-                             uncorrSpacing);
+      // Compute filter parameters
+      unsigned int filterInitialPos = m_filterInitialPos;
+      unsigned int filterSpacing    = m_filterSpacing;
+      if (filterSpacing == 0) {
+        computeFilterParameters(m_chain1,
+                                m_chain2,
+                                chainId,
+                                ofs,
+                                filterInitialPos,
+                                filterSpacing);
       }
 
-      m_chain1.filter(uncorrInitialPos,
-                      uncorrSpacing,
-                      0,
-                      m_filteredChain1);
+      // Filter positions from the converged portion of the chain
+      m_chain1.filter(filterInitialPos,
+                      filterSpacing);
 
-      computeHistKde(m_filteredChain1,
-                     m_filteredChain2,
+      // Write filtered chain
+      if (m_filterWrite && ofs) {
+        char tmpChainId[10];
+        sprintf(tmpChainId,"%d",chainId);
+        const std::string& name = m_prefix + tmpChainId + "_filteredChain";
+        m_chain1.write(name,*ofs);
+      }
+
+      // Compute histogram and/or KDE
+      computeHistKde(m_chain1,
+                     m_chain2,
                      chainId,
                      ofs);
-#endif
     }
 
     //****************************************************
@@ -291,7 +298,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain1(
   const M*       proposalCovMatrix,
   const M*       mahalanobisMatrix,
   bool           applyMahalanobisInvert,
-  std::ofstream* ofs)
+  std::ofstream* passedOfs)
 {
   if (m_env.rank() == 0) {
     std::cout << "Generating chain1 of id " << chainId
@@ -789,11 +796,11 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain1(
     std::cout << std::endl;
   }
 
-  if (ofs != NULL) {
+  if (m_chainWrite && passedOfs) {
     iRC = writeInfo(m_chain1,
                     m_chain2,
                     chainId,
-                    *ofs,
+                    *passedOfs,
                     mahalanobisMatrix,
                     applyMahalanobisInvert);
     UQ_FATAL_RC_MACRO(iRC,

@@ -40,6 +40,7 @@ calib_MCMC_chain_displayPeriod        = 5000
 calib_MCMC_chain_measureRunTimes      = 0
 calib_MCMC_chain_write                = 1
 calib_MCMC_chain_computeStats         = 1
+calib_MCMC_chain_filter               = 1
 calib_MCMC_chain_outputFileNames      = calib.m
 calib_MCMC_uniqueChain_generate       = 0
 calib_MCMC_uniqueChain_write          = 0
@@ -66,6 +67,9 @@ calib_MCMC_corr_lagSpacing            = 1
 calib_MCMC_corr_numberOfLags          = 11
 calib_MCMC_corr_display               = 1
 calib_MCMC_corr_write                 = 0
+calib_MCMC_filter_initialPos          = 0
+calib_MCMC_filter_spacing             = 0
+calib_MCMC_filter_write               = 1
 calib_MCMC_hist_compute               = 1
 calib_MCMC_kde_compute                = 1
 

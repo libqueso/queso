@@ -136,7 +136,10 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains2(
                   << "\n"
                   << std::endl;
       }
-      computeStatistics(m_chain1,m_chain2,chainId,ofs);
+      computeStatistics(m_chain1,
+                        m_chain2,
+                        chainId,
+                        ofs);
     }
 
     //****************************************************
@@ -269,7 +272,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain2(
   const M*       proposalCovMatrix,
   const M*       mahalanobisMatrix,
   bool           applyMahalanobisInvert,
-  std::ofstream* ofs)
+  std::ofstream* passedOfs)
 {
   if (m_env.rank() == 0) {
     std::cout << "Generating chain2 of id " << chainId
@@ -766,11 +769,11 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain2(
     std::cout << std::endl;
   }
 
-  if (ofs != NULL) {
+  if (m_chainWrite && passedOfs) {
     iRC = writeInfo(m_chain1,
                     m_chain2,
                     chainId,
-                    *ofs,
+                    *passedOfs,
                     mahalanobisMatrix,
                     applyMahalanobisInvert);
     UQ_FATAL_RC_MACRO(iRC,

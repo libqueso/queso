@@ -100,6 +100,8 @@ public:
                                         std::vector<V*>&          densityValues) const;
         void         write             (const std::string&        name,
                                         std::ofstream&            ofs) const;
+        void         filter            (unsigned int              initialPos,
+                                        unsigned int              spacing);
 
 private:
         void         extractScalarSeq  (unsigned int                   initialPos,
@@ -953,6 +955,15 @@ uqSequenceOfVectorsClass<V>::write(
   }
   ofs << "];\n";
 
+  return;
+}
+
+template <class V>
+void
+uqSequenceOfVectorsClass<V>::filter(
+  unsigned int initialPos,
+  unsigned int spacing)
+{
   return;
 }
 
