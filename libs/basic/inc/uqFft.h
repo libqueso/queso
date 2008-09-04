@@ -21,8 +21,8 @@
 #define __UQ_FFT_H__
 
 #include <uqEnvironment.h>
-#include <gsl/gsl_fft_real.h>
-#include <gsl/gsl_fft_complex.h>
+//#include <gsl/gsl_fft_real.h>
+//#include <gsl/gsl_fft_complex.h>
 #include <vector>
 #include <complex>
 
@@ -42,16 +42,28 @@ public:
                      std::vector<std::complex<double> >& result);
 
 private:
-  void allocTables(unsigned int fftSize);
-  void freeTables ();
+  //void allocTables(unsigned int fftSize);
+  //void freeTables ();
 
   const uqEnvironmentClass& m_env;
-  unsigned int              m_fftSize;
+  //unsigned int               m_fftSize;
 
-  gsl_fft_real_workspace*    m_realWkSpace;
-  gsl_fft_real_wavetable*    m_realWvTable;
-  gsl_fft_complex_workspace* m_complexWkSpace;
-  gsl_fft_complex_wavetable* m_complexWvTable;
+  //gsl_fft_real_workspace*    m_realWkSpace;
+  //gsl_fft_real_wavetable*    m_realWvTable;
+  //gsl_fft_complex_workspace* m_complexWkSpace;
+  //gsl_fft_complex_wavetable* m_complexWvTable;
 };
+
+template <class T>
+uqFftClass<T>::uqFftClass(const uqEnvironmentClass& env)
+  :
+  m_env(env)
+{
+}
+
+template <class T>
+uqFftClass<T>::~uqFftClass()
+{
+}
 
 #endif // __UQ_FFT_H__

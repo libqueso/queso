@@ -72,6 +72,11 @@ public:
                                         unsigned int                        fftSize,
                                         unsigned int                        paramId,
                                         std::vector<std::complex<double> >& resultData) const;
+        void         psd               (unsigned int             initialPos,
+                                        unsigned int             numBlocks,
+                                        double                   hopSizeRatio,
+                                        unsigned int             paramId,
+                                        std::vector<double>&     psdResult) const;
         void         psdAtZero         (unsigned int             initialPos,
                                         unsigned int             numBlocks,
                                         double                   hopSizeRatio,
@@ -529,6 +534,18 @@ uqArrayOfSequencesClass<V>::fftForward(
   unsigned int                        fftSize,
   unsigned int                        paramId,
   std::vector<std::complex<double> >& resultData) const
+{
+  return;
+}
+
+template <class V>
+void
+uqArrayOfSequencesClass<V>::psd(
+  unsigned int         initialPos,
+  unsigned int         numBlocks,
+  double               hopSizeRatio,
+  unsigned int         paramId,
+  std::vector<double>& psdResult) const
 {
   return;
 }

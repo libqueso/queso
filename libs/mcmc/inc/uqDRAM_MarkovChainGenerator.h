@@ -20,7 +20,7 @@
 #ifndef __UQ_DRAM_MCG_H__
 #define __UQ_DRAM_MCG_H__
 
-#undef UQ_DRAM_MCG_REQUIRES_INVERTED_COV_MATRICES
+#undef  UQ_DRAM_MCG_REQUIRES_INVERTED_COV_MATRICES
 
 #define UQ_MCMC_MARKOV_CHAIN_TYPE       1
 #define UQ_MCMC_WHITE_NOISE_CHAIN_TYPE  2
@@ -58,8 +58,18 @@
 #define UQ_MCMC_BMM_DISPLAY_ODV                0
 #define UQ_MCMC_BMM_WRITE_ODV                  0
 #define UQ_MCMC_FFT_COMPUTE_ODV                0
+#define UQ_MCMC_FFT_PARAM_ID_ODV               0
+#define UQ_MCMC_FFT_SIZE_ODV                   2048
+#define UQ_MCMC_FFT_TEST_INVERSION_ODV         0
 #define UQ_MCMC_FFT_WRITE_ODV                  0
+#define UQ_MCMC_PSD_COMPUTE_ODV                0
+#define UQ_MCMC_PSD_NUM_BLOCKS_ODV             0
+#define UQ_MCMC_PSD_HOP_SIZE_RATIO_ODV         0.
+#define UQ_MCMC_PSD_PARAM_ID_ODV               0
+#define UQ_MCMC_PSD_WRITE_ODV                  0
 #define UQ_MCMC_PSD_AT_ZERO_COMPUTE_ODV        0
+#define UQ_MCMC_PSD_AT_ZERO_NUM_BLOCKS_ODV     0
+#define UQ_MCMC_PSD_AT_ZERO_HOP_SIZE_RATIO_ODV 0.
 #define UQ_MCMC_PSD_AT_ZERO_DISPLAY_ODV        0
 #define UQ_MCMC_PSD_AT_ZERO_WRITE_ODV          0
 #define UQ_MCMC_GEWEKE_COMPUTE_ODV             0
@@ -86,7 +96,6 @@
 #include <uqMiscellaneous.h>
 #include <uqSequenceOfVectors.h>
 #include <uqArrayOfSequences.h>
-//#include <uqSequenceStatistics.h>
 #include <uq2dArrayOfStuff.h>
 #include <sys/time.h>
 #include <fstream>
@@ -242,7 +251,15 @@ private:
   std::string m_option_bmm_display;
   std::string m_option_bmm_write;
   std::string m_option_fft_compute;
+  std::string m_option_fft_paramId;
+  std::string m_option_fft_size;
+  std::string m_option_fft_testInversion;
   std::string m_option_fft_write;
+  std::string m_option_psd_compute;
+  std::string m_option_psd_numBlocks;
+  std::string m_option_psd_hopSizeRatio;
+  std::string m_option_psd_paramId;
+  std::string m_option_psd_write;
   std::string m_option_psdAtZero_compute;
   std::string m_option_psdAtZero_numBlocks;
   std::string m_option_psdAtZero_hopSizeRatio;
@@ -310,7 +327,16 @@ private:
   bool                        m_bmmWrite;
 
   bool                        m_fftCompute;
+  unsigned int                m_fftParamId;
+  unsigned int                m_fftSize;
+  bool                        m_fftTestInversion;
   bool                        m_fftWrite;
+
+  bool                        m_psdCompute;
+  unsigned int                m_psdNumBlocks;
+  double                      m_psdHopSizeRatio;
+  unsigned int                m_psdParamId;
+  bool                        m_psdWrite;
 
   bool                        m_psdAtZeroCompute;
   std::vector<unsigned int>   m_psdAtZeroNumBlocks;
@@ -425,10 +451,18 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::uqDRAM_MarkovChainGeneratorClass(
   m_bmmRun                       (UQ_MCMC_BMM_RUN_ODV),
   m_bmmLengths                   (0),//,0),
   m_fftCompute                   (UQ_MCMC_FFT_COMPUTE_ODV),
+  m_fftParamId                   (UQ_MCMC_FFT_PARAM_ID_ODV),
+  m_fftSize                      (UQ_MCMC_FFT_SIZE_ODV),
+  m_fftTestInversion             (UQ_MCMC_FFT_TEST_INVERSION_ODV),
   m_fftWrite                     (UQ_MCMC_FFT_WRITE_ODV),
+  m_psdCompute                   (UQ_MCMC_PSD_COMPUTE_ODV),
+  m_psdNumBlocks                 (UQ_MCMC_PSD_NUM_BLOCKS_ODV),
+  m_psdHopSizeRatio              (UQ_MCMC_PSD_HOP_SIZE_RATIO_ODV),
+  m_psdParamId                   (UQ_MCMC_PSD_PARAM_ID_ODV),
+  m_psdWrite                     (UQ_MCMC_PSD_WRITE_ODV),
   m_psdAtZeroCompute             (UQ_MCMC_PSD_AT_ZERO_COMPUTE_ODV),
   m_psdAtZeroNumBlocks           (0),//,0),
-  m_psdAtZeroHopSizeRatio        (1.),
+  m_psdAtZeroHopSizeRatio        (UQ_MCMC_PSD_AT_ZERO_HOP_SIZE_RATIO_ODV),
   m_gewekeCompute                (UQ_MCMC_GEWEKE_COMPUTE_ODV),
   m_gewekeRatioNa                (0.),
   m_gewekeRatioNb                (0.),
@@ -521,7 +555,16 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::uqDRAM_MarkovChainGeneratorClass(
   m_option_bmm_write                  = m_prefix + "MCMC_bmm_write";
 
   m_option_fft_compute                = m_prefix + "MCMC_fft_compute";
+  m_option_fft_paramId                = m_prefix + "MCMC_fft_paramId";
+  m_option_fft_size                   = m_prefix + "MCMC_fft_size";
+  m_option_fft_testInversion          = m_prefix + "MCMC_fft_testInversion";
   m_option_fft_write                  = m_prefix + "MCMC_fft_write";
+
+  m_option_psd_compute                = m_prefix + "MCMC_psd_compute";
+  m_option_psd_numBlocks              = m_prefix + "MCMC_psd_numBlocks";
+  m_option_psd_hopSizeRatio           = m_prefix + "MCMC_psd_hopSizeRatio";
+  m_option_psd_paramId                = m_prefix + "MCMC_psd_paramId";
+  m_option_psd_write                  = m_prefix + "MCMC_psd_write";
 
   m_option_psdAtZero_compute          = m_prefix + "MCMC_psdAtZero_compute";
   m_option_psdAtZero_numBlocks        = m_prefix + "MCMC_psdAtZero_numBlocks";
@@ -683,7 +726,15 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::defineMyOptions(
     (m_option_bmm_run.c_str(),                    po::value<bool        >()->default_value(UQ_MCMC_BMM_RUN_ODV                     ), "compute variance of sample mean with batch means method")
     (m_option_bmm_lengths.c_str(),                po::value<std::string >()->default_value(UQ_MCMC_BMM_LENGTHS_ODV                 ), "batch lenghts for BMM"                                  )
     (m_option_fft_compute.c_str(),                po::value<bool        >()->default_value(UQ_MCMC_FFT_COMPUTE_ODV                 ), "compute fft"                                            )
+    (m_option_fft_paramId.c_str(),                po::value<unsigned int>()->default_value(UQ_MCMC_FFT_PARAM_ID_ODV                ), "parameter id for fft computations"                      )
+    (m_option_fft_size.c_str(),                   po::value<unsigned int>()->default_value(UQ_MCMC_FFT_SIZE_ODV                    ), "fft size"                                               )
+    (m_option_fft_testInversion.c_str(),          po::value<bool        >()->default_value(UQ_MCMC_FFT_TEST_INVERSION_ODV          ), "test fft inversion"                                     )
     (m_option_fft_write.c_str(),                  po::value<bool        >()->default_value(UQ_MCMC_FFT_WRITE_ODV                   ), "write fft"                                              )
+    (m_option_psd_compute.c_str(),                po::value<bool        >()->default_value(UQ_MCMC_PSD_COMPUTE_ODV                 ), "compute psd"                                            )
+    (m_option_psd_numBlocks.c_str(),              po::value<unsigned int>()->default_value(UQ_MCMC_PSD_NUM_BLOCKS_ODV              ), "number of blocks for psd"                               )
+    (m_option_psd_hopSizeRatio.c_str(),           po::value<double      >()->default_value(UQ_MCMC_PSD_HOP_SIZE_RATIO_ODV          ), "hop size ratio for psd"                                 )
+    (m_option_psd_paramId.c_str(),                po::value<unsigned int>()->default_value(UQ_MCMC_PSD_PARAM_ID_ODV                ), "parameter id for psd computations"                      )
+    (m_option_psd_write.c_str(),                  po::value<bool        >()->default_value(UQ_MCMC_PSD_WRITE_ODV                   ), "write psd"                                              )
     (m_option_psdAtZero_compute.c_str(),          po::value<bool        >()->default_value(UQ_MCMC_PSD_AT_ZERO_COMPUTE_ODV         ), "compute power spectral densities"                       )
 #if 0
     (m_option_psdAtZero_numBlocks.c_str(),        po::value<            >()->default_value(), "")
@@ -934,8 +985,40 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::getMyOptionValues(
     m_fftCompute = m_env.allOptionsMap()[m_option_fft_compute.c_str()].as<bool>();
   }
 
+  if (m_env.allOptionsMap().count(m_option_fft_paramId.c_str())) {
+    m_fftParamId = m_env.allOptionsMap()[m_option_fft_paramId.c_str()].as<unsigned int>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_fft_size.c_str())) {
+    m_fftSize = m_env.allOptionsMap()[m_option_fft_size.c_str()].as<unsigned int>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_fft_testInversion.c_str())) {
+    m_fftTestInversion = m_env.allOptionsMap()[m_option_fft_testInversion.c_str()].as<bool>();
+  }
+
   if (m_env.allOptionsMap().count(m_option_fft_write.c_str())) {
     m_fftWrite = m_env.allOptionsMap()[m_option_fft_write.c_str()].as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_psd_compute.c_str())) {
+    m_psdCompute = m_env.allOptionsMap()[m_option_psd_compute.c_str()].as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_psd_numBlocks.c_str())) {
+    m_psdNumBlocks = m_env.allOptionsMap()[m_option_psd_numBlocks.c_str()].as<unsigned int>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_psd_hopSizeRatio.c_str())) {
+    m_psdHopSizeRatio = m_env.allOptionsMap()[m_option_psd_hopSizeRatio.c_str()].as<double>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_psd_paramId.c_str())) {
+    m_psdParamId = m_env.allOptionsMap()[m_option_psd_paramId.c_str()].as<unsigned int>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_psd_write.c_str())) {
+    m_psdWrite = m_env.allOptionsMap()[m_option_psd_write.c_str()].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_psdAtZero_compute.c_str())) {
@@ -1544,53 +1627,64 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
     iRC = gettimeofday(&timevalTmp, NULL);
     if (m_env.rank() == 0) {
       std::cout << "\n-----------------------------------------------------"
-                << "\nComputing FFT of chain"
+                << "\nComputing FFT of chain on parameter of id = " << m_fftParamId
                 << std::endl;
     }
 
-    unsigned int paramId = 0;
-    unsigned int fftSize = 2048;
-    std::vector<std::complex<double> > resultData(0,std::complex<double>(0.,0.));
+    std::vector<std::complex<double> > forwardResult(0,std::complex<double>(0.,0.));
+    std::vector<std::complex<double> > inverseResult(0,std::complex<double>(0.,0.));
+    uqFftClass<std::complex<double> > fftObj(m_env);
     for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
       unsigned int initialPosition = initialPosForStatistics[initialPosId];
       if (m_chainUse2) {
         chain2.fftForward(initialPosition,
-                          fftSize,
-                          paramId,
-                          resultData);
+                          m_fftSize,
+                          m_fftParamId,
+                          forwardResult);
       }
       else {
         chain1.fftForward(initialPosition,
-                          fftSize,
-                          paramId,
-                          resultData);
+                          m_fftSize,
+                          m_fftParamId,
+                          forwardResult);
       }
 
       if (m_fftWrite && passedOfs) {
         std::ofstream& ofs = *passedOfs;
-        ofs << chainName << "_fftReal_initPos" << initialPosForStatistics[initialPosId] << " = zeros(" << 1
-            << ","                                                                                     << resultData.size()
+        ofs << chainName << "_fft_initPos" << initialPosForStatistics[initialPosId] << " = zeros(" << 1
+            << ","                                                                                 << forwardResult.size()
             << ");"
             << std::endl;
-        for (unsigned int j = 0; j < resultData.size(); ++j) {
-          ofs << chainName << "_fftReal_initPos" << initialPosForStatistics[initialPosId] << "(" << 1
-              << ","                                                                             << j+1
-              << ") = "                                                                          << resultData[j].real()
-              << ";"
-              << std::endl;
-        }
-        ofs << chainName << "_fftImag_initPos" << initialPosForStatistics[initialPosId] << " = zeros(" << 1
-            << ","                                                                                     << resultData.size()
-            << ");"
-            << std::endl;
-        for (unsigned int j = 0; j < resultData.size(); ++j) {
-          ofs << chainName << "_fftImag_initPos" << initialPosForStatistics[initialPosId] << "(" << 1
-              << ","                                                                             << j+1
-              << ") = "                                                                          << resultData[j].imag()
+        for (unsigned int j = 0; j < forwardResult.size(); ++j) {
+          ofs << chainName << "_fft_initPos" << initialPosForStatistics[initialPosId] << "(" << 1
+              << ","                                                                         << j+1
+              << ") = "                                                                      << forwardResult[j].real()
+              << " + i*"                                                                     << forwardResult[j].imag()
               << ";"
               << std::endl;
         }
       } // if write
+
+      if (m_fftTestInversion) {
+        fftObj.inverse(forwardResult,
+                       m_fftSize,
+                       inverseResult);
+        if (m_fftWrite && passedOfs) {
+          std::ofstream& ofs = *passedOfs;
+          ofs << chainName << "_inv_initPos" << initialPosForStatistics[initialPosId] << " = zeros(" << 1
+              << ","                                                                                 << inverseResult.size()
+              << ");"
+              << std::endl;
+          for (unsigned int j = 0; j < inverseResult.size(); ++j) {
+            ofs << chainName << "_inv_initPos" << initialPosForStatistics[initialPosId] << "(" << 1
+                << ","                                                                         << j+1
+                << ") = "                                                                      << inverseResult[j].real()
+                << " + i*"                                                                     << inverseResult[j].imag()
+                << ";"
+                << std::endl;
+          }
+        } // if write
+      }
     } // for initialPosId
 
     tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
@@ -1604,6 +1698,57 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
   //****************************************************
   // Compute power spectral density (PSD) of chain, for first parameter only
   //****************************************************
+  if ((m_psdCompute                      ) &&
+      (initialPosForStatistics.size() > 0)) {
+    tmpRunTime = 0.;
+    iRC = gettimeofday(&timevalTmp, NULL);
+    if (m_env.rank() == 0) {
+      std::cout << "\n-----------------------------------------------------"
+                << "\nComputing PSD of chain on parameter of id = " << m_psdParamId
+                << std::endl;
+    }
+
+    std::vector<double> psdResult(0,0.);
+    for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+      unsigned int initialPosition = initialPosForStatistics[initialPosId];
+      if (m_chainUse2) {
+        chain2.psd(initialPosition,
+                   m_psdNumBlocks,
+                   m_psdHopSizeRatio,
+                   m_psdParamId,
+                   psdResult);
+      }
+      else {
+        chain1.psd(initialPosition,
+                   m_psdNumBlocks,
+                   m_psdHopSizeRatio,
+                   m_psdParamId,
+                   psdResult);
+      }
+
+      if (m_fftWrite && passedOfs) {
+        std::ofstream& ofs = *passedOfs;
+        ofs << chainName << "_psd_initPos" << initialPosForStatistics[initialPosId] << " = zeros(" << 1
+            << ","                                                                                 << psdResult.size()
+            << ");"
+            << std::endl;
+        for (unsigned int j = 0; j < psdResult.size(); ++j) {
+          ofs << chainName << "_psd_initPos" << initialPosForStatistics[initialPosId] << "(" << 1
+              << ","                                                                         << j+1
+              << ") = "                                                                      << psdResult[j]
+              << ";"
+              << std::endl;
+        }
+      } // if write
+    }
+
+    tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
+    if (m_env.rank() == 0) {
+      std::cout << "Chain PSD took " << tmpRunTime
+                << " seconds"
+                << std::endl;
+    }
+  }
 
   //****************************************************
   // Compute power spectral density (PSD) of chain at zero frequency
@@ -1615,7 +1760,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
     iRC = gettimeofday(&timevalTmp, NULL);
     if (m_env.rank() == 0) {
       std::cout << "\n-----------------------------------------------------"
-                << "\nComputing variance of sample mean through PSD"
+                << "\nComputing PSD at frequency zero for all parameters"
                 << std::endl;
     }
 
@@ -1646,11 +1791,46 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
       }
     }
 
-    // Display PSD
+    // Display PSD at frequency zero
     if ((m_psdAtZeroDisplay) && (m_env.rank() == 0)) {
       for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
         double sizeForPSD = doubleChainSequenceSize - (double) initialPosForStatistics[initialPosId];
-        std::cout << "\nEstimated variance of sample mean, through psd (fft), for subchain beggining at position " << initialPosForStatistics[initialPosId]
+        std::cout << "\nComputed PSD at frequency zero for subchain beggining at position " << initialPosForStatistics[initialPosId]
+                  << ", so effective data size = " << sizeForPSD
+                  << " (each column corresponds to a number of blocks)"
+                  << std::endl;
+
+        char line[512];
+        sprintf(line,"%s",
+                "Parameter");
+        std::cout << line;
+        for (unsigned int numBlocksId = 0; numBlocksId < m_psdAtZeroNumBlocks.size(); numBlocksId++) {
+          sprintf(line,"%10s%3d",
+                  " ",
+                  m_psdAtZeroNumBlocks[numBlocksId]);
+          std::cout << line;
+        }
+
+        for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
+          sprintf(line,"\n%9.9s",
+                  m_paramSpace.parameter(i).name().c_str());
+          std::cout << line;
+          for (unsigned int numBlocksId = 0; numBlocksId < m_psdAtZeroNumBlocks.size(); numBlocksId++) {
+            sprintf(line,"%2s%11.4e",
+                    " ",
+                    _2dArrayOfPSDAtZero(initialPosId,numBlocksId)[i]);
+            std::cout << line;
+          }
+        }
+        std::cout << std::endl;
+      }
+    }
+
+    // Display estimated variance of sample mean through PSD
+    if ((m_psdAtZeroDisplay) && (m_env.rank() == 0)) {
+      for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+        double sizeForPSD = doubleChainSequenceSize - (double) initialPosForStatistics[initialPosId];
+        std::cout << "\nEstimated variance of sample mean, through psd, for subchain beggining at position " << initialPosForStatistics[initialPosId]
                   << ", so effective data size = " << sizeForPSD
                   << " (each column corresponds to a number of blocks)"
                   << std::endl;
@@ -1683,7 +1863,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
 
     tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
     if (m_env.rank() == 0) {
-      std::cout << "Chain PSD took " << tmpRunTime
+      std::cout << "Chain PSD at frequency zero took " << tmpRunTime
                 << " seconds"
                 << std::endl;
     }
@@ -1869,7 +2049,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
 
     if ((m_corrDisplay) && (m_env.rank() == 0)) {
       for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
-        std::cout << "\nEstimated autocorrelation coefficients (via def), for subchain beggining at position " << initialPosForStatistics[initialPosId]
+        std::cout << "\nComputed autocorrelation coefficients (via def), for subchain beggining at position " << initialPosForStatistics[initialPosId]
                   << " (each column corresponds to a different lag)"
                   << std::endl;
 
@@ -1967,9 +2147,9 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
         _2dArrayOfAutoCorrs.setLocation(i,j,m_paramSpace.newVector());
       }
     }
+    std::vector<V*> corrVecs(lagsForCorrs.size(),NULL);
     for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
       unsigned int initialPos = initialPosForStatistics[initialPosId];
-      std::vector<V*> corrVecs(lagsForCorrs.size(),NULL);
       for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
         corrVecs[lagId] = m_paramSpace.newVector();
       }
@@ -1980,6 +2160,15 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
                               corrVecs);
       }
       else {
+        if (m_env.rank() == 0) {
+          std::cout << "In uqDRAM_MarkovChainGeneratorClass<V>::computeStatistics()"
+                    << ": about to call chain.autoCorrViaFft()"
+                    << " with initialPos = "      << initialPos
+                    << ", numPos = "              << chain1.sequenceSize()-initialPos
+                    << ", lagsForCorrs.size() = " << lagsForCorrs.size()
+                    << ", corrVecs.size() = "     << corrVecs.size()
+                    << std::endl;
+        }
         chain1.autoCorrViaFft(initialPos,
                               chain1.sequenceSize()-initialPos,
                               lagsForCorrs,
@@ -1988,6 +2177,9 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
       for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
         _2dArrayOfAutoCorrs(initialPosId,lagId) = *(corrVecs[lagId]);
       }
+    }
+    for (unsigned int j = 0; j < corrVecs.size(); ++j) {
+      if (corrVecs[j] != NULL) delete corrVecs[j];
     }
 
     if (m_env.rank() == 0) {
@@ -2013,7 +2205,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
 
     if ((m_corrDisplay) && (m_env.rank() == 0)) {
       for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
-        std::cout << "\nEstimated autocorrelation coefficients (via fft), for subchain beggining at position " << initialPosForStatistics[initialPosId]
+        std::cout << "\nComputed autocorrelation coefficients (via fft), for subchain beggining at position " << initialPosForStatistics[initialPosId]
                   << " (each column corresponds to a different lag)"
                   << std::endl;
 
@@ -2767,7 +2959,15 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::print(std::ostream& os) const
     os << m_bmmLengths[i] << " ";
   }
   os << "\n" << m_option_fft_compute        << " = " << m_fftCompute
+     << "\n" << m_option_fft_paramId        << " = " << m_fftParamId
+     << "\n" << m_option_fft_size           << " = " << m_fftSize
+     << "\n" << m_option_fft_testInversion  << " = " << m_fftTestInversion
      << "\n" << m_option_fft_write          << " = " << m_fftWrite
+     << "\n" << m_option_psd_compute        << " = " << m_psdCompute
+     << "\n" << m_option_psd_paramId        << " = " << m_psdParamId
+     << "\n" << m_option_psd_numBlocks      << " = " << m_psdNumBlocks
+     << "\n" << m_option_psd_hopSizeRatio   << " = " << m_psdHopSizeRatio
+     << "\n" << m_option_psd_write          << " = " << m_psdWrite
      << "\n" << m_option_psdAtZero_compute  << " = " << m_psdAtZeroCompute
      << "\n" << m_option_geweke_compute     << " = " << m_gewekeCompute
      << "\n" << m_option_corr_computeViaDef << " = " << m_corrComputeViaDef

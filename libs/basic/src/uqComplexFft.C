@@ -1,4 +1,4 @@
-/* uq/libs/basic/inc/uqRealFft.C
+/* uq/libs/basic/inc/uqComplexFft.C
  *
  * Copyright (C) 2008 The PECOS Team, http://queso.ices.utexas.edu
  *
@@ -18,16 +18,17 @@
  */
 
 #include <uqFft.h>
-#include <gsl/gsl_fft_real.h>
 #include <gsl/gsl_fft_complex.h>
 
 template <>
 void
-uqFftClass<double>::forward(
-  const std::vector<double>&                data, 
+uqFftClass<std::complex<double> >::forward(
+  const std::vector<std::complex<double> >& data, 
         unsigned int                        fftSize,
         std::vector<std::complex<double> >& forwardResult)
 {
+  exit(1);
+#if 0
   if (forwardResult.size() != fftSize) {
     forwardResult.resize(fftSize,std::complex<double>(0.,0.));
     std::vector<std::complex<double> >(forwardResult).swap(forwardResult);
@@ -39,12 +40,6 @@ uqFftClass<double>::forward(
     internalData[j] = data[j];
   }
 
-  //double sumOfAllTerms = 0.;
-  //for (unsigned int j = 0; j < fftSize; ++j) {
-  //  sumOfAllTerms += internalData[j];
-  //}
-
-  //allocTables(fftSize);
   gsl_fft_real_workspace* realWkSpace = gsl_fft_real_workspace_alloc(fftSize);
   gsl_fft_real_wavetable* realWvTable = gsl_fft_real_wavetable_alloc(fftSize);
 
@@ -56,12 +51,6 @@ uqFftClass<double>::forward(
 
   gsl_fft_real_wavetable_free(realWvTable);
   gsl_fft_real_workspace_free(realWkSpace);
-  //freeTables();
-
-  //std::cout << "After FFT"
-  //          << ", sumOfAllTerms = "          << sumOfAllTerms
-  //          << ", sumOfAllTerms - dft[0] = " << sumOfAllTerms - internalData[0]
-  //          << std::endl;
 
   unsigned int halfFFTSize = fftSize/2;
   double realPartOfFFT = 0.;
@@ -85,14 +74,14 @@ uqFftClass<double>::forward(
     }
     forwardResult[j] = std::complex<double>(realPartOfFFT,imagPartOfFFT);
   }
-
+#endif
   return;
 }
 
 template <>
 void
-uqFftClass<double>::inverse(
-  const std::vector<double>&                data, 
+uqFftClass<std::complex<double> >::inverse(
+  const std::vector<std::complex<double> >& data, 
         unsigned int                        fftSize,
         std::vector<std::complex<double> >& inverseResult)
 {
@@ -101,19 +90,12 @@ uqFftClass<double>::inverse(
     std::vector<std::complex<double> >(inverseResult).swap(inverseResult);
   }
 
-  std::vector<double> internalData(2*fftSize,0.); // Yes, twice the fftSize
-  unsigned int minSize = std::min((unsigned int) data.size(),fftSize);
+  std::vector<double> internalData(2*fftSize,0.);                          // Yes, twice the fftSize
+  unsigned int minSize = 2 * std::min((unsigned int) data.size(),fftSize); // Yes, 2*
   for (unsigned int j = 0; j < minSize; ++j) {
-    internalData[2*j] = data[j];
+    internalData[2*j  ] = data[j].real();
+    internalData[2*j+1] = data[j].imag();
   }
-
-  //if (m_env.rank() == 0) {
-  //  std::cout << "In uqFftClass<double>::inverse()"
-  //            << ": about to call gsl_fft_complex_inverse()"
-  //            << " with fftSize = "         << fftSize
-  //            << "; internalData.size() = " << internalData.size()
-  //            << std::endl;
-  //}
 
   gsl_fft_complex_workspace* complexWkSpace = gsl_fft_complex_workspace_alloc(fftSize);
   gsl_fft_complex_wavetable* complexWvTable = gsl_fft_complex_wavetable_alloc(fftSize);
@@ -127,47 +109,9 @@ uqFftClass<double>::inverse(
   gsl_fft_complex_wavetable_free(complexWvTable);
   gsl_fft_complex_workspace_free(complexWkSpace);
 
-  //if (m_env.rank() == 0) {
-  //  std::cout << "In uqFftClass<double>::inverse()"
-  //            << ": returned from gsl_fft_complex_inverse()"
-  //            << " with fftSize = "          << fftSize
-  //            << "; inverseResult.size() = " << inverseResult.size()
-  //            << std::endl;
-  //}
-
   for (unsigned int j = 0; j < fftSize; ++j) {
     inverseResult[j] = std::complex<double>(internalData[2*j],internalData[2*j+1]);
   }
 
   return;
 }
-#if 0
-template <class T>
-void
-uqFftClass<T>::allocTables(unsigned int fftSize)
-{
-  if (m_fftSize != fftSize) {
-    if (m_fftSize != 0) freeTables();
-    m_fftSize = fftSize;
-    m_realWkSpace = gsl_fft_real_workspace_alloc       (fftSize);
-    m_realWvTable = gsl_fft_real_wavetable_alloc       (fftSize);
-  //m_hcWvTable   = gsl_fft_halfcomplex_wavetable_alloc(fftSize);
-  }
-
-  return;
-}
-
-template <class T>
-void
-uqFftClass<T>::freeTables()
-{
-  if (m_fftSize != 0) {
-  //gsl_fft_halfcomplex_wavetable_free(m_hcWvTable);
-    gsl_fft_real_wavetable_free       (m_realWvTable);
-    gsl_fft_real_workspace_free       (m_realWkSpace);
-    m_fftSize = 0;
-  }
-
-  return;
-}
-#endif

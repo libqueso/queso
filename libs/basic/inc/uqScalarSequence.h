@@ -385,10 +385,21 @@ uqScalarSequenceClass<T>::autoCorrViaFft(
   unsigned int    maxLag,
   std::vector<T>& autoCorrs) const
 {
-  double tmp = log((double) maxLag)/log(2.);
-  double fractionalPart = tmp - ((double) ((unsigned int) tmp));
-  if (fractionalPart > 0.) tmp += (1. - fractionalPart);
-  unsigned int fftSize = (unsigned int) pow(2.,tmp+1.); // Yes, tmp+1
+  unsigned int fftSize = 0;
+  {
+    double tmp = log((double) maxLag)/log(2.);
+    double fractionalPart = tmp - ((double) ((unsigned int) tmp));
+    if (fractionalPart > 0.) tmp += (1. - fractionalPart);
+    unsigned int fftSize1 = (unsigned int) pow(2.,tmp+1.); // Yes, tmp+1
+    fftSize1 = fftSize1; // To remove warning
+
+    tmp = log((double) numPos)/log(2.);
+    fractionalPart = tmp - ((double) ((unsigned int) tmp));
+    if (fractionalPart > 0.) tmp += (1. - fractionalPart);
+    unsigned int fftSize2 = (unsigned int) pow(2.,tmp+1);
+
+    fftSize = fftSize2;
+  }
 
   std::vector<double> rawData(numPos,0.);
   std::vector<std::complex<double> > resultData(0,std::complex<double>(0.,0.));
@@ -396,21 +407,44 @@ uqScalarSequenceClass<T>::autoCorrViaFft(
 
   // Forward FFT
   this->extractRawData(initialPos,
-                       1,      // spacing
+                       1, // spacing
                        numPos,
                        rawData);
   rawData.resize(fftSize,0.);
+
+  //if (m_env.rank() == 0) {
+  //  std::cout << "In uqScalarSequenceClass<T>::autoCorrViaFft()"
+  //            << ": about to call fftObj.forward()"
+  //            << " with rawData.size() = " << rawData.size()
+  //            << ", fftSize = "            << fftSize
+  //            << ", resultData.size() = "  << resultData.size()
+  //            << std::endl;
+  //}
   fftObj.forward(rawData,fftSize,resultData);
 
   // Inverse FFT
   for (unsigned int j = 0; j < fftSize; ++j) {
     rawData[j] = std::norm(resultData[j]);
   }
+  //if (m_env.rank() == 0) {
+  //  std::cout << "In uqScalarSequenceClass<T>::autoCorrViaFft()"
+  //            << ": about to call fftObj.inverse()"
+  //            << " with rawData.size() = " << rawData.size()
+  //            << ", fftSize = "            << fftSize
+  //            << ", resultData.size() = "  << resultData.size()
+  //            << std::endl;
+  //}
   fftObj.inverse(rawData,fftSize,resultData);
 
+  if (m_env.rank() == 0) {
+    std::cout << "In uqScalarSequenceClass<T>::autoCorrViaFft()"
+              << ": returned succesfully from fftObj.inverse()"
+              << std::endl;
+  }
+
   // Prepare return data
-  autoCorrs.resize(maxLag,0.);
-  for (unsigned int j = 0; j < maxLag; ++j) {
+  autoCorrs.resize(maxLag+1,0.); // Yes, +1
+  for (unsigned int j = 0; j < autoCorrs.size(); ++j) {
     autoCorrs[j] = resultData[j].real()/((double) (numPos-j));
   }
 
@@ -462,7 +496,7 @@ uqScalarSequenceClass<T>::psd(
   unsigned int         initialPos,
   unsigned int         numBlocks,
   double               hopSizeRatio,
-  std::vector<double>& psdSequence) const
+  std::vector<double>& psdResult) const
 {
   bool bRC = (initialPos < this->sequenceSize());
   UQ_FATAL_TEST_MACRO(bRC == false,
@@ -507,8 +541,8 @@ uqScalarSequenceClass<T>::psd(
   std::vector<std::complex<double> > resultData(0,std::complex<double>(0.,0.));
 
   unsigned int halfFFTSize = fftSize/2;
-  psdSequence.clear();
-  psdSequence.resize(1+halfFFTSize,0.);
+  psdResult.clear();
+  psdResult.resize(1+halfFFTSize,0.);
   for (unsigned int blockId = 0; blockId < numBlocks; blockId++) {
     // Padding
     std::vector<double> blockData(fftSize,0.);
@@ -528,8 +562,8 @@ uqScalarSequenceClass<T>::psd(
 
     // Normalized spectral density: power per radians per sample
     double factor = 1./((double) numBlocks*blockSize); // /M_PI; // CHECK
-    for (unsigned int j = 0; j < psdSequence.size(); ++j) {
-      psdSequence[j] += norm(resultData[j]) * factor;
+    for (unsigned int j = 0; j < psdResult.size(); ++j) {
+      psdResult[j] += norm(resultData[j]) * factor;
     }
   }
 
@@ -545,7 +579,7 @@ uqScalarSequenceClass<T>::geweke(
 {
   double doubleFullDataSize = (double) (this->sequenceSize() - initialPos);
   uqScalarSequenceClass<T> tmpSeq(m_env,0);
-  std::vector<double> psdSequence(0,0.);
+  std::vector<double> psdResult(0,0.);
 
   unsigned int dataSizeA       = (unsigned int) (doubleFullDataSize * ratioNa);
   double       doubleDataSizeA = (double) dataSizeA;
@@ -559,8 +593,8 @@ uqScalarSequenceClass<T>::geweke(
   tmpSeq.psd(0,
              8,  // numBlocks
              .5, // hopSizeRatio
-             psdSequence);
-  double psdA = psdSequence[0];
+             psdResult);
+  double psdA = psdResult[0];
 
   unsigned int dataSizeB       = (unsigned int) (doubleFullDataSize * ratioNb);
   double       doubleDataSizeB = (double) dataSizeB;
@@ -574,8 +608,8 @@ uqScalarSequenceClass<T>::geweke(
   tmpSeq.psd(0,
              8,  // numBlocks
              .5, // hopSizeRatio
-             psdSequence);
-  double psdB = psdSequence[0];
+             psdResult);
+  double psdB = psdResult[0];
 
 #if 0
   if (m_env.rank() == 0) {
@@ -824,9 +858,9 @@ uqScalarSequencePSD(
   const std::vector<double>& data,
   unsigned int               numBlocks,
   double                     hopSizeRatio,
-  std::vector<double>&       psdSequence) // [dataSize x 1] vector
+  std::vector<double>&       psdResult) // [dataSize x 1] vector
 {
-  psdSequence.clear();
+  psdResult.clear();
   unsigned int dataSize = data.size();
 
   double tmp = ((double) dataSize)/(( ((double) numBlocks) - 1. )*hopSizeRatio + 1.);
@@ -868,7 +902,7 @@ uqScalarSequencePSD(
   //hc      = gsl_fft_halfcomplex_wavetable_alloc(fftSize);
 
   unsigned int halfFFTSize = fftSize/2;
-  psdSequence.resize(1+halfFFTSize,0.);
+  psdResult.resize(1+halfFFTSize,0.);
   for (unsigned int blockId = 0; blockId < numBlocks; blockId++) {
     // Padding
     std::vector<double> blockData(fftSize,0.);
@@ -897,7 +931,7 @@ uqScalarSequencePSD(
     double factor = 1./((double) numBlocks*blockSize); // /M_PI; // CHECK
     double realPartOfFFT = 0.;
     double imagPartOfFFT = 0.;
-    for (unsigned int j = 0; j < psdSequence.size(); ++j) {
+    for (unsigned int j = 0; j < psdResult.size(); ++j) {
       if (j == 0) {
         realPartOfFFT = blockData[j];
         imagPartOfFFT = 0.;
@@ -914,7 +948,7 @@ uqScalarSequencePSD(
         realPartOfFFT =  blockData[fftSize-j];
         imagPartOfFFT = -blockData[j];
       }
-      psdSequence[j] += (realPartOfFFT*realPartOfFFT + imagPartOfFFT*imagPartOfFFT) * factor;
+      psdResult[j] += (realPartOfFFT*realPartOfFFT + imagPartOfFFT*imagPartOfFFT) * factor;
     }
   }
 

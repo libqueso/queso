@@ -71,13 +71,16 @@ public:
         void         bmm               (unsigned int              initialPos,
                                         unsigned int              batchLength,
                                         V&                        bmmVec) const;
-        //void         fftAlloc          ();
         void         fftForward        (unsigned int                        initialPos,
                                         unsigned int                        fftSize,
                                         unsigned int                        paramId,
-                                        std::vector<std::complex<double> >& resultData) const;
+                                        std::vector<std::complex<double> >& fftResult) const;
         //void         fftInverse        (unsigned int fftSize);
-        //void         fftFree           ();
+        void         psd               (unsigned int              initialPos,
+                                        unsigned int              numBlocks,
+                                        double                    hopSizeRatio,
+                                        unsigned int              paramId,
+                                        std::vector<double>&      psdResult) const;
         void         psdAtZero         (unsigned int              initialPos,
                                         unsigned int              numBlocks,
                                         double                    hopSizeRatio,
@@ -541,8 +544,8 @@ uqSequenceOfVectorsClass<V>::autoCorrViaFft(
   }
 
   uqScalarSequenceClass<double> data(m_env,0);
-  unsigned int maxLag    = lags[lags.size()-1];
-  std::vector<double> autoCorrs(maxLag,0.);
+  unsigned int maxLag = lags[lags.size()-1];
+  std::vector<double> autoCorrs(maxLag+1,0.); // Yes, +1
 
   unsigned int numParams = vectorSize();
   for (unsigned int i = 0; i < numParams; ++i) {
@@ -551,6 +554,15 @@ uqSequenceOfVectorsClass<V>::autoCorrViaFft(
                            numPos,
                            i,
                            data);
+
+    //if (m_env.rank() == 0) {
+    //  std::cout << "In uqSequenceOfVectorsClass<V>::autoCorrViaFft()"
+    //            << ": about to call data.autoCorrViaFft() for paramId = " << i
+    //            << ", with numPos = "      << numPos
+    //            << ", maxLag = "           << maxLag
+    //            << ", autoCorrs.size() = " << autoCorrs.size()
+    //            << std::endl;
+    //}
     data.autoCorrViaFft(0,
                         numPos,
                         maxLag,
@@ -642,7 +654,7 @@ uqSequenceOfVectorsClass<V>::fftForward(
   unsigned int                        initialPos,
   unsigned int                        fftSize,
   unsigned int                        paramId,
-  std::vector<std::complex<double> >& resultData) const
+  std::vector<std::complex<double> >& fftResult) const
 {
   bool bRC = ((initialPos           <  this->sequenceSize()) &&
               (paramId              <  this->vectorSize()  ) &&
@@ -662,8 +674,39 @@ uqSequenceOfVectorsClass<V>::fftForward(
                        rawData);
 
   if (m_fftObj == NULL) m_fftObj = new uqFftClass<double>(m_env);
-  m_fftObj->forward(rawData,fftSize,resultData);
+  m_fftObj->forward(rawData,fftSize,fftResult);
   // Don't need to delete m_fftObj now. Done at destructor
+
+  return;
+}
+
+template <class V>
+void
+uqSequenceOfVectorsClass<V>::psd(
+  unsigned int         initialPos,
+  unsigned int         numBlocks,
+  double               hopSizeRatio,
+  unsigned int         paramId,
+  std::vector<double>& psdResult) const
+{
+  bool bRC = ((initialPos           <  this->sequenceSize()) &&
+              (paramId              <  this->vectorSize()  ));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.rank(),
+                      "uqSequenceOfVectorsClass<V>::psd()",
+                      "invalid input data");
+
+  uqScalarSequenceClass<double> data(m_env,0);
+
+  this->extractScalarSeq(initialPos,
+                         1, // spacing
+                         this->sequenceSize()-initialPos,
+                         paramId,
+                         data);
+  data.psd(0,
+           numBlocks,
+           hopSizeRatio,
+           psdResult);
 
   return;
 }
@@ -685,7 +728,7 @@ uqSequenceOfVectorsClass<V>::psdAtZero(
 
 #ifdef UQ_SEQ_VEC_USES_SCALAR_SEQ_CODE
   uqScalarSequenceClass<double> data(m_env,0);
-  std::vector<double> psdSequence(0,0.); // size will be determined by 'uqScalarSequencePSD()'
+  std::vector<double> psdResult(0,0.); // size will be determined by 'data.psd()'
 
   unsigned int numParams = vectorSize();
   for (unsigned int i = 0; i < numParams; ++i) {
@@ -697,14 +740,14 @@ uqSequenceOfVectorsClass<V>::psdAtZero(
     data.psd(0,
              numBlocks,
              hopSizeRatio,
-             psdSequence);
-    psdVec[i] = psdSequence[0];
-    std::cout << "psdSequence[0] = " << psdSequence[0] << std::endl;
+             psdResult);
+    psdVec[i] = psdResult[0];
+    std::cout << "psdResult[0] = " << psdResult[0] << std::endl;
   }
 #else
   unsigned int dataSize = this->sequenceSize() - initialPos;
   uqScalarSequenceClass<double> data(m_env,dataSize);
-  std::vector<double> psdSequence(0,0.); // size will be determined by 'uqScalarSequencePSD()'
+  std::vector<double> psdResult(0,0.); // size will be determined by 'uqScalarSequencePSD()'
 
   unsigned int numParams = vectorSize();
   for (unsigned int i = 0; i < numParams; ++i) {
@@ -714,14 +757,14 @@ uqSequenceOfVectorsClass<V>::psdAtZero(
     data.psd(0,
              numBlocks,
              hopSizeRatio,
-             psdSequence);
-    psdVec[i] = psdSequence[0];
+             psdResult);
+    psdVec[i] = psdResult[0];
 
-    std::cout << "psdSequence[0] = " << psdSequence[0] << std::endl;
+    std::cout << "psdResult[0] = " << psdResult[0] << std::endl;
 
-    //std::cout << "psdSequence = zeros(" << psdSequence.size() << ",1);" << std::endl;
-    //for (unsigned j = 0; j < psdSequence.size(); ++j) {
-    //  std::cout << "psdSequence(" << j+1 << ") = " << psdSequence[j] << ";" << std::endl;
+    //std::cout << "psdResult = zeros(" << psdResult.size() << ",1);" << std::endl;
+    //for (unsigned j = 0; j < psdResult.size(); ++j) {
+    //  std::cout << "psdResult(" << j+1 << ") = " << psdResult[j] << ";" << std::endl;
     //}
   } // for 'i'
 #endif
@@ -771,7 +814,7 @@ uqSequenceOfVectorsClass<V>::geweke(
 
   unsigned int numParams = vectorSize();
 
-  std::vector<double> psdSequence(0,0.);
+  std::vector<double> psdResult(0,0.);
   V psdVecA(m_vectorExample);
   uqScalarSequenceClass<double> dataA(m_env,dataSizeA);
   for (unsigned int i = 0; i < numParams; ++i) {
@@ -781,8 +824,8 @@ uqSequenceOfVectorsClass<V>::geweke(
     dataA.psd(0,
               8,  // numBlocks
               .5, // hopSizeRatio
-              psdSequence);
-    psdVecA[i] = psdSequence[0];
+              psdResult);
+    psdVecA[i] = psdResult[0];
   } // for 'i'
 
   V psdVecB(m_vectorExample);
@@ -794,8 +837,8 @@ uqSequenceOfVectorsClass<V>::geweke(
     dataB.psd(0,
               8,  // numBlocks
               .5, // hopSizeRatio
-              psdSequence);
-    psdVecB[i] = psdSequence[0];
+              psdResult);
+    psdVecB[i] = psdResult[0];
   } // for 'i'
 
   double doubleDataSizeA = (double) dataSizeA;
