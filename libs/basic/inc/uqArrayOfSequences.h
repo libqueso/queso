@@ -24,18 +24,21 @@
 #include <uq2dArrayOfStuff.h>
 #include <uqScalarSequence.h>
 
+
+
 template <class V>
 class uqArrayOfSequencesClass
 {
 public:
+
   uqArrayOfSequencesClass(unsigned int sequenceSize, const V& vectorExample);
  ~uqArrayOfSequencesClass();
 
   const unsigned int sequenceSize      () const;
   const unsigned int vectorSize        () const;
         void         resizeSequence    (unsigned int newSequenceSize);
-        void         resetValues       ();
-        void         erasePositions    (unsigned int posBegin, unsigned int posEnd);
+        void         resetValues       (unsigned int initialPos, unsigned int numPos);
+        void         erasePositions    (unsigned int initialPos, unsigned int numPos);
         void         getPositionValues (unsigned int positionId,       V& vector) const;
         void         setPositionValues (unsigned int positionId, const V& vector);
         void         setGaussian       (gsl_rng* rng, const V& meanVec, const V& stdDevVec);
@@ -51,12 +54,12 @@ public:
                                         unsigned int             numPos,
                                         const V&                 meanVec,
                                         V&                       popVec) const;
-
         void         autoCovariance    (unsigned int             initialPos,
                                         unsigned int             numPos,
                                         const V&                 meanVec,
                                         unsigned int             lag,
                                         V&                       covVec) const;
+
         void         autoCorrViaDef    (unsigned int             initialPos,
                                         unsigned int             numPos,
                                         unsigned int             lag,
@@ -72,6 +75,7 @@ public:
                                         unsigned int                        fftSize,
                                         unsigned int                        paramId,
                                         std::vector<std::complex<double> >& resultData) const;
+        //void         fftInverse        (unsigned int fftSize);
         void         psd               (unsigned int             initialPos,
                                         unsigned int             numBlocks,
                                         double                   hopSizeRatio,
@@ -93,8 +97,6 @@ public:
                                         const V&                 maxVec,
                                         std::vector<V*>&         centersForAllBins,
                                         std::vector<V*>&         binsForAllParams) const;
-        void         sort              (unsigned int             initialPos,
-                                        uqArrayOfSequencesClass& sortedSequence) const;
         void         interQuantileRange(unsigned int             initialPos,
                                         V&                       iqrs) const;
         void         scalesForKDE      (unsigned int             initialPos,
@@ -104,15 +106,29 @@ public:
                                         const std::vector<V*>&   evaluationPositions,
                                         const V&                 scales,
                                         std::vector<V*>&         densityValues) const;
-
-        void         filter            (unsigned int             initialPos,
-                                        unsigned int             spacing);
         void         write             (const std::string&       name,
                                         std::ofstream&           ofs) const;
+        void         filter            (unsigned int             initialPos,
+                                        unsigned int             spacing);
 
 private:
-  const uqEnvironmentClass&                            m_env;
-  V                                                    m_vectorExample;
+        void         sort              (unsigned int                   initialPos,
+                                        uqArrayOfSequencesClass&       sortedSequence) const;
+      //void         extractScalarSeq  (unsigned int                   initialPos,
+      //                                unsigned int                   spacing,
+      //                                unsigned int                   numPos,
+      //                                unsigned int                   paramId,
+      //                                uqScalarSequenceClass<double>& scalarSeq) const;
+      //void         extractRawData    (unsigned int                   initialPos,
+      //                                unsigned int                   spacing,
+      //                                unsigned int                   numPos,
+      //                                unsigned int                   paramId,
+      //                                std::vector<double>&           rawData) const;
+
+  const uqEnvironmentClass&   m_env;
+  V                           m_vectorExample;
+  mutable uqFftClass<double>* m_fftObj;
+
   EpetraExt::DistArray<uqScalarSequenceClass<double>*> m_scalarSequences;
 };
 
@@ -123,6 +139,7 @@ uqArrayOfSequencesClass<V>::uqArrayOfSequencesClass(
   :
   m_env            (vectorExample.env()),
   m_vectorExample  (vectorExample),
+  m_fftObj         (NULL),
   m_scalarSequences(vectorExample.map(),1)
 {
 
@@ -145,6 +162,7 @@ uqArrayOfSequencesClass<V>::uqArrayOfSequencesClass(
 template <class V>
 uqArrayOfSequencesClass<V>::~uqArrayOfSequencesClass()
 {
+  if (m_fftObj != NULL) delete m_fftObj;
   for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
     if (m_scalarSequences(i,0)) delete m_scalarSequences(i,0);
   }
@@ -181,7 +199,9 @@ uqArrayOfSequencesClass<V>::resizeSequence(unsigned int newSequenceSize)
 
 template <class V>
 void
-uqArrayOfSequencesClass<V>::resetValues()
+uqArrayOfSequencesClass<V>::resetValues(
+  unsigned int initialPos,
+  unsigned int numPos)
 {
   for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
     m_scalarSequences(i,0)->resetValues();
@@ -192,12 +212,14 @@ uqArrayOfSequencesClass<V>::resetValues()
 
 template <class V>
 void
-uqArrayOfSequencesClass<V>::erasePositions(unsigned int posBegin, unsigned int posEnd)
+uqArrayOfSequencesClass<V>::erasePositions(
+  unsigned int initialPos,
+  unsigned int numPos)
 {
-  if (posBegin < this->sequenceSize()) {
+  if (initialPos < this->sequenceSize()) {
     for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
       uqScalarSequenceClass<double>& seq = *(m_scalarSequences(i,0));
-      seq.erasePositions(posBegin,posEnd);
+      seq.erasePositions(initialPos,numPos);
     }
   }
 

@@ -97,8 +97,6 @@ public:
                                         const V&                  maxVec,
                                         std::vector<V*>&          centersForAllBins,
                                         std::vector<V*>&          binsForAllParams) const;
-        void         sort              (unsigned int              initialPos,
-                                        std::vector<V*>&          sortedSequence) const; // Instead of uqSequenceOfVectorsClass&
         void         interQuantileRange(unsigned int              initialPos,
                                         V&                        iqrs) const;
         void         scalesForKDE      (unsigned int              initialPos,
@@ -114,6 +112,8 @@ public:
                                         unsigned int              spacing);
 
 private:
+        void         sort              (unsigned int                   initialPos,
+                                        std::vector<V*>&               sortedSequence) const; // Instead of uqSequenceOfVectorsClass&
         void         extractScalarSeq  (unsigned int                   initialPos,
                                         unsigned int                   spacing,
                                         unsigned int                   numPos,
@@ -124,10 +124,12 @@ private:
                                         unsigned int                   numPos,
                                         unsigned int                   paramId,
                                         std::vector<double>&           rawData) const;
+
   const uqEnvironmentClass&   m_env;
   V                           m_vectorExample;
-  std::vector<const V*>       m_seq;
   mutable uqFftClass<double>* m_fftObj;
+
+  std::vector<const V*>       m_seq;
 };
 
 template <class V>
@@ -137,8 +139,8 @@ uqSequenceOfVectorsClass<V>::uqSequenceOfVectorsClass(
   :
   m_env          (vectorExample.env()),
   m_vectorExample(vectorExample),
-  m_seq          (sequenceSize,NULL),
-  m_fftObj       (NULL)
+  m_fftObj       (NULL),
+  m_seq          (sequenceSize,NULL)
 {
 
   //if (m_env.rank() == 0) std::cout << "Entering uqSequenceOfVectorsClass<V>::constructor()"
