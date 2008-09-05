@@ -463,6 +463,8 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::uqDRAM_MarkovChainGeneratorClass(
   m_psdAtZeroCompute             (UQ_MCMC_PSD_AT_ZERO_COMPUTE_ODV),
   m_psdAtZeroNumBlocks           (0),//,0),
   m_psdAtZeroHopSizeRatio        (UQ_MCMC_PSD_AT_ZERO_HOP_SIZE_RATIO_ODV),
+  m_psdAtZeroDisplay             (UQ_MCMC_PSD_AT_ZERO_DISPLAY_ODV),
+  m_psdAtZeroWrite               (UQ_MCMC_PSD_AT_ZERO_WRITE_ODV),
   m_gewekeCompute                (UQ_MCMC_GEWEKE_COMPUTE_ODV),
   m_gewekeRatioNa                (0.),
   m_gewekeRatioNb                (0.),
@@ -740,6 +742,8 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::defineMyOptions(
     (m_option_psdAtZero_numBlocks.c_str(),        po::value<            >()->default_value(), "")
     (m_option_psdAtZero_hopSizeRatio.c_str(),     po::value<            >()->default_value(), "")
 #endif
+    (m_option_psdAtZero_display.c_str(),          po::value<bool        >()->default_value(UQ_MCMC_PSD_AT_ZERO_DISPLAY_ODV         ), "display computed psd at frequency zero on screen"       )
+    (m_option_psdAtZero_write.c_str(),            po::value<bool        >()->default_value(UQ_MCMC_PSD_AT_ZERO_WRITE_ODV           ), "write computed psd at frequency zero to the output file")
     (m_option_geweke_compute.c_str(),             po::value<bool        >()->default_value(UQ_MCMC_GEWEKE_COMPUTE_ODV              ), "compute Geweke coefficients"                            )
 #if 0
     (m_option_geweke_ratioNa.c_str(),             po::value<            >()->default_value(), "")
@@ -750,7 +754,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::defineMyOptions(
     (m_option_corr_secondLag.c_str(),             po::value<unsigned int>()->default_value(UQ_MCMC_CORR_SECOND_LAG_ODV             ), "second lag for computation of autocorrelations"         )
     (m_option_corr_lagSpacing.c_str(),            po::value<unsigned int>()->default_value(UQ_MCMC_CORR_LAG_SPACING_ODV            ), "lag spacing for computation of autocorrelations"        )
     (m_option_corr_numberOfLags.c_str(),          po::value<unsigned int>()->default_value(UQ_MCMC_CORR_NUMBER_OF_LAGS_ODV         ), "number of lags for computation of autocorrelations"     )
-    (m_option_corr_display.c_str(),               po::value<bool        >()->default_value(UQ_MCMC_CORR_DISPLAY_ODV                ), "print computed autocorrelations on the screen"          )
+    (m_option_corr_display.c_str(),               po::value<bool        >()->default_value(UQ_MCMC_CORR_DISPLAY_ODV                ), "display computed autocorrelations on the screen"        )
     (m_option_corr_write.c_str(),                 po::value<bool        >()->default_value(UQ_MCMC_CORR_WRITE_ODV                  ), "write computed autocorrelations to the output file"     )
     (m_option_filter_initialPos.c_str(),          po::value<unsigned int>()->default_value(UQ_MCMC_FILTER_INITIAL_POS_ODV          ), "initial pos for chain filtering"                        )
     (m_option_filter_spacing.c_str(),             po::value<unsigned int>()->default_value(UQ_MCMC_FILTER_SPACING_ODV              ), "spacing for chain filtering"                            )
@@ -1023,6 +1027,14 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::getMyOptionValues(
 
   if (m_env.allOptionsMap().count(m_option_psdAtZero_compute.c_str())) {
     m_psdAtZeroCompute = m_env.allOptionsMap()[m_option_psdAtZero_compute.c_str()].as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_psdAtZero_display.c_str())) {
+    m_psdAtZeroDisplay = m_env.allOptionsMap()[m_option_psdAtZero_display.c_str()].as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_psdAtZero_write.c_str())) {
+    m_psdAtZeroWrite = m_env.allOptionsMap()[m_option_psdAtZero_write.c_str()].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_geweke_compute.c_str())) {
@@ -1827,7 +1839,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
     }
 
     // Display estimated variance of sample mean through PSD
-    if ((m_psdAtZeroDisplay) && (m_env.rank() == 0)) {
+    if (/*(m_psdAtZeroDisplay) &&*/ (m_env.rank() == 0)) {
       for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
         double sizeForPSD = doubleChainSequenceSize - (double) initialPosForStatistics[initialPosId];
         std::cout << "\nEstimated variance of sample mean, through psd, for subchain beggining at position " << initialPosForStatistics[initialPosId]
@@ -1853,7 +1865,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
           for (unsigned int numBlocksId = 0; numBlocksId < m_psdAtZeroNumBlocks.size(); numBlocksId++) {
             sprintf(line,"%2s%11.4e",
                     " ",
-                    M_PI*_2dArrayOfPSDAtZero(initialPosId,numBlocksId)[i]/sizeForPSD); // CHECK
+                    2.*M_PI*_2dArrayOfPSDAtZero(initialPosId,numBlocksId)[i]/sizeForPSD);
             std::cout << line;
           }
         }
@@ -2969,6 +2981,8 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::print(std::ostream& os) const
      << "\n" << m_option_psd_hopSizeRatio   << " = " << m_psdHopSizeRatio
      << "\n" << m_option_psd_write          << " = " << m_psdWrite
      << "\n" << m_option_psdAtZero_compute  << " = " << m_psdAtZeroCompute
+     << "\n" << m_option_psdAtZero_display  << " = " << m_psdAtZeroDisplay
+     << "\n" << m_option_psdAtZero_write    << " = " << m_psdAtZeroWrite
      << "\n" << m_option_geweke_compute     << " = " << m_gewekeCompute
      << "\n" << m_option_corr_computeViaDef << " = " << m_corrComputeViaDef
      << "\n" << m_option_corr_computeViaFft << " = " << m_corrComputeViaFft

@@ -1,4 +1,4 @@
- /* uq/libs/basic/inc/uqScalarSequence.h
+/* uq/libs/basic/inc/uqScalarSequence.h
  *
  * Copyright (C) 2008 The PECOS Team, http://queso.ices.utexas.edu
  *
@@ -537,17 +537,29 @@ uqScalarSequenceClass<T>::psd(
   //          << ", fftSize = "      << fftSize
   //          << std::endl;
 
-  uqFftClass<T> fftObj(m_env);
-  std::vector<std::complex<double> > resultData(0,std::complex<double>(0.,0.));
+  double modificationScale = 0.;
+  for (unsigned int j = 0; j < blockSize; ++j) {
+    double tmpValue = uqMiscHammingWindow(blockSize-1,j);
+    modificationScale += tmpValue*tmpValue;
+  }
+  modificationScale = 1./modificationScale;
 
+  std::vector<double> blockData(blockSize,0.);
+  uqFftClass<T> fftObj(m_env);
+  std::vector<std::complex<double> > fftResult(0,std::complex<double>(0.,0.));
+
+#if 0
   unsigned int halfFFTSize = fftSize/2;
   psdResult.clear();
   psdResult.resize(1+halfFFTSize,0.);
+  double factor = 1./M_PI/((double) numBlocks); // /((double) blockSize);
+#else
+  psdResult.clear();
+  psdResult.resize(fftSize,0.);
+  double factor = 1./2./M_PI/((double) numBlocks); // /((double) blockSize);
+#endif
   for (unsigned int blockId = 0; blockId < numBlocks; blockId++) {
-    // Padding
-    std::vector<double> blockData(fftSize,0.);
-
-    // Fill block using window on full data
+    // Fill block using Hamming window
     unsigned int initialDataPos = initialPos + blockId*hopSize;
     for (unsigned int j = 0; j < blockSize; ++j) {
       unsigned int dataPos = initialDataPos + j;
@@ -555,16 +567,26 @@ uqScalarSequenceClass<T>::psd(
                           UQ_UNAVAILABLE_RANK,
                           "uqScalarSequenceClass<T>::psd()",
                           "too large position to be accessed in data");
-      blockData[j] = uqMiscHammingWindow(fftSize-1,j) * m_seq[dataPos];
+      blockData[j] = uqMiscHammingWindow(blockSize-1,j) * m_seq[dataPos];
     }
 
-    fftObj.forward(blockData,fftSize,resultData);
+    fftObj.forward(blockData,fftSize,fftResult);
 
+#if 0
+    std::cout << "blockData.size() = "   << blockData.size()
+              << ", fftSize = "          << fftSize
+              << ", fftResult.size() = " << fftResult.size()
+              << ", psdResult.size() = " << psdResult.size()
+              << std::endl;
+#endif
     // Normalized spectral density: power per radians per sample
-    double factor = 1./((double) numBlocks*blockSize); // /M_PI; // CHECK
     for (unsigned int j = 0; j < psdResult.size(); ++j) {
-      psdResult[j] += norm(resultData[j]) * factor;
+      psdResult[j] += norm(fftResult[j])*modificationScale;
     }
+  }
+
+  for (unsigned int j = 0; j < psdResult.size(); ++j) {
+    psdResult[j] *= factor;
   }
 
   return;
