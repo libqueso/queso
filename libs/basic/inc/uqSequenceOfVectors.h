@@ -70,6 +70,10 @@ public:
                                         unsigned int                     numPos,
                                         const std::vector<unsigned int>& lags,
                                         std::vector<V*>&                 corrVecs) const;
+        void         autoCorrViaFft    (unsigned int              initialPos,
+                                        unsigned int              numPos,
+                                        unsigned int              numSum,
+                                        V&                        autoCorrsSumVec) const;
         void         bmm               (unsigned int              initialPos,
                                         unsigned int              batchLength,
                                         V&                        bmmVec) const;
@@ -539,6 +543,44 @@ uqSequenceOfVectorsClass<V>::autoCorrViaFft(
     for (unsigned int j = 0; j < lags.size(); ++j) {
       (*(corrVecs[j]))[i] = autoCorrs[lags[j]];
     }
+  }
+
+  return;
+}
+
+template <class V>
+void
+uqSequenceOfVectorsClass<V>::autoCorrViaFft(
+  unsigned int initialPos,
+  unsigned int numPos,
+  unsigned int numSum,
+  V&           autoCorrsSumVec) const
+{
+  bool bRC = ((initialPos             <  this->sequenceSize()) &&
+              (0                      <  numPos              ) &&
+              ((initialPos+numPos)    <= this->sequenceSize()) &&
+              (0                      <  numSum              ) &&
+              (numSum                 <= numPos              ) &&
+              (autoCorrsSumVec.size() == this->vectorSize()  ));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.rank(),
+                      "uqSequenceOfVectorsClass<V>::autoCorrViaFft(), for sum",
+                      "invalid input data");
+
+  uqScalarSequenceClass<double> data(m_env,0);
+
+  unsigned int numParams = this->vectorSize();
+  for (unsigned int i = 0; i < numParams; ++i) {
+    this->extractScalarSeq(initialPos,
+                           1, // spacing
+                           numPos,
+                           i,
+                           data);
+
+    data.autoCorrViaFft(0,
+                        numPos,
+                        numSum,
+                        autoCorrsSumVec[i]);
   }
 
   return;

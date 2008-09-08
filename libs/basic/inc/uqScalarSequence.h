@@ -63,6 +63,10 @@ public:
                                         unsigned int               numPos,
                                         unsigned int               maxLag,
                                         std::vector<T>&            autoCorrs) const;
+        void         autoCorrViaFft    (unsigned int               initialPos,
+                                        unsigned int               numPos,
+                                        unsigned int               numSum,
+                                        T&                         autoCorrsSum) const;
         T            bmm               (unsigned int               initialPos,
                                         unsigned int               batchLength) const;
         void         psd               (unsigned int               initialPos,
@@ -410,6 +414,12 @@ uqScalarSequenceClass<T>::autoCorrViaFft(
                        1, // spacing
                        numPos,
                        rawData);
+  T meanValue = this->mean(initialPos,
+                           numPos);
+  for (unsigned int j = 0; j < numPos; ++j) {
+    rawData[j] -= meanValue; // IMPORTANT
+  }
+
   rawData.resize(fftSize,0.);
 
   //if (m_env.rank() == 0) {
@@ -444,7 +454,77 @@ uqScalarSequenceClass<T>::autoCorrViaFft(
   // Prepare return data
   autoCorrs.resize(maxLag+1,0.); // Yes, +1
   for (unsigned int j = 0; j < autoCorrs.size(); ++j) {
-    autoCorrs[j] = resultData[j].real()/((double) (numPos-j));
+    double ratio = ((double) j)/((double) (numPos-1));
+    autoCorrs[j] = ( resultData[j].real()/resultData[0].real() )*(1.-ratio);
+  }
+
+  return;
+}
+
+template <class T>
+void
+uqScalarSequenceClass<T>::autoCorrViaFft(
+  unsigned int initialPos,
+  unsigned int numPos,
+  unsigned int numSum,
+  T&           autoCorrsSum) const
+{
+  if (m_env.rank() == 0) {
+    std::cout << "Entering uqScalarSequenceClass<T>::autoCorrViaFft(), for sum"
+              << ": initialPos = " << initialPos
+              << ", numPos = "     << numPos
+              << std::endl;
+  }
+
+  double tmp = log((double) numPos)/log(2.);
+  double fractionalPart = tmp - ((double) ((unsigned int) tmp));
+  if (fractionalPart > 0.) tmp += (1. - fractionalPart);
+  unsigned int fftSize = (unsigned int) pow(2.,tmp+1);
+
+  std::vector<double> rawData(numPos,0.);
+  std::vector<std::complex<double> > resultData(0,std::complex<double>(0.,0.));
+  uqFftClass<T> fftObj(m_env);
+
+  // Forward FFT
+  this->extractRawData(initialPos,
+                       1, // spacing
+                       numPos,
+                       rawData);
+  T meanValue = this->mean(initialPos,
+                           numPos);
+  for (unsigned int j = 0; j < numPos; ++j) {
+    rawData[j] -= meanValue; // IMPORTANT
+  }
+  rawData.resize(fftSize,0.);
+
+  if (m_env.rank() == 0) {
+    std::cout << "In uqScalarSequenceClass<T>::autoCorrViaFft(), for sum"
+              << ": about to call fftObj.forward()"
+              << " with rawData.size() = " << rawData.size()
+              << ", fftSize = "            << fftSize
+              << ", resultData.size() = "  << resultData.size()
+              << std::endl;
+  }
+  fftObj.forward(rawData,fftSize,resultData);
+
+  // Inverse FFT
+  for (unsigned int j = 0; j < fftSize; ++j) {
+    rawData[j] = std::norm(resultData[j]);
+  }
+  fftObj.inverse(rawData,fftSize,resultData);
+
+  if (m_env.rank() == 0) {
+    std::cout << "In uqScalarSequenceClass<T>::autoCorrViaFft(), for sum"
+              << ": computed auto covariance for lag 0 = " << resultData[0].real()/((double) (numPos))
+              << ", computed resultData[0].imag() = "      << resultData[0].imag()
+              << std::endl;
+  }
+
+  // Prepare return data
+  autoCorrsSum = 0.;
+  for (unsigned int j = 0; j < numSum; ++j) { // Yes, begin at lag '0'
+    double ratio = ((double) j)/((double) (numPos-1));
+    autoCorrsSum += ( resultData[j].real()/resultData[0].real() )*(1.-ratio);
   }
 
   return;
@@ -507,6 +587,9 @@ uqScalarSequenceClass<T>::psd(
                       "invalid input data");
 
   unsigned int dataSize = this->sequenceSize() - initialPos;
+
+  T meanValue = this->mean(initialPos,
+                           dataSize);
 
   // Determine hopSize and blockSize
   unsigned int hopSize = 0;
@@ -584,6 +667,7 @@ uqScalarSequenceClass<T>::psd(
   psdResult.resize(fftSize,0.);
   double factor = 1./2./M_PI/((double) numBlocks); // /((double) blockSize);
 #endif
+
   for (unsigned int blockId = 0; blockId < numBlocks; blockId++) {
     // Fill block using Hamming window
     unsigned int initialDataPos = initialPos + blockId*hopSize;
@@ -593,7 +677,7 @@ uqScalarSequenceClass<T>::psd(
                           UQ_UNAVAILABLE_RANK,
                           "uqScalarSequenceClass<T>::psd()",
                           "too large position to be accessed in data");
-      blockData[j] = uqMiscHammingWindow(blockSize-1,j) * m_seq[dataPos];
+      blockData[j] = uqMiscHammingWindow(blockSize-1,j) * ( m_seq[dataPos] - meanValue ); // IMPORTANT
     }
 
     fftObj.forward(blockData,fftSize,fftResult);
@@ -639,7 +723,7 @@ uqScalarSequenceClass<T>::geweke(
   double meanA = tmpSeq.mean(0,
                              dataSizeA);
   tmpSeq.psd(0,
-             8,  // numBlocks
+             (unsigned int) sqrt((double) dataSizeA),  // numBlocks
              .5, // hopSizeRatio
              psdResult);
   double psdA = psdResult[0];
@@ -654,24 +738,26 @@ uqScalarSequenceClass<T>::geweke(
   double meanB = tmpSeq.mean(0,
                              dataSizeB);
   tmpSeq.psd(0,
-             8,  // numBlocks
+             (unsigned int) sqrt((double) dataSizeB),  // numBlocks
              .5, // hopSizeRatio
              psdResult);
   double psdB = psdResult[0];
 
-#if 0
   if (m_env.rank() == 0) {
     std::cout << "In uqScalarSequenceClass<T>::geweke()"
               << ", before computation of gewCoef"
-              << ": meanA = "           << meanA
+              << ":\n"
+              << ", dataSizeA = "       << dataSizeA
+              << ", numBlocks = "       << (unsigned int) sqrt((double) dataSizeA)
+              << ", meanA = "           << meanA
               << ", psdA = "            << psdA
-              << ", doubleDataSizeA = " << doubleDataSizeA
+              << "\n"
+              << ", dataSizeB = "       << dataSizeB
+              << ", numBlocks = "       << (unsigned int) sqrt((double) dataSizeB)
               << ", meanB = "           << meanB
               << ", psdB = "            << psdB
-              << ", doubleDataSizeB = " << doubleDataSizeB
               << std::endl;
   }
-#endif
   double gewCoef = (meanA - meanB)/sqrt(psdA/doubleDataSizeA + psdB/doubleDataSizeB);
 
   return gewCoef;

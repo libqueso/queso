@@ -170,9 +170,9 @@ private:
   double alpha                   (const std::vector<uqChainPositionClass<V>*>& inputPositions);
   bool   acceptAlpha             (double alpha);
   void   updateCovMatrices       ();
-  //void   gammar                  (double a,
-  //                                double b,
-  //                                M&     mat);
+//void   gammar                  (double a,
+//                                double b,
+//                                M&     mat);
   void   computeStatistics       (const uqChainBaseClass<V>&       workingChain,
                                   const std::string&               chainName,
                                   std::ofstream*                   passedOfs);
@@ -205,13 +205,11 @@ private:
   void   computeCorrViaDef       (const uqChainBaseClass<V>&       workingChain,
                                   const std::vector<unsigned int>& initialPosForStatistics,
                                   const std::vector<unsigned int>& lagsForCorrs,
-                                  const V&                         chainSampleVariance,
                                   const std::string&               chainName,
                                   std::ofstream*                   passedOfs);
   void   computeCorrViaFFT       (const uqChainBaseClass<V>&       workingChain,
                                   const std::vector<unsigned int>& initialPosForStatistics,
                                   const std::vector<unsigned int>& lagsForCorrs,
-                                  const V&                         chainSampleVariance,
                                   const std::string&               chainName,
                                   std::ofstream*                   passedOfs);
   void   computeFilterParameters (const uqChainBaseClass<V>&       workingChain,
@@ -707,70 +705,70 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::defineMyOptions(
   po::options_description& optionsDesc) const
 {
   optionsDesc.add_options()
-    (m_option_help.c_str(),                                                                                                           "produce help message for DRAM Markov chain generator"   )
-    (m_option_chain_type.c_str(),                 po::value<unsigned int>()->default_value(UQ_MCMC_CHAIN_TYPE_ODV                ), "type of chain (1=Markov, 2=White noise)"                )
-    (m_option_chain_number.c_str(),               po::value<unsigned int>()->default_value(UQ_MCMC_CHAIN_NUMBER_ODV              ), "number of chain(s)"                                     )
-    (m_option_chain_sizes.c_str(),                po::value<std::string >()->default_value(UQ_MCMC_CHAIN_SIZES_ODV               ), "list of size(s) of chain(s)"                            )
-    (m_option_chain_use2.c_str(),                 po::value<bool        >()->default_value(UQ_MCMC_CHAIN_USE2_ODV                ), "use chain2"                                             )
-    (m_option_chain_generateExtra.c_str(),        po::value<bool        >()->default_value(UQ_MCMC_CHAIN_GENERATE_EXTRA_ODV      ), "generate extra chains"                                  )
-    (m_option_chain_displayPeriod.c_str(),        po::value<unsigned int>()->default_value(UQ_MCMC_CHAIN_DISPLAY_PERIOD_ODV      ), "period of message display during chain generation"      )
-    (m_option_chain_measureRunTimes.c_str(),      po::value<bool        >()->default_value(UQ_MCMC_CHAIN_MEASURE_RUN_TIMES_ODV   ), "measure run times"                                      )
-    (m_option_chain_write.c_str(),                po::value<bool        >()->default_value(UQ_MCMC_CHAIN_WRITE_ODV               ), "write chain values to the output file"                  )
-    (m_option_chain_computeStats.c_str(),         po::value<bool        >()->default_value(UQ_MCMC_CHAIN_COMPUTE_STATS_ODV       ), "compute statistics on chain"                            )
-    (m_option_chain_filter.c_str(),               po::value<bool        >()->default_value(UQ_MCMC_CHAIN_FILTER_ODV              ), "filter the chain"                                       )
-    (m_option_chain_outputFileNames.c_str(),      po::value<std::string >()->default_value(UQ_MCMC_CHAIN_OUTPUT_FILE_NAMES_ODV   ), "list of name(s) of output file(s)"                      )
-    (m_option_uniqueChain_generate.c_str(),       po::value<bool        >()->default_value(UQ_MCMC_UNIQUE_CHAIN_GENERATE_ODV     ), "generate unique chain"                                  )
-    (m_option_uniqueChain_write.c_str(),          po::value<bool        >()->default_value(UQ_MCMC_UNIQUE_CHAIN_WRITE_ODV        ), "write unique chain"                                     )
-    (m_option_uniqueChain_computeStats.c_str(),   po::value<bool        >()->default_value(UQ_MCMC_UNIQUE_CHAIN_COMPUTE_STATS_ODV), "compute statistics on unique chain"                     )
-    (m_option_uniqueChain_filter.c_str(),         po::value<bool        >()->default_value(UQ_MCMC_UNIQUE_CHAIN_FILTER_ODV       ), "filter the unique chain"                                )
-    (m_option_avgChain_compute.c_str(),           po::value<std::string >()->default_value(UQ_MCMC_AVG_CHAIN_COMPUTE_ODV         ), "list of amounts of chains involved in chain averages"   )
-    (m_option_avgChain_write.c_str(),             po::value<bool        >()->default_value(UQ_MCMC_AVG_CHAIN_WRITE_ODV           ), "write averages of chains"                               )
-    (m_option_avgChain_computeStats.c_str(),      po::value<bool        >()->default_value(UQ_MCMC_AVG_CHAIN_COMPUTE_STATS_ODV   ), "compute statistics on the averages of chains"           )
-    (m_option_avgChain_filter.c_str(),            po::value<bool        >()->default_value(UQ_MCMC_AVG_CHAIN_FILTER_ODV          ), "filter the avg chains"                                  )
-    (m_option_dr_maxNumberOfExtraStages.c_str(),  po::value<unsigned int>()->default_value(UQ_MCMC_DR_MAX_NUM_EXTRA_STAGES_ODV   ), "'dr' maximum number of extra stages"                    )
+    (m_option_help.c_str(),                                                                                                         "produce help message for DRAM Markov chain generator"           )
+    (m_option_chain_type.c_str(),                 po::value<unsigned int>()->default_value(UQ_MCMC_CHAIN_TYPE_ODV                ), "type of chain (1=Markov, 2=White noise)"                        )
+    (m_option_chain_number.c_str(),               po::value<unsigned int>()->default_value(UQ_MCMC_CHAIN_NUMBER_ODV              ), "number of chain(s)"                                             )
+    (m_option_chain_sizes.c_str(),                po::value<std::string >()->default_value(UQ_MCMC_CHAIN_SIZES_ODV               ), "list of size(s) of chain(s)"                                    )
+    (m_option_chain_use2.c_str(),                 po::value<bool        >()->default_value(UQ_MCMC_CHAIN_USE2_ODV                ), "use chain2"                                                     )
+    (m_option_chain_generateExtra.c_str(),        po::value<bool        >()->default_value(UQ_MCMC_CHAIN_GENERATE_EXTRA_ODV      ), "generate extra chains"                                          )
+    (m_option_chain_displayPeriod.c_str(),        po::value<unsigned int>()->default_value(UQ_MCMC_CHAIN_DISPLAY_PERIOD_ODV      ), "period of message display during chain generation"              )
+    (m_option_chain_measureRunTimes.c_str(),      po::value<bool        >()->default_value(UQ_MCMC_CHAIN_MEASURE_RUN_TIMES_ODV   ), "measure run times"                                              )
+    (m_option_chain_write.c_str(),                po::value<bool        >()->default_value(UQ_MCMC_CHAIN_WRITE_ODV               ), "write chain values to the output file"                          )
+    (m_option_chain_computeStats.c_str(),         po::value<bool        >()->default_value(UQ_MCMC_CHAIN_COMPUTE_STATS_ODV       ), "compute statistics on chain"                                    )
+    (m_option_chain_filter.c_str(),               po::value<bool        >()->default_value(UQ_MCMC_CHAIN_FILTER_ODV              ), "filter the chain"                                               )
+    (m_option_chain_outputFileNames.c_str(),      po::value<std::string >()->default_value(UQ_MCMC_CHAIN_OUTPUT_FILE_NAMES_ODV   ), "list of name(s) of output file(s)"                              )
+    (m_option_uniqueChain_generate.c_str(),       po::value<bool        >()->default_value(UQ_MCMC_UNIQUE_CHAIN_GENERATE_ODV     ), "generate unique chain"                                          )
+    (m_option_uniqueChain_write.c_str(),          po::value<bool        >()->default_value(UQ_MCMC_UNIQUE_CHAIN_WRITE_ODV        ), "write unique chain"                                             )
+    (m_option_uniqueChain_computeStats.c_str(),   po::value<bool        >()->default_value(UQ_MCMC_UNIQUE_CHAIN_COMPUTE_STATS_ODV), "compute statistics on unique chain"                             )
+    (m_option_uniqueChain_filter.c_str(),         po::value<bool        >()->default_value(UQ_MCMC_UNIQUE_CHAIN_FILTER_ODV       ), "filter the unique chain"                                        )
+    (m_option_avgChain_compute.c_str(),           po::value<std::string >()->default_value(UQ_MCMC_AVG_CHAIN_COMPUTE_ODV         ), "list of amounts of chains involved in chain averages"           )
+    (m_option_avgChain_write.c_str(),             po::value<bool        >()->default_value(UQ_MCMC_AVG_CHAIN_WRITE_ODV           ), "write averages of chains"                                       )
+    (m_option_avgChain_computeStats.c_str(),      po::value<bool        >()->default_value(UQ_MCMC_AVG_CHAIN_COMPUTE_STATS_ODV   ), "compute statistics on the averages of chains"                   )
+    (m_option_avgChain_filter.c_str(),            po::value<bool        >()->default_value(UQ_MCMC_AVG_CHAIN_FILTER_ODV          ), "filter the avg chains"                                          )
+    (m_option_dr_maxNumberOfExtraStages.c_str(),  po::value<unsigned int>()->default_value(UQ_MCMC_DR_MAX_NUM_EXTRA_STAGES_ODV   ), "'dr' maximum number of extra stages"                            )
     (m_option_dr_scalesForExtraStages.c_str(),    po::value<std::string >()->default_value(UQ_MCMC_DR_SCALES_FOR_EXTRA_STAGES_ODV), "'dr' list of scales for proposal cov matrices from 2nd stage on")
-    (m_option_am_initialNonAdaptInterval.c_str(), po::value<unsigned int>()->default_value(UQ_MCMC_AM_INIT_NON_ADAPT_INT_ODV     ), "'am' initial non adaptation interval"                   )
-    (m_option_am_adaptInterval.c_str(),           po::value<unsigned int>()->default_value(UQ_MCMC_AM_ADAPT_INTERVAL_ODV         ), "'am' adaptation interval"                               )
-    (m_option_am_eta.c_str(),                     po::value<double      >()->default_value(UQ_MCMC_AM_ETA_ODV                    ), "'am' eta"                                               )
-    (m_option_am_epsilon.c_str(),                 po::value<double      >()->default_value(UQ_MCMC_AM_EPSILON_ODV                ), "'am' epsilon"                                           )
+    (m_option_am_initialNonAdaptInterval.c_str(), po::value<unsigned int>()->default_value(UQ_MCMC_AM_INIT_NON_ADAPT_INT_ODV     ), "'am' initial non adaptation interval"                           )
+    (m_option_am_adaptInterval.c_str(),           po::value<unsigned int>()->default_value(UQ_MCMC_AM_ADAPT_INTERVAL_ODV         ), "'am' adaptation interval"                                       )
+    (m_option_am_eta.c_str(),                     po::value<double      >()->default_value(UQ_MCMC_AM_ETA_ODV                    ), "'am' eta"                                                       )
+    (m_option_am_epsilon.c_str(),                 po::value<double      >()->default_value(UQ_MCMC_AM_EPSILON_ODV                ), "'am' epsilon"                                                   )
     (m_option_stats_finalPercentages.c_str(),     po::value<std::string >()->default_value(UQ_MCMC_STATS_FINAL_PERCENTAGES_ODV   ), "list of final percentages for computation of chain statistics"  )
-    (m_option_bmm_run.c_str(),                    po::value<bool        >()->default_value(UQ_MCMC_BMM_RUN_ODV                   ), "compute variance of sample mean with batch means method")
-    (m_option_bmm_lengths.c_str(),                po::value<std::string >()->default_value(UQ_MCMC_BMM_LENGTHS_ODV               ), "list of batch lenghts for BMM"                          )
-    (m_option_fft_compute.c_str(),                po::value<bool        >()->default_value(UQ_MCMC_FFT_COMPUTE_ODV               ), "compute fft"                                            )
-    (m_option_fft_paramId.c_str(),                po::value<unsigned int>()->default_value(UQ_MCMC_FFT_PARAM_ID_ODV              ), "parameter id for fft computations"                      )
-    (m_option_fft_size.c_str(),                   po::value<unsigned int>()->default_value(UQ_MCMC_FFT_SIZE_ODV                  ), "fft size"                                               )
-    (m_option_fft_testInversion.c_str(),          po::value<bool        >()->default_value(UQ_MCMC_FFT_TEST_INVERSION_ODV        ), "test fft inversion"                                     )
-    (m_option_fft_write.c_str(),                  po::value<bool        >()->default_value(UQ_MCMC_FFT_WRITE_ODV                 ), "write fft"                                              )
-    (m_option_psd_compute.c_str(),                po::value<bool        >()->default_value(UQ_MCMC_PSD_COMPUTE_ODV               ), "compute psd"                                            )
-    (m_option_psd_numBlocks.c_str(),              po::value<unsigned int>()->default_value(UQ_MCMC_PSD_NUM_BLOCKS_ODV            ), "number of blocks for psd"                               )
-    (m_option_psd_hopSizeRatio.c_str(),           po::value<double      >()->default_value(UQ_MCMC_PSD_HOP_SIZE_RATIO_ODV        ), "hop size ratio for psd"                                 )
-    (m_option_psd_paramId.c_str(),                po::value<unsigned int>()->default_value(UQ_MCMC_PSD_PARAM_ID_ODV              ), "parameter id for psd computations"                      )
-    (m_option_psd_write.c_str(),                  po::value<bool        >()->default_value(UQ_MCMC_PSD_WRITE_ODV                 ), "write psd"                                              )
-    (m_option_psdAtZero_compute.c_str(),          po::value<bool        >()->default_value(UQ_MCMC_PSD_AT_ZERO_COMPUTE_ODV       ), "compute power spectral densities"                       )
-    (m_option_psdAtZero_numBlocks.c_str(),        po::value<std::string >()->default_value(UQ_MCMC_PSD_AT_ZERO_NUM_BLOCKS_ODV    ), "list of numbers of blocks for computation of psd at zero")
-    (m_option_psdAtZero_hopSizeRatio.c_str(),     po::value<double      >()->default_value(UQ_MCMC_PSD_AT_ZERO_HOP_SIZE_RATIO_ODV), "hop size ratio for psd at zero")
-    (m_option_psdAtZero_display.c_str(),          po::value<bool        >()->default_value(UQ_MCMC_PSD_AT_ZERO_DISPLAY_ODV       ), "display computed psd at frequency zero on screen"       )
-    (m_option_psdAtZero_write.c_str(),            po::value<bool        >()->default_value(UQ_MCMC_PSD_AT_ZERO_WRITE_ODV         ), "write computed psd at frequency zero to the output file")
-    (m_option_geweke_compute.c_str(),             po::value<bool        >()->default_value(UQ_MCMC_GEWEKE_COMPUTE_ODV            ), "compute Geweke coefficients"                            )
-    (m_option_geweke_naRatio.c_str(),             po::value<double      >()->default_value(UQ_MCMC_GEWEKE_NA_RATIO_ODV           ), "ratio NA for Geweke")
-    (m_option_geweke_nbRatio.c_str(),             po::value<double      >()->default_value(UQ_MCMC_GEWEKE_NB_RATIO_ODV           ), "ratio NB for Geweke")
-    (m_option_geweke_display.c_str(),             po::value<bool        >()->default_value(UQ_MCMC_GEWEKE_DISPLAY_ODV            ), "display computed Geweke on screen"                      )
-    (m_option_geweke_write.c_str(),               po::value<bool        >()->default_value(UQ_MCMC_GEWEKE_WRITE_ODV              ), "write computed Geweke to the output file"               )
-    (m_option_corr_computeViaDef.c_str(),         po::value<bool        >()->default_value(UQ_MCMC_CORR_COMPUTE_VIA_DEF_ODV      ), "compute correlations via definition"                    )
-    (m_option_corr_computeViaFft.c_str(),         po::value<bool        >()->default_value(UQ_MCMC_CORR_COMPUTE_VIA_FFT_ODV      ), "compute correlations via fft"                           )
-    (m_option_corr_secondLag.c_str(),             po::value<unsigned int>()->default_value(UQ_MCMC_CORR_SECOND_LAG_ODV           ), "second lag for computation of autocorrelations"         )
-    (m_option_corr_lagSpacing.c_str(),            po::value<unsigned int>()->default_value(UQ_MCMC_CORR_LAG_SPACING_ODV          ), "lag spacing for computation of autocorrelations"        )
-    (m_option_corr_numberOfLags.c_str(),          po::value<unsigned int>()->default_value(UQ_MCMC_CORR_NUMBER_OF_LAGS_ODV       ), "number of lags for computation of autocorrelations"     )
-    (m_option_corr_display.c_str(),               po::value<bool        >()->default_value(UQ_MCMC_CORR_DISPLAY_ODV              ), "display computed autocorrelations on the screen"        )
-    (m_option_corr_write.c_str(),                 po::value<bool        >()->default_value(UQ_MCMC_CORR_WRITE_ODV                ), "write computed autocorrelations to the output file"     )
-    (m_option_filter_initialPos.c_str(),          po::value<unsigned int>()->default_value(UQ_MCMC_FILTER_INITIAL_POS_ODV        ), "initial pos for chain filtering"                        )
-    (m_option_filter_spacing.c_str(),             po::value<unsigned int>()->default_value(UQ_MCMC_FILTER_SPACING_ODV            ), "spacing for chain filtering"                            )
-    (m_option_filter_write.c_str(),               po::value<bool        >()->default_value(UQ_MCMC_FILTER_WRITE_ODV              ), "write filtered chain"                                   )
-    (m_option_hist_compute.c_str(),               po::value<bool        >()->default_value(UQ_MCMC_HIST_COMPUTE_ODV              ), "compute histograms"                                     )
+    (m_option_bmm_run.c_str(),                    po::value<bool        >()->default_value(UQ_MCMC_BMM_RUN_ODV                   ), "compute variance of sample mean with batch means method"        )
+    (m_option_bmm_lengths.c_str(),                po::value<std::string >()->default_value(UQ_MCMC_BMM_LENGTHS_ODV               ), "list of batch lenghts for BMM"                                  )
+    (m_option_fft_compute.c_str(),                po::value<bool        >()->default_value(UQ_MCMC_FFT_COMPUTE_ODV               ), "compute fft"                                                    )
+    (m_option_fft_paramId.c_str(),                po::value<unsigned int>()->default_value(UQ_MCMC_FFT_PARAM_ID_ODV              ), "parameter id for fft computations"                              )
+    (m_option_fft_size.c_str(),                   po::value<unsigned int>()->default_value(UQ_MCMC_FFT_SIZE_ODV                  ), "fft size"                                                       )
+    (m_option_fft_testInversion.c_str(),          po::value<bool        >()->default_value(UQ_MCMC_FFT_TEST_INVERSION_ODV        ), "test fft inversion"                                             )
+    (m_option_fft_write.c_str(),                  po::value<bool        >()->default_value(UQ_MCMC_FFT_WRITE_ODV                 ), "write fft"                                                      )
+    (m_option_psd_compute.c_str(),                po::value<bool        >()->default_value(UQ_MCMC_PSD_COMPUTE_ODV               ), "compute psd"                                                    )
+    (m_option_psd_numBlocks.c_str(),              po::value<unsigned int>()->default_value(UQ_MCMC_PSD_NUM_BLOCKS_ODV            ), "number of blocks for psd"                                       )
+    (m_option_psd_hopSizeRatio.c_str(),           po::value<double      >()->default_value(UQ_MCMC_PSD_HOP_SIZE_RATIO_ODV        ), "hop size ratio for psd"                                         )
+    (m_option_psd_paramId.c_str(),                po::value<unsigned int>()->default_value(UQ_MCMC_PSD_PARAM_ID_ODV              ), "parameter id for psd computations"                              )
+    (m_option_psd_write.c_str(),                  po::value<bool        >()->default_value(UQ_MCMC_PSD_WRITE_ODV                 ), "write psd"                                                      )
+    (m_option_psdAtZero_compute.c_str(),          po::value<bool        >()->default_value(UQ_MCMC_PSD_AT_ZERO_COMPUTE_ODV       ), "compute power spectral densities"                               )
+    (m_option_psdAtZero_numBlocks.c_str(),        po::value<std::string >()->default_value(UQ_MCMC_PSD_AT_ZERO_NUM_BLOCKS_ODV    ), "list of numbers of blocks for computation of psd at zero"       )
+    (m_option_psdAtZero_hopSizeRatio.c_str(),     po::value<double      >()->default_value(UQ_MCMC_PSD_AT_ZERO_HOP_SIZE_RATIO_ODV), "hop size ratio for psd at zero"                                 )
+    (m_option_psdAtZero_display.c_str(),          po::value<bool        >()->default_value(UQ_MCMC_PSD_AT_ZERO_DISPLAY_ODV       ), "display computed psd at frequency zero on screen"               )
+    (m_option_psdAtZero_write.c_str(),            po::value<bool        >()->default_value(UQ_MCMC_PSD_AT_ZERO_WRITE_ODV         ), "write computed psd at frequency zero to the output file"        )
+    (m_option_geweke_compute.c_str(),             po::value<bool        >()->default_value(UQ_MCMC_GEWEKE_COMPUTE_ODV            ), "compute Geweke coefficients"                                    )
+    (m_option_geweke_naRatio.c_str(),             po::value<double      >()->default_value(UQ_MCMC_GEWEKE_NA_RATIO_ODV           ), "ratio NA for Geweke"                                            ) 
+    (m_option_geweke_nbRatio.c_str(),             po::value<double      >()->default_value(UQ_MCMC_GEWEKE_NB_RATIO_ODV           ), "ratio NB for Geweke"                                            )
+    (m_option_geweke_display.c_str(),             po::value<bool        >()->default_value(UQ_MCMC_GEWEKE_DISPLAY_ODV            ), "display computed Geweke on screen"                              )
+    (m_option_geweke_write.c_str(),               po::value<bool        >()->default_value(UQ_MCMC_GEWEKE_WRITE_ODV              ), "write computed Geweke to the output file"                       )
+    (m_option_corr_computeViaDef.c_str(),         po::value<bool        >()->default_value(UQ_MCMC_CORR_COMPUTE_VIA_DEF_ODV      ), "compute correlations via definition"                            )
+    (m_option_corr_computeViaFft.c_str(),         po::value<bool        >()->default_value(UQ_MCMC_CORR_COMPUTE_VIA_FFT_ODV      ), "compute correlations via fft"                                   )
+    (m_option_corr_secondLag.c_str(),             po::value<unsigned int>()->default_value(UQ_MCMC_CORR_SECOND_LAG_ODV           ), "second lag for computation of autocorrelations"                 )
+    (m_option_corr_lagSpacing.c_str(),            po::value<unsigned int>()->default_value(UQ_MCMC_CORR_LAG_SPACING_ODV          ), "lag spacing for computation of autocorrelations"                )
+    (m_option_corr_numberOfLags.c_str(),          po::value<unsigned int>()->default_value(UQ_MCMC_CORR_NUMBER_OF_LAGS_ODV       ), "number of lags for computation of autocorrelations"             )
+    (m_option_corr_display.c_str(),               po::value<bool        >()->default_value(UQ_MCMC_CORR_DISPLAY_ODV              ), "display computed autocorrelations on the screen"                )
+    (m_option_corr_write.c_str(),                 po::value<bool        >()->default_value(UQ_MCMC_CORR_WRITE_ODV                ), "write computed autocorrelations to the output file"             )
+    (m_option_filter_initialPos.c_str(),          po::value<unsigned int>()->default_value(UQ_MCMC_FILTER_INITIAL_POS_ODV        ), "initial pos for chain filtering"                                )
+    (m_option_filter_spacing.c_str(),             po::value<unsigned int>()->default_value(UQ_MCMC_FILTER_SPACING_ODV            ), "spacing for chain filtering"                                    )
+    (m_option_filter_write.c_str(),               po::value<bool        >()->default_value(UQ_MCMC_FILTER_WRITE_ODV              ), "write filtered chain"                                           )
+    (m_option_hist_compute.c_str(),               po::value<bool        >()->default_value(UQ_MCMC_HIST_COMPUTE_ODV              ), "compute histograms"                                             )
 #if 0
     (m_option_hist_numberOfInternalBins.c_str(),  po::value<            >()->default_value(), "")
 #endif
-    (m_option_kde_compute.c_str(),                po::value<bool        >()->default_value(UQ_MCMC_KDE_COMPUTE_ODV               ), "compute kernel density estimators"                      )
+    (m_option_kde_compute.c_str(),                po::value<bool        >()->default_value(UQ_MCMC_KDE_COMPUTE_ODV               ), "compute kernel density estimators"                             )
 #if 0
     (m_option_kde_numberOfEvalPositions.c_str(),  po::value<            >()->default_value(), "")
 #endif
@@ -1165,7 +1163,7 @@ template <class V, class M>
 int
 uqDRAM_MarkovChainGeneratorClass<V,M>::prepareForNextChain(
   const M* proposalCovMatrix)
-  //const M* proposalPrecMatrix)
+//const M* proposalPrecMatrix)
 {
   //if (m_env.rank() == 0) std::cout << "Entering uqDRAM_MarkovChainGeneratorClass<V,M>::prepareForNextChain()..."
   //                                 << std::endl;
@@ -1487,12 +1485,11 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
   //****************************************************
   // Compute mean, sample std, population std
   //****************************************************
-  V chainSampleVariance(m_paramSpace.zeroVector());
   computeMeanVars(workingChain,
                   chainName,
                   passedOfs,
                   NULL,
-                  &chainSampleVariance,
+                  NULL,
                   NULL);
 
   //****************************************************
@@ -1567,7 +1564,6 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
     computeCorrViaDef(workingChain,
                       initialPosForStatistics,
                       lagsForCorrs,
-                      chainSampleVariance,
                       chainName,
                       passedOfs);
   }
@@ -1581,7 +1577,6 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(
     computeCorrViaFFT(workingChain,
                       initialPosForStatistics,
                       lagsForCorrs,
-                      chainSampleVariance,
                       chainName,
                       passedOfs);
   }
@@ -2143,7 +2138,6 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeCorrViaDef(
   const uqChainBaseClass<V>&       workingChain,
   const std::vector<unsigned int>& initialPosForStatistics,
   const std::vector<unsigned int>& lagsForCorrs,
-  const V&                         chainSampleVariance,
   const std::string&               chainName,
   std::ofstream*                   passedOfs)
 {
@@ -2172,7 +2166,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeCorrViaDef(
       _2dArrayOfAutoCorrs.setLocation(i,j,m_paramSpace.newVector());
     }
   }
-  V corrVec(m_paramSpace.zeroVector());
+  //V corrVec(m_paramSpace.zeroVector());
   for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
     unsigned int initialPos = initialPosForStatistics[initialPosId];
     for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
@@ -2180,33 +2174,13 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeCorrViaDef(
       workingChain.autoCorrViaDef(initialPos,
                                   workingChain.sequenceSize()-initialPos,
                                   lag,
-                                  corrVec);
-      _2dArrayOfAutoCorrs(initialPosId,lagId) = corrVec;
+                                  _2dArrayOfAutoCorrs(initialPosId,lagId));
+      //_2dArrayOfAutoCorrs(initialPosId,lagId) = corrVec;
     }
   }
 
-  if (m_env.rank() == 0) {
-    std::cout << "\nEstimated variance of sample mean, through autocorrelation (via def):"
-              << std::endl;
-  }
-  double doubleChainSequenceSize = (double) workingChain.sequenceSize();
-  V estimatedVarianceOfSampleMean(m_paramSpace.zeroVector());
-  estimatedVarianceOfSampleMean.cwSet(1.);
-  for (unsigned int i = 0; i < 1; ++i) {
-    for (unsigned int j = 0; j < _2dArrayOfAutoCorrs.numCols(); ++j) {
-      double ratio = 0.; //((double) j)/doubleChainSequenceSize;
-      estimatedVarianceOfSampleMean += 2.*(1.-ratio)*_2dArrayOfAutoCorrs(i,j);
-    }
-  }
-  estimatedVarianceOfSampleMean *= chainSampleVariance;
-  estimatedVarianceOfSampleMean /= doubleChainSequenceSize;
-  bool savedVectorPrintState = estimatedVarianceOfSampleMean.getPrintHorizontally();
-  estimatedVarianceOfSampleMean.setPrintHorizontally(false);
-  std::cout << estimatedVarianceOfSampleMean;
-  estimatedVarianceOfSampleMean.setPrintHorizontally(savedVectorPrintState);
-  if (m_env.rank() == 0) {
-    std::cout << std::endl;
-  }
+  // It is not practical to compute the variance of sample mean by computing the autocorrelations via definition for each lag
+  // The code computes the variance of sample mean by computing the autocorrelations via fft, below, in another routine
 
   if ((m_corrDisplay) && (m_env.rank() == 0)) {
     for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
@@ -2287,7 +2261,6 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeCorrViaFFT(
   const uqChainBaseClass<V>&       workingChain,
   const std::vector<unsigned int>& initialPosForStatistics,
   const std::vector<unsigned int>& lagsForCorrs,
-  const V&                         chainSampleVariance,
   const std::string&               chainName,
   std::ofstream*                   passedOfs)
 {
@@ -2317,7 +2290,9 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeCorrViaFFT(
     }
   }
   std::vector<V*> corrVecs(lagsForCorrs.size(),NULL);
+  std::vector<V*> corrSumVecs(initialPosForStatistics.size(),NULL);
   for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+    corrSumVecs[initialPosId] = m_paramSpace.newVector();
     unsigned int initialPos = initialPosForStatistics[initialPosId];
     for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
       corrVecs[lagId] = m_paramSpace.newVector();
@@ -2332,9 +2307,13 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeCorrViaFFT(
                 << std::endl;
     }
     workingChain.autoCorrViaFft(initialPos,
-                                workingChain.sequenceSize()-initialPos,
+                                workingChain.sequenceSize()-initialPos, // Use all possible data positions
                                 lagsForCorrs,
                                 corrVecs);
+    workingChain.autoCorrViaFft(initialPos,
+                                workingChain.sequenceSize()-initialPos, // Use all possible data positions
+                                (unsigned int) (1.0 * (double) (workingChain.sequenceSize()-initialPos)), // CHECK
+                                *corrSumVecs[initialPosId]); // Sum of all possibly computable autocorrelations, not only the asked ones in lagsForCorrs
     for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
       _2dArrayOfAutoCorrs(initialPosId,lagId) = *(corrVecs[lagId]);
     }
@@ -2343,31 +2322,37 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::computeCorrViaFFT(
     if (corrVecs[j] != NULL) delete corrVecs[j];
   }
 
-  if (m_env.rank() == 0) {
-    std::cout << "\nEstimated variance of sample mean, through autocorrelation (via fft):"
-              << std::endl;
-  }
-  double doubleChainSequenceSize = (double) workingChain.sequenceSize();
-  V estimatedVarianceOfSampleMean(m_paramSpace.zeroVector());
-  estimatedVarianceOfSampleMean.cwSet(1.);
-  for (unsigned int i = 0; i < 1; ++i) {
-    for (unsigned int j = 0; j < _2dArrayOfAutoCorrs.numCols(); ++j) {
-      double ratio = 0.; //((double) j)/doubleChainSequenceSize;
-      estimatedVarianceOfSampleMean += 2.*(1.-ratio)*_2dArrayOfAutoCorrs(i,j);
-    }
-  }
-  estimatedVarianceOfSampleMean *= chainSampleVariance;
-  estimatedVarianceOfSampleMean /= doubleChainSequenceSize;
-  bool savedVectorPrintState = estimatedVarianceOfSampleMean.getPrintHorizontally();
-  estimatedVarianceOfSampleMean.setPrintHorizontally(false);
-  std::cout << estimatedVarianceOfSampleMean;
-  estimatedVarianceOfSampleMean.setPrintHorizontally(savedVectorPrintState);
-  if (m_env.rank() == 0) {
-    std::cout << std::endl;
-  }
-
   if ((m_corrDisplay) && (m_env.rank() == 0)) {
+    V chainMean                    (m_paramSpace.zeroVector());
+    V chainSampleVariance          (m_paramSpace.zeroVector());
+    V estimatedVarianceOfSampleMean(m_paramSpace.zeroVector());
     for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+      unsigned int initialPos = initialPosForStatistics[initialPosId];
+
+      workingChain.mean(initialPos,
+                        workingChain.sequenceSize()-initialPos,
+                        chainMean);
+
+      workingChain.sampleVariance(initialPos,
+                                  workingChain.sequenceSize()-initialPos,
+                                  chainMean,
+                                  chainSampleVariance);
+
+      double doubleChainSequenceSize = (double) (workingChain.sequenceSize() - initialPos);
+      std::cout << "\nEstimated variance of sample mean, through autocorrelation (via fft), for subchain beggining at position " << initialPosForStatistics[initialPosId]
+                << std::endl;
+      estimatedVarianceOfSampleMean.cwSet(-1.); // Yes, '-1' because the autocorrelation at lag 0, which values '+1', is already counted in the sum
+      estimatedVarianceOfSampleMean += 2.* (*corrSumVecs[initialPosId]);
+      estimatedVarianceOfSampleMean *= chainSampleVariance;
+      estimatedVarianceOfSampleMean /= doubleChainSequenceSize;
+      bool savedVectorPrintState = estimatedVarianceOfSampleMean.getPrintHorizontally();
+      estimatedVarianceOfSampleMean.setPrintHorizontally(false);
+      std::cout << estimatedVarianceOfSampleMean;
+      estimatedVarianceOfSampleMean.setPrintHorizontally(savedVectorPrintState);
+      if (m_env.rank() == 0) {
+        std::cout << std::endl;
+      }
+
       std::cout << "\nComputed autocorrelation coefficients (via fft), for subchain beggining at position " << initialPosForStatistics[initialPosId]
                 << " (each column corresponds to a different lag)"
                 << std::endl;

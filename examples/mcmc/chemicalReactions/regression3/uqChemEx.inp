@@ -82,12 +82,12 @@ calib_MCMC_geweke_naRatio             = .1
 calib_MCMC_geweke_nbRatio             = .5
 calib_MCMC_geweke_display             = 1
 calib_MCMC_geweke_write               = 1
-calib_MCMC_corr_computeViaDef         = 0
+calib_MCMC_corr_computeViaDef         = 1
 calib_MCMC_corr_computeViaFft         = 1
 calib_MCMC_corr_secondLag             = 2
 calib_MCMC_corr_lagSpacing            = 1
-calib_MCMC_corr_numberOfLags          = 100000
-calib_MCMC_corr_display               = 0
+calib_MCMC_corr_numberOfLags          = 15
+calib_MCMC_corr_display               = 1
 calib_MCMC_corr_write                 = 1
 
 calib_MCMC_filter_initialPos          = 0

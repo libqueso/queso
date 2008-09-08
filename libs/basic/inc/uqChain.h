@@ -63,6 +63,10 @@ public:
                                           unsigned int                     numPos,
                                           const std::vector<unsigned int>& lags,
                                           std::vector<V*>&                 corrVecs) const = 0;
+  virtual void         autoCorrViaFft    (unsigned int              initialPos,
+                                          unsigned int              numPos,
+                                          unsigned int              numSum,
+                                          V&                        autoCorrsSumVec) const = 0;
   virtual void         bmm               (unsigned int              initialPos,
                                           unsigned int              batchLength,
                                           V&                        bmmVec) const = 0;
