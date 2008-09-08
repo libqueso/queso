@@ -49,6 +49,7 @@ public:
   double       sumOfComponents  () const;
   void         cwSet            (double value);
   void         cwSetGaussian    (gsl_rng* rng, double mean, double stdDev);
+  void         cwSetGaussian    (gsl_rng* rng, const uqGslVectorClass& meanVec, const uqGslVectorClass& stdDevVec);
   void         cwInvert         ();
   void         sort             ();
   void         print            (std::ostream& os) const;

@@ -256,6 +256,15 @@ uqGslVectorClass::cwSetGaussian(gsl_rng* rng, double mean, double stdDev)
 }
 
 void
+uqGslVectorClass::cwSetGaussian(gsl_rng* rng, const uqGslVectorClass& meanVec, const uqGslVectorClass& stdDevVec)
+{
+  for (unsigned int i = 0; i < this->size(); ++i) {
+    (*this)[i] = meanVec[i] + gsl_ran_gaussian(rng,stdDevVec[i]);
+  }
+  return;
+}
+
+void
 uqGslVectorClass::cwInvert()
 {
   unsigned int size = this->size();

@@ -66,9 +66,15 @@ calib_MCMC_psd_numBlocks = 8
 calib_MCMC_psd_hopSizeRatio = 0.5
 calib_MCMC_psd_write = 1
 calib_MCMC_psdAtZero_compute = 1
+calib_MCMC_psdAtZero_numBlocks = 8 
+calib_MCMC_psdAtZero_hopSizeRatio = 0.5
 calib_MCMC_psdAtZero_display = 1
 calib_MCMC_psdAtZero_write = 1
 calib_MCMC_geweke_compute = 1
+calib_MCMC_geweke_naRatio = 0.1
+calib_MCMC_geweke_nbRatio = 0.5
+calib_MCMC_geweke_display = 1
+calib_MCMC_geweke_write = 1
 calib_MCMC_corr_computeViaDef = 0
 calib_MCMC_corr_computeViaFft = 1
 calib_MCMC_corr_secondLag = 2
@@ -86,7 +92,7 @@ calib_MCMC_kde_compute = 0
 Leaving uqDRAM_MarkovChainGeneratorClass<V,M>::constructor()
 Opening output file 'calib1.m' for chain loop id = 0 ...
 Generating white noise for chain queso_calib_0_chain, with 131072 positions ...
-Chain1 generation took 0.390394 seconds
+Chain1 generation took 1.08289 seconds
 
 
 -----------------------------------------------------
@@ -98,10 +104,10 @@ In uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(): initial positions
 -----------------------------------------------------
 Computing mean, sample variance and population variance
 
-Estimated variance of sample mean for the whole chain, under independence assumption:
+Estimated variance of sample mean for the whole chain queso_calib_0_chain, under independence assumption:
 7.66981e-06
 
-Mean and variances took 0.093958 seconds
+Mean and variances took 0.140534 seconds
 
 Mean, sample std, population std
 Parameter    Mean         SampleStd         Popul.Std
@@ -109,15 +115,16 @@ Parameter    Mean         SampleStd         Popul.Std
 
 -----------------------------------------------------
 Computing variance of sample mean through BMM
-In uqDRAM_MarkovChainGeneratorClass<V,M>::computeStatistics(): lengths for batchs in BMM = 50 100 200 500
+In uqDRAM_MarkovChainGeneratorClass<V,M>::computeBMM(): lengths for batchs in BMM = 50 100 200 500
 
 Estimated variance of sample mean, through batch means method, for subchain beggining at position 0 (each column corresponds to a batch length)
 Parameter           50          100          200          500
        k1   7.6394e-06   7.7261e-06   7.7550e-06   7.1489e-06
-Chain BMM took 0.114775 seconds
+Chain BMM took 0.181255 seconds
 
 -----------------------------------------------------
 Computing PSD at frequency zero for all parameters
+initialPos = 0, N = 131072, #Blocks = 8, R (hop size) = 14563, B (block size) = 29127, overlap = 14564, [(#Blocks - 1) * R + B] = 131068, numberOfDiscardedDataElements = 4
 psdResult[0] = 0.227031
 
 Computed PSD at frequency zero for subchain beggining at position 0, so effective data size = 131072 (each column corresponds to a number of blocks)
@@ -127,25 +134,27 @@ Parameter            8
 Estimated variance of sample mean, through psd, for subchain beggining at position 0, so effective data size = 131072 (each column corresponds to a number of blocks)
 Parameter            8
        k1   1.0883e-05
-Chain PSD at frequency zero took 0.195058 seconds
+Chain PSD at frequency zero took 0.778372 seconds
 
 -----------------------------------------------------
 Computing Geweke coefficients
+initialPos = 0, N = 13107, #Blocks = 8, R (hop size) = 1456, B (block size) = 2912, overlap = 1456, [(#Blocks - 1) * R + B] = 13104, numberOfDiscardedDataElements = 3
+initialPos = 0, N = 65536, #Blocks = 8, R (hop size) = 7281, B (block size) = 14563, overlap = 7282, [(#Blocks - 1) * R + B] = 65530, numberOfDiscardedDataElements = 6
 
 Computed Geweke coefficients with 10% and 50% percentages (each column corresponds to a different initial position on the full chain)
 Parameter            0
        k1   7.9683e-02
-Chain Geweke took 0.137273 seconds
+Chain Geweke took 0.44938 seconds
 
 -----------------------------------------------------
 Computing autocorrelation coefficients (via fft)
-In uqDRAM_MarkovChainGeneratorClass<V>::computeStatistics(): about to call chain.autoCorrViaFft() with initialPos = 0, numPos = 131072, lagsForCorrs.size() = 100000, corrVecs.size() = 100000
-In uqScalarSequenceClass<T>::autoCorrViaFft(): returned succesfully from fftObj.inverse()
+In uqDRAM_MarkovChainGeneratorClass<V>::computeCorrViaFFT(): about to call chain.autoCorrViaFft() with initialPos = 0, numPos = 131072, lagsForCorrs.size() = 100000, corrVecs.size() = 100000
 
 Estimated variance of sample mean, through autocorrelation (via fft):
 4.84105e-05
 
-Chain autocorrelation (via fft) took 0.55049 seconds
+Chain autocorrelation (via fft) took 1.88377 seconds
+All statistics took 5.88629 seconds
 
 -----------------------------------------------------
  Finished computing statistics for chain queso_calib_0_chain
@@ -171,7 +180,7 @@ Chain autocorrelation (via fft) took 0.55049 seconds
 
 -----------------------------------------------------
 Computing min and max for histograms and KDE
-Chain min and max took 0.022126 seconds
+Chain min and max took 0.061637 seconds
 
 -----------------------------------------------------
  Finished computing histogram and/or KDE for chain queso_calib_0_chain

@@ -20,27 +20,25 @@
 #ifndef __UQ_ARRAY_OF_SEQUENCES_H__
 #define __UQ_ARRAY_OF_SEQUENCES_H__
 
+#include <uqChain.h>
 #include <EpetraExt_DistArray.h>
-#include <uq2dArrayOfStuff.h>
-#include <uqScalarSequence.h>
-
-
 
 template <class V>
-class uqArrayOfSequencesClass
+class uqArrayOfSequencesClass : public uqChainBaseClass<V>
 {
 public:
+
 
   uqArrayOfSequencesClass(unsigned int sequenceSize, const V& vectorExample);
  ~uqArrayOfSequencesClass();
 
   const unsigned int sequenceSize      () const;
-  const unsigned int vectorSize        () const;
         void         resizeSequence    (unsigned int newSequenceSize);
         void         resetValues       (unsigned int initialPos, unsigned int numPos);
         void         erasePositions    (unsigned int initialPos, unsigned int numPos);
-        void         getPositionValues (unsigned int positionId,       V& vector) const;
-        void         setPositionValues (unsigned int positionId, const V& vector);
+      //const V&     positionValues    (unsigned int posId,       V& vec) const;
+        void         getPositionValues (unsigned int posId,       V& vec) const;
+        void         setPositionValues (unsigned int posId, const V& vec);
         void         setGaussian       (gsl_rng* rng, const V& meanVec, const V& stdDevVec);
 
         void         mean              (unsigned int             initialPos,
@@ -114,22 +112,22 @@ public:
 private:
         void         sort              (unsigned int                   initialPos,
                                         uqArrayOfSequencesClass&       sortedSequence) const;
-      //void         extractScalarSeq  (unsigned int                   initialPos,
-      //                                unsigned int                   spacing,
-      //                                unsigned int                   numPos,
-      //                                unsigned int                   paramId,
-      //                                uqScalarSequenceClass<double>& scalarSeq) const;
-      //void         extractRawData    (unsigned int                   initialPos,
-      //                                unsigned int                   spacing,
-      //                                unsigned int                   numPos,
-      //                                unsigned int                   paramId,
-      //                                std::vector<double>&           rawData) const;
-
-  const uqEnvironmentClass&   m_env;
-  V                           m_vectorExample;
-  mutable uqFftClass<double>* m_fftObj;
+        void         extractScalarSeq  (unsigned int                   initialPos,
+                                        unsigned int                   spacing,
+                                        unsigned int                   numPos,
+                                        unsigned int                   paramId,
+                                        uqScalarSequenceClass<double>& scalarSeq) const;
+        void         extractRawData    (unsigned int                   initialPos,
+                                        unsigned int                   spacing,
+                                        unsigned int                   numPos,
+                                        unsigned int                   paramId,
+                                        std::vector<double>&           rawData) const;
 
   EpetraExt::DistArray<uqScalarSequenceClass<double>*> m_scalarSequences;
+
+  using uqChainBaseClass<V>::m_env;
+  using uqChainBaseClass<V>::m_vectorExample;
+  using uqChainBaseClass<V>::m_fftObj;
 };
 
 template <class V>
@@ -137,10 +135,8 @@ uqArrayOfSequencesClass<V>::uqArrayOfSequencesClass(
   unsigned int sequenceSize,
   const V&     vectorExample)
   :
-  m_env            (vectorExample.env()),
-  m_vectorExample  (vectorExample),
-  m_fftObj         (NULL),
-  m_scalarSequences(vectorExample.map(),1)
+  uqChainBaseClass<V>(sequenceSize,vectorExample),
+  m_scalarSequences  (vectorExample.map(),1)
 {
 
   //if (m_env.rank() == 0) std::cout << "Entering uqArrayOfSequencesClass<V>::constructor()"
@@ -162,7 +158,6 @@ uqArrayOfSequencesClass<V>::uqArrayOfSequencesClass(
 template <class V>
 uqArrayOfSequencesClass<V>::~uqArrayOfSequencesClass()
 {
-  if (m_fftObj != NULL) delete m_fftObj;
   for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
     if (m_scalarSequences(i,0)) delete m_scalarSequences(i,0);
   }
@@ -175,13 +170,6 @@ uqArrayOfSequencesClass<V>::sequenceSize() const
   uqArrayOfSequencesClass<V>* tmp = const_cast<uqArrayOfSequencesClass<V>*>(this);
 
   return tmp->m_scalarSequences(0,0)->sequenceSize();
-}
-
-template <class V>
-const unsigned int
-uqArrayOfSequencesClass<V>::vectorSize() const
-{
-  return m_vectorExample.size();
 }
 
 template <class V>
@@ -204,7 +192,7 @@ uqArrayOfSequencesClass<V>::resetValues(
   unsigned int numPos)
 {
   for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
-    m_scalarSequences(i,0)->resetValues();
+    m_scalarSequences(i,0)->resetValues(initialPos,numPos);
   }
 
   return;
@@ -228,11 +216,11 @@ uqArrayOfSequencesClass<V>::erasePositions(
 
 template <class V>
 void
-uqArrayOfSequencesClass<V>::getPositionValues(unsigned int positionId, V& vector) const
+uqArrayOfSequencesClass<V>::getPositionValues(unsigned int posId, V& vec) const
 {
   uqArrayOfSequencesClass<V>* tmp = const_cast<uqArrayOfSequencesClass<V>*>(this);
   for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
-    vector[i] = (*(tmp->m_scalarSequences(i,0)))[positionId];
+    vec[i] = (*(tmp->m_scalarSequences(i,0)))[posId];
   }
 
   return;
@@ -240,11 +228,11 @@ uqArrayOfSequencesClass<V>::getPositionValues(unsigned int positionId, V& vector
 
 template <class V>
 void
-uqArrayOfSequencesClass<V>::setPositionValues(unsigned int positionId, const V& vector)
+uqArrayOfSequencesClass<V>::setPositionValues(unsigned int posId, const V& vec)
 {
   for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
     uqScalarSequenceClass<double>& seq = *(m_scalarSequences(i,0));
-    seq[positionId] = vector[i];
+    seq[posId] = vec[i];
   }
 
   return;
@@ -683,7 +671,7 @@ uqArrayOfSequencesClass<V>::minMax(
 {
   uqArrayOfSequencesClass<V>* tmp = const_cast<uqArrayOfSequencesClass<V>*>(this);
 
-  unsigned int numParams = vectorSize();
+  unsigned int numParams = this->vectorSize();
   for (unsigned int i = 0; i < numParams; ++i) {
     uqScalarSequenceClass<double>& seq = *(tmp->m_scalarSequences(i,0));
     seq.minMax(initialPos,minVec[i],maxVec[i]);
@@ -907,5 +895,58 @@ uqArrayOfSequencesClass<V>::write(
   return;
 }
 
+template <class V>
+void
+uqArrayOfSequencesClass<V>::extractScalarSeq(
+  unsigned int                   initialPos,
+  unsigned int                   spacing,
+  unsigned int                   numPos,
+  unsigned int                   paramId,
+  uqScalarSequenceClass<double>& scalarSeq) const
+{
+  uqArrayOfSequencesClass<V>* tmp = const_cast<uqArrayOfSequencesClass<V>*>(this);
+  uqScalarSequenceClass<double>& seq = *(tmp->m_scalarSequences(paramId,0));
+
+  scalarSeq.resizeSequence(numPos);
+  if (spacing == 1) {
+    for (unsigned int j = 0; j < numPos; ++j) {
+      scalarSeq[j] = seq[paramId];
+    }
+  }
+  else {
+    for (unsigned int j = 0; j < numPos; ++j) {
+      scalarSeq[j] = seq[paramId];
+    }
+  }
+
+  return;
+}
+
+template <class V>
+void
+uqArrayOfSequencesClass<V>::extractRawData(
+  unsigned int         initialPos,
+  unsigned int         spacing,
+  unsigned int         numPos,
+  unsigned int         paramId,
+  std::vector<double>& rawData) const
+{
+  uqArrayOfSequencesClass<V>* tmp = const_cast<uqArrayOfSequencesClass<V>*>(this);
+  uqScalarSequenceClass<double>& seq = *(tmp->m_scalarSequences(paramId,0));
+
+  rawData.resize(numPos);
+  if (spacing == 1) {
+    for (unsigned int j = 0; j < numPos; ++j) {
+      rawData[j] = seq[paramId];
+    }
+  }
+  else {
+    for (unsigned int j = 0; j < numPos; ++j) {
+      rawData[j] = seq[paramId];
+    }
+  }
+
+  return;
+}
 #endif // __UQ_ARRAY_OF_SEQUENCES_H__
 

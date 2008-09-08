@@ -435,12 +435,11 @@ uqScalarSequenceClass<T>::autoCorrViaFft(
   //            << std::endl;
   //}
   fftObj.inverse(rawData,fftSize,resultData);
-
-  if (m_env.rank() == 0) {
-    std::cout << "In uqScalarSequenceClass<T>::autoCorrViaFft()"
-              << ": returned succesfully from fftObj.inverse()"
-              << std::endl;
-  }
+  //if (m_env.rank() == 0) {
+  //  std::cout << "In uqScalarSequenceClass<T>::autoCorrViaFft()"
+  //            << ": returned succesfully from fftObj.inverse()"
+  //            << std::endl;
+  //}
 
   // Prepare return data
   autoCorrs.resize(maxLag+1,0.); // Yes, +1
@@ -498,7 +497,10 @@ uqScalarSequenceClass<T>::psd(
   double               hopSizeRatio,
   std::vector<double>& psdResult) const
 {
-  bool bRC = (initialPos < this->sequenceSize());
+  bool bRC = ((initialPos        < this->sequenceSize()                        ) &&
+              (hopSizeRatio      != 0.                                         ) &&
+              (numBlocks         <          (this->sequenceSize() - initialPos)) &&
+              (abs(hopSizeRatio) < (double) (this->sequenceSize() - initialPos)));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
                       "uqScalarSequenceClass<T>::psd()",
@@ -506,29 +508,53 @@ uqScalarSequenceClass<T>::psd(
 
   unsigned int dataSize = this->sequenceSize() - initialPos;
 
-  double tmp = ((double) dataSize)/(( ((double) numBlocks) - 1. )*hopSizeRatio + 1.);
-  unsigned int blockSize = (unsigned int) tmp;
-  unsigned int hopSize   = (unsigned int) ( ((double) blockSize) * hopSizeRatio );
-  tmp = ((double) dataSize) - ( ((double) numBlocks) - 1.) * ((double) hopSize) - ((double) blockSize);
-#if 0
-  unsigned int numberOfDiscardedDataElements = (unsigned int) tmp;
-  std::cout << "initialPos = " << initialPos
-            << ", N = "        << dataSize
-            << ", #Blocks = "  << numBlocks
-            << ", R = "        << hopSize
-            << ", B = "        << blockSize
-            << ", overlap = "  << blockSize - hopSize
+  // Determine hopSize and blockSize
+  unsigned int hopSize = 0;
+  unsigned int blockSize = 0;
+  if (hopSizeRatio <= -1.) {
+    double overlapSize = -hopSizeRatio;
+    double tmp = ((double) (dataSize + (numBlocks - 1)*overlapSize))/((double) numBlocks);
+    blockSize = (unsigned int) tmp;
+  }
+  else if (hopSizeRatio < 0.) {
+    double tmp = ((double) dataSize)/(( ((double) numBlocks) - 1. )*(-hopSizeRatio) + 1.);
+    blockSize = (unsigned int) tmp;
+    hopSize = (unsigned int) ( ((double) blockSize) * (-hopSizeRatio) );
+  }
+  else if (hopSizeRatio == 0.) {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.rank(),
+                        "uqScalarSequenceClass<T>::psd()",
+                        "hopSizeRatio == 0");
+  }
+  else if (hopSizeRatio < 1.) {
+    double tmp = ((double) dataSize)/(( ((double) numBlocks) - 1. )*hopSizeRatio + 1.);
+    blockSize = (unsigned int) tmp;
+    hopSize = (unsigned int) ( ((double) blockSize) * hopSizeRatio );
+  }
+  else {
+    hopSize = (unsigned int) hopSizeRatio;
+    blockSize = dataSize - (numBlocks - 1)*hopSize;
+  }
+
+  unsigned int numberOfDiscardedDataElements = dataSize - (numBlocks-1)*hopSize - blockSize;
+#if 1
+  std::cout << "initialPos = "       << initialPos
+            << ", N = "              << dataSize
+            << ", #Blocks = "        << numBlocks
+            << ", R (hop size) = "   << hopSize
+            << ", B (block size) = " << blockSize
+            << ", overlap = "        << blockSize - hopSize
             << ", [(#Blocks - 1) * R + B] = "       << (numBlocks-1)*hopSize + blockSize
             << ", numberOfDiscardedDataElements = " << numberOfDiscardedDataElements
-            << ", tmp = "                           << tmp
             << std::endl;
 #endif
-  UQ_FATAL_TEST_MACRO(tmp < 0.,
+  UQ_FATAL_TEST_MACRO(numberOfDiscardedDataElements < 0.,
                       UQ_UNAVAILABLE_RANK,
                       "uqScalarSequenceClass<T>::psd()",
                       "eventual extra space for last block should not be negative");
 
-  tmp = log((double) blockSize)/log(2.);
+  double tmp = log((double) blockSize)/log(2.);
   double fractionalPart = tmp - ((double) ((unsigned int) tmp));
   if (fractionalPart > 0.) tmp += (1. - fractionalPart);
   unsigned int fftSize = (unsigned int) pow(2.,tmp);
