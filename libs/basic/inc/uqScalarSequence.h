@@ -497,10 +497,10 @@ uqScalarSequenceClass<T>::psd(
   double               hopSizeRatio,
   std::vector<double>& psdResult) const
 {
-  bool bRC = ((initialPos        < this->sequenceSize()                        ) &&
-              (hopSizeRatio      != 0.                                         ) &&
-              (numBlocks         <          (this->sequenceSize() - initialPos)) &&
-              (abs(hopSizeRatio) < (double) (this->sequenceSize() - initialPos)));
+  bool bRC = ((initialPos         < this->sequenceSize()                        ) &&
+              (hopSizeRatio       != 0.                                         ) &&
+              (numBlocks          <          (this->sequenceSize() - initialPos)) &&
+              (fabs(hopSizeRatio) < (double) (this->sequenceSize() - initialPos)));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
                       "uqScalarSequenceClass<T>::psd()",
@@ -754,7 +754,7 @@ uqScalarSequenceClass<T>::sort(
   uqScalarSequenceClass<T>& sortedSequence) const
 {
   unsigned int numPos = this->sequenceSize() - initialPos;
-  sortedSequence.resize(numPos);
+  sortedSequence.resizeSequence(numPos);
   this->extractScalarSeq(initialPos,
                          1,
                          numPos,
@@ -900,161 +900,4 @@ uqScalarSequenceClass<T>::extractRawData(
   return;
 }
 
-#if 0
-void
-uqScalarSequencePSD(
-  const std::vector<double>& data,
-  unsigned int               numBlocks,
-  double                     hopSizeRatio,
-  std::vector<double>&       psdResult) // [dataSize x 1] vector
-{
-  psdResult.clear();
-  unsigned int dataSize = data.size();
-
-  double tmp = ((double) dataSize)/(( ((double) numBlocks) - 1. )*hopSizeRatio + 1.);
-  unsigned int blockSize = (unsigned int) tmp;
-  unsigned int hopSize   = (unsigned int) ( ((double) blockSize) * hopSizeRatio );
-  tmp = ((double) dataSize) - ( ((double) numBlocks) - 1.) * ((double) hopSize) - ((double) blockSize);
-#if 0
-  unsigned int numberOfDiscardedDataElements = (unsigned int) tmp;
-  std::cout << "N = "         << dataSize
-            << ", #Blocks = " << numBlocks
-            << ", R = "       << hopSize
-            << ", B = "       << blockSize
-            << ", overlap = " << blockSize - hopSize
-            << ", [(#Blocks - 1) * R + B] = "       << (numBlocks-1)*hopSize + blockSize
-            << ", numberOfDiscardedDataElements = " << numberOfDiscardedDataElements
-            << ", tmp = "                           << tmp
-            << std::endl;
-#endif
-  UQ_FATAL_TEST_MACRO(tmp < 0.,
-                      UQ_UNAVAILABLE_RANK,
-                      "uqScalarSequencePSD()",
-                      "eventual extra space for last block should not be negative");
-
-  tmp = log((double) blockSize)/log(2.);
-  double fractionalPart = tmp - ((double) ((unsigned int) tmp));
-  if (fractionalPart > 0.) tmp += (1. - fractionalPart);
-  unsigned int fftSize = (unsigned int) pow(2.,tmp);
-  //std::cout << "fractionalPart = " << fractionalPart
-  //          << ", B = "            << blockSize
-  //          << ", fftSize = "      << fftSize
-  //          << std::endl;
-
-  gsl_fft_real_workspace*        wkSpace;
-  gsl_fft_real_wavetable*        wvTable;
-  //gsl_fft_halfcomplex_wavetable* hc;
-
-  wkSpace = gsl_fft_real_workspace_alloc       (fftSize);
-  wvTable = gsl_fft_real_wavetable_alloc       (fftSize);
-  //hc      = gsl_fft_halfcomplex_wavetable_alloc(fftSize);
-
-  unsigned int halfFFTSize = fftSize/2;
-  psdResult.resize(1+halfFFTSize,0.);
-  for (unsigned int blockId = 0; blockId < numBlocks; blockId++) {
-    // Padding
-    std::vector<double> blockData(fftSize,0.);
-
-    // Fill block using window on full data
-    for (unsigned int j = 0; j < blockSize; ++j) {
-      unsigned int dataPos = j+blockId*hopSize;
-      UQ_FATAL_TEST_MACRO(dataPos >= dataSize,
-                          UQ_UNAVAILABLE_RANK,
-                          "uqScalarSequencePSD()",
-                          "too large position to be accessed in data");
-      blockData[j] = uqMiscHammingWindow(fftSize-1,j) * data[dataPos];
-    }
-
-    //double sumOfAllTerms = 0.;
-    //for (unsigned int j = 0; j < fftSize; ++j) {
-    //  sumOfAllTerms += blockData[j];
-    //}
-    gsl_fft_real_transform(&blockData[0],1,fftSize,wvTable,wkSpace);
-    //std::cout << "After FFT"
-    //          << ", sumOfAllTerms = "          << sumOfAllTerms
-    //          << ", sumOfAllTerms - dft[0] = " << sumOfAllTerms - blockData[0]
-    //          << std::endl;
-
-    // Normalized spectral density: power per radians per sample
-    double factor = 1./((double) numBlocks*blockSize); // /M_PI; // CHECK
-    double realPartOfFFT = 0.;
-    double imagPartOfFFT = 0.;
-    for (unsigned int j = 0; j < psdResult.size(); ++j) {
-      if (j == 0) {
-        realPartOfFFT = blockData[j];
-        imagPartOfFFT = 0.;
-      }
-      else if (j < halfFFTSize) {
-        realPartOfFFT = blockData[j];
-        imagPartOfFFT = blockData[fftSize-j];
-      }
-      else if (j == halfFFTSize) {
-        realPartOfFFT = blockData[j];
-        imagPartOfFFT = 0.;
-      }
-      else {
-        realPartOfFFT =  blockData[fftSize-j];
-        imagPartOfFFT = -blockData[j];
-      }
-      psdResult[j] += (realPartOfFFT*realPartOfFFT + imagPartOfFFT*imagPartOfFFT) * factor;
-    }
-  }
-
-  //gsl_fft_halfcomplex_wavetable_free(hc);
-  gsl_fft_real_wavetable_free       (wvTable);
-  gsl_fft_real_workspace_free       (wkSpace);
-
-  return;
-}
-
-void
-uqScalarSequenceHistogram(
-  const std::vector<double>& data,
-  double                     minHorizontalValue,
-  double                     maxHorizontalValue,
-  std::vector<double>&       centers,
-  std::vector<double>&       bins)
-{
-  UQ_FATAL_TEST_MACRO(centers.size() != bins.size(),
-                      UQ_UNAVAILABLE_RANK,
-                      "uqScalarSequenceHistogram()",
-                      "vectors 'centers' and 'bins' have different sizes");
-
-  UQ_FATAL_TEST_MACRO(bins.size() < 3,
-                      UQ_UNAVAILABLE_RANK,
-                      "uqScalarSequenceHistogram()",
-                      "number of 'bins' is too small: should be at least 3");
-
-  for (unsigned int j = 0; j < bins.size(); ++j) {
-    centers[j] = 0;
-    bins[j] = 0;
-  }
-
-  double horizontalDelta = (maxHorizontalValue - minHorizontalValue)/(((double) bins.size()) - 2.);
-
-  double minCenter = minHorizontalValue - horizontalDelta/2.;
-  double maxCenter = maxHorizontalValue + horizontalDelta/2.;
-  for (unsigned int j = 0; j < centers.size(); ++j) {
-    double factor = ((double) j)/(((double) centers.size()) - 1.);
-    centers[j] = (1. - factor) * minCenter + factor * maxCenter;
-  }
-
-  unsigned int dataSize = data.size();
-  for (unsigned int j = 0; j < dataSize; ++j) {
-    double value = data[j];
-    if (value < minHorizontalValue) {
-      bins[0]++;
-    }
-    else if (value >= maxHorizontalValue) {
-      bins[bins.size()-1]++;
-    }
-    else {
-      unsigned int index = 1 + (unsigned int) ((value - minHorizontalValue)/horizontalDelta);
-      bins[index]++;
-    }
-  }
-
-  return;
-}
-#endif
 #endif // __UQ_SCALAR_SEQUENCE_H__

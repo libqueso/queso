@@ -34,7 +34,6 @@ public:
   virtual       void         resizeSequence(unsigned int newSequenceSize) = 0;
   virtual       void         resetValues   (unsigned int initialPos, unsigned int numPos) = 0;
   virtual       void         erasePositions(unsigned int initialPos, unsigned int numPos) = 0;
-//virtual       const V&     positionValues   (unsigned int posId,       V& vec) const;
   virtual       void         getPositionValues(unsigned int posId,       V& vec) const = 0;
   virtual       void         setPositionValues(unsigned int posId, const V& vec) = 0;
   virtual       void         setGaussian   (gsl_rng* rng, const V& meanVec, const V& stdDevVec) = 0;
@@ -94,13 +93,13 @@ public:
                                           std::vector<V*>&          centersForAllBins,
                                           std::vector<V*>&          binsForAllParams) const = 0;
   virtual void         interQuantileRange(unsigned int              initialPos,
-                                          V&                        iqrs) const = 0;
+                                          V&                        iqrVec) const = 0;
   virtual void         scalesForKDE      (unsigned int              initialPos,
-                                          const V&                  iqrs,
-                                          V&                        scales) const = 0;
+                                          const V&                  iqrVec,
+                                          V&                        scaleVec) const = 0;
   virtual void         gaussianKDE       (unsigned int              initialPos,
                                           const std::vector<V*>&    evaluationPositions,
-                                          const V&                  scales,
+                                          const V&                  scaleVec,
                                           std::vector<V*>&          densityValues) const = 0;
   virtual void         write             (const std::string&        name,
                                           std::ofstream&            ofs) const = 0;

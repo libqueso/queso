@@ -36,7 +36,6 @@ public:
         void         resizeSequence    (unsigned int newSequenceSize);
         void         resetValues       (unsigned int initialPos, unsigned int numPos);
         void         erasePositions    (unsigned int initialPos, unsigned int numPos);
-      //const V&     positionValues    (unsigned int posId,       V& vec) const;
         void         getPositionValues (unsigned int posId,       V& vec) const;
         void         setPositionValues (unsigned int posId, const V& vec);
         void         setGaussian       (gsl_rng* rng, const V& meanVec, const V& stdDevVec);
@@ -110,8 +109,6 @@ public:
                                         unsigned int             spacing);
 
 private:
-        void         sort              (unsigned int                   initialPos,
-                                        uqArrayOfSequencesClass&       sortedSequence) const;
         void         extractScalarSeq  (unsigned int                   initialPos,
                                         unsigned int                   spacing,
                                         unsigned int                   numPos,
@@ -718,41 +715,6 @@ uqArrayOfSequencesClass<V>::histogram(
     for (unsigned int j = 0; j < bins.size(); ++j) {
       (*(centersForAllBins[j]))[i] = centers[j];
       (*(binsForAllParams [j]))[i] = bins[j];
-    }
-  }
-
-#endif
-  return;
-}
-
-template <class V>
-void
-uqArrayOfSequencesClass<V>::sort(
-  unsigned int             initialPos,
-  uqArrayOfSequencesClass& sortedSequence) const
-{
-#if 0
-  UQ_FATAL_TEST_MACRO((sequence.size() - initialPos) != sortedSequence.size(),
-                      sequence[0]->env().rank(),
-                      "uqVectorSequenceSort<V>()",
-                      "incompatible sizes between vectors 'sequence' and 'sortedSequence'");
-
-  for (unsigned int j = 0; j < sortedSequence.size(); ++j) {
-    sortedSequence[j] = new V(*(sequence[0]));
-  }
-
-  unsigned int dataSize = sequence.size() - initialPos;
-  unsigned int numParams = sequence[0]->size();
-  uqScalarSequenceClass<double> data(dataSize,0.);
-  for (unsigned int i = 0; i < numParams; ++i) {
-    for (unsigned int j = 0; j < dataSize; ++j) {
-      data[j] = (*(sequence[initialPos+j]))[i];
-    }
-
-    std::sort(data.begin(), data.end());
-
-    for (unsigned int j = 0; j < dataSize; ++j) {
-      (*(sortedSequence[j]))[i] = data[j];
     }
   }
 

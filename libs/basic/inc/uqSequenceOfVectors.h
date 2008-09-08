@@ -41,7 +41,6 @@ public:
 	const V*     operator[]        (unsigned int posId) const;
 	const V*&    operator[]        (unsigned int posId);
 #endif
-      //const V&     positionValues    (unsigned int posId,       V& vec) const;
         void         getPositionValues (unsigned int posId,       V& vec) const;
         void         setPositionValues (unsigned int posId, const V& vec);
         void         setGaussian       (gsl_rng* rng, const V& meanVec, const V& stdDevVec);
@@ -101,13 +100,13 @@ public:
                                         std::vector<V*>&          centersForAllBins,
                                         std::vector<V*>&          binsForAllParams) const;
         void         interQuantileRange(unsigned int              initialPos,
-                                        V&                        iqrs) const;
+                                        V&                        iqrVec) const;
         void         scalesForKDE      (unsigned int              initialPos,
-                                        const V&                  iqrs,
-                                        V&                        scales) const;
+                                        const V&                  iqrVec,
+                                        V&                        scaleVec) const;
         void         gaussianKDE       (unsigned int              initialPos,
                                         const std::vector<V*>&    evaluationPositions,
-                                        const V&                  scales,
+                                        const V&                  scaleVec,
                                         std::vector<V*>&          densityValues) const;
         void         write             (const std::string&        name,
                                         std::ofstream&            ofs) const;
@@ -115,8 +114,6 @@ public:
                                         unsigned int              spacing);
 
 private:
-        void         sort              (unsigned int                   initialPos,
-                                        std::vector<V*>&               sortedSequence) const; // Instead of uqSequenceOfVectorsClass&
         void         extractScalarSeq  (unsigned int                   initialPos,
                                         unsigned int                   spacing,
                                         unsigned int                   numPos,
@@ -329,7 +326,6 @@ uqSequenceOfVectorsClass<V>::mean(
                       "uqSequenceOfVectorsClass<V>::mean()",
                       "invalid input data");
 
-#ifdef UQ_SEQ_VEC_USES_SCALAR_SEQ_CODE
   uqScalarSequenceClass<double> data(m_env,0);
 
   unsigned int numParams = this->vectorSize();
@@ -342,17 +338,7 @@ uqSequenceOfVectorsClass<V>::mean(
     meanVec[i] = data.mean(0,
                            numPos);
   }
-#else
-  unsigned int loopSize      = numPos;
-  unsigned int finalPosPlus1 = initialPos + loopSize;
-  double doubleLoopSize = (double) loopSize;
-  meanVec.cwSet(0.);
-  for (unsigned int i = initialPos; i < finalPosPlus1; ++i) {
-    for (unsigned int j = 0; j < meanVec.size(); ++j) {
-      meanVec[j] += (*m_seq[i])[j]/doubleLoopSize;
-    }
-  }
-#endif
+
   return;
 }
 
@@ -374,7 +360,6 @@ uqSequenceOfVectorsClass<V>::sampleVariance(
                       "uqSequenceOfVectorsClass<V>::sampleVariance()",
                       "invalid input data");
 
-#ifdef UQ_SEQ_VEC_USES_SCALAR_SEQ_CODE
   uqScalarSequenceClass<double> data(m_env,0);
 
   unsigned int numParams = this->vectorSize();
@@ -388,22 +373,7 @@ uqSequenceOfVectorsClass<V>::sampleVariance(
                                     numPos,
                                     meanVec[i]);
   }
-#else
-  unsigned int loopSize      = numPos;
-  unsigned int finalPosPlus1 = initialPos + loopSize;
-  samVec.cwSet(0.);
-  for (unsigned int i = initialPos; i < finalPosPlus1; ++i) {
-    for (unsigned int j = 0; j < samVec.size(); ++j) {
-      double diff = (*m_seq[i])[j] - meanVec[j];
-      samVec[j] += diff*diff;
-    }
-  }
 
-  double doubleLoopSize = (double) loopSize;
-  for (unsigned int j = 0; j < samVec.size(); ++j) {
-    samVec[j] /= (doubleLoopSize - 1.);
-  }
-#endif
   return;
 }
 
@@ -425,7 +395,6 @@ uqSequenceOfVectorsClass<V>::populationVariance(
                       "uqSequenceOfVectorsClass<V>::populationVariance()",
                       "invalid input data");
 
-#ifdef UQ_SEQ_VEC_USES_SCALAR_SEQ_CODE
   uqScalarSequenceClass<double> data(m_env,0);
 
   unsigned int numParams = this->vectorSize();
@@ -439,22 +408,7 @@ uqSequenceOfVectorsClass<V>::populationVariance(
                                         numPos,
                                         meanVec[i]);
   }
-#else
-  unsigned int loopSize      = numPos;
-  unsigned int finalPosPlus1 = initialPos + loopSize;
-  popVec.cwSet(0.);
-  for (unsigned int i = initialPos; i < finalPosPlus1; ++i) {
-    for (unsigned int j = 0; j < popVec.size(); ++j) {
-      double diff = (*m_seq[i])[j] - meanVec[j];
-      popVec[j] += diff*diff;
-    }
-  }
 
-  double doubleLoopSize = (double) loopSize;
-  for (unsigned int j = 0; j < popVec.size(); ++j) {
-    popVec[j] /= doubleLoopSize;
-  }
-#endif
   return;
 }
 
@@ -478,7 +432,6 @@ uqSequenceOfVectorsClass<V>::autoCovariance(
                       "uqSequenceOfVectorsClass<V>::autoCovariance()",
                       "invalid input data");
 
-#ifdef UQ_SEQ_VEC_USES_SCALAR_SEQ_CODE
   uqScalarSequenceClass<double> data(m_env,0);
 
   unsigned int numParams = this->vectorSize();
@@ -493,23 +446,7 @@ uqSequenceOfVectorsClass<V>::autoCovariance(
                                     meanVec[i],
                                     lag);
   }
-#else
-  unsigned int loopSize      = numPos - lag;
-  unsigned int finalPosPlus1 = initialPos + loopSize;
-  covVec.cwSet(0.);
-  for (unsigned int i = initialPos; i < finalPosPlus1; ++i) {
-    for (unsigned int j = 0; j < covVec.size(); ++j) {
-      double diff1 = (*m_seq[i    ])[j] - meanVec[j];
-      double diff2 = (*m_seq[i+lag])[j] - meanVec[j];
-      covVec[j] += diff1*diff2;
-    }
-  }
 
-  double doubleLoopSize = (double) loopSize;
-  for (unsigned int j = 0; j < covVec.size(); ++j) {
-    covVec[j] /= doubleLoopSize;
-  }
-#endif
   return;
 }
 
@@ -531,7 +468,6 @@ uqSequenceOfVectorsClass<V>::autoCorrViaDef(
                       "uqSequenceOfVectorsClass<V>::autoCorrViaDef()",
                       "invalid input data");
 
-#ifdef UQ_SEQ_VEC_USES_SCALAR_SEQ_CODE
   uqScalarSequenceClass<double> data(m_env,0);
 
   unsigned int numParams = this->vectorSize();
@@ -545,26 +481,7 @@ uqSequenceOfVectorsClass<V>::autoCorrViaDef(
                                      numPos,
                                      lag);
   }
-#else
-  V subChainMean              (m_vectorExample);
-  V subChainAutoCovarianceLag0(m_vectorExample);
 
-  this->mean(initialPos,
-             numPos,
-             subChainMean);
-  this->autoCovariance(initialPos,
-                       numPos,
-                       subChainMean,
-                       0, // lag
-                       subChainAutoCovarianceLag0);
-
-  this->autoCovariance(initialPos,
-                       numPos,
-                       subChainMean,
-                       lag,
-                       corrVec);
-  corrVec /= subChainAutoCovarianceLag0; 
-#endif
   return;
 }
 
@@ -576,6 +493,16 @@ uqSequenceOfVectorsClass<V>::autoCorrViaFft(
   const std::vector<unsigned int>& lags,
   std::vector<V*>&                 corrVecs) const
 {
+  bool bRC = ((initialPos          <  this->sequenceSize()) &&
+              (0                   <  numPos              ) &&
+              ((initialPos+numPos) <= this->sequenceSize()) &&
+              (0                   < lags.size()          ) &&
+              (lags[lags.size()-1] <  numPos              )); // lag should not be too large
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.rank(),
+                      "uqSequenceOfVectorsClass<V>::autoCorrViaFft()",
+                      "invalid input data");
+
   for (unsigned int j = lags.size(); j < corrVecs.size(); ++j) {
     if (corrVecs[j] != NULL) delete corrVecs[j];
   }
@@ -632,7 +559,6 @@ uqSequenceOfVectorsClass<V>::bmm(
                       "uqSequenceOfVectorsClass<V>::bmm()",
                       "invalid input data");
 
-#ifdef UQ_SEQ_VEC_USES_SCALAR_SEQ_CODE
   uqScalarSequenceClass<double> data(m_env,0);
 
   unsigned int numParams = this->vectorSize();
@@ -645,46 +571,6 @@ uqSequenceOfVectorsClass<V>::bmm(
     bmmVec[i] = data.bmm(0,
                          batchLength);
   }
-#else
-  V meanOfBatchMeans   (m_vectorExample);
-  V covLag0OfBatchMeans(m_vectorExample);
-  V covLag1OfBatchMeans(m_vectorExample);
-
-  unsigned int numberOfBatches = (this->sequenceSize() - initialPos)/batchLength;
-  uqSequenceOfVectorsClass batchMeans(numberOfBatches,m_vectorExample);
-
-  V tmpVector(m_vectorExample); // In order to contour the fact that 'batchMeans' is a vector of 'const V*', but needs to be set first
-  for (unsigned int batchId = 0; batchId < numberOfBatches; batchId++) {
-    this->mean(initialPos + batchId*batchLength,
-               batchLength,
-               tmpVector);
-    batchMeans[batchId] = new V(tmpVector);
-  }
-
-  batchMeans.mean(0,
-                  batchMeans.sequenceSize(),
-                  meanOfBatchMeans);
-
-  batchMeans.autoCovariance(0,
-                            batchMeans.sequenceSize(),
-                            meanOfBatchMeans,
-                            0, // lag
-                            covLag0OfBatchMeans);
-
-  batchMeans.autoCovariance(0,
-                            batchMeans.sequenceSize(),
-                            meanOfBatchMeans,
-                            1, // lag
-                            covLag0OfBatchMeans);
-
-  batchMeans.sampleVariance(0,
-                            batchMeans.sequenceSize(),
-                            meanOfBatchMeans,
-                            bmmVec);
-
-  bmmVec /= (double) batchMeans.sequenceSize(); // CHECK
-//bmmVec *= (double) (this->sequenceSize() - initialPos); // CHECK
-#endif
 
   return;
 }
@@ -728,8 +614,8 @@ uqSequenceOfVectorsClass<V>::psd(
   unsigned int         paramId,
   std::vector<double>& psdResult) const
 {
-  bool bRC = ((initialPos           <  this->sequenceSize()) &&
-              (paramId              <  this->vectorSize()  ));
+  bool bRC = ((initialPos < this->sequenceSize()) &&
+              (paramId    < this->vectorSize()  ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
                       "uqSequenceOfVectorsClass<V>::psd()",
@@ -765,7 +651,6 @@ uqSequenceOfVectorsClass<V>::psdAtZero(
                       "uqSequenceOfVectorsClass<V>::psdAtZero()",
                       "invalid input data");
 
-#ifdef UQ_SEQ_VEC_USES_SCALAR_SEQ_CODE
   uqScalarSequenceClass<double> data(m_env,0);
   std::vector<double> psdResult(0,0.); // size will be determined by 'data.psd()'
 
@@ -783,30 +668,6 @@ uqSequenceOfVectorsClass<V>::psdAtZero(
     psdVec[i] = psdResult[0];
     std::cout << "psdResult[0] = " << psdResult[0] << std::endl;
   }
-#else
-  unsigned int dataSize = this->sequenceSize() - initialPos;
-  uqScalarSequenceClass<double> data(m_env,dataSize);
-  std::vector<double> psdResult(0,0.); // size will be determined by 'uqScalarSequencePSD()'
-
-  unsigned int numParams = this->vectorSize();
-  for (unsigned int i = 0; i < numParams; ++i) {
-    for (unsigned int j = 0; j < dataSize; ++j) {
-      data[j] = (*(m_seq[initialPos+j]))[i];
-    }
-    data.psd(0,
-             numBlocks,
-             hopSizeRatio,
-             psdResult);
-    psdVec[i] = psdResult[0];
-
-    std::cout << "psdResult[0] = " << psdResult[0] << std::endl;
-
-    //std::cout << "psdResult = zeros(" << psdResult.size() << ",1);" << std::endl;
-    //for (unsigned j = 0; j < psdResult.size(); ++j) {
-    //  std::cout << "psdResult(" << j+1 << ") = " << psdResult[j] << ";" << std::endl;
-    //}
-  } // for 'i'
-#endif
 
   return;
 }
@@ -819,7 +680,6 @@ uqSequenceOfVectorsClass<V>::geweke(
   double       ratioNb,
   V&           gewVec) const
 {
-#ifdef UQ_SEQ_VEC_USES_SCALAR_SEQ_CODE
   unsigned int numPos = this->sequenceSize() - initialPos;
   uqScalarSequenceClass<double> data(m_env,0);
 
@@ -834,71 +694,7 @@ uqSequenceOfVectorsClass<V>::geweke(
                             ratioNa,
                             ratioNb);
   }
-#else
-  double       doubleFullDataSize = (double) (this->sequenceSize() - initialPos);
-  unsigned int dataSizeA          = (unsigned int) (doubleFullDataSize * ratioNa);
-  unsigned int dataSizeB          = (unsigned int) (doubleFullDataSize * ratioNb);
-  unsigned int initialPosA        = initialPos;
-  unsigned int initialPosB        = this->sequenceSize() - dataSizeB;
 
-  V meanA(m_vectorExample);
-  this->mean(initialPosA,
-             dataSizeA,
-             meanA);
-
-  V meanB(m_vectorExample);
-  this->mean(initialPosB,
-             dataSizeB,
-             meanB);
-
-  unsigned int numParams = this->vectorSize();
-
-  std::vector<double> psdResult(0,0.);
-  V psdVecA(m_vectorExample);
-  uqScalarSequenceClass<double> dataA(m_env,dataSizeA);
-  for (unsigned int i = 0; i < numParams; ++i) {
-   for (unsigned int j = 0; j < dataSizeA; ++j) {
-      dataA[j] = (*(m_seq[initialPosA+j]))[i];
-    }
-    dataA.psd(0,
-              8,  // numBlocks
-              .5, // hopSizeRatio
-              psdResult);
-    psdVecA[i] = psdResult[0];
-  } // for 'i'
-
-  V psdVecB(m_vectorExample);
-  uqScalarSequenceClass<double> dataB(m_env,dataSizeB);
-  for (unsigned int i = 0; i < numParams; ++i) {
-    for (unsigned int j = 0; j < dataSizeB; ++j) {
-      dataB[j] = (*(m_seq[initialPosB+j]))[i];
-    }
-    dataB.psd(0,
-              8,  // numBlocks
-              .5, // hopSizeRatio
-              psdResult);
-    psdVecB[i] = psdResult[0];
-  } // for 'i'
-
-  double doubleDataSizeA = (double) dataSizeA;
-  double doubleDataSizeB = (double) dataSizeB;
-#if 0
-  if (m_env.rank() == 0) {seq
-    std::cout << "In uqSequenceOfVectorsClass<V>::geweke()"
-              << ", before computation of gewCoef"
-              << ": meanA "             << meanA[0]
-              << ", psdA = "            << psdVecA[0]
-              << ", doubleDataSizeA = " << doubleDataSizeA
-              << ", meanB = "           << meanB[0]
-              << ", psdB = "            << psdVecB[0]
-              << ", doubleDataSizeB = " << doubleDataSizeB
-              << std::endl;
-  }
-#endif
-  for (unsigned int i = 0; i < numParams; ++i) {
-    gewVec[i] = (meanA[i] - meanB[i])/sqrt(psdVecA[i]/doubleDataSizeA + psdVecB[i]/doubleDataSizeB);
-  }
-#endif
   return;
 }
 
@@ -971,70 +767,21 @@ uqSequenceOfVectorsClass<V>::histogram(
 
 template <class V>
 void
-uqSequenceOfVectorsClass<V>::sort(
-  unsigned int     initialPos,
-  std::vector<V*>& sortedSequence) const
-{
-  UQ_FATAL_TEST_MACRO((this->sequenceSize() - initialPos) != sortedSequence.size(),
-                      m_env.rank(),
-                      "uqSequenceOfVectorsClass<V>::sort()",
-                      "incompatible sizes between vectors 'sequence' and 'sortedSequence'");
-
-  for (unsigned int j = 0; j < sortedSequence.size(); ++j) {
-    sortedSequence[j] = new V(m_vectorExample);
-  }
-
-  unsigned int dataSize = this->sequenceSize() - initialPos;
-  unsigned int numParams = this->vectorSize();
-  std::vector<double> data(dataSize,0.);
-  for (unsigned int i = 0; i < numParams; ++i) {
-    for (unsigned int j = 0; j < dataSize; ++j) {
-      data[j] = (*(m_seq[initialPos+j]))[i];
-    }
-
-    std::sort(data.begin(), data.end());
-
-    for (unsigned int j = 0; j < dataSize; ++j) {
-      (*(sortedSequence[j]))[i] = data[j];
-    }
-  }
-
-  return;
-}
-
-template <class V>
-void
 uqSequenceOfVectorsClass<V>::interQuantileRange(
   unsigned int initialPos,
-  V&           iqrs) const
+  V&           iqrVec) const
 {
-  unsigned int dataSize = this->sequenceSize() - initialPos;
-
-  std::vector<V*> sortedSequence(dataSize,NULL);
-  this->sort(initialPos,
-             sortedSequence);
-
-  unsigned int pos1 = (unsigned int) ( (((double) dataSize) + 1.)*1./4. - 1. );
-  unsigned int pos3 = (unsigned int) ( (((double) dataSize) + 1.)*3./4. - 1. );
-
-  double fraction1 = (((double) dataSize) + 1.)*1./4. - 1. - ((double) pos1);
-  double fraction3 = (((double) dataSize) + 1.)*3./4. - 1. - ((double) pos3);
+  unsigned int numPos = this->sequenceSize() - initialPos;
+  uqScalarSequenceClass<double> data(m_env,0);
 
   unsigned int numParams = this->vectorSize();
-  //std::cout << "In uqSeqOfVecs::iqr()"
-  //          << ", initialPos = " << initialPos
-  //          << ", this->sequenceSize() = " << this->sequenceSize()
-  //          << ", dataSize = " << dataSize
-  //          << ", sortedSequence.size() = " << sortedSequence.size()
-  //          << ", pos1 = " << pos1
-  //          << ", pos3 = " << pos3
-  //          << ", numParams = " << numParams
-  //          << ", iqrs.size() = " << iqrs.size()
-  //          << std::endl;
   for (unsigned int i = 0; i < numParams; ++i) {
-    double value1 = (1.-fraction1) * (*sortedSequence[pos1])[i] + fraction1 * (*sortedSequence[pos1+1])[i];
-    double value3 = (1.-fraction3) * (*sortedSequence[pos3])[i] + fraction3 * (*sortedSequence[pos3+1])[i];
-    iqrs[i] = value3 - value1;
+    this->extractScalarSeq(initialPos,
+                           1, // spacing
+                           numPos,
+                           i,
+                           data);
+    iqrVec[i] = data.interQuantileRange(0);
   }
 
   return;
@@ -1044,8 +791,8 @@ template <class V>
 void
 uqSequenceOfVectorsClass<V>::scalesForKDE(
   unsigned int initialPos,
-  const V&     iqrs,
-  V&           scales) const
+  const V&     iqrVec,
+  V&           scaleVec) const
 {
   unsigned int dataSize = this->sequenceSize() - initialPos;
 
@@ -1062,11 +809,11 @@ uqSequenceOfVectorsClass<V>::scalesForKDE(
 
   unsigned int numParams = this->vectorSize();
   for (unsigned int i = 0; i < numParams; ++i) {
-    if (iqrs[i] <= 0.) {
-      scales[i] = 1.06*sqrt(samVec[i])/pow(dataSize,1./5.);
+    if (iqrVec[i] <= 0.) {
+      scaleVec[i] = 1.06*sqrt(samVec[i])/pow(dataSize,1./5.);
     }
     else {
-      scales[i] = 1.06*std::min(sqrt(samVec[i]),iqrs[i]/1.34)/pow(dataSize,1./5.);
+      scaleVec[i] = 1.06*std::min(sqrt(samVec[i]),iqrVec[i]/1.34)/pow(dataSize,1./5.);
     }
   }
 
@@ -1078,7 +825,7 @@ void
 uqSequenceOfVectorsClass<V>::gaussianKDE(
   unsigned int           initialPos,
   const std::vector<V*>& evaluationPositions,
-  const V&               scales,
+  const V&               scaleVec,
   std::vector<V*>&       densityValues) const
 {
   unsigned int dataSize = this->sequenceSize() - initialPos;
@@ -1090,7 +837,7 @@ uqSequenceOfVectorsClass<V>::gaussianKDE(
 
   unsigned int numParams = this->vectorSize();
   for (unsigned int i = 0; i < numParams; ++i) {
-    double scaleInv = 1./scales[i];
+    double scaleInv = 1./scaleVec[i];
     for (unsigned int j = 0; j < numEstimationsPerParam; ++j) {
       double x = (*(evaluationPositions[j]))[i];
       double value = 0.;
