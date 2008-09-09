@@ -42,7 +42,8 @@ public:
         void         erasePositions    (unsigned int initialPos, unsigned int numPos);
   const T&           operator[]        (unsigned int posId) const;
         T&           operator[]        (unsigned int posId);
-        void         setGaussian       (gsl_rng* rng, const T& mean, const T& stdDev);
+        void         setGaussian       (const gsl_rng* rng, const T& mean, const T& stdDev);
+        void         setUniform        (const gsl_rng* rng, const T& a,    const T& b     );
 
         T            mean              (unsigned int               initialPos,
                                         unsigned int               numPos) const;
@@ -91,8 +92,8 @@ public:
         T            scaleForKDE       (unsigned int               initialPos,
                                         const T&                   iqrsValue) const;
         void         gaussianKDE       (unsigned int               initialPos,
-                                        const std::vector<T>&      evaluationPositions,
                                         double                     scaleValue,
+                                        const std::vector<T>&      evaluationPositions,
                                         std::vector<double>&       densityValues) const;
 
 private:
@@ -219,10 +220,10 @@ uqScalarSequenceClass<T>::operator[](unsigned int posId)
 
 template <class T>
 void
-uqScalarSequenceClass<T>::setGaussian(gsl_rng* rng, const T& meanValue, const T& stdDev)
+uqScalarSequenceClass<T>::setGaussian(const gsl_rng* rng, const T& meanValue, const T& stdDev)
 {
   unsigned int maxJ = this->sequenceSize();
-  if (meanValue == 0) {
+  if (meanValue == 0.) {
     for (unsigned int j = 0; j < maxJ; ++j) {
       m_seq[j] = gsl_ran_gaussian(rng,stdDev);
     }
@@ -230,6 +231,39 @@ uqScalarSequenceClass<T>::setGaussian(gsl_rng* rng, const T& meanValue, const T&
   else {
     for (unsigned int j = 0; j < maxJ; ++j) {
       m_seq[j] = meanValue + gsl_ran_gaussian(rng,stdDev);
+    }
+  }
+
+  return;
+}
+
+template <class T>
+void
+uqScalarSequenceClass<T>::setUniform(const gsl_rng* rng, const T& a, const T& b)
+{
+  unsigned int maxJ = this->sequenceSize();
+  if (a == 0.) {
+    if (b == 1.) {
+      for (unsigned int j = 0; j < maxJ; ++j) {
+        m_seq[j] = gsl_rng_uniform(rng);
+      }
+    }
+    else {
+      for (unsigned int j = 0; j < maxJ; ++j) {
+        m_seq[j] = b*gsl_rng_uniform(rng);
+      }
+    }
+  }
+  else {
+    if ((b-a) == 1.) {
+      for (unsigned int j = 0; j < maxJ; ++j) {
+        m_seq[j] = a + gsl_rng_uniform(rng);
+      }
+    }
+    else {
+      for (unsigned int j = 0; j < maxJ; ++j) {
+        m_seq[j] = a + (b-a)*gsl_rng_uniform(rng);
+      }
     }
   }
 
@@ -469,12 +503,12 @@ uqScalarSequenceClass<T>::autoCorrViaFft(
   unsigned int numSum,
   T&           autoCorrsSum) const
 {
-  if (m_env.rank() == 0) {
-    std::cout << "Entering uqScalarSequenceClass<T>::autoCorrViaFft(), for sum"
-              << ": initialPos = " << initialPos
-              << ", numPos = "     << numPos
-              << std::endl;
-  }
+  //if (m_env.rank() == 0) {
+  //  std::cout << "Entering uqScalarSequenceClass<T>::autoCorrViaFft(), for sum"
+  //            << ": initialPos = " << initialPos
+  //            << ", numPos = "     << numPos
+  //            << std::endl;
+  //}
 
   double tmp = log((double) numPos)/log(2.);
   double fractionalPart = tmp - ((double) ((unsigned int) tmp));
@@ -497,14 +531,14 @@ uqScalarSequenceClass<T>::autoCorrViaFft(
   }
   rawData.resize(fftSize,0.);
 
-  if (m_env.rank() == 0) {
-    std::cout << "In uqScalarSequenceClass<T>::autoCorrViaFft(), for sum"
-              << ": about to call fftObj.forward()"
-              << " with rawData.size() = " << rawData.size()
-              << ", fftSize = "            << fftSize
-              << ", resultData.size() = "  << resultData.size()
-              << std::endl;
-  }
+  //if (m_env.rank() == 0) {
+  //  std::cout << "In uqScalarSequenceClass<T>::autoCorrViaFft(), for sum"
+  //            << ": about to call fftObj.forward()"
+  //            << " with rawData.size() = " << rawData.size()
+  //            << ", fftSize = "            << fftSize
+  //            << ", resultData.size() = "  << resultData.size()
+  //            << std::endl;
+  //}
   fftObj.forward(rawData,fftSize,resultData);
 
   // Inverse FFT
@@ -513,12 +547,12 @@ uqScalarSequenceClass<T>::autoCorrViaFft(
   }
   fftObj.inverse(rawData,fftSize,resultData);
 
-  if (m_env.rank() == 0) {
-    std::cout << "In uqScalarSequenceClass<T>::autoCorrViaFft(), for sum"
-              << ": computed auto covariance for lag 0 = " << resultData[0].real()/((double) (numPos))
-              << ", computed resultData[0].imag() = "      << resultData[0].imag()
-              << std::endl;
-  }
+  //if (m_env.rank() == 0) {
+  //  std::cout << "In uqScalarSequenceClass<T>::autoCorrViaFft(), for sum"
+  //            << ": computed auto covariance for lag 0 = " << resultData[0].real()/((double) (numPos))
+  //            << ", computed resultData[0].imag() = "      << resultData[0].imag()
+  //            << std::endl;
+  //}
 
   // Prepare return data
   autoCorrsSum = 0.;
@@ -620,18 +654,18 @@ uqScalarSequenceClass<T>::psd(
     blockSize = dataSize - (numBlocks - 1)*hopSize;
   }
 
-  unsigned int numberOfDiscardedDataElements = dataSize - (numBlocks-1)*hopSize - blockSize;
-#if 1
-  std::cout << "initialPos = "       << initialPos
-            << ", N = "              << dataSize
-            << ", #Blocks = "        << numBlocks
-            << ", R (hop size) = "   << hopSize
-            << ", B (block size) = " << blockSize
-            << ", overlap = "        << blockSize - hopSize
-            << ", [(#Blocks - 1) * R + B] = "       << (numBlocks-1)*hopSize + blockSize
-            << ", numberOfDiscardedDataElements = " << numberOfDiscardedDataElements
-            << std::endl;
-#endif
+  int numberOfDiscardedDataElements = dataSize - (numBlocks-1)*hopSize - blockSize;
+  //if (m_env.rank() == 0) {
+  //  std::cout << "initialPos = "       << initialPos
+  //            << ", N = "              << dataSize
+  //            << ", #Blocks = "        << numBlocks
+  //            << ", R (hop size) = "   << hopSize
+  //            << ", B (block size) = " << blockSize
+  //            << ", overlap = "        << blockSize - hopSize
+  //            << ", [(#Blocks - 1) * R + B] = "       << (numBlocks-1)*hopSize + blockSize
+  //            << ", numberOfDiscardedDataElements = " << numberOfDiscardedDataElements
+  //            << std::endl;
+  //}
   UQ_FATAL_TEST_MACRO(numberOfDiscardedDataElements < 0.,
                       UQ_UNAVAILABLE_RANK,
                       "uqScalarSequenceClass<T>::psd()",
@@ -682,13 +716,13 @@ uqScalarSequenceClass<T>::psd(
 
     fftObj.forward(blockData,fftSize,fftResult);
 
-#if 0
-    std::cout << "blockData.size() = "   << blockData.size()
-              << ", fftSize = "          << fftSize
-              << ", fftResult.size() = " << fftResult.size()
-              << ", psdResult.size() = " << psdResult.size()
-              << std::endl;
-#endif
+    //if (m_env.rank() == 0) {
+    //  std::cout << "blockData.size() = "   << blockData.size()
+    //            << ", fftSize = "          << fftSize
+    //            << ", fftResult.size() = " << fftResult.size()
+    //            << ", psdResult.size() = " << psdResult.size()
+    //            << std::endl;
+    //}
     // Normalized spectral density: power per radians per sample
     for (unsigned int j = 0; j < psdResult.size(); ++j) {
       psdResult[j] += norm(fftResult[j])*modificationScale;
@@ -743,21 +777,21 @@ uqScalarSequenceClass<T>::geweke(
              psdResult);
   double psdB = psdResult[0];
 
-  if (m_env.rank() == 0) {
-    std::cout << "In uqScalarSequenceClass<T>::geweke()"
-              << ", before computation of gewCoef"
-              << ":\n"
-              << ", dataSizeA = "       << dataSizeA
-              << ", numBlocks = "       << (unsigned int) sqrt((double) dataSizeA)
-              << ", meanA = "           << meanA
-              << ", psdA = "            << psdA
-              << "\n"
-              << ", dataSizeB = "       << dataSizeB
-              << ", numBlocks = "       << (unsigned int) sqrt((double) dataSizeB)
-              << ", meanB = "           << meanB
-              << ", psdB = "            << psdB
-              << std::endl;
-  }
+  //if (m_env.rank() == 0) {
+  //  std::cout << "In uqScalarSequenceClass<T>::geweke()"
+  //            << ", before computation of gewCoef"
+  //            << ":\n"
+  //            << ", dataSizeA = "       << dataSizeA
+  //            << ", numBlocks = "       << (unsigned int) sqrt((double) dataSizeA)
+  //            << ", meanA = "           << meanA
+  //            << ", psdA = "            << psdA
+  //            << "\n"
+  //            << ", dataSizeB = "       << dataSizeB
+  //            << ", numBlocks = "       << (unsigned int) sqrt((double) dataSizeB)
+  //            << ", meanB = "           << meanB
+  //            << ", psdB = "            << psdB
+  //            << std::endl;
+  //}
   double gewCoef = (meanA - meanB)/sqrt(psdA/doubleDataSizeA + psdB/doubleDataSizeB);
 
   return gewCoef;
@@ -895,6 +929,12 @@ uqScalarSequenceClass<T>::scaleForKDE(
   unsigned int initialPos,
   const T&     iqrsValue) const
 {
+  bool bRC = (initialPos <  this->sequenceSize());
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.rank(),
+                      "uqScalarSequenceClass<V>::scalesForKDE()",
+                      "invalid input data");
+
   unsigned int dataSize = this->sequenceSize() - initialPos;
 
   T meanValue = this->mean(initialPos,
@@ -919,22 +959,30 @@ template <class T>
 void
 uqScalarSequenceClass<T>::gaussianKDE(
   unsigned int          initialPos,
-  const std::vector<T>& evaluationPositions,
   double                scaleValue,
+  const std::vector<T>& evaluationPositions,
   std::vector<double>&  densityValues) const
 {
+  bool bRC = ((initialPos                 <  this->sequenceSize()      ) &&
+              (0                          <  evaluationPositions.size()) &&
+              (evaluationPositions.size() == densityValues.size()      ));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.rank(),
+                      "uqScalarSequenceClass<V>::gaussianKDE()",
+                      "invalid input data");
+
   unsigned int dataSize = this->sequenceSize() - initialPos;
-  unsigned int numEstimations = evaluationPositions.size();
+  unsigned int numEvals = evaluationPositions.size();
 
   double scaleInv = 1./scaleValue;
-  for (unsigned int j = 0; j < numEstimations; ++j) {
+  for (unsigned int j = 0; j < numEvals; ++j) {
     double x = evaluationPositions[j];
     double value = 0.;
     for (unsigned int k = 0; k < dataSize; ++k) {
       double xk = m_seq[initialPos+k];
       value += uqMiscGaussianDensity((x-xk)*scaleInv,0.,1.);
     }
-    densityValues[j] = scaleInv * (value/(double) numEstimations);
+    densityValues[j] = scaleInv * (value/(double) dataSize);
   }
 
   return;

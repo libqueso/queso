@@ -48,8 +48,9 @@ public:
   double       norm2            () const;
   double       sumOfComponents  () const;
   void         cwSet            (double value);
-  void         cwSetGaussian    (gsl_rng* rng, double mean, double stdDev);
-  void         cwSetGaussian    (gsl_rng* rng, const uqGslVectorClass& meanVec, const uqGslVectorClass& stdDevVec);
+  void         cwSetGaussian    (const gsl_rng* rng, double mean, double stdDev);
+  void         cwSetGaussian    (const gsl_rng* rng, const uqGslVectorClass& meanVec, const uqGslVectorClass& stdDevVec);
+  void         cwSetUniform     (const gsl_rng* rng, const uqGslVectorClass& aVec,    const uqGslVectorClass& bVec     );
   void         cwInvert         ();
   void         sort             ();
   void         print            (std::ostream& os) const;

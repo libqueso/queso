@@ -40,7 +40,7 @@ int    uqMiscReadCharsAndDoubleFromFile (std::ifstream& ifs,
                                          bool&          endOfLineAchieved);
 double uqMiscGammar                     (double   a,
                                          double   b,
-                                         gsl_rng* rng);
+                                         const gsl_rng* rng);
 double uqMiscGetEllapsedSeconds         (struct timeval *timeval0);
 
 double uqMiscHammingWindow              (unsigned int N, unsigned int j);

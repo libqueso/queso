@@ -66,7 +66,7 @@ public:
         po::variables_map&       allOptionsMap            () const;
         void                     scanInputFileForMyOptions(const po::options_description& optionsDesc) const;
         unsigned int             verbosity                () const;
-        gsl_rng*                 rng                      () const;
+        const gsl_rng*           rng                      () const;
         bool                     isThereInputFile         () const;
         void                     print                    (std::ostream& os) const;
 

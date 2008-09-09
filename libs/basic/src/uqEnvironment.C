@@ -417,7 +417,7 @@ uqEnvironmentClass::verbosity() const
   return m_verbosity;
 }
 
-gsl_rng*
+const gsl_rng*
 uqEnvironmentClass::rng() const
 {
   return m_rng;

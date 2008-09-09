@@ -38,7 +38,8 @@ public:
         void         erasePositions    (unsigned int initialPos, unsigned int numPos);
         void         getPositionValues (unsigned int posId,       V& vec) const;
         void         setPositionValues (unsigned int posId, const V& vec);
-        void         setGaussian       (gsl_rng* rng, const V& meanVec, const V& stdDevVec);
+        void         setGaussian       (const gsl_rng* rng, const V& meanVec, const V& stdDevVec);
+        void         setUniform        (const gsl_rng* rng, const V& aVec,    const V& bVec     );
 
         void         mean              (unsigned int             initialPos,
                                         unsigned int             numPos,
@@ -104,8 +105,8 @@ public:
                                         const V&                 iqrs,
                                         V&                       scales) const;
         void         gaussianKDE       (unsigned int             initialPos,
-                                        const std::vector<V*>&   evaluationPositions,
                                         const V&                 scales,
+                                        const std::vector<V*>&   evaluationPositions,
                                         std::vector<V*>&         densityValues) const;
         void         write             (const std::string&       name,
                                         std::ofstream&           ofs) const;
@@ -241,7 +242,7 @@ uqArrayOfSequencesClass<V>::setPositionValues(unsigned int posId, const V& vec)
 
 template <class V>
 void
-uqArrayOfSequencesClass<V>::setGaussian(gsl_rng* rng, const V& meanVec, const V& stdDevVec)
+uqArrayOfSequencesClass<V>::setGaussian(const gsl_rng* rng, const V& meanVec, const V& stdDevVec)
 {
   for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
     uqScalarSequenceClass<double>& seq = *(m_scalarSequences(i,0));
@@ -250,6 +251,16 @@ uqArrayOfSequencesClass<V>::setGaussian(gsl_rng* rng, const V& meanVec, const V&
   return;
 }
 
+template <class V>
+void
+uqArrayOfSequencesClass<V>::setUniform(const gsl_rng* rng, const V& aVec, const V& bVec)
+{
+  for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
+    uqScalarSequenceClass<double>& seq = *(m_scalarSequences(i,0));
+    seq.setUniform(rng,aVec[i],bVec[i]);
+  }
+  return;
+}
 
 template <class V>
 void
@@ -833,8 +844,8 @@ template <class V>
 void
 uqArrayOfSequencesClass<V>::gaussianKDE(
   unsigned int           initialPos,
-  const std::vector<V*>& evaluationPositions,
   const V&               scales,
+  const std::vector<V*>& evaluationPositions,
   std::vector<V*>&       densityValues) const
 {
 #if 0

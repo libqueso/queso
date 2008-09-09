@@ -46,7 +46,7 @@ public:
 
   virtual unsigned int        size                () const = 0;
   virtual void                cwSet               (double value) = 0;
-  virtual void                cwSetGaussian       (gsl_rng* rng, double mean, double stdDev) = 0;
+  virtual void                cwSetGaussian       (const gsl_rng* rng, double mean, double stdDev) = 0;
   virtual void                cwInvert            () = 0;
   virtual void                sort                () = 0;
   virtual void                print               (std::ostream& os) const = 0;

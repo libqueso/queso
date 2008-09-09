@@ -43,7 +43,8 @@ public:
 #endif
         void         getPositionValues (unsigned int posId,       V& vec) const;
         void         setPositionValues (unsigned int posId, const V& vec);
-        void         setGaussian       (gsl_rng* rng, const V& meanVec, const V& stdDevVec);
+        void         setGaussian       (const gsl_rng* rng, const V& meanVec, const V& stdDevVec);
+        void         setUniform        (const gsl_rng* rng, const V& aVec,    const V& bVec     );
 
         void         mean              (unsigned int              initialPos,
                                         unsigned int              numPos,
@@ -109,8 +110,8 @@ public:
                                         const V&                  iqrVec,
                                         V&                        scaleVec) const;
         void         gaussianKDE       (unsigned int              initialPos,
-                                        const std::vector<V*>&    evaluationPositions,
                                         const V&                  scaleVec,
+                                        const std::vector<V*>&    evaluationPositions,
                                         std::vector<V*>&          densityValues) const;
         void         write             (const std::string&        name,
                                         std::ofstream&            ofs) const;
@@ -293,13 +294,28 @@ uqSequenceOfVectorsClass<V>::setPositionValues(unsigned int posId, const V& vec)
 
 template <class V>
 void
-uqSequenceOfVectorsClass<V>::setGaussian(gsl_rng* rng, const V& meanVec, const V& stdDevVec)
+uqSequenceOfVectorsClass<V>::setGaussian(const gsl_rng* rng, const V& meanVec, const V& stdDevVec)
 {
   V gaussianVector(m_vectorExample);
   for (unsigned int j = 0; j < this->sequenceSize(); ++j) {
     gaussianVector.cwSetGaussian(m_env.rng(),meanVec,stdDevVec);
     if (m_seq[j] != NULL) delete m_seq[j];
     m_seq[j] = new V(gaussianVector);
+  }
+
+  return;
+}
+
+
+template <class V>
+void
+uqSequenceOfVectorsClass<V>::setUniform(const gsl_rng* rng, const V& aVec, const V& bVec)
+{
+  V uniformVector(m_vectorExample);
+  for (unsigned int j = 0; j < this->sequenceSize(); ++j) {
+    uniformVector.cwSetUniform(m_env.rng(),aVec,bVec);
+    if (m_seq[j] != NULL) delete m_seq[j];
+    m_seq[j] = new V(uniformVector);
   }
 
   return;
@@ -708,7 +724,7 @@ uqSequenceOfVectorsClass<V>::psdAtZero(
              hopSizeRatio,
              psdResult);
     psdVec[i] = psdResult[0];
-    std::cout << "psdResult[0] = " << psdResult[0] << std::endl;
+    //std::cout << "psdResult[0] = " << psdResult[0] << std::endl;
   }
 
   return;
@@ -722,6 +738,13 @@ uqSequenceOfVectorsClass<V>::geweke(
   double       ratioNb,
   V&           gewVec) const
 {
+  bool bRC = ((initialPos         <  this->sequenceSize()) &&
+              (this->vectorSize() == gewVec.size()       ));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.rank(),
+                      "uqSequenceOfVectorsClass<V>::geweke()",
+                      "invalid input data");
+
   unsigned int numPos = this->sequenceSize() - initialPos;
   uqScalarSequenceClass<double> data(m_env,0);
 
@@ -747,6 +770,14 @@ uqSequenceOfVectorsClass<V>::minMax(
   V&           minVec,
   V&           maxVec) const
 {
+  bool bRC = ((initialPos         <  this->sequenceSize()) &&
+              (this->vectorSize() == minVec.size()       ) &&
+              (this->vectorSize() == maxVec.size()       ));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.rank(),
+                      "uqSequenceOfVectorsClass<V>::minMax()",
+                      "invalid input data");
+
   unsigned int numPos = this->sequenceSize() - initialPos;
   unsigned int numParams = this->vectorSize();
   uqScalarSequenceClass<double> data(m_env,0);
@@ -772,10 +803,15 @@ uqSequenceOfVectorsClass<V>::histogram(
   std::vector<V*>& centersForAllBins,
   std::vector<V*>& binsForAllParams) const
 {
-  UQ_FATAL_TEST_MACRO(centersForAllBins.size() != binsForAllParams.size(),
+  bool bRC = ((initialPos               <  this->sequenceSize()    ) &&
+              (this->vectorSize()       == minVec.size()           ) &&
+              (this->vectorSize()       == maxVec.size()           ) &&
+              (0                        <  centersForAllBins.size()) &&
+              (centersForAllBins.size() == binsForAllParams.size() ));
+  UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
                       "uqSequenceOfVectorsClass<V>::histogram()",
-                      "vectors 'centers' and 'bins' have different sizes");
+                      "invalid input data");
 
   for (unsigned int j = 0; j < binsForAllParams.size(); ++j) {
     centersForAllBins[j] = new V(m_vectorExample);
@@ -813,6 +849,13 @@ uqSequenceOfVectorsClass<V>::interQuantileRange(
   unsigned int initialPos,
   V&           iqrVec) const
 {
+  bool bRC = ((initialPos         <  this->sequenceSize()) &&
+              (this->vectorSize() == iqrVec.size()       ));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.rank(),
+                      "uqSequenceOfVectorsClass<V>::interQuantileRange()",
+                      "invalid input data");
+
   unsigned int numPos = this->sequenceSize() - initialPos;
   uqScalarSequenceClass<double> data(m_env,0);
 
@@ -836,27 +879,26 @@ uqSequenceOfVectorsClass<V>::scalesForKDE(
   const V&     iqrVec,
   V&           scaleVec) const
 {
-  unsigned int dataSize = this->sequenceSize() - initialPos;
+  bool bRC = ((initialPos         <  this->sequenceSize()) &&
+              (this->vectorSize() == iqrVec.size()       ) &&
+              (this->vectorSize() == scaleVec.size()     ));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.rank(),
+                      "uqSequenceOfVectorsClass<V>::scalesForKDE()",
+                      "invalid input data");
 
-  V meanVec(m_vectorExample);
-  this->mean(initialPos,
-             dataSize,
-             meanVec);
-
-  V samVec(m_vectorExample);
-  this->sampleVariance(initialPos,
-                       dataSize,
-                       meanVec,
-                       samVec);
+  unsigned int numPos = this->sequenceSize() - initialPos;
+  uqScalarSequenceClass<double> data(m_env,0);
 
   unsigned int numParams = this->vectorSize();
   for (unsigned int i = 0; i < numParams; ++i) {
-    if (iqrVec[i] <= 0.) {
-      scaleVec[i] = 1.06*sqrt(samVec[i])/pow(dataSize,1./5.);
-    }
-    else {
-      scaleVec[i] = 1.06*std::min(sqrt(samVec[i]),iqrVec[i]/1.34)/pow(dataSize,1./5.);
-    }
+    this->extractScalarSeq(initialPos,
+                           1, // spacing
+                           numPos,
+                           i,
+                           data);
+    scaleVec[i] = data.scaleForKDE(0,
+                                   iqrVec[i]);
   }
 
   return;
@@ -866,28 +908,48 @@ template <class V>
 void
 uqSequenceOfVectorsClass<V>::gaussianKDE(
   unsigned int           initialPos,
-  const std::vector<V*>& evaluationPositions,
   const V&               scaleVec,
+  const std::vector<V*>& evaluationPositions,
   std::vector<V*>&       densityValues) const
 {
-  unsigned int dataSize = this->sequenceSize() - initialPos;
-  unsigned int numEstimationsPerParam = evaluationPositions.size();
+  bool bRC = ((initialPos                 <  this->sequenceSize()      ) &&
+              (this->vectorSize()         == scaleVec.size()           ) &&
+              (0                          <  evaluationPositions.size()) &&
+              (evaluationPositions.size() == densityValues.size()      ));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.rank(),
+                      "uqSequenceOfVectorsClass<V>::gaussianKDE()",
+                      "invalid input data");
 
-  for (unsigned int j = 0; j < numEstimationsPerParam; ++j) {
+  unsigned int numPos = this->sequenceSize() - initialPos;
+  uqScalarSequenceClass<double> data(m_env,0);
+
+  unsigned int numEvals = evaluationPositions.size();
+  for (unsigned int j = 0; j < numEvals; ++j) {
     densityValues[j] = new V(m_vectorExample);
   }
+  std::vector<double> evalScalarPositions(numEvals,0.);
+  std::vector<double> evaluatedDensities (numEvals,0.);
 
   unsigned int numParams = this->vectorSize();
   for (unsigned int i = 0; i < numParams; ++i) {
-    double scaleInv = 1./scaleVec[i];
-    for (unsigned int j = 0; j < numEstimationsPerParam; ++j) {
-      double x = (*(evaluationPositions[j]))[i];
-      double value = 0.;
-      for (unsigned int k = 0; k < dataSize; ++k) {
-        double xk = (*(m_seq[initialPos+k]))[i];
-        value += uqMiscGaussianDensity((x-xk)*scaleInv,0.,1.);
-      }
-      (*(densityValues[j]))[i] = scaleInv * (value/(double) numEstimationsPerParam);
+    this->extractScalarSeq(initialPos,
+                           1, // spacing
+                           numPos,
+                           i,
+                           data);
+
+    for (unsigned int j = 0; j < numEvals; ++j) {
+      evalScalarPositions[j] = (*evaluationPositions[j])[i];
+    }
+
+    data.gaussianKDE(0,
+                     scaleVec[i],
+                     evalScalarPositions,
+                     evaluatedDensities);
+
+    for (unsigned int j = 0; j < numEvals; ++j) {
+      (*densityValues[j])[i] = evaluatedDensities[j];
     }
   }
 

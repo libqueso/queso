@@ -36,7 +36,8 @@ public:
   virtual       void         erasePositions(unsigned int initialPos, unsigned int numPos) = 0;
   virtual       void         getPositionValues(unsigned int posId,       V& vec) const = 0;
   virtual       void         setPositionValues(unsigned int posId, const V& vec) = 0;
-  virtual       void         setGaussian   (gsl_rng* rng, const V& meanVec, const V& stdDevVec) = 0;
+  virtual       void         setGaussian   (const gsl_rng* rng, const V& meanVec, const V& stdDevVec) = 0;
+  virtual       void         setUniform    (const gsl_rng* rng, const V& aVec,    const V& bVec     ) = 0;
 
   virtual void         mean              (unsigned int              initialPos,
                                           unsigned int              numPos,
@@ -102,8 +103,8 @@ public:
                                           const V&                  iqrVec,
                                           V&                        scaleVec) const = 0;
   virtual void         gaussianKDE       (unsigned int              initialPos,
-                                          const std::vector<V*>&    evaluationPositions,
                                           const V&                  scaleVec,
+                                          const std::vector<V*>&    evaluationPositions,
                                           std::vector<V*>&          densityValues) const = 0;
   virtual void         write             (const std::string&        name,
                                           std::ofstream&            ofs) const = 0;

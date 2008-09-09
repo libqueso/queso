@@ -241,9 +241,9 @@ uqMiscReadCharsAndDoubleFromFile(
 
 double
 uqMiscGammar(
-  double   a,
-  double   b,
-  gsl_rng* rng)
+  double         a,
+  double         b,
+  const gsl_rng* rng)
 {
   double result = 0.;
   if (a < 1.) {

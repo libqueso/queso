@@ -88,6 +88,14 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains(
                                workingChain,
                                chainName);
     }
+    else if (m_chainType == UQ_MCMC_UNIFORM_CHAIN_TYPE) {
+      //****************************************************
+      // Just generate uniform    
+      //****************************************************
+      iRC = generateUniform(m_chainSizes[chainId],
+                            workingChain,
+                            chainName);
+    }
     else {
       //****************************************************
       // Initialize variables before chain loop
@@ -143,8 +151,8 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains(
 
     if (m_chainFilter) {
       // Compute filter parameters
-      unsigned int filterInitialPos = m_filterInitialPos;
-      unsigned int filterSpacing    = m_filterSpacing;
+      unsigned int filterInitialPos = (unsigned int) (m_filterInitialDiscardedPortion * (double) workingChain.sequenceSize());
+      unsigned int filterSpacing    = m_filterLag;
       if (filterSpacing == 0) {
         computeFilterParameters(workingChain,
                                 chainName,
@@ -155,7 +163,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChains(
 
       // Filter positions from the converged portion of the chain
       workingChain.filter(filterInitialPos,
-                      filterSpacing);
+                          filterSpacing);
 
       // Write filtered chain
       if (m_filterWrite && ofs) {
@@ -274,6 +282,44 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateWhiteNoise(
 
 template <class V, class M>
 int
+uqDRAM_MarkovChainGeneratorClass<V,M>::generateUniform(
+  unsigned int         chainSize,
+  uqChainBaseClass<V>& workingChain,
+  const std::string&   chainName)
+{
+  if (m_env.rank() == 0) {
+    std::cout << "Generating uniform for chain " << chainName
+              << ", with "                       << chainSize
+              << " positions ..."
+              << std::endl;
+  }
+
+  int iRC = UQ_OK_RC;
+  struct timeval timevalTmp;
+  double tmpRunTime;
+
+  tmpRunTime = 0.;
+  iRC = gettimeofday(&timevalTmp, NULL);
+  workingChain.resizeSequence(chainSize); 
+
+  V aVec(m_paramSpace.zeroVector());
+  V bVec(m_paramSpace.zeroVector());
+  aVec.cwSet(0.);
+  bVec.cwSet(1.);
+  workingChain.setUniform(m_env.rng(),aVec,bVec);
+
+  tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
+  if (m_env.rank() == 0) {
+    std::cout << "Chain generation took " << tmpRunTime
+              << " seconds"
+              << std::endl;
+  }
+
+  return iRC;
+}
+
+template <class V, class M>
+int
 uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
   unsigned int         chainSize,
   const V&             valuesOf1stPosition,
@@ -369,7 +415,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
   for (unsigned int positionId = 1; positionId < workingChain.sequenceSize(); ++positionId) {
     //if (m_env.rank() == 0) std::cout << "In uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain()"
     //                                 << ": beginning chain position of id = " << positionId
-    //                                 << ", m_maxNumberOfExtraStages =  "      << m_maxNumberOfExtraStages
+    //                                 << ", m_maxNumExtraStages =  "           << m_maxNumExtraStages
     //                                 << std::endl;
     unsigned int stageId = 0;
 
@@ -476,13 +522,13 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
     // Loop: delayed rejection
     //****************************************************
     std::vector<uqChainPositionClass<V>*> drPositions(stageId+2,NULL);
-    if ((accept == false) && (outOfBounds == false) && (m_maxNumberOfExtraStages > 0)) {
+    if ((accept == false) && (outOfBounds == false) && (m_maxNumExtraStages > 0)) {
       if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalDR, NULL);
 
       drPositions[0] = new uqChainPositionClass<V>(currentPosition);
       drPositions[1] = new uqChainPositionClass<V>(currentCandidate);
 
-      while ((accept == false) && (stageId < m_maxNumberOfExtraStages)) {
+      while ((accept == false) && (stageId < m_maxNumExtraStages)) {
         stageId++;
 
         if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
@@ -710,7 +756,7 @@ uqDRAM_MarkovChainGeneratorClass<V,M>::generateChain(
                             "need to code the update of m_upperCholProposalPrecMatrices");
 #endif
 
-          if (m_maxNumberOfExtraStages > 0) updateCovMatrices();
+          if (m_maxNumExtraStages > 0) updateCovMatrices();
         }
 
         //for (unsigned int i = 0; i < subChain.sequenceSize(); ++i) {

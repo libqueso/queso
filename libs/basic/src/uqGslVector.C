@@ -246,7 +246,7 @@ uqGslVectorClass::cwSet(double value)
 }
 
 void
-uqGslVectorClass::cwSetGaussian(gsl_rng* rng, double mean, double stdDev)
+uqGslVectorClass::cwSetGaussian(const gsl_rng* rng, double mean, double stdDev)
 {
   for (unsigned int i = 0; i < this->size(); ++i) {
     (*this)[i] = mean + gsl_ran_gaussian(rng,stdDev);
@@ -256,10 +256,19 @@ uqGslVectorClass::cwSetGaussian(gsl_rng* rng, double mean, double stdDev)
 }
 
 void
-uqGslVectorClass::cwSetGaussian(gsl_rng* rng, const uqGslVectorClass& meanVec, const uqGslVectorClass& stdDevVec)
+uqGslVectorClass::cwSetGaussian(const gsl_rng* rng, const uqGslVectorClass& meanVec, const uqGslVectorClass& stdDevVec)
 {
   for (unsigned int i = 0; i < this->size(); ++i) {
     (*this)[i] = meanVec[i] + gsl_ran_gaussian(rng,stdDevVec[i]);
+  }
+  return;
+}
+
+void
+uqGslVectorClass::cwSetUniform(const gsl_rng* rng, const uqGslVectorClass& aVec, const uqGslVectorClass& bVec)
+{
+  for (unsigned int i = 0; i < this->size(); ++i) {
+    (*this)[i] = aVec[i] + (bVec[i]-aVec[i])*gsl_rng_uniform(rng);
   }
   return;
 }
