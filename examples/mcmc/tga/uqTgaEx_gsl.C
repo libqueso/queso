@@ -26,17 +26,25 @@ int main(int argc, char* argv[])
   //************************************************
   // Initialize environment
   //************************************************
+  MPI_Init(&argc,&argv);
   uqEnvironmentClass* env = new uqEnvironmentClass(argc,argv);
 
   //************************************************
   // Call application
   //************************************************
-  uqAppl<uqGslVectorClass,uqGslMatrixClass>(*env);
+  uqAppl<uqGslVectorClass, // type for parameter vectors
+         uqGslMatrixClass, // type for parameter matrices
+         uqGslVectorClass, // type for state vectors
+         uqGslMatrixClass, // type for state matrices
+         uqGslVectorClass, // type for likelihood vectors
+         uqGslMatrixClass  // type for likelihood matrices
+        >(*env);
 
   //************************************************
   // Finalize environment
   //************************************************
   delete env;
+  MPI_Finalize();
 
   return 0;
 }

@@ -35,7 +35,7 @@ public:
                                     const char*               prefix);
   virtual ~uqFinDimLinearSpaceClass();
 
-          void              instantiateZeroVector();                       // See template specialization
+  //void              instantiateZeroVector();                       // See template specialization
           const Epetra_Map& map                  () const;
   virtual unsigned int      dim                  ()                 const = 0;
     const V&                zeroVector           ()                 const;
@@ -74,7 +74,7 @@ template <class V, class M>
   const char*               prefix)
   :
   m_env       (env),
-  m_prefix    (""),
+  m_prefix    (prefix),
   m_dim       (0),
   m_map       (NULL), // It will be instantiated in derived class after 'm_dim' is set in derived class
   m_zeroVector(NULL)  // It will be instantiated in derived class after 'm_dim' is set in derived class
@@ -82,11 +82,11 @@ template <class V, class M>
   //std::cout << "Entering uqFinDimLinearSpaceClass<V,M>::constructor()"
   //          << std::endl;
 
-  if ((prefix         != NULL) && 
-      (strlen(prefix) != 0   )) {
-    std::string tmpString(prefix);
-    m_prefix = tmpString + "_";
-  }
+  //if ((prefix         != NULL) && 
+  //    (strlen(prefix) != 0   )) {
+  //  std::string tmpString(prefix);
+  //  m_prefix = tmpString + "_";
+  //}
 
   //std::cout << "Leaving uqFinDimLinearSpaceClass<V,M>::constructor()"
   //          << std::endl;
@@ -105,13 +105,13 @@ uqFinDimLinearSpaceClass<V,M>::~uqFinDimLinearSpaceClass()
   //          << std::endl;
 }
 
-template <class V, class M>
-void
-uqFinDimLinearSpaceClass<V,M>::instantiateZeroVector()
-{
-  m_map = new Epetra_Map(m_dim,0,m_env.comm());
-  return;
-}
+//template <class V, class M>
+//void
+//uqFinDimLinearSpaceClass<V,M>::instantiateZeroVector()
+//{
+//  m_map = new Epetra_Map(m_dim,0,m_env.comm());
+//  return;
+//}
 
 template <class V, class M>
 const Epetra_Map&

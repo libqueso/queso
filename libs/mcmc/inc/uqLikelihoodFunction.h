@@ -31,24 +31,24 @@
 //*****************************************************
 // Base class
 //*****************************************************
-template<class V, class M>
+template<class P_V,class P_M,class L_V,class L_M>
 class uq_LikelihoodFunction_BaseClass {
 public:
-  uq_LikelihoodFunction_BaseClass(void (*routinePtr)(const V& paramValues, const void* functionDataPtr, V& likelihoodValues),
-                                 const void* functionDataPtr);
+  uq_LikelihoodFunction_BaseClass(void (*routinePtr)(const P_V& paramValues, const void* functionDataPtr, L_V& likelihoodValues),
+                                  const void* functionDataPtr);
   virtual ~uq_LikelihoodFunction_BaseClass();
-  virtual void computeActualLikelihoods  (const V& paramValues, V& likelihoodValues) const = 0;
-  virtual void computeMinus2LnLikelihoods(const V& paramValues, V& likelihoodValues) const = 0;
-  virtual void computeMisfits            (const V& paramValues, V& likelihoodValues) const = 0;
+  virtual void computeActualLikelihoods  (const P_V& paramValues, L_V& likelihoodValues) const = 0;
+  virtual void computeMinus2LnLikelihoods(const P_V& paramValues, L_V& likelihoodValues) const = 0;
+  virtual void computeMisfits            (const P_V& paramValues, L_V& likelihoodValues) const = 0;
 
 protected:
-  void (*m_routinePtr)(const V& paramValues, const void* functionDataPtr, V& likelihoodValues);
+  void (*m_routinePtr)(const P_V& paramValues, const void* functionDataPtr, L_V& likelihoodValues);
   const void* m_routineDataPtr;
 };
 
-template<class V, class M>
-uq_LikelihoodFunction_BaseClass<V,M>::uq_LikelihoodFunction_BaseClass(
-  void (*routinePtr)(const V& paramValues, const void* functionDataPtr, V& likelihoodValues),
+template<class P_V,class P_M,class L_V,class L_M>
+uq_LikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>::uq_LikelihoodFunction_BaseClass(
+  void (*routinePtr)(const P_V& paramValues, const void* functionDataPtr, L_V& likelihoodValues),
   const void* functionDataPtr)
   :
   m_routinePtr(routinePtr),
@@ -56,67 +56,67 @@ uq_LikelihoodFunction_BaseClass<V,M>::uq_LikelihoodFunction_BaseClass(
 {
 }
 
-template<class V, class M>
-uq_LikelihoodFunction_BaseClass<V,M>::~uq_LikelihoodFunction_BaseClass()
+template<class P_V,class P_M,class L_V,class L_M>
+uq_LikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>::~uq_LikelihoodFunction_BaseClass()
 {
 }
 
 //*****************************************************
 // Misfit class
 //*****************************************************
-template<class V, class M>
-class uq_MisfitLikelihoodFunction_Class : public uq_LikelihoodFunction_BaseClass<V,M> {
+template<class P_V,class P_M,class L_V,class L_M>
+class uq_MisfitLikelihoodFunction_Class : public uq_LikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M> {
 public:
-  uq_MisfitLikelihoodFunction_Class(void (*routinePtr)(const V& paramValues, const void* functionDataPtr, V& likelihoodValues),
+  uq_MisfitLikelihoodFunction_Class(void (*routinePtr)(const P_V& paramValues, const void* functionDataPtr, L_V& likelihoodValues),
                                     const void* functionDataPtr);
  ~uq_MisfitLikelihoodFunction_Class();
-  void computeActualLikelihoods  (const V& paramValues, V& likelihoodValues) const;
-  void computeMinus2LnLikelihoods(const V& paramValues, V& likelihoodValues) const;
-  void computeMisfits            (const V& paramValues, V& likelihoodValues) const;
+  void computeActualLikelihoods  (const P_V& paramValues, L_V& likelihoodValues) const;
+  void computeMinus2LnLikelihoods(const P_V& paramValues, L_V& likelihoodValues) const;
+  void computeMisfits            (const P_V& paramValues, L_V& likelihoodValues) const;
 
-  using uq_LikelihoodFunction_BaseClass<V,M>::m_routinePtr;
-  using uq_LikelihoodFunction_BaseClass<V,M>::m_routineDataPtr;
+  using uq_LikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>::m_routinePtr;
+  using uq_LikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>::m_routineDataPtr;
 };
 
-template<class V, class M>
-uq_MisfitLikelihoodFunction_Class<V,M>::uq_MisfitLikelihoodFunction_Class(
-  void (*routinePtr)(const V& paramValues, const void* functionDataPtr, V& likelihoodValues),
+template<class P_V,class P_M,class L_V,class L_M>
+uq_MisfitLikelihoodFunction_Class<P_V,P_M,L_V,L_M>::uq_MisfitLikelihoodFunction_Class(
+  void (*routinePtr)(const P_V& paramValues, const void* functionDataPtr, L_V& likelihoodValues),
   const void* functionDataPtr)
   :
-  uq_LikelihoodFunction_BaseClass<V,M>(routinePtr,functionDataPtr)
+  uq_LikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>(routinePtr,functionDataPtr)
 {
 }
 
-template<class V, class M>
-uq_MisfitLikelihoodFunction_Class<V,M>::~uq_MisfitLikelihoodFunction_Class()
+template<class P_V,class P_M,class L_V,class L_M>
+uq_MisfitLikelihoodFunction_Class<P_V,P_M,L_V,L_M>::~uq_MisfitLikelihoodFunction_Class()
 {
 }
 
-template<class V, class M>
+template<class P_V,class P_M,class L_V,class L_M>
 void
-uq_MisfitLikelihoodFunction_Class<V,M>::computeActualLikelihoods(const V& paramValues, V& likelihoodValues) const
+uq_MisfitLikelihoodFunction_Class<P_V,P_M,L_V,L_M>::computeActualLikelihoods(const P_V& paramValues, L_V& likelihoodValues) const
 {
   UQ_FATAL_TEST_MACRO(false,
                       paramValues.env().rank(),
-                      "uq_MisfitLikelihoodFunction_Class<V,M>::computeActualLikelihoods()",
+                      "uq_MisfitLikelihoodFunction_Class<P_V,P_M,L_V,L_M>::computeActualLikelihoods()",
                       "this method should not be called in the case of this class");
   return;
 }
 
-template<class V, class M>
+template<class P_V,class P_M,class L_V,class L_M>
 void
-uq_MisfitLikelihoodFunction_Class<V,M>::computeMinus2LnLikelihoods(const V& paramValues, V& likelihoodValues) const
+uq_MisfitLikelihoodFunction_Class<P_V,P_M,L_V,L_M>::computeMinus2LnLikelihoods(const P_V& paramValues, L_V& likelihoodValues) const
 {
   UQ_FATAL_TEST_MACRO(false,
                       paramValues.env().rank(),
-                      "uq_MisfitLikelihoodFunction_Class<V,M>::computeMinus2LnLikelihoods()",
+                      "uq_MisfitLikelihoodFunction_Class<P_V,P_M,L_V,L_M>::computeMinus2LnLikelihoods()",
                       "this method should not be called in the case of this class");
   return;
 }
 
-template<class V, class M>
+template<class P_V,class P_M,class L_V,class L_M>
 void
-uq_MisfitLikelihoodFunction_Class<V,M>::computeMisfits(const V& paramValues, V& likelihoodValues) const
+uq_MisfitLikelihoodFunction_Class<P_V,P_M,L_V,L_M>::computeMisfits(const P_V& paramValues, L_V& likelihoodValues) const
 {
   return m_routinePtr(paramValues, m_routineDataPtr, likelihoodValues);
 }
@@ -124,43 +124,43 @@ uq_MisfitLikelihoodFunction_Class<V,M>::computeMisfits(const V& paramValues, V& 
 //*****************************************************
 // Complete class
 //*****************************************************
-template<class V, class M>
-class uq_CompleteLikelihoodFunction_Class : public uq_LikelihoodFunction_BaseClass<V,M> {
+template<class P_V,class P_M,class L_V,class L_M>
+class uq_CompleteLikelihoodFunction_Class : public uq_LikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M> {
 public:
-  uq_CompleteLikelihoodFunction_Class(void (*routinePtr)(const V& paramValues, const void* functionDataPtr, V& likelihoodValues),
+  uq_CompleteLikelihoodFunction_Class(void (*routinePtr)(const P_V& paramValues, const void* functionDataPtr, L_V& likelihoodValues),
                                       const void* functionDataPtr,
                                       bool routineComputesMinus2LogOfLikelihood);
  ~uq_CompleteLikelihoodFunction_Class();
-  void computeActualLikelihoods  (const V& paramValues, V& likelihoodValues) const;
-  void computeMinus2LnLikelihoods(const V& paramValues, V& likelihoodValues) const;
-  void computeMisfits            (const V& paramValues, V& likelihoodValues) const;
+  void computeActualLikelihoods  (const P_V& paramValues, L_V& likelihoodValues) const;
+  void computeMinus2LnLikelihoods(const P_V& paramValues, L_V& likelihoodValues) const;
+  void computeMisfits            (const P_V& paramValues, L_V& likelihoodValues) const;
 
-  using uq_LikelihoodFunction_BaseClass<V,M>::m_routinePtr;
-  using uq_LikelihoodFunction_BaseClass<V,M>::m_routineDataPtr;
+  using uq_LikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>::m_routinePtr;
+  using uq_LikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>::m_routineDataPtr;
 
 private:
   bool m_routineComputesMinus2LogOfLikelihood;
 };
 
-template<class V, class M>
-uq_CompleteLikelihoodFunction_Class<V,M>::uq_CompleteLikelihoodFunction_Class(
-  void (*routinePtr)(const V& paramValues, const void* functionDataPtr, V& likelihoodValues),
+template<class P_V,class P_M,class L_V,class L_M>
+uq_CompleteLikelihoodFunction_Class<P_V,P_M,L_V,L_M>::uq_CompleteLikelihoodFunction_Class(
+  void (*routinePtr)(const P_V& paramValues, const void* functionDataPtr, L_V& likelihoodValues),
   const void* functionDataPtr,
   bool        routineComputesMinus2LogOfLikelihood)
   :
-  uq_LikelihoodFunction_BaseClass<V,M>(routinePtr,functionDataPtr),
+  uq_LikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>(routinePtr,functionDataPtr),
   m_routineComputesMinus2LogOfLikelihood(routineComputesMinus2LogOfLikelihood)
 {
 }
 
-template<class V, class M>
-uq_CompleteLikelihoodFunction_Class<V,M>::~uq_CompleteLikelihoodFunction_Class()
+template<class P_V,class P_M,class L_V,class L_M>
+uq_CompleteLikelihoodFunction_Class<P_V,P_M,L_V,L_M>::~uq_CompleteLikelihoodFunction_Class()
 {
 }
 
-template<class V, class M>
+template<class P_V,class P_M,class L_V,class L_M>
 void
-uq_CompleteLikelihoodFunction_Class<V,M>::computeActualLikelihoods(const V& paramValues, V& likelihoodValues) const
+uq_CompleteLikelihoodFunction_Class<P_V,P_M,L_V,L_M>::computeActualLikelihoods(const P_V& paramValues, L_V& likelihoodValues) const
 {
   m_routinePtr(paramValues, m_routineDataPtr, likelihoodValues);
   if (m_routineComputesMinus2LogOfLikelihood) {
@@ -172,9 +172,9 @@ uq_CompleteLikelihoodFunction_Class<V,M>::computeActualLikelihoods(const V& para
   return;
 }
 
-template<class V, class M>
+template<class P_V,class P_M,class L_V,class L_M>
 void
-uq_CompleteLikelihoodFunction_Class<V,M>::computeMinus2LnLikelihoods(const V& paramValues, V& likelihoodValues) const
+uq_CompleteLikelihoodFunction_Class<P_V,P_M,L_V,L_M>::computeMinus2LnLikelihoods(const P_V& paramValues, L_V& likelihoodValues) const
 {
   m_routinePtr(paramValues, m_routineDataPtr, likelihoodValues);
   if (m_routineComputesMinus2LogOfLikelihood == false) {
@@ -186,13 +186,13 @@ uq_CompleteLikelihoodFunction_Class<V,M>::computeMinus2LnLikelihoods(const V& pa
   return;
 }
 
-template<class V, class M>
+template<class P_V,class P_M,class L_V,class L_M>
 void
-uq_CompleteLikelihoodFunction_Class<V,M>::computeMisfits(const V& paramValues, V& likelihoodValues) const
+uq_CompleteLikelihoodFunction_Class<P_V,P_M,L_V,L_M>::computeMisfits(const P_V& paramValues, L_V& likelihoodValues) const
 {
   UQ_FATAL_TEST_MACRO(false,
                       paramValues.env().rank(),
-                      "uq_CompleteLikelihoodFunction_Class<V,M>::computeMisfits()",
+                      "uq_CompleteLikelihoodFunction_Class<P_V,P_M,L_V,L_M>::computeMisfits()",
                       "this method should not be called in the case of this class");
   return;
 }

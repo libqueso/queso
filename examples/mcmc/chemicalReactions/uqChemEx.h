@@ -47,17 +47,17 @@ double observationsOfA[] = {
 };
 
 #include <uqStateSpace.h>
-#include <uqDRAM_MarkovChainGenerator.h>
 #include <uqDefaultPrior.h>
+#include <uqDRAM_MarkovChainGenerator.h>
 #include <uqComputeQoIDistribution.h>
 
 //********************************************************
 // The prior routine: provided by user and called by the MCMC tool.
 // --> This application is using the default prior() routine provided by the MCMC tool.
 //********************************************************
-template<class V, class M>
+template<class P_V,class P_M>
 double
-calib_M2lPriorRoutine(const V& paramValues, const void* functionDataPtr)
+calib_M2lPriorRoutine(const P_V& paramValues, const void* functionDataPtr)
 {
   UQ_FATAL_TEST_MACRO(true,
                       paramValues.env().rank(),
@@ -74,47 +74,47 @@ calib_M2lPriorRoutine(const V& paramValues, const void* functionDataPtr)
 int calib_StateDotRoutine_gsl(double t, const double currentState[], double stateDot[], void* infoForComputingStateDot);
 #endif
 
-template<class V, class M>
+template<class S_V,class S_M>
 struct
 calib_StateDotRoutine_DataType
 {
-  const V* concentrationRates;
+  const S_V* concentrationRates;
 };
 
 //********************************************************
 // The likelihood routine: provided by user and called by the MCMC tool.
 //********************************************************
-template<class V, class M>
+template<class S_V,class S_M>
 struct
 calib_MisfitLikelihoodRoutine_DataType
 {
   const std::vector<double>* instantsOfAObservations;
-  const std::vector<V*>*     observedEvolutionOfAConcentration;
-  const V*                   initialConcentrations;
+  const std::vector<S_V*>*   observedEvolutionOfAConcentration;
+  const S_V*                 initialConcentrations;
 #ifdef __APPL_USES_GSL__
   uqGslOdeSolverClass*       gslOdeSolver;
 #endif
 };
 
-template<class V, class M>
+template<class P_V,class P_M,class S_V,class S_M,class L_V,class L_M>
 void
-calib_MisfitLikelihoodRoutine(const V& paramValues, const void* functionDataPtr, V& resultValues)
+calib_MisfitLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr, L_V& resultValues)
 {
   if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
     std::cout << "Entering calib_MisfitLikelihoodRoutine()" << std::endl;
   }
 
-  const std::vector<double>& instantsOfAObservations           = *((calib_MisfitLikelihoodRoutine_DataType<V,M> *) functionDataPtr)->instantsOfAObservations;
-  const std::vector<V*>&     observedEvolutionOfAConcentration = *((calib_MisfitLikelihoodRoutine_DataType<V,M> *) functionDataPtr)->observedEvolutionOfAConcentration;
-  const V&                   initialConcentrations             = *((calib_MisfitLikelihoodRoutine_DataType<V,M> *) functionDataPtr)->initialConcentrations;
+  const std::vector<double>& instantsOfAObservations           = *((calib_MisfitLikelihoodRoutine_DataType<S_V,S_M> *) functionDataPtr)->instantsOfAObservations;
+  const std::vector<S_V*>&   observedEvolutionOfAConcentration = *((calib_MisfitLikelihoodRoutine_DataType<S_V,S_M> *) functionDataPtr)->observedEvolutionOfAConcentration;
+  const S_V&                 initialConcentrations             = *((calib_MisfitLikelihoodRoutine_DataType<S_V,S_M> *) functionDataPtr)->initialConcentrations;
 #ifdef __APPL_USES_GSL__
-  uqGslOdeSolverClass&       gslOdeSolver                      = *((calib_MisfitLikelihoodRoutine_DataType<V,M> *) functionDataPtr)->gslOdeSolver;
+  uqGslOdeSolverClass&       gslOdeSolver                      = *((calib_MisfitLikelihoodRoutine_DataType<S_V,S_M> *) functionDataPtr)->gslOdeSolver;
 #endif
 
-  calib_StateDotRoutine_DataType<V,M> calib_StateDotRoutine_Data;
+  calib_StateDotRoutine_DataType<S_V,S_M> calib_StateDotRoutine_Data;
   calib_StateDotRoutine_Data.concentrationRates = &paramValues;
 
-  std::vector<V*> computedEvolutionOfConcentrations(0);//,NULL);
+  std::vector<S_V*> computedEvolutionOfConcentrations(0);//,NULL);
 #ifdef __APPL_USES_GSL__
   gslOdeSolver.solveODE(calib_StateDotRoutine_gsl,
                         NULL,
@@ -143,7 +143,7 @@ calib_MisfitLikelihoodRoutine(const V& paramValues, const void* functionDataPtr,
   for (unsigned int i = 0; i < instantsOfAObservations.size(); ++i) {
     resultValues[0] += pow( (*computedEvolutionOfConcentrations[i])[0] - (*observedEvolutionOfAConcentration[i])[0],2. );
   }
-  //resultValues[0] /= 2.1876e-08; // in case "uq_CompleteLikelihoodFunction_Class<V,M>" is used below in uqAppl() routine
+  //resultValues[0] /= 2.1876e-08; // in case "uq_CompleteLikelihoodFunction_Class" is used below in uqAppl() routine
 
   for (unsigned int i = 0; i < computedEvolutionOfConcentrations.size(); ++i) {
     if (computedEvolutionOfConcentrations[i]) delete computedEvolutionOfConcentrations[i];
@@ -179,7 +179,7 @@ calib_QoIPredictionRoutine(const V& paramValues, const void* functionDataPtr, st
 //********************************************************
 // The MCMC driving routine: called by main()
 //********************************************************
-template<class V, class M>
+template<class P_V,class P_M,class S_V,class S_M,class L_V,class L_M>
 void 
 uqAppl(const uqEnvironmentClass& env)
 {
@@ -194,65 +194,65 @@ uqAppl(const uqEnvironmentClass& env)
   //*****************************************************
   // Step 1 of 6: Define the finite dimensional linear spaces.
   //*****************************************************
-  uqParamSpaceClass<V,M>      calib_ParamSpace     (env,"calib");
-  uqStateSpaceClass<V,M>      calib_StateSpace     (env,"calib");
-  uqObservableSpaceClass<V,M> calib_ObservableSpace(env,"calib");
+  uqParamSpaceClass     <P_V,P_M> calib_ParamSpace     (env,"calib_");
+  uqStateSpaceClass     <S_V,S_M> calib_StateSpace     (env,"calib_");
+  uqObservableSpaceClass<L_V,L_M> calib_ObservableSpace(env,"calib_");
 
   //******************************************************
   // Step 2 of 6: Define the prior prob. density function object: -2*ln[prior]
   //******************************************************
-  uqDefault_M2lPriorRoutine_DataType<V,M> calib_M2lPriorRoutine_Data; // use default prior() routine
-  V calib_ParamPriorMus   (calib_ParamSpace.priorMuValues   ());
-  V calib_ParamPriorSigmas(calib_ParamSpace.priorSigmaValues());
+  uqDefault_M2lPriorRoutine_DataType<P_V,P_M> calib_M2lPriorRoutine_Data; // use default prior() routine
+  P_V calib_ParamPriorMus   (calib_ParamSpace.priorMuValues   ());
+  P_V calib_ParamPriorSigmas(calib_ParamSpace.priorSigmaValues());
   calib_M2lPriorRoutine_Data.paramPriorMus    = &calib_ParamPriorMus;
   calib_M2lPriorRoutine_Data.paramPriorSigmas = &calib_ParamPriorSigmas;
 
-  uq_M2lProbDensity_Class<V,M> calib_M2lPriorProbDensity_Obj(uqDefault_M2lPriorRoutine<V,M>, // use default prior() routine
-                                                             (void *) &calib_M2lPriorRoutine_Data); 
+  uq_M2lProbDensity_Class<P_V,P_M> calib_M2lPriorProbDensity_Obj(uqDefault_M2lPriorRoutine<P_V,P_M>, // use default prior() routine
+                                                                 (void *) &calib_M2lPriorRoutine_Data); 
 
   //******************************************************
   // Step 3 of 6: Define the likelihood prob. density function object: just misfits
   //******************************************************
   std::vector<double> instantsOfAObservations          (23,0.);
-  std::vector<V*>     observedEvolutionOfAConcentration(23);//,NULL);
+  std::vector<S_V*>   observedEvolutionOfAConcentration(23);//,NULL);
   for (unsigned int i = 0; i < 23; ++i) {
     instantsOfAObservations[i]                 = observationsOfA[2*i+0];
     observedEvolutionOfAConcentration[i]       = calib_StateSpace.newVector();
     (*observedEvolutionOfAConcentration[i])[0] = observationsOfA[2*i+1];
   }
 
-  V* initialConcentrations = calib_StateSpace.newVector();
-  (*initialConcentrations)[0] = 0.02090;    // A0
-  (*initialConcentrations)[1] = 0.02090/3.; // B0
-  (*initialConcentrations)[2] = 0.;         // C0
-  (*initialConcentrations)[3] = 0.;         // D0
-  (*initialConcentrations)[4] = 0.;         // E0
+  S_V initialConcentrations(calib_StateSpace.zeroVector());
+  initialConcentrations[0] = 0.02090;    // A0
+  initialConcentrations[1] = 0.02090/3.; // B0
+  initialConcentrations[2] = 0.;         // C0
+  initialConcentrations[3] = 0.;         // D0
+  initialConcentrations[4] = 0.;         // E0
 
 #ifdef __APPL_USES_GSL__
   uqGslOdeSolverClass gslOdeSolver("45",calib_StateSpace.dim());
 #endif
 
-  calib_MisfitLikelihoodRoutine_DataType<V,M> calib_MisfitLikelihoodRoutine_Data;
+  calib_MisfitLikelihoodRoutine_DataType<S_V,S_M> calib_MisfitLikelihoodRoutine_Data;
   calib_MisfitLikelihoodRoutine_Data.instantsOfAObservations           = &instantsOfAObservations;
   calib_MisfitLikelihoodRoutine_Data.observedEvolutionOfAConcentration = &observedEvolutionOfAConcentration;
-  calib_MisfitLikelihoodRoutine_Data.initialConcentrations             = initialConcentrations;
+  calib_MisfitLikelihoodRoutine_Data.initialConcentrations             = &initialConcentrations;
 #ifdef __APPL_USES_GSL__
   calib_MisfitLikelihoodRoutine_Data.gslOdeSolver                      = &gslOdeSolver;
 #endif
 
-  uq_MisfitLikelihoodFunction_Class<V,M> calib_MisfitLikelihoodFunction_Obj(calib_MisfitLikelihoodRoutine<V,M>,
-                                                                            (void *) &calib_MisfitLikelihoodRoutine_Data);
-                                                                            //true); // in case "uq_CompleteLikelihoodFunction_Class<V,M>" is used
+  uq_MisfitLikelihoodFunction_Class<P_V,P_M,L_V,L_M> calib_MisfitLikelihoodFunction_Obj(calib_MisfitLikelihoodRoutine<P_V,P_M,S_V,S_M,L_V,L_M>,
+                                                                                        (void *) &calib_MisfitLikelihoodRoutine_Data);
+                                                                                        //true); // in case "uq_CompleteLikelihoodFunction_Class" is used
 
   //******************************************************
   // Step 4 of 6: Define the Markov chain generator.
   //******************************************************
-  uqDRAM_MarkovChainGeneratorClass<V,M> mcg(env,
-                                            "calib",
-                                            calib_ParamSpace,
-                                            calib_ObservableSpace,
-                                            calib_M2lPriorProbDensity_Obj,
-                                            calib_MisfitLikelihoodFunction_Obj);
+  uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M> mcg(env,
+                                                        "calib_",
+                                                        calib_ParamSpace,
+                                                        calib_ObservableSpace,
+                                                        calib_M2lPriorProbDensity_Obj,
+                                                        calib_MisfitLikelihoodFunction_Obj);
 
   //******************************************************
   // Step 5 of 6: Compute the proposal covariance matrix.
@@ -271,9 +271,9 @@ uqAppl(const uqEnvironmentClass& env)
   // Step 7 of 6: Compute distribution of quantity of interest
   //******************************************************
   if (0) {
-  calib_QoIPredictionRoutine_DataType<V,M> calib_QoIPredictionRoutine_Data;
-  uq_QoIPredictionFunction_Class<V,M> calib_QoIPredictionFunction_Obj(calib_QoIPredictionRoutine<V,M>,
-                                                                      (void *) &calib_QoIPredictionRoutine_Data);
+  calib_QoIPredictionRoutine_DataType<L_V,L_M> calib_QoIPredictionRoutine_Data;
+  uq_QoIPredictionFunction_Class<L_V,L_M> calib_QoIPredictionFunction_Obj(calib_QoIPredictionRoutine<L_V,L_M>,
+                                                                          (void *) &calib_QoIPredictionRoutine_Data);
   //uqComputeQoIDistribution(mcg.chain(),
   //                         mcg.misfitVarianceChain(),
   //                         500,
@@ -288,7 +288,6 @@ uqAppl(const uqEnvironmentClass& env)
     if (observedEvolutionOfAConcentration[i]) delete observedEvolutionOfAConcentration[i];
   }
   observedEvolutionOfAConcentration.clear();
-  delete initialConcentrations;
 
   if (env.rank() == 0) std::cout << "Finishing run of 'uqChemEx' example"
                                  << std::endl;

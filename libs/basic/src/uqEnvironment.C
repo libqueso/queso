@@ -22,9 +22,11 @@
 #include <sys/time.h>
 #include <gsl/gsl_randist.h>
 
-// Version "0.1" on "Aug/11/2008"
-#define QUESO_TOOLKIT_MCMC_TOOL_CURRENT_VERSION "0.11"
-#define QUESO_TOOLKIT_MCMC_TOOL_RELEASE_DATE    "Aug/15/2008"
+// Version "0.1"  on "Aug/11/2008"
+// Version "0.11" on "Aug/15/2008"
+// Version "0.2"  on "Sep/17/2008"
+#define QUESO_TOOLKIT_MCMC_TOOL_CURRENT_VERSION "0.20"
+#define QUESO_TOOLKIT_MCMC_TOOL_RELEASE_DATE    "Sep/17/2008"
 
 uqEnvOptionsStruct::uqEnvOptionsStruct(
   unsigned int verbosity,

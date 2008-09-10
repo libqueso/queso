@@ -46,16 +46,16 @@ double observationsOfTemperatureAndRelativeMass[] = {
 // The prior routine: provided by user and called by the MCMC tool.
 // --> This application uses the default prior() routine provided by the MCMC tool.
 //********************************************************
-template<class V, class M>
+template<class P_V, class P_M>
 struct
 calib_M2lPriorRoutine_DataType
 {
-  const V* nothing1;
-  const M* nothing2;
+  const P_V* nothing1;
+  const P_M* nothing2;
 };
 
-template<class V, class M>
-double calib_M2lPriorRoutine(const V& paramValues, const void* functionDataPtr)
+template<class P_V, class P_M>
+double calib_M2lPriorRoutine(const P_V& paramValues, const void* functionDataPtr)
 {
   UQ_FATAL_TEST_MACRO(true,
                       paramValues.env().rank(),
@@ -80,7 +80,7 @@ int func(double t, const double Mass[], double f[], void *info)
   return GSL_SUCCESS;
 }
 
-template<class V, class M>
+template<class S_V, class S_M>
 struct
 calib_CompleteLikelihoodRoutine_DataType
 {
@@ -90,21 +90,21 @@ calib_CompleteLikelihoodRoutine_DataType
   std::vector<double>* Me1; // relative masses
 };
 
-template<class V, class M>
-void calib_CompleteLikelihoodRoutine(const V& paramValues, const void* functionDataPtr, V& resultValues)
+template<class P_V,class P_M,class S_V,class S_M,class L_V,class L_M>
+void calib_CompleteLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr, L_V& resultValues)
 {
-  double A = paramValues[0];
-  double E = paramValues[1];
-  double beta1             =  ((calib_CompleteLikelihoodRoutine_DataType<V,M> *) functionDataPtr)->beta1;
-  double variance1         =  ((calib_CompleteLikelihoodRoutine_DataType<V,M> *) functionDataPtr)->variance1;
-  const std::vector<double>& Te1 = *((calib_CompleteLikelihoodRoutine_DataType<V,M> *) functionDataPtr)->Te1;
-  const std::vector<double>& Me1 = *((calib_CompleteLikelihoodRoutine_DataType<V,M> *) functionDataPtr)->Me1;
+  double A                       = paramValues[0];
+  double E                       = paramValues[1];
+  double beta1                   =  ((calib_CompleteLikelihoodRoutine_DataType<S_V,S_M> *) functionDataPtr)->beta1;
+  double variance1               =  ((calib_CompleteLikelihoodRoutine_DataType<S_V,S_M> *) functionDataPtr)->variance1;
+  const std::vector<double>& Te1 = *((calib_CompleteLikelihoodRoutine_DataType<S_V,S_M> *) functionDataPtr)->Te1;
+  const std::vector<double>& Me1 = *((calib_CompleteLikelihoodRoutine_DataType<S_V,S_M> *) functionDataPtr)->Me1;
   std::vector<double> Mt1(Me1.size(),0.);
 
   double params[]={A,E,beta1};
       	
   // integration
-  const gsl_odeiv_step_type *T   = gsl_odeiv_step_gear1; //kf45; //gear1;
+  const gsl_odeiv_step_type *T   = gsl_odeiv_step_rkf45; //rkf45; //gear1;
         gsl_odeiv_step      *s   = gsl_odeiv_step_alloc(T,1);
         gsl_odeiv_control   *c   = gsl_odeiv_control_y_new(1e-6,0.0);
         gsl_odeiv_evolve    *e   = gsl_odeiv_evolve_alloc(1);
@@ -158,7 +158,7 @@ void calib_CompleteLikelihoodRoutine(const V& paramValues, const void* functionD
 //********************************************************
 // The MCMC driving routine: called by main()
 //********************************************************
-template<class V, class M>
+template<class P_V,class P_M,class S_V,class S_M,class L_V,class L_M>
 void 
 uqAppl(const uqEnvironmentClass& env)
 {
@@ -175,20 +175,20 @@ uqAppl(const uqEnvironmentClass& env)
   //*****************************************************
   // Step 1 of 6: Define the finite dimensional linear spaces.
   //*****************************************************
-  uqParamSpaceClass<V,M>      calib_ParamSpace     (env,"calib");
-  uqObservableSpaceClass<V,M> calib_ObservableSpace(env,"calib");
+  uqParamSpaceClass     <P_V,P_M> calib_ParamSpace     (env,"calib_");
+  uqObservableSpaceClass<L_V,L_M> calib_ObservableSpace(env,"calib_");
 
   //******************************************************
   // Step 2 of 6: Define the prior prob. density function object: -2*ln[prior]
   //******************************************************
-  uqDefault_M2lPriorRoutine_DataType<V,M> calib_M2lPriorRoutine_Data; // use default prior() routine
-  V calib_ParamPriorMus   (calib_ParamSpace.priorMuValues   ());
-  V calib_ParamPriorSigmas(calib_ParamSpace.priorSigmaValues());
+  uqDefault_M2lPriorRoutine_DataType<P_V,P_M> calib_M2lPriorRoutine_Data; // use default prior() routine
+  P_V calib_ParamPriorMus   (calib_ParamSpace.priorMuValues   ());
+  P_V calib_ParamPriorSigmas(calib_ParamSpace.priorSigmaValues());
   calib_M2lPriorRoutine_Data.paramPriorMus    = &calib_ParamPriorMus;
   calib_M2lPriorRoutine_Data.paramPriorSigmas = &calib_ParamPriorSigmas;
 
-  uq_M2lProbDensity_Class<V,M> calib_M2lPriorProbDensity_Obj(uqDefault_M2lPriorRoutine<V,M>, // use default prior() routine
-                                                             (void *) &calib_M2lPriorRoutine_Data);
+  uq_M2lProbDensity_Class<P_V,P_M> calib_M2lPriorProbDensity_Obj(uqDefault_M2lPriorRoutine<P_V,P_M>, // use default prior() routine
+                                                                 (void *) &calib_M2lPriorRoutine_Data);
 
   //******************************************************
   // Step 3 of 6: Define the likelihood prob. density function object: just misfits
@@ -227,32 +227,32 @@ uqAppl(const uqEnvironmentClass& env)
   // Close input file on experimental data
   fclose(inp);
 
-  calib_CompleteLikelihoodRoutine_DataType<V,M> calib_CompleteLikelihoodRoutine_Data;
+  calib_CompleteLikelihoodRoutine_DataType<P_V,P_M> calib_CompleteLikelihoodRoutine_Data;
   calib_CompleteLikelihoodRoutine_Data.beta1     = beta1;
   calib_CompleteLikelihoodRoutine_Data.variance1 = variance1;
   calib_CompleteLikelihoodRoutine_Data.Te1       = &Te1; // temperatures
   calib_CompleteLikelihoodRoutine_Data.Me1       = &Me1; // relative masses
-  uq_CompleteLikelihoodFunction_Class<V,M> calib_CompleteLikelihoodFunction_Obj(calib_CompleteLikelihoodRoutine<V,M>,
-                                                                                (void *) &calib_CompleteLikelihoodRoutine_Data,
-                                                                                true); // the routine computes [-2.*ln(Likelihood)]
+  uq_CompleteLikelihoodFunction_Class<P_V,P_M,L_V,L_M> calib_CompleteLikelihoodFunction_Obj(calib_CompleteLikelihoodRoutine<P_V,P_M,S_V,S_M,L_V,L_M>,
+                                                                                            (void *) &calib_CompleteLikelihoodRoutine_Data,
+                                                                                            true); // the routine computes [-2.*ln(Likelihood)]
 
   //******************************************************
   // Step 4 of 6: Define the Markov chain generator.
   //******************************************************
-  uqDRAM_MarkovChainGeneratorClass<V,M> mcg(env,
-                                            "calib",
-                                            calib_ParamSpace,
-                                            calib_ObservableSpace,
-                                            calib_M2lPriorProbDensity_Obj,
-                                            calib_CompleteLikelihoodFunction_Obj);
+  uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M> mcg(env,
+                                                        "calib_",
+                                                        calib_ParamSpace,
+                                                        calib_ObservableSpace,
+                                                        calib_M2lPriorProbDensity_Obj,
+                                                        calib_CompleteLikelihoodFunction_Obj);
 
   //******************************************************
   // Step 5 of 6: Compute the proposal covariance matrix.
   //******************************************************
   // Proposal covariance matrix will be computed internally
   // by the Markov chain generator.
-  M* proposalCovMatrix = NULL;
-  //M* proposalCovMatrix = calib_ParamSpace.newMatrix();
+  P_M* proposalCovMatrix = NULL;
+  //P_M* proposalCovMatrix = calib_ParamSpace.newMatrix();
   //(*proposalCovMatrix)(0,0) = 1.65122e+10;
   //(*proposalCovMatrix)(0,1) = 0.;
   //(*proposalCovMatrix)(1,0) = 0.;

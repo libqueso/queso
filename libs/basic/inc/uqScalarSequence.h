@@ -761,6 +761,7 @@ uqScalarSequenceClass<T>::geweke(
              .5, // hopSizeRatio
              psdResult);
   double psdA = psdResult[0];
+  double varOfMeanA = 2.*M_PI*psdA/doubleDataSizeA;
 
   unsigned int dataSizeB       = (unsigned int) (doubleFullDataSize * ratioNb);
   double       doubleDataSizeB = (double) dataSizeB;
@@ -776,23 +777,26 @@ uqScalarSequenceClass<T>::geweke(
              .5, // hopSizeRatio
              psdResult);
   double psdB = psdResult[0];
+  double varOfMeanB = 2.*M_PI*psdB/doubleDataSizeB;
 
-  //if (m_env.rank() == 0) {
-  //  std::cout << "In uqScalarSequenceClass<T>::geweke()"
-  //            << ", before computation of gewCoef"
-  //            << ":\n"
-  //            << ", dataSizeA = "       << dataSizeA
-  //            << ", numBlocks = "       << (unsigned int) sqrt((double) dataSizeA)
-  //            << ", meanA = "           << meanA
-  //            << ", psdA = "            << psdA
-  //            << "\n"
-  //            << ", dataSizeB = "       << dataSizeB
-  //            << ", numBlocks = "       << (unsigned int) sqrt((double) dataSizeB)
-  //            << ", meanB = "           << meanB
-  //            << ", psdB = "            << psdB
-  //            << std::endl;
-  //}
-  double gewCoef = (meanA - meanB)/sqrt(psdA/doubleDataSizeA + psdB/doubleDataSizeB);
+  if (m_env.rank() == 0) {
+    std::cout << "In uqScalarSequenceClass<T>::geweke()"
+              << ", before computation of gewCoef"
+              << ":\n"
+              << ", dataSizeA = "       << dataSizeA
+              << ", numBlocksA = "      << (unsigned int) sqrt((double) dataSizeA)
+              << ", meanA = "           << meanA
+              << ", psdA = "            << psdA
+              << ", varOfMeanA = "      << varOfMeanA
+              << "\n"
+              << ", dataSizeB = "       << dataSizeB
+              << ", numBlocksB = "      << (unsigned int) sqrt((double) dataSizeB)
+              << ", meanB = "           << meanB
+              << ", psdB = "            << psdB
+              << ", varOfMeanB = "      << varOfMeanB
+              << std::endl;
+  }
+  double gewCoef = (meanA - meanB)/sqrt(varOfMeanA + varOfMeanB);
 
   return gewCoef;
 }
