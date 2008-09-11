@@ -37,16 +37,19 @@ calib_MCMC_chain_number                   = 1
 calib_MCMC_chain_sizes                    = 10001
 calib_MCMC_chain_use2                     = 0
 calib_MCMC_chain_generateExtra            = 0
-calib_MCMC_chain_displayPeriod            = 100
+calib_MCMC_chain_displayPeriod            = 5000
 calib_MCMC_chain_measureRunTimes          = 1
-calib_MCMC_chain_write                    = 0
-calib_MCMC_chain_computeStats             = 1
-calib_MCMC_chain_filter                   = 1
+calib_MCMC_chain_write                    = 1
+calib_MCMC_chain_computeStats             = 0
 calib_MCMC_chain_outputFileNames          = calibOutput.m
 
 calib_MCMC_uniqueChain_generate           = 0
-calib_MCMC_uniqueChain_write              = 0
+calib_MCMC_uniqueChain_write              = 1
 calib_MCMC_uniqueChain_computeStats       = 0
+
+calib_MCMC_filteredChain_generate         = 0
+calib_MCMC_filteredChain_write            = 1
+calib_MCMC_filteredChain_computeStats     = 0
 
 calib_MCMC_avgChain_compute               = 0
 calib_MCMC_avgChain_write                 = 0
@@ -92,7 +95,6 @@ calib_MCMC_corr_write                     = 1
 
 calib_MCMC_filter_initialDiscardedPortion = 0.
 calib_MCMC_filter_lag                     = 0
-calib_MCMC_filter_write                   = 0
 calib_MCMC_hist_compute                   = 1
 calib_MCMC_hist_numInternalBins           = 200
 calib_MCMC_kde_compute                    = 1

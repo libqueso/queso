@@ -30,7 +30,7 @@ calib_observableSpace_specificationFile = calib.obs
 # Calibration DRAM Markov Chain Generator
 ###############################################
 #calib_MCMC_help                           = anything
-calib_MCMC_chain_type                     = 2
+calib_MCMC_chain_type                     = 1
 calib_MCMC_chain_number                   = 1
 ##                                           16K   128K   2M      16M
 #calib_MCMC_chain_sizes                    = 16384 131072 2097152 16777216
@@ -52,7 +52,7 @@ calib_MCMC_avgChain_compute               = 0
 calib_MCMC_avgChain_write                 = 0
 calib_MCMC_avgChain_computeStats          = 0
 
-calib_MCMC_dr_maxNumberOfExtraStages      = 1
+calib_MCMC_dr_maxNumExtraStages           = 1
 calib_MCMC_dr_scalesForExtraStages        = 5. 4. 3.
 calib_MCMC_am_initialNonAdaptInterval     = 100
 calib_MCMC_am_adaptInterval               = 0

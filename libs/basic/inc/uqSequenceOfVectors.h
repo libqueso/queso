@@ -115,6 +115,7 @@ public:
                                         std::vector<V*>&          densityValues) const;
         void         write             (const std::string&        name,
                                         std::ofstream&            ofs) const;
+        void         filter            (const std::vector<unsigned int>& idsOfUniquePositions);
         void         filter            (unsigned int              initialPos,
                                         unsigned int              spacing);
 
@@ -958,6 +959,22 @@ uqSequenceOfVectorsClass<V>::gaussianKDE(
 
 template <class V>
 void
+uqSequenceOfVectorsClass<V>::filter(const std::vector<unsigned int>& idsOfUniquePositions)
+{
+  return;
+}
+
+template <class V>
+void
+uqSequenceOfVectorsClass<V>::filter(
+  unsigned int initialPos,
+  unsigned int spacing)
+{
+  return;
+}
+
+template <class V>
+void
 uqSequenceOfVectorsClass<V>::write(
   const std::string& chainName,
   std::ofstream&     ofs) const
@@ -975,15 +992,6 @@ uqSequenceOfVectorsClass<V>::write(
   }
   ofs << "];\n";
 
-  return;
-}
-
-template <class V>
-void
-uqSequenceOfVectorsClass<V>::filter(
-  unsigned int initialPos,
-  unsigned int spacing)
-{
   return;
 }
 

@@ -2,7 +2,7 @@
 #
 #
 #
-Theta_0 0. -inf inf
+Theta_0 0. -inf inf 0. inf
 Theta_1 0. -inf inf 0. inf
-Theta_2 0. -inf inf
+Theta_2 0. -inf inf 0. inf
 Theta_3 0. -inf inf 0. inf

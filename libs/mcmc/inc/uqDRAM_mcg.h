@@ -25,7 +25,7 @@ void
 uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::generateChains(
   const P_M*             proposalCovMatrix,
   const P_M*             mahalanobisMatrix,
-  bool                 applyMahalanobisInvert,
+  bool                   applyMahalanobisInvert,
   uqChainBaseClass<P_V>& workingChain)
 {
   //if (m_env.rank() == 0) std::cout << "Entering uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::generateChains()..."
@@ -45,8 +45,8 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::generateChains(
   for (unsigned int chainId = 0; chainId < m_chainSizes.size(); ++chainId) {
     char tmpChainId[10];
     sprintf(tmpChainId,"%d",chainId);
-    std::string chainName  = "queso_" + m_prefix + tmpChainId + "_chain";
-    std::string prefixName = "queso_" + m_prefix + tmpChainId;
+    std::string prefixName = "queso_" + m_prefix + tmpChainId + "_";
+    std::string chainName  = prefixName + "chain";
 
     //****************************************************
     // Open file      
@@ -137,19 +137,55 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::generateChains(
     // Eventually:
     // --> write chain
     // --> compute statistics on it
-    // --> filter it
     //****************************************************
     if (m_chainWrite && ofs) {
       workingChain.write(chainName,*ofs);
     }
 
-    if (m_chainComputeStatistics) {
+    if (m_chainComputeStats) {
       computeStatistics(workingChain,
                         chainName,
                         ofs);
     }
 
-    if (m_chainFilter) {
+    //****************************************************
+    // Eventually:
+    // --> generate an unique chain
+    // --> write it
+    // --> compute statistics on it
+    //****************************************************
+    if (m_uniqueChainGenerate) {
+      // Select only the unique positions
+      workingChain.filter(m_idsOfUniquePositions);
+      //chainVectorPositionIteratorTypedef positionIterator = m_uniqueChain1.begin();
+      //std::advance(positionIterator,uniquePos);
+      //m_uniqueChain1.erase(positionIterator,m_uniqueChain1.end());
+      //UQ_FATAL_TEST_MACRO((uniquePos != m_uniqueChain1.size()),
+      //                    m_env.rank(),
+      //                    "uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::generateChains()",
+      //                    "uniquePos != m_uniqueChain1.size()");
+
+      // Write unique chain
+      chainName = prefixName + "uniqueChain";
+      if (m_uniqueChainWrite && ofs) {
+        workingChain.write(chainName,*ofs);
+      }
+
+      // Compute statistics
+      if (m_uniqueChainComputeStats) {
+        computeStatistics(workingChain,
+                          chainName,
+                          ofs);
+      }
+    }
+
+    //****************************************************
+    // Eventually:
+    // --> filter the (maybe unique) chain
+    // --> write it
+    // --> compute statistics on it
+    //****************************************************
+    if (m_filteredChainGenerate) {
       // Compute filter parameters
       unsigned int filterInitialPos = (unsigned int) (m_filterInitialDiscardedPortion * (double) workingChain.sequenceSize());
       unsigned int filterSpacing    = m_filterLag;
@@ -166,12 +202,26 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::generateChains(
                           filterSpacing);
 
       // Write filtered chain
-      if (m_filterWrite && ofs) {
-        chainName = "queso_" + m_prefix + tmpChainId + "_filteredChain";
+      chainName = prefixName + "filteredChain";
+      if (m_filteredChainWrite && ofs) {
         workingChain.write(chainName,*ofs);
       }
 
-      // Compute histogram and/or KDE
+      // Compute statistics
+      if (m_filteredChainComputeStats) {
+        computeStatistics(workingChain,
+                          chainName,
+                          ofs);
+      }
+    }
+
+    //****************************************************
+    // Eventually:
+    // --> compute histogram
+    // --> compute KDE
+    //****************************************************
+    if ((m_histCompute) ||
+        (m_kdeCompute )) {
       computeHistKde(workingChain,
                      chainName,
                      ofs);
@@ -179,29 +229,9 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::generateChains(
 
     //****************************************************
     // Eventually:
-    // --> generate an unique chain
-    // --> write it
-    // --> compute statistics on it
-    // --> filter it
-    //****************************************************
-    if (m_uniqueChainGenerate) {
-      //chainVectorPositionIteratorTypedef positionIterator = m_uniqueChain1.begin();
-      //std::advance(positionIterator,uniquePos);
-      //m_uniqueChain1.erase(positionIterator,m_uniqueChain1.end());
-      //UQ_FATAL_TEST_MACRO((uniquePos != m_uniqueChain1.size()),
-      //                    m_env.rank(),
-      //                    "uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::generateChains()",
-      //                    "uniquePos != m_uniqueChain1.size()");
-
-      //computeStatistics(m_uniqueChain1);
-    }
-
-    //****************************************************
-    // Eventually:
     // --> compute an average chain
     // --> write it
     // --> compute statistics on it
-    // --> filter it
     //****************************************************
     if (m_avgChainCompute.size() > chainSumId) {
       // Update workingChainSum
@@ -245,9 +275,9 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::generateChains(
 template <class P_V,class P_M,class L_V,class L_M>
 int
 uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::generateWhiteNoise(
-  unsigned int         chainSize,
+  unsigned int           chainSize,
   uqChainBaseClass<P_V>& workingChain,
-  const std::string&   chainName)
+  const std::string&     chainName)
 {
   if (m_env.rank() == 0) {
     std::cout << "Generating white noise for chain " << chainName
@@ -321,15 +351,15 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::generateUniform(
 template <class P_V,class P_M,class L_V,class L_M>
 int
 uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::generateChain(
-  unsigned int         chainSize,
+  unsigned int           chainSize,
   const P_V&             valuesOf1stPosition,
   const P_M*             proposalCovMatrix,
   const P_M*             mahalanobisMatrix,
-  bool                 applyMahalanobisInvert,
+  bool                   applyMahalanobisInvert,
   uqChainBaseClass<P_V>& workingChain,
-  const std::string&   chainName,
-  const std::string&   prefixName,
-  std::ofstream*       passedOfs)
+  const std::string&     chainName,
+  const std::string&     prefixName,
+  std::ofstream*         passedOfs)
 {
   if (m_env.rank() == 0) {
     std::cout << "Generating chain " << chainName

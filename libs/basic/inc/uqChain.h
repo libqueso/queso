@@ -108,6 +108,7 @@ public:
                                           std::vector<V*>&          densityValues) const = 0;
   virtual void         write             (const std::string&        name,
                                           std::ofstream&            ofs) const = 0;
+  virtual void         filter            (const std::vector<unsigned int>& idsOfUniquePositions) = 0;
   virtual void         filter            (unsigned int              initialPos,
                                           unsigned int              spacing) = 0;
 
