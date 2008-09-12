@@ -33,7 +33,7 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::generateChains(
 
   P_V valuesOf1stPosition(m_paramInitials);
   int iRC = UQ_OK_RC;
-
+#if 0
   unsigned int chainSumId = 0;
   std::vector<const P_V*> chainSum(0);//,NULL);
   if (m_avgChainCompute.size() > 0) {
@@ -41,7 +41,7 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::generateChains(
     // The code will check this assumption.
     chainSum.resize(m_chainSizes[0],NULL);
   }
-
+#endif
   for (unsigned int chainId = 0; chainId < m_chainSizes.size(); ++chainId) {
     char tmpChainId[10];
     sprintf(tmpChainId,"%d",chainId);
@@ -187,8 +187,8 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::generateChains(
     //****************************************************
     if (m_filteredChainGenerate) {
       // Compute filter parameters
-      unsigned int filterInitialPos = (unsigned int) (m_filterInitialDiscardedPortion * (double) workingChain.sequenceSize());
-      unsigned int filterSpacing    = m_filterLag;
+      unsigned int filterInitialPos = (unsigned int) (m_filteredChainDiscardedPortion * (double) workingChain.sequenceSize());
+      unsigned int filterSpacing    = m_filteredChainLag;
       if (filterSpacing == 0) {
         computeFilterParameters(workingChain,
                                 chainName,
@@ -233,6 +233,7 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::generateChains(
     // --> write it
     // --> compute statistics on it
     //****************************************************
+#if 0
     if (m_avgChainCompute.size() > chainSumId) {
       // Update workingChainSum
 
@@ -248,6 +249,7 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::generateChains(
         chainSumId++;
       }
     }
+#endif
 
     //****************************************************
     // Close file      

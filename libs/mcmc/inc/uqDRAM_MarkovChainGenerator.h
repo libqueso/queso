@@ -42,11 +42,13 @@
 #define UQ_MCMC_UNIQUE_CHAIN_WRITE_ODV               0
 #define UQ_MCMC_UNIQUE_CHAIN_COMPUTE_STATS_ODV       0
 #define UQ_MCMC_FILTERED_CHAIN_GENERATE_ODV          0
+#define UQ_MCMC_FILTERED_CHAIN_DISCARDED_PORTION_ODV 0.
+#define UQ_MCMC_FILTERED_CHAIN_LAG_ODV               1
 #define UQ_MCMC_FILTERED_CHAIN_WRITE_ODV             0
 #define UQ_MCMC_FILTERED_CHAIN_COMPUTE_STATS_ODV     0
-#define UQ_MCMC_AVG_CHAIN_COMPUTE_ODV                "0"
-#define UQ_MCMC_AVG_CHAIN_WRITE_ODV                  0
-#define UQ_MCMC_AVG_CHAIN_COMPUTE_STATS_ODV          0
+//#define UQ_MCMC_AVG_CHAIN_COMPUTE_ODV                "0"
+//#define UQ_MCMC_AVG_CHAIN_WRITE_ODV                  0
+//#define UQ_MCMC_AVG_CHAIN_COMPUTE_STATS_ODV          0
 #define UQ_MCMC_DR_MAX_NUM_EXTRA_STAGES_ODV          0
 #define UQ_MCMC_DR_SCALES_FOR_EXTRA_STAGES_ODV       "1."
 #define UQ_MCMC_AM_INIT_NON_ADAPT_INT_ODV            0
@@ -85,8 +87,6 @@
 #define UQ_MCMC_CORR_NUM_LAGS_ODV                    0
 #define UQ_MCMC_CORR_DISPLAY_ODV                     0
 #define UQ_MCMC_CORR_WRITE_ODV                       0
-#define UQ_MCMC_FILTER_INITIAL_DISCARDED_PORTION_ODV 0.
-#define UQ_MCMC_FILTER_LAG_ODV                       1
 #define UQ_MCMC_HIST_COMPUTE_ODV                     0
 #define UQ_MCMC_HIST_NUM_INTERNAL_BINS_ODV           100
 #define UQ_MCMC_KDE_COMPUTE_ODV                      0
@@ -251,11 +251,13 @@ private:
   std::string m_option_uniqueChain_write;
   std::string m_option_uniqueChain_computeStats;
   std::string m_option_filteredChain_generate;
+  std::string m_option_filteredChain_discardedPortion;
+  std::string m_option_filteredChain_lag;
   std::string m_option_filteredChain_write;
   std::string m_option_filteredChain_computeStats;
-  std::string m_option_avgChain_compute;
-  std::string m_option_avgChain_write;
-  std::string m_option_avgChain_computeStats;
+//std::string m_option_avgChain_compute;
+//std::string m_option_avgChain_write;
+//std::string m_option_avgChain_computeStats;
   std::string m_option_dr_maxNumExtraStages;
   std::string m_option_dr_scalesForExtraStages;
   std::string m_option_am_initialNonAdaptInterval;
@@ -295,8 +297,6 @@ private:
   std::string m_option_corr_numLags;
   std::string m_option_corr_display;
   std::string m_option_corr_write;
-  std::string m_option_filter_initialDiscardedPortion;
-  std::string m_option_filter_lag;
   std::string m_option_hist_compute;
   std::string m_option_hist_numInternalBins;
   std::string m_option_kde_compute;
@@ -323,12 +323,14 @@ private:
   bool                          m_uniqueChainComputeStats;
 
   bool                          m_filteredChainGenerate;
+  double                        m_filteredChainDiscardedPortion; // input or set during run time
+  unsigned int                  m_filteredChainLag;              // input or set during run time
   bool                          m_filteredChainWrite;
   bool                          m_filteredChainComputeStats;
 
-  std::vector<unsigned int>     m_avgChainCompute;
-  bool                          m_avgChainWrite;
-  bool                          m_avgChainComputeStats;
+//std::vector<unsigned int>     m_avgChainCompute;
+//bool                          m_avgChainWrite;
+//bool                          m_avgChainComputeStats;
 
   unsigned int                  m_maxNumExtraStages;
   std::vector<double>           m_scalesForCovMProposals;
@@ -375,9 +377,6 @@ private:
   unsigned int                  m_corrNumLags;
   bool                          m_corrDisplay;
   bool                          m_corrWrite;
-
-  double                        m_filterInitialDiscardedPortion; // input or set during run time
-  unsigned int                  m_filterLag;                     // input or set during run time
 
   bool                          m_histCompute;
   unsigned int                  m_histNumInternalBins;
@@ -452,11 +451,13 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::uqDRAM_MarkovChainGeneratorCl
   m_uniqueChainWrite             (UQ_MCMC_UNIQUE_CHAIN_WRITE_ODV),
   m_uniqueChainComputeStats      (UQ_MCMC_UNIQUE_CHAIN_COMPUTE_STATS_ODV),
   m_filteredChainGenerate        (UQ_MCMC_FILTERED_CHAIN_GENERATE_ODV),
+  m_filteredChainDiscardedPortion(UQ_MCMC_FILTERED_CHAIN_DISCARDED_PORTION_ODV),
+  m_filteredChainLag             (UQ_MCMC_FILTERED_CHAIN_LAG_ODV),
   m_filteredChainWrite           (UQ_MCMC_FILTERED_CHAIN_WRITE_ODV),
   m_filteredChainComputeStats    (UQ_MCMC_FILTERED_CHAIN_COMPUTE_STATS_ODV),
-  m_avgChainCompute              (0),//,0.),
-  m_avgChainWrite                (UQ_MCMC_AVG_CHAIN_WRITE_ODV),
-  m_avgChainComputeStats         (UQ_MCMC_AVG_CHAIN_COMPUTE_STATS_ODV),
+//m_avgChainCompute              (0),//,0.),
+//m_avgChainWrite                (UQ_MCMC_AVG_CHAIN_WRITE_ODV),
+//m_avgChainComputeStats         (UQ_MCMC_AVG_CHAIN_COMPUTE_STATS_ODV),
   m_maxNumExtraStages            (UQ_MCMC_DR_MAX_NUM_EXTRA_STAGES_ODV),
   m_scalesForCovMProposals       (0),//,0.),
   m_initialNonAdaptInterval      (UQ_MCMC_AM_INIT_NON_ADAPT_INT_ODV),
@@ -493,8 +494,6 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::uqDRAM_MarkovChainGeneratorCl
   m_corrNumLags                  (UQ_MCMC_CORR_NUM_LAGS_ODV),
   m_corrDisplay                  (UQ_MCMC_CORR_DISPLAY_ODV),
   m_corrWrite                    (UQ_MCMC_CORR_WRITE_ODV),
-  m_filterInitialDiscardedPortion(UQ_MCMC_FILTER_INITIAL_DISCARDED_PORTION_ODV),
-  m_filterLag                    (UQ_MCMC_FILTER_LAG_ODV),
   m_histCompute                  (UQ_MCMC_HIST_COMPUTE_ODV),
   m_histNumInternalBins          (UQ_MCMC_HIST_NUM_INTERNAL_BINS_ODV),
   m_kdeCompute                   (UQ_MCMC_KDE_COMPUTE_ODV),
@@ -553,12 +552,14 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::uqDRAM_MarkovChainGeneratorCl
   m_option_uniqueChain_computeStats       = m_prefix + "MCMC_uniqueChain_computeStats";
 
   m_option_filteredChain_generate         = m_prefix + "MCMC_filteredChain_generate";
+  m_option_filteredChain_discardedPortion = m_prefix + "MCMC_filteredChain_discardedPortion";
+  m_option_filteredChain_lag              = m_prefix + "MCMC_filteredChain_lag";
   m_option_filteredChain_write            = m_prefix + "MCMC_filteredChain_write";
   m_option_filteredChain_computeStats     = m_prefix + "MCMC_filteredChain_computeStats";
 
-  m_option_avgChain_compute               = m_prefix + "MCMC_avgChain_compute";
-  m_option_avgChain_write                 = m_prefix + "MCMC_avgChain_write";
-  m_option_avgChain_computeStats          = m_prefix + "MCMC_avgChain_computeStats";
+//m_option_avgChain_compute               = m_prefix + "MCMC_avgChain_compute";
+//m_option_avgChain_write                 = m_prefix + "MCMC_avgChain_write";
+//m_option_avgChain_computeStats          = m_prefix + "MCMC_avgChain_computeStats";
 
   m_option_dr_maxNumExtraStages           = m_prefix + "MCMC_dr_maxNumExtraStages";
   m_option_dr_scalesForExtraStages        = m_prefix + "MCMC_dr_scalesForExtraStages";
@@ -606,9 +607,6 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::uqDRAM_MarkovChainGeneratorCl
   m_option_corr_numLags                   = m_prefix + "MCMC_corr_numLags";
   m_option_corr_display                   = m_prefix + "MCMC_corr_display";
   m_option_corr_write                     = m_prefix + "MCMC_corr_write";
-
-  m_option_filter_initialDiscardedPortion = m_prefix + "MCMC_filter_initialDiscardedPortion";
-  m_option_filter_lag                     = m_prefix + "MCMC_filter_lag";
 
   m_option_hist_compute                   = m_prefix + "MCMC_hist_compute";
   m_option_hist_numInternalBins           = m_prefix + "MCMC_hist_numInternalBins";
@@ -723,11 +721,13 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::defineMyOptions(
     (m_option_uniqueChain_write.c_str(),              po::value<bool        >()->default_value(UQ_MCMC_UNIQUE_CHAIN_WRITE_ODV              ), "write unique chain"                                             )
     (m_option_uniqueChain_computeStats.c_str(),       po::value<bool        >()->default_value(UQ_MCMC_UNIQUE_CHAIN_COMPUTE_STATS_ODV      ), "compute statistics on unique chain"                             )
     (m_option_filteredChain_generate.c_str(),         po::value<bool        >()->default_value(UQ_MCMC_FILTERED_CHAIN_GENERATE_ODV         ), "generate filtered chain"                                        )
+    (m_option_filteredChain_discardedPortion.c_str(), po::value<double      >()->default_value(UQ_MCMC_FILTERED_CHAIN_DISCARDED_PORTION_ODV), "initial discarded portion for chain filtering"                  )
+    (m_option_filteredChain_lag.c_str(),              po::value<unsigned int>()->default_value(UQ_MCMC_FILTERED_CHAIN_LAG_ODV              ), "spacing for chain filtering"                                    )
     (m_option_filteredChain_write.c_str(),            po::value<bool        >()->default_value(UQ_MCMC_FILTERED_CHAIN_WRITE_ODV            ), "write filtered chain"                                           )
     (m_option_filteredChain_computeStats.c_str(),     po::value<bool        >()->default_value(UQ_MCMC_FILTERED_CHAIN_COMPUTE_STATS_ODV    ), "compute statistics on filtered chain"                           )
-    (m_option_avgChain_compute.c_str(),               po::value<std::string >()->default_value(UQ_MCMC_AVG_CHAIN_COMPUTE_ODV               ), "list of amounts of chains involved in chain averages"           )
-    (m_option_avgChain_write.c_str(),                 po::value<bool        >()->default_value(UQ_MCMC_AVG_CHAIN_WRITE_ODV                 ), "write averages of chains"                                       )
-    (m_option_avgChain_computeStats.c_str(),          po::value<bool        >()->default_value(UQ_MCMC_AVG_CHAIN_COMPUTE_STATS_ODV         ), "compute statistics on the averages of chains"                   )
+  //(m_option_avgChain_compute.c_str(),               po::value<std::string >()->default_value(UQ_MCMC_AVG_CHAIN_COMPUTE_ODV               ), "list of amounts of chains involved in chain averages"           )
+  //(m_option_avgChain_write.c_str(),                 po::value<bool        >()->default_value(UQ_MCMC_AVG_CHAIN_WRITE_ODV                 ), "write averages of chains"                                       )
+  //(m_option_avgChain_computeStats.c_str(),          po::value<bool        >()->default_value(UQ_MCMC_AVG_CHAIN_COMPUTE_STATS_ODV         ), "compute statistics on the averages of chains"                   )
     (m_option_dr_maxNumExtraStages.c_str(),           po::value<unsigned int>()->default_value(UQ_MCMC_DR_MAX_NUM_EXTRA_STAGES_ODV         ), "'dr' maximum number of extra stages"                            )
     (m_option_dr_scalesForExtraStages.c_str(),        po::value<std::string >()->default_value(UQ_MCMC_DR_SCALES_FOR_EXTRA_STAGES_ODV      ), "'dr' list of scales for proposal cov matrices from 2nd stage on")
     (m_option_am_initialNonAdaptInterval.c_str(),     po::value<unsigned int>()->default_value(UQ_MCMC_AM_INIT_NON_ADAPT_INT_ODV           ), "'am' initial non adaptation interval"                           )
@@ -764,8 +764,6 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::defineMyOptions(
     (m_option_corr_numLags.c_str(),                   po::value<unsigned int>()->default_value(UQ_MCMC_CORR_NUM_LAGS_ODV                   ), "number of lags for computation of autocorrelations"             )
     (m_option_corr_display.c_str(),                   po::value<bool        >()->default_value(UQ_MCMC_CORR_DISPLAY_ODV                    ), "display computed autocorrelations on the screen"                )
     (m_option_corr_write.c_str(),                     po::value<bool        >()->default_value(UQ_MCMC_CORR_WRITE_ODV                      ), "write computed autocorrelations to the output file"             )
-    (m_option_filter_initialDiscardedPortion.c_str(), po::value<double      >()->default_value(UQ_MCMC_FILTER_INITIAL_DISCARDED_PORTION_ODV), "initial discarded portion for chain filtering"                  )
-    (m_option_filter_lag.c_str(),                     po::value<unsigned int>()->default_value(UQ_MCMC_FILTER_LAG_ODV                      ), "spacing for chain filtering"                                    )
     (m_option_hist_compute.c_str(),                   po::value<bool        >()->default_value(UQ_MCMC_HIST_COMPUTE_ODV                    ), "compute histograms"                                             )
     (m_option_hist_numInternalBins.c_str(),           po::value<unsigned int>()->default_value(UQ_MCMC_HIST_NUM_INTERNAL_BINS_ODV          ), "number of internal bins"                                        )
     (m_option_kde_compute.c_str(),                    po::value<bool        >()->default_value(UQ_MCMC_KDE_COMPUTE_ODV                     ), "compute kernel density estimators"                              )
@@ -846,6 +844,14 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::getMyOptionValues(
     m_filteredChainGenerate = m_env.allOptionsMap()[m_option_filteredChain_generate.c_str()].as<bool>();
   }
 
+  if (m_env.allOptionsMap().count(m_option_filteredChain_discardedPortion.c_str())) {
+    m_filteredChainDiscardedPortion = m_env.allOptionsMap()[m_option_filteredChain_discardedPortion.c_str()].as<double>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_filteredChain_lag.c_str())) {
+    m_filteredChainLag = m_env.allOptionsMap()[m_option_filteredChain_lag.c_str()].as<unsigned int>();
+  }
+
   if (m_env.allOptionsMap().count(m_option_filteredChain_write.c_str())) {
     m_filteredChainWrite = m_env.allOptionsMap()[m_option_filteredChain_write.c_str()].as<bool>();
   }
@@ -853,7 +859,7 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::getMyOptionValues(
   if (m_env.allOptionsMap().count(m_option_filteredChain_computeStats.c_str())) {
     m_filteredChainComputeStats = m_env.allOptionsMap()[m_option_filteredChain_computeStats.c_str()].as<bool>();
   }
-
+#if 0
   if (m_env.allOptionsMap().count(m_option_avgChain_compute.c_str())) {
     m_avgChainCompute.clear();
     std::vector<double> tmpDenominators(0,0.);
@@ -875,7 +881,7 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::getMyOptionValues(
   if (m_env.allOptionsMap().count(m_option_avgChain_computeStats.c_str())) {
     m_avgChainComputeStats = m_env.allOptionsMap()[m_option_avgChain_computeStats.c_str()].as<bool>();
   }
-
+#endif
   if (m_env.allOptionsMap().count(m_option_chain_outputFileNames.c_str())) {
     m_chainOutputFileNames.clear();
     std::string inputString = m_env.allOptionsMap()[m_option_chain_outputFileNames.c_str()].as<std::string>();
@@ -1109,14 +1115,6 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::getMyOptionValues(
 
   if (m_env.allOptionsMap().count(m_option_corr_write.c_str())) {
     m_corrWrite = m_env.allOptionsMap()[m_option_corr_write.c_str()].as<bool>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_filter_initialDiscardedPortion.c_str())) {
-    m_filterInitialDiscardedPortion = m_env.allOptionsMap()[m_option_filter_initialDiscardedPortion.c_str()].as<double>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_filter_lag.c_str())) {
-    m_filterLag = m_env.allOptionsMap()[m_option_filter_lag.c_str()].as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_hist_compute.c_str())) {
@@ -2993,18 +2991,22 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::print(std::ostream& os) const
   for (unsigned int i = 0; i < m_chainOutputFileNames.size(); ++i) {
     os << m_chainOutputFileNames[i] << " ";
   }
-  os << "\n" << m_option_uniqueChain_generate       << " = " << m_uniqueChainGenerate
-     << "\n" << m_option_uniqueChain_write          << " = " << m_uniqueChainWrite
-     << "\n" << m_option_uniqueChain_computeStats   << " = " << m_uniqueChainComputeStats
-     << "\n" << m_option_filteredChain_generate     << " = " << m_filteredChainGenerate
-     << "\n" << m_option_filteredChain_write        << " = " << m_filteredChainWrite
-     << "\n" << m_option_filteredChain_computeStats << " = " << m_filteredChainComputeStats
-     << "\n" << m_option_avgChain_compute           << " = ";
+  os << "\n" << m_option_uniqueChain_generate           << " = " << m_uniqueChainGenerate
+     << "\n" << m_option_uniqueChain_write              << " = " << m_uniqueChainWrite
+     << "\n" << m_option_uniqueChain_computeStats       << " = " << m_uniqueChainComputeStats
+     << "\n" << m_option_filteredChain_generate         << " = " << m_filteredChainGenerate
+     << "\n" << m_option_filteredChain_discardedPortion << " = " << m_filteredChainDiscardedPortion
+     << "\n" << m_option_filteredChain_lag              << " = " << m_filteredChainLag
+     << "\n" << m_option_filteredChain_write            << " = " << m_filteredChainWrite
+     << "\n" << m_option_filteredChain_computeStats     << " = " << m_filteredChainComputeStats
+#if 0
+     << "\n" << m_option_avgChain_compute               << " = ";
   for (unsigned int i = 0; i < m_avgChainCompute.size(); ++i) {
     os << m_avgChainCompute[i] << " ";
   }
   os << "\n" << m_option_avgChain_write          << " = " << m_avgChainWrite
      << "\n" << m_option_avgChain_computeStats   << " = " << m_avgChainComputeStats
+#endif
      << "\n" << m_option_dr_maxNumExtraStages    << " = " << m_maxNumExtraStages
      << "\n" << m_option_dr_scalesForExtraStages << " = ";
   for (unsigned int i = 0; i < m_scalesForCovMProposals.size(); ++i) {
@@ -3038,27 +3040,25 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::print(std::ostream& os) const
   for (unsigned int i = 0; i < m_psdAtZeroNumBlocks.size(); ++i) {
     os << m_psdAtZeroNumBlocks[i] << " ";
   }
-  os << "\n" << m_option_psdAtZero_hopSizeRatio         << " = " << m_psdAtZeroHopSizeRatio
-     << "\n" << m_option_psdAtZero_display              << " = " << m_psdAtZeroDisplay
-     << "\n" << m_option_psdAtZero_write                << " = " << m_psdAtZeroWrite
-     << "\n" << m_option_geweke_compute                 << " = " << m_gewekeCompute
-     << "\n" << m_option_geweke_naRatio                 << " = " << m_gewekeNaRatio
-     << "\n" << m_option_geweke_nbRatio                 << " = " << m_gewekeNbRatio
-     << "\n" << m_option_geweke_display                 << " = " << m_gewekeDisplay
-     << "\n" << m_option_geweke_write                   << " = " << m_gewekeWrite
-     << "\n" << m_option_corr_computeViaDef             << " = " << m_corrComputeViaDef
-     << "\n" << m_option_corr_computeViaFft             << " = " << m_corrComputeViaFft
-     << "\n" << m_option_corr_secondLag                 << " = " << m_corrSecondLag
-     << "\n" << m_option_corr_lagSpacing                << " = " << m_corrLagSpacing
-     << "\n" << m_option_corr_numLags                   << " = " << m_corrNumLags
-     << "\n" << m_option_corr_display                   << " = " << m_corrDisplay
-     << "\n" << m_option_corr_write                     << " = " << m_corrWrite
-     << "\n" << m_option_filter_initialDiscardedPortion << " = " << m_filterInitialDiscardedPortion
-     << "\n" << m_option_filter_lag                     << " = " << m_filterLag
-     << "\n" << m_option_hist_compute                   << " = " << m_histCompute
-     << "\n" << m_option_hist_numInternalBins           << " = " << m_histNumInternalBins
-     << "\n" << m_option_kde_compute                    << " = " << m_kdeCompute
-     << "\n" << m_option_kde_numEvalPositions           << " = " << m_kdeNumEvalPositions
+  os << "\n" << m_option_psdAtZero_hopSizeRatio << " = " << m_psdAtZeroHopSizeRatio
+     << "\n" << m_option_psdAtZero_display      << " = " << m_psdAtZeroDisplay
+     << "\n" << m_option_psdAtZero_write        << " = " << m_psdAtZeroWrite
+     << "\n" << m_option_geweke_compute         << " = " << m_gewekeCompute
+     << "\n" << m_option_geweke_naRatio         << " = " << m_gewekeNaRatio
+     << "\n" << m_option_geweke_nbRatio         << " = " << m_gewekeNbRatio
+     << "\n" << m_option_geweke_display         << " = " << m_gewekeDisplay
+     << "\n" << m_option_geweke_write           << " = " << m_gewekeWrite
+     << "\n" << m_option_corr_computeViaDef     << " = " << m_corrComputeViaDef
+     << "\n" << m_option_corr_computeViaFft     << " = " << m_corrComputeViaFft
+     << "\n" << m_option_corr_secondLag         << " = " << m_corrSecondLag
+     << "\n" << m_option_corr_lagSpacing        << " = " << m_corrLagSpacing
+     << "\n" << m_option_corr_numLags           << " = " << m_corrNumLags
+     << "\n" << m_option_corr_display           << " = " << m_corrDisplay
+     << "\n" << m_option_corr_write             << " = " << m_corrWrite
+     << "\n" << m_option_hist_compute           << " = " << m_histCompute
+     << "\n" << m_option_hist_numInternalBins   << " = " << m_histNumInternalBins
+     << "\n" << m_option_kde_compute            << " = " << m_kdeCompute
+     << "\n" << m_option_kde_numEvalPositions   << " = " << m_kdeNumEvalPositions
      << "\n" << "(internal variable) m_likelihoodObjComputesMisfits = " << m_likelihoodObjComputesMisfits
      << std::endl;
 
