@@ -82,12 +82,6 @@ template <class V, class M>
   //std::cout << "Entering uqFinDimLinearSpaceClass<V,M>::constructor()"
   //          << std::endl;
 
-  //if ((prefix         != NULL) && 
-  //    (strlen(prefix) != 0   )) {
-  //  std::string tmpString(prefix);
-  //  m_prefix = tmpString + "_";
-  //}
-
   //std::cout << "Leaving uqFinDimLinearSpaceClass<V,M>::constructor()"
   //          << std::endl;
 }

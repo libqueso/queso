@@ -144,6 +144,7 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::generateChains(
 
     if (m_chainComputeStats) {
       computeStatistics(workingChain,
+                        *m_chainStatisticalOptions,
                         chainName,
                         ofs);
     }
@@ -174,6 +175,7 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::generateChains(
       // Compute statistics
       if (m_uniqueChainComputeStats) {
         computeStatistics(workingChain,
+                          *m_uniqueChainStatisticalOptions,
                           chainName,
                           ofs);
       }
@@ -191,6 +193,7 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::generateChains(
       unsigned int filterSpacing    = m_filteredChainLag;
       if (filterSpacing == 0) {
         computeFilterParameters(workingChain,
+                                *m_filteredChainStatisticalOptions,
                                 chainName,
                                 ofs,
                                 filterInitialPos,
@@ -210,21 +213,10 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::generateChains(
       // Compute statistics
       if (m_filteredChainComputeStats) {
         computeStatistics(workingChain,
+                          *m_filteredChainStatisticalOptions,
                           chainName,
                           ofs);
       }
-    }
-
-    //****************************************************
-    // Eventually:
-    // --> compute histogram
-    // --> compute KDE
-    //****************************************************
-    if ((m_histCompute) ||
-        (m_kdeCompute )) {
-      computeHistKde(workingChain,
-                     chainName,
-                     ofs);
     }
 
     //****************************************************

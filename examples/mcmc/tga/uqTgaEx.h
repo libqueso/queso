@@ -191,7 +191,7 @@ uqAppl(const uqEnvironmentClass& env)
                                                                  (void *) &calib_M2lPriorRoutine_Data);
 
   //******************************************************
-  // Step 3 of 6: Define the likelihood prob. density function object: just misfits
+  // Step 3 of 6: Define the likelihood function object
   //******************************************************
 
   // Open input file on experimental data

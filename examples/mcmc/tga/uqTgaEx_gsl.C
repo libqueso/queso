@@ -20,6 +20,7 @@
 #include <uqTgaEx.h>
 #include <uqApplRoutines.h>
 #include <uqGslMatrix.h>
+#include <uqProblem.h>
 
 int main(int argc, char* argv[])
 {
@@ -28,6 +29,18 @@ int main(int argc, char* argv[])
   //************************************************
   MPI_Init(&argc,&argv);
   uqEnvironmentClass* env = new uqEnvironmentClass(argc,argv);
+
+  uqProblemClass<uqGslVectorClass, // type for parameter vectors
+                 uqGslMatrixClass, // type for parameter matrices
+                 uqGslVectorClass, // type for likelihood vectors
+                 uqGslMatrixClass, // type for likelihood matrices
+                 uqGslVectorClass, // type for qoi vectors
+                 uqGslMatrixClass  // type for qoi matrices
+                > problem(*env);
+
+  problem.setSlice(0);
+
+  problem.quantify();
 
   //************************************************
   // Call application

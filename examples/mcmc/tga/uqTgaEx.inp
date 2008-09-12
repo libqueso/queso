@@ -28,24 +28,28 @@ calib_observableSpace_specificationFile = calib.obs
 
 ###############################################
 # Calibration DRAM Markov Chain Generator
+# Size examples 16K   128K   2M      16M
+#               16384 131072 2097152 16777216
 ###############################################
-#calib_MCMC_help                           = anything
-calib_MCMC_chain_type                     = 1
-calib_MCMC_chain_number                   = 1
-##                                           16K   128K   2M      16M
-#calib_MCMC_chain_sizes                    = 16384 131072 2097152 16777216
-calib_MCMC_chain_sizes                    = 10001
-calib_MCMC_chain_use2                     = 0
-calib_MCMC_chain_generateExtra            = 0
-calib_MCMC_chain_displayPeriod            = 5000
-calib_MCMC_chain_measureRunTimes          = 1
-calib_MCMC_chain_write                    = 1
-calib_MCMC_chain_computeStats             = 0
-calib_MCMC_chain_outputFileNames          = calibOutput.m
+calib_MCMC_help = anything
 
-calib_MCMC_uniqueChain_generate           = 0
-calib_MCMC_uniqueChain_write              = 1
-calib_MCMC_uniqueChain_computeStats       = 0
+calib_MCMC_chain_type            = 1
+calib_MCMC_chain_number          = 1
+calib_MCMC_chain_sizes           = 10001
+calib_MCMC_chain_outputFileNames = calibOutput.m
+calib_MCMC_chain_use2            = 0
+calib_MCMC_chain_generateExtra   = 0
+calib_MCMC_chain_displayPeriod   = 5000
+calib_MCMC_chain_measureRunTimes = 1
+calib_MCMC_chain_write           = 1
+calib_MCMC_chain_computeStats    = 1
+
+calib_MCMC_dr_maxNumExtraStages       = 1
+calib_MCMC_dr_scalesForExtraStages    = 5. 4. 3.
+calib_MCMC_am_initialNonAdaptInterval = 0
+calib_MCMC_am_adaptInterval           = 100
+calib_MCMC_am_eta                     = 1.92
+calib_MCMC_am_epsilon                 = 1.e-5
 
 calib_MCMC_filteredChain_generate         = 0
 calib_MCMC_filteredChain_discardedPortion = 0.
@@ -53,101 +57,131 @@ calib_MCMC_filteredChain_lag              = 0
 calib_MCMC_filteredChain_write            = 1
 calib_MCMC_filteredChain_computeStats     = 0
 
-calib_MCMC_dr_maxNumExtraStages           = 1
-calib_MCMC_dr_scalesForExtraStages        = 5. 4. 3.
-calib_MCMC_am_initialNonAdaptInterval     = 0
-calib_MCMC_am_adaptInterval               = 100
-calib_MCMC_am_eta                         = 1.92
-calib_MCMC_am_epsilon                     = 1.e-5
+#calib_MCMC_chain_stats_help = anything
+calib_MCMC_chain_stats_initialDiscardedPortions = 0.
+calib_MCMC_chain_stats_bmm_run                  = 0
+calib_MCMC_chain_stats_bmm_lengths              = 50 100 200 250
+calib_MCMC_chain_stats_fft_compute              = 0
+calib_MCMC_chain_stats_fft_paramId              = 0
+calib_MCMC_chain_stats_fft_size                 = 2048
+calib_MCMC_chain_stats_fft_testInversion        = 1
+calib_MCMC_chain_stats_fft_write                = 1
+calib_MCMC_chain_stats_psd_compute              = 1
+calib_MCMC_chain_stats_psd_numBlocks            = 8
+calib_MCMC_chain_stats_psd_hopSizeRatio         = .5
+calib_MCMC_chain_stats_psd_paramId              = 0
+calib_MCMC_chain_stats_psd_write                = 1
+calib_MCMC_chain_stats_psdAtZero_compute        = 1
+calib_MCMC_chain_stats_psdAtZero_numBlocks      = 32
+calib_MCMC_chain_stats_psdAtZero_hopSizeRatio   = .5
+calib_MCMC_chain_stats_psdAtZero_display        = 1
+calib_MCMC_chain_stats_psdAtZero_write          = 1
+calib_MCMC_chain_stats_geweke_compute           = 1
+calib_MCMC_chain_stats_geweke_naRatio           = .1
+calib_MCMC_chain_stats_geweke_nbRatio           = .5
+calib_MCMC_chain_stats_geweke_display           = 1
+calib_MCMC_chain_stats_geweke_write             = 1
+calib_MCMC_chain_stats_corr_computeViaDef       = 1
+calib_MCMC_chain_stats_corr_computeViaFft       = 1
+calib_MCMC_chain_stats_corr_secondLag           = 2
+calib_MCMC_chain_stats_corr_lagSpacing          = 1
+calib_MCMC_chain_stats_corr_numLags             = 15
+calib_MCMC_chain_stats_corr_display             = 1
+calib_MCMC_chain_stats_corr_write               = 1
+calib_MCMC_chain_stats_hist_compute             = 1
+calib_MCMC_chain_stats_hist_numInternalBins     = 200
+calib_MCMC_chain_stats_kde_compute              = 1
+calib_MCMC_chain_stats_kde_numEvalPositions     = 200
 
-calib_MCMC_stats_initialDiscardedPortions = 0.
-calib_MCMC_bmm_run                        = 0
-calib_MCMC_bmm_lengths                    = 50 100 200 250
-calib_MCMC_fft_compute                    = 0
-calib_MCMC_fft_paramId                    = 0
-calib_MCMC_fft_size                       = 2048
-calib_MCMC_fft_testInversion              = 1
-calib_MCMC_fft_write                      = 1
-calib_MCMC_psd_compute                    = 1
-calib_MCMC_psd_numBlocks                  = 8
-calib_MCMC_psd_hopSizeRatio               = .5
-calib_MCMC_psd_paramId                    = 0
-calib_MCMC_psd_write                      = 1
-calib_MCMC_psdAtZero_compute              = 1
-calib_MCMC_psdAtZero_numBlocks            = 32
-calib_MCMC_psdAtZero_hopSizeRatio         = .5
-calib_MCMC_psdAtZero_display              = 1
-calib_MCMC_psdAtZero_write                = 1
-calib_MCMC_geweke_compute                 = 1
-calib_MCMC_geweke_naRatio                 = .1
-calib_MCMC_geweke_nbRatio                 = .5
-calib_MCMC_geweke_display                 = 1
-calib_MCMC_geweke_write                   = 1
-calib_MCMC_corr_computeViaDef             = 1
-calib_MCMC_corr_computeViaFft             = 1
-calib_MCMC_corr_secondLag                 = 2
-calib_MCMC_corr_lagSpacing                = 1
-calib_MCMC_corr_numLags                   = 15
-calib_MCMC_corr_display                   = 1
-calib_MCMC_corr_write                     = 1
-
-calib_MCMC_hist_compute                   = 1
-calib_MCMC_hist_numInternalBins           = 200
-calib_MCMC_kde_compute                    = 1
-calib_MCMC_kde_numEvalPositions           = 200
+#calib_MCMC_uniqueChain_stats_help = anything
+calib_MCMC_uniqueChain_stats_initialDiscardedPortions = 0.
+calib_MCMC_uniqueChain_stats_bmm_run                  = 0
+calib_MCMC_uniqueChain_stats_bmm_lengths              = 50 100 200 250
+calib_MCMC_uniqueChain_stats_fft_compute              = 0
+calib_MCMC_uniqueChain_stats_fft_paramId              = 0
+calib_MCMC_uniqueChain_stats_fft_size                 = 2048
+calib_MCMC_uniqueChain_stats_fft_testInversion        = 1
+calib_MCMC_uniqueChain_stats_fft_write                = 1
+calib_MCMC_uniqueChain_stats_psd_compute              = 1
+calib_MCMC_uniqueChain_stats_psd_numBlocks            = 8
+calib_MCMC_uniqueChain_stats_psd_hopSizeRatio         = .5
+calib_MCMC_uniqueChain_stats_psd_paramId              = 0
+calib_MCMC_uniqueChain_stats_psd_write                = 1
+calib_MCMC_uniqueChain_stats_psdAtZero_compute        = 1
+calib_MCMC_uniqueChain_stats_psdAtZero_numBlocks      = 32
+calib_MCMC_uniqueChain_stats_psdAtZero_hopSizeRatio   = .5
+calib_MCMC_uniqueChain_stats_psdAtZero_display        = 1
+calib_MCMC_uniqueChain_stats_psdAtZero_write          = 1
+calib_MCMC_uniqueChain_stats_geweke_compute           = 1
+calib_MCMC_uniqueChain_stats_geweke_naRatio           = .1
+calib_MCMC_uniqueChain_stats_geweke_nbRatio           = .5
+calib_MCMC_uniqueChain_stats_geweke_display           = 1
+calib_MCMC_uniqueChain_stats_geweke_write             = 1
+calib_MCMC_uniqueChain_stats_corr_computeViaDef       = 1
+calib_MCMC_uniqueChain_stats_corr_computeViaFft       = 1
+calib_MCMC_uniqueChain_stats_corr_secondLag           = 2
+calib_MCMC_uniqueChain_stats_corr_lagSpacing          = 1
+calib_MCMC_uniqueChain_stats_corr_numLags             = 15
+calib_MCMC_uniqueChain_stats_corr_display             = 1
+calib_MCMC_uniqueChain_stats_corr_write               = 1
+calib_MCMC_uniqueChain_stats_hist_compute             = 1
+calib_MCMC_uniqueChain_stats_hist_numInternalBins     = 200
+calib_MCMC_uniqueChain_stats_kde_compute              = 1
+calib_MCMC_uniqueChain_stats_kde_numEvalPositions     = 200
 
 ###############################################
 # Calibration QoI Space
 ###############################################
-#calib_qoiSpace_help              = anything
+#calib_qoiSpace_help = anything
+
 calib_qoiSpace_dim               = 2
 calib_qoiSpace_specificationFile = calib.qoi
 
 ###############################################
 # Calibration QoI
+# NumSamples examples 16K   128K   2M      16M
+#                     16384 131072 2097152 16777216
 ###############################################
-#calib_QOI_help                           = anything
-##                                          16K   128K   2M      16M
-#calib_QOI_numSamples                     = 16384 131072 2097152 16777216
+#calib_QOI_help = anything
+
 calib_QOI_numSamples                     = 10001
+calib_QOI_outputFileName                 = calibOutput.m
 calib_QOI_displayPeriod                  = 5000
 calib_QOI_measureRunTimes                = 1
 calib_QOI_write                          = 1
 calib_QOI_computeStats                   = 0
-calib_QOI_outputFileName                 = calibOutput.m
 
 calib_QOI_stats_initialDiscardedPortions = 0.
-calib_QOI_bmm_run                        = 0
-calib_QOI_bmm_lengths                    = 50 100 200 250
-calib_QOI_fft_compute                    = 0
-calib_QOI_fft_paramId                    = 0
-calib_QOI_fft_size                       = 2048
-calib_QOI_fft_testInversion              = 1
-calib_QOI_fft_write                      = 1
-calib_QOI_psd_compute                    = 1
-calib_QOI_psd_numBlocks                  = 8
-calib_QOI_psd_hopSizeRatio               = .5
-calib_QOI_psd_paramId                    = 0
-calib_QOI_psd_write                      = 1
-calib_QOI_psdAtZero_compute              = 1
-calib_QOI_psdAtZero_numBlocks            = 32
-calib_QOI_psdAtZero_hopSizeRatio         = .5
-calib_QOI_psdAtZero_display              = 1
-calib_QOI_psdAtZero_write                = 1
-calib_QOI_geweke_compute                 = 1
-calib_QOI_geweke_naRatio                 = .1
-calib_QOI_geweke_nbRatio                 = .5
-calib_QOI_geweke_display                 = 1
-calib_QOI_geweke_write                   = 1
-calib_QOI_corr_computeViaDef             = 1
-calib_QOI_corr_computeViaFft             = 1
-calib_QOI_corr_secondLag                 = 2
-calib_QOI_corr_lagSpacing                = 1
-calib_QOI_corr_numLags                   = 15
-calib_QOI_corr_display                   = 1
-calib_QOI_corr_write                     = 1
-
-calib_QOI_hist_compute                   = 1
-calib_QOI_hist_numInternalBins           = 200
-calib_QOI_kde_compute                    = 1
-calib_QOI_kde_numEvalPositions           = 200
+calib_QOI_stats_bmm_run                  = 0
+calib_QOI_stats_bmm_lengths              = 50 100 200 250
+calib_QOI_stats_fft_compute              = 0
+calib_QOI_stats_fft_paramId              = 0
+calib_QOI_stats_fft_size                 = 2048
+calib_QOI_stats_fft_testInversion        = 1
+calib_QOI_stats_fft_write                = 1
+calib_QOI_stats_psd_compute              = 1
+calib_QOI_stats_psd_numBlocks            = 8
+calib_QOI_stats_psd_hopSizeRatio         = .5
+calib_QOI_stats_psd_paramId              = 0
+calib_QOI_stats_psd_write                = 1
+calib_QOI_stats_psdAtZero_compute        = 1
+calib_QOI_stats_psdAtZero_numBlocks      = 32
+calib_QOI_stats_psdAtZero_hopSizeRatio   = .5
+calib_QOI_stats_psdAtZero_display        = 1
+calib_QOI_stats_psdAtZero_write          = 1
+calib_QOI_stats_geweke_compute           = 1
+calib_QOI_stats_geweke_naRatio           = .1
+calib_QOI_stats_geweke_nbRatio           = .5
+calib_QOI_stats_geweke_display           = 1
+calib_QOI_stats_geweke_write             = 1
+calib_QOI_stats_corr_computeViaDef       = 1
+calib_QOI_stats_corr_computeViaFft       = 1
+calib_QOI_stats_corr_secondLag           = 2
+calib_QOI_stats_corr_lagSpacing          = 1
+calib_QOI_stats_corr_numLags             = 15
+calib_QOI_stats_corr_display             = 1
+calib_QOI_stats_corr_write               = 1
+calib_QOI_stats_hist_compute             = 1
+calib_QOI_stats_hist_numInternalBins     = 200
+calib_QOI_stats_kde_compute              = 1
+calib_QOI_stats_kde_numEvalPositions     = 200
