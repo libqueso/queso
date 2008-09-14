@@ -52,7 +52,7 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::generateChains(
     // Open file      
     //****************************************************
     std::ofstream* ofs = NULL;
-    if (m_chainOutputFileNames[chainId] == UQ_MCMC_NAME_FOR_NO_OUTPUT_FILE) {
+    if (m_chainOutputFileNames[chainId] == UQ_MCMC_FILENAME_FOR_NO_OUTPUT_FILE) {
       if (m_env.rank() == 0) {
         std::cout << "No output file opened for chain loop id = " << chainId
                   << std::endl;

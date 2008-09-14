@@ -22,10 +22,10 @@
 
 #undef  UQ_DRAM_MCG_REQUIRES_INVERTED_COV_MATRICES
 
-#define UQ_MCMC_MARKOV_CHAIN_TYPE       1
-#define UQ_MCMC_WHITE_NOISE_CHAIN_TYPE  2
-#define UQ_MCMC_UNIFORM_CHAIN_TYPE      3
-#define UQ_MCMC_NAME_FOR_NO_OUTPUT_FILE "."
+#define UQ_MCMC_MARKOV_CHAIN_TYPE           1
+#define UQ_MCMC_WHITE_NOISE_CHAIN_TYPE      2
+#define UQ_MCMC_UNIFORM_CHAIN_TYPE          3
+#define UQ_MCMC_FILENAME_FOR_NO_OUTPUT_FILE "."
 
 // _ODV = option default value
 #define UQ_MCMC_CHAIN_TYPE_ODV                       UQ_MCMC_MARKOV_CHAIN_TYPE
@@ -37,7 +37,7 @@
 #define UQ_MCMC_CHAIN_MEASURE_RUN_TIMES_ODV          0
 #define UQ_MCMC_CHAIN_WRITE_ODV                      0
 #define UQ_MCMC_CHAIN_COMPUTE_STATS_ODV              0
-#define UQ_MCMC_CHAIN_OUTPUT_FILE_NAMES_ODV          UQ_MCMC_NAME_FOR_NO_OUTPUT_FILE
+#define UQ_MCMC_CHAIN_OUTPUT_FILE_NAMES_ODV          UQ_MCMC_FILENAME_FOR_NO_OUTPUT_FILE
 #define UQ_MCMC_UNIQUE_CHAIN_GENERATE_ODV            0
 #define UQ_MCMC_UNIQUE_CHAIN_WRITE_ODV               0
 #define UQ_MCMC_UNIQUE_CHAIN_COMPUTE_STATS_ODV       0
@@ -97,7 +97,7 @@ public:
 
 private:
   void   resetChainAndRelatedInfo();
-  void   defineMyOptions         (po::options_description&     optionsDesc) const;
+  void   defineMyOptions         (po::options_description&     optionsDesc);
   void   getMyOptionValues       (po::options_description&     optionsDesc);
 
   int    prepareForNextChain     (const P_M*                   proposalCovMatrix);
@@ -394,49 +394,19 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::uqDRAM_MarkovChainGeneratorCl
   if (m_env.rank() == 0) std::cout << "Entering uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::constructor()"
                                    << std::endl;
 
-  m_option_help                           = m_prefix + "MCMC_help";
-
-  m_option_chain_type                     = m_prefix + "MCMC_chain_type";
-  m_option_chain_number                   = m_prefix + "MCMC_chain_number";
-  m_option_chain_sizes                    = m_prefix + "MCMC_chain_sizes";
-  m_option_chain_use2                     = m_prefix + "MCMC_chain_use2";
-  m_option_chain_generateExtra            = m_prefix + "MCMC_chain_generateExtra";
-  m_option_chain_displayPeriod            = m_prefix + "MCMC_chain_displayPeriod";
-  m_option_chain_measureRunTimes          = m_prefix + "MCMC_chain_measureRunTimes";
-  m_option_chain_write                    = m_prefix + "MCMC_chain_write";
-  m_option_chain_computeStats             = m_prefix + "MCMC_chain_computeStats";
-  m_option_chain_outputFileNames          = m_prefix + "MCMC_chain_outputFileNames";
-
-  m_option_uniqueChain_generate           = m_prefix + "MCMC_uniqueChain_generate";
-  m_option_uniqueChain_write              = m_prefix + "MCMC_uniqueChain_write";
-  m_option_uniqueChain_computeStats       = m_prefix + "MCMC_uniqueChain_computeStats";
-
-  m_option_filteredChain_generate         = m_prefix + "MCMC_filteredChain_generate";
-  m_option_filteredChain_discardedPortion = m_prefix + "MCMC_filteredChain_discardedPortion";
-  m_option_filteredChain_lag              = m_prefix + "MCMC_filteredChain_lag";
-  m_option_filteredChain_write            = m_prefix + "MCMC_filteredChain_write";
-  m_option_filteredChain_computeStats     = m_prefix + "MCMC_filteredChain_computeStats";
-
-  m_option_avgChain_compute               = m_prefix + "MCMC_avgChain_compute";
-  m_option_avgChain_write                 = m_prefix + "MCMC_avgChain_write";
-  m_option_avgChain_computeStats          = m_prefix + "MCMC_avgChain_computeStats";
-
-  m_option_dr_maxNumExtraStages           = m_prefix + "MCMC_dr_maxNumExtraStages";
-  m_option_dr_scalesForExtraStages        = m_prefix + "MCMC_dr_scalesForExtraStages";
-
-  m_option_am_initialNonAdaptInterval     = m_prefix + "MCMC_am_initialNonAdaptInterval";
-  m_option_am_adaptInterval               = m_prefix + "MCMC_am_adaptInterval";
-  m_option_am_eta                         = m_prefix + "MCMC_am_eta";
-  m_option_am_epsilon                     = m_prefix + "MCMC_am_epsilon";
-
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
 
-  if (m_env.rank() == 0) std::cout << "After getting values of options with prefix '" << m_prefix
-                                   << "', state of uqDRAM_MarkovChainGeneratorClass object is:"
+  if (m_env.rank() == 0) std::cout << "In uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::constructor()"
+                                   << ": after getting values of options with prefix '" << m_prefix
+                                   << "', state of  object is:"
                                    << "\n" << *this
                                    << std::endl;
+
+  if (m_chainComputeStats        ) m_chainStatisticalOptions         = new uqChainStatisticalOptionsClass(m_env,m_prefix+"MCMC_chain_"        );
+  if (m_uniqueChainComputeStats  ) m_uniqueChainStatisticalOptions   = new uqChainStatisticalOptionsClass(m_env,m_prefix+"MCMC_uniqueChain_"  );
+  if (m_filteredChainComputeStats) m_filteredChainStatisticalOptions = new uqChainStatisticalOptionsClass(m_env,m_prefix+"MCMC_filteredChain_");
 
   if (m_env.rank() == 0) std::cout << "Leaving uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::constructor()"
                                    << std::endl;
@@ -519,8 +489,43 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::resetChainAndRelatedInfo()
 template<class P_V,class P_M,class L_V,class L_M>
 void
 uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::defineMyOptions(
-  po::options_description& optionsDesc) const
+  po::options_description& optionsDesc)
 {
+  m_option_help                           = m_prefix + "MCMC_help";
+
+  m_option_chain_type                     = m_prefix + "MCMC_chain_type";
+  m_option_chain_number                   = m_prefix + "MCMC_chain_number";
+  m_option_chain_sizes                    = m_prefix + "MCMC_chain_sizes";
+  m_option_chain_use2                     = m_prefix + "MCMC_chain_use2";
+  m_option_chain_generateExtra            = m_prefix + "MCMC_chain_generateExtra";
+  m_option_chain_displayPeriod            = m_prefix + "MCMC_chain_displayPeriod";
+  m_option_chain_measureRunTimes          = m_prefix + "MCMC_chain_measureRunTimes";
+  m_option_chain_write                    = m_prefix + "MCMC_chain_write";
+  m_option_chain_computeStats             = m_prefix + "MCMC_chain_computeStats";
+  m_option_chain_outputFileNames          = m_prefix + "MCMC_chain_outputFileNames";
+
+  m_option_uniqueChain_generate           = m_prefix + "MCMC_uniqueChain_generate";
+  m_option_uniqueChain_write              = m_prefix + "MCMC_uniqueChain_write";
+  m_option_uniqueChain_computeStats       = m_prefix + "MCMC_uniqueChain_computeStats";
+
+  m_option_filteredChain_generate         = m_prefix + "MCMC_filteredChain_generate";
+  m_option_filteredChain_discardedPortion = m_prefix + "MCMC_filteredChain_discardedPortion";
+  m_option_filteredChain_lag              = m_prefix + "MCMC_filteredChain_lag";
+  m_option_filteredChain_write            = m_prefix + "MCMC_filteredChain_write";
+  m_option_filteredChain_computeStats     = m_prefix + "MCMC_filteredChain_computeStats";
+
+  m_option_avgChain_compute               = m_prefix + "MCMC_avgChain_compute";
+  m_option_avgChain_write                 = m_prefix + "MCMC_avgChain_write";
+  m_option_avgChain_computeStats          = m_prefix + "MCMC_avgChain_computeStats";
+
+  m_option_dr_maxNumExtraStages           = m_prefix + "MCMC_dr_maxNumExtraStages";
+  m_option_dr_scalesForExtraStages        = m_prefix + "MCMC_dr_scalesForExtraStages";
+
+  m_option_am_initialNonAdaptInterval     = m_prefix + "MCMC_am_initialNonAdaptInterval";
+  m_option_am_adaptInterval               = m_prefix + "MCMC_am_adaptInterval";
+  m_option_am_eta                         = m_prefix + "MCMC_am_eta";
+  m_option_am_epsilon                     = m_prefix + "MCMC_am_epsilon";
+
   optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                                                   "produce help message for DRAM Markov chain generator"           )
     (m_option_chain_type.c_str(),                     po::value<unsigned int>()->default_value(UQ_MCMC_CHAIN_TYPE_ODV                      ), "type of chain (1=Markov, 2=White noise)"                        )
@@ -608,7 +613,6 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::getMyOptionValues(
 
   if (m_env.allOptionsMap().count(m_option_chain_computeStats.c_str())) {
     m_chainComputeStats = m_env.allOptionsMap()[m_option_chain_computeStats.c_str()].as<bool>();
-    if (m_chainComputeStats) m_chainStatisticalOptions = new uqChainStatisticalOptionsClass(m_env,m_prefix+"MCMC_chain_");
   }
 
   if (m_env.allOptionsMap().count(m_option_chain_generateExtra.c_str())) {
@@ -625,7 +629,6 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::getMyOptionValues(
 
   //if (m_env.allOptionsMap().count(m_option_uniqueChain_computeStats.c_str())) {
   //  m_uniqueChainComputeStats = m_env.allOptionsMap()[m_option_uniqueChain_computeStats.c_str()].as<bool>();
-  //  if (m_uniqueChainComputeStats) m_uniqueChainStatisticalOptions = new uqChainStatisticalOptionsClass(m_env,m_prefix+"MCMC_uniqueChain_");
   //}
 
   if (m_env.allOptionsMap().count(m_option_filteredChain_generate.c_str())) {
@@ -646,7 +649,6 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::getMyOptionValues(
 
   if (m_env.allOptionsMap().count(m_option_filteredChain_computeStats.c_str())) {
     m_filteredChainComputeStats = m_env.allOptionsMap()[m_option_filteredChain_computeStats.c_str()].as<bool>();
-    if (m_filteredChainComputeStats) m_filteredChainStatisticalOptions = new uqChainStatisticalOptionsClass(m_env,m_prefix+"MCMC_filteredChain_");
   }
 #if 0
   if (m_env.allOptionsMap().count(m_option_avgChain_compute.c_str())) {

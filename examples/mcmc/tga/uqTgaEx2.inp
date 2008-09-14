@@ -1,0 +1,204 @@
+###############################################
+# UQ Environment
+###############################################
+#uqEnv_help      = anything
+uqEnv_verbosity = 2
+uqEnv_seed      = 0
+
+###############################################
+# UQ Problem
+###############################################
+#uqProblem_help          = anything
+uqProblem_numSlices     = 1
+uqProblem_slicePrefixes = slice0_
+uqProblem_sliceOrder    = 0
+
+###############################################
+# Slice0 Configuration  
+###############################################
+slice0_help             = anything
+slice0_calibrate        = 1
+slice0_calibInputSlice  = -1
+slice0_propagate        = 1
+slice0_propagInputSlice = 0
+
+###############################################
+# Slice0 Parameter Space
+###############################################
+#slice0_paramSpace_help              = anything
+slice0_paramSpace_dim               = 2
+slice0_paramSpace_specificationFile = calib.par
+
+###############################################
+# Slice0 State Space
+###############################################
+#slice0_stateSpace_help = anything
+#slice0_stateSpace_dim  = 5
+
+###############################################
+# Slice0 Observable Space
+###############################################
+#slice0_observableSpace_help              = anything
+slice0_observableSpace_updateVariances   = 1
+slice0_observableSpace_numSubSpaces      = 1
+slice0_observableSpace_specificationFile = calib.obs
+
+###############################################
+# Slice0 DRAM Markov Chain Generator
+# Size examples 16K   128K   2M      16M
+#               16384 131072 2097152 16777216
+###############################################
+slice0_MCMC_help = anything
+
+slice0_MCMC_chain_type            = 1
+slice0_MCMC_chain_number          = 1
+slice0_MCMC_chain_sizes           = 10001
+slice0_MCMC_chain_outputFileNames = calibOutput.m
+slice0_MCMC_chain_use2            = 0
+slice0_MCMC_chain_generateExtra   = 0
+slice0_MCMC_chain_displayPeriod   = 5000
+slice0_MCMC_chain_measureRunTimes = 1
+slice0_MCMC_chain_write           = 1
+slice0_MCMC_chain_computeStats    = 1
+
+slice0_MCMC_dr_maxNumExtraStages       = 1
+slice0_MCMC_dr_scalesForExtraStages    = 5. 4. 3.
+slice0_MCMC_am_initialNonAdaptInterval = 0
+slice0_MCMC_am_adaptInterval           = 100
+slice0_MCMC_am_eta                     = 1.92
+slice0_MCMC_am_epsilon                 = 1.e-5
+
+slice0_MCMC_filteredChain_generate         = 0
+slice0_MCMC_filteredChain_discardedPortion = 0.
+slice0_MCMC_filteredChain_lag              = 0
+slice0_MCMC_filteredChain_write            = 1
+slice0_MCMC_filteredChain_computeStats     = 0
+
+#slice0_MCMC_chain_stats_help = anything
+slice0_MCMC_chain_stats_initialDiscardedPortions = 0.
+slice0_MCMC_chain_stats_bmm_run                  = 0
+slice0_MCMC_chain_stats_bmm_lengths              = 50 100 200 250
+slice0_MCMC_chain_stats_fft_compute              = 0
+slice0_MCMC_chain_stats_fft_paramId              = 0
+slice0_MCMC_chain_stats_fft_size                 = 2048
+slice0_MCMC_chain_stats_fft_testInversion        = 1
+slice0_MCMC_chain_stats_fft_write                = 1
+slice0_MCMC_chain_stats_psd_compute              = 1
+slice0_MCMC_chain_stats_psd_numBlocks            = 8
+slice0_MCMC_chain_stats_psd_hopSizeRatio         = .5
+slice0_MCMC_chain_stats_psd_paramId              = 0
+slice0_MCMC_chain_stats_psd_write                = 1
+slice0_MCMC_chain_stats_psdAtZero_compute        = 1
+slice0_MCMC_chain_stats_psdAtZero_numBlocks      = 32
+slice0_MCMC_chain_stats_psdAtZero_hopSizeRatio   = .5
+slice0_MCMC_chain_stats_psdAtZero_display        = 1
+slice0_MCMC_chain_stats_psdAtZero_write          = 1
+slice0_MCMC_chain_stats_geweke_compute           = 1
+slice0_MCMC_chain_stats_geweke_naRatio           = .1
+slice0_MCMC_chain_stats_geweke_nbRatio           = .5
+slice0_MCMC_chain_stats_geweke_display           = 1
+slice0_MCMC_chain_stats_geweke_write             = 1
+slice0_MCMC_chain_stats_corr_computeViaDef       = 1
+slice0_MCMC_chain_stats_corr_computeViaFft       = 1
+slice0_MCMC_chain_stats_corr_secondLag           = 2
+slice0_MCMC_chain_stats_corr_lagSpacing          = 1
+slice0_MCMC_chain_stats_corr_numLags             = 15
+slice0_MCMC_chain_stats_corr_display             = 1
+slice0_MCMC_chain_stats_corr_write               = 1
+slice0_MCMC_chain_stats_hist_compute             = 1
+slice0_MCMC_chain_stats_hist_numInternalBins     = 200
+slice0_MCMC_chain_stats_kde_compute              = 1
+slice0_MCMC_chain_stats_kde_numEvalPositions     = 200
+
+#slice0_MCMC_uniqueChain_stats_help = anything
+slice0_MCMC_uniqueChain_stats_initialDiscardedPortions = 0.
+slice0_MCMC_uniqueChain_stats_bmm_run                  = 0
+slice0_MCMC_uniqueChain_stats_bmm_lengths              = 50 100 200 250
+slice0_MCMC_uniqueChain_stats_fft_compute              = 0
+slice0_MCMC_uniqueChain_stats_fft_paramId              = 0
+slice0_MCMC_uniqueChain_stats_fft_size                 = 2048
+slice0_MCMC_uniqueChain_stats_fft_testInversion        = 1
+slice0_MCMC_uniqueChain_stats_fft_write                = 1
+slice0_MCMC_uniqueChain_stats_psd_compute              = 1
+slice0_MCMC_uniqueChain_stats_psd_numBlocks            = 8
+slice0_MCMC_uniqueChain_stats_psd_hopSizeRatio         = .5
+slice0_MCMC_uniqueChain_stats_psd_paramId              = 0
+slice0_MCMC_uniqueChain_stats_psd_write                = 1
+slice0_MCMC_uniqueChain_stats_psdAtZero_compute        = 1
+slice0_MCMC_uniqueChain_stats_psdAtZero_numBlocks      = 32
+slice0_MCMC_uniqueChain_stats_psdAtZero_hopSizeRatio   = .5
+slice0_MCMC_uniqueChain_stats_psdAtZero_display        = 1
+slice0_MCMC_uniqueChain_stats_psdAtZero_write          = 1
+slice0_MCMC_uniqueChain_stats_geweke_compute           = 1
+slice0_MCMC_uniqueChain_stats_geweke_naRatio           = .1
+slice0_MCMC_uniqueChain_stats_geweke_nbRatio           = .5
+slice0_MCMC_uniqueChain_stats_geweke_display           = 1
+slice0_MCMC_uniqueChain_stats_geweke_write             = 1
+slice0_MCMC_uniqueChain_stats_corr_computeViaDef       = 1
+slice0_MCMC_uniqueChain_stats_corr_computeViaFft       = 1
+slice0_MCMC_uniqueChain_stats_corr_secondLag           = 2
+slice0_MCMC_uniqueChain_stats_corr_lagSpacing          = 1
+slice0_MCMC_uniqueChain_stats_corr_numLags             = 15
+slice0_MCMC_uniqueChain_stats_corr_display             = 1
+slice0_MCMC_uniqueChain_stats_corr_write               = 1
+slice0_MCMC_uniqueChain_stats_hist_compute             = 1
+slice0_MCMC_uniqueChain_stats_hist_numInternalBins     = 200
+slice0_MCMC_uniqueChain_stats_kde_compute              = 1
+slice0_MCMC_uniqueChain_stats_kde_numEvalPositions     = 200
+
+###############################################
+# Slice0 QoI Space
+###############################################
+#slice0_qoiSpace_help = anything
+
+slice0_qoiSpace_dim               = 2
+slice0_qoiSpace_specificationFile = calib.qoi
+
+###############################################
+# Slice0 QoI
+# NumSamples examples 16K   128K   2M      16M
+#                     16384 131072 2097152 16777216
+###############################################
+#slice0_QOI_help = anything
+
+slice0_QOI_numSamples                     = 10001
+slice0_QOI_outputFileName                 = calibOutput.m
+slice0_QOI_displayPeriod                  = 5000
+slice0_QOI_measureRunTimes                = 1
+slice0_QOI_write                          = 1
+slice0_QOI_computeStats                   = 0
+
+slice0_QOI_stats_initialDiscardedPortions = 0.
+slice0_QOI_stats_bmm_run                  = 0
+slice0_QOI_stats_bmm_lengths              = 50 100 200 250
+slice0_QOI_stats_fft_compute              = 0
+slice0_QOI_stats_fft_paramId              = 0
+slice0_QOI_stats_fft_size                 = 2048
+slice0_QOI_stats_fft_testInversion        = 1
+slice0_QOI_stats_fft_write                = 1
+slice0_QOI_stats_psd_compute              = 1
+slice0_QOI_stats_psd_numBlocks            = 8
+slice0_QOI_stats_psd_hopSizeRatio         = .5
+slice0_QOI_stats_psd_paramId              = 0
+slice0_QOI_stats_psd_write                = 1
+slice0_QOI_stats_psdAtZero_compute        = 1
+slice0_QOI_stats_psdAtZero_numBlocks      = 32
+slice0_QOI_stats_psdAtZero_hopSizeRatio   = .5
+slice0_QOI_stats_psdAtZero_display        = 1
+slice0_QOI_stats_psdAtZero_write          = 1
+slice0_QOI_stats_geweke_compute           = 1
+slice0_QOI_stats_geweke_naRatio           = .1
+slice0_QOI_stats_geweke_nbRatio           = .5
+slice0_QOI_stats_geweke_display           = 1
+slice0_QOI_stats_geweke_write             = 1
+slice0_QOI_stats_corr_computeViaDef       = 1
+slice0_QOI_stats_corr_computeViaFft       = 1
+slice0_QOI_stats_corr_secondLag           = 2
+slice0_QOI_stats_corr_lagSpacing          = 1
+slice0_QOI_stats_corr_numLags             = 15
+slice0_QOI_stats_corr_display             = 1
+slice0_QOI_stats_corr_write               = 1
+slice0_QOI_stats_hist_compute             = 1
+slice0_QOI_stats_hist_numInternalBins     = 200
+slice0_QOI_stats_kde_compute              = 1
+slice0_QOI_stats_kde_numEvalPositions     = 200

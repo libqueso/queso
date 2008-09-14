@@ -110,6 +110,7 @@ uqParamSpaceClass<V,M>::uqParamSpaceClass(
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqParamSpaceClass<V,M>::constructor()"
+              << ": m_prefix = " << uqFinDimLinearSpaceClass<V,M>::m_prefix
               << std::endl;
   }
 
@@ -132,6 +133,7 @@ uqParamSpaceClass<V,M>::uqParamSpaceClass(
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Leaving uqParamSpaceClass<V,M>::constructor()"
+              << ": m_prefix = " << uqFinDimLinearSpaceClass<V,M>::m_prefix
               << std::endl;
   }
 }
