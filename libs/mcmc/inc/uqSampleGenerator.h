@@ -62,6 +62,8 @@ template<class V, class M>
 void
 uqSampleGenerator_BaseClass<V,M>::nextSample(const V& paramValues) const
 {
-  return m_routinePtr(paramValues, m_routineDataPtr);
+  m_routinePtr(paramValues, m_routineDataPtr);
+
+  return;
 }
 #endif // __UQ_SAMPLE_GENERATOR_H__

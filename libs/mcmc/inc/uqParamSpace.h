@@ -99,7 +99,10 @@ uqParamSpaceClass<V,M>::uqParamSpaceClass(
   const char*               prefix)
   :
   uqFinDimLinearSpaceClass<V,M>(env,prefix),
-  m_optionsDesc                (NULL),
+  m_optionsDesc                (new po::options_description("Parameter space options")),
+  m_option_help                (uqFinDimLinearSpaceClass<V,M>::m_prefix + "paramSpace_help"),
+  m_option_dim                 (uqFinDimLinearSpaceClass<V,M>::m_prefix + "paramSpace_dim"),
+  m_option_specificationFile   (uqFinDimLinearSpaceClass<V,M>::m_prefix + "paramSpace_specificationFile"),
   m_parameters                 (0),//,NULL),
   m_dummyParameter             ("NonExistentYet",0.),
   m_initialValues              (NULL),
@@ -114,11 +117,6 @@ uqParamSpaceClass<V,M>::uqParamSpaceClass(
               << std::endl;
   }
 
-  m_option_help              = uqFinDimLinearSpaceClass<V,M>::m_prefix + "paramSpace_help";
-  m_option_dim               = uqFinDimLinearSpaceClass<V,M>::m_prefix + "paramSpace_dim";
-  m_option_specificationFile = uqFinDimLinearSpaceClass<V,M>::m_prefix + "paramSpace_specificationFile";
-
-  m_optionsDesc = new po::options_description("Parameter space options");
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);

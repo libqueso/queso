@@ -49,6 +49,7 @@ protected:
 
   po::options_description* m_optionsDesc;
   std::string              m_option_help;
+  std::string              m_option_dim;
   std::string              m_option_specificationFile;
 
   std::vector<uqQoIClass*> m_qois; // FIXME: will need to be a parallel vector in case of a very large number of qois
@@ -75,19 +76,19 @@ uqQoISpaceClass<V,M>::uqQoISpaceClass(
   const char*               prefix)
   :
   uqFinDimLinearSpaceClass<V,M>(env,prefix),
-  m_optionsDesc                (NULL),
+  m_optionsDesc                (new po::options_description("QoI space options")),
+  m_option_help                (uqFinDimLinearSpaceClass<V,M>::m_prefix + "qoiSpace_help"             ),
+  m_option_dim                 (uqFinDimLinearSpaceClass<V,M>::m_prefix + "qoiSpace_dim"              ),
+  m_option_specificationFile   (uqFinDimLinearSpaceClass<V,M>::m_prefix + "qoiSpace_specificationFile"),
   m_qois                       (0),//,NULL),
-  m_dummyQoI                   ("NonExistentYet",0)
+  m_dummyQoI                   ("NonExistentYet")
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqQoISpaceClass<V,M>::constructor()"
               << std::endl;
   }
 
-  m_option_help              = uqFinDimLinearSpaceClass<V,M>::m_prefix + "qoiSpace_help";
-  m_option_specificationFile = uqFinDimLinearSpaceClass<V,M>::m_prefix + "qoiSpace_specificationFile";
 
-  m_optionsDesc = new po::options_description("QoI space options");
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
@@ -136,6 +137,7 @@ uqQoISpaceClass<V,M>::defineMyOptions(
 {
   m_optionsDesc->add_options()
     (m_option_help.c_str(),                                                            "produce help message for UQ qoi space"                 )
+    (m_option_dim.c_str(),               po::value<unsigned int>()->default_value(0),  "Space dimension"                                       )
     (m_option_specificationFile.c_str(), po::value<std::string >()->default_value(""), "File with the specification of all qois to be computed")
   ;
 
@@ -149,6 +151,11 @@ uqQoISpaceClass<V,M>::getMyOptionValues(po::options_description& optionsDesc)
   if (m_env.allOptionsMap().count(m_option_help.c_str())) {
     std::cout << optionsDesc
               << std::endl;
+  }
+
+  if (m_env.allOptionsMap().count(m_option_dim.c_str())) {
+    const po::variables_map& tmpMap = m_env.allOptionsMap();
+    m_dim = tmpMap[m_option_dim.c_str()].as<unsigned int>();
   }
 
   // Read qoi specification file only if 0 dimension was passed to constructor

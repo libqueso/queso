@@ -37,7 +37,7 @@ public:
  ~uqProblemClass();
 
         void                                          instantiateSlice (unsigned int                                           sliceId,
-                                                                        const uqProbDensity_BaseClass       <P_V,P_M>*         m2lPriorProbDensityObj,   // Set in substep x.1 in applications setting a problem slice
+                                                                        const uqProbDensity_BaseClass       <P_V,P_M>*         m2lPriorParamDensityObj,  // Set in substep x.1 in applications setting a problem slice
                                                                         const uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>* m2lLikelihoodFunctionObj, // Set in substep x.2
                                                                         P_M*                                                   proposalCovMatrix,        // Set in substep x.3
                                                                         const uqProposalDensity_BaseClass   <P_V,P_M>*         proposalDensityObj,       // Set in substep x.3
@@ -195,7 +195,7 @@ template <class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
 void
 uqProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::instantiateSlice(
   unsigned int                                           sliceId,
-  const uqProbDensity_BaseClass       <P_V,P_M>*         m2lPriorProbDensityObj,   // Set in substep x.1
+  const uqProbDensity_BaseClass       <P_V,P_M>*         m2lPriorParamDensityObj,  // Set in substep x.1
   const uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>* m2lLikelihoodFunctionObj, // Set in substep x.2
   P_M*                                                   proposalCovMatrix,        // Set in substep x.3
   const uqProposalDensity_BaseClass   <P_V,P_M>*         proposalDensityObj,       // Set in substep x.3
@@ -206,7 +206,7 @@ uqProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::instantiateSlice(
 {
   m_slices[sliceId] = new uqProblemSliceClass<P_V,P_M,L_V,L_M,Q_V,Q_M>(m_env,
                                                                        m_slicePrefixes[sliceId].c_str(),
-                                                                       m2lPriorProbDensityObj,
+                                                                       m2lPriorParamDensityObj,
                                                                        m2lLikelihoodFunctionObj,
                                                                        proposalCovMatrix,
                                                                        proposalDensityObj,
@@ -232,10 +232,28 @@ uqProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::quantify()
   for (unsigned int i = 0; i < m_numSlices; ++i) {
     uqProblemSliceClass<P_V,P_M,L_V,L_M,Q_V,Q_M>* currentSlice = m_slices[m_sliceOrder[i]];
     if (currentSlice->isCalibRequested()) {
-      currentSlice->calibrate();
+      if (currentSlice->calibInputSliceId() < 0) {
+        currentSlice->calibrate();
+      }
+      else {
+        unsigned int inputSliceId = (unsigned int) currentSlice->calibInputSliceId();
+        uqProblemSliceClass<P_V,P_M,L_V,L_M,Q_V,Q_M>* inputSlice = m_slices[inputSliceId];
+        currentSlice->calibrate(inputSlice->posteriorParamDensityObj());
+      }
     }
+  }
+
+  for (unsigned int i = 0; i < m_numSlices; ++i) {
+    uqProblemSliceClass<P_V,P_M,L_V,L_M,Q_V,Q_M>* currentSlice = m_slices[m_sliceOrder[i]];
     if (currentSlice->isPropagRequested()) {
-      currentSlice->propagate();
+      if (currentSlice->propagInputSliceId() < 0) {
+        currentSlice->propagate();
+      }
+      else {
+        unsigned int inputSliceId = (unsigned int) currentSlice->propagInputSliceId();
+        uqProblemSliceClass<P_V,P_M,L_V,L_M,Q_V,Q_M>* inputSlice = m_slices[inputSliceId];
+        currentSlice->propagate(inputSlice->posteriorParamGeneratorObj());
+      }
     }
   }
 
