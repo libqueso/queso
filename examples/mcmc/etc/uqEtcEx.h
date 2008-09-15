@@ -124,16 +124,16 @@ uqAppl(const uqEnvironmentClass& env)
   calib_M2lPriorRoutine_Data.paramPriorMus    = &calib_ParamPriorMus;
   calib_M2lPriorRoutine_Data.paramPriorSigmas = &calib_ParamPriorSigmas;
 
-  uq_M2lProbDensity_Class<P_V,P_M> calib_M2lPriorProbDensity_Obj(uqDefault_M2lPriorRoutine<P_V,P_M>, // use default prior() routine
-                                                                 (void *) &calib_M2lPriorRoutine_Data);
+  uqM2lProbDensity_Class<P_V,P_M> calib_M2lPriorProbDensity_Obj(uqDefault_M2lPriorRoutine<P_V,P_M>, // use default prior() routine
+                                                                (void *) &calib_M2lPriorRoutine_Data);
 #else // Or you might need to use your own prior function
   calib_M2lPriorRoutine_DataType<P_V,P_M> calib_M2lPriorRoutine_Data;
   P_V calib_ParamPriorSigmas(calib_ParamSpace.priorSigmaValues());
   calib_M2lPriorRoutine_Data.maybeYouNeedAVector = &calib_ParamPriorSigmas;
   calib_M2lPriorRoutine_Data.maybeYouNeedAMatrix = NULL;
 
-  uq_M2lProbDensity_Class<P_V,P_M> calib_M2lPriorProbDensity_Obj(calib_M2lPriorRoutine<P_V,P_M>,
-                                                                 (void *) &calib_M2lPriorRoutine_Data);
+  uqM2lProbDensity_Class<P_V,P_M> calib_M2lPriorProbDensity_Obj(calib_M2lPriorRoutine<P_V,P_M>,
+                                                                (void *) &calib_M2lPriorRoutine_Data);
 #endif
 
   //******************************************************
@@ -144,9 +144,9 @@ uqAppl(const uqEnvironmentClass& env)
   calib_CompleteLikelihoodRoutine_Data.aVectorForInstance = &calib_ParamInitials;
   calib_CompleteLikelihoodRoutine_Data.aMatrixForInstance = NULL;
 
-  uq_CompleteLikelihoodFunction_Class<P_V,P_M,L_V,L_M> calib_CompleteLikelihoodFunction_Obj(calib_CompleteLikelihoodRoutine<P_V,P_M,S_V,S_M,L_V,L_M>,
-                                                                                            (void *) &calib_CompleteLikelihoodRoutine_Data,
-                                                                                            true); // the routine computes [-2.*ln(Likelihood)]
+  uqCompleteLikelihoodFunction_Class<P_V,P_M,L_V,L_M> calib_CompleteLikelihoodFunction_Obj(calib_CompleteLikelihoodRoutine<P_V,P_M,S_V,S_M,L_V,L_M>,
+                                                                                           (void *) &calib_CompleteLikelihoodRoutine_Data,
+                                                                                           true); // the routine computes [-2.*ln(Likelihood)]
 
   //******************************************************
   // Step 4 of 6: Define the Markov chain generator.

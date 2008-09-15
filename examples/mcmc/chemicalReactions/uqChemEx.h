@@ -207,8 +207,8 @@ uqAppl(const uqEnvironmentClass& env)
   calib_M2lPriorRoutine_Data.paramPriorMus    = &calib_ParamPriorMus;
   calib_M2lPriorRoutine_Data.paramPriorSigmas = &calib_ParamPriorSigmas;
 
-  uq_M2lProbDensity_Class<P_V,P_M> calib_M2lPriorProbDensity_Obj(uqDefault_M2lPriorRoutine<P_V,P_M>, // use default prior() routine
-                                                                 (void *) &calib_M2lPriorRoutine_Data); 
+  uqM2lProbDensity_Class<P_V,P_M> calib_M2lPriorProbDensity_Obj(uqDefault_M2lPriorRoutine<P_V,P_M>, // use default prior() routine
+                                                                (void *) &calib_M2lPriorRoutine_Data); 
 
   //******************************************************
   // Step 3 of 6: Define the likelihood prob. density function object: just misfits
@@ -240,9 +240,9 @@ uqAppl(const uqEnvironmentClass& env)
   calib_MisfitLikelihoodRoutine_Data.gslOdeSolver                      = &gslOdeSolver;
 #endif
 
-  uq_MisfitLikelihoodFunction_Class<P_V,P_M,L_V,L_M> calib_MisfitLikelihoodFunction_Obj(calib_MisfitLikelihoodRoutine<P_V,P_M,S_V,S_M,L_V,L_M>,
-                                                                                        (void *) &calib_MisfitLikelihoodRoutine_Data);
-                                                                                        //true); // in case "uq_CompleteLikelihoodFunction_Class" is used
+  uqMisfitLikelihoodFunction_Class<P_V,P_M,L_V,L_M> calib_MisfitLikelihoodFunction_Obj(calib_MisfitLikelihoodRoutine<P_V,P_M,S_V,S_M,L_V,L_M>,
+                                                                                       (void *) &calib_MisfitLikelihoodRoutine_Data);
+                                                                                       //true); // in case "uq_CompleteLikelihoodFunction_Class" is used
 
   //******************************************************
   // Step 4 of 6: Define the Markov chain generator.

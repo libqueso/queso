@@ -39,7 +39,7 @@ slice0_paramSpace_specificationFile = calib.par
 # Slice0 Observable Space
 ###############################################
 #slice0_observableSpace_help              = anything
-slice0_observableSpace_updateVariances   = 1
+slice0_observableSpace_updateVariances   = 0
 slice0_observableSpace_numSubSpaces      = 1
 slice0_observableSpace_specificationFile = calib.obs
 

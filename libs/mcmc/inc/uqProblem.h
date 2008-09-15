@@ -36,14 +36,15 @@ public:
   uqProblemClass(const uqEnvironmentClass& env);
  ~uqProblemClass();
 
-        void                                          instantiateSlice (unsigned int                                            sliceId,
-                                                                        const uq_ProbDensity_BaseClass       <P_V,P_M>*         m2lPriorProbDensity_Obj,
-                                                                        const uq_LikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>* m2lLikelihoodFunction_Obj,
-                                                                        P_M*                                                    proposalCovMatrix,
-                                                                        void*                                                   userProposalDensity_Obj,
-                                                                        void*                                                   userProposalGenerator_Obj,
-                                                                        const uq_ProbDensity_BaseClass       <P_V,P_M>*         qoiParameterGenerator_Obj,
-                                                                        void*                                                   qoiFunction_Obj);
+        void                                          instantiateSlice (unsigned int                                           sliceId,
+                                                                        const uqProbDensity_BaseClass       <P_V,P_M>*         m2lPriorProbDensityObj,   // Set in substep x.1 in applications setting a problem slice
+                                                                        const uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>* m2lLikelihoodFunctionObj, // Set in substep x.2
+                                                                        P_M*                                                   proposalCovMatrix,        // Set in substep x.3
+                                                                        const uqProposalDensity_BaseClass   <P_V,P_M>*         proposalDensityObj,       // Set in substep x.3
+                                                                        const uqProposalGenerator_BaseClass <P_V,P_M>*         proposalGeneratorObj,     // Set in substep x.3
+                                                                        const uqProbDensity_BaseClass       <P_V,P_M>*         propagParamDensityObj,    // Set in substep x.4
+                                                                        const uqSampleGenerator_BaseClass   <P_V,P_M>*         propagParamGeneratorObj,  // Set in substep x.4
+                                                                        const uqQoIFunction_BaseClass       <P_V,P_M,Q_V,Q_M>* qoiFunctionObj);          // Set in substep x.5
 
   const uqProblemSliceClass<P_V,P_M,L_V,L_M,Q_V,Q_M>& slice            (unsigned int sliceId) const;
         void                                          quantify         ();
@@ -193,24 +194,26 @@ void
 template <class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
 void
 uqProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::instantiateSlice(
-  unsigned int                                            sliceId,
-  const uq_ProbDensity_BaseClass       <P_V,P_M>*         m2lPriorProbDensity_Obj,
-  const uq_LikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>* m2lLikelihoodFunction_Obj,
-  P_M*                                                    proposalCovMatrix,
-  void*                                                   userProposalDensity_Obj,
-  void*                                                   userProposalGenerator_Obj,
-  const uq_ProbDensity_BaseClass       <P_V,P_M>*         qoiParameterGenerator_Obj,
-  void*                                                   qoiFunction_Obj)
+  unsigned int                                           sliceId,
+  const uqProbDensity_BaseClass       <P_V,P_M>*         m2lPriorProbDensityObj,   // Set in substep x.1
+  const uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>* m2lLikelihoodFunctionObj, // Set in substep x.2
+  P_M*                                                   proposalCovMatrix,        // Set in substep x.3
+  const uqProposalDensity_BaseClass   <P_V,P_M>*         proposalDensityObj,       // Set in substep x.3
+  const uqProposalGenerator_BaseClass <P_V,P_M>*         proposalGeneratorObj,     // Set in substep x.3
+  const uqProbDensity_BaseClass       <P_V,P_M>*         propagParamDensityObj,    // Set in substep x.4
+  const uqSampleGenerator_BaseClass   <P_V,P_M>*         propagParamGeneratorObj,  // Set in substep x.4
+  const uqQoIFunction_BaseClass       <P_V,P_M,Q_V,Q_M>* qoiFunctionObj)           // Set in substep x.5
 {
   m_slices[sliceId] = new uqProblemSliceClass<P_V,P_M,L_V,L_M,Q_V,Q_M>(m_env,
                                                                        m_slicePrefixes[sliceId].c_str(),
-                                                                       m2lPriorProbDensity_Obj,
-                                                                       m2lLikelihoodFunction_Obj,
+                                                                       m2lPriorProbDensityObj,
+                                                                       m2lLikelihoodFunctionObj,
                                                                        proposalCovMatrix,
-                                                                       userProposalDensity_Obj,
-                                                                       userProposalGenerator_Obj,
-                                                                       qoiParameterGenerator_Obj,
-                                                                       qoiFunction_Obj);
+                                                                       proposalDensityObj,
+                                                                       proposalGeneratorObj,
+                                                                       propagParamDensityObj,
+                                                                       propagParamGeneratorObj,
+                                                                       qoiFunctionObj);
 
   return;
 }

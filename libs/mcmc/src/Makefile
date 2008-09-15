@@ -44,7 +44,8 @@ CXX = g++
 CXXFLAGS = -Wall -c -g
 
 OBJS_ANY = uqParameter.o \
-	uqObservable.o
+	uqObservable.o \
+	uqQoI.o
 
 OBJS_gsl = uqGslParamSpace.o \
 	uqGslObservableSpace.o \

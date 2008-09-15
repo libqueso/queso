@@ -75,12 +75,12 @@ template <class P_V,class P_M,class L_V,class L_M>
 class uqDRAM_MarkovChainGeneratorClass
 {
 public:
-  uqDRAM_MarkovChainGeneratorClass(const uqEnvironmentClass&                               env,                        /*! The QUESO toolkit environment.   */
-                                   const char*                                             prefix,                     /*! Prefix for the validation phase. */
-                                   const uqParamSpaceClass<P_V,P_M>&                       paramSpace,                 /*! The parameter space.             */
-                                   const uqObservableSpaceClass<L_V,L_M>&                  observableSpace,            /*! The observable space.            */
-                                   const uq_ProbDensity_BaseClass<P_V,P_M>&                m2lPriorProbDensity_Obj,    /*! -2*ln(prior())                   */
-                                   const uq_LikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>& m2lLikelihoodFunction_Obj); /*! -2*ln(likelihood())              */
+  uqDRAM_MarkovChainGeneratorClass(const uqEnvironmentClass&                              env,                        /*! The QUESO toolkit environment.   */
+                                   const char*                                            prefix,                     /*! Prefix for the validation phase. */
+                                   const uqParamSpaceClass<P_V,P_M>&                      paramSpace,                 /*! The parameter space.             */
+                                   const uqObservableSpaceClass<L_V,L_M>&                 observableSpace,            /*! The observable space.            */
+                                   const uqProbDensity_BaseClass<P_V,P_M>&                m2lPriorProbDensity_Obj,    /*! -2*ln(prior())                   */
+                                   const uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>& m2lLikelihoodFunction_Obj); /*! -2*ln(likelihood())              */
  ~uqDRAM_MarkovChainGeneratorClass();
 
   void generateChains             (const P_M* proposalCovMatrix,
@@ -205,12 +205,12 @@ private:
                                   const P_M*                            mahalanobisMatrix = NULL,
                                   bool                                  applyMahalanobisInvert = true) const;
 
-  const uqEnvironmentClass&                               m_env;
-        std::string                                       m_prefix;
-  const uqParamSpaceClass<P_V,P_M>&                       m_paramSpace;
-  const uqObservableSpaceClass<L_V,L_M>&                  m_observableSpace;
-  const uq_ProbDensity_BaseClass<P_V,P_M>&                m_m2lPriorProbDensity_Obj;
-  const uq_LikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>& m_m2lLikelihoodFunction_Obj;
+  const uqEnvironmentClass&                              m_env;
+        std::string                                      m_prefix;
+  const uqParamSpaceClass<P_V,P_M>&                      m_paramSpace;
+  const uqObservableSpaceClass<L_V,L_M>&                 m_observableSpace;
+  const uqProbDensity_BaseClass<P_V,P_M>&                m_m2lPriorProbDensity_Obj;
+  const uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>& m_m2lLikelihoodFunction_Obj;
 
   std::string m_option_help;
   std::string m_option_chain_type;
@@ -317,12 +317,12 @@ std::ostream& operator<<(std::ostream& os, const uqDRAM_MarkovChainGeneratorClas
 
 template<class P_V,class P_M,class L_V,class L_M>
 uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::uqDRAM_MarkovChainGeneratorClass(
-  const uqEnvironmentClass&                               env,
-  const char*                                             prefix,
-  const uqParamSpaceClass<P_V,P_M>&                       paramSpace,
-  const uqObservableSpaceClass<L_V,L_M>&                  observableSpace,
-  const uq_ProbDensity_BaseClass<P_V,P_M>&                m2lPriorProbDensity_Obj,
-  const uq_LikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>& m2lLikelihoodFunction_Obj)
+  const uqEnvironmentClass&                              env,
+  const char*                                            prefix,
+  const uqParamSpaceClass<P_V,P_M>&                      paramSpace,
+  const uqObservableSpaceClass<L_V,L_M>&                 observableSpace,
+  const uqProbDensity_BaseClass<P_V,P_M>&                m2lPriorProbDensity_Obj,
+  const uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>& m2lLikelihoodFunction_Obj)
   :
   m_env                            (env),
   m_prefix                         (prefix),
@@ -330,7 +330,7 @@ uqDRAM_MarkovChainGeneratorClass<P_V,P_M,L_V,L_M>::uqDRAM_MarkovChainGeneratorCl
   m_observableSpace                (observableSpace),
   m_m2lPriorProbDensity_Obj        (m2lPriorProbDensity_Obj),
   m_m2lLikelihoodFunction_Obj      (m2lLikelihoodFunction_Obj),
-  m_likelihoodObjComputesMisfits   (dynamic_cast<const uq_MisfitLikelihoodFunction_Class<P_V,P_M,L_V,L_M>*>(&m2lLikelihoodFunction_Obj) != NULL),
+  m_likelihoodObjComputesMisfits   (dynamic_cast<const uqMisfitLikelihoodFunction_Class<P_V,P_M,L_V,L_M>*>(&m2lLikelihoodFunction_Obj) != NULL),
   m_paramInitials                  (m_paramSpace.initialValues()),
   m_proposalIsSymmetric            (true),
   m_optionsDesc                    (new po::options_description("Markov chain Monte Carlo options")),
