@@ -248,7 +248,7 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
   // Step 4 of 4: Quantify the uncertainty
   //******************************************************
-  problem.quantify();
+  problem.quantifyUncertainty();
 
   //******************************************************
   // Release memory before leaving routine.

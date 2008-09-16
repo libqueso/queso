@@ -34,49 +34,52 @@ public:
                              const char*               prefix);
   virtual ~uqParamSpaceClass();
 
-          unsigned int            dim                       () const;
-          int                     setParameter              (unsigned int       paramId,
-                                                             const std::string& name,
-                                                             double             initialValue,
-                                                             double             minValue = -INFINITY,
-                                                             double             maxValue = INFINITY,
-                                                             double             priorMu = 0.,
-                                                             double             priorSigma = INFINITY);
-          const uqParameterClass& parameter                 (unsigned int paramId) const;
-          const V&                initialValues             () const;
-          const V&                minValues                 () const;
-          const V&                maxValues                 () const;
-          const V&                priorMuValues             () const;
-          const V&                priorSigmaValues          () const;
+          unsigned int                    dim                       () const;
+          int                             setParameter              (unsigned int       paramId,
+                                                                     const std::string& name,
+                                                                     double             initialValue,
+                                                                     double             minValue = -INFINITY,
+                                                                     double             maxValue = INFINITY,
+                                                                     double             priorMu = 0.,
+                                                                     double             priorSigma = INFINITY);
+          const uqParameterClass&         parameter                 (unsigned int paramId) const;
+          const V&                        initialValues             () const;
+          const V&                        minValues                 () const;
+          const V&                        maxValues                 () const;
+          const V&                        priorMuValues             () const;
+          const V&                        priorSigmaValues          () const;
+          const std::vector<std::string>& componentsNames           () const;
 
-          bool                    outOfBounds               (const V& v) const;
+          bool                            outOfBounds               (const V& v) const;
 
-  virtual void                    print                     (std::ostream& os) const;
-          void                    printParameterNames       (std::ostream& os, bool printHorizontally) const; // See template specialization
+  virtual void                            print                     (std::ostream& os) const;
+          void                            printParameterNames       (std::ostream& os, bool printHorizontally) const; // See template specialization
 
 protected:
-          void                    defineMyOptions           (po::options_description& optionsDesc) const;
-          void                    getMyOptionValues         (po::options_description& optionsDesc);
-          void                    readParametersFromSpecFile(std::string& specFileName);
-          void                    resetValues               ();
-          void                    createInitialValues       () const; // See template specialization
-          void                    createMinValues           () const; // See template specialization
-          void                    createMaxValues           () const; // See template specialization
-          void                    createPriorMuValues       () const; // See template specialization
-          void                    createPriorSigmaValues    () const; // See template specialization
+          void                            defineMyOptions           (po::options_description& optionsDesc) const;
+          void                            getMyOptionValues         (po::options_description& optionsDesc);
+          void                            readParametersFromSpecFile(std::string& specFileName);
+          void                            resetValues               ();
+          void                            createInitialValues       () const; // See template specialization
+          void                            createMinValues           () const; // See template specialization
+          void                            createMaxValues           () const; // See template specialization
+          void                            createPriorMuValues       () const; // See template specialization
+          void                            createPriorSigmaValues    () const; // See template specialization
+          void                            createComponentsNames     () const; // See template specialization
 
-  po::options_description*       m_optionsDesc;
-  std::string m_option_help;
-  std::string m_option_dim;
-  std::string m_option_specificationFile;
+  po::options_description*         m_optionsDesc;
+  std::string                      m_option_help;
+  std::string                      m_option_dim;
+  std::string                      m_option_specificationFile;
 
-  std::vector<uqParameterClass*> m_parameters; // FIXME: will need to be a parallel vector in case of a very large number of parameters
-  uqParameterClass               m_dummyParameter;
-  mutable V*                     m_initialValues;
-  mutable V*                     m_minValues;
-  mutable V*                     m_maxValues;
-  mutable V*                     m_priorMuValues;
-  mutable V*                     m_priorSigmaValues;
+  std::vector<uqParameterClass*>   m_parameters; // FIXME: will need to be a parallel vector in case of a very large number of parameters
+  uqParameterClass                 m_dummyParameter;
+  mutable V*                       m_initialValues;
+  mutable V*                       m_minValues;
+  mutable V*                       m_maxValues;
+  mutable V*                       m_priorMuValues;
+  mutable V*                       m_priorSigmaValues;
+  mutable std::vector<std::string> m_componentsNames;
 
   using uqFinDimLinearSpaceClass<V,M>::m_env;
   using uqFinDimLinearSpaceClass<V,M>::m_dim;
@@ -109,7 +112,8 @@ uqParamSpaceClass<V,M>::uqParamSpaceClass(
   m_minValues                  (NULL),
   m_maxValues                  (NULL),
   m_priorMuValues              (NULL),
-  m_priorSigmaValues           (NULL)
+  m_priorSigmaValues           (NULL),
+  m_componentsNames            (0)
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqParamSpaceClass<V,M>::constructor()"
@@ -142,6 +146,7 @@ uqParamSpaceClass<V,M>::~uqParamSpaceClass()
   //std::cout << "Entering uqParamSpaceClass<V,M>::destructor()"
   //          << std::endl;
 
+  m_componentsNames.clear();
   if (m_priorSigmaValues) delete m_priorSigmaValues;
   if (m_priorMuValues   ) delete m_priorMuValues;
   if (m_maxValues       ) delete m_maxValues;
@@ -447,6 +452,7 @@ template <class V, class M>
 void
 uqParamSpaceClass<V,M>::resetValues()
 {
+  m_componentsNames.clear();
   if (m_priorSigmaValues) delete m_priorSigmaValues;
   if (m_priorMuValues   ) delete m_priorMuValues;
   if (m_maxValues       ) delete m_maxValues;
@@ -500,6 +506,14 @@ uqParamSpaceClass<V,M>::priorSigmaValues() const
 }
 
 template <class V, class M>
+const std::vector<std::string>&
+uqParamSpaceClass<V,M>::componentsNames() const
+{
+  if (m_componentsNames.size() == 0) this->createComponentsNames();
+  return m_componentsNames;
+}
+
+template <class V, class M>
 bool
 uqParamSpaceClass<V,M>::outOfBounds(const V& v) const
 {
@@ -516,7 +530,7 @@ uqParamSpaceClass<V,M>::outOfBounds(const V& v) const
 
 template<class V, class M>
 void
-  uqParamSpaceClass<V,M>::printParameterNames(std::ostream& os, bool printHorizontally) const
+uqParamSpaceClass<V,M>::printParameterNames(std::ostream& os, bool printHorizontally) const
 {
   if (printHorizontally) { 
     for (unsigned int i = 0; i < this->dim(); ++i) {

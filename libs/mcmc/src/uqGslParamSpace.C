@@ -84,6 +84,20 @@ uqParamSpaceClass<uqGslVectorClass,uqGslMatrixClass>::createPriorSigmaValues() c
 
   return;
 }
+
+template<>
+void
+uqParamSpaceClass<uqGslVectorClass,uqGslMatrixClass>::createComponentsNames() const
+{
+  m_componentsNames.clear();
+  m_componentsNames.resize(m_parameters.size());
+  for (unsigned int i = 0; i < m_parameters.size(); ++i) {
+    m_componentsNames[i] = m_parameters[i]->name();
+  }
+
+  return;
+}
+
 #if 0
 template<>
 void

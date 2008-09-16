@@ -33,7 +33,7 @@ public:
   uqSequenceOfVectorsClass(unsigned int sequenceSize, const V& vectorExample);
  ~uqSequenceOfVectorsClass();
 
-  const unsigned int sequenceSize      () const;
+        unsigned int sequenceSize      () const;
         void         resizeSequence    (unsigned int newSequenceSize);
         void         resetValues       (unsigned int initialPos, unsigned int numPos);
         void         erasePositions    (unsigned int initialPos, unsigned int numPos);
@@ -115,7 +115,7 @@ public:
                                         std::vector<V*>&          densityValues) const;
         void         write             (const std::string&        name,
                                         std::ofstream&            ofs) const;
-        void         filter            (const std::vector<unsigned int>& idsOfUniquePositions);
+        void         select            (const std::vector<unsigned int>& idsOfUniquePositions);
         void         filter            (unsigned int              initialPos,
                                         unsigned int              spacing);
 
@@ -163,7 +163,7 @@ uqSequenceOfVectorsClass<V>::~uqSequenceOfVectorsClass()
 }
 
 template <class V>
-const unsigned int
+unsigned int
 uqSequenceOfVectorsClass<V>::sequenceSize() const
 {
   return m_seq.size();
@@ -959,7 +959,7 @@ uqSequenceOfVectorsClass<V>::gaussianKDE(
 
 template <class V>
 void
-uqSequenceOfVectorsClass<V>::filter(const std::vector<unsigned int>& idsOfUniquePositions)
+uqSequenceOfVectorsClass<V>::select(const std::vector<unsigned int>& idsOfUniquePositions)
 {
   return;
 }

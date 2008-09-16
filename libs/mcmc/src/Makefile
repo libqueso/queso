@@ -49,6 +49,7 @@ OBJS_ANY = uqParameter.o \
 
 OBJS_gsl = uqGslParamSpace.o \
 	uqGslObservableSpace.o \
+	uqGslQoISpace.o \
 	uqGslFinDimLinearSpace.o
 
 OBJS_tri = uqTrilinosParamSpace.o \

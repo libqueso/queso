@@ -22,13 +22,13 @@
 
 template <class P_V,class P_M,class L_V,class L_M>
 void
-uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculatePosterior(
+uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculateDistributions(
   const P_M*             proposalCovMatrix,
-  const P_M*             mahalanobisMatrix,
-  bool                   applyMahalanobisInvert,
+//const P_M*             mahalanobisMatrix,
+//bool                   applyMahalanobisInvert,
   uqChainBaseClass<P_V>& workingChain)
 {
-  //if (m_env.rank() == 0) std::cout << "Entering uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculatePosterior()..."
+  //if (m_env.rank() == 0) std::cout << "Entering uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculateDistributions()..."
   //                                 << std::endl;
 
   P_V valuesOf1stPosition(m_paramInitials);
@@ -45,7 +45,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculatePosterior(
   for (unsigned int chainId = 0; chainId < m_chainSizes.size(); ++chainId) {
     char tmpChainId[10];
     sprintf(tmpChainId,"%d",chainId);
-    std::string prefixName = "queso_" + m_prefix + tmpChainId + "_";
+    std::string prefixName = m_prefix + tmpChainId + "_";
     std::string chainName  = prefixName + "chain";
 
     //****************************************************
@@ -76,7 +76,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculatePosterior(
 
       UQ_FATAL_TEST_MACRO((ofs && ofs->is_open()) == false,
                           m_env.rank(),
-                          "uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculatePosterior()",
+                          "uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculateDistributions()",
                           "failed to open file");
     }
   
@@ -112,7 +112,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculatePosterior(
       iRC = prepareForNextChain(proposalCovMatrix);
       UQ_FATAL_RC_MACRO(iRC,
                         m_env.rank(),
-                        "uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculatePosterior()",
+                        "uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculateDistributions()",
                         "improper prepareForNextChain() return");
 
       //****************************************************
@@ -121,15 +121,15 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculatePosterior(
       iRC = generateChain(m_chainSizes[chainId],
                           valuesOf1stPosition,
                           proposalCovMatrix,
-                          mahalanobisMatrix,
-                          applyMahalanobisInvert,
+                        //mahalanobisMatrix,
+                        //applyMahalanobisInvert,
                           workingChain,
                           chainName,
                           prefixName,
                           ofs);
       UQ_FATAL_RC_MACRO(iRC,
                         m_env.rank(),
-                        "uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculatePosterior()",
+                        "uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculateDistributions()",
                         "improper generateChain() return");
     }
 
@@ -143,10 +143,10 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculatePosterior(
     }
 
     if (m_chainComputeStats) {
-      computeStatistics(workingChain,
-                        *m_chainStatisticalOptions,
-                        chainName,
-                        ofs);
+      workingChain.computeStatistics(*m_chainStatisticalOptions,
+                                     chainName,
+                                     m_paramSpace.componentsNames(),
+                                     ofs);
     }
 
     //****************************************************
@@ -157,13 +157,13 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculatePosterior(
     //****************************************************
     if (m_uniqueChainGenerate) {
       // Select only the unique positions
-      workingChain.filter(m_idsOfUniquePositions);
+      workingChain.select(m_idsOfUniquePositions);
       //chainVectorPositionIteratorTypedef positionIterator = m_uniqueChain1.begin();
       //std::advance(positionIterator,uniquePos);
       //m_uniqueChain1.erase(positionIterator,m_uniqueChain1.end());
       //UQ_FATAL_TEST_MACRO((uniquePos != m_uniqueChain1.size()),
       //                    m_env.rank(),
-      //                    "uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculatePosterior()",
+      //                    "uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculateDistributions()",
       //                    "uniquePos != m_uniqueChain1.size()");
 
       // Write unique chain
@@ -174,10 +174,10 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculatePosterior(
 
       // Compute statistics
       if (m_uniqueChainComputeStats) {
-        computeStatistics(workingChain,
-                          *m_uniqueChainStatisticalOptions,
-                          chainName,
-                          ofs);
+        workingChain.computeStatistics(*m_uniqueChainStatisticalOptions,
+                                       chainName,
+                                       m_paramSpace.componentsNames(),
+                                       ofs);
       }
     }
 
@@ -192,12 +192,11 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculatePosterior(
       unsigned int filterInitialPos = (unsigned int) (m_filteredChainDiscardedPortion * (double) workingChain.sequenceSize());
       unsigned int filterSpacing    = m_filteredChainLag;
       if (filterSpacing == 0) {
-        computeFilterParameters(workingChain,
-                                *m_filteredChainStatisticalOptions,
-                                chainName,
-                                ofs,
-                                filterInitialPos,
-                                filterSpacing);
+        workingChain.computeFilterParams(*m_filteredChainStatisticalOptions,
+                                         chainName,
+                                         ofs,
+                                         filterInitialPos,
+                                         filterSpacing);
       }
 
       // Filter positions from the converged portion of the chain
@@ -212,10 +211,10 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculatePosterior(
 
       // Compute statistics
       if (m_filteredChainComputeStats) {
-        computeStatistics(workingChain,
-                          *m_filteredChainStatisticalOptions,
-                          chainName,
-                          ofs);
+        workingChain.computeStatistics(*m_filteredChainStatisticalOptions,
+                                       chainName,
+                                       m_paramSpace.componentsNames(),
+                                       ofs);
       }
     }
 
@@ -260,7 +259,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculatePosterior(
     }
   }
 
-  //if (m_env.rank() == 0) std::cout << "Leaving uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculatePosterior()"
+  //if (m_env.rank() == 0) std::cout << "Leaving uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculateDistributions()"
   //                                 << std::endl;
 
   return;
@@ -348,8 +347,8 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateChain(
   unsigned int           chainSize,
   const P_V&             valuesOf1stPosition,
   const P_M*             proposalCovMatrix,
-  const P_M*             mahalanobisMatrix,
-  bool                   applyMahalanobisInvert,
+//const P_M*             mahalanobisMatrix,
+//bool                   applyMahalanobisInvert,
   uqChainBaseClass<P_V>& workingChain,
   const std::string&     chainName,
   const std::string&     prefixName,
@@ -380,7 +379,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateChain(
                       "uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateChain()",
                       "paramInitials should not be out of bound");
   if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalPrior, NULL);
-  double m2lPrior            = m_m2lPriorProbDensity_Obj.minus2LnDensity(valuesOf1stPosition);
+  double m2lPrior            = m_m2lPriorParamDensityObj.minus2LnDensity(valuesOf1stPosition);
   if (m_chainMeasureRunTimes) m_priorRunTime += uqMiscGetEllapsedSeconds(&timevalPrior);
   L_V m2lLikelihoodVector (m_observableSpace.zeroVector());
   L_V misfitVector        (m_observableSpace.zeroVector());
@@ -388,11 +387,11 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateChain(
 
   if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalLH, NULL);
   if (m_likelihoodObjComputesMisfits) {
-    m_m2lLikelihoodFunction_Obj.computeMisfits(valuesOf1stPosition, misfitVector);
+    m_m2lLikelihoodFunctionObj.computeMisfits(valuesOf1stPosition, misfitVector);
     m2lLikelihoodVector = misfitVector/misfitVarianceVector;
   }
   else {
-    m_m2lLikelihoodFunction_Obj.computeMinus2LnLikelihoods(valuesOf1stPosition, m2lLikelihoodVector);
+    m_m2lLikelihoodFunctionObj.computeMinus2LnLikelihoods(valuesOf1stPosition, m2lLikelihoodVector);
   }
   if (m_chainMeasureRunTimes) m_lhRunTime += uqMiscGetEllapsedSeconds(&timevalLH);
   double m2lLikelihoodScalar  = m2lLikelihoodVector.sumOfComponents();
@@ -460,15 +459,15 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateChain(
     }
     else {
       if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalPrior, NULL);
-      m2lPrior      = m_m2lPriorProbDensity_Obj.minus2LnDensity(tmpParamValues);
+      m2lPrior      = m_m2lPriorParamDensityObj.minus2LnDensity(tmpParamValues);
       if (m_chainMeasureRunTimes) m_priorRunTime += uqMiscGetEllapsedSeconds(&timevalPrior);
       if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalLH, NULL);
       if (m_likelihoodObjComputesMisfits) {
-        m_m2lLikelihoodFunction_Obj.computeMisfits(tmpParamValues, misfitVector);
+        m_m2lLikelihoodFunctionObj.computeMisfits(tmpParamValues, misfitVector);
         m2lLikelihoodVector = misfitVector/misfitVarianceVector;
       }
       else {
-        m_m2lLikelihoodFunction_Obj.computeMinus2LnLikelihoods(tmpParamValues, m2lLikelihoodVector);
+        m_m2lLikelihoodFunctionObj.computeMinus2LnLikelihoods(tmpParamValues, m2lLikelihoodVector);
       }
       if (m_chainMeasureRunTimes) m_lhRunTime += uqMiscGetEllapsedSeconds(&timevalLH);
       m2lLikelihoodScalar = m2lLikelihoodVector.sumOfComponents();
@@ -568,15 +567,15 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateChain(
         }
         else {
           if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalPrior, NULL);
-          m2lPrior      = m_m2lPriorProbDensity_Obj.minus2LnDensity(tmpParamValues);
+          m2lPrior      = m_m2lPriorParamDensityObj.minus2LnDensity(tmpParamValues);
           if (m_chainMeasureRunTimes) m_priorRunTime += uqMiscGetEllapsedSeconds(&timevalPrior);
           if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalLH, NULL);
           if (m_likelihoodObjComputesMisfits) {
-            m_m2lLikelihoodFunction_Obj.computeMisfits(tmpParamValues, misfitVector);
+            m_m2lLikelihoodFunctionObj.computeMisfits(tmpParamValues, misfitVector);
             m2lLikelihoodVector = misfitVector/misfitVarianceVector;
           }
           else {
-            m_m2lLikelihoodFunction_Obj.computeMinus2LnLikelihoods(tmpParamValues, m2lLikelihoodVector);
+            m_m2lLikelihoodFunctionObj.computeMinus2LnLikelihoods(tmpParamValues, m2lLikelihoodVector);
           }
           if (m_chainMeasureRunTimes) m_lhRunTime += uqMiscGetEllapsedSeconds(&timevalLH);
           m2lLikelihoodScalar = m2lLikelihoodVector.sumOfComponents();
@@ -857,9 +856,9 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateChain(
     iRC = writeInfo(workingChain,
                     chainName,
                     prefixName,
-                    *passedOfs,
-                    mahalanobisMatrix,
-                    applyMahalanobisInvert);
+                    *passedOfs);
+                  //mahalanobisMatrix,
+                  //applyMahalanobisInvert);
     UQ_FATAL_RC_MACRO(iRC,
                       m_env.rank(),
                       "uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateChain()",

@@ -36,24 +36,24 @@ public:
   uqProblemClass(const uqEnvironmentClass& env);
  ~uqProblemClass();
 
-        void                                          instantiateSlice (unsigned int                                           sliceId,
-                                                                        const uqProbDensity_BaseClass       <P_V,P_M>*         m2lPriorParamDensityObj,  // Set in substep x.1 in applications setting a problem slice
-                                                                        const uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>* m2lLikelihoodFunctionObj, // Set in substep x.2
-                                                                        P_M*                                                   proposalCovMatrix,        // Set in substep x.3
-                                                                        const uqProposalDensity_BaseClass   <P_V,P_M>*         proposalDensityObj,       // Set in substep x.3
-                                                                        const uqProposalGenerator_BaseClass <P_V,P_M>*         proposalGeneratorObj,     // Set in substep x.3
-                                                                        const uqProbDensity_BaseClass       <P_V,P_M>*         propagParamDensityObj,    // Set in substep x.4
-                                                                        const uqSampleGenerator_BaseClass   <P_V,P_M>*         propagParamGeneratorObj,  // Set in substep x.4
-                                                                        const uqQoIFunction_BaseClass       <P_V,P_M,Q_V,Q_M>* qoiFunctionObj);          // Set in substep x.5
+        void                                          instantiateSlice   (unsigned int                                           sliceId,
+                                                                          const uqProbDensity_BaseClass       <P_V,P_M>*         m2lPriorParamDensityObj,  // Set in substep x.1 in applications setting a problem slice
+                                                                          const uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>* m2lLikelihoodFunctionObj, // Set in substep x.2
+                                                                          P_M*                                                   proposalCovMatrix,        // Set in substep x.3
+                                                                          const uqProposalDensity_BaseClass   <P_V,P_M>*         proposalDensityObj,       // Set in substep x.3
+                                                                          const uqProposalGenerator_BaseClass <P_V,P_M>*         proposalGeneratorObj,     // Set in substep x.3
+                                                                          const uqProbDensity_BaseClass       <P_V,P_M>*         propagParamDensityObj,    // Set in substep x.4
+                                                                          const uqSampleGenerator_BaseClass   <P_V,P_M>*         propagParamGeneratorObj,  // Set in substep x.4
+                                                                          const uqQoIFunction_BaseClass       <P_V,P_M,Q_V,Q_M>* qoiFunctionObj);          // Set in substep x.5
 
-  const uqProblemSliceClass<P_V,P_M,L_V,L_M,Q_V,Q_M>& slice            (unsigned int sliceId) const;
-        void                                          quantify         ();
+  const uqProblemSliceClass<P_V,P_M,L_V,L_M,Q_V,Q_M>& slice              (unsigned int sliceId) const;
+        void                                          quantifyUncertainty();
 
-        void                                          print            (std::ostream& os) const;
+        void                                          print              (std::ostream& os) const;
 
 private:
-        void                                          defineMyOptions  (po::options_description& optionsDesc);
-        void                                          getMyOptionValues(po::options_description& optionsDesc);
+        void                                          defineMyOptions    (po::options_description& optionsDesc);
+        void                                          getMyOptionValues  (po::options_description& optionsDesc);
 
   const uqEnvironmentClass&                                  m_env;
 
@@ -227,18 +227,18 @@ uqProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::slice(unsigned int sliceId) const
 
 template <class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
 void
-uqProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::quantify()
+uqProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::quantifyUncertainty()
 {
   for (unsigned int i = 0; i < m_numSlices; ++i) {
     uqProblemSliceClass<P_V,P_M,L_V,L_M,Q_V,Q_M>* currentSlice = m_slices[m_sliceOrder[i]];
     if (currentSlice->isCalibRequested()) {
       if (currentSlice->calibInputSliceId() < 0) {
-        currentSlice->calibrate();
+        currentSlice->calibrateParamDistribs();
       }
       else {
         unsigned int inputSliceId = (unsigned int) currentSlice->calibInputSliceId();
         uqProblemSliceClass<P_V,P_M,L_V,L_M,Q_V,Q_M>* inputSlice = m_slices[inputSliceId];
-        currentSlice->calibrate(inputSlice->posteriorParamDensityObj());
+        currentSlice->calibrateParamDistribs(inputSlice->posteriorParamDensityObj());
       }
     }
   }
@@ -247,12 +247,12 @@ uqProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::quantify()
     uqProblemSliceClass<P_V,P_M,L_V,L_M,Q_V,Q_M>* currentSlice = m_slices[m_sliceOrder[i]];
     if (currentSlice->isPropagRequested()) {
       if (currentSlice->propagInputSliceId() < 0) {
-        currentSlice->propagate();
+        currentSlice->propagateParamDistribs();
       }
       else {
         unsigned int inputSliceId = (unsigned int) currentSlice->propagInputSliceId();
         uqProblemSliceClass<P_V,P_M,L_V,L_M,Q_V,Q_M>* inputSlice = m_slices[inputSliceId];
-        currentSlice->propagate(inputSlice->posteriorParamGeneratorObj());
+        currentSlice->propagateParamDistribs(inputSlice->posteriorParamGeneratorObj());
       }
     }
   }

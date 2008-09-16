@@ -34,26 +34,29 @@ public:
                            const char*               prefix);
   virtual ~uqQoISpaceClass();
 
-          unsigned int      dim                 () const;
-          int               setQoI              (unsigned int       qoiId,
-                                                 const std::string& name);
-          const uqQoIClass& qoi                 (unsigned int qoiId) const;
-  virtual void              print               (std::ostream& os) const;
-          void              printQoINames       (std::ostream& os, bool printHorizontally) const; // See template specialization
+          unsigned int                    dim                  () const;
+          int                             setQoI               (unsigned int       qoiId,
+                                                                const std::string& name);
+          const uqQoIClass& qoi                                (unsigned int qoiId) const;
+          const std::vector<std::string>& componentsNames      () const;
+  virtual void                            print                (std::ostream& os) const;
+          void                            printQoINames        (std::ostream& os, bool printHorizontally) const; // See template specialization
 
 protected:
-          void              defineMyOptions     (po::options_description& optionsDesc) const;
-          void              getMyOptionValues   (po::options_description& optionsDesc);
-          void              readQoIsFromSpecFile(std::string& specFileName);
-          void              resetValues         ();
+          void                            defineMyOptions      (po::options_description& optionsDesc) const;
+          void                            getMyOptionValues    (po::options_description& optionsDesc);
+          void                            readQoIsFromSpecFile (std::string& specFileName);
+          void                            resetValues          ();
+          void                            createComponentsNames() const; // See template specialization
 
-  po::options_description* m_optionsDesc;
-  std::string              m_option_help;
-  std::string              m_option_dim;
-  std::string              m_option_specificationFile;
+  po::options_description*         m_optionsDesc;
+  std::string                      m_option_help;
+  std::string                      m_option_dim;
+  std::string                      m_option_specificationFile;
 
-  std::vector<uqQoIClass*> m_qois; // FIXME: will need to be a parallel vector in case of a very large number of qois
-  uqQoIClass               m_dummyQoI;
+  std::vector<uqQoIClass*>         m_qois; // FIXME: will need to be a parallel vector in case of a very large number of qois
+  uqQoIClass                       m_dummyQoI;
+  mutable std::vector<std::string> m_componentsNames;
 
   using uqFinDimLinearSpaceClass<V,M>::m_env;
   using uqFinDimLinearSpaceClass<V,M>::m_dim;
@@ -81,7 +84,8 @@ uqQoISpaceClass<V,M>::uqQoISpaceClass(
   m_option_dim                 (uqFinDimLinearSpaceClass<V,M>::m_prefix + "qoiSpace_dim"              ),
   m_option_specificationFile   (uqFinDimLinearSpaceClass<V,M>::m_prefix + "qoiSpace_specificationFile"),
   m_qois                       (0),//,NULL),
-  m_dummyQoI                   ("NonExistentYet")
+  m_dummyQoI                   ("NonExistentYet"),
+  m_componentsNames            (0)
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqQoISpaceClass<V,M>::constructor()"
@@ -113,6 +117,7 @@ uqQoISpaceClass<V,M>::~uqQoISpaceClass()
   //std::cout << "Entering uqQoISpaceClass<V,M>::destructor()"
   //          << std::endl;
 
+  m_componentsNames.clear();
   for (unsigned int i = 0; i < m_qois.size(); ++i) {
     if (m_qois[i]) delete m_qois[i];
   }
@@ -318,6 +323,15 @@ template <class V, class M>
 void
 uqQoISpaceClass<V,M>::resetValues()
 {
+  m_componentsNames.clear();
+}
+
+template <class V, class M>
+const std::vector<std::string>&
+uqQoISpaceClass<V,M>::componentsNames() const
+{
+  if (m_componentsNames.size() == 0) this->createComponentsNames();
+  return m_componentsNames;
 }
 
 template<class V, class M>

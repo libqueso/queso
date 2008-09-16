@@ -34,13 +34,17 @@ template<class V, class M>
 class uqSampleGenerator_BaseClass {
 public:
   uqSampleGenerator_BaseClass(double (*routinePtr)(const V& paramValues, const void* routineDataPtr),
-                                const void* routineDataPtr);
+                              const void* routineDataPtr);
   virtual ~uqSampleGenerator_BaseClass();
-  virtual void nextSample(const V& paramValues) const;
+
+  virtual unsigned int period    () const;
+  virtual void         nextSample(V& paramValues) const;
 
 protected:
   double (*m_routinePtr)(const V& paramValues, const void* routineDataPtr);
   const void* m_routineDataPtr;
+
+  unsigned int m_period;
 };
 
 template<class V, class M>
@@ -49,7 +53,8 @@ uqSampleGenerator_BaseClass<V,M>::uqSampleGenerator_BaseClass(
   const void* routineDataPtr)
   :
   m_routinePtr    (routinePtr),
-  m_routineDataPtr(routineDataPtr)
+  m_routineDataPtr(routineDataPtr),
+  m_period        (100)
 {
 }
 
@@ -59,8 +64,15 @@ uqSampleGenerator_BaseClass<V,M>::~uqSampleGenerator_BaseClass()
 }
 
 template<class V, class M>
+unsigned int
+uqSampleGenerator_BaseClass<V,M>::period() const
+{
+  return m_period;
+}
+
+template<class V, class M>
 void
-uqSampleGenerator_BaseClass<V,M>::nextSample(const V& paramValues) const
+uqSampleGenerator_BaseClass<V,M>::nextSample(V& paramValues) const
 {
   m_routinePtr(paramValues, m_routineDataPtr);
 
