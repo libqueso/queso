@@ -218,6 +218,11 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqMonteCarloDCClass<P_V,P_M,Q_V,Q_M>::calculateDistributions()
 {
+  UQ_FATAL_TEST_MACRO(m_paramGeneratorObj == NULL,
+                      m_env.rank(),
+                      "uqMonteCarloDCClass<P_V,P_M,Q_V,Q_M>::calculateDistributions()",
+                      "m_paramGeneratorObj is NULL");
+
   if (m_use2) {
     calculateDistributions(*m_paramGeneratorObj,
                            m_seq2);
@@ -255,6 +260,14 @@ uqMonteCarloDCClass<P_V,P_M,Q_V,Q_M>::calculateDistributions(
 {
   std::string prefixName = m_prefix;
   std::string seqName    = prefixName + "seq";
+  unsigned int actualNumSamples = std::min(m_numSamples,paramGeneratorObj.period());
+
+  if (m_env.rank() == 0) {
+    std::cout << "Generating qoi sequence " << seqName
+              << ", with "                  << actualNumSamples
+              << " samples..."
+              << std::endl;
+  }
 
   //****************************************************
   // Open file      
@@ -262,14 +275,14 @@ uqMonteCarloDCClass<P_V,P_M,Q_V,Q_M>::calculateDistributions(
   std::ofstream* ofs = NULL;
   if (m_outputFileName == UQ_MC_DC_FILENAME_FOR_NO_OUTPUT_FILE) {
     if (m_env.rank() == 0) {
-      std::cout << "No output file opened for sequence of qoi values"
+      std::cout << "No output file opened for qoi sequence " << seqName 
                 << std::endl;
     }
   }
   else {
     if (m_env.rank() == 0) {
-      std::cout << "Opening output file '"  << m_outputFileName
-                << "'..."
+      std::cout << "Opening output file '" << m_outputFileName
+                << "' for qoi sequence "   << seqName
                 << std::endl;
     }
 
@@ -290,13 +303,28 @@ uqMonteCarloDCClass<P_V,P_M,Q_V,Q_M>::calculateDistributions(
   //****************************************************
   // Generate sequence of qoi values
   //****************************************************
-  unsigned int actualNumSamples = std::min(m_numSamples,paramGeneratorObj.period());
-
   workingSeq.resizeSequence(actualNumSamples);
+  P_V tmpV(m_paramSpace.zeroVector());
   Q_V tmpQ(m_qoiSpace.zeroVector());
   for (unsigned int i = 0; i < actualNumSamples; ++i) {
-    paramGeneratorObj.nextSample(tmpQ);
+    paramGeneratorObj.nextSample(tmpV);
+    m_qoiFunctionObj.computeQoIs(tmpV,tmpQ);
     workingSeq.setPositionValues(i,tmpQ);
+
+    if ((m_displayPeriod            > 0) && 
+        (((i+1) % m_displayPeriod) == 0)) {
+      if (m_env.rank() == 0) {
+        std::cout << "Finished generating " << i+1
+                  << " qoi samples"
+                  << std::endl;
+      }
+    }
+  }
+
+  if (m_env.rank() == 0) {
+    std::cout << "Finished generating the qoi sequence " << seqName
+              << ", with "                               << workingSeq.sequenceSize()
+              << " samples";
   }
 
   //****************************************************
@@ -323,7 +351,7 @@ uqMonteCarloDCClass<P_V,P_M,Q_V,Q_M>::calculateDistributions(
     ofs->close();
 
     if (m_env.rank() == 0) {
-      std::cout << "Closed output file for sequence of qoi values"
+      std::cout << "Closed output file for qoi sequence " << seqName
                 << std::endl;
     }
   }

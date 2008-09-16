@@ -42,11 +42,11 @@ int func(double t, const double Mass[], double f[], void *info)
 
 //********************************************************
 // Likelihood function object for one UQ problem slice (with prefix "slice0_").
-// A likelihood function object is provided by user, in order to be called by the MCMC library.
+// A likelihood function object is provided by user and is called by the MCMC library.
 // This likelihood function object consists of data and routine.
 //********************************************************
 
-// The (user defined) data type for the data need by the (user defined) likelihood routine
+// The (user defined) data type for the data needed by the (user defined) likelihood routine
 template<class S_V, class S_M>
 struct
 slice0_likelihoodRoutine_DataType
@@ -124,6 +124,28 @@ void slice0_likelihoodRoutine(const P_V& paramValues, const void* functionDataPt
 }
 
 //********************************************************
+// QoI function object for one UQ problem slice (with prefix "slice0_").
+// A QoI function object is provided by user and is called by the MCMC library.
+// This QoI function object consists of data and routine.
+//********************************************************
+// The (user defined) data type for the data needed by the (user defined) qoi routine
+template<class S_V, class S_M>
+struct
+slice0_qoiRoutine_DataType
+{
+  double beta1;
+};
+
+// The actual (user defined) qoi routine
+template<class P_V,class P_M,class S_V,class S_M,class Q_V,class Q_M>
+void slice0_qoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiValues)
+{
+  qoiValues[0] = 2.;
+
+  return;
+}
+
+//********************************************************
 // The MCMC driving routine "uqAppl()": called by main()
 //********************************************************
 template<class P_V,class P_M,class S_V,class S_M,class L_V,class L_M,class Q_V,class Q_M>
@@ -150,14 +172,16 @@ uqAppl(const uqEnvironmentClass& env)
   // There are 6 substeps: 2.1, 2.2, 2.3, 2.4, 2.5 and 2.6
   //******************************************************
 
+  //******************************************************
   // Substep 2.1: Define the prior probability density function object: -2*ln[prior]
+  //******************************************************
 
-  // This application will pass NULL to 'setSlice()', that is,
-  // this application will use the default prior density
-  // provided by the MCMC library
+  // Use the default prior density, provided by the MCMC library
   uqProbDensity_BaseClass<P_V,P_M>* slice0_priorParamDensityObj = NULL;
 
+  //******************************************************
   // Substep 2.2: Define the likelihood function object: -2*ln[likelihood]
+  //******************************************************
 
   // Open input file on experimental data
   FILE *inp;
@@ -198,15 +222,14 @@ uqAppl(const uqEnvironmentClass& env)
   slice0_likelihoodRoutine_Data.Te1       = &Te1; // temperatures
   slice0_likelihoodRoutine_Data.Me1       = &Me1; // relative masses
   uqCompleteLikelihoodFunction_Class<P_V,P_M,L_V,L_M> slice0_likelihoodFunctionObj(slice0_likelihoodRoutine<P_V,P_M,S_V,S_M,L_V,L_M>,
-                                                                                    (void *) &slice0_likelihoodRoutine_Data,
-                                                                                    true); // the routine computes [-2.*ln(Likelihood)]
+                                                                                   (void *) &slice0_likelihoodRoutine_Data,
+                                                                                   true); // the routine computes [-2.*ln(Likelihood)]
 
+  //******************************************************
   // Substep 2.3: Define the proposal density and proposal generator
+  //******************************************************
 
-  // This application will pass NULL to 'setSlice()', that is,
-  // this application will use the default gaussian proposal and default gaussian generator with the default covariance matrix,
-  // all provided by the MCMC library
-
+  // Use the default gaussian proposal and default gaussian generator with the default covariance matrix, all provided by the MCMC library
   P_M*                                    slice0_proposalCovMatrix    = NULL;
   uqProposalDensity_BaseClass<P_V,P_M>*   slice0_proposalDensityObj   = NULL;
   uqProposalGenerator_BaseClass<P_V,P_M>* slice0_proposalGeneratorObj = NULL;
@@ -217,17 +240,25 @@ uqAppl(const uqEnvironmentClass& env)
   //(*slice0_proposalCovMatrix)(1,0) = 0.;
   //(*slice0_proposalCovMatrix)(1,1) = 9.70225e+04;
 
-
+  //******************************************************
   // Substep 2.4: Define the propagation input parameters (density and generator)
+  //******************************************************
 
   uqProbDensity_BaseClass<P_V,P_M>*     slice0_propagParamDensityObj   = NULL;
   uqSampleGenerator_BaseClass<P_V,P_M>* slice0_propagParamGeneratorObj = NULL;
 
+  //******************************************************
   // Substep 2.5: Define the qoi function object
+  //******************************************************
 
-  uqQoIFunction_BaseClass<P_V,P_M,Q_V,Q_M>* slice0_qoiFunctionObj = NULL;
+  slice0_qoiRoutine_DataType<P_V,P_M> slice0_qoiRoutine_Data;
+  slice0_qoiRoutine_Data.beta1 = beta1;
+  uqQoIFunction_BaseClass<P_V,P_M,Q_V,Q_M> slice0_qoiFunctionObj(slice0_qoiRoutine<P_V,P_M,S_V,S_M,Q_V,Q_M>,
+                                                                 (void *) &slice0_qoiRoutine_Data);
 
+  //******************************************************
   // Substep 2.6: Set the first problem slice
+  //******************************************************
 
   problem.instantiateSlice(0,                              // slice id
                            slice0_priorParamDensityObj,    // step 2.1: calibration prior parameter density
@@ -237,7 +268,7 @@ uqAppl(const uqEnvironmentClass& env)
                            slice0_proposalGeneratorObj,    // step 2.3: calibration proposal generator
                            slice0_propagParamDensityObj,   // step 2.4: propagation input parameter density
                            slice0_propagParamGeneratorObj, // step 2.4: propagation input parameter generator
-                           slice0_qoiFunctionObj);         // step 2.5: propagation qoi function
+                           &slice0_qoiFunctionObj);        // step 2.5: propagation qoi function
 
   //******************************************************
   // Step 3 of 4: Define second problem slice

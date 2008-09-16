@@ -220,6 +220,11 @@ uqProblemSliceClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::uqProblemSliceClass(
     m_qoiSpace = new uqQoISpaceClass<Q_V,Q_M>(m_env,
                                               m_prefix.c_str());
 
+    UQ_FATAL_TEST_MACRO(m_qoiFunctionObj == NULL,
+                        m_env.rank(),
+                        "uqProblemSliceClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::constructor()",
+                        "propagation is being requested but 'm_qoiFunctionObj' is null");
+
     // Instantiate the distribution calculator.
     m_mcDc = new uqMonteCarloDCClass<P_V,P_M,L_V,L_M>(m_env,
                                                       (m_prefix + "propag_").c_str(),
@@ -331,6 +336,9 @@ uqProblemSliceClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::calibrateParamDistribs()
 {
   m_bmcDc->calculateDistributions();
 
+  if (m_posteriorParamGeneratorObj) delete m_posteriorParamGeneratorObj;
+  m_posteriorParamGeneratorObj = new uqSampleGenerator_BaseClass<P_V,P_M>(&(m_bmcDc->chain()));
+
   return;
 }
 
@@ -339,6 +347,9 @@ void
 uqProblemSliceClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::calibrateParamDistribs(const uqProbDensity_BaseClass<P_V,P_M>& priorParamDensityObj)
 {
   m_bmcDc->calculateDistributions(priorParamDensityObj);
+
+  if (m_posteriorParamGeneratorObj) delete m_posteriorParamGeneratorObj;
+  m_posteriorParamGeneratorObj = new uqSampleGenerator_BaseClass<P_V,P_M>(&(m_bmcDc->chain()));
 
   return;
 }
@@ -407,7 +418,7 @@ uqProblemSliceClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::posteriorParamGeneratorObj() const
 {
   UQ_FATAL_TEST_MACRO(m_posteriorParamGeneratorObj == NULL,
                       m_env.rank(),
-                      "uqProblemSliceClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::posteriorParamGeneratorObj()",
+                      "uqProblemSliceClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::posteriorParamDensityObj()",
                       "posterior param generator object is being requested but it has not been created yet");
 
   return *m_posteriorParamGeneratorObj;

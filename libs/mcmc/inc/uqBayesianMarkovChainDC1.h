@@ -94,44 +94,44 @@ public:
 
   void print                  (std::ostream& os) const;
 
-//const uqSequenceOfVectorsClass<P_V>& chain              () const;
+  const uqChainBaseClass<P_V>&         chain              () const;
 //const std::vector<const L_V*>&       misfitChain        () const;
 //const std::vector<const L_V*>&       misfitVarianceChain() const;
 //const std::string&                   outputFileName     () const;
 
 private:
   void   resetChainAndRelatedInfo();
-  void   defineMyOptions         (po::options_description&     optionsDesc);
-  void   getMyOptionValues       (po::options_description&     optionsDesc);
+  void   defineMyOptions         (po::options_description&                       optionsDesc);
+  void   getMyOptionValues       (po::options_description&                       optionsDesc);
 
-  int    prepareForNextChain     (const P_M*                   proposalCovMatrix);
-                                //const P_M*                   proposalPrecMatrix,
+  int    prepareForNextChain     (const P_M*                                     proposalCovMatrix);
+                                //const P_M*                                     proposalPrecMatrix,
 
-  void   calculateDistributions  (const P_M*                   proposalCovMatrix,
-                                //const P_M*                   proposalPrecMatrix,
-                                //const P_M*                   mahalanobisMatrix,
-                                //bool                         applyMahalanobisInvert,
-                                  uqChainBaseClass<P_V>&       workingChain);
-  int    generateChain           (unsigned int                 chainSize,
-                                  const P_V&                   valuesOf1stPosition,
-                                  const P_M*                   proposalCovMatrix,
-                                //const P_M*                   mahalanobisMatrix,
-                                //bool                         applyMahalanobisInvert,
-                                  uqChainBaseClass<P_V>&       workingChain,
-                                  const std::string&           chainName,
-                                  const std::string&           prefixName,
-                                  std::ofstream*               ofs);
-  int    generateWhiteNoise      (unsigned int                 chainSize,
-                                  uqChainBaseClass<P_V>&       workingChain,
-                                  const std::string&           chainName);
-  int    generateUniform         (unsigned int                 chainSize,
-                                  uqChainBaseClass<P_V>&       workingChain,
-                                  const std::string&           chainName);
-  void   updateCovMatrix         (const uqChainBaseClass<P_V>& subChain,
-                                  unsigned int                 idOfFirstPositionInSubChain,
-                                  double&                      lastChainSize,
-                                  P_V&                         lastMean,
-                                  P_M&                         lastAdaptedCovMatrix);
+  void   calculateDistributions  (const P_M*                                     proposalCovMatrix,
+                                //const P_M*                                     proposalPrecMatrix,
+                                //const P_M*                                     mahalanobisMatrix,
+                                //bool                                           applyMahalanobisInvert,
+                                  uqChainBaseClass<P_V>&                         workingChain);
+  int    generateChain           (unsigned int                                   chainSize,
+                                  const P_V&                                     valuesOf1stPosition,
+                                  const P_M*                                     proposalCovMatrix,
+                                //const P_M*                                     mahalanobisMatrix,
+                                //bool                                           applyMahalanobisInvert,
+                                  uqChainBaseClass<P_V>&                         workingChain,
+                                  const std::string&                             chainName,
+                                  const std::string&                             prefixName,
+                                  std::ofstream*                                 ofs);
+  int    generateWhiteNoise      (unsigned int                                   chainSize,
+                                  uqChainBaseClass<P_V>&                         workingChain,
+                                  const std::string&                             chainName);
+  int    generateUniform         (unsigned int                                   chainSize,
+                                  uqChainBaseClass<P_V>&                         workingChain,
+                                  const std::string&                             chainName);
+  void   updateCovMatrix         (const uqChainBaseClass<P_V>&                   subChain,
+                                  unsigned int                                   idOfFirstPositionInSubChain,
+                                  double&                                        lastChainSize,
+                                  P_V&                                           lastMean,
+                                  P_M&                                           lastAdaptedCovMatrix);
 
   double logProposal             (const uqChainPositionClass<P_V>&               x,
                                   const uqChainPositionClass<P_V>&               y,
@@ -144,12 +144,12 @@ private:
   bool   acceptAlpha             (double                                         alpha);
   void   updateCovMatrices       ();
 
-  int    writeInfo               (const uqChainBaseClass<P_V>&          workingChain,
-                                  const std::string&                    chainName,
-                                  const std::string&                    prefixName,
-                                  std::ofstream&                        ofs) const;
-                                //const P_M*                            mahalanobisMatrix = NULL,
-                                //bool                                  applyMahalanobisInvert = true) const;
+  int    writeInfo               (const uqChainBaseClass<P_V>&                   workingChain,
+                                  const std::string&                             chainName,
+                                  const std::string&                             prefixName,
+                                  std::ofstream&                                 ofs) const;
+                                //const P_M*                                     mahalanobisMatrix = NULL,
+                                //bool                                           applyMahalanobisInvert = true) const;
 
   const uqEnvironmentClass&                              m_env;
         std::string                                      m_prefix;
@@ -697,6 +697,8 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculateDistributions()
 //const P_M* mahalanobisMatrix,
 //bool       applyMahalanobisInvert)
 {
+  // FIX ME: complement code logic
+
   if (m_chainUse2) {
     calculateDistributions(m_proposalCovMatrix,
                          //mahalanobisMatrix,
@@ -1213,14 +1215,15 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::writeInfo(
   return iRC;
 }
 
-#if 0
 template<class P_V,class P_M,class L_V,class L_M>
-const uqSequenceOfVectorsClass<P_V>&
+const uqChainBaseClass<P_V>&
 uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::chain() const
 {
+  if (m_chainUse2) return m_chain2;
   return m_chain1;
 }
 
+#if 0
 template<class P_V,class P_M,class L_V,class L_M>
 const std::vector<const L_V*>&
 uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::misfitChain() const
