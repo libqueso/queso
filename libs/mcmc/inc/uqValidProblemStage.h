@@ -49,6 +49,7 @@ class uqValidProblemStageClass
 public:
   uqValidProblemStageClass(const uqEnvironmentClass&                              env,
                            const char*                                            prefix,
+                           const char*                                            sufix,
                            const uqProbDensity_BaseClass       <P_V,P_M>*         m2lPriorParamDensityObj,  // Set in substep x.1 in applications setting a validation problem stage
                            const uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>* m2lLikelihoodFunctionObj, // Set in substep x.2
                            P_M*                                                   proposalCovMatrix,        // Set in substep x.3
@@ -132,6 +133,7 @@ template <class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
 uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::uqValidProblemStageClass(
   const uqEnvironmentClass&                              env,
   const char*                                            prefix,
+  const char*                                            sufix,
   const uqProbDensity_BaseClass       <P_V,P_M>*         m2lPriorParamDensityObj,
   const uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>* m2lLikelihoodFunctionObj,
   P_M*                                                   proposalCovMatrix,
@@ -142,18 +144,18 @@ uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::uqValidProblemStageClass(
   const uqQoIFunction_BaseClass       <P_V,P_M,Q_V,Q_M>* qoiFunctionObj)
   :
   m_env                          (env),
-  m_prefix                       (prefix),
+  m_prefix                       ((std::string)(prefix) + "stage_" + (std::string)(sufix)),
   m_paramSpace                   (new uqParamSpaceClass<P_V,P_M>(env,m_prefix.c_str())),
   m_observableSpace              (NULL),
   m_qoiSpace                     (NULL),
   m_optionsDesc                  (new po::options_description("UQ Validation Problem Stage")),
-  m_option_help                  (m_prefix + "help"                       ),
-  m_option_calib_perform         (m_prefix + "calib_"  + "perform"        ),
-  m_option_calib_inputStageId    (m_prefix + "calib_"  + "inputStageId"   ),
-  m_option_calib_distrCalculator (m_prefix + "calib_"  + "distrCalculator"),
-  m_option_propag_perform        (m_prefix + "propag_" + "perform"        ),
-  m_option_propag_inputStageId   (m_prefix + "propag_" + "inputStageId"   ),
-  m_option_propag_distrCalculator(m_prefix + "propag_" + "distrCalculator"),
+  m_option_help                  (m_prefix + "help"                    ),
+  m_option_calib_perform         (m_prefix + "cal_" + "perform"        ),
+  m_option_calib_inputStageId    (m_prefix + "cal_" + "inputStageId"   ),
+  m_option_calib_distrCalculator (m_prefix + "cal_" + "distrCalculator"),
+  m_option_propag_perform        (m_prefix + "pro_" + "perform"        ),
+  m_option_propag_inputStageId   (m_prefix + "pro_" + "inputStageId"   ),
+  m_option_propag_distrCalculator(m_prefix + "pro_" + "distrCalculator"),
   m_calibPerform                 (UQ_VALID_PROBLEM_STAGE_CALIB_PERFORM_ODV          ),
   m_calibInputStageId            (UQ_VALID_PROBLEM_STAGE_CALIB_INPUT_STAGE_ID_ODV   ),
   m_calibDistrCalculator         (UQ_VALID_PROBLEM_STAGE_CALIB_DISTR_CALCULATOR_ODV ),
@@ -179,6 +181,7 @@ uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::uqValidProblemStageClass(
   m_qoiGeneratorObj              (NULL)
 {
   if (m_env.rank() == 0) std::cout << "Entering uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::constructor()"
+                                   << ": prefix = " << m_prefix
                                    << std::endl;
 
   defineMyOptions                (*m_optionsDesc);
@@ -206,7 +209,7 @@ uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::uqValidProblemStageClass(
 
     // Instantiate the distribution calculator.
     m_bmcDc = new uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>(m_env,
-                                                                (m_prefix + "calib_").c_str(),
+                                                                (m_prefix + "cal_").c_str(),
                                                                *m_paramSpace,
                                                                *m_observableSpace,
                                                                *m_m2lPriorParamDensityObj,
@@ -227,7 +230,7 @@ uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::uqValidProblemStageClass(
 
     // Instantiate the distribution calculator.
     m_mcDc = new uqMonteCarloDCClass<P_V,P_M,L_V,L_M>(m_env,
-                                                      (m_prefix + "propag_").c_str(),
+                                                      (m_prefix + "pro_").c_str(),
                                                      *m_paramSpace,
                                                      *m_qoiSpace,
                                                       m_propagParamDensityObj,
@@ -236,6 +239,7 @@ uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::uqValidProblemStageClass(
   }
 
   if (m_env.rank() == 0) std::cout << "Leaving uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::constructor()"
+                                   << ": prefix = " << m_prefix
                                    << std::endl;
 }
 

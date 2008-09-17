@@ -1,0 +1,190 @@
+###############################################
+# UQ Environment
+###############################################
+#uqEnv_help      = anything
+uqEnv_verbosity = 2
+uqEnv_seed      = 0
+
+###############################################
+# CP Problem: parameter/state/observable/qoi spaces
+# CP = calibration+propagation
+###############################################
+#cpProblem_help         = anything
+cp_cal_distrCalculator = bmc
+cp_pro_distrCalculator = mc
+
+#cp_paramSpace_help              = anything
+cp_paramSpace_dim               = 2
+cp_paramSpace_specificationFile = cp.par
+
+#cp_stateSpace_help = anything
+#cp_stateSpace_dim  = 5
+
+#cp_observableSpace_help              = anything
+cp_observableSpace_updateVariances   = 0
+cp_observableSpace_numSubSpaces      = 1
+cp_observableSpace_specificationFile = cp.obs
+
+#cp_qoiSpace_help              = anything
+cp_qoiSpace_dim               = 1
+cp_qoiSpace_specificationFile = cp.qoi
+
+###############################################
+# CP Problem, calibration problem: BMC DC
+#
+# BMC = Bayesian Markov Chain
+# DC =  (Posterior Parameter) Distribution Calculator
+#
+# '_sizes' examples 16K   128K   2M      16M
+#                   16384 131072 2097152 16777216
+###############################################
+cp_cal_bmcdc_help                   = anything
+cp_cal_bmcdc_chain_type            = 1
+cp_cal_bmcdc_chain_number          = 1
+cp_cal_bmcdc_chain_sizes           = 10001
+cp_cal_bmcdc_chain_outputFileNames = cpOutput.m
+cp_cal_bmcdc_chain_use2            = 0
+cp_cal_bmcdc_chain_generateExtra   = 0
+cp_cal_bmcdc_chain_displayPeriod   = 5000
+cp_cal_bmcdc_chain_measureRunTimes = 1
+cp_cal_bmcdc_chain_write           = 1
+cp_cal_bmcdc_chain_computeStats    = 1
+
+cp_cal_bmcdc_dr_maxNumExtraStages       = 1
+cp_cal_bmcdc_dr_scalesForExtraStages    = 5. 4. 3.
+cp_cal_bmcdc_am_initialNonAdaptInterval = 0
+cp_cal_bmcdc_am_adaptInterval           = 100
+cp_cal_bmcdc_am_eta                     = 1.92
+cp_cal_bmcdc_am_epsilon                 = 1.e-5
+
+cp_cal_bmcdc_filteredChain_generate         = 0
+cp_cal_bmcdc_filteredChain_discardedPortion = 0.
+cp_cal_bmcdc_filteredChain_lag              = 0
+cp_cal_bmcdc_filteredChain_write            = 1
+cp_cal_bmcdc_filteredChain_computeStats     = 0
+
+#cp_cal_bmcdc_chain_stats_help                     = anything
+cp_cal_bmcdc_chain_stats_initialDiscardedPortions = 0.
+cp_cal_bmcdc_chain_stats_bmm_run                  = 0
+cp_cal_bmcdc_chain_stats_bmm_lengths              = 50 100 200 250
+cp_cal_bmcdc_chain_stats_fft_compute              = 0
+cp_cal_bmcdc_chain_stats_fft_paramId              = 0
+cp_cal_bmcdc_chain_stats_fft_size                 = 2048
+cp_cal_bmcdc_chain_stats_fft_testInversion        = 1
+cp_cal_bmcdc_chain_stats_fft_write                = 1
+cp_cal_bmcdc_chain_stats_psd_compute              = 1
+cp_cal_bmcdc_chain_stats_psd_numBlocks            = 8
+cp_cal_bmcdc_chain_stats_psd_hopSizeRatio         = .5
+cp_cal_bmcdc_chain_stats_psd_paramId              = 0
+cp_cal_bmcdc_chain_stats_psd_write                = 1
+cp_cal_bmcdc_chain_stats_psdAtZero_compute        = 1
+cp_cal_bmcdc_chain_stats_psdAtZero_numBlocks      = 32
+cp_cal_bmcdc_chain_stats_psdAtZero_hopSizeRatio   = .5
+cp_cal_bmcdc_chain_stats_psdAtZero_display        = 1
+cp_cal_bmcdc_chain_stats_psdAtZero_write          = 1
+cp_cal_bmcdc_chain_stats_geweke_compute           = 1
+cp_cal_bmcdc_chain_stats_geweke_naRatio           = .1
+cp_cal_bmcdc_chain_stats_geweke_nbRatio           = .5
+cp_cal_bmcdc_chain_stats_geweke_display           = 1
+cp_cal_bmcdc_chain_stats_geweke_write             = 1
+cp_cal_bmcdc_chain_stats_corr_computeViaDef       = 1
+cp_cal_bmcdc_chain_stats_corr_computeViaFft       = 1
+cp_cal_bmcdc_chain_stats_corr_secondLag           = 2
+cp_cal_bmcdc_chain_stats_corr_lagSpacing          = 1
+cp_cal_bmcdc_chain_stats_corr_numLags             = 15
+cp_cal_bmcdc_chain_stats_corr_display             = 1
+cp_cal_bmcdc_chain_stats_corr_write               = 1
+cp_cal_bmcdc_chain_stats_hist_compute             = 1
+cp_cal_bmcdc_chain_stats_hist_numInternalBins     = 200
+cp_cal_bmcdc_chain_stats_kde_compute              = 1
+cp_cal_bmcdc_chain_stats_kde_numEvalPositions     = 200
+
+#cp_cal_bmcdc_uniqueChain_stats_help                     = anything
+cp_cal_bmcdc_uniqueChain_stats_initialDiscardedPortions = 0.
+cp_cal_bmcdc_uniqueChain_stats_bmm_run                  = 0
+cp_cal_bmcdc_uniqueChain_stats_bmm_lengths              = 50 100 200 250
+cp_cal_bmcdc_uniqueChain_stats_fft_compute              = 0
+cp_cal_bmcdc_uniqueChain_stats_fft_paramId              = 0
+cp_cal_bmcdc_uniqueChain_stats_fft_size                 = 2048
+cp_cal_bmcdc_uniqueChain_stats_fft_testInversion        = 1
+cp_cal_bmcdc_uniqueChain_stats_fft_write                = 1
+cp_cal_bmcdc_uniqueChain_stats_psd_compute              = 1
+cp_cal_bmcdc_uniqueChain_stats_psd_numBlocks            = 8
+cp_cal_bmcdc_uniqueChain_stats_psd_hopSizeRatio         = .5
+cp_cal_bmcdc_uniqueChain_stats_psd_paramId              = 0
+cp_cal_bmcdc_uniqueChain_stats_psd_write                = 1
+cp_cal_bmcdc_uniqueChain_stats_psdAtZero_compute        = 1
+cp_cal_bmcdc_uniqueChain_stats_psdAtZero_numBlocks      = 32
+cp_cal_bmcdc_uniqueChain_stats_psdAtZero_hopSizeRatio   = .5
+cp_cal_bmcdc_uniqueChain_stats_psdAtZero_display        = 1
+cp_cal_bmcdc_uniqueChain_stats_psdAtZero_write          = 1
+cp_cal_bmcdc_uniqueChain_stats_geweke_compute           = 1
+cp_cal_bmcdc_uniqueChain_stats_geweke_naRatio           = .1
+cp_cal_bmcdc_uniqueChain_stats_geweke_nbRatio           = .5
+cp_cal_bmcdc_uniqueChain_stats_geweke_display           = 1
+cp_cal_bmcdc_uniqueChain_stats_geweke_write             = 1
+cp_cal_bmcdc_uniqueChain_stats_corr_computeViaDef       = 1
+cp_cal_bmcdc_uniqueChain_stats_corr_computeViaFft       = 1
+cp_cal_bmcdc_uniqueChain_stats_corr_secondLag           = 2
+cp_cal_bmcdc_uniqueChain_stats_corr_lagSpacing          = 1
+cp_cal_bmcdc_uniqueChain_stats_corr_numLags             = 15
+cp_cal_bmcdc_uniqueChain_stats_corr_display             = 1
+cp_cal_bmcdc_uniqueChain_stats_corr_write               = 1
+cp_cal_bmcdc_uniqueChain_stats_hist_compute             = 1
+cp_cal_bmcdc_uniqueChain_stats_hist_numInternalBins     = 200
+cp_cal_bmcdc_uniqueChain_stats_kde_compute              = 1
+cp_cal_bmcdc_uniqueChain_stats_kde_numEvalPositions     = 200
+
+###############################################
+# CP Problem, propagation problem: MC DC
+#
+# MC = Monte Carlo
+# DC = (QoI) Distribution Calculator
+#
+# '_numSamples' examples 16K   128K   2M      16M
+#                        16384 131072 2097152 16777216
+###############################################
+#cp_pro_mcdc_help            = anything
+cp_pro_mcdc_numSamples      = 10001
+cp_pro_mcdc_outputFileName  = cpOutput.m
+cp_pro_mcdc_use2            = 0
+cp_pro_mcdc_displayPeriod   = 5000
+cp_pro_mcdc_measureRunTimes = 1
+cp_pro_mcdc_write           = 1
+cp_pro_mcdc_computeStats    = 1
+
+#cp_pro_mcdc_stats_help                     = anything
+cp_pro_mcdc_stats_initialDiscardedPortions = 0.
+cp_pro_mcdc_stats_bmm_run                  = 0
+cp_pro_mcdc_stats_bmm_lengths              = 50 100 200 250
+cp_pro_mcdc_stats_fft_compute              = 0
+cp_pro_mcdc_stats_fft_paramId              = 0
+cp_pro_mcdc_stats_fft_size                 = 2048
+cp_pro_mcdc_stats_fft_testInversion        = 1
+cp_pro_mcdc_stats_fft_write                = 1
+cp_pro_mcdc_stats_psd_compute              = 1
+cp_pro_mcdc_stats_psd_numBlocks            = 8
+cp_pro_mcdc_stats_psd_hopSizeRatio         = .5
+cp_pro_mcdc_stats_psd_paramId              = 0
+cp_pro_mcdc_stats_psd_write                = 1
+cp_pro_mcdc_stats_psdAtZero_compute        = 1
+cp_pro_mcdc_stats_psdAtZero_numBlocks      = 32
+cp_pro_mcdc_stats_psdAtZero_hopSizeRatio   = .5
+cp_pro_mcdc_stats_psdAtZero_display        = 1
+cp_pro_mcdc_stats_psdAtZero_write          = 1
+cp_pro_mcdc_stats_geweke_compute           = 1
+cp_pro_mcdc_stats_geweke_naRatio           = .1
+cp_pro_mcdc_stats_geweke_nbRatio           = .5
+cp_pro_mcdc_stats_geweke_display           = 1
+cp_pro_mcdc_stats_geweke_write             = 1
+cp_pro_mcdc_stats_corr_computeViaDef       = 1
+cp_pro_mcdc_stats_corr_computeViaFft       = 1
+cp_pro_mcdc_stats_corr_secondLag           = 2
+cp_pro_mcdc_stats_corr_lagSpacing          = 1
+cp_pro_mcdc_stats_corr_numLags             = 15
+cp_pro_mcdc_stats_corr_display             = 1
+cp_pro_mcdc_stats_corr_write               = 1
+cp_pro_mcdc_stats_hist_compute             = 1
+cp_pro_mcdc_stats_hist_numInternalBins     = 200
+cp_pro_mcdc_stats_kde_compute              = 1
+cp_pro_mcdc_stats_kde_numEvalPositions     = 200

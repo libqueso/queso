@@ -22,18 +22,19 @@
 
 #include <uqValidProblemStage.h>
 
-#define UQ_VALID_PROBLEM_PREFIX_FOR_NO_STAGE_PREFIX "."
+#define UQ_VALID_PROBLEM_SUFIX_FOR_NO_STAGE_SUFIX "."
 
 // _ODV = option default value
-#define UQ_VALID_PROBLEM_NUM_STAGES_ODV     0
-#define UQ_VALID_PROBLEM_STAGE_PREFIXES_ODV UQ_VALID_PROBLEM_PREFIX_FOR_NO_STAGE_PREFIX
-#define UQ_VALID_PROBLEM_STAGE_ORDER_ODV    "0"
+#define UQ_VALID_PROBLEM_NUM_STAGES_ODV    0
+#define UQ_VALID_PROBLEM_STAGE_SUFIXES_ODV UQ_VALID_PROBLEM_SUFIX_FOR_NO_STAGE_SUFIX
+#define UQ_VALID_PROBLEM_STAGE_ORDER_ODV   "0"
 
 template <class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
 class uqValidProblemClass
 {
 public:
-  uqValidProblemClass(const uqEnvironmentClass& env);
+  uqValidProblemClass(const uqEnvironmentClass& env,
+                      const char*               prefix);
  ~uqValidProblemClass();
 
         void                                               instantiateStage (unsigned int                                           stageId,
@@ -55,38 +56,43 @@ private:
         void                                               defineMyOptions  (po::options_description& optionsDesc);
         void                                               getMyOptionValues(po::options_description& optionsDesc);
 
-  const uqEnvironmentClass&                                       m_env;
+  const uqEnvironmentClass&                                             m_env;
+        std::string                                                     m_prefix;
 
-  po::options_description*                                        m_optionsDesc;
-  std::string                                                     m_option_help;
-  std::string                                                     m_option_numStages;
-  std::string                                                     m_option_stagePrefixes;
-  std::string                                                     m_option_stageOrder;
+        po::options_description*                                        m_optionsDesc;
+        std::string                                                     m_option_help;
+        std::string                                                     m_option_numStages;
+        std::string                                                     m_option_stageSufixes;
+        std::string                                                     m_option_stageOrder;
 
-  unsigned int                                                    m_numStages;
-  std::vector<std::string>                                        m_stagePrefixes;
-  std::vector<unsigned int>                                       m_stageOrder;
-  std::vector<uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>*> m_stages;
+        unsigned int                                                    m_numStages;
+        std::vector<std::string>                                        m_stageSufixes;
+        std::vector<unsigned int>                                       m_stageOrder;
+        std::vector<uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>*> m_stages;
 };
 
 template<class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
 std::ostream& operator<<(std::ostream& os, const uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>& obj);
 
 template <class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
-uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::uqValidProblemClass(const uqEnvironmentClass& env)
+uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::uqValidProblemClass(
+  const uqEnvironmentClass& env,
+  const char*               prefix)
   :
-  m_env                 (env),
-  m_optionsDesc         (new po::options_description("Validation Problem")),
-  m_option_help         ("validProblem_help"         ),
-  m_option_numStages    ("validProblem_numStages"    ),
-  m_option_stagePrefixes("validProblem_stagePrefixes"),
-  m_option_stageOrder   ("validProblem_stageOrder"   ),
-  m_numStages           (UQ_VALID_PROBLEM_NUM_STAGES_ODV),
-  m_stagePrefixes       (1,UQ_VALID_PROBLEM_STAGE_PREFIXES_ODV),
-  m_stageOrder          (0),
-  m_stages              (0)
+  m_env                (env),
+  m_prefix             ((std::string)(prefix) + "val_"),
+  m_optionsDesc        (new po::options_description("Validation Problem")),
+  m_option_help        (m_prefix + "help"        ),
+  m_option_numStages   (m_prefix + "numStages"   ),
+  m_option_stageSufixes(m_prefix + "stageSufixes"),
+  m_option_stageOrder  (m_prefix + "stageOrder"  ),
+  m_numStages          (UQ_VALID_PROBLEM_NUM_STAGES_ODV),
+  m_stageSufixes       (1,UQ_VALID_PROBLEM_STAGE_SUFIXES_ODV),
+  m_stageOrder         (0),
+  m_stages             (0)
 {
   if (m_env.rank() == 0) std::cout << "Entering uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::constructor()"
+                                   << ": prefix = " << m_prefix
                                    << std::endl;
 
   defineMyOptions                (*m_optionsDesc);
@@ -101,6 +107,7 @@ uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::uqValidProblemClass(const uqEnviro
   m_stages.resize(m_numStages,NULL);
 
   if (m_env.rank() == 0) std::cout << "Leaving uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::constructor()"
+                                   << ": prefix = " << m_prefix
                                    << std::endl;
 }
 
@@ -119,10 +126,10 @@ uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::defineMyOptions(
   po::options_description& optionsDesc)
 {
   optionsDesc.add_options()
-    (m_option_help.c_str(),                                                                                         "produce help message for a validation problem")
-    (m_option_numStages.c_str(),     po::value<unsigned int>()->default_value(UQ_VALID_PROBLEM_NUM_STAGES_ODV),     "number of stages"                             )
-    (m_option_stagePrefixes.c_str(), po::value<std::string >()->default_value(UQ_VALID_PROBLEM_STAGE_PREFIXES_ODV), "list of prefix(es) for stage(s)"              )
-    (m_option_stageOrder.c_str(),    po::value<std::string >()->default_value(UQ_VALID_PROBLEM_STAGE_ORDER_ODV),    "order of stages during solution process"      )
+    (m_option_help.c_str(),                                                                                       "produce help message for a validation problem")
+    (m_option_numStages.c_str(),    po::value<unsigned int>()->default_value(UQ_VALID_PROBLEM_NUM_STAGES_ODV),    "number of stages"                             )
+    (m_option_stageSufixes.c_str(), po::value<std::string >()->default_value(UQ_VALID_PROBLEM_STAGE_SUFIXES_ODV), "list of sufix(es) for stage(s)"               )
+    (m_option_stageOrder.c_str(),   po::value<std::string >()->default_value(UQ_VALID_PROBLEM_STAGE_ORDER_ODV),   "order of stages during solution process"      )
   ;
 
   return;
@@ -142,19 +149,19 @@ void
     m_numStages = m_env.allOptionsMap()[m_option_numStages.c_str()].as<unsigned int>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_stagePrefixes.c_str())) {
-    m_stagePrefixes.clear();
-    std::string inputString = m_env.allOptionsMap()[m_option_stagePrefixes.c_str()].as<std::string>();
-    uqMiscReadWordsFromString(inputString,m_stagePrefixes);
+  if (m_env.allOptionsMap().count(m_option_stageSufixes.c_str())) {
+    m_stageSufixes.clear();
+    std::string inputString = m_env.allOptionsMap()[m_option_stageSufixes.c_str()].as<std::string>();
+    uqMiscReadWordsFromString(inputString,m_stageSufixes);
     //std::cout << "In uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::getMyOptionValues()"
-    //          << ": m_stagePrefixes[0] = " << m_stagePrefixes[0]
+    //          << ": m_stageSufixes[0] = " << m_stageSufixes[0]
     //          << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(m_numStages != m_stagePrefixes.size(),
+  UQ_FATAL_TEST_MACRO(m_numStages != m_stageSufixes.size(),
                       m_env.rank(),
                       "uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::getMyOptionsValues()",
-                      "option 'numStages' is not equal to size of array of stage prefixes");
+                      "option 'numStages' is not equal to size of array of stage sufixes");
 
   if (m_env.allOptionsMap().count(m_option_stageOrder.c_str())) {
     m_stageOrder.clear();
@@ -205,7 +212,8 @@ uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::instantiateStage(
   const uqQoIFunction_BaseClass       <P_V,P_M,Q_V,Q_M>* qoiFunctionObj)           // Set in substep x.5
 {
   m_stages[stageId] = new uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>(m_env,
-                                                                            m_stagePrefixes[stageId].c_str(),
+                                                                            m_prefix.c_str(),
+                                                                            m_stageSufixes[stageId].c_str(),
                                                                             m2lPriorParamDensityObj,
                                                                             m2lLikelihoodFunctionObj,
                                                                             proposalCovMatrix,
@@ -265,9 +273,9 @@ void
 uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::print(std::ostream& os) const
 {
   os << "\n" << m_option_numStages     << " = " << m_numStages
-     << "\n" << m_option_stagePrefixes << " = ";
-  for (unsigned int i = 0; i < m_stagePrefixes.size(); ++i) {
-    os << m_stagePrefixes[i] << " ";
+     << "\n" << m_option_stageSufixes << " = ";
+  for (unsigned int i = 0; i < m_stageSufixes.size(); ++i) {
+    os << m_stageSufixes[i] << " ";
   }
   os << "\n" << m_option_stageOrder << " = ";
   for (unsigned int i = 0; i < m_stageOrder.size(); ++i) {

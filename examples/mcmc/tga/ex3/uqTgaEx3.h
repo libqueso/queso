@@ -1,4 +1,4 @@
-/* uq/examples/mcmc/tga/uqTgaEx4.h
+/* uq/examples/mcmc/tga/uqTgaEx3.h
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu
  *
@@ -17,11 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef __UQ_TGA_EX4_H__
-#define __UQ_TGA_EX4_H__
+#ifndef __UQ_TGA_EX3_H__
+#define __UQ_TGA_EX3_H__
 
 //#include <uqStateSpace.h>
-#include <uqValidProblem.h>
+#include <uqCalibProblem.h>
+#include <uqPropagProblem.h>
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_odeiv.h>
 
@@ -41,7 +42,7 @@ int func(double t, const double Mass[], double f[], void *info)
 }
 
 //********************************************************
-// Likelihood function object for the first validation problem stage (with prefix "stage0_").
+// Likelihood function object for the CP problem
 // A likelihood function object is provided by user and is called by the UQ library.
 // This likelihood function object consists of data and routine.
 //********************************************************
@@ -124,7 +125,7 @@ void stage0_likelihoodRoutine(const P_V& paramValues, const void* functionDataPt
 }
 
 //********************************************************
-// QoI function object for the first validation problem stage (with prefix "stage0_").
+// QoI function object for the CP problem
 // A QoI function object is provided by user and is called by the UQ library.
 // This QoI function object consists of data and routine.
 //********************************************************
@@ -187,7 +188,7 @@ void stage0_qoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V&
   qoiValues[0] = crossingTemperature/beta1;
 	
   //printf("loopSize = %d\n",loopSize);
-  if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
+  if ((paramValues.env().verbosity() >= 0) && (paramValues.env().rank() == 0)) {
     printf("In stage0_qoiRoutine(), A = %g, E = %g, beta1 = %.3lf, criticalMass1 = %.3lf: qoi = %lf.\n",A,E,beta1,criticalMass1,qoiValues[0]);
   }
 
@@ -199,14 +200,14 @@ void stage0_qoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V&
 }
 
 //********************************************************
-// The validation problem driving routine "uqAppl()": called by main()
+// The CP problem driving routine "uqAppl()": called by main()
 //********************************************************
 template<class P_V,class P_M,class S_V,class S_M,class L_V,class L_M,class Q_V,class Q_M>
 void 
 uqAppl(const uqEnvironmentClass& env)
 {
   if (env.rank() == 0) {
-    std::cout << "Beginning run of 'uqTgaEx4' example\n"
+    std::cout << "Beginning run of 'uqTgaEx3' example\n"
               << std::endl;
   }
 
@@ -216,22 +217,11 @@ uqAppl(const uqEnvironmentClass& env)
                       "input file must be specified in command line, after the '-i' option");
 
   //*****************************************************
-  // Step 1 of 4: Instantiate the validation problem
-  //*****************************************************
-  uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M> validProblem(env,
-                                                            "");
-
-  //******************************************************
-  // Step 2 of 4: Set the first validation problem stage
-  // There are 6 substeps: 2.1, 2.2, 2.3, 2.4, 2.5 and 2.6
-  //******************************************************
-
-  //*****************************************************
-  // Substep 2.0: Code specific to this TGA example
+  // Step 0 of 4: Code specific to this TGA example
   //*****************************************************
   // Open input file on experimental data
   FILE *inp;
-  inp = fopen("global4.dat","r");
+  inp = fopen("global3.dat","r");
 
   // Read kinetic parameters and convert heating rate to K/s
   double tmpA, tmpE, beta1, variance1, criticalMass1;
@@ -262,6 +252,15 @@ uqAppl(const uqEnvironmentClass& env)
   // Close input file on experimental data
   fclose(inp);
 
+  //*****************************************************
+  // Step 1 of 4: Instantiate the CP (calibration+propagation) problem
+  //*****************************************************
+  uqCPProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M> cpProblem(env);
+
+  //******************************************************
+  // Step 2 of 4: Instantiate the calibration problem, in 4 substeps
+  //******************************************************
+
   //******************************************************
   // Substep 2.1: Define the prior probability density function object: -2*ln[prior]
   //******************************************************
@@ -283,31 +282,36 @@ uqAppl(const uqEnvironmentClass& env)
                                                                                    true); // the routine computes [-2.*ln(Likelihood)]
 
   //******************************************************
-  // Substep 2.3: Define the proposal density and proposal generator
+  // Substep 2.3: Define the proposal cov matrix, the proposal density and the proposal generator
   //******************************************************
 
   // Use the default gaussian proposal and default gaussian generator with the default covariance matrix, all provided by the UQ library
-  P_M*                                    stage0_proposalCovMatrix    = NULL;
+  //P_M*                                    stage0_proposalCovMatrix    = NULL;
   uqProposalDensity_BaseClass<P_V,P_M>*   stage0_proposalDensityObj   = NULL;
   uqProposalGenerator_BaseClass<P_V,P_M>* stage0_proposalGeneratorObj = NULL;
 
-  //P_M* stage0_proposalCovMatrix = validProblem.stage(0).paramSpace().newMatrix();
+  P_M* stage0_proposalCovMatrix = cpProblem.paramSpace().newMatrix();
   //(*stage0_proposalCovMatrix)(0,0) = 1.65122e+10;
   //(*stage0_proposalCovMatrix)(0,1) = 0.;
   //(*stage0_proposalCovMatrix)(1,0) = 0.;
   //(*stage0_proposalCovMatrix)(1,1) = 9.70225e+04;
 
   //******************************************************
-  // Substep 2.4: Define the propagation input parameters (density and generator)
+  // Substep 2.4: Instantiate the calibration problem
   //******************************************************
 
-  // Let the 'validProblem' class internally use the parameter generator obtained with the calibration.
-  // The 'uqTgaEx2.inp' file should set 'stage0_propag_inputStageId = 0'.
-  uqProbDensity_BaseClass<P_V,P_M>*     stage0_propagParamDensityObj   = NULL;
-  uqSampleGenerator_BaseClass<P_V,P_M>* stage0_propagParamGeneratorObj = NULL;
+  cpProblem.instantiateCalibration(stage0_priorParamDensityObj,   // substep 2.1: calibration prior parameter density
+                                   &stage0_likelihoodFunctionObj, // substep 2.2: calibration likelihood function
+                                   stage0_proposalCovMatrix,      // substep 2.3: calibration gaussian proposal (density and generator)
+                                   stage0_proposalDensityObj,     // substep 2.3: calibration proposal density
+                                   stage0_proposalGeneratorObj);  // substep 2.3: calibration proposal generator
 
   //******************************************************
-  // Substep 2.5: Define the qoi function object
+  // Step 3 of 4: Instantiate the propagation problem, in 2 substeps
+  //******************************************************
+
+  //******************************************************
+  // Substep 3.1: Define the qoi function object
   //******************************************************
 
   stage0_qoiRoutine_DataType<P_V,P_M> stage0_qoiRoutine_Data;
@@ -317,39 +321,25 @@ uqAppl(const uqEnvironmentClass& env)
                                                                  (void *) &stage0_qoiRoutine_Data);
 
   //******************************************************
-  // Substep 2.6: Instantiate the first validation problem stage
+  // Substep 3.2: Instantiate the propagation problem
   //******************************************************
 
-  validProblem.instantiateStage(0,                              // stage id
-                                stage0_priorParamDensityObj,    // substep 2.1: calibration prior parameter density
-                                &stage0_likelihoodFunctionObj,  // substep 2.2: calibration likelihood function
-                                stage0_proposalCovMatrix,       // substep 2.3: calibration gaussian proposal (density and generator)
-                                stage0_proposalDensityObj,      // substep 2.3: calibration proposal density
-                                stage0_proposalGeneratorObj,    // substep 2.3: calibration proposal generator
-                                stage0_propagParamDensityObj,   // substep 2.4: propagation input parameter density
-                                stage0_propagParamGeneratorObj, // substep 2.4: propagation input parameter generator
-                                &stage0_qoiFunctionObj);        // substep 2.5: propagation qoi function
+  cpProblem.instantiatePropagation(&stage0_qoiFunctionObj); // substep 3.1: propagation qoi function
 
   //******************************************************
-  // Step 3 of 4: Set the second validation problem stage
+  // Step 4 of 4: solve the CP problem
   //******************************************************
-
-  // This TGA example deals with only one stage
-
-  //******************************************************
-  // Step 4 of 4: solve the validation problem
-  //******************************************************
-  validProblem.solve();
+  cpProblem.solve();
 
   //******************************************************
   // Release memory before leaving routine.
   //******************************************************
 
   if (env.rank() == 0) {
-    std::cout << "Finishing run of 'uqTgaEx4' example"
+    std::cout << "Finishing run of 'uqTgaEx3' example"
               << std::endl;
   }
 
   return;
 }
-#endif // __UQ_TGA_EX4_H__
+#endif // __UQ_TGA_EX3_H__
