@@ -21,7 +21,7 @@
 #define __UQ_TGA_EX_H__
 
 //#include <uqStateSpace.h>
-#include <uqProblem.h>
+#include <uqValidProblem.h>
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_odeiv.h>
 
@@ -41,7 +41,7 @@ int func(double t, const double Mass[], double f[], void *info)
 }
 
 //********************************************************
-// Likelihood function object for one UQ problem slice (with prefix "slice0_").
+// Likelihood function object for one UQ problem stage (with prefix "stage0_").
 // A likelihood function object is provided by user and is called by the MCMC library.
 // This likelihood function object consists of data and routine.
 //********************************************************
@@ -49,7 +49,7 @@ int func(double t, const double Mass[], double f[], void *info)
 // The (user defined) data type for the data needed by the (user defined) likelihood routine
 template<class S_V, class S_M>
 struct
-slice0_likelihoodRoutine_DataType
+stage0_likelihoodRoutine_DataType
 {
   double               beta1;
   double               variance1;
@@ -59,14 +59,14 @@ slice0_likelihoodRoutine_DataType
 
 // The actual (user defined) likelihood routine
 template<class P_V,class P_M,class S_V,class S_M,class L_V,class L_M>
-void slice0_likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr, L_V& resultValues)
+void stage0_likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr, L_V& resultValues)
 {
   double A                       = paramValues[0];
   double E                       = paramValues[1];
-  double beta1                   =  ((slice0_likelihoodRoutine_DataType<S_V,S_M> *) functionDataPtr)->beta1;
-  double variance1               =  ((slice0_likelihoodRoutine_DataType<S_V,S_M> *) functionDataPtr)->variance1;
-  const std::vector<double>& Te1 = *((slice0_likelihoodRoutine_DataType<S_V,S_M> *) functionDataPtr)->Te1;
-  const std::vector<double>& Me1 = *((slice0_likelihoodRoutine_DataType<S_V,S_M> *) functionDataPtr)->Me1;
+  double beta1                   =  ((stage0_likelihoodRoutine_DataType<S_V,S_M> *) functionDataPtr)->beta1;
+  double variance1               =  ((stage0_likelihoodRoutine_DataType<S_V,S_M> *) functionDataPtr)->variance1;
+  const std::vector<double>& Te1 = *((stage0_likelihoodRoutine_DataType<S_V,S_M> *) functionDataPtr)->Te1;
+  const std::vector<double>& Me1 = *((stage0_likelihoodRoutine_DataType<S_V,S_M> *) functionDataPtr)->Me1;
   std::vector<double> Mt1(Me1.size(),0.);
 
   double params[]={A,E,beta1};
@@ -94,7 +94,7 @@ void slice0_likelihoodRoutine(const P_V& paramValues, const void* functionDataPt
     int status = gsl_odeiv_evolve_apply(e, c, s, &sys, &t, t1, &h, Mass);
     UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
                         paramValues.env().rank(),
-                        "slice0_likelihoodRoutine()",
+                        "stage0_likelihoodRoutine()",
                         "gsl_odeiv_evolve_apply() failed");
     //printf("%6.1lf %10.4lf\n",t,Mass[0]);
     //loopSize++;
@@ -124,21 +124,21 @@ void slice0_likelihoodRoutine(const P_V& paramValues, const void* functionDataPt
 }
 
 //********************************************************
-// QoI function object for one UQ problem slice (with prefix "slice0_").
+// QoI function object for one UQ problem stage (with prefix "stage0_").
 // A QoI function object is provided by user and is called by the MCMC library.
 // This QoI function object consists of data and routine.
 //********************************************************
 // The (user defined) data type for the data needed by the (user defined) qoi routine
 template<class S_V, class S_M>
 struct
-slice0_qoiRoutine_DataType
+stage0_qoiRoutine_DataType
 {
   double beta1;
 };
 
 // The actual (user defined) qoi routine
 template<class P_V,class P_M,class S_V,class S_M,class Q_V,class Q_M>
-void slice0_qoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiValues)
+void stage0_qoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiValues)
 {
   qoiValues[0] = 2.;
 
@@ -163,12 +163,12 @@ uqAppl(const uqEnvironmentClass& env)
                       "input file must be specified in command line, after the '-i' option");
 
   //*****************************************************
-  // Step 1 of 4: Instantiate the problem
+  // Step 1 of 4: Instantiate the validation problem
   //*****************************************************
-  uqProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M> problem(env);
+  uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M> validProblem(env);
 
   //******************************************************
-  // Step 2 of 4: Define first problem slice
+  // Step 2 of 4: Define first validation problem stage
   // There are 6 substeps: 2.1, 2.2, 2.3, 2.4, 2.5 and 2.6
   //******************************************************
 
@@ -177,7 +177,7 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
 
   // Use the default prior density, provided by the MCMC library
-  uqProbDensity_BaseClass<P_V,P_M>* slice0_priorParamDensityObj = NULL;
+  uqProbDensity_BaseClass<P_V,P_M>* stage0_priorParamDensityObj = NULL;
 
   //******************************************************
   // Substep 2.2: Define the likelihood function object: -2*ln[likelihood]
@@ -216,13 +216,13 @@ uqAppl(const uqEnvironmentClass& env)
   // Close input file on experimental data
   fclose(inp);
 
-  slice0_likelihoodRoutine_DataType<P_V,P_M> slice0_likelihoodRoutine_Data;
-  slice0_likelihoodRoutine_Data.beta1     = beta1;
-  slice0_likelihoodRoutine_Data.variance1 = variance1;
-  slice0_likelihoodRoutine_Data.Te1       = &Te1; // temperatures
-  slice0_likelihoodRoutine_Data.Me1       = &Me1; // relative masses
-  uqCompleteLikelihoodFunction_Class<P_V,P_M,L_V,L_M> slice0_likelihoodFunctionObj(slice0_likelihoodRoutine<P_V,P_M,S_V,S_M,L_V,L_M>,
-                                                                                   (void *) &slice0_likelihoodRoutine_Data,
+  stage0_likelihoodRoutine_DataType<P_V,P_M> stage0_likelihoodRoutine_Data;
+  stage0_likelihoodRoutine_Data.beta1     = beta1;
+  stage0_likelihoodRoutine_Data.variance1 = variance1;
+  stage0_likelihoodRoutine_Data.Te1       = &Te1; // temperatures
+  stage0_likelihoodRoutine_Data.Me1       = &Me1; // relative masses
+  uqCompleteLikelihoodFunction_Class<P_V,P_M,L_V,L_M> stage0_likelihoodFunctionObj(stage0_likelihoodRoutine<P_V,P_M,S_V,S_M,L_V,L_M>,
+                                                                                   (void *) &stage0_likelihoodRoutine_Data,
                                                                                    true); // the routine computes [-2.*ln(Likelihood)]
 
   //******************************************************
@@ -230,56 +230,56 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
 
   // Use the default gaussian proposal and default gaussian generator with the default covariance matrix, all provided by the MCMC library
-  P_M*                                    slice0_proposalCovMatrix    = NULL;
-  uqProposalDensity_BaseClass<P_V,P_M>*   slice0_proposalDensityObj   = NULL;
-  uqProposalGenerator_BaseClass<P_V,P_M>* slice0_proposalGeneratorObj = NULL;
+  P_M*                                    stage0_proposalCovMatrix    = NULL;
+  uqProposalDensity_BaseClass<P_V,P_M>*   stage0_proposalDensityObj   = NULL;
+  uqProposalGenerator_BaseClass<P_V,P_M>* stage0_proposalGeneratorObj = NULL;
 
-  //P_M* slice0_proposalCovMatrix = slice0_ParamSpace.newMatrix();
-  //(*slice0_proposalCovMatrix)(0,0) = 1.65122e+10;
-  //(*slice0_proposalCovMatrix)(0,1) = 0.;
-  //(*slice0_proposalCovMatrix)(1,0) = 0.;
-  //(*slice0_proposalCovMatrix)(1,1) = 9.70225e+04;
+  //P_M* stage0_proposalCovMatrix = stage0_ParamSpace.newMatrix();
+  //(*stage0_proposalCovMatrix)(0,0) = 1.65122e+10;
+  //(*stage0_proposalCovMatrix)(0,1) = 0.;
+  //(*stage0_proposalCovMatrix)(1,0) = 0.;
+  //(*stage0_proposalCovMatrix)(1,1) = 9.70225e+04;
 
   //******************************************************
   // Substep 2.4: Define the propagation input parameters (density and generator)
   //******************************************************
 
-  uqProbDensity_BaseClass<P_V,P_M>*     slice0_propagParamDensityObj   = NULL;
-  uqSampleGenerator_BaseClass<P_V,P_M>* slice0_propagParamGeneratorObj = NULL;
+  uqProbDensity_BaseClass<P_V,P_M>*     stage0_propagParamDensityObj   = NULL;
+  uqSampleGenerator_BaseClass<P_V,P_M>* stage0_propagParamGeneratorObj = NULL;
 
   //******************************************************
   // Substep 2.5: Define the qoi function object
   //******************************************************
 
-  slice0_qoiRoutine_DataType<P_V,P_M> slice0_qoiRoutine_Data;
-  slice0_qoiRoutine_Data.beta1 = beta1;
-  uqQoIFunction_BaseClass<P_V,P_M,Q_V,Q_M> slice0_qoiFunctionObj(slice0_qoiRoutine<P_V,P_M,S_V,S_M,Q_V,Q_M>,
-                                                                 (void *) &slice0_qoiRoutine_Data);
+  stage0_qoiRoutine_DataType<P_V,P_M> stage0_qoiRoutine_Data;
+  stage0_qoiRoutine_Data.beta1 = beta1;
+  uqQoIFunction_BaseClass<P_V,P_M,Q_V,Q_M> stage0_qoiFunctionObj(stage0_qoiRoutine<P_V,P_M,S_V,S_M,Q_V,Q_M>,
+                                                                 (void *) &stage0_qoiRoutine_Data);
 
   //******************************************************
-  // Substep 2.6: Set the first problem slice
+  // Substep 2.6: Set the first validation problem stage
   //******************************************************
 
-  problem.instantiateSlice(0,                              // slice id
-                           slice0_priorParamDensityObj,    // step 2.1: calibration prior parameter density
-                           &slice0_likelihoodFunctionObj,  // step 2.2: calibration likelihood function
-                           slice0_proposalCovMatrix,       // step 2.3: calibration gaussian proposal (density and generator)
-                           slice0_proposalDensityObj,      // step 2.3: calibration proposal density
-                           slice0_proposalGeneratorObj,    // step 2.3: calibration proposal generator
-                           slice0_propagParamDensityObj,   // step 2.4: propagation input parameter density
-                           slice0_propagParamGeneratorObj, // step 2.4: propagation input parameter generator
-                           &slice0_qoiFunctionObj);        // step 2.5: propagation qoi function
+  validProblem.instantiateStage(0,                              // stage id
+                                stage0_priorParamDensityObj,    // step 2.1: calibration prior parameter density
+                                &stage0_likelihoodFunctionObj,  // step 2.2: calibration likelihood function
+                                stage0_proposalCovMatrix,       // step 2.3: calibration gaussian proposal (density and generator)
+                                stage0_proposalDensityObj,      // step 2.3: calibration proposal density
+                                stage0_proposalGeneratorObj,    // step 2.3: calibration proposal generator
+                                stage0_propagParamDensityObj,   // step 2.4: propagation input parameter density
+                                stage0_propagParamGeneratorObj, // step 2.4: propagation input parameter generator
+                                &stage0_qoiFunctionObj);        // step 2.5: propagation qoi function
 
   //******************************************************
-  // Step 3 of 4: Define second problem slice
+  // Step 3 of 4: Define second validation problem stage
   //******************************************************
 
-  // This code example deals with only one slice
+  // This code example deals with only one stage
 
   //******************************************************
   // Step 4 of 4: Quantify the uncertainty
   //******************************************************
-  problem.quantifyUncertainty();
+  validProblem.solve();
 
   //******************************************************
   // Release memory before leaving routine.
