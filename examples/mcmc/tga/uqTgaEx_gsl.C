@@ -1,4 +1,4 @@
-/* uq/examples/mcmc//uqTgaEx_gsl.C
+/* uq/examples/mcmc/uqTgaEx4_gsl.C
  *
  * Copyright (C) 2008 The PECOS Team, http://queso.ices.utexas.edu
  *
@@ -17,14 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#undef APPL_USES_OLD_H
-
-#ifdef APPL_USES_OLD_H
-#include <uqTgaEx.h>
-#else
-#include <uqTgaEx2.h>
-#endif
-
+#include <uqTgaEx4.h>
 #include <uqGslMatrix.h>
 
 int main(int argc, char* argv[])
@@ -44,12 +37,8 @@ int main(int argc, char* argv[])
          uqGslMatrixClass, // type for state matrices
          uqGslVectorClass, // type for likelihood vectors
          uqGslMatrixClass  // type for likelihood matrices
-#ifdef APPL_USES_OLD_H
-#else
-         ,
          uqGslVectorClass, // type for qoi vectors
          uqGslMatrixClass  // type for qoi matrices
-#endif
         >(*env);
 
   //************************************************
