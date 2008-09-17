@@ -205,15 +205,15 @@ uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::instantiateStage(
   const uqQoIFunction_BaseClass       <P_V,P_M,Q_V,Q_M>* qoiFunctionObj)           // Set in substep x.5
 {
   m_stages[stageId] = new uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>(m_env,
-                                                                       m_stagePrefixes[stageId].c_str(),
-                                                                       m2lPriorParamDensityObj,
-                                                                       m2lLikelihoodFunctionObj,
-                                                                       proposalCovMatrix,
-                                                                       proposalDensityObj,
-                                                                       proposalGeneratorObj,
-                                                                       propagParamDensityObj,
-                                                                       propagParamGeneratorObj,
-                                                                       qoiFunctionObj);
+                                                                            m_stagePrefixes[stageId].c_str(),
+                                                                            m2lPriorParamDensityObj,
+                                                                            m2lLikelihoodFunctionObj,
+                                                                            proposalCovMatrix,
+                                                                            proposalDensityObj,
+                                                                            proposalGeneratorObj,
+                                                                            propagParamDensityObj,
+                                                                            propagParamGeneratorObj,
+                                                                            qoiFunctionObj);
 
   return;
 }

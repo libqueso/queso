@@ -207,10 +207,10 @@ uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::uqValidProblemStageClass(
     // Instantiate the distribution calculator.
     m_bmcDc = new uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>(m_env,
                                                                 (m_prefix + "calib_").c_str(),
-                                                                *m_paramSpace,
-                                                                *m_observableSpace,
-                                                                *m_m2lPriorParamDensityObj,
-                                                                *m_m2lLikelihoodFunctionObj,
+                                                               *m_paramSpace,
+                                                               *m_observableSpace,
+                                                               *m_m2lPriorParamDensityObj,
+                                                               *m_m2lLikelihoodFunctionObj,
                                                                 m_proposalCovMatrix,
                                                                 m_proposalDensityObj,
                                                                 m_proposalGeneratorObj);
@@ -228,11 +228,11 @@ uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::uqValidProblemStageClass(
     // Instantiate the distribution calculator.
     m_mcDc = new uqMonteCarloDCClass<P_V,P_M,L_V,L_M>(m_env,
                                                       (m_prefix + "propag_").c_str(),
-                                                      *m_paramSpace,
-                                                      *m_qoiSpace,
+                                                     *m_paramSpace,
+                                                     *m_qoiSpace,
                                                       m_propagParamDensityObj,
                                                       m_propagParamGeneratorObj,
-                                                      *m_qoiFunctionObj);
+                                                     *m_qoiFunctionObj);
   }
 
   if (m_env.rank() == 0) std::cout << "Leaving uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::constructor()"

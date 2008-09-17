@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef __UQ_BMC_DC2_H__
-#define __UQ_BMC_DC2_H__
+#ifndef __UQ_BMCDC2_H__
+#define __UQ_BMCDC2_H__
 
 template <class P_V,class P_M,class L_V,class L_M>
 void
@@ -45,14 +45,14 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculateDistributions(
   for (unsigned int chainId = 0; chainId < m_chainSizes.size(); ++chainId) {
     char tmpChainId[10];
     sprintf(tmpChainId,"%d",chainId);
-    std::string prefixName = m_prefix + tmpChainId + "_";
+    std::string prefixName = m_prefix + "bmc_" + tmpChainId + "_";
     std::string chainName  = prefixName + "chain";
 
     //****************************************************
     // Open file      
     //****************************************************
     std::ofstream* ofs = NULL;
-    if (m_chainOutputFileNames[chainId] == UQ_BMC_DC_FILENAME_FOR_NO_OUTPUT_FILE) {
+    if (m_chainOutputFileNames[chainId] == UQ_BMCDC_FILENAME_FOR_NO_OUTPUT_FILE) {
       if (m_env.rank() == 0) {
         std::cout << "No output file opened for chain loop id = " << chainId
                   << std::endl;
@@ -80,7 +80,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculateDistributions(
                           "failed to open file");
     }
   
-    if (m_chainType == UQ_BMC_DC_WHITE_NOISE_CHAIN_TYPE) {
+    if (m_chainType == UQ_BMCDC_WHITE_NOISE_CHAIN_TYPE) {
       //****************************************************
       // Just generate white noise
       //****************************************************
@@ -88,7 +88,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculateDistributions(
                                workingChain,
                                chainName);
     }
-    else if (m_chainType == UQ_BMC_DC_UNIFORM_CHAIN_TYPE) {
+    else if (m_chainType == UQ_BMCDC_UNIFORM_CHAIN_TYPE) {
       //****************************************************
       // Just generate uniform    
       //****************************************************
@@ -926,5 +926,5 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::updateCovMatrix(
 
   return;
 }
-#endif // __UQ_BMC_DC2_H__
+#endif // __UQ_BMCDC2_H__
 

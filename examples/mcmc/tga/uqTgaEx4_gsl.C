@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
          uqGslVectorClass, // type for state vectors
          uqGslMatrixClass, // type for state matrices
          uqGslVectorClass, // type for likelihood vectors
-         uqGslMatrixClass  // type for likelihood matrices
+         uqGslMatrixClass,  // type for likelihood matrices
          uqGslVectorClass, // type for qoi vectors
          uqGslMatrixClass  // type for qoi matrices
         >(*env);

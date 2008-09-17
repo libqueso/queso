@@ -17,19 +17,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef __UQ_MC_DC_H__
-#define __UQ_MC_DC_H__
+#ifndef __UQ_MCDC_H__
+#define __UQ_MCDC_H__
 
-#define UQ_MC_DC_FILENAME_FOR_NO_OUTPUT_FILE "."
+#define UQ_MCDC_FILENAME_FOR_NO_OUTPUT_FILE "."
 
 // _ODV = option default value
-#define UQ_MC_DC_NUM_SAMPLES_ODV       100
-#define UQ_MC_DC_OUTPUT_FILE_NAME_ODV  UQ_MC_DC_FILENAME_FOR_NO_OUTPUT_FILE
-#define UQ_MC_DC_USE2_ODV              0
-#define UQ_MC_DC_DISPLAY_PERIOD_ODV    500
-#define UQ_MC_DC_MEASURE_RUN_TIMES_ODV 0
-#define UQ_MC_DC_WRITE_ODV             0
-#define UQ_MC_DC_COMPUTE_STATS_ODV     0
+#define UQ_MCDC_NUM_SAMPLES_ODV       100
+#define UQ_MCDC_OUTPUT_FILE_NAME_ODV  UQ_MCDC_FILENAME_FOR_NO_OUTPUT_FILE
+#define UQ_MCDC_USE2_ODV              0
+#define UQ_MCDC_DISPLAY_PERIOD_ODV    500
+#define UQ_MCDC_MEASURE_RUN_TIMES_ODV 0
+#define UQ_MCDC_WRITE_ODV             0
+#define UQ_MCDC_COMPUTE_STATS_ODV     0
 
 /*! A templated class that implements a Monte Carlo Distribution Calculator
  */
@@ -110,21 +110,21 @@ uqMonteCarloDCClass<P_V,P_M,Q_V,Q_M>::uqMonteCarloDCClass(
   m_paramGeneratorObj     (paramGeneratorObj),
   m_qoiFunctionObj        (qoiFunctionObj),
   m_optionsDesc           (new po::options_description("Monte Carlo options")),
-  m_option_help           (m_prefix + "MC_DC_help"           ),
-  m_option_numSamples     (m_prefix + "MC_DC_numSamples"     ),
-  m_option_outputFileName (m_prefix + "MC_DC_outputFileName" ),
-  m_option_use2           (m_prefix + "MC_DC_use2"           ),
-  m_option_displayPeriod  (m_prefix + "MC_DC_displayPeriod"  ),
-  m_option_measureRunTimes(m_prefix + "MC_DC_measureRunTimes"),
-  m_option_write          (m_prefix + "MC_DC_write"          ),
-  m_option_computeStats   (m_prefix + "MC_DC_computeStats"   ),
-  m_numSamples            (UQ_MC_DC_NUM_SAMPLES_ODV      ),
-  m_outputFileName        (UQ_MC_DC_OUTPUT_FILE_NAME_ODV ),
-  m_use2                  (UQ_MC_DC_USE2_ODV             ),
-  m_displayPeriod         (UQ_MC_DC_DISPLAY_PERIOD_ODV   ),
-  m_measureRunTimes       (UQ_MC_DC_MEASURE_RUN_TIMES_ODV),
-  m_write                 (UQ_MC_DC_WRITE_ODV            ),
-  m_computeStats          (UQ_MC_DC_COMPUTE_STATS_ODV    ),
+  m_option_help           (m_prefix + "mcdc_help"           ),
+  m_option_numSamples     (m_prefix + "mcdc_numSamples"     ),
+  m_option_outputFileName (m_prefix + "mcdc_outputFileName" ),
+  m_option_use2           (m_prefix + "mcdc_use2"           ),
+  m_option_displayPeriod  (m_prefix + "mcdc_displayPeriod"  ),
+  m_option_measureRunTimes(m_prefix + "mcdc_measureRunTimes"),
+  m_option_write          (m_prefix + "mcdc_write"          ),
+  m_option_computeStats   (m_prefix + "mcdc_computeStats"   ),
+  m_numSamples            (UQ_MCDC_NUM_SAMPLES_ODV      ),
+  m_outputFileName        (UQ_MCDC_OUTPUT_FILE_NAME_ODV ),
+  m_use2                  (UQ_MCDC_USE2_ODV             ),
+  m_displayPeriod         (UQ_MCDC_DISPLAY_PERIOD_ODV   ),
+  m_measureRunTimes       (UQ_MCDC_MEASURE_RUN_TIMES_ODV),
+  m_write                 (UQ_MCDC_WRITE_ODV            ),
+  m_computeStats          (UQ_MCDC_COMPUTE_STATS_ODV    ),
   m_statisticalOptions    (NULL),
   m_seq1                  (0,m_qoiSpace.zeroVector()),
   m_seq2                  (0,m_qoiSpace.zeroVector())
@@ -142,7 +142,7 @@ uqMonteCarloDCClass<P_V,P_M,Q_V,Q_M>::uqMonteCarloDCClass(
                                    << "\n" << *this
                                    << std::endl;
 
-  if (m_computeStats) m_statisticalOptions = new uqChainStatisticalOptionsClass(m_env,m_prefix+"MC_DC_");
+  if (m_computeStats) m_statisticalOptions = new uqChainStatisticalOptionsClass(m_env,m_prefix+"mcdc_");
 
   if (m_env.rank() == 0) std::cout << "Leaving uqMonteCarloDCClass<P_V,P_M,Q_V,Q_M>::constructor()"
                                    << std::endl;
@@ -161,13 +161,13 @@ uqMonteCarloDCClass<P_V,P_M,Q_V,Q_M>::defineMyOptions(
 {
   optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                      "produce help message for Monte Carlo distribution calculator")
-    (m_option_numSamples.c_str(),      po::value<unsigned int>()->default_value(UQ_MC_DC_NUM_SAMPLES_ODV      ), "number of samples"                                           )
-    (m_option_outputFileName.c_str(),  po::value<std::string >()->default_value(UQ_MC_DC_OUTPUT_FILE_NAME_ODV ), "name of output file"                                         )
-    (m_option_use2.c_str(),            po::value<bool        >()->default_value(UQ_MC_DC_USE2_ODV             ), "use seq2"                                                    )
-    (m_option_displayPeriod.c_str(),   po::value<unsigned int>()->default_value(UQ_MC_DC_DISPLAY_PERIOD_ODV   ), "period of message display during sequence generation"        )
-    (m_option_measureRunTimes.c_str(), po::value<bool        >()->default_value(UQ_MC_DC_MEASURE_RUN_TIMES_ODV), "measure run times"                                           )
-    (m_option_write.c_str(),           po::value<bool        >()->default_value(UQ_MC_DC_WRITE_ODV            ), "write sequence values to the output file"                    )
-    (m_option_computeStats.c_str(),    po::value<bool        >()->default_value(UQ_MC_DC_COMPUTE_STATS_ODV    ), "compute statistics on sequence of qoi"                       )
+    (m_option_numSamples.c_str(),      po::value<unsigned int>()->default_value(UQ_MCDC_NUM_SAMPLES_ODV      ), "number of samples"                                           )
+    (m_option_outputFileName.c_str(),  po::value<std::string >()->default_value(UQ_MCDC_OUTPUT_FILE_NAME_ODV ), "name of output file"                                         )
+    (m_option_use2.c_str(),            po::value<bool        >()->default_value(UQ_MCDC_USE2_ODV             ), "use seq2"                                                    )
+    (m_option_displayPeriod.c_str(),   po::value<unsigned int>()->default_value(UQ_MCDC_DISPLAY_PERIOD_ODV   ), "period of message display during sequence generation"        )
+    (m_option_measureRunTimes.c_str(), po::value<bool        >()->default_value(UQ_MCDC_MEASURE_RUN_TIMES_ODV), "measure run times"                                           )
+    (m_option_write.c_str(),           po::value<bool        >()->default_value(UQ_MCDC_WRITE_ODV            ), "write sequence values to the output file"                    )
+    (m_option_computeStats.c_str(),    po::value<bool        >()->default_value(UQ_MCDC_COMPUTE_STATS_ODV    ), "compute statistics on sequence of qoi"                       )
   ;
 
   return;
@@ -258,7 +258,7 @@ uqMonteCarloDCClass<P_V,P_M,Q_V,Q_M>::calculateDistributions(
   const uqSampleGenerator_BaseClass<P_V,P_M>& paramGeneratorObj,
         uqChainBaseClass<P_V>&                workingSeq)
 {
-  std::string prefixName = m_prefix;
+  std::string prefixName = m_prefix + "mc_" ;
   std::string seqName    = prefixName + "seq";
   unsigned int actualNumSamples = std::min(m_numSamples,paramGeneratorObj.period());
 
@@ -273,7 +273,7 @@ uqMonteCarloDCClass<P_V,P_M,Q_V,Q_M>::calculateDistributions(
   // Open file      
   //****************************************************
   std::ofstream* ofs = NULL;
-  if (m_outputFileName == UQ_MC_DC_FILENAME_FOR_NO_OUTPUT_FILE) {
+  if (m_outputFileName == UQ_MCDC_FILENAME_FOR_NO_OUTPUT_FILE) {
     if (m_env.rank() == 0) {
       std::cout << "No output file opened for qoi sequence " << seqName 
                 << std::endl;
@@ -384,4 +384,4 @@ std::ostream& operator<<(std::ostream& os, const uqMonteCarloDCClass<P_V,P_M,Q_V
 
   return os;
 }
-#endif // __UQ_MC_DC_H__
+#endif // __UQ_MCDC_H__
