@@ -230,7 +230,7 @@ uqAppl(const uqEnvironmentClass& env)
   //*****************************************************
   // Open input file on experimental data
   FILE *inp;
-  inp = fopen("global.dat","r");
+  inp = fopen("global4.dat","r");
 
   // Read kinetic parameters and convert heating rate to K/s
   double tmpA, tmpE, beta1, variance1, criticalMass1;

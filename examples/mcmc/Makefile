@@ -9,7 +9,8 @@ override LOWERCASE_EXAMPLE_NAME=$(n1)
 override MIXED_EXAMPLE_NAME=$(n2)
 override CAPITAL_EXAMPLE_NAME=$(n3)
 
-all:	all_normal all_chem all_algae all_tga all_etc
+#all:	all_normal all_chem all_algae all_tga all_etc
+all:	all_tga
 
 echo_basic_type:
 	@echo 'UQBT = ' $(UQBT)
