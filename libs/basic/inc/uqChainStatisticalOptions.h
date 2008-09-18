@@ -70,47 +70,47 @@ public:
 
   const std::vector<double>&       initialDiscardedPortions() const;
 
-  const bool                       bmmRun() const;
+  const bool                       bmmRun    () const;
   const std::vector<unsigned int>& bmmLengths() const;
   const bool                       bmmDisplay() const;
-  const bool                       bmmWrite() const;
+  const bool                       bmmWrite  () const;
 
-  const bool                       fftCompute() const;
-  const unsigned int               fftParamId() const;
-  const unsigned int               fftSize() const;
+  const bool                       fftCompute      () const;
+  const unsigned int               fftParamId      () const;
+  const unsigned int               fftSize         () const;
   const bool                       fftTestInversion() const;
-  const bool                       fftWrite() const;
+  const bool                       fftWrite        () const;
 
-  const bool                       psdCompute() const;
-  const unsigned int               psdNumBlocks() const;
+  const bool                       psdCompute     () const;
+  const unsigned int               psdNumBlocks   () const;
   const double                     psdHopSizeRatio() const;
-  const unsigned int               psdParamId() const;
-  const bool                       psdWrite() const;
+  const unsigned int               psdParamId     () const;
+  const bool                       psdWrite       () const;
 
-  const bool                       psdAtZeroCompute() const;
-  const std::vector<unsigned int>& psdAtZeroNumBlocks() const;
+  const bool                       psdAtZeroCompute     () const;
+  const std::vector<unsigned int>& psdAtZeroNumBlocks   () const;
   const double                     psdAtZeroHopSizeRatio() const;
-  const bool                       psdAtZeroDisplay() const;
-  const bool                       psdAtZeroWrite() const;
+  const bool                       psdAtZeroDisplay     () const;
+  const bool                       psdAtZeroWrite       () const;
 
   const bool                       gewekeCompute() const;
   const double                     gewekeNaRatio() const;
   const double                     gewekeNbRatio() const;
   const bool                       gewekeDisplay() const;
-  const bool                       gewekeWrite() const;
+  const bool                       gewekeWrite  () const;
 
   const bool                       corrComputeViaDef() const;
   const bool                       corrComputeViaFft() const;
-  const unsigned int               corrSecondLag() const;
-  const unsigned int               corrLagSpacing() const;
-  const unsigned int               corrNumLags() const;
-  const bool                       corrDisplay() const;
-  const bool                       corrWrite() const;
+  const unsigned int               corrSecondLag    () const;
+  const unsigned int               corrLagSpacing   () const;
+  const unsigned int               corrNumLags      () const;
+  const bool                       corrDisplay      () const;
+  const bool                       corrWrite        () const;
 
-  const bool                       histCompute() const;
+  const bool                       histCompute        () const;
   const unsigned int               histNumInternalBins() const;
 
-  const bool                       kdeCompute() const;
+  const bool                       kdeCompute         () const;
   const unsigned int               kdeNumEvalPositions() const;
 
   void print                    (std::ostream& os) const;

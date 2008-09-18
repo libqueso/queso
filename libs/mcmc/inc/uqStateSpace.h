@@ -62,14 +62,14 @@ uqStateSpaceClass<V,M>::uqStateSpaceClass(
   const uqEnvironmentClass& env,
   const char*               prefix)
   :
-  uqFinDimLinearSpaceClass<V,M>(env,prefix),
+  uqFinDimLinearSpaceClass<V,M>(env,((std::string)(prefix) + "stateSpace_").c_str()),
   m_optionsDesc                (NULL)
 {
   //std::cout << "Entering uqStateSpaceClass<V,M>::constructor()"
   //          << std::endl;
 
-  m_option_help = uqFinDimLinearSpaceClass<V,M>::m_prefix + "stateSpace_help";
-  m_option_dim  = uqFinDimLinearSpaceClass<V,M>::m_prefix + "stateSpace_dim";
+  m_option_help = uqFinDimLinearSpaceClass<V,M>::m_prefix + "help";
+  m_option_dim  = uqFinDimLinearSpaceClass<V,M>::m_prefix + "dim";
 
   m_optionsDesc = new po::options_description("State space options");
   defineMyOptions                (*m_optionsDesc);

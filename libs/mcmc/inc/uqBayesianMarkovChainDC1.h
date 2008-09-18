@@ -277,7 +277,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::uqBayesianMarkovChainDCClass(
   const uqProposalGenerator_BaseClass <P_V,P_M>*         proposalGeneratorObj)
   :
   m_env                                  (env),
-  m_prefix                               (prefix),
+  m_prefix                               ((std::string)(prefix) + "bmcdc_"),
   m_paramSpace                           (paramSpace),
   m_observableSpace                      (observableSpace),
   m_m2lPriorParamDensityObj              (m2lPriorParamDensityObj),
@@ -286,34 +286,34 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::uqBayesianMarkovChainDCClass(
   m_proposalDensityObj                   (proposalDensityObj),
   m_proposalGeneratorObj                 (proposalGeneratorObj),
   m_optionsDesc                          (new po::options_description("Bayesian Markov chain options")),
-  m_option_help                          (m_prefix + "bmcdc_help"                          ),
-  m_option_chain_type                    (m_prefix + "bmcdc_chain_type"                    ),
-  m_option_chain_number                  (m_prefix + "bmcdc_chain_number"                  ),
-  m_option_chain_sizes                   (m_prefix + "bmcdc_chain_sizes"                   ),
-  m_option_chain_outputFileNames         (m_prefix + "bmcdc_chain_outputFileNames"         ),
-  m_option_chain_use2                    (m_prefix + "bmcdc_chain_use2"                    ),
-  m_option_chain_generateExtra           (m_prefix + "bmcdc_chain_generateExtra"           ),
-  m_option_chain_displayPeriod           (m_prefix + "bmcdc_chain_displayPeriod"           ),
-  m_option_chain_measureRunTimes         (m_prefix + "bmcdc_chain_measureRunTimes"         ),
-  m_option_chain_write                   (m_prefix + "bmcdc_chain_write"                   ),
-  m_option_chain_computeStats            (m_prefix + "bmcdc_chain_computeStats"            ),
-  m_option_uniqueChain_generate          (m_prefix + "bmcdc_uniqueChain_generate"          ),
-  m_option_uniqueChain_write             (m_prefix + "bmcdc_uniqueChain_write"             ),
-  m_option_uniqueChain_computeStats      (m_prefix + "bmcdc_uniqueChain_computeStats"      ),
-  m_option_filteredChain_generate        (m_prefix + "bmcdc_filteredChain_generate"        ),
-  m_option_filteredChain_discardedPortion(m_prefix + "bmcdc_filteredChain_discardedPortion"),
-  m_option_filteredChain_lag             (m_prefix + "bmcdc_filteredChain_lag"             ),
-  m_option_filteredChain_write           (m_prefix + "bmcdc_filteredChain_write"           ),
-  m_option_filteredChain_computeStats    (m_prefix + "bmcdc_filteredChain_computeStats"    ),
-  m_option_avgChain_compute              (m_prefix + "bmcdc_avgChain_compute"              ),
-  m_option_avgChain_write                (m_prefix + "bmcdc_avgChain_write"                ),
-  m_option_avgChain_computeStats         (m_prefix + "bmcdc_avgChain_computeStats"         ),
-  m_option_dr_maxNumExtraStages          (m_prefix + "bmcdc_dr_maxNumExtraStages"          ),
-  m_option_dr_scalesForExtraStages       (m_prefix + "bmcdc_dr_scalesForExtraStages"       ),
-  m_option_am_initialNonAdaptInterval    (m_prefix + "bmcdc_am_initialNonAdaptInterval"    ),
-  m_option_am_adaptInterval              (m_prefix + "bmcdc_am_adaptInterval"              ),
-  m_option_am_eta                        (m_prefix + "bmcdc_am_eta"                        ),
-  m_option_am_epsilon                    (m_prefix + "bmcdc_am_epsilon"                    ),
+  m_option_help                          (m_prefix + "help"                          ),
+  m_option_chain_type                    (m_prefix + "chain_type"                    ),
+  m_option_chain_number                  (m_prefix + "chain_number"                  ),
+  m_option_chain_sizes                   (m_prefix + "chain_sizes"                   ),
+  m_option_chain_outputFileNames         (m_prefix + "chain_outputFileNames"         ),
+  m_option_chain_use2                    (m_prefix + "chain_use2"                    ),
+  m_option_chain_generateExtra           (m_prefix + "chain_generateExtra"           ),
+  m_option_chain_displayPeriod           (m_prefix + "chain_displayPeriod"           ),
+  m_option_chain_measureRunTimes         (m_prefix + "chain_measureRunTimes"         ),
+  m_option_chain_write                   (m_prefix + "chain_write"                   ),
+  m_option_chain_computeStats            (m_prefix + "chain_computeStats"            ),
+  m_option_uniqueChain_generate          (m_prefix + "uniqueChain_generate"          ),
+  m_option_uniqueChain_write             (m_prefix + "uniqueChain_write"             ),
+  m_option_uniqueChain_computeStats      (m_prefix + "uniqueChain_computeStats"      ),
+  m_option_filteredChain_generate        (m_prefix + "filteredChain_generate"        ),
+  m_option_filteredChain_discardedPortion(m_prefix + "filteredChain_discardedPortion"),
+  m_option_filteredChain_lag             (m_prefix + "filteredChain_lag"             ),
+  m_option_filteredChain_write           (m_prefix + "filteredChain_write"           ),
+  m_option_filteredChain_computeStats    (m_prefix + "filteredChain_computeStats"    ),
+  m_option_avgChain_compute              (m_prefix + "avgChain_compute"              ),
+  m_option_avgChain_write                (m_prefix + "avgChain_write"                ),
+  m_option_avgChain_computeStats         (m_prefix + "avgChain_computeStats"         ),
+  m_option_dr_maxNumExtraStages          (m_prefix + "dr_maxNumExtraStages"          ),
+  m_option_dr_scalesForExtraStages       (m_prefix + "dr_scalesForExtraStages"       ),
+  m_option_am_initialNonAdaptInterval    (m_prefix + "am_initialNonAdaptInterval"    ),
+  m_option_am_adaptInterval              (m_prefix + "am_adaptInterval"              ),
+  m_option_am_eta                        (m_prefix + "am_eta"                        ),
+  m_option_am_epsilon                    (m_prefix + "am_epsilon"                    ),
   m_likelihoodObjComputesMisfits         (dynamic_cast<const uqMisfitLikelihoodFunction_Class<P_V,P_M,L_V,L_M>*>(&m2lLikelihoodFunctionObj) != NULL),
   m_paramInitials                        (m_paramSpace.initialValues()),
   m_proposalIsSymmetric                  (true),
@@ -387,9 +387,9 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::uqBayesianMarkovChainDCClass(
                                    << "\n" << *this
                                    << std::endl;
 
-  if (m_chainComputeStats        ) m_chainStatisticalOptions         = new uqChainStatisticalOptionsClass(m_env,m_prefix+"bmcdc_chain_"        );
-  if (m_uniqueChainComputeStats  ) m_uniqueChainStatisticalOptions   = new uqChainStatisticalOptionsClass(m_env,m_prefix+"bmcdc_uniqueChain_"  );
-  if (m_filteredChainComputeStats) m_filteredChainStatisticalOptions = new uqChainStatisticalOptionsClass(m_env,m_prefix+"bmcdc_filteredChain_");
+  if (m_chainComputeStats        ) m_chainStatisticalOptions         = new uqChainStatisticalOptionsClass(m_env,m_prefix + "chain_"        );
+  if (m_uniqueChainComputeStats  ) m_uniqueChainStatisticalOptions   = new uqChainStatisticalOptionsClass(m_env,m_prefix + "uniqueChain_"  );
+  if (m_filteredChainComputeStats) m_filteredChainStatisticalOptions = new uqChainStatisticalOptionsClass(m_env,m_prefix + "filteredChain_");
 
   if (m_env.rank() == 0) std::cout << "Leaving uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::constructor()"
                                    << std::endl;

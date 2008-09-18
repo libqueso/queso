@@ -146,7 +146,7 @@ cp_cal_bmcdc_uniqueChain_stats_kde_numEvalPositions     = 200
 #                        16384 131072 2097152 16777216
 ###############################################
 #cp_pro_help            = anything
-cp_pro_distrCalculator = mc
+cp_pro_distrCalculator = mcdc
 
 #cp_pro_mcdc_help            = anything
 cp_pro_mcdc_numSamples      = 10001

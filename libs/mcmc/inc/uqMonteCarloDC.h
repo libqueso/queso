@@ -103,21 +103,21 @@ uqMonteCarloDCClass<P_V,P_M,Q_V,Q_M>::uqMonteCarloDCClass(
   const uqQoIFunction_BaseClass    <P_V,P_M,Q_V,Q_M>& qoiFunctionObj)
   :
   m_env                   (env),
-  m_prefix                (prefix),
+  m_prefix                ((std::string)prefix + "mcdc_"),
   m_paramSpace            (paramSpace),
   m_qoiSpace              (qoiSpace),
   m_paramDensityObj       (paramDensityObj),
   m_paramGeneratorObj     (paramGeneratorObj),
   m_qoiFunctionObj        (qoiFunctionObj),
   m_optionsDesc           (new po::options_description("Monte Carlo options")),
-  m_option_help           (m_prefix + "mcdc_help"           ),
-  m_option_numSamples     (m_prefix + "mcdc_numSamples"     ),
-  m_option_outputFileName (m_prefix + "mcdc_outputFileName" ),
-  m_option_use2           (m_prefix + "mcdc_use2"           ),
-  m_option_displayPeriod  (m_prefix + "mcdc_displayPeriod"  ),
-  m_option_measureRunTimes(m_prefix + "mcdc_measureRunTimes"),
-  m_option_write          (m_prefix + "mcdc_write"          ),
-  m_option_computeStats   (m_prefix + "mcdc_computeStats"   ),
+  m_option_help           (m_prefix + "help"           ),
+  m_option_numSamples     (m_prefix + "numSamples"     ),
+  m_option_outputFileName (m_prefix + "outputFileName" ),
+  m_option_use2           (m_prefix + "use2"           ),
+  m_option_displayPeriod  (m_prefix + "displayPeriod"  ),
+  m_option_measureRunTimes(m_prefix + "measureRunTimes"),
+  m_option_write          (m_prefix + "write"          ),
+  m_option_computeStats   (m_prefix + "computeStats"   ),
   m_numSamples            (UQ_MCDC_NUM_SAMPLES_ODV      ),
   m_outputFileName        (UQ_MCDC_OUTPUT_FILE_NAME_ODV ),
   m_use2                  (UQ_MCDC_USE2_ODV             ),
@@ -142,7 +142,7 @@ uqMonteCarloDCClass<P_V,P_M,Q_V,Q_M>::uqMonteCarloDCClass(
                                    << "\n" << *this
                                    << std::endl;
 
-  if (m_computeStats) m_statisticalOptions = new uqChainStatisticalOptionsClass(m_env,m_prefix+"mcdc_");
+  if (m_computeStats) m_statisticalOptions = new uqChainStatisticalOptionsClass(m_env,m_prefix);
 
   if (m_env.rank() == 0) std::cout << "Leaving uqMonteCarloDCClass<P_V,P_M,Q_V,Q_M>::constructor()"
                                    << std::endl;
@@ -258,7 +258,7 @@ uqMonteCarloDCClass<P_V,P_M,Q_V,Q_M>::calculateDistributions(
   const uqSampleGenerator_BaseClass<P_V,P_M>& paramGeneratorObj,
         uqChainBaseClass<P_V>&                workingSeq)
 {
-  std::string prefixName = m_prefix + "mc_" ;
+  std::string prefixName = m_prefix;
   std::string seqName    = prefixName + "seq";
   unsigned int actualNumSamples = std::min(m_numSamples,paramGeneratorObj.period());
 

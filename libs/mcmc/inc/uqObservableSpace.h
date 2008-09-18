@@ -90,7 +90,7 @@ uqObservableSpaceClass<V,M>::uqObservableSpaceClass(
   const uqEnvironmentClass& env,
   const char*               prefix)
   :
-  uqFinDimLinearSpaceClass<V,M>(env,prefix),
+  uqFinDimLinearSpaceClass<V,M>(env,((std::string)(prefix) + "observableSpace_").c_str()),
   m_optionsDesc                (NULL),
   m_observables                (0),//,NULL),
   m_dummyObservable            ("NonExistentYet",0),
@@ -104,10 +104,10 @@ uqObservableSpaceClass<V,M>::uqObservableSpaceClass(
               << std::endl;
   }
 
-  m_option_help              = uqFinDimLinearSpaceClass<V,M>::m_prefix + "observableSpace_help";
-  m_option_updateVariances   = uqFinDimLinearSpaceClass<V,M>::m_prefix + "observableSpace_updateVariances";
-  m_option_numSubSpaces      = uqFinDimLinearSpaceClass<V,M>::m_prefix + "observableSpace_numSubSpaces";
-  m_option_specificationFile = uqFinDimLinearSpaceClass<V,M>::m_prefix + "observableSpace_specificationFile";
+  m_option_help              = uqFinDimLinearSpaceClass<V,M>::m_prefix + "help";
+  m_option_updateVariances   = uqFinDimLinearSpaceClass<V,M>::m_prefix + "updateVariances";
+  m_option_numSubSpaces      = uqFinDimLinearSpaceClass<V,M>::m_prefix + "numSubSpaces";
+  m_option_specificationFile = uqFinDimLinearSpaceClass<V,M>::m_prefix + "specificationFile";
 
   m_optionsDesc = new po::options_description("Observable space options");
   defineMyOptions                (*m_optionsDesc);

@@ -25,7 +25,7 @@ uqChainStatisticalOptionsClass::uqChainStatisticalOptionsClass(
   const std::string&        prefix)
   :
   m_env                     (env),
-  m_prefix                  (prefix),
+  m_prefix                  ((std::string)(prefix) + "stats_"),
   m_optionsDesc             (new po::options_description("Chain statistical options")),
   m_initialDiscardedPortions(0),//,0.),
   m_bmmRun                  (UQ_MCMC_BMM_RUN_ODV),
@@ -66,52 +66,52 @@ uqChainStatisticalOptionsClass::uqChainStatisticalOptionsClass(
                                    << ", prefix = " << m_prefix
                                    << std::endl;
 
-  m_option_help                     = m_prefix + "stats_help";
+  m_option_help                     = m_prefix + "help";
 
-  m_option_initialDiscardedPortions = m_prefix + "stats_initialDiscardedPortions";
+  m_option_initialDiscardedPortions = m_prefix + "initialDiscardedPortions";
 
-  m_option_bmm_run                  = m_prefix + "stats_bmm_run";
-  m_option_bmm_lengths              = m_prefix + "stats_bmm_lengths";
-  m_option_bmm_display              = m_prefix + "stats_bmm_display";
-  m_option_bmm_write                = m_prefix + "stats_bmm_write";
+  m_option_bmm_run                  = m_prefix + "bmm_run";
+  m_option_bmm_lengths              = m_prefix + "bmm_lengths";
+  m_option_bmm_display              = m_prefix + "bmm_display";
+  m_option_bmm_write                = m_prefix + "bmm_write";
 
-  m_option_fft_compute              = m_prefix + "stats_fft_compute";
-  m_option_fft_paramId              = m_prefix + "stats_fft_paramId";
-  m_option_fft_size                 = m_prefix + "stats_fft_size";
-  m_option_fft_testInversion        = m_prefix + "stats_fft_testInversion";
-  m_option_fft_write                = m_prefix + "stats_fft_write";
+  m_option_fft_compute              = m_prefix + "fft_compute";
+  m_option_fft_paramId              = m_prefix + "fft_paramId";
+  m_option_fft_size                 = m_prefix + "fft_size";
+  m_option_fft_testInversion        = m_prefix + "fft_testInversion";
+  m_option_fft_write                = m_prefix + "fft_write";
 
-  m_option_psd_compute              = m_prefix + "stats_psd_compute";
-  m_option_psd_numBlocks            = m_prefix + "stats_psd_numBlocks";
-  m_option_psd_hopSizeRatio         = m_prefix + "stats_psd_hopSizeRatio";
-  m_option_psd_paramId              = m_prefix + "stats_psd_paramId";
-  m_option_psd_write                = m_prefix + "stats_psd_write";
+  m_option_psd_compute              = m_prefix + "psd_compute";
+  m_option_psd_numBlocks            = m_prefix + "psd_numBlocks";
+  m_option_psd_hopSizeRatio         = m_prefix + "psd_hopSizeRatio";
+  m_option_psd_paramId              = m_prefix + "psd_paramId";
+  m_option_psd_write                = m_prefix + "psd_write";
 
-  m_option_psdAtZero_compute        = m_prefix + "stats_psdAtZero_compute";
-  m_option_psdAtZero_numBlocks      = m_prefix + "stats_psdAtZero_numBlocks";
-  m_option_psdAtZero_hopSizeRatio   = m_prefix + "stats_psdAtZero_hopSizeRatio";
-  m_option_psdAtZero_display        = m_prefix + "stats_psdAtZero_display";
-  m_option_psdAtZero_write          = m_prefix + "stats_psdAtZero_write";
+  m_option_psdAtZero_compute        = m_prefix + "psdAtZero_compute";
+  m_option_psdAtZero_numBlocks      = m_prefix + "psdAtZero_numBlocks";
+  m_option_psdAtZero_hopSizeRatio   = m_prefix + "psdAtZero_hopSizeRatio";
+  m_option_psdAtZero_display        = m_prefix + "psdAtZero_display";
+  m_option_psdAtZero_write          = m_prefix + "psdAtZero_write";
 
-  m_option_geweke_compute           = m_prefix + "stats_geweke_compute";
-  m_option_geweke_naRatio           = m_prefix + "stats_geweke_naRatio";
-  m_option_geweke_nbRatio           = m_prefix + "stats_geweke_nbRatio";
-  m_option_geweke_display           = m_prefix + "stats_geweke_display";
-  m_option_geweke_write             = m_prefix + "stats_geweke_write";
+  m_option_geweke_compute           = m_prefix + "geweke_compute";
+  m_option_geweke_naRatio           = m_prefix + "geweke_naRatio";
+  m_option_geweke_nbRatio           = m_prefix + "geweke_nbRatio";
+  m_option_geweke_display           = m_prefix + "geweke_display";
+  m_option_geweke_write             = m_prefix + "geweke_write";
 
-  m_option_corr_computeViaDef       = m_prefix + "stats_corr_computeViaDef";
-  m_option_corr_computeViaFft       = m_prefix + "stats_corr_computeViaFft";
-  m_option_corr_secondLag           = m_prefix + "stats_corr_secondLag";
-  m_option_corr_lagSpacing          = m_prefix + "stats_corr_lagSpacing";
-  m_option_corr_numLags             = m_prefix + "stats_corr_numLags";
-  m_option_corr_display             = m_prefix + "stats_corr_display";
-  m_option_corr_write               = m_prefix + "stats_corr_write";
+  m_option_corr_computeViaDef       = m_prefix + "corr_computeViaDef";
+  m_option_corr_computeViaFft       = m_prefix + "corr_computeViaFft";
+  m_option_corr_secondLag           = m_prefix + "corr_secondLag";
+  m_option_corr_lagSpacing          = m_prefix + "corr_lagSpacing";
+  m_option_corr_numLags             = m_prefix + "corr_numLags";
+  m_option_corr_display             = m_prefix + "corr_display";
+  m_option_corr_write               = m_prefix + "corr_write";
 
-  m_option_hist_compute             = m_prefix + "stats_hist_compute";
-  m_option_hist_numInternalBins     = m_prefix + "stats_hist_numInternalBins";
+  m_option_hist_compute             = m_prefix + "hist_compute";
+  m_option_hist_numInternalBins     = m_prefix + "hist_numInternalBins";
 
-  m_option_kde_compute              = m_prefix + "stats_kde_compute";
-  m_option_kde_numEvalPositions     = m_prefix + "stats_kde_numEvalPositions";
+  m_option_kde_compute              = m_prefix + "kde_compute";
+  m_option_kde_numEvalPositions     = m_prefix + "kde_numEvalPositions";
 
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);

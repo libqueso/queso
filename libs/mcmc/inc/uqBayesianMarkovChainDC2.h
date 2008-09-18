@@ -45,7 +45,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculateDistributions(
   for (unsigned int chainId = 0; chainId < m_chainSizes.size(); ++chainId) {
     char tmpChainId[10];
     sprintf(tmpChainId,"%d",chainId);
-    std::string prefixName = m_prefix + "bmc_" + tmpChainId + "_";
+    std::string prefixName = m_prefix + tmpChainId + "_";
     std::string chainName  = prefixName + "chain";
 
     //****************************************************

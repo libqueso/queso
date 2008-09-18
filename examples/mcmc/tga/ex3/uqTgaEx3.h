@@ -187,7 +187,7 @@ void cp_qoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoi
   qoiValues[0] = crossingTemperature/beta1;
 	
   //printf("loopSize = %d\n",loopSize);
-  if ((paramValues.env().verbosity() >= 0) && (paramValues.env().rank() == 0)) {
+  if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
     printf("In cp_qoiRoutine(), A = %g, E = %g, beta1 = %.3lf, criticalMass1 = %.3lf: qoi = %lf.\n",A,E,beta1,criticalMass1,qoiValues[0]);
   }
 
@@ -280,12 +280,12 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
 
   // Use the default gaussian proposal and default gaussian generator with the default covariance matrix, all provided by the UQ library
-  //P_M*                                    cp_proposalCovMatrix    = NULL;
+  P_M*                                    cp_proposalCovMatrix    = NULL;
   uqProposalDensity_BaseClass<P_V,P_M>*   cp_proposalDensityObj   = NULL;
   uqProposalGenerator_BaseClass<P_V,P_M>* cp_proposalGeneratorObj = NULL;
 
-  uqParamSpaceClass<P_V,P_M> cp_paramSpace(env,"cp_");
-  P_M* cp_proposalCovMatrix = cp_paramSpace.newMatrix();
+  //uqParamSpaceClass<P_V,P_M> cp_paramSpace(env,"cp_");
+  //P_M* cp_proposalCovMatrix = cp_paramSpace.newMatrix();
   //(*cp_proposalCovMatrix)(0,0) = 1.65122e+10;
   //(*cp_proposalCovMatrix)(0,1) = 0.;
   //(*cp_proposalCovMatrix)(1,0) = 0.;
@@ -306,12 +306,12 @@ uqAppl(const uqEnvironmentClass& env)
   //*****************************************************
   uqCPProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M> cpProblem(env,
                                                       "",
-                                                      cp_priorParamDensityObj,   // substep 1: calibration prior parameter density
-                                                      &cp_likelihoodFunctionObj, // substep 2: calibration likelihood function
-                                                      cp_proposalCovMatrix,      // substep 3: calibration gaussian proposal (density and generator)
-                                                      cp_proposalDensityObj,     // substep 3: calibration proposal density
-                                                      cp_proposalGeneratorObj,   // substep 3: calibration proposal generator
-                                                      &cp_qoiFunctionObj);       // substep 4: propagation qoi function
+                                                      cp_priorParamDensityObj,  // substep 1: calibration prior parameter density
+                                                      cp_likelihoodFunctionObj, // substep 2: calibration likelihood function
+                                                      cp_proposalCovMatrix,     // substep 3: calibration gaussian proposal (density and generator)
+                                                      cp_proposalDensityObj,    // substep 3: calibration proposal density
+                                                      cp_proposalGeneratorObj,  // substep 3: calibration proposal generator
+                                                      cp_qoiFunctionObj);       // substep 4: propagation qoi function
 
   //******************************************************
   // Step 4 of 4: Solve the CP problem

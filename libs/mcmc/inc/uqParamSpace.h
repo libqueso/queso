@@ -101,11 +101,11 @@ uqParamSpaceClass<V,M>::uqParamSpaceClass(
   const uqEnvironmentClass& env,
   const char*               prefix)
   :
-  uqFinDimLinearSpaceClass<V,M>(env,prefix),
+  uqFinDimLinearSpaceClass<V,M>(env,((std::string)(prefix) + "paramSpace_").c_str()),
   m_optionsDesc                (new po::options_description("Parameter space options")),
-  m_option_help                (uqFinDimLinearSpaceClass<V,M>::m_prefix + "paramSpace_help"),
-  m_option_dim                 (uqFinDimLinearSpaceClass<V,M>::m_prefix + "paramSpace_dim"),
-  m_option_specificationFile   (uqFinDimLinearSpaceClass<V,M>::m_prefix + "paramSpace_specificationFile"),
+  m_option_help                (uqFinDimLinearSpaceClass<V,M>::m_prefix + "help"),
+  m_option_dim                 (uqFinDimLinearSpaceClass<V,M>::m_prefix + "dim"),
+  m_option_specificationFile   (uqFinDimLinearSpaceClass<V,M>::m_prefix + "specificationFile"),
   m_parameters                 (0),//,NULL),
   m_dummyParameter             ("NonExistentYet",0.),
   m_initialValues              (NULL),

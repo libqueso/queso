@@ -287,12 +287,12 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
 
   // Use the default gaussian proposal and default gaussian generator with the default covariance matrix, all provided by the UQ library
-  //P_M*                                    stage0_proposalCovMatrix    = NULL;
+  P_M*                                    stage0_proposalCovMatrix    = NULL;
   uqProposalDensity_BaseClass<P_V,P_M>*   stage0_proposalDensityObj   = NULL;
   uqProposalGenerator_BaseClass<P_V,P_M>* stage0_proposalGeneratorObj = NULL;
 
-  std::cout << "HERE 000" << std::endl;
-  P_M* stage0_proposalCovMatrix = validProblem.stage(0).paramSpace().newMatrix();
+  //uqParamSpaceClass<P_V,P_M> stage0_paramSpace(env,"val_stage_0_");
+  //P_M* stage0_proposalCovMatrix = stage0_paramSpace.newMatrix();
   //(*stage0_proposalCovMatrix)(0,0) = 1.65122e+10;
   //(*stage0_proposalCovMatrix)(0,1) = 0.;
   //(*stage0_proposalCovMatrix)(1,0) = 0.;
@@ -302,8 +302,8 @@ uqAppl(const uqEnvironmentClass& env)
   // Substep 2.4: Define the propagation input parameters (density and generator)
   //******************************************************
 
-  // Let the 'validProblem' class internally use the parameter generator obtained with the calibration.
-  // The 'uqTgaEx2.inp' file should set 'stage0_propag_inputStageId = 0'.
+  // Let the 'uqValidProblem' class internally use the parameter generator obtained with the calibration.
+  // The 'uqTgaEx2.inp' file should set 'val_stage_0_pro_inputStageId = 0'.
   uqProbDensity_BaseClass<P_V,P_M>*     stage0_propagParamDensityObj   = NULL;
   uqSampleGenerator_BaseClass<P_V,P_M>* stage0_propagParamGeneratorObj = NULL;
 

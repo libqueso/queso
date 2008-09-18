@@ -14,7 +14,7 @@ val_stageSufixes = 0_
 val_stageOrder   = 0
 
 ###############################################
-# Validation Problem Stage 'stage0_': configuration  
+# Validation Problem Stage 'val_stage_0_': configuration  
 ###############################################
 val_stage_0_help                 = anything
 val_stage_0_cal_perform         = 1
@@ -25,7 +25,7 @@ val_stage_0_pro_inputStageId    = 0
 val_stage_0_pro_distrCalculator = mc
 
 ###############################################
-# Validation Problem Stage 'stage0_': parameter/state/observable/qoi spaces
+# Validation Problem Stage 'val_stage_0_': parameter/state/observable/qoi spaces
 ###############################################
 #val_stage_0_paramSpace_help              = anything
 val_stage_0_paramSpace_dim               = 2
@@ -44,7 +44,7 @@ val_stage_0_qoiSpace_dim               = 1
 val_stage_0_qoiSpace_specificationFile = stage0.qoi
 
 ###############################################
-# Validation Problem Stage 'stage0_', calibration problem: BMC DC
+# Validation Problem Stage 'val_stage_0_', calibration problem: BMC DC
 #
 # BMC = Bayesian Markov Chain
 # DC =  (Posterior Parameter) Distribution Calculator
@@ -150,7 +150,7 @@ val_stage_0_cal_bmcdc_uniqueChain_stats_kde_compute              = 1
 val_stage_0_cal_bmcdc_uniqueChain_stats_kde_numEvalPositions     = 200
 
 ###############################################
-# Validation Problem Stage 'stage0_', propagation problem: MC DC
+# Validation Problem Stage 'val_stage_0_', propagation problem: MC DC
 #
 # MC = Monte Carlo
 # DC = (QoI) Distribution Calculator

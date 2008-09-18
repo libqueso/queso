@@ -78,11 +78,11 @@ uqQoISpaceClass<V,M>::uqQoISpaceClass(
   const uqEnvironmentClass& env,
   const char*               prefix)
   :
-  uqFinDimLinearSpaceClass<V,M>(env,prefix),
+  uqFinDimLinearSpaceClass<V,M>(env,((std::string)(prefix) + "qoiSpace_").c_str()),
   m_optionsDesc                (new po::options_description("QoI space options")),
-  m_option_help                (uqFinDimLinearSpaceClass<V,M>::m_prefix + "qoiSpace_help"             ),
-  m_option_dim                 (uqFinDimLinearSpaceClass<V,M>::m_prefix + "qoiSpace_dim"              ),
-  m_option_specificationFile   (uqFinDimLinearSpaceClass<V,M>::m_prefix + "qoiSpace_specificationFile"),
+  m_option_help                (uqFinDimLinearSpaceClass<V,M>::m_prefix + "help"             ),
+  m_option_dim                 (uqFinDimLinearSpaceClass<V,M>::m_prefix + "dim"              ),
+  m_option_specificationFile   (uqFinDimLinearSpaceClass<V,M>::m_prefix + "specificationFile"),
   m_qois                       (0),//,NULL),
   m_dummyQoI                   ("NonExistentYet"),
   m_componentsNames            (0)
