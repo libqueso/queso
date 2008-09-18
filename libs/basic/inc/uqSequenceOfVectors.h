@@ -188,6 +188,13 @@ uqSequenceOfVectorsClass<V>::resetValues(unsigned int initialPos, unsigned int n
   bool bRC = ((initialPos          <  this->sequenceSize()) &&
               (0                   <  numPos              ) &&
               ((initialPos+numPos) <= this->sequenceSize()));
+  if ((bRC == false) && (m_env.rank() == 0)) {
+    std::cout << "In uqSequenceOfVectorsClass<V>::resetValues()"
+              << ", initialPos = "           << initialPos
+              << ", this->sequenceSize() = " << this->sequenceSize()
+              << ", numPos = "               << numPos
+              << std::endl;
+  }
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
                       "uqSequenceOfVectorsClass<V>::resetValues()",
@@ -970,6 +977,38 @@ uqSequenceOfVectorsClass<V>::filter(
   unsigned int initialPos,
   unsigned int spacing)
 {
+  if (m_env.rank() == 0) {
+    std::cout << "Entering uqSequenceOfVectorsClass<V>::filter()"
+              << ": initialPos = "   << initialPos
+              << ", spacing = "      << spacing
+              << ", sequenceSize = " << this->sequenceSize()
+              << std::endl;
+  }
+
+  unsigned int i = 0;
+  unsigned int j = initialPos;
+  unsigned int originalSequenceSize = this->sequenceSize();
+  while (j < originalSequenceSize) {
+    if (i != j) {
+      //std::cout << i << "--" << j << " ";
+      delete m_seq[i];
+      m_seq[i] = new V(*(m_seq[j]));
+    }
+    i++;
+    j += spacing;
+  }
+
+  this->resetValues(i,originalSequenceSize-i);
+  this->resizeSequence(i);
+
+  if (m_env.rank() == 0) {
+    std::cout << "Leaving uqSequenceOfVectorsClass<V>::filter()"
+              << ": initialPos = "   << initialPos
+              << ", spacing = "      << spacing
+              << ", sequenceSize = " << this->sequenceSize()
+              << std::endl;
+  }
+
   return;
 }
 
