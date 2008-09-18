@@ -9,25 +9,23 @@ uqEnv_seed      = 0
 # CP Problem: parameter/state/observable/qoi spaces
 # CP = calibration+propagation
 ###############################################
-#cpProblem_help         = anything
-cp_cal_distrCalculator = bmc
-cp_pro_distrCalculator = mc
+#cp_help                              = anything
 
-#cp_paramSpace_help              = anything
-cp_paramSpace_dim               = 2
-cp_paramSpace_specificationFile = cp.par
+#cp_paramSpace_help                   = anything
+cp_paramSpace_dim                    = 2
+cp_paramSpace_specificationFile      = cp.par
 
-#cp_stateSpace_help = anything
-#cp_stateSpace_dim  = 5
+#cp_stateSpace_help                   = anything
+#cp_stateSpace_dim                    = 5
 
 #cp_observableSpace_help              = anything
 cp_observableSpace_updateVariances   = 0
 cp_observableSpace_numSubSpaces      = 1
 cp_observableSpace_specificationFile = cp.obs
 
-#cp_qoiSpace_help              = anything
-cp_qoiSpace_dim               = 1
-cp_qoiSpace_specificationFile = cp.qoi
+#cp_qoiSpace_help                     = anything
+cp_qoiSpace_dim                      = 1
+cp_qoiSpace_specificationFile        = cp.qoi
 
 ###############################################
 # CP Problem, calibration problem: BMC DC
@@ -38,6 +36,9 @@ cp_qoiSpace_specificationFile = cp.qoi
 # '_sizes' examples 16K   128K   2M      16M
 #                   16384 131072 2097152 16777216
 ###############################################
+#cp_cal_help            = anything
+cp_cal_distrCalculator = bmcdc
+
 cp_cal_bmcdc_help                   = anything
 cp_cal_bmcdc_chain_type            = 1
 cp_cal_bmcdc_chain_number          = 1
@@ -144,6 +145,9 @@ cp_cal_bmcdc_uniqueChain_stats_kde_numEvalPositions     = 200
 # '_numSamples' examples 16K   128K   2M      16M
 #                        16384 131072 2097152 16777216
 ###############################################
+#cp_pro_help            = anything
+cp_pro_distrCalculator = mc
+
 #cp_pro_mcdc_help            = anything
 cp_pro_mcdc_numSamples      = 10001
 cp_pro_mcdc_outputFileName  = cpOutput.m

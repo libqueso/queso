@@ -287,11 +287,12 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
 
   // Use the default gaussian proposal and default gaussian generator with the default covariance matrix, all provided by the UQ library
-  P_M*                                    stage0_proposalCovMatrix    = NULL;
+  //P_M*                                    stage0_proposalCovMatrix    = NULL;
   uqProposalDensity_BaseClass<P_V,P_M>*   stage0_proposalDensityObj   = NULL;
   uqProposalGenerator_BaseClass<P_V,P_M>* stage0_proposalGeneratorObj = NULL;
 
-  //P_M* stage0_proposalCovMatrix = validProblem.stage(0).paramSpace().newMatrix();
+  std::cout << "HERE 000" << std::endl;
+  P_M* stage0_proposalCovMatrix = validProblem.stage(0).paramSpace().newMatrix();
   //(*stage0_proposalCovMatrix)(0,0) = 1.65122e+10;
   //(*stage0_proposalCovMatrix)(0,1) = 0.;
   //(*stage0_proposalCovMatrix)(1,0) = 0.;
