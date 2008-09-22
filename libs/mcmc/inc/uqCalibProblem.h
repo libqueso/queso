@@ -23,10 +23,12 @@
 #include <uqParamSpace.h>
 #include <uqObservableSpace.h>
 
-#include <uqProbDensity.h>        // For substep 1 in appls with a calibration problem
-#include <uqLikelihoodFunction.h> // For substep 2
-#include <uqProposalDensity.h>    // For substep 3
-#include <uqProposalGenerator.h>  // For substep 3
+#include <uqBayesProbDensity.h>
+#include <uqProbDensity.h>       // For substep 1 in appls with a calibration problem
+#include <uqScalarLhFunction.h>  // For substep 2
+#include <uqVectorLhFunction.h>
+#include <uqProposalDensity.h>   // For substep 3
+#include <uqProposalGenerator.h> // For substep 3
 
 #include <uqDefaultPrior.h>
 #include <uqBayesianMarkovChainDC1.h>
@@ -39,34 +41,42 @@ template <class P_V,class P_M,class L_V,class L_M>
 class uqCalibProblemClass
 {
 public:
-  uqCalibProblemClass(const uqEnvironmentClass&                              env,
-                      const char*                                            prefix,
-                      const uqParamSpaceClass             <P_V,P_M>&         paramSpace,
-                      const uqObservableSpaceClass        <L_V,L_M>&         observableSpace,
-                      const uqProbDensity_BaseClass       <P_V,P_M>*         m2lPriorParamDensityObj,  // Set in substep 1 in appls with a calibration prob.
-                      const uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>& m2lLikelihoodFunctionObj, // Set in substep 2
-                      P_M*                                                   proposalCovMatrix,        // Set in substep 3
-                      const uqProposalDensity_BaseClass   <P_V,P_M>*         proposalDensityObj,       // Set in substep 3
-                      const uqProposalGenerator_BaseClass <P_V,P_M>*         proposalGeneratorObj);    // Set in substep 3 // FIX ME: use such object
-  uqCalibProblemClass(const uqEnvironmentClass&                              env,
-                      const char*                                            prefix,
-                      const uqProbDensity_BaseClass       <P_V,P_M>*         m2lPriorParamDensityObj,  // Set in substep 1 in appls with a calibration prob.
-                      const uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>& m2lLikelihoodFunctionObj, // Set in substep 2
-                      P_M*                                                   proposalCovMatrix,        // Set in substep 3
-                      const uqProposalDensity_BaseClass   <P_V,P_M>*         proposalDensityObj,       // Set in substep 3
-                      const uqProposalGenerator_BaseClass <P_V,P_M>*         proposalGeneratorObj);    // Set in substep 3 // FIX ME: use such object
+  uqCalibProblemClass(const uqEnvironmentClass&                             env,
+                      const char*                                           prefix,
+                      const uqParamSpaceClass            <P_V,P_M>&         paramSpace,
+                      const uqObservableSpaceClass       <L_V,L_M>&         observableSpace,
+                      const uqProbDensity_BaseClass      <P_V,P_M>*         m2lPriorParamDensityObj, // Set in substep 1 in appls with a calibration prob.
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+                      const uqScalarLhFunction_BaseClass <P_V,P_M>&         m2lScalarLhFunctionObj,  // Set in substep 2
+#else
+                      const uqVectorLhFunction_BaseClass <P_V,P_M,L_V,L_M>& m2lVectorLhFunctionObj,  // Set in substep 2
+#endif
+                      P_M*                                                  proposalCovMatrix,       // Set in substep 3
+                      const uqProposalDensity_BaseClass  <P_V,P_M>*         proposalDensityObj,      // Set in substep 3
+                      const uqProposalGenerator_BaseClass<P_V,P_M>*         proposalGeneratorObj);   // Set in substep 3 // FIX ME: use such object
+  uqCalibProblemClass(const uqEnvironmentClass&                             env,
+                      const char*                                           prefix,
+                      const uqProbDensity_BaseClass      <P_V,P_M>*         m2lPriorParamDensityObj, // Set in substep 1 in appls with a calibration prob.
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+                      const uqScalarLhFunction_BaseClass <P_V,P_M>&         m2lScalarLhFunctionObj,  // Set in substep 2
+#else
+                      const uqVectorLhFunction_BaseClass <P_V,P_M,L_V,L_M>& m2lVectorLhFunctionObj,  // Set in substep 2
+#endif
+                      P_M*                                                  proposalCovMatrix,       // Set in substep 3
+                      const uqProposalDensity_BaseClass  <P_V,P_M>*         proposalDensityObj,      // Set in substep 3
+                      const uqProposalGenerator_BaseClass<P_V,P_M>*         proposalGeneratorObj);   // Set in substep 3 // FIX ME: use such object
  ~uqCalibProblemClass();
 
-  const uqParamSpaceClass          <P_V,P_M>& paramSpace                () const;
-  const uqObservableSpaceClass     <L_V,L_M>& observableSpace           () const;
+  const uqParamSpaceClass           <P_V,P_M>& paramSpace                () const;
+  const uqObservableSpaceClass      <L_V,L_M>& observableSpace           () const;
 
-        void                                  solve                     ();
-        void                                  solve                     (const uqProbDensity_BaseClass<P_V,P_M>& priorParamDensityObj);
+        void                                   solve                     ();
+        void                                   solve                     (const uqProbDensity_BaseClass<P_V,P_M>& priorParamDensityObj);
 
-  const uqProbDensity_BaseClass    <P_V,P_M>& posteriorParamDensityObj  () const;
-  const uqSampleGenerator_BaseClass<P_V,P_M>& posteriorParamGeneratorObj() const;
+  const uqBayesProbDensity_BaseClass<P_V,P_M>& posteriorParamDensityObj  () const;
+  const uqSampleGenerator_BaseClass <P_V,P_M>& posteriorParamGeneratorObj() const;
 
-        void                                  print                     (std::ostream& os) const;
+        void                                   print                     (std::ostream& os) const;
 
 private:
         void commonConstructor();
@@ -90,13 +100,17 @@ private:
         uqDefault_M2lPriorRoutine_DataType<P_V,P_M>          m_m2lPriorRoutine_Data;
         P_V*                                                 m_paramPriorMus;
         P_V*                                                 m_paramPriorSigmas;
-  const uqLikelihoodFunction_BaseClass    <P_V,P_M,L_V,L_M>& m_m2lLikelihoodFunctionObj;
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+  const uqScalarLhFunction_BaseClass      <P_V,P_M>&         m_m2lScalarLhFunctionObj;
+#else
+  const uqVectorLhFunction_BaseClass      <P_V,P_M,L_V,L_M>& m_m2lVectorLhFunctionObj;
+#endif
         P_M*                                                 m_proposalCovMatrix;
   const uqProposalDensity_BaseClass       <P_V,P_M>*         m_proposalDensityObj;
   const uqProposalGenerator_BaseClass     <P_V,P_M>*         m_proposalGeneratorObj;
 
         uqBayesianMarkovChainDCClass      <P_V,P_M,L_V,L_M>* m_bmcDc;
-        uqProbDensity_BaseClass           <P_V,P_M>*         m_posteriorParamDensityObj;
+        uqBayesProbDensity_BaseClass      <P_V,P_M>*         m_posteriorParamDensityObj;
         uqSampleGenerator_BaseClass       <P_V,P_M>*         m_posteriorParamGeneratorObj;
 };
 
@@ -105,15 +119,19 @@ std::ostream& operator<<(std::ostream& os, const uqCalibProblemClass<P_V,P_M,L_V
 
 template <class P_V,class P_M,class L_V,class L_M>
 uqCalibProblemClass<P_V,P_M,L_V,L_M>::uqCalibProblemClass(
-  const uqEnvironmentClass&                              env,
-  const char*                                            prefix,
-  const uqParamSpaceClass             <P_V,P_M>&         paramSpace,
-  const uqObservableSpaceClass        <L_V,L_M>&         observableSpace,
-  const uqProbDensity_BaseClass       <P_V,P_M>*         m2lPriorParamDensityObj,
-  const uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>& m2lLikelihoodFunctionObj,
-  P_M*                                                   proposalCovMatrix,
-  const uqProposalDensity_BaseClass   <P_V,P_M>*         proposalDensityObj,
-  const uqProposalGenerator_BaseClass <P_V,P_M>*         proposalGeneratorObj)
+  const uqEnvironmentClass&                             env,
+  const char*                                           prefix,
+  const uqParamSpaceClass            <P_V,P_M>&         paramSpace,
+  const uqObservableSpaceClass       <L_V,L_M>&         observableSpace,
+  const uqProbDensity_BaseClass      <P_V,P_M>*         m2lPriorParamDensityObj,
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+  const uqScalarLhFunction_BaseClass <P_V,P_M>&         m2lScalarLhFunctionObj,
+#else
+  const uqVectorLhFunction_BaseClass <P_V,P_M,L_V,L_M>& m2lVectorLhFunctionObj,
+#endif
+  P_M*                                                  proposalCovMatrix,
+  const uqProposalDensity_BaseClass  <P_V,P_M>*         proposalDensityObj,
+  const uqProposalGenerator_BaseClass<P_V,P_M>*         proposalGeneratorObj)
   :
   m_env                       (env),
   m_prefix                    ((std::string)(prefix) + "cal_"),
@@ -128,7 +146,11 @@ uqCalibProblemClass<P_V,P_M,L_V,L_M>::uqCalibProblemClass(
   m_userPriorDensityIsNull    (m2lPriorParamDensityObj == NULL),
   m_paramPriorMus             (NULL),
   m_paramPriorSigmas          (NULL),
-  m_m2lLikelihoodFunctionObj  (m2lLikelihoodFunctionObj),
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+  m_m2lScalarLhFunctionObj    (m2lScalarLhFunctionObj),
+#else
+  m_m2lVectorLhFunctionObj    (m2lVectorLhFunctionObj),
+#endif
   m_proposalCovMatrix         (proposalCovMatrix),
   m_proposalDensityObj        (proposalDensityObj),
   m_proposalGeneratorObj      (proposalGeneratorObj),
@@ -141,13 +163,17 @@ uqCalibProblemClass<P_V,P_M,L_V,L_M>::uqCalibProblemClass(
 
 template <class P_V,class P_M,class L_V,class L_M>
 uqCalibProblemClass<P_V,P_M,L_V,L_M>::uqCalibProblemClass(
-  const uqEnvironmentClass&                              env,
-  const char*                                            prefix,
-  const uqProbDensity_BaseClass       <P_V,P_M>*         m2lPriorParamDensityObj,
-  const uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>& m2lLikelihoodFunctionObj,
-  P_M*                                                   proposalCovMatrix,
-  const uqProposalDensity_BaseClass   <P_V,P_M>*         proposalDensityObj,
-  const uqProposalGenerator_BaseClass <P_V,P_M>*         proposalGeneratorObj)
+  const uqEnvironmentClass&                            env,
+  const char*                                          prefix,
+  const uqProbDensity_BaseClass       <P_V,P_M>*       m2lPriorParamDensityObj,
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+  const uqScalarLhFunction_BaseClass<P_V,P_M>&         m2lScalarLhFunctionObj,
+#else
+  const uqVectorLhFunction_BaseClass<P_V,P_M,L_V,L_M>& m2lVectorLhFunctionObj,
+#endif
+  P_M*                                                 proposalCovMatrix,
+  const uqProposalDensity_BaseClass   <P_V,P_M>*       proposalDensityObj,
+  const uqProposalGenerator_BaseClass <P_V,P_M>*       proposalGeneratorObj)
   :
   m_env                       (env),
   m_prefix                    ((std::string)(prefix) + "cal_"),
@@ -162,7 +188,11 @@ uqCalibProblemClass<P_V,P_M,L_V,L_M>::uqCalibProblemClass(
   m_userPriorDensityIsNull    (m2lPriorParamDensityObj == NULL),
   m_paramPriorMus             (NULL),
   m_paramPriorSigmas          (NULL),
-  m_m2lLikelihoodFunctionObj  (m2lLikelihoodFunctionObj),
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+  m_m2lScalarLhFunctionObj    (m2lScalarLhFunctionObj),
+#else
+  m_m2lVectorLhFunctionObj    (m2lVectorLhFunctionObj),
+#endif
   m_proposalCovMatrix         (proposalCovMatrix),
   m_proposalDensityObj        (proposalDensityObj),
   m_proposalGeneratorObj      (proposalGeneratorObj),
@@ -201,13 +231,22 @@ uqCalibProblemClass<P_V,P_M,L_V,L_M>::commonConstructor()
                                                                     (void *) &m_m2lPriorRoutine_Data);
   }
 
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+  m_posteriorParamDensityObj = new uqM2lBayesProbDensity_Class<P_V,P_M>(m_m2lPriorParamDensityObj,
+                                                                        &m_m2lScalarLhFunctionObj);
+#endif
+
   // Instantiate the distribution calculator.
   m_bmcDc = new uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>(m_env,
                                                               m_prefix.c_str(),
                                                              *m_paramSpace,
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+                                                             *m_posteriorParamDensityObj,
+#else
                                                              *m_observableSpace,
                                                              *m_m2lPriorParamDensityObj,
-                                                              m_m2lLikelihoodFunctionObj,
+                                                              m_m2lVectorLhFunctionObj,
+#endif
                                                               m_proposalCovMatrix,
                                                               m_proposalDensityObj,
                                                               m_proposalGeneratorObj);
@@ -303,7 +342,7 @@ uqCalibProblemClass<P_V,P_M,L_V,L_M>::paramSpace() const
 }
 
 template <class P_V,class P_M,class L_V,class L_M>
-const uqProbDensity_BaseClass<P_V,P_M>&
+const uqBayesProbDensity_BaseClass<P_V,P_M>&
 uqCalibProblemClass<P_V,P_M,L_V,L_M>::posteriorParamDensityObj() const
 {
   UQ_FATAL_TEST_MACRO(m_posteriorParamDensityObj == NULL,
@@ -320,7 +359,7 @@ uqCalibProblemClass<P_V,P_M,L_V,L_M>::posteriorParamGeneratorObj() const
 {
   UQ_FATAL_TEST_MACRO(m_posteriorParamGeneratorObj == NULL,
                       m_env.rank(),
-                      "uqCalibProblemClass<P_V,P_M,L_V,L_M>::posteriorParamDensityObj()",
+                      "uqCalibProblemClass<P_V,P_M,L_V,L_M>::posteriorParamGeneratorObj()",
                       "posterior param generator object is being requested but it has not been created yet");
 
   return *m_posteriorParamGeneratorObj;

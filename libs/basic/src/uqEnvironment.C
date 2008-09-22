@@ -24,9 +24,9 @@
 
 // Version "0.1"  on "Aug/11/2008"
 // Version "0.11" on "Aug/15/2008"
-// Version "0.2"  on "Sep/17/2008"
+// Version "0.2"  on "Sep/29/2008"
 #define QUESO_TOOLKIT_MCMC_TOOL_CURRENT_VERSION "0.20"
-#define QUESO_TOOLKIT_MCMC_TOOL_RELEASE_DATE    "Sep/17/2008"
+#define QUESO_TOOLKIT_MCMC_TOOL_RELEASE_DATE    "Sep/29/2008"
 
 uqEnvOptionsStruct::uqEnvOptionsStruct(
   unsigned int verbosity,
@@ -122,16 +122,27 @@ uqEnvironmentClass::commonConstructor()
   m_rank     = m_comm->MyPID();
   m_commSize = m_comm->NumProc();
 
+  int iRC;
+  iRC = gettimeofday(&m_timevalBegin, NULL);
+
   if ((this->verbosity() >= 5) && (this->rank() == 0)) {
     std::cout << "Entering uqEnvironmentClass::commonConstructor()"
               << std::endl;
   }
 
-  if (m_rank == 0) std::cout << "\n================================="
-                             << "\n QUESO toolkit, MCMC tool, version " << QUESO_TOOLKIT_MCMC_TOOL_CURRENT_VERSION << ", released on " << QUESO_TOOLKIT_MCMC_TOOL_RELEASE_DATE
-                             << "\n================================="
-                             << "\n"
-                             << std::endl;
+  if (m_rank == 0) {
+    std::cout << "\n================================="
+              << "\n QUESO toolkit, MCMC tool, version " << QUESO_TOOLKIT_MCMC_TOOL_CURRENT_VERSION
+              << ", released on "                        << QUESO_TOOLKIT_MCMC_TOOL_RELEASE_DATE
+              << "\n================================="
+              << "\n"
+              << std::endl;
+  }
+
+  if (m_rank == 0) {
+    std::cout << "Beginning run at " << ctime(&m_timevalBegin.tv_sec)
+              << std::endl;
+  }
 
   m_allOptionsMap  = new po::variables_map();
   m_allOptionsDesc = new po::options_description("Allowed options");
@@ -262,6 +273,7 @@ uqEnvironmentClass::uqEnvironmentClass(const uqEnvironmentClass& obj)
   m_numDebugParams = obj.m_numDebugParams;
   m_debugParams    = obj.m_debugParams;
   m_rng            = obj.m_rng;
+  m_timevalBegin   = obj.m_timevalBegin;
 }
 
 uqEnvironmentClass::~uqEnvironmentClass()
@@ -276,6 +288,16 @@ uqEnvironmentClass::~uqEnvironmentClass()
   }
 
   if (m_rng) gsl_rng_free(m_rng);
+
+  int iRC;
+  struct timeval timevalNow;
+  iRC = gettimeofday(&timevalNow, NULL);
+  if (m_rank == 0) {
+    std::cout << "Ending run at " << ctime(&timevalNow.tv_sec)
+              << "Total run time = " << timevalNow.tv_sec - m_timevalBegin.tv_sec
+              << " seconds"
+              << std::endl;
+  }
 
   //if (m_rank == 0) std::cout << "Leaving uqEnvironmentClass::destructor()"
   //                           << std::endl;
@@ -304,6 +326,7 @@ uqEnvironmentClass::operator= (const uqEnvironmentClass& rhs)
   m_numDebugParams = rhs.m_numDebugParams;
   m_debugParams    = rhs.m_debugParams;
   m_rng            = rhs.m_rng;
+  m_timevalBegin   = rhs.m_timevalBegin;
 
   return *this;
 }

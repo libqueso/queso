@@ -24,8 +24,9 @@
 #include <uqObservableSpace.h>
 #include <uqQoISpace.h>
 
+#include <uqBayesProbDensity.h>
 #include <uqProbDensity.h>        // For substep x.1 and substep x.4 in applications setting a validation problem stage
-#include <uqLikelihoodFunction.h> // For substep x.2
+#include <uqVectorLhFunction.h> // For substep x.2
 #include <uqProposalDensity.h>    // For substep x.3
 #include <uqProposalGenerator.h>  // For substep x.3
 #include <uqSampleGenerator.h>    // For substep x.4
@@ -51,7 +52,7 @@ public:
                            const char*                                            prefix,
                            const char*                                            sufix,
                            const uqProbDensity_BaseClass       <P_V,P_M>*         m2lPriorParamDensityObj,  // Set in substep x.1 in applications setting a validation problem stage
-                           const uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>* m2lLikelihoodFunctionObj, // Set in substep x.2
+                           const uqVectorLhFunction_BaseClass<P_V,P_M,L_V,L_M>* m2lVectorLhFunctionObj, // Set in substep x.2
                            P_M*                                                   proposalCovMatrix,        // Set in substep x.3
                            const uqProposalDensity_BaseClass   <P_V,P_M>*         proposalDensityObj,       // Set in substep x.3
                            const uqProposalGenerator_BaseClass <P_V,P_M>*         proposalGeneratorObj,     // Set in substep x.3 // FIX ME: accomodate code in order to use such object
@@ -106,7 +107,7 @@ private:
         uqDefault_M2lPriorRoutine_DataType<P_V,P_M>          m_m2lPriorRoutine_Data;
         P_V*                                                 m_paramPriorMus;
         P_V*                                                 m_paramPriorSigmas;
-  const uqLikelihoodFunction_BaseClass    <P_V,P_M,L_V,L_M>* m_m2lLikelihoodFunctionObj;
+  const uqVectorLhFunction_BaseClass    <P_V,P_M,L_V,L_M>* m_m2lVectorLhFunctionObj;
         P_M*                                                 m_proposalCovMatrix;
   const uqProposalDensity_BaseClass       <P_V,P_M>*         m_proposalDensityObj;
   const uqProposalGenerator_BaseClass     <P_V,P_M>*         m_proposalGeneratorObj;
@@ -135,7 +136,7 @@ uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::uqValidProblemStageClass(
   const char*                                            prefix,
   const char*                                            sufix,
   const uqProbDensity_BaseClass       <P_V,P_M>*         m2lPriorParamDensityObj,
-  const uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>* m2lLikelihoodFunctionObj,
+  const uqVectorLhFunction_BaseClass<P_V,P_M,L_V,L_M>* m2lVectorLhFunctionObj,
   P_M*                                                   proposalCovMatrix,
   const uqProposalDensity_BaseClass   <P_V,P_M>*         proposalDensityObj,
   const uqProposalGenerator_BaseClass <P_V,P_M>*         proposalGeneratorObj,
@@ -166,7 +167,7 @@ uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::uqValidProblemStageClass(
   m_m2lPriorParamDensityObj      (m2lPriorParamDensityObj),
   m_paramPriorMus                (NULL),
   m_paramPriorSigmas             (NULL),
-  m_m2lLikelihoodFunctionObj     (m2lLikelihoodFunctionObj),
+  m_m2lVectorLhFunctionObj     (m2lVectorLhFunctionObj),
   m_proposalCovMatrix            (proposalCovMatrix),
   m_proposalDensityObj           (proposalDensityObj),
   m_proposalGeneratorObj         (proposalGeneratorObj),
@@ -213,7 +214,7 @@ uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::uqValidProblemStageClass(
                                                                *m_paramSpace,
                                                                *m_observableSpace,
                                                                *m_m2lPriorParamDensityObj,
-                                                               *m_m2lLikelihoodFunctionObj,
+                                                               *m_m2lVectorLhFunctionObj,
                                                                 m_proposalCovMatrix,
                                                                 m_proposalDensityObj,
                                                                 m_proposalGeneratorObj);

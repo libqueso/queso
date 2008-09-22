@@ -21,6 +21,7 @@
 #define __UQ_BMCDC1_H__
 
 #undef  UQ_BMCDC_REQUIRES_INVERTED_COV_MATRICES
+#define UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
 
 #define UQ_BMCDC_MARKOV_CHAIN_TYPE           1
 #define UQ_BMCDC_WHITE_NOISE_CHAIN_TYPE      2
@@ -58,9 +59,12 @@
 
 #include <uqChainStatisticalOptions.h>
 #include <uqProbDensity.h>
-#include <uqLikelihoodFunction.h>
 #include <uqParamSpace.h>
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+#else
+#include <uqVectorLhFunction.h>
 #include <uqObservableSpace.h>
+#endif
 #include <uqChainPosition.h>
 #include <uqMiscellaneous.h>
 #include <uqSequenceOfVectors.h>
@@ -74,15 +78,19 @@ template <class P_V,class P_M,class L_V,class L_M>
 class uqBayesianMarkovChainDCClass
 {
 public:
-  uqBayesianMarkovChainDCClass(const uqEnvironmentClass&                              env,                      /*! The QUESO toolkit environment. */
-                               const char*                                            prefix,                   /*! Prefix.                        */
-                               const uqParamSpaceClass             <P_V,P_M>&         paramSpace,               /*! The parameter space.           */
-                               const uqObservableSpaceClass        <L_V,L_M>&         observableSpace,          /*! The observable space.          */
-                               const uqProbDensity_BaseClass       <P_V,P_M>&         m2lPriorParamDensityObj,  /*! -2*ln(prior()).                */
-                               const uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>& m2lLikelihoodFunctionObj, /*! -2*ln(likelihood()).           */
-                                     P_M*                                             proposalCovMatrix,        /*! */
-                               const uqProposalDensity_BaseClass   <P_V,P_M>*         proposalDensityObj,       /*! */
-                               const uqProposalGenerator_BaseClass <P_V,P_M>*         proposalGeneratorObj);    /*! */
+  uqBayesianMarkovChainDCClass(const uqEnvironmentClass&                             env,                      /*! The QUESO toolkit environment. */
+                               const char*                                           prefix,                   /*! Prefix.                        */
+                               const uqParamSpaceClass            <P_V,P_M>&         paramSpace,               /*! The parameter space.           */
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+                               const uqBayesProbDensity_BaseClass <P_V,P_M>&         targetParamDensityObj,
+#else
+                               const uqObservableSpaceClass       <L_V,L_M>&         observableSpace,          /*! The observable space.          */
+                               const uqProbDensity_BaseClass      <P_V,P_M>&         m2lPriorParamDensityObj,  /*! -2*ln(prior()).                */
+                               const uqVectorLhFunction_BaseClass <P_V,P_M,L_V,L_M>& m2lVectorLhFunctionObj,   /*! -2*ln(likelihood()).           */
+#endif
+                                     P_M*                                            proposalCovMatrix,        /*! */
+                               const uqProposalDensity_BaseClass  <P_V,P_M>*         proposalDensityObj,       /*! */
+                               const uqProposalGenerator_BaseClass<P_V,P_M>*         proposalGeneratorObj);    /*! */
  ~uqBayesianMarkovChainDCClass();
 
   void calculateDistributions ();
@@ -112,19 +120,15 @@ private:
                                 //const P_M*                                     mahalanobisMatrix,
                                 //bool                                           applyMahalanobisInvert,
                                   uqChainBaseClass<P_V>&                         workingChain);
-  int    generateChain           (unsigned int                                   chainSize,
+  void   generateMarkovChain     (unsigned int                                   chainSize,
                                   const P_V&                                     valuesOf1stPosition,
                                   const P_M*                                     proposalCovMatrix,
-                                //const P_M*                                     mahalanobisMatrix,
-                                //bool                                           applyMahalanobisInvert,
-                                  uqChainBaseClass<P_V>&                         workingChain,
-                                  const std::string&                             chainName,
-                                  const std::string&                             prefixName,
-                                  std::ofstream*                                 ofs);
-  int    generateWhiteNoise      (unsigned int                                   chainSize,
                                   uqChainBaseClass<P_V>&                         workingChain,
                                   const std::string&                             chainName);
-  int    generateUniform         (unsigned int                                   chainSize,
+  void   generateWhiteNoiseChain (unsigned int                                   chainSize,
+                                  uqChainBaseClass<P_V>&                         workingChain,
+                                  const std::string&                             chainName);
+  void   generateUniformChain    (unsigned int                                   chainSize,
                                   uqChainBaseClass<P_V>&                         workingChain,
                                   const std::string&                             chainName);
   void   updateCovMatrix         (const uqChainBaseClass<P_V>&                   subChain,
@@ -151,15 +155,19 @@ private:
                                 //const P_M*                                     mahalanobisMatrix = NULL,
                                 //bool                                           applyMahalanobisInvert = true) const;
 
-  const uqEnvironmentClass&                              m_env;
-        std::string                                      m_prefix;
-  const uqParamSpaceClass             <P_V,P_M>&         m_paramSpace;
-  const uqObservableSpaceClass        <L_V,L_M>&         m_observableSpace;
-  const uqProbDensity_BaseClass       <P_V,P_M>&         m_m2lPriorParamDensityObj;
-  const uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>& m_m2lLikelihoodFunctionObj;
-        P_M*                                             m_proposalCovMatrix;
-  const uqProposalDensity_BaseClass   <P_V,P_M>*         m_proposalDensityObj;
-  const uqProposalGenerator_BaseClass <P_V,P_M>*         m_proposalGeneratorObj;
+  const uqEnvironmentClass&                             m_env;
+        std::string                                     m_prefix;
+  const uqParamSpaceClass            <P_V,P_M>&         m_paramSpace;
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+  const uqBayesProbDensity_BaseClass <P_V,P_M>&         m_targetParamDensityObj;
+#else
+  const uqObservableSpaceClass       <L_V,L_M>&         m_observableSpace;
+  const uqProbDensity_BaseClass      <P_V,P_M>&         m_m2lPriorParamDensityObj;
+  const uqVectorLhFunction_BaseClass <P_V,P_M,L_V,L_M>& m_m2lVectorLhFunctionObj;
+#endif
+        P_M*                                            m_proposalCovMatrix;
+  const uqProposalDensity_BaseClass  <P_V,P_M>*         m_proposalDensityObj;
+  const uqProposalGenerator_BaseClass<P_V,P_M>*         m_proposalGeneratorObj;
 
   po::options_description*        m_optionsDesc;
   std::string                     m_option_help;
@@ -191,7 +199,10 @@ private:
   std::string                     m_option_am_eta;
   std::string                     m_option_am_epsilon;
 
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+#else
   bool                            m_likelihoodObjComputesMisfits;
+#endif
   P_V                             m_paramInitials;
   bool                            m_proposalIsSymmetric;
 
@@ -240,18 +251,14 @@ private:
   uqSequenceOfVectorsClass<P_V>   m_chain1;
   uqArrayOfSequencesClass<P_V>    m_chain2;
   std::vector<unsigned int>       m_idsOfUniquePositions;
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+#else
   std::vector<const L_V*>         m_misfitChain; // Sum of squares of differences between model and experiments: computed by user supplied likelihood obj
   std::vector<const L_V*>         m_misfitVarianceChain;
   std::vector<const L_V*>         m_m2lLikelihoodChain;
+#endif
   std::vector<double>             m_alphaQuotients;
   double                          m_chainRunTime;
-  double                          m_candidateRunTime;
-  double                          m_priorRunTime;
-  double                          m_lhRunTime;
-  double                          m_mhAlphaRunTime;
-  double                          m_drAlphaRunTime;
-  double                          m_drRunTime;
-  double                          m_amRunTime;
   unsigned int                    m_numRejections;
   unsigned int                    m_numOutOfBounds;
   double                          m_lastChainSize;
@@ -266,22 +273,30 @@ std::ostream& operator<<(std::ostream& os, const uqBayesianMarkovChainDCClass<P_
 
 template<class P_V,class P_M,class L_V,class L_M>
 uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::uqBayesianMarkovChainDCClass(
-  const uqEnvironmentClass&                              env,
-  const char*                                            prefix,
-  const uqParamSpaceClass             <P_V,P_M>&         paramSpace,
-  const uqObservableSpaceClass        <L_V,L_M>&         observableSpace,
-  const uqProbDensity_BaseClass       <P_V,P_M>&         m2lPriorParamDensityObj,
-  const uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>& m2lLikelihoodFunctionObj,
-        P_M*                                             proposalCovMatrix,
-  const uqProposalDensity_BaseClass   <P_V,P_M>*         proposalDensityObj,
-  const uqProposalGenerator_BaseClass <P_V,P_M>*         proposalGeneratorObj)
+  const uqEnvironmentClass&                             env,
+  const char*                                           prefix,
+  const uqParamSpaceClass            <P_V,P_M>&         paramSpace,
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+  const uqBayesProbDensity_BaseClass <P_V,P_M>&         targetParamDensityObj,
+#else
+  const uqObservableSpaceClass       <L_V,L_M>&         observableSpace,
+  const uqProbDensity_BaseClass      <P_V,P_M>&         m2lPriorParamDensityObj,
+  const uqVectorLhFunction_BaseClass <P_V,P_M,L_V,L_M>& m2lVectorLhFunctionObj,
+#endif
+        P_M*                                            proposalCovMatrix,
+  const uqProposalDensity_BaseClass  <P_V,P_M>*         proposalDensityObj,
+  const uqProposalGenerator_BaseClass<P_V,P_M>*         proposalGeneratorObj)
   :
   m_env                                  (env),
   m_prefix                               ((std::string)(prefix) + "bmcdc_"),
   m_paramSpace                           (paramSpace),
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+  m_targetParamDensityObj                (targetParamDensityObj),
+#else
   m_observableSpace                      (observableSpace),
   m_m2lPriorParamDensityObj              (m2lPriorParamDensityObj),
-  m_m2lLikelihoodFunctionObj             (m2lLikelihoodFunctionObj),
+  m_m2lVectorLhFunctionObj               (m2lVectorLhFunctionObj),
+#endif
   m_proposalCovMatrix                    (proposalCovMatrix),
   m_proposalDensityObj                   (proposalDensityObj),
   m_proposalGeneratorObj                 (proposalGeneratorObj),
@@ -314,7 +329,10 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::uqBayesianMarkovChainDCClass(
   m_option_am_adaptInterval              (m_prefix + "am_adaptInterval"              ),
   m_option_am_eta                        (m_prefix + "am_eta"                        ),
   m_option_am_epsilon                    (m_prefix + "am_epsilon"                    ),
-  m_likelihoodObjComputesMisfits         (dynamic_cast<const uqMisfitLikelihoodFunction_Class<P_V,P_M,L_V,L_M>*>(&m2lLikelihoodFunctionObj) != NULL),
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+#else
+  m_likelihoodObjComputesMisfits         (dynamic_cast<const uqMisfitVectorLhFunction_Class<P_V,P_M,L_V,L_M>*>(&m2lVectorLhFunctionObj) != NULL),
+#endif
   m_paramInitials                        (m_paramSpace.initialValues()),
   m_proposalIsSymmetric                  (true),
   m_chainType                            (UQ_BMCDC_CHAIN_TYPE_ODV),
@@ -356,18 +374,14 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::uqBayesianMarkovChainDCClass(
   m_chain1                               (0,m_paramSpace.zeroVector()),
   m_chain2                               (0,m_paramSpace.zeroVector()),
   m_idsOfUniquePositions                 (0),//0),
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+#else
   m_misfitChain                          (0),//,NULL),
   m_misfitVarianceChain                  (0),//,NULL),
   m_m2lLikelihoodChain                   (0),//,NULL),
+#endif
   m_alphaQuotients                       (0),//,0.),
   m_chainRunTime                         (0.),
-  m_candidateRunTime                     (0.),
-  m_priorRunTime                         (0.),
-  m_lhRunTime                            (0.),
-  m_mhAlphaRunTime                       (0.),
-  m_drAlphaRunTime                       (0.),
-  m_drRunTime                            (0.),
-  m_amRunTime                            (0.), 
   m_numRejections                        (0),
   m_numOutOfBounds                       (0),
   m_lastChainSize                        (0),
@@ -419,18 +433,13 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::resetChainAndRelatedInfo()
 {
   if (m_lastAdaptedCovMatrix) delete m_lastAdaptedCovMatrix;
   if (m_lastMean)             delete m_lastMean;
-  m_lastChainSize     = 0;
-  m_numOutOfBounds    = 0;
-  m_chainRunTime      = 0.;
-  m_candidateRunTime  = 0.;
-  m_priorRunTime      = 0.;
-  m_lhRunTime         = 0.;
-  m_mhAlphaRunTime    = 0.;
-  m_drAlphaRunTime    = 0.;
-  m_drRunTime         = 0.;
-  m_amRunTime         = 0.;
-  m_numRejections     = 0;
+  m_lastChainSize  = 0;
+  m_numOutOfBounds = 0;
+  m_chainRunTime   = 0.;
+  m_numRejections  = 0;
   m_alphaQuotients.clear();
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+#else
   for (unsigned int i = 0; i < m_m2lLikelihoodChain.size(); ++i) {
     if (m_m2lLikelihoodChain[i]) delete m_m2lLikelihoodChain[i];
   }
@@ -440,8 +449,10 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::resetChainAndRelatedInfo()
   for (unsigned int i = 0; i < m_misfitChain.size(); ++i) {
     if (m_misfitChain[i]) delete m_misfitChain[i];
   }
-
+#endif
   m_idsOfUniquePositions.clear();
+  m_chain1.clear();
+  m_chain2.clear();
 
 #ifdef UQ_BMCDC_REQUIRES_INVERTED_COV_MATRICES
   for (unsigned int i = 0; i < m_proposalPrecMatrices.size(); ++i) {
@@ -901,7 +912,7 @@ double
 uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::alpha(
   const uqChainPositionClass<P_V>& x,
   const uqChainPositionClass<P_V>& y,
-  double*                        alphaQuotientPtr)
+  double*                          alphaQuotientPtr)
 {
   double alphaQuotient = 0.;
   bool xOutOfBounds = x.outOfBounds();
@@ -909,11 +920,14 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::alpha(
   if ((xOutOfBounds == false) &&
       (yOutOfBounds == false)) {
     double yLogPosteriorToUse = y.logPosterior();
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+#else
     if (m_likelihoodObjComputesMisfits &&
         m_observableSpace.shouldVariancesBeUpdated()) {
       // Divide the misfitVector of 'y' by the misfitVarianceVector of 'x'
       yLogPosteriorToUse = -0.5 * ( y.m2lPrior() + (y.misfitVector()/x.misfitVarianceVector()).sumOfComponents() );
     }
+#endif
     if (m_proposalIsSymmetric) {
       alphaQuotient = exp(yLogPosteriorToUse - x.logPosterior());
       if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
@@ -990,12 +1004,15 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::alpha(const std::vector<uqChainPo
   }
 
   double numeratorLogPosteriorToUse = backwardPositions[0]->logPosterior();
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+#else
   if (m_likelihoodObjComputesMisfits &&
       m_observableSpace.shouldVariancesBeUpdated()) {
     // Divide the misfitVector of 'back[0]' by the misfitVarianceVector of 'pos[0]'
     numeratorLogPosteriorToUse = -0.5 * ( backwardPositions[0]->m2lPrior() +
       (backwardPositions[0]->misfitVector()/positions[0]->misfitVarianceVector()).sumOfComponents() );
   }
+#endif
   logNumerator   += numeratorLogPosteriorToUse;
   logDenominator += positions[0]->logPosterior();
 
@@ -1039,6 +1056,8 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::writeInfo(
   int iRC = UQ_OK_RC;
 
   if (m_chainGenerateExtra) {
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+#else
     if (m_likelihoodObjComputesMisfits) {
       // Write m_misfitChain
       ofs << prefixName << "misfitChain = zeros(" << m_misfitChain.size()
@@ -1067,7 +1086,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::writeInfo(
 
     // Write m_m2lLikelihoodChain
     ofs << prefixName << "m2lLikelihoodChain = zeros(" << m_m2lLikelihoodChain.size()
-        << ","                                          << m_m2lLikelihoodChain[0]->size()
+        << ","                                         << m_m2lLikelihoodChain[0]->size()
         << ");"
         << std::endl;
     ofs << prefixName << "m2lLikelihoodChain = [";
@@ -1076,7 +1095,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::writeInfo(
           << std::endl;
     }
     ofs << "];\n";
-
+#endif
     // Write m_alphaQuotients
     ofs << prefixName << "alphaQuotients = zeros(" << m_alphaQuotients.size()
         << ","                                      << 1
@@ -1291,7 +1310,10 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::print(std::ostream& os) const
      << "\n" << m_option_am_adaptInterval           << " = " << m_adaptInterval
      << "\n" << m_option_am_eta                     << " = " << m_eta
      << "\n" << m_option_am_epsilon                 << " = " << m_epsilon
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+#else
      << "\n" << "(internal variable) m_likelihoodObjComputesMisfits = " << m_likelihoodObjComputesMisfits
+#endif
      << std::endl;
 
   return;

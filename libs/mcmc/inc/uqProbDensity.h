@@ -34,7 +34,7 @@ template<class V, class M>
 class uqProbDensity_BaseClass {
 public:
   uqProbDensity_BaseClass(double (*routinePtr)(const V& paramValues, const void* routineDataPtr),
-                           const void* routineDataPtr);
+                          const void* routineDataPtr);
   virtual ~uqProbDensity_BaseClass();
   virtual double actualDensity  (const V& paramValues) const = 0;
   virtual double minus2LnDensity(const V& paramValues) const = 0;
@@ -49,8 +49,8 @@ uqProbDensity_BaseClass<V,M>::uqProbDensity_BaseClass(
   double (*routinePtr)(const V& paramValues, const void* routineDataPtr),
   const void* routineDataPtr)
   :
-  m_routinePtr       (routinePtr),
-  m_routineDataPtr   (routineDataPtr)
+  m_routinePtr    (routinePtr),
+  m_routineDataPtr(routineDataPtr)
 {
 }
 
@@ -66,7 +66,7 @@ template<class V, class M>
 class uqM2lProbDensity_Class : public uqProbDensity_BaseClass<V,M> {
 public:
   uqM2lProbDensity_Class(double (*routinePtr)(const V& paramValues, const void* routineDataPtr),
-                          const void* routineDataPtr);
+                         const void* routineDataPtr);
  ~uqM2lProbDensity_Class();
 
   double actualDensity  (const V& paramValues) const;

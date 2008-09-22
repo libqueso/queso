@@ -59,7 +59,13 @@ cp_likelihoodRoutine_DataType
 
 // The actual (user defined) likelihood routine
 template<class P_V,class P_M,class S_V,class S_M,class L_V,class L_M>
-void cp_likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr, L_V& resultValues)
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+double
+cp_likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
+#else
+void
+  cp_likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr, L_V& resultValues)
+#endif
 {
   double A                       = paramValues[0];
   double E                       = paramValues[1];
@@ -109,18 +115,26 @@ void cp_likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr, L
     t_old=t;
     M_old[0]=Mass[0];
   }
-  resultValues[0] = misfit1/variance1;
+  double resultValue = misfit1/variance1;
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+#else
+  resultValues[0] = resultValue;
+#endif
 	
   //printf("loopSize = %d\n",loopSize);
   if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
-    printf("In cp_likelihoodRoutine(), A = %g, E = %g, beta1 = %.3lf: misfit1 = %lf, likelihood1 = %lf.\n",A,E,beta1,misfit1,resultValues[0]);
+    printf("In cp_likelihoodRoutine(), A = %g, E = %g, beta1 = %.3lf: misfit1 = %lf, likelihood1 = %lf.\n",A,E,beta1,misfit1,resultValue);
   }
 
   gsl_odeiv_evolve_free (e);
   gsl_odeiv_control_free(c);
   gsl_odeiv_step_free   (s);
 
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+  return resultValue;
+#else
   return;
+#endif
 }
 
 //********************************************************
@@ -271,9 +285,13 @@ uqAppl(const uqEnvironmentClass& env)
   cp_likelihoodRoutine_Data.variance1 = variance1;
   cp_likelihoodRoutine_Data.Te1       = &Te1; // temperatures
   cp_likelihoodRoutine_Data.Me1       = &Me1; // relative masses
-  uqCompleteLikelihoodFunction_Class<P_V,P_M,L_V,L_M> cp_likelihoodFunctionObj(cp_likelihoodRoutine<P_V,P_M,S_V,S_M,L_V,L_M>,
-                                                                               (void *) &cp_likelihoodRoutine_Data,
-                                                                               true); // the routine computes [-2.*ln(Likelihood)]
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+  uqCompleteScalarLhFunction_Class<P_V,P_M> cp_likelihoodFunctionObj(cp_likelihoodRoutine<P_V,P_M,S_V,S_M,L_V,L_M>,
+#else
+  uqCompleteVectorLhFunction_Class<P_V,P_M,L_V,L_M> cp_likelihoodFunctionObj(cp_likelihoodRoutine<P_V,P_M,S_V,S_M,L_V,L_M>,
+#endif
+                                                                     (void *) &cp_likelihoodRoutine_Data,
+                                                                     true); // the routine computes [-2.*ln(Likelihood)]
 
   //******************************************************
   // Substep 3: Define the proposal cov matrix, the proposal density and the proposal generator

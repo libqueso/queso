@@ -58,6 +58,11 @@ private:
   void calculateDistributions(const uqSampleGenerator_BaseClass<P_V,P_M>& paramGeneratorObj,
                                     uqChainBaseClass<P_V>&                workingSeq);
 
+  void generateSequence      (      unsigned int                          seqSize,
+                              const uqSampleGenerator_BaseClass<P_V,P_M>& paramGeneratorObj,
+                                    uqChainBaseClass<P_V>&                workingSeq,
+                              const std::string&                          seqName);
+
   const uqEnvironmentClass&                           m_env;
         std::string                                   m_prefix;
   const uqParamSpaceClass          <P_V,P_M>&         m_paramSpace;
@@ -142,7 +147,7 @@ uqMonteCarloDCClass<P_V,P_M,Q_V,Q_M>::uqMonteCarloDCClass(
                                    << "\n" << *this
                                    << std::endl;
 
-  if (m_computeStats) m_statisticalOptions = new uqChainStatisticalOptionsClass(m_env,m_prefix);
+  if (m_computeStats) m_statisticalOptions = new uqChainStatisticalOptionsClass(m_env,m_prefix + "seq_");
 
   if (m_env.rank() == 0) std::cout << "Leaving uqMonteCarloDCClass<P_V,P_M,Q_V,Q_M>::constructor()"
                                    << std::endl;
@@ -260,14 +265,15 @@ uqMonteCarloDCClass<P_V,P_M,Q_V,Q_M>::calculateDistributions(
 {
   std::string prefixName = m_prefix;
   std::string seqName    = prefixName + "seq";
-  unsigned int actualNumSamples = std::min(m_numSamples,paramGeneratorObj.period());
 
-  if (m_env.rank() == 0) {
-    std::cout << "Generating qoi sequence " << seqName
-              << ", with "                  << actualNumSamples
-              << " samples..."
-              << std::endl;
-  }
+  //****************************************************
+  // Generate sequence of qoi values
+  //****************************************************
+  unsigned int actualNumSamples = std::min(m_numSamples,paramGeneratorObj.period());
+  generateSequence(actualNumSamples,
+                   paramGeneratorObj,
+                   workingSeq,
+                   seqName);
 
   //****************************************************
   // Open file      
@@ -301,33 +307,6 @@ uqMonteCarloDCClass<P_V,P_M,Q_V,Q_M>::calculateDistributions(
   }
   
   //****************************************************
-  // Generate sequence of qoi values
-  //****************************************************
-  workingSeq.resizeSequence(actualNumSamples);
-  P_V tmpV(m_paramSpace.zeroVector());
-  Q_V tmpQ(m_qoiSpace.zeroVector());
-  for (unsigned int i = 0; i < actualNumSamples; ++i) {
-    paramGeneratorObj.nextSample(tmpV);
-    m_qoiFunctionObj.computeQoIs(tmpV,tmpQ);
-    workingSeq.setPositionValues(i,tmpQ);
-
-    if ((m_displayPeriod            > 0) && 
-        (((i+1) % m_displayPeriod) == 0)) {
-      if (m_env.rank() == 0) {
-        std::cout << "Finished generating " << i+1
-                  << " qoi samples"
-                  << std::endl;
-      }
-    }
-  }
-
-  if (m_env.rank() == 0) {
-    std::cout << "Finished generating the qoi sequence " << seqName
-              << ", with "                               << workingSeq.sequenceSize()
-              << " samples";
-  }
-
-  //****************************************************
   // Eventually:
   // --> write sequence
   // --> compute statistics on it
@@ -351,12 +330,79 @@ uqMonteCarloDCClass<P_V,P_M,Q_V,Q_M>::calculateDistributions(
     ofs->close();
 
     if (m_env.rank() == 0) {
-      std::cout << "Closed output file for qoi sequence " << seqName
+      std::cout << "Closed output file '" << m_outputFileName
+                << "' for qoi sequence "  << seqName
                 << std::endl;
     }
   }
   if (m_env.rank() == 0) {
     std::cout << std::endl;
+  }
+
+  return;
+}
+
+template <class P_V,class P_M,class Q_V,class Q_M>
+void
+uqMonteCarloDCClass<P_V,P_M,Q_V,Q_M>::generateSequence(
+        unsigned int                          seqSize,
+  const uqSampleGenerator_BaseClass<P_V,P_M>& paramGeneratorObj,
+        uqChainBaseClass<P_V>&                workingSeq,
+  const std::string&                          seqName)
+{
+  if (m_env.rank() == 0) {
+    std::cout << "Starting the generation of qoi sequence " << seqName
+              << ", with "                                  << seqSize
+              << " samples..."
+              << std::endl;
+  }
+
+  int iRC = UQ_OK_RC;
+  struct timeval timevalSeq;
+  struct timeval timevalQoIFunction;
+
+  double seqRunTime         = 0;
+  double qoiFunctionRunTime = 0;
+
+  iRC = gettimeofday(&timevalSeq, NULL);
+
+  workingSeq.resizeSequence(seqSize);
+  P_V tmpV(m_paramSpace.zeroVector());
+  Q_V tmpQ(m_qoiSpace.zeroVector());
+  for (unsigned int i = 0; i < seqSize; ++i) {
+    paramGeneratorObj.nextSample(tmpV);
+
+    if (m_measureRunTimes) iRC = gettimeofday(&timevalQoIFunction, NULL);
+    m_qoiFunctionObj.computeQoIs(tmpV,tmpQ);
+    if (m_measureRunTimes) qoiFunctionRunTime += uqMiscGetEllapsedSeconds(&timevalQoIFunction);
+
+    workingSeq.setPositionValues(i,tmpQ);
+
+    if ((m_displayPeriod            > 0) && 
+        (((i+1) % m_displayPeriod) == 0)) {
+      if (m_env.rank() == 0) {
+        std::cout << "Finished generating " << i+1
+                  << " qoi samples"
+                  << std::endl;
+      }
+    }
+  }
+
+  seqRunTime = uqMiscGetEllapsedSeconds(&timevalSeq);
+
+  if (m_env.rank() == 0) {
+    std::cout << "Finished the generation of qoi sequence " << seqName
+              << ", with "                                  << workingSeq.sequenceSize()
+              << " samples";
+  }
+  std::cout << "\nSome information about this sequence:"
+            << "\n  Sequence run time = " << seqRunTime
+            << " seconds";
+  if (m_measureRunTimes) {
+    std::cout << "\n\n Breaking of the seq run time:\n";
+    std::cout << "\n  QoI function run time   = " << qoiFunctionRunTime
+              << " seconds ("                     << 100.*qoiFunctionRunTime/seqRunTime
+              << "%)";
   }
 
   return;

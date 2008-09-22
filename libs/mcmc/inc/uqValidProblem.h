@@ -39,7 +39,7 @@ public:
 
         void                                               instantiateStage (unsigned int                                           stageId,
                                                                              const uqProbDensity_BaseClass       <P_V,P_M>*         m2lPriorParamDensityObj,  // Set in substep x.1 in applications setting a validation problem stage
-                                                                             const uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>* m2lLikelihoodFunctionObj, // Set in substep x.2
+                                                                             const uqVectorLhFunction_BaseClass<P_V,P_M,L_V,L_M>* m2lVectorLhFunctionObj, // Set in substep x.2
                                                                              P_M*                                                   proposalCovMatrix,        // Set in substep x.3
                                                                              const uqProposalDensity_BaseClass   <P_V,P_M>*         proposalDensityObj,       // Set in substep x.3
                                                                              const uqProposalGenerator_BaseClass <P_V,P_M>*         proposalGeneratorObj,     // Set in substep x.3
@@ -203,7 +203,7 @@ void
 uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::instantiateStage(
   unsigned int                                           stageId,
   const uqProbDensity_BaseClass       <P_V,P_M>*         m2lPriorParamDensityObj,  // Set in substep x.1
-  const uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>* m2lLikelihoodFunctionObj, // Set in substep x.2
+  const uqVectorLhFunction_BaseClass<P_V,P_M,L_V,L_M>* m2lVectorLhFunctionObj, // Set in substep x.2
   P_M*                                                   proposalCovMatrix,        // Set in substep x.3
   const uqProposalDensity_BaseClass   <P_V,P_M>*         proposalDensityObj,       // Set in substep x.3
   const uqProposalGenerator_BaseClass <P_V,P_M>*         proposalGeneratorObj,     // Set in substep x.3
@@ -215,7 +215,7 @@ uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::instantiateStage(
                                                                             m_prefix.c_str(),
                                                                             m_stageSufixes[stageId].c_str(),
                                                                             m2lPriorParamDensityObj,
-                                                                            m2lLikelihoodFunctionObj,
+                                                                            m2lVectorLhFunctionObj,
                                                                             proposalCovMatrix,
                                                                             proposalDensityObj,
                                                                             proposalGeneratorObj,

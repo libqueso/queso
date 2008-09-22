@@ -278,9 +278,9 @@ uqAppl(const uqEnvironmentClass& env)
   stage0_likelihoodRoutine_Data.variance1 = variance1;
   stage0_likelihoodRoutine_Data.Te1       = &Te1; // temperatures
   stage0_likelihoodRoutine_Data.Me1       = &Me1; // relative masses
-  uqCompleteLikelihoodFunction_Class<P_V,P_M,L_V,L_M> stage0_likelihoodFunctionObj(stage0_likelihoodRoutine<P_V,P_M,S_V,S_M,L_V,L_M>,
-                                                                                   (void *) &stage0_likelihoodRoutine_Data,
-                                                                                   true); // the routine computes [-2.*ln(Likelihood)]
+  uqCompleteVectorLhFunction_Class<P_V,P_M,L_V,L_M> stage0_likelihoodFunctionObj(stage0_likelihoodRoutine<P_V,P_M,S_V,S_M,L_V,L_M>,
+                                                                                 (void *) &stage0_likelihoodRoutine_Data,
+                                                                                 true); // the routine computes [-2.*ln(Likelihood)]
 
   //******************************************************
   // Substep 2.3: Define the proposal density and proposal generator

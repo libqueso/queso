@@ -37,6 +37,7 @@ public:
            unsigned int vectorSize         () const;
   virtual  void         resizeSequence     (unsigned int newSequenceSize) = 0;
   virtual  void         resetValues        (unsigned int initialPos, unsigned int numPos) = 0;
+           void         clear              ();
   virtual  void         erasePositions     (unsigned int initialPos, unsigned int numPos) = 0;
   virtual  void         getPositionValues  (unsigned int posId,       V& vec) const = 0;
   virtual  void         setPositionValues  (unsigned int posId, const V& vec) = 0;
@@ -212,6 +213,19 @@ unsigned int
 uqChainBaseClass<V>::vectorSize() const
 {
   return m_vectorExample.size();
+}
+
+template <class V>
+void
+uqChainBaseClass<V>::clear()
+{
+  unsigned int numPos = this->sequenceSize();
+  if (numPos) {
+    this->resetValues(0,numPos);
+    this->resizeSequence(0);
+  }
+
+ return;
 }
 
 template<class V>

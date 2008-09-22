@@ -92,6 +92,7 @@ private:
   unsigned int             m_numDebugParams;
   std::vector<double>      m_debugParams;
   gsl_rng*                 m_rng;
+  struct timeval           m_timevalBegin;
 };
 
 std::ostream& operator<<(std::ostream& os, const uqEnvironmentClass& obj);

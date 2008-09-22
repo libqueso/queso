@@ -1,4 +1,4 @@
-/* uq/libs/mcmc/inc/uqLikelihoodFunction.h
+/* uq/libs/mcmc/inc/uqVectorLhFunction.h
  *
  * Copyright (C) 2008 The PECOS Team, http://www.ices.utexas.edu/centers/pecos
  *
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef __UQ_LIKELIHOOD_FUNCTION_H__
-#define __UQ_LIKELIHOOD_FUNCTION_H__
+#ifndef __UQ_VECTOR_LH_FUNCTION_H__
+#define __UQ_VECTOR_LH_FUNCTION_H__
 
 #include <uqEnvironment.h>
 #include <uqDefines.h>
@@ -32,11 +32,11 @@
 // Base class
 //*****************************************************
 template<class P_V,class P_M,class L_V,class L_M>
-class uqLikelihoodFunction_BaseClass {
+class uqVectorLhFunction_BaseClass {
 public:
-  uqLikelihoodFunction_BaseClass(void (*routinePtr)(const P_V& paramValues, const void* functionDataPtr, L_V& likelihoodValues),
+  uqVectorLhFunction_BaseClass(void (*routinePtr)(const P_V& paramValues, const void* functionDataPtr, L_V& likelihoodValues),
                                   const void* functionDataPtr);
-  virtual ~uqLikelihoodFunction_BaseClass();
+  virtual ~uqVectorLhFunction_BaseClass();
   virtual void computeActualLikelihoods  (const P_V& paramValues, L_V& likelihoodValues) const = 0;
   virtual void computeMinus2LnLikelihoods(const P_V& paramValues, L_V& likelihoodValues) const = 0;
   virtual void computeMisfits            (const P_V& paramValues, L_V& likelihoodValues) const = 0;
@@ -47,7 +47,7 @@ protected:
 };
 
 template<class P_V,class P_M,class L_V,class L_M>
-uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>::uqLikelihoodFunction_BaseClass(
+uqVectorLhFunction_BaseClass<P_V,P_M,L_V,L_M>::uqVectorLhFunction_BaseClass(
   void (*routinePtr)(const P_V& paramValues, const void* functionDataPtr, L_V& likelihoodValues),
   const void* functionDataPtr)
   :
@@ -57,7 +57,7 @@ uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>::uqLikelihoodFunction_BaseClass(
 }
 
 template<class P_V,class P_M,class L_V,class L_M>
-uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>::~uqLikelihoodFunction_BaseClass()
+uqVectorLhFunction_BaseClass<P_V,P_M,L_V,L_M>::~uqVectorLhFunction_BaseClass()
 {
 }
 
@@ -65,58 +65,58 @@ uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>::~uqLikelihoodFunction_BaseClass
 // Misfit class
 //*****************************************************
 template<class P_V,class P_M,class L_V,class L_M>
-class uqMisfitLikelihoodFunction_Class : public uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M> {
+class uqMisfitVectorLhFunction_Class : public uqVectorLhFunction_BaseClass<P_V,P_M,L_V,L_M> {
 public:
-  uqMisfitLikelihoodFunction_Class(void (*routinePtr)(const P_V& paramValues, const void* functionDataPtr, L_V& likelihoodValues),
+  uqMisfitVectorLhFunction_Class(void (*routinePtr)(const P_V& paramValues, const void* functionDataPtr, L_V& likelihoodValues),
                                     const void* functionDataPtr);
- ~uqMisfitLikelihoodFunction_Class();
+ ~uqMisfitVectorLhFunction_Class();
   void computeActualLikelihoods  (const P_V& paramValues, L_V& likelihoodValues) const;
   void computeMinus2LnLikelihoods(const P_V& paramValues, L_V& likelihoodValues) const;
   void computeMisfits            (const P_V& paramValues, L_V& likelihoodValues) const;
 
-  using uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>::m_routinePtr;
-  using uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>::m_routineDataPtr;
+  using uqVectorLhFunction_BaseClass<P_V,P_M,L_V,L_M>::m_routinePtr;
+  using uqVectorLhFunction_BaseClass<P_V,P_M,L_V,L_M>::m_routineDataPtr;
 };
 
 template<class P_V,class P_M,class L_V,class L_M>
-uqMisfitLikelihoodFunction_Class<P_V,P_M,L_V,L_M>::uqMisfitLikelihoodFunction_Class(
+uqMisfitVectorLhFunction_Class<P_V,P_M,L_V,L_M>::uqMisfitVectorLhFunction_Class(
   void (*routinePtr)(const P_V& paramValues, const void* functionDataPtr, L_V& likelihoodValues),
   const void* functionDataPtr)
   :
-  uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>(routinePtr,functionDataPtr)
+  uqVectorLhFunction_BaseClass<P_V,P_M,L_V,L_M>(routinePtr,functionDataPtr)
 {
 }
 
 template<class P_V,class P_M,class L_V,class L_M>
-uqMisfitLikelihoodFunction_Class<P_V,P_M,L_V,L_M>::~uqMisfitLikelihoodFunction_Class()
+uqMisfitVectorLhFunction_Class<P_V,P_M,L_V,L_M>::~uqMisfitVectorLhFunction_Class()
 {
 }
 
 template<class P_V,class P_M,class L_V,class L_M>
 void
-uqMisfitLikelihoodFunction_Class<P_V,P_M,L_V,L_M>::computeActualLikelihoods(const P_V& paramValues, L_V& likelihoodValues) const
+uqMisfitVectorLhFunction_Class<P_V,P_M,L_V,L_M>::computeActualLikelihoods(const P_V& paramValues, L_V& likelihoodValues) const
 {
   UQ_FATAL_TEST_MACRO(false,
                       paramValues.env().rank(),
-                      "uqMisfitLikelihoodFunction_Class<P_V,P_M,L_V,L_M>::computeActualLikelihoods()",
+                      "uqMisfitVectorLhFunction_Class<P_V,P_M,L_V,L_M>::computeActualLikelihoods()",
                       "this method should not be called in the case of this class");
   return;
 }
 
 template<class P_V,class P_M,class L_V,class L_M>
 void
-uqMisfitLikelihoodFunction_Class<P_V,P_M,L_V,L_M>::computeMinus2LnLikelihoods(const P_V& paramValues, L_V& likelihoodValues) const
+uqMisfitVectorLhFunction_Class<P_V,P_M,L_V,L_M>::computeMinus2LnLikelihoods(const P_V& paramValues, L_V& likelihoodValues) const
 {
   UQ_FATAL_TEST_MACRO(false,
                       paramValues.env().rank(),
-                      "uqMisfitLikelihoodFunction_Class<P_V,P_M,L_V,L_M>::computeMinus2LnLikelihoods()",
+                      "uqMisfitVectorLhFunction_Class<P_V,P_M,L_V,L_M>::computeMinus2LnLikelihoods()",
                       "this method should not be called in the case of this class");
   return;
 }
 
 template<class P_V,class P_M,class L_V,class L_M>
 void
-uqMisfitLikelihoodFunction_Class<P_V,P_M,L_V,L_M>::computeMisfits(const P_V& paramValues, L_V& likelihoodValues) const
+uqMisfitVectorLhFunction_Class<P_V,P_M,L_V,L_M>::computeMisfits(const P_V& paramValues, L_V& likelihoodValues) const
 {
   return m_routinePtr(paramValues, m_routineDataPtr, likelihoodValues);
 }
@@ -125,42 +125,42 @@ uqMisfitLikelihoodFunction_Class<P_V,P_M,L_V,L_M>::computeMisfits(const P_V& par
 // Complete class
 //*****************************************************
 template<class P_V,class P_M,class L_V,class L_M>
-class uqCompleteLikelihoodFunction_Class : public uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M> {
+class uqCompleteVectorLhFunction_Class : public uqVectorLhFunction_BaseClass<P_V,P_M,L_V,L_M> {
 public:
-  uqCompleteLikelihoodFunction_Class(void (*routinePtr)(const P_V& paramValues, const void* functionDataPtr, L_V& likelihoodValues),
+  uqCompleteVectorLhFunction_Class(void (*routinePtr)(const P_V& paramValues, const void* functionDataPtr, L_V& likelihoodValues),
                                       const void* functionDataPtr,
                                       bool routineComputesMinus2LogOfLikelihood);
- ~uqCompleteLikelihoodFunction_Class();
+ ~uqCompleteVectorLhFunction_Class();
   void computeActualLikelihoods  (const P_V& paramValues, L_V& likelihoodValues) const;
   void computeMinus2LnLikelihoods(const P_V& paramValues, L_V& likelihoodValues) const;
   void computeMisfits            (const P_V& paramValues, L_V& likelihoodValues) const;
 
-  using uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>::m_routinePtr;
-  using uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>::m_routineDataPtr;
+  using uqVectorLhFunction_BaseClass<P_V,P_M,L_V,L_M>::m_routinePtr;
+  using uqVectorLhFunction_BaseClass<P_V,P_M,L_V,L_M>::m_routineDataPtr;
 
 private:
   bool m_routineComputesMinus2LogOfLikelihood;
 };
 
 template<class P_V,class P_M,class L_V,class L_M>
-uqCompleteLikelihoodFunction_Class<P_V,P_M,L_V,L_M>::uqCompleteLikelihoodFunction_Class(
+uqCompleteVectorLhFunction_Class<P_V,P_M,L_V,L_M>::uqCompleteVectorLhFunction_Class(
   void (*routinePtr)(const P_V& paramValues, const void* functionDataPtr, L_V& likelihoodValues),
   const void* functionDataPtr,
   bool        routineComputesMinus2LogOfLikelihood)
   :
-  uqLikelihoodFunction_BaseClass<P_V,P_M,L_V,L_M>(routinePtr,functionDataPtr),
+  uqVectorLhFunction_BaseClass<P_V,P_M,L_V,L_M>(routinePtr,functionDataPtr),
   m_routineComputesMinus2LogOfLikelihood(routineComputesMinus2LogOfLikelihood)
 {
 }
 
 template<class P_V,class P_M,class L_V,class L_M>
-uqCompleteLikelihoodFunction_Class<P_V,P_M,L_V,L_M>::~uqCompleteLikelihoodFunction_Class()
+uqCompleteVectorLhFunction_Class<P_V,P_M,L_V,L_M>::~uqCompleteVectorLhFunction_Class()
 {
 }
 
 template<class P_V,class P_M,class L_V,class L_M>
 void
-uqCompleteLikelihoodFunction_Class<P_V,P_M,L_V,L_M>::computeActualLikelihoods(const P_V& paramValues, L_V& likelihoodValues) const
+uqCompleteVectorLhFunction_Class<P_V,P_M,L_V,L_M>::computeActualLikelihoods(const P_V& paramValues, L_V& likelihoodValues) const
 {
   m_routinePtr(paramValues, m_routineDataPtr, likelihoodValues);
   if (m_routineComputesMinus2LogOfLikelihood) {
@@ -174,7 +174,7 @@ uqCompleteLikelihoodFunction_Class<P_V,P_M,L_V,L_M>::computeActualLikelihoods(co
 
 template<class P_V,class P_M,class L_V,class L_M>
 void
-uqCompleteLikelihoodFunction_Class<P_V,P_M,L_V,L_M>::computeMinus2LnLikelihoods(const P_V& paramValues, L_V& likelihoodValues) const
+uqCompleteVectorLhFunction_Class<P_V,P_M,L_V,L_M>::computeMinus2LnLikelihoods(const P_V& paramValues, L_V& likelihoodValues) const
 {
   m_routinePtr(paramValues, m_routineDataPtr, likelihoodValues);
   if (m_routineComputesMinus2LogOfLikelihood == false) {
@@ -188,12 +188,12 @@ uqCompleteLikelihoodFunction_Class<P_V,P_M,L_V,L_M>::computeMinus2LnLikelihoods(
 
 template<class P_V,class P_M,class L_V,class L_M>
 void
-uqCompleteLikelihoodFunction_Class<P_V,P_M,L_V,L_M>::computeMisfits(const P_V& paramValues, L_V& likelihoodValues) const
+uqCompleteVectorLhFunction_Class<P_V,P_M,L_V,L_M>::computeMisfits(const P_V& paramValues, L_V& likelihoodValues) const
 {
   UQ_FATAL_TEST_MACRO(false,
                       paramValues.env().rank(),
-                      "uqCompleteLikelihoodFunction_Class<P_V,P_M,L_V,L_M>::computeMisfits()",
+                      "uqCompleteVectorLhFunction_Class<P_V,P_M,L_V,L_M>::computeMisfits()",
                       "this method should not be called in the case of this class");
   return;
 }
-#endif // __UQ_LIKELIHOOD_FUNCTION_H__
+#endif // __UQ_VECTOR_LH_FUNCTION_H__
