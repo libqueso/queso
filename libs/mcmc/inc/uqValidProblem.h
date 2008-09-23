@@ -212,16 +212,16 @@ uqValidProblemClass<P_V,P_M,Q_V,Q_M>::instantiateStage(
   const uqQoIFunction_BaseClass      <P_V,P_M,Q_V,Q_M>* qoiFunctionObj)          // Set in substep x.5
 {
   m_stages[stageId] = new uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>(m_env,
-                                                                            m_prefix.c_str(),
-                                                                            m_stageSufixes[stageId].c_str(),
-                                                                            m2lPriorParamDensityObj,
-                                                                            m2lScalarLhFunctionObj,
-                                                                            proposalCovMatrix,
-                                                                            proposalDensityObj,
-                                                                            proposalGeneratorObj,
-                                                                            propagParamDensityObj,
-                                                                            propagParamGeneratorObj,
-                                                                            qoiFunctionObj);
+                                                                    m_prefix.c_str(),
+                                                                    m_stageSufixes[stageId].c_str(),
+                                                                    m2lPriorParamDensityObj,
+                                                                    m2lScalarLhFunctionObj,
+                                                                    proposalCovMatrix,
+                                                                    proposalDensityObj,
+                                                                    proposalGeneratorObj,
+                                                                    propagParamDensityObj,
+                                                                    propagParamGeneratorObj,
+                                                                    qoiFunctionObj);
 
   return;
 }
@@ -241,12 +241,12 @@ uqValidProblemClass<P_V,P_M,Q_V,Q_M>::solve()
     uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>* currentStage = m_stages[m_stageOrder[i]];
     if (currentStage->isCalibRequested()) {
       if (currentStage->calibInputStageId() < 0) {
-        currentStage->calibrateParamDistribs();
+        currentStage->solveCalibration();
       }
       else {
         unsigned int inputStageId = (unsigned int) currentStage->calibInputStageId();
         uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>* inputStage = m_stages[inputStageId];
-        currentStage->calibrateParamDistribs(inputStage->posteriorParamDensityObj());
+        currentStage->solveCalibration(inputStage->calibProblem().solutionProbDensityObj());
       }
     }
   }
@@ -255,12 +255,12 @@ uqValidProblemClass<P_V,P_M,Q_V,Q_M>::solve()
     uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>* currentStage = m_stages[m_stageOrder[i]];
     if (currentStage->isPropagRequested()) {
       if (currentStage->propagInputStageId() < 0) {
-        currentStage->propagateParamDistribs();
+        currentStage->solvePropagation();
       }
       else {
         unsigned int inputStageId = (unsigned int) currentStage->propagInputStageId();
         uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>* inputStage = m_stages[inputStageId];
-        currentStage->propagateParamDistribs(inputStage->posteriorParamGeneratorObj());
+        currentStage->solvePropagation(inputStage->calibProblem().solutionSampleGeneratorObj());
       }
     }
   }

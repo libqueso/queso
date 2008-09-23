@@ -109,10 +109,12 @@ public:
         void         scalesForKDE      (unsigned int              initialPos,
                                         const V&                  iqrVec,
                                         V&                        scaleVec) const;
+        void         gaussianKDE       (const V&                  evalParamVec,
+                                        V&                        densityVec) const;
         void         gaussianKDE       (unsigned int              initialPos,
                                         const V&                  scaleVec,
-                                        const std::vector<V*>&    evaluationPositions,
-                                        std::vector<V*>&          densityValues) const;
+                                        const std::vector<V*>&    evalParamVecs,
+                                        std::vector<V*>&          densityVecs) const;
         void         write             (const std::string&        name,
                                         std::ofstream&            ofs) const;
         void         select            (const std::vector<unsigned int>& idsOfUniquePositions);
@@ -915,15 +917,37 @@ uqSequenceOfVectorsClass<V>::scalesForKDE(
 template <class V>
 void
 uqSequenceOfVectorsClass<V>::gaussianKDE(
+  const V& evalParamVec,
+        V& densityVec) const
+{
+  uqScalarSequenceClass<double> data(m_env,0);
+
+  unsigned int numParams = this->vectorSize();
+  for (unsigned int i = 0; i < numParams; ++i) {
+    this->extractScalarSeq(0, // Use the whole chain
+                           1, // spacing
+                           this->sequenceSize(),
+                           i,
+                           data);
+
+    densityVec[i] = data.gaussianKDE(evalParamVec[i]);
+  }
+
+  return;
+}
+
+template <class V>
+void
+uqSequenceOfVectorsClass<V>::gaussianKDE(
   unsigned int           initialPos,
   const V&               scaleVec,
-  const std::vector<V*>& evaluationPositions,
-  std::vector<V*>&       densityValues) const
+  const std::vector<V*>& evalParamVecs,
+  std::vector<V*>&       densityVecs) const
 {
-  bool bRC = ((initialPos                 <  this->sequenceSize()      ) &&
-              (this->vectorSize()         == scaleVec.size()           ) &&
-              (0                          <  evaluationPositions.size()) &&
-              (evaluationPositions.size() == densityValues.size()      ));
+  bool bRC = ((initialPos           <  this->sequenceSize()) &&
+              (this->vectorSize()   == scaleVec.size()     ) &&
+              (0                    <  evalParamVecs.size()) &&
+              (evalParamVecs.size() == densityVecs.size()  ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
                       "uqSequenceOfVectorsClass<V>::gaussianKDE()",
@@ -932,12 +956,12 @@ uqSequenceOfVectorsClass<V>::gaussianKDE(
   unsigned int numPos = this->sequenceSize() - initialPos;
   uqScalarSequenceClass<double> data(m_env,0);
 
-  unsigned int numEvals = evaluationPositions.size();
+  unsigned int numEvals = evalParamVecs.size();
   for (unsigned int j = 0; j < numEvals; ++j) {
-    densityValues[j] = new V(m_vectorExample);
+    densityVecs[j] = new V(m_vectorExample);
   }
-  std::vector<double> evalScalarPositions(numEvals,0.);
-  std::vector<double> evaluatedDensities (numEvals,0.);
+  std::vector<double> evalParams(numEvals,0.);
+  std::vector<double> densities  (numEvals,0.);
 
   unsigned int numParams = this->vectorSize();
   for (unsigned int i = 0; i < numParams; ++i) {
@@ -948,16 +972,16 @@ uqSequenceOfVectorsClass<V>::gaussianKDE(
                            data);
 
     for (unsigned int j = 0; j < numEvals; ++j) {
-      evalScalarPositions[j] = (*evaluationPositions[j])[i];
+      evalParams[j] = (*evalParamVecs[j])[i];
     }
 
     data.gaussianKDE(0,
                      scaleVec[i],
-                     evalScalarPositions,
-                     evaluatedDensities);
+                     evalParams,
+                     densities);
 
     for (unsigned int j = 0; j < numEvals; ++j) {
-      (*densityValues[j])[i] = evaluatedDensities[j];
+      (*densityVecs[j])[i] = densities[j];
     }
   }
 

@@ -47,7 +47,7 @@ int func(double t, const double Mass[], double f[], void *info)
 //********************************************************
 
 // The (user defined) data type for the data needed by the (user defined) likelihood routine
-template<class S_V, class S_M>
+template<class P_V, class P_M>
 struct
 cp_likelihoodRoutine_DataType
 {
@@ -58,16 +58,16 @@ cp_likelihoodRoutine_DataType
 };
 
 // The actual (user defined) likelihood routine
-template<class P_V,class P_M,class S_V,class S_M,class L_V,class L_M>
+template<class P_V,class P_M>
 double
 cp_likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 {
   double A                       = paramValues[0];
   double E                       = paramValues[1];
-  double beta1                   =  ((cp_likelihoodRoutine_DataType<S_V,S_M> *) functionDataPtr)->beta1;
-  double variance1               =  ((cp_likelihoodRoutine_DataType<S_V,S_M> *) functionDataPtr)->variance1;
-  const std::vector<double>& Te1 = *((cp_likelihoodRoutine_DataType<S_V,S_M> *) functionDataPtr)->Te1;
-  const std::vector<double>& Me1 = *((cp_likelihoodRoutine_DataType<S_V,S_M> *) functionDataPtr)->Me1;
+  double beta1                   =  ((cp_likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta1;
+  double variance1               =  ((cp_likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->variance1;
+  const std::vector<double>& Te1 = *((cp_likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Te1;
+  const std::vector<double>& Me1 = *((cp_likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Me1;
   std::vector<double> Mt1(Me1.size(),0.);
 
   double params[]={A,E,beta1};
@@ -130,7 +130,7 @@ cp_likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 // This QoI function object consists of data and routine.
 //********************************************************
 // The (user defined) data type for the data needed by the (user defined) qoi routine
-template<class S_V, class S_M>
+template<class P_V,class P_M,class Q_V, class Q_M>
 struct
 cp_qoiRoutine_DataType
 {
@@ -139,13 +139,13 @@ cp_qoiRoutine_DataType
 };
 
 // The actual (user defined) qoi routine
-template<class P_V,class P_M,class S_V,class S_M,class Q_V,class Q_M>
+template<class P_V,class P_M,class Q_V,class Q_M>
 void cp_qoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiValues)
 {
   double A             = paramValues[0];
   double E             = paramValues[1];
-  double beta1         = ((cp_qoiRoutine_DataType<S_V,S_M> *) functionDataPtr)->beta1;
-  double criticalMass1 = ((cp_qoiRoutine_DataType<S_V,S_M> *) functionDataPtr)->criticalMass1;
+  double beta1         = ((cp_qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->beta1;
+  double criticalMass1 = ((cp_qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->criticalMass1;
 
   double params[]={A,E,beta1};
       	
@@ -202,7 +202,7 @@ void cp_qoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoi
 //********************************************************
 // The CP problem driving routine "uqAppl()": called by main()
 //********************************************************
-template<class P_V,class P_M,class S_V,class S_M,class L_V,class L_M,class Q_V,class Q_M>
+template<class P_V,class P_M,class Q_V,class Q_M>
 void 
 uqAppl(const uqEnvironmentClass& env)
 {
@@ -272,7 +272,7 @@ uqAppl(const uqEnvironmentClass& env)
   cp_likelihoodRoutine_Data.variance1 = variance1;
   cp_likelihoodRoutine_Data.Te1       = &Te1; // temperatures
   cp_likelihoodRoutine_Data.Me1       = &Me1; // relative masses
-  uqCompleteScalarLhFunction_Class<P_V,P_M> cp_likelihoodFunctionObj(cp_likelihoodRoutine<P_V,P_M,S_V,S_M,L_V,L_M>,
+  uqCompleteScalarLhFunction_Class<P_V,P_M> cp_likelihoodFunctionObj(cp_likelihoodRoutine<P_V,P_M>,
                                                                      (void *) &cp_likelihoodRoutine_Data,
                                                                      true); // the routine computes [-2.*ln(Likelihood)]
 
@@ -296,10 +296,10 @@ uqAppl(const uqEnvironmentClass& env)
   // Substep 4: Define the qoi function object
   //******************************************************
 
-  cp_qoiRoutine_DataType<P_V,P_M> cp_qoiRoutine_Data;
+  cp_qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> cp_qoiRoutine_Data;
   cp_qoiRoutine_Data.beta1         = beta1;
   cp_qoiRoutine_Data.criticalMass1 = criticalMass1;
-  uqQoIFunction_BaseClass<P_V,P_M,Q_V,Q_M> cp_qoiFunctionObj(cp_qoiRoutine<P_V,P_M,S_V,S_M,Q_V,Q_M>,
+  uqQoIFunction_BaseClass<P_V,P_M,Q_V,Q_M> cp_qoiFunctionObj(cp_qoiRoutine<P_V,P_M,Q_V,Q_M>,
                                                              (void *) &cp_qoiRoutine_Data);
 
   //*****************************************************

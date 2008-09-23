@@ -20,27 +20,14 @@
 #ifndef __UQ_VALID_PROBLEM_STAGE_H__
 #define __UQ_VALID_PROBLEM_STAGE_H__
 
-#include <uqParamSpace.h>
-#include <uqQoISpace.h>
-
-#include <uqProbDensity.h>       // For substep x.1 and substep x.4 in applications setting a validation problem stage
-#include <uqScalarLhFunction.h>  // For substep x.2
-#include <uqProposalDensity.h>   // For substep x.3
-#include <uqProposalGenerator.h> // For substep x.3
-#include <uqSampleGenerator.h>   // For substep x.4
-#include <uqQoIFunction.h>       // For substep x.5
-
-#include <uqDefaultPrior.h>
-#include <uqBayesianMarkovChainDC1.h>
-#include <uqMonteCarloDC.h>
+#include <uqCalibProblem.h>
+#include <uqPropagProblem.h>
 
 // _ODV = option default value
-#define UQ_VALID_PROBLEM_STAGE_CALIB_PERFORM_ODV           0
-#define UQ_VALID_PROBLEM_STAGE_CALIB_INPUT_STAGE_ID_ODV    -1
-#define UQ_VALID_PROBLEM_STAGE_CALIB_DISTR_CALCULATOR_ODV  "BMC_DC" // Bayesian Markov Chain Distribution Calculator
-#define UQ_VALID_PROBLEM_STAGE_PROPAG_PERFORM_ODV          0
-#define UQ_VALID_PROBLEM_STAGE_PROPAG_INPUT_STAGE_ID_ODV   -1
-#define UQ_VALID_PROBLEM_STAGE_PROPAG_DISTR_CALCULATOR_ODV "MC_DC" // Monte Carlo Distribution Calculator
+#define UQ_VALID_PROBLEM_STAGE_CALIB_PERFORM_ODV         0
+#define UQ_VALID_PROBLEM_STAGE_CALIB_INPUT_STAGE_ID_ODV  -1
+#define UQ_VALID_PROBLEM_STAGE_PROPAG_PERFORM_ODV        0
+#define UQ_VALID_PROBLEM_STAGE_PROPAG_INPUT_STAGE_ID_ODV -1
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 class uqValidProblemStageClass
@@ -50,8 +37,8 @@ public:
                            const char*                                           prefix,
                            const char*                                           sufix,
                            const uqProbDensity_BaseClass      <P_V,P_M>*         m2lPriorParamDensityObj, // Set in substep x.1 in appls with a validation problem stage
-                           const uqScalarLhFunction_BaseClass <P_V,P_M>*         m2lScalarLhFunctionObj,  // Set in substep 2
-                           P_M*                                                  proposalCovMatrix,       // Set in substep x.3
+                           const uqScalarLhFunction_BaseClass <P_V,P_M>*         m2lScalarLhFunctionObj,  // Set in substep x.2
+                                 P_M*                                            proposalCovMatrix,       // Set in substep x.3
                            const uqProposalDensity_BaseClass  <P_V,P_M>*         proposalDensityObj,      // Set in substep x.3
                            const uqProposalGenerator_BaseClass<P_V,P_M>*         proposalGeneratorObj,    // Set in substep x.3 // FIX ME: accomodate code in order to use such object
                            const uqProbDensity_BaseClass      <P_V,P_M>*         propagParamDensityObj,   // Set in substep x.4 // FIX ME: accomodate code in order to use such object
@@ -59,68 +46,47 @@ public:
                            const uqQoIFunction_BaseClass      <P_V,P_M,Q_V,Q_M>* qoiFunctionObj);         // Set in substep x.5
  ~uqValidProblemStageClass();
 
-        bool                                  isCalibRequested          () const;
-        int                                   calibInputStageId         () const;
-        void                                  calibrateParamDistribs    ();
-        void                                  calibrateParamDistribs    (const uqProbDensity_BaseClass<P_V,P_M>& priorParamDensityObj);
-        bool                                  isPropagRequested         () const;
-        int                                   propagInputStageId        () const;
-        void                                  propagateParamDistribs    ();
-        void                                  propagateParamDistribs    (const uqSampleGenerator_BaseClass<P_V,P_M>& paramGeneratorObj);
+  const uqParamSpaceClass   <P_V,P_M>&         paramSpace        () const;
+  const uqQoISpaceClass     <Q_V,Q_M>&         qoiSpace          () const;
 
-  const uqParamSpaceClass          <P_V,P_M>& paramSpace                () const;
-  const uqQoISpaceClass            <Q_V,Q_M>& qoiSpace                  () const;
+        bool                                   isCalibRequested  () const;
+        int                                    calibInputStageId () const;
+        void                                   solveCalibration  ();
+        void                                   solveCalibration  (const uqProbDensity_BaseClass<P_V,P_M>& priorParamDensityObj);
 
-  const uqProbDensity_BaseClass    <P_V,P_M>& posteriorParamDensityObj  () const;
-  const uqSampleGenerator_BaseClass<P_V,P_M>& posteriorParamGeneratorObj() const;
+        bool                                   isPropagRequested () const;
+        int                                    propagInputStageId() const;
+        void                                   solvePropagation  ();
+        void                                   solvePropagation  (const uqSampleGenerator_BaseClass<P_V,P_M>& paramGeneratorObj);
 
-        void                                  print                     (std::ostream& os) const;
+  const uqCalibProblemClass <P_V,P_M>&         calibProblem      () const;
+  const uqPropagProblemClass<P_V,P_M,Q_V,Q_M>& propagProblem     () const;
+
+        void                                   print             (std::ostream& os) const;
 
 private:
-  const uqEnvironmentClass&                                  m_env;
-        std::string                                          m_prefix;
-        uqParamSpaceClass     <P_V,P_M>*                     m_paramSpace;
-        uqQoISpaceClass       <Q_V,Q_M>*                     m_qoiSpace;
+        void                                   defineMyOptions   (po::options_description& optionsDesc);
+        void                                   getMyOptionValues (po::options_description& optionsDesc);
 
-        po::options_description*                             m_optionsDesc;
-        std::string                                          m_option_help;
-        std::string                                          m_option_calib_perform;
-        std::string                                          m_option_calib_inputStageId;
-        std::string                                          m_option_calib_distrCalculator;
-        std::string                                          m_option_propag_perform;
-        std::string                                          m_option_propag_inputStageId;
-        std::string                                          m_option_propag_distrCalculator;
+  const uqEnvironmentClass&                    m_env;
+        std::string                            m_prefix;
+        uqParamSpaceClass   <P_V,P_M>*         m_paramSpace;
+        uqQoISpaceClass     <Q_V,Q_M>*         m_qoiSpace;
 
-        bool                                                 m_calibPerform;
-        int                                                  m_calibInputStageId;
-	std::string                                          m_calibDistrCalculator;
-        bool                                                 m_propagPerform;
-        int                                                  m_propagInputStageId;
-	std::string                                          m_propagDistrCalculator;
+        po::options_description*               m_optionsDesc;
+        std::string                            m_option_help;
+        std::string                            m_option_calib_perform;
+        std::string                            m_option_calib_inputStageId;
+        std::string                            m_option_propag_perform;
+        std::string                            m_option_propag_inputStageId;
 
-        bool                                                 m_userPriorDensityIsNull;
-  const uqProbDensity_BaseClass           <P_V,P_M>*         m_m2lPriorParamDensityObj;
-        uqDefault_M2lPriorRoutine_DataType<P_V,P_M>          m_m2lPriorRoutine_Data;
-        P_V*                                                 m_paramPriorMus;
-        P_V*                                                 m_paramPriorSigmas;
-  const uqScalarLhFunction_BaseClass      <P_V,P_M>*         m_m2lScalarLhFunctionObj;
-        P_M*                                                 m_proposalCovMatrix;
-  const uqProposalDensity_BaseClass       <P_V,P_M>*         m_proposalDensityObj;
-  const uqProposalGenerator_BaseClass     <P_V,P_M>*         m_proposalGeneratorObj;
-  const uqProbDensity_BaseClass           <P_V,P_M>*         m_propagParamDensityObj;
-  const uqSampleGenerator_BaseClass       <P_V,P_M>*         m_propagParamGeneratorObj;
-  const uqQoIFunction_BaseClass           <P_V,P_M,Q_V,Q_M>* m_qoiFunctionObj;
+        bool                                   m_calibPerform;
+        int                                    m_calibInputStageId;
+        bool                                   m_propagPerform;
+        int                                    m_propagInputStageId;
 
-        uqBayesianMarkovChainDCClass      <P_V,P_M>*         m_bmcDc;
-        uqProbDensity_BaseClass           <P_V,P_M>*         m_posteriorParamDensityObj;
-        uqSampleGenerator_BaseClass       <P_V,P_M>*         m_posteriorParamGeneratorObj;
-
-        uqMonteCarloDCClass               <P_V,P_M,Q_V,Q_M>* m_mcDc;
-        uqProbDensity_BaseClass           <Q_V,Q_M>*         m_qoiDensityObj;
-        uqSampleGenerator_BaseClass       <Q_V,Q_M>*         m_qoiGeneratorObj;
-
-        void defineMyOptions  (po::options_description& optionsDesc);
-        void getMyOptionValues(po::options_description& optionsDesc);
+        uqCalibProblemClass <P_V,P_M>*         m_calibProblem;
+        uqPropagProblemClass<P_V,P_M,Q_V,Q_M>* m_propagProblem;
 };
 
 template<class P_V,class P_M,class Q_V,class Q_M>
@@ -128,53 +94,34 @@ std::ostream& operator<<(std::ostream& os, const uqValidProblemStageClass<P_V,P_
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::uqValidProblemStageClass(
-  const uqEnvironmentClass&                              env,
-  const char*                                            prefix,
-  const char*                                            sufix,
-  const uqProbDensity_BaseClass       <P_V,P_M>*         m2lPriorParamDensityObj,
-  const uqScalarLhFunction_BaseClass  <P_V,P_M>*         m2lScalarLhFunctionObj,
-  P_M*                                                   proposalCovMatrix,
-  const uqProposalDensity_BaseClass   <P_V,P_M>*         proposalDensityObj,
-  const uqProposalGenerator_BaseClass <P_V,P_M>*         proposalGeneratorObj,
-  const uqProbDensity_BaseClass       <P_V,P_M>*         propagParamDensityObj,
-  const uqSampleGenerator_BaseClass   <P_V,P_M>*         propagParamGeneratorObj,
-  const uqQoIFunction_BaseClass       <P_V,P_M,Q_V,Q_M>* qoiFunctionObj)
+  const uqEnvironmentClass&                             env,
+  const char*                                           prefix,
+  const char*                                           sufix,
+  const uqProbDensity_BaseClass      <P_V,P_M>*         m2lPriorParamDensityObj,
+  const uqScalarLhFunction_BaseClass <P_V,P_M>*         m2lScalarLhFunctionObj,
+        P_M*                                            proposalCovMatrix,
+  const uqProposalDensity_BaseClass  <P_V,P_M>*         proposalDensityObj,
+  const uqProposalGenerator_BaseClass<P_V,P_M>*         proposalGeneratorObj,
+  const uqProbDensity_BaseClass      <P_V,P_M>*         propagParamDensityObj,
+  const uqSampleGenerator_BaseClass  <P_V,P_M>*         propagParamGeneratorObj,
+  const uqQoIFunction_BaseClass      <P_V,P_M,Q_V,Q_M>* qoiFunctionObj)
   :
-  m_env                          (env),
-  m_prefix                       ((std::string)(prefix) + "stage_" + (std::string)(sufix)),
-  m_paramSpace                   (new uqParamSpaceClass<P_V,P_M>(env,m_prefix.c_str())),
-  m_qoiSpace                     (NULL),
-  m_optionsDesc                  (new po::options_description("UQ Validation Problem Stage")),
-  m_option_help                  (m_prefix + "help"                    ),
-  m_option_calib_perform         (m_prefix + "cal_" + "perform"        ),
-  m_option_calib_inputStageId    (m_prefix + "cal_" + "inputStageId"   ),
-  m_option_calib_distrCalculator (m_prefix + "cal_" + "distrCalculator"),
-  m_option_propag_perform        (m_prefix + "pro_" + "perform"        ),
-  m_option_propag_inputStageId   (m_prefix + "pro_" + "inputStageId"   ),
-  m_option_propag_distrCalculator(m_prefix + "pro_" + "distrCalculator"),
-  m_calibPerform                 (UQ_VALID_PROBLEM_STAGE_CALIB_PERFORM_ODV          ),
-  m_calibInputStageId            (UQ_VALID_PROBLEM_STAGE_CALIB_INPUT_STAGE_ID_ODV   ),
-  m_calibDistrCalculator         (UQ_VALID_PROBLEM_STAGE_CALIB_DISTR_CALCULATOR_ODV ),
-  m_propagPerform                (UQ_VALID_PROBLEM_STAGE_PROPAG_PERFORM_ODV         ),
-  m_propagInputStageId           (UQ_VALID_PROBLEM_STAGE_PROPAG_INPUT_STAGE_ID_ODV  ),
-  m_propagDistrCalculator        (UQ_VALID_PROBLEM_STAGE_PROPAG_DISTR_CALCULATOR_ODV),
-  m_userPriorDensityIsNull       (m2lPriorParamDensityObj == NULL),
-  m_m2lPriorParamDensityObj      (m2lPriorParamDensityObj),
-  m_paramPriorMus                (NULL),
-  m_paramPriorSigmas             (NULL),
-  m_m2lScalarLhFunctionObj       (m2lScalarLhFunctionObj),
-  m_proposalCovMatrix            (proposalCovMatrix),
-  m_proposalDensityObj           (proposalDensityObj),
-  m_proposalGeneratorObj         (proposalGeneratorObj),
-  m_propagParamDensityObj        (propagParamDensityObj),
-  m_propagParamGeneratorObj      (propagParamGeneratorObj),
-  m_qoiFunctionObj               (qoiFunctionObj),
-  m_bmcDc                        (NULL),
-  m_posteriorParamDensityObj     (NULL),
-  m_posteriorParamGeneratorObj   (NULL),
-  m_mcDc                         (NULL),
-  m_qoiDensityObj                (NULL),
-  m_qoiGeneratorObj              (NULL)
+  m_env                       (env),
+  m_prefix                    ((std::string)(prefix) + "stage_" + (std::string)(sufix)),
+  m_paramSpace                (new uqParamSpaceClass<P_V,P_M>(env,m_prefix.c_str())),
+  m_qoiSpace                  (new uqQoISpaceClass  <Q_V,Q_M>(env,m_prefix.c_str())),
+  m_optionsDesc               (new po::options_description("UQ Validation Problem Stage")),
+  m_option_help               (m_prefix + "help"                 ),
+  m_option_calib_perform      (m_prefix + "cal_" + "perform"     ),
+  m_option_calib_inputStageId (m_prefix + "cal_" + "inputStageId"),
+  m_option_propag_perform     (m_prefix + "pro_" + "perform"     ),
+  m_option_propag_inputStageId(m_prefix + "pro_" + "inputStageId"),
+  m_calibPerform              (UQ_VALID_PROBLEM_STAGE_CALIB_PERFORM_ODV        ),
+  m_calibInputStageId         (UQ_VALID_PROBLEM_STAGE_CALIB_INPUT_STAGE_ID_ODV ),
+  m_propagPerform             (UQ_VALID_PROBLEM_STAGE_PROPAG_PERFORM_ODV       ),
+  m_propagInputStageId        (UQ_VALID_PROBLEM_STAGE_PROPAG_INPUT_STAGE_ID_ODV),
+  m_calibProblem              (NULL),
+  m_propagProblem             (NULL)
 {
   if (m_env.rank() == 0) std::cout << "Entering uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::constructor()"
                                    << ": prefix = " << m_prefix
@@ -190,46 +137,24 @@ uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::uqValidProblemStageClass(
                                    << std::endl;
 
   if (m_calibPerform) {
-    if (m_userPriorDensityIsNull) {
-      m_paramPriorMus    = new P_V(m_paramSpace->priorMuValues   ());
-      m_paramPriorSigmas = new P_V(m_paramSpace->priorSigmaValues());
-      m_m2lPriorRoutine_Data.paramPriorMus    = m_paramPriorMus;
-      m_m2lPriorRoutine_Data.paramPriorSigmas = m_paramPriorSigmas;
-
-      m_m2lPriorParamDensityObj = new uqM2lProbDensity_Class<P_V,P_M>(uqDefault_M2lPriorRoutine<P_V,P_M>, // use default prior() routine
-                                                                      (void *) &m_m2lPriorRoutine_Data);
-    }
-
-    m_posteriorParamDensityObj = new uqM2lProbDensity_Class<P_V,P_M>(m_m2lPriorParamDensityObj,
-                                                                     m_m2lScalarLhFunctionObj);
-
-    // Instantiate the distribution calculator.
-    m_bmcDc = new uqBayesianMarkovChainDCClass<P_V,P_M>(m_env,
-                                                                (m_prefix + "cal_").c_str(),
-                                                               *m_paramSpace,
-                                                               *m_posteriorParamDensityObj,
-                                                                m_proposalCovMatrix,
-                                                                m_proposalDensityObj,
-                                                                m_proposalGeneratorObj);
+    m_calibProblem = new uqCalibProblemClass<P_V,P_M>(m_env,
+                                                      m_prefix.c_str(),
+                                                     *m_paramSpace,
+                                                      m2lPriorParamDensityObj,
+                                                     *m2lScalarLhFunctionObj,
+                                                      proposalCovMatrix,
+                                                      proposalDensityObj,
+                                                      proposalGeneratorObj);
   }
 
   if (m_propagPerform) {
-    m_qoiSpace = new uqQoISpaceClass<Q_V,Q_M>(m_env,
-                                              m_prefix.c_str());
-
-    UQ_FATAL_TEST_MACRO(m_qoiFunctionObj == NULL,
-                        m_env.rank(),
-                        "uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::constructor()",
-                        "propagation is being requested but 'm_qoiFunctionObj' is null");
-
-    // Instantiate the distribution calculator.
-    m_mcDc = new uqMonteCarloDCClass<P_V,P_M,Q_V,Q_M>(m_env,
-                                                      (m_prefix + "pro_").c_str(),
-                                                     *m_paramSpace,
-                                                     *m_qoiSpace,
-                                                      m_propagParamDensityObj,
-                                                      m_propagParamGeneratorObj,
-                                                     *m_qoiFunctionObj);
+    m_propagProblem = new uqPropagProblemClass<P_V,P_M,Q_V,Q_M>(m_env,
+                                                                m_prefix.c_str(),
+                                                               *m_paramSpace,
+                                                               *m_qoiSpace,
+                                                                NULL,
+                                                                NULL,
+                                                               *qoiFunctionObj);
   }
 
   if (m_env.rank() == 0) std::cout << "Leaving uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::constructor()"
@@ -240,22 +165,11 @@ uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::uqValidProblemStageClass(
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::~uqValidProblemStageClass()
 {
-  if (m_qoiGeneratorObj           ) delete m_qoiGeneratorObj;
-  if (m_qoiDensityObj             ) delete m_qoiDensityObj;
-  if (m_mcDc                      ) delete m_mcDc;
-  if (m_posteriorParamGeneratorObj) delete m_posteriorParamGeneratorObj;
-  if (m_posteriorParamDensityObj  ) delete m_posteriorParamDensityObj;
-  if (m_bmcDc                     ) delete m_bmcDc;
-
-  if (m_userPriorDensityIsNull) { 
-    delete m_m2lPriorParamDensityObj;
-    delete m_paramPriorSigmas;
-    delete m_paramPriorMus;
-  }
-
-  if (m_optionsDesc    ) delete m_optionsDesc;
-  if (m_qoiSpace       ) delete m_qoiSpace;
-  if (m_paramSpace     ) delete m_paramSpace;
+  if (m_propagProblem) delete m_propagProblem;
+  if (m_calibProblem ) delete m_calibProblem;
+  if (m_optionsDesc  ) delete m_optionsDesc;
+  if (m_qoiSpace     ) delete m_qoiSpace;
+  if (m_paramSpace   ) delete m_paramSpace;
 }
 
 template<class P_V,class P_M,class Q_V,class Q_M>
@@ -264,13 +178,11 @@ uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::defineMyOptions(
   po::options_description& optionsDesc)
 {
   optionsDesc.add_options()
-    (m_option_help.c_str(),                                                                                                                "produce help message for validation problem stage")
-    (m_option_calib_perform.c_str(),          po::value<bool       >()->default_value(UQ_VALID_PROBLEM_STAGE_CALIB_PERFORM_ODV          ), "calibrate parameters"                             )
-    (m_option_calib_inputStageId.c_str(),     po::value<int        >()->default_value(UQ_VALID_PROBLEM_STAGE_CALIB_INPUT_STAGE_ID_ODV   ), "eventual input stage for calibration"             )
-    (m_option_calib_distrCalculator.c_str(),  po::value<std::string>()->default_value(UQ_VALID_PROBLEM_STAGE_CALIB_DISTR_CALCULATOR_ODV ), "algorithm for calibration"                        )
-    (m_option_propag_perform.c_str(),         po::value<bool       >()->default_value(UQ_VALID_PROBLEM_STAGE_PROPAG_PERFORM_ODV         ), "propagate distributions"                          )
-    (m_option_propag_inputStageId.c_str(),    po::value<int        >()->default_value(UQ_VALID_PROBLEM_STAGE_PROPAG_INPUT_STAGE_ID_ODV  ), "eventual input stage for propagation"             )
-    (m_option_propag_distrCalculator.c_str(), po::value<std::string>()->default_value(UQ_VALID_PROBLEM_STAGE_PROPAG_DISTR_CALCULATOR_ODV), "algorithm for propagation"                        )
+    (m_option_help.c_str(),                                                                                                    "produce help message for validation problem stage")
+    (m_option_calib_perform.c_str(),       po::value<bool>()->default_value(UQ_VALID_PROBLEM_STAGE_CALIB_PERFORM_ODV        ), "calibrate parameters"                             )
+    (m_option_calib_inputStageId.c_str(),  po::value<int >()->default_value(UQ_VALID_PROBLEM_STAGE_CALIB_INPUT_STAGE_ID_ODV ), "eventual input stage for calibration"             )
+    (m_option_propag_perform.c_str(),      po::value<bool>()->default_value(UQ_VALID_PROBLEM_STAGE_PROPAG_PERFORM_ODV       ), "propagate distributions"                          )
+    (m_option_propag_inputStageId.c_str(), po::value<int >()->default_value(UQ_VALID_PROBLEM_STAGE_PROPAG_INPUT_STAGE_ID_ODV), "eventual input stage for propagation"             )
   ;
 
   return;
@@ -294,20 +206,12 @@ void
     m_calibInputStageId = m_env.allOptionsMap()[m_option_calib_inputStageId.c_str()].as<int>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_calib_distrCalculator.c_str())) {
-    m_calibDistrCalculator = m_env.allOptionsMap()[m_option_calib_distrCalculator.c_str()].as<std::string>();
-  }
-
   if (m_env.allOptionsMap().count(m_option_propag_perform.c_str())) {
     m_propagPerform = m_env.allOptionsMap()[m_option_propag_perform.c_str()].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_propag_inputStageId.c_str())) {
     m_propagInputStageId = m_env.allOptionsMap()[m_option_propag_inputStageId.c_str()].as<int>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_propag_distrCalculator.c_str())) {
-    m_propagDistrCalculator = m_env.allOptionsMap()[m_option_propag_distrCalculator.c_str()].as<std::string>();
   }
 
   return;
@@ -329,24 +233,22 @@ uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::calibInputStageId() const
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::calibrateParamDistribs()
+uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::solveCalibration()
 {
-  m_bmcDc->calculateDistributions();
-
-  if (m_posteriorParamGeneratorObj) delete m_posteriorParamGeneratorObj;
-  m_posteriorParamGeneratorObj = new uqSampleGenerator_BaseClass<P_V,P_M>(&(m_bmcDc->chain()));
+  if (m_calibPerform) {
+    m_calibProblem->solve();
+  }
 
   return;
 }
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::calibrateParamDistribs(const uqProbDensity_BaseClass<P_V,P_M>& priorParamDensityObj)
+uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::solveCalibration(const uqProbDensity_BaseClass<P_V,P_M>& priorParamDensityObj)
 {
-  m_bmcDc->calculateDistributions(priorParamDensityObj);
-
-  if (m_posteriorParamGeneratorObj) delete m_posteriorParamGeneratorObj;
-  m_posteriorParamGeneratorObj = new uqSampleGenerator_BaseClass<P_V,P_M>(&(m_bmcDc->chain()));
+  if (m_calibPerform) {
+    m_calibProblem->solve(priorParamDensityObj);
+  }
 
   return;
 }
@@ -359,6 +261,20 @@ uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::isPropagRequested() const
 }
 
 template <class P_V,class P_M,class Q_V,class Q_M>
+const uqCalibProblemClass<P_V,P_M>&
+uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::calibProblem() const
+{
+  return *m_calibProblem;
+}
+
+template <class P_V,class P_M,class Q_V,class Q_M>
+const uqPropagProblemClass<P_V,P_M,Q_V,Q_M>&
+uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::propagProblem() const
+{
+  return *m_propagProblem;
+}
+
+template <class P_V,class P_M,class Q_V,class Q_M>
 int
 uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::propagInputStageId() const
 {
@@ -367,18 +283,22 @@ uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::propagInputStageId() const
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::propagateParamDistribs()
+uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::solvePropagation()
 {
-  m_mcDc->calculateDistributions();
+  if (m_propagPerform) {
+    m_propagProblem->solve();
+  }
 
   return;
 }
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::propagateParamDistribs(const uqSampleGenerator_BaseClass<P_V,P_M>& paramGeneratorObj)
+uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::solvePropagation(const uqSampleGenerator_BaseClass<P_V,P_M>& paramGeneratorObj)
 {
-  m_mcDc->calculateDistributions(paramGeneratorObj);
+  if (m_propagPerform) {
+    m_propagProblem->solve(paramGeneratorObj);
+  }
 
   return;
 }
@@ -398,39 +318,13 @@ uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::qoiSpace() const
 }
 
 template <class P_V,class P_M,class Q_V,class Q_M>
-const uqProbDensity_BaseClass<P_V,P_M>&
-uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::posteriorParamDensityObj() const
-{
-  UQ_FATAL_TEST_MACRO(m_posteriorParamDensityObj == NULL,
-                      m_env.rank(),
-                      "uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::posteriorParamDensityObj()",
-                      "posterior param density object is being requested but it has not been created yet");
-
-  return *m_posteriorParamDensityObj;
-}
-
-template <class P_V,class P_M,class Q_V,class Q_M>
-const uqSampleGenerator_BaseClass<P_V,P_M>&
-uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::posteriorParamGeneratorObj() const
-{
-  UQ_FATAL_TEST_MACRO(m_posteriorParamGeneratorObj == NULL,
-                      m_env.rank(),
-                      "uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::posteriorParamGeneratorObj()",
-                      "posterior param generator object is being requested but it has not been created yet");
-
-  return *m_posteriorParamGeneratorObj;
-}
-
-template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::print(std::ostream& os) const
 {
-  os << "\n" << m_option_calib_perform          << " = " << m_calibPerform
-     << "\n" << m_option_calib_inputStageId     << " = " << m_calibInputStageId
-     << "\n" << m_option_calib_distrCalculator  << " = " << m_calibDistrCalculator
-     << "\n" << m_option_propag_perform         << " = " << m_propagPerform
-     << "\n" << m_option_propag_inputStageId    << " = " << m_propagInputStageId
-     << "\n" << m_option_propag_distrCalculator << " = " << m_propagDistrCalculator;
+  os << "\n" << m_option_calib_perform       << " = " << m_calibPerform
+     << "\n" << m_option_calib_inputStageId  << " = " << m_calibInputStageId
+     << "\n" << m_option_propag_perform      << " = " << m_propagPerform
+     << "\n" << m_option_propag_inputStageId << " = " << m_propagInputStageId;
   os << std::endl;
 }
 

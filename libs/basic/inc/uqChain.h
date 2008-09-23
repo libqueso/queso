@@ -107,10 +107,12 @@ public:
   virtual  void         scalesForKDE       (unsigned int                          initialPos,
                                             const V&                              iqrVec,
                                             V&                                    scaleVec) const = 0;
+  virtual  void         gaussianKDE        (const V&                              evaluationParamVec,
+                                            V&                                    densityVec) const = 0;
   virtual  void         gaussianKDE        (unsigned int                          initialPos,
                                             const V&                              scaleVec,
-                                            const std::vector<V*>&                evaluationPositions,
-                                            std::vector<V*>&                      densityValues) const = 0;
+                                            const std::vector<V*>&                evaluationParamVecs,
+                                            std::vector<V*>&                      densityVecs) const = 0;
   virtual  void         write              (const std::string&                    name,
                                             std::ofstream&                        ofs) const = 0;
   virtual  void         select             (const std::vector<unsigned int>&      idsOfUniquePositions) = 0;

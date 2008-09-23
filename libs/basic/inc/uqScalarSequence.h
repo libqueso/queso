@@ -90,10 +90,11 @@ public:
         void         sort              ();
         T            interQuantileRange(unsigned int               initialPos) const;
         T            scaleForKDE       (unsigned int               initialPos,
-                                        const T&                   iqrsValue) const;
+                                        const T&                   iqrValue) const;
+        double       gaussianKDE       (T                          evaluationParam) const;
         void         gaussianKDE       (unsigned int               initialPos,
                                         double                     scaleValue,
-                                        const std::vector<T>&      evaluationPositions,
+                                        const std::vector<T>&      evaluationParams,
                                         std::vector<double>&       densityValues) const;
 
 private:
@@ -922,16 +923,16 @@ uqScalarSequenceClass<T>::interQuantileRange(unsigned int initialPos) const
   //          << std::endl;
   T value1 = (1.-fraction1) * sortedSequence[pos1] + fraction1 * sortedSequence[pos1+1];
   T value3 = (1.-fraction3) * sortedSequence[pos3] + fraction3 * sortedSequence[pos3+1];
-  T iqrsValue = value3 - value1;
+  T iqrValue = value3 - value1;
 
-  return iqrsValue;
+  return iqrValue;
 }
 
 template <class T>
 T
 uqScalarSequenceClass<T>::scaleForKDE(
   unsigned int initialPos,
-  const T&     iqrsValue) const
+  const T&     iqrValue) const
 {
   bool bRC = (initialPos <  this->sequenceSize());
   UQ_FATAL_TEST_MACRO(bRC == false,
@@ -949,14 +950,36 @@ uqScalarSequenceClass<T>::scaleForKDE(
                                     meanValue);
 
   T scaleValue;
-  if (iqrsValue <= 0.) {
+  if (iqrValue <= 0.) {
     scaleValue = 1.06*sqrt(samValue)/pow(dataSize,1./5.);
    }
   else {
-    scaleValue = 1.06*std::min(sqrt(samValue),iqrsValue/1.34)/pow(dataSize,1./5.);
+    scaleValue = 1.06*std::min(sqrt(samValue),iqrValue/1.34)/pow(dataSize,1./5.);
   }
 
   return scaleValue;
+}
+
+template <class T>
+double
+uqScalarSequenceClass<T>::gaussianKDE(T evaluationParam) const
+{
+  T iqrValue = this->interQuantileRange(0); // Use the whole chain
+
+  T scaleValue = this->scaleForKDE(0, // Use the whole chain
+                                   iqrValue);
+
+  unsigned int dataSize = this->sequenceSize();
+
+  double scaleInv = 1./scaleValue;
+  double x = evaluationParam;
+  double value = 0.;
+  for (unsigned int k = 0; k < dataSize; ++k) {
+    double xk = m_seq[k];
+    value += uqMiscGaussianDensity((x-xk)*scaleInv,0.,1.);
+  }
+
+  return scaleInv * (value/(double) dataSize);
 }
 
 template <class T>
@@ -964,23 +987,23 @@ void
 uqScalarSequenceClass<T>::gaussianKDE(
   unsigned int          initialPos,
   double                scaleValue,
-  const std::vector<T>& evaluationPositions,
+  const std::vector<T>& evaluationParams,
   std::vector<double>&  densityValues) const
 {
-  bool bRC = ((initialPos                 <  this->sequenceSize()      ) &&
-              (0                          <  evaluationPositions.size()) &&
-              (evaluationPositions.size() == densityValues.size()      ));
+  bool bRC = ((initialPos                 <  this->sequenceSize()   ) &&
+              (0                          <  evaluationParams.size()) &&
+              (evaluationParams.size() == densityValues.size()      ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
                       "uqScalarSequenceClass<V>::gaussianKDE()",
                       "invalid input data");
 
   unsigned int dataSize = this->sequenceSize() - initialPos;
-  unsigned int numEvals = evaluationPositions.size();
+  unsigned int numEvals = evaluationParams.size();
 
   double scaleInv = 1./scaleValue;
   for (unsigned int j = 0; j < numEvals; ++j) {
-    double x = evaluationPositions[j];
+    double x = evaluationParams[j];
     double value = 0.;
     for (unsigned int k = 0; k < dataSize; ++k) {
       double xk = m_seq[initialPos+k];

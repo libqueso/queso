@@ -47,7 +47,7 @@ int func(double t, const double Mass[], double f[], void *info)
 //********************************************************
 
 // The (user defined) data type for the data needed by the (user defined) likelihood routine
-template<class S_V, class S_M>
+template<class P_V, class P_M>
 struct
 stage0_likelihoodRoutine_DataType
 {
@@ -58,16 +58,16 @@ stage0_likelihoodRoutine_DataType
 };
 
 // The actual (user defined) likelihood routine
-template<class P_V,class P_M,class S_V,class S_M,class L_V,class L_M>
+template<class P_V,class P_M>
 double
 stage0_likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 {
   double A                       = paramValues[0];
   double E                       = paramValues[1];
-  double beta1                   =  ((stage0_likelihoodRoutine_DataType<S_V,S_M> *) functionDataPtr)->beta1;
-  double variance1               =  ((stage0_likelihoodRoutine_DataType<S_V,S_M> *) functionDataPtr)->variance1;
-  const std::vector<double>& Te1 = *((stage0_likelihoodRoutine_DataType<S_V,S_M> *) functionDataPtr)->Te1;
-  const std::vector<double>& Me1 = *((stage0_likelihoodRoutine_DataType<S_V,S_M> *) functionDataPtr)->Me1;
+  double beta1                   =  ((stage0_likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta1;
+  double variance1               =  ((stage0_likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->variance1;
+  const std::vector<double>& Te1 = *((stage0_likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Te1;
+  const std::vector<double>& Me1 = *((stage0_likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Me1;
   std::vector<double> Mt1(Me1.size(),0.);
 
   double params[]={A,E,beta1};
@@ -130,7 +130,7 @@ stage0_likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 // This QoI function object consists of data and routine.
 //********************************************************
 // The (user defined) data type for the data needed by the (user defined) qoi routine
-template<class S_V, class S_M>
+template<class P_V,class P_M,class Q_V, class Q_M>
 struct
 stage0_qoiRoutine_DataType
 {
@@ -139,13 +139,13 @@ stage0_qoiRoutine_DataType
 };
 
 // The actual (user defined) qoi routine
-template<class P_V,class P_M,class S_V,class S_M,class Q_V,class Q_M>
+template<class P_V,class P_M,class Q_V,class Q_M>
 void stage0_qoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiValues)
 {
   double A             = paramValues[0];
   double E             = paramValues[1];
-  double beta1         = ((stage0_qoiRoutine_DataType<S_V,S_M> *) functionDataPtr)->beta1;
-  double criticalMass1 = ((stage0_qoiRoutine_DataType<S_V,S_M> *) functionDataPtr)->criticalMass1;
+  double beta1         = ((stage0_qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->beta1;
+  double criticalMass1 = ((stage0_qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->criticalMass1;
 
   double params[]={A,E,beta1};
       	
@@ -202,7 +202,7 @@ void stage0_qoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V&
 //********************************************************
 // The validation problem driving routine "uqAppl()": called by main()
 //********************************************************
-template<class P_V,class P_M,class S_V,class S_M,class L_V,class L_M,class Q_V,class Q_M>
+template<class P_V,class P_M,class Q_V,class Q_M>
 void 
 uqAppl(const uqEnvironmentClass& env)
 {
@@ -279,7 +279,7 @@ uqAppl(const uqEnvironmentClass& env)
   stage0_likelihoodRoutine_Data.variance1 = variance1;
   stage0_likelihoodRoutine_Data.Te1       = &Te1; // temperatures
   stage0_likelihoodRoutine_Data.Me1       = &Me1; // relative masses
-  uqCompleteScalarLhFunction_Class<P_V,P_M> stage0_likelihoodFunctionObj(stage0_likelihoodRoutine<P_V,P_M,S_V,S_M,L_V,L_M>,
+  uqCompleteScalarLhFunction_Class<P_V,P_M> stage0_likelihoodFunctionObj(stage0_likelihoodRoutine<P_V,P_M>,
                                                                          (void *) &stage0_likelihoodRoutine_Data,
                                                                          true); // the routine computes [-2.*ln(Likelihood)]
 
@@ -312,10 +312,10 @@ uqAppl(const uqEnvironmentClass& env)
   // Substep 2.5: Define the qoi function object
   //******************************************************
 
-  stage0_qoiRoutine_DataType<P_V,P_M> stage0_qoiRoutine_Data;
+  stage0_qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> stage0_qoiRoutine_Data;
   stage0_qoiRoutine_Data.beta1         = beta1;
   stage0_qoiRoutine_Data.criticalMass1 = criticalMass1;
-  uqQoIFunction_BaseClass<P_V,P_M,Q_V,Q_M> stage0_qoiFunctionObj(stage0_qoiRoutine<P_V,P_M,S_V,S_M,Q_V,Q_M>,
+  uqQoIFunction_BaseClass<P_V,P_M,Q_V,Q_M> stage0_qoiFunctionObj(stage0_qoiRoutine<P_V,P_M,Q_V,Q_M>,
                                                                  (void *) &stage0_qoiRoutine_Data);
 
   //******************************************************

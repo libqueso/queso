@@ -104,10 +104,12 @@ public:
         void         scalesForKDE      (unsigned int             initialPos,
                                         const V&                 iqrs,
                                         V&                       scales) const;
+        void         gaussianKDE       (const V&                 evaluationParamVec,
+                                        V&                       densityVec) const;
         void         gaussianKDE       (unsigned int             initialPos,
                                         const V&                 scales,
-                                        const std::vector<V*>&   evaluationPositions,
-                                        std::vector<V*>&         densityValues) const;
+                                        const std::vector<V*>&   evaluationParamVecs,
+                                        std::vector<V*>&         densityVecs) const;
         void         write             (const std::string&       name,
                                         std::ofstream&           ofs) const;
         void         select            (const std::vector<unsigned int>& idsOfUniquePositions);
@@ -844,30 +846,39 @@ uqArrayOfSequencesClass<V>::scalesForKDE(
 template <class V>
 void
 uqArrayOfSequencesClass<V>::gaussianKDE(
+  const V& evaluationParamVec,
+  V&       densityVec) const
+{
+  return;
+}
+
+template <class V>
+void
+uqArrayOfSequencesClass<V>::gaussianKDE(
   unsigned int           initialPos,
   const V&               scales,
-  const std::vector<V*>& evaluationPositions,
-  std::vector<V*>&       densityValues) const
+  const std::vector<V*>& evaluationParamVecs,
+  std::vector<V*>&       densityVecs) const
 {
 #if 0
   unsigned int dataSize = sequence.size() - initialPos;
-  unsigned int numEstimationsPerParam = evaluationPositions.size();
+  unsigned int numEstimationsPerParam = evaluationParamVecs.size();
 
   for (unsigned int j = 0; j < numEstimationsPerParam; ++j) {
-    densityValues[j] = new V(*(sequence[0]));
+    densityVecs[j] = new V(*(sequence[0]));
   }
 
   unsigned int numParams = sequence[0]->size();
   for (unsigned int i = 0; i < numParams; ++i) {
     double scaleInv = 1./scales[i];
     for (unsigned int j = 0; j < numEstimationsPerParam; ++j) {
-      double x = (*(evaluationPositions[j]))[i];
+      double x = (*(evaluationParamVecs[j]))[i];
       double value = 0.;
       for (unsigned int k = 0; k < dataSize; ++k) {
         double xk = (*(sequence[initialPos+k]))[i];
         value += uqMiscGaussianDensity((x-xk)*scaleInv,0.,1.);
       }
-      (*(densityValues[j]))[i] = scaleInv * (value/(double) numEstimationsPerParam);
+      (*(densityVecs[j]))[i] = scaleInv * (value/(double) numEstimationsPerParam);
     }
   }
 

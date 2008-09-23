@@ -56,8 +56,8 @@ public:
         void                                  solve          ();
         void                                  solve          (const uqSampleGenerator_BaseClass<P_V,P_M>& paramGeneratorObj);
 
-  const uqProbDensity_BaseClass    <Q_V,Q_M>& qoiDensityObj  () const;
-  const uqSampleGenerator_BaseClass<Q_V,Q_M>& qoiGeneratorObj() const;
+  const uqProbDensity_BaseClass    <Q_V,Q_M>& solutionProbDensityObj  () const;
+  const uqSampleGenerator_BaseClass<Q_V,Q_M>& solutionSampleGeneratorObj() const;
 
         void                                  print          (std::ostream& os) const;
 
@@ -76,15 +76,15 @@ private:
         std::string                                   m_option_help;
         std::string                                   m_option_distrCalculator;
 
-	std::string                                   m_distrCalculator;
+	std::string                                   m_dcString;
 
   const uqProbDensity_BaseClass    <P_V,P_M>*         m_paramDensityObj;
   const uqSampleGenerator_BaseClass<P_V,P_M>*         m_paramGeneratorObj;
   const uqQoIFunction_BaseClass    <P_V,P_M,Q_V,Q_M>& m_qoiFunctionObj;
 
         uqMonteCarloDCClass        <P_V,P_M,Q_V,Q_M>* m_mcDc;
-        uqProbDensity_BaseClass    <Q_V,Q_M>*         m_qoiDensityObj;
-        uqSampleGenerator_BaseClass<Q_V,Q_M>*         m_qoiGeneratorObj;
+        uqProbDensity_BaseClass    <Q_V,Q_M>*         m_solutionProbDensityObj;
+        uqSampleGenerator_BaseClass<Q_V,Q_M>*         m_solutionSampleGeneratorObj;
 
 };
 
@@ -101,21 +101,21 @@ uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::uqPropagProblemClass(
   const uqSampleGenerator_BaseClass<P_V,P_M>*         paramGeneratorObj,
   const uqQoIFunction_BaseClass    <P_V,P_M,Q_V,Q_M>& qoiFunctionObj)
   :
-  m_env                   (env),
-  m_prefix                ((std::string)(prefix) + "pro_"),
-  m_paramSpace            (&paramSpace),
-  m_qoiSpace              (&qoiSpace),
-  m_userSpacesAreNull     (false),
-  m_optionsDesc           (new po::options_description("UQ Propagation Problem")),
-  m_option_help           (m_prefix + "help"           ),
-  m_option_distrCalculator(m_prefix + "distrCalculator"),
-  m_distrCalculator       (UQ_PROPAG_PROBLEM_DISTR_CALCULATOR_ODV),
-  m_paramDensityObj       (paramDensityObj),
-  m_paramGeneratorObj     (paramGeneratorObj),
-  m_qoiFunctionObj        (qoiFunctionObj),
-  m_mcDc                  (NULL),
-  m_qoiDensityObj         (NULL),
-  m_qoiGeneratorObj       (NULL)
+  m_env                       (env),
+  m_prefix                    ((std::string)(prefix) + "pro_"),
+  m_paramSpace                (&paramSpace),
+  m_qoiSpace                  (&qoiSpace),
+  m_userSpacesAreNull         (false),
+  m_optionsDesc               (new po::options_description("UQ Propagation Problem")),
+  m_option_help               (m_prefix + "help"           ),
+  m_option_distrCalculator    (m_prefix + "distrCalculator"),
+  m_dcString                  (UQ_PROPAG_PROBLEM_DISTR_CALCULATOR_ODV),
+  m_paramDensityObj           (paramDensityObj),
+  m_paramGeneratorObj         (paramGeneratorObj),
+  m_qoiFunctionObj            (qoiFunctionObj),
+  m_mcDc                      (NULL),
+  m_solutionProbDensityObj    (NULL),
+  m_solutionSampleGeneratorObj(NULL)
 {
   commonConstructor();
 }
@@ -128,21 +128,21 @@ uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::uqPropagProblemClass(
   const uqSampleGenerator_BaseClass<P_V,P_M>*         paramGeneratorObj,
   const uqQoIFunction_BaseClass    <P_V,P_M,Q_V,Q_M>& qoiFunctionObj)
   :
-  m_env                   (env),
-  m_prefix                ((std::string)(prefix) + "pro_"),
-  m_paramSpace            (new uqParamSpaceClass<P_V,P_M>(m_env,m_prefix.c_str())),
-  m_qoiSpace              (new uqQoISpaceClass  <Q_V,Q_M>(m_env,m_prefix.c_str())),
-  m_userSpacesAreNull     (true),
-  m_optionsDesc           (new po::options_description("UQ Propagation Problem")),
-  m_option_help           (m_prefix + "help"           ),
-  m_option_distrCalculator(m_prefix + "distrCalculator"),
-  m_distrCalculator       (UQ_PROPAG_PROBLEM_DISTR_CALCULATOR_ODV),
-  m_paramDensityObj       (paramDensityObj),
-  m_paramGeneratorObj     (paramGeneratorObj),
-  m_qoiFunctionObj        (qoiFunctionObj),
-  m_mcDc                  (NULL),
-  m_qoiDensityObj         (NULL),
-  m_qoiGeneratorObj       (NULL)
+  m_env                       (env),
+  m_prefix                    ((std::string)(prefix) + "pro_"),
+  m_paramSpace                (new uqParamSpaceClass<P_V,P_M>(m_env,m_prefix.c_str())),
+  m_qoiSpace                  (new uqQoISpaceClass  <Q_V,Q_M>(m_env,m_prefix.c_str())),
+  m_userSpacesAreNull         (true),
+  m_optionsDesc               (new po::options_description("UQ Propagation Problem")),
+  m_option_help               (m_prefix + "help"           ),
+  m_option_distrCalculator    (m_prefix + "distrCalculator"),
+  m_dcString                  (UQ_PROPAG_PROBLEM_DISTR_CALCULATOR_ODV),
+  m_paramDensityObj           (paramDensityObj),
+  m_paramGeneratorObj         (paramGeneratorObj),
+  m_qoiFunctionObj            (qoiFunctionObj),
+  m_mcDc                      (NULL),
+  m_solutionProbDensityObj    (NULL),
+  m_solutionSampleGeneratorObj(NULL)
 {
   commonConstructor();
 }
@@ -183,13 +183,15 @@ uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::commonConstructor()
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::~uqPropagProblemClass()
 {
-  if (m_qoiGeneratorObj) delete m_qoiGeneratorObj;
-  if (m_qoiDensityObj  ) delete m_qoiDensityObj;
-  if (m_mcDc           ) delete m_mcDc;
+  if (m_solutionSampleGeneratorObj) delete m_solutionSampleGeneratorObj;
+  if (m_solutionProbDensityObj    ) delete m_solutionProbDensityObj;
+  if (m_mcDc                      ) delete m_mcDc;
 
-  if (m_optionsDesc    ) delete m_optionsDesc;
-  if (m_qoiSpace       ) delete m_qoiSpace;
-  if (m_paramSpace     ) delete m_paramSpace;
+  if (m_optionsDesc               ) delete m_optionsDesc;
+  if (m_userSpacesAreNull) {
+    if (m_qoiSpace  ) delete m_qoiSpace;
+    if (m_paramSpace) delete m_paramSpace;
+  }
 }
 
 template<class P_V,class P_M,class Q_V,class Q_M>
@@ -216,7 +218,7 @@ void
   }
 
   if (m_env.allOptionsMap().count(m_option_distrCalculator.c_str())) {
-    m_distrCalculator = m_env.allOptionsMap()[m_option_distrCalculator.c_str()].as<std::string>();
+    m_dcString = m_env.allOptionsMap()[m_option_distrCalculator.c_str()].as<std::string>();
   }
 
   return;
@@ -258,7 +260,7 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::print(std::ostream& os) const
 {
-  os << "\n" << m_option_distrCalculator << " = " << m_distrCalculator;
+  os << "\n" << m_option_distrCalculator << " = " << m_dcString;
   os << std::endl;
 }
 
