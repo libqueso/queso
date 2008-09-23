@@ -82,7 +82,7 @@ public:
                                const char*                                           prefix,                   /*! Prefix.                        */
                                const uqParamSpaceClass            <P_V,P_M>&         paramSpace,               /*! The parameter space.           */
 #ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
-                               const uqBayesProbDensity_BaseClass <P_V,P_M>&         targetParamDensityObj,
+                               const uqProbDensity_BaseClass      <P_V,P_M>&         targetParamDensityObj,
 #else
                                const uqObservableSpaceClass       <L_V,L_M>&         observableSpace,          /*! The observable space.          */
                                const uqProbDensity_BaseClass      <P_V,P_M>&         m2lPriorParamDensityObj,  /*! -2*ln(prior()).                */
@@ -159,7 +159,7 @@ private:
         std::string                                     m_prefix;
   const uqParamSpaceClass            <P_V,P_M>&         m_paramSpace;
 #ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
-  const uqBayesProbDensity_BaseClass <P_V,P_M>&         m_targetParamDensityObj;
+  const uqProbDensity_BaseClass      <P_V,P_M>&         m_targetParamDensityObj;
 #else
   const uqObservableSpaceClass       <L_V,L_M>&         m_observableSpace;
   const uqProbDensity_BaseClass      <P_V,P_M>&         m_m2lPriorParamDensityObj;
@@ -277,7 +277,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::uqBayesianMarkovChainDCClass(
   const char*                                           prefix,
   const uqParamSpaceClass            <P_V,P_M>&         paramSpace,
 #ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
-  const uqBayesProbDensity_BaseClass <P_V,P_M>&         targetParamDensityObj,
+  const uqProbDensity_BaseClass      <P_V,P_M>&         targetParamDensityObj,
 #else
   const uqObservableSpaceClass       <L_V,L_M>&         observableSpace,
   const uqProbDensity_BaseClass      <P_V,P_M>&         m2lPriorParamDensityObj,

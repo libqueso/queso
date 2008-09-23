@@ -24,13 +24,12 @@
 #include <uqObservableSpace.h>
 #include <uqQoISpace.h>
 
-#include <uqBayesProbDensity.h>
-#include <uqProbDensity.h>        // For substep x.1 and substep x.4 in applications setting a validation problem stage
-#include <uqVectorLhFunction.h> // For substep x.2
-#include <uqProposalDensity.h>    // For substep x.3
-#include <uqProposalGenerator.h>  // For substep x.3
-#include <uqSampleGenerator.h>    // For substep x.4
-#include <uqQoIFunction.h>        // For substep x.5
+#include <uqProbDensity.h>       // For substep x.1 and substep x.4 in applications setting a validation problem stage
+#include <uqVectorLhFunction.h>  // For substep x.2
+#include <uqProposalDensity.h>   // For substep x.3
+#include <uqProposalGenerator.h> // For substep x.3
+#include <uqSampleGenerator.h>   // For substep x.4
+#include <uqQoIFunction.h>       // For substep x.5
 
 #include <uqDefaultPrior.h>
 #include <uqBayesianMarkovChainDC1.h>
@@ -48,17 +47,21 @@ template <class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
 class uqValidProblemStageClass
 {
 public:
-  uqValidProblemStageClass(const uqEnvironmentClass&                              env,
-                           const char*                                            prefix,
-                           const char*                                            sufix,
-                           const uqProbDensity_BaseClass       <P_V,P_M>*         m2lPriorParamDensityObj,  // Set in substep x.1 in applications setting a validation problem stage
-                           const uqVectorLhFunction_BaseClass<P_V,P_M,L_V,L_M>* m2lVectorLhFunctionObj, // Set in substep x.2
-                           P_M*                                                   proposalCovMatrix,        // Set in substep x.3
-                           const uqProposalDensity_BaseClass   <P_V,P_M>*         proposalDensityObj,       // Set in substep x.3
-                           const uqProposalGenerator_BaseClass <P_V,P_M>*         proposalGeneratorObj,     // Set in substep x.3 // FIX ME: accomodate code in order to use such object
-                           const uqProbDensity_BaseClass       <P_V,P_M>*         propagParamDensityObj,    // Set in substep x.4 // FIX ME: accomodate code in order to use such object
-                           const uqSampleGenerator_BaseClass   <P_V,P_M>*         propagParamGeneratorObj,  // Set in substep x.4
-                           const uqQoIFunction_BaseClass       <P_V,P_M,Q_V,Q_M>* qoiFunctionObj);          // Set in substep x.5
+  uqValidProblemStageClass(const uqEnvironmentClass&                             env,
+                           const char*                                           prefix,
+                           const char*                                           sufix,
+                           const uqProbDensity_BaseClass      <P_V,P_M>*         m2lPriorParamDensityObj, // Set in substep x.1 in appls with a validation problem stage
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+                           const uqScalarLhFunction_BaseClass <P_V,P_M>*         m2lScalarLhFunctionObj,  // Set in substep 2
+#else
+                           const uqVectorLhFunction_BaseClass <P_V,P_M,L_V,L_M>* m2lVectorLhFunctionObj,  // Set in substep x.2
+#endif
+                           P_M*                                                  proposalCovMatrix,       // Set in substep x.3
+                           const uqProposalDensity_BaseClass  <P_V,P_M>*         proposalDensityObj,      // Set in substep x.3
+                           const uqProposalGenerator_BaseClass<P_V,P_M>*         proposalGeneratorObj,    // Set in substep x.3 // FIX ME: accomodate code in order to use such object
+                           const uqProbDensity_BaseClass      <P_V,P_M>*         propagParamDensityObj,   // Set in substep x.4 // FIX ME: accomodate code in order to use such object
+                           const uqSampleGenerator_BaseClass  <P_V,P_M>*         propagParamGeneratorObj, // Set in substep x.4
+                           const uqQoIFunction_BaseClass      <P_V,P_M,Q_V,Q_M>* qoiFunctionObj);         // Set in substep x.5
  ~uqValidProblemStageClass();
 
         bool                                  isCalibRequested          () const;
@@ -107,7 +110,11 @@ private:
         uqDefault_M2lPriorRoutine_DataType<P_V,P_M>          m_m2lPriorRoutine_Data;
         P_V*                                                 m_paramPriorMus;
         P_V*                                                 m_paramPriorSigmas;
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+  const uqScalarLhFunction_BaseClass    <P_V,P_M>*         m_m2lScalarLhFunctionObj;
+#else
   const uqVectorLhFunction_BaseClass    <P_V,P_M,L_V,L_M>* m_m2lVectorLhFunctionObj;
+#endif
         P_M*                                                 m_proposalCovMatrix;
   const uqProposalDensity_BaseClass       <P_V,P_M>*         m_proposalDensityObj;
   const uqProposalGenerator_BaseClass     <P_V,P_M>*         m_proposalGeneratorObj;
@@ -136,7 +143,11 @@ uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::uqValidProblemStageClass(
   const char*                                            prefix,
   const char*                                            sufix,
   const uqProbDensity_BaseClass       <P_V,P_M>*         m2lPriorParamDensityObj,
-  const uqVectorLhFunction_BaseClass<P_V,P_M,L_V,L_M>* m2lVectorLhFunctionObj,
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+  const uqScalarLhFunction_BaseClass  <P_V,P_M>*         m2lScalarLhFunctionObj,
+#else
+  const uqVectorLhFunction_BaseClass  <P_V,P_M,L_V,L_M>* m2lVectorLhFunctionObj,
+#endif
   P_M*                                                   proposalCovMatrix,
   const uqProposalDensity_BaseClass   <P_V,P_M>*         proposalDensityObj,
   const uqProposalGenerator_BaseClass <P_V,P_M>*         proposalGeneratorObj,
@@ -167,7 +178,11 @@ uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::uqValidProblemStageClass(
   m_m2lPriorParamDensityObj      (m2lPriorParamDensityObj),
   m_paramPriorMus                (NULL),
   m_paramPriorSigmas             (NULL),
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+  m_m2lScalarLhFunctionObj     (m2lScalarLhFunctionObj),
+#else
   m_m2lVectorLhFunctionObj     (m2lVectorLhFunctionObj),
+#endif
   m_proposalCovMatrix            (proposalCovMatrix),
   m_proposalDensityObj           (proposalDensityObj),
   m_proposalGeneratorObj         (proposalGeneratorObj),
@@ -208,13 +223,22 @@ uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::uqValidProblemStageClass(
                                                                       (void *) &m_m2lPriorRoutine_Data);
     }
 
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+    m_posteriorParamDensityObj = new uqM2lProbDensity_Class<P_V,P_M>(m_m2lPriorParamDensityObj,
+                                                                     m_m2lScalarLhFunctionObj);
+#endif
+
     // Instantiate the distribution calculator.
     m_bmcDc = new uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>(m_env,
                                                                 (m_prefix + "cal_").c_str(),
                                                                *m_paramSpace,
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+                                                               *m_posteriorParamDensityObj,
+#else
                                                                *m_observableSpace,
                                                                *m_m2lPriorParamDensityObj,
                                                                *m_m2lVectorLhFunctionObj,
+#endif
                                                                 m_proposalCovMatrix,
                                                                 m_proposalDensityObj,
                                                                 m_proposalGeneratorObj);
@@ -423,7 +447,7 @@ uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::posteriorParamGeneratorObj() 
 {
   UQ_FATAL_TEST_MACRO(m_posteriorParamGeneratorObj == NULL,
                       m_env.rank(),
-                      "uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::posteriorParamDensityObj()",
+                      "uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::posteriorParamGeneratorObj()",
                       "posterior param generator object is being requested but it has not been created yet");
 
   return *m_posteriorParamGeneratorObj;

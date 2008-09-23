@@ -39,7 +39,11 @@ public:
 
         void                                               instantiateStage (unsigned int                                           stageId,
                                                                              const uqProbDensity_BaseClass       <P_V,P_M>*         m2lPriorParamDensityObj,  // Set in substep x.1 in applications setting a validation problem stage
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+                                                                             const uqScalarLhFunction_BaseClass <P_V,P_M>*         m2lScalarLhFunctionObj,  // Set in substep 2
+#else
                                                                              const uqVectorLhFunction_BaseClass<P_V,P_M,L_V,L_M>* m2lVectorLhFunctionObj, // Set in substep x.2
+#endif
                                                                              P_M*                                                   proposalCovMatrix,        // Set in substep x.3
                                                                              const uqProposalDensity_BaseClass   <P_V,P_M>*         proposalDensityObj,       // Set in substep x.3
                                                                              const uqProposalGenerator_BaseClass <P_V,P_M>*         proposalGeneratorObj,     // Set in substep x.3
@@ -203,7 +207,11 @@ void
 uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::instantiateStage(
   unsigned int                                           stageId,
   const uqProbDensity_BaseClass       <P_V,P_M>*         m2lPriorParamDensityObj,  // Set in substep x.1
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+  const uqScalarLhFunction_BaseClass <P_V,P_M>*         m2lScalarLhFunctionObj,  // Set in substep 2
+#else
   const uqVectorLhFunction_BaseClass<P_V,P_M,L_V,L_M>* m2lVectorLhFunctionObj, // Set in substep x.2
+#endif
   P_M*                                                   proposalCovMatrix,        // Set in substep x.3
   const uqProposalDensity_BaseClass   <P_V,P_M>*         proposalDensityObj,       // Set in substep x.3
   const uqProposalGenerator_BaseClass <P_V,P_M>*         proposalGeneratorObj,     // Set in substep x.3
@@ -215,7 +223,11 @@ uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::instantiateStage(
                                                                             m_prefix.c_str(),
                                                                             m_stageSufixes[stageId].c_str(),
                                                                             m2lPriorParamDensityObj,
+#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+                                                                            m2lScalarLhFunctionObj,
+#else
                                                                             m2lVectorLhFunctionObj,
+#endif
                                                                             proposalCovMatrix,
                                                                             proposalDensityObj,
                                                                             proposalGeneratorObj,
