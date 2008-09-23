@@ -44,16 +44,13 @@ CXX = g++
 CXXFLAGS = -Wall -c -g
 
 OBJS_ANY = uqParameter.o \
-	uqObservable.o \
 	uqQoI.o
 
 OBJS_gsl = uqGslParamSpace.o \
-	uqGslObservableSpace.o \
 	uqGslQoISpace.o \
 	uqGslFinDimLinearSpace.o
 
 OBJS_tri = uqTrilinosParamSpace.o \
-	uqTrilinosObservableSpace.o \
 	uqTrilinosFinDimLinearSpace.o
 
 all:	libuq_mcmc_all

@@ -20,15 +20,15 @@
 #ifndef __UQ_BMCDC2_H__
 #define __UQ_BMCDC2_H__
 
-template <class P_V,class P_M,class L_V,class L_M>
+template <class P_V,class P_M>
 void
-uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculateDistributions(
+uqBayesianMarkovChainDCClass<P_V,P_M>::calculateDistributions(
   const P_M*             proposalCovMatrix,
 //const P_M*             mahalanobisMatrix,
 //bool                   applyMahalanobisInvert,
   uqChainBaseClass<P_V>& workingChain)
 {
-  //if (m_env.rank() == 0) std::cout << "Entering uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculateDistributions()..."
+  //if (m_env.rank() == 0) std::cout << "Entering uqBayesianMarkovChainDCClass<P_V,P_M>::calculateDistributions()..."
   //                                 << std::endl;
 
   P_V valuesOf1stPosition(m_paramInitials);
@@ -80,7 +80,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculateDistributions(
       iRC = prepareForNextChain(proposalCovMatrix);
       UQ_FATAL_RC_MACRO(iRC,
                         m_env.rank(),
-                        "uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculateDistributions()",
+                        "uqBayesianMarkovChainDCClass<P_V,P_M>::calculateDistributions()",
                         "improper prepareForNextChain() return");
 
       //****************************************************
@@ -121,7 +121,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculateDistributions(
 
       UQ_FATAL_TEST_MACRO((ofs && ofs->is_open()) == false,
                           m_env.rank(),
-                          "uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculateDistributions()",
+                          "uqBayesianMarkovChainDCClass<P_V,P_M>::calculateDistributions()",
                           "failed to open file");
     }
   
@@ -142,7 +142,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculateDistributions(
                     //applyMahalanobisInvert);
       UQ_FATAL_RC_MACRO(iRC,
                         m_env.rank(),
-                        "uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculateDistributions()",
+                        "uqBayesianMarkovChainDCClass<P_V,P_M>::calculateDistributions()",
                         "improper writeInfo() return");
     }
 
@@ -167,7 +167,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculateDistributions(
       //m_uniqueChain1.erase(positionIterator,m_uniqueChain1.end());
       //UQ_FATAL_TEST_MACRO((uniquePos != m_uniqueChain1.size()),
       //                    m_env.rank(),
-      //                    "uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculateDistributions()",
+      //                    "uqBayesianMarkovChainDCClass<P_V,P_M>::calculateDistributions()",
       //                    "uniquePos != m_uniqueChain1.size()");
 
       // Write unique chain
@@ -265,15 +265,15 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculateDistributions(
     }
   }
 
-  //if (m_env.rank() == 0) std::cout << "Leaving uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculateDistributions()"
+  //if (m_env.rank() == 0) std::cout << "Leaving uqBayesianMarkovChainDCClass<P_V,P_M>::calculateDistributions()"
   //                                 << std::endl;
 
   return;
 }
 
-template <class P_V,class P_M,class L_V,class L_M>
+template <class P_V,class P_M>
 void
-uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateWhiteNoiseChain(
+uqBayesianMarkovChainDCClass<P_V,P_M>::generateWhiteNoiseChain(
   unsigned int           chainSize,
   uqChainBaseClass<P_V>& workingChain,
   const std::string&     chainName)
@@ -316,9 +316,9 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateWhiteNoiseChain(
   return;
 }
 
-template <class P_V,class P_M,class L_V,class L_M>
+template <class P_V,class P_M>
 void
-uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateUniformChain(
+uqBayesianMarkovChainDCClass<P_V,P_M>::generateUniformChain(
   unsigned int           chainSize,
   uqChainBaseClass<P_V>& workingChain,
   const std::string&     chainName)
@@ -361,9 +361,9 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateUniformChain(
   return;
 }
 
-template <class P_V,class P_M,class L_V,class L_M>
+template <class P_V,class P_M>
 void
-uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateMarkovChain(
+uqBayesianMarkovChainDCClass<P_V,P_M>::generateMarkovChain(
   unsigned int           chainSize,
   const P_V&             valuesOf1stPosition,
   const P_M*             proposalCovMatrix,
@@ -380,70 +380,32 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateMarkovChain(
   int iRC = UQ_OK_RC;
   struct timeval timevalChain;
   struct timeval timevalCandidate;
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
-#else
-  struct timeval timevalPrior;
-  struct timeval timevalLH;
-#endif
+  struct timeval timevalTargetD;
   struct timeval timevalMhAlpha;
   struct timeval timevalDrAlpha;
   struct timeval timevalDR;
   struct timeval timevalAM;
 
-  double m_candidateRunTime = 0;
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
-#else
-  double m_priorRunTime     = 0;
-  double m_lhRunTime        = 0;
-#endif
-  double m_mhAlphaRunTime   = 0;
-  double m_drAlphaRunTime   = 0;
-  double m_drRunTime        = 0;
-  double m_amRunTime        = 0;
+  double candidateRunTime = 0;
+  double targetDRunTime   = 0;
+  double mhAlphaRunTime   = 0;
+  double drAlphaRunTime   = 0;
+  double drRunTime        = 0;
+  double amRunTime        = 0;
 
   iRC = gettimeofday(&timevalChain, NULL);
 
   bool   outOfBounds = m_paramSpace.outOfBounds(valuesOf1stPosition);
   UQ_FATAL_TEST_MACRO(outOfBounds,
                       m_env.rank(),
-                      "uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateMarkovChain()",
+                      "uqBayesianMarkovChainDCClass<P_V,P_M>::generateMarkovChain()",
                       "paramInitials should not be out of bound");
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+  if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalTargetD, NULL);
   double logPosterior = -0.5 * m_targetParamDensityObj.minus2LnDensity(valuesOf1stPosition);
-#else
-  if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalPrior, NULL);
-  double m2lPrior            = m_m2lPriorParamDensityObj.minus2LnDensity(valuesOf1stPosition);
-  if (m_chainMeasureRunTimes) m_priorRunTime += uqMiscGetEllapsedSeconds(&timevalPrior);
-  L_V m2lLikelihoodVector (m_observableSpace.zeroVector());
-  L_V misfitVector        (m_observableSpace.zeroVector());
-  L_V misfitVarianceVector(m_observableSpace.priorVariances());
-
-  if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalLH, NULL);
-  if (m_likelihoodObjComputesMisfits) {
-    m_m2lVectorLhFunctionObj.computeMisfits(valuesOf1stPosition, misfitVector);
-    m2lLikelihoodVector = misfitVector/misfitVarianceVector;
-  }
-  else {
-    m_m2lVectorLhFunctionObj.computeMinus2LnLikelihoods(valuesOf1stPosition, m2lLikelihoodVector);
-  }
-  if (m_chainMeasureRunTimes) m_lhRunTime += uqMiscGetEllapsedSeconds(&timevalLH);
-  double m2lLikelihoodScalar  = m2lLikelihoodVector.sumOfComponents();
-  double logPosterior = -0.5 * ( m2lPrior + m2lLikelihoodScalar );
-#endif
+  if (m_chainMeasureRunTimes) targetDRunTime += uqMiscGetEllapsedSeconds(&timevalTargetD);
   uqChainPositionClass<P_V> currentPosition(m_env,
                                             valuesOf1stPosition,
                                             outOfBounds,
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
-                                            0.,
-                                            m_paramSpace.zeroVector(),
-                                            m_paramSpace.zeroVector(),
-                                            m_paramSpace.zeroVector(),
-#else
-                                            m2lPrior,
-                                            misfitVector,
-                                            misfitVarianceVector,
-                                            m2lLikelihoodVector,
-#endif
                                             logPosterior);
 
   P_V gaussianVector(m_paramSpace.zeroVector());
@@ -456,34 +418,20 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateMarkovChain(
   workingChain.resizeSequence(chainSize); 
   if (m_uniqueChainGenerate) m_idsOfUniquePositions.resize(chainSize,0); 
   if (m_chainGenerateExtra) {
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
-#else
-    if (m_likelihoodObjComputesMisfits) {
-      m_misfitChain.resize        (chainSize,NULL); 
-      m_misfitVarianceChain.resize(chainSize,NULL); 
-    }
-    m_m2lLikelihoodChain.resize(chainSize,NULL); 
-#endif
-    m_alphaQuotients.resize    (chainSize,0.);
+    m_logPosteriors.resize (chainSize,0.);
+    m_alphaQuotients.resize(chainSize,0.);
   }
 
   unsigned int uniquePos = 0;
   workingChain.setPositionValues(0,currentPosition.paramValues());
   if (m_uniqueChainGenerate) m_idsOfUniquePositions[uniquePos++] = 0;
   if (m_chainGenerateExtra) {
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
-#else
-    if (m_likelihoodObjComputesMisfits) {
-      m_misfitChain        [0] = m_observableSpace.newVector(misfitVector);
-      m_misfitVarianceChain[0] = m_observableSpace.newVector(misfitVarianceVector);
-    }
-    m_m2lLikelihoodChain[0] = m_observableSpace.newVector(currentPosition.m2lLikelihoodVector());
-#endif
-    m_alphaQuotients    [0] = 1.;
+    m_logPosteriors [0] = currentPosition.logPosterior();
+    m_alphaQuotients[0] = 1.;
   }
 
   for (unsigned int positionId = 1; positionId < workingChain.sequenceSize(); ++positionId) {
-    //if (m_env.rank() == 0) std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateMarkovChain()"
+    //if (m_env.rank() == 0) std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M>::generateMarkovChain()"
     //                                 << ": beginning chain position of id = " << positionId
     //                                 << ", m_maxNumExtraStages =  "           << m_maxNumExtraStages
     //                                 << std::endl;
@@ -495,51 +443,20 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateMarkovChain(
     if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
     gaussianVector.cwSetGaussian(m_env.rng(),0.,1.);
     tmpParamValues = currentPosition.paramValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
-    if (m_chainMeasureRunTimes) m_candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
+    if (m_chainMeasureRunTimes) candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
 
-    outOfBounds     = m_paramSpace.outOfBounds(tmpParamValues);
+    outOfBounds    = m_paramSpace.outOfBounds(tmpParamValues);
     if (outOfBounds) {
       m_numOutOfBounds++;
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
-#else
-      m2lPrior      = 0.;
-      m2lLikelihoodVector.cwSet(INFINITY);
-#endif
-      logPosterior  = -INFINITY;
+      logPosterior = -INFINITY;
     }
     else {
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+      if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalTargetD, NULL);
       logPosterior = -0.5 * m_targetParamDensityObj.minus2LnDensity(tmpParamValues);
-#else
-      if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalPrior, NULL);
-      m2lPrior      = m_m2lPriorParamDensityObj.minus2LnDensity(tmpParamValues);
-      if (m_chainMeasureRunTimes) m_priorRunTime += uqMiscGetEllapsedSeconds(&timevalPrior);
-      if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalLH, NULL);
-      if (m_likelihoodObjComputesMisfits) {
-        m_m2lVectorLhFunctionObj.computeMisfits(tmpParamValues, misfitVector);
-        m2lLikelihoodVector = misfitVector/misfitVarianceVector;
-      }
-      else {
-        m_m2lVectorLhFunctionObj.computeMinus2LnLikelihoods(tmpParamValues, m2lLikelihoodVector);
-      }
-      if (m_chainMeasureRunTimes) m_lhRunTime += uqMiscGetEllapsedSeconds(&timevalLH);
-      m2lLikelihoodScalar = m2lLikelihoodVector.sumOfComponents();
-      logPosterior  = -0.5 * ( m2lPrior + m2lLikelihoodScalar );
-#endif
+      if (m_chainMeasureRunTimes) targetDRunTime += uqMiscGetEllapsedSeconds(&timevalTargetD);
     }
     currentCandidate.set(tmpParamValues,
                          outOfBounds,
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
-                         0.,
-                         m_paramSpace.zeroVector(),
-                         m_paramSpace.zeroVector(),
-                         m_paramSpace.zeroVector(),
-#else
-                         m2lPrior,
-                         misfitVector,
-                         misfitVarianceVector,
-                         m2lLikelihoodVector,
-#endif
                          logPosterior);
 
     if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
@@ -561,9 +478,9 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateMarkovChain(
       else {
         alpha = this->alpha(currentPosition,currentCandidate,NULL);
       }
-      if (m_chainMeasureRunTimes) m_mhAlphaRunTime += uqMiscGetEllapsedSeconds(&timevalMhAlpha);
+      if (m_chainMeasureRunTimes) mhAlphaRunTime += uqMiscGetEllapsedSeconds(&timevalMhAlpha);
       if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-        std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateMarkovChain()"
+        std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M>::generateMarkovChain()"
                   << ": for chain position of id = " << positionId
                   << ", alpha = " << alpha
                   << std::endl;
@@ -571,33 +488,19 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateMarkovChain(
       accept = acceptAlpha(alpha);
     }
     if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-      if (m_env.rank() == 0) std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateMarkovChain()"
+      if (m_env.rank() == 0) std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M>::generateMarkovChain()"
                                        << ": for chain position of id = " << positionId
                                        << " contents of currentCandidate.paramValues() are:"
                                        << std::endl;
       std::cout << currentCandidate.paramValues();
       if (m_env.rank() == 0) std::cout << std::endl;
 
-      if (m_env.rank() == 0) std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateMarkovChain()"
+      if (m_env.rank() == 0) std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M>::generateMarkovChain()"
                                        << ": for chain position of id = " << positionId
                                        << ", outOfBounds = "              << outOfBounds
                                        << "\n"
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
-#else
-                                       << "\n curM2lPrior = "             << currentPosition.m2lPrior()
-                                       << "\n curMisfitVector = "         << currentPosition.misfitVector()
-                                       << "\n curMisfitVarianceVector = " << currentPosition.misfitVarianceVector()
-                                       << "\n curM2lLikelihoodVector = "  << currentPosition.m2lLikelihoodVector()
-#endif
                                        << "\n curLogPosterior = "         << currentPosition.logPosterior()
                                        << "\n"
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
-#else
-                                       << "\n canM2lPrior = "             << currentCandidate.m2lPrior()
-                                       << "\n canMisfitVector = "         << currentCandidate.misfitVector()
-                                       << "\n canMisfitVarianceVector = " << currentCandidate.misfitVarianceVector()
-                                       << "\n canM2lLikelihoodVector = "  << currentCandidate.m2lLikelihoodVector()
-#endif
                                        << "\n canLogPosterior = "         << currentCandidate.logPosterior()
                                        << "\n"
                                        << "\n accept = "                  << accept
@@ -624,59 +527,28 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateMarkovChain(
         if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
         gaussianVector.cwSetGaussian(m_env.rng(),0.,1.);
         tmpParamValues = currentPosition.paramValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
-        if (m_chainMeasureRunTimes) m_candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
+        if (m_chainMeasureRunTimes) candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
 
-        outOfBounds   = m_paramSpace.outOfBounds(tmpParamValues);
+        outOfBounds    = m_paramSpace.outOfBounds(tmpParamValues);
         if (outOfBounds) {
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
-#else
-          m2lPrior      = 0.;
-          m2lLikelihoodVector.cwSet(INFINITY);
-#endif
-          logPosterior  = -INFINITY;
+          logPosterior = -INFINITY;
         }
         else {
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+          if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalTargetD, NULL);
           logPosterior = -0.5 * m_targetParamDensityObj.minus2LnDensity(tmpParamValues);
-#else
-          if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalPrior, NULL);
-          m2lPrior      = m_m2lPriorParamDensityObj.minus2LnDensity(tmpParamValues);
-          if (m_chainMeasureRunTimes) m_priorRunTime += uqMiscGetEllapsedSeconds(&timevalPrior);
-          if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalLH, NULL);
-          if (m_likelihoodObjComputesMisfits) {
-            m_m2lVectorLhFunctionObj.computeMisfits(tmpParamValues, misfitVector);
-            m2lLikelihoodVector = misfitVector/misfitVarianceVector;
-          }
-          else {
-            m_m2lVectorLhFunctionObj.computeMinus2LnLikelihoods(tmpParamValues, m2lLikelihoodVector);
-          }
-          if (m_chainMeasureRunTimes) m_lhRunTime += uqMiscGetEllapsedSeconds(&timevalLH);
-          m2lLikelihoodScalar = m2lLikelihoodVector.sumOfComponents();
-          logPosterior  = -0.5 * ( m2lPrior + m2lLikelihoodScalar );
-#endif
+          if (m_chainMeasureRunTimes) targetDRunTime += uqMiscGetEllapsedSeconds(&timevalTargetD);
         }
         currentCandidate.set(tmpParamValues,
                              outOfBounds,
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
-                             0.,
-                             m_paramSpace.zeroVector(),
-                             m_paramSpace.zeroVector(),
-                             m_paramSpace.zeroVector(),
-#else
-                             m2lPrior,
-                             misfitVector,
-                             misfitVarianceVector,
-                             m2lLikelihoodVector,
-#endif
                              logPosterior);
 
         drPositions.push_back(new uqChainPositionClass<P_V>(currentCandidate));
         if (outOfBounds == false) {
           if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalDrAlpha, NULL);
           double alpha = this->alpha(drPositions);
-          if (m_chainMeasureRunTimes) m_drAlphaRunTime += uqMiscGetEllapsedSeconds(&timevalDrAlpha);
+          if (m_chainMeasureRunTimes) drAlphaRunTime += uqMiscGetEllapsedSeconds(&timevalDrAlpha);
 #if 0 // For debug only
-          if (m_env.rank() == 0) std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateMarkovChain()"
+          if (m_env.rank() == 0) std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M>::generateMarkovChain()"
                                            << ": for chain position of id = " << positionId
                                            << " and stageId = " << stageId
                                            << ", alpha = " << alpha
@@ -686,7 +558,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateMarkovChain(
         }
       } // while
 
-      if (m_chainMeasureRunTimes) m_drRunTime += uqMiscGetEllapsedSeconds(&timevalDR);
+      if (m_chainMeasureRunTimes) drRunTime += uqMiscGetEllapsedSeconds(&timevalDR);
     } // end of 'delayed rejection' logic
 
     for (unsigned int i = 0; i < drPositions.size(); ++i) {
@@ -699,31 +571,15 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateMarkovChain(
     if (accept) {
       workingChain.setPositionValues(positionId,currentCandidate.paramValues());
       if (m_uniqueChainGenerate) m_idsOfUniquePositions[uniquePos++] = positionId;
-      if (m_chainGenerateExtra) {
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
-#else
-        if (m_likelihoodObjComputesMisfits) {
-          m_misfitChain[positionId] = m_observableSpace.newVector(currentCandidate.misfitVector());
-          //m_misfitVarianceChain[positionId] is updated below, after the update of 'misfitVarianceVector'
-        }
-        m_m2lLikelihoodChain[positionId] = m_observableSpace.newVector(currentCandidate.m2lLikelihoodVector());
-#endif
-      }
       currentPosition = currentCandidate;
     }
     else {
       workingChain.setPositionValues(positionId,currentPosition.paramValues());
-      if (m_chainGenerateExtra) {
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
-#else
-        if (m_likelihoodObjComputesMisfits) {
-          m_misfitChain[positionId] = m_observableSpace.newVector(currentPosition.misfitVector());
-          //m_misfitVarianceChain[positionId] is updated below, after the update of 'misfitVarianceVector'
-        }
-        m_m2lLikelihoodChain[positionId] = m_observableSpace.newVector(currentPosition.m2lLikelihoodVector());
-#endif
-      }
       m_numRejections++;
+    }
+
+    if (m_chainGenerateExtra) {
+      m_logPosteriors[positionId] = currentPosition.logPosterior();
     }
 
 #ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
@@ -739,7 +595,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateMarkovChain(
           double term2 =  2./( varAccuracies[i] * priorVars[i] + misfitVec[i] );
           misfitVarianceVector[i] = 1./uqMiscGammar(term1,term2,m_env.rng());
           //if (m_env.rank() == 0) {
-          //  std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateMarkovChain()"
+          //  std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M>::generateMarkovChain()"
           //            << ": for chain position of id = "     << positionId
           //            << ", numbersOfObs = "                 << numbersOfObs
           //            << ", varAccuracies = "                << varAccuracies
@@ -751,7 +607,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateMarkovChain(
           //}
         }
         //if (m_env.rank() == 0) {
-        //  std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateMarkovChain()"
+        //  std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M>::generateMarkovChain()"
         //            << ": for chain position of id = "        << positionId
         //            << ", misfitVarianceVector changed from " << *(m_misfitVarianceChain[positionId])
         //            << " to "                                 << misfitVarianceVector
@@ -824,7 +680,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateMarkovChain(
         if (iRC) {
           UQ_FATAL_TEST_MACRO(iRC != UQ_MATRIX_IS_NOT_POS_DEFINITE_RC,
                               m_env.rank(),
-                              "uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateMarkovChain()",
+                              "uqBayesianMarkovChainDCClass<P_V,P_M>::generateMarkovChain()",
                               "invalid iRC returned from first chol()");
           // Matrix is not positive definite
           P_M* tmpDiag = m_paramSpace.newDiagMatrix(m_epsilon);
@@ -846,7 +702,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateMarkovChain(
           if (iRC) {
             UQ_FATAL_TEST_MACRO(iRC != UQ_MATRIX_IS_NOT_POS_DEFINITE_RC,
                                 m_env.rank(),
-                                "uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateMarkovChain()",
+                                "uqBayesianMarkovChainDCClass<P_V,P_M>::generateMarkovChain()",
                                 "invalid iRC returned from second chol()");
             // Do nothing
           }
@@ -865,7 +721,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateMarkovChain(
 #ifdef UQ_DRAM_MCG_REQUIRES_INVERTED_COV_MATRICES
           UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
                             m_env.rank(),
-                            "uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateMarkovChain()",
+                            "uqBayesianMarkovChainDCClass<P_V,P_M>::generateMarkovChain()",
                             "need to code the update of m_upperCholProposalPrecMatrices");
 #endif
 
@@ -877,7 +733,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateMarkovChain(
         //}
       }
 
-      if (m_chainMeasureRunTimes) m_amRunTime += uqMiscGetEllapsedSeconds(&timevalAM);
+      if (m_chainMeasureRunTimes) amRunTime += uqMiscGetEllapsedSeconds(&timevalAM);
     } // End of 'adaptive Metropolis' logic
 
     if ((m_chainDisplayPeriod                     > 0) && 
@@ -907,39 +763,29 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateMarkovChain(
               << " seconds";
     if (m_chainMeasureRunTimes) {
       std::cout << "\n\n Breaking of the chain run time:\n";
-      std::cout << "\n  Candidate run time   = " << m_candidateRunTime
-                << " seconds ("                  << 100.*m_candidateRunTime/m_chainRunTime
+      std::cout << "\n  Candidate run time   = " << candidateRunTime
+                << " seconds ("                  << 100.*candidateRunTime/m_chainRunTime
                 << "%)";
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
-#else
-      std::cout << "\n  Prior run time       = " << m_priorRunTime
-                << " seconds ("                  << 100.*m_priorRunTime/m_chainRunTime
+      std::cout << "\n  Target d. run time   = " << targetDRunTime
+                << " seconds ("                  << 100.*targetDRunTime/m_chainRunTime
                 << "%)";
-      std::cout << "\n  LH run time          = " << m_lhRunTime
-                << " seconds ("                  << 100.*m_lhRunTime/m_chainRunTime
+      std::cout << "\n  Mh alpha run time    = " << mhAlphaRunTime
+                << " seconds ("                  << 100.*mhAlphaRunTime/m_chainRunTime
                 << "%)";
-#endif
-      std::cout << "\n  Mh alpha run time    = " << m_mhAlphaRunTime
-                << " seconds ("                  << 100.*m_mhAlphaRunTime/m_chainRunTime
-                << "%)";
-      std::cout << "\n  Dr alpha run time    = " << m_drAlphaRunTime
-                << " seconds ("                  << 100.*m_drAlphaRunTime/m_chainRunTime
+      std::cout << "\n  Dr alpha run time    = " << drAlphaRunTime
+                << " seconds ("                  << 100.*drAlphaRunTime/m_chainRunTime
                 << "%)";
       std::cout << "\n----------------------   --------------";
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
-      double sumRunTime = m_candidateRunTime + m_mhAlphaRunTime + m_drAlphaRunTime;
-#else
-      double sumRunTime = m_candidateRunTime + m_priorRunTime + m_lhRunTime + m_mhAlphaRunTime + m_drAlphaRunTime;
-#endif
+      double sumRunTime = candidateRunTime + targetDRunTime + mhAlphaRunTime + drAlphaRunTime;
       std::cout << "\n  Sum                  = " << sumRunTime
                 << " seconds ("                  << 100.*sumRunTime/m_chainRunTime
                 << "%)";
       std::cout << "\n\n Other run times:";
-      std::cout << "\n  DR run time          = " << m_drRunTime
-                << " seconds ("                  << 100.*m_drRunTime/m_chainRunTime
+      std::cout << "\n  DR run time          = " << drRunTime
+                << " seconds ("                  << 100.*drRunTime/m_chainRunTime
                 << "%)";
-      std::cout << "\n  AM run time          = " << m_amRunTime
-                << " seconds ("                  << 100.*m_amRunTime/m_chainRunTime
+      std::cout << "\n  AM run time          = " << amRunTime
+                << " seconds ("                  << 100.*amRunTime/m_chainRunTime
                 << "%)";
     }
     std::cout << "\n  Rejection percentage = " << 100. * (double) m_numRejections/(double) workingChain.sequenceSize()
@@ -956,9 +802,9 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::generateMarkovChain(
   return;
 }
 
-template <class P_V,class P_M,class L_V,class L_M>
+template <class P_V,class P_M>
 void
-uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::updateCovMatrix(
+uqBayesianMarkovChainDCClass<P_V,P_M>::updateCovMatrix(
   const uqChainBaseClass<P_V>& subChain,
   unsigned int                 idOfFirstPositionInSubChain,
   double&                      lastChainSize,
@@ -969,7 +815,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::updateCovMatrix(
   if (lastChainSize == 0) {
     UQ_FATAL_TEST_MACRO(subChain.sequenceSize() < 2,
                         m_env.rank(),
-                        "uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::updateCovMatrix()",
+                        "uqBayesianMarkovChainDCClass<P_V,P_M>::updateCovMatrix()",
                         "'subChain.sequenceSize()' should be >= 2");
 
     subChain.mean(0,subChain.sequenceSize(),lastMean);
@@ -985,12 +831,12 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::updateCovMatrix(
   else {
     UQ_FATAL_TEST_MACRO(subChain.sequenceSize() < 1,
                         m_env.rank(),
-                        "uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::updateCovMatrix()",
+                        "uqBayesianMarkovChainDCClass<P_V,P_M>::updateCovMatrix()",
                         "'subChain.sequenceSize()' should be >= 1");
 
     UQ_FATAL_TEST_MACRO(idOfFirstPositionInSubChain < 1,
                         m_env.rank(),
-                        "uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::updateCovMatrix()",
+                        "uqBayesianMarkovChainDCClass<P_V,P_M>::updateCovMatrix()",
                         "'idOfFirstPositionInSubChain' should be >= 1");
 
     P_V tmpVec (m_paramSpace.zeroVector());

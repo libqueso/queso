@@ -7,11 +7,22 @@ uqEnv_seed      = 0
 
 ###############################################
 # CP Problem: basic configuration
-# CP = calibration+propagation
 ###############################################
 #cp_help        = anything
 cp_cal_perform = 1
-cp_pro_perform = 0
+cp_pro_perform = 1
+
+
+
+
+
+
+
+
+
+
+
+
 
 ###############################################
 # CP Problem: parameter/state/observable/qoi spaces
@@ -70,7 +81,7 @@ cp_cal_bmcdc_filteredChain_write            = 1
 cp_cal_bmcdc_filteredChain_computeStats     = 1
 
 #cp_cal_bmcdc_chain_stats_help                     = anything
-cp_cal_bmcdc_chain_stats_initialDiscardedPortions = 0.
+cp_cal_bmcdc_chain_stats_initialDiscardedPortions = 0. .1 .2 .3
 cp_cal_bmcdc_chain_stats_bmm_run                  = 0
 cp_cal_bmcdc_chain_stats_bmm_lengths              = 50 100 200 250
 cp_cal_bmcdc_chain_stats_fft_compute              = 0
@@ -88,7 +99,7 @@ cp_cal_bmcdc_chain_stats_psdAtZero_numBlocks      = 32
 cp_cal_bmcdc_chain_stats_psdAtZero_hopSizeRatio   = .5
 cp_cal_bmcdc_chain_stats_psdAtZero_display        = 1
 cp_cal_bmcdc_chain_stats_psdAtZero_write          = 1
-cp_cal_bmcdc_chain_stats_geweke_compute           = 0
+cp_cal_bmcdc_chain_stats_geweke_compute           = 1
 cp_cal_bmcdc_chain_stats_geweke_naRatio           = .1
 cp_cal_bmcdc_chain_stats_geweke_nbRatio           = .5
 cp_cal_bmcdc_chain_stats_geweke_display           = 1

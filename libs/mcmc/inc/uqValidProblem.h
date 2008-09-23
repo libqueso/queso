@@ -29,7 +29,7 @@
 #define UQ_VALID_PROBLEM_STAGE_SUFIXES_ODV UQ_VALID_PROBLEM_SUFIX_FOR_NO_STAGE_SUFIX
 #define UQ_VALID_PROBLEM_STAGE_ORDER_ODV   "0"
 
-template <class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
+template <class P_V,class P_M,class Q_V,class Q_M>
 class uqValidProblemClass
 {
 public:
@@ -37,49 +37,45 @@ public:
                       const char*               prefix);
  ~uqValidProblemClass();
 
-        void                                               instantiateStage (unsigned int                                           stageId,
-                                                                             const uqProbDensity_BaseClass       <P_V,P_M>*         m2lPriorParamDensityObj,  // Set in substep x.1 in applications setting a validation problem stage
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
-                                                                             const uqScalarLhFunction_BaseClass <P_V,P_M>*         m2lScalarLhFunctionObj,  // Set in substep 2
-#else
-                                                                             const uqVectorLhFunction_BaseClass<P_V,P_M,L_V,L_M>* m2lVectorLhFunctionObj, // Set in substep x.2
-#endif
-                                                                             P_M*                                                   proposalCovMatrix,        // Set in substep x.3
-                                                                             const uqProposalDensity_BaseClass   <P_V,P_M>*         proposalDensityObj,       // Set in substep x.3
-                                                                             const uqProposalGenerator_BaseClass <P_V,P_M>*         proposalGeneratorObj,     // Set in substep x.3
-                                                                             const uqProbDensity_BaseClass       <P_V,P_M>*         propagParamDensityObj,    // Set in substep x.4
-                                                                             const uqSampleGenerator_BaseClass   <P_V,P_M>*         propagParamGeneratorObj,  // Set in substep x.4
-                                                                             const uqQoIFunction_BaseClass       <P_V,P_M,Q_V,Q_M>* qoiFunctionObj);          // Set in substep x.5
+        void                                       instantiateStage (unsigned int                                          stageId,
+                                                                     const uqProbDensity_BaseClass      <P_V,P_M>*         m2lPriorParamDensityObj, // Set in substep x.1 in applications setting a validation problem stage
+                                                                     const uqScalarLhFunction_BaseClass <P_V,P_M>*         m2lScalarLhFunctionObj,  // Set in substep 2
+                                                                           P_M*                                            proposalCovMatrix,       // Set in substep x.3
+                                                                     const uqProposalDensity_BaseClass  <P_V,P_M>*         proposalDensityObj,      // Set in substep x.3
+                                                                     const uqProposalGenerator_BaseClass<P_V,P_M>*         proposalGeneratorObj,    // Set in substep x.3
+                                                                     const uqProbDensity_BaseClass      <P_V,P_M>*         propagParamDensityObj,   // Set in substep x.4
+                                                                     const uqSampleGenerator_BaseClass  <P_V,P_M>*         propagParamGeneratorObj, // Set in substep x.4
+                                                                     const uqQoIFunction_BaseClass      <P_V,P_M,Q_V,Q_M>* qoiFunctionObj);         // Set in substep x.5
 
-  const uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>& stage            (unsigned int stageId) const;
-        void                                               solve            ();
+  const uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>& stage            (unsigned int stageId) const;
+        void                                       solve            ();
 
-        void                                               print            (std::ostream& os) const;
+        void                                       print            (std::ostream& os) const;
 
 private:
-        void                                               defineMyOptions  (po::options_description& optionsDesc);
-        void                                               getMyOptionValues(po::options_description& optionsDesc);
+        void                                       defineMyOptions  (po::options_description& optionsDesc);
+        void                                       getMyOptionValues(po::options_description& optionsDesc);
 
-  const uqEnvironmentClass&                                             m_env;
-        std::string                                                     m_prefix;
+  const uqEnvironmentClass&                                     m_env;
+        std::string                                             m_prefix;
 
-        po::options_description*                                        m_optionsDesc;
-        std::string                                                     m_option_help;
-        std::string                                                     m_option_numStages;
-        std::string                                                     m_option_stageSufixes;
-        std::string                                                     m_option_stageOrder;
+        po::options_description*                                m_optionsDesc;
+        std::string                                             m_option_help;
+        std::string                                             m_option_numStages;
+        std::string                                             m_option_stageSufixes;
+        std::string                                             m_option_stageOrder;
 
-        unsigned int                                                    m_numStages;
-        std::vector<std::string>                                        m_stageSufixes;
-        std::vector<unsigned int>                                       m_stageOrder;
-        std::vector<uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>*> m_stages;
+        unsigned int                                            m_numStages;
+        std::vector<std::string>                                m_stageSufixes;
+        std::vector<unsigned int>                               m_stageOrder;
+        std::vector<uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>*> m_stages;
 };
 
-template<class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
-std::ostream& operator<<(std::ostream& os, const uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>& obj);
+template<class P_V,class P_M,class Q_V,class Q_M>
+std::ostream& operator<<(std::ostream& os, const uqValidProblemClass<P_V,P_M,Q_V,Q_M>& obj);
 
-template <class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
-uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::uqValidProblemClass(
+template <class P_V,class P_M,class Q_V,class Q_M>
+uqValidProblemClass<P_V,P_M,Q_V,Q_M>::uqValidProblemClass(
   const uqEnvironmentClass& env,
   const char*               prefix)
   :
@@ -95,7 +91,7 @@ uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::uqValidProblemClass(
   m_stageOrder         (0),
   m_stages             (0)
 {
-  if (m_env.rank() == 0) std::cout << "Entering uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::constructor()"
+  if (m_env.rank() == 0) std::cout << "Entering uqValidProblemClass<P_V,P_M,Q_V,Q_M>::constructor()"
                                    << ": prefix = " << m_prefix
                                    << std::endl;
 
@@ -103,20 +99,20 @@ uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::uqValidProblemClass(
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
 
-  if (m_env.rank() == 0) std::cout << "In uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::constructor()"
+  if (m_env.rank() == 0) std::cout << "In uqValidProblemClass<P_V,P_M,Q_V,Q_M>::constructor()"
                                    << ": after getting values of options, state of object is:"
                                    << "\n" << *this
                                    << std::endl;
 
   m_stages.resize(m_numStages,NULL);
 
-  if (m_env.rank() == 0) std::cout << "Leaving uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::constructor()"
+  if (m_env.rank() == 0) std::cout << "Leaving uqValidProblemClass<P_V,P_M,Q_V,Q_M>::constructor()"
                                    << ": prefix = " << m_prefix
                                    << std::endl;
 }
 
-template <class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
-uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::~uqValidProblemClass()
+template <class P_V,class P_M,class Q_V,class Q_M>
+uqValidProblemClass<P_V,P_M,Q_V,Q_M>::~uqValidProblemClass()
 {
   for (unsigned int i = 0; i < m_stages.size(); ++i) {
     if (m_stages[i] != NULL) delete m_stages[i];
@@ -124,9 +120,9 @@ uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::~uqValidProblemClass()
   if (m_optionsDesc) delete m_optionsDesc;
 }
 
-template<class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
+template<class P_V,class P_M,class Q_V,class Q_M>
 void
-uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::defineMyOptions(
+uqValidProblemClass<P_V,P_M,Q_V,Q_M>::defineMyOptions(
   po::options_description& optionsDesc)
 {
   optionsDesc.add_options()
@@ -139,9 +135,9 @@ uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::defineMyOptions(
   return;
 }
 
-template<class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
+template<class P_V,class P_M,class Q_V,class Q_M>
 void
-  uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::getMyOptionValues(
+  uqValidProblemClass<P_V,P_M,Q_V,Q_M>::getMyOptionValues(
   po::options_description& optionsDesc)
 {
   if (m_env.allOptionsMap().count(m_option_help.c_str())) {
@@ -157,14 +153,14 @@ void
     m_stageSufixes.clear();
     std::string inputString = m_env.allOptionsMap()[m_option_stageSufixes.c_str()].as<std::string>();
     uqMiscReadWordsFromString(inputString,m_stageSufixes);
-    //std::cout << "In uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::getMyOptionValues()"
+    //std::cout << "In uqValidProblemClass<P_V,P_M,Q_V,Q_M>::getMyOptionValues()"
     //          << ": m_stageSufixes[0] = " << m_stageSufixes[0]
     //          << std::endl;
   }
 
   UQ_FATAL_TEST_MACRO(m_numStages != m_stageSufixes.size(),
                       m_env.rank(),
-                      "uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::getMyOptionsValues()",
+                      "uqValidProblemClass<P_V,P_M,Q_V,Q_M>::getMyOptionsValues()",
                       "option 'numStages' is not equal to size of array of stage sufixes");
 
   if (m_env.allOptionsMap().count(m_option_stageOrder.c_str())) {
@@ -189,45 +185,37 @@ void
 
   UQ_FATAL_TEST_MACRO(m_numStages != m_stageOrder.size(),
                       m_env.rank(),
-                      "uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::getMyOptionsValues()",
+                      "uqValidProblemClass<P_V,P_M,Q_V,Q_M>::getMyOptionsValues()",
                       "option 'numStages' is not equal to size of array of stage order");
 
   for (unsigned int i = 0; i < m_stageOrder.size(); ++i) {
     UQ_FATAL_TEST_MACRO(m_stageOrder[i] >= m_numStages,
                         m_env.rank(),
-                        "uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::getMyOptionsValues()",
+                        "uqValidProblemClass<P_V,P_M,Q_V,Q_M>::getMyOptionsValues()",
                         "a stage id on the array of stage order is too big");
   }
 
   return;
 }
 
-template <class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
+template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::instantiateStage(
-  unsigned int                                           stageId,
-  const uqProbDensity_BaseClass       <P_V,P_M>*         m2lPriorParamDensityObj,  // Set in substep x.1
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+uqValidProblemClass<P_V,P_M,Q_V,Q_M>::instantiateStage(
+  unsigned int                                          stageId,
+  const uqProbDensity_BaseClass      <P_V,P_M>*         m2lPriorParamDensityObj, // Set in substep x.1
   const uqScalarLhFunction_BaseClass <P_V,P_M>*         m2lScalarLhFunctionObj,  // Set in substep 2
-#else
-  const uqVectorLhFunction_BaseClass<P_V,P_M,L_V,L_M>* m2lVectorLhFunctionObj, // Set in substep x.2
-#endif
-  P_M*                                                   proposalCovMatrix,        // Set in substep x.3
-  const uqProposalDensity_BaseClass   <P_V,P_M>*         proposalDensityObj,       // Set in substep x.3
-  const uqProposalGenerator_BaseClass <P_V,P_M>*         proposalGeneratorObj,     // Set in substep x.3
-  const uqProbDensity_BaseClass       <P_V,P_M>*         propagParamDensityObj,    // Set in substep x.4
-  const uqSampleGenerator_BaseClass   <P_V,P_M>*         propagParamGeneratorObj,  // Set in substep x.4
-  const uqQoIFunction_BaseClass       <P_V,P_M,Q_V,Q_M>* qoiFunctionObj)           // Set in substep x.5
+  P_M*                                                  proposalCovMatrix,       // Set in substep x.3
+  const uqProposalDensity_BaseClass  <P_V,P_M>*         proposalDensityObj,      // Set in substep x.3
+  const uqProposalGenerator_BaseClass<P_V,P_M>*         proposalGeneratorObj,    // Set in substep x.3
+  const uqProbDensity_BaseClass      <P_V,P_M>*         propagParamDensityObj,   // Set in substep x.4
+  const uqSampleGenerator_BaseClass  <P_V,P_M>*         propagParamGeneratorObj, // Set in substep x.4
+  const uqQoIFunction_BaseClass      <P_V,P_M,Q_V,Q_M>* qoiFunctionObj)          // Set in substep x.5
 {
-  m_stages[stageId] = new uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>(m_env,
+  m_stages[stageId] = new uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>(m_env,
                                                                             m_prefix.c_str(),
                                                                             m_stageSufixes[stageId].c_str(),
                                                                             m2lPriorParamDensityObj,
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
                                                                             m2lScalarLhFunctionObj,
-#else
-                                                                            m2lVectorLhFunctionObj,
-#endif
                                                                             proposalCovMatrix,
                                                                             proposalDensityObj,
                                                                             proposalGeneratorObj,
@@ -238,40 +226,40 @@ uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::instantiateStage(
   return;
 }
 
-template <class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
-const uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>&
-uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::stage(unsigned int stageId) const
+template <class P_V,class P_M,class Q_V,class Q_M>
+const uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>&
+uqValidProblemClass<P_V,P_M,Q_V,Q_M>::stage(unsigned int stageId) const
 {
   return *(m_stages[stageId]);
 }
 
-template <class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
+template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::solve()
+uqValidProblemClass<P_V,P_M,Q_V,Q_M>::solve()
 {
   for (unsigned int i = 0; i < m_numStages; ++i) {
-    uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>* currentStage = m_stages[m_stageOrder[i]];
+    uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>* currentStage = m_stages[m_stageOrder[i]];
     if (currentStage->isCalibRequested()) {
       if (currentStage->calibInputStageId() < 0) {
         currentStage->calibrateParamDistribs();
       }
       else {
         unsigned int inputStageId = (unsigned int) currentStage->calibInputStageId();
-        uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>* inputStage = m_stages[inputStageId];
+        uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>* inputStage = m_stages[inputStageId];
         currentStage->calibrateParamDistribs(inputStage->posteriorParamDensityObj());
       }
     }
   }
 
   for (unsigned int i = 0; i < m_numStages; ++i) {
-    uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>* currentStage = m_stages[m_stageOrder[i]];
+    uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>* currentStage = m_stages[m_stageOrder[i]];
     if (currentStage->isPropagRequested()) {
       if (currentStage->propagInputStageId() < 0) {
         currentStage->propagateParamDistribs();
       }
       else {
         unsigned int inputStageId = (unsigned int) currentStage->propagInputStageId();
-        uqValidProblemStageClass<P_V,P_M,L_V,L_M,Q_V,Q_M>* inputStage = m_stages[inputStageId];
+        uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>* inputStage = m_stages[inputStageId];
         currentStage->propagateParamDistribs(inputStage->posteriorParamGeneratorObj());
       }
     }
@@ -280,9 +268,9 @@ uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::solve()
   return;
 }
 
-template <class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
+template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::print(std::ostream& os) const
+uqValidProblemClass<P_V,P_M,Q_V,Q_M>::print(std::ostream& os) const
 {
   os << "\n" << m_option_numStages     << " = " << m_numStages
      << "\n" << m_option_stageSufixes << " = ";
@@ -296,8 +284,8 @@ uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::print(std::ostream& os) const
   os << std::endl;
 }
 
-template<class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
-std::ostream& operator<<(std::ostream& os, const uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>& obj)
+template<class P_V,class P_M,class Q_V,class Q_M>
+std::ostream& operator<<(std::ostream& os, const uqValidProblemClass<P_V,P_M,Q_V,Q_M>& obj)
 {
   obj.print(os);
 

@@ -20,7 +20,7 @@
 #ifndef __UQ_BMCDC1_H__
 #define __UQ_BMCDC1_H__
 
-#undef  UQ_BMCDC_REQUIRES_INVERTED_COV_MATRICES
+#undef UQ_BMCDC_REQUIRES_INVERTED_COV_MATRICES
 #define UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
 
 #define UQ_BMCDC_MARKOV_CHAIN_TYPE           1
@@ -60,11 +60,6 @@
 #include <uqChainStatisticalOptions.h>
 #include <uqProbDensity.h>
 #include <uqParamSpace.h>
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
-#else
-#include <uqVectorLhFunction.h>
-#include <uqObservableSpace.h>
-#endif
 #include <uqChainPosition.h>
 #include <uqMiscellaneous.h>
 #include <uqSequenceOfVectors.h>
@@ -74,20 +69,14 @@
 
 /*! A templated class that implements a Bayesian Markov Chain Distribution Calculator
  */
-template <class P_V,class P_M,class L_V,class L_M>
+template <class P_V,class P_M>
 class uqBayesianMarkovChainDCClass
 {
 public:
   uqBayesianMarkovChainDCClass(const uqEnvironmentClass&                             env,                      /*! The QUESO toolkit environment. */
                                const char*                                           prefix,                   /*! Prefix.                        */
                                const uqParamSpaceClass            <P_V,P_M>&         paramSpace,               /*! The parameter space.           */
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
                                const uqProbDensity_BaseClass      <P_V,P_M>&         targetParamDensityObj,
-#else
-                               const uqObservableSpaceClass       <L_V,L_M>&         observableSpace,          /*! The observable space.          */
-                               const uqProbDensity_BaseClass      <P_V,P_M>&         m2lPriorParamDensityObj,  /*! -2*ln(prior()).                */
-                               const uqVectorLhFunction_BaseClass <P_V,P_M,L_V,L_M>& m2lVectorLhFunctionObj,   /*! -2*ln(likelihood()).           */
-#endif
                                      P_M*                                            proposalCovMatrix,        /*! */
                                const uqProposalDensity_BaseClass  <P_V,P_M>*         proposalDensityObj,       /*! */
                                const uqProposalGenerator_BaseClass<P_V,P_M>*         proposalGeneratorObj);    /*! */
@@ -103,8 +92,6 @@ public:
   void print                  (std::ostream& os) const;
 
   const uqChainBaseClass<P_V>&         chain              () const;
-//const std::vector<const L_V*>&       misfitChain        () const;
-//const std::vector<const L_V*>&       misfitVarianceChain() const;
 //const std::string&                   outputFileName     () const;
 
 private:
@@ -158,13 +145,7 @@ private:
   const uqEnvironmentClass&                             m_env;
         std::string                                     m_prefix;
   const uqParamSpaceClass            <P_V,P_M>&         m_paramSpace;
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
   const uqProbDensity_BaseClass      <P_V,P_M>&         m_targetParamDensityObj;
-#else
-  const uqObservableSpaceClass       <L_V,L_M>&         m_observableSpace;
-  const uqProbDensity_BaseClass      <P_V,P_M>&         m_m2lPriorParamDensityObj;
-  const uqVectorLhFunction_BaseClass <P_V,P_M,L_V,L_M>& m_m2lVectorLhFunctionObj;
-#endif
         P_M*                                            m_proposalCovMatrix;
   const uqProposalDensity_BaseClass  <P_V,P_M>*         m_proposalDensityObj;
   const uqProposalGenerator_BaseClass<P_V,P_M>*         m_proposalGeneratorObj;
@@ -199,10 +180,6 @@ private:
   std::string                     m_option_am_eta;
   std::string                     m_option_am_epsilon;
 
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
-#else
-  bool                            m_likelihoodObjComputesMisfits;
-#endif
   P_V                             m_paramInitials;
   bool                            m_proposalIsSymmetric;
 
@@ -251,12 +228,7 @@ private:
   uqSequenceOfVectorsClass<P_V>   m_chain1;
   uqArrayOfSequencesClass<P_V>    m_chain2;
   std::vector<unsigned int>       m_idsOfUniquePositions;
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
-#else
-  std::vector<const L_V*>         m_misfitChain; // Sum of squares of differences between model and experiments: computed by user supplied likelihood obj
-  std::vector<const L_V*>         m_misfitVarianceChain;
-  std::vector<const L_V*>         m_m2lLikelihoodChain;
-#endif
+  std::vector<double>             m_logPosteriors;
   std::vector<double>             m_alphaQuotients;
   double                          m_chainRunTime;
   unsigned int                    m_numRejections;
@@ -266,23 +238,17 @@ private:
   P_M*                            m_lastAdaptedCovMatrix;
 };
 
-template<class P_V,class P_M,class L_V,class L_M>
-std::ostream& operator<<(std::ostream& os, const uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>& obj);
+template<class P_V,class P_M>
+std::ostream& operator<<(std::ostream& os, const uqBayesianMarkovChainDCClass<P_V,P_M>& obj);
 
 #include <uqBayesianMarkovChainDC2.h>
 
-template<class P_V,class P_M,class L_V,class L_M>
-uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::uqBayesianMarkovChainDCClass(
+template<class P_V,class P_M>
+uqBayesianMarkovChainDCClass<P_V,P_M>::uqBayesianMarkovChainDCClass(
   const uqEnvironmentClass&                             env,
   const char*                                           prefix,
   const uqParamSpaceClass            <P_V,P_M>&         paramSpace,
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
   const uqProbDensity_BaseClass      <P_V,P_M>&         targetParamDensityObj,
-#else
-  const uqObservableSpaceClass       <L_V,L_M>&         observableSpace,
-  const uqProbDensity_BaseClass      <P_V,P_M>&         m2lPriorParamDensityObj,
-  const uqVectorLhFunction_BaseClass <P_V,P_M,L_V,L_M>& m2lVectorLhFunctionObj,
-#endif
         P_M*                                            proposalCovMatrix,
   const uqProposalDensity_BaseClass  <P_V,P_M>*         proposalDensityObj,
   const uqProposalGenerator_BaseClass<P_V,P_M>*         proposalGeneratorObj)
@@ -290,13 +256,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::uqBayesianMarkovChainDCClass(
   m_env                                  (env),
   m_prefix                               ((std::string)(prefix) + "bmcdc_"),
   m_paramSpace                           (paramSpace),
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
   m_targetParamDensityObj                (targetParamDensityObj),
-#else
-  m_observableSpace                      (observableSpace),
-  m_m2lPriorParamDensityObj              (m2lPriorParamDensityObj),
-  m_m2lVectorLhFunctionObj               (m2lVectorLhFunctionObj),
-#endif
   m_proposalCovMatrix                    (proposalCovMatrix),
   m_proposalDensityObj                   (proposalDensityObj),
   m_proposalGeneratorObj                 (proposalGeneratorObj),
@@ -329,10 +289,6 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::uqBayesianMarkovChainDCClass(
   m_option_am_adaptInterval              (m_prefix + "am_adaptInterval"              ),
   m_option_am_eta                        (m_prefix + "am_eta"                        ),
   m_option_am_epsilon                    (m_prefix + "am_epsilon"                    ),
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
-#else
-  m_likelihoodObjComputesMisfits         (dynamic_cast<const uqMisfitVectorLhFunction_Class<P_V,P_M,L_V,L_M>*>(&m2lVectorLhFunctionObj) != NULL),
-#endif
   m_paramInitials                        (m_paramSpace.initialValues()),
   m_proposalIsSymmetric                  (true),
   m_chainType                            (UQ_BMCDC_CHAIN_TYPE_ODV),
@@ -374,12 +330,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::uqBayesianMarkovChainDCClass(
   m_chain1                               (0,m_paramSpace.zeroVector()),
   m_chain2                               (0,m_paramSpace.zeroVector()),
   m_idsOfUniquePositions                 (0),//0),
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
-#else
-  m_misfitChain                          (0),//,NULL),
-  m_misfitVarianceChain                  (0),//,NULL),
-  m_m2lLikelihoodChain                   (0),//,NULL),
-#endif
+  m_logPosteriors                        (0),//0),
   m_alphaQuotients                       (0),//,0.),
   m_chainRunTime                         (0.),
   m_numRejections                        (0),
@@ -388,14 +339,14 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::uqBayesianMarkovChainDCClass(
   m_lastMean                             (NULL),
   m_lastAdaptedCovMatrix                 (NULL)
 {
-  if (m_env.rank() == 0) std::cout << "Entering uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::constructor()"
+  if (m_env.rank() == 0) std::cout << "Entering uqBayesianMarkovChainDCClass<P_V,P_M>::constructor()"
                                    << std::endl;
 
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
 
-  if (m_env.rank() == 0) std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::constructor()"
+  if (m_env.rank() == 0) std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M>::constructor()"
                                    << ": after getting values of options with prefix '" << m_prefix
                                    << "', state of  object is:"
                                    << "\n" << *this
@@ -405,14 +356,14 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::uqBayesianMarkovChainDCClass(
   if (m_uniqueChainComputeStats  ) m_uniqueChainStatisticalOptions   = new uqChainStatisticalOptionsClass(m_env,m_prefix + "uniqueChain_"  );
   if (m_filteredChainComputeStats) m_filteredChainStatisticalOptions = new uqChainStatisticalOptionsClass(m_env,m_prefix + "filteredChain_");
 
-  if (m_env.rank() == 0) std::cout << "Leaving uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::constructor()"
+  if (m_env.rank() == 0) std::cout << "Leaving uqBayesianMarkovChainDCClass<P_V,P_M>::constructor()"
                                    << std::endl;
 }
 
-template<class P_V,class P_M,class L_V,class L_M>
-uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::~uqBayesianMarkovChainDCClass()
+template<class P_V,class P_M>
+uqBayesianMarkovChainDCClass<P_V,P_M>::~uqBayesianMarkovChainDCClass()
 {
-  //std::cout << "Entering uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::destructor()"
+  //std::cout << "Entering uqBayesianMarkovChainDCClass<P_V,P_M>::destructor()"
   //          << std::endl;
 
   resetChainAndRelatedInfo();
@@ -423,13 +374,13 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::~uqBayesianMarkovChainDCClass()
   if (m_chainStatisticalOptions        ) delete m_chainStatisticalOptions;
   if (m_optionsDesc                    ) delete m_optionsDesc;
 
-  //std::cout << "Leaving uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::destructor()"
+  //std::cout << "Leaving uqBayesianMarkovChainDCClass<P_V,P_M>::destructor()"
   //          << std::endl;
 }
 
-template<class P_V,class P_M,class L_V,class L_M>
+template<class P_V,class P_M>
 void
-uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::resetChainAndRelatedInfo()
+uqBayesianMarkovChainDCClass<P_V,P_M>::resetChainAndRelatedInfo()
 {
   if (m_lastAdaptedCovMatrix) delete m_lastAdaptedCovMatrix;
   if (m_lastMean)             delete m_lastMean;
@@ -438,18 +389,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::resetChainAndRelatedInfo()
   m_chainRunTime   = 0.;
   m_numRejections  = 0;
   m_alphaQuotients.clear();
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
-#else
-  for (unsigned int i = 0; i < m_m2lLikelihoodChain.size(); ++i) {
-    if (m_m2lLikelihoodChain[i]) delete m_m2lLikelihoodChain[i];
-  }
-  for (unsigned int i = 0; i < m_misfitVarianceChain.size(); ++i) {
-    if (m_misfitVarianceChain[i]) delete m_misfitVarianceChain[i];
-  }
-  for (unsigned int i = 0; i < m_misfitChain.size(); ++i) {
-    if (m_misfitChain[i]) delete m_misfitChain[i];
-  }
-#endif
+  m_logPosteriors.clear();
   m_idsOfUniquePositions.clear();
   m_chain1.clear();
   m_chain2.clear();
@@ -480,9 +420,9 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::resetChainAndRelatedInfo()
   return;
 }
 
-template<class P_V,class P_M,class L_V,class L_M>
+template<class P_V,class P_M>
 void
-uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::defineMyOptions(
+uqBayesianMarkovChainDCClass<P_V,P_M>::defineMyOptions(
   po::options_description& optionsDesc)
 {
   optionsDesc.add_options()
@@ -519,9 +459,9 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::defineMyOptions(
   return;
 }
 
-template<class P_V,class P_M,class L_V,class L_M>
+template<class P_V,class P_M>
 void
-uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::getMyOptionValues(
+uqBayesianMarkovChainDCClass<P_V,P_M>::getMyOptionValues(
   po::options_description& optionsDesc)
 {
   if (m_env.allOptionsMap().count(m_option_help.c_str())) {
@@ -644,7 +584,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::getMyOptionValues(
 
     UQ_FATAL_TEST_MACRO(m_chainOutputFileNames.size() != m_chainSizes.size(),
                         m_env.rank(),
-                        "uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::readMyOptionsValues()",
+                        "uqBayesianMarkovChainDCClass<P_V,P_M>::readMyOptionsValues()",
                         "size of array for 'outputFileNames' is not equal to size of array for 'chainSizes'");
   }
 
@@ -656,7 +596,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::getMyOptionValues(
   if (m_env.allOptionsMap().count(m_option_dr_scalesForExtraStages.c_str())) {
     std::string inputString = m_env.allOptionsMap()[m_option_dr_scalesForExtraStages.c_str()].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpScales);
-    //std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::getMyOptionValues(): scales =";
+    //std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M>::getMyOptionValues(): scales =";
     //for (unsigned int i = 0; i < tmpScales.size(); ++i) {
     //  std::cout << " " << tmpScales[i];
     //}
@@ -701,9 +641,9 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::getMyOptionValues(
   return;
 }
 
-template<class P_V,class P_M,class L_V,class L_M>
+template<class P_V,class P_M>
 void
-uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculateDistributions()
+uqBayesianMarkovChainDCClass<P_V,P_M>::calculateDistributions()
 //const P_M* proposalCovMatrix,
 //const P_M* mahalanobisMatrix,
 //bool       applyMahalanobisInvert)
@@ -726,21 +666,21 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculateDistributions()
   return;
 }
 
-template<class P_V,class P_M,class L_V,class L_M>
+template<class P_V,class P_M>
 void
-uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::calculateDistributions(const uqProbDensity_BaseClass<P_V,P_M>& priorParamDensityObj)
+uqBayesianMarkovChainDCClass<P_V,P_M>::calculateDistributions(const uqProbDensity_BaseClass<P_V,P_M>& priorParamDensityObj)
 {
   return;
 }
 
-template<class P_V,class P_M,class L_V,class L_M>
+template<class P_V,class P_M>
 int
-uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::prepareForNextChain(
+uqBayesianMarkovChainDCClass<P_V,P_M>::prepareForNextChain(
   const P_M* proposalCovMatrix)
 //const P_M* proposalPrecMatrix)
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::prepareForNextChain()..."
+    std::cout << "Entering uqBayesianMarkovChainDCClass<P_V,P_M>::prepareForNextChain()..."
               << std::endl;
   }
 
@@ -765,14 +705,14 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::prepareForNextChain(
     }
     internalProposalCovMatrix = m_paramSpace.uqFinDimLinearSpaceClass<P_V,P_M>::newDiagMatrix(tmpVec);
 
-    if (m_env.rank() == 0) std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::prepareForNextChain()"
+    if (m_env.rank() == 0) std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M>::prepareForNextChain()"
                                      << ", contents of internally generated proposal cov matrix are:"
                                      << std::endl;
     std::cout << *internalProposalCovMatrix;
     if (m_env.rank() == 0) std::cout << std::endl;
   }
   else {
-    if (m_env.rank() == 0)  std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::prepareForNextChain()"
+    if (m_env.rank() == 0)  std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M>::prepareForNextChain()"
                                       << "using suplied proposalCovMatrix, whose contents are:"
                                       << std::endl;
     std::cout << *internalProposalCovMatrix;
@@ -783,13 +723,13 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::prepareForNextChain(
   iRC = m_lowerCholProposalCovMatrices[0]->chol();
   UQ_FATAL_RC_MACRO(iRC,
                     m_env.rank(),
-                    "uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::prepareForNextChain()",
+                    "uqBayesianMarkovChainDCClass<P_V,P_M>::prepareForNextChain()",
                     "proposalCovMatrix is not positive definite");
   m_lowerCholProposalCovMatrices[0]->zeroUpper(false);
 
   m_proposalCovMatrices[0] = new P_M(*internalProposalCovMatrix);
 
-  if (m_env.rank() == 0) std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::prepareForNextChain()"
+  if (m_env.rank() == 0) std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M>::prepareForNextChain()"
                                    << ", m_lowerCholProposalCovMatrices[0] contents are:"
                                    << std::endl;
   std::cout << *(m_lowerCholProposalCovMatrices[0]);
@@ -800,7 +740,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::prepareForNextChain(
   if (proposalPrecMatrix == NULL) {
     UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
                       m_env.rank(),
-                      "uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::prepareForNextChain()",
+                      "uqBayesianMarkovChainDCClass<P_V,P_M>::prepareForNextChain()",
                       "not yet implemented for the case 'proposalPrecMatrix == NULL'");
   }
 
@@ -808,13 +748,13 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::prepareForNextChain(
   iRC = m_upperCholProposalPrecMatrices[0]->chol();
   UQ_FATAL_RC_MACRO(iRC,
                     m_env.rank(),
-                    "uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::prepareForNextChain()",
+                    "uqBayesianMarkovChainDCClass<P_V,P_M>::prepareForNextChain()",
                     "proposalPrecMatrix is not positive definite");
   m_upperCholProposalPrecMatrices[0]->zeroLower(false);
 
   m_proposalPrecMatrices[0] = new P_M(*internalProposalPrecMatrix);
 
-  //if (m_env.rank() == 0) std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::prepareForNextChain()"
+  //if (m_env.rank() == 0) std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M>::prepareForNextChain()"
   //                                 << ", m_upperCholProposalPrecMatrices[0] contents are:"
   //                                 << std::endl;
   //std::cout << *(m_upperCholProposalPrecMatrices[0]);
@@ -828,24 +768,24 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::prepareForNextChain(
   if (proposalCovMatrix == NULL) delete internalProposalCovMatrix;
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::prepareForNextChain()"
+    std::cout << "Leaving uqBayesianMarkovChainDCClass<P_V,P_M>::prepareForNextChain()"
               << std::endl;
   }
 
   return iRC;
 }
 
-template<class P_V,class P_M,class L_V,class L_M>
+template<class P_V,class P_M>
 void
-uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::updateCovMatrices()
+uqBayesianMarkovChainDCClass<P_V,P_M>::updateCovMatrices()
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::updateCovMatrices()"
+    std::cout << "Entering uqBayesianMarkovChainDCClass<P_V,P_M>::updateCovMatrices()"
               << std::endl;
   }
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::updateCovMatrices()"
+    std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M>::updateCovMatrices()"
               << ": m_maxNumExtraStages = "                   << m_maxNumExtraStages
               << ", m_scalesForCovMProposals.size() = "       << m_scalesForCovMProposals.size()
               << ", m_lowerCholProposalCovMatrices.size() = " << m_lowerCholProposalCovMatrices.size()
@@ -869,16 +809,16 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::updateCovMatrices()
   }
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::updateCovMatrices()"
+    std::cout << "Leaving uqBayesianMarkovChainDCClass<P_V,P_M>::updateCovMatrices()"
               << std::endl;
   }
 
   return;
 }
 
-template<class P_V,class P_M,class L_V,class L_M>
+template<class P_V,class P_M>
 double
-uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::logProposal(
+uqBayesianMarkovChainDCClass<P_V,P_M>::logProposal(
   const uqChainPositionClass<P_V>& x,
   const uqChainPositionClass<P_V>& y,
   unsigned int                     idOfProposalCovMatrix)
@@ -892,14 +832,14 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::logProposal(
   return value;
 }
 
-template<class P_V,class P_M,class L_V,class L_M>
+template<class P_V,class P_M>
 double
-uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::logProposal(const std::vector<uqChainPositionClass<P_V>*>& inputPositions)
+uqBayesianMarkovChainDCClass<P_V,P_M>::logProposal(const std::vector<uqChainPositionClass<P_V>*>& inputPositions)
 {
   unsigned int inputSize = inputPositions.size();
   UQ_FATAL_TEST_MACRO((inputSize < 2),
                       m_env.rank(),
-                      "uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::logProposal()",
+                      "uqBayesianMarkovChainDCClass<P_V,P_M>::logProposal()",
                       "inputPositions has size < 2");
 
   return this->logProposal(*(inputPositions[0            ]),
@@ -907,9 +847,9 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::logProposal(const std::vector<uqC
                            inputSize-2);
 }
 
-template<class P_V,class P_M,class L_V,class L_M>
+template<class P_V,class P_M>
 double
-uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::alpha(
+uqBayesianMarkovChainDCClass<P_V,P_M>::alpha(
   const uqChainPositionClass<P_V>& x,
   const uqChainPositionClass<P_V>& y,
   double*                          alphaQuotientPtr)
@@ -931,7 +871,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::alpha(
     if (m_proposalIsSymmetric) {
       alphaQuotient = exp(yLogPosteriorToUse - x.logPosterior());
       if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-        std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::alpha()"
+        std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M>::alpha()"
                   << ": symmetric proposal case"
                   << ", yLogPosteriorToUse = " << yLogPosteriorToUse
                   << ", x.logPosterior() = "   << x.logPosterior()
@@ -945,7 +885,7 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::alpha(
   }
   else {
       if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-        std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::alpha()"
+        std::cout << "In uqBayesianMarkovChainDCClass<P_V,P_M>::alpha()"
                   << ": xOutOfBounds = " << xOutOfBounds
                   << ", yOutOfBounds = " << yOutOfBounds
                   << std::endl;
@@ -956,14 +896,14 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::alpha(
   return std::min(1.,alphaQuotient);
 }
 
-template<class P_V,class P_M,class L_V,class L_M>
+template<class P_V,class P_M>
 double
-uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::alpha(const std::vector<uqChainPositionClass<P_V>*>& inputPositions)
+uqBayesianMarkovChainDCClass<P_V,P_M>::alpha(const std::vector<uqChainPositionClass<P_V>*>& inputPositions)
 {
   unsigned int inputSize = inputPositions.size();
   UQ_FATAL_TEST_MACRO((inputSize < 2),
                       m_env.rank(),
-                      "uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::alpha()",
+                      "uqBayesianMarkovChainDCClass<P_V,P_M>::alpha()",
                       "inputPositions has size < 2");
 
   // If necessary, return 0. right away
@@ -1020,9 +960,9 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::alpha(const std::vector<uqChainPo
   return std::min(1.,(alphasNumerator/alphasDenominator)*exp(logNumerator-logDenominator));
 }
 
-template<class P_V,class P_M,class L_V,class L_M>
+template<class P_V,class P_M>
 bool
-uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::acceptAlpha(double alpha)
+uqBayesianMarkovChainDCClass<P_V,P_M>::acceptAlpha(double alpha)
 {
   bool result = false;
 
@@ -1034,9 +974,9 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::acceptAlpha(double alpha)
   return result;
 }
 
-template<class P_V,class P_M,class L_V,class L_M>
+template<class P_V,class P_M>
 int
-uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::writeInfo(
+uqBayesianMarkovChainDCClass<P_V,P_M>::writeInfo(
   const uqChainBaseClass<P_V>&     workingChain,
   const std::string&               chainName,
   const std::string&               prefixName,
@@ -1056,46 +996,18 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::writeInfo(
   int iRC = UQ_OK_RC;
 
   if (m_chainGenerateExtra) {
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
-#else
-    if (m_likelihoodObjComputesMisfits) {
-      // Write m_misfitChain
-      ofs << prefixName << "misfitChain = zeros(" << m_misfitChain.size()
-          << ","                                   << m_misfitChain[0]->size()
-          << ");"
-          << std::endl;
-      ofs << prefixName << "misfitChain = [";
-      for (unsigned int i = 0; i < m_misfitChain.size(); ++i) {
-        ofs << *(m_misfitChain[i])
-            << std::endl;
-      }
-      ofs << "];\n";
-
-      // Write m_misfitVarianceChain
-      ofs << prefixName << "misfitVarianceChain = zeros(" << m_misfitVarianceChain.size()
-          << ","                                           << m_misfitVarianceChain[0]->size()
-          << ");"
-          << std::endl;
-      ofs << prefixName << "misfitVarianceChain = [";
-      for (unsigned int i = 0; i < m_misfitVarianceChain.size(); ++i) {
-        ofs << *(m_misfitVarianceChain[i])
-            << std::endl;
-      }
-      ofs << "];\n";
-    }
-
-    // Write m_m2lLikelihoodChain
-    ofs << prefixName << "m2lLikelihoodChain = zeros(" << m_m2lLikelihoodChain.size()
-        << ","                                         << m_m2lLikelihoodChain[0]->size()
+    // Write m_logPosteriors
+    ofs << prefixName << "logPosteriors = zeros(" << m_logPosteriors.size()
+        << ","                                      << 1
         << ");"
         << std::endl;
-    ofs << prefixName << "m2lLikelihoodChain = [";
-    for (unsigned int i = 0; i < m_m2lLikelihoodChain.size(); ++i) {
-      ofs << *(m_m2lLikelihoodChain[i])
+    ofs << prefixName << "logPosteriors = [";
+    for (unsigned int i = 0; i < m_logPosteriors.size(); ++i) {
+      ofs << m_logPosteriors[i]
           << std::endl;
     }
     ofs << "];\n";
-#endif
+
     // Write m_alphaQuotients
     ofs << prefixName << "alphaQuotients = zeros(" << m_alphaQuotients.size()
         << ","                                      << 1
@@ -1234,40 +1146,17 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::writeInfo(
   return iRC;
 }
 
-template<class P_V,class P_M,class L_V,class L_M>
+template<class P_V,class P_M>
 const uqChainBaseClass<P_V>&
-uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::chain() const
+uqBayesianMarkovChainDCClass<P_V,P_M>::chain() const
 {
   if (m_chainUse2) return m_chain2;
   return m_chain1;
 }
 
-#if 0
-template<class P_V,class P_M,class L_V,class L_M>
-const std::vector<const L_V*>&
-uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::misfitChain() const
-{
-  return m_misfitChain;
-}
-
-template<class P_V,class P_M,class L_V,class L_M>
-const std::vector<const L_V*>&
-uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::misfitVarianceChain() const
-{
-  return m_misfitVarianceChain;
-}
-
-template<class P_V,class P_M,class L_V,class L_M>
-const std::string&
-uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::outputFileName() const
-{
-  return m_chainOutputFileNames[nothing yet];
-}
-#endif
-
-template<class P_V,class P_M,class L_V,class L_M>
+template<class P_V,class P_M>
 void
-uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::print(std::ostream& os) const
+uqBayesianMarkovChainDCClass<P_V,P_M>::print(std::ostream& os) const
 {
   os <<         m_option_chain_type   << " = " << m_chainType
      << "\n" << m_option_chain_number << " = " << m_chainNumber
@@ -1310,17 +1199,13 @@ uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>::print(std::ostream& os) const
      << "\n" << m_option_am_adaptInterval           << " = " << m_adaptInterval
      << "\n" << m_option_am_eta                     << " = " << m_eta
      << "\n" << m_option_am_epsilon                 << " = " << m_epsilon
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
-#else
-     << "\n" << "(internal variable) m_likelihoodObjComputesMisfits = " << m_likelihoodObjComputesMisfits
-#endif
      << std::endl;
 
   return;
 }
 
-template<class P_V,class P_M,class L_V,class L_M>
-std::ostream& operator<<(std::ostream& os, const uqBayesianMarkovChainDCClass<P_V,P_M,L_V,L_M>& obj)
+template<class P_V,class P_M>
+std::ostream& operator<<(std::ostream& os, const uqBayesianMarkovChainDCClass<P_V,P_M>& obj)
 {
   obj.print(os);
 

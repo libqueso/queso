@@ -21,7 +21,6 @@
 #define __UQ_CP_PROBLEM_H__
 
 #include <uqParamSpace.h>
-#include <uqObservableSpace.h>
 #include <uqQoISpace.h>
 
 #include <uqCalibProblem.h>
@@ -31,18 +30,14 @@
 #define UQ_CP_PROBLEM_CALIB_PERFORM_ODV  0
 #define UQ_CP_PROBLEM_PROPAG_PERFORM_ODV 0
 
-template <class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
+template <class P_V,class P_M,class Q_V,class Q_M>
 class uqCPProblemClass
 {
 public:
   uqCPProblemClass(const uqEnvironmentClass&                             env,
                    const char*                                           prefix,
                    const uqProbDensity_BaseClass      <P_V,P_M>*         m2lPriorParamDensityObj, // Set in substep 1 in appls with a CP problem
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
                    const uqScalarLhFunction_BaseClass <P_V,P_M>&         m2lScalarLhFunctionObj,  // Set in substep 2
-#else
-                   const uqVectorLhFunction_BaseClass <P_V,P_M,L_V,L_M>& m2lVectorLhFunctionObj,  // Set in substep 2
-#endif
                    P_M*                                                  proposalCovMatrix,       // Set in substep 3
                    const uqProposalDensity_BaseClass  <P_V,P_M>*         proposalDensityObj,      // Set in substep 3
                    const uqProposalGenerator_BaseClass<P_V,P_M>*         proposalGeneratorObj,    // Set in substep 3 // FIX ME: use such object
@@ -50,12 +45,11 @@ public:
  ~uqCPProblemClass();
 
   const uqParamSpaceClass     <P_V,P_M>&         paramSpace       () const;
-  const uqObservableSpaceClass<L_V,L_M>&         observableSpace  () const;
   const uqQoISpaceClass       <Q_V,Q_M>&         qoiSpace         () const;
 
         void                                     solve            ();
 
-  const uqCalibProblemClass   <P_V,P_M,L_V,L_M>& calibProblem     () const;
+  const uqCalibProblemClass   <P_V,P_M>&         calibProblem     () const;
   const uqPropagProblemClass  <P_V,P_M,Q_V,Q_M>& propagProblem    () const;
 
         void                                     print            (std::ostream& os) const;
@@ -67,7 +61,6 @@ private:
   const uqEnvironmentClass&                      m_env;
         std::string                              m_prefix;
         uqParamSpaceClass     <P_V,P_M>*         m_paramSpace;
-        uqObservableSpaceClass<L_V,L_M>*         m_observableSpace;
         uqQoISpaceClass       <Q_V,Q_M>*         m_qoiSpace;
 
         po::options_description*                 m_optionsDesc;
@@ -78,23 +71,19 @@ private:
         bool                                     m_calibPerform;
         bool                                     m_propagPerform;
 
-        uqCalibProblemClass   <P_V,P_M,L_V,L_M>* m_calibProblem;
+        uqCalibProblemClass   <P_V,P_M>*         m_calibProblem;
         uqPropagProblemClass  <P_V,P_M,Q_V,Q_M>* m_propagProblem;
 };
 
-template<class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
-std::ostream& operator<<(std::ostream& os, const uqCPProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>& obj);
+template<class P_V,class P_M,class Q_V,class Q_M>
+std::ostream& operator<<(std::ostream& os, const uqCPProblemClass<P_V,P_M,Q_V,Q_M>& obj);
 
-template <class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
-uqCPProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::uqCPProblemClass(
+template <class P_V,class P_M,class Q_V,class Q_M>
+uqCPProblemClass<P_V,P_M,Q_V,Q_M>::uqCPProblemClass(
   const uqEnvironmentClass&                             env,
   const char*                                           prefix,
   const uqProbDensity_BaseClass      <P_V,P_M>*         m2lPriorParamDensityObj,
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
   const uqScalarLhFunction_BaseClass <P_V,P_M>&         m2lScalarLhFunctionObj,
-#else
-  const uqVectorLhFunction_BaseClass <P_V,P_M,L_V,L_M>& m2lVectorLhFunctionObj,
-#endif
   P_M*                                                  proposalCovMatrix,
   const uqProposalDensity_BaseClass  <P_V,P_M>*         proposalDensityObj,
   const uqProposalGenerator_BaseClass<P_V,P_M>*         proposalGeneratorObj,
@@ -103,7 +92,6 @@ uqCPProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::uqCPProblemClass(
   m_env                  (env),
   m_prefix               ((std::string)(prefix) + "cp_"),
   m_paramSpace           (new uqParamSpaceClass     <P_V,P_M>(env,m_prefix.c_str())),
-  m_observableSpace      (new uqObservableSpaceClass<P_V,P_M>(env,m_prefix.c_str())),
   m_qoiSpace             (new uqQoISpaceClass       <P_V,P_M>(env,m_prefix.c_str())),
   m_optionsDesc          (new po::options_description("UQ CP Problem")),
   m_option_help          (m_prefix + "help"            ),
@@ -114,7 +102,7 @@ uqCPProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::uqCPProblemClass(
   m_calibProblem         (NULL),
   m_propagProblem        (NULL)
 {
-  if (m_env.rank() == 0) std::cout << "Entering uqCPProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::constructor()"
+  if (m_env.rank() == 0) std::cout << "Entering uqCPProblemClass<P_V,P_M,Q_V,Q_M>::constructor()"
                                    << ": prefix = " << m_prefix
                                    << std::endl;
 
@@ -122,25 +110,20 @@ uqCPProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::uqCPProblemClass(
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
 
-  if (m_env.rank() == 0) std::cout << "In uqCPProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::constructor()"
+  if (m_env.rank() == 0) std::cout << "In uqCPProblemClass<P_V,P_M,Q_V,Q_M>::constructor()"
                                    << ": after getting values of options, state of object is:"
                                    << "\n" << *this
                                    << std::endl;
 
   if (m_calibPerform) {
-    m_calibProblem = new uqCalibProblemClass<P_V,P_M,L_V,L_M>(m_env,
-                                                              m_prefix.c_str(),
-                                                             *m_paramSpace,
-                                                             *m_observableSpace,
-                                                              m2lPriorParamDensityObj,
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
-                                                              m2lScalarLhFunctionObj,
-#else
-                                                              m2lVectorLhFunctionObj,
-#endif
-                                                              proposalCovMatrix,
-                                                              proposalDensityObj,
-                                                              proposalGeneratorObj);
+    m_calibProblem = new uqCalibProblemClass<P_V,P_M>(m_env,
+                                                      m_prefix.c_str(),
+                                                     *m_paramSpace,
+                                                      m2lPriorParamDensityObj,
+                                                      m2lScalarLhFunctionObj,
+                                                      proposalCovMatrix,
+                                                      proposalDensityObj,
+                                                      proposalGeneratorObj);
   }
 
   if (m_propagPerform) {
@@ -153,23 +136,22 @@ uqCPProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::uqCPProblemClass(
                                                                 qoiFunctionObj);
   }
 
-  if (m_env.rank() == 0) std::cout << "Leaving uqCPProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::constructor()"
+  if (m_env.rank() == 0) std::cout << "Leaving uqCPProblemClass<P_V,P_M,Q_V,Q_M>::constructor()"
                                    << ": prefix = " << m_prefix
                                    << std::endl;
 }
 
-template <class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
-uqCPProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::~uqCPProblemClass()
+template <class P_V,class P_M,class Q_V,class Q_M>
+uqCPProblemClass<P_V,P_M,Q_V,Q_M>::~uqCPProblemClass()
 {
   if (m_optionsDesc    ) delete m_optionsDesc;
   if (m_qoiSpace       ) delete m_qoiSpace;
-  if (m_observableSpace) delete m_observableSpace;
   if (m_paramSpace     ) delete m_paramSpace;
 }
 
-template<class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
+template<class P_V,class P_M,class Q_V,class Q_M>
 void
-uqCPProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::defineMyOptions(
+uqCPProblemClass<P_V,P_M,Q_V,Q_M>::defineMyOptions(
   po::options_description& optionsDesc)
 {
   optionsDesc.add_options()
@@ -181,9 +163,9 @@ uqCPProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::defineMyOptions(
   return;
 }
 
-template<class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
+template<class P_V,class P_M,class Q_V,class Q_M>
 void
-  uqCPProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::getMyOptionValues(
+  uqCPProblemClass<P_V,P_M,Q_V,Q_M>::getMyOptionValues(
   po::options_description& optionsDesc)
 {
   if (m_env.allOptionsMap().count(m_option_help.c_str())) {
@@ -203,30 +185,23 @@ void
   return;
 }
 
-template <class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
+template <class P_V,class P_M,class Q_V,class Q_M>
 const uqParamSpaceClass<P_V,P_M>&
-uqCPProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::paramSpace() const
+uqCPProblemClass<P_V,P_M,Q_V,Q_M>::paramSpace() const
 {
   return *m_paramSpace;
 }
 
-template <class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
-const uqObservableSpaceClass<L_V,L_M>&
-uqCPProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::observableSpace() const
-{
-  return *m_observableSpace;
-}
-
-template <class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
+template <class P_V,class P_M,class Q_V,class Q_M>
 const uqQoISpaceClass<Q_V,Q_M>&
-uqCPProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::qoiSpace() const
+uqCPProblemClass<P_V,P_M,Q_V,Q_M>::qoiSpace() const
 {
   return *m_qoiSpace;
 }
 
-template <class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
+template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqCPProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::solve()
+uqCPProblemClass<P_V,P_M,Q_V,Q_M>::solve()
 {
   if (m_calibPerform) {
     m_calibProblem->solve();
@@ -239,31 +214,31 @@ uqCPProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::solve()
   return;
 }
 
-template <class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
-const uqCalibProblemClass<P_V,P_M,L_V,L_M>&
-uqCPProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::calibProblem() const
+template <class P_V,class P_M,class Q_V,class Q_M>
+const uqCalibProblemClass<P_V,P_M>&
+uqCPProblemClass<P_V,P_M,Q_V,Q_M>::calibProblem() const
 {
   return *m_calibProblem;
 }
 
-template <class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
+template <class P_V,class P_M,class Q_V,class Q_M>
 const uqPropagProblemClass<P_V,P_M,Q_V,Q_M>&
-uqCPProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::propagProblem() const
+uqCPProblemClass<P_V,P_M,Q_V,Q_M>::propagProblem() const
 {
   return *m_propagProblem;
 }
 
-template <class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
+template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqCPProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>::print(std::ostream& os) const
+uqCPProblemClass<P_V,P_M,Q_V,Q_M>::print(std::ostream& os) const
 {
   os << "\n" << m_option_calib_perform  << " = " << m_calibPerform
      << "\n" << m_option_propag_perform << " = " << m_propagPerform;
   os << std::endl;
 }
 
-template<class P_V,class P_M,class L_V,class L_M,class Q_V,class Q_M>
-std::ostream& operator<<(std::ostream& os, const uqCPProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M>& obj)
+template<class P_V,class P_M,class Q_V,class Q_M>
+std::ostream& operator<<(std::ostream& os, const uqCPProblemClass<P_V,P_M,Q_V,Q_M>& obj)
 {
   obj.print(os);
 

@@ -59,13 +59,8 @@ cp_likelihoodRoutine_DataType
 
 // The actual (user defined) likelihood routine
 template<class P_V,class P_M,class S_V,class S_M,class L_V,class L_M>
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
 double
 cp_likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
-#else
-void
-  cp_likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr, L_V& resultValues)
-#endif
 {
   double A                       = paramValues[0];
   double E                       = paramValues[1];
@@ -116,10 +111,6 @@ void
     M_old[0]=Mass[0];
   }
   double resultValue = misfit1/variance1;
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
-#else
-  resultValues[0] = resultValue;
-#endif
 	
   //printf("loopSize = %d\n",loopSize);
   if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
@@ -130,11 +121,7 @@ void
   gsl_odeiv_control_free(c);
   gsl_odeiv_step_free   (s);
 
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
   return resultValue;
-#else
-  return;
-#endif
 }
 
 //********************************************************
@@ -285,11 +272,7 @@ uqAppl(const uqEnvironmentClass& env)
   cp_likelihoodRoutine_Data.variance1 = variance1;
   cp_likelihoodRoutine_Data.Te1       = &Te1; // temperatures
   cp_likelihoodRoutine_Data.Me1       = &Me1; // relative masses
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
   uqCompleteScalarLhFunction_Class<P_V,P_M> cp_likelihoodFunctionObj(cp_likelihoodRoutine<P_V,P_M,S_V,S_M,L_V,L_M>,
-#else
-  uqCompleteVectorLhFunction_Class<P_V,P_M,L_V,L_M> cp_likelihoodFunctionObj(cp_likelihoodRoutine<P_V,P_M,S_V,S_M,L_V,L_M>,
-#endif
                                                                      (void *) &cp_likelihoodRoutine_Data,
                                                                      true); // the routine computes [-2.*ln(Likelihood)]
 
@@ -322,14 +305,14 @@ uqAppl(const uqEnvironmentClass& env)
   //*****************************************************
   // Step 3 of 4: Instantiate the CP (calibration+propagation) problem, together with its spaces
   //*****************************************************
-  uqCPProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M> cpProblem(env,
-                                                      "",
-                                                      cp_priorParamDensityObj,  // substep 1: calibration prior parameter density
-                                                      cp_likelihoodFunctionObj, // substep 2: calibration likelihood function
-                                                      cp_proposalCovMatrix,     // substep 3: calibration gaussian proposal (density and generator)
-                                                      cp_proposalDensityObj,    // substep 3: calibration proposal density
-                                                      cp_proposalGeneratorObj,  // substep 3: calibration proposal generator
-                                                      cp_qoiFunctionObj);       // substep 4: propagation qoi function
+  uqCPProblemClass<P_V,P_M,Q_V,Q_M> cpProblem(env,
+                                              "",
+                                              cp_priorParamDensityObj,  // substep 1: calibration prior parameter density
+                                              cp_likelihoodFunctionObj, // substep 2: calibration likelihood function
+                                              cp_proposalCovMatrix,     // substep 3: calibration gaussian proposal (density and generator)
+                                              cp_proposalDensityObj,    // substep 3: calibration proposal density
+                                              cp_proposalGeneratorObj,  // substep 3: calibration proposal generator
+                                              cp_qoiFunctionObj);       // substep 4: propagation qoi function
 
   //******************************************************
   // Step 4 of 4: Solve the CP problem

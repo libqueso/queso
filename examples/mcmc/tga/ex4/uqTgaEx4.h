@@ -59,13 +59,8 @@ stage0_likelihoodRoutine_DataType
 
 // The actual (user defined) likelihood routine
 template<class P_V,class P_M,class S_V,class S_M,class L_V,class L_M>
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
 double
 stage0_likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
-#else
-void
-stage0_likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr, L_V& resultValues)
-#endif
 {
   double A                       = paramValues[0];
   double E                       = paramValues[1];
@@ -116,10 +111,6 @@ stage0_likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr, L_
     M_old[0]=Mass[0];
   }
   double resultValue = misfit1/variance1;
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
-#else
-  resultValues[0] = resultValue;
-#endif
 	
   //printf("loopSize = %d\n",loopSize);
   if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
@@ -130,11 +121,7 @@ stage0_likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr, L_
   gsl_odeiv_control_free(c);
   gsl_odeiv_step_free   (s);
 
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
   return resultValue;
-#else
-  return;
-#endif
 }
 
 //********************************************************
@@ -232,8 +219,8 @@ uqAppl(const uqEnvironmentClass& env)
   //*****************************************************
   // Step 1 of 4: Instantiate the validation problem
   //*****************************************************
-  uqValidProblemClass<P_V,P_M,L_V,L_M,Q_V,Q_M> validProblem(env,
-                                                            "");
+  uqValidProblemClass<P_V,P_M,Q_V,Q_M> validProblem(env,
+                                                    "");
 
   //******************************************************
   // Step 2 of 4: Set the first validation problem stage
@@ -292,13 +279,9 @@ uqAppl(const uqEnvironmentClass& env)
   stage0_likelihoodRoutine_Data.variance1 = variance1;
   stage0_likelihoodRoutine_Data.Te1       = &Te1; // temperatures
   stage0_likelihoodRoutine_Data.Me1       = &Me1; // relative masses
-#ifdef UQ_BMCDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
   uqCompleteScalarLhFunction_Class<P_V,P_M> stage0_likelihoodFunctionObj(stage0_likelihoodRoutine<P_V,P_M,S_V,S_M,L_V,L_M>,
-#else
-  uqCompleteVectorLhFunction_Class<P_V,P_M,L_V,L_M> stage0_likelihoodFunctionObj(stage0_likelihoodRoutine<P_V,P_M,S_V,S_M,L_V,L_M>,
-#endif
-                                                                                 (void *) &stage0_likelihoodRoutine_Data,
-                                                                                 true); // the routine computes [-2.*ln(Likelihood)]
+                                                                         (void *) &stage0_likelihoodRoutine_Data,
+                                                                         true); // the routine computes [-2.*ln(Likelihood)]
 
   //******************************************************
   // Substep 2.3: Define the proposal density and proposal generator
