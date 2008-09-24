@@ -19,8 +19,10 @@ val_stageOrder   = 0
 val_stage_0_help                 = anything
 val_stage_0_cal_perform         = 1
 val_stage_0_cal_inputStageId    = -1
+val_stage_0_cal_distrCalculator = bmc
 val_stage_0_pro_perform         = 1
 val_stage_0_pro_inputStageId    = 0
+val_stage_0_pro_distrCalculator = mc
 
 ###############################################
 # Validation Problem Stage 'val_stage_0_': parameter/state/observable/qoi spaces
@@ -50,8 +52,8 @@ val_stage_0_qoiSpace_specificationFile = stage0.qoi
 # '_sizes' examples 16K   128K   1M      2M      16M
 #                   16384 131072 1048576 2097152 16777216
 ###############################################
-#val_stage_0_cal_help            = anything
-val_stage_0_cal_distrCalculator = bmcdc
+
+
 
 val_stage_0_cal_bmcdc_help                   = anything
 val_stage_0_cal_bmcdc_chain_type            = 1
@@ -159,9 +161,6 @@ val_stage_0_cal_bmcdc_filteredChain_stats_kde_numEvalPositions     = 200
 # '_numSamples' examples 16K   128K   1M      2M      16M
 #                        16384 131072 1048576 2097152 16777216
 ###############################################
-#val_stage_0_pro_help            = anything
-val_stage_0_pro_distrCalculator = mcdc
-
 #val_stage_0_pro_mcdc_help            = anything
 val_stage_0_pro_mcdc_numSamples      = 131072
 val_stage_0_pro_mcdc_outputFileName  = stage0Output.m
