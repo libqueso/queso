@@ -41,7 +41,7 @@ int func(double t, const double Mass[], double f[], void *info)
 }
 
 //********************************************************
-// Likelihood function object for the first validation problem stage (with prefix "stage0_").
+// Likelihood function object for the first validation problem stage (with prefix "s1_").
 // A likelihood function object is provided by user and is called by the UQ library.
 // This likelihood function object consists of data and routine.
 //********************************************************
@@ -49,7 +49,7 @@ int func(double t, const double Mass[], double f[], void *info)
 // The (user defined) data type for the data needed by the (user defined) likelihood routine
 template<class P_V, class P_M>
 struct
-stage0_likelihoodRoutine_DataType
+s1_likelihoodRoutine_DataType
 {
   double               beta1;
   double               variance1;
@@ -60,14 +60,14 @@ stage0_likelihoodRoutine_DataType
 // The actual (user defined) likelihood routine
 template<class P_V,class P_M>
 double
-stage0_likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
+s1_likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 {
   double A                       = paramValues[0];
   double E                       = paramValues[1];
-  double beta1                   =  ((stage0_likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta1;
-  double variance1               =  ((stage0_likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->variance1;
-  const std::vector<double>& Te1 = *((stage0_likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Te1;
-  const std::vector<double>& Me1 = *((stage0_likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Me1;
+  double beta1                   =  ((s1_likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta1;
+  double variance1               =  ((s1_likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->variance1;
+  const std::vector<double>& Te1 = *((s1_likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Te1;
+  const std::vector<double>& Me1 = *((s1_likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Me1;
   std::vector<double> Mt1(Me1.size(),0.);
 
   double params[]={A,E,beta1};
@@ -95,7 +95,7 @@ stage0_likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
     int status = gsl_odeiv_evolve_apply(e, c, s, &sys, &t, t1, &h, Mass);
     UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
                         paramValues.env().rank(),
-                        "stage0_likelihoodRoutine()",
+                        "s1_likelihoodRoutine()",
                         "gsl_odeiv_evolve_apply() failed");
     //printf("t = %6.1lf, mass = %10.4lf\n",t,Mass[0]);
     //loopSize++;
@@ -114,7 +114,7 @@ stage0_likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 	
   //printf("loopSize = %d\n",loopSize);
   if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
-    printf("In stage0_likelihoodRoutine(), A = %g, E = %g, beta1 = %.3lf: misfit1 = %lf, likelihood1 = %lf.\n",A,E,beta1,misfit1,resultValue);
+    printf("In s1_likelihoodRoutine(), A = %g, E = %g, beta1 = %.3lf: misfit1 = %lf, likelihood1 = %lf.\n",A,E,beta1,misfit1,resultValue);
   }
 
   gsl_odeiv_evolve_free (e);
@@ -125,14 +125,14 @@ stage0_likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 }
 
 //********************************************************
-// QoI function object for the first validation problem stage (with prefix "stage0_").
+// QoI function object for the first validation problem stage (with prefix "s1_").
 // A QoI function object is provided by user and is called by the UQ library.
 // This QoI function object consists of data and routine.
 //********************************************************
 // The (user defined) data type for the data needed by the (user defined) qoi routine
 template<class P_V,class P_M,class Q_V, class Q_M>
 struct
-stage0_qoiRoutine_DataType
+s1_qoiRoutine_DataType
 {
   double beta1;
   double criticalMass1;
@@ -140,12 +140,12 @@ stage0_qoiRoutine_DataType
 
 // The actual (user defined) qoi routine
 template<class P_V,class P_M,class Q_V,class Q_M>
-void stage0_qoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiValues)
+void s1_qoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiValues)
 {
   double A             = paramValues[0];
   double E             = paramValues[1];
-  double beta1         = ((stage0_qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->beta1;
-  double criticalMass1 = ((stage0_qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->criticalMass1;
+  double beta1         = ((s1_qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->beta1;
+  double criticalMass1 = ((s1_qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->criticalMass1;
 
   double params[]={A,E,beta1};
       	
@@ -172,7 +172,7 @@ void stage0_qoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V&
     int status = gsl_odeiv_evolve_apply(e, c, s, &sys, &t, t1, &h, Mass);
     UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
                         paramValues.env().rank(),
-                        "stage0_qoiRoutine()",
+                        "s1_qoiRoutine()",
                         "gsl_odeiv_evolve_apply() failed");
     //printf("t = %6.1lf, mass = %10.4lf\n",t,Mass[0]);
     //loopSize++;
@@ -189,7 +189,7 @@ void stage0_qoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V&
 	
   //printf("loopSize = %d\n",loopSize);
   if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
-    printf("In stage0_qoiRoutine(), A = %g, E = %g, beta1 = %.3lf, criticalMass1 = %.3lf: qoi = %lf.\n",A,E,beta1,criticalMass1,qoiValues[0]);
+    printf("In s1_qoiRoutine(), A = %g, E = %g, beta1 = %.3lf, criticalMass1 = %.3lf: qoi = %lf.\n",A,E,beta1,criticalMass1,qoiValues[0]);
   }
 
   gsl_odeiv_evolve_free (e);
@@ -268,36 +268,36 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
 
   // Use the default prior density, provided by the UQ library
-  uqProbDensity_BaseClass<P_V,P_M>* stage0_priorParamDensityObj = NULL;
+  uqProbDensity_BaseClass<P_V,P_M>* s1_priorParamDensityObj = NULL;
 
   //******************************************************
   // Substep 2.2: Define the likelihood function object: -2*ln[likelihood]
   //******************************************************
 
-  stage0_likelihoodRoutine_DataType<P_V,P_M> stage0_likelihoodRoutine_Data;
-  stage0_likelihoodRoutine_Data.beta1     = beta1;
-  stage0_likelihoodRoutine_Data.variance1 = variance1;
-  stage0_likelihoodRoutine_Data.Te1       = &Te1; // temperatures
-  stage0_likelihoodRoutine_Data.Me1       = &Me1; // relative masses
-  uqCompleteScalarLhFunction_Class<P_V,P_M> stage0_likelihoodFunctionObj(stage0_likelihoodRoutine<P_V,P_M>,
-                                                                         (void *) &stage0_likelihoodRoutine_Data,
-                                                                         true); // the routine computes [-2.*ln(Likelihood)]
+  s1_likelihoodRoutine_DataType<P_V,P_M> s1_likelihoodRoutine_Data;
+  s1_likelihoodRoutine_Data.beta1     = beta1;
+  s1_likelihoodRoutine_Data.variance1 = variance1;
+  s1_likelihoodRoutine_Data.Te1       = &Te1; // temperatures
+  s1_likelihoodRoutine_Data.Me1       = &Me1; // relative masses
+  uqRoutineProbDensity_Class<P_V,P_M> s1_likelihoodFunctionObj(s1_likelihoodRoutine<P_V,P_M>,
+                                                               (void *) &s1_likelihoodRoutine_Data,
+                                                               true); // the routine computes [-2.*ln(Likelihood)]
 
   //******************************************************
   // Substep 2.3: Define the proposal density and proposal generator
   //******************************************************
 
   // Use the default gaussian proposal and default gaussian generator with the default covariance matrix, all provided by the UQ library
-  P_M*                                    stage0_proposalCovMatrix    = NULL;
-  uqProposalDensity_BaseClass<P_V,P_M>*   stage0_proposalDensityObj   = NULL;
-  uqProposalGenerator_BaseClass<P_V,P_M>* stage0_proposalGeneratorObj = NULL;
+  P_M*                                    s1_proposalCovMatrix    = NULL;
+  uqProposalDensity_BaseClass<P_V,P_M>*   s1_proposalDensityObj   = NULL;
+  uqProposalGenerator_BaseClass<P_V,P_M>* s1_proposalGeneratorObj = NULL;
 
-  //uqParamSpaceClass<P_V,P_M> stage0_paramSpace(env,"val_stage_0_");
-  //P_M* stage0_proposalCovMatrix = stage0_paramSpace.newMatrix();
-  //(*stage0_proposalCovMatrix)(0,0) = 1.65122e+10;
-  //(*stage0_proposalCovMatrix)(0,1) = 0.;
-  //(*stage0_proposalCovMatrix)(1,0) = 0.;
-  //(*stage0_proposalCovMatrix)(1,1) = 9.70225e+04;
+  //uqParamSpaceClass<P_V,P_M> s1_paramSpace(env,"val_stage_0_");
+  //P_M* s1_proposalCovMatrix = s1_paramSpace.newMatrix();
+  //(*s1_proposalCovMatrix)(0,0) = 1.65122e+10;
+  //(*s1_proposalCovMatrix)(0,1) = 0.;
+  //(*s1_proposalCovMatrix)(1,0) = 0.;
+  //(*s1_proposalCovMatrix)(1,1) = 9.70225e+04;
 
   //******************************************************
   // Substep 2.4: Define the propagation input parameters (density and generator)
@@ -305,32 +305,32 @@ uqAppl(const uqEnvironmentClass& env)
 
   // Let the 'uqValidProblem' class internally use the parameter generator obtained with the calibration.
   // The 'uqTgaEx2.inp' file should set 'val_stage_0_pro_inputStageId = 0'.
-  uqProbDensity_BaseClass<P_V,P_M>*     stage0_propagParamDensityObj   = NULL;
-  uqSampleGenerator_BaseClass<P_V,P_M>* stage0_propagParamGeneratorObj = NULL;
+  uqProbDensity_BaseClass<P_V,P_M>*     s1_propagParamDensityObj   = NULL;
+  uqSampleGenerator_BaseClass<P_V,P_M>* s1_propagParamGeneratorObj = NULL;
 
   //******************************************************
   // Substep 2.5: Define the qoi function object
   //******************************************************
 
-  stage0_qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> stage0_qoiRoutine_Data;
-  stage0_qoiRoutine_Data.beta1         = beta1;
-  stage0_qoiRoutine_Data.criticalMass1 = criticalMass1;
-  uqQoIFunction_BaseClass<P_V,P_M,Q_V,Q_M> stage0_qoiFunctionObj(stage0_qoiRoutine<P_V,P_M,Q_V,Q_M>,
-                                                                 (void *) &stage0_qoiRoutine_Data);
+  s1_qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> s1_qoiRoutine_Data;
+  s1_qoiRoutine_Data.beta1         = beta1;
+  s1_qoiRoutine_Data.criticalMass1 = criticalMass1;
+  uqQoIFunction_BaseClass<P_V,P_M,Q_V,Q_M> s1_qoiFunctionObj(s1_qoiRoutine<P_V,P_M,Q_V,Q_M>,
+                                                             (void *) &s1_qoiRoutine_Data);
 
   //******************************************************
   // Substep 2.6: Instantiate the first validation problem stage
   //******************************************************
 
-  validProblem.instantiateStage(0,                              // stage id
-                                stage0_priorParamDensityObj,    // substep 2.1: calibration prior parameter density
-                                &stage0_likelihoodFunctionObj,  // substep 2.2: calibration likelihood function
-                                stage0_proposalCovMatrix,       // substep 2.3: calibration gaussian proposal (density and generator)
-                                stage0_proposalDensityObj,      // substep 2.3: calibration proposal density
-                                stage0_proposalGeneratorObj,    // substep 2.3: calibration proposal generator
-                                stage0_propagParamDensityObj,   // substep 2.4: propagation input parameter density
-                                stage0_propagParamGeneratorObj, // substep 2.4: propagation input parameter generator
-                                &stage0_qoiFunctionObj);        // substep 2.5: propagation qoi function
+  validProblem.instantiateStage(1,                              // stage id
+                                s1_priorParamDensityObj,    // substep 2.1: calibration prior parameter density
+                                &s1_likelihoodFunctionObj,  // substep 2.2: calibration likelihood function
+                                s1_proposalCovMatrix,       // substep 2.3: calibration gaussian proposal (density and generator)
+                                s1_proposalDensityObj,      // substep 2.3: calibration proposal density
+                                s1_proposalGeneratorObj,    // substep 2.3: calibration proposal generator
+                                s1_propagParamDensityObj,   // substep 2.4: propagation input parameter density
+                                s1_propagParamGeneratorObj, // substep 2.4: propagation input parameter generator
+                                &s1_qoiFunctionObj);        // substep 2.5: propagation qoi function
 
   //******************************************************
   // Step 3 of 4: Set the second validation problem stage

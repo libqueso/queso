@@ -1,0 +1,545 @@
+
+=================================
+ QUESO toolkit, MCMC tool, version 0.20, released on Sep/29/2008
+=================================
+
+Beginning run at Thu Sep 25 14:03:16 2008
+
+After getting option values, state of uqEnvironmentClass object is:
+m_verbosity = 2
+m_seed = 0
+
+Beginning run of 'uqTgaEx3' example
+
+Parameter specification file 'cp.par' has 4 lines and specifies 2 parameters.
+After getting values of options with prefix 'cp_paramSpace_', state of uqParamSpaceClass object is:
+cp_paramSpace_dim = 2
+Parameters are:
+0 A_param 2.57e+11 2.4e+11 2.8e+11 0 inf
+1 E_param 197000 180000 220000 0 inf
+
+QoI specification file 'cp.qoi' has 4 lines and specifies 1 qois.
+Just read, for qoiId = 0: qoiName = TimeFor25PercentOfMass
+After getting values of options with prefix 'cp_qoiSpace_', state of uqQoISpaceClass object is:
+cp_qoiSpace_dim = 1
+QoIs are:
+0 TimeFor25PercentOfMass
+
+Entering uqCPProblemClass<P_V,P_M,Q_V,Q_M>::constructor(): prefix = cp_
+In uqCPProblemClass<P_V,P_M,Q_V,Q_M>::constructor(): after getting values of options, state of object is:
+
+cp_performCalibration = 1
+cp_performPropagation = 1
+
+Entering uqCalibProblemClass<P_V,P_M>::constructor(): prefix = cp_cal_, m_userSpacesAreNull = 0
+In uqCalibProblemClass<P_V,P_M>::constructor(): after getting values of options, state of object is:
+
+cp_cal_solver = bayes_mc
+
+Entering uqMarkovChainSGClass<P_V,P_M>::constructor()
+Bayesian Markov chain options:
+  --cp_cal_mc_help                                     produce help message for
+                                                       Bayesian Markov chain 
+                                                       distr. calculator
+  --cp_cal_mc_chain_type arg (=1)                      type of chain (1=Markov,
+                                                       2=White noise)
+  --cp_cal_mc_chain_number arg (=1)                    number of chain(s)
+  --cp_cal_mc_chain_sizes arg (=100)                   list of size(s) of 
+                                                       chain(s)
+  --cp_cal_mc_chain_outputFileNames arg (=.)           list of name(s) of 
+                                                       output file(s)
+  --cp_cal_mc_chain_use2 arg (=0)                      use chain2
+  --cp_cal_mc_chain_generateExtra arg (=0)             generate extra chains
+  --cp_cal_mc_chain_displayPeriod arg (=500)           period of message 
+                                                       display during chain 
+                                                       generation
+  --cp_cal_mc_chain_measureRunTimes arg (=0)           measure run times
+  --cp_cal_mc_chain_write arg (=0)                     write chain values to 
+                                                       the output file
+  --cp_cal_mc_chain_computeStats arg (=0)              compute statistics on 
+                                                       chain
+  --cp_cal_mc_filteredChain_generate arg (=0)          generate filtered chain
+  --cp_cal_mc_filteredChain_discardedPortion arg (=0)  initial discarded 
+                                                       portion for chain 
+                                                       filtering
+  --cp_cal_mc_filteredChain_lag arg (=1)               spacing for chain 
+                                                       filtering
+  --cp_cal_mc_filteredChain_write arg (=0)             write filtered chain
+  --cp_cal_mc_filteredChain_computeStats arg (=0)      compute statistics on 
+                                                       filtered chain
+  --cp_cal_mc_dr_maxNumExtraStages arg (=0)            'dr' maximum number of 
+                                                       extra stages
+  --cp_cal_mc_dr_scalesForExtraStages arg (=1.)        'dr' list of scales for 
+                                                       proposal cov matrices 
+                                                       from 2nd stage on
+  --cp_cal_mc_am_initialNonAdaptInterval arg (=0)      'am' initial non 
+                                                       adaptation interval
+  --cp_cal_mc_am_adaptInterval arg (=0)                'am' adaptation interval
+  --cp_cal_mc_am_eta arg (=1)                          'am' eta
+  --cp_cal_mc_am_epsilon arg (=1.0000000000000001e-05) 'am' epsilon
+
+In uqMarkovChainSGClass<P_V,P_M>::constructor(): after getting values of options with prefix 'cp_cal_mc_', state of  object is:
+cp_cal_mc_chain_type = 1
+cp_cal_mc_chain_number = 1
+cp_cal_mc_chain_sizes = 131072 
+cp_cal_mc_chain_outputFileNames = cpOutput.m 
+cp_cal_mc_chain_use2 = 0
+cp_cal_mc_chain_generateExtra = 0
+cp_cal_mc_chain_displayPeriod = 20000
+cp_cal_mc_chain_measureRunTimes = 1
+cp_cal_mc_chain_write = 0
+cp_cal_mc_chain_computeStats = 1
+cp_cal_mc_filteredChain_generate = 1
+cp_cal_mc_filteredChain_discardedPortion = 0
+cp_cal_mc_filteredChain_lag = 20
+cp_cal_mc_filteredChain_write = 1
+cp_cal_mc_filteredChain_computeStats = 1
+cp_cal_mc_dr_maxNumExtraStages = 1
+cp_cal_mc_dr_scalesForExtraStages = 1 5 
+cp_cal_mc_am_initialNonAdaptInterval = 0
+cp_cal_mc_am_adaptInterval = 100
+cp_cal_mc_am_eta = 1.92
+cp_cal_mc_am_epsilon = 1e-05
+
+Entering uqChainStatisticalOptions::constructor(), prefix = cp_cal_mc_chain_stats_
+After getting values of options with prefix 'cp_cal_mc_chain_stats_', state of uqChainStatisticalOptionsClass object is:
+
+cp_cal_mc_chain_stats_initialDiscardedPortions = 0 0.1 0.2 0.3 
+cp_cal_mc_chain_stats_bmm_run = 0
+cp_cal_mc_chain_stats_bmm_lengths = 50 100 200 250 
+cp_cal_mc_chain_stats_fft_compute = 0
+cp_cal_mc_chain_stats_fft_paramId = 0
+cp_cal_mc_chain_stats_fft_size = 2048
+cp_cal_mc_chain_stats_fft_testInversion = 1
+cp_cal_mc_chain_stats_fft_write = 1
+cp_cal_mc_chain_stats_psd_compute = 0
+cp_cal_mc_chain_stats_psd_paramId = 0
+cp_cal_mc_chain_stats_psd_numBlocks = 8
+cp_cal_mc_chain_stats_psd_hopSizeRatio = 0.5
+cp_cal_mc_chain_stats_psd_write = 1
+cp_cal_mc_chain_stats_psdAtZero_compute = 0
+cp_cal_mc_chain_stats_psdAtZero_numBlocks = 32 
+cp_cal_mc_chain_stats_psdAtZero_hopSizeRatio = 0.5
+cp_cal_mc_chain_stats_psdAtZero_display = 1
+cp_cal_mc_chain_stats_psdAtZero_write = 1
+cp_cal_mc_chain_stats_geweke_compute = 1
+cp_cal_mc_chain_stats_geweke_naRatio = 0.1
+cp_cal_mc_chain_stats_geweke_nbRatio = 0.5
+cp_cal_mc_chain_stats_geweke_display = 1
+cp_cal_mc_chain_stats_geweke_write = 1
+cp_cal_mc_chain_stats_corr_computeViaDef = 0
+cp_cal_mc_chain_stats_corr_computeViaFft = 1
+cp_cal_mc_chain_stats_corr_secondLag = 2
+cp_cal_mc_chain_stats_corr_lagSpacing = 2
+cp_cal_mc_chain_stats_corr_numLags = 15
+cp_cal_mc_chain_stats_corr_display = 1
+cp_cal_mc_chain_stats_corr_write = 1
+cp_cal_mc_chain_stats_hist_compute = 0
+cp_cal_mc_chain_stats_hist_numInternalBins = 250
+cp_cal_mc_chain_stats_kde_compute = 0
+cp_cal_mc_chain_stats_kde_numEvalPositions = 250
+
+Leaving uqChainStatisticalOptions::constructor(), prefix = cp_cal_mc_chain_stats_
+Entering uqChainStatisticalOptions::constructor(), prefix = cp_cal_mc_filteredChain_stats_
+After getting values of options with prefix 'cp_cal_mc_filteredChain_stats_', state of uqChainStatisticalOptionsClass object is:
+
+cp_cal_mc_filteredChain_stats_initialDiscardedPortions = 0 
+cp_cal_mc_filteredChain_stats_bmm_run = 0
+cp_cal_mc_filteredChain_stats_bmm_lengths = 50 100 200 250 
+cp_cal_mc_filteredChain_stats_fft_compute = 0
+cp_cal_mc_filteredChain_stats_fft_paramId = 0
+cp_cal_mc_filteredChain_stats_fft_size = 2048
+cp_cal_mc_filteredChain_stats_fft_testInversion = 1
+cp_cal_mc_filteredChain_stats_fft_write = 1
+cp_cal_mc_filteredChain_stats_psd_compute = 0
+cp_cal_mc_filteredChain_stats_psd_paramId = 0
+cp_cal_mc_filteredChain_stats_psd_numBlocks = 8
+cp_cal_mc_filteredChain_stats_psd_hopSizeRatio = 0.5
+cp_cal_mc_filteredChain_stats_psd_write = 1
+cp_cal_mc_filteredChain_stats_psdAtZero_compute = 0
+cp_cal_mc_filteredChain_stats_psdAtZero_numBlocks = 32 
+cp_cal_mc_filteredChain_stats_psdAtZero_hopSizeRatio = 0.5
+cp_cal_mc_filteredChain_stats_psdAtZero_display = 1
+cp_cal_mc_filteredChain_stats_psdAtZero_write = 1
+cp_cal_mc_filteredChain_stats_geweke_compute = 0
+cp_cal_mc_filteredChain_stats_geweke_naRatio = 0.1
+cp_cal_mc_filteredChain_stats_geweke_nbRatio = 0.5
+cp_cal_mc_filteredChain_stats_geweke_display = 1
+cp_cal_mc_filteredChain_stats_geweke_write = 1
+cp_cal_mc_filteredChain_stats_corr_computeViaDef = 0
+cp_cal_mc_filteredChain_stats_corr_computeViaFft = 1
+cp_cal_mc_filteredChain_stats_corr_secondLag = 2
+cp_cal_mc_filteredChain_stats_corr_lagSpacing = 2
+cp_cal_mc_filteredChain_stats_corr_numLags = 15
+cp_cal_mc_filteredChain_stats_corr_display = 1
+cp_cal_mc_filteredChain_stats_corr_write = 1
+cp_cal_mc_filteredChain_stats_hist_compute = 1
+cp_cal_mc_filteredChain_stats_hist_numInternalBins = 250
+cp_cal_mc_filteredChain_stats_kde_compute = 1
+cp_cal_mc_filteredChain_stats_kde_numEvalPositions = 250
+
+Leaving uqChainStatisticalOptions::constructor(), prefix = cp_cal_mc_filteredChain_stats_
+Leaving uqMarkovChainSGClass<P_V,P_M>::constructor()
+Leaving uqCalibProblemClass<P_V,P_M>::constructor(): prefix = cp_cal_, m_userSpacesAreNull = 0
+Entering uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::constructor(): prefix = cp_pro_, m_userSpacesAreNull = 0
+In uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::constructor(): after getting values of options, state of object is:
+
+cp_pro_solver = mc_kde
+
+Entering uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::constructor()
+In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::constructor(): after getting values of options with prefix 'cp_pro_mc_', state of  object is:
+cp_pro_mc_numSamples = 131072
+cp_pro_mc_outputFileName = cpOutput.m
+cp_pro_mc_use2 = 0
+cp_pro_mc_displayPeriod = 20000
+cp_pro_mc_measureRunTimes = 1
+cp_pro_mc_write = 1
+cp_pro_mc_computeStats = 1
+Entering uqChainStatisticalOptions::constructor(), prefix = cp_pro_mc_seq_stats_
+After getting values of options with prefix 'cp_pro_mc_seq_stats_', state of uqChainStatisticalOptionsClass object is:
+
+cp_pro_mc_seq_stats_initialDiscardedPortions = 0 
+cp_pro_mc_seq_stats_bmm_run = 0
+cp_pro_mc_seq_stats_bmm_lengths = 50 100 200 250 
+cp_pro_mc_seq_stats_fft_compute = 0
+cp_pro_mc_seq_stats_fft_paramId = 0
+cp_pro_mc_seq_stats_fft_size = 2048
+cp_pro_mc_seq_stats_fft_testInversion = 1
+cp_pro_mc_seq_stats_fft_write = 1
+cp_pro_mc_seq_stats_psd_compute = 0
+cp_pro_mc_seq_stats_psd_paramId = 0
+cp_pro_mc_seq_stats_psd_numBlocks = 8
+cp_pro_mc_seq_stats_psd_hopSizeRatio = 0.5
+cp_pro_mc_seq_stats_psd_write = 1
+cp_pro_mc_seq_stats_psdAtZero_compute = 0
+cp_pro_mc_seq_stats_psdAtZero_numBlocks = 32 
+cp_pro_mc_seq_stats_psdAtZero_hopSizeRatio = 0.5
+cp_pro_mc_seq_stats_psdAtZero_display = 1
+cp_pro_mc_seq_stats_psdAtZero_write = 1
+cp_pro_mc_seq_stats_geweke_compute = 0
+cp_pro_mc_seq_stats_geweke_naRatio = 0.1
+cp_pro_mc_seq_stats_geweke_nbRatio = 0.5
+cp_pro_mc_seq_stats_geweke_display = 1
+cp_pro_mc_seq_stats_geweke_write = 1
+cp_pro_mc_seq_stats_corr_computeViaDef = 0
+cp_pro_mc_seq_stats_corr_computeViaFft = 1
+cp_pro_mc_seq_stats_corr_secondLag = 2
+cp_pro_mc_seq_stats_corr_lagSpacing = 1
+cp_pro_mc_seq_stats_corr_numLags = 15
+cp_pro_mc_seq_stats_corr_display = 1
+cp_pro_mc_seq_stats_corr_write = 1
+cp_pro_mc_seq_stats_hist_compute = 1
+cp_pro_mc_seq_stats_hist_numInternalBins = 250
+cp_pro_mc_seq_stats_kde_compute = 1
+cp_pro_mc_seq_stats_kde_numEvalPositions = 250
+
+Leaving uqChainStatisticalOptions::constructor(), prefix = cp_pro_mc_seq_stats_
+Leaving uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::constructor()
+Leaving uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::constructor(): prefix = cp_pro_, m_userSpacesAreNull = 0
+Leaving uqCPProblemClass<P_V,P_M,Q_V,Q_M>::constructor(): prefix = cp_
+In uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain(), contents of internally generated proposal cov matrix are:
+1.65122e+20 0 
+0 9.70225e+07 
+
+In uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain(), m_lowerCholProposalCovMatrices[0] contents are:
+1.285e+10 0 
+0 9850 
+
+Starting the generation of Markov chain cp_cal_mc_0_chain, with 131072 positions...
+Finished generating 20000 positions
+Finished generating 40000 positions
+Finished generating 60000 positions
+Finished generating 80000 positions
+Finished generating 100000 positions
+Finished generating 120000 positions
+Finished the generation of Markov chain cp_cal_mc_0_chain, with 131072 positions
+Some information about this chain:
+  Chain run time       = 70.4531 seconds
+
+ Breaking of the chain run time:
+
+  Candidate run time   = 2.68917 seconds (3.81697%)
+  Target d. run time   = 64.1051 seconds (90.9898%)
+  Mh alpha run time    = 0.198167 seconds (0.281275%)
+  Dr alpha run time    = 1.40244 seconds (1.9906%)
+----------------------   --------------
+  Sum                  = 68.3949 seconds (97.0787%)
+
+ Other run times:
+  DR run time          = 28.4294 seconds (40.3523%)
+  AM run time          = 0 seconds (0%)
+  Rejection percentage = 45.565 %
+   Outbound percentage = 30.3955 %
+Opening output file 'cpOutput.m' for chain loop id = 0 ...
+
+
+-----------------------------------------------------
+ Computing statistics for chain cp_cal_mc_0_chain ...
+-----------------------------------------------------
+
+In uqChainBaseClass<V>::computeStatistics(): initial positions for statistics = 0 13107 26214 39321
+
+-----------------------------------------------------
+Computing mean, sample variance and population variance
+
+Estimated variance of sample mean for the whole chain cp_cal_mc_0_chain, under independence assumption:
+1.00308e+15
+44.5784
+
+Mean and variances took 0.348267 seconds
+
+Mean, sample std, population std
+Parameter    Mean         SampleStd         Popul.Std
+ A_param   2.6002e+11   1.1466e+10   1.1466e+10
+ E_param   1.9610e+05   2.4172e+03   2.4172e+03
+
+-----------------------------------------------------
+Computing Geweke coefficients
+In uqScalarSequenceClass<T>::geweke(), before computation of gewCoef:
+, dataSizeA = 13107, numBlocksA = 114, meanA = 2.59636e+11, psdA = 4.29624e+20, varOfMeanA = 2.05952e+17
+, dataSizeB = 65536, numBlocksB = 256, meanB = 2.60445e+11, psdB = 3.55967e+20, varOfMeanB = 3.41279e+16
+In uqScalarSequenceClass<T>::geweke(), before computation of gewCoef:
+, dataSizeA = 13107, numBlocksA = 114, meanA = 196099, psdA = 6.25942e+06, varOfMeanA = 3000.62
+, dataSizeB = 65536, numBlocksB = 256, meanB = 196150, psdB = 4.66421e+06, varOfMeanB = 447.176
+In uqScalarSequenceClass<T>::geweke(), before computation of gewCoef:
+, dataSizeA = 11796, numBlocksA = 108, meanA = 2.58995e+11, psdA = 3.47118e+20, varOfMeanA = 1.84894e+17
+, dataSizeB = 58982, numBlocksB = 242, meanB = 2.60391e+11, psdB = 3.78854e+20, varOfMeanB = 4.03582e+16
+In uqScalarSequenceClass<T>::geweke(), before computation of gewCoef:
+, dataSizeA = 11796, numBlocksA = 108, meanA = 196029, psdA = 4.77533e+06, varOfMeanA = 2543.6
+, dataSizeB = 58982, numBlocksB = 242, meanB = 196151, psdB = 4.7152e+06, varOfMeanB = 502.297
+In uqScalarSequenceClass<T>::geweke(), before computation of gewCoef:
+, dataSizeA = 10485, numBlocksA = 102, meanA = 2.60661e+11, psdA = 3.18069e+20, varOfMeanA = 1.90604e+17
+, dataSizeB = 52429, numBlocksB = 228, meanB = 2.60381e+11, psdB = 3.62206e+20, varOfMeanB = 4.34074e+16
+In uqScalarSequenceClass<T>::geweke(), before computation of gewCoef:
+, dataSizeA = 10485, numBlocksA = 102, meanA = 196014, psdA = 5.25577e+06, varOfMeanA = 3149.55
+, dataSizeB = 52429, numBlocksB = 228, meanB = 196151, psdB = 4.80053e+06, varOfMeanB = 575.304
+In uqScalarSequenceClass<T>::geweke(), before computation of gewCoef:
+, dataSizeA = 9175, numBlocksA = 95, meanA = 2.59414e+11, psdA = 4.1821e+20, varOfMeanA = 2.86397e+17
+, dataSizeB = 45875, numBlocksB = 214, meanB = 2.60249e+11, psdB = 3.62962e+20, varOfMeanB = 4.97124e+16
+In uqScalarSequenceClass<T>::geweke(), before computation of gewCoef:
+, dataSizeA = 9175, numBlocksA = 95, meanA = 196105, psdA = 4.55716e+06, varOfMeanA = 3120.81
+, dataSizeB = 45875, numBlocksB = 214, meanB = 196155, psdB = 4.19035e+06, varOfMeanB = 573.924
+
+Computed Geweke coefficients with 10% and 50% percentages (each column corresponds to a different initial position on the full chain)
+Parameter            0          13107          26214          39321
+  A_param  -1.6520e+00  -2.9411e+00   5.7975e-01  -1.4394e+00
+  E_param  -8.5974e-01  -2.2189e+00  -2.2381e+00  -8.3417e-01
+Chain Geweke took 2.72621 seconds
+
+-----------------------------------------------------
+Computing autocorrelation coefficients (via fft)
+In uqChainBaseClass<V>::computeCorrViaFFT(): lags for autocorrelation (via fft) =  1 2 4 6 8 10 12 14 16 18 20 22 24 26 28
+In uqChainBaseClass<V>::computeCorrViaFFT(): about to call chain.autoCorrViaFft() with initialPos = 0, numPos = 131072, lagsForCorrs.size() = 15, corrVecs.size() = 15
+In uqChainBaseClass<V>::computeCorrViaFFT(): about to call chain.autoCorrViaFft() with initialPos = 13107, numPos = 117965, lagsForCorrs.size() = 15, corrVecs.size() = 15
+In uqChainBaseClass<V>::computeCorrViaFFT(): about to call chain.autoCorrViaFft() with initialPos = 26214, numPos = 104858, lagsForCorrs.size() = 15, corrVecs.size() = 15
+In uqChainBaseClass<V>::computeCorrViaFFT(): about to call chain.autoCorrViaFft() with initialPos = 39321, numPos = 91751, lagsForCorrs.size() = 15, corrVecs.size() = 15
+
+Estimated variance of sample mean, through autocorrelation (via fft), for subchain beggining at position 0
+2.06538e+16
+387.46
+
+
+Computed autocorrelation coefficients (via fft), for subchain beggining at position 0 (each column corresponds to a different lag)
+Parameter            1            2            4            6            8           10           12           14           16           18           20           22           24           26           28
+  A_param   9.0354e-01   8.1703e-01   6.6785e-01   5.4421e-01   4.4205e-01   3.5893e-01   2.9180e-01   2.3799e-01   1.9311e-01   1.5561e-01   1.2544e-01   9.9911e-02   7.9667e-02   6.3481e-02   5.1410e-02
+  E_param   6.8177e-01   4.6825e-01   2.3000e-01   1.1852e-01   5.9476e-02   3.3572e-02   1.6851e-02   9.2958e-03   5.0820e-03   6.8644e-03   5.3464e-03   3.8032e-03   4.4325e-03   6.9742e-03   3.7682e-03
+
+Estimated variance of sample mean, through autocorrelation (via fft), for subchain beggining at position 13107
+1.92138e+16
+509.762
+
+
+Computed autocorrelation coefficients (via fft), for subchain beggining at position 13107 (each column corresponds to a different lag)
+Parameter            1            2            4            6            8           10           12           14           16           18           20           22           24           26           28
+  A_param   9.0325e-01   8.1653e-01   6.6711e-01   5.4370e-01   4.4145e-01   3.5852e-01   2.9139e-01   2.3735e-01   1.9219e-01   1.5434e-01   1.2386e-01   9.8477e-02   7.8219e-02   6.2087e-02   5.0305e-02
+  E_param   6.8204e-01   4.6899e-01   2.3129e-01   1.1850e-01   5.8306e-02   3.3034e-02   1.7540e-02   9.7152e-03   6.1263e-03   7.2249e-03   5.5757e-03   3.1083e-03   3.6795e-03   6.5868e-03   2.5708e-03
+
+Estimated variance of sample mean, through autocorrelation (via fft), for subchain beggining at position 26214
+9.6768e+15
+325.279
+
+
+Computed autocorrelation coefficients (via fft), for subchain beggining at position 26214 (each column corresponds to a different lag)
+Parameter            1            2            4            6            8           10           12           14           16           18           20           22           24           26           28
+  A_param   9.0321e-01   8.1621e-01   6.6563e-01   5.4143e-01   4.3881e-01   3.5581e-01   2.8837e-01   2.3485e-01   1.9000e-01   1.5251e-01   1.2288e-01   9.8363e-02   7.8765e-02   6.3219e-02   5.2310e-02
+  E_param   6.8292e-01   4.7091e-01   2.3390e-01   1.1939e-01   5.9124e-02   3.2737e-02   1.5457e-02   8.4072e-03   5.8906e-03   6.3057e-03   3.0683e-03   6.2933e-04   8.8192e-04   5.8031e-03   4.2577e-03
+
+Estimated variance of sample mean, through autocorrelation (via fft), for subchain beggining at position 39321
+2.05433e+16
+136.105
+
+
+Computed autocorrelation coefficients (via fft), for subchain beggining at position 39321 (each column corresponds to a different lag)
+Parameter            1            2            4            6            8           10           12           14           16           18           20           22           24           26           28
+  A_param   9.0371e-01   8.1688e-01   6.6612e-01   5.4257e-01   4.4091e-01   3.5906e-01   2.9293e-01   2.4034e-01   1.9666e-01   1.6026e-01   1.3116e-01   1.0622e-01   8.5205e-02   6.7527e-02   5.4198e-02
+  E_param   6.8530e-01   4.7333e-01   2.3440e-01   1.1864e-01   5.7586e-02   3.2883e-02   1.6888e-02   8.5609e-03   4.9113e-03   5.6270e-03   1.8010e-03   7.9597e-04   1.5151e-03   8.5188e-03   5.3904e-03
+Chain autocorrelation (via fft) took 21.7529 seconds
+All statistics took 24.8297 seconds
+
+-----------------------------------------------------
+ Finished computing statistics for chain cp_cal_mc_0_chain
+-----------------------------------------------------
+
+Entering uqSequenceOfVectorsClass<V>::filter(): initialPos = 0, spacing = 20, sequenceSize = 131072
+Leaving uqSequenceOfVectorsClass<V>::filter(): initialPos = 0, spacing = 20, sequenceSize = 6554
+
+
+-----------------------------------------------------
+ Computing statistics for chain cp_cal_mc_0_filteredChain ...
+-----------------------------------------------------
+
+In uqChainBaseClass<V>::computeStatistics(): initial positions for statistics = 0
+
+-----------------------------------------------------
+Computing mean, sample variance and population variance
+
+Estimated variance of sample mean for the whole chain cp_cal_mc_0_filteredChain, under independence assumption:
+1.98429e+16
+897.938
+
+Mean and variances took 0.017017 seconds
+
+Mean, sample std, population std
+Parameter    Mean         SampleStd         Popul.Std
+ A_param   2.5996e+11   1.1404e+10   1.1403e+10
+ E_param   1.9608e+05   2.4259e+03   2.4257e+03
+
+-----------------------------------------------------
+Computing autocorrelation coefficients (via fft)
+In uqChainBaseClass<V>::computeCorrViaFFT(): lags for autocorrelation (via fft) =  1 2 4 6 8 10 12 14 16 18 20 22 24 26 28
+In uqChainBaseClass<V>::computeCorrViaFFT(): about to call chain.autoCorrViaFft() with initialPos = 0, numPos = 6554, lagsForCorrs.size() = 15, corrVecs.size() = 15
+
+Estimated variance of sample mean, through autocorrelation (via fft), for subchain beggining at position 0
+3.18334e+16
+794.338
+
+
+Computed autocorrelation coefficients (via fft), for subchain beggining at position 0 (each column corresponds to a different lag)
+Parameter            1            2            4            6            8           10           12           14           16           18           20           22           24           26           28
+  A_param   1.3030e-01   1.2727e-02  -5.2092e-03  -1.0466e-03  -7.8419e-03  -9.0115e-03   2.3721e-03  -2.1631e-02  -5.7800e-03   8.4981e-03   1.5504e-04   1.9055e-02   1.5723e-02  -9.2249e-03  -1.3890e-02
+  E_param   2.0621e-02   1.7315e-02   4.0644e-03  -8.1509e-03   1.8763e-03  -3.1736e-03  -7.3579e-03   8.1674e-03   1.0288e-02   4.8098e-03  -5.7383e-03   1.6917e-03  -4.2182e-03  -2.2951e-02  -1.2466e-02
+Chain autocorrelation (via fft) took 0.288946 seconds
+
+
+-----------------------------------------------------
+ Computing histogram and/or KDE for chain cp_cal_mc_0_filteredChain ...
+-----------------------------------------------------
+
+
+-----------------------------------------------------
+Computing min and max for histograms and KDE
+
+Computed min values and max values for chain cp_cal_mc_0_filteredChain
+Parameter         min         max
+ A_param   2.4001e+11   2.8000e+11
+ E_param   1.8869e+05   2.0635e+05
+Chain min and max took 0.008329 seconds
+
+-----------------------------------------------------
+Computing histograms
+Chain histograms took 0.00938 seconds
+
+-----------------------------------------------------
+Computing KDE
+
+Computed inter quantile ranges for chain cp_cal_mc_0_filteredChain
+Parameter         iqr
+ A_param   1.9521e+10
+ E_param   3.2328e+03
+Chain KDE took 3.58871 seconds
+
+-----------------------------------------------------
+ Finished computing histogram and/or KDE for chain cp_cal_mc_0_filteredChain
+-----------------------------------------------------
+
+All statistics took 3.94323 seconds
+
+-----------------------------------------------------
+ Finished computing statistics for chain cp_cal_mc_0_filteredChain
+-----------------------------------------------------
+
+Closed output file 'cpOutput.m' for chain loop id = 0 ...
+
+Starting the generation of qoi sequence cp_pro_mc_seq, with 6554 samples...
+Finished the generation of qoi sequence cp_pro_mc_seq, with 6554 samples
+Some information about this sequence:
+  Sequence run time = 1.60208 seconds
+
+ Breaking of the seq run time:
+
+  QoI function run time   = 1.58179 seconds (98.733%)Opening output file 'cpOutput.m' for qoi sequence cp_pro_mc_seq
+
+
+-----------------------------------------------------
+ Computing statistics for chain cp_pro_mc_seq ...
+-----------------------------------------------------
+
+In uqChainBaseClass<V>::computeStatistics(): initial positions for statistics = 0
+
+-----------------------------------------------------
+Computing mean, sample variance and population variance
+
+Estimated variance of sample mean for the whole chain cp_pro_mc_seq, under independence assumption:
+1.75419
+
+Mean and variances took 0.006623 seconds
+
+Mean, sample std, population std
+Parameter    Mean         SampleStd         Popul.Std
+TimeFor2   8.9711e+03   1.0722e+02   1.0722e+02
+
+-----------------------------------------------------
+Computing autocorrelation coefficients (via fft)
+In uqChainBaseClass<V>::computeCorrViaFFT(): lags for autocorrelation (via fft) =  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+In uqChainBaseClass<V>::computeCorrViaFFT(): about to call chain.autoCorrViaFft() with initialPos = 0, numPos = 6554, lagsForCorrs.size() = 15, corrVecs.size() = 15
+
+Estimated variance of sample mean, through autocorrelation (via fft), for subchain beggining at position 0
+1.18534
+
+
+Computed autocorrelation coefficients (via fft), for subchain beggining at position 0 (each column corresponds to a different lag)
+Parameter            1            2            3            4            5            6            7            8            9           10           11           12           13           14           15
+TimeFor25   2.0482e-02   1.6988e-02  -1.4635e-02   4.8264e-03  -1.6152e-04  -8.8835e-03   1.3861e-02  -1.4691e-04   4.1031e-03  -5.1604e-03   9.6839e-03  -1.2562e-02   4.4712e-03   7.5856e-03  -1.3102e-02
+Chain autocorrelation (via fft) took 0.138637 seconds
+
+
+-----------------------------------------------------
+ Computing histogram and/or KDE for chain cp_pro_mc_seq ...
+-----------------------------------------------------
+
+
+-----------------------------------------------------
+Computing min and max for histograms and KDE
+
+Computed min values and max values for chain cp_pro_mc_seq
+Parameter         min         max
+TimeFor2   8.6248e+03   9.4133e+03
+Chain min and max took 0.003587 seconds
+
+-----------------------------------------------------
+Computing histograms
+Chain histograms took 0.004234 seconds
+
+-----------------------------------------------------
+Computing KDE
+
+Computed inter quantile ranges for chain cp_pro_mc_seq
+Parameter         iqr
+TimeFor2   1.4197e+02
+Chain KDE took 1.80366 seconds
+
+-----------------------------------------------------
+ Finished computing histogram and/or KDE for chain cp_pro_mc_seq
+-----------------------------------------------------
+
+All statistics took 1.9725 seconds
+
+-----------------------------------------------------
+ Finished computing statistics for chain cp_pro_mc_seq
+-----------------------------------------------------
+
+Closed output file 'cpOutput.m' for qoi sequence cp_pro_mc_seq
+
+Finishing run of 'uqTgaEx3' example
+Ending run at Thu Sep 25 14:05:00 2008
+Total run time = 104 seconds

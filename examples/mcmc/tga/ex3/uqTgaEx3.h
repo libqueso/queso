@@ -272,9 +272,9 @@ uqAppl(const uqEnvironmentClass& env)
   cp_likelihoodRoutine_Data.variance1 = variance1;
   cp_likelihoodRoutine_Data.Te1       = &Te1; // temperatures
   cp_likelihoodRoutine_Data.Me1       = &Me1; // relative masses
-  uqCompleteScalarLhFunction_Class<P_V,P_M> cp_likelihoodFunctionObj(cp_likelihoodRoutine<P_V,P_M>,
-                                                                     (void *) &cp_likelihoodRoutine_Data,
-                                                                     true); // the routine computes [-2.*ln(Likelihood)]
+  uqRoutineProbDensity_Class<P_V,P_M> cp_likelihoodFunctionObj(cp_likelihoodRoutine<P_V,P_M>,
+                                                               (void *) &cp_likelihoodRoutine_Data,
+                                                               true); // the routine computes [-2.*ln(Likelihood)]
 
   //******************************************************
   // Substep 3: Define the proposal cov matrix, the proposal density and the proposal generator

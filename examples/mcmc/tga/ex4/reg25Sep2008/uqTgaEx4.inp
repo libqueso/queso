@@ -16,40 +16,22 @@ val_stageOrder   = 1
 ###############################################
 # Validation Problem Stage 'val_s1_': configuration  
 ###############################################
-<<<<<<< .mine
 val_s1_help                 = anything
 val_s1_performCalibration  = 1
-val_s1_inputStageIdForCal  = -1
+val_s1_inputStageIdForCal  = 0
 val_s1_performPropagation  = 1
 val_s1_inputStageIdForPro  = 1
-=======
-val_stage_0_help                 = anything
-val_stage_0_cal_perform         = 1
-val_stage_0_cal_inputStageId    = -1
-val_stage_0_cal_distrCalculator = bmc
-val_stage_0_pro_perform         = 1
-val_stage_0_pro_inputStageId    = 0
->>>>>>> .r214
-val_stage_0_pro_distrCalculator = mc
 
 ###############################################
-# Validation Problem Stage 'val_s1_': parameter/state/observable/qoi spaces
+# Validation Problem Stage 'val_s1_': parameter/qoi spaces
 ###############################################
 #val_s1_paramSpace_help              = anything
 val_s1_paramSpace_dim               = 2
-val_s1_paramSpace_specificationFile = stage0.par
-
-#val_s1_stateSpace_help = anything
-#val_s1_stateSpace_dim  = 5
-
-#val_s1_observableSpace_help              = anything
-val_s1_observableSpace_updateVariances   = 0
-val_s1_observableSpace_numSubSpaces      = 1
-val_s1_observableSpace_specificationFile = stage0.obs
+val_s1_paramSpace_specificationFile = s1.par
 
 #val_s1_qoiSpace_help              = anything
 val_s1_qoiSpace_dim               = 1
-val_s1_qoiSpace_specificationFile = stage0.qoi
+val_s1_qoiSpace_specificationFile = s1.qoi
 
 ###############################################
 # Validation Problem Stage 'val_s1_', calibration problem: BMC DC
@@ -60,38 +42,19 @@ val_s1_qoiSpace_specificationFile = stage0.qoi
 # '_sizes' examples 16K   128K   1M      2M      16M
 #                   16384 131072 1048576 2097152 16777216
 ###############################################
-<<<<<<< .mine
 val_s1_cal_solver = bayes_mc
-=======
->>>>>>> .r214
 
-<<<<<<< .mine
 val_s1_cal_mc_help                   = anything
 val_s1_cal_mc_chain_type            = 1
 val_s1_cal_mc_chain_number          = 1
 val_s1_cal_mc_chain_sizes           = 131072
-val_s1_cal_mc_chain_outputFileNames = stage0Output.m
+val_s1_cal_mc_chain_outputFileNames = s1Output.m
 val_s1_cal_mc_chain_use2            = 0
 val_s1_cal_mc_chain_generateExtra   = 0
 val_s1_cal_mc_chain_displayPeriod   = 20000
 val_s1_cal_mc_chain_measureRunTimes = 1
 val_s1_cal_mc_chain_write           = 0
 val_s1_cal_mc_chain_computeStats    = 1
-=======
-
-
-val_stage_0_cal_bmcdc_help                   = anything
-val_stage_0_cal_bmcdc_chain_type            = 1
-val_stage_0_cal_bmcdc_chain_number          = 1
-val_stage_0_cal_bmcdc_chain_sizes           = 131072
-val_stage_0_cal_bmcdc_chain_outputFileNames = stage0Output.m
-val_stage_0_cal_bmcdc_chain_use2            = 0
-val_stage_0_cal_bmcdc_chain_generateExtra   = 0
-val_stage_0_cal_bmcdc_chain_displayPeriod   = 20000
-val_stage_0_cal_bmcdc_chain_measureRunTimes = 1
-val_stage_0_cal_bmcdc_chain_write           = 0
-val_stage_0_cal_bmcdc_chain_computeStats    = 1
->>>>>>> .r214
 
 val_s1_cal_mc_dr_maxNumExtraStages       = 1
 val_s1_cal_mc_dr_scalesForExtraStages    = 5. 4. 3.
@@ -187,14 +150,11 @@ val_s1_cal_mc_filteredChain_stats_kde_numEvalPositions     = 200
 # '_numSamples' examples 16K   128K   1M      2M      16M
 #                        16384 131072 1048576 2097152 16777216
 ###############################################
-<<<<<<< .mine
 val_s1_pro_solver = mc_kde
 
-=======
->>>>>>> .r214
 #val_s1_pro_mc_help            = anything
 val_s1_pro_mc_numSamples      = 131072
-val_s1_pro_mc_outputFileName  = stage0Output.m
+val_s1_pro_mc_outputFileName  = s1Output.m
 val_s1_pro_mc_use2            = 0
 val_s1_pro_mc_displayPeriod   = 20000
 val_s1_pro_mc_measureRunTimes = 1

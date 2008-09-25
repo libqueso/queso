@@ -1,4 +1,4 @@
-/* uq/libs/mcmc/inc/uqMarkovChainDC1.h
+/* uq/libs/mcmc/inc/uqMarkovChainSG1.h
  *
  * Copyright (C) 2008 The PECOS Team, http://queso.ices.utexas.edu
  *
@@ -17,45 +17,45 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef __UQ_MACDC1_H__
-#define __UQ_MACDC1_H__
+#ifndef __UQ_MAC_SG1_H__
+#define __UQ_MAC_SG1_H__
 
-#undef UQ_MACDC_REQUIRES_INVERTED_COV_MATRICES
-#define UQ_MACDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+#undef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
+#define UQ_MAC_SG_REQUIRES_TARGET_DISTRIBUTION_ONLY
 
-#define UQ_MACDC_MARKOV_CHAIN_TYPE           1
-#define UQ_MACDC_WHITE_NOISE_CHAIN_TYPE      2
-#define UQ_MACDC_UNIFORM_CHAIN_TYPE          3
-#define UQ_MACDC_FILENAME_FOR_NO_OUTPUT_FILE "."
+#define UQ_MAC_SG_MARKOV_CHAIN_TYPE           1
+#define UQ_MAC_SG_WHITE_NOISE_CHAIN_TYPE      2
+#define UQ_MAC_SG_UNIFORM_CHAIN_TYPE          3
+#define UQ_MAC_SG_FILENAME_FOR_NO_OUTPUT_FILE "."
 
 // _ODV = option default value
-#define UQ_MACDC_CHAIN_TYPE_ODV                       UQ_MACDC_MARKOV_CHAIN_TYPE
-#define UQ_MACDC_CHAIN_NUMBER_ODV                     1
-#define UQ_MACDC_CHAIN_SIZES_ODV                      "100"
-#define UQ_MACDC_CHAIN_OUTPUT_FILE_NAMES_ODV          UQ_MACDC_FILENAME_FOR_NO_OUTPUT_FILE
-#define UQ_MACDC_CHAIN_USE2_ODV                       0
-#define UQ_MACDC_CHAIN_GENERATE_EXTRA_ODV             0
-#define UQ_MACDC_CHAIN_DISPLAY_PERIOD_ODV             500
-#define UQ_MACDC_CHAIN_MEASURE_RUN_TIMES_ODV          0
-#define UQ_MACDC_CHAIN_WRITE_ODV                      0
-#define UQ_MACDC_CHAIN_COMPUTE_STATS_ODV              0
-#define UQ_MACDC_UNIQUE_CHAIN_GENERATE_ODV            0
-#define UQ_MACDC_UNIQUE_CHAIN_WRITE_ODV               0
-#define UQ_MACDC_UNIQUE_CHAIN_COMPUTE_STATS_ODV       0
-#define UQ_MACDC_FILTERED_CHAIN_GENERATE_ODV          0
-#define UQ_MACDC_FILTERED_CHAIN_DISCARDED_PORTION_ODV 0.
-#define UQ_MACDC_FILTERED_CHAIN_LAG_ODV               1
-#define UQ_MACDC_FILTERED_CHAIN_WRITE_ODV             0
-#define UQ_MACDC_FILTERED_CHAIN_COMPUTE_STATS_ODV     0
-#define UQ_MACDC_AVG_CHAIN_COMPUTE_ODV                "0"
-#define UQ_MACDC_AVG_CHAIN_WRITE_ODV                  0
-#define UQ_MACDC_AVG_CHAIN_COMPUTE_STATS_ODV          0
-#define UQ_MACDC_DR_MAX_NUM_EXTRA_STAGES_ODV          0
-#define UQ_MACDC_DR_SCALES_FOR_EXTRA_STAGES_ODV       "1."
-#define UQ_MACDC_AM_INIT_NON_ADAPT_INT_ODV            0
-#define UQ_MACDC_AM_ADAPT_INTERVAL_ODV                0
-#define UQ_MACDC_AM_ETA_ODV                           1.
-#define UQ_MACDC_AM_EPSILON_ODV                       1.e-5
+#define UQ_MAC_SG_CHAIN_TYPE_ODV                       UQ_MAC_SG_MARKOV_CHAIN_TYPE
+#define UQ_MAC_SG_CHAIN_NUMBER_ODV                     1
+#define UQ_MAC_SG_CHAIN_SIZES_ODV                      "100"
+#define UQ_MAC_SG_CHAIN_OUTPUT_FILE_NAMES_ODV          UQ_MAC_SG_FILENAME_FOR_NO_OUTPUT_FILE
+#define UQ_MAC_SG_CHAIN_USE2_ODV                       0
+#define UQ_MAC_SG_CHAIN_GENERATE_EXTRA_ODV             0
+#define UQ_MAC_SG_CHAIN_DISPLAY_PERIOD_ODV             500
+#define UQ_MAC_SG_CHAIN_MEASURE_RUN_TIMES_ODV          0
+#define UQ_MAC_SG_CHAIN_WRITE_ODV                      0
+#define UQ_MAC_SG_CHAIN_COMPUTE_STATS_ODV              0
+#define UQ_MAC_SG_UNIQUE_CHAIN_GENERATE_ODV            0
+#define UQ_MAC_SG_UNIQUE_CHAIN_WRITE_ODV               0
+#define UQ_MAC_SG_UNIQUE_CHAIN_COMPUTE_STATS_ODV       0
+#define UQ_MAC_SG_FILTERED_CHAIN_GENERATE_ODV          0
+#define UQ_MAC_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV 0.
+#define UQ_MAC_SG_FILTERED_CHAIN_LAG_ODV               1
+#define UQ_MAC_SG_FILTERED_CHAIN_WRITE_ODV             0
+#define UQ_MAC_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV     0
+#define UQ_MAC_SG_AVG_CHAIN_COMPUTE_ODV                "0"
+#define UQ_MAC_SG_AVG_CHAIN_WRITE_ODV                  0
+#define UQ_MAC_SG_AVG_CHAIN_COMPUTE_STATS_ODV          0
+#define UQ_MAC_SG_DR_MAX_NUM_EXTRA_STAGES_ODV          0
+#define UQ_MAC_SG_DR_SCALES_FOR_EXTRA_STAGES_ODV       "1."
+#define UQ_MAC_SG_AM_INIT_NON_ADAPT_INT_ODV            0
+#define UQ_MAC_SG_AM_ADAPT_INTERVAL_ODV                0
+#define UQ_MAC_SG_AM_ETA_ODV                           1.
+#define UQ_MAC_SG_AM_EPSILON_ODV                       1.e-5
 
 #include <uqChainStatisticalOptions.h>
 #include <uqProbDensity.h>
@@ -70,17 +70,17 @@
 /*! A templated class that implements a Bayesian Markov Chain Distribution Calculator
  */
 template <class P_V,class P_M>
-class uqMarkovChainDCClass
+class uqMarkovChainSGClass
 {
 public:
-  uqMarkovChainDCClass(const uqEnvironmentClass&                     env,                   /*! The QUESO toolkit environment. */
+  uqMarkovChainSGClass(const uqEnvironmentClass&                     env,                   /*! The QUESO toolkit environment. */
                        const char*                                   prefix,                /*! Prefix.                        */
                        const uqParamSpaceClass            <P_V,P_M>& paramSpace,            /*! The parameter space.           */
                        const uqProbDensity_BaseClass      <P_V,P_M>& targetParamDensityObj,
                              P_M*                                    proposalCovMatrix,     /*! */
                        const uqProposalDensity_BaseClass  <P_V,P_M>* proposalDensityObj,    /*! */
                        const uqProposalGenerator_BaseClass<P_V,P_M>* proposalGeneratorObj); /*! */
- ~uqMarkovChainDCClass();
+ ~uqMarkovChainSGClass();
 
         void                   calculateDistributions();
         void                   calculateDistributions(const uqProbDensity_BaseClass<P_V,P_M>& targetParamDensityObj);
@@ -213,7 +213,7 @@ private:
 
         std::vector<P_M*>                       m_lowerCholProposalCovMatrices;
         std::vector<P_M*>                       m_proposalCovMatrices;
-#ifdef UQ_MACDC_REQUIRES_INVERTED_COV_MATRICES
+#ifdef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
         std::vector<P_M*>                       m_upperCholProposalPrecMatrices;
         std::vector<P_M*>                       m_proposalPrecMatrices;
 #endif
@@ -232,12 +232,12 @@ private:
 };
 
 template<class P_V,class P_M>
-std::ostream& operator<<(std::ostream& os, const uqMarkovChainDCClass<P_V,P_M>& obj);
+std::ostream& operator<<(std::ostream& os, const uqMarkovChainSGClass<P_V,P_M>& obj);
 
-#include <uqMarkovChainDC2.h>
+#include <uqMarkovChainSG2.h>
 
 template<class P_V,class P_M>
-uqMarkovChainDCClass<P_V,P_M>::uqMarkovChainDCClass(
+uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   const uqEnvironmentClass&                             env,
   const char*                                           prefix,
   const uqParamSpaceClass            <P_V,P_M>&         paramSpace,
@@ -247,7 +247,7 @@ uqMarkovChainDCClass<P_V,P_M>::uqMarkovChainDCClass(
   const uqProposalGenerator_BaseClass<P_V,P_M>*         proposalGeneratorObj)
   :
   m_env                                  (env),
-  m_prefix                               ((std::string)(prefix) + "bmcdc_"),
+  m_prefix                               ((std::string)(prefix) + "mc_"),
   m_paramSpace                           (paramSpace),
   m_targetParamDensityObj                (targetParamDensityObj),
   m_proposalCovMatrix                    (proposalCovMatrix),
@@ -284,39 +284,39 @@ uqMarkovChainDCClass<P_V,P_M>::uqMarkovChainDCClass(
   m_option_am_epsilon                    (m_prefix + "am_epsilon"                    ),
   m_paramInitials                        (m_paramSpace.initialValues()),
   m_proposalIsSymmetric                  (true),
-  m_chainType                            (UQ_MACDC_CHAIN_TYPE_ODV),
-  m_chainNumber                          (UQ_MACDC_CHAIN_NUMBER_ODV),
-  m_chainSizes                           (1,(unsigned int) strtod(UQ_MACDC_CHAIN_SIZES_ODV,NULL)),
-  m_chainOutputFileNames                 (1,UQ_MACDC_CHAIN_OUTPUT_FILE_NAMES_ODV),
-  m_chainUse2                            (UQ_MACDC_CHAIN_USE2_ODV),
-  m_chainGenerateExtra                   (UQ_MACDC_CHAIN_GENERATE_EXTRA_ODV),
-  m_chainDisplayPeriod                   (UQ_MACDC_CHAIN_DISPLAY_PERIOD_ODV),
-  m_chainMeasureRunTimes                 (UQ_MACDC_CHAIN_MEASURE_RUN_TIMES_ODV),
-  m_chainWrite                           (UQ_MACDC_CHAIN_WRITE_ODV),
-  m_chainComputeStats                    (UQ_MACDC_CHAIN_COMPUTE_STATS_ODV),
+  m_chainType                            (UQ_MAC_SG_CHAIN_TYPE_ODV),
+  m_chainNumber                          (UQ_MAC_SG_CHAIN_NUMBER_ODV),
+  m_chainSizes                           (1,(unsigned int) strtod(UQ_MAC_SG_CHAIN_SIZES_ODV,NULL)),
+  m_chainOutputFileNames                 (1,UQ_MAC_SG_CHAIN_OUTPUT_FILE_NAMES_ODV),
+  m_chainUse2                            (UQ_MAC_SG_CHAIN_USE2_ODV),
+  m_chainGenerateExtra                   (UQ_MAC_SG_CHAIN_GENERATE_EXTRA_ODV),
+  m_chainDisplayPeriod                   (UQ_MAC_SG_CHAIN_DISPLAY_PERIOD_ODV),
+  m_chainMeasureRunTimes                 (UQ_MAC_SG_CHAIN_MEASURE_RUN_TIMES_ODV),
+  m_chainWrite                           (UQ_MAC_SG_CHAIN_WRITE_ODV),
+  m_chainComputeStats                    (UQ_MAC_SG_CHAIN_COMPUTE_STATS_ODV),
   m_chainStatisticalOptions              (NULL),
-  m_uniqueChainGenerate                  (UQ_MACDC_UNIQUE_CHAIN_GENERATE_ODV),
-  m_uniqueChainWrite                     (UQ_MACDC_UNIQUE_CHAIN_WRITE_ODV),
-  m_uniqueChainComputeStats              (UQ_MACDC_UNIQUE_CHAIN_COMPUTE_STATS_ODV),
+  m_uniqueChainGenerate                  (UQ_MAC_SG_UNIQUE_CHAIN_GENERATE_ODV),
+  m_uniqueChainWrite                     (UQ_MAC_SG_UNIQUE_CHAIN_WRITE_ODV),
+  m_uniqueChainComputeStats              (UQ_MAC_SG_UNIQUE_CHAIN_COMPUTE_STATS_ODV),
   m_uniqueChainStatisticalOptions        (NULL),
-  m_filteredChainGenerate                (UQ_MACDC_FILTERED_CHAIN_GENERATE_ODV),
-  m_filteredChainDiscardedPortion        (UQ_MACDC_FILTERED_CHAIN_DISCARDED_PORTION_ODV),
-  m_filteredChainLag                     (UQ_MACDC_FILTERED_CHAIN_LAG_ODV),
-  m_filteredChainWrite                   (UQ_MACDC_FILTERED_CHAIN_WRITE_ODV),
-  m_filteredChainComputeStats            (UQ_MACDC_FILTERED_CHAIN_COMPUTE_STATS_ODV),
+  m_filteredChainGenerate                (UQ_MAC_SG_FILTERED_CHAIN_GENERATE_ODV),
+  m_filteredChainDiscardedPortion        (UQ_MAC_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV),
+  m_filteredChainLag                     (UQ_MAC_SG_FILTERED_CHAIN_LAG_ODV),
+  m_filteredChainWrite                   (UQ_MAC_SG_FILTERED_CHAIN_WRITE_ODV),
+  m_filteredChainComputeStats            (UQ_MAC_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV),
   m_filteredChainStatisticalOptions      (NULL),
   m_avgChainCompute                      (0),//0.),
-  m_avgChainWrite                        (UQ_MACDC_AVG_CHAIN_WRITE_ODV),
-  m_avgChainComputeStats                 (UQ_MACDC_AVG_CHAIN_COMPUTE_STATS_ODV),
-  m_maxNumExtraStages                    (UQ_MACDC_DR_MAX_NUM_EXTRA_STAGES_ODV),
+  m_avgChainWrite                        (UQ_MAC_SG_AVG_CHAIN_WRITE_ODV),
+  m_avgChainComputeStats                 (UQ_MAC_SG_AVG_CHAIN_COMPUTE_STATS_ODV),
+  m_maxNumExtraStages                    (UQ_MAC_SG_DR_MAX_NUM_EXTRA_STAGES_ODV),
   m_scalesForCovMProposals               (0),//0.),
-  m_initialNonAdaptInterval              (UQ_MACDC_AM_INIT_NON_ADAPT_INT_ODV),
-  m_adaptInterval                        (UQ_MACDC_AM_ADAPT_INTERVAL_ODV),
-  m_eta                                  (UQ_MACDC_AM_ETA_ODV),
-  m_epsilon                              (UQ_MACDC_AM_EPSILON_ODV),
+  m_initialNonAdaptInterval              (UQ_MAC_SG_AM_INIT_NON_ADAPT_INT_ODV),
+  m_adaptInterval                        (UQ_MAC_SG_AM_ADAPT_INTERVAL_ODV),
+  m_eta                                  (UQ_MAC_SG_AM_ETA_ODV),
+  m_epsilon                              (UQ_MAC_SG_AM_EPSILON_ODV),
   m_lowerCholProposalCovMatrices         (1),//NULL),
   m_proposalCovMatrices                  (1),//NULL),
-#ifdef UQ_MACDC_REQUIRES_INVERTED_COV_MATRICES
+#ifdef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
   m_upperCholProposalPrecMatrices        (1),//NULL),
   m_proposalPrecMatrices                 (1),//NULL),
 #endif
@@ -332,14 +332,14 @@ uqMarkovChainDCClass<P_V,P_M>::uqMarkovChainDCClass(
   m_lastMean                             (NULL),
   m_lastAdaptedCovMatrix                 (NULL)
 {
-  if (m_env.rank() == 0) std::cout << "Entering uqMarkovChainDCClass<P_V,P_M>::constructor()"
+  if (m_env.rank() == 0) std::cout << "Entering uqMarkovChainSGClass<P_V,P_M>::constructor()"
                                    << std::endl;
 
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
 
-  if (m_env.rank() == 0) std::cout << "In uqMarkovChainDCClass<P_V,P_M>::constructor()"
+  if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::constructor()"
                                    << ": after getting values of options with prefix '" << m_prefix
                                    << "', state of  object is:"
                                    << "\n" << *this
@@ -349,14 +349,14 @@ uqMarkovChainDCClass<P_V,P_M>::uqMarkovChainDCClass(
   if (m_uniqueChainComputeStats  ) m_uniqueChainStatisticalOptions   = new uqChainStatisticalOptionsClass(m_env,m_prefix + "uniqueChain_"  );
   if (m_filteredChainComputeStats) m_filteredChainStatisticalOptions = new uqChainStatisticalOptionsClass(m_env,m_prefix + "filteredChain_");
 
-  if (m_env.rank() == 0) std::cout << "Leaving uqMarkovChainDCClass<P_V,P_M>::constructor()"
+  if (m_env.rank() == 0) std::cout << "Leaving uqMarkovChainSGClass<P_V,P_M>::constructor()"
                                    << std::endl;
 }
 
 template<class P_V,class P_M>
-uqMarkovChainDCClass<P_V,P_M>::~uqMarkovChainDCClass()
+uqMarkovChainSGClass<P_V,P_M>::~uqMarkovChainSGClass()
 {
-  //std::cout << "Entering uqMarkovChainDCClass<P_V,P_M>::destructor()"
+  //std::cout << "Entering uqMarkovChainSGClass<P_V,P_M>::destructor()"
   //          << std::endl;
 
   resetChainAndRelatedInfo();
@@ -367,13 +367,13 @@ uqMarkovChainDCClass<P_V,P_M>::~uqMarkovChainDCClass()
   if (m_chainStatisticalOptions        ) delete m_chainStatisticalOptions;
   if (m_optionsDesc                    ) delete m_optionsDesc;
 
-  //std::cout << "Leaving uqMarkovChainDCClass<P_V,P_M>::destructor()"
+  //std::cout << "Leaving uqMarkovChainSGClass<P_V,P_M>::destructor()"
   //          << std::endl;
 }
 
 template<class P_V,class P_M>
 void
-uqMarkovChainDCClass<P_V,P_M>::resetChainAndRelatedInfo()
+uqMarkovChainSGClass<P_V,P_M>::resetChainAndRelatedInfo()
 {
   if (m_lastAdaptedCovMatrix) delete m_lastAdaptedCovMatrix;
   if (m_lastMean)             delete m_lastMean;
@@ -387,7 +387,7 @@ uqMarkovChainDCClass<P_V,P_M>::resetChainAndRelatedInfo()
   m_chain1.clear();
   m_chain2.clear();
 
-#ifdef UQ_MACDC_REQUIRES_INVERTED_COV_MATRICES
+#ifdef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
   for (unsigned int i = 0; i < m_proposalPrecMatrices.size(); ++i) {
     if (m_proposalPrecMatrices[i]) delete m_proposalPrecMatrices[i];
   }
@@ -415,38 +415,38 @@ uqMarkovChainDCClass<P_V,P_M>::resetChainAndRelatedInfo()
 
 template<class P_V,class P_M>
 void
-uqMarkovChainDCClass<P_V,P_M>::defineMyOptions(
+uqMarkovChainSGClass<P_V,P_M>::defineMyOptions(
   po::options_description& optionsDesc)
 {
   optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                                                    "produce help message for Bayesian Markov chain distr. calculator")
-    (m_option_chain_type.c_str(),                     po::value<unsigned int>()->default_value(UQ_MACDC_CHAIN_TYPE_ODV                      ), "type of chain (1=Markov, 2=White noise)"                         )
-    (m_option_chain_number.c_str(),                   po::value<unsigned int>()->default_value(UQ_MACDC_CHAIN_NUMBER_ODV                    ), "number of chain(s)"                                              )
-    (m_option_chain_sizes.c_str(),                    po::value<std::string >()->default_value(UQ_MACDC_CHAIN_SIZES_ODV                     ), "list of size(s) of chain(s)"                                     )
-    (m_option_chain_outputFileNames.c_str(),          po::value<std::string >()->default_value(UQ_MACDC_CHAIN_OUTPUT_FILE_NAMES_ODV         ), "list of name(s) of output file(s)"                               )
-    (m_option_chain_use2.c_str(),                     po::value<bool        >()->default_value(UQ_MACDC_CHAIN_USE2_ODV                      ), "use chain2"                                                      )
-    (m_option_chain_generateExtra.c_str(),            po::value<bool        >()->default_value(UQ_MACDC_CHAIN_GENERATE_EXTRA_ODV            ), "generate extra chains"                                           )
-    (m_option_chain_displayPeriod.c_str(),            po::value<unsigned int>()->default_value(UQ_MACDC_CHAIN_DISPLAY_PERIOD_ODV            ), "period of message display during chain generation"               )
-    (m_option_chain_measureRunTimes.c_str(),          po::value<bool        >()->default_value(UQ_MACDC_CHAIN_MEASURE_RUN_TIMES_ODV         ), "measure run times"                                               )
-    (m_option_chain_write.c_str(),                    po::value<bool        >()->default_value(UQ_MACDC_CHAIN_WRITE_ODV                     ), "write chain values to the output file"                           )
-    (m_option_chain_computeStats.c_str(),             po::value<bool        >()->default_value(UQ_MACDC_CHAIN_COMPUTE_STATS_ODV             ), "compute statistics on chain"                                     )
-  //(m_option_uniqueChain_generate.c_str(),           po::value<bool        >()->default_value(UQ_MACDC_UNIQUE_CHAIN_GENERATE_ODV           ), "generate unique chain"                                           )
-  //(m_option_uniqueChain_write.c_str(),              po::value<bool        >()->default_value(UQ_MACDC_UNIQUE_CHAIN_WRITE_ODV              ), "write unique chain"                                              )
-  //(m_option_uniqueChain_computeStats.c_str(),       po::value<bool        >()->default_value(UQ_MACDC_UNIQUE_CHAIN_COMPUTE_STATS_ODV      ), "compute statistics on unique chain"                              )
-    (m_option_filteredChain_generate.c_str(),         po::value<bool        >()->default_value(UQ_MACDC_FILTERED_CHAIN_GENERATE_ODV         ), "generate filtered chain"                                         )
-    (m_option_filteredChain_discardedPortion.c_str(), po::value<double      >()->default_value(UQ_MACDC_FILTERED_CHAIN_DISCARDED_PORTION_ODV), "initial discarded portion for chain filtering"                   )
-    (m_option_filteredChain_lag.c_str(),              po::value<unsigned int>()->default_value(UQ_MACDC_FILTERED_CHAIN_LAG_ODV              ), "spacing for chain filtering"                                     )
-    (m_option_filteredChain_write.c_str(),            po::value<bool        >()->default_value(UQ_MACDC_FILTERED_CHAIN_WRITE_ODV            ), "write filtered chain"                                            )
-    (m_option_filteredChain_computeStats.c_str(),     po::value<bool        >()->default_value(UQ_MACDC_FILTERED_CHAIN_COMPUTE_STATS_ODV    ), "compute statistics on filtered chain"                            )
-  //(m_option_avgChain_compute.c_str(),               po::value<std::string >()->default_value(UQ_MACDC_AVG_CHAIN_COMPUTE_ODV               ), "list of amounts of chains involved in chain averages"            )
-  //(m_option_avgChain_write.c_str(),                 po::value<bool        >()->default_value(UQ_MACDC_AVG_CHAIN_WRITE_ODV                 ), "write averages of chains"                                        )
-  //(m_option_avgChain_computeStats.c_str(),          po::value<bool        >()->default_value(UQ_MACDC_AVG_CHAIN_COMPUTE_STATS_ODV         ), "compute statistics on the averages of chains"                    )
-    (m_option_dr_maxNumExtraStages.c_str(),           po::value<unsigned int>()->default_value(UQ_MACDC_DR_MAX_NUM_EXTRA_STAGES_ODV         ), "'dr' maximum number of extra stages"                             )
-    (m_option_dr_scalesForExtraStages.c_str(),        po::value<std::string >()->default_value(UQ_MACDC_DR_SCALES_FOR_EXTRA_STAGES_ODV      ), "'dr' list of scales for proposal cov matrices from 2nd stage on" )
-    (m_option_am_initialNonAdaptInterval.c_str(),     po::value<unsigned int>()->default_value(UQ_MACDC_AM_INIT_NON_ADAPT_INT_ODV           ), "'am' initial non adaptation interval"                            )
-    (m_option_am_adaptInterval.c_str(),               po::value<unsigned int>()->default_value(UQ_MACDC_AM_ADAPT_INTERVAL_ODV               ), "'am' adaptation interval"                                        )
-    (m_option_am_eta.c_str(),                         po::value<double      >()->default_value(UQ_MACDC_AM_ETA_ODV                          ), "'am' eta"                                                        )
-    (m_option_am_epsilon.c_str(),                     po::value<double      >()->default_value(UQ_MACDC_AM_EPSILON_ODV                      ), "'am' epsilon"                                                    )
+    (m_option_chain_type.c_str(),                     po::value<unsigned int>()->default_value(UQ_MAC_SG_CHAIN_TYPE_ODV                      ), "type of chain (1=Markov, 2=White noise)"                         )
+    (m_option_chain_number.c_str(),                   po::value<unsigned int>()->default_value(UQ_MAC_SG_CHAIN_NUMBER_ODV                    ), "number of chain(s)"                                              )
+    (m_option_chain_sizes.c_str(),                    po::value<std::string >()->default_value(UQ_MAC_SG_CHAIN_SIZES_ODV                     ), "list of size(s) of chain(s)"                                     )
+    (m_option_chain_outputFileNames.c_str(),          po::value<std::string >()->default_value(UQ_MAC_SG_CHAIN_OUTPUT_FILE_NAMES_ODV         ), "list of name(s) of output file(s)"                               )
+    (m_option_chain_use2.c_str(),                     po::value<bool        >()->default_value(UQ_MAC_SG_CHAIN_USE2_ODV                      ), "use chain2"                                                      )
+    (m_option_chain_generateExtra.c_str(),            po::value<bool        >()->default_value(UQ_MAC_SG_CHAIN_GENERATE_EXTRA_ODV            ), "generate extra chains"                                           )
+    (m_option_chain_displayPeriod.c_str(),            po::value<unsigned int>()->default_value(UQ_MAC_SG_CHAIN_DISPLAY_PERIOD_ODV            ), "period of message display during chain generation"               )
+    (m_option_chain_measureRunTimes.c_str(),          po::value<bool        >()->default_value(UQ_MAC_SG_CHAIN_MEASURE_RUN_TIMES_ODV         ), "measure run times"                                               )
+    (m_option_chain_write.c_str(),                    po::value<bool        >()->default_value(UQ_MAC_SG_CHAIN_WRITE_ODV                     ), "write chain values to the output file"                           )
+    (m_option_chain_computeStats.c_str(),             po::value<bool        >()->default_value(UQ_MAC_SG_CHAIN_COMPUTE_STATS_ODV             ), "compute statistics on chain"                                     )
+  //(m_option_uniqueChain_generate.c_str(),           po::value<bool        >()->default_value(UQ_MAC_SG_UNIQUE_CHAIN_GENERATE_ODV           ), "generate unique chain"                                           )
+  //(m_option_uniqueChain_write.c_str(),              po::value<bool        >()->default_value(UQ_MAC_SG_UNIQUE_CHAIN_WRITE_ODV              ), "write unique chain"                                              )
+  //(m_option_uniqueChain_computeStats.c_str(),       po::value<bool        >()->default_value(UQ_MAC_SG_UNIQUE_CHAIN_COMPUTE_STATS_ODV      ), "compute statistics on unique chain"                              )
+    (m_option_filteredChain_generate.c_str(),         po::value<bool        >()->default_value(UQ_MAC_SG_FILTERED_CHAIN_GENERATE_ODV         ), "generate filtered chain"                                         )
+    (m_option_filteredChain_discardedPortion.c_str(), po::value<double      >()->default_value(UQ_MAC_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV), "initial discarded portion for chain filtering"                   )
+    (m_option_filteredChain_lag.c_str(),              po::value<unsigned int>()->default_value(UQ_MAC_SG_FILTERED_CHAIN_LAG_ODV              ), "spacing for chain filtering"                                     )
+    (m_option_filteredChain_write.c_str(),            po::value<bool        >()->default_value(UQ_MAC_SG_FILTERED_CHAIN_WRITE_ODV            ), "write filtered chain"                                            )
+    (m_option_filteredChain_computeStats.c_str(),     po::value<bool        >()->default_value(UQ_MAC_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV    ), "compute statistics on filtered chain"                            )
+  //(m_option_avgChain_compute.c_str(),               po::value<std::string >()->default_value(UQ_MAC_SG_AVG_CHAIN_COMPUTE_ODV               ), "list of amounts of chains involved in chain averages"            )
+  //(m_option_avgChain_write.c_str(),                 po::value<bool        >()->default_value(UQ_MAC_SG_AVG_CHAIN_WRITE_ODV                 ), "write averages of chains"                                        )
+  //(m_option_avgChain_computeStats.c_str(),          po::value<bool        >()->default_value(UQ_MAC_SG_AVG_CHAIN_COMPUTE_STATS_ODV         ), "compute statistics on the averages of chains"                    )
+    (m_option_dr_maxNumExtraStages.c_str(),           po::value<unsigned int>()->default_value(UQ_MAC_SG_DR_MAX_NUM_EXTRA_STAGES_ODV         ), "'dr' maximum number of extra stages"                             )
+    (m_option_dr_scalesForExtraStages.c_str(),        po::value<std::string >()->default_value(UQ_MAC_SG_DR_SCALES_FOR_EXTRA_STAGES_ODV      ), "'dr' list of scales for proposal cov matrices from 2nd stage on" )
+    (m_option_am_initialNonAdaptInterval.c_str(),     po::value<unsigned int>()->default_value(UQ_MAC_SG_AM_INIT_NON_ADAPT_INT_ODV           ), "'am' initial non adaptation interval"                            )
+    (m_option_am_adaptInterval.c_str(),               po::value<unsigned int>()->default_value(UQ_MAC_SG_AM_ADAPT_INTERVAL_ODV               ), "'am' adaptation interval"                                        )
+    (m_option_am_eta.c_str(),                         po::value<double      >()->default_value(UQ_MAC_SG_AM_ETA_ODV                          ), "'am' eta"                                                        )
+    (m_option_am_epsilon.c_str(),                     po::value<double      >()->default_value(UQ_MAC_SG_AM_EPSILON_ODV                      ), "'am' epsilon"                                                    )
   ;
 
   return;
@@ -454,7 +454,7 @@ uqMarkovChainDCClass<P_V,P_M>::defineMyOptions(
 
 template<class P_V,class P_M>
 void
-uqMarkovChainDCClass<P_V,P_M>::getMyOptionValues(
+uqMarkovChainSGClass<P_V,P_M>::getMyOptionValues(
   po::options_description& optionsDesc)
 {
   if (m_env.allOptionsMap().count(m_option_help.c_str())) {
@@ -577,7 +577,7 @@ uqMarkovChainDCClass<P_V,P_M>::getMyOptionValues(
 
     UQ_FATAL_TEST_MACRO(m_chainOutputFileNames.size() != m_chainSizes.size(),
                         m_env.rank(),
-                        "uqMarkovChainDCClass<P_V,P_M>::readMyOptionsValues()",
+                        "uqMarkovChainSGClass<P_V,P_M>::readMyOptionsValues()",
                         "size of array for 'outputFileNames' is not equal to size of array for 'chainSizes'");
   }
 
@@ -589,7 +589,7 @@ uqMarkovChainDCClass<P_V,P_M>::getMyOptionValues(
   if (m_env.allOptionsMap().count(m_option_dr_scalesForExtraStages.c_str())) {
     std::string inputString = m_env.allOptionsMap()[m_option_dr_scalesForExtraStages.c_str()].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpScales);
-    //std::cout << "In uqMarkovChainDCClass<P_V,P_M>::getMyOptionValues(): scales =";
+    //std::cout << "In uqMarkovChainSGClass<P_V,P_M>::getMyOptionValues(): scales =";
     //for (unsigned int i = 0; i < tmpScales.size(); ++i) {
     //  std::cout << " " << tmpScales[i];
     //}
@@ -636,7 +636,7 @@ uqMarkovChainDCClass<P_V,P_M>::getMyOptionValues(
 
 template<class P_V,class P_M>
 void
-uqMarkovChainDCClass<P_V,P_M>::calculateDistributions()
+uqMarkovChainSGClass<P_V,P_M>::calculateDistributions()
 //const P_M* proposalCovMatrix,
 {
   // FIX ME: complement code logic
@@ -655,19 +655,19 @@ uqMarkovChainDCClass<P_V,P_M>::calculateDistributions()
 
 template<class P_V,class P_M>
 void
-uqMarkovChainDCClass<P_V,P_M>::calculateDistributions(const uqProbDensity_BaseClass<P_V,P_M>& targetParamDensityObj)
+uqMarkovChainSGClass<P_V,P_M>::calculateDistributions(const uqProbDensity_BaseClass<P_V,P_M>& targetParamDensityObj)
 {
   return;
 }
 
 template<class P_V,class P_M>
 int
-uqMarkovChainDCClass<P_V,P_M>::prepareForNextChain(
+uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain(
   const P_M* proposalCovMatrix)
 //const P_M* proposalPrecMatrix)
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqMarkovChainDCClass<P_V,P_M>::prepareForNextChain()..."
+    std::cout << "Entering uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain()..."
               << std::endl;
   }
 
@@ -692,14 +692,14 @@ uqMarkovChainDCClass<P_V,P_M>::prepareForNextChain(
     }
     internalProposalCovMatrix = m_paramSpace.uqFinDimLinearSpaceClass<P_V,P_M>::newDiagMatrix(tmpVec);
 
-    if (m_env.rank() == 0) std::cout << "In uqMarkovChainDCClass<P_V,P_M>::prepareForNextChain()"
+    if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain()"
                                      << ", contents of internally generated proposal cov matrix are:"
                                      << std::endl;
     std::cout << *internalProposalCovMatrix;
     if (m_env.rank() == 0) std::cout << std::endl;
   }
   else {
-    if (m_env.rank() == 0)  std::cout << "In uqMarkovChainDCClass<P_V,P_M>::prepareForNextChain()"
+    if (m_env.rank() == 0)  std::cout << "In uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain()"
                                       << "using suplied proposalCovMatrix, whose contents are:"
                                       << std::endl;
     std::cout << *internalProposalCovMatrix;
@@ -710,24 +710,24 @@ uqMarkovChainDCClass<P_V,P_M>::prepareForNextChain(
   iRC = m_lowerCholProposalCovMatrices[0]->chol();
   UQ_FATAL_RC_MACRO(iRC,
                     m_env.rank(),
-                    "uqMarkovChainDCClass<P_V,P_M>::prepareForNextChain()",
+                    "uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain()",
                     "proposalCovMatrix is not positive definite");
   m_lowerCholProposalCovMatrices[0]->zeroUpper(false);
 
   m_proposalCovMatrices[0] = new P_M(*internalProposalCovMatrix);
 
-  if (m_env.rank() == 0) std::cout << "In uqMarkovChainDCClass<P_V,P_M>::prepareForNextChain()"
+  if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain()"
                                    << ", m_lowerCholProposalCovMatrices[0] contents are:"
                                    << std::endl;
   std::cout << *(m_lowerCholProposalCovMatrices[0]);
   if (m_env.rank() == 0) std::cout << std::endl;
 
-#ifdef UQ_MACDC_REQUIRES_INVERTED_COV_MATRICES
+#ifdef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
   const P_M* internalProposalPrecMatrix = proposalPrecMatrix;
   if (proposalPrecMatrix == NULL) {
     UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
                       m_env.rank(),
-                      "uqMarkovChainDCClass<P_V,P_M>::prepareForNextChain()",
+                      "uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain()",
                       "not yet implemented for the case 'proposalPrecMatrix == NULL'");
   }
 
@@ -735,13 +735,13 @@ uqMarkovChainDCClass<P_V,P_M>::prepareForNextChain(
   iRC = m_upperCholProposalPrecMatrices[0]->chol();
   UQ_FATAL_RC_MACRO(iRC,
                     m_env.rank(),
-                    "uqMarkovChainDCClass<P_V,P_M>::prepareForNextChain()",
+                    "uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain()",
                     "proposalPrecMatrix is not positive definite");
   m_upperCholProposalPrecMatrices[0]->zeroLower(false);
 
   m_proposalPrecMatrices[0] = new P_M(*internalProposalPrecMatrix);
 
-  //if (m_env.rank() == 0) std::cout << "In uqMarkovChainDCClass<P_V,P_M>::prepareForNextChain()"
+  //if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain()"
   //                                 << ", m_upperCholProposalPrecMatrices[0] contents are:"
   //                                 << std::endl;
   //std::cout << *(m_upperCholProposalPrecMatrices[0]);
@@ -755,7 +755,7 @@ uqMarkovChainDCClass<P_V,P_M>::prepareForNextChain(
   if (proposalCovMatrix == NULL) delete internalProposalCovMatrix;
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqMarkovChainDCClass<P_V,P_M>::prepareForNextChain()"
+    std::cout << "Leaving uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain()"
               << std::endl;
   }
 
@@ -764,15 +764,15 @@ uqMarkovChainDCClass<P_V,P_M>::prepareForNextChain(
 
 template<class P_V,class P_M>
 void
-uqMarkovChainDCClass<P_V,P_M>::updateCovMatrices()
+uqMarkovChainSGClass<P_V,P_M>::updateCovMatrices()
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqMarkovChainDCClass<P_V,P_M>::updateCovMatrices()"
+    std::cout << "Entering uqMarkovChainSGClass<P_V,P_M>::updateCovMatrices()"
               << std::endl;
   }
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "In uqMarkovChainDCClass<P_V,P_M>::updateCovMatrices()"
+    std::cout << "In uqMarkovChainSGClass<P_V,P_M>::updateCovMatrices()"
               << ": m_maxNumExtraStages = "                   << m_maxNumExtraStages
               << ", m_scalesForCovMProposals.size() = "       << m_scalesForCovMProposals.size()
               << ", m_lowerCholProposalCovMatrices.size() = " << m_lowerCholProposalCovMatrices.size()
@@ -787,7 +787,7 @@ uqMarkovChainDCClass<P_V,P_M>::updateCovMatrices()
     if (m_proposalCovMatrices[i]) delete m_proposalCovMatrices[i];
     m_proposalCovMatrices[i]             = new P_M(*(m_proposalCovMatrices[i-1]));
   *(m_proposalCovMatrices[i])           /= (scale*scale);
-#ifdef UQ_MACDC_REQUIRES_INVERTED_COV_MATRICES
+#ifdef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
     m_upperCholProposalPrecMatrices[i]   = new P_M(*(m_upperCholProposalPrecMatrices[i-1]));
   *(m_upperCholProposalPrecMatrices[i]) *= scale;
     m_proposalPrecMatrices[i]            = new P_M(*(m_proposalPrecMatrices[i-1]));
@@ -796,7 +796,7 @@ uqMarkovChainDCClass<P_V,P_M>::updateCovMatrices()
   }
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqMarkovChainDCClass<P_V,P_M>::updateCovMatrices()"
+    std::cout << "Leaving uqMarkovChainSGClass<P_V,P_M>::updateCovMatrices()"
               << std::endl;
   }
 
@@ -805,13 +805,13 @@ uqMarkovChainDCClass<P_V,P_M>::updateCovMatrices()
 
 template<class P_V,class P_M>
 double
-uqMarkovChainDCClass<P_V,P_M>::logProposal(
+uqMarkovChainSGClass<P_V,P_M>::logProposal(
   const uqChainPositionClass<P_V>& x,
   const uqChainPositionClass<P_V>& y,
   unsigned int                     idOfProposalCovMatrix)
 {
   P_V diffVec(y.paramValues() - x.paramValues());
-#ifdef UQ_MACDC_REQUIRES_INVERTED_COV_MATRICES
+#ifdef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
   double value = -0.5 * scalarProduct(diffVec, *(m_proposalPrecMatrices[idOfProposalCovMatrix]) * diffVec);
 #else
   double value = -0.5 * scalarProduct(diffVec, m_proposalCovMatrices[idOfProposalCovMatrix]->invertMultiply(diffVec));
@@ -821,12 +821,12 @@ uqMarkovChainDCClass<P_V,P_M>::logProposal(
 
 template<class P_V,class P_M>
 double
-uqMarkovChainDCClass<P_V,P_M>::logProposal(const std::vector<uqChainPositionClass<P_V>*>& inputPositions)
+uqMarkovChainSGClass<P_V,P_M>::logProposal(const std::vector<uqChainPositionClass<P_V>*>& inputPositions)
 {
   unsigned int inputSize = inputPositions.size();
   UQ_FATAL_TEST_MACRO((inputSize < 2),
                       m_env.rank(),
-                      "uqMarkovChainDCClass<P_V,P_M>::logProposal()",
+                      "uqMarkovChainSGClass<P_V,P_M>::logProposal()",
                       "inputPositions has size < 2");
 
   return this->logProposal(*(inputPositions[0            ]),
@@ -836,7 +836,7 @@ uqMarkovChainDCClass<P_V,P_M>::logProposal(const std::vector<uqChainPositionClas
 
 template<class P_V,class P_M>
 double
-uqMarkovChainDCClass<P_V,P_M>::alpha(
+uqMarkovChainSGClass<P_V,P_M>::alpha(
   const uqChainPositionClass<P_V>& x,
   const uqChainPositionClass<P_V>& y,
   double*                          alphaQuotientPtr)
@@ -847,7 +847,7 @@ uqMarkovChainDCClass<P_V,P_M>::alpha(
   if ((xOutOfBounds == false) &&
       (yOutOfBounds == false)) {
     double yLogPosteriorToUse = y.logPosterior();
-#ifdef UQ_MACDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+#ifdef UQ_MAC_SG_REQUIRES_TARGET_DISTRIBUTION_ONLY
 #else
     if (m_likelihoodObjComputesMisfits &&
         m_observableSpace.shouldVariancesBeUpdated()) {
@@ -858,7 +858,7 @@ uqMarkovChainDCClass<P_V,P_M>::alpha(
     if (m_proposalIsSymmetric) {
       alphaQuotient = exp(yLogPosteriorToUse - x.logPosterior());
       if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-        std::cout << "In uqMarkovChainDCClass<P_V,P_M>::alpha()"
+        std::cout << "In uqMarkovChainSGClass<P_V,P_M>::alpha()"
                   << ": symmetric proposal case"
                   << ", yLogPosteriorToUse = " << yLogPosteriorToUse
                   << ", x.logPosterior() = "   << x.logPosterior()
@@ -872,7 +872,7 @@ uqMarkovChainDCClass<P_V,P_M>::alpha(
   }
   else {
       if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-        std::cout << "In uqMarkovChainDCClass<P_V,P_M>::alpha()"
+        std::cout << "In uqMarkovChainSGClass<P_V,P_M>::alpha()"
                   << ": xOutOfBounds = " << xOutOfBounds
                   << ", yOutOfBounds = " << yOutOfBounds
                   << std::endl;
@@ -885,12 +885,12 @@ uqMarkovChainDCClass<P_V,P_M>::alpha(
 
 template<class P_V,class P_M>
 double
-uqMarkovChainDCClass<P_V,P_M>::alpha(const std::vector<uqChainPositionClass<P_V>*>& inputPositions)
+uqMarkovChainSGClass<P_V,P_M>::alpha(const std::vector<uqChainPositionClass<P_V>*>& inputPositions)
 {
   unsigned int inputSize = inputPositions.size();
   UQ_FATAL_TEST_MACRO((inputSize < 2),
                       m_env.rank(),
-                      "uqMarkovChainDCClass<P_V,P_M>::alpha()",
+                      "uqMarkovChainSGClass<P_V,P_M>::alpha()",
                       "inputPositions has size < 2");
 
   // If necessary, return 0. right away
@@ -931,7 +931,7 @@ uqMarkovChainDCClass<P_V,P_M>::alpha(const std::vector<uqChainPositionClass<P_V>
   }
 
   double numeratorLogPosteriorToUse = backwardPositions[0]->logPosterior();
-#ifdef UQ_MACDC_REQUIRES_TARGET_DISTRIBUTION_ONLY
+#ifdef UQ_MAC_SG_REQUIRES_TARGET_DISTRIBUTION_ONLY
 #else
   if (m_likelihoodObjComputesMisfits &&
       m_observableSpace.shouldVariancesBeUpdated()) {
@@ -949,7 +949,7 @@ uqMarkovChainDCClass<P_V,P_M>::alpha(const std::vector<uqChainPositionClass<P_V>
 
 template<class P_V,class P_M>
 bool
-uqMarkovChainDCClass<P_V,P_M>::acceptAlpha(double alpha)
+uqMarkovChainSGClass<P_V,P_M>::acceptAlpha(double alpha)
 {
   bool result = false;
 
@@ -963,7 +963,7 @@ uqMarkovChainDCClass<P_V,P_M>::acceptAlpha(double alpha)
 
 template<class P_V,class P_M>
 int
-uqMarkovChainDCClass<P_V,P_M>::writeInfo(
+uqMarkovChainSGClass<P_V,P_M>::writeInfo(
   const uqChainBaseClass<P_V>& workingChain,
   const std::string&           chainName,
   const std::string&           prefixName,
@@ -1139,7 +1139,7 @@ uqMarkovChainDCClass<P_V,P_M>::writeInfo(
 
 template<class P_V,class P_M>
 const uqChainBaseClass<P_V>&
-uqMarkovChainDCClass<P_V,P_M>::chain() const
+uqMarkovChainSGClass<P_V,P_M>::chain() const
 {
   if (m_chainUse2) return m_chain2;
   return m_chain1;
@@ -1147,7 +1147,7 @@ uqMarkovChainDCClass<P_V,P_M>::chain() const
 
 template<class P_V,class P_M>
 void
-uqMarkovChainDCClass<P_V,P_M>::print(std::ostream& os) const
+uqMarkovChainSGClass<P_V,P_M>::print(std::ostream& os) const
 {
   os <<         m_option_chain_type   << " = " << m_chainType
      << "\n" << m_option_chain_number << " = " << m_chainNumber
@@ -1196,10 +1196,10 @@ uqMarkovChainDCClass<P_V,P_M>::print(std::ostream& os) const
 }
 
 template<class P_V,class P_M>
-std::ostream& operator<<(std::ostream& os, const uqMarkovChainDCClass<P_V,P_M>& obj)
+std::ostream& operator<<(std::ostream& os, const uqMarkovChainSGClass<P_V,P_M>& obj)
 {
   obj.print(os);
 
   return os;
 }
-#endif // __UQ_MACDC1_H__
+#endif // __UQ_MAC_SG1_H__

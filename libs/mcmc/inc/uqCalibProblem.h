@@ -23,16 +23,15 @@
 #include <uqParamSpace.h>
 
 #include <uqProbDensity.h>       // For substep 1 in appls with a calibration problem
-#include <uqScalarLhFunction.h>  // For substep 2
 #include <uqProposalDensity.h>   // For substep 3
 #include <uqProposalGenerator.h> // For substep 3
 
 #include <uqDefaultPrior.h>
-#include <uqMarkovChainDC1.h>
-#include <uqSampleGenerator.h>
+#include <uqMarkovChainSG1.h>
+#include <uqRandomVariable.h>
 
 // _ODV = option default value
-#define UQ_CALIB_PROBLEM_DISTR_CALCULATOR_ODV "BMC_DC" // Bayesian Markov Chain Distribution Calculator
+#define UQ_CALIB_PROBLEM_SOLVER_ODV "bayes_mc" // Bayesian formula + Markov Chain
 
 template <class P_V,class P_M>
 class uqCalibProblemClass
@@ -41,26 +40,28 @@ public:
   uqCalibProblemClass(const uqEnvironmentClass&                     env,
                       const char*                                   prefix,
                       const uqParamSpaceClass            <P_V,P_M>& paramSpace,
-                      const uqProbDensity_BaseClass      <P_V,P_M>* m2lPriorParamDensityObj, // Set in substep 1 in appls with a calibration prob.
-                      const uqScalarLhFunction_BaseClass <P_V,P_M>& m2lScalarLhFunctionObj,  // Set in substep 2
-                      P_M*                                          proposalCovMatrix,       // Set in substep 3
-                      const uqProposalDensity_BaseClass  <P_V,P_M>* proposalDensityObj,      // Set in substep 3
-                      const uqProposalGenerator_BaseClass<P_V,P_M>* proposalGeneratorObj);   // Set in substep 3 // FIX ME: use such object
+                      const uqProbDensity_BaseClass      <P_V,P_M>* priorParamDensityObj,  // Set in substep 1 in appls with a calibration prob.
+                      const uqProbDensity_BaseClass      <P_V,P_M>& likelihoodFunctionObj, // Set in substep 2
+                      P_M*                                          proposalCovMatrix,     // Set in substep 3
+                      const uqProposalDensity_BaseClass  <P_V,P_M>* proposalDensityObj,    // Set in substep 3
+                      const uqProposalGenerator_BaseClass<P_V,P_M>* proposalGeneratorObj); // Set in substep 3 // FIX ME: use such object
   uqCalibProblemClass(const uqEnvironmentClass&                     env,
                       const char*                                   prefix,
-                      const uqProbDensity_BaseClass      <P_V,P_M>* m2lPriorParamDensityObj, // Set in substep 1 in appls with a calibration prob.
-                      const uqScalarLhFunction_BaseClass <P_V,P_M>& m2lScalarLhFunctionObj,  // Set in substep 2
-                      P_M*                                          proposalCovMatrix,       // Set in substep 3
-                      const uqProposalDensity_BaseClass  <P_V,P_M>* proposalDensityObj,      // Set in substep 3
-                      const uqProposalGenerator_BaseClass<P_V,P_M>* proposalGeneratorObj);   // Set in substep 3 // FIX ME: use such object
+                      const uqProbDensity_BaseClass      <P_V,P_M>* priorParamDensityObj,  // Set in substep 1 in appls with a calibration prob.
+                      const uqProbDensity_BaseClass      <P_V,P_M>& likelihoodFunctionObj, // Set in substep 2
+                      P_M*                                          proposalCovMatrix,     // Set in substep 3
+                      const uqProposalDensity_BaseClass  <P_V,P_M>* proposalDensityObj,    // Set in substep 3
+                      const uqProposalGenerator_BaseClass<P_V,P_M>* proposalGeneratorObj); // Set in substep 3 // FIX ME: use such object
  ~uqCalibProblemClass();
 
   const uqParamSpaceClass           <P_V,P_M>& paramSpace                () const;
 
+        void                                   prepareSolver             ();
         void                                   solve                     ();
         void                                   solve                     (const uqProbDensity_BaseClass<P_V,P_M>& priorParamDensityObj);
 
-  const uqProbDensity_BaseClass     <P_V,P_M>& solutionProbDensityObj  () const;
+  const uqRandomVariableClass       <P_V,P_M>& solution                  () const;    
+  const uqProbDensity_BaseClass     <P_V,P_M>& solutionProbDensityObj    () const;
   const uqSampleGenerator_BaseClass <P_V,P_M>& solutionSampleGeneratorObj() const;
 
         void                                   print                     (std::ostream& os) const;
@@ -77,23 +78,24 @@ private:
 
         po::options_description*                     m_optionsDesc;
         std::string                                  m_option_help;
-        std::string                                  m_option_distrCalculator;
+        std::string                                  m_option_solver;
 
-	std::string                                  m_dcString;
+	std::string                                  m_solverString;
 
-  const uqProbDensity_BaseClass           <P_V,P_M>* m_m2lPriorParamDensityObj;
+  const uqProbDensity_BaseClass           <P_V,P_M>* m_priorParamDensityObj;
         bool                                         m_userPriorDensityIsNull;
         uqDefault_M2lPriorRoutine_DataType<P_V,P_M>  m_m2lPriorRoutine_Data;
         P_V*                                         m_paramPriorMus;
         P_V*                                         m_paramPriorSigmas;
-  const uqScalarLhFunction_BaseClass      <P_V,P_M>& m_m2lScalarLhFunctionObj;
+  const uqProbDensity_BaseClass           <P_V,P_M>& m_likelihoodFunctionObj;
         P_M*                                         m_proposalCovMatrix;
   const uqProposalDensity_BaseClass       <P_V,P_M>* m_proposalDensityObj;
   const uqProposalGenerator_BaseClass     <P_V,P_M>* m_proposalGeneratorObj;
 
-        uqMarkovChainDCClass              <P_V,P_M>* m_macDc;
+        uqMarkovChainSGClass              <P_V,P_M>* m_mcSampler;
         uqProbDensity_BaseClass           <P_V,P_M>* m_solutionProbDensityObj;
         uqSampleGenerator_BaseClass       <P_V,P_M>* m_solutionSampleGeneratorObj;
+        uqRandomVariableClass             <P_V,P_M>* m_solutionObj;
 };
 
 template<class P_V,class P_M>
@@ -104,8 +106,8 @@ uqCalibProblemClass<P_V,P_M>::uqCalibProblemClass(
   const uqEnvironmentClass&                     env,
   const char*                                   prefix,
   const uqParamSpaceClass            <P_V,P_M>& paramSpace,
-  const uqProbDensity_BaseClass      <P_V,P_M>* m2lPriorParamDensityObj,
-  const uqScalarLhFunction_BaseClass <P_V,P_M>& m2lScalarLhFunctionObj,
+  const uqProbDensity_BaseClass      <P_V,P_M>* priorParamDensityObj,
+  const uqProbDensity_BaseClass      <P_V,P_M>& likelihoodFunctionObj,
   P_M*                                          proposalCovMatrix,
   const uqProposalDensity_BaseClass  <P_V,P_M>* proposalDensityObj,
   const uqProposalGenerator_BaseClass<P_V,P_M>* proposalGeneratorObj)
@@ -115,20 +117,21 @@ uqCalibProblemClass<P_V,P_M>::uqCalibProblemClass(
   m_paramSpace                (&paramSpace),
   m_userSpacesAreNull         (false),
   m_optionsDesc               (new po::options_description("UQ Calibration Problem")),
-  m_option_help               (m_prefix + "help"           ),
-  m_option_distrCalculator    (m_prefix + "distrCalculator"),
-  m_dcString                  (UQ_CALIB_PROBLEM_DISTR_CALCULATOR_ODV),
-  m_m2lPriorParamDensityObj   (m2lPriorParamDensityObj),
-  m_userPriorDensityIsNull    (m2lPriorParamDensityObj == NULL),
+  m_option_help               (m_prefix + "help"  ),
+  m_option_solver             (m_prefix + "solver"),
+  m_solverString              (UQ_CALIB_PROBLEM_SOLVER_ODV),
+  m_priorParamDensityObj      (priorParamDensityObj),
+  m_userPriorDensityIsNull    (priorParamDensityObj == NULL),
   m_paramPriorMus             (NULL),
   m_paramPriorSigmas          (NULL),
-  m_m2lScalarLhFunctionObj    (m2lScalarLhFunctionObj),
+  m_likelihoodFunctionObj     (likelihoodFunctionObj),
   m_proposalCovMatrix         (proposalCovMatrix),
   m_proposalDensityObj        (proposalDensityObj),
   m_proposalGeneratorObj      (proposalGeneratorObj),
-  m_macDc                     (NULL),
+  m_mcSampler                 (NULL),
   m_solutionProbDensityObj    (NULL),
-  m_solutionSampleGeneratorObj(NULL)
+  m_solutionSampleGeneratorObj(NULL),
+  m_solutionObj               (NULL)
 {
   commonConstructor();
 }
@@ -137,8 +140,8 @@ template <class P_V,class P_M>
 uqCalibProblemClass<P_V,P_M>::uqCalibProblemClass(
   const uqEnvironmentClass&                     env,
   const char*                                   prefix,
-  const uqProbDensity_BaseClass      <P_V,P_M>* m2lPriorParamDensityObj,
-  const uqScalarLhFunction_BaseClass <P_V,P_M>& m2lScalarLhFunctionObj,
+  const uqProbDensity_BaseClass      <P_V,P_M>* priorParamDensityObj,
+  const uqProbDensity_BaseClass      <P_V,P_M>& likelihoodFunctionObj,
   P_M*                                          proposalCovMatrix,
   const uqProposalDensity_BaseClass  <P_V,P_M>* proposalDensityObj,
   const uqProposalGenerator_BaseClass<P_V,P_M>* proposalGeneratorObj)
@@ -148,20 +151,21 @@ uqCalibProblemClass<P_V,P_M>::uqCalibProblemClass(
   m_paramSpace                (new uqParamSpaceClass<P_V,P_M>(m_env,m_prefix.c_str())),
   m_userSpacesAreNull         (true),
   m_optionsDesc               (new po::options_description("UQ Calibration Problem")),
-  m_option_help               (m_prefix + "help"           ),
-  m_option_distrCalculator    (m_prefix + "distrCalculator"),
-  m_dcString                  (UQ_CALIB_PROBLEM_DISTR_CALCULATOR_ODV),
-  m_m2lPriorParamDensityObj   (m2lPriorParamDensityObj),
-  m_userPriorDensityIsNull    (m2lPriorParamDensityObj == NULL),
+  m_option_help               (m_prefix + "help"  ),
+  m_option_solver             (m_prefix + "solver"),
+  m_solverString              (UQ_CALIB_PROBLEM_SOLVER_ODV),
+  m_priorParamDensityObj      (priorParamDensityObj),
+  m_userPriorDensityIsNull    (priorParamDensityObj == NULL),
   m_paramPriorMus             (NULL),
   m_paramPriorSigmas          (NULL),
-  m_m2lScalarLhFunctionObj    (m2lScalarLhFunctionObj),
+  m_likelihoodFunctionObj     (likelihoodFunctionObj),
   m_proposalCovMatrix         (proposalCovMatrix),
   m_proposalDensityObj        (proposalDensityObj),
   m_proposalGeneratorObj      (proposalGeneratorObj),
-  m_macDc                     (NULL),
+  m_mcSampler                 (NULL),
   m_solutionProbDensityObj    (NULL),
-  m_solutionSampleGeneratorObj(NULL)
+  m_solutionSampleGeneratorObj(NULL),
+  m_solutionObj               (NULL)
 {
   commonConstructor();
 }
@@ -190,21 +194,22 @@ uqCalibProblemClass<P_V,P_M>::commonConstructor()
     m_m2lPriorRoutine_Data.paramPriorMus    = m_paramPriorMus;
     m_m2lPriorRoutine_Data.paramPriorSigmas = m_paramPriorSigmas;
 
-    m_m2lPriorParamDensityObj = new uqM2lProbDensity_Class<P_V,P_M>(uqDefault_M2lPriorRoutine<P_V,P_M>, // use default prior() routine
-                                                                    (void *) &m_m2lPriorRoutine_Data);
+    m_priorParamDensityObj = new uqRoutineProbDensity_Class<P_V,P_M>(uqDefault_M2lPriorRoutine<P_V,P_M>, // use default prior() routine
+                                                                     (void *) &m_m2lPriorRoutine_Data,
+                                                                     true); // the routine computes [-2.*ln(Likelihood)]
   }
 
-  m_solutionProbDensityObj = new uqM2lProbDensity_Class<P_V,P_M>(m_m2lPriorParamDensityObj,
-                                                                 &m_m2lScalarLhFunctionObj);
+  m_solutionProbDensityObj = new uqBayesianProbDensity_Class<P_V,P_M>(m_priorParamDensityObj,
+                                                                     &m_likelihoodFunctionObj);
 
   // Instantiate the distribution calculator.
-  m_macDc = new uqMarkovChainDCClass<P_V,P_M>(m_env,
-                                              m_prefix.c_str(),
-                                             *m_paramSpace,
-                                             *m_solutionProbDensityObj,
-                                              m_proposalCovMatrix,
-                                              m_proposalDensityObj,
-                                              m_proposalGeneratorObj);
+  m_mcSampler = new uqMarkovChainSGClass<P_V,P_M>(m_env,
+                                                  m_prefix.c_str(),
+                                                 *m_paramSpace,
+                                                 *m_solutionProbDensityObj,
+                                                  m_proposalCovMatrix,
+                                                  m_proposalDensityObj,
+                                                  m_proposalGeneratorObj);
 
   if (m_env.rank() == 0) std::cout << "Leaving uqCalibProblemClass<P_V,P_M>::constructor()"
                                    << ": prefix = "              << m_prefix
@@ -217,12 +222,13 @@ uqCalibProblemClass<P_V,P_M>::commonConstructor()
 template <class P_V,class P_M>
 uqCalibProblemClass<P_V,P_M>::~uqCalibProblemClass()
 {
+  if (m_solutionObj               ) delete m_solutionObj;
   if (m_solutionSampleGeneratorObj) delete m_solutionSampleGeneratorObj;
   if (m_solutionProbDensityObj    ) delete m_solutionProbDensityObj;
-  if (m_macDc                     ) delete m_macDc;
+  if (m_mcSampler                 ) delete m_mcSampler;
 
   if (m_userPriorDensityIsNull) { 
-    delete m_m2lPriorParamDensityObj;
+    delete m_priorParamDensityObj;
     delete m_paramPriorSigmas;
     delete m_paramPriorMus;
   }
@@ -240,8 +246,8 @@ uqCalibProblemClass<P_V,P_M>::defineMyOptions(
   po::options_description& optionsDesc)
 {
   optionsDesc.add_options()
-    (m_option_help.c_str(),                                                                                             "produce help message for calibration problem")
-    (m_option_distrCalculator.c_str(),  po::value<std::string>()->default_value(UQ_CALIB_PROBLEM_DISTR_CALCULATOR_ODV), "algorithm for calibration"                   )
+    (m_option_help.c_str(),                                                                         "produce help message for calibration problem")
+    (m_option_solver.c_str(), po::value<std::string>()->default_value(UQ_CALIB_PROBLEM_SOLVER_ODV), "algorithm for calibration"                   )
   ;
 
   return;
@@ -257,8 +263,8 @@ void
               << std::endl;
   }
 
-  if (m_env.allOptionsMap().count(m_option_distrCalculator.c_str())) {
-    m_dcString = m_env.allOptionsMap()[m_option_distrCalculator.c_str()].as<std::string>();
+  if (m_env.allOptionsMap().count(m_option_solver.c_str())) {
+    m_solverString = m_env.allOptionsMap()[m_option_solver.c_str()].as<std::string>();
   }
 
   return;
@@ -266,12 +272,19 @@ void
 
 template <class P_V,class P_M>
 void
+uqCalibProblemClass<P_V,P_M>::prepareSolver()
+{
+  return;
+}
+
+template <class P_V,class P_M>
+void
 uqCalibProblemClass<P_V,P_M>::solve()
 {
-  m_macDc->calculateDistributions();
+  m_mcSampler->calculateDistributions();
 
   if (m_solutionSampleGeneratorObj) delete m_solutionSampleGeneratorObj;
-  m_solutionSampleGeneratorObj = new uqSampleGenerator_BaseClass<P_V,P_M>(&(m_macDc->chain()));
+  m_solutionSampleGeneratorObj = new uqSampleGenerator_BaseClass<P_V,P_M>(&(m_mcSampler->chain()));
 
   return;
 }
@@ -280,10 +293,10 @@ template <class P_V,class P_M>
 void
 uqCalibProblemClass<P_V,P_M>::solve(const uqProbDensity_BaseClass<P_V,P_M>& priorParamDensityObj)
 {
-  m_macDc->calculateDistributions(priorParamDensityObj);
+  m_mcSampler->calculateDistributions(priorParamDensityObj);
 
   if (m_solutionSampleGeneratorObj) delete m_solutionSampleGeneratorObj;
-  m_solutionSampleGeneratorObj = new uqSampleGenerator_BaseClass<P_V,P_M>(&(m_macDc->chain()));
+  m_solutionSampleGeneratorObj = new uqSampleGenerator_BaseClass<P_V,P_M>(&(m_mcSampler->chain()));
 
   return;
 }
@@ -320,10 +333,22 @@ uqCalibProblemClass<P_V,P_M>::solutionSampleGeneratorObj() const
 }
 
 template <class P_V,class P_M>
+const uqRandomVariableClass<P_V,P_M>&
+uqCalibProblemClass<P_V,P_M>::solution() const
+{
+  UQ_FATAL_TEST_MACRO(m_solutionObj == NULL,
+                      m_env.rank(),
+                      "uqCalibProblemClass<P_V,P_M>::solutionSampleGeneratorObj()",
+                      "solution is being requested but it has not been created yet");
+
+  return *m_solutionObj;
+}
+
+template <class P_V,class P_M>
 void
 uqCalibProblemClass<P_V,P_M>::print(std::ostream& os) const
 {
-  os << "\n" << m_option_distrCalculator  << " = " << m_dcString;
+  os << "\n" << m_option_solver  << " = " << m_solverString;
   os << std::endl;
 }
 
