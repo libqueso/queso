@@ -121,6 +121,19 @@ uqVectorRVClass<V,M>::uqVectorRVClass(
   m_priorSigmaValues        (NULL),
   m_componentsNames         (0)
 {
+  if (m_probDensity == NULL) {
+#if 0
+    m_paramPriorMus    = new P_V(m_paramSpace->priorMuValues   ());
+    m_paramPriorSigmas = new P_V(m_paramSpace->priorSigmaValues());
+    m_m2lPriorRoutine_Data.paramPriorMus    = m_paramPriorMus;
+    m_m2lPriorRoutine_Data.paramPriorSigmas = m_paramPriorSigmas;
+
+    m_priorParamDensity = new uqRoutineProbDensity_Class<P_V,P_M>(uqDefault_M2lPriorRoutine<P_V,P_M>, // use default prior() routine
+                                                                  (void *) &m_m2lPriorRoutine_Data,
+                                                                  true); // the routine computes [-2.*ln(Likelihood)]
+#endif
+  }
+
 }
 
 template<class V, class M>

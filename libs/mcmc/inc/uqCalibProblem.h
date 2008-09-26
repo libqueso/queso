@@ -29,6 +29,9 @@
 #include <uqMarkovChainSG1.h>
 #include <uqVectorRV.h>
 
+// _ODV = option default value
+#define UQ_CALIB_PROBLEM_SOLVER_ODV "bayes_mc" // Bayesian formula + Markov Chain
+
 template <class P_V,class P_M>
 class uqCalibProblemClass
 {
@@ -53,6 +56,9 @@ private:
 
         po::options_description*                     m_optionsDesc;
         std::string                                  m_option_help;
+        std::string                                  m_option_solver;
+
+	std::string                                  m_solverString;
 
   const uqVectorRVClass                   <P_V,P_M>& m_priorRv;
   const uqProbDensity_BaseClass           <P_V,P_M>& m_likelihoodFunction;
@@ -87,6 +93,8 @@ uqCalibProblemClass<P_V,P_M>::uqCalibProblemClass(
   m_prefix                ((std::string)(prefix) + "cal_"),
   m_optionsDesc           (new po::options_description("UQ Calibration Problem")),
   m_option_help           (m_prefix + "help"  ),
+  m_option_solver         (m_prefix + "solver"),
+  m_solverString          (UQ_CALIB_PROBLEM_SOLVER_ODV),
   m_priorRv               (priorRv),
   m_likelihoodFunction    (likelihoodFunction),
   m_postRv                (postRv),
@@ -143,7 +151,8 @@ uqCalibProblemClass<P_V,P_M>::defineMyOptions(
   po::options_description& optionsDesc)
 {
   optionsDesc.add_options()
-    (m_option_help.c_str(), "produce help message for calibration problem")
+    (m_option_help.c_str(),                                                                         "produce help message for calibration problem")
+    (m_option_solver.c_str(), po::value<std::string>()->default_value(UQ_CALIB_PROBLEM_SOLVER_ODV), "algorithm for calibration"                   )
   ;
 
   return;
@@ -159,6 +168,10 @@ void
               << std::endl;
   }
 
+  if (m_env.allOptionsMap().count(m_option_solver.c_str())) {
+    m_solverString = m_env.allOptionsMap()[m_option_solver.c_str()].as<std::string>();
+  }
+
   return;
 }
 
@@ -168,17 +181,6 @@ uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain(void* transitionKernel)
 {
   if (m_solutionRealizer   ) delete m_solutionRealizer;
   if (m_solutionProbDensity) delete m_solutionProbDensity;
-
-  if (m_userPriorDensityIsNull) {
-    m_paramPriorMus    = new P_V(m_paramSpace->priorMuValues   ());
-    m_paramPriorSigmas = new P_V(m_paramSpace->priorSigmaValues());
-    m_m2lPriorRoutine_Data.paramPriorMus    = m_paramPriorMus;
-    m_m2lPriorRoutine_Data.paramPriorSigmas = m_paramPriorSigmas;
-
-    m_priorParamDensity = new uqRoutineProbDensity_Class<P_V,P_M>(uqDefault_M2lPriorRoutine<P_V,P_M>, // use default prior() routine
-                                                                  (void *) &m_m2lPriorRoutine_Data,
-                                                                  true); // the routine computes [-2.*ln(Likelihood)]
-  }
 
   // Bayesian step
   m_solutionProbDensity = new uqBayesianProbDensity_Class<P_V,P_M>(m_priorRv.probDensity(),
@@ -206,7 +208,7 @@ template <class P_V,class P_M>
 void
 uqCalibProblemClass<P_V,P_M>::print(std::ostream& os) const
 {
-  os << "\n" << "No options for this class";
+  os << "\n" << m_option_solver  << " = " << m_solverString;
   os << std::endl;
 }
 

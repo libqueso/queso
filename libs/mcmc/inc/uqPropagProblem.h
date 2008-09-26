@@ -38,26 +38,12 @@ class uqPropagProblemClass
 public:
   uqPropagProblemClass(const uqEnvironmentClass&                     env,
                        const char*                                   prefix,
-                       const uqParamSpaceClass    <P_V,P_M>&         paramSpace,
-                       const uqQoISpaceClass      <Q_V,Q_M>&         qoiSpace,
-                       const uqVectorRVClass      <P_V,P_M>*         paramRV,
-                       const uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction); // Set in substep 4
-  uqPropagProblemClass(const uqEnvironmentClass&                     env,
-                       const char*                                   prefix,
-                       const uqVectorRVClass      <P_V,P_M>*         paramRV,
-                             unsigned int                            qoiSpaceDim,
-                       const uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction); // Set in substep 4
+                       const uqVectorRVClass      <P_V,P_M>&         paramRv,
+                       const uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction,
+                             uqVectorRVClass      <Q_V,Q_M>&         qoiRV);
  ~uqPropagProblemClass();
 
-  const uqParamSpaceClass          <P_V,P_M>& paramSpace     () const;
-  const uqQoISpaceClass            <Q_V,Q_M>& qoiSpace       () const;
-
-        void                                  solve          ();
-        void                                  solve          (const uqVectorRVClass<P_V,P_M>& paramRV);
-
-//const uqProbDensity_BaseClass<Q_V,Q_M>& solutionProbDensity    () const;
-//const uqVectorRVClass  <Q_V,Q_M>& solutionSampleGenerator() const;
-  const uqVectorRVClass  <Q_V,Q_M>& solution                  () const;
+        void                                  solveWithMonteCarloKde();
 
         void                                  print          (std::ostream& os) const;
 
@@ -68,9 +54,6 @@ private:
 
   const uqEnvironmentClass&                       m_env;
         std::string                               m_prefix;
-  const uqParamSpaceClass      <P_V,P_M>*         m_paramSpace;
-  const uqQoISpaceClass        <Q_V,Q_M>*         m_qoiSpace;
-        bool                                      m_userSpacesAreNull;
 
         po::options_description*                  m_optionsDesc;
         std::string                               m_option_help;
@@ -78,14 +61,13 @@ private:
 
 	std::string                               m_solverString;
 
-  const uqVectorRVClass        <P_V,P_M>*         m_paramRV;
+  const uqVectorRVClass        <P_V,P_M>&         m_paramRv;
   const uqVectorFunctionClass  <P_V,P_M,Q_V,Q_M>& m_qoiFunction;
+        uqVectorRVClass        <Q_V,Q_M>&         m_qoiRv;
 
         uqMonteCarloSGClass    <P_V,P_M,Q_V,Q_M>* m_mcSeqGenerator;
         uqProbDensity_BaseClass<Q_V,Q_M>*         m_solutionProbDensity;
         uqRealizer_BaseClass   <Q_V,Q_M>*         m_solutionRealizer;
-        uqVectorRVClass        <Q_V,Q_M>*         m_solution;
-
 };
 
 template<class P_V,class P_M,class Q_V,class Q_M>
@@ -95,64 +77,25 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::uqPropagProblemClass(
   const uqEnvironmentClass&                     env,
   const char*                                   prefix,
-  const uqParamSpaceClass    <P_V,P_M>&         paramSpace,
-  const uqQoISpaceClass      <Q_V,Q_M>&         qoiSpace,
-  const uqVectorRVClass      <P_V,P_M>*         paramRV,
-  const uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction)
+  const uqVectorRVClass      <P_V,P_M>&         paramRv,
+  const uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction,
+        uqVectorRVClass      <Q_V,Q_M>&         qoiRv)
   :
   m_env                (env),
   m_prefix             ((std::string)(prefix) + "pro_"),
-  m_paramSpace         (&paramSpace),
-  m_qoiSpace           (&qoiSpace),
-  m_userSpacesAreNull  (false),
   m_optionsDesc        (new po::options_description("UQ Propagation Problem")),
   m_option_help        (m_prefix + "help"  ),
   m_option_solver      (m_prefix + "solver"),
   m_solverString       (UQ_PROPAG_PROBLEM_SOLVER_ODV),
-  m_paramRV            (paramRV),
+  m_paramRv            (paramRv),
   m_qoiFunction        (qoiFunction),
+  m_qoiRv              (qoiRv),
   m_mcSeqGenerator     (NULL),
   m_solutionProbDensity(NULL),
-  m_solutionRealizer   (NULL),
-  m_solution           (NULL)
-{
-  commonConstructor();
-}
-
-template <class P_V,class P_M,class Q_V,class Q_M>
-uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::uqPropagProblemClass(
-  const uqEnvironmentClass&                     env,
-  const char*                                   prefix,
-  const uqVectorRVClass      <P_V,P_M>*         paramRV,
-        unsigned int                            qoiSpaceDim,
-  const uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction)
-  :
-  m_env                (env),
-  m_prefix             ((std::string)(prefix) + "pro_"),
-  m_paramSpace         (new uqParamSpaceClass<P_V,P_M>(m_env,m_prefix.c_str())),
-  m_qoiSpace           (new uqQoISpaceClass  <Q_V,Q_M>(m_env,m_prefix.c_str())),
-  m_userSpacesAreNull  (true),
-  m_optionsDesc        (new po::options_description("UQ Propagation Problem")),
-  m_option_help        (m_prefix + "help"  ),
-  m_option_solver      (m_prefix + "solver"),
-  m_solverString       (UQ_PROPAG_PROBLEM_SOLVER_ODV),
-  m_paramRV            (paramRV),
-  m_qoiFunction        (qoiFunction),
-  m_mcSeqGenerator     (NULL),
-  m_solutionProbDensity(NULL),
-  m_solutionRealizer   (NULL),
-  m_solution           (NULL)
-{
-  commonConstructor();
-}
-
-template <class P_V,class P_M,class Q_V,class Q_M>
-void
-uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::commonConstructor()
+  m_solutionRealizer   (NULL)
 {
   if (m_env.rank() == 0) std::cout << "Entering uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::constructor()"
                                    << ": prefix = "              << m_prefix
-                                   << ", m_userSpacesAreNull = " << m_userSpacesAreNull
                                    << std::endl;
 
   defineMyOptions                (*m_optionsDesc);
@@ -164,33 +107,19 @@ uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::commonConstructor()
                                    << "\n" << *this
                                    << std::endl;
 
-  // Instantiate the distribution calculator.
-  m_mcSeqGenerator = new uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>(m_env,
-                                                              m_prefix.c_str(),
-                                                             *m_paramSpace,
-                                                             *m_qoiSpace,
-                                                              m_paramRV,
-                                                              m_qoiFunction);
-
   if (m_env.rank() == 0) std::cout << "Leaving uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::constructor()"
                                    << ": prefix = "              << m_prefix
-                                   << ", m_userSpacesAreNull = " << m_userSpacesAreNull
                                    << std::endl;
 }
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::~uqPropagProblemClass()
 {
-  if (m_solution           ) delete m_solution;
   if (m_solutionRealizer   ) delete m_solutionRealizer;
   if (m_solutionProbDensity) delete m_solutionProbDensity;
   if (m_mcSeqGenerator     ) delete m_mcSeqGenerator;
 
   if (m_optionsDesc        ) delete m_optionsDesc;
-  if (m_userSpacesAreNull) {
-    if (m_qoiSpace  ) delete m_qoiSpace;
-    if (m_paramSpace) delete m_paramSpace;
-  }
 }
 
 template<class P_V,class P_M,class Q_V,class Q_M>
@@ -225,46 +154,18 @@ void
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::solve()
+uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarloKde()
 {
+  // Instantiate the distribution calculator.
+  m_mcSeqGenerator = new uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>(m_env,
+                                                              m_prefix.c_str(),
+                                                              m_paramRv,
+                                                              m_qoiFunction,
+                                                              m_qoiRv);
+
   m_mcSeqGenerator->generateSequence();
 
   return;
-}
-
-template <class P_V,class P_M,class Q_V,class Q_M>
-void
-uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::solve(const uqVectorRVClass<P_V,P_M>& paramRV)
-{
-  m_mcSeqGenerator->generateSequence(paramRV);
-
-  return;
-}
-
-template <class P_V,class P_M,class Q_V,class Q_M>
-const uqParamSpaceClass<P_V,P_M>&
-uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::paramSpace() const
-{
-  return *m_paramSpace;
-}
-
-template <class P_V,class P_M,class Q_V,class Q_M>
-const uqQoISpaceClass<Q_V,Q_M>&
-uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::qoiSpace() const
-{
-  return *m_qoiSpace;
-}
-
-template <class P_V,class P_M,class Q_V,class Q_M>
-const uqVectorRVClass<Q_V,Q_M>&
-uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::solution() const
-{
-  UQ_FATAL_TEST_MACRO(m_solution == NULL,
-                      m_env.rank(),
-                      "uqPropagProblemClass<P_V,P_M>::solution()",
-                      "solution is being requested but it has not been created yet");
-
-  return *m_solution;
 }
 
 template <class P_V,class P_M,class Q_V,class Q_M>

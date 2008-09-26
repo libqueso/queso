@@ -296,8 +296,8 @@ uqAppl(const uqEnvironmentClass& env)
   uqCalibProblemClass<P_V,P_M> calibProblem(env,
                                             "", // No extra prefix before the default "cal_" prefix
                                             calibPriorRv,
-                                            calibPostRv,
-                                            calibLikelihoodFunctionObj);
+                                            calibLikelihoodFunctionObj,
+                                            calibPostRv);
 
   // Transition kernel for the Markov Chain algorithm
   //P_M*                                    calibProposalCovMatrix    = NULL;
@@ -334,11 +334,11 @@ uqAppl(const uqEnvironmentClass& env)
   uqPropagProblemClass<P_V,P_M,Q_V,Q_M> propagProblem(env,
                                                       "",          // No extra prefix before the default "pro_" prefix
                                                       calibPostRv, // propagation input = calibration output
-                                                      propagQoiRv,
-                                                      propagQoiFunctionObj);
+                                                      propagQoiFunctionObj,
+                                                      propagQoiRv);
 
   // Solve the propagation problem
-  propagProblem.solve("monte_carlo_kde"); // no extra user entities needed for Monte Carlo algorithm
+  propagProblem.solveWithMonteCarloKde(); // no extra user entities needed for Monte Carlo algorithm
 
   //******************************************************
   // Release memory before leaving routine.
