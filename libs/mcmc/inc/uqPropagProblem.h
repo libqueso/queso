@@ -27,7 +27,7 @@
 
 #include <uqMonteCarloSG.h>
 #include <uqProbDensity.h>
-#include <uqRandomVariable.h>
+#include <uqVectorRV.h>
 
 // _ODV = option default value
 #define UQ_PROPAG_PROBLEM_SOLVER_ODV "mc_kde" // Monte Carlo + Kernel Density Estimator
@@ -40,11 +40,12 @@ public:
                        const char*                                   prefix,
                        const uqParamSpaceClass    <P_V,P_M>&         paramSpace,
                        const uqQoISpaceClass      <Q_V,Q_M>&         qoiSpace,
-                       const uqRandomVariableClass<P_V,P_M>*         paramRV,
+                       const uqVectorRVClass      <P_V,P_M>*         paramRV,
                        const uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction); // Set in substep 4
   uqPropagProblemClass(const uqEnvironmentClass&                     env,
                        const char*                                   prefix,
-                       const uqRandomVariableClass<P_V,P_M>*         paramRV,
+                       const uqVectorRVClass      <P_V,P_M>*         paramRV,
+                             unsigned int                            qoiSpaceDim,
                        const uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction); // Set in substep 4
  ~uqPropagProblemClass();
 
@@ -52,11 +53,11 @@ public:
   const uqQoISpaceClass            <Q_V,Q_M>& qoiSpace       () const;
 
         void                                  solve          ();
-        void                                  solve          (const uqRandomVariableClass<P_V,P_M>& paramRV);
+        void                                  solve          (const uqVectorRVClass<P_V,P_M>& paramRV);
 
 //const uqProbDensity_BaseClass<Q_V,Q_M>& solutionProbDensity    () const;
-//const uqRandomVariableClass  <Q_V,Q_M>& solutionSampleGenerator() const;
-  const uqRandomVariableClass  <Q_V,Q_M>& solution                  () const;
+//const uqVectorRVClass  <Q_V,Q_M>& solutionSampleGenerator() const;
+  const uqVectorRVClass  <Q_V,Q_M>& solution                  () const;
 
         void                                  print          (std::ostream& os) const;
 
@@ -77,13 +78,13 @@ private:
 
 	std::string                               m_solverString;
 
-  const uqRandomVariableClass  <P_V,P_M>*         m_paramRV;
+  const uqVectorRVClass        <P_V,P_M>*         m_paramRV;
   const uqVectorFunctionClass  <P_V,P_M,Q_V,Q_M>& m_qoiFunction;
 
         uqMonteCarloSGClass    <P_V,P_M,Q_V,Q_M>* m_mcSeqGenerator;
         uqProbDensity_BaseClass<Q_V,Q_M>*         m_solutionProbDensity;
-        uqRandomVariableClass  <Q_V,Q_M>*         m_solutionRealizer;
-        uqRandomVariableClass  <Q_V,Q_M>*         m_solution;
+        uqRealizer_BaseClass   <Q_V,Q_M>*         m_solutionRealizer;
+        uqVectorRVClass        <Q_V,Q_M>*         m_solution;
 
 };
 
@@ -96,7 +97,7 @@ uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::uqPropagProblemClass(
   const char*                                   prefix,
   const uqParamSpaceClass    <P_V,P_M>&         paramSpace,
   const uqQoISpaceClass      <Q_V,Q_M>&         qoiSpace,
-  const uqRandomVariableClass<P_V,P_M>*         paramRV,
+  const uqVectorRVClass      <P_V,P_M>*         paramRV,
   const uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction)
   :
   m_env                (env),
@@ -122,7 +123,8 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::uqPropagProblemClass(
   const uqEnvironmentClass&                     env,
   const char*                                   prefix,
-  const uqRandomVariableClass<P_V,P_M>*         paramRV,
+  const uqVectorRVClass      <P_V,P_M>*         paramRV,
+        unsigned int                            qoiSpaceDim,
   const uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction)
   :
   m_env                (env),
@@ -225,16 +227,16 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::solve()
 {
-  m_mcSeqGenerator->calculateDistributions();
+  m_mcSeqGenerator->generateSequence();
 
   return;
 }
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::solve(const uqRandomVariableClass<P_V,P_M>& paramRV)
+uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::solve(const uqVectorRVClass<P_V,P_M>& paramRV)
 {
-  m_mcSeqGenerator->calculateDistributions(paramRV);
+  m_mcSeqGenerator->generateSequence(paramRV);
 
   return;
 }
@@ -254,7 +256,7 @@ uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::qoiSpace() const
 }
 
 template <class P_V,class P_M,class Q_V,class Q_M>
-const uqRandomVariableClass<Q_V,Q_M>&
+const uqVectorRVClass<Q_V,Q_M>&
 uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::solution() const
 {
   UQ_FATAL_TEST_MACRO(m_solution == NULL,

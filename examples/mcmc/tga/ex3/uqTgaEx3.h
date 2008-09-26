@@ -20,8 +20,8 @@
 #ifndef __UQ_TGA_EX3_H__
 #define __UQ_TGA_EX3_H__
 
-//#include <uqStateSpace.h>
-#include <uqCPProblem.h>
+#include <uqCalibProblem.h>
+#include <uqPropagProblem.h>
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_odeiv.h>
 
@@ -49,7 +49,7 @@ int func(double t, const double Mass[], double f[], void *info)
 // The (user defined) data type for the data needed by the (user defined) likelihood routine
 template<class P_V, class P_M>
 struct
-cp_likelihoodRoutine_DataType
+calibLikelihoodRoutine_DataType
 {
   double               beta1;
   double               variance1;
@@ -60,14 +60,14 @@ cp_likelihoodRoutine_DataType
 // The actual (user defined) likelihood routine
 template<class P_V,class P_M>
 double
-cp_likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
+calibLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 {
   double A                       = paramValues[0];
   double E                       = paramValues[1];
-  double beta1                   =  ((cp_likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta1;
-  double variance1               =  ((cp_likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->variance1;
-  const std::vector<double>& Te1 = *((cp_likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Te1;
-  const std::vector<double>& Me1 = *((cp_likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Me1;
+  double beta1                   =  ((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta1;
+  double variance1               =  ((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->variance1;
+  const std::vector<double>& Te1 = *((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Te1;
+  const std::vector<double>& Me1 = *((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Me1;
   std::vector<double> Mt1(Me1.size(),0.);
 
   double params[]={A,E,beta1};
@@ -95,7 +95,7 @@ cp_likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
     int status = gsl_odeiv_evolve_apply(e, c, s, &sys, &t, t1, &h, Mass);
     UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
                         paramValues.env().rank(),
-                        "cp_likelihoodRoutine()",
+                        "calibLikelihoodRoutine()",
                         "gsl_odeiv_evolve_apply() failed");
     //printf("t = %6.1lf, mass = %10.4lf\n",t,Mass[0]);
     //loopSize++;
@@ -114,7 +114,7 @@ cp_likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 	
   //printf("loopSize = %d\n",loopSize);
   if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
-    printf("In cp_likelihoodRoutine(), A = %g, E = %g, beta1 = %.3lf: misfit1 = %lf, likelihood1 = %lf.\n",A,E,beta1,misfit1,resultValue);
+    printf("In calibLikelihoodRoutine(), A = %g, E = %g, beta1 = %.3lf: misfit1 = %lf, likelihood1 = %lf.\n",A,E,beta1,misfit1,resultValue);
   }
 
   gsl_odeiv_evolve_free (e);
@@ -125,14 +125,14 @@ cp_likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 }
 
 //********************************************************
-// QoI function object for the CP problem
-// A QoI function object is provided by user and is called by the UQ library.
-// This QoI function object consists of data and routine.
+// Qoi function object for the CP problem
+// A Qoi function object is provided by user and is called by the UQ library.
+// This Qoi function object consists of data and routine.
 //********************************************************
 // The (user defined) data type for the data needed by the (user defined) qoi routine
 template<class P_V,class P_M,class Q_V, class Q_M>
 struct
-cp_qoiRoutine_DataType
+propagQoiRoutine_DataType
 {
   double beta1;
   double criticalMass1;
@@ -140,12 +140,12 @@ cp_qoiRoutine_DataType
 
 // The actual (user defined) qoi routine
 template<class P_V,class P_M,class Q_V,class Q_M>
-void cp_qoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiValues)
+void propagQoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiValues)
 {
   double A             = paramValues[0];
   double E             = paramValues[1];
-  double beta1         = ((cp_qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->beta1;
-  double criticalMass1 = ((cp_qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->criticalMass1;
+  double beta1         = ((propagQoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->beta1;
+  double criticalMass1 = ((propagQoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->criticalMass1;
 
   double params[]={A,E,beta1};
       	
@@ -172,7 +172,7 @@ void cp_qoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoi
     int status = gsl_odeiv_evolve_apply(e, c, s, &sys, &t, t1, &h, Mass);
     UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
                         paramValues.env().rank(),
-                        "cp_qoiRoutine()",
+                        "propagQoiRoutine()",
                         "gsl_odeiv_evolve_apply() failed");
     //printf("t = %6.1lf, mass = %10.4lf\n",t,Mass[0]);
     //loopSize++;
@@ -189,7 +189,7 @@ void cp_qoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoi
 	
   //printf("loopSize = %d\n",loopSize);
   if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
-    printf("In cp_qoiRoutine(), A = %g, E = %g, beta1 = %.3lf, criticalMass1 = %.3lf: qoi = %lf.\n",A,E,beta1,criticalMass1,qoiValues[0]);
+    printf("In propagQoiRoutine(), A = %g, E = %g, beta1 = %.3lf, criticalMass1 = %.3lf: qoi = %lf.\n",A,E,beta1,criticalMass1,qoiValues[0]);
   }
 
   gsl_odeiv_evolve_free (e);
@@ -200,7 +200,10 @@ void cp_qoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoi
 }
 
 //********************************************************
-// The CP problem driving routine "uqAppl()": called by main()
+// The driving routine "uqAppl()": called by main()
+// Step 1 of 3: code very user specific
+// Step 2 of 3: deal with the calibration problem
+// Step 3 of 3: deal with the propagation problem
 //********************************************************
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
@@ -217,7 +220,7 @@ uqAppl(const uqEnvironmentClass& env)
                       "input file must be specified in command line, after the '-i' option");
 
   //*****************************************************
-  // Step 1 of 4: Code specific to this TGA example
+  // Step 1 of 3: Code very specific to this TGA example
   //*****************************************************
   // Open input file on experimental data
   FILE *inp;
@@ -253,61 +256,89 @@ uqAppl(const uqEnvironmentClass& env)
   fclose(inp);
 
   //******************************************************
-  // Step 2 of 4: define the CP (calibration+propagation) problem
+  // Usually, spaces are the same throughout different problems.
+  // If this is the case, we can instantiate them here, just once.
+  //******************************************************
+  uqVectorSpaceClass<P_V,P_M> paramSpace(env,
+                                         ""); // No extra prefix before the default "param_" prefix
+  uqVectorSpaceClass<Q_V,Q_M> qoiSpace  (env,
+                                         ""); // No extra prefix before the default "qoi_" prefix
+
+  //******************************************************
+  // Step 2 of 3: deal with the calibration problem
   //******************************************************
 
-  // Prior probability density function object: -2*ln[prior]
-  // Use the default prior density, provided by the UQ library
-  uqProbDensity_BaseClass<P_V,P_M>* cp_priorParamDensityObj = NULL;
+  // Prior vector rv
+  uqVectorRVClass<P_V,P_M> calibPriorRv(env,
+                                        "prior_",   // Extra prefix before the default "rv_" prefix
+                                        paramSpace,
+                                        NULL,       // pdf: use default prior from library
+                                        NULL);
+
+  // Posterior vector rv
+  uqVectorRVClass<P_V,P_M> calibPostRv(env,
+                                       "post_",     // Extra prefix before the default "rv_" prefix
+                                       paramSpace,
+                                       NULL,        // pdf: internally set by the solution process
+                                       NULL);
 
   // Likelihood function object: -2*ln[likelihood]
-  cp_likelihoodRoutine_DataType<P_V,P_M> cp_likelihoodRoutine_Data;
-  cp_likelihoodRoutine_Data.beta1     = beta1;
-  cp_likelihoodRoutine_Data.variance1 = variance1;
-  cp_likelihoodRoutine_Data.Te1       = &Te1; // temperatures
-  cp_likelihoodRoutine_Data.Me1       = &Me1; // relative masses
-  uqRoutineProbDensity_Class<P_V,P_M> cp_likelihoodFunctionObj(cp_likelihoodRoutine<P_V,P_M>,
-                                                               (void *) &cp_likelihoodRoutine_Data,
-                                                               true); // the routine computes [-2.*ln(Likelihood)]
+  calibLikelihoodRoutine_DataType<P_V,P_M> calibLikelihoodRoutine_Data;
+  calibLikelihoodRoutine_Data.beta1     = beta1;
+  calibLikelihoodRoutine_Data.variance1 = variance1;
+  calibLikelihoodRoutine_Data.Te1       = &Te1; // temperatures
+  calibLikelihoodRoutine_Data.Me1       = &Me1; // relative masses
+  uqRoutineProbDensity_Class<P_V,P_M> calibLikelihoodFunctionObj(calibLikelihoodRoutine<P_V,P_M>,
+                                                                 (void *) &calibLikelihoodRoutine_Data,
+                                                                 true); // the routine computes [-2.*ln(Likelihood)]
+
+  // Calibration problem
+  uqCalibProblemClass<P_V,P_M> calibProblem(env,
+                                            "", // No extra prefix before the default "cal_" prefix
+                                            calibPriorRv,
+                                            calibPostRv,
+                                            calibLikelihoodFunctionObj);
+
+  // Transition kernel for the Markov Chain algorithm
+  //P_M*                                    calibProposalCovMatrix    = NULL;
+  //uqProposalDensity_BaseClass<P_V,P_M>*   calibProposalDensityObj   = NULL;
+  //uqProposalGenerator_BaseClass<P_V,P_M>* calibProposalGeneratorObj = NULL;
+  //P_M* calibProposalCovMatrix = paramSpace.newMatrix();
+  //(*calibProposalCovMatrix)(0,0) = 1.65122e+10;
+  //(*calibProposalCovMatrix)(0,1) = 0.;
+  //(*calibProposalCovMatrix)(1,0) = 0.;
+  //(*calibProposalCovMatrix)(1,1) = 9.70225e+04;
+
+  // Solve the calibration problem
+  calibProblem.solveWithBayesMarkovChain(NULL); // use default kernel from library
+
+  //******************************************************
+  // Step 3 of 3: deal with the propagation problem
+  //******************************************************
+
+  // Qoi vector rv
+  uqVectorRVClass<Q_V,Q_M> propagQoiRv(env,
+                                       "qoi_",   // Extra prefix before the default "rv_" prefix
+                                       qoiSpace,
+                                       NULL,     // pdf: internally set by the solution process
+                                       NULL);
 
   // Qoi function object
-  cp_qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> cp_qoiRoutine_Data;
-  cp_qoiRoutine_Data.beta1         = beta1;
-  cp_qoiRoutine_Data.criticalMass1 = criticalMass1;
-  uqVectorFunctionClass<P_V,P_M,Q_V,Q_M> cp_qoiFunctionObj(cp_qoiRoutine<P_V,P_M,Q_V,Q_M>,
-                                                           (void *) &cp_qoiRoutine_Data);
+  propagQoiRoutine_DataType<P_V,P_M,Q_V,Q_M> propagQoiRoutine_Data;
+  propagQoiRoutine_Data.beta1         = beta1;
+  propagQoiRoutine_Data.criticalMass1 = criticalMass1;
+  uqVectorFunctionClass<P_V,P_M,Q_V,Q_M> propagQoiFunctionObj(propagQoiRoutine<P_V,P_M,Q_V,Q_M>,
+                                                              (void *) &propagQoiRoutine_Data);
 
-  //******************************************************
-  // Step 3 of 4: Define the solvers for the CP problem
-  //******************************************************
+  // Propagation problem
+  uqPropagProblemClass<P_V,P_M,Q_V,Q_M> propagProblem(env,
+                                                      "",          // No extra prefix before the default "pro_" prefix
+                                                      calibPostRv, // propagation input = calibration output
+                                                      propagQoiRv,
+                                                      propagQoiFunctionObj);
 
-  // Proposal cov matrix, the proposal density and the proposal generator
-  // Use the default gaussian proposal and default gaussian generator with the default covariance matrix, all provided by the UQ library
-  P_M*                                    cp_proposalCovMatrix    = NULL;
-  uqProposalDensity_BaseClass<P_V,P_M>*   cp_proposalDensityObj   = NULL;
-  uqProposalGenerator_BaseClass<P_V,P_M>* cp_proposalGeneratorObj = NULL;
-
-  //uqParamSpaceClass<P_V,P_M> cp_paramSpace(env,"cp_");
-  //P_M* cp_proposalCovMatrix = cp_paramSpace.newMatrix();
-  //(*cp_proposalCovMatrix)(0,0) = 1.65122e+10;
-  //(*cp_proposalCovMatrix)(0,1) = 0.;
-  //(*cp_proposalCovMatrix)(1,0) = 0.;
-  //(*cp_proposalCovMatrix)(1,1) = 9.70225e+04;
-
-  // Instantiate the CP problem, together with its spaces
-  uqCPProblemClass<P_V,P_M,Q_V,Q_M> cpProblem(env,
-                                              "",
-                                              cp_priorParamDensityObj,  // substep 1: calibration prior parameter density
-                                              cp_likelihoodFunctionObj, // substep 2: calibration likelihood function
-                                              cp_proposalCovMatrix,     // substep 3: calibration gaussian proposal (density and generator)
-                                              cp_proposalDensityObj,    // substep 3: calibration proposal density
-                                              cp_proposalGeneratorObj,  // substep 3: calibration proposal generator
-                                              cp_qoiFunctionObj);       // substep 4: propagation qoi function
-
-  //******************************************************
-  // Step 4 of 4: Solve the CP problem
-  //******************************************************
-  cpProblem.solve();
+  // Solve the propagation problem
+  propagProblem.solve("monte_carlo_kde"); // no extra user entities needed for Monte Carlo algorithm
 
   //******************************************************
   // Release memory before leaving routine.

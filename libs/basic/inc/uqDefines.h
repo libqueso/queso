@@ -39,6 +39,7 @@ int uqMyRank();
 #define UQ_FAILED_TO_OPEN_FILE_RC        -7
 #define UQ_MATRIX_IS_NOT_POS_DEFINITE_RC -8
 #define UQ_FAILED_READING_FILE_RC        -9
+#define UQ_INVALID_SPACE_COMPONENT_ID_RC -10
 
 #define UQ_RC_MACRO(iRC,givenRank,where,what,retValue) \
   if (iRC) {                                           \

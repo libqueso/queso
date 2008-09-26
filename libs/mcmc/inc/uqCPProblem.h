@@ -33,19 +33,21 @@ class uqCPProblemClass
 public:
   uqCPProblemClass(const uqEnvironmentClass&                             env,
                    const char*                                           prefix,
+                         unsigned int                                    paramSpaceDim,
                    const uqProbDensity_BaseClass      <P_V,P_M>*         priorParamDensityObj,  // Set in substep 1 in appls with a CP problem
                    const uqProbDensity_BaseClass      <P_V,P_M>&         likelihoodFunctionObj, // Set in substep 2
                          P_M*                                            proposalCovMatrix,     // Set in substep 3
                    const uqProposalDensity_BaseClass  <P_V,P_M>*         proposalDensityObj,    // Set in substep 3
                    const uqProposalGenerator_BaseClass<P_V,P_M>*         proposalGeneratorObj,  // Set in substep 3 // FIX ME: use such object
+                         unsigned int                                    qoiSpaceDim,
                    const uqVectorFunctionClass        <P_V,P_M,Q_V,Q_M>& qoiFunctionObj);       // Set in substep 4
  ~uqCPProblemClass();
 
 //const uqParamSpaceClass   <P_V,P_M>&         paramSpace       () const;
 //const uqQoISpaceClass     <Q_V,Q_M>&         qoiSpace         () const;
 
-  const uqCalibProblemClass <P_V,P_M>&         calibProblem     () const;
-  const uqPropagProblemClass<P_V,P_M,Q_V,Q_M>& propagProblem    () const;
+        uqCalibProblemClass <P_V,P_M>&         calibProblem     ();
+        uqPropagProblemClass<P_V,P_M,Q_V,Q_M>& propagProblem    ();
         void                                   solve            ();
 
         void                                   print            (std::ostream& os) const;
@@ -78,11 +80,13 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 uqCPProblemClass<P_V,P_M,Q_V,Q_M>::uqCPProblemClass(
   const uqEnvironmentClass&                             env,
   const char*                                           prefix,
+        unsigned int                                    paramSpaceDim,
   const uqProbDensity_BaseClass      <P_V,P_M>*         priorParamDensityObj,
   const uqProbDensity_BaseClass      <P_V,P_M>&         likelihoodFunctionObj,
         P_M*                                            proposalCovMatrix,
   const uqProposalDensity_BaseClass  <P_V,P_M>*         proposalDensityObj,
   const uqProposalGenerator_BaseClass<P_V,P_M>*         proposalGeneratorObj,
+        unsigned int                                    qoiSpaceDim,
   const uqVectorFunctionClass        <P_V,P_M,Q_V,Q_M>& qoiFunctionObj)
   :
   m_env                  (env),
@@ -114,6 +118,7 @@ uqCPProblemClass<P_V,P_M,Q_V,Q_M>::uqCPProblemClass(
   if (m_calibPerform) {
     m_calibProblem = new uqCalibProblemClass<P_V,P_M>(m_env,
                                                       m_prefix.c_str(),
+                                                      paramSpaceDim,
 						      //*m_paramSpace,
                                                       priorParamDensityObj,
                                                       likelihoodFunctionObj,
@@ -128,6 +133,7 @@ uqCPProblemClass<P_V,P_M,Q_V,Q_M>::uqCPProblemClass(
 								//*m_paramSpace,
 								//*m_qoiSpace,
                                                                 NULL,
+                                                                qoiSpaceDim,
                                                                 qoiFunctionObj);
   }
 
@@ -214,15 +220,15 @@ uqCPProblemClass<P_V,P_M,Q_V,Q_M>::solve()
 }
 
 template <class P_V,class P_M,class Q_V,class Q_M>
-const uqCalibProblemClass<P_V,P_M>&
-uqCPProblemClass<P_V,P_M,Q_V,Q_M>::calibProblem() const
+uqCalibProblemClass<P_V,P_M>&
+uqCPProblemClass<P_V,P_M,Q_V,Q_M>::calibProblem()
 {
   return *m_calibProblem;
 }
 
 template <class P_V,class P_M,class Q_V,class Q_M>
-const uqPropagProblemClass<P_V,P_M,Q_V,Q_M>&
-uqCPProblemClass<P_V,P_M,Q_V,Q_M>::propagProblem() const
+uqPropagProblemClass<P_V,P_M,Q_V,Q_M>&
+uqCPProblemClass<P_V,P_M,Q_V,Q_M>::propagProblem()
 {
   return *m_propagProblem;
 }

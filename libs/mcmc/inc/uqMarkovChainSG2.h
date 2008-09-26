@@ -22,12 +22,12 @@
 
 template <class P_V,class P_M>
 void
-uqMarkovChainSGClass<P_V,P_M>::calculateDistributions(
+uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
   const P_M*             proposalCovMatrix,
   uqChainBaseClass<P_V>& workingChain)
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqMarkovChainSGClass<P_V,P_M>::calculateDistributions()..."
+    std::cout << "Entering uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences()..."
               << std::endl;
   }
 
@@ -80,13 +80,13 @@ uqMarkovChainSGClass<P_V,P_M>::calculateDistributions(
       iRC = prepareForNextChain(proposalCovMatrix);
       UQ_FATAL_RC_MACRO(iRC,
                         m_env.rank(),
-                        "uqMarkovChainSGClass<P_V,P_M>::calculateDistributions()",
+                        "uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences()",
                         "improper prepareForNextChain() return");
 
       //****************************************************
       // Generate chain
       //****************************************************
-      generateMarkovChain(m_chainSizes[chainId],
+      intGenerateSequence(m_chainSizes[chainId],
                           valuesOf1stPosition,
                           proposalCovMatrix,
                           workingChain,
@@ -121,7 +121,7 @@ uqMarkovChainSGClass<P_V,P_M>::calculateDistributions(
 
       UQ_FATAL_TEST_MACRO((ofs && ofs->is_open()) == false,
                           m_env.rank(),
-                          "uqMarkovChainSGClass<P_V,P_M>::calculateDistributions()",
+                          "uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences()",
                           "failed to open file");
     }
   
@@ -140,7 +140,7 @@ uqMarkovChainSGClass<P_V,P_M>::calculateDistributions(
                       *ofs);
       UQ_FATAL_RC_MACRO(iRC,
                         m_env.rank(),
-                        "uqMarkovChainSGClass<P_V,P_M>::calculateDistributions()",
+                        "uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences()",
                         "improper writeInfo() return");
     }
 
@@ -165,7 +165,7 @@ uqMarkovChainSGClass<P_V,P_M>::calculateDistributions(
       //m_uniqueChain1.erase(positionIterator,m_uniqueChain1.end());
       //UQ_FATAL_TEST_MACRO((uniquePos != m_uniqueChain1.size()),
       //                    m_env.rank(),
-      //                    "uqMarkovChainSGClass<P_V,P_M>::calculateDistributions()",
+      //                    "uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences()",
       //                    "uniquePos != m_uniqueChain1.size()");
 
       // Write unique chain
@@ -264,7 +264,7 @@ uqMarkovChainSGClass<P_V,P_M>::calculateDistributions(
   }
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqMarkovChainSGClass<P_V,P_M>::calculateDistributions()"
+    std::cout << "Leaving uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences()"
               << std::endl;
   }
 
@@ -363,7 +363,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateUniformChain(
 
 template <class P_V,class P_M>
 void
-uqMarkovChainSGClass<P_V,P_M>::generateMarkovChain(
+uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
   unsigned int           chainSize,
   const P_V&             valuesOf1stPosition,
   const P_M*             proposalCovMatrix,
@@ -398,7 +398,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateMarkovChain(
   bool   outOfBounds = m_paramSpace.outOfBounds(valuesOf1stPosition);
   UQ_FATAL_TEST_MACRO(outOfBounds,
                       m_env.rank(),
-                      "uqMarkovChainSGClass<P_V,P_M>::generateMarkovChain()",
+                      "uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()",
                       "paramInitials should not be out of bound");
   if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalTargetD, NULL);
   double logPosterior = -0.5 * m_targetParamDensityObj.minus2LnDensity(valuesOf1stPosition);
@@ -431,7 +431,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateMarkovChain(
   }
 
   for (unsigned int positionId = 1; positionId < workingChain.sequenceSize(); ++positionId) {
-    //if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateMarkovChain()"
+    //if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()"
     //                                 << ": beginning chain position of id = " << positionId
     //                                 << ", m_maxNumExtraStages =  "           << m_maxNumExtraStages
     //                                 << std::endl;
@@ -480,7 +480,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateMarkovChain(
       }
       if (m_chainMeasureRunTimes) mhAlphaRunTime += uqMiscGetEllapsedSeconds(&timevalMhAlpha);
       if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-        std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateMarkovChain()"
+        std::cout << "In uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()"
                   << ": for chain position of id = " << positionId
                   << ", alpha = " << alpha
                   << std::endl;
@@ -488,14 +488,14 @@ uqMarkovChainSGClass<P_V,P_M>::generateMarkovChain(
       accept = acceptAlpha(alpha);
     }
     if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-      if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateMarkovChain()"
+      if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()"
                                        << ": for chain position of id = " << positionId
                                        << " contents of currentCandidate.paramValues() are:"
                                        << std::endl;
       std::cout << currentCandidate.paramValues();
       if (m_env.rank() == 0) std::cout << std::endl;
 
-      if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateMarkovChain()"
+      if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()"
                                        << ": for chain position of id = " << positionId
                                        << ", outOfBounds = "              << outOfBounds
                                        << "\n"
@@ -548,7 +548,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateMarkovChain(
           double alpha = this->alpha(drPositions);
           if (m_chainMeasureRunTimes) drAlphaRunTime += uqMiscGetEllapsedSeconds(&timevalDrAlpha);
 #if 0 // For debug only
-          if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateMarkovChain()"
+          if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()"
                                            << ": for chain position of id = " << positionId
                                            << " and stageId = " << stageId
                                            << ", alpha = " << alpha
@@ -595,7 +595,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateMarkovChain(
           double term2 =  2./( varAccuracies[i] * priorVars[i] + misfitVec[i] );
           misfitVarianceVector[i] = 1./uqMiscGammar(term1,term2,m_env.rng());
           //if (m_env.rank() == 0) {
-          //  std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateMarkovChain()"
+          //  std::cout << "In uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()"
           //            << ": for chain position of id = "     << positionId
           //            << ", numbersOfObs = "                 << numbersOfObs
           //            << ", varAccuracies = "                << varAccuracies
@@ -607,7 +607,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateMarkovChain(
           //}
         }
         //if (m_env.rank() == 0) {
-        //  std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateMarkovChain()"
+        //  std::cout << "In uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()"
         //            << ": for chain position of id = "        << positionId
         //            << ", misfitVarianceVector changed from " << *(m_misfitVarianceChain[positionId])
         //            << " to "                                 << misfitVarianceVector
@@ -680,7 +680,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateMarkovChain(
         if (iRC) {
           UQ_FATAL_TEST_MACRO(iRC != UQ_MATRIX_IS_NOT_POS_DEFINITE_RC,
                               m_env.rank(),
-                              "uqMarkovChainSGClass<P_V,P_M>::generateMarkovChain()",
+                              "uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()",
                               "invalid iRC returned from first chol()");
           // Matrix is not positive definite
           P_M* tmpDiag = m_paramSpace.newDiagMatrix(m_epsilon);
@@ -702,7 +702,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateMarkovChain(
           if (iRC) {
             UQ_FATAL_TEST_MACRO(iRC != UQ_MATRIX_IS_NOT_POS_DEFINITE_RC,
                                 m_env.rank(),
-                                "uqMarkovChainSGClass<P_V,P_M>::generateMarkovChain()",
+                                "uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()",
                                 "invalid iRC returned from second chol()");
             // Do nothing
           }
@@ -721,7 +721,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateMarkovChain(
 #ifdef UQ_DRAM_MCG_REQUIRES_INVERTED_COV_MATRICES
           UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
                             m_env.rank(),
-                            "uqMarkovChainSGClass<P_V,P_M>::generateMarkovChain()",
+                            "uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()",
                             "need to code the update of m_upperCholProposalPrecMatrices");
 #endif
 

@@ -41,32 +41,32 @@ public:
                       const char*                                   prefix,          /*! Prefix.                        */
                       const uqParamSpaceClass    <P_V,P_M>&         paramSpace,      /*! The parameter space.           */
                       const uqQoISpaceClass      <Q_V,Q_M>&         qoiSpace,        /*! The QoI space.                 */
-                      const uqRandomVariableClass<P_V,P_M>*         paramRV,         /*! The parameter generator.       */
+                      const uqVectorRVClass      <P_V,P_M>*         paramRV,         /*! The parameter generator.       */
                       const uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunctionObj); /*! The QoI function.              */
  ~uqMonteCarloSGClass();
 
-  void calculateDistributions();
-  void calculateDistributions(const uqRandomVariableClass<P_V,P_M>& paramRV);
+  void generateSequence   ();
+  void generateSequence   (const uqVectorRVClass<P_V,P_M>& paramRV);
 
-  void print                 (std::ostream&            os) const;
+  void print              (std::ostream&            os) const;
 
 private:
-  void defineMyOptions       (po::options_description& optionsDesc);
-  void getMyOptionValues     (po::options_description& optionsDesc);
+  void defineMyOptions    (po::options_description& optionsDesc);
+  void getMyOptionValues  (po::options_description& optionsDesc);
 
-  void calculateDistributions(const uqRandomVariableClass<P_V,P_M>& paramRV,
-                                    uqChainBaseClass     <P_V>&     workingSeq);
+  void intGenerateSequence(const uqVectorRVClass <P_V,P_M>& paramRV,
+                                 uqChainBaseClass<P_V>&     workingSeq);
 
-  void generateSequence      (      unsigned int                    seqSize,
-                              const uqRandomVariableClass<P_V,P_M>& paramRV,
-                                    uqChainBaseClass     <P_V>&     workingSeq,
-                              const std::string&                    seqName);
+  void intGenerateSequence(const uqVectorRVClass <P_V,P_M>& paramRV,
+                                 uqChainBaseClass<P_V>&     workingSeq,
+                           const std::string&               seqName,
+                                 unsigned int               seqSize);
 
   const uqEnvironmentClass&                     m_env;
         std::string                             m_prefix;
   const uqParamSpaceClass    <P_V,P_M>&         m_paramSpace;
   const uqQoISpaceClass      <Q_V,Q_M>&         m_qoiSpace;
-  const uqRandomVariableClass<P_V,P_M>*         m_paramRV;
+  const uqVectorRVClass      <P_V,P_M>*         m_paramRV;
   const uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>& m_qoiFunctionObj;
 
   po::options_description*        m_optionsDesc;
@@ -97,12 +97,12 @@ std::ostream& operator<<(std::ostream& os, const uqMonteCarloSGClass<P_V,P_M,Q_V
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::uqMonteCarloSGClass(
-  const uqEnvironmentClass&                           env,
-  const char*                                         prefix,
-  const uqParamSpaceClass          <P_V,P_M>&         paramSpace,
-  const uqQoISpaceClass            <Q_V,Q_M>&         qoiSpace,
-  const uqRandomVariableClass<P_V,P_M>*         paramRV,
-  const uqVectorFunctionClass      <P_V,P_M,Q_V,Q_M>& qoiFunctionObj)
+  const uqEnvironmentClass&                     env,
+  const char*                                   prefix,
+  const uqParamSpaceClass    <P_V,P_M>&         paramSpace,
+  const uqQoISpaceClass      <Q_V,Q_M>&         qoiSpace,
+  const uqVectorRVClass      <P_V,P_M>*         paramRV,
+  const uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunctionObj)
   :
   m_env                   (env),
   m_prefix                ((std::string)(prefix) + "mc_"),
@@ -217,20 +217,20 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::getMyOptionValues(
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::calculateDistributions()
+uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence()
 {
   UQ_FATAL_TEST_MACRO(m_paramRV == NULL,
                       m_env.rank(),
-                      "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::calculateDistributions()",
+                      "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence()",
                       "m_paramRV is NULL");
 
   if (m_use2) {
-    calculateDistributions(*m_paramRV,
-                           m_seq2);
+    generateSequence(*m_paramRV,
+                     m_seq2);
   }
   else {
-    calculateDistributions(*m_paramRV,
-                           m_seq1);
+    generateSequence(*m_paramRV,
+                     m_seq1);
   }
 
   return;
@@ -238,16 +238,16 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::calculateDistributions()
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::calculateDistributions(
-  const uqRandomVariableClass<P_V,P_M>& paramRV)
+uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence(
+  const uqVectorRVClass<P_V,P_M>& paramRV)
 {
   if (m_use2) {
-    calculateDistributions(paramRV,
-                           m_seq2);
+    intGenerateSequence(paramRV,
+                        m_seq2);
   }
   else {
-    calculateDistributions(paramRV,
-                           m_seq1);
+    intGenerateSequence(paramRV,
+                        m_seq1);
   }
 
   return;
@@ -255,9 +255,9 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::calculateDistributions(
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::calculateDistributions(
-  const uqRandomVariableClass<P_V,P_M>& paramRV,
-        uqChainBaseClass<P_V>&                workingSeq)
+uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence(
+  const uqVectorRVClass <P_V,P_M>& paramRV,
+        uqChainBaseClass<P_V>&     workingSeq)
 {
   std::string prefixName = m_prefix;
   std::string seqName    = prefixName + "seq";
@@ -266,10 +266,10 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::calculateDistributions(
   // Generate sequence of qoi values
   //****************************************************
   unsigned int actualNumSamples = std::min(m_numSamples,paramRV.realizer().period());
-  generateSequence(actualNumSamples,
-                   paramRV,
-                   workingSeq,
-                   seqName);
+  intGenerateSequence(paramRV,
+                      workingSeq,
+                      seqName,
+                      actualNumSamples);
 
   //****************************************************
   // Open file      
@@ -298,7 +298,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::calculateDistributions(
 
     UQ_FATAL_TEST_MACRO((ofs && ofs->is_open()) == false,
                         m_env.rank(),
-                        "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::calculateDistributions()",
+                        "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence()",
                         "failed to open file");
   }
   
@@ -340,11 +340,11 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::calculateDistributions(
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence(
-        unsigned int                          seqSize,
-  const uqRandomVariableClass<P_V,P_M>& paramRV,
-        uqChainBaseClass<P_V>&                workingSeq,
-  const std::string&                          seqName)
+uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence(
+  const uqVectorRVClass<P_V,P_M>& paramRV,
+        uqChainBaseClass<P_V>&    workingSeq,
+  const std::string&              seqName,
+        unsigned int              seqSize)
 {
   if (m_env.rank() == 0) {
     std::cout << "Starting the generation of qoi sequence " << seqName

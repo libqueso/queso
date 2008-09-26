@@ -82,12 +82,12 @@ public:
                        const uqProposalGenerator_BaseClass<P_V,P_M>* proposalGeneratorObj); /*! */
  ~uqMarkovChainSGClass();
 
-        void                   calculateDistributions();
-        void                   calculateDistributions(const uqProbDensity_BaseClass<P_V,P_M>& targetParamDensityObj);
+        void                   generateSequence();
+        void                   generateSequence(const uqProbDensity_BaseClass<P_V,P_M>& targetParamDensityObj);
 
-        void                   print                 (std::ostream& os) const;
+        void                   print           (std::ostream& os) const;
 
-  const uqChainBaseClass<P_V>& chain                 () const;
+  const uqChainBaseClass<P_V>& chain           () const;
 
 private:
   void   resetChainAndRelatedInfo();
@@ -97,10 +97,10 @@ private:
   int    prepareForNextChain     (const P_M*                                     proposalCovMatrix);
                                 //const P_M*                                     proposalPrecMatrix,
 
-  void   calculateDistributions  (const P_M*                                     proposalCovMatrix,
+  void   intGenerateSequences    (const P_M*                                     proposalCovMatrix,
                                 //const P_M*                                     proposalPrecMatrix,
                                   uqChainBaseClass<P_V>&                         workingChain);
-  void   generateMarkovChain     (unsigned int                                   chainSize,
+  void   intGenerateSequence     (unsigned int                                   chainSize,
                                   const P_V&                                     valuesOf1stPosition,
                                   const P_M*                                     proposalCovMatrix,
                                   uqChainBaseClass<P_V>&                         workingChain,
@@ -636,18 +636,18 @@ uqMarkovChainSGClass<P_V,P_M>::getMyOptionValues(
 
 template<class P_V,class P_M>
 void
-uqMarkovChainSGClass<P_V,P_M>::calculateDistributions()
+uqMarkovChainSGClass<P_V,P_M>::generateSequence()
 //const P_M* proposalCovMatrix,
 {
   // FIX ME: complement code logic
 
   if (m_chainUse2) {
-    calculateDistributions(m_proposalCovMatrix,
-                           m_chain2);
+    intGenerateSequences(m_proposalCovMatrix,
+                         m_chain2);
   }
   else {
-    calculateDistributions(m_proposalCovMatrix,
-                           m_chain1);
+    intGenerateSequences(m_proposalCovMatrix,
+                         m_chain1);
   }
 
   return;
@@ -655,7 +655,7 @@ uqMarkovChainSGClass<P_V,P_M>::calculateDistributions()
 
 template<class P_V,class P_M>
 void
-uqMarkovChainSGClass<P_V,P_M>::calculateDistributions(const uqProbDensity_BaseClass<P_V,P_M>& targetParamDensityObj)
+uqMarkovChainSGClass<P_V,P_M>::generateSequence(const uqProbDensity_BaseClass<P_V,P_M>& targetParamDensityObj)
 {
   return;
 }
