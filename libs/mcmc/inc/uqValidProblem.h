@@ -38,14 +38,13 @@ public:
  ~uqValidProblemClass();
 
         void                                       instantiateStage (unsigned int                                          stageId,
-                                                                     const uqProbDensity_BaseClass      <P_V,P_M>*         priorParamDensityObj, // Set in substep x.1 in applications setting a validation problem stage
-                                                                     const uqProbDensity_BaseClass      <P_V,P_M>*         likelihoodFunctionObj,  // Set in substep 2
-                                                                           P_M*                                            proposalCovMatrix,       // Set in substep x.3
-                                                                     const uqProposalDensity_BaseClass  <P_V,P_M>*         proposalDensityObj,      // Set in substep x.3
-                                                                     const uqProposalGenerator_BaseClass<P_V,P_M>*         proposalGeneratorObj,    // Set in substep x.3
-                                                                     const uqProbDensity_BaseClass      <P_V,P_M>*         propagParamDensityObj,   // Set in substep x.4
-                                                                     const uqSampleGenerator_BaseClass  <P_V,P_M>*         propagParamGeneratorObj, // Set in substep x.4
-                                                                     const uqQoIFunction_BaseClass      <P_V,P_M,Q_V,Q_M>* qoiFunctionObj);         // Set in substep x.5
+                                                                     const uqProbDensity_BaseClass      <P_V,P_M>*         priorParamDensityObj,  // Set in substep x.1 in applications setting a validation problem stage
+                                                                     const uqProbDensity_BaseClass      <P_V,P_M>*         likelihoodFunctionObj, // Set in substep 2
+                                                                           P_M*                                            proposalCovMatrix,     // Set in substep x.3
+                                                                     const uqProposalDensity_BaseClass  <P_V,P_M>*         proposalDensityObj,    // Set in substep x.3
+                                                                     const uqProposalGenerator_BaseClass<P_V,P_M>*         proposalGeneratorObj,  // Set in substep x.3
+                                                                     const uqRandomVariableClass        <P_V,P_M>*         propagParamRV,         // Set in substep x.4
+                                                                     const uqVectorFunctionClass        <P_V,P_M,Q_V,Q_M>* qoiFunctionObj);       // Set in substep x.5
 
   const uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>& stage            (unsigned int stageId) const;
         void                                       solve            ();
@@ -202,14 +201,13 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqValidProblemClass<P_V,P_M,Q_V,Q_M>::instantiateStage(
   unsigned int                                          stageId,
-  const uqProbDensity_BaseClass      <P_V,P_M>*         priorParamDensityObj,    // Set in substep x.1
-  const uqProbDensity_BaseClass      <P_V,P_M>*         likelihoodFunctionObj,   // Set in substep 2
-  P_M*                                                  proposalCovMatrix,       // Set in substep x.3
-  const uqProposalDensity_BaseClass  <P_V,P_M>*         proposalDensityObj,      // Set in substep x.3
-  const uqProposalGenerator_BaseClass<P_V,P_M>*         proposalGeneratorObj,    // Set in substep x.3
-  const uqProbDensity_BaseClass      <P_V,P_M>*         propagParamDensityObj,   // Set in substep x.4
-  const uqSampleGenerator_BaseClass  <P_V,P_M>*         propagParamGeneratorObj, // Set in substep x.4
-  const uqQoIFunction_BaseClass      <P_V,P_M,Q_V,Q_M>* qoiFunctionObj)          // Set in substep x.5
+  const uqProbDensity_BaseClass      <P_V,P_M>*         priorParamDensityObj,  // Set in substep x.1
+  const uqProbDensity_BaseClass      <P_V,P_M>*         likelihoodFunctionObj, // Set in substep 2
+  P_M*                                                  proposalCovMatrix,     // Set in substep x.3
+  const uqProposalDensity_BaseClass  <P_V,P_M>*         proposalDensityObj,    // Set in substep x.3
+  const uqProposalGenerator_BaseClass<P_V,P_M>*         proposalGeneratorObj,  // Set in substep x.3
+  const uqRandomVariableClass        <P_V,P_M>*         propagParamRV,         // Set in substep x.4
+  const uqVectorFunctionClass        <P_V,P_M,Q_V,Q_M>* qoiFunctionObj)        // Set in substep x.5
 {
   UQ_FATAL_TEST_MACRO((stageId == 0) || (stageId > m_numStages),
                       m_env.rank(),
@@ -224,8 +222,7 @@ uqValidProblemClass<P_V,P_M,Q_V,Q_M>::instantiateStage(
                                                                       proposalCovMatrix,
                                                                       proposalDensityObj,
                                                                       proposalGeneratorObj,
-                                                                      propagParamDensityObj,
-                                                                      propagParamGeneratorObj,
+                                                                      propagParamRV,
                                                                       qoiFunctionObj);
 
   return;
@@ -263,7 +260,7 @@ uqValidProblemClass<P_V,P_M,Q_V,Q_M>::solve()
       else {
         unsigned int inputStageId = currentStage->calibInputStageId();
         uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>* inputStage = m_stages[inputStageId-1];
-        currentStage->solveCalibration(inputStage->calibProblem().solutionProbDensityObj());
+        currentStage->solveCalibration(inputStage->calibProblem().solution().probDensity());
       }
     }
   }
@@ -284,7 +281,7 @@ uqValidProblemClass<P_V,P_M,Q_V,Q_M>::solve()
       else {
         unsigned int inputStageId = currentStage->propagInputStageId();
         uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>* inputStage = m_stages[inputStageId-1];
-        currentStage->solvePropagation(inputStage->calibProblem().solutionSampleGeneratorObj());
+        currentStage->solvePropagation(inputStage->calibProblem().solution());
       }
     }
   }

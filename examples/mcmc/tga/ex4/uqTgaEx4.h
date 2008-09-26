@@ -305,8 +305,7 @@ uqAppl(const uqEnvironmentClass& env)
 
   // Let the 'uqValidProblem' class internally use the parameter generator obtained with the calibration.
   // The 'uqTgaEx2.inp' file should set 'val_stage_0_pro_inputStageId = 0'.
-  uqProbDensity_BaseClass<P_V,P_M>*     s1_propagParamDensityObj   = NULL;
-  uqSampleGenerator_BaseClass<P_V,P_M>* s1_propagParamGeneratorObj = NULL;
+  uqRandomVariableClass<P_V,P_M>* s1_propagParamRV = NULL;
 
   //******************************************************
   // Substep 2.5: Define the qoi function object
@@ -315,22 +314,21 @@ uqAppl(const uqEnvironmentClass& env)
   s1_qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> s1_qoiRoutine_Data;
   s1_qoiRoutine_Data.beta1         = beta1;
   s1_qoiRoutine_Data.criticalMass1 = criticalMass1;
-  uqQoIFunction_BaseClass<P_V,P_M,Q_V,Q_M> s1_qoiFunctionObj(s1_qoiRoutine<P_V,P_M,Q_V,Q_M>,
-                                                             (void *) &s1_qoiRoutine_Data);
+  uqVectorFunctionClass<P_V,P_M,Q_V,Q_M> s1_qoiFunctionObj(s1_qoiRoutine<P_V,P_M,Q_V,Q_M>,
+                                                           (void *) &s1_qoiRoutine_Data);
 
   //******************************************************
   // Substep 2.6: Instantiate the first validation problem stage
   //******************************************************
 
-  validProblem.instantiateStage(1,                              // stage id
-                                s1_priorParamDensityObj,    // substep 2.1: calibration prior parameter density
-                                &s1_likelihoodFunctionObj,  // substep 2.2: calibration likelihood function
-                                s1_proposalCovMatrix,       // substep 2.3: calibration gaussian proposal (density and generator)
-                                s1_proposalDensityObj,      // substep 2.3: calibration proposal density
-                                s1_proposalGeneratorObj,    // substep 2.3: calibration proposal generator
-                                s1_propagParamDensityObj,   // substep 2.4: propagation input parameter density
-                                s1_propagParamGeneratorObj, // substep 2.4: propagation input parameter generator
-                                &s1_qoiFunctionObj);        // substep 2.5: propagation qoi function
+  validProblem.instantiateStage(1,                         // stage id
+                                s1_priorParamDensityObj,   // substep 2.1: calibration prior parameter density
+                                &s1_likelihoodFunctionObj, // substep 2.2: calibration likelihood function
+                                s1_proposalCovMatrix,      // substep 2.3: calibration gaussian proposal (density and generator)
+                                s1_proposalDensityObj,     // substep 2.3: calibration proposal density
+                                s1_proposalGeneratorObj,   // substep 2.3: calibration proposal generator
+                                s1_propagParamRV,          // substep 2.4: propagation input parameter density
+                                &s1_qoiFunctionObj);       // substep 2.5: propagation qoi function
 
   //******************************************************
   // Step 3 of 4: Set the second validation problem stage

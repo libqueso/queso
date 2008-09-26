@@ -253,20 +253,14 @@ uqAppl(const uqEnvironmentClass& env)
   fclose(inp);
 
   //******************************************************
-  // Step 2 of 4: 4 substeps to define entities for the CP problem
+  // Step 2 of 4: define the CP (calibration+propagation) problem
   //******************************************************
 
-  //******************************************************
-  // Substep 1: Define the prior probability density function object: -2*ln[prior]
-  //******************************************************
-
+  // Prior probability density function object: -2*ln[prior]
   // Use the default prior density, provided by the UQ library
   uqProbDensity_BaseClass<P_V,P_M>* cp_priorParamDensityObj = NULL;
 
-  //******************************************************
-  // Substep 2: Define the likelihood function object: -2*ln[likelihood]
-  //******************************************************
-
+  // Likelihood function object: -2*ln[likelihood]
   cp_likelihoodRoutine_DataType<P_V,P_M> cp_likelihoodRoutine_Data;
   cp_likelihoodRoutine_Data.beta1     = beta1;
   cp_likelihoodRoutine_Data.variance1 = variance1;
@@ -276,10 +270,18 @@ uqAppl(const uqEnvironmentClass& env)
                                                                (void *) &cp_likelihoodRoutine_Data,
                                                                true); // the routine computes [-2.*ln(Likelihood)]
 
+  // Qoi function object
+  cp_qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> cp_qoiRoutine_Data;
+  cp_qoiRoutine_Data.beta1         = beta1;
+  cp_qoiRoutine_Data.criticalMass1 = criticalMass1;
+  uqVectorFunctionClass<P_V,P_M,Q_V,Q_M> cp_qoiFunctionObj(cp_qoiRoutine<P_V,P_M,Q_V,Q_M>,
+                                                           (void *) &cp_qoiRoutine_Data);
+
   //******************************************************
-  // Substep 3: Define the proposal cov matrix, the proposal density and the proposal generator
+  // Step 3 of 4: Define the solvers for the CP problem
   //******************************************************
 
+  // Proposal cov matrix, the proposal density and the proposal generator
   // Use the default gaussian proposal and default gaussian generator with the default covariance matrix, all provided by the UQ library
   P_M*                                    cp_proposalCovMatrix    = NULL;
   uqProposalDensity_BaseClass<P_V,P_M>*   cp_proposalDensityObj   = NULL;
@@ -292,19 +294,7 @@ uqAppl(const uqEnvironmentClass& env)
   //(*cp_proposalCovMatrix)(1,0) = 0.;
   //(*cp_proposalCovMatrix)(1,1) = 9.70225e+04;
 
-  //******************************************************
-  // Substep 4: Define the qoi function object
-  //******************************************************
-
-  cp_qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> cp_qoiRoutine_Data;
-  cp_qoiRoutine_Data.beta1         = beta1;
-  cp_qoiRoutine_Data.criticalMass1 = criticalMass1;
-  uqQoIFunction_BaseClass<P_V,P_M,Q_V,Q_M> cp_qoiFunctionObj(cp_qoiRoutine<P_V,P_M,Q_V,Q_M>,
-                                                             (void *) &cp_qoiRoutine_Data);
-
-  //*****************************************************
-  // Step 3 of 4: Instantiate the CP (calibration+propagation) problem, together with its spaces
-  //*****************************************************
+  // Instantiate the CP problem, together with its spaces
   uqCPProblemClass<P_V,P_M,Q_V,Q_M> cpProblem(env,
                                               "",
                                               cp_priorParamDensityObj,  // substep 1: calibration prior parameter density

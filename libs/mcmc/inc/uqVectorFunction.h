@@ -1,4 +1,4 @@
-/* uq/libs/mcmc/inc/uqQoIFunction.h
+/* uq/libs/mcmc/inc/uqVectorFunction.h
  *
  * Copyright (C) 2008 The PECOS Team, http://www.ices.utexas.edu/centers/pecos
  *
@@ -17,36 +17,31 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef __UQ_QOI_FUNCTION_H__
-#define __UQ_QOI_FUNCTION_H__
+#ifndef __UQ_VECTOR_FUNCTION_H__
+#define __UQ_VECTOR_FUNCTION_H__
 
 #include <uqEnvironment.h>
 #include <uqDefines.h>
 
 //*****************************************************
-// Class to accomodate the qoi function.
-// User must provide a qoi() routine.
-//*****************************************************
-
-//*****************************************************
 // Base class
 //*****************************************************
 template<class P_V,class P_M,class Q_V,class Q_M>
-class uqQoIFunction_BaseClass {
+class uqVectorFunctionClass {
 public:
-  uqQoIFunction_BaseClass(void (*routinePtr)(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiValues),
-                          const void* functionDataPtr);
-  virtual ~uqQoIFunction_BaseClass();
-  virtual void computeQoIs(const P_V& paramValues, Q_V& qoiValues) const;
+  uqVectorFunctionClass(void (*routinePtr)(const P_V& domainVector, const void* functionDataPtr, Q_V& imageVector),
+                        const void* functionDataPtr);
+  virtual ~uqVectorFunctionClass();
+  virtual void compute(const P_V& domainVector, Q_V& imageVector) const;
 
 protected:
-  void (*m_routinePtr)(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiValues);
+  void (*m_routinePtr)(const P_V& domainVector, const void* functionDataPtr, Q_V& imageVector);
   const void* m_routineDataPtr;
 };
 
 template<class P_V,class P_M,class Q_V,class Q_M>
-uqQoIFunction_BaseClass<P_V,P_M,Q_V,Q_M>::uqQoIFunction_BaseClass(
-  void (*routinePtr)(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiValues),
+uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>::uqVectorFunctionClass(
+  void (*routinePtr)(const P_V& domainVector, const void* functionDataPtr, Q_V& imageVector),
   const void* functionDataPtr)
   :
   m_routinePtr(routinePtr),
@@ -55,22 +50,22 @@ uqQoIFunction_BaseClass<P_V,P_M,Q_V,Q_M>::uqQoIFunction_BaseClass(
 }
 
 template<class P_V,class P_M,class Q_V,class Q_M>
-uqQoIFunction_BaseClass<P_V,P_M,Q_V,Q_M>::~uqQoIFunction_BaseClass()
+uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>::~uqVectorFunctionClass()
 {
 }
 
 template<class P_V,class P_M,class Q_V,class Q_M>
 void
-uqQoIFunction_BaseClass<P_V,P_M,Q_V,Q_M>::computeQoIs(const P_V& paramValues, Q_V& qoiValues) const
+uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>::compute(const P_V& domainVector, Q_V& imageVector) const
 {
   //UQ_FATAL_TEST_MACRO(false,
-  //                    paramValues.env().rank(),
-  //                    "uqQoIFunction_BaseClass<P_V,P_M,Q_V,Q_M>::computeQoIs()",
+  //                    domainVector.env().rank(),
+  //                    "uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>::compute()",
   //                    "this method should not be called in the case of this class");
 
-  m_routinePtr(paramValues, m_routineDataPtr, qoiValues);
+  m_routinePtr(domainVector, m_routineDataPtr, imageVector);
 
   return;
 }
 
-#endif // __UQ_QOI_FUNCTION_H__
+#endif // __UQ_VECTOR_FUNCTION_H__

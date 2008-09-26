@@ -1,4 +1,4 @@
-/* uq/libs/mcmc/inc/uqSampleGenerator.h
+/* uq/libs/mcmc/inc/uqRealizer.h
  *
  * Copyright (C) 2008 The PECOS Team, http://www.ices.utexas.edu/centers/pecos
  *
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef __UQ_SAMPLE_GENERATOR_H__
-#define __UQ_SAMPLE_GENERATOR_H__
+#ifndef __UQ_REALIZER_H__
+#define __UQ_REALIZER_H__
 
 #include <uqChain.h>
 #include <uqEnvironment.h>
@@ -32,13 +32,13 @@
 // Base class
 //*****************************************************
 template<class V, class M>
-class uqSampleGenerator_BaseClass {
+class uqRealizer_BaseClass {
 public:
-           uqSampleGenerator_BaseClass(double (*routinePtr)(const void* routineDataPtr, V& nextParamValues),
-                                       const void*  routineDataPtr,
-                                       unsigned int period);
-           uqSampleGenerator_BaseClass(const uqChainBaseClass<V>* chain);
-  virtual ~uqSampleGenerator_BaseClass();
+           uqRealizer_BaseClass(double (*routinePtr)(const void* routineDataPtr, V& nextParamValues),
+                                const void*  routineDataPtr,
+                                unsigned int period);
+           uqRealizer_BaseClass(const uqChainBaseClass<V>* chain);
+  virtual ~uqRealizer_BaseClass();
 
   virtual unsigned int period    () const;
   virtual void         nextSample(V& paramValues) const;
@@ -53,7 +53,7 @@ protected:
 };
 
 template<class V, class M>
-uqSampleGenerator_BaseClass<V,M>::uqSampleGenerator_BaseClass(
+uqRealizer_BaseClass<V,M>::uqRealizer_BaseClass(
   double (*routinePtr)(const void* routineDataPtr, V& nextParamValues),
   const void*  routineDataPtr,
   unsigned int period)
@@ -67,7 +67,7 @@ uqSampleGenerator_BaseClass<V,M>::uqSampleGenerator_BaseClass(
 }
 
 template<class V, class M>
-uqSampleGenerator_BaseClass<V,M>::uqSampleGenerator_BaseClass(
+uqRealizer_BaseClass<V,M>::uqRealizer_BaseClass(
   const uqChainBaseClass<V>* chain)
   :
   m_routinePtr     (NULL),
@@ -79,20 +79,20 @@ uqSampleGenerator_BaseClass<V,M>::uqSampleGenerator_BaseClass(
 }
 
 template<class V, class M>
-uqSampleGenerator_BaseClass<V,M>::~uqSampleGenerator_BaseClass()
+uqRealizer_BaseClass<V,M>::~uqRealizer_BaseClass()
 {
 }
 
 template<class V, class M>
 unsigned int
-uqSampleGenerator_BaseClass<V,M>::period() const
+uqRealizer_BaseClass<V,M>::period() const
 {
   return m_period;
 }
 
 template<class V, class M>
 void
-uqSampleGenerator_BaseClass<V,M>::nextSample(V& nextParamValues) const
+uqRealizer_BaseClass<V,M>::nextSample(V& nextParamValues) const
 {
   if (m_routinePtr) {
     m_routinePtr(m_routineDataPtr, nextParamValues);
@@ -103,4 +103,4 @@ uqSampleGenerator_BaseClass<V,M>::nextSample(V& nextParamValues) const
 
   return;
 }
-#endif // __UQ_SAMPLE_GENERATOR_H__
+#endif // __UQ_REALIZER_H__

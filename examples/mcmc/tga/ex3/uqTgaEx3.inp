@@ -25,29 +25,14 @@ cp_performPropagation = 1
 
 
 ###############################################
-# CP Problem: parameter/state/observable/qoi spaces
+# CP Problem, calibration problem: parameter space
 ###############################################
-#cp_paramSpace_help                   = anything
-cp_paramSpace_dim                    = 2
-cp_paramSpace_specificationFile      = cp.par
-
-#cp_stateSpace_help                   = anything
-#cp_stateSpace_dim                    = 5
-
-#cp_observableSpace_help              = anything
-cp_observableSpace_updateVariances   = 0
-cp_observableSpace_numSubSpaces      = 1
-cp_observableSpace_specificationFile = cp.obs
-
-#cp_qoiSpace_help                     = anything
-cp_qoiSpace_dim                      = 1
-cp_qoiSpace_specificationFile        = cp.qoi
+#cp_cal_paramSpace_help              = anything
+cp_cal_paramSpace_dim               = 2
+cp_cal_paramSpace_specificationFile = cp.par
 
 ###############################################
-# CP Problem, calibration problem: BMC DC
-#
-# BMC = Bayesian Markov Chain
-# DC =  (Posterior Parameter) Distribution Calculator
+# CP Problem, calibration problem: solver
 #
 # '_sizes' examples 16K   128K   1M      2M      16M
 #                   16384 131072 1048576 2097152 16777216
@@ -153,10 +138,18 @@ cp_cal_mc_filteredChain_stats_kde_compute              = 1
 cp_cal_mc_filteredChain_stats_kde_numEvalPositions     = 250
 
 ###############################################
-# CP Problem, propagation problem: MC DC
-#
-# MC = Monte Carlo
-# DC = (QoI) Distribution Calculator
+# CP Problem, propagation problem: parameter and qoi spaces
+###############################################
+#cp_pro_paramSpace_help              = anything
+cp_pro_paramSpace_dim               = 2
+cp_pro_paramSpace_specificationFile = cp.par
+
+#cp_pro_qoiSpace_help                = anything
+cp_pro_qoiSpace_dim                 = 1
+cp_pro_qoiSpace_specificationFile   = cp.qoi
+
+###############################################
+# CP Problem, propagation problem: solver
 #
 # '_numSamples' examples 16K   128K   1M      2M      16M
 #                        16384 131072 1048576 2097152 16777216

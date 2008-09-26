@@ -37,17 +37,16 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 class uqMonteCarloSGClass
 {
 public:
-  uqMonteCarloSGClass(const uqEnvironmentClass&                           env,               /*! The QUESO toolkit environment. */
-                      const char*                                         prefix,            /*! Prefix.                        */
-                      const uqParamSpaceClass          <P_V,P_M>&         paramSpace,        /*! The parameter space.           */
-                      const uqQoISpaceClass            <Q_V,Q_M>&         qoiSpace,          /*! The QoI space.                 */
-                      const uqProbDensity_BaseClass    <P_V,P_M>*         paramDensityObj,   /*! The parameter density.         */
-                      const uqSampleGenerator_BaseClass<P_V,P_M>*         paramGeneratorObj, /*! The parameter generator.       */
-                      const uqQoIFunction_BaseClass    <P_V,P_M,Q_V,Q_M>& qoiFunctionObj);   /*! The QoI function.              */
+  uqMonteCarloSGClass(const uqEnvironmentClass&                     env,             /*! The QUESO toolkit environment. */
+                      const char*                                   prefix,          /*! Prefix.                        */
+                      const uqParamSpaceClass    <P_V,P_M>&         paramSpace,      /*! The parameter space.           */
+                      const uqQoISpaceClass      <Q_V,Q_M>&         qoiSpace,        /*! The QoI space.                 */
+                      const uqRandomVariableClass<P_V,P_M>*         paramRV,         /*! The parameter generator.       */
+                      const uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunctionObj); /*! The QoI function.              */
  ~uqMonteCarloSGClass();
 
   void calculateDistributions();
-  void calculateDistributions(const uqSampleGenerator_BaseClass<P_V,P_M>& paramGeneratorObj);
+  void calculateDistributions(const uqRandomVariableClass<P_V,P_M>& paramRV);
 
   void print                 (std::ostream&            os) const;
 
@@ -55,21 +54,20 @@ private:
   void defineMyOptions       (po::options_description& optionsDesc);
   void getMyOptionValues     (po::options_description& optionsDesc);
 
-  void calculateDistributions(const uqSampleGenerator_BaseClass<P_V,P_M>& paramGeneratorObj,
-                                    uqChainBaseClass<P_V>&                workingSeq);
+  void calculateDistributions(const uqRandomVariableClass<P_V,P_M>& paramRV,
+                                    uqChainBaseClass     <P_V>&     workingSeq);
 
-  void generateSequence      (      unsigned int                          seqSize,
-                              const uqSampleGenerator_BaseClass<P_V,P_M>& paramGeneratorObj,
-                                    uqChainBaseClass<P_V>&                workingSeq,
-                              const std::string&                          seqName);
+  void generateSequence      (      unsigned int                    seqSize,
+                              const uqRandomVariableClass<P_V,P_M>& paramRV,
+                                    uqChainBaseClass     <P_V>&     workingSeq,
+                              const std::string&                    seqName);
 
-  const uqEnvironmentClass&                           m_env;
-        std::string                                   m_prefix;
-  const uqParamSpaceClass          <P_V,P_M>&         m_paramSpace;
-  const uqQoISpaceClass            <Q_V,Q_M>&         m_qoiSpace;
-  const uqProbDensity_BaseClass    <P_V,P_M>*         m_paramDensityObj;
-  const uqSampleGenerator_BaseClass<P_V,P_M>*         m_paramGeneratorObj;
-  const uqQoIFunction_BaseClass    <P_V,P_M,Q_V,Q_M>& m_qoiFunctionObj;
+  const uqEnvironmentClass&                     m_env;
+        std::string                             m_prefix;
+  const uqParamSpaceClass    <P_V,P_M>&         m_paramSpace;
+  const uqQoISpaceClass      <Q_V,Q_M>&         m_qoiSpace;
+  const uqRandomVariableClass<P_V,P_M>*         m_paramRV;
+  const uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>& m_qoiFunctionObj;
 
   po::options_description*        m_optionsDesc;
   std::string                     m_option_help;
@@ -103,16 +101,14 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::uqMonteCarloSGClass(
   const char*                                         prefix,
   const uqParamSpaceClass          <P_V,P_M>&         paramSpace,
   const uqQoISpaceClass            <Q_V,Q_M>&         qoiSpace,
-  const uqProbDensity_BaseClass    <P_V,P_M>*         paramDensityObj,
-  const uqSampleGenerator_BaseClass<P_V,P_M>*         paramGeneratorObj,
-  const uqQoIFunction_BaseClass    <P_V,P_M,Q_V,Q_M>& qoiFunctionObj)
+  const uqRandomVariableClass<P_V,P_M>*         paramRV,
+  const uqVectorFunctionClass      <P_V,P_M,Q_V,Q_M>& qoiFunctionObj)
   :
   m_env                   (env),
   m_prefix                ((std::string)(prefix) + "mc_"),
   m_paramSpace            (paramSpace),
   m_qoiSpace              (qoiSpace),
-  m_paramDensityObj       (paramDensityObj),
-  m_paramGeneratorObj     (paramGeneratorObj),
+  m_paramRV     (paramRV),
   m_qoiFunctionObj        (qoiFunctionObj),
   m_optionsDesc           (new po::options_description("Monte Carlo options")),
   m_option_help           (m_prefix + "help"           ),
@@ -223,17 +219,17 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::calculateDistributions()
 {
-  UQ_FATAL_TEST_MACRO(m_paramGeneratorObj == NULL,
+  UQ_FATAL_TEST_MACRO(m_paramRV == NULL,
                       m_env.rank(),
                       "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::calculateDistributions()",
-                      "m_paramGeneratorObj is NULL");
+                      "m_paramRV is NULL");
 
   if (m_use2) {
-    calculateDistributions(*m_paramGeneratorObj,
+    calculateDistributions(*m_paramRV,
                            m_seq2);
   }
   else {
-    calculateDistributions(*m_paramGeneratorObj,
+    calculateDistributions(*m_paramRV,
                            m_seq1);
   }
 
@@ -243,14 +239,14 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::calculateDistributions()
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::calculateDistributions(
-  const uqSampleGenerator_BaseClass<P_V,P_M>& paramGeneratorObj)
+  const uqRandomVariableClass<P_V,P_M>& paramRV)
 {
   if (m_use2) {
-    calculateDistributions(paramGeneratorObj,
+    calculateDistributions(paramRV,
                            m_seq2);
   }
   else {
-    calculateDistributions(paramGeneratorObj,
+    calculateDistributions(paramRV,
                            m_seq1);
   }
 
@@ -260,7 +256,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::calculateDistributions(
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::calculateDistributions(
-  const uqSampleGenerator_BaseClass<P_V,P_M>& paramGeneratorObj,
+  const uqRandomVariableClass<P_V,P_M>& paramRV,
         uqChainBaseClass<P_V>&                workingSeq)
 {
   std::string prefixName = m_prefix;
@@ -269,9 +265,9 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::calculateDistributions(
   //****************************************************
   // Generate sequence of qoi values
   //****************************************************
-  unsigned int actualNumSamples = std::min(m_numSamples,paramGeneratorObj.period());
+  unsigned int actualNumSamples = std::min(m_numSamples,paramRV.realizer().period());
   generateSequence(actualNumSamples,
-                   paramGeneratorObj,
+                   paramRV,
                    workingSeq,
                    seqName);
 
@@ -346,7 +342,7 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence(
         unsigned int                          seqSize,
-  const uqSampleGenerator_BaseClass<P_V,P_M>& paramGeneratorObj,
+  const uqRandomVariableClass<P_V,P_M>& paramRV,
         uqChainBaseClass<P_V>&                workingSeq,
   const std::string&                          seqName)
 {
@@ -370,10 +366,10 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence(
   P_V tmpV(m_paramSpace.zeroVector());
   Q_V tmpQ(m_qoiSpace.zeroVector());
   for (unsigned int i = 0; i < seqSize; ++i) {
-    paramGeneratorObj.nextSample(tmpV);
+    paramRV.realization(tmpV);
 
     if (m_measureRunTimes) iRC = gettimeofday(&timevalQoIFunction, NULL);
-    m_qoiFunctionObj.computeQoIs(tmpV,tmpQ);
+    m_qoiFunctionObj.compute(tmpV,tmpQ);
     if (m_measureRunTimes) qoiFunctionRunTime += uqMiscGetEllapsedSeconds(&timevalQoIFunction);
 
     workingSeq.setPositionValues(i,tmpQ);

@@ -36,18 +36,17 @@ public:
   uqValidProblemStageClass(const uqEnvironmentClass&                             env,
                            const char*                                           prefix,
                            const char*                                           sufix,
-                           const uqProbDensity_BaseClass      <P_V,P_M>*         priorParamDensityObj,    // Set in substep x.1 in appls with a validation problem stage
-                           const uqProbDensity_BaseClass      <P_V,P_M>*         likelihoodFunctionObj,   // Set in substep x.2
-                                 P_M*                                            proposalCovMatrix,       // Set in substep x.3
-                           const uqProposalDensity_BaseClass  <P_V,P_M>*         proposalDensityObj,      // Set in substep x.3
-                           const uqProposalGenerator_BaseClass<P_V,P_M>*         proposalGeneratorObj,    // Set in substep x.3 // FIX ME: accomodate code in order to use such object
-                           const uqProbDensity_BaseClass      <P_V,P_M>*         propagParamDensityObj,   // Set in substep x.4 // FIX ME: accomodate code in order to use such object
-                           const uqSampleGenerator_BaseClass  <P_V,P_M>*         propagParamGeneratorObj, // Set in substep x.4
-                           const uqQoIFunction_BaseClass      <P_V,P_M,Q_V,Q_M>* qoiFunctionObj);         // Set in substep x.5
+                           const uqProbDensity_BaseClass      <P_V,P_M>*         priorParamDensityObj,  // Set in substep x.1 in appls with a validation problem stage
+                           const uqProbDensity_BaseClass      <P_V,P_M>*         likelihoodFunctionObj, // Set in substep x.2
+                                 P_M*                                            proposalCovMatrix,     // Set in substep x.3
+                           const uqProposalDensity_BaseClass  <P_V,P_M>*         proposalDensityObj,    // Set in substep x.3
+                           const uqProposalGenerator_BaseClass<P_V,P_M>*         proposalGeneratorObj,  // Set in substep x.3 // FIX ME: accomodate code in order to use such object
+                           const uqRandomVariableClass        <P_V,P_M>*         propagParamRV,         // Set in substep x.4
+                           const uqVectorFunctionClass        <P_V,P_M,Q_V,Q_M>* qoiFunctionObj);       // Set in substep x.5
  ~uqValidProblemStageClass();
 
-  const uqParamSpaceClass   <P_V,P_M>&         paramSpace        () const;
-  const uqQoISpaceClass     <Q_V,Q_M>&         qoiSpace          () const;
+//const uqParamSpaceClass   <P_V,P_M>&         paramSpace        () const;
+//const uqQoISpaceClass     <Q_V,Q_M>&         qoiSpace          () const;
 
         bool                                   isCalibRequested  () const;
         unsigned int                           calibInputStageId () const;
@@ -57,7 +56,7 @@ public:
         bool                                   isPropagRequested () const;
         unsigned int                           propagInputStageId() const;
         void                                   solvePropagation  ();
-        void                                   solvePropagation  (const uqSampleGenerator_BaseClass<P_V,P_M>& paramGeneratorObj);
+        void                                   solvePropagation  (const uqRandomVariableClass<P_V,P_M>& propagParamRV);
 
   const uqCalibProblemClass <P_V,P_M>&         calibProblem      () const;
   const uqPropagProblemClass<P_V,P_M,Q_V,Q_M>& propagProblem     () const;
@@ -70,8 +69,8 @@ private:
 
   const uqEnvironmentClass&                    m_env;
         std::string                            m_prefix;
-        uqParamSpaceClass   <P_V,P_M>*         m_paramSpace;
-        uqQoISpaceClass     <Q_V,Q_M>*         m_qoiSpace;
+        //uqParamSpaceClass   <P_V,P_M>*         m_paramSpace;
+        //uqQoISpaceClass     <Q_V,Q_M>*         m_qoiSpace;
 
         po::options_description*               m_optionsDesc;
         std::string                            m_option_help;
@@ -102,14 +101,13 @@ uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::uqValidProblemStageClass(
         P_M*                                            proposalCovMatrix,
   const uqProposalDensity_BaseClass  <P_V,P_M>*         proposalDensityObj,
   const uqProposalGenerator_BaseClass<P_V,P_M>*         proposalGeneratorObj,
-  const uqProbDensity_BaseClass      <P_V,P_M>*         propagParamDensityObj,
-  const uqSampleGenerator_BaseClass  <P_V,P_M>*         propagParamGeneratorObj,
-  const uqQoIFunction_BaseClass      <P_V,P_M,Q_V,Q_M>* qoiFunctionObj)
+  const uqRandomVariableClass        <P_V,P_M>*         propagParamRV,
+  const uqVectorFunctionClass        <P_V,P_M,Q_V,Q_M>* qoiFunctionObj)
   :
   m_env                       (env),
   m_prefix                    ((std::string)(prefix) + "s" + (std::string)(sufix)),
-  m_paramSpace                (new uqParamSpaceClass<P_V,P_M>(env,m_prefix.c_str())),
-  m_qoiSpace                  (new uqQoISpaceClass  <Q_V,Q_M>(env,m_prefix.c_str())),
+  //m_paramSpace                (new uqParamSpaceClass<P_V,P_M>(env,m_prefix.c_str())),
+  //m_qoiSpace                  (new uqQoISpaceClass  <Q_V,Q_M>(env,m_prefix.c_str())),
   m_optionsDesc               (new po::options_description("UQ Validation Problem Stage")),
   m_option_help               (m_prefix + "help"              ),
   m_option_calib_perform      (m_prefix + "performCalibration"),
@@ -139,7 +137,7 @@ uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::uqValidProblemStageClass(
   if (m_calibPerform) {
     m_calibProblem = new uqCalibProblemClass<P_V,P_M>(m_env,
                                                       m_prefix.c_str(),
-                                                     *m_paramSpace,
+						      //*m_paramSpace,
                                                       priorParamDensityObj,
                                                      *likelihoodFunctionObj,
                                                       proposalCovMatrix,
@@ -150,9 +148,8 @@ uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::uqValidProblemStageClass(
   if (m_propagPerform) {
     m_propagProblem = new uqPropagProblemClass<P_V,P_M,Q_V,Q_M>(m_env,
                                                                 m_prefix.c_str(),
-                                                               *m_paramSpace,
-                                                               *m_qoiSpace,
-                                                                NULL,
+								//*m_paramSpace,
+								//*m_qoiSpace,
                                                                 NULL,
                                                                *qoiFunctionObj);
   }
@@ -168,8 +165,8 @@ uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::~uqValidProblemStageClass()
   if (m_propagProblem) delete m_propagProblem;
   if (m_calibProblem ) delete m_calibProblem;
   if (m_optionsDesc  ) delete m_optionsDesc;
-  if (m_qoiSpace     ) delete m_qoiSpace;
-  if (m_paramSpace   ) delete m_paramSpace;
+  //if (m_qoiSpace     ) delete m_qoiSpace;
+  //if (m_paramSpace   ) delete m_paramSpace;
 }
 
 template<class P_V,class P_M,class Q_V,class Q_M>
@@ -294,15 +291,15 @@ uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::solvePropagation()
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::solvePropagation(const uqSampleGenerator_BaseClass<P_V,P_M>& paramGeneratorObj)
+uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::solvePropagation(const uqRandomVariableClass<P_V,P_M>& propagParamRV)
 {
   if (m_propagPerform) {
-    m_propagProblem->solve(paramGeneratorObj);
+    m_propagProblem->solve(propagParamRV);
   }
 
   return;
 }
-
+#if 0
 template <class P_V,class P_M,class Q_V,class Q_M>
 const uqParamSpaceClass<P_V,P_M>&
 uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::paramSpace() const
@@ -316,7 +313,7 @@ uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::qoiSpace() const
 {
   return *m_qoiSpace;
 }
-
+#endif
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqValidProblemStageClass<P_V,P_M,Q_V,Q_M>::print(std::ostream& os) const

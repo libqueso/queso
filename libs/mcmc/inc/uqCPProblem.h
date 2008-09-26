@@ -38,16 +38,15 @@ public:
                          P_M*                                            proposalCovMatrix,     // Set in substep 3
                    const uqProposalDensity_BaseClass  <P_V,P_M>*         proposalDensityObj,    // Set in substep 3
                    const uqProposalGenerator_BaseClass<P_V,P_M>*         proposalGeneratorObj,  // Set in substep 3 // FIX ME: use such object
-                   const uqQoIFunction_BaseClass      <P_V,P_M,Q_V,Q_M>& qoiFunctionObj);       // Set in substep 4
+                   const uqVectorFunctionClass        <P_V,P_M,Q_V,Q_M>& qoiFunctionObj);       // Set in substep 4
  ~uqCPProblemClass();
 
-  const uqParamSpaceClass   <P_V,P_M>&         paramSpace       () const;
-  const uqQoISpaceClass     <Q_V,Q_M>&         qoiSpace         () const;
-
-        void                                   solve            ();
+//const uqParamSpaceClass   <P_V,P_M>&         paramSpace       () const;
+//const uqQoISpaceClass     <Q_V,Q_M>&         qoiSpace         () const;
 
   const uqCalibProblemClass <P_V,P_M>&         calibProblem     () const;
   const uqPropagProblemClass<P_V,P_M,Q_V,Q_M>& propagProblem    () const;
+        void                                   solve            ();
 
         void                                   print            (std::ostream& os) const;
 
@@ -57,8 +56,8 @@ private:
 
   const uqEnvironmentClass&                    m_env;
         std::string                            m_prefix;
-        uqParamSpaceClass   <P_V,P_M>*         m_paramSpace;
-        uqQoISpaceClass     <Q_V,Q_M>*         m_qoiSpace;
+        //uqParamSpaceClass   <P_V,P_M>*         m_paramSpace;
+        //uqQoISpaceClass     <Q_V,Q_M>*         m_qoiSpace;
 
         po::options_description*               m_optionsDesc;
         std::string                            m_option_help;
@@ -84,12 +83,12 @@ uqCPProblemClass<P_V,P_M,Q_V,Q_M>::uqCPProblemClass(
         P_M*                                            proposalCovMatrix,
   const uqProposalDensity_BaseClass  <P_V,P_M>*         proposalDensityObj,
   const uqProposalGenerator_BaseClass<P_V,P_M>*         proposalGeneratorObj,
-  const uqQoIFunction_BaseClass      <P_V,P_M,Q_V,Q_M>& qoiFunctionObj)
+  const uqVectorFunctionClass        <P_V,P_M,Q_V,Q_M>& qoiFunctionObj)
   :
   m_env                  (env),
   m_prefix               ((std::string)(prefix) + "cp_"),
-  m_paramSpace           (new uqParamSpaceClass<P_V,P_M>(env,m_prefix.c_str())),
-  m_qoiSpace             (new uqQoISpaceClass  <P_V,P_M>(env,m_prefix.c_str())),
+  //m_paramSpace           (new uqParamSpaceClass<P_V,P_M>(env,m_prefix.c_str())),
+  //m_qoiSpace             (new uqQoISpaceClass  <P_V,P_M>(env,m_prefix.c_str())),
   m_optionsDesc          (new po::options_description("UQ CP Problem")),
   m_option_help          (m_prefix + "help"              ),
   m_option_calib_perform (m_prefix + "performCalibration"),
@@ -115,7 +114,7 @@ uqCPProblemClass<P_V,P_M,Q_V,Q_M>::uqCPProblemClass(
   if (m_calibPerform) {
     m_calibProblem = new uqCalibProblemClass<P_V,P_M>(m_env,
                                                       m_prefix.c_str(),
-                                                     *m_paramSpace,
+						      //*m_paramSpace,
                                                       priorParamDensityObj,
                                                       likelihoodFunctionObj,
                                                       proposalCovMatrix,
@@ -126,9 +125,8 @@ uqCPProblemClass<P_V,P_M,Q_V,Q_M>::uqCPProblemClass(
   if (m_propagPerform) {
     m_propagProblem = new uqPropagProblemClass<P_V,P_M,Q_V,Q_M>(m_env,
                                                                 m_prefix.c_str(),
-                                                               *m_paramSpace,
-                                                               *m_qoiSpace,
-                                                                NULL,
+								//*m_paramSpace,
+								//*m_qoiSpace,
                                                                 NULL,
                                                                 qoiFunctionObj);
   }
@@ -144,8 +142,8 @@ uqCPProblemClass<P_V,P_M,Q_V,Q_M>::~uqCPProblemClass()
   if (m_propagProblem) delete m_propagProblem;
   if (m_calibProblem ) delete m_calibProblem;
   if (m_optionsDesc  ) delete m_optionsDesc;
-  if (m_qoiSpace     ) delete m_qoiSpace;
-  if (m_paramSpace   ) delete m_paramSpace;
+  //if (m_qoiSpace     ) delete m_qoiSpace;
+  //if (m_paramSpace   ) delete m_paramSpace;
 }
 
 template<class P_V,class P_M,class Q_V,class Q_M>
@@ -184,6 +182,7 @@ void
   return;
 }
 
+#if 0
 template <class P_V,class P_M,class Q_V,class Q_M>
 const uqParamSpaceClass<P_V,P_M>&
 uqCPProblemClass<P_V,P_M,Q_V,Q_M>::paramSpace() const
@@ -197,6 +196,7 @@ uqCPProblemClass<P_V,P_M,Q_V,Q_M>::qoiSpace() const
 {
   return *m_qoiSpace;
 }
+#endif
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
@@ -206,7 +206,7 @@ uqCPProblemClass<P_V,P_M,Q_V,Q_M>::solve()
     m_calibProblem->solve();
 
     if (m_propagPerform) {
-      m_propagProblem->solve(m_calibProblem->solutionSampleGeneratorObj());
+      m_propagProblem->solve(m_calibProblem->solution());
     }
   }
 

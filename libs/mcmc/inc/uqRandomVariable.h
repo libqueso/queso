@@ -21,7 +21,7 @@
 #define __UQ_RANDOM_VARIABLE_H__
 
 #include <uqProbDensity.h>
-#include <uqSampleGenerator.h>
+#include <uqRealizer.h>
 
 //*****************************************************
 // Base class
@@ -29,25 +29,26 @@
 template<class V, class M>
 class uqRandomVariableClass {
 public:
-  uqRandomVariableClass(const uqProbDensity_BaseClass    <V,M>* probDensityObj,
-                        const uqSampleGenerator_BaseClass<V,M>* sampleGenObj);
+  uqRandomVariableClass(const uqProbDensity_BaseClass<V,M>* probDensity,
+                        const uqRealizer_BaseClass   <V,M>* realizer);
   virtual ~uqRandomVariableClass();
 
-  const uqProbDensity_BaseClass    <V,M>& probDensity    () const;
-  const uqSampleGenerator_BaseClass<V,M>& sampleGenerator() const;
+  const uqProbDensity_BaseClass<V,M>& probDensity()       const;
+  const uqRealizer_BaseClass   <V,M>& realizer   ()       const;
+        void                          realization(V& vec) const;
 
 protected:
-  const uqProbDensity_BaseClass    <V,M>* m_probDensity;
-  const uqSampleGenerator_BaseClass<V,M>* m_sampleGenerator;
+  const uqProbDensity_BaseClass<V,M>* m_probDensity;
+  const uqRealizer_BaseClass   <V,M>* m_realizer;
 };
 
 template<class V, class M>
 uqRandomVariableClass<V,M>::uqRandomVariableClass(
-  const uqProbDensity_BaseClass    <V,M>* probDensityObj,
-  const uqSampleGenerator_BaseClass<V,M>* sampleGenObj)
+  const uqProbDensity_BaseClass<V,M>* probDensity,
+  const uqRealizer_BaseClass   <V,M>* realizer)
   :
-  m_probDensity    (probDensityObj),
-  m_sampleGenerator(sampleGenObj)
+  m_probDensity(probDensity),
+  m_realizer   (realizer)
 {
 }
 
@@ -69,15 +70,29 @@ uqRandomVariableClass<V,M>::probDensity() const
 }
 
 template<class V, class M>
-const uqSampleGenerator_BaseClass<V,M>&
-uqRandomVariableClass<V,M>::sampleGenerator() const
+const uqRealizer_BaseClass<V,M>&
+uqRandomVariableClass<V,M>::realizer() const
 {
-  UQ_FATAL_TEST_MACRO(m_sampleGenerator == NULL,
+  UQ_FATAL_TEST_MACRO(m_realizer == NULL,
                       UQ_UNAVAILABLE_RANK,
-                      "uqRandomVariableClass<V,M>::sampleGenerator()",
-                      "m_sampleGenerator is NULL");
+                      "uqRandomVariableClass<V,M>::realizer()",
+                      "m_realizer is NULL");
 
-  return *m_sampleGenerator;
+  return *m_realizer;
+}
+
+template<class V, class M>
+void
+uqRandomVariableClass<V,M>::realization(V& vec) const
+{
+  UQ_FATAL_TEST_MACRO(m_realizer == NULL,
+                      UQ_UNAVAILABLE_RANK,
+                      "uqRandomVariableClass<V,M>::realization()",
+                      "m_realizer is NULL");
+
+  m_realizer->nextSample(vec);
+
+  return;
 }
 
 #endif // __UQ_RANDOM_VARIABLE_H__
