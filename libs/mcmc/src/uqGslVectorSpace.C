@@ -1,4 +1,4 @@
-/* uq/libs/mcmc/src/uqQoI.C
+/* uq/libs/mcmc/src/uqGslVectorSpace.C
  *
  * Copyright (C) 2008 The PECOS Team, http://queso.ices.utexas.edu
  *
@@ -17,44 +17,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <uqQoI.h>
+#include <uqVectorSpace.h>
+#include <uqGslMatrix.h>
 
-uqQoIClass::uqQoIClass(
-  const std::string& name)
-  :
-  m_name                (name)
+template<>
+uqGslVectorClass*
+uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass>::newVector() const
 {
+  return new uqGslVectorClass(m_env,*m_map);
 }
 
-uqQoIClass::~uqQoIClass()
+template<>
+uqGslMatrixClass*
+uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass>::newMatrix() const
 {
+  return new uqGslMatrixClass(m_env,*m_map,this->dim());
 }
 
-std::string
-uqQoIClass::name() const
+template<>
+uqGslMatrixClass*
+uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass>::newDiagMatrix(double diagValue) const
 {
-  return m_name;
-}
-
-void
-uqQoIClass::setName(const std::string& name)
-{
-  m_name = name;
-  return;
-}
-
-void
-uqQoIClass::print(std::ostream& os) const
-{
-  os << this->m_name;
-
-  return;
-}
-
-std::ostream&
-operator<<(std::ostream& os, const uqQoIClass& qoi)
-{
-  qoi.print(os);
-
-  return os;
+  return new uqGslMatrixClass(m_env,*m_map,diagValue);
 }

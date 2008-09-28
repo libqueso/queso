@@ -1,4 +1,4 @@
-/* uq/libs/mcmc/inc/uqRealizer.h
+/* uq/libs/mcmc/inc/uqVectorRealizer.h
  *
  * Copyright (C) 2008 The PECOS Team, http://www.ices.utexas.edu/centers/pecos
  *
@@ -32,13 +32,13 @@
 // Base class
 //*****************************************************
 template<class V, class M>
-class uqRealizer_BaseClass {
+class uqBaseVectorRealizerClass {
 public:
-           uqRealizer_BaseClass(double (*routinePtr)(const void* routineDataPtr, V& nextParamValues),
-                                const void*  routineDataPtr,
-                                unsigned int period);
-           uqRealizer_BaseClass(const uqChainBaseClass<V>* chain);
-  virtual ~uqRealizer_BaseClass();
+           uqBaseVectorRealizerClass(double (*routinePtr)(const void* routineDataPtr, V& nextParamValues),
+                                     const void*  routineDataPtr,
+                                     unsigned int period);
+           uqBaseVectorRealizerClass(const uqChainBaseClass<V>* chain);
+  virtual ~uqBaseVectorRealizerClass();
 
   virtual unsigned int period    () const;
   virtual void         nextSample(V& paramValues) const;
@@ -53,7 +53,7 @@ protected:
 };
 
 template<class V, class M>
-uqRealizer_BaseClass<V,M>::uqRealizer_BaseClass(
+uqBaseVectorRealizerClass<V,M>::uqBaseVectorRealizerClass(
   double (*routinePtr)(const void* routineDataPtr, V& nextParamValues),
   const void*  routineDataPtr,
   unsigned int period)
@@ -67,7 +67,7 @@ uqRealizer_BaseClass<V,M>::uqRealizer_BaseClass(
 }
 
 template<class V, class M>
-uqRealizer_BaseClass<V,M>::uqRealizer_BaseClass(
+uqBaseVectorRealizerClass<V,M>::uqBaseVectorRealizerClass(
   const uqChainBaseClass<V>* chain)
   :
   m_routinePtr     (NULL),
@@ -79,20 +79,20 @@ uqRealizer_BaseClass<V,M>::uqRealizer_BaseClass(
 }
 
 template<class V, class M>
-uqRealizer_BaseClass<V,M>::~uqRealizer_BaseClass()
+uqBaseVectorRealizerClass<V,M>::~uqBaseVectorRealizerClass()
 {
 }
 
 template<class V, class M>
 unsigned int
-uqRealizer_BaseClass<V,M>::period() const
+uqBaseVectorRealizerClass<V,M>::period() const
 {
   return m_period;
 }
 
 template<class V, class M>
 void
-uqRealizer_BaseClass<V,M>::nextSample(V& nextParamValues) const
+uqBaseVectorRealizerClass<V,M>::nextSample(V& nextParamValues) const
 {
   if (m_routinePtr) {
     m_routinePtr(m_routineDataPtr, nextParamValues);

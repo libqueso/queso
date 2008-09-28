@@ -20,8 +20,6 @@
 #ifndef __UQ_CALIB_PROBLEM_H__
 #define __UQ_CALIB_PROBLEM_H__
 
-#include <uqParamSpace.h>
-
 #include <uqProposalDensity.h>   // For substep 3
 #include <uqProposalGenerator.h> // For substep 3
 
@@ -181,25 +179,23 @@ uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain(void* transitionKernel)
 {
   if (m_solutionRealizer   ) delete m_solutionRealizer;
   if (m_solutionProbDensity) delete m_solutionProbDensity;
+  if (m_mcSeqGenerator     ) delete m_mcSeqGenerator;
 
   // Bayesian step
-  m_solutionProbDensity = new uqBayesianProbDensity_Class<P_V,P_M>(m_priorRv.probDensity(),
-                                                                  &m_likelihoodFunction);
-  m_postRv.setProbDensity(m_solutionProbDensity);
+  m_solutionProbDensity = new uqBayesianProbDensity_Class<P_V,P_M>(&m_priorRv.probDensity(),
+                                                                   &m_likelihoodFunction);
+  m_postRv.setProbDensity(*m_solutionProbDensity);
 
   // Markov Chain step
-  if (m_mcSeqGenerator == NULL) {
-    m_mcSeqGenerator = new uqMarkovChainSGClass<P_V,P_M>(m_env,
-                                                         m_prefix.c_str(),
-                                                         m_postRv,
-                                                         m_proposalCovMatrix,
-                                                         m_proposalDensity,
-                                                         m_proposalGenerator);
-  }
-
+  m_mcSeqGenerator = new uqMarkovChainSGClass<P_V,P_M>(m_env,
+                                                       m_prefix.c_str(),
+                                                       m_postRv,
+                                                       m_proposalCovMatrix,
+                                                       m_proposalDensity,
+                                                       m_proposalGenerator);
   m_mcSeqGenerator->generateSequence();
   m_solutionRealizer = new uqRealizer_BaseClass<P_V,P_M>(&(m_mcSeqGenerator->chain()));
-  m_postRv.setRealizer(m_solutionRealizer);
+  m_postRv.setRealizer(*m_solutionRealizer);
 
   return;
 }

@@ -20,7 +20,6 @@
 #ifndef __UQ_CHAIN_POSITION_H__
 #define __UQ_CHAIN_POSITION_H__
 
-#include <uqParameter.h>
 #include <uqEnvironment.h>
 
 template <class V>

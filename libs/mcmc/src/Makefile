@@ -43,13 +43,10 @@ ARFLAGS = -rv
 CXX = g++
 CXXFLAGS = -Wall -c -g
 
-OBJS_ANY = uqParameter.o \
-	uqBasicScalarRV.o \
-	uqQoI.o
+OBJS_ANY = uqScalarRV.o \
 
-OBJS_gsl = uqGslParamSpace.o \
-	uqGslQoISpace.o \
-	uqGslFinDimLinearSpace.o
+OBJS_gsl = uqGslVectorRV.o \
+	uqGslVectorSpace.o
 
 OBJS_tri = uqTrilinosParamSpace.o \
 	uqTrilinosFinDimLinearSpace.o

@@ -1,4 +1,4 @@
-/* uq/libs/mcmc/inc/uqProbDensity.h
+/* uq/libs/mcmc/inc/uqVectorProbDensity.h
  *
  * Copyright (C) 2008 The PECOS Team, http://www.ices.utexas.edu/centers/pecos
  *
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef __UQ_PROB_DENSITY_H__
-#define __UQ_PROB_DENSITY_H__
+#ifndef __UQ_VECTOR_PROB_DENSITY_H__
+#define __UQ_VECTOR_PROB_DENSITY_H__
 
 #include <uqEnvironment.h>
 #include <math.h>
@@ -31,22 +31,22 @@
 // Base class
 //*****************************************************
 template<class V, class M>
-class uqProbDensity_BaseClass {
+class uqBaseVectorProbDensityClass {
 public:
-           uqProbDensity_BaseClass();
-  virtual ~uqProbDensity_BaseClass();
+           uqBaseVectorProbDensityClass();
+  virtual ~uqBaseVectorProbDensityClass();
 
   virtual double actualDensity  (const V& paramValues) const = 0;
   virtual double minus2LnDensity(const V& paramValues) const = 0;
 };
 
 template<class V, class M>
-uqProbDensity_BaseClass<V,M>::uqProbDensity_BaseClass()
+uqBaseVectorProbDensityClass<V,M>::uqBaseVectorProbDensityClass()
 {
 }
 
 template<class V, class M>
-uqProbDensity_BaseClass<V,M>::~uqProbDensity_BaseClass()
+uqBaseVectorProbDensityClass<V,M>::~uqBaseVectorProbDensityClass()
 {
 }
 
@@ -54,12 +54,12 @@ uqProbDensity_BaseClass<V,M>::~uqProbDensity_BaseClass()
 // Routine probability density class
 //*****************************************************
 template<class V, class M>
-class uqRoutineProbDensity_Class : public uqProbDensity_BaseClass<V,M> {
+class uqRoutineVectorProbDensityClass : public uqBaseVectorProbDensityClass<V,M> {
 public:
-  uqRoutineProbDensity_Class(double (*routinePtr)(const V& paramValues, const void* routineDataPtr),
-                             const void* routineDataPtr,
-                             bool routineComputesMinus2LogOfDensity);
- ~uqRoutineProbDensity_Class();
+  uqRoutineVectorProbDensityClass(double (*routinePtr)(const V& paramValues, const void* routineDataPtr),
+                                  const void* routineDataPtr,
+                                  bool routineComputesMinus2LogOfDensity);
+ ~uqRoutineVectorProbDensityClass();
 
   double actualDensity  (const V& paramValues) const;
   double minus2LnDensity(const V& paramValues) const;
@@ -73,12 +73,12 @@ protected:
 };
 
 template<class V, class M>
-uqRoutineProbDensity_Class<V,M>::uqRoutineProbDensity_Class(
+uqRoutineVectorProbDensityClass<V,M>::uqRoutineVectorProbDensityClass(
   double (*routinePtr)(const V& paramValues, const void* routineDataPtr),
   const void* routineDataPtr,
   bool        routineComputesMinus2LogOfDensity)
   :
-  uqProbDensity_BaseClass<V,M>(),
+  uqBaseVectorProbDensityClass<V,M>(),
   m_routinePtr                       (routinePtr),
   m_routineDataPtr                   (routineDataPtr),
   m_routineComputesMinus2LogOfDensity(routineComputesMinus2LogOfDensity)
@@ -86,13 +86,13 @@ uqRoutineProbDensity_Class<V,M>::uqRoutineProbDensity_Class(
 }
 
 template<class V, class M>
-uqRoutineProbDensity_Class<V,M>::~uqRoutineProbDensity_Class()
+uqRoutineVectorProbDensityClass<V,M>::~uqRoutineVectorProbDensityClass()
 {
 }
 
 template<class V, class M>
 double
-uqRoutineProbDensity_Class<V,M>::minus2LnDensity(const V& paramValues) const
+uqRoutineVectorProbDensityClass<V,M>::minus2LnDensity(const V& paramValues) const
 {
   double value = m_routinePtr(paramValues, m_routineDataPtr);
   if (m_routineComputesMinus2LogOfDensity == false) {
@@ -104,7 +104,7 @@ uqRoutineProbDensity_Class<V,M>::minus2LnDensity(const V& paramValues) const
 
 template<class V, class M>
 double
-uqRoutineProbDensity_Class<V,M>::actualDensity(const V& paramValues) const
+uqRoutineVectorProbDensityClass<V,M>::actualDensity(const V& paramValues) const
 {
   double value = m_routinePtr(paramValues, m_routineDataPtr);
   if (m_routineComputesMinus2LogOfDensity) {
@@ -118,39 +118,39 @@ uqRoutineProbDensity_Class<V,M>::actualDensity(const V& paramValues) const
 // Bayesian probability density class
 //*****************************************************
 template<class V, class M>
-class uqBayesianProbDensity_Class : public uqProbDensity_BaseClass<V,M> {
+class uqBayesianVectorProbDensityClass : public uqBaseVectorProbDensityClass<V,M> {
 public:
-  uqBayesianProbDensity_Class(const uqProbDensity_BaseClass<V,M>* priorDensity,
-                              const uqProbDensity_BaseClass<V,M>* likelihoodFunction); 
- ~uqBayesianProbDensity_Class();
+  uqBayesianVectorProbDensityClass(const uqBaseVectorProbDensityClass<V,M>* priorDensity,
+                                   const uqBaseVectorProbDensityClass<V,M>* likelihoodFunction); 
+ ~uqBayesianVectorProbDensityClass();
 
   double actualDensity  (const V& paramValues) const;
   double minus2LnDensity(const V& paramValues) const;
 
 protected:
-  const uqProbDensity_BaseClass<V,M>* m_priorDensity;
-  const uqProbDensity_BaseClass<V,M>* m_likelihoodFunction;
+  const uqBaseVectorProbDensityClass<V,M>* m_priorDensity;
+  const uqBaseVectorProbDensityClass<V,M>* m_likelihoodFunction;
 };
 
 template<class V,class M>
-uqBayesianProbDensity_Class<V,M>::uqBayesianProbDensity_Class(
-  const uqProbDensity_BaseClass<V,M>* priorDensity,
-  const uqProbDensity_BaseClass<V,M>* likelihoodFunction)
+uqBayesianVectorProbDensityClass<V,M>::uqBayesianVectorProbDensityClass(
+  const uqBaseVectorProbDensityClass<V,M>* priorDensity,
+  const uqBaseVectorProbDensityClass<V,M>* likelihoodFunction)
   :
-  uqProbDensity_BaseClass<V,M>(),
+  uqBaseVectorProbDensityClass<V,M>(),
   m_priorDensity      (priorDensity),
   m_likelihoodFunction(likelihoodFunction)
 {
 }
 
 template<class V,class M>
-uqBayesianProbDensity_Class<V,M>::~uqBayesianProbDensity_Class()
+uqBayesianVectorProbDensityClass<V,M>::~uqBayesianVectorProbDensityClass()
 {
 }
 
 template<class V, class M>
 double
-uqBayesianProbDensity_Class<V,M>::minus2LnDensity(const V& paramValues) const
+uqBayesianVectorProbDensityClass<V,M>::minus2LnDensity(const V& paramValues) const
 {
   double value = 0.;
 
@@ -162,7 +162,7 @@ uqBayesianProbDensity_Class<V,M>::minus2LnDensity(const V& paramValues) const
 
 template<class V, class M>
 double
-uqBayesianProbDensity_Class<V,M>::actualDensity(const V& paramValues) const
+uqBayesianVectorProbDensityClass<V,M>::actualDensity(const V& paramValues) const
 {
   double value = 0.;
 
@@ -172,4 +172,4 @@ uqBayesianProbDensity_Class<V,M>::actualDensity(const V& paramValues) const
   return value;
 }
 
-#endif // __UQ_PROB_DENSITY_H__
+#endif // __UQ_VECTOR_PROB_DENSITY_H__

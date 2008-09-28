@@ -45,7 +45,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
   for (unsigned int chainId = 0; chainId < m_chainSizes.size(); ++chainId) {
     char tmpChainId[10];
     sprintf(tmpChainId,"%d",chainId);
-    std::string prefixName = m_prefix + tmpChainId + "_";
+    std::string prefixName = m_prefix + "c" + tmpChainId + "_";
     std::string chainName  = prefixName + "chain";
 
     if (m_chainType == UQ_MAC_SG_WHITE_NOISE_CHAIN_TYPE) {
@@ -133,7 +133,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
     if (m_chainWrite && ofs) {
       workingChain.write(chainName,*ofs);
 
-      // Write misfitChain, alphaValues etc, if they were requested by user and created by 
+      // Write likelihoodValues and alphaValues, if they were requested by user
       iRC = writeInfo(workingChain,
                       chainName,
                       prefixName,
@@ -147,7 +147,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
     if (m_chainComputeStats) {
       workingChain.computeStatistics(*m_chainStatisticalOptions,
                                      chainName,
-                                     m_paramSpace.componentsNames(),
+                                     m_sourceRv.componentsNames(),
                                      ofs);
     }
 
@@ -178,7 +178,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
       if (m_uniqueChainComputeStats) {
         workingChain.computeStatistics(*m_uniqueChainStatisticalOptions,
                                        chainName,
-                                       m_paramSpace.componentsNames(),
+                                       m_sourceRv.componentsNames(),
                                        ofs);
       }
     }
@@ -215,7 +215,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
       if (m_filteredChainComputeStats) {
         workingChain.computeStatistics(*m_filteredChainStatisticalOptions,
                                        chainName,
-                                       m_paramSpace.componentsNames(),
+                                       m_sourceRv.componentsNames(),
                                        ofs);
       }
     }
@@ -395,7 +395,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
 
   iRC = gettimeofday(&timevalChain, NULL);
 
-  bool   outOfBounds = m_paramSpace.outOfBounds(valuesOf1stPosition);
+  bool   outOfBounds = m_sourceRv.outOfBounds(valuesOf1stPosition);
   UQ_FATAL_TEST_MACRO(outOfBounds,
                       m_env.rank(),
                       "uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()",
@@ -445,7 +445,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
     tmpParamValues = currentPosition.paramValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
     if (m_chainMeasureRunTimes) candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
 
-    outOfBounds    = m_paramSpace.outOfBounds(tmpParamValues);
+    outOfBounds    = m_sourceRv.outOfBounds(tmpParamValues);
     if (outOfBounds) {
       m_numOutOfBounds++;
       logPosterior = -INFINITY;
@@ -529,7 +529,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
         tmpParamValues = currentPosition.paramValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
         if (m_chainMeasureRunTimes) candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
 
-        outOfBounds    = m_paramSpace.outOfBounds(tmpParamValues);
+        outOfBounds    = m_sourceRv.outOfBounds(tmpParamValues);
         if (outOfBounds) {
           logPosterior = -INFINITY;
         }

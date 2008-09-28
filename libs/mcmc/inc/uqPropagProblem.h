@@ -20,9 +20,6 @@
 #ifndef __UQ_PROPAG_PROBLEM_H__
 #define __UQ_PROPAG_PROBLEM_H__
 
-#include <uqParamSpace.h>
-#include <uqQoISpace.h>
-
 #include <uqVectorFunction.h> // For substep 4 (or 1) in appls. with propagation
 
 #include <uqMonteCarloSG.h>

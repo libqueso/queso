@@ -22,6 +22,7 @@
 
 #include <uqFft.h>
 #include <uqEnvironment.h>
+#include <uqMiscellaneous.h>
 #include <uqDefines.h>
 #include <vector>
 #include <complex>

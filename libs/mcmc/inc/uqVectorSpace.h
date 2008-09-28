@@ -21,7 +21,7 @@
 #define __UQ_VECTOR_SPACE_H__
 
 #include <uqEnvironment.h>
-#include <uqBasicScalarRV.h>
+#include <uqMiscellaneous.h>
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -31,10 +31,10 @@ template <class V, class M>
 class uqVectorSpaceClass
 {
 public:
-           uqVectorSpaceClass();
-           uqVectorSpaceClass(const uqEnvironmentClass& env, // See template specialization
-                              const char*               prefix,
-                                    unsigned int        dimValue = 0);
+          uqVectorSpaceClass();
+          uqVectorSpaceClass(const uqEnvironmentClass& env, // See template specialization
+                             const char*               prefix,
+                                   unsigned int        dimValue = 0);
          ~uqVectorSpaceClass();
 
   const   Epetra_Map&               map            ()                         const;

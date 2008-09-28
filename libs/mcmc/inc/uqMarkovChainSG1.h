@@ -58,8 +58,8 @@
 #define UQ_MAC_SG_AM_EPSILON_ODV                       1.e-5
 
 #include <uqChainStatisticalOptions.h>
-#include <uqProbDensity.h>
-#include <uqParamSpace.h>
+#include <uqVectorRV.h>
+#include <uqVectorSpace.h>
 #include <uqChainPosition.h>
 #include <uqMiscellaneous.h>
 #include <uqSequenceOfVectors.h>
@@ -75,8 +75,7 @@ class uqMarkovChainSGClass
 public:
   uqMarkovChainSGClass(const uqEnvironmentClass&                     env,                   /*! The QUESO toolkit environment. */
                        const char*                                   prefix,                /*! Prefix.                        */
-                       const uqParamSpaceClass            <P_V,P_M>& paramSpace,            /*! The parameter space.           */
-                       const uqProbDensity_BaseClass      <P_V,P_M>& targetParamDensityObj,
+                       const uqVectorRVClass              <P_V,P_M>& sourceRv,              /*! The source random variable.    */
                              P_M*                                    proposalCovMatrix,     /*! */
                        const uqProposalDensity_BaseClass  <P_V,P_M>* proposalDensityObj,    /*! */
                        const uqProposalGenerator_BaseClass<P_V,P_M>* proposalGeneratorObj); /*! */
@@ -137,7 +136,8 @@ private:
 
   const uqEnvironmentClass&                     m_env;
         std::string                             m_prefix;
-  const uqParamSpaceClass            <P_V,P_M>& m_paramSpace;
+  const uqVectorRVClass              <P_V,P_M>& m_sourceRv;
+  const uqVectorSpaceClass           <P_V,P_M>& m_paramSpace;
   const uqProbDensity_BaseClass      <P_V,P_M>& m_targetParamDensityObj;
         P_M*                                    m_proposalCovMatrix;
   const uqProposalDensity_BaseClass  <P_V,P_M>* m_proposalDensityObj;
@@ -238,18 +238,18 @@ std::ostream& operator<<(std::ostream& os, const uqMarkovChainSGClass<P_V,P_M>& 
 
 template<class P_V,class P_M>
 uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
-  const uqEnvironmentClass&                             env,
-  const char*                                           prefix,
-  const uqParamSpaceClass            <P_V,P_M>&         paramSpace,
-  const uqProbDensity_BaseClass      <P_V,P_M>&         targetParamDensityObj,
-        P_M*                                            proposalCovMatrix,
-  const uqProposalDensity_BaseClass  <P_V,P_M>*         proposalDensityObj,
-  const uqProposalGenerator_BaseClass<P_V,P_M>*         proposalGeneratorObj)
+  const uqEnvironmentClass&                     env,
+  const char*                                   prefix,
+  const uqVectorRVClass              <P_V,P_M>& sourceRv, /*! The source random variable. */
+        P_M*                                    proposalCovMatrix,
+  const uqProposalDensity_BaseClass  <P_V,P_M>* proposalDensityObj,
+  const uqProposalGenerator_BaseClass<P_V,P_M>* proposalGeneratorObj)
   :
   m_env                                  (env),
   m_prefix                               ((std::string)(prefix) + "mc_"),
-  m_paramSpace                           (paramSpace),
-  m_targetParamDensityObj                (targetParamDensityObj),
+  m_sourceRv                             (sourceRv),
+  m_paramSpace                           (sourceRv.imageSpace()),
+  m_targetParamDensityObj                (sourceRv.probDensity()),
   m_proposalCovMatrix                    (proposalCovMatrix),
   m_proposalDensityObj                   (proposalDensityObj),
   m_proposalGeneratorObj                 (proposalGeneratorObj),
@@ -282,7 +282,7 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   m_option_am_adaptInterval              (m_prefix + "am_adaptInterval"              ),
   m_option_am_eta                        (m_prefix + "am_eta"                        ),
   m_option_am_epsilon                    (m_prefix + "am_epsilon"                    ),
-  m_paramInitials                        (m_paramSpace.initialValues()),
+  m_paramInitials                        (sourceRv.initialValues()),
   m_proposalIsSymmetric                  (true),
   m_chainType                            (UQ_MAC_SG_CHAIN_TYPE_ODV),
   m_chainNumber                          (UQ_MAC_SG_CHAIN_NUMBER_ODV),
@@ -677,7 +677,7 @@ uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain(
   if (proposalCovMatrix == NULL) {
     P_V tmpVec(m_paramSpace.zeroVector());
     for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
-      double sigma = m_paramSpace.parameter(i).priorSigma();
+      double sigma = m_sourceRv.parameter(i).priorSigma();
       if ((sigma == INFINITY) ||
           (sigma == NAN     )) {
         tmpVec[i] = pow( fabs(m_paramInitials[i])*0.05,2. );
@@ -690,7 +690,7 @@ uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain(
         tmpVec[i] = sigma*sigma;
       }
     }
-    internalProposalCovMatrix = m_paramSpace.uqFinDimLinearSpaceClass<P_V,P_M>::newDiagMatrix(tmpVec);
+    internalProposalCovMatrix = m_paramSpace.newDiagMatrix(tmpVec);
 
     if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain()"
                                      << ", contents of internally generated proposal cov matrix are:"
@@ -1010,7 +1010,7 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
 
   // Write names of parameters
   ofs << prefixName << "paramNames = {";
-  m_paramSpace.printParameterNames(ofs,false);
+  m_sourceRv.printParameterNames(ofs,false);
   ofs << "};\n";
 
 #if 0
