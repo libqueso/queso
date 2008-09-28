@@ -23,7 +23,7 @@
 #include <uqVectorFunction.h> // For substep 4 (or 1) in appls. with propagation
 
 #include <uqMonteCarloSG.h>
-#include <uqProbDensity.h>
+#include <uqVectorProbDensity.h>
 #include <uqVectorRV.h>
 
 // _ODV = option default value
@@ -49,22 +49,22 @@ private:
         void defineMyOptions  (po::options_description& optionsDesc);
         void getMyOptionValues(po::options_description& optionsDesc);
 
-  const uqEnvironmentClass&                       m_env;
-        std::string                               m_prefix;
+  const uqEnvironmentClass&                            m_env;
+        std::string                                    m_prefix;
 
-        po::options_description*                  m_optionsDesc;
-        std::string                               m_option_help;
-        std::string                               m_option_solver;
+        po::options_description*                       m_optionsDesc;
+        std::string                                    m_option_help;
+        std::string                                    m_option_solver;
 
-	std::string                               m_solverString;
+	std::string                                    m_solverString;
 
-  const uqVectorRVClass        <P_V,P_M>&         m_paramRv;
-  const uqVectorFunctionClass  <P_V,P_M,Q_V,Q_M>& m_qoiFunction;
-        uqVectorRVClass        <Q_V,Q_M>&         m_qoiRv;
+  const uqVectorRVClass             <P_V,P_M>&         m_paramRv;
+  const uqVectorFunctionClass       <P_V,P_M,Q_V,Q_M>& m_qoiFunction;
+        uqVectorRVClass             <Q_V,Q_M>&         m_qoiRv;
 
-        uqMonteCarloSGClass    <P_V,P_M,Q_V,Q_M>* m_mcSeqGenerator;
-        uqProbDensity_BaseClass<Q_V,Q_M>*         m_solutionProbDensity;
-        uqRealizer_BaseClass   <Q_V,Q_M>*         m_solutionRealizer;
+        uqMonteCarloSGClass         <P_V,P_M,Q_V,Q_M>* m_mcSeqGenerator;
+        uqBaseVectorProbDensityClass<Q_V,Q_M>*         m_solutionProbDensity;
+        uqBaseVectorRealizerClass   <Q_V,Q_M>*         m_solutionRealizer;
 };
 
 template<class P_V,class P_M,class Q_V,class Q_M>

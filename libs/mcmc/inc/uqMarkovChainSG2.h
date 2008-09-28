@@ -147,7 +147,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
     if (m_chainComputeStats) {
       workingChain.computeStatistics(*m_chainStatisticalOptions,
                                      chainName,
-                                     m_sourceRv.componentsNames(),
+                                     m_sourceRv.imageSpace().componentsNames(),
                                      ofs);
     }
 
@@ -178,7 +178,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
       if (m_uniqueChainComputeStats) {
         workingChain.computeStatistics(*m_uniqueChainStatisticalOptions,
                                        chainName,
-                                       m_sourceRv.componentsNames(),
+                                       m_sourceRv.imageSpace().componentsNames(),
                                        ofs);
       }
     }
@@ -215,7 +215,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
       if (m_filteredChainComputeStats) {
         workingChain.computeStatistics(*m_filteredChainStatisticalOptions,
                                        chainName,
-                                       m_sourceRv.componentsNames(),
+                                       m_sourceRv.imageSpace().componentsNames(),
                                        ofs);
       }
     }

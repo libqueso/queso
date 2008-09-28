@@ -82,7 +82,7 @@ public:
  ~uqMarkovChainSGClass();
 
         void                   generateSequence();
-        void                   generateSequence(const uqProbDensity_BaseClass<P_V,P_M>& targetParamDensityObj);
+        void                   generateSequence(const uqBaseVectorProbDensityClass<P_V,P_M>& targetParamDensityObj);
 
         void                   print           (std::ostream& os) const;
 
@@ -138,7 +138,7 @@ private:
         std::string                             m_prefix;
   const uqVectorRVClass              <P_V,P_M>& m_sourceRv;
   const uqVectorSpaceClass           <P_V,P_M>& m_paramSpace;
-  const uqProbDensity_BaseClass      <P_V,P_M>& m_targetParamDensityObj;
+  const uqBaseVectorProbDensityClass <P_V,P_M>& m_targetParamDensityObj;
         P_M*                                    m_proposalCovMatrix;
   const uqProposalDensity_BaseClass  <P_V,P_M>* m_proposalDensityObj;
   const uqProposalGenerator_BaseClass<P_V,P_M>* m_proposalGeneratorObj;
@@ -282,7 +282,7 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   m_option_am_adaptInterval              (m_prefix + "am_adaptInterval"              ),
   m_option_am_eta                        (m_prefix + "am_eta"                        ),
   m_option_am_epsilon                    (m_prefix + "am_epsilon"                    ),
-  m_paramInitials                        (sourceRv.initialValues()),
+  m_paramInitials                        (m_paramSpace.zeroVector()),//sourceRv.initialValues()),
   m_proposalIsSymmetric                  (true),
   m_chainType                            (UQ_MAC_SG_CHAIN_TYPE_ODV),
   m_chainNumber                          (UQ_MAC_SG_CHAIN_NUMBER_ODV),
@@ -655,7 +655,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence()
 
 template<class P_V,class P_M>
 void
-uqMarkovChainSGClass<P_V,P_M>::generateSequence(const uqProbDensity_BaseClass<P_V,P_M>& targetParamDensityObj)
+uqMarkovChainSGClass<P_V,P_M>::generateSequence(const uqBaseVectorProbDensityClass<P_V,P_M>& targetParamDensityObj)
 {
   return;
 }
@@ -677,7 +677,7 @@ uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain(
   if (proposalCovMatrix == NULL) {
     P_V tmpVec(m_paramSpace.zeroVector());
     for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
-      double sigma = m_sourceRv.parameter(i).priorSigma();
+      double sigma = m_sourceRv.component(i).stdDevValue();
       if ((sigma == INFINITY) ||
           (sigma == NAN     )) {
         tmpVec[i] = pow( fabs(m_paramInitials[i])*0.05,2. );
@@ -1010,7 +1010,7 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
 
   // Write names of parameters
   ofs << prefixName << "paramNames = {";
-  m_sourceRv.printParameterNames(ofs,false);
+  m_sourceRv.imageSpace().printComponentsNames(ofs,false);
   ofs << "};\n";
 
 #if 0

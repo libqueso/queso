@@ -2,7 +2,7 @@
 # UQ Environment
 ###############################################
 uqEnv_help      = anything
-uqEnv_verbosity = 2
+uqEnv_verbosity = 20
 uqEnv_seed      = 0
 
 ###############################################

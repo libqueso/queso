@@ -34,11 +34,11 @@ template <class P_V,class P_M>
 class uqCalibProblemClass
 {
 public:
-  uqCalibProblemClass(const uqEnvironmentClass&               env,
-                      const char*                             prefix,
-                      const uqVectorRVClass        <P_V,P_M>& priorRv,
-                      const uqProbDensity_BaseClass<P_V,P_M>& likelihoodFunction,
-                            uqVectorRVClass        <P_V,P_M>& postRv);
+  uqCalibProblemClass(const uqEnvironmentClass&                    env,
+                      const char*                                  prefix,
+                      const uqVectorRVClass             <P_V,P_M>& priorRv,
+                      const uqBaseVectorProbDensityClass<P_V,P_M>& likelihoodFunction,
+                            uqVectorRVClass             <P_V,P_M>& postRv);
  ~uqCalibProblemClass();
 
         void solveWithBayesMarkovChain(void* transitionKernel);
@@ -59,10 +59,10 @@ private:
 	std::string                                  m_solverString;
 
   const uqVectorRVClass                   <P_V,P_M>& m_priorRv;
-  const uqProbDensity_BaseClass           <P_V,P_M>& m_likelihoodFunction;
+  const uqBaseVectorProbDensityClass      <P_V,P_M>& m_likelihoodFunction;
         uqVectorRVClass                   <P_V,P_M>& m_postRv;
 
-  const uqProbDensity_BaseClass           <P_V,P_M>* m_priorParamDensity;
+  const uqBaseVectorProbDensityClass      <P_V,P_M>* m_priorParamDensity;
         bool                                         m_userPriorDensityIsNull;
         uqDefault_M2lPriorRoutine_DataType<P_V,P_M>  m_m2lPriorRoutine_Data;
         P_V*                                         m_paramPriorMus;
@@ -72,8 +72,8 @@ private:
   const uqProposalGenerator_BaseClass     <P_V,P_M>* m_proposalGenerator;
 
         uqMarkovChainSGClass              <P_V,P_M>* m_mcSeqGenerator;
-        uqProbDensity_BaseClass           <P_V,P_M>* m_solutionProbDensity;
-        uqRealizer_BaseClass              <P_V,P_M>* m_solutionRealizer;
+        uqBaseVectorProbDensityClass      <P_V,P_M>* m_solutionProbDensity;
+        uqBaseVectorRealizerClass         <P_V,P_M>* m_solutionRealizer;
 };
 
 template<class P_V,class P_M>
@@ -81,11 +81,11 @@ std::ostream& operator<<(std::ostream& os, const uqCalibProblemClass<P_V,P_M>& o
 
 template <class P_V,class P_M>
 uqCalibProblemClass<P_V,P_M>::uqCalibProblemClass(
-  const uqEnvironmentClass&               env,
-  const char*                             prefix,
-  const uqVectorRVClass        <P_V,P_M>& priorRv,
-  const uqProbDensity_BaseClass<P_V,P_M>& likelihoodFunction,
-        uqVectorRVClass        <P_V,P_M>& postRv)
+  const uqEnvironmentClass&                    env,
+  const char*                                  prefix,
+  const uqVectorRVClass             <P_V,P_M>& priorRv,
+  const uqBaseVectorProbDensityClass<P_V,P_M>& likelihoodFunction,
+        uqVectorRVClass             <P_V,P_M>& postRv)
   :
   m_env                   (env),
   m_prefix                ((std::string)(prefix) + "cal_"),
@@ -182,8 +182,8 @@ uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain(void* transitionKernel)
   if (m_mcSeqGenerator     ) delete m_mcSeqGenerator;
 
   // Bayesian step
-  m_solutionProbDensity = new uqBayesianProbDensity_Class<P_V,P_M>(&m_priorRv.probDensity(),
-                                                                   &m_likelihoodFunction);
+  m_solutionProbDensity = new uqBayesianVectorProbDensityClass<P_V,P_M>(&m_priorRv.probDensity(),
+                                                                        &m_likelihoodFunction);
   m_postRv.setProbDensity(*m_solutionProbDensity);
 
   // Markov Chain step
@@ -194,7 +194,7 @@ uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain(void* transitionKernel)
                                                        m_proposalDensity,
                                                        m_proposalGenerator);
   m_mcSeqGenerator->generateSequence();
-  m_solutionRealizer = new uqRealizer_BaseClass<P_V,P_M>(&(m_mcSeqGenerator->chain()));
+  m_solutionRealizer = new uqBaseVectorRealizerClass<P_V,P_M>(&(m_mcSeqGenerator->chain()));
   m_postRv.setRealizer(*m_solutionRealizer);
 
   return;

@@ -79,7 +79,7 @@ protected:
 
           po::options_description*           m_optionsDesc;
           std::string                        m_option_help;
-          std::string                        m_option_specificationFile;
+          std::string                        m_option_specFile;
 
           std::vector<uqBaseScalarRVClass*>  m_components; // FIXME: will need to be a parallel vector in case of a very large number of components
           uqBaseScalarRVClass                m_dummyComponent;
@@ -97,21 +97,36 @@ uqVectorRVClass<V,M>::uqVectorRVClass(
   const uqBaseVectorProbDensityClass<V,M>* probDensity,
   const uqBaseVectorRealizerClass   <V,M>* realizer)
   :
-  m_env                     (env),
-  m_prefix                  (prefix),
-  m_imageSpace              (imageSpace),
-  m_probDensity             (probDensity),
-  m_realizer                (realizer),
-  m_optionsDesc             (new po::options_description("Vector random variable options")),
-  m_option_help             (m_prefix + "help"),
-  m_option_specificationFile(m_prefix + "specificationFile"),
-  m_components              (0),//,NULL),
-  m_dummyComponent          (".",0.),
-  m_minValues               (NULL),
-  m_maxValues               (NULL),
-  m_expectValues            (NULL),
-  m_stdDevValues            (NULL)
+  m_env            (env),
+  m_prefix         ((std::string)(prefix)+"rv_"),
+  m_imageSpace     (imageSpace),
+  m_probDensity    (probDensity),
+  m_realizer       (realizer),
+  m_optionsDesc    (new po::options_description("Vector random variable options")),
+  m_option_help    (m_prefix + "help"),
+  m_option_specFile(m_prefix + "specFile"),
+  m_components     (0),//,NULL),
+  m_dummyComponent (),
+  m_minValues      (NULL),
+  m_maxValues      (NULL),
+  m_expectValues   (NULL),
+  m_stdDevValues   (NULL)
 {
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Entering uqVectorRVClass<V,M>::constructor()"
+              << ": prefix = " << m_prefix
+              << std::endl;
+  }
+
+  defineMyOptions                (*m_optionsDesc);
+  m_env.scanInputFileForMyOptions(*m_optionsDesc);
+  getMyOptionValues              (*m_optionsDesc);
+
+  if (m_env.rank() == 0) std::cout << "In uqVectorRVClass<V,M>::constructor()"
+                                   << ": after getting values of options, state of object is:"
+                                   << "\n" << *this
+                                   << std::endl;
+
   if (m_probDensity == NULL) {
 #if 0
     m_paramPriorMus    = new P_V(m_paramSpace->expectValues());
@@ -125,6 +140,11 @@ uqVectorRVClass<V,M>::uqVectorRVClass(
 #endif
   }
 
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Leaving uqVectorRVClass<V,M>::constructor()"
+              << ": prefix = " << m_prefix
+              << std::endl;
+  }
 }
 
 template<class V, class M>
@@ -138,8 +158,8 @@ uqVectorRVClass<V,M>::defineMyOptions(
   po::options_description& optionsDesc) const
 {
   m_optionsDesc->add_options()
-    (m_option_help.c_str(),                                                           "produce help message for vector random variable"             )
-    (m_option_specificationFile.c_str(), po::value<std::string>()->default_value(""), "File with the specification of all components to be inferred")
+    (m_option_help.c_str(),                                                  "produce help message for vector random variable" )
+    (m_option_specFile.c_str(), po::value<std::string>()->default_value(""), "File with the specification of all RV components")
   ;
 
   return;
@@ -159,13 +179,29 @@ uqVectorRVClass<V,M>::getMyOptionValues(po::options_description& optionsDesc)
               << std::endl;
   }
 
-  // Read component specification file only if 0 dimension was passed to constructor
+  // Read RV components specification file only if 0 dimension was passed to constructor
   if (m_components.size() == 0) {
     std::string specFileName("");
-    if (m_env.allOptionsMap().count(m_option_specificationFile.c_str())) {
+    if (m_env.allOptionsMap().count(m_option_specFile.c_str())) {
       const po::variables_map& tmpMap = m_env.allOptionsMap();
-      specFileName = tmpMap[m_option_specificationFile.c_str()].as<std::string>();
-      readComponentsFromSpecFile(specFileName);
+      specFileName = tmpMap[m_option_specFile.c_str()].as<std::string>();
+      if (specFileName == ".") {
+        if (m_env.rank() == 0) {
+          std::cout << "In uqVectorRVClass<V,M>::getMyOptionValues()"
+                    << ": spec file '" << specFileName << "' is interpreted as 'no spec was speficied'"
+                    << std::endl;
+        }
+      }
+      else {
+        readComponentsFromSpecFile(specFileName);
+      }
+    }
+    else {
+      if (m_env.rank() == 0) {
+        std::cout << "In uqVectorRVClass<V,M>::getMyOptionValues()"
+                  << ": no spec file was specified"
+                  << std::endl;
+      }
     }
   }
 
@@ -184,6 +220,23 @@ uqVectorRVClass<V,M>::readComponentsFromSpecFile(std::string& specFileName)
   unsigned int maxCharsPerLine = 512;
 
   std::ifstream ifs(specFileName.c_str());
+  if (ifs.is_open() == false) {
+    if (m_env.rank() == 0) {
+      std::cout << "In uqVectorRVClass<V,M>::readComponentsFromSpecFile()"
+                << ", WARNING: spec file '" << specFileName
+                << "' was not found"
+                << std::endl;
+    }
+    return;
+  }
+  else {
+    if (m_env.rank() == 0) {
+      std::cout << "In uqVectorRVClass<V,M>::readComponentsFromSpecFile()"
+                << ": about to read file '" << specFileName
+                << "'"
+                << std::endl;
+    }
+  }
 
   // Determine number of lines
   unsigned int numLines = std::count(std::istreambuf_iterator<char>(ifs),
@@ -216,16 +269,16 @@ uqVectorRVClass<V,M>::readComponentsFromSpecFile(std::string& specFileName)
                       "the first number of lines read is nonconsistent");
   if (m_imageSpace.dim() != numComponents) {
     char errorExplanation[512];
-    sprintf(errorExplanation,"number of components (%d) in component specification file does not match dimension (%d) of the image space",numComponents,m_imageSpace.dim());
+    sprintf(errorExplanation,"number of components (%d) in RV components specification file '%s' does not match dimension (%d) of the image space",numComponents,specFileName.c_str(),m_imageSpace.dim());
     UQ_FATAL_TEST_MACRO(true,
                         m_env.rank(),
                         "uqVectorRVClass<V,M>::constructor()",
                         errorExplanation);
   }
 
-  std::cout << "Component specification file '" << specFileName
-            << "' has "                         << numLines
-            << " lines and specifies "          << numComponents
+  std::cout << "RV components specification file '" << specFileName
+            << "' has "                             << numLines
+            << " lines and specifies "              << numComponents
             << " components."
             << std::endl;
   m_components.resize(numComponents,NULL);
@@ -244,7 +297,7 @@ uqVectorRVClass<V,M>::readComponentsFromSpecFile(std::string& specFileName)
   double       expectValue;
   double       stdDevValue;
   while ((lineId < numLines) && (ifs.eof() == false)) {
-    //std::cout << "Beginning read of line (in component specification file) of id = " << lineId << std::endl;
+    //std::cout << "Beginning read of line (in RV components specification file) of id = " << lineId << std::endl;
     bool endOfLineAchieved = false;
 
     iRC = uqMiscReadCharsAndDoubleFromFile(ifs, componentExplan, NULL, endOfLineAchieved);
@@ -266,7 +319,7 @@ uqVectorRVClass<V,M>::readComponentsFromSpecFile(std::string& specFileName)
     // Check 'componentId' before setting one more component
     if (componentId >= m_components.size()) {
       char errorExplanation[512];
-      sprintf(errorExplanation,"componentId (%d) got too large during reading of component specification file",componentId);
+      sprintf(errorExplanation,"componentId (%d) got too large during reading of RV components specification file",componentId);
       UQ_FATAL_TEST_MACRO(true,
                           m_env.rank(),
                           "uqVectorRVClass<V,M>::constructor()",

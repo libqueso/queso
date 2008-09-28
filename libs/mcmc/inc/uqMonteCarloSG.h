@@ -312,7 +312,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence(
   if (m_computeStats) {
     workingSeq.computeStatistics(*m_statisticalOptions,
                                  seqName,
-                                 m_qoiRv.componentsNames(),
+                                 m_qoiRv.imageSpace().componentsNames(),
                                  ofs);
   }
 

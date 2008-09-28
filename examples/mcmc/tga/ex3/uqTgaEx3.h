@@ -260,9 +260,9 @@ uqAppl(const uqEnvironmentClass& env)
   // If this is the case, we can instantiate them here, just once.
   //******************************************************
   uqVectorSpaceClass<P_V,P_M> paramSpace(env,
-                                         ""); // No extra prefix before the default "param_" prefix
+                                         "param_"); // Extra prefix before the default "space_" prefix
   uqVectorSpaceClass<Q_V,Q_M> qoiSpace  (env,
-                                         ""); // No extra prefix before the default "qoi_" prefix
+                                         "qoi_");   // Extra prefix before the default "space_" prefix
 
   //******************************************************
   // Step 2 of 3: deal with the calibration problem
@@ -275,22 +275,22 @@ uqAppl(const uqEnvironmentClass& env)
                                         NULL,       // pdf: use default prior from library
                                         NULL);
 
-  // Posterior vector rv
-  uqVectorRVClass<P_V,P_M> calibPostRv(env,
-                                       "post_",     // Extra prefix before the default "rv_" prefix
-                                       paramSpace,
-                                       NULL,        // pdf: internally set by the solution process
-                                       NULL);
-
   // Likelihood function object: -2*ln[likelihood]
   calibLikelihoodRoutine_DataType<P_V,P_M> calibLikelihoodRoutine_Data;
   calibLikelihoodRoutine_Data.beta1     = beta1;
   calibLikelihoodRoutine_Data.variance1 = variance1;
   calibLikelihoodRoutine_Data.Te1       = &Te1; // temperatures
   calibLikelihoodRoutine_Data.Me1       = &Me1; // relative masses
-  uqRoutineProbDensity_Class<P_V,P_M> calibLikelihoodFunctionObj(calibLikelihoodRoutine<P_V,P_M>,
-                                                                 (void *) &calibLikelihoodRoutine_Data,
-                                                                 true); // the routine computes [-2.*ln(Likelihood)]
+  uqRoutineVectorProbDensityClass<P_V,P_M> calibLikelihoodFunctionObj(calibLikelihoodRoutine<P_V,P_M>,
+                                                                      (void *) &calibLikelihoodRoutine_Data,
+                                                                      true); // the routine computes [-2.*ln(Likelihood)]
+
+  // Posterior vector rv
+  uqVectorRVClass<P_V,P_M> calibPostRv(env,
+                                       "post_",     // Extra prefix before the default "rv_" prefix
+                                       paramSpace,
+                                       NULL,        // pdf: internally set by the solution process
+                                       NULL);
 
   // Calibration problem
   uqCalibProblemClass<P_V,P_M> calibProblem(env,
