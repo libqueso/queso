@@ -42,13 +42,13 @@ class uqMonteCarloSGClass
 public:
   uqMonteCarloSGClass(const uqEnvironmentClass&                     env,            /*! The QUESO toolkit environment. */
                       const char*                                   prefix,         /*! Prefix.                        */
-                      const uqVectorRVClass      <P_V,P_M>&         paramRv,        /*! The parameter rv.              */
+                      const uqBaseVectorRVClass  <P_V,P_M>&         paramRv,        /*! The parameter rv.              */
                       const uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunctionObj, /*! The qoi function.              */
-                            uqVectorRVClass      <Q_V,Q_M>&         qoiRv);         /*! The qoi rv.                    */
+                            uqBaseVectorRVClass  <Q_V,Q_M>&         qoiRv);         /*! The qoi rv.                    */
  ~uqMonteCarloSGClass();
 
   void generateSequence   ();
-  void generateSequence   (const uqVectorRVClass<P_V,P_M>& paramRv);
+  void generateSequence   (const uqBaseVectorRVClass<P_V,P_M>& paramRv);
 
   void print              (std::ostream&            os) const;
 
@@ -56,19 +56,19 @@ private:
   void defineMyOptions    (po::options_description& optionsDesc);
   void getMyOptionValues  (po::options_description& optionsDesc);
 
-  void intGenerateSequence(const uqVectorRVClass <P_V,P_M>& paramRv,
-                                 uqChainBaseClass<P_V>&     workingSeq);
+  void intGenerateSequence(const uqBaseVectorRVClass <P_V,P_M>& paramRv,
+                                 uqChainBaseClass    <P_V>&     workingSeq);
 
-  void intGenerateSequence(const uqVectorRVClass <P_V,P_M>& paramRv,
-                                 uqChainBaseClass<P_V>&     workingSeq,
-                           const std::string&               seqName,
-                                 unsigned int               seqSize);
+  void intGenerateSequence(const uqBaseVectorRVClass <P_V,P_M>& paramRv,
+                                 uqChainBaseClass    <P_V>&     workingSeq,
+                           const std::string&                   seqName,
+                                 unsigned int                   seqSize);
 
   const uqEnvironmentClass&                     m_env;
         std::string                             m_prefix;
-  const uqVectorRVClass      <P_V,P_M>&         m_paramRv;
+  const uqBaseVectorRVClass  <P_V,P_M>&         m_paramRv;
   const uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>& m_qoiFunctionObj;
-  const uqVectorRVClass      <Q_V,Q_M>&         m_qoiRv;
+  const uqBaseVectorRVClass  <Q_V,Q_M>&         m_qoiRv;
   const uqVectorSpaceClass   <P_V,P_M>&         m_paramSpace;
   const uqVectorSpaceClass   <Q_V,Q_M>&         m_qoiSpace;
 
@@ -102,9 +102,9 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::uqMonteCarloSGClass(
   const uqEnvironmentClass&                     env,
   const char*                                   prefix,
-  const uqVectorRVClass      <P_V,P_M>&         paramRv,
+  const uqBaseVectorRVClass  <P_V,P_M>&         paramRv,
   const uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunctionObj,
-        uqVectorRVClass      <Q_V,Q_M>&         qoiRv)
+        uqBaseVectorRVClass  <Q_V,Q_M>&         qoiRv)
   :
   m_env                   (env),
   m_prefix                ((std::string)(prefix) + "mc_"),
@@ -237,7 +237,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence()
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence(
-  const uqVectorRVClass<P_V,P_M>& paramRv)
+  const uqBaseVectorRVClass<P_V,P_M>& paramRv)
 {
   if (m_use2) {
     intGenerateSequence(paramRv,
@@ -254,7 +254,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence(
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence(
-  const uqVectorRVClass <P_V,P_M>& paramRv,
+  const uqBaseVectorRVClass <P_V,P_M>& paramRv,
         uqChainBaseClass<P_V>&     workingSeq)
 {
   std::string prefixName = m_prefix;
@@ -339,10 +339,10 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence(
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence(
-  const uqVectorRVClass<P_V,P_M>& paramRv,
-        uqChainBaseClass<P_V>&    workingSeq,
-  const std::string&              seqName,
-        unsigned int              seqSize)
+  const uqBaseVectorRVClass<P_V,P_M>& paramRv,
+        uqChainBaseClass   <P_V>&     workingSeq,
+  const std::string&                  seqName,
+        unsigned int                  seqSize)
 {
   if (m_env.rank() == 0) {
     std::cout << "Starting the generation of qoi sequence " << seqName

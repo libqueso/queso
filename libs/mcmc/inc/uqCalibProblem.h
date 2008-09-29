@@ -36,9 +36,9 @@ class uqCalibProblemClass
 public:
   uqCalibProblemClass(const uqEnvironmentClass&                    env,
                       const char*                                  prefix,
-                      const uqVectorRVClass             <P_V,P_M>& priorRv,
+                      const uqBaseVectorRVClass         <P_V,P_M>& priorRv,
                       const uqBaseVectorProbDensityClass<P_V,P_M>& likelihoodFunction,
-                            uqVectorRVClass             <P_V,P_M>& postRv);
+                            uqBaseVectorRVClass         <P_V,P_M>& postRv);
  ~uqCalibProblemClass();
 
         void solveWithBayesMarkovChain(void* transitionKernel);
@@ -58,9 +58,9 @@ private:
 
 	std::string                                  m_solverString;
 
-  const uqVectorRVClass                   <P_V,P_M>& m_priorRv;
+  const uqBaseVectorRVClass               <P_V,P_M>& m_priorRv;
   const uqBaseVectorProbDensityClass      <P_V,P_M>& m_likelihoodFunction;
-        uqVectorRVClass                   <P_V,P_M>& m_postRv;
+        uqBaseVectorRVClass               <P_V,P_M>& m_postRv;
 
   const uqBaseVectorProbDensityClass      <P_V,P_M>* m_priorParamDensity;
         bool                                         m_userPriorDensityIsNull;
@@ -83,9 +83,9 @@ template <class P_V,class P_M>
 uqCalibProblemClass<P_V,P_M>::uqCalibProblemClass(
   const uqEnvironmentClass&                    env,
   const char*                                  prefix,
-  const uqVectorRVClass             <P_V,P_M>& priorRv,
+  const uqBaseVectorRVClass         <P_V,P_M>& priorRv,
   const uqBaseVectorProbDensityClass<P_V,P_M>& likelihoodFunction,
-        uqVectorRVClass             <P_V,P_M>& postRv)
+        uqBaseVectorRVClass         <P_V,P_M>& postRv)
   :
   m_env                   (env),
   m_prefix                ((std::string)(prefix) + "cal_"),
@@ -181,10 +181,27 @@ uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain(void* transitionKernel)
   if (m_solutionProbDensity) delete m_solutionProbDensity;
   if (m_mcSeqGenerator     ) delete m_mcSeqGenerator;
 
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "In uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain()"
+              << ", m_priorRv contents: " << m_priorRv
+              << std::endl;
+  }
+
   // Bayesian step
   m_solutionProbDensity = new uqBayesianVectorProbDensityClass<P_V,P_M>(&m_priorRv.probDensity(),
                                                                         &m_likelihoodFunction);
   m_postRv.setProbDensity(*m_solutionProbDensity);
+
+  m_postRv.setComponent(0, // GAMBIARRA
+                        m_priorRv.component(0).minValue(),
+                        m_priorRv.component(0).maxValue(),
+                        0.,
+                        INFINITY);
+  m_postRv.setComponent(1, // GAMBIARRA
+                        m_priorRv.component(1).minValue(),
+                        m_priorRv.component(1).maxValue(),
+                        0.,
+                        INFINITY);
 
   // Markov Chain step
   m_mcSeqGenerator = new uqMarkovChainSGClass<P_V,P_M>(m_env,

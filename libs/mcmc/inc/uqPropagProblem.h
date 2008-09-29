@@ -35,9 +35,9 @@ class uqPropagProblemClass
 public:
   uqPropagProblemClass(const uqEnvironmentClass&                     env,
                        const char*                                   prefix,
-                       const uqVectorRVClass      <P_V,P_M>&         paramRv,
+                       const uqBaseVectorRVClass  <P_V,P_M>&         paramRv,
                        const uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction,
-                             uqVectorRVClass      <Q_V,Q_M>&         qoiRV);
+                             uqBaseVectorRVClass  <Q_V,Q_M>&         qoiRV);
  ~uqPropagProblemClass();
 
         void                                  solveWithMonteCarloKde();
@@ -58,9 +58,9 @@ private:
 
 	std::string                                    m_solverString;
 
-  const uqVectorRVClass             <P_V,P_M>&         m_paramRv;
+  const uqBaseVectorRVClass         <P_V,P_M>&         m_paramRv;
   const uqVectorFunctionClass       <P_V,P_M,Q_V,Q_M>& m_qoiFunction;
-        uqVectorRVClass             <Q_V,Q_M>&         m_qoiRv;
+        uqBaseVectorRVClass         <Q_V,Q_M>&         m_qoiRv;
 
         uqMonteCarloSGClass         <P_V,P_M,Q_V,Q_M>* m_mcSeqGenerator;
         uqBaseVectorProbDensityClass<Q_V,Q_M>*         m_solutionProbDensity;
@@ -74,9 +74,9 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::uqPropagProblemClass(
   const uqEnvironmentClass&                     env,
   const char*                                   prefix,
-  const uqVectorRVClass      <P_V,P_M>&         paramRv,
+  const uqBaseVectorRVClass  <P_V,P_M>&         paramRv,
   const uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction,
-        uqVectorRVClass      <Q_V,Q_M>&         qoiRv)
+        uqBaseVectorRVClass  <Q_V,Q_M>&         qoiRv)
   :
   m_env                (env),
   m_prefix             ((std::string)(prefix) + "pro_"),

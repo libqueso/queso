@@ -22,7 +22,7 @@
 
 template<>
 void
-uqVectorRVClass<uqGslVectorClass,uqGslMatrixClass>::createMinValues() const
+uqBaseVectorRVClass<uqGslVectorClass,uqGslMatrixClass>::createMinValues() const
 {
   m_minValues = new uqGslVectorClass(m_env,m_imageSpace.map());
 
@@ -35,7 +35,7 @@ uqVectorRVClass<uqGslVectorClass,uqGslMatrixClass>::createMinValues() const
 
 template<>
 void
-uqVectorRVClass<uqGslVectorClass,uqGslMatrixClass>::createMaxValues() const
+uqBaseVectorRVClass<uqGslVectorClass,uqGslMatrixClass>::createMaxValues() const
 {
   m_maxValues = new uqGslVectorClass(m_env,m_imageSpace.map());
 
@@ -48,7 +48,7 @@ uqVectorRVClass<uqGslVectorClass,uqGslMatrixClass>::createMaxValues() const
 
 template<>
 void
-uqVectorRVClass<uqGslVectorClass,uqGslMatrixClass>::createExpectValues() const
+uqBaseVectorRVClass<uqGslVectorClass,uqGslMatrixClass>::createExpectValues() const
 {
   m_expectValues = new uqGslVectorClass(m_env,m_imageSpace.map());
 
@@ -61,7 +61,7 @@ uqVectorRVClass<uqGslVectorClass,uqGslMatrixClass>::createExpectValues() const
 
 template<>
 void
-uqVectorRVClass<uqGslVectorClass,uqGslMatrixClass>::createStdDevValues() const
+uqBaseVectorRVClass<uqGslVectorClass,uqGslMatrixClass>::createStdDevValues() const
 {
   m_stdDevValues = new uqGslVectorClass(m_env,m_imageSpace.map());
 
@@ -75,7 +75,7 @@ uqVectorRVClass<uqGslVectorClass,uqGslMatrixClass>::createStdDevValues() const
 #if 0
 template<>
 void
-uqVectorRVClass<uqGslVectorClass,uqGslMatrixClass>::printParameterNames(std::ostream& os, bool printHorizontally) const
+uqBaseVectorRVClass<uqGslVectorClass,uqGslMatrixClass>::printParameterNames(std::ostream& os, bool printHorizontally) const
 {
   if (printHorizontally) { 
     for (unsigned int i = 0; i < this->dim(); ++i) {

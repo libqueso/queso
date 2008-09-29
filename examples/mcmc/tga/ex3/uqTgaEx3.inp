@@ -2,7 +2,7 @@
 # UQ Environment
 ###############################################
 uqEnv_help      = anything
-uqEnv_verbosity = 20
+uqEnv_verbosity = 2
 uqEnv_seed      = 0
 
 ###############################################
@@ -42,7 +42,7 @@ cal_mc_chain_sizes           = 131072
 cal_mc_chain_outputFileNames = cpOutput.m
 cal_mc_chain_use2            = 0
 cal_mc_chain_generateExtra   = 0
-cal_mc_chain_displayPeriod   = 20000
+cal_mc_chain_displayPeriod   = 2000
 cal_mc_chain_measureRunTimes = 1
 cal_mc_chain_write           = 0
 cal_mc_chain_computeStats    = 1
@@ -153,7 +153,7 @@ pro_mc_help            = anything
 pro_mc_numSamples      = 131072
 pro_mc_outputFileName  = cpOutput.m
 pro_mc_use2            = 0
-pro_mc_displayPeriod   = 20000
+pro_mc_displayPeriod   = 2000
 pro_mc_measureRunTimes = 1
 pro_mc_write           = 1
 pro_mc_computeStats    = 1

@@ -75,7 +75,7 @@ class uqMarkovChainSGClass
 public:
   uqMarkovChainSGClass(const uqEnvironmentClass&                     env,                   /*! The QUESO toolkit environment. */
                        const char*                                   prefix,                /*! Prefix.                        */
-                       const uqVectorRVClass              <P_V,P_M>& sourceRv,              /*! The source random variable.    */
+                       const uqBaseVectorRVClass          <P_V,P_M>& sourceRv,              /*! The source random variable.    */
                              P_M*                                    proposalCovMatrix,     /*! */
                        const uqProposalDensity_BaseClass  <P_V,P_M>* proposalDensityObj,    /*! */
                        const uqProposalGenerator_BaseClass<P_V,P_M>* proposalGeneratorObj); /*! */
@@ -136,7 +136,7 @@ private:
 
   const uqEnvironmentClass&                     m_env;
         std::string                             m_prefix;
-  const uqVectorRVClass              <P_V,P_M>& m_sourceRv;
+  const uqBaseVectorRVClass          <P_V,P_M>& m_sourceRv;
   const uqVectorSpaceClass           <P_V,P_M>& m_paramSpace;
   const uqBaseVectorProbDensityClass <P_V,P_M>& m_targetParamDensityObj;
         P_M*                                    m_proposalCovMatrix;
@@ -240,7 +240,7 @@ template<class P_V,class P_M>
 uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   const uqEnvironmentClass&                     env,
   const char*                                   prefix,
-  const uqVectorRVClass              <P_V,P_M>& sourceRv, /*! The source random variable. */
+  const uqBaseVectorRVClass          <P_V,P_M>& sourceRv,
         P_M*                                    proposalCovMatrix,
   const uqProposalDensity_BaseClass  <P_V,P_M>* proposalDensityObj,
   const uqProposalGenerator_BaseClass<P_V,P_M>* proposalGeneratorObj)
@@ -334,6 +334,8 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
 {
   if (m_env.rank() == 0) std::cout << "Entering uqMarkovChainSGClass<P_V,P_M>::constructor()"
                                    << std::endl;
+  m_paramInitials[0] = 2.57e+11; // GAMBIARRA
+  m_paramInitials[1] = 1.97e+05; // GAMBIARRA
 
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
@@ -668,6 +670,7 @@ uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain(
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain()..."
+              << ", m_sourceRv contents: " << m_sourceRv
               << std::endl;
   }
 
@@ -678,7 +681,11 @@ uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain(
     P_V tmpVec(m_paramSpace.zeroVector());
     for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
       double sigma = m_sourceRv.component(i).stdDevValue();
-      if ((sigma == INFINITY) ||
+      std::cout << "In uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain()"
+                << ": i = "     << i
+                << ", sigma = " << sigma
+                << std::endl;
+      if (true || (sigma == INFINITY) || // GAMBIARRA
           (sigma == NAN     )) {
         tmpVec[i] = pow( fabs(m_paramInitials[i])*0.05,2. );
         if ( tmpVec[i] == 0 ) tmpVec[i] = 1.;

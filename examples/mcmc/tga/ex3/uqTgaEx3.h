@@ -269,11 +269,10 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
 
   // Prior vector rv
-  uqVectorRVClass<P_V,P_M> calibPriorRv(env,
-                                        "prior_",   // Extra prefix before the default "rv_" prefix
-                                        paramSpace,
-                                        NULL,       // pdf: use default prior from library
-                                        NULL);
+  uqGaussianVectorRVClass<P_V,P_M> calibPriorRv(env,
+                                                "prior_",   // Extra prefix before the default "rv_" prefix
+                                                paramSpace,
+                                                NULL);      // cov matrix: use default from library
 
   // Likelihood function object: -2*ln[likelihood]
   calibLikelihoodRoutine_DataType<P_V,P_M> calibLikelihoodRoutine_Data;
@@ -286,11 +285,11 @@ uqAppl(const uqEnvironmentClass& env)
                                                                       true); // the routine computes [-2.*ln(Likelihood)]
 
   // Posterior vector rv
-  uqVectorRVClass<P_V,P_M> calibPostRv(env,
-                                       "post_",     // Extra prefix before the default "rv_" prefix
-                                       paramSpace,
-                                       NULL,        // pdf: internally set by the solution process
-                                       NULL);
+  uqGenericVectorRVClass<P_V,P_M> calibPostRv(env,
+                                              "post_",     // Extra prefix before the default "rv_" prefix
+                                              paramSpace,
+                                              NULL,        // pdf: internally set by the solution process
+                                              NULL);
 
   // Calibration problem
   uqCalibProblemClass<P_V,P_M> calibProblem(env,
@@ -317,11 +316,11 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
 
   // Qoi vector rv
-  uqVectorRVClass<Q_V,Q_M> propagQoiRv(env,
-                                       "qoi_",   // Extra prefix before the default "rv_" prefix
-                                       qoiSpace,
-                                       NULL,     // pdf: internally set by the solution process
-                                       NULL);
+  uqGenericVectorRVClass<Q_V,Q_M> propagQoiRv(env,
+                                              "qoi_",   // Extra prefix before the default "rv_" prefix
+                                              qoiSpace,
+                                              NULL,     // pdf: internally set by the solution process
+                                              NULL);
 
   // Qoi function object
   propagQoiRoutine_DataType<P_V,P_M,Q_V,Q_M> propagQoiRoutine_Data;

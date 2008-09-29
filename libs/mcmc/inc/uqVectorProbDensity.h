@@ -154,8 +154,15 @@ uqBayesianVectorProbDensityClass<V,M>::minus2LnDensity(const V& paramValues) con
 {
   double value = 0.;
 
-  value = m_priorDensity->minus2LnDensity(paramValues);
-  value += m_likelihoodFunction->minus2LnDensity(paramValues);
+  double value1 = m_priorDensity->minus2LnDensity(paramValues);
+  double value2 = m_likelihoodFunction->minus2LnDensity(paramValues);
+
+  //if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+  //  std::cout << "In uqBayesianVectorProbDensityClass<P_V,P_M>::minus2LnDensity()"
+  //            << ", -2ln(prior) = " << value1
+  //            << ", -2ln(like) = "  << value2
+  //            << std::endl;
+  //}
 
   return value;
 }
