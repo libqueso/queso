@@ -186,21 +186,22 @@ uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain(void* transitionKernel)
   }
 
   // Bayesian step
-  m_solutionProbDensity = new uqBayesianVectorProbDensityClass<P_V,P_M>(&m_priorRv.probDensity(),
+  m_solutionProbDensity = new uqBayesianVectorProbDensityClass<P_V,P_M>(m_prefix.c_str(),
+                                                                        &m_priorRv.probDensity(),
                                                                         &m_likelihoodFunction);
   m_postRv.setProbDensity(*m_solutionProbDensity);
-
-  m_postRv.setComponent(0, // GAMBIARRA
+#if 0
+  m_postRv.setComponent(0, // GAMBIARRA COMENTADA
                         m_priorRv.component(0).minValue(),
                         m_priorRv.component(0).maxValue(),
                         0.,
                         INFINITY);
-  m_postRv.setComponent(1, // GAMBIARRA
+  m_postRv.setComponent(1, // GAMBIARRA COMENTADA
                         m_priorRv.component(1).minValue(),
                         m_priorRv.component(1).maxValue(),
                         0.,
                         INFINITY);
-
+#endif
   // Markov Chain step
   m_mcSeqGenerator = new uqMarkovChainSGClass<P_V,P_M>(m_prefix.c_str(),
                                                        m_postRv,

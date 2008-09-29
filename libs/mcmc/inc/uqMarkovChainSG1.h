@@ -648,7 +648,7 @@ uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain(
   if (proposalCovMatrix == NULL) {
     P_V tmpVec(m_paramSpace.zeroVector());
     for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
-      double sigma = m_sourceRv.component(i).stdDevValue();
+      double sigma = INFINITY; //m_sourceRv.component(i).stdDevValue(); GAMBIARRA
       std::cout << "In uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain()"
                 << ": i = "     << i
                 << ", sigma = " << sigma

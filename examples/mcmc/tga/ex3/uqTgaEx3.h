@@ -22,6 +22,7 @@
 
 #include <uqCalibProblem.h>
 #include <uqPropagProblem.h>
+#include <uqAsciiTable.h>
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_odeiv.h>
 
@@ -264,14 +265,39 @@ uqAppl(const uqEnvironmentClass& env)
   uqVectorSpaceClass<Q_V,Q_M> qoiSpace  (env,
                                          "qoi_");   // Extra prefix before the default "space_" prefix
 
+
+  //******************************************************
+  // Read Ascii file with important information on the calibration problem.
+  //******************************************************
+  uqAsciiTableClass<P_V> calTable(env,
+                                  paramSpace.dim(), // Number of rows
+                                  5,                // Number of columns after the first (parameter name): min + max + mean + std + initial value for Markov chain
+                                  NULL,             // All extra columns are of 'double' type
+                                  "cal.tab");
+
+  P_V* minValues     = NULL;
+  P_V* maxValues     = NULL;
+  P_V* expectValues  = NULL;
+  P_V* stdDevValues  = NULL;
+  P_V* initialValues = NULL;
+  calTable.getColumn(1,NULL,minValues    );
+  calTable.getColumn(2,NULL,maxValues    );
+  calTable.getColumn(3,NULL,expectValues );
+  calTable.getColumn(4,NULL,stdDevValues );
+  calTable.getColumn(4,NULL,initialValues);
+
   //******************************************************
   // Step 2 of 3: deal with the calibration problem
   //******************************************************
 
   // Prior vector rv
-  uqGaussianVectorRVClass<P_V,P_M> calibPriorRv("prior_",   // Extra prefix before the default "rv_" prefix
+  uqGaussianVectorRVClass<P_V,P_M> calibPriorRv("prior_",      // Extra prefix before the default "rv_" prefix
                                                 paramSpace,
-                                                NULL);      // cov matrix: use default from library
+                                                minValues,
+                                                maxValues,
+                                                NULL,
+                                                expectValues,
+                                                stdDevValues); // cov matrix: use default from library
 
   // Likelihood function object: -2*ln[likelihood]
   calibLikelihoodRoutine_DataType<P_V,P_M> calibLikelihoodRoutine_Data;
@@ -279,7 +305,10 @@ uqAppl(const uqEnvironmentClass& env)
   calibLikelihoodRoutine_Data.variance1 = variance1;
   calibLikelihoodRoutine_Data.Te1       = &Te1; // temperatures
   calibLikelihoodRoutine_Data.Me1       = &Me1; // relative masses
-  uqRoutineVectorProbDensityClass<P_V,P_M> calibLikelihoodFunctionObj(paramSpace,
+  uqGenericVectorProbDensityClass<P_V,P_M> calibLikelihoodFunctionObj("prior_", // Extra prefix before the default "genpd_" prefix
+                                                                      paramSpace,
+                                                                      NULL,
+                                                                      NULL,
                                                                       calibLikelihoodRoutine<P_V,P_M>,
                                                                       (void *) &calibLikelihoodRoutine_Data,
                                                                       true); // the routine computes [-2.*ln(Likelihood)]
@@ -295,16 +324,6 @@ uqAppl(const uqEnvironmentClass& env)
                                             calibPriorRv,
                                             calibLikelihoodFunctionObj,
                                             calibPostRv);
-
-  // Transition kernel for the Markov Chain algorithm
-  //P_M*                                    calibProposalCovMatrix    = NULL;
-  //uqProposalDensity_BaseClass<P_V,P_M>*   calibProposalDensityObj   = NULL;
-  //uqProposalGenerator_BaseClass<P_V,P_M>* calibProposalGeneratorObj = NULL;
-  //P_M* calibProposalCovMatrix = paramSpace.newMatrix();
-  //(*calibProposalCovMatrix)(0,0) = 1.65122e+10;
-  //(*calibProposalCovMatrix)(0,1) = 0.;
-  //(*calibProposalCovMatrix)(1,0) = 0.;
-  //(*calibProposalCovMatrix)(1,1) = 9.70225e+04;
 
   // Solve the calibration problem
   calibProblem.solveWithBayesMarkovChain(NULL); // use default kernel from library
@@ -323,7 +342,8 @@ uqAppl(const uqEnvironmentClass& env)
   propagQoiRoutine_DataType<P_V,P_M,Q_V,Q_M> propagQoiRoutine_Data;
   propagQoiRoutine_Data.beta1         = beta1;
   propagQoiRoutine_Data.criticalMass1 = criticalMass1;
-  uqVectorFunctionClass<P_V,P_M,Q_V,Q_M> propagQoiFunctionObj(paramSpace,
+  uqVectorFunctionClass<P_V,P_M,Q_V,Q_M> propagQoiFunctionObj("qoi_", // Extra prefix before the default "func_" prefix
+                                                              paramSpace,
                                                               qoiSpace,
                                                               propagQoiRoutine<P_V,P_M,Q_V,Q_M>,
                                                               (void *) &propagQoiRoutine_Data);

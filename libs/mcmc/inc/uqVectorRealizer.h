@@ -40,13 +40,13 @@ public:
            uqBaseVectorRealizerClass(const uqBaseVectorSequenceClass<V>* chain);
   virtual ~uqBaseVectorRealizerClass();
 
-  virtual unsigned int period    () const;
-  virtual void         nextSample(V& paramValues) const;
+  virtual unsigned int period     ()               const;
+  virtual void         realization(V& paramValues) const;
 
 protected:
   double (*m_routinePtr)(const void* routineDataPtr, V& nextParamValues);
-  const void*                m_routineDataPtr;
-  unsigned int               m_period;
+  const void*                         m_routineDataPtr;
+  unsigned int                        m_period;
 
   const uqBaseVectorSequenceClass<V>* m_chain;
   mutable unsigned int                m_currentChainPos;
@@ -92,7 +92,7 @@ uqBaseVectorRealizerClass<V,M>::period() const
 
 template<class V, class M>
 void
-uqBaseVectorRealizerClass<V,M>::nextSample(V& nextParamValues) const
+uqBaseVectorRealizerClass<V,M>::realization(V& nextParamValues) const
 {
   if (m_routinePtr) {
     m_routinePtr(m_routineDataPtr, nextParamValues);

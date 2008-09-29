@@ -327,7 +327,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence(
   P_V tmpV(m_paramSpace.zeroVector());
   Q_V tmpQ(m_qoiSpace.zeroVector());
   for (unsigned int i = 0; i < seqSize; ++i) {
-    paramRv.realization(tmpV);
+    paramRv.realizer().realization(tmpV);
 
     if (m_measureRunTimes) iRC = gettimeofday(&timevalQoIFunction, NULL);
     m_qoiFunctionObj.compute(tmpV,tmpQ);

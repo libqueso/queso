@@ -45,8 +45,7 @@ CXXFLAGS = -Wall -c -g
 
 OBJS_ANY = uqScalarRV.o \
 
-OBJS_gsl = uqGslVectorRV.o \
-	uqGslVectorSpace.o
+OBJS_gsl = uqGslVectorSpace.o
 
 OBJS_tri = uqTrilinosParamSpace.o \
 	uqTrilinosFinDimLinearSpace.o

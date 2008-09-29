@@ -29,7 +29,8 @@
 template<class P_V,class P_M,class Q_V,class Q_M>
 class uqVectorFunctionClass {
 public:
-  uqVectorFunctionClass(const uqVectorSpaceClass<P_V,P_M>& domainSpace,
+  uqVectorFunctionClass(const char*                        prefix,
+                        const uqVectorSpaceClass<P_V,P_M>& domainSpace,
                         const uqVectorSpaceClass<Q_V,Q_M>& imageSpace,
                         void (*routinePtr)(const P_V& domainVector, const void* functionDataPtr, Q_V& imageVector),
                         const void* functionDataPtr);
@@ -41,6 +42,7 @@ public:
 
 protected:
   const uqEnvironmentClass&          m_env;
+        std::string                  m_prefix;
   const uqVectorSpaceClass<P_V,P_M>& m_domainSpace;
   const uqVectorSpaceClass<Q_V,Q_M>& m_imageSpace;
   void (*m_routinePtr)(const P_V& domainVector, const void* functionDataPtr, Q_V& imageVector);
@@ -49,12 +51,14 @@ protected:
 
 template<class P_V,class P_M,class Q_V,class Q_M>
 uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>::uqVectorFunctionClass(
+  const char*                        prefix,
   const uqVectorSpaceClass<P_V,P_M>& domainSpace,
   const uqVectorSpaceClass<Q_V,Q_M>& imageSpace,
   void (*routinePtr)(const P_V& domainVector, const void* functionDataPtr, Q_V& imageVector),
   const void* functionDataPtr)
   :
   m_env           (domainSpace.env()),
+  m_prefix        ((std::string)(prefix)+"func_"),
   m_domainSpace   (domainSpace),
   m_imageSpace    (imageSpace),
   m_routinePtr    (routinePtr),

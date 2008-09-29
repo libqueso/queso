@@ -395,7 +395,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
 
   iRC = gettimeofday(&timevalChain, NULL);
 
-  bool   outOfBounds = m_sourceRv.outOfBounds(valuesOf1stPosition);
+  bool   outOfBounds = m_sourceRv.probDensity().outOfBounds(valuesOf1stPosition);
   UQ_FATAL_TEST_MACRO(outOfBounds,
                       m_env.rank(),
                       "uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()",
@@ -445,7 +445,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
     tmpParamValues = currentPosition.paramValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
     if (m_chainMeasureRunTimes) candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
 
-    outOfBounds    = m_sourceRv.outOfBounds(tmpParamValues);
+    outOfBounds    = m_sourceRv.probDensity().outOfBounds(tmpParamValues);
     if (outOfBounds) {
       m_numOutOfBounds++;
       logPosterior = -INFINITY;
@@ -529,7 +529,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
         tmpParamValues = currentPosition.paramValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
         if (m_chainMeasureRunTimes) candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
 
-        outOfBounds    = m_sourceRv.outOfBounds(tmpParamValues);
+        outOfBounds    = m_sourceRv.probDensity().outOfBounds(tmpParamValues);
         if (outOfBounds) {
           logPosterior = -INFINITY;
         }
