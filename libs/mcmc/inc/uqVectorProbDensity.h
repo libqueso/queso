@@ -33,15 +33,23 @@
 template<class V, class M>
 class uqBaseVectorProbDensityClass {
 public:
-           uqBaseVectorProbDensityClass();
+           uqBaseVectorProbDensityClass(const uqVectorSpaceClass<V,M>& domainSpace);
   virtual ~uqBaseVectorProbDensityClass();
 
-  virtual double actualDensity  (const V& paramValues) const = 0;
-  virtual double minus2LnDensity(const V& paramValues) const = 0;
+          const uqVectorSpaceClass<V,M>& domainSpace    ()                     const;
+  virtual       double                   actualDensity  (const V& paramValues) const = 0;
+  virtual       double                   minus2LnDensity(const V& paramValues) const = 0;
+
+protected:
+  const uqEnvironmentClass&      m_env;
+  const uqVectorSpaceClass<V,M>& m_domainSpace;
 };
 
 template<class V, class M>
-uqBaseVectorProbDensityClass<V,M>::uqBaseVectorProbDensityClass()
+uqBaseVectorProbDensityClass<V,M>::uqBaseVectorProbDensityClass(const uqVectorSpaceClass<V,M>& domainSpace)
+  :
+  m_env        (domainSpace.env()),
+  m_domainSpace(domainSpace)
 {
 }
 
@@ -50,13 +58,21 @@ uqBaseVectorProbDensityClass<V,M>::~uqBaseVectorProbDensityClass()
 {
 }
 
+template<class V, class M>
+const uqVectorSpaceClass<V,M>&
+uqBaseVectorProbDensityClass<V,M>::domainSpace() const
+{
+  return m_domainSpace;
+}
+
 //*****************************************************
 // Routine probability density class
 //*****************************************************
 template<class V, class M>
 class uqRoutineVectorProbDensityClass : public uqBaseVectorProbDensityClass<V,M> {
 public:
-  uqRoutineVectorProbDensityClass(double (*routinePtr)(const V& paramValues, const void* routineDataPtr),
+  uqRoutineVectorProbDensityClass(const uqVectorSpaceClass<V,M>& domainSpace,
+                                  double (*routinePtr)(const V& paramValues, const void* routineDataPtr),
                                   const void* routineDataPtr,
                                   bool routineComputesMinus2LogOfDensity);
  ~uqRoutineVectorProbDensityClass();
@@ -74,11 +90,12 @@ protected:
 
 template<class V, class M>
 uqRoutineVectorProbDensityClass<V,M>::uqRoutineVectorProbDensityClass(
+  const uqVectorSpaceClass<V,M>& domainSpace,
   double (*routinePtr)(const V& paramValues, const void* routineDataPtr),
   const void* routineDataPtr,
   bool        routineComputesMinus2LogOfDensity)
   :
-  uqBaseVectorProbDensityClass<V,M>(),
+  uqBaseVectorProbDensityClass<V,M>(domainSpace),
   m_routinePtr                       (routinePtr),
   m_routineDataPtr                   (routineDataPtr),
   m_routineComputesMinus2LogOfDensity(routineComputesMinus2LogOfDensity)
@@ -137,7 +154,7 @@ uqBayesianVectorProbDensityClass<V,M>::uqBayesianVectorProbDensityClass(
   const uqBaseVectorProbDensityClass<V,M>* priorDensity,
   const uqBaseVectorProbDensityClass<V,M>* likelihoodFunction)
   :
-  uqBaseVectorProbDensityClass<V,M>(),
+  uqBaseVectorProbDensityClass<V,M>(priorDensity->domainSpace()),
   m_priorDensity      (priorDensity),
   m_likelihoodFunction(likelihoodFunction)
 {
@@ -152,8 +169,6 @@ template<class V, class M>
 double
 uqBayesianVectorProbDensityClass<V,M>::minus2LnDensity(const V& paramValues) const
 {
-  double value = 0.;
-
   double value1 = m_priorDensity->minus2LnDensity(paramValues);
   double value2 = m_likelihoodFunction->minus2LnDensity(paramValues);
 
@@ -164,7 +179,7 @@ uqBayesianVectorProbDensityClass<V,M>::minus2LnDensity(const V& paramValues) con
   //            << std::endl;
   //}
 
-  return value;
+  return value1+value2;
 }
 
 template<class V, class M>

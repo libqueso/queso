@@ -20,11 +20,11 @@
 #ifndef __UQ_ARRAY_OF_SEQUENCES_H__
 #define __UQ_ARRAY_OF_SEQUENCES_H__
 
-#include <uqChain.h>
+#include <uqVectorSequence.h>
 #include <EpetraExt_DistArray.h>
 
 template <class V>
-class uqArrayOfSequencesClass : public uqChainBaseClass<V>
+class uqArrayOfSequencesClass : public uqBaseVectorSequenceClass<V>
 {
 public:
 
@@ -130,9 +130,9 @@ private:
 
   EpetraExt::DistArray<uqScalarSequenceClass<double>*> m_scalarSequences;
 
-  using uqChainBaseClass<V>::m_env;
-  using uqChainBaseClass<V>::m_vectorExample;
-  using uqChainBaseClass<V>::m_fftObj;
+  using uqBaseVectorSequenceClass<V>::m_env;
+  using uqBaseVectorSequenceClass<V>::m_vectorExample;
+  using uqBaseVectorSequenceClass<V>::m_fftObj;
 };
 
 template <class V>
@@ -140,8 +140,8 @@ uqArrayOfSequencesClass<V>::uqArrayOfSequencesClass(
   unsigned int sequenceSize,
   const V&     vectorExample)
   :
-  uqChainBaseClass<V>(sequenceSize,vectorExample),
-  m_scalarSequences  (vectorExample.map(),1)
+  uqBaseVectorSequenceClass<V>(sequenceSize,vectorExample),
+  m_scalarSequences           (vectorExample.map(),1)
 {
 
   //if (m_env.rank() == 0) std::cout << "Entering uqArrayOfSequencesClass<V>::constructor()"

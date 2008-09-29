@@ -33,8 +33,7 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 class uqPropagProblemClass
 {
 public:
-  uqPropagProblemClass(const uqEnvironmentClass&                     env,
-                       const char*                                   prefix,
+  uqPropagProblemClass(const char*                                   prefix,
                        const uqBaseVectorRVClass  <P_V,P_M>&         paramRv,
                        const uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction,
                              uqBaseVectorRVClass  <Q_V,Q_M>&         qoiRV);
@@ -72,13 +71,12 @@ std::ostream& operator<<(std::ostream& os, const uqPropagProblemClass<P_V,P_M,Q_
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::uqPropagProblemClass(
-  const uqEnvironmentClass&                     env,
   const char*                                   prefix,
   const uqBaseVectorRVClass  <P_V,P_M>&         paramRv,
   const uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction,
         uqBaseVectorRVClass  <Q_V,Q_M>&         qoiRv)
   :
-  m_env                (env),
+  m_env                (paramRv.env()),
   m_prefix             ((std::string)(prefix) + "pro_"),
   m_optionsDesc        (new po::options_description("UQ Propagation Problem")),
   m_option_help        (m_prefix + "help"  ),
@@ -154,13 +152,12 @@ void
 uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarloKde()
 {
   // Instantiate the distribution calculator.
-  m_mcSeqGenerator = new uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>(m_env,
-                                                              m_prefix.c_str(),
+  m_mcSeqGenerator = new uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>(m_prefix.c_str(),
                                                               m_paramRv,
                                                               m_qoiFunction,
                                                               m_qoiRv);
 
-  m_mcSeqGenerator->generateSequence();
+  m_mcSeqGenerator->generateSequence(m_qoiRv.chain());
 
   return;
 }

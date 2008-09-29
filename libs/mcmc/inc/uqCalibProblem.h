@@ -34,8 +34,7 @@ template <class P_V,class P_M>
 class uqCalibProblemClass
 {
 public:
-  uqCalibProblemClass(const uqEnvironmentClass&                    env,
-                      const char*                                  prefix,
+  uqCalibProblemClass(const char*                                  prefix,
                       const uqBaseVectorRVClass         <P_V,P_M>& priorRv,
                       const uqBaseVectorProbDensityClass<P_V,P_M>& likelihoodFunction,
                             uqBaseVectorRVClass         <P_V,P_M>& postRv);
@@ -81,13 +80,12 @@ std::ostream& operator<<(std::ostream& os, const uqCalibProblemClass<P_V,P_M>& o
 
 template <class P_V,class P_M>
 uqCalibProblemClass<P_V,P_M>::uqCalibProblemClass(
-  const uqEnvironmentClass&                    env,
   const char*                                  prefix,
   const uqBaseVectorRVClass         <P_V,P_M>& priorRv,
   const uqBaseVectorProbDensityClass<P_V,P_M>& likelihoodFunction,
         uqBaseVectorRVClass         <P_V,P_M>& postRv)
   :
-  m_env                   (env),
+  m_env                   (priorRv.env()),
   m_prefix                ((std::string)(prefix) + "cal_"),
   m_optionsDesc           (new po::options_description("UQ Calibration Problem")),
   m_option_help           (m_prefix + "help"  ),
@@ -204,14 +202,13 @@ uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain(void* transitionKernel)
                         INFINITY);
 
   // Markov Chain step
-  m_mcSeqGenerator = new uqMarkovChainSGClass<P_V,P_M>(m_env,
-                                                       m_prefix.c_str(),
+  m_mcSeqGenerator = new uqMarkovChainSGClass<P_V,P_M>(m_prefix.c_str(),
                                                        m_postRv,
                                                        m_proposalCovMatrix,
                                                        m_proposalDensity,
                                                        m_proposalGenerator);
-  m_mcSeqGenerator->generateSequence();
-  m_solutionRealizer = new uqBaseVectorRealizerClass<P_V,P_M>(&(m_mcSeqGenerator->chain()));
+  m_mcSeqGenerator->generateSequence(m_postRv.chain());
+  m_solutionRealizer = new uqBaseVectorRealizerClass<P_V,P_M>(&(m_postRv.chain()));
   m_postRv.setRealizer(*m_solutionRealizer);
 
   return;

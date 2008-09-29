@@ -20,12 +20,12 @@
 #ifndef __UQ_SEQUENCE_OF_VECTORS_H__
 #define __UQ_SEQUENCE_OF_VECTORS_H__
 
-#include <uqChain.h>
+#include <uqVectorSequence.h>
 #define UQ_SEQ_VEC_USES_SCALAR_SEQ_CODE
 #undef UQ_SEQ_VEC_USES_OPERATOR
 
 template <class V>
-class uqSequenceOfVectorsClass : public uqChainBaseClass<V>
+class uqSequenceOfVectorsClass : public uqBaseVectorSequenceClass<V>
 {
 public:
   typedef typename std::vector<const V*>::const_iterator seqVectorPositionConstIteratorTypedef;
@@ -135,9 +135,9 @@ private:
 
   std::vector<const V*> m_seq;
 
-  using uqChainBaseClass<V>::m_env;
-  using uqChainBaseClass<V>::m_vectorExample;
-  using uqChainBaseClass<V>::m_fftObj;
+  using uqBaseVectorSequenceClass<V>::m_env;
+  using uqBaseVectorSequenceClass<V>::m_vectorExample;
+  using uqBaseVectorSequenceClass<V>::m_fftObj;
 };
 
 template <class V>
@@ -145,8 +145,8 @@ uqSequenceOfVectorsClass<V>::uqSequenceOfVectorsClass(
   unsigned int sequenceSize,
   const V&     vectorExample)
   :
-  uqChainBaseClass<V>(sequenceSize,vectorExample),
-  m_seq              (sequenceSize,NULL)
+  uqBaseVectorSequenceClass<V>(sequenceSize,vectorExample),
+  m_seq                       (sequenceSize,NULL)
 {
 
   //if (m_env.rank() == 0) std::cout << "Entering uqSequenceOfVectorsClass<V>::constructor()"

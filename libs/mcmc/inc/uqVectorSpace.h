@@ -37,6 +37,7 @@ public:
                                    unsigned int        dimValue = 0);
          ~uqVectorSpaceClass();
 
+  const   uqEnvironmentClass&       env                            ()                         const;
   const   Epetra_Map&               map                            ()                         const;
           unsigned int              dim                            ()                         const;
   const   std::string&              componentName                  (unsigned int componentId) const;
@@ -178,6 +179,13 @@ uqVectorSpaceClass<V,M>::getMyOptionValues(po::options_description& optionsDesc)
   }
 
   return;
+}
+
+template <class V, class M>
+const uqEnvironmentClass&
+uqVectorSpaceClass<V,M>::env() const
+{
+  return m_env;
 }
 
 template <class V, class M>

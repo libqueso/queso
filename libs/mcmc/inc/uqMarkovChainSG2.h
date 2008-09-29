@@ -23,8 +23,8 @@
 template <class P_V,class P_M>
 void
 uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
-  const P_M*             proposalCovMatrix,
-  uqChainBaseClass<P_V>& workingChain)
+  const P_M*                      proposalCovMatrix,
+  uqBaseVectorSequenceClass<P_V>& workingChain)
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences()..."
@@ -42,10 +42,10 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
     chainSum.resize(m_chainSizes[0],NULL);
   }
 #endif
-  for (unsigned int chainId = 0; chainId < m_chainSizes.size(); ++chainId) {
+  for (unsigned int chainId = 0; chainId < 1/*m_chainSizes.size()*/; ++chainId) { // GAMBIARRA
     char tmpChainId[10];
     sprintf(tmpChainId,"%d",chainId);
-    std::string prefixName = m_prefix + "c" + tmpChainId + "_";
+    std::string prefixName = m_prefix; // GAMBIARRA + "c" + tmpChainId + "_";
     std::string chainName  = prefixName + "chain";
 
     if (m_chainType == UQ_MAC_SG_WHITE_NOISE_CHAIN_TYPE) {
@@ -274,8 +274,8 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
 template <class P_V,class P_M>
 void
 uqMarkovChainSGClass<P_V,P_M>::generateWhiteNoiseChain(
-  unsigned int           chainSize,
-  uqChainBaseClass<P_V>& workingChain,
+  unsigned int                    chainSize,
+  uqBaseVectorSequenceClass<P_V>& workingChain,
   const std::string&     chainName)
 {
   if (m_env.rank() == 0) {
@@ -319,8 +319,8 @@ uqMarkovChainSGClass<P_V,P_M>::generateWhiteNoiseChain(
 template <class P_V,class P_M>
 void
 uqMarkovChainSGClass<P_V,P_M>::generateUniformChain(
-  unsigned int           chainSize,
-  uqChainBaseClass<P_V>& workingChain,
+  unsigned int                    chainSize,
+  uqBaseVectorSequenceClass<P_V>& workingChain,
   const std::string&     chainName)
 {
   if (m_env.rank() == 0) {
@@ -364,10 +364,10 @@ uqMarkovChainSGClass<P_V,P_M>::generateUniformChain(
 template <class P_V,class P_M>
 void
 uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
-  unsigned int           chainSize,
-  const P_V&             valuesOf1stPosition,
-  const P_M*             proposalCovMatrix,
-  uqChainBaseClass<P_V>& workingChain,
+  unsigned int                    chainSize,
+  const P_V&                      valuesOf1stPosition,
+  const P_M*                      proposalCovMatrix,
+  uqBaseVectorSequenceClass<P_V>& workingChain,
   const std::string&     chainName)
 {
   if (m_env.rank() == 0) {
@@ -805,11 +805,11 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
 template <class P_V,class P_M>
 void
 uqMarkovChainSGClass<P_V,P_M>::updateCovMatrix(
-  const uqChainBaseClass<P_V>& subChain,
-  unsigned int                 idOfFirstPositionInSubChain,
-  double&                      lastChainSize,
-  P_V&                         lastMean,
-  P_M&                         lastAdaptedCovMatrix)
+  const uqBaseVectorSequenceClass<P_V>& subChain,
+  unsigned int                          idOfFirstPositionInSubChain,
+  double&                               lastChainSize,
+  P_V&                                  lastMean,
+  P_M&                                  lastAdaptedCovMatrix)
 {
   double doubleSubChainSize = (double) subChain.sequenceSize();
   if (lastChainSize == 0) {

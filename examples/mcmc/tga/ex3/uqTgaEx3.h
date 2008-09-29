@@ -269,8 +269,7 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
 
   // Prior vector rv
-  uqGaussianVectorRVClass<P_V,P_M> calibPriorRv(env,
-                                                "prior_",   // Extra prefix before the default "rv_" prefix
+  uqGaussianVectorRVClass<P_V,P_M> calibPriorRv("prior_",   // Extra prefix before the default "rv_" prefix
                                                 paramSpace,
                                                 NULL);      // cov matrix: use default from library
 
@@ -280,20 +279,19 @@ uqAppl(const uqEnvironmentClass& env)
   calibLikelihoodRoutine_Data.variance1 = variance1;
   calibLikelihoodRoutine_Data.Te1       = &Te1; // temperatures
   calibLikelihoodRoutine_Data.Me1       = &Me1; // relative masses
-  uqRoutineVectorProbDensityClass<P_V,P_M> calibLikelihoodFunctionObj(calibLikelihoodRoutine<P_V,P_M>,
+  uqRoutineVectorProbDensityClass<P_V,P_M> calibLikelihoodFunctionObj(paramSpace,
+                                                                      calibLikelihoodRoutine<P_V,P_M>,
                                                                       (void *) &calibLikelihoodRoutine_Data,
                                                                       true); // the routine computes [-2.*ln(Likelihood)]
 
   // Posterior vector rv
-  uqGenericVectorRVClass<P_V,P_M> calibPostRv(env,
-                                              "post_",     // Extra prefix before the default "rv_" prefix
+  uqGenericVectorRVClass<P_V,P_M> calibPostRv("post_",     // Extra prefix before the default "rv_" prefix
                                               paramSpace,
                                               NULL,        // pdf: internally set by the solution process
                                               NULL);
 
   // Calibration problem
-  uqCalibProblemClass<P_V,P_M> calibProblem(env,
-                                            "", // No extra prefix before the default "cal_" prefix
+  uqCalibProblemClass<P_V,P_M> calibProblem("", // No extra prefix before the default "cal_" prefix
                                             calibPriorRv,
                                             calibLikelihoodFunctionObj,
                                             calibPostRv);
@@ -316,8 +314,7 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
 
   // Qoi vector rv
-  uqGenericVectorRVClass<Q_V,Q_M> propagQoiRv(env,
-                                              "qoi_",   // Extra prefix before the default "rv_" prefix
+  uqGenericVectorRVClass<Q_V,Q_M> propagQoiRv("qoi_",   // Extra prefix before the default "rv_" prefix
                                               qoiSpace,
                                               NULL,     // pdf: internally set by the solution process
                                               NULL);
@@ -326,12 +323,13 @@ uqAppl(const uqEnvironmentClass& env)
   propagQoiRoutine_DataType<P_V,P_M,Q_V,Q_M> propagQoiRoutine_Data;
   propagQoiRoutine_Data.beta1         = beta1;
   propagQoiRoutine_Data.criticalMass1 = criticalMass1;
-  uqVectorFunctionClass<P_V,P_M,Q_V,Q_M> propagQoiFunctionObj(propagQoiRoutine<P_V,P_M,Q_V,Q_M>,
+  uqVectorFunctionClass<P_V,P_M,Q_V,Q_M> propagQoiFunctionObj(paramSpace,
+                                                              qoiSpace,
+                                                              propagQoiRoutine<P_V,P_M,Q_V,Q_M>,
                                                               (void *) &propagQoiRoutine_Data);
 
   // Propagation problem
-  uqPropagProblemClass<P_V,P_M,Q_V,Q_M> propagProblem(env,
-                                                      "",          // No extra prefix before the default "pro_" prefix
+  uqPropagProblemClass<P_V,P_M,Q_V,Q_M> propagProblem("",          // No extra prefix before the default "pro_" prefix
                                                       calibPostRv, // propagation input = calibration output
                                                       propagQoiFunctionObj,
                                                       propagQoiRv);

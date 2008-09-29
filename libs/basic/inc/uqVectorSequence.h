@@ -1,4 +1,4 @@
-/* uq/libs/basic/inc/uqChain.h
+/* uq/libs/basic/inc/uqVectorSequence.h
  *
  * Copyright (C) 2008 The PECOS Team, http://queso.ices.utexas.edu
  *
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef __UQ_CHAIN_H__
-#define __UQ_CHAIN_H__
+#ifndef __UQ_VECTOR_SEQUENCE_H__
+#define __UQ_VECTOR_SEQUENCE_H__
 
 #include <uqScalarSequence.h>
 #include <uqChainStatisticalOptions.h>
@@ -27,11 +27,11 @@
 #include <fstream>
 
 template <class V>
-class uqChainBaseClass
+class uqBaseVectorSequenceClass
 {
 public:
-           uqChainBaseClass(unsigned int sequenceSize, const V& vectorExample);
-  virtual ~uqChainBaseClass();
+           uqBaseVectorSequenceClass(unsigned int sequenceSize, const V& vectorExample);
+  virtual ~uqBaseVectorSequenceClass();
 
   virtual  unsigned int sequenceSize       () const = 0;
            unsigned int vectorSize         () const;
@@ -194,7 +194,7 @@ protected:
 };
 
 template <class V>
-uqChainBaseClass<V>::uqChainBaseClass(
+uqBaseVectorSequenceClass<V>::uqBaseVectorSequenceClass(
   unsigned int sequenceSize,
   const V&     vectorExample)
   :
@@ -205,21 +205,21 @@ uqChainBaseClass<V>::uqChainBaseClass(
 }
 
 template <class V>
-uqChainBaseClass<V>::~uqChainBaseClass()
+uqBaseVectorSequenceClass<V>::~uqBaseVectorSequenceClass()
 {
   if (m_fftObj != NULL) delete m_fftObj;
 }
 
 template <class V>
 unsigned int
-uqChainBaseClass<V>::vectorSize() const
+uqBaseVectorSequenceClass<V>::vectorSize() const
 {
   return m_vectorExample.size();
 }
 
 template <class V>
 void
-uqChainBaseClass<V>::clear()
+uqBaseVectorSequenceClass<V>::clear()
 {
   unsigned int numPos = this->sequenceSize();
   if (numPos) {
@@ -232,7 +232,7 @@ uqChainBaseClass<V>::clear()
 
 template<class V>
 void
-uqChainBaseClass<V>::computeStatistics(
+uqBaseVectorSequenceClass<V>::computeStatistics(
   const uqChainStatisticalOptionsClass& statisticalOptions,
   const std::string&                    chainName,
   const std::vector<std::string>&       componentsNames,
@@ -257,7 +257,7 @@ uqChainBaseClass<V>::computeStatistics(
   for (unsigned int i = 0; i < initialPosForStatistics.size(); ++i) {
     initialPosForStatistics[i] = (unsigned int) (statisticalOptions.initialDiscardedPortions()[i] * (double) this->sequenceSize());
   }
-  std::cout << "In uqChainBaseClass<V>::computeStatistics(): initial positions for statistics =";
+  std::cout << "In uqBaseVectorSequenceClass<V>::computeStatistics(): initial positions for statistics =";
   for (unsigned int i = 0; i < initialPosForStatistics.size(); ++i) {
     std::cout << " " << initialPosForStatistics[i];
   }
@@ -399,7 +399,7 @@ uqChainBaseClass<V>::computeStatistics(
 
 template<class V>
 void
-uqChainBaseClass<V>::computeMeanVars(
+uqBaseVectorSequenceClass<V>::computeMeanVars(
   const uqChainStatisticalOptionsClass& statisticalOptions,
   const std::string&                    chainName,
   const std::vector<std::string>&       componentsNames,
@@ -495,7 +495,7 @@ uqChainBaseClass<V>::computeMeanVars(
 
 template<class V>
 void
-uqChainBaseClass<V>::computeBMM(
+uqBaseVectorSequenceClass<V>::computeBMM(
   const uqChainStatisticalOptionsClass& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
   const std::string&                    chainName,
@@ -513,7 +513,7 @@ uqChainBaseClass<V>::computeBMM(
               << std::endl;
   }
 
-  std::cout << "In uqChainBaseClass<V>::computeBMM(): lengths for batchs in BMM =";
+  std::cout << "In uqBaseVectorSequenceClass<V>::computeBMM(): lengths for batchs in BMM =";
   for (unsigned int i = 0; i < statisticalOptions.bmmLengths().size(); ++i) {
     std::cout << " " << statisticalOptions.bmmLengths()[i];
   }
@@ -581,7 +581,7 @@ uqChainBaseClass<V>::computeBMM(
 
 template<class V>
 void
-uqChainBaseClass<V>::computeFFT(
+uqBaseVectorSequenceClass<V>::computeFFT(
   const uqChainStatisticalOptionsClass& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
   const std::string&                    chainName,
@@ -658,7 +658,7 @@ uqChainBaseClass<V>::computeFFT(
 
 template<class V>
 void
-uqChainBaseClass<V>::computePSD(
+uqBaseVectorSequenceClass<V>::computePSD(
   const uqChainStatisticalOptionsClass& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
   const std::string&                    chainName,
@@ -712,7 +712,7 @@ uqChainBaseClass<V>::computePSD(
 
 template<class V>
 void
-uqChainBaseClass<V>::computePSDAtZero(
+uqBaseVectorSequenceClass<V>::computePSDAtZero(
   const uqChainStatisticalOptionsClass& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
   const std::string&                    chainName,
@@ -863,7 +863,7 @@ uqChainBaseClass<V>::computePSDAtZero(
 
 template<class V>
 void
-uqChainBaseClass<V>::computeGeweke(
+uqBaseVectorSequenceClass<V>::computeGeweke(
   const uqChainStatisticalOptionsClass& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
   const std::string&                    chainName,
@@ -934,7 +934,7 @@ uqChainBaseClass<V>::computeGeweke(
 
 template<class V>
 void
-uqChainBaseClass<V>::computeCorrViaDef(
+uqBaseVectorSequenceClass<V>::computeCorrViaDef(
   const uqChainStatisticalOptionsClass& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
   const std::vector<unsigned int>&      lagsForCorrs,
@@ -954,7 +954,7 @@ uqChainBaseClass<V>::computeCorrViaDef(
   }
 
   if (statisticalOptions.corrDisplay() && (m_env.rank() == 0)) {
-    std::cout << "In uqChainBaseClass<V>::computeCorrViaDef(): lags for autocorrelation (via def) = ";
+    std::cout << "In uqBaseVectorSequenceClass<V>::computeCorrViaDef(): lags for autocorrelation (via def) = ";
     for (unsigned int i = 0; i < lagsForCorrs.size(); ++i) {
       std::cout << " " << lagsForCorrs[i];
     }
@@ -1058,7 +1058,7 @@ uqChainBaseClass<V>::computeCorrViaDef(
 
 template<class V>
 void
-uqChainBaseClass<V>::computeCorrViaFFT(
+uqBaseVectorSequenceClass<V>::computeCorrViaFFT(
   const uqChainStatisticalOptionsClass& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
   const std::vector<unsigned int>&      lagsForCorrs,
@@ -1078,7 +1078,7 @@ uqChainBaseClass<V>::computeCorrViaFFT(
   }
 
   if (statisticalOptions.corrDisplay() && (m_env.rank() == 0)) {
-    std::cout << "In uqChainBaseClass<V>::computeCorrViaFFT(): lags for autocorrelation (via fft) = ";
+    std::cout << "In uqBaseVectorSequenceClass<V>::computeCorrViaFFT(): lags for autocorrelation (via fft) = ";
     for (unsigned int i = 0; i < lagsForCorrs.size(); ++i) {
       std::cout << " " << lagsForCorrs[i];
      }
@@ -1100,7 +1100,7 @@ uqChainBaseClass<V>::computeCorrViaFFT(
       corrVecs[lagId] = new V(m_vectorExample) /*.*/;
     }
     if (m_env.rank() == 0) {
-      std::cout << "In uqChainBaseClass<V>::computeCorrViaFFT()"
+      std::cout << "In uqBaseVectorSequenceClass<V>::computeCorrViaFFT()"
                 << ": about to call chain.autoCorrViaFft()"
                 << " with initialPos = "      << initialPos
                 << ", numPos = "              << this->sequenceSize()-initialPos
@@ -1228,7 +1228,7 @@ uqChainBaseClass<V>::computeCorrViaFFT(
 
 template<class V>
 void
-uqChainBaseClass<V>::computeFilterParams(
+uqBaseVectorSequenceClass<V>::computeFilterParams(
   const uqChainStatisticalOptionsClass& statisticalOptions,
   const std::string&                    chainName,
   std::ofstream*                        passedOfs,
@@ -1262,7 +1262,7 @@ uqChainBaseClass<V>::computeFilterParams(
 
 template<class V>
 void
-uqChainBaseClass<V>::computeHistKde( // Use the whole chain
+uqBaseVectorSequenceClass<V>::computeHistKde( // Use the whole chain
   const uqChainStatisticalOptionsClass& statisticalOptions,
   const std::string&                    chainName,
   const std::vector<std::string>&       componentsNames,
@@ -1544,4 +1544,4 @@ uqChainBaseClass<V>::computeHistKde( // Use the whole chain
   return;
 }
 
-#endif // __UQ_CHAIN_H__
+#endif // __UQ_VECTOR_SEQUENCE_H__

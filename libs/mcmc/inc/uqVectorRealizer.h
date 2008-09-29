@@ -20,7 +20,7 @@
 #ifndef __UQ_REALIZER_H__
 #define __UQ_REALIZER_H__
 
-#include <uqChain.h>
+#include <uqVectorSequence.h>
 #include <uqEnvironment.h>
 #include <math.h>
 
@@ -37,7 +37,7 @@ public:
            uqBaseVectorRealizerClass(double (*routinePtr)(const void* routineDataPtr, V& nextParamValues),
                                      const void*  routineDataPtr,
                                      unsigned int period);
-           uqBaseVectorRealizerClass(const uqChainBaseClass<V>* chain);
+           uqBaseVectorRealizerClass(const uqBaseVectorSequenceClass<V>* chain);
   virtual ~uqBaseVectorRealizerClass();
 
   virtual unsigned int period    () const;
@@ -48,8 +48,8 @@ protected:
   const void*                m_routineDataPtr;
   unsigned int               m_period;
 
-  const uqChainBaseClass<V>* m_chain;
-  mutable unsigned int       m_currentChainPos;
+  const uqBaseVectorSequenceClass<V>* m_chain;
+  mutable unsigned int                m_currentChainPos;
 };
 
 template<class V, class M>
@@ -68,7 +68,7 @@ uqBaseVectorRealizerClass<V,M>::uqBaseVectorRealizerClass(
 
 template<class V, class M>
 uqBaseVectorRealizerClass<V,M>::uqBaseVectorRealizerClass(
-  const uqChainBaseClass<V>* chain)
+  const uqBaseVectorSequenceClass<V>* chain)
   :
   m_routinePtr     (NULL),
   m_routineDataPtr (NULL),

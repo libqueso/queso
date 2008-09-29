@@ -29,22 +29,35 @@
 template<class P_V,class P_M,class Q_V,class Q_M>
 class uqVectorFunctionClass {
 public:
-  uqVectorFunctionClass(void (*routinePtr)(const P_V& domainVector, const void* functionDataPtr, Q_V& imageVector),
+  uqVectorFunctionClass(const uqVectorSpaceClass<P_V,P_M>& domainSpace,
+                        const uqVectorSpaceClass<Q_V,Q_M>& imageSpace,
+                        void (*routinePtr)(const P_V& domainVector, const void* functionDataPtr, Q_V& imageVector),
                         const void* functionDataPtr);
   virtual ~uqVectorFunctionClass();
-  virtual void compute(const P_V& domainVector, Q_V& imageVector) const;
+
+          const uqVectorSpaceClass<P_V,P_M>& domainSpace()                                          const;
+          const uqVectorSpaceClass<Q_V,Q_M>& imageSpace ()                                          const;
+  virtual       void                         compute    (const P_V& domainVector, Q_V& imageVector) const;
 
 protected:
+  const uqEnvironmentClass&          m_env;
+  const uqVectorSpaceClass<P_V,P_M>& m_domainSpace;
+  const uqVectorSpaceClass<Q_V,Q_M>& m_imageSpace;
   void (*m_routinePtr)(const P_V& domainVector, const void* functionDataPtr, Q_V& imageVector);
   const void* m_routineDataPtr;
 };
 
 template<class P_V,class P_M,class Q_V,class Q_M>
 uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>::uqVectorFunctionClass(
+  const uqVectorSpaceClass<P_V,P_M>& domainSpace,
+  const uqVectorSpaceClass<Q_V,Q_M>& imageSpace,
   void (*routinePtr)(const P_V& domainVector, const void* functionDataPtr, Q_V& imageVector),
   const void* functionDataPtr)
   :
-  m_routinePtr(routinePtr),
+  m_env           (domainSpace.env()),
+  m_domainSpace   (domainSpace),
+  m_imageSpace    (imageSpace),
+  m_routinePtr    (routinePtr),
   m_routineDataPtr(functionDataPtr)
 {
 }
@@ -52,6 +65,20 @@ uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>::uqVectorFunctionClass(
 template<class P_V,class P_M,class Q_V,class Q_M>
 uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>::~uqVectorFunctionClass()
 {
+}
+
+template<class P_V,class P_M,class Q_V,class Q_M>
+const uqVectorSpaceClass<P_V,P_M>&
+uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>::domainSpace() const
+{
+  return m_domainSpace;
+}
+
+template<class P_V,class P_M,class Q_V,class Q_M>
+const uqVectorSpaceClass<Q_V,Q_M>&
+uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>::imageSpace() const
+{
+  return m_imageSpace;
 }
 
 template<class P_V,class P_M,class Q_V,class Q_M>

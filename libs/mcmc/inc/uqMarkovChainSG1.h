@@ -73,20 +73,17 @@ template <class P_V,class P_M>
 class uqMarkovChainSGClass
 {
 public:
-  uqMarkovChainSGClass(const uqEnvironmentClass&                     env,                   /*! The QUESO toolkit environment. */
-                       const char*                                   prefix,                /*! Prefix.                        */
+  uqMarkovChainSGClass(const char*                                   prefix,                /*! Prefix.                        */
                        const uqBaseVectorRVClass          <P_V,P_M>& sourceRv,              /*! The source random variable.    */
                              P_M*                                    proposalCovMatrix,     /*! */
                        const uqProposalDensity_BaseClass  <P_V,P_M>* proposalDensityObj,    /*! */
                        const uqProposalGenerator_BaseClass<P_V,P_M>* proposalGeneratorObj); /*! */
  ~uqMarkovChainSGClass();
 
-        void                   generateSequence();
-        void                   generateSequence(const uqBaseVectorProbDensityClass<P_V,P_M>& targetParamDensityObj);
+        void                   generateSequence(uqBaseVectorSequenceClass<P_V>& workingChain);
 
         void                   print           (std::ostream& os) const;
 
-  const uqChainBaseClass<P_V>& chain           () const;
 
 private:
   void   resetChainAndRelatedInfo();
@@ -98,19 +95,19 @@ private:
 
   void   intGenerateSequences    (const P_M*                                     proposalCovMatrix,
                                 //const P_M*                                     proposalPrecMatrix,
-                                  uqChainBaseClass<P_V>&                         workingChain);
+                                  uqBaseVectorSequenceClass<P_V>&                workingChain);
   void   intGenerateSequence     (unsigned int                                   chainSize,
                                   const P_V&                                     valuesOf1stPosition,
                                   const P_M*                                     proposalCovMatrix,
-                                  uqChainBaseClass<P_V>&                         workingChain,
+                                  uqBaseVectorSequenceClass<P_V>&                workingChain,
                                   const std::string&                             chainName);
   void   generateWhiteNoiseChain (unsigned int                                   chainSize,
-                                  uqChainBaseClass<P_V>&                         workingChain,
+                                  uqBaseVectorSequenceClass<P_V>&                workingChain,
                                   const std::string&                             chainName);
   void   generateUniformChain    (unsigned int                                   chainSize,
-                                  uqChainBaseClass<P_V>&                         workingChain,
+                                  uqBaseVectorSequenceClass<P_V>&                workingChain,
                                   const std::string&                             chainName);
-  void   updateCovMatrix         (const uqChainBaseClass<P_V>&                   subChain,
+  void   updateCovMatrix         (const uqBaseVectorSequenceClass<P_V>&          subChain,
                                   unsigned int                                   idOfFirstPositionInSubChain,
                                   double&                                        lastChainSize,
                                   P_V&                                           lastMean,
@@ -127,7 +124,7 @@ private:
   bool   acceptAlpha             (double                                         alpha);
   void   updateCovMatrices       ();
 
-  int    writeInfo               (const uqChainBaseClass<P_V>&                   workingChain,
+  int    writeInfo               (const uqBaseVectorSequenceClass<P_V>&          workingChain,
                                   const std::string&                             chainName,
                                   const std::string&                             prefixName,
                                   std::ofstream&                                 ofs) const;
@@ -180,7 +177,6 @@ private:
         unsigned int                            m_chainNumber;
         std::vector<unsigned int>               m_chainSizes;
         std::vector<std::string>                m_chainOutputFileNames;
-        bool                                    m_chainUse2;
         bool                                    m_chainGenerateExtra;
         unsigned int                            m_chainDisplayPeriod;
         bool                                    m_chainMeasureRunTimes;
@@ -218,8 +214,6 @@ private:
         std::vector<P_M*>                       m_proposalPrecMatrices;
 #endif
 
-        uqSequenceOfVectorsClass<P_V>           m_chain1;
-        uqArrayOfSequencesClass<P_V>            m_chain2;
         std::vector<unsigned int>               m_idsOfUniquePositions;
         std::vector<double>                     m_logPosteriors;
         std::vector<double>                     m_alphaQuotients;
@@ -238,14 +232,13 @@ std::ostream& operator<<(std::ostream& os, const uqMarkovChainSGClass<P_V,P_M>& 
 
 template<class P_V,class P_M>
 uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
-  const uqEnvironmentClass&                     env,
   const char*                                   prefix,
   const uqBaseVectorRVClass          <P_V,P_M>& sourceRv,
         P_M*                                    proposalCovMatrix,
   const uqProposalDensity_BaseClass  <P_V,P_M>* proposalDensityObj,
   const uqProposalGenerator_BaseClass<P_V,P_M>* proposalGeneratorObj)
   :
-  m_env                                  (env),
+  m_env                                  (sourceRv.env()),
   m_prefix                               ((std::string)(prefix) + "mc_"),
   m_sourceRv                             (sourceRv),
   m_paramSpace                           (sourceRv.imageSpace()),
@@ -288,7 +281,6 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   m_chainNumber                          (UQ_MAC_SG_CHAIN_NUMBER_ODV),
   m_chainSizes                           (1,(unsigned int) strtod(UQ_MAC_SG_CHAIN_SIZES_ODV,NULL)),
   m_chainOutputFileNames                 (1,UQ_MAC_SG_CHAIN_OUTPUT_FILE_NAMES_ODV),
-  m_chainUse2                            (UQ_MAC_SG_CHAIN_USE2_ODV),
   m_chainGenerateExtra                   (UQ_MAC_SG_CHAIN_GENERATE_EXTRA_ODV),
   m_chainDisplayPeriod                   (UQ_MAC_SG_CHAIN_DISPLAY_PERIOD_ODV),
   m_chainMeasureRunTimes                 (UQ_MAC_SG_CHAIN_MEASURE_RUN_TIMES_ODV),
@@ -320,8 +312,6 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   m_upperCholProposalPrecMatrices        (1),//NULL),
   m_proposalPrecMatrices                 (1),//NULL),
 #endif
-  m_chain1                               (0,m_paramSpace.zeroVector()),
-  m_chain2                               (0,m_paramSpace.zeroVector()),
   m_idsOfUniquePositions                 (0),//0.),
   m_logPosteriors                        (0),//0.),
   m_alphaQuotients                       (0),//0.),
@@ -386,8 +376,6 @@ uqMarkovChainSGClass<P_V,P_M>::resetChainAndRelatedInfo()
   m_alphaQuotients.clear();
   m_logPosteriors.clear();
   m_idsOfUniquePositions.clear();
-  m_chain1.clear();
-  m_chain2.clear();
 
 #ifdef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
   for (unsigned int i = 0; i < m_proposalPrecMatrices.size(); ++i) {
@@ -487,10 +475,6 @@ uqMarkovChainSGClass<P_V,P_M>::getMyOptionValues(
     for (unsigned int i = 0; i < inputDoubles.size(); ++i) {
       m_chainSizes[i] = (unsigned int) inputDoubles[i];
     }
-  }
-
-  if (m_env.allOptionsMap().count(m_option_chain_use2.c_str())) {
-    m_chainUse2 = m_env.allOptionsMap()[m_option_chain_use2.c_str()].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_chain_displayPeriod.c_str())) {
@@ -638,27 +622,11 @@ uqMarkovChainSGClass<P_V,P_M>::getMyOptionValues(
 
 template<class P_V,class P_M>
 void
-uqMarkovChainSGClass<P_V,P_M>::generateSequence()
+uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V>& workingChain)
 //const P_M* proposalCovMatrix,
 {
-  // FIX ME: complement code logic
-
-  if (m_chainUse2) {
-    intGenerateSequences(m_proposalCovMatrix,
-                         m_chain2);
-  }
-  else {
-    intGenerateSequences(m_proposalCovMatrix,
-                         m_chain1);
-  }
-
-  return;
-}
-
-template<class P_V,class P_M>
-void
-uqMarkovChainSGClass<P_V,P_M>::generateSequence(const uqBaseVectorProbDensityClass<P_V,P_M>& targetParamDensityObj)
-{
+  intGenerateSequences(m_proposalCovMatrix,
+                       workingChain);
   return;
 }
 
@@ -971,10 +939,10 @@ uqMarkovChainSGClass<P_V,P_M>::acceptAlpha(double alpha)
 template<class P_V,class P_M>
 int
 uqMarkovChainSGClass<P_V,P_M>::writeInfo(
-  const uqChainBaseClass<P_V>& workingChain,
-  const std::string&           chainName,
-  const std::string&           prefixName,
-  std::ofstream&               ofs) const
+  const uqBaseVectorSequenceClass<P_V>& workingChain,
+  const std::string&                    chainName,
+  const std::string&                    prefixName,
+  std::ofstream&                        ofs) const
 //const P_M*                   mahalanobisMatrix,
 //bool                         applyMahalanobisInvert) const
 {
@@ -1145,14 +1113,6 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
 }
 
 template<class P_V,class P_M>
-const uqChainBaseClass<P_V>&
-uqMarkovChainSGClass<P_V,P_M>::chain() const
-{
-  if (m_chainUse2) return m_chain2;
-  return m_chain1;
-}
-
-template<class P_V,class P_M>
 void
 uqMarkovChainSGClass<P_V,P_M>::print(std::ostream& os) const
 {
@@ -1166,8 +1126,7 @@ uqMarkovChainSGClass<P_V,P_M>::print(std::ostream& os) const
   for (unsigned int i = 0; i < m_chainOutputFileNames.size(); ++i) {
     os << m_chainOutputFileNames[i] << " ";
   }
-  os << "\n" << m_option_chain_use2            << " = " << m_chainUse2
-     << "\n" << m_option_chain_generateExtra   << " = " << m_chainGenerateExtra
+  os << "\n" << m_option_chain_generateExtra   << " = " << m_chainGenerateExtra
      << "\n" << m_option_chain_displayPeriod   << " = " << m_chainDisplayPeriod
      << "\n" << m_option_chain_measureRunTimes << " = " << m_chainMeasureRunTimes
      << "\n" << m_option_chain_write           << " = " << m_chainWrite

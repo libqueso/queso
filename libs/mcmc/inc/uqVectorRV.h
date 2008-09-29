@@ -25,6 +25,8 @@
 #include <uqVectorProbDensity.h>
 #include <uqVectorRealizer.h>
 #include <uqDefaultPrior.h>
+#include <uqSequenceOfVectors.h>
+#include <uqArrayOfSequences.h>
 
 //*****************************************************
 // Base class
@@ -32,11 +34,11 @@
 template<class V, class M>
 class uqBaseVectorRVClass {
 public:
-  uqBaseVectorRVClass(const uqEnvironmentClass&      env,
-                      const char*                    prefix,
+  uqBaseVectorRVClass(const char*                    prefix,
                       const uqVectorSpaceClass<V,M>& imageSpace);
   virtual ~uqBaseVectorRVClass();
 
+  const   uqEnvironmentClass&                env                       ()       const;
   const   uqVectorSpaceClass          <V,M>& imageSpace                ()       const;
   const   uqBaseVectorProbDensityClass<V,M>& probDensity               ()       const;
   const   uqBaseVectorRealizerClass   <V,M>& realizer                  ()       const;
@@ -57,6 +59,7 @@ public:
                                                                         double       stdDevValue = INFINITY);
 
           bool                               outOfBounds               (const V& v) const;
+          uqBaseVectorSequenceClass<V>&      chain                     ();
 
   virtual void                               print                     (std::ostream& os) const;
 
@@ -86,17 +89,20 @@ protected:
           mutable V*                         m_maxValues;
           mutable V*                         m_expectValues;
           mutable V*                         m_stdDevValues;
+
+          bool                               m_chainUse2;
+          uqSequenceOfVectorsClass<V>        m_chain1;
+          uqArrayOfSequencesClass<V>         m_chain2;
 };
 
 template<class V, class M>
 uqBaseVectorRVClass<V,M>::uqBaseVectorRVClass(
-  const uqEnvironmentClass&                env,
   const char*                              prefix,
   const uqVectorSpaceClass          <V,M>& imageSpace)
   //const uqBaseVectorProbDensityClass<V,M>* probDensity,
   //const uqBaseVectorRealizerClass   <V,M>* realizer)
   :
-  m_env            (env),
+  m_env            (imageSpace.env()),
   m_prefix         ((std::string)(prefix)+"rv_"),
   m_imageSpace     (imageSpace),
   m_probDensity    (NULL),//(probDensity),
@@ -109,7 +115,10 @@ uqBaseVectorRVClass<V,M>::uqBaseVectorRVClass(
   m_minValues      (NULL),
   m_maxValues      (NULL),
   m_expectValues   (NULL),
-  m_stdDevValues   (NULL)
+  m_stdDevValues   (NULL),
+  m_chainUse2      (false),
+  m_chain1         (0,m_imageSpace.zeroVector()),
+  m_chain2         (0,m_imageSpace.zeroVector())
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqBaseVectorRVClass<V,M>::constructor()"
@@ -136,6 +145,8 @@ uqBaseVectorRVClass<V,M>::uqBaseVectorRVClass(
 template<class V, class M>
 uqBaseVectorRVClass<V,M>::~uqBaseVectorRVClass()
 {
+  m_chain1.clear();
+  m_chain2.clear();
 }
 
 template <class V, class M>
@@ -164,6 +175,10 @@ uqBaseVectorRVClass<V,M>::getMyOptionValues(po::options_description& optionsDesc
     std::cout << optionsDesc
               << std::endl;
   }
+
+  //if (m_env.allOptionsMap().count(m_option_chain_use2.c_str())) {
+  //  m_chainUse2 = m_env.allOptionsMap()[m_option_chain_use2.c_str()].as<bool>();
+  //}
 
   // Read RV components specification file only if 0 dimension was passed to constructor
   //if (m_components.size() == 0) { GAMBIARRA
@@ -547,6 +562,22 @@ uqBaseVectorRVClass<V,M>::realization(V& vec) const
   return;
 }
 #endif
+
+template<class V,class M>
+uqBaseVectorSequenceClass<V>&
+uqBaseVectorRVClass<V,M>::chain()
+{
+  if (m_chainUse2) return m_chain2;
+  return m_chain1;
+}
+
+template <class V, class M>
+const uqEnvironmentClass&
+uqBaseVectorRVClass<V,M>::env() const
+{
+  return m_env;
+}
+
 template <class V, class M>
 void
 uqBaseVectorRVClass<V,M>::print(std::ostream& os) const
@@ -580,8 +611,7 @@ std::ostream& operator<<(std::ostream& os, const uqBaseVectorRVClass<V,M>& obj)
 template<class V, class M>
 class uqGenericVectorRVClass : public uqBaseVectorRVClass<V,M> {
 public:
-  uqGenericVectorRVClass(const uqEnvironmentClass&                env,
-                         const char*                              prefix,
+  uqGenericVectorRVClass(const char*                              prefix,
                          const uqVectorSpaceClass          <V,M>& imageSpace,
                          const uqBaseVectorProbDensityClass<V,M>* probDensity,
                          const uqBaseVectorRealizerClass   <V,M>* realizer);
@@ -592,19 +622,19 @@ private:
 
   using uqBaseVectorRVClass<V,M>::m_env;
   using uqBaseVectorRVClass<V,M>::m_prefix;
+  using uqBaseVectorRVClass<V,M>::m_imageSpace;
   using uqBaseVectorRVClass<V,M>::m_probDensity;
   using uqBaseVectorRVClass<V,M>::m_realizer;
 };
 
 template<class V, class M>
 uqGenericVectorRVClass<V,M>::uqGenericVectorRVClass(
-  const uqEnvironmentClass&                env,
   const char*                              prefix,
   const uqVectorSpaceClass          <V,M>& imageSpace,
   const uqBaseVectorProbDensityClass<V,M>* probDensity,
   const uqBaseVectorRealizerClass   <V,M>* realizer)
   :
-  uqBaseVectorRVClass<V,M>(env,prefix,imageSpace)
+  uqBaseVectorRVClass<V,M>(prefix,imageSpace)
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqGenericVectorRVClass<V,M>::constructor()"
@@ -647,8 +677,7 @@ uqGenericVectorRVClass<V,M>::realization(V& vec) const
 template<class V, class M>
 class uqGaussianVectorRVClass : public uqBaseVectorRVClass<V,M> {
 public:
-  uqGaussianVectorRVClass(const uqEnvironmentClass&      env,
-                          const char*                    prefix,
+  uqGaussianVectorRVClass(const char*                    prefix,
                           const uqVectorSpaceClass<V,M>& imageSpace,
                           const M*                       covMatrix);
   virtual ~uqGaussianVectorRVClass();
@@ -663,18 +692,18 @@ private:
 
   using uqBaseVectorRVClass<V,M>::m_env;
   using uqBaseVectorRVClass<V,M>::m_prefix;
+  using uqBaseVectorRVClass<V,M>::m_imageSpace;
   using uqBaseVectorRVClass<V,M>::m_probDensity;
   using uqBaseVectorRVClass<V,M>::m_realizer;
 };
 
 template<class V, class M>
 uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
-  const uqEnvironmentClass&      env,
   const char*                    prefix,
   const uqVectorSpaceClass<V,M>& imageSpace,
   const M*                       covMatrix)
   :
-  uqBaseVectorRVClass<V,M>(env,prefix,imageSpace),
+  uqBaseVectorRVClass<V,M>(prefix,imageSpace),
   m_covMatrix             (covMatrix)
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
@@ -697,7 +726,8 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
     m_paramPriorSigmas = new V(this->stdDevValues());
     m_m2lPriorRoutine_Data.paramPriorMus    = m_paramPriorMus;
     m_m2lPriorRoutine_Data.paramPriorSigmas = m_paramPriorSigmas;
-    m_probDensity = new uqRoutineVectorProbDensityClass<V,M>(uqDefault_M2lPriorRoutine<V,M>, // use default prior() routine
+    m_probDensity = new uqRoutineVectorProbDensityClass<V,M>(m_imageSpace,
+                                                             uqDefault_M2lPriorRoutine<V,M>, // use default prior() routine
                                                              (void *) &m_m2lPriorRoutine_Data,
                                                              true); // the routine computes [-2.*ln(Likelihood)]
     if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {

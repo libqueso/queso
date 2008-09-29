@@ -40,15 +40,13 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 class uqMonteCarloSGClass
 {
 public:
-  uqMonteCarloSGClass(const uqEnvironmentClass&                     env,            /*! The QUESO toolkit environment. */
-                      const char*                                   prefix,         /*! Prefix.                        */
+  uqMonteCarloSGClass(const char*                                   prefix,         /*! Prefix.                        */
                       const uqBaseVectorRVClass  <P_V,P_M>&         paramRv,        /*! The parameter rv.              */
                       const uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunctionObj, /*! The qoi function.              */
                             uqBaseVectorRVClass  <Q_V,Q_M>&         qoiRv);         /*! The qoi rv.                    */
  ~uqMonteCarloSGClass();
 
-  void generateSequence   ();
-  void generateSequence   (const uqBaseVectorRVClass<P_V,P_M>& paramRv);
+  void generateSequence   (uqBaseVectorSequenceClass<P_V>& workingSeq);
 
   void print              (std::ostream&            os) const;
 
@@ -56,13 +54,13 @@ private:
   void defineMyOptions    (po::options_description& optionsDesc);
   void getMyOptionValues  (po::options_description& optionsDesc);
 
-  void intGenerateSequence(const uqBaseVectorRVClass <P_V,P_M>& paramRv,
-                                 uqChainBaseClass    <P_V>&     workingSeq);
+  void intGenerateSequence(const uqBaseVectorRVClass      <P_V,P_M>& paramRv,
+                                 uqBaseVectorSequenceClass<P_V>&     workingSeq);
 
-  void intGenerateSequence(const uqBaseVectorRVClass <P_V,P_M>& paramRv,
-                                 uqChainBaseClass    <P_V>&     workingSeq,
-                           const std::string&                   seqName,
-                                 unsigned int                   seqSize);
+  void intGenerateSequence(const uqBaseVectorRVClass      <P_V,P_M>& paramRv,
+                                 uqBaseVectorSequenceClass<P_V>&     workingSeq,
+                           const std::string&                        seqName,
+                                 unsigned int                        seqSize);
 
   const uqEnvironmentClass&                     m_env;
         std::string                             m_prefix;
@@ -84,15 +82,11 @@ private:
 
   unsigned int                    m_numSamples;
   std::string                     m_outputFileName;
-  bool                            m_use2;
   unsigned int                    m_displayPeriod;
   bool                            m_measureRunTimes;
   bool                            m_write;
   bool                            m_computeStats;
   uqChainStatisticalOptionsClass* m_statisticalOptions;
-
-  uqSequenceOfVectorsClass<P_V>   m_seq1;
-  uqArrayOfSequencesClass<P_V>    m_seq2;
 };
 
 template<class P_V,class P_M,class Q_V,class Q_M>
@@ -100,13 +94,12 @@ std::ostream& operator<<(std::ostream& os, const uqMonteCarloSGClass<P_V,P_M,Q_V
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::uqMonteCarloSGClass(
-  const uqEnvironmentClass&                     env,
   const char*                                   prefix,
   const uqBaseVectorRVClass  <P_V,P_M>&         paramRv,
   const uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunctionObj,
         uqBaseVectorRVClass  <Q_V,Q_M>&         qoiRv)
   :
-  m_env                   (env),
+  m_env                   (paramRv.env()),
   m_prefix                ((std::string)(prefix) + "mc_"),
   m_paramRv               (paramRv),
   m_qoiFunctionObj        (qoiFunctionObj),
@@ -124,14 +117,11 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::uqMonteCarloSGClass(
   m_option_computeStats   (m_prefix + "computeStats"   ),
   m_numSamples            (UQ_MOC_SG_NUM_SAMPLES_ODV      ),
   m_outputFileName        (UQ_MOC_SG_OUTPUT_FILE_NAME_ODV ),
-  m_use2                  (UQ_MOC_SG_USE2_ODV             ),
   m_displayPeriod         (UQ_MOC_SG_DISPLAY_PERIOD_ODV   ),
   m_measureRunTimes       (UQ_MOC_SG_MEASURE_RUN_TIMES_ODV),
   m_write                 (UQ_MOC_SG_WRITE_ODV            ),
   m_computeStats          (UQ_MOC_SG_COMPUTE_STATS_ODV    ),
-  m_statisticalOptions    (NULL),
-  m_seq1                  (0,m_qoiSpace.zeroVector()),
-  m_seq2                  (0,m_qoiSpace.zeroVector())
+  m_statisticalOptions    (NULL)
 {
   if (m_env.rank() == 0) std::cout << "Entering uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::constructor()"
                                    << std::endl;
@@ -195,10 +185,6 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::getMyOptionValues(
     m_outputFileName = m_env.allOptionsMap()[m_option_outputFileName.c_str()].as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_use2.c_str())) {
-    m_use2 = m_env.allOptionsMap()[m_option_use2.c_str()].as<bool>();
-  }
-
   if (m_env.allOptionsMap().count(m_option_displayPeriod.c_str())) {
     m_displayPeriod = m_env.allOptionsMap()[m_option_displayPeriod.c_str()].as<unsigned int>();
   }
@@ -220,33 +206,10 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::getMyOptionValues(
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence()
+uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence(uqBaseVectorSequenceClass<P_V>& workingSeq)
 {
-  if (m_use2) {
-    intGenerateSequence(m_paramRv,
-                        m_seq2);
-  }
-  else {
-    intGenerateSequence(m_paramRv,
-                        m_seq1);
-  }
-
-  return;
-}
-
-template <class P_V,class P_M,class Q_V,class Q_M>
-void
-uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence(
-  const uqBaseVectorRVClass<P_V,P_M>& paramRv)
-{
-  if (m_use2) {
-    intGenerateSequence(paramRv,
-                        m_seq2);
-  }
-  else {
-    intGenerateSequence(paramRv,
-                        m_seq1);
-  }
+  intGenerateSequence(m_paramRv,
+                      workingSeq);
 
   return;
 }
@@ -254,8 +217,8 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence(
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence(
-  const uqBaseVectorRVClass <P_V,P_M>& paramRv,
-        uqChainBaseClass<P_V>&     workingSeq)
+  const uqBaseVectorRVClass      <P_V,P_M>& paramRv,
+        uqBaseVectorSequenceClass<P_V>&     workingSeq)
 {
   std::string prefixName = m_prefix;
   std::string seqName    = prefixName + "seq";
@@ -339,10 +302,10 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence(
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence(
-  const uqBaseVectorRVClass<P_V,P_M>& paramRv,
-        uqChainBaseClass   <P_V>&     workingSeq,
-  const std::string&                  seqName,
-        unsigned int                  seqSize)
+  const uqBaseVectorRVClass      <P_V,P_M>& paramRv,
+        uqBaseVectorSequenceClass<P_V>&     workingSeq,
+  const std::string&                        seqName,
+        unsigned int                        seqSize)
 {
   if (m_env.rank() == 0) {
     std::cout << "Starting the generation of qoi sequence " << seqName
@@ -408,7 +371,6 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::print(std::ostream& os) const
 {
   os <<         m_option_numSamples      << " = " << m_numSamples
      << "\n" << m_option_outputFileName  << " = " << m_outputFileName
-     << "\n" << m_option_use2            << " = " << m_use2
      << "\n" << m_option_displayPeriod   << " = " << m_displayPeriod
      << "\n" << m_option_measureRunTimes << " = " << m_measureRunTimes
      << "\n" << m_option_write           << " = " << m_write
