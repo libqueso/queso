@@ -20,18 +20,20 @@
 #ifndef __UQ_ASCII_TABLE_H__
 #define __UQ_ASCII_TABLE_H__
 
+#include <uqVectorSpace.h>
+#include <uqMiscellaneous.h>
 #include <uqEnvironment.h>
 #include <EpetraExt_DistArray.h>
 
-template <class V>
+template <class V, class M>
 class uqAsciiTableClass
 {
 public:
-  uqAsciiTableClass(const uqEnvironmentClass& env,
-                          unsigned int        numRows,
-                          unsigned int        numExtraCols,
-                    const std::vector<bool>*  extraColIsString,
-                    const std::string&        fileName);
+  uqAsciiTableClass(const uqEnvironmentClass&      env,
+                    const uqVectorSpaceClass<V,M>& vectorSpace,
+                          unsigned int             numExtraCols,
+                    const std::vector<bool>*       extraColIsString,
+                    const std::string&             fileName);
  ~uqAsciiTableClass();
 
   unsigned int numRows  ()                                             const;
@@ -43,7 +45,7 @@ public:
 
 private:
   const uqEnvironmentClass&                       m_env;
-  unsigned int                                    m_numRows;
+  const uqVectorSpaceClass<V,M>&                  m_vectorSpace;
   unsigned int                                    m_numCols;
   std::vector<bool>                               m_colIsString;
   std::vector<EpetraExt::DistArray<std::string>*> m_stringColumns;
@@ -52,31 +54,51 @@ private:
   void readColumnsFromFile(std::string& fileName);
 };
 
-template <class V>
-uqAsciiTableClass<V>::uqAsciiTableClass(
-  const uqEnvironmentClass& env,
-        unsigned int        numRows,
-        unsigned int        numCols,
-  const std::vector<bool>*  colIsString,
-  const std::string&        fileName)
+template <class V, class M>
+uqAsciiTableClass<V,M>::uqAsciiTableClass(
+  const uqEnvironmentClass&      env,
+  const uqVectorSpaceClass<V,M>& vectorSpace,
+        unsigned int             numExtraCols,
+  const std::vector<bool>*       extraColIsString,
+  const std::string&             fileName)
   :
   m_env          (env),
-  m_numRows      (numRows),
-  m_numCols      (numCols),
+  m_vectorSpace  (vectorSpace),
+  m_numCols      (1+numExtraCols),
   m_colIsString  (1,true),
-  m_stringColumns(1,NULL),
-  m_doubleColumns(1,NULL)
+  m_stringColumns(0),
+  m_doubleColumns(0)
 {
+  if (m_numCols > 1) {
+    m_colIsString.resize(m_numCols,false);
+    if (extraColIsString == NULL) {
+      // Nothing extra needs to be done
+    }
+    else {
+      unsigned int maxJ = std::min(numExtraCols,extraColIsString->size());
+      for (unsigned int j = 0; j < maxJ; ++j) {
+        m_colIsString[1+j] = (*extraColIsString)[j];
+      }
+    }
+  }
+  m_stringColumns.resize(m_numCols,NULL);
+  m_doubleColumns.resize(m_numCols,NULL);
 }
 
-template <class V>
-uqAsciiTableClass<V>::~uqAsciiTableClass()
+template <class V, class M>
+uqAsciiTableClass<V,M>::~uqAsciiTableClass()
 {
+  for (unsigned int j = 0; j < m_doubleColumns.size(); ++j) {
+    if (m_doubleColumns[j]) delete m_doubleColumns[j];
+  }
+  for (unsigned int j = 0; j < m_stringColumns.size(); ++j) {
+    if (m_stringColumns[j]) delete m_stringColumns[j];
+  }
 }
 
-template <class V>
+template <class V, class M>
 void
-uqAsciiTableClass<V>::readColumnsFromFile(std::string& fileName)
+uqAsciiTableClass<V,M>::readColumnsFromFile(std::string& fileName)
 {
   unsigned int maxCharsPerLine = 512;
 
@@ -86,115 +108,123 @@ uqAsciiTableClass<V>::readColumnsFromFile(std::string& fileName)
   unsigned int numLines = std::count(std::istreambuf_iterator<char>(ifs),
                                      std::istreambuf_iterator<char>(),
                                      '\n');
-#if 0
-  // Determine number of components
+
+  // Determine number of valid lines
   int iRC;
   ifs.seekg(0,std::ios_base::beg);
   unsigned int lineId = 0;
-  unsigned int numComponents = 0;
+  unsigned int numValid = 0;
   std::string tempString;
   while ((lineId < numLines) && (ifs.eof() == false)) {
     iRC = uqMiscReadStringAndDoubleFromFile(ifs,tempString,NULL);
     UQ_FATAL_TEST_MACRO(iRC,
                         m_env.rank(),
-                        "uqAsciiTableClass<V>::constructor()",
-                        "failed reading during the determination of the number of components");
+                        "uqAsciiTableClass<V,M>::constructor()",
+                        "failed reading during the determination of the number of valid lines");
     //std::cout << "lineId = "           << lineId
-    //          << ", numComponents = " << numComponents
+    //          << ", numValid = " << numValid
     //          << ", tempString = "     << tempString
     //          << std::endl;
-    if (tempString[0] != '#') numComponents++;
+    if (tempString[0] != '#') numValid++;
     lineId++;
     ifs.ignore(maxCharsPerLine,'\n');
   }
   UQ_FATAL_TEST_MACRO(lineId != numLines,
                       m_env.rank(),
-                      "uqAsciiTableClass<V>::constructor()",
+                      "uqAsciiTableClass<V,M>::constructor()",
                       "the first number of lines read is nonconsistent");
-  if (m_dim != numComponents) {
+  if (m_vectorSpace.dim() != numValid) {
     char errorExplanation[512];
-    sprintf(errorExplanation,"number of components (%d) in space spec file does not match dimension (%d) passed in the main input file",numComponents,m_dim);
+    sprintf(errorExplanation,"number of valid lines (%d) in ascii table file does not match dimension (%d) of vector space",numValid,m_vectorSpace.dim());
     UQ_FATAL_TEST_MACRO(true,
                         m_env.rank(),
-                        "uqAsciiTableClass<V>::constructor()",
+                        "uqAsciiTableClass<V,M>::constructor()",
                         errorExplanation);
   }
 
-  std::cout << "Space spec file '"     << fileName
+  std::cout << "Ascii table file '"    << fileName
             << "' has "                << numLines
-            << " lines and specifies " << numComponents
-            << " components."
+            << " lines and specifies " << numValid
+            << " valid lines."
             << std::endl;
-  m_componentsNames->resize(numComponents,"");
+
+  for (unsigned int j=0; j < m_numCols; +j) {
+    if (m_colIsString[j]) {
+      m_stringColumns[j] = new EpetraExt::DistArray<std::string>(m_vectorSpace.map(),1);
+    }
+    else {
+      m_doubleColumns[j] = new V(m_vectorSpace.zeroVector());
+    }
+  }
 
   // Read file until End Of File character is reached
   ifs.seekg(0,std::ios_base::beg);
   lineId = 0;
-  unsigned int componentId = 0;
-  std::string  componentName("");
+  unsigned int validId = 0;
+  std::string  firstColumn("");
   while ((lineId < numLines) && (ifs.eof() == false)) {
-    //std::cout << "Beginning read of line (in space spec file) of id = " << lineId << std::endl;
+    //std::cout << "Beginning read of line (in ascii table file) of id = " << lineId << std::endl;
     bool endOfLineAchieved = false;
 
-    iRC = uqMiscReadCharsAndDoubleFromFile(ifs, componentName, NULL, endOfLineAchieved);
+    iRC = uqMiscReadCharsAndDoubleFromFile(ifs, firstColumn, NULL, endOfLineAchieved);
     UQ_FATAL_TEST_MACRO(iRC,
                         m_env.rank(),
-                        "uqAsciiTableClass<V>::constructor()",
-                        "failed reading a component name during the components names reading loop");
+                        "uqAsciiTableClass<V,M>::constructor()",
+                        "failed reading a first column during the valid lines reading loop");
 
     lineId++;
-    if (componentName[0] == '#') {
+    if (firstColumn[0] == '#') {
       if (!endOfLineAchieved) ifs.ignore(maxCharsPerLine,'\n');
       continue;
     }
 
-    // Check 'componentId' before setting one more component
-    if (componentId >= m_componentsNames->size()) {
+    // Check 'validId' before setting one more valid line
+    if (validId >= numValid) {
       char errorExplanation[512];
-      sprintf(errorExplanation,"componentId (%d) got too large during reading of space spec file",componentId);
+      sprintf(errorExplanation,"validId (%d) got too large during reading of ascii table file",validId);
       UQ_FATAL_TEST_MACRO(true,
                           m_env.rank(),
-                          "uqAsciiTableClass<V>::constructor()",
+                          "uqAsciiTableClass<V,M>::constructor()",
                           errorExplanation);
     }
 
-    std::cout << "Just read, for componentId = " << componentId
-              << ": componentName = "            << componentName
+    std::cout << "Just read, for validId = " << validId
+              << ": firstColumn = "          << firstColumn
               << std::endl;
-    setComponentName(componentId,
-                     componentName);
-    componentId++;
+    //setComponentName(validId,
+    //                 firstColumn);
+    validId++;
   }
 
   UQ_FATAL_TEST_MACRO(lineId != numLines,
                       m_env.rank(),
-                      "uqAsciiTableClass<V>::constructor()",
-                      "the second number of lines read is nonconsistent");
-  UQ_FATAL_TEST_MACRO(componentId != m_componentsNames->size(),
+                      "uqAsciiTableClass<V,M>::constructor()",
+                      "the second number of lines read is not consistent");
+  UQ_FATAL_TEST_MACRO(validId != numValid,
                       m_env.rank(),
-                      "uqAsciiTableClass<V>::constructor()",
-                      "the number of components just read is nonconsistent");
-#endif
+                      "uqAsciiTableClass<V,M>::constructor()",
+                      "the number of valid lines just read is not consistent");
+
   return;
 }
 
-template <class V>
+template <class V, class M>
 unsigned int
-uqAsciiTableClass<V>::numRows() const
+uqAsciiTableClass<V,M>::numRows() const
 {
-  return m_numRows;
+  return m_vectorSpace.dim();
 }
 
-template <class V>
+template <class V, class M>
 unsigned int
-uqAsciiTableClass<V>::numCols() const
+uqAsciiTableClass<V,M>::numCols() const
 {
   return m_numCols;
 }
 
-template <class V>
+template <class V, class M>
 void
-uqAsciiTableClass<V>::getColumn(
+uqAsciiTableClass<V,M>::getColumn(
   unsigned int                       columnId,
   EpetraExt::DistArray<std::string>* stringCol,
   V*                                 doubleCol) const
@@ -202,20 +232,20 @@ uqAsciiTableClass<V>::getColumn(
   return;
 }
 
-template <class V>
+template <class V, class M>
 void
-uqAsciiTableClass<V>::print(std::ostream& os) const
+uqAsciiTableClass<V,M>::print(std::ostream& os) const
 {
   os << "\nTables contents are:"
      << std::endl;
-  for (unsigned int i = 0; i < m_numRows; ++i) {
+  for (unsigned int i = 0; i < m_vectorSpace.dim(); ++i) {
     UQ_FATAL_TEST_MACRO((m_stringColumns[i] != NULL) && (m_doubleColumns[i] != NULL),
                         m_env.rank(),
-                        "uqAsciiTableClass<V>::print()",
+                        "uqAsciiTableClass<V,M>::print()",
                         "column is not null on both possible ways");
     UQ_FATAL_TEST_MACRO((m_stringColumns[i] == NULL) && (m_doubleColumns[i] == NULL),
                         m_env.rank(),
-                        "uqAsciiTableClass<V>::print()",
+                        "uqAsciiTableClass<V,M>::print()",
                         "column is null on both possible ways");
 
     os << i << " ";
@@ -231,8 +261,8 @@ uqAsciiTableClass<V>::print(std::ostream& os) const
   return;
 }
 
-template<class V>
-std::ostream& operator<<(std::ostream& os, const uqAsciiTableClass<V>& obj)
+template<class V, class M>
+std::ostream& operator<<(std::ostream& os, const uqAsciiTableClass<V,M>& obj)
 {
   obj.print(os);
 

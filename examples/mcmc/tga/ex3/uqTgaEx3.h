@@ -269,22 +269,25 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
   // Read Ascii file with important information on the calibration problem.
   //******************************************************
-  uqAsciiTableClass<P_V> calTable(env,
-                                  paramSpace.dim(), // Number of rows
-                                  5,                // Number of columns after the first (parameter name): min + max + mean + std + initial value for Markov chain
-                                  NULL,             // All extra columns are of 'double' type
-                                  "cal.tab");
+  uqAsciiTableClass<P_V,P_M> calTable(env,
+                                      paramSpace, // # of rows and the row map
+                                      5,          // # of cols after 'parameter name': min + max + mean + std + initial value for Markov chain
+                                      NULL,       // All extra columns are of 'double' type
+                                      "cal.tab");
 
-  P_V* minValues     = NULL;
-  P_V* maxValues     = NULL;
-  P_V* expectValues  = NULL;
-  P_V* stdDevValues  = NULL;
-  P_V* initialValues = NULL;
-  calTable.getColumn(1,NULL,minValues    );
-  calTable.getColumn(2,NULL,maxValues    );
-  calTable.getColumn(3,NULL,expectValues );
-  calTable.getColumn(4,NULL,stdDevValues );
-  calTable.getColumn(4,NULL,initialValues);
+  EpetraExt::DistArray<std::string>* firstColumn   = NULL;
+  P_V*                               minValues     = NULL;
+  P_V*                               maxValues     = NULL;
+  P_V*                               expectValues  = NULL;
+  P_V*                               stdDevValues  = NULL;
+  P_V*                               initialValues = NULL;
+
+  calTable.getColumn(0,firstColumn,NULL         );
+  calTable.getColumn(1,NULL,       minValues    );
+  calTable.getColumn(2,NULL,       maxValues    );
+  calTable.getColumn(3,NULL,       expectValues );
+  calTable.getColumn(4,NULL,       stdDevValues );
+  calTable.getColumn(4,NULL,       initialValues);
 
   //******************************************************
   // Step 2 of 3: deal with the calibration problem
