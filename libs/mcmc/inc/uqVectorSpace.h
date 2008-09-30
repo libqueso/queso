@@ -50,6 +50,8 @@ public:
           M*                        newMatrix                      ()                         const; // See template specialization
           M*                        newDiagMatrix                  (const V& v)               const;
           M*                        newDiagMatrix                  (double diagValue)         const; // See template specialization
+          M*                        newGaussianMatrix              (const V& varianceValues,
+                                                                    const V& initialValues) const;
 
           void                      printComponentsNames           (std::ostream& os, bool printHorizontally) const;
           void                      print                          (std::ostream& os) const;
@@ -337,6 +339,35 @@ uqVectorSpaceClass<V,M>::readComponentsNamesFromSpecFile(std::string& specFileNa
                       "uqVectorSpaceClass<V,M>::constructor()",
                       "the number of components just read is nonconsistent");
   return;
+}
+
+template <class V, class M>
+M*
+uqVectorSpaceClass<V,M>::newGaussianMatrix(
+  const V& varianceValues,
+  const V& initialValues) const
+{
+  V tmpVec(*m_zeroVector);
+  for (unsigned int i = 0; i < m_dim; ++i) {
+    double variance = varianceValues[i];
+    std::cout << "In uqVectorSpaceClass<V,M>::newGaussianMatrix()"
+              << ": i = "        << i
+              << ", variance = " << variance
+              << std::endl;
+    if ((variance == INFINITY) ||
+        (variance == NAN     )) {
+      tmpVec[i] = pow( fabs(initialValues[i])*0.05,2. );
+      if ( tmpVec[i] == 0 ) tmpVec[i] = 1.;
+    }
+    else if (variance == 0.) {
+      tmpVec[i] = 1.;
+    }
+    else {
+      tmpVec[i] = variance;
+    }
+  }
+
+  return newDiagMatrix(tmpVec);
 }
 
 template <class V, class M>

@@ -38,13 +38,13 @@ public:
                                         const uqVectorSpaceClass<V,M>& domainSpace,
                                         const V&                       domainMinValues,
                                         const V&                       domainMaxValues,
-                                        const V&                       domainExpectValues,
-                                        const V&                       domainStdDevValues);
+                                        const V&                       domainExpectedValues,
+                                        const V&                       domainVarianceValues);
            uqBaseVectorProbDensityClass(const char*                    prefix,
                                         const uqVectorSpaceClass<V,M>& domainSpace,
                                         const V&                       domainMinValues,
                                         const V&                       domainMaxValues,
-                                        const V&                       domainExpectValues);
+                                        const V&                       domainExpectedValues);
            uqBaseVectorProbDensityClass(const char*                    prefix,
                                         const uqVectorSpaceClass<V,M>& domainSpace,
                                         const V&                       domainMinValues,
@@ -61,6 +61,8 @@ public:
           bool                                  outOfDomainBounds         (const V& v) const;
   const   V&                                    domainMinValues           () const;
   const   V&                                    domainMaxValues           () const;
+  const   V&                                    domainExpectedValues      () const;
+  const   V&                                    domainVarianceValues      () const;
 
 protected:
 
@@ -69,8 +71,8 @@ protected:
   const   uqVectorSpaceClass<V,M>& m_domainSpace;
           V*                       m_domainMinValues;
           V*                       m_domainMaxValues;
-          V*                       m_domainExpectValues;
-          V*                       m_domainStdDevValues;
+          V*                       m_domainExpectedValues;
+          V*                       m_domainVarianceValues;
 
 //std::vector<uqBaseScalarProbDensityClass<double>*> m_components; // FIXME: will need to be a parallel vector in case of a very large number of components
 //uqBaseScalarProbDensityClass<double>               m_dummyComponent;
@@ -82,16 +84,16 @@ uqBaseVectorProbDensityClass<V,M>::uqBaseVectorProbDensityClass(
   const uqVectorSpaceClass<V,M>& domainSpace,
   const V&                       domainMinValues,
   const V&                       domainMaxValues,
-  const V&                       domainExpectValues,
-  const V&                       domainStdDevValues)
+  const V&                       domainExpectedValues,
+  const V&                       domainVarianceValues)
   :
-  m_env               (domainSpace.env()),
-  m_prefix            ((std::string)(prefix)+"pd_"),
-  m_domainSpace       (domainSpace),
-  m_domainMinValues   (new V(domainMinValues   )),
-  m_domainMaxValues   (new V(domainMaxValues   )),
-  m_domainExpectValues(new V(domainExpectValues)),
-  m_domainStdDevValues(new V(domainStdDevValues))
+  m_env                 (domainSpace.env()),
+  m_prefix              ((std::string)(prefix)+"pd_"),
+  m_domainSpace         (domainSpace),
+  m_domainMinValues     (new V(domainMinValues   )),
+  m_domainMaxValues     (new V(domainMaxValues   )),
+  m_domainExpectedValues(new V(domainExpectedValues)),
+  m_domainVarianceValues(new V(domainVarianceValues))
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqBaseVectorProbDensityClass<V,M>::constructor() [1]"
@@ -112,15 +114,15 @@ uqBaseVectorProbDensityClass<V,M>::uqBaseVectorProbDensityClass(
   const uqVectorSpaceClass<V,M>& domainSpace,
   const V&                       domainMinValues,
   const V&                       domainMaxValues,
-  const V&                       domainExpectValues)
+  const V&                       domainExpectedValues)
   :
-  m_env               (domainSpace.env()),
-  m_prefix            ((std::string)(prefix)+"pd_"),
-  m_domainSpace       (domainSpace),
-  m_domainMinValues   (new V(domainMinValues         )),
-  m_domainMaxValues   (new V(domainMaxValues         )),
-  m_domainExpectValues(new V(domainExpectValues      )),
-  m_domainStdDevValues(domainSpace.newVector(INFINITY))
+  m_env                 (domainSpace.env()),
+  m_prefix              ((std::string)(prefix)+"pd_"),
+  m_domainSpace         (domainSpace),
+  m_domainMinValues     (new V(domainMinValues         )),
+  m_domainMaxValues     (new V(domainMaxValues         )),
+  m_domainExpectedValues(new V(domainExpectedValues    )),
+  m_domainVarianceValues(domainSpace.newVector(INFINITY))
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqBaseVectorProbDensityClass<V,M>::constructor() [2]"
@@ -142,13 +144,13 @@ uqBaseVectorProbDensityClass<V,M>::uqBaseVectorProbDensityClass(
   const V&                       domainMinValues,
   const V&                       domainMaxValues)
   :
-  m_env               (domainSpace.env()),
-  m_prefix            ((std::string)(prefix)+"pd_"),
-  m_domainSpace       (domainSpace),
-  m_domainMinValues   (new V(domainMinValues         )),
-  m_domainMaxValues   (new V(domainMaxValues         )),
-  m_domainExpectValues(domainSpace.newVector(      0.)),
-  m_domainStdDevValues(domainSpace.newVector(INFINITY))
+  m_env                 (domainSpace.env()),
+  m_prefix              ((std::string)(prefix)+"pd_"),
+  m_domainSpace         (domainSpace),
+  m_domainMinValues     (new V(domainMinValues         )),
+  m_domainMaxValues     (new V(domainMaxValues         )),
+  m_domainExpectedValues(domainSpace.newVector(      0.)),
+  m_domainVarianceValues(domainSpace.newVector(INFINITY))
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqBaseVectorProbDensityClass<V,M>::constructor() [3]"
@@ -168,13 +170,13 @@ uqBaseVectorProbDensityClass<V,M>::uqBaseVectorProbDensityClass(
   const char*                    prefix,
   const uqVectorSpaceClass<V,M>& domainSpace)
   :
-  m_env               (domainSpace.env()),
-  m_prefix            ((std::string)(prefix)+"pd_"),
-  m_domainSpace       (domainSpace),
-  m_domainMinValues   (domainSpace.newVector(-INFINITY)),
-  m_domainMaxValues   (domainSpace.newVector( INFINITY)),
-  m_domainExpectValues(domainSpace.newVector(       0.)),
-  m_domainStdDevValues(domainSpace.newVector( INFINITY))
+  m_env                 (domainSpace.env()),
+  m_prefix              ((std::string)(prefix)+"pd_"),
+  m_domainSpace         (domainSpace),
+  m_domainMinValues     (domainSpace.newVector(-INFINITY)),
+  m_domainMaxValues     (domainSpace.newVector( INFINITY)),
+  m_domainExpectedValues(domainSpace.newVector(       0.)),
+  m_domainVarianceValues(domainSpace.newVector( INFINITY))
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqBaseVectorProbDensityClass<V,M>::constructor() [4]"
@@ -202,16 +204,16 @@ uqBaseVectorProbDensityClass<V,M>::setComponent(
   unsigned int componentId,
   double       minValue,
   double       maxValue,
-  double       expectValue,
-  double       stdDevValue)
+  double       expectedValue,
+  double       varianceValues)
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqBaseVectorProbDensityClass<V,M>::setComponent()"
-              << ", componentId = " << componentId
-              << ", minValue = "    << minValue
-              << ", maxValue = "    << maxValue
-              << ", expectValue = " << expectValue
-              << ", stdDevValue = " << stdDevValue
+              << ", componentId = "    << componentId
+              << ", minValue = "       << minValue
+              << ", maxValue = "       << maxValue
+              << ", expectedValue = "  << expectedValue
+              << ", varianceValues = " << varianceValues
               << std::endl;
   }
   UQ_FATAL_TEST_MACRO((componentId > m_components.size()),
@@ -222,14 +224,14 @@ uqBaseVectorProbDensityClass<V,M>::setComponent(
   if (m_components[componentId] == NULL) {
     m_components[componentId] = new uqBaseScalarProbDensityClass(minValue,
                                                                  maxValue,
-                                                                 expectValue,
-                                                                 stdDevValue);
+                                                                 expectedValue,
+                                                                 varianceValues);
   }
   else {
     m_components[componentId]->setMinValue   (minValue);
     m_components[componentId]->setMaxValue   (maxValue);
-    m_components[componentId]->setExpectValue(expectValue);
-    m_components[componentId]->setStdDevValue(stdDevValue);
+    m_components[componentId]->setExpectValue(expectedValue);
+    m_components[componentId]->setStdDevValue(varianceValues);
   }
 
   // These values cannot be trusted anymore
@@ -244,14 +246,14 @@ template <class V, class M>
 void
 uqBaseVectorProbDensityClass<V,M>::resetValues()
 {
-  if (m_stdDevValues) delete m_stdDevValues;
-  if (m_expectValues) delete m_expectValues;
-  if (m_domainMaxValues   ) delete m_domainMaxValues;
-  if (m_domainMinValues   ) delete m_domainMinValues;
-  m_stdDevValues = NULL;
-  m_expectValues = NULL;
-  m_domainMaxValues    = NULL;
-  m_domainMinValues    = NULL;
+  if (m_varianceValuess) delete m_varianceValuess;
+  if (m_expectedValues ) delete m_expectedValues;
+  if (m_domainMaxValues) delete m_domainMaxValues;
+  if (m_domainMinValues) delete m_domainMinValues;
+  m_varianceValuess = NULL;
+  m_expectedValues  = NULL;
+  m_domainMaxValues = NULL;
+  m_domainMinValues = NULL;
 }
 
 template <class V, class M>
@@ -268,7 +270,6 @@ template <class V, class M>
 const V&
 uqBaseVectorProbDensityClass<V,M>::domainMinValues() const
 {
-  //if (m_domainMinValues == NULL) this->createMinValues();
   return *m_domainMinValues;
 }
 
@@ -276,8 +277,21 @@ template <class V, class M>
 const V&
 uqBaseVectorProbDensityClass<V,M>::domainMaxValues() const
 {
-  //if (m_domainMaxValues == NULL) this->createMaxValues();
   return *m_domainMaxValues;
+}
+
+template <class V, class M>
+const V&
+uqBaseVectorProbDensityClass<V,M>::domainExpectedValues() const
+{
+  return *m_domainExpectedValues;
+}
+
+template <class V, class M>
+const V&
+uqBaseVectorProbDensityClass<V,M>::domainVarianceValues() const
+{
+  return *m_domainVarianceValues;
 }
 
 template <class V, class M>
@@ -305,8 +319,8 @@ public:
                                   const uqVectorSpaceClass<V,M>& domainSpace,
                                   const V&                       domainMinValues,
                                   const V&                       domainMaxValues,
-                                  const V&                       domainExpectValues,
-                                  const V&                       domainStdDevValues,
+                                  const V&                       domainExpectedValues,
+                                  const V&                       domainVarianceValues,
                                   double (*routinePtr)(const V& paramValues, const void* routineDataPtr),
                                   const void* routineDataPtr,
                                   bool routineComputesMinus2LogOfDensity);
@@ -331,8 +345,8 @@ protected:
   using uqBaseVectorProbDensityClass<V,M>::m_domainSpace;
   using uqBaseVectorProbDensityClass<V,M>::m_domainMinValues;
   using uqBaseVectorProbDensityClass<V,M>::m_domainMaxValues;
-  using uqBaseVectorProbDensityClass<V,M>::m_domainExpectValues;
-  using uqBaseVectorProbDensityClass<V,M>::m_domainStdDevValues;
+  using uqBaseVectorProbDensityClass<V,M>::m_domainExpectedValues;
+  using uqBaseVectorProbDensityClass<V,M>::m_domainVarianceValues;
 };
 
 template<class V, class M>
@@ -341,13 +355,13 @@ uqGenericVectorProbDensityClass<V,M>::uqGenericVectorProbDensityClass(
   const uqVectorSpaceClass<V,M>& domainSpace,
   const V&                       domainMinValues,
   const V&                       domainMaxValues,
-  const V&                       domainExpectValues,
-  const V&                       domainStdDevValues,
+  const V&                       domainExpectedValues,
+  const V&                       domainVarianceValues,
   double (*routinePtr)(const V& paramValues, const void* routineDataPtr),
   const void* routineDataPtr,
   bool        routineComputesMinus2LogOfDensity)
   :
-  uqBaseVectorProbDensityClass<V,M>(((std::string)(prefix)+"gen").c_str(),domainSpace,domainMinValues,domainMaxValues,domainExpectValues,domainStdDevValues),
+  uqBaseVectorProbDensityClass<V,M>(((std::string)(prefix)+"gen").c_str(),domainSpace,domainMinValues,domainMaxValues,domainExpectedValues,domainVarianceValues),
   m_routinePtr                       (routinePtr),
   m_routineDataPtr                   (routineDataPtr),
   m_routineComputesMinus2LogOfDensity(routineComputesMinus2LogOfDensity)
@@ -421,8 +435,8 @@ protected:
   using uqBaseVectorProbDensityClass<V,M>::m_domainSpace;
   using uqBaseVectorProbDensityClass<V,M>::m_domainMinValues;
   using uqBaseVectorProbDensityClass<V,M>::m_domainMaxValues;
-  using uqBaseVectorProbDensityClass<V,M>::m_domainExpectValues;
-  using uqBaseVectorProbDensityClass<V,M>::m_domainStdDevValues;
+  using uqBaseVectorProbDensityClass<V,M>::m_domainExpectedValues;
+  using uqBaseVectorProbDensityClass<V,M>::m_domainVarianceValues;
 };
 
 template<class V,class M>
@@ -496,13 +510,13 @@ public:
                                    const uqVectorSpaceClass<V,M>& domainSpace,
                                    const V&                       domainMinValues,
                                    const V&                       domainMaxValues,
-                                   const V&                       domainExpectValues,
-                                   const V&                       domainStdDevValues);
+                                   const V&                       domainExpectedValues,
+                                   const V&                       domainVarianceValues);
   uqGaussianVectorProbDensityClass(const char*                    prefix,
                                    const uqVectorSpaceClass<V,M>& domainSpace,
                                    const V&                       domainMinValues,
                                    const V&                       domainMaxValues,
-                                   const V&                       domainExpectValues,
+                                   const V&                       domainExpectedValues,
                                    const M&                       covMatrix);
  ~uqGaussianVectorProbDensityClass();
 
@@ -519,8 +533,8 @@ protected:
   using uqBaseVectorProbDensityClass<V,M>::m_domainSpace;
   using uqBaseVectorProbDensityClass<V,M>::m_domainMinValues;
   using uqBaseVectorProbDensityClass<V,M>::m_domainMaxValues;
-  using uqBaseVectorProbDensityClass<V,M>::m_domainExpectValues;
-  using uqBaseVectorProbDensityClass<V,M>::m_domainStdDevValues;
+  using uqBaseVectorProbDensityClass<V,M>::m_domainExpectedValues;
+  using uqBaseVectorProbDensityClass<V,M>::m_domainVarianceValues;
 
   void commonConstructor();
 };
@@ -531,11 +545,11 @@ uqGaussianVectorProbDensityClass<V,M>::uqGaussianVectorProbDensityClass(
   const uqVectorSpaceClass<V,M>& domainSpace,
   const V&                       domainMinValues,
   const V&                       domainMaxValues,
-  const V&                       domainExpectValues,
-  const V&                       domainStdDevValues)
+  const V&                       domainExpectedValues,
+  const V&                       domainVarianceValues)
   :
-  uqBaseVectorProbDensityClass<V,M>(((std::string)(prefix)+"gau").c_str(),domainSpace,domainMinValues,domainMaxValues,domainExpectValues,domainStdDevValues),
-  m_covMatrix                      (m_domainSpace.newDiagMatrix(domainStdDevValues*domainStdDevValues))
+  uqBaseVectorProbDensityClass<V,M>(((std::string)(prefix)+"gau").c_str(),domainSpace,domainMinValues,domainMaxValues,domainExpectedValues,domainVarianceValues),
+  m_covMatrix                      (m_domainSpace.newDiagMatrix(domainVarianceValues*domainVarianceValues))
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqGaussianVectorProbDensityClass<V,M>::constructor() [1]"
@@ -558,10 +572,10 @@ uqGaussianVectorProbDensityClass<V,M>::uqGaussianVectorProbDensityClass(
   const uqVectorSpaceClass<V,M>& domainSpace,
   const V&                       domainMinValues,
   const V&                       domainMaxValues,
-  const V&                       domainExpectValues,
+  const V&                       domainExpectedValues,
   const M&                       covMatrix)
   :
-  uqBaseVectorProbDensityClass<V,M>(((std::string)(prefix)+"gau").c_str(),domainSpace,domainMinValues,domainMaxValues,domainExpectValues),
+  uqBaseVectorProbDensityClass<V,M>(((std::string)(prefix)+"gau").c_str(),domainSpace,domainMinValues,domainMaxValues,domainExpectedValues),
   m_covMatrix                      (new M(covMatrix))
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
@@ -586,20 +600,20 @@ uqGaussianVectorProbDensityClass<V,M>::commonConstructor()
 #if 0
   V tmpVec(m_domainSpace.zeroVector());
   for (unsigned int i = 0; i < m_domainSpace.dim(); ++i) {
-    sigma = m_components[i]->stdDevValue();
+    sigma = m_components[i]->varianceValues();
     tmpVec[i] = sigma*sigma;
   }
   m_covMatrix = m_domainSpace.newDiagMatrix(tmpVec);
 #endif
 
-  m_m2lPriorRoutine_Data.paramPriorMus    = m_domainExpectValues;
-  m_m2lPriorRoutine_Data.paramPriorSigmas = m_domainStdDevValues;
+  m_m2lPriorRoutine_Data.paramPriorMus       = m_domainExpectedValues;
+  m_m2lPriorRoutine_Data.paramPriorVariances = m_domainVarianceValues;
   m_probDensity = new uqGenericVectorProbDensityClass<V,M>(m_prefix.c_str(),
                                                            m_domainSpace,
                                                            *m_domainMinValues,
                                                            *m_domainMaxValues,
-                                                           *m_domainExpectValues,
-                                                           *m_domainStdDevValues,
+                                                           *m_domainExpectedValues,
+                                                           *m_domainVarianceValues,
                                                            uqDefault_M2lPriorRoutine<V,M>, // use default prior() routine
                                                            (void *) &m_m2lPriorRoutine_Data,
                                                            true); // the routine computes [-2.*ln(Likelihood)]
@@ -607,7 +621,7 @@ uqGaussianVectorProbDensityClass<V,M>::commonConstructor()
     std::cout << "In uqGaussianVectorProbDensityClass<V,M>::constructor()"
               << ", prefix = "      << m_prefix
               << ": priorMus = "    << *m_m2lPriorRoutine_Data.paramPriorMus
-              << ", priorSigmas = " << *m_m2lPriorRoutine_Data.paramPriorSigmas
+              << ", priorSigmas = " << *m_m2lPriorRoutine_Data.paramPriorVariances
               << std::endl;
   }
 

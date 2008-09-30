@@ -73,17 +73,16 @@ template <class P_V,class P_M>
 class uqMarkovChainSGClass
 {
 public:
-  uqMarkovChainSGClass(const char*                                   prefix,                /*! Prefix.                        */
-                       const uqBaseVectorRVClass          <P_V,P_M>& sourceRv,              /*! The source random variable.    */
-                       const P_V&                                    initialValues,         /*! */
-                             P_M*                                    proposalCovMatrix,     /*! */
-                       const uqProposalDensity_BaseClass  <P_V,P_M>* proposalDensityObj,    /*! */
-                       const uqProposalGenerator_BaseClass<P_V,P_M>* proposalGeneratorObj); /*! */
+  uqMarkovChainSGClass(const char*                         prefix,            /*! Prefix.                     */
+                       const uqBaseVectorRVClass<P_V,P_M>& sourceRv,          /*! The source random variable. */
+                       const P_V&                          initialValues,     /*! First position of chain.    */
+                       const P_M&                          proposalCovMatrix, /*! Proposal covariance matrix. */ 
+                             void*                         proposalTk);       /*! Proposal transition kernel. */
  ~uqMarkovChainSGClass();
 
-        void                   generateSequence(uqBaseVectorSequenceClass<P_V>& workingChain);
+  void   generateSequence        (uqBaseVectorSequenceClass<P_V>& workingChain); /*! */
 
-        void                   print           (std::ostream& os) const;
+  void   print                   (std::ostream& os) const;
 
 
 private:
@@ -91,17 +90,13 @@ private:
   void   defineMyOptions         (po::options_description&                       optionsDesc);
   void   getMyOptionValues       (po::options_description&                       optionsDesc);
 
-  int    prepareForNextChain     (const P_M*                                     proposalCovMatrix);
-                                //const P_M*                                     proposalPrecMatrix,
-
-  void   intGenerateSequences    (const P_M*                                     proposalCovMatrix,
-                                //const P_M*                                     proposalPrecMatrix,
+  void   intGenerateSequences    (const P_M&                                     proposalCovMatrix,
                                   uqBaseVectorSequenceClass<P_V>&                workingChain);
-  void   intGenerateSequence     (unsigned int                                   chainSize,
-                                  const P_V&                                     valuesOf1stPosition,
-                                  const P_M*                                     proposalCovMatrix,
+  int    prepareForNextChain     (const P_M&                                     proposalCovMatrix);
+  void   intGenerateSequence     (const P_V&                                     valuesOf1stPosition,
                                   uqBaseVectorSequenceClass<P_V>&                workingChain,
-                                  const std::string&                             chainName);
+                                  const std::string&                             chainName,
+                                  unsigned int                                   chainSize);
   void   generateWhiteNoiseChain (unsigned int                                   chainSize,
                                   uqBaseVectorSequenceClass<P_V>&                workingChain,
                                   const std::string&                             chainName);
@@ -137,9 +132,7 @@ private:
   const uqBaseVectorRVClass          <P_V,P_M>& m_sourceRv;
   const uqVectorSpaceClass           <P_V,P_M>& m_paramSpace;
   const uqBaseVectorProbDensityClass <P_V,P_M>& m_targetParamDensityObj;
-        P_M*                                    m_proposalCovMatrix;
-  const uqProposalDensity_BaseClass  <P_V,P_M>* m_proposalDensityObj;
-  const uqProposalGenerator_BaseClass<P_V,P_M>* m_proposalGeneratorObj;
+  const P_M&                                    m_proposalCovMatrix;
 
         po::options_description*                m_optionsDesc;
         std::string                             m_option_help;
@@ -233,12 +226,11 @@ std::ostream& operator<<(std::ostream& os, const uqMarkovChainSGClass<P_V,P_M>& 
 
 template<class P_V,class P_M>
 uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
-  const char*                                   prefix,
-  const uqBaseVectorRVClass          <P_V,P_M>& sourceRv,
-  const P_V&                                    initialValues,
-        P_M*                                    proposalCovMatrix,
-  const uqProposalDensity_BaseClass  <P_V,P_M>* proposalDensityObj,
-  const uqProposalGenerator_BaseClass<P_V,P_M>* proposalGeneratorObj)
+  const char*                         prefix,
+  const uqBaseVectorRVClass<P_V,P_M>& sourceRv,
+  const P_V&                          initialValues,
+  const P_M&                          proposalCovMatrix,
+        void*                         proposalTk)
   :
   m_env                                  (sourceRv.env()),
   m_prefix                               ((std::string)(prefix) + "mc_"),
@@ -246,8 +238,6 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   m_paramSpace                           (sourceRv.imageSpace()),
   m_targetParamDensityObj                (sourceRv.probDensity()),
   m_proposalCovMatrix                    (proposalCovMatrix),
-  m_proposalDensityObj                   (proposalDensityObj),
-  m_proposalGeneratorObj                 (proposalGeneratorObj),
   m_optionsDesc                          (new po::options_description("Bayesian Markov chain options")),
   m_option_help                          (m_prefix + "help"                          ),
   m_option_chain_type                    (m_prefix + "chain_type"                    ),
@@ -409,7 +399,7 @@ uqMarkovChainSGClass<P_V,P_M>::defineMyOptions(
   po::options_description& optionsDesc)
 {
   optionsDesc.add_options()
-    (m_option_help.c_str(),                                                                                                                    "produce help message for Bayesian Markov chain distr. calculator")
+    (m_option_help.c_str(),                                                                                                                     "produce help message for Bayesian Markov chain distr. calculator")
     (m_option_chain_type.c_str(),                     po::value<unsigned int>()->default_value(UQ_MAC_SG_CHAIN_TYPE_ODV                      ), "type of chain (1=Markov, 2=White noise)"                         )
     (m_option_chain_number.c_str(),                   po::value<unsigned int>()->default_value(UQ_MAC_SG_CHAIN_NUMBER_ODV                    ), "number of chain(s)"                                              )
     (m_option_chain_sizes.c_str(),                    po::value<std::string >()->default_value(UQ_MAC_SG_CHAIN_SIZES_ODV                     ), "list of size(s) of chain(s)"                                     )
@@ -623,7 +613,6 @@ uqMarkovChainSGClass<P_V,P_M>::getMyOptionValues(
 template<class P_V,class P_M>
 void
 uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V>& workingChain)
-//const P_M* proposalCovMatrix,
 {
   intGenerateSequences(m_proposalCovMatrix,
                        workingChain);
@@ -633,7 +622,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V>& 
 template<class P_V,class P_M>
 int
 uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain(
-  const P_M* proposalCovMatrix)
+  const P_M& proposalCovMatrix)
 //const P_M* proposalPrecMatrix)
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
@@ -644,44 +633,13 @@ uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain(
 
   int iRC = UQ_OK_RC;
 
-  const P_M* internalProposalCovMatrix = proposalCovMatrix;
-  if (proposalCovMatrix == NULL) {
-    P_V tmpVec(m_paramSpace.zeroVector());
-    for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
-      double sigma = INFINITY; //m_sourceRv.component(i).stdDevValue(); GAMBIARRA
-      std::cout << "In uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain()"
-                << ": i = "     << i
-                << ", sigma = " << sigma
-                << std::endl;
-      if (true || (sigma == INFINITY) || // GAMBIARRA
-          (sigma == NAN     )) {
-        tmpVec[i] = pow( fabs(m_paramInitials[i])*0.05,2. );
-        if ( tmpVec[i] == 0 ) tmpVec[i] = 1.;
-      }
-      else if (sigma == 0.) {
-        tmpVec[i] = 1.;
-      }
-      else {
-        tmpVec[i] = sigma*sigma;
-      }
-    }
-    internalProposalCovMatrix = m_paramSpace.newDiagMatrix(tmpVec);
+  if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain()"
+                                   << ": using suplied proposalCovMatrix, whose contents are:"
+                                   << std::endl;
+  std::cout << proposalCovMatrix;
+  if (m_env.rank() == 0) std::cout << std::endl;
 
-    if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain()"
-                                     << ", contents of internally generated proposal cov matrix are:"
-                                     << std::endl;
-    std::cout << *internalProposalCovMatrix;
-    if (m_env.rank() == 0) std::cout << std::endl;
-  }
-  else {
-    if (m_env.rank() == 0)  std::cout << "In uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain()"
-                                      << "using suplied proposalCovMatrix, whose contents are:"
-                                      << std::endl;
-    std::cout << *internalProposalCovMatrix;
-    if (m_env.rank() == 0) std::cout << std::endl;
-  }
-
-  m_lowerCholProposalCovMatrices[0] = new P_M(*internalProposalCovMatrix); 
+  m_lowerCholProposalCovMatrices[0] = new P_M(proposalCovMatrix); 
   iRC = m_lowerCholProposalCovMatrices[0]->chol();
   UQ_FATAL_RC_MACRO(iRC,
                     m_env.rank(),
@@ -689,7 +647,7 @@ uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain(
                     "proposalCovMatrix is not positive definite");
   m_lowerCholProposalCovMatrices[0]->zeroUpper(false);
 
-  m_proposalCovMatrices[0] = new P_M(*internalProposalCovMatrix);
+  m_proposalCovMatrices[0] = new P_M(proposalCovMatrix);
 
   if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain()"
                                    << ", m_lowerCholProposalCovMatrices[0] contents are:"
@@ -706,7 +664,7 @@ uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain(
                       "not yet implemented for the case 'proposalPrecMatrix == NULL'");
   }
 
-  m_upperCholProposalPrecMatrices[0] = new P_M(*internalProposalPrecMatrix); 
+  m_upperCholProposalPrecMatrices[0] = new P_M(proposalPrecMatrix); 
   iRC = m_upperCholProposalPrecMatrices[0]->chol();
   UQ_FATAL_RC_MACRO(iRC,
                     m_env.rank(),
@@ -714,7 +672,7 @@ uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain(
                     "proposalPrecMatrix is not positive definite");
   m_upperCholProposalPrecMatrices[0]->zeroLower(false);
 
-  m_proposalPrecMatrices[0] = new P_M(*internalProposalPrecMatrix);
+  m_proposalPrecMatrices[0] = new P_M(proposalPrecMatrix);
 
   //if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain()"
   //                                 << ", m_upperCholProposalPrecMatrices[0] contents are:"
@@ -726,8 +684,6 @@ uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain(
   if (m_maxNumExtraStages > 0) {
     updateCovMatrices();
   }
-
-  if (proposalCovMatrix == NULL) delete internalProposalCovMatrix;
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Leaving uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain()"

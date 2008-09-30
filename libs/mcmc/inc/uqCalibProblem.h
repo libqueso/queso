@@ -41,7 +41,8 @@ public:
  ~uqCalibProblemClass();
 
         void solveWithBayesMarkovChain(const P_V& initialValues,
-                                       void* transitionKernel);
+                                       const P_M& proposalCovMatrix,
+                                       void*      transitionKernel);
 
         void print                    (std::ostream& os) const;
 
@@ -49,31 +50,25 @@ private:
         void defineMyOptions          (po::options_description& optionsDesc);
         void getMyOptionValues        (po::options_description& optionsDesc);
 
-  const uqEnvironmentClass&                          m_env;
-        std::string                                  m_prefix;
+  const uqEnvironmentClass&                    m_env;
+        std::string                            m_prefix;
 
-        po::options_description*                     m_optionsDesc;
-        std::string                                  m_option_help;
-        std::string                                  m_option_solver;
+        po::options_description*               m_optionsDesc;
+        std::string                            m_option_help;
+        std::string                            m_option_solver;
 
-	std::string                                  m_solverString;
+	std::string                            m_solverString;
 
-  const uqBaseVectorRVClass               <P_V,P_M>& m_priorRv;
-  const uqBaseVectorProbDensityClass      <P_V,P_M>& m_likelihoodFunction;
-        uqBaseVectorRVClass               <P_V,P_M>& m_postRv;
+  const uqBaseVectorRVClass         <P_V,P_M>& m_priorRv;
+  const uqBaseVectorProbDensityClass<P_V,P_M>& m_likelihoodFunction;
+        uqBaseVectorRVClass         <P_V,P_M>& m_postRv;
 
-  const uqBaseVectorProbDensityClass      <P_V,P_M>* m_priorParamDensity;
-        bool                                         m_userPriorDensityIsNull;
-        uqDefault_M2lPriorRoutine_DataType<P_V,P_M>  m_m2lPriorRoutine_Data;
-        P_V*                                         m_paramPriorMus;
-        P_V*                                         m_paramPriorSigmas;
-        P_M*                                         m_proposalCovMatrix;
-  const uqProposalDensity_BaseClass       <P_V,P_M>* m_proposalDensity;
-  const uqProposalGenerator_BaseClass     <P_V,P_M>* m_proposalGenerator;
+        uqBaseVectorProbDensityClass<P_V,P_M>* m_solutionProbDensity;
+        uqBaseVectorRealizerClass   <P_V,P_M>* m_solutionRealizer;
 
-        uqMarkovChainSGClass              <P_V,P_M>* m_mcSeqGenerator;
-        uqBaseVectorProbDensityClass      <P_V,P_M>* m_solutionProbDensity;
-        uqBaseVectorRealizerClass         <P_V,P_M>* m_solutionRealizer;
+        uqMarkovChainSGClass        <P_V,P_M>* m_mcSeqGenerator;
+        uqSequenceOfVectorsClass    <P_V>*     m_chain1;
+        uqArrayOfSequencesClass     <P_V>*     m_chain2;
 };
 
 template<class P_V,class P_M>
@@ -86,25 +81,20 @@ uqCalibProblemClass<P_V,P_M>::uqCalibProblemClass(
   const uqBaseVectorProbDensityClass<P_V,P_M>& likelihoodFunction,
         uqBaseVectorRVClass         <P_V,P_M>& postRv)
   :
-  m_env                   (priorRv.env()),
-  m_prefix                ((std::string)(prefix) + "cal_"),
-  m_optionsDesc           (new po::options_description("UQ Calibration Problem")),
-  m_option_help           (m_prefix + "help"  ),
-  m_option_solver         (m_prefix + "solver"),
-  m_solverString          (UQ_CALIB_PROBLEM_SOLVER_ODV),
-  m_priorRv               (priorRv),
-  m_likelihoodFunction    (likelihoodFunction),
-  m_postRv                (postRv),
-  m_priorParamDensity     (NULL),
-  m_userPriorDensityIsNull(true),
-  m_paramPriorMus         (NULL),
-  m_paramPriorSigmas      (NULL),
-  m_proposalCovMatrix     (NULL),
-  m_proposalDensity       (NULL),
-  m_proposalGenerator     (NULL),
-  m_mcSeqGenerator        (NULL),
-  m_solutionProbDensity   (NULL),
-  m_solutionRealizer      (NULL)
+  m_env                (priorRv.env()),
+  m_prefix             ((std::string)(prefix) + "cal_"),
+  m_optionsDesc        (new po::options_description("UQ Calibration Problem")),
+  m_option_help        (m_prefix + "help"  ),
+  m_option_solver      (m_prefix + "solver"),
+  m_solverString       (UQ_CALIB_PROBLEM_SOLVER_ODV),
+  m_priorRv            (priorRv),
+  m_likelihoodFunction (likelihoodFunction),
+  m_postRv             (postRv),
+  m_solutionProbDensity(NULL),
+  m_solutionRealizer   (NULL),
+  m_mcSeqGenerator     (NULL),
+  m_chain1             (NULL),
+  m_chain2             (NULL)
 {
   if (m_env.rank() == 0) std::cout << "Entering uqCalibProblemClass<P_V,P_M>::constructor()"
                                    << ": prefix = "              << m_prefix
@@ -129,17 +119,18 @@ uqCalibProblemClass<P_V,P_M>::uqCalibProblemClass(
 template <class P_V,class P_M>
 uqCalibProblemClass<P_V,P_M>::~uqCalibProblemClass()
 {
+  if (m_chain1) {
+    m_chain1->clear();
+    delete m_chain1;
+  }
+  if (m_chain2) {
+    m_chain2->clear();
+    delete m_chain2;
+  }
+  if (m_mcSeqGenerator     ) delete m_mcSeqGenerator;
   if (m_solutionRealizer   ) delete m_solutionRealizer;
   if (m_solutionProbDensity) delete m_solutionProbDensity;
-  if (m_mcSeqGenerator     ) delete m_mcSeqGenerator;
-
-  if (m_userPriorDensityIsNull) { 
-    delete m_priorParamDensity;
-    delete m_paramPriorSigmas;
-    delete m_paramPriorMus;
-  }
-
-  if (m_optionsDesc) delete m_optionsDesc;
+  if (m_optionsDesc        ) delete m_optionsDesc;
 }
 
 template<class P_V,class P_M>
@@ -176,7 +167,8 @@ template <class P_V,class P_M>
 void
 uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   const P_V& initialValues,
-  void* transitionKernel)
+  const P_M& proposalCovMatrix,
+  void*      transitionKernel)
 {
   if (m_solutionRealizer   ) delete m_solutionRealizer;
   if (m_solutionProbDensity) delete m_solutionProbDensity;
@@ -198,11 +190,15 @@ uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   m_mcSeqGenerator = new uqMarkovChainSGClass<P_V,P_M>(m_prefix.c_str(),
                                                        m_postRv,
                                                        initialValues,
-                                                       m_proposalCovMatrix,
-                                                       m_proposalDensity,
-                                                       m_proposalGenerator);
-  m_mcSeqGenerator->generateSequence(m_postRv.chain());
-  m_solutionRealizer = new uqBaseVectorRealizerClass<P_V,P_M>(&(m_postRv.chain()));
+                                                       proposalCovMatrix,
+                                                       NULL);
+  m_chain1 = new uqSequenceOfVectorsClass<P_V>(0,m_postRv.imageSpace().zeroVector());
+  //m_chain2 = new uqArrayOfSequencesClass <P_V>(0,m_postRv.imageSpace().zeroVector());
+
+  m_mcSeqGenerator->generateSequence(*m_chain1);
+  m_solutionRealizer = new uqSequentialVectorRealizerClass<P_V,P_M>(m_prefix.c_str(),
+                                                                    m_postRv.imageSpace(),
+                                                                   *m_chain1);
   m_postRv.setRealizer(*m_solutionRealizer);
 
   return;

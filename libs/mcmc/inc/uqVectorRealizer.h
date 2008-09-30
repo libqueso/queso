@@ -34,19 +34,21 @@
 template<class V, class M>
 class uqBaseVectorRealizerClass {
 public:
-           uqBaseVectorRealizerClass(double (*routinePtr)(const void* routineDataPtr, V& nextParamValues),
-                                     const void*  routineDataPtr,
-                                     unsigned int period);
+           uqBaseVectorRealizerClass(const char*                    prefix,
+                                     const uqVectorSpaceClass<V,M>& domainSpace,
+                                     unsigned int                   period);
+
            uqBaseVectorRealizerClass(const uqBaseVectorSequenceClass<V>* chain);
   virtual ~uqBaseVectorRealizerClass();
 
-  virtual unsigned int period     ()               const;
-  virtual void         realization(V& paramValues) const;
+          unsigned int period     ()              const;
+  virtual void         realization(V& nextValues) const = 0;
 
 protected:
-  double (*m_routinePtr)(const void* routineDataPtr, V& nextParamValues);
-  const void*                         m_routineDataPtr;
-  unsigned int                        m_period;
+  const uqEnvironmentClass&      m_env;
+        std::string              m_prefix;
+  const uqVectorSpaceClass<V,M>& m_domainSpace;
+        unsigned int             m_period;
 
   const uqBaseVectorSequenceClass<V>* m_chain;
   mutable unsigned int                m_currentChainPos;
@@ -54,27 +56,14 @@ protected:
 
 template<class V, class M>
 uqBaseVectorRealizerClass<V,M>::uqBaseVectorRealizerClass(
-  double (*routinePtr)(const void* routineDataPtr, V& nextParamValues),
-  const void*  routineDataPtr,
-  unsigned int period)
+  const char*                    prefix,
+  const uqVectorSpaceClass<V,M>& domainSpace,
+  unsigned int                   period)
   :
-  m_routinePtr     (routinePtr),
-  m_routineDataPtr (routineDataPtr),
-  m_period         (period),
-  m_chain          (NULL),
-  m_currentChainPos(0)
-{
-}
-
-template<class V, class M>
-uqBaseVectorRealizerClass<V,M>::uqBaseVectorRealizerClass(
-  const uqBaseVectorSequenceClass<V>* chain)
-  :
-  m_routinePtr     (NULL),
-  m_routineDataPtr (NULL),
-  m_period         (chain->sequenceSize()),
-  m_chain          (chain),
-  m_currentChainPos(0)
+  m_env        (domainSpace.env()),
+  m_prefix     ((std::string)(prefix)+"re_"),
+  m_domainSpace(domainSpace),
+  m_period     (period)
 {
 }
 
@@ -90,16 +79,120 @@ uqBaseVectorRealizerClass<V,M>::period() const
   return m_period;
 }
 
+//*****************************************************
+// Generic class
+//*****************************************************
+template<class V, class M>
+class uqGenericVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
+public:
+  uqGenericVectorRealizerClass(const char*                    prefix,
+                               const uqVectorSpaceClass<V,M>& domainSpace,
+                               unsigned int                   period,
+                               double (*routinePtr)(const void* routineDataPtr, V& nextParamValues),
+                               const void* routineDataPtr);
+ ~uqGenericVectorRealizerClass();
+
+  void realization(V& nextValues) const;
+
+private:
+  double (*m_routinePtr)(const void* routineDataPtr, V& nextParamValues);
+  const void* m_routineDataPtr;
+
+  using uqBaseVectorRealizerClass<V,M>::m_env;
+  using uqBaseVectorRealizerClass<V,M>::m_prefix;
+  using uqBaseVectorRealizerClass<V,M>::m_domainSpace;
+  using uqBaseVectorRealizerClass<V,M>::m_period;
+};
+
+template<class V, class M>
+uqGenericVectorRealizerClass<V,M>::uqGenericVectorRealizerClass(
+  const char*                    prefix,
+  const uqVectorSpaceClass<V,M>& domainSpace,
+  unsigned int                   period,
+  double (*routinePtr)(const void* routineDataPtr, V& nextParamValues),
+  const void* routineDataPtr)
+  :
+  uqBaseVectorRealizerClass<V,M>(((std::string)(prefix)+"gen").c_str(),domainSpace,period),
+  m_routinePtr    (routinePtr),
+  m_routineDataPtr(routineDataPtr)
+{
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Entering uqGenericVectorRealizerClass<V,M>::constructor()"
+              << ": prefix = " << m_prefix
+              << std::endl;
+  }
+
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Leaving uqGenericVectorRealizerClass<V,M>::constructor()"
+              << ": prefix = " << m_prefix
+              << std::endl;
+  }
+}
+
+template<class V, class M>
+uqGenericVectorRealizerClass<V,M>::~uqGenericVectorRealizerClass()
+{
+}
+
 template<class V, class M>
 void
-uqBaseVectorRealizerClass<V,M>::realization(V& nextParamValues) const
+uqGenericVectorRealizerClass<V,M>::realization(V& nextValues) const
 {
-  if (m_routinePtr) {
-    m_routinePtr(m_routineDataPtr, nextParamValues);
+  m_routinePtr(m_routineDataPtr,nextValues);
+  return;
+}
+
+//*****************************************************
+// Sequential class
+//*****************************************************
+template<class V, class M>
+class uqSequentialVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
+public:
+  uqSequentialVectorRealizerClass(const char*                         prefix,
+                                  const uqVectorSpaceClass<V,M>&      domainSpace,
+                                  const uqBaseVectorSequenceClass<V>& chain);
+ ~uqSequentialVectorRealizerClass();
+
+  void realization(V& nextValues) const;
+
+private:
+  const uqBaseVectorSequenceClass<V>& m_chain;
+  mutable unsigned int                m_currentChainPos;
+
+  using uqBaseVectorRealizerClass<V,M>::m_env;
+  using uqBaseVectorRealizerClass<V,M>::m_prefix;
+  using uqBaseVectorRealizerClass<V,M>::m_domainSpace;
+  using uqBaseVectorRealizerClass<V,M>::m_period;
+};
+
+template<class V, class M>
+uqSequentialVectorRealizerClass<V,M>::uqSequentialVectorRealizerClass(
+  const char*                         prefix,
+  const uqVectorSpaceClass<V,M>&      domainSpace,
+  const uqBaseVectorSequenceClass<V>& chain)
+  :
+  uqBaseVectorRealizerClass<V,M>(((std::string)(prefix)+"seq").c_str(),domainSpace,chain.sequenceSize()),
+  m_chain          (chain),
+  m_currentChainPos(0)
+{
+  if ((m_env.verbosity() >= 0) && (m_env.rank() == 0)) {
+    std::cout << "In uqSequentialVectorRealizerClass<V,M>::constructor()"
+              << ": m_chain.sequenceSize() = " << m_chain.sequenceSize()
+              << std::endl;
   }
-  else {
-    m_chain->getPositionValues(m_currentChainPos++,nextParamValues);
-  }
+}
+
+template<class V, class M>
+uqSequentialVectorRealizerClass<V,M>::~uqSequentialVectorRealizerClass()
+{
+}
+
+template<class V, class M>
+void
+uqSequentialVectorRealizerClass<V,M>::realization(V& nextParamValues) const
+{
+  m_chain.getPositionValues(m_currentChainPos++,nextParamValues);
+  if (m_currentChainPos >= m_period) m_currentChainPos = 0;
 
   return;
 }

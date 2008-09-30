@@ -41,7 +41,6 @@ public:
   const   uqVectorSpaceClass          <V,M>& imageSpace    () const;
   const   uqBaseVectorProbDensityClass<V,M>& probDensity   () const;
   const   uqBaseVectorRealizerClass   <V,M>& realizer      () const;
-          uqBaseVectorSequenceClass<V>&      chain         ();
 
   virtual void                               setProbDensity(const uqBaseVectorProbDensityClass<V,M>& probDensity) = 0;
   virtual void                               setRealizer   (const uqBaseVectorRealizerClass   <V,M>& realizer   ) = 0;
@@ -54,27 +53,18 @@ protected:
   const   uqVectorSpaceClass          <V,M>& m_imageSpace;
   const   uqBaseVectorProbDensityClass<V,M>* m_probDensity;
   const   uqBaseVectorRealizerClass   <V,M>* m_realizer;
-
-          bool                               m_chainUse2;
-          uqSequenceOfVectorsClass<V>        m_chain1;
-          uqArrayOfSequencesClass<V>         m_chain2;
 };
 
 template<class V, class M>
 uqBaseVectorRVClass<V,M>::uqBaseVectorRVClass(
   const char*                              prefix,
   const uqVectorSpaceClass          <V,M>& imageSpace)
-  //const uqBaseVectorProbDensityClass<V,M>* probDensity,
-  //const uqBaseVectorRealizerClass   <V,M>* realizer)
   :
   m_env            (imageSpace.env()),
   m_prefix         ((std::string)(prefix)+"rv_"),
   m_imageSpace     (imageSpace),
-  m_probDensity    (NULL),//(probDensity),
-  m_realizer       (NULL),//(realizer)
-  m_chainUse2      (false),
-  m_chain1         (0,m_imageSpace.zeroVector()),
-  m_chain2         (0,m_imageSpace.zeroVector())
+  m_probDensity    (NULL),
+  m_realizer       (NULL)
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqBaseVectorRVClass<V,M>::constructor()"
@@ -92,8 +82,6 @@ uqBaseVectorRVClass<V,M>::uqBaseVectorRVClass(
 template<class V, class M>
 uqBaseVectorRVClass<V,M>::~uqBaseVectorRVClass()
 {
-  m_chain1.clear();
-  m_chain2.clear();
 }
 
 template<class V, class M>
@@ -125,14 +113,6 @@ uqBaseVectorRVClass<V,M>::realizer() const
                       "m_realizer is NULL");
 
   return *m_realizer;
-}
-
-template<class V,class M>
-uqBaseVectorSequenceClass<V>&
-uqBaseVectorRVClass<V,M>::chain()
-{
-  if (m_chainUse2) return m_chain2;
-  return m_chain1;
 }
 
 template <class V, class M>
@@ -250,13 +230,13 @@ public:
                           const uqVectorSpaceClass<V,M>& imageSpace,
                           const V&                       imageMinValues,
                           const V&                       imageMaxValues,
-                          const V&                       imageExpectValues,
-                          const V&                       imageStdDevValues);
+                          const V&                       imageExpectedValues,
+                          const V&                       imageVarianceValues);
   uqGaussianVectorRVClass(const char*                    prefix,
                           const uqVectorSpaceClass<V,M>& imageSpace,
                           const V&                       imageMinValues,
                           const V&                       imageMaxValues,
-                          const V&                       imageExpectValues,
+                          const V&                       imageExpectedValues,
                           const M&                       covMatrix);
   virtual ~uqGaussianVectorRVClass();
 
@@ -277,8 +257,8 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
   const uqVectorSpaceClass<V,M>& imageSpace,
   const V&                       imageMinValues,
   const V&                       imageMaxValues,
-  const V&                       imageExpectValues,
-  const V&                       imageStdDevValues)
+  const V&                       imageExpectedValues,
+  const V&                       imageVarianceValues)
   :
   uqBaseVectorRVClass<V,M>(prefix,imageSpace)
 {
@@ -292,8 +272,8 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
                                                             m_imageSpace,
                                                             imageMinValues,
                                                             imageMaxValues,
-                                                            imageExpectValues,
-                                                            imageStdDevValues);
+                                                            imageExpectedValues,
+                                                            imageVarianceValues);
   m_realizer    = NULL; // FIX ME: complete code
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
@@ -309,7 +289,7 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
   const uqVectorSpaceClass<V,M>& imageSpace,
   const V&                       imageMinValues,
   const V&                       imageMaxValues,
-  const V&                       imageExpectValues,
+  const V&                       imageExpectedValues,
   const M&                       covMatrix)
   :
   uqBaseVectorRVClass<V,M>(prefix,imageSpace)
@@ -324,7 +304,7 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
                                                             m_imageSpace,
                                                             imageMinValues,
                                                             imageMaxValues,
-                                                            imageExpectValues,
+                                                            imageExpectedValues,
                                                             covMatrix);
   m_realizer    = NULL; // FIX ME: complete code
 

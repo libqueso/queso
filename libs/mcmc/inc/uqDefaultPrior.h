@@ -30,7 +30,7 @@ struct
 uqDefault_M2lPriorRoutine_DataType
 {
   const V* paramPriorMus;
-  const V* paramPriorSigmas;
+  const V* paramPriorVariances;
 };
 
 template<class V, class M>
@@ -41,10 +41,11 @@ uqDefault_M2lPriorRoutine(const V& paramValues, const void* functionDataPtr)
     std::cout << "Entering uqDefault_M2lPriorRoutine()" << std::endl;
   }
 
-  const V& paramPriorMus    = *((uqDefault_M2lPriorRoutine_DataType<V,M> *) functionDataPtr)->paramPriorMus;
-  const V& paramPriorSigmas = *((uqDefault_M2lPriorRoutine_DataType<V,M> *) functionDataPtr)->paramPriorSigmas;
+  const V& paramPriorMus       = *((uqDefault_M2lPriorRoutine_DataType<V,M> *) functionDataPtr)->paramPriorMus;
+  const V& paramPriorVariances = *((uqDefault_M2lPriorRoutine_DataType<V,M> *) functionDataPtr)->paramPriorVariances;
 
-  double result = ((paramValues - paramPriorMus)/paramPriorSigmas).norm2Sq();
+  V diffVec(paramValues - paramPriorMus);
+  double result = ((diffVec*diffVec)/paramPriorVariances).sumOfComponents();
 
   if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
     std::cout << "Leaving uqDefault_M2lPriorRoutine()" << std::endl;

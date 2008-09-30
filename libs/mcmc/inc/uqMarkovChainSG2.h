@@ -23,7 +23,7 @@
 template <class P_V,class P_M>
 void
 uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
-  const P_M*                      proposalCovMatrix,
+  const P_M&                      proposalCovMatrix,
   uqBaseVectorSequenceClass<P_V>& workingChain)
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
@@ -86,11 +86,10 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
       //****************************************************
       // Generate chain
       //****************************************************
-      intGenerateSequence(m_chainSizes[chainId],
-                          valuesOf1stPosition,
-                          proposalCovMatrix,
+      intGenerateSequence(valuesOf1stPosition,
                           workingChain,
-                          chainName);
+                          chainName,
+                          m_chainSizes[chainId]);
     }
 
     //****************************************************
@@ -364,11 +363,10 @@ uqMarkovChainSGClass<P_V,P_M>::generateUniformChain(
 template <class P_V,class P_M>
 void
 uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
-  unsigned int                    chainSize,
   const P_V&                      valuesOf1stPosition,
-  const P_M*                      proposalCovMatrix,
   uqBaseVectorSequenceClass<P_V>& workingChain,
-  const std::string&     chainName)
+  const std::string&              chainName,
+  unsigned int                    chainSize)
 {
   if (m_env.rank() == 0) {
     std::cout << "Starting the generation of Markov chain " << chainName

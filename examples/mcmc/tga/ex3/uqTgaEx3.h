@@ -265,12 +265,12 @@ uqAppl(const uqEnvironmentClass& env)
                                       NULL, // All extra columns are of 'double' type
                                       "cal.tab");
 
-  const EpetraExt::DistArray<std::string>& firstColumn   = calTable.stringColumn(0);
-  const P_V&                               minValues     = calTable.doubleColumn(1);
-  const P_V&                               maxValues     = calTable.doubleColumn(2);
-  const P_V&                               expectValues  = calTable.doubleColumn(3);
-  const P_V&                               stdDevValues  = calTable.doubleColumn(4);
-  const P_V&                               initialValues = calTable.doubleColumn(5);
+  const EpetraExt::DistArray<std::string>& firstColumn    = calTable.stringColumn(0);
+  const P_V&                               minValues      = calTable.doubleColumn(1);
+  const P_V&                               maxValues      = calTable.doubleColumn(2);
+  const P_V&                               expectedValues = calTable.doubleColumn(3);
+  const P_V&                               varianceValues = calTable.doubleColumn(4);
+  const P_V&                               initialValues  = calTable.doubleColumn(5);
 
   //******************************************************
   // Usually, spaces are the same throughout different problems.
@@ -291,8 +291,8 @@ uqAppl(const uqEnvironmentClass& env)
                                                 paramSpace,
                                                 minValues,
                                                 maxValues,
-                                                expectValues,
-                                                stdDevValues);
+                                                expectedValues,
+                                                varianceValues);
 
   // Likelihood function object: -2*ln[likelihood]
   calibLikelihoodRoutine_DataType<P_V,P_M> calibLikelihoodRoutine_Data;
@@ -307,10 +307,10 @@ uqAppl(const uqEnvironmentClass& env)
                                                                       true); // the routine computes [-2.*ln(Likelihood)]
 
   // Posterior vector rv
-  uqGenericVectorRVClass<P_V,P_M> calibPostRv("post_",     // Extra prefix before the default "rv_" prefix
+  uqGenericVectorRVClass<P_V,P_M> calibPostRv("post_",    // Extra prefix before the default "rv_" prefix
                                               paramSpace,
-                                              NULL,        // pdf: internally set by the solution process
-                                              NULL);
+                                              NULL,       // pdf:      internally set by the solution process
+                                              NULL);      // realizer: internally set by the solution process
 
   // Calibration problem
   uqCalibProblemClass<P_V,P_M> calibProblem("", // No extra prefix before the default "cal_" prefix
@@ -319,7 +319,11 @@ uqAppl(const uqEnvironmentClass& env)
                                             calibPostRv);
 
   // Solve the calibration problem
-  calibProblem.solveWithBayesMarkovChain(initialValues,NULL); // use default kernel from library
+  P_M* calibProposalCovMatrix = calibPostRv.imageSpace().newGaussianMatrix(calibPriorRv.probDensity().domainVarianceValues(),
+                                                                           initialValues);
+  calibProblem.solveWithBayesMarkovChain(initialValues,
+                                        *calibProposalCovMatrix,
+                                         NULL); // use default kernel from library
 
   //******************************************************
   // Step 3 of 3: deal with the propagation problem
@@ -353,6 +357,7 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
   // Release memory before leaving routine.
   //******************************************************
+  delete calibProposalCovMatrix;
 
   if (env.rank() == 0) {
     std::cout << "Finishing run of 'uqTgaEx3' example"

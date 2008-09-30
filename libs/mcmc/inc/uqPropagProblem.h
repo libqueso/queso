@@ -61,9 +61,12 @@ private:
   const uqVectorFunctionClass       <P_V,P_M,Q_V,Q_M>& m_qoiFunction;
         uqBaseVectorRVClass         <Q_V,Q_M>&         m_qoiRv;
 
-        uqMonteCarloSGClass         <P_V,P_M,Q_V,Q_M>* m_mcSeqGenerator;
         uqBaseVectorProbDensityClass<Q_V,Q_M>*         m_solutionProbDensity;
         uqBaseVectorRealizerClass   <Q_V,Q_M>*         m_solutionRealizer;
+
+        uqMonteCarloSGClass         <P_V,P_M,Q_V,Q_M>* m_mcSeqGenerator;
+        uqSequenceOfVectorsClass    <P_V>*             m_chain1;
+        uqArrayOfSequencesClass     <P_V>*             m_chain2;
 };
 
 template<class P_V,class P_M,class Q_V,class Q_M>
@@ -85,9 +88,11 @@ uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::uqPropagProblemClass(
   m_paramRv            (paramRv),
   m_qoiFunction        (qoiFunction),
   m_qoiRv              (qoiRv),
-  m_mcSeqGenerator     (NULL),
   m_solutionProbDensity(NULL),
-  m_solutionRealizer   (NULL)
+  m_solutionRealizer   (NULL),
+  m_mcSeqGenerator     (NULL),
+  m_chain1             (NULL),
+  m_chain2             (NULL)
 {
   if (m_env.rank() == 0) std::cout << "Entering uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::constructor()"
                                    << ": prefix = "              << m_prefix
@@ -110,10 +115,17 @@ uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::uqPropagProblemClass(
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::~uqPropagProblemClass()
 {
+  if (m_chain1) {
+    m_chain1->clear();
+    delete m_chain1;
+  }
+  if (m_chain2) {
+    m_chain2->clear();
+    delete m_chain2;
+  }
+  if (m_mcSeqGenerator     ) delete m_mcSeqGenerator;
   if (m_solutionRealizer   ) delete m_solutionRealizer;
   if (m_solutionProbDensity) delete m_solutionProbDensity;
-  if (m_mcSeqGenerator     ) delete m_mcSeqGenerator;
-
   if (m_optionsDesc        ) delete m_optionsDesc;
 }
 
@@ -157,7 +169,14 @@ uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarloKde()
                                                               m_qoiFunction,
                                                               m_qoiRv);
 
-  m_mcSeqGenerator->generateSequence(m_qoiRv.chain());
+  m_chain1 = new uqSequenceOfVectorsClass<P_V>(0,m_qoiRv.imageSpace().zeroVector());
+  //m_chain2 = new uqArrayOfSequencesClass <P_V>(0,m_qoiRv.imageSpace().zeroVector());
+
+  m_mcSeqGenerator->generateSequence(*m_chain1);
+  m_solutionRealizer = new uqSequentialVectorRealizerClass<P_V,P_M>(m_prefix.c_str(),
+                                                                    m_qoiRv.imageSpace(),
+                                                                   *m_chain1);
+  m_qoiRv.setRealizer(*m_solutionRealizer);
 
   return;
 }

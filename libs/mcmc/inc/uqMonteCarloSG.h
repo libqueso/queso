@@ -40,10 +40,10 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 class uqMonteCarloSGClass
 {
 public:
-  uqMonteCarloSGClass(const char*                                   prefix,         /*! Prefix.                        */
-                      const uqBaseVectorRVClass  <P_V,P_M>&         paramRv,        /*! The parameter rv.              */
-                      const uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunctionObj, /*! The qoi function.              */
-                            uqBaseVectorRVClass  <Q_V,Q_M>&         qoiRv);         /*! The qoi rv.                    */
+  uqMonteCarloSGClass(const char*                                   prefix,         /*! Prefix.           */
+                      const uqBaseVectorRVClass  <P_V,P_M>&         paramRv,        /*! The parameter rv. */
+                      const uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunctionObj, /*! The qoi function. */
+                            uqBaseVectorRVClass  <Q_V,Q_M>&         qoiRv);         /*! The qoi rv.       */
  ~uqMonteCarloSGClass();
 
   void generateSequence   (uqBaseVectorSequenceClass<P_V>& workingSeq);
@@ -226,6 +226,12 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence(
   //****************************************************
   // Generate sequence of qoi values
   //****************************************************
+  if ((m_env.verbosity() >= 0) && (m_env.rank() == 0)) {
+    std::cout << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence()"
+              << ": m_numSamples = "                << m_numSamples
+              << ", paramRv.realizer().period() = " << paramRv.realizer().period()
+              << std::endl;
+  }
   unsigned int actualNumSamples = std::min(m_numSamples,paramRv.realizer().period());
   intGenerateSequence(paramRv,
                       workingSeq,
