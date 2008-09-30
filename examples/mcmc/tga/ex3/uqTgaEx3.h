@@ -257,6 +257,22 @@ uqAppl(const uqEnvironmentClass& env)
   fclose(inp);
 
   //******************************************************
+  // Read Ascii file with important information on the calibration problem.
+  //******************************************************
+  uqAsciiTableClass<P_V,P_M> calTable(env,
+                                      2,    // # of rows and, for the case of parallel environments, the row map
+                                      5,    // # of cols after 'parameter name': min + max + mean + std + initial value for Markov chain
+                                      NULL, // All extra columns are of 'double' type
+                                      "cal.tab");
+
+  const EpetraExt::DistArray<std::string>& firstColumn   = calTable.stringColumn(0);
+  const P_V&                               minValues     = calTable.doubleColumn(1);
+  const P_V&                               maxValues     = calTable.doubleColumn(2);
+  const P_V&                               expectValues  = calTable.doubleColumn(3);
+  const P_V&                               stdDevValues  = calTable.doubleColumn(4);
+  const P_V&                               initialValues = calTable.doubleColumn(5);
+
+  //******************************************************
   // Usually, spaces are the same throughout different problems.
   // If this is the case, we can instantiate them here, just once.
   //******************************************************
@@ -267,40 +283,16 @@ uqAppl(const uqEnvironmentClass& env)
 
 
   //******************************************************
-  // Read Ascii file with important information on the calibration problem.
-  //******************************************************
-  uqAsciiTableClass<P_V,P_M> calTable(env,
-                                      paramSpace, // # of rows and the row map
-                                      5,          // # of cols after 'parameter name': min + max + mean + std + initial value for Markov chain
-                                      NULL,       // All extra columns are of 'double' type
-                                      "cal.tab");
-
-  EpetraExt::DistArray<std::string>* firstColumn   = NULL;
-  P_V*                               minValues     = NULL;
-  P_V*                               maxValues     = NULL;
-  P_V*                               expectValues  = NULL;
-  P_V*                               stdDevValues  = NULL;
-  P_V*                               initialValues = NULL;
-
-  calTable.getColumn(0,firstColumn,NULL         );
-  calTable.getColumn(1,NULL,       minValues    );
-  calTable.getColumn(2,NULL,       maxValues    );
-  calTable.getColumn(3,NULL,       expectValues );
-  calTable.getColumn(4,NULL,       stdDevValues );
-  calTable.getColumn(4,NULL,       initialValues);
-
-  //******************************************************
   // Step 2 of 3: deal with the calibration problem
   //******************************************************
 
   // Prior vector rv
-  uqGaussianVectorRVClass<P_V,P_M> calibPriorRv("prior_",      // Extra prefix before the default "rv_" prefix
+  uqGaussianVectorRVClass<P_V,P_M> calibPriorRv("prior_", // Extra prefix before the default "rv_" prefix
                                                 paramSpace,
                                                 minValues,
                                                 maxValues,
-                                                NULL,
                                                 expectValues,
-                                                stdDevValues); // cov matrix: use default from library
+                                                stdDevValues);
 
   // Likelihood function object: -2*ln[likelihood]
   calibLikelihoodRoutine_DataType<P_V,P_M> calibLikelihoodRoutine_Data;
@@ -310,8 +302,6 @@ uqAppl(const uqEnvironmentClass& env)
   calibLikelihoodRoutine_Data.Me1       = &Me1; // relative masses
   uqGenericVectorProbDensityClass<P_V,P_M> calibLikelihoodFunctionObj("prior_", // Extra prefix before the default "genpd_" prefix
                                                                       paramSpace,
-                                                                      NULL,
-                                                                      NULL,
                                                                       calibLikelihoodRoutine<P_V,P_M>,
                                                                       (void *) &calibLikelihoodRoutine_Data,
                                                                       true); // the routine computes [-2.*ln(Likelihood)]
@@ -329,7 +319,7 @@ uqAppl(const uqEnvironmentClass& env)
                                             calibPostRv);
 
   // Solve the calibration problem
-  calibProblem.solveWithBayesMarkovChain(NULL); // use default kernel from library
+  calibProblem.solveWithBayesMarkovChain(initialValues,NULL); // use default kernel from library
 
   //******************************************************
   // Step 3 of 3: deal with the propagation problem

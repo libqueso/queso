@@ -40,7 +40,8 @@ public:
                             uqBaseVectorRVClass         <P_V,P_M>& postRv);
  ~uqCalibProblemClass();
 
-        void solveWithBayesMarkovChain(void* transitionKernel);
+        void solveWithBayesMarkovChain(const P_V& initialValues,
+                                       void* transitionKernel);
 
         void print                    (std::ostream& os) const;
 
@@ -173,7 +174,9 @@ void
 
 template <class P_V,class P_M>
 void
-uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain(void* transitionKernel)
+uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
+  const P_V& initialValues,
+  void* transitionKernel)
 {
   if (m_solutionRealizer   ) delete m_solutionRealizer;
   if (m_solutionProbDensity) delete m_solutionProbDensity;
@@ -190,21 +193,11 @@ uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain(void* transitionKernel)
                                                                         &m_priorRv.probDensity(),
                                                                         &m_likelihoodFunction);
   m_postRv.setProbDensity(*m_solutionProbDensity);
-#if 0
-  m_postRv.setComponent(0, // GAMBIARRA COMENTADA
-                        m_priorRv.component(0).minValue(),
-                        m_priorRv.component(0).maxValue(),
-                        0.,
-                        INFINITY);
-  m_postRv.setComponent(1, // GAMBIARRA COMENTADA
-                        m_priorRv.component(1).minValue(),
-                        m_priorRv.component(1).maxValue(),
-                        0.,
-                        INFINITY);
-#endif
+
   // Markov Chain step
   m_mcSeqGenerator = new uqMarkovChainSGClass<P_V,P_M>(m_prefix.c_str(),
                                                        m_postRv,
+                                                       initialValues,
                                                        m_proposalCovMatrix,
                                                        m_proposalDensity,
                                                        m_proposalGenerator);

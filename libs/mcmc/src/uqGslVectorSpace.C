@@ -28,6 +28,13 @@ uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass>::newVector() const
 }
 
 template<>
+uqGslVectorClass*
+uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass>::newVector(double value) const
+{
+  return new uqGslVectorClass(m_env,*m_map,value);
+}
+
+template<>
 uqGslMatrixClass*
 uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass>::newMatrix() const
 {

@@ -248,19 +248,22 @@ class uqGaussianVectorRVClass : public uqBaseVectorRVClass<V,M> {
 public:
   uqGaussianVectorRVClass(const char*                    prefix,
                           const uqVectorSpaceClass<V,M>& imageSpace,
-                          const V*                       minValues,
-                          const V*                       maxValues,
-                          const M*                       covMatrix,
-                          const V*                       expectValues,  // GAMBIARRA
-                          const V*                       stdDevValues); // GAMBIARRA
+                          const V&                       imageMinValues,
+                          const V&                       imageMaxValues,
+                          const V&                       imageExpectValues,
+                          const V&                       imageStdDevValues);
+  uqGaussianVectorRVClass(const char*                    prefix,
+                          const uqVectorSpaceClass<V,M>& imageSpace,
+                          const V&                       imageMinValues,
+                          const V&                       imageMaxValues,
+                          const V&                       imageExpectValues,
+                          const M&                       covMatrix);
   virtual ~uqGaussianVectorRVClass();
 
           void setProbDensity(const uqBaseVectorProbDensityClass<V,M>& probDensity);
           void setRealizer   (const uqBaseVectorRealizerClass   <V,M>& realizer   );
 
 private:
-  const M* m_covMatrix;
-
   using uqBaseVectorRVClass<V,M>::m_env;
   using uqBaseVectorRVClass<V,M>::m_prefix;
   using uqBaseVectorRVClass<V,M>::m_imageSpace;
@@ -272,32 +275,61 @@ template<class V, class M>
 uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
   const char*                    prefix,
   const uqVectorSpaceClass<V,M>& imageSpace,
-  const V*                       minValues,
-  const V*                       maxValues,
-  const M*                       covMatrix,
-  const V*                       expectValues,
-  const V*                       stdDevValues)
+  const V&                       imageMinValues,
+  const V&                       imageMaxValues,
+  const V&                       imageExpectValues,
+  const V&                       imageStdDevValues)
   :
-  uqBaseVectorRVClass<V,M>(prefix,imageSpace),
-  m_covMatrix             (covMatrix)
+  uqBaseVectorRVClass<V,M>(prefix,imageSpace)
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqGaussianVectorRVClass<V,M>::constructor()"
+    std::cout << "Entering uqGaussianVectorRVClass<V,M>::constructor() [1]"
               << ": prefix = " << m_prefix
               << std::endl;
   }
 
   m_probDensity = new uqGaussianVectorProbDensityClass<V,M>(m_prefix.c_str(),
                                                             m_imageSpace,
-                                                            minValues,
-                                                            maxValues,
-                                                            m_covMatrix,
-                                                            expectValues,
-                                                            stdDevValues);
-  m_realizer    = NULL; // GAMBIARRA
+                                                            imageMinValues,
+                                                            imageMaxValues,
+                                                            imageExpectValues,
+                                                            imageStdDevValues);
+  m_realizer    = NULL; // FIX ME: complete code
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqGaussianVectorRVClass<V,M>::constructor()"
+    std::cout << "Leaving uqGaussianVectorRVClass<V,M>::constructor() [1]"
+              << ": prefix = " << m_prefix
+              << std::endl;
+  }
+}
+
+template<class V, class M>
+uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
+  const char*                    prefix,
+  const uqVectorSpaceClass<V,M>& imageSpace,
+  const V&                       imageMinValues,
+  const V&                       imageMaxValues,
+  const V&                       imageExpectValues,
+  const M&                       covMatrix)
+  :
+  uqBaseVectorRVClass<V,M>(prefix,imageSpace)
+{
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Entering uqGaussianVectorRVClass<V,M>::constructor() [2]"
+              << ": prefix = " << m_prefix
+              << std::endl;
+  }
+
+  m_probDensity = new uqGaussianVectorProbDensityClass<V,M>(m_prefix.c_str(),
+                                                            m_imageSpace,
+                                                            imageMinValues,
+                                                            imageMaxValues,
+                                                            imageExpectValues,
+                                                            covMatrix);
+  m_realizer    = NULL; // FIX ME: complete code
+
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Leaving uqGaussianVectorRVClass<V,M>::constructor() [2]"
               << ": prefix = " << m_prefix
               << std::endl;
   }

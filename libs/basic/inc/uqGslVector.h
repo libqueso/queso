@@ -28,6 +28,7 @@ class uqGslVectorClass : public uqVectorClass
 public:
   uqGslVectorClass();
   uqGslVectorClass(const uqEnvironmentClass& env, const Epetra_Map& map);
+  uqGslVectorClass(const uqEnvironmentClass& env, const Epetra_Map& map, double value);
   uqGslVectorClass(const uqEnvironmentClass& env, double d1, double d2, const Epetra_Map& map); // MATLAB linspace
   uqGslVectorClass(const uqGslVectorClass&     v, double d1, double d2);                        // MATLAB linspace
   uqGslVectorClass(const uqGslVectorClass& y);

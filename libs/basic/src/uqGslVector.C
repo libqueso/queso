@@ -43,6 +43,18 @@ uqGslVectorClass::uqGslVectorClass(const uqEnvironmentClass& env, const Epetra_M
                       "null vector generated");
 }
 
+uqGslVectorClass::uqGslVectorClass(const uqEnvironmentClass& env, const Epetra_Map& map, double value)
+  :
+  uqVectorClass(env,map),
+  m_vec(gsl_vector_calloc(map.NumGlobalElements()))
+{
+  UQ_FATAL_TEST_MACRO((m_vec == NULL),
+                      m_env.rank(),
+                      "uqGslVectorClass::constructor()",
+                      "null vector generated");
+  this->cwSet(value);
+}
+
 uqGslVectorClass::uqGslVectorClass(const uqEnvironmentClass& env, double d1, double d2, const Epetra_Map& map)
   :
   uqVectorClass(env,map),

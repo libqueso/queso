@@ -45,6 +45,7 @@ public:
 
   const   V&                        zeroVector                     ()                         const;
           V*                        newVector                      ()                         const; // See template specialization
+          V*                        newVector                      (double value)             const; // See template specialization
           V*                        newVector                      (const V& v)               const;
           M*                        newMatrix                      ()                         const; // See template specialization
           M*                        newDiagMatrix                  (const V& v)               const;

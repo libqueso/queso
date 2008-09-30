@@ -75,6 +75,7 @@ class uqMarkovChainSGClass
 public:
   uqMarkovChainSGClass(const char*                                   prefix,                /*! Prefix.                        */
                        const uqBaseVectorRVClass          <P_V,P_M>& sourceRv,              /*! The source random variable.    */
+                       const P_V&                                    initialValues,         /*! */
                              P_M*                                    proposalCovMatrix,     /*! */
                        const uqProposalDensity_BaseClass  <P_V,P_M>* proposalDensityObj,    /*! */
                        const uqProposalGenerator_BaseClass<P_V,P_M>* proposalGeneratorObj); /*! */
@@ -234,6 +235,7 @@ template<class P_V,class P_M>
 uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   const char*                                   prefix,
   const uqBaseVectorRVClass          <P_V,P_M>& sourceRv,
+  const P_V&                                    initialValues,
         P_M*                                    proposalCovMatrix,
   const uqProposalDensity_BaseClass  <P_V,P_M>* proposalDensityObj,
   const uqProposalGenerator_BaseClass<P_V,P_M>* proposalGeneratorObj)
@@ -275,7 +277,7 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   m_option_am_adaptInterval              (m_prefix + "am_adaptInterval"              ),
   m_option_am_eta                        (m_prefix + "am_eta"                        ),
   m_option_am_epsilon                    (m_prefix + "am_epsilon"                    ),
-  m_paramInitials                        (m_paramSpace.zeroVector()),//sourceRv.initialValues()),
+  m_paramInitials                        (initialValues),
   m_proposalIsSymmetric                  (true),
   m_chainType                            (UQ_MAC_SG_CHAIN_TYPE_ODV),
   m_chainNumber                          (UQ_MAC_SG_CHAIN_NUMBER_ODV),
@@ -324,8 +326,6 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
 {
   if (m_env.rank() == 0) std::cout << "Entering uqMarkovChainSGClass<P_V,P_M>::constructor()"
                                    << std::endl;
-  m_paramInitials[0] = 2.57e+11; // GAMBIARRA
-  m_paramInitials[1] = 1.97e+05; // GAMBIARRA
 
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
