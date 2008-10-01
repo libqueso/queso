@@ -189,6 +189,15 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarloKde()
 {
+  if (m_skipSolution) {
+    if ((m_env.rank() == 0)) {
+      std::cout << "In uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarloKde()"
+                << ": skipping solution, as requested by user"
+                << std::endl;
+    }
+    return;
+  }
+
   // Instantiate the distribution calculator.
   m_mcSeqGenerator = new uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>(m_prefix.c_str(),
                                                               m_paramRv,

@@ -24,9 +24,9 @@
 
 // Version "0.1"  on "Aug/11/2008"
 // Version "0.11" on "Aug/15/2008"
-// Version "0.2"  on "Sep/29/2008"
+// Version "0.2"  on "Oct/01/2008"
 #define QUESO_TOOLKIT_MCMC_TOOL_CURRENT_VERSION "0.20"
-#define QUESO_TOOLKIT_MCMC_TOOL_RELEASE_DATE    "Sep/29/2008"
+#define QUESO_TOOLKIT_MCMC_TOOL_RELEASE_DATE    "Oct/01/2008"
 
 uqEnvOptionsStruct::uqEnvOptionsStruct(
   unsigned int verbosity,

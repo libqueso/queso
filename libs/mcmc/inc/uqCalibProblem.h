@@ -196,15 +196,18 @@ uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   const P_M& proposalCovMatrix,
   void*      transitionKernel)
 {
+  if (m_skipSolution) {
+    if ((m_env.rank() == 0)) {
+      std::cout << "In uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain()"
+                << ": skipping solution, as requested by user"
+                << std::endl;
+    }
+    return;
+  }
+
   if (m_solutionRealizer   ) delete m_solutionRealizer;
   if (m_solutionProbDensity) delete m_solutionProbDensity;
   if (m_mcSeqGenerator     ) delete m_mcSeqGenerator;
-
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "In uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain()"
-              << ", m_priorRv contents: " << m_priorRv
-              << std::endl;
-  }
 
   // Bayesian step
   m_solutionProbDensity = new uqBayesianVectorProbDensityClass<P_V,P_M>(m_prefix.c_str(),
