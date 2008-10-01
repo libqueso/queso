@@ -35,11 +35,11 @@ public:
                     const std::string&        fileName);
  ~uqAsciiTableClass();
 
-  unsigned int numRows  ()                                              const;
-  unsigned int numCols  ()                                              const;
+  unsigned int numRows()                                                const;
+  unsigned int numCols()                                                const;
   const EpetraExt::DistArray<std::string>& stringColumn(unsigned int j) const;
   const V&                                 doubleColumn(unsigned int j) const;
-  void         print    (std::ostream& os)                              const;
+  void         print  (std::ostream& os)                                const;
 
 private:
   const uqEnvironmentClass&                       m_env;

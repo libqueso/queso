@@ -38,7 +38,7 @@ public:
                                      const uqVectorSpaceClass<V,M>& domainSpace,
                                      unsigned int                   period);
 
-           uqBaseVectorRealizerClass(const uqBaseVectorSequenceClass<V>* chain);
+           uqBaseVectorRealizerClass(const uqBaseVectorSequenceClass<V,M>* chain);
   virtual ~uqBaseVectorRealizerClass();
 
           unsigned int period     ()              const;
@@ -50,8 +50,8 @@ protected:
   const uqVectorSpaceClass<V,M>& m_domainSpace;
         unsigned int             m_period;
 
-  const uqBaseVectorSequenceClass<V>* m_chain;
-  mutable unsigned int                m_currentChainPos;
+  const uqBaseVectorSequenceClass<V,M>* m_chain;
+  mutable unsigned int                  m_currentChainPos;
 };
 
 template<class V, class M>
@@ -148,16 +148,15 @@ uqGenericVectorRealizerClass<V,M>::realization(V& nextValues) const
 template<class V, class M>
 class uqSequentialVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
 public:
-  uqSequentialVectorRealizerClass(const char*                         prefix,
-                                  const uqVectorSpaceClass<V,M>&      domainSpace,
-                                  const uqBaseVectorSequenceClass<V>& chain);
+  uqSequentialVectorRealizerClass(const char*                           prefix,
+                                  const uqBaseVectorSequenceClass<V,M>& chain);
  ~uqSequentialVectorRealizerClass();
 
   void realization(V& nextValues) const;
 
 private:
-  const uqBaseVectorSequenceClass<V>& m_chain;
-  mutable unsigned int                m_currentChainPos;
+  const uqBaseVectorSequenceClass<V,M>& m_chain;
+  mutable unsigned int                  m_currentChainPos;
 
   using uqBaseVectorRealizerClass<V,M>::m_env;
   using uqBaseVectorRealizerClass<V,M>::m_prefix;
@@ -167,11 +166,10 @@ private:
 
 template<class V, class M>
 uqSequentialVectorRealizerClass<V,M>::uqSequentialVectorRealizerClass(
-  const char*                         prefix,
-  const uqVectorSpaceClass<V,M>&      domainSpace,
-  const uqBaseVectorSequenceClass<V>& chain)
+  const char*                           prefix,
+  const uqBaseVectorSequenceClass<V,M>& chain)
   :
-  uqBaseVectorRealizerClass<V,M>(((std::string)(prefix)+"seq").c_str(),domainSpace,chain.sequenceSize()),
+  uqBaseVectorRealizerClass<V,M>(((std::string)(prefix)+"seq").c_str(),chain.vectorSpace(),chain.sequenceSize()),
   m_chain          (chain),
   m_currentChainPos(0)
 {

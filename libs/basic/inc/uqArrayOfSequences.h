@@ -23,13 +23,13 @@
 #include <uqVectorSequence.h>
 #include <EpetraExt_DistArray.h>
 
-template <class V>
-class uqArrayOfSequencesClass : public uqBaseVectorSequenceClass<V>
+template <class V, class M>
+class uqArrayOfSequencesClass : public uqBaseVectorSequenceClass<V,M>
 {
 public:
 
 
-  uqArrayOfSequencesClass(unsigned int sequenceSize, const V& vectorExample);
+  uqArrayOfSequencesClass(const uqVectorSpaceClass<V,M>& vectorSpace, unsigned int sequenceSize);
  ~uqArrayOfSequencesClass();
 
         unsigned int sequenceSize      () const;
@@ -130,24 +130,24 @@ private:
 
   EpetraExt::DistArray<uqScalarSequenceClass<double>*> m_scalarSequences;
 
-  using uqBaseVectorSequenceClass<V>::m_env;
-  using uqBaseVectorSequenceClass<V>::m_vectorExample;
-  using uqBaseVectorSequenceClass<V>::m_fftObj;
+  using uqBaseVectorSequenceClass<V,M>::m_env;
+  using uqBaseVectorSequenceClass<V,M>::m_vectorSpace;
+  using uqBaseVectorSequenceClass<V,M>::m_fftObj;
 };
 
-template <class V>
-uqArrayOfSequencesClass<V>::uqArrayOfSequencesClass(
-  unsigned int sequenceSize,
-  const V&     vectorExample)
+template <class V, class M>
+uqArrayOfSequencesClass<V,M>::uqArrayOfSequencesClass(
+  const uqVectorSpaceClass<V,M>& vectorSpace,
+  unsigned int                   sequenceSize)
   :
-  uqBaseVectorSequenceClass<V>(sequenceSize,vectorExample),
-  m_scalarSequences           (vectorExample.map(),1)
+  uqBaseVectorSequenceClass<V,M>(vectorSpace,sequenceSize),
+  m_scalarSequences             (m_vectorSpace.map(),1)
 {
 
-  //if (m_env.rank() == 0) std::cout << "Entering uqArrayOfSequencesClass<V>::constructor()"
+  //if (m_env.rank() == 0) std::cout << "Entering uqArrayOfSequencesClass<V,M>::constructor()"
   //                                 << std::endl;
 
-  //if (m_env.rank() == 0) std::cout << "In uqArrayOfSequencesClass<V>::constructor()"
+  //if (m_env.rank() == 0) std::cout << "In uqArrayOfSequencesClass<V,M>::constructor()"
   //                                 << "\n sequenceSize = "                 << sequenceSize
   //                                 << "\n m_scalarSequences.MyLength() = " << m_scalarSequences.MyLength()
   //                                 << std::endl;
@@ -156,30 +156,30 @@ uqArrayOfSequencesClass<V>::uqArrayOfSequencesClass(
     m_scalarSequences(i,0) = new uqScalarSequenceClass<double>(m_env,sequenceSize);
   }
 
-  //if (m_env.rank() == 0) std::cout << "Leaving uqArrayOfSequencesClass<V>::constructor()"
+  //if (m_env.rank() == 0) std::cout << "Leaving uqArrayOfSequencesClass<V,M>::constructor()"
   //                                 << std::endl;
 }
 
-template <class V>
-uqArrayOfSequencesClass<V>::~uqArrayOfSequencesClass()
+template <class V, class M>
+uqArrayOfSequencesClass<V,M>::~uqArrayOfSequencesClass()
 {
   for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
     if (m_scalarSequences(i,0)) delete m_scalarSequences(i,0);
   }
 }
 
-template <class V>
+template <class V, class M>
 unsigned int
-uqArrayOfSequencesClass<V>::sequenceSize() const
+uqArrayOfSequencesClass<V,M>::sequenceSize() const
 {
-  uqArrayOfSequencesClass<V>* tmp = const_cast<uqArrayOfSequencesClass<V>*>(this);
+  uqArrayOfSequencesClass<V,M>* tmp = const_cast<uqArrayOfSequencesClass<V,M>*>(this);
 
   return tmp->m_scalarSequences(0,0)->sequenceSize();
 }
 
-template <class V>
+template <class V, class M>
 void
-uqArrayOfSequencesClass<V>::resizeSequence(unsigned int newSequenceSize)
+uqArrayOfSequencesClass<V,M>::resizeSequence(unsigned int newSequenceSize)
 {
   if (newSequenceSize != this->sequenceSize()) {
     for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
@@ -190,9 +190,9 @@ uqArrayOfSequencesClass<V>::resizeSequence(unsigned int newSequenceSize)
   return;
 }
 
-template <class V>
+template <class V, class M>
 void
-uqArrayOfSequencesClass<V>::resetValues(
+uqArrayOfSequencesClass<V,M>::resetValues(
   unsigned int initialPos,
   unsigned int numPos)
 {
@@ -203,9 +203,9 @@ uqArrayOfSequencesClass<V>::resetValues(
   return;
 }
 
-template <class V>
+template <class V, class M>
 void
-uqArrayOfSequencesClass<V>::erasePositions(
+uqArrayOfSequencesClass<V,M>::erasePositions(
   unsigned int initialPos,
   unsigned int numPos)
 {
@@ -219,11 +219,11 @@ uqArrayOfSequencesClass<V>::erasePositions(
   return;
 }
 
-template <class V>
+template <class V, class M>
 void
-uqArrayOfSequencesClass<V>::getPositionValues(unsigned int posId, V& vec) const
+uqArrayOfSequencesClass<V,M>::getPositionValues(unsigned int posId, V& vec) const
 {
-  uqArrayOfSequencesClass<V>* tmp = const_cast<uqArrayOfSequencesClass<V>*>(this);
+  uqArrayOfSequencesClass<V,M>* tmp = const_cast<uqArrayOfSequencesClass<V,M>*>(this);
   for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
     vec[i] = (*(tmp->m_scalarSequences(i,0)))[posId];
   }
@@ -231,9 +231,9 @@ uqArrayOfSequencesClass<V>::getPositionValues(unsigned int posId, V& vec) const
   return;
 }
 
-template <class V>
+template <class V, class M>
 void
-uqArrayOfSequencesClass<V>::setPositionValues(unsigned int posId, const V& vec)
+uqArrayOfSequencesClass<V,M>::setPositionValues(unsigned int posId, const V& vec)
 {
   for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
     uqScalarSequenceClass<double>& seq = *(m_scalarSequences(i,0));
@@ -243,9 +243,9 @@ uqArrayOfSequencesClass<V>::setPositionValues(unsigned int posId, const V& vec)
   return;
 }
 
-template <class V>
+template <class V, class M>
 void
-uqArrayOfSequencesClass<V>::setGaussian(const gsl_rng* rng, const V& meanVec, const V& stdDevVec)
+uqArrayOfSequencesClass<V,M>::setGaussian(const gsl_rng* rng, const V& meanVec, const V& stdDevVec)
 {
   for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
     uqScalarSequenceClass<double>& seq = *(m_scalarSequences(i,0));
@@ -254,9 +254,9 @@ uqArrayOfSequencesClass<V>::setGaussian(const gsl_rng* rng, const V& meanVec, co
   return;
 }
 
-template <class V>
+template <class V, class M>
 void
-uqArrayOfSequencesClass<V>::setUniform(const gsl_rng* rng, const V& aVec, const V& bVec)
+uqArrayOfSequencesClass<V,M>::setUniform(const gsl_rng* rng, const V& aVec, const V& bVec)
 {
   for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
     uqScalarSequenceClass<double>& seq = *(m_scalarSequences(i,0));
@@ -265,9 +265,9 @@ uqArrayOfSequencesClass<V>::setUniform(const gsl_rng* rng, const V& aVec, const 
   return;
 }
 
-template <class V>
+template <class V, class M>
 void
-uqArrayOfSequencesClass<V>::mean(
+uqArrayOfSequencesClass<V,M>::mean(
   unsigned int initialPos,
   unsigned int numPos,
   V&           meanVec) const
@@ -277,17 +277,17 @@ uqArrayOfSequencesClass<V>::mean(
               ((initialPos+numPos-1) <= (this->sequenceSize()-1)));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqArrayOfSequencesClass<V>::mean()",
+                      "uqArrayOfSequencesClass<V,M>::mean()",
                       "invalid initial position or number of positions");
 
   bRC = (this->vectorSize() == meanVec.size());
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqArrayOfSequencesClass<V>::mean()",
+                      "uqArrayOfSequencesClass<V,M>::mean()",
                       "incompatible sizes between meanVec vector and vectors in sequence");
 
   meanVec.cwSet(0.);
-  uqArrayOfSequencesClass<V>* tmp = const_cast<uqArrayOfSequencesClass<V>*>(this);
+  uqArrayOfSequencesClass<V,M>* tmp = const_cast<uqArrayOfSequencesClass<V,M>*>(this);
   for (unsigned int i = 0; i < meanVec.size(); ++i) {
     const uqScalarSequenceClass<double>& seq = *(tmp->m_scalarSequences(i,0));
     meanVec[i] = seq.mean(initialPos, numPos);
@@ -296,9 +296,9 @@ uqArrayOfSequencesClass<V>::mean(
   return;
 }
 
-template <class V>
+template <class V, class M>
 void
-uqArrayOfSequencesClass<V>::sampleVariance(
+uqArrayOfSequencesClass<V,M>::sampleVariance(
   unsigned int initialPos,
   unsigned int numPos,
   const V&     meanVec,
@@ -309,19 +309,19 @@ uqArrayOfSequencesClass<V>::sampleVariance(
               ((initialPos+numPos-1) <= (this->sequenceSize()-1)));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqArrayOfSequencesClass<V>::sampleVariance()",
+                      "uqArrayOfSequencesClass<V,M>::sampleVariance()",
                       "invalid initial position or number of positions");
 
   bRC = (this->vectorSize() == samVec.size());
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqArrayOfSequencesClass<V>::sampleVariance()",
+                      "uqArrayOfSequencesClass<V,M>::sampleVariance()",
                       "incompatible sizes between samVec vector and vectors in sequence");
 
   bRC = (this->vectorSize() == meanVec.size());
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqArrayOfSequencesClass<V>::sampleVariance()",
+                      "uqArrayOfSequencesClass<V,M>::sampleVariance()",
                       "incompatible sizes between meanVec vector and vectors in sequence");
 
   unsigned int loopSize      = numPos;
@@ -329,7 +329,7 @@ uqArrayOfSequencesClass<V>::sampleVariance(
   double doubleLoopSize = (double) loopSize;
   samVec.cwSet(0.);
 
-  uqArrayOfSequencesClass<V>* tmp = const_cast<uqArrayOfSequencesClass<V>*>(this);
+  uqArrayOfSequencesClass<V,M>* tmp = const_cast<uqArrayOfSequencesClass<V,M>*>(this);
   for (unsigned int i = 0; i < samVec.size(); ++i) {
     const uqScalarSequenceClass<double>& seq = *(tmp->m_scalarSequences(i,0));
     double                               tmpMean = meanVec[i];
@@ -344,9 +344,9 @@ uqArrayOfSequencesClass<V>::sampleVariance(
   return;
 }
 
-template <class V>
+template <class V, class M>
 void
-uqArrayOfSequencesClass<V>::populationVariance(
+uqArrayOfSequencesClass<V,M>::populationVariance(
   unsigned int initialPos,
   unsigned int numPos,
   const V&     meanVec,
@@ -357,19 +357,19 @@ uqArrayOfSequencesClass<V>::populationVariance(
               ((initialPos+numPos-1) <= (this->sequenceSize()-1)));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqArrayOfSequencesClass<V>::populationVariance()",
+                      "uqArrayOfSequencesClass<V,M>::populationVariance()",
                       "invalid initial position or number of positions");
 
   bRC = (this->vectorSize() == popVec.size());
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqArrayOfSequencesClass<V>::populationVariance()",
+                      "uqArrayOfSequencesClass<V,M>::populationVariance()",
                       "incompatible sizes between popVec vector and vectors in sequence");
 
   bRC = (this->vectorSize() == meanVec.size());
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqArrayOfSequencesClass<V>::populationVariance()",
+                      "uqArrayOfSequencesClass<V,M>::populationVariance()",
                       "incompatible sizes between meanVec vector and vectors in sequence");
 
   unsigned int loopSize      = numPos;
@@ -377,7 +377,7 @@ uqArrayOfSequencesClass<V>::populationVariance(
   double doubleLoopSize = (double) loopSize;
   popVec.cwSet(0.);
 
-  uqArrayOfSequencesClass<V>* tmp = const_cast<uqArrayOfSequencesClass<V>*>(this);
+  uqArrayOfSequencesClass<V,M>* tmp = const_cast<uqArrayOfSequencesClass<V,M>*>(this);
   for (unsigned int i = 0; i < popVec.size(); ++i) {
     const uqScalarSequenceClass<double>& seq = *(tmp->m_scalarSequences(i,0));
     double                               tmpMean = meanVec[i];
@@ -392,9 +392,9 @@ uqArrayOfSequencesClass<V>::populationVariance(
   return;
 }
 
-template <class V>
+template <class V, class M>
 void
-uqArrayOfSequencesClass<V>::autoCovariance(
+uqArrayOfSequencesClass<V,M>::autoCovariance(
   unsigned int initialPos,
   unsigned int numPos,
   const V&     meanVec,
@@ -406,25 +406,25 @@ uqArrayOfSequencesClass<V>::autoCovariance(
               ((initialPos+numPos-1) <= (this->sequenceSize()-1)));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqVectorSequenceAutoCovariance<V>()",
+                      "uqVectorSequenceAutoCovariance<V,M>()",
                       "invalid initial position or number of positions");
 
   bRC = (numPos > lag);
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqVectorSequenceAutoCovariance<V>()",
+                      "uqVectorSequenceAutoCovariance<V,M>()",
                       "lag is too large");
 
   bRC = (this->vectorSize() == covVec.size());
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqVectorSequenceAutoCovariance<V>()",
+                      "uqVectorSequenceAutoCovariance<V,M>()",
                       "incompatible sizes between covVec vector and vectors in sequence");
 
   bRC = (this->vectorSize() == meanVec.size());
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqVectorSequenceAutoCovariance<V>()",
+                      "uqVectorSequenceAutoCovariance<V,M>()",
                       "incompatible sizes between meanVec vector and vectors in sequence");
 
   unsigned int loopSize      = numPos - lag;
@@ -432,7 +432,7 @@ uqArrayOfSequencesClass<V>::autoCovariance(
   double doubleLoopSize = (double) loopSize;
   covVec.cwSet(0.);
 
-  uqArrayOfSequencesClass<V>* tmp = const_cast<uqArrayOfSequencesClass<V>*>(this);
+  uqArrayOfSequencesClass<V,M>* tmp = const_cast<uqArrayOfSequencesClass<V,M>*>(this);
   for (unsigned int i = 0; i < covVec.size(); ++i) {
     const uqScalarSequenceClass<double>& seq = *(tmp->m_scalarSequences(i,0));
     double meanValue = meanVec[i];
@@ -448,16 +448,16 @@ uqArrayOfSequencesClass<V>::autoCovariance(
   return;
 }
 
-template <class V>
+template <class V, class M>
 void
-uqArrayOfSequencesClass<V>::autoCorrViaDef(
+uqArrayOfSequencesClass<V,M>::autoCorrViaDef(
   unsigned int initialPos,
   unsigned int numPos,
   unsigned int lag,
   V&           corrVec) const
 {
-  V subChainMean              (m_vectorExample);
-  V subChainAutoCovarianceLag0(m_vectorExample);
+  V subChainMean              (m_vectorSpace.zeroVector());
+  V subChainAutoCovarianceLag0(m_vectorSpace.zeroVector());
 
   this->mean(initialPos,
              numPos,
@@ -478,9 +478,9 @@ uqArrayOfSequencesClass<V>::autoCorrViaDef(
   return;
 }
 
-template <class V>
+template <class V, class M>
 void
-uqArrayOfSequencesClass<V>::autoCorrViaFft(
+uqArrayOfSequencesClass<V,M>::autoCorrViaFft(
   unsigned int                     initialPos,
   unsigned int                     numPos,
   const std::vector<unsigned int>& lags,
@@ -489,9 +489,9 @@ uqArrayOfSequencesClass<V>::autoCorrViaFft(
   return;
 }
 
-template <class V>
+template <class V, class M>
 void
-uqArrayOfSequencesClass<V>::bmm(
+uqArrayOfSequencesClass<V,M>::bmm(
   unsigned int initialPos,
   unsigned int batchLength,
   V&           bmmVec) const
@@ -501,7 +501,7 @@ uqArrayOfSequencesClass<V>::bmm(
   V covLag0OfBatchMeans(*(sequence[0]));
   V covLag1OfBatchMeans(*(sequence[0]));
 
-  V tmpVector(m_vectorExample); // In order to contour the fact that 'batchMeans' is a vector of 'const V*', but needs to be set first
+  V tmpVector(m_vectorSpace.zeroVector()); // In order to contour the fact that 'batchMeans' is a vector of 'const V*', but needs to be set first
   for (unsigned int initialPosId = 0; initialPosId < initialPositions.size(); initialPosId++) {
     for (unsigned int batchLengthId = 0; batchLengthId < batchLengths.size(); batchLengthId++) {
       unsigned int batchLength = batchLengths[batchLengthId];
@@ -552,9 +552,9 @@ uqArrayOfSequencesClass<V>::bmm(
   return;
 }
 
-template <class V>
+template <class V, class M>
 void
-uqArrayOfSequencesClass<V>::autoCorrViaFft(
+uqArrayOfSequencesClass<V,M>::autoCorrViaFft(
   unsigned int initialPos,
   unsigned int numPos,
   unsigned int numSum,
@@ -567,7 +567,7 @@ uqArrayOfSequencesClass<V>::autoCorrViaFft(
               (autoCorrsSumVec.size() == this->vectorSize()  ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqArrayOfSequencesClass<V>::autoCorrViaFft(), for sum",
+                      "uqArrayOfSequencesClass<V,M>::autoCorrViaFft(), for sum",
                       "invalid input data");
 
   uqScalarSequenceClass<double> data(m_env,0);
@@ -588,9 +588,9 @@ uqArrayOfSequencesClass<V>::autoCorrViaFft(
   return;
 }
 
-template <class V>
+template <class V, class M>
 void
-uqArrayOfSequencesClass<V>::fftForward(
+uqArrayOfSequencesClass<V,M>::fftForward(
   unsigned int                        initialPos,
   unsigned int                        fftSize,
   unsigned int                        paramId,
@@ -599,9 +599,9 @@ uqArrayOfSequencesClass<V>::fftForward(
   return;
 }
 
-template <class V>
+template <class V, class M>
 void
-uqArrayOfSequencesClass<V>::psd(
+uqArrayOfSequencesClass<V,M>::psd(
   unsigned int         initialPos,
   unsigned int         numBlocks,
   double               hopSizeRatio,
@@ -611,9 +611,9 @@ uqArrayOfSequencesClass<V>::psd(
   return;
 }
 
-template <class V>
+template <class V, class M>
 void
-uqArrayOfSequencesClass<V>::psdAtZero(
+uqArrayOfSequencesClass<V,M>::psdAtZero(
   unsigned int initialPos,
   unsigned int numBlocks,
   double       hopSizeRatio,
@@ -644,9 +644,9 @@ uqArrayOfSequencesClass<V>::psdAtZero(
   return;
 }
 
-template <class V>
+template <class V, class M>
 void
-uqArrayOfSequencesClass<V>::geweke(
+uqArrayOfSequencesClass<V,M>::geweke(
   unsigned int initialPos,
   double       ratioNa,
   double       ratioNb,
@@ -713,14 +713,14 @@ uqArrayOfSequencesClass<V>::geweke(
   return;
 }
 
-template <class V>
+template <class V, class M>
 void
-uqArrayOfSequencesClass<V>::minMax(
+uqArrayOfSequencesClass<V,M>::minMax(
   unsigned int initialPos,
   V&           minVec,
   V&           maxVec) const
 {
-  uqArrayOfSequencesClass<V>* tmp = const_cast<uqArrayOfSequencesClass<V>*>(this);
+  uqArrayOfSequencesClass<V,M>* tmp = const_cast<uqArrayOfSequencesClass<V,M>*>(this);
 
   unsigned int numParams = this->vectorSize();
   for (unsigned int i = 0; i < numParams; ++i) {
@@ -731,9 +731,9 @@ uqArrayOfSequencesClass<V>::minMax(
   return;
 }
 
-template <class V>
+template <class V, class M>
 void
-uqArrayOfSequencesClass<V>::histogram(
+uqArrayOfSequencesClass<V,M>::histogram(
   unsigned int     initialPos,
   const V&         minVec,
   const V&         maxVec,
@@ -743,7 +743,7 @@ uqArrayOfSequencesClass<V>::histogram(
 #if 0
   UQ_FATAL_TEST_MACRO(centersForAllBins.size() != binsForAllParams.size(),
                       sequence[0]->env().rank(),
-                      "uqVectorSequenceHistogram<V>()",
+                      "uqVectorSequenceHistogram<V,M>()",
                       "vectors 'centers' and 'bins' have different sizes");
 
   for (unsigned int j = 0; j < binsForAllParams.size(); ++j) {
@@ -776,16 +776,16 @@ uqArrayOfSequencesClass<V>::histogram(
   return;
 }
 
-template <class V>
+template <class V, class M>
 void
-uqArrayOfSequencesClass<V>::interQuantileRange(
+uqArrayOfSequencesClass<V,M>::interQuantileRange(
   unsigned int initialPos,
   V&           iqrs) const
 {
 #if 0
   unsigned int dataSize = sequence.size() - initialPos;
 
-  uqArrayOfSequencesClass sortedSequence(dataSize,m_vectorExample);
+  uqArrayOfSequencesClass sortedSequence(dataSize,m_vectorSpace.zeroVector());
   this->sort(initialPos,
              sortedSequence);
 
@@ -806,9 +806,9 @@ uqArrayOfSequencesClass<V>::interQuantileRange(
   return;
 }
 
-template <class V>
+template <class V, class M>
 void
-uqArrayOfSequencesClass<V>::scalesForKDE(
+uqArrayOfSequencesClass<V,M>::scalesForKDE(
   unsigned int initialPos,
   const V&     iqrs,
   V&           scales) const
@@ -843,18 +843,18 @@ uqArrayOfSequencesClass<V>::scalesForKDE(
   return;
 }
 
-template <class V>
+template <class V, class M>
 void
-uqArrayOfSequencesClass<V>::gaussianKDE(
+uqArrayOfSequencesClass<V,M>::gaussianKDE(
   const V& evaluationParamVec,
   V&       densityVec) const
 {
   return;
 }
 
-template <class V>
+template <class V, class M>
 void
-uqArrayOfSequencesClass<V>::gaussianKDE(
+uqArrayOfSequencesClass<V,M>::gaussianKDE(
   unsigned int           initialPos,
   const V&               scales,
   const std::vector<V*>& evaluationParamVecs,
@@ -886,25 +886,25 @@ uqArrayOfSequencesClass<V>::gaussianKDE(
   return;
 }
 
-template <class V>
+template <class V, class M>
 void
-uqArrayOfSequencesClass<V>::select(const std::vector<unsigned int>& idsOfUniquePositions)
+uqArrayOfSequencesClass<V,M>::select(const std::vector<unsigned int>& idsOfUniquePositions)
 {
   return;
 }
 
-template <class V>
+template <class V, class M>
 void
-uqArrayOfSequencesClass<V>::filter(
+uqArrayOfSequencesClass<V,M>::filter(
   unsigned int initialPos,
   unsigned int spacing)
 {
   return;
 }
 
-template <class V>
+template <class V, class M>
 void
-uqArrayOfSequencesClass<V>::write(
+uqArrayOfSequencesClass<V,M>::write(
   const std::string& chainName,
   std::ofstream&     ofs) const
 {
@@ -915,7 +915,7 @@ uqArrayOfSequencesClass<V>::write(
       << std::endl;
   ofs << chainName << " = [";
 
-  V tmpVec(m_vectorExample);
+  V tmpVec(m_vectorSpace.zeroVector());
   unsigned int chainSize = this->sequenceSize();
   for (unsigned int j = 0; j < chainSize; ++j) {
     this->getPositionValues(j,tmpVec);
@@ -927,16 +927,16 @@ uqArrayOfSequencesClass<V>::write(
   return;
 }
 
-template <class V>
+template <class V, class M>
 void
-uqArrayOfSequencesClass<V>::extractScalarSeq(
+uqArrayOfSequencesClass<V,M>::extractScalarSeq(
   unsigned int                   initialPos,
   unsigned int                   spacing,
   unsigned int                   numPos,
   unsigned int                   paramId,
   uqScalarSequenceClass<double>& scalarSeq) const
 {
-  uqArrayOfSequencesClass<V>* tmp = const_cast<uqArrayOfSequencesClass<V>*>(this);
+  uqArrayOfSequencesClass<V,M>* tmp = const_cast<uqArrayOfSequencesClass<V,M>*>(this);
   uqScalarSequenceClass<double>& seq = *(tmp->m_scalarSequences(paramId,0));
 
   scalarSeq.resizeSequence(numPos);
@@ -954,16 +954,16 @@ uqArrayOfSequencesClass<V>::extractScalarSeq(
   return;
 }
 
-template <class V>
+template <class V, class M>
 void
-uqArrayOfSequencesClass<V>::extractRawData(
+uqArrayOfSequencesClass<V,M>::extractRawData(
   unsigned int         initialPos,
   unsigned int         spacing,
   unsigned int         numPos,
   unsigned int         paramId,
   std::vector<double>& rawData) const
 {
-  uqArrayOfSequencesClass<V>* tmp = const_cast<uqArrayOfSequencesClass<V>*>(this);
+  uqArrayOfSequencesClass<V,M>* tmp = const_cast<uqArrayOfSequencesClass<V,M>*>(this);
   uqScalarSequenceClass<double>& seq = *(tmp->m_scalarSequences(paramId,0));
 
   rawData.resize(numPos);

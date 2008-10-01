@@ -26,8 +26,13 @@
 #include <uqVectorProbDensity.h>
 #include <uqVectorRV.h>
 
+#undef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
+
 // _ODV = option default value
-#define UQ_PROPAG_PROBLEM_SOLVER_ODV "mc_kde" // Monte Carlo + Kernel Density Estimator
+#define UQ_PROPAG_PROBLEM_SKIP_SOLUTION_ODV 0
+#ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
+#define UQ_PROPAG_PROBLEM_SOLVER_ODV        "mc_kde" // Monte Carlo + Kernel Density Estimator
+#endif
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 class uqPropagProblemClass
@@ -53,9 +58,15 @@ private:
 
         po::options_description*                       m_optionsDesc;
         std::string                                    m_option_help;
+	std::string                                    m_option_skipSolution;
+#ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
         std::string                                    m_option_solver;
+#endif
 
+        bool                                           m_skipSolution;
+#ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
 	std::string                                    m_solverString;
+#endif
 
   const uqBaseVectorRVClass         <P_V,P_M>&         m_paramRv;
   const uqVectorFunctionClass       <P_V,P_M,Q_V,Q_M>& m_qoiFunction;
@@ -65,8 +76,8 @@ private:
         uqBaseVectorRealizerClass   <Q_V,Q_M>*         m_solutionRealizer;
 
         uqMonteCarloSGClass         <P_V,P_M,Q_V,Q_M>* m_mcSeqGenerator;
-        uqSequenceOfVectorsClass    <P_V>*             m_chain1;
-        uqArrayOfSequencesClass     <P_V>*             m_chain2;
+        uqSequenceOfVectorsClass    <Q_V,Q_M>*         m_chain1;
+        uqArrayOfSequencesClass     <Q_V,Q_M>*         m_chain2;
 };
 
 template<class P_V,class P_M,class Q_V,class Q_M>
@@ -82,9 +93,15 @@ uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::uqPropagProblemClass(
   m_env                (paramRv.env()),
   m_prefix             ((std::string)(prefix) + "pro_"),
   m_optionsDesc        (new po::options_description("UQ Propagation Problem")),
-  m_option_help        (m_prefix + "help"  ),
-  m_option_solver      (m_prefix + "solver"),
+  m_option_help        (m_prefix + "help"        ),
+  m_option_skipSolution(m_prefix + "skipSolution"),
+#ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
+  m_option_solver      (m_prefix + "solver"      ),
+#endif
+  m_skipSolution       (UQ_PROPAG_PROBLEM_SKIP_SOLUTION_ODV),
+#ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
   m_solverString       (UQ_PROPAG_PROBLEM_SOLVER_ODV),
+#endif
   m_paramRv            (paramRv),
   m_qoiFunction        (qoiFunction),
   m_qoiRv              (qoiRv),
@@ -135,8 +152,11 @@ uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::defineMyOptions(
   po::options_description& optionsDesc)
 {
   optionsDesc.add_options()
-    (m_option_help.c_str(),                                                                          "produce help message for propagation problem")
-    (m_option_solver.c_str(), po::value<std::string>()->default_value(UQ_PROPAG_PROBLEM_SOLVER_ODV), "algorithm for propagation"                   )
+    (m_option_help.c_str(),                                                                                       "produce help message for propagation problem")
+    (m_option_skipSolution.c_str(), po::value<bool       >()->default_value(UQ_PROPAG_PROBLEM_SKIP_SOLUTION_ODV), "skip solution process"                       )
+#ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
+    (m_option_solver.c_str(),       po::value<std::string>()->default_value(UQ_PROPAG_PROBLEM_SOLVER_ODV       ), "algorithm for propagation"                   )
+#endif
   ;
 
   return;
@@ -152,9 +172,15 @@ void
               << std::endl;
   }
 
+  if (m_env.allOptionsMap().count(m_option_skipSolution.c_str())) {
+    m_skipSolution = m_env.allOptionsMap()[m_option_skipSolution.c_str()].as<bool>();
+  }
+
+#ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
   if (m_env.allOptionsMap().count(m_option_solver.c_str())) {
     m_solverString = m_env.allOptionsMap()[m_option_solver.c_str()].as<std::string>();
   }
+#endif
 
   return;
 }
@@ -169,12 +195,11 @@ uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarloKde()
                                                               m_qoiFunction,
                                                               m_qoiRv);
 
-  m_chain1 = new uqSequenceOfVectorsClass<P_V>(0,m_qoiRv.imageSpace().zeroVector());
-  //m_chain2 = new uqArrayOfSequencesClass <P_V>(0,m_qoiRv.imageSpace().zeroVector());
+  m_chain1 = new uqSequenceOfVectorsClass<Q_V,Q_M>(m_qoiRv.imageSpace(),0);
+  //m_chain2 = new uqArrayOfSequencesClass <Q_V,Q_M>(m_qoiRv.imageSpace(),0);
 
   m_mcSeqGenerator->generateSequence(*m_chain1);
-  m_solutionRealizer = new uqSequentialVectorRealizerClass<P_V,P_M>(m_prefix.c_str(),
-                                                                    m_qoiRv.imageSpace(),
+  m_solutionRealizer = new uqSequentialVectorRealizerClass<Q_V,Q_M>(m_prefix.c_str(),
                                                                    *m_chain1);
   m_qoiRv.setRealizer(*m_solutionRealizer);
 
@@ -185,7 +210,10 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::print(std::ostream& os) const
 {
-  os << "\n" << m_option_solver << " = " << m_solverString;
+  os << "\n" << m_option_skipSolution << " = " << m_skipSolution;
+#ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
+  os << "\n" << m_option_solver       << " = " << m_solverString;
+#endif
   os << std::endl;
 }
 

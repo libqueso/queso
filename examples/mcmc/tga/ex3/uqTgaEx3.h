@@ -260,12 +260,12 @@ uqAppl(const uqEnvironmentClass& env)
   // Read Ascii file with important information on the calibration problem.
   //******************************************************
   uqAsciiTableClass<P_V,P_M> calTable(env,
-                                      2,    // # of rows and, for the case of parallel environments, the row map
+                                      2,    // # of rows
                                       5,    // # of cols after 'parameter name': min + max + mean + std + initial value for Markov chain
                                       NULL, // All extra columns are of 'double' type
                                       "cal.tab");
 
-  const EpetraExt::DistArray<std::string>& firstColumn    = calTable.stringColumn(0);
+  const EpetraExt::DistArray<std::string>& calFirstColumn = calTable.stringColumn(0);
   const P_V&                               minValues      = calTable.doubleColumn(1);
   const P_V&                               maxValues      = calTable.doubleColumn(2);
   const P_V&                               expectedValues = calTable.doubleColumn(3);
@@ -273,13 +273,28 @@ uqAppl(const uqEnvironmentClass& env)
   const P_V&                               initialValues  = calTable.doubleColumn(5);
 
   //******************************************************
+  // Read Ascii file with important information on the propagation problem.
+  //******************************************************
+  uqAsciiTableClass<P_V,P_M> proTable(env,
+                                      1,    // # of rows
+                                      0,    // # of cols after 'parameter name': none
+                                      NULL, // All extra columns are of 'double' type
+                                      "pro.tab");
+
+  const EpetraExt::DistArray<std::string>& proFirstColumn = proTable.stringColumn(0);
+
+  //******************************************************
   // Usually, spaces are the same throughout different problems.
   // If this is the case, we can instantiate them here, just once.
   //******************************************************
   uqVectorSpaceClass<P_V,P_M> paramSpace(env,
-                                         "param_"); // Extra prefix before the default "space_" prefix
+                                         "param_", // Extra prefix before the default "space_" prefix
+                                         calTable.numRows(),
+                                         &calFirstColumn);
   uqVectorSpaceClass<Q_V,Q_M> qoiSpace  (env,
-                                         "qoi_");   // Extra prefix before the default "space_" prefix
+                                         "qoi_",  // Extra prefix before the default "space_" prefix
+                                         proTable.numRows(),
+                                         &proFirstColumn);
 
 
   //******************************************************
@@ -287,7 +302,7 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
 
   // Prior vector rv
-  uqGaussianVectorRVClass<P_V,P_M> calibPriorRv("prior_", // Extra prefix before the default "rv_" prefix
+  uqGaussianVectorRVClass<P_V,P_M> calibPriorRv("cal_prior_", // Extra prefix before the default "rv_" prefix
                                                 paramSpace,
                                                 minValues,
                                                 maxValues,
@@ -300,17 +315,17 @@ uqAppl(const uqEnvironmentClass& env)
   calibLikelihoodRoutine_Data.variance1 = variance1;
   calibLikelihoodRoutine_Data.Te1       = &Te1; // temperatures
   calibLikelihoodRoutine_Data.Me1       = &Me1; // relative masses
-  uqGenericVectorProbDensityClass<P_V,P_M> calibLikelihoodFunctionObj("prior_", // Extra prefix before the default "genpd_" prefix
+  uqGenericVectorProbDensityClass<P_V,P_M> calibLikelihoodFunctionObj("cal_prior_like_", // Extra prefix before the default "genpd_" prefix
                                                                       paramSpace,
                                                                       calibLikelihoodRoutine<P_V,P_M>,
                                                                       (void *) &calibLikelihoodRoutine_Data,
                                                                       true); // the routine computes [-2.*ln(Likelihood)]
 
   // Posterior vector rv
-  uqGenericVectorRVClass<P_V,P_M> calibPostRv("post_",    // Extra prefix before the default "rv_" prefix
+  uqGenericVectorRVClass<P_V,P_M> calibPostRv("cal_post_", // Extra prefix before the default "rv_" prefix
                                               paramSpace,
-                                              NULL,       // pdf:      internally set by the solution process
-                                              NULL);      // realizer: internally set by the solution process
+                                              NULL,        // pdf:      internally set by the solution process
+                                              NULL);       // realizer: internally set by the solution process
 
   // Calibration problem
   uqCalibProblemClass<P_V,P_M> calibProblem("", // No extra prefix before the default "cal_" prefix
@@ -330,16 +345,16 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
 
   // Qoi vector rv
-  uqGenericVectorRVClass<Q_V,Q_M> propagQoiRv("qoi_",   // Extra prefix before the default "rv_" prefix
+  uqGenericVectorRVClass<Q_V,Q_M> propagQoiRv("pro_qoi_", // Extra prefix before the default "rv_" prefix
                                               qoiSpace,
-                                              NULL,     // pdf: internally set by the solution process
+                                              NULL,       // pdf: internally set by the solution process
                                               NULL);
 
   // Qoi function object
   propagQoiRoutine_DataType<P_V,P_M,Q_V,Q_M> propagQoiRoutine_Data;
   propagQoiRoutine_Data.beta1         = beta1;
   propagQoiRoutine_Data.criticalMass1 = criticalMass1;
-  uqVectorFunctionClass<P_V,P_M,Q_V,Q_M> propagQoiFunctionObj("qoi_", // Extra prefix before the default "func_" prefix
+  uqVectorFunctionClass<P_V,P_M,Q_V,Q_M> propagQoiFunctionObj("pro_qoi_", // Extra prefix before the default "func_" prefix
                                                               paramSpace,
                                                               qoiSpace,
                                                               propagQoiRoutine<P_V,P_M,Q_V,Q_M>,

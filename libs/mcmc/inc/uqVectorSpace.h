@@ -1,4 +1,4 @@
-/* uq/libs/mcmc/inc/uqFinDimLinearSpace.h
+/* uq/libs/mcmc/inc/uqVectorSpace.h
  *
  * Copyright (C) 2008 The PECOS Team, http://www.ices.utexas.edu/centers/pecos
  *
@@ -22,60 +22,64 @@
 
 #include <uqEnvironment.h>
 #include <uqMiscellaneous.h>
-#include <vector>
-#include <iostream>
-#include <fstream>
+//#include <vector>
+//#include <iostream>
+//#include <fstream>
 #include <uqDefines.h>
+#include <EpetraExt_DistArray.h>
+
+#undef UQ_VECTOR_SPACE_READS_FILE_OPTIONS
 
 template <class V, class M>
 class uqVectorSpaceClass
 {
 public:
           uqVectorSpaceClass();
-          uqVectorSpaceClass(const uqEnvironmentClass& env, // See template specialization
-                             const char*               prefix,
-                                   unsigned int        dimValue = 0);
+          uqVectorSpaceClass(const uqEnvironmentClass&                env, // See template specialization
+                             const char*                              prefix,
+                             unsigned int                             dimValue,
+                             const EpetraExt::DistArray<std::string>* componentsNames);
          ~uqVectorSpaceClass();
 
-  const   uqEnvironmentClass&       env                            ()                         const;
-  const   Epetra_Map&               map                            ()                         const;
-          unsigned int              dim                            ()                         const;
-  const   std::string&              componentName                  (unsigned int componentId) const;
-  const   std::vector<std::string>& componentsNames                ()                         const;
+  const   uqEnvironmentClass&                env                 ()                         const;
+  const   Epetra_Map&                        map                 ()                         const;
+          unsigned int                       dim                 ()                         const;
 
-  const   V&                        zeroVector                     ()                         const;
-          V*                        newVector                      ()                         const; // See template specialization
-          V*                        newVector                      (double value)             const; // See template specialization
-          V*                        newVector                      (const V& v)               const;
-          M*                        newMatrix                      ()                         const; // See template specialization
-          M*                        newDiagMatrix                  (const V& v)               const;
-          M*                        newDiagMatrix                  (double diagValue)         const; // See template specialization
-          M*                        newGaussianMatrix              (const V& varianceValues,
-                                                                    const V& initialValues) const;
+  const   V&                                 zeroVector          ()                         const;
+          V*                                 newVector           ()                         const; // See template specialization
+          V*                                 newVector           (double value)             const; // See template specialization
+          V*                                 newVector           (const V& v)               const;
+          M*                                 newMatrix           ()                         const; // See template specialization
+          M*                                 newDiagMatrix       (const V& v)               const;
+          M*                                 newDiagMatrix       (double diagValue)         const; // See template specialization
+          M*                                 newGaussianMatrix   (const V& varianceValues,
+                                                                  const V& initialValues)   const;
 
-          void                      printComponentsNames           (std::ostream& os, bool printHorizontally) const;
-          void                      print                          (std::ostream& os) const;
+  const   std::string&                       componentName       (unsigned int componentId) const;
+  //  const   EpetraExt::DistArray<std::string>* componentsNames     ()                         const;
+          void                               printComponentsNames(std::ostream& os, bool printHorizontally) const;
+          void                               print               (std::ostream& os) const;
 
 protected:
-        //void                      constructMap                   ();
-          void                      defineMyOptions                (po::options_description& optionsDesc) const;
-          void                      getMyOptionValues              (po::options_description& optionsDesc);
+#ifdef UQ_VECTOR_SPACE_READS_FILE_OPTIONS
+          void                               defineMyOptions     (po::options_description& optionsDesc) const;
+          void                               getMyOptionValues   (po::options_description& optionsDesc);
+#endif
 
-          void                      readComponentsNamesFromSpecFile(std::string& specFileName);
-          void                      setComponentName               (unsigned int componentId,
-                                                                    const std::string& name);
-  const   uqEnvironmentClass&       m_env;
-          std::string               m_prefix;
-          unsigned int              m_dim;
-  const   Epetra_Map*               m_map;
-          V*                        m_zeroVector;
+  const   uqEnvironmentClass&                m_env;
+          std::string                        m_prefix;
+          unsigned int                       m_dim;
+  const   EpetraExt::DistArray<std::string>* m_componentsNames;
+          std::string                        m_emptyComponentName;
 
-          po::options_description*  m_optionsDesc;
-          std::string               m_option_help;
-          std::string               m_option_dim;
-          std::string               m_option_specFile;
+  const   Epetra_Map*                        m_map;
+          V*                                 m_zeroVector;
 
-  mutable std::vector<std::string>* m_componentsNames; // FIXME: will need to be a parallel vector in case of a very large number of components
+#ifdef UQ_VECTOR_SPACE_READS_FILE_OPTIONS
+          po::options_description*           m_optionsDesc;
+          std::string                        m_option_help;
+          std::string                        m_option_dim;
+#endif
 };
 
 template <class V, class M>
@@ -93,24 +97,36 @@ template <class V, class M>
 uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
   const uqEnvironmentClass& env,
   const char*               prefix,
-        unsigned int        dimValue)
+        unsigned int        dimValue,
+  const EpetraExt::DistArray<std::string>* componentsNames)
   :
-  m_env            (env),
-  m_prefix         ((std::string)(prefix) + "space_"),
-  m_dim            (dimValue),
-  m_map            (NULL),
-  m_zeroVector     (NULL),
-  m_optionsDesc    (new po::options_description("Vector space options") ),
-  m_option_help    (m_prefix + "help"    ),
-  m_option_dim     (m_prefix + "dim"     ),
-  m_option_specFile(m_prefix + "specFile"),
-  m_componentsNames(new std::vector<std::string>(0))
+  m_env               (env),
+  m_prefix            ((std::string)(prefix) + "space_"),
+  m_dim               (dimValue),
+  m_componentsNames   (componentsNames),
+  m_emptyComponentName(""),
+#ifdef UQ_VECTOR_SPACE_READS_FILE_OPTIONS
+  m_map               (NULL),
+  m_zeroVector        (NULL)
+  m_optionsDesc       (new po::options_description("Vector space options")),
+  m_option_help       (m_prefix + "help"),
+  m_option_dim        (m_prefix + "dim" )
+#else
+  m_map               (new Epetra_Map(m_dim,0,m_env.comm())),
+  m_zeroVector        (new V(m_env,*m_map))
+#endif
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqVectorSpaceClass<V,M>::constructor()"
               << std::endl;
   }
 
+  UQ_FATAL_TEST_MACRO((m_componentsNames != NULL) && (m_componentsNames->GlobalLength() != (int) m_dim),
+                      m_env.rank(),
+                      "uqVectorSpaceClass<V,M>::constructor()",
+                      "size of 'componentsNames' is not equal to m_dim");
+
+#ifdef UQ_VECTOR_SPACE_READS_FILE_OPTIONS
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
@@ -122,7 +138,7 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
 
   m_map        = new Epetra_Map(m_dim,0,m_env.comm());
   m_zeroVector = new V(m_env,*m_map);
-
+#endif
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Leaving uqVectorSpaceClass<V,M>::constructor()"
               << std::endl;
@@ -135,23 +151,22 @@ uqVectorSpaceClass<V,M>::~uqVectorSpaceClass()
   //std::cout << "Entering uqVectorSpaceClass<V,M>::destructor()"
   //          << std::endl;
 
-  if (m_componentsNames != NULL) delete m_componentsNames;
-  if (m_zeroVector      != NULL) delete m_zeroVector;
-  if (m_map             != NULL) delete m_map;
+  if (m_zeroVector != NULL) delete m_zeroVector;
+  if (m_map        != NULL) delete m_map;
 
   //std::cout << "Leaving uqVectorSpaceClass<V,M>::destructor()"
   //          << std::endl;
 }
 
+#ifdef UQ_VECTOR_SPACE_READS_FILE_OPTIONS
 template <class V, class M>
 void
 uqVectorSpaceClass<V,M>::defineMyOptions(
   po::options_description& optionsDesc) const
 {
   m_optionsDesc->add_options()
-    (m_option_help.c_str(),                                                   "produce help message for vector space"              )
-    (m_option_dim.c_str(),      po::value<unsigned int>()->default_value(0),  "Space dimension"                                    )
-    (m_option_specFile.c_str(), po::value<std::string >()->default_value(""), "File with the specification of all components names")
+    (m_option_help.c_str(),                                                   "produce help message for vector space")
+    (m_option_dim.c_str(),      po::value<unsigned int>()->default_value(0),  "Space dimension"                      )
   ;
 
   return;
@@ -171,18 +186,9 @@ uqVectorSpaceClass<V,M>::getMyOptionValues(po::options_description& optionsDesc)
     m_dim = tmpMap[m_option_dim.c_str()].as<unsigned int>();
   }
 
-  // Read vector space spec file only if 0 dimension was passed to constructor
-  if (m_componentsNames->size() == 0) {
-    std::string specFileName("");
-    if (m_env.allOptionsMap().count(m_option_specFile.c_str())) {
-      const po::variables_map& tmpMap = m_env.allOptionsMap();
-      specFileName = tmpMap[m_option_specFile.c_str()].as<std::string>();
-      readComponentsNamesFromSpecFile(specFileName);
-    }
-  }
-
   return;
 }
+#endif
 
 template <class V, class M>
 const uqEnvironmentClass&
@@ -239,109 +245,6 @@ uqVectorSpaceClass<V,M>::newDiagMatrix(const V& v) const
 }
 
 template <class V, class M>
-void
-uqVectorSpaceClass<V,M>::readComponentsNamesFromSpecFile(std::string& specFileName)
-{
-  unsigned int maxCharsPerLine = 512;
-
-  std::ifstream ifs(specFileName.c_str());
-
-  // Determine number of lines
-  unsigned int numLines = std::count(std::istreambuf_iterator<char>(ifs),
-                                     std::istreambuf_iterator<char>(),
-                                     '\n');
-
-  // Determine number of components
-  int iRC;
-  ifs.seekg(0,std::ios_base::beg);
-  unsigned int lineId = 0;
-  unsigned int numComponents = 0;
-  std::string tempString;
-  while ((lineId < numLines) && (ifs.eof() == false)) {
-    iRC = uqMiscReadStringAndDoubleFromFile(ifs,tempString,NULL);
-    UQ_FATAL_TEST_MACRO(iRC,
-                        m_env.rank(),
-                        "uqVectorSpaceClass<V,M>::constructor()",
-                        "failed reading during the determination of the number of components");
-    //std::cout << "lineId = "           << lineId
-    //          << ", numComponents = " << numComponents
-    //          << ", tempString = "     << tempString
-    //          << std::endl;
-    if (tempString[0] != '#') numComponents++;
-    lineId++;
-    ifs.ignore(maxCharsPerLine,'\n');
-  }
-  UQ_FATAL_TEST_MACRO(lineId != numLines,
-                      m_env.rank(),
-                      "uqVectorSpaceClass<V,M>::constructor()",
-                      "the first number of lines read is nonconsistent");
-  if (m_dim != numComponents) {
-    char errorExplanation[512];
-    sprintf(errorExplanation,"number of components (%d) in space spec file does not match dimension (%d) passed in the main input file",numComponents,m_dim);
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.rank(),
-                        "uqVectorSpaceClass<V,M>::constructor()",
-                        errorExplanation);
-  }
-
-  std::cout << "Space spec file '"     << specFileName
-            << "' has "                << numLines
-            << " lines and specifies " << numComponents
-            << " components."
-            << std::endl;
-  m_componentsNames->resize(numComponents,"");
-
-  // Read file until End Of File character is reached
-  ifs.seekg(0,std::ios_base::beg);
-  lineId = 0;
-  unsigned int componentId = 0;
-  std::string  componentName("");
-  while ((lineId < numLines) && (ifs.eof() == false)) {
-    //std::cout << "Beginning read of line (in space spec file) of id = " << lineId << std::endl;
-    bool endOfLineAchieved = false;
-
-    iRC = uqMiscReadCharsAndDoubleFromFile(ifs, componentName, NULL, endOfLineAchieved);
-    UQ_FATAL_TEST_MACRO(iRC,
-                        m_env.rank(),
-                        "uqVectorSpaceClass<V,M>::constructor()",
-                        "failed reading a component name during the components names reading loop");
-
-    lineId++;
-    if (componentName[0] == '#') {
-      if (!endOfLineAchieved) ifs.ignore(maxCharsPerLine,'\n');
-      continue;
-    }
-
-    // Check 'componentId' before setting one more component
-    if (componentId >= m_componentsNames->size()) {
-      char errorExplanation[512];
-      sprintf(errorExplanation,"componentId (%d) got too large during reading of space spec file",componentId);
-      UQ_FATAL_TEST_MACRO(true,
-                          m_env.rank(),
-                          "uqVectorSpaceClass<V,M>::constructor()",
-                          errorExplanation);
-    }
-
-    std::cout << "Just read, for componentId = " << componentId
-              << ": componentName = "            << componentName
-              << std::endl;
-    setComponentName(componentId,
-                     componentName);
-    componentId++;
-  }
-
-  UQ_FATAL_TEST_MACRO(lineId != numLines,
-                      m_env.rank(),
-                      "uqVectorSpaceClass<V,M>::constructor()",
-                      "the second number of lines read is nonconsistent");
-  UQ_FATAL_TEST_MACRO(componentId != m_componentsNames->size(),
-                      m_env.rank(),
-                      "uqVectorSpaceClass<V,M>::constructor()",
-                      "the number of components just read is nonconsistent");
-  return;
-}
-
-template <class V, class M>
 M*
 uqVectorSpaceClass<V,M>::newGaussianMatrix(
   const V& varianceValues,
@@ -371,39 +274,25 @@ uqVectorSpaceClass<V,M>::newGaussianMatrix(
 }
 
 template <class V, class M>
-void
-uqVectorSpaceClass<V,M>::setComponentName(
-  unsigned int       componentId,
-  const std::string& name)
-{
-  UQ_FATAL_TEST_MACRO((componentId > m_componentsNames->size()),
-                      m_env.rank(),
-                      "uqVectorSpaceClass<V,M>::setComponentName()",
-                      "componentId is too big");
-
-  (*m_componentsNames)[componentId] = name;
-
-  return;
-}
-
-template <class V, class M>
 const std::string&
 uqVectorSpaceClass<V,M>::componentName(unsigned int componentId) const
 {
-  UQ_FATAL_TEST_MACRO((componentId > m_componentsNames->size()),
+  if (m_componentsNames == NULL) return m_emptyComponentName;
+
+  UQ_FATAL_TEST_MACRO(componentId > m_dim,
                       m_env.rank(),
                       "uqVectorSpaceClass<V,M>::componentName()",
                       "componentId is too big");
 
-  return (*m_componentsNames)[componentId];
+  return (*(const_cast<EpetraExt::DistArray<std::string>*>(m_componentsNames)))(componentId,0);
 }
 
-template <class V, class M>
-const std::vector<std::string>&
-uqVectorSpaceClass<V,M>::componentsNames() const
-{
-  return (*m_componentsNames);
-}
+//template <class V, class M>
+//const EpetraExt::DistArray<std::string>*
+//uqVectorSpaceClass<V,M>::componentsNames() const
+//{
+// return m_componentsNames;
+//}
 
 template<class V, class M>
 void
@@ -429,8 +318,10 @@ template <class V, class M>
 void
 uqVectorSpaceClass<V,M>::print(std::ostream& os) const
 {
+#ifdef UQ_VECTOR_SPACE_READS_FILE_OPTIONS
   os << m_option_dim << " = " << m_dim
      << std::endl;
+#endif
 
   return;
 }

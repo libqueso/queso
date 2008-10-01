@@ -20,206 +20,207 @@
 #ifndef __UQ_VECTOR_SEQUENCE_H__
 #define __UQ_VECTOR_SEQUENCE_H__
 
+#include <uqVectorSpace.h>
 #include <uqScalarSequence.h>
 #include <uqChainStatisticalOptions.h>
 #include <uq2dArrayOfStuff.h>
 #include <sys/time.h>
 #include <fstream>
 
-template <class V>
+template <class V, class M>
 class uqBaseVectorSequenceClass
 {
 public:
-           uqBaseVectorSequenceClass(unsigned int sequenceSize, const V& vectorExample);
+  uqBaseVectorSequenceClass(const uqVectorSpaceClass<V,M>& vectorSpace, unsigned int sequenceSize);
   virtual ~uqBaseVectorSequenceClass();
 
-  virtual  unsigned int sequenceSize       () const = 0;
-           unsigned int vectorSize         () const;
-  virtual  void         resizeSequence     (unsigned int newSequenceSize) = 0;
-  virtual  void         resetValues        (unsigned int initialPos, unsigned int numPos) = 0;
-           void         clear              ();
-  virtual  void         erasePositions     (unsigned int initialPos, unsigned int numPos) = 0;
-  virtual  void         getPositionValues  (unsigned int posId,       V& vec) const = 0;
-  virtual  void         setPositionValues  (unsigned int posId, const V& vec) = 0;
-  virtual  void         setGaussian        (const gsl_rng* rng, const V& meanVec, const V& stdDevVec) = 0;
-  virtual  void         setUniform         (const gsl_rng* rng, const V& aVec,    const V& bVec     ) = 0;
+  virtual  unsigned int        sequenceSize       () const = 0;
+           unsigned int        vectorSize         () const;
+  const    uqVectorSpaceClass<V,M>& vectorSpace   () const;
+  virtual  void                resizeSequence     (unsigned int newSequenceSize) = 0;
+  virtual  void                resetValues        (unsigned int initialPos, unsigned int numPos) = 0;
+           void                clear              ();
+  virtual  void                erasePositions     (unsigned int initialPos, unsigned int numPos) = 0;
+  virtual  void                getPositionValues  (unsigned int posId,       V& vec) const = 0;
+  virtual  void                setPositionValues  (unsigned int posId, const V& vec) = 0;
+  virtual  void                setGaussian        (const gsl_rng* rng, const V& meanVec, const V& stdDevVec) = 0;
+  virtual  void                setUniform         (const gsl_rng* rng, const V& aVec,    const V& bVec     ) = 0;
 
-  virtual  void         mean               (unsigned int                          initialPos,
-                                            unsigned int                          numPos,
-                                            V&                                    meanVec) const = 0;
-  virtual  void         sampleVariance     (unsigned int                          initialPos,
-                                            unsigned int                          numPos,
-                                            const V&                              meanVec,
-                                            V&                                    samVec) const = 0;
-  virtual  void         populationVariance (unsigned int                          initialPos,
-                                            unsigned int                          numPos,
-                                            const V&                              meanVec,
-                                            V&                                    popVec) const = 0;
-  virtual  void         autoCovariance     (unsigned int                          initialPos,
-                                            unsigned int                          numPos,
-                                            const V&                              meanVec,
-                                            unsigned int                          lag,
-                                            V&                                    covVec) const = 0;
+  virtual  void                mean               (unsigned int                          initialPos,
+                                                   unsigned int                          numPos,
+                                                   V&                                    meanVec) const = 0;
+  virtual  void                sampleVariance     (unsigned int                          initialPos,
+                                                   unsigned int                          numPos,
+                                                   const V&                              meanVec,
+                                                   V&                                    samVec) const = 0;
+  virtual  void                populationVariance (unsigned int                          initialPos,
+                                                   unsigned int                          numPos,
+                                                   const V&                              meanVec,
+                                                   V&                                    popVec) const = 0;
+  virtual  void                autoCovariance     (unsigned int                          initialPos,
+                                                   unsigned int                          numPos,
+                                                   const V&                              meanVec,
+                                                   unsigned int                          lag,
+                                                   V&                                    covVec) const = 0;
 
-  virtual  void         autoCorrViaDef     (unsigned int                          initialPos,
-                                            unsigned int                          numPos,
-                                            unsigned int                          lag,
-                                            V&                                    corrVec) const = 0;
-  virtual  void         autoCorrViaFft     (unsigned int                          initialPos,
-                                            unsigned int                          numPos,
-                                            const std::vector<unsigned int>&      lags,
-                                            std::vector<V*>&                      corrVecs) const = 0;
-  virtual  void         autoCorrViaFft     (unsigned int                          initialPos,
-                                            unsigned int                          numPos,
-                                            unsigned int                          numSum,
-                                            V&                                    autoCorrsSumVec) const = 0;
-  virtual  void         bmm                (unsigned int                          initialPos,
-                                            unsigned int                          batchLength,
-                                            V&                                    bmmVec) const = 0;
-  virtual  void         fftForward         (unsigned int                          initialPos,
-                                            unsigned int                          fftSize,
-                                            unsigned int                          paramId,
-                                            std::vector<std::complex<double> >&   fftResult) const = 0;
-//virtual  void         fftInverse         (unsigned int fftSize) = 0;
-  virtual  void         psd                (unsigned int                          initialPos,
-                                            unsigned int                          numBlocks,
-                                            double                                hopSizeRatio,
-                                            unsigned int                          paramId,
-                                            std::vector<double>&                  psdResult) const = 0;
-  virtual  void         psdAtZero          (unsigned int                          initialPos,
-                                            unsigned int                          numBlocks,
-                                            double                                hopSizeRatio,
-                                            V&                                    psdVec) const = 0;
-  virtual  void         geweke             (unsigned int                          initialPos,
-                                            double                                ratioNa,
-                                            double                                ratioNb,
-                                            V&                                    gewVec) const = 0;
-  virtual  void         minMax             (unsigned int                          initialPos,
-                                            V&                                    minVec,
-                                            V&                                    maxVec) const = 0;
-  virtual  void         histogram          (unsigned int                          initialPos,
-                                            const V&                              minVec,
-                                            const V&                              maxVec,
-                                            std::vector<V*>&                      centersForAllBins,
-                                            std::vector<V*>&                      binsForAllParams) const = 0;
-  virtual  void         interQuantileRange (unsigned int                          initialPos,
-                                            V&                                    iqrVec) const = 0;
-  virtual  void         scalesForKDE       (unsigned int                          initialPos,
-                                            const V&                              iqrVec,
-                                            V&                                    scaleVec) const = 0;
-  virtual  void         gaussianKDE        (const V&                              evaluationParamVec,
-                                            V&                                    densityVec) const = 0;
-  virtual  void         gaussianKDE        (unsigned int                          initialPos,
-                                            const V&                              scaleVec,
-                                            const std::vector<V*>&                evaluationParamVecs,
-                                            std::vector<V*>&                      densityVecs) const = 0;
-  virtual  void         write              (const std::string&                    name,
-                                            std::ofstream&                        ofs) const = 0;
-  virtual  void         select             (const std::vector<unsigned int>&      idsOfUniquePositions) = 0;
-  virtual  void         filter             (unsigned int                          initialPos,
-                                            unsigned int                          spacing) = 0;
+  virtual  void                autoCorrViaDef     (unsigned int                          initialPos,
+                                                   unsigned int                          numPos,
+                                                   unsigned int                          lag,
+                                                   V&                                    corrVec) const = 0;
+  virtual  void                autoCorrViaFft     (unsigned int                          initialPos,
+                                                   unsigned int                          numPos,
+                                                   const std::vector<unsigned int>&      lags,
+                                                   std::vector<V*>&                      corrVecs) const = 0;
+  virtual  void                autoCorrViaFft     (unsigned int                          initialPos,
+                                                   unsigned int                          numPos,
+                                                   unsigned int                          numSum,
+                                                   V&                                    autoCorrsSumVec) const = 0;
+  virtual  void                bmm                (unsigned int                          initialPos,
+                                                   unsigned int                          batchLength,
+                                                   V&                                    bmmVec) const = 0;
+  virtual  void                fftForward         (unsigned int                          initialPos,
+                                                   unsigned int                          fftSize,
+                                                   unsigned int                          paramId,
+                                                   std::vector<std::complex<double> >&   fftResult) const = 0;
+//virtual  void                fftInverse         (unsigned int fftSize) = 0;
+  virtual  void                psd                (unsigned int                          initialPos,
+                                                   unsigned int                          numBlocks,
+                                                   double                                hopSizeRatio,
+                                                   unsigned int                          paramId,
+                                                   std::vector<double>&                  psdResult) const = 0;
+  virtual  void                psdAtZero          (unsigned int                          initialPos,
+                                                   unsigned int                          numBlocks,
+                                                   double                                hopSizeRatio,
+                                                   V&                                    psdVec) const = 0;
+  virtual  void                geweke             (unsigned int                          initialPos,
+                                                   double                                ratioNa,
+                                                   double                                ratioNb,
+                                                   V&                                    gewVec) const = 0;
+  virtual  void                minMax             (unsigned int                          initialPos,
+                                                   V&                                    minVec,
+                                                   V&                                    maxVec) const = 0;
+  virtual  void                histogram          (unsigned int                          initialPos,
+                                                   const V&                              minVec,
+                                                   const V&                              maxVec,
+                                                   std::vector<V*>&                      centersForAllBins,
+                                                   std::vector<V*>&                      binsForAllParams) const = 0;
+  virtual  void                interQuantileRange (unsigned int                          initialPos,
+                                                   V&                                    iqrVec) const = 0;
+  virtual  void                scalesForKDE       (unsigned int                          initialPos,
+                                                   const V&                              iqrVec,
+                                                   V&                                    scaleVec) const = 0;
+  virtual  void                gaussianKDE        (const V&                              evaluationParamVec,
+                                                   V&                                    densityVec) const = 0;
+  virtual  void                gaussianKDE        (unsigned int                          initialPos,
+                                                   const V&                              scaleVec,
+                                                   const std::vector<V*>&                evaluationParamVecs,
+                                                   std::vector<V*>&                      densityVecs) const = 0;
+  virtual  void                write              (const std::string&                    name,
+                                                   std::ofstream&                        ofs) const = 0;
+  virtual  void                select             (const std::vector<unsigned int>&      idsOfUniquePositions) = 0;
+  virtual  void                filter             (unsigned int                          initialPos,
+                                                   unsigned int                          spacing) = 0;
 
-           void         computeStatistics  (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                            const std::string&                    chainName,
-                                            const std::vector<std::string>&       componentsNames,
-                                            std::ofstream*                        passedOfs);
+           void                computeStatistics  (const uqChainStatisticalOptionsClass& statisticalOptions,
+                                                   const std::string&                    chainName,
+                                                   std::ofstream*                        passedOfs);
 
-           void         computeFilterParams(const uqChainStatisticalOptionsClass& statisticalOptions,
-                                            const std::string&                    chainName,
-                                            std::ofstream*                        passedOfs,
-                                            unsigned int&                         initialPos,
-                                            unsigned int&                         spacing);
+           void                computeFilterParams(const uqChainStatisticalOptionsClass& statisticalOptions,
+                                                   const std::string&                    chainName,
+                                                   std::ofstream*                        passedOfs,
+                                                   unsigned int&                         initialPos,
+                                                   unsigned int&                         spacing);
 protected:
-           void         computeMeanVars    (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                            const std::string&                    chainName,
-                                            const std::vector<std::string>&       componentsNames,
-                                            std::ofstream*                        passedOfs,
-                                            V*                                    meanPtr,
-                                            V*                                    sampleVarPtr,
-                                            V*                                    populVarPtr);
-           void         computeBMM         (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                            const std::vector<unsigned int>&      initialPosForStatistics,
-                                            const std::string&                    chainName,
-                                            const std::vector<std::string>&       componentsNames,
-                                            std::ofstream*                        passedOfs);
-           void         computeFFT         (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                            const std::vector<unsigned int>&      initialPosForStatistics,
-                                            const std::string&                    chainName,
-                                            std::ofstream*                        passedOfs);
-           void         computePSD         (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                            const std::vector<unsigned int>&      initialPosForStatistics,
-                                            const std::string&                    chainName,
-                                            std::ofstream*                        passedOfs);
-           void         computePSDAtZero   (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                            const std::vector<unsigned int>&      initialPosForStatistics,
-                                            const std::string&                    chainName,
-                                            const std::vector<std::string>&       componentsNames,
-                                            std::ofstream*                        passedOfs);
-           void         computeGeweke      (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                            const std::vector<unsigned int>&      initialPosForStatistics,
-                                            const std::string&                    chainName,
-                                            const std::vector<std::string>&       componentsNames,
-                                            std::ofstream*                        passedOfs);
-           void         computeCorrViaDef  (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                            const std::vector<unsigned int>&      initialPosForStatistics,
-                                            const std::vector<unsigned int>&      lagsForCorrs,
-                                            const std::string&                    chainName,
-                                            const std::vector<std::string>&       componentsNames,
-                                            std::ofstream*                        passedOfs);
-           void         computeCorrViaFFT  (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                            const std::vector<unsigned int>&      initialPosForStatistics,
-                                            const std::vector<unsigned int>&      lagsForCorrs,
-                                            const std::string&                    chainName,
-                                            const std::vector<std::string>&       componentsNames,
-                                            std::ofstream*                        passedOfs);
-           void         computeHistKde     (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                            const std::string&                    chainName,
-                                            const std::vector<std::string>&       componentsNames,
-                                            std::ofstream*                        passedOfs);
+           void                computeMeanVars    (const uqChainStatisticalOptionsClass& statisticalOptions,
+                                                   const std::string&                    chainName,
+                                                   std::ofstream*                        passedOfs,
+                                                   V*                                    meanPtr,
+                                                   V*                                    sampleVarPtr,
+                                                   V*                                    populVarPtr);
+           void                computeBMM         (const uqChainStatisticalOptionsClass& statisticalOptions,
+                                                   const std::vector<unsigned int>&      initialPosForStatistics,
+                                                   const std::string&                    chainName,
+                                                   std::ofstream*                        passedOfs);
+           void                computeFFT         (const uqChainStatisticalOptionsClass& statisticalOptions,
+                                                   const std::vector<unsigned int>&      initialPosForStatistics,
+                                                   const std::string&                    chainName,
+                                                   std::ofstream*                        passedOfs);
+           void                computePSD         (const uqChainStatisticalOptionsClass& statisticalOptions,
+                                                   const std::vector<unsigned int>&      initialPosForStatistics,
+                                                   const std::string&                    chainName,
+                                                   std::ofstream*                        passedOfs);
+           void                computePSDAtZero   (const uqChainStatisticalOptionsClass& statisticalOptions,
+                                                   const std::vector<unsigned int>&      initialPosForStatistics,
+                                                   const std::string&                    chainName,
+                                                   std::ofstream*                        passedOfs);
+           void                computeGeweke      (const uqChainStatisticalOptionsClass& statisticalOptions,
+                                                   const std::vector<unsigned int>&      initialPosForStatistics,
+                                                   const std::string&                    chainName,
+                                                   std::ofstream*                        passedOfs);
+           void                computeCorrViaDef  (const uqChainStatisticalOptionsClass& statisticalOptions,
+                                                   const std::vector<unsigned int>&      initialPosForStatistics,
+                                                   const std::vector<unsigned int>&      lagsForCorrs,
+                                                   const std::string&                    chainName,
+                                                   std::ofstream*                        passedOfs);
+           void                computeCorrViaFFT  (const uqChainStatisticalOptionsClass& statisticalOptions,
+                                                   const std::vector<unsigned int>&      initialPosForStatistics,
+                                                   const std::vector<unsigned int>&      lagsForCorrs,
+                                                   const std::string&                    chainName,
+                                                   std::ofstream*                        passedOfs);
+           void                computeHistKde     (const uqChainStatisticalOptionsClass& statisticalOptions,
+                                                   const std::string&                    chainName,
+                                                   std::ofstream*                        passedOfs);
 
-  virtual  void         extractScalarSeq   (unsigned int                          initialPos,
-                                            unsigned int                          spacing,
-                                            unsigned int                          numPos,
-                                            unsigned int                          paramId,
-                                            uqScalarSequenceClass<double>&        scalarSeq) const = 0;
-  virtual  void         extractRawData     (unsigned int                          initialPos,
-                                            unsigned int                          spacing,
-                                            unsigned int                          numPos,
-                                            unsigned int                          paramId,
-                                            std::vector<double>&                  rawData) const = 0;
+  virtual  void                extractScalarSeq   (unsigned int                          initialPos,
+                                                   unsigned int                          spacing,
+                                                   unsigned int                          numPos,
+                                                   unsigned int                          paramId,
+                                                   uqScalarSequenceClass<double>&        scalarSeq) const = 0;
+  virtual  void                extractRawData     (unsigned int                          initialPos,
+                                                   unsigned int                          spacing,
+                                                   unsigned int                          numPos,
+                                                   unsigned int                          paramId,
+                                                   std::vector<double>&                  rawData) const = 0;
 
-  const uqEnvironmentClass&   m_env;
-  V                           m_vectorExample;
-  mutable uqFftClass<double>* m_fftObj;
+  const uqEnvironmentClass&      m_env;
+  const uqVectorSpaceClass<V,M>& m_vectorSpace;
+  mutable uqFftClass<double>*    m_fftObj;
 };
 
-template <class V>
-uqBaseVectorSequenceClass<V>::uqBaseVectorSequenceClass(
-  unsigned int sequenceSize,
-  const V&     vectorExample)
+template <class V, class M>
+uqBaseVectorSequenceClass<V,M>::uqBaseVectorSequenceClass(
+  const uqVectorSpaceClass<V,M>& vectorSpace,
+  unsigned int                   sequenceSize)
   :
-  m_env          (vectorExample.env()),
-  m_vectorExample(vectorExample),
-  m_fftObj       (new uqFftClass<double>(m_env))
+  m_env        (vectorSpace.env()),
+  m_vectorSpace(vectorSpace),
+  m_fftObj     (new uqFftClass<double>(m_env))
 {
 }
 
-template <class V>
-uqBaseVectorSequenceClass<V>::~uqBaseVectorSequenceClass()
+template <class V, class M>
+uqBaseVectorSequenceClass<V,M>::~uqBaseVectorSequenceClass()
 {
   if (m_fftObj != NULL) delete m_fftObj;
 }
 
-template <class V>
+template <class V, class M>
 unsigned int
-uqBaseVectorSequenceClass<V>::vectorSize() const
+uqBaseVectorSequenceClass<V,M>::vectorSize() const
 {
-  return m_vectorExample.size();
+  return m_vectorSpace.dim();
 }
 
-template <class V>
+template <class V, class M>
+const uqVectorSpaceClass<V,M>&
+uqBaseVectorSequenceClass<V,M>::vectorSpace() const
+{
+  return m_vectorSpace;
+}
+
+template <class V, class M>
 void
-uqBaseVectorSequenceClass<V>::clear()
+uqBaseVectorSequenceClass<V,M>::clear()
 {
   unsigned int numPos = this->sequenceSize();
   if (numPos) {
@@ -230,12 +231,11 @@ uqBaseVectorSequenceClass<V>::clear()
  return;
 }
 
-template<class V>
+template<class V, class M>
 void
-uqBaseVectorSequenceClass<V>::computeStatistics(
+uqBaseVectorSequenceClass<V,M>::computeStatistics(
   const uqChainStatisticalOptionsClass& statisticalOptions,
   const std::string&                    chainName,
-  const std::vector<std::string>&       componentsNames,
   std::ofstream*                        passedOfs)
 {
   if (m_env.rank() == 0) {
@@ -257,7 +257,7 @@ uqBaseVectorSequenceClass<V>::computeStatistics(
   for (unsigned int i = 0; i < initialPosForStatistics.size(); ++i) {
     initialPosForStatistics[i] = (unsigned int) (statisticalOptions.initialDiscardedPortions()[i] * (double) this->sequenceSize());
   }
-  std::cout << "In uqBaseVectorSequenceClass<V>::computeStatistics(): initial positions for statistics =";
+  std::cout << "In uqBaseVectorSequenceClass<V,M>::computeStatistics(): initial positions for statistics =";
   for (unsigned int i = 0; i < initialPosForStatistics.size(); ++i) {
     std::cout << " " << initialPosForStatistics[i];
   }
@@ -268,7 +268,6 @@ uqBaseVectorSequenceClass<V>::computeStatistics(
   //****************************************************
   this->computeMeanVars(statisticalOptions,
                         chainName,
-                        componentsNames,
                         passedOfs,
                         NULL,
                         NULL,
@@ -283,7 +282,6 @@ uqBaseVectorSequenceClass<V>::computeStatistics(
     this->computeBMM(statisticalOptions,
                      initialPosForStatistics,
                      chainName,
-                     componentsNames,
                      passedOfs);
   }
 
@@ -318,7 +316,6 @@ uqBaseVectorSequenceClass<V>::computeStatistics(
     this->computePSDAtZero(statisticalOptions,
                            initialPosForStatistics,
                            chainName,
-                           componentsNames,
                            passedOfs);
   }
 
@@ -330,7 +327,6 @@ uqBaseVectorSequenceClass<V>::computeStatistics(
     this->computeGeweke(statisticalOptions,
                         initialPosForStatistics,
                         chainName,
-                        componentsNames,
                         passedOfs);
   }
 
@@ -350,7 +346,6 @@ uqBaseVectorSequenceClass<V>::computeStatistics(
                             initialPosForStatistics,
                             lagsForCorrs,
                             chainName,
-                            componentsNames,
                             passedOfs);
   }
 
@@ -364,7 +359,6 @@ uqBaseVectorSequenceClass<V>::computeStatistics(
                             initialPosForStatistics,
                             lagsForCorrs,
                             chainName,
-                            componentsNames,
                             passedOfs);
   }
 
@@ -375,7 +369,6 @@ uqBaseVectorSequenceClass<V>::computeStatistics(
       (statisticalOptions.kdeCompute() )) {
     this->computeHistKde(statisticalOptions,
                          chainName,
-                         componentsNames,
                          passedOfs);
   }
 
@@ -397,12 +390,11 @@ uqBaseVectorSequenceClass<V>::computeStatistics(
   return;
 }
 
-template<class V>
+template<class V, class M>
 void
-uqBaseVectorSequenceClass<V>::computeMeanVars(
+uqBaseVectorSequenceClass<V,M>::computeMeanVars(
   const uqChainStatisticalOptionsClass& statisticalOptions,
   const std::string&                    chainName,
-  const std::vector<std::string>&       componentsNames,
   std::ofstream*                        passedOfs,
   V*                                    meanPtr,
   V*                                    sampleVarPtr,
@@ -419,12 +411,12 @@ uqBaseVectorSequenceClass<V>::computeMeanVars(
               << std::endl;
   }
 
-  V chainMean(m_vectorExample);
+  V chainMean(m_vectorSpace.zeroVector());
   this->mean(0,
              this->sequenceSize(),
              chainMean);
 
-  V chainSampleVariance(m_vectorExample);
+  V chainSampleVariance(m_vectorSpace.zeroVector());
   this->sampleVariance(0,
                        this->sequenceSize(),
                        chainMean,
@@ -445,7 +437,7 @@ uqBaseVectorSequenceClass<V>::computeMeanVars(
     std::cout << std::endl;
   }
 
-  V chainPopulationVariance(m_vectorExample);
+  V chainPopulationVariance(m_vectorSpace.zeroVector());
   this->populationVariance(0,
                            this->sequenceSize(),
                            chainMean,
@@ -472,9 +464,10 @@ uqBaseVectorSequenceClass<V>::computeMeanVars(
             "Popul.Std");
     std::cout << line;
 
+    std::string compName("--");
     for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
       sprintf(line,"\n%8.8s%2s%11.4e%2s%11.4e%2s%11.4e",
-              componentsNames[i].c_str(), /*.*/
+              m_vectorSpace.componentName(i).c_str(), /*.*/
               " ",
 	      chainMean[i],
               " ",
@@ -493,13 +486,12 @@ uqBaseVectorSequenceClass<V>::computeMeanVars(
   return;
 }
 
-template<class V>
+template<class V, class M>
 void
-uqBaseVectorSequenceClass<V>::computeBMM(
+uqBaseVectorSequenceClass<V,M>::computeBMM(
   const uqChainStatisticalOptionsClass& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
   const std::string&                    chainName,
-  const std::vector<std::string>&       componentsNames,
   std::ofstream*                        passedOfs)
 {
   int iRC = UQ_OK_RC;
@@ -513,7 +505,7 @@ uqBaseVectorSequenceClass<V>::computeBMM(
               << std::endl;
   }
 
-  std::cout << "In uqBaseVectorSequenceClass<V>::computeBMM(): lengths for batchs in BMM =";
+  std::cout << "In uqBaseVectorSequenceClass<V,M>::computeBMM(): lengths for batchs in BMM =";
   for (unsigned int i = 0; i < statisticalOptions.bmmLengths().size(); ++i) {
     std::cout << " " << statisticalOptions.bmmLengths()[i];
   }
@@ -522,10 +514,10 @@ uqBaseVectorSequenceClass<V>::computeBMM(
   uq2dArrayOfStuff<V> _2dArrayOfBMM(initialPosForStatistics.size(),statisticalOptions.bmmLengths().size());
   for (unsigned int i = 0; i < _2dArrayOfBMM.numRows(); ++i) {
     for (unsigned int j = 0; j < _2dArrayOfBMM.numCols(); ++j) {
-      _2dArrayOfBMM.setLocation(i,j,new V(m_vectorExample) /*.*/);
+      _2dArrayOfBMM.setLocation(i,j,new V(m_vectorSpace.zeroVector()) /*.*/);
     }
   }
-  V bmmVec(m_vectorExample);
+  V bmmVec(m_vectorSpace.zeroVector());
   for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
     unsigned int initialPos = initialPosForStatistics[initialPosId];
     for (unsigned int batchLengthId = 0; batchLengthId < statisticalOptions.bmmLengths().size(); batchLengthId++) {
@@ -554,9 +546,10 @@ uqBaseVectorSequenceClass<V>::computeBMM(
         std::cout << line;
       }
 
+      std::string compName("--");
       for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
         sprintf(line,"\n%9.9s",
-                componentsNames[i].c_str() /*.*/);
+                m_vectorSpace.componentName(i).c_str() /*.*/);
         std::cout << line;
         for (unsigned int batchLengthId = 0; batchLengthId < statisticalOptions.bmmLengths().size(); batchLengthId++) {
           sprintf(line,"%2s%11.4e",
@@ -579,9 +572,9 @@ uqBaseVectorSequenceClass<V>::computeBMM(
   return;
 }
 
-template<class V>
+template<class V, class M>
 void
-uqBaseVectorSequenceClass<V>::computeFFT(
+uqBaseVectorSequenceClass<V,M>::computeFFT(
   const uqChainStatisticalOptionsClass& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
   const std::string&                    chainName,
@@ -656,9 +649,9 @@ uqBaseVectorSequenceClass<V>::computeFFT(
   return;
 }
 
-template<class V>
+template<class V, class M>
 void
-uqBaseVectorSequenceClass<V>::computePSD(
+uqBaseVectorSequenceClass<V,M>::computePSD(
   const uqChainStatisticalOptionsClass& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
   const std::string&                    chainName,
@@ -710,13 +703,12 @@ uqBaseVectorSequenceClass<V>::computePSD(
   return;
 }
 
-template<class V>
+template<class V, class M>
 void
-uqBaseVectorSequenceClass<V>::computePSDAtZero(
+uqBaseVectorSequenceClass<V,M>::computePSDAtZero(
   const uqChainStatisticalOptionsClass& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
   const std::string&                    chainName,
-  const std::vector<std::string>&       componentsNames,
   std::ofstream*                        passedOfs)
 {
   int iRC = UQ_OK_RC;
@@ -733,10 +725,10 @@ uqBaseVectorSequenceClass<V>::computePSDAtZero(
   uq2dArrayOfStuff<V> _2dArrayOfPSDAtZero(initialPosForStatistics.size(),statisticalOptions.psdAtZeroNumBlocks().size());
   for (unsigned int i = 0; i < _2dArrayOfPSDAtZero.numRows(); ++i) {
     for (unsigned int j = 0; j < _2dArrayOfPSDAtZero.numCols(); ++j) {
-      _2dArrayOfPSDAtZero.setLocation(i,j,new V(m_vectorExample) /*.*/);
+      _2dArrayOfPSDAtZero.setLocation(i,j,new V(m_vectorSpace.zeroVector()) /*.*/);
     }
   }
-  V psdVec(m_vectorExample);
+  V psdVec(m_vectorSpace.zeroVector());
   for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
     unsigned int initialPosition = initialPosForStatistics[initialPosId];
     for (unsigned int numBlocksId = 0; numBlocksId < statisticalOptions.psdAtZeroNumBlocks().size(); numBlocksId++) {
@@ -769,9 +761,10 @@ uqBaseVectorSequenceClass<V>::computePSDAtZero(
         std::cout << line;
       }
 
+      std::string compName("--");
       for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
         sprintf(line,"\n%9.9s",
-                componentsNames[i].c_str() /*.*/);
+                m_vectorSpace.componentName(i).c_str() /*.*/);
         std::cout << line;
         for (unsigned int numBlocksId = 0; numBlocksId < statisticalOptions.psdAtZeroNumBlocks().size(); numBlocksId++) {
           sprintf(line,"%2s%11.4e",
@@ -804,9 +797,10 @@ uqBaseVectorSequenceClass<V>::computePSDAtZero(
         std::cout << line;
       }
 
+      std::string compName("--");
       for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
         sprintf(line,"\n%9.9s",
-                componentsNames[i].c_str() /*.*/);
+                m_vectorSpace.componentName(i).c_str() /*.*/);
         std::cout << line;
         for (unsigned int numBlocksId = 0; numBlocksId < statisticalOptions.psdAtZeroNumBlocks().size(); numBlocksId++) {
           sprintf(line,"%2s%11.4e",
@@ -861,13 +855,12 @@ uqBaseVectorSequenceClass<V>::computePSDAtZero(
   return;
 }
 
-template<class V>
+template<class V, class M>
 void
-uqBaseVectorSequenceClass<V>::computeGeweke(
+uqBaseVectorSequenceClass<V,M>::computeGeweke(
   const uqChainStatisticalOptionsClass& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
   const std::string&                    chainName,
-  const std::vector<std::string>&       componentsNames,
   std::ofstream*                        passedOfs)
 {
   int iRC = UQ_OK_RC;
@@ -882,7 +875,7 @@ uqBaseVectorSequenceClass<V>::computeGeweke(
   }
 
   std::vector<V*> vectorOfGeweke(initialPosForStatistics.size(),NULL);
-  V gewVec(m_vectorExample);
+  V gewVec(m_vectorSpace.zeroVector());
   for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
     unsigned int initialPosition = initialPosForStatistics[initialPosId];
     this->geweke(initialPosition,
@@ -908,9 +901,10 @@ uqBaseVectorSequenceClass<V>::computeGeweke(
       std::cout << line;
     }
 
+    std::string compName("--");
     for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
       sprintf(line,"\n%9.9s",
-              componentsNames[i].c_str() /*.*/);
+              m_vectorSpace.componentName(i).c_str() /*.*/);
       std::cout << line;
       for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
         sprintf(line,"%2s%11.4e",
@@ -932,14 +926,13 @@ uqBaseVectorSequenceClass<V>::computeGeweke(
   return;
 }
 
-template<class V>
+template<class V, class M>
 void
-uqBaseVectorSequenceClass<V>::computeCorrViaDef(
+uqBaseVectorSequenceClass<V,M>::computeCorrViaDef(
   const uqChainStatisticalOptionsClass& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
   const std::vector<unsigned int>&      lagsForCorrs,
   const std::string&                    chainName,
-  const std::vector<std::string>&       componentsNames,
   std::ofstream*                        passedOfs)
 {
   int iRC = UQ_OK_RC;
@@ -954,7 +947,7 @@ uqBaseVectorSequenceClass<V>::computeCorrViaDef(
   }
 
   if (statisticalOptions.corrDisplay() && (m_env.rank() == 0)) {
-    std::cout << "In uqBaseVectorSequenceClass<V>::computeCorrViaDef(): lags for autocorrelation (via def) = ";
+    std::cout << "In uqBaseVectorSequenceClass<V,M>::computeCorrViaDef(): lags for autocorrelation (via def) = ";
     for (unsigned int i = 0; i < lagsForCorrs.size(); ++i) {
       std::cout << " " << lagsForCorrs[i];
     }
@@ -964,10 +957,10 @@ uqBaseVectorSequenceClass<V>::computeCorrViaDef(
   uq2dArrayOfStuff<V> _2dArrayOfAutoCorrs(initialPosForStatistics.size(),lagsForCorrs.size());
   for (unsigned int i = 0; i < _2dArrayOfAutoCorrs.numRows(); ++i) {
     for (unsigned int j = 0; j < _2dArrayOfAutoCorrs.numCols(); ++j) {
-      _2dArrayOfAutoCorrs.setLocation(i,j,new V(m_vectorExample) /*.*/);
+      _2dArrayOfAutoCorrs.setLocation(i,j,new V(m_vectorSpace.zeroVector()) /*.*/);
     }
   }
-  //V corrVec(m_vectorExample);
+  //V corrVec(m_vectorSpace.zeroVector());
   for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
     unsigned int initialPos = initialPosForStatistics[initialPosId];
     for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
@@ -999,9 +992,10 @@ uqBaseVectorSequenceClass<V>::computeCorrViaDef(
         std::cout << line;
       }
 
+      std::string compName("--");
       for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
         sprintf(line,"\n%9.9s",
-                componentsNames[i].c_str() /*.*/);
+                m_vectorSpace.componentName(i).c_str() /*.*/);
         std::cout << line;
         for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
           sprintf(line,"%2s%11.4e",
@@ -1056,14 +1050,13 @@ uqBaseVectorSequenceClass<V>::computeCorrViaDef(
   return;
 }
 
-template<class V>
+template<class V, class M>
 void
-uqBaseVectorSequenceClass<V>::computeCorrViaFFT(
+uqBaseVectorSequenceClass<V,M>::computeCorrViaFFT(
   const uqChainStatisticalOptionsClass& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
   const std::vector<unsigned int>&      lagsForCorrs,
   const std::string&                    chainName,
-  const std::vector<std::string>&       componentsNames,
   std::ofstream*                        passedOfs)
 {
   int iRC = UQ_OK_RC;
@@ -1078,7 +1071,7 @@ uqBaseVectorSequenceClass<V>::computeCorrViaFFT(
   }
 
   if (statisticalOptions.corrDisplay() && (m_env.rank() == 0)) {
-    std::cout << "In uqBaseVectorSequenceClass<V>::computeCorrViaFFT(): lags for autocorrelation (via fft) = ";
+    std::cout << "In uqBaseVectorSequenceClass<V,M>::computeCorrViaFFT(): lags for autocorrelation (via fft) = ";
     for (unsigned int i = 0; i < lagsForCorrs.size(); ++i) {
       std::cout << " " << lagsForCorrs[i];
      }
@@ -1088,19 +1081,19 @@ uqBaseVectorSequenceClass<V>::computeCorrViaFFT(
   uq2dArrayOfStuff<V> _2dArrayOfAutoCorrs(initialPosForStatistics.size(),lagsForCorrs.size());
   for (unsigned int i = 0; i < _2dArrayOfAutoCorrs.numRows(); ++i) {
     for (unsigned int j = 0; j < _2dArrayOfAutoCorrs.numCols(); ++j) {
-      _2dArrayOfAutoCorrs.setLocation(i,j,new V(m_vectorExample) /*.*/);
+      _2dArrayOfAutoCorrs.setLocation(i,j,new V(m_vectorSpace.zeroVector()) /*.*/);
     }
   }
   std::vector<V*> corrVecs(lagsForCorrs.size(),NULL);
   std::vector<V*> corrSumVecs(initialPosForStatistics.size(),NULL);
   for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
-    corrSumVecs[initialPosId] = new V(m_vectorExample) /*.*/;
+    corrSumVecs[initialPosId] = new V(m_vectorSpace.zeroVector()) /*.*/;
     unsigned int initialPos = initialPosForStatistics[initialPosId];
     for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
-      corrVecs[lagId] = new V(m_vectorExample) /*.*/;
+      corrVecs[lagId] = new V(m_vectorSpace.zeroVector()) /*.*/;
     }
     if (m_env.rank() == 0) {
-      std::cout << "In uqBaseVectorSequenceClass<V>::computeCorrViaFFT()"
+      std::cout << "In uqBaseVectorSequenceClass<V,M>::computeCorrViaFFT()"
                 << ": about to call chain.autoCorrViaFft()"
                 << " with initialPos = "      << initialPos
                 << ", numPos = "              << this->sequenceSize()-initialPos
@@ -1125,9 +1118,9 @@ uqBaseVectorSequenceClass<V>::computeCorrViaFFT(
   }
 
   if ((statisticalOptions.corrDisplay()) && (m_env.rank() == 0)) {
-    V chainMean                    (m_vectorExample);
-    V chainSampleVariance          (m_vectorExample);
-    V estimatedVarianceOfSampleMean(m_vectorExample);
+    V chainMean                    (m_vectorSpace.zeroVector());
+    V chainSampleVariance          (m_vectorSpace.zeroVector());
+    V estimatedVarianceOfSampleMean(m_vectorSpace.zeroVector());
     for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
       unsigned int initialPos = initialPosForStatistics[initialPosId];
 
@@ -1169,9 +1162,10 @@ uqBaseVectorSequenceClass<V>::computeCorrViaFFT(
         std::cout << line;
       }
 
+      std::string compName("--");
       for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
         sprintf(line,"\n%9.9s",
-                componentsNames[i].c_str() /*.*/);
+                m_vectorSpace.componentName(i).c_str() /*.*/);
         std::cout << line;
         for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
           sprintf(line,"%2s%11.4e",
@@ -1226,9 +1220,9 @@ uqBaseVectorSequenceClass<V>::computeCorrViaFFT(
   return;
 }
 
-template<class V>
+template<class V, class M>
 void
-uqBaseVectorSequenceClass<V>::computeFilterParams(
+uqBaseVectorSequenceClass<V,M>::computeFilterParams(
   const uqChainStatisticalOptionsClass& statisticalOptions,
   const std::string&                    chainName,
   std::ofstream*                        passedOfs,
@@ -1260,12 +1254,11 @@ uqBaseVectorSequenceClass<V>::computeFilterParams(
   return;
 }
 
-template<class V>
+template<class V, class M>
 void
-uqBaseVectorSequenceClass<V>::computeHistKde( // Use the whole chain
+uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
   const uqChainStatisticalOptionsClass& statisticalOptions,
   const std::string&                    chainName,
-  const std::vector<std::string>&       componentsNames,
   std::ofstream*                        passedOfs)
 {
   if (m_env.rank() == 0) {
@@ -1291,8 +1284,8 @@ uqBaseVectorSequenceClass<V>::computeHistKde( // Use the whole chain
               << std::endl;
   }
 
-  V statsMinPositions(m_vectorExample);
-  V statsMaxPositions(m_vectorExample);
+  V statsMinPositions(m_vectorSpace.zeroVector());
+  V statsMaxPositions(m_vectorSpace.zeroVector());
   this->minMax(0, // Use the whole chain
                statsMinPositions,
                statsMaxPositions);
@@ -1313,9 +1306,10 @@ uqBaseVectorSequenceClass<V>::computeHistKde( // Use the whole chain
             "max");
     std::cout << line;
 
+    std::string compName("--");
     for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
       sprintf(line,"\n%8.8s",
-              componentsNames[i].c_str() /*.*/);
+              m_vectorSpace.componentName(i).c_str() /*.*/);
       std::cout << line;
 
       sprintf(line,"%2s%11.4e%2s%11.4e",
@@ -1425,7 +1419,7 @@ uqBaseVectorSequenceClass<V>::computeHistKde( // Use the whole chain
     }
 
     std::vector<V*> kdeEvalPositions(0);
-    V               gaussianKdeScaleVec(m_vectorExample);
+    V               gaussianKdeScaleVec(m_vectorSpace.zeroVector());
     std::vector<V*> gaussianKdeDensities(0);
 
     kdeEvalPositions.resize(statisticalOptions.kdeNumEvalPositions(),NULL);
@@ -1433,7 +1427,7 @@ uqBaseVectorSequenceClass<V>::computeHistKde( // Use the whole chain
                                         statsMaxPositions,
                                         kdeEvalPositions);
 
-    V iqrVec(m_vectorExample);
+    V iqrVec(m_vectorSpace.zeroVector());
     this->interQuantileRange(0, // Use the whole chain
                              iqrVec);
 
@@ -1451,9 +1445,10 @@ uqBaseVectorSequenceClass<V>::computeHistKde( // Use the whole chain
               "iqr");
       std::cout << line;
 
+      std::string compName("--");
       for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
         sprintf(line,"\n%8.8s",
-                componentsNames[i].c_str() /*.*/);
+                m_vectorSpace.componentName(i).c_str() /*.*/);
         std::cout << line;
 
         sprintf(line,"%2s%11.4e",

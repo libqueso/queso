@@ -27,8 +27,13 @@
 #include <uqMarkovChainSG1.h>
 #include <uqVectorRV.h>
 
+#undef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
+
 // _ODV = option default value
-#define UQ_CALIB_PROBLEM_SOLVER_ODV "bayes_mc" // Bayesian formula + Markov Chain
+#define UQ_CALIB_PROBLEM_SKIP_SOLUTION_ODV 0
+#ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
+#define UQ_CALIB_PROBLEM_SOLVER_ODV        "bayes_mc" // Bayesian formula + Markov Chain
+#endif
 
 template <class P_V,class P_M>
 class uqCalibProblemClass
@@ -55,9 +60,15 @@ private:
 
         po::options_description*               m_optionsDesc;
         std::string                            m_option_help;
+	std::string                            m_option_skipSolution;
+#ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
         std::string                            m_option_solver;
+#endif
 
+        bool                                   m_skipSolution;
+#ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
 	std::string                            m_solverString;
+#endif
 
   const uqBaseVectorRVClass         <P_V,P_M>& m_priorRv;
   const uqBaseVectorProbDensityClass<P_V,P_M>& m_likelihoodFunction;
@@ -67,8 +78,8 @@ private:
         uqBaseVectorRealizerClass   <P_V,P_M>* m_solutionRealizer;
 
         uqMarkovChainSGClass        <P_V,P_M>* m_mcSeqGenerator;
-        uqSequenceOfVectorsClass    <P_V>*     m_chain1;
-        uqArrayOfSequencesClass     <P_V>*     m_chain2;
+        uqSequenceOfVectorsClass    <P_V,P_M>* m_chain1;
+        uqArrayOfSequencesClass     <P_V,P_M>* m_chain2;
 };
 
 template<class P_V,class P_M>
@@ -85,8 +96,14 @@ uqCalibProblemClass<P_V,P_M>::uqCalibProblemClass(
   m_prefix             ((std::string)(prefix) + "cal_"),
   m_optionsDesc        (new po::options_description("UQ Calibration Problem")),
   m_option_help        (m_prefix + "help"  ),
+  m_option_skipSolution(m_prefix + "skipSolution"),
+#ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
   m_option_solver      (m_prefix + "solver"),
+#endif
+  m_skipSolution       (UQ_CALIB_PROBLEM_SKIP_SOLUTION_ODV),
+#ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
   m_solverString       (UQ_CALIB_PROBLEM_SOLVER_ODV),
+#endif
   m_priorRv            (priorRv),
   m_likelihoodFunction (likelihoodFunction),
   m_postRv             (postRv),
@@ -139,8 +156,11 @@ uqCalibProblemClass<P_V,P_M>::defineMyOptions(
   po::options_description& optionsDesc)
 {
   optionsDesc.add_options()
-    (m_option_help.c_str(),                                                                         "produce help message for calibration problem")
-    (m_option_solver.c_str(), po::value<std::string>()->default_value(UQ_CALIB_PROBLEM_SOLVER_ODV), "algorithm for calibration"                   )
+    (m_option_help.c_str(),                                                                                      "produce help message for calibration problem")
+    (m_option_skipSolution.c_str(), po::value<bool       >()->default_value(UQ_CALIB_PROBLEM_SKIP_SOLUTION_ODV), "skip solution process"                       )
+#ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
+    (m_option_solver.c_str()      , po::value<std::string>()->default_value(UQ_CALIB_PROBLEM_SOLVER_ODV       ), "algorithm for calibration"                   )
+#endif
   ;
 
   return;
@@ -156,9 +176,15 @@ void
               << std::endl;
   }
 
+  if (m_env.allOptionsMap().count(m_option_skipSolution.c_str())) {
+    m_skipSolution = m_env.allOptionsMap()[m_option_skipSolution.c_str()].as<bool>();
+  }
+
+#ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
   if (m_env.allOptionsMap().count(m_option_solver.c_str())) {
     m_solverString = m_env.allOptionsMap()[m_option_solver.c_str()].as<std::string>();
   }
+#endif
 
   return;
 }
@@ -192,12 +218,11 @@ uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
                                                        initialValues,
                                                        proposalCovMatrix,
                                                        NULL);
-  m_chain1 = new uqSequenceOfVectorsClass<P_V>(0,m_postRv.imageSpace().zeroVector());
-  //m_chain2 = new uqArrayOfSequencesClass <P_V>(0,m_postRv.imageSpace().zeroVector());
+  m_chain1 = new uqSequenceOfVectorsClass<P_V,P_M>(m_postRv.imageSpace(),0);
+  //m_chain2 = new uqArrayOfSequencesClass <P_V,P_M>(m_postRv.imageSpace(),0);
 
   m_mcSeqGenerator->generateSequence(*m_chain1);
   m_solutionRealizer = new uqSequentialVectorRealizerClass<P_V,P_M>(m_prefix.c_str(),
-                                                                    m_postRv.imageSpace(),
                                                                    *m_chain1);
   m_postRv.setRealizer(*m_solutionRealizer);
 
@@ -208,7 +233,10 @@ template <class P_V,class P_M>
 void
 uqCalibProblemClass<P_V,P_M>::print(std::ostream& os) const
 {
-  os << "\n" << m_option_solver  << " = " << m_solverString;
+  os << "\n" << m_option_skipSolution << " = " << m_skipSolution;
+#ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
+  os << "\n" << m_option_solver       << " = " << m_solverString;
+#endif
   os << std::endl;
 }
 

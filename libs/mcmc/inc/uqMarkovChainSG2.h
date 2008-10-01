@@ -24,7 +24,7 @@ template <class P_V,class P_M>
 void
 uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
   const P_M&                      proposalCovMatrix,
-  uqBaseVectorSequenceClass<P_V>& workingChain)
+  uqBaseVectorSequenceClass<P_V,P_M>& workingChain)
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences()..."
@@ -146,7 +146,6 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
     if (m_chainComputeStats) {
       workingChain.computeStatistics(*m_chainStatisticalOptions,
                                      chainName,
-                                     m_sourceRv.imageSpace().componentsNames(),
                                      ofs);
     }
 
@@ -177,7 +176,6 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
       if (m_uniqueChainComputeStats) {
         workingChain.computeStatistics(*m_uniqueChainStatisticalOptions,
                                        chainName,
-                                       m_sourceRv.imageSpace().componentsNames(),
                                        ofs);
       }
     }
@@ -214,7 +212,6 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
       if (m_filteredChainComputeStats) {
         workingChain.computeStatistics(*m_filteredChainStatisticalOptions,
                                        chainName,
-                                       m_sourceRv.imageSpace().componentsNames(),
                                        ofs);
       }
     }
@@ -274,7 +271,7 @@ template <class P_V,class P_M>
 void
 uqMarkovChainSGClass<P_V,P_M>::generateWhiteNoiseChain(
   unsigned int                    chainSize,
-  uqBaseVectorSequenceClass<P_V>& workingChain,
+  uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
   const std::string&     chainName)
 {
   if (m_env.rank() == 0) {
@@ -319,7 +316,7 @@ template <class P_V,class P_M>
 void
 uqMarkovChainSGClass<P_V,P_M>::generateUniformChain(
   unsigned int                    chainSize,
-  uqBaseVectorSequenceClass<P_V>& workingChain,
+  uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
   const std::string&     chainName)
 {
   if (m_env.rank() == 0) {
@@ -364,7 +361,7 @@ template <class P_V,class P_M>
 void
 uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
   const P_V&                      valuesOf1stPosition,
-  uqBaseVectorSequenceClass<P_V>& workingChain,
+  uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
   const std::string&              chainName,
   unsigned int                    chainSize)
 {
@@ -628,7 +625,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
 
       // Now might be the moment to adapt
       unsigned int idOfFirstPositionInSubChain = 0;
-      uqSequenceOfVectorsClass<P_V> subChain(0,m_paramSpace.zeroVector());
+      uqSequenceOfVectorsClass<P_V,P_M> subChain(m_paramSpace,0);
 
       // Check if now is indeed the moment to adapt
       if (positionId < m_initialNonAdaptInterval) {
@@ -810,7 +807,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
 template <class P_V,class P_M>
 void
 uqMarkovChainSGClass<P_V,P_M>::updateCovMatrix(
-  const uqBaseVectorSequenceClass<P_V>& subChain,
+  const uqBaseVectorSequenceClass<P_V,P_M>& subChain,
   unsigned int                          idOfFirstPositionInSubChain,
   double&                               lastChainSize,
   P_V&                                  lastMean,

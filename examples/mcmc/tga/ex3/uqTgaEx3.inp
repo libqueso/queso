@@ -6,28 +6,10 @@ uqEnv_verbosity = 2
 uqEnv_seed      = 0
 
 ###############################################
-# Spaces
+# Calibration problem
 ###############################################
-param_space_help     = anything
-param_space_dim      = 2
-param_space_specFile = param_space.spc
-
-qoi_space_help     = anything
-qoi_space_dim      = 1
-qoi_space_specFile = qoi_space.spc
-
-###############################################
-# Calibration problem: information for spaces was already provided above
-###############################################
-
-###############################################
-# Calibration problem: information for rvs
-###############################################
-prior_rv_help     = anything
-prior_rv_specFile = prior_rv.spc
-
-post_rv_help     = anything
-post_rv_specFile = .
+cal_help         = anything
+cal_skipSolution = 0
 
 ###############################################
 # Calibration problem: information for Markov Chain algorithm
@@ -132,15 +114,10 @@ cal_mc_filteredChain_stats_kde_compute              = 1
 cal_mc_filteredChain_stats_kde_numEvalPositions     = 250
 
 ###############################################
-# Propagation problem: information for spaces was already provided above
+# Propagation problem
 ###############################################
-
-###############################################
-# Propagation problem: information for qoi rv only,
-# since param rv = posterior rv from calibration
-###############################################
-qoi_rv_help     = anything
-qoi_rv_specFile = .
+pro_help         = anything
+pro_skipSolution = 0
 
 ###############################################
 # Propagation problem: information for Monte Carlo algorithm

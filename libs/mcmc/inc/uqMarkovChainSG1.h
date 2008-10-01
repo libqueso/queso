@@ -80,7 +80,7 @@ public:
                              void*                         proposalTk);       /*! Proposal transition kernel. */
  ~uqMarkovChainSGClass();
 
-  void   generateSequence        (uqBaseVectorSequenceClass<P_V>& workingChain); /*! */
+  void   generateSequence        (uqBaseVectorSequenceClass<P_V,P_M>& workingChain); /*! */
 
   void   print                   (std::ostream& os) const;
 
@@ -91,19 +91,19 @@ private:
   void   getMyOptionValues       (po::options_description&                       optionsDesc);
 
   void   intGenerateSequences    (const P_M&                                     proposalCovMatrix,
-                                  uqBaseVectorSequenceClass<P_V>&                workingChain);
+                                  uqBaseVectorSequenceClass<P_V,P_M>&                workingChain);
   int    prepareForNextChain     (const P_M&                                     proposalCovMatrix);
   void   intGenerateSequence     (const P_V&                                     valuesOf1stPosition,
-                                  uqBaseVectorSequenceClass<P_V>&                workingChain,
+                                  uqBaseVectorSequenceClass<P_V,P_M>&                workingChain,
                                   const std::string&                             chainName,
                                   unsigned int                                   chainSize);
   void   generateWhiteNoiseChain (unsigned int                                   chainSize,
-                                  uqBaseVectorSequenceClass<P_V>&                workingChain,
+                                  uqBaseVectorSequenceClass<P_V,P_M>&                workingChain,
                                   const std::string&                             chainName);
   void   generateUniformChain    (unsigned int                                   chainSize,
-                                  uqBaseVectorSequenceClass<P_V>&                workingChain,
+                                  uqBaseVectorSequenceClass<P_V,P_M>&                workingChain,
                                   const std::string&                             chainName);
-  void   updateCovMatrix         (const uqBaseVectorSequenceClass<P_V>&          subChain,
+  void   updateCovMatrix         (const uqBaseVectorSequenceClass<P_V,P_M>&          subChain,
                                   unsigned int                                   idOfFirstPositionInSubChain,
                                   double&                                        lastChainSize,
                                   P_V&                                           lastMean,
@@ -120,7 +120,7 @@ private:
   bool   acceptAlpha             (double                                         alpha);
   void   updateCovMatrices       ();
 
-  int    writeInfo               (const uqBaseVectorSequenceClass<P_V>&          workingChain,
+  int    writeInfo               (const uqBaseVectorSequenceClass<P_V,P_M>&          workingChain,
                                   const std::string&                             chainName,
                                   const std::string&                             prefixName,
                                   std::ofstream&                                 ofs) const;
@@ -612,7 +612,7 @@ uqMarkovChainSGClass<P_V,P_M>::getMyOptionValues(
 
 template<class P_V,class P_M>
 void
-uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V>& workingChain)
+uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_M>& workingChain)
 {
   intGenerateSequences(m_proposalCovMatrix,
                        workingChain);
@@ -895,7 +895,7 @@ uqMarkovChainSGClass<P_V,P_M>::acceptAlpha(double alpha)
 template<class P_V,class P_M>
 int
 uqMarkovChainSGClass<P_V,P_M>::writeInfo(
-  const uqBaseVectorSequenceClass<P_V>& workingChain,
+  const uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
   const std::string&                    chainName,
   const std::string&                    prefixName,
   std::ofstream&                        ofs) const
