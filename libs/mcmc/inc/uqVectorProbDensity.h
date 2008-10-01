@@ -69,6 +69,7 @@ protected:
   const   uqEnvironmentClass&      m_env;
           std::string              m_prefix;
   const   uqVectorSpaceClass<V,M>& m_domainSpace;
+
           V*                       m_domainMinValues;
           V*                       m_domainMaxValues;
           V*                       m_domainExpectedValues;
@@ -197,65 +198,8 @@ uqBaseVectorProbDensityClass<V,M>::~uqBaseVectorProbDensityClass()
   delete m_domainMinValues;
   delete m_domainMaxValues;
 }
+
 #if 0
-template <class V, class M>
-void
-uqBaseVectorProbDensityClass<V,M>::setComponent(
-  unsigned int componentId,
-  double       minValue,
-  double       maxValue,
-  double       expectedValue,
-  double       varianceValues)
-{
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqBaseVectorProbDensityClass<V,M>::setComponent()"
-              << ", componentId = "    << componentId
-              << ", minValue = "       << minValue
-              << ", maxValue = "       << maxValue
-              << ", expectedValue = "  << expectedValue
-              << ", varianceValues = " << varianceValues
-              << std::endl;
-  }
-  UQ_FATAL_TEST_MACRO((componentId > m_components.size()),
-                      m_env.rank(),
-                      "uqBaseVectorProbDensityClass<V,M>::setComponent()",
-                      "componentId is too big");
-
-  if (m_components[componentId] == NULL) {
-    m_components[componentId] = new uqBaseScalarProbDensityClass(minValue,
-                                                                 maxValue,
-                                                                 expectedValue,
-                                                                 varianceValues);
-  }
-  else {
-    m_components[componentId]->setMinValue   (minValue);
-    m_components[componentId]->setMaxValue   (maxValue);
-    m_components[componentId]->setExpectValue(expectedValue);
-    m_components[componentId]->setStdDevValue(varianceValues);
-  }
-
-  // These values cannot be trusted anymore
-  // They need to be updated
-  // They will be updated the next time they are requested
-  resetValues();
-
-  return;
-}
-
-template <class V, class M>
-void
-uqBaseVectorProbDensityClass<V,M>::resetValues()
-{
-  if (m_varianceValuess) delete m_varianceValuess;
-  if (m_expectedValues ) delete m_expectedValues;
-  if (m_domainMaxValues) delete m_domainMaxValues;
-  if (m_domainMinValues) delete m_domainMinValues;
-  m_varianceValuess = NULL;
-  m_expectedValues  = NULL;
-  m_domainMaxValues = NULL;
-  m_domainMinValues = NULL;
-}
-
 template <class V, class M>
 const uqBaseScalarProbDensityClass&
 uqBaseVectorProbDensityClass<V,M>::component(unsigned int componentId) const
@@ -610,10 +554,10 @@ uqGaussianVectorProbDensityClass<V,M>::commonConstructor()
   m_m2lPriorRoutine_Data.paramPriorVariances = m_domainVarianceValues;
   m_probDensity = new uqGenericVectorProbDensityClass<V,M>(m_prefix.c_str(),
                                                            m_domainSpace,
-                                                           *m_domainMinValues,
-                                                           *m_domainMaxValues,
-                                                           *m_domainExpectedValues,
-                                                           *m_domainVarianceValues,
+                                                          *m_domainMinValues,
+                                                          *m_domainMaxValues,
+                                                          *m_domainExpectedValues,
+                                                          *m_domainVarianceValues,
                                                            uqDefault_M2lPriorRoutine<V,M>, // use default prior() routine
                                                            (void *) &m_m2lPriorRoutine_Data,
                                                            true); // the routine computes [-2.*ln(Likelihood)]

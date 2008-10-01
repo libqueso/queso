@@ -109,7 +109,7 @@ uqBaseVectorRVClass<V,M>::realizer() const
 {
   UQ_FATAL_TEST_MACRO(m_realizer == NULL,
                       m_env.rank(),
-                      "uqBaseVectorRVClass<V,M>::realizer()",
+                      (std::string)("uqBaseVectorRVClass<V,M>::realizer(), prefix=")+m_prefix,
                       "m_realizer is NULL");
 
   return *m_realizer;

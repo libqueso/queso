@@ -117,7 +117,7 @@ cal_mc_filteredChain_stats_kde_numEvalPositions     = 250
 # Propagation problem
 ###############################################
 pro_help         = anything
-pro_skipSolution = 1
+pro_skipSolution = 0
 
 ###############################################
 # Propagation problem: information for Monte Carlo algorithm

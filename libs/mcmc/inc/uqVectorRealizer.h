@@ -35,36 +35,60 @@ template<class V, class M>
 class uqBaseVectorRealizerClass {
 public:
            uqBaseVectorRealizerClass(const char*                    prefix,
-                                     const uqVectorSpaceClass<V,M>& domainSpace,
+                                     const uqVectorSpaceClass<V,M>& imageSpace,
                                      unsigned int                   period);
 
            uqBaseVectorRealizerClass(const uqBaseVectorSequenceClass<V,M>* chain);
   virtual ~uqBaseVectorRealizerClass();
 
-          unsigned int period     ()              const;
-  virtual void         realization(V& nextValues) const = 0;
+  const   uqVectorSpaceClass<V,M>& imageSpace         ()              const;
+          unsigned int             period             ()              const;
+  virtual void                     realization        (V& nextValues) const = 0;
+
+          bool                     outOfImageBounds   (const V& v)    const;
+  const   V&                       imageMinValues     ()              const;
+  const   V&                       imageMaxValues     ()              const;
+  const   V&                       imageExpectedValues()              const;
+  const   V&                       imageVarianceValues()              const;
 
 protected:
   const uqEnvironmentClass&      m_env;
         std::string              m_prefix;
-  const uqVectorSpaceClass<V,M>& m_domainSpace;
+  const uqVectorSpaceClass<V,M>& m_imageSpace;
         unsigned int             m_period;
 
-  const uqBaseVectorSequenceClass<V,M>* m_chain;
-  mutable unsigned int                  m_currentChainPos;
+        V*                       m_imageMinValues;
+        V*                       m_imageMaxValues;
+        V*                       m_imageExpectedValues;
+        V*                       m_imageVarianceValues;
 };
 
 template<class V, class M>
 uqBaseVectorRealizerClass<V,M>::uqBaseVectorRealizerClass(
   const char*                    prefix,
-  const uqVectorSpaceClass<V,M>& domainSpace,
+  const uqVectorSpaceClass<V,M>& imageSpace,
   unsigned int                   period)
   :
-  m_env        (domainSpace.env()),
-  m_prefix     ((std::string)(prefix)+"re_"),
-  m_domainSpace(domainSpace),
-  m_period     (period)
+  m_env                (imageSpace.env()),
+  m_prefix             ((std::string)(prefix)+"re_"),
+  m_imageSpace         (imageSpace),
+  m_period             (period),
+  m_imageMinValues     (imageSpace.newVector(-INFINITY)),
+  m_imageMaxValues     (imageSpace.newVector( INFINITY)),
+  m_imageExpectedValues(imageSpace.newVector(       0.)),
+  m_imageVarianceValues(imageSpace.newVector( INFINITY))
 {
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Entering uqBaseVectorRealizerClass<V,M>::constructor() [4]"
+              << ": prefix = " << m_prefix
+              << std::endl;
+  }
+
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Leaving uqBaseVectorRealizerClass<V,M>::constructor() [4]"
+              << ": prefix = " << m_prefix
+              << std::endl;
+  }
 }
 
 template<class V, class M>
@@ -79,6 +103,49 @@ uqBaseVectorRealizerClass<V,M>::period() const
   return m_period;
 }
 
+template <class V, class M>
+const V&
+uqBaseVectorRealizerClass<V,M>::imageMinValues() const
+{
+  return *m_imageMinValues;
+}
+
+template <class V, class M>
+const V&
+uqBaseVectorRealizerClass<V,M>::imageMaxValues() const
+{
+  return *m_imageMaxValues;
+}
+
+template <class V, class M>
+const V&
+uqBaseVectorRealizerClass<V,M>::imageExpectedValues() const
+{
+  return *m_imageExpectedValues;
+}
+
+template <class V, class M>
+const V&
+uqBaseVectorRealizerClass<V,M>::imageVarianceValues() const
+{
+  return *m_imageVarianceValues;
+}
+
+template <class V, class M>
+bool
+uqBaseVectorRealizerClass<V,M>::outOfImageBounds(const V& v) const
+{
+  return (v.atLeastOneComponentSmallerThan(this->imageMinValues()) ||
+          v.atLeastOneComponentBiggerThan (this->imageMaxValues()));
+}
+
+template<class V, class M>
+const uqVectorSpaceClass<V,M>&
+uqBaseVectorRealizerClass<V,M>::imageSpace() const
+{
+  return m_imageSpace;
+}
+
 //*****************************************************
 // Generic class
 //*****************************************************
@@ -86,7 +153,7 @@ template<class V, class M>
 class uqGenericVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
 public:
   uqGenericVectorRealizerClass(const char*                    prefix,
-                               const uqVectorSpaceClass<V,M>& domainSpace,
+                               const uqVectorSpaceClass<V,M>& imageSpace,
                                unsigned int                   period,
                                double (*routinePtr)(const void* routineDataPtr, V& nextParamValues),
                                const void* routineDataPtr);
@@ -100,19 +167,19 @@ private:
 
   using uqBaseVectorRealizerClass<V,M>::m_env;
   using uqBaseVectorRealizerClass<V,M>::m_prefix;
-  using uqBaseVectorRealizerClass<V,M>::m_domainSpace;
+  using uqBaseVectorRealizerClass<V,M>::m_imageSpace;
   using uqBaseVectorRealizerClass<V,M>::m_period;
 };
 
 template<class V, class M>
 uqGenericVectorRealizerClass<V,M>::uqGenericVectorRealizerClass(
   const char*                    prefix,
-  const uqVectorSpaceClass<V,M>& domainSpace,
+  const uqVectorSpaceClass<V,M>& imageSpace,
   unsigned int                   period,
   double (*routinePtr)(const void* routineDataPtr, V& nextParamValues),
   const void* routineDataPtr)
   :
-  uqBaseVectorRealizerClass<V,M>(((std::string)(prefix)+"gen").c_str(),domainSpace,period),
+  uqBaseVectorRealizerClass<V,M>(((std::string)(prefix)+"gen").c_str(),imageSpace,period),
   m_routinePtr    (routinePtr),
   m_routineDataPtr(routineDataPtr)
 {
@@ -160,7 +227,7 @@ private:
 
   using uqBaseVectorRealizerClass<V,M>::m_env;
   using uqBaseVectorRealizerClass<V,M>::m_prefix;
-  using uqBaseVectorRealizerClass<V,M>::m_domainSpace;
+  using uqBaseVectorRealizerClass<V,M>::m_imageSpace;
   using uqBaseVectorRealizerClass<V,M>::m_period;
 };
 

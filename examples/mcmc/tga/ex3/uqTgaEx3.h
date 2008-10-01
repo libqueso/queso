@@ -344,11 +344,7 @@ uqAppl(const uqEnvironmentClass& env)
   // Step 3 of 3: deal with the propagation problem
   //******************************************************
 
-  // Qoi vector rv
-  uqGenericVectorRVClass<Q_V,Q_M> propagQoiRv("pro_qoi_", // Extra prefix before the default "rv_" prefix
-                                              qoiSpace,
-                                              NULL,       // pdf: internally set by the solution process
-                                              NULL);
+  // Input param vector rv for propagation = output posterior vector rv of calibration
 
   // Qoi function object
   propagQoiRoutine_DataType<P_V,P_M,Q_V,Q_M> propagQoiRoutine_Data;
@@ -359,6 +355,12 @@ uqAppl(const uqEnvironmentClass& env)
                                                               qoiSpace,
                                                               propagQoiRoutine<P_V,P_M,Q_V,Q_M>,
                                                               (void *) &propagQoiRoutine_Data);
+
+  // Qoi vector rv
+  uqGenericVectorRVClass<Q_V,Q_M> propagQoiRv("pro_qoi_", // Extra prefix before the default "rv_" prefix
+                                              qoiSpace,
+                                              NULL,       // pdf:      internally set by the solution process
+                                              NULL);      // realizer: internally set by the solution process
 
   // Propagation problem
   uqPropagProblemClass<P_V,P_M,Q_V,Q_M> propagProblem("",          // No extra prefix before the default "pro_" prefix

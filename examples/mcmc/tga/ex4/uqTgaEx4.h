@@ -224,12 +224,40 @@ uqAppl(const uqEnvironmentClass& env)
                       "uqAppl()",
                       "input file must be specified in command line, after the '-i' option");
 
+  //******************************************************
+  // Read Ascii file with important information on both calibration problems.
+  //******************************************************
+  uqAsciiTableClass<P_V,P_M> calTable(env,
+                                      2,    // # of rows
+                                      5,    // # of cols after 'parameter name': min + max + mean + std + initial value for Markov chain
+                                      NULL, // All extra columns are of 'double' type
+                                      "cal.tab");
+
+  const EpetraExt::DistArray<std::string>& paramNames        = calTable.stringColumn(0);
+  const P_V&                               s1_minValues      = calTable.doubleColumn(1);
+  const P_V&                               s1_maxValues      = calTable.doubleColumn(2);
+  const P_V&                               s1_expectedValues = calTable.doubleColumn(3);
+  const P_V&                               s1_varianceValues = calTable.doubleColumn(4);
+  const P_V&                               s1_initialValues  = calTable.doubleColumn(5);
+
+  //******************************************************
+  // Read Ascii file with important information on both propagation problems.
+  //******************************************************
+  uqAsciiTableClass<P_V,P_M> proTable(env,
+                                      1,    // # of rows
+                                      0,    // # of cols after 'parameter name': none
+                                      NULL, // All extra columns are of 'double' type
+                                      "pro.tab");
+
+  const EpetraExt::DistArray<std::string>& qoiNames = proTable.stringColumn(0);
+
   //*****************************************************
   // Step I.1 of 3: Code very specific to this TGA example
   //*****************************************************
+
   // Open input file on experimental data
   FILE *inp;
-  inp = fopen("global4.dat","r");
+  inp = fopen("s1_global4.dat","r");
 
   // Read kinetic parameters and convert heating rate to K/s
   double tmpA, tmpE, beta1, variance1, criticalMass1;
@@ -261,33 +289,6 @@ uqAppl(const uqEnvironmentClass& env)
   fclose(inp);
 
   //******************************************************
-  // Read Ascii file with important information on both calibration problems.
-  //******************************************************
-  uqAsciiTableClass<P_V,P_M> calTable(env,
-                                      2,    // # of rows
-                                      5,    // # of cols after 'parameter name': min + max + mean + std + initial value for Markov chain
-                                      NULL, // All extra columns are of 'double' type
-                                      "cal.tab");
-
-  const EpetraExt::DistArray<std::string>& paramNames        = calTable.stringColumn(0);
-  const P_V&                               s1_minValues      = calTable.doubleColumn(1);
-  const P_V&                               s1_maxValues      = calTable.doubleColumn(2);
-  const P_V&                               s1_expectedValues = calTable.doubleColumn(3);
-  const P_V&                               s1_varianceValues = calTable.doubleColumn(4);
-  const P_V&                               s1_initialValues  = calTable.doubleColumn(5);
-
-  //******************************************************
-  // Read Ascii file with important information on both propagation problems.
-  //******************************************************
-  uqAsciiTableClass<P_V,P_M> proTable(env,
-                                      1,    // # of rows
-                                      0,    // # of cols after 'parameter name': none
-                                      NULL, // All extra columns are of 'double' type
-                                      "pro.tab");
-
-  const EpetraExt::DistArray<std::string>& qoiNames = proTable.stringColumn(0);
-
-  //******************************************************
   // Usually, spaces are the same throughout different problems.
   // If this is the case, we can instantiate them here, just once.
   //******************************************************
@@ -299,7 +300,6 @@ uqAppl(const uqEnvironmentClass& env)
                                          "qoi_",   // Extra prefix before the default "space_" prefix
                                          proTable.numRows(),
                                          &qoiNames);
-
 
   //******************************************************
   // Step I.2 of 3: deal with the calibration problem
@@ -348,11 +348,7 @@ uqAppl(const uqEnvironmentClass& env)
   // Step I.3 of 3: deal with the propagation problem
   //******************************************************
 
-  // Stage I (s1): Qoi vector rv
-  uqGenericVectorRVClass<Q_V,Q_M> s1_propagQoiRv("s1_pro_qoi_", // Extra prefix before the default "rv_" prefix
-                                                 qoiSpace,
-                                                 NULL,          // pdf: internally set by the solution process
-                                                 NULL);
+  // Stage I (s1): Input param vector rv for propagation = output posterior vector rv of calibration
 
   // Stage I (s1): Qoi function object
   propagQoiRoutine_DataType<P_V,P_M,Q_V,Q_M> s1_propagQoiRoutine_Data;
@@ -364,8 +360,14 @@ uqAppl(const uqEnvironmentClass& env)
                                                                  propagQoiRoutine<P_V,P_M,Q_V,Q_M>,
                                                                  (void *) &s1_propagQoiRoutine_Data);
 
+  // Stage I (s1): Qoi vector rv
+  uqGenericVectorRVClass<Q_V,Q_M> s1_propagQoiRv("s1_pro_qoi_", // Extra prefix before the default "rv_" prefix
+                                                 qoiSpace,
+                                                 NULL,          // pdf:      internally set by the solution process
+                                                 NULL);         // realizer: internally set by the solution process
+
   // Stage I (s1): Propagation problem
-  uqPropagProblemClass<P_V,P_M,Q_V,Q_M> s1_propagProblem("s1_",       // No extra prefix before the default "pro_" prefix
+  uqPropagProblemClass<P_V,P_M,Q_V,Q_M> s1_propagProblem("s1_",          // No extra prefix before the default "pro_" prefix
                                                          s1_calibPostRv, // propagation input = calibration output
                                                          s1_propagQoiFunctionObj,
                                                          s1_propagQoiRv);
@@ -373,9 +375,114 @@ uqAppl(const uqEnvironmentClass& env)
   // Stage I (s1): Solve the propagation problem
   s1_propagProblem.solveWithMonteCarloKde(); // no extra user entities needed for Monte Carlo algorithm
 
+  //*****************************************************
+  // Step II.1 of 3: Code very specific to this TGA example
+  //*****************************************************
+
+  // Open input file on experimental data
+  inp = fopen("s2_global4.dat","r");
+
+  // Read kinetic parameters and convert heating rate to K/s
+  fscanf(inp,"%lf %lf %lf %lf %lf",&tmpA,&tmpE,&beta1,&variance1,&criticalMass1);
+  beta1 /= 60.;
+  
+  // Read experimental data
+  Te1.clear();
+  Te1.resize(11,0.);
+  Me1.clear();
+  Me1.resize(11,0.);
+
+  numObservations = 0;
+  while (fscanf(inp,"%lf %lf",&tmpTe,&tmpMe) != EOF) {
+    UQ_FATAL_TEST_MACRO((numObservations >= Te1.size()),
+                        env.rank(),
+                        "uqAppl(), in uqTgaEx.h",
+                        "input file has too many observations");
+    Te1[numObservations] = tmpTe;
+    Me1[numObservations] = tmpMe;
+    numObservations++;
+  }
+  UQ_FATAL_TEST_MACRO((numObservations != Te1.size()),
+                      env.rank(),
+                      "uqAppl(), in uqTgaEx.h",
+                      "input file has a smaller number of observations than expected");
+
+  // Close input file on experimental data
+  fclose(inp);
+#if 1
+  //******************************************************
+  // Step II.2 of 3: deal with the calibration problem
+  //******************************************************
+
+  // Stage II (s2): Prior vector rv = posterior vector rv of stage I (s1)
+
+  // Stage II (s2): 1Likelihood function object: -2*ln[likelihood]
+  calibLikelihoodRoutine_DataType<P_V,P_M> s2_calibLikelihoodRoutine_Data;
+  s2_calibLikelihoodRoutine_Data.beta1     = beta1;
+  s2_calibLikelihoodRoutine_Data.variance1 = variance1;
+  s2_calibLikelihoodRoutine_Data.Te1       = &Te1; // temperatures
+  s2_calibLikelihoodRoutine_Data.Me1       = &Me1; // relative masses
+  uqGenericVectorProbDensityClass<P_V,P_M> s2_calibLikelihoodFunctionObj("s2_cal_prior_like_", // Extra prefix before the default "genpd_" prefix
+                                                                         paramSpace,
+                                                                         calibLikelihoodRoutine<P_V,P_M>,
+                                                                         (void *) &s2_calibLikelihoodRoutine_Data,
+                                                                         true); // the routine computes [-2.*ln(Likelihood)]
+
+  // Stage II (s2): Posterior vector rv
+  uqGenericVectorRVClass<P_V,P_M> s2_calibPostRv("s2_cal_post_", // Extra prefix before the default "rv_" prefix
+                                                 paramSpace,
+                                                 NULL,           // pdf:      internally set by the solution process
+                                                 NULL);          // realizer: internally set by the solution process
+
+  // Stage II (s2): Calibration problem
+  uqCalibProblemClass<P_V,P_M> s2_calibProblem("s2_", // No extra prefix before the default "cal_" prefix
+                                               s1_calibPostRv, // s2 calibration input = s1 calibration output
+                                               s2_calibLikelihoodFunctionObj,
+                                               s2_calibPostRv);
+
+  // Stage II (s2): Solve the calibration problem
+  P_M* s2_calibProposalCovMatrix = s1_calibPostRv.imageSpace().newGaussianMatrix(s1_calibPostRv.realizer().imageVarianceValues(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
+                                                                                 s1_calibPostRv.realizer().imageExpectedValues()); // Use these values as the initial values
+  s2_calibProblem.solveWithBayesMarkovChain(s1_calibPostRv.realizer().imageExpectedValues(),
+                                           *s2_calibProposalCovMatrix,
+                                            NULL); // use default kernel from library
+
+  //******************************************************
+  // Step II.3 of 3: deal with the propagation problem
+  //******************************************************
+
+  // Stage II (s2): Input param vector rv for propagation = output posterior vector rv of calibration
+
+  // Stage II (s2): Qoi function object
+  propagQoiRoutine_DataType<P_V,P_M,Q_V,Q_M> s2_propagQoiRoutine_Data;
+  s2_propagQoiRoutine_Data.beta1         = beta1;
+  s2_propagQoiRoutine_Data.criticalMass1 = criticalMass1;
+  uqVectorFunctionClass<P_V,P_M,Q_V,Q_M> s2_propagQoiFunctionObj("s2_pro_qoi_", // Extra prefix before the default "func_" prefix
+                                                                 paramSpace,
+                                                                 qoiSpace,
+                                                                 propagQoiRoutine<P_V,P_M,Q_V,Q_M>,
+                                                                 (void *) &s2_propagQoiRoutine_Data);
+
+  // Stage II (s2): Qoi vector rv
+  uqGenericVectorRVClass<Q_V,Q_M> s2_propagQoiRv("s2_pro_qoi_", // Extra prefix before the default "rv_" prefix
+                                                 qoiSpace,
+                                                 NULL,          // pdf:      internally set by the solution process
+                                                 NULL);         // realizer: internally set by the solution process
+
+  // Stage II (s2): Propagation problem
+  uqPropagProblemClass<P_V,P_M,Q_V,Q_M> s2_propagProblem("s2_",          // No extra prefix before the default "pro_" prefix
+                                                         s2_calibPostRv, // propagation input = calibration output
+                                                         s2_propagQoiFunctionObj,
+                                                         s2_propagQoiRv);
+
+  // Stage II (s2): Solve the propagation problem
+  s2_propagProblem.solveWithMonteCarloKde(); // no extra user entities needed for Monte Carlo algorithm
+
   //******************************************************
   // Release memory before leaving routine.
   //******************************************************
+  delete s2_calibProposalCovMatrix;
+#endif
   delete s1_calibProposalCovMatrix;
 
   if (env.rank() == 0) {

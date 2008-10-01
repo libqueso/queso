@@ -56,7 +56,6 @@ public:
                                                                   const V& initialValues)   const;
 
   const   std::string&                       componentName       (unsigned int componentId) const;
-  //  const   EpetraExt::DistArray<std::string>* componentsNames     ()                         const;
           void                               printComponentsNames(std::ostream& os, bool printHorizontally) const;
           void                               print               (std::ostream& os) const;
 
@@ -286,13 +285,6 @@ uqVectorSpaceClass<V,M>::componentName(unsigned int componentId) const
 
   return (*(const_cast<EpetraExt::DistArray<std::string>*>(m_componentsNames)))(componentId,0);
 }
-
-//template <class V, class M>
-//const EpetraExt::DistArray<std::string>*
-//uqVectorSpaceClass<V,M>::componentsNames() const
-//{
-// return m_componentsNames;
-//}
 
 template<class V, class M>
 void
