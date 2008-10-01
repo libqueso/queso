@@ -60,7 +60,7 @@
 #include <uqChainStatisticalOptions.h>
 #include <uqVectorRV.h>
 #include <uqVectorSpace.h>
-#include <uqChainPosition.h>
+#include <uqMarkovChainPosition.h>
 #include <uqMiscellaneous.h>
 #include <uqSequenceOfVectors.h>
 #include <uqArrayOfSequences.h>
@@ -75,7 +75,7 @@ class uqMarkovChainSGClass
 public:
   uqMarkovChainSGClass(const char*                         prefix,            /*! Prefix.                     */
                        const uqBaseVectorRVClass<P_V,P_M>& sourceRv,          /*! The source random variable. */
-                       const P_V&                          initialValues,     /*! First position of chain.    */
+                       const P_V&                          initialPosition,   /*! First position of chain.    */
                        const P_M&                          proposalCovMatrix, /*! Proposal covariance matrix. */ 
                              void*                         proposalTk);       /*! Proposal transition kernel. */
  ~uqMarkovChainSGClass();
@@ -109,14 +109,14 @@ private:
                                   P_V&                                           lastMean,
                                   P_M&                                           lastAdaptedCovMatrix);
 
-  double logProposal             (const uqChainPositionClass<P_V>&               x,
-                                  const uqChainPositionClass<P_V>&               y,
+  double logProposal             (const uqMarkovChainPositionClass<P_V>&               x,
+                                  const uqMarkovChainPositionClass<P_V>&               y,
                                   unsigned int                                   idOfProposalCovMatrix);
-  double logProposal             (const std::vector<uqChainPositionClass<P_V>*>& inputPositions);
-  double alpha                   (const uqChainPositionClass<P_V>&               x,
-                                  const uqChainPositionClass<P_V>&               y,
+  double logProposal             (const std::vector<uqMarkovChainPositionClass<P_V>*>& inputPositions);
+  double alpha                   (const uqMarkovChainPositionClass<P_V>&               x,
+                                  const uqMarkovChainPositionClass<P_V>&               y,
                                   double*                                        alphaQuotientPtr = NULL);
-  double alpha                   (const std::vector<uqChainPositionClass<P_V>*>& inputPositions);
+  double alpha                   (const std::vector<uqMarkovChainPositionClass<P_V>*>& inputPositions);
   bool   acceptAlpha             (double                                         alpha);
   void   updateCovMatrices       ();
 
@@ -129,9 +129,8 @@ private:
 
   const uqEnvironmentClass&                     m_env;
         std::string                             m_prefix;
-  const uqBaseVectorRVClass          <P_V,P_M>& m_sourceRv;
-  const uqVectorSpaceClass           <P_V,P_M>& m_paramSpace;
-  const uqBaseVectorProbDensityClass <P_V,P_M>& m_targetParamDensityObj;
+  const uqVectorSpaceClass           <P_V,P_M>& m_vectorSpace;
+  const uqBaseVectorProbDensityClass <P_V,P_M>& m_targetDensity;
   const P_M&                                    m_proposalCovMatrix;
 
         po::options_description*                m_optionsDesc;
@@ -164,7 +163,7 @@ private:
         std::string                             m_option_am_eta;
         std::string                             m_option_am_epsilon;
 
-        P_V                                     m_paramInitials;
+        P_V                                     m_initialPosition;
         bool                                    m_proposalIsSymmetric;
 
         unsigned int                            m_chainType;
@@ -209,7 +208,7 @@ private:
 #endif
 
         std::vector<unsigned int>               m_idsOfUniquePositions;
-        std::vector<double>                     m_logPosteriors;
+        std::vector<double>                     m_logTargets;
         std::vector<double>                     m_alphaQuotients;
         double                                  m_chainRunTime;
         unsigned int                            m_numRejections;
@@ -228,15 +227,14 @@ template<class P_V,class P_M>
 uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   const char*                         prefix,
   const uqBaseVectorRVClass<P_V,P_M>& sourceRv,
-  const P_V&                          initialValues,
+  const P_V&                          initialPosition,
   const P_M&                          proposalCovMatrix,
         void*                         proposalTk)
   :
   m_env                                  (sourceRv.env()),
   m_prefix                               ((std::string)(prefix) + "mc_"),
-  m_sourceRv                             (sourceRv),
-  m_paramSpace                           (sourceRv.imageSpace()),
-  m_targetParamDensityObj                (sourceRv.probDensity()),
+  m_vectorSpace                          (sourceRv.imageSpace()),
+  m_targetDensity                        (sourceRv.probDensity()),
   m_proposalCovMatrix                    (proposalCovMatrix),
   m_optionsDesc                          (new po::options_description("Bayesian Markov chain options")),
   m_option_help                          (m_prefix + "help"                          ),
@@ -267,7 +265,7 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   m_option_am_adaptInterval              (m_prefix + "am_adaptInterval"              ),
   m_option_am_eta                        (m_prefix + "am_eta"                        ),
   m_option_am_epsilon                    (m_prefix + "am_epsilon"                    ),
-  m_paramInitials                        (initialValues),
+  m_initialPosition                      (initialPosition),
   m_proposalIsSymmetric                  (true),
   m_chainType                            (UQ_MAC_SG_CHAIN_TYPE_ODV),
   m_chainNumber                          (UQ_MAC_SG_CHAIN_NUMBER_ODV),
@@ -305,7 +303,7 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   m_proposalPrecMatrices                 (1),//NULL),
 #endif
   m_idsOfUniquePositions                 (0),//0.),
-  m_logPosteriors                        (0),//0.),
+  m_logTargets                        (0),//0.),
   m_alphaQuotients                       (0),//0.),
   m_chainRunTime                         (0.),
   m_numRejections                        (0),
@@ -364,7 +362,7 @@ uqMarkovChainSGClass<P_V,P_M>::resetChainAndRelatedInfo()
   m_chainRunTime   = 0.;
   m_numRejections  = 0;
   m_alphaQuotients.clear();
-  m_logPosteriors.clear();
+  m_logTargets.clear();
   m_idsOfUniquePositions.clear();
 
 #ifdef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
@@ -627,7 +625,6 @@ uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain(
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqMarkovChainSGClass<P_V,P_M>::prepareForNextChain()..."
-              << ", m_sourceRv contents: " << m_sourceRv
               << std::endl;
   }
 
@@ -737,11 +734,11 @@ uqMarkovChainSGClass<P_V,P_M>::updateCovMatrices()
 template<class P_V,class P_M>
 double
 uqMarkovChainSGClass<P_V,P_M>::logProposal(
-  const uqChainPositionClass<P_V>& x,
-  const uqChainPositionClass<P_V>& y,
+  const uqMarkovChainPositionClass<P_V>& x,
+  const uqMarkovChainPositionClass<P_V>& y,
   unsigned int                     idOfProposalCovMatrix)
 {
-  P_V diffVec(y.paramValues() - x.paramValues());
+  P_V diffVec(y.vecValues() - x.vecValues());
 #ifdef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
   double value = -0.5 * scalarProduct(diffVec, *(m_proposalPrecMatrices[idOfProposalCovMatrix]) * diffVec);
 #else
@@ -752,7 +749,7 @@ uqMarkovChainSGClass<P_V,P_M>::logProposal(
 
 template<class P_V,class P_M>
 double
-uqMarkovChainSGClass<P_V,P_M>::logProposal(const std::vector<uqChainPositionClass<P_V>*>& inputPositions)
+uqMarkovChainSGClass<P_V,P_M>::logProposal(const std::vector<uqMarkovChainPositionClass<P_V>*>& inputPositions)
 {
   unsigned int inputSize = inputPositions.size();
   UQ_FATAL_TEST_MACRO((inputSize < 2),
@@ -768,8 +765,8 @@ uqMarkovChainSGClass<P_V,P_M>::logProposal(const std::vector<uqChainPositionClas
 template<class P_V,class P_M>
 double
 uqMarkovChainSGClass<P_V,P_M>::alpha(
-  const uqChainPositionClass<P_V>& x,
-  const uqChainPositionClass<P_V>& y,
+  const uqMarkovChainPositionClass<P_V>& x,
+  const uqMarkovChainPositionClass<P_V>& y,
   double*                          alphaQuotientPtr)
 {
   double alphaQuotient = 0.;
@@ -777,28 +774,28 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
   bool yOutOfBounds = y.outOfBounds();
   if ((xOutOfBounds == false) &&
       (yOutOfBounds == false)) {
-    double yLogPosteriorToUse = y.logPosterior();
+    double yLogTargetToUse = y.logTarget();
 #ifdef UQ_MAC_SG_REQUIRES_TARGET_DISTRIBUTION_ONLY
 #else
     if (m_likelihoodObjComputesMisfits &&
         m_observableSpace.shouldVariancesBeUpdated()) {
       // Divide the misfitVector of 'y' by the misfitVarianceVector of 'x'
-      yLogPosteriorToUse = -0.5 * ( y.m2lPrior() + (y.misfitVector()/x.misfitVarianceVector()).sumOfComponents() );
+      yLogTargetToUse = -0.5 * ( y.m2lPrior() + (y.misfitVector()/x.misfitVarianceVector()).sumOfComponents() );
     }
 #endif
     if (m_proposalIsSymmetric) {
-      alphaQuotient = exp(yLogPosteriorToUse - x.logPosterior());
+      alphaQuotient = exp(yLogTargetToUse - x.logTarget());
       if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
         std::cout << "In uqMarkovChainSGClass<P_V,P_M>::alpha()"
                   << ": symmetric proposal case"
-                  << ", yLogPosteriorToUse = " << yLogPosteriorToUse
-                  << ", x.logPosterior() = "   << x.logPosterior()
+                  << ", yLogTargetToUse = " << yLogTargetToUse
+                  << ", x.logTarget() = "   << x.logTarget()
                   << ", alpha = "              << alphaQuotient
                   << std::endl;
       }
     }
     else {
-      alphaQuotient = exp(yLogPosteriorToUse + logProposal(y,x,0) - x.logPosterior() - logProposal(x,y,0));
+      alphaQuotient = exp(yLogTargetToUse + logProposal(y,x,0) - x.logTarget() - logProposal(x,y,0));
     }
   }
   else {
@@ -816,7 +813,7 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
 
 template<class P_V,class P_M>
 double
-uqMarkovChainSGClass<P_V,P_M>::alpha(const std::vector<uqChainPositionClass<P_V>*>& inputPositions)
+uqMarkovChainSGClass<P_V,P_M>::alpha(const std::vector<uqMarkovChainPositionClass<P_V>*>& inputPositions)
 {
   unsigned int inputSize = inputPositions.size();
   UQ_FATAL_TEST_MACRO((inputSize < 2),
@@ -833,8 +830,8 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(const std::vector<uqChainPositionClass<P_V>
                                          *(inputPositions[inputSize - 1]));
 
   // Prepare two vectors of positions
-  std::vector<uqChainPositionClass<P_V>*>         positions(inputSize,NULL);
-  std::vector<uqChainPositionClass<P_V>*> backwardPositions(inputSize,NULL);
+  std::vector<uqMarkovChainPositionClass<P_V>*>         positions(inputSize,NULL);
+  std::vector<uqMarkovChainPositionClass<P_V>*> backwardPositions(inputSize,NULL);
   for (unsigned int i = 0; i < inputSize; ++i) {
             positions[i] = inputPositions[i];
     backwardPositions[i] = inputPositions[inputSize-i-1];
@@ -861,18 +858,18 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(const std::vector<uqChainPositionClass<P_V>
     alphasDenominator *= (1 - this->alpha(        positions));
   }
 
-  double numeratorLogPosteriorToUse = backwardPositions[0]->logPosterior();
+  double numeratorLogTargetToUse = backwardPositions[0]->logTarget();
 #ifdef UQ_MAC_SG_REQUIRES_TARGET_DISTRIBUTION_ONLY
 #else
   if (m_likelihoodObjComputesMisfits &&
       m_observableSpace.shouldVariancesBeUpdated()) {
     // Divide the misfitVector of 'back[0]' by the misfitVarianceVector of 'pos[0]'
-    numeratorLogPosteriorToUse = -0.5 * ( backwardPositions[0]->m2lPrior() +
+    numeratorLogTargetToUse = -0.5 * ( backwardPositions[0]->m2lPrior() +
       (backwardPositions[0]->misfitVector()/positions[0]->misfitVarianceVector()).sumOfComponents() );
   }
 #endif
-  logNumerator   += numeratorLogPosteriorToUse;
-  logDenominator += positions[0]->logPosterior();
+  logNumerator   += numeratorLogTargetToUse;
+  logDenominator += positions[0]->logTarget();
 
   // Return result
   return std::min(1.,(alphasNumerator/alphasDenominator)*exp(logNumerator-logDenominator));
@@ -914,14 +911,14 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
   int iRC = UQ_OK_RC;
 
   if (m_chainGenerateExtra) {
-    // Write m_logPosteriors
-    ofs << prefixName << "logPosteriors = zeros(" << m_logPosteriors.size()
+    // Write m_logTargets
+    ofs << prefixName << "logTargets = zeros(" << m_logTargets.size()
         << ","                                      << 1
         << ");"
         << std::endl;
-    ofs << prefixName << "logPosteriors = [";
-    for (unsigned int i = 0; i < m_logPosteriors.size(); ++i) {
-      ofs << m_logPosteriors[i]
+    ofs << prefixName << "logTargets = [";
+    for (unsigned int i = 0; i < m_logTargets.size(); ++i) {
+      ofs << m_logTargets[i]
           << std::endl;
     }
     ofs << "];\n";
@@ -939,19 +936,19 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
     ofs << "];\n";
   }
 
-  // Write names of parameters
-  ofs << prefixName << "paramNames = {";
-  m_sourceRv.imageSpace().printComponentsNames(ofs,false);
+  // Write names of components
+  ofs << prefixName << "componentNames = {";
+  m_vectorSpace.printComponentsNames(ofs,false);
   ofs << "};\n";
 
 #if 0
   // Write mahalanobis distances
   if (mahalanobisMatrix != NULL) {
-    P_V diffVec(m_paramSpace.zeroVector());
+    P_V diffVec(m_vectorSpace.zeroVector());
     ofs << prefixName << "d = [";
     if (applyMahalanobisInvert) {
-      P_V tmpVec(m_paramSpace.zeroVector());
-      P_V vec0(m_paramSpace.zeroVector());
+      P_V tmpVec(m_vectorSpace.zeroVector());
+      P_V vec0(m_vectorSpace.zeroVector());
       workingChain.getPositionValues(0,vec0);
       for (unsigned int i = 0; i < workingChain.sequenceSize(); ++i) {
         workingChain.getPositionValues(i,tmpVec);
@@ -962,8 +959,8 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
       }
     }
     else {
-      P_V tmpVec(m_paramSpace.zeroVector());
-      P_V vec0(m_paramSpace.zeroVector());
+      P_V tmpVec(m_vectorSpace.zeroVector());
+      P_V vec0(m_vectorSpace.zeroVector());
       workingChain.getPositionValues(0,vec0);
       for (unsigned int i = 0; i < workingChain.sequenceSize(); ++i) {
         workingChain.getPositionValues(i,tmpVec);
@@ -980,26 +977,26 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
 #if 0
   // Write prior mean values
   ofs << prefixName << "priorMeanValues = ["
-      << m_paramSpace.priorMuValues()
+      << m_vectorSpace.priorMuValues()
       << "];\n";
 
   // Write prior sigma values
   ofs << prefixName << "priorSigmaValues = ["
-      << m_paramSpace.priorSigmaValues()
+      << m_vectorSpace.priorSigmaValues()
       << "];\n";
 
 #if 0
   ofs << prefixName << "results.prior = [queso_priorMeanValues',queso_priorSigmaValues'];\n";
 #endif
 
-  // Write param lower bounds
+  // Write vector space lower bounds
   ofs << prefixName << "minValues = ["
-      << m_paramSpace.minValues()
+      << m_vectorSpace.minValues()
       << "];\n";
 
-  // Write param upper bounds
+  // Write vector space upper bounds
   ofs << prefixName << "maxValues = ["
-      << m_paramSpace.maxValues()
+      << m_vectorSpace.maxValues()
       << "];\n";
 #endif
 
@@ -1008,14 +1005,14 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
 
   // Write out data for mcmcpred.m
   ofs << prefixName << "results.parind = ["; // FIXME
-  for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
+  for (unsigned int i = 0; i < m_vectorSpace.dim(); ++i) {
     ofs << i+1
         << std::endl;
   }
   ofs << "];\n";
 
   ofs << prefixName << "results.local = [\n"; // FIXME
-  for (unsigned int i = 0; i < m_paramSpace.dim(); ++i) {
+  for (unsigned int i = 0; i < m_vectorSpace.dim(); ++i) {
     ofs << " 0";
     //<< std::endl;
   }

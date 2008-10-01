@@ -43,7 +43,7 @@ ARFLAGS = -rv
 CXX = g++
 CXXFLAGS = -Wall -c -g
 
-OBJS_ANY = uqScalarRV.o \
+OBJS_ANY =
 
 OBJS_gsl = uqGslVectorSpace.o
 

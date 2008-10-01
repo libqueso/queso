@@ -23,7 +23,7 @@
 template <class P_V,class P_M>
 void
 uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
-  const P_M&                      proposalCovMatrix,
+  const P_M&                          proposalCovMatrix,
   uqBaseVectorSequenceClass<P_V,P_M>& workingChain)
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
@@ -31,7 +31,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
               << std::endl;
   }
 
-  P_V valuesOf1stPosition(m_paramInitials);
+  P_V valuesOf1stPosition(m_initialPosition);
   int iRC = UQ_OK_RC;
 #if 0
   unsigned int chainSumId = 0;
@@ -289,8 +289,8 @@ uqMarkovChainSGClass<P_V,P_M>::generateWhiteNoiseChain(
   iRC = gettimeofday(&timevalTmp, NULL);
   workingChain.resizeSequence(chainSize); 
 
-  P_V meanVec  (m_paramSpace.zeroVector());
-  P_V stdDevVec(m_paramSpace.zeroVector());
+  P_V meanVec  (m_vectorSpace.zeroVector());
+  P_V stdDevVec(m_vectorSpace.zeroVector());
   meanVec.cwSet(0.);
   stdDevVec.cwSet(1.);
   workingChain.setGaussian(m_env.rng(),meanVec,stdDevVec);
@@ -334,8 +334,8 @@ uqMarkovChainSGClass<P_V,P_M>::generateUniformChain(
   iRC = gettimeofday(&timevalTmp, NULL);
   workingChain.resizeSequence(chainSize); 
 
-  P_V aVec(m_paramSpace.zeroVector());
-  P_V bVec(m_paramSpace.zeroVector());
+  P_V aVec(m_vectorSpace.zeroVector());
+  P_V bVec(m_vectorSpace.zeroVector());
   aVec.cwSet(0.);
   bVec.cwSet(1.);
   workingChain.setUniform(m_env.rng(),aVec,bVec);
@@ -389,22 +389,22 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
   double amRunTime        = 0;
 
   iRC = gettimeofday(&timevalChain, NULL);
-  bool outOfDomainBounds = m_sourceRv.probDensity().outOfDomainBounds(valuesOf1stPosition);
+  bool outOfDomainBounds = m_targetDensity.outOfDomainBounds(valuesOf1stPosition);
   UQ_FATAL_TEST_MACRO(outOfDomainBounds,
                       m_env.rank(),
                       "uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()",
-                      "paramInitials should not be out of bound");
+                      "initial position should not be out of bound");
   if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalTargetD, NULL);
-  double logPosterior = -0.5 * m_targetParamDensityObj.minus2LnDensity(valuesOf1stPosition);
+  double logTarget = -0.5 * m_targetDensity.minus2LnDensity(valuesOf1stPosition);
   if (m_chainMeasureRunTimes) targetDRunTime += uqMiscGetEllapsedSeconds(&timevalTargetD);
-  uqChainPositionClass<P_V> currentPosition(m_env,
+  uqMarkovChainPositionClass<P_V> currentPosition(m_env,
                                             valuesOf1stPosition,
                                             outOfDomainBounds,
-                                            logPosterior);
+                                            logTarget);
 
-  P_V gaussianVector(m_paramSpace.zeroVector());
-  P_V tmpParamValues(m_paramSpace.zeroVector());
-  uqChainPositionClass<P_V> currentCandidate(m_env);
+  P_V gaussianVector(m_vectorSpace.zeroVector());
+  P_V tmpVecValues(m_vectorSpace.zeroVector());
+  uqMarkovChainPositionClass<P_V> currentCandidate(m_env);
 
   //****************************************************
   // Begin chain loop from positionId = 1
@@ -412,15 +412,15 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
   workingChain.resizeSequence(chainSize); 
   if (m_uniqueChainGenerate) m_idsOfUniquePositions.resize(chainSize,0); 
   if (m_chainGenerateExtra) {
-    m_logPosteriors.resize (chainSize,0.);
+    m_logTargets.resize (chainSize,0.);
     m_alphaQuotients.resize(chainSize,0.);
   }
 
   unsigned int uniquePos = 0;
-  workingChain.setPositionValues(0,currentPosition.paramValues());
+  workingChain.setPositionValues(0,currentPosition.vecValues());
   if (m_uniqueChainGenerate) m_idsOfUniquePositions[uniquePos++] = 0;
   if (m_chainGenerateExtra) {
-    m_logPosteriors [0] = currentPosition.logPosterior();
+    m_logTargets [0] = currentPosition.logTarget();
     m_alphaQuotients[0] = 1.;
   }
 
@@ -434,26 +434,26 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
     unsigned int stageId = 0;
 
     //****************************************************
-    // Loop: generate new parameters
+    // Loop: generate new position
     //****************************************************
     if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
     gaussianVector.cwSetGaussian(m_env.rng(),0.,1.);
-    tmpParamValues = currentPosition.paramValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
+    tmpVecValues = currentPosition.vecValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
     if (m_chainMeasureRunTimes) candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
 
-    outOfDomainBounds = m_sourceRv.probDensity().outOfDomainBounds(tmpParamValues);
+    outOfDomainBounds = m_targetDensity.outOfDomainBounds(tmpVecValues);
     if (outOfDomainBounds) {
       m_numOutOfBounds++;
-      logPosterior = -INFINITY;
+      logTarget = -INFINITY;
     }
     else {
       if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalTargetD, NULL);
-      logPosterior = -0.5 * m_targetParamDensityObj.minus2LnDensity(tmpParamValues);
+      logTarget = -0.5 * m_targetDensity.minus2LnDensity(tmpVecValues);
       if (m_chainMeasureRunTimes) targetDRunTime += uqMiscGetEllapsedSeconds(&timevalTargetD);
     }
-    currentCandidate.set(tmpParamValues,
+    currentCandidate.set(tmpVecValues,
                          outOfDomainBounds,
-                         logPosterior);
+                         logTarget);
 
     if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
       std::cout << "\n-----------------------------------------------------------\n"
@@ -486,18 +486,18 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
     if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
       if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()"
                                        << ": for chain position of id = " << positionId
-                                       << " contents of currentCandidate.paramValues() are:"
+                                       << " contents of currentCandidate.vecValues() are:"
                                        << std::endl;
-      std::cout << currentCandidate.paramValues();
+      std::cout << currentCandidate.vecValues();
       if (m_env.rank() == 0) std::cout << std::endl;
 
       if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()"
                                        << ": for chain position of id = " << positionId
                                        << ", outOfDomainBounds = "        << outOfDomainBounds
                                        << "\n"
-                                       << "\n curLogPosterior  = "        << currentPosition.logPosterior()
+                                       << "\n curLogTarget  = "           << currentPosition.logTarget()
                                        << "\n"
-                                       << "\n canLogPosterior  = "        << currentCandidate.logPosterior()
+                                       << "\n canLogTarget  = "           << currentCandidate.logTarget()
                                        << "\n"
                                        << "\n accept = "                  << accept
                                        << std::endl;
@@ -510,35 +510,35 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
     //****************************************************
     // Loop: delayed rejection
     //****************************************************
-    std::vector<uqChainPositionClass<P_V>*> drPositions(stageId+2,NULL);
+    std::vector<uqMarkovChainPositionClass<P_V>*> drPositions(stageId+2,NULL);
     if ((accept == false) && (outOfDomainBounds == false) && (m_maxNumExtraStages > 0)) {
       if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalDR, NULL);
 
-      drPositions[0] = new uqChainPositionClass<P_V>(currentPosition);
-      drPositions[1] = new uqChainPositionClass<P_V>(currentCandidate);
+      drPositions[0] = new uqMarkovChainPositionClass<P_V>(currentPosition);
+      drPositions[1] = new uqMarkovChainPositionClass<P_V>(currentCandidate);
 
       while ((accept == false) && (stageId < m_maxNumExtraStages)) {
         stageId++;
 
         if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
         gaussianVector.cwSetGaussian(m_env.rng(),0.,1.);
-        tmpParamValues = currentPosition.paramValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
+        tmpVecValues = currentPosition.vecValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
         if (m_chainMeasureRunTimes) candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
 
-        outOfDomainBounds = m_sourceRv.probDensity().outOfDomainBounds(tmpParamValues);
+        outOfDomainBounds = m_targetDensity.outOfDomainBounds(tmpVecValues);
         if (outOfDomainBounds) {
-          logPosterior = -INFINITY;
+          logTarget = -INFINITY;
         }
         else {
           if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalTargetD, NULL);
-          logPosterior = -0.5 * m_targetParamDensityObj.minus2LnDensity(tmpParamValues);
+          logTarget = -0.5 * m_targetDensity.minus2LnDensity(tmpVecValues);
           if (m_chainMeasureRunTimes) targetDRunTime += uqMiscGetEllapsedSeconds(&timevalTargetD);
         }
-        currentCandidate.set(tmpParamValues,
+        currentCandidate.set(tmpVecValues,
                              outOfDomainBounds,
-                             logPosterior);
+                             logTarget);
 
-        drPositions.push_back(new uqChainPositionClass<P_V>(currentCandidate));
+        drPositions.push_back(new uqMarkovChainPositionClass<P_V>(currentCandidate));
         if (outOfDomainBounds == false) {
           if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalDrAlpha, NULL);
           double alpha = this->alpha(drPositions);
@@ -565,17 +565,17 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
     // Loop: update chain
     //****************************************************
     if (accept) {
-      workingChain.setPositionValues(positionId,currentCandidate.paramValues());
+      workingChain.setPositionValues(positionId,currentCandidate.vecValues());
       if (m_uniqueChainGenerate) m_idsOfUniquePositions[uniquePos++] = positionId;
       currentPosition = currentCandidate;
     }
     else {
-      workingChain.setPositionValues(positionId,currentPosition.paramValues());
+      workingChain.setPositionValues(positionId,currentPosition.vecValues());
       m_numRejections++;
     }
 
     if (m_chainGenerateExtra) {
-      m_logPosteriors[positionId] = currentPosition.logPosterior();
+      m_logTargets[positionId] = currentPosition.logTarget();
     }
 
 #ifdef UQ_MAC_SG_REQUIRES_TARGET_DISTRIBUTION_ONLY
@@ -625,7 +625,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
 
       // Now might be the moment to adapt
       unsigned int idOfFirstPositionInSubChain = 0;
-      uqSequenceOfVectorsClass<P_V,P_M> subChain(m_paramSpace,0);
+      uqSequenceOfVectorsClass<P_V,P_M> subChain(m_vectorSpace,0);
 
       // Check if now is indeed the moment to adapt
       if (positionId < m_initialNonAdaptInterval) {
@@ -634,8 +634,8 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
       else if (positionId == m_initialNonAdaptInterval) {
         idOfFirstPositionInSubChain = 0;
         subChain.resizeSequence(m_initialNonAdaptInterval+1);
-        m_lastMean             = m_paramSpace.newVector();
-        m_lastAdaptedCovMatrix = m_paramSpace.newMatrix();
+        m_lastMean             = m_vectorSpace.newVector();
+        m_lastAdaptedCovMatrix = m_vectorSpace.newMatrix();
       }
       else {
         unsigned int interval = positionId - m_initialNonAdaptInterval;
@@ -647,7 +647,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
 
       // If now is indeed the moment to adapt, then do it!
       if (subChain.sequenceSize() > 0) {
-        P_V transporterVec(m_paramSpace.zeroVector());
+        P_V transporterVec(m_vectorSpace.zeroVector());
         for (unsigned int i = 0; i < subChain.sequenceSize(); ++i) {
           workingChain.getPositionValues(idOfFirstPositionInSubChain+i,transporterVec);
           subChain.setPositionValues(i,transporterVec);
@@ -679,7 +679,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
                               "uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()",
                               "invalid iRC returned from first chol()");
           // Matrix is not positive definite
-          P_M* tmpDiag = m_paramSpace.newDiagMatrix(m_epsilon);
+          P_M* tmpDiag = m_vectorSpace.newDiagMatrix(m_epsilon);
           tmpChol = *m_lastAdaptedCovMatrix + *tmpDiag;
           delete tmpDiag;
           //if (m_env.rank() == 0) {
@@ -822,7 +822,7 @@ uqMarkovChainSGClass<P_V,P_M>::updateCovMatrix(
 
     subChain.mean(0,subChain.sequenceSize(),lastMean);
 
-    P_V tmpVec(m_paramSpace.zeroVector());
+    P_V tmpVec(m_vectorSpace.zeroVector());
     lastAdaptedCovMatrix = -doubleSubChainSize * matrixProduct(lastMean,lastMean);
     for (unsigned int i = 0; i < subChain.sequenceSize(); ++i) {
       subChain.getPositionValues(i,tmpVec);
@@ -841,8 +841,8 @@ uqMarkovChainSGClass<P_V,P_M>::updateCovMatrix(
                         "uqMarkovChainSGClass<P_V,P_M>::updateCovMatrix()",
                         "'idOfFirstPositionInSubChain' should be >= 1");
 
-    P_V tmpVec (m_paramSpace.zeroVector());
-    P_V diffVec(m_paramSpace.zeroVector());
+    P_V tmpVec (m_vectorSpace.zeroVector());
+    P_V diffVec(m_vectorSpace.zeroVector());
     for (unsigned int i = 0; i < subChain.sequenceSize(); ++i) {
       double doubleCurrentId  = (double) (idOfFirstPositionInSubChain+i);
       subChain.getPositionValues(i,tmpVec);
