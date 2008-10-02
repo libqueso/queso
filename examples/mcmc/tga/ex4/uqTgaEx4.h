@@ -329,7 +329,8 @@ uqAppl(const uqEnvironmentClass& env)
   uqGenericVectorRVClass<P_V,P_M> s1_calibPostRv("s1_cal_post_", // Extra prefix before the default "rv_" prefix
                                                  paramSpace,
                                                  NULL,           // pdf:      internally set by the solution process
-                                                 NULL);          // realizer: internally set by the solution process
+                                                 NULL,           // realizer: internally set by the solution process
+                                                 NULL);          // cdf:      internally set by the solution process
 
   // Stage I (s1): Calibration problem
   uqCalibProblemClass<P_V,P_M> s1_calibProblem("s1_", // No extra prefix before the default "cal_" prefix
@@ -364,7 +365,8 @@ uqAppl(const uqEnvironmentClass& env)
   uqGenericVectorRVClass<Q_V,Q_M> s1_propagQoiRv("s1_pro_qoi_", // Extra prefix before the default "rv_" prefix
                                                  qoiSpace,
                                                  NULL,          // pdf:      internally set by the solution process
-                                                 NULL);         // realizer: internally set by the solution process
+                                                 NULL,          // realizer: internally set by the solution process
+                                                 NULL);         // cdf:      internally set by the solution process
 
   // Stage I (s1): Propagation problem
   uqPropagProblemClass<P_V,P_M,Q_V,Q_M> s1_propagProblem("s1_",          // No extra prefix before the default "pro_" prefix
@@ -432,7 +434,8 @@ uqAppl(const uqEnvironmentClass& env)
   uqGenericVectorRVClass<P_V,P_M> s2_calibPostRv("s2_cal_post_", // Extra prefix before the default "rv_" prefix
                                                  paramSpace,
                                                  NULL,           // pdf:      internally set by the solution process
-                                                 NULL);          // realizer: internally set by the solution process
+                                                 NULL,           // realizer: internally set by the solution process
+                                                 NULL);          // cdf:      internally set by the solution process
 
   // Stage II (s2): Calibration problem
   uqCalibProblemClass<P_V,P_M> s2_calibProblem("s2_", // No extra prefix before the default "cal_" prefix
@@ -467,7 +470,8 @@ uqAppl(const uqEnvironmentClass& env)
   uqGenericVectorRVClass<Q_V,Q_M> s2_propagQoiRv("s2_pro_qoi_", // Extra prefix before the default "rv_" prefix
                                                  qoiSpace,
                                                  NULL,          // pdf:      internally set by the solution process
-                                                 NULL);         // realizer: internally set by the solution process
+                                                 NULL,          // realizer: internally set by the solution process
+                                                 NULL);         // cdf:      internally set by the solution process
 
   // Stage II (s2): Propagation problem
   uqPropagProblemClass<P_V,P_M,Q_V,Q_M> s2_propagProblem("s2_",          // No extra prefix before the default "pro_" prefix

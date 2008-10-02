@@ -29,7 +29,9 @@ class uqArrayOfSequencesClass : public uqBaseVectorSequenceClass<V,M>
 public:
 
 
-  uqArrayOfSequencesClass(const uqVectorSpaceClass<V,M>& vectorSpace, unsigned int sequenceSize);
+  uqArrayOfSequencesClass(const uqVectorSpaceClass<V,M>& vectorSpace,
+                          unsigned int                   sequenceSize,
+                          const std::string&             name);
  ~uqArrayOfSequencesClass();
 
         unsigned int sequenceSize      () const;
@@ -110,8 +112,7 @@ public:
                                         const V&                 scales,
                                         const std::vector<V*>&   evaluationParamVecs,
                                         std::vector<V*>&         densityVecs) const;
-        void         write             (const std::string&       name,
-                                        std::ofstream&           ofs) const;
+        void         write             (std::ofstream&           ofs) const;
         void         select            (const std::vector<unsigned int>& idsOfUniquePositions);
         void         filter            (unsigned int             initialPos,
                                         unsigned int             spacing);
@@ -132,15 +133,17 @@ private:
 
   using uqBaseVectorSequenceClass<V,M>::m_env;
   using uqBaseVectorSequenceClass<V,M>::m_vectorSpace;
+  using uqBaseVectorSequenceClass<V,M>::m_name;
   using uqBaseVectorSequenceClass<V,M>::m_fftObj;
 };
 
 template <class V, class M>
 uqArrayOfSequencesClass<V,M>::uqArrayOfSequencesClass(
   const uqVectorSpaceClass<V,M>& vectorSpace,
-  unsigned int                   sequenceSize)
+  unsigned int                   sequenceSize,
+  const std::string&             name)
   :
-  uqBaseVectorSequenceClass<V,M>(vectorSpace,sequenceSize),
+  uqBaseVectorSequenceClass<V,M>(vectorSpace,sequenceSize,name),
   m_scalarSequences             (m_vectorSpace.map(),1)
 {
 
@@ -187,6 +190,8 @@ uqArrayOfSequencesClass<V,M>::resizeSequence(unsigned int newSequenceSize)
     }
   }
 
+  uqBaseVectorSequenceClass<V,M>::deleteStoredVectors();
+
   return;
 }
 
@@ -199,6 +204,8 @@ uqArrayOfSequencesClass<V,M>::resetValues(
   for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
     m_scalarSequences(i,0)->resetValues(initialPos,numPos);
   }
+
+  uqBaseVectorSequenceClass<V,M>::deleteStoredVectors();
 
   return;
 }
@@ -215,6 +222,8 @@ uqArrayOfSequencesClass<V,M>::erasePositions(
       seq.erasePositions(initialPos,numPos);
     }
   }
+
+  uqBaseVectorSequenceClass<V,M>::deleteStoredVectors();
 
   return;
 }
@@ -240,6 +249,8 @@ uqArrayOfSequencesClass<V,M>::setPositionValues(unsigned int posId, const V& vec
     seq[posId] = vec[i];
   }
 
+  uqBaseVectorSequenceClass<V,M>::deleteStoredVectors();
+
   return;
 }
 
@@ -251,6 +262,9 @@ uqArrayOfSequencesClass<V,M>::setGaussian(const gsl_rng* rng, const V& meanVec, 
     uqScalarSequenceClass<double>& seq = *(m_scalarSequences(i,0));
     seq.setGaussian(rng,meanVec[i],stdDevVec[i]);
   }
+
+  uqBaseVectorSequenceClass<V,M>::deleteStoredVectors();
+
   return;
 }
 
@@ -262,6 +276,9 @@ uqArrayOfSequencesClass<V,M>::setUniform(const gsl_rng* rng, const V& aVec, cons
     uqScalarSequenceClass<double>& seq = *(m_scalarSequences(i,0));
     seq.setUniform(rng,aVec[i],bVec[i]);
   }
+
+  uqBaseVectorSequenceClass<V,M>::deleteStoredVectors();
+
   return;
 }
 
@@ -904,16 +921,14 @@ uqArrayOfSequencesClass<V,M>::filter(
 
 template <class V, class M>
 void
-uqArrayOfSequencesClass<V,M>::write(
-  const std::string& chainName,
-  std::ofstream&     ofs) const
+uqArrayOfSequencesClass<V,M>::write(std::ofstream& ofs) const
 {
   // Write chain
-  ofs << chainName << " = zeros(" << this->sequenceSize()
-      << ","                      << this->vectorSize()
+  ofs << m_name << " = zeros(" << this->sequenceSize()
+      << ","                   << this->vectorSize()
       << ");"
       << std::endl;
-  ofs << chainName << " = [";
+  ofs << m_name << " = [";
 
   V tmpVec(m_vectorSpace.zeroVector());
   unsigned int chainSize = this->sequenceSize();

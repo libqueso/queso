@@ -221,7 +221,7 @@ uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
                                                        initialValues,
                                                        proposalCovMatrix,
                                                        NULL);
-  m_chain1 = new uqSequenceOfVectorsClass<P_V,P_M>(m_postRv.imageSpace(),0);
+  m_chain1 = new uqSequenceOfVectorsClass<P_V,P_M>(m_postRv.imageSpace(),0,m_prefix+"chain");
   //m_chain2 = new uqArrayOfSequencesClass <P_V,P_M>(m_postRv.imageSpace(),0);
 
   m_mcSeqGenerator->generateSequence(*m_chain1);

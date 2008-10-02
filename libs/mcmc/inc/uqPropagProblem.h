@@ -204,7 +204,7 @@ uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarloKde()
                                                               m_qoiFunction,
                                                               m_qoiRv);
 
-  m_chain1 = new uqSequenceOfVectorsClass<Q_V,Q_M>(m_qoiRv.imageSpace(),0);
+  m_chain1 = new uqSequenceOfVectorsClass<Q_V,Q_M>(m_qoiRv.imageSpace(),0,m_prefix+"chain");
   //m_chain2 = new uqArrayOfSequencesClass <Q_V,Q_M>(m_qoiRv.imageSpace(),0);
 
   m_mcSeqGenerator->generateSequence(*m_chain1);

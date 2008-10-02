@@ -45,24 +45,22 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
   for (unsigned int chainId = 0; chainId < 1/*m_chainSizes.size()*/; ++chainId) { // FIXME: make a definitive change
     char tmpChainId[10];
     sprintf(tmpChainId,"%d",chainId);
-    std::string prefixName = m_prefix; // + "c" + tmpChainId + "_"; FIXME: make a definitive change
-    std::string chainName  = prefixName + "chain";
+    //std::string prefixName = m_prefix; // + "c" + tmpChainId + "_"; FIXME: make a definitive change
+    workingChain.setName(m_prefix + "chain");
 
     if (m_chainType == UQ_MAC_SG_WHITE_NOISE_CHAIN_TYPE) {
       //****************************************************
       // Just generate white noise
       //****************************************************
       generateWhiteNoiseChain(m_chainSizes[chainId],
-                              workingChain,
-                              chainName);
+                              workingChain);
     }
     else if (m_chainType == UQ_MAC_SG_UNIFORM_CHAIN_TYPE) {
       //****************************************************
       // Just generate uniform    
       //****************************************************
       generateUniformChain(m_chainSizes[chainId],
-                           workingChain,
-                           chainName);
+                           workingChain);
     }
     else {
       //****************************************************
@@ -88,7 +86,6 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
       //****************************************************
       intGenerateSequence(valuesOf1stPosition,
                           workingChain,
-                          chainName,
                           m_chainSizes[chainId]);
     }
 
@@ -130,12 +127,10 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
     // --> compute statistics on it
     //****************************************************
     if (m_chainWrite && ofs) {
-      workingChain.write(chainName,*ofs);
+      workingChain.write(*ofs);
 
       // Write likelihoodValues and alphaValues, if they were requested by user
       iRC = writeInfo(workingChain,
-                      chainName,
-                      prefixName,
                       *ofs);
       UQ_FATAL_RC_MACRO(iRC,
                         m_env.rank(),
@@ -145,7 +140,6 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
 
     if (m_chainComputeStats) {
       workingChain.computeStatistics(*m_chainStatisticalOptions,
-                                     chainName,
                                      ofs);
     }
 
@@ -167,15 +161,14 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
       //                    "uniquePos != m_uniqueChain1.size()");
 
       // Write unique chain
-      chainName = prefixName + "uniqueChain";
+      workingChain.setName(m_prefix + "uniqueChain");
       if (m_uniqueChainWrite && ofs) {
-        workingChain.write(chainName,*ofs);
+        workingChain.write(*ofs);
       }
 
       // Compute statistics
       if (m_uniqueChainComputeStats) {
         workingChain.computeStatistics(*m_uniqueChainStatisticalOptions,
-                                       chainName,
                                        ofs);
       }
     }
@@ -192,7 +185,6 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
       unsigned int filterSpacing    = m_filteredChainLag;
       if (filterSpacing == 0) {
         workingChain.computeFilterParams(*m_filteredChainStatisticalOptions,
-                                         chainName,
                                          ofs,
                                          filterInitialPos,
                                          filterSpacing);
@@ -203,15 +195,14 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
                           filterSpacing);
 
       // Write filtered chain
-      chainName = prefixName + "filteredChain";
+      workingChain.setName(m_prefix + "filteredChain");
       if (m_filteredChainWrite && ofs) {
-        workingChain.write(chainName,*ofs);
+        workingChain.write(*ofs);
       }
 
       // Compute statistics
       if (m_filteredChainComputeStats) {
         workingChain.computeStatistics(*m_filteredChainStatisticalOptions,
-                                       chainName,
                                        ofs);
       }
     }
@@ -270,12 +261,11 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
 template <class P_V,class P_M>
 void
 uqMarkovChainSGClass<P_V,P_M>::generateWhiteNoiseChain(
-  unsigned int                    chainSize,
-  uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
-  const std::string&     chainName)
+  unsigned int                        chainSize,
+  uqBaseVectorSequenceClass<P_V,P_M>& workingChain)
 {
   if (m_env.rank() == 0) {
-    std::cout << "Starting the generation of white noise chain " << chainName
+    std::cout << "Starting the generation of white noise chain " << workingChain.name()
               << ", with "                                       << chainSize
               << " positions ..."
               << std::endl;
@@ -298,7 +288,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateWhiteNoiseChain(
   tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
 
   if (m_env.rank() == 0) {
-    std::cout << "Finished the generation of white noise chain " << chainName
+    std::cout << "Finished the generation of white noise chain " << workingChain.name()
               << ", with "                                       << workingChain.sequenceSize()
               << " positions";
   }
@@ -315,12 +305,11 @@ uqMarkovChainSGClass<P_V,P_M>::generateWhiteNoiseChain(
 template <class P_V,class P_M>
 void
 uqMarkovChainSGClass<P_V,P_M>::generateUniformChain(
-  unsigned int                    chainSize,
-  uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
-  const std::string&     chainName)
+  unsigned int                        chainSize,
+  uqBaseVectorSequenceClass<P_V,P_M>& workingChain)
 {
   if (m_env.rank() == 0) {
-    std::cout << "Starting the generation of uniform chain " << chainName
+    std::cout << "Starting the generation of uniform chain " << workingChain.name()
               << ", with "                                   << chainSize
               << " positions ..."
               << std::endl;
@@ -343,7 +332,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateUniformChain(
   tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
 
   if (m_env.rank() == 0) {
-    std::cout << "Finished the generation of white noise chain " << chainName
+    std::cout << "Finished the generation of white noise chain " << workingChain.name()
               << ", with "                                       << workingChain.sequenceSize()
               << " positions";
   }
@@ -360,13 +349,12 @@ uqMarkovChainSGClass<P_V,P_M>::generateUniformChain(
 template <class P_V,class P_M>
 void
 uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
-  const P_V&                      valuesOf1stPosition,
+  const P_V&                          valuesOf1stPosition,
   uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
-  const std::string&              chainName,
-  unsigned int                    chainSize)
+  unsigned int                        chainSize)
 {
   if (m_env.rank() == 0) {
-    std::cout << "Starting the generation of Markov chain " << chainName
+    std::cout << "Starting the generation of Markov chain " << workingChain.name()
               << ", with "                                  << chainSize
               << " positions..."
               << std::endl;
@@ -625,7 +613,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
 
       // Now might be the moment to adapt
       unsigned int idOfFirstPositionInSubChain = 0;
-      uqSequenceOfVectorsClass<P_V,P_M> subChain(m_vectorSpace,0);
+      uqSequenceOfVectorsClass<P_V,P_M> subChain(m_vectorSpace,0,m_prefix+"subChain");
 
       // Check if now is indeed the moment to adapt
       if (positionId < m_initialNonAdaptInterval) {
@@ -753,7 +741,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
   //****************************************************
   m_chainRunTime += uqMiscGetEllapsedSeconds(&timevalChain);
   if (m_env.rank() == 0) {
-    std::cout << "Finished the generation of Markov chain " << chainName
+    std::cout << "Finished the generation of Markov chain " << workingChain.name()
               << ", with "                                  << workingChain.sequenceSize()
               << " positions";
     if (m_uniqueChainGenerate) {

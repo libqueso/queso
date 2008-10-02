@@ -318,8 +318,7 @@ uqScalarSequenceClass<T>::sampleVariance(
     samValue += diff*diff;
   }
 
-  T doubleNumPos = (T) numPos;
-  samValue /= (doubleNumPos - 1.);
+  samValue /= (((T) numPos) - 1.);
 
   return samValue;
 }

@@ -173,7 +173,7 @@ s1_pro_mc_seq_stats_kde_numEvalPositions     = 250
 # Stage II: Calibration problem
 ###############################################
 s2_cal_help         = anything
-s2_cal_skipSolution = 1
+s2_cal_skipSolution = 0
 
 ###############################################
 # Stage II: Calibration problem: information for Markov Chain algorithm
@@ -281,7 +281,7 @@ s2_cal_mc_filteredChain_stats_kde_numEvalPositions     = 250
 # Stage II: Propagation problem
 ###############################################
 s2_pro_help         = anything
-s2_pro_skipSolution = 1
+s2_pro_skipSolution = 0
 
 ###############################################
 # Stage II: Propagation problem: information for Monte Carlo algorithm

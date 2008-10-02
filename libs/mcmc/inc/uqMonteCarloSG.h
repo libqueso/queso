@@ -55,11 +55,10 @@ private:
   void getMyOptionValues  (po::options_description& optionsDesc);
 
   void intGenerateSequence(const uqBaseVectorRVClass      <P_V,P_M>& paramRv,
-                                 uqBaseVectorSequenceClass<P_V,P_M>&     workingSeq);
+                                 uqBaseVectorSequenceClass<P_V,P_M>& workingSeq);
 
   void intGenerateSequence(const uqBaseVectorRVClass      <P_V,P_M>& paramRv,
-                                 uqBaseVectorSequenceClass<P_V,P_M>&     workingSeq,
-                           const std::string&                        seqName,
+                                 uqBaseVectorSequenceClass<P_V,P_M>& workingSeq,
                                  unsigned int                        seqSize);
 
   const uqEnvironmentClass&                     m_env;
@@ -218,10 +217,9 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence(
   const uqBaseVectorRVClass      <P_V,P_M>& paramRv,
-        uqBaseVectorSequenceClass<P_V,P_M>&     workingSeq)
+        uqBaseVectorSequenceClass<P_V,P_M>& workingSeq)
 {
-  std::string prefixName = m_prefix;
-  std::string seqName    = prefixName + "seq";
+  workingSeq.setName(m_prefix+"seq");
 
   //****************************************************
   // Generate sequence of qoi values
@@ -235,7 +233,6 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence(
   unsigned int actualNumSamples = std::min(m_numSamples,paramRv.realizer().period());
   intGenerateSequence(paramRv,
                       workingSeq,
-                      seqName,
                       actualNumSamples);
 
   //****************************************************
@@ -244,14 +241,14 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence(
   std::ofstream* ofs = NULL;
   if (m_outputFileName == UQ_MOC_SG_FILENAME_FOR_NO_OUTPUT_FILE) {
     if (m_env.rank() == 0) {
-      std::cout << "No output file opened for qoi sequence " << seqName 
+      std::cout << "No output file opened for qoi sequence " << workingSeq.name() 
                 << std::endl;
     }
   }
   else {
     if (m_env.rank() == 0) {
       std::cout << "Opening output file '" << m_outputFileName
-                << "' for qoi sequence "   << seqName
+                << "' for qoi sequence "   << workingSeq.name()
                 << std::endl;
     }
 
@@ -275,12 +272,11 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence(
   // --> compute statistics on it
   //****************************************************
   if (m_write && ofs) {
-    workingSeq.write(seqName,*ofs);
+    workingSeq.write(*ofs);
   }
 
   if (m_computeStats) {
     workingSeq.computeStatistics(*m_statisticalOptions,
-                                 seqName,
                                  ofs);
   }
 
@@ -293,7 +289,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence(
 
     if (m_env.rank() == 0) {
       std::cout << "Closed output file '" << m_outputFileName
-                << "' for qoi sequence "  << seqName
+                << "' for qoi sequence "  << workingSeq.name()
                 << std::endl;
     }
   }
@@ -308,12 +304,11 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence(
   const uqBaseVectorRVClass      <P_V,P_M>& paramRv,
-        uqBaseVectorSequenceClass<P_V,P_M>&     workingSeq,
-  const std::string&                        seqName,
+        uqBaseVectorSequenceClass<P_V,P_M>& workingSeq,
         unsigned int                        seqSize)
 {
   if (m_env.rank() == 0) {
-    std::cout << "Starting the generation of qoi sequence " << seqName
+    std::cout << "Starting the generation of qoi sequence " << workingSeq.name()
               << ", with "                                  << seqSize
               << " samples..."
               << std::endl;
@@ -353,7 +348,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence(
   seqRunTime = uqMiscGetEllapsedSeconds(&timevalSeq);
 
   if (m_env.rank() == 0) {
-    std::cout << "Finished the generation of qoi sequence " << seqName
+    std::cout << "Finished the generation of qoi sequence " << workingSeq.name()
               << ", with "                                  << workingSeq.sequenceSize()
               << " samples";
   }

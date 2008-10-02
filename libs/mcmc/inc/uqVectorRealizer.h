@@ -36,6 +36,24 @@ class uqBaseVectorRealizerClass {
 public:
            uqBaseVectorRealizerClass(const char*                    prefix,
                                      const uqVectorSpaceClass<V,M>& imageSpace,
+                                     unsigned int                   period,
+                                     const V&                       imageMinValues,
+                                     const V&                       imageMaxValues,
+                                     const V&                       imageExpectedValues,
+                                     const V&                       imageVarianceValues);
+           uqBaseVectorRealizerClass(const char*                    prefix,
+                                     const uqVectorSpaceClass<V,M>& imageSpace,
+                                     unsigned int                   period,
+                                     const V&                       imageMinValues,
+                                     const V&                       imageMaxValues,
+                                     const V&                       imageExpectedValues);
+           uqBaseVectorRealizerClass(const char*                    prefix,
+                                     const uqVectorSpaceClass<V,M>& imageSpace,
+                                     unsigned int                   period,
+                                     const V&                       imageMinValues,
+                                     const V&                       imageMaxValues);
+           uqBaseVectorRealizerClass(const char*                    prefix,
+                                     const uqVectorSpaceClass<V,M>& imageSpace,
                                      unsigned int                   period);
 
            uqBaseVectorRealizerClass(const uqBaseVectorSequenceClass<V,M>* chain);
@@ -62,6 +80,99 @@ protected:
         V*                       m_imageExpectedValues;
         V*                       m_imageVarianceValues;
 };
+
+template<class V, class M>
+uqBaseVectorRealizerClass<V,M>::uqBaseVectorRealizerClass(
+  const char*                    prefix,
+  const uqVectorSpaceClass<V,M>& imageSpace,
+  unsigned int                   period,
+  const V&                       imageMinValues,
+  const V&                       imageMaxValues,
+  const V&                       imageExpectedValues,
+  const V&                       imageVarianceValues)
+  :
+  m_env                (imageSpace.env()),
+  m_prefix             ((std::string)(prefix)+"re_"),
+  m_imageSpace         (imageSpace),
+  m_period             (period),
+  m_imageMinValues     (new V(imageMinValues     )),
+  m_imageMaxValues     (new V(imageMaxValues     )),
+  m_imageExpectedValues(new V(imageExpectedValues)),
+  m_imageVarianceValues(new V(imageVarianceValues))
+{
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Entering uqBaseVectorRealizerClass<V,M>::constructor() [1]"
+              << ": prefix = " << m_prefix
+              << std::endl;
+  }
+
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Leaving uqBaseVectorRealizerClass<V,M>::constructor() [1]"
+              << ": prefix = " << m_prefix
+              << std::endl;
+  }
+}
+
+template<class V, class M>
+uqBaseVectorRealizerClass<V,M>::uqBaseVectorRealizerClass(
+  const char*                    prefix,
+  const uqVectorSpaceClass<V,M>& imageSpace,
+  unsigned int                   period,
+  const V&                       imageMinValues,
+  const V&                       imageMaxValues,
+  const V&                       imageExpectedValues)
+  :
+  m_env                (imageSpace.env()),
+  m_prefix             ((std::string)(prefix)+"re_"),
+  m_imageSpace         (imageSpace),
+  m_period             (period),
+  m_imageMinValues     (new V(imageMinValues)         ),
+  m_imageMaxValues     (new V(imageMaxValues)         ),
+  m_imageExpectedValues(new V(imageExpectedValues)    ),
+  m_imageVarianceValues(imageSpace.newVector(INFINITY))
+{
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Entering uqBaseVectorRealizerClass<V,M>::constructor() [2]"
+              << ": prefix = " << m_prefix
+              << std::endl;
+  }
+
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Leaving uqBaseVectorRealizerClass<V,M>::constructor() [2]"
+              << ": prefix = " << m_prefix
+              << std::endl;
+  }
+}
+
+template<class V, class M>
+uqBaseVectorRealizerClass<V,M>::uqBaseVectorRealizerClass(
+  const char*                    prefix,
+  const uqVectorSpaceClass<V,M>& imageSpace,
+  unsigned int                   period,
+  const V&                       imageMinValues,
+  const V&                       imageMaxValues)
+  :
+  m_env                (imageSpace.env()),
+  m_prefix             ((std::string)(prefix)+"re_"),
+  m_imageSpace         (imageSpace),
+  m_period             (period),
+  m_imageMinValues     (new V(imageMinValues)         ),
+  m_imageMaxValues     (new V(imageMaxValues)         ),
+  m_imageExpectedValues(imageSpace.newVector(      0.)),
+  m_imageVarianceValues(imageSpace.newVector(INFINITY))
+{
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Entering uqBaseVectorRealizerClass<V,M>::constructor() [3]"
+              << ": prefix = " << m_prefix
+              << std::endl;
+  }
+
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Leaving uqBaseVectorRealizerClass<V,M>::constructor() [3]"
+              << ": prefix = " << m_prefix
+              << std::endl;
+  }
+}
 
 template<class V, class M>
 uqBaseVectorRealizerClass<V,M>::uqBaseVectorRealizerClass(
@@ -236,7 +347,7 @@ uqSequentialVectorRealizerClass<V,M>::uqSequentialVectorRealizerClass(
   const char*                           prefix,
   const uqBaseVectorSequenceClass<V,M>& chain)
   :
-  uqBaseVectorRealizerClass<V,M>(((std::string)(prefix)+"seq").c_str(),chain.vectorSpace(),chain.sequenceSize()),
+  uqBaseVectorRealizerClass<V,M>(((std::string)(prefix)+"seq").c_str(),chain.vectorSpace(),chain.sequenceSize(),chain.minValues(),chain.maxValues(),chain.meanValues(),chain.sampleVarianceValues()),
   m_chain          (chain),
   m_currentChainPos(0)
 {

@@ -94,16 +94,13 @@ private:
                                   uqBaseVectorSequenceClass<P_V,P_M>&                workingChain);
   int    prepareForNextChain     (const P_M&                                     proposalCovMatrix);
   void   intGenerateSequence     (const P_V&                                     valuesOf1stPosition,
-                                  uqBaseVectorSequenceClass<P_V,P_M>&                workingChain,
-                                  const std::string&                             chainName,
+                                  uqBaseVectorSequenceClass<P_V,P_M>&            workingChain,
                                   unsigned int                                   chainSize);
   void   generateWhiteNoiseChain (unsigned int                                   chainSize,
-                                  uqBaseVectorSequenceClass<P_V,P_M>&                workingChain,
-                                  const std::string&                             chainName);
+                                  uqBaseVectorSequenceClass<P_V,P_M>&            workingChain);
   void   generateUniformChain    (unsigned int                                   chainSize,
-                                  uqBaseVectorSequenceClass<P_V,P_M>&                workingChain,
-                                  const std::string&                             chainName);
-  void   updateCovMatrix         (const uqBaseVectorSequenceClass<P_V,P_M>&          subChain,
+                                  uqBaseVectorSequenceClass<P_V,P_M>&            workingChain);
+  void   updateCovMatrix         (const uqBaseVectorSequenceClass<P_V,P_M>&      subChain,
                                   unsigned int                                   idOfFirstPositionInSubChain,
                                   double&                                        lastChainSize,
                                   P_V&                                           lastMean,
@@ -120,9 +117,7 @@ private:
   bool   acceptAlpha             (double                                         alpha);
   void   updateCovMatrices       ();
 
-  int    writeInfo               (const uqBaseVectorSequenceClass<P_V,P_M>&          workingChain,
-                                  const std::string&                             chainName,
-                                  const std::string&                             prefixName,
+  int    writeInfo               (const uqBaseVectorSequenceClass<P_V,P_M>&      workingChain,
                                   std::ofstream&                                 ofs) const;
                                 //const P_M*                                     mahalanobisMatrix = NULL,
                                 //bool                                           applyMahalanobisInvert = true) const;
@@ -893,8 +888,6 @@ template<class P_V,class P_M>
 int
 uqMarkovChainSGClass<P_V,P_M>::writeInfo(
   const uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
-  const std::string&                    chainName,
-  const std::string&                    prefixName,
   std::ofstream&                        ofs) const
 //const P_M*                   mahalanobisMatrix,
 //bool                         applyMahalanobisInvert) const
@@ -902,7 +895,7 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
   if (m_env.rank() == 0) {
     std::cout << "\n"
               << "\n-----------------------------------------------------"
-              << "\n Writing extra information about the Markov chain " << chainName << " to output file ..."
+              << "\n Writing extra information about the Markov chain " << workingChain.name() << " to output file ..."
               << "\n-----------------------------------------------------"
               << "\n"
               << std::endl;
@@ -912,11 +905,11 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
 
   if (m_chainGenerateExtra) {
     // Write m_logTargets
-    ofs << prefixName << "logTargets = zeros(" << m_logTargets.size()
+    ofs << m_prefix << "logTargets = zeros(" << m_logTargets.size()
         << ","                                      << 1
         << ");"
         << std::endl;
-    ofs << prefixName << "logTargets = [";
+    ofs << m_prefix << "logTargets = [";
     for (unsigned int i = 0; i < m_logTargets.size(); ++i) {
       ofs << m_logTargets[i]
           << std::endl;
@@ -924,11 +917,11 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
     ofs << "];\n";
 
     // Write m_alphaQuotients
-    ofs << prefixName << "alphaQuotients = zeros(" << m_alphaQuotients.size()
+    ofs << m_prefix << "alphaQuotients = zeros(" << m_alphaQuotients.size()
         << ","                                      << 1
         << ");"
         << std::endl;
-    ofs << prefixName << "alphaQuotients = [";
+    ofs << m_prefix << "alphaQuotients = [";
     for (unsigned int i = 0; i < m_alphaQuotients.size(); ++i) {
       ofs << m_alphaQuotients[i]
           << std::endl;
@@ -937,7 +930,7 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
   }
 
   // Write names of components
-  ofs << prefixName << "componentNames = {";
+  ofs << m_prefix << "componentNames = {";
   m_vectorSpace.printComponentsNames(ofs,false);
   ofs << "};\n";
 
@@ -945,7 +938,7 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
   // Write mahalanobis distances
   if (mahalanobisMatrix != NULL) {
     P_V diffVec(m_vectorSpace.zeroVector());
-    ofs << prefixName << "d = [";
+    ofs << m_prefix << "d = [";
     if (applyMahalanobisInvert) {
       P_V tmpVec(m_vectorSpace.zeroVector());
       P_V vec0(m_vectorSpace.zeroVector());
@@ -976,42 +969,42 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
 
 #if 0
   // Write prior mean values
-  ofs << prefixName << "priorMeanValues = ["
+  ofs << m_prefix << "priorMeanValues = ["
       << m_vectorSpace.priorMuValues()
       << "];\n";
 
   // Write prior sigma values
-  ofs << prefixName << "priorSigmaValues = ["
+  ofs << m_prefix << "priorSigmaValues = ["
       << m_vectorSpace.priorSigmaValues()
       << "];\n";
 
 #if 0
-  ofs << prefixName << "results.prior = [queso_priorMeanValues',queso_priorSigmaValues'];\n";
+  ofs << m_prefix << "results.prior = [queso_priorMeanValues',queso_priorSigmaValues'];\n";
 #endif
 
   // Write vector space lower bounds
-  ofs << prefixName << "minValues = ["
+  ofs << m_prefix << "minValues = ["
       << m_vectorSpace.minValues()
       << "];\n";
 
   // Write vector space upper bounds
-  ofs << prefixName << "maxValues = ["
+  ofs << m_prefix << "maxValues = ["
       << m_vectorSpace.maxValues()
       << "];\n";
 #endif
 
 #if 0
-  ofs << prefixName << "results.limits = [queso_low',queso_upp'];\n";
+  ofs << m_prefix << "results.limits = [queso_low',queso_upp'];\n";
 
   // Write out data for mcmcpred.m
-  ofs << prefixName << "results.parind = ["; // FIXME
+  ofs << m_prefix << "results.parind = ["; // FIXME
   for (unsigned int i = 0; i < m_vectorSpace.dim(); ++i) {
     ofs << i+1
         << std::endl;
   }
   ofs << "];\n";
 
-  ofs << prefixName << "results.local = [\n"; // FIXME
+  ofs << m_prefix << "results.local = [\n"; // FIXME
   for (unsigned int i = 0; i < m_vectorSpace.dim(); ++i) {
     ofs << " 0";
     //<< std::endl;
@@ -1023,40 +1016,40 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
   else {
     bool savedVectorPrintState = workingChain[workingChain.sequenceSize()-1]->getPrintHorizontally();
     workingChain[workingChain.sequenceSize()-1]->setPrintHorizontally(false);
-    ofs << prefixName << "results.theta = ["
+    ofs << m_prefix << "results.theta = ["
         << *(workingChain[workingChain.sequenceSize()-1])
         << "];\n";
     workingChain[workingChain.sequenceSize()-1]->setPrintHorizontally(savedVectorPrintState);
   }
   
-  ofs << prefixName << "results.nbatch = 1.;\n"; // FIXME
+  ofs << m_prefix << "results.nbatch = 1.;\n"; // FIXME
 
   if (mahalanobisMatrix != NULL) {
     // Write covMatrix
-    ofs << prefixName << "mahalanobisMatrix = ["
+    ofs << m_prefix << "mahalanobisMatrix = ["
         << *mahalanobisMatrix
         << "];\n";
   }
 #endif
 
   // Write number of rejections
-  ofs << prefixName << "rejected = " << (double) m_numRejections/(double) (workingChain.sequenceSize()-1)
+  ofs << m_prefix << "rejected = " << (double) m_numRejections/(double) (workingChain.sequenceSize()-1)
       << ";\n"
       << std::endl;
 
   // Write number of outbounds
-  ofs << prefixName << "outbounds = " << (double) m_numOutOfBounds/(double) (workingChain.sequenceSize()-1)
+  ofs << m_prefix << "outbounds = " << (double) m_numOutOfBounds/(double) (workingChain.sequenceSize()-1)
       << ";\n"
       << std::endl;
 
   // Write chain run time
-  ofs << prefixName << "runTime = " << m_chainRunTime
+  ofs << m_prefix << "runTime = " << m_chainRunTime
       << ";\n"
       << std::endl;
 
   if (m_env.rank() == 0) {
     std::cout << "\n-----------------------------------------------------"
-              << "\n Finished writing extra information about the Markov chain " << chainName
+              << "\n Finished writing extra information about the Markov chain " << workingChain.name()
               << "\n-----------------------------------------------------"
               << "\n"
               << std::endl;

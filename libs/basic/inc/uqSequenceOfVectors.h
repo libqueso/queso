@@ -30,7 +30,9 @@ class uqSequenceOfVectorsClass : public uqBaseVectorSequenceClass<V,M>
 public:
   typedef typename std::vector<const V*>::const_iterator seqVectorPositionConstIteratorTypedef;
   typedef typename std::vector<const V*>::iterator       seqVectorPositionIteratorTypedef;
-  uqSequenceOfVectorsClass(const uqVectorSpaceClass<V,M>& vectorSpace, unsigned int sequenceSize);
+  uqSequenceOfVectorsClass(const uqVectorSpaceClass<V,M>& vectorSpace,
+                           unsigned int                   sequenceSize,
+                           const std::string&             name);
  ~uqSequenceOfVectorsClass();
 
         unsigned int sequenceSize      () const;
@@ -115,8 +117,7 @@ public:
                                         const V&                  scaleVec,
                                         const std::vector<V*>&    evalParamVecs,
                                         std::vector<V*>&          densityVecs) const;
-        void         write             (const std::string&        name,
-                                        std::ofstream&            ofs) const;
+        void         write             (std::ofstream&            ofs) const;
         void         select            (const std::vector<unsigned int>& idsOfUniquePositions);
         void         filter            (unsigned int              initialPos,
                                         unsigned int              spacing);
@@ -137,15 +138,17 @@ private:
 
   using uqBaseVectorSequenceClass<V,M>::m_env;
   using uqBaseVectorSequenceClass<V,M>::m_vectorSpace;
+  using uqBaseVectorSequenceClass<V,M>::m_name;
   using uqBaseVectorSequenceClass<V,M>::m_fftObj;
 };
 
 template <class V, class M>
 uqSequenceOfVectorsClass<V,M>::uqSequenceOfVectorsClass(
   const uqVectorSpaceClass<V,M>& vectorSpace,
-  unsigned int                   sequenceSize)
+  unsigned int                   sequenceSize,
+  const std::string&             name)
   :
-  uqBaseVectorSequenceClass<V,M>(vectorSpace,sequenceSize),
+  uqBaseVectorSequenceClass<V,M>(vectorSpace,sequenceSize,name),
   m_seq                         (sequenceSize,NULL)
 {
 
@@ -180,6 +183,8 @@ uqSequenceOfVectorsClass<V,M>::resizeSequence(unsigned int newSequenceSize)
     std::vector<const V*>(m_seq).swap(m_seq);
   }
 
+  uqBaseVectorSequenceClass<V,M>::deleteStoredVectors();
+
  return;
 }
 
@@ -208,6 +213,8 @@ uqSequenceOfVectorsClass<V,M>::resetValues(unsigned int initialPos, unsigned int
       m_seq[initialPos+j] = NULL;
     }
   }
+
+  uqBaseVectorSequenceClass<V,M>::deleteStoredVectors();
 
   return;
 }
@@ -243,6 +250,8 @@ uqSequenceOfVectorsClass<V,M>::erasePositions(unsigned int initialPos, unsigned 
                       m_env.rank(),
                       "uqSequenceOfVectors::erasePositions()",
                       "(oldSequenceSize - numPos) != this->sequenceSize()");
+
+  uqBaseVectorSequenceClass<V,M>::deleteStoredVectors();
 
   return;
 }
@@ -299,6 +308,8 @@ uqSequenceOfVectorsClass<V,M>::setPositionValues(unsigned int posId, const V& ve
   if (m_seq[posId] != NULL) delete m_seq[posId];
   m_seq[posId] = new V(vec);
 
+  uqBaseVectorSequenceClass<V,M>::deleteStoredVectors();
+
   return;
 }
 
@@ -312,6 +323,8 @@ uqSequenceOfVectorsClass<V,M>::setGaussian(const gsl_rng* rng, const V& meanVec,
     if (m_seq[j] != NULL) delete m_seq[j];
     m_seq[j] = new V(gaussianVector);
   }
+
+  uqBaseVectorSequenceClass<V,M>::deleteStoredVectors();
 
   return;
 }
@@ -327,6 +340,8 @@ uqSequenceOfVectorsClass<V,M>::setUniform(const gsl_rng* rng, const V& aVec, con
     if (m_seq[j] != NULL) delete m_seq[j];
     m_seq[j] = new V(uniformVector);
   }
+
+  uqBaseVectorSequenceClass<V,M>::deleteStoredVectors();
 
   return;
 }
@@ -1038,16 +1053,14 @@ uqSequenceOfVectorsClass<V,M>::filter(
 
 template <class V, class M>
 void
-uqSequenceOfVectorsClass<V,M>::write(
-  const std::string& chainName,
-  std::ofstream&     ofs) const
+uqSequenceOfVectorsClass<V,M>::write(std::ofstream& ofs) const
 {
   // Write chain
-  ofs << chainName << " = zeros(" << this->sequenceSize()
-      << ","                      << this->vectorSize()
+  ofs << m_name << " = zeros(" << this->sequenceSize()
+      << ","                   << this->vectorSize()
       << ");"
       << std::endl;
-  ofs << chainName << " = [";
+  ofs << m_name << " = [";
   unsigned int chainSize = this->sequenceSize();
   for (unsigned int j = 0; j < chainSize; ++j) {
     ofs << *(m_seq[j])
