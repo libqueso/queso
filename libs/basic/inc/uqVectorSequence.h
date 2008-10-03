@@ -23,6 +23,8 @@
 #include <uqVectorSpace.h>
 #include <uqScalarSequence.h>
 #include <uqChainStatisticalOptions.h>
+#include <uqArrayOfOneDUniformGrids.h>
+#include <uqArrayOfScalarSets.h>
 #include <uq2dArrayOfStuff.h>
 #include <sys/time.h>
 #include <fstream>
@@ -55,6 +57,9 @@ public:
   virtual  void                     setPositionValues   (unsigned int posId, const V& vec) = 0;
   virtual  void                     setGaussian         (const gsl_rng* rng, const V& meanVec, const V& stdDevVec) = 0;
   virtual  void                     setUniform          (const gsl_rng* rng, const V& aVec,    const V& bVec     ) = 0;
+  virtual  void                     uniformlySampleCdfs (const V&                             numEvaluationPointsVec,
+                                                         uqArrayOfOneDUniformGridsClass<V,M>& oneDGrids,
+                                                         uqArrayOfScalarSetsClass      <V,M>& cdfValues) const = 0;
 
   virtual  void                     mean                (unsigned int                          initialPos,
                                                          unsigned int                          numPos,
@@ -125,7 +130,7 @@ public:
                                                          const V&                              scaleVec,
                                                          const std::vector<V*>&                evaluationParamVecs,
                                                          std::vector<V*>&                      densityVecs) const = 0;
-  virtual  void                     write               (std::ofstream&                        ofs) const = 0;
+  virtual  void                     printContents       (std::ofstream&                        ofs) const = 0;
   virtual  void                     select              (const std::vector<unsigned int>&      idsOfUniquePositions) = 0;
   virtual  void                     filter              (unsigned int                          initialPos,
                                                          unsigned int                          spacing) = 0;

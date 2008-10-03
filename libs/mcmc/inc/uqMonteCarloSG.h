@@ -272,7 +272,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence(
   // --> compute statistics on it
   //****************************************************
   if (m_write && ofs) {
-    workingSeq.write(*ofs);
+    workingSeq.printContents(*ofs);
   }
 
   if (m_computeStats) {

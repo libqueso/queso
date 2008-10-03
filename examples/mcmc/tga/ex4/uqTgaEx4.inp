@@ -26,7 +26,7 @@ s1_cal_mc_chain_generateExtra   = 0
 s1_cal_mc_chain_displayPeriod   = 20000
 s1_cal_mc_chain_measureRunTimes = 1
 s1_cal_mc_chain_write           = 0
-s1_cal_mc_chain_computeStats    = 1
+s1_cal_mc_chain_computeStats    = 0
 
 s1_cal_mc_dr_maxNumExtraStages       = 1
 s1_cal_mc_dr_scalesForExtraStages    = 5. 4. 3.
@@ -39,7 +39,7 @@ s1_cal_mc_filteredChain_generate         = 1
 s1_cal_mc_filteredChain_discardedPortion = 0.
 s1_cal_mc_filteredChain_lag              = 20
 s1_cal_mc_filteredChain_write            = 1
-s1_cal_mc_filteredChain_computeStats     = 1
+s1_cal_mc_filteredChain_computeStats     = 0
 
 #s1_cal_mc_chain_stats_help                     = anything
 s1_cal_mc_chain_stats_initialDiscardedPortions = 0. .1 .2 .3
@@ -131,7 +131,7 @@ s1_pro_mc_outputFileName  = s1Output.m
 s1_pro_mc_displayPeriod   = 20000
 s1_pro_mc_measureRunTimes = 1
 s1_pro_mc_write           = 1
-s1_pro_mc_computeStats    = 1
+s1_pro_mc_computeStats    = 0
 
 #s1_pro_mc_seq_stats_help                     = anything
 s1_pro_mc_seq_stats_initialDiscardedPortions = 0.
@@ -190,7 +190,7 @@ s2_cal_mc_chain_generateExtra   = 0
 s2_cal_mc_chain_displayPeriod   = 20000
 s2_cal_mc_chain_measureRunTimes = 1
 s2_cal_mc_chain_write           = 0
-s2_cal_mc_chain_computeStats    = 1
+s2_cal_mc_chain_computeStats    = 0
 
 s2_cal_mc_dr_maxNumExtraStages       = 1
 s2_cal_mc_dr_scalesForExtraStages    = 5. 4. 3.
@@ -203,7 +203,7 @@ s2_cal_mc_filteredChain_generate         = 1
 s2_cal_mc_filteredChain_discardedPortion = 0.
 s2_cal_mc_filteredChain_lag              = 20
 s2_cal_mc_filteredChain_write            = 1
-s2_cal_mc_filteredChain_computeStats     = 1
+s2_cal_mc_filteredChain_computeStats     = 0
 
 #s2_cal_mc_chain_stats_help                     = anything
 s2_cal_mc_chain_stats_initialDiscardedPortions = 0. .1 .2 .3
@@ -295,7 +295,7 @@ s2_pro_mc_outputFileName  = s2Output.m
 s2_pro_mc_displayPeriod   = 20000
 s2_pro_mc_measureRunTimes = 1
 s2_pro_mc_write           = 1
-s2_pro_mc_computeStats    = 1
+s2_pro_mc_computeStats    = 0
 
 #s2_pro_mc_seq_stats_help                     = anything
 s2_pro_mc_seq_stats_initialDiscardedPortions = 0.

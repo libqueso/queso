@@ -56,7 +56,6 @@ public:
                                      const uqVectorSpaceClass<V,M>& imageSpace,
                                      unsigned int                   period);
 
-           uqBaseVectorRealizerClass(const uqBaseVectorSequenceClass<V,M>* chain);
   virtual ~uqBaseVectorRealizerClass();
 
   const   uqVectorSpaceClass<V,M>& imageSpace         ()              const;

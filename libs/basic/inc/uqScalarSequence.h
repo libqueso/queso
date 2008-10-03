@@ -45,6 +45,10 @@ public:
         T&           operator[]        (unsigned int posId);
         void         setGaussian       (const gsl_rng* rng, const T& mean, const T& stdDev);
         void         setUniform        (const gsl_rng* rng, const T& a,    const T& b     );
+        void         uniformlySampleCdf(unsigned int               numIntervals,
+                                        T&                         minDomainValue,
+                                        T&                         maxDomainValue,
+                                        std::vector<T>&            cdfValues) const;
 
         T            mean              (unsigned int               initialPos,
                                         unsigned int               numPos) const;
@@ -267,6 +271,47 @@ uqScalarSequenceClass<T>::setUniform(const gsl_rng* rng, const T& a, const T& b)
         m_seq[j] = a + (b-a)*gsl_rng_uniform(rng);
       }
     }
+  }
+
+  return;
+}
+
+template <class T>
+void
+uqScalarSequenceClass<T>::uniformlySampleCdf(
+  unsigned int    numEvaluationPoints,
+  T&              minDomainValue,
+  T&              maxDomainValue,
+  std::vector<T>& cdfValues) const
+{
+  T                         tmpMinValue;
+  T                         tmpMaxValue;
+  std::vector<T>            centers(numEvaluationPoints,0.);
+  std::vector<unsigned int> bins   (numEvaluationPoints,0.);
+
+  minMax(0, // initialPos
+         tmpMinValue,
+         tmpMaxValue);
+  histogram(0, // initialPos,
+            tmpMinValue,
+            tmpMaxValue,
+            centers,
+            bins);
+
+  minDomainValue = centers[0];
+  maxDomainValue = centers[centers.size()-1];
+
+  unsigned int totalCount = 0;
+  for (unsigned int i = 0; i < numEvaluationPoints; ++i) {
+    totalCount += bins[i];
+  }
+
+  cdfValues.clear();
+  cdfValues.resize(numEvaluationPoints);
+  unsigned int partialCount = 0;
+  for (unsigned int i = 0; i < numEvaluationPoints; ++i) {
+    partialCount += bins[i];
+    cdfValues[i] = ((T) partialCount)/((T) totalCount);
   }
 
   return;

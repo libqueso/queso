@@ -42,6 +42,9 @@ public:
         void         setPositionValues (unsigned int posId, const V& vec);
         void         setGaussian       (const gsl_rng* rng, const V& meanVec, const V& stdDevVec);
         void         setUniform        (const gsl_rng* rng, const V& aVec,    const V& bVec     );
+        void         uniformlySampleCdfs(const V&                             numEvaluationPointsVec,
+                                         uqArrayOfOneDUniformGridsClass<V,M>& oneDGrids,
+                                         uqArrayOfScalarSetsClass      <V,M>& cdfValues) const;
 
         void         mean              (unsigned int             initialPos,
                                         unsigned int             numPos,
@@ -278,6 +281,34 @@ uqArrayOfSequencesClass<V,M>::setUniform(const gsl_rng* rng, const V& aVec, cons
   }
 
   uqBaseVectorSequenceClass<V,M>::deleteStoredVectors();
+
+  return;
+}
+
+template <class V, class M>
+void
+uqArrayOfSequencesClass<V,M>::uniformlySampleCdfs(
+  const V&                             numEvaluationPointsVec,
+  uqArrayOfOneDUniformGridsClass<V,M>& oneDGrids,
+  uqArrayOfScalarSetsClass      <V,M>& cdfValues) const
+{
+  uqArrayOfSequencesClass<V,M>* tmp = const_cast<uqArrayOfSequencesClass<V,M>*>(this);
+  V minCdfValues(m_vectorSpace.zeroVector());
+  V maxCdfValues(m_vectorSpace.zeroVector());
+  for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
+    const uqScalarSequenceClass<double>& seq = *(tmp->m_scalarSequences(i,0));
+
+    unsigned int numEvaluationPoints = (unsigned int) numEvaluationPointsVec[i];
+    std::vector<double> aCdf(0);
+    seq.uniformlySampleCdf(numEvaluationPoints,
+                           minCdfValues[i],
+                           maxCdfValues[i],
+                           aCdf);
+    cdfValues.setScalarSet(i,aCdf);
+  }
+  oneDGrids.setGrids(numEvaluationPointsVec,
+                     minCdfValues,
+                     maxCdfValues);
 
   return;
 }

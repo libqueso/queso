@@ -78,8 +78,7 @@ private:
         uqBaseVectorRealizerClass   <P_V,P_M>* m_solutionRealizer;
 
         uqMarkovChainSGClass        <P_V,P_M>* m_mcSeqGenerator;
-        uqSequenceOfVectorsClass    <P_V,P_M>* m_chain1;
-        uqArrayOfSequencesClass     <P_V,P_M>* m_chain2;
+        uqBaseVectorSequenceClass   <P_V,P_M>* m_chain;
 };
 
 template<class P_V,class P_M>
@@ -110,8 +109,7 @@ uqCalibProblemClass<P_V,P_M>::uqCalibProblemClass(
   m_solutionProbDensity(NULL),
   m_solutionRealizer   (NULL),
   m_mcSeqGenerator     (NULL),
-  m_chain1             (NULL),
-  m_chain2             (NULL)
+  m_chain              (NULL)
 {
   if (m_env.rank() == 0) std::cout << "Entering uqCalibProblemClass<P_V,P_M>::constructor()"
                                    << ": prefix = "              << m_prefix
@@ -136,13 +134,9 @@ uqCalibProblemClass<P_V,P_M>::uqCalibProblemClass(
 template <class P_V,class P_M>
 uqCalibProblemClass<P_V,P_M>::~uqCalibProblemClass()
 {
-  if (m_chain1) {
-    m_chain1->clear();
-    delete m_chain1;
-  }
-  if (m_chain2) {
-    m_chain2->clear();
-    delete m_chain2;
+  if (m_chain) {
+    m_chain->clear();
+    delete m_chain;
   }
   if (m_mcSeqGenerator     ) delete m_mcSeqGenerator;
   if (m_solutionRealizer   ) delete m_solutionRealizer;
@@ -221,12 +215,12 @@ uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
                                                        initialValues,
                                                        proposalCovMatrix,
                                                        NULL);
-  m_chain1 = new uqSequenceOfVectorsClass<P_V,P_M>(m_postRv.imageSpace(),0,m_prefix+"chain");
-  //m_chain2 = new uqArrayOfSequencesClass <P_V,P_M>(m_postRv.imageSpace(),0);
+  m_chain = new uqSequenceOfVectorsClass<P_V,P_M>(m_postRv.imageSpace(),0,m_prefix+"chain");
+  //m_chain = new uqArrayOfSequencesClass <P_V,P_M>(m_postRv.imageSpace(),0);
 
-  m_mcSeqGenerator->generateSequence(*m_chain1);
+  m_mcSeqGenerator->generateSequence(*m_chain);
   m_solutionRealizer = new uqSequentialVectorRealizerClass<P_V,P_M>(m_prefix.c_str(),
-                                                                   *m_chain1);
+                                                                   *m_chain);
   m_postRv.setRealizer(*m_solutionRealizer);
 
   return;

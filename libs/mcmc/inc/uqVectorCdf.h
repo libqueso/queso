@@ -20,6 +20,8 @@
 #ifndef __UQ_VECTOR_CUMULATIVE_DISTRIBUTION_FUNCTION_H__
 #define __UQ_VECTOR_CUMULATIVE_DISTRIBUTION_FUNCTION_H__
 
+#include <uqArrayOfOneDUniformGrids.h>
+#include <uqArrayOfScalarSets.h>
 #include <uqEnvironment.h>
 #include <math.h>
 
@@ -47,6 +49,7 @@ public:
           bool                     outOfDomainBounds(const V& v)      const;
   const   V&                       domainMinValues  ()                const;
   const   V&                       domainMaxValues  ()                const;
+  virtual void                     printContents    (const std::string& name, std::ofstream& ofs) const = 0;
 
 protected:
 
@@ -66,7 +69,7 @@ uqBaseVectorCdfClass<V,M>::uqBaseVectorCdfClass(
   const V&                       domainMaxValues)
   :
   m_env            (domainSpace.env()),
-  m_prefix         ((std::string)(prefix)+"pd_"),
+  m_prefix         ((std::string)(prefix)+"cdf_"),
   m_domainSpace    (domainSpace),
   m_domainMinValues(new V(domainMinValues)),
   m_domainMaxValues(new V(domainMaxValues))
@@ -162,7 +165,8 @@ public:
                           const void* routineDataPtr);
  ~uqGenericVectorCdfClass();
 
- void values(const V& paramValues, V& cdfVec) const;
+  void values       (const V& paramValues, V& cdfVec) const;
+  void printContents(const std::string& name, std::ofstream& ofs) const;
 
 protected:
   double (*m_routinePtr)(const V& paramValues, const void* routineDataPtr, V& cdfVec);
@@ -218,8 +222,15 @@ uqGenericVectorCdfClass<V,M>::values(
   return;
 }
 
+template <class V, class M>
+void
+uqGenericVectorCdfClass<V,M>::printContents(const std::string& name, std::ofstream& ofs) const
+{
+  return;
+}
+
 //*****************************************************
-// Guassian probability distribution function class
+// Gaussian probability distribution function class
 //*****************************************************
 template<class V, class M>
 class uqGaussianVectorCdfClass : public uqBaseVectorCdfClass<V,M> {
@@ -238,7 +249,8 @@ public:
                            const M&                       covMatrix);
  ~uqGaussianVectorCdfClass();
 
-  void values(const V& paramValues, V& cdfVec) const;
+  void values       (const V& paramValues, V& cdfVec) const;
+  void printContents(const std::string& name, std::ofstream& ofs) const;
 
 protected:
   const M*                         m_covMatrix;
@@ -333,6 +345,115 @@ uqGaussianVectorCdfClass<V,M>::values(
                       m_env.rank(),
                       "uqGaussianVectorCdfClass<V,M>::cdfVec()",
                       "incomplete code");
+  return;
+}
+
+template <class V, class M>
+void
+uqGaussianVectorCdfClass<V,M>::printContents(const std::string& name, std::ofstream& ofs) const
+{
+  return;
+}
+
+//*****************************************************
+// Sampled probability distribution function class
+//*****************************************************
+template<class V, class M>
+class uqSampledVectorCdfClass : public uqBaseVectorCdfClass<V,M> {
+public:
+  uqSampledVectorCdfClass(const char*                                prefix,
+                          const uqArrayOfOneDUniformGridsClass<V,M>& oneDGrids,
+                          const uqArrayOfScalarSetsClass      <V,M>& cdfValues);
+ ~uqSampledVectorCdfClass();
+
+  void values       (const V& paramValues, V& cdfVec) const;
+  void printContents(const std::string& name, std::ofstream& ofs) const;
+
+protected:
+  using uqBaseVectorCdfClass<V,M>::m_env;
+  using uqBaseVectorCdfClass<V,M>::m_prefix;
+  using uqBaseVectorCdfClass<V,M>::m_domainSpace;
+  using uqBaseVectorCdfClass<V,M>::m_domainMinValues;
+  using uqBaseVectorCdfClass<V,M>::m_domainMaxValues;
+
+  const uqArrayOfOneDUniformGridsClass<V,M>& m_oneDGrids;
+  const uqArrayOfScalarSetsClass      <V,M>& m_cdfValues;
+};
+
+template<class V,class M>
+uqSampledVectorCdfClass<V,M>::uqSampledVectorCdfClass(
+  const char*                                prefix,
+  const uqArrayOfOneDUniformGridsClass<V,M>& oneDGrids,
+  const uqArrayOfScalarSetsClass      <V,M>& cdfValues)
+  :
+  uqBaseVectorCdfClass<V,M>(((std::string)(prefix)+"sam").c_str(),oneDGrids.rowSpace(),oneDGrids.minValues(),oneDGrids.maxValues()),
+  m_oneDGrids(oneDGrids),
+  m_cdfValues(cdfValues)
+{
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Entering uqSampledVectorCdfClass<V,M>::constructor()"
+              << ": prefix = " << m_prefix
+              << std::endl;
+  }
+
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Leaving uqSampledVectorCdfClass<V,M>::constructor()"
+              << ": prefix = " << m_prefix
+              << std::endl;
+  }
+}
+
+template<class V,class M>
+uqSampledVectorCdfClass<V,M>::~uqSampledVectorCdfClass()
+{
+}
+
+template<class V, class M>
+void
+uqSampledVectorCdfClass<V,M>::values(
+  const V& paramValues,
+        V& cdfVec) const
+{
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.rank(),
+                      "uqSampledVectorCdfClass<V,M>::cdfVec()",
+                      "incomplete code");
+  return;
+}
+
+template <class V, class M>
+void
+uqSampledVectorCdfClass<V,M>::printContents(const std::string& name, std::ofstream& ofs) const
+{
+  for (unsigned int i = 0; i < m_domainSpace.dim(); ++i) {
+    // Print values *of* grid points
+    std::vector<double> aGrid;
+    m_oneDGrids.getAGrid(i,aGrid);
+    ofs << m_prefix << i << "_grid = zeros(" << aGrid.size()
+        << ","                             << 1
+        << ");"
+        << std::endl;
+    ofs << m_prefix << i << "_grid = [";
+    for (unsigned int j = 0; j < aGrid.size(); ++j) {
+      ofs << aGrid[j] << " ";
+    }
+    ofs << "];"
+        << std::endl;
+
+    // Print *cdf* values *at* grid points
+    const std::vector<double>& aSetOfCdfValues = m_cdfValues.scalarSet(i);
+    ofs << m_prefix << i << "_cdf = zeros(" << aSetOfCdfValues.size()
+        << ","                              << 1
+        << ");"
+        << std::endl;
+    ofs << m_prefix << i << "_cdf = [";
+    for (unsigned int j = 0; j < aSetOfCdfValues.size(); ++j) {
+      ofs << aSetOfCdfValues[j] << " ";
+    }
+    ofs << "];"
+        << std::endl;
+  }
+
   return;
 }
 

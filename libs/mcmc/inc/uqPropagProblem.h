@@ -53,31 +53,33 @@ private:
         void defineMyOptions  (po::options_description& optionsDesc);
         void getMyOptionValues(po::options_description& optionsDesc);
 
-  const uqEnvironmentClass&                            m_env;
-        std::string                                    m_prefix;
+  const uqEnvironmentClass&                              m_env;
+        std::string                                      m_prefix;
 
-        po::options_description*                       m_optionsDesc;
-        std::string                                    m_option_help;
-	std::string                                    m_option_skipSolution;
+        po::options_description*                         m_optionsDesc;
+        std::string                                      m_option_help;
+	std::string                                      m_option_skipSolution;
 #ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
-        std::string                                    m_option_solver;
+        std::string                                      m_option_solver;
 #endif
 
-        bool                                           m_skipSolution;
+        bool                                             m_skipSolution;
 #ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
-	std::string                                    m_solverString;
+	std::string                                      m_solverString;
 #endif
 
-  const uqBaseVectorRVClass         <P_V,P_M>&         m_paramRv;
-  const uqVectorFunctionClass       <P_V,P_M,Q_V,Q_M>& m_qoiFunction;
-        uqBaseVectorRVClass         <Q_V,Q_M>&         m_qoiRv;
+  const uqBaseVectorRVClass           <P_V,P_M>&         m_paramRv;
+  const uqVectorFunctionClass         <P_V,P_M,Q_V,Q_M>& m_qoiFunction;
+        uqBaseVectorRVClass           <Q_V,Q_M>&         m_qoiRv;
 
-        uqBaseVectorProbDensityClass<Q_V,Q_M>*         m_solutionProbDensity;
-        uqBaseVectorRealizerClass   <Q_V,Q_M>*         m_solutionRealizer;
+        uqBaseVectorProbDensityClass  <Q_V,Q_M>*         m_solutionProbDensity;
+        uqBaseVectorRealizerClass     <Q_V,Q_M>*         m_solutionRealizer;
+        uqBaseVectorCdfClass          <Q_V,Q_M>*         m_solutionCdf;
 
-        uqMonteCarloSGClass         <P_V,P_M,Q_V,Q_M>* m_mcSeqGenerator;
-        uqSequenceOfVectorsClass    <Q_V,Q_M>*         m_chain1;
-        uqArrayOfSequencesClass     <Q_V,Q_M>*         m_chain2;
+        uqMonteCarloSGClass           <P_V,P_M,Q_V,Q_M>* m_mcSeqGenerator;
+        uqBaseVectorSequenceClass     <Q_V,Q_M>*         m_chain;
+        uqArrayOfOneDUniformGridsClass<Q_V,Q_M>*         m_oneDGrids;
+        uqArrayOfScalarSetsClass      <Q_V,Q_M>*         m_cdfValues;
 };
 
 template<class P_V,class P_M,class Q_V,class Q_M>
@@ -107,9 +109,9 @@ uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::uqPropagProblemClass(
   m_qoiRv              (qoiRv),
   m_solutionProbDensity(NULL),
   m_solutionRealizer   (NULL),
+  m_solutionCdf        (NULL),
   m_mcSeqGenerator     (NULL),
-  m_chain1             (NULL),
-  m_chain2             (NULL)
+  m_chain              (NULL)
 {
   if (m_env.rank() == 0) std::cout << "Entering uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::constructor()"
                                    << ": prefix = "              << m_prefix
@@ -132,15 +134,12 @@ uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::uqPropagProblemClass(
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::~uqPropagProblemClass()
 {
-  if (m_chain1) {
-    m_chain1->clear();
-    delete m_chain1;
-  }
-  if (m_chain2) {
-    m_chain2->clear();
-    delete m_chain2;
+  if (m_chain) {
+    m_chain->clear();
+    delete m_chain;
   }
   if (m_mcSeqGenerator     ) delete m_mcSeqGenerator;
+  if (m_solutionCdf        ) delete m_solutionCdf;
   if (m_solutionRealizer   ) delete m_solutionRealizer;
   if (m_solutionProbDensity) delete m_solutionProbDensity;
   if (m_optionsDesc        ) delete m_optionsDesc;
@@ -204,13 +203,38 @@ uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarloKde()
                                                               m_qoiFunction,
                                                               m_qoiRv);
 
-  m_chain1 = new uqSequenceOfVectorsClass<Q_V,Q_M>(m_qoiRv.imageSpace(),0,m_prefix+"chain");
-  //m_chain2 = new uqArrayOfSequencesClass <Q_V,Q_M>(m_qoiRv.imageSpace(),0);
+  // Compute output chain
+  m_chain = new uqSequenceOfVectorsClass<Q_V,Q_M>(m_qoiRv.imageSpace(),0,m_prefix+"chain");
+  //m_chain = new uqArrayOfSequencesClass <Q_V,Q_M>(m_qoiRv.imageSpace(),0);
+  m_mcSeqGenerator->generateSequence(*m_chain);
 
-  m_mcSeqGenerator->generateSequence(*m_chain1);
+  // Set realizer of output rv
   m_solutionRealizer = new uqSequentialVectorRealizerClass<Q_V,Q_M>(m_prefix.c_str(),
-                                                                   *m_chain1);
+                                                                   *m_chain);
   m_qoiRv.setRealizer(*m_solutionRealizer);
+
+  // Set cdf of output rv
+  m_oneDGrids = new uqArrayOfOneDUniformGridsClass<Q_V,Q_M>(m_qoiRv.imageSpace());
+  m_cdfValues = new uqArrayOfScalarSetsClass      <Q_V,Q_M>(m_qoiRv.imageSpace());
+  Q_V* numIntervalsVec = m_qoiRv.imageSpace().newVector(250.);
+  m_chain->uniformlySampleCdfs(*numIntervalsVec, // input
+                               *m_oneDGrids,     // output
+                               *m_cdfValues);    // output
+  delete numIntervalsVec;
+  m_solutionCdf = new uqSampledVectorCdfClass<Q_V,Q_M>(m_prefix.c_str(),
+                                                      *m_oneDGrids,
+                                                      *m_cdfValues);
+
+  m_qoiRv.setCdf(*m_solutionCdf);
+
+  std::ofstream* ofs = new std::ofstream("pancada.m", std::ofstream::out | std::ofstream::in | std::ofstream::ate);
+  if ((ofs            == NULL ) ||
+      (ofs->is_open() == false)) {
+    delete ofs;
+    ofs = new std::ofstream("pancada.m", std::ofstream::out | std::ofstream::trunc);
+  }
+  m_qoiRv.cdf().printContents(m_prefix,*ofs);
+  delete ofs;
 
   return;
 }

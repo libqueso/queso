@@ -127,7 +127,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
     // --> compute statistics on it
     //****************************************************
     if (m_chainWrite && ofs) {
-      workingChain.write(*ofs);
+      workingChain.printContents(*ofs);
 
       // Write likelihoodValues and alphaValues, if they were requested by user
       iRC = writeInfo(workingChain,
@@ -163,7 +163,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
       // Write unique chain
       workingChain.setName(m_prefix + "uniqueChain");
       if (m_uniqueChainWrite && ofs) {
-        workingChain.write(*ofs);
+        workingChain.printContents(*ofs);
       }
 
       // Compute statistics
@@ -197,7 +197,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
       // Write filtered chain
       workingChain.setName(m_prefix + "filteredChain");
       if (m_filteredChainWrite && ofs) {
-        workingChain.write(*ofs);
+        workingChain.printContents(*ofs);
       }
 
       // Compute statistics

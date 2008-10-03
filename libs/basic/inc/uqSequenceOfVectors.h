@@ -47,6 +47,9 @@ public:
         void         setPositionValues (unsigned int posId, const V& vec);
         void         setGaussian       (const gsl_rng* rng, const V& meanVec, const V& stdDevVec);
         void         setUniform        (const gsl_rng* rng, const V& aVec,    const V& bVec     );
+        void         uniformlySampleCdfs(const V&                             numEvaluationPointsVec,
+                                         uqArrayOfOneDUniformGridsClass<V,M>& oneDGrids,
+                                         uqArrayOfScalarSetsClass      <V,M>& cdfValues) const;
 
         void         mean              (unsigned int              initialPos,
                                         unsigned int              numPos,
@@ -117,7 +120,7 @@ public:
                                         const V&                  scaleVec,
                                         const std::vector<V*>&    evalParamVecs,
                                         std::vector<V*>&          densityVecs) const;
-        void         write             (std::ofstream&            ofs) const;
+        void         printContents     (std::ofstream&            ofs) const;
         void         select            (const std::vector<unsigned int>& idsOfUniquePositions);
         void         filter            (unsigned int              initialPos,
                                         unsigned int              spacing);
@@ -342,6 +345,41 @@ uqSequenceOfVectorsClass<V,M>::setUniform(const gsl_rng* rng, const V& aVec, con
   }
 
   uqBaseVectorSequenceClass<V,M>::deleteStoredVectors();
+
+  return;
+}
+
+template <class V, class M>
+void
+uqSequenceOfVectorsClass<V,M>::uniformlySampleCdfs(
+  const V&                             numEvaluationPointsVec,
+  uqArrayOfOneDUniformGridsClass<V,M>& oneDGrids,
+  uqArrayOfScalarSetsClass      <V,M>& cdfValues) const
+{
+  V minDomainValues(m_vectorSpace.zeroVector());
+  V maxDomainValues(m_vectorSpace.zeroVector());
+
+  uqScalarSequenceClass<double> data(m_env,0);
+
+  unsigned int numParams = this->vectorSize();
+  for (unsigned int i = 0; i < numParams; ++i) {
+    this->extractScalarSeq(0,              // initialPos
+                           1,              // spacing
+                           sequenceSize(), // numPos
+                           i,
+                           data);
+
+    unsigned int numEvaluationPoints = (unsigned int) numEvaluationPointsVec[i];
+    std::vector<double> aCdf(0);
+    data.uniformlySampleCdf(numEvaluationPoints,
+                            minDomainValues[i],
+                            maxDomainValues[i],
+                            aCdf);
+    cdfValues.setScalarSet(i,aCdf);
+  }
+  oneDGrids.setGrids(numEvaluationPointsVec,
+                     minDomainValues,
+                     maxDomainValues);
 
   return;
 }
@@ -1053,9 +1091,8 @@ uqSequenceOfVectorsClass<V,M>::filter(
 
 template <class V, class M>
 void
-uqSequenceOfVectorsClass<V,M>::write(std::ofstream& ofs) const
+uqSequenceOfVectorsClass<V,M>::printContents(std::ofstream& ofs) const
 {
-  // Write chain
   ofs << m_name << " = zeros(" << this->sequenceSize()
       << ","                   << this->vectorSize()
       << ");"
@@ -1063,8 +1100,11 @@ uqSequenceOfVectorsClass<V,M>::write(std::ofstream& ofs) const
   ofs << m_name << " = [";
   unsigned int chainSize = this->sequenceSize();
   for (unsigned int j = 0; j < chainSize; ++j) {
+    bool savedVectorPrintState = m_seq[j]->getPrintHorizontally();
+    m_seq[j]->setPrintHorizontally(true);
     ofs << *(m_seq[j])
         << std::endl;
+    m_seq[j]->setPrintHorizontally(savedVectorPrintState);
   }
   ofs << "];\n";
 
