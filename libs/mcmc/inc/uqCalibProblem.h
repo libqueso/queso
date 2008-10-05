@@ -29,20 +29,23 @@
 
 #undef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
 
+#define UQ_CALIB_PROBLEM_FILENAME_FOR_NO_OUTPUT_FILE "."
+
 // _ODV = option default value
-#define UQ_CALIB_PROBLEM_SKIP_SOLUTION_ODV 0
+#define UQ_CALIB_PROBLEM_COMPUTE_SOLUTION_ODV 1
+#define UQ_CALIB_PROBLEM_OUTPUT_FILE_NAME_ODV UQ_CALIB_PROBLEM_FILENAME_FOR_NO_OUTPUT_FILE
 #ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
-#define UQ_CALIB_PROBLEM_SOLVER_ODV        "bayes_mc" // Bayesian formula + Markov Chain
+#define UQ_CALIB_PROBLEM_SOLVER_ODV           "bayes_mc" // Bayesian formula + Markov Chain
 #endif
 
 template <class P_V,class P_M>
 class uqCalibProblemClass
 {
 public:
-  uqCalibProblemClass(const char*                                  prefix,
-                      const uqBaseVectorRVClass         <P_V,P_M>& priorRv,
-                      const uqBaseVectorProbDensityClass<P_V,P_M>& likelihoodFunction,
-                            uqBaseVectorRVClass         <P_V,P_M>& postRv);
+  uqCalibProblemClass(const char*                          prefix,
+                      const uqBaseVectorRVClass <P_V,P_M>& priorRv,
+                      const uqBaseVectorPdfClass<P_V,P_M>& likelihoodFunction,
+                            uqBaseVectorRVClass <P_V,P_M>& postRv);
  ~uqCalibProblemClass();
 
         void solveWithBayesMarkovChain(const P_V& initialValues,
@@ -55,30 +58,35 @@ private:
         void defineMyOptions          (po::options_description& optionsDesc);
         void getMyOptionValues        (po::options_description& optionsDesc);
 
-  const uqEnvironmentClass&                    m_env;
-        std::string                            m_prefix;
+  const uqEnvironmentClass&                      m_env;
+        std::string                              m_prefix;
 
-        po::options_description*               m_optionsDesc;
-        std::string                            m_option_help;
-	std::string                            m_option_skipSolution;
+        po::options_description*                 m_optionsDesc;
+        std::string                              m_option_help;
+	std::string                              m_option_computeSolution;
+        std::string                              m_option_outputFileName;
 #ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
-        std::string                            m_option_solver;
+        std::string                              m_option_solver;
 #endif
 
-        bool                                   m_skipSolution;
+        bool                                     m_computeSolution;
+        std::string                              m_outputFileName;
 #ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
-	std::string                            m_solverString;
+	std::string                              m_solverString;
 #endif
 
-  const uqBaseVectorRVClass         <P_V,P_M>& m_priorRv;
-  const uqBaseVectorProbDensityClass<P_V,P_M>& m_likelihoodFunction;
-        uqBaseVectorRVClass         <P_V,P_M>& m_postRv;
+  const uqBaseVectorRVClass           <P_V,P_M>& m_priorRv;
+  const uqBaseVectorPdfClass          <P_V,P_M>& m_likelihoodFunction;
+        uqBaseVectorRVClass           <P_V,P_M>& m_postRv;
 
-        uqBaseVectorProbDensityClass<P_V,P_M>* m_solutionProbDensity;
-        uqBaseVectorRealizerClass   <P_V,P_M>* m_solutionRealizer;
+        uqBaseVectorPdfClass          <P_V,P_M>* m_solutionPdf;
+        uqBaseVectorRealizerClass     <P_V,P_M>* m_solutionRealizer;
+        uqBaseVectorMdfClass          <P_V,P_M>* m_solutionMdf;
 
-        uqMarkovChainSGClass        <P_V,P_M>* m_mcSeqGenerator;
-        uqBaseVectorSequenceClass   <P_V,P_M>* m_chain;
+        uqMarkovChainSGClass          <P_V,P_M>* m_mcSeqGenerator;
+        uqBaseVectorSequenceClass     <P_V,P_M>* m_chain;
+        uqArrayOfOneDUniformGridsClass<P_V,P_M>* m_mdfGrids;
+        uqArrayOfScalarSetsClass      <P_V,P_M>* m_mdfValues;
 };
 
 template<class P_V,class P_M>
@@ -86,30 +94,33 @@ std::ostream& operator<<(std::ostream& os, const uqCalibProblemClass<P_V,P_M>& o
 
 template <class P_V,class P_M>
 uqCalibProblemClass<P_V,P_M>::uqCalibProblemClass(
-  const char*                                  prefix,
-  const uqBaseVectorRVClass         <P_V,P_M>& priorRv,
-  const uqBaseVectorProbDensityClass<P_V,P_M>& likelihoodFunction,
-        uqBaseVectorRVClass         <P_V,P_M>& postRv)
+  const char*                          prefix,
+  const uqBaseVectorRVClass <P_V,P_M>& priorRv,
+  const uqBaseVectorPdfClass<P_V,P_M>& likelihoodFunction,
+        uqBaseVectorRVClass <P_V,P_M>& postRv)
   :
-  m_env                (priorRv.env()),
-  m_prefix             ((std::string)(prefix) + "cal_"),
-  m_optionsDesc        (new po::options_description("UQ Calibration Problem")),
-  m_option_help        (m_prefix + "help"  ),
-  m_option_skipSolution(m_prefix + "skipSolution"),
+  m_env                   (priorRv.env()),
+  m_prefix                ((std::string)(prefix) + "cal_"),
+  m_optionsDesc           (new po::options_description("UQ Calibration Problem")),
+  m_option_help           (m_prefix + "help"           ),
+  m_option_computeSolution(m_prefix + "computeSolution"),
+  m_option_outputFileName (m_prefix + "outputFileName" ),
 #ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
-  m_option_solver      (m_prefix + "solver"),
+  m_option_solver         (m_prefix + "solver"),
 #endif
-  m_skipSolution       (UQ_CALIB_PROBLEM_SKIP_SOLUTION_ODV),
+  m_computeSolution       (UQ_CALIB_PROBLEM_COMPUTE_SOLUTION_ODV),
+  m_outputFileName        (UQ_CALIB_PROBLEM_OUTPUT_FILE_NAME_ODV),
 #ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
-  m_solverString       (UQ_CALIB_PROBLEM_SOLVER_ODV),
+  m_solverString          (UQ_CALIB_PROBLEM_SOLVER_ODV),
 #endif
-  m_priorRv            (priorRv),
+  m_priorRv               (priorRv),
   m_likelihoodFunction (likelihoodFunction),
-  m_postRv             (postRv),
-  m_solutionProbDensity(NULL),
-  m_solutionRealizer   (NULL),
-  m_mcSeqGenerator     (NULL),
-  m_chain              (NULL)
+  m_postRv                (postRv),
+  m_solutionPdf           (NULL),
+  m_solutionRealizer      (NULL),
+  m_solutionMdf           (NULL),
+  m_mcSeqGenerator        (NULL),
+  m_chain                 (NULL)
 {
   if (m_env.rank() == 0) std::cout << "Entering uqCalibProblemClass<P_V,P_M>::constructor()"
                                    << ": prefix = "              << m_prefix
@@ -138,10 +149,11 @@ uqCalibProblemClass<P_V,P_M>::~uqCalibProblemClass()
     m_chain->clear();
     delete m_chain;
   }
-  if (m_mcSeqGenerator     ) delete m_mcSeqGenerator;
-  if (m_solutionRealizer   ) delete m_solutionRealizer;
-  if (m_solutionProbDensity) delete m_solutionProbDensity;
-  if (m_optionsDesc        ) delete m_optionsDesc;
+  if (m_mcSeqGenerator  ) delete m_mcSeqGenerator;
+  if (m_solutionMdf     ) delete m_solutionMdf;
+  if (m_solutionRealizer) delete m_solutionRealizer;
+  if (m_solutionPdf     ) delete m_solutionPdf;
+  if (m_optionsDesc     ) delete m_optionsDesc;
 }
 
 template<class P_V,class P_M>
@@ -150,10 +162,11 @@ uqCalibProblemClass<P_V,P_M>::defineMyOptions(
   po::options_description& optionsDesc)
 {
   optionsDesc.add_options()
-    (m_option_help.c_str(),                                                                                      "produce help message for calibration problem")
-    (m_option_skipSolution.c_str(), po::value<bool       >()->default_value(UQ_CALIB_PROBLEM_SKIP_SOLUTION_ODV), "skip solution process"                       )
+    (m_option_help.c_str(),                                                                                            "produce help message for calibration problem")
+    (m_option_computeSolution.c_str(), po::value<bool       >()->default_value(UQ_CALIB_PROBLEM_COMPUTE_SOLUTION_ODV), "compute solution process"                    )
+    (m_option_outputFileName.c_str(),  po::value<std::string>()->default_value(UQ_CALIB_PROBLEM_OUTPUT_FILE_NAME_ODV), "name of output file"                         )
 #ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
-    (m_option_solver.c_str()      , po::value<std::string>()->default_value(UQ_CALIB_PROBLEM_SOLVER_ODV       ), "algorithm for calibration"                   )
+    (m_option_solver.c_str(),          po::value<std::string>()->default_value(UQ_CALIB_PROBLEM_SOLVER_ODV          ), "algorithm for calibration"                   )
 #endif
   ;
 
@@ -170,8 +183,12 @@ void
               << std::endl;
   }
 
-  if (m_env.allOptionsMap().count(m_option_skipSolution.c_str())) {
-    m_skipSolution = m_env.allOptionsMap()[m_option_skipSolution.c_str()].as<bool>();
+  if (m_env.allOptionsMap().count(m_option_computeSolution.c_str())) {
+    m_computeSolution = m_env.allOptionsMap()[m_option_computeSolution.c_str()].as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_outputFileName.c_str())) {
+    m_outputFileName = m_env.allOptionsMap()[m_option_outputFileName.c_str()].as<std::string>();
   }
 
 #ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
@@ -190,39 +207,85 @@ uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   const P_M& proposalCovMatrix,
   void*      transitionKernel)
 {
-  if (m_skipSolution) {
+  if (m_computeSolution == false) {
     if ((m_env.rank() == 0)) {
       std::cout << "In uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain()"
-                << ": skipping solution, as requested by user"
+                << ": computeping solution, as requested by user"
                 << std::endl;
     }
     return;
   }
 
-  if (m_solutionRealizer   ) delete m_solutionRealizer;
-  if (m_solutionProbDensity) delete m_solutionProbDensity;
-  if (m_mcSeqGenerator     ) delete m_mcSeqGenerator;
+  if (m_solutionMdf     ) delete m_solutionMdf;
+  if (m_solutionRealizer) delete m_solutionRealizer;
+  if (m_solutionPdf     ) delete m_solutionPdf;
+  if (m_mcSeqGenerator  ) delete m_mcSeqGenerator;
 
-  // Bayesian step
-  m_solutionProbDensity = new uqBayesianVectorProbDensityClass<P_V,P_M>(m_prefix.c_str(),
-                                                                        &m_priorRv.probDensity(),
-                                                                        &m_likelihoodFunction);
-  m_postRv.setProbDensity(*m_solutionProbDensity);
+  // Compute output pdf up to a multiplicative constant: Bayesian approach
+  m_solutionPdf = new uqBayesianVectorPdfClass<P_V,P_M>(m_prefix.c_str(),
+                                                       &m_priorRv.pdf(),
+                                                       &m_likelihoodFunction);
+  m_postRv.setPdf(*m_solutionPdf);
 
-  // Markov Chain step
+  // Compute output realizer: Markov Chain approach
+  m_chain = new uqSequenceOfVectorsClass<P_V,P_M>(m_postRv.imageSpace(),0,m_prefix+"chain");
   m_mcSeqGenerator = new uqMarkovChainSGClass<P_V,P_M>(m_prefix.c_str(),
                                                        m_postRv,
                                                        initialValues,
                                                        proposalCovMatrix,
                                                        NULL);
-  m_chain = new uqSequenceOfVectorsClass<P_V,P_M>(m_postRv.imageSpace(),0,m_prefix+"chain");
-  //m_chain = new uqArrayOfSequencesClass <P_V,P_M>(m_postRv.imageSpace(),0);
-
   m_mcSeqGenerator->generateSequence(*m_chain);
   m_solutionRealizer = new uqSequentialVectorRealizerClass<P_V,P_M>(m_prefix.c_str(),
                                                                    *m_chain);
   m_postRv.setRealizer(*m_solutionRealizer);
 
+  // Compute output mdf: uniform sampling approach
+  m_mdfGrids  = new uqArrayOfOneDUniformGridsClass<P_V,P_M>(m_postRv.imageSpace());
+  m_mdfValues = new uqArrayOfScalarSetsClass      <P_V,P_M>(m_postRv.imageSpace());
+  P_V* numIntervalsVec = m_postRv.imageSpace().newVector(250.);
+  m_chain->uniformlySampledMdf(*numIntervalsVec, // input
+                               *m_mdfGrids,      // output
+                               *m_mdfValues);    // output
+  delete numIntervalsVec;
+  m_solutionMdf = new uqSampledVectorMdfClass<P_V,P_M>(m_prefix.c_str(),
+                                                      *m_mdfGrids,
+                                                      *m_mdfValues);
+  m_postRv.setMdf(*m_solutionMdf);
+
+  if (m_outputFileName != UQ_CALIB_PROBLEM_FILENAME_FOR_NO_OUTPUT_FILE) {
+    // Write output file
+    if (m_env.rank() == 0) {
+      std::cout << "Opening output file '" << m_outputFileName
+                << "' for calibration problem with problem with prefix = " << m_prefix
+                << std::endl;
+    }
+
+    // Open file
+    std::ofstream* ofs = new std::ofstream(m_outputFileName.c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
+    if ((ofs            == NULL ) ||
+        (ofs->is_open() == false)) {
+      delete ofs;
+      ofs = new std::ofstream(m_outputFileName.c_str(), std::ofstream::out | std::ofstream::trunc);
+    }
+    UQ_FATAL_TEST_MACRO((ofs && ofs->is_open()) == false,
+                        m_env.rank(),
+                        "uqCalibProblem<P_V,P_M>::solveWithBayesMarkovChain()",
+                        "failed to open file");
+
+    m_postRv.mdf().printContents(m_prefix,*ofs);
+
+    // Close file
+    ofs->close();
+    if (m_env.rank() == 0) {
+      std::cout << "Closed output file '" << m_outputFileName
+                << "' for calibration problem with problem with prefix = " << m_prefix
+                << std::endl;
+    }
+  }
+  if (m_env.rank() == 0) {
+    std::cout << std::endl;
+  }
+  
   return;
 }
 
@@ -230,11 +293,12 @@ template <class P_V,class P_M>
 void
 uqCalibProblemClass<P_V,P_M>::print(std::ostream& os) const
 {
-  os << "\n" << m_option_skipSolution << " = " << m_skipSolution;
+  os << "\n" << m_option_computeSolution << " = " << m_computeSolution
+     << "\n" << m_option_outputFileName  << " = " << m_outputFileName
 #ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
-  os << "\n" << m_option_solver       << " = " << m_solverString;
+     << "\n" << m_option_solver          << " = " << m_solverString
 #endif
-  os << std::endl;
+     << std::endl;
 }
 
 template<class P_V,class P_M>

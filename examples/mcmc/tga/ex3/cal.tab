@@ -1,5 +1,5 @@
 #
-# Name[P_i] Min[P_i]  Max[P_i]  E[P_i]    V[P_i]    P_i^{(0)}  
+# Name[P_i] Min[P_i]  Max[P_i]  P_i^{(0)}  
 #
-A_param     2.40e+11  2.80e+11  0.        inf       2.57e+11 
-E_param     1.80e+05  2.20e+05  0.        inf       1.97e+05 
+A_param     2.40e+11  2.80e+11  2.57e+11 
+E_param     1.80e+05  2.20e+05  1.97e+05 

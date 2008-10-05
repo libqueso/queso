@@ -37,80 +37,84 @@ public:
   uqScalarSequenceClass(const uqEnvironmentClass& env, unsigned int sequenceSize);
  ~uqScalarSequenceClass();
 
-  const unsigned int sequenceSize      () const;
-        void         resizeSequence    (unsigned int newSequenceSize);
-        void         resetValues       (unsigned int initialPos, unsigned int numPos);
-        void         erasePositions    (unsigned int initialPos, unsigned int numPos);
-  const T&           operator[]        (unsigned int posId) const;
-        T&           operator[]        (unsigned int posId);
-        void         setGaussian       (const gsl_rng* rng, const T& mean, const T& stdDev);
-        void         setUniform        (const gsl_rng* rng, const T& a,    const T& b     );
-        void         uniformlySampleCdf(unsigned int               numIntervals,
-                                        T&                         minDomainValue,
-                                        T&                         maxDomainValue,
-                                        std::vector<T>&            cdfValues) const;
+  const unsigned int sequenceSize       () const;
+        void         resizeSequence     (unsigned int newSequenceSize);
+        void         resetValues        (unsigned int initialPos, unsigned int numPos);
+        void         erasePositions     (unsigned int initialPos, unsigned int numPos);
+  const T&           operator[]         (unsigned int posId) const;
+        T&           operator[]         (unsigned int posId);
+        void         setGaussian        (const gsl_rng* rng, const T& mean, const T& stdDev);
+        void         setUniform         (const gsl_rng* rng, const T& a,    const T& b     );
+        void         uniformlySampledMdf(unsigned int               numIntervals,
+                                         T&                         minDomainValue,
+                                         T&                         maxDomainValue,
+                                         std::vector<T>&            mdfValues) const;
+        void         uniformlySampledCdf(unsigned int               numIntervals,
+                                         T&                         minDomainValue,
+                                         T&                         maxDomainValue,
+                                         std::vector<T>&            cdfValues) const;
 
-        T            mean              (unsigned int               initialPos,
-                                        unsigned int               numPos) const;
-        T            sampleVariance    (unsigned int               initialPos,
-                                        unsigned int               numPos,
-                                        const T&                   meanValue) const;
-        T            populationVariance(unsigned int               initialPos,
-                                        unsigned int               numPos,
-                                        const T&                   meanValue) const;
-        T            autoCovariance    (unsigned int               initialPos,
-                                        unsigned int               numPos,
-                                        const T&                   meanValue,
-                                        unsigned int               lag) const;
-        T            autoCorrViaDef    (unsigned int               initialPos,
-                                        unsigned int               numPos,
-                                        unsigned int               lag) const;
-        void         autoCorrViaFft    (unsigned int               initialPos,
-                                        unsigned int               numPos,
-                                        unsigned int               maxLag,
-                                        std::vector<T>&            autoCorrs) const;
-        void         autoCorrViaFft    (unsigned int               initialPos,
-                                        unsigned int               numPos,
-                                        unsigned int               numSum,
-                                        T&                         autoCorrsSum) const;
-        T            bmm               (unsigned int               initialPos,
-                                        unsigned int               batchLength) const;
-        void         psd               (unsigned int               initialPos,
-                                        unsigned int               numBlocks,
-                                        double                     hopSizeRatio,
-                                        std::vector<double>&       psdSequence) const;
-        T            geweke            (unsigned int               initialPos,
-                                        double                     ratioNa,
-                                        double                     ratioNb) const;
-        void         minMax            (unsigned int               initialPos,
-                                        T&                         minValue,
-                                        T&                         maxValue) const;
-        void         histogram         (unsigned int               initialPos,
-                                        const T&                   minHorizontalValue,
-                                        const T&                   maxHorizontalValue,
-                                        std::vector<T>&            centers,
-                                        std::vector<unsigned int>& bins) const;
-        void         sort              (unsigned int               initialPos,
-                                        uqScalarSequenceClass<T>&  sortedSequence) const;
-        void         sort              ();
-        T            interQuantileRange(unsigned int               initialPos) const;
-        T            scaleForKDE       (unsigned int               initialPos,
-                                        const T&                   iqrValue) const;
-        double       gaussianKDE       (T                          evaluationParam) const;
-        void         gaussianKDE       (unsigned int               initialPos,
-                                        double                     scaleValue,
-                                        const std::vector<T>&      evaluationParams,
-                                        std::vector<double>&       densityValues) const;
+        T            mean               (unsigned int               initialPos,
+                                         unsigned int               numPos) const;
+        T            sampleVariance     (unsigned int               initialPos,
+                                         unsigned int               numPos,
+                                         const T&                   meanValue) const;
+        T            populationVariance (unsigned int               initialPos,
+                                         unsigned int               numPos,
+                                         const T&                   meanValue) const;
+        T            autoCovariance     (unsigned int               initialPos,
+                                         unsigned int               numPos,
+                                         const T&                   meanValue,
+                                         unsigned int               lag) const;
+        T            autoCorrViaDef     (unsigned int               initialPos,
+                                         unsigned int               numPos,
+                                         unsigned int               lag) const;
+        void         autoCorrViaFft     (unsigned int               initialPos,
+                                         unsigned int               numPos,
+                                         unsigned int               maxLag,
+                                         std::vector<T>&            autoCorrs) const;
+        void         autoCorrViaFft     (unsigned int               initialPos,
+                                         unsigned int               numPos,
+                                         unsigned int               numSum,
+                                         T&                         autoCorrsSum) const;
+        T            bmm                (unsigned int               initialPos,
+                                         unsigned int               batchLength) const;
+        void         psd                (unsigned int               initialPos,
+                                         unsigned int               numBlocks,
+                                         double                     hopSizeRatio,
+                                         std::vector<double>&       psdSequence) const;
+        T            geweke             (unsigned int               initialPos,
+                                         double                     ratioNa,
+                                         double                     ratioNb) const;
+        void         minMax             (unsigned int               initialPos,
+                                         T&                         minValue,
+                                         T&                         maxValue) const;
+        void         histogram          (unsigned int               initialPos,
+                                         const T&                   minHorizontalValue,
+                                         const T&                   maxHorizontalValue,
+                                         std::vector<T>&            centers,
+                                         std::vector<unsigned int>& bins) const;
+        void         sort               (unsigned int               initialPos,
+                                         uqScalarSequenceClass<T>&  sortedSequence) const;
+        void         sort               ();
+        T            interQuantileRange (unsigned int               initialPos) const;
+        T            scaleForKDE        (unsigned int               initialPos,
+                                         const T&                   iqrValue) const;
+        double       gaussianKDE        (T                          evaluationParam) const;
+        void         gaussianKDE        (unsigned int               initialPos,
+                                         double                     scaleValue,
+                                         const std::vector<T>&      evaluationParams,
+                                         std::vector<double>&       densityValues) const;
 
 private:
-        void         extractScalarSeq  (unsigned int               initialPos,
-                                        unsigned int               spacing,
-                                        unsigned int               numPos,
-                                        uqScalarSequenceClass<T>&  scalarSeq) const;
-        void         extractRawData    (unsigned int               initialPos,
-                                        unsigned int               spacing,
-                                        unsigned int               numPos,
-                                        std::vector<double>&       rawData) const;
+        void         extractScalarSeq   (unsigned int               initialPos,
+                                         unsigned int               spacing,
+                                         unsigned int               numPos,
+                                         uqScalarSequenceClass<T>&  scalarSeq) const;
+        void         extractRawData     (unsigned int               initialPos,
+                                         unsigned int               spacing,
+                                         unsigned int               numPos,
+                                         std::vector<double>&       rawData) const;
 
   const uqEnvironmentClass& m_env;
   std::vector<T>            m_seq;
@@ -278,7 +282,47 @@ uqScalarSequenceClass<T>::setUniform(const gsl_rng* rng, const T& a, const T& b)
 
 template <class T>
 void
-uqScalarSequenceClass<T>::uniformlySampleCdf(
+uqScalarSequenceClass<T>::uniformlySampledMdf(
+  unsigned int    numEvaluationPoints,
+  T&              minDomainValue,
+  T&              maxDomainValue,
+  std::vector<T>& mdfValues) const
+{
+  T                         tmpMinValue;
+  T                         tmpMaxValue;
+  std::vector<T>            centers(numEvaluationPoints,0.);
+  std::vector<unsigned int> bins   (numEvaluationPoints,0.);
+
+  minMax(0, // initialPos
+         tmpMinValue,
+         tmpMaxValue);
+  histogram(0, // initialPos,
+            tmpMinValue,
+            tmpMaxValue,
+            centers,
+            bins);
+
+  minDomainValue = centers[0];
+  maxDomainValue = centers[centers.size()-1];
+  T binSize = (maxDomainValue - minDomainValue)/((double)(centers.size() - 1));
+
+  unsigned int totalCount = 0;
+  for (unsigned int i = 0; i < numEvaluationPoints; ++i) {
+    totalCount += bins[i];
+  }
+
+  mdfValues.clear();
+  mdfValues.resize(numEvaluationPoints);
+  for (unsigned int i = 0; i < numEvaluationPoints; ++i) {
+    mdfValues[i] = ((T) bins[i])/((T) totalCount)/binSize;
+  }
+
+  return;
+}
+
+template <class T>
+void
+uqScalarSequenceClass<T>::uniformlySampledCdf(
   unsigned int    numEvaluationPoints,
   T&              minDomainValue,
   T&              maxDomainValue,

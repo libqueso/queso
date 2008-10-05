@@ -261,16 +261,14 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
   uqAsciiTableClass<P_V,P_M> calTable(env,
                                       2,    // # of rows
-                                      5,    // # of cols after 'parameter name': min + max + mean + std + initial value for Markov chain
+                                      3,    // # of cols after 'parameter name': min + max + initial value for Markov chain
                                       NULL, // All extra columns are of 'double' type
                                       "cal.tab");
 
-  const EpetraExt::DistArray<std::string>& calFirstColumn = calTable.stringColumn(0);
-  const P_V&                               minValues      = calTable.doubleColumn(1);
-  const P_V&                               maxValues      = calTable.doubleColumn(2);
-  const P_V&                               expectedValues = calTable.doubleColumn(3);
-  const P_V&                               varianceValues = calTable.doubleColumn(4);
-  const P_V&                               initialValues  = calTable.doubleColumn(5);
+  const EpetraExt::DistArray<std::string>& paramNames = calTable.stringColumn(0);
+  P_V                                      minValues    (calTable.doubleColumn(1));
+  P_V                                      maxValues    (calTable.doubleColumn(2));
+  P_V                                      initialValues(calTable.doubleColumn(3));
 
   //******************************************************
   // Read Ascii file with important information on the propagation problem.
@@ -281,7 +279,7 @@ uqAppl(const uqEnvironmentClass& env)
                                       NULL, // All extra columns are of 'double' type
                                       "pro.tab");
 
-  const EpetraExt::DistArray<std::string>& proFirstColumn = proTable.stringColumn(0);
+  const EpetraExt::DistArray<std::string>& qoiNames = proTable.stringColumn(0);
 
   //******************************************************
   // Usually, spaces are the same throughout different problems.
@@ -290,24 +288,21 @@ uqAppl(const uqEnvironmentClass& env)
   uqVectorSpaceClass<P_V,P_M> paramSpace(env,
                                          "param_", // Extra prefix before the default "space_" prefix
                                          calTable.numRows(),
-                                         &calFirstColumn);
+                                         &paramNames);
   uqVectorSpaceClass<Q_V,Q_M> qoiSpace  (env,
-                                         "qoi_",  // Extra prefix before the default "space_" prefix
+                                         "qoi_",   // Extra prefix before the default "space_" prefix
                                          proTable.numRows(),
-                                         &proFirstColumn);
-
+                                         &qoiNames);
 
   //******************************************************
   // Step 2 of 3: deal with the calibration problem
   //******************************************************
 
   // Prior vector rv
-  uqGaussianVectorRVClass<P_V,P_M> calibPriorRv("cal_prior_", // Extra prefix before the default "rv_" prefix
-                                                paramSpace,
-                                                minValues,
-                                                maxValues,
-                                                expectedValues,
-                                                varianceValues);
+  uqUniformVectorRVClass<P_V,P_M> calibPriorRv("cal_prior_", // Extra prefix before the default "rv_" prefix
+                                               paramSpace,
+                                               minValues,
+                                               maxValues);
 
   // Likelihood function object: -2*ln[likelihood]
   calibLikelihoodRoutine_DataType<P_V,P_M> calibLikelihoodRoutine_Data;
@@ -315,18 +310,15 @@ uqAppl(const uqEnvironmentClass& env)
   calibLikelihoodRoutine_Data.variance1 = variance1;
   calibLikelihoodRoutine_Data.Te1       = &Te1; // temperatures
   calibLikelihoodRoutine_Data.Me1       = &Me1; // relative masses
-  uqGenericVectorProbDensityClass<P_V,P_M> calibLikelihoodFunctionObj("cal_prior_like_", // Extra prefix before the default "genpd_" prefix
-                                                                      paramSpace,
-                                                                      calibLikelihoodRoutine<P_V,P_M>,
-                                                                      (void *) &calibLikelihoodRoutine_Data,
-                                                                      true); // the routine computes [-2.*ln(Likelihood)]
+  uqGenericVectorPdfClass<P_V,P_M> calibLikelihoodFunctionObj("cal_prior_like_", // Extra prefix before the default "genpd_" prefix
+                                                              paramSpace,
+                                                              calibLikelihoodRoutine<P_V,P_M>,
+                                                              (void *) &calibLikelihoodRoutine_Data,
+                                                              true); // the routine computes [-2.*ln(Likelihood)]
 
   // Posterior vector rv
   uqGenericVectorRVClass<P_V,P_M> calibPostRv("cal_post_", // Extra prefix before the default "rv_" prefix
-                                              paramSpace,
-                                              NULL,        // pdf:      internally set by the solution process
-                                              NULL,        // realizer: internally set by the solution process
-                                              NULL);       // cdf:      internally set by the solution process
+                                              paramSpace);
 
   // Calibration problem
   uqCalibProblemClass<P_V,P_M> calibProblem("", // No extra prefix before the default "cal_" prefix
@@ -334,8 +326,8 @@ uqAppl(const uqEnvironmentClass& env)
                                             calibLikelihoodFunctionObj,
                                             calibPostRv);
 
-  // Solve the calibration problem
-  P_M* calibProposalCovMatrix = calibPostRv.imageSpace().newGaussianMatrix(calibPriorRv.probDensity().domainVarianceValues(),
+  // Solve the calibration problem: set 'pdf' and 'realizer' of 'calibPostRv'
+  P_M* calibProposalCovMatrix = calibPostRv.imageSpace().newGaussianMatrix(calibPriorRv.pdf().domainVarianceValues(),
                                                                            initialValues);
   calibProblem.solveWithBayesMarkovChain(initialValues,
                                         *calibProposalCovMatrix,
@@ -351,18 +343,15 @@ uqAppl(const uqEnvironmentClass& env)
   propagQoiRoutine_DataType<P_V,P_M,Q_V,Q_M> propagQoiRoutine_Data;
   propagQoiRoutine_Data.beta1         = beta1;
   propagQoiRoutine_Data.criticalMass1 = criticalMass1;
-  uqVectorFunctionClass<P_V,P_M,Q_V,Q_M> propagQoiFunctionObj("pro_qoi_", // Extra prefix before the default "func_" prefix
-                                                              paramSpace,
-                                                              qoiSpace,
-                                                              propagQoiRoutine<P_V,P_M,Q_V,Q_M>,
-                                                              (void *) &propagQoiRoutine_Data);
+  uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M> propagQoiFunctionObj("pro_qoi_", // Extra prefix before the default "func_" prefix
+                                                                     paramSpace,
+                                                                     qoiSpace,
+                                                                     propagQoiRoutine<P_V,P_M,Q_V,Q_M>,
+                                                                     (void *) &propagQoiRoutine_Data);
 
   // Qoi vector rv
   uqGenericVectorRVClass<Q_V,Q_M> propagQoiRv("pro_qoi_", // Extra prefix before the default "rv_" prefix
-                                              qoiSpace,
-                                              NULL,       // pdf:      internally set by the solution process
-                                              NULL,       // realizer: internally set by the solution process
-                                              NULL);      // cdf:      internally set by the solution process
+                                              qoiSpace);
 
   // Propagation problem
   uqPropagProblemClass<P_V,P_M,Q_V,Q_M> propagProblem("",          // No extra prefix before the default "pro_" prefix
@@ -370,8 +359,8 @@ uqAppl(const uqEnvironmentClass& env)
                                                       propagQoiFunctionObj,
                                                       propagQoiRv);
 
-  // Solve the propagation problem
-  propagProblem.solveWithMonteCarloKde(); // no extra user entities needed for Monte Carlo algorithm
+  // Solve the propagation problem: set 'realizer' and 'cdf' of 'propagQoiRv'
+  propagProblem.solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
 
   //******************************************************
   // Release memory before leaving routine.

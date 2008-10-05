@@ -33,221 +33,174 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
 
   P_V valuesOf1stPosition(m_initialPosition);
   int iRC = UQ_OK_RC;
-#if 0
-  unsigned int chainSumId = 0;
-  std::vector<const P_V*> chainSum(0);//,NULL);
-  if (m_avgChainCompute.size() > 0) {
-    // It is expected that all participating chains will have the same size.
-    // The code will check this assumption.
-    chainSum.resize(m_chainSizes[0],NULL);
+
+  workingChain.setName(m_prefix + "chain");
+
+  if (m_chainType == UQ_MAC_SG_WHITE_NOISE_CHAIN_TYPE) {
+    //****************************************************
+    // Just generate white noise
+    //****************************************************
+    generateWhiteNoiseChain(m_chainSize,
+                            workingChain);
   }
-#endif
-  for (unsigned int chainId = 0; chainId < 1/*m_chainSizes.size()*/; ++chainId) { // FIXME: make a definitive change
-    char tmpChainId[10];
-    sprintf(tmpChainId,"%d",chainId);
-    //std::string prefixName = m_prefix; // + "c" + tmpChainId + "_"; FIXME: make a definitive change
-    workingChain.setName(m_prefix + "chain");
+  else if (m_chainType == UQ_MAC_SG_UNIFORM_CHAIN_TYPE) {
+    //****************************************************
+    // Just generate uniform    
+    //****************************************************
+    generateUniformChain(m_chainSize,
+                         workingChain);
+  }
+  else {
+    //****************************************************
+    // Initialize m_lowerCholProposalCovMatrices[0]
+    // Initialize m_proposalCovMatrices[0]
+    //****************************************************
+    iRC = prepareForNextChain(proposalCovMatrix);
+    UQ_FATAL_RC_MACRO(iRC,
+                      m_env.rank(),
+                      "uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences()",
+                      "improper prepareForNextChain() return");
 
-    if (m_chainType == UQ_MAC_SG_WHITE_NOISE_CHAIN_TYPE) {
-      //****************************************************
-      // Just generate white noise
-      //****************************************************
-      generateWhiteNoiseChain(m_chainSizes[chainId],
-                              workingChain);
-    }
-    else if (m_chainType == UQ_MAC_SG_UNIFORM_CHAIN_TYPE) {
-      //****************************************************
-      // Just generate uniform    
-      //****************************************************
-      generateUniformChain(m_chainSizes[chainId],
-                           workingChain);
-    }
-    else {
-      //****************************************************
-      // Initialize variables before chain loop
-      //****************************************************
-      if (chainId > 0) {
-        workingChain.getPositionValues(workingChain.sequenceSize()-1,valuesOf1stPosition);
-        resetChainAndRelatedInfo();
-      }
+    //****************************************************
+    // Generate chain
+    //****************************************************
+    intGenerateSequence(valuesOf1stPosition,
+                        workingChain,
+                        m_chainSize);
+  }
 
-      //****************************************************
-      // Initialize m_lowerCholProposalCovMatrices[0]
-      // Initialize m_proposalCovMatrices[0]
-      //****************************************************
-      iRC = prepareForNextChain(proposalCovMatrix);
-      UQ_FATAL_RC_MACRO(iRC,
+  //****************************************************
+  // Open file      
+  //****************************************************
+  std::ofstream* ofs = NULL;
+  if (m_chainOutputFileName == UQ_MAC_SG_FILENAME_FOR_NO_OUTPUT_FILE) {
+    if (m_env.rank() == 0) {
+      std::cout << "No output file opened for chain " << workingChain.name()
+                << std::endl;
+    }
+  }
+  else {
+    if (m_env.rank() == 0) {
+      std::cout << "Opening output file '"  << m_chainOutputFileName
+                << "' for chain " << workingChain.name()
+                << std::endl;
+    }
+
+    // Open file
+    ofs = new std::ofstream(m_chainOutputFileName.c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
+    if ((ofs            == NULL ) ||
+        (ofs->is_open() == false)) {
+      delete ofs;
+      ofs = new std::ofstream(m_chainOutputFileName.c_str(), std::ofstream::out | std::ofstream::trunc);
+    }
+
+    UQ_FATAL_TEST_MACRO((ofs && ofs->is_open()) == false,
                         m_env.rank(),
                         "uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences()",
-                        "improper prepareForNextChain() return");
-
-      //****************************************************
-      // Generate chain
-      //****************************************************
-      intGenerateSequence(valuesOf1stPosition,
-                          workingChain,
-                          m_chainSizes[chainId]);
-    }
-
-    //****************************************************
-    // Open file      
-    //****************************************************
-    std::ofstream* ofs = NULL;
-    if (m_chainOutputFileNames[chainId] == UQ_MAC_SG_FILENAME_FOR_NO_OUTPUT_FILE) {
-      if (m_env.rank() == 0) {
-        std::cout << "No output file opened for chain loop id = " << chainId
-                  << std::endl;
-      }
-    }
-    else {
-      if (m_env.rank() == 0) {
-        std::cout << "Opening output file '"  << m_chainOutputFileNames[chainId]
-                  << "' for chain loop id = " << chainId
-                  << " ..."
-                  << std::endl;
-      }
-
-      // Open file
-      ofs = new std::ofstream(m_chainOutputFileNames[chainId].c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
-      if ((ofs            == NULL ) ||
-          (ofs->is_open() == false)) {
-        delete ofs;
-        ofs = new std::ofstream(m_chainOutputFileNames[chainId].c_str(), std::ofstream::out | std::ofstream::trunc);
-      }
-
-      UQ_FATAL_TEST_MACRO((ofs && ofs->is_open()) == false,
-                          m_env.rank(),
-                          "uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences()",
-                          "failed to open file");
-    }
+                        "failed to open file");
+  }
   
-    //****************************************************
-    // Eventually:
-    // --> write chain
-    // --> compute statistics on it
-    //****************************************************
-    if (m_chainWrite && ofs) {
-      workingChain.printContents(*ofs);
+  //****************************************************
+  // Eventually:
+  // --> write chain
+  // --> compute statistics on it
+  //****************************************************
+  if (m_chainWrite && ofs) {
+    workingChain.printContents(*ofs);
 
-      // Write likelihoodValues and alphaValues, if they were requested by user
-      iRC = writeInfo(workingChain,
-                      *ofs);
-      UQ_FATAL_RC_MACRO(iRC,
-                        m_env.rank(),
-                        "uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences()",
-                        "improper writeInfo() return");
+    // Write likelihoodValues and alphaValues, if they were requested by user
+    iRC = writeInfo(workingChain,
+                    *ofs);
+    UQ_FATAL_RC_MACRO(iRC,
+                      m_env.rank(),
+                      "uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences()",
+                      "improper writeInfo() return");
+  }
+
+  if (m_chainComputeStats) {
+    workingChain.computeStatistics(*m_chainStatisticalOptions,
+                                   ofs);
+  }
+
+  //****************************************************
+  // Eventually:
+  // --> generate an unique chain
+  // --> write it
+  // --> compute statistics on it
+  //****************************************************
+  if (m_uniqueChainGenerate) {
+    // Select only the unique positions
+    workingChain.select(m_idsOfUniquePositions);
+    //chainVectorPositionIteratorTypedef positionIterator = m_uniqueChain1.begin();
+    //std::advance(positionIterator,uniquePos);
+    //m_uniqueChain1.erase(positionIterator,m_uniqueChain1.end());
+    //UQ_FATAL_TEST_MACRO((uniquePos != m_uniqueChain1.size()),
+    //                    m_env.rank(),
+    //                    "uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences()",
+    //                    "uniquePos != m_uniqueChain1.size()");
+
+    // Write unique chain
+    workingChain.setName(m_prefix + "uniqueChain");
+    if (m_uniqueChainWrite && ofs) {
+      workingChain.printContents(*ofs);
     }
 
-    if (m_chainComputeStats) {
-      workingChain.computeStatistics(*m_chainStatisticalOptions,
+    // Compute statistics
+    if (m_uniqueChainComputeStats) {
+      workingChain.computeStatistics(*m_uniqueChainStatisticalOptions,
                                      ofs);
     }
+  }
 
-    //****************************************************
-    // Eventually:
-    // --> generate an unique chain
-    // --> write it
-    // --> compute statistics on it
-    //****************************************************
-    if (m_uniqueChainGenerate) {
-      // Select only the unique positions
-      workingChain.select(m_idsOfUniquePositions);
-      //chainVectorPositionIteratorTypedef positionIterator = m_uniqueChain1.begin();
-      //std::advance(positionIterator,uniquePos);
-      //m_uniqueChain1.erase(positionIterator,m_uniqueChain1.end());
-      //UQ_FATAL_TEST_MACRO((uniquePos != m_uniqueChain1.size()),
-      //                    m_env.rank(),
-      //                    "uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences()",
-      //                    "uniquePos != m_uniqueChain1.size()");
-
-      // Write unique chain
-      workingChain.setName(m_prefix + "uniqueChain");
-      if (m_uniqueChainWrite && ofs) {
-        workingChain.printContents(*ofs);
-      }
-
-      // Compute statistics
-      if (m_uniqueChainComputeStats) {
-        workingChain.computeStatistics(*m_uniqueChainStatisticalOptions,
-                                       ofs);
-      }
+  //****************************************************
+  // Eventually:
+  // --> filter the (maybe unique) chain
+  // --> write it
+  // --> compute statistics on it
+  //****************************************************
+  if (m_filteredChainGenerate) {
+    // Compute filter parameters
+    unsigned int filterInitialPos = (unsigned int) (m_filteredChainDiscardedPortion * (double) workingChain.sequenceSize());
+    unsigned int filterSpacing    = m_filteredChainLag;
+    if (filterSpacing == 0) {
+      workingChain.computeFilterParams(*m_filteredChainStatisticalOptions,
+                                       ofs,
+                                       filterInitialPos,
+                                       filterSpacing);
     }
 
-    //****************************************************
-    // Eventually:
-    // --> filter the (maybe unique) chain
-    // --> write it
-    // --> compute statistics on it
-    //****************************************************
-    if (m_filteredChainGenerate) {
-      // Compute filter parameters
-      unsigned int filterInitialPos = (unsigned int) (m_filteredChainDiscardedPortion * (double) workingChain.sequenceSize());
-      unsigned int filterSpacing    = m_filteredChainLag;
-      if (filterSpacing == 0) {
-        workingChain.computeFilterParams(*m_filteredChainStatisticalOptions,
-                                         ofs,
-                                         filterInitialPos,
-                                         filterSpacing);
-      }
+    // Filter positions from the converged portion of the chain
+    workingChain.filter(filterInitialPos,
+                        filterSpacing);
 
-      // Filter positions from the converged portion of the chain
-      workingChain.filter(filterInitialPos,
-                          filterSpacing);
-
-      // Write filtered chain
-      workingChain.setName(m_prefix + "filteredChain");
-      if (m_filteredChainWrite && ofs) {
-        workingChain.printContents(*ofs);
-      }
-
-      // Compute statistics
-      if (m_filteredChainComputeStats) {
-        workingChain.computeStatistics(*m_filteredChainStatisticalOptions,
-                                       ofs);
-      }
+    // Write filtered chain
+    workingChain.setName(m_prefix + "filteredChain");
+    if (m_filteredChainWrite && ofs) {
+      workingChain.printContents(*ofs);
     }
 
-    //****************************************************
-    // Eventually:
-    // --> compute an average chain
-    // --> write it
-    // --> compute statistics on it
-    //****************************************************
-#if 0
-    if (m_avgChainCompute.size() > chainSumId) {
-      // Update workingChainSum
-
-      // Check if it is time to compute an average
-      if ((chainId+1) == m_avgChainCompute[chainSumId]) {
-        // Compute the average
-
-        // Write the computed average
-        
-        // Compute statistics on the average
-
-        // Prepare for eventual next chain average
-        chainSumId++;
-      }
+    // Compute statistics
+    if (m_filteredChainComputeStats) {
+      workingChain.computeStatistics(*m_filteredChainStatisticalOptions,
+                                     ofs);
     }
-#endif
+  }
 
-    //****************************************************
-    // Close file      
-    //****************************************************
-    if (ofs) {
-      // Close file
-      ofs->close();
+  //****************************************************
+  // Close file      
+  //****************************************************
+  if (ofs) {
+    // Close file
+    ofs->close();
 
-      if (m_env.rank() == 0) {
-        std::cout << "Closed output file '"   << m_chainOutputFileNames[chainId]
-                  << "' for chain loop id = " << chainId
-                  << " ..."
-                  << std::endl;
-      }
-    }
     if (m_env.rank() == 0) {
-      std::cout << std::endl;
+      std::cout << "Closed output file '"   << m_chainOutputFileName
+                << "' for chain " << workingChain.name()
+                << std::endl;
     }
+  }
+  if (m_env.rank() == 0) {
+    std::cout << std::endl;
   }
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
@@ -377,13 +330,13 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
   double amRunTime        = 0;
 
   iRC = gettimeofday(&timevalChain, NULL);
-  bool outOfDomainBounds = m_targetDensity.outOfDomainBounds(valuesOf1stPosition);
+  bool outOfDomainBounds = m_targetPdf.outOfDomainBounds(valuesOf1stPosition);
   UQ_FATAL_TEST_MACRO(outOfDomainBounds,
                       m_env.rank(),
                       "uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()",
                       "initial position should not be out of bound");
   if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalTargetD, NULL);
-  double logTarget = -0.5 * m_targetDensity.minus2LnDensity(valuesOf1stPosition);
+  double logTarget = -0.5 * m_targetPdf.minus2LnDensity(valuesOf1stPosition);
   if (m_chainMeasureRunTimes) targetDRunTime += uqMiscGetEllapsedSeconds(&timevalTargetD);
   uqMarkovChainPositionClass<P_V> currentPosition(m_env,
                                             valuesOf1stPosition,
@@ -429,14 +382,14 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
     tmpVecValues = currentPosition.vecValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
     if (m_chainMeasureRunTimes) candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
 
-    outOfDomainBounds = m_targetDensity.outOfDomainBounds(tmpVecValues);
+    outOfDomainBounds = m_targetPdf.outOfDomainBounds(tmpVecValues);
     if (outOfDomainBounds) {
       m_numOutOfBounds++;
       logTarget = -INFINITY;
     }
     else {
       if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalTargetD, NULL);
-      logTarget = -0.5 * m_targetDensity.minus2LnDensity(tmpVecValues);
+      logTarget = -0.5 * m_targetPdf.minus2LnDensity(tmpVecValues);
       if (m_chainMeasureRunTimes) targetDRunTime += uqMiscGetEllapsedSeconds(&timevalTargetD);
     }
     currentCandidate.set(tmpVecValues,
@@ -513,13 +466,13 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
         tmpVecValues = currentPosition.vecValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
         if (m_chainMeasureRunTimes) candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
 
-        outOfDomainBounds = m_targetDensity.outOfDomainBounds(tmpVecValues);
+        outOfDomainBounds = m_targetPdf.outOfDomainBounds(tmpVecValues);
         if (outOfDomainBounds) {
           logTarget = -INFINITY;
         }
         else {
           if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalTargetD, NULL);
-          logTarget = -0.5 * m_targetDensity.minus2LnDensity(tmpVecValues);
+          logTarget = -0.5 * m_targetPdf.minus2LnDensity(tmpVecValues);
           if (m_chainMeasureRunTimes) targetDRunTime += uqMiscGetEllapsedSeconds(&timevalTargetD);
         }
         currentCandidate.set(tmpVecValues,
@@ -649,14 +602,14 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
         bool tmpCholIsPositiveDefinite = false;
         P_M tmpChol(*m_lastAdaptedCovMatrix);
         //if (m_env.rank() == 0) {
-        //  std::cout << "DRAM: chainId = " << chainId
+        //  std::cout << "DRAM"
         //            << ", positionId = "  << positionId
         //            << ": 'am' calling first tmpChol.chol()"
         //            << std::endl;
         //}
         iRC = tmpChol.chol();
         //if (m_env.rank() == 0) {
-        //  std::cout << "DRAM: chainId = " << chainId
+        //  std::cout << "DRAM"
         //            << ", positionId = "  << positionId
         //            << ": 'am' got first tmpChol.chol() with iRC = " << iRC
         //            << std::endl;
@@ -671,14 +624,14 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
           tmpChol = *m_lastAdaptedCovMatrix + *tmpDiag;
           delete tmpDiag;
           //if (m_env.rank() == 0) {
-          //  std::cout << "DRAM: chainId = " << chainId
+          //  std::cout << "DRAM"
           //            << ", positionId = "  << positionId
           //            << ": 'am' calling second tmpChol.chol()"
           //            << std::endl;
           //}
           iRC = tmpChol.chol();
           //if (m_env.rank() == 0) {
-          //  std::cout << "DRAM: chainId = " << chainId
+          //  std::cout << "DRAM"
           //            << ", positionId = "  << positionId
           //            << ": 'am' got second tmpChol.chol() with iRC = " << iRC
           //            << std::endl;

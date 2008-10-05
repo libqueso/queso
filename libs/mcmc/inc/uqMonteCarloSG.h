@@ -40,10 +40,10 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 class uqMonteCarloSGClass
 {
 public:
-  uqMonteCarloSGClass(const char*                                   prefix,         /*! Prefix.           */
-                      const uqBaseVectorRVClass  <P_V,P_M>&         paramRv,        /*! The parameter rv. */
-                      const uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunctionObj, /*! The qoi function. */
-                            uqBaseVectorRVClass  <Q_V,Q_M>&         qoiRv);         /*! The qoi rv.       */
+  uqMonteCarloSGClass(const char*                                       prefix,         /*! Prefix.           */
+                      const uqBaseVectorRVClass  <P_V,P_M>&             paramRv,        /*! The parameter rv. */
+                      const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunctionObj, /*! The qoi function. */
+                            uqBaseVectorRVClass  <Q_V,Q_M>&             qoiRv);         /*! The qoi rv.       */
  ~uqMonteCarloSGClass();
 
   void generateSequence   (uqBaseVectorSequenceClass<P_V,P_M>& workingSeq);
@@ -61,13 +61,13 @@ private:
                                  uqBaseVectorSequenceClass<P_V,P_M>& workingSeq,
                                  unsigned int                        seqSize);
 
-  const uqEnvironmentClass&                     m_env;
-        std::string                             m_prefix;
-  const uqBaseVectorRVClass  <P_V,P_M>&         m_paramRv;
-  const uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>& m_qoiFunctionObj;
-  const uqBaseVectorRVClass  <Q_V,Q_M>&         m_qoiRv;
-  const uqVectorSpaceClass   <P_V,P_M>&         m_paramSpace;
-  const uqVectorSpaceClass   <Q_V,Q_M>&         m_qoiSpace;
+  const uqEnvironmentClass&                         m_env;
+        std::string                                 m_prefix;
+  const uqBaseVectorRVClass      <P_V,P_M>&         m_paramRv;
+  const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& m_qoiFunctionObj;
+  const uqBaseVectorRVClass      <Q_V,Q_M>&         m_qoiRv;
+  const uqVectorSpaceClass       <P_V,P_M>&         m_paramSpace;
+  const uqVectorSpaceClass       <Q_V,Q_M>&         m_qoiSpace;
 
   po::options_description*        m_optionsDesc;
   std::string                     m_option_help;
@@ -93,10 +93,10 @@ std::ostream& operator<<(std::ostream& os, const uqMonteCarloSGClass<P_V,P_M,Q_V
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::uqMonteCarloSGClass(
-  const char*                                   prefix,
-  const uqBaseVectorRVClass  <P_V,P_M>&         paramRv,
-  const uqVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunctionObj,
-        uqBaseVectorRVClass  <Q_V,Q_M>&         qoiRv)
+  const char*                                       prefix,
+  const uqBaseVectorRVClass      <P_V,P_M>&         paramRv,
+  const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunctionObj,
+        uqBaseVectorRVClass      <Q_V,Q_M>&         qoiRv)
   :
   m_env                   (paramRv.env()),
   m_prefix                ((std::string)(prefix) + "mc_"),

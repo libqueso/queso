@@ -42,8 +42,11 @@ public:
         void         setPositionValues (unsigned int posId, const V& vec);
         void         setGaussian       (const gsl_rng* rng, const V& meanVec, const V& stdDevVec);
         void         setUniform        (const gsl_rng* rng, const V& aVec,    const V& bVec     );
-        void         uniformlySampleCdfs(const V&                             numEvaluationPointsVec,
-                                         uqArrayOfOneDUniformGridsClass<V,M>& oneDGrids,
+        void         uniformlySampledMdf(const V&                             numEvaluationPointsVec,
+                                         uqArrayOfOneDUniformGridsClass<V,M>& mdfGrids,
+                                         uqArrayOfScalarSetsClass      <V,M>& mdfValues) const;
+        void         uniformlySampledCdf(const V&                             numEvaluationPointsVec,
+                                         uqArrayOfOneDUniformGridsClass<V,M>& cdfGrids,
                                          uqArrayOfScalarSetsClass      <V,M>& cdfValues) const;
 
         void         mean              (unsigned int             initialPos,
@@ -287,9 +290,9 @@ uqArrayOfSequencesClass<V,M>::setUniform(const gsl_rng* rng, const V& aVec, cons
 
 template <class V, class M>
 void
-uqArrayOfSequencesClass<V,M>::uniformlySampleCdfs(
+uqArrayOfSequencesClass<V,M>::uniformlySampledCdf(
   const V&                             numEvaluationPointsVec,
-  uqArrayOfOneDUniformGridsClass<V,M>& oneDGrids,
+  uqArrayOfOneDUniformGridsClass<V,M>& cdfGrids,
   uqArrayOfScalarSetsClass      <V,M>& cdfValues) const
 {
   uqArrayOfSequencesClass<V,M>* tmp = const_cast<uqArrayOfSequencesClass<V,M>*>(this);
@@ -300,15 +303,15 @@ uqArrayOfSequencesClass<V,M>::uniformlySampleCdfs(
 
     unsigned int numEvaluationPoints = (unsigned int) numEvaluationPointsVec[i];
     std::vector<double> aCdf(0);
-    seq.uniformlySampleCdf(numEvaluationPoints,
-                           minCdfValues[i],
-                           maxCdfValues[i],
-                           aCdf);
+    seq.uniformlySampledCdf(numEvaluationPoints,
+                            minCdfValues[i],
+                            maxCdfValues[i],
+                            aCdf);
     cdfValues.setScalarSet(i,aCdf);
   }
-  oneDGrids.setGrids(numEvaluationPointsVec,
-                     minCdfValues,
-                     maxCdfValues);
+  cdfGrids.setGrids(numEvaluationPointsVec,
+                    minCdfValues,
+                    maxCdfValues);
 
   return;
 }

@@ -8,8 +8,21 @@ uqEnv_seed      = 0
 ###############################################
 # Calibration problem
 ###############################################
-cal_help         = anything
-cal_skipSolution = 0
+cal_help               = anything
+cal_computeSolution    = 1
+cal_outputFile         = cpOutput.m
+#cal_priorPdf_write     = 0 # not implemented yet
+#cal_priorMdf_write     = 1 # not implemented yet
+#cal_priorCdf_write     = 0 # not implemented yet
+#cal_priorRea_write     = 0 # not implemented yet
+#cal_postPdf_compute    = 1 # not implemented yet
+#cal_postMdf_compute    = 1 # not implemented yet
+#cal_postCdf_compute    = 0 # not implemented yet
+#cal_postRea_compute    = 1 # not implemented yet
+#cal_postPdf_write      = 0 # not implemented yet
+#cal_postMdf_write      = 1 # not implemented yet
+#cal_postCdf_write      = 0 # not implemented yet
+#cal_postRea_write      = 0 # not implemented yet
 
 ###############################################
 # Calibration problem: information for Markov Chain algorithm
@@ -116,8 +129,21 @@ cal_mc_filteredChain_stats_kde_numEvalPositions     = 250
 ###############################################
 # Propagation problem
 ###############################################
-pro_help         = anything
-pro_skipSolution = 0
+pro_help            = anything
+pro_computeSolution = 1
+pro_outputFile      = cpOutput.m
+#pro_paramPdf_write  = 0 # not implemented yet
+#pro_paramMdf_write  = 0 # not implemented yet
+#pro_paramCdf_write  = 0 # not implemented yet
+#pro_paramRea_write  = 0 # not implemented yet
+#pro_qoiPdf_compute  = 0 # not implemented yet
+#pro_qoiMdf_compute  = 1 # not implemented yet
+#pro_qoiCdf_compute  = 0 # not implemented yet
+#pro_qoiRea_compute  = 1 # not implemented yet
+#pro_qoiPdf_write    = 0 # not implemented yet
+#pro_qoiMdf_write    = 1 # not implemented yet
+#pro_qoiCdf_write    = 1 # not implemented yet
+#pro_qoiRea_write    = 0 # not implemented yet
 
 ###############################################
 # Propagation problem: information for Monte Carlo algorithm

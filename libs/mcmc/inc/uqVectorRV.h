@@ -20,13 +20,11 @@
 #ifndef __UQ_VECTOR_RV_H__
 #define __UQ_VECTOR_RV_H__
 
-#include <uqScalarRV.h>
 #include <uqVectorSpace.h>
-#include <uqVectorProbDensity.h>
+#include <uqVectorPdf.h>
 #include <uqVectorRealizer.h>
 #include <uqVectorCdf.h>
-#include <uqSequenceOfVectors.h>
-#include <uqArrayOfSequences.h>
+#include <uqVectorMdf.h>
 
 //*****************************************************
 // Base class
@@ -38,25 +36,28 @@ public:
                       const uqVectorSpaceClass<V,M>& imageSpace);
   virtual ~uqBaseVectorRVClass();
 
-  const   uqEnvironmentClass&                env           () const;
-  const   uqVectorSpaceClass          <V,M>& imageSpace    () const;
-  const   uqBaseVectorProbDensityClass<V,M>& probDensity   () const;
-  const   uqBaseVectorRealizerClass   <V,M>& realizer      () const;
-  const   uqBaseVectorCdfClass        <V,M>& cdf           () const;
+  const   uqEnvironmentClass&             env        () const;
+  const   uqVectorSpaceClass       <V,M>& imageSpace () const;
+  const   uqBaseVectorPdfClass     <V,M>& pdf() const;
+  const   uqBaseVectorRealizerClass<V,M>& realizer   () const;
+  const   uqBaseVectorCdfClass     <V,M>& cdf        () const;
+  const   uqBaseVectorMdfClass     <V,M>& mdf        () const;
 
-  virtual void                               setProbDensity(const uqBaseVectorProbDensityClass<V,M>& probDensity) = 0;
-  virtual void                               setRealizer   (const uqBaseVectorRealizerClass   <V,M>& realizer   ) = 0;
-  virtual void                               setCdf        (const uqBaseVectorCdfClass        <V,M>& cdf        ) = 0;
+  virtual void                            setPdf     (const uqBaseVectorPdfClass     <V,M>& pdf     ) = 0;
+  virtual void                            setRealizer(const uqBaseVectorRealizerClass<V,M>& realizer) = 0;
+  virtual void                            setCdf     (const uqBaseVectorCdfClass     <V,M>& cdf     ) = 0;
+  virtual void                            setMdf     (const uqBaseVectorMdfClass     <V,M>& mdf     ) = 0;
 
-  virtual void                               print         (std::ostream& os) const;
+  virtual void                            print      (std::ostream& os) const;
 
 protected:
-  const   uqEnvironmentClass&                m_env;
-          std::string                        m_prefix;
-  const   uqVectorSpaceClass          <V,M>& m_imageSpace;
-  const   uqBaseVectorProbDensityClass<V,M>* m_probDensity;
-  const   uqBaseVectorRealizerClass   <V,M>* m_realizer;
-  const   uqBaseVectorCdfClass        <V,M>* m_cdf;
+  const   uqEnvironmentClass&             m_env;
+          std::string                     m_prefix;
+  const   uqVectorSpaceClass       <V,M>& m_imageSpace;
+  const   uqBaseVectorPdfClass     <V,M>* m_pdf;
+  const   uqBaseVectorRealizerClass<V,M>* m_realizer;
+  const   uqBaseVectorCdfClass     <V,M>* m_cdf;
+  const   uqBaseVectorMdfClass     <V,M>* m_mdf;
 };
 
 template<class V, class M>
@@ -64,12 +65,13 @@ uqBaseVectorRVClass<V,M>::uqBaseVectorRVClass(
   const char*                              prefix,
   const uqVectorSpaceClass          <V,M>& imageSpace)
   :
-  m_env        (imageSpace.env()),
-  m_prefix     ((std::string)(prefix)+"rv_"),
-  m_imageSpace (imageSpace),
-  m_probDensity(NULL),
-  m_realizer   (NULL),
-  m_cdf        (NULL)
+  m_env       (imageSpace.env()),
+  m_prefix    ((std::string)(prefix)+"rv_"),
+  m_imageSpace(imageSpace),
+  m_pdf       (NULL),
+  m_realizer  (NULL),
+  m_cdf       (NULL),
+  m_mdf       (NULL)
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqBaseVectorRVClass<V,M>::constructor()"
@@ -97,15 +99,15 @@ uqBaseVectorRVClass<V,M>::imageSpace() const
 }
 
 template<class V, class M>
-const uqBaseVectorProbDensityClass<V,M>&
-uqBaseVectorRVClass<V,M>::probDensity() const
+const uqBaseVectorPdfClass<V,M>&
+uqBaseVectorRVClass<V,M>::pdf() const
 {
-  UQ_FATAL_TEST_MACRO(m_probDensity == NULL,
+  UQ_FATAL_TEST_MACRO(m_pdf == NULL,
                       m_env.rank(),
-                      "uqBaseVectorRVClass<V,M>::probDensity()",
-                      "m_probDensity is NULL");
+                      "uqBaseVectorRVClass<V,M>::pdf()",
+                      "m_pdf is NULL");
 
-  return *m_probDensity;
+  return *m_pdf;
 }
 
 template<class V, class M>
@@ -130,6 +132,18 @@ uqBaseVectorRVClass<V,M>::cdf() const
                       "m_cdf is NULL");
 
   return *m_cdf;
+}
+
+template<class V, class M>
+const uqBaseVectorMdfClass<V,M>&
+uqBaseVectorRVClass<V,M>::mdf() const
+{
+  UQ_FATAL_TEST_MACRO(m_mdf == NULL,
+                      m_env.rank(),
+                      (std::string)("uqBaseVectorRVClass<V,M>::mdf(), prefix=")+m_prefix,
+                      "m_mdf is NULL");
+
+  return *m_mdf;
 }
 
 template <class V, class M>
@@ -174,48 +188,75 @@ std::ostream& operator<<(std::ostream& os, const uqBaseVectorRVClass<V,M>& obj)
 template<class V, class M>
 class uqGenericVectorRVClass : public uqBaseVectorRVClass<V,M> {
 public:
-  uqGenericVectorRVClass(const char*                              prefix,
-                         const uqVectorSpaceClass          <V,M>& imageSpace,
-                         const uqBaseVectorProbDensityClass<V,M>* probDensity,
-                         const uqBaseVectorRealizerClass   <V,M>* realizer,
-                         const uqBaseVectorCdfClass        <V,M>* cdf);
+  uqGenericVectorRVClass(const char*                           prefix,
+                         const uqVectorSpaceClass       <V,M>& imageSpace);
+  uqGenericVectorRVClass(const char*                           prefix,
+                         const uqVectorSpaceClass       <V,M>& imageSpace,
+                         const uqBaseVectorPdfClass     <V,M>& pdf,
+                         const uqBaseVectorRealizerClass<V,M>& realizer,
+                         const uqBaseVectorCdfClass     <V,M>& cdf,
+                         const uqBaseVectorMdfClass     <V,M>& mdf);
   virtual ~uqGenericVectorRVClass();
 
-          void setProbDensity(const uqBaseVectorProbDensityClass<V,M>& probDensity);
-          void setRealizer   (const uqBaseVectorRealizerClass   <V,M>& realizer   );
-          void setCdf        (const uqBaseVectorCdfClass        <V,M>& cdf        );
+          void setPdf     (const uqBaseVectorPdfClass     <V,M>& pdf     );
+          void setRealizer(const uqBaseVectorRealizerClass<V,M>& realizer);
+          void setCdf     (const uqBaseVectorCdfClass     <V,M>& cdf     );
+          void setMdf     (const uqBaseVectorMdfClass     <V,M>& mdf     );
 
 private:
   using uqBaseVectorRVClass<V,M>::m_env;
   using uqBaseVectorRVClass<V,M>::m_prefix;
   using uqBaseVectorRVClass<V,M>::m_imageSpace;
-  using uqBaseVectorRVClass<V,M>::m_probDensity;
+  using uqBaseVectorRVClass<V,M>::m_pdf;
   using uqBaseVectorRVClass<V,M>::m_realizer;
   using uqBaseVectorRVClass<V,M>::m_cdf;
+  using uqBaseVectorRVClass<V,M>::m_mdf;
 };
 
 template<class V, class M>
 uqGenericVectorRVClass<V,M>::uqGenericVectorRVClass(
-  const char*                              prefix,
-  const uqVectorSpaceClass          <V,M>& imageSpace,
-  const uqBaseVectorProbDensityClass<V,M>* probDensity,
-  const uqBaseVectorRealizerClass   <V,M>* realizer,
-  const uqBaseVectorCdfClass        <V,M>* cdf)
+  const char*                     prefix,
+  const uqVectorSpaceClass <V,M>& imageSpace)
   :
-  uqBaseVectorRVClass<V,M>(prefix,imageSpace)
+  uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"gen").c_str(),imageSpace)
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqGenericVectorRVClass<V,M>::constructor()"
+    std::cout << "Entering uqGenericVectorRVClass<V,M>::constructor() [1]"
               << ": prefix = " << m_prefix
               << std::endl;
   }
 
-  m_probDensity = probDensity;
-  m_realizer    = realizer;
-  m_cdf         = cdf;
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Leaving uqGenericVectorRVClass<V,M>::constructor() [1]"
+              << ": prefix = " << m_prefix
+              << std::endl;
+  }
+}
+
+template<class V, class M>
+uqGenericVectorRVClass<V,M>::uqGenericVectorRVClass(
+  const char*                           prefix,
+  const uqVectorSpaceClass       <V,M>& imageSpace,
+  const uqBaseVectorPdfClass     <V,M>& pdf,
+  const uqBaseVectorRealizerClass<V,M>& realizer,
+  const uqBaseVectorCdfClass     <V,M>& cdf,
+  const uqBaseVectorMdfClass     <V,M>& mdf)
+  :
+  uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"gen").c_str(),imageSpace)
+{
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Entering uqGenericVectorRVClass<V,M>::constructor() [2]"
+              << ": prefix = " << m_prefix
+              << std::endl;
+  }
+
+  m_pdf      = &pdf;
+  m_realizer = &realizer;
+  m_cdf      = &cdf;
+  m_mdf      = &mdf;
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqGenericVectorRVClass<V,M>::constructor()"
+    std::cout << "Leaving uqGenericVectorRVClass<V,M>::constructor() [2]"
               << ": prefix = " << m_prefix
               << std::endl;
   }
@@ -228,9 +269,9 @@ uqGenericVectorRVClass<V,M>::~uqGenericVectorRVClass()
 
 template<class V, class M>
 void
-uqGenericVectorRVClass<V,M>::setProbDensity(const uqBaseVectorProbDensityClass<V,M>& probDensity)
+uqGenericVectorRVClass<V,M>::setPdf(const uqBaseVectorPdfClass<V,M>& pdf)
 {
-  m_probDensity = &probDensity;
+  m_pdf = &pdf;
   return;
 }
 
@@ -247,6 +288,14 @@ void
 uqGenericVectorRVClass<V,M>::setCdf(const uqBaseVectorCdfClass<V,M>& cdf)
 {
   m_cdf = &cdf;
+  return;
+}
+
+template<class V, class M>
+void
+uqGenericVectorRVClass<V,M>::setMdf(const uqBaseVectorMdfClass<V,M>& mdf)
+{
+  m_mdf = &mdf;
   return;
 }
 
@@ -270,17 +319,19 @@ public:
                           const M&                       covMatrix);
   virtual ~uqGaussianVectorRVClass();
 
-          void setProbDensity(const uqBaseVectorProbDensityClass<V,M>& probDensity);
-          void setRealizer   (const uqBaseVectorRealizerClass   <V,M>& realizer   );
-          void setCdf        (const uqBaseVectorCdfClass        <V,M>& cdf        );
+          void setPdf     (const uqBaseVectorPdfClass     <V,M>& pdf     );
+          void setRealizer(const uqBaseVectorRealizerClass<V,M>& realizer);
+          void setCdf     (const uqBaseVectorCdfClass     <V,M>& cdf     );
+          void setMdf     (const uqBaseVectorMdfClass     <V,M>& mdf     );
 
 private:
   using uqBaseVectorRVClass<V,M>::m_env;
   using uqBaseVectorRVClass<V,M>::m_prefix;
   using uqBaseVectorRVClass<V,M>::m_imageSpace;
-  using uqBaseVectorRVClass<V,M>::m_probDensity;
+  using uqBaseVectorRVClass<V,M>::m_pdf;
   using uqBaseVectorRVClass<V,M>::m_realizer;
   using uqBaseVectorRVClass<V,M>::m_cdf;
+  using uqBaseVectorRVClass<V,M>::m_mdf;
 };
 
 template<class V, class M>
@@ -292,7 +343,7 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
   const V&                       imageExpectedValues,
   const V&                       imageVarianceValues)
   :
-  uqBaseVectorRVClass<V,M>(prefix,imageSpace)
+  uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"gau").c_str(),imageSpace)
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqGaussianVectorRVClass<V,M>::constructor() [1]"
@@ -300,14 +351,15 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
               << std::endl;
   }
 
-  m_probDensity = new uqGaussianVectorProbDensityClass<V,M>(m_prefix.c_str(),
-                                                            m_imageSpace,
-                                                            imageMinValues,
-                                                            imageMaxValues,
-                                                            imageExpectedValues,
-                                                            imageVarianceValues);
+  m_pdf = new uqGaussianVectorPdfClass<V,M>(m_prefix.c_str(),
+                                            m_imageSpace,
+                                            imageMinValues,
+                                            imageMaxValues,
+                                            imageExpectedValues,
+                                            imageVarianceValues);
   m_realizer    = NULL; // FIX ME: complete code
   m_cdf         = NULL; // FIX ME: complete code
+  m_mdf         = NULL; // FIX ME: complete code
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Leaving uqGaussianVectorRVClass<V,M>::constructor() [1]"
@@ -325,7 +377,7 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
   const V&                       imageExpectedValues,
   const M&                       covMatrix)
   :
-  uqBaseVectorRVClass<V,M>(prefix,imageSpace)
+  uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"gau").c_str(),imageSpace)
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqGaussianVectorRVClass<V,M>::constructor() [2]"
@@ -333,14 +385,15 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
               << std::endl;
   }
 
-  m_probDensity = new uqGaussianVectorProbDensityClass<V,M>(m_prefix.c_str(),
-                                                            m_imageSpace,
-                                                            imageMinValues,
-                                                            imageMaxValues,
-                                                            imageExpectedValues,
-                                                            covMatrix);
+  m_pdf = new uqGaussianVectorPdfClass<V,M>(m_prefix.c_str(),
+                                            m_imageSpace,
+                                            imageMinValues,
+                                            imageMaxValues,
+                                            imageExpectedValues,
+                                            covMatrix);
   m_realizer    = NULL; // FIX ME: complete code
   m_cdf         = NULL; // FIX ME: complete code
+  m_mdf         = NULL; // FIX ME: complete code
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Leaving uqGaussianVectorRVClass<V,M>::constructor() [2]"
@@ -356,11 +409,11 @@ uqGaussianVectorRVClass<V,M>::~uqGaussianVectorRVClass()
 
 template<class V, class M>
 void
-uqGaussianVectorRVClass<V,M>::setProbDensity(const uqBaseVectorProbDensityClass<V,M>& probDensity)
+uqGaussianVectorRVClass<V,M>::setPdf(const uqBaseVectorPdfClass<V,M>& pdf)
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.rank(),
-                      "uqGaussianVectorRVClass<V,M>::setProbDensity()",
+                      "uqGaussianVectorRVClass<V,M>::setPdf()",
                       "it does not make sense to call such routine for this class");
   return;
 }
@@ -383,6 +436,123 @@ uqGaussianVectorRVClass<V,M>::setCdf(const uqBaseVectorCdfClass<V,M>& cdf)
   UQ_FATAL_TEST_MACRO(true,
                       m_env.rank(),
                       "uqGaussianVectorRVClass<V,M>::setCdf()",
+                      "it does not make sense to call such routine for this class");
+  return;
+}
+
+template<class V, class M>
+void
+uqGaussianVectorRVClass<V,M>::setMdf(const uqBaseVectorMdfClass<V,M>& mdf)
+{
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.rank(),
+                      "uqGaussianVectorRVClass<V,M>::setMdf()",
+                      "it does not make sense to call such routine for this class");
+  return;
+}
+
+//*****************************************************
+// Uniform class
+//*****************************************************
+template<class V, class M>
+class uqUniformVectorRVClass : public uqBaseVectorRVClass<V,M> {
+public:
+  uqUniformVectorRVClass(const char*                     prefix,
+                          const uqVectorSpaceClass<V,M>& imageSpace,
+                          const V&                       imageMinValues,
+                          const V&                       imageMaxValues);
+  virtual ~uqUniformVectorRVClass();
+
+          void setPdf     (const uqBaseVectorPdfClass     <V,M>& pdf     );
+          void setRealizer(const uqBaseVectorRealizerClass<V,M>& realizer);
+          void setCdf     (const uqBaseVectorCdfClass     <V,M>& cdf     );
+          void setMdf     (const uqBaseVectorMdfClass     <V,M>& mdf     );
+
+private:
+  using uqBaseVectorRVClass<V,M>::m_env;
+  using uqBaseVectorRVClass<V,M>::m_prefix;
+  using uqBaseVectorRVClass<V,M>::m_imageSpace;
+  using uqBaseVectorRVClass<V,M>::m_pdf;
+  using uqBaseVectorRVClass<V,M>::m_realizer;
+  using uqBaseVectorRVClass<V,M>::m_cdf;
+  using uqBaseVectorRVClass<V,M>::m_mdf;
+};
+
+template<class V, class M>
+uqUniformVectorRVClass<V,M>::uqUniformVectorRVClass(
+  const char*                    prefix,
+  const uqVectorSpaceClass<V,M>& imageSpace,
+  const V&                       imageMinValues,
+  const V&                       imageMaxValues)
+  :
+  uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"uni").c_str(),imageSpace)
+{
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Entering uqUniformVectorRVClass<V,M>::constructor()"
+              << ": prefix = " << m_prefix
+              << std::endl;
+  }
+
+  m_pdf = new uqUniformVectorPdfClass<V,M>(m_prefix.c_str(),
+                                           m_imageSpace,
+                                           imageMinValues,
+                                           imageMaxValues);
+  m_realizer    = NULL; // FIX ME: complete code
+  m_cdf         = NULL; // FIX ME: complete code
+  m_mdf         = NULL; // FIX ME: complete code
+
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Leaving uqUniformVectorRVClass<V,M>::constructor()"
+              << ": prefix = " << m_prefix
+              << std::endl;
+  }
+}
+
+template<class V, class M>
+uqUniformVectorRVClass<V,M>::~uqUniformVectorRVClass()
+{
+}
+
+template<class V, class M>
+void
+uqUniformVectorRVClass<V,M>::setPdf(const uqBaseVectorPdfClass<V,M>& pdf)
+{
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.rank(),
+                      "uqUniformVectorRVClass<V,M>::setPdf()",
+                      "it does not make sense to call such routine for this class");
+  return;
+}
+
+template<class V, class M>
+void
+uqUniformVectorRVClass<V,M>::setRealizer(const uqBaseVectorRealizerClass<V,M>& realizer)
+{
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.rank(),
+                      "uqUniformVectorRVClass<V,M>::setRealizer()",
+                      "it does not make sense to call such routine for this class");
+  return;
+}
+
+template<class V, class M>
+void
+uqUniformVectorRVClass<V,M>::setCdf(const uqBaseVectorCdfClass<V,M>& cdf)
+{
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.rank(),
+                      "uqUniformVectorRVClass<V,M>::setCdf()",
+                      "it does not make sense to call such routine for this class");
+  return;
+}
+
+template<class V, class M>
+void
+uqUniformVectorRVClass<V,M>::setMdf(const uqBaseVectorMdfClass<V,M>& mdf)
+{
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.rank(),
+                      "uqUniformVectorRVClass<V,M>::setMdf()",
                       "it does not make sense to call such routine for this class");
   return;
 }
