@@ -10,7 +10,7 @@ uqEnv_seed      = 0
 ###############################################
 cal_help               = anything
 cal_computeSolution    = 1
-cal_outputFile         = cpOutput.m
+cal_outputFileName     = cpOutput.m
 #cal_priorPdf_write     = 0 # not implemented yet
 #cal_priorMdf_write     = 1 # not implemented yet
 #cal_priorCdf_write     = 0 # not implemented yet
@@ -32,9 +32,8 @@ cal_outputFile         = cpOutput.m
 ###############################################
 cal_mc_help                  = anything
 cal_mc_chain_type            = 1
-cal_mc_chain_number          = 1
-cal_mc_chain_sizes           = 131072
-cal_mc_chain_outputFileNames = cpOutput.m
+cal_mc_chain_size            = 131072
+cal_mc_chain_outputFileName  = cpOutput.m
 cal_mc_chain_generateExtra   = 0
 cal_mc_chain_displayPeriod   = 20000
 cal_mc_chain_measureRunTimes = 1
@@ -131,7 +130,7 @@ cal_mc_filteredChain_stats_kde_numEvalPositions     = 250
 ###############################################
 pro_help            = anything
 pro_computeSolution = 1
-pro_outputFile      = cpOutput.m
+pro_outputFileName  = cpOutput.m
 #pro_paramPdf_write  = 0 # not implemented yet
 #pro_paramMdf_write  = 0 # not implemented yet
 #pro_paramCdf_write  = 0 # not implemented yet

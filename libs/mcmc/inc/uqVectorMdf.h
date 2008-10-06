@@ -49,7 +49,7 @@ public:
           bool                     outOfDomainBounds(const V& v)      const;
   const   V&                       domainMinValues  ()                const;
   const   V&                       domainMaxValues  ()                const;
-  virtual void                     printContents    (const std::string& name, std::ofstream& ofs) const = 0;
+  virtual void                     printContents    (std::ofstream& ofs) const = 0;
 
 protected:
 
@@ -166,7 +166,7 @@ public:
  ~uqGenericVectorMdfClass();
 
   void values       (const V& paramValues, V& mdfVec) const;
-  void printContents(const std::string& name, std::ofstream& ofs) const;
+  void printContents(std::ofstream& ofs) const;
 
 protected:
   double (*m_routinePtr)(const V& paramValues, const void* routineDataPtr, V& mdfVec);
@@ -224,7 +224,7 @@ uqGenericVectorMdfClass<V,M>::values(
 
 template <class V, class M>
 void
-uqGenericVectorMdfClass<V,M>::printContents(const std::string& name, std::ofstream& ofs) const
+uqGenericVectorMdfClass<V,M>::printContents(std::ofstream& ofs) const
 {
   return;
 }
@@ -250,7 +250,7 @@ public:
  ~uqGaussianVectorMdfClass();
 
   void values       (const V& paramValues, V& mdfVec) const;
-  void printContents(const std::string& name, std::ofstream& ofs) const;
+  void printContents(std::ofstream& ofs) const;
 
 protected:
   const M*                         m_covMatrix;
@@ -350,7 +350,7 @@ uqGaussianVectorMdfClass<V,M>::values(
 
 template <class V, class M>
 void
-uqGaussianVectorMdfClass<V,M>::printContents(const std::string& name, std::ofstream& ofs) const
+uqGaussianVectorMdfClass<V,M>::printContents(std::ofstream& ofs) const
 {
   return;
 }
@@ -367,7 +367,7 @@ public:
  ~uqSampledVectorMdfClass();
 
   void values       (const V& paramValues, V& mdfVec) const;
-  void printContents(const std::string& name, std::ofstream& ofs) const;
+  void printContents(std::ofstream& ofs) const;
 
 protected:
   using uqBaseVectorMdfClass<V,M>::m_env;
@@ -423,14 +423,14 @@ uqSampledVectorMdfClass<V,M>::values(
 
 template <class V, class M>
 void
-uqSampledVectorMdfClass<V,M>::printContents(const std::string& name, std::ofstream& ofs) const
+uqSampledVectorMdfClass<V,M>::printContents(std::ofstream& ofs) const
 {
   for (unsigned int i = 0; i < m_domainSpace.dim(); ++i) {
     // Print values *of* grid points
     std::vector<double> aGrid;
     m_oneDGrids.getAGrid(i,aGrid);
     ofs << m_prefix << i << "_grid = zeros(" << aGrid.size()
-        << ","                             << 1
+        << ","                               << 1
         << ");"
         << std::endl;
     ofs << m_prefix << i << "_grid = [";
@@ -442,11 +442,11 @@ uqSampledVectorMdfClass<V,M>::printContents(const std::string& name, std::ofstre
 
     // Print *mdf* values *at* grid points
     const std::vector<double>& aSetOfMdfValues = m_mdfValues.scalarSet(i);
-    ofs << m_prefix << i << "_mdf = zeros(" << aSetOfMdfValues.size()
-        << ","                              << 1
+    ofs << m_prefix << i << "_values = zeros(" << aSetOfMdfValues.size()
+        << ","                                 << 1
         << ");"
         << std::endl;
-    ofs << m_prefix << i << "_mdf = [";
+    ofs << m_prefix << i << "_values = [";
     for (unsigned int j = 0; j < aSetOfMdfValues.size(); ++j) {
       ofs << aSetOfMdfValues[j] << " ";
     }

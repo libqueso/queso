@@ -80,8 +80,9 @@ private:
         uqBaseVectorRVClass           <P_V,P_M>& m_postRv;
 
         uqBaseVectorPdfClass          <P_V,P_M>* m_solutionPdf;
-        uqBaseVectorRealizerClass     <P_V,P_M>* m_solutionRealizer;
         uqBaseVectorMdfClass          <P_V,P_M>* m_solutionMdf;
+        uqBaseVectorCdfClass          <P_V,P_M>* m_solutionCdf;
+        uqBaseVectorRealizerClass     <P_V,P_M>* m_solutionRealizer;
 
         uqMarkovChainSGClass          <P_V,P_M>* m_mcSeqGenerator;
         uqBaseVectorSequenceClass     <P_V,P_M>* m_chain;
@@ -117,8 +118,9 @@ uqCalibProblemClass<P_V,P_M>::uqCalibProblemClass(
   m_likelihoodFunction (likelihoodFunction),
   m_postRv                (postRv),
   m_solutionPdf           (NULL),
-  m_solutionRealizer      (NULL),
   m_solutionMdf           (NULL),
+  m_solutionCdf           (NULL),
+  m_solutionRealizer      (NULL),
   m_mcSeqGenerator        (NULL),
   m_chain                 (NULL)
 {
@@ -150,8 +152,9 @@ uqCalibProblemClass<P_V,P_M>::~uqCalibProblemClass()
     delete m_chain;
   }
   if (m_mcSeqGenerator  ) delete m_mcSeqGenerator;
-  if (m_solutionMdf     ) delete m_solutionMdf;
   if (m_solutionRealizer) delete m_solutionRealizer;
+  if (m_solutionCdf     ) delete m_solutionCdf;
+  if (m_solutionMdf     ) delete m_solutionMdf;
   if (m_solutionPdf     ) delete m_solutionPdf;
   if (m_optionsDesc     ) delete m_optionsDesc;
 }
@@ -216,9 +219,10 @@ uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
     return;
   }
 
-  if (m_solutionMdf     ) delete m_solutionMdf;
-  if (m_solutionRealizer) delete m_solutionRealizer;
   if (m_solutionPdf     ) delete m_solutionPdf;
+  if (m_solutionMdf     ) delete m_solutionMdf;
+  if (m_solutionCdf     ) delete m_solutionCdf;
+  if (m_solutionRealizer) delete m_solutionRealizer;
   if (m_mcSeqGenerator  ) delete m_mcSeqGenerator;
 
   // Compute output pdf up to a multiplicative constant: Bayesian approach
@@ -272,10 +276,11 @@ uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
                         "uqCalibProblem<P_V,P_M>::solveWithBayesMarkovChain()",
                         "failed to open file");
 
-    m_postRv.mdf().printContents(m_prefix,*ofs);
+    m_postRv.mdf().printContents(*ofs);
 
     // Close file
     ofs->close();
+    delete ofs;
     if (m_env.rank() == 0) {
       std::cout << "Closed output file '" << m_outputFileName
                 << "' for calibration problem with problem with prefix = " << m_prefix

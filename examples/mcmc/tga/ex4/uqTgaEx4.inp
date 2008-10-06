@@ -8,8 +8,9 @@ uqEnv_seed      = 0
 ###############################################
 # Stage I: Calibration problem
 ###############################################
-s1_cal_help         = anything
-s1_cal_skipSolution = 0
+s1_cal_help            = anything
+s1_cal_computeSolution = 1
+s1_cal_outputFileName  = s1Output.m
 
 ###############################################
 # Stage I: Calibration problem: information for Markov Chain algorithm
@@ -116,8 +117,9 @@ s1_cal_mc_filteredChain_stats_kde_numEvalPositions     = 250
 ###############################################
 # Stage I: Propagation problem
 ###############################################
-s1_pro_help         = anything
-s1_pro_skipSolution = 0
+s1_pro_help            = anything
+s1_pro_computeSolution = 1
+s1_pro_outputFileName  = s1Output.m
 
 ###############################################
 # Stage I: Propagation problem: information for Monte Carlo algorithm
@@ -172,8 +174,9 @@ s1_pro_mc_seq_stats_kde_numEvalPositions     = 250
 ###############################################
 # Stage II: Calibration problem
 ###############################################
-s2_cal_help         = anything
-s2_cal_skipSolution = 0
+s2_cal_help            = anything
+s2_cal_computeSolution = 1
+s2_cal_outputFileName  = s2Output.m
 
 ###############################################
 # Stage II: Calibration problem: information for Markov Chain algorithm
@@ -280,8 +283,9 @@ s2_cal_mc_filteredChain_stats_kde_numEvalPositions     = 250
 ###############################################
 # Stage II: Propagation problem
 ###############################################
-s2_pro_help         = anything
-s2_pro_skipSolution = 0
+s2_pro_help            = anything
+s2_pro_computeSolution = 1
+s2_pro_outputFileName  = s2Output.m
 
 ###############################################
 # Stage II: Propagation problem: information for Monte Carlo algorithm
