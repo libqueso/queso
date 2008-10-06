@@ -23,7 +23,6 @@
 #include <uqProposalDensity.h>   // For substep 3
 #include <uqProposalGenerator.h> // For substep 3
 
-#include <uqDefaultPrior.h>
 #include <uqMarkovChainSG1.h>
 #include <uqVectorRV.h>
 

@@ -44,8 +44,9 @@ public:
   virtual ~uqBaseVectorCdfClass();
 
   const   uqVectorSpaceClass<V,M>& domainSpace      ()                const;
-  virtual void                     values           (const V& paramValues,
-                                                           V& cdfVec) const = 0;
+  virtual void                     values           (const V& paramValues, V& cdfVec        ) const = 0;
+  virtual double                   value            (unsigned int paramId, double paramValue) const = 0;
+  virtual double                   inverse          (unsigned int paramId, double cdfValue  ) const = 0;
           bool                     outOfDomainBounds(const V& v)      const;
   const   V&                       domainMinValues  ()                const;
   const   V&                       domainMaxValues  ()                const;
@@ -367,6 +368,8 @@ public:
  ~uqSampledVectorCdfClass();
 
   void values       (const V& paramValues, V& cdfVec) const;
+  double value      (unsigned int paramId, double paramValue) const;
+  double inverse    (unsigned int paramId, double cdfValue  ) const;
   void printContents(std::ofstream& ofs) const;
 
 protected:
@@ -421,6 +424,20 @@ uqSampledVectorCdfClass<V,M>::values(
   return;
 }
 
+template<class V, class M>
+double
+uqSampledVectorCdfClass<V,M>::value(unsigned int paramId, double paramValue) const
+{
+  return 0.;
+}
+
+template<class V, class M>
+double
+uqSampledVectorCdfClass<V,M>::inverse(unsigned int paramId, double cdfValue) const
+{
+  return 0.;
+}
+
 template <class V, class M>
 void
 uqSampledVectorCdfClass<V,M>::printContents(std::ofstream& ofs) const
@@ -457,4 +474,30 @@ uqSampledVectorCdfClass<V,M>::printContents(std::ofstream& ofs) const
   return;
 }
 
+template <class V, class M>
+double
+horizontalDistance(const uqBaseVectorCdfClass<V,M>& cdf1,
+                   const uqBaseVectorCdfClass<V,M>& cdf2,
+                   double epsilon)
+{
+  double maxDistance     = 0.;
+  double xForMaxDistance = 0.;
+
+  double x1 = cdf1.inverse(0,epsilon);
+  double x2 = cdf1.inverse(0,1.-epsilon);
+
+  double numEvaluationPoints = 1001.;
+  for (double i = 0.; i < numEvaluationPoints; ++i) {
+    double ratio = i/(numEvaluationPoints-1.); // IMPORTANT: Yes, '-1.'
+    double x = (1.-ratio)*x1 + ratio*x2;
+    double y = cdf2.inverse(0,cdf1.value(0,x));
+    double d = fabs(x-y);
+    if (maxDistance < d) {
+      maxDistance     = d;
+      xForMaxDistance = x;
+    }
+  }
+
+  return maxDistance;
+}
 #endif // __UQ_VECTOR_CUMULATIVE_DISTRIBUTION_FUNCTION_H__

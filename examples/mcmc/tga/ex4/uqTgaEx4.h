@@ -467,6 +467,20 @@ uqAppl(const uqEnvironmentClass& env)
   s2_propagProblem.solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
 
   //******************************************************
+  // Step III.1 of 1: compare the cdf's of stages I and II
+  //******************************************************
+  double epsilon = 0.01;
+  double cdfDistance = horizontalDistance(s1_propagQoiRv.cdf(),
+                                          s2_propagQoiRv.cdf(),
+                                          epsilon);
+
+  if (env.rank() == 0) {
+    std::cout << "For epsilon = "   << epsilon
+              << ", cdfDistance = " << cdfDistance
+              << std::endl;
+  }
+
+  //******************************************************
   // Release memory before leaving routine.
   //******************************************************
   delete s2_calibProposalCovMatrix;
