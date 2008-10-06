@@ -22,6 +22,7 @@
 
 #include <uqArrayOfOneDGrids.h>
 #include <uqArrayOfOneDTables.h>
+#include <uqScalarCdf.h>
 #include <uqEnvironment.h>
 #include <math.h>
 
@@ -43,14 +44,12 @@ public:
                                 const uqVectorSpaceClass<V,M>& domainSpace);
   virtual ~uqBaseVectorCdfClass();
 
-  const   uqVectorSpaceClass<V,M>& domainSpace      ()                const;
-  virtual void                     values           (const V& paramValues, V& cdfVec        ) const = 0;
-  virtual double                   value            (unsigned int paramId, double paramValue) const = 0;
-  virtual double                   inverse          (unsigned int paramId, double cdfValue  ) const = 0;
-          bool                     outOfDomainBounds(const V& v)      const;
-  const   V&                       domainMinValues  ()                const;
-  const   V&                       domainMaxValues  ()                const;
-  virtual void                     printContents    (std::ostream& os) const = 0;
+  const   uqVectorSpaceClass<V,M>&            domainSpace    ()                                const;
+  virtual void                                values         (const V& paramValues, V& cdfVec) const = 0;
+  virtual const uqBaseScalarCdfClass<double>& cdf            (unsigned int rowId)              const = 0;
+  const   V&                                  domainMinValues()                                const;
+  const   V&                                  domainMaxValues()                                const;
+  virtual void                                print          (std::ostream& os)                const = 0;
 
 protected:
 
@@ -94,7 +93,7 @@ uqBaseVectorCdfClass<V,M>::uqBaseVectorCdfClass(
   const uqVectorSpaceClass<V,M>& domainSpace)
   :
   m_env            (domainSpace.env()),
-  m_prefix         ((std::string)(prefix)+"pd_"),
+  m_prefix         ((std::string)(prefix)+"cdf_"),
   m_domainSpace    (domainSpace),
   m_domainMinValues(domainSpace.newVector(-INFINITY)),
   m_domainMaxValues(domainSpace.newVector( INFINITY))
@@ -133,19 +132,18 @@ uqBaseVectorCdfClass<V,M>::domainMaxValues() const
   return *m_domainMaxValues;
 }
 
-template <class V, class M>
-bool
-uqBaseVectorCdfClass<V,M>::outOfDomainBounds(const V& v) const
-{
-  return (v.atLeastOneComponentSmallerThan(this->domainMinValues()) ||
-          v.atLeastOneComponentBiggerThan (this->domainMaxValues()));
-}
-
 template<class V, class M>
 const uqVectorSpaceClass<V,M>&
 uqBaseVectorCdfClass<V,M>::domainSpace() const
 {
   return m_domainSpace;
+}
+
+template <class V, class M>
+  std::ostream& operator<< (std::ostream& os, const uqBaseVectorCdfClass<V,M>& obj)
+{
+  obj.print(os);
+  return os;
 }
 
 //*****************************************************
@@ -166,8 +164,8 @@ public:
                           const void* routineDataPtr);
  ~uqGenericVectorCdfClass();
 
-  void values       (const V& paramValues, V& cdfVec) const;
-  void printContents(std::ostream& os) const;
+  void values(const V& paramValues, V& cdfVec) const;
+  void print (std::ostream& os) const;
 
 protected:
   double (*m_routinePtr)(const V& paramValues, const void* routineDataPtr, V& cdfVec);
@@ -189,7 +187,7 @@ uqGenericVectorCdfClass<V,M>::uqGenericVectorCdfClass(
   double (*routinePtr)(const V& paramValues, const void* routineDataPtr, V& cdfVec),
   const void* routineDataPtr)
   :
-  uqBaseVectorCdfClass<V,M>(((std::string)(prefix)+"gen").c_str(),domainSpace,domainMinValues,domainMaxValues),
+  uqBaseVectorCdfClass<V,M>(prefix,domainSpace,domainMinValues,domainMaxValues),
   m_routinePtr    (routinePtr),
   m_routineDataPtr(routineDataPtr)
 {
@@ -202,7 +200,7 @@ uqGenericVectorCdfClass<V,M>::uqGenericVectorCdfClass(
   double (*routinePtr)(const V& paramValues, const void* routineDataPtr, V& cdfVec),
   const void* routineDataPtr)
   :
-  uqBaseVectorCdfClass<V,M>(((std::string)(prefix)+"gen").c_str(),domainSpace),
+  uqBaseVectorCdfClass<V,M>(prefix,domainSpace),
   m_routinePtr    (routinePtr),
   m_routineDataPtr(routineDataPtr)
 {
@@ -225,7 +223,7 @@ uqGenericVectorCdfClass<V,M>::values(
 
 template <class V, class M>
 void
-uqGenericVectorCdfClass<V,M>::printContents(std::ostream& os) const
+uqGenericVectorCdfClass<V,M>::print(std::ostream& os) const
 {
   return;
 }
@@ -250,8 +248,8 @@ public:
                            const M&                       covMatrix);
  ~uqGaussianVectorCdfClass();
 
-  void values       (const V& paramValues, V& cdfVec) const;
-  void printContents(std::ostream& os) const;
+  void values(const V& paramValues, V& cdfVec) const;
+  void print (std::ostream& os) const;
 
 protected:
   const M*                         m_covMatrix;
@@ -274,7 +272,7 @@ uqGaussianVectorCdfClass<V,M>::uqGaussianVectorCdfClass(
   const V&                       domainExpectedValues,
   const V&                       domainVarianceValues)
   :
-  uqBaseVectorCdfClass<V,M>(((std::string)(prefix)+"gau").c_str(),domainSpace,domainMinValues,domainMaxValues),
+  uqBaseVectorCdfClass<V,M>(prefix,domainSpace,domainMinValues,domainMaxValues),
   m_covMatrix              (m_domainSpace.newDiagMatrix(domainVarianceValues*domainVarianceValues))
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
@@ -301,8 +299,8 @@ uqGaussianVectorCdfClass<V,M>::uqGaussianVectorCdfClass(
   const V&                       domainExpectedValues,
   const M&                       covMatrix)
   :
-  uqBaseVectorCdfClass<V,M>(((std::string)(prefix)+"gau").c_str(),domainSpace,domainMinValues,domainMaxValues),
-  m_covMatrix                      (new M(covMatrix))
+  uqBaseVectorCdfClass<V,M>(prefix,domainSpace,domainMinValues,domainMaxValues),
+  m_covMatrix              (new M(covMatrix))
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqGaussianVectorCdfClass<V,M>::constructor() [2]"
@@ -351,7 +349,7 @@ uqGaussianVectorCdfClass<V,M>::values(
 
 template <class V, class M>
 void
-uqGaussianVectorCdfClass<V,M>::printContents(std::ostream& os) const
+uqGaussianVectorCdfClass<V,M>::print(std::ostream& os) const
 {
   return;
 }
@@ -367,10 +365,9 @@ public:
                           const uqArrayOfOneDTablesClass<V,M>& cdfValues);
  ~uqSampledVectorCdfClass();
 
-  void values       (const V& paramValues, V& cdfVec) const;
-  double value      (unsigned int paramId, double paramValue) const;
-  double inverse    (unsigned int paramId, double cdfValue  ) const;
-  void printContents(std::ostream& os) const;
+        void                          values(const V& paramValues, V& cdfVec) const;
+  const uqBaseScalarCdfClass<double>& cdf   (unsigned int rowId)              const;
+        void                          print (std::ostream& os)                const;
 
 protected:
   using uqBaseVectorCdfClass<V,M>::m_env;
@@ -379,24 +376,31 @@ protected:
   using uqBaseVectorCdfClass<V,M>::m_domainMinValues;
   using uqBaseVectorCdfClass<V,M>::m_domainMaxValues;
 
-  const uqArrayOfOneDGridsClass <V,M>& m_oneDGrids;
-  const uqArrayOfOneDTablesClass<V,M>& m_cdfValues;
+  EpetraExt::DistArray<uqSampledScalarCdfClass<double>*> m_cdfs;
 };
 
 template<class V,class M>
 uqSampledVectorCdfClass<V,M>::uqSampledVectorCdfClass(
-  const char*                           prefix,
+  const char*                          prefix,
   const uqArrayOfOneDGridsClass <V,M>& oneDGrids,
   const uqArrayOfOneDTablesClass<V,M>& cdfValues)
   :
-  uqBaseVectorCdfClass<V,M>(((std::string)(prefix)+"sam").c_str(),oneDGrids.rowSpace(),oneDGrids.minPositions(),oneDGrids.maxPositions()),
-  m_oneDGrids(oneDGrids),
-  m_cdfValues(cdfValues)
+  uqBaseVectorCdfClass<V,M>(prefix,oneDGrids.rowSpace(),oneDGrids.minPositions(),oneDGrids.maxPositions()),
+  m_cdfs(m_domainSpace.map(),1)
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqSampledVectorCdfClass<V,M>::constructor()"
               << ": prefix = " << m_prefix
               << std::endl;
+  }
+
+  char strI[65];
+  for (unsigned int i = 0; i < (unsigned int) m_cdfs.MyLength(); ++i) {
+    sprintf(strI,"%d_",i);
+    m_cdfs(i,0) = new uqSampledScalarCdfClass<double>(m_env,
+                                                      ((std::string)(m_prefix)+strI).c_str(),
+                                                      oneDGrids.grid(i),
+                                                      cdfValues.oneDTable(i));
   }
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
@@ -409,6 +413,9 @@ uqSampledVectorCdfClass<V,M>::uqSampledVectorCdfClass(
 template<class V,class M>
 uqSampledVectorCdfClass<V,M>::~uqSampledVectorCdfClass()
 {
+  for (unsigned int i = 0; i < (unsigned int) m_cdfs.MyLength(); ++i) {
+    if (m_cdfs(i,0)) delete m_cdfs(i,0);
+  }
 }
 
 template<class V, class M>
@@ -425,56 +432,46 @@ uqSampledVectorCdfClass<V,M>::values(
 }
 
 template<class V, class M>
-double
-uqSampledVectorCdfClass<V,M>::value(unsigned int paramId, double paramValue) const
+const uqBaseScalarCdfClass<double>&
+uqSampledVectorCdfClass<V,M>::cdf(unsigned int rowId) const
 {
-  return 0.;
+  UQ_FATAL_TEST_MACRO(rowId >= m_domainSpace.dim(),
+                      m_env.rank(),
+                      "uqSampledVectorCdfClass<T>::cdf()",
+                      "rowId is out of range");
+
+  uqSampledVectorCdfClass<V,M>* tmp = const_cast<uqSampledVectorCdfClass<V,M>*>(this);
+  return *(tmp->m_cdfs(rowId,0));
+  
 }
 
-template<class V, class M>
-double
-uqSampledVectorCdfClass<V,M>::inverse(unsigned int paramId, double cdfValue) const
-{
-  return 0.;
-}
 
 template <class V, class M>
 void
-uqSampledVectorCdfClass<V,M>::printContents(std::ostream& os) const
+uqSampledVectorCdfClass<V,M>::print(std::ostream& os) const
 {
-  // Print values *of* grid points
-  os << m_oneDGrids;
-
-  // Print *cdf* values *at* grid points
-  os << m_cdfValues;
+  uqSampledVectorCdfClass<V,M>* tmp = const_cast<uqSampledVectorCdfClass<V,M>*>(this);
+  for (unsigned int i = 0; i < (unsigned int) m_cdfs.MyLength(); ++i) {
+    os << (*tmp->m_cdfs(i,0))
+       << std::endl;
+  }
 
   return;
 }
 
 template <class V, class M>
-double
-horizontalDistance(const uqBaseVectorCdfClass<V,M>& cdf1,
-                   const uqBaseVectorCdfClass<V,M>& cdf2,
-                   double epsilon)
+void
+horizontalDistances(const uqBaseVectorCdfClass<V,M>& cdf1,
+                    const uqBaseVectorCdfClass<V,M>& cdf2,
+                    const V& epsilonVec,
+                    V&       distances)
 {
-  double maxDistance     = 0.;
-  double xForMaxDistance = 0.;
-
-  double x1 = cdf1.inverse(0,epsilon);
-  double x2 = cdf1.inverse(0,1.-epsilon);
-
-  double numEvaluationPoints = 1001.;
-  for (double i = 0.; i < numEvaluationPoints; ++i) {
-    double ratio = i/(numEvaluationPoints-1.); // IMPORTANT: Yes, '-1.'
-    double x = (1.-ratio)*x1 + ratio*x2;
-    double y = cdf2.inverse(0,cdf1.value(0,x));
-    double d = fabs(x-y);
-    if (maxDistance < d) {
-      maxDistance     = d;
-      xForMaxDistance = x;
-    }
+  for (unsigned int i = 0; i < cdf1.domainSpace().dim(); ++i) {
+    distances[i] = horizontalDistance(cdf1.cdf(i),
+                                      cdf2.cdf(i),
+                                      epsilonVec[i]);
   }
 
-  return maxDistance;
+  return;
 }
 #endif // __UQ_VECTOR_CUMULATIVE_DISTRIBUTION_FUNCTION_H__

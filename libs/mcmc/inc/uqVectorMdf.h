@@ -43,13 +43,13 @@ public:
                                 const uqVectorSpaceClass<V,M>& domainSpace);
   virtual ~uqBaseVectorMdfClass();
 
-  const   uqVectorSpaceClass<V,M>& domainSpace      ()                const;
+  const   uqVectorSpaceClass<V,M>& domainSpace      ()                 const;
   virtual void                     values           (const V& paramValues,
-                                                           V& mdfVec) const = 0;
-          bool                     outOfDomainBounds(const V& v)      const;
-  const   V&                       domainMinValues  ()                const;
-  const   V&                       domainMaxValues  ()                const;
-  virtual void                     printContents    (std::ostream& os) const = 0;
+                                                           V& mdfVec)  const = 0;
+          bool                     outOfDomainBounds(const V& v)       const;
+  const   V&                       domainMinValues  ()                 const;
+  const   V&                       domainMaxValues  ()                 const;
+  virtual void                     print            (std::ostream& os) const = 0;
 
 protected:
 
@@ -93,7 +93,7 @@ uqBaseVectorMdfClass<V,M>::uqBaseVectorMdfClass(
   const uqVectorSpaceClass<V,M>& domainSpace)
   :
   m_env            (domainSpace.env()),
-  m_prefix         ((std::string)(prefix)+"pd_"),
+  m_prefix         ((std::string)(prefix)+"mdf_"),
   m_domainSpace    (domainSpace),
   m_domainMinValues(domainSpace.newVector(-INFINITY)),
   m_domainMaxValues(domainSpace.newVector( INFINITY))
@@ -165,8 +165,8 @@ public:
                           const void* routineDataPtr);
  ~uqGenericVectorMdfClass();
 
-  void values       (const V& paramValues, V& mdfVec) const;
-  void printContents(std::ostream& os) const;
+  void values(const V& paramValues, V& mdfVec) const;
+  void print (std::ostream& os)                const;
 
 protected:
   double (*m_routinePtr)(const V& paramValues, const void* routineDataPtr, V& mdfVec);
@@ -188,7 +188,7 @@ uqGenericVectorMdfClass<V,M>::uqGenericVectorMdfClass(
   double (*routinePtr)(const V& paramValues, const void* routineDataPtr, V& mdfVec),
   const void* routineDataPtr)
   :
-  uqBaseVectorMdfClass<V,M>(((std::string)(prefix)+"gen").c_str(),domainSpace,domainMinValues,domainMaxValues),
+  uqBaseVectorMdfClass<V,M>(prefix,domainSpace,domainMinValues,domainMaxValues),
   m_routinePtr    (routinePtr),
   m_routineDataPtr(routineDataPtr)
 {
@@ -201,7 +201,7 @@ uqGenericVectorMdfClass<V,M>::uqGenericVectorMdfClass(
   double (*routinePtr)(const V& paramValues, const void* routineDataPtr, V& mdfVec),
   const void* routineDataPtr)
   :
-  uqBaseVectorMdfClass<V,M>(((std::string)(prefix)+"gen").c_str(),domainSpace),
+  uqBaseVectorMdfClass<V,M>(prefix,domainSpace),
   m_routinePtr    (routinePtr),
   m_routineDataPtr(routineDataPtr)
 {
@@ -224,7 +224,7 @@ uqGenericVectorMdfClass<V,M>::values(
 
 template <class V, class M>
 void
-uqGenericVectorMdfClass<V,M>::printContents(std::ostream& os) const
+uqGenericVectorMdfClass<V,M>::print(std::ostream& os) const
 {
   return;
 }
@@ -249,8 +249,8 @@ public:
                            const M&                       covMatrix);
  ~uqGaussianVectorMdfClass();
 
-  void values       (const V& paramValues, V& mdfVec) const;
-  void printContents(std::ostream& os) const;
+  void values(const V& paramValues, V& mdfVec) const;
+  void print (std::ostream& os)                const;
 
 protected:
   const M*                         m_covMatrix;
@@ -273,7 +273,7 @@ uqGaussianVectorMdfClass<V,M>::uqGaussianVectorMdfClass(
   const V&                       domainExpectedValues,
   const V&                       domainVarianceValues)
   :
-  uqBaseVectorMdfClass<V,M>(((std::string)(prefix)+"gau").c_str(),domainSpace,domainMinValues,domainMaxValues),
+  uqBaseVectorMdfClass<V,M>(prefix,domainSpace,domainMinValues,domainMaxValues),
   m_covMatrix              (m_domainSpace.newDiagMatrix(domainVarianceValues*domainVarianceValues))
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
@@ -300,8 +300,8 @@ uqGaussianVectorMdfClass<V,M>::uqGaussianVectorMdfClass(
   const V&                       domainExpectedValues,
   const M&                       covMatrix)
   :
-  uqBaseVectorMdfClass<V,M>(((std::string)(prefix)+"gau").c_str(),domainSpace,domainMinValues,domainMaxValues),
-  m_covMatrix                      (new M(covMatrix))
+  uqBaseVectorMdfClass<V,M>(prefix,domainSpace,domainMinValues,domainMaxValues),
+  m_covMatrix              (new M(covMatrix))
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqGaussianVectorMdfClass<V,M>::constructor() [2]"
@@ -350,7 +350,7 @@ uqGaussianVectorMdfClass<V,M>::values(
 
 template <class V, class M>
 void
-uqGaussianVectorMdfClass<V,M>::printContents(std::ostream& os) const
+uqGaussianVectorMdfClass<V,M>::print(std::ostream& os) const
 {
   return;
 }
@@ -366,8 +366,8 @@ public:
                           const uqArrayOfOneDTablesClass<V,M>& mdfValues);
  ~uqSampledVectorMdfClass();
 
-  void values       (const V& paramValues, V& mdfVec) const;
-  void printContents(std::ostream& os) const;
+  void values(const V& paramValues, V& mdfVec) const;
+  void print (std::ostream& os)                const;
 
 protected:
   using uqBaseVectorMdfClass<V,M>::m_env;
@@ -386,7 +386,7 @@ uqSampledVectorMdfClass<V,M>::uqSampledVectorMdfClass(
   const uqArrayOfOneDGridsClass <V,M>& oneDGrids,
   const uqArrayOfOneDTablesClass<V,M>& mdfValues)
   :
-  uqBaseVectorMdfClass<V,M>(((std::string)(prefix)+"sam").c_str(),oneDGrids.rowSpace(),oneDGrids.minPositions(),oneDGrids.maxPositions()),
+  uqBaseVectorMdfClass<V,M>(prefix,oneDGrids.rowSpace(),oneDGrids.minPositions(),oneDGrids.maxPositions()),
   m_oneDGrids(oneDGrids),
   m_mdfValues(mdfValues)
 {
@@ -423,7 +423,7 @@ uqSampledVectorMdfClass<V,M>::values(
 
 template <class V, class M>
 void
-uqSampledVectorMdfClass<V,M>::printContents(std::ostream& os) const
+uqSampledVectorMdfClass<V,M>::print(std::ostream& os) const
 {
   // Print values *of* grid points
   os << m_oneDGrids;

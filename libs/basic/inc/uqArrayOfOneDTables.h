@@ -46,7 +46,7 @@ uqArrayOfOneDTablesClass<V,M>::uqArrayOfOneDTablesClass(
   const uqVectorSpaceClass<V,M>& rowSpace)
   :
   m_env       (rowSpace.env()),
-  m_prefix    ((std::string)(prefix)+"va_"),
+  m_prefix    ((std::string)(prefix)+""),
   m_rowSpace  (rowSpace      ),
   m_oneDTables(m_rowSpace.map(),1)
 {

@@ -276,8 +276,8 @@ uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
                         "uqPropagProblem<P_V,P_M,Q_V,Q_M>::solveWithBayesMarkovChain()",
                         "failed to open file");
 
-    m_qoiRv.mdf().printContents(*ofs);
-    m_qoiRv.cdf().printContents(*ofs);
+    m_qoiRv.mdf().print(*ofs);
+    *ofs << m_qoiRv.cdf();
 
     // Close file
     ofs->close();

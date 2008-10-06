@@ -60,7 +60,7 @@ uqArrayOfOneDGridsClass<V,M>::uqArrayOfOneDGridsClass(
   const uqVectorSpaceClass<V,M>& rowSpace)
   :
   m_env         (rowSpace.env()    ),
-  m_prefix      ((std::string)(prefix)+"ga_"),
+  m_prefix      ((std::string)(prefix)+""),
   m_rowSpace    (rowSpace          ),
   m_oneDGrids   (m_rowSpace.map(),1),
   m_sizes       (NULL),
@@ -165,7 +165,8 @@ uqArrayOfOneDGridsClass<V,M>::grid(unsigned int rowId) const
                       "uqArrayOfOneDUnformGridsClass<T>::grid()",
                       "rowId is out of range");
 
-  return m_oneDGrids(rowId,0);
+  uqArrayOfOneDGridsClass<V,M>* tmp = const_cast<uqArrayOfOneDGridsClass<V,M>*>(this);
+  return *(tmp->m_oneDGrids(rowId,0));
 }
 
 template <class V, class M>

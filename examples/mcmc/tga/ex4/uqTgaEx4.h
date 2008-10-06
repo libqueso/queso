@@ -401,7 +401,7 @@ uqAppl(const uqEnvironmentClass& env)
 
   // Close input file on experimental data
   fclose(inp);
-#if 1
+
   //******************************************************
   // Step II.2 of 3: deal with the calibration problem
   //******************************************************
@@ -469,22 +469,34 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
   // Step III.1 of 1: compare the cdf's of stages I and II
   //******************************************************
-  double epsilon = 0.01;
-  double cdfDistance = horizontalDistance(s1_propagQoiRv.cdf(),
-                                          s2_propagQoiRv.cdf(),
-                                          epsilon);
-
+  Q_V* epsilonVec = s1_propagQoiRv.imageSpace().newVector(0.02);
+  Q_V cdfDistancesVec(s1_propagQoiRv.imageSpace().zeroVector());
+  horizontalDistances(s1_propagQoiRv.cdf(),
+                      s2_propagQoiRv.cdf(),
+                      *epsilonVec,
+                      cdfDistancesVec);
   if (env.rank() == 0) {
-    std::cout << "For epsilon = "   << epsilon
-              << ", cdfDistance = " << cdfDistance
+    std::cout << "For epsilonVec = "    << *epsilonVec
+              << ", cdfDistancesVec = " << cdfDistancesVec
               << std::endl;
   }
+
+  // Test independence of 'distance' w.r.t. order of cdfs
+  horizontalDistances(s2_propagQoiRv.cdf(),
+                      s1_propagQoiRv.cdf(),
+                      *epsilonVec,
+                      cdfDistancesVec);
+  if (env.rank() == 0) {
+    std::cout << "For epsilonVec = "    << *epsilonVec
+              << ", cdfDistancesVec (swithced order of cdfs) = " << cdfDistancesVec
+              << std::endl;
+  }
+  delete epsilonVec;
 
   //******************************************************
   // Release memory before leaving routine.
   //******************************************************
   delete s2_calibProposalCovMatrix;
-#endif
   delete s1_calibProposalCovMatrix;
 
   if (env.rank() == 0) {

@@ -37,9 +37,10 @@ public:
                                  const char* prefix);
   virtual ~uqBaseOneDGridClass();
 
-  virtual unsigned int size      ()                  const = 0;
-  virtual T            operator[](unsigned int i)    const = 0;
-          void         print     (std::ostream& ofs) const;
+  virtual unsigned int size          ()                    const = 0;
+  virtual T            operator[]    (unsigned int i)      const = 0;
+  virtual unsigned int findIntervalId(const T& paramValue) const = 0; 
+          void         print         (std::ostream& ofs)   const;
 
 protected:
   const uqEnvironmentClass& m_env;
@@ -111,8 +112,9 @@ public:
                                T                   maxPosition);
  ~uqUniformOneDGridClass();
 
-  unsigned int size      ()               const;
-  T            operator[](unsigned int i) const;
+  unsigned int size          ()                    const;
+  T            operator[]    (unsigned int i)      const;
+  unsigned int findIntervalId(const T& paramValue) const; 
 
 protected:
   using uqBaseOneDGridClass<T>::m_env;
@@ -173,6 +175,19 @@ uqUniformOneDGridClass<T>::operator[](unsigned int i) const
   T ratio = ((T) i)/(((T)m_size)-1.); // IMPORTANT: Yes, '-1.'
   T position = (1.-ratio)*m_minPosition + ratio*m_maxPosition;
   return position;
+}
+
+template<class T>
+unsigned int
+uqUniformOneDGridClass<T>::findIntervalId(const T& paramValue) const
+{
+  UQ_FATAL_TEST_MACRO((paramValue < m_minPosition) || (m_maxPosition < paramValue),
+                      m_env.rank(),
+                      "uqUniformOneDGridClass<V,M>::findIntervalId[]",
+                      "paramValue is out of domain");
+
+  T ratio = (paramValue - m_minPosition)/(m_maxPosition - m_minPosition);
+  return (unsigned int) (ratio*(m_size-1.));
 }
 
 #endif // __UQ_ONE_D_GRID_FUNCTION_H__

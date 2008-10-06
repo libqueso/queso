@@ -275,7 +275,7 @@ uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
                         "uqCalibProblem<P_V,P_M>::solveWithBayesMarkovChain()",
                         "failed to open file");
 
-    m_postRv.mdf().printContents(*ofs);
+    m_postRv.mdf().print(*ofs);
 
     // Close file
     ofs->close();
