@@ -25,8 +25,9 @@
 // Version "0.1"  on "Aug/11/2008"
 // Version "0.11" on "Aug/15/2008"
 // Version "0.2"  on "Oct/01/2008"
-#define QUESO_TOOLKIT_MCMC_TOOL_CURRENT_VERSION "0.20"
-#define QUESO_TOOLKIT_MCMC_TOOL_RELEASE_DATE    "Oct/01/2008"
+// Version "0.21" on "Oct/08/2008"
+#define QUESO_TOOLKIT_CURRENT_VERSION "0.21"
+#define QUESO_TOOLKIT_RELEASE_DATE    "Oct/08/2008"
 
 uqEnvOptionsStruct::uqEnvOptionsStruct(
   unsigned int verbosity,
@@ -132,8 +133,8 @@ uqEnvironmentClass::commonConstructor()
 
   if (m_rank == 0) {
     std::cout << "\n================================="
-              << "\n QUESO toolkit, MCMC tool, version " << QUESO_TOOLKIT_MCMC_TOOL_CURRENT_VERSION
-              << ", released on "                        << QUESO_TOOLKIT_MCMC_TOOL_RELEASE_DATE
+              << "\n QUESO toolkit, version " << QUESO_TOOLKIT_CURRENT_VERSION
+              << ", released on "             << QUESO_TOOLKIT_RELEASE_DATE
               << "\n================================="
               << "\n"
               << std::endl;

@@ -47,12 +47,12 @@ public:
         void         setPositionValues (unsigned int posId, const V& vec);
         void         setGaussian       (const gsl_rng* rng, const V& meanVec, const V& stdDevVec);
         void         setUniform        (const gsl_rng* rng, const V& aVec,    const V& bVec     );
-        void         uniformlySampledMdf(const V&                             numEvaluationPointsVec,
-                                         uqArrayOfOneDUniformGridsClass<V,M>& mdfGrids,
-                                         uqArrayOfScalarSetsClass      <V,M>& mdfValues) const;
-        void         uniformlySampledCdf(const V&                             numEvaluationPointsVec,
-                                         uqArrayOfOneDUniformGridsClass<V,M>& cdfGrids,
-                                         uqArrayOfScalarSetsClass      <V,M>& cdfValues) const;
+        void         uniformlySampledMdf(const V&                       numEvaluationPointsVec,
+                                         uqArrayOfOneDGridsClass <V,M>& mdfGrids,
+                                         uqArrayOfOneDTablesClass<V,M>& mdfValues) const;
+        void         uniformlySampledCdf(const V&                       numEvaluationPointsVec,
+                                         uqArrayOfOneDGridsClass <V,M>& cdfGrids,
+                                         uqArrayOfOneDTablesClass<V,M>& cdfValues) const;
 
         void         mean              (unsigned int              initialPos,
                                         unsigned int              numPos,
@@ -355,9 +355,9 @@ uqSequenceOfVectorsClass<V,M>::setUniform(const gsl_rng* rng, const V& aVec, con
 template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::uniformlySampledMdf(
-  const V&                             numEvaluationPointsVec,
-  uqArrayOfOneDUniformGridsClass<V,M>& mdfGrids,
-  uqArrayOfScalarSetsClass      <V,M>& mdfValues) const
+  const V&                       numEvaluationPointsVec,
+  uqArrayOfOneDGridsClass <V,M>& mdfGrids,
+  uqArrayOfOneDTablesClass<V,M>& mdfValues) const
 {
   V minDomainValues(m_vectorSpace.zeroVector());
   V maxDomainValues(m_vectorSpace.zeroVector());
@@ -378,11 +378,11 @@ uqSequenceOfVectorsClass<V,M>::uniformlySampledMdf(
                              minDomainValues[i],
                              maxDomainValues[i],
                              aMdf);
-    mdfValues.setScalarSet(i,aMdf);
+    mdfValues.setOneDTable(i,aMdf);
   }
-  mdfGrids.setGrids(numEvaluationPointsVec,
-                    minDomainValues,
-                    maxDomainValues);
+  mdfGrids.setUniformGrids(numEvaluationPointsVec,
+                           minDomainValues,
+                           maxDomainValues);
 
   return;
 }
@@ -390,9 +390,9 @@ uqSequenceOfVectorsClass<V,M>::uniformlySampledMdf(
 template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::uniformlySampledCdf(
-  const V&                             numEvaluationPointsVec,
-  uqArrayOfOneDUniformGridsClass<V,M>& cdfGrids,
-  uqArrayOfScalarSetsClass      <V,M>& cdfValues) const
+  const V&                       numEvaluationPointsVec,
+  uqArrayOfOneDGridsClass <V,M>& cdfGrids,
+  uqArrayOfOneDTablesClass<V,M>& cdfValues) const
 {
   V minDomainValues(m_vectorSpace.zeroVector());
   V maxDomainValues(m_vectorSpace.zeroVector());
@@ -413,11 +413,11 @@ uqSequenceOfVectorsClass<V,M>::uniformlySampledCdf(
                              minDomainValues[i],
                              maxDomainValues[i],
                              aCdf);
-    cdfValues.setScalarSet(i,aCdf);
+    cdfValues.setOneDTable(i,aCdf);
   }
-  cdfGrids.setGrids(numEvaluationPointsVec,
-                    minDomainValues,
-                    maxDomainValues);
+  cdfGrids.setUniformGrids(numEvaluationPointsVec,
+                           minDomainValues,
+                           maxDomainValues);
 
   return;
 }

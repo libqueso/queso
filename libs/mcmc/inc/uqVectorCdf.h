@@ -20,8 +20,8 @@
 #ifndef __UQ_VECTOR_CUMULATIVE_DISTRIBUTION_FUNCTION_H__
 #define __UQ_VECTOR_CUMULATIVE_DISTRIBUTION_FUNCTION_H__
 
-#include <uqArrayOfOneDUniformGrids.h>
-#include <uqArrayOfScalarSets.h>
+#include <uqArrayOfOneDGrids.h>
+#include <uqArrayOfOneDTables.h>
 #include <uqEnvironment.h>
 #include <math.h>
 
@@ -50,7 +50,7 @@ public:
           bool                     outOfDomainBounds(const V& v)      const;
   const   V&                       domainMinValues  ()                const;
   const   V&                       domainMaxValues  ()                const;
-  virtual void                     printContents    (std::ofstream& ofs) const = 0;
+  virtual void                     printContents    (std::ostream& os) const = 0;
 
 protected:
 
@@ -167,7 +167,7 @@ public:
  ~uqGenericVectorCdfClass();
 
   void values       (const V& paramValues, V& cdfVec) const;
-  void printContents(std::ofstream& ofs) const;
+  void printContents(std::ostream& os) const;
 
 protected:
   double (*m_routinePtr)(const V& paramValues, const void* routineDataPtr, V& cdfVec);
@@ -225,7 +225,7 @@ uqGenericVectorCdfClass<V,M>::values(
 
 template <class V, class M>
 void
-uqGenericVectorCdfClass<V,M>::printContents(std::ofstream& ofs) const
+uqGenericVectorCdfClass<V,M>::printContents(std::ostream& os) const
 {
   return;
 }
@@ -251,7 +251,7 @@ public:
  ~uqGaussianVectorCdfClass();
 
   void values       (const V& paramValues, V& cdfVec) const;
-  void printContents(std::ofstream& ofs) const;
+  void printContents(std::ostream& os) const;
 
 protected:
   const M*                         m_covMatrix;
@@ -351,7 +351,7 @@ uqGaussianVectorCdfClass<V,M>::values(
 
 template <class V, class M>
 void
-uqGaussianVectorCdfClass<V,M>::printContents(std::ofstream& ofs) const
+uqGaussianVectorCdfClass<V,M>::printContents(std::ostream& os) const
 {
   return;
 }
@@ -362,15 +362,15 @@ uqGaussianVectorCdfClass<V,M>::printContents(std::ofstream& ofs) const
 template<class V, class M>
 class uqSampledVectorCdfClass : public uqBaseVectorCdfClass<V,M> {
 public:
-  uqSampledVectorCdfClass(const char*                                prefix,
-                          const uqArrayOfOneDUniformGridsClass<V,M>& oneDGrids,
-                          const uqArrayOfScalarSetsClass      <V,M>& cdfValues);
+  uqSampledVectorCdfClass(const char*                          prefix,
+                          const uqArrayOfOneDGridsClass <V,M>& oneDGrids,
+                          const uqArrayOfOneDTablesClass<V,M>& cdfValues);
  ~uqSampledVectorCdfClass();
 
   void values       (const V& paramValues, V& cdfVec) const;
   double value      (unsigned int paramId, double paramValue) const;
   double inverse    (unsigned int paramId, double cdfValue  ) const;
-  void printContents(std::ofstream& ofs) const;
+  void printContents(std::ostream& os) const;
 
 protected:
   using uqBaseVectorCdfClass<V,M>::m_env;
@@ -379,17 +379,17 @@ protected:
   using uqBaseVectorCdfClass<V,M>::m_domainMinValues;
   using uqBaseVectorCdfClass<V,M>::m_domainMaxValues;
 
-  const uqArrayOfOneDUniformGridsClass<V,M>& m_oneDGrids;
-  const uqArrayOfScalarSetsClass      <V,M>& m_cdfValues;
+  const uqArrayOfOneDGridsClass <V,M>& m_oneDGrids;
+  const uqArrayOfOneDTablesClass<V,M>& m_cdfValues;
 };
 
 template<class V,class M>
 uqSampledVectorCdfClass<V,M>::uqSampledVectorCdfClass(
-  const char*                                prefix,
-  const uqArrayOfOneDUniformGridsClass<V,M>& oneDGrids,
-  const uqArrayOfScalarSetsClass      <V,M>& cdfValues)
+  const char*                           prefix,
+  const uqArrayOfOneDGridsClass <V,M>& oneDGrids,
+  const uqArrayOfOneDTablesClass<V,M>& cdfValues)
   :
-  uqBaseVectorCdfClass<V,M>(((std::string)(prefix)+"sam").c_str(),oneDGrids.rowSpace(),oneDGrids.minValues(),oneDGrids.maxValues()),
+  uqBaseVectorCdfClass<V,M>(((std::string)(prefix)+"sam").c_str(),oneDGrids.rowSpace(),oneDGrids.minPositions(),oneDGrids.maxPositions()),
   m_oneDGrids(oneDGrids),
   m_cdfValues(cdfValues)
 {
@@ -440,36 +440,13 @@ uqSampledVectorCdfClass<V,M>::inverse(unsigned int paramId, double cdfValue) con
 
 template <class V, class M>
 void
-uqSampledVectorCdfClass<V,M>::printContents(std::ofstream& ofs) const
+uqSampledVectorCdfClass<V,M>::printContents(std::ostream& os) const
 {
-  for (unsigned int i = 0; i < m_domainSpace.dim(); ++i) {
-    // Print values *of* grid points
-    std::vector<double> aGrid;
-    m_oneDGrids.getAGrid(i,aGrid);
-    ofs << m_prefix << i << "_grid = zeros(" << aGrid.size()
-        << ","                               << 1
-        << ");"
-        << std::endl;
-    ofs << m_prefix << i << "_grid = [";
-    for (unsigned int j = 0; j < aGrid.size(); ++j) {
-      ofs << aGrid[j] << " ";
-    }
-    ofs << "];"
-        << std::endl;
+  // Print values *of* grid points
+  os << m_oneDGrids;
 
-    // Print *cdf* values *at* grid points
-    const std::vector<double>& aSetOfCdfValues = m_cdfValues.scalarSet(i);
-    ofs << m_prefix << i << "_values = zeros(" << aSetOfCdfValues.size()
-        << ","                                 << 1
-        << ");"
-        << std::endl;
-    ofs << m_prefix << i << "_values = [";
-    for (unsigned int j = 0; j < aSetOfCdfValues.size(); ++j) {
-      ofs << aSetOfCdfValues[j] << " ";
-    }
-    ofs << "];"
-        << std::endl;
-  }
+  // Print *cdf* values *at* grid points
+  os << m_cdfValues;
 
   return;
 }

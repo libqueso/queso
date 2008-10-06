@@ -20,8 +20,8 @@
 #ifndef __UQ_VECTOR_MARGINAL_DENSITY_FUNCTION_H__
 #define __UQ_VECTOR_MARGINAL_DENSITY_FUNCTION_H__
 
-#include <uqArrayOfOneDUniformGrids.h>
-#include <uqArrayOfScalarSets.h>
+#include <uqArrayOfOneDGrids.h>
+#include <uqArrayOfOneDTables.h>
 #include <uqEnvironment.h>
 #include <math.h>
 
@@ -49,7 +49,7 @@ public:
           bool                     outOfDomainBounds(const V& v)      const;
   const   V&                       domainMinValues  ()                const;
   const   V&                       domainMaxValues  ()                const;
-  virtual void                     printContents    (std::ofstream& ofs) const = 0;
+  virtual void                     printContents    (std::ostream& os) const = 0;
 
 protected:
 
@@ -166,7 +166,7 @@ public:
  ~uqGenericVectorMdfClass();
 
   void values       (const V& paramValues, V& mdfVec) const;
-  void printContents(std::ofstream& ofs) const;
+  void printContents(std::ostream& os) const;
 
 protected:
   double (*m_routinePtr)(const V& paramValues, const void* routineDataPtr, V& mdfVec);
@@ -224,7 +224,7 @@ uqGenericVectorMdfClass<V,M>::values(
 
 template <class V, class M>
 void
-uqGenericVectorMdfClass<V,M>::printContents(std::ofstream& ofs) const
+uqGenericVectorMdfClass<V,M>::printContents(std::ostream& os) const
 {
   return;
 }
@@ -250,7 +250,7 @@ public:
  ~uqGaussianVectorMdfClass();
 
   void values       (const V& paramValues, V& mdfVec) const;
-  void printContents(std::ofstream& ofs) const;
+  void printContents(std::ostream& os) const;
 
 protected:
   const M*                         m_covMatrix;
@@ -350,7 +350,7 @@ uqGaussianVectorMdfClass<V,M>::values(
 
 template <class V, class M>
 void
-uqGaussianVectorMdfClass<V,M>::printContents(std::ofstream& ofs) const
+uqGaussianVectorMdfClass<V,M>::printContents(std::ostream& os) const
 {
   return;
 }
@@ -361,13 +361,13 @@ uqGaussianVectorMdfClass<V,M>::printContents(std::ofstream& ofs) const
 template<class V, class M>
 class uqSampledVectorMdfClass : public uqBaseVectorMdfClass<V,M> {
 public:
-  uqSampledVectorMdfClass(const char*                                prefix,
-                          const uqArrayOfOneDUniformGridsClass<V,M>& oneDGrids,
-                          const uqArrayOfScalarSetsClass      <V,M>& mdfValues);
+  uqSampledVectorMdfClass(const char*                          prefix,
+                          const uqArrayOfOneDGridsClass <V,M>& oneDGrids,
+                          const uqArrayOfOneDTablesClass<V,M>& mdfValues);
  ~uqSampledVectorMdfClass();
 
   void values       (const V& paramValues, V& mdfVec) const;
-  void printContents(std::ofstream& ofs) const;
+  void printContents(std::ostream& os) const;
 
 protected:
   using uqBaseVectorMdfClass<V,M>::m_env;
@@ -376,17 +376,17 @@ protected:
   using uqBaseVectorMdfClass<V,M>::m_domainMinValues;
   using uqBaseVectorMdfClass<V,M>::m_domainMaxValues;
 
-  const uqArrayOfOneDUniformGridsClass<V,M>& m_oneDGrids;
-  const uqArrayOfScalarSetsClass      <V,M>& m_mdfValues;
+  const uqArrayOfOneDGridsClass <V,M>& m_oneDGrids;
+  const uqArrayOfOneDTablesClass<V,M>& m_mdfValues;
 };
 
 template<class V,class M>
 uqSampledVectorMdfClass<V,M>::uqSampledVectorMdfClass(
-  const char*                                prefix,
-  const uqArrayOfOneDUniformGridsClass<V,M>& oneDGrids,
-  const uqArrayOfScalarSetsClass      <V,M>& mdfValues)
+  const char*                          prefix,
+  const uqArrayOfOneDGridsClass <V,M>& oneDGrids,
+  const uqArrayOfOneDTablesClass<V,M>& mdfValues)
   :
-  uqBaseVectorMdfClass<V,M>(((std::string)(prefix)+"sam").c_str(),oneDGrids.rowSpace(),oneDGrids.minValues(),oneDGrids.maxValues()),
+  uqBaseVectorMdfClass<V,M>(((std::string)(prefix)+"sam").c_str(),oneDGrids.rowSpace(),oneDGrids.minPositions(),oneDGrids.maxPositions()),
   m_oneDGrids(oneDGrids),
   m_mdfValues(mdfValues)
 {
@@ -423,36 +423,13 @@ uqSampledVectorMdfClass<V,M>::values(
 
 template <class V, class M>
 void
-uqSampledVectorMdfClass<V,M>::printContents(std::ofstream& ofs) const
+uqSampledVectorMdfClass<V,M>::printContents(std::ostream& os) const
 {
-  for (unsigned int i = 0; i < m_domainSpace.dim(); ++i) {
-    // Print values *of* grid points
-    std::vector<double> aGrid;
-    m_oneDGrids.getAGrid(i,aGrid);
-    ofs << m_prefix << i << "_grid = zeros(" << aGrid.size()
-        << ","                               << 1
-        << ");"
-        << std::endl;
-    ofs << m_prefix << i << "_grid = [";
-    for (unsigned int j = 0; j < aGrid.size(); ++j) {
-      ofs << aGrid[j] << " ";
-    }
-    ofs << "];"
-        << std::endl;
+  // Print values *of* grid points
+  os << m_oneDGrids;
 
-    // Print *mdf* values *at* grid points
-    const std::vector<double>& aSetOfMdfValues = m_mdfValues.scalarSet(i);
-    ofs << m_prefix << i << "_values = zeros(" << aSetOfMdfValues.size()
-        << ","                                 << 1
-        << ");"
-        << std::endl;
-    ofs << m_prefix << i << "_values = [";
-    for (unsigned int j = 0; j < aSetOfMdfValues.size(); ++j) {
-      ofs << aSetOfMdfValues[j] << " ";
-    }
-    ofs << "];"
-        << std::endl;
-  }
+  // Print *mdf* values *at* grid points
+  os << m_mdfValues;
 
   return;
 }

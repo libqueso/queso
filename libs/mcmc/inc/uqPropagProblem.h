@@ -55,38 +55,38 @@ private:
         void defineMyOptions    (po::options_description& optionsDesc);
         void getMyOptionValues  (po::options_description& optionsDesc);
 
-  const uqEnvironmentClass&                              m_env;
-        std::string                                      m_prefix;
+  const uqEnvironmentClass&                         m_env;
+        std::string                                 m_prefix;
 
-        po::options_description*                         m_optionsDesc;
-        std::string                                      m_option_help;
-	std::string                                      m_option_computeSolution;
-        std::string                                      m_option_outputFileName;
+        po::options_description*                    m_optionsDesc;
+        std::string                                 m_option_help;
+	std::string                                 m_option_computeSolution;
+        std::string                                 m_option_outputFileName;
 #ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
-        std::string                                      m_option_solver;
+        std::string                                 m_option_solver;
 #endif
 
-        bool                                             m_computeSolution;
-        std::string                                      m_outputFileName;
+        bool                                        m_computeSolution;
+        std::string                                 m_outputFileName;
 #ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
-	std::string                                      m_solverString;
+	std::string                                 m_solverString;
 #endif
 
-  const uqBaseVectorRVClass           <P_V,P_M>&         m_paramRv;
-  const uqBaseVectorFunctionClass     <P_V,P_M,Q_V,Q_M>& m_qoiFunction;
-        uqBaseVectorRVClass           <Q_V,Q_M>&         m_qoiRv;
+  const uqBaseVectorRVClass      <P_V,P_M>&         m_paramRv;
+  const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& m_qoiFunction;
+        uqBaseVectorRVClass      <Q_V,Q_M>&         m_qoiRv;
 
-        uqBaseVectorPdfClass          <Q_V,Q_M>*         m_solutionPdf;
-        uqBaseVectorMdfClass          <Q_V,Q_M>*         m_solutionMdf;
-        uqBaseVectorCdfClass          <Q_V,Q_M>*         m_solutionCdf;
-        uqBaseVectorRealizerClass     <Q_V,Q_M>*         m_solutionRealizer;
+        uqBaseVectorPdfClass     <Q_V,Q_M>*         m_solutionPdf;
+        uqBaseVectorMdfClass     <Q_V,Q_M>*         m_solutionMdf;
+        uqBaseVectorCdfClass     <Q_V,Q_M>*         m_solutionCdf;
+        uqBaseVectorRealizerClass<Q_V,Q_M>*         m_solutionRealizer;
 
-        uqMonteCarloSGClass           <P_V,P_M,Q_V,Q_M>* m_mcSeqGenerator;
-        uqBaseVectorSequenceClass     <Q_V,Q_M>*         m_chain;
-        uqArrayOfOneDUniformGridsClass<Q_V,Q_M>*         m_mdfGrids;
-        uqArrayOfScalarSetsClass      <Q_V,Q_M>*         m_mdfValues;
-        uqArrayOfOneDUniformGridsClass<Q_V,Q_M>*         m_cdfGrids;
-        uqArrayOfScalarSetsClass      <Q_V,Q_M>*         m_cdfValues;
+        uqMonteCarloSGClass      <P_V,P_M,Q_V,Q_M>* m_mcSeqGenerator;
+        uqBaseVectorSequenceClass<Q_V,Q_M>*         m_chain;
+        uqArrayOfOneDGridsClass  <Q_V,Q_M>*         m_mdfGrids;
+        uqArrayOfOneDTablesClass <Q_V,Q_M>*         m_mdfValues;
+        uqArrayOfOneDGridsClass  <Q_V,Q_M>*         m_cdfGrids;
+        uqArrayOfOneDTablesClass <Q_V,Q_M>*         m_cdfValues;
 };
 
 template<class P_V,class P_M,class Q_V,class Q_M>
@@ -231,8 +231,8 @@ uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   m_qoiRv.setRealizer(*m_solutionRealizer);
 
   // Compute output mdf: uniform sampling approach
-  m_mdfGrids  = new uqArrayOfOneDUniformGridsClass<Q_V,Q_M>(m_qoiRv.imageSpace());
-  m_mdfValues = new uqArrayOfScalarSetsClass      <Q_V,Q_M>(m_qoiRv.imageSpace());
+  m_mdfGrids  = new uqArrayOfOneDGridsClass <Q_V,Q_M>((m_prefix+"mdf_").c_str(),m_qoiRv.imageSpace());
+  m_mdfValues = new uqArrayOfOneDTablesClass<Q_V,Q_M>((m_prefix+"mdf_").c_str(),m_qoiRv.imageSpace());
   Q_V* numIntervalsVec = m_qoiRv.imageSpace().newVector(250.);
   m_chain->uniformlySampledMdf(*numIntervalsVec, // input
                                *m_mdfGrids,      // output
@@ -244,8 +244,8 @@ uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   m_qoiRv.setMdf(*m_solutionMdf);
 
   // Compute output cdf: uniform sampling approach
-  m_cdfGrids  = new uqArrayOfOneDUniformGridsClass<Q_V,Q_M>(m_qoiRv.imageSpace());
-  m_cdfValues = new uqArrayOfScalarSetsClass      <Q_V,Q_M>(m_qoiRv.imageSpace());
+  m_cdfGrids  = new uqArrayOfOneDGridsClass <Q_V,Q_M>((m_prefix+"cdf_").c_str(),m_qoiRv.imageSpace());
+  m_cdfValues = new uqArrayOfOneDTablesClass<Q_V,Q_M>((m_prefix+"cdf_").c_str(),m_qoiRv.imageSpace());
   numIntervalsVec = m_qoiRv.imageSpace().newVector(250.);
   m_chain->uniformlySampledCdf(*numIntervalsVec, // input
                                *m_cdfGrids,      // output

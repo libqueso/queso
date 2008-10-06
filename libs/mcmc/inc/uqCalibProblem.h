@@ -57,36 +57,36 @@ private:
         void defineMyOptions          (po::options_description& optionsDesc);
         void getMyOptionValues        (po::options_description& optionsDesc);
 
-  const uqEnvironmentClass&                      m_env;
-        std::string                              m_prefix;
+  const uqEnvironmentClass&                  m_env;
+        std::string                          m_prefix;
 
-        po::options_description*                 m_optionsDesc;
-        std::string                              m_option_help;
-	std::string                              m_option_computeSolution;
-        std::string                              m_option_outputFileName;
+        po::options_description*             m_optionsDesc;
+        std::string                          m_option_help;
+	std::string                          m_option_computeSolution;
+        std::string                          m_option_outputFileName;
 #ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
-        std::string                              m_option_solver;
+        std::string                          m_option_solver;
 #endif
 
-        bool                                     m_computeSolution;
-        std::string                              m_outputFileName;
+        bool                                 m_computeSolution;
+        std::string                          m_outputFileName;
 #ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
-	std::string                              m_solverString;
+	std::string                          m_solverString;
 #endif
 
-  const uqBaseVectorRVClass           <P_V,P_M>& m_priorRv;
-  const uqBaseVectorPdfClass          <P_V,P_M>& m_likelihoodFunction;
-        uqBaseVectorRVClass           <P_V,P_M>& m_postRv;
+  const uqBaseVectorRVClass       <P_V,P_M>& m_priorRv;
+  const uqBaseVectorPdfClass      <P_V,P_M>& m_likelihoodFunction;
+        uqBaseVectorRVClass       <P_V,P_M>& m_postRv;
 
-        uqBaseVectorPdfClass          <P_V,P_M>* m_solutionPdf;
-        uqBaseVectorMdfClass          <P_V,P_M>* m_solutionMdf;
-        uqBaseVectorCdfClass          <P_V,P_M>* m_solutionCdf;
-        uqBaseVectorRealizerClass     <P_V,P_M>* m_solutionRealizer;
+        uqBaseVectorPdfClass      <P_V,P_M>* m_solutionPdf;
+        uqBaseVectorMdfClass      <P_V,P_M>* m_solutionMdf;
+        uqBaseVectorCdfClass      <P_V,P_M>* m_solutionCdf;
+        uqBaseVectorRealizerClass <P_V,P_M>* m_solutionRealizer;
 
-        uqMarkovChainSGClass          <P_V,P_M>* m_mcSeqGenerator;
-        uqBaseVectorSequenceClass     <P_V,P_M>* m_chain;
-        uqArrayOfOneDUniformGridsClass<P_V,P_M>* m_mdfGrids;
-        uqArrayOfScalarSetsClass      <P_V,P_M>* m_mdfValues;
+        uqMarkovChainSGClass      <P_V,P_M>* m_mcSeqGenerator;
+        uqBaseVectorSequenceClass <P_V,P_M>* m_chain;
+        uqArrayOfOneDGridsClass   <P_V,P_M>* m_mdfGrids;
+        uqArrayOfOneDTablesClass  <P_V,P_M>* m_mdfValues;
 };
 
 template<class P_V,class P_M>
@@ -243,8 +243,8 @@ uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   m_postRv.setRealizer(*m_solutionRealizer);
 
   // Compute output mdf: uniform sampling approach
-  m_mdfGrids  = new uqArrayOfOneDUniformGridsClass<P_V,P_M>(m_postRv.imageSpace());
-  m_mdfValues = new uqArrayOfScalarSetsClass      <P_V,P_M>(m_postRv.imageSpace());
+  m_mdfGrids  = new uqArrayOfOneDGridsClass <P_V,P_M>((m_prefix+"mdf_").c_str(),m_postRv.imageSpace());
+  m_mdfValues = new uqArrayOfOneDTablesClass<P_V,P_M>((m_prefix+"mdf_").c_str(),m_postRv.imageSpace());
   P_V* numIntervalsVec = m_postRv.imageSpace().newVector(250.);
   m_chain->uniformlySampledMdf(*numIntervalsVec, // input
                                *m_mdfGrids,      // output
