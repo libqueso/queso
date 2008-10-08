@@ -53,7 +53,7 @@ uqBaseOneDGridClass<T>::uqBaseOneDGridClass(
   const char*               prefix)
   :
   m_env   (env),
-  m_prefix((std::string)(prefix)+"")
+  m_prefix((std::string)(prefix)+"grid")
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqBaseOneDGridClass<T>::constructor()"
@@ -79,7 +79,7 @@ uqBaseOneDGridClass<T>::print(std::ostream& os) const
 {
   // Print values *of* grid points
   os << m_prefix << " = zeros(" << this->size()
-     << ","                          << 1
+     << ","                     << 1
      << ");"
      << std::endl;
   os << m_prefix << " = [";
@@ -133,7 +133,7 @@ uqUniformOneDGridClass<T>::uqUniformOneDGridClass(
         T                   minPosition,
         T                   maxPosition)
   :
-  uqBaseOneDGridClass<T>(env,((std::string)(prefix)+"ugrid").c_str()),
+  uqBaseOneDGridClass<T>(env,prefix),
   m_size       (size),
   m_minPosition(minPosition),
   m_maxPosition(maxPosition)

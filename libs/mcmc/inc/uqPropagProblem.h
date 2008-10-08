@@ -46,6 +46,7 @@ public:
                              uqBaseVectorRVClass      <Q_V,Q_M>&         qoiRV);
  ~uqPropagProblemClass();
 
+        bool computeSolutionFlag() const;
         void solveWithMonteCarlo();
 
         void print              (std::ostream& os) const;
@@ -200,6 +201,13 @@ void
   return;
 }
 
+template <class P_V,class P_M, class Q_V, class Q_M>
+bool
+  uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::computeSolutionFlag() const
+{
+  return m_computeSolution;
+}
+
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
@@ -207,7 +215,7 @@ uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   if (m_computeSolution == false) {
     if ((m_env.rank() == 0)) {
       std::cout << "In uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
-                << ": computeping solution, as requested by user"
+                << ": computing solution, as requested by user"
                 << std::endl;
     }
     return;

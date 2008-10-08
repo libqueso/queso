@@ -47,6 +47,7 @@ public:
                             uqBaseVectorRVClass <P_V,P_M>& postRv);
  ~uqCalibProblemClass();
 
+        bool computeSolutionFlag      () const;
         void solveWithBayesMarkovChain(const P_V& initialValues,
                                        const P_M& proposalCovMatrix,
                                        void*      transitionKernel);
@@ -203,6 +204,13 @@ void
 }
 
 template <class P_V,class P_M>
+bool
+uqCalibProblemClass<P_V,P_M>::computeSolutionFlag() const
+{
+  return m_computeSolution;
+}
+
+template <class P_V,class P_M>
 void
 uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   const P_V& initialValues,
@@ -212,7 +220,7 @@ uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   if (m_computeSolution == false) {
     if ((m_env.rank() == 0)) {
       std::cout << "In uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain()"
-                << ": computeping solution, as requested by user"
+                << ": computing solution, as requested by user"
                 << std::endl;
     }
     return;

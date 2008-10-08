@@ -147,7 +147,7 @@ template <class V, class M>
 }
 
 //*****************************************************
-// Generic probability distibution function class
+// Generic cumulative distibution function class
 //*****************************************************
 template<class V, class M>
 class uqGenericVectorCdfClass : public uqBaseVectorCdfClass<V,M> {
@@ -229,7 +229,7 @@ uqGenericVectorCdfClass<V,M>::print(std::ostream& os) const
 }
 
 //*****************************************************
-// Gaussian probability distribution function class
+// Gaussian cumulative distribution function class
 //*****************************************************
 template<class V, class M>
 class uqGaussianVectorCdfClass : public uqBaseVectorCdfClass<V,M> {
@@ -355,7 +355,7 @@ uqGaussianVectorCdfClass<V,M>::print(std::ostream& os) const
 }
 
 //*****************************************************
-// Sampled probability distribution function class
+// Sampled cumulative distribution function class
 //*****************************************************
 template<class V, class M>
 class uqSampledVectorCdfClass : public uqBaseVectorCdfClass<V,M> {

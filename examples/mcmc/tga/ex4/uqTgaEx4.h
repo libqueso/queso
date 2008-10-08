@@ -52,10 +52,10 @@ template<class P_V, class P_M>
 struct
 calibLikelihoodRoutine_DataType
 {
-  double               beta1;
-  double               variance1;
-  std::vector<double>* Te1; // temperatures
-  std::vector<double>* Me1; // relative masses
+  double               beta;
+  double               variance;
+  std::vector<double>* Te; // temperatures
+  std::vector<double>* Me; // relative masses
 };
 
 // The actual (user defined) likelihood routine
@@ -65,13 +65,13 @@ calibLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 {
   double A                       = paramValues[0];
   double E                       = paramValues[1];
-  double beta1                   =  ((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta1;
-  double variance1               =  ((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->variance1;
-  const std::vector<double>& Te1 = *((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Te1;
-  const std::vector<double>& Me1 = *((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Me1;
-  std::vector<double> Mt1(Me1.size(),0.);
+  double beta                    =  ((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta;
+  double variance                =  ((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->variance;
+  const std::vector<double>& Te  = *((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Te;
+  const std::vector<double>& Me  = *((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Me;
+  std::vector<double> Mt(Me.size(),0.);
 
-  double params[]={A,E,beta1};
+  double params[]={A,E,beta};
       	
   // integration
   const gsl_odeiv_step_type *T   = gsl_odeiv_step_rkf45; //rkf45; //gear1;
@@ -80,7 +80,7 @@ calibLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
         gsl_odeiv_evolve    *e   = gsl_odeiv_evolve_alloc(1);
         gsl_odeiv_system     sys = {func, NULL, 1, (void *)params}; 
 	
-  double t = 0.1, t1 = 800.;
+  double t = 0.1, t1 = 1900.;
   double h = 1e-3;
   double Mass[1];
   Mass[0]=1.;
@@ -90,9 +90,9 @@ calibLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
   double M_old[1];
   M_old[0]=1.;
 	
-  double misfit1=0.;
+  double misfit=0.;
   //unsigned int loopSize = 0;
-  while (t < t1) {
+  while ((t < t1) && (i < Me.size())) {
     int status = gsl_odeiv_evolve_apply(e, c, s, &sys, &t, t1, &h, Mass);
     UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
                         paramValues.env().rank(),
@@ -101,21 +101,21 @@ calibLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
     //printf("t = %6.1lf, mass = %10.4lf\n",t,Mass[0]);
     //loopSize++;
 		
-    while ( (t_old <= Te1[i]) && (Te1[i] <= t) ) {
-      Mt1[i] = (Te1[i]-t_old)*(Mass[0]-M_old[0])/(t-t_old) + M_old[0];
-      misfit1 += (Me1[i]-Mt1[i])*(Me1[i]-Mt1[i]);
-      //printf("%i %lf %lf %lf %lf\n",i,Te1[i],Me1[i],Mt1[i],misfit1);
+    while ( (i < Me.size()) && (t_old <= Te[i]) && (Te[i] <= t) ) {
+      Mt[i] = (Te[i]-t_old)*(Mass[0]-M_old[0])/(t-t_old) + M_old[0];
+      misfit += (Me[i]-Mt[i])*(Me[i]-Mt[i]);
+      //printf("%i %lf %lf %lf %lf\n",i,Te[i],Me[i],Mt[i],misfit);
       i++;
     }
 		
     t_old=t;
     M_old[0]=Mass[0];
   }
-  double resultValue = misfit1/variance1;
+  double resultValue = misfit/variance;
 	
   //printf("loopSize = %d\n",loopSize);
   if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
-    printf("In calibLikelihoodRoutine(), A = %g, E = %g, beta1 = %.3lf: misfit1 = %lf, likelihood1 = %lf.\n",A,E,beta1,misfit1,resultValue);
+    printf("In calibLikelihoodRoutine(), A = %g, E = %g, beta = %.3lf: misfit = %lf, likelihood = %lf.\n",A,E,beta,misfit,resultValue);
   }
 
   gsl_odeiv_evolve_free (e);
@@ -135,8 +135,8 @@ template<class P_V,class P_M,class Q_V, class Q_M>
 struct
 propagQoiRoutine_DataType
 {
-  double beta1;
-  double criticalMass1;
+  double beta;
+  double criticalMass;
 };
 
 // The actual (user defined) qoi routine
@@ -145,10 +145,10 @@ void propagQoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& 
 {
   double A             = paramValues[0];
   double E             = paramValues[1];
-  double beta1         = ((propagQoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->beta1;
-  double criticalMass1 = ((propagQoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->criticalMass1;
+  double beta          = ((propagQoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->beta;
+  double criticalMass  = ((propagQoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->criticalMass;
 
-  double params[]={A,E,beta1};
+  double params[]={A,E,beta};
       	
   // integration
   const gsl_odeiv_step_type *T   = gsl_odeiv_step_rkf45; //rkf45; //gear1;
@@ -157,7 +157,7 @@ void propagQoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& 
         gsl_odeiv_evolve    *e   = gsl_odeiv_evolve_alloc(1);
         gsl_odeiv_system     sys = {func, NULL, 1, (void *)params}; 
 	
-  double t = 0.1, t1 = 800.;
+  double t = 0.1, t1 = 1100.;
   double h = 1e-3;
   double Mass[1];
   Mass[0]=1.;
@@ -168,8 +168,8 @@ void propagQoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& 
 	
   double crossingTemperature = 0.;
   //unsigned int loopSize = 0;
-  while ((t       < t1           ) &&
-         (Mass[0] > criticalMass1)) {
+  while ((t       < t1          ) &&
+         (Mass[0] > criticalMass)) {
     int status = gsl_odeiv_evolve_apply(e, c, s, &sys, &t, t1, &h, Mass);
     UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
                         paramValues.env().rank(),
@@ -178,19 +178,19 @@ void propagQoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& 
     //printf("t = %6.1lf, mass = %10.4lf\n",t,Mass[0]);
     //loopSize++;
 
-    if (Mass[0] <= criticalMass1) {
-      crossingTemperature = t_old + (t - t_old) * (M_old[0]-criticalMass1)/(M_old[0]-Mass[0]);
+    if (Mass[0] <= criticalMass) {
+      crossingTemperature = t_old + (t - t_old) * (M_old[0]-criticalMass)/(M_old[0]-Mass[0]);
     }
 		
     t_old=t;
     M_old[0]=Mass[0];
   }
 
-  qoiValues[0] = crossingTemperature/beta1;
+  qoiValues[0] = crossingTemperature/beta;
 	
   //printf("loopSize = %d\n",loopSize);
   if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
-    printf("In propagQoiRoutine(), A = %g, E = %g, beta1 = %.3lf, criticalMass1 = %.3lf: qoi = %lf.\n",A,E,beta1,criticalMass1,qoiValues[0]);
+    printf("In propagQoiRoutine(), A = %g, E = %g, beta = %.3lf, criticalMass = %.3lf: qoi = %lf.\n",A,E,beta,criticalMass,qoiValues[0]);
   }
 
   gsl_odeiv_evolve_free (e);
@@ -253,6 +253,9 @@ uqAppl(const uqEnvironmentClass& env)
   // Step I.1 of 3: Code very specific to this TGA example
   //*****************************************************
 
+  double beta3         = 50.;
+  double criticalMass3 = .25;
+
   // Open input file on experimental data
   FILE *inp;
   inp = fopen("s1_global4.dat","r");
@@ -311,10 +314,10 @@ uqAppl(const uqEnvironmentClass& env)
 
   // Stage I (s1): 1Likelihood function object: -2*ln[likelihood]
   calibLikelihoodRoutine_DataType<P_V,P_M> s1_calibLikelihoodRoutine_Data;
-  s1_calibLikelihoodRoutine_Data.beta1     = beta1;
-  s1_calibLikelihoodRoutine_Data.variance1 = variance1;
-  s1_calibLikelihoodRoutine_Data.Te1       = &Te1; // temperatures
-  s1_calibLikelihoodRoutine_Data.Me1       = &Me1; // relative masses
+  s1_calibLikelihoodRoutine_Data.beta     = beta1;
+  s1_calibLikelihoodRoutine_Data.variance = variance1;
+  s1_calibLikelihoodRoutine_Data.Te       = &Te1; // temperatures
+  s1_calibLikelihoodRoutine_Data.Me       = &Me1; // relative masses
   uqGenericVectorPdfClass<P_V,P_M> s1_calibLikelihoodFunctionObj("s1_cal_prior_like_", // Extra prefix before the default "genpd_" prefix
                                                                  paramSpace,
                                                                  calibLikelihoodRoutine<P_V,P_M>,
@@ -346,8 +349,8 @@ uqAppl(const uqEnvironmentClass& env)
 
   // Stage I (s1): Qoi function object
   propagQoiRoutine_DataType<P_V,P_M,Q_V,Q_M> s1_propagQoiRoutine_Data;
-  s1_propagQoiRoutine_Data.beta1         = beta1;
-  s1_propagQoiRoutine_Data.criticalMass1 = criticalMass1;
+  s1_propagQoiRoutine_Data.beta         = beta3;
+  s1_propagQoiRoutine_Data.criticalMass = criticalMass3;
   uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M> s1_propagQoiFunctionObj("s1_pro_qoi_", // Extra prefix before the default "func_" prefix
                                                                         paramSpace,
                                                                         qoiSpace,
@@ -375,26 +378,25 @@ uqAppl(const uqEnvironmentClass& env)
   inp = fopen("s2_global4.dat","r");
 
   // Read kinetic parameters and convert heating rate to K/s
-  fscanf(inp,"%lf %lf %lf %lf %lf",&tmpA,&tmpE,&beta1,&variance1,&criticalMass1);
-  beta1 /= 60.;
+  double beta2, variance2, criticalMass2;
+  fscanf(inp,"%lf %lf %lf %lf %lf",&tmpA,&tmpE,&beta2,&variance2,&criticalMass2);
+  beta2 /= 60.;
   
   // Read experimental data
-  Te1.clear();
-  Te1.resize(11,0.);
-  Me1.clear();
-  Me1.resize(11,0.);
+  std::vector<double> Te2(11,0.);
+  std::vector<double> Me2(11,0.);
 
   numObservations = 0;
   while (fscanf(inp,"%lf %lf",&tmpTe,&tmpMe) != EOF) {
-    UQ_FATAL_TEST_MACRO((numObservations >= Te1.size()),
+    UQ_FATAL_TEST_MACRO((numObservations >= Te2.size()),
                         env.rank(),
                         "uqAppl(), in uqTgaEx.h",
                         "input file has too many observations");
-    Te1[numObservations] = tmpTe;
-    Me1[numObservations] = tmpMe;
+    Te2[numObservations] = tmpTe;
+    Me2[numObservations] = tmpMe;
     numObservations++;
   }
-  UQ_FATAL_TEST_MACRO((numObservations != Te1.size()),
+  UQ_FATAL_TEST_MACRO((numObservations != Te2.size()),
                       env.rank(),
                       "uqAppl(), in uqTgaEx.h",
                       "input file has a smaller number of observations than expected");
@@ -410,10 +412,10 @@ uqAppl(const uqEnvironmentClass& env)
 
   // Stage II (s2): 1Likelihood function object: -2*ln[likelihood]
   calibLikelihoodRoutine_DataType<P_V,P_M> s2_calibLikelihoodRoutine_Data;
-  s2_calibLikelihoodRoutine_Data.beta1     = beta1;
-  s2_calibLikelihoodRoutine_Data.variance1 = variance1;
-  s2_calibLikelihoodRoutine_Data.Te1       = &Te1; // temperatures
-  s2_calibLikelihoodRoutine_Data.Me1       = &Me1; // relative masses
+  s2_calibLikelihoodRoutine_Data.beta     = beta2;
+  s2_calibLikelihoodRoutine_Data.variance = variance2;
+  s2_calibLikelihoodRoutine_Data.Te       = &Te2; // temperatures
+  s2_calibLikelihoodRoutine_Data.Me       = &Me2; // relative masses
   uqGenericVectorPdfClass<P_V,P_M> s2_calibLikelihoodFunctionObj("s2_cal_prior_like_", // Extra prefix before the default "genpd_" prefix
                                                                  paramSpace,
                                                                  calibLikelihoodRoutine<P_V,P_M>,
@@ -445,8 +447,8 @@ uqAppl(const uqEnvironmentClass& env)
 
   // Stage II (s2): Qoi function object
   propagQoiRoutine_DataType<P_V,P_M,Q_V,Q_M> s2_propagQoiRoutine_Data;
-  s2_propagQoiRoutine_Data.beta1         = beta1;
-  s2_propagQoiRoutine_Data.criticalMass1 = criticalMass1;
+  s2_propagQoiRoutine_Data.beta          = beta3;
+  s2_propagQoiRoutine_Data.criticalMass  = criticalMass3;
   uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M> s2_propagQoiFunctionObj("s2_pro_qoi_", // Extra prefix before the default "func_" prefix
                                                                         paramSpace,
                                                                         qoiSpace,
@@ -469,29 +471,32 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
   // Step III.1 of 1: compare the cdf's of stages I and II
   //******************************************************
-  Q_V* epsilonVec = s1_propagQoiRv.imageSpace().newVector(0.02);
-  Q_V cdfDistancesVec(s1_propagQoiRv.imageSpace().zeroVector());
-  horizontalDistances(s1_propagQoiRv.cdf(),
-                      s2_propagQoiRv.cdf(),
-                      *epsilonVec,
-                      cdfDistancesVec);
-  if (env.rank() == 0) {
-    std::cout << "For epsilonVec = "    << *epsilonVec
-              << ", cdfDistancesVec = " << cdfDistancesVec
-              << std::endl;
-  }
+  if (s1_propagProblem.computeSolutionFlag() &&
+      s2_propagProblem.computeSolutionFlag()) {
+    Q_V* epsilonVec = s1_propagQoiRv.imageSpace().newVector(0.02);
+    Q_V cdfDistancesVec(s1_propagQoiRv.imageSpace().zeroVector());
+    horizontalDistances(s1_propagQoiRv.cdf(),
+                        s2_propagQoiRv.cdf(),
+                        *epsilonVec,
+                        cdfDistancesVec);
+    if (env.rank() == 0) {
+      std::cout << "For epsilonVec = "    << *epsilonVec
+                << ", cdfDistancesVec = " << cdfDistancesVec
+                << std::endl;
+    }
 
-  // Test independence of 'distance' w.r.t. order of cdfs
-  horizontalDistances(s2_propagQoiRv.cdf(),
-                      s1_propagQoiRv.cdf(),
-                      *epsilonVec,
-                      cdfDistancesVec);
-  if (env.rank() == 0) {
-    std::cout << "For epsilonVec = "    << *epsilonVec
-              << ", cdfDistancesVec (swithced order of cdfs) = " << cdfDistancesVec
-              << std::endl;
+    // Test independence of 'distance' w.r.t. order of cdfs
+    horizontalDistances(s2_propagQoiRv.cdf(),
+                        s1_propagQoiRv.cdf(),
+                        *epsilonVec,
+                        cdfDistancesVec);
+    if (env.rank() == 0) {
+      std::cout << "For epsilonVec = "    << *epsilonVec
+                << ", cdfDistancesVec (swithced order of cdfs) = " << cdfDistancesVec
+                << std::endl;
+    }
+    delete epsilonVec;
   }
-  delete epsilonVec;
 
   //******************************************************
   // Release memory before leaving routine.
