@@ -249,12 +249,20 @@ uqAppl(const uqEnvironmentClass& env)
 
   const EpetraExt::DistArray<std::string>& qoiNames = proTable.stringColumn(0);
 
+  double beta3         = 50.;
+  double criticalMass3 = .25;
+
   //*****************************************************
   // Step I.1 of 3: Code very specific to this TGA example
   //*****************************************************
 
-  double beta3         = 50.;
-  double criticalMass3 = .25;
+  int iRC;
+  struct timeval timevalRef;
+  iRC = gettimeofday(&timevalRef, NULL);
+  if (env.rank() == 0) {
+    std::cout << "Beginning stage 1 at " << ctime(&timevalRef.tv_sec)
+              << std::endl;
+  }
 
   // Open input file on experimental data
   FILE *inp;
@@ -370,9 +378,24 @@ uqAppl(const uqEnvironmentClass& env)
   // Stage I (s1): Solve the propagation problem: set 'realizer' and 'cdf' of 's1_propagQoiRv'
   s1_propagProblem.solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
 
+  struct timeval timevalNow;
+  iRC = gettimeofday(&timevalNow, NULL);
+  if (env.rank() == 0) {
+    std::cout << "Ending stage 1 at " << ctime(&timevalNow.tv_sec)
+              << "Total s1 run time = " << timevalNow.tv_sec - timevalRef.tv_sec
+              << " seconds"
+              << std::endl;
+  }
+
   //*****************************************************
   // Step II.1 of 3: Code very specific to this TGA example
   //*****************************************************
+
+  iRC = gettimeofday(&timevalRef, NULL);
+  if (env.rank() == 0) {
+    std::cout << "Beginning stage 2 at " << ctime(&timevalRef.tv_sec)
+              << std::endl;
+  }
 
   // Open input file on experimental data
   inp = fopen("s2_global4.dat","r");
@@ -468,9 +491,24 @@ uqAppl(const uqEnvironmentClass& env)
   // Stage II (s2): Solve the propagation problem
   s2_propagProblem.solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
 
+  iRC = gettimeofday(&timevalNow, NULL);
+  if (env.rank() == 0) {
+    std::cout << "Ending stage 2 at " << ctime(&timevalNow.tv_sec)
+              << "Total s2 run time = " << timevalNow.tv_sec - timevalRef.tv_sec
+              << " seconds"
+              << std::endl;
+  }
+
   //******************************************************
   // Step III.1 of 1: compare the cdf's of stages I and II
   //******************************************************
+
+  iRC = gettimeofday(&timevalRef, NULL);
+  if (env.rank() == 0) {
+    std::cout << "Beginning stage 3 at " << ctime(&timevalRef.tv_sec)
+              << std::endl;
+  }
+
   if (s1_propagProblem.computeSolutionFlag() &&
       s2_propagProblem.computeSolutionFlag()) {
     Q_V* epsilonVec = s1_propagQoiRv.imageSpace().newVector(0.02);
@@ -495,7 +533,64 @@ uqAppl(const uqEnvironmentClass& env)
                 << ", cdfDistancesVec (swithced order of cdfs) = " << cdfDistancesVec
                 << std::endl;
     }
+
+    // Epsilon = 0.04
+    epsilonVec->cwSet(0.04);
+    horizontalDistances(s1_propagQoiRv.cdf(),
+                        s2_propagQoiRv.cdf(),
+                        *epsilonVec,
+                        cdfDistancesVec);
+    if (env.rank() == 0) {
+      std::cout << "For epsilonVec = "    << *epsilonVec
+                << ", cdfDistancesVec = " << cdfDistancesVec
+                << std::endl;
+    }
+
+    // Epsilon = 0.06
+    epsilonVec->cwSet(0.06);
+    horizontalDistances(s1_propagQoiRv.cdf(),
+                        s2_propagQoiRv.cdf(),
+                        *epsilonVec,
+                        cdfDistancesVec);
+    if (env.rank() == 0) {
+      std::cout << "For epsilonVec = "    << *epsilonVec
+                << ", cdfDistancesVec = " << cdfDistancesVec
+                << std::endl;
+    }
+
+    // Epsilon = 0.08
+    epsilonVec->cwSet(0.08);
+    horizontalDistances(s1_propagQoiRv.cdf(),
+                        s2_propagQoiRv.cdf(),
+                        *epsilonVec,
+                        cdfDistancesVec);
+    if (env.rank() == 0) {
+      std::cout << "For epsilonVec = "    << *epsilonVec
+                << ", cdfDistancesVec = " << cdfDistancesVec
+                << std::endl;
+    }
+
+    // Epsilon = 0.10
+    epsilonVec->cwSet(0.10);
+    horizontalDistances(s1_propagQoiRv.cdf(),
+                        s2_propagQoiRv.cdf(),
+                        *epsilonVec,
+                        cdfDistancesVec);
+    if (env.rank() == 0) {
+      std::cout << "For epsilonVec = "    << *epsilonVec
+                << ", cdfDistancesVec = " << cdfDistancesVec
+                << std::endl;
+    }
+
     delete epsilonVec;
+  }
+
+  iRC = gettimeofday(&timevalNow, NULL);
+  if (env.rank() == 0) {
+    std::cout << "Ending stage 3 at " << ctime(&timevalNow.tv_sec)
+              << "Total s3 run time = " << timevalNow.tv_sec - timevalRef.tv_sec
+              << " seconds"
+              << std::endl;
   }
 
   //******************************************************

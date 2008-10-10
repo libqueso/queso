@@ -335,13 +335,21 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
                       m_env.rank(),
                       "uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()",
                       "initial position should not be out of bound");
+  if (m_env.rank() == 0) {
+    std::cout << "In uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()"
+              << ": contents of initial position are:\n";
+  }
+  std::cout << valuesOf1stPosition;
+  if (m_env.rank() == 0) {
+    std::cout << std::endl;
+  }
   if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalTargetD, NULL);
   double logTarget = -0.5 * m_targetPdf.minus2LnDensity(valuesOf1stPosition);
   if (m_chainMeasureRunTimes) targetDRunTime += uqMiscGetEllapsedSeconds(&timevalTargetD);
   uqMarkovChainPositionClass<P_V> currentPosition(m_env,
-                                            valuesOf1stPosition,
-                                            outOfDomainBounds,
-                                            logTarget);
+                                                  valuesOf1stPosition,
+                                                  outOfDomainBounds,
+                                                  logTarget);
 
   P_V gaussianVector(m_vectorSpace.zeroVector());
   P_V tmpVecValues(m_vectorSpace.zeroVector());
