@@ -9,7 +9,7 @@
  * 
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
@@ -45,7 +45,7 @@ double calib_M2lPriorRoutine(const P_V& paramValues, const void* functionDataPtr
   UQ_FATAL_TEST_MACRO(true,
                       paramValues.env().rank(),
                       "calib_M2lPriorRoutine(), in uqEtcEx.h",
-                      "should not be here, since application is using the default prior() routine provided by PECOS toolkit");
+                      "should not be here, since application is using the default prior() routine provided by QUESO toolkit");
 
   return (m1 * v1).sumOfComponents();
 }

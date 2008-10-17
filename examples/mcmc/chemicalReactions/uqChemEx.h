@@ -1,6 +1,6 @@
 /* uq/examples/mcmc/chemicalReactions/uqChemEx.h
  *
- * Copyright (C) 2008 The PECOS Team, http://queso.ices.utexas.edu
+ * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -9,7 +9,7 @@
  * 
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
@@ -62,7 +62,7 @@ calib_M2lPriorRoutine(const P_V& paramValues, const void* functionDataPtr)
   UQ_FATAL_TEST_MACRO(true,
                       paramValues.env().rank(),
                       "calib_M2lPriorRoutine()",
-                      "should not be here, since application is using the default prior() routine provided by PECOS toolkit");
+                      "should not be here, since application is using the default prior() routine provided by QUESO toolkit");
   return 0.;
 }
 
