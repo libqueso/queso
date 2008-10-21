@@ -52,10 +52,20 @@ template<class P_V, class P_M>
 struct
 calibLikelihoodRoutine_DataType
 {
-  double               beta;
-  double               variance;
-  std::vector<double>* Te; // temperatures
-  std::vector<double>* Me; // relative masses
+  double               beta1;
+  double               variance1;
+  std::vector<double>* Te1; // temperatures
+  std::vector<double>* Me1; // relative masses
+
+  double               beta2;
+  double               variance2;
+  std::vector<double>* Te2; // temperatures
+  std::vector<double>* Me2; // relative masses
+
+  double               beta3;
+  double               variance3;
+  std::vector<double>* Te3; // temperatures
+  std::vector<double>* Me3; // relative masses
 };
 
 // The actual (user defined) likelihood routine
@@ -63,64 +73,196 @@ template<class P_V,class P_M>
 double
 calibLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 {
-  double A                       = paramValues[0];
-  double E                       = paramValues[1];
-  double beta                    =  ((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta;
-  double variance                =  ((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->variance;
-  const std::vector<double>& Te  = *((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Te;
-  const std::vector<double>& Me  = *((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Me;
-  std::vector<double> Mt(Me.size(),0.);
+  double resultValue = 0.;
 
-  double params[]={A,E,beta};
+  // Compute likelihood for scenario 1
+  double betaTest = ((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta1;
+  if (betaTest) {
+    double A                       = paramValues[0];
+    double E                       = paramValues[1];
+    double beta                    =  ((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta1;
+    double variance                =  ((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->variance1;
+    const std::vector<double>& Te  = *((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Te1;
+    const std::vector<double>& Me  = *((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Me1;
+    std::vector<double> Mt(Me.size(),0.);
+
+    double params[]={A,E,beta};
       	
-  // integration
-  const gsl_odeiv_step_type *T   = gsl_odeiv_step_rkf45; //rkf45; //gear1;
-        gsl_odeiv_step      *s   = gsl_odeiv_step_alloc(T,1);
-        gsl_odeiv_control   *c   = gsl_odeiv_control_y_new(1e-6,0.0);
-        gsl_odeiv_evolve    *e   = gsl_odeiv_evolve_alloc(1);
-        gsl_odeiv_system     sys = {func, NULL, 1, (void *)params}; 
-	
-  double t = 0.1, t1 = 1900.;
-  double h = 1e-3;
-  double Mass[1];
-  Mass[0]=1.;
+    // integration
+    const gsl_odeiv_step_type *T   = gsl_odeiv_step_rkf45; //rkf45; //gear1;
+          gsl_odeiv_step      *s   = gsl_odeiv_step_alloc(T,1);
+          gsl_odeiv_control   *c   = gsl_odeiv_control_y_new(1e-6,0.0);
+          gsl_odeiv_evolve    *e   = gsl_odeiv_evolve_alloc(1);
+          gsl_odeiv_system     sys = {func, NULL, 1, (void *)params}; 
+
+    double t = 0.1, t_final = 1900.;
+    double h = 1e-3;
+    double Mass[1];
+    Mass[0]=1.;
   
-  unsigned int i = 0;
-  double t_old = 0.;
-  double M_old[1];
-  M_old[0]=1.;
+    unsigned int i = 0;
+    double t_old = 0.;
+    double M_old[1];
+    M_old[0]=1.;
 	
-  double misfit=0.;
-  //unsigned int loopSize = 0;
-  while ((t < t1) && (i < Me.size())) {
-    int status = gsl_odeiv_evolve_apply(e, c, s, &sys, &t, t1, &h, Mass);
-    UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
-                        paramValues.env().rank(),
-                        "calibLikelihoodRoutine()",
-                        "gsl_odeiv_evolve_apply() failed");
-    //printf("t = %6.1lf, mass = %10.4lf\n",t,Mass[0]);
-    //loopSize++;
+    double misfit=0.;
+    //unsigned int loopSize = 0;
+    while ((t < t_final) && (i < Me.size())) {
+      int status = gsl_odeiv_evolve_apply(e, c, s, &sys, &t, t_final, &h, Mass);
+      UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
+                          paramValues.env().rank(),
+                          "calibLikelihoodRoutine()",
+                          "gsl_odeiv_evolve_apply() failed");
+      //printf("t = %6.1lf, mass = %10.4lf\n",t,Mass[0]);
+      //loopSize++;
 		
-    while ( (i < Me.size()) && (t_old <= Te[i]) && (Te[i] <= t) ) {
-      Mt[i] = (Te[i]-t_old)*(Mass[0]-M_old[0])/(t-t_old) + M_old[0];
-      misfit += (Me[i]-Mt[i])*(Me[i]-Mt[i]);
-      //printf("%i %lf %lf %lf %lf\n",i,Te[i],Me[i],Mt[i],misfit);
-      i++;
+      while ( (i < Me.size()) && (t_old <= Te[i]) && (Te[i] <= t) ) {
+        Mt[i] = (Te[i]-t_old)*(Mass[0]-M_old[0])/(t-t_old) + M_old[0];
+        misfit += (Me[i]-Mt[i])*(Me[i]-Mt[i]);
+        //printf("%i %lf %lf %lf %lf\n",i,Te[i],Me[i],Mt[i],misfit);
+        i++;
+      }
+		
+      t_old=t;
+      M_old[0]=Mass[0];
     }
-		
-    t_old=t;
-    M_old[0]=Mass[0];
-  }
-  double resultValue = misfit/variance;
+    resultValue += misfit/variance;
 	
-  //printf("loopSize = %d\n",loopSize);
-  if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
-    printf("In calibLikelihoodRoutine(), A = %g, E = %g, beta = %.3lf: misfit = %lf, likelihood = %lf.\n",A,E,beta,misfit,resultValue);
+    //printf("loopSize = %d\n",loopSize);
+    if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
+      printf("In calibLikelihoodRoutine(), A = %g, E = %g, beta = %.3lf: misfit = %lf, likelihood = %lf.\n",A,E,beta,misfit,resultValue);
+    }
+
+    gsl_odeiv_evolve_free (e);
+    gsl_odeiv_control_free(c);
+    gsl_odeiv_step_free   (s);
   }
 
-  gsl_odeiv_evolve_free (e);
-  gsl_odeiv_control_free(c);
-  gsl_odeiv_step_free   (s);
+  // Compute likelihood for scenario 2
+  betaTest = ((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta2;
+  if (betaTest > 0.) {
+    double A                       = paramValues[0];
+    double E                       = paramValues[1];
+    double beta                    =  ((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta2;
+    double variance                =  ((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->variance2;
+    const std::vector<double>& Te  = *((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Te2;
+    const std::vector<double>& Me  = *((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Me2;
+    std::vector<double> Mt(Me.size(),0.);
+
+    double params[]={A,E,beta};
+      	
+    // integration
+    const gsl_odeiv_step_type *T   = gsl_odeiv_step_rkf45; //rkf45; //gear1;
+          gsl_odeiv_step      *s   = gsl_odeiv_step_alloc(T,1);
+          gsl_odeiv_control   *c   = gsl_odeiv_control_y_new(1e-6,0.0);
+          gsl_odeiv_evolve    *e   = gsl_odeiv_evolve_alloc(1);
+          gsl_odeiv_system     sys = {func, NULL, 1, (void *)params}; 
+
+    double t = 0.1, t_final = 1900.;
+    double h = 1e-3;
+    double Mass[1];
+    Mass[0]=1.;
+  
+    unsigned int i = 0;
+    double t_old = 0.;
+    double M_old[1];
+    M_old[0]=1.;
+	
+    double misfit=0.;
+    //unsigned int loopSize = 0;
+    while ((t < t_final) && (i < Me.size())) {
+      int status = gsl_odeiv_evolve_apply(e, c, s, &sys, &t, t_final, &h, Mass);
+      UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
+                          paramValues.env().rank(),
+                          "calibLikelihoodRoutine()",
+                          "gsl_odeiv_evolve_apply() failed");
+      //printf("t = %6.1lf, mass = %10.4lf\n",t,Mass[0]);
+      //loopSize++;
+		
+      while ( (i < Me.size()) && (t_old <= Te[i]) && (Te[i] <= t) ) {
+        Mt[i] = (Te[i]-t_old)*(Mass[0]-M_old[0])/(t-t_old) + M_old[0];
+        misfit += (Me[i]-Mt[i])*(Me[i]-Mt[i]);
+        //printf("%i %lf %lf %lf %lf\n",i,Te[i],Me[i],Mt[i],misfit);
+        i++;
+      }
+		
+      t_old=t;
+      M_old[0]=Mass[0];
+    }
+    resultValue += misfit/variance;
+	
+    //printf("loopSize = %d\n",loopSize);
+    if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
+      printf("In calibLikelihoodRoutine(), A = %g, E = %g, beta = %.3lf: misfit = %lf, likelihood = %lf.\n",A,E,beta,misfit,resultValue);
+    }
+
+    gsl_odeiv_evolve_free (e);
+    gsl_odeiv_control_free(c);
+    gsl_odeiv_step_free   (s);
+  }
+
+  // Compute likelihood for scenario 3
+  betaTest = ((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta3;
+  if (betaTest > 0.) {
+    double A                       = paramValues[0];
+    double E                       = paramValues[1];
+    double beta                    =  ((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta3;
+    double variance                =  ((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->variance3;
+    const std::vector<double>& Te  = *((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Te3;
+    const std::vector<double>& Me  = *((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Me3;
+    std::vector<double> Mt(Me.size(),0.);
+
+    double params[]={A,E,beta};
+      	
+    // integration
+    const gsl_odeiv_step_type *T   = gsl_odeiv_step_rkf45; //rkf45; //gear1;
+          gsl_odeiv_step      *s   = gsl_odeiv_step_alloc(T,1);
+          gsl_odeiv_control   *c   = gsl_odeiv_control_y_new(1e-6,0.0);
+          gsl_odeiv_evolve    *e   = gsl_odeiv_evolve_alloc(1);
+          gsl_odeiv_system     sys = {func, NULL, 1, (void *)params}; 
+
+    double t = 0.1, t_final = 1900.;
+    double h = 1e-3;
+    double Mass[1];
+    Mass[0]=1.;
+  
+    unsigned int i = 0;
+    double t_old = 0.;
+    double M_old[1];
+    M_old[0]=1.;
+	
+    double misfit=0.;
+    //unsigned int loopSize = 0;
+    while ((t < t_final) && (i < Me.size())) {
+      int status = gsl_odeiv_evolve_apply(e, c, s, &sys, &t, t_final, &h, Mass);
+      UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
+                          paramValues.env().rank(),
+                          "calibLikelihoodRoutine()",
+                          "gsl_odeiv_evolve_apply() failed");
+      //printf("t = %6.1lf, mass = %10.4lf\n",t,Mass[0]);
+      //loopSize++;
+		
+      while ( (i < Me.size()) && (t_old <= Te[i]) && (Te[i] <= t) ) {
+        Mt[i] = (Te[i]-t_old)*(Mass[0]-M_old[0])/(t-t_old) + M_old[0];
+        misfit += (Me[i]-Mt[i])*(Me[i]-Mt[i]);
+        //printf("%i %lf %lf %lf %lf\n",i,Te[i],Me[i],Mt[i],misfit);
+        i++;
+      }
+		
+      t_old=t;
+      M_old[0]=Mass[0];
+    }
+    resultValue += misfit/variance;
+	
+    //printf("loopSize = %d\n",loopSize);
+    if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
+      printf("In calibLikelihoodRoutine(), A = %g, E = %g, beta = %.3lf: misfit = %lf, likelihood = %lf.\n",A,E,beta,misfit,resultValue);
+    }
+
+    gsl_odeiv_evolve_free (e);
+    gsl_odeiv_control_free(c);
+    gsl_odeiv_step_free   (s);
+  }
 
   return resultValue;
 }
@@ -137,6 +279,7 @@ propagQoiRoutine_DataType
 {
   double beta;
   double criticalMass;
+  double criticalTime;
 };
 
 // The actual (user defined) qoi routine
@@ -147,6 +290,7 @@ void propagQoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& 
   double E             = paramValues[1];
   double beta          = ((propagQoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->beta;
   double criticalMass  = ((propagQoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->criticalMass;
+  double criticalTime  = ((propagQoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->criticalTime;
 
   double params[]={A,E,beta};
       	
@@ -157,20 +301,20 @@ void propagQoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& 
         gsl_odeiv_evolve    *e   = gsl_odeiv_evolve_alloc(1);
         gsl_odeiv_system     sys = {func, NULL, 1, (void *)params}; 
 	
-  double t = 0.1, t1 = 1100.;
+  double temperature = 0.1;
   double h = 1e-3;
   double Mass[1];
   Mass[0]=1.;
   
-  double t_old = 0.;
+  double temperature_old = 0.;
   double M_old[1];
   M_old[0]=1.;
 	
   double crossingTemperature = 0.;
   //unsigned int loopSize = 0;
-  while ((t       < t1          ) &&
-         (Mass[0] > criticalMass)) {
-    int status = gsl_odeiv_evolve_apply(e, c, s, &sys, &t, t1, &h, Mass);
+  while ((temperature < criticalTime*beta) &&
+         (Mass[0]     > criticalMass     )) {
+    int status = gsl_odeiv_evolve_apply(e, c, s, &sys, &temperature, criticalTime*beta, &h, Mass);
     UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
                         paramValues.env().rank(),
                         "propagQoiRoutine()",
@@ -179,18 +323,19 @@ void propagQoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& 
     //loopSize++;
 
     if (Mass[0] <= criticalMass) {
-      crossingTemperature = t_old + (t - t_old) * (M_old[0]-criticalMass)/(M_old[0]-Mass[0]);
+      crossingTemperature = temperature_old + (temperature - temperature_old) * (M_old[0]-criticalMass)/(M_old[0]-Mass[0]);
     }
 		
-    t_old=t;
+    temperature_old=temperature;
     M_old[0]=Mass[0];
   }
 
-  qoiValues[0] = crossingTemperature/beta;
+  if (criticalMass > 0.) qoiValues[0] = crossingTemperature/beta; // QoI = time to achieve critical mass
+  if (criticalTime > 0.) qoiValues[0] = Mass[0];                  // QoI = mass fraction remaining at critical time
 	
   //printf("loopSize = %d\n",loopSize);
-  if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
-    printf("In propagQoiRoutine(), A = %g, E = %g, beta = %.3lf, criticalMass = %.3lf: qoi = %lf.\n",A,E,beta,criticalMass,qoiValues[0]);
+  if ((paramValues.env().verbosity() >= 3) && (paramValues.env().rank() == 0)) {
+    printf("In propagQoiRoutine(), A = %g, E = %g, beta = %.3lf, criticalTime = %.3lf, criticalMass = %.3lf: qoi = %lf.\n",A,E,beta,criticalTime,criticalMass,qoiValues[0]);
   }
 
   gsl_odeiv_evolve_free (e);
@@ -227,30 +372,31 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
   // Read Ascii file with important information on both calibration problems.
   //******************************************************
-  uqAsciiTableClass<P_V,P_M> calTable(env,
-                                      2,    // # of rows
-                                      3,    // # of cols after 'parameter name': min + max + initial value for Markov chain
-                                      NULL, // All extra columns are of 'double' type
-                                      "cal.tab");
+  uqAsciiTableClass<P_V,P_M> paramsTable(env,
+                                         2,    // # of rows
+                                         3,    // # of cols after 'parameter name': min + max + initial value for Markov chain
+                                         NULL, // All extra columns are of 'double' type
+                                         "params.tab");
 
-  const EpetraExt::DistArray<std::string>& paramNames = calTable.stringColumn(0);
-  P_V                                      s1_minValues    (calTable.doubleColumn(1));
-  P_V                                      s1_maxValues    (calTable.doubleColumn(2));
-  P_V                                      s1_initialValues(calTable.doubleColumn(3));
+  const EpetraExt::DistArray<std::string>& paramNames = paramsTable.stringColumn(0);
+  P_V                                      s1_minValues    (paramsTable.doubleColumn(1));
+  P_V                                      s1_maxValues    (paramsTable.doubleColumn(2));
+  P_V                                      s1_initialValues(paramsTable.doubleColumn(3));
 
   //******************************************************
   // Read Ascii file with important information on both propagation problems.
   //******************************************************
-  uqAsciiTableClass<P_V,P_M> proTable(env,
-                                      1,    // # of rows
-                                      0,    // # of cols after 'parameter name': none
-                                      NULL, // All extra columns are of 'double' type
-                                      "pro.tab");
+  uqAsciiTableClass<P_V,P_M> qoisTable(env,
+                                       1,    // # of rows
+                                       0,    // # of cols after 'parameter name': none
+                                       NULL, // All extra columns are of 'double' type
+                                       "qois.tab");
 
-  const EpetraExt::DistArray<std::string>& qoiNames = proTable.stringColumn(0);
+  const EpetraExt::DistArray<std::string>& qoiNames = qoisTable.stringColumn(0);
 
-  double beta3         = 50.;
-  double criticalMass3 = .25;
+  double beta_prediction         = 250.;
+  double criticalMass_prediction = 0.;
+  double criticalTime_prediction = 3.9;
 
   //*****************************************************
   // Step I.1 of 3: Code very specific to this TGA example
@@ -264,38 +410,110 @@ uqAppl(const uqEnvironmentClass& env)
               << std::endl;
   }
 
-  // Open input file on experimental data
-  FILE *inp;
-  inp = fopen("s1_global4.dat","r");
-
-  // Read kinetic parameters and convert heating rate to K/s
-  double tmpA, tmpE, beta1, variance1, criticalMass1;
-  fscanf(inp,"%lf %lf %lf %lf %lf",&tmpA,&tmpE,&beta1,&variance1,&criticalMass1);
-  beta1 /= 60.;
-  
   // Read experimental data
-  std::vector<double> Te1(11,0.);
-  std::vector<double> Me1(11,0.);
+  double beta_cal1, variance_cal1;
+  std::vector<double> Te_cal1(11,0.);
+  std::vector<double> Me_cal1(11,0.);
 
-  unsigned int numObservations = 0;
-  double tmpTe;
-  double tmpMe;
-  while (fscanf(inp,"%lf %lf",&tmpTe,&tmpMe) != EOF) {
-    UQ_FATAL_TEST_MACRO((numObservations >= Te1.size()),
+  {
+    // Open input file on experimental data
+    FILE *inp;
+    inp = fopen("scenario_5_K_min.dat","r");
+
+    // Read kinetic parameters and convert heating rate to K/s
+    fscanf(inp,"%lf %lf",&beta_cal1,&variance_cal1);
+    beta_cal1 /= 60.;
+  
+    unsigned int numObservations = 0;
+    double tmpTe;
+    double tmpMe;
+    while (fscanf(inp,"%lf %lf",&tmpTe,&tmpMe) != EOF) {
+      UQ_FATAL_TEST_MACRO((numObservations >= Te_cal1.size()),
+                          env.rank(),
+                          "uqAppl(), in uqTgaEx.h",
+                          "input file has too many observations");
+      Te_cal1[numObservations] = tmpTe;
+      Me_cal1[numObservations] = tmpMe;
+      numObservations++;
+    }
+    UQ_FATAL_TEST_MACRO((numObservations != Te_cal1.size()),
                         env.rank(),
                         "uqAppl(), in uqTgaEx.h",
-                        "input file has too many observations");
-    Te1[numObservations] = tmpTe;
-    Me1[numObservations] = tmpMe;
-    numObservations++;
-  }
-  UQ_FATAL_TEST_MACRO((numObservations != Te1.size()),
-                      env.rank(),
-                      "uqAppl(), in uqTgaEx.h",
-                      "input file has a smaller number of observations than expected");
+                        "input file has a smaller number of observations than expected");
 
-  // Close input file on experimental data
-  fclose(inp);
+    // Close input file on experimental data
+    fclose(inp);
+  }
+
+  // Read experimental data
+  double beta_cal2, variance_cal2;
+  std::vector<double> Te_cal2(11,0.);
+  std::vector<double> Me_cal2(11,0.);
+
+  {
+    // Open input file on experimental data
+    FILE *inp;
+    inp = fopen("scenario_25_K_min.dat","r");
+
+    // Read kinetic parameters and convert heating rate to K/s
+    fscanf(inp,"%lf %lf",&beta_cal2,&variance_cal2);
+    beta_cal2 /= 60.;
+  
+    unsigned int numObservations = 0;
+    double tmpTe;
+    double tmpMe;
+    while (fscanf(inp,"%lf %lf",&tmpTe,&tmpMe) != EOF) {
+      UQ_FATAL_TEST_MACRO((numObservations >= Te_cal2.size()),
+                          env.rank(),
+                          "uqAppl(), in uqTgaEx.h",
+                          "input file has too many observations");
+      Te_cal2[numObservations] = tmpTe;
+      Me_cal2[numObservations] = tmpMe;
+      numObservations++;
+    }
+    UQ_FATAL_TEST_MACRO((numObservations != Te_cal2.size()),
+                        env.rank(),
+                        "uqAppl(), in uqTgaEx.h",
+                        "input file has a smaller number of observations than expected");
+
+    // Close input file on experimental data
+    fclose(inp);
+  }
+
+  // Read experimental data
+  double beta_cal3, variance_cal3;
+  std::vector<double> Te_cal3(11,0.);
+  std::vector<double> Me_cal3(11,0.);
+
+  {
+    // Open input file on experimental data
+    FILE *inp;
+    inp = fopen("scenario_50_K_min.dat","r");
+
+    // Read kinetic parameters and convert heating rate to K/s
+    fscanf(inp,"%lf %lf",&beta_cal3,&variance_cal3);
+    beta_cal3 /= 60.;
+  
+    unsigned int numObservations = 0;
+    double tmpTe;
+    double tmpMe;
+    while (fscanf(inp,"%lf %lf",&tmpTe,&tmpMe) != EOF) {
+      UQ_FATAL_TEST_MACRO((numObservations >= Te_cal3.size()),
+                          env.rank(),
+                          "uqAppl(), in uqTgaEx.h",
+                          "input file has too many observations");
+      Te_cal3[numObservations] = tmpTe;
+      Me_cal3[numObservations] = tmpMe;
+      numObservations++;
+    }
+    UQ_FATAL_TEST_MACRO((numObservations != Te_cal3.size()),
+                        env.rank(),
+                        "uqAppl(), in uqTgaEx.h",
+                        "input file has a smaller number of observations than expected");
+
+    // Close input file on experimental data
+    fclose(inp);
+  }
 
   //******************************************************
   // Usually, spaces are the same throughout different problems.
@@ -303,11 +521,11 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
   uqVectorSpaceClass<P_V,P_M> paramSpace(env,
                                          "param_", // Extra prefix before the default "space_" prefix
-                                         calTable.numRows(),
+                                         paramsTable.numRows(),
                                          &paramNames);
   uqVectorSpaceClass<Q_V,Q_M> qoiSpace  (env,
                                          "qoi_",   // Extra prefix before the default "space_" prefix
-                                         proTable.numRows(),
+                                         qoisTable.numRows(),
                                          &qoiNames);
 
   //******************************************************
@@ -322,10 +540,18 @@ uqAppl(const uqEnvironmentClass& env)
 
   // Stage I (s1): 1Likelihood function object: -2*ln[likelihood]
   calibLikelihoodRoutine_DataType<P_V,P_M> s1_calibLikelihoodRoutine_Data;
-  s1_calibLikelihoodRoutine_Data.beta     = beta1;
-  s1_calibLikelihoodRoutine_Data.variance = variance1;
-  s1_calibLikelihoodRoutine_Data.Te       = &Te1; // temperatures
-  s1_calibLikelihoodRoutine_Data.Me       = &Me1; // relative masses
+  s1_calibLikelihoodRoutine_Data.beta1     = beta_cal1;
+  s1_calibLikelihoodRoutine_Data.variance1 = variance_cal1;
+  s1_calibLikelihoodRoutine_Data.Te1       = &Te_cal1; // temperatures
+  s1_calibLikelihoodRoutine_Data.Me1       = &Me_cal1; // relative masses
+  s1_calibLikelihoodRoutine_Data.beta2     = beta_cal2;
+  s1_calibLikelihoodRoutine_Data.variance2 = variance_cal2;
+  s1_calibLikelihoodRoutine_Data.Te2       = &Te_cal2; // temperatures
+  s1_calibLikelihoodRoutine_Data.Me2       = &Me_cal2; // relative masses
+  s1_calibLikelihoodRoutine_Data.beta3     = beta_cal3;
+  s1_calibLikelihoodRoutine_Data.variance3 = variance_cal3;
+  s1_calibLikelihoodRoutine_Data.Te3       = &Te_cal3; // temperatures
+  s1_calibLikelihoodRoutine_Data.Me3       = &Me_cal3; // relative masses
   uqGenericVectorPdfClass<P_V,P_M> s1_calibLikelihoodFunctionObj("s1_cal_prior_like_", // Extra prefix before the default "genpd_" prefix
                                                                  paramSpace,
                                                                  calibLikelihoodRoutine<P_V,P_M>,
@@ -357,8 +583,9 @@ uqAppl(const uqEnvironmentClass& env)
 
   // Stage I (s1): Qoi function object
   propagQoiRoutine_DataType<P_V,P_M,Q_V,Q_M> s1_propagQoiRoutine_Data;
-  s1_propagQoiRoutine_Data.beta         = beta3;
-  s1_propagQoiRoutine_Data.criticalMass = criticalMass3;
+  s1_propagQoiRoutine_Data.beta         = beta_prediction;
+  s1_propagQoiRoutine_Data.criticalMass = criticalMass_prediction;
+  s1_propagQoiRoutine_Data.criticalTime = criticalTime_prediction;
   uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M> s1_propagQoiFunctionObj("s1_pro_qoi_", // Extra prefix before the default "func_" prefix
                                                                         paramSpace,
                                                                         qoiSpace,
@@ -397,35 +624,39 @@ uqAppl(const uqEnvironmentClass& env)
               << std::endl;
   }
 
-  // Open input file on experimental data
-  inp = fopen("s2_global4.dat","r");
-
-  // Read kinetic parameters and convert heating rate to K/s
-  double beta2, variance2, criticalMass2;
-  fscanf(inp,"%lf %lf %lf %lf %lf",&tmpA,&tmpE,&beta2,&variance2,&criticalMass2);
-  beta2 /= 60.;
-  
   // Read experimental data
-  std::vector<double> Te2(11,0.);
-  std::vector<double> Me2(11,0.);
+  double beta_val, variance_val;
+  std::vector<double> Te_val(11,0.);
+  std::vector<double> Me_val(11,0.);
 
-  numObservations = 0;
-  while (fscanf(inp,"%lf %lf",&tmpTe,&tmpMe) != EOF) {
-    UQ_FATAL_TEST_MACRO((numObservations >= Te2.size()),
+  {
+    // Open input file on experimental data
+    FILE *inp = fopen("scenario_100_K_min.dat","r");
+
+    // Read kinetic parameters and convert heating rate to K/s
+    fscanf(inp,"%lf %lf",&beta_val,&variance_val);
+    beta_val /= 60.;
+  
+    unsigned int numObservations = 0;
+    double tmpTe;
+    double tmpMe;
+    while (fscanf(inp,"%lf %lf",&tmpTe,&tmpMe) != EOF) {
+      UQ_FATAL_TEST_MACRO((numObservations >= Te_val.size()),
+                          env.rank(),
+                          "uqAppl(), in uqTgaEx.h",
+                          "input file has too many observations");
+      Te_val[numObservations] = tmpTe;
+      Me_val[numObservations] = tmpMe;
+      numObservations++;
+    }
+    UQ_FATAL_TEST_MACRO((numObservations != Te_val.size()),
                         env.rank(),
                         "uqAppl(), in uqTgaEx.h",
-                        "input file has too many observations");
-    Te2[numObservations] = tmpTe;
-    Me2[numObservations] = tmpMe;
-    numObservations++;
-  }
-  UQ_FATAL_TEST_MACRO((numObservations != Te2.size()),
-                      env.rank(),
-                      "uqAppl(), in uqTgaEx.h",
-                      "input file has a smaller number of observations than expected");
+                        "input file has a smaller number of observations than expected");
 
-  // Close input file on experimental data
-  fclose(inp);
+    // Close input file on experimental data
+    fclose(inp);
+  }
 
   //******************************************************
   // Step II.2 of 3: deal with the calibration problem
@@ -435,10 +666,18 @@ uqAppl(const uqEnvironmentClass& env)
 
   // Stage II (s2): 1Likelihood function object: -2*ln[likelihood]
   calibLikelihoodRoutine_DataType<P_V,P_M> s2_calibLikelihoodRoutine_Data;
-  s2_calibLikelihoodRoutine_Data.beta     = beta2;
-  s2_calibLikelihoodRoutine_Data.variance = variance2;
-  s2_calibLikelihoodRoutine_Data.Te       = &Te2; // temperatures
-  s2_calibLikelihoodRoutine_Data.Me       = &Me2; // relative masses
+  s2_calibLikelihoodRoutine_Data.beta1     = beta_val;
+  s2_calibLikelihoodRoutine_Data.variance1 = variance_val;
+  s2_calibLikelihoodRoutine_Data.Te1       = &Te_val; // temperatures
+  s2_calibLikelihoodRoutine_Data.Me1       = &Me_val; // relative masses
+  s2_calibLikelihoodRoutine_Data.beta2     = 0.;
+  s2_calibLikelihoodRoutine_Data.variance2 = 0.;
+  s2_calibLikelihoodRoutine_Data.Te2       = NULL; // temperatures
+  s2_calibLikelihoodRoutine_Data.Me2       = NULL; // relative masses
+  s2_calibLikelihoodRoutine_Data.beta3     = 0.;
+  s2_calibLikelihoodRoutine_Data.variance3 = 0.;
+  s2_calibLikelihoodRoutine_Data.Te3       = NULL; // temperatures
+  s2_calibLikelihoodRoutine_Data.Me3       = NULL; // relative masses
   uqGenericVectorPdfClass<P_V,P_M> s2_calibLikelihoodFunctionObj("s2_cal_prior_like_", // Extra prefix before the default "genpd_" prefix
                                                                  paramSpace,
                                                                  calibLikelihoodRoutine<P_V,P_M>,
@@ -470,8 +709,9 @@ uqAppl(const uqEnvironmentClass& env)
 
   // Stage II (s2): Qoi function object
   propagQoiRoutine_DataType<P_V,P_M,Q_V,Q_M> s2_propagQoiRoutine_Data;
-  s2_propagQoiRoutine_Data.beta          = beta3;
-  s2_propagQoiRoutine_Data.criticalMass  = criticalMass3;
+  s2_propagQoiRoutine_Data.beta          = beta_prediction;
+  s2_propagQoiRoutine_Data.criticalMass  = criticalMass_prediction;
+  s2_propagQoiRoutine_Data.criticalTime  = criticalTime_prediction;
   uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M> s2_propagQoiFunctionObj("s2_pro_qoi_", // Extra prefix before the default "func_" prefix
                                                                         paramSpace,
                                                                         qoiSpace,
