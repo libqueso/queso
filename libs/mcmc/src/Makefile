@@ -55,7 +55,7 @@ all:	libuq_mcmc_all
 echo_num_proc:
 	@echo 'UQBT = ' $(UQBT)
 
-clean_all: echo_num_proc clean_obj
+clean_all: echo_num_proc clean_obj clean_docs 
 	rm -f ../lib/libuq_mcmc_any.a
 	rm -f ../lib/libuq_mcmc_$(UQBT).a
 
@@ -64,6 +64,9 @@ clean_obj:
 	rm -rf ../inc/html
 	rm -f *~
 	rm -f *.o
+
+clean_docs:
+	rm -rf html
 
 all_docs:
 	doxygen uqLibsMcmcSrc.dox
