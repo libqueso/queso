@@ -1,0 +1,105 @@
+###############################################
+# UQ Environment
+###############################################
+#uqEnv_help      = anything
+uqEnv_verbosity = 2
+uqEnv_seed      = 0
+
+###############################################
+# Calibration Parameter Space
+###############################################
+#calib_paramSpace_help              = anything
+calib_paramSpace_dim               = 1
+calib_paramSpace_specificationFile = calib.par
+
+###############################################
+# Calibration State Space
+###############################################
+#calib_stateSpace_help = anything
+calib_stateSpace_dim  = 5
+
+###############################################
+# Calibration Observable Space
+###############################################
+#calib_observableSpace_help              = anything
+calib_observableSpace_updateVariances   = 1
+calib_observableSpace_numSubSpaces      = 1
+calib_observableSpace_specificationFile = calib.obs
+
+###############################################
+# Calibration DRAM Markov Chain Generator
+###############################################
+#calib_MCMC_help                           = anything
+calib_MCMC_chain_type                     = 2
+calib_MCMC_chain_number                   = 1
+##                                           16K   128K   2M      16M
+#calib_MCMC_chain_sizes                    = 16384 131072 2097152 16777216
+calib_MCMC_chain_sizes                    = 131072
+calib_MCMC_chain_use2                     = 0
+calib_MCMC_chain_generateExtra            = 0
+calib_MCMC_chain_displayPeriod            = 0
+calib_MCMC_chain_measureRunTimes          = 1
+calib_MCMC_chain_write                    = 0
+calib_MCMC_chain_computeStats             = 1
+calib_MCMC_chain_filter                   = 1
+calib_MCMC_chain_outputFileNames          = calib1.m
+
+calib_MCMC_uniqueChain_generate           = 0
+calib_MCMC_uniqueChain_write              = 0
+calib_MCMC_uniqueChain_computeStats       = 0
+
+calib_MCMC_avgChain_compute               = 0
+calib_MCMC_avgChain_write                 = 0
+calib_MCMC_avgChain_computeStats          = 0
+
+calib_MCMC_dr_maxNumExtraStages           = 1
+calib_MCMC_dr_scalesForExtraStages        = 5. 4. 3.
+calib_MCMC_am_initialNonAdaptInterval     = 100
+calib_MCMC_am_adaptInterval               = 0
+calib_MCMC_am_eta                         = 1.92
+calib_MCMC_am_epsilon                     = 1.e-5
+
+#calib_MCMC_stats_initialDiscardedPortions = 0. 0.05 0.10 0.15 0.20 0.25 0.3 0.35 0.40
+calib_MCMC_stats_initialDiscardedPortions = 0.
+calib_MCMC_bmm_run                        = 1
+calib_MCMC_bmm_lengths                    = 50 100 200 500
+calib_MCMC_fft_compute                    = 0
+calib_MCMC_fft_paramId                    = 0
+calib_MCMC_fft_size                       = 2048
+calib_MCMC_fft_testInversion              = 1
+calib_MCMC_fft_write                      = 1
+calib_MCMC_psd_compute                    = 0
+calib_MCMC_psd_numBlocks                  = 8
+calib_MCMC_psd_hopSizeRatio               = 0.5
+calib_MCMC_psd_paramId                    = 0
+calib_MCMC_psd_write                      = 1
+calib_MCMC_psdAtZero_compute              = 1
+calib_MCMC_psdAtZero_numBlocks            = 256
+calib_MCMC_psdAtZero_hopSizeRatio         = .5
+calib_MCMC_psdAtZero_display              = 1
+calib_MCMC_psdAtZero_write                = 1
+calib_MCMC_geweke_compute                 = 1
+calib_MCMC_geweke_naRatio                 = .1
+calib_MCMC_geweke_nbRatio                 = .5
+calib_MCMC_geweke_display                 = 1
+calib_MCMC_geweke_write                   = 1
+calib_MCMC_corr_computeViaDef             = 1
+calib_MCMC_corr_computeViaFft             = 1
+calib_MCMC_corr_secondLag                 = 2
+calib_MCMC_corr_lagSpacing                = 1
+calib_MCMC_corr_numLags                   = 15
+calib_MCMC_corr_display                   = 1
+calib_MCMC_corr_write                     = 1
+
+calib_MCMC_filter_initialDiscardedPortion = 0.
+calib_MCMC_filter_lag                     = 0
+calib_MCMC_filter_write                   = 0
+calib_MCMC_hist_compute                   = 1
+calib_MCMC_hist_numInternalBins           = 200
+calib_MCMC_kde_compute                    = 1
+calib_MCMC_kde_numEvalPositions           = 200
+
+###############################################
+# Other Inputs
+###############################################
+unknownOption = 97
