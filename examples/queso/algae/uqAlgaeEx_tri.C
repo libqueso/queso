@@ -1,4 +1,4 @@
-/* uq/examples/mcmc/algae/uqAlgaeEx_tri.C
+/* uq/examples/queso/algae/uqAlgaeEx_tri.C
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu
  *

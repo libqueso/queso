@@ -1,4 +1,4 @@
-/* uq/libs/mcmc/inc/uqMonteCarloSG.h
+/* uq/libs/queso/inc/uqMonteCarloSG.h
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu
  *

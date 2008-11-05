@@ -1,4 +1,4 @@
-/* uq/libs/mcmc/src/uqGslVectorSpace.C
+/* uq/libs/queso/src/uqGslVectorSpace.C
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu
  *

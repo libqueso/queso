@@ -1,4 +1,4 @@
-/* uq/examples/mcmc/etc/uqEtcEx.h
+/* uq/examples/queso/etc/uqEtcEx.h
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu
  *

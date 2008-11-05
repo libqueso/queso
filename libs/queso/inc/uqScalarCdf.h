@@ -1,4 +1,4 @@
-/* uq/libs/mcmc/inc/uqScalarCdf.h
+/* uq/libs/queso/inc/uqScalarCdf.h
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu/
  *

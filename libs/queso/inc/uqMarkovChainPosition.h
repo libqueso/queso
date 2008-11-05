@@ -1,4 +1,4 @@
-/* uq/libs/mcmc/inc/uqMarkovChainPosition.h
+/* uq/libs/queso/inc/uqMarkovChainPosition.h
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu/
  *

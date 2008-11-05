@@ -1,4 +1,4 @@
-/* uq/libs/mcmc/inc/uqVectorPdf.h
+/* uq/libs/queso/inc/uqVectorPdf.h
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu/
  *

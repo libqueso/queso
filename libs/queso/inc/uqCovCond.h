@@ -1,4 +1,4 @@
-/* uq/libs/mcmc/inc/uqCovCond.h
+/* uq/libs/queso/inc/uqCovCond.h
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu/
  *

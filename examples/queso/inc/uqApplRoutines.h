@@ -1,4 +1,4 @@
-/* uq/examples/mcmc/inc/uqApplRoutines.h
+/* uq/examples/queso/inc/uqApplRoutines.h
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu
  *

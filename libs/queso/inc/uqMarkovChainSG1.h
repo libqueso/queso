@@ -1,4 +1,4 @@
-/* uq/libs/mcmc/inc/uqMarkovChainSG1.h
+/* uq/libs/queso/inc/uqMarkovChainSG1.h
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu
  *
@@ -920,7 +920,7 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
 #if 0
   ofs << m_prefix << "results.limits = [queso_low',queso_upp'];\n";
 
-  // Write out data for mcmcpred.m
+  // Write out data for mcmcpred.m of MATLAB MCMC toolbox
   ofs << m_prefix << "results.parind = ["; // FIXME
   for (unsigned int i = 0; i < m_vectorSpace.dim(); ++i) {
     ofs << i+1

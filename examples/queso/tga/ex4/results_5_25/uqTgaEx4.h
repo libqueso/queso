@@ -1,4 +1,4 @@
-/* uq/examples/mcmc/tga/uqTgaEx4.h
+/* uq/examples/queso/tga/uqTgaEx4.h
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu
  *

@@ -1,4 +1,4 @@
-/* uq/libs/mcmc/src/uqTrilinosParamSpace.C
+/* uq/libs/queso/src/uqTrilinosParamSpace.C
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu
  *

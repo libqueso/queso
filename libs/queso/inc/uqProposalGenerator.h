@@ -1,4 +1,4 @@
-/* uq/libs/mcmc/inc/uqProposalGenerator.h
+/* uq/libs/queso/inc/uqProposalGenerator.h
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu/
  *

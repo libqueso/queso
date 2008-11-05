@@ -1,4 +1,4 @@
-/* uq/libs/mcmc/inc/uqVectorRV.h
+/* uq/libs/queso/inc/uqVectorRV.h
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu/
  *

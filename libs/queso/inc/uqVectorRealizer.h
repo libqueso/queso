@@ -1,4 +1,4 @@
-/* uq/libs/mcmc/inc/uqVectorRealizer.h
+/* uq/libs/queso/inc/uqVectorRealizer.h
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu/
  *

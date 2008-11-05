@@ -1,4 +1,4 @@
-/* uq/examples/mcmc/normal/uqNormalEx.h
+/* uq/examples/queso/normal/uqNormalEx.h
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu
  *

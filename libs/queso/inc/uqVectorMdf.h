@@ -1,4 +1,4 @@
-/* uq/libs/mcmc/inc/uqVectorMdf.h
+/* uq/libs/queso/inc/uqVectorMdf.h
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu/
  *

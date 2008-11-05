@@ -1,4 +1,4 @@
-/* uq/libs/mcmc/inc/uqPropagProblem.h
+/* uq/libs/queso/inc/uqPropagProblem.h
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu
  *

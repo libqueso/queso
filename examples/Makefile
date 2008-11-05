@@ -5,18 +5,18 @@ else
 override UQBT = tri
 endif
 
-all:	all_mcmc all_fp
+all:	all_queso all_dakota
 
 echo_basic_type:
 	@echo 'UQBT = ' $(UQBT)
 
-clean_all: echo_basic_type clean_mcmc clean_fp clean_docs clean_exec
+clean_all: echo_basic_type clean_queso clean_dakota clean_docs clean_exec
 
-clean_mcmc:
-	cd mcmc; make clean_all UQBT=$(UQBT)
+clean_queso:
+	cd queso; make clean_all UQBT=$(UQBT)
 
-clean_fp:
-	cd fp; make clean_all UQBT=$(UQBT)
+clean_dakota:
+	cd dakota; make clean_all UQBT=$(UQBT)
 
 clean_docs:
 	rm -rf html
@@ -26,11 +26,11 @@ clean_exec:
 
 all_docs:
 	doxygen uqAppls.dox
-	cd mcmc; make all_docs
-	cd fp; make all_docs
+	cd queso; make all_docs
+	cd dakota; make all_docs
 
-all_mcmc:
-	cd mcmc; make UQBT=$(UQBT)
+all_queso:
+	cd queso; make UQBT=$(UQBT)
 
-all_fp:
-	cd fp; make UQBT=$(UQBT)
+all_dakota:
+	cd dakota; make UQBT=$(UQBT)

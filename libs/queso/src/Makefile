@@ -50,14 +50,14 @@ OBJS_gsl = uqGslVectorSpace.o
 OBJS_tri = uqTrilinosParamSpace.o \
 	uqTrilinosFinDimLinearSpace.o
 
-all:	libuq_mcmc_all
+all:	libuq_queso_all
 
 echo_num_proc:
 	@echo 'UQBT = ' $(UQBT)
 
 clean_all: echo_num_proc clean_obj clean_docs 
-	rm -f ../lib/libuq_mcmc_any.a
-	rm -f ../lib/libuq_mcmc_$(UQBT).a
+	rm -f ../lib/libuq_queso_any.a
+	rm -f ../lib/libuq_queso_$(UQBT).a
 
 clean_obj:
 	rm -f ../inc/*~
@@ -71,13 +71,13 @@ clean_docs:
 all_docs:
 	doxygen uqLibsMcmcSrc.dox
 
-libuq_mcmc_all: libuq_mcmc_any libuq_mcmc_specific
+libuq_queso_all: libuq_queso_any libuq_queso_specific
 
-libuq_mcmc_any: echo_num_proc $(OBJS_ANY)
-	$(AR) $(ARFLAGS) ../lib/libuq_mcmc_any.a $(OBJS_ANY)
+libuq_queso_any: echo_num_proc $(OBJS_ANY)
+	$(AR) $(ARFLAGS) ../lib/libuq_queso_any.a $(OBJS_ANY)
 
-libuq_mcmc_specific: echo_num_proc $(OBJS_$(UQBT))
-	$(AR) $(ARFLAGS) ../lib/libuq_mcmc_$(UQBT).a $(OBJS_$(UQBT))
+libuq_queso_specific: echo_num_proc $(OBJS_$(UQBT))
+	$(AR) $(ARFLAGS) ../lib/libuq_queso_$(UQBT).a $(OBJS_$(UQBT))
 
 .SUFFIXES: .o .C
 

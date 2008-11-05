@@ -26,21 +26,21 @@ INC_PATHS = \
 	-I. \
 	-I../inc \
 	-I../../../libs/basic/inc \
-	-I../../../libs/mcmc/inc \
+	-I../../../libs/queso/inc \
 	-I$(MPI_INCLUDE_PATH_FOR_MCMC_TOOL) \
 	-I$(TRILINOS_INCLUDE_PATH_FOR_MCMC_TOOL) \
 	-I$(BOOST_INCLUDE_PATH_FOR_MCMC_TOOL) \
 	-I$(GSL_INCLUDE_PATH_FOR_MCMC_TOOL)
 LIB_PATHS = \
 	-L../../../libs/basic/lib \
-	-L../../../libs/mcmc/lib \
+	-L../../../libs/queso/lib \
 	-L$(MPI_LIB_PATH_FOR_MCMC_TOOL) \
 	-L$(TRILINOS_LIB_PATH_FOR_MCMC_TOOL) \
 	-L$(BOOST_LIB_PATH_FOR_MCMC_TOOL) \
 	-L$(GSL_LIB_PATH_FOR_MCMC_TOOL)
 LIBS = \
-	-luq_mcmc_$(UQBT) \
-	-luq_mcmc_any \
+	-luq_queso_$(UQBT) \
+	-luq_queso_any \
 	-luq_basic_$(UQBT) \
 	-luq_basic_any \
 	-lepetra \
@@ -60,7 +60,7 @@ INC_PATHS = \
 	-I. \
 	-I../inc \
 	-I../../../libs/basic/inc \
-	-I../../../libs/mcmc/inc \
+	-I../../../libs/queso/inc \
 	-I$(MPI_INCLUDE_PATH_FOR_MCMC_TOOL) \
 	-I$(TRILINOS_INCLUDE_PATH_FOR_MCMC_TOOL) \
 	-I$(BOOST_INCLUDE_PATH_FOR_MCMC_TOOL) \
@@ -68,15 +68,15 @@ INC_PATHS = \
 
 LIB_PATHS = \
 	-L../../../libs/basic/lib \
-	-L../../../libs/mcmc/lib \
+	-L../../../libs/queso/lib \
 	-L$(MPI_LIB_PATH_FOR_MCMC_TOOL) \
 	-L$(TRILINOS_LIB_PATH_FOR_MCMC_TOOL) \
 	-L$(BOOST_LIB_PATH_FOR_MCMC_TOOL) \
 	-L$(GSL_LIB_PATH_FOR_MCMC_TOOL)
 
 LIBS = \
-	-luq_mcmc_$(UQBT) \
-	-luq_mcmc_any \
+	-luq_queso_$(UQBT) \
+	-luq_queso_any \
 	-luq_basic_$(UQBT) \
 	-luq_basic_any \
 	-lepetra \
@@ -102,7 +102,7 @@ clean_all: echo_basic_type clean_lib clean_exec
 
 clean_lib:
 	cd ../../../libs/basic/src; make clean_all UQBT=$(UQBT)
-	cd ../../../libs/mcmc/src; make clean_all UQBT=$(UQBT)
+	cd ../../../libs/queso/src; make clean_all UQBT=$(UQBT)
 
 clean_exec:
 	rm -f *~
@@ -114,7 +114,7 @@ uqAlgaeEx: libs uqAlgaeEx_$(UQBT).o
 
 libs:
 	cd ../../../libs/basic/src; make libuq_basic_all UQBT=$(UQBT)
-	cd ../../../libs/mcmc/src; make libuq_mcmc_all UQBT=$(UQBT)
+	cd ../../../libs/queso/src; make libuq_queso_all UQBT=$(UQBT)
 
 .SUFFIXES: .o .C
 

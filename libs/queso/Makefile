@@ -5,14 +5,14 @@ else
 override UQBT = tri
 endif
 
-all:	all_mcmc
+all:	all_queso
 
-echo_mcmc_type:
+echo_queso_type:
 	@echo 'UQBT = ' $(UQBT)
 
-clean_all: echo_mcmc_type clean_mcmc clean_docs clean_exec
+clean_all: echo_queso_type clean_queso clean_docs clean_exec
 
-clean_mcmc:
+clean_queso:
 	cd src; make clean_all UQBT=$(UQBT)
 
 clean_docs:
@@ -22,9 +22,9 @@ clean_exec:
 	rm -f *~
 
 all_docs:
-	doxygen uqLibsMcmc.dox
+	doxygen uqLibsQueso.dox
 	cd src; make all_docs
 	cd inc; make all_docs
 
-all_mcmc:
+all_queso:
 	cd src; make UQBT=$(UQBT)

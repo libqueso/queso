@@ -1,4 +1,4 @@
-/* uq/examples/mcmc/chemicalReactions/uqChemEx_gsl.C
+/* uq/examples/queso/chemicalReactions/uqChemEx_gsl.C
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu
  *

@@ -1,4 +1,4 @@
-/* uq/libs/mcmc/src/uqTrilinosFinDimLinearSpace.C
+/* uq/libs/queso/src/uqTrilinosFinDimLinearSpace.C
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu
  *

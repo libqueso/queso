@@ -1,4 +1,4 @@
-/* uq/libs/mcmc/inc/uqOneDGrid.h
+/* uq/libs/queso/inc/uqOneDGrid.h
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu/
  *

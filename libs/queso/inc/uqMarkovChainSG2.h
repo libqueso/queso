@@ -1,4 +1,4 @@
-/* uq/libs/mcmc/inc/uqMarkovChainSG2.h
+/* uq/libs/queso/inc/uqMarkovChainSG2.h
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu
  *

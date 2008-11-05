@@ -7,10 +7,10 @@ endif
 
 all:	all_docs
 
-echo_mcmc_type:
+echo_queso_type:
 	@echo 'UQBT = ' $(UQBT)
 
-clean_all: echo_mcmc_type clean_docs clean_exec
+clean_all: echo_queso_type clean_docs clean_exec
 
 clean_docs:
 	rm -rf html
@@ -19,4 +19,4 @@ clean_exec:
 	rm -f *~
 
 all_docs:
-	doxygen uqLibsMcmcInc.dox
+	doxygen uqLibsQUESOInc.dox

@@ -1,4 +1,4 @@
-/* uq/examples/mcmc/normal/uqNormalEx_tri.C
+/* uq/examples/queso/normal/uqNormalEx_tri.C
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu
  *
