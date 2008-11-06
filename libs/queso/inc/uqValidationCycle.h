@@ -38,8 +38,14 @@ public:
                 const void* likelihoodRoutineDataPtr,
                 bool routineComputesMinus2LogOfDensity);
 
+  void setCalFP(void (*qoiRoutinePtr)(const P_V& domainVector, const void* functionDataPtr, Q_V& imageVector),
+                const void* qoiRoutineDataPtr);
+
   const uqStatisticalInverseProblemClass<P_V,P_M>& calIP() const;
         uqStatisticalInverseProblemClass<P_V,P_M>& calIP();
+
+  const uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>& calFP() const;
+        uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>& calFP();
 
 private:
   const uqEnvironmentClass&          m_env;
@@ -51,6 +57,10 @@ private:
 	uqGenericVectorPdfClass         <P_V,P_M>* m_calLikelihoodFunctionObj;
         uqGenericVectorRVClass          <P_V,P_M>* m_calPostRv;
         uqStatisticalInverseProblemClass<P_V,P_M>* m_calIP;
+
+        uqGenericVectorFunctionClass    <P_V,P_M,Q_V,Q_M>* m_calQoiFunctionObj;
+        uqGenericVectorRVClass          <Q_V,Q_M>*         m_calQoiRv;
+        uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>* m_calFP;
 };
 
 template <class P_V,class P_M,class Q_V,class Q_M>
@@ -125,4 +135,47 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::calIP()
 {
   return *m_calIP;
 }
+
+template <class P_V,class P_M,class Q_V,class Q_M>
+void
+uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::setCalFP(
+  void (*qoiRoutinePtr)(const P_V& domainVector, const void* functionDataPtr, Q_V& imageVector),
+  const void* qoiRoutineDataPtr)
+{
+  // Calibration stage: Input param vector rv for forward = output posterior vector rv of inverse
+
+  // Calibration stage: Qoi function object
+  m_calQoiFunctionObj = new uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M> ("cal_qoi_", // Extra prefix before the default "func_" prefix
+                                                                           m_paramSpace,
+                                                                           m_qoiSpace,
+                                                                           qoiRoutinePtr,
+                                                                           qoiRoutineDataPtr);
+
+  // Calibration stage: Qoi vector rv
+  m_calQoiRv = new uqGenericVectorRVClass<Q_V,Q_M> ("cal_qoi_", // Extra prefix before the default "rv_" prefix
+                                                    m_qoiSpace);
+
+  // Calibration stage: Forward problem
+  m_calFP = new uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M> ("cal_",       // Extra prefix before the default "fp_" prefix
+                                                                   *m_calPostRv, // forward input = inverse output
+                                                                   *m_calQoiFunctionObj,
+                                                                   *m_calQoiRv);
+
+  return;
+}
+
+template <class P_V,class P_M,class Q_V,class Q_M>
+const uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>&
+uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::calFP() const
+{
+  return *m_calFP;
+}
+
+template <class P_V,class P_M,class Q_V,class Q_M>
+uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>&
+uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::calFP()
+{
+  return *m_calFP;
+}
+
 #endif // __UQ_VALIDATION_CYCLE_H__

@@ -48,6 +48,7 @@ public:
 
         bool computeSolutionFlag() const;
         void solveWithMonteCarlo();
+  const uqBaseVectorRVClass<Q_V,Q_M>& qoiRv() const;
 
         void print              (std::ostream& os) const;
 
@@ -301,6 +302,13 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   }
 
   return;
+}
+
+template <class P_V,class P_M,class Q_V,class Q_M>
+const uqBaseVectorRVClass<Q_V,Q_M>& 
+uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::qoiRv() const
+{
+  return m_qoiRv;
 }
 
 template <class P_V,class P_M,class Q_V,class Q_M>
