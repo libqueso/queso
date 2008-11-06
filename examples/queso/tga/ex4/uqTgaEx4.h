@@ -42,7 +42,7 @@ int func(double t, const double Mass[], double f[], void *info)
 }
 
 //********************************************************
-// Likelihood function object for the first validation problem stage (with prefix "s1_").
+// Likelihood function object for the first validation problem stage (with prefix "cal_").
 // A likelihood function object is provided by user and is called by the UQ library.
 // This likelihood function object consists of data and routine.
 //********************************************************
@@ -50,7 +50,7 @@ int func(double t, const double Mass[], double f[], void *info)
 // The (user defined) data type for the data needed by the (user defined) likelihood routine
 template<class P_V, class P_M>
 struct
-calibLikelihoodRoutine_DataType
+likelihoodRoutine_DataType
 {
   double               beta1;
   double               variance1;
@@ -71,19 +71,19 @@ calibLikelihoodRoutine_DataType
 // The actual (user defined) likelihood routine
 template<class P_V,class P_M>
 double
-calibLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
+likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 {
   double resultValue = 0.;
 
   // Compute likelihood for scenario 1
-  double betaTest = ((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta1;
+  double betaTest = ((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta1;
   if (betaTest) {
     double A                       = paramValues[0];
     double E                       = paramValues[1];
-    double beta                    =  ((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta1;
-    double variance                =  ((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->variance1;
-    const std::vector<double>& Te  = *((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Te1;
-    const std::vector<double>& Me  = *((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Me1;
+    double beta                    =  ((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta1;
+    double variance                =  ((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->variance1;
+    const std::vector<double>& Te  = *((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Te1;
+    const std::vector<double>& Me  = *((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Me1;
     std::vector<double> Mt(Me.size(),0.);
 
     double params[]={A,E,beta};
@@ -111,7 +111,7 @@ calibLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
       int status = gsl_odeiv_evolve_apply(e, c, s, &sys, &t, t_final, &h, Mass);
       UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
                           paramValues.env().rank(),
-                          "calibLikelihoodRoutine()",
+                          "likelihoodRoutine()",
                           "gsl_odeiv_evolve_apply() failed");
       //printf("t = %6.1lf, mass = %10.4lf\n",t,Mass[0]);
       //loopSize++;
@@ -130,7 +130,7 @@ calibLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 	
     //printf("loopSize = %d\n",loopSize);
     if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
-      printf("In calibLikelihoodRoutine(), A = %g, E = %g, beta = %.3lf: misfit = %lf, likelihood = %lf.\n",A,E,beta,misfit,resultValue);
+      printf("In likelihoodRoutine(), A = %g, E = %g, beta = %.3lf: misfit = %lf, likelihood = %lf.\n",A,E,beta,misfit,resultValue);
     }
 
     gsl_odeiv_evolve_free (e);
@@ -139,14 +139,14 @@ calibLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
   }
 
   // Compute likelihood for scenario 2
-  betaTest = ((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta2;
+  betaTest = ((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta2;
   if (betaTest > 0.) {
     double A                       = paramValues[0];
     double E                       = paramValues[1];
-    double beta                    =  ((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta2;
-    double variance                =  ((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->variance2;
-    const std::vector<double>& Te  = *((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Te2;
-    const std::vector<double>& Me  = *((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Me2;
+    double beta                    =  ((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta2;
+    double variance                =  ((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->variance2;
+    const std::vector<double>& Te  = *((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Te2;
+    const std::vector<double>& Me  = *((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Me2;
     std::vector<double> Mt(Me.size(),0.);
 
     double params[]={A,E,beta};
@@ -174,7 +174,7 @@ calibLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
       int status = gsl_odeiv_evolve_apply(e, c, s, &sys, &t, t_final, &h, Mass);
       UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
                           paramValues.env().rank(),
-                          "calibLikelihoodRoutine()",
+                          "likelihoodRoutine()",
                           "gsl_odeiv_evolve_apply() failed");
       //printf("t = %6.1lf, mass = %10.4lf\n",t,Mass[0]);
       //loopSize++;
@@ -193,7 +193,7 @@ calibLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 	
     //printf("loopSize = %d\n",loopSize);
     if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
-      printf("In calibLikelihoodRoutine(), A = %g, E = %g, beta = %.3lf: misfit = %lf, likelihood = %lf.\n",A,E,beta,misfit,resultValue);
+      printf("In likelihoodRoutine(), A = %g, E = %g, beta = %.3lf: misfit = %lf, likelihood = %lf.\n",A,E,beta,misfit,resultValue);
     }
 
     gsl_odeiv_evolve_free (e);
@@ -202,14 +202,14 @@ calibLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
   }
 
   // Compute likelihood for scenario 3
-  betaTest = ((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta3;
+  betaTest = ((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta3;
   if (betaTest > 0.) {
     double A                       = paramValues[0];
     double E                       = paramValues[1];
-    double beta                    =  ((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta3;
-    double variance                =  ((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->variance3;
-    const std::vector<double>& Te  = *((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Te3;
-    const std::vector<double>& Me  = *((calibLikelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Me3;
+    double beta                    =  ((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta3;
+    double variance                =  ((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->variance3;
+    const std::vector<double>& Te  = *((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Te3;
+    const std::vector<double>& Me  = *((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Me3;
     std::vector<double> Mt(Me.size(),0.);
 
     double params[]={A,E,beta};
@@ -237,7 +237,7 @@ calibLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
       int status = gsl_odeiv_evolve_apply(e, c, s, &sys, &t, t_final, &h, Mass);
       UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
                           paramValues.env().rank(),
-                          "calibLikelihoodRoutine()",
+                          "likelihoodRoutine()",
                           "gsl_odeiv_evolve_apply() failed");
       //printf("t = %6.1lf, mass = %10.4lf\n",t,Mass[0]);
       //loopSize++;
@@ -256,7 +256,7 @@ calibLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 	
     //printf("loopSize = %d\n",loopSize);
     if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
-      printf("In calibLikelihoodRoutine(), A = %g, E = %g, beta = %.3lf: misfit = %lf, likelihood = %lf.\n",A,E,beta,misfit,resultValue);
+      printf("In likelihoodRoutine(), A = %g, E = %g, beta = %.3lf: misfit = %lf, likelihood = %lf.\n",A,E,beta,misfit,resultValue);
     }
 
     gsl_odeiv_evolve_free (e);
@@ -268,7 +268,7 @@ calibLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 }
 
 //********************************************************
-// QoI function object for the first validation problem stage (with prefix "s1_").
+// QoI function object for the first validation problem stage (with prefix "cal_").
 // A QoI function object is provided by user and is called by the UQ library.
 // This QoI function object consists of data and routine.
 //********************************************************
@@ -533,46 +533,46 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
 
   // Stage I (s1): Prior vector rv
-  uqUniformVectorRVClass<P_V,P_M> s1_calibPriorRv("s1_cal_prior_", // Extra prefix before the default "rv_" prefix
-                                                   paramSpace,
-                                                   s1_minValues,
-                                                   s1_maxValues);
+  uqUniformVectorRVClass<P_V,P_M> cal_ip_PriorRv("cal_ip_prior_", // Extra prefix before the default "rv_" prefix
+                                                 paramSpace,
+                                                 s1_minValues,
+                                                 s1_maxValues);
 
-  // Stage I (s1): 1Likelihood function object: -2*ln[likelihood]
-  calibLikelihoodRoutine_DataType<P_V,P_M> s1_calibLikelihoodRoutine_Data;
-  s1_calibLikelihoodRoutine_Data.beta1     = beta_cal1;
-  s1_calibLikelihoodRoutine_Data.variance1 = variance_cal1;
-  s1_calibLikelihoodRoutine_Data.Te1       = &Te_cal1; // temperatures
-  s1_calibLikelihoodRoutine_Data.Me1       = &Me_cal1; // relative masses
-  s1_calibLikelihoodRoutine_Data.beta2     = beta_cal2;
-  s1_calibLikelihoodRoutine_Data.variance2 = variance_cal2;
-  s1_calibLikelihoodRoutine_Data.Te2       = &Te_cal2; // temperatures
-  s1_calibLikelihoodRoutine_Data.Me2       = &Me_cal2; // relative masses
-  s1_calibLikelihoodRoutine_Data.beta3     = beta_cal3;
-  s1_calibLikelihoodRoutine_Data.variance3 = variance_cal3;
-  s1_calibLikelihoodRoutine_Data.Te3       = &Te_cal3; // temperatures
-  s1_calibLikelihoodRoutine_Data.Me3       = &Me_cal3; // relative masses
-  uqGenericVectorPdfClass<P_V,P_M> s1_calibLikelihoodFunctionObj("s1_cal_prior_like_", // Extra prefix before the default "genpd_" prefix
-                                                                 paramSpace,
-                                                                 calibLikelihoodRoutine<P_V,P_M>,
-                                                                 (void *) &s1_calibLikelihoodRoutine_Data,
-                                                                 true); // the routine computes [-2.*ln(Likelihood)]
+  // Stage I (s1): Likelihood function object: -2*ln[likelihood]
+  likelihoodRoutine_DataType<P_V,P_M> cal_LikelihoodRoutine_Data;
+  cal_LikelihoodRoutine_Data.beta1     = beta_cal1;
+  cal_LikelihoodRoutine_Data.variance1 = variance_cal1;
+  cal_LikelihoodRoutine_Data.Te1       = &Te_cal1; // temperatures
+  cal_LikelihoodRoutine_Data.Me1       = &Me_cal1; // relative masses
+  cal_LikelihoodRoutine_Data.beta2     = beta_cal2;
+  cal_LikelihoodRoutine_Data.variance2 = variance_cal2;
+  cal_LikelihoodRoutine_Data.Te2       = &Te_cal2; // temperatures
+  cal_LikelihoodRoutine_Data.Me2       = &Me_cal2; // relative masses
+  cal_LikelihoodRoutine_Data.beta3     = beta_cal3;
+  cal_LikelihoodRoutine_Data.variance3 = variance_cal3;
+  cal_LikelihoodRoutine_Data.Te3       = &Te_cal3; // temperatures
+  cal_LikelihoodRoutine_Data.Me3       = &Me_cal3; // relative masses
+  uqGenericVectorPdfClass<P_V,P_M> cal_LikelihoodFunctionObj("cal_ip_prior_Like_", // Extra prefix before the default "genpd_" prefix
+                                                                paramSpace,
+                                                                likelihoodRoutine<P_V,P_M>,
+                                                                (void *) &cal_LikelihoodRoutine_Data,
+                                                                true); // the routine computes [-2.*ln(Likelihood)]
 
   // Stage I (s1): Posterior vector rv
-  uqGenericVectorRVClass<P_V,P_M> s1_calibPostRv("s1_cal_post_", // Extra prefix before the default "rv_" prefix
-                                                 paramSpace);
+  uqGenericVectorRVClass<P_V,P_M> cal_ip_PostRv("cal_ip_post_", // Extra prefix before the default "rv_" prefix
+                                                paramSpace);
 
   // Stage I (s1): Calibration problem
-  uqCalibProblemClass<P_V,P_M> s1_calibProblem("s1_", // No extra prefix before the default "cal_" prefix
-                                               s1_calibPriorRv,
-                                               s1_calibLikelihoodFunctionObj,
-                                               s1_calibPostRv);
+  uqCalibProblemClass<P_V,P_M> cal_ip_Problem("cal_", // No extra prefix before the default "cal_" prefix
+                                              cal_ip_PriorRv,
+                                              cal_LikelihoodFunctionObj,
+                                              cal_ip_PostRv);
 
-  // Stage I (s1): Solve the calibration problem: set 'pdf' and 'realizer' of 's1_calibPostRv'
-  P_M* s1_calibProposalCovMatrix = s1_calibPostRv.imageSpace().newGaussianMatrix(s1_calibPriorRv.pdf().domainVarianceValues(),
+  // Stage I (s1): Solve the calibration problem: set 'pdf' and 'realizer' of 'cal_ip_PostRv'
+  P_M* cal_ip_ProposalCovMatrix = cal_ip_PostRv.imageSpace().newGaussianMatrix(cal_ip_PriorRv.pdf().domainVarianceValues(),
                                                                                  s1_initialValues);
-  s1_calibProblem.solveWithBayesMarkovChain(s1_initialValues,
-                                           *s1_calibProposalCovMatrix,
+  cal_ip_Problem.solveWithBayesMarkovChain(s1_initialValues,
+                                           *cal_ip_ProposalCovMatrix,
                                             NULL); // use default kernel from library
 
   //******************************************************
@@ -582,28 +582,28 @@ uqAppl(const uqEnvironmentClass& env)
   // Stage I (s1): Input param vector rv for propagation = output posterior vector rv of calibration
 
   // Stage I (s1): Qoi function object
-  propagQoiRoutine_DataType<P_V,P_M,Q_V,Q_M> s1_propagQoiRoutine_Data;
-  s1_propagQoiRoutine_Data.beta         = beta_prediction;
-  s1_propagQoiRoutine_Data.criticalMass = criticalMass_prediction;
-  s1_propagQoiRoutine_Data.criticalTime = criticalTime_prediction;
-  uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M> s1_propagQoiFunctionObj("s1_pro_qoi_", // Extra prefix before the default "func_" prefix
-                                                                        paramSpace,
-                                                                        qoiSpace,
-                                                                        propagQoiRoutine<P_V,P_M,Q_V,Q_M>,
-                                                                        (void *) &s1_propagQoiRoutine_Data);
+  propagQoiRoutine_DataType<P_V,P_M,Q_V,Q_M> cal_fp_QoiRoutine_Data;
+  cal_fp_QoiRoutine_Data.beta         = beta_prediction;
+  cal_fp_QoiRoutine_Data.criticalMass = criticalMass_prediction;
+  cal_fp_QoiRoutine_Data.criticalTime = criticalTime_prediction;
+  uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M> cal_fp_QoiFunctionObj("cal_fp_qoi_", // Extra prefix before the default "func_" prefix
+                                                                      paramSpace,
+                                                                      qoiSpace,
+                                                                      propagQoiRoutine<P_V,P_M,Q_V,Q_M>,
+                                                                      (void *) &cal_fp_QoiRoutine_Data);
 
   // Stage I (s1): Qoi vector rv
-  uqGenericVectorRVClass<Q_V,Q_M> s1_propagQoiRv("s1_pro_qoi_", // Extra prefix before the default "rv_" prefix
-                                                 qoiSpace);
+  uqGenericVectorRVClass<Q_V,Q_M> cal_fp_QoiRv("cal_fp_qoi_", // Extra prefix before the default "rv_" prefix
+                                               qoiSpace);
 
   // Stage I (s1): Propagation problem
-  uqPropagProblemClass<P_V,P_M,Q_V,Q_M> s1_propagProblem("s1_",          // No extra prefix before the default "pro_" prefix
-                                                         s1_calibPostRv, // propagation input = calibration output
-                                                         s1_propagQoiFunctionObj,
-                                                         s1_propagQoiRv);
+  uqPropagProblemClass<P_V,P_M,Q_V,Q_M> cal_fp_Problem("cal_",          // No extra prefix before the default "pro_" prefix
+                                                       cal_ip_PostRv, // propagation input = calibration output
+                                                       cal_fp_QoiFunctionObj,
+                                                       cal_fp_QoiRv);
 
-  // Stage I (s1): Solve the propagation problem: set 'realizer' and 'cdf' of 's1_propagQoiRv'
-  s1_propagProblem.solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
+  // Stage I (s1): Solve the propagation problem: set 'realizer' and 'cdf' of 'cal_fp_QoiRv'
+  cal_fp_Problem.solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
 
   struct timeval timevalNow;
   iRC = gettimeofday(&timevalNow, NULL);
@@ -664,42 +664,42 @@ uqAppl(const uqEnvironmentClass& env)
 
   // Stage II (s2): Prior vector rv = posterior vector rv of stage I (s1)
 
-  // Stage II (s2): 1Likelihood function object: -2*ln[likelihood]
-  calibLikelihoodRoutine_DataType<P_V,P_M> s2_calibLikelihoodRoutine_Data;
-  s2_calibLikelihoodRoutine_Data.beta1     = beta_val;
-  s2_calibLikelihoodRoutine_Data.variance1 = variance_val;
-  s2_calibLikelihoodRoutine_Data.Te1       = &Te_val; // temperatures
-  s2_calibLikelihoodRoutine_Data.Me1       = &Me_val; // relative masses
-  s2_calibLikelihoodRoutine_Data.beta2     = 0.;
-  s2_calibLikelihoodRoutine_Data.variance2 = 0.;
-  s2_calibLikelihoodRoutine_Data.Te2       = NULL; // temperatures
-  s2_calibLikelihoodRoutine_Data.Me2       = NULL; // relative masses
-  s2_calibLikelihoodRoutine_Data.beta3     = 0.;
-  s2_calibLikelihoodRoutine_Data.variance3 = 0.;
-  s2_calibLikelihoodRoutine_Data.Te3       = NULL; // temperatures
-  s2_calibLikelihoodRoutine_Data.Me3       = NULL; // relative masses
-  uqGenericVectorPdfClass<P_V,P_M> s2_calibLikelihoodFunctionObj("s2_cal_prior_like_", // Extra prefix before the default "genpd_" prefix
+  // Stage II (s2): Likelihood function object: -2*ln[likelihood]
+  likelihoodRoutine_DataType<P_V,P_M> val_LikelihoodRoutine_Data;
+  val_LikelihoodRoutine_Data.beta1     = beta_val;
+  val_LikelihoodRoutine_Data.variance1 = variance_val;
+  val_LikelihoodRoutine_Data.Te1       = &Te_val; // temperatures
+  val_LikelihoodRoutine_Data.Me1       = &Me_val; // relative masses
+  val_LikelihoodRoutine_Data.beta2     = 0.;
+  val_LikelihoodRoutine_Data.variance2 = 0.;
+  val_LikelihoodRoutine_Data.Te2       = NULL; // temperatures
+  val_LikelihoodRoutine_Data.Me2       = NULL; // relative masses
+  val_LikelihoodRoutine_Data.beta3     = 0.;
+  val_LikelihoodRoutine_Data.variance3 = 0.;
+  val_LikelihoodRoutine_Data.Te3       = NULL; // temperatures
+  val_LikelihoodRoutine_Data.Me3       = NULL; // relative masses
+  uqGenericVectorPdfClass<P_V,P_M> val_LikelihoodFunctionObj("s2_cal_prior_Like_", // Extra prefix before the default "genpd_" prefix
                                                                  paramSpace,
-                                                                 calibLikelihoodRoutine<P_V,P_M>,
-                                                                 (void *) &s2_calibLikelihoodRoutine_Data,
+                                                                 likelihoodRoutine<P_V,P_M>,
+                                                                 (void *) &val_LikelihoodRoutine_Data,
                                                                  true); // the routine computes [-2.*ln(Likelihood)]
 
   // Stage II (s2): Posterior vector rv
-  uqGenericVectorRVClass<P_V,P_M> s2_calibPostRv("s2_cal_post_", // Extra prefix before the default "rv_" prefix
-                                                 paramSpace);
+  uqGenericVectorRVClass<P_V,P_M> val_ip_PostRv("s2_cal_post_", // Extra prefix before the default "rv_" prefix
+                                                paramSpace);
 
   // Stage II (s2): Calibration problem
-  uqCalibProblemClass<P_V,P_M> s2_calibProblem("s2_", // No extra prefix before the default "cal_" prefix
-                                               s1_calibPostRv, // s2 calibration input = s1 calibration output
-                                               s2_calibLikelihoodFunctionObj,
-                                               s2_calibPostRv);
+  uqCalibProblemClass<P_V,P_M> val_ip_Problem("s2_", // No extra prefix before the default "cal_" prefix
+                                              cal_ip_PostRv, // s2 calibration input = s1 calibration output
+                                              val_LikelihoodFunctionObj,
+                                              val_ip_PostRv);
 
-  // Stage II (s2): Solve the calibration problem: set 'pdf' and 'realizer' of 's2_calibPostRv'
-  P_M* s2_calibProposalCovMatrix = s1_calibPostRv.imageSpace().newGaussianMatrix(s1_calibPostRv.realizer().imageVarianceValues(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
-                                                                                 s1_calibPostRv.realizer().imageExpectedValues()); // Use these values as the initial values
-  s2_calibProblem.solveWithBayesMarkovChain(s1_calibPostRv.realizer().imageExpectedValues(),
-                                           *s2_calibProposalCovMatrix,
-                                            NULL); // use default kernel from library
+  // Stage II (s2): Solve the calibration problem: set 'pdf' and 'realizer' of 'val_ip_PostRv'
+  P_M* val_ip_ProposalCovMatrix = cal_ip_PostRv.imageSpace().newGaussianMatrix(cal_ip_PostRv.realizer().imageVarianceValues(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
+                                                                                 cal_ip_PostRv.realizer().imageExpectedValues()); // Use these values as the initial values
+  val_ip_Problem.solveWithBayesMarkovChain(cal_ip_PostRv.realizer().imageExpectedValues(),
+                                           *val_ip_ProposalCovMatrix,
+                                           NULL); // use default kernel from library
 
   //******************************************************
   // Step II.3 of 3: deal with the propagation problem
@@ -708,28 +708,28 @@ uqAppl(const uqEnvironmentClass& env)
   // Stage II (s2): Input param vector rv for propagation = output posterior vector rv of calibration
 
   // Stage II (s2): Qoi function object
-  propagQoiRoutine_DataType<P_V,P_M,Q_V,Q_M> s2_propagQoiRoutine_Data;
-  s2_propagQoiRoutine_Data.beta          = beta_prediction;
-  s2_propagQoiRoutine_Data.criticalMass  = criticalMass_prediction;
-  s2_propagQoiRoutine_Data.criticalTime  = criticalTime_prediction;
-  uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M> s2_propagQoiFunctionObj("s2_pro_qoi_", // Extra prefix before the default "func_" prefix
+  propagQoiRoutine_DataType<P_V,P_M,Q_V,Q_M> val_fp_QoiRoutine_Data;
+  val_fp_QoiRoutine_Data.beta          = beta_prediction;
+  val_fp_QoiRoutine_Data.criticalMass  = criticalMass_prediction;
+  val_fp_QoiRoutine_Data.criticalTime  = criticalTime_prediction;
+  uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M> val_fp_QoiFunctionObj("s2_pro_qoi_", // Extra prefix before the default "func_" prefix
                                                                         paramSpace,
                                                                         qoiSpace,
                                                                         propagQoiRoutine<P_V,P_M,Q_V,Q_M>,
-                                                                        (void *) &s2_propagQoiRoutine_Data);
+                                                                        (void *) &val_fp_QoiRoutine_Data);
 
-  // Stage II (s2): Qoi vector rv: set 'realizer' and 'cdf' of 's2_propagQoiRv'
-  uqGenericVectorRVClass<Q_V,Q_M> s2_propagQoiRv("s2_pro_qoi_", // Extra prefix before the default "rv_" prefix
+  // Stage II (s2): Qoi vector rv: set 'realizer' and 'cdf' of 'val_fp_QoiRv'
+  uqGenericVectorRVClass<Q_V,Q_M> val_fp_QoiRv("s2_pro_qoi_", // Extra prefix before the default "rv_" prefix
                                                  qoiSpace);
 
   // Stage II (s2): Propagation problem
-  uqPropagProblemClass<P_V,P_M,Q_V,Q_M> s2_propagProblem("s2_",          // No extra prefix before the default "pro_" prefix
-                                                         s2_calibPostRv, // propagation input = calibration output
-                                                         s2_propagQoiFunctionObj,
-                                                         s2_propagQoiRv);
+  uqPropagProblemClass<P_V,P_M,Q_V,Q_M> val_fp_Problem("s2_",          // No extra prefix before the default "pro_" prefix
+                                                         val_ip_PostRv, // propagation input = calibration output
+                                                         val_fp_QoiFunctionObj,
+                                                         val_fp_QoiRv);
 
   // Stage II (s2): Solve the propagation problem
-  s2_propagProblem.solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
+  val_fp_Problem.solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
 
   iRC = gettimeofday(&timevalNow, NULL);
   if (env.rank() == 0) {
@@ -749,12 +749,12 @@ uqAppl(const uqEnvironmentClass& env)
               << std::endl;
   }
 
-  if (s1_propagProblem.computeSolutionFlag() &&
-      s2_propagProblem.computeSolutionFlag()) {
-    Q_V* epsilonVec = s1_propagQoiRv.imageSpace().newVector(0.02);
-    Q_V cdfDistancesVec(s1_propagQoiRv.imageSpace().zeroVector());
-    horizontalDistances(s1_propagQoiRv.cdf(),
-                        s2_propagQoiRv.cdf(),
+  if (cal_fp_Problem.computeSolutionFlag() &&
+      val_fp_Problem.computeSolutionFlag()) {
+    Q_V* epsilonVec = cal_fp_QoiRv.imageSpace().newVector(0.02);
+    Q_V cdfDistancesVec(cal_fp_QoiRv.imageSpace().zeroVector());
+    horizontalDistances(cal_fp_QoiRv.cdf(),
+                        val_fp_QoiRv.cdf(),
                         *epsilonVec,
                         cdfDistancesVec);
     if (env.rank() == 0) {
@@ -764,8 +764,8 @@ uqAppl(const uqEnvironmentClass& env)
     }
 
     // Test independence of 'distance' w.r.t. order of cdfs
-    horizontalDistances(s2_propagQoiRv.cdf(),
-                        s1_propagQoiRv.cdf(),
+    horizontalDistances(val_fp_QoiRv.cdf(),
+                        cal_fp_QoiRv.cdf(),
                         *epsilonVec,
                         cdfDistancesVec);
     if (env.rank() == 0) {
@@ -776,8 +776,8 @@ uqAppl(const uqEnvironmentClass& env)
 
     // Epsilon = 0.04
     epsilonVec->cwSet(0.04);
-    horizontalDistances(s1_propagQoiRv.cdf(),
-                        s2_propagQoiRv.cdf(),
+    horizontalDistances(cal_fp_QoiRv.cdf(),
+                        val_fp_QoiRv.cdf(),
                         *epsilonVec,
                         cdfDistancesVec);
     if (env.rank() == 0) {
@@ -788,8 +788,8 @@ uqAppl(const uqEnvironmentClass& env)
 
     // Epsilon = 0.06
     epsilonVec->cwSet(0.06);
-    horizontalDistances(s1_propagQoiRv.cdf(),
-                        s2_propagQoiRv.cdf(),
+    horizontalDistances(cal_fp_QoiRv.cdf(),
+                        val_fp_QoiRv.cdf(),
                         *epsilonVec,
                         cdfDistancesVec);
     if (env.rank() == 0) {
@@ -800,8 +800,8 @@ uqAppl(const uqEnvironmentClass& env)
 
     // Epsilon = 0.08
     epsilonVec->cwSet(0.08);
-    horizontalDistances(s1_propagQoiRv.cdf(),
-                        s2_propagQoiRv.cdf(),
+    horizontalDistances(cal_fp_QoiRv.cdf(),
+                        val_fp_QoiRv.cdf(),
                         *epsilonVec,
                         cdfDistancesVec);
     if (env.rank() == 0) {
@@ -812,8 +812,8 @@ uqAppl(const uqEnvironmentClass& env)
 
     // Epsilon = 0.10
     epsilonVec->cwSet(0.10);
-    horizontalDistances(s1_propagQoiRv.cdf(),
-                        s2_propagQoiRv.cdf(),
+    horizontalDistances(cal_fp_QoiRv.cdf(),
+                        val_fp_QoiRv.cdf(),
                         *epsilonVec,
                         cdfDistancesVec);
     if (env.rank() == 0) {
@@ -836,8 +836,8 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
   // Release memory before leaving routine.
   //******************************************************
-  delete s2_calibProposalCovMatrix;
-  delete s1_calibProposalCovMatrix;
+  delete val_ip_ProposalCovMatrix;
+  delete cal_ip_ProposalCovMatrix;
 
   if (env.rank() == 0) {
     std::cout << "Finishing run of 'uqTgaEx4' example"
