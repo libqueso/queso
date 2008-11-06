@@ -20,8 +20,7 @@
 #ifndef __UQ_TGA_EX4_H__
 #define __UQ_TGA_EX4_H__
 
-#include <uqCalibProblem.h>
-#include <uqPropagProblem.h>
+#include <uqValidationCycle.h>
 #include <uqAsciiTable.h>
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_odeiv.h>
@@ -42,31 +41,165 @@ int func(double t, const double Mass[], double f[], void *info)
 }
 
 //********************************************************
-// Likelihood function object for the first validation problem stage (with prefix "cal_").
+// Likelihood function object for both inverse problems of the validation cycle.
 // A likelihood function object is provided by user and is called by the UQ library.
 // This likelihood function object consists of data and routine.
 //********************************************************
 
-// The (user defined) data type for the data needed by the (user defined) likelihood routine
+// The (user defined) data class that carries the data needed by the (user defined) likelihood routine
 template<class P_V, class P_M>
 struct
-likelihoodRoutine_DataType
+likelihoodRoutine_DataClass
 {
-  double               beta1;
-  double               variance1;
-  std::vector<double>* Te1; // temperatures
-  std::vector<double>* Me1; // relative masses
+  likelihoodRoutine_DataClass(const uqEnvironmentClass& env,
+                              const char* inpName1,
+                              const char* inpName2,
+                              const char* inpName3);
+ ~likelihoodRoutine_DataClass();
 
-  double               beta2;
-  double               variance2;
-  std::vector<double>* Te2; // temperatures
-  std::vector<double>* Me2; // relative masses
+  double              m_beta1;
+  double              m_variance1;
+  std::vector<double> m_Te1; // temperatures
+  std::vector<double> m_Me1; // relative masses
 
-  double               beta3;
-  double               variance3;
-  std::vector<double>* Te3; // temperatures
-  std::vector<double>* Me3; // relative masses
+  double              m_beta2;
+  double              m_variance2;
+  std::vector<double> m_Te2; // temperatures
+  std::vector<double> m_Me2; // relative masses
+
+  double              m_beta3;
+  double              m_variance3;
+  std::vector<double> m_Te3; // temperatures
+  std::vector<double> m_Me3; // relative masses
 };
+
+template<class P_V, class P_M>
+likelihoodRoutine_DataClass<P_V,P_M>::likelihoodRoutine_DataClass(
+  const uqEnvironmentClass& env,
+  const char* inpName1,
+  const char* inpName2,
+  const char* inpName3)
+  :
+  m_beta1    (0.),
+  m_variance1(0.),
+  m_Te1      (0),
+  m_Me1      (0),
+  m_beta2    (0.),
+  m_variance2(0.),
+  m_Te2      (0),
+  m_Me2      (0),
+  m_beta3    (0.),
+  m_variance3(0.),
+  m_Te3      (0),
+  m_Me3      (0)
+{
+  // Read experimental data
+  if (inpName1) {
+    m_Te1.resize(11,0.);
+    m_Me1.resize(11,0.);
+
+    // Open input file on experimental data
+    FILE *inp;
+    inp = fopen(inpName1,"r");
+
+    // Read kinetic parameters and convert heating rate to K/s
+    fscanf(inp,"%lf %lf",&m_beta1,&m_variance1);
+    m_beta1 /= 60.;
+  
+    unsigned int numObservations = 0;
+    double tmpTe;
+    double tmpMe;
+    while (fscanf(inp,"%lf %lf",&tmpTe,&tmpMe) != EOF) {
+      UQ_FATAL_TEST_MACRO((numObservations >= m_Te1.size()),
+                          env.rank(),
+                          "uqAppl(), in uqTgaEx4.h",
+                          "input file 1 has too many observations");
+      m_Te1[numObservations] = tmpTe;
+      m_Me1[numObservations] = tmpMe;
+      numObservations++;
+    }
+    UQ_FATAL_TEST_MACRO((numObservations != m_Te1.size()),
+                        env.rank(),
+                        "uqAppl(), in uqTgaEx4.h",
+                        "input file 1 has a smaller number of observations than expected");
+
+    // Close input file on experimental data
+    fclose(inp);
+  }
+
+  // Read experimental data
+  if (inpName2) {
+    m_Te2.resize(11,0.);
+    m_Me2.resize(11,0.);
+
+    // Open input file on experimental data
+    FILE *inp;
+    inp = fopen(inpName2,"r");
+
+    // Read kinetic parameters and convert heating rate to K/s
+    fscanf(inp,"%lf %lf",&m_beta2,&m_variance2);
+    m_beta2 /= 60.;
+  
+    unsigned int numObservations = 0;
+    double tmpTe;
+    double tmpMe;
+    while (fscanf(inp,"%lf %lf",&tmpTe,&tmpMe) != EOF) {
+      UQ_FATAL_TEST_MACRO((numObservations >= m_Te2.size()),
+                          env.rank(),
+                          "uqAppl(), in uqTgaEx4.h",
+                          "input file 2 has too many observations");
+      m_Te2[numObservations] = tmpTe;
+      m_Me2[numObservations] = tmpMe;
+      numObservations++;
+    }
+    UQ_FATAL_TEST_MACRO((numObservations != m_Te2.size()),
+                        env.rank(),
+                        "uqAppl(), in uqTgaEx4.h",
+                        "input file 2 has a smaller number of observations than expected");
+
+    // Close input file on experimental data
+    fclose(inp);
+  }
+
+  // Read experimental data
+  if (inpName3) {
+    m_Te3.resize(11,0.);
+    m_Me3.resize(11,0.);
+
+    // Open input file on experimental data
+    FILE *inp;
+    inp = fopen(inpName3,"r");
+
+    // Read kinetic parameters and convert heating rate to K/s
+    fscanf(inp,"%lf %lf",&m_beta3,&m_variance3);
+    m_beta3 /= 60.;
+  
+    unsigned int numObservations = 0;
+    double tmpTe;
+    double tmpMe;
+    while (fscanf(inp,"%lf %lf",&tmpTe,&tmpMe) != EOF) {
+      UQ_FATAL_TEST_MACRO((numObservations >= m_Te3.size()),
+                          env.rank(),
+                          "uqAppl(), in uqTgaEx4.h",
+                          "input file 3 has too many observations");
+      m_Te3[numObservations] = tmpTe;
+      m_Me3[numObservations] = tmpMe;
+      numObservations++;
+    }
+    UQ_FATAL_TEST_MACRO((numObservations != m_Te3.size()),
+                        env.rank(),
+                        "uqAppl(), in uqTgaEx4.h",
+                        "input file 3 has a smaller number of observations than expected");
+
+    // Close input file on experimental data
+    fclose(inp);
+  }
+}
+
+template<class P_V, class P_M>
+likelihoodRoutine_DataClass<P_V,P_M>::~likelihoodRoutine_DataClass()
+{
+}
 
 // The actual (user defined) likelihood routine
 template<class P_V,class P_M>
@@ -76,14 +209,14 @@ likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
   double resultValue = 0.;
 
   // Compute likelihood for scenario 1
-  double betaTest = ((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta1;
+  double betaTest = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_beta1;
   if (betaTest) {
     double A                       = paramValues[0];
     double E                       = paramValues[1];
-    double beta                    =  ((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta1;
-    double variance                =  ((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->variance1;
-    const std::vector<double>& Te  = *((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Te1;
-    const std::vector<double>& Me  = *((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Me1;
+    double beta                    = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_beta1;
+    double variance                = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_variance1;
+    const std::vector<double>& Te  = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_Te1;
+    const std::vector<double>& Me  = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_Me1;
     std::vector<double> Mt(Me.size(),0.);
 
     double params[]={A,E,beta};
@@ -139,14 +272,14 @@ likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
   }
 
   // Compute likelihood for scenario 2
-  betaTest = ((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta2;
+  betaTest = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_beta2;
   if (betaTest > 0.) {
     double A                       = paramValues[0];
     double E                       = paramValues[1];
-    double beta                    =  ((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta2;
-    double variance                =  ((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->variance2;
-    const std::vector<double>& Te  = *((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Te2;
-    const std::vector<double>& Me  = *((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Me2;
+    double beta                    = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_beta2;
+    double variance                = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_variance2;
+    const std::vector<double>& Te  = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_Te2;
+    const std::vector<double>& Me  = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_Me2;
     std::vector<double> Mt(Me.size(),0.);
 
     double params[]={A,E,beta};
@@ -202,14 +335,14 @@ likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
   }
 
   // Compute likelihood for scenario 3
-  betaTest = ((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta3;
+  betaTest = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_beta3;
   if (betaTest > 0.) {
     double A                       = paramValues[0];
     double E                       = paramValues[1];
-    double beta                    =  ((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->beta3;
-    double variance                =  ((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->variance3;
-    const std::vector<double>& Te  = *((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Te3;
-    const std::vector<double>& Me  = *((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->Me3;
+    double beta                    = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_beta3;
+    double variance                = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_variance3;
+    const std::vector<double>& Te  = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_Te3;
+    const std::vector<double>& Me  = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_Me3;
     std::vector<double> Mt(Me.size(),0.);
 
     double params[]={A,E,beta};
@@ -268,29 +401,29 @@ likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 }
 
 //********************************************************
-// QoI function object for the first validation problem stage (with prefix "cal_").
+// QoI function object for both forward problems of the validation cycle.
 // A QoI function object is provided by user and is called by the UQ library.
 // This QoI function object consists of data and routine.
 //********************************************************
-// The (user defined) data type for the data needed by the (user defined) qoi routine
+// The (user defined) data class that carries the data needed by the (user defined) qoi routine
 template<class P_V,class P_M,class Q_V, class Q_M>
 struct
-propagQoiRoutine_DataType
+qoiRoutine_DataClass
 {
-  double beta;
-  double criticalMass;
-  double criticalTime;
+  double m_beta;
+  double m_criticalMass;
+  double m_criticalTime;
 };
 
 // The actual (user defined) qoi routine
 template<class P_V,class P_M,class Q_V,class Q_M>
-void propagQoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiValues)
+void qoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiValues)
 {
   double A             = paramValues[0];
   double E             = paramValues[1];
-  double beta          = ((propagQoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->beta;
-  double criticalMass  = ((propagQoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->criticalMass;
-  double criticalTime  = ((propagQoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->criticalTime;
+  double beta          = ((qoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->m_beta;
+  double criticalMass  = ((qoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->m_criticalMass;
+  double criticalTime  = ((qoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->m_criticalTime;
 
   double params[]={A,E,beta};
       	
@@ -317,7 +450,7 @@ void propagQoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& 
     int status = gsl_odeiv_evolve_apply(e, c, s, &sys, &temperature, criticalTime*beta, &h, Mass);
     UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
                         paramValues.env().rank(),
-                        "propagQoiRoutine()",
+                        "qoiRoutine()",
                         "gsl_odeiv_evolve_apply() failed");
     //printf("t = %6.1lf, mass = %10.4lf\n",t,Mass[0]);
     //loopSize++;
@@ -335,7 +468,7 @@ void propagQoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& 
 	
   //printf("loopSize = %d\n",loopSize);
   if ((paramValues.env().verbosity() >= 3) && (paramValues.env().rank() == 0)) {
-    printf("In propagQoiRoutine(), A = %g, E = %g, beta = %.3lf, criticalTime = %.3lf, criticalMass = %.3lf: qoi = %lf.\n",A,E,beta,criticalTime,criticalMass,qoiValues[0]);
+    printf("In qoiRoutine(), A = %g, E = %g, beta = %.3lf, criticalTime = %.3lf, criticalMass = %.3lf: qoi = %lf.\n",A,E,beta,criticalTime,criticalMass,qoiValues[0]);
   }
 
   gsl_odeiv_evolve_free (e);
@@ -346,14 +479,53 @@ void propagQoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& 
 }
 
 //********************************************************
+// The 'calibration stage' of the driving routine "uqAppl()":
+// Step I.1 of 3: code very user specific to the "calibration stage" of the validation cycle
+// Step I.2 of 3: deal with the inverse problem of the "calibration stage"
+// Step I.3 of 3: deal with the forward problem of the "calibration stage"
+//********************************************************
+template<class P_V,class P_M,class Q_V,class Q_M>
+void 
+uqAppl_CalibrationStage(
+  const uqEnvironmentClass& env,
+  uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& tgaCycle)
+{
+  return;
+}
+
+//********************************************************
+// The 'validation stage' of the driving routine "uqAppl()":
+// Step  II.1 of 3: code very user specific to the "validation stage" of the validation cycle
+// Step  II.2 of 3: deal with the inverse problem of the "validation stage"
+// Step  II.3 of 3: deal with the forward problem of the "validation stage"
+//********************************************************
+template<class P_V,class P_M,class Q_V,class Q_M>
+void 
+uqAppl_ValidationStage(
+  const uqEnvironmentClass& env,
+  uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& tgaCycle)
+{
+  return;
+}
+
+//********************************************************
+// The 'comparison stage' of the driving routine "uqAppl()":
+// Step III.1 of 1: compare the cdf's of both "stages" of the validation cycle
+//********************************************************
+template<class P_V,class P_M,class Q_V,class Q_M>
+void 
+uqAppl_ComparisonStage(
+  const uqEnvironmentClass& env,
+  uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& tgaCycle)
+{
+  return;
+}
+
+//********************************************************
 // The driving routine "uqAppl()": called by main()
-// Step   I.1 of 3: code very user specific to stage I
-// Step   I.2 of 3: deal with the calibration problem of stage I 
-// Step   I.3 of 3: deal with the propagation problem of stage I
-// Step  II.1 of 3: code very user specific to stage II
-// Step  II.2 of 3: deal with the calibration problem of stage II
-// Step  II.3 of 3: deal with the propagation problem of stage II
-// Step III.1 of 1: compare the cdf's of stages I and II
+// Stage   I: the 'calibration stage'
+// Stage  II: the 'validation stage'
+// Stage III: the 'comparison stage'
 //********************************************************
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
@@ -370,7 +542,7 @@ uqAppl(const uqEnvironmentClass& env)
                       "input file must be specified in command line, after the '-i' option");
 
   //******************************************************
-  // Read Ascii file with important information on both calibration problems.
+  // Read Ascii file with important information on both inverse problems.
   //******************************************************
   uqAsciiTableClass<P_V,P_M> paramsTable(env,
                                          2,    // # of rows
@@ -379,12 +551,12 @@ uqAppl(const uqEnvironmentClass& env)
                                          "params.tab");
 
   const EpetraExt::DistArray<std::string>& paramNames = paramsTable.stringColumn(0);
-  P_V                                      s1_minValues    (paramsTable.doubleColumn(1));
-  P_V                                      s1_maxValues    (paramsTable.doubleColumn(2));
-  P_V                                      s1_initialValues(paramsTable.doubleColumn(3));
+  P_V                                      paramMinValues    (paramsTable.doubleColumn(1));
+  P_V                                      paramMaxValues    (paramsTable.doubleColumn(2));
+  P_V                                      paramInitialValues(paramsTable.doubleColumn(3));
 
   //******************************************************
-  // Read Ascii file with important information on both propagation problems.
+  // Read Ascii file with important information on both forward problems.
   //******************************************************
   uqAsciiTableClass<P_V,P_M> qoisTable(env,
                                        1,    // # of rows
@@ -397,123 +569,6 @@ uqAppl(const uqEnvironmentClass& env)
   double beta_prediction         = 250.;
   double criticalMass_prediction = 0.;
   double criticalTime_prediction = 3.9;
-
-  //*****************************************************
-  // Step I.1 of 3: Code very specific to this TGA example
-  //*****************************************************
-
-  int iRC;
-  struct timeval timevalRef;
-  iRC = gettimeofday(&timevalRef, NULL);
-  if (env.rank() == 0) {
-    std::cout << "Beginning stage 1 at " << ctime(&timevalRef.tv_sec)
-              << std::endl;
-  }
-
-  // Read experimental data
-  double beta_cal1, variance_cal1;
-  std::vector<double> Te_cal1(11,0.);
-  std::vector<double> Me_cal1(11,0.);
-
-  {
-    // Open input file on experimental data
-    FILE *inp;
-    inp = fopen("scenario_5_K_min.dat","r");
-
-    // Read kinetic parameters and convert heating rate to K/s
-    fscanf(inp,"%lf %lf",&beta_cal1,&variance_cal1);
-    beta_cal1 /= 60.;
-  
-    unsigned int numObservations = 0;
-    double tmpTe;
-    double tmpMe;
-    while (fscanf(inp,"%lf %lf",&tmpTe,&tmpMe) != EOF) {
-      UQ_FATAL_TEST_MACRO((numObservations >= Te_cal1.size()),
-                          env.rank(),
-                          "uqAppl(), in uqTgaEx.h",
-                          "input file has too many observations");
-      Te_cal1[numObservations] = tmpTe;
-      Me_cal1[numObservations] = tmpMe;
-      numObservations++;
-    }
-    UQ_FATAL_TEST_MACRO((numObservations != Te_cal1.size()),
-                        env.rank(),
-                        "uqAppl(), in uqTgaEx.h",
-                        "input file has a smaller number of observations than expected");
-
-    // Close input file on experimental data
-    fclose(inp);
-  }
-
-  // Read experimental data
-  double beta_cal2, variance_cal2;
-  std::vector<double> Te_cal2(11,0.);
-  std::vector<double> Me_cal2(11,0.);
-
-  {
-    // Open input file on experimental data
-    FILE *inp;
-    inp = fopen("scenario_25_K_min.dat","r");
-
-    // Read kinetic parameters and convert heating rate to K/s
-    fscanf(inp,"%lf %lf",&beta_cal2,&variance_cal2);
-    beta_cal2 /= 60.;
-  
-    unsigned int numObservations = 0;
-    double tmpTe;
-    double tmpMe;
-    while (fscanf(inp,"%lf %lf",&tmpTe,&tmpMe) != EOF) {
-      UQ_FATAL_TEST_MACRO((numObservations >= Te_cal2.size()),
-                          env.rank(),
-                          "uqAppl(), in uqTgaEx.h",
-                          "input file has too many observations");
-      Te_cal2[numObservations] = tmpTe;
-      Me_cal2[numObservations] = tmpMe;
-      numObservations++;
-    }
-    UQ_FATAL_TEST_MACRO((numObservations != Te_cal2.size()),
-                        env.rank(),
-                        "uqAppl(), in uqTgaEx.h",
-                        "input file has a smaller number of observations than expected");
-
-    // Close input file on experimental data
-    fclose(inp);
-  }
-
-  // Read experimental data
-  double beta_cal3, variance_cal3;
-  std::vector<double> Te_cal3(11,0.);
-  std::vector<double> Me_cal3(11,0.);
-
-  {
-    // Open input file on experimental data
-    FILE *inp;
-    inp = fopen("scenario_50_K_min.dat","r");
-
-    // Read kinetic parameters and convert heating rate to K/s
-    fscanf(inp,"%lf %lf",&beta_cal3,&variance_cal3);
-    beta_cal3 /= 60.;
-  
-    unsigned int numObservations = 0;
-    double tmpTe;
-    double tmpMe;
-    while (fscanf(inp,"%lf %lf",&tmpTe,&tmpMe) != EOF) {
-      UQ_FATAL_TEST_MACRO((numObservations >= Te_cal3.size()),
-                          env.rank(),
-                          "uqAppl(), in uqTgaEx.h",
-                          "input file has too many observations");
-      Te_cal3[numObservations] = tmpTe;
-      Me_cal3[numObservations] = tmpMe;
-      numObservations++;
-    }
-    UQ_FATAL_TEST_MACRO((numObservations != Te_cal3.size()),
-                        env.rank(),
-                        "uqAppl(), in uqTgaEx.h",
-                        "input file has a smaller number of observations than expected");
-
-    // Close input file on experimental data
-    fclose(inp);
-  }
 
   //******************************************************
   // Usually, spaces are the same throughout different problems.
@@ -529,90 +584,94 @@ uqAppl(const uqEnvironmentClass& env)
                                          &qoiNames);
 
   //******************************************************
-  // Step I.2 of 3: deal with the calibration problem
+  // Instantiate a validation cycle.
   //******************************************************
+  uqValidationCycleClass<P_V,P_M,Q_V,Q_M> cycle(env,
+                                                "", // No extra prefix
+                                                paramSpace,
+                                                qoiSpace);
 
-  // Stage I (s1): Prior vector rv
-  uqUniformVectorRVClass<P_V,P_M> cal_ip_PriorRv("cal_ip_prior_", // Extra prefix before the default "rv_" prefix
-                                                 paramSpace,
-                                                 s1_minValues,
-                                                 s1_maxValues);
-
-  // Stage I (s1): Likelihood function object: -2*ln[likelihood]
-  likelihoodRoutine_DataType<P_V,P_M> cal_LikelihoodRoutine_Data;
-  cal_LikelihoodRoutine_Data.beta1     = beta_cal1;
-  cal_LikelihoodRoutine_Data.variance1 = variance_cal1;
-  cal_LikelihoodRoutine_Data.Te1       = &Te_cal1; // temperatures
-  cal_LikelihoodRoutine_Data.Me1       = &Me_cal1; // relative masses
-  cal_LikelihoodRoutine_Data.beta2     = beta_cal2;
-  cal_LikelihoodRoutine_Data.variance2 = variance_cal2;
-  cal_LikelihoodRoutine_Data.Te2       = &Te_cal2; // temperatures
-  cal_LikelihoodRoutine_Data.Me2       = &Me_cal2; // relative masses
-  cal_LikelihoodRoutine_Data.beta3     = beta_cal3;
-  cal_LikelihoodRoutine_Data.variance3 = variance_cal3;
-  cal_LikelihoodRoutine_Data.Te3       = &Te_cal3; // temperatures
-  cal_LikelihoodRoutine_Data.Me3       = &Me_cal3; // relative masses
-  uqGenericVectorPdfClass<P_V,P_M> cal_LikelihoodFunctionObj("cal_ip_prior_Like_", // Extra prefix before the default "genpd_" prefix
-                                                                paramSpace,
-                                                                likelihoodRoutine<P_V,P_M>,
-                                                                (void *) &cal_LikelihoodRoutine_Data,
-                                                                true); // the routine computes [-2.*ln(Likelihood)]
-
-  // Stage I (s1): Posterior vector rv
-  uqGenericVectorRVClass<P_V,P_M> cal_ip_PostRv("cal_ip_post_", // Extra prefix before the default "rv_" prefix
-                                                paramSpace);
-
-  // Stage I (s1): Calibration problem
-  uqCalibProblemClass<P_V,P_M> cal_ip_Problem("cal_", // No extra prefix before the default "cal_" prefix
-                                              cal_ip_PriorRv,
-                                              cal_LikelihoodFunctionObj,
-                                              cal_ip_PostRv);
-
-  // Stage I (s1): Solve the calibration problem: set 'pdf' and 'realizer' of 'cal_ip_PostRv'
-  P_M* cal_ip_ProposalCovMatrix = cal_ip_PostRv.imageSpace().newGaussianMatrix(cal_ip_PriorRv.pdf().domainVarianceValues(),
-                                                                                 s1_initialValues);
-  cal_ip_Problem.solveWithBayesMarkovChain(s1_initialValues,
-                                           *cal_ip_ProposalCovMatrix,
-                                            NULL); // use default kernel from library
+  //********************************************************
+  // 'Calibration stage': begin
+  //********************************************************
+  int iRC;
+  struct timeval timevalRef;
+  iRC = gettimeofday(&timevalRef, NULL);
+  if (env.rank() == 0) {
+    std::cout << "Beginning 'calibration stage' at " << ctime(&timevalRef.tv_sec)
+              << std::endl;
+  }
 
   //******************************************************
-  // Step I.3 of 3: deal with the propagation problem
+  // 'Calibration stage': set the inverse problem
+  //******************************************************
+  uqUniformVectorRVClass<P_V,P_M> calPriorRv("cal_prior_", // Extra prefix before the default "rv_" prefix
+                                              paramSpace,
+                                              paramMinValues,
+                                              paramMaxValues);
+
+  likelihoodRoutine_DataClass<P_V,P_M> cal_likelihoodRoutine_Data(env,
+                                                                  "scenario_5_K_min.dat",
+                                                                  "scenario_25_K_min.dat",
+                                                                  "scenario_50_K_min.dat");
+
+  cycle.setCalIP(calPriorRv,
+                 likelihoodRoutine<P_V,P_M>,
+                 (void *) &cal_likelihoodRoutine_Data,
+                 true); // the likelihood routine computes [-2.*ln(Likelihood)]
+
+  //******************************************************
+  // 'Calibration stage': solve the inverse problem, i.e., set 'pdf' and 'realizer' of 'postRv'
+  //******************************************************
+  P_M* calProposalCovMatrix = cycle.calIP().postRv().imageSpace().newGaussianMatrix(cycle.calIP().priorRv().pdf().domainVarianceValues(),
+                                                                                    paramInitialValues);
+  cycle.calIP().solveWithBayesMarkovChain(paramInitialValues,
+                                                      *calProposalCovMatrix,
+                                                      NULL); // use default kernel from library
+
+  //******************************************************
+  // Step I.3 of 3: deal with the forward problem
   //******************************************************
 
-  // Stage I (s1): Input param vector rv for propagation = output posterior vector rv of calibration
+  // Calibration stage: Input param vector rv for forward = output posterior vector rv of inverse
 
-  // Stage I (s1): Qoi function object
-  propagQoiRoutine_DataType<P_V,P_M,Q_V,Q_M> cal_fp_QoiRoutine_Data;
-  cal_fp_QoiRoutine_Data.beta         = beta_prediction;
-  cal_fp_QoiRoutine_Data.criticalMass = criticalMass_prediction;
-  cal_fp_QoiRoutine_Data.criticalTime = criticalTime_prediction;
-  uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M> cal_fp_QoiFunctionObj("cal_fp_qoi_", // Extra prefix before the default "func_" prefix
-                                                                      paramSpace,
-                                                                      qoiSpace,
-                                                                      propagQoiRoutine<P_V,P_M,Q_V,Q_M>,
-                                                                      (void *) &cal_fp_QoiRoutine_Data);
+  // Calibration stage: Qoi function object
+  qoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> cal_qoiRoutine_Data;
+  cal_qoiRoutine_Data.m_beta         = beta_prediction;
+  cal_qoiRoutine_Data.m_criticalMass = criticalMass_prediction;
+  cal_qoiRoutine_Data.m_criticalTime = criticalTime_prediction;
+  uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M> cal_qoiFunctionObj("cal_qoi_", // Extra prefix before the default "func_" prefix
+                                                                   paramSpace,
+                                                                   qoiSpace,
+                                                                   qoiRoutine<P_V,P_M,Q_V,Q_M>,
+                                                                   (void *) &cal_qoiRoutine_Data);
 
-  // Stage I (s1): Qoi vector rv
-  uqGenericVectorRVClass<Q_V,Q_M> cal_fp_QoiRv("cal_fp_qoi_", // Extra prefix before the default "rv_" prefix
-                                               qoiSpace);
+  // Calibration stage: Qoi vector rv
+  uqGenericVectorRVClass<Q_V,Q_M> cal_qoiRv("cal_qoi_", // Extra prefix before the default "rv_" prefix
+                                            qoiSpace);
 
-  // Stage I (s1): Propagation problem
-  uqPropagProblemClass<P_V,P_M,Q_V,Q_M> cal_fp_Problem("cal_",          // No extra prefix before the default "pro_" prefix
-                                                       cal_ip_PostRv, // propagation input = calibration output
-                                                       cal_fp_QoiFunctionObj,
-                                                       cal_fp_QoiRv);
+  // Calibration stage: Forward problem
+  uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M> cal_fp_Problem("cal_",     // Extra prefix before the default "fp_" prefix
+                                                                   cycle.calIP().postRv(), // forward input = inverse output
+                                                                   cal_qoiFunctionObj,
+                                                                   cal_qoiRv);
 
-  // Stage I (s1): Solve the propagation problem: set 'realizer' and 'cdf' of 'cal_fp_QoiRv'
+  // Calibration stage: Solve the forward problem: set 'realizer' and 'cdf' of 'cal_qoiRv'
   cal_fp_Problem.solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
 
   struct timeval timevalNow;
   iRC = gettimeofday(&timevalNow, NULL);
   if (env.rank() == 0) {
-    std::cout << "Ending stage 1 at " << ctime(&timevalNow.tv_sec)
-              << "Total s1 run time = " << timevalNow.tv_sec - timevalRef.tv_sec
+    std::cout << "Ending 'calibration stage' at " << ctime(&timevalNow.tv_sec)
+              << "Total 'calibration stage' run time = " << timevalNow.tv_sec - timevalRef.tv_sec
               << " seconds"
               << std::endl;
   }
+
+  //********************************************************
+  // Stage II: the 'validation stage'
+  //********************************************************
+  uqAppl_ValidationStage(env,cycle);
 
   //*****************************************************
   // Step II.1 of 3: Code very specific to this TGA example
@@ -620,141 +679,104 @@ uqAppl(const uqEnvironmentClass& env)
 
   iRC = gettimeofday(&timevalRef, NULL);
   if (env.rank() == 0) {
-    std::cout << "Beginning stage 2 at " << ctime(&timevalRef.tv_sec)
+    std::cout << "Beginning 'validation stage' at " << ctime(&timevalRef.tv_sec)
               << std::endl;
   }
 
-  // Read experimental data
-  double beta_val, variance_val;
-  std::vector<double> Te_val(11,0.);
-  std::vector<double> Me_val(11,0.);
-
-  {
-    // Open input file on experimental data
-    FILE *inp = fopen("scenario_100_K_min.dat","r");
-
-    // Read kinetic parameters and convert heating rate to K/s
-    fscanf(inp,"%lf %lf",&beta_val,&variance_val);
-    beta_val /= 60.;
-  
-    unsigned int numObservations = 0;
-    double tmpTe;
-    double tmpMe;
-    while (fscanf(inp,"%lf %lf",&tmpTe,&tmpMe) != EOF) {
-      UQ_FATAL_TEST_MACRO((numObservations >= Te_val.size()),
-                          env.rank(),
-                          "uqAppl(), in uqTgaEx.h",
-                          "input file has too many observations");
-      Te_val[numObservations] = tmpTe;
-      Me_val[numObservations] = tmpMe;
-      numObservations++;
-    }
-    UQ_FATAL_TEST_MACRO((numObservations != Te_val.size()),
-                        env.rank(),
-                        "uqAppl(), in uqTgaEx.h",
-                        "input file has a smaller number of observations than expected");
-
-    // Close input file on experimental data
-    fclose(inp);
-  }
-
   //******************************************************
-  // Step II.2 of 3: deal with the calibration problem
+  // Step II.2 of 3: deal with the inverse problem
   //******************************************************
 
-  // Stage II (s2): Prior vector rv = posterior vector rv of stage I (s1)
+  // Validation stage: Prior vector rv = posterior vector rv of "calibration stage"
 
-  // Stage II (s2): Likelihood function object: -2*ln[likelihood]
-  likelihoodRoutine_DataType<P_V,P_M> val_LikelihoodRoutine_Data;
-  val_LikelihoodRoutine_Data.beta1     = beta_val;
-  val_LikelihoodRoutine_Data.variance1 = variance_val;
-  val_LikelihoodRoutine_Data.Te1       = &Te_val; // temperatures
-  val_LikelihoodRoutine_Data.Me1       = &Me_val; // relative masses
-  val_LikelihoodRoutine_Data.beta2     = 0.;
-  val_LikelihoodRoutine_Data.variance2 = 0.;
-  val_LikelihoodRoutine_Data.Te2       = NULL; // temperatures
-  val_LikelihoodRoutine_Data.Me2       = NULL; // relative masses
-  val_LikelihoodRoutine_Data.beta3     = 0.;
-  val_LikelihoodRoutine_Data.variance3 = 0.;
-  val_LikelihoodRoutine_Data.Te3       = NULL; // temperatures
-  val_LikelihoodRoutine_Data.Me3       = NULL; // relative masses
-  uqGenericVectorPdfClass<P_V,P_M> val_LikelihoodFunctionObj("s2_cal_prior_Like_", // Extra prefix before the default "genpd_" prefix
-                                                                 paramSpace,
-                                                                 likelihoodRoutine<P_V,P_M>,
-                                                                 (void *) &val_LikelihoodRoutine_Data,
-                                                                 true); // the routine computes [-2.*ln(Likelihood)]
+  // Validation stage: Likelihood function object: -2*ln[likelihood]
+  likelihoodRoutine_DataClass<P_V,P_M> val_likelihoodRoutine_Data(env,
+                                                                  "scenario_100_K_min.dat",
+                                                                  NULL,
+                                                                  NULL);
 
-  // Stage II (s2): Posterior vector rv
-  uqGenericVectorRVClass<P_V,P_M> val_ip_PostRv("s2_cal_post_", // Extra prefix before the default "rv_" prefix
-                                                paramSpace);
+  uqGenericVectorPdfClass<P_V,P_M> val_likelihoodFunctionObj("val_like_", // Extra prefix before the default "genpd_" prefix
+                                                             paramSpace,
+                                                             likelihoodRoutine<P_V,P_M>,
+                                                             (void *) &val_likelihoodRoutine_Data,
+                                                             true); // the routine computes [-2.*ln(Likelihood)]
 
-  // Stage II (s2): Calibration problem
-  uqCalibProblemClass<P_V,P_M> val_ip_Problem("s2_", // No extra prefix before the default "cal_" prefix
-                                              cal_ip_PostRv, // s2 calibration input = s1 calibration output
-                                              val_LikelihoodFunctionObj,
-                                              val_ip_PostRv);
+  // Validation stage: Posterior vector rv
+  uqGenericVectorRVClass<P_V,P_M> val_postRv("val_post_", // Extra prefix before the default "rv_" prefix
+                                             paramSpace);
 
-  // Stage II (s2): Solve the calibration problem: set 'pdf' and 'realizer' of 'val_ip_PostRv'
-  P_M* val_ip_ProposalCovMatrix = cal_ip_PostRv.imageSpace().newGaussianMatrix(cal_ip_PostRv.realizer().imageVarianceValues(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
-                                                                                 cal_ip_PostRv.realizer().imageExpectedValues()); // Use these values as the initial values
-  val_ip_Problem.solveWithBayesMarkovChain(cal_ip_PostRv.realizer().imageExpectedValues(),
-                                           *val_ip_ProposalCovMatrix,
+  // Validation stage: Inverse problem
+  uqStatisticalInverseProblemClass<P_V,P_M> val_ip_Problem("val_",     // Extra prefix before the default "ip_" prefix
+                                                           cycle.calIP().postRv(), // 'validation stage' inverse input = 'calibration stage' inverse output
+                                                           val_likelihoodFunctionObj,
+                                                           val_postRv);
+
+  // Validation stage: Solve the inverse problem: set 'pdf' and 'realizer' of 'val_postRv'
+  P_M* valProposalCovMatrix = cycle.calIP().postRv().imageSpace().newGaussianMatrix(cycle.calIP().postRv().realizer().imageVarianceValues(),       // Use 'realizer()' because the posterior rv was computed with Markov Chain
+                                                                                    cycle.calIP().postRv().realizer().imageExpectedValues()); // Use these values as the initial values
+  val_ip_Problem.solveWithBayesMarkovChain(cycle.calIP().postRv().realizer().imageExpectedValues(),
+                                           *valProposalCovMatrix,
                                            NULL); // use default kernel from library
 
   //******************************************************
-  // Step II.3 of 3: deal with the propagation problem
+  // Step II.3 of 3: deal with the forward problem
   //******************************************************
 
-  // Stage II (s2): Input param vector rv for propagation = output posterior vector rv of calibration
+  // Validation stage: Input param vector rv for forward = output posterior vector rv of inverse
 
-  // Stage II (s2): Qoi function object
-  propagQoiRoutine_DataType<P_V,P_M,Q_V,Q_M> val_fp_QoiRoutine_Data;
-  val_fp_QoiRoutine_Data.beta          = beta_prediction;
-  val_fp_QoiRoutine_Data.criticalMass  = criticalMass_prediction;
-  val_fp_QoiRoutine_Data.criticalTime  = criticalTime_prediction;
-  uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M> val_fp_QoiFunctionObj("s2_pro_qoi_", // Extra prefix before the default "func_" prefix
-                                                                        paramSpace,
-                                                                        qoiSpace,
-                                                                        propagQoiRoutine<P_V,P_M,Q_V,Q_M>,
-                                                                        (void *) &val_fp_QoiRoutine_Data);
+  // Validation stage: Qoi function object
+  qoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> val_qoiRoutine_Data;
+  val_qoiRoutine_Data.m_beta          = beta_prediction;
+  val_qoiRoutine_Data.m_criticalMass  = criticalMass_prediction;
+  val_qoiRoutine_Data.m_criticalTime  = criticalTime_prediction;
+  uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M> val_qoiFunctionObj("val_qoi_", // Extra prefix before the default "func_" prefix
+                                                                   paramSpace,
+                                                                   qoiSpace,
+                                                                   qoiRoutine<P_V,P_M,Q_V,Q_M>,
+                                                                   (void *) &val_qoiRoutine_Data);
 
-  // Stage II (s2): Qoi vector rv: set 'realizer' and 'cdf' of 'val_fp_QoiRv'
-  uqGenericVectorRVClass<Q_V,Q_M> val_fp_QoiRv("s2_pro_qoi_", // Extra prefix before the default "rv_" prefix
-                                                 qoiSpace);
+  // Validation stage: Qoi vector rv
+  uqGenericVectorRVClass<Q_V,Q_M> val_qoiRv("val_qoi_", // Extra prefix before the default "rv_" prefix
+                                            qoiSpace);
 
-  // Stage II (s2): Propagation problem
-  uqPropagProblemClass<P_V,P_M,Q_V,Q_M> val_fp_Problem("s2_",          // No extra prefix before the default "pro_" prefix
-                                                         val_ip_PostRv, // propagation input = calibration output
-                                                         val_fp_QoiFunctionObj,
-                                                         val_fp_QoiRv);
+  // Validation stage: Forward problem
+  uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M> val_fp_Problem("val_",     // Extra prefix before the default "fp_" prefix
+                                                                   val_postRv, // forward input = inverse output
+                                                                   val_qoiFunctionObj,
+                                                                   val_qoiRv);
 
-  // Stage II (s2): Solve the propagation problem
+  // Validation stage: Solve the forward problem: set 'realizer' and 'cdf' of 'val_qoiRv'
   val_fp_Problem.solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
 
   iRC = gettimeofday(&timevalNow, NULL);
   if (env.rank() == 0) {
-    std::cout << "Ending stage 2 at " << ctime(&timevalNow.tv_sec)
-              << "Total s2 run time = " << timevalNow.tv_sec - timevalRef.tv_sec
+    std::cout << "Ending 'validation stage' at " << ctime(&timevalNow.tv_sec)
+              << "Total 'validation stage' run time = " << timevalNow.tv_sec - timevalRef.tv_sec
               << " seconds"
               << std::endl;
   }
 
+  //********************************************************
+  // Stage III: the 'comparison stage'
+  //********************************************************
+  uqAppl_ComparisonStage(env,cycle);
+
   //******************************************************
-  // Step III.1 of 1: compare the cdf's of stages I and II
+  // Step III.1 of 1: compare the cdf's of both "stages" of the validation cycle
   //******************************************************
 
   iRC = gettimeofday(&timevalRef, NULL);
   if (env.rank() == 0) {
-    std::cout << "Beginning stage 3 at " << ctime(&timevalRef.tv_sec)
+    std::cout << "Beginning 'comparison stage' at " << ctime(&timevalRef.tv_sec)
               << std::endl;
   }
 
   if (cal_fp_Problem.computeSolutionFlag() &&
       val_fp_Problem.computeSolutionFlag()) {
-    Q_V* epsilonVec = cal_fp_QoiRv.imageSpace().newVector(0.02);
-    Q_V cdfDistancesVec(cal_fp_QoiRv.imageSpace().zeroVector());
-    horizontalDistances(cal_fp_QoiRv.cdf(),
-                        val_fp_QoiRv.cdf(),
+    Q_V* epsilonVec = cal_qoiRv.imageSpace().newVector(0.02);
+    Q_V cdfDistancesVec(cal_qoiRv.imageSpace().zeroVector());
+    horizontalDistances(cal_qoiRv.cdf(),
+                        val_qoiRv.cdf(),
                         *epsilonVec,
                         cdfDistancesVec);
     if (env.rank() == 0) {
@@ -764,20 +786,20 @@ uqAppl(const uqEnvironmentClass& env)
     }
 
     // Test independence of 'distance' w.r.t. order of cdfs
-    horizontalDistances(val_fp_QoiRv.cdf(),
-                        cal_fp_QoiRv.cdf(),
+    horizontalDistances(val_qoiRv.cdf(),
+                        cal_qoiRv.cdf(),
                         *epsilonVec,
                         cdfDistancesVec);
     if (env.rank() == 0) {
-      std::cout << "For epsilonVec = "    << *epsilonVec
+      std::cout << "For epsilonVec = "                             << *epsilonVec
                 << ", cdfDistancesVec (swithced order of cdfs) = " << cdfDistancesVec
                 << std::endl;
     }
 
     // Epsilon = 0.04
     epsilonVec->cwSet(0.04);
-    horizontalDistances(cal_fp_QoiRv.cdf(),
-                        val_fp_QoiRv.cdf(),
+    horizontalDistances(cal_qoiRv.cdf(),
+                        val_qoiRv.cdf(),
                         *epsilonVec,
                         cdfDistancesVec);
     if (env.rank() == 0) {
@@ -788,8 +810,8 @@ uqAppl(const uqEnvironmentClass& env)
 
     // Epsilon = 0.06
     epsilonVec->cwSet(0.06);
-    horizontalDistances(cal_fp_QoiRv.cdf(),
-                        val_fp_QoiRv.cdf(),
+    horizontalDistances(cal_qoiRv.cdf(),
+                        val_qoiRv.cdf(),
                         *epsilonVec,
                         cdfDistancesVec);
     if (env.rank() == 0) {
@@ -800,8 +822,8 @@ uqAppl(const uqEnvironmentClass& env)
 
     // Epsilon = 0.08
     epsilonVec->cwSet(0.08);
-    horizontalDistances(cal_fp_QoiRv.cdf(),
-                        val_fp_QoiRv.cdf(),
+    horizontalDistances(cal_qoiRv.cdf(),
+                        val_qoiRv.cdf(),
                         *epsilonVec,
                         cdfDistancesVec);
     if (env.rank() == 0) {
@@ -812,8 +834,8 @@ uqAppl(const uqEnvironmentClass& env)
 
     // Epsilon = 0.10
     epsilonVec->cwSet(0.10);
-    horizontalDistances(cal_fp_QoiRv.cdf(),
-                        val_fp_QoiRv.cdf(),
+    horizontalDistances(cal_qoiRv.cdf(),
+                        val_qoiRv.cdf(),
                         *epsilonVec,
                         cdfDistancesVec);
     if (env.rank() == 0) {
@@ -827,7 +849,7 @@ uqAppl(const uqEnvironmentClass& env)
 
   iRC = gettimeofday(&timevalNow, NULL);
   if (env.rank() == 0) {
-    std::cout << "Ending stage 3 at " << ctime(&timevalNow.tv_sec)
+    std::cout << "Ending 'comparison stage' at " << ctime(&timevalNow.tv_sec)
               << "Total s3 run time = " << timevalNow.tv_sec - timevalRef.tv_sec
               << " seconds"
               << std::endl;
@@ -836,8 +858,8 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
   // Release memory before leaving routine.
   //******************************************************
-  delete val_ip_ProposalCovMatrix;
-  delete cal_ip_ProposalCovMatrix;
+  delete valProposalCovMatrix;
+  delete calProposalCovMatrix;
 
   if (env.rank() == 0) {
     std::cout << "Finishing run of 'uqTgaEx4' example"

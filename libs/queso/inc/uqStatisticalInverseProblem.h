@@ -1,4 +1,4 @@
-/* uq/libs/queso/inc/uqCalibProblem.h
+/* uq/libs/queso/inc/uqStatisticalInverseProblem.h
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu
  *
@@ -38,19 +38,21 @@
 #endif
 
 template <class P_V,class P_M>
-class uqCalibProblemClass
+class uqStatisticalInverseProblemClass
 {
 public:
-  uqCalibProblemClass(const char*                          prefix,
-                      const uqBaseVectorRVClass <P_V,P_M>& priorRv,
-                      const uqBaseVectorPdfClass<P_V,P_M>& likelihoodFunction,
-                            uqBaseVectorRVClass <P_V,P_M>& postRv);
- ~uqCalibProblemClass();
+  uqStatisticalInverseProblemClass(const char*                          prefix,
+                                   const uqBaseVectorRVClass <P_V,P_M>& priorRv,
+                                   const uqBaseVectorPdfClass<P_V,P_M>& likelihoodFunction,
+                                   uqBaseVectorRVClass <P_V,P_M>&       postRv);
+ ~uqStatisticalInverseProblemClass();
 
         bool computeSolutionFlag      () const;
         void solveWithBayesMarkovChain(const P_V& initialValues,
                                        const P_M& proposalCovMatrix,
                                        void*      transitionKernel);
+  const uqBaseVectorRVClass<P_V,P_M>& priorRv() const;
+  const uqBaseVectorRVClass<P_V,P_M>& postRv()  const;
 
         void print                    (std::ostream& os) const;
 
@@ -91,17 +93,17 @@ private:
 };
 
 template<class P_V,class P_M>
-std::ostream& operator<<(std::ostream& os, const uqCalibProblemClass<P_V,P_M>& obj);
+std::ostream& operator<<(std::ostream& os, const uqStatisticalInverseProblemClass<P_V,P_M>& obj);
 
 template <class P_V,class P_M>
-uqCalibProblemClass<P_V,P_M>::uqCalibProblemClass(
+uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
   const char*                          prefix,
   const uqBaseVectorRVClass <P_V,P_M>& priorRv,
   const uqBaseVectorPdfClass<P_V,P_M>& likelihoodFunction,
         uqBaseVectorRVClass <P_V,P_M>& postRv)
   :
   m_env                   (priorRv.env()),
-  m_prefix                ((std::string)(prefix) + "cal_"),
+  m_prefix                ((std::string)(prefix) + "ip_"),
   m_optionsDesc           (new po::options_description("UQ Calibration Problem")),
   m_option_help           (m_prefix + "help"           ),
   m_option_computeSolution(m_prefix + "computeSolution"),
@@ -124,7 +126,7 @@ uqCalibProblemClass<P_V,P_M>::uqCalibProblemClass(
   m_mcSeqGenerator        (NULL),
   m_chain                 (NULL)
 {
-  if (m_env.rank() == 0) std::cout << "Entering uqCalibProblemClass<P_V,P_M>::constructor()"
+  if (m_env.rank() == 0) std::cout << "Entering uqStatisticalInverseProblemClass<P_V,P_M>::constructor()"
                                    << ": prefix = "              << m_prefix
                                    << std::endl;
 
@@ -132,12 +134,12 @@ uqCalibProblemClass<P_V,P_M>::uqCalibProblemClass(
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
 
-  if (m_env.rank() == 0) std::cout << "In uqCalibProblemClass<P_V,P_M>::constructor()"
+  if (m_env.rank() == 0) std::cout << "In uqStatisticalInverseProblemClass<P_V,P_M>::constructor()"
                                    << ": after getting values of options, state of object is:"
                                    << "\n" << *this
                                    << std::endl;
 
-  if (m_env.rank() == 0) std::cout << "Leaving uqCalibProblemClass<P_V,P_M>::constructor()"
+  if (m_env.rank() == 0) std::cout << "Leaving uqStatisticalInverseProblemClass<P_V,P_M>::constructor()"
                                    << ": prefix = "              << m_prefix
                                    << std::endl;
 
@@ -145,7 +147,7 @@ uqCalibProblemClass<P_V,P_M>::uqCalibProblemClass(
 }
 
 template <class P_V,class P_M>
-uqCalibProblemClass<P_V,P_M>::~uqCalibProblemClass()
+uqStatisticalInverseProblemClass<P_V,P_M>::~uqStatisticalInverseProblemClass()
 {
   if (m_chain) {
     m_chain->clear();
@@ -161,7 +163,7 @@ uqCalibProblemClass<P_V,P_M>::~uqCalibProblemClass()
 
 template<class P_V,class P_M>
 void
-uqCalibProblemClass<P_V,P_M>::defineMyOptions(
+uqStatisticalInverseProblemClass<P_V,P_M>::defineMyOptions(
   po::options_description& optionsDesc)
 {
   optionsDesc.add_options()
@@ -178,7 +180,7 @@ uqCalibProblemClass<P_V,P_M>::defineMyOptions(
 
 template<class P_V,class P_M>
 void
-  uqCalibProblemClass<P_V,P_M>::getMyOptionValues(
+  uqStatisticalInverseProblemClass<P_V,P_M>::getMyOptionValues(
   po::options_description& optionsDesc)
 {
   if (m_env.allOptionsMap().count(m_option_help.c_str())) {
@@ -205,21 +207,21 @@ void
 
 template <class P_V,class P_M>
 bool
-uqCalibProblemClass<P_V,P_M>::computeSolutionFlag() const
+uqStatisticalInverseProblemClass<P_V,P_M>::computeSolutionFlag() const
 {
   return m_computeSolution;
 }
 
 template <class P_V,class P_M>
 void
-uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
+uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   const P_V& initialValues,
   const P_M& proposalCovMatrix,
   void*      transitionKernel)
 {
   if (m_computeSolution == false) {
     if ((m_env.rank() == 0)) {
-      std::cout << "In uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain()"
+      std::cout << "In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()"
                 << ": computing solution, as requested by user"
                 << std::endl;
     }
@@ -280,7 +282,7 @@ uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
     }
     UQ_FATAL_TEST_MACRO((ofs && ofs->is_open()) == false,
                         m_env.rank(),
-                        "uqCalibProblem<P_V,P_M>::solveWithBayesMarkovChain()",
+                        "uqStatisticalInverseProblem<P_V,P_M>::solveWithBayesMarkovChain()",
                         "failed to open file");
 
     m_postRv.mdf().print(*ofs);
@@ -302,8 +304,22 @@ uqCalibProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
 }
 
 template <class P_V,class P_M>
+const uqBaseVectorRVClass<P_V,P_M>& 
+uqStatisticalInverseProblemClass<P_V,P_M>::priorRv() const
+{
+  return m_priorRv;
+}
+
+template <class P_V,class P_M>
+const uqBaseVectorRVClass<P_V,P_M>& 
+uqStatisticalInverseProblemClass<P_V,P_M>::postRv() const
+{
+  return m_postRv;
+}
+
+template <class P_V,class P_M>
 void
-uqCalibProblemClass<P_V,P_M>::print(std::ostream& os) const
+uqStatisticalInverseProblemClass<P_V,P_M>::print(std::ostream& os) const
 {
   os << "\n" << m_option_computeSolution << " = " << m_computeSolution
      << "\n" << m_option_outputFileName  << " = " << m_outputFileName
@@ -314,7 +330,7 @@ uqCalibProblemClass<P_V,P_M>::print(std::ostream& os) const
 }
 
 template<class P_V,class P_M>
-std::ostream& operator<<(std::ostream& os, const uqCalibProblemClass<P_V,P_M>& obj)
+std::ostream& operator<<(std::ostream& os, const uqStatisticalInverseProblemClass<P_V,P_M>& obj)
 {
   obj.print(os);
 

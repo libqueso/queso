@@ -1,4 +1,4 @@
-/* uq/libs/queso/inc/uqPropagProblem.h
+/* uq/libs/queso/inc/uqStatisticalForwardProblem.h
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu
  *
@@ -37,14 +37,14 @@
 #endif
 
 template <class P_V,class P_M,class Q_V,class Q_M>
-class uqPropagProblemClass
+class uqStatisticalForwardProblemClass
 {
 public:
-  uqPropagProblemClass(const char*                                       prefix,
+  uqStatisticalForwardProblemClass(const char*                                       prefix,
                        const uqBaseVectorRVClass      <P_V,P_M>&         paramRv,
                        const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction,
                              uqBaseVectorRVClass      <Q_V,Q_M>&         qoiRV);
- ~uqPropagProblemClass();
+ ~uqStatisticalForwardProblemClass();
 
         bool computeSolutionFlag() const;
         void solveWithMonteCarlo();
@@ -91,10 +91,10 @@ private:
 };
 
 template<class P_V,class P_M,class Q_V,class Q_M>
-std::ostream& operator<<(std::ostream& os, const uqPropagProblemClass<P_V,P_M,Q_V,Q_M>& obj);
+std::ostream& operator<<(std::ostream& os, const uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>& obj);
 
 template <class P_V,class P_M,class Q_V,class Q_M>
-uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::uqPropagProblemClass(
+uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::uqStatisticalForwardProblemClass(
   const char*                                       prefix,
   const uqBaseVectorRVClass      <P_V,P_M>&         paramRv,
   const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction,
@@ -124,7 +124,7 @@ uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::uqPropagProblemClass(
   m_mcSeqGenerator        (NULL),
   m_chain                 (NULL)
 {
-  if (m_env.rank() == 0) std::cout << "Entering uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::constructor()"
+  if (m_env.rank() == 0) std::cout << "Entering uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::constructor()"
                                    << ": prefix = "              << m_prefix
                                    << std::endl;
 
@@ -132,18 +132,18 @@ uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::uqPropagProblemClass(
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
 
-  if (m_env.rank() == 0) std::cout << "In uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::constructor()"
+  if (m_env.rank() == 0) std::cout << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::constructor()"
                                    << ": after getting values of options, state of object is:"
                                    << "\n" << *this
                                    << std::endl;
 
-  if (m_env.rank() == 0) std::cout << "Leaving uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::constructor()"
+  if (m_env.rank() == 0) std::cout << "Leaving uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::constructor()"
                                    << ": prefix = "              << m_prefix
                                    << std::endl;
 }
 
 template <class P_V,class P_M,class Q_V,class Q_M>
-uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::~uqPropagProblemClass()
+uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::~uqStatisticalForwardProblemClass()
 {
   if (m_chain) {
     m_chain->clear();
@@ -159,7 +159,7 @@ uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::~uqPropagProblemClass()
 
 template<class P_V,class P_M,class Q_V,class Q_M>
 void
-uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::defineMyOptions(
+uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::defineMyOptions(
   po::options_description& optionsDesc)
 {
   optionsDesc.add_options()
@@ -176,7 +176,7 @@ uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::defineMyOptions(
 
 template<class P_V,class P_M,class Q_V,class Q_M>
 void
-  uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::getMyOptionValues(
+  uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::getMyOptionValues(
   po::options_description& optionsDesc)
 {
   if (m_env.allOptionsMap().count(m_option_help.c_str())) {
@@ -203,18 +203,18 @@ void
 
 template <class P_V,class P_M, class Q_V, class Q_M>
 bool
-  uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::computeSolutionFlag() const
+  uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::computeSolutionFlag() const
 {
   return m_computeSolution;
 }
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
+uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
 {
   if (m_computeSolution == false) {
     if ((m_env.rank() == 0)) {
-      std::cout << "In uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
+      std::cout << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
                 << ": computing solution, as requested by user"
                 << std::endl;
     }
@@ -281,7 +281,7 @@ uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
     }
     UQ_FATAL_TEST_MACRO((ofs && ofs->is_open()) == false,
                         m_env.rank(),
-                        "uqPropagProblem<P_V,P_M,Q_V,Q_M>::solveWithBayesMarkovChain()",
+                        "uqStatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithBayesMarkovChain()",
                         "failed to open file");
 
     m_qoiRv.mdf().print(*ofs);
@@ -305,7 +305,7 @@ uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::print(std::ostream& os) const
+uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::print(std::ostream& os) const
 {
   os << "\n" << m_option_computeSolution << " = " << m_computeSolution
      << "\n" << m_option_outputFileName  << " = " << m_outputFileName
@@ -316,7 +316,7 @@ uqPropagProblemClass<P_V,P_M,Q_V,Q_M>::print(std::ostream& os) const
 }
 
 template<class P_V,class P_M,class Q_V,class Q_M>
-std::ostream& operator<<(std::ostream& os, const uqPropagProblemClass<P_V,P_M,Q_V,Q_M>& obj)
+std::ostream& operator<<(std::ostream& os, const uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>& obj)
 {
   obj.print(os);
 
