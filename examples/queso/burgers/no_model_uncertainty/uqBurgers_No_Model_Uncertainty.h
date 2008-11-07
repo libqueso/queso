@@ -178,6 +178,59 @@ likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 
 
 //********************************************************
+// QoI function object for the first validation problem stage (with prefix "s1_").
+// A QoI function object is provided by user and is called by the UQ library.
+// This QoI function object consists of data and routine.
+//********************************************************
+// The (user defined) data type for the data needed by the (user defined) qoi routine
+struct
+qoiRoutine_DataClass
+{
+  qoiRoutine_DataClass();
+  ~qoiRoutine_DataClass();
+
+  // For the Burgers solver
+  quadBasis *pQB; // quad points, weights, and basis evaluation
+};
+
+// constructor
+qoiRoutine_DataClass::qoiRoutine_DataClass()
+{
+  cout << "Calling qoiRoutine_DataClass constructor...";
+  // allocate and initialize quadrature points
+  UQ_FATAL_TEST_MACRO( (evaluateQuadratureAndBasisForResidual(100, &pQB)!=0), UQ_UNAVAILABLE_RANK,
+		       "uqAppl(), in uqBurgers_No_Model_Uncertainty (likelihoodRoutine_DataClass constructor)",
+		       "failed while allocating/computing quadrature points" );
+  cout << "success.\n";
+} // end constructor
+
+// destructor
+qoiRoutine_DataClass::~qoiRoutine_DataClass()
+{
+  cout << "Calling qoiRoutine_DataClass destructor...";
+  freeQuadratureAndBasisForResidual(pQB);
+  cout << "success.\n";
+} // end destructor
+
+// The actual (user defined) qoi routine
+template<class P_V,class P_M,class Q_V,class Q_M>
+void qoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiValues)
+{
+
+  int ierr;
+  const double kappa = paramValues[0];
+  double u_x1;
+  quadBasis *pQB = ((qoiRoutine_DataClass *) functionDataPtr)->pQB;
+
+  UQ_FATAL_TEST_MACRO( (computeGradientAtOne(kappa, pQB, &u_x1)!=0), UQ_UNAVAILABLE_RANK,
+		       "uqAppl(), in uqBurgers_No_Model_Uncertainty (qoiRoutine)",
+		       "failed while computing QoI.");
+  qoiValues[0] = u_x1;
+  return;
+}
+
+
+//********************************************************
 // The driving routine "uqAppl()": called by main()
 // Stage   I: the 'calibration stage'
 // Stage  II: the 'validation stage'
@@ -275,6 +328,22 @@ uqAppl(const uqEnvironmentClass& env)
                                           *calProposalCovMatrix,
                                           NULL); // use default kernel from library
   delete calProposalCovMatrix;
+
+  // Deal with forward problem
+  qoiRoutine_DataClass calQoiRoutine_Data;
+
+  cycle.setCalFP(qoiRoutine<P_V,P_M,Q_V,Q_M>, (void *) &calQoiRoutine_Data);
+
+  // Solve forward problem = set 'realizer' and 'cdf' of 'qoiRv'
+  cycle.calFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
+
+  iRC = gettimeofday(&timevalNow, NULL);
+  if (env.rank() == 0) {
+    std::cout << "Ending 'calibration stage' at " << ctime(&timevalNow.tv_sec)
+              << "Total 'calibration stage' run time = " << timevalNow.tv_sec - timevalRef.tv_sec
+              << " seconds"
+              << std::endl;
+  }
 
 
   if (env.rank() == 0) {
