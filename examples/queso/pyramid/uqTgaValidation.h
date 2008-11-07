@@ -1,4 +1,4 @@
-/* uq/examples/queso/tga/uqTgaEx4.h
+/* uq/examples/queso/pyramid/uqTgaValidation.h
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu
  *
@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef __UQ_TGA_EX4_H__
-#define __UQ_TGA_EX4_H__
+#ifndef __UQ_TGA_VALIDATION_H__
+#define __UQ_TGA_VALIDATION_H__
 
-#include <uqValidationCycle.h>
+#include <uqModelValidation.h>
 #include <uqAsciiTable.h>
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_odeiv.h>
@@ -28,7 +28,7 @@
 #define R_CONSTANT 8.314472
 
 // The ODE (state dot) function
-int func(double t, const double Mass[], double f[], void *info)
+int tgaOdeFunc(double t, const double Mass[], double f[], void *info)
 {
   double* params = (double *)info;
   double A    = params[0];
@@ -49,13 +49,13 @@ int func(double t, const double Mass[], double f[], void *info)
 // The (user defined) data class that carries the data needed by the (user defined) likelihood routine
 template<class P_V, class P_M>
 struct
-likelihoodRoutine_DataClass
+tgaLikelihoodRoutine_DataClass
 {
-  likelihoodRoutine_DataClass(const uqEnvironmentClass& env,
-                              const char* inpName1,
-                              const char* inpName2,
-                              const char* inpName3);
- ~likelihoodRoutine_DataClass();
+  tgaLikelihoodRoutine_DataClass(const uqEnvironmentClass& env,
+                                 const char* inpName1,
+                                 const char* inpName2,
+                                 const char* inpName3);
+ ~tgaLikelihoodRoutine_DataClass();
 
   double              m_beta1;
   double              m_variance1;
@@ -74,7 +74,7 @@ likelihoodRoutine_DataClass
 };
 
 template<class P_V, class P_M>
-likelihoodRoutine_DataClass<P_V,P_M>::likelihoodRoutine_DataClass(
+tgaLikelihoodRoutine_DataClass<P_V,P_M>::tgaLikelihoodRoutine_DataClass(
   const uqEnvironmentClass& env,
   const char* inpName1,
   const char* inpName2,
@@ -112,7 +112,7 @@ likelihoodRoutine_DataClass<P_V,P_M>::likelihoodRoutine_DataClass(
     while (fscanf(inp,"%lf %lf",&tmpTe,&tmpMe) != EOF) {
       UQ_FATAL_TEST_MACRO((numObservations >= m_Te1.size()),
                           env.rank(),
-                          "uqAppl(), in uqTgaEx4.h",
+                          "tgaLikelihoodRoutine_DataClass(), in uqTgaValidation.h",
                           "input file 1 has too many observations");
       m_Te1[numObservations] = tmpTe;
       m_Me1[numObservations] = tmpMe;
@@ -120,7 +120,7 @@ likelihoodRoutine_DataClass<P_V,P_M>::likelihoodRoutine_DataClass(
     }
     UQ_FATAL_TEST_MACRO((numObservations != m_Te1.size()),
                         env.rank(),
-                        "uqAppl(), in uqTgaEx4.h",
+                        "tgaLikelihoodRoutine_DataClass(), in uqTgaValidation.h",
                         "input file 1 has a smaller number of observations than expected");
 
     // Close input file on experimental data
@@ -146,7 +146,7 @@ likelihoodRoutine_DataClass<P_V,P_M>::likelihoodRoutine_DataClass(
     while (fscanf(inp,"%lf %lf",&tmpTe,&tmpMe) != EOF) {
       UQ_FATAL_TEST_MACRO((numObservations >= m_Te2.size()),
                           env.rank(),
-                          "uqAppl(), in uqTgaEx4.h",
+                          "tgaLikelihoodRoutine_DataClass(), in uqTgaValidation.h",
                           "input file 2 has too many observations");
       m_Te2[numObservations] = tmpTe;
       m_Me2[numObservations] = tmpMe;
@@ -154,7 +154,7 @@ likelihoodRoutine_DataClass<P_V,P_M>::likelihoodRoutine_DataClass(
     }
     UQ_FATAL_TEST_MACRO((numObservations != m_Te2.size()),
                         env.rank(),
-                        "uqAppl(), in uqTgaEx4.h",
+                        "tgaLikelihoodRoutine_DataClass(), in uqTgaValidation.h",
                         "input file 2 has a smaller number of observations than expected");
 
     // Close input file on experimental data
@@ -180,7 +180,7 @@ likelihoodRoutine_DataClass<P_V,P_M>::likelihoodRoutine_DataClass(
     while (fscanf(inp,"%lf %lf",&tmpTe,&tmpMe) != EOF) {
       UQ_FATAL_TEST_MACRO((numObservations >= m_Te3.size()),
                           env.rank(),
-                          "uqAppl(), in uqTgaEx4.h",
+                          "tgaLikelihoodRoutine_DataClass(), in uqTgaValidation.h",
                           "input file 3 has too many observations");
       m_Te3[numObservations] = tmpTe;
       m_Me3[numObservations] = tmpMe;
@@ -188,7 +188,7 @@ likelihoodRoutine_DataClass<P_V,P_M>::likelihoodRoutine_DataClass(
     }
     UQ_FATAL_TEST_MACRO((numObservations != m_Te3.size()),
                         env.rank(),
-                        "uqAppl(), in uqTgaEx4.h",
+                        "tgaLikelihoodRoutine_DataClass(), in uqTgaValidation.h",
                         "input file 3 has a smaller number of observations than expected");
 
     // Close input file on experimental data
@@ -197,26 +197,26 @@ likelihoodRoutine_DataClass<P_V,P_M>::likelihoodRoutine_DataClass(
 }
 
 template<class P_V, class P_M>
-likelihoodRoutine_DataClass<P_V,P_M>::~likelihoodRoutine_DataClass()
+tgaLikelihoodRoutine_DataClass<P_V,P_M>::~tgaLikelihoodRoutine_DataClass()
 {
 }
 
 // The actual (user defined) likelihood routine
 template<class P_V,class P_M>
 double
-likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
+tgaLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 {
   double resultValue = 0.;
 
   // Compute likelihood for scenario 1
-  double betaTest = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_beta1;
+  double betaTest = ((tgaLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_beta1;
   if (betaTest) {
-    double A                       = paramValues[0];
-    double E                       = paramValues[1];
-    double beta                    = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_beta1;
-    double variance                = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_variance1;
-    const std::vector<double>& Te  = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_Te1;
-    const std::vector<double>& Me  = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_Me1;
+    double A                      = paramValues[0];
+    double E                      = paramValues[1];
+    double beta                   = ((tgaLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_beta1;
+    double variance               = ((tgaLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_variance1;
+    const std::vector<double>& Te = ((tgaLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_Te1;
+    const std::vector<double>& Me = ((tgaLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_Me1;
     std::vector<double> Mt(Me.size(),0.);
 
     double params[]={A,E,beta};
@@ -226,7 +226,7 @@ likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
           gsl_odeiv_step      *s   = gsl_odeiv_step_alloc(T,1);
           gsl_odeiv_control   *c   = gsl_odeiv_control_y_new(1e-6,0.0);
           gsl_odeiv_evolve    *e   = gsl_odeiv_evolve_alloc(1);
-          gsl_odeiv_system     sys = {func, NULL, 1, (void *)params}; 
+          gsl_odeiv_system     sys = {tgaOdeFunc, NULL, 1, (void *)params}; 
 
     double t = 0.1, t_final = 1900.;
     double h = 1e-3;
@@ -244,7 +244,7 @@ likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
       int status = gsl_odeiv_evolve_apply(e, c, s, &sys, &t, t_final, &h, Mass);
       UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
                           paramValues.env().rank(),
-                          "likelihoodRoutine()",
+                          "tgaLikelihoodRoutine()",
                           "gsl_odeiv_evolve_apply() failed");
       //printf("t = %6.1lf, mass = %10.4lf\n",t,Mass[0]);
       //loopSize++;
@@ -263,7 +263,7 @@ likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 	
     //printf("loopSize = %d\n",loopSize);
     if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
-      printf("In likelihoodRoutine(), A = %g, E = %g, beta = %.3lf: misfit = %lf, likelihood = %lf.\n",A,E,beta,misfit,resultValue);
+      printf("In tgaLikelihoodRoutine(), A = %g, E = %g, beta = %.3lf: misfit = %lf, likelihood = %lf.\n",A,E,beta,misfit,resultValue);
     }
 
     gsl_odeiv_evolve_free (e);
@@ -272,14 +272,14 @@ likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
   }
 
   // Compute likelihood for scenario 2
-  betaTest = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_beta2;
+  betaTest = ((tgaLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_beta2;
   if (betaTest > 0.) {
     double A                       = paramValues[0];
     double E                       = paramValues[1];
-    double beta                    = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_beta2;
-    double variance                = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_variance2;
-    const std::vector<double>& Te  = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_Te2;
-    const std::vector<double>& Me  = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_Me2;
+    double beta                    = ((tgaLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_beta2;
+    double variance                = ((tgaLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_variance2;
+    const std::vector<double>& Te  = ((tgaLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_Te2;
+    const std::vector<double>& Me  = ((tgaLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_Me2;
     std::vector<double> Mt(Me.size(),0.);
 
     double params[]={A,E,beta};
@@ -289,7 +289,7 @@ likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
           gsl_odeiv_step      *s   = gsl_odeiv_step_alloc(T,1);
           gsl_odeiv_control   *c   = gsl_odeiv_control_y_new(1e-6,0.0);
           gsl_odeiv_evolve    *e   = gsl_odeiv_evolve_alloc(1);
-          gsl_odeiv_system     sys = {func, NULL, 1, (void *)params}; 
+          gsl_odeiv_system     sys = {tgaOdeFunc, NULL, 1, (void *)params}; 
 
     double t = 0.1, t_final = 1900.;
     double h = 1e-3;
@@ -307,7 +307,7 @@ likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
       int status = gsl_odeiv_evolve_apply(e, c, s, &sys, &t, t_final, &h, Mass);
       UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
                           paramValues.env().rank(),
-                          "likelihoodRoutine()",
+                          "tgaLikelihoodRoutine()",
                           "gsl_odeiv_evolve_apply() failed");
       //printf("t = %6.1lf, mass = %10.4lf\n",t,Mass[0]);
       //loopSize++;
@@ -326,7 +326,7 @@ likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 	
     //printf("loopSize = %d\n",loopSize);
     if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
-      printf("In likelihoodRoutine(), A = %g, E = %g, beta = %.3lf: misfit = %lf, likelihood = %lf.\n",A,E,beta,misfit,resultValue);
+      printf("In tgaLikelihoodRoutine(), A = %g, E = %g, beta = %.3lf: misfit = %lf, likelihood = %lf.\n",A,E,beta,misfit,resultValue);
     }
 
     gsl_odeiv_evolve_free (e);
@@ -335,14 +335,14 @@ likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
   }
 
   // Compute likelihood for scenario 3
-  betaTest = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_beta3;
+  betaTest = ((tgaLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_beta3;
   if (betaTest > 0.) {
     double A                       = paramValues[0];
     double E                       = paramValues[1];
-    double beta                    = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_beta3;
-    double variance                = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_variance3;
-    const std::vector<double>& Te  = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_Te3;
-    const std::vector<double>& Me  = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_Me3;
+    double beta                    = ((tgaLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_beta3;
+    double variance                = ((tgaLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_variance3;
+    const std::vector<double>& Te  = ((tgaLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_Te3;
+    const std::vector<double>& Me  = ((tgaLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_Me3;
     std::vector<double> Mt(Me.size(),0.);
 
     double params[]={A,E,beta};
@@ -352,7 +352,7 @@ likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
           gsl_odeiv_step      *s   = gsl_odeiv_step_alloc(T,1);
           gsl_odeiv_control   *c   = gsl_odeiv_control_y_new(1e-6,0.0);
           gsl_odeiv_evolve    *e   = gsl_odeiv_evolve_alloc(1);
-          gsl_odeiv_system     sys = {func, NULL, 1, (void *)params}; 
+          gsl_odeiv_system     sys = {tgaOdeFunc, NULL, 1, (void *)params}; 
 
     double t = 0.1, t_final = 1900.;
     double h = 1e-3;
@@ -370,7 +370,7 @@ likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
       int status = gsl_odeiv_evolve_apply(e, c, s, &sys, &t, t_final, &h, Mass);
       UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
                           paramValues.env().rank(),
-                          "likelihoodRoutine()",
+                          "tgaLikelihoodRoutine()",
                           "gsl_odeiv_evolve_apply() failed");
       //printf("t = %6.1lf, mass = %10.4lf\n",t,Mass[0]);
       //loopSize++;
@@ -389,7 +389,7 @@ likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 	
     //printf("loopSize = %d\n",loopSize);
     if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
-      printf("In likelihoodRoutine(), A = %g, E = %g, beta = %.3lf: misfit = %lf, likelihood = %lf.\n",A,E,beta,misfit,resultValue);
+      printf("In tgaLikelihoodRoutine(), A = %g, E = %g, beta = %.3lf: misfit = %lf, likelihood = %lf.\n",A,E,beta,misfit,resultValue);
     }
 
     gsl_odeiv_evolve_free (e);
@@ -408,7 +408,7 @@ likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 // The (user defined) data class that carries the data needed by the (user defined) qoi routine
 template<class P_V,class P_M,class Q_V, class Q_M>
 struct
-qoiRoutine_DataClass
+tgaQoiRoutine_DataClass
 {
   double m_beta;
   double m_criticalMass;
@@ -417,13 +417,13 @@ qoiRoutine_DataClass
 
 // The actual (user defined) qoi routine
 template<class P_V,class P_M,class Q_V,class Q_M>
-void qoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiValues)
+void tgaQoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiValues)
 {
-  double A             = paramValues[0];
-  double E             = paramValues[1];
-  double beta          = ((qoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->m_beta;
-  double criticalMass  = ((qoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->m_criticalMass;
-  double criticalTime  = ((qoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->m_criticalTime;
+  double A            = paramValues[0];
+  double E            = paramValues[1];
+  double beta         = ((tgaQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->m_beta;
+  double criticalMass = ((tgaQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->m_criticalMass;
+  double criticalTime = ((tgaQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->m_criticalTime;
 
   double params[]={A,E,beta};
       	
@@ -432,7 +432,7 @@ void qoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiVal
         gsl_odeiv_step      *s   = gsl_odeiv_step_alloc(T,1);
         gsl_odeiv_control   *c   = gsl_odeiv_control_y_new(1e-6,0.0);
         gsl_odeiv_evolve    *e   = gsl_odeiv_evolve_alloc(1);
-        gsl_odeiv_system     sys = {func, NULL, 1, (void *)params}; 
+        gsl_odeiv_system     sys = {tgaOdeFunc, NULL, 1, (void *)params}; 
 	
   double temperature = 0.1;
   double h = 1e-3;
@@ -450,7 +450,7 @@ void qoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiVal
     int status = gsl_odeiv_evolve_apply(e, c, s, &sys, &temperature, criticalTime*beta, &h, Mass);
     UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
                         paramValues.env().rank(),
-                        "qoiRoutine()",
+                        "tgaQoiRoutine()",
                         "gsl_odeiv_evolve_apply() failed");
     //printf("t = %6.1lf, mass = %10.4lf\n",t,Mass[0]);
     //loopSize++;
@@ -468,7 +468,7 @@ void qoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiVal
 	
   //printf("loopSize = %d\n",loopSize);
   if ((paramValues.env().verbosity() >= 3) && (paramValues.env().rank() == 0)) {
-    printf("In qoiRoutine(), A = %g, E = %g, beta = %.3lf, criticalTime = %.3lf, criticalMass = %.3lf: qoi = %lf.\n",A,E,beta,criticalTime,criticalMass,qoiValues[0]);
+    printf("In tgaQoiRoutine(), A = %g, E = %g, beta = %.3lf, criticalTime = %.3lf, criticalMass = %.3lf: qoi = %lf.\n",A,E,beta,criticalTime,criticalMass,qoiValues[0]);
   }
 
   gsl_odeiv_evolve_free (e);
@@ -479,11 +479,11 @@ void qoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiVal
 }
 
 //********************************************************
-// The 'comparison stage' of the driving routine "uqAppl()":
+// The 'comparison stage' of the validation cycle
 //********************************************************
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
-uqAppl_ComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
+tgaComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
 {
   if (cycle.calFP().computeSolutionFlag() &&
       cycle.valFP().computeSolutionFlag()) {
@@ -565,24 +565,57 @@ uqAppl_ComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
 }
 
 //********************************************************
-// The driving routine "uqAppl()": called by main()
-// Stage   I: the 'calibration stage'
-// Stage  II: the 'validation stage'
-// Stage III: the 'comparison stage'
+// The class related to "TGA validation", instantiated by main()
 //********************************************************
-template<class P_V,class P_M,class Q_V,class Q_M>
-void 
-uqAppl(const uqEnvironmentClass& env)
+template <class P_V,class P_M,class Q_V,class Q_M>
+class uqTgaValidationClass : public uqModelValidationClass<P_V,P_M,Q_V,Q_M>
 {
-  if (env.rank() == 0) {
-    std::cout << "Beginning run of 'uqTgaEx4' example\n"
+public:
+  uqTgaValidationClass(const uqEnvironmentClass& env,
+                       const char*               prefix);
+ ~uqTgaValidationClass();
+
+  void run();
+
+private:
+  using uqModelValidationClass<P_V,P_M,Q_V,Q_M>::m_env;
+  using uqModelValidationClass<P_V,P_M,Q_V,Q_M>::m_prefix;
+  using uqModelValidationClass<P_V,P_M,Q_V,Q_M>::m_cycle;
+
+  uqAsciiTableClass<P_V,P_M>*               m_paramsTable;
+  const EpetraExt::DistArray<std::string>*  m_paramNames;
+  P_V*                                      m_paramMinValues;
+  P_V*                                      m_paramMaxValues;
+  P_V*                                      m_paramInitialValues;
+  uqVectorSpaceClass<P_V,P_M>*              m_paramSpace;
+
+  uqAsciiTableClass<P_V,P_M>*               m_qoisTable;
+  const EpetraExt::DistArray<std::string>*  m_qoiNames;
+  uqVectorSpaceClass<Q_V,Q_M>*              m_qoiSpace;
+
+  double                                    m_predBeta;
+  double                                    m_predCriticalMass;
+  double                                    m_predCriticalTime;
+
+  uqUniformVectorRVClass<P_V,P_M>*          m_calPriorRv;
+  tgaLikelihoodRoutine_DataClass<P_V,P_M>*  m_calLikelihoodRoutine_Data;
+  tgaQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M>* m_calQoiRoutine_Data;
+
+  tgaLikelihoodRoutine_DataClass<P_V,P_M>*  m_valLikelihoodRoutine_Data;
+  tgaQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M>* m_valQoiRoutine_Data;
+};
+
+template <class P_V,class P_M,class Q_V,class Q_M>
+uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::uqTgaValidationClass(
+  const uqEnvironmentClass& env,
+  const char*               prefix)
+  :
+  uqModelValidationClass<P_V,P_M,Q_V,Q_M>(env,prefix)
+{
+  if (m_env.rank() == 0) {
+    std::cout << "Beginning run of 'uqTgaValidation' example\n"
               << std::endl;
   }
-
-  UQ_FATAL_TEST_MACRO(env.isThereInputFile() == false,
-                      env.rank(),
-                      "uqAppl()",
-                      "input file must be specified in command line, after the '-i' option");
 
   int iRC;
   struct timeval timevalRef;
@@ -593,24 +626,24 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
 
   // Read Ascii file with information on parameters
-  uqAsciiTableClass<P_V,P_M> paramsTable(env,
-                                         2,    // # of rows
-                                         3,    // # of cols after 'parameter name': min + max + initial value for Markov chain
-                                         NULL, // All extra columns are of 'double' type
-                                         "params.tab");
+  m_paramsTable = new uqAsciiTableClass<P_V,P_M> (m_env,
+                                                  2,    // # of rows
+                                                  3,    // # of cols after 'parameter name': min + max + initial value for Markov chain
+                                                  NULL, // All extra columns are of 'double' type
+                                                  "params.tab");
 
-  const EpetraExt::DistArray<std::string>& paramNames = paramsTable.stringColumn(0);
-  P_V                                      paramMinValues    (paramsTable.doubleColumn(1));
-  P_V                                      paramMaxValues    (paramsTable.doubleColumn(2));
-  P_V                                      paramInitialValues(paramsTable.doubleColumn(3));
+  m_paramNames = &(m_paramsTable->stringColumn(0));
+  m_paramMinValues     = new P_V(m_paramsTable->doubleColumn(1));
+  m_paramMaxValues     = new P_V(m_paramsTable->doubleColumn(2));
+  m_paramInitialValues = new P_V(m_paramsTable->doubleColumn(3));
 
-  uqVectorSpaceClass<P_V,P_M> paramSpace(env,
+  uqVectorSpaceClass<P_V,P_M> paramSpace(m_env,
                                          "param_", // Extra prefix before the default "space_" prefix
-                                         paramsTable.numRows(),
-                                         &paramNames);
+                                         m_paramsTable->numRows(),
+                                         m_paramNames);
 
   // Read Ascii file with information on qois
-  uqAsciiTableClass<P_V,P_M> qoisTable(env,
+  uqAsciiTableClass<P_V,P_M> qoisTable(m_env,
                                        1,    // # of rows
                                        0,    // # of cols after 'parameter name': none
                                        NULL, // All extra columns are of 'double' type
@@ -618,27 +651,27 @@ uqAppl(const uqEnvironmentClass& env)
 
   const EpetraExt::DistArray<std::string>& qoiNames = qoisTable.stringColumn(0);
 
-  double beta_prediction         = 250.;
-  double criticalMass_prediction = 0.;
-  double criticalTime_prediction = 3.9;
-
-  uqVectorSpaceClass<Q_V,Q_M> qoiSpace(env,
+  uqVectorSpaceClass<Q_V,Q_M> qoiSpace(m_env,
                                        "qoi_", // Extra prefix before the default "space_" prefix
                                        qoisTable.numRows(),
                                        &qoiNames);
 
   // Instantiate the validation cycle
-  uqValidationCycleClass<P_V,P_M,Q_V,Q_M> cycle(env,
+  uqValidationCycleClass<P_V,P_M,Q_V,Q_M> cycle(m_env,
                                                 "", // No extra prefix
                                                 paramSpace,
                                                 qoiSpace);
+
+  double m_predBeta         = 250.;
+  double m_predCriticalMass = 0.;
+  double m_predCriticalTime = 3.9;
 
   //********************************************************
   // TGA validation cycle: calibration stage
   //********************************************************
 
   iRC = gettimeofday(&timevalRef, NULL);
-  if (env.rank() == 0) {
+  if (m_env.rank() == 0) {
     std::cout << "Beginning 'calibration stage' at " << ctime(&timevalRef.tv_sec)
               << std::endl;
   }
@@ -646,41 +679,41 @@ uqAppl(const uqEnvironmentClass& env)
   // Deal with inverse problem
   uqUniformVectorRVClass<P_V,P_M> calPriorRv("cal_prior_", // Extra prefix before the default "rv_" prefix
                                              paramSpace,
-                                             paramMinValues,
-                                             paramMaxValues);
+                                             *m_paramMinValues,
+                                             *m_paramMaxValues);
 
-  likelihoodRoutine_DataClass<P_V,P_M> calLikelihoodRoutine_Data(env,
-                                                                 "scenario_5_K_min.dat",
-                                                                 "scenario_25_K_min.dat",
-                                                                 "scenario_50_K_min.dat");
+  tgaLikelihoodRoutine_DataClass<P_V,P_M> calLikelihoodRoutine_Data(m_env,
+                                                                    "scenario_5_K_min.dat",
+                                                                    "scenario_25_K_min.dat",
+                                                                    "scenario_50_K_min.dat");
 
   cycle.setCalIP(calPriorRv,
-                 likelihoodRoutine<P_V,P_M>,
+                 tgaLikelihoodRoutine<P_V,P_M>,
                  (void *) &calLikelihoodRoutine_Data,
                  true); // the likelihood routine computes [-2.*ln(Likelihood)]
 
   // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
   P_M* calProposalCovMatrix = cycle.calIP().postRv().imageSpace().newGaussianMatrix(cycle.calIP().priorRv().pdf().domainVarianceValues(),
-                                                                                    paramInitialValues);
-  cycle.calIP().solveWithBayesMarkovChain(paramInitialValues,
+                                                                                    *m_paramInitialValues);
+  cycle.calIP().solveWithBayesMarkovChain(*m_paramInitialValues,
                                           *calProposalCovMatrix,
                                           NULL); // use default kernel from library
   delete calProposalCovMatrix;
 
   // Deal with forward problem
-  qoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> calQoiRoutine_Data;
-  calQoiRoutine_Data.m_beta         = beta_prediction;
-  calQoiRoutine_Data.m_criticalMass = criticalMass_prediction;
-  calQoiRoutine_Data.m_criticalTime = criticalTime_prediction;
+  tgaQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> calQoiRoutine_Data;
+  calQoiRoutine_Data.m_beta         = m_predBeta;
+  calQoiRoutine_Data.m_criticalMass = m_predCriticalMass;
+  calQoiRoutine_Data.m_criticalTime = m_predCriticalTime;
 
-  cycle.setCalFP(qoiRoutine<P_V,P_M,Q_V,Q_M>,
+  cycle.setCalFP(tgaQoiRoutine<P_V,P_M,Q_V,Q_M>,
                  (void *) &calQoiRoutine_Data);
 
   // Solve forward problem = set 'realizer' and 'cdf' of 'qoiRv'
   cycle.calFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
 
   iRC = gettimeofday(&timevalNow, NULL);
-  if (env.rank() == 0) {
+  if (m_env.rank() == 0) {
     std::cout << "Ending 'calibration stage' at " << ctime(&timevalNow.tv_sec)
               << "Total 'calibration stage' run time = " << timevalNow.tv_sec - timevalRef.tv_sec
               << " seconds"
@@ -692,18 +725,18 @@ uqAppl(const uqEnvironmentClass& env)
   //********************************************************
 
   iRC = gettimeofday(&timevalRef, NULL);
-  if (env.rank() == 0) {
+  if (m_env.rank() == 0) {
     std::cout << "Beginning 'validation stage' at " << ctime(&timevalRef.tv_sec)
               << std::endl;
   }
 
   // Deal with inverse problem
-  likelihoodRoutine_DataClass<P_V,P_M> valLikelihoodRoutine_Data(env,
-                                                                  "scenario_100_K_min.dat",
-                                                                  NULL,
-                                                                  NULL);
+  tgaLikelihoodRoutine_DataClass<P_V,P_M> valLikelihoodRoutine_Data(m_env,
+                                                                    "scenario_100_K_min.dat",
+                                                                    NULL,
+                                                                    NULL);
 
-  cycle.setValIP(likelihoodRoutine<P_V,P_M>,
+  cycle.setValIP(tgaLikelihoodRoutine<P_V,P_M>,
                  (void *) &valLikelihoodRoutine_Data,
                  true); // the likelihood routine computes [-2.*ln(Likelihood)]
 
@@ -716,19 +749,19 @@ uqAppl(const uqEnvironmentClass& env)
   delete valProposalCovMatrix;
 
   // Deal with forward problem
-  qoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> valQoiRoutine_Data;
-  valQoiRoutine_Data.m_beta          = beta_prediction;
-  valQoiRoutine_Data.m_criticalMass  = criticalMass_prediction;
-  valQoiRoutine_Data.m_criticalTime  = criticalTime_prediction;
+  tgaQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> valQoiRoutine_Data;
+  valQoiRoutine_Data.m_beta         = m_predBeta;
+  valQoiRoutine_Data.m_criticalMass = m_predCriticalMass;
+  valQoiRoutine_Data.m_criticalTime = m_predCriticalTime;
 
-  cycle.setValFP(qoiRoutine<P_V,P_M,Q_V,Q_M>,
+  cycle.setValFP(tgaQoiRoutine<P_V,P_M,Q_V,Q_M>,
                  (void *) &valQoiRoutine_Data);
 
   // Solve forward problem = set 'realizer' and 'cdf' of 'qoiRv'
   cycle.valFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
 
   iRC = gettimeofday(&timevalNow, NULL);
-  if (env.rank() == 0) {
+  if (m_env.rank() == 0) {
     std::cout << "Ending 'validation stage' at " << ctime(&timevalNow.tv_sec)
               << "Total 'validation stage' run time = " << timevalNow.tv_sec - timevalRef.tv_sec
               << " seconds"
@@ -740,15 +773,15 @@ uqAppl(const uqEnvironmentClass& env)
   //********************************************************
 
   iRC = gettimeofday(&timevalRef, NULL);
-  if (env.rank() == 0) {
+  if (m_env.rank() == 0) {
     std::cout << "Beginning 'comparison stage' at " << ctime(&timevalRef.tv_sec)
               << std::endl;
   }
 
-  uqAppl_ComparisonStage(cycle);
+  tgaComparisonStage(cycle);
 
   iRC = gettimeofday(&timevalNow, NULL);
-  if (env.rank() == 0) {
+  if (m_env.rank() == 0) {
     std::cout << "Ending 'comparison stage' at " << ctime(&timevalNow.tv_sec)
               << "Total 'comparison stage' run time = " << timevalNow.tv_sec - timevalRef.tv_sec
               << " seconds"
@@ -759,11 +792,23 @@ uqAppl(const uqEnvironmentClass& env)
   // Release memory before leaving routine.
   //******************************************************
 
-  if (env.rank() == 0) {
-    std::cout << "Finishing run of 'uqTgaEx4' example"
+  if (m_env.rank() == 0) {
+    std::cout << "Finishing run of 'uqTgaValidation' example"
               << std::endl;
   }
 
   return;
 }
-#endif // __UQ_TGA_EX4_H__
+
+template <class P_V,class P_M,class Q_V,class Q_M>
+uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::~uqTgaValidationClass()
+{
+}
+
+template <class P_V,class P_M,class Q_V,class Q_M>
+void
+uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::run()
+{
+  return;
+}
+#endif // __UQ_TGA_VALIDATION_H__

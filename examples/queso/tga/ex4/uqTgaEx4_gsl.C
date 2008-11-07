@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
   uqEnvironmentClass* env = new uqEnvironmentClass(argc,argv);
 
   //************************************************
-  // Call application
+  // Run application
   //************************************************
   uqAppl<uqGslVectorClass, // type for parameter vectors
          uqGslMatrixClass, // type for parameter matrices
