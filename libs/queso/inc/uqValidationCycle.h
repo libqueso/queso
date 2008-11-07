@@ -33,6 +33,8 @@ public:
                          const uqVectorSpaceClass<P_V,P_M>& qoiSpace);
  ~uqValidationCycleClass();
 
+  const uqEnvironmentClass& env() const;
+
   void setCalIP(const uqBaseVectorRVClass <P_V,P_M>& priorRv,
                 double (*likelihoodRoutinePtr)(const P_V& paramValues, const void* routineDataPtr),
                 const void* likelihoodRoutineDataPtr,
@@ -46,6 +48,19 @@ public:
 
   const uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>& calFP() const;
         uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>& calFP();
+
+  void setValIP(double (*likelihoodRoutinePtr)(const P_V& paramValues, const void* routineDataPtr),
+                const void* likelihoodRoutineDataPtr,
+                bool routineComputesMinus2LogOfDensity);
+
+  void setValFP(void (*qoiRoutinePtr)(const P_V& domainVector, const void* functionDataPtr, Q_V& imageVector),
+                const void* qoiRoutineDataPtr);
+
+  const uqStatisticalInverseProblemClass<P_V,P_M>& valIP() const;
+        uqStatisticalInverseProblemClass<P_V,P_M>& valIP();
+
+  const uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>& valFP() const;
+        uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>& valFP();
 
 private:
   const uqEnvironmentClass&          m_env;
@@ -61,6 +76,14 @@ private:
         uqGenericVectorFunctionClass    <P_V,P_M,Q_V,Q_M>* m_calQoiFunctionObj;
         uqGenericVectorRVClass          <Q_V,Q_M>*         m_calQoiRv;
         uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>* m_calFP;
+
+	uqGenericVectorPdfClass         <P_V,P_M>* m_valLikelihoodFunctionObj;
+        uqGenericVectorRVClass          <P_V,P_M>* m_valPostRv;
+        uqStatisticalInverseProblemClass<P_V,P_M>* m_valIP;
+
+        uqGenericVectorFunctionClass    <P_V,P_M,Q_V,Q_M>* m_valQoiFunctionObj;
+        uqGenericVectorRVClass          <Q_V,Q_M>*         m_valQoiRv;
+        uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>* m_valFP;
 };
 
 template <class P_V,class P_M,class Q_V,class Q_M>
@@ -89,6 +112,13 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::uqValidationCycleClass(
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::~uqValidationCycleClass()
 {
+}
+
+template <class P_V,class P_M,class Q_V,class Q_M>
+const uqEnvironmentClass&
+uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::env() const
+{
+  return m_env;
 }
 
 template <class P_V,class P_M,class Q_V,class Q_M>
@@ -176,6 +206,91 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>&
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::calFP()
 {
   return *m_calFP;
+}
+
+template <class P_V,class P_M,class Q_V,class Q_M>
+void
+uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::setValIP(
+  double (*likelihoodRoutinePtr)(const P_V& paramValues, const void* routineDataPtr),
+  const void* likelihoodRoutineDataPtr,
+  bool routineComputesMinus2LogOfDensity)
+{
+  // Validation stage: Prior vector rv = posterior vector rv from calibration stage
+
+  // Validation stage: Likelihood function object (e.g., -2*ln[likelihood])
+  m_valLikelihoodFunctionObj = new uqGenericVectorPdfClass<P_V,P_M> ("val_like_", // Extra prefix before the default "genpd_" prefix
+                                                                     m_paramSpace,
+                                                                     likelihoodRoutinePtr,
+                                                                     likelihoodRoutineDataPtr,
+                                                                     routineComputesMinus2LogOfDensity);
+
+  // Validation stage: Posterior vector rv
+  m_valPostRv = new uqGenericVectorRVClass<P_V,P_M> ("val_post_", // Extra prefix before the default "rv_" prefix
+                                                     m_paramSpace);
+
+  // Validation stage: Inverse problem
+  m_valIP = new uqStatisticalInverseProblemClass<P_V,P_M> ("val_", // Extra prefix before the default "ip_" prefix
+                                                           *m_calPostRv, // 'validation stage' inverse input = 'calibration stage' inverse output
+                                                           *m_valLikelihoodFunctionObj,
+                                                           *m_valPostRv);
+
+  return;
+}
+
+template <class P_V,class P_M,class Q_V,class Q_M>
+const uqStatisticalInverseProblemClass<P_V,P_M>&
+uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::valIP() const
+{
+  return *m_valIP;
+}
+
+template <class P_V,class P_M,class Q_V,class Q_M>
+uqStatisticalInverseProblemClass<P_V,P_M>&
+uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::valIP()
+{
+  return *m_valIP;
+}
+
+template <class P_V,class P_M,class Q_V,class Q_M>
+void
+uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::setValFP(
+  void (*qoiRoutinePtr)(const P_V& domainVector, const void* functionDataPtr, Q_V& imageVector),
+  const void* qoiRoutineDataPtr)
+{
+  // Validation stage: Input param vector rv for forward = output posterior vector rv of inverse
+
+  // Validation stage: Qoi function object
+  m_valQoiFunctionObj = new uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M> ("val_qoi_", // Extra prefix before the default "func_" prefix
+                                                                           m_paramSpace,
+                                                                           m_qoiSpace,
+                                                                           qoiRoutinePtr,
+                                                                           qoiRoutineDataPtr);
+
+  // Validation stage: Qoi vector rv
+  m_valQoiRv = new uqGenericVectorRVClass<Q_V,Q_M> ("val_qoi_", // Extra prefix before the default "rv_" prefix
+                                                    m_qoiSpace);
+
+  // Validation stage: Forward problem
+  m_valFP = new uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M> ("val_",       // Extra prefix before the default "fp_" prefix
+                                                                   *m_valPostRv, // forward input = inverse output
+                                                                   *m_valQoiFunctionObj,
+                                                                   *m_valQoiRv);
+
+  return;
+}
+
+template <class P_V,class P_M,class Q_V,class Q_M>
+const uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>&
+uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::valFP() const
+{
+  return *m_valFP;
+}
+
+template <class P_V,class P_M,class Q_V,class Q_M>
+uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>&
+uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::valFP()
+{
+  return *m_valFP;
 }
 
 #endif // __UQ_VALIDATION_CYCLE_H__

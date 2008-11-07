@@ -490,21 +490,21 @@ uqAppl_ComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
     Q_V* epsilonVec = cycle.calFP().qoiRv().imageSpace().newVector(0.02);
     Q_V cdfDistancesVec(cycle.calFP().qoiRv().imageSpace().zeroVector());
     horizontalDistances(cycle.calFP().qoiRv().cdf(),
-                        valQoiRv.cdf(),
+                        cycle.valFP().qoiRv().cdf(),
                         *epsilonVec,
                         cdfDistancesVec);
-    if (env.rank() == 0) {
+    if (cycle.env().rank() == 0) {
       std::cout << "For epsilonVec = "    << *epsilonVec
                 << ", cdfDistancesVec = " << cdfDistancesVec
                 << std::endl;
     }
 
     // Test independence of 'distance' w.r.t. order of cdfs
-    horizontalDistances(valQoiRv.cdf(),
+    horizontalDistances(cycle.valFP().qoiRv().cdf(),
                         cycle.calFP().qoiRv().cdf(),
                         *epsilonVec,
                         cdfDistancesVec);
-    if (env.rank() == 0) {
+    if (cycle.env().rank() == 0) {
       std::cout << "For epsilonVec = "                             << *epsilonVec
                 << ", cdfDistancesVec (switched order of cdfs) = " << cdfDistancesVec
                 << std::endl;
@@ -513,10 +513,10 @@ uqAppl_ComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
     // Epsilon = 0.04
     epsilonVec->cwSet(0.04);
     horizontalDistances(cycle.calFP().qoiRv().cdf(),
-                        valQoiRv.cdf(),
+                        cycle.valFP().qoiRv().cdf(),
                         *epsilonVec,
                         cdfDistancesVec);
-    if (env.rank() == 0) {
+    if (cycle.env().rank() == 0) {
       std::cout << "For epsilonVec = "    << *epsilonVec
                 << ", cdfDistancesVec = " << cdfDistancesVec
                 << std::endl;
@@ -525,10 +525,10 @@ uqAppl_ComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
     // Epsilon = 0.06
     epsilonVec->cwSet(0.06);
     horizontalDistances(cycle.calFP().qoiRv().cdf(),
-                        valQoiRv.cdf(),
+                        cycle.valFP().qoiRv().cdf(),
                         *epsilonVec,
                         cdfDistancesVec);
-    if (env.rank() == 0) {
+    if (cycle.env().rank() == 0) {
       std::cout << "For epsilonVec = "    << *epsilonVec
                 << ", cdfDistancesVec = " << cdfDistancesVec
                 << std::endl;
@@ -537,10 +537,10 @@ uqAppl_ComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
     // Epsilon = 0.08
     epsilonVec->cwSet(0.08);
     horizontalDistances(cycle.calFP().qoiRv().cdf(),
-                        valQoiRv.cdf(),
+                        cycle.valFP().qoiRv().cdf(),
                         *epsilonVec,
                         cdfDistancesVec);
-    if (env.rank() == 0) {
+    if (cycle.env().rank() == 0) {
       std::cout << "For epsilonVec = "    << *epsilonVec
                 << ", cdfDistancesVec = " << cdfDistancesVec
                 << std::endl;
@@ -549,10 +549,10 @@ uqAppl_ComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
     // Epsilon = 0.10
     epsilonVec->cwSet(0.10);
     horizontalDistances(cycle.calFP().qoiRv().cdf(),
-                        valQoiRv.cdf(),
+                        cycle.valFP().qoiRv().cdf(),
                         *epsilonVec,
                         cdfDistancesVec);
-    if (env.rank() == 0) {
+    if (cycle.env().rank() == 0) {
       std::cout << "For epsilonVec = "    << *epsilonVec
                 << ", cdfDistancesVec = " << cdfDistancesVec
                 << std::endl;
@@ -636,6 +636,7 @@ uqAppl(const uqEnvironmentClass& env)
   //********************************************************
   // TGA validation cycle: calibration stage
   //********************************************************
+
   iRC = gettimeofday(&timevalRef, NULL);
   if (env.rank() == 0) {
     std::cout << "Beginning 'calibration stage' at " << ctime(&timevalRef.tv_sec)
@@ -689,6 +690,7 @@ uqAppl(const uqEnvironmentClass& env)
   //********************************************************
   // TGA validation cycle: validation stage
   //********************************************************
+
   iRC = gettimeofday(&timevalRef, NULL);
   if (env.rank() == 0) {
     std::cout << "Beginning 'validation stage' at " << ctime(&timevalRef.tv_sec)
@@ -704,26 +706,6 @@ uqAppl(const uqEnvironmentClass& env)
   cycle.setValIP(likelihoodRoutine<P_V,P_M>,
                  (void *) &valLikelihoodRoutine_Data,
                  true); // the likelihood routine computes [-2.*ln(Likelihood)]
-
-  // Validation stage: Prior vector rv = posterior vector rv of "calibration stage"
-
-  // Validation stage: Likelihood function object: -2*ln[likelihood]
-
-  uqGenericVectorPdfClass<P_V,P_M> valLikelihoodFunctionObj("val_like_", // Extra prefix before the default "genpd_" prefix
-                                                             paramSpace,
-                                                             likelihoodRoutine<P_V,P_M>,
-                                                             (void *) &valLikelihoodRoutine_Data,
-                                                             true); // the routine computes [-2.*ln(Likelihood)]
-
-  // Validation stage: Posterior vector rv
-  uqGenericVectorRVClass<P_V,P_M> val_postRv("val_post_", // Extra prefix before the default "rv_" prefix
-                                             paramSpace);
-
-  // Validation stage: Inverse problem
-  uqStatisticalInverseProblemClass<P_V,P_M> val_ip_Problem("val_",     // Extra prefix before the default "ip_" prefix
-                                                           cycle.calIP().postRv(), // 'validation stage' inverse input = 'calibration stage' inverse output
-                                                           valLikelihoodFunctionObj,
-                                                           val_postRv);
 
   // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
   P_M* valProposalCovMatrix = cycle.calIP().postRv().imageSpace().newGaussianMatrix(cycle.calIP().postRv().realizer().imageVarianceValues(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
@@ -742,25 +724,6 @@ uqAppl(const uqEnvironmentClass& env)
   cycle.setValFP(qoiRoutine<P_V,P_M,Q_V,Q_M>,
                  (void *) &valQoiRoutine_Data);
 
-  // Validation stage: Input param vector rv for forward = output posterior vector rv of inverse
-
-  // Validation stage: Qoi function object
-  uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M> valQoiFunctionObj("val_qoi_", // Extra prefix before the default "func_" prefix
-                                                                   paramSpace,
-                                                                   qoiSpace,
-                                                                   qoiRoutine<P_V,P_M,Q_V,Q_M>,
-                                                                   (void *) &valQoiRoutine_Data);
-
-  // Validation stage: Qoi vector rv
-  uqGenericVectorRVClass<Q_V,Q_M> valQoiRv("val_qoi_", // Extra prefix before the default "rv_" prefix
-                                            qoiSpace);
-
-  // Validation stage: Forward problem
-  uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M> val_fp_Problem("val_",     // Extra prefix before the default "fp_" prefix
-                                                                   val_postRv, // forward input = inverse output
-                                                                   valQoiFunctionObj,
-                                                                   valQoiRv);
-
   // Solve forward problem = set 'realizer' and 'cdf' of 'qoiRv'
   cycle.valFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
 
@@ -775,6 +738,7 @@ uqAppl(const uqEnvironmentClass& env)
   //********************************************************
   // TGA validation cycle: comparison stage
   //********************************************************
+
   iRC = gettimeofday(&timevalRef, NULL);
   if (env.rank() == 0) {
     std::cout << "Beginning 'comparison stage' at " << ctime(&timevalRef.tv_sec)
