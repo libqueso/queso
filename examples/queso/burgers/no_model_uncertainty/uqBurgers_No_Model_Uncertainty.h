@@ -51,11 +51,13 @@ struct
 likelihoodRoutine_DataClass
 {
   likelihoodRoutine_DataClass(const uqEnvironmentClass& env,
+			      double Re,
                               const char* fileName);
  ~likelihoodRoutine_DataClass();
 
   // Experimental data
   int nDataPoints; // number of data points
+  double Re;
   double *dataLocations; // x locations where state was measured
   double *dataValues; // measured values of averaged state at dataLocations
 
@@ -66,7 +68,8 @@ likelihoodRoutine_DataClass
 
 // likelihoodRoutine_DataClass constructor: Read data, allocate/initialize memory for Burgers' solver
 template<class P_V, class P_M>
-likelihoodRoutine_DataClass<P_V,P_M>::likelihoodRoutine_DataClass(const uqEnvironmentClass &env, const char *fileName)
+likelihoodRoutine_DataClass<P_V,P_M>::likelihoodRoutine_DataClass(const uqEnvironmentClass &env, 
+								  double Re, const char *fileName)
   :
   nDataPoints(0),
   dataLocations(0),
@@ -75,6 +78,9 @@ likelihoodRoutine_DataClass<P_V,P_M>::likelihoodRoutine_DataClass(const uqEnviro
   U(0)
 {
   std::cout << "Calling likelihoodRoutine_DataClass constructor...";
+
+  // set Re
+  this->Re = Re;
   
   // open file
   FILE *fp = fopen(fileName, "r");
@@ -139,7 +145,8 @@ likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
   //std::cout << "Calling likelihoodRoutine...\n";
 
   // Experimental data
-  int nDataPoints = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->nDataPoints;
+  const int nDataPoints = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->nDataPoints;
+  const double Re = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->Re;
   const double *xx = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->dataLocations;
   const double *ue = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->dataValues;
 
@@ -155,13 +162,10 @@ likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 
   
   // Evaluate model
-  int ierr;
-  ierr = solveForStateAtXLocations(xx, nDataPoints, 1e-1, kappa, U, pQB, um);
-  if( ierr != 0 ){
-    printf("WARNING: Burgers solver was not successful!\n");
-    printf("         Results are probably meaningless.\n");
-    fflush(stdout);
-  }
+  int ierr = solveForStateAtXLocations(xx, nDataPoints, 1.0/Re, kappa, U, pQB, um);
+  UQ_FATAL_TEST_MACRO( (ierr!=0), UQ_UNAVAILABLE_RANK,
+		       "uqAppl(), in uqBurgers_No_Model_Uncertainty (likelihoodRoutine)",
+		       "failed solving Burgers' eqn" );
 
   // Compute misfit vector
   double misfit2[nDataPoints];
@@ -311,11 +315,9 @@ uqAppl(const uqEnvironmentClass& env)
                                              paramMinValues,
                                              paramMaxValues);
 
-  likelihoodRoutine_DataClass<P_V,P_M> calLikelihoodRoutine_Data(env, "calibration_data.dat");
+  likelihoodRoutine_DataClass<P_V,P_M> calLikelihoodRoutine_Data(env, 10.0, "calibration_data.dat");
 
-  cycle.setCalIP(calPriorRv,
-		 likelihoodRoutine<P_V,P_M>,
-		 (void *) &calLikelihoodRoutine_Data,
+  cycle.setCalIP(calPriorRv, likelihoodRoutine<P_V,P_M>, (void *) &calLikelihoodRoutine_Data,
 		 true); // the likelihood routine computes [-2.*ln(Likelihood)]
 
 
@@ -345,7 +347,85 @@ uqAppl(const uqEnvironmentClass& env)
               << std::endl;
   }
 
+  //******************************************************
+  // Burgers' example: validation phase
+  //******************************************************
+  iRC = gettimeofday(&timevalRef, NULL);
+  if (env.rank() == 0) {
+    std::cout << "Beginning 'validation stage' at " << ctime(&timevalRef.tv_sec)
+              << std::endl;
+  }
 
+  // Set up inverse problem
+  likelihoodRoutine_DataClass<P_V,P_M> valLikelihoodRoutine_Data(env, 100.0, "validation_data.dat");
+
+  cycle.setValIP(likelihoodRoutine<P_V,P_M>, (void *) &valLikelihoodRoutine_Data,
+                 true); // the likelihood routine computes [-2.*ln(Likelihood)]
+
+
+  // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
+  // Use 'realizer()' because the posterior rv was computed with Markov Chain
+  // Use these calibration mean values as the initial values
+  P_M* valProposalCovMatrix = 
+    cycle.calIP().postRv().imageSpace().newGaussianMatrix(cycle.calIP().postRv().realizer().imageVarianceValues(),
+							  cycle.calIP().postRv().realizer().imageExpectedValues()); 
+
+  cycle.valIP().solveWithBayesMarkovChain(cycle.calIP().postRv().realizer().imageExpectedValues(),
+                                          *valProposalCovMatrix,
+                                          NULL); // use default kernel from library
+  delete valProposalCovMatrix;
+
+
+  // Deal with forward problem
+  qoiRoutine_DataClass valQoiRoutine_Data;
+
+  cycle.setValFP(qoiRoutine<P_V,P_M,Q_V,Q_M>, (void *) &valQoiRoutine_Data);
+
+  // Solve forward problem = set 'realizer' and 'cdf' of 'qoiRv'
+  cycle.valFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
+
+  iRC = gettimeofday(&timevalNow, NULL);
+  if (env.rank() == 0) {
+    std::cout << "Ending 'calibration stage' at " << ctime(&timevalNow.tv_sec)
+              << "Total 'calibration stage' run time = " << timevalNow.tv_sec - timevalRef.tv_sec
+              << " seconds"
+              << std::endl;
+  }
+
+
+  //******************************************************
+  // Burgers' example: comparison phase
+  //******************************************************
+
+  if (cycle.calFP().computeSolutionFlag() &&
+      cycle.valFP().computeSolutionFlag()) {
+    Q_V* epsilonVec = cycle.calFP().qoiRv().imageSpace().newVector(0.02);
+    Q_V cdfDistancesVec(cycle.calFP().qoiRv().imageSpace().zeroVector());
+    horizontalDistances(cycle.calFP().qoiRv().cdf(),
+                        cycle.valFP().qoiRv().cdf(),
+                        *epsilonVec,
+                        cdfDistancesVec);
+    if (cycle.env().rank() == 0) {
+      std::cout << "For epsilonVec = "    << *epsilonVec
+                << ", cdfDistancesVec = " << cdfDistancesVec
+                << std::endl;
+    }
+
+    // Test independence of 'distance' w.r.t. order of cdfs
+    horizontalDistances(cycle.valFP().qoiRv().cdf(),
+                        cycle.calFP().qoiRv().cdf(),
+                        *epsilonVec,
+                        cdfDistancesVec);
+    if (cycle.env().rank() == 0) {
+      std::cout << "For epsilonVec = "                             << *epsilonVec
+                << ", cdfDistancesVec (switched order of cdfs) = " << cdfDistancesVec
+                << std::endl;
+    }
+
+    delete epsilonVec;
+  }
+
+  // done
   if (env.rank() == 0) {
     std::cout << "Finishing run of 'uqBurgers_No_Model_Uncertainty' example"
               << std::endl;
