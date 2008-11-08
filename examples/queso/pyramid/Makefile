@@ -24,6 +24,8 @@ DEFINES = \
 	-D__APPL_USES_GSL__ -D__UQ_USES_GSL__
 INC_PATHS = \
 	-I. \
+	-I./tga \
+	-I./tur \
 	-I../inc \
 	-I../../../libs/basic/inc \
 	-I../../../libs/queso/inc \
@@ -58,6 +60,8 @@ DEFINES = \
 	-D__APPL_USES_TRILINOS__ -D__UQ_USES_TRILINOS__
 INC_PATHS = \
 	-I. \
+	-I./tga \
+	-I./tur \
 	-I../inc \
 	-I../../../libs/basic/inc \
 	-I../../../libs/queso/inc \

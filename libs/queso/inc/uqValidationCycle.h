@@ -68,7 +68,7 @@ private:
   const uqVectorSpaceClass<P_V,P_M>& m_paramSpace;
   const uqVectorSpaceClass<Q_V,Q_M>& m_qoiSpace;
 
-  const uqBaseVectorRVClass             <P_V,P_M>* m_calPriorRv;
+  const uqBaseVectorRVClass             <P_V,P_M>* m_calPriorRv; // instantiated outside this class!!
 	uqGenericVectorPdfClass         <P_V,P_M>* m_calLikelihoodFunctionObj;
         uqGenericVectorRVClass          <P_V,P_M>* m_calPostRv;
         uqStatisticalInverseProblemClass<P_V,P_M>* m_calIP;
@@ -93,10 +93,22 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::uqValidationCycleClass(
   const uqVectorSpaceClass<P_V,P_M>& paramSpace,
   const uqVectorSpaceClass<P_V,P_M>& qoiSpace)
   :
-  m_env       (env),
-  m_prefix    ((std::string)(prefix) + ""),
-  m_paramSpace(paramSpace),
-  m_qoiSpace  (qoiSpace)
+  m_env                     (env),
+  m_prefix                  ((std::string)(prefix) + ""),
+  m_paramSpace              (paramSpace),
+  m_qoiSpace                (qoiSpace),
+  m_calLikelihoodFunctionObj(NULL),
+  m_calPostRv               (NULL),
+  m_calIP                   (NULL),
+  m_calQoiFunctionObj       (NULL),
+  m_calQoiRv                (NULL),
+  m_calFP                   (NULL),
+  m_valLikelihoodFunctionObj(NULL),
+  m_valPostRv               (NULL),
+  m_valIP                   (NULL),
+  m_valQoiFunctionObj       (NULL),
+  m_valQoiRv                (NULL),
+  m_valFP                   (NULL)
 {
   if (m_env.rank() == 0) std::cout << "Entering uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::constructor()"
                                    << ": prefix = "              << m_prefix
@@ -112,6 +124,18 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::uqValidationCycleClass(
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::~uqValidationCycleClass()
 {
+  if (m_valFP)                    delete m_valFP;
+  if (m_valQoiRv)                 delete m_valQoiRv;
+  if (m_valQoiFunctionObj)        delete m_valQoiFunctionObj;
+  if (m_valIP)                    delete m_valIP;
+  if (m_valPostRv)                delete m_valPostRv;
+  if (m_valLikelihoodFunctionObj) delete m_valLikelihoodFunctionObj;
+  if (m_calFP)                    delete m_calFP;
+  if (m_calQoiRv)                 delete m_calQoiRv;
+  if (m_calQoiFunctionObj)        delete m_calQoiFunctionObj;
+  if (m_calIP)                    delete m_calIP;
+  if (m_calPostRv)                delete m_calPostRv;
+  if (m_calLikelihoodFunctionObj) delete m_calLikelihoodFunctionObj;
 }
 
 template <class P_V,class P_M,class Q_V,class Q_M>

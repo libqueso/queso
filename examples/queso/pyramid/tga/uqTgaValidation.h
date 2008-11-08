@@ -479,93 +479,7 @@ void tgaQoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoi
 }
 
 //********************************************************
-// The 'comparison stage' of the validation cycle
-//********************************************************
-template<class P_V,class P_M,class Q_V,class Q_M>
-void 
-tgaComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
-{
-  if (cycle.calFP().computeSolutionFlag() &&
-      cycle.valFP().computeSolutionFlag()) {
-    Q_V* epsilonVec = cycle.calFP().qoiRv().imageSpace().newVector(0.02);
-    Q_V cdfDistancesVec(cycle.calFP().qoiRv().imageSpace().zeroVector());
-    horizontalDistances(cycle.calFP().qoiRv().cdf(),
-                        cycle.valFP().qoiRv().cdf(),
-                        *epsilonVec,
-                        cdfDistancesVec);
-    if (cycle.env().rank() == 0) {
-      std::cout << "For epsilonVec = "    << *epsilonVec
-                << ", cdfDistancesVec = " << cdfDistancesVec
-                << std::endl;
-    }
-
-    // Test independence of 'distance' w.r.t. order of cdfs
-    horizontalDistances(cycle.valFP().qoiRv().cdf(),
-                        cycle.calFP().qoiRv().cdf(),
-                        *epsilonVec,
-                        cdfDistancesVec);
-    if (cycle.env().rank() == 0) {
-      std::cout << "For epsilonVec = "                             << *epsilonVec
-                << ", cdfDistancesVec (switched order of cdfs) = " << cdfDistancesVec
-                << std::endl;
-    }
-
-    // Epsilon = 0.04
-    epsilonVec->cwSet(0.04);
-    horizontalDistances(cycle.calFP().qoiRv().cdf(),
-                        cycle.valFP().qoiRv().cdf(),
-                        *epsilonVec,
-                        cdfDistancesVec);
-    if (cycle.env().rank() == 0) {
-      std::cout << "For epsilonVec = "    << *epsilonVec
-                << ", cdfDistancesVec = " << cdfDistancesVec
-                << std::endl;
-    }
-
-    // Epsilon = 0.06
-    epsilonVec->cwSet(0.06);
-    horizontalDistances(cycle.calFP().qoiRv().cdf(),
-                        cycle.valFP().qoiRv().cdf(),
-                        *epsilonVec,
-                        cdfDistancesVec);
-    if (cycle.env().rank() == 0) {
-      std::cout << "For epsilonVec = "    << *epsilonVec
-                << ", cdfDistancesVec = " << cdfDistancesVec
-                << std::endl;
-    }
-
-    // Epsilon = 0.08
-    epsilonVec->cwSet(0.08);
-    horizontalDistances(cycle.calFP().qoiRv().cdf(),
-                        cycle.valFP().qoiRv().cdf(),
-                        *epsilonVec,
-                        cdfDistancesVec);
-    if (cycle.env().rank() == 0) {
-      std::cout << "For epsilonVec = "    << *epsilonVec
-                << ", cdfDistancesVec = " << cdfDistancesVec
-                << std::endl;
-    }
-
-    // Epsilon = 0.10
-    epsilonVec->cwSet(0.10);
-    horizontalDistances(cycle.calFP().qoiRv().cdf(),
-                        cycle.valFP().qoiRv().cdf(),
-                        *epsilonVec,
-                        cdfDistancesVec);
-    if (cycle.env().rank() == 0) {
-      std::cout << "For epsilonVec = "    << *epsilonVec
-                << ", cdfDistancesVec = " << cdfDistancesVec
-                << std::endl;
-    }
-
-    delete epsilonVec;
-  }
-
-  return;
-}
-
-//********************************************************
-// The class related to "TGA validation", instantiated by main()
+// Class "uqTgaValidation", instantiated by main()
 //********************************************************
 template <class P_V,class P_M,class Q_V,class Q_M>
 class uqTgaValidationClass : public uqModelValidationClass<P_V,P_M,Q_V,Q_M>
@@ -578,6 +492,10 @@ public:
   void run();
 
 private:
+  void  calibrationStage();
+  void  validationStage();
+  void  comparisonStage();
+
   using uqModelValidationClass<P_V,P_M,Q_V,Q_M>::m_env;
   using uqModelValidationClass<P_V,P_M,Q_V,Q_M>::m_prefix;
   using uqModelValidationClass<P_V,P_M,Q_V,Q_M>::m_cycle;
@@ -610,20 +528,26 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::uqTgaValidationClass(
   const uqEnvironmentClass& env,
   const char*               prefix)
   :
-  uqModelValidationClass<P_V,P_M,Q_V,Q_M>(env,prefix)
+  uqModelValidationClass<P_V,P_M,Q_V,Q_M>(env,prefix),
+  m_paramsTable              (NULL),
+  m_paramNames               (NULL),
+  m_paramMinValues           (NULL),
+  m_paramMaxValues           (NULL),
+  m_paramInitialValues       (NULL),
+  m_paramSpace               (NULL),
+  m_qoisTable                (NULL),
+  m_qoiNames                 (NULL),
+  m_qoiSpace                 (NULL),
+  m_calPriorRv               (NULL),
+  m_calLikelihoodRoutine_Data(NULL),
+  m_calQoiRoutine_Data       (NULL),
+  m_valLikelihoodRoutine_Data(NULL),
+  m_valQoiRoutine_Data       (NULL)
 {
   if (m_env.rank() == 0) {
-    std::cout << "Beginning run of 'uqTgaValidation' example\n"
+    std::cout << "Entering uqTgaValidation::constructor()\n"
               << std::endl;
   }
-
-  int iRC;
-  struct timeval timevalRef;
-  struct timeval timevalNow;
-
-  //******************************************************
-  // TGA validation cycle: instantiation
-  //******************************************************
 
   // Read Ascii file with information on parameters
   m_paramsTable = new uqAsciiTableClass<P_V,P_M> (m_env,
@@ -637,163 +561,37 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::uqTgaValidationClass(
   m_paramMaxValues     = new P_V(m_paramsTable->doubleColumn(2));
   m_paramInitialValues = new P_V(m_paramsTable->doubleColumn(3));
 
-  uqVectorSpaceClass<P_V,P_M> paramSpace(m_env,
-                                         "param_", // Extra prefix before the default "space_" prefix
-                                         m_paramsTable->numRows(),
-                                         m_paramNames);
+  m_paramSpace = new uqVectorSpaceClass<P_V,P_M> (m_env,
+                                                  "param_", // Extra prefix before the default "space_" prefix
+                                                  m_paramsTable->numRows(),
+                                                  m_paramNames);
 
   // Read Ascii file with information on qois
-  uqAsciiTableClass<P_V,P_M> qoisTable(m_env,
-                                       1,    // # of rows
-                                       0,    // # of cols after 'parameter name': none
-                                       NULL, // All extra columns are of 'double' type
-                                       "qois.tab");
+  m_qoisTable = new uqAsciiTableClass<P_V,P_M> (m_env,
+                                                1,    // # of rows
+                                                0,    // # of cols after 'parameter name': none
+                                                NULL, // All extra columns are of 'double' type
+                                                "qois.tab");
 
-  const EpetraExt::DistArray<std::string>& qoiNames = qoisTable.stringColumn(0);
+  m_qoiNames = &(m_qoisTable->stringColumn(0));
 
-  uqVectorSpaceClass<Q_V,Q_M> qoiSpace(m_env,
-                                       "qoi_", // Extra prefix before the default "space_" prefix
-                                       qoisTable.numRows(),
-                                       &qoiNames);
+  m_qoiSpace = new uqVectorSpaceClass<Q_V,Q_M> (m_env,
+                                                "qoi_", // Extra prefix before the default "space_" prefix
+                                                m_qoisTable->numRows(),
+                                                m_qoiNames);
 
   // Instantiate the validation cycle
-  uqValidationCycleClass<P_V,P_M,Q_V,Q_M> cycle(m_env,
-                                                "", // No extra prefix
-                                                paramSpace,
-                                                qoiSpace);
+  m_cycle = new uqValidationCycleClass<P_V,P_M,Q_V,Q_M> (m_env,
+                                                         "", // No extra prefix
+                                                         *m_paramSpace,
+                                                         *m_qoiSpace);
 
-  double m_predBeta         = 250.;
-  double m_predCriticalMass = 0.;
-  double m_predCriticalTime = 3.9;
-
-  //********************************************************
-  // TGA validation cycle: calibration stage
-  //********************************************************
-
-  iRC = gettimeofday(&timevalRef, NULL);
-  if (m_env.rank() == 0) {
-    std::cout << "Beginning 'calibration stage' at " << ctime(&timevalRef.tv_sec)
-              << std::endl;
-  }
-
-  // Deal with inverse problem
-  uqUniformVectorRVClass<P_V,P_M> calPriorRv("cal_prior_", // Extra prefix before the default "rv_" prefix
-                                             paramSpace,
-                                             *m_paramMinValues,
-                                             *m_paramMaxValues);
-
-  tgaLikelihoodRoutine_DataClass<P_V,P_M> calLikelihoodRoutine_Data(m_env,
-                                                                    "scenario_5_K_min.dat",
-                                                                    "scenario_25_K_min.dat",
-                                                                    "scenario_50_K_min.dat");
-
-  cycle.setCalIP(calPriorRv,
-                 tgaLikelihoodRoutine<P_V,P_M>,
-                 (void *) &calLikelihoodRoutine_Data,
-                 true); // the likelihood routine computes [-2.*ln(Likelihood)]
-
-  // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
-  P_M* calProposalCovMatrix = cycle.calIP().postRv().imageSpace().newGaussianMatrix(cycle.calIP().priorRv().pdf().domainVarianceValues(),
-                                                                                    *m_paramInitialValues);
-  cycle.calIP().solveWithBayesMarkovChain(*m_paramInitialValues,
-                                          *calProposalCovMatrix,
-                                          NULL); // use default kernel from library
-  delete calProposalCovMatrix;
-
-  // Deal with forward problem
-  tgaQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> calQoiRoutine_Data;
-  calQoiRoutine_Data.m_beta         = m_predBeta;
-  calQoiRoutine_Data.m_criticalMass = m_predCriticalMass;
-  calQoiRoutine_Data.m_criticalTime = m_predCriticalTime;
-
-  cycle.setCalFP(tgaQoiRoutine<P_V,P_M,Q_V,Q_M>,
-                 (void *) &calQoiRoutine_Data);
-
-  // Solve forward problem = set 'realizer' and 'cdf' of 'qoiRv'
-  cycle.calFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
-
-  iRC = gettimeofday(&timevalNow, NULL);
-  if (m_env.rank() == 0) {
-    std::cout << "Ending 'calibration stage' at " << ctime(&timevalNow.tv_sec)
-              << "Total 'calibration stage' run time = " << timevalNow.tv_sec - timevalRef.tv_sec
-              << " seconds"
-              << std::endl;
-  }
-
-  //********************************************************
-  // TGA validation cycle: validation stage
-  //********************************************************
-
-  iRC = gettimeofday(&timevalRef, NULL);
-  if (m_env.rank() == 0) {
-    std::cout << "Beginning 'validation stage' at " << ctime(&timevalRef.tv_sec)
-              << std::endl;
-  }
-
-  // Deal with inverse problem
-  tgaLikelihoodRoutine_DataClass<P_V,P_M> valLikelihoodRoutine_Data(m_env,
-                                                                    "scenario_100_K_min.dat",
-                                                                    NULL,
-                                                                    NULL);
-
-  cycle.setValIP(tgaLikelihoodRoutine<P_V,P_M>,
-                 (void *) &valLikelihoodRoutine_Data,
-                 true); // the likelihood routine computes [-2.*ln(Likelihood)]
-
-  // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
-  P_M* valProposalCovMatrix = cycle.calIP().postRv().imageSpace().newGaussianMatrix(cycle.calIP().postRv().realizer().imageVarianceValues(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
-                                                                                    cycle.calIP().postRv().realizer().imageExpectedValues()); // Use these values as the initial values
-  cycle.valIP().solveWithBayesMarkovChain(cycle.calIP().postRv().realizer().imageExpectedValues(),
-                                          *valProposalCovMatrix,
-                                          NULL); // use default kernel from library
-  delete valProposalCovMatrix;
-
-  // Deal with forward problem
-  tgaQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> valQoiRoutine_Data;
-  valQoiRoutine_Data.m_beta         = m_predBeta;
-  valQoiRoutine_Data.m_criticalMass = m_predCriticalMass;
-  valQoiRoutine_Data.m_criticalTime = m_predCriticalTime;
-
-  cycle.setValFP(tgaQoiRoutine<P_V,P_M,Q_V,Q_M>,
-                 (void *) &valQoiRoutine_Data);
-
-  // Solve forward problem = set 'realizer' and 'cdf' of 'qoiRv'
-  cycle.valFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
-
-  iRC = gettimeofday(&timevalNow, NULL);
-  if (m_env.rank() == 0) {
-    std::cout << "Ending 'validation stage' at " << ctime(&timevalNow.tv_sec)
-              << "Total 'validation stage' run time = " << timevalNow.tv_sec - timevalRef.tv_sec
-              << " seconds"
-              << std::endl;
-  }
-
-  //********************************************************
-  // TGA validation cycle: comparison stage
-  //********************************************************
-
-  iRC = gettimeofday(&timevalRef, NULL);
-  if (m_env.rank() == 0) {
-    std::cout << "Beginning 'comparison stage' at " << ctime(&timevalRef.tv_sec)
-              << std::endl;
-  }
-
-  tgaComparisonStage(cycle);
-
-  iRC = gettimeofday(&timevalNow, NULL);
-  if (m_env.rank() == 0) {
-    std::cout << "Ending 'comparison stage' at " << ctime(&timevalNow.tv_sec)
-              << "Total 'comparison stage' run time = " << timevalNow.tv_sec - timevalRef.tv_sec
-              << " seconds"
-              << std::endl;
-  }
-
-  //******************************************************
-  // Release memory before leaving routine.
-  //******************************************************
+  m_predBeta         = 250.;
+  m_predCriticalMass = 0.;
+  m_predCriticalTime = 3.9;
 
   if (m_env.rank() == 0) {
-    std::cout << "Finishing run of 'uqTgaValidation' example"
+    std::cout << "Leaving uqTgaValidation::constructor()\n"
               << std::endl;
   }
 
@@ -803,12 +601,257 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::uqTgaValidationClass(
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::~uqTgaValidationClass()
 {
+  if (m_valQoiRoutine_Data)        delete m_valQoiRoutine_Data;
+  if (m_valLikelihoodRoutine_Data) delete m_valLikelihoodRoutine_Data;
+  if (m_calQoiRoutine_Data)        delete m_calQoiRoutine_Data;
+  if (m_calLikelihoodRoutine_Data) delete m_calLikelihoodRoutine_Data;
+  if (m_calPriorRv)                delete m_calPriorRv;
+  if (m_qoiSpace)                  delete m_qoiSpace;
+  if (m_qoiNames)                  delete m_qoiNames;
+  if (m_qoisTable)                 delete m_qoisTable;
+  if (m_paramSpace)                delete m_paramSpace;
+  if (m_paramInitialValues)        delete m_paramInitialValues;
+  if (m_paramMaxValues)            delete m_paramMaxValues;
+  if (m_paramMinValues)            delete m_paramMinValues;
+  if (m_paramNames)                delete m_paramNames;
+  if (m_paramsTable)               delete m_paramsTable;
 }
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::run()
 {
+  if (m_env.rank() == 0) {
+    std::cout << "Entering uqTgaValidation::run()\n"
+              << std::endl;
+  }
+
+  calibrationStage();
+  validationStage();
+  comparisonStage();
+
+  if (m_env.rank() == 0) {
+    std::cout << "Leaving uqTgaValidation::run()"
+              << std::endl;
+  }
+
+  return;
+}
+
+template<class P_V,class P_M,class Q_V,class Q_M>
+void 
+uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::calibrationStage()
+{
+  int iRC;
+  struct timeval timevalRef;
+  struct timeval timevalNow;
+
+  iRC = gettimeofday(&timevalRef, NULL);
+  if (m_env.rank() == 0) {
+    std::cout << "Entering uqTgaValidation::calibrationStage() at " << ctime(&timevalRef.tv_sec)
+              << std::endl;
+  }
+
+  // Deal with inverse problem
+  m_calPriorRv = new uqUniformVectorRVClass<P_V,P_M> ("cal_prior_", // Extra prefix before the default "rv_" prefix
+                                                      *m_paramSpace,
+                                                      *m_paramMinValues,
+                                                      *m_paramMaxValues);
+
+  m_calLikelihoodRoutine_Data = new tgaLikelihoodRoutine_DataClass<P_V,P_M> (m_env,
+                                                                             "scenario_5_K_min.dat",
+                                                                             "scenario_25_K_min.dat",
+                                                                             "scenario_50_K_min.dat");
+
+  m_cycle->setCalIP(*m_calPriorRv,
+                    tgaLikelihoodRoutine<P_V,P_M>,
+                    (void *) m_calLikelihoodRoutine_Data,
+                    true); // the likelihood routine computes [-2.*ln(Likelihood)]
+
+  // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
+  P_M* calProposalCovMatrix = m_cycle->calIP().postRv().imageSpace().newGaussianMatrix(m_cycle->calIP().priorRv().pdf().domainVarianceValues(),
+                                                                                       *m_paramInitialValues);
+  m_cycle->calIP().solveWithBayesMarkovChain(*m_paramInitialValues,
+                                             *calProposalCovMatrix,
+                                             NULL); // use default kernel from library
+  delete calProposalCovMatrix;
+
+  // Deal with forward problem
+  m_calQoiRoutine_Data = new tgaQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M>();
+  m_calQoiRoutine_Data->m_beta         = m_predBeta;
+  m_calQoiRoutine_Data->m_criticalMass = m_predCriticalMass;
+  m_calQoiRoutine_Data->m_criticalTime = m_predCriticalTime;
+
+  m_cycle->setCalFP(tgaQoiRoutine<P_V,P_M,Q_V,Q_M>,
+                    (void *) m_calQoiRoutine_Data);
+
+  // Solve forward problem = set 'realizer' and 'cdf' of 'qoiRv'
+  m_cycle->calFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
+
+  iRC = gettimeofday(&timevalNow, NULL);
+  if (m_env.rank() == 0) {
+    std::cout << "Leaving uqTgaValidation::calibrationStage() at " << ctime(&timevalNow.tv_sec)
+              << "Total uqTgaValidation::calibrationStage() run time = " << timevalNow.tv_sec - timevalRef.tv_sec
+              << " seconds"
+              << std::endl;
+  }
+
+  return;
+}
+
+template<class P_V,class P_M,class Q_V,class Q_M>
+void 
+uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::validationStage()
+{
+  int iRC;
+  struct timeval timevalRef;
+  struct timeval timevalNow;
+
+  iRC = gettimeofday(&timevalRef, NULL);
+  if (m_env.rank() == 0) {
+    std::cout << "Entering uqTgaValidation::validationStage() at " << ctime(&timevalRef.tv_sec)
+              << std::endl;
+  }
+
+  // Deal with inverse problem
+  m_valLikelihoodRoutine_Data = new tgaLikelihoodRoutine_DataClass<P_V,P_M> (m_env,
+                                                                             "scenario_100_K_min.dat",
+                                                                             NULL,
+                                                                             NULL);
+
+  m_cycle->setValIP(tgaLikelihoodRoutine<P_V,P_M>,
+                    (void *) m_valLikelihoodRoutine_Data,
+                    true); // the likelihood routine computes [-2.*ln(Likelihood)]
+
+  // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
+  P_M* valProposalCovMatrix = m_cycle->calIP().postRv().imageSpace().newGaussianMatrix(m_cycle->calIP().postRv().realizer().imageVarianceValues(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
+                                                                                       m_cycle->calIP().postRv().realizer().imageExpectedValues()); // Use these values as the initial values
+  m_cycle->valIP().solveWithBayesMarkovChain(m_cycle->calIP().postRv().realizer().imageExpectedValues(),
+                                             *valProposalCovMatrix,
+                                             NULL); // use default kernel from library
+  delete valProposalCovMatrix;
+
+  // Deal with forward problem
+  m_valQoiRoutine_Data = new tgaQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M>();
+  m_valQoiRoutine_Data->m_beta         = m_predBeta;
+  m_valQoiRoutine_Data->m_criticalMass = m_predCriticalMass;
+  m_valQoiRoutine_Data->m_criticalTime = m_predCriticalTime;
+
+  m_cycle->setValFP(tgaQoiRoutine<P_V,P_M,Q_V,Q_M>,
+                    (void *) m_valQoiRoutine_Data);
+
+  // Solve forward problem = set 'realizer' and 'cdf' of 'qoiRv'
+  m_cycle->valFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
+
+  iRC = gettimeofday(&timevalNow, NULL);
+  if (m_env.rank() == 0) {
+    std::cout << "Leaving uqTgaValidation::validationStage() at " << ctime(&timevalNow.tv_sec)
+              << "Total uqTgaValidation::validationStage() run time = " << timevalNow.tv_sec - timevalRef.tv_sec
+              << " seconds"
+              << std::endl;
+  }
+
+  return;
+}
+
+template<class P_V,class P_M,class Q_V,class Q_M>
+void 
+uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::comparisonStage()
+{
+  int iRC;
+  struct timeval timevalRef;
+  struct timeval timevalNow;
+
+  iRC = gettimeofday(&timevalRef, NULL);
+  if (m_env.rank() == 0) {
+    std::cout << "Entering uqTgaValidation::comparisonStage() at " << ctime(&timevalRef.tv_sec)
+              << std::endl;
+  }
+
+  if (m_cycle->calFP().computeSolutionFlag() &&
+      m_cycle->valFP().computeSolutionFlag()) {
+    Q_V* epsilonVec = m_cycle->calFP().qoiRv().imageSpace().newVector(0.02);
+    Q_V cdfDistancesVec(m_cycle->calFP().qoiRv().imageSpace().zeroVector());
+    horizontalDistances(m_cycle->calFP().qoiRv().cdf(),
+                        m_cycle->valFP().qoiRv().cdf(),
+                        *epsilonVec,
+                        cdfDistancesVec);
+    if (m_cycle->env().rank() == 0) {
+      std::cout << "For epsilonVec = "    << *epsilonVec
+                << ", cdfDistancesVec = " << cdfDistancesVec
+                << std::endl;
+    }
+
+    // Test independence of 'distance' w.r.t. order of cdfs
+    horizontalDistances(m_cycle->valFP().qoiRv().cdf(),
+                        m_cycle->calFP().qoiRv().cdf(),
+                        *epsilonVec,
+                        cdfDistancesVec);
+    if (m_cycle->env().rank() == 0) {
+      std::cout << "For epsilonVec = "                             << *epsilonVec
+                << ", cdfDistancesVec (switched order of cdfs) = " << cdfDistancesVec
+                << std::endl;
+    }
+
+    // Epsilon = 0.04
+    epsilonVec->cwSet(0.04);
+    horizontalDistances(m_cycle->calFP().qoiRv().cdf(),
+                        m_cycle->valFP().qoiRv().cdf(),
+                        *epsilonVec,
+                        cdfDistancesVec);
+    if (m_cycle->env().rank() == 0) {
+      std::cout << "For epsilonVec = "    << *epsilonVec
+                << ", cdfDistancesVec = " << cdfDistancesVec
+                << std::endl;
+    }
+
+    // Epsilon = 0.06
+    epsilonVec->cwSet(0.06);
+    horizontalDistances(m_cycle->calFP().qoiRv().cdf(),
+                        m_cycle->valFP().qoiRv().cdf(),
+                        *epsilonVec,
+                        cdfDistancesVec);
+    if (m_cycle->env().rank() == 0) {
+      std::cout << "For epsilonVec = "    << *epsilonVec
+                << ", cdfDistancesVec = " << cdfDistancesVec
+                << std::endl;
+    }
+
+    // Epsilon = 0.08
+    epsilonVec->cwSet(0.08);
+    horizontalDistances(m_cycle->calFP().qoiRv().cdf(),
+                        m_cycle->valFP().qoiRv().cdf(),
+                        *epsilonVec,
+                        cdfDistancesVec);
+    if (m_cycle->env().rank() == 0) {
+      std::cout << "For epsilonVec = "    << *epsilonVec
+                << ", cdfDistancesVec = " << cdfDistancesVec
+                << std::endl;
+    }
+
+    // Epsilon = 0.10
+    epsilonVec->cwSet(0.10);
+    horizontalDistances(m_cycle->calFP().qoiRv().cdf(),
+                        m_cycle->valFP().qoiRv().cdf(),
+                        *epsilonVec,
+                        cdfDistancesVec);
+    if (m_cycle->env().rank() == 0) {
+      std::cout << "For epsilonVec = "    << *epsilonVec
+                << ", cdfDistancesVec = " << cdfDistancesVec
+                << std::endl;
+    }
+
+    delete epsilonVec;
+  }
+
+  iRC = gettimeofday(&timevalNow, NULL);
+  if (m_env.rank() == 0) {
+    std::cout << "Leaving uqTgaValidation::comparisonStage() at " << ctime(&timevalNow.tv_sec)
+              << "Total uqTgaValidation::comparisonStage() run time = " << timevalNow.tv_sec - timevalRef.tv_sec
+              << " seconds"
+              << std::endl;
+  }
+
   return;
 }
 #endif // __UQ_TGA_VALIDATION_H__

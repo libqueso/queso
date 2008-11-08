@@ -48,7 +48,8 @@ uqModelValidationClass<P_V,P_M,Q_V,Q_M>::uqModelValidationClass(
   const char*               prefix)
   :
   m_env   (env),
-  m_prefix((std::string)(prefix) + "")
+  m_prefix((std::string)(prefix) + ""),
+  m_cycle (NULL)
 {
   if (m_env.rank() == 0) std::cout << "Entering uqModelValidationClass<P_V,P_M,Q_V,Q_M>::constructor()"
                                    << ": prefix = "              << m_prefix
@@ -64,6 +65,7 @@ uqModelValidationClass<P_V,P_M,Q_V,Q_M>::uqModelValidationClass(
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqModelValidationClass<P_V,P_M,Q_V,Q_M>::~uqModelValidationClass()
 {
+  if (m_cycle) delete m_cycle;
 }
 
 template <class P_V,class P_M,class Q_V,class Q_M>
