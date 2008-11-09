@@ -124,6 +124,12 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::uqValidationCycleClass(
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::~uqValidationCycleClass()
 {
+  if (m_env.rank() == 0) {
+    std::cout << "Entering uqValidationCycle::destructor()"
+              << ": prefix = " << m_prefix
+              << std::endl;
+  }
+
   if (m_valFP)                    delete m_valFP;
   if (m_valQoiRv)                 delete m_valQoiRv;
   if (m_valQoiFunctionObj)        delete m_valQoiFunctionObj;
@@ -136,6 +142,12 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::~uqValidationCycleClass()
   if (m_calIP)                    delete m_calIP;
   if (m_calPostRv)                delete m_calPostRv;
   if (m_calLikelihoodFunctionObj) delete m_calLikelihoodFunctionObj;
+
+  if (m_env.rank() == 0) {
+    std::cout << "Leaving uqValidationCycle::destructor()"
+              << ": prefix = " << m_prefix
+              << std::endl;
+  }
 }
 
 template <class P_V,class P_M,class Q_V,class Q_M>
@@ -168,7 +180,7 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::setCalIP(
                                                      m_paramSpace);
 
   // Calibration stage: Inverse problem
-  m_calIP = new uqStatisticalInverseProblemClass<P_V,P_M> ("cal_", // Extra prefix before the default "ip_" prefix
+  m_calIP = new uqStatisticalInverseProblemClass<P_V,P_M> ((m_prefix+"cal_").c_str(), // Extra prefix before the default "ip_" prefix
                                                            *m_calPriorRv,
                                                            *m_calLikelihoodFunctionObj,
                                                            *m_calPostRv);
@@ -210,7 +222,7 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::setCalFP(
                                                     m_qoiSpace);
 
   // Calibration stage: Forward problem
-  m_calFP = new uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M> ("cal_",       // Extra prefix before the default "fp_" prefix
+  m_calFP = new uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M> ((m_prefix+"cal_").c_str(), // Extra prefix before the default "fp_" prefix
                                                                    *m_calPostRv, // forward input = inverse output
                                                                    *m_calQoiFunctionObj,
                                                                    *m_calQoiRv);
@@ -253,7 +265,7 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::setValIP(
                                                      m_paramSpace);
 
   // Validation stage: Inverse problem
-  m_valIP = new uqStatisticalInverseProblemClass<P_V,P_M> ("val_", // Extra prefix before the default "ip_" prefix
+  m_valIP = new uqStatisticalInverseProblemClass<P_V,P_M> ((m_prefix+"val_").c_str(), // Extra prefix before the default "ip_" prefix
                                                            *m_calPostRv, // 'validation stage' inverse input = 'calibration stage' inverse output
                                                            *m_valLikelihoodFunctionObj,
                                                            *m_valPostRv);
@@ -295,7 +307,7 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::setValFP(
                                                     m_qoiSpace);
 
   // Validation stage: Forward problem
-  m_valFP = new uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M> ("val_",       // Extra prefix before the default "fp_" prefix
+  m_valFP = new uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M> ((m_prefix+"val_").c_str(),       // Extra prefix before the default "fp_" prefix
                                                                    *m_valPostRv, // forward input = inverse output
                                                                    *m_valQoiFunctionObj,
                                                                    *m_valQoiRv);

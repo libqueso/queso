@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
                        uqGslMatrixClass, // type for parameter matrices
                        uqGslVectorClass, // type for qoi vectors
                        uqGslMatrixClass  // type for qoi matrices
-                      > tgaValidation(*env,"tga");
+                      > tgaValidation(*env,"tga_");
   tgaValidation.run();
 
 #if 0

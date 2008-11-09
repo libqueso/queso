@@ -95,6 +95,11 @@ tgaLikelihoodRoutine_DataClass<P_V,P_M>::tgaLikelihoodRoutine_DataClass(
 {
   // Read experimental data
   if (inpName1) {
+    if (env.rank() == 0) {
+      std::cout << "In tgaLikelihoodRoutine_DataClass(), reading file '"
+                << inpName1 << "'\n"
+                << std::endl;
+    }
     m_Te1.resize(11,0.);
     m_Me1.resize(11,0.);
 
@@ -129,6 +134,11 @@ tgaLikelihoodRoutine_DataClass<P_V,P_M>::tgaLikelihoodRoutine_DataClass(
 
   // Read experimental data
   if (inpName2) {
+    if (env.rank() == 0) {
+      std::cout << "In tgaLikelihoodRoutine_DataClass(), reading file '"
+                << inpName2 << "'\n"
+                << std::endl;
+    }
     m_Te2.resize(11,0.);
     m_Me2.resize(11,0.);
 
@@ -163,6 +173,11 @@ tgaLikelihoodRoutine_DataClass<P_V,P_M>::tgaLikelihoodRoutine_DataClass(
 
   // Read experimental data
   if (inpName3) {
+    if (env.rank() == 0) {
+      std::cout << "In tgaLikelihoodRoutine_DataClass(), reading file '"
+                << inpName3 << "'\n"
+                << std::endl;
+    }
     m_Te3.resize(11,0.);
     m_Me3.resize(11,0.);
 
@@ -501,14 +516,14 @@ private:
   using uqModelValidationClass<P_V,P_M,Q_V,Q_M>::m_cycle;
 
   uqAsciiTableClass<P_V,P_M>*               m_paramsTable;
-  const EpetraExt::DistArray<std::string>*  m_paramNames;
-  P_V*                                      m_paramMinValues;
-  P_V*                                      m_paramMaxValues;
-  P_V*                                      m_paramInitialValues;
+  const EpetraExt::DistArray<std::string>*  m_paramNames;         // instantiated outside this class!!
+  P_V*                                      m_paramMinValues;     // instantiated outside this class!!
+  P_V*                                      m_paramMaxValues;     // instantiated outside this class!!
+  P_V*                                      m_paramInitialValues; // instantiated outside this class!!
   uqVectorSpaceClass<P_V,P_M>*              m_paramSpace;
 
   uqAsciiTableClass<P_V,P_M>*               m_qoisTable;
-  const EpetraExt::DistArray<std::string>*  m_qoiNames;
+  const EpetraExt::DistArray<std::string>*  m_qoiNames; // instantiated outside this class!!
   uqVectorSpaceClass<Q_V,Q_M>*              m_qoiSpace;
 
   double                                    m_predBeta;
@@ -554,7 +569,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::uqTgaValidationClass(
                                                   2,    // # of rows
                                                   3,    // # of cols after 'parameter name': min + max + initial value for Markov chain
                                                   NULL, // All extra columns are of 'double' type
-                                                  "params.tab");
+                                                  "tga/params.tab");
 
   m_paramNames = &(m_paramsTable->stringColumn(0));
   m_paramMinValues     = new P_V(m_paramsTable->doubleColumn(1));
@@ -571,7 +586,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::uqTgaValidationClass(
                                                 1,    // # of rows
                                                 0,    // # of cols after 'parameter name': none
                                                 NULL, // All extra columns are of 'double' type
-                                                "qois.tab");
+                                                "tga/qois.tab");
 
   m_qoiNames = &(m_qoisTable->stringColumn(0));
 
@@ -582,7 +597,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::uqTgaValidationClass(
 
   // Instantiate the validation cycle
   m_cycle = new uqValidationCycleClass<P_V,P_M,Q_V,Q_M> (m_env,
-                                                         "", // No extra prefix
+                                                         m_prefix.c_str(), // Use the prefix passed above
                                                          *m_paramSpace,
                                                          *m_qoiSpace);
 
@@ -601,20 +616,30 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::uqTgaValidationClass(
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::~uqTgaValidationClass()
 {
+  if (m_env.rank() == 0) {
+    std::cout << "Entering uqTgaValidation::destructor()"
+              << std::endl;
+  }
+
   if (m_valQoiRoutine_Data)        delete m_valQoiRoutine_Data;
   if (m_valLikelihoodRoutine_Data) delete m_valLikelihoodRoutine_Data;
   if (m_calQoiRoutine_Data)        delete m_calQoiRoutine_Data;
   if (m_calLikelihoodRoutine_Data) delete m_calLikelihoodRoutine_Data;
   if (m_calPriorRv)                delete m_calPriorRv;
   if (m_qoiSpace)                  delete m_qoiSpace;
-  if (m_qoiNames)                  delete m_qoiNames;
+//if (m_qoiNames)                  delete m_qoiNames; // instantiated outside this class!!
   if (m_qoisTable)                 delete m_qoisTable;
   if (m_paramSpace)                delete m_paramSpace;
-  if (m_paramInitialValues)        delete m_paramInitialValues;
-  if (m_paramMaxValues)            delete m_paramMaxValues;
-  if (m_paramMinValues)            delete m_paramMinValues;
-  if (m_paramNames)                delete m_paramNames;
+//if (m_paramInitialValues)        delete m_paramInitialValues; // instantiated outside this class!!
+//if (m_paramMaxValues)            delete m_paramMaxValues;     // instantiated outside this class!!
+//if (m_paramMinValues)            delete m_paramMinValues;     // instantiated outside this class!!
+//if (m_paramNames)                delete m_paramNames;         // instantiated outside this class!!
   if (m_paramsTable)               delete m_paramsTable;
+
+  if (m_env.rank() == 0) {
+    std::cout << "Leaving uqTgaValidation::destructor()"
+              << std::endl;
+  }
 }
 
 template <class P_V,class P_M,class Q_V,class Q_M>
@@ -622,7 +647,7 @@ void
 uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::run()
 {
   if (m_env.rank() == 0) {
-    std::cout << "Entering uqTgaValidation::run()\n"
+    std::cout << "Entering uqTgaValidation::run()"
               << std::endl;
   }
 
@@ -659,9 +684,9 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::calibrationStage()
                                                       *m_paramMaxValues);
 
   m_calLikelihoodRoutine_Data = new tgaLikelihoodRoutine_DataClass<P_V,P_M> (m_env,
-                                                                             "scenario_5_K_min.dat",
-                                                                             "scenario_25_K_min.dat",
-                                                                             "scenario_50_K_min.dat");
+                                                                             "tga/scenario_5_K_min.dat",
+                                                                             "tga/scenario_25_K_min.dat",
+                                                                             "tga/scenario_50_K_min.dat");
 
   m_cycle->setCalIP(*m_calPriorRv,
                     tgaLikelihoodRoutine<P_V,P_M>,
@@ -715,7 +740,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::validationStage()
 
   // Deal with inverse problem
   m_valLikelihoodRoutine_Data = new tgaLikelihoodRoutine_DataClass<P_V,P_M> (m_env,
-                                                                             "scenario_100_K_min.dat",
+                                                                             "tga/scenario_100_K_min.dat",
                                                                              NULL,
                                                                              NULL);
 

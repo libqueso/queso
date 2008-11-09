@@ -65,7 +65,19 @@ uqModelValidationClass<P_V,P_M,Q_V,Q_M>::uqModelValidationClass(
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqModelValidationClass<P_V,P_M,Q_V,Q_M>::~uqModelValidationClass()
 {
+  if (m_env.rank() == 0) {
+    std::cout << "Entering uqModeValidation::destructor()"
+              << ": prefix = " << m_prefix
+              << std::endl;
+  }
+
   if (m_cycle) delete m_cycle;
+
+  if (m_env.rank() == 0) {
+    std::cout << "Leaving uqModeValidation::destructor()"
+              << ": prefix = " << m_prefix
+              << std::endl;
+  }
 }
 
 template <class P_V,class P_M,class Q_V,class Q_M>
