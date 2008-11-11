@@ -272,3 +272,77 @@ validationCovarianceChol(const double sig2, const double ellx, const double ellR
 
   return 0;
 }
+
+
+int
+computeStage1PropagationMean(const int N1, const double *xLoc1, const double Re1,
+			     const int N3, const double *xLoc3, const double Re3,
+			     const double sig2, const double ellx, const double ellRe,
+			     const double *s1_misfit, const double *cholK, double *mean)
+{
+
+  // variance = K33_xx - K13_x^T*(M+K11)^-1*K13_x
+  double K13[N1], K13_x[N1];
+  double dxol, dlogRe;
+
+  dlogRe = (log10(Re3) - log10(Re1))/ellRe;
+
+  for( int ii=0; ii<N1; ii++ ){
+    dxol = (xLoc1[ii] - xLoc3[0])/ellx;
+    K13[ii] = sig2*exp(-0.5*(dxol*dxol + dlogRe*dlogRe) );
+    K13_x[ii] = (dxol/ellx)*K13[ii];
+  }
+  
+  gsl_matrix_const_view gslCholK = gsl_matrix_const_view_array(cholK, N1, N1);
+  gsl_vector_const_view gslMis = gsl_vector_const_view_array(s1_misfit, N1);
+
+  double tmp[N1];
+  gsl_vector_view gslTmp = gsl_vector_view_array(tmp, N1);
+
+  int ierr = gsl_linalg_cholesky_solve(&gslCholK.matrix, &gslMis.vector, &gslTmp.vector);
+  if( ierr != 0 ) return ierr;
+
+  *mean=0.0;
+  for( int ii=0; ii<N1; ii++ ) *mean += K13_x[ii]*tmp[ii];
+
+  return 0;
+}
+
+int
+computeStage1PropagationVariance(const int N1, const double *xLoc1, const double Re1,
+				 const int N3, const double *xLoc3, const double Re3,
+				 const double sig2, const double ellx, const double ellRe,
+				 const double *cholK, double *variance)
+{
+
+  // variance = K33_xx - K13_x^T*(M+K11)^-1*K13_x
+  double K33 = sig2;
+  double K33_xx = K33/(ellx*ellx);
+
+  double K13[N1], K13_x[N1];
+  double dxol, dlogRe;
+
+  dlogRe = (log10(Re3) - log10(Re1))/ellRe;
+
+  for( int ii=0; ii<N1; ii++ ){
+    dxol = (xLoc1[ii] - xLoc3[0])/ellx;
+    K13[ii] = sig2*exp(-0.5*(dxol*dxol + dlogRe*dlogRe) );
+    K13_x[ii] = (dxol/ellx)*K13[ii];
+  }
+  
+  gsl_matrix_const_view gslCholK = gsl_matrix_const_view_array(cholK, N1, N1);
+  gsl_vector_const_view gslK13_x = gsl_vector_const_view_array(K13_x, N1);
+
+  double tmp[N1];
+  gsl_vector_view gslTmp = gsl_vector_view_array(tmp, N1);
+
+  int ierr = gsl_linalg_cholesky_solve(&gslCholK.matrix, &gslK13_x.vector, &gslTmp.vector);
+  if( ierr != 0 ) return ierr;
+
+  double sum=0.0;
+  for( int ii=0; ii<N1; ii++ ) sum += K13_x[ii]*tmp[ii];
+
+  (*variance) = K33_xx - sum;
+
+  return 0;
+}
