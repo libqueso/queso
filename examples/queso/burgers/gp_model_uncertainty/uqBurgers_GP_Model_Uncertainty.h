@@ -1,4 +1,4 @@
-/* uq/examples/queso/tga/uqTgaEx4.h
+/* uq/examples/queso/burgers/gp_model_uncertainty/uqBurgers_GP_Model_Uncertainty.h
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu
  *
@@ -40,68 +40,43 @@
 #include <tools.h>
 #include <quesoFunctions.h>
 
-//********************************************************
-// Likelihood function object for both inverse problems of the validation cycle.
-// A likelihood function object is provided by user and is called by the UQ library.
-// This likelihood function object consists of data and routine.
-//********************************************************
 
-// Declaration of function to compute likelihood from misfit
-// (defined in uqBurgers_GP_Model_Uncertainty.C)
-void 
-negTwoLogLikelihood(const int N, const double *cholK, const double *misfit, 
-		    double *result);
-
-// Declaration of function to compute GP covariance matrix for calibration
-// (defined in uqBurgers_GP_Model_Uncertainty.C)
-int
-calibrationCovarianceChol(const int N, const double *xLoc, const double sig2, const double ellx, 
-			  double *cholK);
-
-
-// The (user defined) data class for the data needed by the 
-// (user defined) likelihood routine
-template<class P_V, class P_M>
-struct 
-likelihoodRoutine_DataClass
+// A struct used by the likelihood data
+// This struct contains experimental data and
+// a covariance matrix specifying model uncertainty
+// covariance at the data points
+struct
+inverseProblem_DataClass
 {
-  likelihoodRoutine_DataClass(const uqEnvironmentClass& env,
-			      double Re,
-                              const char* fileName);
- ~likelihoodRoutine_DataClass();
-
+  inverseProblem_DataClass(const uqEnvironmentClass& env,
+			   double Re,
+			   const char* fileName);
+  ~inverseProblem_DataClass();
+  
   // Experimental data
-  int nDataPoints; // number of data points
-  double Re;
+  int nDataPoints;       // number of data points
+  double Re;             // Reynolds number for data
   double *dataLocations; // x locations where state was measured
-  double *dataValues; // measured values of averaged state at dataLocations
-
+  double *dataValues;    // measured values of averaged state at dataLocations
+  
   // Gaussian process model uncertainty
-  double *mean;  // GP mean evaluated at data points
   double *cholK; // GP covariance evaluated at data points
-
-  // For Burgers' solver
-  quadBasis *pQB; // quad points, weights, and basis evaluation
-  gsl_vector *U; // solution (re-used after each solve at IC for next solve to hopefully decrease Newton iterations)
 };
-
-// likelihoodRoutine_DataClass constructor: Read data, allocate/initialize memory for Burgers' solver
-template<class P_V, class P_M>
-likelihoodRoutine_DataClass<P_V,P_M>::likelihoodRoutine_DataClass(const uqEnvironmentClass &env, 
-								  double Re, const char *fileName)
+  
+// inverseProblem_DataClass constructor
+inverseProblem_DataClass::inverseProblem_DataClass(const uqEnvironmentClass& env,
+						   double Re,
+						   const char* fileName)
   :
   nDataPoints(0),
   dataLocations(0),
   dataValues(0),
-  pQB(0),
-  U(0)
+  cholK(0)
 {
-  std::cout << "Calling likelihoodRoutine_DataClass constructor...";
-
-  // set Re
+  // Set Re
   this->Re = Re;
-  
-  // open file
+
+  // open data file
   FILE *fp = fopen(fileName, "r");
   UQ_FATAL_TEST_MACRO((!fp), env.rank(),
 		      "uqAppl(), in uqBurgers_No_Model_Uncertainty (likelihoodRoutine_DataClass constructor)",
@@ -128,19 +103,105 @@ likelihoodRoutine_DataClass<P_V,P_M>::likelihoodRoutine_DataClass(const uqEnviro
     numObservations++;
   }
 
-  // close file
+  // done with data file
   fclose(fp);
 
-  // allocate and initialize mean vector and covariance matrix for Gaussian process
-  mean = new double[nDataPoints];
-  for( int ii=0; ii<nDataPoints; ii++ ) mean[ii] = 0.0;
-
+  // allocate storage for covariance and initialize to identity
   cholK = new double[nDataPoints*nDataPoints];
   for( int ii=0; ii<nDataPoints; ii++ ){
     for( int jj=0; jj<nDataPoints; jj++ ){
       cholK[nDataPoints*ii+jj] = 0.0;
     }
     cholK[nDataPoints*ii+ii] = 1.0;
+  }
+
+} // end constructor
+
+// inverseProblem_DataClass destructor
+inverseProblem_DataClass::~inverseProblem_DataClass()
+{
+  delete[] dataLocations;
+  delete[] dataValues;
+  delete[] cholK;
+} // end destructor
+  
+
+// Declaration of function to compute GP covariance matrix for calibration phase
+// (defined in uqBurgers_GP_Model_Uncertainty.C)
+int
+calibrationCovarianceChol(const double sig2, const double ellx, inverseProblem_DataClass *cal_data);
+
+// Declaration of function to compute GP covariance matrix for validation phase
+// (defined in uqBurgers_GP_Model_Uncertainty.C)
+int
+validationCovarianceChol(const double sig2, const double ellx, const double ellRe,
+			 const inverseProblem_DataClass *cal_data, inverseProblem_DataClass *val_data);
+
+
+//********************************************************
+// Likelihood function object for both inverse problems of the validation cycle.
+// A likelihood function object is provided by user and is called by the UQ library.
+// This likelihood function object consists of data and routine.
+//********************************************************
+
+// The (user defined) data class for the data needed by the 
+// (user defined) likelihood routine
+struct 
+likelihoodRoutine_DataClass
+{
+  likelihoodRoutine_DataClass(const uqEnvironmentClass& env,
+			      double cal_Re,
+			      double val_Re,
+                              const char* calFileName,
+			      const char* valFileName);
+ ~likelihoodRoutine_DataClass();
+
+  // Experimental data and model uncertainty
+  bool calPhase;                             // if true, in calibration phase
+  inverseProblem_DataClass *calibrationData; // calibration data and covariance
+  inverseProblem_DataClass *validationData;  // validation data and covariance
+
+  // For Burgers' solver
+  quadBasis *pQB; // quad points, weights, and basis evaluation
+  gsl_vector *U;  // solution (re-used after each solve at IC for next solve to hopefully decrease Newton iterations)
+};
+
+// Declaration of function to compute likelihood from misfit
+// (defined in uqBurgers_GP_Model_Uncertainty_gsl.C)
+void 
+negTwoLogLikelihood(const int N, const double *cholK, const double *misfit, 
+		    double *result);
+
+// Declaration of function to compute GP mean for validation phase (i.e. posterior mean from calibration)
+// (defined in uqBurgers_GP_Model_Uncertainty_gsl.C)
+int
+validationMean(const double sig2, const double ellx, const double ellRe, const double kappa,
+	       likelihoodRoutine_DataClass *data, double *mean);
+
+
+// likelihoodRoutine_DataClass constructor: Read data, allocate/initialize memory for Burgers' solver
+likelihoodRoutine_DataClass::likelihoodRoutine_DataClass(const uqEnvironmentClass &env, 
+							 double cal_Re, 
+							 double val_Re,
+							 const char *calFileName,
+							 const char *valFileName)
+  :
+  pQB(0),
+  U(0)
+{
+  // allocation and initialize calibration and/or validation data
+  calPhase = false;
+  calibrationData = (inverseProblem_DataClass *)NULL;
+  validationData  = (inverseProblem_DataClass *)NULL;
+
+  if( calFileName ){
+    calPhase = true;
+    calibrationData = new inverseProblem_DataClass(env, cal_Re, calFileName);
+  }
+
+  if( valFileName ){
+    calPhase = false;  // ONLY have validation data for validation phase
+    validationData = new inverseProblem_DataClass(env, val_Re, valFileName);
   }
 
   // allocate and initialize quadrature points
@@ -151,22 +212,16 @@ likelihoodRoutine_DataClass<P_V,P_M>::likelihoodRoutine_DataClass(const uqEnviro
   // allocate and initialize solution (to zero) 
   U = gsl_vector_calloc(100);
 
-  std::cout << "success.\n";
 } // end constructor
 
 
 // likelihoodRoutine_DataClass destructor: Frees memory allocated by constructor
-template<class P_V, class P_M>
-likelihoodRoutine_DataClass<P_V,P_M>::~likelihoodRoutine_DataClass()
+likelihoodRoutine_DataClass::~likelihoodRoutine_DataClass()
 {
-  std::cout << "Calling likelihoodRoutine_DataClass destructor...";
-  delete[] dataLocations;
-  delete[] dataValues;
-  delete[] mean;
-  delete[] cholK;
+  delete calibrationData;
+  delete validationData;
   freeQuadratureAndBasisForResidual(pQB);
   gsl_vector_free(U);
-  std::cout << "success.\n";
 } // end destructor
 
 
@@ -175,29 +230,75 @@ template<class P_V,class P_M>
 double
 likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 {
-  //std::cout << "Calling likelihoodRoutine...\n";
+  // FIXME: This routine is ugly
+
+  int nDataPoints;
+  double Re, *xx, *ue, *cholK;
+
+  int cal_nDataPoints;
+  double cal_Re, *cal_xx, *cal_ue, *cal_cholK;
+
+  int val_nDataPoints;
+  double val_Re, *val_xx, *val_ue, *val_cholK;
+
+  bool calPhase = ((likelihoodRoutine_DataClass *) functionDataPtr)->calPhase;
 
   // Experimental data
-  const int nDataPoints = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->nDataPoints;
-  const double Re = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->Re;
-  const double *xx = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->dataLocations;
-  const double *ue = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->dataValues;
+  cal_nDataPoints = ((likelihoodRoutine_DataClass *) functionDataPtr)->calibrationData->nDataPoints;
+  cal_Re = ((likelihoodRoutine_DataClass *) functionDataPtr)->calibrationData->Re;
+  cal_xx = ((likelihoodRoutine_DataClass *) functionDataPtr)->calibrationData->dataLocations;
+  cal_ue = ((likelihoodRoutine_DataClass *) functionDataPtr)->calibrationData->dataValues;
 
+  cal_cholK = ((likelihoodRoutine_DataClass *) functionDataPtr)->calibrationData->cholK;
+    
   // Gaussian process model uncertainty
-  const double *mean = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->mean;
-  const double *cholK = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->cholK;
+  if( !calPhase ){
+    // Experimental data
+    val_nDataPoints = ((likelihoodRoutine_DataClass *) functionDataPtr)->validationData->nDataPoints;
+    val_Re = ((likelihoodRoutine_DataClass *) functionDataPtr)->validationData->Re;
+    val_xx = ((likelihoodRoutine_DataClass *) functionDataPtr)->validationData->dataLocations;
+    val_ue = ((likelihoodRoutine_DataClass *) functionDataPtr)->validationData->dataValues;
+    
+    // Gaussian process model uncertainty
+    val_cholK = ((likelihoodRoutine_DataClass *) functionDataPtr)->validationData->cholK;
+  }
 
   // Solver data
-  quadBasis *pQB = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->pQB;
-  gsl_vector *U = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->U;
+  quadBasis *pQB = ((likelihoodRoutine_DataClass *) functionDataPtr)->pQB;
+  gsl_vector *U = ((likelihoodRoutine_DataClass *) functionDataPtr)->U;
 
   // Model parameter
-  const double kappa = paramValues[0];
+  double kappa = paramValues[0];
+
+  // choose appropriate data
+  if( calPhase ){
+    nDataPoints = cal_nDataPoints;
+    Re = cal_Re;
+    xx = cal_xx;
+    ue = cal_ue;
+    cholK = cal_cholK;
+  } else{
+    nDataPoints = val_nDataPoints;
+    Re = val_Re;
+    xx = val_xx;
+    ue = val_ue;
+    cholK = val_cholK;
+  }
 
   // Model data
   double um[nDataPoints];
 
+  // compute GP mean
+  double mean[nDataPoints];
+  for( int ii=0; ii<nDataPoints; ii++ ) mean[ii] = 0.0; // for calibration phase, model inadequacy mean is zero
   
+  if( !calPhase ){ // for validation phase, model inadequacy mean is posterior from calibration
+    int ierr = validationMean(1e-4, 0.1, 0.5, kappa, (likelihoodRoutine_DataClass *) functionDataPtr, mean);
+    UQ_FATAL_TEST_MACRO( (ierr!=0), UQ_UNAVAILABLE_RANK,
+			 "uqAppl(), in uqBurgers_No_Model_Uncertainty (likelihoodRoutine)",
+			 "failed while computing validation phase GP mean" );
+  }
+
   // Evaluate model
   int ierr = solveForStateAtXLocations(xx, nDataPoints, 1.0/Re, kappa, U, pQB, um);
   UQ_FATAL_TEST_MACRO( (ierr!=0), UQ_UNAVAILABLE_RANK,
@@ -208,6 +309,7 @@ likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
   double misfit[nDataPoints];
   for( int ii=0; ii<nDataPoints; ii++ ) misfit[ii] = (ue[ii] - um[ii] - mean[ii]);
 
+  // Compute -2*log(likelihood)
   double resultValue;
   negTwoLogLikelihood(nDataPoints, cholK, misfit, &resultValue);
 
@@ -216,7 +318,7 @@ likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 
 
 //********************************************************
-// QoI function object for the first validation problem stage (with prefix "s1_").
+// QoI function object 
 // A QoI function object is provided by user and is called by the UQ library.
 // This QoI function object consists of data and routine.
 //********************************************************
@@ -234,21 +336,18 @@ qoiRoutine_DataClass
 // constructor
 qoiRoutine_DataClass::qoiRoutine_DataClass()
 {
-  cout << "Calling qoiRoutine_DataClass constructor...";
   // allocate and initialize quadrature points
   UQ_FATAL_TEST_MACRO( (evaluateQuadratureAndBasisForResidual(100, &pQB)!=0), UQ_UNAVAILABLE_RANK,
 		       "uqAppl(), in uqBurgers_No_Model_Uncertainty (likelihoodRoutine_DataClass constructor)",
 		       "failed while allocating/computing quadrature points" );
-  cout << "success.\n";
 } // end constructor
 
 // destructor
 qoiRoutine_DataClass::~qoiRoutine_DataClass()
 {
-  cout << "Calling qoiRoutine_DataClass destructor...";
   freeQuadratureAndBasisForResidual(pQB);
-  cout << "success.\n";
 } // end destructor
+
 
 // The actual (user defined) qoi routine
 template<class P_V,class P_M,class Q_V,class Q_M>
@@ -349,13 +448,10 @@ uqAppl(const uqEnvironmentClass& env)
                                              paramMinValues,
                                              paramMaxValues);
 
-  likelihoodRoutine_DataClass<P_V,P_M> calLikelihoodRoutine_Data(env, 10.0, "calibration_data.dat");
+  likelihoodRoutine_DataClass calLikelihoodRoutine_Data(env, 10.0, 100.0, "calibration_data.dat", NULL);
 
   // Set GP covariance for calibration phase (from prior)
-  ierr = calibrationCovarianceChol(calLikelihoodRoutine_Data.nDataPoints,
-				   calLikelihoodRoutine_Data.dataLocations,
-				   1e-4, 0.1,
-				   calLikelihoodRoutine_Data.cholK);
+  ierr = calibrationCovarianceChol(1e-4, 0.1, calLikelihoodRoutine_Data.calibrationData);
   UQ_FATAL_TEST_MACRO( (ierr!=0), env.rank(),
 		       "uqAppl(), in uqBurgers_GP_Model_Uncertainty",
 		       "failed while computing calibration covariance matrix" );
@@ -375,6 +471,8 @@ uqAppl(const uqEnvironmentClass& env)
                                           NULL); // use default kernel from library
   delete calProposalCovMatrix;
 
+  
+  // FIXME: Add propagation
 
 
   // done with calibration phase
@@ -386,6 +484,7 @@ uqAppl(const uqEnvironmentClass& env)
               << std::endl;
   }
 
+
   //******************************************************
   // Burgers' example: validation phase
   //******************************************************
@@ -395,25 +494,39 @@ uqAppl(const uqEnvironmentClass& env)
               << std::endl;
   }
 
-/*   // Set up inverse problem */
-/*   likelihoodRoutine_DataClass<P_V,P_M> valLikelihoodRoutine_Data(env, 100.0, "validation_data.dat"); */
+  // Set up inverse problem
+  likelihoodRoutine_DataClass valLikelihoodRoutine_Data(env, 10.0, 100.0, "calibration_data.dat", "validation_data.dat");
 
-/*   cycle.setValIP(likelihoodRoutine<P_V,P_M>, (void *) &valLikelihoodRoutine_Data, */
-/*                  true); // the likelihood routine computes [-2.*ln(Likelihood)] */
+  // Set GP covariance for calibration phase (from prior) (b/c this is required for validation phase)
+  ierr = calibrationCovarianceChol(1e-4, 0.1, valLikelihoodRoutine_Data.calibrationData);
+  UQ_FATAL_TEST_MACRO( (ierr!=0), env.rank(),
+		       "uqAppl(), in uqBurgers_GP_Model_Uncertainty",
+		       "failed while computing calibration covariance matrix" );
+
+  // Set GP covariance for validation phase (from calibration posterior)
+  ierr = validationCovarianceChol(1e-4, 0.1, 0.5, valLikelihoodRoutine_Data.calibrationData, 
+				  valLikelihoodRoutine_Data.validationData);
+  UQ_FATAL_TEST_MACRO( (ierr!=0), env.rank(),
+		       "uqAppl(), in uqBurgers_GP_Model_Uncertainty",
+		       "failed while computing validation covariance matrix" );
+
+  cycle.setValIP(likelihoodRoutine<P_V,P_M>, (void *) &valLikelihoodRoutine_Data,
+                 true); // the likelihood routine computes [-2.*ln(Likelihood)]
 
 
-/*   // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv' */
-/*   // Use 'realizer()' because the posterior rv was computed with Markov Chain */
-/*   // Use these calibration mean values as the initial values */
-/*   P_M* valProposalCovMatrix =  */
-/*     cycle.calIP().postRv().imageSpace().newGaussianMatrix(cycle.calIP().postRv().realizer().imageVarianceValues(), */
-/* 							  cycle.calIP().postRv().realizer().imageExpectedValues());  */
+  // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
+  // Use 'realizer()' because the posterior rv was computed with Markov Chain
+  // Use these calibration mean values as the initial values
+  P_M* valProposalCovMatrix =
+    cycle.calIP().postRv().imageSpace().newGaussianMatrix(cycle.calIP().postRv().realizer().imageVarianceValues(),
+							  cycle.calIP().postRv().realizer().imageExpectedValues());
 
-/*   cycle.valIP().solveWithBayesMarkovChain(cycle.calIP().postRv().realizer().imageExpectedValues(), */
-/*                                           *valProposalCovMatrix, */
-/*                                           NULL); // use default kernel from library */
-/*   delete valProposalCovMatrix; */
+  cycle.valIP().solveWithBayesMarkovChain(cycle.calIP().postRv().realizer().imageExpectedValues(),
+                                          *valProposalCovMatrix,
+                                          NULL); // use default kernel from library
+  delete valProposalCovMatrix;
 
+  // FIXME: Add propagation
 
   // done with validation phase
   iRC = gettimeofday(&timevalNow, NULL);
@@ -428,6 +541,8 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
   // Burgers' example: comparison phase
   //******************************************************
+
+  // FIXME: Add comparison
 
   // done with everything
   if (env.rank() == 0) {

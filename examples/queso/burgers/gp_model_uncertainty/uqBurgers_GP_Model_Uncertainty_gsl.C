@@ -91,10 +91,11 @@ negTwoLogLikelihood(const int N, const double *cholK, const double *misfit, doub
 // Computes Cholesky decomposition of GP prior covariance
 // required for calibration phase 
 int
-calibrationCovarianceChol(const int N, const double *xLoc, const double sig2, const double ellx, 
-			  double *cholK)
+calibrationCovarianceChol(const double sig2, const double ellx, inverseProblem_DataClass *cal_data)
 {
-  int ierr;
+  int ierr, N=cal_data->nDataPoints;
+  const double *xLoc = cal_data->dataLocations;
+  double *cholK = cal_data->cholK;
   const double noise = 1e-10;
 
   // Compute covariance matrix
@@ -110,6 +111,160 @@ calibrationCovarianceChol(const int N, const double *xLoc, const double sig2, co
   // BELOW HERE, K HAS BEEN OVERWRITTEN WITH chol(K)
   gsl_matrix_view gslCholK = gsl_matrix_view_array(cholK, N, N);
   ierr = gsl_linalg_cholesky_decomp(&gslCholK.matrix);
+  if( ierr == GSL_EDOM ){
+    printf("ERROR: MATRIX IS NOT POSITIVE DEFINITE!\n");
+    return ierr;
+  }
+
+  return 0;
+}
+
+// Computes GP prior covariance between calibration and validation data points
+int
+computePriorCovarianceOffDiag(const int N1, const double *xLoc1, const double Re1,
+			      const int N2, const double *xLoc2, const double Re2,
+			      const double sig2, const double ellx, const double ellRe,
+			      double *K21)
+{
+  const double logRe1 = log10(Re1);
+  const double logRe2 = log10(Re2);
+  const double dlogReol = (logRe2 - logRe1)/ellRe;
+  const double dlogReol2 = dlogReol*dlogReol;
+  double dxol;
+
+  // Compute covariance matrix
+  for( int ii=0; ii<N2; ii++ ){
+    for( int jj=0; jj<N1; jj++ ){
+      dxol = (xLoc2[ii] - xLoc1[jj])/ellx;
+      K21[N1*ii+jj] = sig2*exp( -0.5*(dxol*dxol + dlogReol2) );
+    }
+  }
+
+  return 0;
+}
+
+
+// Compute GP mean for validation phase (i.e. posterior mean from calibration)
+int
+validationMean(const double sig2, const double ellx, const double ellRe, const double kappa,
+	       likelihoodRoutine_DataClass *data, double *mean)
+{
+
+  int ierr;
+  int N1 = data->calibrationData->nDataPoints, N2 = data->validationData->nDataPoints;
+  double cal_umodel[N1];
+  const double *cal_udata = data->calibrationData->dataValues;
+  
+  double Re1 = data->calibrationData->Re, Re2 = data->validationData->Re;
+  double *xLoc1 = data->calibrationData->dataLocations, *xLoc2 = data->validationData->dataLocations;
+  
+  quadBasis *pQB = data->pQB;
+  gsl_vector *U = data->U;
+  
+  // evaluate misfit for stage 1 scenario
+  ierr = solveForStateAtXLocations(xLoc1, N1, 1.0/Re1, kappa, U, pQB, cal_umodel);
+  if( ierr != 0 ){
+    printf("WARNING: Burgers solver was not successful!\n");
+    printf("         Results are probably meaningless.\n");
+    fflush(stdout);
+  }
+    
+  double cal_misfit[N1];
+  for( int ii=0; ii<N1; ii++ ) cal_misfit[ii] = (cal_udata[ii] - cal_umodel[ii]);
+
+
+  double *cal_cholK = data->calibrationData->cholK;
+
+  double K21[N2*N1];
+  double temp[N1];
+
+  // Compute stage 1 off diagonal
+  ierr = computePriorCovarianceOffDiag(N1, xLoc1, Re1, N2, xLoc2, Re2, sig2, ellx, ellRe, K21);
+  if( ierr != 0 ) return ierr;
+
+  // temp = K\s1_misfit
+  gsl_matrix_const_view gslK = gsl_matrix_const_view_array(cal_cholK, N1, N1);
+  gsl_vector_const_view gslMis = gsl_vector_const_view_array(cal_misfit, N1);
+  gsl_vector_view gslTemp = gsl_vector_view_array(temp, N1);
+
+  ierr = gsl_linalg_cholesky_solve(&gslK.matrix, &gslMis.vector, &gslTemp.vector);
+  if( ierr == GSL_EDOM ){
+    printf("ERROR: MATRIX IS NOT POSITIVE DEFINITE!\n");
+    return ierr;
+  }
+
+  // s1_mean = K21*(K\s1_misfit)
+  gsl_matrix_const_view gslK21 = gsl_matrix_const_view_array(K21, N2, N1);
+  gsl_vector_view gslMean = gsl_vector_view_array(mean, N2);
+
+  ierr = gsl_blas_dgemv(CblasNoTrans, 1.0, &gslK21.matrix, &gslTemp.vector, 0.0, &gslMean.vector);
+  if( ierr != 0 ) return ierr;
+
+  return 0;
+}
+
+
+// Computes Cholesky decomposition of GP covariance
+// required for stage 2 calibration
+int
+validationCovarianceChol(const double sig2, const double ellx, const double ellRe,
+			 const inverseProblem_DataClass *cal_data, inverseProblem_DataClass *val_data)
+{
+  int ierr;
+  int N1 = cal_data->nDataPoints, N2 = val_data->nDataPoints;
+  
+  double Re1 = cal_data->Re, Re2 = val_data->Re;
+  double *xLoc1 = cal_data->dataLocations, *xLoc2 = val_data->dataLocations;
+
+  double *cal_cholK = cal_data->cholK, *val_cholK = val_data->cholK;
+
+  double K21[N2*N1];
+  double temp[N1*N2];
+
+  // Compute stage 1 off diagonal
+  ierr = computePriorCovarianceOffDiag(N1, xLoc1, Re1, N2, xLoc2, Re2, sig2, ellx, ellRe, K21);
+  if( ierr != 0 ) return ierr;
+
+  // temp = transpose(K21)
+  for( int ii=0; ii<N1; ii++ ){
+    for( int jj=0; jj<N2; jj++ ){
+      temp[N2*ii+jj] = K21[N1*jj+ii];
+    }
+  }
+
+  // temp = (K11 + M)^{-1}*K12
+  gsl_matrix_const_view gslCalCholK = gsl_matrix_const_view_array(cal_cholK, N1, N1);
+  gsl_matrix_view gslTemp = gsl_matrix_view_array(temp, N1, N2);
+
+  ierr = gsl_blas_dtrsm(CblasLeft, CblasLower, CblasNoTrans, CblasNonUnit, 1.0, &gslCalCholK.matrix, &gslTemp.matrix);
+  if( ierr != 0 ) return ierr;
+
+  ierr = gsl_blas_dtrsm(CblasLeft, CblasUpper, CblasNoTrans, CblasNonUnit, 1.0, &gslCalCholK.matrix, &gslTemp.matrix);
+  if( ierr != 0 ) return ierr;
+  
+  // Compute stage 2 covariace according to prior
+  for( int ii=0; ii<N2; ii++ ){
+    for( int jj=0; jj<N2; jj++ ){
+      double dxol = (xLoc2[ii] - xLoc2[jj])/ellx;
+      val_cholK[N2*ii+jj] = sig2*exp(-0.5*dxol*dxol); //K(ii, jj) = sig2*exp(-0.5*dxol*dxol);
+    }
+  }
+
+  // C = K22 - K21*(K11 + noise_variance*I)^{-1}*K12
+  gsl_matrix_view gslValCholK = gsl_matrix_view_array(val_cholK, N2, N2);
+  gsl_matrix_view gslK21 = gsl_matrix_view_array(K21, N2, N1);
+
+  ierr = gsl_blas_dgemm(CblasNoTrans, CblasNoTrans, -1.0, &gslK21.matrix, &gslTemp.matrix, 1.0, &gslValCholK.matrix);
+  if( ierr != 0 ) return ierr;
+
+  // Add noise to diagonal to ensure Cholesky decomposition is successful
+  for( int ii=0; ii<N2; ii++ ){
+    val_cholK[N2*ii+ii] += 1e-10;
+  }
+      
+
+  // Cholesky decomposition
+  ierr = gsl_linalg_cholesky_decomp(&gslValCholK.matrix);
   if( ierr == GSL_EDOM ){
     printf("ERROR: MATRIX IS NOT POSITIVE DEFINITE!\n");
     return ierr;
