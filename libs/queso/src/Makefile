@@ -83,3 +83,11 @@ libuq_queso_specific: echo_num_proc $(OBJS_$(UQBT))
 
 %.o: %.C
 	$(CXX) $(DEFINES) $(INC_PATHS) $(CXXFLAGS) $<
+
+# Unit testing
+check: uqExampleTest
+	./uqExampleTest
+
+uqExampleTest: uqExampleTest.o
+	$(CXX) -L$(BOOST_LIB_PATH_FOR_QUESO_TOOL) $< -o $@ -l$(BOOST_UNIT_TEST_LIB_FOR_QUESO_TOOL) 
+
