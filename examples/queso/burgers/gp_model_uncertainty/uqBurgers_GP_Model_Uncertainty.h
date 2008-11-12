@@ -899,6 +899,29 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
 
   // FIXME: Add comparison
+  Q_V* epsilonVec = calQoiRoutine_Data.qoiRv->imageSpace().newVector(0.05);
+  Q_V cdfDistancesVec(calQoiRoutine_Data.qoiRv->imageSpace().zeroVector());
+  horizontalDistances(calQoiRoutine_Data.qoiRv->cdf(),
+		      valQoiRoutine_Data.qoiRv->cdf(),
+		      *epsilonVec,
+		      cdfDistancesVec);
+  if (env.rank() == 0) {
+    std::cout << "For epsilonVec = "    << *epsilonVec
+	      << ", cdfDistancesVec = " << cdfDistancesVec
+	      << std::endl;
+  }
+  
+  // Test independence of 'distance' w.r.t. order of cdfs
+  horizontalDistances(valQoiRoutine_Data.qoiRv->cdf(),
+		      calQoiRoutine_Data.qoiRv->cdf(),
+		      *epsilonVec,
+		      cdfDistancesVec);
+  if (env.rank() == 0) {
+    std::cout << "For epsilonVec = "    << *epsilonVec
+	      << ", cdfDistancesVec (swithced order of cdfs) = " << cdfDistancesVec
+	      << std::endl;
+  }
+  delete epsilonVec;
 
   // done with everything
   if (env.rank() == 0) {
