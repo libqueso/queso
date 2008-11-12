@@ -346,3 +346,193 @@ computeStage1PropagationVariance(const int N1, const double *xLoc1, const double
 
   return 0;
 }
+
+
+
+int
+computeStage2PropagationMean(const int N1, const double *xLoc1, const double Re1,
+			     const int N2, const double *xLoc2, const double Re2,
+			     const int N3, const double *xLoc3, const double Re3,
+			     const double sig2, const double ellx, const double ellRe,
+			     const double *cholK1, const double *cholK2, double *s2_misfit, double mean1,
+			     double *mean2)
+{
+  int ierr;
+
+  // compute K12
+  double K21[N2*N1];
+  ierr = computePriorCovarianceOffDiag(N1, xLoc1, Re1, N2, xLoc2, Re2, sig2, ellx, ellRe, K21);
+  if( ierr != 0 ) return ierr;
+
+  // temp = transpose(K21)
+  double temp[N1*N2];
+  for( int ii=0; ii<N1; ii++ ){
+    for( int jj=0; jj<N2; jj++ ){
+      temp[N2*ii+jj] = K21[N1*jj+ii];
+    }
+  }
+
+  // temp = (K11 + M)^{-1}*K12
+  gsl_matrix_const_view gslCholK1 = gsl_matrix_const_view_array(cholK1, N1, N1);
+  gsl_matrix_view gslTemp = gsl_matrix_view_array(temp, N1, N2);
+
+  ierr = gsl_blas_dtrsm(CblasLeft, CblasLower, CblasNoTrans, CblasNonUnit, 1.0, &gslCholK1.matrix, &gslTemp.matrix);
+  if( ierr != 0 ) return ierr;
+
+  ierr = gsl_blas_dtrsm(CblasLeft, CblasUpper, CblasNoTrans, CblasNonUnit, 1.0, &gslCholK1.matrix, &gslTemp.matrix);
+  if( ierr != 0 ) return ierr;
+
+  // compute K31_x
+  double K13[N1], K13_x[N1];
+  double dxol, dlogRe;
+
+  dlogRe = (log10(Re3) - log10(Re1))/ellRe;
+
+  for( int ii=0; ii<N1; ii++ ){
+    dxol = (xLoc1[ii] - xLoc3[0])/ellx;
+    K13[ii] = sig2*exp(-0.5*(dxol*dxol + dlogRe*dlogRe) );
+    K13_x[ii] = (dxol/ellx)*K13[ii];
+  }
+
+  // temp2 = K31_x*(K11 + M)^{-1}*K12
+  double temp2[N2];
+  for( int ii=0; ii<N2; ii++ ){
+    temp2[ii] = 0.0;
+    for( int jj=0; jj<N1; jj++ ){
+      temp2[ii] += K13_x[jj]*temp[N2*jj+ii];
+    }
+  }
+
+  // Compute K32_x
+  double K23[N2], K23_x[N2];
+
+  dlogRe = (log10(Re3) - log10(Re2))/ellRe;
+
+  for( int ii=0; ii<N2; ii++ ){
+    dxol = (xLoc2[ii] - xLoc3[0])/ellx;
+    K23[ii] = sig2*exp(-0.5*(dxol*dxol + dlogRe*dlogRe) );
+    K23_x[ii] = (dxol/ellx)*K23[ii];
+  }
+
+  // Compute C32
+  double C32[N2];
+  for( int ii=0; ii<N2; ii++ ) C32[ii] = K23_x[ii] - temp2[ii];
+
+
+  gsl_matrix_const_view gslCholK2 = gsl_matrix_const_view_array(cholK2, N2, N2);
+  gsl_vector_const_view gslMis = gsl_vector_const_view_array(s2_misfit, N2);
+
+  double tmp[N2];
+  gsl_vector_view gslTmp = gsl_vector_view_array(tmp, N2);
+
+  ierr = gsl_linalg_cholesky_solve(&gslCholK2.matrix, &gslMis.vector, &gslTmp.vector);
+  if( ierr != 0 ) return ierr;
+
+  *mean2=0.0;
+  for( int ii=0; ii<N2; ii++ ) *mean2 += C32[ii]*tmp[ii];
+  *mean2 += mean1;
+
+  return 0;
+}
+
+
+int
+computeStage2PropagationVariance(const int N1, const double *xLoc1, const double Re1,
+				 const int N2, const double *xLoc2, const double Re2,
+				 const int N3, const double *xLoc3, const double Re3,
+				 const double sig2, const double ellx, const double ellRe,
+				 const double *cholK1, const double *cholK2, const double variance1,
+				 double *variance2)
+{
+
+  int ierr;
+
+  // compute K12
+  double K21[N2*N1];
+  ierr = computePriorCovarianceOffDiag(N1, xLoc1, Re1, N2, xLoc2, Re2, sig2, ellx, ellRe, K21);
+  if( ierr != 0 ) return ierr;
+
+  // temp = transpose(K21) = K12
+  double temp[N1*N2];
+  for( int ii=0; ii<N1; ii++ ){
+    for( int jj=0; jj<N2; jj++ ){
+      temp[N2*ii+jj] = K21[N1*jj+ii];
+    }
+  }
+
+  // temp = (K11 + M)^{-1}*K12
+  gsl_matrix_const_view gslCholK1 = gsl_matrix_const_view_array(cholK1, N1, N1);
+  gsl_matrix_view gslTemp = gsl_matrix_view_array(temp, N1, N2);
+
+  ierr = gsl_blas_dtrsm(CblasLeft, CblasLower, CblasNoTrans, CblasNonUnit, 1.0, &gslCholK1.matrix, &gslTemp.matrix);
+  if( ierr != 0 ) return ierr;
+
+  ierr = gsl_blas_dtrsm(CblasLeft, CblasUpper, CblasNoTrans, CblasNonUnit, 1.0, &gslCholK1.matrix, &gslTemp.matrix);
+  if( ierr != 0 ) return ierr;
+
+  // compute K31_x
+  double K13[N1], K13_x[N1];
+  double dxol, dlogRe;
+
+  dlogRe = (log10(Re3) - log10(Re1))/ellRe;
+
+  for( int ii=0; ii<N1; ii++ ){
+    dxol = (xLoc1[ii] - xLoc3[0])/ellx;
+    K13[ii] = sig2*exp(-0.5*(dxol*dxol + dlogRe*dlogRe) );
+    K13_x[ii] = (dxol/ellx)*K13[ii];
+    //printf("xx1[%d] = %.6E, xx3 = %.6E, Re1 = %.6E, Re3 = %.6E\n", ii, xLoc1[ii], xLoc3[0], Re1, Re3);
+    //printf("K13[%d] = %.6E, K13_x[%d] = %.6E\n", ii, K13[ii], ii, K13_x[ii]); fflush(stdout);
+    //K13_x[ii] = -(dxol/ellx)*K13[ii];
+  }
+
+  // temp2 = K31_x*(K11 + M)^{-1}*K12
+  double temp2[N2];
+  for( int ii=0; ii<N2; ii++ ){
+    temp2[ii] = 0.0;
+    for( int jj=0; jj<N1; jj++ ){
+      temp2[ii] += K13_x[jj]*temp[N2*jj+ii];
+    }
+  }
+
+  // Compute K32_x
+  double K23[N2], K23_x[N2];
+
+  dlogRe = (log10(Re3) - log10(Re2))/ellRe;
+
+  for( int ii=0; ii<N2; ii++ ){
+    dxol = (xLoc2[ii] - xLoc3[0])/ellx;
+    K23[ii] = sig2*exp(-0.5*(dxol*dxol + dlogRe*dlogRe) );
+    K23_x[ii] = (dxol/ellx)*K23[ii];
+    //K23_x[ii] = -(dxol/ellx)*K23[ii];
+  }
+
+  // Compute C32
+  double C32[N2];
+  for( int ii=0; ii<N2; ii++ ){
+    printf("K23_x[%d] = %.6E, temp2[%d] = %.6E\n", ii, K23_x[ii], ii, temp2[ii]); fflush(stdout);
+    C32[ii] = K23_x[ii] - temp2[ii];
+  }
+
+
+  gsl_matrix_const_view gslCholK2 = gsl_matrix_const_view_array(cholK2, N2, N2);
+  gsl_vector_const_view gslC32 = gsl_vector_const_view_array(C32, N2);
+
+  double tmp[N2];
+  gsl_vector_view gslTmp = gsl_vector_view_array(tmp, N2);
+
+  ierr = gsl_linalg_cholesky_solve(&gslCholK2.matrix, &gslC32.vector, &gslTmp.vector);
+  if( ierr != 0 ) return ierr;
+
+  double sum=0.0;
+  for( int ii=0; ii<N2; ii++ ){
+    printf("C32[%d] = %.6E, tmp[%d] = %.6E\n", ii, C32[ii], ii, tmp[ii]); fflush(stdout);
+    sum += C32[ii]*tmp[ii];
+  }
+
+
+  //printf("variance1 = %.6E, sum = %.6E\n", variance1, sum); fflush(stdout);
+
+  (*variance2) = variance1 - sum;
+
+  return 0;
+}

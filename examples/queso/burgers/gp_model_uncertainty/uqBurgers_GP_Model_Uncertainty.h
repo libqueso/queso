@@ -454,7 +454,6 @@ computeStage1PropagationVariance(const int N1, const double *xLoc1, const double
 				 const double *cholK, double *variance);
 
 // Routine to compute qoi and mean chains for calibration phase
-// stage 1 uncertainty propagation routine
 template<class P_V,class P_M,class Q_V, class Q_M>
 void
 calibrationQoiMeanChains(const uqBaseVectorRVClass<P_V,P_M>& calPostRv,
@@ -528,20 +527,121 @@ calibrationQoiMeanChains(const uqBaseVectorRVClass<P_V,P_M>& calPostRv,
   return;
 }
 
-// The actual (user defined) qoi routine
-template<class P_V,class P_M,class Q_V,class Q_M>
-void qoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiValues)
+int
+computeStage2PropagationMean(const int N1, const double *xLoc1, const double Re1,
+			     const int N2, const double *xLoc2, const double Re2,
+			     const int N3, const double *xLoc3, const double Re3,
+			     const double sig2, const double ellx, const double ellRe,
+			     const double *cholK1, const double *cholK2, double *s2_misfit, double mean1,
+			     double *mean2);
+
+int
+computeStage2PropagationVariance(const int N1, const double *xLoc1, const double Re1,
+				 const int N2, const double *xLoc2, const double Re2,
+				 const int N3, const double *xLoc3, const double Re3,
+				 const double sig2, const double ellx, const double ellRe,
+				 const double *cholK1, const double *cholK2, const double variance1,
+				 double *variance2);
+
+// Routine to compute qoi and mean chains for calibration phase
+template<class P_V,class P_M,class Q_V, class Q_M>
+void
+validationQoiMeanChains(const uqBaseVectorRVClass<P_V,P_M>& valPostRv,
+			likelihoodRoutine_DataClass& valLikelihoodRoutine_Data,
+			qoiRoutine_DataClass<Q_V, Q_M>& qoiRoutine_Data)
 {
-
   int ierr;
-  const double kappa = paramValues[0];
-  double u_x1;
-  quadBasis *pQB = ((qoiRoutine_DataClass<Q_V, Q_M> *) functionDataPtr)->pQB;
+  unsigned int seqSize = valPostRv.realizer().period();
+  quadBasis *pQB = qoiRoutine_Data.pQB;
 
-  UQ_FATAL_TEST_MACRO( (computeGradientAtOne(kappa, pQB, &u_x1)!=0), UQ_UNAVAILABLE_RANK,
-		       "uqAppl(), in uqBurgers_No_Model_Uncertainty (qoiRoutine)",
-		       "failed while computing QoI.");
-  qoiValues[0] = u_x1;
+  int N1 = valLikelihoodRoutine_Data.calibrationData->nDataPoints;
+  double Re1 = valLikelihoodRoutine_Data.calibrationData->Re;
+  double *xLoc1 = valLikelihoodRoutine_Data.calibrationData->dataLocations;
+  double *ue1 = valLikelihoodRoutine_Data.calibrationData->dataValues;
+  double *cholK1 = valLikelihoodRoutine_Data.calibrationData->cholK;
+
+  int N2 = valLikelihoodRoutine_Data.validationData->nDataPoints;
+  double Re2 = valLikelihoodRoutine_Data.validationData->Re;
+  double *xLoc2 = valLikelihoodRoutine_Data.validationData->dataLocations;
+  double *ue2 = valLikelihoodRoutine_Data.validationData->dataValues;
+  double *cholK2 = valLikelihoodRoutine_Data.validationData->cholK;
+
+  double xLoc3 = 1.0;
+  double variance1, variance2;
+
+  gsl_vector *U1 = valLikelihoodRoutine_Data.U;
+  double um1[N1], um2[N2], cal_qoi_mean;
+
+
+  // Compute variance of conditional dist of d(eps)/dx (it is independent of kappa)
+  ierr = computeStage1PropagationVariance(N1, xLoc1, Re1, 1, &xLoc3, 200, 1e-4, 0.1, 0.5, cholK1, &variance1);
+
+  ierr = computeStage2PropagationVariance(N1, xLoc1, Re1, N2, xLoc2, Re2, 1, &xLoc3, 200.0,
+					  1e-4, 0.1, 0.5, cholK1, cholK2, variance1, &variance2);
+  //
+  variance2 *= (5e-3*5e-3); // FIX ME... DO THE RIGHT THING INSIDE THE FUNCTION!!!
+  qoiRoutine_Data.variance[0] = variance2;
+
+  printf("Computing qoi chain of length %d...\n", seqSize); fflush(stdout);
+
+  // Compute output realizer: Monte Carlo approach
+  qoiRoutine_Data.qoi_chain->resizeSequence(seqSize);
+  qoiRoutine_Data.mean_chain->resizeSequence(seqSize);
+
+  P_V tmpV(valPostRv.imageSpace().zeroVector());
+  Q_V tmpQ(qoiRoutine_Data.qoiRv->imageSpace().zeroVector());
+  Q_V tmpMean(qoiRoutine_Data.qoiRv->imageSpace().zeroVector());
+
+  for (unsigned int i = 0; i < seqSize; ++i) {
+    valPostRv.realizer().realization(tmpV);
+
+    // compute quantity of interest chain
+    ierr = computeGradientAtOne(tmpV[0], pQB, &(tmpQ[0]));
+    if( ierr != 0 ){
+      printf("WARNING: Burgers solver was not successful in propagQoiRoutine!\n");
+      printf("         Results are probably meaningless.\n");
+      fflush(stdout);
+    }
+    qoiRoutine_Data.qoi_chain->setPositionValues(i,tmpQ);
+
+    // compute mean value of d(eps)/dx for this kappa
+    // evaluate misfit for stage 1 scenario
+    ierr = solveForStateAtXLocations(xLoc1, N1, 1.0/Re1, tmpV[0], U1, pQB, um1);
+    if( ierr != 0 ){
+      printf("WARNING: Burgers solver was not successful!\n");
+      printf("         Results are probably meaningless.\n");
+      fflush(stdout);
+    }
+
+    double s1_misfit[N1];
+    for( int jj=0; jj<N1; jj++ ) s1_misfit[jj] = (ue1[jj] - um1[jj]);
+
+    ierr = computeStage1PropagationMean(N1, xLoc1, Re1, 1, &xLoc3, 200, 1e-4, 0.1, 0.5, 
+					s1_misfit, cholK1, &cal_qoi_mean);
+
+
+    // compute stage 2 mean value of d(eps)/dx for this kappa
+    ierr = solveForStateAtXLocations(xLoc2, N2, 1.0/Re2, tmpV[0], U1, pQB, um2);
+    if( ierr != 0 ){
+      printf("WARNING: Burgers solver was not successful!\n");
+      printf("         Results are probably meaningless.\n");
+      fflush(stdout);
+    }
+
+    double cal_mean[N2];
+    ierr = validationMean(1e-4, 0.1, 0.5, tmpV[0], &valLikelihoodRoutine_Data, cal_mean);
+
+    double s2_misfit[N2];
+    for( int jj=0; jj<N2; jj++ ) s2_misfit[jj] = (ue2[jj] - um2[jj] - cal_mean[jj]);
+
+    ierr = computeStage2PropagationMean(N1, xLoc1, Re1, N2, xLoc2, Re2, 1, &xLoc3, 200.0,
+					1e-4, 0.1, 0.5, cholK1, cholK2, s2_misfit, cal_qoi_mean, &(tmpMean[0]));
+
+    tmpMean[0] *= -5e-3;
+    qoiRoutine_Data.mean_chain->setPositionValues(i, tmpMean);
+
+  }
+  
   return;
 }
 
@@ -743,13 +843,52 @@ uqAppl(const uqEnvironmentClass& env)
                                           NULL); // use default kernel from library
   delete valProposalCovMatrix;
 
-  // FIXME: Add propagation
+  // Forward propagation problem
+  qoiRoutine_DataClass<Q_V, Q_M> valQoiRoutine_Data(qoiSpace);
+  validationQoiMeanChains(cycle.valIP().postRv(), valLikelihoodRoutine_Data, valQoiRoutine_Data);
+  valQoiRoutine_Data.qoiMonteCarloIntegrate();
+
+  uqBaseVectorCdfClass<Q_V,Q_M>* valQoiCdf = new uqSampledVectorCdfClass<Q_V,Q_M>("val_fp_qoi_",
+										  valQoiRoutine_Data.cdfGrids[0],
+										  valQoiRoutine_Data.cdfValues[0]);
+
+  valQoiRoutine_Data.qoiRv->setCdf(*valQoiCdf);
+
+  // Write output file
+  if (env.rank() == 0) {
+    std::cout << "Opening output file '" << "valOutput.m"
+	      << "' for propagation problem with problem with prefix = " << "val_fp"
+	      << std::endl;
+  }
+  
+  // Open file
+  ofs = new std::ofstream("valOutput.m", std::ofstream::out | std::ofstream::in | std::ofstream::ate);
+  if ((ofs            == NULL ) ||
+      (ofs->is_open() == false)) {
+    delete ofs;
+    ofs = new std::ofstream("valOutput.m", std::ofstream::out | std::ofstream::trunc);
+  }
+  UQ_FATAL_TEST_MACRO((ofs && ofs->is_open()) == false,
+		      env.rank(),
+		      "uqPropagProblem<P_V,P_M,Q_V,Q_M>::solveWithBayesMarkovChain()",
+		      "failed to open file");
+  
+  *ofs << valQoiRoutine_Data.qoiRv->cdf();
+  
+  // Close file
+  ofs->close();
+  delete ofs;
+  if (env.rank() == 0) {
+    std::cout << "Closed output file '" << "valOutput.m"
+	      << "' for propagation problem with problem with prefix = " << "val_fp"
+	      << std::endl;
+  }
 
   // done with validation phase
   iRC = gettimeofday(&timevalNow, NULL);
   if (env.rank() == 0) {
-    std::cout << "Ending 'calibration stage' at " << ctime(&timevalNow.tv_sec)
-              << "Total 'calibration stage' run time = " << timevalNow.tv_sec - timevalRef.tv_sec
+    std::cout << "Ending 'validation stage' at " << ctime(&timevalNow.tv_sec)
+              << "Total 'validation stage' run time = " << timevalNow.tv_sec - timevalRef.tv_sec
               << " seconds"
               << std::endl;
   }
