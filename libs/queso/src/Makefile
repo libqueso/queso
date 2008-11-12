@@ -50,6 +50,8 @@ OBJS_gsl = uqGslVectorSpace.o
 OBJS_tri = uqTrilinosParamSpace.o \
 	uqTrilinosFinDimLinearSpace.o
 
+UNIT_TESTS = uqExampleTest
+
 all:	libuq_queso_all
 
 echo_num_proc:
@@ -58,6 +60,7 @@ echo_num_proc:
 clean_all: echo_num_proc clean_obj clean_docs 
 	rm -f ../lib/libuq_queso_any.a
 	rm -f ../lib/libuq_queso_$(UQBT).a
+	rm -f $(UNIT_TESTS)
 
 clean_obj:
 	rm -f ../inc/*~
@@ -85,8 +88,8 @@ libuq_queso_specific: echo_num_proc $(OBJS_$(UQBT))
 	$(CXX) $(DEFINES) $(INC_PATHS) $(CXXFLAGS) $<
 
 # Unit testing
-check: uqExampleTest
-	./uqExampleTest
+check: $(UNIT_TESTS)
+	@for mytest in $^; do echo "Running ./$${mytest}..."; ./$${mytest}; done
 
 uqExampleTest: uqExampleTest.o
 	$(CXX) -L$(BOOST_LIB_PATH_FOR_QUESO_TOOL) $< -o $@ -l$(BOOST_UNIT_TEST_LIB_FOR_QUESO_TOOL) 
