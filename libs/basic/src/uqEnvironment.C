@@ -44,7 +44,10 @@ uqEnvOptionsStruct::~uqEnvOptionsStruct()
 {
 }
 
-uqEnvironmentClass::uqEnvironmentClass()
+//*****************************************************
+// Base class
+//*****************************************************
+uqBaseEnvironmentClass::uqBaseEnvironmentClass()
   :
   m_argc            (0),
   m_argv            (NULL),
@@ -63,10 +66,9 @@ uqEnvironmentClass::uqEnvironmentClass()
   m_debugParams     (m_numDebugParams,0.),
   m_rng             (NULL)
 {
-  commonConstructor();
 }
 
-uqEnvironmentClass::uqEnvironmentClass(
+uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   int&   argc,
   char** &argv)
   :
@@ -87,13 +89,9 @@ uqEnvironmentClass::uqEnvironmentClass(
   m_debugParams     (m_numDebugParams,0.),
   m_rng             (NULL)
 {
-  //////////////////////////////////////////////////
-  // Initialize MPI
-  //////////////////////////////////////////////////
-  commonConstructor();
 }
 
-uqEnvironmentClass::uqEnvironmentClass(
+uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   const uqEnvOptionsStruct& options)
   :
   m_argc            (0),
@@ -113,7 +111,184 @@ uqEnvironmentClass::uqEnvironmentClass(
   m_debugParams     (options.m_debugParams),
   m_rng             (NULL)
 {
+}
+
+uqBaseEnvironmentClass::uqBaseEnvironmentClass(const uqBaseEnvironmentClass& obj)
+{
+  UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
+                      this->rank(),
+                      "uqBaseEnvironmentClass::constructor(), copy",
+                      "code should not execute through here");
+}
+
+uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
+{
+  //if (m_rank == 0) std::cout << "Entering uqBaseEnvironmentClass::destructor()"
+  //                           << std::endl;
+
+  if (m_allOptionsMap) {
+    delete m_allOptionsMap;
+    delete m_envOptionsDesc;
+    delete m_allOptionsDesc;
+  }
+
+  if (m_rng) gsl_rng_free(m_rng);
+
+  int iRC;
+  struct timeval timevalNow;
+  iRC = gettimeofday(&timevalNow, NULL);
+  if (m_rank == 0) {
+    std::cout << "Ending run at " << ctime(&timevalNow.tv_sec)
+              << "Total run time = " << timevalNow.tv_sec - m_timevalBegin.tv_sec
+              << " seconds"
+              << std::endl;
+  }
+
+  //if (m_rank == 0) std::cout << "Leaving uqBaseEnvironmentClass::destructor()"
+  //                           << std::endl;
+
+  if (m_comm) delete m_comm;
+}
+
+uqBaseEnvironmentClass&
+uqBaseEnvironmentClass::operator= (const uqBaseEnvironmentClass& rhs)
+{
+  UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
+                      this->rank(),
+                      "uqBaseEnvironmentClass::operator=()",
+                      "code should not execute through here");
+  return *this;
+}
+
+int
+uqBaseEnvironmentClass::rank() const
+{
+  return m_rank;
+}
+
+void
+uqBaseEnvironmentClass::scanInputFileForMyOptions(const po::options_description& optionsDesc) const
+{
+#ifdef UQ_USES_COMMAND_LINE_OPTIONS
+  // If you want to use command line options, the following line does *not* work outside 'main.C',
+  // e.g., in the constructor of uqEnvironmentClass:
+  // Line: po::store(po::parse_command_line(argc, argv, *m_allOptionsDesc), *m_allOptionsMap);
+  //
+  // Instead, put the following three lines *immediately after* instantianting the UQ environment
+  // variable "uqEnvironmentClass* env":
+  // Line 1: po::store(po::parse_command_line(argc, argv, env->allOptionsDesc()), env->allOptionsMap());
+  // Line 2: po::notify(env->allOptionsMap());
+  // Line 3: env->getMyOptionValues();
+#endif
+
+  m_allOptionsDesc->add(optionsDesc);
+  //std::cout << *m_allOptionsDesc
+  //          << std::endl;
+  if (m_thereIsInputFile) {
+    std::ifstream ifs(m_inputFileName.c_str());
+    po::store(po::parse_config_file(ifs, *m_allOptionsDesc, true), *m_allOptionsMap);
+    po::notify(*m_allOptionsMap);
+    ifs.close();
+  }
+
+  return;
+}
+
+void
+uqBaseEnvironmentClass::barrier() const
+{
+  if (m_commSize > 1) {
+    m_comm->Barrier();
+  }
+  return;
+}
+
+const Epetra_MpiComm&
+uqBaseEnvironmentClass::comm() const
+{
+  return *m_comm;
+}
+
+#ifdef UQ_USES_COMMAND_LINE_OPTIONS
+const po::options_description&
+uqBaseEnvironmentClass::allOptionsDesc() const
+{
+  return *m_allOptionsDesc;
+}
+#endif
+
+po::variables_map&
+uqBaseEnvironmentClass::allOptionsMap() const
+{
+  return *m_allOptionsMap;
+}
+
+unsigned int
+uqBaseEnvironmentClass::verbosity() const
+{
+  return m_verbosity;
+}
+
+const gsl_rng*
+uqBaseEnvironmentClass::rng() const
+{
+  return m_rng;
+}
+
+bool
+uqBaseEnvironmentClass::isThereInputFile() const
+{
+  return m_thereIsInputFile;
+}
+
+//*****************************************************
+// Empty Environment
+//*****************************************************
+uqEmptyEnvironmentClass::uqEmptyEnvironmentClass()
+  :
+  uqBaseEnvironmentClass()
+{
+}
+
+uqEmptyEnvironmentClass::~uqEmptyEnvironmentClass()
+{
+}
+
+void
+uqEmptyEnvironmentClass::print(std::ostream& os) const
+{
+  return;
+}
+
+//*****************************************************
+// Full Environment
+//*****************************************************
+uqEnvironmentClass::uqEnvironmentClass()
+  :
+  uqBaseEnvironmentClass()
+{
   commonConstructor();
+}
+
+uqEnvironmentClass::uqEnvironmentClass(
+  int&   argc,
+  char** &argv)
+  :
+  uqBaseEnvironmentClass(argc,argv)
+{
+  commonConstructor();
+}
+
+uqEnvironmentClass::uqEnvironmentClass(
+  const uqEnvOptionsStruct& options)
+  :
+  uqBaseEnvironmentClass(options)
+{
+  commonConstructor();
+}
+
+uqEnvironmentClass::~uqEnvironmentClass()
+{
 }
 
 void
@@ -254,119 +429,6 @@ uqEnvironmentClass::readEventualInputFile()
   return;
 }
 
-uqEnvironmentClass::uqEnvironmentClass(const uqEnvironmentClass& obj)
-{
-  UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      this->rank(),
-                      "uqEnvironmentClass::constructor(), copy",
-                      "code should not execute through here");
-
-  m_argc           = obj.m_argc;
-  m_argv           = obj.m_argv;
-  m_comm           = obj.m_comm;
-  m_rank           = obj.m_rank;
-  m_commSize       = obj.m_commSize;
-  m_allOptionsDesc = NULL;
-  m_envOptionsDesc = NULL;
-  m_allOptionsMap  = obj.m_allOptionsMap;
-  m_verbosity      = obj.m_verbosity;
-  m_seed           = obj.m_seed;
-  m_numDebugParams = obj.m_numDebugParams;
-  m_debugParams    = obj.m_debugParams;
-  m_rng            = obj.m_rng;
-  m_timevalBegin   = obj.m_timevalBegin;
-}
-
-uqEnvironmentClass::~uqEnvironmentClass()
-{
-  //if (m_rank == 0) std::cout << "Entering uqEnvironmentClass::destructor()"
-  //                           << std::endl;
-
-  if (m_allOptionsMap) {
-    delete m_allOptionsMap;
-    delete m_envOptionsDesc;
-    delete m_allOptionsDesc;
-  }
-
-  if (m_rng) gsl_rng_free(m_rng);
-
-  int iRC;
-  struct timeval timevalNow;
-  iRC = gettimeofday(&timevalNow, NULL);
-  if (m_rank == 0) {
-    std::cout << "Ending run at " << ctime(&timevalNow.tv_sec)
-              << "Total run time = " << timevalNow.tv_sec - m_timevalBegin.tv_sec
-              << " seconds"
-              << std::endl;
-  }
-
-  //if (m_rank == 0) std::cout << "Leaving uqEnvironmentClass::destructor()"
-  //                           << std::endl;
-
-  //////////////////////////////////////////////////
-  // Finalize MPI
-  //////////////////////////////////////////////////
-  if (m_comm) delete m_comm;
-}
-
-uqEnvironmentClass&
-uqEnvironmentClass::operator= (const uqEnvironmentClass& rhs)
-{
-  UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      this->rank(),
-                      "uqEnvironmentClass::operator=()",
-                      "code should not execute through here");
-
-  m_argc           = rhs.m_argc;
-  m_argv           = rhs.m_argv;
-  m_comm           = rhs.m_comm;
-  m_rank           = rhs.m_rank;
-  m_commSize       = rhs.m_commSize;
-  m_verbosity      = rhs.m_verbosity;
-  m_seed           = rhs.m_seed;
-  m_numDebugParams = rhs.m_numDebugParams;
-  m_debugParams    = rhs.m_debugParams;
-  m_rng            = rhs.m_rng;
-  m_timevalBegin   = rhs.m_timevalBegin;
-
-  return *this;
-}
-
-int
-uqEnvironmentClass::rank() const
-{
-  return m_rank;
-}
-
-void
-uqEnvironmentClass::barrier() const
-{
-  if (m_commSize > 1) {
-    m_comm->Barrier();
-  }
-  return;
-}
-
-const Epetra_MpiComm&
-uqEnvironmentClass::comm() const
-{
-  return *m_comm;
-}
-
-#ifdef UQ_USES_COMMAND_LINE_OPTIONS
-const po::options_description&
-uqEnvironmentClass::allOptionsDesc() const
-{
-  return *m_allOptionsDesc;
-}
-#endif
-
-po::variables_map&
-uqEnvironmentClass::allOptionsMap() const
-{
-  return *m_allOptionsMap;
-}
-
 void
 uqEnvironmentClass::defineMyOptions(po::options_description& options) const
 {
@@ -376,34 +438,6 @@ uqEnvironmentClass::defineMyOptions(po::options_description& options) const
     ("uqEnv_seed",           po::value<int         >()->default_value(UQ_ENV_SEED_ODV),            "set seed"                      )
     //("uqEnv_numDebugParams", po::value<unsigned int>()->default_value(UQ_ENV_NUM_DEBUG_PARAMS_ODV),"set number of debug parameters")
   ;
-
-  return;
-}
-
-void
-uqEnvironmentClass::scanInputFileForMyOptions(const po::options_description& optionsDesc) const
-{
-#ifdef UQ_USES_COMMAND_LINE_OPTIONS
-  // If you want to use command line options, the following line does *not* work outside 'main.C',
-  // e.g., in the constructor of uqEnvironmentClass:
-  // Line: po::store(po::parse_command_line(argc, argv, *m_allOptionsDesc), *m_allOptionsMap);
-  //
-  // Instead, put the following three lines *immediately after* instantianting the UQ environment
-  // variable "uqEnvironmentClass* env":
-  // Line 1: po::store(po::parse_command_line(argc, argv, env->allOptionsDesc()), env->allOptionsMap());
-  // Line 2: po::notify(env->allOptionsMap());
-  // Line 3: env->getMyOptionValues();
-#endif
-
-  m_allOptionsDesc->add(optionsDesc);
-  //std::cout << *m_allOptionsDesc
-  //          << std::endl;
-  if (m_thereIsInputFile) {
-    std::ifstream ifs(m_inputFileName.c_str());
-    po::store(po::parse_config_file(ifs, *m_allOptionsDesc, true), *m_allOptionsMap);
-    po::notify(*m_allOptionsMap);
-    ifs.close();
-  }
 
   return;
 }
@@ -437,24 +471,6 @@ uqEnvironmentClass::getMyOptionValues(po::options_description& optionsDesc)
   return;
 }
 
-unsigned int
-uqEnvironmentClass::verbosity() const
-{
-  return m_verbosity;
-}
-
-const gsl_rng*
-uqEnvironmentClass::rng() const
-{
-  return m_rng;
-}
-
-bool
-uqEnvironmentClass::isThereInputFile() const
-{
-  return m_thereIsInputFile;
-}
-
 void
 uqEnvironmentClass::print(std::ostream& os) const
 {
@@ -466,7 +482,7 @@ uqEnvironmentClass::print(std::ostream& os) const
 }
 
 std::ostream&
-operator<<(std::ostream& os, const uqEnvironmentClass& obj)
+operator<<(std::ostream& os, const uqBaseEnvironmentClass& obj)
 {
   obj.print(os);
 

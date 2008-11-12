@@ -22,12 +22,12 @@
 
 template <class P_V,class P_M>
 void
-uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
+uqMarkovChainSGClass<P_V,P_M>::internalGenerateSequence(
   const P_M&                          proposalCovMatrix,
   uqBaseVectorSequenceClass<P_V,P_M>& workingChain)
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences()..."
+    std::cout << "Entering uqMarkovChainSGClass<P_V,P_M>::internalGenerateSequence()..."
               << std::endl;
   }
 
@@ -55,18 +55,18 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
     // Initialize m_lowerCholProposalCovMatrices[0]
     // Initialize m_proposalCovMatrices[0]
     //****************************************************
-    iRC = prepareForNextChain(proposalCovMatrix);
+    iRC = computeCholFactors(proposalCovMatrix);
     UQ_FATAL_RC_MACRO(iRC,
                       m_env.rank(),
-                      "uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences()",
-                      "improper prepareForNextChain() return");
+                      "uqMarkovChainSGClass<P_V,P_M>::internalGenerateSequence()",
+                      "improper computeCholFactors() return");
 
     //****************************************************
     // Generate chain
     //****************************************************
-    intGenerateSequence(valuesOf1stPosition,
-                        workingChain,
-                        m_chainSize);
+    generateFullSequence(valuesOf1stPosition,
+                         workingChain,
+                         m_chainSize);
   }
 
   //****************************************************
@@ -96,7 +96,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
 
     UQ_FATAL_TEST_MACRO((ofs && ofs->is_open()) == false,
                         m_env.rank(),
-                        "uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences()",
+                        "uqMarkovChainSGClass<P_V,P_M>::internalGenerateSequence()",
                         "failed to open file");
   }
   
@@ -113,7 +113,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
                     *ofs);
     UQ_FATAL_RC_MACRO(iRC,
                       m_env.rank(),
-                      "uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences()",
+                      "uqMarkovChainSGClass<P_V,P_M>::internalGenerateSequence()",
                       "improper writeInfo() return");
   }
 
@@ -136,7 +136,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
     //m_uniqueChain1.erase(positionIterator,m_uniqueChain1.end());
     //UQ_FATAL_TEST_MACRO((uniquePos != m_uniqueChain1.size()),
     //                    m_env.rank(),
-    //                    "uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences()",
+    //                    "uqMarkovChainSGClass<P_V,P_M>::internalGenerateSequence()",
     //                    "uniquePos != m_uniqueChain1.size()");
 
     // Write unique chain
@@ -204,7 +204,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences(
   }
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqMarkovChainSGClass<P_V,P_M>::intGenerateSequences()"
+    std::cout << "Leaving uqMarkovChainSGClass<P_V,P_M>::internalGenerateSequence()"
               << std::endl;
   }
 
@@ -301,7 +301,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateUniformChain(
 
 template <class P_V,class P_M>
 void
-uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
+uqMarkovChainSGClass<P_V,P_M>::generateFullSequence(
   const P_V&                          valuesOf1stPosition,
   uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
   unsigned int                        chainSize)
@@ -333,10 +333,10 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
   bool outOfDomainBounds = m_targetPdf.outOfDomainBounds(valuesOf1stPosition);
   UQ_FATAL_TEST_MACRO(outOfDomainBounds,
                       m_env.rank(),
-                      "uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()",
+                      "uqMarkovChainSGClass<P_V,P_M>::generateFullSequence()",
                       "initial position should not be out of bound");
   if (m_env.rank() == 0) {
-    std::cout << "In uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()"
+    std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullSequence()"
               << ": contents of initial position are:\n";
   }
   std::cout << valuesOf1stPosition;
@@ -375,9 +375,9 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
 
   for (unsigned int positionId = 1; positionId < workingChain.sequenceSize(); ++positionId) {
     if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-      std::cout << "In uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()"
+      std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullSequence()"
                 << ": beginning chain position of id = " << positionId
-                << ", m_maxNumExtraStages =  "           << m_maxNumExtraStages
+                << ", m_drMaxNumExtraStages =  "           << m_drMaxNumExtraStages
                 << std::endl;
     }
     unsigned int stageId = 0;
@@ -425,7 +425,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
       }
       if (m_chainMeasureRunTimes) mhAlphaRunTime += uqMiscGetEllapsedSeconds(&timevalMhAlpha);
       if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-        std::cout << "In uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()"
+        std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullSequence()"
                   << ": for chain position of id = " << positionId
                   << ", alpha = " << alpha
                   << std::endl;
@@ -433,14 +433,14 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
       accept = acceptAlpha(alpha);
     }
     if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-      if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()"
+      if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullSequence()"
                                        << ": for chain position of id = " << positionId
                                        << " contents of currentCandidate.vecValues() are:"
                                        << std::endl;
       std::cout << currentCandidate.vecValues();
       if (m_env.rank() == 0) std::cout << std::endl;
 
-      if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()"
+      if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullSequence()"
                                        << ": for chain position of id = " << positionId
                                        << ", outOfDomainBounds = "        << outOfDomainBounds
                                        << "\n"
@@ -460,13 +460,13 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
     // Loop: delayed rejection
     //****************************************************
     std::vector<uqMarkovChainPositionClass<P_V>*> drPositions(stageId+2,NULL);
-    if ((accept == false) && (outOfDomainBounds == false) && (m_maxNumExtraStages > 0)) {
+    if ((accept == false) && (outOfDomainBounds == false) && (m_drMaxNumExtraStages > 0)) {
       if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalDR, NULL);
 
       drPositions[0] = new uqMarkovChainPositionClass<P_V>(currentPosition);
       drPositions[1] = new uqMarkovChainPositionClass<P_V>(currentCandidate);
 
-      while ((accept == false) && (stageId < m_maxNumExtraStages)) {
+      while ((accept == false) && (stageId < m_drMaxNumExtraStages)) {
         stageId++;
 
         if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
@@ -493,7 +493,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
           double alpha = this->alpha(drPositions);
           if (m_chainMeasureRunTimes) drAlphaRunTime += uqMiscGetEllapsedSeconds(&timevalDrAlpha);
 #if 0 // For debug only
-          if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()"
+          if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullSequence()"
                                            << ": for chain position of id = " << positionId
                                            << " and stageId = " << stageId
                                            << ", alpha = " << alpha
@@ -540,7 +540,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
           double term2 =  2./( varAccuracies[i] * priorVars[i] + misfitVec[i] );
           misfitVarianceVector[i] = 1./uqMiscGammar(term1,term2,m_env.rng());
           //if (m_env.rank() == 0) {
-          //  std::cout << "In uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()"
+          //  std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullSequence()"
           //            << ": for chain position of id = "     << positionId
           //            << ", numbersOfObs = "                 << numbersOfObs
           //            << ", varAccuracies = "                << varAccuracies
@@ -552,7 +552,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
           //}
         }
         //if (m_env.rank() == 0) {
-        //  std::cout << "In uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()"
+        //  std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullSequence()"
         //            << ": for chain position of id = "        << positionId
         //            << ", misfitVarianceVector changed from " << *(m_misfitVarianceChain[positionId])
         //            << " to "                                 << misfitVarianceVector
@@ -568,8 +568,8 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
     //****************************************************
     // Loop: adaptive Metropolis (adaptation of covariance matrix)
     //****************************************************
-    if ((m_initialNonAdaptInterval > 0) &&
-        (m_adaptInterval           > 0)) {
+    if ((m_amInitialNonAdaptInterval > 0) &&
+        (m_amAdaptInterval           > 0)) {
       if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalAM, NULL);
 
       // Now might be the moment to adapt
@@ -577,20 +577,20 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
       uqSequenceOfVectorsClass<P_V,P_M> subChain(m_vectorSpace,0,m_prefix+"subChain");
 
       // Check if now is indeed the moment to adapt
-      if (positionId < m_initialNonAdaptInterval) {
+      if (positionId < m_amInitialNonAdaptInterval) {
         // Do nothing
       }
-      else if (positionId == m_initialNonAdaptInterval) {
+      else if (positionId == m_amInitialNonAdaptInterval) {
         idOfFirstPositionInSubChain = 0;
-        subChain.resizeSequence(m_initialNonAdaptInterval+1);
+        subChain.resizeSequence(m_amInitialNonAdaptInterval+1);
         m_lastMean             = m_vectorSpace.newVector();
         m_lastAdaptedCovMatrix = m_vectorSpace.newMatrix();
       }
       else {
-        unsigned int interval = positionId - m_initialNonAdaptInterval;
-        if ((interval % m_adaptInterval) == 0) {
-          idOfFirstPositionInSubChain = positionId - m_adaptInterval;
-          subChain.resizeSequence(m_adaptInterval);
+        unsigned int interval = positionId - m_amInitialNonAdaptInterval;
+        if ((interval % m_amAdaptInterval) == 0) {
+          idOfFirstPositionInSubChain = positionId - m_amAdaptInterval;
+          subChain.resizeSequence(m_amAdaptInterval);
         }
       }
 
@@ -625,10 +625,10 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
         if (iRC) {
           UQ_FATAL_TEST_MACRO(iRC != UQ_MATRIX_IS_NOT_POS_DEFINITE_RC,
                               m_env.rank(),
-                              "uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()",
+                              "uqMarkovChainSGClass<P_V,P_M>::generateFullSequence()",
                               "invalid iRC returned from first chol()");
           // Matrix is not positive definite
-          P_M* tmpDiag = m_vectorSpace.newDiagMatrix(m_epsilon);
+          P_M* tmpDiag = m_vectorSpace.newDiagMatrix(m_amEpsilon);
           tmpChol = *m_lastAdaptedCovMatrix + *tmpDiag;
           delete tmpDiag;
           //if (m_env.rank() == 0) {
@@ -647,7 +647,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
           if (iRC) {
             UQ_FATAL_TEST_MACRO(iRC != UQ_MATRIX_IS_NOT_POS_DEFINITE_RC,
                                 m_env.rank(),
-                                "uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()",
+                                "uqMarkovChainSGClass<P_V,P_M>::generateFullSequence()",
                                 "invalid iRC returned from second chol()");
             // Do nothing
           }
@@ -660,17 +660,17 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
         }
         if (tmpCholIsPositiveDefinite) {
           *(m_lowerCholProposalCovMatrices[0]) = tmpChol;
-          *(m_lowerCholProposalCovMatrices[0]) *= sqrt(m_eta);
+          *(m_lowerCholProposalCovMatrices[0]) *= sqrt(m_amEta);
           m_lowerCholProposalCovMatrices[0]->zeroUpper(false);
 
 #ifdef UQ_DRAM_MCG_REQUIRES_INVERTED_COV_MATRICES
           UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
                             m_env.rank(),
-                            "uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()",
+                            "uqMarkovChainSGClass<P_V,P_M>::generateFullSequence()",
                             "need to code the update of m_upperCholProposalPrecMatrices");
 #endif
 
-          if (m_maxNumExtraStages > 0) updateCovMatrices();
+          if (m_drMaxNumExtraStages > 0) updateCovMatrices();
         }
 
         //for (unsigned int i = 0; i < subChain.sequenceSize(); ++i) {
@@ -682,7 +682,7 @@ uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence(
     } // End of 'adaptive Metropolis' logic
 
     if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-      std::cout << "In uqMarkovChainSGClass<P_V,P_M>::intGenerateSequence()"
+      std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullSequence()"
                 << ": finishing chain position of id = " << positionId
                 << std::endl;
     }

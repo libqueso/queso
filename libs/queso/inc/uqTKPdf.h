@@ -1,4 +1,4 @@
-/* uq/libs/queso/inc/uqProposalGenerator.h
+/* uq/libs/queso/inc/uqTKPdf.h
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu/
  *
@@ -17,26 +17,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef __UQ_PROPOSAL_GENERATOR_H__
-#define __UQ_PROPOSAL_GENERATOR_H__
+#ifndef __UQ_TK_PDF_H__
+#define __UQ_TK_PDF_H__
 
 #include <uqEnvironment.h>
 #include <math.h>
 
 //*****************************************************
-// Classes to accomodate a probability density routine.
-//*****************************************************
-
-//*****************************************************
 // Base class
 //*****************************************************
 template<class V, class M>
-class uqProposalGenerator_BaseClass {
+class uqBaseTKPdfClass {
 public:
-  uqProposalGenerator_BaseClass(double (*routinePtr)(const V& paramValues, const void* routineDataPtr),
-                                const void* routineDataPtr);
-  virtual ~uqProposalGenerator_BaseClass();
-  virtual void nextSample(const V& paramValues) const;
+  uqBaseTKPdfClass(double (*routinePtr)(const V& paramValues, const void* routineDataPtr),
+                    const void* routineDataPtr);
+  virtual ~uqBaseTKPdfClass();
+  virtual double density(const V& paramValues) const;
 
 protected:
   double (*m_routinePtr)(const V& paramValues, const void* routineDataPtr);
@@ -44,7 +40,7 @@ protected:
 };
 
 template<class V, class M>
-uqProposalGenerator_BaseClass<V,M>::uqProposalGenerator_BaseClass(
+uqBaseTKPdfClass<V,M>::uqBaseTKPdfClass(
   double (*routinePtr)(const V& paramValues, const void* routineDataPtr),
   const void* routineDataPtr)
   :
@@ -54,14 +50,14 @@ uqProposalGenerator_BaseClass<V,M>::uqProposalGenerator_BaseClass(
 }
 
 template<class V, class M>
-uqProposalGenerator_BaseClass<V,M>::~uqProposalGenerator_BaseClass()
+uqBaseTKPdfClass<V,M>::~uqBaseTKPdfClass()
 {
 }
 
 template<class V, class M>
-void
-uqProposalGenerator_BaseClass<V,M>::nextSample(const V& paramValues) const
+double
+uqBaseTKPdfClass<V,M>::density(const V& paramValues) const
 {
   return m_routinePtr(paramValues, m_routineDataPtr);
 }
-#endif // __UQ_PROPOSAL_GENERATOR_H__
+#endif // __UQ_TK_PDF_H__

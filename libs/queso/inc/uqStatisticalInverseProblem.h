@@ -20,9 +20,6 @@
 #ifndef __UQ_CALIB_PROBLEM_H__
 #define __UQ_CALIB_PROBLEM_H__
 
-#include <uqProposalDensity.h>   // For substep 3
-#include <uqProposalGenerator.h> // For substep 3
-
 #include <uqMarkovChainSG1.h>
 #include <uqVectorRV.h>
 
@@ -48,9 +45,9 @@ public:
  ~uqStatisticalInverseProblemClass();
 
         bool computeSolutionFlag      () const;
-        void solveWithBayesMarkovChain(const P_V& initialValues,
-                                       const P_M& proposalCovMatrix,
-                                       void*      transitionKernel);
+        void solveWithBayesMarkovChain(const P_V&                    initialValues,
+                                       const P_M*                    proposalCovMatrix,
+                                       const uqBaseTKClass<P_V,P_M>* proposalTK);
   const uqBaseVectorRVClass<P_V,P_M>& priorRv() const;
   const uqBaseVectorRVClass<P_V,P_M>& postRv()  const;
 
@@ -215,9 +212,9 @@ uqStatisticalInverseProblemClass<P_V,P_M>::computeSolutionFlag() const
 template <class P_V,class P_M>
 void
 uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
-  const P_V& initialValues,
-  const P_M& proposalCovMatrix,
-  void*      transitionKernel)
+  const P_V&                    initialValues,
+  const P_M*                    proposalCovMatrix,
+  const uqBaseTKClass<P_V,P_M>* proposalTK)
 {
   if (m_computeSolution == false) {
     if ((m_env.rank() == 0)) {
@@ -246,7 +243,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
                                                        m_postRv,
                                                        initialValues,
                                                        proposalCovMatrix,
-                                                       NULL);
+                                                       proposalTK);
   m_mcSeqGenerator->generateSequence(*m_chain);
   m_solutionRealizer = new uqSequentialVectorRealizerClass<P_V,P_M>(m_prefix.c_str(),
                                                                    *m_chain);

@@ -697,8 +697,8 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::calibrationStage()
   P_M* calProposalCovMatrix = m_cycle->calIP().postRv().imageSpace().newGaussianMatrix(m_cycle->calIP().priorRv().pdf().domainVarianceValues(),
                                                                                        *m_paramInitialValues);
   m_cycle->calIP().solveWithBayesMarkovChain(*m_paramInitialValues,
-                                             *calProposalCovMatrix,
-                                             NULL); // use default kernel from library
+                                             calProposalCovMatrix,
+                                             NULL); // let the library create a Gaussian transition kernel internally
   delete calProposalCovMatrix;
 
   // Deal with forward problem
@@ -752,8 +752,8 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::validationStage()
   P_M* valProposalCovMatrix = m_cycle->calIP().postRv().imageSpace().newGaussianMatrix(m_cycle->calIP().postRv().realizer().imageVarianceValues(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
                                                                                        m_cycle->calIP().postRv().realizer().imageExpectedValues()); // Use these values as the initial values
   m_cycle->valIP().solveWithBayesMarkovChain(m_cycle->calIP().postRv().realizer().imageExpectedValues(),
-                                             *valProposalCovMatrix,
-                                             NULL); // use default kernel from library
+                                             valProposalCovMatrix,
+                                             NULL); // let the library create a Gaussian transition kernel internally
   delete valProposalCovMatrix;
 
   // Deal with forward problem

@@ -663,7 +663,7 @@ uqAppl(const uqEnvironmentClass& env)
   P_M* calProposalCovMatrix = cycle.calIP().postRv().imageSpace().newGaussianMatrix(cycle.calIP().priorRv().pdf().domainVarianceValues(),
                                                                                     paramInitialValues);
   cycle.calIP().solveWithBayesMarkovChain(paramInitialValues,
-                                          *calProposalCovMatrix,
+                                          calProposalCovMatrix,
                                           NULL); // use default kernel from library
   delete calProposalCovMatrix;
 
@@ -711,7 +711,7 @@ uqAppl(const uqEnvironmentClass& env)
   P_M* valProposalCovMatrix = cycle.calIP().postRv().imageSpace().newGaussianMatrix(cycle.calIP().postRv().realizer().imageVarianceValues(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
                                                                                     cycle.calIP().postRv().realizer().imageExpectedValues()); // Use these values as the initial values
   cycle.valIP().solveWithBayesMarkovChain(cycle.calIP().postRv().realizer().imageExpectedValues(),
-                                          *valProposalCovMatrix,
+                                          valProposalCovMatrix,
                                           NULL); // use default kernel from library
   delete valProposalCovMatrix;
 

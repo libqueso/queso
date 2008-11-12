@@ -47,35 +47,32 @@ struct uqEnvOptionsStruct {
   std::vector<double> m_debugParams;
 };
 
-class uqEnvironmentClass {
+//*****************************************************
+// Base class
+//*****************************************************
+class uqBaseEnvironmentClass {
 public:
-  uqEnvironmentClass();
-  uqEnvironmentClass(int& argc, char** &argv);
-  uqEnvironmentClass(const uqEnvOptionsStruct& options);
-  uqEnvironmentClass(const uqEnvironmentClass& obj);
- ~uqEnvironmentClass();
+  uqBaseEnvironmentClass();
+  uqBaseEnvironmentClass(int& argc, char** &argv);
+  uqBaseEnvironmentClass(const uqEnvOptionsStruct& options);
+  uqBaseEnvironmentClass(const uqBaseEnvironmentClass& obj);
+  virtual ~uqBaseEnvironmentClass();
 
-  uqEnvironmentClass& operator= (const uqEnvironmentClass& rhs);
-
-        int                      rank                     () const;
-        void                     barrier                  () const;
-        const Epetra_MpiComm&    comm                     () const; 
+          uqBaseEnvironmentClass& operator=                (const uqBaseEnvironmentClass& rhs);
+          int                     rank                     () const;
+          void                    barrier                  () const;
+          const Epetra_MpiComm&   comm                     () const; 
 #ifdef UQ_USES_COMMAND_LINE_OPTIONS
-  const po::options_description& allOptionsDesc           () const;
+  const po::options_description&  allOptionsDesc           () const;
 #endif
-        po::variables_map&       allOptionsMap            () const;
-        void                     scanInputFileForMyOptions(const po::options_description& optionsDesc) const;
-        unsigned int             verbosity                () const;
-        const gsl_rng*           rng                      () const;
-        bool                     isThereInputFile         () const;
-        void                     print                    (std::ostream& os) const;
+          po::variables_map&      allOptionsMap            () const;
+          void                    scanInputFileForMyOptions(const po::options_description& optionsDesc) const;
+          unsigned int            verbosity                () const;
+          const gsl_rng*          rng                      () const;
+          bool                    isThereInputFile         () const;
+  virtual void                    print                    (std::ostream& os) const = 0;
 
-private:
-        void                     commonConstructor        ();
-        void                     readEventualInputFile    ();
-        void                     defineMyOptions          (po::options_description& optionsDesc) const;
-        void                     getMyOptionValues        (po::options_description& optionsDesc);
-
+protected:
   int                      m_argc;
   char**                   m_argv;
   Epetra_MpiComm*          m_comm;
@@ -95,6 +92,36 @@ private:
   struct timeval           m_timevalBegin;
 };
 
-std::ostream& operator<<(std::ostream& os, const uqEnvironmentClass& obj);
+//*****************************************************
+// Empty Environment
+//*****************************************************
+class uqEmptyEnvironmentClass : public uqBaseEnvironmentClass {
+public:
+  uqEmptyEnvironmentClass();
+ ~uqEmptyEnvironmentClass();
+
+        void                     print                    (std::ostream& os) const;
+};
+
+//*****************************************************
+// Full Environment
+//*****************************************************
+class uqEnvironmentClass : public uqBaseEnvironmentClass {
+public:
+  uqEnvironmentClass();
+  uqEnvironmentClass(int& argc, char** &argv);
+  uqEnvironmentClass(const uqEnvOptionsStruct& options);
+ ~uqEnvironmentClass();
+
+        void                     print                    (std::ostream& os) const;
+
+private:
+        void                     commonConstructor        ();
+        void                     readEventualInputFile    ();
+        void                     defineMyOptions          (po::options_description& optionsDesc) const;
+        void                     getMyOptionValues        (po::options_description& optionsDesc);
+};
+
+std::ostream& operator<<(std::ostream& os, const uqBaseEnvironmentClass& obj);
 
 #endif // __UQ_ENVIRONMENT_H__

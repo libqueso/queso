@@ -48,15 +48,15 @@ int main(int argc, char* argv[])
                        uqGslMatrixClass, // type for parameter matrices
                        uqGslVectorClass, // type for qoi vectors
                        uqGslMatrixClass  // type for qoi matrices
-                      > turbValidation(*env);
-  turbValidation.run();
+                      > turValidation(*env);
+  turValidation.run();
 
   uqTgaTurValidationClass<uqGslVectorClass, // type for parameter vectors
                           uqGslMatrixClass, // type for parameter matrices
                           uqGslVectorClass, // type for qoi vectors
                           uqGslMatrixClass  // type for qoi matrices
                          > tgaTurValidation(tgaValidation,turValidation);
-  tgaTurbValidation.run();
+  tgaTurValidation.run();
 #endif
 
   //************************************************
