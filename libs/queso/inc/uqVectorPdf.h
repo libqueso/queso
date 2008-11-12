@@ -473,9 +473,8 @@ public:
   double minus2LnDensity(const V& paramValues) const;
 
 protected:
-  const M*                                 m_covMatrix;
-  uqDefault_M2lPriorRoutine_DataType<V,M>  m_m2lPriorRoutine_Data;
-  const uqBaseVectorPdfClass<V,M>* m_probDensity;
+  bool     m_diagonalCovMatrix;
+  const M* m_covMatrix;
 
   using uqBaseVectorPdfClass<V,M>::m_env;
   using uqBaseVectorPdfClass<V,M>::m_prefix;
@@ -485,7 +484,6 @@ protected:
   using uqBaseVectorPdfClass<V,M>::m_domainExpectedValues;
   using uqBaseVectorPdfClass<V,M>::m_domainVarianceValues;
 
-  void commonConstructor();
 };
 
 template<class V,class M>
@@ -498,7 +496,8 @@ uqGaussianVectorPdfClass<V,M>::uqGaussianVectorPdfClass(
   const V&                       domainVarianceValues)
   :
   uqBaseVectorPdfClass<V,M>(((std::string)(prefix)+"gau").c_str(),domainSpace,domainMinValues,domainMaxValues,domainExpectedValues,domainVarianceValues),
-  m_covMatrix                      (m_domainSpace.newDiagMatrix(domainVarianceValues*domainVarianceValues))
+  m_diagonalCovMatrix(true),
+  m_covMatrix                      (m_domainSpace.newDiagMatrix(domainVarianceValues))
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqGaussianVectorPdfClass<V,M>::constructor() [1]"
@@ -506,7 +505,13 @@ uqGaussianVectorPdfClass<V,M>::uqGaussianVectorPdfClass(
               << std::endl;
   }
 
-  commonConstructor();
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "In uqGaussianVectorPdfClass<V,M>::constructor()"
+              << ", prefix = "      << m_prefix
+              << ": Mus = "    << this->domainExpectedValues()
+	      << ", Variances = " << this->domainVarianceValues()
+              << std::endl;
+  }
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Leaving uqGaussianVectorPdfClass<V,M>::constructor() [1]"
@@ -525,6 +530,7 @@ uqGaussianVectorPdfClass<V,M>::uqGaussianVectorPdfClass(
   const M&                       covMatrix)
   :
   uqBaseVectorPdfClass<V,M>(((std::string)(prefix)+"gau").c_str(),domainSpace,domainMinValues,domainMaxValues,domainExpectedValues),
+  m_diagonalCovMatrix(false),
   m_covMatrix                      (new M(covMatrix))
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
@@ -533,7 +539,13 @@ uqGaussianVectorPdfClass<V,M>::uqGaussianVectorPdfClass(
               << std::endl;
   }
 
-  commonConstructor();
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "In uqGaussianVectorPdfClass<V,M>::constructor()"
+              << ", prefix = "      << m_prefix
+              << ": Mus = "    << this->domainExpectedValues()
+	      << ", Covariance Matrix = " << covMatrix
+              << std::endl;
+  }
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Leaving uqGaussianVectorPdfClass<V,M>::constructor() [2]"
@@ -543,59 +555,30 @@ uqGaussianVectorPdfClass<V,M>::uqGaussianVectorPdfClass(
 }
 
 template<class V,class M>
-void
-uqGaussianVectorPdfClass<V,M>::commonConstructor()
-{
-#if 0
-  V tmpVec(m_domainSpace.zeroVector());
-  for (unsigned int i = 0; i < m_domainSpace.dim(); ++i) {
-    sigma = m_components[i]->varianceValues();
-    tmpVec[i] = sigma*sigma;
-  }
-  m_covMatrix = m_domainSpace.newDiagMatrix(tmpVec);
-#endif
-
-  m_m2lPriorRoutine_Data.paramPriorMus       = m_domainExpectedValues;
-  m_m2lPriorRoutine_Data.paramPriorVariances = m_domainVarianceValues;
-  m_probDensity = new uqGenericVectorPdfClass<V,M>(m_prefix.c_str(),
-                                                           m_domainSpace,
-                                                          *m_domainMinValues,
-                                                          *m_domainMaxValues,
-                                                          *m_domainExpectedValues,
-                                                          *m_domainVarianceValues,
-                                                           uqDefault_M2lPriorRoutine<V,M>, // use default prior() routine
-                                                           (void *) &m_m2lPriorRoutine_Data,
-                                                           true); // the routine computes [-2.*ln(Likelihood)]
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "In uqGaussianVectorPdfClass<V,M>::constructor()"
-              << ", prefix = "      << m_prefix
-              << ": priorMus = "    << *m_m2lPriorRoutine_Data.paramPriorMus
-              << ", priorSigmas = " << *m_m2lPriorRoutine_Data.paramPriorVariances
-              << std::endl;
-  }
-
-  return;
-}
-
-template<class V,class M>
 uqGaussianVectorPdfClass<V,M>::~uqGaussianVectorPdfClass()
 {
   delete m_covMatrix;
-  delete m_probDensity;
 }
 
 template<class V, class M>
 double
 uqGaussianVectorPdfClass<V,M>::minus2LnDensity(const V& paramValues) const
 {
-  return m_probDensity->minus2LnDensity(paramValues);
+  if( m_diagonalCovMatrix ){
+    V diffVec(paramValues - this->domainExpectedValues());
+    return ((diffVec*diffVec)/this->domainVarianceValues()).sumOfComponents();
+  } else{
+    UQ_FATAL_TEST_MACRO( true, m_env.rank(),
+			 "In uqGaussianVectorPdfClass<V,M>::actualDensity,",
+			 "general covariance matrices are not yet supported." );
+  }
 }
 
 template<class V, class M>
 double
 uqGaussianVectorPdfClass<V,M>::actualDensity(const V& paramValues) const
 {
-  return m_probDensity->actualDensity(paramValues);
+  return exp(-0.5*this->minus2LnDensity(paramValues));
 }
 
 //*****************************************************

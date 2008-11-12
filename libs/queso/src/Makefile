@@ -123,5 +123,8 @@ uqExampleTest: uqExampleTest.o
 uqTestVectorPdf_gsl: uqTestVectorPdf_gsl.o libs_basic
 	$(CXX) $(LIB_PATHS) $< -o $@ $(LIBS) -l$(BOOST_UNIT_TEST_LIB_FOR_QUESO_TOOL)
 
+uqTestVectorPdf_gsl.o: uqTestVectorPdf_gsl.C ../inc/uqVectorPdf.h
+	$(CXX) $(DEFINES) $(INC_PATHS) $(CXXFLAGS) $<
+
 libs_basic:
 	cd ../../basic/src; make libuq_basic_all UQBT=$(UQBT)
