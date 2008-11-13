@@ -58,7 +58,6 @@ echo_num_proc:
 clean_all: echo_num_proc clean_obj clean_docs 
 	rm -f ../lib/libuq_queso_any.a
 	rm -f ../lib/libuq_queso_$(UQBT).a
-	rm -f $(UNIT_TESTS)
 
 clean_obj:
 	rm -f ../inc/*~
