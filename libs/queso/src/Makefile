@@ -50,9 +50,6 @@ OBJS_gsl = uqGslVectorSpace.o
 OBJS_tri = uqTrilinosParamSpace.o \
 	uqTrilinosFinDimLinearSpace.o
 
-UNIT_TESTS = uqExampleTest \
-	uqTestVectorPdf_gsl
-
 all:	libuq_queso_all
 
 echo_num_proc:
@@ -88,43 +85,3 @@ libuq_queso_specific: echo_num_proc $(OBJS_$(UQBT))
 %.o: %.C
 	$(CXX) $(DEFINES) $(INC_PATHS) $(CXXFLAGS) $<
 
-# Unit testing
-#
-# For new unit test, add executable name to UNIT_TESTS variable above, and
-# create target and rule for building exectuable.  Use 'make check' to
-# build and run all unit tests.
-
-LIB_PATHS = \
-	-L../../basic/lib \
-	-L$(MPI_LIB_PATH_FOR_QUESO_TOOL) \
-	-L$(TRILINOS_LIB_PATH_FOR_QUESO_TOOL) \
-	-L$(BOOST_LIB_PATH_FOR_QUESO_TOOL) \
-	-L$(GSL_LIB_PATH_FOR_QUESO_TOOL)
-
-LIBS = \
-	-luq_basic_$(UQBT) \
-	-luq_basic_any \
-	-lepetra \
-	-lteuchos \
-	-lmpi_cxx \
-	-lmpi \
-	-lgsl \
-	-lgslcblas \
-	-lblas \
-	-lboost_program_options-$(COMPILER_SPEC_IN_BOOST_LIB_NAME)-mt-1_35
-
-check: $(UNIT_TESTS)
-	@for mytest in $^; do echo "Running ./$${mytest}..."; ./$${mytest}; done
-
-uqExampleTest: uqExampleTest.o
-	$(CXX) -L$(BOOST_LIB_PATH_FOR_QUESO_TOOL) $< -o $@ -l$(BOOST_UNIT_TEST_LIB_FOR_QUESO_TOOL) 
-
-
-uqTestVectorPdf_gsl: uqTestVectorPdf_gsl.o libs_basic
-	$(CXX) $(LIB_PATHS) $< -o $@ $(LIBS) -l$(BOOST_UNIT_TEST_LIB_FOR_QUESO_TOOL)
-
-uqTestVectorPdf_gsl.o: uqTestVectorPdf_gsl.C ../inc/uqVectorPdf.h
-	$(CXX) $(DEFINES) $(INC_PATHS) $(CXXFLAGS) $<
-
-libs_basic:
-	cd ../../basic/src; make libuq_basic_all UQBT=$(UQBT)
