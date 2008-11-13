@@ -320,6 +320,70 @@ uqGenericVectorRealizerClass<V,M>::realization(V& nextValues) const
 }
 
 //*****************************************************
+// Gaussian class
+//*****************************************************
+template<class V, class M>
+class uqGaussianVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
+public:
+  uqGaussianVectorRealizerClass(const char* prefix,
+				const uqVectorSpaceClass<V,M>& imageSpace,
+				const V& expectedValues, // vector of mean values
+				const M& lowerCholCovMatrix); // lower triangular matrix resulting from Cholesky decomposition of the covariance matrix
+
+  ~uqGaussianVectorRealizerClass();
+
+  void realization(V& nextValues) const;
+    
+private:
+  const V& m_expectedValues;
+  const M& m_lowerCholCovMatrix;
+
+  using uqBaseVectorRealizerClass<V,M>::m_env;
+  using uqBaseVectorRealizerClass<V,M>::m_prefix;
+  using uqBaseVectorRealizerClass<V,M>::m_imageSpace;
+  using uqBaseVectorRealizerClass<V,M>::m_period;
+};
+
+template<class V, class M>
+uqGaussianVectorRealizerClass<V,M>::uqGaussianVectorRealizerClass(const char* prefix,
+								  const uqVectorSpaceClass<V,M>& imageSpace,
+								  const V& expectedValues,
+								  const M& lowerCholCovMatrix)
+  :
+  uqBaseVectorRealizerClass<V,M>( ((std::string)(prefix)+"gau").c_str(), imageSpace, 0 ),
+  m_expectedValues(expectedValues),
+  m_lowerCholCovMatrix(lowerCholCovMatrix)
+{
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Entering uqGaussianVectorRealizerClass<V,M>::constructor()"
+              << ": prefix = " << m_prefix
+              << std::endl;
+  }
+
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Leaving uqGaussianVectorRealizerClass<V,M>::constructor()"
+              << ": prefix = " << m_prefix
+              << std::endl;
+  }
+}
+								  
+template<class V, class M>
+uqGaussianVectorRealizerClass<V,M>::~uqGaussianVectorRealizerClass()
+{
+}
+
+template<class V, class M>
+void
+uqGaussianVectorRealizerClass<V,M>::realization(V& nextValues) const
+{
+  V iidGaussianVector(m_imageSpace.zeroVector());
+  iidGaussianVector.cwSetGaussian(m_env.rng(), 0.0, 1.0);
+
+  nextValues = m_expectedValues + m_lowerCholCovMatrix*iidGaussianVector;
+  return;
+}
+
+//*****************************************************
 // Sequential class
 //*****************************************************
 template<class V, class M>

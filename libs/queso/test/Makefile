@@ -66,7 +66,8 @@ OBJS_tri = uqTrilinosParamSpace.o \
 	uqTrilinosFinDimLinearSpace.o
 
 UNIT_TESTS = uqTestExample \
-	uqTestVectorPdf_gsl
+	uqTestVectorPdf_gsl \
+	uqTestVectorRealizer_gsl
 
 all: check
 
@@ -106,11 +107,16 @@ check: $(UNIT_TESTS)
 uqTestExample: uqTestExample.o
 	$(CXX) -L$(BOOST_LIB_PATH_FOR_QUESO_TOOL) $< -o $@ -l$(BOOST_UNIT_TEST_LIB_FOR_QUESO_TOOL)
 
-
 uqTestVectorPdf_gsl: uqTestVectorPdf_gsl.o libs_basic
 	$(CXX) $(LIB_PATHS) $< -o $@ $(LIBS)
 
 uqTestVectorPdf_gsl.o: uqTestVectorPdf_gsl.C ../inc/uqVectorPdf.h
+	$(CXX) $(DEFINES) $(INC_PATHS) $(CXXFLAGS) $<
+
+uqTestVectorRealizer_gsl: uqTestVectorRealizer_gsl.o libs_basic
+	$(CXX) $(LIB_PATHS) $< -o $@ $(LIBS)
+
+uqTestVectorRealizer_gsl.o: uqTestVectorRealizer_gsl.C ../inc/uqVectorRealizer.h
 	$(CXX) $(DEFINES) $(INC_PATHS) $(CXXFLAGS) $<
 
 libs_basic:
