@@ -58,7 +58,8 @@ OBJS_ANY = uqEnvironment.o \
 
 OBJS_gsl = uqGslVector.o \
 	uqGslMatrix.o \
-	uqGslOdeSolver.o
+	uqGslOdeSolver.o \
+	uqGslVectorSpace.o
 
 OBJS_tri = uqTrilinosVector.o \
 	uqTrilinosMatrix.o

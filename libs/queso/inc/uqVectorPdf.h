@@ -123,8 +123,7 @@ uqBaseVectorPdfClass<V,M>::uqBaseVectorPdfClass(
   m_domainMinValues     (new V(domainMinValues         )),
   m_domainMaxValues     (new V(domainMaxValues         )),
   m_domainExpectedValues(new V(domainExpectedValues    )),
-  //m_domainVarianceValues(domainSpace.newVector(INFINITY)) QUESTION: Ask Ernesto why this won't compile
-  m_domainVarianceValues(new V(domainExpectedValues)) // FIXME: These variance values are bogus
+  m_domainVarianceValues(domainSpace.newVector(INFINITY))
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqBaseVectorPdfClass<V,M>::constructor() [2]"
