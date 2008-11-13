@@ -14,6 +14,7 @@ clean_all: echo_queso_type clean_queso clean_docs clean_exec
 
 clean_queso:
 	cd src; make clean_all UQBT=$(UQBT)
+	cd test; make clean_all UQBT=$(UQBT)
 
 clean_docs:
 	rm -rf html
@@ -28,3 +29,6 @@ all_docs:
 
 all_queso:
 	cd src; make UQBT=$(UQBT)
+
+check:
+	cd test; make check UQBT=$(UQBT)

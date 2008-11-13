@@ -123,7 +123,8 @@ uqBaseVectorPdfClass<V,M>::uqBaseVectorPdfClass(
   m_domainMinValues     (new V(domainMinValues         )),
   m_domainMaxValues     (new V(domainMaxValues         )),
   m_domainExpectedValues(new V(domainExpectedValues    )),
-  m_domainVarianceValues(domainSpace.newVector(INFINITY))
+  //m_domainVarianceValues(domainSpace.newVector(INFINITY)) QUESTION: Ask Ernesto why this won't compile
+  m_domainVarianceValues(new V(domainExpectedValues)) // FIXME: These variance values are bogus
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqBaseVectorPdfClass<V,M>::constructor() [2]"
@@ -568,9 +569,9 @@ uqGaussianVectorPdfClass<V,M>::minus2LnDensity(const V& paramValues) const
     V diffVec(paramValues - this->domainExpectedValues());
     return ((diffVec*diffVec)/this->domainVarianceValues()).sumOfComponents();
   } else{
-    UQ_FATAL_TEST_MACRO( true, m_env.rank(),
-			 "In uqGaussianVectorPdfClass<V,M>::actualDensity,",
-			 "general covariance matrices are not yet supported." );
+    V diffVec(paramValues - this->domainExpectedValues());
+    V tmpVec = this->m_covMatrix->invertMultiply(diffVec);
+    return (diffVec*tmpVec).sumOfComponents();
   }
 }
 
