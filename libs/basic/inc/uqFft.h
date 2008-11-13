@@ -30,7 +30,7 @@ template <class T>
 class uqFftClass
 {
 public:
-  uqFftClass(const uqEnvironmentClass& env);
+  uqFftClass(const uqBaseEnvironmentClass& env);
  ~uqFftClass();
 
   void forward(const std::vector<T>&                     data, 
@@ -45,7 +45,7 @@ private:
   //void allocTables(unsigned int fftSize);
   //void freeTables ();
 
-  const uqEnvironmentClass& m_env;
+  const uqBaseEnvironmentClass& m_env;
   //unsigned int               m_fftSize;
 
   //gsl_fft_real_workspace*    m_realWkSpace;
@@ -55,7 +55,7 @@ private:
 };
 
 template <class T>
-uqFftClass<T>::uqFftClass(const uqEnvironmentClass& env)
+uqFftClass<T>::uqFftClass(const uqBaseEnvironmentClass& env)
   :
   m_env(env)
 {

@@ -32,7 +32,7 @@ uqGslVectorClass::uqGslVectorClass()
                       "should not be used by user");
 }
 
-uqGslVectorClass::uqGslVectorClass(const uqEnvironmentClass& env, const Epetra_Map& map)
+uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, const Epetra_Map& map)
   :
   uqVectorClass(env,map),
   m_vec(gsl_vector_calloc(map.NumGlobalElements()))
@@ -43,7 +43,7 @@ uqGslVectorClass::uqGslVectorClass(const uqEnvironmentClass& env, const Epetra_M
                       "null vector generated");
 }
 
-uqGslVectorClass::uqGslVectorClass(const uqEnvironmentClass& env, const Epetra_Map& map, double value)
+uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, const Epetra_Map& map, double value)
   :
   uqVectorClass(env,map),
   m_vec(gsl_vector_calloc(map.NumGlobalElements()))
@@ -55,7 +55,7 @@ uqGslVectorClass::uqGslVectorClass(const uqEnvironmentClass& env, const Epetra_M
   this->cwSet(value);
 }
 
-uqGslVectorClass::uqGslVectorClass(const uqEnvironmentClass& env, double d1, double d2, const Epetra_Map& map)
+uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, double d1, double d2, const Epetra_Map& map)
   :
   uqVectorClass(env,map),
   m_vec(gsl_vector_calloc(map.NumGlobalElements()))

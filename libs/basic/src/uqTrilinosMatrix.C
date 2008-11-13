@@ -30,7 +30,7 @@ uqTrilinosMatrixClass::uqTrilinosMatrixClass()
 }
  
 uqTrilinosMatrixClass::uqTrilinosMatrixClass(
-  const uqEnvironmentClass& env,
+  const uqBaseEnvironmentClass& env,
   const Epetra_Map&         map,
   unsigned int              numCols)
   :
@@ -46,7 +46,7 @@ uqTrilinosMatrixClass::uqTrilinosMatrixClass(
 }
  
 uqTrilinosMatrixClass::uqTrilinosMatrixClass(
-  const uqEnvironmentClass& env,
+  const uqBaseEnvironmentClass& env,
   const Epetra_Map&         map,
   double                    diagValue)
   :

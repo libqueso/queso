@@ -28,7 +28,7 @@ template <class V, class M>
 class uqAsciiTableClass
 {
 public:
-  uqAsciiTableClass(const uqEnvironmentClass& env,
+  uqAsciiTableClass(const uqBaseEnvironmentClass& env,
                           unsigned int        numRows,
                           unsigned int        numExtraCols,
                     const std::vector<bool>*  extraColIsString,
@@ -42,7 +42,7 @@ public:
   void         print  (std::ostream& os)                                const;
 
 private:
-  const uqEnvironmentClass&                       m_env;
+  const uqBaseEnvironmentClass&                       m_env;
   unsigned int                                    m_numRows;
   unsigned int                                    m_numCols;
   std::vector<bool>                               m_colIsString;
@@ -57,7 +57,7 @@ private:
 
 template <class V, class M>
 uqAsciiTableClass<V,M>::uqAsciiTableClass(
-  const uqEnvironmentClass& env,
+  const uqBaseEnvironmentClass& env,
         unsigned int        numRows,
         unsigned int        numExtraCols,
   const std::vector<bool>*  extraColIsString,

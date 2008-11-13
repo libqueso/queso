@@ -22,7 +22,7 @@
 
 uqMatrixClass::uqMatrixClass()
   :
-  m_env(*(new uqEnvironmentClass())                                    ),
+  m_env(*(new uqFullEnvironmentClass())                                ),
   m_map(*(new Epetra_Map( 1,0,*(new Epetra_MpiComm(MPI_COMM_WORLD)) ) ))
 {
   UQ_FATAL_TEST_MACRO(true,
@@ -31,7 +31,7 @@ uqMatrixClass::uqMatrixClass()
                       "should not be used by user");
 }
 
-uqMatrixClass::uqMatrixClass(const uqEnvironmentClass& env, const Epetra_Map& map)
+uqMatrixClass::uqMatrixClass(const uqBaseEnvironmentClass& env, const Epetra_Map& map)
   :
   m_env(env),
   m_map(map)
@@ -102,7 +102,7 @@ uqMatrixClass::operator-=(const uqMatrixClass& rhs)
   return *this;
 }
 
-const uqEnvironmentClass&
+const uqBaseEnvironmentClass&
 uqMatrixClass::env() const
 {
   return m_env;

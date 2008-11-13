@@ -33,7 +33,7 @@ uqGslMatrixClass::uqGslMatrixClass()
 }
 
 uqGslMatrixClass::uqGslMatrixClass(
-  const uqEnvironmentClass& env,
+  const uqBaseEnvironmentClass& env,
   const Epetra_Map&         map,
   unsigned int              numCols)
   :
@@ -49,7 +49,7 @@ uqGslMatrixClass::uqGslMatrixClass(
 }
  
 uqGslMatrixClass::uqGslMatrixClass(
-  const uqEnvironmentClass& env,
+  const uqBaseEnvironmentClass& env,
   const Epetra_Map&         map,
   double                    diagValue)
   :

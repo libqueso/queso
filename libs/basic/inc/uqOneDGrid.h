@@ -33,7 +33,7 @@
 template<class T>
 class uqBaseOneDGridClass {
 public:
-           uqBaseOneDGridClass(const uqEnvironmentClass& env,
+           uqBaseOneDGridClass(const uqBaseEnvironmentClass& env,
                                  const char* prefix);
   virtual ~uqBaseOneDGridClass();
 
@@ -43,13 +43,13 @@ public:
           void         print         (std::ostream& ofs)   const;
 
 protected:
-  const uqEnvironmentClass& m_env;
+  const uqBaseEnvironmentClass& m_env;
         std::string         m_prefix;
 };
 
 template<class T>
 uqBaseOneDGridClass<T>::uqBaseOneDGridClass(
-  const uqEnvironmentClass& env,
+  const uqBaseEnvironmentClass& env,
   const char*               prefix)
   :
   m_env   (env),
@@ -105,7 +105,7 @@ std::ostream& operator<< (std::ostream& os, const uqBaseOneDGridClass<T>& obj)
 template<class T>
 class uqUniformOneDGridClass : public uqBaseOneDGridClass<T> {
 public:
-  uqUniformOneDGridClass(const uqEnvironmentClass& env,
+  uqUniformOneDGridClass(const uqBaseEnvironmentClass& env,
                          const char*               prefix,
                                unsigned int        size,
                                T                   minPosition,
@@ -127,7 +127,7 @@ protected:
 
 template<class T>
 uqUniformOneDGridClass<T>::uqUniformOneDGridClass(
-  const uqEnvironmentClass& env,
+  const uqBaseEnvironmentClass& env,
   const char*               prefix,
         unsigned int        size,
         T                   minPosition,

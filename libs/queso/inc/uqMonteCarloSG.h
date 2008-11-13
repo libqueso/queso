@@ -61,7 +61,7 @@ private:
                                  uqBaseVectorSequenceClass<P_V,P_M>& workingSeq,
                                  unsigned int                        seqSize);
 
-  const uqEnvironmentClass&                         m_env;
+  const uqBaseEnvironmentClass&                         m_env;
         std::string                                 m_prefix;
   const uqBaseVectorRVClass      <P_V,P_M>&         m_paramRv;
   const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& m_qoiFunctionObj;

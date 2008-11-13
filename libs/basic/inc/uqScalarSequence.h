@@ -34,7 +34,7 @@ class uqScalarSequenceClass
 public:
   typedef typename std::vector<T>::iterator       seqScalarPositionIteratorTypedef;
   typedef typename std::vector<T>::const_iterator seqScalarPositionConstIteratorTypedef;
-  uqScalarSequenceClass(const uqEnvironmentClass& env, unsigned int sequenceSize);
+  uqScalarSequenceClass(const uqBaseEnvironmentClass& env, unsigned int sequenceSize);
  ~uqScalarSequenceClass();
 
   const unsigned int sequenceSize       () const;
@@ -116,13 +116,13 @@ private:
                                          unsigned int               numPos,
                                          std::vector<double>&       rawData) const;
 
-  const uqEnvironmentClass& m_env;
+  const uqBaseEnvironmentClass& m_env;
   std::vector<T>            m_seq;
 };
 
 template <class T>
 uqScalarSequenceClass<T>::uqScalarSequenceClass(
-  const uqEnvironmentClass& env,
+  const uqBaseEnvironmentClass& env,
         unsigned int        sequenceSize)
   :
   m_env(env),

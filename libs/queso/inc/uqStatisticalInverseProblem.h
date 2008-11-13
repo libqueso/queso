@@ -45,9 +45,8 @@ public:
  ~uqStatisticalInverseProblemClass();
 
         bool computeSolutionFlag      () const;
-        void solveWithBayesMarkovChain(const P_V&                    initialValues,
-                                       const P_M*                    proposalCovMatrix,
-                                       const uqBaseTKClass<P_V,P_M>* proposalTK);
+        void solveWithBayesMarkovChain(const P_V& initialValues,
+                                       const P_M* proposalCovMatrix);
   const uqBaseVectorRVClass<P_V,P_M>& priorRv() const;
   const uqBaseVectorRVClass<P_V,P_M>& postRv()  const;
 
@@ -57,7 +56,7 @@ private:
         void defineMyOptions          (po::options_description& optionsDesc);
         void getMyOptionValues        (po::options_description& optionsDesc);
 
-  const uqEnvironmentClass&                  m_env;
+  const uqBaseEnvironmentClass&                  m_env;
         std::string                          m_prefix;
 
         po::options_description*             m_optionsDesc;
@@ -212,9 +211,8 @@ uqStatisticalInverseProblemClass<P_V,P_M>::computeSolutionFlag() const
 template <class P_V,class P_M>
 void
 uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
-  const P_V&                    initialValues,
-  const P_M*                    proposalCovMatrix,
-  const uqBaseTKClass<P_V,P_M>* proposalTK)
+  const P_V& initialValues,
+  const P_M* proposalCovMatrix)
 {
   if (m_computeSolution == false) {
     if ((m_env.rank() == 0)) {
@@ -242,8 +240,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   m_mcSeqGenerator = new uqMarkovChainSGClass<P_V,P_M>(m_prefix.c_str(),
                                                        m_postRv,
                                                        initialValues,
-                                                       proposalCovMatrix,
-                                                       proposalTK);
+                                                       proposalCovMatrix);
   m_mcSeqGenerator->generateSequence(*m_chain);
   m_solutionRealizer = new uqSequentialVectorRealizerClass<P_V,P_M>(m_prefix.c_str(),
                                                                    *m_chain);

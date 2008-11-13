@@ -27,7 +27,7 @@
 class uq1DProblemClass
 {
 public:
-  uq1DProblemClass(const uqEnvironmentClass& env,
+  uq1DProblemClass(const uqBaseEnvironmentClass& env,
                    double a,
                    double b,
                    double c,
@@ -48,7 +48,7 @@ public:
   double h       () const;
 
 protected:
-  const uqEnvironmentClass& m_env;
+  const uqBaseEnvironmentClass& m_env;
   const Epetra_Map*         m_map;
   double m_a;
   double m_b;

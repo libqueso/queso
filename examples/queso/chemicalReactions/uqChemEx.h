@@ -181,7 +181,7 @@ calib_QoIPredictionRoutine(const V& paramValues, const void* functionDataPtr, st
 //********************************************************
 template<class P_V,class P_M,class S_V,class S_M,class L_V,class L_M>
 void 
-uqAppl(const uqEnvironmentClass& env)
+uqAppl(const uqBaseEnvironmentClass& env)
 {
   if (env.rank() == 0) std::cout << "Beginning run of 'uqChemEx' example\n"
                                  << std::endl;

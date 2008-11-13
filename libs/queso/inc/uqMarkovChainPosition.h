@@ -26,8 +26,8 @@ template <class V>
 class uqMarkovChainPositionClass
 {
 public:
-  uqMarkovChainPositionClass(const uqEnvironmentClass& env);
-  uqMarkovChainPositionClass(const uqEnvironmentClass& env,
+  uqMarkovChainPositionClass(const uqBaseEnvironmentClass& env);
+  uqMarkovChainPositionClass(const uqBaseEnvironmentClass& env,
                              const V& vecValues,
                              bool     outOfBounds,
                              double   logTarget);
@@ -47,14 +47,14 @@ public:
   void     print      (std::ostream& os) const;
 
 private:
-  const uqEnvironmentClass& m_env;
+  const uqBaseEnvironmentClass& m_env;
   V*     m_vecValues;
   bool   m_outOfBounds;
   double m_logTarget;
 };
 
 template <class V>
-uqMarkovChainPositionClass<V>::uqMarkovChainPositionClass(const uqEnvironmentClass& env)
+uqMarkovChainPositionClass<V>::uqMarkovChainPositionClass(const uqBaseEnvironmentClass& env)
   :
   m_env        (env),
   m_vecValues(NULL),
@@ -65,7 +65,7 @@ uqMarkovChainPositionClass<V>::uqMarkovChainPositionClass(const uqEnvironmentCla
 
 template <class V>
 uqMarkovChainPositionClass<V>::uqMarkovChainPositionClass(
-  const uqEnvironmentClass& env,
+  const uqBaseEnvironmentClass& env,
   const V& vecValues,
   bool     outOfBounds,
   double   logTarget)

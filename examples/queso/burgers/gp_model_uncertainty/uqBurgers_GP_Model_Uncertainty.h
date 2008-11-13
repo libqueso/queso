@@ -48,7 +48,7 @@
 struct
 inverseProblem_DataClass
 {
-  inverseProblem_DataClass(const uqEnvironmentClass& env,
+  inverseProblem_DataClass(const uqBaseEnvironmentClass& env,
 			   double Re,
 			   const char* fileName);
   ~inverseProblem_DataClass();
@@ -64,7 +64,7 @@ inverseProblem_DataClass
 };
   
 // inverseProblem_DataClass constructor
-inverseProblem_DataClass::inverseProblem_DataClass(const uqEnvironmentClass& env,
+inverseProblem_DataClass::inverseProblem_DataClass(const uqBaseEnvironmentClass& env,
 						   double Re,
 						   const char* fileName)
   :
@@ -149,7 +149,7 @@ validationCovarianceChol(const double sig2, const double ellx, const double ellR
 struct 
 likelihoodRoutine_DataClass
 {
-  likelihoodRoutine_DataClass(const uqEnvironmentClass& env,
+  likelihoodRoutine_DataClass(const uqBaseEnvironmentClass& env,
 			      double cal_Re,
 			      double val_Re,
                               const char* calFileName,
@@ -180,7 +180,7 @@ validationMean(const double sig2, const double ellx, const double ellRe, const d
 
 
 // likelihoodRoutine_DataClass constructor: Read data, allocate/initialize memory for Burgers' solver
-likelihoodRoutine_DataClass::likelihoodRoutine_DataClass(const uqEnvironmentClass &env, 
+likelihoodRoutine_DataClass::likelihoodRoutine_DataClass(const uqBaseEnvironmentClass &env, 
 							 double cal_Re, 
 							 double val_Re,
 							 const char *calFileName,
@@ -654,7 +654,7 @@ validationQoiMeanChains(const uqBaseVectorRVClass<P_V,P_M>& valPostRv,
 //********************************************************
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
-uqAppl(const uqEnvironmentClass& env)
+uqAppl(const uqBaseEnvironmentClass& env)
 {
   if (env.rank() == 0) {
     std::cout << "Beginning run of 'uqBurgers_No_Model_Uncertainty' example\n"

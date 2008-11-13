@@ -188,7 +188,7 @@ protected:
                                                          unsigned int                          paramId,
                                                          std::vector<double>&                  rawData) const = 0;
 
-  const uqEnvironmentClass&      m_env;
+  const uqBaseEnvironmentClass&      m_env;
   const uqVectorSpaceClass<V,M>& m_vectorSpace;
   std::string                    m_name;
 

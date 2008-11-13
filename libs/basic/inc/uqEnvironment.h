@@ -106,12 +106,12 @@ public:
 //*****************************************************
 // Full Environment
 //*****************************************************
-class uqEnvironmentClass : public uqBaseEnvironmentClass {
+class uqFullEnvironmentClass : public uqBaseEnvironmentClass {
 public:
-  uqEnvironmentClass();
-  uqEnvironmentClass(int& argc, char** &argv);
-  uqEnvironmentClass(const uqEnvOptionsStruct& options);
- ~uqEnvironmentClass();
+  uqFullEnvironmentClass();
+  uqFullEnvironmentClass(int& argc, char** &argv);
+  uqFullEnvironmentClass(const uqEnvOptionsStruct& options);
+ ~uqFullEnvironmentClass();
 
         void                     print                    (std::ostream& os) const;
 

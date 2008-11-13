@@ -51,7 +51,7 @@ template<class P_V, class P_M>
 struct
 likelihoodRoutine_DataClass
 {
-  likelihoodRoutine_DataClass(const uqEnvironmentClass& env,
+  likelihoodRoutine_DataClass(const uqBaseEnvironmentClass& env,
                               const char* inpName1,
                               const char* inpName2,
                               const char* inpName3);
@@ -75,7 +75,7 @@ likelihoodRoutine_DataClass
 
 template<class P_V, class P_M>
 likelihoodRoutine_DataClass<P_V,P_M>::likelihoodRoutine_DataClass(
-  const uqEnvironmentClass& env,
+  const uqBaseEnvironmentClass& env,
   const char* inpName1,
   const char* inpName2,
   const char* inpName3)
@@ -572,7 +572,7 @@ uqAppl_ComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
 //********************************************************
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
-uqAppl(const uqEnvironmentClass& env)
+uqAppl(const uqBaseEnvironmentClass& env)
 {
   if (env.rank() == 0) {
     std::cout << "Beginning run of 'uqTgaEx4' example\n"
@@ -663,8 +663,7 @@ uqAppl(const uqEnvironmentClass& env)
   P_M* calProposalCovMatrix = cycle.calIP().postRv().imageSpace().newGaussianMatrix(cycle.calIP().priorRv().pdf().domainVarianceValues(),
                                                                                     paramInitialValues);
   cycle.calIP().solveWithBayesMarkovChain(paramInitialValues,
-                                          calProposalCovMatrix,
-                                          NULL); // use default kernel from library
+                                          calProposalCovMatrix);
   delete calProposalCovMatrix;
 
   // Deal with forward problem
@@ -711,8 +710,7 @@ uqAppl(const uqEnvironmentClass& env)
   P_M* valProposalCovMatrix = cycle.calIP().postRv().imageSpace().newGaussianMatrix(cycle.calIP().postRv().realizer().imageVarianceValues(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
                                                                                     cycle.calIP().postRv().realizer().imageExpectedValues()); // Use these values as the initial values
   cycle.valIP().solveWithBayesMarkovChain(cycle.calIP().postRv().realizer().imageExpectedValues(),
-                                          valProposalCovMatrix,
-                                          NULL); // use default kernel from library
+                                          valProposalCovMatrix);
   delete valProposalCovMatrix;
 
   // Deal with forward problem

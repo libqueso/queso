@@ -31,7 +31,7 @@
 class uq1DScalarElementClass
 {
 public:
-  uq1DScalarElementClass(const uqEnvironmentClass& env,
+  uq1DScalarElementClass(const uqBaseEnvironmentClass& env,
                          const uq1DNodeClass&      node0,
                          const uq1DNodeClass&      node1,
                                unsigned int        order);
@@ -59,7 +59,7 @@ protected:
   double                   gradPhi              (unsigned int i, double bcc);
   unsigned int             numIntegrationPoints ();
 
-  const uqEnvironmentClass&       m_env;
+  const uqBaseEnvironmentClass&       m_env;
   std::vector<uq1DNodeClass*>     m_nodes;
   unsigned int                    m_order;
   std::vector<uq1DLocalDofClass*> m_localDofs;

@@ -30,11 +30,11 @@ class uqTrilinosMatrixClass : public uqMatrixClass
 {
 public:
   uqTrilinosMatrixClass();
-  uqTrilinosMatrixClass(const uqEnvironmentClass& env,
+  uqTrilinosMatrixClass(const uqBaseEnvironmentClass& env,
                         const Epetra_Map&         map,
                         unsigned int              numCols);
 
-  uqTrilinosMatrixClass(const uqEnvironmentClass& env,
+  uqTrilinosMatrixClass(const uqBaseEnvironmentClass& env,
                         const Epetra_Map&         map,
                         double                    diagValue); // MATLAB eye
   uqTrilinosMatrixClass(const uqTrilinosVectorClass& v,

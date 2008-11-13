@@ -32,7 +32,7 @@ uqTrilinosVectorClass::uqTrilinosVectorClass()
                       "should not be used by user");
 }
 
-uqTrilinosVectorClass::uqTrilinosVectorClass(const uqEnvironmentClass& env, const Epetra_Map& map)
+uqTrilinosVectorClass::uqTrilinosVectorClass(const uqBaseEnvironmentClass& env, const Epetra_Map& map)
   :
   uqVectorClass(env),
   m_map        (map),
@@ -45,7 +45,7 @@ uqTrilinosVectorClass::uqTrilinosVectorClass(const uqEnvironmentClass& env, cons
                       "null vector generated");
 }
 
-uqTrilinosVectorClass::uqTrilinosVectorClass(const uqEnvironmentClass& env, const Epetra_Map& map, double d1, double d2, unsigned int size)
+uqTrilinosVectorClass::uqTrilinosVectorClass(const uqBaseEnvironmentClass& env, const Epetra_Map& map, double d1, double d2, unsigned int size)
   :
   uqVectorClass(env),
   m_map        (map),

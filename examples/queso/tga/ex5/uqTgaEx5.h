@@ -211,7 +211,7 @@ void propagQoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& 
 //********************************************************
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
-uqAppl(const uqEnvironmentClass& env)
+uqAppl(const uqBaseEnvironmentClass& env)
 {
   if (env.rank() == 0) {
     std::cout << "Beginning run of 'uqTgaEx5' example\n"

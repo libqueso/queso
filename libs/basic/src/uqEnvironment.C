@@ -171,11 +171,11 @@ uqBaseEnvironmentClass::scanInputFileForMyOptions(const po::options_description&
 {
 #ifdef UQ_USES_COMMAND_LINE_OPTIONS
   // If you want to use command line options, the following line does *not* work outside 'main.C',
-  // e.g., in the constructor of uqEnvironmentClass:
+  // e.g., in the constructor of uqFullEnvironmentClass:
   // Line: po::store(po::parse_command_line(argc, argv, *m_allOptionsDesc), *m_allOptionsMap);
   //
   // Instead, put the following three lines *immediately after* instantianting the UQ environment
-  // variable "uqEnvironmentClass* env":
+  // variable "uqFullEnvironmentClass* env":
   // Line 1: po::store(po::parse_command_line(argc, argv, env->allOptionsDesc()), env->allOptionsMap());
   // Line 2: po::notify(env->allOptionsMap());
   // Line 3: env->getMyOptionValues();
@@ -263,14 +263,14 @@ uqEmptyEnvironmentClass::print(std::ostream& os) const
 //*****************************************************
 // Full Environment
 //*****************************************************
-uqEnvironmentClass::uqEnvironmentClass()
+uqFullEnvironmentClass::uqFullEnvironmentClass()
   :
   uqBaseEnvironmentClass()
 {
   commonConstructor();
 }
 
-uqEnvironmentClass::uqEnvironmentClass(
+uqFullEnvironmentClass::uqFullEnvironmentClass(
   int&   argc,
   char** &argv)
   :
@@ -279,7 +279,7 @@ uqEnvironmentClass::uqEnvironmentClass(
   commonConstructor();
 }
 
-uqEnvironmentClass::uqEnvironmentClass(
+uqFullEnvironmentClass::uqFullEnvironmentClass(
   const uqEnvOptionsStruct& options)
   :
   uqBaseEnvironmentClass(options)
@@ -287,12 +287,12 @@ uqEnvironmentClass::uqEnvironmentClass(
   commonConstructor();
 }
 
-uqEnvironmentClass::~uqEnvironmentClass()
+uqFullEnvironmentClass::~uqFullEnvironmentClass()
 {
 }
 
 void
-uqEnvironmentClass::commonConstructor()
+uqFullEnvironmentClass::commonConstructor()
 {
   m_comm     = new Epetra_MpiComm(MPI_COMM_WORLD);
   m_rank     = m_comm->MyPID();
@@ -302,7 +302,7 @@ uqEnvironmentClass::commonConstructor()
   iRC = gettimeofday(&m_timevalBegin, NULL);
 
   if ((this->verbosity() >= 5) && (this->rank() == 0)) {
-    std::cout << "Entering uqEnvironmentClass::commonConstructor()"
+    std::cout << "Entering uqFullEnvironmentClass::commonConstructor()"
               << std::endl;
   }
 
@@ -343,11 +343,11 @@ uqEnvironmentClass::commonConstructor()
   m_rng = gsl_rng_alloc(gsl_rng_ranlxd2);
   UQ_FATAL_TEST_MACRO((m_rng == NULL),
                       m_rank,
-                      "uqEnvironmentClass::commonConstructor()",
+                      "uqFullEnvironmentClass::commonConstructor()",
                       "null m_rng");
 
   if ((this->verbosity() >= 5) && (this->rank() == 0)) {
-    std::cout << "In uqEnvironmentClass::commonConstructor():"
+    std::cout << "In uqFullEnvironmentClass::commonConstructor():"
               << "\n  m_seed = "                                              << m_seed
               << "\n  internal seed = "                                       << gsl_rng_default_seed
               << "\n  first generated sample from uniform distribution = "    << gsl_rng_uniform(m_rng)
@@ -356,7 +356,7 @@ uqEnvironmentClass::commonConstructor()
   }
 
   if ((this->verbosity() >= 5) && (this->rank() == 0)) {
-    std::cout << "Leaving uqEnvironmentClass::commonConstructor()"
+    std::cout << "Leaving uqFullEnvironmentClass::commonConstructor()"
               << std::endl;
   }
 
@@ -364,7 +364,7 @@ uqEnvironmentClass::commonConstructor()
 }
 
 void
-uqEnvironmentClass::readEventualInputFile()
+uqFullEnvironmentClass::readEventualInputFile()
 {
   bool displayHelpMessageAndExit = false;
   bool invalidCmdLineParameters  = false;
@@ -430,7 +430,7 @@ uqEnvironmentClass::readEventualInputFile()
 }
 
 void
-uqEnvironmentClass::defineMyOptions(po::options_description& options) const
+uqFullEnvironmentClass::defineMyOptions(po::options_description& options) const
 {
   options.add_options()
     ("uqEnv_help", "produce help message for uq environment")
@@ -443,7 +443,7 @@ uqEnvironmentClass::defineMyOptions(po::options_description& options) const
 }
 
 void
-uqEnvironmentClass::getMyOptionValues(po::options_description& optionsDesc)
+uqFullEnvironmentClass::getMyOptionValues(po::options_description& optionsDesc)
 {
   if (m_allOptionsMap->count("uqEnv_help")) {
     std::cout << optionsDesc
@@ -463,7 +463,7 @@ uqEnvironmentClass::getMyOptionValues(po::options_description& optionsDesc)
   //}
 
   if (m_verbosity >= 1) {
-    if (m_rank == 0) std::cout << "After getting option values, state of uqEnvironmentClass object is:"
+    if (m_rank == 0) std::cout << "After getting option values, state of uqFullEnvironmentClass object is:"
                                << "\n" << *this
                                << std::endl;
   }
@@ -472,7 +472,7 @@ uqEnvironmentClass::getMyOptionValues(po::options_description& optionsDesc)
 }
 
 void
-uqEnvironmentClass::print(std::ostream& os) const
+uqFullEnvironmentClass::print(std::ostream& os) const
 {
   os << "m_verbosity = "        << m_verbosity
      << "\nm_seed = "           << m_seed

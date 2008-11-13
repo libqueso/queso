@@ -35,13 +35,13 @@ class uqVectorSpaceClass
 {
 public:
           uqVectorSpaceClass();
-          uqVectorSpaceClass(const uqEnvironmentClass&                env, // See template specialization
+          uqVectorSpaceClass(const uqBaseEnvironmentClass&                env, // See template specialization
                              const char*                              prefix,
                              unsigned int                             dimValue,
                              const EpetraExt::DistArray<std::string>* componentsNames);
          ~uqVectorSpaceClass();
 
-  const   uqEnvironmentClass&                env                 ()                         const;
+  const   uqBaseEnvironmentClass&                env                 ()                         const;
   const   Epetra_Map&                        map                 ()                         const;
           unsigned int                       dim                 ()                         const;
 
@@ -65,7 +65,7 @@ protected:
           void                               getMyOptionValues   (po::options_description& optionsDesc);
 #endif
 
-  const   uqEnvironmentClass&                m_env;
+  const   uqBaseEnvironmentClass&                m_env;
           std::string                        m_prefix;
           unsigned int                       m_dim;
   const   EpetraExt::DistArray<std::string>* m_componentsNames;
@@ -84,7 +84,7 @@ protected:
 template <class V, class M>
 uqVectorSpaceClass<V,M>::uqVectorSpaceClass()
   :
-  m_env(*(new uqEnvironmentClass()))
+  m_env(*(new uqFullEnvironmentClass()))
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.rank(),
@@ -94,7 +94,7 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass()
 
 template <class V, class M>
 uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
-  const uqEnvironmentClass& env,
+  const uqBaseEnvironmentClass& env,
   const char*               prefix,
         unsigned int        dimValue,
   const EpetraExt::DistArray<std::string>* componentsNames)
@@ -190,7 +190,7 @@ uqVectorSpaceClass<V,M>::getMyOptionValues(po::options_description& optionsDesc)
 #endif
 
 template <class V, class M>
-const uqEnvironmentClass&
+const uqBaseEnvironmentClass&
 uqVectorSpaceClass<V,M>::env() const
 {
   return m_env;

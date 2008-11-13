@@ -23,7 +23,7 @@
 #include <uqDefines.h>
 
 uq1DProblemClass::uq1DProblemClass(
-  const uqEnvironmentClass& env,
+  const uqBaseEnvironmentClass& env,
   double a,
   double b,
   double c,

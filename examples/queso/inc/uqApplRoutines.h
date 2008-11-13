@@ -27,6 +27,6 @@
 //*****************************************************
 template<class V, class M>
 void
-uqAppl(const uqEnvironmentClass& env);
+uqAppl(const uqBaseEnvironmentClass& env);
 
 #endif // __UQ_APPL_ROUTINES_H__

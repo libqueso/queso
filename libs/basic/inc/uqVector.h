@@ -29,7 +29,7 @@ class uqVectorClass
 {
 public:
            uqVectorClass();
-           uqVectorClass(const uqEnvironmentClass& env, const Epetra_Map& map);
+           uqVectorClass(const uqBaseEnvironmentClass& env, const Epetra_Map& map);
            uqVectorClass(const uqVectorClass& rhs);
   virtual ~uqVectorClass();
 
@@ -39,7 +39,7 @@ public:
   uqVectorClass& operator+=(const uqVectorClass& rhs);
   uqVectorClass& operator-=(const uqVectorClass& rhs);
 
-    const uqEnvironmentClass& env                 ()           const;
+    const uqBaseEnvironmentClass& env                 ()           const;
     const Epetra_Map&         map                 ()           const;
           void                setPrintHorizontally(bool value) const; // Yes, 'const'
           bool                getPrintHorizontally()           const;
@@ -54,7 +54,7 @@ public:
 protected:
   virtual void                copy                (const uqVectorClass& src);
 
-  const uqEnvironmentClass& m_env;
+  const uqBaseEnvironmentClass& m_env;
   const Epetra_Map&         m_map;
   mutable bool m_printHorizontally;
 };

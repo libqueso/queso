@@ -12,7 +12,7 @@ BOOST_AUTO_TEST_CASE( test_uqGaussianVectorPdfClass_diagonalCovariance )
 {
   // Initialize
   MPI_Init(NULL, NULL);
-  uqEnvironmentClass env;
+  uqFullEnvironmentClass env;
   uqVectorSpaceClass<uqGslVectorClass, uqGslMatrixClass> domainSpace(env, "test_space", 2, NULL);
   Epetra_Map eMap(2, 0, env.comm());
 

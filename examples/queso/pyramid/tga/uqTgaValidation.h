@@ -51,7 +51,7 @@ template<class P_V, class P_M>
 struct
 tgaLikelihoodRoutine_DataClass
 {
-  tgaLikelihoodRoutine_DataClass(const uqEnvironmentClass& env,
+  tgaLikelihoodRoutine_DataClass(const uqBaseEnvironmentClass& env,
                                  const char* inpName1,
                                  const char* inpName2,
                                  const char* inpName3);
@@ -75,7 +75,7 @@ tgaLikelihoodRoutine_DataClass
 
 template<class P_V, class P_M>
 tgaLikelihoodRoutine_DataClass<P_V,P_M>::tgaLikelihoodRoutine_DataClass(
-  const uqEnvironmentClass& env,
+  const uqBaseEnvironmentClass& env,
   const char* inpName1,
   const char* inpName2,
   const char* inpName3)
@@ -500,16 +500,16 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 class uqTgaValidationClass : public uqModelValidationClass<P_V,P_M,Q_V,Q_M>
 {
 public:
-  uqTgaValidationClass(const uqEnvironmentClass& env,
+  uqTgaValidationClass(const uqBaseEnvironmentClass& env,
                        const char*               prefix);
  ~uqTgaValidationClass();
 
   void run();
 
 private:
-  void  calibrationStage();
-  void  validationStage();
-  void  comparisonStage();
+  void  runCalibrationStage();
+  void  runValidationStage();
+  void  runComparisonStage();
 
   using uqModelValidationClass<P_V,P_M,Q_V,Q_M>::m_env;
   using uqModelValidationClass<P_V,P_M,Q_V,Q_M>::m_prefix;
@@ -540,7 +540,7 @@ private:
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::uqTgaValidationClass(
-  const uqEnvironmentClass& env,
+  const uqBaseEnvironmentClass& env,
   const char*               prefix)
   :
   uqModelValidationClass<P_V,P_M,Q_V,Q_M>(env,prefix),
@@ -651,9 +651,9 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::run()
               << std::endl;
   }
 
-  calibrationStage();
-  validationStage();
-  comparisonStage();
+  runCalibrationStage();
+  runValidationStage();
+  runComparisonStage();
 
   if (m_env.rank() == 0) {
     std::cout << "Leaving uqTgaValidation::run()"
@@ -665,7 +665,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::run()
 
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
-uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::calibrationStage()
+uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
 {
   int iRC;
   struct timeval timevalRef;
@@ -673,7 +673,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::calibrationStage()
 
   iRC = gettimeofday(&timevalRef, NULL);
   if (m_env.rank() == 0) {
-    std::cout << "Entering uqTgaValidation::calibrationStage() at " << ctime(&timevalRef.tv_sec)
+    std::cout << "Entering uqTgaValidation::runCalibrationStage() at " << ctime(&timevalRef.tv_sec)
               << std::endl;
   }
 
@@ -697,8 +697,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::calibrationStage()
   P_M* calProposalCovMatrix = m_cycle->calIP().postRv().imageSpace().newGaussianMatrix(m_cycle->calIP().priorRv().pdf().domainVarianceValues(),
                                                                                        *m_paramInitialValues);
   m_cycle->calIP().solveWithBayesMarkovChain(*m_paramInitialValues,
-                                             calProposalCovMatrix,
-                                             NULL); // let the library create a Gaussian transition kernel internally
+                                             calProposalCovMatrix);
   delete calProposalCovMatrix;
 
   // Deal with forward problem
@@ -715,8 +714,8 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::calibrationStage()
 
   iRC = gettimeofday(&timevalNow, NULL);
   if (m_env.rank() == 0) {
-    std::cout << "Leaving uqTgaValidation::calibrationStage() at " << ctime(&timevalNow.tv_sec)
-              << "Total uqTgaValidation::calibrationStage() run time = " << timevalNow.tv_sec - timevalRef.tv_sec
+    std::cout << "Leaving uqTgaValidation::runCalibrationStage() at " << ctime(&timevalNow.tv_sec)
+              << "Total uqTgaValidation::runCalibrationStage() run time = " << timevalNow.tv_sec - timevalRef.tv_sec
               << " seconds"
               << std::endl;
   }
@@ -726,7 +725,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::calibrationStage()
 
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
-uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::validationStage()
+uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
 {
   int iRC;
   struct timeval timevalRef;
@@ -734,7 +733,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::validationStage()
 
   iRC = gettimeofday(&timevalRef, NULL);
   if (m_env.rank() == 0) {
-    std::cout << "Entering uqTgaValidation::validationStage() at " << ctime(&timevalRef.tv_sec)
+    std::cout << "Entering uqTgaValidation::runValidationStage() at " << ctime(&timevalRef.tv_sec)
               << std::endl;
   }
 
@@ -752,8 +751,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::validationStage()
   P_M* valProposalCovMatrix = m_cycle->calIP().postRv().imageSpace().newGaussianMatrix(m_cycle->calIP().postRv().realizer().imageVarianceValues(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
                                                                                        m_cycle->calIP().postRv().realizer().imageExpectedValues()); // Use these values as the initial values
   m_cycle->valIP().solveWithBayesMarkovChain(m_cycle->calIP().postRv().realizer().imageExpectedValues(),
-                                             valProposalCovMatrix,
-                                             NULL); // let the library create a Gaussian transition kernel internally
+                                             valProposalCovMatrix);
   delete valProposalCovMatrix;
 
   // Deal with forward problem
@@ -770,8 +768,8 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::validationStage()
 
   iRC = gettimeofday(&timevalNow, NULL);
   if (m_env.rank() == 0) {
-    std::cout << "Leaving uqTgaValidation::validationStage() at " << ctime(&timevalNow.tv_sec)
-              << "Total uqTgaValidation::validationStage() run time = " << timevalNow.tv_sec - timevalRef.tv_sec
+    std::cout << "Leaving uqTgaValidation::runValidationStage() at " << ctime(&timevalNow.tv_sec)
+              << "Total uqTgaValidation::runValidationStage() run time = " << timevalNow.tv_sec - timevalRef.tv_sec
               << " seconds"
               << std::endl;
   }
@@ -781,7 +779,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::validationStage()
 
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
-uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::comparisonStage()
+uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runComparisonStage()
 {
   int iRC;
   struct timeval timevalRef;
@@ -789,7 +787,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::comparisonStage()
 
   iRC = gettimeofday(&timevalRef, NULL);
   if (m_env.rank() == 0) {
-    std::cout << "Entering uqTgaValidation::comparisonStage() at " << ctime(&timevalRef.tv_sec)
+    std::cout << "Entering uqTgaValidation::runComparisonStage() at " << ctime(&timevalRef.tv_sec)
               << std::endl;
   }
 
@@ -871,8 +869,8 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::comparisonStage()
 
   iRC = gettimeofday(&timevalNow, NULL);
   if (m_env.rank() == 0) {
-    std::cout << "Leaving uqTgaValidation::comparisonStage() at " << ctime(&timevalNow.tv_sec)
-              << "Total uqTgaValidation::comparisonStage() run time = " << timevalNow.tv_sec - timevalRef.tv_sec
+    std::cout << "Leaving uqTgaValidation::runComparisonStage() at " << ctime(&timevalNow.tv_sec)
+              << "Total uqTgaValidation::runComparisonStage() run time = " << timevalNow.tv_sec - timevalRef.tv_sec
               << " seconds"
               << std::endl;
   }

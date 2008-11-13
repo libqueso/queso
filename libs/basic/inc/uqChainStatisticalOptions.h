@@ -64,7 +64,7 @@
 class uqChainStatisticalOptionsClass
 {
 public:
-  uqChainStatisticalOptionsClass(const uqEnvironmentClass& env,     /*! The QUESO toolkit environment.                 */
+  uqChainStatisticalOptionsClass(const uqBaseEnvironmentClass& env,     /*! The QUESO toolkit environment.                 */
                                  const std::string&        prefix); /*! Prefix for reading parameters from input file. */
  ~uqChainStatisticalOptionsClass();
 
@@ -119,7 +119,7 @@ private:
   void   defineMyOptions        (po::options_description& optionsDesc) const;
   void   getMyOptionValues      (po::options_description& optionsDesc);
 
-  const uqEnvironmentClass& m_env;
+  const uqBaseEnvironmentClass& m_env;
         std::string         m_prefix;
 
   std::string m_option_help;

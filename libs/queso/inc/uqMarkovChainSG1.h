@@ -72,11 +72,10 @@ template <class P_V,class P_M>
 class uqMarkovChainSGClass
 {
 public:
-  uqMarkovChainSGClass(const char*                         prefix,            /*! Prefix.                     */
-                       const uqBaseVectorRVClass<P_V,P_M>& sourceRv,          /*! The source random variable. */
-                       const P_V&                          initialPosition,   /*! First position of chain.    */
-                       const P_M*                          proposalCovMatrix, /*! Proposal covariance matrix. */ 
-                       const uqBaseTKClass<P_V,P_M>*       proposalTK);       /*! Transition kernel proposal. */
+  uqMarkovChainSGClass(const char*                         prefix,                  /*! Prefix.                     */
+                       const uqBaseVectorRVClass<P_V,P_M>& sourceRv,                /*! The source random variable. */
+                       const P_V&                          initialPosition,         /*! First position of chain.    */
+                       const P_M*                          inputProposalCovMatrix); /*! Proposal covariance matrix. */ 
  ~uqMarkovChainSGClass();
 
   void   generateSequence        (uqBaseVectorSequenceClass<P_V,P_M>& workingChain); /*! */
@@ -121,11 +120,14 @@ private:
                                 //const P_M*                                     mahalanobisMatrix = NULL,
                                 //bool                                           applyMahalanobisInvert = true) const;
 
-  const uqEnvironmentClass&             m_env;
+  const uqBaseEnvironmentClass&         m_env;
         std::string                     m_prefix;
   const uqVectorSpaceClass   <P_V,P_M>& m_vectorSpace;
   const uqBaseVectorPdfClass <P_V,P_M>& m_targetPdf;
+        P_V                             m_initialPosition;
+        bool                            m_nullInputProposalCovMatrix;
   const P_M*                            m_currentProposalCovMatrix;
+        uqBaseTKClass<P_V,P_M>*         m_proposalTK;
 
         po::options_description*                m_optionsDesc;
         std::string                             m_option_help;
@@ -154,13 +156,6 @@ private:
         std::string                             m_option_am_adaptInterval;
         std::string                             m_option_am_eta;
         std::string                             m_option_am_epsilon;
-
-        P_V                                     m_initialPosition;
-#ifdef UQ_USES_PROPOSAL_CLASS
-        uqTKProposal_BaseClass*                 m_tKProposal;
-#else
-        bool                                    m_proposalIsSymmetric;
-#endif
 
         unsigned int                            m_chainType;
         unsigned int                            m_chainSize;
@@ -195,6 +190,7 @@ private:
 
 #ifdef UQ_USES_PROPOSAL_CLASS
 #else
+        bool                                    m_proposalIsSymmetric;
         std::vector<P_M*>                       m_lowerCholProposalCovMatrices;
         std::vector<P_M*>                       m_proposalCovMatrices;
 #ifdef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
@@ -223,14 +219,16 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   const char*                         prefix,
   const uqBaseVectorRVClass<P_V,P_M>& sourceRv,
   const P_V&                          initialPosition,
-  const P_M*                          proposalCovMatrix,
-  const uqBaseTKClass<P_V,P_M>*       proposalTK)
+  const P_M*                          inputProposalCovMatrix)
   :
   m_env                                  (sourceRv.env()),
   m_prefix                               ((std::string)(prefix) + "mc_"),
   m_vectorSpace                          (sourceRv.imageSpace()),
   m_targetPdf                            (sourceRv.pdf()),
-  m_currentProposalCovMatrix             (proposalCovMatrix),
+  m_initialPosition                      (initialPosition),
+  m_nullInputProposalCovMatrix           (inputProposalCovMatrix == NULL),
+  m_currentProposalCovMatrix             (inputProposalCovMatrix),
+  m_proposalTK                           (NULL),
   m_optionsDesc                          (new po::options_description("Bayesian Markov chain options")),
   m_option_help                          (m_prefix + "help"                          ),
   m_option_chain_type                    (m_prefix + "chain_type"                    ),
@@ -258,8 +256,6 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   m_option_am_adaptInterval              (m_prefix + "am_adaptInterval"              ),
   m_option_am_eta                        (m_prefix + "am_eta"                        ),
   m_option_am_epsilon                    (m_prefix + "am_epsilon"                    ),
-  m_initialPosition                      (initialPosition),
-  m_proposalIsSymmetric                  (true),
   m_chainType                            (UQ_MAC_SG_CHAIN_TYPE_ODV),
   m_chainSize                            (UQ_MAC_SG_CHAIN_SIZE_ODV),
   m_chainOutputFileName                  (UQ_MAC_SG_CHAIN_OUTPUT_FILE_NAME_ODV),
@@ -287,6 +283,7 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   m_amAdaptInterval                      (UQ_MAC_SG_AM_ADAPT_INTERVAL_ODV),
   m_amEta                                (UQ_MAC_SG_AM_ETA_ODV),
   m_amEpsilon                            (UQ_MAC_SG_AM_EPSILON_ODV),
+  m_proposalIsSymmetric                  (true),
   m_lowerCholProposalCovMatrices         (1),//NULL),
   m_proposalCovMatrices                  (1),//NULL),
 #ifdef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
@@ -294,7 +291,7 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   m_proposalPrecMatrices                 (1),//NULL),
 #endif
   m_idsOfUniquePositions                 (0),//0.),
-  m_logTargets                        (0),//0.),
+  m_logTargets                           (0),//0.),
   m_alphaQuotients                       (0),//0.),
   m_chainRunTime                         (0.),
   m_numRejections                        (0),
@@ -315,6 +312,14 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
                                    << "', state of  object is:"
                                    << "\n" << *this
                                    << std::endl;
+
+  if (m_proposalTK == NULL) {
+    if (m_currentProposalCovMatrix == NULL) {
+      // Create cov matrix for Langevin transition kernel
+    }
+    m_proposalTK = new uqLangevinTKClass<P_V,P_M>(m_prefix.c_str(),
+                                                  m_vectorSpace);
+  }
 
   if (m_chainComputeStats        ) m_chainStatisticalOptions         = new uqChainStatisticalOptionsClass(m_env,m_prefix + "chain_"        );
   if (m_uniqueChainComputeStats  ) m_uniqueChainStatisticalOptions   = new uqChainStatisticalOptionsClass(m_env,m_prefix + "uniqueChain_"  );
@@ -337,6 +342,8 @@ uqMarkovChainSGClass<P_V,P_M>::~uqMarkovChainSGClass()
   if (m_uniqueChainStatisticalOptions  ) delete m_uniqueChainStatisticalOptions;
   if (m_chainStatisticalOptions        ) delete m_chainStatisticalOptions;
   if (m_optionsDesc                    ) delete m_optionsDesc;
+
+  if (m_nullInputProposalCovMatrix) delete m_currentProposalCovMatrix;
 
   //std::cout << "Leaving uqMarkovChainSGClass<P_V,P_M>::destructor()"
   //          << std::endl;

@@ -39,7 +39,7 @@ public:
   virtual       void                         compute    (const P_V& domainVector, Q_V& imageVector) const = 0;
 
 protected:
-  const uqEnvironmentClass&          m_env;
+  const uqBaseEnvironmentClass&          m_env;
         std::string                  m_prefix;
   const uqVectorSpaceClass<P_V,P_M>& m_domainSpace;
   const uqVectorSpaceClass<Q_V,Q_M>& m_imageSpace;

@@ -22,7 +22,7 @@
 #include <string>
 
 void defineMyOptions  (po::options_description& optionsDesc);
-void getMyOptionValues(const uqEnvironmentClass& env,
+void getMyOptionValues(const uqBaseEnvironmentClass& env,
                        po::options_description&  optionsDesc,
                        double*                   c,
                        double*                   f,
@@ -42,7 +42,7 @@ int main(int argc, char* argv[])
   double       h = 100.;
   unsigned int numDiv = 20;
 
-  uqEnvironmentClass env;
+  uqFullEnvironmentClass env;
   po::options_description optionsDesc("1D FEM problem options");
 
   //////////////////////////////////////////////////
@@ -123,7 +123,7 @@ void defineMyOptions(po::options_description& optionsDesc)
 }
 
 void getMyOptionValues(
-  const uqEnvironmentClass& env,
+  const uqBaseEnvironmentClass& env,
   po::options_description&  optionsDesc,
   double*                   c,
   double*                   f,

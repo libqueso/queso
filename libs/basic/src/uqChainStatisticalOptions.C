@@ -21,7 +21,7 @@
 #include <uqMiscellaneous.h>
 
 uqChainStatisticalOptionsClass::uqChainStatisticalOptionsClass(
-  const uqEnvironmentClass& env,
+  const uqBaseEnvironmentClass& env,
   const std::string&        prefix)
   :
   m_env                     (env),

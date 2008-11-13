@@ -21,7 +21,7 @@
 #include <math.h>
 
 uq1DScalarElementClass::uq1DScalarElementClass(
-  const uqEnvironmentClass& env,
+  const uqBaseEnvironmentClass& env,
   const uq1DNodeClass&      node0,
   const uq1DNodeClass&      node1,
         unsigned int        order)

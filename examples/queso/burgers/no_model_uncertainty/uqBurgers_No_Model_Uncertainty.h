@@ -50,7 +50,7 @@ template<class P_V, class P_M>
 struct 
 likelihoodRoutine_DataClass
 {
-  likelihoodRoutine_DataClass(const uqEnvironmentClass& env,
+  likelihoodRoutine_DataClass(const uqBaseEnvironmentClass& env,
 			      double Re,
                               const char* fileName);
  ~likelihoodRoutine_DataClass();
@@ -68,7 +68,7 @@ likelihoodRoutine_DataClass
 
 // likelihoodRoutine_DataClass constructor: Read data, allocate/initialize memory for Burgers' solver
 template<class P_V, class P_M>
-likelihoodRoutine_DataClass<P_V,P_M>::likelihoodRoutine_DataClass(const uqEnvironmentClass &env, 
+likelihoodRoutine_DataClass<P_V,P_M>::likelihoodRoutine_DataClass(const uqBaseEnvironmentClass &env, 
 								  double Re, const char *fileName)
   :
   nDataPoints(0),
@@ -242,7 +242,7 @@ void qoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiVal
 //********************************************************
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
-uqAppl(const uqEnvironmentClass& env)
+uqAppl(const uqBaseEnvironmentClass& env)
 {
   if (env.rank() == 0) {
     std::cout << "Beginning run of 'uqBurgers_No_Model_Uncertainty' example\n"

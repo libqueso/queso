@@ -27,13 +27,13 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 class uqValidationCycleClass
 {
 public:
-  uqValidationCycleClass(const uqEnvironmentClass&          env,
+  uqValidationCycleClass(const uqBaseEnvironmentClass&          env,
                          const char*                        prefix,
                          const uqVectorSpaceClass<P_V,P_M>& paramSpace,
                          const uqVectorSpaceClass<P_V,P_M>& qoiSpace);
  ~uqValidationCycleClass();
 
-  const uqEnvironmentClass& env() const;
+  const uqBaseEnvironmentClass& env() const;
 
   void setCalIP(const uqBaseVectorRVClass <P_V,P_M>& priorRv,
                 double (*likelihoodRoutinePtr)(const P_V& paramValues, const void* routineDataPtr),
@@ -63,7 +63,7 @@ public:
         uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>& valFP();
 
 private:
-  const uqEnvironmentClass&          m_env;
+  const uqBaseEnvironmentClass&          m_env;
         std::string                  m_prefix;
   const uqVectorSpaceClass<P_V,P_M>& m_paramSpace;
   const uqVectorSpaceClass<Q_V,Q_M>& m_qoiSpace;
@@ -88,7 +88,7 @@ private:
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::uqValidationCycleClass(
-  const uqEnvironmentClass&          env,
+  const uqBaseEnvironmentClass&          env,
   const char*                        prefix,
   const uqVectorSpaceClass<P_V,P_M>& paramSpace,
   const uqVectorSpaceClass<P_V,P_M>& qoiSpace)
@@ -151,7 +151,7 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::~uqValidationCycleClass()
 }
 
 template <class P_V,class P_M,class Q_V,class Q_M>
-const uqEnvironmentClass&
+const uqBaseEnvironmentClass&
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::env() const
 {
   return m_env;

@@ -57,7 +57,7 @@ private:
         void defineMyOptions    (po::options_description& optionsDesc);
         void getMyOptionValues  (po::options_description& optionsDesc);
 
-  const uqEnvironmentClass&                         m_env;
+  const uqBaseEnvironmentClass&                         m_env;
         std::string                                 m_prefix;
 
         po::options_description*                    m_optionsDesc;

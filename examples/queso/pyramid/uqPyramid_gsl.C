@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
   // Initialize environment
   //************************************************
   MPI_Init(&argc,&argv);
-  uqEnvironmentClass* env = new uqEnvironmentClass(argc,argv);
+  uqFullEnvironmentClass* env = new uqFullEnvironmentClass(argc,argv);
 
   UQ_FATAL_TEST_MACRO(env->isThereInputFile() == false,
                       env->rank(),

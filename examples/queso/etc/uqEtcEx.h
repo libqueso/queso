@@ -96,7 +96,7 @@ void calib_CompleteLikelihoodRoutine(const P_V& paramValues, const void* functio
 //********************************************************
 template<class P_V,class P_M,class S_V,class S_M,class L_V,class L_M>
 void 
-uqAppl(const uqEnvironmentClass& env)
+uqAppl(const uqBaseEnvironmentClass& env)
 {
   if (env.rank() == 0) {
     std::cout << "Beginning run of 'uqEtcEx' example\n"

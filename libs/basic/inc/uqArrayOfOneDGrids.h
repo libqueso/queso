@@ -43,7 +43,7 @@ public:
         void                         print          (std::ostream& os) const;
 
 private:
-  const uqEnvironmentClass&                          m_env;
+  const uqBaseEnvironmentClass&                          m_env;
         std::string                                  m_prefix;
   const uqVectorSpaceClass<V,M>&                     m_rowSpace;
   EpetraExt::DistArray<uqBaseOneDGridClass<double>*> m_oneDGrids;

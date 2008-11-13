@@ -36,9 +36,9 @@ public:
                       const uqVectorSpaceClass<V,M>& imageSpace);
   virtual ~uqBaseVectorRVClass();
 
-  const   uqEnvironmentClass&             env        () const;
+  const   uqBaseEnvironmentClass&         env        () const;
   const   uqVectorSpaceClass       <V,M>& imageSpace () const;
-  const   uqBaseVectorPdfClass     <V,M>& pdf() const;
+  const   uqBaseVectorPdfClass     <V,M>& pdf        () const;
   const   uqBaseVectorRealizerClass<V,M>& realizer   () const;
   const   uqBaseVectorCdfClass     <V,M>& cdf        () const;
   const   uqBaseVectorMdfClass     <V,M>& mdf        () const;
@@ -51,7 +51,7 @@ public:
   virtual void                            print      (std::ostream& os) const;
 
 protected:
-  const   uqEnvironmentClass&             m_env;
+  const   uqBaseEnvironmentClass&         m_env;
           std::string                     m_prefix;
   const   uqVectorSpaceClass       <V,M>& m_imageSpace;
   const   uqBaseVectorPdfClass     <V,M>* m_pdf;
@@ -147,7 +147,7 @@ uqBaseVectorRVClass<V,M>::mdf() const
 }
 
 template <class V, class M>
-const uqEnvironmentClass&
+const uqBaseEnvironmentClass&
 uqBaseVectorRVClass<V,M>::env() const
 {
   return m_env;

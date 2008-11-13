@@ -69,7 +69,7 @@ public:
   const   V&                       imageVarianceValues()              const;
 
 protected:
-  const uqEnvironmentClass&      m_env;
+  const uqBaseEnvironmentClass&      m_env;
         std::string              m_prefix;
   const uqVectorSpaceClass<V,M>& m_imageSpace;
         unsigned int             m_period;

@@ -22,7 +22,7 @@
 
 uqVectorClass::uqVectorClass()
   :
-  m_env(*(new uqEnvironmentClass())                                    ),
+  m_env(*(new uqFullEnvironmentClass())                                ),
   m_map(*(new Epetra_Map( 1,0,*(new Epetra_MpiComm(MPI_COMM_WORLD)) ) ))
 {
   UQ_FATAL_TEST_MACRO(true,
@@ -31,7 +31,7 @@ uqVectorClass::uqVectorClass()
                       "should not be used by user");
 }
 
-uqVectorClass::uqVectorClass(const uqEnvironmentClass& env, const Epetra_Map& map)
+uqVectorClass::uqVectorClass(const uqBaseEnvironmentClass& env, const Epetra_Map& map)
   :
   m_env              (env),
   m_map              (map),
@@ -114,7 +114,7 @@ uqVectorClass::operator-=(const uqVectorClass& rhs)
   return *this;
 }
 
-const uqEnvironmentClass&
+const uqBaseEnvironmentClass&
 uqVectorClass::env() const
 {
   return m_env;

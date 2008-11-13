@@ -33,23 +33,23 @@
 template<class T>
 class uqBaseScalarCdfClass {
 public:
-           uqBaseScalarCdfClass(const uqEnvironmentClass& env, const char* prefix);
+           uqBaseScalarCdfClass(const uqBaseEnvironmentClass& env, const char* prefix);
   virtual ~uqBaseScalarCdfClass();
 
-  const   uqEnvironmentClass& env()    const;
+  const   uqBaseEnvironmentClass& env()    const;
   const   std::string&        prefix() const;
   virtual double value  (T      paramValue) const = 0;
   virtual T      inverse(double cdfValue  ) const = 0;
   virtual void   print  (std::ostream& os ) const = 0;
 
 protected:
-  const uqEnvironmentClass& m_env;
+  const uqBaseEnvironmentClass& m_env;
         std::string         m_prefix;
 };
 
 template<class T>
 uqBaseScalarCdfClass<T>::uqBaseScalarCdfClass(
-  const uqEnvironmentClass& env,
+  const uqBaseEnvironmentClass& env,
   const char*               prefix)
   :
   m_env   (env),
@@ -74,7 +74,7 @@ uqBaseScalarCdfClass<T>::~uqBaseScalarCdfClass()
 }
 
 template <class T>
-const uqEnvironmentClass&
+const uqBaseEnvironmentClass&
 uqBaseScalarCdfClass<T>::env() const
 {
   return m_env;
@@ -100,7 +100,7 @@ std::ostream& operator<< (std::ostream& os, const uqBaseScalarCdfClass<T>& obj)
 template<class T>
 class uqSampledScalarCdfClass : public uqBaseScalarCdfClass<T> {
 public:
-  uqSampledScalarCdfClass(const uqEnvironmentClass&     env,
+  uqSampledScalarCdfClass(const uqBaseEnvironmentClass&     env,
                           const char*                   prefix,
                           const uqBaseOneDGridClass<T>& cdfGrid,
                           const std::vector<double>&    cdfValues);
@@ -121,7 +121,7 @@ protected:
 
 template<class T>
 uqSampledScalarCdfClass<T>::uqSampledScalarCdfClass(
-  const uqEnvironmentClass&     env,
+  const uqBaseEnvironmentClass&     env,
   const char*                   prefix,
   const uqBaseOneDGridClass<T>& cdfGrid,
   const std::vector<double>&    cdfValues)
