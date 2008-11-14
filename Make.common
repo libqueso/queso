@@ -1,0 +1,45 @@
+ifeq ($(UQBT),)
+override UQBT = gsl
+else ifeq ($(UQBT),gsl)
+else
+override UQBT = tri
+endif
+
+ifeq ($(TRILINOS_INCLUDE_PATH_FOR_QUESO_TOOL),)
+override TRILINOS_INCLUDE_PATH_FOR_QUESO_TOOL = $(TRILINOS_DIR)/include
+endif
+ifeq ($(MPI_INCLUDE_PATH_FOR_QUESO_TOOL),)
+override MPI_INCLUDE_PATH_FOR_QUESO_TOOL = $(MPI_DIR)/include
+endif
+ifeq ($(BOOST_INCLUDE_PATH_FOR_QUESO_TOOL),)
+override BOOST_INCLUDE_PATH_FOR_QUESO_TOOL = /usr/include/boost
+endif
+ifeq ($(GSL_INCLUDE_PATH_FOR_QUESO_TOOL),)
+override GSL_INCLUDE_PATH_FOR_QUESO_TOOL = /usr/include/gsl
+endif
+ifeq ($(TRILINOS_LIB_PATH_FOR_QUESO_TOOL),)
+override TRILINOS_LIB_PATH_FOR_QUESO_TOOL = $(TRILINOS_DIR)/lib
+endif
+ifeq ($(MPI_LIB_PATH_FOR_QUESO_TOOL),)
+override MPI_LIB_PATH_FOR_QUESO_TOOL = $(MPI_DIR)/lib
+endif
+ifeq ($(BOOST_LIB_PATH_FOR_QUESO_TOOL),)
+override BOOST_LIB_PATH_FOR_QUESO_TOOL = /usr/lib
+endif
+ifeq ($(GSL_LIB_PATH_FOR_QUESO_TOOL),)
+override GSL_LIB_PATH_FOR_QUESO_TOOL = /usr/lib
+endif
+
+AR ?= ar
+ARFLAGS ?= -rv
+CXX ?= g++
+CXXFLAGS += -Wall -c
+
+default: all
+
+echo_basic_type:
+	@echo 'UQBT = ' $(UQBT)
+
+clean_all: echo_basic_type clean_lib clean_exec
+
+.SUFFIXES: .o .C

@@ -1,27 +1,9 @@
-ifeq ($(UQBT),)
-override UQBT = gsl
-else ifeq ($(UQBT),gsl)
-else
-override UQBT = tri
-endif
-
-ifeq ($(BOOST_INCLUDE_PATH_FOR_QUESO_TOOL),)
-override BOOST_INCLUDE_PATH_FOR_QUESO_TOOL = .
-endif
-ifeq ($(GSL_INCLUDE_PATH_FOR_QUESO_TOOL),)
-override GSL_INCLUDE_PATH_FOR_QUESO_TOOL = .
-endif
-ifeq ($(BOOST_LIB_PATH_FOR_QUESO_TOOL),)
-override BOOST_LIB_PATH_FOR_QUESO_TOOL = .
-endif
-ifeq ($(GSL_LIB_PATH_FOR_QUESO_TOOL),)
-override GSL_LIB_PATH_FOR_QUESO_TOOL = .
-endif
+include ../../../Make.common
 
 ifeq ($(UQBT),gsl)
 
 DEFINES = \
-	-D__EXAMPLE_USES_GSL__
+	-D__APPL_USES_GSL__ -D__UQ_USES_GSL__
 INC_PATHS = \
 	-I. \
 	-I../inc \
@@ -49,7 +31,7 @@ LIBS = \
 	-lgsl \
 	-lgslcblas \
 	-lblas \
-	-lboost_program_options-$(COMPILER_SPEC_IN_BOOST_LIB_NAME)-mt-1_35
+	-lboost_program_options
 
 else
 
@@ -84,20 +66,12 @@ LIBS = \
 	-lgsl \
 	-lgslcblas \
 	-lblas \
-	-lboost_program_options-$(COMPILER_SPEC_IN_BOOST_LIB_NAME)-mt-1_35
+	-lboost_program_options
 
 endif
 
 
-CXX = g++
-CXXFLAGS = -Wall -c
-
 all:	uqHeatEx
-
-echo_basic_type:
-	@echo 'UQBT = ' $(UQBT)
-
-clean_all: echo_basic_type clean_lib clean_exec
 
 clean_lib:
 	cd ../../../libs/basic/src; make clean_all UQBT=$(UQBT)
@@ -114,8 +88,6 @@ uqHeatEx: libs uqHeatEx.o
 libs:
 	cd ../../../libs/basic/src; make libuq_basic_all UQBT=$(UQBT)
 	cd ../../../libs/fp/src; make libuq_fp_all UQBT=$(UQBT)
-
-.SUFFIXES: .o .C
 
 %.o: %.C
 	$(CXX) $(DEFINES) $(INC_PATHS) $(CXXFLAGS) $<

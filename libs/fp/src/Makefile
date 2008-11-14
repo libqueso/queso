@@ -1,11 +1,4 @@
-override UQBT = gsl
-
-ifeq ($(BOOST_INCLUDE_PATH_FOR_QUESO_TOOL),)
-override BOOST_INCLUDE_PATH_FOR_QUESO_TOOL = .
-endif
-ifeq ($(GSL_INCLUDE_PATH_FOR_QUESO_TOOL),)
-override GSL_INCLUDE_PATH_FOR_QUESO_TOOL = .
-endif
+include ../../../Make.common
 
 INC_PATHS = \
 	-I../inc \
@@ -14,11 +7,6 @@ INC_PATHS = \
 	-I$(TRILINOS_INCLUDE_PATH_FOR_QUESO_TOOL) \
 	-I$(BOOST_INCLUDE_PATH_FOR_QUESO_TOOL) \
 	-I$(GSL_INCLUDE_PATH_FOR_QUESO_TOOL)
-
-AR = ar
-ARFLAGS = -rv
-CXX = g++
-CXXFLAGS = -Wall -c
 
 OBJS_ANY = uq1DScalarElement.o \
 	uq1DNode.o \
@@ -34,8 +22,10 @@ all_docs:
 echo_num_proc:
 	@echo 'UQBT = ' $(UQBT)
 
-clean_all: echo_num_proc clean_obj
+clean_lib: echo_num_proc clean_obj
 	rm -f ../lib/libuq_fp_any.a
+
+clean_exec:
 
 clean_obj:
 	rm -f ../inc/*~
@@ -48,8 +38,6 @@ libuq_fp_any: echo_num_proc $(OBJS_ANY)
 	$(AR) $(ARFLAGS) ../lib/libuq_fp_any.a $(OBJS_ANY)
 
 libuq_fp_specific: echo_num_proc $(OBJS_$(UQBT))
-
-.SUFFIXES: .o .C
 
 %.o: %.C
 	$(CXX) $(INC_PATHS) $(CXXFLAGS) $<

@@ -1,22 +1,4 @@
-ifeq ($(UQBT),)
-override UQBT = gsl
-else ifeq ($(UQBT),gsl)
-else
-override UQBT = tri
-endif
-
-ifeq ($(BOOST_INCLUDE_PATH_FOR_QUESO_TOOL),)
-override BOOST_INCLUDE_PATH_FOR_QUESO_TOOL = .
-endif
-ifeq ($(GSL_INCLUDE_PATH_FOR_QUESO_TOOL),)
-override GSL_INCLUDE_PATH_FOR_QUESO_TOOL = .
-endif
-ifeq ($(MPI_INCLUDE_PATH_FOR_QUESO_TOOL),)
-override MPI_INCLUDE_PATH_FOR_QUESO_TOOL = .
-endif
-ifeq ($(TRILINOS_INCLUDE_PATH_FOR_QUESO_TOOL),)
-override TRILINOS_INCLUDE_PATH_FOR_QUESO_TOOL = .
-endif
+include ../../../Make.common
 
 ifeq ($(UQBT),gsl)
 
@@ -45,7 +27,7 @@ endif
 AR = ar
 ARFLAGS = -rv
 CXX = g++
-CXXFLAGS = -Wall -c -g
+CXXFLAGS += -Wall -c -g
 
 OBJS_ANY = uqEnvironment.o \
 	uqDefines.o \
@@ -72,9 +54,11 @@ all_docs:
 echo_num_proc:
 	@echo 'UQBT = ' $(UQBT)
 
-clean_all: echo_num_proc clean_obj
+clean_lib: echo_num_proc clean_obj
 	rm -f ../lib/libuq_basic_any.a
 	rm -f ../lib/libuq_basic_$(UQBT).a
+
+clean_exec:
 
 clean_obj:
 	rm -f ../inc/*~
@@ -88,8 +72,6 @@ libuq_basic_any: echo_num_proc $(OBJS_ANY)
 
 libuq_basic_specific: echo_num_proc $(OBJS_$(UQBT))
 	$(AR) $(ARFLAGS) ../lib/libuq_basic_$(UQBT).a $(OBJS_$(UQBT))
-
-.SUFFIXES: .o .C
 
 %.o: %.C
 	$(CXX) $(DEFINES) $(INC_PATHS) $(CXXFLAGS) $<

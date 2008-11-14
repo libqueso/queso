@@ -1,22 +1,4 @@
-ifeq ($(UQBT),)
-override UQBT = gsl
-else ifeq ($(UQBT),gsl)
-else
-override UQBT = tri
-endif
-
-ifeq ($(BOOST_INCLUDE_PATH_FOR_QUESO_TOOL),)
-override BOOST_INCLUDE_PATH_FOR_QUESO_TOOL = .
-endif
-ifeq ($(GSL_INCLUDE_PATH_FOR_QUESO_TOOL),)
-override GSL_INCLUDE_PATH_FOR_QUESO_TOOL = .
-endif
-ifeq ($(BOOST_LIB_PATH_FOR_QUESO_TOOL),)
-override BOOST_LIB_PATH_FOR_QUESO_TOOL = .
-endif
-ifeq ($(GSL_LIB_PATH_FOR_QUESO_TOOL),)
-override GSL_LIB_PATH_FOR_QUESO_TOOL = .
-endif
+include ../../../../Make.common
 
 ifeq ($(UQBT),gsl)
 
@@ -52,7 +34,7 @@ LIBS = \
 	-lgsl \
 	-lgslcblas \
 	-lblas \
-	-lboost_program_options-$(COMPILER_SPEC_IN_BOOST_LIB_NAME)-mt-1_35 \
+	-lboost_program_options
 	-lburgers
 
 else
@@ -91,20 +73,12 @@ LIBS = \
 	-lgsl \
 	-lgslcblas \
 	-lblas \
-	-lboost_program_options-$(COMPILER_SPEC_IN_BOOST_LIB_NAME)-mt-1_35 \
+	-lboost_program_options
 	-lburgers
 
 endif
 
-CXX = g++
-CXXFLAGS = -Wall -c
-
 all:	Burgers_GP_Model_Uncertainty
-
-echo_basic_type:
-	@echo 'UQBT = ' $(UQBT)
-
-clean_all: echo_basic_type clean_lib clean_exec
 
 clean_lib:
 	cd ../../../../libs/basic/src; make clean_all UQBT=$(UQBT)
@@ -121,8 +95,6 @@ Burgers_GP_Model_Uncertainty: libs uqBurgers_GP_Model_Uncertainty_$(UQBT).o uqBu
 libs:
 	cd ../../../../libs/basic/src; make libuq_basic_all UQBT=$(UQBT)
 	cd ../../../../libs/queso/src; make libuq_queso_all UQBT=$(UQBT)
-
-.SUFFIXES: .o .C
 
 %.o: %.C
 	$(CXX) $(DEFINES) $(INC_PATHS) $(CXXFLAGS) $<

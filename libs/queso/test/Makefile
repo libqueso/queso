@@ -1,16 +1,4 @@
-ifeq ($(UQBT),)
-override UQBT = gsl
-else ifeq ($(UQBT),gsl)
-else
-override UQBT = tri
-endif
-
-ifeq ($(BOOST_INCLUDE_PATH_FOR_QUESO_TOOL),)
-override BOOST_INCLUDE_PATH_FOR_QUESO_TOOL = .
-endif
-ifeq ($(GSL_INCLUDE_PATH_FOR_QUESO_TOOL),)
-override GSL_INCLUDE_PATH_FOR_QUESO_TOOL = .
-endif
+include ../../../Make.common
 
 ifeq ($(UQBT),gsl)
 
@@ -49,14 +37,9 @@ LIBS = \
 	-lgsl \
 	-lgslcblas \
 	-lblas \
-	-lboost_program_options-$(COMPILER_SPEC_IN_BOOST_LIB_NAME)-mt-1_35 \
+	-lboost_program_options \
 	-l$(BOOST_UNIT_TEST_LIB_FOR_QUESO_TOOL)
 
-
-AR = ar
-ARFLAGS = -rv
-CXX = g++
-CXXFLAGS = -Wall -c -g
 
 OBJS_ANY =
 
@@ -77,7 +60,7 @@ echo_num_proc:
 
 clean: clean_all
 
-clean_all: echo_num_proc clean_obj clean_docs 
+clean_lib: echo_num_proc clean_obj clean_docs 
 	rm -f ../lib/libuq_queso_any.a
 	rm -f ../lib/libuq_queso_$(UQBT).a
 	rm -f $(UNIT_TESTS)
@@ -88,10 +71,10 @@ clean_obj:
 	rm -f *~
 	rm -f *.o
 
+clean_exec:
+
 clean_docs:
 	rm -rf html
-
-.SUFFIXES: .o .C
 
 %.o: %.C
 	$(CXX) $(DEFINES) $(INC_PATHS) $(CXXFLAGS) $<
