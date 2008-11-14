@@ -54,7 +54,7 @@ protected:
   const   uqBaseEnvironmentClass&         m_env;
           std::string                     m_prefix;
   const   uqVectorSpaceClass       <V,M>& m_imageSpace;
-  const   uqBaseVectorPdfClass     <V,M>* m_pdf;
+          uqBaseVectorPdfClass     <V,M>* m_pdf;
   const   uqBaseVectorRealizerClass<V,M>* m_realizer;
   const   uqBaseVectorCdfClass     <V,M>* m_cdf;
   const   uqBaseVectorMdfClass     <V,M>* m_mdf;
@@ -323,6 +323,7 @@ public:
           void setRealizer(const uqBaseVectorRealizerClass<V,M>& realizer);
           void setCdf     (const uqBaseVectorCdfClass     <V,M>& cdf     );
           void setMdf     (const uqBaseVectorMdfClass     <V,M>& mdf     );
+	  void updateExpectedValues(const V& newExpectedValues );
 
 private:
   using uqBaseVectorRVClass<V,M>::m_env;
@@ -448,6 +449,15 @@ uqGaussianVectorRVClass<V,M>::setMdf(const uqBaseVectorMdfClass<V,M>& mdf)
                       m_env.rank(),
                       "uqGaussianVectorRVClass<V,M>::setMdf()",
                       "it does not make sense to call such routine for this class");
+  return;
+}
+
+template<class V, class M>
+void
+uqGaussianVectorRVClass<V,M>::updateExpectedValues(const V& newExpectedValues)
+{
+  // we are sure that m_pdf pointer to type uqGaussianVectorPdfClass<V,M>, so all is well
+  ( dynamic_cast< uqGaussianVectorPdfClass<V,M>* >(m_pdf) )->updateExpectedValues(newExpectedValues);
   return;
 }
 

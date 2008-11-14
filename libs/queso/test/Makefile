@@ -67,7 +67,8 @@ OBJS_tri = uqTrilinosParamSpace.o \
 
 UNIT_TESTS = uqTestExample \
 	uqTestVectorPdf_gsl \
-	uqTestVectorRealizer_gsl
+	uqTestVectorRealizer_gsl \
+	uqTestVectorRV_gsl
 
 all: check
 
@@ -117,6 +118,12 @@ uqTestVectorRealizer_gsl: uqTestVectorRealizer_gsl.o libs_basic
 	$(CXX) $(LIB_PATHS) $< -o $@ $(LIBS)
 
 uqTestVectorRealizer_gsl.o: uqTestVectorRealizer_gsl.C ../inc/uqVectorRealizer.h
+	$(CXX) $(DEFINES) $(INC_PATHS) $(CXXFLAGS) $<
+
+uqTestVectorRV_gsl: uqTestVectorRV_gsl.o libs_basic
+	$(CXX) $(LIB_PATHS) $< -o $@ $(LIBS)
+
+uqTestVectorRV_gsl.o: uqTestVectorRV_gsl.C ../inc/uqVectorRV.h
 	$(CXX) $(DEFINES) $(INC_PATHS) $(CXXFLAGS) $<
 
 libs_basic:

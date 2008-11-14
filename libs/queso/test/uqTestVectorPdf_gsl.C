@@ -115,13 +115,14 @@ BOOST_AUTO_TEST_CASE( test_uqGaussianVectorPdfClass )
   BOOST_REQUIRE_CLOSE(gaussianPdf->actualDensity(testValues), exp(-2.0), tolClose);
   BOOST_REQUIRE_CLOSE(gaussianPdf->minus2LnDensity(testValues),    4.0 , tolClose);
 
-  delete gaussianPdf;
+  //delete gaussianPdf;
 
   // mean = [1.0; -0.5], var = [0.25; 0.5]
   expectedVal[0] = 1.0; expectedVal[1] = -0.5;
 
-  gaussianPdf = new uqGaussianVectorPdfClass<uqGslVectorClass, uqGslMatrixClass>("test_pdf", domainSpace, domainMinVal, 
-										 domainMaxVal, expectedVal, varianceVal);
+//   gaussianPdf = new uqGaussianVectorPdfClass<uqGslVectorClass, uqGslMatrixClass>("test_pdf", domainSpace, domainMinVal, 
+// 										 domainMaxVal, expectedVal, varianceVal);
+  gaussianPdf->updateExpectedValues(expectedVal); // just update expected value (don't reallocate everything)
 
   testValues[0] = 0.0; testValues[1] = 0.0;
   BOOST_REQUIRE_CLOSE(gaussianPdf->actualDensity(testValues), exp(-2.25), tolClose);

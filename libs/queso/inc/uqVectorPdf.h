@@ -471,6 +471,7 @@ public:
 
   double actualDensity  (const V& paramValues) const;
   double minus2LnDensity(const V& paramValues) const;
+  void updateExpectedValues(const V& newExpectedValues );
 
 protected:
   bool     m_diagonalCovMatrix;
@@ -579,6 +580,16 @@ double
 uqGaussianVectorPdfClass<V,M>::actualDensity(const V& paramValues) const
 {
   return exp(-0.5*this->minus2LnDensity(paramValues));
+}
+
+template<class V, class M>
+void
+uqGaussianVectorPdfClass<V,M>::updateExpectedValues(const V& newExpectedValues)
+{
+  // delete old expected values (alloced at construction or last call to this function)
+  delete m_domainExpectedValues;
+  m_domainExpectedValues = new V(newExpectedValues);
+  return;
 }
 
 //*****************************************************
