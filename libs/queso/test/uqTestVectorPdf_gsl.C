@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_CASE( test_uqGaussianVectorPdfClass )
 
   gaussianPdf = new uqGaussianVectorPdfClass<uqGslVectorClass, uqGslMatrixClass>("test_pdf", domainSpace, domainMinVal, 
 										 domainMaxVal, expectedVal, varianceVal);
-
+  
   testValues[0] = testValues[1] = 0.0;
   BOOST_REQUIRE_CLOSE(gaussianPdf->actualDensity(testValues), 1.0, tolClose);
   BOOST_REQUIRE_SMALL(gaussianPdf->minus2LnDensity(testValues),    tolSmall); // can't check close b/c exact val = 0
@@ -207,14 +207,16 @@ BOOST_AUTO_TEST_CASE( test_uqGaussianVectorPdfClass )
   BOOST_REQUIRE_CLOSE(gaussianPdf->actualDensity(testValues), exp(-0.5), tolClose);
   BOOST_REQUIRE_CLOSE(gaussianPdf->minus2LnDensity(testValues),    1.0 , tolClose);
 
-  delete gaussianPdf;
+  //delete gaussianPdf;
 
   // mean = [0, 0], covar = [2, 1; 1, 2];
   covMatrix(0,0) = 2.0; covMatrix(0,1) = 1.0;
   covMatrix(1,0) = 1.0; covMatrix(1,1) = 2.0;
 
-  gaussianPdf = new uqGaussianVectorPdfClass<uqGslVectorClass, uqGslMatrixClass>("test_pdf", domainSpace, domainMinVal, 
-										 domainMaxVal, expectedVal, covMatrix);
+//   gaussianPdf = new uqGaussianVectorPdfClass<uqGslVectorClass, uqGslMatrixClass>("test_pdf", domainSpace, domainMinVal, 
+// 										 domainMaxVal, expectedVal, covMatrix);
+
+  gaussianPdf->updateCovMatrix(covMatrix);
 
   testValues[0] = testValues[1] = 0.0;
   BOOST_REQUIRE_CLOSE(gaussianPdf->actualDensity(testValues), 1.0, tolClose);

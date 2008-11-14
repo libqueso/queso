@@ -43,10 +43,10 @@ public:
   const   uqBaseVectorCdfClass     <V,M>& cdf        () const;
   const   uqBaseVectorMdfClass     <V,M>& mdf        () const;
 
-  virtual void                            setPdf     (const uqBaseVectorPdfClass     <V,M>& pdf     ) = 0;
-  virtual void                            setRealizer(const uqBaseVectorRealizerClass<V,M>& realizer) = 0;
-  virtual void                            setCdf     (const uqBaseVectorCdfClass     <V,M>& cdf     ) = 0;
-  virtual void                            setMdf     (const uqBaseVectorMdfClass     <V,M>& mdf     ) = 0;
+  virtual void                            setPdf     (uqBaseVectorPdfClass     <V,M>& pdf     ) = 0;
+  virtual void                            setRealizer(uqBaseVectorRealizerClass<V,M>& realizer) = 0;
+  virtual void                            setCdf     (uqBaseVectorCdfClass     <V,M>& cdf     ) = 0;
+  virtual void                            setMdf     (uqBaseVectorMdfClass     <V,M>& mdf     ) = 0;
 
   virtual void                            print      (std::ostream& os) const;
 
@@ -198,10 +198,10 @@ public:
                          const uqBaseVectorMdfClass     <V,M>& mdf);
   virtual ~uqGenericVectorRVClass();
 
-          void setPdf     (const uqBaseVectorPdfClass     <V,M>& pdf     );
-          void setRealizer(const uqBaseVectorRealizerClass<V,M>& realizer);
-          void setCdf     (const uqBaseVectorCdfClass     <V,M>& cdf     );
-          void setMdf     (const uqBaseVectorMdfClass     <V,M>& mdf     );
+          void setPdf     (uqBaseVectorPdfClass     <V,M>& pdf     );
+          void setRealizer(uqBaseVectorRealizerClass<V,M>& realizer);
+          void setCdf     (uqBaseVectorCdfClass     <V,M>& cdf     );
+          void setMdf     (uqBaseVectorMdfClass     <V,M>& mdf     );
 
 private:
   using uqBaseVectorRVClass<V,M>::m_env;
@@ -269,7 +269,7 @@ uqGenericVectorRVClass<V,M>::~uqGenericVectorRVClass()
 
 template<class V, class M>
 void
-uqGenericVectorRVClass<V,M>::setPdf(const uqBaseVectorPdfClass<V,M>& pdf)
+uqGenericVectorRVClass<V,M>::setPdf(uqBaseVectorPdfClass<V,M>& pdf)
 {
   m_pdf = &pdf;
   return;
@@ -277,7 +277,7 @@ uqGenericVectorRVClass<V,M>::setPdf(const uqBaseVectorPdfClass<V,M>& pdf)
 
 template<class V, class M>
 void
-uqGenericVectorRVClass<V,M>::setRealizer(const uqBaseVectorRealizerClass<V,M>& realizer)
+uqGenericVectorRVClass<V,M>::setRealizer(uqBaseVectorRealizerClass<V,M>& realizer)
 {
   m_realizer = &realizer;
   return;
@@ -285,7 +285,7 @@ uqGenericVectorRVClass<V,M>::setRealizer(const uqBaseVectorRealizerClass<V,M>& r
 
 template<class V, class M>
 void
-uqGenericVectorRVClass<V,M>::setCdf(const uqBaseVectorCdfClass<V,M>& cdf)
+uqGenericVectorRVClass<V,M>::setCdf(uqBaseVectorCdfClass<V,M>& cdf)
 {
   m_cdf = &cdf;
   return;
@@ -293,7 +293,7 @@ uqGenericVectorRVClass<V,M>::setCdf(const uqBaseVectorCdfClass<V,M>& cdf)
 
 template<class V, class M>
 void
-uqGenericVectorRVClass<V,M>::setMdf(const uqBaseVectorMdfClass<V,M>& mdf)
+uqGenericVectorRVClass<V,M>::setMdf(uqBaseVectorMdfClass<V,M>& mdf)
 {
   m_mdf = &mdf;
   return;
@@ -319,11 +319,12 @@ public:
                           const M&                       covMatrix);
   virtual ~uqGaussianVectorRVClass();
 
-          void setPdf     (const uqBaseVectorPdfClass     <V,M>& pdf     );
-          void setRealizer(const uqBaseVectorRealizerClass<V,M>& realizer);
-          void setCdf     (const uqBaseVectorCdfClass     <V,M>& cdf     );
-          void setMdf     (const uqBaseVectorMdfClass     <V,M>& mdf     );
+          void setPdf     (uqBaseVectorPdfClass     <V,M>& pdf     );
+          void setRealizer(uqBaseVectorRealizerClass<V,M>& realizer);
+          void setCdf     (uqBaseVectorCdfClass     <V,M>& cdf     );
+          void setMdf     (uqBaseVectorMdfClass     <V,M>& mdf     );
 	  void updateExpectedValues(const V& newExpectedValues );
+	  void updateCovMatrix(const M& newCovMatrix );
 
 private:
   using uqBaseVectorRVClass<V,M>::m_env;
@@ -365,6 +366,11 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
 		       "uqGaussianVectorRVClass<V,M>::constructor() [2]",
 		       "Cholesky decomposition of covariance matrix failed.");
   lowerCholCovMatrix.zeroUpper(false);
+
+  m_realizer = new uqGaussianVectorRealizerClass<V,M>(m_prefix.c_str(),
+						      m_imageSpace,
+						      imageExpectedValues,
+						      lowerCholCovMatrix);
 
   m_cdf         = NULL; // FIX ME: complete code
   m_mdf         = NULL; // FIX ME: complete code
@@ -429,7 +435,7 @@ uqGaussianVectorRVClass<V,M>::~uqGaussianVectorRVClass()
 
 template<class V, class M>
 void
-uqGaussianVectorRVClass<V,M>::setPdf(const uqBaseVectorPdfClass<V,M>& pdf)
+uqGaussianVectorRVClass<V,M>::setPdf(uqBaseVectorPdfClass<V,M>& pdf)
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.rank(),
@@ -440,7 +446,7 @@ uqGaussianVectorRVClass<V,M>::setPdf(const uqBaseVectorPdfClass<V,M>& pdf)
 
 template<class V, class M>
 void
-uqGaussianVectorRVClass<V,M>::setRealizer(const uqBaseVectorRealizerClass<V,M>& realizer)
+uqGaussianVectorRVClass<V,M>::setRealizer(uqBaseVectorRealizerClass<V,M>& realizer)
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.rank(),
@@ -451,7 +457,7 @@ uqGaussianVectorRVClass<V,M>::setRealizer(const uqBaseVectorRealizerClass<V,M>& 
 
 template<class V, class M>
 void
-uqGaussianVectorRVClass<V,M>::setCdf(const uqBaseVectorCdfClass<V,M>& cdf)
+uqGaussianVectorRVClass<V,M>::setCdf(uqBaseVectorCdfClass<V,M>& cdf)
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.rank(),
@@ -462,7 +468,7 @@ uqGaussianVectorRVClass<V,M>::setCdf(const uqBaseVectorCdfClass<V,M>& cdf)
 
 template<class V, class M>
 void
-uqGaussianVectorRVClass<V,M>::setMdf(const uqBaseVectorMdfClass<V,M>& mdf)
+uqGaussianVectorRVClass<V,M>::setMdf(uqBaseVectorMdfClass<V,M>& mdf)
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.rank(),
@@ -481,6 +487,23 @@ uqGaussianVectorRVClass<V,M>::updateExpectedValues(const V& newExpectedValues)
   return;
 }
 
+template<class V, class M>
+void
+uqGaussianVectorRVClass<V,M>::updateCovMatrix(const M& newCovMatrix)
+{
+  // we are sure that m_pdf (and m_realizer, etc) point to associated Gaussian classes, so all is well
+  ( dynamic_cast< uqGaussianVectorPdfClass     <V,M>* >(m_pdf     ) )->updateCovMatrix(newCovMatrix);
+
+  M newLowerCholCovMatrix(newCovMatrix);
+  int ierr = newLowerCholCovMatrix.chol();
+  UQ_FATAL_TEST_MACRO( (ierr!=0), m_env.rank(),
+		       "uqGaussianVectorRVClass<V,M>::updateCovMatrix()",
+		       "Cholesky decomposition of covariance matrix failed.");
+  newLowerCholCovMatrix.zeroUpper(false);
+  ( dynamic_cast< uqGaussianVectorRealizerClass<V,M>* >(m_realizer) )->updateLowerCholCovMatrix(newLowerCholCovMatrix);
+  return;
+}
+
 //*****************************************************
 // Uniform class
 //*****************************************************
@@ -493,10 +516,10 @@ public:
                           const V&                       imageMaxValues);
   virtual ~uqUniformVectorRVClass();
 
-          void setPdf     (const uqBaseVectorPdfClass     <V,M>& pdf     );
-          void setRealizer(const uqBaseVectorRealizerClass<V,M>& realizer);
-          void setCdf     (const uqBaseVectorCdfClass     <V,M>& cdf     );
-          void setMdf     (const uqBaseVectorMdfClass     <V,M>& mdf     );
+          void setPdf     (uqBaseVectorPdfClass     <V,M>& pdf     );
+          void setRealizer(uqBaseVectorRealizerClass<V,M>& realizer);
+          void setCdf     (uqBaseVectorCdfClass     <V,M>& cdf     );
+          void setMdf     (uqBaseVectorMdfClass     <V,M>& mdf     );
 
 private:
   using uqBaseVectorRVClass<V,M>::m_env;
@@ -545,7 +568,7 @@ uqUniformVectorRVClass<V,M>::~uqUniformVectorRVClass()
 
 template<class V, class M>
 void
-uqUniformVectorRVClass<V,M>::setPdf(const uqBaseVectorPdfClass<V,M>& pdf)
+uqUniformVectorRVClass<V,M>::setPdf(uqBaseVectorPdfClass<V,M>& pdf)
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.rank(),
@@ -556,7 +579,7 @@ uqUniformVectorRVClass<V,M>::setPdf(const uqBaseVectorPdfClass<V,M>& pdf)
 
 template<class V, class M>
 void
-uqUniformVectorRVClass<V,M>::setRealizer(const uqBaseVectorRealizerClass<V,M>& realizer)
+uqUniformVectorRVClass<V,M>::setRealizer(uqBaseVectorRealizerClass<V,M>& realizer)
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.rank(),
@@ -567,7 +590,7 @@ uqUniformVectorRVClass<V,M>::setRealizer(const uqBaseVectorRealizerClass<V,M>& r
 
 template<class V, class M>
 void
-uqUniformVectorRVClass<V,M>::setCdf(const uqBaseVectorCdfClass<V,M>& cdf)
+uqUniformVectorRVClass<V,M>::setCdf(uqBaseVectorCdfClass<V,M>& cdf)
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.rank(),
@@ -578,7 +601,7 @@ uqUniformVectorRVClass<V,M>::setCdf(const uqBaseVectorCdfClass<V,M>& cdf)
 
 template<class V, class M>
 void
-uqUniformVectorRVClass<V,M>::setMdf(const uqBaseVectorMdfClass<V,M>& mdf)
+uqUniformVectorRVClass<V,M>::setMdf(uqBaseVectorMdfClass<V,M>& mdf)
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.rank(),
