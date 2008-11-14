@@ -20,6 +20,7 @@
 #ifndef __UQ_MAC_SG1_H__
 #define __UQ_MAC_SG1_H__
 
+#undef UQ_USES_TK_CLASS
 #undef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
 #define UQ_MAC_SG_REQUIRES_TARGET_DISTRIBUTION_ONLY
 
@@ -84,41 +85,42 @@ public:
 
 
 private:
-  void   resetChainAndRelatedInfo();
-  void   defineMyOptions         (po::options_description&                       optionsDesc);
-  void   getMyOptionValues       (po::options_description&                       optionsDesc);
+  void   resetChainAndRelatedInfo ();
+  void   defineMyOptions          (po::options_description&                             optionsDesc);
+  void   getMyOptionValues        (po::options_description&                             optionsDesc);
 
-  void   internalGenerateSequence(const P_M&                                     proposalCovMatrix,
-                                  uqBaseVectorSequenceClass<P_V,P_M>&            workingChain);
-  int    computeCholFactors      (const P_M&                                     proposalCovMatrix);
-  void   generateFullSequence    (const P_V&                                     valuesOf1stPosition,
-                                  uqBaseVectorSequenceClass<P_V,P_M>&            workingChain,
-                                  unsigned int                                   chainSize);
-  void   generateWhiteNoiseChain (unsigned int                                   chainSize,
-                                  uqBaseVectorSequenceClass<P_V,P_M>&            workingChain);
-  void   generateUniformChain    (unsigned int                                   chainSize,
-                                  uqBaseVectorSequenceClass<P_V,P_M>&            workingChain);
-  void   updateCovMatrix         (const uqBaseVectorSequenceClass<P_V,P_M>&      subChain,
-                                  unsigned int                                   idOfFirstPositionInSubChain,
-                                  double&                                        lastChainSize,
-                                  P_V&                                           lastMean,
-                                  P_M&                                           lastAdaptedCovMatrix);
+  void   generateWhiteNoiseChain  (unsigned int                                         chainSize,
+                                   uqBaseVectorSequenceClass<P_V,P_M>&                  workingChain);
+  void   generateUniformChain     (unsigned int                                         chainSize,
+                                   uqBaseVectorSequenceClass<P_V,P_M>&                  workingChain);
+  void   generateFullChain        (const P_V&                                           valuesOf1stPosition,
+                                   uqBaseVectorSequenceClass<P_V,P_M>&                  workingChain,
+                                   unsigned int                                         chainSize);
+  void   updateAdaptedCovMatrix   (const uqBaseVectorSequenceClass<P_V,P_M>&            subChain,
+                                   unsigned int                                         idOfFirstPositionInSubChain,
+                                   double&                                              lastChainSize,
+                                   P_V&                                                 lastMean,
+                                   P_M&                                                 lastAdaptedCovMatrix);
 
-  double logProposal             (const uqMarkovChainPositionClass<P_V>&               x,
-                                  const uqMarkovChainPositionClass<P_V>&               y,
-                                  unsigned int                                   idOfProposalCovMatrix);
-  double logProposal             (const std::vector<uqMarkovChainPositionClass<P_V>*>& inputPositions);
-  double alpha                   (const uqMarkovChainPositionClass<P_V>&               x,
-                                  const uqMarkovChainPositionClass<P_V>&               y,
-                                  double*                                        alphaQuotientPtr = NULL);
-  double alpha                   (const std::vector<uqMarkovChainPositionClass<P_V>*>& inputPositions);
-  bool   acceptAlpha             (double                                         alpha);
-  void   updateCovMatrices       ();
+#ifdef UQ_USES_TK_CLASS
+#else
+  int    computeInitialCholFactors();
+  void   updateTK                 ();
+  double logProposal              (const uqMarkovChainPositionClass<P_V>&               x,
+                                   const uqMarkovChainPositionClass<P_V>&               y,
+                                   unsigned int                                         idOfProposalCovMatrix);
+  double logProposal              (const std::vector<uqMarkovChainPositionClass<P_V>*>& inputPositions);
+#endif
+  double alpha                    (const uqMarkovChainPositionClass<P_V>&               x,
+                                   const uqMarkovChainPositionClass<P_V>&               y,
+                                   double*                                              alphaQuotientPtr = NULL);
+  double alpha                    (const std::vector<uqMarkovChainPositionClass<P_V>*>& inputPositions);
+  bool   acceptAlpha              (double                                               alpha);
 
-  int    writeInfo               (const uqBaseVectorSequenceClass<P_V,P_M>&      workingChain,
-                                  std::ofstream&                                 ofs) const;
-                                //const P_M*                                     mahalanobisMatrix = NULL,
-                                //bool                                           applyMahalanobisInvert = true) const;
+  int    writeInfo                (const uqBaseVectorSequenceClass<P_V,P_M>&            workingChain,
+                                   std::ofstream&                                       ofs) const;
+                                 //const P_M*                                           mahalanobisMatrix = NULL,
+                                 //bool                                                 applyMahalanobisInvert = true) const;
 
   const uqBaseEnvironmentClass&         m_env;
         std::string                     m_prefix;
@@ -126,8 +128,6 @@ private:
   const uqBaseVectorPdfClass <P_V,P_M>& m_targetPdf;
         P_V                             m_initialPosition;
         bool                            m_nullInputProposalCovMatrix;
-  const P_M*                            m_currentProposalCovMatrix;
-        uqBaseTKClass<P_V,P_M>*         m_proposalTK;
 
         po::options_description*                m_optionsDesc;
         std::string                             m_option_help;
@@ -182,15 +182,19 @@ private:
         bool                                    m_proposalUseLocalHessian;
         bool                                    m_proposalUseNewtonComponent;
         unsigned int                            m_drMaxNumExtraStages;
-        std::vector<double>                     m_drScalesForCovMProposals;
+        std::vector<double>                     m_drScalesForCovMatrices;
         unsigned int                            m_amInitialNonAdaptInterval;
         unsigned int                            m_amAdaptInterval;
         double                                  m_amEta;
         double                                  m_amEpsilon;
 
-#ifdef UQ_USES_PROPOSAL_CLASS
-#else
+  const P_V*                                    m_currentProposalExpVector;
+  const P_M*                                    m_initialProposalCovMatrix;
+        uqScaledCovMatrixTKClass   <P_V,P_M>*   m_proposalTK1;
+        uqHessianCovMatricesTKClass<P_V,P_M>*   m_proposalTK2;
         bool                                    m_proposalIsSymmetric;
+#ifdef UQ_USES_TK_CLASS
+#else
         std::vector<P_M*>                       m_lowerCholProposalCovMatrices;
         std::vector<P_M*>                       m_proposalCovMatrices;
 #ifdef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
@@ -227,8 +231,6 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   m_targetPdf                            (sourceRv.pdf()),
   m_initialPosition                      (initialPosition),
   m_nullInputProposalCovMatrix           (inputProposalCovMatrix == NULL),
-  m_currentProposalCovMatrix             (inputProposalCovMatrix),
-  m_proposalTK                           (NULL),
   m_optionsDesc                          (new po::options_description("Bayesian Markov chain options")),
   m_option_help                          (m_prefix + "help"                          ),
   m_option_chain_type                    (m_prefix + "chain_type"                    ),
@@ -278,17 +280,24 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   m_proposalUseLocalHessian              (UQ_MAC_SG_PROPOSAL_USE_LOCAL_HESSIAN_ODV),
   m_proposalUseNewtonComponent           (UQ_MAC_SG_PROPOSAL_USE_NEWTON_COMPONENT_ODV),
   m_drMaxNumExtraStages                  (UQ_MAC_SG_DR_MAX_NUM_EXTRA_STAGES_ODV),
-  m_drScalesForCovMProposals             (0),//0.),
+  m_drScalesForCovMatrices               (0),//0.),
   m_amInitialNonAdaptInterval            (UQ_MAC_SG_AM_INIT_NON_ADAPT_INT_ODV),
   m_amAdaptInterval                      (UQ_MAC_SG_AM_ADAPT_INTERVAL_ODV),
   m_amEta                                (UQ_MAC_SG_AM_ETA_ODV),
   m_amEpsilon                            (UQ_MAC_SG_AM_EPSILON_ODV),
+  m_currentProposalExpVector             (new P_V(initialPosition)),
+  m_initialProposalCovMatrix             (inputProposalCovMatrix),
+  m_proposalTK1                          (NULL),
+  m_proposalTK2                          (NULL),
   m_proposalIsSymmetric                  (true),
+#ifdef UQ_USES_TK_CLASS
+#else
   m_lowerCholProposalCovMatrices         (1),//NULL),
   m_proposalCovMatrices                  (1),//NULL),
 #ifdef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
   m_upperCholProposalPrecMatrices        (1),//NULL),
   m_proposalPrecMatrices                 (1),//NULL),
+#endif
 #endif
   m_idsOfUniquePositions                 (0),//0.),
   m_logTargets                           (0),//0.),
@@ -313,13 +322,35 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
                                    << "\n" << *this
                                    << std::endl;
 
-  if (m_proposalTK == NULL) {
-    if (m_currentProposalCovMatrix == NULL) {
-      // Create cov matrix for Langevin transition kernel
+  /////////////////////////////////////////////////////////////////
+  // Instantiate the appropriate TK
+  /////////////////////////////////////////////////////////////////
+  if (m_proposalUseLocalHessian) {
+    // Set current proposal cov matrix = local Hessian at initial position
+
+    if (m_proposalUseNewtonComponent) {
+      // Set current proposal exp vector = initial position - H^{-1}*\grad[-2*ln(target density)]
     }
-    m_proposalTK = new uqLangevinTKClass<P_V,P_M>(m_prefix.c_str(),
-                                                  m_vectorSpace);
+
+    m_proposalTK2 = new uqHessianCovMatricesTKClass<P_V,P_M>(m_prefix.c_str(),
+                                                             m_vectorSpace,
+                                                             m_targetPdf,
+                                                             m_drScalesForCovMatrices.size());
   }
+  else {
+    if (m_initialProposalCovMatrix == NULL) {
+      UQ_FATAL_TEST_MACRO(true,
+                          m_env.rank(),
+                          "uqMarkovChainSGClass<P_V,P_M>::constructor()",
+                          "proposal cov matrix should have been passed by user, since, according to the input algorithm options, local Hessians will not be used in the proposal");
+    }
+
+    m_proposalTK1 = new uqScaledCovMatrixTKClass<P_V,P_M>(m_prefix.c_str(),
+                                                          m_vectorSpace,
+                                                         *m_initialProposalCovMatrix,
+                                                          m_drScalesForCovMatrices);
+  }
+
 
   if (m_chainComputeStats        ) m_chainStatisticalOptions         = new uqChainStatisticalOptionsClass(m_env,m_prefix + "chain_"        );
   if (m_uniqueChainComputeStats  ) m_uniqueChainStatisticalOptions   = new uqChainStatisticalOptionsClass(m_env,m_prefix + "uniqueChain_"  );
@@ -343,7 +374,10 @@ uqMarkovChainSGClass<P_V,P_M>::~uqMarkovChainSGClass()
   if (m_chainStatisticalOptions        ) delete m_chainStatisticalOptions;
   if (m_optionsDesc                    ) delete m_optionsDesc;
 
-  if (m_nullInputProposalCovMatrix) delete m_currentProposalCovMatrix;
+  if (m_proposalTK1                    ) delete m_proposalTK1;
+  if (m_proposalTK2                    ) delete m_proposalTK2;
+  if (m_nullInputProposalCovMatrix     ) delete m_initialProposalCovMatrix;
+                                         delete m_currentProposalExpVector;
 
   //std::cout << "Leaving uqMarkovChainSGClass<P_V,P_M>::destructor()"
   //          << std::endl;
@@ -363,6 +397,8 @@ uqMarkovChainSGClass<P_V,P_M>::resetChainAndRelatedInfo()
   m_logTargets.clear();
   m_idsOfUniquePositions.clear();
 
+#ifdef UQ_USES_TK_CLASS
+#else
 #ifdef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
   for (unsigned int i = 0; i < m_proposalPrecMatrices.size(); ++i) {
     if (m_proposalPrecMatrices[i]) delete m_proposalPrecMatrices[i];
@@ -385,6 +421,7 @@ uqMarkovChainSGClass<P_V,P_M>::resetChainAndRelatedInfo()
     }
   }
 //m_lowerCholProposalCovMatrices.clear(); // Do not clear
+#endif
 
   return;
 }
@@ -524,22 +561,28 @@ uqMarkovChainSGClass<P_V,P_M>::getMyOptionValues(
   }
 
   if (m_drMaxNumExtraStages > 0) {
-    m_drScalesForCovMProposals.clear();
+    m_drScalesForCovMatrices.clear();
+#ifdef UQ_USES_TK_CLASS
+#else
     m_lowerCholProposalCovMatrices.clear();
     m_proposalCovMatrices.clear();
+#endif
 
     double scale = 1.0;
     unsigned int tmpSize = tmpScales.size();
 
-    m_drScalesForCovMProposals.resize    (m_drMaxNumExtraStages+1,1.);
+    m_drScalesForCovMatrices.resize    (m_drMaxNumExtraStages+1,1.);
+#ifdef UQ_USES_TK_CLASS
+#else
     m_lowerCholProposalCovMatrices.resize(m_drMaxNumExtraStages+1,NULL);
     m_proposalCovMatrices.resize         (m_drMaxNumExtraStages+1,NULL);
+#endif
 
     for (unsigned int i = 1; i < (m_drMaxNumExtraStages+1); ++i) {
       if (i <= tmpSize) scale = tmpScales[i-1];
-      m_drScalesForCovMProposals[i] = scale;
+      m_drScalesForCovMatrices[i] = scale;
     }
-    //updateCovMatrices();
+    //updateTK();
   }
 
   if (m_env.allOptionsMap().count(m_option_am_initialNonAdaptInterval.c_str())) {
@@ -561,45 +604,41 @@ uqMarkovChainSGClass<P_V,P_M>::getMyOptionValues(
   return;
 }
 
-template<class P_V,class P_M>
-void
-uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_M>& workingChain)
-{
-  internalGenerateSequence(*m_currentProposalCovMatrix,
-                           workingChain);
-  return;
-}
-
+#ifdef UQ_USES_TK_CLASS
+#else
 template<class P_V,class P_M>
 int
-uqMarkovChainSGClass<P_V,P_M>::computeCholFactors(
-  const P_M& proposalCovMatrix)
-//const P_M* proposalPrecMatrix)
+uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()
 {
+//const P_M& proposalCovMatrix (*m_initialProposalCovMatrix);
+//const P_M& proposalPrecMatrix(...);
+
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqMarkovChainSGClass<P_V,P_M>::computeCholFactors()..."
+    std::cout << "Entering uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()..."
               << std::endl;
   }
 
   int iRC = UQ_OK_RC;
 
-  if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::computeCholFactors()"
-                                   << ": using suplied proposalCovMatrix, whose contents are:"
+  if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()"
+                                   << ": using supplied initialProposalCovMatrix, whose contents are:"
                                    << std::endl;
-  std::cout << proposalCovMatrix;
+  std::cout << *m_initialProposalCovMatrix;
   if (m_env.rank() == 0) std::cout << std::endl;
 
-  m_lowerCholProposalCovMatrices[0] = new P_M(proposalCovMatrix); 
+#ifdef UQ_USES_TK_CLASS
+#else
+  m_lowerCholProposalCovMatrices[0] = new P_M(*m_initialProposalCovMatrix); 
   iRC = m_lowerCholProposalCovMatrices[0]->chol();
   UQ_FATAL_RC_MACRO(iRC,
                     m_env.rank(),
-                    "uqMarkovChainSGClass<P_V,P_M>::computeCholFactors()",
-                    "proposalCovMatrix is not positive definite");
+                    "uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()",
+                    "initialProposalCovMatrix is not positive definite");
   m_lowerCholProposalCovMatrices[0]->zeroUpper(false);
 
-  m_proposalCovMatrices[0] = new P_M(proposalCovMatrix);
+  m_proposalCovMatrices[0] = new P_M(*m_initialProposalCovMatrix);
 
-  if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::computeCholFactors()"
+  if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()"
                                    << ", m_lowerCholProposalCovMatrices[0] contents are:"
                                    << std::endl;
   std::cout << *(m_lowerCholProposalCovMatrices[0]);
@@ -610,7 +649,7 @@ uqMarkovChainSGClass<P_V,P_M>::computeCholFactors(
   if (proposalPrecMatrix == NULL) {
     UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
                       m_env.rank(),
-                      "uqMarkovChainSGClass<P_V,P_M>::computeCholFactors()",
+                      "uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()",
                       "not yet implemented for the case 'proposalPrecMatrix == NULL'");
   }
 
@@ -618,25 +657,22 @@ uqMarkovChainSGClass<P_V,P_M>::computeCholFactors(
   iRC = m_upperCholProposalPrecMatrices[0]->chol();
   UQ_FATAL_RC_MACRO(iRC,
                     m_env.rank(),
-                    "uqMarkovChainSGClass<P_V,P_M>::computeCholFactors()",
+                    "uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()",
                     "proposalPrecMatrix is not positive definite");
   m_upperCholProposalPrecMatrices[0]->zeroLower(false);
 
   m_proposalPrecMatrices[0] = new P_M(proposalPrecMatrix);
 
-  //if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::computeCholFactors()"
+  //if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()"
   //                                 << ", m_upperCholProposalPrecMatrices[0] contents are:"
   //                                 << std::endl;
   //std::cout << *(m_upperCholProposalPrecMatrices[0]);
   //if (m_env.rank() == 0) std::cout << std::endl;
 #endif
-
-  if (m_drMaxNumExtraStages > 0) {
-    updateCovMatrices();
-  }
+#endif
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqMarkovChainSGClass<P_V,P_M>::computeCholFactors()"
+    std::cout << "Leaving uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()"
               << std::endl;
   }
 
@@ -645,23 +681,28 @@ uqMarkovChainSGClass<P_V,P_M>::computeCholFactors(
 
 template<class P_V,class P_M>
 void
-uqMarkovChainSGClass<P_V,P_M>::updateCovMatrices()
+uqMarkovChainSGClass<P_V,P_M>::updateTK()
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqMarkovChainSGClass<P_V,P_M>::updateCovMatrices()"
+    std::cout << "Entering uqMarkovChainSGClass<P_V,P_M>::updateTK()"
               << std::endl;
   }
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "In uqMarkovChainSGClass<P_V,P_M>::updateCovMatrices()"
+    std::cout << "In uqMarkovChainSGClass<P_V,P_M>::updateTK()"
               << ": m_drMaxNumExtraStages = "                 << m_drMaxNumExtraStages
-              << ", m_drScalesForCovMProposals.size() = "     << m_drScalesForCovMProposals.size()
+              << ", m_drScalesForCovMatrices.size() = "       << m_drScalesForCovMatrices.size()
+#ifdef UQ_USES_TK_CLASS
+#else
               << ", m_lowerCholProposalCovMatrices.size() = " << m_lowerCholProposalCovMatrices.size()
+#endif
               << std::endl;
   }
 
+#ifdef UQ_USES_TK_CLASS
+#else
   for (unsigned int i = 1; i < (m_drMaxNumExtraStages+1); ++i) {
-    double scale = m_drScalesForCovMProposals[i];
+    double scale = m_drScalesForCovMatrices[i];
     if (m_lowerCholProposalCovMatrices[i]) delete m_lowerCholProposalCovMatrices[i];
     m_lowerCholProposalCovMatrices [i]   = new P_M(*(m_lowerCholProposalCovMatrices[i-1]));
   *(m_lowerCholProposalCovMatrices [i]) /= scale;
@@ -675,9 +716,10 @@ uqMarkovChainSGClass<P_V,P_M>::updateCovMatrices()
   *(m_proposalPrecMatrices[i])          *= (scale*scale);
 #endif
   }
+#endif
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqMarkovChainSGClass<P_V,P_M>::updateCovMatrices()"
+    std::cout << "Leaving uqMarkovChainSGClass<P_V,P_M>::updateTK()"
               << std::endl;
   }
 
@@ -689,8 +731,11 @@ double
 uqMarkovChainSGClass<P_V,P_M>::logProposal(
   const uqMarkovChainPositionClass<P_V>& x,
   const uqMarkovChainPositionClass<P_V>& y,
-  unsigned int                     idOfProposalCovMatrix)
+  unsigned int                           idOfProposalCovMatrix)
 {
+#ifdef UQ_USES_TK_CLASS
+  return 0.;
+#else
   P_V diffVec(y.vecValues() - x.vecValues());
 #ifdef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
   double value = -0.5 * scalarProduct(diffVec, *(m_proposalPrecMatrices[idOfProposalCovMatrix]) * diffVec);
@@ -698,6 +743,7 @@ uqMarkovChainSGClass<P_V,P_M>::logProposal(
   double value = -0.5 * scalarProduct(diffVec, m_proposalCovMatrices[idOfProposalCovMatrix]->invertMultiply(diffVec));
 #endif
   return value;
+#endif
 }
 
 template<class P_V,class P_M>
@@ -714,13 +760,14 @@ uqMarkovChainSGClass<P_V,P_M>::logProposal(const std::vector<uqMarkovChainPositi
                            *(inputPositions[inputSize - 1]),
                            inputSize-2);
 }
+#endif // UQ_USES_TK_CLASS
 
 template<class P_V,class P_M>
 double
 uqMarkovChainSGClass<P_V,P_M>::alpha(
   const uqMarkovChainPositionClass<P_V>& x,
   const uqMarkovChainPositionClass<P_V>& y,
-  double*                          alphaQuotientPtr)
+  double*                                alphaQuotientPtr)
 {
   double alphaQuotient = 0.;
   bool xOutOfBounds = x.outOfBounds();
@@ -748,7 +795,10 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
       }
     }
     else {
+#ifdef UQ_USES_TK_CLASS
+#else
       alphaQuotient = exp(yLogTargetToUse + logProposal(y,x,0) - x.logTarget() - logProposal(x,y,0));
+#endif
     }
   }
   else {
@@ -797,15 +847,21 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(const std::vector<uqMarkovChainPositionClas
   double alphasDenominator = 1.;
 
   // Compute cumulative variables
+#ifdef UQ_USES_TK_CLASS
+#else
   logNumerator   += logProposal(backwardPositions);
   logDenominator += logProposal(        positions);
+#endif
 
   for (unsigned int i = 0; i < (inputSize-2); ++i) { // That is why size must be >= 2
             positions.pop_back();
     backwardPositions.pop_back();
 
+#ifdef UQ_USES_TK_CLASS
+#else
     logNumerator   += logProposal(backwardPositions);
     logDenominator += logProposal(        positions);
+#endif
 
     alphasNumerator   *= (1 - this->alpha(backwardPositions));
     alphasDenominator *= (1 - this->alpha(        positions));
@@ -1040,8 +1096,8 @@ uqMarkovChainSGClass<P_V,P_M>::print(std::ostream& os) const
      << "\n" << m_option_proposal_useNewtonComponent    << " = " << m_proposalUseNewtonComponent
      << "\n" << m_option_dr_maxNumExtraStages    << " = " << m_drMaxNumExtraStages
      << "\n" << m_option_dr_scalesForExtraStages << " = ";
-  for (unsigned int i = 0; i < m_drScalesForCovMProposals.size(); ++i) {
-    os << m_drScalesForCovMProposals[i] << " ";
+  for (unsigned int i = 0; i < m_drScalesForCovMatrices.size(); ++i) {
+    os << m_drScalesForCovMatrices[i] << " ";
   }
   os << "\n" << m_option_am_initialNonAdaptInterval << " = " << m_amInitialNonAdaptInterval
      << "\n" << m_option_am_adaptInterval           << " = " << m_amAdaptInterval

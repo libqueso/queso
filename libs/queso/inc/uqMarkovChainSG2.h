@@ -22,9 +22,7 @@
 
 template <class P_V,class P_M>
 void
-uqMarkovChainSGClass<P_V,P_M>::internalGenerateSequence(
-  const P_M&                          proposalCovMatrix,
-  uqBaseVectorSequenceClass<P_V,P_M>& workingChain)
+uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_M>& workingChain)
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqMarkovChainSGClass<P_V,P_M>::internalGenerateSequence()..."
@@ -55,18 +53,23 @@ uqMarkovChainSGClass<P_V,P_M>::internalGenerateSequence(
     // Initialize m_lowerCholProposalCovMatrices[0]
     // Initialize m_proposalCovMatrices[0]
     //****************************************************
-    iRC = computeCholFactors(proposalCovMatrix);
+#ifdef UQ_USES_TK_CLASS
+#else
+    iRC = computeInitialCholFactors();
     UQ_FATAL_RC_MACRO(iRC,
                       m_env.rank(),
                       "uqMarkovChainSGClass<P_V,P_M>::internalGenerateSequence()",
-                      "improper computeCholFactors() return");
+                      "improper computeInitialCholFactors() return");
+
+    if (m_drMaxNumExtraStages > 0) updateTK();
+#endif
 
     //****************************************************
     // Generate chain
     //****************************************************
-    generateFullSequence(valuesOf1stPosition,
-                         workingChain,
-                         m_chainSize);
+    generateFullChain(valuesOf1stPosition,
+                      workingChain,
+                      m_chainSize);
   }
 
   //****************************************************
@@ -301,7 +304,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateUniformChain(
 
 template <class P_V,class P_M>
 void
-uqMarkovChainSGClass<P_V,P_M>::generateFullSequence(
+uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
   const P_V&                          valuesOf1stPosition,
   uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
   unsigned int                        chainSize)
@@ -333,10 +336,10 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullSequence(
   bool outOfDomainBounds = m_targetPdf.outOfDomainBounds(valuesOf1stPosition);
   UQ_FATAL_TEST_MACRO(outOfDomainBounds,
                       m_env.rank(),
-                      "uqMarkovChainSGClass<P_V,P_M>::generateFullSequence()",
+                      "uqMarkovChainSGClass<P_V,P_M>::generateFullChain()",
                       "initial position should not be out of bound");
   if (m_env.rank() == 0) {
-    std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullSequence()"
+    std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
               << ": contents of initial position are:\n";
   }
   std::cout << valuesOf1stPosition;
@@ -375,7 +378,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullSequence(
 
   for (unsigned int positionId = 1; positionId < workingChain.sequenceSize(); ++positionId) {
     if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-      std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullSequence()"
+      std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
                 << ": beginning chain position of id = " << positionId
                 << ", m_drMaxNumExtraStages =  "           << m_drMaxNumExtraStages
                 << std::endl;
@@ -386,8 +389,11 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullSequence(
     // Loop: generate new position
     //****************************************************
     if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
+#ifdef UQ_USES_TK_CLASS
+#else
     gaussianVector.cwSetGaussian(m_env.rng(),0.,1.);
     tmpVecValues = currentPosition.vecValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
+#endif
     if (m_chainMeasureRunTimes) candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
 
     outOfDomainBounds = m_targetPdf.outOfDomainBounds(tmpVecValues);
@@ -425,7 +431,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullSequence(
       }
       if (m_chainMeasureRunTimes) mhAlphaRunTime += uqMiscGetEllapsedSeconds(&timevalMhAlpha);
       if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-        std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullSequence()"
+        std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
                   << ": for chain position of id = " << positionId
                   << ", alpha = " << alpha
                   << std::endl;
@@ -433,14 +439,14 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullSequence(
       accept = acceptAlpha(alpha);
     }
     if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-      if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullSequence()"
+      if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
                                        << ": for chain position of id = " << positionId
                                        << " contents of currentCandidate.vecValues() are:"
                                        << std::endl;
       std::cout << currentCandidate.vecValues();
       if (m_env.rank() == 0) std::cout << std::endl;
 
-      if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullSequence()"
+      if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
                                        << ": for chain position of id = " << positionId
                                        << ", outOfDomainBounds = "        << outOfDomainBounds
                                        << "\n"
@@ -470,8 +476,11 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullSequence(
         stageId++;
 
         if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
+#ifdef UQ_USES_TK_CLASS
+#else
         gaussianVector.cwSetGaussian(m_env.rng(),0.,1.);
         tmpVecValues = currentPosition.vecValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
+#endif
         if (m_chainMeasureRunTimes) candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
 
         outOfDomainBounds = m_targetPdf.outOfDomainBounds(tmpVecValues);
@@ -493,7 +502,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullSequence(
           double alpha = this->alpha(drPositions);
           if (m_chainMeasureRunTimes) drAlphaRunTime += uqMiscGetEllapsedSeconds(&timevalDrAlpha);
 #if 0 // For debug only
-          if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullSequence()"
+          if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
                                            << ": for chain position of id = " << positionId
                                            << " and stageId = " << stageId
                                            << ", alpha = " << alpha
@@ -540,7 +549,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullSequence(
           double term2 =  2./( varAccuracies[i] * priorVars[i] + misfitVec[i] );
           misfitVarianceVector[i] = 1./uqMiscGammar(term1,term2,m_env.rng());
           //if (m_env.rank() == 0) {
-          //  std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullSequence()"
+          //  std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
           //            << ": for chain position of id = "     << positionId
           //            << ", numbersOfObs = "                 << numbersOfObs
           //            << ", varAccuracies = "                << varAccuracies
@@ -552,7 +561,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullSequence(
           //}
         }
         //if (m_env.rank() == 0) {
-        //  std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullSequence()"
+        //  std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
         //            << ": for chain position of id = "        << positionId
         //            << ", misfitVarianceVector changed from " << *(m_misfitVarianceChain[positionId])
         //            << " to "                                 << misfitVarianceVector
@@ -601,11 +610,11 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullSequence(
           workingChain.getPositionValues(idOfFirstPositionInSubChain+i,transporterVec);
           subChain.setPositionValues(i,transporterVec);
         }
-        updateCovMatrix(subChain,
-			idOfFirstPositionInSubChain,
-                        m_lastChainSize,
-                        *m_lastMean,
-                        *m_lastAdaptedCovMatrix);
+        updateAdaptedCovMatrix(subChain,
+                               idOfFirstPositionInSubChain,
+                               m_lastChainSize,
+                              *m_lastMean,
+                              *m_lastAdaptedCovMatrix);
 
         bool tmpCholIsPositiveDefinite = false;
         P_M tmpChol(*m_lastAdaptedCovMatrix);
@@ -625,7 +634,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullSequence(
         if (iRC) {
           UQ_FATAL_TEST_MACRO(iRC != UQ_MATRIX_IS_NOT_POS_DEFINITE_RC,
                               m_env.rank(),
-                              "uqMarkovChainSGClass<P_V,P_M>::generateFullSequence()",
+                              "uqMarkovChainSGClass<P_V,P_M>::generateFullChain()",
                               "invalid iRC returned from first chol()");
           // Matrix is not positive definite
           P_M* tmpDiag = m_vectorSpace.newDiagMatrix(m_amEpsilon);
@@ -647,7 +656,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullSequence(
           if (iRC) {
             UQ_FATAL_TEST_MACRO(iRC != UQ_MATRIX_IS_NOT_POS_DEFINITE_RC,
                                 m_env.rank(),
-                                "uqMarkovChainSGClass<P_V,P_M>::generateFullSequence()",
+                                "uqMarkovChainSGClass<P_V,P_M>::generateFullChain()",
                                 "invalid iRC returned from second chol()");
             // Do nothing
           }
@@ -659,18 +668,24 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullSequence(
           tmpCholIsPositiveDefinite = true;
         }
         if (tmpCholIsPositiveDefinite) {
+#ifdef UQ_USES_TK_CLASS
+#else
           *(m_lowerCholProposalCovMatrices[0]) = tmpChol;
           *(m_lowerCholProposalCovMatrices[0]) *= sqrt(m_amEta);
           m_lowerCholProposalCovMatrices[0]->zeroUpper(false);
+#endif
 
 #ifdef UQ_DRAM_MCG_REQUIRES_INVERTED_COV_MATRICES
           UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
                             m_env.rank(),
-                            "uqMarkovChainSGClass<P_V,P_M>::generateFullSequence()",
+                            "uqMarkovChainSGClass<P_V,P_M>::generateFullChain()",
                             "need to code the update of m_upperCholProposalPrecMatrices");
 #endif
 
-          if (m_drMaxNumExtraStages > 0) updateCovMatrices();
+#ifdef UQ_USES_TK_CLASS
+#else
+          if (m_drMaxNumExtraStages > 0) updateTK();
+#endif
         }
 
         //for (unsigned int i = 0; i < subChain.sequenceSize(); ++i) {
@@ -682,7 +697,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullSequence(
     } // End of 'adaptive Metropolis' logic
 
     if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-      std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullSequence()"
+      std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
                 << ": finishing chain position of id = " << positionId
                 << std::endl;
     }
@@ -755,7 +770,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullSequence(
 
 template <class P_V,class P_M>
 void
-uqMarkovChainSGClass<P_V,P_M>::updateCovMatrix(
+uqMarkovChainSGClass<P_V,P_M>::updateAdaptedCovMatrix(
   const uqBaseVectorSequenceClass<P_V,P_M>& subChain,
   unsigned int                          idOfFirstPositionInSubChain,
   double&                               lastChainSize,
@@ -766,7 +781,7 @@ uqMarkovChainSGClass<P_V,P_M>::updateCovMatrix(
   if (lastChainSize == 0) {
     UQ_FATAL_TEST_MACRO(subChain.sequenceSize() < 2,
                         m_env.rank(),
-                        "uqMarkovChainSGClass<P_V,P_M>::updateCovMatrix()",
+                        "uqMarkovChainSGClass<P_V,P_M>::updateAdaptedCovMatrix()",
                         "'subChain.sequenceSize()' should be >= 2");
 
     subChain.mean(0,subChain.sequenceSize(),lastMean);
@@ -782,12 +797,12 @@ uqMarkovChainSGClass<P_V,P_M>::updateCovMatrix(
   else {
     UQ_FATAL_TEST_MACRO(subChain.sequenceSize() < 1,
                         m_env.rank(),
-                        "uqMarkovChainSGClass<P_V,P_M>::updateCovMatrix()",
+                        "uqMarkovChainSGClass<P_V,P_M>::updateAdaptedCovMatrix()",
                         "'subChain.sequenceSize()' should be >= 1");
 
     UQ_FATAL_TEST_MACRO(idOfFirstPositionInSubChain < 1,
                         m_env.rank(),
-                        "uqMarkovChainSGClass<P_V,P_M>::updateCovMatrix()",
+                        "uqMarkovChainSGClass<P_V,P_M>::updateAdaptedCovMatrix()",
                         "'idOfFirstPositionInSubChain' should be >= 1");
 
     P_V tmpVec (m_vectorSpace.zeroVector());

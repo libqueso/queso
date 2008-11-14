@@ -29,23 +29,30 @@
 template<class V, class M>
 class uqBaseTKPdfClass {
 public:
-  uqBaseTKPdfClass(double (*routinePtr)(const V& paramValues, const void* routineDataPtr),
-                    const void* routineDataPtr);
+           uqBaseTKPdfClass(const char*                    prefix,
+                            const uqVectorSpaceClass<V,M>& domainSpace,
+                            const V&                       expVector,
+                            const M&                       covMatrix);
   virtual ~uqBaseTKPdfClass();
-  virtual double density(const V& paramValues) const;
+
+  const   uqVectorSpaceClass<V,M>& domainSpace    ()                     const;
+  virtual double                   actualDensity  (const V& paramValues) const = 0;
+  virtual double                   minus2LnDensity(const V& paramValues) const = 0;
 
 protected:
-  double (*m_routinePtr)(const V& paramValues, const void* routineDataPtr);
-  const void* m_routineDataPtr;
+  const   uqBaseEnvironmentClass&  m_env;
+          std::string              m_prefix;
+  const   uqVectorSpaceClass<V,M>& m_domainSpace;
 };
 
 template<class V, class M>
 uqBaseTKPdfClass<V,M>::uqBaseTKPdfClass(
-  double (*routinePtr)(const V& paramValues, const void* routineDataPtr),
-  const void* routineDataPtr)
+  const char*                    prefix,
+  const uqVectorSpaceClass<V,M>& domainSpace)
   :
-  m_routinePtr    (routinePtr),
-  m_routineDataPtr(routineDataPtr)
+  m_env        (domainSpace.env()          ),
+  m_prefix     ((std::string)(prefix)+"tk_"),
+  m_domainSpace(domainSpace                )
 {
 }
 
@@ -54,10 +61,73 @@ uqBaseTKPdfClass<V,M>::~uqBaseTKPdfClass()
 {
 }
 
+//*****************************************************
+// Gaussian class
+//*****************************************************
+template<class V, class M>
+class uqGaussianTKPdfClass : public uqBaseTKPdfClass<V,M> {
+public:
+  uqGaussianTKPdfClass(const char*                    prefix,
+                       const uqVectorSpaceClass<V,M>& domainSpace,
+                       const V&                       expVector,
+                       const M&                       covMatrix);
+ ~uqGaussianTKPdfClass();
+
+  double actualDensity  (const V& paramValues) const;
+  double minus2LnDensity(const V& paramValues) const;
+
+  void setExpectedVector  (const V& expVector);
+  void setCovarianceMatrix(const M& covMatrix);
+
+private:
+  using uqBaseTKPdfClass<V,M>::m_env;
+  using uqBaseTKPdfClass<V,M>::m_prefix;
+  using uqBaseTKPdfClass<V,M>::m_domainSpace;
+
+  V* m_expVector;
+  M* m_covMatrix;
+};
+
+template<class V, class M>
+uqGaussianTKPdfClass<V,M>::uqGaussianTKPdfClass()
+  :
+  uqBaseTKPdfClass<V,M>(prefix,domainSpace  ),
+  m_expVector           (new V(expectedVetor)),
+  m_covMatrix          (new M(covMatrix)    )
+{
+}
+
 template<class V, class M>
 double
-uqBaseTKPdfClass<V,M>::density(const V& paramValues) const
+uqBaseTKPdfClass<V,M>::actualDensity(const V& paramValues) const
 {
-  return m_routinePtr(paramValues, m_routineDataPtr);
+  return 0.;
+}
+
+template<class V, class M>
+double
+uqBaseTKPdfClass<V,M>::minus2LnDensity(const V& paramValues) const
+{
+  return 0.;
+}
+
+template<class V, class M>
+void
+uqBaseTKPdfClass<V,M>::setExpectedVector(const V& expVector)
+{
+  if (m_expVector) delete m_expVector;
+  m_expVector = new V(expVector);
+
+  return;
+}
+
+template<class V, class M>
+void
+uqBaseTKPdfClass<V,M>::setCovarianceMatrix(const M& covMatrix)
+{
+  if (m_covMatrix) delete m_covMatrix;
+  m_covMatrix = new M(covMatrix);
+
+  return;
 }
 #endif // __UQ_TK_PDF_H__

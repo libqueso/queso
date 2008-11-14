@@ -20,9 +20,7 @@
 #ifndef __UQ_TRANSITION_KERNEL_H__
 #define __UQ_TRANSITION_KERNEL_H__
 
-#include <uqVectorSpace.h>
-#include <uqTKPdf.h>
-#include <uqTKRealizer.h>
+#include <uqVectorRV.h>
 
 //*****************************************************
 // Base class
@@ -35,29 +33,25 @@ public:
                 const uqVectorSpaceClass<V,M>& vectorSpace);
   virtual ~uqBaseTKClass();
 
-  const   uqBaseEnvironmentClass&     env        () const;
-  const   uqBaseTKPdfClass     <V,M>& pdf        () const;
-  const   uqBaseTKRealizerClass<V,M>& realizer   () const;
+          const uqBaseEnvironmentClass& env() const;
 
-  virtual void setPdf     (const uqBaseTKPdfClass     <V,M>& tKPdf     ) = 0;
-  virtual void setRealizer(const uqBaseTKRealizerClass<V,M>& tKRealizer) = 0;
+  virtual       void                    print(std::ostream& os) const = 0;
 
 protected:
-  const   uqEmptyEnvironmentClass*    m_emptyEnv;
-  const   uqBaseEnvironmentClass&     m_env;
-          std::string                 m_prefix;
-  const   uqBaseTKPdfClass     <V,M>* m_tKPdf;
-  const   uqBaseTKRealizerClass<V,M>* m_tKRealizer;
+  const   uqEmptyEnvironmentClass* m_emptyEnv;
+  const   uqBaseEnvironmentClass&  m_env;
+          std::string              m_prefix;
+
+  const   std::vector<const uqGaussianVectorRVClass<V,M>* > m_rvs; // Gaussian, not Base...
 };
 
 template<class V, class M>
 uqBaseTKClass<V,M>::uqBaseTKClass()
   :
-  m_emptyEnv  (new uqEmptyEnvironmentClass()),
-  m_env       (*m_emptyEnv),
-  m_prefix    (""),
-  m_tKPdf     (NULL),
-  m_tKRealizer(NULL)
+  m_emptyEnv(new uqEmptyEnvironmentClass()),
+  m_env     (*m_emptyEnv),
+  m_prefix  (""),
+  m_rvs     (0)
 {
 }
 
@@ -66,11 +60,10 @@ uqBaseTKClass<V,M>::uqBaseTKClass(
   const char*                    prefix,
   const uqVectorSpaceClass<V,M>& vectorSpace)
   :
-  m_emptyEnv  (NULL),
-  m_env       (vectorSpace.env()),
-  m_prefix    (prefix),
-  m_tKPdf     (NULL),
-  m_tKRealizer(NULL)
+  m_emptyEnv(NULL),
+  m_env     (vectorSpace.env()),
+  m_prefix  (prefix),
+  m_rvs     (0)
 {
 }
 
@@ -87,95 +80,155 @@ uqBaseTKClass<V,M>::env() const
   return m_env;
 }
 
-template<class V, class M>
-const uqBaseTKPdfClass<V,M>&
-uqBaseTKClass<V,M>::pdf() const
-{
-  UQ_FATAL_TEST_MACRO(m_tKPdf == NULL,
-                      m_env.rank(),
-                      "uqBaseTKClass<V,M>::pdf()",
-                      "m_tKPdf is NULL");
-
-  return *m_tKPdf;
-}
-
-template<class V, class M>
-const uqBaseTKRealizerClass<V,M>&
-uqBaseTKClass<V,M>::realizer() const
-{
-  UQ_FATAL_TEST_MACRO(m_tKRealizer == NULL,
-                      m_env.rank(),
-                      (std::string)("uqBaseTKClass<V,M>::realizer(), prefix=")+m_prefix,
-                      "m_tKRealizer is NULL");
-
-  return *m_tKRealizer;
-}
-
 //*****************************************************
-// Langevin class
+// TK with scaled cov matrix
 //*****************************************************
 template<class V, class M>
-class uqLangevinTKClass : public uqBaseTKClass<V,M> {
+class uqScaledCovMatrixTKClass : public uqBaseTKClass<V,M> {
 public:
-  uqLangevinTKClass();
-  uqLangevinTKClass(const char*                    prefix,
-                    const uqVectorSpaceClass<V,M>& vectorSpace);
- ~uqLangevinTKClass();
+  uqScaledCovMatrixTKClass(const char*                    prefix,
+                           const uqVectorSpaceClass<V,M>& vectorSpace,
+                           const M&                       covMatrix,
+                           const std::vector<double>&     scales);
+ ~uqScaledCovMatrixTKClass();
 
-  void setPdf     (const uqBaseTKPdfClass     <V,M>& tKPdf     );
-  void setRealizer(const uqBaseTKRealizerClass<V,M>& tKRealizer);
+       void                          updateCovMatrix(const M& covMatrix);
+ const uqGaussianVectorRVClass<V,M>& rv             (const std::vector<const V*>& positions) const;
+       void                          print          (std::ostream& os) const;
 
 private:
   using uqBaseTKClass<V,M>::m_env;
   using uqBaseTKClass<V,M>::m_prefix;
-  using uqBaseTKClass<V,M>::m_tKPdf;
-  using uqBaseTKClass<V,M>::m_tKRealizer;
+  using uqBaseTKClass<V,M>::m_rvs;
+
+  M                   m_covMatrix;
+  std::vector<double> m_scales;
 };
 
 template<class V, class M>
-uqLangevinTKClass<V,M>::uqLangevinTKClass()
-  :
-  uqBaseTKClass<V,M>()
-{
-}
-
-template<class V, class M>
-uqLangevinTKClass<V,M>::uqLangevinTKClass(
+uqScaledCovMatrixTKClass<V,M>::uqScaledCovMatrixTKClass(
   const char*                    prefix,
-  const uqVectorSpaceClass<V,M>& vectorSpace)
+  const uqVectorSpaceClass<V,M>& vectorSpace,
+  const M&                       covMatrix,
+  const std::vector<double>&     scales)
   :
-  uqBaseTKClass<V,M>(prefix,vectorSpace)
+  uqBaseTKClass<V,M>(prefix,vectorSpace),
+  m_covMatrix       (covMatrix),
+  m_scales          (0)
 {
-  m_tKPdf = NULL; //new uqLangevinTKPdfClass<V,M>(m_prefix.c_str(),
-                  //                              vectorSpace,
-                  //                              covMatrix);
-  m_tKRealizer = NULL; // FIX ME: complete code
 }
 
 template<class V, class M>
-uqLangevinTKClass<V,M>::~uqLangevinTKClass()
+uqScaledCovMatrixTKClass<V,M>::~uqScaledCovMatrixTKClass()
 {
 }
 
 template<class V, class M>
 void
-uqLangevinTKClass<V,M>::setPdf(const uqBaseTKPdfClass<V,M>& tKPdf)
+uqScaledCovMatrixTKClass<V,M>::updateCovMatrix(const M& covMatrix)
 {
-  UQ_FATAL_TEST_MACRO(true,
+  return;
+}
+
+template<class V, class M>
+const uqGaussianVectorRVClass<V,M>&
+uqScaledCovMatrixTKClass<V,M>::rv(const std::vector<const V*>& positions) const
+{
+  UQ_FATAL_TEST_MACRO(m_rvs.size() < positions.size(),
                       m_env.rank(),
-                      "uqLangevinTKClass<V,M>::setPdf()",
-                      "it does not make sense to call such routine for this class");
+                      "uqScaledCovTKClass<V,M>::pdf()",
+                      "m_rvs.size() < positions.size()");
+
+  return m_rvs[positions.size()-1];
+}
+
+template<class V, class M>
+void
+uqScaledCovMatrixTKClass<V,M>::print(std::ostream& os) const
+{
+  return;
+}
+
+//*****************************************************
+// TK with Hessians
+//*****************************************************
+template<class V, class M>
+class uqHessianCovMatricesTKClass : public uqBaseTKClass<V,M> {
+public:
+  uqHessianCovMatricesTKClass(const char*                      prefix,
+                              const uqVectorSpaceClass<V,M>&   vectorSpace,
+                              const uqBaseVectorPdfClass<V,M>& targetPdf,
+                              unsigned int                     maxNumberOfStages);
+ ~uqHessianCovMatricesTKClass();
+
+       void                          addPreComputingPosition   (unsigned int positionId, const V& position);
+       void                          clearPreComputingPositions();
+ const uqGaussianVectorRVClass<V,M>& rv                        (const std::vector<unsigned int>& positionIds) const;
+       void                          print                     (std::ostream& os) const;
+
+private:
+  using uqBaseTKClass<V,M>::m_env;
+  using uqBaseTKClass<V,M>::m_prefix;
+  using uqBaseTKClass<V,M>::m_rvs;
+
+  const uqBaseVectorPdfClass<V,M>& m_targetPdf;
+  unsigned int                     m_maxNumberOfStages;
+  std::vector<const V*>            m_preComputingPositions;
+  std::vector<const V*>            m_preComputedGrads;
+  //std::vector<const M*>            m_preComputedHessians; // Hessians are saved inside the rvs
+};
+
+template<class V, class M>
+uqHessianCovMatricesTKClass<V,M>::uqHessianCovMatricesTKClass(
+  const char*                      prefix,
+  const uqVectorSpaceClass<V,M>&   vectorSpace,
+  const uqBaseVectorPdfClass<V,M>& targetPdf,
+  unsigned int                     maxNumberOfStages)
+  :
+  uqBaseTKClass<V,M>     (prefix,vectorSpace),
+  m_targetPdf            (targetPdf),
+  m_maxNumberOfStages    (maxNumberOfStages),
+  m_preComputingPositions(m_maxNumberOfStages,NULL),
+  m_preComputedGrads     (m_maxNumberOfStages,NULL)
+//m_preComputedHessians  (m_maxNumberOfStages,NULL)
+{
+}
+
+template<class V, class M>
+uqHessianCovMatricesTKClass<V,M>::~uqHessianCovMatricesTKClass()
+{
+}
+
+template<class V, class M>
+void
+uqHessianCovMatricesTKClass<V,M>::addPreComputingPosition(unsigned int positionId, const V& position)
+{
   return;
 }
 
 template<class V, class M>
 void
-uqLangevinTKClass<V,M>::setRealizer(const uqBaseTKRealizerClass<V,M>& tKRealizer)
+uqHessianCovMatricesTKClass<V,M>::clearPreComputingPositions()
 {
-  UQ_FATAL_TEST_MACRO(true,
+  return;
+}
+
+template<class V, class M>
+const uqGaussianVectorRVClass<V,M>&
+uqHessianCovMatricesTKClass<V,M>::rv(const std::vector<unsigned int>& positionIds) const
+{
+  UQ_FATAL_TEST_MACRO(m_rvs.size() < positionIds.size(),
                       m_env.rank(),
-                      "uqLangevinTKClass<V,M>::setRealizer()",
-                      "it does not make sense to call such routine for this class");
+                      "uqScaledCovTKClass<V,M>::pdf()",
+                      "m_rvs.size() < positionIds.size()");
+
+  return m_rvs[positionIds.size()-1];
+}
+
+template<class V, class M>
+void
+uqHessianCovMatricesTKClass<V,M>::print(std::ostream& os) const
+{
   return;
 }
 #endif // __UQ_TRANSITION_KERNEL_H__
