@@ -389,7 +389,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
     // Loop: generate new position
     //****************************************************
     if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
-#ifdef UQ_USES_TK_CLASS
+#ifdef UQ_USES_TK_CLASS // AQUI
 #else
     gaussianVector.cwSetGaussian(m_env.rng(),0.,1.);
     tmpVecValues = currentPosition.vecValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
@@ -466,17 +466,26 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
     // Loop: delayed rejection
     //****************************************************
     std::vector<uqMarkovChainPositionClass<P_V>*> drPositions(stageId+2,NULL);
+    std::vector<const P_V*> vecPositions(stageId+2,NULL);
     if ((accept == false) && (outOfDomainBounds == false) && (m_drMaxNumExtraStages > 0)) {
       if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalDR, NULL);
 
       drPositions[0] = new uqMarkovChainPositionClass<P_V>(currentPosition);
       drPositions[1] = new uqMarkovChainPositionClass<P_V>(currentCandidate);
 
+      vecPositions[0] = &(drPositions[0]->vecValues());
+      vecPositions[1] = &(drPositions[1]->vecValues());
+
       while ((accept == false) && (stageId < m_drMaxNumExtraStages)) {
         stageId++;
 
         if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
-#ifdef UQ_USES_TK_CLASS
+#ifdef UQ_USES_TK_CLASS // AQUI
+        if (m_tk1) {
+          m_tk1->rv(vecPositions).realizer().realization(tmpVecValues);
+        }
+        else {
+        }
 #else
         gaussianVector.cwSetGaussian(m_env.rng(),0.,1.);
         tmpVecValues = currentPosition.vecValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
@@ -517,6 +526,10 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
 
     for (unsigned int i = 0; i < drPositions.size(); ++i) {
       if (drPositions[i]) delete drPositions[i];
+    }
+
+    for (unsigned int i = 0; i < vecPositions.size(); ++i) {
+      if (vecPositions[i]) delete vecPositions[i];
     }
 
     //****************************************************
@@ -668,7 +681,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
           tmpCholIsPositiveDefinite = true;
         }
         if (tmpCholIsPositiveDefinite) {
-#ifdef UQ_USES_TK_CLASS
+#ifdef UQ_USES_TK_CLASS // AQUI
 #else
           *(m_lowerCholProposalCovMatrices[0]) = tmpChol;
           *(m_lowerCholProposalCovMatrices[0]) *= sqrt(m_amEta);
@@ -682,7 +695,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
                             "need to code the update of m_upperCholProposalPrecMatrices");
 #endif
 
-#ifdef UQ_USES_TK_CLASS
+#ifdef UQ_USES_TK_CLASS // AQUI
 #else
           if (m_drMaxNumExtraStages > 0) updateTK();
 #endif
