@@ -186,8 +186,7 @@ uqBaseEnvironmentClass::scanInputFileForMyOptions(const po::options_description&
   //          << std::endl;
   if (m_thereIsInputFile) {
     std::ifstream ifs(m_inputFileName.c_str());
-//    po::store(po::parse_config_file(ifs, *m_allOptionsDesc, true), *m_allOptionsMap);
-    po::store(po::parse_config_file(ifs, *m_allOptionsDesc), *m_allOptionsMap);
+    po::store(po::parse_config_file(ifs, *m_allOptionsDesc, true), *m_allOptionsMap);
     po::notify(*m_allOptionsMap);
     ifs.close();
   }
