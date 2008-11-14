@@ -333,15 +333,16 @@ public:
   ~uqGaussianVectorRealizerClass();
 
   void realization(V& nextValues) const;
+  void updateExpectedValues(const V& newExpectedValues);
     
 private:
-  const V& m_expectedValues;
-  const M& m_lowerCholCovMatrix;
+  M* m_lowerCholCovMatrix;
 
   using uqBaseVectorRealizerClass<V,M>::m_env;
   using uqBaseVectorRealizerClass<V,M>::m_prefix;
   using uqBaseVectorRealizerClass<V,M>::m_imageSpace;
   using uqBaseVectorRealizerClass<V,M>::m_period;
+  using uqBaseVectorRealizerClass<V,M>::m_imageExpectedValues;
 };
 
 template<class V, class M>
@@ -351,14 +352,15 @@ uqGaussianVectorRealizerClass<V,M>::uqGaussianVectorRealizerClass(const char* pr
 								  const M& lowerCholCovMatrix)
   :
   uqBaseVectorRealizerClass<V,M>( ((std::string)(prefix)+"gau").c_str(), imageSpace, 0 ),
-  m_expectedValues(expectedValues),
-  m_lowerCholCovMatrix(lowerCholCovMatrix)
+  m_lowerCholCovMatrix(new M(lowerCholCovMatrix))
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqGaussianVectorRealizerClass<V,M>::constructor()"
               << ": prefix = " << m_prefix
               << std::endl;
   }
+
+  *m_imageExpectedValues = expectedValues;
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Leaving uqGaussianVectorRealizerClass<V,M>::constructor()"
@@ -370,6 +372,7 @@ uqGaussianVectorRealizerClass<V,M>::uqGaussianVectorRealizerClass(const char* pr
 template<class V, class M>
 uqGaussianVectorRealizerClass<V,M>::~uqGaussianVectorRealizerClass()
 {
+  delete m_lowerCholCovMatrix;
 }
 
 template<class V, class M>
@@ -379,7 +382,17 @@ uqGaussianVectorRealizerClass<V,M>::realization(V& nextValues) const
   V iidGaussianVector(m_imageSpace.zeroVector());
   iidGaussianVector.cwSetGaussian(m_env.rng(), 0.0, 1.0);
 
-  nextValues = m_expectedValues + m_lowerCholCovMatrix*iidGaussianVector;
+  nextValues = (*m_imageExpectedValues) + (*m_lowerCholCovMatrix)*iidGaussianVector;
+  return;
+}
+
+template<class V, class M>
+void
+uqGaussianVectorRealizerClass<V,M>::updateExpectedValues(const V& newExpectedValues)
+{
+  // delete old expected values (alloced at construction or last call to this function)
+  delete m_imageExpectedValues;
+  m_imageExpectedValues = new V(newExpectedValues);
   return;
 }
 

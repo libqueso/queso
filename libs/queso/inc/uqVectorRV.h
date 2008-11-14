@@ -55,7 +55,7 @@ protected:
           std::string                     m_prefix;
   const   uqVectorSpaceClass       <V,M>& m_imageSpace;
           uqBaseVectorPdfClass     <V,M>* m_pdf;
-  const   uqBaseVectorRealizerClass<V,M>* m_realizer;
+	  uqBaseVectorRealizerClass<V,M>* m_realizer;
   const   uqBaseVectorCdfClass     <V,M>* m_cdf;
   const   uqBaseVectorMdfClass     <V,M>* m_mdf;
 };
@@ -358,7 +358,14 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
                                             imageMaxValues,
                                             imageExpectedValues,
                                             imageVarianceValues);
-  m_realizer    = NULL; // FIX ME: complete code
+
+  M lowerCholCovMatrix(imageVarianceValues);
+  int ierr = lowerCholCovMatrix.chol();
+  UQ_FATAL_TEST_MACRO( (ierr!=0), m_env.rank(),
+		       "uqGaussianVectorRVClass<V,M>::constructor() [2]",
+		       "Cholesky decomposition of covariance matrix failed.");
+  lowerCholCovMatrix.zeroUpper(false);
+
   m_cdf         = NULL; // FIX ME: complete code
   m_mdf         = NULL; // FIX ME: complete code
 
@@ -392,7 +399,19 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
                                             imageMaxValues,
                                             imageExpectedValues,
                                             covMatrix);
-  m_realizer    = NULL; // FIX ME: complete code
+
+  M lowerCholCovMatrix(covMatrix);
+  int ierr = lowerCholCovMatrix.chol();
+  UQ_FATAL_TEST_MACRO( (ierr!=0), m_env.rank(),
+		       "uqGaussianVectorRVClass<V,M>::constructor() [2]",
+		       "Cholesky decomposition of covariance matrix failed.");
+  lowerCholCovMatrix.zeroUpper(false);
+
+  m_realizer = new uqGaussianVectorRealizerClass<V,M>(m_prefix.c_str(),
+						      m_imageSpace,
+						      imageExpectedValues,
+						      lowerCholCovMatrix);
+
   m_cdf         = NULL; // FIX ME: complete code
   m_mdf         = NULL; // FIX ME: complete code
 
@@ -456,8 +475,9 @@ template<class V, class M>
 void
 uqGaussianVectorRVClass<V,M>::updateExpectedValues(const V& newExpectedValues)
 {
-  // we are sure that m_pdf pointer to type uqGaussianVectorPdfClass<V,M>, so all is well
-  ( dynamic_cast< uqGaussianVectorPdfClass<V,M>* >(m_pdf) )->updateExpectedValues(newExpectedValues);
+  // we are sure that m_pdf (and m_realizer, etc) point to associated Gaussian classes, so all is well
+  ( dynamic_cast< uqGaussianVectorPdfClass     <V,M>* >(m_pdf     ) )->updateExpectedValues(newExpectedValues);
+  ( dynamic_cast< uqGaussianVectorRealizerClass<V,M>* >(m_realizer) )->updateExpectedValues(newExpectedValues);
   return;
 }
 

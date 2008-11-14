@@ -41,6 +41,15 @@ BOOST_AUTO_TEST_CASE( test_uqGaussianVectorRVClass )
   gaussianRV.updateExpectedValues(finalExpectedValues);
   BOOST_REQUIRE_CLOSE(gaussianRV.pdf().actualDensity(testValues), exp(-1.0), tolClose);
 
+  //***********************************************************************
+  // Test realizer
+  // NOTE: just calls it... doesn't check values
+  //***********************************************************************
+  uqGslVectorClass myRealization(testValues);
+  gaussianRV.realizer().realization(myRealization);
+
+  std::cout << myRealization;
+
   // finalize
   MPI_Finalize();
 }
