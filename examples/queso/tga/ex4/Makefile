@@ -32,7 +32,7 @@ LIBS = \
 	-lgsl \
 	-lgslcblas \
 	-lblas \
-	-lboost_program_options
+	-lboost_program_options-$(COMPILER_SPEC_IN_BOOST_LIB_NAME)-mt-1_35
 
 else
 
@@ -68,7 +68,7 @@ LIBS = \
 	-lgsl \
 	-lgslcblas \
 	-lblas \
-	-lboost_program_options
+	-lboost_program_options-$(COMPILER_SPEC_IN_BOOST_LIB_NAME)-mt-1_35
 
 endif
 
