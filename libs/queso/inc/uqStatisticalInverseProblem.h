@@ -38,17 +38,17 @@ template <class P_V,class P_M>
 class uqStatisticalInverseProblemClass
 {
 public:
-  uqStatisticalInverseProblemClass(const char*                          prefix,
-                                   const uqBaseVectorRVClass <P_V,P_M>& priorRv,
-                                   const uqBaseVectorPdfClass<P_V,P_M>& likelihoodFunction,
-                                   uqBaseVectorRVClass <P_V,P_M>&       postRv);
+  uqStatisticalInverseProblemClass(const char*                            prefix,
+                                   const uqBaseVectorRVClass   <P_V,P_M>& priorRv,
+                                   const uqBaseVectorPdfClass  <P_V,P_M>& likelihoodFunction,
+                                         uqGenericVectorRVClass<P_V,P_M>& postRv);
  ~uqStatisticalInverseProblemClass();
 
         bool computeSolutionFlag      () const;
         void solveWithBayesMarkovChain(const P_V& initialValues,
                                        const P_M* proposalCovMatrix);
-  const uqBaseVectorRVClass<P_V,P_M>& priorRv() const;
-  const uqBaseVectorRVClass<P_V,P_M>& postRv()  const;
+  const uqBaseVectorRVClass<P_V,P_M>&    priorRv() const;
+  const uqGenericVectorRVClass<P_V,P_M>& postRv () const;
 
         void print                    (std::ostream& os) const;
 
@@ -75,7 +75,7 @@ private:
 
   const uqBaseVectorRVClass       <P_V,P_M>& m_priorRv;
   const uqBaseVectorPdfClass      <P_V,P_M>& m_likelihoodFunction;
-        uqBaseVectorRVClass       <P_V,P_M>& m_postRv;
+        uqGenericVectorRVClass    <P_V,P_M>& m_postRv;
 
         uqBaseVectorPdfClass      <P_V,P_M>* m_solutionPdf;
         uqBaseVectorMdfClass      <P_V,P_M>* m_solutionMdf;
@@ -93,10 +93,10 @@ std::ostream& operator<<(std::ostream& os, const uqStatisticalInverseProblemClas
 
 template <class P_V,class P_M>
 uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
-  const char*                          prefix,
-  const uqBaseVectorRVClass <P_V,P_M>& priorRv,
-  const uqBaseVectorPdfClass<P_V,P_M>& likelihoodFunction,
-        uqBaseVectorRVClass <P_V,P_M>& postRv)
+  const char*                            prefix,
+  const uqBaseVectorRVClass   <P_V,P_M>& priorRv,
+  const uqBaseVectorPdfClass  <P_V,P_M>& likelihoodFunction,
+        uqGenericVectorRVClass<P_V,P_M>& postRv)
   :
   m_env                   (priorRv.env()),
   m_prefix                ((std::string)(prefix) + "ip_"),
@@ -305,7 +305,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::priorRv() const
 }
 
 template <class P_V,class P_M>
-const uqBaseVectorRVClass<P_V,P_M>& 
+const uqGenericVectorRVClass<P_V,P_M>& 
 uqStatisticalInverseProblemClass<P_V,P_M>::postRv() const
 {
   return m_postRv;

@@ -27,7 +27,7 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 class uqValidationCycleClass
 {
 public:
-  uqValidationCycleClass(const uqBaseEnvironmentClass&          env,
+  uqValidationCycleClass(const uqBaseEnvironmentClass&      env,
                          const char*                        prefix,
                          const uqVectorSpaceClass<P_V,P_M>& paramSpace,
                          const uqVectorSpaceClass<P_V,P_M>& qoiSpace);
@@ -63,23 +63,23 @@ public:
         uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>& valFP();
 
 private:
-  const uqBaseEnvironmentClass&          m_env;
-        std::string                  m_prefix;
-  const uqVectorSpaceClass<P_V,P_M>& m_paramSpace;
-  const uqVectorSpaceClass<Q_V,Q_M>& m_qoiSpace;
+  const uqBaseEnvironmentClass&                            m_env;
+        std::string                                        m_prefix;
+  const uqVectorSpaceClass<P_V,P_M>&                       m_paramSpace;
+  const uqVectorSpaceClass<Q_V,Q_M>&                       m_qoiSpace;
 
-  const uqBaseVectorRVClass             <P_V,P_M>* m_calPriorRv; // instantiated outside this class!!
-	uqGenericVectorPdfClass         <P_V,P_M>* m_calLikelihoodFunctionObj;
-        uqGenericVectorRVClass          <P_V,P_M>* m_calPostRv;
-        uqStatisticalInverseProblemClass<P_V,P_M>* m_calIP;
+  const uqBaseVectorRVClass             <P_V,P_M>*         m_calPriorRv; // instantiated outside this class!!
+	uqGenericVectorPdfClass         <P_V,P_M>*         m_calLikelihoodFunctionObj;
+        uqGenericVectorRVClass          <P_V,P_M>*         m_calPostRv;
+        uqStatisticalInverseProblemClass<P_V,P_M>*         m_calIP;
 
         uqGenericVectorFunctionClass    <P_V,P_M,Q_V,Q_M>* m_calQoiFunctionObj;
         uqGenericVectorRVClass          <Q_V,Q_M>*         m_calQoiRv;
         uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>* m_calFP;
 
-	uqGenericVectorPdfClass         <P_V,P_M>* m_valLikelihoodFunctionObj;
-        uqGenericVectorRVClass          <P_V,P_M>* m_valPostRv;
-        uqStatisticalInverseProblemClass<P_V,P_M>* m_valIP;
+	uqGenericVectorPdfClass         <P_V,P_M>*         m_valLikelihoodFunctionObj;
+        uqGenericVectorRVClass          <P_V,P_M>*         m_valPostRv;
+        uqStatisticalInverseProblemClass<P_V,P_M>*         m_valIP;
 
         uqGenericVectorFunctionClass    <P_V,P_M,Q_V,Q_M>* m_valQoiFunctionObj;
         uqGenericVectorRVClass          <Q_V,Q_M>*         m_valQoiRv;
@@ -88,7 +88,7 @@ private:
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::uqValidationCycleClass(
-  const uqBaseEnvironmentClass&          env,
+  const uqBaseEnvironmentClass&      env,
   const char*                        prefix,
   const uqVectorSpaceClass<P_V,P_M>& paramSpace,
   const uqVectorSpaceClass<P_V,P_M>& qoiSpace)

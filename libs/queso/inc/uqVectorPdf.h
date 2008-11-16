@@ -57,8 +57,8 @@ public:
   virtual double                                actualDensity             (const V& paramValues) const = 0;
   virtual double                                minus2LnDensity           (const V& paramValues) const = 0;
 
-//const   uqBaseScalarPdfClass<double>& component                 (unsigned int componentId) const;
-          bool                                  outOfDomainBounds         (const V& v) const;
+//const   uqBaseScalarPdfClass<double>&         component                 (unsigned int componentId) const;
+          bool                                  outOfSupport              (const V& v) const;
   const   V&                                    domainMinValues           () const;
   const   V&                                    domainMaxValues           () const;
   const   V&                                    domainExpectedValues      () const;
@@ -240,7 +240,7 @@ uqBaseVectorPdfClass<V,M>::domainVarianceValues() const
 
 template <class V, class M>
 bool
-uqBaseVectorPdfClass<V,M>::outOfDomainBounds(const V& v) const
+uqBaseVectorPdfClass<V,M>::outOfSupport(const V& v) const
 {
   return (v.atLeastOneComponentSmallerThan(this->domainMinValues()) ||
           v.atLeastOneComponentBiggerThan (this->domainMaxValues()));
@@ -390,7 +390,7 @@ protected:
 
 template<class V,class M>
 uqBayesianVectorPdfClass<V,M>::uqBayesianVectorPdfClass(
-  const char*                              prefix,
+  const char*                      prefix,
   const uqBaseVectorPdfClass<V,M>* priorDensity,
   const uqBaseVectorPdfClass<V,M>* likelihoodFunction)
   :
@@ -532,8 +532,8 @@ uqGaussianVectorPdfClass<V,M>::uqGaussianVectorPdfClass(
   const M&                       covMatrix)
   :
   uqBaseVectorPdfClass<V,M>(((std::string)(prefix)+"gau").c_str(),domainSpace,domainMinValues,domainMaxValues,domainExpectedValues),
-  m_diagonalCovMatrix(false),
-  m_covMatrix                      (new M(covMatrix))
+  m_diagonalCovMatrix      (false),
+  m_covMatrix              (new M(covMatrix))
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqGaussianVectorPdfClass<V,M>::constructor() [2]"

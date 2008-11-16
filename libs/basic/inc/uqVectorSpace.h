@@ -35,13 +35,13 @@ class uqVectorSpaceClass
 {
 public:
           uqVectorSpaceClass();
-          uqVectorSpaceClass(const uqBaseEnvironmentClass&                env, // See template specialization
+          uqVectorSpaceClass(const uqBaseEnvironmentClass&            env, // See template specialization
                              const char*                              prefix,
                              unsigned int                             dimValue,
                              const EpetraExt::DistArray<std::string>* componentsNames);
          ~uqVectorSpaceClass();
 
-  const   uqBaseEnvironmentClass&                env                 ()                         const;
+  const   uqBaseEnvironmentClass&            env                 ()                         const;
   const   Epetra_Map&                        map                 ()                         const;
           unsigned int                       dim                 ()                         const;
 
@@ -65,7 +65,7 @@ protected:
           void                               getMyOptionValues   (po::options_description& optionsDesc);
 #endif
 
-  const   uqBaseEnvironmentClass&                m_env;
+  const   uqBaseEnvironmentClass&            m_env;
           std::string                        m_prefix;
           unsigned int                       m_dim;
   const   EpetraExt::DistArray<std::string>* m_componentsNames;

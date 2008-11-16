@@ -30,7 +30,8 @@ class uqBaseTKGroupClass {
 public:
   uqBaseTKGroupClass();
   uqBaseTKGroupClass(const char*                    prefix,
-                     const uqVectorSpaceClass<V,M>& vectorSpace);
+                     const uqVectorSpaceClass<V,M>& vectorSpace,
+                     const std::vector<double>&     scales);
   virtual ~uqBaseTKGroupClass();
 
           const uqBaseEnvironmentClass& env() const;
@@ -38,38 +39,55 @@ public:
   virtual       void                    print(std::ostream& os) const = 0;
 
 protected:
-  const   uqEmptyEnvironmentClass* m_emptyEnv;
-  const   uqBaseEnvironmentClass&  m_env;
-          std::string              m_prefix;
-
-  const   std::vector<const uqGaussianVectorRVClass<V,M>* > m_rvs; // Gaussian, not Base...
+  const   uqEmptyEnvironmentClass*                    m_emptyEnv;
+  const   uqBaseEnvironmentClass&                     m_env;
+          std::string                                 m_prefix;
+  const   uqVectorSpaceClass<V,M>*                    m_vectorSpace;
+          std::vector<double>                         m_scales;
+  const   V*                                          m_mInfVec;
+  const   V*                                          m_pInfVec;
+          std::vector<uqGaussianVectorRVClass<V,M>* > m_rvs; // Gaussian, not Base... And nothing const...
 };
 
 template<class V, class M>
 uqBaseTKGroupClass<V,M>::uqBaseTKGroupClass()
   :
-  m_emptyEnv(new uqEmptyEnvironmentClass()),
-  m_env     (*m_emptyEnv),
-  m_prefix  (""),
-  m_rvs     (0)
+  m_emptyEnv   (new uqEmptyEnvironmentClass()),
+  m_env        (*m_emptyEnv),
+  m_prefix     (""),
+  m_vectorSpace(NULL),
+  m_scales     (0),
+  m_mInfVec    (NULL),
+  m_pInfVec    (NULL),
+  m_rvs        (0)
 {
 }
 
 template<class V, class M>
 uqBaseTKGroupClass<V,M>::uqBaseTKGroupClass(
   const char*                    prefix,
-  const uqVectorSpaceClass<V,M>& vectorSpace)
+  const uqVectorSpaceClass<V,M>& vectorSpace,
+  const std::vector<double>&     scales)
   :
-  m_emptyEnv(NULL),
-  m_env     (vectorSpace.env()),
-  m_prefix  (prefix),
-  m_rvs     (0)
+  m_emptyEnv   (NULL),
+  m_env        (vectorSpace.env()),
+  m_prefix     (prefix),
+  m_vectorSpace(&vectorSpace),
+  m_scales     (scales.size(),1.),
+  m_mInfVec    (vectorSpace.newVector(-INFINITY)),
+  m_pInfVec    (vectorSpace.newVector( INFINITY)),
+  m_rvs        (0)
 {
+  for (unsigned int i = 0; i < m_scales.size(); ++i) {
+    m_scales[i] = scales[i];
+  }
 }
 
 template<class V, class M>
 uqBaseTKGroupClass<V,M>::~uqBaseTKGroupClass()
 {
+  if (m_pInfVec)  delete m_pInfVec;
+  if (m_mInfVec)  delete m_mInfVec;
   if (m_emptyEnv) delete m_emptyEnv;
 }
 
@@ -88,34 +106,46 @@ class uqScaledCovMatrixTKGroupClass : public uqBaseTKGroupClass<V,M> {
 public:
   uqScaledCovMatrixTKGroupClass(const char*                    prefix,
                                 const uqVectorSpaceClass<V,M>& vectorSpace,
-                                const M&                       covMatrix,
-                                const std::vector<double>&     scales);
+                                const std::vector<double>&     scales,
+                                const M&                       covMatrix);
  ~uqScaledCovMatrixTKGroupClass();
 
        void                          updateCovMatrix(const M& covMatrix);
+ const uqGaussianVectorRVClass<V,M>& rv             (const V&                     position ) const;
  const uqGaussianVectorRVClass<V,M>& rv             (const std::vector<const V*>& positions) const;
        void                          print          (std::ostream& os) const;
 
 private:
   using uqBaseTKGroupClass<V,M>::m_env;
   using uqBaseTKGroupClass<V,M>::m_prefix;
+  using uqBaseTKGroupClass<V,M>::m_vectorSpace;
+  using uqBaseTKGroupClass<V,M>::m_scales;
+  using uqBaseTKGroupClass<V,M>::m_mInfVec;
+  using uqBaseTKGroupClass<V,M>::m_pInfVec;
   using uqBaseTKGroupClass<V,M>::m_rvs;
 
-  M                   m_covMatrix;
-  std::vector<double> m_scales;
+  M m_covMatrix;
 };
 
 template<class V, class M>
 uqScaledCovMatrixTKGroupClass<V,M>::uqScaledCovMatrixTKGroupClass(
   const char*                    prefix,
   const uqVectorSpaceClass<V,M>& vectorSpace,
-  const M&                       covMatrix,
-  const std::vector<double>&     scales)
+  const std::vector<double>&     scales,
+  const M&                       covMatrix)
   :
-  uqBaseTKGroupClass<V,M>(prefix,vectorSpace),
-  m_covMatrix       (covMatrix),
-  m_scales          (0)
+  uqBaseTKGroupClass<V,M>(prefix,vectorSpace,scales),
+  m_covMatrix            (covMatrix)
 {
+  for (unsigned int i = 0; i < m_scales.size(); ++i) {
+    double factor = 1./m_scales[i]/m_scales[i];
+    m_rvs[i] = new uqGaussianVectorRVClass<V,M>(m_prefix.c_str(),
+                                                *m_vectorSpace,
+                                                *m_mInfVec,
+                                                *m_pInfVec,
+                                                m_vectorSpace->zeroVector(),
+                                                factor*covMatrix);
+  }
 }
 
 template<class V, class M>
@@ -127,19 +157,46 @@ template<class V, class M>
 void
 uqScaledCovMatrixTKGroupClass<V,M>::updateCovMatrix(const M& covMatrix)
 {
+  for (unsigned int i = 0; i < m_scales.size(); ++i) {
+    double factor = 1./m_scales[i]/m_scales[i];
+    m_rvs[i]->updateCovMatrix(factor*covMatrix);
+  }
+
   return;
+}
+
+template<class V, class M>
+const uqGaussianVectorRVClass<V,M>&
+uqScaledCovMatrixTKGroupClass<V,M>::rv(const V& position) const
+{
+  UQ_FATAL_TEST_MACRO(m_rvs.size() == 0,
+                      m_env.rank(),
+                      "uqScaledCovTKGroupClass<V,M>::pdf()",
+                      "m_rvs.size() = 0");
+
+  m_rvs[0]->updateExpectedValues(position);
+
+  return (*m_rvs[0]);
 }
 
 template<class V, class M>
 const uqGaussianVectorRVClass<V,M>&
 uqScaledCovMatrixTKGroupClass<V,M>::rv(const std::vector<const V*>& positions) const
 {
+  UQ_FATAL_TEST_MACRO(positions.size() == 0,
+                      m_env.rank(),
+                      "uqScaledCovTKGroupClass<V,M>::pdf()",
+                      "positions.size() = 0");
+
   UQ_FATAL_TEST_MACRO(m_rvs.size() < positions.size(),
                       m_env.rank(),
                       "uqScaledCovTKGroupClass<V,M>::pdf()",
                       "m_rvs.size() < positions.size()");
 
-  return (*m_rvs[positions.size()-1]);
+  unsigned int i = positions.size()-1;
+  m_rvs[i]->updateExpectedValues(*positions[0]);
+
+  return (*m_rvs[i]);
 }
 
 template<class V, class M>
@@ -157,40 +214,43 @@ class uqHessianCovMatricesTKGroupClass : public uqBaseTKGroupClass<V,M> {
 public:
   uqHessianCovMatricesTKGroupClass(const char*                      prefix,
                                    const uqVectorSpaceClass<V,M>&   vectorSpace,
-                                   const uqBaseVectorPdfClass<V,M>& targetPdf,
-                                   unsigned int                     maxNumberOfStages);
+                                   const std::vector<double>&       scales,
+                                   const uqBaseVectorPdfClass<V,M>& targetPdf);
  ~uqHessianCovMatricesTKGroupClass();
 
        void                          addPreComputingPosition   (unsigned int positionId, const V& position);
        void                          clearPreComputingPositions();
+ const uqGaussianVectorRVClass<V,M>& rv                        (unsigned int                     positionId ) const;
  const uqGaussianVectorRVClass<V,M>& rv                        (const std::vector<unsigned int>& positionIds) const;
        void                          print                     (std::ostream& os) const;
 
 private:
   using uqBaseTKGroupClass<V,M>::m_env;
   using uqBaseTKGroupClass<V,M>::m_prefix;
+  using uqBaseTKGroupClass<V,M>::m_vectorSpace;
+  using uqBaseTKGroupClass<V,M>::m_scales;
+  using uqBaseTKGroupClass<V,M>::m_mInfVec;
+  using uqBaseTKGroupClass<V,M>::m_pInfVec;
   using uqBaseTKGroupClass<V,M>::m_rvs;
 
   const uqBaseVectorPdfClass<V,M>& m_targetPdf;
-  unsigned int                     m_maxNumberOfStages;
   std::vector<const V*>            m_preComputingPositions;
   std::vector<const V*>            m_preComputedGrads;
-  //std::vector<const M*>            m_preComputedHessians; // Hessians are stored inside the rvs
+//std::vector<const M*>            m_preComputedHessians; // Hessians are stored inside the rvs
 };
 
 template<class V, class M>
 uqHessianCovMatricesTKGroupClass<V,M>::uqHessianCovMatricesTKGroupClass(
   const char*                      prefix,
   const uqVectorSpaceClass<V,M>&   vectorSpace,
-  const uqBaseVectorPdfClass<V,M>& targetPdf,
-  unsigned int                     maxNumberOfStages)
+  const std::vector<double>&       scales,
+  const uqBaseVectorPdfClass<V,M>& targetPdf)
   :
-  uqBaseTKGroupClass<V,M>     (prefix,vectorSpace),
+  uqBaseTKGroupClass<V,M>(prefix,vectorSpace,scales),
   m_targetPdf            (targetPdf),
-  m_maxNumberOfStages    (maxNumberOfStages),
-  m_preComputingPositions(m_maxNumberOfStages,NULL),
-  m_preComputedGrads     (m_maxNumberOfStages,NULL)
-//m_preComputedHessians  (m_maxNumberOfStages,NULL)
+  m_preComputingPositions(scales.size(),NULL),
+  m_preComputedGrads     (scales.size(),NULL)
+//m_preComputedHessians  (scales.size(),NULL)
 {
 }
 
@@ -215,14 +275,31 @@ uqHessianCovMatricesTKGroupClass<V,M>::clearPreComputingPositions()
 
 template<class V, class M>
 const uqGaussianVectorRVClass<V,M>&
+uqHessianCovMatricesTKGroupClass<V,M>::rv(unsigned int positionId) const
+{
+  UQ_FATAL_TEST_MACRO(m_rvs.size() <= positionId,
+                      m_env.rank(),
+                      "uqScaledCovTKGroupClass<V,M>::pdf()",
+                      "m_rvs.size() <= positionId");
+
+  return *m_rvs[positionId];
+}
+
+template<class V, class M>
+const uqGaussianVectorRVClass<V,M>&
 uqHessianCovMatricesTKGroupClass<V,M>::rv(const std::vector<unsigned int>& positionIds) const
 {
+  UQ_FATAL_TEST_MACRO(positionIds.size() == 0,
+                      m_env.rank(),
+                      "uqScaledCovTKGroupClass<V,M>::pdf()",
+                      "positionIds.size() = 0");
+
   UQ_FATAL_TEST_MACRO(m_rvs.size() < positionIds.size(),
                       m_env.rank(),
                       "uqScaledCovTKGroupClass<V,M>::pdf()",
                       "m_rvs.size() < positionIds.size()");
 
-  return m_rvs[positionIds.size()-1];
+  return *m_rvs[positionIds.size()-1];
 }
 
 template<class V, class M>

@@ -20,8 +20,8 @@
 #ifndef __UQ_MAC_SG1_H__
 #define __UQ_MAC_SG1_H__
 
-#undef UQ_USES_TK_CLASS
-#undef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
+#undef  UQ_USES_TK_CLASS
+#undef  UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
 #define UQ_MAC_SG_REQUIRES_TARGET_DISTRIBUTION_ONLY
 
 #define UQ_MAC_SG_MARKOV_CHAIN_TYPE           1
@@ -60,7 +60,7 @@
 #include <uqChainStatisticalOptions.h>
 #include <uqVectorRV.h>
 #include <uqVectorSpace.h>
-#include <uqMarkovChainPosition.h>
+#include <uqMarkovChainPositionData.h>
 #include <uqMiscellaneous.h>
 #include <uqSequenceOfVectors.h>
 #include <uqArrayOfSequences.h>
@@ -106,21 +106,21 @@ private:
 #else
   int    computeInitialCholFactors();
   void   updateTK                 ();
-  double logProposal              (const uqMarkovChainPositionClass<P_V>&               x,
-                                   const uqMarkovChainPositionClass<P_V>&               y,
-                                   unsigned int                                         idOfProposalCovMatrix);
-  double logProposal              (const std::vector<uqMarkovChainPositionClass<P_V>*>& inputPositions);
+  double logProposal              (const uqMarkovChainPositionDataClass<P_V>&               x,
+                                   const uqMarkovChainPositionDataClass<P_V>&               y,
+                                   unsigned int                                             idOfProposalCovMatrix);
+  double logProposal              (const std::vector<uqMarkovChainPositionDataClass<P_V>*>& inputPositions);
 #endif
-  double alpha                    (const uqMarkovChainPositionClass<P_V>&               x,
-                                   const uqMarkovChainPositionClass<P_V>&               y,
-                                   double*                                              alphaQuotientPtr = NULL);
-  double alpha                    (const std::vector<uqMarkovChainPositionClass<P_V>*>& inputPositions);
-  bool   acceptAlpha              (double                                               alpha);
+  double alpha                    (const uqMarkovChainPositionDataClass<P_V>&               x,
+                                   const uqMarkovChainPositionDataClass<P_V>&               y,
+                                   double*                                                  alphaQuotientPtr = NULL);
+  double alpha                    (const std::vector<uqMarkovChainPositionDataClass<P_V>*>& inputPositions);
+  bool   acceptAlpha              (double                                                   alpha);
 
-  int    writeInfo                (const uqBaseVectorSequenceClass<P_V,P_M>&            workingChain,
-                                   std::ofstream&                                       ofs) const;
-                                 //const P_M*                                           mahalanobisMatrix = NULL,
-                                 //bool                                                 applyMahalanobisInvert = true) const;
+  int    writeInfo                (const uqBaseVectorSequenceClass<P_V,P_M>&                workingChain,
+                                   std::ofstream&                                           ofs) const;
+                                 //const P_M*                                               mahalanobisMatrix = NULL,
+                                 //bool                                                     applyMahalanobisInvert = true) const;
 
   const uqBaseEnvironmentClass&                    m_env;
         std::string                                m_prefix;
@@ -206,7 +206,7 @@ private:
         std::vector<double>                        m_alphaQuotients;
         double                                     m_chainRunTime;
         unsigned int                               m_numRejections;
-        unsigned int                               m_numOutOfBounds;
+        unsigned int                               m_numOutOfTargetSupport;
         double                                     m_lastChainSize;
         P_V*                                       m_lastMean;
         P_M*                                       m_lastAdaptedCovMatrix;
@@ -250,8 +250,8 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   m_option_filteredChain_lag             (m_prefix + "filteredChain_lag"             ),
   m_option_filteredChain_write           (m_prefix + "filteredChain_write"           ),
   m_option_filteredChain_computeStats    (m_prefix + "filteredChain_computeStats"    ),
-  m_option_tk_useLocalHessian      (m_prefix + "proposal_useLocalHessian"      ),
-  m_option_tk_useNewtonComponent   (m_prefix + "proposal_useNewtonComponent"   ),
+  m_option_tk_useLocalHessian            (m_prefix + "proposal_useLocalHessian"      ),
+  m_option_tk_useNewtonComponent         (m_prefix + "proposal_useNewtonComponent"   ),
   m_option_dr_maxNumExtraStages          (m_prefix + "dr_maxNumExtraStages"          ),
   m_option_dr_scalesForExtraStages       (m_prefix + "dr_scalesForExtraStages"       ),
   m_option_am_initialNonAdaptInterval    (m_prefix + "am_initialNonAdaptInterval"    ),
@@ -302,7 +302,7 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   m_alphaQuotients                       (0),//0.),
   m_chainRunTime                         (0.),
   m_numRejections                        (0),
-  m_numOutOfBounds                       (0),
+  m_numOutOfTargetSupport                       (0),
   m_lastChainSize                        (0),
   m_lastMean                             (NULL),
   m_lastAdaptedCovMatrix                 (NULL)
@@ -332,8 +332,8 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
 
     m_tk2 = new uqHessianCovMatricesTKGroupClass<P_V,P_M>(m_prefix.c_str(),
                                                           m_vectorSpace,
-                                                          m_targetPdf,
-                                                          m_drScalesForCovMatrices.size());
+                                                          m_drScalesForCovMatrices,
+                                                          m_targetPdf);
   }
   else {
     if (m_initialProposalCovMatrix == NULL) {
@@ -345,8 +345,8 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
 
     m_tk1 = new uqScaledCovMatrixTKGroupClass<P_V,P_M>(m_prefix.c_str(),
                                                        m_vectorSpace,
-                                                      *m_initialProposalCovMatrix,
-                                                       m_drScalesForCovMatrices);
+                                                       m_drScalesForCovMatrices,
+                                                       *m_initialProposalCovMatrix);
   }
 
 
@@ -387,7 +387,7 @@ uqMarkovChainSGClass<P_V,P_M>::resetChainAndRelatedInfo()
   if (m_lastAdaptedCovMatrix) delete m_lastAdaptedCovMatrix;
   if (m_lastMean)             delete m_lastMean;
   m_lastChainSize  = 0;
-  m_numOutOfBounds = 0;
+  m_numOutOfTargetSupport = 0;
   m_chainRunTime   = 0.;
   m_numRejections  = 0;
   m_alphaQuotients.clear();
@@ -447,8 +447,8 @@ uqMarkovChainSGClass<P_V,P_M>::defineMyOptions(
     (m_option_filteredChain_lag.c_str(),              po::value<unsigned int>()->default_value(UQ_MAC_SG_FILTERED_CHAIN_LAG_ODV              ), "spacing for chain filtering"                                     )
     (m_option_filteredChain_write.c_str(),            po::value<bool        >()->default_value(UQ_MAC_SG_FILTERED_CHAIN_WRITE_ODV            ), "write filtered chain"                                            )
     (m_option_filteredChain_computeStats.c_str(),     po::value<bool        >()->default_value(UQ_MAC_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV    ), "compute statistics on filtered chain"                            )
-    (m_option_tk_useLocalHessian.c_str(),       po::value<bool        >()->default_value(UQ_MAC_SG_TK_USE_LOCAL_HESSIAN_ODV      ), "'proposal' use local Hessian"                                    )
-    (m_option_tk_useNewtonComponent.c_str(),    po::value<bool        >()->default_value(UQ_MAC_SG_TK_USE_NEWTON_COMPONENT_ODV   ), "'proposal' use Newton component"                                 )
+    (m_option_tk_useLocalHessian.c_str(),             po::value<bool        >()->default_value(UQ_MAC_SG_TK_USE_LOCAL_HESSIAN_ODV            ), "'proposal' use local Hessian"                                    )
+    (m_option_tk_useNewtonComponent.c_str(),          po::value<bool        >()->default_value(UQ_MAC_SG_TK_USE_NEWTON_COMPONENT_ODV         ), "'proposal' use Newton component"                                 )
     (m_option_dr_maxNumExtraStages.c_str(),           po::value<unsigned int>()->default_value(UQ_MAC_SG_DR_MAX_NUM_EXTRA_STAGES_ODV         ), "'dr' maximum number of extra stages"                             )
     (m_option_dr_scalesForExtraStages.c_str(),        po::value<std::string >()->default_value(UQ_MAC_SG_DR_SCALES_FOR_EXTRA_STAGES_ODV      ), "'dr' list of scales for proposal cov matrices from 2nd stage on" )
     (m_option_am_initialNonAdaptInterval.c_str(),     po::value<unsigned int>()->default_value(UQ_MAC_SG_AM_INIT_NON_ADAPT_INT_ODV           ), "'am' initial non adaptation interval"                            )
@@ -568,7 +568,7 @@ uqMarkovChainSGClass<P_V,P_M>::getMyOptionValues(
     double scale = 1.0;
     unsigned int tmpSize = tmpScales.size();
 
-    m_drScalesForCovMatrices.resize    (m_drMaxNumExtraStages+1,1.);
+    m_drScalesForCovMatrices.resize(m_drMaxNumExtraStages+1,1.);
 #ifdef UQ_USES_TK_CLASS
 #else
     m_lowerCholProposalCovMatrices.resize(m_drMaxNumExtraStages+1,NULL);
@@ -726,9 +726,9 @@ uqMarkovChainSGClass<P_V,P_M>::updateTK()
 template<class P_V,class P_M>
 double
 uqMarkovChainSGClass<P_V,P_M>::logProposal(
-  const uqMarkovChainPositionClass<P_V>& x,
-  const uqMarkovChainPositionClass<P_V>& y,
-  unsigned int                           idOfProposalCovMatrix)
+  const uqMarkovChainPositionDataClass<P_V>& x,
+  const uqMarkovChainPositionDataClass<P_V>& y,
+  unsigned int                               idOfProposalCovMatrix)
 {
 #ifdef UQ_USES_TK_CLASS
   return 0.;
@@ -745,7 +745,7 @@ uqMarkovChainSGClass<P_V,P_M>::logProposal(
 
 template<class P_V,class P_M>
 double
-uqMarkovChainSGClass<P_V,P_M>::logProposal(const std::vector<uqMarkovChainPositionClass<P_V>*>& inputPositions)
+uqMarkovChainSGClass<P_V,P_M>::logProposal(const std::vector<uqMarkovChainPositionDataClass<P_V>*>& inputPositions)
 {
   unsigned int inputSize = inputPositions.size();
   UQ_FATAL_TEST_MACRO((inputSize < 2),
@@ -762,15 +762,15 @@ uqMarkovChainSGClass<P_V,P_M>::logProposal(const std::vector<uqMarkovChainPositi
 template<class P_V,class P_M>
 double
 uqMarkovChainSGClass<P_V,P_M>::alpha(
-  const uqMarkovChainPositionClass<P_V>& x,
-  const uqMarkovChainPositionClass<P_V>& y,
-  double*                                alphaQuotientPtr)
+  const uqMarkovChainPositionDataClass<P_V>& x,
+  const uqMarkovChainPositionDataClass<P_V>& y,
+  double*                                    alphaQuotientPtr)
 {
   double alphaQuotient = 0.;
-  bool xOutOfBounds = x.outOfBounds();
-  bool yOutOfBounds = y.outOfBounds();
-  if ((xOutOfBounds == false) &&
-      (yOutOfBounds == false)) {
+  bool xOutOfTargetSupport = x.outOfTargetSupport();
+  bool yOutOfTargetSupport = y.outOfTargetSupport();
+  if ((xOutOfTargetSupport == false) &&
+      (yOutOfTargetSupport == false)) {
     double yLogTargetToUse = y.logTarget();
 #ifdef UQ_MAC_SG_REQUIRES_TARGET_DISTRIBUTION_ONLY
 #else
@@ -801,8 +801,8 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
   else {
     if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
       std::cout << "In uqMarkovChainSGClass<P_V,P_M>::alpha()"
-                << ": xOutOfBounds = " << xOutOfBounds
-                << ", yOutOfBounds = " << yOutOfBounds
+                << ": xOutOfTargetSupport = " << xOutOfTargetSupport
+                << ", yOutOfTargetSupport = " << yOutOfTargetSupport
                 << std::endl;
     }
   }
@@ -813,7 +813,7 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
 
 template<class P_V,class P_M>
 double
-uqMarkovChainSGClass<P_V,P_M>::alpha(const std::vector<uqMarkovChainPositionClass<P_V>*>& inputPositions)
+uqMarkovChainSGClass<P_V,P_M>::alpha(const std::vector<uqMarkovChainPositionDataClass<P_V>*>& inputPositions)
 {
   unsigned int inputSize = inputPositions.size();
   UQ_FATAL_TEST_MACRO((inputSize < 2),
@@ -822,16 +822,16 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(const std::vector<uqMarkovChainPositionClas
                       "inputPositions has size < 2");
 
   // If necessary, return 0. right away
-  if (inputPositions[0          ]->outOfBounds()) return 0.;
-  if (inputPositions[inputSize-1]->outOfBounds()) return 0.;
+  if (inputPositions[0          ]->outOfTargetSupport()) return 0.;
+  if (inputPositions[inputSize-1]->outOfTargetSupport()) return 0.;
 
   // If inputSize is 2, recursion is not needed
   if (inputSize == 2) return this->alpha(*(inputPositions[0            ]),
                                          *(inputPositions[inputSize - 1]));
 
   // Prepare two vectors of positions
-  std::vector<uqMarkovChainPositionClass<P_V>*>         positions(inputSize,NULL);
-  std::vector<uqMarkovChainPositionClass<P_V>*> backwardPositions(inputSize,NULL);
+  std::vector<uqMarkovChainPositionDataClass<P_V>*>         positions(inputSize,NULL);
+  std::vector<uqMarkovChainPositionDataClass<P_V>*> backwardPositions(inputSize,NULL);
   for (unsigned int i = 0; i < inputSize; ++i) {
             positions[i] = inputPositions[i];
     backwardPositions[i] = inputPositions[inputSize-i-1];
@@ -1048,8 +1048,8 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
       << ";\n"
       << std::endl;
 
-  // Write number of outbounds
-  ofs << m_prefix << "outbounds = " << (double) m_numOutOfBounds/(double) (workingChain.sequenceSize()-1)
+  // Write number of out of target support
+  ofs << m_prefix << "outTargetSupport = " << (double) m_numOutOfTargetSupport/(double) (workingChain.sequenceSize()-1)
       << ";\n"
       << std::endl;
 

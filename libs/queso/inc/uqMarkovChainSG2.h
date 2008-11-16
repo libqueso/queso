@@ -333,11 +333,11 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
   double amRunTime        = 0;
 
   iRC = gettimeofday(&timevalChain, NULL);
-  bool outOfDomainBounds = m_targetPdf.outOfDomainBounds(valuesOf1stPosition);
-  UQ_FATAL_TEST_MACRO(outOfDomainBounds,
+  bool outOfTargetSupport = m_targetPdf.outOfSupport(valuesOf1stPosition);
+  UQ_FATAL_TEST_MACRO(outOfTargetSupport,
                       m_env.rank(),
                       "uqMarkovChainSGClass<P_V,P_M>::generateFullChain()",
-                      "initial position should not be out of bound");
+                      "initial position should not be out of target pdf support");
   if (m_env.rank() == 0) {
     std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
               << ": contents of initial position are:\n";
@@ -349,14 +349,14 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
   if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalTargetD, NULL);
   double logTarget = -0.5 * m_targetPdf.minus2LnDensity(valuesOf1stPosition);
   if (m_chainMeasureRunTimes) targetDRunTime += uqMiscGetEllapsedSeconds(&timevalTargetD);
-  uqMarkovChainPositionClass<P_V> currentPosition(m_env,
-                                                  valuesOf1stPosition,
-                                                  outOfDomainBounds,
-                                                  logTarget);
+  uqMarkovChainPositionDataClass<P_V> currentPositionData(m_env,
+                                                          valuesOf1stPosition,
+                                                          outOfTargetSupport,
+                                                          logTarget);
 
   P_V gaussianVector(m_vectorSpace.zeroVector());
   P_V tmpVecValues(m_vectorSpace.zeroVector());
-  uqMarkovChainPositionClass<P_V> currentCandidate(m_env);
+  uqMarkovChainPositionDataClass<P_V> currentCandidateData(m_env);
 
   //****************************************************
   // Begin chain loop from positionId = 1
@@ -369,10 +369,10 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
   }
 
   unsigned int uniquePos = 0;
-  workingChain.setPositionValues(0,currentPosition.vecValues());
+  workingChain.setPositionValues(0,currentPositionData.vecValues());
   if (m_uniqueChainGenerate) m_idsOfUniquePositions[uniquePos++] = 0;
   if (m_chainGenerateExtra) {
-    m_logTargets [0] = currentPosition.logTarget();
+    m_logTargets    [0] = currentPositionData.logTarget();
     m_alphaQuotients[0] = 1.;
   }
 
@@ -380,7 +380,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
     if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
       std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
                 << ": beginning chain position of id = " << positionId
-                << ", m_drMaxNumExtraStages =  "           << m_drMaxNumExtraStages
+                << ", m_drMaxNumExtraStages =  "         << m_drMaxNumExtraStages
                 << std::endl;
     }
     unsigned int stageId = 0;
@@ -389,16 +389,23 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
     // Loop: generate new position
     //****************************************************
     if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
-#ifdef UQ_USES_TK_CLASS // AQUI
+#ifdef UQ_USES_TK_CLASS
+    if (m_tk1) {
+      m_tk1->rv(currentPositionData.vecValues()).realizer().realization(tmpVecValues);
+    }
+    else {
+      m_tk2->addPreComputingPosition(0,currentPositionData.vecValues());
+      m_tk2->rv(0).realizer().realization(tmpVecValues);
+    }
 #else
     gaussianVector.cwSetGaussian(m_env.rng(),0.,1.);
-    tmpVecValues = currentPosition.vecValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
+    tmpVecValues = currentPositionData.vecValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
 #endif
     if (m_chainMeasureRunTimes) candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
 
-    outOfDomainBounds = m_targetPdf.outOfDomainBounds(tmpVecValues);
-    if (outOfDomainBounds) {
-      m_numOutOfBounds++;
+    outOfTargetSupport = m_targetPdf.outOfSupport(tmpVecValues);
+    if (outOfTargetSupport) {
+      m_numOutOfTargetSupport++;
       logTarget = -INFINITY;
     }
     else {
@@ -406,16 +413,16 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
       logTarget = -0.5 * m_targetPdf.minus2LnDensity(tmpVecValues);
       if (m_chainMeasureRunTimes) targetDRunTime += uqMiscGetEllapsedSeconds(&timevalTargetD);
     }
-    currentCandidate.set(tmpVecValues,
-                         outOfDomainBounds,
-                         logTarget);
+    currentCandidateData.set(tmpVecValues,
+                             outOfTargetSupport,
+                             logTarget);
 
     if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
       std::cout << "\n-----------------------------------------------------------\n"
                 << std::endl;
     }
     bool accept = false;
-    if (outOfDomainBounds) {
+    if (outOfTargetSupport) {
       if (m_chainGenerateExtra) {
         m_alphaQuotients[positionId] = 0.;
       }
@@ -424,10 +431,10 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
       if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalMhAlpha, NULL);
       double alpha = 0.;
       if (m_chainGenerateExtra) {
-        alpha = this->alpha(currentPosition,currentCandidate,&m_alphaQuotients[positionId]);
+        alpha = this->alpha(currentPositionData,currentCandidateData,&m_alphaQuotients[positionId]);
       }
       else {
-        alpha = this->alpha(currentPosition,currentCandidate,NULL);
+        alpha = this->alpha(currentPositionData,currentCandidateData,NULL);
       }
       if (m_chainMeasureRunTimes) mhAlphaRunTime += uqMiscGetEllapsedSeconds(&timevalMhAlpha);
       if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
@@ -441,18 +448,18 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
     if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
       if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
                                        << ": for chain position of id = " << positionId
-                                       << " contents of currentCandidate.vecValues() are:"
+                                       << " contents of currentCandidateData.vecValues() are:"
                                        << std::endl;
-      std::cout << currentCandidate.vecValues();
+      std::cout << currentCandidateData.vecValues();
       if (m_env.rank() == 0) std::cout << std::endl;
 
       if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
                                        << ": for chain position of id = " << positionId
-                                       << ", outOfDomainBounds = "        << outOfDomainBounds
+                                       << ", outOfTargetSupport = "        << outOfTargetSupport
                                        << "\n"
-                                       << "\n curLogTarget  = "           << currentPosition.logTarget()
+                                       << "\n curLogTarget  = "           << currentPositionData.logTarget()
                                        << "\n"
-                                       << "\n canLogTarget  = "           << currentCandidate.logTarget()
+                                       << "\n canLogTarget  = "           << currentCandidateData.logTarget()
                                        << "\n"
                                        << "\n accept = "                  << accept
                                        << std::endl;
@@ -465,35 +472,40 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
     //****************************************************
     // Loop: delayed rejection
     //****************************************************
-    std::vector<uqMarkovChainPositionClass<P_V>*> drPositions(stageId+2,NULL);
-    std::vector<const P_V*> vecPositions(stageId+2,NULL);
-    if ((accept == false) && (outOfDomainBounds == false) && (m_drMaxNumExtraStages > 0)) {
+    std::vector<uqMarkovChainPositionDataClass<P_V>*> drPositionsData(stageId+2,NULL);
+    std::vector<const P_V*  > tkPositions(stageId+2,NULL);
+    std::vector<unsigned int> tkPosIds   (stageId+2,0   );
+    if ((accept == false) && (outOfTargetSupport == false) && (m_drMaxNumExtraStages > 0)) {
       if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalDR, NULL);
 
-      drPositions[0] = new uqMarkovChainPositionClass<P_V>(currentPosition);
-      drPositions[1] = new uqMarkovChainPositionClass<P_V>(currentCandidate);
+      drPositionsData[0] = new uqMarkovChainPositionDataClass<P_V>(currentPositionData );
+      drPositionsData[1] = new uqMarkovChainPositionDataClass<P_V>(currentCandidateData);
 
-      vecPositions[0] = &(drPositions[0]->vecValues());
-      vecPositions[1] = &(drPositions[1]->vecValues());
+      tkPositions[0] = new P_V(currentPositionData.vecValues ());
+      tkPositions[1] = new P_V(currentCandidateData.vecValues());
+
+      tkPosIds[0]    = 0;
+      tkPosIds[1]    = 1;
 
       while ((accept == false) && (stageId < m_drMaxNumExtraStages)) {
         stageId++;
 
         if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
-#ifdef UQ_USES_TK_CLASS // AQUI
+#ifdef UQ_USES_TK_CLASS
         if (m_tk1) {
-          m_tk1->rv(vecPositions).realizer().realization(tmpVecValues);
+          m_tk1->rv(tkPositions).realizer().realization(tmpVecValues);
         }
         else {
+          m_tk2->rv(tkPosIds   ).realizer().realization(tmpVecValues);
         }
 #else
         gaussianVector.cwSetGaussian(m_env.rng(),0.,1.);
-        tmpVecValues = currentPosition.vecValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
+        tmpVecValues = currentPositionData.vecValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
 #endif
         if (m_chainMeasureRunTimes) candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
 
-        outOfDomainBounds = m_targetPdf.outOfDomainBounds(tmpVecValues);
-        if (outOfDomainBounds) {
+        outOfTargetSupport = m_targetPdf.outOfSupport(tmpVecValues);
+        if (outOfTargetSupport) {
           logTarget = -INFINITY;
         }
         else {
@@ -501,14 +513,14 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
           logTarget = -0.5 * m_targetPdf.minus2LnDensity(tmpVecValues);
           if (m_chainMeasureRunTimes) targetDRunTime += uqMiscGetEllapsedSeconds(&timevalTargetD);
         }
-        currentCandidate.set(tmpVecValues,
-                             outOfDomainBounds,
-                             logTarget);
+        currentCandidateData.set(tmpVecValues,
+                                 outOfTargetSupport,
+                                 logTarget);
 
-        drPositions.push_back(new uqMarkovChainPositionClass<P_V>(currentCandidate));
-        if (outOfDomainBounds == false) {
+        drPositionsData.push_back(new uqMarkovChainPositionDataClass<P_V>(currentCandidateData));
+        if (outOfTargetSupport == false) {
           if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalDrAlpha, NULL);
-          double alpha = this->alpha(drPositions);
+          double alpha = this->alpha(drPositionsData);
           if (m_chainMeasureRunTimes) drAlphaRunTime += uqMiscGetEllapsedSeconds(&timevalDrAlpha);
 #if 0 // For debug only
           if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
@@ -524,36 +536,36 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
       if (m_chainMeasureRunTimes) drRunTime += uqMiscGetEllapsedSeconds(&timevalDR);
     } // end of 'delayed rejection' logic
 
-    for (unsigned int i = 0; i < drPositions.size(); ++i) {
-      if (drPositions[i]) delete drPositions[i];
+    for (unsigned int i = 0; i < drPositionsData.size(); ++i) {
+      if (drPositionsData[i]) delete drPositionsData[i];
     }
 
-    for (unsigned int i = 0; i < vecPositions.size(); ++i) {
-      if (vecPositions[i]) delete vecPositions[i];
+    for (unsigned int i = 0; i < tkPositions.size(); ++i) {
+      if (tkPositions[i]) delete tkPositions[i];
     }
 
     //****************************************************
     // Loop: update chain
     //****************************************************
     if (accept) {
-      workingChain.setPositionValues(positionId,currentCandidate.vecValues());
+      workingChain.setPositionValues(positionId,currentCandidateData.vecValues());
       if (m_uniqueChainGenerate) m_idsOfUniquePositions[uniquePos++] = positionId;
-      currentPosition = currentCandidate;
+      currentPositionData = currentCandidateData;
     }
     else {
-      workingChain.setPositionValues(positionId,currentPosition.vecValues());
+      workingChain.setPositionValues(positionId,currentPositionData.vecValues());
       m_numRejections++;
     }
 
     if (m_chainGenerateExtra) {
-      m_logTargets[positionId] = currentPosition.logTarget();
+      m_logTargets[positionId] = currentPositionData.logTarget();
     }
 
 #ifdef UQ_MAC_SG_REQUIRES_TARGET_DISTRIBUTION_ONLY
 #else
     if (m_likelihoodObjComputesMisfits) {
       if (m_observableSpace.shouldVariancesBeUpdated()) {
-        L_V misfitVec    (currentPosition.misfitVector()           );
+        L_V misfitVec    (currentPositionData.misfitVector()       );
         L_V numbersOfObs (m_observableSpace.numbersOfObservations());
         L_V varAccuracies(m_observableSpace.varianceAccuracies()   );
         L_V priorVars    (m_observableSpace.priorVariances()       );
@@ -681,7 +693,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
           tmpCholIsPositiveDefinite = true;
         }
         if (tmpCholIsPositiveDefinite) {
-#ifdef UQ_USES_TK_CLASS // AQUI
+#ifdef UQ_USES_TK_CLASS
 #else
           *(m_lowerCholProposalCovMatrices[0]) = tmpChol;
           *(m_lowerCholProposalCovMatrices[0]) *= sqrt(m_amEta);
@@ -695,7 +707,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
                             "need to code the update of m_upperCholProposalPrecMatrices");
 #endif
 
-#ifdef UQ_USES_TK_CLASS // AQUI
+#ifdef UQ_USES_TK_CLASS
 #else
           if (m_drMaxNumExtraStages > 0) updateTK();
 #endif
@@ -767,9 +779,9 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
                 << " seconds ("                  << 100.*amRunTime/m_chainRunTime
                 << "%)";
     }
-    std::cout << "\n  Rejection percentage = " << 100. * (double) m_numRejections/(double) workingChain.sequenceSize()
+    std::cout << "\n  Rejection percentage = "   << 100. * (double) m_numRejections/(double) workingChain.sequenceSize()
               << " %";
-    std::cout << "\n   Outbound percentage = " << 100. * (double) m_numOutOfBounds/(double) workingChain.sequenceSize()
+    std::cout << "\n  Out of target support percentage = " << 100. * (double) m_numOutOfTargetSupport/(double) workingChain.sequenceSize()
               << " %";
     std::cout << std::endl;
   }
