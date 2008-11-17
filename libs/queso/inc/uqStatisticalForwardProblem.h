@@ -41,9 +41,9 @@ class uqStatisticalForwardProblemClass
 {
 public:
   uqStatisticalForwardProblemClass(const char*                                       prefix,
-                       const uqBaseVectorRVClass      <P_V,P_M>&         paramRv,
-                       const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction,
-                             uqBaseVectorRVClass      <Q_V,Q_M>&         qoiRV);
+                                   const uqBaseVectorRVClass      <P_V,P_M>&         paramRv,
+                                   const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction,
+                                   uqBaseVectorRVClass            <Q_V,Q_M>&         qoiRV);
  ~uqStatisticalForwardProblemClass();
 
         bool computeSolutionFlag() const;
@@ -57,7 +57,7 @@ private:
         void defineMyOptions    (po::options_description& optionsDesc);
         void getMyOptionValues  (po::options_description& optionsDesc);
 
-  const uqBaseEnvironmentClass&                         m_env;
+  const uqBaseEnvironmentClass&                     m_env;
         std::string                                 m_prefix;
 
         po::options_description*                    m_optionsDesc;
@@ -102,7 +102,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::uqStatisticalForwardProblemCl
         uqBaseVectorRVClass      <Q_V,Q_M>&         qoiRv)
   :
   m_env                   (paramRv.env()),
-  m_prefix                ((std::string)(prefix) + "pro_"),
+  m_prefix                ((std::string)(prefix) + "fp_"),
   m_optionsDesc           (new po::options_description("UQ Propagation Problem")),
   m_option_help           (m_prefix + "help"           ),
   m_option_computeSolution(m_prefix + "computeSolution"),
