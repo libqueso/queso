@@ -85,7 +85,7 @@ uqBaseTKGroupClass<V,M>::uqBaseTKGroupClass(
   m_mInfVec              (vectorSpace.newVector(-INFINITY)),
   m_pInfVec              (vectorSpace.newVector( INFINITY)),
   m_preComputingPositions(scales.size(),NULL),
-  m_rvs                  (0)
+  m_rvs                  (scales.size(),NULL)
 {
   for (unsigned int i = 0; i < m_scales.size(); ++i) {
     m_scales[i] = scales[i];
@@ -95,6 +95,12 @@ uqBaseTKGroupClass<V,M>::uqBaseTKGroupClass(
 template<class V, class M>
 uqBaseTKGroupClass<V,M>::~uqBaseTKGroupClass()
 {
+  for (unsigned int i = 0; i < m_rvs.size(); ++i) {
+    if (m_rvs[i]) delete m_rvs[i];
+  }
+  for (unsigned int i = 0; i < m_preComputingPositions.size(); ++i) {
+    if (m_preComputingPositions[i]) delete m_preComputingPositions[i];
+  }
   if (m_pInfVec)  delete m_pInfVec;
   if (m_mInfVec)  delete m_mInfVec;
   if (m_emptyEnv) delete m_emptyEnv;
@@ -118,6 +124,23 @@ template<class V, class M>
 void
 uqBaseTKGroupClass<V,M>::setPreComputingPosition(const V& position, unsigned int stageId)
 {
+  UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() == 0,
+                      m_env.rank(),
+                      "uqBaseTKGroupClass<V,M>::setPreComputingPosition()",
+                      "m_preComputingPositions.size() = 0");
+
+  UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageId,
+                      m_env.rank(),
+                      "uqBaseTKGroupClass<V,M>::setPreComputingPosition()",
+                      "m_preComputingPositions.size() <= stageId");
+
+  UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageId] != NULL,
+                      m_env.rank(),
+                      "uqBaseTKGroupClass<V,M>::setPreComputingPosition()",
+                      "m_preComputingPositions[stageId] != NULL");
+
+  m_preComputingPositions[stageId] = new V(position);
+
   return;
 }
 
@@ -125,6 +148,12 @@ template<class V, class M>
 void
 uqBaseTKGroupClass<V,M>::clearPreComputingPositions()
 {
+  for (unsigned int i = 0; i < m_preComputingPositions.size(); ++i) {
+    if (m_preComputingPositions[i]) {
+      delete m_preComputingPositions[i];
+      m_preComputingPositions[i] = NULL;
+    }
+  }
   return;
 }
 
@@ -205,15 +234,30 @@ template<class V, class M>
 const uqGaussianVectorRVClass<V,M>&
 uqScaledCovMatrixTKGroupClass<V,M>::rv(unsigned int stageId)
 {
+  UQ_FATAL_TEST_MACRO(m_rvs.size() == 0,
+                      m_env.rank(),
+                      "uqScaledCovTKGroupClass<V,M>::rv1()",
+                      "m_rvs.size() = 0");
+
+  UQ_FATAL_TEST_MACRO(m_rvs[0] == NULL,
+                      m_env.rank(),
+                      "uqScaledCovTKGroupClass<V,M>::rv1()",
+                      "m_rvs[0] == NULL");
+
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() == 0,
                       m_env.rank(),
-                      "uqScaledCovTKGroupClass<V,M>::pdf()",
+                      "uqScaledCovTKGroupClass<V,M>::rv1()",
                       "m_preComputingPositions.size() = 0");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageId,
                       m_env.rank(),
-                      "uqScaledCovTKGroupClass<V,M>::pdf()",
+                      "uqScaledCovTKGroupClass<V,M>::rv1()",
                       "m_preComputingPositions.size() <= stageId");
+
+  UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageId] == NULL,
+                      m_env.rank(),
+                      "uqScaledCovTKGroupClass<V,M>::rv1()",
+                      "m_preComputingPositions[stageId] == NULL");
 
   m_rvs[0]->updateExpectedValues(*m_preComputingPositions[stageId]);
 
@@ -224,15 +268,30 @@ template<class V, class M>
 const uqGaussianVectorRVClass<V,M>&
 uqScaledCovMatrixTKGroupClass<V,M>::rv(const std::vector<unsigned int>& stageIds)
 {
-  UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() == 0,
+  UQ_FATAL_TEST_MACRO(stageIds.size() == 0,
                       m_env.rank(),
-                      "uqScaledCovTKGroupClass<V,M>::pdf()",
-                      "m_preComputingPositions.size() = 0");
+                      "uqScaledCovTKGroupClass<V,M>::rv2()",
+                      "stageIds.size() = 0");
 
   UQ_FATAL_TEST_MACRO(m_rvs.size() < stageIds.size(),
                       m_env.rank(),
-                      "uqScaledCovTKGroupClass<V,M>::pdf()",
+                      "uqScaledCovTKGroupClass<V,M>::rv2()",
                       "m_rvs.size() < stageIds.size()");
+
+  UQ_FATAL_TEST_MACRO(m_rvs[stageIds.size()-1] == NULL,
+                      m_env.rank(),
+                      "uqScaledCovTKGroupClass<V,M>::rv2()",
+                      "m_rvs[stageIds.size()-1] == NULL");
+
+  UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() < stageIds[0],
+                      m_env.rank(),
+                      "uqScaledCovTKGroupClass<V,M>::rv2()",
+                      "m_preComputingPositions.size() = 0");
+
+  UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageIds[0]] == NULL,
+                      m_env.rank(),
+                      "uqScaledCovTKGroupClass<V,M>::rv2()",
+                      "m_preComputingPositions[stageIds[0]] == NULL");
 
   m_rvs[stageIds.size()-1]->updateExpectedValues(*m_preComputingPositions[stageIds[0]]);
 
@@ -341,7 +400,7 @@ uqHessianCovMatricesTKGroupClass<V,M>::rv(unsigned int stageId)
 {
   UQ_FATAL_TEST_MACRO(m_rvs.size() <= stageId,
                       m_env.rank(),
-                      "uqScaledCovTKGroupClass<V,M>::pdf()",
+                      "uqScaledCovTKGroupClass<V,M>::rv()",
                       "m_rvs.size() <= stageId");
 
   return *m_rvs[stageId];
@@ -353,12 +412,12 @@ uqHessianCovMatricesTKGroupClass<V,M>::rv(const std::vector<unsigned int>& stage
 {
   UQ_FATAL_TEST_MACRO(stageIds.size() == 0,
                       m_env.rank(),
-                      "uqScaledCovTKGroupClass<V,M>::pdf()",
+                      "uqScaledCovTKGroupClass<V,M>::rv()",
                       "stageIds.size() = 0");
 
   UQ_FATAL_TEST_MACRO(m_rvs.size() < stageIds.size(),
                       m_env.rank(),
-                      "uqScaledCovTKGroupClass<V,M>::pdf()",
+                      "uqScaledCovTKGroupClass<V,M>::rv()",
                       "m_rvs.size() < stageIds.size()");
 
   return *m_rvs[stageIds.size()-1];

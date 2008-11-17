@@ -48,7 +48,7 @@
 #define UQ_MAC_SG_FILTERED_CHAIN_WRITE_ODV             0
 #define UQ_MAC_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV     0
 #define UQ_MAC_SG_TK_USE_LOCAL_HESSIAN_ODV             0
-#define UQ_MAC_SG_TK_USE_NEWTON_COMPONENT_ODV          0
+#define UQ_MAC_SG_TK_USE_NEWTON_COMPONENT_ODV          1
 #define UQ_MAC_SG_DR_MAX_NUM_EXTRA_STAGES_ODV          0
 #define UQ_MAC_SG_DR_SCALES_FOR_EXTRA_STAGES_ODV       "1."
 #define UQ_MAC_SG_AM_INIT_NON_ADAPT_INT_ODV            0
@@ -325,12 +325,6 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   // Instantiate the appropriate TK
   /////////////////////////////////////////////////////////////////
   if (m_tkUseLocalHessian) {
-    // Set current proposal cov matrix = local Hessian at initial position
-
-    if (m_tkUseNewtonComponent) {
-      // Set current proposal exp vector = initial position - H^{-1}*\grad[-2*ln(target density)]
-    }
-
     m_tk = new uqHessianCovMatricesTKGroupClass<P_V,P_M>(m_prefix.c_str(),
                                                          m_vectorSpace,
                                                          m_drScalesForCovMatrices,
@@ -870,6 +864,9 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
           positionsData.pop_back();
   backwardPositionsData.pop_back();
 
+          tkStageIds.pop_back();
+  backwardTKStageIds.pop_back();
+
   logNumerator   += m_tk->rv(backwardTKStageIds).pdf().minus2LnDensity(_lastBackwardTKPosition);
   logDenominator += m_tk->rv(        tkStageIds).pdf().minus2LnDensity(_lastTKPosition);
 #else
@@ -887,6 +884,9 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
     backwardPositionsData.pop_back();
 
 #ifdef UQ_USES_TK_CLASS // AQUI
+            tkStageIds.pop_back();
+    backwardTKStageIds.pop_back();
+
     logNumerator   += m_tk->rv(backwardTKStageIds).pdf().minus2LnDensity(lastBackwardTKPosition);
     logDenominator += m_tk->rv(        tkStageIds).pdf().minus2LnDensity(lastTKPosition);
 #else

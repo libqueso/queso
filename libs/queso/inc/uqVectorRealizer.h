@@ -334,7 +334,7 @@ public:
 
   void realization(V& nextValues) const;
   void updateExpectedValues(const V& newExpectedValues);
-  void updateLowerCholCovMatrix(const V& newLowerCholCovMatrix);
+  void updateLowerCholCovMatrix(const M& newLowerCholCovMatrix);
     
 private:
   M* m_lowerCholCovMatrix;
@@ -399,11 +399,11 @@ uqGaussianVectorRealizerClass<V,M>::updateExpectedValues(const V& newExpectedVal
 
 template<class V, class M>
 void
-uqGaussianVectorRealizerClass<V,M>::updateLowerCholCovMatrix(const V& newLowerCholCovMatrix)
+uqGaussianVectorRealizerClass<V,M>::updateLowerCholCovMatrix(const M& newLowerCholCovMatrix)
 {
   // delete old expected values (alloced at construction or last call to this function)
   delete m_lowerCholCovMatrix;
-  m_lowerCholCovMatrix = new V(newLowerCholCovMatrix);
+  m_lowerCholCovMatrix = new M(newLowerCholCovMatrix);
   return;
 }
 

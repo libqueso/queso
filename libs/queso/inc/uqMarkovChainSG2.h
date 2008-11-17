@@ -591,7 +591,8 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
     //****************************************************
     // Loop: adaptive Metropolis (adaptation of covariance matrix)
     //****************************************************
-    if ((m_amInitialNonAdaptInterval > 0) &&
+    if ((m_tkUseLocalHessian ==    false) && // IMPORTANT
+        (m_amInitialNonAdaptInterval > 0) &&
         (m_amAdaptInterval           > 0)) {
       if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalAM, NULL);
 
@@ -632,6 +633,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
 
         bool tmpCholIsPositiveDefinite = false;
         P_M tmpChol(*m_lastAdaptedCovMatrix);
+        P_M attemptedMatrix(tmpChol);
         //if (m_env.rank() == 0) {
         //  std::cout << "DRAM"
         //            << ", positionId = "  << positionId
@@ -653,6 +655,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
           // Matrix is not positive definite
           P_M* tmpDiag = m_vectorSpace.newDiagMatrix(m_amEpsilon);
           tmpChol = *m_lastAdaptedCovMatrix + *tmpDiag;
+          attemptedMatrix = tmpChol;
           delete tmpDiag;
           //if (m_env.rank() == 0) {
           //  std::cout << "DRAM"
@@ -683,6 +686,8 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
         }
         if (tmpCholIsPositiveDefinite) {
 #ifdef UQ_USES_TK_CLASS
+          uqScaledCovMatrixTKGroupClass<P_V,P_M>* tempTK = dynamic_cast<uqScaledCovMatrixTKGroupClass<P_V,P_M>* >(m_tk);
+          tempTK->updateCovMatrix(m_amEta*attemptedMatrix);
 #else
           *(m_lowerCholProposalCovMatrices[0]) = tmpChol;
           *(m_lowerCholProposalCovMatrices[0]) *= sqrt(m_amEta);
