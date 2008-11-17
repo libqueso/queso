@@ -76,7 +76,7 @@ private:
 
   const uqBaseVectorRVClass      <P_V,P_M>&         m_paramRv;
   const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& m_qoiFunction;
-        uqBaseVectorRVClass      <Q_V,Q_M>&         m_qoiRv;
+        uqGenericVectorRVClass   <Q_V,Q_M>&         m_qoiRv; // FIX ME: Maybe not always generic ?
 
         uqBaseVectorPdfClass     <Q_V,Q_M>*         m_solutionPdf;
         uqBaseVectorMdfClass     <Q_V,Q_M>*         m_solutionMdf;

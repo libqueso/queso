@@ -43,12 +43,7 @@ public:
   const   uqBaseVectorCdfClass     <V,M>& cdf        () const;
   const   uqBaseVectorMdfClass     <V,M>& mdf        () const;
 
-  virtual void                            setPdf     (uqBaseVectorPdfClass     <V,M>& pdf     ) = 0;
-  virtual void                            setRealizer(uqBaseVectorRealizerClass<V,M>& realizer) = 0;
-  virtual void                            setCdf     (uqBaseVectorCdfClass     <V,M>& cdf     ) = 0;
-  virtual void                            setMdf     (uqBaseVectorMdfClass     <V,M>& mdf     ) = 0;
-
-  virtual void                            print      (std::ostream& os) const;
+  virtual void                            print      (std::ostream& os) const = 0;
 
 protected:
   const   uqBaseEnvironmentClass&         m_env;
@@ -153,27 +148,6 @@ uqBaseVectorRVClass<V,M>::env() const
   return m_env;
 }
 
-template <class V, class M>
-void
-uqBaseVectorRVClass<V,M>::print(std::ostream& os) const
-{
-#if 0
-  os << "\nComponents are:"
-     << std::endl;
-  for (unsigned int i = 0; i < m_components.size(); ++i) {
-    os << i << " ";
-    if (m_components[i]) {
-      os << *(m_components[i]);
-    }
-    else {
-      os << "NULL";
-    }
-    os << std::endl;
-  }
-#endif
-  return;
-}
-
 template<class V, class M>
 std::ostream& operator<<(std::ostream& os, const uqBaseVectorRVClass<V,M>& obj)
 {
@@ -198,10 +172,12 @@ public:
                          const uqBaseVectorMdfClass     <V,M>& mdf);
   virtual ~uqGenericVectorRVClass();
 
-          void setPdf     (uqBaseVectorPdfClass     <V,M>& pdf     );
-          void setRealizer(uqBaseVectorRealizerClass<V,M>& realizer);
-          void setCdf     (uqBaseVectorCdfClass     <V,M>& cdf     );
-          void setMdf     (uqBaseVectorMdfClass     <V,M>& mdf     );
+  void setPdf     (uqBaseVectorPdfClass     <V,M>& pdf     );
+  void setRealizer(uqBaseVectorRealizerClass<V,M>& realizer);
+  void setCdf     (uqBaseVectorCdfClass     <V,M>& cdf     );
+  void setMdf     (uqBaseVectorMdfClass     <V,M>& mdf     );
+
+  void print(std::ostream& os) const;
 
 private:
   using uqBaseVectorRVClass<V,M>::m_env;
@@ -299,6 +275,14 @@ uqGenericVectorRVClass<V,M>::setMdf(uqBaseVectorMdfClass<V,M>& mdf)
   return;
 }
 
+template <class V, class M>
+void
+uqGenericVectorRVClass<V,M>::print(std::ostream& os) const
+{
+  os << "uqGenericVectorRVClass<V,M>::print() says, 'Please implement me.'" << std::endl;
+  return;
+}
+
 //*****************************************************
 // Gaussian class
 //*****************************************************
@@ -319,12 +303,10 @@ public:
                           const M&                       covMatrix);
   virtual ~uqGaussianVectorRVClass();
 
-          void setPdf     (uqBaseVectorPdfClass     <V,M>& pdf     );
-          void setRealizer(uqBaseVectorRealizerClass<V,M>& realizer);
-          void setCdf     (uqBaseVectorCdfClass     <V,M>& cdf     );
-          void setMdf     (uqBaseVectorMdfClass     <V,M>& mdf     );
-	  void updateExpectedValues(const V& newExpectedValues );
-	  void updateCovMatrix(const M& newCovMatrix );
+  void updateExpectedValues(const V& newExpectedValues );
+  void updateCovMatrix(const M& newCovMatrix );
+  
+  void print(std::ostream& os) const;
 
 private:
   using uqBaseVectorRVClass<V,M>::m_env;
@@ -435,50 +417,6 @@ uqGaussianVectorRVClass<V,M>::~uqGaussianVectorRVClass()
 
 template<class V, class M>
 void
-uqGaussianVectorRVClass<V,M>::setPdf(uqBaseVectorPdfClass<V,M>& pdf)
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
-                      "uqGaussianVectorRVClass<V,M>::setPdf()",
-                      "it does not make sense to call such routine for this class");
-  return;
-}
-
-template<class V, class M>
-void
-uqGaussianVectorRVClass<V,M>::setRealizer(uqBaseVectorRealizerClass<V,M>& realizer)
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
-                      "uqGaussianVectorRVClass<V,M>::setRealizer()",
-                      "it does not make sense to call such routine for this class");
-  return;
-}
-
-template<class V, class M>
-void
-uqGaussianVectorRVClass<V,M>::setCdf(uqBaseVectorCdfClass<V,M>& cdf)
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
-                      "uqGaussianVectorRVClass<V,M>::setCdf()",
-                      "it does not make sense to call such routine for this class");
-  return;
-}
-
-template<class V, class M>
-void
-uqGaussianVectorRVClass<V,M>::setMdf(uqBaseVectorMdfClass<V,M>& mdf)
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
-                      "uqGaussianVectorRVClass<V,M>::setMdf()",
-                      "it does not make sense to call such routine for this class");
-  return;
-}
-
-template<class V, class M>
-void
 uqGaussianVectorRVClass<V,M>::updateExpectedValues(const V& newExpectedValues)
 {
   // we are sure that m_pdf (and m_realizer, etc) point to associated Gaussian classes, so all is well
@@ -504,6 +442,14 @@ uqGaussianVectorRVClass<V,M>::updateCovMatrix(const M& newCovMatrix)
   return;
 }
 
+template <class V, class M>
+void
+uqGaussianVectorRVClass<V,M>::print(std::ostream& os) const
+{
+  os << "uqGaussianVectorRVClass<V,M>::print() says, 'Please implement me.'" << std::endl;
+  return;
+}
+
 //*****************************************************
 // Uniform class
 //*****************************************************
@@ -516,10 +462,7 @@ public:
                           const V&                       imageMaxValues);
   virtual ~uqUniformVectorRVClass();
 
-          void setPdf     (uqBaseVectorPdfClass     <V,M>& pdf     );
-          void setRealizer(uqBaseVectorRealizerClass<V,M>& realizer);
-          void setCdf     (uqBaseVectorCdfClass     <V,M>& cdf     );
-          void setMdf     (uqBaseVectorMdfClass     <V,M>& mdf     );
+  void print(std::ostream& os) const;
 
 private:
   using uqBaseVectorRVClass<V,M>::m_env;
@@ -566,47 +509,11 @@ uqUniformVectorRVClass<V,M>::~uqUniformVectorRVClass()
 {
 }
 
-template<class V, class M>
+template <class V, class M>
 void
-uqUniformVectorRVClass<V,M>::setPdf(uqBaseVectorPdfClass<V,M>& pdf)
+uqUniformVectorRVClass<V,M>::print(std::ostream& os) const
 {
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
-                      "uqUniformVectorRVClass<V,M>::setPdf()",
-                      "it does not make sense to call such routine for this class");
-  return;
-}
-
-template<class V, class M>
-void
-uqUniformVectorRVClass<V,M>::setRealizer(uqBaseVectorRealizerClass<V,M>& realizer)
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
-                      "uqUniformVectorRVClass<V,M>::setRealizer()",
-                      "it does not make sense to call such routine for this class");
-  return;
-}
-
-template<class V, class M>
-void
-uqUniformVectorRVClass<V,M>::setCdf(uqBaseVectorCdfClass<V,M>& cdf)
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
-                      "uqUniformVectorRVClass<V,M>::setCdf()",
-                      "it does not make sense to call such routine for this class");
-  return;
-}
-
-template<class V, class M>
-void
-uqUniformVectorRVClass<V,M>::setMdf(uqBaseVectorMdfClass<V,M>& mdf)
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
-                      "uqUniformVectorRVClass<V,M>::setMdf()",
-                      "it does not make sense to call such routine for this class");
+  os << "uqUniformVectorRVClass<V,M>::print() says, 'Please implement me.'" << std::endl;
   return;
 }
 
