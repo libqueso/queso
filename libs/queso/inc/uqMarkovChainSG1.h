@@ -836,19 +836,28 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
                                          inputTKStageIds[inputSize-1]);
 
   // Prepare two vectors of positions
-  std::vector<uqMarkovChainPositionDataClass<P_V>*>         positionsData(inputSize,NULL);
-  std::vector<uqMarkovChainPositionDataClass<P_V>*> backwardPositionsData(inputSize,NULL);
+  std::vector<uqMarkovChainPositionDataClass<P_V>*>         positionsData  (inputSize,NULL);
+  std::vector<uqMarkovChainPositionDataClass<P_V>*> backwardPositionsData  (inputSize,NULL);
 
-  std::vector<unsigned int                        >         tkStageIds   (inputSize,0);
-  std::vector<unsigned int                        > backwardTKStageIds   (inputSize,0);
+  std::vector<unsigned int                        >         tkStageIds     (inputSize,0);
+  std::vector<unsigned int                        > backwardTKStageIds     (inputSize,0);
+
+  std::vector<unsigned int                        >         tkStageIdsLess1(inputSize,0);
+  std::vector<unsigned int                        > backwardTKStageIdsLess1(inputSize,0);
 
   for (unsigned int i = 0; i < inputSize; ++i) {
-            positionsData[i] = inputPositionsData[i];
-    backwardPositionsData[i] = inputPositionsData[inputSize-i-1];
+            positionsData  [i] = inputPositionsData[i];
+    backwardPositionsData  [i] = inputPositionsData[inputSize-i-1];
 
-            tkStageIds   [i] = inputTKStageIds   [i];
-    backwardTKStageIds   [i] = inputTKStageIds   [inputSize-i-1];
+            tkStageIds     [i] = inputTKStageIds   [i];
+    backwardTKStageIds     [i] = inputTKStageIds   [inputSize-i-1];
+
+            tkStageIdsLess1[i] = inputTKStageIds   [i];
+    backwardTKStageIdsLess1[i] = inputTKStageIds   [inputSize-i-1];
   }
+
+          tkStageIdsLess1.pop_back();
+  backwardTKStageIdsLess1.pop_back();
 
   // Initialize cumulative variables
   double logNumerator      = 0.;
@@ -861,41 +870,36 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
   const P_V& _lastTKPosition         = m_tk->preComputingPosition(        tkStageIds[inputSize-1]);
   const P_V& _lastBackwardTKPosition = m_tk->preComputingPosition(backwardTKStageIds[inputSize-1]);
 
-          positionsData.pop_back();
-  backwardPositionsData.pop_back();
-
-          tkStageIds.pop_back();
-  backwardTKStageIds.pop_back();
-
-  logNumerator   += m_tk->rv(backwardTKStageIds).pdf().minus2LnDensity(_lastBackwardTKPosition);
-  logDenominator += m_tk->rv(        tkStageIds).pdf().minus2LnDensity(_lastTKPosition);
+  logNumerator   += m_tk->rv(backwardTKStageIdsLess1).pdf().minus2LnDensity(_lastBackwardTKPosition);
+  logDenominator += m_tk->rv(        tkStageIdsLess1).pdf().minus2LnDensity(_lastTKPosition);
 #else
   logNumerator   += logProposal(backwardPositionsData);
   logDenominator += logProposal(        positionsData);
 #endif
 
   for (unsigned int i = 0; i < (inputSize-2); ++i) { // That is why size must be >= 2
-#ifdef UQ_USES_TK_CLASS
-    const P_V& lastTKPosition         = m_tk->preComputingPosition(        tkStageIds[inputSize-2-i]);
-    const P_V& lastBackwardTKPosition = m_tk->preComputingPosition(backwardTKStageIds[inputSize-2-i]);
-#endif
-
             positionsData.pop_back();
     backwardPositionsData.pop_back();
 
 #ifdef UQ_USES_TK_CLASS // AQUI
+    const P_V& lastTKPosition         = m_tk->preComputingPosition(        tkStageIds[inputSize-2-i]);
+    const P_V& lastBackwardTKPosition = m_tk->preComputingPosition(backwardTKStageIds[inputSize-2-i]);
+
             tkStageIds.pop_back();
     backwardTKStageIds.pop_back();
 
-    logNumerator   += m_tk->rv(backwardTKStageIds).pdf().minus2LnDensity(lastBackwardTKPosition);
-    logDenominator += m_tk->rv(        tkStageIds).pdf().minus2LnDensity(lastTKPosition);
+            tkStageIdsLess1.pop_back();
+    backwardTKStageIdsLess1.pop_back();
+
+    logNumerator   += m_tk->rv(backwardTKStageIdsLess1).pdf().minus2LnDensity(lastBackwardTKPosition);
+    logDenominator += m_tk->rv(        tkStageIdsLess1).pdf().minus2LnDensity(lastTKPosition);
 #else
     logNumerator   += logProposal(backwardPositionsData);
     logDenominator += logProposal(        positionsData);
 #endif
 
-    alphasNumerator   *= (1 - this->alpha(backwardPositionsData,backwardTKStageIds));
-    alphasDenominator *= (1 - this->alpha(        positionsData,        tkStageIds));
+    alphasNumerator   *= (1. - this->alpha(backwardPositionsData,backwardTKStageIds));
+    alphasDenominator *= (1. - this->alpha(        positionsData,        tkStageIds));
   }
 
   double numeratorLogTargetToUse = backwardPositionsData[0]->logTarget();

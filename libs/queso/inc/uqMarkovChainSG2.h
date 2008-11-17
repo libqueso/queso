@@ -485,6 +485,12 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
 
       while ((accept == false) && (stageId < m_drMaxNumExtraStages)) {
         stageId++;
+        if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
+          std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
+                    << ": for chain position of id = " << positionId
+                    << ", beginning stageId = "        << stageId
+                    << std::endl;
+        }
 
         if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
 #ifdef UQ_USES_TK_CLASS
@@ -523,6 +529,13 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
                                            << std::endl;
 #endif
           accept = acceptAlpha(alpha);
+        }
+        if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
+          std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
+                    << ": for chain position of id = " << positionId
+                    << ", finishing stageId = "        << stageId
+                    << " and accept = "                << accept
+                    << std::endl;
         }
       } // while
 

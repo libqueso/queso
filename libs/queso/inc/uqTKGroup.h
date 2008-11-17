@@ -84,7 +84,7 @@ uqBaseTKGroupClass<V,M>::uqBaseTKGroupClass(
   m_scales               (scales.size(),1.),
   m_mInfVec              (vectorSpace.newVector(-INFINITY)),
   m_pInfVec              (vectorSpace.newVector( INFINITY)),
-  m_preComputingPositions(scales.size(),NULL),
+  m_preComputingPositions(scales.size()+1,NULL), // Yes, +1
   m_rvs                  (scales.size(),NULL)
 {
   for (unsigned int i = 0; i < m_scales.size(); ++i) {
@@ -377,8 +377,8 @@ uqHessianCovMatricesTKGroupClass<V,M>::uqHessianCovMatricesTKGroupClass(
   :
   uqBaseTKGroupClass<V,M>(prefix,vectorSpace,scales),
   m_targetPdf            (targetPdf),
-  m_preComputedGrads     (scales.size(),NULL)
-//m_preComputedHessians  (scales.size(),NULL)
+  m_preComputedGrads     (scales.size()+1,NULL) // Yes, +1
+//m_preComputedHessians  (scales.size()+1,NULL) // Yes, +1
 {
 }
 
