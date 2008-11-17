@@ -43,12 +43,12 @@ public:
   uqStatisticalForwardProblemClass(const char*                                       prefix,
                                    const uqBaseVectorRVClass      <P_V,P_M>&         paramRv,
                                    const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction,
-                                   uqBaseVectorRVClass            <Q_V,Q_M>&         qoiRV);
+                                   uqGenericVectorRVClass         <Q_V,Q_M>&         qoiRv);
  ~uqStatisticalForwardProblemClass();
 
         bool computeSolutionFlag() const;
         void solveWithMonteCarlo();
-  const uqBaseVectorRVClass<Q_V,Q_M>& qoiRv() const;
+  const uqGenericVectorRVClass<Q_V,Q_M>& qoiRv() const;
 
         void print              (std::ostream& os) const;
 
@@ -99,7 +99,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::uqStatisticalForwardProblemCl
   const char*                                       prefix,
   const uqBaseVectorRVClass      <P_V,P_M>&         paramRv,
   const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction,
-        uqBaseVectorRVClass      <Q_V,Q_M>&         qoiRv)
+        uqGenericVectorRVClass   <Q_V,Q_M>&         qoiRv)
   :
   m_env                   (paramRv.env()),
   m_prefix                ((std::string)(prefix) + "fp_"),
@@ -305,7 +305,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
 }
 
 template <class P_V,class P_M,class Q_V,class Q_M>
-const uqBaseVectorRVClass<Q_V,Q_M>& 
+const uqGenericVectorRVClass<Q_V,Q_M>& 
 uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::qoiRv() const
 {
   return m_qoiRv;
