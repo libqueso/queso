@@ -113,8 +113,11 @@ private:
 #endif
   double alpha                    (const uqMarkovChainPositionDataClass<P_V>&               x,
                                    const uqMarkovChainPositionDataClass<P_V>&               y,
+                                   unsigned int                                             xStageId,
+                                   unsigned int                                             yStageId,
                                    double*                                                  alphaQuotientPtr = NULL);
-  double alpha                    (const std::vector<uqMarkovChainPositionDataClass<P_V>*>& inputPositions);
+  double alpha                    (const std::vector<uqMarkovChainPositionDataClass<P_V>*>& inputPositions,
+                                   const std::vector<unsigned int                        >& inputTKStageIds);
   bool   acceptAlpha              (double                                                   alpha);
 
   int    writeInfo                (const uqBaseVectorSequenceClass<P_V,P_M>&                workingChain,
@@ -122,94 +125,93 @@ private:
                                  //const P_M*                                               mahalanobisMatrix = NULL,
                                  //bool                                                     applyMahalanobisInvert = true) const;
 
-  const uqBaseEnvironmentClass&                    m_env;
-        std::string                                m_prefix;
-  const uqVectorSpaceClass   <P_V,P_M>&            m_vectorSpace;
-  const uqBaseVectorPdfClass <P_V,P_M>&            m_targetPdf;
-        P_V                                        m_initialPosition;
-  const P_M*                                       m_initialProposalCovMatrix;
-        bool                                       m_nullInputProposalCovMatrix;
+  const uqBaseEnvironmentClass&         m_env;
+        std::string                     m_prefix;
+  const uqVectorSpaceClass  <P_V,P_M>&  m_vectorSpace;
+  const uqBaseVectorPdfClass<P_V,P_M>&  m_targetPdf;
+        P_V                             m_initialPosition;
+  const P_M*                            m_initialProposalCovMatrix;
+        bool                            m_nullInputProposalCovMatrix;
 
-        po::options_description*                   m_optionsDesc;
-        std::string                                m_option_help;
-        std::string                                m_option_chain_type;
-        std::string                                m_option_chain_size;
-        std::string                                m_option_chain_outputFileName;
-        std::string                                m_option_chain_use2;
-        std::string                                m_option_chain_generateExtra;
-        std::string                                m_option_chain_displayPeriod;
-        std::string                                m_option_chain_measureRunTimes;
-        std::string                                m_option_chain_write;
-        std::string                                m_option_chain_computeStats;
-        std::string                                m_option_uniqueChain_generate;
-        std::string                                m_option_uniqueChain_write;
-        std::string                                m_option_uniqueChain_computeStats;
-        std::string                                m_option_filteredChain_generate;
-        std::string                                m_option_filteredChain_discardedPortion;
-        std::string                                m_option_filteredChain_lag;
-        std::string                                m_option_filteredChain_write;
-        std::string                                m_option_filteredChain_computeStats;
-	std::string                                m_option_tk_useLocalHessian;
-	std::string                                m_option_tk_useNewtonComponent;
-        std::string                                m_option_dr_maxNumExtraStages;
-        std::string                                m_option_dr_scalesForExtraStages;
-        std::string                                m_option_am_initialNonAdaptInterval;
-        std::string                                m_option_am_adaptInterval;
-        std::string                                m_option_am_eta;
-        std::string                                m_option_am_epsilon;
+        po::options_description*        m_optionsDesc;
+        std::string                     m_option_help;
+        std::string                     m_option_chain_type;
+        std::string                     m_option_chain_size;
+        std::string                     m_option_chain_outputFileName;
+        std::string                     m_option_chain_use2;
+        std::string                     m_option_chain_generateExtra;
+        std::string                     m_option_chain_displayPeriod;
+        std::string                     m_option_chain_measureRunTimes;
+        std::string                     m_option_chain_write;
+        std::string                     m_option_chain_computeStats;
+        std::string                     m_option_uniqueChain_generate;
+        std::string                     m_option_uniqueChain_write;
+        std::string                     m_option_uniqueChain_computeStats;
+        std::string                     m_option_filteredChain_generate;
+        std::string                     m_option_filteredChain_discardedPortion;
+        std::string                     m_option_filteredChain_lag;
+        std::string                     m_option_filteredChain_write;
+        std::string                     m_option_filteredChain_computeStats;
+	std::string                     m_option_tk_useLocalHessian;
+	std::string                     m_option_tk_useNewtonComponent;
+        std::string                     m_option_dr_maxNumExtraStages;
+        std::string                     m_option_dr_scalesForExtraStages;
+        std::string                     m_option_am_initialNonAdaptInterval;
+        std::string                     m_option_am_adaptInterval;
+        std::string                     m_option_am_eta;
+        std::string                     m_option_am_epsilon;
 
-        unsigned int                               m_chainType;
-        unsigned int                               m_chainSize;
-        std::string                                m_chainOutputFileName;
-        bool                                       m_chainGenerateExtra;
-        unsigned int                               m_chainDisplayPeriod;
-        bool                                       m_chainMeasureRunTimes;
-        bool                                       m_chainWrite;
-        bool                                       m_chainComputeStats;
-        uqChainStatisticalOptionsClass*            m_chainStatisticalOptions;
+        unsigned int                    m_chainType;
+        unsigned int                    m_chainSize;
+        std::string                     m_chainOutputFileName;
+        bool                            m_chainGenerateExtra;
+        unsigned int                    m_chainDisplayPeriod;
+        bool                            m_chainMeasureRunTimes;
+        bool                            m_chainWrite;
+        bool                            m_chainComputeStats;
+        uqChainStatisticalOptionsClass* m_chainStatisticalOptions;
 
-        bool                                       m_uniqueChainGenerate;
-        bool                                       m_uniqueChainWrite;
-        bool                                       m_uniqueChainComputeStats;
-        uqChainStatisticalOptionsClass*            m_uniqueChainStatisticalOptions;
+        bool                            m_uniqueChainGenerate;
+        bool                            m_uniqueChainWrite;
+        bool                            m_uniqueChainComputeStats;
+        uqChainStatisticalOptionsClass* m_uniqueChainStatisticalOptions;
 
-        bool                                       m_filteredChainGenerate;
-        double                                     m_filteredChainDiscardedPortion; // input or set during run time
-        unsigned int                               m_filteredChainLag;              // input or set during run time
-        bool                                       m_filteredChainWrite;
-        bool                                       m_filteredChainComputeStats;
-        uqChainStatisticalOptionsClass*            m_filteredChainStatisticalOptions;
+        bool                            m_filteredChainGenerate;
+        double                          m_filteredChainDiscardedPortion; // input or set during run time
+        unsigned int                    m_filteredChainLag;              // input or set during run time
+        bool                            m_filteredChainWrite;
+        bool                            m_filteredChainComputeStats;
+        uqChainStatisticalOptionsClass* m_filteredChainStatisticalOptions;
 
-        bool                                       m_tkUseLocalHessian;
-        bool                                       m_tkUseNewtonComponent;
-        unsigned int                               m_drMaxNumExtraStages;
-        std::vector<double>                        m_drScalesForCovMatrices;
-        unsigned int                               m_amInitialNonAdaptInterval;
-        unsigned int                               m_amAdaptInterval;
-        double                                     m_amEta;
-        double                                     m_amEpsilon;
+        bool                            m_tkUseLocalHessian;
+        bool                            m_tkUseNewtonComponent;
+        unsigned int                    m_drMaxNumExtraStages;
+        std::vector<double>             m_drScalesForCovMatrices;
+        unsigned int                    m_amInitialNonAdaptInterval;
+        unsigned int                    m_amAdaptInterval;
+        double                          m_amEta;
+        double                          m_amEpsilon;
 
-        uqScaledCovMatrixTKGroupClass   <P_V,P_M>* m_tk1;
-        uqHessianCovMatricesTKGroupClass<P_V,P_M>* m_tk2;
-        bool                                       m_tkIsSymmetric;
+        uqBaseTKGroupClass<P_V,P_M>*    m_tk;
 #ifdef UQ_USES_TK_CLASS
 #else
-        std::vector<P_M*>                          m_lowerCholProposalCovMatrices;
-        std::vector<P_M*>                          m_proposalCovMatrices;
+        bool                            m_tkIsSymmetric;
+        std::vector<P_M*>               m_lowerCholProposalCovMatrices;
+        std::vector<P_M*>               m_proposalCovMatrices;
 #ifdef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
-        std::vector<P_M*>                          m_upperCholProposalPrecMatrices;
-        std::vector<P_M*>                          m_proposalPrecMatrices;
+        std::vector<P_M*>               m_upperCholProposalPrecMatrices;
+        std::vector<P_M*>               m_proposalPrecMatrices;
 #endif
 #endif
-        std::vector<unsigned int>                  m_idsOfUniquePositions;
-        std::vector<double>                        m_logTargets;
-        std::vector<double>                        m_alphaQuotients;
-        double                                     m_chainRunTime;
-        unsigned int                               m_numRejections;
-        unsigned int                               m_numOutOfTargetSupport;
-        double                                     m_lastChainSize;
-        P_V*                                       m_lastMean;
-        P_M*                                       m_lastAdaptedCovMatrix;
+        std::vector<unsigned int>       m_idsOfUniquePositions;
+        std::vector<double>             m_logTargets;
+        std::vector<double>             m_alphaQuotients;
+        double                          m_chainRunTime;
+        unsigned int                    m_numRejections;
+        unsigned int                    m_numOutOfTargetSupport;
+        double                          m_lastChainSize;
+        P_V*                            m_lastMean;
+        P_M*                            m_lastAdaptedCovMatrix;
 };
 
 template<class P_V,class P_M>
@@ -285,11 +287,10 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   m_amAdaptInterval                      (UQ_MAC_SG_AM_ADAPT_INTERVAL_ODV),
   m_amEta                                (UQ_MAC_SG_AM_ETA_ODV),
   m_amEpsilon                            (UQ_MAC_SG_AM_EPSILON_ODV),
-  m_tk1                                  (NULL),
-  m_tk2                                  (NULL),
-  m_tkIsSymmetric                        (true),
+  m_tk                                   (NULL),
 #ifdef UQ_USES_TK_CLASS
 #else
+  m_tkIsSymmetric                        (true),
   m_lowerCholProposalCovMatrices         (1),//NULL),
   m_proposalCovMatrices                  (1),//NULL),
 #ifdef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
@@ -302,7 +303,7 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   m_alphaQuotients                       (0),//0.),
   m_chainRunTime                         (0.),
   m_numRejections                        (0),
-  m_numOutOfTargetSupport                       (0),
+  m_numOutOfTargetSupport                (0),
   m_lastChainSize                        (0),
   m_lastMean                             (NULL),
   m_lastAdaptedCovMatrix                 (NULL)
@@ -330,10 +331,10 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
       // Set current proposal exp vector = initial position - H^{-1}*\grad[-2*ln(target density)]
     }
 
-    m_tk2 = new uqHessianCovMatricesTKGroupClass<P_V,P_M>(m_prefix.c_str(),
-                                                          m_vectorSpace,
-                                                          m_drScalesForCovMatrices,
-                                                          m_targetPdf);
+    m_tk = new uqHessianCovMatricesTKGroupClass<P_V,P_M>(m_prefix.c_str(),
+                                                         m_vectorSpace,
+                                                         m_drScalesForCovMatrices,
+                                                         m_targetPdf);
   }
   else {
     if (m_initialProposalCovMatrix == NULL) {
@@ -343,10 +344,10 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
                           "proposal cov matrix should have been passed by user, since, according to the input algorithm options, local Hessians will not be used in the proposal");
     }
 
-    m_tk1 = new uqScaledCovMatrixTKGroupClass<P_V,P_M>(m_prefix.c_str(),
-                                                       m_vectorSpace,
-                                                       m_drScalesForCovMatrices,
-                                                       *m_initialProposalCovMatrix);
+    m_tk = new uqScaledCovMatrixTKGroupClass<P_V,P_M>(m_prefix.c_str(),
+                                                      m_vectorSpace,
+                                                      m_drScalesForCovMatrices,
+                                                      *m_initialProposalCovMatrix);
   }
 
 
@@ -372,8 +373,7 @@ uqMarkovChainSGClass<P_V,P_M>::~uqMarkovChainSGClass()
   if (m_chainStatisticalOptions        ) delete m_chainStatisticalOptions;
   if (m_optionsDesc                    ) delete m_optionsDesc;
 
-  if (m_tk1                            ) delete m_tk1;
-  if (m_tk2                            ) delete m_tk2;
+  if (m_tk                             ) delete m_tk;
   if (m_nullInputProposalCovMatrix     ) delete m_initialProposalCovMatrix;
 
   //std::cout << "Leaving uqMarkovChainSGClass<P_V,P_M>::destructor()"
@@ -386,10 +386,10 @@ uqMarkovChainSGClass<P_V,P_M>::resetChainAndRelatedInfo()
 {
   if (m_lastAdaptedCovMatrix) delete m_lastAdaptedCovMatrix;
   if (m_lastMean)             delete m_lastMean;
-  m_lastChainSize  = 0;
+  m_lastChainSize         = 0;
   m_numOutOfTargetSupport = 0;
-  m_chainRunTime   = 0.;
-  m_numRejections  = 0;
+  m_chainRunTime          = 0.;
+  m_numRejections         = 0;
   m_alphaQuotients.clear();
   m_logTargets.clear();
   m_idsOfUniquePositions.clear();
@@ -764,13 +764,13 @@ double
 uqMarkovChainSGClass<P_V,P_M>::alpha(
   const uqMarkovChainPositionDataClass<P_V>& x,
   const uqMarkovChainPositionDataClass<P_V>& y,
+  unsigned int                               xStageId,
+  unsigned int                               yStageId,
   double*                                    alphaQuotientPtr)
 {
   double alphaQuotient = 0.;
-  bool xOutOfTargetSupport = x.outOfTargetSupport();
-  bool yOutOfTargetSupport = y.outOfTargetSupport();
-  if ((xOutOfTargetSupport == false) &&
-      (yOutOfTargetSupport == false)) {
+  if ((x.outOfTargetSupport() == false) &&
+      (y.outOfTargetSupport() == false)) {
     double yLogTargetToUse = y.logTarget();
 #ifdef UQ_MAC_SG_REQUIRES_TARGET_DISTRIBUTION_ONLY
 #else
@@ -780,19 +780,27 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
       yLogTargetToUse = -0.5 * ( y.m2lPrior() + (y.misfitVector()/x.misfitVarianceVector()).sumOfComponents() );
     }
 #endif
+#ifdef UQ_USES_TK_CLASS
+    if (m_tk->symmetric()) {
+#else
     if (m_tkIsSymmetric) {
+#endif
       alphaQuotient = exp(yLogTargetToUse - x.logTarget());
       if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
         std::cout << "In uqMarkovChainSGClass<P_V,P_M>::alpha()"
                   << ": symmetric proposal case"
                   << ", yLogTargetToUse = " << yLogTargetToUse
                   << ", x.logTarget() = "   << x.logTarget()
-                  << ", alpha = "              << alphaQuotient
+                  << ", alpha = "           << alphaQuotient
                   << std::endl;
       }
     }
     else {
 #ifdef UQ_USES_TK_CLASS // AQUI
+      alphaQuotient = exp(yLogTargetToUse +
+                          m_tk->rv(yStageId).pdf().minus2LnDensity(x.vecValues()) -
+                          x.logTarget() -
+                          m_tk->rv(xStageId).pdf().minus2LnDensity(y.vecValues()));
 #else
       alphaQuotient = exp(yLogTargetToUse + logProposal(y,x,0) - x.logTarget() - logProposal(x,y,0));
 #endif
@@ -801,8 +809,8 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
   else {
     if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
       std::cout << "In uqMarkovChainSGClass<P_V,P_M>::alpha()"
-                << ": xOutOfTargetSupport = " << xOutOfTargetSupport
-                << ", yOutOfTargetSupport = " << yOutOfTargetSupport
+                << ": x.outOfTargetSupport = " << x.outOfTargetSupport()
+                << ", y.outOfTargetSupport = " << y.outOfTargetSupport()
                 << std::endl;
     }
   }
@@ -813,28 +821,39 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
 
 template<class P_V,class P_M>
 double
-uqMarkovChainSGClass<P_V,P_M>::alpha(const std::vector<uqMarkovChainPositionDataClass<P_V>*>& inputPositions)
+uqMarkovChainSGClass<P_V,P_M>::alpha(
+  const std::vector<uqMarkovChainPositionDataClass<P_V>*>& inputPositionsData,
+  const std::vector<unsigned int                        >& inputTKStageIds)
 {
-  unsigned int inputSize = inputPositions.size();
+  unsigned int inputSize = inputPositionsData.size();
   UQ_FATAL_TEST_MACRO((inputSize < 2),
                       m_env.rank(),
                       "uqMarkovChainSGClass<P_V,P_M>::alpha()",
-                      "inputPositions has size < 2");
+                      "inputPositionsData has size < 2");
 
   // If necessary, return 0. right away
-  if (inputPositions[0          ]->outOfTargetSupport()) return 0.;
-  if (inputPositions[inputSize-1]->outOfTargetSupport()) return 0.;
+  if (inputPositionsData[0          ]->outOfTargetSupport()) return 0.;
+  if (inputPositionsData[inputSize-1]->outOfTargetSupport()) return 0.;
 
   // If inputSize is 2, recursion is not needed
-  if (inputSize == 2) return this->alpha(*(inputPositions[0            ]),
-                                         *(inputPositions[inputSize - 1]));
+  if (inputSize == 2) return this->alpha(*(inputPositionsData[0            ]),
+                                         *(inputPositionsData[inputSize - 1]),
+                                         inputTKStageIds[0],
+                                         inputTKStageIds[inputSize-1]);
 
   // Prepare two vectors of positions
-  std::vector<uqMarkovChainPositionDataClass<P_V>*>         positions(inputSize,NULL);
-  std::vector<uqMarkovChainPositionDataClass<P_V>*> backwardPositions(inputSize,NULL);
+  std::vector<uqMarkovChainPositionDataClass<P_V>*>         positionsData(inputSize,NULL);
+  std::vector<uqMarkovChainPositionDataClass<P_V>*> backwardPositionsData(inputSize,NULL);
+
+  std::vector<unsigned int                        >         tkStageIds   (inputSize,0);
+  std::vector<unsigned int                        > backwardTKStageIds   (inputSize,0);
+
   for (unsigned int i = 0; i < inputSize; ++i) {
-            positions[i] = inputPositions[i];
-    backwardPositions[i] = inputPositions[inputSize-i-1];
+            positionsData[i] = inputPositionsData[i];
+    backwardPositionsData[i] = inputPositionsData[inputSize-i-1];
+
+            tkStageIds   [i] = inputTKStageIds   [i];
+    backwardTKStageIds   [i] = inputTKStageIds   [inputSize-i-1];
   }
 
   // Initialize cumulative variables
@@ -845,37 +864,52 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(const std::vector<uqMarkovChainPositionData
 
   // Compute cumulative variables
 #ifdef UQ_USES_TK_CLASS // AQUI
+  const P_V& _lastTKPosition         = m_tk->preComputingPosition(        tkStageIds[inputSize-1]);
+  const P_V& _lastBackwardTKPosition = m_tk->preComputingPosition(backwardTKStageIds[inputSize-1]);
+
+          positionsData.pop_back();
+  backwardPositionsData.pop_back();
+
+  logNumerator   += m_tk->rv(backwardTKStageIds).pdf().minus2LnDensity(_lastBackwardTKPosition);
+  logDenominator += m_tk->rv(        tkStageIds).pdf().minus2LnDensity(_lastTKPosition);
 #else
-  logNumerator   += logProposal(backwardPositions);
-  logDenominator += logProposal(        positions);
+  logNumerator   += logProposal(backwardPositionsData);
+  logDenominator += logProposal(        positionsData);
 #endif
 
   for (unsigned int i = 0; i < (inputSize-2); ++i) { // That is why size must be >= 2
-            positions.pop_back();
-    backwardPositions.pop_back();
-
-#ifdef UQ_USES_TK_CLASS // AQUI
-#else
-    logNumerator   += logProposal(backwardPositions);
-    logDenominator += logProposal(        positions);
+#ifdef UQ_USES_TK_CLASS
+    const P_V& lastTKPosition         = m_tk->preComputingPosition(        tkStageIds[inputSize-2-i]);
+    const P_V& lastBackwardTKPosition = m_tk->preComputingPosition(backwardTKStageIds[inputSize-2-i]);
 #endif
 
-    alphasNumerator   *= (1 - this->alpha(backwardPositions));
-    alphasDenominator *= (1 - this->alpha(        positions));
+            positionsData.pop_back();
+    backwardPositionsData.pop_back();
+
+#ifdef UQ_USES_TK_CLASS // AQUI
+    logNumerator   += m_tk->rv(backwardTKStageIds).pdf().minus2LnDensity(lastBackwardTKPosition);
+    logDenominator += m_tk->rv(        tkStageIds).pdf().minus2LnDensity(lastTKPosition);
+#else
+    logNumerator   += logProposal(backwardPositionsData);
+    logDenominator += logProposal(        positionsData);
+#endif
+
+    alphasNumerator   *= (1 - this->alpha(backwardPositionsData,backwardTKStageIds));
+    alphasDenominator *= (1 - this->alpha(        positionsData,        tkStageIds));
   }
 
-  double numeratorLogTargetToUse = backwardPositions[0]->logTarget();
+  double numeratorLogTargetToUse = backwardPositionsData[0]->logTarget();
 #ifdef UQ_MAC_SG_REQUIRES_TARGET_DISTRIBUTION_ONLY
 #else
   if (m_likelihoodObjComputesMisfits &&
       m_observableSpace.shouldVariancesBeUpdated()) {
     // Divide the misfitVector of 'back[0]' by the misfitVarianceVector of 'pos[0]'
-    numeratorLogTargetToUse = -0.5 * ( backwardPositions[0]->m2lPrior() +
-      (backwardPositions[0]->misfitVector()/positions[0]->misfitVarianceVector()).sumOfComponents() );
+    numeratorLogTargetToUse = -0.5 * ( backwardPositionsData[0]->m2lPrior() +
+      (backwardPositionsData[0]->misfitVector()/positionsData[0]->misfitVarianceVector()).sumOfComponents() );
   }
 #endif
   logNumerator   += numeratorLogTargetToUse;
-  logDenominator += positions[0]->logTarget();
+  logDenominator += positionsData[0]->logTarget();
 
   // Return result
   return std::min(1.,(alphasNumerator/alphasDenominator)*exp(logNumerator-logDenominator));

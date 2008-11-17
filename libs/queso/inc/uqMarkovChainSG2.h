@@ -385,18 +385,18 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
     }
     unsigned int stageId = 0;
 
+#ifdef UQ_USES_TK_CLASS
+    m_tk->clearPreComputingPositions();
+    m_tk->setPreComputingPosition(currentPositionData.vecValues(),0);
+#endif
+
     //****************************************************
     // Loop: generate new position
     //****************************************************
     if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
 #ifdef UQ_USES_TK_CLASS
-    if (m_tk1) {
-      m_tk1->rv(currentPositionData.vecValues()).realizer().realization(tmpVecValues);
-    }
-    else {
-      m_tk2->addPreComputingPosition(0,currentPositionData.vecValues());
-      m_tk2->rv(0).realizer().realization(tmpVecValues);
-    }
+    m_tk->rv(0).realizer().realization(tmpVecValues);
+    m_tk->setPreComputingPosition(tmpVecValues,stageId+1);
 #else
     gaussianVector.cwSetGaussian(m_env.rng(),0.,1.);
     tmpVecValues = currentPositionData.vecValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
@@ -431,10 +431,10 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
       if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalMhAlpha, NULL);
       double alpha = 0.;
       if (m_chainGenerateExtra) {
-        alpha = this->alpha(currentPositionData,currentCandidateData,&m_alphaQuotients[positionId]);
+        alpha = this->alpha(currentPositionData,currentCandidateData,0,1,&m_alphaQuotients[positionId]);
       }
       else {
-        alpha = this->alpha(currentPositionData,currentCandidateData,NULL);
+        alpha = this->alpha(currentPositionData,currentCandidateData,0,1,NULL);
       }
       if (m_chainMeasureRunTimes) mhAlphaRunTime += uqMiscGetEllapsedSeconds(&timevalMhAlpha);
       if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
@@ -455,7 +455,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
 
       if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
                                        << ": for chain position of id = " << positionId
-                                       << ", outOfTargetSupport = "        << outOfTargetSupport
+                                       << ", outOfTargetSupport = "       << outOfTargetSupport
                                        << "\n"
                                        << "\n curLogTarget  = "           << currentPositionData.logTarget()
                                        << "\n"
@@ -473,31 +473,23 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
     // Loop: delayed rejection
     //****************************************************
     std::vector<uqMarkovChainPositionDataClass<P_V>*> drPositionsData(stageId+2,NULL);
-    std::vector<const P_V*  > tkPositions(stageId+2,NULL);
-    std::vector<unsigned int> tkPosIds   (stageId+2,0   );
+    std::vector<unsigned int> tkStageIds (stageId+2,0   );
     if ((accept == false) && (outOfTargetSupport == false) && (m_drMaxNumExtraStages > 0)) {
       if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalDR, NULL);
 
       drPositionsData[0] = new uqMarkovChainPositionDataClass<P_V>(currentPositionData );
       drPositionsData[1] = new uqMarkovChainPositionDataClass<P_V>(currentCandidateData);
 
-      tkPositions[0] = new P_V(currentPositionData.vecValues ());
-      tkPositions[1] = new P_V(currentCandidateData.vecValues());
-
-      tkPosIds[0]    = 0;
-      tkPosIds[1]    = 1;
+      tkStageIds[0]  = 0;
+      tkStageIds[1]  = 1;
 
       while ((accept == false) && (stageId < m_drMaxNumExtraStages)) {
         stageId++;
 
         if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
 #ifdef UQ_USES_TK_CLASS
-        if (m_tk1) {
-          m_tk1->rv(tkPositions).realizer().realization(tmpVecValues);
-        }
-        else {
-          m_tk2->rv(tkPosIds   ).realizer().realization(tmpVecValues);
-        }
+        m_tk->rv(tkStageIds).realizer().realization(tmpVecValues);
+        m_tk->setPreComputingPosition(tmpVecValues,stageId+1);
 #else
         gaussianVector.cwSetGaussian(m_env.rng(),0.,1.);
         tmpVecValues = currentPositionData.vecValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
@@ -518,9 +510,10 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
                                  logTarget);
 
         drPositionsData.push_back(new uqMarkovChainPositionDataClass<P_V>(currentCandidateData));
+        tkStageIds.push_back     (stageId+1);
         if (outOfTargetSupport == false) {
           if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalDrAlpha, NULL);
-          double alpha = this->alpha(drPositionsData);
+          double alpha = this->alpha(drPositionsData,tkStageIds);
           if (m_chainMeasureRunTimes) drAlphaRunTime += uqMiscGetEllapsedSeconds(&timevalDrAlpha);
 #if 0 // For debug only
           if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
@@ -538,10 +531,6 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
 
     for (unsigned int i = 0; i < drPositionsData.size(); ++i) {
       if (drPositionsData[i]) delete drPositionsData[i];
-    }
-
-    for (unsigned int i = 0; i < tkPositions.size(); ++i) {
-      if (tkPositions[i]) delete tkPositions[i];
     }
 
     //****************************************************
