@@ -1,4 +1,4 @@
-/* uq/libs/queso/inc/uqVectorFunction.h
+/* uq/libs/queso/inc/uqScalarFunction.h
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu/
  *
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef __UQ_VECTOR_FUNCTION_H__
-#define __UQ_VECTOR_FUNCTION_H__
+#ifndef __UQ_SCALAR_FUNCTION_H__
+#define __UQ_SCALAR_FUNCTION_H__
 
 #include <uqEnvironment.h>
 #include <uqDefines.h>
@@ -27,16 +27,16 @@
 // Base class
 //*****************************************************
 template<class P_V,class P_M,class Q_V,class Q_M>
-class uqBaseVectorFunctionClass {
+class uqBaseScalarFunctionClass {
 public:
-           uqBaseVectorFunctionClass(const char*                      prefix,
+           uqBaseScalarFunctionClass(const char*                      prefix,
                                      const uqVectorSetClass<P_V,P_M>& domainSet,
                                      const uqVectorSetClass<Q_V,Q_M>& imageSet);
-  virtual ~uqBaseVectorFunctionClass();
+  virtual ~uqBaseScalarFunctionClass();
 
-          const uqVectorSetClass<P_V,P_M>& domainSet()                                          const;
-          const uqVectorSetClass<Q_V,Q_M>& imageSet ()                                          const;
-  virtual       void                       compute  (const P_V& domainVector, Q_V& imageVector) const = 0;
+          const uqVectorSetClass<P_V,P_M>& domainSet()                        const;
+          const uqVectorSetClass<Q_V,Q_M>& imageSet ()                        const;
+  virtual       double                     value    (const P_V& domainVector) const = 0;
 
 protected:
   const uqBaseEnvironmentClass&    m_env;
@@ -46,7 +46,7 @@ protected:
 };
 
 template<class P_V,class P_M,class Q_V,class Q_M>
-uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::uqBaseVectorFunctionClass(
+uqBaseScalarFunctionClass<P_V,P_M,Q_V,Q_M>::uqBaseScalarFunctionClass(
   const char*                      prefix,
   const uqVectorSetClass<P_V,P_M>& domainSet,
   const uqVectorSetClass<Q_V,Q_M>& imageSet)
@@ -59,20 +59,20 @@ uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::uqBaseVectorFunctionClass(
 }
 
 template<class P_V,class P_M,class Q_V,class Q_M>
-uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::~uqBaseVectorFunctionClass()
+uqBaseScalarFunctionClass<P_V,P_M,Q_V,Q_M>::~uqBaseScalarFunctionClass()
 {
 }
 
 template<class P_V,class P_M,class Q_V,class Q_M>
 const uqVectorSetClass<P_V,P_M>&
-uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::domainSet() const
+uqBaseScalarFunctionClass<P_V,P_M,Q_V,Q_M>::domainSet() const
 {
   return m_domainSet;
 }
 
 template<class P_V,class P_M,class Q_V,class Q_M>
 const uqVectorSetClass<Q_V,Q_M>&
-uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::imageSet() const
+uqBaseScalarFunctionClass<P_V,P_M,Q_V,Q_M>::imageSet() const
 {
   return m_imageSet;
 }
@@ -81,36 +81,36 @@ uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::imageSet() const
 // Generic class
 //*****************************************************
 template<class P_V,class P_M,class Q_V,class Q_M>
-class uqGenericVectorFunctionClass : public uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M> {
+class uqGenericScalarFunctionClass : public uqBaseScalarFunctionClass<P_V,P_M,Q_V,Q_M> {
 public:
-  uqGenericVectorFunctionClass(const char*                      prefix,
+  uqGenericScalarFunctionClass(const char*                      prefix,
                                const uqVectorSetClass<P_V,P_M>& domainSet,
                                const uqVectorSetClass<Q_V,Q_M>& imageSet,
-                               void (*routinePtr)(const P_V& domainVector, const void* functionDataPtr, Q_V& imageVector),
+                               double (*routinePtr)(const P_V& domainVector, const void* functionDataPtr),
                                const void* functionDataPtr);
-  virtual ~uqGenericVectorFunctionClass();
+  virtual ~uqGenericScalarFunctionClass();
 
-  void compute(const P_V& domainVector, Q_V& imageVector) const;
+  double value(const P_V& domainVector) const;
 
 protected:
-  void (*m_routinePtr)(const P_V& domainVector, const void* functionDataPtr, Q_V& imageVector);
+  double (*m_routinePtr)(const P_V& domainVector, const void* functionDataPtr);
   const void* m_routineDataPtr;
 
-  using uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_env;
-  using uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_prefix;
-  using uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_domainSet;
-  using uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_imageSet;
+  using uqBaseScalarFunctionClass<P_V,P_M,Q_V,Q_M>::m_env;
+  using uqBaseScalarFunctionClass<P_V,P_M,Q_V,Q_M>::m_prefix;
+  using uqBaseScalarFunctionClass<P_V,P_M,Q_V,Q_M>::m_domainSet;
+  using uqBaseScalarFunctionClass<P_V,P_M,Q_V,Q_M>::m_imageSet;
 };
 
 template<class P_V,class P_M,class Q_V,class Q_M>
-uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M>::uqGenericVectorFunctionClass(
+uqGenericScalarFunctionClass<P_V,P_M,Q_V,Q_M>::uqGenericScalarFunctionClass(
   const char*                      prefix,
   const uqVectorSetClass<P_V,P_M>& domainSet,
   const uqVectorSetClass<Q_V,Q_M>& imageSet,
-  void (*routinePtr)(const P_V& domainVector, const void* functionDataPtr, Q_V& imageVector),
+  double (*routinePtr)(const P_V& domainVector, const void* functionDataPtr),
   const void* functionDataPtr)
   :
-  uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>(((std::string)(prefix)+"gen").c_str(),
+  uqBaseScalarFunctionClass<P_V,P_M,Q_V,Q_M>(((std::string)(prefix)+"gen").c_str(),
                                              domainSet,
                                              imageSet),
   m_routinePtr    (routinePtr),
@@ -119,22 +119,15 @@ uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M>::uqGenericVectorFunctionClass(
 }
 
 template<class P_V,class P_M,class Q_V,class Q_M>
-uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M>::~uqGenericVectorFunctionClass()
+uqGenericScalarFunctionClass<P_V,P_M,Q_V,Q_M>::~uqGenericScalarFunctionClass()
 {
 }
 
 template<class P_V,class P_M,class Q_V,class Q_M>
-void
-uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M>::compute(const P_V& domainVector, Q_V& imageVector) const
+double
+uqGenericScalarFunctionClass<P_V,P_M,Q_V,Q_M>::value(const P_V& domainVector) const
 {
-  //UQ_FATAL_TEST_MACRO(false,
-  //                    domainVector.env().rank(),
-  //                    "uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M>::compute()",
-  //                    "this method should not be called in the case of this class");
-
-  m_routinePtr(domainVector, m_routineDataPtr, imageVector);
-
-  return;
+  return m_routinePtr(domainVector, m_routineDataPtr);
 }
 
-#endif // __UQ_VECTOR_FUNCTION_H__
+#endif // __UQ_SCALAR_FUNCTION_H__

@@ -20,71 +20,57 @@
 #ifndef __UQ_VECTOR_SPACE_H__
 #define __UQ_VECTOR_SPACE_H__
 
-#include <uqEnvironment.h>
-#include <uqMiscellaneous.h>
-//#include <vector>
-//#include <iostream>
-//#include <fstream>
-#include <uqDefines.h>
+#include <uqVectorSet.h>
 #include <EpetraExt_DistArray.h>
 
-#undef UQ_VECTOR_SPACE_READS_FILE_OPTIONS
-
 template <class V, class M>
-class uqVectorSpaceClass
+class uqVectorSpaceClass : public uqVectorSetClass<V,M>
 {
 public:
           uqVectorSpaceClass();
-          uqVectorSpaceClass(const uqBaseEnvironmentClass&            env, // See template specialization
+          uqVectorSpaceClass(const uqBaseEnvironmentClass&            env,
                              const char*                              prefix,
                              unsigned int                             dimValue,
                              const EpetraExt::DistArray<std::string>* componentsNames);
          ~uqVectorSpaceClass();
 
-  const   uqBaseEnvironmentClass&            env                 ()                         const;
-  const   Epetra_Map&                        map                 ()                         const;
-          unsigned int                       dim                 ()                         const;
+  const   Epetra_Map&              map                 ()                         const;
+          unsigned int             dim                 ()                         const;
 
-  const   V&                                 zeroVector          ()                         const;
-          V*                                 newVector           ()                         const; // See template specialization
-          V*                                 newVector           (double value)             const; // See template specialization
-          V*                                 newVector           (const V& v)               const;
-          M*                                 newMatrix           ()                         const; // See template specialization
-          M*                                 newDiagMatrix       (const V& v)               const;
-          M*                                 newDiagMatrix       (double diagValue)         const; // See template specialization
-          M*                                 newGaussianMatrix   (const V& varianceValues,
-                                                                  const V& initialValues)   const;
+  const   V&                       zeroVector          ()                         const;
+          V*                       newVector           ()                         const; // See template specialization
+          V*                       newVector           (double value)             const; // See template specialization
+          V*                       newVector           (const V& v)               const;
+          M*                       newMatrix           ()                         const; // See template specialization
+          M*                       newDiagMatrix       (const V& v)               const;
+          M*                       newDiagMatrix       (double diagValue)         const; // See template specialization
+          M*                       newGaussianMatrix   (const V& varianceValues,
+                                                        const V& initialValues)   const;
 
-  const   std::string&                       componentName       (unsigned int componentId) const;
-          void                               printComponentsNames(std::ostream& os, bool printHorizontally) const;
-          void                               print               (std::ostream& os) const;
+  const   uqVectorSpaceClass<V,M>& vectorSpace         ()                         const;
+          bool                     contains            (const V& vec)             const;
+
+  const   std::string&             componentName       (unsigned int componentId) const;
+          void                     printComponentsNames(std::ostream& os, bool printHorizontally) const;
+          void                     print               (std::ostream& os) const;
 
 protected:
-#ifdef UQ_VECTOR_SPACE_READS_FILE_OPTIONS
-          void                               defineMyOptions     (po::options_description& optionsDesc) const;
-          void                               getMyOptionValues   (po::options_description& optionsDesc);
-#endif
+          using uqVectorSetClass<V,M>::m_env;
+          using uqVectorSetClass<V,M>::m_prefix;
+          using uqVectorSetClass<V,M>::m_volume;
 
-  const   uqBaseEnvironmentClass&            m_env;
-          std::string                        m_prefix;
           unsigned int                       m_dim;
   const   EpetraExt::DistArray<std::string>* m_componentsNames;
           std::string                        m_emptyComponentName;
 
   const   Epetra_Map*                        m_map;
           V*                                 m_zeroVector;
-
-#ifdef UQ_VECTOR_SPACE_READS_FILE_OPTIONS
-          po::options_description*           m_optionsDesc;
-          std::string                        m_option_help;
-          std::string                        m_option_dim;
-#endif
 };
 
 template <class V, class M>
 uqVectorSpaceClass<V,M>::uqVectorSpaceClass()
   :
-  m_env(*(new uqFullEnvironmentClass()))
+  uqVectorSetClass<V,M>(m_env,m_prefix,INFINITY)
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.rank(),
@@ -94,26 +80,17 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass()
 
 template <class V, class M>
 uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
-  const uqBaseEnvironmentClass& env,
-  const char*               prefix,
-        unsigned int        dimValue,
+  const uqBaseEnvironmentClass&            env,
+  const char*                              prefix,
+        unsigned int                       dimValue,
   const EpetraExt::DistArray<std::string>* componentsNames)
   :
-  m_env               (env),
-  m_prefix            ((std::string)(prefix) + "space_"),
-  m_dim               (dimValue),
-  m_componentsNames   (componentsNames),
-  m_emptyComponentName(""),
-#ifdef UQ_VECTOR_SPACE_READS_FILE_OPTIONS
-  m_map               (NULL),
-  m_zeroVector        (NULL)
-  m_optionsDesc       (new po::options_description("Vector space options")),
-  m_option_help       (m_prefix + "help"),
-  m_option_dim        (m_prefix + "dim" )
-#else
-  m_map               (new Epetra_Map(m_dim,0,m_env.comm())),
-  m_zeroVector        (new V(m_env,*m_map))
-#endif
+  uqVectorSetClass<V,M>(m_env,((std::string)(prefix) + "space_").c_str(),INFINITY),
+  m_dim                (dimValue),
+  m_componentsNames    (componentsNames),
+  m_emptyComponentName (""),
+  m_map                (new Epetra_Map(m_dim,0,m_env.comm())),
+  m_zeroVector         (new V(m_env,*m_map))
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqVectorSpaceClass<V,M>::constructor()"
@@ -125,19 +102,6 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
                       "uqVectorSpaceClass<V,M>::constructor()",
                       "size of 'componentsNames' is not equal to m_dim");
 
-#ifdef UQ_VECTOR_SPACE_READS_FILE_OPTIONS
-  defineMyOptions                (*m_optionsDesc);
-  m_env.scanInputFileForMyOptions(*m_optionsDesc);
-  getMyOptionValues              (*m_optionsDesc);
-
-  if (m_env.rank() == 0) std::cout << "After getting values of options with prefix '" << m_prefix
-                                   << "', state of uqVectorSpaceClass object is:"
-                                   << "\n" << *this
-                                   << std::endl;
-
-  m_map        = new Epetra_Map(m_dim,0,m_env.comm());
-  m_zeroVector = new V(m_env,*m_map);
-#endif
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Leaving uqVectorSpaceClass<V,M>::constructor()"
               << std::endl;
@@ -157,43 +121,18 @@ uqVectorSpaceClass<V,M>::~uqVectorSpaceClass()
   //          << std::endl;
 }
 
-#ifdef UQ_VECTOR_SPACE_READS_FILE_OPTIONS
 template <class V, class M>
-void
-uqVectorSpaceClass<V,M>::defineMyOptions(
-  po::options_description& optionsDesc) const
+const uqVectorSpaceClass<V,M>&
+uqVectorSpaceClass<V,M>::vectorSpace() const
 {
-  m_optionsDesc->add_options()
-    (m_option_help.c_str(),                                                   "produce help message for vector space")
-    (m_option_dim.c_str(),      po::value<unsigned int>()->default_value(0),  "Space dimension"                      )
-  ;
-
-  return;
+  return *this;
 }
 
 template <class V, class M>
-void
-uqVectorSpaceClass<V,M>::getMyOptionValues(po::options_description& optionsDesc)
+bool
+uqVectorSpaceClass<V,M>::contains(const V& vec) const
 {
-  if (m_env.allOptionsMap().count(m_option_help.c_str())) {
-    std::cout << optionsDesc
-              << std::endl;
-  }
-
-  if (m_env.allOptionsMap().count(m_option_dim.c_str())) {
-    const po::variables_map& tmpMap = m_env.allOptionsMap();
-    m_dim = tmpMap[m_option_dim.c_str()].as<unsigned int>();
-  }
-
-  return;
-}
-#endif
-
-template <class V, class M>
-const uqBaseEnvironmentClass&
-uqVectorSpaceClass<V,M>::env() const
-{
-  return m_env;
+  return true;
 }
 
 template <class V, class M>
@@ -310,11 +249,6 @@ template <class V, class M>
 void
 uqVectorSpaceClass<V,M>::print(std::ostream& os) const
 {
-#ifdef UQ_VECTOR_SPACE_READS_FILE_OPTIONS
-  os << m_option_dim << " = " << m_dim
-     << std::endl;
-#endif
-
   return;
 }
 
