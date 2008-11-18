@@ -229,7 +229,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   if (m_mcSeqGenerator  ) delete m_mcSeqGenerator;
 
   // Compute output realizer: Monte Carlo approach
-  m_chain = new uqSequenceOfVectorsClass<Q_V,Q_M>(m_qoiRv.imageSpace(),0,m_prefix+"chain");
+  m_chain = new uqSequenceOfVectorsClass<Q_V,Q_M>(m_qoiRv.imageSet().vectorSpace(),0,m_prefix+"chain");
   m_mcSeqGenerator = new uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>(m_prefix.c_str(),
                                                               m_paramRv,
                                                               m_qoiFunction,
@@ -240,9 +240,9 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   m_qoiRv.setRealizer(*m_solutionRealizer);
 
   // Compute output mdf: uniform sampling approach
-  m_mdfGrids  = new uqArrayOfOneDGridsClass <Q_V,Q_M>((m_prefix+"mdf_").c_str(),m_qoiRv.imageSpace());
-  m_mdfValues = new uqArrayOfOneDTablesClass<Q_V,Q_M>((m_prefix+"mdf_").c_str(),m_qoiRv.imageSpace());
-  Q_V* numIntervalsVec = m_qoiRv.imageSpace().newVector(250.);
+  m_mdfGrids  = new uqArrayOfOneDGridsClass <Q_V,Q_M>((m_prefix+"mdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
+  m_mdfValues = new uqArrayOfOneDTablesClass<Q_V,Q_M>((m_prefix+"mdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
+  Q_V* numIntervalsVec = m_qoiRv.imageSet().vectorSpace().newVector(250.);
   m_chain->uniformlySampledMdf(*numIntervalsVec, // input
                                *m_mdfGrids,      // output
                                *m_mdfValues);    // output
@@ -253,9 +253,9 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   m_qoiRv.setMdf(*m_solutionMdf);
 
   // Compute output cdf: uniform sampling approach
-  m_cdfGrids  = new uqArrayOfOneDGridsClass <Q_V,Q_M>((m_prefix+"cdf_").c_str(),m_qoiRv.imageSpace());
-  m_cdfValues = new uqArrayOfOneDTablesClass<Q_V,Q_M>((m_prefix+"cdf_").c_str(),m_qoiRv.imageSpace());
-  numIntervalsVec = m_qoiRv.imageSpace().newVector(250.);
+  m_cdfGrids  = new uqArrayOfOneDGridsClass <Q_V,Q_M>((m_prefix+"cdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
+  m_cdfValues = new uqArrayOfOneDTablesClass<Q_V,Q_M>((m_prefix+"cdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
+  numIntervalsVec = m_qoiRv.imageSet().vectorSpace().newVector(250.);
   m_chain->uniformlySampledCdf(*numIntervalsVec, // input
                                *m_cdfGrids,      // output
                                *m_cdfValues);    // output

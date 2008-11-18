@@ -37,14 +37,14 @@ template<class V, class M>
 class uqBaseVectorCdfClass {
 public:
            uqBaseVectorCdfClass(const char*                    prefix,
-                                const uqVectorSpaceClass<V,M>& domainSpace,
+                                const uqVectorSetClass<V,M>& pdfSupport,
                                 const V&                       domainMinValues,
                                 const V&                       domainMaxValues);
            uqBaseVectorCdfClass(const char*                    prefix,
-                                const uqVectorSpaceClass<V,M>& domainSpace);
+                                const uqVectorSetClass<V,M>& pdfSupport);
   virtual ~uqBaseVectorCdfClass();
 
-  const   uqVectorSpaceClass<V,M>&            domainSpace    ()                                const;
+  const   uqVectorSetClass<V,M>&            pdfSupport    ()                                const;
   virtual void                                values         (const V& paramValues, V& cdfVec) const = 0;
   virtual const uqBaseScalarCdfClass<double>& cdf            (unsigned int rowId)              const = 0;
   const   V&                                  domainMinValues()                                const;
@@ -55,7 +55,7 @@ protected:
 
   const   uqBaseEnvironmentClass&      m_env;
           std::string              m_prefix;
-  const   uqVectorSpaceClass<V,M>& m_domainSpace;
+  const   uqVectorSetClass<V,M>& m_pdfSupport;
 
           V*                       m_domainMinValues;
           V*                       m_domainMaxValues;
@@ -64,13 +64,13 @@ protected:
 template<class V, class M>
 uqBaseVectorCdfClass<V,M>::uqBaseVectorCdfClass(
   const char*                    prefix,
-  const uqVectorSpaceClass<V,M>& domainSpace,
+  const uqVectorSetClass<V,M>& pdfSupport,
   const V&                       domainMinValues,
   const V&                       domainMaxValues)
   :
-  m_env            (domainSpace.env()),
+  m_env            (pdfSupport.env()),
   m_prefix         ((std::string)(prefix)+"cdf_"),
-  m_domainSpace    (domainSpace),
+  m_pdfSupport    (pdfSupport),
   m_domainMinValues(new V(domainMinValues)),
   m_domainMaxValues(new V(domainMaxValues))
 {
@@ -90,13 +90,13 @@ uqBaseVectorCdfClass<V,M>::uqBaseVectorCdfClass(
 template<class V, class M>
 uqBaseVectorCdfClass<V,M>::uqBaseVectorCdfClass(
   const char*                    prefix,
-  const uqVectorSpaceClass<V,M>& domainSpace)
+  const uqVectorSetClass<V,M>& pdfSupport)
   :
-  m_env            (domainSpace.env()),
+  m_env            (pdfSupport.env()),
   m_prefix         ((std::string)(prefix)+"cdf_"),
-  m_domainSpace    (domainSpace),
-  m_domainMinValues(domainSpace.newVector(-INFINITY)),
-  m_domainMaxValues(domainSpace.newVector( INFINITY))
+  m_pdfSupport    (pdfSupport),
+  m_domainMinValues(pdfSupport.newVector(-INFINITY)),
+  m_domainMaxValues(pdfSupport.newVector( INFINITY))
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqBaseVectorCdfClass<V,M>::constructor() [4]"
@@ -133,10 +133,10 @@ uqBaseVectorCdfClass<V,M>::domainMaxValues() const
 }
 
 template<class V, class M>
-const uqVectorSpaceClass<V,M>&
-uqBaseVectorCdfClass<V,M>::domainSpace() const
+const uqVectorSetClass<V,M>&
+uqBaseVectorCdfClass<V,M>::pdfSupport() const
 {
-  return m_domainSpace;
+  return m_pdfSupport;
 }
 
 template <class V, class M>
@@ -153,13 +153,13 @@ template<class V, class M>
 class uqGenericVectorCdfClass : public uqBaseVectorCdfClass<V,M> {
 public:
   uqGenericVectorCdfClass(const char*                    prefix,
-                          const uqVectorSpaceClass<V,M>& domainSpace,
+                          const uqVectorSetClass<V,M>& pdfSupport,
                           const V&                       domainMinValues,
                           const V&                       domainMaxValues,
                           double (*routinePtr)(const V& paramValues, const void* routineDataPtr, V& cdfVec),
                           const void* routineDataPtr);
   uqGenericVectorCdfClass(const char*                    prefix,
-                          const uqVectorSpaceClass<V,M>& domainSpace,
+                          const uqVectorSetClass<V,M>& pdfSupport,
                           double (*routinePtr)(const V& paramValues, const void* routineDataPtr, V& cdfVec),
                           const void* routineDataPtr);
  ~uqGenericVectorCdfClass();
@@ -173,7 +173,7 @@ protected:
 
   using uqBaseVectorCdfClass<V,M>::m_env;
   using uqBaseVectorCdfClass<V,M>::m_prefix;
-  using uqBaseVectorCdfClass<V,M>::m_domainSpace;
+  using uqBaseVectorCdfClass<V,M>::m_pdfSupport;
   using uqBaseVectorCdfClass<V,M>::m_domainMinValues;
   using uqBaseVectorCdfClass<V,M>::m_domainMaxValues;
 };
@@ -181,13 +181,13 @@ protected:
 template<class V, class M>
 uqGenericVectorCdfClass<V,M>::uqGenericVectorCdfClass(
   const char*                    prefix,
-  const uqVectorSpaceClass<V,M>& domainSpace,
+  const uqVectorSetClass<V,M>& pdfSupport,
   const V&                       domainMinValues,
   const V&                       domainMaxValues,
   double (*routinePtr)(const V& paramValues, const void* routineDataPtr, V& cdfVec),
   const void* routineDataPtr)
   :
-  uqBaseVectorCdfClass<V,M>(prefix,domainSpace,domainMinValues,domainMaxValues),
+  uqBaseVectorCdfClass<V,M>(prefix,pdfSupport,domainMinValues,domainMaxValues),
   m_routinePtr    (routinePtr),
   m_routineDataPtr(routineDataPtr)
 {
@@ -196,11 +196,11 @@ uqGenericVectorCdfClass<V,M>::uqGenericVectorCdfClass(
 template<class V, class M>
 uqGenericVectorCdfClass<V,M>::uqGenericVectorCdfClass(
   const char*                    prefix,
-  const uqVectorSpaceClass<V,M>& domainSpace,
+  const uqVectorSetClass<V,M>& pdfSupport,
   double (*routinePtr)(const V& paramValues, const void* routineDataPtr, V& cdfVec),
   const void* routineDataPtr)
   :
-  uqBaseVectorCdfClass<V,M>(prefix,domainSpace),
+  uqBaseVectorCdfClass<V,M>(prefix,pdfSupport),
   m_routinePtr    (routinePtr),
   m_routineDataPtr(routineDataPtr)
 {
@@ -235,13 +235,13 @@ template<class V, class M>
 class uqGaussianVectorCdfClass : public uqBaseVectorCdfClass<V,M> {
 public:
   uqGaussianVectorCdfClass(const char*                    prefix,
-                           const uqVectorSpaceClass<V,M>& domainSpace,
+                           const uqVectorSetClass<V,M>& pdfSupport,
                            const V&                       domainMinValues,
                            const V&                       domainMaxValues,
                            const V&                       domainExpectedValues,
                            const V&                       domainVarianceValues);
   uqGaussianVectorCdfClass(const char*                    prefix,
-                           const uqVectorSpaceClass<V,M>& domainSpace,
+                           const uqVectorSetClass<V,M>& pdfSupport,
                            const V&                       domainMinValues,
                            const V&                       domainMaxValues,
                            const V&                       domainExpectedValues,
@@ -256,7 +256,7 @@ protected:
 
   using uqBaseVectorCdfClass<V,M>::m_env;
   using uqBaseVectorCdfClass<V,M>::m_prefix;
-  using uqBaseVectorCdfClass<V,M>::m_domainSpace;
+  using uqBaseVectorCdfClass<V,M>::m_pdfSupport;
   using uqBaseVectorCdfClass<V,M>::m_domainMinValues;
   using uqBaseVectorCdfClass<V,M>::m_domainMaxValues;
 
@@ -266,14 +266,14 @@ protected:
 template<class V,class M>
 uqGaussianVectorCdfClass<V,M>::uqGaussianVectorCdfClass(
   const char*                    prefix,
-  const uqVectorSpaceClass<V,M>& domainSpace,
+  const uqVectorSetClass<V,M>& pdfSupport,
   const V&                       domainMinValues,
   const V&                       domainMaxValues,
   const V&                       domainExpectedValues,
   const V&                       domainVarianceValues)
   :
-  uqBaseVectorCdfClass<V,M>(prefix,domainSpace,domainMinValues,domainMaxValues),
-  m_covMatrix              (m_domainSpace.newDiagMatrix(domainVarianceValues*domainVarianceValues))
+  uqBaseVectorCdfClass<V,M>(prefix,pdfSupport,domainMinValues,domainMaxValues),
+  m_covMatrix              (m_pdfSupport.newDiagMatrix(domainVarianceValues*domainVarianceValues))
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqGaussianVectorCdfClass<V,M>::constructor() [1]"
@@ -293,13 +293,13 @@ uqGaussianVectorCdfClass<V,M>::uqGaussianVectorCdfClass(
 template<class V,class M>
 uqGaussianVectorCdfClass<V,M>::uqGaussianVectorCdfClass(
   const char*                    prefix,
-  const uqVectorSpaceClass<V,M>& domainSpace,
+  const uqVectorSetClass<V,M>& pdfSupport,
   const V&                       domainMinValues,
   const V&                       domainMaxValues,
   const V&                       domainExpectedValues,
   const M&                       covMatrix)
   :
-  uqBaseVectorCdfClass<V,M>(prefix,domainSpace,domainMinValues,domainMaxValues),
+  uqBaseVectorCdfClass<V,M>(prefix,pdfSupport,domainMinValues,domainMaxValues),
   m_covMatrix              (new M(covMatrix))
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
@@ -372,7 +372,7 @@ public:
 protected:
   using uqBaseVectorCdfClass<V,M>::m_env;
   using uqBaseVectorCdfClass<V,M>::m_prefix;
-  using uqBaseVectorCdfClass<V,M>::m_domainSpace;
+  using uqBaseVectorCdfClass<V,M>::m_pdfSupport;
   using uqBaseVectorCdfClass<V,M>::m_domainMinValues;
   using uqBaseVectorCdfClass<V,M>::m_domainMaxValues;
 
@@ -386,7 +386,7 @@ uqSampledVectorCdfClass<V,M>::uqSampledVectorCdfClass(
   const uqArrayOfOneDTablesClass<V,M>& cdfValues)
   :
   uqBaseVectorCdfClass<V,M>(prefix,oneDGrids.rowSpace(),oneDGrids.minPositions(),oneDGrids.maxPositions()),
-  m_cdfs(m_domainSpace.map(),1)
+  m_cdfs(m_pdfSupport.vectorSpace().map(),1)
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqSampledVectorCdfClass<V,M>::constructor()"
@@ -435,7 +435,7 @@ template<class V, class M>
 const uqBaseScalarCdfClass<double>&
 uqSampledVectorCdfClass<V,M>::cdf(unsigned int rowId) const
 {
-  UQ_FATAL_TEST_MACRO(rowId >= m_domainSpace.dim(),
+  UQ_FATAL_TEST_MACRO(rowId >= m_pdfSupport.vectorSpace().dim(),
                       m_env.rank(),
                       "uqSampledVectorCdfClass<T>::cdf()",
                       "rowId is out of range");
@@ -466,7 +466,7 @@ horizontalDistances(const uqBaseVectorCdfClass<V,M>& cdf1,
                     const V& epsilonVec,
                     V&       distances)
 {
-  for (unsigned int i = 0; i < cdf1.domainSpace().dim(); ++i) {
+  for (unsigned int i = 0; i < cdf1.pdfSupport().vectorSpace().dim(); ++i) {
     distances[i] = horizontalDistance(cdf1.cdf(i),
                                       cdf2.cdf(i),
                                       epsilonVec[i]);

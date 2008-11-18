@@ -35,25 +35,25 @@ template<class V, class M>
 class uqBaseVectorPdfClass {
 public:
            uqBaseVectorPdfClass(const char*                    prefix,
-                                const uqVectorSpaceClass<V,M>& domainSpace,
+                                const uqVectorSetClass<V,M>& domainSet,
                                 const V&                       domainMinValues,
                                 const V&                       domainMaxValues,
                                 const V&                       domainExpectedValues,
                                 const V&                       domainVarianceValues);
            uqBaseVectorPdfClass(const char*                    prefix,
-                                const uqVectorSpaceClass<V,M>& domainSpace,
+                                const uqVectorSetClass<V,M>& domainSet,
                                 const V&                       domainMinValues,
                                 const V&                       domainMaxValues,
                                 const V&                       domainExpectedValues);
            uqBaseVectorPdfClass(const char*                    prefix,
-                                const uqVectorSpaceClass<V,M>& domainSpace,
+                                const uqVectorSetClass<V,M>& domainSet,
                                 const V&                       domainMinValues,
                                 const V&                       domainMaxValues);
            uqBaseVectorPdfClass(const char*                    prefix,
-                                const uqVectorSpaceClass<V,M>& domainSpace);
+                                const uqVectorSetClass<V,M>& domainSet);
   virtual ~uqBaseVectorPdfClass();
 
-  const   uqVectorSpaceClass<V,M>&              domainSpace               ()                     const;
+  const   uqVectorSetClass<V,M>&              domainSet               ()                     const;
   virtual double                                actualDensity             (const V& paramValues) const = 0;
   virtual double                                minus2LnDensity           (const V& paramValues) const = 0;
 
@@ -68,7 +68,7 @@ protected:
 
   const   uqBaseEnvironmentClass&      m_env;
           std::string              m_prefix;
-  const   uqVectorSpaceClass<V,M>& m_domainSpace;
+  const   uqVectorSetClass<V,M>& m_domainSet;
 
           V*                       m_domainMinValues;
           V*                       m_domainMaxValues;
@@ -82,15 +82,15 @@ protected:
 template<class V, class M>
 uqBaseVectorPdfClass<V,M>::uqBaseVectorPdfClass(
   const char*                    prefix,
-  const uqVectorSpaceClass<V,M>& domainSpace,
+  const uqVectorSetClass<V,M>& domainSet,
   const V&                       domainMinValues,
   const V&                       domainMaxValues,
   const V&                       domainExpectedValues,
   const V&                       domainVarianceValues)
   :
-  m_env                 (domainSpace.env()),
+  m_env                 (domainSet.env()),
   m_prefix              ((std::string)(prefix)+"pd_"),
-  m_domainSpace         (domainSpace),
+  m_domainSet         (domainSet),
   m_domainMinValues     (new V(domainMinValues   )),
   m_domainMaxValues     (new V(domainMaxValues   )),
   m_domainExpectedValues(new V(domainExpectedValues)),
@@ -112,18 +112,18 @@ uqBaseVectorPdfClass<V,M>::uqBaseVectorPdfClass(
 template<class V, class M>
 uqBaseVectorPdfClass<V,M>::uqBaseVectorPdfClass(
   const char*                    prefix,
-  const uqVectorSpaceClass<V,M>& domainSpace,
+  const uqVectorSetClass<V,M>& domainSet,
   const V&                       domainMinValues,
   const V&                       domainMaxValues,
   const V&                       domainExpectedValues)
   :
-  m_env                 (domainSpace.env()),
+  m_env                 (domainSet.env()),
   m_prefix              ((std::string)(prefix)+"pd_"),
-  m_domainSpace         (domainSpace),
+  m_domainSet         (domainSet),
   m_domainMinValues     (new V(domainMinValues         )),
   m_domainMaxValues     (new V(domainMaxValues         )),
   m_domainExpectedValues(new V(domainExpectedValues    )),
-  m_domainVarianceValues(domainSpace.newVector(INFINITY))
+  m_domainVarianceValues(domainSet.vectorSpace().newVector(INFINITY))
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqBaseVectorPdfClass<V,M>::constructor() [2]"
@@ -141,17 +141,17 @@ uqBaseVectorPdfClass<V,M>::uqBaseVectorPdfClass(
 template<class V, class M>
 uqBaseVectorPdfClass<V,M>::uqBaseVectorPdfClass(
   const char*                    prefix,
-  const uqVectorSpaceClass<V,M>& domainSpace,
+  const uqVectorSetClass<V,M>& domainSet,
   const V&                       domainMinValues,
   const V&                       domainMaxValues)
   :
-  m_env                 (domainSpace.env()),
+  m_env                 (domainSet.env()),
   m_prefix              ((std::string)(prefix)+"pd_"),
-  m_domainSpace         (domainSpace),
+  m_domainSet         (domainSet),
   m_domainMinValues     (new V(domainMinValues         )),
   m_domainMaxValues     (new V(domainMaxValues         )),
-  m_domainExpectedValues(domainSpace.newVector(      0.)),
-  m_domainVarianceValues(domainSpace.newVector(INFINITY))
+  m_domainExpectedValues(domainSet.vectorSpace().newVector(      0.)),
+  m_domainVarianceValues(domainSet.vectorSpace().newVector(INFINITY))
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqBaseVectorPdfClass<V,M>::constructor() [3]"
@@ -169,15 +169,15 @@ uqBaseVectorPdfClass<V,M>::uqBaseVectorPdfClass(
 template<class V, class M>
 uqBaseVectorPdfClass<V,M>::uqBaseVectorPdfClass(
   const char*                    prefix,
-  const uqVectorSpaceClass<V,M>& domainSpace)
+  const uqVectorSetClass<V,M>& domainSet)
   :
-  m_env                 (domainSpace.env()),
+  m_env                 (domainSet.env()),
   m_prefix              ((std::string)(prefix)+"pd_"),
-  m_domainSpace         (domainSpace),
-  m_domainMinValues     (domainSpace.newVector(-INFINITY)),
-  m_domainMaxValues     (domainSpace.newVector( INFINITY)),
-  m_domainExpectedValues(domainSpace.newVector(       0.)),
-  m_domainVarianceValues(domainSpace.newVector( INFINITY))
+  m_domainSet         (domainSet),
+  m_domainMinValues     (domainSet.vectorSpace().newVector(-INFINITY)),
+  m_domainMaxValues     (domainSet.vectorSpace().newVector( INFINITY)),
+  m_domainExpectedValues(domainSet.vectorSpace().newVector(       0.)),
+  m_domainVarianceValues(domainSet.vectorSpace().newVector( INFINITY))
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqBaseVectorPdfClass<V,M>::constructor() [4]"
@@ -247,10 +247,10 @@ uqBaseVectorPdfClass<V,M>::outOfSupport(const V& v) const
 }
 
 template<class V, class M>
-const uqVectorSpaceClass<V,M>&
-uqBaseVectorPdfClass<V,M>::domainSpace() const
+const uqVectorSetClass<V,M>&
+uqBaseVectorPdfClass<V,M>::domainSet() const
 {
-  return m_domainSpace;
+  return m_domainSet;
 }
 
 //*****************************************************
@@ -260,7 +260,7 @@ template<class V, class M>
 class uqGenericVectorPdfClass : public uqBaseVectorPdfClass<V,M> {
 public:
   uqGenericVectorPdfClass(const char*                    prefix,
-                          const uqVectorSpaceClass<V,M>& domainSpace,
+                          const uqVectorSetClass<V,M>& domainSet,
                           const V&                       domainMinValues,
                           const V&                       domainMaxValues,
                           const V&                       domainExpectedValues,
@@ -269,7 +269,7 @@ public:
                           const void* routineDataPtr,
                           bool routineComputesMinus2LogOfDensity);
   uqGenericVectorPdfClass(const char*                    prefix,
-                          const uqVectorSpaceClass<V,M>& domainSpace,
+                          const uqVectorSetClass<V,M>& domainSet,
                           double (*routinePtr)(const V& paramValues, const void* routineDataPtr),
                           const void* routineDataPtr,
                           bool routineComputesMinus2LogOfDensity);
@@ -286,7 +286,7 @@ protected:
 
   using uqBaseVectorPdfClass<V,M>::m_env;
   using uqBaseVectorPdfClass<V,M>::m_prefix;
-  using uqBaseVectorPdfClass<V,M>::m_domainSpace;
+  using uqBaseVectorPdfClass<V,M>::m_domainSet;
   using uqBaseVectorPdfClass<V,M>::m_domainMinValues;
   using uqBaseVectorPdfClass<V,M>::m_domainMaxValues;
   using uqBaseVectorPdfClass<V,M>::m_domainExpectedValues;
@@ -296,7 +296,7 @@ protected:
 template<class V, class M>
 uqGenericVectorPdfClass<V,M>::uqGenericVectorPdfClass(
   const char*                    prefix,
-  const uqVectorSpaceClass<V,M>& domainSpace,
+  const uqVectorSetClass<V,M>& domainSet,
   const V&                       domainMinValues,
   const V&                       domainMaxValues,
   const V&                       domainExpectedValues,
@@ -306,7 +306,7 @@ uqGenericVectorPdfClass<V,M>::uqGenericVectorPdfClass(
   bool        routineComputesMinus2LogOfDensity)
   :
   uqBaseVectorPdfClass<V,M>(((std::string)(prefix)+"gen").c_str(),
-                                    domainSpace,
+                                    domainSet,
                                     domainMinValues,
                                     domainMaxValues,
                                     domainExpectedValues,
@@ -320,12 +320,12 @@ uqGenericVectorPdfClass<V,M>::uqGenericVectorPdfClass(
 template<class V, class M>
 uqGenericVectorPdfClass<V,M>::uqGenericVectorPdfClass(
   const char*                    prefix,
-  const uqVectorSpaceClass<V,M>& domainSpace,
+  const uqVectorSetClass<V,M>& domainSet,
   double (*routinePtr)(const V& paramValues, const void* routineDataPtr),
   const void* routineDataPtr,
   bool        routineComputesMinus2LogOfDensity)
   :
-  uqBaseVectorPdfClass<V,M>(((std::string)(prefix)+"gen").c_str(),domainSpace),
+  uqBaseVectorPdfClass<V,M>(((std::string)(prefix)+"gen").c_str(),domainSet),
   m_routinePtr                       (routinePtr),
   m_routineDataPtr                   (routineDataPtr),
   m_routineComputesMinus2LogOfDensity(routineComputesMinus2LogOfDensity)
@@ -381,7 +381,7 @@ protected:
 
   using uqBaseVectorPdfClass<V,M>::m_env;
   using uqBaseVectorPdfClass<V,M>::m_prefix;
-  using uqBaseVectorPdfClass<V,M>::m_domainSpace;
+  using uqBaseVectorPdfClass<V,M>::m_domainSet;
   using uqBaseVectorPdfClass<V,M>::m_domainMinValues;
   using uqBaseVectorPdfClass<V,M>::m_domainMaxValues;
   using uqBaseVectorPdfClass<V,M>::m_domainExpectedValues;
@@ -394,7 +394,7 @@ uqBayesianVectorPdfClass<V,M>::uqBayesianVectorPdfClass(
   const uqBaseVectorPdfClass<V,M>* priorDensity,
   const uqBaseVectorPdfClass<V,M>* likelihoodFunction)
   :
-  uqBaseVectorPdfClass<V,M>(((std::string)(prefix)+"bay").c_str(),priorDensity->domainSpace()),
+  uqBaseVectorPdfClass<V,M>(((std::string)(prefix)+"bay").c_str(),priorDensity->domainSet()),
   m_priorDensity      (priorDensity),
   m_likelihoodFunction(likelihoodFunction)
 {
@@ -456,13 +456,13 @@ template<class V, class M>
 class uqGaussianVectorPdfClass : public uqBaseVectorPdfClass<V,M> {
 public:
   uqGaussianVectorPdfClass(const char*                    prefix,
-                           const uqVectorSpaceClass<V,M>& domainSpace,
+                           const uqVectorSetClass<V,M>& domainSet,
                            const V&                       domainMinValues,
                            const V&                       domainMaxValues,
                            const V&                       domainExpectedValues,
                            const V&                       domainVarianceValues);
   uqGaussianVectorPdfClass(const char*                    prefix,
-                           const uqVectorSpaceClass<V,M>& domainSpace,
+                           const uqVectorSetClass<V,M>& domainSet,
                            const V&                       domainMinValues,
                            const V&                       domainMaxValues,
                            const V&                       domainExpectedValues,
@@ -480,7 +480,7 @@ protected:
 
   using uqBaseVectorPdfClass<V,M>::m_env;
   using uqBaseVectorPdfClass<V,M>::m_prefix;
-  using uqBaseVectorPdfClass<V,M>::m_domainSpace;
+  using uqBaseVectorPdfClass<V,M>::m_domainSet;
   using uqBaseVectorPdfClass<V,M>::m_domainMinValues;
   using uqBaseVectorPdfClass<V,M>::m_domainMaxValues;
   using uqBaseVectorPdfClass<V,M>::m_domainExpectedValues;
@@ -491,15 +491,15 @@ protected:
 template<class V,class M>
 uqGaussianVectorPdfClass<V,M>::uqGaussianVectorPdfClass(
   const char*                    prefix,
-  const uqVectorSpaceClass<V,M>& domainSpace,
+  const uqVectorSetClass<V,M>& domainSet,
   const V&                       domainMinValues,
   const V&                       domainMaxValues,
   const V&                       domainExpectedValues,
   const V&                       domainVarianceValues)
   :
-  uqBaseVectorPdfClass<V,M>(((std::string)(prefix)+"gau").c_str(),domainSpace,domainMinValues,domainMaxValues,domainExpectedValues,domainVarianceValues),
+  uqBaseVectorPdfClass<V,M>(((std::string)(prefix)+"gau").c_str(),domainSet,domainMinValues,domainMaxValues,domainExpectedValues,domainVarianceValues),
   m_diagonalCovMatrix(true),
-  m_covMatrix                      (m_domainSpace.newDiagMatrix(domainVarianceValues))
+  m_covMatrix                      (m_domainSet.newDiagMatrix(domainVarianceValues))
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqGaussianVectorPdfClass<V,M>::constructor() [1]"
@@ -525,13 +525,13 @@ uqGaussianVectorPdfClass<V,M>::uqGaussianVectorPdfClass(
 template<class V,class M>
 uqGaussianVectorPdfClass<V,M>::uqGaussianVectorPdfClass(
   const char*                    prefix,
-  const uqVectorSpaceClass<V,M>& domainSpace,
+  const uqVectorSetClass<V,M>& domainSet,
   const V&                       domainMinValues,
   const V&                       domainMaxValues,
   const V&                       domainExpectedValues,
   const M&                       covMatrix)
   :
-  uqBaseVectorPdfClass<V,M>(((std::string)(prefix)+"gau").c_str(),domainSpace,domainMinValues,domainMaxValues,domainExpectedValues),
+  uqBaseVectorPdfClass<V,M>(((std::string)(prefix)+"gau").c_str(),domainSet,domainMinValues,domainMaxValues,domainExpectedValues),
   m_diagonalCovMatrix      (false),
   m_covMatrix              (new M(covMatrix))
 {
@@ -610,7 +610,7 @@ template<class V, class M>
 class uqUniformVectorPdfClass : public uqBaseVectorPdfClass<V,M> {
 public:
   uqUniformVectorPdfClass(const char*                    prefix,
-                          const uqVectorSpaceClass<V,M>& domainSpace,
+                          const uqVectorSetClass<V,M>& domainSet,
                           const V&                       domainMinValues,
                           const V&                       domainMaxValues);
  ~uqUniformVectorPdfClass();
@@ -621,7 +621,7 @@ public:
 protected:
   using uqBaseVectorPdfClass<V,M>::m_env;
   using uqBaseVectorPdfClass<V,M>::m_prefix;
-  using uqBaseVectorPdfClass<V,M>::m_domainSpace;
+  using uqBaseVectorPdfClass<V,M>::m_domainSet;
   using uqBaseVectorPdfClass<V,M>::m_domainMinValues;
   using uqBaseVectorPdfClass<V,M>::m_domainMaxValues;
   using uqBaseVectorPdfClass<V,M>::m_domainExpectedValues;
@@ -631,12 +631,12 @@ protected:
 template<class V,class M>
 uqUniformVectorPdfClass<V,M>::uqUniformVectorPdfClass(
   const char*                    prefix,
-  const uqVectorSpaceClass<V,M>& domainSpace,
+  const uqVectorSetClass<V,M>& domainSet,
   const V&                       domainMinValues,
   const V&                       domainMaxValues)
   :
   uqBaseVectorPdfClass<V,M>(((std::string)(prefix)+"uni").c_str(),
-                                    domainSpace,
+                                    domainSet,
                                     domainMinValues,
                                     domainMaxValues)
 {

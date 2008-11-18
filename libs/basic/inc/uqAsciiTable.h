@@ -58,10 +58,10 @@ private:
 template <class V, class M>
 uqAsciiTableClass<V,M>::uqAsciiTableClass(
   const uqBaseEnvironmentClass& env,
-        unsigned int        numRows,
-        unsigned int        numExtraCols,
-  const std::vector<bool>*  extraColIsString,
-  const std::string&        fileName)
+        unsigned int            numRows,
+        unsigned int            numExtraCols,
+  const std::vector<bool>*      extraColIsString,
+  const std::string&            fileName)
   :
   m_env          (env),
   m_numRows      (numRows),
@@ -72,6 +72,11 @@ uqAsciiTableClass<V,M>::uqAsciiTableClass(
   m_stringColumns(0),
   m_doubleColumns(0)
 {
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Entering uqAsciiTableClass<V,M>::constructor()..."
+              << std::endl;
+  }
+
   if (m_numCols > 1) {
     m_colIsString.resize(m_numCols,false);
     if (extraColIsString == NULL) {
@@ -87,6 +92,11 @@ uqAsciiTableClass<V,M>::uqAsciiTableClass(
   m_stringColumns.resize(m_numCols,NULL);
   m_doubleColumns.resize(m_numCols,NULL);
   readColumnsFromFile();
+
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Leaving uqAsciiTableClass<V,M>::constructor()"
+              << std::endl;
+  }
 }
 
 template <class V, class M>

@@ -70,7 +70,7 @@ protected:
 template <class V, class M>
 uqVectorSpaceClass<V,M>::uqVectorSpaceClass()
   :
-  uqVectorSetClass<V,M>(m_env,m_prefix,INFINITY)
+  uqVectorSetClass<V,M>()
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.rank(),
@@ -85,7 +85,7 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
         unsigned int                       dimValue,
   const EpetraExt::DistArray<std::string>* componentsNames)
   :
-  uqVectorSetClass<V,M>(m_env,((std::string)(prefix) + "space_").c_str(),INFINITY),
+  uqVectorSetClass<V,M>(env,((std::string)(prefix) + "space_").c_str(),INFINITY),
   m_dim                (dimValue),
   m_componentsNames    (componentsNames),
   m_emptyComponentName (""),
@@ -251,15 +251,5 @@ uqVectorSpaceClass<V,M>::print(std::ostream& os) const
 {
   return;
 }
-
-template<class V, class M>
-std::ostream&
-operator<<(std::ostream& os, const uqVectorSpaceClass<V,M>& obj)
-{
-  obj.print(os);
-
-  return os;
-}
-
 #endif // __UQ_VECTOR_SPACE_H__
 

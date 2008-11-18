@@ -228,7 +228,7 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   :
   m_env                                  (sourceRv.env()),
   m_prefix                               ((std::string)(prefix) + "mc_"),
-  m_vectorSpace                          (sourceRv.imageSpace()),
+  m_vectorSpace                          (sourceRv.imageSet().vectorSpace()),
   m_targetPdf                            (sourceRv.pdf()),
   m_initialPosition                      (initialPosition),
   m_initialProposalCovMatrix             (inputProposalCovMatrix),

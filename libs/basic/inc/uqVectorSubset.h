@@ -20,17 +20,19 @@
 #ifndef __UQ_VECTOR_SUBSET_H__
 #define __UQ_VECTOR_SUBSET_H__
 
-#include <uqVectorSet.h>
-#include <EpetraExt_DistArray.h>
+#include <uqVectorSpace.h>
 
+//*****************************************************
+// Base class
+//*****************************************************
 template <class V, class M>
 class uqVectorSubsetClass : public uqVectorSetClass<V,M>
 {
 public:
            uqVectorSubsetClass();
-           uqVectorSubsetClass(const uqBaseEnvironmentClass& env,
-                              const char*                   prefix,
-                              const uqVectorSpace<V,M>&     vectorSpace);
+           uqVectorSubsetClass(const uqBaseEnvironmentClass&  env,
+                               const char*                    prefix,
+                               const uqVectorSpaceClass<V,M>& vectorSpace);
   virtual ~uqVectorSubsetClass();
 
            const uqVectorSpaceClass<V,M>& vectorSpace()                 const;
@@ -47,7 +49,7 @@ protected:
 template <class V, class M>
 uqVectorSubsetClass<V,M>::uqVectorSubsetClass()
   :
-  uqVectorSetClass<V,M>(m_env,m_prefix,0.),
+  uqVectorSetClass<V,M>(),
   m_vectorSpace        (NULL)
 {
   UQ_FATAL_TEST_MACRO(true,
@@ -58,11 +60,11 @@ uqVectorSubsetClass<V,M>::uqVectorSubsetClass()
 
 template <class V, class M>
 uqVectorSubsetClass<V,M>::uqVectorSubsetClass(
-  const uqBaseEnvironmentClass& env,
-  const char*                   prefix,
-  const uqVectorSpace<V,M>&     vectorSpace)
+  const uqBaseEnvironmentClass&  env,
+  const char*                    prefix,
+  const uqVectorSpaceClass<V,M>& vectorSpace)
   :
-  uqVectorSetClass<V,M>(m_env,prefix,0.),
+  uqVectorSetClass<V,M>(env,prefix,0.),
   m_vectorSpace        (&vectorSpace)
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
@@ -82,8 +84,6 @@ uqVectorSubsetClass<V,M>::~uqVectorSubsetClass()
   //std::cout << "Entering uqVectorSubsetClass<V,M>::destructor()"
   //          << std::endl;
 
-  if (m_vectorSpace != NULL) delete m_vectorSpace;
-
   //std::cout << "Leaving uqVectorSubsetClass<V,M>::destructor()"
   //          << std::endl;
 }
@@ -102,14 +102,73 @@ uqVectorSubsetClass<V,M>::print(std::ostream& os) const
   return;
 }
 
+//*****************************************************
+// Box class
+//*****************************************************
 template<class V, class M>
-std::ostream&
-operator<<(std::ostream& os, const uqVectorSubsetClass<V,M>& obj)
-{
-  obj.print(os);
+class uqBoxSubsetClass : public uqVectorSubsetClass<V,M> {
+public:
+  uqBoxSubsetClass(const uqBaseEnvironmentClass&  env,
+                   const char*                    prefix,
+                   const uqVectorSpaceClass<V,M>& vectorSpace,
+                   const V&                       minValues,
+                   const V&                       maxValues);
+ ~uqBoxSubsetClass();
 
-  return os;
+  bool contains(const V& vec)     const;
+  void print   (std::ostream& os) const;
+
+protected:
+  using uqVectorSetClass   <V,M>::m_env;
+  using uqVectorSetClass   <V,M>::m_prefix;
+  using uqVectorSetClass   <V,M>::m_volume;
+  using uqVectorSubsetClass<V,M>::m_vectorSpace;
+
+  V m_minValues;
+  V m_maxValues;
+};
+
+template<class V, class M>
+uqBoxSubsetClass<V,M>::uqBoxSubsetClass(
+  const uqBaseEnvironmentClass&  env,
+  const char*                    prefix,
+  const uqVectorSpaceClass<V,M>& vectorSpace,
+  const V&                       minValues,
+  const V&                       maxValues)
+  :
+  uqVectorSubsetClass<V,M>(env,prefix,vectorSpace),
+  m_minValues(minValues),
+  m_maxValues(maxValues)
+{
+  m_volume = 1.;
+  for (unsigned int i = 0; i < m_vectorSpace->dim(); ++i) {
+    m_volume *= (m_maxValues[i] - m_minValues[i]);
+  }
 }
 
+template<class V, class M>
+uqBoxSubsetClass<V,M>::~uqBoxSubsetClass()
+{
+}
+
+template<class V, class M>
+bool
+uqBoxSubsetClass<V,M>::contains(const V& vec) const
+{
+  bool result = true;
+
+  for (unsigned int i = 0; (i < m_vectorSpace->dim()) && (result == true); ++i) {
+    result = (m_maxValues[i] <= vec[i]) && (vec[i] <= m_minValues[i]);
+  }
+
+  return result;
+}
+
+template <class V, class M>
+void
+uqBoxSubsetClass<V,M>::print(std::ostream& os) const
+{
+  return;
+}
 #endif // __UQ_VECTOR_SUBSET_H__
 

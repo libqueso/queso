@@ -21,6 +21,7 @@
 #define __UQ_TGA_VALIDATION_H__
 
 #include <uqModelValidation.h>
+#include <uqVectorSubset.h>
 #include <uqAsciiTable.h>
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_odeiv.h>
@@ -521,6 +522,7 @@ private:
   P_V*                                      m_paramMaxValues;     // instantiated outside this class!!
   P_V*                                      m_paramInitialValues; // instantiated outside this class!!
   uqVectorSpaceClass<P_V,P_M>*              m_paramSpace;
+  uqVectorSetClass<P_V,P_M>*                m_paramDomain;
 
   uqAsciiTableClass<P_V,P_M>*               m_qoisTable;
   const EpetraExt::DistArray<std::string>*  m_qoiNames; // instantiated outside this class!!
@@ -541,7 +543,7 @@ private:
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::uqTgaValidationClass(
   const uqBaseEnvironmentClass& env,
-  const char*               prefix)
+  const char*                   prefix)
   :
   uqModelValidationClass<P_V,P_M,Q_V,Q_M>(env,prefix),
   m_paramsTable              (NULL),
@@ -550,6 +552,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::uqTgaValidationClass(
   m_paramMaxValues           (NULL),
   m_paramInitialValues       (NULL),
   m_paramSpace               (NULL),
+  m_paramDomain              (NULL),
   m_qoisTable                (NULL),
   m_qoiNames                 (NULL),
   m_qoiSpace                 (NULL),
@@ -576,30 +579,36 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::uqTgaValidationClass(
   m_paramMaxValues     = new P_V(m_paramsTable->doubleColumn(2));
   m_paramInitialValues = new P_V(m_paramsTable->doubleColumn(3));
 
-  m_paramSpace = new uqVectorSpaceClass<P_V,P_M> (m_env,
-                                                  "param_", // Extra prefix before the default "space_" prefix
-                                                  m_paramsTable->numRows(),
-                                                  m_paramNames);
+  m_paramSpace = new uqVectorSpaceClass<P_V,P_M>(m_env,
+                                                 "param_", // Extra prefix before the default "space_" prefix
+                                                 m_paramsTable->numRows(),
+                                                 m_paramNames);
+
+  m_paramDomain = new uqBoxSubsetClass<P_V,P_M>(m_env,
+                                                "param_",
+                                                *m_paramSpace,
+                                                *m_paramMinValues,
+                                                *m_paramMaxValues);
 
   // Read Ascii file with information on qois
-  m_qoisTable = new uqAsciiTableClass<P_V,P_M> (m_env,
-                                                1,    // # of rows
-                                                0,    // # of cols after 'parameter name': none
-                                                NULL, // All extra columns are of 'double' type
-                                                "tga/qois.tab");
+  m_qoisTable = new uqAsciiTableClass<P_V,P_M>(m_env,
+                                               1,    // # of rows
+                                               0,    // # of cols after 'parameter name': none
+                                               NULL, // All extra columns are of 'double' type
+                                               "tga/qois.tab");
 
   m_qoiNames = &(m_qoisTable->stringColumn(0));
 
-  m_qoiSpace = new uqVectorSpaceClass<Q_V,Q_M> (m_env,
-                                                "qoi_", // Extra prefix before the default "space_" prefix
-                                                m_qoisTable->numRows(),
-                                                m_qoiNames);
+  m_qoiSpace = new uqVectorSpaceClass<Q_V,Q_M>(m_env,
+                                               "qoi_", // Extra prefix before the default "space_" prefix
+                                               m_qoisTable->numRows(),
+                                               m_qoiNames);
 
   // Instantiate the validation cycle
-  m_cycle = new uqValidationCycleClass<P_V,P_M,Q_V,Q_M> (m_env,
-                                                         m_prefix.c_str(), // Use the prefix passed above
-                                                         *m_paramSpace,
-                                                         *m_qoiSpace);
+  m_cycle = new uqValidationCycleClass<P_V,P_M,Q_V,Q_M>(m_env,
+                                                        m_prefix.c_str(), // Use the prefix passed above
+                                                        *m_paramSpace,
+                                                        *m_qoiSpace);
 
   m_predBeta         = 250.;
   m_predCriticalMass = 0.;
@@ -629,6 +638,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::~uqTgaValidationClass()
   if (m_qoiSpace)                  delete m_qoiSpace;
 //if (m_qoiNames)                  delete m_qoiNames; // instantiated outside this class!!
   if (m_qoisTable)                 delete m_qoisTable;
+  if (m_paramDomain)               delete m_paramDomain;
   if (m_paramSpace)                delete m_paramSpace;
 //if (m_paramInitialValues)        delete m_paramInitialValues; // instantiated outside this class!!
 //if (m_paramMaxValues)            delete m_paramMaxValues;     // instantiated outside this class!!
@@ -694,8 +704,8 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
                     true); // the likelihood routine computes [-2.*ln(Likelihood)]
 
   // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
-  P_M* calProposalCovMatrix = m_cycle->calIP().postRv().imageSpace().newGaussianMatrix(m_cycle->calIP().priorRv().pdf().domainVarianceValues(),
-                                                                                       *m_paramInitialValues);
+  P_M* calProposalCovMatrix = m_cycle->calIP().postRv().imageSet().vectorSpace().newGaussianMatrix(m_cycle->calIP().priorRv().pdf().domainVarianceValues(),
+                                                                                                  *m_paramInitialValues);
   m_cycle->calIP().solveWithBayesMarkovChain(*m_paramInitialValues,
                                              calProposalCovMatrix);
   delete calProposalCovMatrix;
@@ -748,8 +758,8 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
                     true); // the likelihood routine computes [-2.*ln(Likelihood)]
 
   // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
-  P_M* valProposalCovMatrix = m_cycle->calIP().postRv().imageSpace().newGaussianMatrix(m_cycle->calIP().postRv().realizer().imageVarianceValues(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
-                                                                                       m_cycle->calIP().postRv().realizer().imageExpectedValues()); // Use these values as the initial values
+  P_M* valProposalCovMatrix = m_cycle->calIP().postRv().imageSet().vectorSpace().newGaussianMatrix(m_cycle->calIP().postRv().realizer().imageVarianceValues(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
+                                                                                                   m_cycle->calIP().postRv().realizer().imageExpectedValues()); // Use these values as the initial values
   m_cycle->valIP().solveWithBayesMarkovChain(m_cycle->calIP().postRv().realizer().imageExpectedValues(),
                                              valProposalCovMatrix);
   delete valProposalCovMatrix;
@@ -793,8 +803,8 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runComparisonStage()
 
   if (m_cycle->calFP().computeSolutionFlag() &&
       m_cycle->valFP().computeSolutionFlag()) {
-    Q_V* epsilonVec = m_cycle->calFP().qoiRv().imageSpace().newVector(0.02);
-    Q_V cdfDistancesVec(m_cycle->calFP().qoiRv().imageSpace().zeroVector());
+    Q_V* epsilonVec = m_cycle->calFP().qoiRv().imageSet().vectorSpace().newVector(0.02);
+    Q_V cdfDistancesVec(m_cycle->calFP().qoiRv().imageSet().vectorSpace().zeroVector());
     horizontalDistances(m_cycle->calFP().qoiRv().cdf(),
                         m_cycle->valFP().qoiRv().cdf(),
                         *epsilonVec,

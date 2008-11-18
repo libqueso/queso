@@ -236,7 +236,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   m_postRv.setPdf(*m_solutionPdf);
 
   // Compute output realizer: Markov Chain approach
-  m_chain = new uqSequenceOfVectorsClass<P_V,P_M>(m_postRv.imageSpace(),0,m_prefix+"chain");
+  m_chain = new uqSequenceOfVectorsClass<P_V,P_M>(m_postRv.imageSet().vectorSpace(),0,m_prefix+"chain");
   m_mcSeqGenerator = new uqMarkovChainSGClass<P_V,P_M>(m_prefix.c_str(),
                                                        m_postRv,
                                                        initialValues,
@@ -247,9 +247,9 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   m_postRv.setRealizer(*m_solutionRealizer);
 
   // Compute output mdf: uniform sampling approach
-  m_mdfGrids  = new uqArrayOfOneDGridsClass <P_V,P_M>((m_prefix+"mdf_").c_str(),m_postRv.imageSpace());
-  m_mdfValues = new uqArrayOfOneDTablesClass<P_V,P_M>((m_prefix+"mdf_").c_str(),m_postRv.imageSpace());
-  P_V* numIntervalsVec = m_postRv.imageSpace().newVector(250.);
+  m_mdfGrids  = new uqArrayOfOneDGridsClass <P_V,P_M>((m_prefix+"mdf_").c_str(),m_postRv.imageSet().vectorSpace());
+  m_mdfValues = new uqArrayOfOneDTablesClass<P_V,P_M>((m_prefix+"mdf_").c_str(),m_postRv.imageSet().vectorSpace());
+  P_V* numIntervalsVec = m_postRv.imageSet().vectorSpace().newVector(250.);
   m_chain->uniformlySampledMdf(*numIntervalsVec, // input
                                *m_mdfGrids,      // output
                                *m_mdfValues);    // output

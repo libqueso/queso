@@ -487,8 +487,8 @@ uqAppl_ComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
 {
   if (cycle.calFP().computeSolutionFlag() &&
       cycle.valFP().computeSolutionFlag()) {
-    Q_V* epsilonVec = cycle.calFP().qoiRv().imageSpace().newVector(0.02);
-    Q_V cdfDistancesVec(cycle.calFP().qoiRv().imageSpace().zeroVector());
+    Q_V* epsilonVec = cycle.calFP().qoiRv().imageSet().vectorSpace().newVector(0.02);
+    Q_V cdfDistancesVec(cycle.calFP().qoiRv().imageSet().vectorSpace().zeroVector());
     horizontalDistances(cycle.calFP().qoiRv().cdf(),
                         cycle.valFP().qoiRv().cdf(),
                         *epsilonVec,
@@ -660,8 +660,8 @@ uqAppl(const uqBaseEnvironmentClass& env)
                  true); // the likelihood routine computes [-2.*ln(Likelihood)]
 
   // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
-  P_M* calProposalCovMatrix = cycle.calIP().postRv().imageSpace().newGaussianMatrix(cycle.calIP().priorRv().pdf().domainVarianceValues(),
-                                                                                    paramInitialValues);
+  P_M* calProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newGaussianMatrix(cycle.calIP().priorRv().pdf().domainVarianceValues(),
+                                                                                                paramInitialValues);
   cycle.calIP().solveWithBayesMarkovChain(paramInitialValues,
                                           calProposalCovMatrix);
   delete calProposalCovMatrix;
@@ -707,8 +707,8 @@ uqAppl(const uqBaseEnvironmentClass& env)
                  true); // the likelihood routine computes [-2.*ln(Likelihood)]
 
   // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
-  P_M* valProposalCovMatrix = cycle.calIP().postRv().imageSpace().newGaussianMatrix(cycle.calIP().postRv().realizer().imageVarianceValues(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
-                                                                                    cycle.calIP().postRv().realizer().imageExpectedValues()); // Use these values as the initial values
+  P_M* valProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newGaussianMatrix(cycle.calIP().postRv().realizer().imageVarianceValues(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
+                                                                                                cycle.calIP().postRv().realizer().imageExpectedValues()); // Use these values as the initial values
   cycle.valIP().solveWithBayesMarkovChain(cycle.calIP().postRv().realizer().imageExpectedValues(),
                                           valProposalCovMatrix);
   delete valProposalCovMatrix;
