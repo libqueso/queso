@@ -37,6 +37,7 @@ public:
   virtual ~uqVectorSetClass();
 
           const uqBaseEnvironmentClass&  env        ()                 const;
+          const std::string&             prefix     ()                 const;
                 double                   volume     ()                 const;
   virtual const uqVectorSpaceClass<V,M>& vectorSpace()                 const = 0;
   virtual       bool                     contains   (const V& vec)     const = 0;
@@ -95,6 +96,13 @@ const uqBaseEnvironmentClass&
 uqVectorSetClass<V,M>::env() const
 {
   return m_env;
+}
+
+template <class V, class M>
+const std::string&
+uqVectorSetClass<V,M>::prefix() const
+{
+  return m_prefix;
 }
 
 template <class V, class M>

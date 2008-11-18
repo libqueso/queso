@@ -21,6 +21,7 @@
 #define __UQ_CALIB_PROBLEM_H__
 
 #include <uqMarkovChainSG1.h>
+#include <uqInstantiateIntersection.h>
 #include <uqVectorRV.h>
 
 #undef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
@@ -56,7 +57,7 @@ private:
         void defineMyOptions          (po::options_description& optionsDesc);
         void getMyOptionValues        (po::options_description& optionsDesc);
 
-  const uqBaseEnvironmentClass&                  m_env;
+  const uqBaseEnvironmentClass&              m_env;
         std::string                          m_prefix;
 
         po::options_description*             m_optionsDesc;
@@ -77,6 +78,7 @@ private:
   const uqBaseVectorPdfClass      <P_V,P_M>& m_likelihoodFunction;
         uqGenericVectorRVClass    <P_V,P_M>& m_postRv;
 
+        uqVectorSetClass          <P_V,P_M>* m_solutionDomain;
         uqBaseVectorPdfClass      <P_V,P_M>* m_solutionPdf;
         uqBaseVectorMdfClass      <P_V,P_M>* m_solutionMdf;
         uqBaseVectorCdfClass      <P_V,P_M>* m_solutionCdf;
@@ -115,6 +117,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
   m_priorRv               (priorRv),
   m_likelihoodFunction (likelihoodFunction),
   m_postRv                (postRv),
+  m_solutionDomain        (NULL),
   m_solutionPdf           (NULL),
   m_solutionMdf           (NULL),
   m_solutionCdf           (NULL),
@@ -154,6 +157,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::~uqStatisticalInverseProblemClass()
   if (m_solutionCdf     ) delete m_solutionCdf;
   if (m_solutionMdf     ) delete m_solutionMdf;
   if (m_solutionPdf     ) delete m_solutionPdf;
+  if (m_solutionDomain  ) delete m_solutionDomain;
   if (m_optionsDesc     ) delete m_optionsDesc;
 }
 
@@ -223,16 +227,20 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
     return;
   }
 
-  if (m_solutionPdf     ) delete m_solutionPdf;
-  if (m_solutionMdf     ) delete m_solutionMdf;
-  if (m_solutionCdf     ) delete m_solutionCdf;
-  if (m_solutionRealizer) delete m_solutionRealizer;
   if (m_mcSeqGenerator  ) delete m_mcSeqGenerator;
+  if (m_solutionRealizer) delete m_solutionRealizer;
+  if (m_solutionCdf     ) delete m_solutionCdf;
+  if (m_solutionMdf     ) delete m_solutionMdf;
+  if (m_solutionPdf     ) delete m_solutionPdf;
+  if (m_solutionDomain  ) delete m_solutionDomain;
 
   // Compute output pdf up to a multiplicative constant: Bayesian approach
+  m_solutionDomain = uqInstantiateIntersection(m_priorRv.pdf().domainSet(),m_likelihoodFunction.domainSet());
+
   m_solutionPdf = new uqBayesianVectorPdfClass<P_V,P_M>(m_prefix.c_str(),
-                                                       &m_priorRv.pdf(),
-                                                       &m_likelihoodFunction);
+                                                        m_priorRv.pdf(),
+                                                        m_likelihoodFunction,
+                                                        *m_solutionDomain);
   m_postRv.setPdf(*m_solutionPdf);
 
   // Compute output realizer: Markov Chain approach

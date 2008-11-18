@@ -35,77 +35,39 @@
 template<class V, class M>
 class uqBaseVectorMdfClass {
 public:
-           uqBaseVectorMdfClass(const char*                    prefix,
-                                const uqVectorSetClass<V,M>& domainSet,
-                                const V&                       domainMinValues,
-                                const V&                       domainMaxValues);
-           uqBaseVectorMdfClass(const char*                    prefix,
+           uqBaseVectorMdfClass(const char*                  prefix,
                                 const uqVectorSetClass<V,M>& domainSet);
   virtual ~uqBaseVectorMdfClass();
 
-  const   uqVectorSetClass<V,M>& domainSet      ()                 const;
-  virtual void                     values           (const V& paramValues,
-                                                           V& mdfVec)  const = 0;
-          bool                     outOfDomainBounds(const V& v)       const;
-  const   V&                       domainMinValues  ()                 const;
-  const   V&                       domainMaxValues  ()                 const;
-  virtual void                     print            (std::ostream& os) const = 0;
+  const   uqVectorSetClass<V,M>& domainSet() const;
+  virtual void                   values   (const V& paramValues,
+                                                 V& mdfVec)  const = 0;
+  virtual void                   print    (std::ostream& os) const = 0;
 
 protected:
 
-  const   uqBaseEnvironmentClass&      m_env;
-          std::string              m_prefix;
-  const   uqVectorSetClass<V,M>& m_domainSet;
-
-          V*                       m_domainMinValues;
-          V*                       m_domainMaxValues;
+  const   uqBaseEnvironmentClass& m_env;
+          std::string             m_prefix;
+  const   uqVectorSetClass<V,M>&  m_domainSet;
 };
 
 template<class V, class M>
 uqBaseVectorMdfClass<V,M>::uqBaseVectorMdfClass(
-  const char*                    prefix,
-  const uqVectorSetClass<V,M>& domainSet,
-  const V&                       domainMinValues,
-  const V&                       domainMaxValues)
-  :
-  m_env            (domainSet.env()),
-  m_prefix         ((std::string)(prefix)+"mdf_"),
-  m_domainSet    (domainSet),
-  m_domainMinValues(new V(domainMinValues)),
-  m_domainMaxValues(new V(domainMaxValues))
-{
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqBaseVectorMdfClass<V,M>::constructor() [3]"
-              << ": prefix = " << m_prefix
-              << std::endl;
-  }
-
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqBaseVectorMdfClass<V,M>::constructor() [3]"
-              << ": prefix = " << m_prefix
-              << std::endl;
-  }
-}
-
-template<class V, class M>
-uqBaseVectorMdfClass<V,M>::uqBaseVectorMdfClass(
-  const char*                    prefix,
+  const char*                  prefix,
   const uqVectorSetClass<V,M>& domainSet)
   :
-  m_env            (domainSet.env()),
-  m_prefix         ((std::string)(prefix)+"mdf_"),
-  m_domainSet    (domainSet),
-  m_domainMinValues(domainSet.newVector(-INFINITY)),
-  m_domainMaxValues(domainSet.newVector( INFINITY))
+  m_env      (domainSet.env()),
+  m_prefix   ((std::string)(prefix)+"mdf_"),
+  m_domainSet(domainSet)
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqBaseVectorMdfClass<V,M>::constructor() [4]"
+    std::cout << "Entering uqBaseVectorMdfClass<V,M>::constructor()"
               << ": prefix = " << m_prefix
               << std::endl;
   }
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqBaseVectorMdfClass<V,M>::constructor() [4]"
+    std::cout << "Leaving uqBaseVectorMdfClass<V,M>::constructor()"
               << ": prefix = " << m_prefix
               << std::endl;
   }
@@ -114,30 +76,6 @@ uqBaseVectorMdfClass<V,M>::uqBaseVectorMdfClass(
 template<class V, class M>
 uqBaseVectorMdfClass<V,M>::~uqBaseVectorMdfClass()
 {
-  delete m_domainMinValues;
-  delete m_domainMaxValues;
-}
-
-template <class V, class M>
-const V&
-uqBaseVectorMdfClass<V,M>::domainMinValues() const
-{
-  return *m_domainMinValues;
-}
-
-template <class V, class M>
-const V&
-uqBaseVectorMdfClass<V,M>::domainMaxValues() const
-{
-  return *m_domainMaxValues;
-}
-
-template <class V, class M>
-bool
-uqBaseVectorMdfClass<V,M>::outOfDomainBounds(const V& v) const
-{
-  return (v.atLeastOneComponentSmallerThan(this->domainMinValues()) ||
-          v.atLeastOneComponentBiggerThan (this->domainMaxValues()));
 }
 
 template<class V, class M>
@@ -155,12 +93,6 @@ class uqGenericVectorMdfClass : public uqBaseVectorMdfClass<V,M> {
 public:
   uqGenericVectorMdfClass(const char*                    prefix,
                           const uqVectorSetClass<V,M>& domainSet,
-                          const V&                       domainMinValues,
-                          const V&                       domainMaxValues,
-                          double (*routinePtr)(const V& paramValues, const void* routineDataPtr, V& mdfVec),
-                          const void* routineDataPtr);
-  uqGenericVectorMdfClass(const char*                    prefix,
-                          const uqVectorSetClass<V,M>& domainSet,
                           double (*routinePtr)(const V& paramValues, const void* routineDataPtr, V& mdfVec),
                           const void* routineDataPtr);
  ~uqGenericVectorMdfClass();
@@ -175,24 +107,7 @@ protected:
   using uqBaseVectorMdfClass<V,M>::m_env;
   using uqBaseVectorMdfClass<V,M>::m_prefix;
   using uqBaseVectorMdfClass<V,M>::m_domainSet;
-  using uqBaseVectorMdfClass<V,M>::m_domainMinValues;
-  using uqBaseVectorMdfClass<V,M>::m_domainMaxValues;
 };
-
-template<class V, class M>
-uqGenericVectorMdfClass<V,M>::uqGenericVectorMdfClass(
-  const char*                    prefix,
-  const uqVectorSetClass<V,M>& domainSet,
-  const V&                       domainMinValues,
-  const V&                       domainMaxValues,
-  double (*routinePtr)(const V& paramValues, const void* routineDataPtr, V& mdfVec),
-  const void* routineDataPtr)
-  :
-  uqBaseVectorMdfClass<V,M>(prefix,domainSet,domainMinValues,domainMaxValues),
-  m_routinePtr    (routinePtr),
-  m_routineDataPtr(routineDataPtr)
-{
-}
 
 template<class V, class M>
 uqGenericVectorMdfClass<V,M>::uqGenericVectorMdfClass(
@@ -237,14 +152,10 @@ class uqGaussianVectorMdfClass : public uqBaseVectorMdfClass<V,M> {
 public:
   uqGaussianVectorMdfClass(const char*                    prefix,
                            const uqVectorSetClass<V,M>& domainSet,
-                           const V&                       domainMinValues,
-                           const V&                       domainMaxValues,
                            const V&                       domainExpectedValues,
                            const V&                       domainVarianceValues);
   uqGaussianVectorMdfClass(const char*                    prefix,
                            const uqVectorSetClass<V,M>& domainSet,
-                           const V&                       domainMinValues,
-                           const V&                       domainMaxValues,
                            const V&                       domainExpectedValues,
                            const M&                       covMatrix);
  ~uqGaussianVectorMdfClass();
@@ -258,8 +169,6 @@ protected:
   using uqBaseVectorMdfClass<V,M>::m_env;
   using uqBaseVectorMdfClass<V,M>::m_prefix;
   using uqBaseVectorMdfClass<V,M>::m_domainSet;
-  using uqBaseVectorMdfClass<V,M>::m_domainMinValues;
-  using uqBaseVectorMdfClass<V,M>::m_domainMaxValues;
 
   void commonConstructor();
 };
@@ -268,12 +177,10 @@ template<class V,class M>
 uqGaussianVectorMdfClass<V,M>::uqGaussianVectorMdfClass(
   const char*                    prefix,
   const uqVectorSetClass<V,M>& domainSet,
-  const V&                       domainMinValues,
-  const V&                       domainMaxValues,
   const V&                       domainExpectedValues,
   const V&                       domainVarianceValues)
   :
-  uqBaseVectorMdfClass<V,M>(prefix,domainSet,domainMinValues,domainMaxValues),
+  uqBaseVectorMdfClass<V,M>(prefix,domainSet),
   m_covMatrix              (m_domainSet.newDiagMatrix(domainVarianceValues*domainVarianceValues))
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
@@ -295,12 +202,10 @@ template<class V,class M>
 uqGaussianVectorMdfClass<V,M>::uqGaussianVectorMdfClass(
   const char*                    prefix,
   const uqVectorSetClass<V,M>& domainSet,
-  const V&                       domainMinValues,
-  const V&                       domainMaxValues,
   const V&                       domainExpectedValues,
   const M&                       covMatrix)
   :
-  uqBaseVectorMdfClass<V,M>(prefix,domainSet,domainMinValues,domainMaxValues),
+  uqBaseVectorMdfClass<V,M>(prefix,domainSet),
   m_covMatrix              (new M(covMatrix))
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
@@ -373,8 +278,6 @@ protected:
   using uqBaseVectorMdfClass<V,M>::m_env;
   using uqBaseVectorMdfClass<V,M>::m_prefix;
   using uqBaseVectorMdfClass<V,M>::m_domainSet;
-  using uqBaseVectorMdfClass<V,M>::m_domainMinValues;
-  using uqBaseVectorMdfClass<V,M>::m_domainMaxValues;
 
   const uqArrayOfOneDGridsClass <V,M>& m_oneDGrids;
   const uqArrayOfOneDTablesClass<V,M>& m_mdfValues;
@@ -386,7 +289,7 @@ uqSampledVectorMdfClass<V,M>::uqSampledVectorMdfClass(
   const uqArrayOfOneDGridsClass <V,M>& oneDGrids,
   const uqArrayOfOneDTablesClass<V,M>& mdfValues)
   :
-  uqBaseVectorMdfClass<V,M>(prefix,oneDGrids.rowSpace(),oneDGrids.minPositions(),oneDGrids.maxPositions()),
+  uqBaseVectorMdfClass<V,M>(prefix,oneDGrids.rowSpace()),
   m_oneDGrids(oneDGrids),
   m_mdfValues(mdfValues)
 {

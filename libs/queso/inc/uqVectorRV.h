@@ -32,23 +32,23 @@
 template<class V, class M>
 class uqBaseVectorRVClass {
 public:
-  uqBaseVectorRVClass(const char*                    prefix,
+  uqBaseVectorRVClass(const char*                  prefix,
                       const uqVectorSetClass<V,M>& imageSet);
   virtual ~uqBaseVectorRVClass();
 
-  const   uqBaseEnvironmentClass&         env        () const;
-  const   uqVectorSetClass       <V,M>& imageSet () const;
-  const   uqBaseVectorPdfClass     <V,M>& pdf        () const;
-  const   uqBaseVectorRealizerClass<V,M>& realizer   () const;
-  const   uqBaseVectorCdfClass     <V,M>& cdf        () const;
-  const   uqBaseVectorMdfClass     <V,M>& mdf        () const;
+  const   uqBaseEnvironmentClass&         env     () const;
+  const   uqVectorSetClass         <V,M>& imageSet() const;
+  const   uqBaseVectorPdfClass     <V,M>& pdf     () const;
+  const   uqBaseVectorRealizerClass<V,M>& realizer() const;
+  const   uqBaseVectorCdfClass     <V,M>& cdf     () const;
+  const   uqBaseVectorMdfClass     <V,M>& mdf     () const;
 
-  virtual void                            print      (std::ostream& os) const = 0;
+  virtual void                            print   (std::ostream& os) const = 0;
 
 protected:
   const   uqBaseEnvironmentClass&         m_env;
           std::string                     m_prefix;
-  const   uqVectorSetClass       <V,M>& m_imageSet;
+  const   uqVectorSetClass         <V,M>& m_imageSet;
           uqBaseVectorPdfClass     <V,M>* m_pdf;
 	  uqBaseVectorRealizerClass<V,M>* m_realizer;
   const   uqBaseVectorCdfClass     <V,M>* m_cdf;
@@ -57,16 +57,16 @@ protected:
 
 template<class V, class M>
 uqBaseVectorRVClass<V,M>::uqBaseVectorRVClass(
-  const char*                              prefix,
+  const char*                            prefix,
   const uqVectorSetClass          <V,M>& imageSet)
   :
-  m_env       (imageSet.env()),
-  m_prefix    ((std::string)(prefix)+"rv_"),
+  m_env     (imageSet.env()),
+  m_prefix  ((std::string)(prefix)+"rv_"),
   m_imageSet(imageSet),
-  m_pdf       (NULL),
-  m_realizer  (NULL),
-  m_cdf       (NULL),
-  m_mdf       (NULL)
+  m_pdf     (NULL),
+  m_realizer(NULL),
+  m_cdf     (NULL),
+  m_mdf     (NULL)
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqBaseVectorRVClass<V,M>::constructor()"
@@ -163,9 +163,9 @@ template<class V, class M>
 class uqGenericVectorRVClass : public uqBaseVectorRVClass<V,M> {
 public:
   uqGenericVectorRVClass(const char*                           prefix,
-                         const uqVectorSetClass       <V,M>& imageSet);
+                         const uqVectorSetClass         <V,M>& imageSet);
   uqGenericVectorRVClass(const char*                           prefix,
-                         const uqVectorSetClass       <V,M>& imageSet,
+                         const uqVectorSetClass         <V,M>& imageSet,
                          const uqBaseVectorPdfClass     <V,M>& pdf,
                          const uqBaseVectorRealizerClass<V,M>& realizer,
                          const uqBaseVectorCdfClass     <V,M>& cdf,
@@ -291,14 +291,10 @@ class uqGaussianVectorRVClass : public uqBaseVectorRVClass<V,M> {
 public:
   uqGaussianVectorRVClass(const char*                    prefix,
                           const uqVectorSetClass<V,M>& imageSet,
-                          const V&                       imageMinValues,
-                          const V&                       imageMaxValues,
                           const V&                       imageExpectedValues,
                           const V&                       imageVarianceValues);
   uqGaussianVectorRVClass(const char*                    prefix,
                           const uqVectorSetClass<V,M>& imageSet,
-                          const V&                       imageMinValues,
-                          const V&                       imageMaxValues,
                           const V&                       imageExpectedValues,
                           const M&                       covMatrix);
   virtual ~uqGaussianVectorRVClass();
@@ -322,8 +318,6 @@ template<class V, class M>
 uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
   const char*                    prefix,
   const uqVectorSetClass<V,M>& imageSet,
-  const V&                       imageMinValues,
-  const V&                       imageMaxValues,
   const V&                       imageExpectedValues,
   const V&                       imageVarianceValues)
   :
@@ -337,8 +331,6 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
 
   m_pdf = new uqGaussianVectorPdfClass<V,M>(m_prefix.c_str(),
                                             m_imageSet,
-                                            imageMinValues,
-                                            imageMaxValues,
                                             imageExpectedValues,
                                             imageVarianceValues);
 
@@ -368,8 +360,6 @@ template<class V, class M>
 uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
   const char*                    prefix,
   const uqVectorSetClass<V,M>& imageSet,
-  const V&                       imageMinValues,
-  const V&                       imageMaxValues,
   const V&                       imageExpectedValues,
   const M&                       covMatrix)
   :
@@ -383,8 +373,6 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
 
   m_pdf = new uqGaussianVectorPdfClass<V,M>(m_prefix.c_str(),
                                             m_imageSet,
-                                            imageMinValues,
-                                            imageMaxValues,
                                             imageExpectedValues,
                                             covMatrix);
 
@@ -457,9 +445,7 @@ template<class V, class M>
 class uqUniformVectorRVClass : public uqBaseVectorRVClass<V,M> {
 public:
   uqUniformVectorRVClass(const char*                     prefix,
-                          const uqVectorSetClass<V,M>& imageSet,
-                          const V&                       imageMinValues,
-                          const V&                       imageMaxValues);
+                         const uqVectorSetClass<V,M>& imageSet);
   virtual ~uqUniformVectorRVClass();
 
   void print(std::ostream& os) const;
@@ -476,10 +462,8 @@ private:
 
 template<class V, class M>
 uqUniformVectorRVClass<V,M>::uqUniformVectorRVClass(
-  const char*                    prefix,
-  const uqVectorSetClass<V,M>& imageSet,
-  const V&                       imageMinValues,
-  const V&                       imageMaxValues)
+  const char*                  prefix,
+  const uqVectorSetClass<V,M>& imageSet)
   :
   uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"uni").c_str(),imageSet)
 {
@@ -490,9 +474,7 @@ uqUniformVectorRVClass<V,M>::uqUniformVectorRVClass(
   }
 
   m_pdf = new uqUniformVectorPdfClass<V,M>(m_prefix.c_str(),
-                                           m_imageSet,
-                                           imageMinValues,
-                                           imageMaxValues);
+                                           m_imageSet);
   m_realizer    = NULL; // FIX ME: complete code
   m_cdf         = NULL; // FIX ME: complete code
   m_mdf         = NULL; // FIX ME: complete code

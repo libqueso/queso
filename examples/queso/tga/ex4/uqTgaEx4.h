@@ -21,6 +21,7 @@
 #define __UQ_TGA_EX4_H__
 
 #include <uqValidationCycle.h>
+#include <uqVectorSubset.h>
 #include <uqAsciiTable.h>
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_odeiv.h>
@@ -609,6 +610,12 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                          paramsTable.numRows(),
                                          &paramNames);
 
+  uqBoxSubsetClass<P_V,P_M> paramDomain(env,
+                                        "param_",
+                                        paramSpace,
+                                        paramMinValues,
+                                        paramMaxValues);
+
   // Read Ascii file with information on qois
   uqAsciiTableClass<P_V,P_M> qoisTable(env,
                                        1,    // # of rows
@@ -645,9 +652,10 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
   // Deal with inverse problem
   uqUniformVectorRVClass<P_V,P_M> calPriorRv("cal_prior_", // Extra prefix before the default "rv_" prefix
-                                             paramSpace,
-                                             paramMinValues,
-                                             paramMaxValues);
+                                             paramDomain);
+                                             //paramSpace,
+                                             //paramMinValues,
+                                             //paramMaxValues);
 
   likelihoodRoutine_DataClass<P_V,P_M> calLikelihoodRoutine_Data(env,
                                                                  "scenario_5_K_min.dat",

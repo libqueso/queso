@@ -50,8 +50,6 @@ protected:
           std::string                                 m_prefix;
   const   uqVectorSpaceClass<V,M>*                    m_vectorSpace;
           std::vector<double>                         m_scales;
-  const   V*                                          m_mInfVec;
-  const   V*                                          m_pInfVec;
           std::vector<const V*>                       m_preComputingPositions;
           std::vector<uqGaussianVectorRVClass<V,M>* > m_rvs; // Gaussian, not Base... And nothing const...
 };
@@ -64,8 +62,6 @@ uqBaseTKGroupClass<V,M>::uqBaseTKGroupClass()
   m_prefix               (""),
   m_vectorSpace          (NULL),
   m_scales               (0),
-  m_mInfVec              (NULL),
-  m_pInfVec              (NULL),
   m_preComputingPositions(NULL),
   m_rvs                  (0)
 {
@@ -82,8 +78,6 @@ uqBaseTKGroupClass<V,M>::uqBaseTKGroupClass(
   m_prefix               (prefix),
   m_vectorSpace          (&vectorSpace),
   m_scales               (scales.size(),1.),
-  m_mInfVec              (vectorSpace.newVector(-INFINITY)),
-  m_pInfVec              (vectorSpace.newVector( INFINITY)),
   m_preComputingPositions(scales.size()+1,NULL), // Yes, +1
   m_rvs                  (scales.size(),NULL)
 {
@@ -101,8 +95,6 @@ uqBaseTKGroupClass<V,M>::~uqBaseTKGroupClass()
   for (unsigned int i = 0; i < m_preComputingPositions.size(); ++i) {
     if (m_preComputingPositions[i]) delete m_preComputingPositions[i];
   }
-  if (m_pInfVec)  delete m_pInfVec;
-  if (m_mInfVec)  delete m_mInfVec;
   if (m_emptyEnv) delete m_emptyEnv;
 }
 
@@ -189,8 +181,6 @@ private:
   using uqBaseTKGroupClass<V,M>::m_prefix;
   using uqBaseTKGroupClass<V,M>::m_vectorSpace;
   using uqBaseTKGroupClass<V,M>::m_scales;
-  using uqBaseTKGroupClass<V,M>::m_mInfVec;
-  using uqBaseTKGroupClass<V,M>::m_pInfVec;
   using uqBaseTKGroupClass<V,M>::m_preComputingPositions;
   using uqBaseTKGroupClass<V,M>::m_rvs;
 
@@ -200,7 +190,7 @@ private:
 template<class V, class M>
 uqScaledCovMatrixTKGroupClass<V,M>::uqScaledCovMatrixTKGroupClass(
   const char*                    prefix,
-  const uqVectorSpaceClass<V,M>& vectorSpace,
+  const uqVectorSpaceClass<V,M>& vectorSpace, // FIX ME: vectorSubset ???
   const std::vector<double>&     scales,
   const M&                       covMatrix)
   :
@@ -211,8 +201,6 @@ uqScaledCovMatrixTKGroupClass<V,M>::uqScaledCovMatrixTKGroupClass(
     double factor = 1./m_scales[i]/m_scales[i];
     m_rvs[i] = new uqGaussianVectorRVClass<V,M>(m_prefix.c_str(),
                                                 *m_vectorSpace,
-                                                *m_mInfVec,
-                                                *m_pInfVec,
                                                 m_vectorSpace->zeroVector(),
                                                 factor*covMatrix);
   }
@@ -358,8 +346,6 @@ private:
   using uqBaseTKGroupClass<V,M>::m_prefix;
   using uqBaseTKGroupClass<V,M>::m_vectorSpace;
   using uqBaseTKGroupClass<V,M>::m_scales;
-  using uqBaseTKGroupClass<V,M>::m_mInfVec;
-  using uqBaseTKGroupClass<V,M>::m_pInfVec;
   using uqBaseTKGroupClass<V,M>::m_preComputingPositions;
   using uqBaseTKGroupClass<V,M>::m_rvs;
 

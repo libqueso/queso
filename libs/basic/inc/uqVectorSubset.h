@@ -115,8 +115,10 @@ public:
                    const V&                       maxValues);
  ~uqBoxSubsetClass();
 
-  bool contains(const V& vec)     const;
-  void print   (std::ostream& os) const;
+        bool contains (const V& vec)     const;
+  const V&   minValues()                 const;
+  const V&   maxValues()                 const;
+        void print    (std::ostream& os) const;
 
 protected:
   using uqVectorSetClass   <V,M>::m_env;
@@ -155,18 +157,97 @@ template<class V, class M>
 bool
 uqBoxSubsetClass<V,M>::contains(const V& vec) const
 {
-  bool result = true;
+  //bool result = true;
 
-  for (unsigned int i = 0; (i < m_vectorSpace->dim()) && (result == true); ++i) {
-    result = (m_maxValues[i] <= vec[i]) && (vec[i] <= m_minValues[i]);
-  }
+  //for (unsigned int i = 0; (i < m_vectorSpace->dim()) && (result == true); ++i) {
+  //  result = (m_maxValues[i] <= vec[i]) && (vec[i] <= m_minValues[i]);
+  //}
 
-  return result;
+  //return result;
+
+  return (!vec.atLeastOneComponentSmallerThan(m_minValues) &&
+          !vec.atLeastOneComponentBiggerThan (m_maxValues));
+}
+
+template<class V, class M>
+const V&
+uqBoxSubsetClass<V,M>::minValues() const
+{
+  return m_minValues;
+}
+
+template<class V, class M>
+const V&
+uqBoxSubsetClass<V,M>::maxValues() const
+{
+  return m_maxValues;
 }
 
 template <class V, class M>
 void
 uqBoxSubsetClass<V,M>::print(std::ostream& os) const
+{
+  return;
+}
+
+//*****************************************************
+// Intersection class
+//*****************************************************
+template<class V, class M>
+class uqIntersectionSubsetClass : public uqVectorSubsetClass<V,M> {
+public:
+  uqIntersectionSubsetClass(const uqBaseEnvironmentClass&  env,
+                            const char*                    prefix,
+                            const uqVectorSpaceClass<V,M>& vectorSpace,
+                                  double                   volume,
+                            const uqVectorSetClass<V,M>&   set1,
+                            const uqVectorSetClass<V,M>&   set2);
+ ~uqIntersectionSubsetClass();
+
+  bool contains(const V& vec)     const;
+  void print   (std::ostream& os) const;
+
+protected:
+  using uqVectorSetClass   <V,M>::m_env;
+  using uqVectorSetClass   <V,M>::m_prefix;
+  using uqVectorSetClass   <V,M>::m_volume;
+  using uqVectorSubsetClass<V,M>::m_vectorSpace;
+
+  const uqVectorSetClass<V,M>& m_set1;
+  const uqVectorSetClass<V,M>& m_set2;
+};
+
+template<class V, class M>
+uqIntersectionSubsetClass<V,M>::uqIntersectionSubsetClass(
+  const uqBaseEnvironmentClass&  env,
+  const char*                    prefix,
+  const uqVectorSpaceClass<V,M>& vectorSpace,
+        double                   volume,
+  const uqVectorSetClass<V,M>&   set1,
+  const uqVectorSetClass<V,M>&   set2)
+  :
+  uqVectorSubsetClass<V,M>(env,prefix,vectorSpace),
+  m_set1                  (set1),
+  m_set2                  (set2)
+{
+  m_volume = volume;
+}
+
+template<class V, class M>
+uqIntersectionSubsetClass<V,M>::~uqIntersectionSubsetClass()
+{
+}
+
+template<class V, class M>
+bool
+uqIntersectionSubsetClass<V,M>::contains(const V& vec) const
+{
+  return (m_set1.contains(vec) && m_set2.contains(vec));
+}
+
+template <class V, class M>
+void
+uqIntersectionSubsetClass<V,M>::print(std::ostream& os) const
 {
   return;
 }

@@ -20,7 +20,7 @@ tga_cal_ip_outputFileName  = tga/s1Output.m
 ###############################################
 tga_cal_ip_mc_help                  = anything
 tga_cal_ip_mc_chain_type            = 1
-tga_cal_ip_mc_chain_size            = 131072
+tga_cal_ip_mc_chain_size            = 1048576
 tga_cal_ip_mc_chain_outputFileName  = tga/s1ExtraOutput.m
 tga_cal_ip_mc_chain_generateExtra   = 0
 tga_cal_ip_mc_chain_displayPeriod   = 20000
@@ -127,7 +127,7 @@ tga_cal_fp_outputFileName  = tga/s1Output.m
 #                        16384 131072 1048576 2097152 16777216
 ###############################################
 tga_cal_fp_mc_help            = anything
-tga_cal_fp_mc_numSamples      = 131072
+tga_cal_fp_mc_numSamples      = 1048576
 tga_cal_fp_mc_outputFileName  = tga/s1ExtraOutput.m
 tga_cal_fp_mc_displayPeriod   = 20000
 tga_cal_fp_mc_measureRunTimes = 1
@@ -185,7 +185,7 @@ tga_val_ip_outputFileName  = tga/s2Output.m
 ###############################################
 tga_val_ip_mc_help                  = anything
 tga_val_ip_mc_chain_type            = 1
-tga_val_ip_mc_chain_size            = 131072
+tga_val_ip_mc_chain_size            = 1048576
 tga_val_ip_mc_chain_outputFileName  = tga/s2ExtraOutput.m
 tga_val_ip_mc_chain_generateExtra   = 0
 tga_val_ip_mc_chain_displayPeriod   = 20000
@@ -292,7 +292,7 @@ tga_val_fp_outputFileName  = tga/s2Output.m
 #                        16384 131072 1048576 2097152 16777216
 ###############################################
 tga_val_fp_mc_help            = anything
-tga_val_fp_mc_numSamples      = 131072
+tga_val_fp_mc_numSamples      = 1048576
 tga_val_fp_mc_outputFileName  = tga/s2ExtraOutput.m
 tga_val_fp_mc_displayPeriod   = 20000
 tga_val_fp_mc_measureRunTimes = 1

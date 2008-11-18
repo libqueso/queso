@@ -333,7 +333,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
   double amRunTime        = 0;
 
   iRC = gettimeofday(&timevalChain, NULL);
-  bool outOfTargetSupport = m_targetPdf.outOfSupport(valuesOf1stPosition);
+  bool outOfTargetSupport = !m_targetPdf.domainSet().contains(valuesOf1stPosition);
   UQ_FATAL_TEST_MACRO(outOfTargetSupport,
                       m_env.rank(),
                       "uqMarkovChainSGClass<P_V,P_M>::generateFullChain()",
@@ -403,7 +403,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
 #endif
     if (m_chainMeasureRunTimes) candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
 
-    outOfTargetSupport = m_targetPdf.outOfSupport(tmpVecValues);
+    outOfTargetSupport = !m_targetPdf.domainSet().contains(tmpVecValues);
     if (outOfTargetSupport) {
       m_numOutOfTargetSupport++;
       logTarget = -INFINITY;
@@ -502,7 +502,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
 #endif
         if (m_chainMeasureRunTimes) candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
 
-        outOfTargetSupport = m_targetPdf.outOfSupport(tmpVecValues);
+        outOfTargetSupport = !m_targetPdf.domainSet().contains(tmpVecValues);
         if (outOfTargetSupport) {
           logTarget = -INFINITY;
         }

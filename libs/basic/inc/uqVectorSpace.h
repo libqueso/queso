@@ -50,6 +50,7 @@ public:
   const   uqVectorSpaceClass<V,M>& vectorSpace         ()                         const;
           bool                     contains            (const V& vec)             const;
 
+  const   EpetraExt::DistArray<std::string>* componentsNames() const;
   const   std::string&             componentName       (unsigned int componentId) const;
           void                     printComponentsNames(std::ostream& os, bool printHorizontally) const;
           void                     print               (std::ostream& os) const;
@@ -209,6 +210,13 @@ uqVectorSpaceClass<V,M>::newGaussianMatrix(
   }
 
   return newDiagMatrix(tmpVec);
+}
+
+template <class V, class M>
+const EpetraExt::DistArray<std::string>* 
+uqVectorSpaceClass<V,M>::componentsNames() const
+{
+  return m_componentsNames;
 }
 
 template <class V, class M>

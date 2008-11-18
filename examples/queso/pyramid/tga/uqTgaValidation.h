@@ -689,9 +689,10 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
 
   // Deal with inverse problem
   m_calPriorRv = new uqUniformVectorRVClass<P_V,P_M> ("cal_prior_", // Extra prefix before the default "rv_" prefix
-                                                      *m_paramSpace,
-                                                      *m_paramMinValues,
-                                                      *m_paramMaxValues);
+                                                      *m_paramDomain);
+                                                      //*m_paramSpace,
+                                                      //*m_paramMinValues,
+                                                      //*m_paramMaxValues);
 
   m_calLikelihoodRoutine_Data = new tgaLikelihoodRoutine_DataClass<P_V,P_M> (m_env,
                                                                              "tga/scenario_5_K_min.dat",
