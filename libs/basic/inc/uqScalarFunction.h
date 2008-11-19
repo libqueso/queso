@@ -26,108 +26,155 @@
 //*****************************************************
 // Base class
 //*****************************************************
-template<class P_V,class P_M,class Q_V,class Q_M>
+template<class V,class M>
 class uqBaseScalarFunctionClass {
 public:
-           uqBaseScalarFunctionClass(const char*                      prefix,
-                                     const uqVectorSetClass<P_V,P_M>& domainSet,
-                                     const uqVectorSetClass<Q_V,Q_M>& imageSet);
+           uqBaseScalarFunctionClass(const char*                  prefix,
+                                     const uqVectorSetClass<V,M>& domainSet);
   virtual ~uqBaseScalarFunctionClass();
 
-          const uqVectorSetClass<P_V,P_M>& domainSet()                        const;
-          const uqVectorSetClass<Q_V,Q_M>& imageSet ()                        const;
-  virtual       double                     value    (const P_V& domainVector) const = 0;
+          const uqVectorSetClass<V,M>& domainSet        ()                                        const;
+  virtual       double                 actualValue      (const V& domainVector)                   const = 0;
+  virtual       double                 minus2LnValue    (const V& domainVector)                   const = 0;
+  virtual       void                   gradOfActual     (const V& domainVector, V& gradVector)    const = 0;
+  virtual       void                   gradOfMinus2Ln   (const V& domainVector, V& gradVector)    const = 0;
+  virtual       void                   hessianOfActual  (const V& domainVector, M& hessianMatrix) const = 0;
+  virtual       void                   hessianOfMinus2Ln(const V& domainVector, M& hessianMatrix) const = 0;
 
 protected:
-  const uqBaseEnvironmentClass&    m_env;
-        std::string                m_prefix;
-  const uqVectorSetClass<P_V,P_M>& m_domainSet;
-  const uqVectorSetClass<Q_V,Q_M>& m_imageSet;
+  const uqBaseEnvironmentClass& m_env;
+        std::string             m_prefix;
+  const uqVectorSetClass<V,M>&  m_domainSet;
 };
 
-template<class P_V,class P_M,class Q_V,class Q_M>
-uqBaseScalarFunctionClass<P_V,P_M,Q_V,Q_M>::uqBaseScalarFunctionClass(
-  const char*                      prefix,
-  const uqVectorSetClass<P_V,P_M>& domainSet,
-  const uqVectorSetClass<Q_V,Q_M>& imageSet)
+template<class V,class M>
+uqBaseScalarFunctionClass<V,M>::uqBaseScalarFunctionClass(
+  const char*                  prefix,
+  const uqVectorSetClass<V,M>& domainSet)
   :
   m_env      (domainSet.env()),
   m_prefix   ((std::string)(prefix)+"func_"),
-  m_domainSet(domainSet),
-  m_imageSet (imageSet)
+  m_domainSet(domainSet)
 {
 }
 
-template<class P_V,class P_M,class Q_V,class Q_M>
-uqBaseScalarFunctionClass<P_V,P_M,Q_V,Q_M>::~uqBaseScalarFunctionClass()
+template<class V,class M>
+uqBaseScalarFunctionClass<V,M>::~uqBaseScalarFunctionClass()
 {
 }
 
-template<class P_V,class P_M,class Q_V,class Q_M>
-const uqVectorSetClass<P_V,P_M>&
-uqBaseScalarFunctionClass<P_V,P_M,Q_V,Q_M>::domainSet() const
+template<class V,class M>
+const uqVectorSetClass<V,M>&
+uqBaseScalarFunctionClass<V,M>::domainSet() const
 {
   return m_domainSet;
-}
-
-template<class P_V,class P_M,class Q_V,class Q_M>
-const uqVectorSetClass<Q_V,Q_M>&
-uqBaseScalarFunctionClass<P_V,P_M,Q_V,Q_M>::imageSet() const
-{
-  return m_imageSet;
 }
 
 //*****************************************************
 // Generic class
 //*****************************************************
-template<class P_V,class P_M,class Q_V,class Q_M>
-class uqGenericScalarFunctionClass : public uqBaseScalarFunctionClass<P_V,P_M,Q_V,Q_M> {
+template<class V,class M>
+class uqGenericScalarFunctionClass : public uqBaseScalarFunctionClass<V,M> {
 public:
-  uqGenericScalarFunctionClass(const char*                      prefix,
-                               const uqVectorSetClass<P_V,P_M>& domainSet,
-                               const uqVectorSetClass<Q_V,Q_M>& imageSet,
-                               double (*routinePtr)(const P_V& domainVector, const void* functionDataPtr),
-                               const void* functionDataPtr);
+  uqGenericScalarFunctionClass(const char*                  prefix,
+                               const uqVectorSetClass<V,M>& domainSet,
+                               double (*valueRoutinePtr  )(const V& domainVector, const void* routinesDataPtr),
+                               void   (*gradRoutinePtr   )(const V& domainVector, const void* routinesDataPtr, V& gradVector),
+                               void   (*hessianRoutinePtr)(const V& domainVector, const void* routinesDataPtr, M& hessianMatrix),
+                               const void* routinesDataPtr,
+                               bool routinesAreForMinus2Ln);
   virtual ~uqGenericScalarFunctionClass();
 
-  double value(const P_V& domainVector) const;
+  double actualValue      (const V& domainVector)                   const;
+  double minus2LnValue    (const V& domainVector)                   const;
+  void   gradOfActual     (const V& domainVector, V& gradVector)    const;
+  void   gradOfMinus2Ln   (const V& domainVector, V& gradVector)    const;
+  void   hessianOfActual  (const V& domainVector, M& hessianMatrix) const;
+  void   hessianOfMinus2Ln(const V& domainVector, M& hessianMatrix) const;
 
 protected:
-  double (*m_routinePtr)(const P_V& domainVector, const void* functionDataPtr);
-  const void* m_routineDataPtr;
+  using uqBaseScalarFunctionClass<V,M>::m_env;
+  using uqBaseScalarFunctionClass<V,M>::m_prefix;
+  using uqBaseScalarFunctionClass<V,M>::m_domainSet;
 
-  using uqBaseScalarFunctionClass<P_V,P_M,Q_V,Q_M>::m_env;
-  using uqBaseScalarFunctionClass<P_V,P_M,Q_V,Q_M>::m_prefix;
-  using uqBaseScalarFunctionClass<P_V,P_M,Q_V,Q_M>::m_domainSet;
-  using uqBaseScalarFunctionClass<P_V,P_M,Q_V,Q_M>::m_imageSet;
+  double (*m_valueRoutinePtr  )(const V& domainVector, const void* routinesDataPtr);
+  void   (*m_gradRoutinePtr   )(const V& domainVector, const void* routinesDataPtr, V& gradVector);
+  void   (*m_hessianRoutinePtr)(const V& domainVector, const void* routinesDataPtr, M& hessianMatrix);
+  const void* m_routinesDataPtr;
+  bool m_routinesAreForMinus2Ln;
 };
 
-template<class P_V,class P_M,class Q_V,class Q_M>
-uqGenericScalarFunctionClass<P_V,P_M,Q_V,Q_M>::uqGenericScalarFunctionClass(
-  const char*                      prefix,
-  const uqVectorSetClass<P_V,P_M>& domainSet,
-  const uqVectorSetClass<Q_V,Q_M>& imageSet,
-  double (*routinePtr)(const P_V& domainVector, const void* functionDataPtr),
-  const void* functionDataPtr)
+template<class V,class M>
+uqGenericScalarFunctionClass<V,M>::uqGenericScalarFunctionClass(
+  const char*                  prefix,
+  const uqVectorSetClass<V,M>& domainSet,
+  double (*valueRoutinePtr)(const V& domainVector, const void* routinesDataPtr),
+  void   (*gradRoutinePtr   )(const V& domainVector, const void* routinesDataPtr, V& gradVector),
+  void   (*hessianRoutinePtr)(const V& domainVector, const void* routinesDataPtr, M& hessianMatrix),
+  const void* routinesDataPtr,
+  bool routinesAreForMinus2Ln)
   :
-  uqBaseScalarFunctionClass<P_V,P_M,Q_V,Q_M>(((std::string)(prefix)+"gen").c_str(),
-                                             domainSet,
-                                             imageSet),
-  m_routinePtr    (routinePtr),
-  m_routineDataPtr(functionDataPtr)
+  uqBaseScalarFunctionClass<V,M>(((std::string)(prefix)+"gen").c_str(), domainSet),
+  m_valueRoutinePtr             (valueRoutinePtr),
+  m_gradRoutinePtr              (gradRoutinePtr),
+  m_hessianRoutinePtr           (hessianRoutinePtr),
+  m_routinesDataPtr             (routinesDataPtr),
+  m_routinesAreForMinus2Ln      (routinesAreForMinus2Ln)
 {
 }
 
-template<class P_V,class P_M,class Q_V,class Q_M>
-uqGenericScalarFunctionClass<P_V,P_M,Q_V,Q_M>::~uqGenericScalarFunctionClass()
+template<class V,class M>
+uqGenericScalarFunctionClass<V,M>::~uqGenericScalarFunctionClass()
 {
 }
 
-template<class P_V,class P_M,class Q_V,class Q_M>
+template<class V,class M>
 double
-uqGenericScalarFunctionClass<P_V,P_M,Q_V,Q_M>::value(const P_V& domainVector) const
+uqGenericScalarFunctionClass<V,M>::actualValue(const V& domainVector) const
 {
-  return m_routinePtr(domainVector, m_routineDataPtr);
+  double value = m_valueRoutinePtr(domainVector, m_routinesDataPtr);
+  if (m_routinesAreForMinus2Ln) {
+    value = exp(-.5*value);
+  }
+  return value;
 }
 
+template<class V,class M>
+double
+uqGenericScalarFunctionClass<V,M>::minus2LnValue(const V& domainVector) const
+{
+  double value = m_valueRoutinePtr(domainVector, m_routinesDataPtr);
+  if (m_routinesAreForMinus2Ln == false) {
+    value = -2.*log(value);
+  }
+  return value;
+}
+
+template<class V,class M>
+void
+uqGenericScalarFunctionClass<V,M>::gradOfActual(const V& domainVector, V& gradVector) const
+{
+  return;
+}
+
+template<class V,class M>
+void
+uqGenericScalarFunctionClass<V,M>::gradOfMinus2Ln(const V& domainVector, V& gradVector) const
+{
+  return;
+}
+
+template<class V,class M>
+void
+uqGenericScalarFunctionClass<V,M>::hessianOfActual(const V& domainVector, M& hessianMatrix) const
+{
+  return;
+}
+
+template<class V,class M>
+void
+uqGenericScalarFunctionClass<V,M>::hessianOfMinus2Ln(const V& domainVector, M& hessianMatrix) const
+{
+  return;
+}
 #endif // __UQ_SCALAR_FUNCTION_H__

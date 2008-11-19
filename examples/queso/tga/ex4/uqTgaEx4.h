@@ -662,10 +662,16 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                                                  "scenario_25_K_min.dat",
                                                                  "scenario_50_K_min.dat");
 
+  uqGenericScalarFunctionClass<P_V,P_M> calLikelihoodFunctionObj("cal_like_",
+                                                                 paramDomain,
+                                                                 likelihoodRoutine<P_V,P_M>,
+                                                                 NULL,
+                                                                 NULL,
+                                                                 (void *) &calLikelihoodRoutine_Data,
+                                                                 true); // the routine computes [-2.*ln(function)]
+
   cycle.setCalIP(calPriorRv,
-                 likelihoodRoutine<P_V,P_M>,
-                 (void *) &calLikelihoodRoutine_Data,
-                 true); // the likelihood routine computes [-2.*ln(Likelihood)]
+                 calLikelihoodFunctionObj);
 
   // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
   P_M* calProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newGaussianMatrix(cycle.calIP().priorRv().pdf().domainVarianceValues(),
@@ -710,9 +716,15 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                                                   NULL,
                                                                   NULL);
 
-  cycle.setValIP(likelihoodRoutine<P_V,P_M>,
-                 (void *) &valLikelihoodRoutine_Data,
-                 true); // the likelihood routine computes [-2.*ln(Likelihood)]
+  uqGenericScalarFunctionClass<P_V,P_M> valLikelihoodFunctionObj("val_like_",
+                                                                 paramDomain,
+                                                                 likelihoodRoutine<P_V,P_M>,
+                                                                 NULL,
+                                                                 NULL,
+                                                                 (void *) &valLikelihoodRoutine_Data,
+                                                                 true); // the routine computes [-2.*ln(function)]
+
+  cycle.setValIP(valLikelihoodFunctionObj);
 
   // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
   P_M* valProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newGaussianMatrix(cycle.calIP().postRv().realizer().imageVarianceValues(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain

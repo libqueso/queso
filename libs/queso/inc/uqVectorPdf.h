@@ -23,6 +23,7 @@
 #include <uqEnvironment.h>
 #include <math.h>
 #include <uqDefaultPrior.h>
+#include <uqScalarFunction.h>
 
 //*****************************************************
 // Classes to accomodate a probability density.
@@ -32,7 +33,7 @@
 // Base class
 //*****************************************************
 template<class V, class M>
-class uqBaseVectorPdfClass {
+class uqBaseVectorPdfClass : public uqBaseScalarFunctionClass<V,M> {
 public:
            uqBaseVectorPdfClass(const char*                  prefix,
                                 const uqVectorSetClass<V,M>& domainSet,
@@ -45,22 +46,24 @@ public:
                                 const uqVectorSetClass<V,M>& domainSet);
   virtual ~uqBaseVectorPdfClass();
 
-          const uqVectorSetClass<V,M>&  domainSet           ()                     const;
-  virtual double                        actualDensity       (const V& paramValues) const = 0;
-  virtual double                        minus2LnDensity     (const V& paramValues) const = 0;
+  virtual       double                 actualValue      (const V& domainVector)                   const = 0;
+  virtual       double                 minus2LnValue    (const V& domainVector)                   const = 0;
+  virtual       void                   gradOfActual     (const V& domainVector, V& gradVector)    const = 0;
+  virtual       void                   gradOfMinus2Ln   (const V& domainVector, V& gradVector)    const = 0;
+  virtual       void                   hessianOfActual  (const V& domainVector, M& hessianMatrix) const = 0;
+  virtual       void                   hessianOfMinus2Ln(const V& domainVector, M& hessianMatrix) const = 0;
 
 //const   uqBaseScalarPdfClass<double>& component           (unsigned int componentId) const;
           const V&                      domainExpectedValues() const;
           const V&                      domainVarianceValues() const;
 
 protected:
+  using uqBaseScalarFunctionClass<V,M>::m_env;
+  using uqBaseScalarFunctionClass<V,M>::m_prefix;
+  using uqBaseScalarFunctionClass<V,M>::m_domainSet;
 
-  const   uqBaseEnvironmentClass& m_env;
-          std::string             m_prefix;
-  const   uqVectorSetClass<V,M>&  m_domainSet;
-
-          V*                      m_domainExpectedValues;
-          V*                      m_domainVarianceValues;
+  V* m_domainExpectedValues;
+  V* m_domainVarianceValues;
 
 //std::vector<uqBaseScalarPdfClass<double>*> m_components; // FIXME: will need to be a parallel vector in case of a very large number of components
 //uqBaseScalarPdfClass<double>               m_dummyComponent;
@@ -73,9 +76,7 @@ uqBaseVectorPdfClass<V,M>::uqBaseVectorPdfClass(
   const V&                     domainExpectedValues,
   const V&                     domainVarianceValues)
   :
-  m_env                 (domainSet.env()),
-  m_prefix              ((std::string)(prefix)+"pd_"),
-  m_domainSet         (domainSet),
+  uqBaseScalarFunctionClass<V,M>(((std::string)(prefix)+"pd_").c_str(), domainSet),
   m_domainExpectedValues(new V(domainExpectedValues)),
   m_domainVarianceValues(new V(domainVarianceValues))
 {
@@ -98,9 +99,7 @@ uqBaseVectorPdfClass<V,M>::uqBaseVectorPdfClass(
   const uqVectorSetClass<V,M>& domainSet,
   const V&                     domainExpectedValues)
   :
-  m_env                 (domainSet.env()),
-  m_prefix              ((std::string)(prefix)+"pd_"),
-  m_domainSet           (domainSet),
+  uqBaseScalarFunctionClass<V,M>(((std::string)(prefix)+"pd_").c_str(), domainSet),
   m_domainExpectedValues(new V(domainExpectedValues    )),
   m_domainVarianceValues(domainSet.vectorSpace().newVector(INFINITY))
 {
@@ -122,9 +121,7 @@ uqBaseVectorPdfClass<V,M>::uqBaseVectorPdfClass(
   const char*                  prefix,
   const uqVectorSetClass<V,M>& domainSet)
   :
-  m_env                 (domainSet.env()),
-  m_prefix              ((std::string)(prefix)+"pd_"),
-  m_domainSet           (domainSet),
+  uqBaseScalarFunctionClass<V,M>(((std::string)(prefix)+"pd_").c_str(), domainSet),
   m_domainExpectedValues(domainSet.vectorSpace().newVector(       0.)),
   m_domainVarianceValues(domainSet.vectorSpace().newVector( INFINITY))
 {
@@ -156,6 +153,7 @@ uqBaseVectorPdfClass<V,M>::component(unsigned int componentId) const
   return *(m_components[componentId]);
 }
 #endif
+
 template <class V, class M>
 const V&
 uqBaseVectorPdfClass<V,M>::domainExpectedValues() const
@@ -170,81 +168,59 @@ uqBaseVectorPdfClass<V,M>::domainVarianceValues() const
   return *m_domainVarianceValues;
 }
 
-template<class V, class M>
-const uqVectorSetClass<V,M>&
-uqBaseVectorPdfClass<V,M>::domainSet() const
-{
-  return m_domainSet;
-}
-
 //*****************************************************
 // Generic probability density class
 //*****************************************************
 template<class V, class M>
 class uqGenericVectorPdfClass : public uqBaseVectorPdfClass<V,M> {
 public:
-  uqGenericVectorPdfClass(const char*                  prefix,
-                          const uqVectorSetClass<V,M>& domainSet,
-                          const V&                     domainExpectedValues,
-                          const V&                     domainVarianceValues,
-                          double (*routinePtr)(const V& paramValues, const void* routineDataPtr),
-                          const void* routineDataPtr,
-                          bool routineComputesMinus2LogOfDensity);
-  uqGenericVectorPdfClass(const char*                    prefix,
-                          const uqVectorSetClass<V,M>& domainSet,
-                          double (*routinePtr)(const V& paramValues, const void* routineDataPtr),
-                          const void* routineDataPtr,
-                          bool routineComputesMinus2LogOfDensity);
+  uqGenericVectorPdfClass(const char*                           prefix,
+                          const uqBaseScalarFunctionClass<V,M>& scalarFunction,
+                          const V&                              domainExpectedValues,
+                          const V&                              domainVarianceValues);
+  uqGenericVectorPdfClass(const char*                           prefix,
+                          const uqBaseScalarFunctionClass<V,M>& scalarFunction);
  ~uqGenericVectorPdfClass();
 
-  double actualDensity  (const V& paramValues) const;
-  double minus2LnDensity(const V& paramValues) const;
+  double actualValue      (const V& domainVector)                   const;
+  double minus2LnValue    (const V& domainVector)                   const;
+  void   gradOfActual     (const V& domainVector, V& gradVector)    const;
+  void   gradOfMinus2Ln   (const V& domainVector, V& gradVector)    const;
+  void   hessianOfActual  (const V& domainVector, M& hessianMatrix) const;
+  void   hessianOfMinus2Ln(const V& domainVector, M& hessianMatrix) const;
 
 protected:
-  double (*m_routinePtr)(const V& paramValues, const void* routineDataPtr);
-  const void* m_routineDataPtr;
-
-  bool m_routineComputesMinus2LogOfDensity;
-
-  using uqBaseVectorPdfClass<V,M>::m_env;
-  using uqBaseVectorPdfClass<V,M>::m_prefix;
-  using uqBaseVectorPdfClass<V,M>::m_domainSet;
+  using uqBaseScalarFunctionClass<V,M>::m_env;
+  using uqBaseScalarFunctionClass<V,M>::m_prefix;
+  using uqBaseScalarFunctionClass<V,M>::m_domainSet;
   using uqBaseVectorPdfClass<V,M>::m_domainExpectedValues;
   using uqBaseVectorPdfClass<V,M>::m_domainVarianceValues;
+
+  const uqBaseScalarFunctionClass<V,M>& m_scalarFunction;
 };
 
 template<class V, class M>
 uqGenericVectorPdfClass<V,M>::uqGenericVectorPdfClass(
-  const char*                  prefix,
-  const uqVectorSetClass<V,M>& domainSet,
-  const V&                     domainExpectedValues,
-  const V&                     domainVarianceValues,
-  double (*routinePtr)(const V& paramValues, const void* routineDataPtr),
-  const void* routineDataPtr,
-  bool        routineComputesMinus2LogOfDensity)
+  const char*                           prefix,
+  const uqBaseScalarFunctionClass<V,M>& scalarFunction,
+  const V&                              domainExpectedValues,
+  const V&                              domainVarianceValues)
   :
   uqBaseVectorPdfClass<V,M>(((std::string)(prefix)+"gen").c_str(),
-                            domainSet,
+                            scalarFunction.domainSet(),
                             domainExpectedValues,
                             domainVarianceValues),
-  m_routinePtr                       (routinePtr),
-  m_routineDataPtr                   (routineDataPtr),
-  m_routineComputesMinus2LogOfDensity(routineComputesMinus2LogOfDensity)
+  m_scalarFunction(scalarFunction)
 {
 }
 
 template<class V, class M>
 uqGenericVectorPdfClass<V,M>::uqGenericVectorPdfClass(
-  const char*                  prefix,
-  const uqVectorSetClass<V,M>& domainSet,
-  double (*routinePtr)(const V& paramValues, const void* routineDataPtr),
-  const void* routineDataPtr,
-  bool        routineComputesMinus2LogOfDensity)
+  const char*                           prefix,
+  const uqBaseScalarFunctionClass<V,M>& scalarFunction)
   :
-  uqBaseVectorPdfClass<V,M>(((std::string)(prefix)+"gen").c_str(),domainSet),
-  m_routinePtr                       (routinePtr),
-  m_routineDataPtr                   (routineDataPtr),
-  m_routineComputesMinus2LogOfDensity(routineComputesMinus2LogOfDensity)
+  uqBaseVectorPdfClass<V,M>(((std::string)(prefix)+"gen").c_str(),scalarFunction.domainSet()),
+  m_scalarFunction(scalarFunction)
 {
 }
 
@@ -255,26 +231,44 @@ uqGenericVectorPdfClass<V,M>::~uqGenericVectorPdfClass()
 
 template<class V, class M>
 double
-uqGenericVectorPdfClass<V,M>::minus2LnDensity(const V& paramValues) const
+uqGenericVectorPdfClass<V,M>::minus2LnValue(const V& paramValues) const
 {
-  double value = m_routinePtr(paramValues, m_routineDataPtr);
-  if (m_routineComputesMinus2LogOfDensity == false) {
-    value = -2.*log(value);
-  }
-
-  return value;
+  return m_scalarFunction.minus2LnValue(paramValues);
 }
 
 template<class V, class M>
 double
-uqGenericVectorPdfClass<V,M>::actualDensity(const V& paramValues) const
+uqGenericVectorPdfClass<V,M>::actualValue(const V& paramValues) const
 {
-  double value = m_routinePtr(paramValues, m_routineDataPtr);
-  if (m_routineComputesMinus2LogOfDensity) {
-    value = exp(-.5*value);
-  }
+  return m_scalarFunction.actualValue(paramValues);
+}
 
-  return value;
+template<class V, class M>
+void
+uqGenericVectorPdfClass<V,M>::gradOfActual(const V& domainVector, V& gradVector) const
+{
+  return;
+}
+
+template<class V, class M>
+void
+uqGenericVectorPdfClass<V,M>::gradOfMinus2Ln(const V& domainVector, V& gradVector) const
+{
+  return;
+}
+
+template<class V, class M>
+void
+uqGenericVectorPdfClass<V,M>::hessianOfActual(const V& domainVector, M& hessianMatrix) const
+{
+  return;
+}
+
+template<class V, class M>
+void
+uqGenericVectorPdfClass<V,M>::hessianOfMinus2Ln(const V& domainVector, M& hessianMatrix) const
+{
+  return;
 }
 
 //*****************************************************
@@ -283,47 +277,41 @@ uqGenericVectorPdfClass<V,M>::actualDensity(const V& paramValues) const
 template<class V, class M>
 class uqBayesianVectorPdfClass : public uqBaseVectorPdfClass<V,M> {
 public:
-  uqBayesianVectorPdfClass(const char*                      prefix,
-                           const uqBaseVectorPdfClass<V,M>& priorDensity,
-                           const uqBaseVectorPdfClass<V,M>& likelihoodFunction,
-                           const uqVectorSetClass    <V,M>& intersectionDomain); 
+  uqBayesianVectorPdfClass(const char*                           prefix,
+                           const uqBaseVectorPdfClass     <V,M>& priorDensity,
+                           const uqBaseScalarFunctionClass<V,M>& likelihoodFunction,
+                           const uqVectorSetClass         <V,M>& intersectionDomain); 
  ~uqBayesianVectorPdfClass();
 
-  double actualDensity  (const V& paramValues) const;
-  double minus2LnDensity(const V& paramValues) const;
+  double actualValue      (const V& domainVector)                   const;
+  double minus2LnValue    (const V& domainVector)                   const;
+  void   gradOfActual     (const V& domainVector, V& gradVector)    const;
+  void   gradOfMinus2Ln   (const V& domainVector, V& gradVector)    const;
+  void   hessianOfActual  (const V& domainVector, M& hessianMatrix) const;
+  void   hessianOfMinus2Ln(const V& domainVector, M& hessianMatrix) const;
 
 protected:
-  const uqBaseVectorPdfClass<V,M>& m_priorDensity;
-  const uqBaseVectorPdfClass<V,M>& m_likelihoodFunction;
+  const uqBaseVectorPdfClass     <V,M>& m_priorDensity;
+  const uqBaseScalarFunctionClass<V,M>& m_likelihoodFunction;
 
-  using uqBaseVectorPdfClass<V,M>::m_env;
-  using uqBaseVectorPdfClass<V,M>::m_prefix;
-  using uqBaseVectorPdfClass<V,M>::m_domainSet;
+  using uqBaseScalarFunctionClass<V,M>::m_env;
+  using uqBaseScalarFunctionClass<V,M>::m_prefix;
+  using uqBaseScalarFunctionClass<V,M>::m_domainSet;
   using uqBaseVectorPdfClass<V,M>::m_domainExpectedValues;
   using uqBaseVectorPdfClass<V,M>::m_domainVarianceValues;
 };
 
 template<class V,class M>
 uqBayesianVectorPdfClass<V,M>::uqBayesianVectorPdfClass(
-  const char*                      prefix,
-  const uqBaseVectorPdfClass<V,M>& priorDensity,
-  const uqBaseVectorPdfClass<V,M>& likelihoodFunction,
-  const uqVectorSetClass    <V,M>& intersectionDomain)
+  const char*                           prefix,
+  const uqBaseVectorPdfClass     <V,M>& priorDensity,
+  const uqBaseScalarFunctionClass<V,M>& likelihoodFunction,
+  const uqVectorSetClass         <V,M>& intersectionDomain)
   :
   uqBaseVectorPdfClass<V,M>(((std::string)(prefix)+"bay").c_str(),intersectionDomain),
   m_priorDensity           (priorDensity),
   m_likelihoodFunction     (likelihoodFunction)
 {
-#if 0 // FIX ME
-  for (unsigned int i = 0; i < m_domainMinValues->size(); ++i) {
-    (*m_domainMinValues)[i] = std::max(m_priorDensity->domainMinValues()[i],
-                                       m_likelihoodFunction->domainMinValues()[i]);
-  }
-  for (unsigned int i = 0; i < m_domainMaxValues->size(); ++i) {
-    (*m_domainMaxValues)[i] = std::min(m_priorDensity->domainMaxValues()[i],
-                                       m_likelihoodFunction->domainMaxValues()[i]);
-  }
-#endif
 }
 
 template<class V,class M>
@@ -333,13 +321,13 @@ uqBayesianVectorPdfClass<V,M>::~uqBayesianVectorPdfClass()
 
 template<class V, class M>
 double
-uqBayesianVectorPdfClass<V,M>::minus2LnDensity(const V& paramValues) const
+uqBayesianVectorPdfClass<V,M>::minus2LnValue(const V& paramValues) const
 {
-  double value1 = m_priorDensity.minus2LnDensity(paramValues);
-  double value2 = m_likelihoodFunction.minus2LnDensity(paramValues);
+  double value1 = m_priorDensity.minus2LnValue(paramValues);
+  double value2 = m_likelihoodFunction.minus2LnValue(paramValues);
 
   //if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-  //  std::cout << "In uqBayesianVectorPdfClass<P_V,P_M>::minus2LnDensity()"
+  //  std::cout << "In uqBayesianVectorPdfClass<P_V,P_M>::minus2LnValue()"
   //            << ", -2ln(prior) = " << value1
   //            << ", -2ln(like) = "  << value2
   //            << std::endl;
@@ -350,12 +338,40 @@ uqBayesianVectorPdfClass<V,M>::minus2LnDensity(const V& paramValues) const
 
 template<class V, class M>
 double
-uqBayesianVectorPdfClass<V,M>::actualDensity(const V& paramValues) const
+uqBayesianVectorPdfClass<V,M>::actualValue(const V& paramValues) const
 {
-  double value1 = m_priorDensity.actualDensity(paramValues);
-  double value2 = m_likelihoodFunction.actualDensity(paramValues);
+  double value1 = m_priorDensity.actualValue(paramValues);
+  double value2 = m_likelihoodFunction.actualValue(paramValues);
 
   return value1*value2;
+}
+
+template<class V, class M>
+void
+uqBayesianVectorPdfClass<V,M>::gradOfActual(const V& domainVector, V& gradVector) const
+{
+  return;
+}
+
+template<class V, class M>
+void
+uqBayesianVectorPdfClass<V,M>::gradOfMinus2Ln(const V& domainVector, V& gradVector) const
+{
+  return;
+}
+
+template<class V, class M>
+void
+uqBayesianVectorPdfClass<V,M>::hessianOfActual(const V& domainVector, M& hessianMatrix) const
+{
+  return;
+}
+
+template<class V, class M>
+void
+uqBayesianVectorPdfClass<V,M>::hessianOfMinus2Ln(const V& domainVector, M& hessianMatrix) const
+{
+  return;
 }
 
 //*****************************************************
@@ -374,8 +390,12 @@ public:
                            const M&                     covMatrix);
  ~uqGaussianVectorPdfClass();
 
-  double actualDensity       (const V& paramValues) const;
-  double minus2LnDensity     (const V& paramValues) const;
+  double actualValue      (const V& domainVector)                   const;
+  double minus2LnValue    (const V& domainVector)                   const;
+  void   gradOfActual     (const V& domainVector, V& gradVector)    const;
+  void   gradOfMinus2Ln   (const V& domainVector, V& gradVector)    const;
+  void   hessianOfActual  (const V& domainVector, M& hessianMatrix) const;
+  void   hessianOfMinus2Ln(const V& domainVector, M& hessianMatrix) const;
   void   updateExpectedValues(const V& newExpectedValues);
   void   updateCovMatrix     (const M& newCovMatrix);
 
@@ -383,9 +403,9 @@ protected:
   bool     m_diagonalCovMatrix;
   const M* m_covMatrix;
 
-  using uqBaseVectorPdfClass<V,M>::m_env;
-  using uqBaseVectorPdfClass<V,M>::m_prefix;
-  using uqBaseVectorPdfClass<V,M>::m_domainSet;
+  using uqBaseScalarFunctionClass<V,M>::m_env;
+  using uqBaseScalarFunctionClass<V,M>::m_prefix;
+  using uqBaseScalarFunctionClass<V,M>::m_domainSet;
   using uqBaseVectorPdfClass<V,M>::m_domainExpectedValues;
   using uqBaseVectorPdfClass<V,M>::m_domainVarianceValues;
 
@@ -393,10 +413,10 @@ protected:
 
 template<class V,class M>
 uqGaussianVectorPdfClass<V,M>::uqGaussianVectorPdfClass(
-  const char*                    prefix,
+  const char*                  prefix,
   const uqVectorSetClass<V,M>& domainSet,
-  const V&                       domainExpectedValues,
-  const V&                       domainVarianceValues)
+  const V&                     domainExpectedValues,
+  const V&                     domainVarianceValues)
   :
   uqBaseVectorPdfClass<V,M>(((std::string)(prefix)+"gau").c_str(),domainSet,domainExpectedValues,domainVarianceValues),
   m_diagonalCovMatrix(true),
@@ -463,7 +483,7 @@ uqGaussianVectorPdfClass<V,M>::~uqGaussianVectorPdfClass()
 
 template<class V, class M>
 double
-uqGaussianVectorPdfClass<V,M>::minus2LnDensity(const V& paramValues) const
+uqGaussianVectorPdfClass<V,M>::minus2LnValue(const V& paramValues) const
 {
   if( m_diagonalCovMatrix ){
     V diffVec(paramValues - this->domainExpectedValues());
@@ -477,9 +497,37 @@ uqGaussianVectorPdfClass<V,M>::minus2LnDensity(const V& paramValues) const
 
 template<class V, class M>
 double
-uqGaussianVectorPdfClass<V,M>::actualDensity(const V& paramValues) const
+uqGaussianVectorPdfClass<V,M>::actualValue(const V& paramValues) const
 {
-  return exp(-0.5*this->minus2LnDensity(paramValues));
+  return exp(-0.5*this->minus2LnValue(paramValues));
+}
+
+template<class V, class M>
+void
+uqGaussianVectorPdfClass<V,M>::gradOfActual(const V& domainVector, V& gradVector) const
+{
+  return;
+}
+
+template<class V, class M>
+void
+uqGaussianVectorPdfClass<V,M>::gradOfMinus2Ln(const V& domainVector, V& gradVector) const
+{
+  return;
+}
+
+template<class V, class M>
+void
+uqGaussianVectorPdfClass<V,M>::hessianOfActual(const V& domainVector, M& hessianMatrix) const
+{
+  return;
+}
+
+template<class V, class M>
+void
+uqGaussianVectorPdfClass<V,M>::hessianOfMinus2Ln(const V& domainVector, M& hessianMatrix) const
+{
+  return;
 }
 
 template<class V, class M>
@@ -512,13 +560,17 @@ public:
                           const uqVectorSetClass<V,M>& domainSet);
  ~uqUniformVectorPdfClass();
 
-  double actualDensity  (const V& paramValues) const;
-  double minus2LnDensity(const V& paramValues) const;
+  double actualValue      (const V& domainVector)                   const;
+  double minus2LnValue    (const V& domainVector)                   const;
+  void   gradOfActual     (const V& domainVector, V& gradVector)    const;
+  void   gradOfMinus2Ln   (const V& domainVector, V& gradVector)    const;
+  void   hessianOfActual  (const V& domainVector, M& hessianMatrix) const;
+  void   hessianOfMinus2Ln(const V& domainVector, M& hessianMatrix) const;
 
 protected:
-  using uqBaseVectorPdfClass<V,M>::m_env;
-  using uqBaseVectorPdfClass<V,M>::m_prefix;
-  using uqBaseVectorPdfClass<V,M>::m_domainSet;
+  using uqBaseScalarFunctionClass<V,M>::m_env;
+  using uqBaseScalarFunctionClass<V,M>::m_prefix;
+  using uqBaseScalarFunctionClass<V,M>::m_domainSet;
   using uqBaseVectorPdfClass<V,M>::m_domainExpectedValues;
   using uqBaseVectorPdfClass<V,M>::m_domainVarianceValues;
 };
@@ -551,16 +603,43 @@ uqUniformVectorPdfClass<V,M>::~uqUniformVectorPdfClass()
 
 template<class V, class M>
 double
-uqUniformVectorPdfClass<V,M>::minus2LnDensity(const V& paramValues) const
+uqUniformVectorPdfClass<V,M>::minus2LnValue(const V& paramValues) const
 {
   return 0.;
 }
 
 template<class V, class M>
 double
-uqUniformVectorPdfClass<V,M>::actualDensity(const V& paramValues) const
+uqUniformVectorPdfClass<V,M>::actualValue(const V& paramValues) const
 {
   return 1.;
 }
 
+template<class V, class M>
+void
+uqUniformVectorPdfClass<V,M>::gradOfActual(const V& domainVector, V& gradVector) const
+{
+  return;
+}
+
+template<class V, class M>
+void
+uqUniformVectorPdfClass<V,M>::gradOfMinus2Ln(const V& domainVector, V& gradVector) const
+{
+  return;
+}
+
+template<class V, class M>
+void
+uqUniformVectorPdfClass<V,M>::hessianOfActual(const V& domainVector, M& hessianMatrix) const
+{
+  return;
+}
+
+template<class V, class M>
+void
+uqUniformVectorPdfClass<V,M>::hessianOfMinus2Ln(const V& domainVector, M& hessianMatrix) const
+{
+  return;
+}
 #endif // __UQ_VECTOR_PROB_DENSITY_H__

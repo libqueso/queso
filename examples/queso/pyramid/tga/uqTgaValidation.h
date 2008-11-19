@@ -532,11 +532,13 @@ private:
   double                                    m_predCriticalMass;
   double                                    m_predCriticalTime;
 
-  uqUniformVectorRVClass<P_V,P_M>*          m_calPriorRv;
+  uqBaseVectorRVClass<P_V,P_M>*             m_calPriorRv;
   tgaLikelihoodRoutine_DataClass<P_V,P_M>*  m_calLikelihoodRoutine_Data;
+  uqBaseScalarFunctionClass<P_V,P_M>*       m_calLikelihoodFunctionObj;
   tgaQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M>* m_calQoiRoutine_Data;
 
   tgaLikelihoodRoutine_DataClass<P_V,P_M>*  m_valLikelihoodRoutine_Data;
+  uqBaseScalarFunctionClass<P_V,P_M>*       m_valLikelihoodFunctionObj;
   tgaQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M>* m_valQoiRoutine_Data;
 };
 
@@ -558,8 +560,10 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::uqTgaValidationClass(
   m_qoiSpace                 (NULL),
   m_calPriorRv               (NULL),
   m_calLikelihoodRoutine_Data(NULL),
+  m_calLikelihoodFunctionObj (NULL),
   m_calQoiRoutine_Data       (NULL),
   m_valLikelihoodRoutine_Data(NULL),
+  m_valLikelihoodFunctionObj (NULL),
   m_valQoiRoutine_Data       (NULL)
 {
   if (m_env.rank() == 0) {
@@ -631,8 +635,10 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::~uqTgaValidationClass()
   }
 
   if (m_valQoiRoutine_Data)        delete m_valQoiRoutine_Data;
+  if (m_valLikelihoodFunctionObj)  delete m_valLikelihoodFunctionObj;
   if (m_valLikelihoodRoutine_Data) delete m_valLikelihoodRoutine_Data;
   if (m_calQoiRoutine_Data)        delete m_calQoiRoutine_Data;
+  if (m_calLikelihoodFunctionObj)  delete m_calLikelihoodFunctionObj;
   if (m_calLikelihoodRoutine_Data) delete m_calLikelihoodRoutine_Data;
   if (m_calPriorRv)                delete m_calPriorRv;
   if (m_qoiSpace)                  delete m_qoiSpace;
@@ -690,19 +696,22 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
   // Deal with inverse problem
   m_calPriorRv = new uqUniformVectorRVClass<P_V,P_M> ("cal_prior_", // Extra prefix before the default "rv_" prefix
                                                       *m_paramDomain);
-                                                      //*m_paramSpace,
-                                                      //*m_paramMinValues,
-                                                      //*m_paramMaxValues);
 
-  m_calLikelihoodRoutine_Data = new tgaLikelihoodRoutine_DataClass<P_V,P_M> (m_env,
-                                                                             "tga/scenario_5_K_min.dat",
-                                                                             "tga/scenario_25_K_min.dat",
-                                                                             "tga/scenario_50_K_min.dat");
+  m_calLikelihoodRoutine_Data = new tgaLikelihoodRoutine_DataClass<P_V,P_M>(m_env,
+                                                                            "tga/scenario_5_K_min.dat",
+                                                                            "tga/scenario_25_K_min.dat",
+                                                                            "tga/scenario_50_K_min.dat");
+
+  m_calLikelihoodFunctionObj = new uqGenericScalarFunctionClass<P_V,P_M>("cal_like_",
+                                                                         *m_paramDomain,
+                                                                         tgaLikelihoodRoutine<P_V,P_M>,
+                                                                         NULL,
+                                                                         NULL,
+                                                                         (void *) m_calLikelihoodRoutine_Data,
+                                                                         true); // the routine computes [-2.*ln(function)]
 
   m_cycle->setCalIP(*m_calPriorRv,
-                    tgaLikelihoodRoutine<P_V,P_M>,
-                    (void *) m_calLikelihoodRoutine_Data,
-                    true); // the likelihood routine computes [-2.*ln(Likelihood)]
+                    *m_calLikelihoodFunctionObj);
 
   // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
   P_M* calProposalCovMatrix = m_cycle->calIP().postRv().imageSet().vectorSpace().newGaussianMatrix(m_cycle->calIP().priorRv().pdf().domainVarianceValues(),
@@ -754,9 +763,15 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
                                                                              NULL,
                                                                              NULL);
 
-  m_cycle->setValIP(tgaLikelihoodRoutine<P_V,P_M>,
-                    (void *) m_valLikelihoodRoutine_Data,
-                    true); // the likelihood routine computes [-2.*ln(Likelihood)]
+  m_valLikelihoodFunctionObj = new uqGenericScalarFunctionClass<P_V,P_M>("val_like_",
+                                                                         *m_paramDomain,
+                                                                         tgaLikelihoodRoutine<P_V,P_M>,
+                                                                         NULL,
+                                                                         NULL,
+                                                                         (void *) m_valLikelihoodRoutine_Data,
+                                                                         true); // the routine computes [-2.*ln(function)]
+
+  m_cycle->setValIP(*m_valLikelihoodFunctionObj);
 
   // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
   P_M* valProposalCovMatrix = m_cycle->calIP().postRv().imageSet().vectorSpace().newGaussianMatrix(m_cycle->calIP().postRv().realizer().imageVarianceValues(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain

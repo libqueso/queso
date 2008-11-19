@@ -23,6 +23,7 @@
 #include <uqMarkovChainSG1.h>
 #include <uqInstantiateIntersection.h>
 #include <uqVectorRV.h>
+#include <uqScalarFunction.h>
 
 #undef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
 
@@ -39,10 +40,10 @@ template <class P_V,class P_M>
 class uqStatisticalInverseProblemClass
 {
 public:
-  uqStatisticalInverseProblemClass(const char*                            prefix,
-                                   const uqBaseVectorRVClass   <P_V,P_M>& priorRv,
-                                   const uqBaseVectorPdfClass  <P_V,P_M>& likelihoodFunction,
-                                         uqGenericVectorRVClass<P_V,P_M>& postRv);
+  uqStatisticalInverseProblemClass(const char*                               prefix,
+                                   const uqBaseVectorRVClass      <P_V,P_M>& priorRv,
+                                   const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunction,
+                                         uqGenericVectorRVClass   <P_V,P_M>& postRv);
  ~uqStatisticalInverseProblemClass();
 
         bool computeSolutionFlag      () const;
@@ -75,7 +76,7 @@ private:
 #endif
 
   const uqBaseVectorRVClass       <P_V,P_M>& m_priorRv;
-  const uqBaseVectorPdfClass      <P_V,P_M>& m_likelihoodFunction;
+  const uqBaseScalarFunctionClass <P_V,P_M>& m_likelihoodFunction;
         uqGenericVectorRVClass    <P_V,P_M>& m_postRv;
 
         uqVectorSetClass          <P_V,P_M>* m_solutionDomain;
@@ -95,10 +96,10 @@ std::ostream& operator<<(std::ostream& os, const uqStatisticalInverseProblemClas
 
 template <class P_V,class P_M>
 uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
-  const char*                            prefix,
-  const uqBaseVectorRVClass   <P_V,P_M>& priorRv,
-  const uqBaseVectorPdfClass  <P_V,P_M>& likelihoodFunction,
-        uqGenericVectorRVClass<P_V,P_M>& postRv)
+  const char*                               prefix,
+  const uqBaseVectorRVClass      <P_V,P_M>& priorRv,
+  const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunction,
+        uqGenericVectorRVClass   <P_V,P_M>& postRv)
   :
   m_env                   (priorRv.env()),
   m_prefix                ((std::string)(prefix) + "ip_"),
@@ -115,7 +116,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
   m_solverString          (UQ_CALIB_PROBLEM_SOLVER_ODV),
 #endif
   m_priorRv               (priorRv),
-  m_likelihoodFunction (likelihoodFunction),
+  m_likelihoodFunction    (likelihoodFunction),
   m_postRv                (postRv),
   m_solutionDomain        (NULL),
   m_solutionPdf           (NULL),
