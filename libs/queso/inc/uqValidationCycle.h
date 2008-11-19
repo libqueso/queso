@@ -72,7 +72,6 @@ private:
 
   const uqBaseVectorRVClass             <P_V,P_M>*         m_calPriorRv;               // instantiated outside this class!!
   const	uqBaseScalarFunctionClass       <P_V,P_M>*         m_calLikelihoodFunctionObj; // instantiated outside this class!!
-      //uqGenericVectorPdfClass         <P_V,P_M>*         m_calLikelihoodFunctionObj;
         uqGenericVectorRVClass          <P_V,P_M>*         m_calPostRv;
         uqStatisticalInverseProblemClass<P_V,P_M>*         m_calIP;
 
@@ -81,7 +80,6 @@ private:
         uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>* m_calFP;
 
   const uqBaseScalarFunctionClass       <P_V,P_M>*         m_valLikelihoodFunctionObj; // instantiated outside this class!!
-      //uqGenericVectorPdfClass         <P_V,P_M>*         m_valLikelihoodFunctionObj;
         uqGenericVectorRVClass          <P_V,P_M>*         m_valPostRv;
         uqStatisticalInverseProblemClass<P_V,P_M>*         m_valIP;
 
@@ -139,13 +137,11 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::~uqValidationCycleClass()
   if (m_valQoiFunctionObj)        delete m_valQoiFunctionObj;
   if (m_valIP)                    delete m_valIP;
   if (m_valPostRv)                delete m_valPostRv;
-//if (m_valLikelihoodFunctionObj) delete m_valLikelihoodFunctionObj;
   if (m_calFP)                    delete m_calFP;
   if (m_calQoiRv)                 delete m_calQoiRv;
   if (m_calQoiFunctionObj)        delete m_calQoiFunctionObj;
   if (m_calIP)                    delete m_calIP;
   if (m_calPostRv)                delete m_calPostRv;
-//if (m_calLikelihoodFunctionObj) delete m_calLikelihoodFunctionObj;
 
   if (m_env.rank() == 0) {
     std::cout << "Leaving uqValidationCycle::destructor()"
@@ -175,11 +171,6 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::setCalIP(
 
   // Calibration stage: Likelihood function object (e.g., -2*ln[likelihood])
   m_calLikelihoodFunctionObj = &likelihoodFunctionObj;
-  //m_calLikelihoodFunctionObj = new uqGenericVectorPdfClass<P_V,P_M> ("cal_like_", // Extra prefix before the default "genpd_" prefix
-  //                                                                   m_paramSpace,
-  //                                                                   likelihoodRoutinePtr,
-  //                                                                   likelihoodRoutineDataPtr,
-  //                                                                   routineComputesMinus2LogOfDensity);
 
   // Calibration stage: Posterior vector rv
   m_calPostRv = new uqGenericVectorRVClass<P_V,P_M> ("cal_post_", // Extra prefix before the default "rv_" prefix
@@ -261,11 +252,6 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::setValIP(const uqBaseScalarFunctionClas
 
   // Validation stage: Likelihood function object (e.g., -2*ln[likelihood])
   m_valLikelihoodFunctionObj = &likelihoodFunctionObj;
-  //m_valLikelihoodFunctionObj = new uqGenericVectorPdfClass<P_V,P_M> ("val_like_", // Extra prefix before the default "genpd_" prefix
-  //                                                                   m_paramSpace,
-  //                                                                   likelihoodRoutinePtr,
-  //                                                                   likelihoodRoutineDataPtr,
-  //                                                                   routineComputesMinus2LogOfDensity);
 
   // Validation stage: Posterior vector rv
   m_valPostRv = new uqGenericVectorRVClass<P_V,P_M> ("val_post_", // Extra prefix before the default "rv_" prefix
