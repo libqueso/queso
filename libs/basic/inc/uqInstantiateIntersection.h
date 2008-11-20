@@ -78,15 +78,13 @@ uqInstantiateIntersection(const uqVectorSetClass<V,M>& domain1, const uqVectorSe
             maxV[i] = std::min(box1->maxValues()[i],
                                box2->maxValues()[i]);
           }
-          result = new uqBoxSubsetClass<V,M>(box1->env(),
-                                             box1->prefix().c_str(),
+          result = new uqBoxSubsetClass<V,M>(box1->prefix().c_str(),
                                              box1->vectorSpace(),
                                              minV,
                                              maxV);
         }
         else {
-          result = new uqIntersectionSubsetClass<V,M>(tmp1->env(),
-                                                      tmp1->prefix().c_str(),
+          result = new uqIntersectionSubsetClass<V,M>(tmp1->prefix().c_str(),
                                                       tmp1->vectorSpace(),
                                                       0., // FIX ME
                                                       domain1,
@@ -110,8 +108,7 @@ uqInstantiateIntersection(const uqVectorSetClass<V,M>& domain1, const uqVectorSe
       if (dim1 == dim2) {
         const uqBoxSubsetClass<V,M>* box1 = dynamic_cast<const uqBoxSubsetClass<V,M>* >(&domain1);
         if (box1 != NULL) {
-          result = new uqBoxSubsetClass<V,M>(box1->env(),
-                                             box1->prefix().c_str(),
+          result = new uqBoxSubsetClass<V,M>(box1->prefix().c_str(),
                                              box1->vectorSpace(),
                                              box1->minValues(),
                                              box1->maxValues());
@@ -140,8 +137,7 @@ uqInstantiateIntersection(const uqVectorSetClass<V,M>& domain1, const uqVectorSe
       if (dim1 == dim2) {
         const uqBoxSubsetClass<V,M>* box2 = dynamic_cast<const uqBoxSubsetClass<V,M>* >(&domain2);
         if (box2 != NULL) {
-          result = new uqBoxSubsetClass<V,M>(box2->env(),
-                                             box2->prefix().c_str(),
+          result = new uqBoxSubsetClass<V,M>(box2->prefix().c_str(),
                                              box2->vectorSpace(),
                                              box2->minValues(),
                                              box2->maxValues());

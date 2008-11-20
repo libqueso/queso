@@ -289,18 +289,18 @@ uqGenericVectorRVClass<V,M>::print(std::ostream& os) const
 template<class V, class M>
 class uqGaussianVectorRVClass : public uqBaseVectorRVClass<V,M> {
 public:
-  uqGaussianVectorRVClass(const char*                    prefix,
+  uqGaussianVectorRVClass(const char*                  prefix,
                           const uqVectorSetClass<V,M>& imageSet,
-                          const V&                       imageExpectedValues,
-                          const V&                       imageVarianceValues);
-  uqGaussianVectorRVClass(const char*                    prefix,
+                          const V&                     imageExpVector,
+                          const V&                     imageVarVector);
+  uqGaussianVectorRVClass(const char*                  prefix,
                           const uqVectorSetClass<V,M>& imageSet,
-                          const V&                       imageExpectedValues,
-                          const M&                       covMatrix);
+                          const V&                     imageExpVector,
+                          const M&                     covMatrix);
   virtual ~uqGaussianVectorRVClass();
 
-  void updateExpectedValues(const V& newExpectedValues );
-  void updateCovMatrix(const M& newCovMatrix );
+  void updateExpVector(const V& newExpVector);
+  void updateCovMatrix     (const M& newCovMatrix);
   
   void print(std::ostream& os) const;
 
@@ -318,8 +318,8 @@ template<class V, class M>
 uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
   const char*                    prefix,
   const uqVectorSetClass<V,M>& imageSet,
-  const V&                       imageExpectedValues,
-  const V&                       imageVarianceValues)
+  const V&                       imageExpVector,
+  const V&                       imageVarVector)
   :
   uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"gau").c_str(),imageSet)
 {
@@ -331,10 +331,10 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
 
   m_pdf = new uqGaussianVectorPdfClass<V,M>(m_prefix.c_str(),
                                             m_imageSet,
-                                            imageExpectedValues,
-                                            imageVarianceValues);
+                                            imageExpVector,
+                                            imageVarVector);
 
-  M lowerCholCovMatrix(imageVarianceValues);
+  M lowerCholCovMatrix(imageVarVector);
   int ierr = lowerCholCovMatrix.chol();
   UQ_FATAL_TEST_MACRO( (ierr!=0), m_env.rank(),
 		       "uqGaussianVectorRVClass<V,M>::constructor() [2]",
@@ -343,7 +343,7 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
 
   m_realizer = new uqGaussianVectorRealizerClass<V,M>(m_prefix.c_str(),
 						      m_imageSet,
-						      imageExpectedValues,
+						      imageExpVector,
 						      lowerCholCovMatrix);
 
   m_cdf         = NULL; // FIX ME: complete code
@@ -358,10 +358,10 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
 
 template<class V, class M>
 uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
-  const char*                    prefix,
+  const char*                  prefix,
   const uqVectorSetClass<V,M>& imageSet,
-  const V&                       imageExpectedValues,
-  const M&                       covMatrix)
+  const V&                     imageExpVector,
+  const M&                     covMatrix)
   :
   uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"gau").c_str(),imageSet)
 {
@@ -373,19 +373,20 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
 
   m_pdf = new uqGaussianVectorPdfClass<V,M>(m_prefix.c_str(),
                                             m_imageSet,
-                                            imageExpectedValues,
+                                            imageExpVector,
                                             covMatrix);
 
   M lowerCholCovMatrix(covMatrix);
   int ierr = lowerCholCovMatrix.chol();
-  UQ_FATAL_TEST_MACRO( (ierr!=0), m_env.rank(),
-		       "uqGaussianVectorRVClass<V,M>::constructor() [2]",
-		       "Cholesky decomposition of covariance matrix failed.");
+  UQ_FATAL_TEST_MACRO(ierr != 0,
+                      m_env.rank(),
+		      "uqGaussianVectorRVClass<V,M>::constructor() [2]",
+		      "Cholesky decomposition of covariance matrix failed.");
   lowerCholCovMatrix.zeroUpper(false);
 
   m_realizer = new uqGaussianVectorRealizerClass<V,M>(m_prefix.c_str(),
 						      m_imageSet,
-						      imageExpectedValues,
+						      imageExpVector,
 						      lowerCholCovMatrix);
 
   m_cdf         = NULL; // FIX ME: complete code
@@ -405,11 +406,11 @@ uqGaussianVectorRVClass<V,M>::~uqGaussianVectorRVClass()
 
 template<class V, class M>
 void
-uqGaussianVectorRVClass<V,M>::updateExpectedValues(const V& newExpectedValues)
+uqGaussianVectorRVClass<V,M>::updateExpVector(const V& newExpVector)
 {
   // we are sure that m_pdf (and m_realizer, etc) point to associated Gaussian classes, so all is well
-  ( dynamic_cast< uqGaussianVectorPdfClass     <V,M>* >(m_pdf     ) )->updateExpectedValues(newExpectedValues);
-  ( dynamic_cast< uqGaussianVectorRealizerClass<V,M>* >(m_realizer) )->updateExpectedValues(newExpectedValues);
+  ( dynamic_cast< uqGaussianVectorPdfClass     <V,M>* >(m_pdf     ) )->updateExpVector(newExpVector);
+  ( dynamic_cast< uqGaussianVectorRealizerClass<V,M>* >(m_realizer) )->updateExpVector(newExpVector);
   return;
 }
 

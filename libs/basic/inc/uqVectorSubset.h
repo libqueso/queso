@@ -30,8 +30,7 @@ class uqVectorSubsetClass : public uqVectorSetClass<V,M>
 {
 public:
            uqVectorSubsetClass();
-           uqVectorSubsetClass(const uqBaseEnvironmentClass&  env,
-                               const char*                    prefix,
+           uqVectorSubsetClass(const char*                    prefix,
                                const uqVectorSpaceClass<V,M>& vectorSpace);
   virtual ~uqVectorSubsetClass();
 
@@ -60,11 +59,10 @@ uqVectorSubsetClass<V,M>::uqVectorSubsetClass()
 
 template <class V, class M>
 uqVectorSubsetClass<V,M>::uqVectorSubsetClass(
-  const uqBaseEnvironmentClass&  env,
   const char*                    prefix,
   const uqVectorSpaceClass<V,M>& vectorSpace)
   :
-  uqVectorSetClass<V,M>(env,prefix,0.),
+  uqVectorSetClass<V,M>(vectorSpace.env(),prefix,0.),
   m_vectorSpace        (&vectorSpace)
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
@@ -108,8 +106,7 @@ uqVectorSubsetClass<V,M>::print(std::ostream& os) const
 template<class V, class M>
 class uqBoxSubsetClass : public uqVectorSubsetClass<V,M> {
 public:
-  uqBoxSubsetClass(const uqBaseEnvironmentClass&  env,
-                   const char*                    prefix,
+  uqBoxSubsetClass(const char*                    prefix,
                    const uqVectorSpaceClass<V,M>& vectorSpace,
                    const V&                       minValues,
                    const V&                       maxValues);
@@ -132,13 +129,12 @@ protected:
 
 template<class V, class M>
 uqBoxSubsetClass<V,M>::uqBoxSubsetClass(
-  const uqBaseEnvironmentClass&  env,
   const char*                    prefix,
   const uqVectorSpaceClass<V,M>& vectorSpace,
   const V&                       minValues,
   const V&                       maxValues)
   :
-  uqVectorSubsetClass<V,M>(env,prefix,vectorSpace),
+  uqVectorSubsetClass<V,M>(prefix,vectorSpace),
   m_minValues(minValues),
   m_maxValues(maxValues)
 {
@@ -196,8 +192,7 @@ uqBoxSubsetClass<V,M>::print(std::ostream& os) const
 template<class V, class M>
 class uqIntersectionSubsetClass : public uqVectorSubsetClass<V,M> {
 public:
-  uqIntersectionSubsetClass(const uqBaseEnvironmentClass&  env,
-                            const char*                    prefix,
+  uqIntersectionSubsetClass(const char*                    prefix,
                             const uqVectorSpaceClass<V,M>& vectorSpace,
                                   double                   volume,
                             const uqVectorSetClass<V,M>&   set1,
@@ -219,14 +214,13 @@ protected:
 
 template<class V, class M>
 uqIntersectionSubsetClass<V,M>::uqIntersectionSubsetClass(
-  const uqBaseEnvironmentClass&  env,
   const char*                    prefix,
   const uqVectorSpaceClass<V,M>& vectorSpace,
         double                   volume,
   const uqVectorSetClass<V,M>&   set1,
   const uqVectorSetClass<V,M>&   set2)
   :
-  uqVectorSubsetClass<V,M>(env,prefix,vectorSpace),
+  uqVectorSubsetClass<V,M>(prefix,vectorSpace),
   m_set1                  (set1),
   m_set2                  (set2)
 {

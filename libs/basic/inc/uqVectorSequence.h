@@ -20,7 +20,7 @@
 #ifndef __UQ_VECTOR_SEQUENCE_H__
 #define __UQ_VECTOR_SEQUENCE_H__
 
-#include <uqVectorSpace.h>
+#include <uqVectorSubset.h>
 #include <uqScalarSequence.h>
 #include <uqChainStatisticalOptions.h>
 #include <uqArrayOfOneDGrids.h>
@@ -48,6 +48,7 @@ public:
   const    V&                       maxValues           () const;
   const    V&                       meanValues          () const;
   const    V&                       sampleVarianceValues() const;
+  const    uqBoxSubsetClass<V,M>&   valuesBox           () const;
            void                     deleteStoredVectors ();
 
   virtual  void                     resizeSequence      (unsigned int newSequenceSize) = 0;
@@ -188,7 +189,7 @@ protected:
                                                          unsigned int                          paramId,
                                                          std::vector<double>&                  rawData) const = 0;
 
-  const uqBaseEnvironmentClass&      m_env;
+  const uqBaseEnvironmentClass&  m_env;
   const uqVectorSpaceClass<V,M>& m_vectorSpace;
   std::string                    m_name;
 
@@ -197,6 +198,7 @@ protected:
   mutable V*                     m_maxValues;
   mutable V*                     m_meanValues;
   mutable V*                     m_sampleVarianceValues;
+  mutable uqBoxSubsetClass<V,M>* m_valuesBox;
 };
 
 template <class V, class M>
@@ -212,7 +214,8 @@ uqBaseVectorSequenceClass<V,M>::uqBaseVectorSequenceClass(
   m_minValues           (NULL),
   m_maxValues           (NULL),
   m_meanValues          (NULL),
-  m_sampleVarianceValues(NULL)
+  m_sampleVarianceValues(NULL),
+  m_valuesBox           (NULL)
 {
 }
 
@@ -220,6 +223,7 @@ template <class V, class M>
 uqBaseVectorSequenceClass<V,M>::~uqBaseVectorSequenceClass()
 {
   //clear();
+  if (m_valuesBox           ) delete m_valuesBox;
   if (m_sampleVarianceValues) delete m_sampleVarianceValues;
   if (m_meanValues          ) delete m_meanValues;
   if (m_maxValues           ) delete m_maxValues;
@@ -317,6 +321,20 @@ uqBaseVectorSequenceClass<V,M>::sampleVarianceValues() const
   }
 
   return *m_sampleVarianceValues;
+}
+
+template <class V, class M>
+const uqBoxSubsetClass<V,M>&
+uqBaseVectorSequenceClass<V,M>::valuesBox() const
+{
+  if (m_valuesBox == NULL) {
+    m_valuesBox = new uqBoxSubsetClass<V,M>(m_name.c_str(),
+                                            m_vectorSpace,
+                                            this->minValues(),
+                                            this->maxValues());
+  }
+
+  return *m_valuesBox;
 }
 
 template <class V, class M>

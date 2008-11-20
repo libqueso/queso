@@ -109,6 +109,16 @@ template<class V, class M>
 const V&
 uqBaseTKGroupClass<V,M>::preComputingPosition(unsigned int stageId) const
 {
+  UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageId,
+                      m_env.rank(),
+                      "uqBaseTKGroupClass<V,M>::preComputingPosition()",
+                      "m_preComputingPositions.size() <= stageId");
+
+  UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageId] == NULL,
+                      m_env.rank(),
+                      "uqBaseTKGroupClass<V,M>::preComputingPosition()",
+                      "m_preComputingPositions[stageId] == NULL");
+
   return *m_preComputingPositions[stageId];
 }
 
@@ -116,11 +126,6 @@ template<class V, class M>
 void
 uqBaseTKGroupClass<V,M>::setPreComputingPosition(const V& position, unsigned int stageId)
 {
-  UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() == 0,
-                      m_env.rank(),
-                      "uqBaseTKGroupClass<V,M>::setPreComputingPosition()",
-                      "m_preComputingPositions.size() = 0");
-
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageId,
                       m_env.rank(),
                       "uqBaseTKGroupClass<V,M>::setPreComputingPosition()",
@@ -224,30 +229,25 @@ uqScaledCovMatrixTKGroupClass<V,M>::rv(unsigned int stageId)
 {
   UQ_FATAL_TEST_MACRO(m_rvs.size() == 0,
                       m_env.rank(),
-                      "uqScaledCovTKGroupClass<V,M>::rv1()",
+                      "uqScaledCovMatrixTKGroupClass<V,M>::rv1()",
                       "m_rvs.size() = 0");
 
-  UQ_FATAL_TEST_MACRO(m_rvs[0] == NULL,
+  UQ_FATAL_TEST_MACRO(m_rvs[0] == NULL, // Yes, '0', because that is the id used below
                       m_env.rank(),
-                      "uqScaledCovTKGroupClass<V,M>::rv1()",
+                      "uqScaledCovMatrixTKGroupClass<V,M>::rv1()",
                       "m_rvs[0] == NULL");
-
-  UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() == 0,
-                      m_env.rank(),
-                      "uqScaledCovTKGroupClass<V,M>::rv1()",
-                      "m_preComputingPositions.size() = 0");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageId,
                       m_env.rank(),
-                      "uqScaledCovTKGroupClass<V,M>::rv1()",
+                      "uqScaledCovMatrixTKGroupClass<V,M>::rv1()",
                       "m_preComputingPositions.size() <= stageId");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageId] == NULL,
                       m_env.rank(),
-                      "uqScaledCovTKGroupClass<V,M>::rv1()",
+                      "uqScaledCovMatrixTKGroupClass<V,M>::rv1()",
                       "m_preComputingPositions[stageId] == NULL");
 
-  m_rvs[0]->updateExpectedValues(*m_preComputingPositions[stageId]);
+  m_rvs[0]->updateExpVector(*m_preComputingPositions[stageId]);
 
   return (*m_rvs[0]);
 }
@@ -256,32 +256,27 @@ template<class V, class M>
 const uqGaussianVectorRVClass<V,M>&
 uqScaledCovMatrixTKGroupClass<V,M>::rv(const std::vector<unsigned int>& stageIds)
 {
-  UQ_FATAL_TEST_MACRO(stageIds.size() == 0,
-                      m_env.rank(),
-                      "uqScaledCovTKGroupClass<V,M>::rv2()",
-                      "stageIds.size() = 0");
-
   UQ_FATAL_TEST_MACRO(m_rvs.size() < stageIds.size(),
                       m_env.rank(),
-                      "uqScaledCovTKGroupClass<V,M>::rv2()",
+                      "uqScaledCovMatrixTKGroupClass<V,M>::rv2()",
                       "m_rvs.size() < stageIds.size()");
 
   UQ_FATAL_TEST_MACRO(m_rvs[stageIds.size()-1] == NULL,
                       m_env.rank(),
-                      "uqScaledCovTKGroupClass<V,M>::rv2()",
+                      "uqScaledCovMatrixTKGroupClass<V,M>::rv2()",
                       "m_rvs[stageIds.size()-1] == NULL");
 
-  UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() < stageIds[0],
+  UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageIds[0],
                       m_env.rank(),
-                      "uqScaledCovTKGroupClass<V,M>::rv2()",
-                      "m_preComputingPositions.size() = 0");
+                      "uqScaledCovMatrixTKGroupClass<V,M>::rv2()",
+                      "m_preComputingPositions.size() <= stageIds[0]");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageIds[0]] == NULL,
                       m_env.rank(),
-                      "uqScaledCovTKGroupClass<V,M>::rv2()",
+                      "uqScaledCovMatrixTKGroupClass<V,M>::rv2()",
                       "m_preComputingPositions[stageIds[0]] == NULL");
 
-  m_rvs[stageIds.size()-1]->updateExpectedValues(*m_preComputingPositions[stageIds[0]]);
+  m_rvs[stageIds.size()-1]->updateExpVector(*m_preComputingPositions[stageIds[0]]);
 
   return (*m_rvs[stageIds.size()-1]);
 }
@@ -350,7 +345,7 @@ private:
   using uqBaseTKGroupClass<V,M>::m_rvs;
 
   const uqBaseVectorPdfClass<V,M>& m_targetPdf;
-  std::vector<const V*>            m_preComputedGrads;
+  std::vector<const V*>            m_preComputedPosPlusNewton;
 //std::vector<const M*>            m_preComputedHessians; // Hessians are stored inside the rvs
 };
 
@@ -361,10 +356,10 @@ uqHessianCovMatricesTKGroupClass<V,M>::uqHessianCovMatricesTKGroupClass(
   const std::vector<double>&       scales,
   const uqBaseVectorPdfClass<V,M>& targetPdf)
   :
-  uqBaseTKGroupClass<V,M>(prefix,vectorSpace,scales),
-  m_targetPdf            (targetPdf),
-  m_preComputedGrads     (scales.size()+1,NULL) // Yes, +1
-//m_preComputedHessians  (scales.size()+1,NULL) // Yes, +1
+  uqBaseTKGroupClass<V,M>   (prefix,vectorSpace,scales),
+  m_targetPdf               (targetPdf),
+  m_preComputedPosPlusNewton(scales.size()+1,NULL) // Yes, +1
+//m_preComputedHessians     (scales.size()+1,NULL) // Yes, +1
 {
 }
 
@@ -386,8 +381,25 @@ uqHessianCovMatricesTKGroupClass<V,M>::rv(unsigned int stageId)
 {
   UQ_FATAL_TEST_MACRO(m_rvs.size() <= stageId,
                       m_env.rank(),
-                      "uqScaledCovTKGroupClass<V,M>::rv()",
+                      "uqHessianCovMatricesTKGroupClass<V,M>::rv1()",
                       "m_rvs.size() <= stageId");
+
+  UQ_FATAL_TEST_MACRO(m_rvs[stageId] == NULL,
+                      m_env.rank(),
+                      "uqHessianCovMatricesTKGroupClass<V,M>::rv1()",
+                      "m_rvs[stageId] == NULL");
+
+  UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageId,
+                      m_env.rank(),
+                      "uqHessianCovMatricesTKGroupClass<V,M>::rv1()",
+                      "m_preComputingPositions.size() <= stageId");
+
+  UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageId] == NULL,
+                      m_env.rank(),
+                      "uqHessianCovMatricesTKGroupClass<V,M>::rv1()",
+                      "m_preComputingPositions[stageId] == NULL");
+
+  m_rvs[stageId]->updateExpVector(*m_preComputedPosPlusNewton[stageId]);
 
   return *m_rvs[stageId];
 }
@@ -396,24 +408,54 @@ template<class V, class M>
 const uqGaussianVectorRVClass<V,M>&
 uqHessianCovMatricesTKGroupClass<V,M>::rv(const std::vector<unsigned int>& stageIds)
 {
-  UQ_FATAL_TEST_MACRO(stageIds.size() == 0,
+  UQ_FATAL_TEST_MACRO(m_rvs.size() <= stageIds[0],
                       m_env.rank(),
-                      "uqScaledCovTKGroupClass<V,M>::rv()",
-                      "stageIds.size() = 0");
+                      "uqHessianCovMatricesTKGroupClass<V,M>::rv2()",
+                      "m_rvs.size() <= stageIds[0]");
 
-  UQ_FATAL_TEST_MACRO(m_rvs.size() < stageIds.size(),
+  UQ_FATAL_TEST_MACRO(m_rvs[stageIds[0]] == NULL,
                       m_env.rank(),
-                      "uqScaledCovTKGroupClass<V,M>::rv()",
-                      "m_rvs.size() < stageIds.size()");
+                      "uqHessianCovMatricesTKGroupClass<V,M>::rv2()",
+                      "m_rvs[stageIds[0]] == NULL");
 
-  return *m_rvs[stageIds.size()-1];
+  UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageIds[0],
+                      m_env.rank(),
+                      "uqHessianCovMatricesTKGroupClass<V,M>::rv2()",
+                      "m_preComputingPositions.size() <= stageIds[0]");
+
+  UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageIds[0]] == NULL,
+                      m_env.rank(),
+                      "uqHessianCovMatricesTKGroupClass<V,M>::rv2()",
+                      "m_preComputingPositions[stageIds[0]] == NULL");
+
+  m_rvs[stageIds[0]]->updateExpVector(*m_preComputedPosPlusNewton[stageIds[0]]);
+
+  return *m_rvs[stageIds[0]];
 }
 
 template<class V, class M>
 void
 uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position, unsigned int stageId)
 {
+  UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() != m_preComputedPosPlusNewton.size(),
+                      m_env.rank(),
+                      "uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
+                      "m_preComputingPositions.size() != m_preComputedPosPlusNewton.size()");
+
   uqBaseTKGroupClass<V,M>::setPreComputingPosition(position,stageId);
+  for (unsigned int i = 0; i < m_preComputedPosPlusNewton.size(); ++i) {
+#if 0
+    double factor = 1./m_scales[i]/m_scales[i];
+    m_rvs[i] = new uqGaussianVectorRVClass<V,M>(m_prefix.c_str(),
+                                                *m_vectorSpace,
+                                                m_vectorSpace->zeroVector(),
+                                                factor*covMatrix);
+    if (m_preComputedPosPlusNewton[i]) {
+      delete m_preComputedPosPlusNewton[i];
+      m_preComputedPosPlusNewton[i] = NULL;
+    }
+#endif
+  }
   return;
 }
 
@@ -421,7 +463,18 @@ template<class V, class M>
 void
 uqHessianCovMatricesTKGroupClass<V,M>::clearPreComputingPositions()
 {
+  UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() != m_preComputedPosPlusNewton.size(),
+                      m_env.rank(),
+                      "uqHessianCovMatricesTKGroupClass<V,M>::clearPreComputingPositions()",
+                      "m_preComputingPositions.size() != m_preComputedPosPlusNewton.size()");
+
   uqBaseTKGroupClass<V,M>::clearPreComputingPositions();
+  for (unsigned int i = 0; i < m_preComputedPosPlusNewton.size(); ++i) {
+    if (m_preComputedPosPlusNewton[i]) {
+      delete m_preComputedPosPlusNewton[i];
+      m_preComputedPosPlusNewton[i] = NULL;
+    }
+  }
   return;
 }
 

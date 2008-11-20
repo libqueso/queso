@@ -960,7 +960,6 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
               << ", denContrib = " << denContrib
               << std::endl;
   }
-
   logNumerator   += numContrib;
   logDenominator += denContrib;
 
