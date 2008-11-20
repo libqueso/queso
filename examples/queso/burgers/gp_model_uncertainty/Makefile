@@ -34,8 +34,8 @@ LIBS = \
 	-lgsl \
 	-lgslcblas \
 	-lblas \
-	-lboost_program_options
-	-lburgers
+	-lboost_program_options \
+	-llegendrePoly
 
 else
 
@@ -73,8 +73,8 @@ LIBS = \
 	-lgsl \
 	-lgslcblas \
 	-lblas \
-	-lboost_program_options
-	-lburgers
+	-lboost_program_options \
+	-llegendrePoly
 
 endif
 

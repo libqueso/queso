@@ -35,8 +35,7 @@
 #include <gsl/gsl_vector.h>
 
 // burgers
-#include <tools.h>
-#include <quesoFunctions.h>
+#include <quesoInterface.h>
 
 //********************************************************
 // Likelihood function object for both inverse problems of the validation cycle.
@@ -52,8 +51,12 @@ likelihoodRoutine_DataClass
 {
   likelihoodRoutine_DataClass(const uqBaseEnvironmentClass& env,
 			      double Re,
-                              const char* fileName);
+                              const char* fileName,
+			      burgersQuesoInterface& interface);
  ~likelihoodRoutine_DataClass();
+
+  // burgers/queso interface class
+  burgersQuesoInterface& burgersInterface;
 
   // Experimental data
   int nDataPoints; // number of data points
@@ -61,21 +64,23 @@ likelihoodRoutine_DataClass
   double *dataLocations; // x locations where state was measured
   double *dataValues; // measured values of averaged state at dataLocations
 
-  // For Burgers' solver
-  quadBasis *pQB; // quad points, weights, and basis evaluation
-  gsl_vector *U; // solution (re-used after each solve at IC for next solve to hopefully decrease Newton iterations)
+//   // For Burgers' solver
+//   quadBasis *pQB; // quad points, weights, and basis evaluation
+//   gsl_vector *U; // solution (re-used after each solve at IC for next solve to hopefully decrease Newton iterations)
 };
 
 // likelihoodRoutine_DataClass constructor: Read data, allocate/initialize memory for Burgers' solver
 template<class P_V, class P_M>
 likelihoodRoutine_DataClass<P_V,P_M>::likelihoodRoutine_DataClass(const uqBaseEnvironmentClass &env, 
-								  double Re, const char *fileName)
+								  double Re, const char *fileName,
+								  burgersQuesoInterface& interface)
   :
+  burgersInterface(interface),
   nDataPoints(0),
   dataLocations(0),
-  dataValues(0),
-  pQB(0),
-  U(0)
+  dataValues(0)//,
+  //pQB(0),
+  //U(0)
 {
   std::cout << "Calling likelihoodRoutine_DataClass constructor...";
 
@@ -112,13 +117,13 @@ likelihoodRoutine_DataClass<P_V,P_M>::likelihoodRoutine_DataClass(const uqBaseEn
   // close file
   fclose(fp);
 
-  // allocate and initialize quadrature points
-  UQ_FATAL_TEST_MACRO( (evaluateQuadratureAndBasisForResidual(100, &pQB)!=0), env.rank(),
-		       "uqAppl(), in uqBurgers_No_Model_Uncertainty (likelihoodRoutine_DataClass constructor)",
-		       "failed while allocating/computing quadrature points" );
+//   // allocate and initialize quadrature points
+//   UQ_FATAL_TEST_MACRO( (evaluateQuadratureAndBasisForResidual(100, &pQB)!=0), env.rank(),
+// 		       "uqAppl(), in uqBurgers_No_Model_Uncertainty (likelihoodRoutine_DataClass constructor)",
+// 		       "failed while allocating/computing quadrature points" );
 		       
-  // allocate and initialize solution (to zero) 
-  U = gsl_vector_calloc(100);
+//   // allocate and initialize solution (to zero) 
+//   U = gsl_vector_calloc(100);
 
   std::cout << "success.\n";
 } // end constructor
@@ -131,8 +136,8 @@ likelihoodRoutine_DataClass<P_V,P_M>::~likelihoodRoutine_DataClass()
   std::cout << "Calling likelihoodRoutine_DataClass destructor...";
   delete[] dataLocations;
   delete[] dataValues;
-  freeQuadratureAndBasisForResidual(pQB);
-  gsl_vector_free(U);
+//   freeQuadratureAndBasisForResidual(pQB);
+//   gsl_vector_free(U);
   std::cout << "success.\n";
 } // end destructor
 
@@ -149,20 +154,27 @@ likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
   const double Re = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->Re;
   const double *xx = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->dataLocations;
   const double *ue = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->dataValues;
+  burgersQuesoInterface& burgersInterface = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->burgersInterface;
 
-  // Solver data
-  quadBasis *pQB = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->pQB;
-  gsl_vector *U = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->U;
+//   // Solver data
+//   quadBasis *pQB = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->pQB;
+//   gsl_vector *U = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->U;
 
   // Model parameter
-  const double kappa = paramValues[0];
+  double kappa = paramValues[0];
 
   // Model data
   double um[nDataPoints];
 
   
   // Evaluate model
-  int ierr = solveForStateAtXLocations(xx, nDataPoints, 1.0/Re, kappa, U, pQB, um);
+//   int ierr = solveForStateAtXLocations(xx, nDataPoints, 1.0/Re, kappa, U, pQB, um);
+//   UQ_FATAL_TEST_MACRO( (ierr!=0), UQ_UNAVAILABLE_RANK,
+// 		       "uqAppl(), in uqBurgers_No_Model_Uncertainty (likelihoodRoutine)",
+// 		       "failed solving Burgers' eqn" );
+
+  // Evaluate model
+  int ierr = burgersInterface.solveForStateAtDataLocations(1.0/Re, kappa, um);
   UQ_FATAL_TEST_MACRO( (ierr!=0), UQ_UNAVAILABLE_RANK,
 		       "uqAppl(), in uqBurgers_No_Model_Uncertainty (likelihoodRoutine)",
 		       "failed solving Burgers' eqn" );
@@ -190,21 +202,29 @@ likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 struct
 qoiRoutine_DataClass
 {
-  qoiRoutine_DataClass();
+  qoiRoutine_DataClass(burgersQuesoInterface& interface);
   ~qoiRoutine_DataClass();
 
+  double qoiRe;
+
+  // burgers/queso interface class
+  burgersQuesoInterface& burgersInterface;
+
   // For the Burgers solver
-  quadBasis *pQB; // quad points, weights, and basis evaluation
+  //quadBasis *pQB; // quad points, weights, and basis evaluation
 };
 
 // constructor
-qoiRoutine_DataClass::qoiRoutine_DataClass()
+qoiRoutine_DataClass::qoiRoutine_DataClass(burgersQuesoInterface& interface)
+  :
+  burgersInterface(interface)
 {
   cout << "Calling qoiRoutine_DataClass constructor...";
-  // allocate and initialize quadrature points
-  UQ_FATAL_TEST_MACRO( (evaluateQuadratureAndBasisForResidual(100, &pQB)!=0), UQ_UNAVAILABLE_RANK,
-		       "uqAppl(), in uqBurgers_No_Model_Uncertainty (likelihoodRoutine_DataClass constructor)",
-		       "failed while allocating/computing quadrature points" );
+  qoiRe = 200;
+//   // allocate and initialize quadrature points
+//   UQ_FATAL_TEST_MACRO( (evaluateQuadratureAndBasisForResidual(100, &pQB)!=0), UQ_UNAVAILABLE_RANK,
+// 		       "uqAppl(), in uqBurgers_No_Model_Uncertainty (likelihoodRoutine_DataClass constructor)",
+// 		       "failed while allocating/computing quadrature points" );
   cout << "success.\n";
 } // end constructor
 
@@ -212,7 +232,7 @@ qoiRoutine_DataClass::qoiRoutine_DataClass()
 qoiRoutine_DataClass::~qoiRoutine_DataClass()
 {
   cout << "Calling qoiRoutine_DataClass destructor...";
-  freeQuadratureAndBasisForResidual(pQB);
+  //freeQuadratureAndBasisForResidual(pQB);
   cout << "success.\n";
 } // end destructor
 
@@ -222,13 +242,21 @@ void qoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiVal
 {
 
   int ierr;
-  const double kappa = paramValues[0];
+  double kappa = paramValues[0];
   double u_x1;
-  quadBasis *pQB = ((qoiRoutine_DataClass *) functionDataPtr)->pQB;
+  double qoiRe = ((qoiRoutine_DataClass *) functionDataPtr)->qoiRe;
+  burgersQuesoInterface& burgersInterface = ((qoiRoutine_DataClass *) functionDataPtr)->burgersInterface;
+  //quadBasis *pQB = ((qoiRoutine_DataClass *) functionDataPtr)->pQB;
 
-  UQ_FATAL_TEST_MACRO( (computeGradientAtOne(kappa, pQB, &u_x1)!=0), UQ_UNAVAILABLE_RANK,
+//   UQ_FATAL_TEST_MACRO( (computeGradientAtOne(kappa, pQB, &u_x1)!=0), UQ_UNAVAILABLE_RANK,
+// 		       "uqAppl(), in uqBurgers_No_Model_Uncertainty (qoiRoutine)",
+// 		       "failed while computing QoI.");
+
+  ierr = burgersInterface.solveForViscFluxAtOne(1.0/qoiRe, kappa, &u_x1);
+  UQ_FATAL_TEST_MACRO( (ierr!=0), UQ_UNAVAILABLE_RANK,
 		       "uqAppl(), in uqBurgers_No_Model_Uncertainty (qoiRoutine)",
-		       "failed while computing QoI.");
+		       "failed solving Burgers' eqn" );
+
   qoiValues[0] = u_x1;
   return;
 }
@@ -315,7 +343,8 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                              paramMinValues,
                                              paramMaxValues);
 
-  likelihoodRoutine_DataClass<P_V,P_M> calLikelihoodRoutine_Data(env, 10.0, "calibration_data.dat");
+  burgersQuesoInterface cal_burgersInterface(100, 10.0, "calibration_data.dat");
+  likelihoodRoutine_DataClass<P_V,P_M> calLikelihoodRoutine_Data(env, 10.0, "calibration_data.dat", cal_burgersInterface);
 
   cycle.setCalIP(calPriorRv, likelihoodRoutine<P_V,P_M>, (void *) &calLikelihoodRoutine_Data,
 		 true); // the likelihood routine computes [-2.*ln(Likelihood)]
@@ -326,13 +355,11 @@ uqAppl(const uqBaseEnvironmentClass& env)
     cycle.calIP().postRv().imageSpace().newGaussianMatrix(cycle.calIP().priorRv().pdf().domainVarianceValues(),
 							  calInitialValues);
 
-  cycle.calIP().solveWithBayesMarkovChain(calInitialValues,
-                                          *calProposalCovMatrix,
-                                          NULL); // use default kernel from library
+  cycle.calIP().solveWithBayesMarkovChain(calInitialValues, calProposalCovMatrix);
   delete calProposalCovMatrix;
 
   // Deal with forward problem
-  qoiRoutine_DataClass calQoiRoutine_Data;
+  qoiRoutine_DataClass calQoiRoutine_Data(cal_burgersInterface);
 
   cycle.setCalFP(qoiRoutine<P_V,P_M,Q_V,Q_M>, (void *) &calQoiRoutine_Data);
 
@@ -357,7 +384,8 @@ uqAppl(const uqBaseEnvironmentClass& env)
   }
 
   // Set up inverse problem
-  likelihoodRoutine_DataClass<P_V,P_M> valLikelihoodRoutine_Data(env, 100.0, "validation_data.dat");
+  burgersQuesoInterface val_burgersInterface(100, 100.0, "validation_data.dat");
+  likelihoodRoutine_DataClass<P_V,P_M> valLikelihoodRoutine_Data(env, 100.0, "validation_data.dat", val_burgersInterface);
 
   cycle.setValIP(likelihoodRoutine<P_V,P_M>, (void *) &valLikelihoodRoutine_Data,
                  true); // the likelihood routine computes [-2.*ln(Likelihood)]
@@ -371,13 +399,12 @@ uqAppl(const uqBaseEnvironmentClass& env)
 							  cycle.calIP().postRv().realizer().imageExpectedValues()); 
 
   cycle.valIP().solveWithBayesMarkovChain(cycle.calIP().postRv().realizer().imageExpectedValues(),
-                                          *valProposalCovMatrix,
-                                          NULL); // use default kernel from library
+                                          valProposalCovMatrix);
   delete valProposalCovMatrix;
 
 
   // Deal with forward problem
-  qoiRoutine_DataClass valQoiRoutine_Data;
+  qoiRoutine_DataClass valQoiRoutine_Data(val_burgersInterface);
 
   cycle.setValFP(qoiRoutine<P_V,P_M,Q_V,Q_M>, (void *) &valQoiRoutine_Data);
 

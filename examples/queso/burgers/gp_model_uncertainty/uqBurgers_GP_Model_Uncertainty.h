@@ -37,8 +37,7 @@
 #include <gsl/gsl_vector.h>
 
 // burgers
-#include <tools.h>
-#include <quesoFunctions.h>
+#include <quesoInterface.h>
 
 
 // A struct used by the likelihood data
@@ -153,7 +152,9 @@ likelihoodRoutine_DataClass
 			      double cal_Re,
 			      double val_Re,
                               const char* calFileName,
-			      const char* valFileName);
+			      const char* valFileName,
+			      burgersQuesoInterface& calInterface,
+			      burgersQuesoInterface& valInterface);
  ~likelihoodRoutine_DataClass();
 
   // Experimental data and model uncertainty
@@ -161,9 +162,12 @@ likelihoodRoutine_DataClass
   inverseProblem_DataClass *calibrationData; // calibration data and covariance
   inverseProblem_DataClass *validationData;  // validation data and covariance
 
-  // For Burgers' solver
-  quadBasis *pQB; // quad points, weights, and basis evaluation
-  gsl_vector *U;  // solution (re-used after each solve at IC for next solve to hopefully decrease Newton iterations)
+  burgersQuesoInterface& calibrationBurgersInterface;
+  burgersQuesoInterface& validationBurgersInterface;
+
+/*   // For Burgers' solver */
+/*   quadBasis *pQB; // quad points, weights, and basis evaluation */
+/*   gsl_vector *U;  // solution (re-used after each solve at IC for next solve to hopefully decrease Newton iterations) */
 };
 
 // Declaration of function to compute likelihood from misfit
@@ -180,14 +184,18 @@ validationMean(const double sig2, const double ellx, const double ellRe, const d
 
 
 // likelihoodRoutine_DataClass constructor: Read data, allocate/initialize memory for Burgers' solver
-likelihoodRoutine_DataClass::likelihoodRoutine_DataClass(const uqBaseEnvironmentClass &env, 
-							 double cal_Re, 
+likelihoodRoutine_DataClass::likelihoodRoutine_DataClass(const uqBaseEnvironmentClass& env,
+							 double cal_Re,
 							 double val_Re,
-							 const char *calFileName,
-							 const char *valFileName)
+							 const char* calFileName,
+							 const char* valFileName,
+							 burgersQuesoInterface& calInterface,
+							 burgersQuesoInterface& valInterface)
   :
-  pQB(0),
-  U(0)
+  calibrationBurgersInterface(calInterface),
+  validationBurgersInterface(valInterface)
+//   pQB(0),
+//   U(0)
 {
   // allocation and initialize calibration and/or validation data
   calPhase = false;
@@ -204,13 +212,13 @@ likelihoodRoutine_DataClass::likelihoodRoutine_DataClass(const uqBaseEnvironment
     validationData = new inverseProblem_DataClass(env, val_Re, valFileName);
   }
 
-  // allocate and initialize quadrature points
-  UQ_FATAL_TEST_MACRO( (evaluateQuadratureAndBasisForResidual(100, &pQB)!=0), env.rank(),
-		       "uqAppl(), in uqBurgers_No_Model_Uncertainty (likelihoodRoutine_DataClass constructor)",
-		       "failed while allocating/computing quadrature points" );
+//   // allocate and initialize quadrature points
+//   UQ_FATAL_TEST_MACRO( (evaluateQuadratureAndBasisForResidual(100, &pQB)!=0), env.rank(),
+// 		       "uqAppl(), in uqBurgers_No_Model_Uncertainty (likelihoodRoutine_DataClass constructor)",
+// 		       "failed while allocating/computing quadrature points" );
 		       
-  // allocate and initialize solution (to zero) 
-  U = gsl_vector_calloc(100);
+//   // allocate and initialize solution (to zero) 
+//   U = gsl_vector_calloc(100);
 
 } // end constructor
 
@@ -220,8 +228,8 @@ likelihoodRoutine_DataClass::~likelihoodRoutine_DataClass()
 {
   delete calibrationData;
   delete validationData;
-  freeQuadratureAndBasisForResidual(pQB);
-  gsl_vector_free(U);
+  //freeQuadratureAndBasisForResidual(pQB);
+  //gsl_vector_free(U);
 } // end destructor
 
 
@@ -250,6 +258,8 @@ likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
   cal_ue = ((likelihoodRoutine_DataClass *) functionDataPtr)->calibrationData->dataValues;
 
   cal_cholK = ((likelihoodRoutine_DataClass *) functionDataPtr)->calibrationData->cholK;
+
+  burgersQuesoInterface& calInterface = ((likelihoodRoutine_DataClass *) functionDataPtr)->calibrationBurgersInterface;
     
   // Gaussian process model uncertainty
   if( !calPhase ){
@@ -262,10 +272,13 @@ likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
     // Gaussian process model uncertainty
     val_cholK = ((likelihoodRoutine_DataClass *) functionDataPtr)->validationData->cholK;
   }
+  
+  burgersQuesoInterface& valInterface = ((likelihoodRoutine_DataClass *) functionDataPtr)->validationBurgersInterface;
 
-  // Solver data
-  quadBasis *pQB = ((likelihoodRoutine_DataClass *) functionDataPtr)->pQB;
-  gsl_vector *U = ((likelihoodRoutine_DataClass *) functionDataPtr)->U;
+
+//   // Solver data
+//   quadBasis *pQB = ((likelihoodRoutine_DataClass *) functionDataPtr)->pQB;
+//   gsl_vector *U = ((likelihoodRoutine_DataClass *) functionDataPtr)->U;
 
   // Model parameter
   double kappa = paramValues[0];
@@ -299,8 +312,18 @@ likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 			 "failed while computing validation phase GP mean" );
   }
 
-  // Evaluate model
-  int ierr = solveForStateAtXLocations(xx, nDataPoints, 1.0/Re, kappa, U, pQB, um);
+//   // Evaluate model
+//   int ierr = solveForStateAtXLocations(xx, nDataPoints, 1.0/Re, kappa, U, pQB, um);
+//   UQ_FATAL_TEST_MACRO( (ierr!=0), UQ_UNAVAILABLE_RANK,
+// 		       "uqAppl(), in uqBurgers_No_Model_Uncertainty (likelihoodRoutine)",
+// 		       "failed solving Burgers' eqn" );
+
+  int ierr;
+  if( calPhase ){
+    ierr = calInterface.solveForStateAtDataLocations(1.0/Re, kappa, um);
+  } else {
+    ierr = valInterface.solveForStateAtDataLocations(1.0/Re, kappa, um);
+  }
   UQ_FATAL_TEST_MACRO( (ierr!=0), UQ_UNAVAILABLE_RANK,
 		       "uqAppl(), in uqBurgers_No_Model_Uncertainty (likelihoodRoutine)",
 		       "failed solving Burgers' eqn" );
@@ -327,7 +350,9 @@ template<class Q_V, class Q_M>
 struct
 qoiRoutine_DataClass
 {
-  qoiRoutine_DataClass( uqVectorSpaceClass<Q_V,Q_M>& myQoiSpace );
+  qoiRoutine_DataClass( uqVectorSpaceClass<Q_V,Q_M>& myQoiSpace, 
+			burgersQuesoInterface& calInterface,
+			burgersQuesoInterface& valInterface );
   ~qoiRoutine_DataClass();
 
   void qoiMonteCarloIntegrate();
@@ -345,15 +370,23 @@ qoiRoutine_DataClass
   uqArrayOfOneDGridsClass<Q_V, Q_M>* cdfGrids;
   uqArrayOfOneDTablesClass<Q_V, Q_M>* cdfValues;
 
+  // interfaces to burgers solver
+  burgersQuesoInterface& calibrationBurgersInterface;
+  burgersQuesoInterface& validationBurgersInterface;
+
   // For the Burgers solver
-  quadBasis *pQB; // quad points, weights, and basis evaluation
+  //quadBasis *pQB; // quad points, weights, and basis evaluation
 };
 
 // constructor
 template<class Q_V, class Q_M>
-qoiRoutine_DataClass<Q_V, Q_M>::qoiRoutine_DataClass( uqVectorSpaceClass<Q_V,Q_M>& myQoiSpace )
+qoiRoutine_DataClass<Q_V, Q_M>::qoiRoutine_DataClass( uqVectorSpaceClass<Q_V,Q_M>& myQoiSpace, 
+						      burgersQuesoInterface& calInterface,
+						      burgersQuesoInterface& valInterface )
   :
-  qoiSpace(myQoiSpace)
+  qoiSpace(myQoiSpace),
+  calibrationBurgersInterface(calInterface),
+  validationBurgersInterface(valInterface)
 {
 
   // call RV constructor (is this right??)
@@ -376,10 +409,10 @@ qoiRoutine_DataClass<Q_V, Q_M>::qoiRoutine_DataClass( uqVectorSpaceClass<Q_V,Q_M
 
   cdfValues = new uqArrayOfOneDTablesClass<Q_V, Q_M>("qoi_cdf", qoiRv->imageSpace());
 
-  // allocate and initialize quadrature points
-  UQ_FATAL_TEST_MACRO( (evaluateQuadratureAndBasisForResidual(100, &pQB)!=0), UQ_UNAVAILABLE_RANK,
-		       "uqAppl(), in uqBurgers_No_Model_Uncertainty (likelihoodRoutine_DataClass constructor)",
-		       "failed while allocating/computing quadrature points" );
+//   // allocate and initialize quadrature points
+//   UQ_FATAL_TEST_MACRO( (evaluateQuadratureAndBasisForResidual(100, &pQB)!=0), UQ_UNAVAILABLE_RANK,
+// 		       "uqAppl(), in uqBurgers_No_Model_Uncertainty (likelihoodRoutine_DataClass constructor)",
+// 		       "failed while allocating/computing quadrature points" );
 } // end constructor
 
 // destructor
@@ -392,7 +425,7 @@ qoiRoutine_DataClass<Q_V, Q_M>::~qoiRoutine_DataClass()
   delete numIntervalsVec;
   delete cdfGrids;
   delete cdfValues;
-  freeQuadratureAndBasisForResidual(pQB);
+  //freeQuadratureAndBasisForResidual(pQB);
 } // end destructor
 
 
@@ -462,7 +495,7 @@ calibrationQoiMeanChains(const uqBaseVectorRVClass<P_V,P_M>& calPostRv,
 {
   int ierr;
   unsigned int seqSize = calPostRv.realizer().period();
-  quadBasis *pQB = qoiRoutine_Data.pQB;
+  //quadBasis *pQB = qoiRoutine_Data.pQB;
 
   int N1 = calLikelihoodRoutine_Data.calibrationData->nDataPoints;
   double Re = calLikelihoodRoutine_Data.calibrationData->Re;
@@ -472,8 +505,10 @@ calibrationQoiMeanChains(const uqBaseVectorRVClass<P_V,P_M>& calPostRv,
   double *cholK = calLikelihoodRoutine_Data.calibrationData->cholK;
   double variance;
 
-  gsl_vector *U1 = calLikelihoodRoutine_Data.U;
+  //gsl_vector *U1 = calLikelihoodRoutine_Data.U;
   double um1[N1];
+
+  burgersQuesoInterface& calInterface = qoiRoutine_Data.calibrationBurgersInterface;
 
 
   // Compute variance of conditional dist of d(eps)/dx (it is independent of kappa)
@@ -496,22 +531,33 @@ calibrationQoiMeanChains(const uqBaseVectorRVClass<P_V,P_M>& calPostRv,
     calPostRv.realizer().realization(tmpV);
 
     // compute quantity of interest chain
-    ierr = computeGradientAtOne(tmpV[0], pQB, &(tmpQ[0]));
-    if( ierr != 0 ){
-      printf("WARNING: Burgers solver was not successful in propagQoiRoutine!\n");
-      printf("         Results are probably meaningless.\n");
-      fflush(stdout);
-    }
+//     ierr = computeGradientAtOne(tmpV[0], pQB, &(tmpQ[0]));
+//     if( ierr != 0 ){
+//       printf("WARNING: Burgers solver was not successful in propagQoiRoutine!\n");
+//       printf("         Results are probably meaningless.\n");
+//       fflush(stdout);
+//     }
+
+    ierr = calInterface.solveForViscFluxAtOne(1.0/200.0, tmpV[0], &(tmpQ[0]));
+    UQ_FATAL_TEST_MACRO( (ierr!=0), UQ_UNAVAILABLE_RANK,
+			 "Burgers solver unsuccessful in calibrationQoiMeanChains",
+			 "quitting" );
+
+    //tmpQ[0] *= -200.0; // for backward compatibility... should fix this
     qoiRoutine_Data.qoi_chain->setPositionValues(i,tmpQ);
 
     // compute mean value of d(eps)/dx for this kappa
     // evaluate misfit for stage 1 scenario
-    ierr = solveForStateAtXLocations(xLoc1, N1, 1.0/Re, tmpV[0], U1, pQB, um1);
-    if( ierr != 0 ){
-      printf("WARNING: Burgers solver was not successful!\n");
-      printf("         Results are probably meaningless.\n");
-      fflush(stdout);
-    }
+//     ierr = solveForStateAtXLocations(xLoc1, N1, 1.0/Re, tmpV[0], U1, pQB, um1);
+//     if( ierr != 0 ){
+//       printf("WARNING: Burgers solver was not successful!\n");
+//       printf("         Results are probably meaningless.\n");
+//       fflush(stdout);
+//     }
+    ierr = calInterface.solveForStateAtDataLocations(1.0/Re, tmpV[0], um1);
+    UQ_FATAL_TEST_MACRO( (ierr!=0), UQ_UNAVAILABLE_RANK,
+			 "Burgers solver unsuccessful in calibrationQoiMeanChains",
+			 "quitting" );
 
     double s1_misfit[N1];
     for( int jj=0; jj<N1; jj++ ) s1_misfit[jj] = (ue1[jj] - um1[jj]);
@@ -552,7 +598,7 @@ validationQoiMeanChains(const uqBaseVectorRVClass<P_V,P_M>& valPostRv,
 {
   int ierr;
   unsigned int seqSize = valPostRv.realizer().period();
-  quadBasis *pQB = qoiRoutine_Data.pQB;
+  //quadBasis *pQB = qoiRoutine_Data.pQB;
 
   int N1 = valLikelihoodRoutine_Data.calibrationData->nDataPoints;
   double Re1 = valLikelihoodRoutine_Data.calibrationData->Re;
@@ -569,8 +615,11 @@ validationQoiMeanChains(const uqBaseVectorRVClass<P_V,P_M>& valPostRv,
   double xLoc3 = 1.0;
   double variance1, variance2;
 
-  gsl_vector *U1 = valLikelihoodRoutine_Data.U;
+  //gsl_vector *U1 = valLikelihoodRoutine_Data.U;
   double um1[N1], um2[N2], cal_qoi_mean;
+
+  burgersQuesoInterface& calInterface = qoiRoutine_Data.calibrationBurgersInterface;
+  burgersQuesoInterface& valInterface = qoiRoutine_Data.validationBurgersInterface;
 
 
   // Compute variance of conditional dist of d(eps)/dx (it is independent of kappa)
@@ -595,23 +644,35 @@ validationQoiMeanChains(const uqBaseVectorRVClass<P_V,P_M>& valPostRv,
   for (unsigned int i = 0; i < seqSize; ++i) {
     valPostRv.realizer().realization(tmpV);
 
-    // compute quantity of interest chain
-    ierr = computeGradientAtOne(tmpV[0], pQB, &(tmpQ[0]));
-    if( ierr != 0 ){
-      printf("WARNING: Burgers solver was not successful in propagQoiRoutine!\n");
-      printf("         Results are probably meaningless.\n");
-      fflush(stdout);
-    }
+//     // compute quantity of interest chain
+//     ierr = computeGradientAtOne(tmpV[0], pQB, &(tmpQ[0]));
+//     if( ierr != 0 ){
+//       printf("WARNING: Burgers solver was not successful in propagQoiRoutine!\n");
+//       printf("         Results are probably meaningless.\n");
+//       fflush(stdout);
+//     }
+
+    ierr = valInterface.solveForViscFluxAtOne(1.0/200.0, tmpV[0], &(tmpQ[0]));
+    UQ_FATAL_TEST_MACRO( (ierr!=0), UQ_UNAVAILABLE_RANK,
+			 "Burgers solver unsuccessful in calibrationQoiMeanChains",
+			 "quitting" );
+
+    //tmpQ[0] *= -200.0; // for backward compatibility... should fix this
     qoiRoutine_Data.qoi_chain->setPositionValues(i,tmpQ);
 
     // compute mean value of d(eps)/dx for this kappa
     // evaluate misfit for stage 1 scenario
-    ierr = solveForStateAtXLocations(xLoc1, N1, 1.0/Re1, tmpV[0], U1, pQB, um1);
-    if( ierr != 0 ){
-      printf("WARNING: Burgers solver was not successful!\n");
-      printf("         Results are probably meaningless.\n");
-      fflush(stdout);
-    }
+//     ierr = solveForStateAtXLocations(xLoc1, N1, 1.0/Re1, tmpV[0], U1, pQB, um1);
+//     if( ierr != 0 ){
+//       printf("WARNING: Burgers solver was not successful!\n");
+//       printf("         Results are probably meaningless.\n");
+//       fflush(stdout);
+//     }
+
+    ierr = calInterface.solveForStateAtDataLocations(1.0/Re1, tmpV[0], um1);
+    UQ_FATAL_TEST_MACRO( (ierr!=0), UQ_UNAVAILABLE_RANK,
+			 "Burgers solver unsuccessful in calibrationQoiMeanChains",
+			 "quitting" );
 
     double s1_misfit[N1];
     for( int jj=0; jj<N1; jj++ ) s1_misfit[jj] = (ue1[jj] - um1[jj]);
@@ -620,13 +681,18 @@ validationQoiMeanChains(const uqBaseVectorRVClass<P_V,P_M>& valPostRv,
 					s1_misfit, cholK1, &cal_qoi_mean);
 
 
-    // compute stage 2 mean value of d(eps)/dx for this kappa
-    ierr = solveForStateAtXLocations(xLoc2, N2, 1.0/Re2, tmpV[0], U1, pQB, um2);
-    if( ierr != 0 ){
-      printf("WARNING: Burgers solver was not successful!\n");
-      printf("         Results are probably meaningless.\n");
-      fflush(stdout);
-    }
+//     // compute stage 2 mean value of d(eps)/dx for this kappa
+//     ierr = solveForStateAtXLocations(xLoc2, N2, 1.0/Re2, tmpV[0], U1, pQB, um2);
+//     if( ierr != 0 ){
+//       printf("WARNING: Burgers solver was not successful!\n");
+//       printf("         Results are probably meaningless.\n");
+//       fflush(stdout);
+//     }
+
+    ierr = calInterface.solveForStateAtDataLocations(1.0/Re2, tmpV[0], um2);
+    UQ_FATAL_TEST_MACRO( (ierr!=0), UQ_UNAVAILABLE_RANK,
+			 "Burgers solver unsuccessful in calibrationQoiMeanChains",
+			 "quitting" );
 
     double cal_mean[N2];
     ierr = validationMean(1e-4, 0.1, 0.5, tmpV[0], &valLikelihoodRoutine_Data, cal_mean);
@@ -727,7 +793,11 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                              paramMinValues,
                                              paramMaxValues);
 
-  likelihoodRoutine_DataClass calLikelihoodRoutine_Data(env, 10.0, 100.0, "calibration_data.dat", NULL);
+  burgersQuesoInterface cal_burgersInterface(100, 10.0, "calibration_data.dat");
+  burgersQuesoInterface val_burgersInterface(100, 10.0, "validation_data.dat");
+
+  likelihoodRoutine_DataClass calLikelihoodRoutine_Data(env, 10.0, 100.0, "calibration_data.dat", NULL,
+							cal_burgersInterface, val_burgersInterface);
 
   // Set GP covariance for calibration phase (from prior)
   ierr = calibrationCovarianceChol(1e-4, 0.1, calLikelihoodRoutine_Data.calibrationData);
@@ -745,14 +815,12 @@ uqAppl(const uqBaseEnvironmentClass& env)
     cycle.calIP().postRv().imageSpace().newGaussianMatrix(cycle.calIP().priorRv().pdf().domainVarianceValues(),
 							  calInitialValues);
 
-  cycle.calIP().solveWithBayesMarkovChain(calInitialValues,
-                                          *calProposalCovMatrix,
-                                          NULL); // use default kernel from library
+  cycle.calIP().solveWithBayesMarkovChain(calInitialValues, calProposalCovMatrix);
   delete calProposalCovMatrix;
 
   
   // Forward propagation problem
-  qoiRoutine_DataClass<Q_V, Q_M> calQoiRoutine_Data(qoiSpace);
+  qoiRoutine_DataClass<Q_V, Q_M> calQoiRoutine_Data(qoiSpace, cal_burgersInterface, val_burgersInterface);
   calibrationQoiMeanChains(cycle.calIP().postRv(), calLikelihoodRoutine_Data, calQoiRoutine_Data);
   calQoiRoutine_Data.qoiMonteCarloIntegrate();
 
@@ -812,7 +880,8 @@ uqAppl(const uqBaseEnvironmentClass& env)
   }
 
   // Set up inverse problem
-  likelihoodRoutine_DataClass valLikelihoodRoutine_Data(env, 10.0, 100.0, "calibration_data.dat", "validation_data.dat");
+  likelihoodRoutine_DataClass valLikelihoodRoutine_Data(env, 10.0, 100.0, "calibration_data.dat", "validation_data.dat",
+							cal_burgersInterface, val_burgersInterface);
 
   // Set GP covariance for calibration phase (from prior) (b/c this is required for validation phase)
   ierr = calibrationCovarianceChol(1e-4, 0.1, valLikelihoodRoutine_Data.calibrationData);
@@ -839,12 +908,11 @@ uqAppl(const uqBaseEnvironmentClass& env)
 							  cycle.calIP().postRv().realizer().imageExpectedValues());
 
   cycle.valIP().solveWithBayesMarkovChain(cycle.calIP().postRv().realizer().imageExpectedValues(),
-                                          *valProposalCovMatrix,
-                                          NULL); // use default kernel from library
+                                          valProposalCovMatrix);
   delete valProposalCovMatrix;
 
   // Forward propagation problem
-  qoiRoutine_DataClass<Q_V, Q_M> valQoiRoutine_Data(qoiSpace);
+  qoiRoutine_DataClass<Q_V, Q_M> valQoiRoutine_Data(qoiSpace, cal_burgersInterface, val_burgersInterface);
   validationQoiMeanChains(cycle.valIP().postRv(), valLikelihoodRoutine_Data, valQoiRoutine_Data);
   valQoiRoutine_Data.qoiMonteCarloIntegrate();
 

@@ -158,16 +158,22 @@ validationMean(const double sig2, const double ellx, const double ellRe, const d
   double Re1 = data->calibrationData->Re, Re2 = data->validationData->Re;
   double *xLoc1 = data->calibrationData->dataLocations, *xLoc2 = data->validationData->dataLocations;
   
-  quadBasis *pQB = data->pQB;
-  gsl_vector *U = data->U;
+//   quadBasis *pQB = data->pQB;
+//   gsl_vector *U = data->U;
   
-  // evaluate misfit for stage 1 scenario
-  ierr = solveForStateAtXLocations(xLoc1, N1, 1.0/Re1, kappa, U, pQB, cal_umodel);
-  if( ierr != 0 ){
-    printf("WARNING: Burgers solver was not successful!\n");
-    printf("         Results are probably meaningless.\n");
-    fflush(stdout);
-  }
+//   // evaluate misfit for stage 1 scenario
+//   ierr = solveForStateAtXLocations(xLoc1, N1, 1.0/Re1, kappa, U, pQB, cal_umodel);
+//   if( ierr != 0 ){
+//     printf("WARNING: Burgers solver was not successful!\n");
+//     printf("         Results are probably meaningless.\n");
+//     fflush(stdout);
+//   }
+
+  burgersQuesoInterface& calInterface = data->calibrationBurgersInterface;
+  ierr = calInterface.solveForStateAtDataLocations(1.0/Re1, kappa, cal_umodel);
+  UQ_FATAL_TEST_MACRO( (ierr!=0), UQ_UNAVAILABLE_RANK,
+		       "uqAppl(), in uqBurgers_No_Model_Uncertainty (likelihoodRoutine)",
+		       "failed solving Burgers' eqn" );
     
   double cal_misfit[N1];
   for( int ii=0; ii<N1; ii++ ) cal_misfit[ii] = (cal_udata[ii] - cal_umodel[ii]);
