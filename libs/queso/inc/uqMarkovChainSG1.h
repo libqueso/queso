@@ -781,7 +781,7 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
 #endif
       alphaQuotient = exp(yLogTargetToUse - x.logTarget());
       if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-        std::cout << "In uqMarkovChainSGClass<P_V,P_M>::alpha()"
+        std::cout << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
                   << ": symmetric proposal case"
                   << ", yLogTargetToUse = " << yLogTargetToUse
                   << ", x.logTarget() = "   << x.logTarget()
@@ -791,18 +791,31 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
     }
     else {
 #ifdef UQ_USES_TK_CLASS // AQUI
-      alphaQuotient = exp(yLogTargetToUse +
-                          m_tk->rv(yStageId).pdf().minus2LnDensity(x.vecValues()) -
-                          x.logTarget() -
-                          m_tk->rv(xStageId).pdf().minus2LnDensity(y.vecValues()));
+      double qyx = -.5 * m_tk->rv(yStageId).pdf().minus2LnValue(x.vecValues());
+      double qxy = -.5 * m_tk->rv(xStageId).pdf().minus2LnValue(y.vecValues());
 #else
-      alphaQuotient = exp(yLogTargetToUse + logProposal(y,x,0) - x.logTarget() - logProposal(x,y,0));
+      double qyx = logProposal(y,x,0);
+      double qxy = logProposal(x,y,0);
 #endif
+      alphaQuotient = exp(yLogTargetToUse +
+                          qyx -
+                          x.logTarget() -
+                          qxy);
+      if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
+        std::cout << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
+                  << ": unsymmetric proposal case"
+                  << ", yLogTargetToUse = " << yLogTargetToUse
+                  << ", q(y,x) = "          << qyx
+                  << ", x.logTarget() = "   << x.logTarget()
+                  << ", q(x,y) = "          << qxy
+                  << ", alpha = "           << alphaQuotient
+                  << std::endl;
+      }
     }
   }
   else {
     if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-      std::cout << "In uqMarkovChainSGClass<P_V,P_M>::alpha()"
+      std::cout << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
                 << ": x.outOfTargetSupport = " << x.outOfTargetSupport()
                 << ", y.outOfTargetSupport = " << y.outOfTargetSupport()
                 << std::endl;
@@ -820,9 +833,14 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
   const std::vector<unsigned int                        >& inputTKStageIds)
 {
   unsigned int inputSize = inputPositionsData.size();
+  if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
+    std::cout << "Entering uqMarkovChainSGClass<P_V,P_M>::alpha(vec)"
+              << ", inputSize = " << inputSize
+              << std::endl;
+  }
   UQ_FATAL_TEST_MACRO((inputSize < 2),
                       m_env.rank(),
-                      "uqMarkovChainSGClass<P_V,P_M>::alpha()",
+                      "uqMarkovChainSGClass<P_V,P_M>::alpha(vec)",
                       "inputPositionsData has size < 2");
 
   // If necessary, return 0. right away
@@ -870,12 +888,22 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
   const P_V& _lastTKPosition         = m_tk->preComputingPosition(        tkStageIds[inputSize-1]);
   const P_V& _lastBackwardTKPosition = m_tk->preComputingPosition(backwardTKStageIds[inputSize-1]);
 
-  logNumerator   += m_tk->rv(backwardTKStageIdsLess1).pdf().minus2LnDensity(_lastBackwardTKPosition);
-  logDenominator += m_tk->rv(        tkStageIdsLess1).pdf().minus2LnDensity(_lastTKPosition);
+  double numContrib = -.5 * m_tk->rv(backwardTKStageIdsLess1).pdf().minus2LnValue(_lastBackwardTKPosition);
+  double denContrib = -.5 * m_tk->rv(        tkStageIdsLess1).pdf().minus2LnValue(_lastTKPosition);
 #else
-  logNumerator   += logProposal(backwardPositionsData);
-  logDenominator += logProposal(        positionsData);
+  double numContrib = logProposal(backwardPositionsData);
+  double denContrib = logProposal(        positionsData);
 #endif
+  if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
+    std::cout << "In uqMarkovChainSGClass<P_V,P_M>::alpha(vec)"
+              << ", inputSize = "  << inputSize
+              << ", before loop"
+              << ": numContrib = " << numContrib
+              << ", denContrib = " << denContrib
+              << std::endl;
+  }
+  logNumerator   += numContrib;
+  logDenominator += denContrib;
 
   for (unsigned int i = 0; i < (inputSize-2); ++i) { // That is why size must be >= 2
             positionsData.pop_back();
@@ -891,12 +919,22 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
             tkStageIdsLess1.pop_back();
     backwardTKStageIdsLess1.pop_back();
 
-    logNumerator   += m_tk->rv(backwardTKStageIdsLess1).pdf().minus2LnDensity(lastBackwardTKPosition);
-    logDenominator += m_tk->rv(        tkStageIdsLess1).pdf().minus2LnDensity(lastTKPosition);
+    numContrib = -.5 * m_tk->rv(backwardTKStageIdsLess1).pdf().minus2LnValue(lastBackwardTKPosition);
+    denContrib = -.5 * m_tk->rv(        tkStageIdsLess1).pdf().minus2LnValue(lastTKPosition);
 #else
-    logNumerator   += logProposal(backwardPositionsData);
-    logDenominator += logProposal(        positionsData);
+    numContrib = logProposal(backwardPositionsData);
+    denContrib = logProposal(        positionsData);
 #endif
+    if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
+      std::cout << "In uqMarkovChainSGClass<P_V,P_M>::alpha(vec)"
+                << ", inputSize = "  << inputSize
+                << ", in loop, i = " << i
+                << ": numContrib = " << numContrib
+                << ", denContrib = " << denContrib
+                << std::endl;
+    }
+    logNumerator   += numContrib;
+    logDenominator += denContrib;
 
     alphasNumerator   *= (1. - this->alpha(backwardPositionsData,backwardTKStageIds));
     alphasDenominator *= (1. - this->alpha(        positionsData,        tkStageIds));
@@ -912,8 +950,29 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
       (backwardPositionsData[0]->misfitVector()/positionsData[0]->misfitVarianceVector()).sumOfComponents() );
   }
 #endif
-  logNumerator   += numeratorLogTargetToUse;
-  logDenominator += positionsData[0]->logTarget();
+  numContrib = numeratorLogTargetToUse;
+  denContrib = positionsData[0]->logTarget();
+  if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
+    std::cout << "In uqMarkovChainSGClass<P_V,P_M>::alpha(vec)"
+              << ", inputSize = "  << inputSize
+              << ", after loop"
+              << ": numContrib = " << numContrib
+              << ", denContrib = " << denContrib
+              << std::endl;
+  }
+
+  logNumerator   += numContrib;
+  logDenominator += denContrib;
+
+  if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
+    std::cout << "Leaving uqMarkovChainSGClass<P_V,P_M>::alpha(vec)"
+              << ", inputSize = "         << inputSize
+              << ": alphasNumerator = "   << alphasNumerator
+              << ", alphasDenominator = " << alphasDenominator
+              << ", logNumerator = "      << logNumerator
+              << ", logDenominator = "    << logDenominator
+              << std::endl;
+  }
 
   // Return result
   return std::min(1.,(alphasNumerator/alphasDenominator)*exp(logNumerator-logDenominator));

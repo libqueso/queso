@@ -521,13 +521,13 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
           if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalDrAlpha, NULL);
           double alpha = this->alpha(drPositionsData,tkStageIds);
           if (m_chainMeasureRunTimes) drAlphaRunTime += uqMiscGetEllapsedSeconds(&timevalDrAlpha);
-#if 0 // For debug only
-          if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                                           << ": for chain position of id = " << positionId
-                                           << " and stageId = " << stageId
-                                           << ", alpha = " << alpha
-                                           << std::endl;
-#endif
+          if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
+            std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
+                      << ": for chain position of id = " << positionId
+                      << " and stageId = " << stageId
+                      << ", alpha = " << alpha
+                      << std::endl;
+          }
           accept = acceptAlpha(alpha);
         }
         if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
