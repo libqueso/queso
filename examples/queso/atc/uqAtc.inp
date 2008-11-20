@@ -10,7 +10,7 @@ uqEnv_seed      = 0
 ###############################################
 atc_cal_ip_help            = anything
 atc_cal_ip_computeSolution = 1
-atc_cal_ip_outputFileName  = tga/s1Output.m
+atc_cal_ip_outputFileName  = s1Output.m
 
 ###############################################
 # Stage I: Calibration problem: information for Markov Chain algorithm
@@ -21,7 +21,7 @@ atc_cal_ip_outputFileName  = tga/s1Output.m
 atc_cal_ip_mc_help                  = anything
 atc_cal_ip_mc_chain_type            = 1
 atc_cal_ip_mc_chain_size            = 1048576
-atc_cal_ip_mc_chain_outputFileName  = tga/s1ExtraOutput.m
+atc_cal_ip_mc_chain_outputFileName  = s1ExtraOutput.m
 atc_cal_ip_mc_chain_generateExtra   = 0
 atc_cal_ip_mc_chain_displayPeriod   = 20000
 atc_cal_ip_mc_chain_measureRunTimes = 1
@@ -118,7 +118,7 @@ atc_cal_ip_mc_filteredChain_stats_kde_numEvalPositions     = 250
 ###############################################
 atc_cal_fp_help            = anything
 atc_cal_fp_computeSolution = 1
-atc_cal_fp_outputFileName  = tga/s1Output.m
+atc_cal_fp_outputFileName  = s1Output.m
 
 ###############################################
 # Stage I: Propagation problem: information for Monte Carlo algorithm
@@ -128,7 +128,7 @@ atc_cal_fp_outputFileName  = tga/s1Output.m
 ###############################################
 atc_cal_fp_mc_help            = anything
 atc_cal_fp_mc_numSamples      = 1048576
-atc_cal_fp_mc_outputFileName  = tga/s1ExtraOutput.m
+atc_cal_fp_mc_outputFileName  = s1ExtraOutput.m
 atc_cal_fp_mc_displayPeriod   = 20000
 atc_cal_fp_mc_measureRunTimes = 1
 atc_cal_fp_mc_write           = 0
@@ -175,7 +175,7 @@ atc_cal_fp_mc_seq_stats_kde_numEvalPositions     = 250
 ###############################################
 atc_val_ip_help            = anything
 atc_val_ip_computeSolution = 1
-atc_val_ip_outputFileName  = tga/s2Output.m
+atc_val_ip_outputFileName  = s2Output.m
 
 ###############################################
 # Stage II: Calibration problem: information for Markov Chain algorithm
@@ -186,7 +186,7 @@ atc_val_ip_outputFileName  = tga/s2Output.m
 atc_val_ip_mc_help                  = anything
 atc_val_ip_mc_chain_type            = 1
 atc_val_ip_mc_chain_size            = 1048576
-atc_val_ip_mc_chain_outputFileName  = tga/s2ExtraOutput.m
+atc_val_ip_mc_chain_outputFileName  = s2ExtraOutput.m
 atc_val_ip_mc_chain_generateExtra   = 0
 atc_val_ip_mc_chain_displayPeriod   = 20000
 atc_val_ip_mc_chain_measureRunTimes = 1
@@ -283,7 +283,7 @@ atc_val_ip_mc_filteredChain_stats_kde_numEvalPositions     = 250
 ###############################################
 atc_val_fp_help            = anything
 atc_val_fp_computeSolution = 1
-atc_val_fp_outputFileName  = tga/s2Output.m
+atc_val_fp_outputFileName  = s2Output.m
 
 ###############################################
 # Stage II: Propagation problem: information for Monte Carlo algorithm
@@ -293,7 +293,7 @@ atc_val_fp_outputFileName  = tga/s2Output.m
 ###############################################
 atc_val_fp_mc_help            = anything
 atc_val_fp_mc_numSamples      = 1048576
-atc_val_fp_mc_outputFileName  = tga/s2ExtraOutput.m
+atc_val_fp_mc_outputFileName  = s2ExtraOutput.m
 atc_val_fp_mc_displayPeriod   = 20000
 atc_val_fp_mc_measureRunTimes = 1
 atc_val_fp_mc_write           = 0
