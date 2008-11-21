@@ -56,6 +56,7 @@ atcLikelihoodRoutine_DataClass
 #if 1 // KENJI
   atcLikelihoodRoutine_DataClass(const uqBaseEnvironmentClass& env,
                                  const char* experimentDescriptionFileName,
+                                 const char* reactionFileName,
                                  const char* scenarioFileName1,
                                  const char* experimentalDataFileName1,
                                  const char* scenarioFileName2,
@@ -65,23 +66,40 @@ atcLikelihoodRoutine_DataClass
  ~atcLikelihoodRoutine_DataClass();
 
   // Description of experiments
-  int  NREST, NSPECI, NO_STEPS, NO_PARAM;
-  double Time_step, UREF, TREF, PREF, RHOREF;
-  std::vector<std::string> Species_name;
+  int  NSPECI, NO_STEPS, NO_PARAM;
+  double  UREF, TREF, PREF, RHOREF;
+  char Species_name[13][100];
+
+  int  reac[19][13],prod[19][13];
+
+ //  std::vector<std::string> Species_name;
+  std::vector<double>      comno;
+  std::vector<double>      comno_old;
   std::vector<double>      Species_con;
   std::vector<double>      Species_mass;
   std::vector<double>      Species_conm;
 
   // Scenario parameters
-  std::vector<double> EQC_s1;
-  std::vector<double> A_s1;
-  std::vector<double> m_s1;
-  std::vector<double> T_s1;
+  double ex_temperature_s1;
+  std::vector<double> lkc_s1;
+  std::vector<double> la_s1;
+  std::vector<double> p_s1;
+  std::vector<double> s_s1;
+
+  double ex_temperature_s2;
+  std::vector<double> lkc_s2;
+  std::vector<double> la_s2;
+  std::vector<double> p_s2;
+  std::vector<double> s_s2;
 
   // Experimental data
   std::vector<double> Time_ex1;
   std::vector<double> Ocon_ex1;
   std::vector<double> Variance_ex1;
+  std::vector<double> Time_ex2;
+  std::vector<double> Ocon_ex2;
+  std::vector<double> Variance_ex2;
+
 #endif // KENJI
 };
 
@@ -89,6 +107,7 @@ template<class P_V, class P_M>
 atcLikelihoodRoutine_DataClass<P_V,P_M>::atcLikelihoodRoutine_DataClass(
   const uqBaseEnvironmentClass& env,
   const char* experimentDescriptionFileName,
+  const char* reactionFileName,
   const char* scenarioFileName1,
   const char* experimentalDataFileName1,
   const char* scenarioFileName2,
@@ -97,58 +116,86 @@ atcLikelihoodRoutine_DataClass<P_V,P_M>::atcLikelihoodRoutine_DataClass(
   const char* experimentalDataFileName3)
   :
 #if 1 // KENJI
-  Species_name(13,""),
+//  Species_name(13,""),
+  comno       (13,0.),
+  comno_old   (13,0.),
   Species_con (13,0.),
   Species_mass(13,0.),
   Species_conm(13,0.),
+  lkc_s1      (18,0.),
+  la_s1        (18,0.),
+  p_s1        (18,0.),
+  s_s1        (18,0.),
   Time_ex1    (4,0.),
   Ocon_ex1    (4,0.),
-  Variance_ex1(4,0.)
+  Variance_ex1(4,0.),
+  lkc_s2      (18,0.),
+  la_s2       (18,0.),
+  p_s2        (18,0.),
+  s_s2        (18,0.),
+  Time_ex2    (4,0.),
+  Ocon_ex2    (4,0.),
+  Variance_ex2(4,0.)
 {
   // Read description of experiment
-  char dummyNAME1[100],dummyNAME2[100],dummyNAME3[100];
-  char tmpSpecies[100];
+  char dummyNAME1[100],dummyNAME2[100];
+  char dummyNAME3[100],dummyNAME4[100];
   double tmp_con, tmp_mass;
   unsigned int tmpCount = 0;
 
   FILE *inp = fopen(experimentDescriptionFileName,"r");
-  fscanf(inp,"%s %s",dummyNAME1,dummyNAME2);                // NREST      Time_step
-  fscanf(inp,"%d %lf",&NREST,&Time_step);
-  fscanf(inp,"%s %s %s",dummyNAME1,dummyNAME2,dummyNAME3);  // NSPECI     NO_STEPS  NO_PARAM
-  fscanf(inp,"%d %d %d",&NSPECI,&NO_STEPS,&NO_PARAM);                    
-  fscanf(inp,"%s %s %s",dummyNAME1,dummyNAME2,dummyNAME3);  // UREF  TREF_K  PREF_Pa
-  fscanf(inp,"%lf %lf %lf",&UREF, &TREF, &PREF);
-  fscanf(inp,"%s %s %s",dummyNAME1,dummyNAME2,dummyNAME3);  // SPNAME  CONCO_mass_base  MWT
+   fscanf(inp,"%s %s %s",dummyNAME1,dummyNAME2,dummyNAME3);  // NSPECI     NO_STEPS  NO_PARAM
+   fscanf(inp,"%d %d %d",&NSPECI,&NO_STEPS,&NO_PARAM);                    
+   fscanf(inp,"%s %s %s",dummyNAME1,dummyNAME2,dummyNAME3);  // UREF  TREF_K  PREF_Pa
+   fscanf(inp,"%lf %lf %lf",&UREF, &TREF, &PREF);
+   fscanf(inp,"%s %s %s",dummyNAME1,dummyNAME2,dummyNAME3);  // SPNAME  CONCO_mass_base  MWT
 
   while (fscanf(inp,"%s %lf %lf",Species_name[tmpCount],&tmp_con,&tmp_mass) != EOF) {
     Species_con[tmpCount]  = tmp_con;
     Species_mass[tmpCount] =tmp_mass;
     tmpCount++;
   }
-
   // Close file
+  fclose(inp);
+
+  int  tmp_Num,tmpREAC,tmpPROD,i,j;
+  inp = fopen(reactionFileName,"r");
+  for (j=0; j<NO_STEPS; j++){
+       fscanf(inp,"%s",dummyNAME1);
+       fscanf(inp,"%s %d %s",dummyNAME2,&tmp_Num,dummyNAME3);
+       fscanf(inp,"%s",dummyNAME4);
+       for (i=0; i<NSPECI; i++) {
+          fscanf(inp,"%d",&tmpREAC);
+          reac[j][i] = tmpREAC;
+       }
+       for (i=0; i<NSPECI; i++) {
+          fscanf(inp,"%d",&tmpPROD);
+          prod[j][i] = tmpPROD;
+       }
+  }
+  // Close reaction file
   fclose(inp);
 
   if (scenarioFileName1 && experimentalDataFileName1) {
     // Read scenario parameters
-    if (env.rank() == 0) {
-      std::cout << "In atcLikelihoodRoutine_DataClass(), reading file '"
-                << scenarioFileName1 << "'\n"
-                << std::endl;
-    }
-
-    inp = fopen(scenarioFileName1,"r");    
+     if (env.rank() == 0) {
+     std::cout << "In atcLikelihoodRoutine_DataClass(), reading file '"
+               << scenarioFileName1 << "'\n"
+               << std::endl;
+     }
+       inp = fopen(scenarioFileName1,"r");    
        char dummyNAME1[100],dummyNAME2[100];
        char dummyNAME3[100],dummyNAME4[100];
        int i;
        double tmpEQC,tmpA,tmpms,tmpTs;
+       fscanf(inp,"%lf",&ex_temperature_s1); 
        for (i=0; i<NO_STEPS; i++){
 		fscanf(inp,"%s %s %s %s",dummyNAME1,dummyNAME2,dummyNAME3,dummyNAME4);
                 fscanf(inp,"%lf %lf %lf %lf",&tmpEQC,&tmpA,&tmpms,&tmpTs);
-                EQC_s1[i] = tmpEQC;
-                A_s1[i]   = tmpA;
-                m_s1[i]   = tmpms;
-                T_s1[i]   = tmpTs;
+                lkc_s1[i] = tmpEQC;
+                la_s1[i]   = tmpA;
+                p_s1[i]   = tmpms;
+                s_s1[i]   = tmpTs;
        }
 
     // Close file
@@ -172,6 +219,7 @@ atcLikelihoodRoutine_DataClass<P_V,P_M>::atcLikelihoodRoutine_DataClass(
       Ocon_ex1[numObservations] = tmpOcon;
       Variance_ex1[numObservations] = tmpVar;
       numObservations++;
+     printf("%lf %lf", tmpTime, tmpOcon); 
     }
 
     // Close file
@@ -185,6 +233,45 @@ atcLikelihoodRoutine_DataClass<P_V,P_M>::atcLikelihoodRoutine_DataClass(
                 << experimentalDataFileName2 << "'\n"
                 << std::endl;
     }
+       inp = fopen(scenarioFileName1,"r");    
+       char dummyNAME1[100],dummyNAME2[100];
+       char dummyNAME3[100],dummyNAME4[100];
+       int i;
+       double tmpEQC,tmpA,tmpms,tmpTs;
+       fscanf(inp,"%lf",&ex_temperature_s2); 
+       for (i=0; i<NO_STEPS; i++){
+		fscanf(inp,"%s %s %s %s",dummyNAME1,dummyNAME2,dummyNAME3,dummyNAME4);
+                fscanf(inp,"%lf %lf %lf %lf",&tmpEQC,&tmpA,&tmpms,&tmpTs);
+                lkc_s1[i] = tmpEQC;
+                la_s2[i]  = tmpA;
+                p_s2[i]   = tmpms;
+                s_s2[i]   = tmpTs;
+       }
+
+    // Close file
+    fclose(inp);
+
+    // Read experimental data
+    if (env.rank() == 0) {
+      std::cout << "In atcLikelihoodRoutine_DataClass(), reading file '"
+                << experimentalDataFileName1 << "'\n"
+                << std::endl;
+    }
+
+    inp = fopen(experimentalDataFileName1,"r");
+    unsigned int numObservations = 0;
+    double tmpTime;
+    double tmpOcon;
+    double tmpVar;
+
+    while (fscanf(inp,"%lf %lf %lf",&tmpTime,&tmpOcon,&tmpVar) != EOF) {
+      Time_ex2[numObservations] = tmpTime;
+      Ocon_ex2[numObservations] = tmpOcon;
+      Variance_ex1[numObservations] = tmpVar;
+      numObservations++;
+     printf("%lf %lf", tmpTime, tmpOcon); 
+    }
+    // Close file
   }
 
   // Read experimental data
@@ -195,6 +282,11 @@ atcLikelihoodRoutine_DataClass<P_V,P_M>::atcLikelihoodRoutine_DataClass(
                 << std::endl;
     }
   }
+
+#if 0 //KENJI2
+  initial_setup() 
+#endif 
+   
 #endif // KENJI
 }
 
@@ -211,12 +303,15 @@ atcLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
   double resultValue = 0.;
 
   // Compute likelihood for scenario 1
-  double la_param  = paramValues[0];
-  double p_param   = paramValues[1];
-  double s_param   = paramValues[2];
-  double lkc_param = paramValues[3];
+  double la_param  = paramValues[0];    // 19th Reaction parameters  Log_10 (A)
+  double p_param   = paramValues[1];    // 19th Reaction parameters  T^p
+  double s_param   = paramValues[2];    // 19th Reaction parameters  exp(-s/T)
+  double lkc_param = paramValues[3];    // 19th Reaction parameters  K_b=k_f/Kc
 
-  const std::vector<double>& EQC_s1 = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->EQC_s1;
+#if 0 // KENJI2
+  reactionRoutine();
+#endif
+
 #if 0 // KENJI
     double variance               = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_variance1;
     const std::vector<double>& Te = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_Te1;
@@ -277,6 +372,7 @@ atcLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 
   return resultValue;
 }
+
 
 //********************************************************
 // QoI function object for both forward problems of the validation cycle.
@@ -535,9 +631,9 @@ uqAtcValidationClass<P_V,P_M,Q_V,Q_M>::run()
               << std::endl;
   }
   
-  printf("Hello Kenji\n");
-  //runCalibrationStage();
-  //runValidationStage();
+  printf("Hello Kenji3\n");
+  runCalibrationStage();
+  runValidationStage();
   //runComparisonStage();
 
   if (m_env.rank() == 0) {
@@ -567,15 +663,14 @@ uqAtcValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
                                                       *m_paramDomain);
 
   m_calLikelihoodRoutine_Data = new atcLikelihoodRoutine_DataClass<P_V,P_M>(m_env,
-#if 1 // KENJI
                                                                             "input.dat",
+                                                                            "reaction.dat", 
                                                                             "scenario_001.dat",
                                                                             "Experimental_001.dat",
                                                                             NULL,
                                                                             NULL,
                                                                             NULL,
                                                                             NULL);
-#endif // KENJI
 
   m_calLikelihoodFunctionObj = new uqGenericScalarFunctionClass<P_V,P_M>("cal_like_",
                                                                          *m_paramDomain,
@@ -634,15 +729,14 @@ uqAtcValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
 
   // Deal with inverse problem
   m_valLikelihoodRoutine_Data = new atcLikelihoodRoutine_DataClass<P_V,P_M>(m_env,
-#if 1 // KENJI
                                                                             "input.dat",
+                                                                            "reaction.dat",
                                                                             "scenario_002.dat",
                                                                             "Experimental_002.dat",
                                                                             NULL,
                                                                             NULL,
                                                                             NULL,
                                                                             NULL);
-#endif // KENJI
 
   m_valLikelihoodFunctionObj = new uqGenericScalarFunctionClass<P_V,P_M>("val_like_",
                                                                          *m_paramDomain,

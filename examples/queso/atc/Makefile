@@ -6,7 +6,7 @@ DEFINES = \
 	-D__APPL_USES_GSL__ -D__UQ_USES_GSL__
 INC_PATHS = \
 	-I. \
-	-I./tga \
+	-I./atc \
 	-I./tur \
 	-I../inc \
 	-I../../../libs/basic/inc \
@@ -42,7 +42,7 @@ DEFINES = \
 	-D__APPL_USES_TRILINOS__ -D__UQ_USES_TRILINOS__
 INC_PATHS = \
 	-I. \
-	-I./tga \
+	-I./atc \
 	-I./tur \
 	-I../inc \
 	-I../../../libs/basic/inc \
@@ -76,7 +76,7 @@ LIBS = \
 
 endif
 
-all:	uqTgaEx
+all:	uqAtc
 
 clean_lib:
 	cd ../../../libs/basic/src; make clean_all UQBT=$(UQBT)
@@ -87,7 +87,7 @@ clean_exec:
 	rm -f *.o
 	rm -f uqAtc_$(UQBT)
 
-uqTgaEx: libs uqAtc_$(UQBT).o
+uqAtc: libs uqAtc_$(UQBT).o
 	$(CXX) $(LIB_PATHS) uqAtc_$(UQBT).o -o uqAtc_$(UQBT) $(LIBS)
 
 libs:
