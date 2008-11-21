@@ -23,23 +23,6 @@
 #include <uqModelValidation.h>
 #include <uqVectorSubset.h>
 #include <uqAsciiTable.h>
-#include <gsl/gsl_errno.h>
-#include <gsl/gsl_odeiv.h>
-
-#define R_CONSTANT 8.314472
-
-// The ODE (state dot) function
-int radOdeFunc(double t, const double Mass[], double f[], void *info)
-{
-  double* params = (double *)info;
-  double A    = params[0];
-  double E    = params[1];
-  double beta = params[2];
-
-  f[0] = -A*Mass[0]*exp(-E/(R_CONSTANT*t))/beta;
-
-  return GSL_SUCCESS;
-}
 
 //********************************************************
 // Likelihood function object for both inverse problems of the validation cycle.
@@ -53,159 +36,47 @@ struct
 radLikelihoodRoutine_DataClass
 {
   radLikelihoodRoutine_DataClass(const uqBaseEnvironmentClass& env,
-                                 const char* inpName1,
-                                 const char* inpName2,
-                                 const char* inpName3);
+                                 const char* inpName);
  ~radLikelihoodRoutine_DataClass();
 
-  double              m_beta1;
-  double              m_variance1;
-  std::vector<double> m_Te1; // temperatures
-  std::vector<double> m_Me1; // relative masses
-
-  double              m_beta2;
-  double              m_variance2;
-  std::vector<double> m_Te2; // temperatures
-  std::vector<double> m_Me2; // relative masses
-
-  double              m_beta3;
-  double              m_variance3;
-  std::vector<double> m_Te3; // temperatures
-  std::vector<double> m_Me3; // relative masses
+  std::vector<double> m_P;   // pressure
+  std::vector<double> m_T;   // temperatures
+  std::vector<double> m_I;   // integrated intensities of radiation
+  std::vector<double> m_Var; //
 };
 
 template<class P_V, class P_M>
 radLikelihoodRoutine_DataClass<P_V,P_M>::radLikelihoodRoutine_DataClass(
   const uqBaseEnvironmentClass& env,
-  const char* inpName1,
-  const char* inpName2,
-  const char* inpName3)
+  const char* inpName)
   :
-  m_beta1    (0.),
-  m_variance1(0.),
-  m_Te1      (0),
-  m_Me1      (0),
-  m_beta2    (0.),
-  m_variance2(0.),
-  m_Te2      (0),
-  m_Me2      (0),
-  m_beta3    (0.),
-  m_variance3(0.),
-  m_Te3      (0),
-  m_Me3      (0)
+  m_P(1,0.),
+  m_T(1,0.),
+  m_I(1,0.),
+  m_Var(1,0.)
 {
   // Read experimental data
-  if (inpName1) {
+  if (inpName) {
     if (env.rank() == 0) {
       std::cout << "In radLikelihoodRoutine_DataClass(), reading file '"
-                << inpName1 << "'\n"
+                << inpName << "'\n"
                 << std::endl;
     }
-    m_Te1.resize(11,0.);
-    m_Me1.resize(11,0.);
 
     // Open input file on experimental data
     FILE *inp;
-    inp = fopen(inpName1,"r");
+    inp = fopen(inpName,"r");
 
-    // Read kinetic parameters and convert heating rate to K/s
-    fscanf(inp,"%lf %lf",&m_beta1,&m_variance1);
-    m_beta1 /= 60.;
-  
-    unsigned int numObservations = 0;
-    double tmpTe;
-    double tmpMe;
-    while (fscanf(inp,"%lf %lf",&tmpTe,&tmpMe) != EOF) {
-      UQ_FATAL_TEST_MACRO((numObservations >= m_Te1.size()),
-                          env.rank(),
-                          "radLikelihoodRoutine_DataClass(), in uqRadEx.h",
-                          "input file 1 has too many observations");
-      m_Te1[numObservations] = tmpTe;
-      m_Me1[numObservations] = tmpMe;
-      numObservations++;
+    // Read data
+    unsigned int numLines;
+    fscanf(inp,"%d",&numLines);
+    for (unsigned int i = 0; i < numLines; ++i) {
+      fscanf(inp,"%lf %lf %lf %lf",&m_P[i],&m_T[i],&m_I[i],&m_Var[i]);
     }
-    UQ_FATAL_TEST_MACRO((numObservations != m_Te1.size()),
-                        env.rank(),
-                        "radLikelihoodRoutine_DataClass(), in uqRadEx.h",
-                        "input file 1 has a smaller number of observations than expected");
 
-    // Close input file on experimental data
-    fclose(inp);
-  }
-
-  // Read experimental data
-  if (inpName2) {
-    if (env.rank() == 0) {
-      std::cout << "In radLikelihoodRoutine_DataClass(), reading file '"
-                << inpName2 << "'\n"
-                << std::endl;
+    for (unsigned int i = 0; i < numLines; ++i) {
+      printf("i = %d, m_P[i] = %lf, m_T[i] = %lf, m_I[i] = %lf, m_Var[i] = %lf",i,m_P[i],m_T[i],m_I[i],m_Var[i]);
     }
-    m_Te2.resize(11,0.);
-    m_Me2.resize(11,0.);
-
-    // Open input file on experimental data
-    FILE *inp;
-    inp = fopen(inpName2,"r");
-
-    // Read kinetic parameters and convert heating rate to K/s
-    fscanf(inp,"%lf %lf",&m_beta2,&m_variance2);
-    m_beta2 /= 60.;
-  
-    unsigned int numObservations = 0;
-    double tmpTe;
-    double tmpMe;
-    while (fscanf(inp,"%lf %lf",&tmpTe,&tmpMe) != EOF) {
-      UQ_FATAL_TEST_MACRO((numObservations >= m_Te2.size()),
-                          env.rank(),
-                          "radLikelihoodRoutine_DataClass(), in uqRadEx.h",
-                          "input file 2 has too many observations");
-      m_Te2[numObservations] = tmpTe;
-      m_Me2[numObservations] = tmpMe;
-      numObservations++;
-    }
-    UQ_FATAL_TEST_MACRO((numObservations != m_Te2.size()),
-                        env.rank(),
-                        "radLikelihoodRoutine_DataClass(), in uqRadEx.h",
-                        "input file 2 has a smaller number of observations than expected");
-
-    // Close input file on experimental data
-    fclose(inp);
-  }
-
-  // Read experimental data
-  if (inpName3) {
-    if (env.rank() == 0) {
-      std::cout << "In radLikelihoodRoutine_DataClass(), reading file '"
-                << inpName3 << "'\n"
-                << std::endl;
-    }
-    m_Te3.resize(11,0.);
-    m_Me3.resize(11,0.);
-
-    // Open input file on experimental data
-    FILE *inp;
-    inp = fopen(inpName3,"r");
-
-    // Read kinetic parameters and convert heating rate to K/s
-    fscanf(inp,"%lf %lf",&m_beta3,&m_variance3);
-    m_beta3 /= 60.;
-  
-    unsigned int numObservations = 0;
-    double tmpTe;
-    double tmpMe;
-    while (fscanf(inp,"%lf %lf",&tmpTe,&tmpMe) != EOF) {
-      UQ_FATAL_TEST_MACRO((numObservations >= m_Te3.size()),
-                          env.rank(),
-                          "radLikelihoodRoutine_DataClass(), in uqRadEx.h",
-                          "input file 3 has too many observations");
-      m_Te3[numObservations] = tmpTe;
-      m_Me3[numObservations] = tmpMe;
-      numObservations++;
-    }
-    UQ_FATAL_TEST_MACRO((numObservations != m_Te3.size()),
-                        env.rank(),
-                        "radLikelihoodRoutine_DataClass(), in uqRadEx.h",
-                        "input file 3 has a smaller number of observations than expected");
 
     // Close input file on experimental data
     fclose(inp);
@@ -230,28 +101,36 @@ radLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
   //DOUBLE PRECISION ct2 = paramValues[3];
   //DOUBLE PRECISION ct3 = paramValues[4];
   //CALL SPECTRAL_MODEL(cp1,cp2,ct1,ct2,ct3,resultValue);
-
-  double cp1 = paramValues[0];
-  double cp2 = paramValues[1];
-  double ct1 = paramValues[2];
-  double ct2 = paramValues[3];
-  double ct3 = paramValues[4];
+  //double T=10337.;
+  //double P=77.;
 
   double resultValue = 0.;
 
-  // Compute likelihood for scenario 1
-  //double A                      = paramValues[0];
-  //double E                      = paramValues[1];
-  //double beta                   = ((radLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_beta1;
-  //double variance               = ((radLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_variance1;
-  //const std::vector<double>& Te = ((radLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_Te1;
-  //const std::vector<double>& Me = ((radLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_Me1;
-  //std::vector<double> Mt(Me.size(),0.);
+  double CP1 = paramValues[0];
+  double CP2 = paramValues[1];
+  double CT1 = paramValues[2];
+  double CT2 = paramValues[3];
+  double CT3 = paramValues[4];
 
-  //double params[]={A,E,beta};
-      	
-  //double misfit=0.;
-  //resultValue += misfit/variance;
+  const std::vector<double>& m_P   = ((radLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_P;
+  const std::vector<double>& m_T   = ((radLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_T;
+  const std::vector<double>& m_I   = ((radLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_I;
+  const std::vector<double>& m_Var = ((radLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_Var;
+
+  double DS=.1016;
+  double SIG=5.67e-8;
+
+  for (unsigned int i = 0; i < m_P.size(); ++i) {
+    double CP=CP1*m_P[i]-CP2;
+
+    double K_G=CP*(CT1*m_T[i]*m_T[i]+CT2*m_T[i]+CT3);
+
+    double IB=SIG*(m_T[i]*m_T[i]*m_T[i]*m_T[i])/M_PI;
+
+    double I=IB*(1.-exp(-K_G*DS));
+
+    resultValue += (I-m_I[i])*(I-m_I[i])/m_Var[i];
+  }
 
   return resultValue;
 }
@@ -286,9 +165,8 @@ template<class P_V,class P_M,class Q_V, class Q_M>
 struct
 radQoiRoutine_DataClass
 {
-  double m_beta;
-  double m_criticalMass;
-  double m_criticalTime;
+  double m_P;
+  double m_T;
 };
 
 // The actual (user defined) qoi routine
@@ -301,55 +179,10 @@ void radQoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoi
   double criticalMass = ((radQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->m_criticalMass;
   double criticalTime = ((radQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->m_criticalTime;
 
-  double params[]={A,E,beta};
-      	
-  // integration
-  const gsl_odeiv_step_type *T   = gsl_odeiv_step_rkf45; //rkf45; //gear1;
-        gsl_odeiv_step      *s   = gsl_odeiv_step_alloc(T,1);
-        gsl_odeiv_control   *c   = gsl_odeiv_control_y_new(1e-6,0.0);
-        gsl_odeiv_evolve    *e   = gsl_odeiv_evolve_alloc(1);
-        gsl_odeiv_system     sys = {radOdeFunc, NULL, 1, (void *)params}; 
 	
-  double temperature = 0.1;
-  double h = 1e-3;
-  double Mass[1];
-  Mass[0]=1.;
-  
-  double temperature_old = 0.;
-  double M_old[1];
-  M_old[0]=1.;
-	
-  double crossingTemperature = 0.;
-  //unsigned int loopSize = 0;
-  while ((temperature < criticalTime*beta) &&
-         (Mass[0]     > criticalMass     )) {
-    int status = gsl_odeiv_evolve_apply(e, c, s, &sys, &temperature, criticalTime*beta, &h, Mass);
-    UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
-                        paramValues.env().rank(),
-                        "radQoiRoutine()",
-                        "gsl_odeiv_evolve_apply() failed");
-    //printf("t = %6.1lf, mass = %10.4lf\n",t,Mass[0]);
-    //loopSize++;
-
-    if (Mass[0] <= criticalMass) {
-      crossingTemperature = temperature_old + (temperature - temperature_old) * (M_old[0]-criticalMass)/(M_old[0]-Mass[0]);
-    }
-		
-    temperature_old=temperature;
-    M_old[0]=Mass[0];
-  }
-
-  if (criticalMass > 0.) qoiValues[0] = crossingTemperature/beta; // QoI = time to achieve critical mass
-  if (criticalTime > 0.) qoiValues[0] = Mass[0];                  // QoI = mass fraction remaining at critical time
-	
-  //printf("loopSize = %d\n",loopSize);
   if ((paramValues.env().verbosity() >= 3) && (paramValues.env().rank() == 0)) {
     printf("In radQoiRoutine(), A = %g, E = %g, beta = %.3lf, criticalTime = %.3lf, criticalMass = %.3lf: qoi = %lf.\n",A,E,beta,criticalTime,criticalMass,qoiValues[0]);
   }
-
-  gsl_odeiv_evolve_free (e);
-  gsl_odeiv_control_free(c);
-  gsl_odeiv_step_free   (s);
 
   return;
 }
@@ -433,7 +266,7 @@ uqRadValidationClass<P_V,P_M,Q_V,Q_M>::uqRadValidationClass(
 
   // Read Ascii file with information on parameters
   m_paramsTable = new uqAsciiTableClass<P_V,P_M> (m_env,
-                                                  2,    // # of rows
+                                                  5,    // # of rows
                                                   3,    // # of cols after 'parameter name': min + max + initial value for Markov chain
                                                   NULL, // All extra columns are of 'double' type
                                                   "params.tab");
@@ -527,8 +360,8 @@ uqRadValidationClass<P_V,P_M,Q_V,Q_M>::run()
   }
 
   runCalibrationStage();
-  runValidationStage();
-  runComparisonStage();
+  //runValidationStage();
+  //runComparisonStage();
 
   if (m_env.rank() == 0) {
     std::cout << "Leaving uqRadValidation::run()"
@@ -557,10 +390,8 @@ uqRadValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
                                                       *m_paramDomain);
 
   m_calLikelihoodRoutine_Data = new radLikelihoodRoutine_DataClass<P_V,P_M>(m_env,
-                                                                            "scenario_5_K_min.dat",
-                                                                            "scenario_25_K_min.dat",
-                                                                            "scenario_50_K_min.dat");
-
+                                                                            "I1.dat");
+#if 0
   m_calLikelihoodFunctionObj = new uqGenericScalarFunctionClass<P_V,P_M>("cal_like_",
                                                                          *m_paramDomain,
                                                                          radLikelihoodRoutine<P_V,P_M>,
@@ -590,6 +421,7 @@ uqRadValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
 
   // Solve forward problem = set 'realizer' and 'cdf' of 'qoiRv'
   m_cycle->calFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
+#endif
 
   iRC = gettimeofday(&timevalNow, NULL);
   if (m_env.rank() == 0) {
@@ -617,10 +449,8 @@ uqRadValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
   }
 
   // Deal with inverse problem
-  m_valLikelihoodRoutine_Data = new radLikelihoodRoutine_DataClass<P_V,P_M> (m_env,
-                                                                             "scenario_100_K_min.dat",
-                                                                             NULL,
-                                                                             NULL);
+  m_valLikelihoodRoutine_Data = new radLikelihoodRoutine_DataClass<P_V,P_M>(m_env,
+                                                                            "I2.dat");
 
   m_valLikelihoodFunctionObj = new uqGenericScalarFunctionClass<P_V,P_M>("val_like_",
                                                                          *m_paramDomain,
