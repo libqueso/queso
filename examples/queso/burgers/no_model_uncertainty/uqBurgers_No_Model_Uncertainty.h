@@ -64,9 +64,6 @@ likelihoodRoutine_DataClass
   double *dataLocations; // x locations where state was measured
   double *dataValues; // measured values of averaged state at dataLocations
 
-//   // For Burgers' solver
-//   quadBasis *pQB; // quad points, weights, and basis evaluation
-//   gsl_vector *U; // solution (re-used after each solve at IC for next solve to hopefully decrease Newton iterations)
 };
 
 // likelihoodRoutine_DataClass constructor: Read data, allocate/initialize memory for Burgers' solver
@@ -78,9 +75,7 @@ likelihoodRoutine_DataClass<P_V,P_M>::likelihoodRoutine_DataClass(const uqBaseEn
   burgersInterface(interface),
   nDataPoints(0),
   dataLocations(0),
-  dataValues(0)//,
-  //pQB(0),
-  //U(0)
+  dataValues(0)
 {
   std::cout << "Calling likelihoodRoutine_DataClass constructor...";
 
@@ -117,14 +112,6 @@ likelihoodRoutine_DataClass<P_V,P_M>::likelihoodRoutine_DataClass(const uqBaseEn
   // close file
   fclose(fp);
 
-//   // allocate and initialize quadrature points
-//   UQ_FATAL_TEST_MACRO( (evaluateQuadratureAndBasisForResidual(100, &pQB)!=0), env.rank(),
-// 		       "uqAppl(), in uqBurgers_No_Model_Uncertainty (likelihoodRoutine_DataClass constructor)",
-// 		       "failed while allocating/computing quadrature points" );
-		       
-//   // allocate and initialize solution (to zero) 
-//   U = gsl_vector_calloc(100);
-
   std::cout << "success.\n";
 } // end constructor
 
@@ -136,8 +123,6 @@ likelihoodRoutine_DataClass<P_V,P_M>::~likelihoodRoutine_DataClass()
   std::cout << "Calling likelihoodRoutine_DataClass destructor...";
   delete[] dataLocations;
   delete[] dataValues;
-//   freeQuadratureAndBasisForResidual(pQB);
-//   gsl_vector_free(U);
   std::cout << "success.\n";
 } // end destructor
 
@@ -147,31 +132,17 @@ template<class P_V,class P_M>
 double
 likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 {
-  //std::cout << "Calling likelihoodRoutine...\n";
-
   // Experimental data
   const int nDataPoints = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->nDataPoints;
   const double Re = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->Re;
-  const double *xx = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->dataLocations;
   const double *ue = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->dataValues;
   burgersQuesoInterface& burgersInterface = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->burgersInterface;
-
-//   // Solver data
-//   quadBasis *pQB = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->pQB;
-//   gsl_vector *U = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->U;
 
   // Model parameter
   double kappa = paramValues[0];
 
   // Model data
   double um[nDataPoints];
-
-  
-  // Evaluate model
-//   int ierr = solveForStateAtXLocations(xx, nDataPoints, 1.0/Re, kappa, U, pQB, um);
-//   UQ_FATAL_TEST_MACRO( (ierr!=0), UQ_UNAVAILABLE_RANK,
-// 		       "uqAppl(), in uqBurgers_No_Model_Uncertainty (likelihoodRoutine)",
-// 		       "failed solving Burgers' eqn" );
 
   // Evaluate model
   int ierr = burgersInterface.solveForStateAtDataLocations(1.0/Re, kappa, um);
@@ -210,8 +181,6 @@ qoiRoutine_DataClass
   // burgers/queso interface class
   burgersQuesoInterface& burgersInterface;
 
-  // For the Burgers solver
-  //quadBasis *pQB; // quad points, weights, and basis evaluation
 };
 
 // constructor
@@ -220,11 +189,7 @@ qoiRoutine_DataClass::qoiRoutine_DataClass(burgersQuesoInterface& interface)
   burgersInterface(interface)
 {
   cout << "Calling qoiRoutine_DataClass constructor...";
-  qoiRe = 200;
-//   // allocate and initialize quadrature points
-//   UQ_FATAL_TEST_MACRO( (evaluateQuadratureAndBasisForResidual(100, &pQB)!=0), UQ_UNAVAILABLE_RANK,
-// 		       "uqAppl(), in uqBurgers_No_Model_Uncertainty (likelihoodRoutine_DataClass constructor)",
-// 		       "failed while allocating/computing quadrature points" );
+  qoiRe = 200.0;
   cout << "success.\n";
 } // end constructor
 
@@ -232,7 +197,6 @@ qoiRoutine_DataClass::qoiRoutine_DataClass(burgersQuesoInterface& interface)
 qoiRoutine_DataClass::~qoiRoutine_DataClass()
 {
   cout << "Calling qoiRoutine_DataClass destructor...";
-  //freeQuadratureAndBasisForResidual(pQB);
   cout << "success.\n";
 } // end destructor
 
@@ -246,11 +210,6 @@ void qoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiVal
   double u_x1;
   double qoiRe = ((qoiRoutine_DataClass *) functionDataPtr)->qoiRe;
   burgersQuesoInterface& burgersInterface = ((qoiRoutine_DataClass *) functionDataPtr)->burgersInterface;
-  //quadBasis *pQB = ((qoiRoutine_DataClass *) functionDataPtr)->pQB;
-
-//   UQ_FATAL_TEST_MACRO( (computeGradientAtOne(kappa, pQB, &u_x1)!=0), UQ_UNAVAILABLE_RANK,
-// 		       "uqAppl(), in uqBurgers_No_Model_Uncertainty (qoiRoutine)",
-// 		       "failed while computing QoI.");
 
   ierr = burgersInterface.solveForViscFluxAtOne(1.0/qoiRe, kappa, &u_x1);
   UQ_FATAL_TEST_MACRO( (ierr!=0), UQ_UNAVAILABLE_RANK,
@@ -308,6 +267,11 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                          paramTable.numRows(),
                                          &paramNames);
 
+  uqBoxSubsetClass<P_V,P_M> paramDomain("param_",
+                                        paramSpace,
+                                        paramMinValues,
+                                        paramMaxValues);
+
   // Read Ascii file with QoI information.
   uqAsciiTableClass<P_V,P_M> qoiTable(env,
                                       1,    // # of rows
@@ -339,21 +303,25 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
   // Set up inverse problem (i.e. prior and likelihood)
   uqUniformVectorRVClass<P_V,P_M> calPriorRv("cal_prior_", // Extra prefix before the default "rv_" prefix
-                                             paramSpace,
-                                             paramMinValues,
-                                             paramMaxValues);
+                                             paramDomain);
 
   burgersQuesoInterface cal_burgersInterface(100, 10.0, "calibration_data.dat");
   likelihoodRoutine_DataClass<P_V,P_M> calLikelihoodRoutine_Data(env, 10.0, "calibration_data.dat", cal_burgersInterface);
 
-  cycle.setCalIP(calPriorRv, likelihoodRoutine<P_V,P_M>, (void *) &calLikelihoodRoutine_Data,
-		 true); // the likelihood routine computes [-2.*ln(Likelihood)]
 
-
-  // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv' (using Markov Chain)
+  uqGenericScalarFunctionClass<P_V,P_M> calLikelihoodFunctionObj("cal_like_",
+                                                                 paramDomain,
+                                                                 likelihoodRoutine<P_V,P_M>,
+                                                                 NULL,
+                                                                 NULL,
+                                                                 (void *) &calLikelihoodRoutine_Data,
+                                                                 true);
+  
+  cycle.setCalIP(calPriorRv, calLikelihoodFunctionObj);
+  
   P_M* calProposalCovMatrix = 
-    cycle.calIP().postRv().imageSpace().newGaussianMatrix(cycle.calIP().priorRv().pdf().domainVarianceValues(),
-							  calInitialValues);
+    cycle.calIP().postRv().imageSet().vectorSpace().newGaussianMatrix(cycle.calIP().priorRv().pdf().domainVarVector(), 
+								      calInitialValues);
 
   cycle.calIP().solveWithBayesMarkovChain(calInitialValues, calProposalCovMatrix);
   delete calProposalCovMatrix;
@@ -387,18 +355,21 @@ uqAppl(const uqBaseEnvironmentClass& env)
   burgersQuesoInterface val_burgersInterface(100, 100.0, "validation_data.dat");
   likelihoodRoutine_DataClass<P_V,P_M> valLikelihoodRoutine_Data(env, 100.0, "validation_data.dat", val_burgersInterface);
 
-  cycle.setValIP(likelihoodRoutine<P_V,P_M>, (void *) &valLikelihoodRoutine_Data,
-                 true); // the likelihood routine computes [-2.*ln(Likelihood)]
+  uqGenericScalarFunctionClass<P_V,P_M> valLikelihoodFunctionObj("val_like_",
+                                                                 paramDomain,
+                                                                 likelihoodRoutine<P_V,P_M>,
+                                                                 NULL,
+                                                                 NULL,
+                                                                 (void *) &valLikelihoodRoutine_Data,
+                                                                 true); // the routine computes [-2.*ln(function)]
+
+  cycle.setValIP(valLikelihoodFunctionObj);
 
 
-  // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
-  // Use 'realizer()' because the posterior rv was computed with Markov Chain
-  // Use these calibration mean values as the initial values
-  P_M* valProposalCovMatrix = 
-    cycle.calIP().postRv().imageSpace().newGaussianMatrix(cycle.calIP().postRv().realizer().imageVarianceValues(),
-							  cycle.calIP().postRv().realizer().imageExpectedValues()); 
+   P_M* valProposalCovMatrix = 
+     cycle.calIP().postRv().imageSet().vectorSpace().newGaussianMatrix(cycle.calIP().postRv().realizer().imageVarVector(), cycle.calIP().postRv().realizer().imageExpVector()); 
 
-  cycle.valIP().solveWithBayesMarkovChain(cycle.calIP().postRv().realizer().imageExpectedValues(),
+  cycle.valIP().solveWithBayesMarkovChain(cycle.calIP().postRv().realizer().imageExpVector(),
                                           valProposalCovMatrix);
   delete valProposalCovMatrix;
 
@@ -426,8 +397,8 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
   if (cycle.calFP().computeSolutionFlag() &&
       cycle.valFP().computeSolutionFlag()) {
-    Q_V* epsilonVec = cycle.calFP().qoiRv().imageSpace().newVector(0.02);
-    Q_V cdfDistancesVec(cycle.calFP().qoiRv().imageSpace().zeroVector());
+    Q_V* epsilonVec = cycle.calFP().qoiRv().imageSet().vectorSpace().newVector(0.02);
+    Q_V cdfDistancesVec(cycle.calFP().qoiRv().imageSet().vectorSpace().zeroVector());
     horizontalDistances(cycle.calFP().qoiRv().cdf(),
                         cycle.valFP().qoiRv().cdf(),
                         *epsilonVec,
