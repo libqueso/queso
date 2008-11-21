@@ -345,7 +345,7 @@ private:
   using uqBaseTKGroupClass<V,M>::m_rvs;
 
   const uqBaseVectorPdfClass<V,M>& m_targetPdf;
-  std::vector<const V*>            m_preComputedPosPlusNewton;
+  std::vector<V*>                  m_preComputedPosPlusNewton;
 //std::vector<const M*>            m_preComputedHessians; // Hessians are stored inside the rvs
 };
 
@@ -442,20 +442,57 @@ uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position
                       "uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
                       "m_preComputingPositions.size() != m_preComputedPosPlusNewton.size()");
 
+  UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageId,
+                      m_env.rank(),
+                      "uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
+                      "m_preComputingPositions.size() <= stageId");
+
+  UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageId] != NULL,
+                      m_env.rank(),
+                      "uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
+                      "m_preComputingPositions[stageId] != NULL");
+
+  UQ_FATAL_TEST_MACRO(m_rvs.size() <= stageId,
+                      m_env.rank(),
+                      "uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
+                      "m_rvs.size() <= stageId");
+
+  UQ_FATAL_TEST_MACRO(m_rvs[stageId] != NULL,
+                      m_env.rank(),
+                      "uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
+                      "m_rvs[stageId] != NULL");
+
+  UQ_FATAL_TEST_MACRO(m_preComputedPosPlusNewton.size() <= stageId,
+                      m_env.rank(),
+                      "uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
+                      "m_preComputedPosPlusNewton.size() <= stageId");
+
+  UQ_FATAL_TEST_MACRO(m_preComputedPosPlusNewton[stageId] != NULL,
+                      m_env.rank(),
+                      "uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
+                      "m_preComputedPosPlusNewton[stageId] != NULL");
+
   uqBaseTKGroupClass<V,M>::setPreComputingPosition(position,stageId);
+
+  M* tmpHessian = m_vectorSpace->newMatrix();
+  V* tmpGrad    = m_vectorSpace->newVector();
   for (unsigned int i = 0; i < m_preComputedPosPlusNewton.size(); ++i) {
-#if 0
-    double factor = 1./m_scales[i]/m_scales[i];
+    m_targetPdf.hessianOfMinus2Ln(position,*tmpHessian);
+    //double factor = 1./m_scales[i]/m_scales[i];
+    //*tmpHessian *= factor;
+
+    m_targetPdf.gradOfMinus2Ln(position,*tmpGrad);
+    m_preComputedPosPlusNewton[i] = m_vectorSpace->newVector();
+    *(m_preComputedPosPlusNewton[i]) = *m_preComputingPositions[i] - tmpHessian->invertMultiply(*tmpGrad);
+
     m_rvs[i] = new uqGaussianVectorRVClass<V,M>(m_prefix.c_str(),
                                                 *m_vectorSpace,
-                                                m_vectorSpace->zeroVector(),
-                                                factor*covMatrix);
-    if (m_preComputedPosPlusNewton[i]) {
-      delete m_preComputedPosPlusNewton[i];
-      m_preComputedPosPlusNewton[i] = NULL;
-    }
-#endif
+                                                *m_preComputedPosPlusNewton[i],
+                                                *tmpHessian);
   }
+  delete tmpGrad;
+  delete tmpHessian;
+
   return;
 }
 

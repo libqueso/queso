@@ -316,10 +316,10 @@ private:
 
 template<class V, class M>
 uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
-  const char*                    prefix,
+  const char*                  prefix,
   const uqVectorSetClass<V,M>& imageSet,
-  const V&                       imageExpVector,
-  const V&                       imageVarVector)
+  const V&                     imageExpVector,
+  const V&                     imageVarVector)
   :
   uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"gau").c_str(),imageSet)
 {
@@ -336,9 +336,10 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
 
   M lowerCholCovMatrix(imageVarVector);
   int ierr = lowerCholCovMatrix.chol();
-  UQ_FATAL_TEST_MACRO( (ierr!=0), m_env.rank(),
-		       "uqGaussianVectorRVClass<V,M>::constructor() [2]",
-		       "Cholesky decomposition of covariance matrix failed.");
+  UQ_FATAL_TEST_MACRO(ierr != 0,
+                      m_env.rank(),
+                      "uqGaussianVectorRVClass<V,M>::constructor() [1]",
+                      "Cholesky decomposition of covariance matrix failed.");
   lowerCholCovMatrix.zeroUpper(false);
 
   m_realizer = new uqGaussianVectorRealizerClass<V,M>(m_prefix.c_str(),
@@ -378,6 +379,11 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
 
   M lowerCholCovMatrix(covMatrix);
   int ierr = lowerCholCovMatrix.chol();
+  if (ierr != 0) {
+    std::cout << "In uqGaussianVectorRVClass<V,M>::constructor() [2]: covMatrix contents are\n"
+              << covMatrix
+              << std::endl;
+  }
   UQ_FATAL_TEST_MACRO(ierr != 0,
                       m_env.rank(),
 		      "uqGaussianVectorRVClass<V,M>::constructor() [2]",

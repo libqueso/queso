@@ -28,6 +28,8 @@ tga_cal_ip_mc_chain_measureRunTimes = 1
 tga_cal_ip_mc_chain_write           = 0
 tga_cal_ip_mc_chain_computeStats    = 1
 
+tga_cal_ip_mc_tk_useLocalHessian         = 1
+tga_cal_ip_mc_tk_useNewtonComponent      = 1
 tga_cal_ip_mc_dr_maxNumExtraStages       = 1
 tga_cal_ip_mc_dr_scalesForExtraStages    = 5. 4. 3.
 tga_cal_ip_mc_am_initialNonAdaptInterval = 0
@@ -193,6 +195,8 @@ tga_val_ip_mc_chain_measureRunTimes = 1
 tga_val_ip_mc_chain_write           = 0
 tga_val_ip_mc_chain_computeStats    = 1
 
+tga_val_ip_mc_tk_useLocalHessian         = 1
+tga_val_ip_mc_tk_useNewtonComponent      = 1
 tga_val_ip_mc_dr_maxNumExtraStages       = 1
 tga_val_ip_mc_dr_scalesForExtraStages    = 5. 4. 3.
 tga_val_ip_mc_am_initialNonAdaptInterval = 0

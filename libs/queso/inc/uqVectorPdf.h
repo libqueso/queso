@@ -231,22 +231,23 @@ uqGenericVectorPdfClass<V,M>::~uqGenericVectorPdfClass()
 
 template<class V, class M>
 double
-uqGenericVectorPdfClass<V,M>::minus2LnValue(const V& paramValues) const
+uqGenericVectorPdfClass<V,M>::minus2LnValue(const V& domainVector) const
 {
-  return m_scalarFunction.minus2LnValue(paramValues);
+  return m_scalarFunction.minus2LnValue(domainVector);
 }
 
 template<class V, class M>
 double
-uqGenericVectorPdfClass<V,M>::actualValue(const V& paramValues) const
+uqGenericVectorPdfClass<V,M>::actualValue(const V& domainVector) const
 {
-  return m_scalarFunction.actualValue(paramValues);
+  return m_scalarFunction.actualValue(domainVector);
 }
 
 template<class V, class M>
 void
 uqGenericVectorPdfClass<V,M>::gradOfActual(const V& domainVector, V& gradVector) const
 {
+  m_scalarFunction.gradOfActual(domainVector,gradVector);
   return;
 }
 
@@ -254,6 +255,7 @@ template<class V, class M>
 void
 uqGenericVectorPdfClass<V,M>::gradOfMinus2Ln(const V& domainVector, V& gradVector) const
 {
+  m_scalarFunction.gradOfMinus2Ln(domainVector,gradVector);
   return;
 }
 
@@ -261,6 +263,7 @@ template<class V, class M>
 void
 uqGenericVectorPdfClass<V,M>::hessianOfActual(const V& domainVector, M& hessianMatrix) const
 {
+  m_scalarFunction.hessianOfActual(domainVector,hessianMatrix);
   return;
 }
 
@@ -268,6 +271,7 @@ template<class V, class M>
 void
 uqGenericVectorPdfClass<V,M>::hessianOfMinus2Ln(const V& domainVector, M& hessianMatrix) const
 {
+  m_scalarFunction.hessianOfMinus2Ln(domainVector,hessianMatrix);
   return;
 }
 
@@ -291,14 +295,17 @@ public:
   void   hessianOfMinus2Ln(const V& domainVector, M& hessianMatrix) const;
 
 protected:
-  const uqBaseVectorPdfClass     <V,M>& m_priorDensity;
-  const uqBaseScalarFunctionClass<V,M>& m_likelihoodFunction;
-
   using uqBaseScalarFunctionClass<V,M>::m_env;
   using uqBaseScalarFunctionClass<V,M>::m_prefix;
   using uqBaseScalarFunctionClass<V,M>::m_domainSet;
   using uqBaseVectorPdfClass<V,M>::m_domainExpVector;
   using uqBaseVectorPdfClass<V,M>::m_domainVarVector;
+
+  const uqBaseVectorPdfClass     <V,M>& m_priorDensity;
+  const uqBaseScalarFunctionClass<V,M>& m_likelihoodFunction;
+
+  mutable V m_tmpVector;
+  mutable M* m_tmpMatrix;
 };
 
 template<class V,class M>
@@ -310,21 +317,24 @@ uqBayesianVectorPdfClass<V,M>::uqBayesianVectorPdfClass(
   :
   uqBaseVectorPdfClass<V,M>(((std::string)(prefix)+"bay").c_str(),intersectionDomain),
   m_priorDensity           (priorDensity),
-  m_likelihoodFunction     (likelihoodFunction)
+  m_likelihoodFunction     (likelihoodFunction),
+  m_tmpVector              (m_domainSet.vectorSpace().zeroVector()),
+  m_tmpMatrix              (m_domainSet.vectorSpace().newMatrix())
 {
 }
 
 template<class V,class M>
 uqBayesianVectorPdfClass<V,M>::~uqBayesianVectorPdfClass()
 {
+  delete m_tmpMatrix;
 }
 
 template<class V, class M>
 double
-uqBayesianVectorPdfClass<V,M>::minus2LnValue(const V& paramValues) const
+uqBayesianVectorPdfClass<V,M>::minus2LnValue(const V& domainVector) const
 {
-  double value1 = m_priorDensity.minus2LnValue(paramValues);
-  double value2 = m_likelihoodFunction.minus2LnValue(paramValues);
+  double value1 = m_priorDensity.minus2LnValue(domainVector);
+  double value2 = m_likelihoodFunction.minus2LnValue(domainVector);
 
   //if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
   //  std::cout << "In uqBayesianVectorPdfClass<P_V,P_M>::minus2LnValue()"
@@ -338,10 +348,10 @@ uqBayesianVectorPdfClass<V,M>::minus2LnValue(const V& paramValues) const
 
 template<class V, class M>
 double
-uqBayesianVectorPdfClass<V,M>::actualValue(const V& paramValues) const
+uqBayesianVectorPdfClass<V,M>::actualValue(const V& domainVector) const
 {
-  double value1 = m_priorDensity.actualValue(paramValues);
-  double value2 = m_likelihoodFunction.actualValue(paramValues);
+  double value1 = m_priorDensity.actualValue(domainVector);
+  double value2 = m_likelihoodFunction.actualValue(domainVector);
 
   return value1*value2;
 }
@@ -350,6 +360,10 @@ template<class V, class M>
 void
 uqBayesianVectorPdfClass<V,M>::gradOfActual(const V& domainVector, V& gradVector) const
 {
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.rank(),
+                      "uqBayesianVectorPdfClass<V,M>::gradOfActual()",
+                      "INCOMPLETE CODE");
   return;
 }
 
@@ -357,6 +371,10 @@ template<class V, class M>
 void
 uqBayesianVectorPdfClass<V,M>::gradOfMinus2Ln(const V& domainVector, V& gradVector) const
 {
+  m_priorDensity.gradOfMinus2Ln(domainVector,gradVector);
+  m_likelihoodFunction.gradOfMinus2Ln(domainVector,m_tmpVector);
+  gradVector += m_tmpVector;
+
   return;
 }
 
@@ -364,6 +382,10 @@ template<class V, class M>
 void
 uqBayesianVectorPdfClass<V,M>::hessianOfActual(const V& domainVector, M& hessianMatrix) const
 {
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.rank(),
+                      "uqBayesianVectorPdfClass<V,M>::hessianOfActual()",
+                      "INCOMPLETE CODE");
   return;
 }
 
@@ -371,6 +393,10 @@ template<class V, class M>
 void
 uqBayesianVectorPdfClass<V,M>::hessianOfMinus2Ln(const V& domainVector, M& hessianMatrix) const
 {
+  m_priorDensity.hessianOfMinus2Ln(domainVector,hessianMatrix);
+  m_likelihoodFunction.hessianOfMinus2Ln(domainVector,*m_tmpMatrix);
+  hessianMatrix += *m_tmpMatrix;
+
   return;
 }
 
@@ -396,19 +422,18 @@ public:
   void   gradOfMinus2Ln   (const V& domainVector, V& gradVector)    const;
   void   hessianOfActual  (const V& domainVector, M& hessianMatrix) const;
   void   hessianOfMinus2Ln(const V& domainVector, M& hessianMatrix) const;
-  void   updateExpVector(const V& newExpVector);
-  void   updateCovMatrix     (const M& newCovMatrix);
+  void   updateExpVector  (const V& newExpVector);
+  void   updateCovMatrix  (const M& newCovMatrix);
 
 protected:
-  bool     m_diagonalCovMatrix;
-  const M* m_covMatrix;
-
   using uqBaseScalarFunctionClass<V,M>::m_env;
   using uqBaseScalarFunctionClass<V,M>::m_prefix;
   using uqBaseScalarFunctionClass<V,M>::m_domainSet;
   using uqBaseVectorPdfClass<V,M>::m_domainExpVector;
   using uqBaseVectorPdfClass<V,M>::m_domainVarVector;
 
+  bool     m_diagonalCovMatrix;
+  const M* m_covMatrix;
 };
 
 template<class V,class M>
@@ -483,13 +508,13 @@ uqGaussianVectorPdfClass<V,M>::~uqGaussianVectorPdfClass()
 
 template<class V, class M>
 double
-uqGaussianVectorPdfClass<V,M>::minus2LnValue(const V& paramValues) const
+uqGaussianVectorPdfClass<V,M>::minus2LnValue(const V& domainVector) const
 {
   if( m_diagonalCovMatrix ){
-    V diffVec(paramValues - this->domainExpVector());
+    V diffVec(domainVector - this->domainExpVector());
     return ((diffVec*diffVec)/this->domainVarVector()).sumOfComponents();
   } else{
-    V diffVec(paramValues - this->domainExpVector());
+    V diffVec(domainVector - this->domainExpVector());
     V tmpVec = this->m_covMatrix->invertMultiply(diffVec);
     return (diffVec*tmpVec).sumOfComponents();
   }
@@ -497,15 +522,19 @@ uqGaussianVectorPdfClass<V,M>::minus2LnValue(const V& paramValues) const
 
 template<class V, class M>
 double
-uqGaussianVectorPdfClass<V,M>::actualValue(const V& paramValues) const
+uqGaussianVectorPdfClass<V,M>::actualValue(const V& domainVector) const
 {
-  return exp(-0.5*this->minus2LnValue(paramValues));
+  return exp(-0.5*this->minus2LnValue(domainVector));
 }
 
 template<class V, class M>
 void
 uqGaussianVectorPdfClass<V,M>::gradOfActual(const V& domainVector, V& gradVector) const
 {
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.rank(),
+                      "uqGaussianVectorPdfClass<V,M>::gradOfActual()",
+                      "INCOMPLETE CODE");
   return;
 }
 
@@ -513,6 +542,10 @@ template<class V, class M>
 void
 uqGaussianVectorPdfClass<V,M>::gradOfMinus2Ln(const V& domainVector, V& gradVector) const
 {
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.rank(),
+                      "uqGaussianVectorPdfClass<V,M>::gradOfMinus2Ln()",
+                      "INCOMPLETE CODE");
   return;
 }
 
@@ -520,6 +553,10 @@ template<class V, class M>
 void
 uqGaussianVectorPdfClass<V,M>::hessianOfActual(const V& domainVector, M& hessianMatrix) const
 {
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.rank(),
+                      "uqGaussianVectorPdfClass<V,M>::hessianOfActual()",
+                      "INCOMPLETE CODE");
   return;
 }
 
@@ -527,6 +564,10 @@ template<class V, class M>
 void
 uqGaussianVectorPdfClass<V,M>::hessianOfMinus2Ln(const V& domainVector, M& hessianMatrix) const
 {
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.rank(),
+                      "uqGaussianVectorPdfClass<V,M>::hessianOfMinus2Ln()",
+                      "INCOMPLETE CODE");
   return;
 }
 
@@ -603,14 +644,14 @@ uqUniformVectorPdfClass<V,M>::~uqUniformVectorPdfClass()
 
 template<class V, class M>
 double
-uqUniformVectorPdfClass<V,M>::minus2LnValue(const V& paramValues) const
+uqUniformVectorPdfClass<V,M>::minus2LnValue(const V& domainVector) const
 {
   return 0.;
 }
 
 template<class V, class M>
 double
-uqUniformVectorPdfClass<V,M>::actualValue(const V& paramValues) const
+uqUniformVectorPdfClass<V,M>::actualValue(const V& domainVector) const
 {
   return 1.;
 }
@@ -619,6 +660,7 @@ template<class V, class M>
 void
 uqUniformVectorPdfClass<V,M>::gradOfActual(const V& domainVector, V& gradVector) const
 {
+  gradVector = m_domainSet.vectorSpace().zeroVector();
   return;
 }
 
@@ -626,6 +668,7 @@ template<class V, class M>
 void
 uqUniformVectorPdfClass<V,M>::gradOfMinus2Ln(const V& domainVector, V& gradVector) const
 {
+  gradVector = m_domainSet.vectorSpace().zeroVector();
   return;
 }
 
@@ -633,6 +676,7 @@ template<class V, class M>
 void
 uqUniformVectorPdfClass<V,M>::hessianOfActual(const V& domainVector, M& hessianMatrix) const
 {
+  hessianMatrix *= 0.;
   return;
 }
 
@@ -640,6 +684,7 @@ template<class V, class M>
 void
 uqUniformVectorPdfClass<V,M>::hessianOfMinus2Ln(const V& domainVector, M& hessianMatrix) const
 {
+  hessianMatrix *= 0.;
   return;
 }
 #endif // __UQ_VECTOR_PROB_DENSITY_H__

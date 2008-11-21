@@ -416,6 +416,26 @@ tgaLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
   return resultValue;
 }
 
+// The (user defined) grad likelihood routine
+template<class P_V,class P_M>
+void
+tgaLikelihoodGradRoutine(const P_V& paramValues, const void* functionDataPtr, P_V& gradVector)
+{
+  gradVector *= 0.;
+
+  return;
+}
+
+// The (user defined) grad likelihood routine
+template<class P_V,class P_M>
+void
+tgaLikelihoodHessianRoutine(const P_V& paramValues, const void* functionDataPtr, P_M& hessianMatrix)
+{
+  hessianMatrix *= 0.;
+
+  return;
+}
+
 //********************************************************
 // QoI function object for both forward problems of the validation cycle.
 // A QoI function object is provided by user and is called by the UQ library.
@@ -704,8 +724,8 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
   m_calLikelihoodFunctionObj = new uqGenericScalarFunctionClass<P_V,P_M>("cal_like_",
                                                                          *m_paramDomain,
                                                                          tgaLikelihoodRoutine<P_V,P_M>,
-                                                                         NULL,
-                                                                         NULL,
+                                                                         tgaLikelihoodGradRoutine<P_V,P_M>,
+                                                                         tgaLikelihoodHessianRoutine<P_V,P_M>,
                                                                          (void *) m_calLikelihoodRoutine_Data,
                                                                          true); // the routine computes [-2.*ln(function)]
 
@@ -765,8 +785,8 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
   m_valLikelihoodFunctionObj = new uqGenericScalarFunctionClass<P_V,P_M>("val_like_",
                                                                          *m_paramDomain,
                                                                          tgaLikelihoodRoutine<P_V,P_M>,
-                                                                         NULL,
-                                                                         NULL,
+                                                                         tgaLikelihoodGradRoutine<P_V,P_M>,
+                                                                         tgaLikelihoodHessianRoutine<P_V,P_M>,
                                                                          (void *) m_valLikelihoodRoutine_Data,
                                                                          true); // the routine computes [-2.*ln(function)]
 
