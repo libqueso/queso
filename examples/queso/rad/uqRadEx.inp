@@ -44,7 +44,7 @@ rad_cal_ip_mc_filteredChain_write            = 0
 rad_cal_ip_mc_filteredChain_computeStats     = 1
 
 #rad_cal_ip_mc_chain_stats_help                     = anything
-rad_cal_ip_mc_chain_stats_initialDiscardedPortions = 0. .05 .10 .15 .20 .25 .30 .35 .40
+rad_cal_ip_mc_chain_stats_initialDiscardedPortions = 0.
 rad_cal_ip_mc_chain_stats_bmm_run                  = 0
 rad_cal_ip_mc_chain_stats_bmm_lengths              = 50 100 200 250
 rad_cal_ip_mc_chain_stats_fft_compute              = 0
@@ -211,7 +211,7 @@ rad_val_ip_mc_filteredChain_write            = 0
 rad_val_ip_mc_filteredChain_computeStats     = 1
 
 #rad_val_ip_mc_chain_stats_help                     = anything
-rad_val_ip_mc_chain_stats_initialDiscardedPortions = 0. .05 .10 .15 .20 .25 .30 .35 .40
+rad_val_ip_mc_chain_stats_initialDiscardedPortions = 0.
 rad_val_ip_mc_chain_stats_bmm_run                  = 0
 rad_val_ip_mc_chain_stats_bmm_lengths              = 50 100 200 250
 rad_val_ip_mc_chain_stats_fft_compute              = 0

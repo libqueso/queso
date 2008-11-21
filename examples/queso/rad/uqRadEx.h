@@ -70,12 +70,16 @@ radLikelihoodRoutine_DataClass<P_V,P_M>::radLikelihoodRoutine_DataClass(
     // Read data
     unsigned int numLines;
     fscanf(inp,"%d",&numLines);
+    m_P.resize(numLines,0.);
+    m_T.resize(numLines,0.);
+    m_I.resize(numLines,0.);
+    m_Var.resize(numLines,0.);
     for (unsigned int i = 0; i < numLines; ++i) {
       fscanf(inp,"%lf %lf %lf %lf",&m_P[i],&m_T[i],&m_I[i],&m_Var[i]);
     }
 
     for (unsigned int i = 0; i < numLines; ++i) {
-      printf("i = %d, m_P[i] = %lf, m_T[i] = %lf, m_I[i] = %lf, m_Var[i] = %lf",i,m_P[i],m_T[i],m_I[i],m_Var[i]);
+      printf("i = %d, m_P[i] = %lf, m_T[i] = %lf, m_I[i] = %lf, m_Var[i] = %lf\n",i,m_P[i],m_T[i],m_I[i],m_Var[i]);
     }
 
     // Close input file on experimental data
@@ -101,8 +105,6 @@ radLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
   //DOUBLE PRECISION ct2 = paramValues[3];
   //DOUBLE PRECISION ct3 = paramValues[4];
   //CALL SPECTRAL_MODEL(cp1,cp2,ct1,ct2,ct3,resultValue);
-  //double T=10337.;
-  //double P=77.;
 
   double resultValue = 0.;
 
@@ -173,16 +175,31 @@ radQoiRoutine_DataClass
 template<class P_V,class P_M,class Q_V,class Q_M>
 void radQoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiValues)
 {
-  double A            = paramValues[0];
-  double E            = paramValues[1];
-  double beta         = ((radQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->m_beta;
-  double criticalMass = ((radQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->m_criticalMass;
-  double criticalTime = ((radQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->m_criticalTime;
+  double CP1 = paramValues[0];
+  double CP2 = paramValues[1];
+  double CT1 = paramValues[2];
+  double CT2 = paramValues[3];
+  double CT3 = paramValues[4];
 
+  double m_P  = ((radQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->m_P;
+  double m_T  = ((radQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->m_T;
+
+  double DS=.1016;
+  double SIG=5.67e-8;
+
+    double CP=CP1*m_P-CP2;
+
+    double K_G=CP*(CT1*m_T*m_T+CT2*m_T+CT3);
+
+    double IB=SIG*(m_T*m_T*m_T*m_T)/M_PI;
+
+    double I=IB*(1.-exp(-K_G*DS));
+
+    qoiValues[0] = M_PI*I;
 	
-  if ((paramValues.env().verbosity() >= 3) && (paramValues.env().rank() == 0)) {
-    printf("In radQoiRoutine(), A = %g, E = %g, beta = %.3lf, criticalTime = %.3lf, criticalMass = %.3lf: qoi = %lf.\n",A,E,beta,criticalTime,criticalMass,qoiValues[0]);
-  }
+  //if ((paramValues.env().verbosity() >= 3) && (paramValues.env().rank() == 0)) {
+  //  printf("In radQoiRoutine(), A = %g, E = %g, beta = %.3lf, criticalTime = %.3lf, criticalMass = %.3lf: qoi = %lf.\n",A,E,beta,criticalTime,criticalMass,qoiValues[0]);
+  //}
 
   return;
 }
@@ -221,9 +238,8 @@ private:
   const EpetraExt::DistArray<std::string>*  m_qoiNames; // instantiated outside this class!!
   uqVectorSpaceClass<Q_V,Q_M>*              m_qoiSpace;
 
-  double                                    m_predBeta;
-  double                                    m_predCriticalMass;
-  double                                    m_predCriticalTime;
+  double                                    m_predT;
+  double                                    m_predP;
 
   uqBaseVectorRVClass<P_V,P_M>*             m_calPriorRv;
   radLikelihoodRoutine_DataClass<P_V,P_M>*  m_calLikelihoodRoutine_Data;
@@ -306,9 +322,8 @@ uqRadValidationClass<P_V,P_M,Q_V,Q_M>::uqRadValidationClass(
                                                         *m_paramSpace,
                                                         *m_qoiSpace);
 
-  m_predBeta         = 250.;
-  m_predCriticalMass = 0.;
-  m_predCriticalTime = 3.9;
+  m_predT = 10337.;
+  m_predP = 0.77;
 
   if (m_env.rank() == 0) {
     std::cout << "Leaving uqRadValidation::constructor()\n"
@@ -360,8 +375,8 @@ uqRadValidationClass<P_V,P_M,Q_V,Q_M>::run()
   }
 
   runCalibrationStage();
-  //runValidationStage();
-  //runComparisonStage();
+  runValidationStage();
+  runComparisonStage();
 
   if (m_env.rank() == 0) {
     std::cout << "Leaving uqRadValidation::run()"
@@ -391,7 +406,6 @@ uqRadValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
 
   m_calLikelihoodRoutine_Data = new radLikelihoodRoutine_DataClass<P_V,P_M>(m_env,
                                                                             "I1.dat");
-#if 0
   m_calLikelihoodFunctionObj = new uqGenericScalarFunctionClass<P_V,P_M>("cal_like_",
                                                                          *m_paramDomain,
                                                                          radLikelihoodRoutine<P_V,P_M>,
@@ -412,16 +426,14 @@ uqRadValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
 
   // Deal with forward problem
   m_calQoiRoutine_Data = new radQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M>();
-  m_calQoiRoutine_Data->m_beta         = m_predBeta;
-  m_calQoiRoutine_Data->m_criticalMass = m_predCriticalMass;
-  m_calQoiRoutine_Data->m_criticalTime = m_predCriticalTime;
+  m_calQoiRoutine_Data->m_T = m_predT;
+  m_calQoiRoutine_Data->m_P = m_predP;
 
   m_cycle->setCalFP(radQoiRoutine<P_V,P_M,Q_V,Q_M>,
                     (void *) m_calQoiRoutine_Data);
 
   // Solve forward problem = set 'realizer' and 'cdf' of 'qoiRv'
   m_cycle->calFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
-#endif
 
   iRC = gettimeofday(&timevalNow, NULL);
   if (m_env.rank() == 0) {
@@ -471,9 +483,8 @@ uqRadValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
 
   // Deal with forward problem
   m_valQoiRoutine_Data = new radQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M>();
-  m_valQoiRoutine_Data->m_beta         = m_predBeta;
-  m_valQoiRoutine_Data->m_criticalMass = m_predCriticalMass;
-  m_valQoiRoutine_Data->m_criticalTime = m_predCriticalTime;
+  m_valQoiRoutine_Data->m_T = m_predT;
+  m_valQoiRoutine_Data->m_P = m_predP;
 
   m_cycle->setValFP(radQoiRoutine<P_V,P_M,Q_V,Q_M>,
                     (void *) m_valQoiRoutine_Data);
