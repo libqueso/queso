@@ -28,20 +28,6 @@
 
 #define R_CONSTANT 8.314472
 
-// The ODE (state dot) function
-int atcOdeFunc(double t, const double Mass[], double f[], void *info)
-{
-#if 1 // KENJI
-  double* params = (double *)info;
-  double A    = params[0];
-  double E    = params[1];
-  double beta = params[2];
-
-  f[0] = -A*Mass[0]*exp(-E/(R_CONSTANT*t))/beta;
-#endif // KENJI
-  return GSL_SUCCESS;
-}
-
 //********************************************************
 // Likelihood function object for both inverse problems of the validation cycle.
 // A likelihood function object is provided by user and is called by the UQ library.
@@ -61,13 +47,17 @@ atcLikelihoodRoutine_DataClass
  ~atcLikelihoodRoutine_DataClass();
 
   // Description of experiments
+  int    NREST;
   int    NSPECI;
   int    NO_STEPS;
   int    NO_PARAM;
+  int    NO_EXP;
+  double DTIME;
   double UREF;
   double TREF;
   double PREF;
   double RHOREF;
+  double ex_SystemTemperature;
   char Species_name[13][100];
 
   int  reac[19][13];
@@ -79,7 +69,6 @@ atcLikelihoodRoutine_DataClass
   std::vector<double>      Species_conm;
 
   // Scenario parameters
-  double ex_temperature;
   std::vector<double> lkc;
   std::vector<double> la;
   std::vector<double> p;
@@ -113,37 +102,41 @@ atcLikelihoodRoutine_DataClass<P_V,P_M>::atcLikelihoodRoutine_DataClass(
   Variance_ex(4,0.)
 {
   // Read description of experiment
-  char dummyNAME1[100],dummyNAME2[100];
-  char dummyNAME3[100],dummyNAME4[100];
+  char dummyNAME1[100];
+  char dummyNAME2[100];
+  char dummyNAME3[100];
+  char dummyNAME4[100];
   double tmp_con, tmp_mass;
   unsigned int tmpCount = 0;
 
   FILE *inp = fopen(experimentDescriptionFileName,"r");
-   fscanf(inp,"%s %s %s",dummyNAME1,dummyNAME2,dummyNAME3);  // NSPECI     NO_STEPS  NO_PARAM
-   fscanf(inp,"%d %d %d",&NSPECI,&NO_STEPS,&NO_PARAM);                    
-   fscanf(inp,"%s %s %s",dummyNAME1,dummyNAME2,dummyNAME3);  // UREF  TREF_K  PREF_Pa
+   fscanf(inp,"%s %s      ",dummyNAME1,dummyNAME2);  // NSPECI     NO_STEPS  NO_PARAM
+   fscanf(inp,"%d %lf     ",&NREST,&DTIME);
+   fscanf(inp,"%s %s %s   ",dummyNAME1,dummyNAME2,dummyNAME3);  // NSPECI     NO_STEPS  NO_PARAM
+   fscanf(inp,"%d %d %d   ",&NSPECI,&NO_STEPS,&NO_PARAM);                    
+   fscanf(inp,"%s %s %s   ",dummyNAME1,dummyNAME2,dummyNAME3);  // UREF  TREF_K  PREF_Pa
    fscanf(inp,"%lf %lf %lf",&UREF, &TREF, &PREF);
-   fscanf(inp,"%s %s %s",dummyNAME1,dummyNAME2,dummyNAME3);  // SPNAME  CONCO_mass_base  MWT
-
-  while (fscanf(inp,"%s %lf %lf",Species_name[tmpCount],&tmp_con,&tmp_mass) != EOF) {
+   fscanf(inp,"%s %s %s   ",dummyNAME1,dummyNAME2,dummyNAME3);  // SPNAME  CONCO_mass_base  MWT
+   while (fscanf(inp,"%s %lf %lf",Species_name[tmpCount],&tmp_con,&tmp_mass) != EOF) {
     Species_con[tmpCount]  = tmp_con;
     Species_mass[tmpCount] =tmp_mass;
     tmpCount++;
-  }
+   }
   // Close file
   fclose(inp);
 
-  int  tmp_Num,tmpREAC,tmpPROD,i,j;
+  int  tmp_Num,tmpREAC,tmpPROD;
+
   inp = fopen(reactionFileName,"r");
-  for (j=0; j<NO_STEPS; j++){
+  for (int j=0; j<NO_STEPS; j++){
        fscanf(inp,"%s",dummyNAME1);
        fscanf(inp,"%s %d %s",dummyNAME2,&tmp_Num,dummyNAME3);
        fscanf(inp,"%s",dummyNAME4);
-       for (i=0; i<NSPECI; i++) {
+       for (int i=0; i<NSPECI; i++) {
           fscanf(inp,"%d",&tmpREAC);
           reac[j][i] = tmpREAC;
        }
-       for (i=0; i<NSPECI; i++) {
+       for (int i=0; i<NSPECI; i++) {
           fscanf(inp,"%d",&tmpPROD);
           prod[j][i] = tmpPROD;
        }
@@ -159,12 +152,9 @@ atcLikelihoodRoutine_DataClass<P_V,P_M>::atcLikelihoodRoutine_DataClass(
                << std::endl;
      }
        inp = fopen(scenarioFileName1,"r");    
-       char dummyNAME1[100],dummyNAME2[100];
-       char dummyNAME3[100],dummyNAME4[100];
-       int i;
        double tmpEQC,tmpA,tmpms,tmpTs;
-       fscanf(inp,"%lf",&ex_temperature); 
-       for (i=0; i<NO_STEPS; i++){
+       fscanf(inp,"%lf",&ex_SystemTemperature); 
+       for (int i=0; i<NO_STEPS; i++){
 		fscanf(inp,"%s %s %s %s",dummyNAME1,dummyNAME2,dummyNAME3,dummyNAME4);
                 fscanf(inp,"%lf %lf %lf %lf",&tmpEQC,&tmpA,&tmpms,&tmpTs);
                 lkc[i] = tmpEQC;
@@ -182,29 +172,33 @@ atcLikelihoodRoutine_DataClass<P_V,P_M>::atcLikelihoodRoutine_DataClass(
                 << experimentalDataFileName1 << "'\n"
                 << std::endl;
     }
-
     inp = fopen(experimentalDataFileName1,"r");
     unsigned int numObservations = 0;
     double tmpTime;
     double tmpOcon;
     double tmpVar;
-
+    fscanf(inp,"%d",&NO_EXP);
     while (fscanf(inp,"%lf %lf %lf",&tmpTime,&tmpOcon,&tmpVar) != EOF) {
       Time_ex[numObservations] = tmpTime;
       Ocon_ex[numObservations] = tmpOcon;
       Variance_ex[numObservations] = tmpVar;
       numObservations++;
-     printf("%lf %lf", tmpTime, tmpOcon); 
     }
-
-#if 0 //KENJI2
-    initial_setup() 
-#endif 
-
-    // Close file
     fclose(inp);
   }
-  
+
+//   initial set up for concentration
+    double tmpRG = 0.0;
+    double universalGasConstant = 8.31451e3;
+    for (int i=0; i < NSPECI; i++){
+      tmpRG  +=  universalGasConstant / Species_mass[i] * Species_con[i];
+    }
+    RHOREF =  PREF / (tmpRG * TREF);
+
+    for (int i=0; i < NSPECI; i++){
+      Species_conm[i] = RHOREF * Species_con[i] / Species_mass[i]; // Kmol/m^3
+    }
+
 #endif // KENJI
 }
 
@@ -226,42 +220,61 @@ atcLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
   double s_param   = paramValues[2];    // 19th Reaction parameters  exp(-s/T)
   double lkc_param = paramValues[3];    // 19th Reaction parameters  K_b=k_f/Kc
 
-     double Ts       = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->ex_temperature;
-     int    NSPECI   = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->NSPECI;
-     int    NO_STEPS = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->NO_STEPS;
-     const std::vector<double>& lkc = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->lkc;
-     const std::vector<double>& la = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->la;
-     const std::vector<double>& p = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->p;
-     const std::vector<double>& s = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->s;
-     int reac[19][13];
-     int prod[19][13];
-     for (unsigned int i = 0; i < 19; ++i) {
-       for (unsigned int j = 0; j < 13; ++j) {
+  double Ts       = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->ex_SystemTemperature;
+  double DTIME    = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->DTIME;
+  int    NO_EXP   = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->NO_EXP;
+  int    NREST    = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->NREST;
+  int    NSPECI   = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->NSPECI;
+  int    NO_STEPS = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->NO_STEPS;
+  const std::vector<double>& lkc = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->lkc;
+  const std::vector<double>& la = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->la;
+  const std::vector<double>& p = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->p;
+  const std::vector<double>& s = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->s;
+  const std::vector<double>& Time_ex = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->Time_ex;
+  const std::vector<double>& Ocon_ex = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->Ocon_ex;
+  const std::vector<double>& Variance_ex = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->Variance_ex;
+  const std::vector<double>& conmoInitial = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->Species_conm;
+  int reac[NO_STEPS][NSPECI];
+  int prod[NO_STEPS][NSPECI];
+  double Ocon_num[NO_EXP];
+
+  for (int i = 0; i < NO_STEPS; ++i) {
+     for (int j = 0; j < NSPECI; ++j) {
          reac[i][j] = (((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->reac)[i][j];
          prod[i][j] = (((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->prod)[i][j];
-       }
      }
-     std::vector<double>      conmo(13,0.);
-     std::vector<double>      conmo_old(13,0.);
-     double WDOT[2][NSPECI];
-     double WKIN[NO_STEPS];
-     double RKF[NO_STEPS];
-     double RKB[NO_STEPS];
-     double CO,CN,CC,CARG,CO2,CN2,CNO,CCO,CCN,CNCO,CNCN,CN2O,CC2N2;
-     double DTIME = 1.e-6;
-     int i, NSP, NS, NR;
+  }
+  std::vector<double>      conmo(NSPECI,0.);
+  std::vector<double>      conmo_old(NSPECI,0.);
 
-     for (i=0; i<NO_STEPS-1; i++){
-       WKIN[i] = 0.0;    
-       RKF[i]   = (pow(10.,la[i])) * (pow(Ts,p[i])) * exp(- s[i] / Ts); 
-       RKB[i]   = RKF[i] / pow(10.,lkc[i]);
+  double WDOT[2][NSPECI];
+  double WKIN[NO_STEPS];
+  double RKF[NO_STEPS];
+  double RKB[NO_STEPS];
+  double CO,CN,CC,CARG,CO2,CN2,CNO,CCO,CCN,CNCO,CNCN,CN2O,CC2N2,time,numAvgad;
+
+  for (int i=0; i<NO_STEPS-1; i++){
+     WKIN[i] = 0.0;    
+     RKF[i]   = (pow(10.,la[i])) * (pow(Ts,p[i])) * exp(- s[i] / Ts); 
+     RKB[i]   = RKF[i] / pow(10.,lkc[i]);
+  }
+  RKF[NO_STEPS-1]   = (pow(10.,la_param)) * (pow(Ts,p_param)) * exp(- s_param / Ts); 
+  RKB[NO_STEPS-1]   = RKF[NO_STEPS-1] / pow(10.,lkc_param);
+//  RKF[NO_STEPS-1]   = (pow(10.,12.66)) * (pow(Ts,0.0)) * exp(- 1500. / Ts); 
+//  RKB[NO_STEPS-1]   = RKF[NO_STEPS-1] / pow(10.,0.5);
+
+
+  for (int i=0; i<NSPECI; i++){
+     conmo[i]  = conmoInitial[i] / 1e+3;       // kmol/m^3 -> mol/cm^3
+  }
+  for (int TSP=0; TSP<NREST; TSP++) {
+     time = TSP * DTIME;
+
+     for (int i=0; i<NSPECI; i++){
+          conmo_old[i]  = conmo[i]; 
      }
-     i = NO_STEPS-1;
-     RKF[i]   = (pow(10.,la_param)) * (pow(Ts,p_param)) * exp(- s_param / Ts); 
-     RKB[i]   = RKF[i] / pow(10.,lkc_param);
 
-   for (int TSP=0; TSP<10000; TSP++) {
-     for (NSP=0; NSP<2; NSP++) {
+     for (int NSP=0; NSP<2; NSP++) {
           CO    = conmo[0];
           CN    = conmo[1];
           CC    = conmo[2];
@@ -296,28 +309,49 @@ atcLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
           WKIN[17] = -RKF[17] * CC2N2 * CARG + RKB[17] * CCN  * CCN * CARG;
           WKIN[18] = -RKF[18] * CC2N2 * CO   + RKB[18] * CCO  * CNCN;
 
-          for(NR = 0; NR < NO_STEPS; NR++) {
-            WDOT[NSP][NR] = 0.0;
+
+          for(int NR = 0; NR < NSPECI; NR++) {
+             WDOT[NSP][NR] = 0.0;
           }
 
-          for(NS = 0; NS < NSPECI; NS++){
-             for(NR = 0; NR < NO_STEPS; NR++){
+          for(int NS = 0; NS < NSPECI; NS++){
+             for(int NR = 0; NR < NO_STEPS; NR++){
                 WDOT[NSP][NS] += (reac[NR][NS]-prod[NR][NS])*WKIN[NR];
              }
           }
 
-          if(NSP == 0) {
-             for(NS = 0; NS < NSPECI; NS++){
+          if( NSP == 0) {
+             for(int NS = 0; NS < NSPECI; NS++){
                conmo[NS] = conmo_old[NS] + DTIME * WDOT[0][NS];
              }
           }
           else if (NSP == 1) {
-             for(NS = 0; NS < NSPECI; NS++){
+             for(int NS = 0; NS < NSPECI; NS++){
                conmo[NS] = conmo_old[NS] + 0.5e0 *  DTIME *  ( WDOT[1][NS] + WDOT[1][NS] );
              }
           }
-      }
-   } // for TSP
+     }
+
+     for(int NS = 0; NS < NO_EXP; NS++){
+          if( time <= Time_ex[NS] ){
+             Ocon_num[NS] = conmo[0];
+          }  
+     } 
+
+  } // for TSP
+
+//    Calculate misfit
+  resultValue = 0.0;
+  numAvgad    = 6.02214179e+23;
+
+  for(int NS = 0; NS < NO_EXP; NS++){
+    Ocon_num[NS] = Ocon_num[NS] * numAvgad / 1e+13;      //  (# / 1D+13)   /cm^3
+    resultValue += (Ocon_num[NS]-Ocon_ex[NS])* (Ocon_num[NS]-Ocon_ex[NS]) / Variance_ex[NS];
+  }
+
+  for (int i=0; i<NSPECI; i++){
+     conmo[i]  = conmo[i] * 1e+3;   // mol/cm^3 -> kmol/m^3
+  }
   return resultValue;
 }
 
@@ -332,74 +366,144 @@ template<class P_V,class P_M,class Q_V, class Q_M>
 struct
 atcQoiRoutine_DataClass
 {
-#if 1 // KENJI
-  double m_beta;
-  double m_criticalMass;
-  double m_criticalTime;
-#endif // KENJI
+  double m_SystemTemperature;
+  double m_criticalmaxOcon;
+  double m_criticalmaxOcontime;
 };
 
 // The actual (user defined) qoi routine
 template<class P_V,class P_M,class Q_V,class Q_M>
 void atcQoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiValues)
 {
-#if 0 // KENJI
-  double A            = paramValues[0];
-  double E            = paramValues[1];
-  double beta         = ((atcQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->m_beta;
-  double criticalMass = ((atcQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->m_criticalMass;
-  double criticalTime = ((atcQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->m_criticalTime;
+  double la_param  = paramValues[0];    // 19th Reaction parameters  Log_10 (A)
+  double p_param   = paramValues[1];    // 19th Reaction parameters  T^p
+  double s_param   = paramValues[2];    // 19th Reaction parameters  exp(-s/T)
+  double lkc_param = paramValues[3];    // 19th Reaction parameters  K_b=k_f/Kc
 
-  double params[]={A,E,beta};
-      	
-  // integration
-  const gsl_odeiv_step_type *T   = gsl_odeiv_step_rkf45; //rkf45; //gear1;
-        gsl_odeiv_step      *s   = gsl_odeiv_step_alloc(T,1);
-        gsl_odeiv_control   *c   = gsl_odeiv_control_y_new(1e-6,0.0);
-        gsl_odeiv_evolve    *e   = gsl_odeiv_evolve_alloc(1);
-        gsl_odeiv_system     sys = {atcOdeFunc, NULL, 1, (void *)params}; 
-	
-  double temperature = 0.1;
-  double h = 1e-3;
-  double Mass[1];
-  Mass[0]=1.;
-  
-  double temperature_old = 0.;
-  double M_old[1];
-  M_old[0]=1.;
-	
-  double crossingTemperature = 0.;
-  //unsigned int loopSize = 0;
-  while ((temperature < criticalTime*beta) &&
-         (Mass[0]     > criticalMass     )) {
-    int status = gsl_odeiv_evolve_apply(e, c, s, &sys, &temperature, criticalTime*beta, &h, Mass);
-    UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
-                        paramValues.env().rank(),
-                        "atcQoiRoutine()",
-                        "gsl_odeiv_evolve_apply() failed");
-    //printf("t = %6.1lf, mass = %10.4lf\n",t,Mass[0]);
-    //loopSize++;
+  double Ts                  = ((atcQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->m_SystemTemperature;
+  double criticalmaxOcon     = ((atcQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->m_criticalmaxOcon;
+  double criticalmaxOcontime = ((atcQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->m_criticalmaxOcontime;
 
-    if (Mass[0] <= criticalMass) {
-      crossingTemperature = temperature_old + (temperature - temperature_old) * (M_old[0]-criticalMass)/(M_old[0]-Mass[0]);
-    }
-		
-    temperature_old=temperature;
-    M_old[0]=Mass[0];
+  double DTIME    = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->DTIME;
+  int    NO_EXP   = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->NO_EXP;
+  int    NREST    = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->NREST;
+  int    NSPECI   = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->NSPECI;
+  int    NO_STEPS = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->NO_STEPS;
+  const std::vector<double>& lkc = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->lkc;
+  const std::vector<double>& la = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->la;
+  const std::vector<double>& p = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->p;
+  const std::vector<double>& s = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->s;
+  const std::vector<double>& conmoInitial = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->Species_conm;
+  int reac[NO_STEPS][NSPECI];
+  int prod[NO_STEPS][NSPECI];
+
+  for (int i = 0; i < NO_STEPS; ++i) {
+     for (int j = 0; j < NSPECI; ++j) {
+         reac[i][j] = (((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->reac)[i][j];
+         prod[i][j] = (((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->prod)[i][j];
+     }
   }
+  std::vector<double>      conmo(NSPECI,0.);
+  std::vector<double>      conmo_old(NSPECI,0.);
 
-  if (criticalMass > 0.) qoiValues[0] = crossingTemperature/beta; // QoI = time to achieve critical mass
-  if (criticalTime > 0.) qoiValues[0] = Mass[0];                  // QoI = mass fraction remaining at critical time
-	
-  //printf("loopSize = %d\n",loopSize);
-  if ((paramValues.env().verbosity() >= 3) && (paramValues.env().rank() == 0)) {
-    printf("In atcQoiRoutine(), A = %g, E = %g, beta = %.3lf, criticalTime = %.3lf, criticalMass = %.3lf: qoi = %lf.\n",A,E,beta,criticalTime,criticalMass,qoiValues[0]);
+  double WDOT[2][NSPECI];
+  double WKIN[NO_STEPS];
+  double RKF[NO_STEPS];
+  double RKB[NO_STEPS];
+  double CO,CN,CC,CARG,CO2,CN2,CNO,CCO,CCN,CNCO,CNCN,CN2O,CC2N2,time,numAvgad;
+  double tmpmaxOcon,tmpmaxOcontime;
+  tmpmaxOcon= 0.0;
+
+
+  for (int i=0; i<NO_STEPS-1; i++){
+     WKIN[i] = 0.0;    
+     RKF[i]   = (pow(10.,la[i])) * (pow(Ts,p[i])) * exp(- s[i] / Ts); 
+     RKB[i]   = RKF[i] / pow(10.,lkc[i]);
   }
+  RKF[NO_STEPS-1]   = (pow(10.,la_param)) * (pow(Ts,p_param)) * exp(- s_param / Ts); 
+  RKB[NO_STEPS-1]   = RKF[NO_STEPS-1] / pow(10.,lkc_param);
+//  RKF[NO_STEPS-1]   = (pow(10.,12.66)) * (pow(Ts,0.0)) * exp(- 1500. / Ts); 
+//  RKB[NO_STEPS-1]   = RKF[NO_STEPS-1] / pow(10.,0.5);
 
-  gsl_odeiv_evolve_free (e);
-  gsl_odeiv_control_free(c);
-  gsl_odeiv_step_free   (s);
-#endif // KENJI
+
+  for (int i=0; i<NSPECI; i++){
+     conmo[i]  = conmoInitial[i] / 1e+3;       // kmol/m^3 -> mol/cm^3
+  }
+  for (int TSP=0; TSP<NREST; TSP++) {
+     time = TSP * DTIME;
+
+     for (int i=0; i<NSPECI; i++){
+          conmo_old[i]  = conmo[i]; 
+     }
+
+     for (int NSP=0; NSP<2; NSP++) {
+          CO    = conmo[0];
+          CN    = conmo[1];
+          CC    = conmo[2];
+          CARG  = conmo[3];
+          CO2   = conmo[4];
+          CN2   = conmo[5];
+          CNO   = conmo[6];
+          CCO   = conmo[7];
+          CCN   = conmo[8];
+          CNCO  = conmo[9];;
+          CNCN  = conmo[10];
+          CN2O  = conmo[11];
+          CC2N2 = conmo[12];
+
+          WKIN[0]  = -RKF[0]  * CN2O  * CARG + RKB[0]  * CN2  * CO * CARG;
+          WKIN[1]  = -RKF[1]  * CC2N2 * CO   + RKB[1]  * CCN  * CNCO;
+          WKIN[2]  = -RKF[2]  * CNCO  * CO   + RKB[2]  * CCO  * CNO;
+          WKIN[3]  = -RKF[3]  * CNCO  * CARG + RKB[3]  * CN   * CCO * CARG;
+          WKIN[4]  = -RKF[4]  * CCN   * CO2  + RKB[4]  * CNCO * CO;
+          WKIN[5]  = -RKF[5]  * CCN   * CO   + RKB[5]  * CCO  * CN;
+          WKIN[6]  = -RKF[6]  * CN2O  * CO   + RKB[6]  * CNO  * CNO;
+          WKIN[7]  = -RKF[7]  * CN2O  * CO   + RKB[7]  * CN2  * CO2;
+          WKIN[8]  = -RKF[8]  * CN2   * CO   + RKB[8]  * CN   * CNO;
+          WKIN[9]  = -RKF[9]  * CNO   * CO   + RKB[9]  * CN   * CO2;
+          WKIN[10] = -RKF[10] * CNCO  * CN   + RKB[10] * CN2  * CCO;
+          WKIN[11] = -RKF[11] * CNCO  * CN   + RKB[11] * CCN  * CNO;
+          WKIN[12] = -RKF[12] * CNCO  * CC   + RKB[12] * CCN  * CCO;
+          WKIN[13] = -RKF[13] * CCN   * CN   + RKB[13] * CC   * CN2;
+          WKIN[14] = -RKF[14] * CN2O  * CCN  + RKB[14] * CNCN * CNO;
+          WKIN[15] = -RKF[15] * CNCN  * CO   + RKB[15] * CCN  * CNO;
+          WKIN[16] = -RKF[16] * CNCN  * CN   + RKB[16] * CCN  * CN2;
+          WKIN[17] = -RKF[17] * CC2N2 * CARG + RKB[17] * CCN  * CCN * CARG;
+          WKIN[18] = -RKF[18] * CC2N2 * CO   + RKB[18] * CCO  * CNCN;
+
+
+          for(int NR = 0; NR < NSPECI; NR++) {
+             WDOT[NSP][NR] = 0.0;
+          }
+
+          for(int NS = 0; NS < NSPECI; NS++){
+             for(int NR = 0; NR < NO_STEPS; NR++){
+                WDOT[NSP][NS] += (reac[NR][NS]-prod[NR][NS])*WKIN[NR];
+             }
+          }
+
+          if( NSP == 0) {
+             for(int NS = 0; NS < NSPECI; NS++){
+               conmo[NS] = conmo_old[NS] + DTIME * WDOT[0][NS];
+             }
+          }
+          else if (NSP == 1) {
+             for(int NS = 0; NS < NSPECI; NS++){
+               conmo[NS] = conmo_old[NS] + 0.5e0 *  DTIME *  ( WDOT[1][NS] + WDOT[1][NS] );
+             }
+          }
+     }
+
+    if(tmpmaxOcon < conmo[0]) 
+    {
+       tmpmaxOcon     = conmo[0];
+       tmpmaxOcontime = time;
+       if(criticalmaxOcon     > 0.)  qoiValues[0] = tmpmaxOcon * numAvgad / 1e+13;  //  (# / 1D+13)   /cm^3;  
+       if(criticalmaxOcontime > 0.)  qoiValues[0] = tmpmaxOcontime;
+    } 
+
+  } 
+	
   return;
 }
 
@@ -438,9 +542,9 @@ private:
   uqVectorSpaceClass<Q_V,Q_M>*              m_qoiSpace;
 
 #if 1 // KENJI
-  double                                    m_predBeta;
-  double                                    m_predCriticalMass;
-  double                                    m_predCriticalTime;
+  double                                    m_SystemTemperature;
+  double                                    m_predCriticalmaxOcon;
+  double                                    m_predCriticalmaxOcontime;
 #endif
 
   uqBaseVectorRVClass<P_V,P_M>*             m_calPriorRv;
@@ -525,9 +629,9 @@ uqAtcValidationClass<P_V,P_M,Q_V,Q_M>::uqAtcValidationClass(
                                                         *m_qoiSpace);
 
 #if 1 // KENJI
-  m_predBeta         = 250.;
-  m_predCriticalMass = 0.;
-  m_predCriticalTime = 3.9;
+  m_SystemTemperature        = 250.;
+  m_predCriticalmaxOcon = 0.;
+  m_predCriticalmaxOcontime = 3.9;
 #endif // KENJI
 
   if (m_env.rank() == 0) {
@@ -579,9 +683,8 @@ uqAtcValidationClass<P_V,P_M,Q_V,Q_M>::run()
               << std::endl;
   }
   
-  printf("Hello Kenji3\n");
   runCalibrationStage();
-  runValidationStage();
+//  runValidationStage();
   //runComparisonStage();
 
   if (m_env.rank() == 0) {
@@ -613,9 +716,8 @@ uqAtcValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
   m_calLikelihoodRoutine_Data = new atcLikelihoodRoutine_DataClass<P_V,P_M>(m_env,
                                                                             "input.dat",
                                                                             "reaction.dat", 
-                                                                            "scenario_001.dat",
-                                                                            "Experimental_001.dat");
-
+                                                                           "scenario_001.dat",
+                                                                          "Experimental_001.dat");
   m_calLikelihoodFunctionObj = new uqGenericScalarFunctionClass<P_V,P_M>("cal_like_",
                                                                          *m_paramDomain,
                                                                          atcLikelihoodRoutine<P_V,P_M>,
@@ -623,26 +725,21 @@ uqAtcValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
                                                                          NULL,
                                                                          (void *) m_calLikelihoodRoutine_Data,
                                                                          true); // the routine computes [-2.*ln(function)]
-
   m_cycle->setCalIP(*m_calPriorRv,
                     *m_calLikelihoodFunctionObj);
-
   // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
   P_M* calProposalCovMatrix = m_cycle->calIP().postRv().imageSet().vectorSpace().newGaussianMatrix(m_cycle->calIP().priorRv().pdf().domainVarVector(),
-                                                                                                  *m_paramInitialValues);
+                                                                                               *m_paramInitialValues);
   m_cycle->calIP().solveWithBayesMarkovChain(*m_paramInitialValues,
                                              calProposalCovMatrix);
   delete calProposalCovMatrix;
-
   // Deal with forward problem
   m_calQoiRoutine_Data = new atcQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M>();
-  m_calQoiRoutine_Data->m_beta         = m_predBeta;
-  m_calQoiRoutine_Data->m_criticalMass = m_predCriticalMass;
-  m_calQoiRoutine_Data->m_criticalTime = m_predCriticalTime;
-
+  m_calQoiRoutine_Data->m_SystemTemperature   = m_SystemTemperature;
+  m_calQoiRoutine_Data->m_criticalmaxOcon     = m_predCriticalmaxOcon;
+  m_calQoiRoutine_Data->m_criticalmaxOcontime = m_predCriticalmaxOcontime;
   m_cycle->setCalFP(atcQoiRoutine<P_V,P_M,Q_V,Q_M>,
                     (void *) m_calQoiRoutine_Data);
-
   // Solve forward problem = set 'realizer' and 'cdf' of 'qoiRv'
   m_cycle->calFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
 
@@ -697,9 +794,9 @@ uqAtcValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
 
   // Deal with forward problem
   m_valQoiRoutine_Data = new atcQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M>();
-  m_valQoiRoutine_Data->m_beta         = m_predBeta;
-  m_valQoiRoutine_Data->m_criticalMass = m_predCriticalMass;
-  m_valQoiRoutine_Data->m_criticalTime = m_predCriticalTime;
+  m_valQoiRoutine_Data->m_SystemTemperature   = m_SystemTemperature;
+  m_valQoiRoutine_Data->m_criticalmaxOcon     = m_predCriticalmaxOcon;
+  m_valQoiRoutine_Data->m_criticalmaxOcontime = m_predCriticalmaxOcontime;
 
   m_cycle->setValFP(atcQoiRoutine<P_V,P_M,Q_V,Q_M>,
                     (void *) m_valQoiRoutine_Data);

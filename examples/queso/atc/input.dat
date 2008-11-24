@@ -1,3 +1,5 @@
+NREST      Time_step
+1        1e-6
 NSPECI     NO_STEPS   NO_PARAM
 13         19           4
 UREF  TREF_K  PREF_Pa
