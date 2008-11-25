@@ -42,11 +42,11 @@ atcLikelihoodRoutine_DataClass
   atcLikelihoodRoutine_DataClass(const uqBaseEnvironmentClass& env,
                                  const char* experimentDescriptionFileName,
                                  const char* reactionFileName,
-                                 const char* scenarioFileName1,
-                                 const char* experimentalDataFileName1);
+                                 const char* scenarioFileName,
+                                 const char* experimentalDataFileName);
  ~atcLikelihoodRoutine_DataClass();
 
-  // Description of experiments
+  // Experiment description
   int    NREST;
   int    NSPECI;
   int    NO_STEPS;
@@ -57,18 +57,17 @@ atcLikelihoodRoutine_DataClass
   double TREF;
   double PREF;
   double RHOREF;
-  double ex_SystemTemperature;
   char Species_name[13][100];
-
-  int  reac[19][13];
-  int  prod[19][13];
-
- //  std::vector<std::string> Species_name;
   std::vector<double>      Species_con;
   std::vector<double>      Species_mass;
   std::vector<double>      Species_conm;
 
+  // Reaction data
+  int  reac[19][13];
+  int  prod[19][13];
+
   // Scenario parameters
+  double ex_SystemTemperature;
   std::vector<double> lkc;
   std::vector<double> la;
   std::vector<double> p;
@@ -85,11 +84,10 @@ atcLikelihoodRoutine_DataClass<P_V,P_M>::atcLikelihoodRoutine_DataClass(
   const uqBaseEnvironmentClass& env,
   const char* experimentDescriptionFileName,
   const char* reactionFileName,
-  const char* scenarioFileName1,
-  const char* experimentalDataFileName1)
+  const char* scenarioFileName,
+  const char* experimentalDataFileName)
   :
 #if 1 // KENJI
-//  Species_name(13,""),
   Species_con (13,0.),
   Species_mass(13,0.),
   Species_conm(13,0.),
@@ -144,14 +142,14 @@ atcLikelihoodRoutine_DataClass<P_V,P_M>::atcLikelihoodRoutine_DataClass(
   // Close reaction file
   fclose(inp);
 
-  if (scenarioFileName1 && experimentalDataFileName1) {
+  if (scenarioFileName && experimentalDataFileName) {
     // Read scenario parameters
      if (env.rank() == 0) {
      std::cout << "In atcLikelihoodRoutine_DataClass(), reading file '"
-               << scenarioFileName1 << "'\n"
+               << scenarioFileName << "'\n"
                << std::endl;
      }
-       inp = fopen(scenarioFileName1,"r");    
+       inp = fopen(scenarioFileName,"r");    
        double tmpEQC,tmpA,tmpms,tmpTs;
        fscanf(inp,"%lf",&ex_SystemTemperature); 
        for (int i=0; i<NO_STEPS; i++){
@@ -169,10 +167,10 @@ atcLikelihoodRoutine_DataClass<P_V,P_M>::atcLikelihoodRoutine_DataClass(
     // Read experimental data
     if (env.rank() == 0) {
       std::cout << "In atcLikelihoodRoutine_DataClass(), reading file '"
-                << experimentalDataFileName1 << "'\n"
+                << experimentalDataFileName << "'\n"
                 << std::endl;
     }
-    inp = fopen(experimentalDataFileName1,"r");
+    inp = fopen(experimentalDataFileName,"r");
     unsigned int numObservations = 0;
     double tmpTime;
     double tmpOcon;
@@ -366,10 +364,141 @@ template<class P_V,class P_M,class Q_V, class Q_M>
 struct
 atcQoiRoutine_DataClass
 {
+  atcQoiRoutine_DataClass(const uqBaseEnvironmentClass& env,
+                          const char* experimentDescriptionFileName,
+                          const char* reactionFileName,
+                          const char* scenarioFileName);
+ ~atcQoiRoutine_DataClass();
+
+  double m_criticalmaxOcon;     // Not read from file, but set inside program instead
+  double m_criticalmaxOcontime; // Not read from file, but set inside program instead
+
+  // Experiment description
+  int    NREST;
+  int    NSPECI;
+  int    NO_STEPS;
+  int    NO_PARAM;
+  int    NO_EXP;
+  double DTIME;
+  double UREF;
+  double TREF;
+  double PREF;
+  double RHOREF;
+  char Species_name[13][100];
+  std::vector<double> Species_con;
+  std::vector<double> Species_mass;
+  std::vector<double> Species_conm;  // Initial concentrations: set in constructor
+
+  // Reaction data
+  int  reac[19][13];
+  int  prod[19][13];
+
+  // Scenario parameters
   double m_SystemTemperature;
-  double m_criticalmaxOcon;
-  double m_criticalmaxOcontime;
+  std::vector<double> lkc;
+  std::vector<double> la;
+  std::vector<double> p;
+  std::vector<double> s;
 };
+
+template<class P_V, class P_M,class Q_V, class Q_M>
+atcQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M>::atcQoiRoutine_DataClass(
+  const uqBaseEnvironmentClass& env,
+  const char* experimentDescriptionFileName,
+  const char* reactionFileName,
+  const char* scenarioFileName)
+  :
+  Species_con (13,0.),
+  Species_mass(13,0.),
+  Species_conm(13,0.),
+  lkc      (18,0.),
+  la        (18,0.),
+  p        (18,0.),
+  s        (18,0.)
+{
+  // Read description of experiment
+  char dummyNAME1[100];
+  char dummyNAME2[100];
+  char dummyNAME3[100];
+  char dummyNAME4[100];
+  double tmp_con, tmp_mass;
+  unsigned int tmpCount = 0;
+
+  FILE *inp = fopen(experimentDescriptionFileName,"r");
+   fscanf(inp,"%s %s      ",dummyNAME1,dummyNAME2);  // NSPECI     NO_STEPS  NO_PARAM
+   fscanf(inp,"%d %lf     ",&NREST,&DTIME);
+   fscanf(inp,"%s %s %s   ",dummyNAME1,dummyNAME2,dummyNAME3);  // NSPECI     NO_STEPS  NO_PARAM
+   fscanf(inp,"%d %d %d   ",&NSPECI,&NO_STEPS,&NO_PARAM);                    
+   fscanf(inp,"%s %s %s   ",dummyNAME1,dummyNAME2,dummyNAME3);  // UREF  TREF_K  PREF_Pa
+   fscanf(inp,"%lf %lf %lf",&UREF, &TREF, &PREF);
+   fscanf(inp,"%s %s %s   ",dummyNAME1,dummyNAME2,dummyNAME3);  // SPNAME  CONCO_mass_base  MWT
+   while (fscanf(inp,"%s %lf %lf",Species_name[tmpCount],&tmp_con,&tmp_mass) != EOF) {
+    Species_con[tmpCount]  = tmp_con;
+    Species_mass[tmpCount] =tmp_mass;
+    tmpCount++;
+   }
+  // Close file
+  fclose(inp);
+
+  int  tmp_Num,tmpREAC,tmpPROD;
+
+  inp = fopen(reactionFileName,"r");
+  for (int j=0; j<NO_STEPS; j++){
+       fscanf(inp,"%s",dummyNAME1);
+       fscanf(inp,"%s %d %s",dummyNAME2,&tmp_Num,dummyNAME3);
+       fscanf(inp,"%s",dummyNAME4);
+       for (int i=0; i<NSPECI; i++) {
+          fscanf(inp,"%d",&tmpREAC);
+          reac[j][i] = tmpREAC;
+       }
+       for (int i=0; i<NSPECI; i++) {
+          fscanf(inp,"%d",&tmpPROD);
+          prod[j][i] = tmpPROD;
+       }
+  }
+  // Close reaction file
+  fclose(inp);
+
+  if (scenarioFileName) {
+    // Read scenario parameters
+     if (env.rank() == 0) {
+     std::cout << "In atcQoiRoutine_DataClass(), reading file '"
+               << scenarioFileName << "'\n"
+               << std::endl;
+     }
+       inp = fopen(scenarioFileName,"r");    
+       double tmpEQC,tmpA,tmpms,tmpTs;
+       fscanf(inp,"%lf",&m_SystemTemperature); 
+       for (int i=0; i<NO_STEPS; i++){
+		fscanf(inp,"%s %s %s %s",dummyNAME1,dummyNAME2,dummyNAME3,dummyNAME4);
+                fscanf(inp,"%lf %lf %lf %lf",&tmpEQC,&tmpA,&tmpms,&tmpTs);
+                lkc[i] = tmpEQC;
+                la[i]   = tmpA;
+                p[i]   = tmpms;
+                s[i]   = tmpTs;
+       }
+
+    // Close file
+    fclose(inp);
+  }
+
+//   initial set up for concentration
+    double tmpRG = 0.0;
+    double universalGasConstant = 8.31451e3;
+    for (int i=0; i < NSPECI; i++){
+      tmpRG  +=  universalGasConstant / Species_mass[i] * Species_con[i];
+    }
+    RHOREF =  PREF / (tmpRG * TREF);
+
+    for (int i=0; i < NSPECI; i++){
+      Species_conm[i] = RHOREF * Species_con[i] / Species_mass[i]; // Kmol/m^3
+    }
+}
+
+template<class P_V, class P_M,class Q_V, class Q_M>
+    atcQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M>::~atcQoiRoutine_DataClass()
+{
+}
 
 // The actual (user defined) qoi routine
 template<class P_V,class P_M,class Q_V,class Q_M>
@@ -384,23 +513,22 @@ void atcQoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoi
   double criticalmaxOcon     = ((atcQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->m_criticalmaxOcon;
   double criticalmaxOcontime = ((atcQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->m_criticalmaxOcontime;
 
-  double DTIME    = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->DTIME;
-  int    NO_EXP   = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->NO_EXP;
-  int    NREST    = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->NREST;
-  int    NSPECI   = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->NSPECI;
-  int    NO_STEPS = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->NO_STEPS;
-  const std::vector<double>& lkc = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->lkc;
-  const std::vector<double>& la = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->la;
-  const std::vector<double>& p = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->p;
-  const std::vector<double>& s = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->s;
-  const std::vector<double>& conmoInitial = ((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->Species_conm;
+  double DTIME    = ((atcQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->DTIME;
+  int    NREST    = ((atcQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->NREST;
+  int    NSPECI   = ((atcQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->NSPECI;
+  int    NO_STEPS = ((atcQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->NO_STEPS;
+  const std::vector<double>& lkc = ((atcQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->lkc;
+  const std::vector<double>& la = ((atcQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->la;
+  const std::vector<double>& p = ((atcQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->p;
+  const std::vector<double>& s = ((atcQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->s;
+  const std::vector<double>& conmoInitial = ((atcQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->Species_conm;
   int reac[NO_STEPS][NSPECI];
   int prod[NO_STEPS][NSPECI];
 
   for (int i = 0; i < NO_STEPS; ++i) {
      for (int j = 0; j < NSPECI; ++j) {
-         reac[i][j] = (((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->reac)[i][j];
-         prod[i][j] = (((atcLikelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->prod)[i][j];
+         reac[i][j] = (((atcQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->reac)[i][j];
+         prod[i][j] = (((atcQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->prod)[i][j];
      }
   }
   std::vector<double>      conmo(NSPECI,0.);
@@ -542,7 +670,6 @@ private:
   uqVectorSpaceClass<Q_V,Q_M>*              m_qoiSpace;
 
 #if 1 // KENJI
-  double                                    m_SystemTemperature;
   double                                    m_predCriticalmaxOcon;
   double                                    m_predCriticalmaxOcontime;
 #endif
@@ -591,7 +718,7 @@ uqAtcValidationClass<P_V,P_M,Q_V,Q_M>::uqAtcValidationClass(
                                                   4,    // # of rows
                                                   3,    // # of cols after 'parameter name': min + max + initial value for Markov chain
                                                   NULL, // All extra columns are of 'double' type
-                                                  "params2.tab");
+                                                  "params.tab");
 
   m_paramNames = &(m_paramsTable->stringColumn(0));
   m_paramMinValues     = new P_V(m_paramsTable->doubleColumn(1));
@@ -629,9 +756,8 @@ uqAtcValidationClass<P_V,P_M,Q_V,Q_M>::uqAtcValidationClass(
                                                         *m_qoiSpace);
 
 #if 1 // KENJI
-  m_SystemTemperature        = 250.;
-  m_predCriticalmaxOcon = 0.;
-  m_predCriticalmaxOcontime = 3.9;
+  m_predCriticalmaxOcon     = 0.;
+  m_predCriticalmaxOcontime = 1.;
 #endif // KENJI
 
   if (m_env.rank() == 0) {
@@ -684,8 +810,8 @@ uqAtcValidationClass<P_V,P_M,Q_V,Q_M>::run()
   }
   
   runCalibrationStage();
-//  runValidationStage();
-  //runComparisonStage();
+  runValidationStage();
+  runComparisonStage();
 
   if (m_env.rank() == 0) {
     std::cout << "Leaving uqAtcValidation::run()"
@@ -734,8 +860,10 @@ uqAtcValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
                                              calProposalCovMatrix);
   delete calProposalCovMatrix;
   // Deal with forward problem
-  m_calQoiRoutine_Data = new atcQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M>();
-  m_calQoiRoutine_Data->m_SystemTemperature   = m_SystemTemperature;
+  m_calQoiRoutine_Data = new atcQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M>(m_env,
+                                                                      "input.dat",
+                                                                      "reaction.dat", 
+                                                                      "scenario_003.dat");
   m_calQoiRoutine_Data->m_criticalmaxOcon     = m_predCriticalmaxOcon;
   m_calQoiRoutine_Data->m_criticalmaxOcontime = m_predCriticalmaxOcontime;
   m_cycle->setCalFP(atcQoiRoutine<P_V,P_M,Q_V,Q_M>,
@@ -793,8 +921,10 @@ uqAtcValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
   delete valProposalCovMatrix;
 
   // Deal with forward problem
-  m_valQoiRoutine_Data = new atcQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M>();
-  m_valQoiRoutine_Data->m_SystemTemperature   = m_SystemTemperature;
+  m_valQoiRoutine_Data = new atcQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M>(m_env,
+                                                                      "input.dat",
+                                                                      "reaction.dat", 
+                                                                      "scenario_003.dat");
   m_valQoiRoutine_Data->m_criticalmaxOcon     = m_predCriticalmaxOcon;
   m_valQoiRoutine_Data->m_criticalmaxOcontime = m_predCriticalmaxOcontime;
 
