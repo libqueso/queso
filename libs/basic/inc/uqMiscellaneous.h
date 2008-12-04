@@ -21,6 +21,7 @@
 #define __UQ_MISCELLANEOUS_H__
 
 #include <gsl/gsl_rng.h>
+#include <string>
 #include <vector>
 
 void   uqMiscReadDoublesFromString      (const std::string&   inputString,
