@@ -49,7 +49,7 @@ public:
   double         norm2           () const;
   double         sumOfComponents () const;
   void           cwSet           (double value);
-  void           cwSetGaussian   (gsl_rng* rng, double mean, double stdDev);
+  void           cwSetGaussian   (const gsl_rng* rng, double mean, double stdDev);
   void           cwInvert        ();
   void           sort            ();
   void           print           (std::ostream& os) const;
@@ -64,7 +64,7 @@ private:
 
   void           copy            (const uqTrilinosVectorClass& src);
 
-  //const Epetra_Map&       m_map;
+  const Epetra_Map&       m_map;
   //Epetra_Vector*          m_vec;
   Epetra_SerialDenseMatrix* m_vec;
 };

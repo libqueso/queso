@@ -34,7 +34,7 @@ uqTrilinosVectorClass::uqTrilinosVectorClass()
 
 uqTrilinosVectorClass::uqTrilinosVectorClass(const uqBaseEnvironmentClass& env, const Epetra_Map& map)
   :
-  uqVectorClass(env),
+  uqVectorClass(env, map),
   m_map        (map),
   //m_vec      (new Epetra_Vector(map,true))
   m_vec        (new Epetra_SerialDenseMatrix(map.NumGlobalElements(),1))
@@ -47,7 +47,7 @@ uqTrilinosVectorClass::uqTrilinosVectorClass(const uqBaseEnvironmentClass& env, 
 
 uqTrilinosVectorClass::uqTrilinosVectorClass(const uqBaseEnvironmentClass& env, const Epetra_Map& map, double d1, double d2, unsigned int size)
   :
-  uqVectorClass(env),
+  uqVectorClass(env, map),
   m_map        (map),
   //m_vec      (new Epetra_Vector(map,true))
   m_vec        (new Epetra_SerialDenseMatrix(map.NumGlobalElements(),1))
@@ -65,7 +65,7 @@ uqTrilinosVectorClass::uqTrilinosVectorClass(const uqBaseEnvironmentClass& env, 
 
 uqTrilinosVectorClass::uqTrilinosVectorClass(const uqTrilinosVectorClass& v, double d1, double d2, unsigned int size)
   :
-  uqVectorClass(v.env()),
+  uqVectorClass(v.env(), v.map()),
   m_map        (v.map()),
   //m_vec      (new Epetra_Vector(v.map(),true))
   m_vec        (new Epetra_SerialDenseMatrix(v.map().NumGlobalElements(),1))
@@ -83,7 +83,7 @@ uqTrilinosVectorClass::uqTrilinosVectorClass(const uqTrilinosVectorClass& v, dou
 
 uqTrilinosVectorClass::uqTrilinosVectorClass(const uqTrilinosVectorClass& v)
   :
-  uqVectorClass(v.env()),
+  uqVectorClass(v.env(), v.map()),
   m_map        (v.map()),
   //m_vec      (new Epetra_Vector(v.map(),true))
   m_vec        (new Epetra_SerialDenseMatrix(v.map().NumGlobalElements(),1))
@@ -217,7 +217,7 @@ uqTrilinosVectorClass::cwSet(double value)
 }
 
 void
-uqTrilinosVectorClass::cwSetGaussian(gsl_rng* rng, double mean, double stdDev)
+uqTrilinosVectorClass::cwSetGaussian(const gsl_rng* rng, double mean, double stdDev)
 {
   return;
 }
