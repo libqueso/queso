@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#if 0
 #include <uqTrilinosParamSpace.h>
 
-#if 0
 uqTrilinosParamSpaceClass::uqTrilinosParamSpaceClass(const Epetra_MpiComm& comm, unsigned int dimension)
   :
   uqParamSpaceClass<uqTrilinosVectorClass,uqTrilinosMatrixClass>(dimension),
@@ -57,7 +57,6 @@ uqTrilinosParamSpaceClass::newMatrix() const
 {
   return new uqTrilinosMatrixClass(*m_map,this->dim());
 }
-#endif
 
 template<>
 void
@@ -101,7 +100,6 @@ uqParamSpaceClass<uqTrilinosVectorClass,uqTrilinosMatrixClass>::print(std::ostre
   return;
 }
 
-#if 0
 template<>
 const Epetra_Map&
 uqParamSpaceClass<uqTrilinosVectorClass,uqTrilinosMatrixClass>::map() const

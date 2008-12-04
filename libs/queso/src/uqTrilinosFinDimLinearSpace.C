@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#if 0
 #include <uqFinDimLinearSpace.h>
 #include <uqTrilinosMatrix.h>
 
@@ -42,3 +43,4 @@ uqFinDimLinearSpaceClass<uqTrilinosVectorClass,uqTrilinosMatrixClass>::newDiagMa
   v.cwSet(diagValue);
   return new uqTrilinosMatrixClass(v);
 }
+#endif
