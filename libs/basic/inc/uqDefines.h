@@ -22,24 +22,25 @@
 
 #include <iostream>
 #include <limits>
+#include <stdlib.h> // For exit()
 
 int uqMyRank();
 
-#define UQ_UNAVAILABLE_RANK -1
-#define UQ_INVALID_DOF_ID   UINT_MAX
-#define UQ_INVALID_NODE_ID  UINT_MAX
+const int UQ_UNAVAILABLE_RANK         = -1;
+const unsigned int UQ_INVALID_DOF_ID  = std::numeric_limits<unsigned int>::max();
+const unsigned int UQ_INVALID_NODE_ID = std::numeric_limits<unsigned int>::max();
 
-#define UQ_OK_RC                          0
-#define UQ_INCOMPLETE_IMPLEMENTATION_RC  -1
-#define UQ_INVALID_PARAMETER_SPEC_RC     -2
-#define UQ_INVALID_OBSERVABLE_SPEC_RC    -3
-#define UQ_INVALID_QOI_SPEC_RC           -4
-#define UQ_INVALID_INTERNAL_RESULT_RC    -5
-#define UQ_INVALID_INTERNAL_STATE_RC     -6
-#define UQ_FAILED_TO_OPEN_FILE_RC        -7
-#define UQ_MATRIX_IS_NOT_POS_DEFINITE_RC -8
-#define UQ_FAILED_READING_FILE_RC        -9
-#define UQ_INVALID_SPACE_COMPONENT_ID_RC -10
+const int UQ_OK_RC                         =  0;
+const int UQ_INCOMPLETE_IMPLEMENTATION_RC  = -1;
+const int UQ_INVALID_PARAMETER_SPEC_RC     = -2;
+const int UQ_INVALID_OBSERVABLE_SPEC_RC    = -3;
+const int UQ_INVALID_QOI_SPEC_RC           = -4;
+const int UQ_INVALID_INTERNAL_RESULT_RC    = -5;
+const int UQ_INVALID_INTERNAL_STATE_RC     = -6;
+const int UQ_FAILED_TO_OPEN_FILE_RC        = -7;
+const int UQ_MATRIX_IS_NOT_POS_DEFINITE_RC = -8;
+const int UQ_FAILED_READING_FILE_RC        = -9;
+const int UQ_INVALID_SPACE_COMPONENT_ID_RC = -10;
 
 #define UQ_RC_MACRO(iRC,givenRank,where,what,retValue) \
   if (iRC) {                                           \
