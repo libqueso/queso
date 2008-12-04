@@ -36,6 +36,11 @@ public:
 
   uqTrilinosMatrixClass(const uqBaseEnvironmentClass& env,
                         const Epetra_Map&         map,
+                        unsigned int              numRows,
+                        unsigned int              numCols);
+
+  uqTrilinosMatrixClass(const uqBaseEnvironmentClass& env,
+                        const Epetra_Map&         map,
                         double                    diagValue); // MATLAB eye
   uqTrilinosMatrixClass(const uqTrilinosVectorClass& v,
                         double                       diagValue); // MATLAB eye
@@ -67,6 +72,7 @@ private:
   void                  copy          (const uqTrilinosMatrixClass& src);
   void                  multiply      (const uqTrilinosVectorClass& x, uqTrilinosVectorClass& y) const;
 
+  const Epetra_Map&         m_map;
   //Epetra_CrsMatrix*       m_mat;
   Epetra_SerialDenseMatrix* m_mat;
 };

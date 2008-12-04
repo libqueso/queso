@@ -34,7 +34,7 @@ uqTrilinosMatrixClass::uqTrilinosMatrixClass(
   const Epetra_Map&         map,
   unsigned int              numCols)
   :
-  uqMatrixClass(env),
+  uqMatrixClass(env, map),
   m_map        (map),
   //m_mat(new Epetra_CrsMatrix(Copy,map,numCols))
   m_mat(new Epetra_SerialDenseMatrix(map.NumGlobalElements(),numCols))
@@ -48,9 +48,25 @@ uqTrilinosMatrixClass::uqTrilinosMatrixClass(
 uqTrilinosMatrixClass::uqTrilinosMatrixClass(
   const uqBaseEnvironmentClass& env,
   const Epetra_Map&         map,
+  unsigned int              numRows,
+  unsigned int              numCols)
+  :
+  uqMatrixClass(env, map),
+  m_map        (map),
+  m_mat(new Epetra_SerialDenseMatrix(numRows,numCols))
+{
+  UQ_FATAL_TEST_MACRO((m_mat == NULL),
+                      m_env.rank(),
+                      "uqTrilinosMatrixClass::constructor()",
+                      "null matrix generated");
+}
+ 
+uqTrilinosMatrixClass::uqTrilinosMatrixClass(
+  const uqBaseEnvironmentClass& env,
+  const Epetra_Map&         map,
   double                    diagValue)
   :
-  uqMatrixClass(env),
+  uqMatrixClass(env, map),
   m_map        (map)
 {
 }
@@ -59,21 +75,21 @@ uqTrilinosMatrixClass::uqTrilinosMatrixClass(
   const uqTrilinosVectorClass& v,
   double                       diagValue)
   :
-  uqMatrixClass(v.env()),
+  uqMatrixClass(v.env(), v.map()),
   m_map        (v.map())
 {
 }
 
 uqTrilinosMatrixClass::uqTrilinosMatrixClass(const uqTrilinosVectorClass& v)
   :
-  uqMatrixClass(v.env()),
+  uqMatrixClass(v.env(), v.map()),
   m_map        (v.map())
 {
 }
 
 uqTrilinosMatrixClass::uqTrilinosMatrixClass(const uqTrilinosMatrixClass& B)
   :
-  uqMatrixClass(B.env()),
+  uqMatrixClass(B.env(), B.map()),
   m_map        (B.map())
 {
 }
