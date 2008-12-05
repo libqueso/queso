@@ -1,9 +1,5 @@
 include ../../../Make.common
 
-ifeq ($(UQBT),gsl)
-
-DEFINES = \
-	-D__APPL_USES_GSL__ -D__UQ_USES_GSL__
 INC_PATHS = \
 	-I. \
 	-I./tga \
@@ -11,70 +7,16 @@ INC_PATHS = \
 	-I../inc \
 	-I../../../libs/basic/inc \
 	-I../../../libs/queso/inc \
-	-I$(MPI_INCLUDE_PATH_FOR_QUESO_TOOL) \
-	-I$(TRILINOS_INCLUDE_PATH_FOR_QUESO_TOOL) \
-	-I$(BOOST_INCLUDE_PATH_FOR_QUESO_TOOL) \
-	-I$(GSL_INCLUDE_PATH_FOR_QUESO_TOOL)
-LIB_PATHS = \
+	$(QUESO_TOOL_INCLUDE)
+
+LIBS = \
 	-L../../../libs/basic/lib \
 	-L../../../libs/queso/lib \
-	-L$(MPI_LIB_PATH_FOR_QUESO_TOOL) \
-	-L$(TRILINOS_LIB_PATH_FOR_QUESO_TOOL) \
-	-L$(BOOST_LIB_PATH_FOR_QUESO_TOOL) \
-	-L$(GSL_LIB_PATH_FOR_QUESO_TOOL)
-LIBS = \
 	-luq_queso_$(UQBT) \
 	-luq_queso_any \
 	-luq_basic_$(UQBT) \
 	-luq_basic_any \
-	-lepetra \
-	-lteuchos \
-	-lmpi_cxx \
-	-lmpi \
-	-lgsl \
-	-lgslcblas \
-	-lblas \
-	-lboost_program_options
-
-else
-
-DEFINES = \
-	-D__APPL_USES_TRILINOS__ -D__UQ_USES_TRILINOS__
-INC_PATHS = \
-	-I. \
-	-I./tga \
-	-I./tur \
-	-I../inc \
-	-I../../../libs/basic/inc \
-	-I../../../libs/queso/inc \
-	-I$(MPI_INCLUDE_PATH_FOR_QUESO_TOOL) \
-	-I$(TRILINOS_INCLUDE_PATH_FOR_QUESO_TOOL) \
-	-I$(BOOST_INCLUDE_PATH_FOR_QUESO_TOOL) \
-	-I$(GSL_INCLUDE_PATH_FOR_QUESO_TOOL)
-
-LIB_PATHS = \
-	-L../../../libs/basic/lib \
-	-L../../../libs/queso/lib \
-	-L$(MPI_LIB_PATH_FOR_QUESO_TOOL) \
-	-L$(TRILINOS_LIB_PATH_FOR_QUESO_TOOL) \
-	-L$(BOOST_LIB_PATH_FOR_QUESO_TOOL) \
-	-L$(GSL_LIB_PATH_FOR_QUESO_TOOL)
-
-LIBS = \
-	-luq_queso_$(UQBT) \
-	-luq_queso_any \
-	-luq_basic_$(UQBT) \
-	-luq_basic_any \
-	-lepetra \
-	-lteuchos \
-	-lmpi_cxx \
-	-lmpi \
-	-lgsl \
-	-lgslcblas \
-	-lblas \
-	-lboost_program_options
-
-endif
+	$(QUESO_TOOL_LIBS)
 
 all:	uqTgaEx
 
@@ -88,7 +30,7 @@ clean_exec:
 	rm -f uqPyramid_$(UQBT)
 
 uqTgaEx: libs uqPyramid_$(UQBT).o
-	$(CXX) $(LIB_PATHS) uqPyramid_$(UQBT).o -o uqPyramid_$(UQBT) $(LIBS)
+	$(CXX) uqPyramid_$(UQBT).o -o uqPyramid_$(UQBT) $(LIBS)
 
 libs:
 	cd ../../../libs/basic/src; make libuq_basic_all UQBT=$(UQBT)

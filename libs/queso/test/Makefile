@@ -1,43 +1,15 @@
 include ../../../Make.common
 
-ifeq ($(UQBT),gsl)
-
-DEFINES = \
-	-D__UQ_USES_GSL__
-
-else
-
-DEFINES = \
-	-D__UQ_USES_TRILINOS__
-
-endif
-
 INC_PATHS = \
 	-I../../basic/inc \
 	-I../inc \
-	-I$(MPI_INCLUDE_PATH_FOR_QUESO_TOOL) \
-	-I$(TRILINOS_INCLUDE_PATH_FOR_QUESO_TOOL) \
-	-I$(BOOST_INCLUDE_PATH_FOR_QUESO_TOOL) \
-	-I$(GSL_INCLUDE_PATH_FOR_QUESO_TOOL)
-
-LIB_PATHS = \
-	-L../../basic/lib \
-	-L$(MPI_LIB_PATH_FOR_QUESO_TOOL) \
-	-L$(TRILINOS_LIB_PATH_FOR_QUESO_TOOL) \
-	-L$(BOOST_LIB_PATH_FOR_QUESO_TOOL) \
-	-L$(GSL_LIB_PATH_FOR_QUESO_TOOL)
+	$(QUESO_TOOL_INCLUDE)
 
 LIBS = \
+	-L../../basic/lib \
 	-luq_basic_$(UQBT) \
 	-luq_basic_any \
-	-lepetra \
-	-lteuchos \
-	-lmpi_cxx \
-	-lmpi \
-	-lgsl \
-	-lgslcblas \
-	-lblas \
-	-lboost_program_options \
+	$(QUESO_TOOL_LIBS) \
 	-l$(BOOST_UNIT_TEST_LIB_FOR_QUESO_TOOL)
 
 
@@ -92,19 +64,19 @@ uqTestExample: uqTestExample.o
 	$(CXX) -L$(BOOST_LIB_PATH_FOR_QUESO_TOOL) $< -o $@ -l$(BOOST_UNIT_TEST_LIB_FOR_QUESO_TOOL)
 
 uqTestVectorPdf_gsl: uqTestVectorPdf_gsl.o libs_basic
-	$(CXX) $(LIB_PATHS) $< -o $@ $(LIBS)
+	$(CXX) $< -o $@ $(LIBS)
 
 uqTestVectorPdf_gsl.o: uqTestVectorPdf_gsl.C ../inc/uqVectorPdf.h
 	$(CXX) $(DEFINES) $(INC_PATHS) $(CXXFLAGS) $<
 
 uqTestVectorRealizer_gsl: uqTestVectorRealizer_gsl.o libs_basic
-	$(CXX) $(LIB_PATHS) $< -o $@ $(LIBS)
+	$(CXX) $< -o $@ $(LIBS)
 
 uqTestVectorRealizer_gsl.o: uqTestVectorRealizer_gsl.C ../inc/uqVectorRealizer.h
 	$(CXX) $(DEFINES) $(INC_PATHS) $(CXXFLAGS) $<
 
 uqTestVectorRV_gsl: uqTestVectorRV_gsl.o libs_basic
-	$(CXX) $(LIB_PATHS) $< -o $@ $(LIBS)
+	$(CXX) $< -o $@ $(LIBS)
 
 uqTestVectorRV_gsl.o: uqTestVectorRV_gsl.C ../inc/uqVectorRV.h
 	$(CXX) $(DEFINES) $(INC_PATHS) $(CXXFLAGS) $<

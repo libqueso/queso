@@ -3,10 +3,7 @@ include ../../../Make.common
 INC_PATHS = \
 	-I../inc \
 	-I../../basic/inc \
-	-I$(MPI_INCLUDE_PATH_FOR_QUESO_TOOL) \
-	-I$(TRILINOS_INCLUDE_PATH_FOR_QUESO_TOOL) \
-	-I$(BOOST_INCLUDE_PATH_FOR_QUESO_TOOL) \
-	-I$(GSL_INCLUDE_PATH_FOR_QUESO_TOOL)
+	$(QUESO_TOOL_INCLUDE)
 
 OBJS_ANY = uq1DScalarElement.o \
 	uq1DNode.o \

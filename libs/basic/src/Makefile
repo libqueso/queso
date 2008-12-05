@@ -1,33 +1,8 @@
 include ../../../Make.common
 
-ifeq ($(UQBT),gsl)
-
-DEFINES = \
-	-D__UQ_USES_GSL__
 INC_PATHS = \
 	-I../inc \
-	-I$(MPI_INCLUDE_PATH_FOR_QUESO_TOOL) \
-	-I$(TRILINOS_INCLUDE_PATH_FOR_QUESO_TOOL) \
-	-I$(BOOST_INCLUDE_PATH_FOR_QUESO_TOOL) \
-	-I$(GSL_INCLUDE_PATH_FOR_QUESO_TOOL)
-
-else
-
-DEFINES = \
-	-D__UQ_USES_TRILINOS__
-INC_PATHS = \
-	-I../inc \
-	-I$(MPI_INCLUDE_PATH_FOR_QUESO_TOOL) \
-	-I$(TRILINOS_INCLUDE_PATH_FOR_QUESO_TOOL) \
-	-I$(BOOST_INCLUDE_PATH_FOR_QUESO_TOOL) \
-	-I$(GSL_INCLUDE_PATH_FOR_QUESO_TOOL)
-
-endif
-
-AR = ar
-ARFLAGS = -rv
-CXX = g++
-CXXFLAGS += -Wall -c -g
+	$(QUESO_TOOL_INCLUDE)
 
 OBJS_ANY = uqEnvironment.o \
 	uqDefines.o \
