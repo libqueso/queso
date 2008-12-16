@@ -418,7 +418,7 @@ uqFullEnvironmentClass::readEventualInputFile()
 
   if (displayHelpMessageAndExit) {
     if (m_rank == 0) std::cout << "\nThis is a help message of the UQ library."
-                               << "\nAn UQ application using the MCMC tool ot the QUESO toolkit shall be executed by typing"
+                               << "\nAn UQ application using the QUESO toolkit shall be executed by typing"
                                << "\n  '<eventual mpi commands and options> <uqApplication> -i <uqInputFile>'"
                                << "\nin the command line."
                                << "\n"
