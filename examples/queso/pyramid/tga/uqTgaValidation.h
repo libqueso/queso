@@ -27,6 +27,10 @@
 #include <gsl/gsl_odeiv.h>
 
 #define R_CONSTANT 8.314472
+#define GSL_ODE_CONTROL_ABS_PRECISION_FOR_QUESO 1.0e-6
+#define QUESO_USE_FABRICATED_MEASUREMENT
+#undef  QUESO_USE_OBSERVED_MINUS_COMPUTED
+#undef  QUESO_RUN_SIMPLIFIED_W_CASE
 
 // The state dot ODE function
 int tgaStateTimeDotOdeFunction(double time, const double w[], double f[], void *info)
@@ -38,7 +42,7 @@ int tgaStateTimeDotOdeFunction(double time, const double w[], double f[], void *
   double initialTemp = odeParameters[3];
   double temp        = initialTemp + beta*time;
 
-  f[0] = -A*w[0]*exp(-E/(R_CONSTANT*temp)); // No division by 'beta'
+  f[0] = -A*w[0]*exp(-E/(R_CONSTANT*temp)); // No division by 'beta' (CONVERSION TO TIME)
 
   return GSL_SUCCESS;
 }
@@ -62,8 +66,12 @@ typedef struct
   double E;
   double beta;
   double initialTemp;
+  double nextContributionTime;
   double nextContributionTemp;
   double nextContributionValue;
+  const std::vector<double>* fabricatedTemps;
+  const std::vector<double>* fabricatedWs;
+  const std::vector<double>* simulatedWs;
 } tgaLambdaDotOdeInfo_st;
 
 int tgaLambdaTimeDotOdeFunction(double time, const double L[], double f[], void *info)
@@ -75,20 +83,107 @@ int tgaLambdaTimeDotOdeFunction(double time, const double L[], double f[], void 
   double initialTemp = odeInfo->initialTemp;
   double temp        = initialTemp + beta*time;
 
-  f[0] = A*L[0]*exp(-E/(R_CONSTANT*temp)); // No division by 'beta'
+  if (odeInfo->fabricatedTemps) {
+    const std::vector<double>& fabricatedTemps = *(odeInfo->fabricatedTemps);
+    const std::vector<double>& fabricatedWs    = *(odeInfo->fabricatedWs   );
+    const std::vector<double>& simulatedWs     = *(odeInfo->simulatedWs    );
+
+    double tempTilda = fabricatedTemps[0] + fabricatedTemps[fabricatedTemps.size()-1] - temp;
+    f[0] = -A*L[0]*exp(-E/(R_CONSTANT*tempTilda));
+
+    unsigned int tmpId = 0;
+    double contribution = 0.;
+    if (tempTilda > fabricatedTemps[0]) while(tmpId < fabricatedTemps.size()) {
+      if (tempTilda < fabricatedTemps[tmpId]) {
+        double ratio = (tempTilda - fabricatedTemps[tmpId-1])/(fabricatedTemps[tmpId] - fabricatedTemps[tmpId-1]);
+        double fabricatedW = fabricatedWs[tmpId-1]+ratio*(fabricatedWs[tmpId]-fabricatedWs[tmpId-1]);
+        double simulatedW  = simulatedWs [tmpId-1]+ratio*(simulatedWs [tmpId]-simulatedWs [tmpId-1]);
+        contribution = 2.*(simulatedW - fabricatedW);
+        break;
+      }
+      else if (tempTilda == fabricatedTemps[tmpId]) {
+        contribution = 2.*(simulatedWs[tmpId] - fabricatedWs[tmpId]);
+        break;
+      }
+      tmpId++;
+    }
+    UQ_FATAL_TEST_MACRO((tmpId == fabricatedTemps.size()),
+                        0,
+                        "tgaLambdaTempDotOdeFunction, in uqTgaValidation.h",
+                        "tmpId got too large");
+    //std::cout << "In tgaLambdaTempDotOdeFunction()"
+    //          << ": temp = "                << temp
+    //          << ", adding contribution = " << contribution
+    //         << std::endl;
+    f[0] -= contribution;
+  }
+  else if (temp == odeInfo->nextContributionTemp) {
+    f[0] = A*L[0]*exp(-E/(R_CONSTANT*temp));
+    std::cout << "In tgaLambdaTimeDotOdeFunction()"
+              << ": time = "                         << time
+              << ", nextContributionTime = "         << odeInfo->nextContributionTime
+              << ", adding nextContributionValue = " << odeInfo->nextContributionValue
+              << std::endl;
+    f[0] += odeInfo->nextContributionValue;
+  }
+  //else {
+  //  std::cout << "In tgaLambdaTimeDotOdeFunction()"
+  //            << ": temp = "                 << temp
+  //            << ", nextContributionTime = " << odeInfo->nextContributionTime
+  //            << ", adding 0."
+  //            << std::endl;
+  //}
+  // No division by 'beta' (CONVERSION TO TIME)
 
   return GSL_SUCCESS;
 }
 
 int tgaLambdaTempDotOdeFunction(double temp, const double L[], double f[], void *info)
 {
+  //std::cout << "Entering tgaLambdaTempDotOdeFunction()"
+  //          << ": temp = " << temp
+  //          << std::endl;
   tgaLambdaDotOdeInfo_st* odeInfo = (tgaLambdaDotOdeInfo_st *)info;
   double A    = odeInfo->A;
   double E    = odeInfo->E;
   double beta = odeInfo->beta;
 
-  f[0] = A*L[0]*exp(-E/(R_CONSTANT*temp))/beta;
-  if (temp == odeInfo->nextContributionTemp) {
+  if (odeInfo->fabricatedTemps) {
+    const std::vector<double>& fabricatedTemps = *(odeInfo->fabricatedTemps);
+    const std::vector<double>& fabricatedWs    = *(odeInfo->fabricatedWs   );
+    const std::vector<double>& simulatedWs     = *(odeInfo->simulatedWs    );
+
+    double tempTilda = fabricatedTemps[0] + fabricatedTemps[fabricatedTemps.size()-1] - temp;
+    f[0] = -A*L[0]*exp(-E/(R_CONSTANT*tempTilda));
+
+    unsigned int tmpId = 0;
+    double contribution = 0.;
+    if (tempTilda > fabricatedTemps[0]) while(tmpId < fabricatedTemps.size()) {
+      if (tempTilda < fabricatedTemps[tmpId]) {
+        double ratio = (tempTilda - fabricatedTemps[tmpId-1])/(fabricatedTemps[tmpId] - fabricatedTemps[tmpId-1]);
+        double fabricatedW = fabricatedWs[tmpId-1]+ratio*(fabricatedWs[tmpId]-fabricatedWs[tmpId-1]);
+        double simulatedW  = simulatedWs [tmpId-1]+ratio*(simulatedWs [tmpId]-simulatedWs [tmpId-1]);
+        contribution = 2.*(simulatedW - fabricatedW);
+        break;
+      }
+      else if (tempTilda == fabricatedTemps[tmpId]) {
+        contribution = 2.*(simulatedWs[tmpId] - fabricatedWs[tmpId]);
+        break;
+      }
+      tmpId++;
+    }
+    UQ_FATAL_TEST_MACRO((tmpId == fabricatedTemps.size()),
+                        0,
+                        "tgaLambdaTempDotOdeFunction, in uqTgaValidation.h",
+                        "tmpId got too large");
+    //std::cout << "In tgaLambdaTempDotOdeFunction()"
+    //          << ": temp = "                << temp
+    //          << ", adding contribution = " << contribution
+    //         << std::endl;
+    f[0] -= contribution;
+  }
+  else if (temp == odeInfo->nextContributionTemp) {
+    f[0] = -A*L[0]*exp(-E/(R_CONSTANT*temp));
     std::cout << "In tgaLambdaTempDotOdeFunction()"
               << ": temp = "                         << temp
               << ", nextContributionTemp = "         << odeInfo->nextContributionTemp
@@ -103,6 +198,11 @@ int tgaLambdaTempDotOdeFunction(double temp, const double L[], double f[], void 
   //            << ", adding 0."
   //            << std::endl;
   //}
+  f[0] /= beta;
+
+  //std::cout << "Leaving tgaLambdaTempDotOdeFunction()"
+  //          << ": temp = " << temp
+  //          << std::endl;
 
   return GSL_SUCCESS;
 }
@@ -128,6 +228,9 @@ tgaLikelihoodRoutine_DataClass
   std::vector<double> m_measuredTemps; // temperatures
   std::vector<double> m_measuredWs;    // relative masses
   std::vector<double> m_measurementVs; // variances
+  std::vector<double> m_fabricatedTemps;
+  std::vector<double> m_fabricatedWs;
+  std::vector<double> m_simulatedWs;
 };
 
 template<class P_V, class P_M>
@@ -135,12 +238,15 @@ tgaLikelihoodRoutine_DataClass<P_V,P_M>::tgaLikelihoodRoutine_DataClass(
   const uqBaseEnvironmentClass& env,
   const std::string&            inpName)
   :
-  m_useTimeAsDomainVariable(false), // IMPORTANT
-  m_beta                   (0.),
-  m_initialTemp            (0.),
-  m_measuredTemps          (0),
-  m_measuredWs             (0),
-  m_measurementVs          (0)
+  m_useTimeAsDomainVariable(true), // IMPORTANT
+  m_beta           (0.),
+  m_initialTemp    (0.),
+  m_measuredTemps  (0),
+  m_measuredWs     (0),
+  m_measurementVs  (0),
+  m_fabricatedTemps(0),
+  m_fabricatedWs   (0),
+  m_simulatedWs    (0)
 {
   // Read experimental data
   if (env.rank() == 0) {
@@ -160,6 +266,63 @@ tgaLikelihoodRoutine_DataClass<P_V,P_M>::tgaLikelihoodRoutine_DataClass(
   m_measuredTemps.resize(numMeasurements,0.);
   m_measuredWs.resize   (numMeasurements,0.);
   m_measurementVs.resize(numMeasurements,0.);
+#ifdef QUESO_USE_FABRICATED_MEASUREMENT
+  m_useTimeAsDomainVariable = true; // IMPORTANT
+  m_fabricatedTemps.resize(100000,0.);
+  m_fabricatedWs.resize   (100000,0.);
+  m_simulatedWs.resize    (100000,0.);
+  double A = 2.6090e+11; // Reference _A
+  double E = 1.9910e+05; // Reference _E
+  double stateTimeDotOdeParameters[]={A,E,m_beta,m_initialTemp};
+  double stateTempDotOdeParameters[]={A,E,m_beta};
+    	
+  // Integration
+  const gsl_odeiv_step_type *st = gsl_odeiv_step_rkf45; //rkf45; //gear1;
+        gsl_odeiv_step      *s  = gsl_odeiv_step_alloc(st,1);
+        gsl_odeiv_control   *c  = gsl_odeiv_control_y_new(GSL_ODE_CONTROL_ABS_PRECISION_FOR_QUESO,0.0);
+        gsl_odeiv_evolve    *e  = gsl_odeiv_evolve_alloc(1);
+        gsl_odeiv_system     sysTime = {tgaStateTimeDotOdeFunction, NULL, 1, (void *)stateTimeDotOdeParameters};
+        gsl_odeiv_system     sysTemp = {tgaStateTempDotOdeFunction, NULL, 1, (void *)stateTempDotOdeParameters}; 
+
+  double currentTemp = m_initialTemp;
+  double deltaTemp   = 1e-1;
+
+  double currentTime = 0.;
+  double deltaTime   = 1e-1;
+
+  double currentW[1];
+  currentW[0]=1.;
+
+  unsigned int loopId = 0;
+  m_fabricatedTemps[loopId] = currentTemp;
+  m_fabricatedWs   [loopId] = currentW[0];
+  while (currentW[0] > 0.) {
+    int status = 0;
+    if (m_useTimeAsDomainVariable) {
+      deltaTime = .1;
+      status = gsl_odeiv_evolve_apply(e, c, s, &sysTime, &currentTime, currentTime+deltaTime, &deltaTime, currentW);
+      currentTemp = m_initialTemp + m_beta*currentTime;
+    }
+    else {
+      deltaTemp = .1;
+      status = gsl_odeiv_evolve_apply(e, c, s, &sysTemp, &currentTemp, currentTemp+deltaTemp, &deltaTemp, currentW);
+    }
+    if (currentW[0] < 1.e-6) currentW[0] = 0.; // IMPORTANT
+
+    loopId++;
+    m_fabricatedTemps[loopId] = currentTemp;
+    m_fabricatedWs   [loopId] = currentW[0];
+  }
+  m_fabricatedTemps.resize(loopId+1);
+  m_fabricatedWs.resize   (loopId+1);
+  m_simulatedWs.resize    (loopId+1);
+
+  std::cout << "Fabricated signal has " << m_fabricatedTemps.size() << " samples" << std::endl;
+
+  gsl_odeiv_evolve_free (e);
+  gsl_odeiv_control_free(c);
+  gsl_odeiv_step_free   (s);
+#endif
   
   unsigned int whileSize = 0;
   double tmpTemp;
@@ -194,7 +357,7 @@ template<class P_V,class P_M>
 double
 tgaConstraintEquation(
   const P_V&                                     paramValues,
-  const tgaLikelihoodRoutine_DataClass<P_V,P_M>& info,
+  tgaLikelihoodRoutine_DataClass<P_V,P_M>& info, // NO CONST
   bool                                           justComputeMisfit,
   std::vector<double>*                           misfitVarRatios,
   std::vector<double>*                           allWTemps,
@@ -204,12 +367,21 @@ tgaConstraintEquation(
 
     double A = paramValues[0];
     double E = paramValues[1];
-    bool   useTimeAsDomainVariable           = info.m_useTimeAsDomainVariable;
-    double beta                              = info.m_beta;
-    double initialTemp                       = info.m_initialTemp;
-    const std::vector<double>& measuredTemps = info.m_measuredTemps;
-    const std::vector<double>& measuredWs    = info.m_measuredWs;
-    const std::vector<double>& measurementVs = info.m_measurementVs;
+    bool   useTimeAsDomainVariable             = info.m_useTimeAsDomainVariable;
+    double beta                                = info.m_beta;
+    double initialTemp                         = info.m_initialTemp;
+    const std::vector<double>& measuredTemps   = info.m_measuredTemps;
+    const std::vector<double>& measuredWs      = info.m_measuredWs;
+    const std::vector<double>& measurementVs   = info.m_measurementVs;
+    const std::vector<double>& fabricatedTemps = info.m_fabricatedTemps;
+    const std::vector<double>& fabricatedWs    = info.m_fabricatedWs;
+          std::vector<double>& simulatedWs     = info.m_simulatedWs;
+
+    std::cout << "In tgaConstraintEquation()"
+              << ": fabricatedTemps.size() = " << fabricatedTemps.size()
+              << ", A = " << A
+              << ", E = " << E
+              << std::endl;
 
     double stateTimeDotOdeParameters[]={A,E,beta,initialTemp};
     double stateTempDotOdeParameters[]={A,E,beta};
@@ -217,7 +389,7 @@ tgaConstraintEquation(
     // Integration
     const gsl_odeiv_step_type *st = gsl_odeiv_step_rkf45; //rkf45; //gear1;
           gsl_odeiv_step      *s  = gsl_odeiv_step_alloc(st,1);
-          gsl_odeiv_control   *c  = gsl_odeiv_control_y_new(1e-6,0.0);
+          gsl_odeiv_control   *c  = gsl_odeiv_control_y_new(GSL_ODE_CONTROL_ABS_PRECISION_FOR_QUESO,0.0);
           gsl_odeiv_evolve    *e  = gsl_odeiv_evolve_alloc(1);
           gsl_odeiv_system     sysTime = {tgaStateTimeDotOdeFunction, NULL, 1, (void *)stateTimeDotOdeParameters};
           gsl_odeiv_system     sysTemp = {tgaStateTempDotOdeFunction, NULL, 1, (void *)stateTempDotOdeParameters}; 
@@ -229,7 +401,7 @@ tgaConstraintEquation(
 
     double currentTime  = 0.;
     double deltaTime    = 1e-3;
-    double maximumTime  = maximumTemp/beta;
+    double maximumTime  = (maximumTemp-initialTemp)/beta; // CONVERSION TO TIME
 
     double previousW[1];
     double currentW [1];
@@ -248,18 +420,34 @@ tgaConstraintEquation(
       (*allWs)[loopId] = currentW[0];
     }
 
+    unsigned int fabricatedId = 0;
+    simulatedWs[fabricatedId] = currentW[0];
     unsigned int misfitId = 0;
     bool continueOnWhile = true;
-    if (justComputeMisfit) {
+    if (fabricatedTemps.size() > 0) {
+      continueOnWhile = (fabricatedId <= (fabricatedTemps.size()-2));
+    }
+    else if (justComputeMisfit) {
       continueOnWhile = (currentTemp < maximumTemp) && (misfitId < measuredWs.size());
     }
     else {
-      continueOnWhile = (1.0e-6 < currentW[0]);
+      continueOnWhile = (1.e-16 < currentW[0]);
     }
     while (continueOnWhile) {
       loopId++;
       int status = 0;
-      if (useTimeAsDomainVariable) {
+      if (fabricatedTemps.size() > 0) {
+	//std::cout << "In tgaConstraintEquation(), fabricated case"
+        //          << ": loopId = "       << loopId
+        //          << ", fabricatedId = " << fabricatedId
+        //          << ", currentTemp = "  << currentTemp
+        //          << ", limitTemp = "    << fabricatedTemps[fabricatedId+1]
+        //          << ", currentTime = "  << (currentTemp-initialTemp)/beta
+        //          << ", currentW[0] = "  << currentW[0]
+        //          << std::endl;
+        status = gsl_odeiv_evolve_apply(e, c, s, &sysTemp, &currentTemp, fabricatedTemps[fabricatedId+1], &deltaTemp, currentW);
+      }
+      else if (useTimeAsDomainVariable) {
 	//std::cout << "currentTime = " << currentTime << std::endl;
         status = gsl_odeiv_evolve_apply(e, c, s, &sysTime, &currentTime, maximumTime, &deltaTime, currentW);
         currentTemp = initialTemp + beta*currentTime;
@@ -270,7 +458,7 @@ tgaConstraintEquation(
       //std::cout << "In tgaConstraintEquation()"
       //          << ": currentTemp = " << currentTemp
       //          << std::endl;
-      if ((currentW[0] < 0.) && (paramValues.env().rank() == 0)) {
+      if (currentW[0] < 1.e-6) { // IMPORTANT
         //std::cout << "In tgaConstraintEquation()"
         //          << ": currentTemp = " << currentTemp
         //          << ", currentW[0] = " << currentW[0]
@@ -290,9 +478,32 @@ tgaConstraintEquation(
 	(*allWs)[loopId] = currentW[0];
       }
 		
-      while ( (misfitId < measuredWs.size()) && (previousTemp <= measuredTemps[misfitId]) && (measuredTemps[misfitId] <= currentTemp) ) {
+      if (fabricatedTemps.size() > 0) {
+        if (currentTemp == fabricatedTemps[fabricatedId+1]) {
+          fabricatedId++;
+          simulatedWs[fabricatedId] = currentW[0];
+#ifdef QUESO_USE_OBSERVED_MINUS_COMPUTED
+          double tmpMisfitValue = fabricatedWs[fabricatedId] - simulatedWs[fabricatedId];
+#else
+          double tmpMisfitValue = simulatedWs[fabricatedId] - fabricatedWs[fabricatedId];
+#endif
+          double tmpToAdd = tmpMisfitValue*tmpMisfitValue*(currentTemp-previousTemp)/beta;
+          //std::cout << "In tgaConstraintEquation()"
+          //          << ": previousTemp = "   << previousTemp
+          //          << ", currentTemp = "    << currentTemp
+          //          << ", tmpMisfitValue = " << tmpMisfitValue
+          //          << ", tmpToAdd = "       << tmpToAdd
+          //          << std::endl;
+          resultValue += tmpToAdd;
+        }
+      }
+      else while ( (misfitId < measuredWs.size()) && (previousTemp <= measuredTemps[misfitId]) && (measuredTemps[misfitId] <= currentTemp) ) {
         computedWs[misfitId] = (measuredTemps[misfitId]-previousTemp)*(currentW[0]-previousW[0])/(currentTemp-previousTemp) + previousW[0];
+#ifdef QUESO_USE_OBSERVED_MINUS_COMPUTED
+        misfitValues[misfitId] = measuredWs[misfitId]-computedWs[misfitId];
+#else
         misfitValues[misfitId] = computedWs[misfitId]-measuredWs[misfitId];
+#endif
         if (misfitVarRatios) (*misfitVarRatios)[misfitId] = misfitValues[misfitId]/measurementVs[misfitId];
         resultValue += (misfitValues[misfitId]*misfitValues[misfitId])/measurementVs[misfitId];
         if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
@@ -310,11 +521,14 @@ tgaConstraintEquation(
       previousTemp = currentTemp;
       previousW[0] = currentW[0];
 
-      if (justComputeMisfit) {
+      if (fabricatedTemps.size() > 0) {
+        continueOnWhile = (fabricatedId <= (fabricatedTemps.size()-2));
+      }
+      else if (justComputeMisfit) {
         continueOnWhile = (currentTemp < maximumTemp) && (misfitId < measuredWs.size());
       }
       else {
-        continueOnWhile = (1.0e-6 < currentW[0]);
+        continueOnWhile = (1.e-16 < currentW[0]);
       }
     }
     if (allWTemps) {
@@ -322,13 +536,17 @@ tgaConstraintEquation(
       allWs->resize(loopId+1);
     }
 	
-    if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
+    if ((paramValues.env().verbosity() >= 0) && (paramValues.env().rank() == 0)) {
+      char stringA[64];
+      char stringE[64];
+      sprintf(stringA,"%12.6e",A);
+      sprintf(stringE,"%12.6e",E);
       std::cout << "In tgaConstraintEquation()"
-                << ", A = "                << A
-                << ", E = "                << E
-                << ", beta = "             << beta
-                << ", stageOdeLoopSize = " << loopId
-                << ": likelihood = "       << resultValue
+                << ", A = "                              << stringA
+                << ", E = "                              << stringE
+                << ", beta = "                           << beta
+                << ": finished ode loop after "          << loopId
+                << " iterations, with weigthedMisfit = " << resultValue
                 << std::endl;
     }
 
@@ -368,13 +586,17 @@ tgaAdjointEquation(
   odeInfo.E           = paramValues[1];
   odeInfo.beta        = info.m_beta;
   odeInfo.initialTemp = info.m_initialTemp;
+  odeInfo.nextContributionTime  = 0.;
   odeInfo.nextContributionTemp  = 0.;
   odeInfo.nextContributionValue = 0.;
+  odeInfo.fabricatedTemps       = &(info.m_fabricatedTemps);
+  odeInfo.fabricatedWs          = &(info.m_fabricatedWs);
+  odeInfo.simulatedWs           = &(info.m_simulatedWs);
 
   // Integration
   const gsl_odeiv_step_type *st = gsl_odeiv_step_rkf45; //rkf45; //gear1;
         gsl_odeiv_step      *s  = gsl_odeiv_step_alloc(st,1);
-        gsl_odeiv_control   *c  = gsl_odeiv_control_y_new(1e-6,0.0);
+        gsl_odeiv_control   *c  = gsl_odeiv_control_y_new(GSL_ODE_CONTROL_ABS_PRECISION_FOR_QUESO,0.0);
         gsl_odeiv_evolve    *e  = gsl_odeiv_evolve_alloc(1);
         gsl_odeiv_system     sysTime = {tgaLambdaTimeDotOdeFunction, NULL, 1, (void *)&odeInfo};
         gsl_odeiv_system     sysTemp = {tgaLambdaTempDotOdeFunction, NULL, 1, (void *)&odeInfo}; 
@@ -384,7 +606,7 @@ tgaAdjointEquation(
 
   double currentTime = 0.;
   double deltaTime   = 1e-3;
-  double maximumTime = maximumTemp/odeInfo.beta;
+  double maximumTime = (maximumTemp-odeInfo.initialTemp)/odeInfo.beta; // CONVERSION
 
   double currentLambda[1];
   currentLambda[0]=0.;
@@ -399,47 +621,77 @@ tgaAdjointEquation(
   }
 
   std::cout << "In tgaAdjointEquation()"
+            << ", maximumTime = " << maximumTime
+            << ", currentTime = " << currentTime
             << ", maximumTemp = " << maximumTemp
             << ", currentTemp = " << currentTemp
             << std::endl;
 
+  double evolveTimeLimit = maximumTime;
   double evolveTempLimit = maximumTemp;
+
   while (currentTemp < maximumTemp) {
     loopId++;
     int status = 0;
-    if (nextContributionId < measuredTemps.size()) {
-      evolveTempLimit = measuredTemps[nextContributionId];
-      if (currentTemp == evolveTempLimit) {
-        odeInfo.nextContributionTemp  = measuredTemps[nextContributionId];
-        odeInfo.nextContributionValue = misfitVarRatios[nextContributionId];
-        nextContributionId++;
-        if (nextContributionId >= measuredTemps.size()) {
-          evolveTempLimit = maximumTemp;
+    if (useTimeAsDomainVariable) {
+      if (nextContributionId < measuredTemps.size()) {
+        evolveTimeLimit = (measuredTemps[nextContributionId]-odeInfo.initialTemp)/odeInfo.beta;
+        if (currentTime == evolveTimeLimit) {
+          odeInfo.nextContributionTime  = (measuredTemps[nextContributionId]-odeInfo.initialTemp)/odeInfo.beta; // CONVERSION TO TIME
+          odeInfo.nextContributionValue = 2.*misfitVarRatios[nextContributionId];
+          nextContributionId++;
+          if (nextContributionId >= measuredTemps.size()) {
+            evolveTimeLimit = maximumTime;
+          }
+          else {
+            evolveTimeLimit = (measuredTemps[nextContributionId]-odeInfo.initialTemp)/odeInfo.beta; // CONVERSION TO TIME
+          }
         }
-        else {
-          evolveTempLimit = measuredTemps[nextContributionId];
-        }
+      }
+      else {
+        odeInfo.nextContributionTime  = maximumTime;
+        odeInfo.nextContributionValue = 0.;
       }
     }
     else {
-      odeInfo.nextContributionTemp  = maximumTemp;
-      odeInfo.nextContributionValue = 0.;
+      if (nextContributionId < measuredTemps.size()) {
+        evolveTempLimit = measuredTemps[nextContributionId];
+        if (currentTemp == evolveTempLimit) {
+          odeInfo.nextContributionTemp  = measuredTemps[nextContributionId];
+          odeInfo.nextContributionValue = 2.*misfitVarRatios[nextContributionId];
+          nextContributionId++;
+          if (nextContributionId >= measuredTemps.size()) {
+            evolveTempLimit = maximumTemp;
+          }
+          else {
+            evolveTempLimit = measuredTemps[nextContributionId];
+          }
+        }
+      }
+      else {
+        odeInfo.nextContributionTemp  = maximumTemp;
+        odeInfo.nextContributionValue = 0.;
+      }
     }
-    //std::cout << "In tgaAdjointEquation()"
+    //std::cout << "In tgaAdjointEquation(), before evolve()"
     //          << ": loopId = "          << loopId
     //          << ", evolveTempLimit = " << evolveTempLimit
     //          << ", currentTemp = "     << currentTemp
+    //          << ", currentLambda = "   << currentLambda[0]
     //          << std::endl;
     if (useTimeAsDomainVariable) {
       //std::cout << "currentTime = " << currentTime << std::endl;
-      status = gsl_odeiv_evolve_apply(e, c, s, &sysTime, &currentTime, maximumTime, &deltaTime, currentLambda);
+      status = gsl_odeiv_evolve_apply(e, c, s, &sysTime, &currentTime, evolveTimeLimit, &deltaTime, currentLambda);
       currentTemp = odeInfo.initialTemp + odeInfo.beta*currentTime;
     }
     else {
       status = gsl_odeiv_evolve_apply(e, c, s, &sysTemp, &currentTemp, evolveTempLimit, &deltaTemp, currentLambda);
     }
-    //std::cout << "In tgaAdjointEquation()"
-    //          << ", currentTemp = " << currentTemp
+    //std::cout << "In tgaAdjointEquation(), after evolve()"
+    //          << ": loopId = "          << loopId
+    //          << ", evolveTempLimit = " << evolveTempLimit
+    //          << ", currentTemp = "     << currentTemp
+    //          << ", currentLambda = "   << currentLambda[0]
     //          << std::endl;
     UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
                         paramValues.env().rank(),
@@ -458,13 +710,35 @@ tgaAdjointEquation(
     allLambdaTemps->resize(loopId+1);
     allLambdas->resize(loopId+1);
   }
+
+  unsigned int pos1 = 0;
+  unsigned int pos2 = allLambdas->size()-1;
+  double minTemp = (*allLambdaTemps)[0];
+  double maxTemp = (*allLambdaTemps)[allLambdaTemps->size()-1];
+  while (pos2 >= pos1) {
+    double tmpTemp = (*allLambdaTemps)[pos1];
+    (*allLambdaTemps)[pos1] = minTemp + maxTemp - (*allLambdaTemps)[pos2];
+    (*allLambdaTemps)[pos2] = minTemp + maxTemp - tmpTemp;
+
+    double tmpLambda = (*allLambdas)[pos1];
+    (*allLambdas)[pos1] = (*allLambdas)[pos2];
+    (*allLambdas)[pos2] = tmpLambda;
+
+    pos1++;
+    pos2--;
+  }
 	
-  if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
+  if ((paramValues.env().verbosity() >= 0) && (paramValues.env().rank() == 0)) {
+    char stringA[64];
+    char stringE[64];
+    sprintf(stringA,"%12.6e",odeInfo.A);
+    sprintf(stringE,"%12.6e",odeInfo.E);
     std::cout << "In tgaAdjointEquation()"
-              << ", A = "                << odeInfo.A
-              << ", E = "                << odeInfo.E
-              << ", beta = "             << odeInfo.beta
-              << ", stageOdeLoopSize = " << loopId
+              << ", A = "                     << stringA
+              << ", E = "                     << stringE
+              << ", beta = "                  << odeInfo.beta
+              << ": finished ode loop after " << loopId
+              << " iterations"
               << std::endl;
   }
 
@@ -479,24 +753,30 @@ tgaAdjointEquation(
 template<class P_V,class P_M>
 void
 tgaDesignEquation(
-  const P_V&           paramValues,
-  double               beta,
-  std::vector<double>& allWTemps,
-  std::vector<double>& allWs,
-  std::vector<double>& allLambdaTemps,
-  std::vector<double>& allLambdas,
-  P_V&                 LagrangianGradWrtParams)
+  const P_V&                                     paramValues,
+  const tgaLikelihoodRoutine_DataClass<P_V,P_M>& info,
+  std::vector<double>&                           allWTemps,
+  std::vector<double>&                           allWs,
+  std::vector<double>&                           allLambdaTemps,
+  std::vector<double>&                           allLambdas,
+  P_V&                                           LagrangianGradWrtParams,
+  double*                                        extraTerm)
 {
+  std::cout << "Entering tgaDesignEquation()"
+            << ", allWTemps[0] = " << allWTemps[0]
+            << ", allLambdaTemps[0] = " << allLambdaTemps[0]
+            << std::endl;
+#if 0
   UQ_FATAL_TEST_MACRO((allWTemps[0] != allLambdaTemps[0]),
                       paramValues.env().rank(),
-                      "tgaDesingEquation()",
+                      "tgaDesignEquation()",
                       "allWTemps[0] and allLambdaTemps[0] are different");
 
   UQ_FATAL_TEST_MACRO((allWTemps[allWTemps.size()-1] != allLambdaTemps[allLambdaTemps.size()-1]),
                       paramValues.env().rank(),
-                      "tgaDesingEquation()",
+                      "tgaDesignEquation()",
                       "allWTemps[last] and allLambdaTemps[last] are different");
-
+#endif
   double A = paramValues[0];
   double E = paramValues[1];
 
@@ -504,13 +784,37 @@ tgaDesignEquation(
   unsigned int currentLambdaIntervalId = 0;
 
   unsigned int numIntervals = 1000;
-  double intervalSize = (allWTemps[allWTemps.size()-1]-allWTemps[0])/((double)numIntervals);
-  double firstTemp = .5*intervalSize;
-  for (unsigned int i = 0; i < numIntervals; ++i) {
-    double temp = firstTemp + i*intervalSize;
+  double tempIntervalSize = (allWTemps[allWTemps.size()-1]-allWTemps[0])/((double)numIntervals);
+  double firstTemp = allWTemps[0]+.5*tempIntervalSize;
 
-    while (allWTemps[currentWIntervalId+1] < temp) {
+  std::cout << "In tgaAdjointEquation()"
+            << ": beginning integration loop on temperature interval "
+            << "["          << allWTemps[0]
+            << ", "         << allWTemps[allWTemps.size()-1]
+            << "], with = " << numIntervals
+            << " subintervals"
+            << "; allWTemps.size() = "      << allWTemps.size()
+            << ", allLambdaTemps.size() = " << allLambdaTemps.size()
+            << std::endl;
+
+  LagrangianGradWrtParams *= 0.;
+  if (extraTerm) *extraTerm = 0.;
+
+  for (unsigned int i = 0; i < numIntervals; ++i) {
+    double temp = firstTemp + ((double) i)*tempIntervalSize;
+
+    while (allWTemps[currentWIntervalId+1] <= temp) {
       currentWIntervalId++;
+    }
+    if ((allWTemps[currentWIntervalId] <= temp ) &&
+        (temp < allWTemps[currentWIntervalId+1])) {
+      // Ok
+    }
+    else {
+      UQ_FATAL_TEST_MACRO(true,
+                          paramValues.env().rank(),
+                          "tgaDesignEquation()",
+                          "invalid situation with allWTemps");
     }
     double wTempDelta = allWTemps[currentWIntervalId+1] - allWTemps[currentWIntervalId];
     double wTempRatio = (temp - allWTemps[currentWIntervalId])/wTempDelta;
@@ -520,6 +824,16 @@ tgaDesignEquation(
     while (allLambdaTemps[currentLambdaIntervalId+1] < temp) {
       currentLambdaIntervalId++;
     }
+    if ((allLambdaTemps[currentLambdaIntervalId] <= temp ) &&
+        (temp < allLambdaTemps[currentLambdaIntervalId+1])) {
+      // Ok
+    }
+    else {
+      UQ_FATAL_TEST_MACRO(true,
+                          paramValues.env().rank(),
+                          "tgaDesignEquation()",
+                          "invalid situation with allLambdaTemps");
+    }
     double lambdaTempDelta = allLambdaTemps[currentLambdaIntervalId+1] - allLambdaTemps[currentLambdaIntervalId];
     double lambdaTempRatio = (temp - allLambdaTemps[currentLambdaIntervalId])/lambdaTempDelta;
     double lambdaDelta = allLambdas[currentLambdaIntervalId+1] - allLambdas[currentLambdaIntervalId];
@@ -527,9 +841,28 @@ tgaDesignEquation(
 
     LagrangianGradWrtParams[0] +=                          lambda * w * exp(-E/(R_CONSTANT*temp));
     LagrangianGradWrtParams[1] += -(A/(R_CONSTANT*temp)) * lambda * w * exp(-E/(R_CONSTANT*temp));
+    if (extraTerm) *extraTerm  +=  (A/(R_CONSTANT*temp*R_CONSTANT*temp)) * lambda * w * exp(-E/(R_CONSTANT*temp));
   }
 
-  LagrangianGradWrtParams *= (intervalSize/beta);
+  std::cout << "In tgaAdjointEquation()"
+            << ": finsihed integration loop with"
+            << " currentWIntervalId = " << currentWIntervalId
+            << ", currentLambdaIntervalId = " << currentLambdaIntervalId
+            << std::endl;
+
+#if 0
+  UQ_FATAL_TEST_MACRO((currentWIntervalId != (allWTemps.size()-2)),
+                      paramValues.env().rank(),
+                      "tgaDesignEquation()",
+                      "currentWIntervalId finished with an invalid value");
+
+  UQ_FATAL_TEST_MACRO((currentLambdaIntervalId != (allLambdaTemps.size()-2)),
+                      paramValues.env().rank(),
+                      "tgaDesignEquation()",
+                      "currentLambdaIntervalId finished with an invalid value");
+#endif
+
+  LagrangianGradWrtParams *= (tempIntervalSize/info.m_beta); // Division by beta due to the integration w.r.t. temperature
 
   return;
 }
@@ -615,7 +948,7 @@ void tgaQoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoi
   // integration
   const gsl_odeiv_step_type *st = gsl_odeiv_step_rkf45; //rkf45; //gear1;
         gsl_odeiv_step      *s  = gsl_odeiv_step_alloc(st,1);
-        gsl_odeiv_control   *c  = gsl_odeiv_control_y_new(1e-6,0.0);
+        gsl_odeiv_control   *c  = gsl_odeiv_control_y_new(GSL_ODE_CONTROL_ABS_PRECISION_FOR_QUESO,0.0);
         gsl_odeiv_evolve    *e  = gsl_odeiv_evolve_alloc(1);
         gsl_odeiv_system     sysTime = {tgaStateTimeDotOdeFunction, NULL, 1, (void *)stateTimeDotOdeParameters};
         gsl_odeiv_system     sysTemp = {tgaStateTempDotOdeFunction, NULL, 1, (void *)stateTempDotOdeParameters}; 
@@ -628,7 +961,7 @@ void tgaQoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoi
 
   double currentTime  = 0.;
   double deltaTime    = 1e-3;
-  double maximumTime  = maximumTemp/beta;
+  double maximumTime  = (maximumTemp-initialTemp)/beta; // CONVERSION TO TIME
 
   double currentW [1];
   double previousW[1];
@@ -660,8 +993,8 @@ void tgaQoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoi
     previousW[0] = currentW[0];
   }
 
-  if (criticalW    > 0.) qoiValues[0] = crossingTemp/beta; // QoI = time to achieve critical mass
-  if (criticalTime > 0.) qoiValues[0] = currentW[0];    // QoI = mass fraction remaining at critical time
+  if (criticalW    > 0.) qoiValues[0] = (crossingTemp-initialTemp)/beta; // QoI = time to achieve critical mass
+  if (criticalTime > 0.) qoiValues[0] = currentW[0];                     // QoI = mass fraction remaining at critical time
 	
   if ((paramValues.env().verbosity() >= 3) && (paramValues.env().rank() == 0)) {
     std::cout << "In tgaQoiRoutine()"
@@ -693,8 +1026,9 @@ public:
                        const char*                   prefix);
  ~uqTgaValidationClass();
 
-  void run();
-  void runGradTest();
+  void run            ();
+  void runGradTest    ();
+  void runMinimization();
 
 private:
   void  runCalibrationStage();
@@ -1115,14 +1449,26 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest()
   m_calLikelihoodRoutine_DataVector[0] = new tgaLikelihoodRoutine_DataClass<P_V,P_M>(m_env,"tga/scenario_5_K_min.dat");
   P_V params(m_paramSpace->zeroVector());
 
+  // Open file
+  std::ofstream ofs("nada1.m", std::ofstream::out | std::ofstream::trunc);
+  unsigned int tmpSize = m_calLikelihoodRoutine_DataVector[0]->m_fabricatedTemps.size();
+  ofs << "fabricatedTemps = zeros(" << tmpSize
+      << ",1);"
+      << "\nfabricatedWs = zeros(" << tmpSize
+      << ",1);";
+  for (unsigned int i = 0; i < tmpSize; ++i) {
+    ofs << "\nfabricatedTemps(" << i+1 << ",1) = " << m_calLikelihoodRoutine_DataVector[0]->m_fabricatedTemps[i] << ";"
+        << "\nfabricatedWs("    << i+1 << ",1) = " << m_calLikelihoodRoutine_DataVector[0]->m_fabricatedWs[i]    << ";";
+  }
+
   if (m_env.rank() == 0) {
     std::cout << "In uqTgaValidation::runGradTest()"
               << ": compute misfit gradient w.r.t. parameters A and E, using adjoint..."
               << std::endl;
   }
 
-  params[0] = 2.6000e+11; // A
-  params[1] = 2.0000e+05; // E
+  params[0] = 2.6000e+11; // Initial guess _A
+  params[1] = 2.0000e+05; // Initial guess _E
 
   std::vector<double> misfitVarRatios(0);
   std::vector<double> allWTemps(0);
@@ -1134,9 +1480,17 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest()
                                                &misfitVarRatios,
                                                &allWTemps,
                                                &allWs);
-  std::cout << "valueCenter = " << valueCenter << std::endl;
+  std::cout << "In runGradTest()"
+            << ": valueCenter = " << valueCenter
+            << std::endl;
+
+  ofs << "\nallWTemps = zeros(" << allWTemps.size()
+      << ",1);"
+      << "\nallWs = zeros(" << allWTemps.size()
+      << ",1);";
   for (unsigned int i = 0; i < allWTemps.size(); ++i) {
-    std::cout << allWTemps[i] << " " << allWs[i] << std::endl;
+    ofs << "\nallWTemps(" << i+1 << ",1) = " << allWTemps[i] << ";"
+        << "\nallWs("     << i+1 << ",1) = " << allWs[i]     << ";";
   }
 
   std::vector<double> allLambdaTemps(0);
@@ -1148,18 +1502,28 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest()
                               &allLambdaTemps,
                               &allLambdas);
 
+  ofs << "\nallLambdaTemps = zeros(" << allLambdaTemps.size()
+      << ",1);"
+      << "\nallLambdas = zeros(" << allLambdaTemps.size()
+      << ",1);";
   for (unsigned int i = 0; i < allLambdaTemps.size(); ++i) {
-    std::cout << allLambdaTemps[i] << " " << allLambdas[i] << std::endl;
+    ofs << "\nallLambdaTemps(" << i+1 << ",1) = " << allLambdaTemps[i] << ";"
+        << "\nallLambdas("     << i+1 << ",1) = " << allLambdas[i]     << ";";
   }
+
+#ifdef QUESO_RUN_SIMPLIFIED_W_CASE
+  return;
+#endif
 
   P_V LagrangianGradWrtParams(m_paramSpace->zeroVector());
   tgaDesignEquation<P_V,P_M>(params,
-                             m_calLikelihoodRoutine_DataVector[0]->m_beta,
+                             *(m_calLikelihoodRoutine_DataVector[0]),
                              allWTemps,
                              allWs,
                              allLambdaTemps,
                              allLambdas,
-			     LagrangianGradWrtParams);
+			     LagrangianGradWrtParams,
+                             NULL);
 
   std::cout << "lagGrad = " << LagrangianGradWrtParams << std::endl;
 
@@ -1169,8 +1533,10 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest()
               << std::endl;
   }
 
-  params[0] = 2.6000e+11-2.6000e+07; // A
-  params[1] = 2.0000e+05;            // E
+  double deltaA = params[0] * 1.e-6;
+
+  params[0] = 2.6000e+11-deltaA; // A
+  params[1] = 2.0000e+05;        // E
   double valueAm = tgaConstraintEquation<P_V,P_M>(params,
                                                   *(m_calLikelihoodRoutine_DataVector[0]),
                                                   true,
@@ -1179,8 +1545,8 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest()
                                                   NULL);
   std::cout << "valueAm = " << valueAm << std::endl;
 
-  params[0] = 2.6000e+11+2.6000e+07; // A
-  params[1] = 2.0000e+05;            // E
+  params[0] = 2.6000e+11+deltaA; // A
+  params[1] = 2.0000e+05;        // E
   double valueAp = tgaConstraintEquation<P_V,P_M>(params,
                                                   *(m_calLikelihoodRoutine_DataVector[0]),
                                                   true,
@@ -1189,8 +1555,10 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest()
                                                   NULL);
   std::cout << "valueAp = " << valueAp << std::endl;
 
-  params[0] = 2.6000e+11;            // A
-  params[1] = 2.0000e+05-2.0000e+01; // E
+  double deltaE = params[1] * 1.e-6;
+
+  params[0] = 2.6000e+11;        // A
+  params[1] = 2.0000e+05-deltaE; // E
   double valueEm = tgaConstraintEquation<P_V,P_M>(params,
                                                   *(m_calLikelihoodRoutine_DataVector[0]),
                                                   true,
@@ -1199,8 +1567,8 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest()
                                                   NULL);
   std::cout << "valueEm = " << valueEm << std::endl;
 
-  params[0] = 2.6000e+11;            // A
-  params[1] = 2.0000e+05+2.0000e+01; // E
+  params[0] = 2.6000e+11;        // A
+  params[1] = 2.0000e+05+deltaE; // E
   double valueEp = tgaConstraintEquation<P_V,P_M>(params,
                                                   *(m_calLikelihoodRoutine_DataVector[0]),
                                                   true,
@@ -1209,10 +1577,153 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest()
                                                   NULL);
   std::cout << "valueEp = " << valueEp << std::endl;
 
-  std::cout << "So, grad (finite diff) = " << (valueAp-valueAm)/5.2e+7 << ", " << (valueEp-valueEm)/4.0e+1 << std::endl;
+  std::cout << "So, grad (finite diff) = " << (valueAp-valueAm)/2./deltaA << ", " << (valueEp-valueEm)/2./deltaE << std::endl;
 
   if (m_env.rank() == 0) {
     std::cout << "Leaving uqTgaValidation::runGradTest()"
+              << std::endl;
+  }
+
+  return;
+}
+
+template <class P_V,class P_M,class Q_V,class Q_M>
+void
+uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runMinimization()
+{
+  if (m_env.rank() == 0) {
+    std::cout << "Entering uqTgaValidation::runMinimization()"
+              << std::endl;
+  }
+
+  P_V params(m_paramSpace->zeroVector());
+  params[0] = 2.6000e+11; // A
+  params[1] = 2.0000e+05; // E
+  P_V externalLagGrad(m_paramSpace->zeroVector());
+  double externalLagGradNorm = externalLagGrad.norm2();
+
+  unsigned int externalLoopId = 0;
+  do {
+    std::cout << "Beggining externalLoopId = " << externalLoopId
+              << " with params = "             << params
+              << std::endl;
+
+    m_calLikelihoodRoutine_DataVector.resize(1,NULL);
+    m_calLikelihoodRoutine_DataVector[0] = new tgaLikelihoodRoutine_DataClass<P_V,P_M>(m_env,"tga/scenario_5_K_min.dat");
+
+    std::vector<double> misfitVarRatios(0);
+    std::vector<double> allWTemps(0);
+    std::vector<double> allWs(0);
+    double tmpValue = 0.;
+    tmpValue = tgaConstraintEquation<P_V,P_M>(params,
+                                              *(m_calLikelihoodRoutine_DataVector[0]),
+                                              false,
+                                              &misfitVarRatios,
+                                              &allWTemps,
+                                              &allWs);
+    //for (unsigned int i = 0; i < allWTemps.size(); ++i) {
+    //  std::cout << allWTemps[i] << " " << allWs[i] << std::endl;
+    //}
+
+    std::vector<double> allLambdaTemps(0);
+    std::vector<double> allLambdas(0);
+    tgaAdjointEquation<P_V,P_M>(params,
+                                *(m_calLikelihoodRoutine_DataVector[0]),
+                                allWTemps[allWTemps.size()-1],
+                                misfitVarRatios,
+                                &allLambdaTemps,
+                                &allLambdas);
+
+    //for (unsigned int i = 0; i < allLambdaTemps.size(); ++i) {
+    //  std::cout << allLambdaTemps[i] << " " << allLambdas[i] << std::endl;
+    //}
+
+    double extraTerm;
+    tgaDesignEquation<P_V,P_M>(params,
+                               *(m_calLikelihoodRoutine_DataVector[0]),
+                               allWTemps,
+                               allWs,
+                               allLambdaTemps,
+                               allLambdas,
+                               externalLagGrad,
+                               &extraTerm);
+    std::cout << "externalLagGrad = " << externalLagGrad << std::endl;
+    externalLagGradNorm = externalLagGrad.norm2();
+    std::cout << "At externalLoopId = "     << externalLoopId
+              << " with params = "          << params
+              << ": misfit = "              << tmpValue
+              << ", externalLagGradNorm = " << externalLagGradNorm
+              << std::endl;
+
+    if (1.e-7 < externalLagGradNorm) {
+      P_V newtonLagGrad(externalLagGrad);
+      double newtonLagGradNorm = newtonLagGrad.norm2();
+
+      // Apply Newton method
+      unsigned int newtonLoopId = 0;
+      do {
+        // Compute Newton step
+        P_V paramsStep(m_paramSpace->zeroVector());
+        double A = params[0];
+        P_M mat(params,0.);
+        mat(0,0)=0.;
+        mat(0,1)=newtonLagGrad[1]/A;
+        mat(1,0)=newtonLagGrad[1]/A;
+        mat(1,1)=extraTerm;
+        paramsStep *= 0.;
+        mat.invertMultiply(-1.*newtonLagGrad,paramsStep);
+        std::cout << "In newtonLoopId = " << newtonLoopId
+                  << " with params = "    << params
+                  << ": paramsStep = "    << paramsStep
+                  << std::endl;
+
+        // Perform line search
+        unsigned int lineSearchLoopId = 0;
+        double directionalDerivative = -newtonLagGrad.norm2Sq();
+        double c = 0.1;
+        double alpha = 2.0;
+        double currentMeritFunction = .5*newtonLagGrad.norm2Sq();
+        double newMeritFunction = 0.;
+        double lineSearchThreshold = 0.;
+        do {
+          alpha *= .5;
+          lineSearchThreshold = currentMeritFunction + alpha * c * directionalDerivative;
+          params += alpha*paramsStep;
+          tgaDesignEquation<P_V,P_M>(params,
+                                     *(m_calLikelihoodRoutine_DataVector[0]),
+                                     allWTemps,
+                                     allWs,
+                                     allLambdaTemps,
+                                     allLambdas,
+                                     newtonLagGrad,
+                                     NULL);
+          newtonLagGradNorm = newtonLagGrad.norm2();
+          newMeritFunction = .5*newtonLagGrad.norm2Sq();
+          std::cout << "In lineSearchLoopId = "   << lineSearchLoopId
+                    << ", with params = "         << params
+                    << ": newMeritFunction = "    << newMeritFunction
+                    << ", lineSearchThreshold = " << lineSearchThreshold
+                    << std::endl;
+          lineSearchLoopId++;
+        } while ((newMeritFunction > lineSearchThreshold) && (lineSearchLoopId < 5));
+        std::cout << "In newtonLoopId = "                << newtonLoopId
+                  << ", with params = "                  << params
+                  << ": exited line search after "       <<  lineSearchLoopId
+                  << " iterations; newtonLagGradNorm = " << newtonLagGradNorm
+                  << std::endl;
+
+        newtonLoopId++;
+      } while ((1.e-7 < newtonLagGradNorm) && (newtonLoopId < 10));
+    }
+
+    std::cout << "Ending externalLoopId = " << externalLoopId
+              << "\n"
+              << std::endl;
+    externalLoopId++;
+  } while ((1.e-8 < externalLagGradNorm) && (externalLoopId < 10));
+
+  if (m_env.rank() == 0) {
+    std::cout << "Leaving uqTgaValidation::runMinimization()"
               << std::endl;
   }
 
