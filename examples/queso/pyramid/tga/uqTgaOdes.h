@@ -171,35 +171,46 @@ int tgaLambdaTempDotOdeFunction(double temp, const double L[], double f[], void 
 }
 
 // The TGA constraint equation
+#ifdef QUESO_USE_NEW_W_CLASS
+#else
 template<class P_V,class P_M>
 double
 tgaConstraintEquation(
-  const P_V&                                     paramValues,
-  tgaLikelihoodRoutine_DataClass<P_V,P_M>& info, // NO CONST
-  bool                                           justComputeMisfit,
-  std::vector<double>*                           misfitVarRatios,
-  std::vector<double>*                           allWTemps,
-  std::vector<double>*                           allWs)
+  const P_V&                          paramValues,
+  uqTgaLikelihoodInfoStruct<P_V,P_M>& info,
+  bool                                justComputeMisfit,
+  std::vector<double>*                misfitVarRatios,
+  std::vector<double>*                allWTemps,
+  std::vector<double>*                allWs)
 {
   double resultValue = 0.;
 
     double A = paramValues[0];
     double E = paramValues[1];
+    double beta                                = info.m_temperatureFunctionObj->deriv(0.);
+    double initialTemp                         = info.m_temperatureFunctionObj->value(0.);
+    const std::vector<double>& measuredTemps   = info.m_referenceW->temps();
+    const std::vector<double>& measuredWs      = info.m_referenceW->ws();
+    const std::vector<double>& measurementVs   = info.m_referenceW->variances();
     bool   useTimeAsDomainVariable             = info.m_useTimeAsDomainVariable;
-    double beta                                = info.m_beta;
-    double initialTemp                         = info.m_initialTemp;
-    const std::vector<double>& measuredTemps   = info.m_measuredTemps;
-    const std::vector<double>& measuredWs      = info.m_measuredWs;
-    const std::vector<double>& measurementVs   = info.m_measurementVs;
+
+#if 0
     const std::vector<double>& fabricatedTemps = info.m_fabricatedTemps;
     const std::vector<double>& fabricatedWs    = info.m_fabricatedWs;
           std::vector<double>& simulatedWs     = info.m_simulatedWs;
+#else
+    const std::vector<double> fabricatedTemps(0);
+    const std::vector<double> fabricatedWs   (0);
+          std::vector<double> simulatedWs    (0);
+#endif
 
-    std::cout << "In tgaConstraintEquation()"
-              << ": fabricatedTemps.size() = " << fabricatedTemps.size()
-              << ", A = " << A
-              << ", E = " << E
-              << std::endl;
+    if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
+      std::cout << "In tgaConstraintEquation()"
+	//        << ": fabricatedTemps.size() = " << fabricatedTemps.size()
+          << ", A = " << A
+          << ", E = " << E
+          << std::endl;
+    }
 
     double stateTimeDotOdeParameters[]={A,E,beta,initialTemp};
     double stateTempDotOdeParameters[]={A,E,beta};
@@ -354,7 +365,7 @@ tgaConstraintEquation(
       allWs->resize(loopId+1);
     }
 	
-    if ((paramValues.env().verbosity() >= 0) && (paramValues.env().rank() == 0)) {
+    if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
       char stringA[64];
       char stringE[64];
       sprintf(stringA,"%12.6e",A);
@@ -379,12 +390,12 @@ tgaConstraintEquation(
 template<class P_V,class P_M>
 void
 tgaAdjointEquation(
-  const P_V&                                     paramValues,
-  const tgaLikelihoodRoutine_DataClass<P_V,P_M>& info,
-  double                                         maximumTemp,
-  const std::vector<double>&                     misfitVarRatios,
-  std::vector<double>*                           allLambdaTemps,
-  std::vector<double>*                           allLambdas)
+  const P_V&                                paramValues,
+  const uqTgaLikelihoodInfoStruct<P_V,P_M>& info,
+  double                                    maximumTemp,
+  const std::vector<double>&                misfitVarRatios,
+  std::vector<double>*                      allLambdaTemps,
+  std::vector<double>*                      allLambdas)
 {
   bool useTimeAsDomainVariable = info.m_useTimeAsDomainVariable;
   const std::vector<double>& measuredTemps = info.m_measuredTemps;
@@ -402,14 +413,20 @@ tgaAdjointEquation(
   tgaLambdaDotOdeInfo_st odeInfo;
   odeInfo.A           = paramValues[0];
   odeInfo.E           = paramValues[1];
-  odeInfo.beta        = info.m_beta;
-  odeInfo.initialTemp = info.m_initialTemp;
+  odeInfo.beta        = info.m_temperatureFunctionObj->deriv(0.);
+  odeInfo.initialTemp = info.m_temperatureFunctionObj->value(0.);
   odeInfo.nextContributionTime  = 0.;
   odeInfo.nextContributionTemp  = 0.;
   odeInfo.nextContributionValue = 0.;
+#if 0
   odeInfo.fabricatedTemps       = &(info.m_fabricatedTemps);
   odeInfo.fabricatedWs          = &(info.m_fabricatedWs);
   odeInfo.simulatedWs           = &(info.m_simulatedWs);
+#else
+  odeInfo.fabricatedTemps       = NULL;
+  odeInfo.fabricatedWs          = NULL;
+  odeInfo.simulatedWs           = NULL;
+#endif
 
   // Integration
   const gsl_odeiv_step_type *st = gsl_odeiv_step_rkf45; //rkf45; //gear1;
@@ -571,14 +588,14 @@ tgaAdjointEquation(
 template<class P_V,class P_M>
 void
 tgaDesignEquation(
-  const P_V&                                     paramValues,
-  const tgaLikelihoodRoutine_DataClass<P_V,P_M>& info,
-  std::vector<double>&                           allWTemps,
-  std::vector<double>&                           allWs,
-  std::vector<double>&                           allLambdaTemps,
-  std::vector<double>&                           allLambdas,
-  P_V&                                           LagrangianGradWrtParams,
-  double*                                        extraTerm)
+  const P_V&                                paramValues,
+  const uqTgaLikelihoodInfoStruct<P_V,P_M>& info,
+  std::vector<double>&                      allWTemps,
+  std::vector<double>&                      allWs,
+  std::vector<double>&                      allLambdaTemps,
+  std::vector<double>&                      allLambdas,
+  P_V&                                      LagrangianGradWrtParams,
+  double*                                   extraTerm)
 {
   std::cout << "Entering tgaDesignEquation()"
             << ", allWTemps[0] = " << allWTemps[0]
@@ -680,9 +697,11 @@ tgaDesignEquation(
                       "currentLambdaIntervalId finished with an invalid value");
 #endif
 
-  LagrangianGradWrtParams *= (tempIntervalSize/info.m_beta); // Division by beta due to the integration w.r.t. temperature
+  double beta = info.m_temperatureFunctionObj->deriv(0.);
+  LagrangianGradWrtParams *= (tempIntervalSize/beta); // Division by beta due to the integration w.r.t. temperature
 
   return;
 }
+#endif // ifdef QUESO_USE_NEW_W_CLASS
 
 #endif // __UQ_TGA_ODES_H__

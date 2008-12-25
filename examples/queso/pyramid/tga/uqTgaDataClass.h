@@ -21,14 +21,19 @@
 #define __UQ_TGA_DATA_CLASS_H__
 
 #include <uqTgaDefines.h>
-#include <uqEnvironment.h>
+#include <uqTgaMeasuredW.h>
 #include <uqDefines.h>
 #include <gsl/gsl_odeiv.h>
 #include <gsl/gsl_errno.h>
 
+#ifdef QUESO_USE_NEW_W_CLASS
+#else
 // The state dot ODE function
 int tgaStateTimeDotOdeFunction(double time, const double w[], double f[], void *info)
 {
+  std::cout << "Should not pass of ode-time routine()" << std::endl;
+  exit(1);
+
   double* odeParameters = (double *)info;
   double A           = odeParameters[0];
   double E           = odeParameters[1];
@@ -52,20 +57,114 @@ int tgaStateTempDotOdeFunction(double temp, const double w[], double f[], void *
 
   return GSL_SUCCESS;
 }
+#endif
+//********************************************************
+// Likelihood function object for both forward problems of the validation cycle.
+// A likelihood function object is provided by user and is called by the UQ library.
+// This likelihood function object consists of data and routine.
+//********************************************************
+template<class P_V,class P_M>
+struct
+uqTgaLikelihoodInfoStruct
+{
+  uqTgaLikelihoodInfoStruct(const uqVectorSpaceClass<P_V,P_M>& paramSpace,
+                            const std::string&                 inpName);
+ ~uqTgaLikelihoodInfoStruct();
+
+  const uqVectorSpaceClass<P_V,P_M>& m_paramSpace;
+  uqBase1D1DFunctionClass*           m_temperatureFunctionObj;
+  uqTgaMeasuredWClass<P_V,P_M>*      m_referenceW;
+  bool                               m_useTimeAsDomainVariable;
+};
+
+template<class P_V,class P_M>
+uqTgaLikelihoodInfoStruct<P_V,P_M>::uqTgaLikelihoodInfoStruct(
+  const uqVectorSpaceClass<P_V,P_M>& paramSpace,
+  const std::string&                 inpName)
+  :
+  m_paramSpace(paramSpace)
+{
+  if (paramSpace.env().rank() == 0) {
+    std::cout << "Entering uqTgaLikelihoodInfoStruct<P_V,P_M>::constructor()"
+              << inpName << "'\n"
+              << std::endl;
+  }
+
+  // Read experimental data
+  // Open input file on experimental data
+  FILE *inp;
+  inp = fopen(inpName.c_str(),"r");
+
+  // Read kinetic parameters and convert heating rate to K/s
+  double beta;
+  double initialTemp;
+  unsigned int numMeasurements;
+  fscanf(inp,"%lf %lf %d",&beta,&initialTemp,&numMeasurements);
+  beta /= 60.;
+  m_temperatureFunctionObj = new uqLinear1D1DFunctionClass(-INFINITY,INFINITY,0.,initialTemp,beta);
+
+  std::vector<double> measuredTimes(numMeasurements,0.);
+  std::vector<double> measuredTemps(numMeasurements,0.);
+  std::vector<double> measuredWs   (numMeasurements,0.);
+  std::vector<double> measurementVs(numMeasurements,0.);
+
+  unsigned int whileSize = 0;
+  double tmpTemp;
+  double tmpW;
+  double tmpV;
+  while (fscanf(inp,"%lf %lf %lf",&tmpTemp,&tmpW,&tmpV) != EOF) {
+    UQ_FATAL_TEST_MACRO((whileSize >= numMeasurements),
+                        paramSpace.env().rank(),
+                        "uqTgaLikelihoodInfoStruct<P_V,P_M>::constructor(), in uqTgaValidation.h",
+                        "input file 1 has too many measurements");
+    measuredTimes[whileSize] = m_temperatureFunctionObj->inverseValue(tmpTemp);
+    measuredTemps[whileSize] = tmpTemp;
+    measuredWs   [whileSize] = tmpW;
+    measurementVs[whileSize] = tmpV;
+    whileSize++;
+  }
+  UQ_FATAL_TEST_MACRO((whileSize != numMeasurements),
+                      paramSpace.env().rank(),
+                      "uqTgaLikelihoodInfoStruct<P_V,P_M>::constructor(), in uqTgaValidation.h",
+                      "input file 1 has a smaller number of measurements than expected");
+
+  // Close input file on experimental data
+  fclose(inp);
+
+  m_referenceW = new uqTgaMeasuredWClass<P_V,P_M>(paramSpace.zeroVector(),
+                                                  measuredTimes,
+                                                  measuredTemps,
+                                                  measuredWs,
+                                                  measurementVs);
+  m_useTimeAsDomainVariable = false;
+
+  if (paramSpace.env().rank() == 0) {
+    std::cout << "Leaving uqTgaLikelihoodInfoStruct<P_V,P_M>::constructor()"
+              << inpName << "'\n"
+              << std::endl;
+  }
+}
+
+template<class P_V,class P_M>
+uqTgaLikelihoodInfoStruct<P_V,P_M>::~uqTgaLikelihoodInfoStruct()
+{
+  delete m_referenceW;
+  delete m_temperatureFunctionObj;
+}
 
 //********************************************************
 // Likelihood data object for both inverse problems of the validation cycle.
 // A likelihood function object is provided by user and is called by the UQ library.
 //********************************************************
-
 // The (user defined) data class that carries the data needed by the (user defined) likelihood routine
+#if 0
 template<class P_V, class P_M>
 struct
-tgaLikelihoodRoutine_DataClass
+tgaExperimentalDataClass
 {
-  tgaLikelihoodRoutine_DataClass(const uqBaseEnvironmentClass& env,
-                                 const std::string&            inpName);
- ~tgaLikelihoodRoutine_DataClass();
+  tgaExperimentalDataClass(const uqBaseEnvironmentClass& env,
+                           const std::string&            inpName);
+ ~tgaExperimentalDataClass();
 
   bool                m_useTimeAsDomainVariable;
   double              m_beta;
@@ -79,11 +178,11 @@ tgaLikelihoodRoutine_DataClass
 };
 
 template<class P_V, class P_M>
-tgaLikelihoodRoutine_DataClass<P_V,P_M>::tgaLikelihoodRoutine_DataClass(
+tgaExperimentalDataClass<P_V,P_M>::tgaExperimentalDataClass(
   const uqBaseEnvironmentClass& env,
   const std::string&            inpName)
   :
-  m_useTimeAsDomainVariable(true), // IMPORTANT
+  m_useTimeAsDomainVariable(false), // IMPORTANT
   m_beta           (0.),
   m_initialTemp    (0.),
   m_measuredTemps  (0),
@@ -95,7 +194,7 @@ tgaLikelihoodRoutine_DataClass<P_V,P_M>::tgaLikelihoodRoutine_DataClass(
 {
   // Read experimental data
   if (env.rank() == 0) {
-    std::cout << "In tgaLikelihoodRoutine_DataClass(), reading file '"
+    std::cout << "In tgaExperimentalDataClass(), reading file '"
               << inpName << "'\n"
               << std::endl;
   }
@@ -176,7 +275,7 @@ tgaLikelihoodRoutine_DataClass<P_V,P_M>::tgaLikelihoodRoutine_DataClass(
   while (fscanf(inp,"%lf %lf %lf",&tmpTemp,&tmpW,&tmpV) != EOF) {
     UQ_FATAL_TEST_MACRO((whileSize >= numMeasurements),
                         env.rank(),
-                        "tgaLikelihoodRoutine_DataClass(), in uqTgaValidation.h",
+                        "tgaExperimentalDataClass(), in uqTgaValidation.h",
                         "input file 1 has too many measurements");
     m_measuredTemps[whileSize] = tmpTemp;
     m_measuredWs   [whileSize] = tmpW;
@@ -185,7 +284,7 @@ tgaLikelihoodRoutine_DataClass<P_V,P_M>::tgaLikelihoodRoutine_DataClass(
   }
   UQ_FATAL_TEST_MACRO((whileSize != numMeasurements),
                       env.rank(),
-                      "tgaLikelihoodRoutine_DataClass(), in uqTgaValidation.h",
+                      "tgaExperimentalDataClass(), in uqTgaValidation.h",
                       "input file 1 has a smaller number of measurements than expected");
 
   // Close input file on experimental data
@@ -193,8 +292,8 @@ tgaLikelihoodRoutine_DataClass<P_V,P_M>::tgaLikelihoodRoutine_DataClass(
 }
 
 template<class P_V, class P_M>
-tgaLikelihoodRoutine_DataClass<P_V,P_M>::~tgaLikelihoodRoutine_DataClass()
+tgaExperimentalDataClass<P_V,P_M>::~tgaExperimentalDataClass()
 {
 }
-
+#endif
 #endif // __UQ_TGA_VALIDATION_H__

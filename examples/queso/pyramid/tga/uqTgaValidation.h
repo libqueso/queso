@@ -20,31 +20,38 @@
 #ifndef __UQ_TGA_VALIDATION_H__
 #define __UQ_TGA_VALIDATION_H__
 
+#include <uq1D1DFunction.h>
+#include <uqTgaComputableW.h>
 #include <uqTgaOdes.h>
 #include <uqModelValidation.h>
 #include <uqVectorSubset.h>
 #include <uqAsciiTable.h>
 
-//********************************************************
-// Likelihood function object for both forward problems of the validation cycle.
-// A likelihood function object is provided by user and is called by the UQ library.
-// This likelihood function object consists of data and routine.
-//********************************************************
 // The actual (user defined) likelihood routine
 template<class P_V,class P_M>
 double
-tgaLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
+tgaLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr, P_V* gradVector, P_M* hessianMatrix, P_V* hessianEffect)
 {
   if ((paramValues.env().verbosity() >= 30) && (paramValues.env().rank() == 0)) {
     std::cout << "Entering tgaLikelihoodRoutine()..." << std::endl;
   }
 
   double resultValue = 0.;
-  const std::vector<tgaLikelihoodRoutine_DataClass<P_V,P_M> *>& info = *((const std::vector<tgaLikelihoodRoutine_DataClass<P_V,P_M> *> *) functionDataPtr);
+  const std::vector<uqTgaLikelihoodInfoStruct<P_V,P_M> *>& info = *((const std::vector<uqTgaLikelihoodInfoStruct<P_V,P_M> *> *) functionDataPtr);
 
   for (unsigned int i = 0; i < info.size(); ++i) {
     // Compute likelihood for scenario
-    resultValue += tgaConstraintEquation(paramValues,*(info[i]),true,NULL,NULL,NULL);
+#ifdef QUESO_USE_NEW_W_CLASS
+    uqTgaComputableWClass<P_V,P_M> newW(info[i]->m_paramSpace,
+                                        *(info[i]->m_temperatureFunctionObj),
+                                        false); // useOdeWithDerivativeWrtTime = false
+    newW.compute(paramValues,
+                 false, // alsoComputeGrads = true
+                 info[i]->m_referenceW,
+                 1900.); // COMPATIBILITY WITH OLD VERSION
+#else
+    resultValue += tgaConstraintEquation<P_V,P_M>(paramValues,*(info[i]),true,NULL,NULL,NULL);
+#endif
   }
 
   if ((paramValues.env().verbosity() >= 30) && (paramValues.env().rank() == 0)) {
@@ -52,26 +59,6 @@ tgaLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
   }
 
   return resultValue;
-}
-
-// The (user defined) grad likelihood routine
-template<class P_V,class P_M>
-void
-tgaLikelihoodGradRoutine(const P_V& paramValues, const void* functionDataPtr, P_V& gradVector)
-{
-  gradVector *= 0.;
-
-  return;
-}
-
-// The (user defined) grad likelihood routine
-template<class P_V,class P_M>
-void
-tgaLikelihoodHessianRoutine(const P_V& paramValues, const void* functionDataPtr, P_M& hessianMatrix)
-{
-  hessianMatrix *= 0.;
-
-  return;
 }
 
 //********************************************************
@@ -82,26 +69,68 @@ tgaLikelihoodHessianRoutine(const P_V& paramValues, const void* functionDataPtr,
 // The (user defined) data class that carries the data needed by the (user defined) qoi routine
 template<class P_V,class P_M,class Q_V, class Q_M>
 struct
-tgaQoiRoutine_DataClass
+uqTgaQoiInfoStruct
 {
-  bool   m_useTimeAsDomainVariable;
-  double m_beta;
-  double m_initialTemp;
-  double m_criticalW;
-  double m_criticalTime;
+  uqTgaQoiInfoStruct(const uqVectorSpaceClass<P_V,P_M>& paramSpace,
+                     double                             initialTemp,
+                     double                             beta,
+                     double                             criticalW,
+                     double                             criticalTime);
+ ~uqTgaQoiInfoStruct();
+
+  const uqVectorSpaceClass<P_V,P_M>& m_paramSpace;
+  uqBase1D1DFunctionClass*           m_temperatureFunctionObj;
+  double                             m_criticalW;
+  double                             m_criticalTime;
+  bool                               m_useTimeAsDomainVariable;
 };
+
+template<class P_V,class P_M,class Q_V,class Q_M>
+  uqTgaQoiInfoStruct<P_V,P_M,Q_V,Q_M>::uqTgaQoiInfoStruct(
+  const uqVectorSpaceClass<P_V,P_M>& paramSpace,
+  double                             initialTemp,
+  double                             beta,
+  double                             criticalW,
+  double                             criticalTime)
+  :
+  m_paramSpace             (paramSpace),
+  m_temperatureFunctionObj (new uqLinear1D1DFunctionClass(-INFINITY,INFINITY,0.,initialTemp,beta)),
+  m_criticalW              (criticalW),
+  m_criticalTime           (criticalTime),
+  m_useTimeAsDomainVariable(false)
+{
+}
+
+template<class P_V,class P_M,class Q_V,class Q_M>
+uqTgaQoiInfoStruct<P_V,P_M,Q_V,Q_M>::~uqTgaQoiInfoStruct()
+{
+  delete m_temperatureFunctionObj;
+}
 
 // The actual (user defined) qoi routine
 template<class P_V,class P_M,class Q_V,class Q_M>
 void tgaQoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiValues)
 {
-  double A            = paramValues[0];
-  double E            = paramValues[1];
+  const uqTgaQoiInfoStruct<P_V,P_M,Q_V,Q_M>& info = *((const uqTgaQoiInfoStruct<P_V,P_M,Q_V,Q_M> *) functionDataPtr);
 
-  const tgaQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M>& info = *((const tgaQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr);
+#ifdef QUESO_USE_NEW_W_CLASS
+  uqTgaComputableWClass<P_V,P_M> newW(info.m_paramSpace,
+                                      *(info.m_temperatureFunctionObj),
+                                      false); // useOdeWithDerivativeWrtTime = false
+  newW.compute(paramValues,
+               false, // alsoComputeGrads = true
+               NULL,
+               info.m_criticalTime*info.m_temperatureFunctionObj->deriv(0.)); // Should add initialTemp --> COMPATIBILITY WITH OLD VERSION
+
+  unsigned int tmpSize = newW.ws().size();
+  qoiValues[0] = newW.ws()[tmpSize-1]; // QoI = mass fraction remaining at critical time
+#else
+  double A = paramValues[0];
+  double E = paramValues[1];
+
   bool   useTimeAsDomainVariable = info.m_useTimeAsDomainVariable;
-  double beta                    = info.m_beta;
-  double initialTemp             = info.m_initialTemp;
+  double beta                    = info.m_temperatureFunctionObj->deriv(0.);
+  double initialTemp             = info.m_temperatureFunctionObj->value(0.);
   double criticalW               = info.m_criticalW;
   double criticalTime            = info.m_criticalTime;
 
@@ -174,6 +203,7 @@ void tgaQoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoi
   gsl_odeiv_evolve_free (e);
   gsl_odeiv_control_free(c);
   gsl_odeiv_step_free   (s);
+#endif
 
   return;
 }
@@ -189,9 +219,9 @@ public:
                        const char*                   prefix);
  ~uqTgaValidationClass();
 
-  void run            ();
-  void runGradTest    ();
-  void runMinimization();
+  void  run            ();
+  void  runGradTest    ();
+  //void  runMinimization();
 
 private:
   void  runCalibrationStage();
@@ -202,32 +232,31 @@ private:
   using uqModelValidationClass<P_V,P_M,Q_V,Q_M>::m_prefix;
   using uqModelValidationClass<P_V,P_M,Q_V,Q_M>::m_cycle;
 
-  uqAsciiTableClass<P_V,P_M>*                            m_paramsTable;
-  const EpetraExt::DistArray<std::string>*               m_paramNames;         // instantiated outside this class!!
-  P_V*                                                   m_paramMinValues;     // instantiated outside this class!!
-  P_V*                                                   m_paramMaxValues;     // instantiated outside this class!!
-  P_V*                                                   m_paramInitialValues; // instantiated outside this class!!
-  uqVectorSpaceClass<P_V,P_M>*                           m_paramSpace;
-  uqVectorSetClass<P_V,P_M>*                             m_paramDomain;
+  uqAsciiTableClass<P_V,P_M>*               m_paramsTable;
+  const EpetraExt::DistArray<std::string>*  m_paramNames;         // instantiated outside this class!!
+  P_V*                                      m_paramMinValues;     // instantiated outside this class!!
+  P_V*                                      m_paramMaxValues;     // instantiated outside this class!!
+  P_V*                                      m_paramInitialValues; // instantiated outside this class!!
+  uqVectorSpaceClass<P_V,P_M>*              m_paramSpace;
+  uqVectorSetClass<P_V,P_M>*                m_paramDomain;
 
-  uqAsciiTableClass<P_V,P_M>*                            m_qoisTable;
-  const EpetraExt::DistArray<std::string>*               m_qoiNames; // instantiated outside this class!!
-  uqVectorSpaceClass<Q_V,Q_M>*                           m_qoiSpace;
+  uqAsciiTableClass<P_V,P_M>*               m_qoisTable;
+  const EpetraExt::DistArray<std::string>*  m_qoiNames; // instantiated outside this class!!
+  uqVectorSpaceClass<Q_V,Q_M>*              m_qoiSpace;
 
-  double                                                 m_predUseTimeAsDomainVariable;
-  double                                                 m_predBeta;
-  double                                                 m_predInitialTemp;
-  double                                                 m_predCriticalW;
-  double                                                 m_predCriticalTime;
+  double                                    m_predBeta;
+  double                                    m_predInitialTemp;
+  double                                    m_predCriticalW;
+  double                                    m_predCriticalTime;
 
-  uqBaseVectorRVClass<P_V,P_M>*                          m_calPriorRv;
-  std::vector<tgaLikelihoodRoutine_DataClass<P_V,P_M>* > m_calLikelihoodRoutine_DataVector;
-  uqBaseScalarFunctionClass<P_V,P_M>*                    m_calLikelihoodFunctionObj;
-  tgaQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M>*              m_calQoiRoutine_Data;
+  uqBaseVectorRVClass<P_V,P_M>*                     m_calPriorRv;
+  std::vector<uqTgaLikelihoodInfoStruct<P_V,P_M>* > m_calLikelihoodInfoVector;
+  uqBaseScalarFunctionClass<P_V,P_M>*               m_calLikelihoodFunctionObj;
+  uqTgaQoiInfoStruct<P_V,P_M,Q_V,Q_M>*              m_calQoiRoutineInfo;
 
-  std::vector<tgaLikelihoodRoutine_DataClass<P_V,P_M>* > m_valLikelihoodRoutine_DataVector;
-  uqBaseScalarFunctionClass<P_V,P_M>*                    m_valLikelihoodFunctionObj;
-  tgaQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M>*              m_valQoiRoutine_Data;
+  std::vector<uqTgaLikelihoodInfoStruct<P_V,P_M>* > m_valLikelihoodInfoVector;
+  uqBaseScalarFunctionClass<P_V,P_M>*               m_valLikelihoodFunctionObj;
+  uqTgaQoiInfoStruct<P_V,P_M,Q_V,Q_M>*              m_valQoiRoutineInfo;
 };
 
 template <class P_V,class P_M,class Q_V,class Q_M>
@@ -236,23 +265,23 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::uqTgaValidationClass(
   const char*                   prefix)
   :
   uqModelValidationClass<P_V,P_M,Q_V,Q_M>(env,prefix),
-  m_paramsTable                    (NULL),
-  m_paramNames                     (NULL),
-  m_paramMinValues                 (NULL),
-  m_paramMaxValues                 (NULL),
-  m_paramInitialValues             (NULL),
-  m_paramSpace                     (NULL),
-  m_paramDomain                    (NULL),
-  m_qoisTable                      (NULL),
-  m_qoiNames                       (NULL),
-  m_qoiSpace                       (NULL),
-  m_calPriorRv                     (NULL),
-  m_calLikelihoodRoutine_DataVector(0),
-  m_calLikelihoodFunctionObj       (NULL),
-  m_calQoiRoutine_Data             (NULL),
-  m_valLikelihoodRoutine_DataVector(0),
-  m_valLikelihoodFunctionObj       (NULL),
-  m_valQoiRoutine_Data             (NULL)
+  m_paramsTable             (NULL),
+  m_paramNames              (NULL),
+  m_paramMinValues          (NULL),
+  m_paramMaxValues          (NULL),
+  m_paramInitialValues      (NULL),
+  m_paramSpace              (NULL),
+  m_paramDomain             (NULL),
+  m_qoisTable               (NULL),
+  m_qoiNames                (NULL),
+  m_qoiSpace                (NULL),
+  m_calPriorRv              (NULL),
+  m_calLikelihoodInfoVector (0),
+  m_calLikelihoodFunctionObj(NULL),
+  m_calQoiRoutineInfo       (NULL),
+  m_valLikelihoodInfoVector (0),
+  m_valLikelihoodFunctionObj(NULL),
+  m_valQoiRoutineInfo       (NULL)
 {
   if (m_env.rank() == 0) {
     std::cout << "Entering uqTgaValidation::constructor()\n"
@@ -301,11 +330,10 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::uqTgaValidationClass(
                                                         *m_paramSpace,
                                                         *m_qoiSpace);
 
-  m_predUseTimeAsDomainVariable = false; // IMPORTANT
-  m_predBeta                    = 250.;
-  m_predInitialTemp             = 0.1;
-  m_predCriticalW               = 0.;
-  m_predCriticalTime            = 3.9;
+  m_predBeta         = 250.; // Should /60. --> COMPATIBILITY WITH OLD VERSION
+  m_predInitialTemp  = 0.1;
+  m_predCriticalW    = 0.;
+  m_predCriticalTime = 3.9;
 
   if (m_env.rank() == 0) {
     std::cout << "Leaving uqTgaValidation::constructor()\n"
@@ -323,15 +351,15 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::~uqTgaValidationClass()
               << std::endl;
   }
 
-  if (m_valQoiRoutine_Data)        delete m_valQoiRoutine_Data;
+  if (m_valQoiRoutineInfo)         delete m_valQoiRoutineInfo;
   if (m_valLikelihoodFunctionObj)  delete m_valLikelihoodFunctionObj;
-  for (unsigned int i = 0; i < m_valLikelihoodRoutine_DataVector.size(); ++i) {
-    if (m_valLikelihoodRoutine_DataVector[i]) delete m_valLikelihoodRoutine_DataVector[i];
+  for (unsigned int i = 0; i < m_valLikelihoodInfoVector.size(); ++i) {
+    if (m_valLikelihoodInfoVector[i]) delete m_valLikelihoodInfoVector[i];
   }
-  if (m_calQoiRoutine_Data)        delete m_calQoiRoutine_Data;
+  if (m_calQoiRoutineInfo)         delete m_calQoiRoutineInfo;
   if (m_calLikelihoodFunctionObj)  delete m_calLikelihoodFunctionObj;
-  for (unsigned int i = 0; i < m_calLikelihoodRoutine_DataVector.size(); ++i) {
-    if (m_calLikelihoodRoutine_DataVector[i]) delete m_calLikelihoodRoutine_DataVector[i];
+  for (unsigned int i = 0; i < m_calLikelihoodInfoVector.size(); ++i) {
+    if (m_calLikelihoodInfoVector[i]) delete m_calLikelihoodInfoVector[i];
   }
   if (m_calPriorRv)                delete m_calPriorRv;
   if (m_qoiSpace)                  delete m_qoiSpace;
@@ -390,17 +418,15 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
   m_calPriorRv = new uqUniformVectorRVClass<P_V,P_M> ("cal_prior_", // Extra prefix before the default "rv_" prefix
                                                       *m_paramDomain);
 
-  m_calLikelihoodRoutine_DataVector.resize(3,NULL);
-  m_calLikelihoodRoutine_DataVector[0] = new tgaLikelihoodRoutine_DataClass<P_V,P_M>(m_env,"tga/scenario_5_K_min.dat");
-  m_calLikelihoodRoutine_DataVector[1] = new tgaLikelihoodRoutine_DataClass<P_V,P_M>(m_env,"tga/scenario_25_K_min.dat");
-  m_calLikelihoodRoutine_DataVector[2] = new tgaLikelihoodRoutine_DataClass<P_V,P_M>(m_env,"tga/scenario_50_K_min.dat");
+  m_calLikelihoodInfoVector.resize(3,NULL);
+  m_calLikelihoodInfoVector[0] = new uqTgaLikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"tga/scenario_5_K_min.dat");
+  m_calLikelihoodInfoVector[1] = new uqTgaLikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"tga/scenario_25_K_min.dat");
+  m_calLikelihoodInfoVector[2] = new uqTgaLikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"tga/scenario_50_K_min.dat");
 
   m_calLikelihoodFunctionObj = new uqGenericScalarFunctionClass<P_V,P_M>("cal_like_",
                                                                          *m_paramDomain,
                                                                          tgaLikelihoodRoutine<P_V,P_M>,
-                                                                         tgaLikelihoodGradRoutine<P_V,P_M>,
-                                                                         tgaLikelihoodHessianRoutine<P_V,P_M>,
-                                                                         (void *) &m_calLikelihoodRoutine_DataVector,
+                                                                         (void *) &m_calLikelihoodInfoVector,
                                                                          true); // the routine computes [-2.*ln(function)]
 
   m_cycle->setCalIP(*m_calPriorRv,
@@ -414,15 +440,14 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
   delete calProposalCovMatrix;
 
   // Deal with forward problem
-  m_calQoiRoutine_Data = new tgaQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M>();
-  m_calQoiRoutine_Data->m_useTimeAsDomainVariable = m_predUseTimeAsDomainVariable;
-  m_calQoiRoutine_Data->m_beta                    = m_predBeta;
-  m_calQoiRoutine_Data->m_initialTemp             = m_predInitialTemp;
-  m_calQoiRoutine_Data->m_criticalW               = m_predCriticalW;
-  m_calQoiRoutine_Data->m_criticalTime            = m_predCriticalTime;
+  m_calQoiRoutineInfo = new uqTgaQoiInfoStruct<P_V,P_M,Q_V,Q_M>(*m_paramSpace,
+                                                                m_predInitialTemp,
+                                                                m_predBeta,
+                                                                m_predCriticalW,
+                                                                m_predCriticalTime);
 
   m_cycle->setCalFP(tgaQoiRoutine<P_V,P_M,Q_V,Q_M>,
-                    (void *) m_calQoiRoutine_Data);
+                    (void *) m_calQoiRoutineInfo);
 
   // Solve forward problem = set 'realizer' and 'cdf' of 'qoiRv'
   m_cycle->calFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
@@ -453,15 +478,13 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
   }
 
   // Deal with inverse problem
-  m_valLikelihoodRoutine_DataVector.resize(1,NULL);
-  m_valLikelihoodRoutine_DataVector[0] = new tgaLikelihoodRoutine_DataClass<P_V,P_M> (m_env,"tga/scenario_100_K_min.dat");
+  m_valLikelihoodInfoVector.resize(1,NULL);
+  m_valLikelihoodInfoVector[0] = new uqTgaLikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"tga/scenario_100_K_min.dat");
 
   m_valLikelihoodFunctionObj = new uqGenericScalarFunctionClass<P_V,P_M>("val_like_",
                                                                          *m_paramDomain,
                                                                          tgaLikelihoodRoutine<P_V,P_M>,
-                                                                         tgaLikelihoodGradRoutine<P_V,P_M>,
-                                                                         tgaLikelihoodHessianRoutine<P_V,P_M>,
-                                                                         (void *) &m_valLikelihoodRoutine_DataVector,
+                                                                         (void *) &m_valLikelihoodInfoVector,
                                                                          true); // the routine computes [-2.*ln(function)]
 
   m_cycle->setValIP(*m_valLikelihoodFunctionObj);
@@ -474,15 +497,14 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
   delete valProposalCovMatrix;
 
   // Deal with forward problem
-  m_valQoiRoutine_Data = new tgaQoiRoutine_DataClass<P_V,P_M,Q_V,Q_M>();
-  m_valQoiRoutine_Data->m_useTimeAsDomainVariable = m_predUseTimeAsDomainVariable;
-  m_valQoiRoutine_Data->m_beta                    = m_predBeta;
-  m_valQoiRoutine_Data->m_initialTemp             = m_predInitialTemp;
-  m_valQoiRoutine_Data->m_criticalW               = m_predCriticalW;
-  m_valQoiRoutine_Data->m_criticalTime            = m_predCriticalTime;
+  m_valQoiRoutineInfo = new uqTgaQoiInfoStruct<P_V,P_M,Q_V,Q_M>(*m_paramSpace,
+                                                                m_predInitialTemp,
+                                                                m_predBeta,
+                                                                m_predCriticalW,
+                                                                m_predCriticalTime);
 
   m_cycle->setValFP(tgaQoiRoutine<P_V,P_M,Q_V,Q_M>,
-                    (void *) m_valQoiRoutine_Data);
+                    (void *) m_valQoiRoutineInfo);
 
   // Solve forward problem = set 'realizer' and 'cdf' of 'qoiRv'
   m_cycle->valFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
@@ -608,20 +630,28 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest()
               << std::endl;
   }
 
-  m_calLikelihoodRoutine_DataVector.resize(1,NULL);
-  m_calLikelihoodRoutine_DataVector[0] = new tgaLikelihoodRoutine_DataClass<P_V,P_M>(m_env,"tga/scenario_5_K_min.dat");
+  // Read discrete measurements
+  m_calLikelihoodInfoVector.resize(1,NULL);
+  m_calLikelihoodInfoVector[0] = new uqTgaLikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"tga/scenario_5_K_min.dat");
+
+  // Miscellaneous
+  std::ofstream ofs("nada1.m", std::ofstream::out | std::ofstream::trunc); // Output file
   P_V params(m_paramSpace->zeroVector());
 
-  // Open file
-  std::ofstream ofs("nada1.m", std::ofstream::out | std::ofstream::trunc);
-  unsigned int tmpSize = m_calLikelihoodRoutine_DataVector[0]->m_fabricatedTemps.size();
-  ofs << "fabricatedTemps = zeros(" << tmpSize
+  // Compute w(A_reference,E_reference)
+  params[0] = 2.6090e+11; // Reference _A
+  params[1] = 1.9910e+05; // Reference _E
+  uqTgaComputableWClass<P_V,P_M> referenceW(m_env, *(m_calLikelihoodInfoVector[0]->m_temperatureFunctionObj), false); // useOdeWithDerivativeWrtTime = false
+  referenceW.compute(params,true,NULL,1900.); // alsoComputeGrads = true
+
+  unsigned int tmpSize = referenceW.times().size();
+  ofs << "referenceTemps = zeros(" << tmpSize
       << ",1);"
-      << "\nfabricatedWs = zeros(" << tmpSize
+      << "\nreferenceWs = zeros(" << tmpSize
       << ",1);";
   for (unsigned int i = 0; i < tmpSize; ++i) {
-    ofs << "\nfabricatedTemps(" << i+1 << ",1) = " << m_calLikelihoodRoutine_DataVector[0]->m_fabricatedTemps[i] << ";"
-        << "\nfabricatedWs("    << i+1 << ",1) = " << m_calLikelihoodRoutine_DataVector[0]->m_fabricatedWs[i]    << ";";
+    ofs << "\nreferenceTemps(" << i+1 << ",1) = " << referenceW.temps()[i] << ";"
+        << "\nreferenceWs("    << i+1 << ",1) = " << referenceW.ws()   [i] << ";";
   }
 
   if (m_env.rank() == 0) {
@@ -630,15 +660,44 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest()
               << std::endl;
   }
 
-  params[0] = 2.6000e+11; // Initial guess _A
-  params[1] = 2.0000e+05; // Initial guess _E
+  // Compute w(A_guess,E_guess)
+  params[0] = 2.6000e+11; // Guess _A
+  params[1] = 2.0000e+05; // Guess _E
+  uqTgaComputableWClass<P_V,P_M> guessW(m_env, *(m_calLikelihoodInfoVector[0]->m_temperatureFunctionObj), false); // useOdeWithDerivativeWrtTime = false
+  guessW.compute(params,true,&referenceW,1900.); // alsoComputeGrads = true
 
+  tmpSize = guessW.times().size();
+  ofs << "\nguessWTemps = zeros(" << tmpSize
+      << ",1);"
+      << "\nguessWs = zeros(" << tmpSize
+      << ",1);";
+  for (unsigned int i = 0; i < tmpSize; ++i) {
+    ofs << "\nguessWTemps(" << i+1 << ",1) = " << guessW.temps()[i] << ";"
+        << "\nguessWs("     << i+1 << ",1) = " << guessW.ws()   [i] << ";";
+  }
+
+  // Compute lambda(A_guess,E_guess)
+#if 0
+  uqTgaLambdaClass<P_V,P_M> guessLambda(m_env, *(m_calLikelihoodInfoVector[0]->m_temperatureFunctionObj), false); // useOdeWithDerivativeWrtTime = false
+  guessLambda.compute(params,true,guessW); // alsoComputeGrads = true
+
+  tmpSize = guessLambda.times().size();
+  ofs << "\nguessLambdaTemps = zeros(" << tmpSize
+      << ",1);"
+      << "\nguessLambdas = zeros(" << tmpSize
+      << ",1);";
+  for (unsigned int i = 0; i < tmpSize; ++i) {
+    ofs << "\nguessLambdaTemps(" << i+1 << ",1) = " << guessLambda.temps[i]  << ";"
+        << "\nguessLambdas("     << i+1 << ",1) = " << guessLambda.lamdas[i] << ";";
+  }
+#endif
+#if 0
   std::vector<double> misfitVarRatios(0);
   std::vector<double> allWTemps(0);
   std::vector<double> allWs(0);
   double valueCenter = 0.;
   valueCenter = tgaConstraintEquation<P_V,P_M>(params,
-                                               *(m_calLikelihoodRoutine_DataVector[0]),
+                                               *(m_calLikelihoodInfoVector[0]),
                                                false,
                                                &misfitVarRatios,
                                                &allWTemps,
@@ -647,40 +706,21 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest()
             << ": valueCenter = " << valueCenter
             << std::endl;
 
-  ofs << "\nallWTemps = zeros(" << allWTemps.size()
-      << ",1);"
-      << "\nallWs = zeros(" << allWTemps.size()
-      << ",1);";
-  for (unsigned int i = 0; i < allWTemps.size(); ++i) {
-    ofs << "\nallWTemps(" << i+1 << ",1) = " << allWTemps[i] << ";"
-        << "\nallWs("     << i+1 << ",1) = " << allWs[i]     << ";";
-  }
-
-  std::vector<double> allLambdaTemps(0);
-  std::vector<double> allLambdas(0);
   tgaAdjointEquation<P_V,P_M>(params,
-                              *(m_calLikelihoodRoutine_DataVector[0]),
+                              *(m_calLikelihoodInfoVector[0]),
                               allWTemps[allWTemps.size()-1],
                               misfitVarRatios,
                               &allLambdaTemps,
                               &allLambdas);
 
-  ofs << "\nallLambdaTemps = zeros(" << allLambdaTemps.size()
-      << ",1);"
-      << "\nallLambdas = zeros(" << allLambdaTemps.size()
-      << ",1);";
-  for (unsigned int i = 0; i < allLambdaTemps.size(); ++i) {
-    ofs << "\nallLambdaTemps(" << i+1 << ",1) = " << allLambdaTemps[i] << ";"
-        << "\nallLambdas("     << i+1 << ",1) = " << allLambdas[i]     << ";";
-  }
-
 #ifdef QUESO_RUN_SIMPLIFIED_W_CASE
   return;
 #endif
 
+  // Compute \grad(misfit), using adjoint
   P_V LagrangianGradWrtParams(m_paramSpace->zeroVector());
   tgaDesignEquation<P_V,P_M>(params,
-                             *(m_calLikelihoodRoutine_DataVector[0]),
+                             *(m_calLikelihoodInfoVector[0]),
                              allWTemps,
                              allWs,
                              allLambdaTemps,
@@ -689,19 +729,22 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest()
                              NULL);
 
   std::cout << "lagGrad = " << LagrangianGradWrtParams << std::endl;
-
+#endif
+  // Compute \grad(misfit), using finite differences
   if (m_env.rank() == 0) {
     std::cout << "In uqTgaValidation::runGradTest()"
               << ": computing misfit gradient w.r.t. parameters A and E, using finite differences..."
               << std::endl;
   }
 
+#ifdef QUESO_USE_NEW_W_CLASS
+#else
   double deltaA = params[0] * 1.e-6;
 
   params[0] = 2.6000e+11-deltaA; // A
   params[1] = 2.0000e+05;        // E
   double valueAm = tgaConstraintEquation<P_V,P_M>(params,
-                                                  *(m_calLikelihoodRoutine_DataVector[0]),
+                                                  *(m_calLikelihoodInfoVector[0]),
                                                   true,
                                                   NULL,
                                                   NULL,
@@ -711,7 +754,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest()
   params[0] = 2.6000e+11+deltaA; // A
   params[1] = 2.0000e+05;        // E
   double valueAp = tgaConstraintEquation<P_V,P_M>(params,
-                                                  *(m_calLikelihoodRoutine_DataVector[0]),
+                                                  *(m_calLikelihoodInfoVector[0]),
                                                   true,
                                                   NULL,
                                                   NULL,
@@ -723,7 +766,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest()
   params[0] = 2.6000e+11;        // A
   params[1] = 2.0000e+05-deltaE; // E
   double valueEm = tgaConstraintEquation<P_V,P_M>(params,
-                                                  *(m_calLikelihoodRoutine_DataVector[0]),
+                                                  *(m_calLikelihoodInfoVector[0]),
                                                   true,
                                                   NULL,
                                                   NULL,
@@ -733,7 +776,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest()
   params[0] = 2.6000e+11;        // A
   params[1] = 2.0000e+05+deltaE; // E
   double valueEp = tgaConstraintEquation<P_V,P_M>(params,
-                                                  *(m_calLikelihoodRoutine_DataVector[0]),
+                                                  *(m_calLikelihoodInfoVector[0]),
                                                   true,
                                                   NULL,
                                                   NULL,
@@ -741,7 +784,8 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest()
   std::cout << "valueEp = " << valueEp << std::endl;
 
   std::cout << "So, grad (finite diff) = " << (valueAp-valueAm)/2./deltaA << ", " << (valueEp-valueEm)/2./deltaE << std::endl;
-
+#endif
+  // Finish
   if (m_env.rank() == 0) {
     std::cout << "Leaving uqTgaValidation::runGradTest()"
               << std::endl;
@@ -749,7 +793,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest()
 
   return;
 }
-
+#if 0
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runMinimization()
@@ -771,15 +815,15 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runMinimization()
               << " with params = "             << params
               << std::endl;
 
-    m_calLikelihoodRoutine_DataVector.resize(1,NULL);
-    m_calLikelihoodRoutine_DataVector[0] = new tgaLikelihoodRoutine_DataClass<P_V,P_M>(m_env,"tga/scenario_5_K_min.dat");
+    m_calLikelihoodInfoVector.resize(1,NULL);
+    m_calLikelihoodInfoVector[0] = new uqTgaLikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"tga/scenario_5_K_min.dat");
 
     std::vector<double> misfitVarRatios(0);
     std::vector<double> allWTemps(0);
     std::vector<double> allWs(0);
     double tmpValue = 0.;
     tmpValue = tgaConstraintEquation<P_V,P_M>(params,
-                                              *(m_calLikelihoodRoutine_DataVector[0]),
+                                              *(m_calLikelihoodInfoVector[0]),
                                               false,
                                               &misfitVarRatios,
                                               &allWTemps,
@@ -791,7 +835,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runMinimization()
     std::vector<double> allLambdaTemps(0);
     std::vector<double> allLambdas(0);
     tgaAdjointEquation<P_V,P_M>(params,
-                                *(m_calLikelihoodRoutine_DataVector[0]),
+                                *(m_calLikelihoodInfoVector[0]),
                                 allWTemps[allWTemps.size()-1],
                                 misfitVarRatios,
                                 &allLambdaTemps,
@@ -803,7 +847,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runMinimization()
 
     double extraTerm;
     tgaDesignEquation<P_V,P_M>(params,
-                               *(m_calLikelihoodRoutine_DataVector[0]),
+                               *(m_calLikelihoodInfoVector[0]),
                                allWTemps,
                                allWs,
                                allLambdaTemps,
@@ -853,7 +897,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runMinimization()
           lineSearchThreshold = currentMeritFunction + alpha * c * directionalDerivative;
           params += alpha*paramsStep;
           tgaDesignEquation<P_V,P_M>(params,
-                                     *(m_calLikelihoodRoutine_DataVector[0]),
+                                     *(m_calLikelihoodInfoVector[0]),
                                      allWTemps,
                                      allWs,
                                      allLambdaTemps,
@@ -892,4 +936,5 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runMinimization()
 
   return;
 }
+#endif
 #endif // __UQ_TGA_VALIDATION_H__
