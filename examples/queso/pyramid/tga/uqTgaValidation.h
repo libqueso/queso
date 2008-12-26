@@ -36,20 +36,115 @@ tgaLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr, P_V* g
     std::cout << "Entering tgaLikelihoodRoutine()..." << std::endl;
   }
 
+  if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
+    std::cout << "In tgaLikelihoodRoutine()"
+              << ", A = " << paramValues[0]
+              << ", E = " << paramValues[1]
+              << std::endl;
+  }
+
+  bool computeLambda = false;
+  bool computeWAndLambdaGradsAlso = false;
+
+  if (gradVector) computeLambda = true;
+  if (hessianMatrix || hessianEffect) {
+    computeLambda              = true;
+    computeWAndLambdaGradsAlso = true;
+  }
+
   double resultValue = 0.;
   const std::vector<uqTgaLikelihoodInfoStruct<P_V,P_M> *>& info = *((const std::vector<uqTgaLikelihoodInfoStruct<P_V,P_M> *> *) functionDataPtr);
 
+  /////////////////////////////////////////////////////////////////////////////
+  // Loop on scenarios
+  /////////////////////////////////////////////////////////////////////////////
   for (unsigned int i = 0; i < info.size(); ++i) {
-    // Compute likelihood for scenario
 #ifdef QUESO_USE_NEW_W_CLASS
-    uqTgaComputableWClass<P_V,P_M> newW(info[i]->m_paramSpace,
+    /////////////////////////////////////////////////////////////////////////////
+    // Compute W
+    /////////////////////////////////////////////////////////////////////////////
+    uqTgaComputableWClass<P_V,P_M> wObj(info[i]->m_paramSpace,
                                         *(info[i]->m_temperatureFunctionObj),
-                                        false); // useOdeWithDerivativeWrtTime = false
-    newW.compute(paramValues,
-                 false, // alsoComputeGrads = true
+                                        false); // useOdeWithDerivativeWrtTime // COMPATIBILITY WITH OLD VERSION
+    wObj.compute(paramValues,
+                 computeWAndLambdaGradsAlso,
                  info[i]->m_referenceW,
                  1900.); // COMPATIBILITY WITH OLD VERSION
+
+    /////////////////////////////////////////////////////////////////////////////
+    // Compute contribution from this scenario to the likelihood ("tmpResultValue")
+    /////////////////////////////////////////////////////////////////////////////
+    unsigned int numMisfits = info[i]->m_referenceW->times().size();
+    std::vector<double> twiceDiffVec(numMisfits,0.);
+    double tmpResultValue = 0.; // COMPATIBILITY WITH OLD VERSION
+    for (unsigned int j = 0; j < numMisfits; ++j) {
+      double diff = wObj.diffsForMisfit()[j];
+      double ratio = diff/info[i]->m_referenceW->variances()[j];
+      twiceDiffVec[j] = 2.*ratio;
+      tmpResultValue += diff*diff/info[i]->m_referenceW->variances()[j]; //COMPATIBILITY WITH OLD VERSION
+
+      if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
+        std::cout << "In tgaLikelihoodRoutine()"
+                  << ", misfitId = "     << j
+                  << ", measuredTemp = " << info[i]->m_referenceW->temps()[j]
+                  << ", measuredW = "    << info[i]->m_referenceW->ws()[j]
+                  << ": computedW = "    << info[i]->m_referenceW->ws()[j] + wObj.diffsForMisfit()[j]
+                  << ", misfitValue = "  << diff
+                  << std::endl;
+      }
+    }
+    resultValue += tmpResultValue;
+
+    if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
+      char stringA[64];
+      char stringE[64];
+      sprintf(stringA,"%12.6e",paramValues[0]);
+      sprintf(stringE,"%12.6e",paramValues[1]);
+      std::cout << "In tgaLikelihoodRoutine()"
+                << ", A = "                              << stringA
+                << ", E = "                              << stringE
+                << ", beta = "                           << info[i]->m_temperatureFunctionObj->deriv(0.)
+                << ": finished ode loop after "          << wObj.ws().size()
+                << " iterations, with weigthedMisfit = " << tmpResultValue
+                << std::endl;
+    }
+
+    /////////////////////////////////////////////////////////////////////////////
+    // Compute Lambda, if necessary
+    /////////////////////////////////////////////////////////////////////////////
+#if 0
+    uqTgaLambdaClass<P_V,P_M> lambdaObj(info[i]->m_paramSpace,
+                                        *(info[i]->m_temperatureFunctionObj),
+                                        false); // useOdeWithDerivativeWrtTime
+    if (computeLambda) {
+      lambdaObj.compute(paramValues,
+                        computeWAndLambdaGradsAlso,
+                        twiceDiffVec,
+                        info[i]->m_referenceW->continuous(),
+                        wObj);
+    }
+#endif
+    /////////////////////////////////////////////////////////////////////////////
+    // Compute contribution from this scenario to gradVector
+    /////////////////////////////////////////////////////////////////////////////
+    if (gradVector) {
+      P_V tmpGradVector(info[i]->m_paramSpace.zeroVector());
+      *gradVector += tmpGradVector;
+    }
+
+    /////////////////////////////////////////////////////////////////////////////
+    // Compute contribution from this scenario to hessianMatrix and/or hessianEffect
+    /////////////////////////////////////////////////////////////////////////////
+    if (hessianMatrix || hessianEffect) {
+      P_M* tmpMatrix = info[i]->m_paramSpace.newMatrix();
+
+      if (hessianMatrix) *hessianMatrix += *tmpMatrix;
+      if (hessianEffect) *hessianEffect += ((*tmpMatrix) * paramValues);
+
+      delete tmpMatrix;
+    }
 #else
+    // Compute likelihood for scenario
     resultValue += tgaConstraintEquation<P_V,P_M>(paramValues,*(info[i]),true,NULL,NULL,NULL);
 #endif
   }
@@ -82,7 +177,10 @@ uqTgaQoiInfoStruct
   uqBase1D1DFunctionClass*           m_temperatureFunctionObj;
   double                             m_criticalW;
   double                             m_criticalTime;
+#ifdef QUESO_USE_NEW_W_CLASS
+#else
   bool                               m_useTimeAsDomainVariable;
+#endif
 };
 
 template<class P_V,class P_M,class Q_V,class Q_M>
@@ -93,11 +191,15 @@ template<class P_V,class P_M,class Q_V,class Q_M>
   double                             criticalW,
   double                             criticalTime)
   :
-  m_paramSpace             (paramSpace),
-  m_temperatureFunctionObj (new uqLinear1D1DFunctionClass(-INFINITY,INFINITY,0.,initialTemp,beta)),
-  m_criticalW              (criticalW),
-  m_criticalTime           (criticalTime),
-  m_useTimeAsDomainVariable(false)
+  m_paramSpace            (paramSpace),
+  m_temperatureFunctionObj(new uqLinear1D1DFunctionClass(-INFINITY,INFINITY,0.,initialTemp,beta)),
+  m_criticalW             (criticalW),
+  m_criticalTime          (criticalTime)
+#ifdef QUESO_USE_NEW_W_CLASS
+#else
+  ,
+  m_useTimeAsDomainVariable(false) // COMPATIBILITY WITH OLD VERSION
+#endif
 {
 }
 
@@ -114,16 +216,16 @@ void tgaQoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoi
   const uqTgaQoiInfoStruct<P_V,P_M,Q_V,Q_M>& info = *((const uqTgaQoiInfoStruct<P_V,P_M,Q_V,Q_M> *) functionDataPtr);
 
 #ifdef QUESO_USE_NEW_W_CLASS
-  uqTgaComputableWClass<P_V,P_M> newW(info.m_paramSpace,
+  uqTgaComputableWClass<P_V,P_M> wObj(info.m_paramSpace,
                                       *(info.m_temperatureFunctionObj),
-                                      false); // useOdeWithDerivativeWrtTime = false
-  newW.compute(paramValues,
-               false, // alsoComputeGrads = true
-               NULL,
+                                      false); // useOdeWithDerivativeWrtTime = false // COMPATIBILITY WITH OLD VERSION
+  wObj.compute(paramValues,
+               false, // computeGradAlso
+               NULL,  // referenceW
                info.m_criticalTime*info.m_temperatureFunctionObj->deriv(0.)); // Should add initialTemp --> COMPATIBILITY WITH OLD VERSION
 
-  unsigned int tmpSize = newW.ws().size();
-  qoiValues[0] = newW.ws()[tmpSize-1]; // QoI = mass fraction remaining at critical time
+  unsigned int tmpSize = wObj.ws().size();
+  qoiValues[0] = wObj.ws()[tmpSize-1]; // QoI = mass fraction remaining at critical time
 #else
   double A = paramValues[0];
   double E = paramValues[1];
@@ -642,7 +744,10 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest()
   params[0] = 2.6090e+11; // Reference _A
   params[1] = 1.9910e+05; // Reference _E
   uqTgaComputableWClass<P_V,P_M> referenceW(m_env, *(m_calLikelihoodInfoVector[0]->m_temperatureFunctionObj), false); // useOdeWithDerivativeWrtTime = false
-  referenceW.compute(params,true,NULL,1900.); // alsoComputeGrads = true
+  referenceW.compute(params,
+                     true, // computeGradAlso
+                     NULL, // referenceW
+                     0.);  // maximumTemp
 
   unsigned int tmpSize = referenceW.times().size();
   ofs << "referenceTemps = zeros(" << tmpSize
@@ -664,7 +769,10 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest()
   params[0] = 2.6000e+11; // Guess _A
   params[1] = 2.0000e+05; // Guess _E
   uqTgaComputableWClass<P_V,P_M> guessW(m_env, *(m_calLikelihoodInfoVector[0]->m_temperatureFunctionObj), false); // useOdeWithDerivativeWrtTime = false
-  guessW.compute(params,true,&referenceW,1900.); // alsoComputeGrads = true
+  guessW.compute(params,
+                 true, // computeGradAlso
+                 &referenceW,
+                 0.);  // maximumTemp
 
   tmpSize = guessW.times().size();
   ofs << "\nguessWTemps = zeros(" << tmpSize
@@ -679,7 +787,9 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest()
   // Compute lambda(A_guess,E_guess)
 #if 0
   uqTgaLambdaClass<P_V,P_M> guessLambda(m_env, *(m_calLikelihoodInfoVector[0]->m_temperatureFunctionObj), false); // useOdeWithDerivativeWrtTime = false
-  guessLambda.compute(params,true,guessW); // alsoComputeGrads = true
+  guessLambda.compute(params,
+                      true, // computeGradAlso
+                      guessW);
 
   tmpSize = guessLambda.times().size();
   ofs << "\nguessLambdaTemps = zeros(" << tmpSize

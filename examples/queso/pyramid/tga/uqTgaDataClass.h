@@ -31,7 +31,7 @@
 // The state dot ODE function
 int tgaStateTimeDotOdeFunction(double time, const double w[], double f[], void *info)
 {
-  std::cout << "Should not pass of ode-time routine()" << std::endl;
+  std::cout << "Should not call ode-time routine(), case 1" << std::endl;
   exit(1);
 
   double* odeParameters = (double *)info;
@@ -136,7 +136,7 @@ uqTgaLikelihoodInfoStruct<P_V,P_M>::uqTgaLikelihoodInfoStruct(
                                                   measuredTemps,
                                                   measuredWs,
                                                   measurementVs);
-  m_useTimeAsDomainVariable = false;
+  m_useTimeAsDomainVariable = false; // COMPATIBILITY WITH OLD VERSION
 
   if (paramSpace.env().rank() == 0) {
     std::cout << "Leaving uqTgaLikelihoodInfoStruct<P_V,P_M>::constructor()"
