@@ -34,14 +34,16 @@ public:
                       const std::vector<double>& times,
                       const std::vector<double>& temps,
                       const std::vector<double>& ws,
-                      const std::vector<double>& variances);
+                      const std::vector<double>* variances,
+                            bool                 treatMeasurementsAsContinuous);
  ~uqTgaMeasuredWClass();
 
-  const P_V&                 params   () const;
-  const std::vector<double>& times    () const;
-  const std::vector<double>& temps    () const;
-  const std::vector<double>& ws       () const;
-  const std::vector<double>& variances() const;
+  const P_V&                 params    () const;
+  const std::vector<double>& times     () const;
+  const std::vector<double>& temps     () const;
+  const std::vector<double>& ws        () const;
+  const std::vector<double>& variances () const;
+        bool                 continuous() const;
 
 protected:
   const uqBaseEnvironmentClass& m_env;
@@ -50,6 +52,7 @@ protected:
         std::vector<double>     m_temps;
         std::vector<double>     m_ws;
         std::vector<double>     m_variances;
+        bool                    m_treatMeasurementsAsContinuous;
 };
 
 template<class P_V, class P_M>
@@ -58,14 +61,16 @@ uqTgaMeasuredWClass<P_V,P_M>::uqTgaMeasuredWClass(
   const std::vector<double>& times,
   const std::vector<double>& temps,
   const std::vector<double>& ws,
-  const std::vector<double>& variances)
+  const std::vector<double>* variances,
+  bool treatMeasurementsAsContinuous)
   :
-  m_env      (params.env()       ),
-  m_params   (params             ),
-  m_times    (times.size()    ,0.),
-  m_temps    (temps.size()    ,0.),
-  m_ws       (ws.size()       ,0.),
-  m_variances(variances.size(),0.)
+  m_env      (params.env()   ),
+  m_params   (params         ),
+  m_times    (times.size(),0.),
+  m_temps    (temps.size(),0.),
+  m_ws       (ws.size()   ,0.),
+  m_variances(ws.size()   ,1.),
+  m_treatMeasurementsAsContinuous(treatMeasurementsAsContinuous)
 {
   if (m_env.rank() == 0) {
     std::cout << "Entering uqTgaMeasuredWClass::constructor()"
@@ -74,10 +79,10 @@ uqTgaMeasuredWClass<P_V,P_M>::uqTgaMeasuredWClass(
 
   unsigned int tmpSize = m_times.size();
   for (unsigned int i = 0; i < tmpSize; ++i) {
-    m_times    [i] = times    [i];
-    m_temps    [i] = temps    [i];
-    m_ws       [i] = ws       [i];
-    m_variances[i] = variances[i];
+    m_times    [i] = times[i];
+    m_temps    [i] = temps[i];
+    m_ws       [i] = ws   [i];
+    if (variances) m_variances[i] = (*variances)[i];
   }
 
   if (m_env.rank() == 0) {
@@ -124,5 +129,12 @@ const std::vector<double>&
 uqTgaMeasuredWClass<P_V,P_M>::variances() const
 {
   return m_variances;
+}
+
+template<class P_V, class P_M>
+bool
+uqTgaMeasuredWClass<P_V,P_M>::continuous() const
+{
+  return m_treatMeasurementsAsContinuous;
 }
 #endif // __UQ_TGA_MEASURED _W_H__
