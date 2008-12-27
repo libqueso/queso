@@ -347,7 +347,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
     std::cout << std::endl;
   }
   if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalTargetD, NULL);
-  double logTarget = -0.5 * m_targetPdf.minus2LnValue(valuesOf1stPosition);
+  double logTarget = -0.5 * m_targetPdf.minus2LnValue(valuesOf1stPosition,NULL,NULL,NULL);
   if (m_chainMeasureRunTimes) targetDRunTime += uqMiscGetEllapsedSeconds(&timevalTargetD);
   uqMarkovChainPositionDataClass<P_V> currentPositionData(m_env,
                                                           valuesOf1stPosition,
@@ -410,7 +410,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
     }
     else {
       if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalTargetD, NULL);
-      logTarget = -0.5 * m_targetPdf.minus2LnValue(tmpVecValues);
+      logTarget = -0.5 * m_targetPdf.minus2LnValue(tmpVecValues,NULL,NULL,NULL);
       if (m_chainMeasureRunTimes) targetDRunTime += uqMiscGetEllapsedSeconds(&timevalTargetD);
     }
     currentCandidateData.set(tmpVecValues,
@@ -508,7 +508,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
         }
         else {
           if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalTargetD, NULL);
-          logTarget = -0.5 * m_targetPdf.minus2LnValue(tmpVecValues);
+          logTarget = -0.5 * m_targetPdf.minus2LnValue(tmpVecValues,NULL,NULL,NULL);
           if (m_chainMeasureRunTimes) targetDRunTime += uqMiscGetEllapsedSeconds(&timevalTargetD);
         }
         currentCandidateData.set(tmpVecValues,
