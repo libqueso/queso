@@ -21,9 +21,10 @@
 #define __UQ_TGA_LIKELIHOOD_H__
 
 #include <uqTgaDefines.h>
-#include <uqTgaMeasuredW.h>
+#include <uqTgaStorageW.h>
 #include <uqTgaComputableW.h>
 #include <uqTgaLambda.h>
+#include <uqTgaIntegrals.h>
 #include <uqDefines.h>
 #include <gsl/gsl_odeiv.h>
 #include <gsl/gsl_errno.h>
@@ -41,9 +42,11 @@ uqTgaLikelihoodInfoStruct
                             const std::string&                 inpName);
  ~uqTgaLikelihoodInfoStruct();
 
+  void setReferenceW(const uqTgaStorageWClass<P_V,P_M>& referenceW);
+
   const uqVectorSpaceClass<P_V,P_M>& m_paramSpace;
   uqBase1D1DFunctionClass*           m_temperatureFunctionObj;
-  uqTgaMeasuredWClass<P_V,P_M>*      m_referenceW;
+  uqTgaStorageWClass<P_V,P_M>*       m_referenceW;
 };
 
 template<class P_V,class P_M>
@@ -100,12 +103,11 @@ uqTgaLikelihoodInfoStruct<P_V,P_M>::uqTgaLikelihoodInfoStruct(
   // Close input file on experimental data
   fclose(inp);
 
-  m_referenceW = new uqTgaMeasuredWClass<P_V,P_M>(paramSpace.zeroVector(),
-                                                  measuredTimes,
-                                                  measuredTemps,
-                                                  measuredWs,
-                                                  &measurementVs,
-                                                  false);
+  m_referenceW = new uqTgaStorageWClass<P_V,P_M>(measuredTimes,
+                                                 measuredTemps,
+                                                 measuredWs,
+                                                 &measurementVs,
+                                                 false);
 
   if (paramSpace.env().rank() == 0) {
     std::cout << "Leaving uqTgaLikelihoodInfoStruct<P_V,P_M>::constructor()"
@@ -121,17 +123,30 @@ uqTgaLikelihoodInfoStruct<P_V,P_M>::~uqTgaLikelihoodInfoStruct()
   delete m_temperatureFunctionObj;
 }
 
+template<class P_V,class P_M>
+void
+uqTgaLikelihoodInfoStruct<P_V,P_M>::setReferenceW(const uqTgaStorageWClass<P_V,P_M>& referenceW)
+{
+  if (m_referenceW) delete m_referenceW;
+  m_referenceW = new uqTgaStorageWClass<P_V,P_M>(referenceW.times(),
+                                                 referenceW.temps(),
+                                                 referenceW.values(),
+                                                 &referenceW.variances(),
+                                                 referenceW.continuous());
+  return;
+}
+
 // The actual (user defined) likelihood routine
 template<class P_V,class P_M>
 double
-tgaLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr, P_V* gradVector, P_M* hessianMatrix, P_V* hessianEffect)
+uqTgaLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr, P_V* gradVector, P_M* hessianMatrix, P_V* hessianEffect)
 {
   if ((paramValues.env().verbosity() >= 30) && (paramValues.env().rank() == 0)) {
-    std::cout << "Entering tgaLikelihoodRoutine()..." << std::endl;
+    std::cout << "Entering uqTgaLikelihoodRoutine()..." << std::endl;
   }
 
   if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
-    std::cout << "In tgaLikelihoodRoutine()"
+    std::cout << "In uqTgaLikelihoodRoutine()"
               << ", A = " << paramValues[0]
               << ", E = " << paramValues[1]
               << std::endl;
@@ -151,60 +166,32 @@ tgaLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr, P_V* g
   double resultValue = 0.;
   const std::vector<uqTgaLikelihoodInfoStruct<P_V,P_M> *>& info = *((const std::vector<uqTgaLikelihoodInfoStruct<P_V,P_M> *> *) functionDataPtr);
 
-  /////////////////////////////////////////////////////////////////////////////
   // Loop on scenarios
-  /////////////////////////////////////////////////////////////////////////////
   for (unsigned int i = 0; i < info.size(); ++i) {
-    //resultValue += tgaConstraintEquation<P_V,P_M>(paramValues,*(info[i]),true,NULL,NULL,NULL);
-
     /////////////////////////////////////////////////////////////////////////////
     // Compute W
+    // Compute contribution from this scenario to the likelihood ("weigthedMisfitSum")
     /////////////////////////////////////////////////////////////////////////////
     uqTgaComputableWClass<P_V,P_M> wObj(info[i]->m_paramSpace,
-                                        *(info[i]->m_temperatureFunctionObj),
-                                        useOdesWithDerivativeWrtTime);
-    wObj.compute(paramValues,
-                 computeWAndLambdaGradsAlso,
-                 info[i]->m_referenceW,
-                 1900.); // COMPATIBILITY WITH OLD VERSION
+                                        *(info[i]->m_temperatureFunctionObj));
 
-    /////////////////////////////////////////////////////////////////////////////
-    // Compute contribution from this scenario to the likelihood ("tmpResultValue")
-    /////////////////////////////////////////////////////////////////////////////
-    unsigned int numMisfits = info[i]->m_referenceW->times().size();
-    std::vector<double> twiceDiffVec(numMisfits,0.);
-    double tmpResultValue = 0.; // COMPATIBILITY WITH OLD VERSION
-    for (unsigned int j = 0; j < numMisfits; ++j) {
-      double diff = wObj.diffsForMisfit()[j];
-      double ratio = diff/info[i]->m_referenceW->variances()[j];
-      twiceDiffVec[j] = 2.*ratio;
-      tmpResultValue += diff*diff/info[i]->m_referenceW->variances()[j]; //COMPATIBILITY WITH OLD VERSION
-
-      if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
-        std::cout << "In tgaLikelihoodRoutine()"
-                  << ", misfitId = "     << j
-                  << ", measuredTemp = " << info[i]->m_referenceW->temps()[j]
-                  << ", measuredW = "    << info[i]->m_referenceW->ws()[j]
-                  << ": computedW = "    << info[i]->m_referenceW->ws()[j] + wObj.diffsForMisfit()[j]
-                  << ", misfitValue = "  << diff
-                  << std::endl;
-      }
+    double weigthedMisfitSum = 0.; // COMPATIBILITY WITH OLD VERSION
+    uqTgaStorageWClass<P_V,P_M> weigthedMisfitData(info[i]->m_referenceW->continuous());
+    if (useOdesWithDerivativeWrtTime) {
+      wObj.computeUsingTime(paramValues,
+                            computeWAndLambdaGradsAlso,
+                            info[i]->m_referenceW,
+                            &weigthedMisfitSum,
+                            &weigthedMisfitData);
     }
-    resultValue += tmpResultValue;
-
-    if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
-      char stringA[64];
-      char stringE[64];
-      sprintf(stringA,"%12.6e",paramValues[0]);
-      sprintf(stringE,"%12.6e",paramValues[1]);
-      std::cout << "In tgaLikelihoodRoutine()"
-                << ", A = "                              << stringA
-                << ", E = "                              << stringE
-                << ", beta = "                           << info[i]->m_temperatureFunctionObj->deriv(0.)
-                << ": finished ode loop after "          << wObj.ws().size()
-                << " iterations, with weigthedMisfit = " << tmpResultValue
-                << std::endl;
+    else {
+      wObj.computeUsingTemp(paramValues,
+                            1900., // COMPATIBILITY WITH OLD VERSION
+                            info[i]->m_referenceW,
+                            &weigthedMisfitSum);
     }
+
+    resultValue += weigthedMisfitSum;
 
     /////////////////////////////////////////////////////////////////////////////
     // Compute Lambda, if necessary
@@ -214,8 +201,7 @@ tgaLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr, P_V* g
     if (computeLambda) {
       lambdaObj.compute(paramValues,
                         computeWAndLambdaGradsAlso,
-                        twiceDiffVec,
-                        info[i]->m_referenceW->continuous(),
+                        weigthedMisfitData,
                         wObj);
     }
 
@@ -224,6 +210,18 @@ tgaLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr, P_V* g
     /////////////////////////////////////////////////////////////////////////////
     if (gradVector) {
       P_V tmpGradVector(info[i]->m_paramSpace.zeroVector());
+
+      unsigned int tmpSize = weigthedMisfitData.times().size();
+      double upperIntegralLimit = weigthedMisfitData.times()[tmpSize-1];
+      uqTgaLagrangianGradientWrtDesignParameters<P_V,P_M>(paramValues,
+                                                          *(info[i]->m_temperatureFunctionObj),
+                                                          upperIntegralLimit,                  
+                                                          wObj.times(),
+                                                          wObj.ws(),
+                                                          lambdaObj.times(),
+                                                          lambdaObj.lambdas(),
+                                                          tmpGradVector);
+
       *gradVector += tmpGradVector;
     }
 
@@ -233,6 +231,12 @@ tgaLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr, P_V* g
     if (hessianMatrix || hessianEffect) {
       P_M* tmpMatrix = info[i]->m_paramSpace.newMatrix();
 
+      // AQUI
+      UQ_FATAL_TEST_MACRO(true,
+                          UQ_UNAVAILABLE_RANK,
+                          "uqTgaLikelihoodRoutine<P_V,P_M>(), hessianMatrix",
+                          "INCOMPLETE CODE");
+
       if (hessianMatrix) *hessianMatrix += *tmpMatrix;
       if (hessianEffect) *hessianEffect += ((*tmpMatrix) * paramValues);
 
@@ -241,7 +245,7 @@ tgaLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr, P_V* g
   }
 
   if ((paramValues.env().verbosity() >= 30) && (paramValues.env().rank() == 0)) {
-    std::cout << "Leaving tgaLikelihoodRoutine()..." << std::endl;
+    std::cout << "Leaving uqTgaLikelihoodRoutine()..." << std::endl;
   }
 
   return resultValue;

@@ -72,17 +72,26 @@ uqTgaQoiInfoStruct<P_V,P_M,Q_V,Q_M>::~uqTgaQoiInfoStruct()
 
 // The actual (user defined) qoi routine
 template<class P_V,class P_M,class Q_V,class Q_M>
-void tgaQoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiValues)
+void uqTgaQoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiValues)
 {
   const uqTgaQoiInfoStruct<P_V,P_M,Q_V,Q_M>& info = *((const uqTgaQoiInfoStruct<P_V,P_M,Q_V,Q_M> *) functionDataPtr);
 
   uqTgaComputableWClass<P_V,P_M> wObj(info.m_paramSpace,
-                                      *(info.m_temperatureFunctionObj),
-                                      false); // useOdeWithDerivativeWrtTime // COMPATIBILITY WITH OLD VERSION
-  wObj.compute(paramValues,
-               false, // computeGradAlso
-               NULL,  // referenceW
-               info.m_criticalTime*info.m_temperatureFunctionObj->deriv(0.)); // Should add initialTemp --> COMPATIBILITY WITH OLD VERSION
+                                      *(info.m_temperatureFunctionObj));
+                       
+  if (0) {
+    wObj.computeUsingTime(paramValues,
+                          false, // computeGradAlso
+                          NULL,  // referenceW
+                          NULL,
+                          NULL);
+  }
+  else {
+    wObj.computeUsingTemp(paramValues,
+                          info.m_criticalTime*info.m_temperatureFunctionObj->deriv(0.), // Should add initialTemp --> COMPATIBILITY WITH OLD VERSION
+                          NULL,  // referenceW
+                          NULL);
+  }
 
   unsigned int tmpSize = wObj.ws().size();
   qoiValues[0] = wObj.ws()[tmpSize-1]; // QoI = mass fraction remaining at critical time
