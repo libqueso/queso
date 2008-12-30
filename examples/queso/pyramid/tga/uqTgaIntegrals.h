@@ -21,7 +21,7 @@
 #define __UQ_TGA_INTEGRALS_H__
 
 #include <uqTgaDefines.h>
-#include <uqTgaStorageW.h>
+#include <uqTgaStorage.h>
 #include <uqTgaComputableW.h>
 #include <uqTgaLambda.h>
 #include <uqDefines.h>
@@ -71,7 +71,7 @@ uqTgaLagrangianGradientWrtDesignParameters(
   double timeIntervalSize = (upperIntegralLimit-allWTimes[0])/((double)numIntervals);
   double firstTime = allWTimes[0]+.5*timeIntervalSize;
 
-  std::cout << "In tgaAdjointEquation()"
+  std::cout << "In uqTgaLagrangianGradientWrtDesignParameters()"
             << ": beginning integration loop on time interval "
             << "["          << allWTimes[0]
             << ", "         << upperIntegralLimit
@@ -128,7 +128,7 @@ uqTgaLagrangianGradientWrtDesignParameters(
   }
   LagrangianGrad *= timeIntervalSize;
 
-  std::cout << "In tgaAdjointEquation()"
+  std::cout << "In uqTgaLagrangianGradientWrtDesignParameters()"
             << ": finsihed integration loop with"
             << " currentWIntervalId = " << currentWIntervalId
             << ", currentLambdaIntervalId = " << currentLambdaIntervalId

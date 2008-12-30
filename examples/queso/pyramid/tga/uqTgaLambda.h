@@ -22,7 +22,7 @@
 
 #include <uqTgaComputableW.h>
 #include <uqTgaDefines.h>
-#include <uqTgaStorageW.h>
+#include <uqTgaStorage.h>
 #include <uqDefines.h>
 #include <gsl/gsl_odeiv.h>
 #include <gsl/gsl_errno.h>
@@ -36,7 +36,7 @@ uqTgaLambdaInfoStruct
   double                                E;
   const uqBase1D1DFunctionClass*        temperatureFunctionObj;
   bool                                  computeGradAlso;
-  const uqTgaStorageWClass<P_V,P_M>*    weigthedMisfitData;
+  const uqTgaStorageClass<P_V,P_M>*     weigthedMisfitData;
   const uqTgaComputableWClass<P_V,P_M>* wObj;
 };
 
@@ -47,11 +47,12 @@ int uqTgaLambdaTildeDotWrtTimeRoutine(double timeTilde, const double lambdaTilde
   double A = info.A;
   double E = info.E;
 
-  if (info.weigthedMisfitData->continuous()) {
+  if (info.weigthedMisfitData->dataIsContinuousWithTime()) {
     unsigned int tmpSize    = info.weigthedMisfitData->times().size();
     double maximumTimeTilde = info.weigthedMisfitData->times()[tmpSize-1];
     double equivalentTime   = maximumTimeTilde - timeTilde;
     double temp             = info.temperatureFunctionObj->value(equivalentTime);
+    double expTerm          = exp(-E/(R_CONSTANT*temp));
     double weigthedMisfit   = info.weigthedMisfitData->value(equivalentTime);
 
     if ((info.wObj->env().verbosity() >= 99) && (info.wObj->env().rank() == 0)) {
@@ -64,14 +65,14 @@ int uqTgaLambdaTildeDotWrtTimeRoutine(double timeTilde, const double lambdaTilde
     }
 
     if (info.computeGradAlso) {
-      // AQUI
-      UQ_FATAL_TEST_MACRO(true,
-                          UQ_UNAVAILABLE_RANK,
-                          "uqTgaLambdaTildeDotWrtTimeRoutine(), continuous case + grad",
-                          "INCOMPLETE CODE");
-      f[0] = (-A*lambdaTilde[0]*exp(-E/(R_CONSTANT*temp)))-2*weigthedMisfit;
-      f[1] = 0.;
-      f[2] = 0.;
+      P_V wGrad(*(info.wObj->grads()[0]));
+      info.wObj->grad(equivalentTime,wGrad);
+      double wA = wGrad[0];
+      double wE = wGrad[1];
+
+      f[0] =  -A*lambdaTilde[0]                                      *expTerm - 2*weigthedMisfit;
+      f[1] = (-A*lambdaTilde[1] -   lambdaTilde[0]                  )*expTerm - 2*wA;
+      f[2] = (-A*lambdaTilde[2] + A*lambdaTilde[0]/(R_CONSTANT*temp))*expTerm - 2*wE;
     }
     else {
       f[0] = (-A*lambdaTilde[0]*exp(-E/(R_CONSTANT*temp)))-2*weigthedMisfit;
@@ -99,7 +100,7 @@ public:
 
         void                 compute(const P_V&                            params,
                                      bool                                  computeGradAlso,
-                                     const uqTgaStorageWClass<P_V,P_M>&    weigthedMisfitData,
+                                     const uqTgaStorageClass<P_V,P_M>&     weigthedMisfitData,
                                      const uqTgaComputableWClass<P_V,P_M>& wObj);
         double               lambda (double time) const;
   const P_V&                 grad   (double time) const;
@@ -169,7 +170,7 @@ void
 uqTgaLambdaClass<P_V,P_M>::compute(
   const P_V&                            params,
   bool                                  computeGradAlso,
-  const uqTgaStorageWClass<P_V,P_M>&    weigthedMisfitData,
+  const uqTgaStorageClass<P_V,P_M>&     weigthedMisfitData,
   const uqTgaComputableWClass<P_V,P_M>& wObj)
 {
   this->resetInternalValues();
@@ -222,7 +223,7 @@ uqTgaLambdaClass<P_V,P_M>::compute(
   unsigned int misfitId = weigthedMisfitData.times().size()-1;
   while (currentTimeTilde < maximumTimeTilde) {
     int status = 0;
-    if (weigthedMisfitData.continuous()) {
+    if (weigthedMisfitData.dataIsContinuousWithTime()) {
       double nextTimeTilde = std::min(maximumTimeTilde,currentTimeTilde+deltaTimeTilde);
       status = gsl_odeiv_evolve_apply(e, c, s, &sysTime, &currentTimeTilde, nextTimeTilde, &deltaTimeTilde, currentLambdaTilde);
       UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),

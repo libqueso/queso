@@ -39,7 +39,12 @@ public:
  ~uqTgaValidationClass();
 
   void  run           ();
-  void  runGradTest   ();
+  void  runGradTest   (const std::string& outerPrefixName,
+                       double refA,
+                       double refE,
+                       bool   treatReferenceDataAsContinuous,
+                       double guessA,
+                       double guessE);
 
 private:
   void  runCalibrationStage();
@@ -441,7 +446,13 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runComparisonStage()
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest()
+uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest(
+  const std::string& outerPrefixName,
+  double refA,
+  double refE,
+  bool   treatReferenceDataAsContinuous,
+  double guessA,
+  double guessE)
 {
   if (m_env.rank() == 0) {
     std::cout << "Entering uqTgaValidation::runGradTest()"
@@ -454,257 +465,249 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest()
   m_calLikelihoodInfoVector[0] = new uqTgaLikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"tga/scenario_5_K_min.dat");
 
   // Miscellaneous
-  std::ofstream ofs("nada1.m", std::ofstream::out | std::ofstream::trunc); // Output file
-  P_V params(m_paramSpace->zeroVector());
+  std::ofstream ofs( (outerPrefixName+".m").c_str(), std::ofstream::out | std::ofstream::trunc); // Output file
+  P_V paramValues(m_paramSpace->zeroVector());
 
-  // Compute w(A_reference,E_reference), using derivative wrt temperature
+  // Compute w(refA,refE), using derivative wrt temperature
 
   if (m_env.rank() == 0) {
     std::cout << "In uqTgaValidation::runGradTest()"
-              << ": compute w(A_reference,E_reference) using derivative wrt temperature..."
+              << ": compute w(refA,refE) using derivative wrt temperature..."
               << std::endl;
   }
 
-  params[0] = 2.6090e+11; // Reference _A
-  params[1] = 1.9910e+05; // Reference _E
+  paramValues[0] = refA;
+  paramValues[1] = refE;
 
   uqTgaComputableWClass<P_V,P_M> tmpW(*m_paramSpace,
                                       *(m_calLikelihoodInfoVector[0]->m_temperatureFunctionObj));
-  tmpW.computeUsingTemp(params,
+  tmpW.computeUsingTemp(paramValues,
                         822., // maximumTemp
                         NULL, // referenceW
                         NULL);
+  std::string tmpPrefixName = outerPrefixName + "withTempW_";
+  tmpW.printForMatlab(ofs,tmpPrefixName);
 
-  unsigned int tmpSize = tmpW.times().size();
-  ofs << "tempTemps = zeros(" << tmpSize
-      << ",1);"
-      << "\ntempWs = zeros(" << tmpSize
-      << ",1);";
-  for (unsigned int i = 0; i < tmpSize; ++i) {
-    ofs << "\ntempTemps(" << i+1 << ",1) = " << tmpW.temps()[i] << ";"
-        << "\ntempWs("    << i+1 << ",1) = " << tmpW.ws()   [i] << ";";
-  }
 
-  // Compute w(A_reference,E_reference), using derivative wrt time
+  //////////////////////////////////////////////////////////////////
+  // Step 1 of 4: Compute referenceW
+  //////////////////////////////////////////////////////////////////
+
+  // Compute w(refA,refE), using derivative wrt time
 
   if (m_env.rank() == 0) {
     std::cout << "In uqTgaValidation::runGradTest()"
-              << ": compute w(A_reference,E_reference) using derivative wrt time..."
+              << ": compute w(refA,refE) using derivative wrt time..."
               << std::endl;
   }
 
-  tmpW.computeUsingTime(params,
+  tmpW.computeUsingTime(paramValues,
                         false, // computeWAndLambdaGradsAlso
                         NULL,  // referenceW
                         NULL,
                         NULL);
 
-  uqTgaStorageWClass<P_V,P_M> referenceW(tmpW.times(),
-                                         tmpW.temps(),
-                                         tmpW.ws(),
-                                         NULL,  // use all variances = 1.
-                                         true); // treat data as continuous with time
-
-  tmpSize = referenceW.times().size();
-  ofs << "referenceTemps = zeros(" << tmpSize
-      << ",1);"
-      << "\nreferenceWs = zeros(" << tmpSize
-      << ",1);";
-  for (unsigned int i = 0; i < tmpSize; ++i) {
-    ofs << "\nreferenceTemps(" << i+1 << ",1) = " << referenceW.temps() [i] << ";"
-        << "\nreferenceWs("    << i+1 << ",1) = " << referenceW.values()[i] << ";";
-  }
-
-  // Change measured data, from discrete (read from file) to continuous (computed with 'uqTgaComputableWClass' object)
-  m_calLikelihoodInfoVector[0]->setReferenceW(referenceW);
-
-  // Compute w(A_guess,E_guess)
-
-  if (m_env.rank() == 0) {
-    std::cout << "In uqTgaValidation::runGradTest()"
-              << ": compute w(A_guess,E_guess)..."
-              << std::endl;
-  }
-
-  params[0] = 2.6000e+11; // Guess _A
-  params[1] = 2.0000e+05; // Guess _E
-  uqTgaStorageWClass<P_V,P_M> weigthedMisfitData(referenceW.continuous());
-  tmpW.computeUsingTime(params,
-                        false, // computeWAndLambdaGradsAlso
-                        &referenceW,
-                        NULL,
-                        &weigthedMisfitData);
- 
-  tmpSize = tmpW.times().size();
-  ofs << "\nguessWTemps = zeros(" << tmpSize
-      << ",1);"
-      << "\nguessWs = zeros(" << tmpSize
-      << ",1);";
-  for (unsigned int i = 0; i < tmpSize; ++i) {
-    ofs << "\nguessWTemps(" << i+1 << ",1) = " << tmpW.temps()[i] << ";"
-        << "\nguessWs("     << i+1 << ",1) = " << tmpW.ws()   [i] << ";";
-  }
-
-  // Compute lambda(A_guess,E_guess)
-
-  if (m_env.rank() == 0) {
-    std::cout << "In uqTgaValidation::runGradTest()"
-              << ": compute lambda(A_guess,E_guess)..."
-              << std::endl;
-  }
-
-  uqTgaLambdaClass<P_V,P_M> guessLambda(*m_paramSpace,
-                                        *(m_calLikelihoodInfoVector[0]->m_temperatureFunctionObj));
-  guessLambda.compute(params,
-                      false, // computeWAndLambdaGradsAlso
-                      weigthedMisfitData,
-                      tmpW);
-
-  tmpSize = guessLambda.times().size();
-  ofs << "\nguessLambdaTemps = zeros(" << tmpSize
-      << ",1);"
-      << "\nguessLambdas = zeros(" << tmpSize
-      << ",1);";
-  for (unsigned int i = 0; i < tmpSize; ++i) {
-    ofs << "\nguessLambdaTemps(" << i+1 << ",1) = " << guessLambda.temps()[i]   << ";"
-        << "\nguessLambdas("     << i+1 << ",1) = " << guessLambda.lambdas()[i] << ";";
-  }
+  uqTgaStorageClass<P_V,P_M> refW(tmpW.times(),
+                                  tmpW.temps(),
+                                  tmpW.ws(),
+                                  NULL,  // use all variances = 1.
+                                  treatReferenceDataAsContinuous);
 
   //////////////////////////////////////////////////////////////////
-  // Compute Gradient(misfit) wrt A and E, using Lagrangian multipliers
+  // Step 2 of 4: Compute gradient(misfit) and Hessian(misfit) wrt A and E, using Lagrangian multipliers
   //////////////////////////////////////////////////////////////////
+
+  // Change the reference data to be used inside the likelihood routine,
+  // from discrete (read from file) to continuous (computed and saved in 'refW')
+  m_calLikelihoodInfoVector[0]->setReferenceW(refW);
+
+  // Create the objects where the likelihood routine will store its calculations.
+  // These objects will then be plotted in Matlab
+  uqTgaStorageClass<P_V,P_M> refWForPlot   (refW.dataIsContinuousWithTime());
+  uqTgaStorageClass<P_V,P_M> wForPlot      (refW.dataIsContinuousWithTime());
+  uqTgaStorageClass<P_V,P_M> wAForPlot     (refW.dataIsContinuousWithTime());
+  uqTgaStorageClass<P_V,P_M> wEForPlot     (refW.dataIsContinuousWithTime());
+  uqTgaStorageClass<P_V,P_M> misfitForPlot (refW.dataIsContinuousWithTime());
+  uqTgaStorageClass<P_V,P_M> lambdaForPlot (refW.dataIsContinuousWithTime());
+  uqTgaStorageClass<P_V,P_M> lambdaAForPlot(refW.dataIsContinuousWithTime());
+  uqTgaStorageClass<P_V,P_M> lambdaEForPlot(refW.dataIsContinuousWithTime());
+  m_calLikelihoodInfoVector[0]->setPlottingVariables(&refWForPlot,
+                                                     &wForPlot,
+                                                     &wAForPlot,
+                                                     &wEForPlot,
+                                                     &misfitForPlot,
+                                                     &lambdaForPlot,
+                                                     &lambdaAForPlot,
+                                                     &lambdaEForPlot);
+
+  paramValues[0] = guessA;
+  paramValues[1] = guessE;
 
   if (m_env.rank() == 0) {
     std::cout << "In uqTgaValidation::runGradTest()"
-              << ": compute misfit gradient w.r.t. parameters A and E, using adjoint..."
+              << ": compute gradient(misfit) and Hessian(misfit) w.r.t. parameters A and E, using adjoint..."
               << std::endl;
   }
 
-  P_V misfitGrad(m_paramSpace->zeroVector());
-  double valueCenter = uqTgaLikelihoodRoutine<P_V,P_M>(params,
+  P_V gradWithLM(m_paramSpace->zeroVector());
+  P_M* hessianWithLM = m_paramSpace->newMatrix();
+  double guessMisfit = uqTgaLikelihoodRoutine<P_V,P_M>(paramValues,
                                                        (const void *)&m_calLikelihoodInfoVector,
-                                                       &misfitGrad,
-                                                       NULL, // Hessian
+                                                       &gradWithLM,
+                                                       hessianWithLM,
                                                        NULL);
-  std::cout << "valueCenter = "  << valueCenter
-            << "\nmisfitGrad = " << misfitGrad
+  std::cout << "guessMisfit = "     << guessMisfit
+            << "\ngradWithLM = "    << gradWithLM
+            << "\nhessianWithLM = " << *hessianWithLM
             << std::endl;
+  delete hessianWithLM;
+
+  tmpPrefixName = outerPrefixName + "refW_";
+  refWForPlot.printForMatlab(ofs,tmpPrefixName);
+
+  tmpPrefixName = outerPrefixName + "w_";
+  wForPlot.printForMatlab(ofs,tmpPrefixName);
+
+  tmpPrefixName = outerPrefixName + "wA_";
+  wAForPlot.printForMatlab(ofs,tmpPrefixName);
+
+  tmpPrefixName = outerPrefixName + "wE_";
+  wEForPlot.printForMatlab(ofs,tmpPrefixName);
+
+  tmpPrefixName = outerPrefixName + "misfit_";
+  misfitForPlot.printForMatlab(ofs,tmpPrefixName);
+
+  tmpPrefixName = outerPrefixName + "lambda_";
+  lambdaForPlot.printForMatlab(ofs,tmpPrefixName);
+
+  tmpPrefixName = outerPrefixName + "lambdaA_";
+  lambdaAForPlot.printForMatlab(ofs,tmpPrefixName);
+
+  tmpPrefixName = outerPrefixName + "lambdaE_";
+  lambdaEForPlot.printForMatlab(ofs,tmpPrefixName);
 
   //////////////////////////////////////////////////////////////////
-  // Compute Gradient(misfit) wrt A and E, using finite differences
+  // Step 3 of 4: Compute gradient(misfit) wrt A and E, using finite differences
   //////////////////////////////////////////////////////////////////
-  double deltaA = params[0] * 1.e-6;
 
-  params[0] = 2.6000e+11-deltaA; // A
-  params[1] = 2.0000e+05;        // E
+  if (m_env.rank() == 0) {
+    std::cout << "In uqTgaValidation::runGradTest()"
+              << ": compute gradient(misfit) w.r.t. parameters A and E, using finite differences..."
+              << std::endl;
+  }
+
+  double deltaA = guessA * 1.e-6;
+
+  paramValues[0] = guessA-deltaA;
+  paramValues[1] = guessE;
   double valueAm = 0.;
-  tmpW.computeUsingTime(params,
+  tmpW.computeUsingTime(paramValues,
                         false, // computeWAndLambdaGradsAlso
-                        &referenceW,
+                        &refW,
                         &valueAm,
                         NULL);
   std::cout << "valueAm = " << valueAm << std::endl;
 
-  params[0] = 2.6000e+11+deltaA; // A
-  params[1] = 2.0000e+05;        // E
+  paramValues[0] = guessA+deltaA;
+  paramValues[1] = guessE;
   double valueAp = 0.;
-  tmpW.computeUsingTime(params,
+  tmpW.computeUsingTime(paramValues,
                         false, // computeWAndLambdaGradsAlso
-                        &referenceW,
+                        &refW,
                         &valueAp,
                         NULL);
   std::cout << "valueAp = " << valueAp << std::endl;
 
-  double deltaE = params[1] * 1.e-6;
+  double deltaE = guessE * 1.e-6;
 
-  params[0] = 2.6000e+11;        // A
-  params[1] = 2.0000e+05-deltaE; // E
+  paramValues[0] = guessA;
+  paramValues[1] = guessE-deltaE;
   double valueEm = 0.;
-  tmpW.computeUsingTime(params,
+  tmpW.computeUsingTime(paramValues,
                         false, // computeWAndLambdaGradsAlso
-                        &referenceW,
+                        &refW,
                         &valueEm,
                         NULL);
   std::cout << "valueEm = " << valueEm << std::endl;
 
-  params[0] = 2.6000e+11;        // A
-  params[1] = 2.0000e+05+deltaE; // E
+  paramValues[0] = guessA;
+  paramValues[1] = guessE+deltaE;
   double valueEp = 0.;
-  tmpW.computeUsingTime(params,
+  tmpW.computeUsingTime(paramValues,
                         false, // computeWAndLambdaGradsAlso
-                        &referenceW,
+                        &refW,
                         &valueEp,
                         NULL);
   std::cout << "valueEp = " << valueEp << std::endl;
 
-  std::cout << "So, grad (finite diff) = " << (valueAp-valueAm)/2./deltaA << ", " << (valueEp-valueEm)/2./deltaE << std::endl;
-
-  //////////////////////////////////////////////////////////////////
-  // Compute Hessian(misfit) wrt A and E, using Lagrangian multipliers
-  //////////////////////////////////////////////////////////////////
-#if 0
-  if (m_env.rank() == 0) {
-    std::cout << "In uqTgaValidation::runGradTest()"
-              << ": compute misfit gradient w.r.t. parameters A and E, using adjoint..."
-              << std::endl;
-  }
-
-  P_M* misfitHessian = m_paramSpace->newMatrix();
-  valueCenter = uqTgaLikelihoodRoutine<P_V,P_M>(params,
-                                                (const void *)&m_calLikelihoodInfoVector,
-                                                NULL,
-                                                misfitHessian,
-                                                NULL);
-  std::cout << "valueCenter = "     << valueCenter
-            << "\nmisfitHessian = " << *misfitHessian
-            << std::endl;
-  delete misfitHessian;
-#endif
-  //////////////////////////////////////////////////////////////////
-  // Compute Hessian(misfit), wrt A and E, using finite differences
-  //////////////////////////////////////////////////////////////////
-
-#if 0
-  std::vector<double> misfitVarRatios(0);
-  std::vector<double> allWTemps(0);
-  std::vector<double> allWs(0);
-  double valueCenter = 0.;
-  valueCenter = tgaConstraintEquation<P_V,P_M>(params,
-                                               *(m_calLikelihoodInfoVector[0]),
-                                               false,
-                                               &misfitVarRatios,
-                                               &allWTemps,
-                                               &allWs);
-  std::cout << "In runGradTest()"
-            << ": valueCenter = " << valueCenter
+  P_V gradWithFD(m_paramSpace->zeroVector());
+  gradWithFD[0] = (valueAp-valueAm)/2./deltaA;
+  gradWithFD[1] = (valueEp-valueEm)/2./deltaE;
+  std::cout << "gradWithFD = " << gradWithFD
+            << "\ngrad relative error = " << (gradWithFD - gradWithLM).norm2()/gradWithFD.norm2()
             << std::endl;
 
-  tgaAdjointEquation<P_V,P_M>(params,
-                              *(m_calLikelihoodInfoVector[0]),
-                              allWTemps[allWTemps.size()-1],
-                              misfitVarRatios,
-                              &allLambdaTemps,
-                              &allLambdas);
+  //////////////////////////////////////////////////////////////////
+  // Step 4 of 4: Compute Hessian(misfit), wrt A and E, using finite differences
+  //////////////////////////////////////////////////////////////////
 
-  // Compute \grad(misfit), using adjoint
-  P_V LagrangianGradWrtParams(m_paramSpace->zeroVector());
-  tgaDesignEquation<P_V,P_M>(params,
-                             *(m_calLikelihoodInfoVector[0]),
-                             allWTemps,
-                             allWs,
-                             allLambdaTemps,
-                             allLambdas,
-			     LagrangianGradWrtParams,
-                             NULL);
-
-  std::cout << "lagGrad = " << LagrangianGradWrtParams << std::endl;
-#endif
   // Compute \grad(misfit), using finite differences
   if (m_env.rank() == 0) {
     std::cout << "In uqTgaValidation::runGradTest()"
-              << ": computing misfit gradient w.r.t. parameters A and E, using finite differences..."
+              << ": compute Hessian(misfit) w.r.t. parameters A and E, using finite differences..."
               << std::endl;
   }
+
+  paramValues[0] = guessA-deltaA;
+  paramValues[1] = guessE;
+  P_V grad_Am(m_paramSpace->zeroVector());
+  double tmpMisfit = uqTgaLikelihoodRoutine<P_V,P_M>(paramValues,
+                                                     (const void *)&m_calLikelihoodInfoVector,
+                                                     &grad_Am,
+                                                     NULL, // Hessian
+                                                     NULL);
+  std::cout << "grad_Am = " << grad_Am << std::endl;
+
+  paramValues[0] = guessA+deltaA;
+  paramValues[1] = guessE;
+  P_V grad_Ap(m_paramSpace->zeroVector());
+  tmpMisfit = uqTgaLikelihoodRoutine<P_V,P_M>(paramValues,
+                                              (const void *)&m_calLikelihoodInfoVector,
+                                              &grad_Ap,
+                                              NULL, // Hessian
+                                              NULL);
+  std::cout << "grad_Ap = " << grad_Ap << std::endl;
+
+  paramValues[0] = guessA;
+  paramValues[1] = guessE-deltaE;
+  P_V grad_Em(m_paramSpace->zeroVector());
+  tmpMisfit = uqTgaLikelihoodRoutine<P_V,P_M>(paramValues,
+                                              (const void *)&m_calLikelihoodInfoVector,
+                                              &grad_Em,
+                                              NULL, // Hessian
+                                              NULL);
+  std::cout << "grad_Em = " << grad_Em << std::endl;
+
+  paramValues[0] = guessA;
+  paramValues[1] = guessE+deltaE;
+  P_V grad_Ep(m_paramSpace->zeroVector());
+  tmpMisfit = uqTgaLikelihoodRoutine<P_V,P_M>(paramValues,
+                                              (const void *)&m_calLikelihoodInfoVector,
+                                              &grad_Ep,
+                                              NULL, // Hessian
+                                              NULL);
+  std::cout << "grad_Ep = " << grad_Ep << std::endl;
+
+  P_V column1((.5/deltaA)*(grad_Ap-grad_Am));
+  P_V column2((.5/deltaE)*(grad_Ep-grad_Em));
+  P_M* hessianWithFD = m_paramSpace->newMatrix();
+  (*hessianWithFD)(0,0)=column1[0];
+  (*hessianWithFD)(1,0)=column1[1];
+  (*hessianWithFD)(0,1)=column2[0];
+  (*hessianWithFD)(1,1)=column2[1];
+  std::cout << "\nhessianWithFD = " << *hessianWithFD
+            << std::endl;
+  delete hessianWithFD;
 
   // Finish
   if (m_env.rank() == 0) {
@@ -715,3 +718,41 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest()
   return;
 }
 #endif // __UQ_TGA_VALIDATION_H__
+
+#if 0
+  // Compute w(guessA,guessE)
+
+  if (m_env.rank() == 0) {
+    std::cout << "In uqTgaValidation::runGradTest()"
+              << ": compute w(guessA,guessE)..."
+              << std::endl;
+  }
+
+  uqTgaStorageClass<P_V,P_M> weigthedMisfitData(refW.dataIsContinuousWithTime());
+  tmpW.computeUsingTime(paramValues,
+                        false, // computeWAndLambdaGradsAlso
+                        &refW,
+                        NULL,
+                        &weigthedMisfitData);
+  tmpPrefixName = outerPrefixName + "guessW_";
+  tmpW.printForMatlab(ofs,tmpPrefixName);
+
+  // AQUI: print misfitData as well 
+
+  // Compute lambda(guessA,guessE)
+
+  if (m_env.rank() == 0) {
+    std::cout << "In uqTgaValidation::runGradTest()"
+              << ": compute lambda(guessA,guessE)..."
+              << std::endl;
+  }
+
+  uqTgaLambdaClass<P_V,P_M> guessLambda(*m_paramSpace,
+                                        *(m_calLikelihoodInfoVector[0]->m_temperatureFunctionObj));
+  guessLambda.compute(paramValues,
+                      false, // computeWAndLambdaGradsAlso
+                      weigthedMisfitData,
+                      tmpW);
+  tmpPrefixName = outerPrefixName + "guessLambda_";
+  guessLambda.printForMatlab(ofs,tmpPrefixName);
+#endif

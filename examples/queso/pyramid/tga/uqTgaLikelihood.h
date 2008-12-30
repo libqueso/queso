@@ -21,7 +21,7 @@
 #define __UQ_TGA_LIKELIHOOD_H__
 
 #include <uqTgaDefines.h>
-#include <uqTgaStorageW.h>
+#include <uqTgaStorage.h>
 #include <uqTgaComputableW.h>
 #include <uqTgaLambda.h>
 #include <uqTgaIntegrals.h>
@@ -42,11 +42,28 @@ uqTgaLikelihoodInfoStruct
                             const std::string&                 inpName);
  ~uqTgaLikelihoodInfoStruct();
 
-  void setReferenceW(const uqTgaStorageWClass<P_V,P_M>& referenceW);
+  void setReferenceW       (const uqTgaStorageClass<P_V,P_M>& referenceW);
+  void setPlottingVariables(uqTgaStorageClass<P_V,P_M>* refWPtrForPlot,
+                            uqTgaStorageClass<P_V,P_M>* wPtrForPlot,
+                            uqTgaStorageClass<P_V,P_M>* wAPtrForPlot,
+                            uqTgaStorageClass<P_V,P_M>* wEPtrForPlot,
+                            uqTgaStorageClass<P_V,P_M>* misfitPtrForPlot,
+                            uqTgaStorageClass<P_V,P_M>* lambdaPtrForPlot,
+                            uqTgaStorageClass<P_V,P_M>* lambdaAPtrForPlot,
+                            uqTgaStorageClass<P_V,P_M>* lambdaEPtrForPlot);
 
-  const uqVectorSpaceClass<P_V,P_M>& m_paramSpace;
-  uqBase1D1DFunctionClass*           m_temperatureFunctionObj;
-  uqTgaStorageWClass<P_V,P_M>*       m_referenceW;
+  const uqVectorSpaceClass <P_V,P_M>& m_paramSpace;
+  uqBase1D1DFunctionClass*            m_temperatureFunctionObj;
+  uqTgaStorageClass        <P_V,P_M>* m_referenceW;
+
+  mutable uqTgaStorageClass<P_V,P_M>* m_refWPtrForPlot;
+  mutable uqTgaStorageClass<P_V,P_M>* m_wPtrForPlot;
+  mutable uqTgaStorageClass<P_V,P_M>* m_wAPtrForPlot;
+  mutable uqTgaStorageClass<P_V,P_M>* m_wEPtrForPlot;
+  mutable uqTgaStorageClass<P_V,P_M>* m_misfitPtrForPlot;
+  mutable uqTgaStorageClass<P_V,P_M>* m_lambdaPtrForPlot;
+  mutable uqTgaStorageClass<P_V,P_M>* m_lambdaAPtrForPlot;
+  mutable uqTgaStorageClass<P_V,P_M>* m_lambdaEPtrForPlot;
 };
 
 template<class P_V,class P_M>
@@ -54,7 +71,17 @@ uqTgaLikelihoodInfoStruct<P_V,P_M>::uqTgaLikelihoodInfoStruct(
   const uqVectorSpaceClass<P_V,P_M>& paramSpace,
   const std::string&                 inpName)
   :
-  m_paramSpace(paramSpace)
+  m_paramSpace            (paramSpace),
+  m_temperatureFunctionObj(NULL),
+  m_referenceW            (NULL),
+  m_refWPtrForPlot        (NULL),
+  m_wPtrForPlot           (NULL),
+  m_wAPtrForPlot          (NULL),
+  m_wEPtrForPlot          (NULL),
+  m_misfitPtrForPlot      (NULL),
+  m_lambdaPtrForPlot      (NULL),
+  m_lambdaAPtrForPlot     (NULL),
+  m_lambdaEPtrForPlot     (NULL)
 {
   if (paramSpace.env().rank() == 0) {
     std::cout << "Entering uqTgaLikelihoodInfoStruct<P_V,P_M>::constructor()"
@@ -103,11 +130,11 @@ uqTgaLikelihoodInfoStruct<P_V,P_M>::uqTgaLikelihoodInfoStruct(
   // Close input file on experimental data
   fclose(inp);
 
-  m_referenceW = new uqTgaStorageWClass<P_V,P_M>(measuredTimes,
-                                                 measuredTemps,
-                                                 measuredWs,
-                                                 &measurementVs,
-                                                 false);
+  m_referenceW = new uqTgaStorageClass<P_V,P_M>(measuredTimes,
+                                                measuredTemps,
+                                                measuredWs,
+                                                &measurementVs,
+                                                false);
 
   if (paramSpace.env().rank() == 0) {
     std::cout << "Leaving uqTgaLikelihoodInfoStruct<P_V,P_M>::constructor()"
@@ -125,21 +152,50 @@ uqTgaLikelihoodInfoStruct<P_V,P_M>::~uqTgaLikelihoodInfoStruct()
 
 template<class P_V,class P_M>
 void
-uqTgaLikelihoodInfoStruct<P_V,P_M>::setReferenceW(const uqTgaStorageWClass<P_V,P_M>& referenceW)
+uqTgaLikelihoodInfoStruct<P_V,P_M>::setReferenceW(const uqTgaStorageClass<P_V,P_M>& referenceW)
 {
   if (m_referenceW) delete m_referenceW;
-  m_referenceW = new uqTgaStorageWClass<P_V,P_M>(referenceW.times(),
-                                                 referenceW.temps(),
-                                                 referenceW.values(),
-                                                 &referenceW.variances(),
-                                                 referenceW.continuous());
+  m_referenceW = new uqTgaStorageClass<P_V,P_M>(referenceW.times(),
+                                                referenceW.temps(),
+                                                referenceW.values(),
+                                                &referenceW.variances(),
+                                                referenceW.dataIsContinuousWithTime());
+  return;
+}
+
+template<class P_V,class P_M>
+void
+uqTgaLikelihoodInfoStruct<P_V,P_M>::setPlottingVariables(
+  uqTgaStorageClass<P_V,P_M>* refWPtrForPlot,
+  uqTgaStorageClass<P_V,P_M>* wPtrForPlot,
+  uqTgaStorageClass<P_V,P_M>* wAPtrForPlot,
+  uqTgaStorageClass<P_V,P_M>* wEPtrForPlot,
+  uqTgaStorageClass<P_V,P_M>* misfitPtrForPlot,
+  uqTgaStorageClass<P_V,P_M>* lambdaPtrForPlot,
+  uqTgaStorageClass<P_V,P_M>* lambdaAPtrForPlot,
+  uqTgaStorageClass<P_V,P_M>* lambdaEPtrForPlot)
+{
+  m_refWPtrForPlot    = refWPtrForPlot;
+  m_wPtrForPlot       = wPtrForPlot;
+  m_wAPtrForPlot      = wAPtrForPlot;
+  m_wEPtrForPlot      = wEPtrForPlot;
+  m_misfitPtrForPlot  = misfitPtrForPlot;
+  m_lambdaPtrForPlot  = lambdaPtrForPlot;
+  m_lambdaAPtrForPlot = lambdaAPtrForPlot;
+  m_lambdaEPtrForPlot = lambdaEPtrForPlot;
+
   return;
 }
 
 // The actual (user defined) likelihood routine
 template<class P_V,class P_M>
 double
-uqTgaLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr, P_V* gradVector, P_M* hessianMatrix, P_V* hessianEffect)
+uqTgaLikelihoodRoutine(
+  const P_V&  paramValues,
+  const void* functionDataPtr,
+  P_V*        gradVector,
+  P_M*        hessianMatrix,
+  P_V*        hessianEffect)
 {
   if ((paramValues.env().verbosity() >= 30) && (paramValues.env().rank() == 0)) {
     std::cout << "Entering uqTgaLikelihoodRoutine()..." << std::endl;
@@ -176,7 +232,7 @@ uqTgaLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr, P_V*
                                         *(info[i]->m_temperatureFunctionObj));
 
     double weigthedMisfitSum = 0.; // COMPATIBILITY WITH OLD VERSION
-    uqTgaStorageWClass<P_V,P_M> weigthedMisfitData(info[i]->m_referenceW->continuous());
+    uqTgaStorageClass<P_V,P_M> weigthedMisfitData(info[i]->m_referenceW->dataIsContinuousWithTime());
     if (useOdesWithDerivativeWrtTime) {
       wObj.computeUsingTime(paramValues,
                             computeWAndLambdaGradsAlso,
@@ -241,6 +297,77 @@ uqTgaLikelihoodRoutine(const P_V& paramValues, const void* functionDataPtr, P_V*
       if (hessianEffect) *hessianEffect += ((*tmpMatrix) * paramValues);
 
       delete tmpMatrix;
+    }
+
+    /////////////////////////////////////////////////////////////////////////////
+    // Store computed dara, if requested and if available
+    /////////////////////////////////////////////////////////////////////////////
+    if (info[i]->m_refWPtrForPlot) info[i]->m_refWPtrForPlot->set(info[i]->m_referenceW->times(),
+                                                                  info[i]->m_referenceW->temps(),
+                                                                  info[i]->m_referenceW->values(),
+                                                                  &info[i]->m_referenceW->variances());
+
+    if (info[i]->m_wPtrForPlot) info[i]->m_wPtrForPlot->set(wObj.times(),
+                                                            wObj.temps(),
+                                                            wObj.ws(),
+                                                            NULL);
+
+    if (info[i]->m_wAPtrForPlot) {
+      unsigned int tmpSize = wObj.times().size();
+      std::vector<double> tmpVec(tmpSize,0.);
+      if (computeWAndLambdaGradsAlso) for (unsigned int j = 0; j < tmpSize; ++j) {
+        tmpVec[j] = (*(wObj.grads()[j]))[0];
+      }
+      info[i]->m_wAPtrForPlot->set(wObj.times(),
+                                   wObj.temps(),
+                                   tmpVec,
+                                   NULL);
+    }
+
+    if (info[i]->m_wEPtrForPlot) {
+      unsigned int tmpSize = wObj.times().size();
+      std::vector<double> tmpVec(tmpSize,0.);
+      if (computeWAndLambdaGradsAlso) for (unsigned int j = 0; j < tmpSize; ++j) {
+        tmpVec[j] = (*(wObj.grads()[j]))[1];
+      }
+      info[i]->m_wEPtrForPlot->set(wObj.times(),
+                                   wObj.temps(),
+                                   tmpVec,
+                                   NULL);
+    }
+
+    if (info[i]->m_misfitPtrForPlot) info[i]->m_misfitPtrForPlot->set(weigthedMisfitData.times(),
+                                                                      weigthedMisfitData.temps(),
+                                                                      weigthedMisfitData.values(),
+                                                                      NULL);
+
+    if (info[i]->m_lambdaPtrForPlot) info[i]->m_lambdaPtrForPlot->set(lambdaObj.times(),
+                                                                      lambdaObj.temps(),
+                                                                      lambdaObj.lambdas(),
+                                                                      NULL);
+
+    if (info[i]->m_lambdaAPtrForPlot) {
+      unsigned int tmpSize = lambdaObj.times().size();
+      std::vector<double> tmpVec(tmpSize,0.);
+      if (computeWAndLambdaGradsAlso) for (unsigned int j = 0; j < tmpSize; ++j) {
+        tmpVec[j] = (*(lambdaObj.grads()[j]))[0];
+      }
+      info[i]->m_lambdaAPtrForPlot->set(lambdaObj.times(),
+                                        lambdaObj.temps(),
+                                        tmpVec,
+                                        NULL);
+    }
+
+    if (info[i]->m_lambdaEPtrForPlot) {
+      unsigned int tmpSize = lambdaObj.times().size();
+      std::vector<double> tmpVec(tmpSize,0.);
+      if (computeWAndLambdaGradsAlso) for (unsigned int j = 0; j < tmpSize; ++j) {
+        tmpVec[j] = (*(lambdaObj.grads()[j]))[1];
+      }
+      info[i]->m_lambdaEPtrForPlot->set(lambdaObj.times(),
+                                        lambdaObj.temps(),
+                                        tmpVec,
+                                        NULL);
     }
   }
 

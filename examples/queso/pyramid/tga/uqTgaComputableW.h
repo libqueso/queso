@@ -23,7 +23,7 @@
 #include <uqVectorSpace.h>
 #include <uq1D1DFunction.h>
 #include <uqTgaDefines.h>
-#include <uqTgaStorageW.h>
+#include <uqTgaStorage.h>
 #include <uqDefines.h>
 #include <gsl/gsl_odeiv.h>
 #include <gsl/gsl_errno.h>
@@ -46,19 +46,15 @@ int uqTgaWDotWrtTimeRoutine(double time, const double w[], double f[], void *voi
   double A    = info.A;
   double E    = info.E;
   double temp = info.temperatureFunctionObj->value(time);
+  double expTerm = exp(-E/(R_CONSTANT*temp));
 
   if (info.computeGradAlso) {
-    // AQUI
-    UQ_FATAL_TEST_MACRO(true,
-                        UQ_UNAVAILABLE_RANK,
-                        "uqTgaWDotWrtTimeRoutine()",
-                        "INCOMPLETE CODE");
-    f[0] = -A*w[0]*exp(-E/(R_CONSTANT*temp));
-    f[1] = 0.;
-    f[2] = 0.;
+    f[0] =  -A*w[0]                            *expTerm;
+    f[1] = (-A*w[1] -   w[0]                  )*expTerm;
+    f[2] = (-A*w[2] + A*w[0]/(R_CONSTANT*temp))*expTerm;
   }
   else {
-    f[0] = -A*w[0]*exp(-E/(R_CONSTANT*temp));
+    f[0] = -A*w[0]*expTerm;
   }
 
   return GSL_SUCCESS;
@@ -90,23 +86,25 @@ public:
                         const uqBase1D1DFunctionClass&     temperatureFunctionObj);
  ~uqTgaComputableWClass();
 
-        void                    computeUsingTime(const P_V&                         params,
-                                                 bool                               computeGradAlso,
-                                                 const uqTgaStorageWClass<P_V,P_M>* referenceW,
-                                                 double*                            weigthedMisfitSum,
-                                                 uqTgaStorageWClass<P_V,P_M>*       weigthedMisfitData);
-        void                    computeUsingTemp(const P_V&                         params,
-                                                 double                             maximumTemp, // COMPATIBILITY WITH OLD VERSION
-                                                 const uqTgaStorageWClass<P_V,P_M>* referenceW,
-                                                 double*                            weigthedMisfitSum);
+        void                    computeUsingTime(const P_V&                        params,
+                                                 bool                              computeGradAlso,
+                                                 const uqTgaStorageClass<P_V,P_M>* referenceW,
+                                                 double*                           weigthedMisfitSum,
+                                                 uqTgaStorageClass<P_V,P_M>*       weigthedMisfitData);
+        void                    computeUsingTemp(const P_V&                        params,
+                                                 double                            maximumTemp, // COMPATIBILITY WITH OLD VERSION
+                                                 const uqTgaStorageClass<P_V,P_M>* referenceW,
+                                                 double*                           weigthedMisfitSum);
 
         double                  w    (double time) const;
-  const P_V&                    grad (double time) const;
+        void                    grad (double time, P_V& result) const;
   const std::vector<double>&    times() const;
   const std::vector<double>&    temps() const;
   const std::vector<double>&    ws   () const;
   const std::vector<P_V*  >&    grads() const;
   const uqBaseEnvironmentClass& env  () const;
+
+  void  printForMatlab(std::ofstream& ofs, const std::string& prefixName) const;
 
 protected:
         void                    resetInternalValues();
@@ -167,11 +165,11 @@ uqTgaComputableWClass<P_V,P_M>::resetInternalValues()
 template<class P_V, class P_M>
 void
 uqTgaComputableWClass<P_V,P_M>::computeUsingTime(
-  const P_V&                         params,
-  bool                               computeGradAlso,
-  const uqTgaStorageWClass<P_V,P_M>* referenceW,
-  double*                            weigthedMisfitSum,
-  uqTgaStorageWClass<P_V,P_M>*       weigthedMisfitData)
+  const P_V&                        params,
+  bool                              computeGradAlso,
+  const uqTgaStorageClass<P_V,P_M>* referenceW,
+  double*                           weigthedMisfitSum,
+  uqTgaStorageClass<P_V,P_M>*       weigthedMisfitData)
 {
   UQ_FATAL_TEST_MACRO((weigthedMisfitSum != NULL) && (referenceW == NULL),
                       m_env.rank(),
@@ -279,7 +277,7 @@ uqTgaComputableWClass<P_V,P_M>::computeUsingTime(
                                                                    diff/referenceW->variances()[misfitId],
                                                                    1.);
         if (weigthedMisfitSum) {
-          if (referenceW->continuous()) {
+          if (referenceW->dataIsContinuousWithTime()) {
             // Properly scale in order to compute integral correctly
             double tmpTimeInterval = 0.;
             if (misfitId == 0) tmpTimeInterval = referenceW->times()[misfitId];
@@ -355,10 +353,10 @@ uqTgaComputableWClass<P_V,P_M>::computeUsingTime(
 template<class P_V, class P_M>
 void
 uqTgaComputableWClass<P_V,P_M>::computeUsingTemp(
-  const P_V&                         params,
-  double                             maximumTemp, // COMPATIBILITY WITH OLD VERSION
-  const uqTgaStorageWClass<P_V,P_M>* referenceW,
-  double*                            weigthedMisfitSum)
+  const P_V&                        params,
+  double                            maximumTemp, // COMPATIBILITY WITH OLD VERSION
+  const uqTgaStorageClass<P_V,P_M>* referenceW,
+  double*                           weigthedMisfitSum)
 {
   this->resetInternalValues();
   m_times.resize(1000,0.);
@@ -512,14 +510,54 @@ uqTgaComputableWClass<P_V,P_M>::w(double time) const
 }
 
 template<class P_V, class P_M>
-const P_V&
-uqTgaComputableWClass<P_V,P_M>::grad(double time) const
+void
+uqTgaComputableWClass<P_V,P_M>::grad(double time, P_V& result) const
 {
-  // AQUI
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
-                      "uqTgaComputableWClass<P_V,P_M>::grad()",
-                      "INCOMPLETE CODE");
+  unsigned int tmpSize = m_grads.size(); // Yes, 'm_grads'
+  //std::cout << "In uqTgaComputableWClass<P_V,P_M>::grad()"
+  //          << ": time = "         << time
+  //          << ", tmpSize = "      << tmpSize
+  //          << ", m_times[0] = "   << m_times[0]
+  //          << ", m_times[max] = " << m_times[tmpSize-1]
+  //          << std::endl;
+
+  UQ_FATAL_TEST_MACRO(tmpSize == 0,
+                      UQ_UNAVAILABLE_RANK,
+                      "uqTgaComputableW<P_V,P_M>::value()",
+                      "m_times.size() = 0");
+
+  UQ_FATAL_TEST_MACRO(time < m_times[0],
+                      UQ_UNAVAILABLE_RANK,
+                      "uqTgaComputableW<P_V,P_M>::value()",
+                      "time < m_times[0]");
+
+  UQ_FATAL_TEST_MACRO(m_times[tmpSize-1] < time,
+                      UQ_UNAVAILABLE_RANK,
+                      "uqTgaComputableW<P_V,P_M>::value()",
+                      "m_times[max] < time");
+
+  unsigned int i = 0;
+  for (i = 0; i < tmpSize; ++i) {
+    if (time <= m_times[i]) break;
+  }
+
+  if (time == m_times[i]) {
+    result = *(m_grads[i]);
+  }
+  else {
+    //if ((9130.0 < time) && (time < 9131.0)) {
+    //  std::cout << "time = " << time
+    //            << "i = " << i
+    //            << "time[i-1] = " << m_times[i-1]
+    //            << "value[i-1] = " << m_values[i-1]
+    //            << "time[i] = " << m_times[i]
+    //            << "value[i] = " << m_values[i]
+    //            << std::endl;
+    //}
+    double ratio = (time - m_times[i-1])/(m_times[i]-m_times[i-1]);
+    result = *(m_grads[i-1]) + ratio * ( *(m_grads[i]) - *(m_grads[i-1]) );
+  }
+
   return;
 }
 
@@ -557,4 +595,32 @@ uqTgaComputableWClass<P_V,P_M>::env() const
 {
   return m_env;
 }
+
+template<class P_V, class P_M>
+void
+uqTgaComputableWClass<P_V,P_M>::printForMatlab(
+  std::ofstream&     ofs,
+  const std::string& prefixName) const
+{
+  unsigned int tmpSize = m_times.size();
+  if (tmpSize == 0) {
+    tmpSize = 1;
+    ofs << "\n" << prefixName << "Time = zeros(" << tmpSize << ",1);"
+        << "\n" << prefixName << "Temp = zeros(" << tmpSize << ",1);"
+        << "\n" << prefixName << "W = zeros("    << tmpSize << ",1);";
+  }
+  else {
+    ofs << "\n" << prefixName << "Time = zeros(" << tmpSize << ",1);"
+        << "\n" << prefixName << "Temp = zeros(" << tmpSize << ",1);"
+        << "\n" << prefixName << "W = zeros("    << tmpSize << ",1);";
+    for (unsigned int i = 0; i < tmpSize; ++i) {
+      ofs << "\n" << prefixName << "Time(" << i+1 << ",1) = " << m_times[i] << ";"
+          << "\n" << prefixName << "Temp(" << i+1 << ",1) = " << m_temps[i] << ";"
+          << "\n" << prefixName << "W("    << i+1 << ",1) = " << m_ws   [i] << ";";
+    }
+  }
+
+  return;
+}
+
 #endif // __UQ_TGA_COMPUTABLE_W_H__
