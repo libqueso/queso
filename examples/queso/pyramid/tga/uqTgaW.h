@@ -1,4 +1,4 @@
-/* uq/examples/queso/pyramid/uqTgaComputableW.h
+/* uq/examples/queso/pyramid/uqTgaW.h
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu
  *
@@ -60,6 +60,7 @@ int uqTgaWDotWrtTimeRoutine(double time, const double w[], double f[], void *voi
   return GSL_SUCCESS;
 }
 
+#ifdef QUESO_TGA_USES_OLD_COMPATIBLE_CODE
 int uqTgaWDotWrtTempRoutine(double temp, const double w[], double f[], void *voidInfo)
 {
   const uqTgaWDotInfoStruct& info = *((uqTgaWDotInfoStruct *)voidInfo);
@@ -76,25 +77,30 @@ int uqTgaWDotWrtTempRoutine(double temp, const double w[], double f[], void *voi
 
   return GSL_SUCCESS;
 }
+#endif
 
 template<class P_V, class P_M>
 class
-uqTgaComputableWClass
+uqTgaWClass
 {
 public:
-  uqTgaComputableWClass(const uqVectorSpaceClass<P_V,P_M>& paramSpace,
-                        const uqBase1D1DFunctionClass&     temperatureFunctionObj);
- ~uqTgaComputableWClass();
+  uqTgaWClass(const uqVectorSpaceClass<P_V,P_M>& paramSpace,
+              const uqBase1D1DFunctionClass&     temperatureFunctionObj);
+ ~uqTgaWClass();
 
-        void                    computeUsingTime(const P_V&                        params,
-                                                 bool                              computeGradAlso,
-                                                 const uqTgaStorageClass<P_V,P_M>* referenceW,
-                                                 double*                           weigthedMisfitSum,
-                                                 uqTgaStorageClass<P_V,P_M>*       weigthedMisfitData);
+        void                    compute(const P_V&                        params,
+                                        double                            reqMaxTime,
+                                        double                            maximumDeltaTime,
+                                        bool                              computeGradAlso,
+                                        const uqTgaStorageClass<P_V,P_M>* referenceW,
+                                        double*                           weigthedMisfitSum,
+                                        uqTgaStorageClass<P_V,P_M>*       weigthedMisfitData);
+#ifdef QUESO_TGA_USES_OLD_COMPATIBLE_CODE
         void                    computeUsingTemp(const P_V&                        params,
                                                  double                            maximumTemp, // COMPATIBILITY WITH OLD VERSION
                                                  const uqTgaStorageClass<P_V,P_M>* referenceW,
                                                  double*                           weigthedMisfitSum);
+#endif
 
         void                    interpolate(double        time,
                                             unsigned int& startingTimeId,
@@ -121,7 +127,7 @@ protected:
 };
 
 template<class P_V, class P_M>
-uqTgaComputableWClass<P_V,P_M>::uqTgaComputableWClass(
+uqTgaWClass<P_V,P_M>::uqTgaWClass(
   const uqVectorSpaceClass<P_V,P_M>& paramSpace,
   const uqBase1D1DFunctionClass&     temperatureFunctionObj)
   :
@@ -133,18 +139,18 @@ uqTgaComputableWClass<P_V,P_M>::uqTgaComputableWClass(
   m_grads                 (0)
 {
   if ((m_env.verbosity() >= 30) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqTgaComputableWClass::constructor()"
+    std::cout << "Entering uqTgaWClass::constructor()"
               << std::endl;
   }
 
   if ((m_env.verbosity() >= 30) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqTgaComputableWClass::constructor()"
+    std::cout << "Leaving uqTgaWClass::constructor()"
               << std::endl;
   }
 }
 
 template<class P_V, class P_M>
-uqTgaComputableWClass<P_V,P_M>::~uqTgaComputableWClass()
+uqTgaWClass<P_V,P_M>::~uqTgaWClass()
 {
   for (unsigned int i = 0; i < m_grads.size(); ++i) {
     delete m_grads[i];
@@ -153,7 +159,7 @@ uqTgaComputableWClass<P_V,P_M>::~uqTgaComputableWClass()
 
 template<class P_V, class P_M>
 void
-uqTgaComputableWClass<P_V,P_M>::resetInternalValues()
+uqTgaWClass<P_V,P_M>::resetInternalValues()
 {
   m_times.clear();
   m_temps.clear();
@@ -166,8 +172,10 @@ uqTgaComputableWClass<P_V,P_M>::resetInternalValues()
 
 template<class P_V, class P_M>
 void
-uqTgaComputableWClass<P_V,P_M>::computeUsingTime(
+uqTgaWClass<P_V,P_M>::compute(
   const P_V&                        params,
+  double                            reqMaxTime,
+  double                            maximumDeltaTime,
   bool                              computeGradAlso,
   const uqTgaStorageClass<P_V,P_M>* referenceW,
   double*                           weigthedMisfitSum,
@@ -175,19 +183,38 @@ uqTgaComputableWClass<P_V,P_M>::computeUsingTime(
 {
   UQ_FATAL_TEST_MACRO((weigthedMisfitSum != NULL) && (referenceW == NULL),
                       m_env.rank(),
-                      "uqTgaComputableWClass<P_V,P_M>::computeUsingTime()",
+                      "uqTgaWClass<P_V,P_M>::compute()",
                       "weigthedMisfitSum is being requested but not referenceW is supplied");
   UQ_FATAL_TEST_MACRO((weigthedMisfitData != NULL) && (referenceW == NULL),
                       m_env.rank(),
-                      "uqTgaComputableWClass<P_V,P_M>::computeUsingTime()",
+                      "uqTgaWClass<P_V,P_M>::compute()",
                       "weigthedMisfitData is being requested but not referenceW is supplied");
+
+  const std::vector<double> dummyVec(0);
+  const std::vector<double>* refTimesPtr    (&dummyVec);
+  const std::vector<double>* refTempsPtr    (&dummyVec);
+  const std::vector<double>* refValuesPtr   (&dummyVec);
+  const std::vector<double>* refVariancesPtr(&dummyVec);
+  if (referenceW) {
+    refTimesPtr     = &(referenceW->times    ());
+    refTempsPtr     = &(referenceW->temps    ());
+    refValuesPtr    = &(referenceW->values   ());
+    refVariancesPtr = &(referenceW->variances());
+  }
+  const std::vector<double>& refTimes    (*refTimesPtr    );
+  const std::vector<double>& refTemps    (*refTempsPtr    );
+  const std::vector<double>& refValues   (*refValuesPtr   );
+  const std::vector<double>& refVariances(*refVariancesPtr);
+  unsigned int refSize = refTimes.size();
+  bool refDataIsContinuousWithTime = false;
+  if (referenceW) refDataIsContinuousWithTime = referenceW->dataIsContinuousWithTime();
 
   this->resetInternalValues();
   m_times.resize(1000,0.  );
   m_temps.resize(1000,0.  );
   m_ws.resize   (1000,0.  );
   m_grads.resize(1000,NULL);
-  if (weigthedMisfitData) weigthedMisfitData->resizeData(referenceW->times().size());
+  if (weigthedMisfitData) weigthedMisfitData->reset(refSize,refDataIsContinuousWithTime);
 
   uqTgaWDotInfoStruct wDotWrtTimeInfo = {params[0],params[1],&m_temperatureFunctionObj,computeGradAlso};
 
@@ -203,6 +230,7 @@ uqTgaComputableWClass<P_V,P_M>::computeUsingTime(
 
   double currentTime = 0.;
   double deltaTime   = .1;
+  if (maximumDeltaTime > 0) deltaTime = maximumDeltaTime;
   double currentTemp = m_temperatureFunctionObj.value(currentTime);
 
   double currentW[numWComponents];
@@ -227,25 +255,30 @@ uqTgaComputableWClass<P_V,P_M>::computeUsingTime(
   previousW[0]=1.;
   unsigned int misfitId = 0;
 
-  double maximumTime = 1.e+9;
+  double maximumTime = reqMaxTime;
+  if (maximumTime == 0.) maximumTime = 1.e+9;
   bool continueOnWhile = true;
   if (referenceW) {
-    continueOnWhile = (misfitId < referenceW->values().size());
-    unsigned int tmpSize = referenceW->times().size();
-    maximumTime = referenceW->times()[tmpSize-1];
+    continueOnWhile = (misfitId < refSize);
+    unsigned int tmpSize = refSize;
+    maximumTime = refTimes[tmpSize-1];
+  }
+  else if (reqMaxTime > 0) {
+    continueOnWhile = (currentTime < maximumTime);
   }
   else {
     continueOnWhile = (0. < currentW[0]);
   }
   while (continueOnWhile) {
     int status = 0;
-    double nextTime = std::min(maximumTime,currentTime+deltaTime);
+    double nextTime = maximumTime;
+    if (maximumDeltaTime > 0) nextTime = std::min(maximumTime,currentTime+maximumDeltaTime);
     status = gsl_odeiv_evolve_apply(e, c, s, &sysTime, &currentTime, nextTime, &deltaTime, currentW);
     UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
                         params.env().rank(),
-                        "uqTgaComputableWClass<P_V,P_M>::computeUsingTime()",
+                        "uqTgaWClass<P_V,P_M>::compute()",
                         "gsl_odeiv_evolve_apply() failed");
-    deltaTime = std::min(.1,deltaTime);
+    if (maximumDeltaTime > 0) deltaTime = std::min(maximumDeltaTime,deltaTime);
     currentTemp = m_temperatureFunctionObj.value(currentTime);
     if (currentW[0] < 1.e-6) currentW[0] = 0.;
 
@@ -267,38 +300,38 @@ uqTgaComputableWClass<P_V,P_M>::computeUsingTime(
     }
 
     if (referenceW) {
-      while ((misfitId < referenceW->values().size()       ) &&
-             (previousTime <= referenceW->times()[misfitId]) &&
-             (referenceW->times()[misfitId] <= currentTime )) {
-        double tmpValue = (referenceW->times()[misfitId]-previousTime)*(currentW[0]-previousW[0])/(currentTime-previousTime) + previousW[0];
-        double diff = tmpValue - referenceW->values()[misfitId];
+      while ((misfitId           < refSize            ) &&
+             (previousTime       <= refTimes[misfitId]) &&
+             (refTimes[misfitId] <= currentTime       )) {
+        double tmpValue = (refTimes[misfitId]-previousTime)*(currentW[0]-previousW[0])/(currentTime-previousTime) + previousW[0];
+        double diff = tmpValue - refValues[misfitId];
 
         if (weigthedMisfitData) weigthedMisfitData->setInstantData(misfitId,
-                                                                   referenceW->times()[misfitId],
-                                                                   referenceW->temps()[misfitId],
-                                                                   diff/referenceW->variances()[misfitId],
+                                                                   refTimes[misfitId],
+                                                                   refTemps[misfitId],
+                                                                   diff/refVariances[misfitId],
                                                                    1.);
         if (weigthedMisfitSum) {
-          if (referenceW->dataIsContinuousWithTime()) {
+          if (refDataIsContinuousWithTime) {
             // Properly scale in order to compute integral correctly
             double tmpTimeInterval = 0.;
-            if (misfitId == 0) tmpTimeInterval = referenceW->times()[misfitId];
-            else               tmpTimeInterval = referenceW->times()[misfitId]-referenceW->times()[misfitId-1];
-            *weigthedMisfitSum += diff*diff*tmpTimeInterval/referenceW->variances()[misfitId];
+            if (misfitId == 0) tmpTimeInterval = refTimes[misfitId];
+            else               tmpTimeInterval = refTimes[misfitId]-refTimes[misfitId-1];
+            *weigthedMisfitSum += diff*diff*tmpTimeInterval/refVariances[misfitId];
           }
           else {
-            *weigthedMisfitSum += diff*diff/referenceW->variances()[misfitId];
+            *weigthedMisfitSum += diff*diff/refVariances[misfitId];
           }
         }
 
         if ((m_env.verbosity() >= 99) && (m_env.rank() == 0)) {
-          std::cout << "In uqTgaComputableWClass<P_V,P_M>::computeUsingTime()"
+          std::cout << "In uqTgaWClass<P_V,P_M>::compute()"
                     << ", currentTime = "  << currentTime
                     << ", misfitId = "     << misfitId
-                    << ", measuredTime = " << referenceW->times()[misfitId]
-                    << ", measuredTemp = " << referenceW->temps()[misfitId]
-                    << ", measuredW = "    << referenceW->values()[misfitId]
-                    << ", variance = "     << referenceW->variances()[misfitId]
+                    << ", measuredTime = " << refTimes[misfitId]
+                    << ", measuredTemp = " << refTemps[misfitId]
+                    << ", measuredW = "    << refValues[misfitId]
+                    << ", variance = "     << refVariances[misfitId]
                     << ": computedW = "    << tmpValue
                     << ", diffValue = "    << diff
                     << std::endl;
@@ -312,7 +345,10 @@ uqTgaComputableWClass<P_V,P_M>::computeUsingTime(
     previousW[0] = currentW[0];
 
     if (referenceW) {
-      continueOnWhile = (misfitId < referenceW->values().size());
+      continueOnWhile = (misfitId < refSize);
+    }
+    else if (reqMaxTime > 0) {
+      continueOnWhile = (currentTime < maximumTime);
     }
     else {
       continueOnWhile = (0. < currentW[0]);
@@ -324,12 +360,12 @@ uqTgaComputableWClass<P_V,P_M>::computeUsingTime(
   m_ws.resize   (loopId+1);
   m_grads.resize(loopId+1);
 
-  if ((m_env.verbosity() >= 0) && (m_env.rank() == 0)) {
+  if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
     char stringA[64];
     char stringE[64];
     sprintf(stringA,"%12.6e",params[0]);
     sprintf(stringE,"%12.6e",params[1]);
-    std::cout << "In uqTgaComputableWClass<P_V,P_M>::computeUsingTime()"
+    std::cout << "In uqTgaWClass<P_V,P_M>::compute()"
               << ", A = "                          << stringA
               << ", E = "                          << stringE
               << ", beta = "                       << m_temperatureFunctionObj.deriv(0.)
@@ -339,7 +375,7 @@ uqTgaComputableWClass<P_V,P_M>::computeUsingTime(
               << ", final w = "                    << m_ws   [m_ws.size()   -1]
               << std::endl;
     if (weigthedMisfitSum) {
-      std::cout << " and with referenceW->times()[max] = " << referenceW->times()[referenceW->times().size()-1]
+      std::cout << " and with refTimes[max] = " << refTimes[refSize-1]
                 << ", weigthedMisfitSum = "                << *weigthedMisfitSum
                 << std::endl;
     }
@@ -352,19 +388,43 @@ uqTgaComputableWClass<P_V,P_M>::computeUsingTime(
   return;
 }
 
+#ifdef QUESO_TGA_USES_OLD_COMPATIBLE_CODE
 template<class P_V, class P_M>
 void
-uqTgaComputableWClass<P_V,P_M>::computeUsingTemp(
+uqTgaWClass<P_V,P_M>::computeUsingTemp(
   const P_V&                        params,
   double                            maximumTemp, // COMPATIBILITY WITH OLD VERSION
   const uqTgaStorageClass<P_V,P_M>* referenceW,
   double*                           weigthedMisfitSum)
 {
+  ////UQ_FATAL_TEST_MACRO((weigthedMisfitSum != NULL) && (referenceW == NULL),
+  ////                    m_env.rank(),
+  ////                    "uqTgaWClass<P_V,P_M>::computeUsingTemp()",
+  ////                    "weigthedMisfitSum is being requested but not referenceW is supplied");
+
+  const std::vector<double> dummyVec(0);
+  const std::vector<double>* refTimesPtr    (&dummyVec);
+  const std::vector<double>* refTempsPtr    (&dummyVec);
+  const std::vector<double>* refValuesPtr   (&dummyVec);
+  const std::vector<double>* refVariancesPtr(&dummyVec);
+  if (referenceW) {
+    refTimesPtr     = &(referenceW->times    ());
+    refTempsPtr     = &(referenceW->temps    ());
+    refValuesPtr    = &(referenceW->values   ());
+    refVariancesPtr = &(referenceW->variances());
+  }
+  const std::vector<double>& refTimes    (*refTimesPtr    );
+  const std::vector<double>& refTemps    (*refTempsPtr    );
+  const std::vector<double>& refValues   (*refValuesPtr   );
+  const std::vector<double>& refVariances(*refVariancesPtr);
+  unsigned int refSize = refTimes.size();
+
+  unsigned int sizeForResize = 100;
   this->resetInternalValues();
-  m_times.resize(1000,0.);
-  m_temps.resize(1000,0.);
-  m_ws.resize   (1000,0.);
-  m_grads.clear();
+  ////m_times.resize(sizeForResize,0.);
+  ////m_temps.resize(sizeForResize,0.);
+  m_ws.resize   (sizeForResize,0.);
+  ////m_grads.clear();
 
   uqTgaWDotInfoStruct wDotInfo = {params[0],params[1],&m_temperatureFunctionObj,false};
 
@@ -385,8 +445,8 @@ uqTgaComputableWClass<P_V,P_M>::computeUsingTemp(
   currentW[0]=1.;
 
   unsigned int loopId = 0;
-  m_times[loopId] = currentTime;
-  m_temps[loopId] = currentTemp;
+  ////m_times[loopId] = currentTime;
+  ////m_temps[loopId] = currentTemp;
   m_ws   [loopId] = currentW[0];
 
   double previousTemp = 0.;
@@ -394,9 +454,10 @@ uqTgaComputableWClass<P_V,P_M>::computeUsingTemp(
   previousW[0]=1.;
   unsigned int misfitId = 0;
 
+  double sumValue = 0.;
   bool continueOnWhile = true;
   if (referenceW) {
-    continueOnWhile = (currentTemp < maximumTemp) && (misfitId < referenceW->values().size());
+    continueOnWhile = (currentTemp < maximumTemp) && (misfitId < refSize);
   }
   else if (maximumTemp > 0) {
     continueOnWhile = (currentTemp < maximumTemp); // COMPATIBILITY WITH OLD VERSION
@@ -409,42 +470,42 @@ uqTgaComputableWClass<P_V,P_M>::computeUsingTemp(
     status = gsl_odeiv_evolve_apply(e, c, s, &sysTemp, &currentTemp, maximumTemp, &deltaTemp, currentW); // COMPATIBILITY WITH OLD VERSION
     UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
                         params.env().rank(),
-                        "uqTgaComputableWClass<P_V,P_M>::computeUsingTemp()",
+                        "uqTgaWClass<P_V,P_M>::computeUsingTemp()",
                         "gsl_odeiv_evolve_apply() failed");
-    currentTime = m_temperatureFunctionObj.inverseValue(currentTemp);
+    ////currentTime = m_temperatureFunctionObj.inverseValue(currentTemp); // Comment for performance reasons
     if (currentW[0] < 1.e-6) currentW[0] = 0.;
 
     loopId++;
-    if (loopId >= m_times.size()) {
-      m_times.resize(m_times.size()+1000,0.);
-      m_temps.resize(m_temps.size()+1000,0.);
-      m_ws.resize   (m_ws.size()   +1000,0.);
-      m_grads.clear();
+    if (loopId >= m_ws.size()) {
+      ////m_times.resize(m_times.size()+sizeForResize,0.);
+      ////m_temps.resize(m_temps.size()+sizeForResize,0.);
+      m_ws.resize   (m_ws.size()   +sizeForResize,0.);
+      ////m_grads.clear();
     }
 
-    m_times[loopId] = currentTime;
-    m_temps[loopId] = currentTemp;
+    ////m_times[loopId] = currentTime;
+    ////m_temps[loopId] = currentTemp;
     m_ws   [loopId] = currentW[0];
 
     if (referenceW) {
-      while ((misfitId < referenceW->values().size()       ) &&
-             (previousTemp <= referenceW->temps()[misfitId]) &&
-             (referenceW->temps()[misfitId] <= currentTemp )) {
-        double tmpValue = (referenceW->temps()[misfitId]-previousTemp)*(currentW[0]-previousW[0])/(currentTemp-previousTemp) + previousW[0];
-        double diff = tmpValue - referenceW->values()[misfitId];
+      while ((misfitId           < refSize            ) &&
+             (previousTemp       <= refTemps[misfitId]) &&
+             (refTemps[misfitId] <= currentTemp       )) {
+        double tmpValue = (refTemps[misfitId]-previousTemp)*(currentW[0]-previousW[0])/(currentTemp-previousTemp) + previousW[0];
+        double diff = tmpValue - refValues[misfitId];
 
-        if (weigthedMisfitSum) *weigthedMisfitSum += diff*diff/referenceW->variances()[misfitId]; //COMPATIBILITY WITH OLD VERSION
-
+        sumValue += diff*diff/refVariances[misfitId]; //COMPATIBILITY WITH OLD VERSION
+#if 0
         if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-          std::cout << "In uqTgaComputableWClass<P_V,P_M>::computeUsingTemp()"
+          std::cout << "In uqTgaWClass<P_V,P_M>::computeUsingTemp()"
                     << ", misfitId = "     << misfitId
-                    << ", measuredTemp = " << referenceW->temps()[misfitId]
-                    << ", measuredW = "    << referenceW->values()[misfitId]
+                    << ", measuredTemp = " << refTemps[misfitId]
+                    << ", measuredW = "    << refValues[misfitId]
                     << ": computedW = "    << tmpValue
                     << ", diffValue = "    << diff
                     << std::endl;
         }
-
+#endif
         misfitId++;
       }
     }
@@ -453,7 +514,7 @@ uqTgaComputableWClass<P_V,P_M>::computeUsingTemp(
     previousW[0] = currentW[0];
 
     if (referenceW) {
-      continueOnWhile = (currentTemp < maximumTemp) && (misfitId < referenceW->values().size());
+      continueOnWhile = (currentTemp < maximumTemp) && (misfitId < refSize);
     }
     else if (maximumTemp > 0) {
       continueOnWhile = (currentTemp < maximumTemp); // COMPATIBILITY WITH OLD VERSION
@@ -462,18 +523,19 @@ uqTgaComputableWClass<P_V,P_M>::computeUsingTemp(
       continueOnWhile = (currentW[0] > 0.);
     }
   }
+  if (weigthedMisfitSum) *weigthedMisfitSum = sumValue;
 
-  m_times.resize(loopId+1);
-  m_temps.resize(loopId+1);
+  ////m_times.resize(loopId+1);
+  ////m_temps.resize(loopId+1);
   m_ws.resize   (loopId+1);
-  m_grads.clear();
-
+  ////m_grads.clear();
+#if 0
   if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
     char stringA[64];
     char stringE[64];
     sprintf(stringA,"%12.6e",params[0]);
     sprintf(stringE,"%12.6e",params[1]);
-    std::cout << "In uqTgaComputableWClass<P_V,P_M>::computeUsingTemp()"
+    std::cout << "In uqTgaWClass<P_V,P_M>::computeUsingTemp()"
               << ", A = "                          << stringA
               << ", E = "                          << stringE
               << ", beta = "                       << m_temperatureFunctionObj.deriv(0.)
@@ -483,29 +545,30 @@ uqTgaComputableWClass<P_V,P_M>::computeUsingTemp(
               << ", final w = "                    << m_ws   [m_ws.size()   -1]
               << std::endl;
     if (weigthedMisfitSum) {
-      std::cout << " and with referenceW->times()[max] = " << referenceW->times()[referenceW->times().size()-1]
-                << ", weigthedMisfitSum = "                << *weigthedMisfitSum
+      std::cout << " and with refTimes[max] = " << refTimes[refSize-1]
+                << ", weigthedMisfitSum = "     << *weigthedMisfitSum
                 << std::endl;
     }
   }
-
+#endif
   gsl_odeiv_evolve_free (e);
   gsl_odeiv_control_free(c);
   gsl_odeiv_step_free   (s);
 
   return;
 }
+#endif
 
 template<class P_V, class P_M>
 void
-uqTgaComputableWClass<P_V,P_M>::interpolate(
+uqTgaWClass<P_V,P_M>::interpolate(
   double        time,
   unsigned int& startingTimeId, // input and output
   double*       wValue,
   P_V*          wGrad) const
 {
   unsigned int tmpSize = m_times.size(); // Yes, 'm_grads'
-  //std::cout << "In uqTgaComputableWClass<P_V,P_M>::grad()"
+  //std::cout << "In uqTgaWClass<P_V,P_M>::grad()"
   //          << ": time = "           << time
   //          << ", m_times.size() = " << tmpSize
   //          << ", m_times[0] = "     << m_times[0]
@@ -514,27 +577,27 @@ uqTgaComputableWClass<P_V,P_M>::interpolate(
 
   UQ_FATAL_TEST_MACRO(tmpSize == 0,
                       m_env.rank(),
-                      "uqTgaComputableW<P_V,P_M>::grad()",
+                      "uqTgaW<P_V,P_M>::grad()",
                       "m_times.size() = 0");
 
   UQ_FATAL_TEST_MACRO(startingTimeId >= tmpSize,
                       m_env.rank(),
-                      "uqTgaComputableW<P_V,P_M>::grad()",
+                      "uqTgaW<P_V,P_M>::grad()",
                       "startingTimeId is too big");
 
   UQ_FATAL_TEST_MACRO(time < m_times[0],
                       m_env.rank(),
-                      "uqTgaComputableW<P_V,P_M>::grad()",
+                      "uqTgaW<P_V,P_M>::grad()",
                       "time < m_times[0]");
 
   UQ_FATAL_TEST_MACRO(m_times[tmpSize-1] < time,
                       m_env.rank(),
-                      "uqTgaComputableW<P_V,P_M>::grad()",
+                      "uqTgaW<P_V,P_M>::grad()",
                       "m_times[max] < time");
 
   UQ_FATAL_TEST_MACRO(wGrad && (m_grads[0] == NULL),
                       m_env.rank(),
-                      "uqTgaComputableW<P_V,P_M>::grad()",
+                      "uqTgaW<P_V,P_M>::grad()",
                       "m_grads[0] == NULL");
 
   unsigned int i = 0;
@@ -567,42 +630,42 @@ uqTgaComputableWClass<P_V,P_M>::interpolate(
 
 template<class P_V, class P_M>
 const std::vector<double>&
-uqTgaComputableWClass<P_V,P_M>::times() const
+uqTgaWClass<P_V,P_M>::times() const
 {
   return m_times;
 }
 
 template<class P_V, class P_M>
 const std::vector<double>&
-uqTgaComputableWClass<P_V,P_M>::temps() const
+uqTgaWClass<P_V,P_M>::temps() const
 {
   return m_temps;
 }
 
 template<class P_V, class P_M>
 const std::vector<double>&
-uqTgaComputableWClass<P_V,P_M>::ws() const
+uqTgaWClass<P_V,P_M>::ws() const
 {
   return m_ws;
 }
 
 template<class P_V, class P_M>
 const std::vector<P_V*>&
-uqTgaComputableWClass<P_V,P_M>::grads() const
+uqTgaWClass<P_V,P_M>::grads() const
 {
   return m_grads;
 }
 
 template<class P_V, class P_M>
 const uqBaseEnvironmentClass&
-uqTgaComputableWClass<P_V,P_M>::env() const
+uqTgaWClass<P_V,P_M>::env() const
 {
   return m_env;
 }
 
 template<class P_V, class P_M>
 void
-uqTgaComputableWClass<P_V,P_M>::printForMatlab(
+uqTgaWClass<P_V,P_M>::printForMatlab(
   std::ofstream&     ofs,
   const std::string& prefixName) const
 {

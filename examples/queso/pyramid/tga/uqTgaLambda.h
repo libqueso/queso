@@ -20,7 +20,7 @@
 #ifndef __UQ_TGA_LAMBDA_W_H__
 #define __UQ_TGA_LAMBDA_W_H__
 
-#include <uqTgaComputableW.h>
+#include <uqTgaW.h>
 #include <uqTgaDefines.h>
 #include <uqTgaStorage.h>
 #include <uqDefines.h>
@@ -32,12 +32,12 @@ template<class P_V,class P_M>
 struct
 uqTgaLambdaInfoStruct
 {
-  double                                A;
-  double                                E;
-  const uqBase1D1DFunctionClass*        temperatureFunctionObj;
-  bool                                  computeGradAlso;
-  const uqTgaStorageClass<P_V,P_M>*     weigthedMisfitData;
-  const uqTgaComputableWClass<P_V,P_M>* wObj;
+  double                            A;
+  double                            E;
+  const uqBase1D1DFunctionClass*    temperatureFunctionObj;
+  bool                              computeGradAlso;
+  const uqTgaStorageClass<P_V,P_M>* weigthedMisfitData;
+  const uqTgaWClass      <P_V,P_M>* wObj;
 };
 
 template<class P_V,class P_M>
@@ -102,10 +102,11 @@ public:
                    const uqBase1D1DFunctionClass&     temperatureFunctionObj);
  ~uqTgaLambdaClass();
 
-        void                 compute(const P_V&                            params,
-                                     bool                                  computeGradAlso,
-                                     const uqTgaStorageClass<P_V,P_M>&     weigthedMisfitData,
-                                     const uqTgaComputableWClass<P_V,P_M>& wObj);
+        void                 compute(const P_V&                        params,
+                                     double                            maximumDeltaTime,
+                                     bool                              computeGradAlso,
+                                     const uqTgaStorageClass<P_V,P_M>& weigthedMisfitData,
+                                     const uqTgaWClass      <P_V,P_M>& wObj);
         void                 interpolate(double        time,
                                          unsigned int& startingTimeId,
                                          double*       lambdaValue,
@@ -174,10 +175,11 @@ uqTgaLambdaClass<P_V,P_M>::resetInternalValues()
 template<class P_V, class P_M>
 void
 uqTgaLambdaClass<P_V,P_M>::compute(
-  const P_V&                            params,
-  bool                                  computeGradAlso,
-  const uqTgaStorageClass<P_V,P_M>&     weigthedMisfitData,
-  const uqTgaComputableWClass<P_V,P_M>& wObj)
+  const P_V&                        params,
+  double                            maximumDeltaTime,
+  bool                              computeGradAlso,
+  const uqTgaStorageClass<P_V,P_M>& weigthedMisfitData,
+  const uqTgaWClass      <P_V,P_M>& wObj)
 {
   this->resetInternalValues();
 
@@ -208,6 +210,7 @@ uqTgaLambdaClass<P_V,P_M>::compute(
   double currentTimeTilde = 0.;
   double equivalentTime   = maximumTimeTilde - currentTimeTilde;
   double deltaTimeTilde   = 5.;
+  if (maximumDeltaTime > 0) deltaTimeTilde = maximumDeltaTime;
 
   double currentLambdaTilde[numLambdaComponents];
   currentLambdaTilde[0]=0.;
@@ -230,13 +233,14 @@ uqTgaLambdaClass<P_V,P_M>::compute(
   while (currentTimeTilde < maximumTimeTilde) {
     int status = 0;
     if (weigthedMisfitData.dataIsContinuousWithTime()) {
-      double nextTimeTilde = std::min(maximumTimeTilde,currentTimeTilde+deltaTimeTilde);
+      double nextTimeTilde = maximumTimeTilde;
+      if (maximumDeltaTime > 0) nextTimeTilde = std::min(maximumTimeTilde,currentTimeTilde+maximumDeltaTime);
       status = gsl_odeiv_evolve_apply(e, c, s, &sysTime, &currentTimeTilde, nextTimeTilde, &deltaTimeTilde, currentLambdaTilde);
       UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
                           params.env().rank(),
-                          "uqTgaComputableWClass<P_V,P_M>::compute()",
+                          "uqTgaWClass<P_V,P_M>::compute()",
                           "gsl_odeiv_evolve_apply() failed");
-      deltaTimeTilde = std::min(5.,deltaTimeTilde);
+      if (maximumDeltaTime > 0) deltaTimeTilde = std::min(maximumDeltaTime,deltaTimeTilde);
       if ((m_env.verbosity() >= 99) && (m_env.rank() == 0)) {
         std::cout << "In uqTgaLambdaClass::compute()"
                   << ": currentTimeTilde = "      << currentTimeTilde
@@ -292,7 +296,7 @@ uqTgaLambdaClass<P_V,P_M>::compute(
     }
   }
 
-  if ((m_env.verbosity() >= 0) && (m_env.rank() == 0)) {
+  if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
     char stringA[64];
     char stringE[64];
     sprintf(stringA,"%12.6e",params[0]);

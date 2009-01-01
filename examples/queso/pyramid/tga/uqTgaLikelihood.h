@@ -22,7 +22,7 @@
 
 #include <uqTgaDefines.h>
 #include <uqTgaStorage.h>
-#include <uqTgaComputableW.h>
+#include <uqTgaW.h>
 #include <uqTgaLambda.h>
 #include <uqTgaIntegrals.h>
 #include <uqDefines.h>
@@ -43,27 +43,24 @@ uqTgaLikelihoodInfoStruct
  ~uqTgaLikelihoodInfoStruct();
 
   void setReferenceW       (const uqTgaStorageClass<P_V,P_M>& referenceW);
-  void setPlottingVariables(uqTgaStorageClass<P_V,P_M>* refWPtrForPlot,
-                            uqTgaStorageClass<P_V,P_M>* wPtrForPlot,
-                            uqTgaStorageClass<P_V,P_M>* wAPtrForPlot,
-                            uqTgaStorageClass<P_V,P_M>* wEPtrForPlot,
-                            uqTgaStorageClass<P_V,P_M>* misfitPtrForPlot,
-                            uqTgaStorageClass<P_V,P_M>* lambdaPtrForPlot,
-                            uqTgaStorageClass<P_V,P_M>* lambdaAPtrForPlot,
-                            uqTgaStorageClass<P_V,P_M>* lambdaEPtrForPlot);
+  void setCheckingFlag     (bool value);
 
   const uqVectorSpaceClass <P_V,P_M>& m_paramSpace;
   uqBase1D1DFunctionClass*            m_temperatureFunctionObj;
   uqTgaStorageClass        <P_V,P_M>* m_referenceW;
+  uqTgaWClass              <P_V,P_M>* m_wObj;
+  uqTgaLambdaClass         <P_V,P_M>* m_lambdaObj;
+  uqTgaStorageClass        <P_V,P_M>* m_weigthedMisfitData;
 
-  mutable uqTgaStorageClass<P_V,P_M>* m_refWPtrForPlot;
-  mutable uqTgaStorageClass<P_V,P_M>* m_wPtrForPlot;
-  mutable uqTgaStorageClass<P_V,P_M>* m_wAPtrForPlot;
-  mutable uqTgaStorageClass<P_V,P_M>* m_wEPtrForPlot;
-  mutable uqTgaStorageClass<P_V,P_M>* m_misfitPtrForPlot;
-  mutable uqTgaStorageClass<P_V,P_M>* m_lambdaPtrForPlot;
-  mutable uqTgaStorageClass<P_V,P_M>* m_lambdaAPtrForPlot;
-  mutable uqTgaStorageClass<P_V,P_M>* m_lambdaEPtrForPlot;
+  bool                        m_checkingFlag;
+  uqTgaStorageClass<P_V,P_M>* m_refWPtrForPlot;
+  uqTgaStorageClass<P_V,P_M>* m_wPtrForPlot;
+  uqTgaStorageClass<P_V,P_M>* m_wAPtrForPlot;
+  uqTgaStorageClass<P_V,P_M>* m_wEPtrForPlot;
+  uqTgaStorageClass<P_V,P_M>* m_misfitPtrForPlot;
+  uqTgaStorageClass<P_V,P_M>* m_lambdaPtrForPlot;
+  uqTgaStorageClass<P_V,P_M>* m_lambdaAPtrForPlot;
+  uqTgaStorageClass<P_V,P_M>* m_lambdaEPtrForPlot;
 };
 
 template<class P_V,class P_M>
@@ -74,6 +71,10 @@ uqTgaLikelihoodInfoStruct<P_V,P_M>::uqTgaLikelihoodInfoStruct(
   m_paramSpace            (paramSpace),
   m_temperatureFunctionObj(NULL),
   m_referenceW            (NULL),
+  m_wObj                  (NULL),
+  m_lambdaObj             (NULL),
+  m_weigthedMisfitData    (NULL),
+  m_checkingFlag          (false),
   m_refWPtrForPlot        (NULL),
   m_wPtrForPlot           (NULL),
   m_wAPtrForPlot          (NULL),
@@ -101,6 +102,10 @@ uqTgaLikelihoodInfoStruct<P_V,P_M>::uqTgaLikelihoodInfoStruct(
   fscanf(inp,"%lf %lf %d",&beta,&initialTemp,&numMeasurements);
   beta /= 60.;
   m_temperatureFunctionObj = new uqLinear1D1DFunctionClass(-INFINITY,INFINITY,0.,initialTemp,beta);
+
+  m_wObj               = new uqTgaWClass      <P_V,P_M>(m_paramSpace, *m_temperatureFunctionObj);
+  m_lambdaObj          = new uqTgaLambdaClass <P_V,P_M>(m_paramSpace, *m_temperatureFunctionObj);
+  m_weigthedMisfitData = new uqTgaStorageClass<P_V,P_M>();
 
   std::vector<double> measuredTimes(numMeasurements,0.);
   std::vector<double> measuredTemps(numMeasurements,0.);
@@ -146,7 +151,18 @@ uqTgaLikelihoodInfoStruct<P_V,P_M>::uqTgaLikelihoodInfoStruct(
 template<class P_V,class P_M>
 uqTgaLikelihoodInfoStruct<P_V,P_M>::~uqTgaLikelihoodInfoStruct()
 {
+  if (m_refWPtrForPlot   ) delete m_refWPtrForPlot;
+  if (m_wPtrForPlot      ) delete m_wPtrForPlot;
+  if (m_wAPtrForPlot     ) delete m_wAPtrForPlot;
+  if (m_wEPtrForPlot     ) delete m_wEPtrForPlot;
+  if (m_misfitPtrForPlot ) delete m_misfitPtrForPlot;
+  if (m_lambdaPtrForPlot ) delete m_lambdaPtrForPlot;
+  if (m_lambdaAPtrForPlot) delete m_lambdaAPtrForPlot;
+  if (m_lambdaEPtrForPlot) delete m_lambdaEPtrForPlot;
+
   delete m_referenceW;
+  delete m_lambdaObj;
+  delete m_wObj;
   delete m_temperatureFunctionObj;
 }
 
@@ -165,27 +181,25 @@ uqTgaLikelihoodInfoStruct<P_V,P_M>::setReferenceW(const uqTgaStorageClass<P_V,P_
 
 template<class P_V,class P_M>
 void
-uqTgaLikelihoodInfoStruct<P_V,P_M>::setPlottingVariables(
-  uqTgaStorageClass<P_V,P_M>* refWPtrForPlot,
-  uqTgaStorageClass<P_V,P_M>* wPtrForPlot,
-  uqTgaStorageClass<P_V,P_M>* wAPtrForPlot,
-  uqTgaStorageClass<P_V,P_M>* wEPtrForPlot,
-  uqTgaStorageClass<P_V,P_M>* misfitPtrForPlot,
-  uqTgaStorageClass<P_V,P_M>* lambdaPtrForPlot,
-  uqTgaStorageClass<P_V,P_M>* lambdaAPtrForPlot,
-  uqTgaStorageClass<P_V,P_M>* lambdaEPtrForPlot)
+uqTgaLikelihoodInfoStruct<P_V,P_M>::setCheckingFlag(bool value)
 {
-  m_refWPtrForPlot    = refWPtrForPlot;
-  m_wPtrForPlot       = wPtrForPlot;
-  m_wAPtrForPlot      = wAPtrForPlot;
-  m_wEPtrForPlot      = wEPtrForPlot;
-  m_misfitPtrForPlot  = misfitPtrForPlot;
-  m_lambdaPtrForPlot  = lambdaPtrForPlot;
-  m_lambdaAPtrForPlot = lambdaAPtrForPlot;
-  m_lambdaEPtrForPlot = lambdaEPtrForPlot;
-
+  m_checkingFlag = value;
   return;
 }
+
+// Just declaration of checking routine here: actual code is below
+template<class P_V,class P_M>
+void
+uqTgaLikelihoodChecking(
+  const P_V&                          paramValues,
+  const uqTgaWClass      <P_V,P_M>&   wObj,
+  const uqTgaLambdaClass <P_V,P_M>&   lambdaObj,
+  bool                                wAndLambdaGradsAreAlsoAvaiable,
+  const uqTgaStorageClass<P_V,P_M>&   weigthedMisfitData,
+  const P_V*                          tmpGradVector,
+  const P_M*                          tmpHessianMatrix,
+  const P_V*                          tmpHessianEffect,
+  uqTgaLikelihoodInfoStruct<P_V,P_M>& info);
 
 // The actual (user defined) likelihood routine
 template<class P_V,class P_M>
@@ -210,52 +224,61 @@ uqTgaLikelihoodRoutine(
 
   bool computeLambda = false;
   bool computeWAndLambdaGradsAlso = false;
-  bool useOdesWithDerivativeWrtTime = false; // COMPATIBILITY WITH OLD VERSION
 
+#ifdef QUESO_TGA_USES_OLD_COMPATIBLE_CODE
+#else
   if (gradVector) computeLambda = true;
   if (hessianMatrix || hessianEffect) {
     computeLambda              = true;
     computeWAndLambdaGradsAlso = true;
   }
-  if (computeLambda || computeWAndLambdaGradsAlso) useOdesWithDerivativeWrtTime = true;
+#endif
+
+  double wMaxDeltaTime      = 0.;
+  double lambdaMaxDeltaTime = 0.;
+  if (computeLambda) {
+    wMaxDeltaTime      = .1;
+    lambdaMaxDeltaTime = 5.;
+  }
 
   double resultValue = 0.;
-  const std::vector<uqTgaLikelihoodInfoStruct<P_V,P_M> *>& info = *((const std::vector<uqTgaLikelihoodInfoStruct<P_V,P_M> *> *) functionDataPtr);
+  const std::vector<uqTgaLikelihoodInfoStruct<P_V,P_M> *>& vecInfo = *((const std::vector<uqTgaLikelihoodInfoStruct<P_V,P_M> *> *) functionDataPtr);
 
   // Loop on scenarios
-  for (unsigned int i = 0; i < info.size(); ++i) {
+  for (unsigned int i = 0; i < vecInfo.size(); ++i) {
+    uqTgaLikelihoodInfoStruct<P_V,P_M>& info = *(vecInfo[i]);
+    uqTgaWClass      <P_V,P_M>& wObj               = *(info.m_wObj);
+    uqTgaLambdaClass <P_V,P_M>& lambdaObj          = *(info.m_lambdaObj);
+    uqTgaStorageClass<P_V,P_M>& weigthedMisfitData = *(info.m_weigthedMisfitData);
+
     /////////////////////////////////////////////////////////////////////////////
     // Compute W
     // Compute contribution from this scenario to the likelihood ("weigthedMisfitSum")
     /////////////////////////////////////////////////////////////////////////////
-    uqTgaComputableWClass<P_V,P_M> wObj(info[i]->m_paramSpace,
-                                        *(info[i]->m_temperatureFunctionObj));
-
-    double weigthedMisfitSum = 0.; // COMPATIBILITY WITH OLD VERSION
-    uqTgaStorageClass<P_V,P_M> weigthedMisfitData(info[i]->m_referenceW->dataIsContinuousWithTime());
-    if (useOdesWithDerivativeWrtTime) {
-      wObj.computeUsingTime(paramValues,
-                            computeWAndLambdaGradsAlso,
-                            info[i]->m_referenceW,
-                            &weigthedMisfitSum,
-                            &weigthedMisfitData);
-    }
-    else {
-      wObj.computeUsingTemp(paramValues,
-                            1900., // COMPATIBILITY WITH OLD VERSION
-                            info[i]->m_referenceW,
-                            &weigthedMisfitSum);
-    }
+    double weigthedMisfitSum = 0.;
+#ifdef QUESO_TGA_USES_OLD_COMPATIBLE_CODE
+    wObj.computeUsingTemp(paramValues,
+                          1900., // COMPATIBILITY WITH OLD VERSION
+                          info.m_referenceW,
+                          &weigthedMisfitSum);
+#else
+    wObj.compute(paramValues,
+                 0.,
+                 wMaxDeltaTime,
+                 computeWAndLambdaGradsAlso,
+                 info.m_referenceW,
+                 &weigthedMisfitSum,
+                 &weigthedMisfitData);
+#endif
 
     resultValue += weigthedMisfitSum;
 
     /////////////////////////////////////////////////////////////////////////////
     // Compute Lambda, if necessary
     /////////////////////////////////////////////////////////////////////////////
-    uqTgaLambdaClass<P_V,P_M> lambdaObj(info[i]->m_paramSpace,
-                                        *(info[i]->m_temperatureFunctionObj));
     if (computeLambda) {
       lambdaObj.compute(paramValues,
+                        lambdaMaxDeltaTime,
                         computeWAndLambdaGradsAlso,
                         weigthedMisfitData,
                         wObj);
@@ -266,101 +289,50 @@ uqTgaLikelihoodRoutine(
     // Compute contribution from this scenario to hessianMatrix and/or hessianEffect
     /////////////////////////////////////////////////////////////////////////////
     P_V* tmpVector = NULL;
-    if (gradVector) tmpVector = new P_V(info[i]->m_paramSpace.zeroVector());
+    if (gradVector) tmpVector = new P_V(info.m_paramSpace.zeroVector());
 
     P_M* tmpMatrix = NULL;
-    if (hessianMatrix || hessianEffect) tmpMatrix = info[i]->m_paramSpace.newMatrix();
+    P_V* tmpEffect = NULL;
+    if (hessianMatrix || hessianEffect) {
+      tmpMatrix = info.m_paramSpace.newMatrix();
+      tmpEffect = new P_V(info.m_paramSpace.zeroVector());
+    }
 
-    if (gradVector || hessianMatrix || hessianEffect) {
+    if (computeLambda) { // Same effect as "if (gradVector || hessianMatrix || hessianEffect) {"
       unsigned int tmpSize = weigthedMisfitData.times().size();
       double lowerIntegralLimit = 0.; //weigthedMisfitData.times()[0]; // ????
       double upperIntegralLimit = weigthedMisfitData.times()[tmpSize-1];
       uqTgaIntegrals<P_V,P_M>(paramValues,
-                              *(info[i]->m_temperatureFunctionObj),
+                              *(info.m_temperatureFunctionObj),
                               lowerIntegralLimit,
                               upperIntegralLimit,
                               wObj,
                               lambdaObj,
                               tmpVector,
                               tmpMatrix);
+      if (hessianEffect) *tmpEffect = ((*tmpMatrix) * paramValues);
+
       if (gradVector)    *gradVector    += *tmpVector;
       if (hessianMatrix) *hessianMatrix += *tmpMatrix;
-      if (hessianEffect) *hessianEffect += ((*tmpMatrix) * paramValues);
+      if (hessianEffect) *hessianEffect += *tmpEffect;
     }
 
+    /////////////////////////////////////////////////////////////////////////////
+    // Store computed data, if requested
+    // Update some vector<double>'s in 'info', in order to be plotted afterwards
+    /////////////////////////////////////////////////////////////////////////////
+    if (info.m_checkingFlag) uqTgaLikelihoodChecking<P_V,P_M>(paramValues,
+                                                              wObj,
+                                                              lambdaObj,
+                                                              computeWAndLambdaGradsAlso,
+                                                              weigthedMisfitData,
+                                                              tmpVector,
+                                                              tmpMatrix,
+                                                              tmpEffect,
+                                                              info);
     if (tmpVector) delete tmpVector;
     if (tmpMatrix) delete tmpMatrix;
-
-    /////////////////////////////////////////////////////////////////////////////
-    // Store computed dara, if requested and if available
-    /////////////////////////////////////////////////////////////////////////////
-    if (info[i]->m_refWPtrForPlot) info[i]->m_refWPtrForPlot->set(info[i]->m_referenceW->times(),
-                                                                  info[i]->m_referenceW->temps(),
-                                                                  info[i]->m_referenceW->values(),
-                                                                  &info[i]->m_referenceW->variances());
-
-    if (info[i]->m_wPtrForPlot) info[i]->m_wPtrForPlot->set(wObj.times(),
-                                                            wObj.temps(),
-                                                            wObj.ws(),
-                                                            NULL);
-
-    if (info[i]->m_wAPtrForPlot) {
-      unsigned int tmpSize = wObj.times().size();
-      std::vector<double> tmpVec(tmpSize,0.);
-      if (computeWAndLambdaGradsAlso) for (unsigned int j = 0; j < tmpSize; ++j) {
-        tmpVec[j] = (*(wObj.grads()[j]))[0];
-      }
-      info[i]->m_wAPtrForPlot->set(wObj.times(),
-                                   wObj.temps(),
-                                   tmpVec,
-                                   NULL);
-    }
-
-    if (info[i]->m_wEPtrForPlot) {
-      unsigned int tmpSize = wObj.times().size();
-      std::vector<double> tmpVec(tmpSize,0.);
-      if (computeWAndLambdaGradsAlso) for (unsigned int j = 0; j < tmpSize; ++j) {
-        tmpVec[j] = (*(wObj.grads()[j]))[1];
-      }
-      info[i]->m_wEPtrForPlot->set(wObj.times(),
-                                   wObj.temps(),
-                                   tmpVec,
-                                   NULL);
-    }
-
-    if (info[i]->m_misfitPtrForPlot) info[i]->m_misfitPtrForPlot->set(weigthedMisfitData.times(),
-                                                                      weigthedMisfitData.temps(),
-                                                                      weigthedMisfitData.values(),
-                                                                      NULL);
-
-    if (info[i]->m_lambdaPtrForPlot) info[i]->m_lambdaPtrForPlot->set(lambdaObj.times(),
-                                                                      lambdaObj.temps(),
-                                                                      lambdaObj.lambdas(),
-                                                                      NULL);
-
-    if (info[i]->m_lambdaAPtrForPlot) {
-      unsigned int tmpSize = lambdaObj.times().size();
-      std::vector<double> tmpVec(tmpSize,0.);
-      if (computeWAndLambdaGradsAlso) for (unsigned int j = 0; j < tmpSize; ++j) {
-        tmpVec[j] = (*(lambdaObj.grads()[j]))[0];
-      }
-      info[i]->m_lambdaAPtrForPlot->set(lambdaObj.times(),
-                                        lambdaObj.temps(),
-                                        tmpVec,
-                                        NULL);
-    }
-
-    if (info[i]->m_lambdaEPtrForPlot) {
-      unsigned int tmpSize = lambdaObj.times().size();
-      std::vector<double> tmpVec(tmpSize,0.);
-      if (computeWAndLambdaGradsAlso) for (unsigned int j = 0; j < tmpSize; ++j) {
-        tmpVec[j] = (*(lambdaObj.grads()[j]))[1];
-      }
-      info[i]->m_lambdaEPtrForPlot->set(lambdaObj.times(),
-                                        lambdaObj.temps(),
-                                        tmpVec,
-                                        NULL);
-    }
+    if (tmpEffect) delete tmpEffect;
   }
 
   if ((paramValues.env().verbosity() >= 30) && (paramValues.env().rank() == 0)) {
@@ -368,5 +340,269 @@ uqTgaLikelihoodRoutine(
   }
 
   return resultValue;
+}
+
+template<class P_V,class P_M>
+void
+uqTgaLikelihoodChecking(
+  const P_V&                          paramValues,
+  const uqTgaWClass      <P_V,P_M>&   wObj,
+  const uqTgaLambdaClass <P_V,P_M>&   lambdaObj,
+  bool                                wAndLambdaGradsAreAlsoAvaiable,
+  const uqTgaStorageClass<P_V,P_M>&   weigthedMisfitData,
+  const P_V*                          tmpGradVector,
+  const P_M*                          tmpHessianMatrix,
+  const P_V*                          tmpHessianEffect,
+  uqTgaLikelihoodInfoStruct<P_V,P_M>& info)
+{
+  //////////////////////////////////////////////////////////////////
+  // Step 1 of 3: Store data to be printed
+  //////////////////////////////////////////////////////////////////
+
+  if (info.m_refWPtrForPlot    == NULL) info.m_refWPtrForPlot    = new uqTgaStorageClass<P_V,P_M>();
+  if (info.m_wPtrForPlot       == NULL) info.m_wPtrForPlot       = new uqTgaStorageClass<P_V,P_M>();
+  if (info.m_wAPtrForPlot      == NULL) info.m_wAPtrForPlot      = new uqTgaStorageClass<P_V,P_M>();
+  if (info.m_wEPtrForPlot      == NULL) info.m_wEPtrForPlot      = new uqTgaStorageClass<P_V,P_M>();
+  if (info.m_misfitPtrForPlot  == NULL) info.m_misfitPtrForPlot  = new uqTgaStorageClass<P_V,P_M>();
+  if (info.m_lambdaPtrForPlot  == NULL) info.m_lambdaPtrForPlot  = new uqTgaStorageClass<P_V,P_M>();
+  if (info.m_lambdaAPtrForPlot == NULL) info.m_lambdaAPtrForPlot = new uqTgaStorageClass<P_V,P_M>();
+  if (info.m_lambdaEPtrForPlot == NULL) info.m_lambdaEPtrForPlot = new uqTgaStorageClass<P_V,P_M>();
+
+  info.m_refWPtrForPlot->set(info.m_referenceW->times(),
+                             info.m_referenceW->temps(),
+                             info.m_referenceW->values(),
+                             &info.m_referenceW->variances(),
+                             info.m_referenceW->dataIsContinuousWithTime());
+
+  info.m_wPtrForPlot->set(wObj.times(),
+                          wObj.temps(),
+                          wObj.ws(),
+                          NULL,
+                          true);
+
+  unsigned int wTmpSize = wObj.times().size();
+  std::vector<double> wTmpVec(wTmpSize,0.);
+
+  if (wAndLambdaGradsAreAlsoAvaiable) for (unsigned int j = 0; j < wTmpSize; ++j) {
+    wTmpVec[j] = (*(wObj.grads()[j]))[0];
+  }
+  info.m_wAPtrForPlot->set(wObj.times(),
+                           wObj.temps(),
+                           wTmpVec,
+                           NULL,
+                           true);
+
+  if (wAndLambdaGradsAreAlsoAvaiable) for (unsigned int j = 0; j < wTmpSize; ++j) {
+    wTmpVec[j] = (*(wObj.grads()[j]))[1];
+  }
+  info.m_wEPtrForPlot->set(wObj.times(),
+                           wObj.temps(),
+                           wTmpVec,
+                           NULL,
+                           true);
+
+  info.m_misfitPtrForPlot->set(weigthedMisfitData.times(),
+                               weigthedMisfitData.temps(),
+                               weigthedMisfitData.values(),
+                               NULL,
+                               weigthedMisfitData.dataIsContinuousWithTime());
+
+  info.m_lambdaPtrForPlot->set(lambdaObj.times(),
+                               lambdaObj.temps(),
+                               lambdaObj.lambdas(),
+                               NULL,
+                               true);
+
+  unsigned int lambdaTmpSize = lambdaObj.times().size();
+  std::vector<double> lambdaTmpVec(lambdaTmpSize,0.);
+
+  if (wAndLambdaGradsAreAlsoAvaiable) for (unsigned int j = 0; j < lambdaTmpSize; ++j) {
+    lambdaTmpVec[j] = (*(lambdaObj.grads()[j]))[0];
+  }
+  info.m_lambdaAPtrForPlot->set(lambdaObj.times(),
+                                lambdaObj.temps(),
+                                lambdaTmpVec,
+                                NULL,
+                                true);
+
+  if (wAndLambdaGradsAreAlsoAvaiable) for (unsigned int j = 0; j < lambdaTmpSize; ++j) {
+    lambdaTmpVec[j] = (*(lambdaObj.grads()[j]))[1];
+  }
+  info.m_lambdaEPtrForPlot->set(lambdaObj.times(),
+                                lambdaObj.temps(),
+                                lambdaTmpVec,
+                                NULL,
+                                true);
+
+  double guessA = paramValues[0];
+  double guessE = paramValues[1];
+
+  double deltaA = guessA * 1.e-6;
+  double deltaE = guessE * 1.e-6;
+
+  //////////////////////////////////////////////////////////////////
+  // Step 2 of 3: Compute gradient(misfit) wrt A and E, using finite differences
+  //////////////////////////////////////////////////////////////////
+  if (tmpGradVector) {
+    P_V tmpParamValues(paramValues);
+
+    if (tmpParamValues.env().rank() == 0) {
+      std::cout << "\nIn uqTgaLikelihoodChecking()"
+                << ": gradWithLM = " << *tmpGradVector
+                << std::endl;
+    }
+
+    if (tmpParamValues.env().rank() == 0) {
+      std::cout << "In uqTgaLikelihoodChecking()"
+                << ": computing gradient(misfit) w.r.t. parameters A and E, using finite differences..."
+                << std::endl;
+    }
+
+    uqTgaWClass<P_V,P_M> tmpW(info.m_paramSpace,
+                              *(info.m_temperatureFunctionObj));
+
+    tmpParamValues[0] = guessA-deltaA;
+    tmpParamValues[1] = guessE;
+    double valueAm = 0.;
+    tmpW.compute(tmpParamValues,
+                 0.,
+                 .1,
+                 false, // computeWAndLambdaGradsAlso
+                 info.m_referenceW,
+                 &valueAm,
+                 NULL);
+    //std::cout << "valueAm = " << valueAm << std::endl;
+
+    tmpParamValues[0] = guessA+deltaA;
+    tmpParamValues[1] = guessE;
+    double valueAp = 0.;
+    tmpW.compute(tmpParamValues,
+                 0.,
+                 .1,
+                 false, // computeWAndLambdaGradsAlso
+                 info.m_referenceW,
+                 &valueAp,
+                 NULL);
+    //std::cout << "valueAp = " << valueAp << std::endl;
+
+    tmpParamValues[0] = guessA;
+    tmpParamValues[1] = guessE-deltaE;
+    double valueEm = 0.;
+    tmpW.compute(tmpParamValues,
+                 0.,
+                 .1,
+                 false, // computeWAndLambdaGradsAlso
+                 info.m_referenceW,
+                 &valueEm,
+                 NULL);
+    //std::cout << "valueEm = " << valueEm << std::endl;
+
+    tmpParamValues[0] = guessA;
+    tmpParamValues[1] = guessE+deltaE;
+    double valueEp = 0.;
+    tmpW.compute(tmpParamValues,
+                 0.,
+                 .1,
+                 false, // computeWAndLambdaGradsAlso
+                 info.m_referenceW,
+                 &valueEp,
+                 NULL);
+    //std::cout << "valueEp = " << valueEp << std::endl;
+
+    P_V gradWithFD(info.m_paramSpace.zeroVector());
+    gradWithFD[0] = (valueAp-valueAm)/2./deltaA;
+    gradWithFD[1] = (valueEp-valueEm)/2./deltaE;
+    if (tmpParamValues.env().rank() == 0) {
+      std::cout << "\nIn uqTgaLikelihoodChecking()"
+                << ": gradWithFD = " << gradWithFD
+                << "\ngrad relative error = " << (gradWithFD - *tmpGradVector).norm2()/gradWithFD.norm2()
+                << std::endl;
+    }
+  }
+
+  //////////////////////////////////////////////////////////////////
+  // Step 3 of 3: Compute Hessian(misfit), wrt A and E, using finite differences
+  //////////////////////////////////////////////////////////////////
+
+  if (tmpHessianMatrix) {
+    P_V tmpParamValues(paramValues);
+    bool savedCheckingFlag = info.m_checkingFlag;
+    info.m_checkingFlag = false; // IMPORTANT
+
+    std::vector<uqTgaLikelihoodInfoStruct<P_V,P_M>* > tmpCalLikelihoodInfoVector(1,NULL);
+    tmpCalLikelihoodInfoVector[0] = &info;
+
+    if (tmpParamValues.env().rank() == 0) {
+      std::cout << "\nIn uqTgaLikelihoodChecking()"
+                << ": hessianWithLM = " << *tmpHessianMatrix
+                << std::endl;
+    }
+
+    // Compute \grad(misfit), using finite differences
+    if (tmpParamValues.env().rank() == 0) {
+      std::cout << "In uqTgaLikelihoodChecking()"
+                << ": computing Hessian(misfit) w.r.t. parameters A and E, using finite differences..."
+                << std::endl;
+    }
+
+    tmpParamValues[0] = guessA-deltaA;
+    tmpParamValues[1] = guessE;
+    P_V grad_Am(info.m_paramSpace.zeroVector());
+    double tmpMisfit = uqTgaLikelihoodRoutine<P_V,P_M>(tmpParamValues,
+                                                       (const void *)&tmpCalLikelihoodInfoVector,
+                                                       &grad_Am,
+                                                       NULL, // Hessian
+                                                       NULL);
+    //std::cout << "grad_Am = " << grad_Am << std::endl;
+
+    tmpParamValues[0] = guessA+deltaA;
+    tmpParamValues[1] = guessE;
+    P_V grad_Ap(info.m_paramSpace.zeroVector());
+    tmpMisfit = uqTgaLikelihoodRoutine<P_V,P_M>(tmpParamValues,
+                                                (const void *)&tmpCalLikelihoodInfoVector,
+                                                &grad_Ap,
+                                                NULL, // Hessian
+                                                NULL);
+    //std::cout << "grad_Ap = " << grad_Ap << std::endl;
+
+    tmpParamValues[0] = guessA;
+    tmpParamValues[1] = guessE-deltaE;
+    P_V grad_Em(info.m_paramSpace.zeroVector());
+    tmpMisfit = uqTgaLikelihoodRoutine<P_V,P_M>(tmpParamValues,
+                                                (const void *)&tmpCalLikelihoodInfoVector,
+                                                &grad_Em,
+                                                NULL, // Hessian
+                                                NULL);
+    //std::cout << "grad_Em = " << grad_Em << std::endl;
+
+    tmpParamValues[0] = guessA;
+    tmpParamValues[1] = guessE+deltaE;
+    P_V grad_Ep(info.m_paramSpace.zeroVector());
+    tmpMisfit = uqTgaLikelihoodRoutine<P_V,P_M>(tmpParamValues,
+                                                (const void *)&tmpCalLikelihoodInfoVector,
+                                                &grad_Ep,
+                                                NULL, // Hessian
+                                                NULL);
+    //std::cout << "grad_Ep = " << grad_Ep << std::endl;
+
+    P_V column1((.5/deltaA)*(grad_Ap-grad_Am));
+    P_V column2((.5/deltaE)*(grad_Ep-grad_Em));
+    P_M* hessianWithFD = info.m_paramSpace.newMatrix();
+    (*hessianWithFD)(0,0)=column1[0];
+    (*hessianWithFD)(1,0)=column1[1];
+    (*hessianWithFD)(0,1)=column2[0];
+    (*hessianWithFD)(1,1)=column2[1];
+    if (tmpParamValues.env().rank() == 0) {
+      std::cout << "\nIn uqTgaLikelihoodChecking()"
+                << ": hessianWithFD = " << *hessianWithFD
+                << "\nhessian absolute error = " << (*hessianWithFD + (-1.*(*tmpHessianMatrix)))
+                << std::endl;
+    }
+    delete hessianWithFD;
+
+    info.m_checkingFlag = savedCheckingFlag; // IMPORTANT
+  }
+
+  return;
 }
 #endif // __UQ_TGA_LIKELIHOOD_H__

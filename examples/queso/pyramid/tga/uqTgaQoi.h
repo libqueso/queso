@@ -21,7 +21,7 @@
 #define __UQ_TGA_QOI_H__
 
 #include <uqTgaDefines.h>
-#include <uqTgaComputableW.h>
+#include <uqTgaW.h>
 #include <uqDefines.h>
 #include <gsl/gsl_odeiv.h>
 #include <gsl/gsl_errno.h>
@@ -47,6 +47,7 @@ uqTgaQoiInfoStruct
   uqBase1D1DFunctionClass*           m_temperatureFunctionObj;
   double                             m_criticalW;
   double                             m_criticalTime;
+  uqTgaWClass<P_V,P_M>*              m_wObj;
 };
 
 template<class P_V,class P_M,class Q_V,class Q_M>
@@ -60,13 +61,15 @@ uqTgaQoiInfoStruct<P_V,P_M,Q_V,Q_M>::uqTgaQoiInfoStruct(
   m_paramSpace            (paramSpace),
   m_temperatureFunctionObj(new uqLinear1D1DFunctionClass(-INFINITY,INFINITY,0.,initialTemp,beta)),
   m_criticalW             (criticalW),
-  m_criticalTime          (criticalTime)
+  m_criticalTime          (criticalTime),
+  m_wObj                  (new uqTgaWClass<P_V,P_M>(m_paramSpace,*m_temperatureFunctionObj))
 {
 }
 
 template<class P_V,class P_M,class Q_V,class Q_M>
 uqTgaQoiInfoStruct<P_V,P_M,Q_V,Q_M>::~uqTgaQoiInfoStruct()
 {
+  delete m_wObj;
   delete m_temperatureFunctionObj;
 }
 
@@ -76,22 +79,22 @@ void uqTgaQoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& q
 {
   const uqTgaQoiInfoStruct<P_V,P_M,Q_V,Q_M>& info = *((const uqTgaQoiInfoStruct<P_V,P_M,Q_V,Q_M> *) functionDataPtr);
 
-  uqTgaComputableWClass<P_V,P_M> wObj(info.m_paramSpace,
-                                      *(info.m_temperatureFunctionObj));
+  uqTgaWClass<P_V,P_M>& wObj = *(info.m_wObj);
                        
-  if (0) {
-    wObj.computeUsingTime(paramValues,
-                          false, // computeGradAlso
-                          NULL,  // referenceW
-                          NULL,
-                          NULL);
-  }
-  else {
-    wObj.computeUsingTemp(paramValues,
-                          info.m_criticalTime*info.m_temperatureFunctionObj->deriv(0.), // Should add initialTemp --> COMPATIBILITY WITH OLD VERSION
-                          NULL,  // referenceW
-                          NULL);
-  }
+#ifdef QUESO_TGA_USES_OLD_COMPATIBLE_CODE
+  wObj.computeUsingTemp(paramValues,
+                        info.m_criticalTime*info.m_temperatureFunctionObj->deriv(0.), // Should add initialTemp --> COMPATIBILITY WITH OLD VERSION
+                        NULL,  // referenceW
+                        NULL);
+#else
+  wObj.compute(paramValues,
+               info.m_criticalTime,
+               0.,
+               false, // computeGradAlso
+               NULL,  // referenceW
+               NULL,
+               NULL);
+#endif
 
   unsigned int tmpSize = wObj.ws().size();
   qoiValues[0] = wObj.ws()[tmpSize-1]; // QoI = mass fraction remaining at critical time

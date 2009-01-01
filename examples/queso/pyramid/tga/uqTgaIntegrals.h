@@ -22,32 +22,35 @@
 
 #include <uqTgaDefines.h>
 #include <uqTgaStorage.h>
-#include <uqTgaComputableW.h>
+#include <uqTgaW.h>
 #include <uqTgaLambda.h>
 #include <uqDefines.h>
 
 template<class P_V,class P_M>
 void
 uqTgaIntegrals(
-  const P_V&                            paramValues,
-  const uqBase1D1DFunctionClass&        temperatureFunctionObj,
-  double                                lowerIntegralTime,
-  double                                upperIntegralTime,
-  const uqTgaComputableWClass<P_V,P_M>& wObj,
-  const uqTgaLambdaClass<P_V,P_M>&      lambdaObj,
-  P_V*                                  LagrangianGrad,
-  P_M*                                  LagrangianHessian)
+  const P_V&                       paramValues,
+  const uqBase1D1DFunctionClass&   temperatureFunctionObj,
+  double                           lowerIntegralTime,
+  double                           upperIntegralTime,
+  const uqTgaWClass     <P_V,P_M>& wObj,
+  const uqTgaLambdaClass<P_V,P_M>& lambdaObj,
+  P_V*                             LagrangianGrad,
+  P_M*                             LagrangianHessian)
 {
   unsigned int wSize = wObj.times().size();
   unsigned int lambdaSize = lambdaObj.times().size();
-  std::cout << "Entering uqTgaIntegrals()"
-            << ", wObj.times()[0] = "        << wObj.times()[0]
-            << ", wObj.times()[max] = "      << wObj.times()[wSize-1]
-            << ", lambdaObj.times()[0] = "   << lambdaObj.times()[0]
-            << ", lambdaObj.times()[max] = " << lambdaObj.times()[lambdaSize-1]
-            << ", lowerIntegralTime = "      << lowerIntegralTime
-            << ", upperIntegralTime = "      << upperIntegralTime
-            << std::endl;
+
+  if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
+    std::cout << "Entering uqTgaIntegrals()"
+              << ", wObj.times()[0] = "        << wObj.times()[0]
+              << ", wObj.times()[max] = "      << wObj.times()[wSize-1]
+              << ", lambdaObj.times()[0] = "   << lambdaObj.times()[0]
+              << ", lambdaObj.times()[max] = " << lambdaObj.times()[lambdaSize-1]
+              << ", lowerIntegralTime = "      << lowerIntegralTime
+              << ", upperIntegralTime = "      << upperIntegralTime
+              << std::endl;
+  }
 
   UQ_FATAL_TEST_MACRO((wObj.times()[0] != lambdaObj.times()[0]),
                       paramValues.env().rank(),
@@ -81,15 +84,17 @@ uqTgaIntegrals(
   double timeIntervalSize = (upperIntegralTime-lowerIntegralTime)/((double)numIntervals);
   double firstTime = lowerIntegralTime+.5*timeIntervalSize;
 
-  std::cout << "In uqTgaIntegrals()"
-            << ": beginning integration loop on time interval "
-            << "["          << lowerIntegralTime
-            << ", "         << upperIntegralTime
-            << "], with = " << numIntervals
-            << " subintervals"
-            << "; wObj.times().size() = "      << wObj.times().size()
-            << ", lambdaObj.times().size() = " << lambdaObj.times().size()
-            << std::endl;
+  if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
+    std::cout << "In uqTgaIntegrals()"
+              << ": beginning integration loop on time interval "
+              << "["          << lowerIntegralTime
+              << ", "         << upperIntegralTime
+              << "], with = " << numIntervals
+              << " subintervals"
+              << "; wObj.times().size() = "      << wObj.times().size()
+              << ", lambdaObj.times().size() = " << lambdaObj.times().size()
+              << std::endl;
+  }
 
   if (LagrangianGrad   ) *LagrangianGrad    *= 0.;
   if (LagrangianHessian) *LagrangianHessian *= 0.;
@@ -143,11 +148,13 @@ uqTgaIntegrals(
   if (LagrangianGrad   ) (*LagrangianGrad   ) *= timeIntervalSize;
   if (LagrangianHessian) (*LagrangianHessian) *= timeIntervalSize;
 
-  std::cout << "In uqTgaIntegrals()"
-            << ": finsihed integration loop with"
-            << " currentWIntervalId = " << currentWIntervalId
-            << ", currentLambdaIntervalId = " << currentLambdaIntervalId
-            << std::endl;
+  if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
+    std::cout << "In uqTgaIntegrals()"
+              << ": finsihed integration loop with"
+              << " currentWIntervalId = " << currentWIntervalId
+              << ", currentLambdaIntervalId = " << currentLambdaIntervalId
+              << std::endl;
+  }
 
 #if 0
   UQ_FATAL_TEST_MACRO((currentWIntervalId != (allWTimes.size()-2)),

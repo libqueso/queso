@@ -35,10 +35,10 @@ public:
                     const std::vector<double>& values,
                     const std::vector<double>* variances,
                           bool                 dataIsContinuousWithTime);
-  uqTgaStorageClass(bool dataIsContinuousWithTime);
+  uqTgaStorageClass();
  ~uqTgaStorageClass();
 
-        void                 resizeData    (unsigned int newSize);
+        void                 reset         (unsigned int newSize, bool dataIsContinuousWithTime);
         void                 setInstantData(unsigned int id,
                                             double       time,
                                             double       temp,
@@ -47,7 +47,8 @@ public:
         void                 set           (const std::vector<double>& times,
                                             const std::vector<double>& temps,
                                             const std::vector<double>& values,
-                                            const std::vector<double>* variances);
+                                            const std::vector<double>* variances,
+                                            bool                       dataIsContinuousWithTime);
 
         double               value    (double time) const;
   const std::vector<double>& times    () const;
@@ -90,14 +91,13 @@ uqTgaStorageClass<P_V,P_M>::uqTgaStorageClass(
 }
 
 template<class P_V, class P_M>
-uqTgaStorageClass<P_V,P_M>::uqTgaStorageClass(
-  bool dataIsContinuousWithTime)
+uqTgaStorageClass<P_V,P_M>::uqTgaStorageClass()
   :
   m_times    (0),
   m_temps    (0),
   m_values   (0),
   m_variances(0),
-  m_dataIsContinuousWithTime(dataIsContinuousWithTime)
+  m_dataIsContinuousWithTime(false)
 {
 }
 
@@ -108,12 +108,15 @@ uqTgaStorageClass<P_V,P_M>::~uqTgaStorageClass()
 
 template<class P_V, class P_M>
 void
-uqTgaStorageClass<P_V,P_M>::resizeData(unsigned int newSize)
+uqTgaStorageClass<P_V,P_M>::reset(
+  unsigned int newSize,
+  bool         dataIsContinuousWithTime)
 {
-  m_times.resize    (newSize,0.);
-  m_temps.resize    (newSize,0.);
-  m_values.resize   (newSize,0.);
-  m_variances.resize(newSize,1.);
+  m_times.resize            (newSize,0.);
+  m_temps.resize            (newSize,0.);
+  m_values.resize           (newSize,0.);
+  m_variances.resize        (newSize,1.);
+  m_dataIsContinuousWithTime = dataIsContinuousWithTime;
 
   return;
 }
@@ -127,6 +130,11 @@ uqTgaStorageClass<P_V,P_M>::setInstantData(
   double       value,
   double       variance)
 {
+  UQ_FATAL_TEST_MACRO(id >= m_times.size(),
+                      UQ_UNAVAILABLE_RANK,
+                      "uqTgaStorageClass<P_V,P_M>::setInstantData()",
+                      "id is too big");
+
   m_times    [id] = time;
   m_temps    [id] = temp;
   m_values   [id] = value;
@@ -141,10 +149,11 @@ uqTgaStorageClass<P_V,P_M>::set(
   const std::vector<double>& times,
   const std::vector<double>& temps,
   const std::vector<double>& values,
-  const std::vector<double>* variances)
+  const std::vector<double>* variances,
+  bool                       dataIsContinuousWithTime)
 {
   unsigned int tmpSize = times.size();
-  this->resizeData(tmpSize);
+  this->reset(tmpSize,dataIsContinuousWithTime);
   for (unsigned int i = 0; i < tmpSize; ++i) {
     m_times [i] = times [i];
     m_temps [i] = temps [i];
