@@ -66,7 +66,11 @@ int uqTgaLambdaTildeDotWrtTimeRoutine(double timeTilde, const double lambdaTilde
 
     if (info.computeGradAlso) {
       P_V wGrad(*(info.wObj->grads()[0]));
-      info.wObj->grad(equivalentTime,wGrad);
+      unsigned int startingTimeId = 0;
+      info.wObj->interpolate(equivalentTime,
+                             startingTimeId,
+                             NULL,
+                             &wGrad);
       double wA = wGrad[0];
       double wE = wGrad[1];
 
@@ -102,8 +106,10 @@ public:
                                      bool                                  computeGradAlso,
                                      const uqTgaStorageClass<P_V,P_M>&     weigthedMisfitData,
                                      const uqTgaComputableWClass<P_V,P_M>& wObj);
-        double               lambda (double time) const;
-  const P_V&                 grad   (double time) const;
+        void                 interpolate(double        time,
+                                         unsigned int& startingTimeId,
+                                         double*       lambdaValue,
+                                         P_V*          lambdaGrad) const;
   const std::vector<double>& times  () const;
   const std::vector<double>& temps  () const;
   const std::vector<double>& lambdas() const;
@@ -310,29 +316,70 @@ uqTgaLambdaClass<P_V,P_M>::compute(
 }
 
 template<class P_V, class P_M>
-double
-uqTgaLambdaClass<P_V,P_M>::lambda(double time) const
+void
+uqTgaLambdaClass<P_V,P_M>::interpolate(
+  double        time,
+  unsigned int& startingTimeId, // input and output
+  double*       lambdaValue,
+  P_V*          lambdaGrad) const
 {
-  double value = 0.;
+  unsigned int tmpSize = m_times.size(); // Yes, 'm_grads'
+  //std::cout << "In uqTgaLambdaClass<P_V,P_M>::grad()"
+  //          << ": time = "           << time
+  //          << ", m_times.size() = " << tmpSize
+  //          << ", m_times[0] = "     << m_times[0]
+  //          << ", m_times[max] = "   << m_times[tmpSize-1]
+  //          << std::endl;
 
-  // AQUI
-  UQ_FATAL_TEST_MACRO(true,
+  UQ_FATAL_TEST_MACRO(tmpSize == 0,
                       m_env.rank(),
-                      "uqTgaLambdaClass<P_V,P_M>::lambda()",
-                      "INCOMPLETE CODE");
+                      "uqTgaLambda<P_V,P_M>::grad()",
+                      "m_times.size() = 0");
 
-  return value;
-}
-
-template<class P_V, class P_M>
-const P_V&
-uqTgaLambdaClass<P_V,P_M>::grad(double time) const
-{
-  // AQUI
-  UQ_FATAL_TEST_MACRO(true,
+  UQ_FATAL_TEST_MACRO(startingTimeId >= tmpSize,
                       m_env.rank(),
-                      "uqTgaLambdaClass<P_V,P_M>::grad()",
-                      "INCOMPLETE CODE");
+                      "uqTgaLambda<P_V,P_M>::grad()",
+                      "startingTimeId is too big");
+
+  UQ_FATAL_TEST_MACRO(time < m_times[0],
+                      m_env.rank(),
+                      "uqTgaLambda<P_V,P_M>::grad()",
+                      "time < m_times[0]");
+
+  UQ_FATAL_TEST_MACRO(m_times[tmpSize-1] < time,
+                      m_env.rank(),
+                      "uqTgaLambda<P_V,P_M>::grad()",
+                      "m_times[max] < time");
+
+  UQ_FATAL_TEST_MACRO(lambdaGrad && (m_grads[0] == NULL),
+                      m_env.rank(),
+                      "uqTgaLambda<P_V,P_M>::grad()",
+                      "m_grads[0] == NULL");
+
+  unsigned int i = 0;
+  for (i = startingTimeId; i < tmpSize; ++i) {
+    if (time <= m_times[i]) break;
+  }
+  startingTimeId = i;
+
+  if (time == m_times[i]) {
+    if (lambdaValue) *lambdaValue = m_lambdas[i];
+    if (lambdaGrad)  *lambdaGrad  = *(m_grads[i]);
+  }
+  else {
+    //if ((9130.0 < time) && (time < 9131.0)) {
+    //  std::cout << "time = " << time
+    //            << "i = " << i
+    //            << "time[i-1] = " << m_times[i-1]
+    //            << "value[i-1] = " << m_values[i-1]
+    //            << "time[i] = " << m_times[i]
+    //            << "value[i] = " << m_values[i]
+    //            << std::endl;
+    //}
+    double ratio = (time - m_times[i-1])/(m_times[i]-m_times[i-1]);
+    if (lambdaValue) *lambdaValue = m_lambdas[i-1]  + ratio * ( m_lambdas[i]  - m_lambdas[i-1]  );
+    if (lambdaGrad)  *lambdaGrad  = *(m_grads[i-1]) + ratio * ( *(m_grads[i]) - *(m_grads[i-1]) );
+  }
 
   return;
 }

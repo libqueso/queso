@@ -96,8 +96,10 @@ public:
                                                  const uqTgaStorageClass<P_V,P_M>* referenceW,
                                                  double*                           weigthedMisfitSum);
 
-        double                  w    (double time) const;
-        void                    grad (double time, P_V& result) const;
+        void                    interpolate(double        time,
+                                            unsigned int& startingTimeId,
+                                            double*       wValue,
+                                            P_V*          wGrad) const;
   const std::vector<double>&    times() const;
   const std::vector<double>&    temps() const;
   const std::vector<double>&    ws   () const;
@@ -495,54 +497,55 @@ uqTgaComputableWClass<P_V,P_M>::computeUsingTemp(
 }
 
 template<class P_V, class P_M>
-double
-uqTgaComputableWClass<P_V,P_M>::w(double time) const
-{
-  double value = 0.;
-
-  // AQUI
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
-                      "uqTgaComputableWClass<P_V,P_M>::w()",
-                      "INCOMPLETE CODE");
-
-  return value;
-}
-
-template<class P_V, class P_M>
 void
-uqTgaComputableWClass<P_V,P_M>::grad(double time, P_V& result) const
+uqTgaComputableWClass<P_V,P_M>::interpolate(
+  double        time,
+  unsigned int& startingTimeId, // input and output
+  double*       wValue,
+  P_V*          wGrad) const
 {
-  unsigned int tmpSize = m_grads.size(); // Yes, 'm_grads'
+  unsigned int tmpSize = m_times.size(); // Yes, 'm_grads'
   //std::cout << "In uqTgaComputableWClass<P_V,P_M>::grad()"
-  //          << ": time = "         << time
-  //          << ", tmpSize = "      << tmpSize
-  //          << ", m_times[0] = "   << m_times[0]
-  //          << ", m_times[max] = " << m_times[tmpSize-1]
+  //          << ": time = "           << time
+  //          << ", m_times.size() = " << tmpSize
+  //          << ", m_times[0] = "     << m_times[0]
+  //          << ", m_times[max] = "   << m_times[tmpSize-1]
   //          << std::endl;
 
   UQ_FATAL_TEST_MACRO(tmpSize == 0,
-                      UQ_UNAVAILABLE_RANK,
-                      "uqTgaComputableW<P_V,P_M>::value()",
+                      m_env.rank(),
+                      "uqTgaComputableW<P_V,P_M>::grad()",
                       "m_times.size() = 0");
 
+  UQ_FATAL_TEST_MACRO(startingTimeId >= tmpSize,
+                      m_env.rank(),
+                      "uqTgaComputableW<P_V,P_M>::grad()",
+                      "startingTimeId is too big");
+
   UQ_FATAL_TEST_MACRO(time < m_times[0],
-                      UQ_UNAVAILABLE_RANK,
-                      "uqTgaComputableW<P_V,P_M>::value()",
+                      m_env.rank(),
+                      "uqTgaComputableW<P_V,P_M>::grad()",
                       "time < m_times[0]");
 
   UQ_FATAL_TEST_MACRO(m_times[tmpSize-1] < time,
-                      UQ_UNAVAILABLE_RANK,
-                      "uqTgaComputableW<P_V,P_M>::value()",
+                      m_env.rank(),
+                      "uqTgaComputableW<P_V,P_M>::grad()",
                       "m_times[max] < time");
 
+  UQ_FATAL_TEST_MACRO(wGrad && (m_grads[0] == NULL),
+                      m_env.rank(),
+                      "uqTgaComputableW<P_V,P_M>::grad()",
+                      "m_grads[0] == NULL");
+
   unsigned int i = 0;
-  for (i = 0; i < tmpSize; ++i) {
+  for (i = startingTimeId; i < tmpSize; ++i) {
     if (time <= m_times[i]) break;
   }
+  startingTimeId = i;
 
   if (time == m_times[i]) {
-    result = *(m_grads[i]);
+    if (wValue) *wValue = m_ws[i];
+    if (wGrad)  *wGrad  = *(m_grads[i]);
   }
   else {
     //if ((9130.0 < time) && (time < 9131.0)) {
@@ -555,7 +558,8 @@ uqTgaComputableWClass<P_V,P_M>::grad(double time, P_V& result) const
     //            << std::endl;
     //}
     double ratio = (time - m_times[i-1])/(m_times[i]-m_times[i-1]);
-    result = *(m_grads[i-1]) + ratio * ( *(m_grads[i]) - *(m_grads[i-1]) );
+    if (wValue) *wValue =      m_ws[i-1]  + ratio * (      m_ws[i]  -      m_ws[i-1]  );
+    if (wGrad)  *wGrad  = *(m_grads[i-1]) + ratio * ( *(m_grads[i]) - *(m_grads[i-1]) );
   }
 
   return;

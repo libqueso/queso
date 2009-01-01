@@ -263,41 +263,33 @@ uqTgaLikelihoodRoutine(
 
     /////////////////////////////////////////////////////////////////////////////
     // Compute contribution from this scenario to gradVector
-    /////////////////////////////////////////////////////////////////////////////
-    if (gradVector) {
-      P_V tmpGradVector(info[i]->m_paramSpace.zeroVector());
-
-      unsigned int tmpSize = weigthedMisfitData.times().size();
-      double upperIntegralLimit = weigthedMisfitData.times()[tmpSize-1];
-      uqTgaLagrangianGradientWrtDesignParameters<P_V,P_M>(paramValues,
-                                                          *(info[i]->m_temperatureFunctionObj),
-                                                          upperIntegralLimit,                  
-                                                          wObj.times(),
-                                                          wObj.ws(),
-                                                          lambdaObj.times(),
-                                                          lambdaObj.lambdas(),
-                                                          tmpGradVector);
-
-      *gradVector += tmpGradVector;
-    }
-
-    /////////////////////////////////////////////////////////////////////////////
     // Compute contribution from this scenario to hessianMatrix and/or hessianEffect
     /////////////////////////////////////////////////////////////////////////////
-    if (hessianMatrix || hessianEffect) {
-      P_M* tmpMatrix = info[i]->m_paramSpace.newMatrix();
+    P_V* tmpVector = NULL;
+    if (gradVector) tmpVector = new P_V(info[i]->m_paramSpace.zeroVector());
 
-      // AQUI
-      UQ_FATAL_TEST_MACRO(true,
-                          UQ_UNAVAILABLE_RANK,
-                          "uqTgaLikelihoodRoutine<P_V,P_M>(), hessianMatrix",
-                          "INCOMPLETE CODE");
+    P_M* tmpMatrix = NULL;
+    if (hessianMatrix || hessianEffect) tmpMatrix = info[i]->m_paramSpace.newMatrix();
 
+    if (gradVector || hessianMatrix || hessianEffect) {
+      unsigned int tmpSize = weigthedMisfitData.times().size();
+      double lowerIntegralLimit = 0.; //weigthedMisfitData.times()[0]; // ????
+      double upperIntegralLimit = weigthedMisfitData.times()[tmpSize-1];
+      uqTgaIntegrals<P_V,P_M>(paramValues,
+                              *(info[i]->m_temperatureFunctionObj),
+                              lowerIntegralLimit,
+                              upperIntegralLimit,
+                              wObj,
+                              lambdaObj,
+                              tmpVector,
+                              tmpMatrix);
+      if (gradVector)    *gradVector    += *tmpVector;
       if (hessianMatrix) *hessianMatrix += *tmpMatrix;
       if (hessianEffect) *hessianEffect += ((*tmpMatrix) * paramValues);
-
-      delete tmpMatrix;
     }
+
+    if (tmpVector) delete tmpVector;
+    if (tmpMatrix) delete tmpMatrix;
 
     /////////////////////////////////////////////////////////////////////////////
     // Store computed dara, if requested and if available
