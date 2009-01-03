@@ -22,7 +22,6 @@
 
 #include <uqTgaW.h>
 #include <uqTgaDefines.h>
-#include <uqTgaStorage.h>
 #include <uqDefines.h>
 #include <gsl/gsl_odeiv.h>
 #include <gsl/gsl_errno.h>
@@ -32,62 +31,74 @@ template<class P_V,class P_M>
 struct
 uqTgaLambdaInfoStruct
 {
-  double                            A;
-  double                            E;
-  const uqBase1D1DFunctionClass*    temperatureFunctionObj;
-  bool                              computeGradAlso;
-  const uqTgaStorageClass<P_V,P_M>* weigthedMisfitData;
-  const uqTgaWClass      <P_V,P_M>* wObj;
+  double                         A;
+  double                         E;
+  const uqBase1D1DFunctionClass* temperatureFunctionObj;
+  bool                           computeGradAlso;
+  const uqBase1D1DFunctionClass* diffFunction;
+  const uqBase1D1DFunctionClass* tildeWeightFunction;
+  bool                           tildeWeightFunctionIsDelta;
+  const uqTgaWClass<P_V,P_M>*    wObj;
 };
 
 template<class P_V,class P_M>
-int uqTgaLambdaTildeDotWrtTimeRoutine(double timeTilde, const double lambdaTilde[], double f[], void *voidInfo)
+int uqTgaLambdaTildeDotWrtTimeRoutine(double tildeTime, const double lambdaTilde[], double f[], void *voidInfo)
 {
   const uqTgaLambdaInfoStruct<P_V,P_M>& info = *((uqTgaLambdaInfoStruct<P_V,P_M> *)voidInfo);
   double A = info.A;
   double E = info.E;
 
-  if (info.weigthedMisfitData->dataIsContinuousWithTime()) {
-    unsigned int tmpSize    = info.weigthedMisfitData->times().size();
-    double maximumTimeTilde = info.weigthedMisfitData->times()[tmpSize-1];
-    double equivalentTime   = maximumTimeTilde - timeTilde;
-    double temp             = info.temperatureFunctionObj->value(equivalentTime);
-    double expTerm          = exp(-E/(R_CONSTANT*temp));
-    double weigthedMisfit   = info.weigthedMisfitData->value(equivalentTime);
+  double maxTildeTime   = info.diffFunction->maxDomainValue(); // FIX ME
+  double equivalentTime = maxTildeTime - tildeTime;
+  double temp           = info.temperatureFunctionObj->value(equivalentTime);
+  double expTerm        = exp(-E/(R_CONSTANT*temp));
 
-    if ((info.wObj->env().verbosity() >= 99) && (info.wObj->env().rank() == 0)) {
-      std::cout << "In uqTgaLambdaTildeDotWrtTimeRoutine()"
-                << ", continuous case"
-                << ": timeTilde = "      << timeTilde
-                << ", equivalentTime = " << equivalentTime
-                << ", weigthedMisfit = " << weigthedMisfit
-               << std::endl;
-    }
+  bool tildeTimeMatchesExactly = false;
+  //if (info.tildeWeightFunctionIsDelta) tildeTimeMatchesExactly = ( dynamic_cast< const uqSampled1D1DFunctionClass* >(tildeWeightFunction) )->instantMatchesExactly(tildeTime); // FIX ME
 
-    if (info.computeGradAlso) {
+  double tildeDiff = 0.;
+  if ((info.tildeWeightFunctionIsDelta == false) || tildeTimeMatchesExactly) tildeDiff = info.diffFunction->value(equivalentTime);
+
+  if ((info.wObj->env().verbosity() >= 99) && (info.wObj->env().rank() == 0)) {
+    std::cout << "In uqTgaLambdaTildeDotWrtTimeRoutine()"
+              << ", continuous case"
+              << ": tildeTime = "               << tildeTime
+              << ", equivalentTime = "          << equivalentTime
+              << ", tildeDiff = "               << tildeDiff
+              << ", tildeTimeMatchesExactly = " << tildeTimeMatchesExactly
+              << std::endl;
+  }
+  //if (tildeTime == 0.) {
+  //  std::cout << "In uqTgaLambdaTildeDotWrtTimeRoutine()"
+  //            << ", continuous case"
+  //            << ": tildeTime is zero"
+  //            << ", equivalentTime = "          << equivalentTime
+  //            << ", tildeDiff = "               << tildeDiff
+  //            << ", tildeTimeMatchesExactly = " << tildeTimeMatchesExactly
+  //            << std::endl;
+  //}
+
+  if (info.computeGradAlso) {
+    double wA = 0.;
+    double wE = 0.;
+    if ((info.tildeWeightFunctionIsDelta == false) || tildeTimeMatchesExactly) {
       P_V wGrad(*(info.wObj->grads()[0]));
       unsigned int startingTimeId = 0;
       info.wObj->interpolate(equivalentTime,
                              startingTimeId,
                              NULL,
-                             &wGrad);
-      double wA = wGrad[0];
-      double wE = wGrad[1];
+                             &wGrad,
+                             NULL);
+      wA = wGrad[0];
+      wE = wGrad[1];
+    }
 
-      f[0] =  -A*lambdaTilde[0]                                      *expTerm - 2*weigthedMisfit;
-      f[1] = (-A*lambdaTilde[1] -   lambdaTilde[0]                  )*expTerm - 2*wA;
-      f[2] = (-A*lambdaTilde[2] + A*lambdaTilde[0]/(R_CONSTANT*temp))*expTerm - 2*wE;
-    }
-    else {
-      f[0] = (-A*lambdaTilde[0]*exp(-E/(R_CONSTANT*temp)))-2*weigthedMisfit;
-    }
+    f[0] =  -A*lambdaTilde[0]                                      *expTerm - 2*tildeDiff;
+    f[1] = (-A*lambdaTilde[1] -   lambdaTilde[0]                  )*expTerm - 2*wA;
+    f[2] = (-A*lambdaTilde[2] + A*lambdaTilde[0]/(R_CONSTANT*temp))*expTerm - 2*wE;
   }
   else {
-    // AQUI
-    UQ_FATAL_TEST_MACRO(true,
-                        UQ_UNAVAILABLE_RANK,
-                        "uqTgaLambdaTildeDotWrtTimeRoutine(), discrete case",
-                        "INCOMPLETE CODE");
+    f[0] = -A*lambdaTilde[0]*expTerm - 2*tildeDiff;
   }
 
   return GSL_SUCCESS;
@@ -102,17 +113,18 @@ public:
                    const uqBase1D1DFunctionClass&     temperatureFunctionObj);
  ~uqTgaLambdaClass();
 
-        void                 compute(const P_V&                        params,
-                                     double                            maximumDeltaTime,
-                                     bool                              computeGradAlso,
-                                     const uqTgaStorageClass<P_V,P_M>& weigthedMisfitData,
-                                     const uqTgaWClass      <P_V,P_M>& wObj);
+        void                 compute(const P_V&                     params,
+                                     double                         maxTimeStep,
+                                     bool                           computeGradAlso,
+                                     const uqBase1D1DFunctionClass& diffFunction,
+                                     const uqBase1D1DFunctionClass* tildeWeightFunction,
+                                     const uqTgaWClass<P_V,P_M>&    wObj);
         void                 interpolate(double        time,
                                          unsigned int& startingTimeId,
                                          double*       lambdaValue,
-                                         P_V*          lambdaGrad) const;
+                                         P_V*          lambdaGrad,
+                                         bool*         timeWasMatchedExactly) const;
   const std::vector<double>& times  () const;
-  const std::vector<double>& temps  () const;
   const std::vector<double>& lambdas() const;
   const std::vector<P_V*  >& grads  () const;
 
@@ -123,7 +135,6 @@ protected:
   const uqBase1D1DFunctionClass& m_temperatureFunctionObj;
 
         std::vector<double>      m_times;
-        std::vector<double>      m_temps;
         std::vector<double>      m_lambdas;
         std::vector<P_V*  >      m_grads;
 };
@@ -136,7 +147,6 @@ uqTgaLambdaClass<P_V,P_M>::uqTgaLambdaClass(
   m_env                   (paramSpace.env()),
   m_temperatureFunctionObj(temperatureFunctionObj),
   m_times                 (0),
-  m_temps                 (0),
   m_lambdas               (0),
   m_grads                 (0)
 {
@@ -164,7 +174,6 @@ void
 uqTgaLambdaClass<P_V,P_M>::resetInternalValues()
 {
   m_times.clear();
-  m_temps.clear();
   m_lambdas.clear();
   for (unsigned int i = 0; i < m_grads.size(); ++i) {
     delete m_grads[i];
@@ -175,24 +184,43 @@ uqTgaLambdaClass<P_V,P_M>::resetInternalValues()
 template<class P_V, class P_M>
 void
 uqTgaLambdaClass<P_V,P_M>::compute(
-  const P_V&                        params,
-  double                            maximumDeltaTime,
-  bool                              computeGradAlso,
-  const uqTgaStorageClass<P_V,P_M>& weigthedMisfitData,
-  const uqTgaWClass      <P_V,P_M>& wObj)
+  const P_V&                     params,
+  double                         maxTimeStep,
+  bool                           computeGradAlso,
+  const uqBase1D1DFunctionClass& diffFunction,
+  const uqBase1D1DFunctionClass* tildeWeightFunction,
+  const uqTgaWClass<P_V,P_M>&    wObj)
 {
-  this->resetInternalValues();
+  if ((m_env.verbosity() >= 0) && (m_env.rank() == 0)) {
+    std::cout << "Entering uqTgaLambdaClass<P_V,P_M>::compute()"
+              << ": params = "          << params
+              << ", maxTimeStep = "     << maxTimeStep
+              << ", computeGradAlso = " << computeGradAlso
+              << std::endl;
+  }
 
-  std::vector<double> timesTilde  (1000,0.  );
-  std::vector<double> tempsTilde  (1000,0.  );
-  std::vector<double> lambdasTilde(1000,0.  );
-  std::vector<P_V*  > gradsTilde  (1000,NULL);
+  // Initialize variables related to the weight function
+  const uqSampled1D1DFunctionClass* tmpTildeWeightFunction = NULL;
+  bool tmpTildeWeightFunctionIsDelta = false;
+  if (tildeWeightFunction) {
+    tmpTildeWeightFunction = dynamic_cast< const uqSampled1D1DFunctionClass* >(tildeWeightFunction);
+    tmpTildeWeightFunctionIsDelta = (tmpTildeWeightFunction != NULL) && (tmpTildeWeightFunction->dataIsContinuous() == false);
+  }
+  unsigned int tildeDeltaWeightId = 1; // Yes, '1', not '0'
+
+  // Initialize other variables
+  this->resetInternalValues();
+  std::vector<double> tildeTimes  (1000,0.  );
+  std::vector<double> tildeLambdas(1000,0.  );
+  std::vector<P_V*  > tildeGrads  (1000,NULL);
 
   uqTgaLambdaInfoStruct<P_V,P_M> lambdaDotWrtTimeInfo = {params[0],
                                                          params[1],
                                                          &m_temperatureFunctionObj,
                                                          computeGradAlso,
-                                                         &weigthedMisfitData,
+                                                         &diffFunction,
+                                                         tildeWeightFunction,
+                                                         tmpTildeWeightFunctionIsDelta,
                                                          &wObj};
 
   unsigned int numLambdaComponents = 1;
@@ -205,12 +233,11 @@ uqTgaLambdaClass<P_V,P_M>::compute(
         gsl_odeiv_evolve    *e  = gsl_odeiv_evolve_alloc(numLambdaComponents);
         gsl_odeiv_system     sysTime = {uqTgaLambdaTildeDotWrtTimeRoutine<P_V,P_M>, NULL, numLambdaComponents, (void *)&lambdaDotWrtTimeInfo};
 
-  unsigned int tmpSize    = weigthedMisfitData.times().size();
-  double maximumTimeTilde = weigthedMisfitData.times()[tmpSize-1];
-  double currentTimeTilde = 0.;
-  double equivalentTime   = maximumTimeTilde - currentTimeTilde;
-  double deltaTimeTilde   = 5.;
-  if (maximumDeltaTime > 0) deltaTimeTilde = maximumDeltaTime;
+  double maxTildeTime     = diffFunction.maxDomainValue(); // FIX ME
+  double currentTildeTime = 0.;
+  double equivalentTime   = maxTildeTime - currentTildeTime;
+  double tildeTimeStep    = 5.;
+  if (maxTimeStep > 0) tildeTimeStep = maxTimeStep;
 
   double currentLambdaTilde[numLambdaComponents];
   currentLambdaTilde[0]=0.;
@@ -220,79 +247,82 @@ uqTgaLambdaClass<P_V,P_M>::compute(
   }
 
   unsigned int loopId = 0;
-  timesTilde  [loopId] = currentTimeTilde;
-  tempsTilde  [loopId] = m_temperatureFunctionObj.value(equivalentTime);
-  lambdasTilde[loopId] = currentLambdaTilde[0];
+  tildeTimes  [loopId] = currentTildeTime;
+  tildeLambdas[loopId] = currentLambdaTilde[0];
   if (computeGradAlso) {
-    gradsTilde[loopId] = new P_V(params);
-    (*(gradsTilde[loopId]))[0] = currentLambdaTilde[1];
-    (*(gradsTilde[loopId]))[1] = currentLambdaTilde[2];
+    tildeGrads[loopId] = new P_V(params);
+    (*(tildeGrads[loopId]))[0] = currentLambdaTilde[1];
+    (*(tildeGrads[loopId]))[1] = currentLambdaTilde[2];
   }
 
-  unsigned int misfitId = weigthedMisfitData.times().size()-1;
-  while (currentTimeTilde < maximumTimeTilde) {
+  while (currentTildeTime < maxTildeTime) {
     int status = 0;
-    if (weigthedMisfitData.dataIsContinuousWithTime()) {
-      double nextTimeTilde = maximumTimeTilde;
-      if (maximumDeltaTime > 0) nextTimeTilde = std::min(maximumTimeTilde,currentTimeTilde+maximumDeltaTime);
-      status = gsl_odeiv_evolve_apply(e, c, s, &sysTime, &currentTimeTilde, nextTimeTilde, &deltaTimeTilde, currentLambdaTilde);
-      UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
-                          params.env().rank(),
-                          "uqTgaWClass<P_V,P_M>::compute()",
-                          "gsl_odeiv_evolve_apply() failed");
-      if (maximumDeltaTime > 0) deltaTimeTilde = std::min(maximumDeltaTime,deltaTimeTilde);
-      if ((m_env.verbosity() >= 99) && (m_env.rank() == 0)) {
-        std::cout << "In uqTgaLambdaClass::compute()"
-                  << ": currentTimeTilde = "      << currentTimeTilde
-                  << ", currentLambdaTilde[0] = " << currentLambdaTilde[0]
-                  << std::endl;
-      }
+    double nextTildeTime = maxTildeTime;
+    if (maxTimeStep > 0) nextTildeTime = std::min(nextTildeTime,currentTildeTime+maxTimeStep);
+    if (tmpTildeWeightFunctionIsDelta) nextTildeTime = std::min(nextTildeTime,tmpTildeWeightFunction->domainValues()[tildeDeltaWeightId]);
+
+    if ((m_env.verbosity() >= 99) && (m_env.rank() == 0)) {
+      std::cout << "In uqTgaLambdaClass::compute(), before"
+                << ": loopId = "                << loopId
+                << ", currentTildeTime = "      << currentTildeTime
+                << ", currentLambdaTilde[0] = " << currentLambdaTilde[0]
+                << ", equivalentTime = "        << equivalentTime
+                << ", nextTildeTime = "         << nextTildeTime
+                << ", tildeDeltaWeightId = "    << tildeDeltaWeightId
+                << std::endl;
     }
-    else {
-      // AQUI
-      UQ_FATAL_TEST_MACRO(true,
-                          m_env.rank(),
-                          "uqTgaLambdaClass<P_V,P_M>::compute()",
-                          "INCOMPLETE CODE");
-      misfitId--;
+    status = gsl_odeiv_evolve_apply(e, c, s, &sysTime, &currentTildeTime, nextTildeTime, &tildeTimeStep, currentLambdaTilde);
+    UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
+                        params.env().rank(),
+                        "uqTgaWClass<P_V,P_M>::compute()",
+                        "gsl_odeiv_evolve_apply() failed");
+    if (maxTimeStep > 0) tildeTimeStep = std::min(maxTimeStep,tildeTimeStep);
+    if (tmpTildeWeightFunctionIsDelta &&
+        (currentTildeTime == tmpTildeWeightFunction->domainValues()[tildeDeltaWeightId])) {
+      tildeDeltaWeightId++;
     }
-    equivalentTime = maximumTimeTilde - currentTimeTilde;
+    equivalentTime = maxTildeTime - currentTildeTime;
+    if ((m_env.verbosity() >= 99) && (m_env.rank() == 0)) {
+      std::cout << "In uqTgaLambdaClass::compute(), after"
+                << ": loopId = "                << loopId
+                << ", currentTildeTime = "      << currentTildeTime
+                << ", currentLambdaTilde[0] = " << currentLambdaTilde[0]
+                << ", equivalentTime = "        << equivalentTime
+                << ", nextTildeTime = "         << nextTildeTime
+                << ", tildeDeltaWeightId = "    << tildeDeltaWeightId
+                << std::endl;
+    }
 
     loopId++;
-    if (loopId >= timesTilde.size()) {
-      timesTilde.resize  (timesTilde.size()  +1000,0.  );
-      tempsTilde.resize  (tempsTilde.size()  +1000,0.  );
-      lambdasTilde.resize(lambdasTilde.size()+1000,0.  );
-      gradsTilde.resize  (gradsTilde.size()  +1000,NULL);
+    if (loopId >= tildeTimes.size()) {
+      tildeTimes.resize  (tildeTimes.size()  +1000,0.  );
+      tildeLambdas.resize(tildeLambdas.size()+1000,0.  );
+      tildeGrads.resize  (tildeGrads.size()  +1000,NULL);
     }
 
-    timesTilde  [loopId] = currentTimeTilde;
-    tempsTilde  [loopId] = m_temperatureFunctionObj.value(equivalentTime);
-    lambdasTilde[loopId] = currentLambdaTilde[0];
+    tildeTimes  [loopId] = currentTildeTime;
+    tildeLambdas[loopId] = currentLambdaTilde[0];
     if (computeGradAlso) {
-      gradsTilde[loopId] = new P_V(params);
-      (*(gradsTilde[loopId]))[0] = currentLambdaTilde[1];
-      (*(gradsTilde[loopId]))[1] = currentLambdaTilde[2];
+      tildeGrads[loopId] = new P_V(params);
+      (*(tildeGrads[loopId]))[0] = currentLambdaTilde[1];
+      (*(tildeGrads[loopId]))[1] = currentLambdaTilde[2];
     }
   }
 
-  timesTilde.resize  (loopId+1);
-  tempsTilde.resize  (loopId+1);
-  lambdasTilde.resize(loopId+1);
-  gradsTilde.resize  (loopId+1);
+  tildeTimes.resize  (loopId+1);
+  tildeLambdas.resize(loopId+1);
+  tildeGrads.resize  (loopId+1);
 
   m_times.resize  (loopId+1,0.  );
-  m_temps.resize  (loopId+1,0.  );
   m_lambdas.resize(loopId+1,0.  );
   m_grads.resize  (loopId+1,NULL);
   for (unsigned int i = 0; i <= loopId; ++i) {
-    unsigned int iTilde = loopId-i;
-    m_times  [i] = maximumTimeTilde - timesTilde[iTilde];
-    m_temps  [i] = tempsTilde  [iTilde];
-    m_lambdas[i] = lambdasTilde[iTilde];
+    unsigned int tildeI = loopId-i;
+    m_times  [i] = maxTildeTime - tildeTimes[tildeI];
+    m_lambdas[i] = tildeLambdas[tildeI];
     if (computeGradAlso) {
-      m_grads  [i] = new P_V(*(gradsTilde[iTilde]));
-      delete gradsTilde[iTilde];
+      m_grads  [i] = new P_V(*(tildeGrads[tildeI]));
+      delete tildeGrads[tildeI];
     }
   }
 
@@ -307,7 +337,6 @@ uqTgaLambdaClass<P_V,P_M>::compute(
               << ", beta = "                       << m_temperatureFunctionObj.deriv(0.)
               << ": finished ode loop after "      << m_times.size()
               << " iterations, with final time = " << m_times  [m_times.size()  -1]
-              << ", final temp = "                 << m_temps  [m_temps.size()  -1]
               << ", final lambdas = "              << m_lambdas[m_lambdas.size()-1]
               << std::endl;
   }
@@ -325,7 +354,8 @@ uqTgaLambdaClass<P_V,P_M>::interpolate(
   double        time,
   unsigned int& startingTimeId, // input and output
   double*       lambdaValue,
-  P_V*          lambdaGrad) const
+  P_V*          lambdaGrad,
+  bool*         timeWasMatchedExactly) const
 {
   unsigned int tmpSize = m_times.size(); // Yes, 'm_grads'
   //std::cout << "In uqTgaLambdaClass<P_V,P_M>::grad()"
@@ -367,10 +397,12 @@ uqTgaLambdaClass<P_V,P_M>::interpolate(
   startingTimeId = i;
 
   if (time == m_times[i]) {
+    if (timeWasMatchedExactly) *timeWasMatchedExactly = true;
     if (lambdaValue) *lambdaValue = m_lambdas[i];
     if (lambdaGrad)  *lambdaGrad  = *(m_grads[i]);
   }
   else {
+    if (timeWasMatchedExactly) *timeWasMatchedExactly = false;
     //if ((9130.0 < time) && (time < 9131.0)) {
     //  std::cout << "time = " << time
     //            << "i = " << i
@@ -393,13 +425,6 @@ const std::vector<double>&
 uqTgaLambdaClass<P_V,P_M>::times() const
 {
   return m_times;
-}
-
-template<class P_V, class P_M>
-const std::vector<double>&
-uqTgaLambdaClass<P_V,P_M>::temps() const
-{
-  return m_temps;
 }
 
 template<class P_V, class P_M>

@@ -21,7 +21,6 @@
 #define __UQ_TGA_INTEGRALS_H__
 
 #include <uqTgaDefines.h>
-#include <uqTgaStorage.h>
 #include <uqTgaW.h>
 #include <uqTgaLambda.h>
 #include <uqDefines.h>
@@ -33,6 +32,7 @@ uqTgaIntegrals(
   const uqBase1D1DFunctionClass&   temperatureFunctionObj,
   double                           lowerIntegralTime,
   double                           upperIntegralTime,
+  unsigned int                     reqNumIntervals,
   const uqTgaWClass     <P_V,P_M>& wObj,
   const uqTgaLambdaClass<P_V,P_M>& lambdaObj,
   P_V*                             LagrangianGrad,
@@ -41,7 +41,7 @@ uqTgaIntegrals(
   unsigned int wSize = wObj.times().size();
   unsigned int lambdaSize = lambdaObj.times().size();
 
-  if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
+  if ((paramValues.env().verbosity() >= 0) && (paramValues.env().rank() == 0)) {
     std::cout << "Entering uqTgaIntegrals()"
               << ", wObj.times()[0] = "        << wObj.times()[0]
               << ", wObj.times()[max] = "      << wObj.times()[wSize-1]
@@ -49,6 +49,7 @@ uqTgaIntegrals(
               << ", lambdaObj.times()[max] = " << lambdaObj.times()[lambdaSize-1]
               << ", lowerIntegralTime = "      << lowerIntegralTime
               << ", upperIntegralTime = "      << upperIntegralTime
+              << ", reqNumIntervals = "        << reqNumIntervals
               << std::endl;
   }
 
@@ -80,7 +81,8 @@ uqTgaIntegrals(
   double A = paramValues[0];
   double E = paramValues[1];
 
-  unsigned int numIntervals = 1000;
+  unsigned int numIntervals = reqNumIntervals;
+  if (reqNumIntervals == 0) numIntervals = 1000;
   double timeIntervalSize = (upperIntegralTime-lowerIntegralTime)/((double)numIntervals);
   double firstTime = lowerIntegralTime+.5*timeIntervalSize;
 
@@ -122,12 +124,14 @@ uqTgaIntegrals(
     wObj.interpolate(time,
                      currentWIntervalId,
                      &w,
-                     wGradPtr);
+                     wGradPtr,
+                     NULL);
 
     lambdaObj.interpolate(time,
                           currentLambdaIntervalId,
                           &lambda,
-                          lambdaGradPtr);
+                          lambdaGradPtr,
+                          NULL);
 
     double expTerm = exp(-E/(R_CONSTANT*temp));
     if (LagrangianGrad) {

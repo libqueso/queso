@@ -92,8 +92,9 @@ void uqTgaQoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& q
                0.,
                false, // computeGradAlso
                NULL,  // referenceW
-               NULL,
-               NULL);
+               NULL,  // weightFunction
+               NULL,  // misfitValue
+               NULL); // diffFunction
 #endif
 
   unsigned int tmpSize = wObj.ws().size();

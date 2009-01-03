@@ -31,28 +31,36 @@ uqTgaStorageClass
 {
 public:
   uqTgaStorageClass(const std::vector<double>& times,
+#ifdef QUESO_TGA_USES_OLD_COMPATIBLE_CODE
                     const std::vector<double>& temps,
+#endif
                     const std::vector<double>& values,
                     const std::vector<double>* variances,
                           bool                 dataIsContinuousWithTime);
   uqTgaStorageClass();
  ~uqTgaStorageClass();
 
+#ifdef QUESO_TGA_USES_OLD_COMPATIBLE_CODE
+#else
         void                 reset         (unsigned int newSize, bool dataIsContinuousWithTime);
         void                 setInstantData(unsigned int id,
                                             double       time,
-                                            double       temp,
                                             double       value,
                                             double       variance);
         void                 set           (const std::vector<double>& times,
-                                            const std::vector<double>& temps,
                                             const std::vector<double>& values,
                                             const std::vector<double>* variances,
                                             bool                       dataIsContinuousWithTime);
+#endif
 
-        double               value    (double time) const;
+        void                 getValue (double        time,
+                                       unsigned int& startingTimeId,
+                                       double&       returnValue,
+                                       bool*         timeWasMatchedExactly) const;
   const std::vector<double>& times    () const;
+#ifdef QUESO_TGA_USES_OLD_COMPATIBLE_CODE
   const std::vector<double>& temps    () const;
+#endif
   const std::vector<double>& values   () const;
   const std::vector<double>& variances() const;
         bool                 dataIsContinuousWithTime() const;
@@ -61,7 +69,9 @@ public:
 
 protected:
         std::vector<double> m_times;
+#ifdef QUESO_TGA_USES_OLD_COMPATIBLE_CODE
         std::vector<double> m_temps;
+#endif
         std::vector<double> m_values;
         std::vector<double> m_variances;
         bool                m_dataIsContinuousWithTime;
@@ -70,13 +80,17 @@ protected:
 template<class P_V, class P_M>
 uqTgaStorageClass<P_V,P_M>::uqTgaStorageClass(
   const std::vector<double>& times,
+#ifdef QUESO_TGA_USES_OLD_COMPATIBLE_CODE
   const std::vector<double>& temps,
+#endif
   const std::vector<double>& values,
   const std::vector<double>* variances,
   bool dataIsContinuousWithTime)
   :
   m_times    (times.size(), 0.),
-  m_temps    (temps.size(), 0.),
+#ifdef QUESO_TGA_USES_OLD_COMPATIBLE_CODE
+  m_temps    (temps.size(),0.),
+#endif
   m_values   (values.size(),0.),
   m_variances(values.size(),1.),
   m_dataIsContinuousWithTime(dataIsContinuousWithTime)
@@ -84,7 +98,9 @@ uqTgaStorageClass<P_V,P_M>::uqTgaStorageClass(
   unsigned int tmpSize = m_times.size();
   for (unsigned int i = 0; i < tmpSize; ++i) {
     m_times [i] = times [i];
+#ifdef QUESO_TGA_USES_OLD_COMPATIBLE_CODE
     m_temps [i] = temps [i];
+#endif
     m_values[i] = values[i];
     if (variances) m_variances[i] = (*variances)[i];
   }
@@ -94,7 +110,9 @@ template<class P_V, class P_M>
 uqTgaStorageClass<P_V,P_M>::uqTgaStorageClass()
   :
   m_times    (0),
+#ifdef QUESO_TGA_USES_OLD_COMPATIBLE_CODE
   m_temps    (0),
+#endif
   m_values   (0),
   m_variances(0),
   m_dataIsContinuousWithTime(false)
@@ -106,16 +124,20 @@ uqTgaStorageClass<P_V,P_M>::~uqTgaStorageClass()
 {
 }
 
+#ifdef QUESO_TGA_USES_OLD_COMPATIBLE_CODE
+#else
 template<class P_V, class P_M>
 void
 uqTgaStorageClass<P_V,P_M>::reset(
   unsigned int newSize,
   bool         dataIsContinuousWithTime)
 {
-  m_times.resize            (newSize,0.);
-  m_temps.resize            (newSize,0.);
-  m_values.resize           (newSize,0.);
-  m_variances.resize        (newSize,1.);
+  m_times.resize    (newSize,0.);
+#ifdef QUESO_TGA_USES_OLD_COMPATIBLE_CODE
+  m_temps.resize    (newSize,0.);
+#endif
+  m_values.resize   (newSize,0.);
+  m_variances.resize(newSize,1.);
   m_dataIsContinuousWithTime = dataIsContinuousWithTime;
 
   return;
@@ -126,7 +148,6 @@ void
 uqTgaStorageClass<P_V,P_M>::setInstantData(
   unsigned int id,
   double       time,
-  double       temp,
   double       value,
   double       variance)
 {
@@ -136,7 +157,6 @@ uqTgaStorageClass<P_V,P_M>::setInstantData(
                       "id is too big");
 
   m_times    [id] = time;
-  m_temps    [id] = temp;
   m_values   [id] = value;
   m_variances[id] = variance;
 
@@ -147,7 +167,6 @@ template<class P_V, class P_M>
 void
 uqTgaStorageClass<P_V,P_M>::set(
   const std::vector<double>& times,
-  const std::vector<double>& temps,
   const std::vector<double>& values,
   const std::vector<double>* variances,
   bool                       dataIsContinuousWithTime)
@@ -156,22 +175,26 @@ uqTgaStorageClass<P_V,P_M>::set(
   this->reset(tmpSize,dataIsContinuousWithTime);
   for (unsigned int i = 0; i < tmpSize; ++i) {
     m_times [i] = times [i];
-    m_temps [i] = temps [i];
     m_values[i] = values[i];
     if (variances) m_variances[i] = (*variances)[i];
   }
 
   return;
 }
+#endif
 
 template<class P_V, class P_M>
-double
-uqTgaStorageClass<P_V,P_M>::value(double time) const
+void   
+uqTgaStorageClass<P_V,P_M>::getValue(
+  double        time,
+  unsigned int& startingTimeId,
+  double&       returnValue,
+  bool*         timeWasMatchedExactly) const
 {
-  double result = 0.;
+  returnValue = 0.;
 
   unsigned int tmpSize = m_times.size();
-  //std::cout << "In uqTgaStorageClass<P_V,P_M>::value()"
+  //std::cout << "In uqTgaStorageClass<P_V,P_M>::getValue()"
   //          << ": time = "         << time
   //          << ", tmpSize = "      << tmpSize
   //          << ", m_times[0] = "   << m_times[0]
@@ -180,17 +203,17 @@ uqTgaStorageClass<P_V,P_M>::value(double time) const
 
   UQ_FATAL_TEST_MACRO(tmpSize == 0,
                       UQ_UNAVAILABLE_RANK,
-                      "uqTgaStorageClass<P_V,P_M>::value()",
+                      "uqTgaStorageClass<P_V,P_M>::getValue()",
                       "m_times.size() = 0");
 
   UQ_FATAL_TEST_MACRO(time < m_times[0],
                       UQ_UNAVAILABLE_RANK,
-                      "uqTgaStorageClass<P_V,P_M>::value()",
+                      "uqTgaStorageClass<P_V,P_M>::getValue()",
                       "time < m_times[0]");
 
   UQ_FATAL_TEST_MACRO(m_times[tmpSize-1] < time,
                       UQ_UNAVAILABLE_RANK,
-                      "uqTgaStorageClass<P_V,P_M>::value()",
+                      "uqTgaStorageClass<P_V,P_M>::getValue()",
                       "m_times[max] < time");
 
   unsigned int i = 0;
@@ -199,9 +222,11 @@ uqTgaStorageClass<P_V,P_M>::value(double time) const
   }
 
   if (time == m_times[i]) {
-    result = m_values[i];
+    if (timeWasMatchedExactly) *timeWasMatchedExactly = true;
+    returnValue = m_values[i];
   }
   else {
+    if (timeWasMatchedExactly) *timeWasMatchedExactly = false;
     //if ((9130.0 < time) && (time < 9131.0)) {
     //  std::cout << "time = " << time
     //            << "i = " << i
@@ -211,11 +236,16 @@ uqTgaStorageClass<P_V,P_M>::value(double time) const
     //            << "value[i] = " << m_values[i]
     //            << std::endl;
     //}
-    double ratio = (time - m_times[i-1])/(m_times[i]-m_times[i-1]);
-    result = m_values[i-1] + ratio * (m_values[i]-m_values[i-1]);
+    if (m_dataIsContinuousWithTime) {
+      double ratio = (time - m_times[i-1])/(m_times[i]-m_times[i-1]);
+      returnValue = m_values[i-1] + ratio * (m_values[i]-m_values[i-1]);
+    }
+    else {
+      // Leave returnValue = 0.;
+    }
   }
 
-  return result;
+  return;
 }
 
 template<class P_V, class P_M>
@@ -225,12 +255,15 @@ uqTgaStorageClass<P_V,P_M>::times() const
   return m_times;
 }
 
+#ifdef QUESO_TGA_USES_OLD_COMPATIBLE_CODE
 template<class P_V, class P_M>
 const std::vector<double>&
 uqTgaStorageClass<P_V,P_M>::temps() const
 {
   return m_temps;
 }
+
+#endif
 
 template<class P_V, class P_M>
 const std::vector<double>&
@@ -263,16 +296,13 @@ uqTgaStorageClass<P_V,P_M>::printForMatlab(
   if (tmpSize == 0) {
     tmpSize = 1;
     ofs << "\n" << prefixName << "Time = zeros("  << tmpSize << ",1);"
-        << "\n" << prefixName << "Temp = zeros("  << tmpSize << ",1);"
         << "\n" << prefixName << "Value = zeros(" << tmpSize << ",1);";
   }
   else {
     ofs << "\n" << prefixName << "Time = zeros("  << tmpSize << ",1);"
-        << "\n" << prefixName << "Temp = zeros("  << tmpSize << ",1);"
         << "\n" << prefixName << "Value = zeros(" << tmpSize << ",1);";
     for (unsigned int i = 0; i < tmpSize; ++i) {
       ofs << "\n" << prefixName << "Time("  << i+1 << ",1) = " << m_times[i]  << ";"
-          << "\n" << prefixName << "Temp("  << i+1 << ",1) = " << m_temps[i]  << ";"
           << "\n" << prefixName << "Value(" << i+1 << ",1) = " << m_values[i] << ";";
     }
   }

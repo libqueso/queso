@@ -29,19 +29,17 @@
 #include <gsl/gsl_errno.h>
 
 // The "W dot" function
-typedef struct
+struct
+uqTgaWDotInfoStruct
 {
   double                         A;
   double                         E;
   const uqBase1D1DFunctionClass* temperatureFunctionObj;
   bool                           computeGradAlso;
-} uqTgaWDotInfoStruct;
+};
 
 int uqTgaWDotWrtTimeRoutine(double time, const double w[], double f[], void *voidInfo)
 {
-  //std::cout << "Should not call ode-time routine(), case 2" << std::endl;
-  //exit(1);
-
   const uqTgaWDotInfoStruct& info = *((uqTgaWDotInfoStruct *)voidInfo);
   double A    = info.A;
   double E    = info.E;
@@ -88,26 +86,27 @@ public:
               const uqBase1D1DFunctionClass&     temperatureFunctionObj);
  ~uqTgaWClass();
 
-        void                    compute(const P_V&                        params,
-                                        double                            reqMaxTime,
-                                        double                            maximumDeltaTime,
-                                        bool                              computeGradAlso,
-                                        const uqTgaStorageClass<P_V,P_M>* referenceW,
-                                        double*                           weigthedMisfitSum,
-                                        uqTgaStorageClass<P_V,P_M>*       weigthedMisfitData);
+        void                    compute(const P_V&                     params,
+                                        double                         reqMaxTime,
+                                        double                         maxTimeStep,
+                                        bool                           computeGradAlso,
+                                        const uqBase1D1DFunctionClass* referenceW,
+                                        const uqBase1D1DFunctionClass* weightFunction,
+                                        double*                        misfitValue,
+                                        uqSampled1D1DFunctionClass*    diffFunction);
 #ifdef QUESO_TGA_USES_OLD_COMPATIBLE_CODE
         void                    computeUsingTemp(const P_V&                        params,
                                                  double                            maximumTemp, // COMPATIBILITY WITH OLD VERSION
                                                  const uqTgaStorageClass<P_V,P_M>* referenceW,
-                                                 double*                           weigthedMisfitSum);
+                                                 double*                           misfitValue);
 #endif
 
         void                    interpolate(double        time,
                                             unsigned int& startingTimeId,
                                             double*       wValue,
-                                            P_V*          wGrad) const;
+                                            P_V*          wGrad,
+                                            bool*         timeWasMatchedExactly) const;
   const std::vector<double>&    times() const;
-  const std::vector<double>&    temps() const;
   const std::vector<double>&    ws   () const;
   const std::vector<P_V*  >&    grads() const;
   const uqBaseEnvironmentClass& env  () const;
@@ -124,6 +123,7 @@ protected:
         std::vector<double>      m_temps;
         std::vector<double>      m_ws;
         std::vector<P_V*  >      m_grads;
+	std::vector<double>      m_diffs;
 };
 
 template<class P_V, class P_M>
@@ -136,7 +136,8 @@ uqTgaWClass<P_V,P_M>::uqTgaWClass(
   m_times                 (0),
   m_temps                 (0),
   m_ws                    (0),
-  m_grads                 (0)
+  m_grads                 (0),
+  m_diffs                 (0)
 {
   if ((m_env.verbosity() >= 30) && (m_env.rank() == 0)) {
     std::cout << "Entering uqTgaWClass::constructor()"
@@ -168,53 +169,73 @@ uqTgaWClass<P_V,P_M>::resetInternalValues()
     delete m_grads[i];
   }
   m_grads.clear();
+  m_diffs.clear();
 }
 
 template<class P_V, class P_M>
 void
 uqTgaWClass<P_V,P_M>::compute(
-  const P_V&                        params,
-  double                            reqMaxTime,
-  double                            maximumDeltaTime,
-  bool                              computeGradAlso,
-  const uqTgaStorageClass<P_V,P_M>* referenceW,
-  double*                           weigthedMisfitSum,
-  uqTgaStorageClass<P_V,P_M>*       weigthedMisfitData)
+  const P_V&                     params,          // input
+  double                         reqMaxTime,      // input
+  double                         maxTimeStep,     // input
+  bool                           computeGradAlso, // input
+  const uqBase1D1DFunctionClass* referenceW,      // input (possible)
+  const uqBase1D1DFunctionClass* weightFunction,  // input (possible)
+  double*                        misfitValue,     // output 
+  uqSampled1D1DFunctionClass*    diffFunction)    // outpt
 {
-  UQ_FATAL_TEST_MACRO((weigthedMisfitSum != NULL) && (referenceW == NULL),
+  UQ_FATAL_TEST_MACRO((misfitValue != NULL) && (referenceW == NULL),
                       m_env.rank(),
                       "uqTgaWClass<P_V,P_M>::compute()",
-                      "weigthedMisfitSum is being requested but not referenceW is supplied");
-  UQ_FATAL_TEST_MACRO((weigthedMisfitData != NULL) && (referenceW == NULL),
+                      "misfitValue is being requested but not referenceW is supplied");
+  UQ_FATAL_TEST_MACRO((diffFunction != NULL) && (referenceW == NULL),
                       m_env.rank(),
                       "uqTgaWClass<P_V,P_M>::compute()",
-                      "weigthedMisfitData is being requested but not referenceW is supplied");
+                      "diffFunction is being requested but not referenceW is supplied");
+  UQ_FATAL_TEST_MACRO((referenceW != NULL) && (misfitValue == NULL) && (diffFunction == NULL),
+                      m_env.rank(),
+                      "uqTgaWClass<P_V,P_M>::compute()",
+                      "refenceW is being supplied for no purpose");
 
-  const std::vector<double> dummyVec(0);
-  const std::vector<double>* refTimesPtr    (&dummyVec);
-  const std::vector<double>* refTempsPtr    (&dummyVec);
-  const std::vector<double>* refValuesPtr   (&dummyVec);
-  const std::vector<double>* refVariancesPtr(&dummyVec);
-  if (referenceW) {
-    refTimesPtr     = &(referenceW->times    ());
-    refTempsPtr     = &(referenceW->temps    ());
-    refValuesPtr    = &(referenceW->values   ());
-    refVariancesPtr = &(referenceW->variances());
+  if ((m_env.verbosity() >= 0) && (m_env.rank() == 0)) {
+    std::cout << "Entering uqTgaWClass<P_V,P_M>::compute()"
+              << ": params = "          << params
+              << ", reqMaxTime = "      << reqMaxTime
+              << ", maxTimeStep = "     << maxTimeStep
+              << ", computeGradAlso = " << computeGradAlso
+              << ", referenceW = "      << referenceW
+              << ", weightFunction = "  << weightFunction
+              << ", misfitValue = "     << misfitValue
+              << ", diffFunction = "    << diffFunction
+              << std::endl;
   }
-  const std::vector<double>& refTimes    (*refTimesPtr    );
-  const std::vector<double>& refTemps    (*refTempsPtr    );
-  const std::vector<double>& refValues   (*refValuesPtr   );
-  const std::vector<double>& refVariances(*refVariancesPtr);
-  unsigned int refSize = refTimes.size();
-  bool refDataIsContinuousWithTime = false;
-  if (referenceW) refDataIsContinuousWithTime = referenceW->dataIsContinuousWithTime();
 
+  // Initialize variables related to the weight function
+  const uqSampled1D1DFunctionClass* tmpWeightFunction = NULL;
+  bool weightFunctionIsDelta = false;
+  unsigned int deltaWeightSize = 0;
+  const std::vector<double> dummyVec(0);
+  const std::vector<double>* deltaWeightTimesPtr(&dummyVec);
+  const std::vector<double>* deltaWeightValuesPtr(&dummyVec);
+  if (weightFunction) {
+    tmpWeightFunction = dynamic_cast< const uqSampled1D1DFunctionClass* >(weightFunction);
+    weightFunctionIsDelta = (tmpWeightFunction != NULL) && (tmpWeightFunction->dataIsContinuous() == false);
+    if (weightFunctionIsDelta) {
+      deltaWeightSize = tmpWeightFunction->domainValues().size();
+      deltaWeightTimesPtr = &(tmpWeightFunction->domainValues());
+      deltaWeightValuesPtr = &(tmpWeightFunction->domainValues());
+    }
+  }
+  const std::vector<double>& deltaWeightTimes (*deltaWeightTimesPtr );
+  const std::vector<double>& deltaWeightValues(*deltaWeightValuesPtr);
+  unsigned int deltaWeightId = 0;
+
+  // Initialize other variables
   this->resetInternalValues();
   m_times.resize(1000,0.  );
-  m_temps.resize(1000,0.  );
   m_ws.resize   (1000,0.  );
-  m_grads.resize(1000,NULL);
-  if (weigthedMisfitData) weigthedMisfitData->reset(refSize,refDataIsContinuousWithTime);
+  if (computeGradAlso) m_grads.resize(1000,NULL);
+  if (diffFunction)    m_diffs.resize(1000,0.  );
 
   uqTgaWDotInfoStruct wDotWrtTimeInfo = {params[0],params[1],&m_temperatureFunctionObj,computeGradAlso};
 
@@ -229,8 +250,8 @@ uqTgaWClass<P_V,P_M>::compute(
         gsl_odeiv_system     sysTime = {uqTgaWDotWrtTimeRoutine, NULL, numWComponents, (void *)&wDotWrtTimeInfo};
 
   double currentTime = 0.;
-  double deltaTime   = .1;
-  if (maximumDeltaTime > 0) deltaTime = maximumDeltaTime;
+  double timeStep   = .1;
+  if (maxTimeStep > 0) timeStep = maxTimeStep;
   double currentTemp = m_temperatureFunctionObj.value(currentTime);
 
   double currentW[numWComponents];
@@ -242,26 +263,28 @@ uqTgaWClass<P_V,P_M>::compute(
 
   unsigned int loopId = 0;
   m_times[loopId] = currentTime;
-  m_temps[loopId] = currentTemp;
   m_ws   [loopId] = currentW[0];
   if (computeGradAlso) {
     m_grads[loopId] = new P_V(params);
     (*(m_grads[loopId]))[0] = currentW[1];
     (*(m_grads[loopId]))[1] = currentW[2];
   }
+  if (diffFunction) m_diffs[loopId] = currentW[0] - referenceW->value(currentTime);
 
   double previousTime = 0.;
   double previousW[1];
   previousW[0]=1.;
-  unsigned int misfitId = 0;
 
   double maximumTime = reqMaxTime;
   if (maximumTime == 0.) maximumTime = 1.e+9;
+  if (referenceW) maximumTime = referenceW->maxDomainValue(); // FIX ME
+
   bool continueOnWhile = true;
-  if (referenceW) {
-    continueOnWhile = (misfitId < refSize);
-    unsigned int tmpSize = refSize;
-    maximumTime = refTimes[tmpSize-1];
+  if (weightFunctionIsDelta) {
+    continueOnWhile = (deltaWeightId < deltaWeightSize);
+  }
+  else if (referenceW) {
+    continueOnWhile = (currentTime < maximumTime);
   }
   else if (reqMaxTime > 0) {
     continueOnWhile = (currentTime < maximumTime);
@@ -272,80 +295,82 @@ uqTgaWClass<P_V,P_M>::compute(
   while (continueOnWhile) {
     int status = 0;
     double nextTime = maximumTime;
-    if (maximumDeltaTime > 0) nextTime = std::min(maximumTime,currentTime+maximumDeltaTime);
-    status = gsl_odeiv_evolve_apply(e, c, s, &sysTime, &currentTime, nextTime, &deltaTime, currentW);
+    if (maxTimeStep > 0) nextTime = std::min(nextTime,currentTime+maxTimeStep);
+    status = gsl_odeiv_evolve_apply(e, c, s, &sysTime, &currentTime, nextTime, &timeStep, currentW);
     UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
                         params.env().rank(),
                         "uqTgaWClass<P_V,P_M>::compute()",
                         "gsl_odeiv_evolve_apply() failed");
-    if (maximumDeltaTime > 0) deltaTime = std::min(maximumDeltaTime,deltaTime);
+    if (maxTimeStep > 0) timeStep = std::min(maxTimeStep,timeStep);
     currentTemp = m_temperatureFunctionObj.value(currentTime);
     if (currentW[0] < 1.e-6) currentW[0] = 0.;
+
+    if ((m_env.verbosity() >= 99) && (m_env.rank() == 0)) {
+      std::cout << "In uqTgaWClass<P_V,P_M>::compute()"
+                << ": loopId = "         << loopId
+                << ", currentTime = "    << currentTime
+                << ", currentW[0] = "    << currentW[0]
+                << std::endl;
+    }
 
     loopId++;
     if (loopId >= m_times.size()) {
       m_times.resize(m_times.size()+1000,0.);
-      m_temps.resize(m_temps.size()+1000,0.);
       m_ws.resize   (m_ws.size()   +1000,0.);
-      m_grads.resize(m_grads.size()+1000,NULL);
+      if (computeGradAlso) m_grads.resize(m_grads.size()+1000,NULL);
+      if (diffFunction)    m_diffs.resize(m_diffs.size()+1000,0.  );
     }
 
     m_times[loopId] = currentTime;
-    m_temps[loopId] = currentTemp;
     m_ws   [loopId] = currentW[0];
     if (computeGradAlso) {
       m_grads[loopId] = new P_V(params);
       (*(m_grads[loopId]))[0] = currentW[1];
       (*(m_grads[loopId]))[1] = currentW[2];
     }
+    if (diffFunction) m_diffs[loopId] = currentW[0] - referenceW->value(currentTime);
 
-    if (referenceW) {
-      while ((misfitId           < refSize            ) &&
-             (previousTime       <= refTimes[misfitId]) &&
-             (refTimes[misfitId] <= currentTime       )) {
-        double tmpValue = (refTimes[misfitId]-previousTime)*(currentW[0]-previousW[0])/(currentTime-previousTime) + previousW[0];
-        double diff = tmpValue - refValues[misfitId];
-
-        if (weigthedMisfitData) weigthedMisfitData->setInstantData(misfitId,
-                                                                   refTimes[misfitId],
-                                                                   refTemps[misfitId],
-                                                                   diff/refVariances[misfitId],
-                                                                   1.);
-        if (weigthedMisfitSum) {
-          if (refDataIsContinuousWithTime) {
-            // Properly scale in order to compute integral correctly
-            double tmpTimeInterval = 0.;
-            if (misfitId == 0) tmpTimeInterval = refTimes[misfitId];
-            else               tmpTimeInterval = refTimes[misfitId]-refTimes[misfitId-1];
-            *weigthedMisfitSum += diff*diff*tmpTimeInterval/refVariances[misfitId];
+    if (misfitValue) {
+      if (weightFunctionIsDelta) {
+        while ((deltaWeightId                   < deltaWeightSize                 ) &&
+               (previousTime                    <= deltaWeightTimes[deltaWeightId]) &&
+               (deltaWeightTimes[deltaWeightId] <= currentTime                    )) {
+          double tmpValue = (deltaWeightTimes[deltaWeightId]-previousTime)*(currentW[0]-previousW[0])/(currentTime-previousTime) + previousW[0];
+          double diff = tmpValue - referenceW->value(currentTime);
+          *misfitValue += diff*diff*deltaWeightValues[deltaWeightId];
+#if 0
+          if ((m_env.verbosity() >= 99) && (m_env.rank() == 0)) {
+            std::cout << "In uqTgaWClass<P_V,P_M>::compute()"
+                      << ", currentTime = "   << currentTime
+                      << ", deltaWeightId = " << deltaWeightId
+                      << ", measuredTime = "  << deltaWeightTimes[deltaWeightId]
+                      << ", measuredW = "     << refValues[deltaWeightId]
+                      << ", variance = "      << refVariances[deltaWeightId]
+                      << ": computedW = "     << tmpValue
+                      << ", diffValue = "     << diff
+                      << std::endl;
           }
-          else {
-            *weigthedMisfitSum += diff*diff/refVariances[misfitId];
-          }
+#endif
+          deltaWeightId++;
         }
-
-        if ((m_env.verbosity() >= 99) && (m_env.rank() == 0)) {
-          std::cout << "In uqTgaWClass<P_V,P_M>::compute()"
-                    << ", currentTime = "  << currentTime
-                    << ", misfitId = "     << misfitId
-                    << ", measuredTime = " << refTimes[misfitId]
-                    << ", measuredTemp = " << refTemps[misfitId]
-                    << ", measuredW = "    << refValues[misfitId]
-                    << ", variance = "     << refVariances[misfitId]
-                    << ": computedW = "    << tmpValue
-                    << ", diffValue = "    << diff
-                    << std::endl;
-        }
-
-        misfitId++;
+      }
+      else {
+        // Multiply by [time interval] in order to compute integral correctly
+        double diff = m_diffs[loopId];
+        double weightScale = 1.;
+        if (weightFunction) weightScale *= weightFunction->value(currentTime);
+        *misfitValue += diff*diff*weightScale*(currentTime-previousTime);
       }
     }
 
     previousTime = currentTime;
     previousW[0] = currentW[0];
 
-    if (referenceW) {
-      continueOnWhile = (misfitId < refSize);
+    if (weightFunctionIsDelta) {
+      continueOnWhile = (deltaWeightId < deltaWeightSize);
+    }
+    else if (referenceW) {
+      continueOnWhile = (currentTime < maximumTime);
     }
     else if (reqMaxTime > 0) {
       continueOnWhile = (currentTime < maximumTime);
@@ -356,9 +381,11 @@ uqTgaWClass<P_V,P_M>::compute(
   }
 
   m_times.resize(loopId+1);
-  m_temps.resize(loopId+1);
   m_ws.resize   (loopId+1);
-  m_grads.resize(loopId+1);
+  if (computeGradAlso) m_grads.resize(loopId+1);
+  if (diffFunction)    m_diffs.resize(loopId+1);
+
+  if (diffFunction) diffFunction->set(m_times,m_diffs,true);
 
   if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
     char stringA[64];
@@ -371,12 +398,11 @@ uqTgaWClass<P_V,P_M>::compute(
               << ", beta = "                       << m_temperatureFunctionObj.deriv(0.)
               << ": finished ode loop after "      << m_times.size()
               << " iterations, with final time = " << m_times[m_times.size()-1]
-              << ", final temp = "                 << m_temps[m_temps.size()-1]
               << ", final w = "                    << m_ws   [m_ws.size()   -1]
               << std::endl;
-    if (weigthedMisfitSum) {
-      std::cout << " and with refTimes[max] = " << refTimes[refSize-1]
-                << ", weigthedMisfitSum = "                << *weigthedMisfitSum
+    if (misfitValue) {
+      std::cout << " and with deltaWeightTimes[max] = " << deltaWeightTimes[deltaWeightSize-1]
+                << ", misfitValue = "                << *misfitValue
                 << std::endl;
     }
   }
@@ -395,12 +421,12 @@ uqTgaWClass<P_V,P_M>::computeUsingTemp(
   const P_V&                        params,
   double                            maximumTemp, // COMPATIBILITY WITH OLD VERSION
   const uqTgaStorageClass<P_V,P_M>* referenceW,
-  double*                           weigthedMisfitSum)
+  double*                           misfitValue)
 {
-  ////UQ_FATAL_TEST_MACRO((weigthedMisfitSum != NULL) && (referenceW == NULL),
+  ////UQ_FATAL_TEST_MACRO((misfitValue != NULL) && (referenceW == NULL),
   ////                    m_env.rank(),
   ////                    "uqTgaWClass<P_V,P_M>::computeUsingTemp()",
-  ////                    "weigthedMisfitSum is being requested but not referenceW is supplied");
+  ////                    "misfitValue is being requested but not referenceW is supplied");
 
   const std::vector<double> dummyVec(0);
   const std::vector<double>* refTimesPtr    (&dummyVec);
@@ -523,7 +549,7 @@ uqTgaWClass<P_V,P_M>::computeUsingTemp(
       continueOnWhile = (currentW[0] > 0.);
     }
   }
-  if (weigthedMisfitSum) *weigthedMisfitSum = sumValue;
+  if (misfitValue) *misfitValue = sumValue;
 
   ////m_times.resize(loopId+1);
   ////m_temps.resize(loopId+1);
@@ -544,9 +570,9 @@ uqTgaWClass<P_V,P_M>::computeUsingTemp(
               << ", final temp = "                 << m_temps[m_temps.size()-1]
               << ", final w = "                    << m_ws   [m_ws.size()   -1]
               << std::endl;
-    if (weigthedMisfitSum) {
-      std::cout << " and with refTimes[max] = " << refTimes[refSize-1]
-                << ", weigthedMisfitSum = "     << *weigthedMisfitSum
+    if (misfitValue) {
+      std::cout << " and with refTimes[max] = "  << refTimes[refSize-1]
+                << ", misfitValue = " << *misfitValue
                 << std::endl;
     }
   }
@@ -565,7 +591,8 @@ uqTgaWClass<P_V,P_M>::interpolate(
   double        time,
   unsigned int& startingTimeId, // input and output
   double*       wValue,
-  P_V*          wGrad) const
+  P_V*          wGrad,
+  bool*         timeWasMatchedExactly) const
 {
   unsigned int tmpSize = m_times.size(); // Yes, 'm_grads'
   //std::cout << "In uqTgaWClass<P_V,P_M>::grad()"
@@ -607,10 +634,12 @@ uqTgaWClass<P_V,P_M>::interpolate(
   startingTimeId = i;
 
   if (time == m_times[i]) {
+    if (timeWasMatchedExactly) *timeWasMatchedExactly = true;
     if (wValue) *wValue = m_ws[i];
     if (wGrad)  *wGrad  = *(m_grads[i]);
   }
   else {
+    if (timeWasMatchedExactly) *timeWasMatchedExactly = false;
     //if ((9130.0 < time) && (time < 9131.0)) {
     //  std::cout << "time = " << time
     //            << "i = " << i
@@ -633,13 +662,6 @@ const std::vector<double>&
 uqTgaWClass<P_V,P_M>::times() const
 {
   return m_times;
-}
-
-template<class P_V, class P_M>
-const std::vector<double>&
-uqTgaWClass<P_V,P_M>::temps() const
-{
-  return m_temps;
 }
 
 template<class P_V, class P_M>
@@ -673,16 +695,13 @@ uqTgaWClass<P_V,P_M>::printForMatlab(
   if (tmpSize == 0) {
     tmpSize = 1;
     ofs << "\n" << prefixName << "Time = zeros(" << tmpSize << ",1);"
-        << "\n" << prefixName << "Temp = zeros(" << tmpSize << ",1);"
         << "\n" << prefixName << "W = zeros("    << tmpSize << ",1);";
   }
   else {
     ofs << "\n" << prefixName << "Time = zeros(" << tmpSize << ",1);"
-        << "\n" << prefixName << "Temp = zeros(" << tmpSize << ",1);"
         << "\n" << prefixName << "W = zeros("    << tmpSize << ",1);";
     for (unsigned int i = 0; i < tmpSize; ++i) {
       ofs << "\n" << prefixName << "Time(" << i+1 << ",1) = " << m_times[i] << ";"
-          << "\n" << prefixName << "Temp(" << i+1 << ",1) = " << m_temps[i] << ";"
           << "\n" << prefixName << "W("    << i+1 << ",1) = " << m_ws   [i] << ";";
     }
   }
