@@ -347,13 +347,13 @@ uqTgaWClass<P_V,P_M>::compute(
                (previousTime              <= deltaSeqTimes[deltaSeqId]) &&
                (deltaSeqTimes[deltaSeqId] <= currentTime              )) {
           double tmpValue = (deltaSeqTimes[deltaSeqId]-previousTime)*(currentW[0]-previousW[0])/(currentTime-previousTime) + previousW[0];
-          double diffForDelta = tmpValue - referenceW->value(currentTime);
+          double diffForDelta = tmpValue - referenceW->value(deltaSeqTimes[deltaSeqId]);
           *misfitValue += diffForDelta*diffForDelta*deltaSeqIntegratedValues[deltaSeqId]; // Consider delta as delta, i.e., integral = 1;
 #if 0
           if ((m_env.verbosity() >= 99) && (m_env.rank() == 0)) {
             std::cout << "In uqTgaWClass<P_V,P_M>::compute()"
                       << ", currentTime = "   << currentTime
-                      << ", deltaSeqId = " << deltaSeqId
+                      << ", deltaSeqId = "    << deltaSeqId
                       << ", measuredTime = "  << deltaSeqTimes[deltaSeqId]
                       << ", measuredW = "     << refValues[deltaSeqId]
                       << ", variance = "      << refVariances[deltaSeqId]

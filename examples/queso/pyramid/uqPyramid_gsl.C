@@ -42,7 +42,7 @@ int main(int argc, char* argv[])
                        uqGslVectorClass, // type for qoi vectors
                        uqGslMatrixClass  // type for qoi matrices
                       > tgaValidation(*env,"tga_");
-#if 1
+#if 0
   tgaValidation.run();
 #else
   int    treatAsContinuous = atoi  (argv[3]     ); // 1

@@ -55,8 +55,16 @@ int uqTgaLambdaTildeDotWrtTimeRoutine(double tildeTime, const double lambdaTilde
   double expTerm        = exp(-E/(R_CONSTANT*temp));
   double tildeDiff      = info.diffFunction->value(equivalentTime);
 
+  const uqDeltaSeq1D1DFunctionClass* tildeDeltaSeqFunction = NULL;
+  if (info.tildeWeightFunction) {
+    tildeDeltaSeqFunction = dynamic_cast< const uqDeltaSeq1D1DFunctionClass* >(info.tildeWeightFunction);
+  }
+
   double weightValue = 1.;
-  if (info.tildeWeightFunction) weightValue = info.tildeWeightFunction->value(tildeTime);
+  if (info.tildeWeightFunction) {
+    if (tildeDeltaSeqFunction != NULL) weightValue = 0.;
+    else                               weightValue = info.tildeWeightFunction->value(tildeTime);
+  }
 
   if ((info.wObj->env().verbosity() >= 99) && (info.wObj->env().rank() == 0)) {
     std::cout << "In uqTgaLambdaTildeDotWrtTimeRoutine()"
@@ -242,7 +250,26 @@ uqTgaLambdaClass<P_V,P_M>::compute(
     int status = 0;
     double nextTildeTime = maxTildeTime;
     if (maxTimeStep > 0) nextTildeTime = std::min(nextTildeTime,currentTildeTime+maxTimeStep);
-    if (tildeDeltaSeqFunction != NULL) nextTildeTime = std::min(nextTildeTime,tildeDeltaSeqFunction->domainValues()[tildeDeltaWeightId]);
+    if (tildeDeltaSeqFunction != NULL) {
+      nextTildeTime = std::min(nextTildeTime,tildeDeltaSeqFunction->domainValues()[tildeDeltaWeightId]);
+      if (currentTildeTime == tildeDeltaSeqFunction->domainValues()[tildeDeltaWeightId-1]) { // Yes, '[...-1]'
+        currentLambdaTilde[0] -= 2.*diffFunction.value(equivalentTime);
+        tildeLambdas[loopId] = currentLambdaTilde[0];
+        if (computeGradAlso) {
+          P_V wGrad(*(wObj.grads()[0]));
+          unsigned int startingTimeId = 0;
+          wObj.interpolate(equivalentTime,
+                           startingTimeId,
+                           NULL,
+                           &wGrad,
+                           NULL);
+          currentLambdaTilde[1] -= 2.*wGrad[0];
+          currentLambdaTilde[2] -= 2.*wGrad[1];
+          (*(tildeGrads[loopId]))[0] = currentLambdaTilde[1];
+          (*(tildeGrads[loopId]))[1] = currentLambdaTilde[2];
+        }
+      }
+    }
 
     if ((m_env.verbosity() >= 99) && (m_env.rank() == 0)) {
       std::cout << "In uqTgaLambdaClass::compute(), before"

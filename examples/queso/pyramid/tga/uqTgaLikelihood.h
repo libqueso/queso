@@ -144,12 +144,12 @@ uqTgaLikelihoodInfoStruct<P_V,P_M>::uqTgaLikelihoodInfoStruct(
   m_diffFunction = new uqSampled1D1DFunctionClass();
   m_lambdaObj    = new uqTgaLambdaClass<P_V,P_M> (m_paramSpace, *m_temperatureFunctionObj);
 
-  std::vector<double> measuredTimes   (numMeasurements,0.);
-  std::vector<double> measuredTemps   (numMeasurements,0.);
-  std::vector<double> measuredWs      (numMeasurements,0.);
-  std::vector<double> measurementVs   (numMeasurements,0.);
-  std::vector<double> vecOfDeltaValues(numMeasurements,0.);
-  std::vector<double> vecOfWeights    (numMeasurements,0.);
+  std::vector<double> measuredTimes(numMeasurements,0.);
+  std::vector<double> measuredTemps(numMeasurements,0.);
+  std::vector<double> measuredWs   (numMeasurements,0.);
+  std::vector<double> measurementVs(numMeasurements,0.);
+  std::vector<double> vecOfDeltas  (numMeasurements,0.);
+  std::vector<double> vecOfWeights (numMeasurements,0.);
 
   unsigned int whileSize = 0;
   double tmpTemp;
@@ -160,12 +160,12 @@ uqTgaLikelihoodInfoStruct<P_V,P_M>::uqTgaLikelihoodInfoStruct(
                         paramSpace.env().rank(),
                         "uqTgaLikelihoodInfoStruct<P_V,P_M>::constructor(), in uqTgaValidation.h",
                         "input file 1 has too many measurements");
-    measuredTimes   [whileSize] = (tmpTemp-initialTemp)/beta;
-    measuredTemps   [whileSize] = tmpTemp;
-    measuredWs      [whileSize] = tmpW;
-    measurementVs   [whileSize] = tmpV;
-    vecOfDeltaValues[whileSize] = 1.e+4;
-    vecOfWeights    [whileSize] = 1./tmpV;
+    measuredTimes[whileSize] = (tmpTemp-initialTemp)/beta;
+    measuredTemps[whileSize] = tmpTemp;
+    measuredWs   [whileSize] = tmpW;
+    measurementVs[whileSize] = tmpV;
+    vecOfDeltas  [whileSize] = 1.;
+    vecOfWeights [whileSize] = 1./tmpV;
     whileSize++;
   }
   UQ_FATAL_TEST_MACRO((whileSize != numMeasurements),
@@ -187,18 +187,18 @@ uqTgaLikelihoodInfoStruct<P_V,P_M>::uqTgaLikelihoodInfoStruct(
                                                 measuredWs);
 
   m_weightFunction = new uqDeltaSeq1D1DFunctionClass(measuredTimes,
-                                                     vecOfDeltaValues,
+                                                     vecOfDeltas,
                                                      vecOfWeights);
 
   if (paramSpace.env().rank() == 0) {
     std::cout << "In uqTgaLikelihoodInfoStruct<P_V,P_M>::constructor()"
               << ": m_weightFunction.times().size() = "     << measuredTimes.size()
-              << ", m_weightFunction.times()[0] = "         << measuredTimes   [0]
-              << ", m_weightFunction.deltaValues()[0] = "   << vecOfDeltaValues[0]
-              << ", m_weightFunction.intValues()[0] = "     << vecOfWeights    [0]
-              << ", m_weightFunction.times()[max] = "       << measuredTimes   [measuredTimes.size()-1]
-              << ", m_weightFunction.deltaValues()[max] = " << vecOfDeltaValues[measuredTimes.size()-1]
-              << ", m_weightFunction.intValues()[max] = "   << vecOfWeights    [measuredTimes.size()-1]
+              << ", m_weightFunction.times()[0] = "         << measuredTimes[0]
+              << ", m_weightFunction.deltaValues()[0] = "   << vecOfDeltas  [0]
+              << ", m_weightFunction.intValues()[0] = "     << vecOfWeights [0]
+              << ", m_weightFunction.times()[max] = "       << measuredTimes[measuredTimes.size()-1]
+              << ", m_weightFunction.deltaValues()[max] = " << vecOfDeltas  [measuredTimes.size()-1]
+              << ", m_weightFunction.intValues()[max] = "   << vecOfWeights [measuredTimes.size()-1]
               << std::endl;
   }
 
@@ -208,7 +208,7 @@ uqTgaLikelihoodInfoStruct<P_V,P_M>::uqTgaLikelihoodInfoStruct(
   double maxTime = m_weightFunction->maxDomainValue();
   for (unsigned int j = 0; j < whileSize; ++j) {
     aux1[j] = maxTime-measuredTimes[whileSize-1-j];
-    aux2[j] = vecOfDeltaValues     [whileSize-1-j];
+    aux2[j] = vecOfDeltas          [whileSize-1-j];
     aux3[j] = vecOfWeights         [whileSize-1-j];
   }
   m_tildeWeightFunction = new uqDeltaSeq1D1DFunctionClass(aux1,

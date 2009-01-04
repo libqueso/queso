@@ -554,23 +554,24 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest(
 
   // Change the weight functions
   unsigned int tmpSize = refW.domainValues().size();
-  std::vector<double> auxDeltaValues(tmpSize,1.e+4);
+  std::vector<double> vecOfDeltas (tmpSize,1.);
+  std::vector<double> vecOfWeights(tmpSize,1.);
   std::vector<double> aux1(tmpSize,0.);
   std::vector<double> aux2(tmpSize,0.);
   std::vector<double> aux3(tmpSize,0.);
   double maxTime = refW.maxDomainValue();
   for (unsigned int j = 0; j < tmpSize; ++j) {
     aux1[j] = maxTime-refW.domainValues()[tmpSize-1-j];
-    aux2[j] = auxDeltaValues             [tmpSize-1-j];
-    aux3[j] = refW.imageValues         ()[tmpSize-1-j];
+    aux2[j] = vecOfDeltas                [tmpSize-1-j];
+    aux3[j] = vecOfWeights               [tmpSize-1-j];
   }
   uqSampled1D1DFunctionClass continuousWeightFunction(refW.domainValues(),
-                                                      refW.imageValues());
+                                                      vecOfWeights);
   uqSampled1D1DFunctionClass tildeContinuousWeightFunction(aux1,
                                                            aux3);
   uqDeltaSeq1D1DFunctionClass deltaWeightFunction(refW.domainValues(),
-                                                  auxDeltaValues,
-                                                  refW.imageValues());
+                                                  vecOfDeltas,
+                                                  vecOfWeights);
   uqDeltaSeq1D1DFunctionClass tildeDeltaWeightFunction(aux1,
                                                        aux2,
                                                        aux3);
