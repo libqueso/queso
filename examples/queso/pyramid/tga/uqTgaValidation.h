@@ -526,14 +526,23 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest(
                refMaxTimeStep, // maximum delta time
                false,          // computeWAndLambdaGradsAlso
                NULL,           // referenceW
-               NULL,
-               NULL);
+               NULL,           // weightFunction
+               NULL,           // misfitValue
+               NULL);          // diffFunction
 
-  std::vector<double> constantRefWs(tmpW.times().size(),.5);
+  //std::vector<double> constantRefWs(tmpW.times().size(),.5);
   uqSampled1D1DFunctionClass refW(tmpW.times(),
-                                  constantRefWs,//tmpW.ws(),
-                                  NULL,  // use all variances = 1.
-                                  treatReferenceDataAsContinuous);
+                                  tmpW.ws()); // tmpW.ws() or constantRefWs
+
+  if (m_env.rank() == 0) {
+    std::cout << "In uqTgaValidation::runGradTest()"
+              << ": refW.times().size() = " << refW.domainValues().size()
+              << ", refW.times()[0] = "     << refW.domainValues()[0]
+              << ", refW.values()[0] = "    << refW.imageValues ()[0]
+              << ", refW.times()[max] = "   << refW.domainValues()[refW.domainValues().size()-1]
+              << ", refW.values()[max] = "  << refW.imageValues ()[refW.domainValues().size()-1]
+              << std::endl;
+  }
 
   //////////////////////////////////////////////////////////////////
   // Step 2 of 4: Compute gradient(misfit) and Hessian(misfit) wrt A and E, using Lagrangian multipliers
@@ -541,16 +550,46 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest(
 
   // Change the reference data to be used inside the likelihood routine,
   // from discrete (read from file) to continuous (computed and saved in 'refW')
-  m_calLikelihoodInfoVector[0]->setReferenceW(refW);
+  m_calLikelihoodInfoVector[0]->changeReferenceW(refW);
 
-  paramValues[0] = guessA;
-  paramValues[1] = guessE;
+  // Change the weight functions
+  unsigned int tmpSize = refW.domainValues().size();
+  std::vector<double> auxDeltaValues(tmpSize,1.e+4);
+  std::vector<double> aux1(tmpSize,0.);
+  std::vector<double> aux2(tmpSize,0.);
+  std::vector<double> aux3(tmpSize,0.);
+  double maxTime = refW.maxDomainValue();
+  for (unsigned int j = 0; j < tmpSize; ++j) {
+    aux1[j] = maxTime-refW.domainValues()[tmpSize-1-j];
+    aux2[j] = auxDeltaValues             [tmpSize-1-j];
+    aux3[j] = refW.imageValues         ()[tmpSize-1-j];
+  }
+  uqSampled1D1DFunctionClass continuousWeightFunction(refW.domainValues(),
+                                                      refW.imageValues());
+  uqSampled1D1DFunctionClass tildeContinuousWeightFunction(aux1,
+                                                           aux3);
+  uqDeltaSeq1D1DFunctionClass deltaWeightFunction(refW.domainValues(),
+                                                  auxDeltaValues,
+                                                  refW.imageValues());
+  uqDeltaSeq1D1DFunctionClass tildeDeltaWeightFunction(aux1,
+                                                       aux2,
+                                                       aux3);
+  if (treatReferenceDataAsContinuous) {
+    m_calLikelihoodInfoVector[0]->changeWeightFunctions(&continuousWeightFunction,&tildeContinuousWeightFunction); // NULL,NULL or &continuousWeightFunction,&tildeContinuousWeightFunction
+  }
+  else {
+    m_calLikelihoodInfoVector[0]->changeWeightFunctions(&deltaWeightFunction,&tildeDeltaWeightFunction); // NULL,NULL or &deltaWeightFunction,&tildeDeltaWeightFunction
+  }
 
+  // Perform calculations
   if (m_env.rank() == 0) {
     std::cout << "In uqTgaValidation::runGradTest()"
               << ": compute gradient(misfit) and Hessian(misfit) w.r.t. parameters A and E, using adjoint..."
               << std::endl;
   }
+
+  paramValues[0] = guessA;
+  paramValues[1] = guessE;
 
   P_V gradWithLM(m_paramSpace->zeroVector());
   P_M* hessianWithLM = NULL; //m_paramSpace->newMatrix();
@@ -581,7 +620,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest(
     m_calLikelihoodInfoVector[0]->m_wEPtrForPlot->printForMatlab(ofs,tmpPrefixName);
 
     tmpPrefixName = outerPrefixName + "misfit_";
-    m_calLikelihoodInfoVector[0]->m_misfitPtrForPlot->printForMatlab(ofs,tmpPrefixName);
+    m_calLikelihoodInfoVector[0]->m_diffPtrForPlot->printForMatlab(ofs,tmpPrefixName);
 
     tmpPrefixName = outerPrefixName + "lambda_";
     m_calLikelihoodInfoVector[0]->m_lambdaPtrForPlot->printForMatlab(ofs,tmpPrefixName);

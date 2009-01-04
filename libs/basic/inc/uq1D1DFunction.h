@@ -23,6 +23,7 @@
 #include <uqDefines.h>
 #include <vector>
 #include <math.h>
+#include <fstream>
 
 //*****************************************************
 // Base 1D->1D class
@@ -182,20 +183,19 @@ class uqSampled1D1DFunctionClass : public uqBase1D1DFunctionClass {
 public:
   uqSampled1D1DFunctionClass();
   uqSampled1D1DFunctionClass(const std::vector<double>& domainValues,
-                             const std::vector<double>& imageValues,
-                             bool                       dataIsContinuous);
- ~uqSampled1D1DFunctionClass();
+                             const std::vector<double>& imageValues);
+  virtual ~uqSampled1D1DFunctionClass();
 
-  double value(double domainValue) const;
-  double deriv(double domainValue) const;
+  virtual double               value(double domainValue) const;
+          double               deriv(double domainValue) const;
 
-  const std::vector<double>& domainValues    () const;
-  const std::vector<double>& imageValues     () const;
-  const bool                 dataIsContinuous() const;
+  const   std::vector<double>& domainValues() const;
+  const   std::vector<double>& imageValues () const;
+          bool                 domainValueMatchesExactly(double domainValue) const;
+          void                 set(const std::vector<double>& domainValues,
+                                   const std::vector<double>& imageValues);
 
-        void                 set(const std::vector<double>& domainValues,
-                                 const std::vector<double>& imageValues,
-                                 bool                       dataIsContinuous);
+  virtual void                 printForMatlab(std::ofstream& ofs, const std::string& prefixName) const;
 
 protected:
   using uqBase1D1DFunctionClass::m_minDomainValue;
@@ -203,7 +203,6 @@ protected:
 
   std::vector<double> m_domainValues;
   std::vector<double> m_imageValues;
-  bool                m_dataIsContinuous;
 };
 
 uqSampled1D1DFunctionClass::uqSampled1D1DFunctionClass()
@@ -214,13 +213,11 @@ uqSampled1D1DFunctionClass::uqSampled1D1DFunctionClass()
 
 uqSampled1D1DFunctionClass::uqSampled1D1DFunctionClass(
   const std::vector<double>& domainValues,
-  const std::vector<double>& imageValues,
-  bool                       dataIsContinuous)
+  const std::vector<double>& imageValues)
   :
   uqBase1D1DFunctionClass(domainValues[0],domainValues[domainValues.size()-1]),
   m_domainValues    (domainValues.size(),0.),
-  m_imageValues     (imageValues.size(), 0.),
-  m_dataIsContinuous(dataIsContinuous)
+  m_imageValues     (imageValues.size(), 0.)
 {
   unsigned int tmpSize = m_domainValues.size();
   for (unsigned int i = 0; i < tmpSize; ++i) {
@@ -273,13 +270,8 @@ uqSampled1D1DFunctionClass::value(double domainValue) const
   }
   else {
     //if (domainValueWasMatchedExactly) *domainValueWasMatchedExactly = false;
-    if (m_dataIsContinuous) {
-      double ratio = (domainValue - m_domainValues[i-1])/(m_domainValues[i]-m_domainValues[i-1]);
-      returnValue = m_imageValues[i-1] + ratio * (m_imageValues[i]-m_imageValues[i-1]);
-    }
-    else {
-      // Leave returnValue = 0.;
-    }
+    double ratio = (domainValue - m_domainValues[i-1])/(m_domainValues[i]-m_domainValues[i-1]);
+    returnValue = m_imageValues[i-1] + ratio * (m_imageValues[i]-m_imageValues[i-1]);
   }
 
   return returnValue;
@@ -309,29 +301,204 @@ uqSampled1D1DFunctionClass::imageValues() const
   return m_imageValues;
 }
 
-const bool
-uqSampled1D1DFunctionClass::dataIsContinuous() const
+bool
+uqSampled1D1DFunctionClass::domainValueMatchesExactly(double domainValue) const
 {
-  return m_dataIsContinuous;
+  bool result = false;
+
+  unsigned int tmpSize = m_domainValues.size();
+  for (unsigned int i = 0; i < tmpSize; ++i) {
+    if (domainValue <= m_domainValues[i]) {
+      result = (domainValue == m_domainValues[i]);
+      break;
+    }
+  }
+
+  return result;
 }
 
 void
 uqSampled1D1DFunctionClass::set(
   const std::vector<double>& domainValues,
-  const std::vector<double>& imageValues,
-  bool                       dataIsContinuous)
+  const std::vector<double>& imageValues)
 {
   m_domainValues.clear();
   m_imageValues.clear();
 
-  unsigned int tmpSize = m_domainValues.size();
+  unsigned int tmpSize = domainValues.size();
   m_minDomainValue = domainValues[0];
   m_maxDomainValue = domainValues[tmpSize-1];
 
-  m_dataIsContinuous = dataIsContinuous;
+  m_domainValues.resize(tmpSize,0.);
+  m_imageValues.resize(tmpSize,0.);
   for (unsigned int i = 0; i < tmpSize; ++i) {
     m_domainValues[i] = domainValues[i];
     m_imageValues [i] = imageValues [i];
+  }
+
+  return;
+}
+
+void
+uqSampled1D1DFunctionClass::printForMatlab(
+  std::ofstream&     ofs,
+  const std::string& prefixName) const
+{
+  unsigned int tmpSize = m_domainValues.size();
+  if (tmpSize == 0) {
+    tmpSize = 1;
+    ofs << "\n" << prefixName << "Time = zeros("  << tmpSize << ",1);"
+        << "\n" << prefixName << "Value = zeros(" << tmpSize << ",1);";
+  }
+  else {
+    ofs << "\n" << prefixName << "Time = zeros("  << tmpSize << ",1);"
+        << "\n" << prefixName << "Value = zeros(" << tmpSize << ",1);";
+    for (unsigned int i = 0; i < tmpSize; ++i) {
+      ofs << "\n" << prefixName << "Time("  << i+1 << ",1) = " << m_domainValues[i]  << ";"
+          << "\n" << prefixName << "Value(" << i+1 << ",1) = " << m_imageValues[i] << ";";
+    }
+  }
+
+  return;
+}
+
+//*****************************************************
+// Delta Sequence 1D->1D class
+//*****************************************************
+class uqDeltaSeq1D1DFunctionClass : public uqSampled1D1DFunctionClass {
+public:
+  uqDeltaSeq1D1DFunctionClass();
+  uqDeltaSeq1D1DFunctionClass(const std::vector<double>& domainValues,
+                              const std::vector<double>& imageValues,
+                              const std::vector<double>& integratedValues);
+ ~uqDeltaSeq1D1DFunctionClass();
+
+  double                     value(double domainValue) const;
+  const std::vector<double>& integratedValues() const;
+  void                       set(const std::vector<double>& domainValues,
+                                 const std::vector<double>& imageValues,
+                                 const std::vector<double>& integratedValues);
+  void                       printForMatlab(std::ofstream& ofs, const std::string& prefixName) const;
+
+protected:
+  using uqBase1D1DFunctionClass::m_minDomainValue;
+  using uqBase1D1DFunctionClass::m_maxDomainValue;
+  using uqSampled1D1DFunctionClass::m_domainValues;
+  using uqSampled1D1DFunctionClass::m_imageValues;
+
+  std::vector<double> m_integratedValues;
+};
+
+uqDeltaSeq1D1DFunctionClass::uqDeltaSeq1D1DFunctionClass()
+  :
+  uqSampled1D1DFunctionClass()
+{
+}
+
+uqDeltaSeq1D1DFunctionClass::uqDeltaSeq1D1DFunctionClass(
+  const std::vector<double>& domainValues,
+  const std::vector<double>& imageValues,
+  const std::vector<double>& integratedValues)
+  :
+  uqSampled1D1DFunctionClass(domainValues,imageValues),
+  m_integratedValues        (integratedValues.size(),0.)
+{
+  unsigned int tmpSize = m_integratedValues.size();
+  for (unsigned int i = 0; i < tmpSize; ++i) {
+    m_integratedValues[i] = integratedValues[i];
+  }
+}
+
+uqDeltaSeq1D1DFunctionClass::~uqDeltaSeq1D1DFunctionClass()
+{
+}
+
+double
+uqDeltaSeq1D1DFunctionClass::value(double domainValue) const
+{
+  // FIX ME: check range of domainValue
+  double returnValue = 0.;
+
+  unsigned int tmpSize = m_domainValues.size();
+  //std::cout << "In uqDeltaSeq1D1DFunctionClass::getValue()"
+  //          << ": domainValue = "         << domainValue
+  //          << ", tmpSize = "             << tmpSize
+  //          << ", m_domainValues[0] = "   << m_domainValues[0]
+  //          << ", m_domainValues[max] = " << m_domainValues[tmpSize-1]
+  //          << std::endl;
+
+  UQ_FATAL_TEST_MACRO(tmpSize == 0,
+                      UQ_UNAVAILABLE_RANK,
+                      "uqDeltaSeq1D1DFunctionClass::getValue()",
+                      "m_domainValues.size() = 0");
+
+  UQ_FATAL_TEST_MACRO(domainValue < m_domainValues[0],
+                      UQ_UNAVAILABLE_RANK,
+                      "uqDeltaSeq1D1DFunctionClass::getValue()",
+                      "domainValue < m_domainValues[0]");
+
+  UQ_FATAL_TEST_MACRO(m_domainValues[tmpSize-1] < domainValue,
+                      UQ_UNAVAILABLE_RANK,
+                      "uqDeltaSeq1D1DFunctionClass::getValue()",
+                      "m_domainValues[max] < domainValue");
+
+  unsigned int i = 0;
+  for (i = 0; i < tmpSize; ++i) {
+    if (domainValue <= m_domainValues[i]) break;
+  }
+
+  if (domainValue == m_domainValues[i]) {
+    //if (domainValueWasMatchedExactly) *domainValueWasMatchedExactly = true;
+    returnValue = m_imageValues[i];
+  }
+  else {
+    // Leave returnValue = 0.;
+  }
+
+  return returnValue;
+}
+
+const std::vector<double>&
+uqDeltaSeq1D1DFunctionClass::integratedValues() const
+{
+  return m_integratedValues;
+}
+
+void
+uqDeltaSeq1D1DFunctionClass::set(
+  const std::vector<double>& domainValues,
+  const std::vector<double>& imageValues,
+  const std::vector<double>& integratedValues)
+{
+  uqSampled1D1DFunctionClass::set(domainValues,imageValues);
+  m_integratedValues.clear();
+
+  unsigned int tmpSize = integratedValues.size();
+  m_integratedValues.resize(tmpSize,0.);
+  for (unsigned int i = 0; i < tmpSize; ++i) {
+    m_integratedValues[i] = integratedValues[i];
+  }
+
+  return;
+}
+
+void
+uqDeltaSeq1D1DFunctionClass::printForMatlab(
+  std::ofstream&     ofs,
+  const std::string& prefixName) const
+{
+  uqSampled1D1DFunctionClass::printForMatlab(ofs,prefixName);
+
+  unsigned int tmpSize = m_integratedValues.size();
+  if (tmpSize == 0) {
+    tmpSize = 1;
+    ofs << "\n" << prefixName << "intValue = zeros("  << tmpSize << ",1);";
+  }
+  else {
+    ofs << "\n" << prefixName << "intValue = zeros("  << tmpSize << ",1);";
+    for (unsigned int i = 0; i < tmpSize; ++i) {
+      ofs << "\n" << prefixName << "intValue(" << i+1 << ",1) = " << m_integratedValues[i]  << ";";
+    }
   }
 
   return;

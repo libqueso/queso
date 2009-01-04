@@ -41,7 +41,7 @@ uqTgaIntegrals(
   unsigned int wSize = wObj.times().size();
   unsigned int lambdaSize = lambdaObj.times().size();
 
-  if ((paramValues.env().verbosity() >= 0) && (paramValues.env().rank() == 0)) {
+  if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
     std::cout << "Entering uqTgaIntegrals()"
               << ", wObj.times()[0] = "        << wObj.times()[0]
               << ", wObj.times()[max] = "      << wObj.times()[wSize-1]

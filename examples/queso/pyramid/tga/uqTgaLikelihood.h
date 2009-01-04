@@ -47,13 +47,16 @@ uqTgaLikelihoodInfoStruct
 
 #ifdef QUESO_TGA_USES_OLD_COMPATIBLE_CODE
 #else
-  void changeReferenceW    (const uqBase1D1DFunctionClass& referenceW);
+  void changeReferenceW     (const uqBase1D1DFunctionClass& referenceW);
 #endif
-  void setCheckingVariables(bool performChecking, double* relativeFDStep);
+  void changeWeightFunctions(const uqBase1D1DFunctionClass* weightFunction,
+                             const uqBase1D1DFunctionClass* tildeWeightFunction);
+  void setCheckingVariables (bool performChecking, double* relativeFDStep);
 
   const uqVectorSpaceClass <P_V,P_M>& m_paramSpace;
   uqBase1D1DFunctionClass*            m_temperatureFunctionObj;
   bool                                m_refWIsTheInternallyCreated;
+  bool                                m_weightFunctionsAreTheInternallyCreated;
 #ifdef QUESO_TGA_USES_OLD_COMPATIBLE_CODE
   uqTgaStorageClass        <P_V,P_M>* m_referenceW;
 #else
@@ -90,28 +93,29 @@ uqTgaLikelihoodInfoStruct<P_V,P_M>::uqTgaLikelihoodInfoStruct(
   double*                            lambdaMaxTimeStep,
   unsigned int*                      integralsNumIntervals)
   :
-  m_paramSpace             (paramSpace),
-  m_temperatureFunctionObj (NULL),
-  m_refWIsTheInternallyCreated(true),
-  m_referenceW             (NULL),
-  m_weightFunction         (NULL),
-  m_tildeWeightFunction    (NULL),
-  m_wMaxTimeStep           (0.),
-  m_lambdaMaxTimeStep      (0.),
-  m_integralsNumIntervals  (1000),
-  m_wObj                   (NULL),
-  m_diffFunction           (NULL),
-  m_lambdaObj              (NULL),
-  m_performChecking        (false),
-  m_relativeFDStep         (1.e-6),
-  m_refWPtrForPlot         (NULL),
-  m_wPtrForPlot            (NULL),
-  m_wAPtrForPlot           (NULL),
-  m_wEPtrForPlot           (NULL),
-  m_diffPtrForPlot         (NULL),
-  m_lambdaPtrForPlot       (NULL),
-  m_lambdaAPtrForPlot      (NULL),
-  m_lambdaEPtrForPlot      (NULL)
+  m_paramSpace                            (paramSpace),
+  m_temperatureFunctionObj                (NULL),
+  m_refWIsTheInternallyCreated            (true),
+  m_weightFunctionsAreTheInternallyCreated(true),
+  m_referenceW                            (NULL),
+  m_weightFunction                        (NULL),
+  m_tildeWeightFunction                   (NULL),
+  m_wMaxTimeStep                          (0.),
+  m_lambdaMaxTimeStep                     (0.),
+  m_integralsNumIntervals                 (1000),
+  m_wObj                                  (NULL),
+  m_diffFunction                          (NULL),
+  m_lambdaObj                             (NULL),
+  m_performChecking                       (false),
+  m_relativeFDStep                        (1.e-6),
+  m_refWPtrForPlot                        (NULL),
+  m_wPtrForPlot                           (NULL),
+  m_wAPtrForPlot                          (NULL),
+  m_wEPtrForPlot                          (NULL),
+  m_diffPtrForPlot                        (NULL),
+  m_lambdaPtrForPlot                      (NULL),
+  m_lambdaAPtrForPlot                     (NULL),
+  m_lambdaEPtrForPlot                     (NULL)
 {
   if (paramSpace.env().rank() == 0) {
     std::cout << "Entering uqTgaLikelihoodInfoStruct<P_V,P_M>::constructor()"
@@ -140,11 +144,12 @@ uqTgaLikelihoodInfoStruct<P_V,P_M>::uqTgaLikelihoodInfoStruct(
   m_diffFunction = new uqSampled1D1DFunctionClass();
   m_lambdaObj    = new uqTgaLambdaClass<P_V,P_M> (m_paramSpace, *m_temperatureFunctionObj);
 
-  std::vector<double> measuredTimes(numMeasurements,0.);
-  std::vector<double> measuredTemps(numMeasurements,0.);
-  std::vector<double> measuredWs   (numMeasurements,0.);
-  std::vector<double> measurementVs(numMeasurements,0.);
-  std::vector<double> vecOfWeights (numMeasurements,0.);
+  std::vector<double> measuredTimes   (numMeasurements,0.);
+  std::vector<double> measuredTemps   (numMeasurements,0.);
+  std::vector<double> measuredWs      (numMeasurements,0.);
+  std::vector<double> measurementVs   (numMeasurements,0.);
+  std::vector<double> vecOfDeltaValues(numMeasurements,0.);
+  std::vector<double> vecOfWeights    (numMeasurements,0.);
 
   unsigned int whileSize = 0;
   double tmpTemp;
@@ -155,11 +160,12 @@ uqTgaLikelihoodInfoStruct<P_V,P_M>::uqTgaLikelihoodInfoStruct(
                         paramSpace.env().rank(),
                         "uqTgaLikelihoodInfoStruct<P_V,P_M>::constructor(), in uqTgaValidation.h",
                         "input file 1 has too many measurements");
-    measuredTimes[whileSize] = (tmpTemp-initialTemp)/beta;
-    measuredTemps[whileSize] = tmpTemp;
-    measuredWs   [whileSize] = tmpW;
-    measurementVs[whileSize] = tmpV;
-    vecOfWeights [whileSize] = 1./tmpV;
+    measuredTimes   [whileSize] = (tmpTemp-initialTemp)/beta;
+    measuredTemps   [whileSize] = tmpTemp;
+    measuredWs      [whileSize] = tmpW;
+    measurementVs   [whileSize] = tmpV;
+    vecOfDeltaValues[whileSize] = 1.e+4;
+    vecOfWeights    [whileSize] = 1./tmpV;
     whileSize++;
   }
   UQ_FATAL_TEST_MACRO((whileSize != numMeasurements),
@@ -178,10 +184,36 @@ uqTgaLikelihoodInfoStruct<P_V,P_M>::uqTgaLikelihoodInfoStruct(
                                                 false);
 #else
   m_referenceW = new uqSampled1D1DFunctionClass(measuredTimes,
-                                                measuredWs,
-                                                true);
-  //m_weightFunction      = ... // FIX ME
-  //m_tildeWeightFunction = ... // FIX ME
+                                                measuredWs);
+
+  m_weightFunction = new uqDeltaSeq1D1DFunctionClass(measuredTimes,
+                                                     vecOfDeltaValues,
+                                                     vecOfWeights);
+
+  if (paramSpace.env().rank() == 0) {
+    std::cout << "In uqTgaLikelihoodInfoStruct<P_V,P_M>::constructor()"
+              << ": m_weightFunction.times().size() = "     << measuredTimes.size()
+              << ", m_weightFunction.times()[0] = "         << measuredTimes   [0]
+              << ", m_weightFunction.deltaValues()[0] = "   << vecOfDeltaValues[0]
+              << ", m_weightFunction.intValues()[0] = "     << vecOfWeights    [0]
+              << ", m_weightFunction.times()[max] = "       << measuredTimes   [measuredTimes.size()-1]
+              << ", m_weightFunction.deltaValues()[max] = " << vecOfDeltaValues[measuredTimes.size()-1]
+              << ", m_weightFunction.intValues()[max] = "   << vecOfWeights    [measuredTimes.size()-1]
+              << std::endl;
+  }
+
+  std::vector<double> aux1(whileSize,0.);
+  std::vector<double> aux2(whileSize,0.);
+  std::vector<double> aux3(whileSize,0.);
+  double maxTime = m_weightFunction->maxDomainValue();
+  for (unsigned int j = 0; j < whileSize; ++j) {
+    aux1[j] = maxTime-measuredTimes[whileSize-1-j];
+    aux2[j] = vecOfDeltaValues     [whileSize-1-j];
+    aux3[j] = vecOfWeights         [whileSize-1-j];
+  }
+  m_tildeWeightFunction = new uqDeltaSeq1D1DFunctionClass(aux1,
+                                                          aux2,
+                                                          aux3);
 #endif
 
   if (paramSpace.env().rank() == 0) {
@@ -206,8 +238,8 @@ uqTgaLikelihoodInfoStruct<P_V,P_M>::~uqTgaLikelihoodInfoStruct()
   delete m_lambdaObj;
   delete m_diffFunction;
   delete m_wObj;
-  delete m_tildeWeightFunction;
-  delete m_weightFunction;
+  if (m_weightFunctionsAreTheInternallyCreated) delete m_tildeWeightFunction;
+  if (m_weightFunctionsAreTheInternallyCreated) delete m_weightFunction;
   if (m_refWIsTheInternallyCreated) delete m_referenceW;
   delete m_temperatureFunctionObj;
 }
@@ -227,6 +259,23 @@ uqTgaLikelihoodInfoStruct<P_V,P_M>::changeReferenceW(const uqBase1D1DFunctionCla
   return;
 }
 #endif
+
+template<class P_V,class P_M>
+void
+uqTgaLikelihoodInfoStruct<P_V,P_M>::changeWeightFunctions(
+  const uqBase1D1DFunctionClass* weightFunction,
+  const uqBase1D1DFunctionClass* tildeWeightFunction)
+{
+  if (m_weightFunctionsAreTheInternallyCreated) {
+    delete m_weightFunction;
+    delete m_tildeWeightFunction;
+    m_weightFunctionsAreTheInternallyCreated = false;
+  }
+  m_weightFunction      = weightFunction;
+  m_tildeWeightFunction = tildeWeightFunction;
+
+  return;
+}
 
 template<class P_V,class P_M>
 void
@@ -294,6 +343,25 @@ uqTgaLikelihoodRoutine(
     uqSampled1D1DFunctionClass& diffFunction = *(info.m_diffFunction);
     uqTgaLambdaClass<P_V,P_M>&  lambdaObj    = *(info.m_lambdaObj);
 
+    if ((paramValues.env().verbosity() >= 0) && (paramValues.env().rank() == 0)) {
+      if (info.m_weightFunction) {
+        const uqDeltaSeq1D1DFunctionClass* deltaWeight = dynamic_cast< const uqDeltaSeq1D1DFunctionClass* >(info.m_weightFunction);
+        if (deltaWeight != NULL) {
+          unsigned int tmpSize = deltaWeight->domainValues().size();
+          std::cout << "In uqTgaLikelihoodRoutine()"
+                    << ", i = "                               << i
+                    << ": deltaWeight->times().size() = "     << tmpSize
+                    << ", deltaWeight->times()[0] = "         << deltaWeight->domainValues    ()[0]
+                    << ", deltaWeight->deltaValues()[0] = "   << deltaWeight->imageValues     ()[0]
+                    << ", deltaWeight->intValues()[0] = "     << deltaWeight->integratedValues()[0]
+                    << ", deltaWeight->times()[max] = "       << deltaWeight->domainValues    ()[tmpSize-1]
+                    << ", deltaWeight->deltaValues()[max] = " << deltaWeight->imageValues     ()[tmpSize-1]
+                    << ", deltaWeight->intValues()[max] = "   << deltaWeight->integratedValues()[tmpSize-1]
+                    << std::endl;
+        }
+      }
+    }
+
     /////////////////////////////////////////////////////////////////////////////
     // Compute W
     // Compute contribution from this scenario to the likelihood ("misfitValue")
@@ -321,18 +389,6 @@ uqTgaLikelihoodRoutine(
     // Compute Lambda, if necessary
     /////////////////////////////////////////////////////////////////////////////
     if (computeLambda) {
-#if 0
-      unsigned int tmpSize = weigthedMisfitData.times().size();
-      tildeWeigthedMisfitData.reset(tmpSize,weigthedMisfitData.dataIsContinuousWithTime());
-      double maxTime = weigthedMisfitData.times()[tmpSize-1];
-      for (unsigned int j = 0; j < tmpSize; ++j) {
-        tildeWeigthedMisfitData.setInstantData(tmpSize-1-j,
-                                               maxTime-weigthedMisfitData.times()[j],
-                                               weigthedMisfitData.temps    ()[j],
-                                               weigthedMisfitData.values   ()[j],
-                                               weigthedMisfitData.variances()[j]);
-      }
-#endif
       lambdaObj.compute(paramValues,
                         info.m_lambdaMaxTimeStep,
                         computeWAndLambdaGradsAlso,
@@ -358,6 +414,7 @@ uqTgaLikelihoodRoutine(
     if (computeLambda) { // Same effect as "if (gradVector || hessianMatrix || hessianEffect) {"
       double lowerIntegralLimit = 0.; //diffFunction.minDomainValue(); // ????
       double upperIntegralLimit = diffFunction.maxDomainValue(); // FIX ME
+      if (info.m_weightFunction) upperIntegralLimit = info.m_weightFunction->maxDomainValue(); // FIX ME
       uqTgaIntegrals<P_V,P_M>(paramValues,
                               *(info.m_temperatureFunctionObj),
                               lowerIntegralLimit,
@@ -424,13 +481,26 @@ uqTgaLikelihoodCheckingRoutine(
   if (info.m_lambdaAPtrForPlot == NULL) info.m_lambdaAPtrForPlot = new uqSampled1D1DFunctionClass();
   if (info.m_lambdaEPtrForPlot == NULL) info.m_lambdaEPtrForPlot = new uqSampled1D1DFunctionClass();
 
-  //info.m_refWPtrForPlot->set(info.m_referenceW->domainValues(), // FIX ME
-  //                           info.m_referenceW->imageValues(),
-  //                           true);
+#ifdef QUESO_TGA_USES_OLD_COMPATIBLE_CODE
+#else
+  const uqSampled1D1DFunctionClass* tmpRef = dynamic_cast< const uqSampled1D1DFunctionClass* >(info.m_referenceW);
+  if (tmpRef != NULL) {
+    info.m_refWPtrForPlot->set(tmpRef->domainValues(),
+                               tmpRef->imageValues());
+  }
+  else {
+    unsigned int refTmpSize = wObj.times().size();
+    std::vector<double> refTmpVec(refTmpSize,0.);
+    for (unsigned int j = 0; j < refTmpSize; ++j) {
+      refTmpVec[j] = info.m_referenceW->value(wObj.times()[j]);
+    }
+    info.m_refWPtrForPlot->set(wObj.times(),
+                               refTmpVec);
+  }
+#endif
 
   info.m_wPtrForPlot->set(wObj.times(),
-                          wObj.ws(),
-                          true);
+                          wObj.ws());
 
   unsigned int wTmpSize = wObj.times().size();
   std::vector<double> wTmpVec(wTmpSize,0.);
@@ -439,23 +509,19 @@ uqTgaLikelihoodCheckingRoutine(
     wTmpVec[j] = (*(wObj.grads()[j]))[0];
   }
   info.m_wAPtrForPlot->set(wObj.times(),
-                           wTmpVec,
-                           true);
+                           wTmpVec);
 
   if (wAndLambdaGradsAreAlsoAvaiable) for (unsigned int j = 0; j < wTmpSize; ++j) {
     wTmpVec[j] = (*(wObj.grads()[j]))[1];
   }
   info.m_wEPtrForPlot->set(wObj.times(),
-                           wTmpVec,
-                           true);
+                           wTmpVec);
 
   info.m_diffPtrForPlot->set(diffFunction.domainValues(),
-                             diffFunction.imageValues(),
-                             diffFunction.dataIsContinuous());
+                             diffFunction.imageValues());
 
   info.m_lambdaPtrForPlot->set(lambdaObj.times(),
-                               lambdaObj.lambdas(),
-                               true);
+                               lambdaObj.lambdas());
 
   unsigned int lambdaTmpSize = lambdaObj.times().size();
   std::vector<double> lambdaTmpVec(lambdaTmpSize,0.);
@@ -464,15 +530,13 @@ uqTgaLikelihoodCheckingRoutine(
     lambdaTmpVec[j] = (*(lambdaObj.grads()[j]))[0];
   }
   info.m_lambdaAPtrForPlot->set(lambdaObj.times(),
-                                lambdaTmpVec,
-                                true);
+                                lambdaTmpVec);
 
   if (wAndLambdaGradsAreAlsoAvaiable) for (unsigned int j = 0; j < lambdaTmpSize; ++j) {
     lambdaTmpVec[j] = (*(lambdaObj.grads()[j]))[1];
   }
   info.m_lambdaEPtrForPlot->set(lambdaObj.times(),
-                                lambdaTmpVec,
-                                true);
+                                lambdaTmpVec);
 
   double guessA = paramValues[0];
   double guessE = paramValues[1];

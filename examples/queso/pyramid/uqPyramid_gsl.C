@@ -45,17 +45,18 @@ int main(int argc, char* argv[])
 #if 1
   tgaValidation.run();
 #else
-  double refMaxTimeStep    = strtod(argv[3],NULL); //  10.
-  double wMaxTimeStep      = strtod(argv[4],NULL); //  .11
-  double lambdaMaxTimeStep = strtod(argv[5],NULL); //  .55
-  int    integralsNumInts  = atoi  (argv[6]     ); // 1001
-  double relativeFDStep    = strtod(argv[7],NULL); // 1.1e-7
-  int    writeOutput       = atoi  (argv[8]     ); // false
+  int    treatAsContinuous = atoi  (argv[3]     ); // 1
+  double refMaxTimeStep    = strtod(argv[4],NULL); // 10.
+  double wMaxTimeStep      = strtod(argv[5],NULL); // .11
+  double lambdaMaxTimeStep = strtod(argv[6],NULL); // .55
+  int    integralsNumInts  = atoi  (argv[7]     ); // 1001
+  double relativeFDStep    = strtod(argv[8],NULL); // 1.1e-7
+  int    writeOutput       = atoi  (argv[9]     ); // false
   tgaValidation.runGradTest("case1_",
                             2.6090e+11,        // refA
                             1.9910e+05,        // refE
-                            true,              // treat data as continuous with time ----# true # false
-                            refMaxTimeStep,    // suggested time step for reference data #   .1 #  100.
+                            treatAsContinuous, // # true # false
+                            refMaxTimeStep,    // #   .1 #  100.
                             wMaxTimeStep,      //
                             lambdaMaxTimeStep, //
                             integralsNumInts,  //

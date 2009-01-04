@@ -182,7 +182,7 @@ uqTgaWClass<P_V,P_M>::compute(
   const uqBase1D1DFunctionClass* referenceW,      // input (possible)
   const uqBase1D1DFunctionClass* weightFunction,  // input (possible)
   double*                        misfitValue,     // output 
-  uqSampled1D1DFunctionClass*    diffFunction)    // outpt
+  uqSampled1D1DFunctionClass*    diffFunction)    // output
 {
   UQ_FATAL_TEST_MACRO((misfitValue != NULL) && (referenceW == NULL),
                       m_env.rank(),
@@ -197,7 +197,7 @@ uqTgaWClass<P_V,P_M>::compute(
                       "uqTgaWClass<P_V,P_M>::compute()",
                       "refenceW is being supplied for no purpose");
 
-  if ((m_env.verbosity() >= 0) && (m_env.rank() == 0)) {
+  if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
     std::cout << "Entering uqTgaWClass<P_V,P_M>::compute()"
               << ": params = "          << params
               << ", reqMaxTime = "      << reqMaxTime
@@ -210,25 +210,24 @@ uqTgaWClass<P_V,P_M>::compute(
               << std::endl;
   }
 
-  // Initialize variables related to the weight function
-  const uqSampled1D1DFunctionClass* tmpWeightFunction = NULL;
-  bool weightFunctionIsDelta = false;
-  unsigned int deltaWeightSize = 0;
   const std::vector<double> dummyVec(0);
-  const std::vector<double>* deltaWeightTimesPtr(&dummyVec);
-  const std::vector<double>* deltaWeightValuesPtr(&dummyVec);
+
+  // Initialize variables related to the delta sequence function
+  const uqDeltaSeq1D1DFunctionClass* deltaSeqFunction = NULL;
+  unsigned int deltaSeqSize = 0;
+  const std::vector<double>* deltaSeqTimesPtr(&dummyVec);
+  const std::vector<double>* deltaSeqIntegratedValuesPtr(&dummyVec);
   if (weightFunction) {
-    tmpWeightFunction = dynamic_cast< const uqSampled1D1DFunctionClass* >(weightFunction);
-    weightFunctionIsDelta = (tmpWeightFunction != NULL) && (tmpWeightFunction->dataIsContinuous() == false);
-    if (weightFunctionIsDelta) {
-      deltaWeightSize = tmpWeightFunction->domainValues().size();
-      deltaWeightTimesPtr = &(tmpWeightFunction->domainValues());
-      deltaWeightValuesPtr = &(tmpWeightFunction->domainValues());
+    deltaSeqFunction = dynamic_cast< const uqDeltaSeq1D1DFunctionClass* >(weightFunction);
+    if (deltaSeqFunction != NULL) {
+      deltaSeqSize = deltaSeqFunction->domainValues().size();
+      deltaSeqTimesPtr = &(deltaSeqFunction->domainValues());
+      deltaSeqIntegratedValuesPtr = &(deltaSeqFunction->integratedValues());
     }
   }
-  const std::vector<double>& deltaWeightTimes (*deltaWeightTimesPtr );
-  const std::vector<double>& deltaWeightValues(*deltaWeightValuesPtr);
-  unsigned int deltaWeightId = 0;
+  const std::vector<double>& deltaSeqTimes           (*deltaSeqTimesPtr);
+  const std::vector<double>& deltaSeqIntegratedValues(*deltaSeqIntegratedValuesPtr);
+  unsigned int deltaSeqId = 0;
 
   // Initialize other variables
   this->resetInternalValues();
@@ -275,13 +274,19 @@ uqTgaWClass<P_V,P_M>::compute(
   double previousW[1];
   previousW[0]=1.;
 
-  double maximumTime = reqMaxTime;
-  if (maximumTime == 0.) maximumTime = 1.e+9;
-  if (referenceW) maximumTime = referenceW->maxDomainValue(); // FIX ME
+  double maximumTime = 1.e+9;
+  if (reqMaxTime > 0.) maximumTime = reqMaxTime;
+  if (referenceW     ) maximumTime = referenceW->maxDomainValue();     // FIX ME
+  if (weightFunction ) maximumTime = weightFunction->maxDomainValue(); // FIX ME
 
   bool continueOnWhile = true;
-  if (weightFunctionIsDelta) {
-    continueOnWhile = (deltaWeightId < deltaWeightSize);
+#if 1
+  if ((reqMaxTime > 0.) || referenceW || weightFunction) {
+    continueOnWhile = (currentTime < maximumTime);
+  }
+#else
+  if (weightFunctionIsDeltaSeq) {
+    continueOnWhile = (deltaSeqId < deltaSeqSize);
   }
   else if (referenceW) {
     continueOnWhile = (currentTime < maximumTime);
@@ -289,6 +294,7 @@ uqTgaWClass<P_V,P_M>::compute(
   else if (reqMaxTime > 0) {
     continueOnWhile = (currentTime < maximumTime);
   }
+#endif
   else {
     continueOnWhile = (0. < currentW[0]);
   }
@@ -301,15 +307,20 @@ uqTgaWClass<P_V,P_M>::compute(
                         params.env().rank(),
                         "uqTgaWClass<P_V,P_M>::compute()",
                         "gsl_odeiv_evolve_apply() failed");
+    if (currentW[0] < 1.e-6) currentW[0] = 0.;
     if (maxTimeStep > 0) timeStep = std::min(maxTimeStep,timeStep);
     currentTemp = m_temperatureFunctionObj.value(currentTime);
-    if (currentW[0] < 1.e-6) currentW[0] = 0.;
+
+    double diff = 0.;
+    if (referenceW) diff = currentW[0] - referenceW->value(currentTime);
 
     if ((m_env.verbosity() >= 99) && (m_env.rank() == 0)) {
       std::cout << "In uqTgaWClass<P_V,P_M>::compute()"
-                << ": loopId = "         << loopId
-                << ", currentTime = "    << currentTime
-                << ", currentW[0] = "    << currentW[0]
+                << ": loopId = "      << loopId
+                << ", currentTime = " << currentTime
+                << ", currentW[0] = " << currentW[0]
+                << ", maximumTime-currentTime = " << maximumTime-currentTime
+                << ", deltaSeqFunction = "        << deltaSeqFunction
                 << std::endl;
     }
 
@@ -328,35 +339,34 @@ uqTgaWClass<P_V,P_M>::compute(
       (*(m_grads[loopId]))[0] = currentW[1];
       (*(m_grads[loopId]))[1] = currentW[2];
     }
-    if (diffFunction) m_diffs[loopId] = currentW[0] - referenceW->value(currentTime);
+    if (diffFunction) m_diffs[loopId] = diff;
 
     if (misfitValue) {
-      if (weightFunctionIsDelta) {
-        while ((deltaWeightId                   < deltaWeightSize                 ) &&
-               (previousTime                    <= deltaWeightTimes[deltaWeightId]) &&
-               (deltaWeightTimes[deltaWeightId] <= currentTime                    )) {
-          double tmpValue = (deltaWeightTimes[deltaWeightId]-previousTime)*(currentW[0]-previousW[0])/(currentTime-previousTime) + previousW[0];
-          double diff = tmpValue - referenceW->value(currentTime);
-          *misfitValue += diff*diff*deltaWeightValues[deltaWeightId];
+      if (deltaSeqFunction != NULL) {
+        while ((deltaSeqId                < deltaSeqSize              ) &&
+               (previousTime              <= deltaSeqTimes[deltaSeqId]) &&
+               (deltaSeqTimes[deltaSeqId] <= currentTime              )) {
+          double tmpValue = (deltaSeqTimes[deltaSeqId]-previousTime)*(currentW[0]-previousW[0])/(currentTime-previousTime) + previousW[0];
+          double diffForDelta = tmpValue - referenceW->value(currentTime);
+          *misfitValue += diffForDelta*diffForDelta*deltaSeqIntegratedValues[deltaSeqId]; // Consider delta as delta, i.e., integral = 1;
 #if 0
           if ((m_env.verbosity() >= 99) && (m_env.rank() == 0)) {
             std::cout << "In uqTgaWClass<P_V,P_M>::compute()"
                       << ", currentTime = "   << currentTime
-                      << ", deltaWeightId = " << deltaWeightId
-                      << ", measuredTime = "  << deltaWeightTimes[deltaWeightId]
-                      << ", measuredW = "     << refValues[deltaWeightId]
-                      << ", variance = "      << refVariances[deltaWeightId]
+                      << ", deltaSeqId = " << deltaSeqId
+                      << ", measuredTime = "  << deltaSeqTimes[deltaSeqId]
+                      << ", measuredW = "     << refValues[deltaSeqId]
+                      << ", variance = "      << refVariances[deltaSeqId]
                       << ": computedW = "     << tmpValue
-                      << ", diffValue = "     << diff
+                      << ", diffForDelta = "  << diffForDelta
                       << std::endl;
           }
 #endif
-          deltaWeightId++;
+          deltaSeqId++;
         }
       }
       else {
         // Multiply by [time interval] in order to compute integral correctly
-        double diff = m_diffs[loopId];
         double weightScale = 1.;
         if (weightFunction) weightScale *= weightFunction->value(currentTime);
         *misfitValue += diff*diff*weightScale*(currentTime-previousTime);
@@ -366,8 +376,13 @@ uqTgaWClass<P_V,P_M>::compute(
     previousTime = currentTime;
     previousW[0] = currentW[0];
 
-    if (weightFunctionIsDelta) {
-      continueOnWhile = (deltaWeightId < deltaWeightSize);
+#if 1
+    if ((reqMaxTime > 0.) || referenceW || weightFunction) {
+      continueOnWhile = (currentTime < maximumTime);
+    }
+#else
+    if (weightFunctionIsDeltaSeq) {
+      continueOnWhile = (deltaSeqId < deltaSeqSize);
     }
     else if (referenceW) {
       continueOnWhile = (currentTime < maximumTime);
@@ -375,6 +390,7 @@ uqTgaWClass<P_V,P_M>::compute(
     else if (reqMaxTime > 0) {
       continueOnWhile = (currentTime < maximumTime);
     }
+#endif
     else {
       continueOnWhile = (0. < currentW[0]);
     }
@@ -385,7 +401,7 @@ uqTgaWClass<P_V,P_M>::compute(
   if (computeGradAlso) m_grads.resize(loopId+1);
   if (diffFunction)    m_diffs.resize(loopId+1);
 
-  if (diffFunction) diffFunction->set(m_times,m_diffs,true);
+  if (diffFunction) diffFunction->set(m_times,m_diffs);
 
   if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
     char stringA[64];
@@ -401,8 +417,7 @@ uqTgaWClass<P_V,P_M>::compute(
               << ", final w = "                    << m_ws   [m_ws.size()   -1]
               << std::endl;
     if (misfitValue) {
-      std::cout << " and with deltaWeightTimes[max] = " << deltaWeightTimes[deltaWeightSize-1]
-                << ", misfitValue = "                << *misfitValue
+      std::cout << ", and with misfitValue = " << *misfitValue
                 << std::endl;
     }
   }
