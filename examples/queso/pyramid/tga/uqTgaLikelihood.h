@@ -343,7 +343,7 @@ uqTgaLikelihoodRoutine(
     uqSampled1D1DFunctionClass& diffFunction = *(info.m_diffFunction);
     uqTgaLambdaClass<P_V,P_M>&  lambdaObj    = *(info.m_lambdaObj);
 
-    if ((paramValues.env().verbosity() >= 0) && (paramValues.env().rank() == 0)) {
+    if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
       if (info.m_weightFunction) {
         const uqDeltaSeq1D1DFunctionClass* deltaWeight = dynamic_cast< const uqDeltaSeq1D1DFunctionClass* >(info.m_weightFunction);
         if (deltaWeight != NULL) {

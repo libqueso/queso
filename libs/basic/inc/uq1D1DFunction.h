@@ -237,26 +237,28 @@ uqSampled1D1DFunctionClass::value(double domainValue) const
   double returnValue = 0.;
 
   unsigned int tmpSize = m_domainValues.size();
-  //std::cout << "In uqSampled1D1DFunctionClass::getValue()"
-  //          << ": domainValue = "         << domainValue
-  //          << ", tmpSize = "             << tmpSize
-  //          << ", m_domainValues[0] = "   << m_domainValues[0]
-  //          << ", m_domainValues[max] = " << m_domainValues[tmpSize-1]
-  //          << std::endl;
+#if 0
+  std::cout << "In uqSampled1D1DFunctionClass::value()"
+            << ": domainValue = "         << domainValue
+            << ", tmpSize = "             << tmpSize
+            << ", m_domainValues[0] = "   << m_domainValues[0]
+            << ", m_domainValues[max] = " << m_domainValues[tmpSize-1]
+            << std::endl;
+#endif
 
   UQ_FATAL_TEST_MACRO(tmpSize == 0,
                       UQ_UNAVAILABLE_RANK,
-                      "uqSampled1D1DFunctionClass::getValue()",
+                      "uqSampled1D1DFunctionClass::value()",
                       "m_domainValues.size() = 0");
 
   UQ_FATAL_TEST_MACRO(domainValue < m_domainValues[0],
                       UQ_UNAVAILABLE_RANK,
-                      "uqSampled1D1DFunctionClass::getValue()",
+                      "uqSampled1D1DFunctionClass::value()",
                       "domainValue < m_domainValues[0]");
 
   UQ_FATAL_TEST_MACRO(m_domainValues[tmpSize-1] < domainValue,
                       UQ_UNAVAILABLE_RANK,
-                      "uqSampled1D1DFunctionClass::getValue()",
+                      "uqSampled1D1DFunctionClass::value()",
                       "m_domainValues[max] < domainValue");
 
   unsigned int i = 0;
@@ -420,7 +422,7 @@ uqDeltaSeq1D1DFunctionClass::value(double domainValue) const
   double returnValue = 0.;
 
   unsigned int tmpSize = m_domainValues.size();
-  //std::cout << "In uqDeltaSeq1D1DFunctionClass::getValue()"
+  //std::cout << "In uqDeltaSeq1D1DFunctionClass::value()"
   //          << ": domainValue = "         << domainValue
   //          << ", tmpSize = "             << tmpSize
   //          << ", m_domainValues[0] = "   << m_domainValues[0]
@@ -429,17 +431,17 @@ uqDeltaSeq1D1DFunctionClass::value(double domainValue) const
 
   UQ_FATAL_TEST_MACRO(tmpSize == 0,
                       UQ_UNAVAILABLE_RANK,
-                      "uqDeltaSeq1D1DFunctionClass::getValue()",
+                      "uqDeltaSeq1D1DFunctionClass::value()",
                       "m_domainValues.size() = 0");
 
   UQ_FATAL_TEST_MACRO(domainValue < m_domainValues[0],
                       UQ_UNAVAILABLE_RANK,
-                      "uqDeltaSeq1D1DFunctionClass::getValue()",
+                      "uqDeltaSeq1D1DFunctionClass::value()",
                       "domainValue < m_domainValues[0]");
 
   UQ_FATAL_TEST_MACRO(m_domainValues[tmpSize-1] < domainValue,
                       UQ_UNAVAILABLE_RANK,
-                      "uqDeltaSeq1D1DFunctionClass::getValue()",
+                      "uqDeltaSeq1D1DFunctionClass::value()",
                       "m_domainValues[max] < domainValue");
 
   unsigned int i = 0;
