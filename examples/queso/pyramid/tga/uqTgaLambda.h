@@ -203,7 +203,7 @@ uqTgaLambdaClass<P_V,P_M>::compute(
   this->resetInternalValues();
   std::vector<double> tildeTimes  (1000,0.  );
   std::vector<double> tildeLambdas(1000,0.  );
-  std::vector<P_V*  > tildeGrads  (1000,NULL);
+  std::vector<P_V*  > tildeGrads  (1000,(P_V*) NULL);
 
   uqTgaLambdaInfoStruct<P_V,P_M> lambdaDotWrtTimeInfo = {params[0],
                                                          params[1],

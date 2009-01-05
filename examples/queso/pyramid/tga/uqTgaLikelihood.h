@@ -659,7 +659,7 @@ uqTgaLikelihoodCheckingRoutine(
     bool savedCheckingFlag = info.m_performChecking;
     info.m_performChecking = false; // IMPORTANT
 
-    std::vector<uqTgaLikelihoodInfoStruct<P_V,P_M>* > tmpCalLikelihoodInfoVector(1,NULL);
+    std::vector<uqTgaLikelihoodInfoStruct<P_V,P_M>* > tmpCalLikelihoodInfoVector(1,(uqTgaLikelihoodInfoStruct<P_V,P_M>*) NULL);
     tmpCalLikelihoodInfoVector[0] = &info;
 
     if (tmpParamValues.env().rank() == 0) {
