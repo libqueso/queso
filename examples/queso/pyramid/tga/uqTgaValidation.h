@@ -39,18 +39,7 @@ public:
  ~uqTgaValidationClass();
 
   void  run           ();
-  void  runGradTest   (const std::string& outerPrefixName,
-                       double             refA,
-                       double             refE,
-                       bool               treatReferenceDataAsContinuous,
-                       double             refMaxTimeStep,
-                       double             wMaxTimeStep,
-                       double             lambdaMaxTimeStep,
-                       unsigned int       integralsNumIntervals,
-                       double             relativeFDStep,
-                       double             guessA,
-                       double             guessE,
-                       bool               writeOutput);
+  void  runGradTest   (char* argv[]);
 
 private:
   void  runCalibrationStage();
@@ -450,24 +439,44 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runComparisonStage()
   return;
 }
 
+// Example for argv
+// ./uqPyramid_gsl -i uqPyramid.inp Prefix RefA       RefE       GuessA     GuessE     RefDt RefContinuous RefNumDiscreteSamples Hessian Wdt Ldt IntegralNumIntervals FD    writeOut
+// ./uqPyramid_gsl -i uqPyramid.inp case1_ 2.6000e+11 2.0000e+05 2.5910e+11 2.0090e+05 10.   0             1000                  1       1.  1.  1000                 1.e-8 0
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest(
-  const std::string& outerPrefixName,
-  double             refA,
-  double             refE,
-  bool               treatReferenceDataAsContinuous,
-  double             refMaxTimeStep,
-  double             wMaxTimeStep,
-  double             lambdaMaxTimeStep,
-  unsigned int       integralsNumIntervals,
-  double             relativeFDStep,
-  double             guessA,
-  double             guessE,
-  bool               writeOutput)
+uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest(char* argv[])
 {
+  std::string  outerPrefixName                  (argv[ 3]     ); // case1_
+  double       refA                     = strtod(argv[ 4],NULL); // refA
+  double       refE                     = strtod(argv[ 5],NULL); // refE
+  double       guessA                   = strtod(argv[ 6],NULL); // guessA
+  double       guessE                   = strtod(argv[ 7],NULL); // guessE
+  double       refMaxTimeStep           = strtod(argv[ 8],NULL); // 10.
+  bool         treatRefDataAsContinuous = atoi  (argv[ 9]     ); // 0
+  unsigned int refNumDiscreteSamples    = strtod(argv[10],NULL); // 1000
+  bool         computeHessian           = atoi  (argv[11]     ); // 1
+  double       wMaxTimeStep             = strtod(argv[12],NULL); // .11
+  double       lambdaMaxTimeStep        = strtod(argv[13],NULL); // .55
+  unsigned int integralsNumIntervals    = atoi  (argv[14]     ); // 1001
+  double       relativeFDStep           = strtod(argv[15],NULL); // 1.1e-7
+  bool         writeOutput              = atoi  (argv[16]     ); // 0
+
   if (m_env.rank() == 0) {
-    std::cout << "Entering uqTgaValidation::runGradTest()"
+    std::cout << "Entering uqTgaValidation::runGradTest() with:"
+              << "\n outerPrefixName          = " << outerPrefixName
+              << "\n refA                     = " << refA
+              << "\n refE                     = " << refE
+              << "\n guessA                   = " << guessA
+              << "\n guessE                   = " << guessE
+              << "\n refMaxTimeStep           = " << refMaxTimeStep
+              << "\n treatRefDataAsContinuous = " << treatRefDataAsContinuous
+              << "\n refNumDiscreteSamples    = " << refNumDiscreteSamples
+              << "\n computeHessian           = " << computeHessian
+              << "\n wMaxTimeStep             = " << wMaxTimeStep
+              << "\n lambdaMaxTimeStep        = " << lambdaMaxTimeStep
+              << "\n integralsNumIntervals    = " << integralsNumIntervals
+              << "\n relativeFDStep           = " << relativeFDStep
+              << "\n writeOutput              = " << writeOutput
               << std::endl;
   }
 
@@ -487,7 +496,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest(
   std::string tmpPrefixName;
 
   //////////////////////////////////////////////////////////////////
-  // Step 1 of 4: Compute referenceW
+  // Step 1 of 4: Compute data for referenceW
   //////////////////////////////////////////////////////////////////
 
   paramValues[0] = refA;
@@ -530,17 +539,13 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest(
                NULL,           // misfitValue
                NULL);          // diffFunction
 
-  //std::vector<double> constantRefWs(tmpW.times().size(),.5);
-  uqSampled1D1DFunctionClass refW(tmpW.times(),
-                                  tmpW.ws()); // tmpW.ws() or constantRefWs
-
   if (m_env.rank() == 0) {
     std::cout << "In uqTgaValidation::runGradTest()"
-              << ": refW.times().size() = " << refW.domainValues().size()
-              << ", refW.times()[0] = "     << refW.domainValues()[0]
-              << ", refW.values()[0] = "    << refW.imageValues ()[0]
-              << ", refW.times()[max] = "   << refW.domainValues()[refW.domainValues().size()-1]
-              << ", refW.values()[max] = "  << refW.imageValues ()[refW.domainValues().size()-1]
+              << ": tmpW.times().size() = " << tmpW.times().size()
+              << ", tmpW.times()[0] = "     << tmpW.times()[0]
+              << ", tmpW.values()[0] = "    << tmpW.ws   ()[0]
+              << ", tmpW.times()[max] = "   << tmpW.times()[tmpW.times().size()-1]
+              << ", tmpW.values()[max] = "  << tmpW.ws   ()[tmpW.times().size()-1]
               << std::endl;
   }
 
@@ -548,38 +553,83 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest(
   // Step 2 of 4: Compute gradient(misfit) and Hessian(misfit) wrt A and E, using Lagrangian multipliers
   //////////////////////////////////////////////////////////////////
 
+  //std::vector<double> constantTmpWs(tmpW.times().size(),.5);
+
   // Change the reference data to be used inside the likelihood routine,
   // from discrete (read from file) to continuous (computed and saved in 'refW')
-  m_calLikelihoodInfoVector[0]->changeReferenceW(refW);
-
-  // Change the weight functions
-  unsigned int tmpSize = refW.domainValues().size();
-  std::vector<double> vecOfDeltas (tmpSize,1.);
-  std::vector<double> vecOfWeights(tmpSize,1.);
-  std::vector<double> aux1(tmpSize,0.);
-  std::vector<double> aux2(tmpSize,0.);
-  std::vector<double> aux3(tmpSize,0.);
-  double maxTime = refW.maxDomainValue();
-  for (unsigned int j = 0; j < tmpSize; ++j) {
-    aux1[j] = maxTime-refW.domainValues()[tmpSize-1-j];
-    aux2[j] = vecOfDeltas                [tmpSize-1-j];
-    aux3[j] = vecOfWeights               [tmpSize-1-j];
-  }
-  uqSampled1D1DFunctionClass continuousWeightFunction(refW.domainValues(),
-                                                      vecOfWeights);
-  uqSampled1D1DFunctionClass tildeContinuousWeightFunction(aux1,
-                                                           aux3);
-  uqDeltaSeq1D1DFunctionClass deltaWeightFunction(refW.domainValues(),
-                                                  vecOfDeltas,
-                                                  vecOfWeights);
-  uqDeltaSeq1D1DFunctionClass tildeDeltaWeightFunction(aux1,
-                                                       aux2,
-                                                       aux3);
-  if (treatReferenceDataAsContinuous) {
-    m_calLikelihoodInfoVector[0]->changeWeightFunctions(&continuousWeightFunction,&tildeContinuousWeightFunction); // NULL,NULL or &continuousWeightFunction,&tildeContinuousWeightFunction
+  uqSampled1D1DFunctionClass* refW = NULL;
+  if (treatRefDataAsContinuous) {
+    refW = new uqSampled1D1DFunctionClass(tmpW.times(),
+                                          tmpW.ws()); // tmpW.ws() or constantTmpWs
   }
   else {
-    m_calLikelihoodInfoVector[0]->changeWeightFunctions(&deltaWeightFunction,&tildeDeltaWeightFunction); // NULL,NULL or &deltaWeightFunction,&tildeDeltaWeightFunction
+    unsigned int tmpSize = tmpW.times().size();
+    double minTime = tmpW.times()[0];
+    double maxTime = tmpW.times()[tmpSize-1];
+    double refDeltaTime = (maxTime-minTime)/((double) (refNumDiscreteSamples-1));
+
+    std::vector<double> vecOfTimes (refNumDiscreteSamples,0.);
+    std::vector<double> vecOfValues(refNumDiscreteSamples,0.);
+    unsigned int startingId = 0;
+    for (unsigned int j = 0; j < refNumDiscreteSamples; ++j) {
+      if (j == 0) {
+        vecOfTimes [j] = minTime;
+        vecOfValues[j] = tmpW.ws()[0];
+      }
+      else if (j == (refNumDiscreteSamples - 1)) {
+        vecOfTimes [j] = maxTime;
+        vecOfValues[j] = tmpW.ws()[tmpSize-1];
+      }
+      else {
+        vecOfTimes [j] = minTime + ((double) j)*refDeltaTime;
+        tmpW.interpolate(vecOfTimes[j],
+                         startingId,
+                         &vecOfValues[j],
+                         NULL,
+                         NULL);
+      }
+    }
+
+    refW = new uqSampled1D1DFunctionClass(vecOfTimes,
+                                          vecOfValues);
+  }
+  m_calLikelihoodInfoVector[0]->changeReferenceW(*refW);
+
+  // Change the weight functions
+  unsigned int refSize = refW->domainValues().size();
+  double       maxTime = refW->maxDomainValue();
+  std::vector<double> vecOfDeltas (refSize,1.);
+  std::vector<double> vecOfWeights(refSize,1.);
+  std::vector<double> aux1        (refSize,0.);
+  std::vector<double> aux2        (refSize,0.);
+  std::vector<double> aux3        (refSize,0.);
+  for (unsigned int j = 0; j < refSize; ++j) {
+    aux1[j] = maxTime-refW->domainValues()[refSize-1-j];
+    aux2[j] = vecOfDeltas                 [refSize-1-j];
+    aux3[j] = vecOfWeights                [refSize-1-j];
+  }
+
+  uqSampled1D1DFunctionClass*  continuousWeightFunction      = NULL;
+  uqSampled1D1DFunctionClass*  tildeContinuousWeightFunction = NULL;
+  uqDeltaSeq1D1DFunctionClass* deltaWeightFunction           = NULL;
+  uqDeltaSeq1D1DFunctionClass* tildeDeltaWeightFunction      = NULL;
+  if (treatRefDataAsContinuous) {
+    continuousWeightFunction = new uqSampled1D1DFunctionClass(refW->domainValues(),
+                                                              vecOfWeights);
+    tildeContinuousWeightFunction = new uqSampled1D1DFunctionClass(aux1,
+                                                                   aux3);
+
+    m_calLikelihoodInfoVector[0]->changeWeightFunctions(continuousWeightFunction,tildeContinuousWeightFunction); // or NULL,NULL
+  }
+  else {
+    deltaWeightFunction = new uqDeltaSeq1D1DFunctionClass(refW->domainValues(),
+                                                          vecOfDeltas,
+                                                          vecOfWeights);
+    tildeDeltaWeightFunction = new uqDeltaSeq1D1DFunctionClass(aux1,
+                                                               aux2,
+                                                               aux3);
+
+    m_calLikelihoodInfoVector[0]->changeWeightFunctions(deltaWeightFunction,tildeDeltaWeightFunction); // or NULL,NULL
   }
 
   // Perform calculations
@@ -593,7 +643,8 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest(
   paramValues[1] = guessE;
 
   P_V gradWithLM(m_paramSpace->zeroVector());
-  P_M* hessianWithLM = NULL; //m_paramSpace->newMatrix();
+  P_M* hessianWithLM = NULL;
+  if (computeHessian) hessianWithLM = m_paramSpace->newMatrix();
   double guessMisfit = 0.;
   guessMisfit = uqTgaLikelihoodRoutine<P_V,P_M>(paramValues,
                                                 (const void *)&m_calLikelihoodInfoVector,
@@ -608,32 +659,47 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest(
   delete hessianWithLM;
 
   if (writeOutput) {
+    ofs << "\n" << outerPrefixName << "hessianIsAvailable = " << computeHessian << ";" << std::endl;
+    ofs << "\n" << outerPrefixName << "refA = "               << refA           << ";" << std::endl;
+    ofs << "\n" << outerPrefixName << "refE = "               << refE           << ";" << std::endl;
+    ofs << "\n" << outerPrefixName << "guessA = "             << guessA         << ";" << std::endl;
+    ofs << "\n" << outerPrefixName << "guessE = "             << guessE         << ";" << std::endl;
+
     tmpPrefixName = outerPrefixName + "refW_";
     m_calLikelihoodInfoVector[0]->m_refWPtrForPlot->printForMatlab(ofs,tmpPrefixName);
 
     tmpPrefixName = outerPrefixName + "w_";
     m_calLikelihoodInfoVector[0]->m_wPtrForPlot->printForMatlab(ofs,tmpPrefixName);
 
-    tmpPrefixName = outerPrefixName + "wA_";
-    m_calLikelihoodInfoVector[0]->m_wAPtrForPlot->printForMatlab(ofs,tmpPrefixName);
+    if (computeHessian) {
+      tmpPrefixName = outerPrefixName + "wA_";
+      m_calLikelihoodInfoVector[0]->m_wAPtrForPlot->printForMatlab(ofs,tmpPrefixName);
 
-    tmpPrefixName = outerPrefixName + "wE_";
-    m_calLikelihoodInfoVector[0]->m_wEPtrForPlot->printForMatlab(ofs,tmpPrefixName);
+      tmpPrefixName = outerPrefixName + "wE_";
+      m_calLikelihoodInfoVector[0]->m_wEPtrForPlot->printForMatlab(ofs,tmpPrefixName);
+    }
 
-    tmpPrefixName = outerPrefixName + "misfit_";
+    tmpPrefixName = outerPrefixName + "diff_";
     m_calLikelihoodInfoVector[0]->m_diffPtrForPlot->printForMatlab(ofs,tmpPrefixName);
 
     tmpPrefixName = outerPrefixName + "lambda_";
     m_calLikelihoodInfoVector[0]->m_lambdaPtrForPlot->printForMatlab(ofs,tmpPrefixName);
 
-    tmpPrefixName = outerPrefixName + "lambdaA_";
-    m_calLikelihoodInfoVector[0]->m_lambdaAPtrForPlot->printForMatlab(ofs,tmpPrefixName);
+    if (computeHessian) {
+      tmpPrefixName = outerPrefixName + "lambdaA_";
+      m_calLikelihoodInfoVector[0]->m_lambdaAPtrForPlot->printForMatlab(ofs,tmpPrefixName);
 
-    tmpPrefixName = outerPrefixName + "lambdaE_";
-    m_calLikelihoodInfoVector[0]->m_lambdaEPtrForPlot->printForMatlab(ofs,tmpPrefixName);
+      tmpPrefixName = outerPrefixName + "lambdaE_";
+      m_calLikelihoodInfoVector[0]->m_lambdaEPtrForPlot->printForMatlab(ofs,tmpPrefixName);
+    }
   }
 
   // Finish
+  delete tildeDeltaWeightFunction;
+  delete deltaWeightFunction;
+  delete tildeContinuousWeightFunction;
+  delete continuousWeightFunction;
+  delete refW;
   if (m_env.rank() == 0) {
     std::cout << "Leaving uqTgaValidation::runGradTest()"
               << std::endl;

@@ -45,25 +45,7 @@ int main(int argc, char* argv[])
 #if 0
   tgaValidation.run();
 #else
-  int    treatAsContinuous = atoi  (argv[3]     ); // 1
-  double refMaxTimeStep    = strtod(argv[4],NULL); // 10.
-  double wMaxTimeStep      = strtod(argv[5],NULL); // .11
-  double lambdaMaxTimeStep = strtod(argv[6],NULL); // .55
-  int    integralsNumInts  = atoi  (argv[7]     ); // 1001
-  double relativeFDStep    = strtod(argv[8],NULL); // 1.1e-7
-  int    writeOutput       = atoi  (argv[9]     ); // false
-  tgaValidation.runGradTest("case1_",
-                            2.6090e+11,        // refA
-                            1.9910e+05,        // refE
-                            treatAsContinuous, // # true # false
-                            refMaxTimeStep,    // #   .1 #  100.
-                            wMaxTimeStep,      //
-                            lambdaMaxTimeStep, //
-                            integralsNumInts,  //
-                            relativeFDStep,    //
-                            2.6000e+11,        // guessA
-                            2.0000e+05,        // guessE
-                            writeOutput);
+  tgaValidation.runGradTest(argv);
 #endif
 
 #if 0

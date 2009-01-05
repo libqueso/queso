@@ -1,0 +1,6 @@
+./uqPyramid_gsl -i uqPyramid.inp case1_ 2.6000e+11 2.0000e+05 2.5910e+11 2.0090e+05 1.   1             100 1                 1.  1.  1000                 1.e-8 1 > screen_1
+./uqPyramid_gsl -i uqPyramid.inp case2_ 2.6000e+11 2.0000e+05 2.6090e+11 1.9910e+05 1.   1             100 1                 1.  1.  1000                 1.e-8 1 > screen_2
+./uqPyramid_gsl -i uqPyramid.inp case3_ 2.6000e+11 2.0000e+05 2.5910e+11 2.0090e+05 1.   0             500 1                 1.  1.  1000                 1.e-8 1 > screen_3
+./uqPyramid_gsl -i uqPyramid.inp case4_ 2.6000e+11 2.0000e+05 2.6090e+11 1.9910e+05 1.   0             500 1                 1.  1.  1000                 1.e-8 1 > screen_4
+./uqPyramid_gsl -i uqPyramid.inp case5_ 2.6000e+11 2.0000e+05 2.5910e+11 2.0090e+05 1.   0              50 1                 1.  1.  1000                 1.e-8 1 > screen_5
+./uqPyramid_gsl -i uqPyramid.inp case6_ 2.6000e+11 2.0000e+05 2.6090e+11 1.9910e+05 1.   0              50 1                 1.  1.  1000                 1.e-8 1 > screen_6
