@@ -87,6 +87,7 @@ public:
  ~uqTgaWClass();
 
         void                    compute(const P_V&                     params,
+                                        const P_V*                     paramDirection,
                                         double                         initialValue,
                                         double                         reqMaxTime,
                                         double                         maxTimeStep,
@@ -178,6 +179,7 @@ template<class P_V, class P_M>
 void
 uqTgaWClass<P_V,P_M>::compute(
   const P_V&                     params,          // input
+  const P_V*                     paramDirection,  // input
   double                         initialValue,    // input
   double                         reqMaxTime,      // input
   double                         maxTimeStep,     // input
@@ -194,11 +196,11 @@ uqTgaWClass<P_V,P_M>::compute(
   UQ_FATAL_TEST_MACRO((misfitValue != NULL) && (referenceW == NULL),
                       m_env.rank(),
                       "uqTgaWClass<P_V,P_M>::compute()",
-                      "misfitValue is being requested but not referenceW is supplied");
+                      "misfitValue is being requested but no referenceW is supplied");
   UQ_FATAL_TEST_MACRO((diffFunction != NULL) && (referenceW == NULL),
                       m_env.rank(),
                       "uqTgaWClass<P_V,P_M>::compute()",
-                      "diffFunction is being requested but not referenceW is supplied");
+                      "diffFunction is being requested but no referenceW is supplied");
   UQ_FATAL_TEST_MACRO((referenceW != NULL) && (misfitValue == NULL) && (diffFunction == NULL),
                       m_env.rank(),
                       "uqTgaWClass<P_V,P_M>::compute()",

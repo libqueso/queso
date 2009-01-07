@@ -791,8 +791,8 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
     }
     else {
 #ifdef UQ_USES_TK_CLASS // AQUI
-      double qyx = -.5 * m_tk->rv(yStageId).pdf().minus2LnValue(x.vecValues(),NULL,NULL,NULL);
-      double qxy = -.5 * m_tk->rv(xStageId).pdf().minus2LnValue(y.vecValues(),NULL,NULL,NULL);
+      double qyx = -.5 * m_tk->rv(yStageId).pdf().minus2LnValue(x.vecValues(),NULL,NULL,NULL,NULL);
+      double qxy = -.5 * m_tk->rv(xStageId).pdf().minus2LnValue(y.vecValues(),NULL,NULL,NULL,NULL);
 #else
       double qyx = logProposal(y,x,0);
       double qxy = logProposal(x,y,0);
@@ -888,8 +888,8 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
   const P_V& _lastTKPosition         = m_tk->preComputingPosition(        tkStageIds[inputSize-1]);
   const P_V& _lastBackwardTKPosition = m_tk->preComputingPosition(backwardTKStageIds[inputSize-1]);
 
-  double numContrib = -.5 * m_tk->rv(backwardTKStageIdsLess1).pdf().minus2LnValue(_lastBackwardTKPosition,NULL,NULL,NULL);
-  double denContrib = -.5 * m_tk->rv(        tkStageIdsLess1).pdf().minus2LnValue(_lastTKPosition        ,NULL,NULL,NULL);
+  double numContrib = -.5 * m_tk->rv(backwardTKStageIdsLess1).pdf().minus2LnValue(_lastBackwardTKPosition,NULL,NULL,NULL,NULL);
+  double denContrib = -.5 * m_tk->rv(        tkStageIdsLess1).pdf().minus2LnValue(_lastTKPosition        ,NULL,NULL,NULL,NULL);
 #else
   double numContrib = logProposal(backwardPositionsData);
   double denContrib = logProposal(        positionsData);
@@ -919,8 +919,8 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
             tkStageIdsLess1.pop_back();
     backwardTKStageIdsLess1.pop_back();
 
-    numContrib = -.5 * m_tk->rv(backwardTKStageIdsLess1).pdf().minus2LnValue(lastBackwardTKPosition,NULL,NULL,NULL);
-    denContrib = -.5 * m_tk->rv(        tkStageIdsLess1).pdf().minus2LnValue(lastTKPosition        ,NULL,NULL,NULL);
+    numContrib = -.5 * m_tk->rv(backwardTKStageIdsLess1).pdf().minus2LnValue(lastBackwardTKPosition,NULL,NULL,NULL,NULL);
+    denContrib = -.5 * m_tk->rv(        tkStageIdsLess1).pdf().minus2LnValue(lastTKPosition        ,NULL,NULL,NULL,NULL);
 #else
     numContrib = logProposal(backwardPositionsData);
     denContrib = logProposal(        positionsData);

@@ -116,6 +116,7 @@ public:
  ~uqTgaLambdaClass();
 
         void                 compute(const P_V&                     params,
+                                     const P_V*                     paramDirection,
                                      double                         maxTimeStep,
                                      bool                           computeGradAlso,
                                      const uqBase1D1DFunctionClass& diffFunction,
@@ -187,6 +188,7 @@ template<class P_V, class P_M>
 void
 uqTgaLambdaClass<P_V,P_M>::compute(
   const P_V&                     params,
+  const P_V*                     paramDirection,
   double                         maxTimeStep,
   bool                           computeGradAlso,
   const uqBase1D1DFunctionClass& diffFunction,

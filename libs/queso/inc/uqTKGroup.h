@@ -477,7 +477,7 @@ uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position
   M* tmpHessian = m_vectorSpace->newMatrix();
   V* tmpGrad    = m_vectorSpace->newVector();
   for (unsigned int i = 0; i < m_preComputedPosPlusNewton.size(); ++i) {
-    m_targetPdf.minus2LnValue(position,tmpGrad,tmpHessian,NULL);
+    m_targetPdf.minus2LnValue(position,NULL,tmpGrad,tmpHessian,NULL);
     //double factor = 1./m_scales[i]/m_scales[i];
     //*tmpHessian *= factor;
 

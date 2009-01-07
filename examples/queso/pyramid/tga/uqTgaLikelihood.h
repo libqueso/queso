@@ -294,6 +294,7 @@ template<class P_V,class P_M>
 void
 uqTgaLikelihoodCheckingRoutine(
   const P_V&                          paramValues,
+  const P_V*                          paramDirection,
   const uqTgaWClass      <P_V,P_M>&   wObj,
   const uqTgaLambdaClass <P_V,P_M>&   lambdaObj,
   bool                                wAndLambdaGradsAreAlsoAvaiable,
@@ -308,11 +309,17 @@ template<class P_V,class P_M>
 double
 uqTgaLikelihoodRoutine(
   const P_V&  paramValues,
+  const P_V*  paramDirection,
   const void* functionDataPtr,
   P_V*        gradVector,
   P_M*        hessianMatrix,
   P_V*        hessianEffect)
 {
+  UQ_FATAL_TEST_MACRO((hessianEffect != NULL) && (paramDirection == NULL),
+                      paramValues.env().rank(),
+                      "uqTgaLikelihoodRoutine<P_V,P_M>()",
+                      "hessianEffect is being requested but no paramDirection is supplied");
+
   // Set all possible return values to zero
   double resultValue = 0.;
   if (gradVector   ) *gradVector    *= 0.;
@@ -335,10 +342,11 @@ uqTgaLikelihoodRoutine(
   bool computeWAndLambdaGradsAlso = false;
 
   if (gradVector) computeLambda = true;
-  if (hessianMatrix || hessianEffect) {
+  if (hessianMatrix) {
     computeLambda              = true;
     computeWAndLambdaGradsAlso = true;
   }
+  if (hessianEffect) computeLambda = true;
 
   // Loop on scenarios
   const std::vector<uqTgaLikelihoodInfoStruct<P_V,P_M> *>& vecInfo = *((const std::vector<uqTgaLikelihoodInfoStruct<P_V,P_M> *> *) functionDataPtr);
@@ -379,6 +387,7 @@ uqTgaLikelihoodRoutine(
                           &misfitValue);
 #else
     wObj.compute(paramValues,
+                 paramDirection,
                  1.,
                  0.,
                  info.m_wMaxTimeStep,
@@ -396,6 +405,7 @@ uqTgaLikelihoodRoutine(
     /////////////////////////////////////////////////////////////////////////////
     if (computeLambda) {
       lambdaObj.compute(paramValues,
+                        paramDirection,
                         info.m_lambdaMaxTimeStep,
                         computeWAndLambdaGradsAlso,
                         diffFunction,
@@ -411,17 +421,17 @@ uqTgaLikelihoodRoutine(
     if (gradVector) tmpVector = new P_V(info.m_paramSpace.zeroVector());
 
     P_M* tmpMatrix = NULL;
+    if (hessianMatrix) tmpMatrix = info.m_paramSpace.newMatrix();
+
     P_V* tmpEffect = NULL;
-    if (hessianMatrix || hessianEffect) {
-      tmpMatrix = info.m_paramSpace.newMatrix();
-      tmpEffect = new P_V(info.m_paramSpace.zeroVector());
-    }
+    if (hessianEffect) tmpEffect = new P_V(info.m_paramSpace.zeroVector());
 
     if (computeLambda) { // Same effect as "if (gradVector || hessianMatrix || hessianEffect) {"
       double lowerIntegralLimit = 0.; //diffFunction.minDomainValue(); // ????
       double upperIntegralLimit = diffFunction.maxDomainValue(); // FIX ME
       if (info.m_weightFunction) upperIntegralLimit = info.m_weightFunction->maxDomainValue(); // FIX ME
       uqTgaIntegrals<P_V,P_M>(paramValues,
+                              paramDirection,
                               *(info.m_temperatureFunctionObj),
                               lowerIntegralLimit,
                               upperIntegralLimit,
@@ -430,9 +440,8 @@ uqTgaLikelihoodRoutine(
                               lambdaObj,
                               info.m_weightFunction,
                               tmpVector,
-                              tmpMatrix);
-      if (hessianEffect) *tmpEffect = ((*tmpMatrix) * paramValues);
-
+                              tmpMatrix,
+                              tmpEffect);
       if (gradVector)    *gradVector    += *tmpVector;
       if (hessianMatrix) *hessianMatrix += *tmpMatrix;
       if (hessianEffect) *hessianEffect += *tmpEffect;
@@ -443,6 +452,7 @@ uqTgaLikelihoodRoutine(
     // Update some vector<double>'s in 'info', in order to be plotted afterwards
     /////////////////////////////////////////////////////////////////////////////
     if (info.m_performChecking) uqTgaLikelihoodCheckingRoutine<P_V,P_M>(paramValues,
+                                                                        paramDirection,
                                                                         wObj,
                                                                         lambdaObj,
                                                                         computeWAndLambdaGradsAlso,
@@ -467,6 +477,7 @@ template<class P_V,class P_M>
 void
 uqTgaLikelihoodCheckingRoutine(
   const P_V&                          paramValues,
+  const P_V*                          paramDirection,
   const uqTgaWClass      <P_V,P_M>&   wObj,
   const uqTgaLambdaClass <P_V,P_M>&   lambdaObj,
   bool                                wAndLambdaGradsAreAlsoAvaiable,
@@ -476,6 +487,11 @@ uqTgaLikelihoodCheckingRoutine(
   const P_V*                          tmpHessianEffect,
   uqTgaLikelihoodInfoStruct<P_V,P_M>& info)
 {
+  UQ_FATAL_TEST_MACRO((tmpHessianEffect != NULL) && (paramDirection == NULL),
+                      paramValues.env().rank(),
+                      "uqTgaLikelihoodCheckingRoutine<P_V,P_M>()",
+                      "tmpHessianEffect is being requested but no paramDirection is supplied");
+
   //////////////////////////////////////////////////////////////////
   // Step 1 of 3: Store data to be printed
   //////////////////////////////////////////////////////////////////
@@ -583,6 +599,7 @@ uqTgaLikelihoodCheckingRoutine(
     tmpParamValues[1] = guessE;
     double valueAm = 0.;
     tmpW.compute(tmpParamValues,
+                 NULL,
                  1.,
                  0.,
                  info.m_wMaxTimeStep,
@@ -601,6 +618,7 @@ uqTgaLikelihoodCheckingRoutine(
     tmpParamValues[1] = guessE;
     double valueAp = 0.;
     tmpW.compute(tmpParamValues,
+                 NULL,
                  1.,
                  0.,
                  info.m_wMaxTimeStep,
@@ -619,6 +637,7 @@ uqTgaLikelihoodCheckingRoutine(
     tmpParamValues[1] = guessE-deltaE;
     double valueEm = 0.;
     tmpW.compute(tmpParamValues,
+                 NULL,
                  1.,
                  0.,
                  info.m_wMaxTimeStep,
@@ -637,6 +656,7 @@ uqTgaLikelihoodCheckingRoutine(
     tmpParamValues[1] = guessE+deltaE;
     double valueEp = 0.;
     tmpW.compute(tmpParamValues,
+                 NULL,
                  1.,
                  0.,
                  info.m_wMaxTimeStep,
@@ -691,6 +711,7 @@ uqTgaLikelihoodCheckingRoutine(
     tmpParamValues[1] = guessE;
     P_V grad_Am(info.m_paramSpace.zeroVector());
     double tmpMisfit = uqTgaLikelihoodRoutine<P_V,P_M>(tmpParamValues,
+                                                       NULL,
                                                        (const void *)&tmpCalLikelihoodInfoVector,
                                                        &grad_Am,
                                                        NULL, // Hessian
@@ -701,6 +722,7 @@ uqTgaLikelihoodCheckingRoutine(
     tmpParamValues[1] = guessE;
     P_V grad_Ap(info.m_paramSpace.zeroVector());
     tmpMisfit = uqTgaLikelihoodRoutine<P_V,P_M>(tmpParamValues,
+                                                NULL,
                                                 (const void *)&tmpCalLikelihoodInfoVector,
                                                 &grad_Ap,
                                                 NULL, // Hessian
@@ -711,6 +733,7 @@ uqTgaLikelihoodCheckingRoutine(
     tmpParamValues[1] = guessE-deltaE;
     P_V grad_Em(info.m_paramSpace.zeroVector());
     tmpMisfit = uqTgaLikelihoodRoutine<P_V,P_M>(tmpParamValues,
+                                                NULL,
                                                 (const void *)&tmpCalLikelihoodInfoVector,
                                                 &grad_Em,
                                                 NULL, // Hessian
@@ -721,6 +744,7 @@ uqTgaLikelihoodCheckingRoutine(
     tmpParamValues[1] = guessE+deltaE;
     P_V grad_Ep(info.m_paramSpace.zeroVector());
     tmpMisfit = uqTgaLikelihoodRoutine<P_V,P_M>(tmpParamValues,
+                                                NULL,
                                                 (const void *)&tmpCalLikelihoodInfoVector,
                                                 &grad_Ep,
                                                 NULL, // Hessian

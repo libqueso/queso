@@ -29,6 +29,7 @@ template<class P_V,class P_M>
 void
 uqTgaIntegrals(
   const P_V&                       paramValues,
+  const P_V*                       paramDirection,
   const uqBase1D1DFunctionClass&   temperatureFunctionObj,
   double                           lowerIntegralTime,
   double                           upperIntegralTime,
@@ -36,12 +37,18 @@ uqTgaIntegrals(
   const uqTgaWClass     <P_V,P_M>& wObj,
   const uqTgaLambdaClass<P_V,P_M>& lambdaObj,
   const uqBase1D1DFunctionClass*   weightFunction,
-  P_V*                             LagrangianGrad,
-  P_M*                             LagrangianHessian)
+  P_V*                             reducedGrad,
+  P_M*                             reducedHessian,
+  P_V*                             hessianEffect)
 {
+  UQ_FATAL_TEST_MACRO((hessianEffect != NULL) && (paramDirection == NULL),
+                      paramValues.env().rank(),
+                      "uqTgaIntegrals<P_V,P_M>()",
+                      "hessianEffect is being requested but no paramDirection is supplied");
+
   // Set all possible return values to zero
-  if (LagrangianGrad   ) *LagrangianGrad    *= 0.;
-  if (LagrangianHessian) *LagrangianHessian *= 0.;
+  if (reducedGrad   ) *reducedGrad    *= 0.;
+  if (reducedHessian) *reducedHessian *= 0.;
 
   unsigned int wSize = wObj.times().size();
   unsigned int lambdaSize = lambdaObj.times().size();
@@ -97,7 +104,7 @@ uqTgaIntegrals(
   P_V lambdaGrad(paramValues);
   P_V* lambdaGradPtr = &lambdaGrad;
 
-  if (LagrangianHessian == NULL) {
+  if (reducedHessian == NULL) {
     wGradPtr      = NULL;
     lambdaGradPtr = NULL;
   }
@@ -145,23 +152,23 @@ uqTgaIntegrals(
                             NULL);
 
       double expTerm = exp(-E/(R_CONSTANT*temp));
-      if (LagrangianGrad) {
-        (*LagrangianGrad)[0] +=                          lambda * w * expTerm;
-        (*LagrangianGrad)[1] += -(A/(R_CONSTANT*temp)) * lambda * w * expTerm;
+      if (reducedGrad) {
+        (*reducedGrad)[0] +=                          lambda * w * expTerm;
+        (*reducedGrad)[1] += -(A/(R_CONSTANT*temp)) * lambda * w * expTerm;
       }
-      if (LagrangianHessian) {
+      if (reducedHessian) {
         double wA      = (*wGradPtr     )[0];
         double wE      = (*wGradPtr     )[1];
         double lambdaA = (*lambdaGradPtr)[0];
         double lambdaE = (*lambdaGradPtr)[1];
-        (*LagrangianHessian)(0,0) += (lambdaA*w + lambda*wA) * expTerm;
-        (*LagrangianHessian)(0,1) += ( -lambda*w/(R_CONSTANT*temp) + lambdaE*w + lambda*wE ) * expTerm; // (d/dE)(dF/dA)
-        (*LagrangianHessian)(1,0) += ( -lambda*w/(R_CONSTANT*temp) - A*(lambdaA*w + lambda*wA)/(R_CONSTANT*temp) ) * expTerm; // (d/dA)(dF/dE)
-        (*LagrangianHessian)(1,1) += ( A*lambda*w/(R_CONSTANT*R_CONSTANT*temp*temp) - A*(lambdaE*w + lambda*wE)/(R_CONSTANT*temp) ) * expTerm;
+        (*reducedHessian)(0,0) += (lambdaA*w + lambda*wA) * expTerm;
+        (*reducedHessian)(0,1) += ( -lambda*w/(R_CONSTANT*temp) + lambdaE*w + lambda*wE ) * expTerm; // (d/dE)(dF/dA)
+        (*reducedHessian)(1,0) += ( -lambda*w/(R_CONSTANT*temp) - A*(lambdaA*w + lambda*wA)/(R_CONSTANT*temp) ) * expTerm; // (d/dA)(dF/dE)
+        (*reducedHessian)(1,1) += ( A*lambda*w/(R_CONSTANT*R_CONSTANT*temp*temp) - A*(lambdaE*w + lambda*wE)/(R_CONSTANT*temp) ) * expTerm;
       }
     }
-    if (LagrangianGrad   ) (*LagrangianGrad   ) *= timeIntervalSize;
-    if (LagrangianHessian) (*LagrangianHessian) *= timeIntervalSize;
+    if (reducedGrad   ) (*reducedGrad   ) *= timeIntervalSize;
+    if (reducedHessian) (*reducedHessian) *= timeIntervalSize;
   }
   else {
     // Determine number of milestone points (= number of milestone intervals + 1)
@@ -230,19 +237,19 @@ uqTgaIntegrals(
                               NULL);
 
         double expTerm = exp(-E/(R_CONSTANT*temp));
-        if (LagrangianGrad) {
-          (*LagrangianGrad)[0] +=                          lambda * w * expTerm * timeIntervalSize;
-          (*LagrangianGrad)[1] += -(A/(R_CONSTANT*temp)) * lambda * w * expTerm * timeIntervalSize;
+        if (reducedGrad) {
+          (*reducedGrad)[0] +=                          lambda * w * expTerm * timeIntervalSize;
+          (*reducedGrad)[1] += -(A/(R_CONSTANT*temp)) * lambda * w * expTerm * timeIntervalSize;
         }
-        if (LagrangianHessian) {
+        if (reducedHessian) {
           double wA      = (*wGradPtr     )[0];
           double wE      = (*wGradPtr     )[1];
           double lambdaA = (*lambdaGradPtr)[0];
           double lambdaE = (*lambdaGradPtr)[1];
-          (*LagrangianHessian)(0,0) += (lambdaA*w + lambda*wA) * expTerm * timeIntervalSize;
-          (*LagrangianHessian)(0,1) += ( -lambda*w/(R_CONSTANT*temp) + lambdaE*w + lambda*wE ) * expTerm * timeIntervalSize; // (d/dE)(dF/dA)
-          (*LagrangianHessian)(1,0) += ( -lambda*w/(R_CONSTANT*temp) - A*(lambdaA*w + lambda*wA)/(R_CONSTANT*temp) ) * expTerm * timeIntervalSize; // (d/dA)(dF/dE)
-          (*LagrangianHessian)(1,1) += ( A*lambda*w/(R_CONSTANT*R_CONSTANT*temp*temp) - A*(lambdaE*w + lambda*wE)/(R_CONSTANT*temp) ) * expTerm * timeIntervalSize;
+          (*reducedHessian)(0,0) += (lambdaA*w + lambda*wA) * expTerm * timeIntervalSize;
+          (*reducedHessian)(0,1) += ( -lambda*w/(R_CONSTANT*temp) + lambdaE*w + lambda*wE ) * expTerm * timeIntervalSize; // (d/dE)(dF/dA)
+          (*reducedHessian)(1,0) += ( -lambda*w/(R_CONSTANT*temp) - A*(lambdaA*w + lambda*wA)/(R_CONSTANT*temp) ) * expTerm * timeIntervalSize; // (d/dA)(dF/dE)
+          (*reducedHessian)(1,1) += ( A*lambda*w/(R_CONSTANT*R_CONSTANT*temp*temp) - A*(lambdaE*w + lambda*wE)/(R_CONSTANT*temp) ) * expTerm * timeIntervalSize;
         }
       } // i
     } // j

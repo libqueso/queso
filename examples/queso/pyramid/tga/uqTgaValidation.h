@@ -518,6 +518,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runTempTimeTest()
   }
 
   tmpW.compute(paramValues,
+               NULL,
                1.,                           // initialValue
                0.,                           // maximumTime
                m_testOptions.refMaxTimeStep, // maximum delta time
@@ -550,6 +551,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::prepareRefForTests()
                              *(m_calLikelihoodInfoVector[0]->m_temperatureFunctionObj));
 
   tmpW1.compute(paramValues,
+                NULL,
                 m_testOptions.refW1,
                 0.,                           // maximumTime
                 m_testOptions.refMaxTimeStep, // maximum delta time
@@ -569,6 +571,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::prepareRefForTests()
                              *(m_calLikelihoodInfoVector[0]->m_temperatureFunctionObj));
 
   tmpW2.compute(paramValues,
+                NULL,
                 1.-m_testOptions.refW1,
                 0.,                           // maximumTime
                 m_testOptions.refMaxTimeStep, // maximum delta time
@@ -730,6 +733,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runTimingTest()
 
   iRC = gettimeofday(&timeval0, NULL);
   guessMisfit = uqTgaLikelihoodRoutine<P_V,P_M>(paramValues,
+                                                NULL,
                                                 (const void *)&m_calLikelihoodInfoVector,
                                                 NULL,
                                                 NULL,
@@ -749,6 +753,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runTimingTest()
 
   iRC = gettimeofday(&timeval0, NULL);
   guessMisfit = uqTgaLikelihoodRoutine<P_V,P_M>(paramValues,
+                                                NULL,
                                                 (const void *)&m_calLikelihoodInfoVector,
                                                 &gradWithLM,
                                                 hessianWithLM,
@@ -791,6 +796,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest()
   // Run with checking against finite differences
   m_calLikelihoodInfoVector[0]->setCheckingVariables(true,&m_testOptions.relativeFDStep); // IMPORTANT
   guessMisfit = uqTgaLikelihoodRoutine<P_V,P_M>(paramValues,
+                                                NULL,
                                                 (const void *)&m_calLikelihoodInfoVector,
                                                 &gradWithLM,
                                                 hessianWithLM,
@@ -884,6 +890,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runOptimizationTest()
 
     // Compute objective function: value, gradient and Hessian
     objFunctionValue = uqTgaLikelihoodRoutine<P_V,P_M>(paramValues,
+                                                       NULL,
                                                        (const void *)&m_calLikelihoodInfoVector,
                                                        &objFunctionGradient,
                                                        objFunctionHessian,
@@ -997,6 +1004,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runOptimizationTest()
       attemptedParamValues = paramValues + alpha*paramsStep;
 
       double attemptedObjFunctionValue = uqTgaLikelihoodRoutine<P_V,P_M>(attemptedParamValues,
+                                                                         NULL,
                                                                          (const void *)&m_calLikelihoodInfoVector,
                                                                          NULL,
                                                                          NULL,
