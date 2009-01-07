@@ -381,7 +381,7 @@ uqTgaLambdaClass<P_V,P_M>::interpolate(
   bool*         timeWasMatchedExactly) const
 {
   unsigned int tmpSize = m_times.size(); // Yes, 'm_grads'
-  //std::cout << "In uqTgaLambdaClass<P_V,P_M>::grad()"
+  //std::cout << "In uqTgaLambdaClass<P_V,P_M>::interpolate()"
   //          << ": time = "           << time
   //          << ", m_times.size() = " << tmpSize
   //          << ", m_times[0] = "     << m_times[0]
@@ -390,27 +390,27 @@ uqTgaLambdaClass<P_V,P_M>::interpolate(
 
   UQ_FATAL_TEST_MACRO(tmpSize == 0,
                       m_env.rank(),
-                      "uqTgaLambda<P_V,P_M>::grad()",
+                      "uqTgaLambda<P_V,P_M>::interpolate()",
                       "m_times.size() = 0");
 
   UQ_FATAL_TEST_MACRO(startingTimeId >= tmpSize,
                       m_env.rank(),
-                      "uqTgaLambda<P_V,P_M>::grad()",
+                      "uqTgaLambda<P_V,P_M>::interpolate()",
                       "startingTimeId is too big");
 
   UQ_FATAL_TEST_MACRO(time < m_times[0],
                       m_env.rank(),
-                      "uqTgaLambda<P_V,P_M>::grad()",
+                      "uqTgaLambda<P_V,P_M>::interpolate()",
                       "time < m_times[0]");
 
   UQ_FATAL_TEST_MACRO(m_times[tmpSize-1] < time,
                       m_env.rank(),
-                      "uqTgaLambda<P_V,P_M>::grad()",
+                      "uqTgaLambda<P_V,P_M>::interpolate()",
                       "m_times[max] < time");
 
   UQ_FATAL_TEST_MACRO(lambdaGrad && (m_grads[0] == NULL),
                       m_env.rank(),
-                      "uqTgaLambda<P_V,P_M>::grad()",
+                      "uqTgaLambda<P_V,P_M>::interpolate()",
                       "m_grads[0] == NULL");
 
   unsigned int i = 0;

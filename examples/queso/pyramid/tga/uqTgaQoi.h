@@ -88,6 +88,7 @@ void uqTgaQoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& q
                         NULL);
 #else
   wObj.compute(paramValues,
+               1.,
                info.m_criticalTime,
                0.,
                false, // computeGradAlso

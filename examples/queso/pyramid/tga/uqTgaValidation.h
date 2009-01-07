@@ -21,61 +21,12 @@
 #define __UQ_TGA_VALIDATION_H__
 
 #include <uq1D1DFunction.h>
+#include <uqTgaTestOptions.h>
 #include <uqTgaLikelihood.h>
 #include <uqTgaQoi.h>
 #include <uqModelValidation.h>
 #include <uqVectorSubset.h>
 #include <uqAsciiTable.h>
-
-struct uqTgaTestInputStruct {
-  std::string  outerPrefixName;
-  double       refA;
-  double       refE;
-  double       guessA;
-  double       guessE;
-  double       refMaxTimeStep;
-  bool         treatRefDataAsContinuous;
-  unsigned int refNumDiscreteSamples;
-  bool         computeHessian;
-  double       wMaxTimeStep;
-  double       lambdaMaxTimeStep;
-  unsigned int integralsNumIntervals;
-  double       relativeFDStep;
-  bool         writeOutput;
-};
-
-struct uqTgaTestVarsStruct {
-  uqTgaTestVarsStruct();
- ~uqTgaTestVarsStruct();
-
-  uqSampled1D1DFunctionClass*  refW;
-  std::ofstream*               ofs;
-  uqSampled1D1DFunctionClass*  continuousWeightFunction;
-  uqSampled1D1DFunctionClass*  tildeContinuousWeightFunction;
-  uqDeltaSeq1D1DFunctionClass* deltaWeightFunction;
-  uqDeltaSeq1D1DFunctionClass* tildeDeltaWeightFunction;
-};
-
-uqTgaTestVarsStruct::uqTgaTestVarsStruct()
-  :
-  refW                         (NULL),
-  ofs                          (NULL),
-  continuousWeightFunction     (NULL),
-  tildeContinuousWeightFunction(NULL),
-  deltaWeightFunction          (NULL),
-  tildeDeltaWeightFunction     (NULL)
-{
-}
-
-uqTgaTestVarsStruct::~uqTgaTestVarsStruct()
-{
-  delete refW;
-  delete ofs;
-  delete continuousWeightFunction;
-  delete tildeContinuousWeightFunction;
-  delete deltaWeightFunction;
-  delete tildeDeltaWeightFunction;
-}
 
 //********************************************************
 // Class "uqTgaValidation", instantiated by main()
@@ -89,7 +40,7 @@ public:
  ~uqTgaValidationClass();
 
   void  run           ();
-  void  runTests      (char* argv[]);
+  void  runTests      ();
 
 private:
   void  runCalibrationStage();
@@ -98,6 +49,7 @@ private:
 
   void  runTempTimeTest    ();
   void  prepareRefForTests ();
+  void  runTimingTest      ();
   void  runGradTest        ();
   void  runOptimizationTest();
 
@@ -131,7 +83,7 @@ private:
   uqBaseScalarFunctionClass<P_V,P_M>*               m_valLikelihoodFunctionObj;
   uqTgaQoiInfoStruct<P_V,P_M,Q_V,Q_M>*              m_valQoiRoutineInfo;
 
-  uqTgaTestInputStruct                              m_testInput;
+  uqTgaTestOptionsClass                             m_testOptions;
   uqTgaTestVarsStruct                               m_testVars;
 };
 
@@ -157,7 +109,8 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::uqTgaValidationClass(
   m_calQoiRoutineInfo       (NULL),
   m_valLikelihoodInfoVector (0),
   m_valLikelihoodFunctionObj(NULL),
-  m_valQoiRoutineInfo       (NULL)
+  m_valQoiRoutineInfo       (NULL),
+  m_testOptions             (env,prefix)
 {
   if (m_env.rank() == 0) {
     std::cout << "Entering uqTgaValidation::constructor()\n"
@@ -310,7 +263,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
 
   // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
   P_M* calProposalCovMatrix = m_cycle->calIP().postRv().imageSet().vectorSpace().newGaussianMatrix(m_cycle->calIP().priorRv().pdf().domainVarVector(),
-                                                                                                  *m_paramInitialValues);
+                                                                                                   *m_paramInitialValues);
   m_cycle->calIP().solveWithBayesMarkovChain(*m_paramInitialValues,
                                              calProposalCovMatrix);
   delete calProposalCovMatrix;
@@ -502,58 +455,27 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runComparisonStage()
 // ./uqPyramid_gsl -i uqPyramid.inp case1_ 2.6000e+11 2.0000e+05 2.5910e+11 2.0090e+05 10.   0             1000                  1       1.  1.  1000                 1.e-8 0
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runTests(char* argv[])
+uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runTests()
 {
-  m_testInput.outerPrefixName          =       (argv[ 3]     ); // case1_
-  m_testInput.refA                     = strtod(argv[ 4],NULL); // refA
-  m_testInput.refE                     = strtod(argv[ 5],NULL); // refE
-  m_testInput.guessA                   = strtod(argv[ 6],NULL); // guessA
-  m_testInput.guessE                   = strtod(argv[ 7],NULL); // guessE
-  m_testInput.refMaxTimeStep           = strtod(argv[ 8],NULL); // 10.
-  m_testInput.treatRefDataAsContinuous = atoi  (argv[ 9]     ); // 0
-  m_testInput.refNumDiscreteSamples    = strtod(argv[10],NULL); // 1000
-  m_testInput.computeHessian           = atoi  (argv[11]     ); // 1
-  m_testInput.wMaxTimeStep             = strtod(argv[12],NULL); // .11
-  m_testInput.lambdaMaxTimeStep        = strtod(argv[13],NULL); // .55
-  m_testInput.integralsNumIntervals    = atoi  (argv[14]     ); // 1001
-  m_testInput.relativeFDStep           = strtod(argv[15],NULL); // 1.1e-7
-  m_testInput.writeOutput              = atoi  (argv[16]     ); // 0
-
-  if (m_env.rank() == 0) {
-    std::cout << "Entering uqTgaValidation::runTests() with:"
-              << "\n outerPrefixName          = " << m_testInput.outerPrefixName
-              << "\n refA                     = " << m_testInput.refA
-              << "\n refE                     = " << m_testInput.refE
-              << "\n guessA                   = " << m_testInput.guessA
-              << "\n guessE                   = " << m_testInput.guessE
-              << "\n refMaxTimeStep           = " << m_testInput.refMaxTimeStep
-              << "\n treatRefDataAsContinuous = " << m_testInput.treatRefDataAsContinuous
-              << "\n refNumDiscreteSamples    = " << m_testInput.refNumDiscreteSamples
-              << "\n computeHessian           = " << m_testInput.computeHessian
-              << "\n wMaxTimeStep             = " << m_testInput.wMaxTimeStep
-              << "\n lambdaMaxTimeStep        = " << m_testInput.lambdaMaxTimeStep
-              << "\n integralsNumIntervals    = " << m_testInput.integralsNumIntervals
-              << "\n relativeFDStep           = " << m_testInput.relativeFDStep
-              << "\n writeOutput              = " << m_testInput.writeOutput
-              << std::endl;
-  }
+  m_testOptions.scanOptionsValues();
 
   // Read parameters for temperature function (which is linear wrt time)
   // Read discrete measurements (which might be replaced by continuous measurements)
   m_calLikelihoodInfoVector.resize(1,NULL);
   m_calLikelihoodInfoVector[0] = new uqTgaLikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,
                                                                         "tga/scenario_5_K_min.dat",
-                                                                        &m_testInput.wMaxTimeStep,
-                                                                        &m_testInput.lambdaMaxTimeStep,
-                                                                        &m_testInput.integralsNumIntervals);
+                                                                        &m_testOptions.wMaxTimeStep,
+                                                                        &m_testOptions.lambdaMaxTimeStep,
+                                                                        &m_testOptions.integralsNumIntervals);
 
   // Output file
-  m_testVars.ofs = new std::ofstream( (m_testInput.outerPrefixName+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
+  m_testVars.ofs = new std::ofstream( (m_testOptions.outerPrefixName+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
 
   //runTempTimeTest    ();
   prepareRefForTests ();
+  runTimingTest      ();
   runGradTest        ();
-  //runOptimizationTest();
+  runOptimizationTest();
 
   return;
 }
@@ -584,7 +506,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runTempTimeTest()
                         NULL, // referenceW
                         NULL);
 
-  tmpPrefixName = m_testInput.outerPrefixName + "withTempW_";
+  tmpPrefixName = m_testOptions.outerPrefixName + "withTempW_";
   tmpW.printForMatlab(*m_testVars.ofs,tmpPrefixName);
 #endif
 
@@ -596,15 +518,16 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runTempTimeTest()
   }
 
   tmpW.compute(paramValues,
-               0.,                         // maximumTime
-               m_testInput.refMaxTimeStep, // maximum delta time
-               false,                      // computeWAndLambdaGradsAlso
-               NULL,                       // referenceW
-               NULL,                       // weightFunction
-               NULL,                       // misfitValue
-               NULL);                      // diffFunction
+               1.,                           // initialValue
+               0.,                           // maximumTime
+               m_testOptions.refMaxTimeStep, // maximum delta time
+               false,                        // computeWAndLambdaGradsAlso
+               NULL,                         // referenceW
+               NULL,                         // weightFunction
+               NULL,                         // misfitValue
+               NULL);                        // diffFunction
 
-  tmpPrefixName = m_testInput.outerPrefixName + "withTimeW_";
+  tmpPrefixName = m_testOptions.outerPrefixName + "withTimeW_";
   tmpW.printForMatlab(*m_testVars.ofs,tmpPrefixName);
 
   return;
@@ -617,30 +540,75 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::prepareRefForTests()
   //////////////////////////////////////////////////////////////////
   // Compute data for refW
   //////////////////////////////////////////////////////////////////
+  std::string tmpPrefixName;
   P_V paramValues(m_paramSpace->zeroVector());
 
-  paramValues[0] = m_testInput.refA;
-  paramValues[1] = m_testInput.refE;
+  // tmpW1
+  paramValues[0] = m_testOptions.refA1;
+  paramValues[1] = m_testOptions.refE1;
+  uqTgaWClass<P_V,P_M> tmpW1(*m_paramSpace,
+                             *(m_calLikelihoodInfoVector[0]->m_temperatureFunctionObj));
 
-  uqTgaWClass<P_V,P_M> tmpW(*m_paramSpace,
-                            *(m_calLikelihoodInfoVector[0]->m_temperatureFunctionObj));
+  tmpW1.compute(paramValues,
+                m_testOptions.refW1,
+                0.,                           // maximumTime
+                m_testOptions.refMaxTimeStep, // maximum delta time
+                false,                        // computeWAndLambdaGradsAlso
+                NULL,                         // referenceW
+                NULL,                         // weightFunction
+                NULL,                         // misfitValue
+                NULL);                        // diffFunction
 
-  tmpW.compute(paramValues,
-               0.,                         // maximumTime
-               m_testInput.refMaxTimeStep, // maximum delta time
-               false,                      // computeWAndLambdaGradsAlso
-               NULL,                       // referenceW
-               NULL,                       // weightFunction
-               NULL,                       // misfitValue
-               NULL);                      // diffFunction
+  tmpPrefixName = m_testOptions.outerPrefixName + "tmpW1_";
+  tmpW1.printForMatlab(*m_testVars.ofs,tmpPrefixName);
+
+  // tmpW2
+  paramValues[0] = m_testOptions.refA2;
+  paramValues[1] = m_testOptions.refE2;
+  uqTgaWClass<P_V,P_M> tmpW2(*m_paramSpace,
+                             *(m_calLikelihoodInfoVector[0]->m_temperatureFunctionObj));
+
+  tmpW2.compute(paramValues,
+                1.-m_testOptions.refW1,
+                0.,                           // maximumTime
+                m_testOptions.refMaxTimeStep, // maximum delta time
+                false,                        // computeWAndLambdaGradsAlso
+                NULL,                         // referenceW
+                NULL,                         // weightFunction
+                NULL,                         // misfitValue
+                NULL);                        // diffFunction
+
+  tmpPrefixName = m_testOptions.outerPrefixName + "tmpW2_";
+  tmpW2.printForMatlab(*m_testVars.ofs,tmpPrefixName);
+
+  // tmpW1 + tmpW2
+  unsigned int wSize = tmpW1.times().size();
+  unsigned int startingId = 0;
+  std::vector<double> wValues(wSize,0.);
+  for (unsigned i = 0; i < wSize; ++i) {
+    double time = tmpW1.times()[i];
+    double value2 = 0.;
+    if (time <= tmpW2.times()[tmpW2.ws().size()-1]) {
+      tmpW2.interpolate(time,
+                        startingId,
+                        1.,
+                        &value2,
+                        NULL,
+                        NULL);
+    }
+    wValues[i] =tmpW1.ws()[i] + value2;
+  }
+
+  uqSampled1D1DFunctionClass tmpW(tmpW1.times(),
+                                  wValues);
 
   if (m_env.rank() == 0) {
     std::cout << "In uqTgaValidation::prepareRefForTests()"
-              << ": tmpW.times().size() = " << tmpW.times().size()
-              << ", tmpW.times()[0] = "     << tmpW.times()[0]
-              << ", tmpW.values()[0] = "    << tmpW.ws   ()[0]
-              << ", tmpW.times()[max] = "   << tmpW.times()[tmpW.times().size()-1]
-              << ", tmpW.values()[max] = "  << tmpW.ws   ()[tmpW.times().size()-1]
+              << ": tmpW.times().size() = " << wSize
+              << ", tmpW.times()[0] = "     << tmpW1.times()[0]
+              << ", tmpW.values()[0] = "    << wValues      [0]
+              << ", tmpW.times()[max] = "   << tmpW1.times()[wSize-1]
+              << ", tmpW.values()[max] = "  << wValues      [wSize-1]
               << std::endl;
   }
 
@@ -649,36 +617,40 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::prepareRefForTests()
   //////////////////////////////////////////////////////////////////
 
   //std::vector<double> constantTmpWs(tmpW.times().size(),.5);
-  if (m_testInput.treatRefDataAsContinuous) {
-    m_testVars.refW = new uqSampled1D1DFunctionClass(tmpW.times(),
-                                                     tmpW.ws()); // tmpW.ws() or constantTmpWs
+  if (m_testOptions.refTreatDataAsContinuous) {
+    m_testVars.refW = new uqSampled1D1DFunctionClass(tmpW1.times(),
+                                                     wValues); // wValues or constantTmpWs
   }
   else {
-    unsigned int tmpSize = tmpW.times().size();
-    double minTime = tmpW.times()[0];
-    double maxTime = tmpW.times()[tmpSize-1];
-    double refDeltaTime = (maxTime-minTime)/((double) (m_testInput.refNumDiscreteSamples-1));
+    unsigned int tmpSize = tmpW1.times().size();
+    double minTime = tmpW1.times()[0];
+    double maxTime = tmpW1.times()[tmpSize-1];
+    double refDeltaTime = (maxTime-minTime)/((double) (m_testOptions.refNumDiscreteSamples-1));
 
-    std::vector<double> vecOfTimes (m_testInput.refNumDiscreteSamples,0.);
-    std::vector<double> vecOfValues(m_testInput.refNumDiscreteSamples,0.);
-    unsigned int startingId = 0;
-    for (unsigned int j = 0; j < m_testInput.refNumDiscreteSamples; ++j) {
+    std::vector<double> vecOfTimes (m_testOptions.refNumDiscreteSamples,0.);
+    std::vector<double> vecOfValues(m_testOptions.refNumDiscreteSamples,0.);
+    //unsigned int startingId = 0;
+    for (unsigned int j = 0; j < m_testOptions.refNumDiscreteSamples; ++j) {
       if (j == 0) {
         vecOfTimes [j] = minTime;
-        vecOfValues[j] = tmpW.ws()[0];
+        vecOfValues[j] = wValues[0];
       }
-      else if (j == (m_testInput.refNumDiscreteSamples - 1)) {
+      else if (j == (m_testOptions.refNumDiscreteSamples - 1)) {
         vecOfTimes [j] = maxTime;
-        vecOfValues[j] = tmpW.ws()[tmpSize-1];
+        vecOfValues[j] = wValues[tmpSize-1];
       }
       else {
         vecOfTimes [j] = minTime + ((double) j)*refDeltaTime;
+#if 1
+        vecOfValues[j] = tmpW.value(vecOfTimes[j]);
+#else
         tmpW.interpolate(vecOfTimes[j],
                          startingId,
                          1.,
                          &vecOfValues[j],
                          NULL,
                          NULL);
+#endif
       }
     }
 
@@ -702,7 +674,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::prepareRefForTests()
     aux3[j] = vecOfWeights                [refSize-1-j];
   }
 
-  if (m_testInput.treatRefDataAsContinuous) {
+  if (m_testOptions.refTreatDataAsContinuous) {
     m_testVars.continuousWeightFunction = new uqSampled1D1DFunctionClass(m_testVars.refW->domainValues(),
                                                                          vecOfWeights);
     m_testVars.tildeContinuousWeightFunction = new uqSampled1D1DFunctionClass(aux1,
@@ -726,11 +698,73 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::prepareRefForTests()
   // to the (discrete or continuous) one computed and saved in 'refW'.
   m_calLikelihoodInfoVector[0]->changeReferenceW(*m_testVars.refW);
 
-  if (m_testInput.treatRefDataAsContinuous) {
+  if (m_testOptions.refTreatDataAsContinuous) {
     m_calLikelihoodInfoVector[0]->changeWeightFunctions(m_testVars.continuousWeightFunction,m_testVars.tildeContinuousWeightFunction); // or NULL,NULL
   }
   else {
     m_calLikelihoodInfoVector[0]->changeWeightFunctions(m_testVars.deltaWeightFunction,m_testVars.tildeDeltaWeightFunction); // or NULL,NULL
+  }
+
+  return;
+}
+
+template <class P_V,class P_M,class Q_V,class Q_M>
+void
+uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runTimingTest()
+{
+  if (m_env.rank() == 0) {
+    std::cout << "Entering uqTgaValidation::runTimingTest()..."
+              << std::endl;
+  }
+
+  int iRC;
+  struct timeval timeval0;
+  struct timeval timeval1;
+
+  P_V paramValues(m_paramSpace->zeroVector());
+  paramValues[0] = m_testOptions.guessA;
+  paramValues[1] = m_testOptions.guessE;
+
+  // Run without checking, just in order to measure time
+  double guessMisfit = 0.;
+
+  iRC = gettimeofday(&timeval0, NULL);
+  guessMisfit = uqTgaLikelihoodRoutine<P_V,P_M>(paramValues,
+                                                (const void *)&m_calLikelihoodInfoVector,
+                                                NULL,
+                                                NULL,
+                                                NULL);
+  iRC = gettimeofday(&timeval1, NULL);
+  double total_usecs = (timeval1.tv_sec * 1.e+6 + timeval1.tv_usec) - (timeval0.tv_sec * 1.e+6 + timeval0.tv_usec);
+  if (m_env.rank() == 0) {
+    std::cout << "In uqTgaValidation::runTimingTest()"
+              << ": total_usecs (just misfit value) = " << total_usecs
+              << std::endl;
+  }
+
+  // Run without checking, just in order to measure time
+  P_V gradWithLM(m_paramSpace->zeroVector());
+  P_M* hessianWithLM = NULL;
+  if (m_testOptions.computeHessian) hessianWithLM = m_paramSpace->newMatrix();
+
+  iRC = gettimeofday(&timeval0, NULL);
+  guessMisfit = uqTgaLikelihoodRoutine<P_V,P_M>(paramValues,
+                                                (const void *)&m_calLikelihoodInfoVector,
+                                                &gradWithLM,
+                                                hessianWithLM,
+                                                NULL);
+  iRC = gettimeofday(&timeval1, NULL);
+  total_usecs = (timeval1.tv_sec * 1.e+6 + timeval1.tv_usec) - (timeval0.tv_sec * 1.e+6 + timeval0.tv_usec);
+  if (m_env.rank() == 0) {
+    std::cout << "In uqTgaValidation::runTimingTest()"
+              << ": total_usecs (with grad and hessian) = " << total_usecs
+              << std::endl;
+  }
+  delete hessianWithLM;
+
+  if (m_env.rank() == 0) {
+    std::cout << "Leaving uqTgaValidation::runTimingTest()"
+              << std::endl;
   }
 
   return;
@@ -745,89 +779,67 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest()
               << std::endl;
   }
 
-  int iRC;
-  struct timeval timeval0;
-  struct timeval timeval1;
-
   P_V paramValues(m_paramSpace->zeroVector());
-  paramValues[0] = m_testInput.guessA;
-  paramValues[1] = m_testInput.guessE;
+  paramValues[0] = m_testOptions.guessA;
+  paramValues[1] = m_testOptions.guessE;
 
   P_V gradWithLM(m_paramSpace->zeroVector());
   P_M* hessianWithLM = NULL;
-  if (m_testInput.computeHessian) hessianWithLM = m_paramSpace->newMatrix();
+  if (m_testOptions.computeHessian) hessianWithLM = m_paramSpace->newMatrix();
   double guessMisfit = 0.;
 
-#if 1
-  // Run without checking, just in order to measure time
-  iRC = gettimeofday(&timeval0, NULL);
-  guessMisfit = uqTgaLikelihoodRoutine<P_V,P_M>(paramValues,
-                                                (const void *)&m_calLikelihoodInfoVector,
-                                                &gradWithLM,
-                                                hessianWithLM,
-                                                NULL);
-  iRC = gettimeofday(&timeval1, NULL);
-  double total_usecs = (timeval1.tv_sec * 1.e+6 + timeval1.tv_usec) - (timeval0.tv_sec * 1.e+6 + timeval0.tv_usec);
-  if (m_env.rank() == 0) {
-    std::cout << "In uqTgaValidation::runGradTest()"
-              << ": total_usecs = " << total_usecs
-              << std::endl;
-  }
-#else
   // Run with checking against finite differences
-  m_calLikelihoodInfoVector[0]->setCheckingVariables(true,&m_testInput.relativeFDStep); // IMPORTANT
+  m_calLikelihoodInfoVector[0]->setCheckingVariables(true,&m_testOptions.relativeFDStep); // IMPORTANT
   guessMisfit = uqTgaLikelihoodRoutine<P_V,P_M>(paramValues,
                                                 (const void *)&m_calLikelihoodInfoVector,
                                                 &gradWithLM,
                                                 hessianWithLM,
                                                 NULL);
-  m_calLikelihoodInfoVector[0]->setCheckingVariables(false,&m_testInput.relativeFDStep); // IMPORTANT
+  m_calLikelihoodInfoVector[0]->setCheckingVariables(false,&m_testOptions.relativeFDStep); // IMPORTANT
+  delete hessianWithLM;
   if (m_env.rank() == 0) {
     std::cout << "In uqTgaValidation::runGradTest()"
               << ": guessMisfit = " << guessMisfit
               << std::endl;
   }
 
-  if (m_testInput.writeOutput) {
+  if (m_testOptions.writeOutput) {
     std::string tmpPrefixName;
 
-    *m_testVars.ofs << "\n" << m_testInput.outerPrefixName << "hessianIsAvailable = " << m_testInput.computeHessian << ";" << std::endl;
-    *m_testVars.ofs << "\n" << m_testInput.outerPrefixName << "refA = "               << m_testInput.refA           << ";" << std::endl;
-    *m_testVars.ofs << "\n" << m_testInput.outerPrefixName << "refE = "               << m_testInput.refE           << ";" << std::endl;
-    *m_testVars.ofs << "\n" << m_testInput.outerPrefixName << "guessA = "             << m_testInput.guessA         << ";" << std::endl;
-    *m_testVars.ofs << "\n" << m_testInput.outerPrefixName << "guessE = "             << m_testInput.guessE         << ";" << std::endl;
+    *m_testVars.ofs << "\n" << m_testOptions.outerPrefixName << "hessianIsAvailable = " << m_testOptions.computeHessian << ";" << std::endl;
+    *m_testVars.ofs << "\n" << m_testOptions.outerPrefixName << "refA1 = "              << m_testOptions.refA1          << ";" << std::endl;
+    *m_testVars.ofs << "\n" << m_testOptions.outerPrefixName << "refE1 = "              << m_testOptions.refE1          << ";" << std::endl;
+    *m_testVars.ofs << "\n" << m_testOptions.outerPrefixName << "guessA = "             << m_testOptions.guessA         << ";" << std::endl;
+    *m_testVars.ofs << "\n" << m_testOptions.outerPrefixName << "guessE = "             << m_testOptions.guessE         << ";" << std::endl;
 
-    tmpPrefixName = m_testInput.outerPrefixName + "refW_";
+    tmpPrefixName = m_testOptions.outerPrefixName + "refW_";
     m_calLikelihoodInfoVector[0]->m_refWPtrForPlot->printForMatlab(*m_testVars.ofs,tmpPrefixName);
 
-    tmpPrefixName = m_testInput.outerPrefixName + "w_";
+    tmpPrefixName = m_testOptions.outerPrefixName + "w_";
     m_calLikelihoodInfoVector[0]->m_wPtrForPlot->printForMatlab(*m_testVars.ofs,tmpPrefixName);
 
-    if (m_testInput.computeHessian) {
-      tmpPrefixName = m_testInput.outerPrefixName + "wA_";
+    if (m_testOptions.computeHessian) {
+      tmpPrefixName = m_testOptions.outerPrefixName + "wA_";
       m_calLikelihoodInfoVector[0]->m_wAPtrForPlot->printForMatlab(*m_testVars.ofs,tmpPrefixName);
 
-      tmpPrefixName = m_testInput.outerPrefixName + "wE_";
+      tmpPrefixName = m_testOptions.outerPrefixName + "wE_";
       m_calLikelihoodInfoVector[0]->m_wEPtrForPlot->printForMatlab(*m_testVars.ofs,tmpPrefixName);
     }
 
-    tmpPrefixName = m_testInput.outerPrefixName + "diff_";
+    tmpPrefixName = m_testOptions.outerPrefixName + "diff_";
     m_calLikelihoodInfoVector[0]->m_diffPtrForPlot->printForMatlab(*m_testVars.ofs,tmpPrefixName);
 
-    tmpPrefixName = m_testInput.outerPrefixName + "lambda_";
+    tmpPrefixName = m_testOptions.outerPrefixName + "lambda_";
     m_calLikelihoodInfoVector[0]->m_lambdaPtrForPlot->printForMatlab(*m_testVars.ofs,tmpPrefixName);
 
-    if (m_testInput.computeHessian) {
-      tmpPrefixName = m_testInput.outerPrefixName + "lambdaA_";
+    if (m_testOptions.computeHessian) {
+      tmpPrefixName = m_testOptions.outerPrefixName + "lambdaA_";
       m_calLikelihoodInfoVector[0]->m_lambdaAPtrForPlot->printForMatlab(*m_testVars.ofs,tmpPrefixName);
 
-      tmpPrefixName = m_testInput.outerPrefixName + "lambdaE_";
+      tmpPrefixName = m_testOptions.outerPrefixName + "lambdaE_";
       m_calLikelihoodInfoVector[0]->m_lambdaEPtrForPlot->printForMatlab(*m_testVars.ofs,tmpPrefixName);
     }
   }
-#endif
-
-  delete hessianWithLM;
 
   if (m_env.rank() == 0) {
     std::cout << "Leaving uqTgaValidation::runGradTest()"
@@ -847,8 +859,8 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runOptimizationTest()
   }
 
   P_V paramValues(m_paramSpace->zeroVector());
-  paramValues[0] = m_testInput.guessA;
-  paramValues[1] = m_testInput.guessE;
+  paramValues[0] = m_testOptions.guessA;
+  paramValues[1] = m_testOptions.guessE;
 
   double objFunctionValue = 0.;
   P_V    objFunctionGradient(m_paramSpace->zeroVector());

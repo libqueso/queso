@@ -379,6 +379,7 @@ uqTgaLikelihoodRoutine(
                           &misfitValue);
 #else
     wObj.compute(paramValues,
+                 1.,
                  0.,
                  info.m_wMaxTimeStep,
                  computeWAndLambdaGradsAlso,
@@ -582,6 +583,7 @@ uqTgaLikelihoodCheckingRoutine(
     tmpParamValues[1] = guessE;
     double valueAm = 0.;
     tmpW.compute(tmpParamValues,
+                 1.,
                  0.,
                  info.m_wMaxTimeStep,
                  false, // computeWAndLambdaGradsAlso
@@ -599,6 +601,7 @@ uqTgaLikelihoodCheckingRoutine(
     tmpParamValues[1] = guessE;
     double valueAp = 0.;
     tmpW.compute(tmpParamValues,
+                 1.,
                  0.,
                  info.m_wMaxTimeStep,
                  false, // computeWAndLambdaGradsAlso
@@ -616,6 +619,7 @@ uqTgaLikelihoodCheckingRoutine(
     tmpParamValues[1] = guessE-deltaE;
     double valueEm = 0.;
     tmpW.compute(tmpParamValues,
+                 1.,
                  0.,
                  info.m_wMaxTimeStep,
                  false, // computeWAndLambdaGradsAlso
@@ -633,6 +637,7 @@ uqTgaLikelihoodCheckingRoutine(
     tmpParamValues[1] = guessE+deltaE;
     double valueEp = 0.;
     tmpW.compute(tmpParamValues,
+                 1.,
                  0.,
                  info.m_wMaxTimeStep,
                  false, // computeWAndLambdaGradsAlso

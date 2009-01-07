@@ -87,6 +87,7 @@ public:
  ~uqTgaWClass();
 
         void                    compute(const P_V&                     params,
+                                        double                         initialValue,
                                         double                         reqMaxTime,
                                         double                         maxTimeStep,
                                         bool                           computeGradAlso,
@@ -177,6 +178,7 @@ template<class P_V, class P_M>
 void
 uqTgaWClass<P_V,P_M>::compute(
   const P_V&                     params,          // input
+  double                         initialValue,    // input
   double                         reqMaxTime,      // input
   double                         maxTimeStep,     // input
   bool                           computeGradAlso, // input
@@ -259,7 +261,7 @@ uqTgaWClass<P_V,P_M>::compute(
   double currentTemp = m_temperatureFunctionObj.value(currentTime);
 
   double currentW[numWComponents];
-  currentW[0]=1.;
+  currentW[0]=initialValue;
   if (computeGradAlso) {
     currentW[1]=0.;
     currentW[2]=0.;
@@ -616,7 +618,7 @@ uqTgaWClass<P_V,P_M>::interpolate(
   bool*         timeWasMatchedExactly) const
 {
   unsigned int tmpSize = m_times.size(); // Yes, 'm_grads'
-  //std::cout << "In uqTgaWClass<P_V,P_M>::grad()"
+  //std::cout << "In uqTgaWClass<P_V,P_M>::interpolate()"
   //          << ": time = "           << time
   //          << ", m_times.size() = " << tmpSize
   //          << ", m_times[0] = "     << m_times[0]
@@ -625,27 +627,27 @@ uqTgaWClass<P_V,P_M>::interpolate(
 
   UQ_FATAL_TEST_MACRO(tmpSize == 0,
                       m_env.rank(),
-                      "uqTgaW<P_V,P_M>::grad()",
+                      "uqTgaW<P_V,P_M>::interpolate()",
                       "m_times.size() = 0");
 
   UQ_FATAL_TEST_MACRO(suggestedTimeId >= tmpSize,
                       m_env.rank(),
-                      "uqTgaW<P_V,P_M>::grad()",
+                      "uqTgaW<P_V,P_M>::interpolate()",
                       "suggestedTimeId is too big");
 
   UQ_FATAL_TEST_MACRO(time < m_times[0],
                       m_env.rank(),
-                      "uqTgaW<P_V,P_M>::grad()",
+                      "uqTgaW<P_V,P_M>::interpolate()",
                       "time < m_times[0]");
 
   UQ_FATAL_TEST_MACRO(m_times[tmpSize-1] < time,
                       m_env.rank(),
-                      "uqTgaW<P_V,P_M>::grad()",
+                      "uqTgaW<P_V,P_M>::interpolate()",
                       "m_times[max] < time");
 
   UQ_FATAL_TEST_MACRO(wGrad && (m_grads[0] == NULL),
                       m_env.rank(),
-                      "uqTgaW<P_V,P_M>::grad()",
+                      "uqTgaW<P_V,P_M>::interpolate()",
                       "m_grads[0] == NULL");
 
   unsigned int i = 0;
