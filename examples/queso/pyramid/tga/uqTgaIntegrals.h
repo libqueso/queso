@@ -35,9 +35,14 @@ uqTgaIntegrals(
   unsigned int                     reqNumIntervals,
   const uqTgaWClass     <P_V,P_M>& wObj,
   const uqTgaLambdaClass<P_V,P_M>& lambdaObj,
+  const uqBase1D1DFunctionClass*   weightFunction,
   P_V*                             LagrangianGrad,
   P_M*                             LagrangianHessian)
 {
+  // Set all possible return values to zero
+  if (LagrangianGrad   ) *LagrangianGrad    *= 0.;
+  if (LagrangianHessian) *LagrangianHessian *= 0.;
+
   unsigned int wSize = wObj.times().size();
   unsigned int lambdaSize = lambdaObj.times().size();
 
@@ -81,26 +86,6 @@ uqTgaIntegrals(
   double A = paramValues[0];
   double E = paramValues[1];
 
-  unsigned int numIntervals = reqNumIntervals;
-  if (reqNumIntervals == 0) numIntervals = 1000;
-  double timeIntervalSize = (upperIntegralTime-lowerIntegralTime)/((double)numIntervals);
-  double firstTime = lowerIntegralTime+.5*timeIntervalSize;
-
-  if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
-    std::cout << "In uqTgaIntegrals()"
-              << ": beginning integration loop on time interval "
-              << "["          << lowerIntegralTime
-              << ", "         << upperIntegralTime
-              << "], with = " << numIntervals
-              << " subintervals"
-              << "; wObj.times().size() = "      << wObj.times().size()
-              << ", lambdaObj.times().size() = " << lambdaObj.times().size()
-              << std::endl;
-  }
-
-  if (LagrangianGrad   ) *LagrangianGrad    *= 0.;
-  if (LagrangianHessian) *LagrangianHessian *= 0.;
-
   unsigned int currentWIntervalId      = 0;
   unsigned int currentLambdaIntervalId = 0;
 
@@ -117,40 +102,151 @@ uqTgaIntegrals(
     lambdaGradPtr = NULL;
   }
 
-  for (unsigned int i = 0; i < numIntervals; ++i) {
-    double time = firstTime + ((double) i)*timeIntervalSize;
-    double temp = temperatureFunctionObj.value(time);
-
-    wObj.interpolate(time,
-                     currentWIntervalId,
-                     &w,
-                     wGradPtr,
-                     NULL);
-
-    lambdaObj.interpolate(time,
-                          currentLambdaIntervalId,
-                          &lambda,
-                          lambdaGradPtr,
-                          NULL);
-
-    double expTerm = exp(-E/(R_CONSTANT*temp));
-    if (LagrangianGrad) {
-      (*LagrangianGrad)[0] +=                          lambda * w * expTerm;
-      (*LagrangianGrad)[1] += -(A/(R_CONSTANT*temp)) * lambda * w * expTerm;
-    }
-    if (LagrangianHessian) {
-      double wA      = (*wGradPtr     )[0];
-      double wE      = (*wGradPtr     )[1];
-      double lambdaA = (*lambdaGradPtr)[0];
-      double lambdaE = (*lambdaGradPtr)[1];
-      (*LagrangianHessian)(0,0) += (lambdaA*w + lambda*wA) * expTerm;
-      (*LagrangianHessian)(0,1) += ( -lambda*w/(R_CONSTANT*temp) + lambdaE*w + lambda*wE ) * expTerm; // (d/dE)(dF/dA)
-      (*LagrangianHessian)(1,0) += ( -lambda*w/(R_CONSTANT*temp) - A*(lambdaA*w + lambda*wA)/(R_CONSTANT*temp) ) * expTerm; // (d/dA)(dF/dE)
-      (*LagrangianHessian)(1,1) += ( A*lambda*w/(R_CONSTANT*R_CONSTANT*temp*temp) - A*(lambdaE*w + lambda*wE)/(R_CONSTANT*temp) ) * expTerm;
-    }
+  const uqDeltaSeq1D1DFunctionClass* deltaSeqFunction = NULL;
+  if (weightFunction) {
+    deltaSeqFunction = dynamic_cast< const uqDeltaSeq1D1DFunctionClass* >(weightFunction);
   }
-  if (LagrangianGrad   ) (*LagrangianGrad   ) *= timeIntervalSize;
-  if (LagrangianHessian) (*LagrangianHessian) *= timeIntervalSize;
+
+  unsigned int numIntervals = reqNumIntervals;
+  if (reqNumIntervals == 0) numIntervals = 1000;
+
+  if (deltaSeqFunction == NULL) {
+    double timeIntervalSize = (upperIntegralTime-lowerIntegralTime)/((double)numIntervals);
+    double firstTime = lowerIntegralTime+.5*timeIntervalSize;
+ 
+    if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
+      std::cout << "In uqTgaIntegrals()"
+                << ", continuous weight case"
+                << ": beginning integration loop on time interval "
+                << "["          << lowerIntegralTime
+                << ", "         << upperIntegralTime
+                << "], with = " << numIntervals
+                << " subintervals"
+                << "; wObj.times().size() = "      << wObj.times().size()
+                << ", lambdaObj.times().size() = " << lambdaObj.times().size()
+                << std::endl;
+    }
+
+    for (unsigned int i = 0; i < numIntervals; ++i) {
+      double time = firstTime + ((double) i)*timeIntervalSize;
+      double temp = temperatureFunctionObj.value(time);
+
+      wObj.interpolate(time,
+                       currentWIntervalId,
+                       1.,
+                       &w,
+                       wGradPtr,
+                       NULL);
+
+      lambdaObj.interpolate(time,
+                            currentLambdaIntervalId,
+                            &lambda,
+                            lambdaGradPtr,
+                            NULL);
+
+      double expTerm = exp(-E/(R_CONSTANT*temp));
+      if (LagrangianGrad) {
+        (*LagrangianGrad)[0] +=                          lambda * w * expTerm;
+        (*LagrangianGrad)[1] += -(A/(R_CONSTANT*temp)) * lambda * w * expTerm;
+      }
+      if (LagrangianHessian) {
+        double wA      = (*wGradPtr     )[0];
+        double wE      = (*wGradPtr     )[1];
+        double lambdaA = (*lambdaGradPtr)[0];
+        double lambdaE = (*lambdaGradPtr)[1];
+        (*LagrangianHessian)(0,0) += (lambdaA*w + lambda*wA) * expTerm;
+        (*LagrangianHessian)(0,1) += ( -lambda*w/(R_CONSTANT*temp) + lambdaE*w + lambda*wE ) * expTerm; // (d/dE)(dF/dA)
+        (*LagrangianHessian)(1,0) += ( -lambda*w/(R_CONSTANT*temp) - A*(lambdaA*w + lambda*wA)/(R_CONSTANT*temp) ) * expTerm; // (d/dA)(dF/dE)
+        (*LagrangianHessian)(1,1) += ( A*lambda*w/(R_CONSTANT*R_CONSTANT*temp*temp) - A*(lambdaE*w + lambda*wE)/(R_CONSTANT*temp) ) * expTerm;
+      }
+    }
+    if (LagrangianGrad   ) (*LagrangianGrad   ) *= timeIntervalSize;
+    if (LagrangianHessian) (*LagrangianHessian) *= timeIntervalSize;
+  }
+  else {
+    // Determine number of milestone points (= number of milestone intervals + 1)
+    unsigned int numDeltaTimes = deltaSeqFunction->domainValues().size();
+    const std::vector<double>& deltaTimes = deltaSeqFunction->domainValues();
+
+    unsigned int jMin = 0;
+    unsigned int jMax = 0;
+    for (jMin = 0; jMin < numDeltaTimes; ++jMin) {
+      if (lowerIntegralTime < deltaTimes[jMin]) break;
+    }
+    for (jMax = jMin; jMax < numDeltaTimes; ++jMax) {
+      if (upperIntegralTime <= deltaTimes[jMax]) break;
+    }
+
+    unsigned int numMilestones = jMax-jMin+2;
+    std::vector<double> milestones(numMilestones,0.);
+    milestones[0              ] = lowerIntegralTime;
+    milestones[numMilestones-1] = upperIntegralTime;
+    for (unsigned int j = 1; j < (numMilestones-1); ++j) {
+      milestones[j] = deltaTimes[jMin+j-1];
+    }
+
+    // Determine the number of subintervals per milestone interval: needs to be at least 10
+    double aux = ((double) numIntervals)/((double) (numMilestones-1));
+    aux = std::max(aux,9.5);
+    numIntervals = (unsigned int) (aux+0.5);
+
+    if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
+      std::cout << "In uqTgaIntegrals()"
+                << ", delta seq weight case"
+                << ": beginning integration loop on time interval "
+                << "["          << lowerIntegralTime
+                << ", "         << upperIntegralTime
+                << "], with = " << numIntervals
+                << " subintervals for each of the " << numMilestones-1
+                << " milestone intervals"
+                << "; wObj.times().size() = "      << wObj.times().size()
+                << ", lambdaObj.times().size() = " << lambdaObj.times().size()
+                << ", deltaTimes[0] = " << deltaTimes[0]
+                << ", deltaTimes[max] = " << deltaTimes[numDeltaTimes-1]
+                << ", jMin = " << jMin
+                << ", jMax = " << jMax
+                << std::endl;
+    }
+
+    for (unsigned int j = 1; j < numMilestones; ++j) { // Yes, from '1'
+      double timeIntervalSize = (milestones[j] - milestones[j-1])/((double)numIntervals);
+      double firstTime = milestones[j-1]+.5*timeIntervalSize;
+
+      for (unsigned int i = 0; i < numIntervals; ++i) {
+        double time = firstTime + ((double) i)*timeIntervalSize;
+        double temp = temperatureFunctionObj.value(time);
+
+        wObj.interpolate(time,
+                         currentWIntervalId,
+                         1.,
+                         &w,
+                         wGradPtr,
+                         NULL);
+
+        lambdaObj.interpolate(time,
+                              currentLambdaIntervalId,
+                              &lambda,
+                              lambdaGradPtr,
+                              NULL);
+
+        double expTerm = exp(-E/(R_CONSTANT*temp));
+        if (LagrangianGrad) {
+          (*LagrangianGrad)[0] +=                          lambda * w * expTerm * timeIntervalSize;
+          (*LagrangianGrad)[1] += -(A/(R_CONSTANT*temp)) * lambda * w * expTerm * timeIntervalSize;
+        }
+        if (LagrangianHessian) {
+          double wA      = (*wGradPtr     )[0];
+          double wE      = (*wGradPtr     )[1];
+          double lambdaA = (*lambdaGradPtr)[0];
+          double lambdaE = (*lambdaGradPtr)[1];
+          (*LagrangianHessian)(0,0) += (lambdaA*w + lambda*wA) * expTerm * timeIntervalSize;
+          (*LagrangianHessian)(0,1) += ( -lambda*w/(R_CONSTANT*temp) + lambdaE*w + lambda*wE ) * expTerm * timeIntervalSize; // (d/dE)(dF/dA)
+          (*LagrangianHessian)(1,0) += ( -lambda*w/(R_CONSTANT*temp) - A*(lambdaA*w + lambda*wA)/(R_CONSTANT*temp) ) * expTerm * timeIntervalSize; // (d/dA)(dF/dE)
+          (*LagrangianHessian)(1,1) += ( A*lambda*w/(R_CONSTANT*R_CONSTANT*temp*temp) - A*(lambdaE*w + lambda*wE)/(R_CONSTANT*temp) ) * expTerm * timeIntervalSize;
+        }
+      } // i
+    } // j
+  }
 
   if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
     std::cout << "In uqTgaIntegrals()"

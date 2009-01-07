@@ -38,6 +38,7 @@ uqTgaLambdaInfoStruct
   const uqBase1D1DFunctionClass* diffFunction;
   const uqBase1D1DFunctionClass* tildeWeightFunction;
   const uqTgaWClass<P_V,P_M>*    wObj;
+  unsigned int                   suggestedWTimeId;
 };
 
 template<class P_V,class P_M>
@@ -50,41 +51,49 @@ int uqTgaLambdaTildeDotWrtTimeRoutine(double tildeTime, const double lambdaTilde
   double maxTildeTime   = info.diffFunction->maxDomainValue(); // FIX ME
   if (info.tildeWeightFunction) maxTildeTime = info.tildeWeightFunction->maxDomainValue(); // FIX ME
 
-  double equivalentTime = maxTildeTime - tildeTime;
-  double temp           = info.temperatureFunctionObj->value(equivalentTime);
-  double expTerm        = exp(-E/(R_CONSTANT*temp));
-  double tildeDiff      = info.diffFunction->value(equivalentTime);
-
   const uqDeltaSeq1D1DFunctionClass* tildeDeltaSeqFunction = NULL;
   if (info.tildeWeightFunction) {
     tildeDeltaSeqFunction = dynamic_cast< const uqDeltaSeq1D1DFunctionClass* >(info.tildeWeightFunction);
   }
 
+  double equivalentTime = maxTildeTime - tildeTime;
+  double temp           = info.temperatureFunctionObj->value(equivalentTime);
+  double expTerm        = exp(-E/(R_CONSTANT*temp));
+  double tildeDiff      = 0.;
+  if (tildeDeltaSeqFunction == NULL) tildeDiff = info.diffFunction->value(equivalentTime); // Might be slow (non delta seq case)
+
   double weightValue = 1.;
   if (info.tildeWeightFunction) {
-    if (tildeDeltaSeqFunction != NULL) weightValue = 0.;
-    else                               weightValue = info.tildeWeightFunction->value(tildeTime);
+    if (tildeDeltaSeqFunction == NULL) weightValue = info.tildeWeightFunction->value(tildeTime); // Might be slow (non delta seq case)
+    else                               weightValue = 0.;
   }
 
   if ((info.wObj->env().verbosity() >= 99) && (info.wObj->env().rank() == 0)) {
     std::cout << "In uqTgaLambdaTildeDotWrtTimeRoutine()"
-              << ": tildeTime = "       << tildeTime
-              << ", equivalentTime = "  << equivalentTime
-              << ", tildeDiff = "       << tildeDiff
-              << ", weightValue = "     << weightValue
+              << ": tildeTime = "      << tildeTime
+              << ", equivalentTime = " << equivalentTime
+              << ", tildeDiff = "      << tildeDiff
+              << ", weightValue = "    << weightValue
               << std::endl;
   }
 
   if (info.computeGradAlso) {
-    P_V wGrad(*(info.wObj->grads()[0]));
-    unsigned int startingTimeId = 0;
-    info.wObj->interpolate(equivalentTime,
-                           startingTimeId,
-                           NULL,
-                           &wGrad,
-                           NULL);
-    double wA = wGrad[0];
-    double wE = wGrad[1];
+    double wA = 0.;
+    double wE = 0.;
+
+    if (tildeDeltaSeqFunction == NULL) {
+      P_V wGrad(*(info.wObj->grads()[0]));
+      // Always reset to this value because 'gsl' algorithm might backward in tildeTime
+      unsigned int suggestedTimeId = info.suggestedWTimeId; // For performance on w->interpolate()
+      info.wObj->interpolate(equivalentTime,
+                             suggestedTimeId,
+                             -1., // For performance on w->interpolate()
+                             NULL,
+                             &wGrad,
+                             NULL);
+      wA = wGrad[0];
+      wE = wGrad[1];
+    }
 
     f[0] =  -A*lambdaTilde[0]                                      *expTerm - 2*tildeDiff*weightValue;
     f[1] = (-A*lambdaTilde[1] -   lambdaTilde[0]                  )*expTerm - 2*wA*weightValue;
@@ -211,7 +220,8 @@ uqTgaLambdaClass<P_V,P_M>::compute(
                                                          computeGradAlso,
                                                          &diffFunction,
                                                          tildeWeightFunction,
-                                                         &wObj};
+                                                         &wObj,
+                                                         wObj.times().size()-1}; // For performance on w->interpolate()
 
   unsigned int numLambdaComponents = 1;
   if (computeGradAlso) numLambdaComponents = 3;
@@ -227,7 +237,7 @@ uqTgaLambdaClass<P_V,P_M>::compute(
   if (tildeWeightFunction) maxTildeTime = tildeWeightFunction->maxDomainValue(); // FIX ME
   double currentTildeTime = 0.;
   double equivalentTime   = maxTildeTime - currentTildeTime;
-  double tildeTimeStep    = 5.;
+  double tildeTimeStep    = .1;
   if (maxTimeStep > 0) tildeTimeStep = maxTimeStep;
 
   double currentLambdaTilde[numLambdaComponents];
@@ -246,6 +256,7 @@ uqTgaLambdaClass<P_V,P_M>::compute(
     (*(tildeGrads[loopId]))[1] = currentLambdaTilde[2];
   }
 
+  unsigned int suggestedWTimeId = wObj.times().size()-1; // For performance on w->interpolate()
   while (currentTildeTime < maxTildeTime) {
     int status = 0;
     double nextTildeTime = maxTildeTime;
@@ -253,13 +264,13 @@ uqTgaLambdaClass<P_V,P_M>::compute(
     if (tildeDeltaSeqFunction != NULL) {
       nextTildeTime = std::min(nextTildeTime,tildeDeltaSeqFunction->domainValues()[tildeDeltaWeightId]);
       if (currentTildeTime == tildeDeltaSeqFunction->domainValues()[tildeDeltaWeightId-1]) { // Yes, '[...-1]'
-        currentLambdaTilde[0] -= 2.*diffFunction.value(equivalentTime);
+        currentLambdaTilde[0] -= 2.*diffFunction.value(equivalentTime); // Might be slow (delta seq case)
         tildeLambdas[loopId] = currentLambdaTilde[0];
         if (computeGradAlso) {
           P_V wGrad(*(wObj.grads()[0]));
-          unsigned int startingTimeId = 0;
           wObj.interpolate(equivalentTime,
-                           startingTimeId,
+                           suggestedWTimeId,
+                           -1., // For performance on w->interpolate()
                            NULL,
                            &wGrad,
                            NULL);
@@ -271,6 +282,7 @@ uqTgaLambdaClass<P_V,P_M>::compute(
       }
     }
 
+    lambdaDotWrtTimeInfo.suggestedWTimeId = suggestedWTimeId; // For performance on w->interpolate()
     if ((m_env.verbosity() >= 99) && (m_env.rank() == 0)) {
       std::cout << "In uqTgaLambdaClass::compute(), before"
                 << ": loopId = "                << loopId

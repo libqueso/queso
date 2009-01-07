@@ -42,10 +42,10 @@ int main(int argc, char* argv[])
                        uqGslVectorClass, // type for qoi vectors
                        uqGslMatrixClass  // type for qoi matrices
                       > tgaValidation(*env,"tga_");
-#if 0
+#if 1
   tgaValidation.run();
 #else
-  tgaValidation.runGradTest(argv);
+  tgaValidation.runTests(argv);
 #endif
 
 #if 0

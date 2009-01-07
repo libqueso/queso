@@ -100,8 +100,8 @@ uqTgaLikelihoodInfoStruct<P_V,P_M>::uqTgaLikelihoodInfoStruct(
   m_referenceW                            (NULL),
   m_weightFunction                        (NULL),
   m_tildeWeightFunction                   (NULL),
-  m_wMaxTimeStep                          (0.),
-  m_lambdaMaxTimeStep                     (0.),
+  m_wMaxTimeStep                          (0.), // IMPORTANT
+  m_lambdaMaxTimeStep                     (0.), // IMPORTANT
   m_integralsNumIntervals                 (1000),
   m_wObj                                  (NULL),
   m_diffFunction                          (NULL),
@@ -117,7 +117,7 @@ uqTgaLikelihoodInfoStruct<P_V,P_M>::uqTgaLikelihoodInfoStruct(
   m_lambdaAPtrForPlot                     (NULL),
   m_lambdaEPtrForPlot                     (NULL)
 {
-  if (paramSpace.env().rank() == 0) {
+  if ((paramSpace.env().verbosity() >= 30) && (paramSpace.env().rank() == 0)) {
     std::cout << "Entering uqTgaLikelihoodInfoStruct<P_V,P_M>::constructor()"
               << inpName << "'\n"
               << std::endl;
@@ -164,7 +164,7 @@ uqTgaLikelihoodInfoStruct<P_V,P_M>::uqTgaLikelihoodInfoStruct(
     measuredTemps[whileSize] = tmpTemp;
     measuredWs   [whileSize] = tmpW;
     measurementVs[whileSize] = tmpV;
-    vecOfDeltas  [whileSize] = 1.;
+    vecOfDeltas  [whileSize] = INFINITY;
     vecOfWeights [whileSize] = 1./tmpV;
     whileSize++;
   }
@@ -190,7 +190,7 @@ uqTgaLikelihoodInfoStruct<P_V,P_M>::uqTgaLikelihoodInfoStruct(
                                                      vecOfDeltas,
                                                      vecOfWeights);
 
-  if (paramSpace.env().rank() == 0) {
+  if ((paramSpace.env().verbosity() >= 30) && (paramSpace.env().rank() == 0)) {
     std::cout << "In uqTgaLikelihoodInfoStruct<P_V,P_M>::constructor()"
               << ": m_weightFunction.times().size() = "     << measuredTimes.size()
               << ", m_weightFunction.times()[0] = "         << measuredTimes[0]
@@ -216,7 +216,7 @@ uqTgaLikelihoodInfoStruct<P_V,P_M>::uqTgaLikelihoodInfoStruct(
                                                           aux3);
 #endif
 
-  if (paramSpace.env().rank() == 0) {
+  if ((paramSpace.env().verbosity() >= 30) && (paramSpace.env().rank() == 0)) {
     std::cout << "Leaving uqTgaLikelihoodInfoStruct<P_V,P_M>::constructor()"
               << inpName << "'\n"
               << std::endl;
@@ -313,6 +313,12 @@ uqTgaLikelihoodRoutine(
   P_M*        hessianMatrix,
   P_V*        hessianEffect)
 {
+  // Set all possible return values to zero
+  double resultValue = 0.;
+  if (gradVector   ) *gradVector    *= 0.;
+  if (hessianMatrix) *hessianMatrix *= 0.;
+  if (hessianEffect) *hessianEffect *= 0.;
+
   if ((paramValues.env().verbosity() >= 30) && (paramValues.env().rank() == 0)) {
     std::cout << "Entering uqTgaLikelihoodRoutine()..." << std::endl;
   }
@@ -324,6 +330,7 @@ uqTgaLikelihoodRoutine(
               << std::endl;
   }
 
+  // Decide what to compute, based on what is being requested
   bool computeLambda = false;
   bool computeWAndLambdaGradsAlso = false;
 
@@ -333,10 +340,8 @@ uqTgaLikelihoodRoutine(
     computeWAndLambdaGradsAlso = true;
   }
 
-  double resultValue = 0.;
-  const std::vector<uqTgaLikelihoodInfoStruct<P_V,P_M> *>& vecInfo = *((const std::vector<uqTgaLikelihoodInfoStruct<P_V,P_M> *> *) functionDataPtr);
-
   // Loop on scenarios
+  const std::vector<uqTgaLikelihoodInfoStruct<P_V,P_M> *>& vecInfo = *((const std::vector<uqTgaLikelihoodInfoStruct<P_V,P_M> *> *) functionDataPtr);
   for (unsigned int i = 0; i < vecInfo.size(); ++i) {
     uqTgaLikelihoodInfoStruct<P_V,P_M>& info = *(vecInfo[i]);
     uqTgaWClass     <P_V,P_M>&  wObj         = *(info.m_wObj);
@@ -422,6 +427,7 @@ uqTgaLikelihoodRoutine(
                               info.m_integralsNumIntervals,
                               wObj,
                               lambdaObj,
+                              info.m_weightFunction,
                               tmpVector,
                               tmpMatrix);
       if (hessianEffect) *tmpEffect = ((*tmpMatrix) * paramValues);
@@ -447,7 +453,8 @@ uqTgaLikelihoodRoutine(
     if (tmpVector) delete tmpVector;
     if (tmpMatrix) delete tmpMatrix;
     if (tmpEffect) delete tmpEffect;
-  }
+  } // end loop of scenarios
+
   if ((paramValues.env().verbosity() >= 30) && (paramValues.env().rank() == 0)) {
     std::cout << "Leaving uqTgaLikelihoodRoutine()..." << std::endl;
   }
@@ -492,7 +499,7 @@ uqTgaLikelihoodCheckingRoutine(
     unsigned int refTmpSize = wObj.times().size();
     std::vector<double> refTmpVec(refTmpSize,0.);
     for (unsigned int j = 0; j < refTmpSize; ++j) {
-      refTmpVec[j] = info.m_referenceW->value(wObj.times()[j]);
+      refTmpVec[j] = info.m_referenceW->value(wObj.times()[j]); // Might be slow
     }
     info.m_refWPtrForPlot->set(wObj.times(),
                                refTmpVec);

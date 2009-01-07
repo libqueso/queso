@@ -102,7 +102,8 @@ public:
 #endif
 
         void                    interpolate(double        time,
-                                            unsigned int& startingTimeId,
+                                            unsigned int& suggestedTimeId,
+                                            double        directionForIdSearch,
                                             double*       wValue,
                                             P_V*          wGrad,
                                             bool*         timeWasMatchedExactly) const;
@@ -184,6 +185,10 @@ uqTgaWClass<P_V,P_M>::compute(
   double*                        misfitValue,     // output 
   uqSampled1D1DFunctionClass*    diffFunction)    // output
 {
+  // Set all possible return values to zero
+  if (misfitValue) *misfitValue = 0.;
+  // 'diffFunction' is indirectly initialized to zero because 'm_diffs' is set to zero below
+
   UQ_FATAL_TEST_MACRO((misfitValue != NULL) && (referenceW == NULL),
                       m_env.rank(),
                       "uqTgaWClass<P_V,P_M>::compute()",
@@ -268,7 +273,7 @@ uqTgaWClass<P_V,P_M>::compute(
     (*(m_grads[loopId]))[0] = currentW[1];
     (*(m_grads[loopId]))[1] = currentW[2];
   }
-  if (diffFunction) m_diffs[loopId] = currentW[0] - referenceW->value(currentTime);
+  if (diffFunction) m_diffs[loopId] = currentW[0] - referenceW->value(currentTime); // Might be slow (any case)
 
   double previousTime = 0.;
   double previousW[1];
@@ -312,7 +317,7 @@ uqTgaWClass<P_V,P_M>::compute(
     currentTemp = m_temperatureFunctionObj.value(currentTime);
 
     double diff = 0.;
-    if (referenceW) diff = currentW[0] - referenceW->value(currentTime);
+    if (referenceW) diff = currentW[0] - referenceW->value(currentTime); // Might be slow (any case)
 
     if ((m_env.verbosity() >= 99) && (m_env.rank() == 0)) {
       std::cout << "In uqTgaWClass<P_V,P_M>::compute()"
@@ -347,7 +352,7 @@ uqTgaWClass<P_V,P_M>::compute(
                (previousTime              <= deltaSeqTimes[deltaSeqId]) &&
                (deltaSeqTimes[deltaSeqId] <= currentTime              )) {
           double tmpValue = (deltaSeqTimes[deltaSeqId]-previousTime)*(currentW[0]-previousW[0])/(currentTime-previousTime) + previousW[0];
-          double diffForDelta = tmpValue - referenceW->value(deltaSeqTimes[deltaSeqId]);
+          double diffForDelta = tmpValue - referenceW->value(deltaSeqTimes[deltaSeqId]); // Might be slow (delta seq case)
           *misfitValue += diffForDelta*diffForDelta*deltaSeqIntegratedValues[deltaSeqId]; // Consider delta as delta, i.e., integral = 1;
 #if 0
           if ((m_env.verbosity() >= 99) && (m_env.rank() == 0)) {
@@ -368,7 +373,7 @@ uqTgaWClass<P_V,P_M>::compute(
       else {
         // Multiply by [time interval] in order to compute integral correctly
         double weightScale = 1.;
-        if (weightFunction) weightScale *= weightFunction->value(currentTime);
+        if (weightFunction) weightScale *= weightFunction->value(currentTime); // Might be slow (non delta seq case)
         *misfitValue += diff*diff*weightScale*(currentTime-previousTime);
       }
     }
@@ -604,7 +609,8 @@ template<class P_V, class P_M>
 void
 uqTgaWClass<P_V,P_M>::interpolate(
   double        time,
-  unsigned int& startingTimeId, // input and output
+  unsigned int& suggestedTimeId, // input and output
+  double        directionForIdSearch,
   double*       wValue,
   P_V*          wGrad,
   bool*         timeWasMatchedExactly) const
@@ -622,10 +628,10 @@ uqTgaWClass<P_V,P_M>::interpolate(
                       "uqTgaW<P_V,P_M>::grad()",
                       "m_times.size() = 0");
 
-  UQ_FATAL_TEST_MACRO(startingTimeId >= tmpSize,
+  UQ_FATAL_TEST_MACRO(suggestedTimeId >= tmpSize,
                       m_env.rank(),
                       "uqTgaW<P_V,P_M>::grad()",
-                      "startingTimeId is too big");
+                      "suggestedTimeId is too big");
 
   UQ_FATAL_TEST_MACRO(time < m_times[0],
                       m_env.rank(),
@@ -643,10 +649,18 @@ uqTgaWClass<P_V,P_M>::interpolate(
                       "m_grads[0] == NULL");
 
   unsigned int i = 0;
-  for (i = startingTimeId; i < tmpSize; ++i) {
-    if (time <= m_times[i]) break;
+  if (directionForIdSearch >= 0.) {
+    for (i = suggestedTimeId; i < tmpSize; ++i) {
+      if (time <= m_times[i]) break;
+    }
+    suggestedTimeId = i;
   }
-  startingTimeId = i;
+  else {
+    for (i = suggestedTimeId; i >= 0; --i) {
+      if (time <= m_times[i]) break;
+    }
+    suggestedTimeId = i;
+  }
 
   if (time == m_times[i]) {
     if (timeWasMatchedExactly) *timeWasMatchedExactly = true;
