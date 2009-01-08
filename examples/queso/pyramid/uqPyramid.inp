@@ -339,24 +339,42 @@ tga_val_fp_mc_seq_stats_hist_numInternalBins     = 250
 tga_val_fp_mc_seq_stats_kde_compute              = 1
 tga_val_fp_mc_seq_stats_kde_numEvalPositions     = 250
 
-tga_tests_outerPrefixName          = case14_
-tga_tests_refW1                    = 0.7
+#tga_tests_outerPrefixName          = case14_
+#tga_tests_refW1                    = 0.7
+#tga_tests_refA1                    = 2.6000e+11
+#tga_tests_refE1                    = 2.0000e+05
+#tga_tests_refA2                    = 2.5900e+11
+#tga_tests_refE2                    = 2.0010e+05
+##Initial guess --> run for case12_
+##tga_tests_guessA                   = 2.595000e+11
+##tga_tests_guessE                   = 2.000500e+05
+##Solution --> found on case12_, run for case14_
+#tga_tests_guessA                   = 2.594971e+11
+#tga_tests_guessE                   = 2.000253e+05
+#tga_tests_refMaxTimeStep           = 1.
+#tga_tests_refTreatDataAsContinuous = 0
+#tga_tests_refNumDiscreteSamples    = 50
+#tga_tests_computeHessian           = 1
+#tga_tests_wMaxTimeStep             = 1.15
+#tga_tests_lambdaMaxTimeStep        = 1.15
+#tga_tests_integralsNumIntervals    = 1000
+#tga_tests_relativeFDStep           = 1.e-8
+#tga_tests_writeOutput              = 1
+
+tga_tests_outerPrefixName          = case99_
+tga_tests_refW1                    = 1.0
 tga_tests_refA1                    = 2.6000e+11
 tga_tests_refE1                    = 2.0000e+05
 tga_tests_refA2                    = 2.5900e+11
 tga_tests_refE2                    = 2.0010e+05
-#Initial guess --> run for case12_
-#tga_tests_guessA                   = 2.595000e+11
-#tga_tests_guessE                   = 2.000500e+05
-#Solution --> found on case12_, run for case14_
-tga_tests_guessA                   = 2.594971e+11
-tga_tests_guessE                   = 2.000253e+05
+tga_tests_guessA                   = 2.5910e+11
+tga_tests_guessE                   = 2.0090e+05
 tga_tests_refMaxTimeStep           = 1.
-tga_tests_refTreatDataAsContinuous = 1
-tga_tests_refNumDiscreteSamples    = 50
+tga_tests_refTreatDataAsContinuous = 0
+tga_tests_refNumDiscreteSamples    = 100
 tga_tests_computeHessian           = 1
-tga_tests_wMaxTimeStep             = 1.15
-tga_tests_lambdaMaxTimeStep        = 1.15
+tga_tests_wMaxTimeStep             = 1.
+tga_tests_lambdaMaxTimeStep        = 1.
 tga_tests_integralsNumIntervals    = 1000
 tga_tests_relativeFDStep           = 1.e-8
 tga_tests_writeOutput              = 1

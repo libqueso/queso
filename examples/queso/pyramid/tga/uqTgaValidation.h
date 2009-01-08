@@ -473,9 +473,9 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runTests()
 
   //runTempTimeTest    ();
   prepareRefForTests ();
-  runTimingTest      ();
+  //runTimingTest      ();
   runGradTest        ();
-  runOptimizationTest();
+  //runOptimizationTest();
 
   return;
 }
@@ -753,13 +753,18 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runTimingTest()
   P_M* hessianWithLM = NULL;
   if (m_testOptions.computeHessian) hessianWithLM = m_paramSpace->newMatrix();
 
+  P_V paramDirection(m_paramSpace->zeroVector());
+  paramDirection[0] =  0.5;
+  paramDirection[1] = -1.5;
+  P_V hessianEffect(m_paramSpace->zeroVector());
+
   iRC = gettimeofday(&timeval0, NULL);
   guessMisfit = uqTgaLikelihoodRoutine<P_V,P_M>(paramValues,
-                                                NULL,
+                                                &paramDirection,
                                                 (const void *)&m_calLikelihoodInfoVector,
                                                 &gradWithLM,
                                                 hessianWithLM,
-                                                NULL);
+                                                &hessianEffect);
   iRC = gettimeofday(&timeval1, NULL);
   total_usecs = (timeval1.tv_sec * 1.e+6 + timeval1.tv_usec) - (timeval0.tv_sec * 1.e+6 + timeval0.tv_usec);
   if (m_env.rank() == 0) {
@@ -795,14 +800,19 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runGradTest()
   if (m_testOptions.computeHessian) hessianWithLM = m_paramSpace->newMatrix();
   double guessMisfit = 0.;
 
+  P_V paramDirection(m_paramSpace->zeroVector());
+  paramDirection[0] =  0.5;
+  paramDirection[1] = -1.5;
+  P_V hessianEffect(m_paramSpace->zeroVector());
+
   // Run with checking against finite differences
   m_calLikelihoodInfoVector[0]->setCheckingVariables(true,&m_testOptions.relativeFDStep); // IMPORTANT
   guessMisfit = uqTgaLikelihoodRoutine<P_V,P_M>(paramValues,
-                                                NULL,
+                                                &paramDirection,
                                                 (const void *)&m_calLikelihoodInfoVector,
                                                 &gradWithLM,
                                                 hessianWithLM,
-                                                NULL);
+                                                &hessianEffect);
   m_calLikelihoodInfoVector[0]->setCheckingVariables(false,&m_testOptions.relativeFDStep); // IMPORTANT
   delete hessianWithLM;
   if (m_env.rank() == 0) {

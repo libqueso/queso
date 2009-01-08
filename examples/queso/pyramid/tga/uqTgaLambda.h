@@ -31,8 +31,7 @@ template<class P_V,class P_M>
 struct
 uqTgaLambdaInfoStruct
 {
-  double                         A;
-  double                         E;
+  const P_V*                     params;
   const P_V*                     paramDirection;
   const uqBase1D1DFunctionClass* temperatureFunctionObj;
   bool                           computeGradAlso;
@@ -46,8 +45,8 @@ template<class P_V,class P_M>
 int uqTgaLambdaTildeDotWrtTimeRoutine(double tildeTime, const double lambdaTilde[], double f[], void *voidInfo)
 {
   const uqTgaLambdaInfoStruct<P_V,P_M>& info = *((uqTgaLambdaInfoStruct<P_V,P_M> *)voidInfo);
-  double A = info.A;
-  double E = info.E;
+  double A = (*info.params)[0];
+  double E = (*info.params)[1];
 
   double maxTildeTime   = info.diffFunction->maxDomainValue(); // FIX ME
   if (info.tildeWeightFunction) maxTildeTime = info.tildeWeightFunction->maxDomainValue(); // FIX ME
@@ -79,34 +78,56 @@ int uqTgaLambdaTildeDotWrtTimeRoutine(double tildeTime, const double lambdaTilde
   }
 
   f[0] = -A*lambdaTilde[0]*expTerm - 2*tildeDiff*weightValue;
+  if (info.computeGradAlso || info.paramDirection) {
+    f[1] = 0.;
+    f[2] = 0.;
+    f[3] = 0.;
+  }
 
-  if (info.computeGradAlso) {
-    double wA = 0.;
-    double wE = 0.;
+  double wA = 0.;
+  double wE = 0.;
+  P_V  wGrad(*info.params);
+  wGrad *= 0.;
+  P_V* wGradPtr   = NULL;
 
-    if (tildeDeltaSeqFunction == NULL) {
-      P_V wGrad(*(info.wObj->grads()[0]));
-      // Always reset to this value because 'gsl' algorithm might backward in tildeTime
-      unsigned int suggestedTimeId = info.suggestedWTimeId; // For performance on w->interpolate()
-      info.wObj->interpolate(equivalentTime,
-                             suggestedTimeId,
-                             -1., // For performance on w->interpolate()
-                             NULL,
-                             &wGrad,
-                             NULL,
-                             NULL);
+  double wDir = 0.;
+  double* wDirPtr = NULL;
+
+  if ((tildeDeltaSeqFunction == NULL) && (info.computeGradAlso || info.paramDirection)) {
+    if (info.computeGradAlso) wGradPtr = &wGrad;
+    if (info.paramDirection ) wDirPtr  = &wDir;
+
+    // Always reset to this value because 'gsl' algorithm might backward in tildeTime
+    unsigned int suggestedTimeId = info.suggestedWTimeId; // For performance on w->interpolate()
+    info.wObj->interpolate(equivalentTime,
+                           suggestedTimeId,
+                           -1., // For performance on w->interpolate()
+                           NULL,
+                           wGradPtr,
+                           wDirPtr,
+                           NULL);
+
+    if (info.computeGradAlso) {
       wA = wGrad[0];
       wE = wGrad[1];
+      //std::cout << "HERE, equivalentTime = " << equivalentTime
+      //          << ", suggId = " << suggestedTimeId
+      //          << ", wA = " << wA
+      //          << ", wE = " << wE
+      //          << std::endl;
     }
+  }
 
+  if (info.computeGradAlso) {
     f[1] = (-A*lambdaTilde[1] -   lambdaTilde[0]                  )*expTerm - 2*wA*weightValue;
     f[2] = (-A*lambdaTilde[2] + A*lambdaTilde[0]/(R_CONSTANT*temp))*expTerm - 2*wE*weightValue;
   }
-  else {
-  }
 
   if (info.paramDirection) {
-    f[3] = 0.;
+    double q1 = (*info.paramDirection)[0];
+    double q2 = (*info.paramDirection)[1];
+    double aux = -q1 + A*q2/(R_CONSTANT*temp);
+    f[3] = (-A*lambdaTilde[3] + aux*lambdaTilde[0])*expTerm - 2*wDir*weightValue;
   }
 
   return GSL_SUCCESS;
@@ -141,13 +162,14 @@ public:
 protected:
         void                 resetInternalValues();
 
-  const uqBaseEnvironmentClass&  m_env;
-  const uqBase1D1DFunctionClass& m_temperatureFunctionObj;
+  const uqBaseEnvironmentClass&      m_env;
+  const uqVectorSpaceClass<P_V,P_M>& m_paramSpace;
+  const uqBase1D1DFunctionClass&     m_temperatureFunctionObj;
 
-        std::vector<double>      m_times;
-        std::vector<double>      m_lambdas;
-        std::vector<P_V*  >      m_grads;
-	std::vector<double>      m_lambdaDirs;
+        std::vector<double>          m_times;
+        std::vector<double>          m_lambdas;
+        std::vector<P_V*  >          m_grads;
+	std::vector<double>          m_lambdaDirs;
 };
 
 template<class P_V, class P_M>
@@ -156,6 +178,7 @@ uqTgaLambdaClass<P_V,P_M>::uqTgaLambdaClass(
   const uqBase1D1DFunctionClass&     temperatureFunctionObj)
   :
   m_env                   (paramSpace.env()),
+  m_paramSpace            (paramSpace),
   m_temperatureFunctionObj(temperatureFunctionObj),
   m_times                 (0),
   m_lambdas               (0),
@@ -208,6 +231,7 @@ uqTgaLambdaClass<P_V,P_M>::compute(
   if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
     std::cout << "Entering uqTgaLambdaClass<P_V,P_M>::compute()"
               << ": params = "          << params
+              << ", paramDirection = "  << paramDirection
               << ", maxTimeStep = "     << maxTimeStep
               << ", computeGradAlso = " << computeGradAlso
               << std::endl;
@@ -227,8 +251,7 @@ uqTgaLambdaClass<P_V,P_M>::compute(
   std::vector<P_V*  > tildeGrads(1000,(P_V*) NULL);
   std::vector<double> tildeLambdaDirs(1000,0.);
 
-  uqTgaLambdaInfoStruct<P_V,P_M> lambdaDotWrtTimeInfo = {params[0],
-                                                         params[1],
+  uqTgaLambdaInfoStruct<P_V,P_M> lambdaDotWrtTimeInfo = {&params,
                                                          paramDirection,
                                                          &m_temperatureFunctionObj,
                                                          computeGradAlso,
@@ -256,11 +279,9 @@ uqTgaLambdaClass<P_V,P_M>::compute(
 
   double currentLambdaTilde[numLambdaComponents];
   currentLambdaTilde[0]=0.;
-  if (computeGradAlso) {
+  if (computeGradAlso || paramDirection) {
     currentLambdaTilde[1]=0.;
     currentLambdaTilde[2]=0.;
-  }
-  if (paramDirection) {
     currentLambdaTilde[3]=0.;
   }
 
@@ -268,7 +289,7 @@ uqTgaLambdaClass<P_V,P_M>::compute(
   tildeTimes  [loopId] = currentTildeTime;
   tildeLambdas[loopId] = currentLambdaTilde[0];
   if (computeGradAlso) {
-    tildeGrads[loopId] = new P_V(params);
+    tildeGrads[loopId] = new P_V(m_paramSpace.zeroVector());
     (*(tildeGrads[loopId]))[0] = currentLambdaTilde[1];
     (*(tildeGrads[loopId]))[1] = currentLambdaTilde[2];
   }
@@ -284,21 +305,37 @@ uqTgaLambdaClass<P_V,P_M>::compute(
       if (currentTildeTime == tildeDeltaSeqFunction->domainValues()[tildeDeltaWeightId-1]) { // Yes, '[...-1]'
         currentLambdaTilde[0] -= 2.*diffFunction.value(equivalentTime); // Might be slow (delta seq case)
         tildeLambdas[loopId] = currentLambdaTilde[0];
-        if (computeGradAlso) {
-          P_V wGrad(*(wObj.grads()[0]));
+
+        if (computeGradAlso || paramDirection) {
+          P_V  wGrad(m_paramSpace.zeroVector());
+          P_V* wGradPtr = NULL;
+
+          double wDir = 0.;
+          double* wDirPtr = NULL;
+
+          if (computeGradAlso) wGradPtr = &wGrad;
+          if (paramDirection ) wDirPtr  = &wDir;
+
           wObj.interpolate(equivalentTime,
                            suggestedWTimeId,
                            -1., // For performance on w->interpolate()
                            NULL,
-                           &wGrad,
-                           NULL,
+                           wGradPtr,
+                           wDirPtr,
                            NULL);
-          currentLambdaTilde[1] -= 2.*wGrad[0];
-          currentLambdaTilde[2] -= 2.*wGrad[1];
-          (*(tildeGrads[loopId]))[0] = currentLambdaTilde[1];
-          (*(tildeGrads[loopId]))[1] = currentLambdaTilde[2];
+
+          if (computeGradAlso) {
+            currentLambdaTilde[1] -= 2.*wGrad[0];
+            currentLambdaTilde[2] -= 2.*wGrad[1];
+            (*(tildeGrads[loopId]))[0] = currentLambdaTilde[1];
+            (*(tildeGrads[loopId]))[1] = currentLambdaTilde[2];
+          }
+
+          if (paramDirection) { 
+            currentLambdaTilde[3] -= 2.*wDir;
+            tildeLambdaDirs[loopId] = currentLambdaTilde[3];
+          }
         }
-        if (paramDirection) currentLambdaTilde[3] -= 2.*0.; // AQUI 
       }
     }
 
@@ -346,7 +383,7 @@ uqTgaLambdaClass<P_V,P_M>::compute(
     tildeTimes  [loopId] = currentTildeTime;
     tildeLambdas[loopId] = currentLambdaTilde[0];
     if (computeGradAlso) {
-      tildeGrads[loopId] = new P_V(params);
+      tildeGrads[loopId] = new P_V(m_paramSpace.zeroVector());
       (*(tildeGrads[loopId]))[0] = currentLambdaTilde[1];
       (*(tildeGrads[loopId]))[1] = currentLambdaTilde[2];
     }
@@ -371,7 +408,7 @@ uqTgaLambdaClass<P_V,P_M>::compute(
       m_grads[i] = new P_V(*(tildeGrads[tildeI]));
       delete tildeGrads[tildeI];
     }
-    m_lambdaDirs[i] = tildeLambdaDirs[tildeI];
+    if (paramDirection) m_lambdaDirs[i] = tildeLambdaDirs[tildeI];
   }
 
   if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {

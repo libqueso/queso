@@ -493,7 +493,7 @@ uqTgaLikelihoodCheckingRoutine(
                       "tmpHessianEffect is being requested but no paramDirection is supplied");
 
   //////////////////////////////////////////////////////////////////
-  // Step 1 of 3: Store data to be printed
+  // Step 1 of 4: Store data to be printed
   //////////////////////////////////////////////////////////////////
 
   if (info.m_refWPtrForPlot    == NULL) info.m_refWPtrForPlot    = new uqSampled1D1DFunctionClass();
@@ -575,18 +575,18 @@ uqTgaLikelihoodCheckingRoutine(
   double deltaE = guessE * info.m_relativeFDStep;
 
   //////////////////////////////////////////////////////////////////
-  // Step 2 of 3: Compute gradient(misfit) wrt A and E, using finite differences
+  // Step 2 of 4: Compute gradient(misfit) wrt A and E, using finite differences
   //////////////////////////////////////////////////////////////////
   if (tmpGradVector) {
     P_V tmpParamValues(paramValues);
 
-    if (tmpParamValues.env().rank() == 0) {
+    if (paramValues.env().rank() == 0) {
       std::cout << "\nIn uqTgaLikelihoodCheckingRoutine()"
                 << ": gradWithLM = " << *tmpGradVector
                 << std::endl;
     }
 
-    if (tmpParamValues.env().rank() == 0) {
+    if (paramValues.env().rank() == 0) {
       std::cout << "In uqTgaLikelihoodCheckingRoutine()"
                 << ": computing gradient(misfit) w.r.t. parameters A and E, using finite differences..."
                 << std::endl;
@@ -674,7 +674,7 @@ uqTgaLikelihoodCheckingRoutine(
     P_V gradWithFD(info.m_paramSpace.zeroVector());
     gradWithFD[0] = (valueAp-valueAm)/2./deltaA;
     gradWithFD[1] = (valueEp-valueEm)/2./deltaE;
-    if (tmpParamValues.env().rank() == 0) {
+    if (paramValues.env().rank() == 0) {
       std::cout << "\nIn uqTgaLikelihoodCheckingRoutine()"
                 << ": gradWithFD = " << gradWithFD
                 << "\ngrad relative error = " << (gradWithFD - *tmpGradVector).norm2()/gradWithFD.norm2()
@@ -683,7 +683,7 @@ uqTgaLikelihoodCheckingRoutine(
   }
 
   //////////////////////////////////////////////////////////////////
-  // Step 3 of 3: Compute Hessian(misfit), wrt A and E, using finite differences
+  // Step 3 of 4: Compute Hessian(misfit), wrt A and E, using finite differences
   //////////////////////////////////////////////////////////////////
 
   if (tmpHessianMatrix) {
@@ -694,14 +694,14 @@ uqTgaLikelihoodCheckingRoutine(
     std::vector<uqTgaLikelihoodInfoStruct<P_V,P_M>* > tmpCalLikelihoodInfoVector(1,(uqTgaLikelihoodInfoStruct<P_V,P_M>*) NULL);
     tmpCalLikelihoodInfoVector[0] = &info;
 
-    if (tmpParamValues.env().rank() == 0) {
+    if (paramValues.env().rank() == 0) {
       std::cout << "\nIn uqTgaLikelihoodCheckingRoutine()"
                 << ": hessianWithLM = " << *tmpHessianMatrix
                 << std::endl;
     }
 
     // Compute \grad(misfit), using finite differences
-    if (tmpParamValues.env().rank() == 0) {
+    if (paramValues.env().rank() == 0) {
       std::cout << "In uqTgaLikelihoodCheckingRoutine()"
                 << ": computing Hessian(misfit) w.r.t. parameters A and E, using finite differences..."
                 << std::endl;
@@ -758,7 +758,7 @@ uqTgaLikelihoodCheckingRoutine(
     (*hessianWithFD)(1,0)=column1[1];
     (*hessianWithFD)(0,1)=column2[0];
     (*hessianWithFD)(1,1)=column2[1];
-    if (tmpParamValues.env().rank() == 0) {
+    if (paramValues.env().rank() == 0) {
       std::cout << "\nIn uqTgaLikelihoodCheckingRoutine()"
                 << ": hessianWithFD = " << *hessianWithFD
                 << "\nhessian absolute error = " << (*hessianWithFD + (-1.*(*tmpHessianMatrix)))
@@ -767,6 +767,30 @@ uqTgaLikelihoodCheckingRoutine(
     delete hessianWithFD;
 
     info.m_performChecking = savedCheckingFlag; // IMPORTANT
+  }
+
+  //////////////////////////////////////////////////////////////////
+  // Step 4 of 4: compute hessianEffect, using Hessian matrix
+  //////////////////////////////////////////////////////////////////
+
+  if (tmpHessianEffect) {
+    if (paramValues.env().rank() == 0) {
+      std::cout << "\nIn uqTgaLikelihoodCheckingRoutine()"
+                << ": for paramDirection = "  << *paramDirection
+                << ", hessianEffectWithLM = " << *tmpHessianEffect
+                << std::endl;
+    }
+
+    if (paramDirection && tmpHessianMatrix) {
+      P_V effectWithMatrix((*tmpHessianMatrix)*(*paramDirection));
+      if (paramValues.env().rank() == 0) {
+        std::cout << "\nIn uqTgaLikelihoodCheckingRoutine()"
+                  << ": for paramDirection = "      << *paramDirection
+                  << ", hessianEffectWithMatrix = " << effectWithMatrix
+                  << "\neffect relative error = "   << (effectWithMatrix - *tmpHessianEffect).norm2()/effectWithMatrix.norm2()
+                  << std::endl;
+      }
+    }
   }
 
   return;

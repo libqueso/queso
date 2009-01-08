@@ -98,15 +98,20 @@ uqTgaIntegrals(
 
   double w = 0.;
   P_V wGrad(paramValues);
+  wGrad *= 0.;
   P_V* wGradPtr = &wGrad;
   double wDir = 0.;
   double* wDirPtr = &wDir;
 
   double lambda = 0.;
   P_V lambdaGrad(paramValues);
+  lambdaGrad *= 0.;
   P_V* lambdaGradPtr = &lambdaGrad;
   double lambdaDir = 0.;
   double* lambdaDirPtr = &lambdaDir;
+
+  double q1 = 0.;
+  double q2 = 0.;
 
   if (reducedHessian == NULL) {
     wGradPtr      = NULL;
@@ -114,7 +119,12 @@ uqTgaIntegrals(
   }
 
   if (hessianEffect == NULL) {
+    wDirPtr = NULL;
     lambdaDirPtr = NULL;
+  }
+  else {
+    q1 = (*paramDirection)[0];
+    q2 = (*paramDirection)[1];
   }
 
   const uqDeltaSeq1D1DFunctionClass* deltaSeqFunction = NULL;
@@ -176,9 +186,15 @@ uqTgaIntegrals(
         (*reducedHessian)(1,0) += ( -lambda*w/(R_CONSTANT*temp) - A*(lambdaA*w + lambda*wA)/(R_CONSTANT*temp) ) * expTerm; // (d/dA)(dF/dE)
         (*reducedHessian)(1,1) += ( A*lambda*w/(R_CONSTANT*R_CONSTANT*temp*temp) - A*(lambdaE*w + lambda*wE)/(R_CONSTANT*temp) ) * expTerm;
       }
+      if (hessianEffect) {
+        double aux = (-q1 + A*q2)/(R_CONSTANT*temp);
+        (*hessianEffect)[0] += (   lambdaDir*w +   lambda*wDir - q2*lambda*w/(R_CONSTANT*temp)) * expTerm;
+        (*hessianEffect)[1] += (-A*lambdaDir*w - A*lambda*wDir + aux*lambda*w) * expTerm/(R_CONSTANT*temp);
+      }
     }
     if (reducedGrad   ) (*reducedGrad   ) *= timeIntervalSize;
     if (reducedHessian) (*reducedHessian) *= timeIntervalSize;
+    if (hessianEffect ) (*hessianEffect ) *= timeIntervalSize;
   }
   else {
     // Determine number of milestone points (= number of milestone intervals + 1)
@@ -262,6 +278,11 @@ uqTgaIntegrals(
           (*reducedHessian)(0,1) += ( -lambda*w/(R_CONSTANT*temp) + lambdaE*w + lambda*wE ) * expTerm * timeIntervalSize; // (d/dE)(dF/dA)
           (*reducedHessian)(1,0) += ( -lambda*w/(R_CONSTANT*temp) - A*(lambdaA*w + lambda*wA)/(R_CONSTANT*temp) ) * expTerm * timeIntervalSize; // (d/dA)(dF/dE)
           (*reducedHessian)(1,1) += ( A*lambda*w/(R_CONSTANT*R_CONSTANT*temp*temp) - A*(lambdaE*w + lambda*wE)/(R_CONSTANT*temp) ) * expTerm * timeIntervalSize;
+        }
+        if (hessianEffect) {
+          double aux = (-q1 + A*q2)/(R_CONSTANT*temp);
+          (*hessianEffect)[0] += (   lambdaDir*w +   lambda*wDir - q2*lambda*w/(R_CONSTANT*temp)) * expTerm * timeIntervalSize;
+          (*hessianEffect)[1] += (-A*lambdaDir*w - A*lambda*wDir + aux*lambda*w) * expTerm * timeIntervalSize/(R_CONSTANT*temp);
         }
       } // i
     } // j

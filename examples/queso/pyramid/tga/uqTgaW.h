@@ -33,8 +33,7 @@ template<class P_V,class P_M>
 struct
 uqTgaWDotInfoStruct
 {
-  double                         A;
-  double                         E;
+  const P_V*                     paramValues;
   const P_V*                     paramDirection;
   const uqBase1D1DFunctionClass* temperatureFunctionObj;
   bool                           computeGradAlso;
@@ -44,18 +43,27 @@ template<class P_V,class P_M>
 int uqTgaWDotWrtTimeRoutine(double time, const double w[], double f[], void *voidInfo)
 {
   const uqTgaWDotInfoStruct<P_V,P_M>& info = *((uqTgaWDotInfoStruct<P_V,P_M> *)voidInfo);
-  double A    = info.A;
-  double E    = info.E;
+  double A    = (*info.paramValues)[0];
+  double E    = (*info.paramValues)[1];
   double temp = info.temperatureFunctionObj->value(time);
   double expTerm = exp(-E/(R_CONSTANT*temp));
 
   f[0] = -A*w[0]*expTerm;
+  if (info.computeGradAlso || info.paramDirection) {
+    f[1] = 0.;
+    f[2] = 0.;
+    f[3] = 0.;
+  }
+
   if (info.computeGradAlso) {
     f[1] = (-A*w[1] -   w[0]                  )*expTerm;
     f[2] = (-A*w[2] + A*w[0]/(R_CONSTANT*temp))*expTerm;
   }
   if (info.paramDirection) {
-    f[3] = 0.;
+    double q1 = (*info.paramDirection)[0];
+    double q2 = (*info.paramDirection)[1];
+    double aux = q1 - A*q2/(R_CONSTANT*temp);
+    f[3] = (-A*w[3] - aux*w[0])*expTerm;
   }
 
   return GSL_SUCCESS;
@@ -124,15 +132,16 @@ public:
 protected:
         void                    resetInternalValues();
 
-  const uqBaseEnvironmentClass&  m_env;
-  const uqBase1D1DFunctionClass& m_temperatureFunctionObj;
+  const uqBaseEnvironmentClass&      m_env;
+  const uqVectorSpaceClass<P_V,P_M>& m_paramSpace;
+  const uqBase1D1DFunctionClass&     m_temperatureFunctionObj;
 
-        std::vector<double>      m_times;
-        std::vector<double>      m_temps;
-        std::vector<double>      m_ws;
-        std::vector<P_V*  >      m_grads;
-	std::vector<double>      m_wDirs;
-	std::vector<double>      m_diffs;
+        std::vector<double>          m_times;
+        std::vector<double>          m_temps;
+        std::vector<double>          m_ws;
+        std::vector<P_V*  >          m_grads;
+	std::vector<double>          m_wDirs;
+	std::vector<double>          m_diffs;
 };
 
 template<class P_V, class P_M>
@@ -141,6 +150,7 @@ uqTgaWClass<P_V,P_M>::uqTgaWClass(
   const uqBase1D1DFunctionClass&     temperatureFunctionObj)
   :
   m_env                   (paramSpace.env()),
+  m_paramSpace            (paramSpace),
   m_temperatureFunctionObj(temperatureFunctionObj),
   m_times                 (0),
   m_temps                 (0),
@@ -217,6 +227,7 @@ uqTgaWClass<P_V,P_M>::compute(
   if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
     std::cout << "Entering uqTgaWClass<P_V,P_M>::compute()"
               << ": params = "          << params
+              << ", paramDirection = "  << paramDirection
               << ", reqMaxTime = "      << reqMaxTime
               << ", maxTimeStep = "     << maxTimeStep
               << ", computeGradAlso = " << computeGradAlso
@@ -254,8 +265,7 @@ uqTgaWClass<P_V,P_M>::compute(
   if (paramDirection)  m_wDirs.resize(1000,0.  );
   if (diffFunction)    m_diffs.resize(1000,0.  );
 
-  uqTgaWDotInfoStruct<P_V,P_M> wDotWrtTimeInfo = {params[0],
-                                                  params[1],
+  uqTgaWDotInfoStruct<P_V,P_M> wDotWrtTimeInfo = {&params,
                                                   paramDirection,
                                                   &m_temperatureFunctionObj,
                                                   computeGradAlso};
@@ -289,7 +299,7 @@ uqTgaWClass<P_V,P_M>::compute(
   m_times[loopId] = currentTime;
   m_ws   [loopId] = currentW[0];
   if (computeGradAlso) {
-    m_grads[loopId] = new P_V(params);
+    m_grads[loopId] = new P_V(m_paramSpace.zeroVector());
     (*(m_grads[loopId]))[0] = currentW[1];
     (*(m_grads[loopId]))[1] = currentW[2];
   }
@@ -350,7 +360,7 @@ uqTgaWClass<P_V,P_M>::compute(
     m_times[loopId] = currentTime;
     m_ws   [loopId] = currentW[0];
     if (computeGradAlso) {
-      m_grads[loopId] = new P_V(params);
+      m_grads[loopId] = new P_V(m_paramSpace.zeroVector());
       (*(m_grads[loopId]))[0] = currentW[1];
       (*(m_grads[loopId]))[1] = currentW[2];
     }
@@ -668,7 +678,13 @@ uqTgaWClass<P_V,P_M>::interpolate(
   }
   else {
     for (i = suggestedTimeId; i >= 0; --i) {
-      if (time <= m_times[i]) break;
+      if (time > m_times[i]) {
+        i++;
+        break;
+      }
+      else if (time == m_times[i]) {
+        break;
+      }
     }
     suggestedTimeId = i;
   }
