@@ -597,6 +597,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::prepareRefForTests()
                         1.,
                         &value2,
                         NULL,
+                        NULL,
                         NULL);
     }
     wValues[i] =tmpW1.ws()[i] + value2;
@@ -651,6 +652,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::prepareRefForTests()
                          startingId,
                          1.,
                          &vecOfValues[j],
+                         NULL,
                          NULL,
                          NULL);
 #endif

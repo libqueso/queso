@@ -33,6 +33,7 @@ uqTgaLambdaInfoStruct
 {
   double                         A;
   double                         E;
+  const P_V*                     paramDirection;
   const uqBase1D1DFunctionClass* temperatureFunctionObj;
   bool                           computeGradAlso;
   const uqBase1D1DFunctionClass* diffFunction;
@@ -77,6 +78,8 @@ int uqTgaLambdaTildeDotWrtTimeRoutine(double tildeTime, const double lambdaTilde
               << std::endl;
   }
 
+  f[0] = -A*lambdaTilde[0]*expTerm - 2*tildeDiff*weightValue;
+
   if (info.computeGradAlso) {
     double wA = 0.;
     double wE = 0.;
@@ -90,17 +93,20 @@ int uqTgaLambdaTildeDotWrtTimeRoutine(double tildeTime, const double lambdaTilde
                              -1., // For performance on w->interpolate()
                              NULL,
                              &wGrad,
+                             NULL,
                              NULL);
       wA = wGrad[0];
       wE = wGrad[1];
     }
 
-    f[0] =  -A*lambdaTilde[0]                                      *expTerm - 2*tildeDiff*weightValue;
     f[1] = (-A*lambdaTilde[1] -   lambdaTilde[0]                  )*expTerm - 2*wA*weightValue;
     f[2] = (-A*lambdaTilde[2] + A*lambdaTilde[0]/(R_CONSTANT*temp))*expTerm - 2*wE*weightValue;
   }
   else {
-    f[0] = -A*lambdaTilde[0]*expTerm - 2*tildeDiff*weightValue;
+  }
+
+  if (info.paramDirection) {
+    f[3] = 0.;
   }
 
   return GSL_SUCCESS;
@@ -126,6 +132,7 @@ public:
                                          unsigned int& startingTimeId,
                                          double*       lambdaValue,
                                          P_V*          lambdaGrad,
+                                         double*       lambdaDir,
                                          bool*         timeWasMatchedExactly) const;
   const std::vector<double>& times  () const;
   const std::vector<double>& lambdas() const;
@@ -140,6 +147,7 @@ protected:
         std::vector<double>      m_times;
         std::vector<double>      m_lambdas;
         std::vector<P_V*  >      m_grads;
+	std::vector<double>      m_lambdaDirs;
 };
 
 template<class P_V, class P_M>
@@ -151,7 +159,8 @@ uqTgaLambdaClass<P_V,P_M>::uqTgaLambdaClass(
   m_temperatureFunctionObj(temperatureFunctionObj),
   m_times                 (0),
   m_lambdas               (0),
-  m_grads                 (0)
+  m_grads                 (0),
+  m_lambdaDirs            (0)
 {
   if ((m_env.verbosity() >= 30) && (m_env.rank() == 0)) {
     std::cout << "Entering uqTgaLambdaClass::constructor()"
@@ -182,6 +191,7 @@ uqTgaLambdaClass<P_V,P_M>::resetInternalValues()
     delete m_grads[i];
   }
   m_grads.clear();
+  m_lambdaDirs.clear();
 }
 
 template<class P_V, class P_M>
@@ -212,12 +222,14 @@ uqTgaLambdaClass<P_V,P_M>::compute(
 
   // Initialize other variables
   this->resetInternalValues();
-  std::vector<double> tildeTimes  (1000,0.  );
-  std::vector<double> tildeLambdas(1000,0.  );
-  std::vector<P_V*  > tildeGrads  (1000,(P_V*) NULL);
+  std::vector<double> tildeTimes  (1000,0.);
+  std::vector<double> tildeLambdas(1000,0.);
+  std::vector<P_V*  > tildeGrads(1000,(P_V*) NULL);
+  std::vector<double> tildeLambdaDirs(1000,0.);
 
   uqTgaLambdaInfoStruct<P_V,P_M> lambdaDotWrtTimeInfo = {params[0],
                                                          params[1],
+                                                         paramDirection,
                                                          &m_temperatureFunctionObj,
                                                          computeGradAlso,
                                                          &diffFunction,
@@ -226,7 +238,7 @@ uqTgaLambdaClass<P_V,P_M>::compute(
                                                          wObj.times().size()-1}; // For performance on w->interpolate()
 
   unsigned int numLambdaComponents = 1;
-  if (computeGradAlso) numLambdaComponents = 3;
+  if (computeGradAlso || paramDirection) numLambdaComponents = 4;
 
   // Integration
   const gsl_odeiv_step_type *st = gsl_odeiv_step_rkf45; //rkf45; //gear1;
@@ -248,6 +260,9 @@ uqTgaLambdaClass<P_V,P_M>::compute(
     currentLambdaTilde[1]=0.;
     currentLambdaTilde[2]=0.;
   }
+  if (paramDirection) {
+    currentLambdaTilde[3]=0.;
+  }
 
   unsigned int loopId = 0;
   tildeTimes  [loopId] = currentTildeTime;
@@ -257,6 +272,7 @@ uqTgaLambdaClass<P_V,P_M>::compute(
     (*(tildeGrads[loopId]))[0] = currentLambdaTilde[1];
     (*(tildeGrads[loopId]))[1] = currentLambdaTilde[2];
   }
+  if (paramDirection) tildeLambdaDirs[loopId] = currentLambdaTilde[3];
 
   unsigned int suggestedWTimeId = wObj.times().size()-1; // For performance on w->interpolate()
   while (currentTildeTime < maxTildeTime) {
@@ -275,12 +291,14 @@ uqTgaLambdaClass<P_V,P_M>::compute(
                            -1., // For performance on w->interpolate()
                            NULL,
                            &wGrad,
+                           NULL,
                            NULL);
           currentLambdaTilde[1] -= 2.*wGrad[0];
           currentLambdaTilde[2] -= 2.*wGrad[1];
           (*(tildeGrads[loopId]))[0] = currentLambdaTilde[1];
           (*(tildeGrads[loopId]))[1] = currentLambdaTilde[2];
         }
+        if (paramDirection) currentLambdaTilde[3] -= 2.*0.; // AQUI 
       }
     }
 
@@ -321,7 +339,8 @@ uqTgaLambdaClass<P_V,P_M>::compute(
     if (loopId >= tildeTimes.size()) {
       tildeTimes.resize  (tildeTimes.size()  +1000,0.  );
       tildeLambdas.resize(tildeLambdas.size()+1000,0.  );
-      tildeGrads.resize  (tildeGrads.size()  +1000,NULL);
+      if (computeGradAlso) tildeGrads.resize     (tildeGrads.size()     +1000,NULL);
+      if (paramDirection ) tildeLambdaDirs.resize(tildeLambdaDirs.size()+1000,0.  );
     }
 
     tildeTimes  [loopId] = currentTildeTime;
@@ -331,23 +350,28 @@ uqTgaLambdaClass<P_V,P_M>::compute(
       (*(tildeGrads[loopId]))[0] = currentLambdaTilde[1];
       (*(tildeGrads[loopId]))[1] = currentLambdaTilde[2];
     }
+    if (paramDirection) tildeLambdaDirs[loopId] = currentLambdaTilde[3];
   }
 
   tildeTimes.resize  (loopId+1);
   tildeLambdas.resize(loopId+1);
-  tildeGrads.resize  (loopId+1);
+  if (computeGradAlso) tildeGrads.resize     (loopId+1);
+  if (paramDirection ) tildeLambdaDirs.resize(loopId+1);
 
-  m_times.resize  (loopId+1,0.  );
-  m_lambdas.resize(loopId+1,0.  );
-  m_grads.resize  (loopId+1,NULL);
+  m_times.resize  (loopId+1,0.);
+  m_lambdas.resize(loopId+1,0.);
+  if (computeGradAlso) m_grads.resize(loopId+1,NULL);
+  if (paramDirection)  m_lambdaDirs.resize(loopId+1,NULL);
+
   for (unsigned int i = 0; i <= loopId; ++i) {
     unsigned int tildeI = loopId-i;
     m_times  [i] = maxTildeTime - tildeTimes[tildeI];
     m_lambdas[i] = tildeLambdas[tildeI];
     if (computeGradAlso) {
-      m_grads  [i] = new P_V(*(tildeGrads[tildeI]));
+      m_grads[i] = new P_V(*(tildeGrads[tildeI]));
       delete tildeGrads[tildeI];
     }
+    m_lambdaDirs[i] = tildeLambdaDirs[tildeI];
   }
 
   if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
@@ -380,9 +404,10 @@ uqTgaLambdaClass<P_V,P_M>::interpolate(
   unsigned int& startingTimeId, // input and output
   double*       lambdaValue,
   P_V*          lambdaGrad,
+  double*       lambdaDir,
   bool*         timeWasMatchedExactly) const
 {
-  unsigned int tmpSize = m_times.size(); // Yes, 'm_grads'
+  unsigned int tmpSize = m_times.size();
   //std::cout << "In uqTgaLambdaClass<P_V,P_M>::interpolate()"
   //          << ": time = "           << time
   //          << ", m_times.size() = " << tmpSize
@@ -410,10 +435,20 @@ uqTgaLambdaClass<P_V,P_M>::interpolate(
                       "uqTgaLambda<P_V,P_M>::interpolate()",
                       "m_times[max] < time");
 
+  UQ_FATAL_TEST_MACRO(lambdaGrad && (m_grads.size() == 0),
+                      m_env.rank(),
+                      "uqTgaLambda<P_V,P_M>::interpolate()",
+                      "m_grads.size() == 0");
+
   UQ_FATAL_TEST_MACRO(lambdaGrad && (m_grads[0] == NULL),
                       m_env.rank(),
                       "uqTgaLambda<P_V,P_M>::interpolate()",
                       "m_grads[0] == NULL");
+
+  UQ_FATAL_TEST_MACRO(lambdaDir && (m_lambdaDirs.size() == 0),
+                      m_env.rank(),
+                      "uqTgaLambda<P_V,P_M>::interpolate()",
+                      "m_lambdaDirs.size() == 0");
 
   unsigned int i = 0;
   for (i = startingTimeId; i < tmpSize; ++i) {
@@ -423,8 +458,9 @@ uqTgaLambdaClass<P_V,P_M>::interpolate(
 
   if (time == m_times[i]) {
     if (timeWasMatchedExactly) *timeWasMatchedExactly = true;
-    if (lambdaValue) *lambdaValue = m_lambdas[i];
-    if (lambdaGrad)  *lambdaGrad  = *(m_grads[i]);
+    if (lambdaValue) *lambdaValue = m_lambdas   [i];
+    if (lambdaGrad)  *lambdaGrad  = *(m_grads   [i]);
+    if (lambdaDir)   *lambdaDir   = m_lambdaDirs[i];
   }
   else {
     if (timeWasMatchedExactly) *timeWasMatchedExactly = false;
@@ -438,8 +474,9 @@ uqTgaLambdaClass<P_V,P_M>::interpolate(
     //            << std::endl;
     //}
     double ratio = (time - m_times[i-1])/(m_times[i]-m_times[i-1]);
-    if (lambdaValue) *lambdaValue = m_lambdas[i-1]  + ratio * ( m_lambdas[i]  - m_lambdas[i-1]  );
-    if (lambdaGrad)  *lambdaGrad  = *(m_grads[i-1]) + ratio * ( *(m_grads[i]) - *(m_grads[i-1]) );
+    if (lambdaValue) *lambdaValue = m_lambdas   [i-1]  + ratio * ( m_lambdas   [i]  - m_lambdas   [i-1]  );
+    if (lambdaGrad)  *lambdaGrad  = *(m_grads   [i-1]) + ratio * ( *(m_grads   [i]) - *(m_grads   [i-1]) );
+    if (lambdaDir) *lambdaDir     = m_lambdaDirs[i-1]  + ratio * ( m_lambdaDirs[i]  - m_lambdaDirs[i-1]  );
   }
 
   return;

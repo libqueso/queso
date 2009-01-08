@@ -99,14 +99,22 @@ uqTgaIntegrals(
   double w = 0.;
   P_V wGrad(paramValues);
   P_V* wGradPtr = &wGrad;
+  double wDir = 0.;
+  double* wDirPtr = &wDir;
 
   double lambda = 0.;
   P_V lambdaGrad(paramValues);
   P_V* lambdaGradPtr = &lambdaGrad;
+  double lambdaDir = 0.;
+  double* lambdaDirPtr = &lambdaDir;
 
   if (reducedHessian == NULL) {
     wGradPtr      = NULL;
     lambdaGradPtr = NULL;
+  }
+
+  if (hessianEffect == NULL) {
+    lambdaDirPtr = NULL;
   }
 
   const uqDeltaSeq1D1DFunctionClass* deltaSeqFunction = NULL;
@@ -143,12 +151,14 @@ uqTgaIntegrals(
                        1.,
                        &w,
                        wGradPtr,
+                       wDirPtr,
                        NULL);
 
       lambdaObj.interpolate(time,
                             currentLambdaIntervalId,
                             &lambda,
                             lambdaGradPtr,
+                            lambdaDirPtr,
                             NULL);
 
       double expTerm = exp(-E/(R_CONSTANT*temp));
@@ -228,12 +238,14 @@ uqTgaIntegrals(
                          1.,
                          &w,
                          wGradPtr,
+                         wDirPtr,
                          NULL);
 
         lambdaObj.interpolate(time,
                               currentLambdaIntervalId,
                               &lambda,
                               lambdaGradPtr,
+                              lambdaDirPtr,
                               NULL);
 
         double expTerm = exp(-E/(R_CONSTANT*temp));

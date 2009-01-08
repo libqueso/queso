@@ -29,39 +29,43 @@
 #include <gsl/gsl_errno.h>
 
 // The "W dot" function
+template<class P_V,class P_M>
 struct
 uqTgaWDotInfoStruct
 {
   double                         A;
   double                         E;
+  const P_V*                     paramDirection;
   const uqBase1D1DFunctionClass* temperatureFunctionObj;
   bool                           computeGradAlso;
 };
 
+template<class P_V,class P_M>
 int uqTgaWDotWrtTimeRoutine(double time, const double w[], double f[], void *voidInfo)
 {
-  const uqTgaWDotInfoStruct& info = *((uqTgaWDotInfoStruct *)voidInfo);
+  const uqTgaWDotInfoStruct<P_V,P_M>& info = *((uqTgaWDotInfoStruct<P_V,P_M> *)voidInfo);
   double A    = info.A;
   double E    = info.E;
   double temp = info.temperatureFunctionObj->value(time);
   double expTerm = exp(-E/(R_CONSTANT*temp));
 
+  f[0] = -A*w[0]*expTerm;
   if (info.computeGradAlso) {
-    f[0] =  -A*w[0]                            *expTerm;
     f[1] = (-A*w[1] -   w[0]                  )*expTerm;
     f[2] = (-A*w[2] + A*w[0]/(R_CONSTANT*temp))*expTerm;
   }
-  else {
-    f[0] = -A*w[0]*expTerm;
+  if (info.paramDirection) {
+    f[3] = 0.;
   }
 
   return GSL_SUCCESS;
 }
 
 #ifdef QUESO_TGA_USES_OLD_COMPATIBLE_CODE
+template<class P_V,class P_M>
 int uqTgaWDotWrtTempRoutine(double temp, const double w[], double f[], void *voidInfo)
 {
-  const uqTgaWDotInfoStruct& info = *((uqTgaWDotInfoStruct *)voidInfo);
+  const uqTgaWDotInfoStruct<P_V,P_M>& info = *((uqTgaWDotInfoStruct<P_V,P_M> *)voidInfo);
   double A     = info.A;
   double E     = info.E;
   double deriv = info.temperatureFunctionObj->deriv(0.); // COMPATIBILITY WITH OLD VERSION (valid only for linear temperature function)
@@ -108,6 +112,7 @@ public:
                                             double        directionForIdSearch,
                                             double*       wValue,
                                             P_V*          wGrad,
+                                            double*       wDir,
                                             bool*         timeWasMatchedExactly) const;
   const std::vector<double>&    times() const;
   const std::vector<double>&    ws   () const;
@@ -126,6 +131,7 @@ protected:
         std::vector<double>      m_temps;
         std::vector<double>      m_ws;
         std::vector<P_V*  >      m_grads;
+	std::vector<double>      m_wDirs;
 	std::vector<double>      m_diffs;
 };
 
@@ -140,6 +146,7 @@ uqTgaWClass<P_V,P_M>::uqTgaWClass(
   m_temps                 (0),
   m_ws                    (0),
   m_grads                 (0),
+  m_wDirs                 (0),
   m_diffs                 (0)
 {
   if ((m_env.verbosity() >= 30) && (m_env.rank() == 0)) {
@@ -172,6 +179,7 @@ uqTgaWClass<P_V,P_M>::resetInternalValues()
     delete m_grads[i];
   }
   m_grads.clear();
+  m_wDirs.clear();
   m_diffs.clear();
 }
 
@@ -243,19 +251,24 @@ uqTgaWClass<P_V,P_M>::compute(
   m_times.resize(1000,0.  );
   m_ws.resize   (1000,0.  );
   if (computeGradAlso) m_grads.resize(1000,NULL);
+  if (paramDirection)  m_wDirs.resize(1000,0.  );
   if (diffFunction)    m_diffs.resize(1000,0.  );
 
-  uqTgaWDotInfoStruct wDotWrtTimeInfo = {params[0],params[1],&m_temperatureFunctionObj,computeGradAlso};
+  uqTgaWDotInfoStruct<P_V,P_M> wDotWrtTimeInfo = {params[0],
+                                                  params[1],
+                                                  paramDirection,
+                                                  &m_temperatureFunctionObj,
+                                                  computeGradAlso};
 
   unsigned int numWComponents = 1;
-  if (computeGradAlso) numWComponents = 3;
+  if (computeGradAlso || paramDirection) numWComponents = 4;
 
   // Integration
   const gsl_odeiv_step_type *st = gsl_odeiv_step_rkf45; //rkf45; //gear1;
         gsl_odeiv_step      *s  = gsl_odeiv_step_alloc(st,numWComponents);
         gsl_odeiv_control   *c  = gsl_odeiv_control_y_new(GSL_ODE_CONTROL_ABS_PRECISION_FOR_QUESO,0.0);
         gsl_odeiv_evolve    *e  = gsl_odeiv_evolve_alloc(numWComponents);
-        gsl_odeiv_system     sysTime = {uqTgaWDotWrtTimeRoutine, NULL, numWComponents, (void *)&wDotWrtTimeInfo};
+        gsl_odeiv_system     sysTime = {uqTgaWDotWrtTimeRoutine<P_V,P_M>, NULL, numWComponents, (void *)&wDotWrtTimeInfo};
 
   double currentTime = 0.;
   double timeStep   = .1;
@@ -268,6 +281,9 @@ uqTgaWClass<P_V,P_M>::compute(
     currentW[1]=0.;
     currentW[2]=0.;
   }
+  if (paramDirection) {
+    currentW[3]=0.;
+  }
 
   unsigned int loopId = 0;
   m_times[loopId] = currentTime;
@@ -277,7 +293,8 @@ uqTgaWClass<P_V,P_M>::compute(
     (*(m_grads[loopId]))[0] = currentW[1];
     (*(m_grads[loopId]))[1] = currentW[2];
   }
-  if (diffFunction) m_diffs[loopId] = currentW[0] - referenceW->value(currentTime); // Might be slow (any case)
+  if (paramDirection) m_wDirs[loopId] = currentW[3];
+  if (diffFunction)   m_diffs[loopId] = currentW[0] - referenceW->value(currentTime); // Might be slow (any case)
 
   double previousTime = 0.;
   double previousW[1];
@@ -289,21 +306,9 @@ uqTgaWClass<P_V,P_M>::compute(
   if (weightFunction ) maximumTime = weightFunction->maxDomainValue(); // FIX ME
 
   bool continueOnWhile = true;
-#if 1
   if ((reqMaxTime > 0.) || referenceW || weightFunction) {
     continueOnWhile = (currentTime < maximumTime);
   }
-#else
-  if (weightFunctionIsDeltaSeq) {
-    continueOnWhile = (deltaSeqId < deltaSeqSize);
-  }
-  else if (referenceW) {
-    continueOnWhile = (currentTime < maximumTime);
-  }
-  else if (reqMaxTime > 0) {
-    continueOnWhile = (currentTime < maximumTime);
-  }
-#endif
   else {
     continueOnWhile = (0. < currentW[0]);
   }
@@ -338,6 +343,7 @@ uqTgaWClass<P_V,P_M>::compute(
       m_times.resize(m_times.size()+1000,0.);
       m_ws.resize   (m_ws.size()   +1000,0.);
       if (computeGradAlso) m_grads.resize(m_grads.size()+1000,NULL);
+      if (paramDirection)  m_wDirs.resize(m_wDirs.size()+1000,0.  );
       if (diffFunction)    m_diffs.resize(m_diffs.size()+1000,0.  );
     }
 
@@ -348,7 +354,8 @@ uqTgaWClass<P_V,P_M>::compute(
       (*(m_grads[loopId]))[0] = currentW[1];
       (*(m_grads[loopId]))[1] = currentW[2];
     }
-    if (diffFunction) m_diffs[loopId] = diff;
+    if (paramDirection) m_wDirs[loopId] = currentW[3];
+    if (diffFunction  ) m_diffs[loopId] = diff;
 
     if (misfitValue) {
       if (deltaSeqFunction != NULL) {
@@ -385,21 +392,9 @@ uqTgaWClass<P_V,P_M>::compute(
     previousTime = currentTime;
     previousW[0] = currentW[0];
 
-#if 1
     if ((reqMaxTime > 0.) || referenceW || weightFunction) {
       continueOnWhile = (currentTime < maximumTime);
     }
-#else
-    if (weightFunctionIsDeltaSeq) {
-      continueOnWhile = (deltaSeqId < deltaSeqSize);
-    }
-    else if (referenceW) {
-      continueOnWhile = (currentTime < maximumTime);
-    }
-    else if (reqMaxTime > 0) {
-      continueOnWhile = (currentTime < maximumTime);
-    }
-#endif
     else {
       continueOnWhile = (0. < currentW[0]);
     }
@@ -408,6 +403,7 @@ uqTgaWClass<P_V,P_M>::compute(
   m_times.resize(loopId+1);
   m_ws.resize   (loopId+1);
   if (computeGradAlso) m_grads.resize(loopId+1);
+  if (paramDirection)  m_wDirs.resize(loopId+1);
   if (diffFunction)    m_diffs.resize(loopId+1);
 
   if (diffFunction) diffFunction->set(m_times,m_diffs);
@@ -476,7 +472,7 @@ uqTgaWClass<P_V,P_M>::computeUsingTemp(
   m_ws.resize   (sizeForResize,0.);
   ////m_grads.clear();
 
-  uqTgaWDotInfoStruct wDotInfo = {params[0],params[1],&m_temperatureFunctionObj,false};
+  uqTgaWDotInfoStruct<P_V,P_M> wDotInfo = {params[0],params[1],paramDirection,&m_temperatureFunctionObj,false};
 
   unsigned int numWComponents = 1;
 
@@ -485,7 +481,7 @@ uqTgaWClass<P_V,P_M>::computeUsingTemp(
         gsl_odeiv_step      *s  = gsl_odeiv_step_alloc(st,numWComponents);
         gsl_odeiv_control   *c  = gsl_odeiv_control_y_new(GSL_ODE_CONTROL_ABS_PRECISION_FOR_QUESO,0.0);
         gsl_odeiv_evolve    *e  = gsl_odeiv_evolve_alloc(numWComponents);
-        gsl_odeiv_system     sysTemp = {uqTgaWDotWrtTempRoutine, NULL, numWComponents, (void *)&wDotInfo}; 
+        gsl_odeiv_system     sysTemp = {uqTgaWDotWrtTempRoutine<P_V,P_M>, NULL, numWComponents, (void *)&wDotInfo}; 
 
   double currentTime = 0.;
   double currentTemp = m_temperatureFunctionObj.value(currentTime);
@@ -617,9 +613,10 @@ uqTgaWClass<P_V,P_M>::interpolate(
   double        directionForIdSearch,
   double*       wValue,
   P_V*          wGrad,
+  double*       wDir,
   bool*         timeWasMatchedExactly) const
 {
-  unsigned int tmpSize = m_times.size(); // Yes, 'm_grads'
+  unsigned int tmpSize = m_times.size();
   //std::cout << "In uqTgaWClass<P_V,P_M>::interpolate()"
   //          << ": time = "           << time
   //          << ", m_times.size() = " << tmpSize
@@ -647,10 +644,20 @@ uqTgaWClass<P_V,P_M>::interpolate(
                       "uqTgaW<P_V,P_M>::interpolate()",
                       "m_times[max] < time");
 
+  UQ_FATAL_TEST_MACRO(wGrad && (m_grads.size() == 0),
+                      m_env.rank(),
+                      "uqTgaW<P_V,P_M>::interpolate()",
+                      "m_grads.size() == 0");
+
   UQ_FATAL_TEST_MACRO(wGrad && (m_grads[0] == NULL),
                       m_env.rank(),
                       "uqTgaW<P_V,P_M>::interpolate()",
                       "m_grads[0] == NULL");
+
+  UQ_FATAL_TEST_MACRO(wDir && (m_wDirs.size() == 0),
+                      m_env.rank(),
+                      "uqTgaW<P_V,P_M>::interpolate()",
+                      "m_wDirs.size() == 0");
 
   unsigned int i = 0;
   if (directionForIdSearch >= 0.) {
@@ -670,6 +677,7 @@ uqTgaWClass<P_V,P_M>::interpolate(
     if (timeWasMatchedExactly) *timeWasMatchedExactly = true;
     if (wValue) *wValue = m_ws[i];
     if (wGrad)  *wGrad  = *(m_grads[i]);
+    if (wDir)   *wDir   = m_wDirs[i];
   }
   else {
     if (timeWasMatchedExactly) *timeWasMatchedExactly = false;
@@ -685,6 +693,7 @@ uqTgaWClass<P_V,P_M>::interpolate(
     double ratio = (time - m_times[i-1])/(m_times[i]-m_times[i-1]);
     if (wValue) *wValue =      m_ws[i-1]  + ratio * (      m_ws[i]  -      m_ws[i-1]  );
     if (wGrad)  *wGrad  = *(m_grads[i-1]) + ratio * ( *(m_grads[i]) - *(m_grads[i-1]) );
+    if (wDir)   *wDir   =   m_wDirs[i-1]  + ratio * (   m_wDirs[i]  -   m_wDirs[i-1]  );
   }
 
   return;
