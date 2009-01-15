@@ -471,11 +471,16 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runTests()
   // Output file
   m_testVars.ofs = new std::ofstream( (m_testOptions.outerPrefixName+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
 
-  //runTempTimeTest    ();
-  prepareRefForTests ();
-  //runTimingTest      ();
-  runGradTest        ();
-  //runOptimizationTest();
+  if (m_testOptions.runTempTimeTest) runTempTimeTest();
+  if ((m_testOptions.createReference    ) ||
+      (m_testOptions.runTimingTest      ) ||
+      (m_testOptions.runGradTest        ) ||
+      (m_testOptions.runOptimizationTest)) {
+    prepareRefForTests();
+  }
+  if (m_testOptions.runTimingTest      ) runTimingTest      ();
+  if (m_testOptions.runGradTest        ) runGradTest        ();
+  if (m_testOptions.runOptimizationTest) runOptimizationTest();
 
   return;
 }
@@ -552,7 +557,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::prepareRefForTests()
 
   tmpW1.compute(paramValues,
                 NULL,
-                m_testOptions.refW1,
+                1., //m_testOptions.refW1,
                 0.,                           // maximumTime
                 m_testOptions.refMaxTimeStep, // maximum delta time
                 false,                        // computeWAndLambdaGradsAlso
@@ -572,7 +577,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::prepareRefForTests()
 
   tmpW2.compute(paramValues,
                 NULL,
-                1.-m_testOptions.refW1,
+                1., //m_testOptions.refW2,
                 0.,                           // maximumTime
                 m_testOptions.refMaxTimeStep, // maximum delta time
                 false,                        // computeWAndLambdaGradsAlso
@@ -584,27 +589,106 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::prepareRefForTests()
   tmpPrefixName = m_testOptions.outerPrefixName + "tmpW2_";
   tmpW2.printForMatlab(*m_testVars.ofs,tmpPrefixName);
 
-  // tmpW1 + tmpW2
+  // tmpW3
+  paramValues[0] = m_testOptions.refA3;
+  paramValues[1] = m_testOptions.refE3;
+  uqTgaWClass<P_V,P_M> tmpW3(*m_paramSpace,
+                             *(m_calLikelihoodInfoVector[0]->m_temperatureFunctionObj));
+
+  tmpW3.compute(paramValues,
+                NULL,
+                1., //m_testOptions.refW3,
+                0.,                           // maximumTime
+                m_testOptions.refMaxTimeStep, // maximum delta time
+                false,                        // computeWAndLambdaGradsAlso
+                NULL,                         // referenceW
+                NULL,                         // weightFunction
+                NULL,                         // misfitValue
+                NULL);                        // diffFunction
+
+  tmpPrefixName = m_testOptions.outerPrefixName + "tmpW3_";
+  tmpW3.printForMatlab(*m_testVars.ofs,tmpPrefixName);
+
+  // tmpW4
+  paramValues[0] = m_testOptions.refA4;
+  paramValues[1] = m_testOptions.refE4;
+  uqTgaWClass<P_V,P_M> tmpW4(*m_paramSpace,
+                             *(m_calLikelihoodInfoVector[0]->m_temperatureFunctionObj));
+
+  tmpW4.compute(paramValues,
+                NULL,
+                1., //1.-m_testOptions.refW1-m_testOptions.refW2-m_testOptions.refW3,
+                0.,                           // maximumTime
+                m_testOptions.refMaxTimeStep, // maximum delta time
+                false,                        // computeWAndLambdaGradsAlso
+                NULL,                         // referenceW
+                NULL,                         // weightFunction
+                NULL,                         // misfitValue
+                NULL);                        // diffFunction
+
+  tmpPrefixName = m_testOptions.outerPrefixName + "tmpW4_";
+  tmpW4.printForMatlab(*m_testVars.ofs,tmpPrefixName);
+
+  // tmpW1 + tmpW2 + tmpW3 + tmpW4
+  double factor1 = m_testOptions.refW1;
+  double factor2 = m_testOptions.refW2;
+  double factor3 = m_testOptions.refW3;
+  double factor4 = 1. - factor1 - factor2 - factor3;
+
   unsigned int wSize = tmpW1.times().size();
-  unsigned int startingId = 0;
+
+  unsigned int startingId2 = 0;
+  unsigned int startingId3 = 0;
+  unsigned int startingId4 = 0;
+
+  std::vector<double> values2(wSize,0.);
+  std::vector<double> values3(wSize,0.);
+  std::vector<double> values4(wSize,0.);
   std::vector<double> wValues(wSize,0.);
+
   for (unsigned i = 0; i < wSize; ++i) {
     double time = tmpW1.times()[i];
-    double value2 = 0.;
+
+    values2[i] = 0.;
     if (time <= tmpW2.times()[tmpW2.ws().size()-1]) {
       tmpW2.interpolate(time,
-                        startingId,
+                        startingId2,
                         1.,
-                        &value2,
+                        &values2[i],
                         NULL,
                         NULL,
                         NULL);
     }
-    wValues[i] =tmpW1.ws()[i] + value2;
+
+    values3[i] = 0.;
+    if (time <= tmpW3.times()[tmpW3.ws().size()-1]) {
+      tmpW3.interpolate(time,
+                        startingId3,
+                        1.,
+                        &values3[i],
+                        NULL,
+                        NULL,
+                        NULL);
+    }
+
+    values4[i] = 0.;
+    if (time <= tmpW4.times()[tmpW4.ws().size()-1]) {
+      tmpW4.interpolate(time,
+                        startingId4,
+                        1.,
+                        &values4[i],
+                        NULL,
+                        NULL,
+                        NULL);
+    }
+
+    wValues[i] = factor1*tmpW1.ws()[i] + factor2*values2[i] + factor3*values3[i] + factor4*values4[i];
   }
 
   uqSampled1D1DFunctionClass tmpW(tmpW1.times(),
                                   wValues);
+  tmpPrefixName = m_testOptions.outerPrefixName + "tmpW_";
+  tmpW.printForMatlab(*m_testVars.ofs,tmpPrefixName);
 
   if (m_env.rank() == 0) {
     std::cout << "In uqTgaValidation::prepareRefForTests()"

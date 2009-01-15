@@ -362,11 +362,29 @@ tga_val_fp_mc_seq_stats_kde_numEvalPositions     = 250
 #tga_tests_writeOutput              = 1
 
 tga_tests_outerPrefixName          = case99_
+
+tga_tests_runTempTimeTest          = 0
+tga_tests_createReference          = 1
+tga_tests_runTimingTest            = 0
+tga_tests_runGradTest              = 0
+tga_tests_runOptimizationTest      = 0
+
 tga_tests_refW1                    = 1.0
+tga_tests_refW2                    = 0.0
+tga_tests_refW3                    = 0.0
+
 tga_tests_refA1                    = 2.6000e+11
 tga_tests_refE1                    = 2.0000e+05
+
 tga_tests_refA2                    = 2.5900e+11
 tga_tests_refE2                    = 2.0010e+05
+
+tga_tests_refA3                    = 2.1000e+11
+tga_tests_refE3                    = 2.1000e+05
+
+tga_tests_refA4                    = 2.0900e+11
+tga_tests_refE4                    = 2.1010e+05
+
 tga_tests_guessA                   = 2.5910e+11
 tga_tests_guessE                   = 2.0090e+05
 tga_tests_refMaxTimeStep           = 1.
