@@ -1153,6 +1153,28 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runOptimizationTest()
     std::cout << std::endl;
   }
 
+  if (newtonSucceeded) {
+    std::string tmpPrefixName;
+
+    // optW
+    uqTgaWClass<P_V,P_M> optW(*m_paramSpace,
+                              *(m_calLikelihoodInfoVector[0]->m_temperatureFunctionObj));
+
+    optW.compute(paramValues,
+                 NULL,
+                 1., //m_testOptions.refW1,
+                 0.,                           // maximumTime
+                 m_testOptions.refMaxTimeStep, // maximum delta time
+                 false,                        // computeWAndLambdaGradsAlso
+                 NULL,                         // referenceW
+                 NULL,                         // weightFunction
+                 NULL,                         // misfitValue
+                 NULL);                        // diffFunction
+
+    tmpPrefixName = m_testOptions.outerPrefixName + "optW_";
+    optW.printForMatlab(*m_testVars.ofs,tmpPrefixName);
+  }
+
   if (m_env.rank() == 0) {
     std::cout << "Leaving uqTgaValidation::runOptimizationTest()"
               << std::endl;

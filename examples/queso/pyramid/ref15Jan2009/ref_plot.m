@@ -1,12 +1,12 @@
-case99_;
+ref_data_;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-plot(case99_tmpW1_Time,case99_tmpW1_W   ,'-b' ,'linewidth',2);
+plot(ref_data_tmpW1_Time,ref_data_tmpW1_W   ,'-b' ,'linewidth',2);
 hold
-plot(case99_tmpW2_Time,case99_tmpW2_W   ,'--b','linewidth',2);
-plot(case99_tmpW3_Time,case99_tmpW3_W   ,'-r' ,'linewidth',2);
-plot(case99_tmpW4_Time,case99_tmpW4_W   ,'--r','linewidth',2);
-plot(case99_tmpW_Time ,case99_tmpW_Value,'--g','linewidth',2);
+plot(ref_data_tmpW2_Time,ref_data_tmpW2_W   ,'--b','linewidth',2);
+plot(ref_data_tmpW3_Time,ref_data_tmpW3_W   ,'-r' ,'linewidth',2);
+plot(ref_data_tmpW4_Time,ref_data_tmpW4_W   ,'--r','linewidth',2);
+plot(ref_data_tmpW_Time ,ref_data_tmpW_Value,'--g','linewidth',2);
 
 ylabel('w','fontsize',20);
 xlabel('time (s)','fontsize',20);
@@ -24,12 +24,12 @@ waitforbuttonpress
 clf;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-plot(case99_tmpW1_Time,case99_tmpW1_W   ,'-b' ,'linewidth',2);
+plot(ref_data_tmpW1_Time,ref_data_tmpW1_W   ,'-b' ,'linewidth',2);
 hold
-plot(case99_tmpW2_Time,case99_tmpW2_W   ,'--b','linewidth',2);
-plot(case99_tmpW3_Time,case99_tmpW3_W   ,'-r' ,'linewidth',2);
-plot(case99_tmpW4_Time,case99_tmpW4_W   ,'--r','linewidth',2);
-plot(case99_tmpW_Time ,case99_tmpW_Value,'--g','linewidth',2);
+plot(ref_data_tmpW2_Time,ref_data_tmpW2_W   ,'--b','linewidth',2);
+plot(ref_data_tmpW3_Time,ref_data_tmpW3_W   ,'-r' ,'linewidth',2);
+plot(ref_data_tmpW4_Time,ref_data_tmpW4_W   ,'--r','linewidth',2);
+plot(ref_data_tmpW_Time ,ref_data_tmpW_Value,'--g','linewidth',2);
 a = axis;
 axis([8200 10200 a(3) a(4)]);
 
