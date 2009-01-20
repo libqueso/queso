@@ -46,6 +46,8 @@ int uqTgaWDotWrtTimeRoutine(double time, const double w[], double f[], void *voi
   double A    = (*info.paramValues)[0];
   double E    = (*info.paramValues)[1];
   double temp = info.temperatureFunctionObj->value(time);
+  if (temp < globalTgaCriticalTemperature) temp = .1;
+  else                                     temp = temp - globalTgaCriticalTemperature + .1;
   double expTerm = exp(-E/(R_CONSTANT*temp));
 
   f[0] = -A*w[0]*expTerm;
@@ -74,8 +76,8 @@ template<class P_V,class P_M>
 int uqTgaWDotWrtTempRoutine(double temp, const double w[], double f[], void *voidInfo)
 {
   const uqTgaWDotInfoStruct<P_V,P_M>& info = *((uqTgaWDotInfoStruct<P_V,P_M> *)voidInfo);
-  double A     = info.A;
-  double E     = info.E;
+  double A    = (*info.paramValues)[0];
+  double E    = (*info.paramValues)[1];
   double deriv = info.temperatureFunctionObj->deriv(0.); // COMPATIBILITY WITH OLD VERSION (valid only for linear temperature function)
 
   UQ_FATAL_TEST_MACRO(info.computeGradAlso,
@@ -259,8 +261,8 @@ uqTgaWClass<P_V,P_M>::compute(
 
   // Initialize other variables
   this->resetInternalValues();
-  m_times.resize(1000,0.  );
-  m_ws.resize   (1000,0.  );
+  m_times.resize(1000,0.);
+  m_ws.resize   (1000,0.);
   if (computeGradAlso) m_grads.resize(1000,NULL);
   if (paramDirection)  m_wDirs.resize(1000,0.  );
   if (diffFunction)    m_diffs.resize(1000,0.  );
@@ -334,6 +336,9 @@ uqTgaWClass<P_V,P_M>::compute(
     if (currentW[0] < 1.e-6) currentW[0] = 0.;
     if (maxTimeStep > 0) timeStep = std::min(maxTimeStep,timeStep);
     currentTemp = m_temperatureFunctionObj.value(currentTime);
+    double tempUsedInODE = currentTemp;
+    if (tempUsedInODE < globalTgaCriticalTemperature) tempUsedInODE = .1;
+    else                                              tempUsedInODE = tempUsedInODE - globalTgaCriticalTemperature + .1;
 
     double diff = 0.;
     if (referenceW) diff = currentW[0] - referenceW->value(currentTime); // Might be slow (any case)
@@ -345,6 +350,9 @@ uqTgaWClass<P_V,P_M>::compute(
                 << ", currentW[0] = " << currentW[0]
                 << ", maximumTime-currentTime = " << maximumTime-currentTime
                 << ", deltaSeqFunction = "        << deltaSeqFunction
+                << ", globalCriticalTemp = "      << globalTgaCriticalTemperature
+                << ", currentTemp = "             << currentTemp
+                << ", tempUsedInODE = "           << tempUsedInODE
                 << std::endl;
     }
 
@@ -482,7 +490,7 @@ uqTgaWClass<P_V,P_M>::computeUsingTemp(
   m_ws.resize   (sizeForResize,0.);
   ////m_grads.clear();
 
-  uqTgaWDotInfoStruct<P_V,P_M> wDotInfo = {params[0],params[1],paramDirection,&m_temperatureFunctionObj,false};
+  uqTgaWDotInfoStruct<P_V,P_M> wDotInfo = {&params,NULL,&m_temperatureFunctionObj,false};
 
   unsigned int numWComponents = 1;
 

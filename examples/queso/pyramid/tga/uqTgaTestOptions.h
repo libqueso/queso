@@ -50,6 +50,9 @@
 #define UQ_TGA_TEST_LAMBDA_MAX_TIME_STEP_ODV         .1
 #define UQ_TGA_TEST_INTEGRALS_NUM_INTERVALS_ODV      1000
 #define UQ_TGA_TEST_RELATIVE_FD_STEP_ODV             1.e-8
+#define UQ_TGA_TEST_NEWTON_MAX_ITERS_ODV             20
+#define UQ_TGA_TEST_NEWTON_ABS_TOL_ODV               1.e-7
+#define UQ_TGA_TEST_CRITICAL_TEMPERATURE_ODV         0
 #define UQ_TGA_TEST_WRITE_OUTPUT_ODV                 1
 
 class uqTgaTestOptionsClass
@@ -88,6 +91,9 @@ public:
   double       lambdaMaxTimeStep;
   unsigned int integralsNumIntervals;
   double       relativeFDStep;
+  unsigned int NewtonMaxIters;
+  double       NewtonAbsTol;
+  double       criticalTemperature;
   bool         writeOutput;
 
 private:
@@ -126,6 +132,9 @@ private:
   std::string              m_option_lambdaMaxTimeStep;
   std::string              m_option_integralsNumIntervals;
   std::string              m_option_relativeFDStep;
+  std::string              m_option_NewtonMaxIters;
+  std::string              m_option_NewtonAbsTol;
+  std::string              m_option_criticalTemperature;
   std::string              m_option_writeOutput;
 };
 
@@ -164,6 +173,9 @@ uqTgaTestOptionsClass::uqTgaTestOptionsClass(const uqBaseEnvironmentClass& env, 
   m_option_lambdaMaxTimeStep       (m_prefix + "lambdaMaxTimeStep"       ),
   m_option_integralsNumIntervals   (m_prefix + "integralsNumIntervals"   ),
   m_option_relativeFDStep          (m_prefix + "relativeFDStep"          ),
+  m_option_NewtonMaxIters          (m_prefix + "NewtonMaxIters"          ),
+  m_option_NewtonAbsTol            (m_prefix + "NewtonAbsTol"            ),
+  m_option_criticalTemperature     (m_prefix + "criticalTemperature"     ),
   m_option_writeOutput             (m_prefix + "writeOutput"             )
 {
 }
@@ -221,6 +233,9 @@ uqTgaTestOptionsClass::defineMyOptions(po::options_description& optionsDesc)
     (m_option_lambdaMaxTimeStep.c_str(),       po::value<double      >()->default_value(UQ_TGA_TEST_LAMBDA_MAX_TIME_STEP_ODV),         "lambdaMaxTimeStep"                        )
     (m_option_integralsNumIntervals.c_str(),   po::value<unsigned int>()->default_value(UQ_TGA_TEST_INTEGRALS_NUM_INTERVALS_ODV),      "integralsNumIntervals"                    )
     (m_option_relativeFDStep.c_str(),          po::value<double      >()->default_value(UQ_TGA_TEST_RELATIVE_FD_STEP_ODV),             "relativeFDStep"                           )
+    (m_option_NewtonMaxIters.c_str(),          po::value<unsigned int>()->default_value(UQ_TGA_TEST_NEWTON_MAX_ITERS_ODV),             "Newton max number of iterations"          )
+    (m_option_NewtonAbsTol.c_str(),            po::value<double      >()->default_value(UQ_TGA_TEST_NEWTON_ABS_TOL_ODV),               "Newton absolute tolerance"                )
+    (m_option_criticalTemperature.c_str(),     po::value<double      >()->default_value(UQ_TGA_TEST_CRITICAL_TEMPERATURE_ODV),         "critical temperature"                     )
     (m_option_writeOutput.c_str(),             po::value<bool        >()->default_value(UQ_TGA_TEST_WRITE_OUTPUT_ODV),                 "writeOutput"                              )
   ;
 
@@ -343,6 +358,19 @@ uqTgaTestOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
     relativeFDStep = m_env.allOptionsMap()[m_option_relativeFDStep.c_str()].as<double>();
   }
 
+  if (m_env.allOptionsMap().count(m_option_NewtonMaxIters.c_str())) {
+    NewtonMaxIters = m_env.allOptionsMap()[m_option_NewtonMaxIters.c_str()].as<unsigned int>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_NewtonAbsTol.c_str())) {
+    NewtonAbsTol = m_env.allOptionsMap()[m_option_NewtonAbsTol.c_str()].as<double>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_criticalTemperature.c_str())) {
+    criticalTemperature = m_env.allOptionsMap()[m_option_criticalTemperature.c_str()].as<double>();
+    globalTgaCriticalTemperature = criticalTemperature;
+  }
+
   if (m_env.allOptionsMap().count(m_option_writeOutput.c_str())) {
     writeOutput = m_env.allOptionsMap()[m_option_writeOutput.c_str()].as<bool>();
   }
@@ -380,6 +408,9 @@ uqTgaTestOptionsClass::print(std::ostream& os) const
      << "\n" << m_option_lambdaMaxTimeStep        << " = " << lambdaMaxTimeStep
      << "\n" << m_option_integralsNumIntervals    << " = " << integralsNumIntervals
      << "\n" << m_option_relativeFDStep           << " = " << relativeFDStep
+     << "\n" << m_option_NewtonMaxIters           << " = " << NewtonMaxIters
+     << "\n" << m_option_NewtonAbsTol             << " = " << NewtonAbsTol   
+     << "\n" << m_option_criticalTemperature      << " = " << criticalTemperature   
      << "\n" << m_option_writeOutput              << " = " << writeOutput
      << std::endl;
 
@@ -400,6 +431,7 @@ struct uqTgaTestVarsStruct {
   uqTgaTestVarsStruct();
  ~uqTgaTestVarsStruct();
 
+  const uqBase1D1DFunctionClass* tempFunction;
   uqSampled1D1DFunctionClass*  refW;
   std::ofstream*               ofs;
   uqSampled1D1DFunctionClass*  continuousWeightFunction;
@@ -410,6 +442,7 @@ struct uqTgaTestVarsStruct {
 
 uqTgaTestVarsStruct::uqTgaTestVarsStruct()
   :
+  tempFunction                 (NULL),
   refW                         (NULL),
   ofs                          (NULL),
   continuousWeightFunction     (NULL),
@@ -421,6 +454,7 @@ uqTgaTestVarsStruct::uqTgaTestVarsStruct()
 
 uqTgaTestVarsStruct::~uqTgaTestVarsStruct()
 {
+  delete tempFunction;
   delete refW;
   delete ofs;
   delete continuousWeightFunction;

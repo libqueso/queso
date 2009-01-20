@@ -58,6 +58,8 @@ int uqTgaLambdaTildeDotWrtTimeRoutine(double tildeTime, const double lambdaTilde
 
   double equivalentTime = maxTildeTime - tildeTime;
   double temp           = info.temperatureFunctionObj->value(equivalentTime);
+  if (temp < globalTgaCriticalTemperature) temp = .1;
+  else                                     temp = temp - globalTgaCriticalTemperature + .1;
   double expTerm        = exp(-E/(R_CONSTANT*temp));
   double tildeDiff      = 0.;
   if (tildeDeltaSeqFunction == NULL) tildeDiff = info.diffFunction->value(equivalentTime); // Might be slow (non delta seq case)
@@ -158,6 +160,8 @@ public:
   const std::vector<double>& times  () const;
   const std::vector<double>& lambdas() const;
   const std::vector<P_V*  >& grads  () const;
+
+  void  printForMatlab(std::ofstream& ofs, const std::string& prefixName) const;
 
 protected:
         void                 resetInternalValues();
@@ -538,5 +542,29 @@ const std::vector<P_V*>&
 uqTgaLambdaClass<P_V,P_M>::grads() const
 {
   return m_grads;
+}
+
+template<class P_V, class P_M>
+void
+uqTgaLambdaClass<P_V,P_M>::printForMatlab(
+  std::ofstream&     ofs,
+  const std::string& prefixName) const
+{
+  unsigned int tmpSize = m_times.size();
+  if (tmpSize == 0) {
+    tmpSize = 1;
+    ofs << "\n" << prefixName << "Time = zeros("   << tmpSize << ",1);"
+        << "\n" << prefixName << "Lambda = zeros(" << tmpSize << ",1);";
+  }
+  else {
+    ofs << "\n" << prefixName << "Time = zeros("   << tmpSize << ",1);"
+        << "\n" << prefixName << "Lambda = zeros(" << tmpSize << ",1);";
+    for (unsigned int i = 0; i < tmpSize; ++i) {
+      ofs << "\n" << prefixName << "Time("   << i+1 << ",1) = " << m_times  [i] << ";"
+          << "\n" << prefixName << "Lambda(" << i+1 << ",1) = " << m_lambdas[i] << ";";
+    }
+  }
+
+  return;
 }
 #endif // __UQ_TGA_LAMBDA_W_H__

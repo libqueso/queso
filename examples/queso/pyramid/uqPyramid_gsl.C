@@ -17,6 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+double globalTgaCriticalTemperature = 0.;
+
 #include <uqTgaValidation.h>
 #include <uqGslMatrix.h>
 #include <stdlib.h>
@@ -42,7 +44,7 @@ int main(int argc, char* argv[])
                        uqGslVectorClass, // type for qoi vectors
                        uqGslMatrixClass  // type for qoi matrices
                       > tgaValidation(*env,"tga_");
-#if 0
+#if 1
   tgaValidation.run();
 #else
   tgaValidation.runTests();

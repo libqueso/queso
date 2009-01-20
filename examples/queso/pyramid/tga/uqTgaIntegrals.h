@@ -155,6 +155,8 @@ uqTgaIntegrals(
     for (unsigned int i = 0; i < numIntervals; ++i) {
       double time = firstTime + ((double) i)*timeIntervalSize;
       double temp = temperatureFunctionObj.value(time);
+      if (temp < globalTgaCriticalTemperature) temp = .1;
+      else                                     temp = temp - globalTgaCriticalTemperature + .1;
 
       wObj.interpolate(time,
                        currentWIntervalId,

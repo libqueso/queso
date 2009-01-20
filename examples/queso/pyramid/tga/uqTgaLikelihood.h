@@ -45,6 +45,7 @@ uqTgaLikelihoodInfoStruct
                             unsigned int*                      integralsNumIntervals);
  ~uqTgaLikelihoodInfoStruct();
 
+  void changeTempFunction   (const uqBase1D1DFunctionClass& tempFunction);
 #ifdef QUESO_TGA_USES_OLD_COMPATIBLE_CODE
 #else
   void changeReferenceW     (const uqBase1D1DFunctionClass& referenceW);
@@ -54,9 +55,10 @@ uqTgaLikelihoodInfoStruct
   void setCheckingVariables (bool performChecking, double* relativeFDStep);
 
   const uqVectorSpaceClass <P_V,P_M>& m_paramSpace;
-  uqBase1D1DFunctionClass*            m_temperatureFunctionObj;
+  bool                                m_tempFunctionIsTheInternallyCreated;
   bool                                m_refWIsTheInternallyCreated;
   bool                                m_weightFunctionsAreTheInternallyCreated;
+  const uqBase1D1DFunctionClass*      m_temperatureFunctionObj;
 #ifdef QUESO_TGA_USES_OLD_COMPATIBLE_CODE
   uqTgaStorageClass        <P_V,P_M>* m_referenceW;
 #else
@@ -94,9 +96,10 @@ uqTgaLikelihoodInfoStruct<P_V,P_M>::uqTgaLikelihoodInfoStruct(
   unsigned int*                      integralsNumIntervals)
   :
   m_paramSpace                            (paramSpace),
-  m_temperatureFunctionObj                (NULL),
+  m_tempFunctionIsTheInternallyCreated    (true),
   m_refWIsTheInternallyCreated            (true),
   m_weightFunctionsAreTheInternallyCreated(true),
+  m_temperatureFunctionObj                (NULL),
   m_referenceW                            (NULL),
   m_weightFunction                        (NULL),
   m_tildeWeightFunction                   (NULL),
@@ -131,6 +134,15 @@ uqTgaLikelihoodInfoStruct<P_V,P_M>::uqTgaLikelihoodInfoStruct(
   // Open input file on experimental data
   FILE *inp;
   inp = fopen(inpName.c_str(),"r");
+  if (inp == NULL) {
+    if (paramSpace.env().rank() == 0) {
+      std::cout << "Input file " << inpName.c_str() << " was not found" << std::endl;
+    }
+    UQ_FATAL_TEST_MACRO((inp == NULL),
+                        paramSpace.env().rank(),
+                        "uqTgaLikelihoodInfoStruct<P_V,P_M>::constructor()",
+                        "input file not found");
+  }
 
   // Read kinetic parameters and convert heating rate to K/s
   double beta;
@@ -158,7 +170,7 @@ uqTgaLikelihoodInfoStruct<P_V,P_M>::uqTgaLikelihoodInfoStruct(
   while (fscanf(inp,"%lf %lf %lf",&tmpTemp,&tmpW,&tmpV) != EOF) {
     UQ_FATAL_TEST_MACRO((whileSize >= numMeasurements),
                         paramSpace.env().rank(),
-                        "uqTgaLikelihoodInfoStruct<P_V,P_M>::constructor(), in uqTgaValidation.h",
+                        "uqTgaLikelihoodInfoStruct<P_V,P_M>::constructor()",
                         "input file 1 has too many measurements");
     measuredTimes[whileSize] = (tmpTemp-initialTemp)/beta;
     measuredTemps[whileSize] = tmpTemp;
@@ -170,7 +182,7 @@ uqTgaLikelihoodInfoStruct<P_V,P_M>::uqTgaLikelihoodInfoStruct(
   }
   UQ_FATAL_TEST_MACRO((whileSize != numMeasurements),
                       paramSpace.env().rank(),
-                      "uqTgaLikelihoodInfoStruct<P_V,P_M>::constructor(), in uqTgaValidation.h",
+                      "uqTgaLikelihoodInfoStruct<P_V,P_M>::constructor()",
                       "input file 1 has a smaller number of measurements than expected");
 
   // Close input file on experimental data
@@ -240,8 +252,22 @@ uqTgaLikelihoodInfoStruct<P_V,P_M>::~uqTgaLikelihoodInfoStruct()
   delete m_wObj;
   if (m_weightFunctionsAreTheInternallyCreated) delete m_tildeWeightFunction;
   if (m_weightFunctionsAreTheInternallyCreated) delete m_weightFunction;
-  if (m_refWIsTheInternallyCreated) delete m_referenceW;
-  delete m_temperatureFunctionObj;
+  if (m_refWIsTheInternallyCreated            ) delete m_referenceW;
+  if (m_tempFunctionIsTheInternallyCreated    ) delete m_temperatureFunctionObj;
+}
+
+
+template<class P_V,class P_M>
+void
+uqTgaLikelihoodInfoStruct<P_V,P_M>::changeTempFunction(const uqBase1D1DFunctionClass& tempFunction)
+{
+  if (m_tempFunctionIsTheInternallyCreated) {
+    delete m_temperatureFunctionObj;
+    m_tempFunctionIsTheInternallyCreated = false;
+  }
+  m_temperatureFunctionObj = &tempFunction;
+
+  return;
 }
 
 #ifdef QUESO_TGA_USES_OLD_COMPATIBLE_CODE
