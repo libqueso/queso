@@ -216,10 +216,15 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   if (m_computeSolution == false) {
     if ((m_env.rank() == 0)) {
       std::cout << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
-                << ": computing solution, as requested by user"
+                << ": avoiding solution, as requested by user"
                 << std::endl;
     }
     return;
+  }
+  if ((m_env.rank() == 0)) {
+    std::cout << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
+              << ": computing solution, as requested by user"
+              << std::endl;
   }
 
   if (m_solutionPdf     ) delete m_solutionPdf;

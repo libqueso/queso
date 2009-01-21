@@ -71,6 +71,58 @@ uqBase1D1DFunctionClass::maxDomainValue() const
 }
 
 //*****************************************************
+// Generic 1D->1D class
+//*****************************************************
+class uqGeneric1D1DFunctionClass : public uqBase1D1DFunctionClass {
+public:
+  uqGeneric1D1DFunctionClass(double (*valueRoutinePtr)(double domainValue, const void* routinesDataPtr),
+                             double (*derivRoutinePtr)(double domainValue, const void* routinesDataPtr),
+                             const void* routinesDataPtr);
+ ~uqGeneric1D1DFunctionClass();
+
+  double value(double domainValue) const;
+  double deriv(double domainValue) const;
+
+protected:
+  using uqBase1D1DFunctionClass::m_minDomainValue;
+  using uqBase1D1DFunctionClass::m_maxDomainValue;
+
+  double (*m_valueRoutinePtr)(double domainValue, const void* routinesDataPtr);
+  double (*m_derivRoutinePtr)(double domainValue, const void* routinesDataPtr);
+  const void* m_routinesDataPtr;
+};
+
+uqGeneric1D1DFunctionClass::uqGeneric1D1DFunctionClass(
+  double (*valueRoutinePtr)(double domainValue, const void* routinesDataPtr),
+  double (*derivRoutinePtr)(double domainValue, const void* routinesDataPtr),
+  const void* routinesDataPtr)
+  :
+  uqBase1D1DFunctionClass(-INFINITY,INFINITY),
+  m_valueRoutinePtr      (valueRoutinePtr),
+  m_derivRoutinePtr      (derivRoutinePtr),
+  m_routinesDataPtr      (routinesDataPtr)
+{
+}
+
+uqGeneric1D1DFunctionClass::~uqGeneric1D1DFunctionClass()
+{
+}
+
+double
+uqGeneric1D1DFunctionClass::value(double domainValue) const
+{
+  // FIX ME: check range of domainValue
+  return (*m_valueRoutinePtr)(domainValue,m_routinesDataPtr);
+}
+
+double
+uqGeneric1D1DFunctionClass::deriv(double domainValue) const
+{
+  // FIX ME: check range of domainValue
+  return (*m_derivRoutinePtr)(domainValue,m_routinesDataPtr);
+}
+
+//*****************************************************
 // Constant 1D->1D class
 //*****************************************************
 class uqConstant1D1DFunctionClass : public uqBase1D1DFunctionClass {

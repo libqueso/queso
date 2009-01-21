@@ -222,10 +222,15 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   if (m_computeSolution == false) {
     if ((m_env.rank() == 0)) {
       std::cout << "In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()"
-                << ": computing solution, as requested by user"
+                << ": avoiding solution, as requested by user"
                 << std::endl;
     }
     return;
+  }
+  if ((m_env.rank() == 0)) {
+    std::cout << "In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()"
+              << ": computing solution, as requested by user"
+              << std::endl;
   }
 
   if (m_mcSeqGenerator  ) delete m_mcSeqGenerator;

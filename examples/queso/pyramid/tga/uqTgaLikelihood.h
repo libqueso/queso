@@ -376,6 +376,10 @@ uqTgaLikelihoodRoutine(
 
   // Loop on scenarios
   const std::vector<uqTgaLikelihoodInfoStruct<P_V,P_M> *>& vecInfo = *((const std::vector<uqTgaLikelihoodInfoStruct<P_V,P_M> *> *) functionDataPtr);
+  UQ_FATAL_TEST_MACRO(vecInfo.size() == 0,
+                      paramValues.env().rank(),
+                      "uqTgaLikelihoodRoutine<P_V,P_M>()",
+                      "vecInfo has size 0");
   for (unsigned int i = 0; i < vecInfo.size(); ++i) {
     uqTgaLikelihoodInfoStruct<P_V,P_M>& info = *(vecInfo[i]);
     uqTgaWClass     <P_V,P_M>&  wObj         = *(info.m_wObj);

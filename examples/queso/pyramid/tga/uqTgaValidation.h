@@ -247,10 +247,15 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
   m_calPriorRv = new uqUniformVectorRVClass<P_V,P_M> ("cal_prior_", // Extra prefix before the default "rv_" prefix
                                                       *m_paramDomain);
 
+#ifdef QUESO_TEST_OCTOBER_2008
   m_calLikelihoodInfoVector.resize(3,NULL);
   m_calLikelihoodInfoVector[0] = new uqTgaLikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"tgaData/scenario_5_K_min.dat", NULL,NULL,NULL);
   m_calLikelihoodInfoVector[1] = new uqTgaLikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"tgaData/scenario_25_K_min.dat",NULL,NULL,NULL);
   m_calLikelihoodInfoVector[2] = new uqTgaLikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"tgaData/scenario_50_K_min.dat",NULL,NULL,NULL);
+#endif
+#ifdef QUESO_TEST_REPORT1_2009
+  this->runTests(); // Just to create reference data
+#endif
 
   m_calLikelihoodFunctionObj = new uqGenericScalarFunctionClass<P_V,P_M>("cal_like_",
                                                                          *m_paramDomain,
@@ -307,8 +312,14 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
   }
 
   // Deal with inverse problem
+#ifdef QUESO_TEST_OCTOBER_2008
   m_valLikelihoodInfoVector.resize(1,NULL);
   m_valLikelihoodInfoVector[0] = new uqTgaLikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"tgaData/scenario_100_K_min.dat",NULL,NULL,NULL);
+#endif
+#ifdef QUESO_TEST_REPORT1_2009
+  m_valLikelihoodInfoVector.resize(1,NULL);
+  m_valLikelihoodInfoVector[0] = new uqTgaLikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"tgaData/scenario_10_K_min.dat",NULL,NULL,NULL);
+#endif
 
   m_valLikelihoodFunctionObj = new uqGenericScalarFunctionClass<P_V,P_M>("val_like_",
                                                                          *m_paramDomain,

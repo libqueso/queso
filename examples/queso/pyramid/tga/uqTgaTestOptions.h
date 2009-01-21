@@ -42,6 +42,8 @@
 #define UQ_TGA_TEST_REF_E4_ODV                       2.0000e+05
 #define UQ_TGA_TEST_GUESS_A_ODV                      2.5910e+11
 #define UQ_TGA_TEST_GUESS_E_ODV                      2.0090e+05
+#define UQ_TGA_TEST_REF_TEMPERATURE_PROFILE_ID_ODV   0
+#define UQ_TGA_TEST_REF_MAX_TIME_ODV                 0.
 #define UQ_TGA_TEST_REF_MAX_TIME_STEP_ODV            1.
 #define UQ_TGA_TEST_REF_TREAT_DATA_AS_CONTINUOUS_ODV 0
 #define UQ_TGA_TEST_REF_NUM_DISCRETE_SAMPLES_ODV     12
@@ -83,6 +85,8 @@ public:
   double       refE4;
   double       guessA;
   double       guessE;
+  unsigned int refTemperatureProfileId;
+  double       refMaxTime;
   double       refMaxTimeStep;
   bool         refTreatDataAsContinuous;
   unsigned int refNumDiscreteSamples;
@@ -124,6 +128,8 @@ private:
   std::string              m_option_refE4;
   std::string              m_option_guessA;
   std::string              m_option_guessE;
+  std::string              m_option_refTemperatureProfileId;
+  std::string              m_option_refMaxTime;
   std::string              m_option_refMaxTimeStep;
   std::string              m_option_refTreatDataAsContinuous;
   std::string              m_option_refNumDiscreteSamples;
@@ -165,6 +171,8 @@ uqTgaTestOptionsClass::uqTgaTestOptionsClass(const uqBaseEnvironmentClass& env, 
   m_option_refE4                   (m_prefix + "refE4"                   ),
   m_option_guessA                  (m_prefix + "guessA"                  ),
   m_option_guessE                  (m_prefix + "guessE"                  ),
+  m_option_refTemperatureProfileId (m_prefix + "refTemperatureProfileId" ),
+  m_option_refMaxTime              (m_prefix + "refMaxTime"              ),
   m_option_refMaxTimeStep          (m_prefix + "refMaxTimeStep"          ),
   m_option_refTreatDataAsContinuous(m_prefix + "refTreatDataAsContinuous"),
   m_option_refNumDiscreteSamples   (m_prefix + "refNumDiscreteSamples"   ),
@@ -225,6 +233,8 @@ uqTgaTestOptionsClass::defineMyOptions(po::options_description& optionsDesc)
     (m_option_refE4.c_str(),                   po::value<double      >()->default_value(UQ_TGA_TEST_REF_E4_ODV),                       "reference E4"                             )
     (m_option_guessA.c_str(),                  po::value<double      >()->default_value(UQ_TGA_TEST_GUESS_A_ODV),                      "guess A"                                  )
     (m_option_guessE.c_str(),                  po::value<double      >()->default_value(UQ_TGA_TEST_GUESS_E_ODV),                      "guess E"                                  )
+    (m_option_refTemperatureProfileId.c_str(), po::value<unsigned int>()->default_value(UQ_TGA_TEST_REF_TEMPERATURE_PROFILE_ID_ODV),   "refTemperatureProfileId"                  )
+    (m_option_refMaxTime.c_str(),              po::value<double      >()->default_value(UQ_TGA_TEST_REF_MAX_TIME_ODV),                 "refMaxTime"                               )
     (m_option_refMaxTimeStep.c_str(),          po::value<double      >()->default_value(UQ_TGA_TEST_REF_MAX_TIME_STEP_ODV),            "refMaxTimeStep"                           )
     (m_option_refTreatDataAsContinuous.c_str(),po::value<bool        >()->default_value(UQ_TGA_TEST_REF_TREAT_DATA_AS_CONTINUOUS_ODV), "refTreatDataAsContinuous"                 )
     (m_option_refNumDiscreteSamples.c_str(),   po::value<unsigned int>()->default_value(UQ_TGA_TEST_REF_NUM_DISCRETE_SAMPLES_ODV),     "refNumDiscreteSamples"                    )
@@ -326,6 +336,14 @@ uqTgaTestOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
     guessE = m_env.allOptionsMap()[m_option_guessE.c_str()].as<double>();
   }
 
+  if (m_env.allOptionsMap().count(m_option_refTemperatureProfileId.c_str())) {
+    refTemperatureProfileId = m_env.allOptionsMap()[m_option_refTemperatureProfileId.c_str()].as<unsigned int>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_refMaxTime.c_str())) {
+    refMaxTime = m_env.allOptionsMap()[m_option_refMaxTime.c_str()].as<double>();
+  }
+
   if (m_env.allOptionsMap().count(m_option_refMaxTimeStep.c_str())) {
     refMaxTimeStep = m_env.allOptionsMap()[m_option_refMaxTimeStep.c_str()].as<double>();
   }
@@ -400,6 +418,8 @@ uqTgaTestOptionsClass::print(std::ostream& os) const
      << "\n" << m_option_refE4                    << " = " << refE4
      << "\n" << m_option_guessA                   << " = " << guessA
      << "\n" << m_option_guessE                   << " = " << guessE
+     << "\n" << m_option_refTemperatureProfileId  << " = " << refTemperatureProfileId
+     << "\n" << m_option_refMaxTime               << " = " << refMaxTime
      << "\n" << m_option_refMaxTimeStep           << " = " << refMaxTimeStep
      << "\n" << m_option_refTreatDataAsContinuous << " = " << refTreatDataAsContinuous
      << "\n" << m_option_refNumDiscreteSamples    << " = " << refNumDiscreteSamples
