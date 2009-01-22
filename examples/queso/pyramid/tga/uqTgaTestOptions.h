@@ -88,6 +88,19 @@ std::ostream& operator<<(std::ostream& os, const uqTgaTestOptionsClass& obj);
 
 uqTgaTestOptionsClass::uqTgaTestOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix)
   :
+  m_outerPrefixName                (UQ_TGA_TEST_OUTER_PREFIX_NAME_ODV    ),
+  m_runTempTimeTest                (UQ_TGA_TEST_RUN_TEMP_TIME_TEST_ODV   ),
+  m_runTimingTest                  (UQ_TGA_TEST_RUN_TIMINING_TEST_ODV    ),
+  m_runGradTest                    (UQ_TGA_TEST_RUN_GRAD_TEST_ODV        ),
+  m_runOptimizationTest            (UQ_TGA_TEST_RUN_OPTIMIZATION_TEST_ODV),
+  m_guessA                         (UQ_TGA_TEST_GUESS_A_ODV              ),
+  m_guessE                         (UQ_TGA_TEST_GUESS_E_ODV              ),
+  m_computeHessian                 (UQ_TGA_TEST_COMPUTE_HESSIAN_ODV      ),
+  m_relativeFDStep                 (UQ_TGA_TEST_RELATIVE_FD_STEP_ODV     ),
+  m_NewtonMaxIters                 (UQ_TGA_TEST_NEWTON_MAX_ITERS_ODV     ),
+  m_NewtonAbsTol                   (UQ_TGA_TEST_NEWTON_ABS_TOL_ODV       ),
+  m_criticalTemperature            (UQ_TGA_TEST_CRITICAL_TEMPERATURE_ODV ),
+  m_writeOutput                    (UQ_TGA_TEST_WRITE_OUTPUT_ODV         ),
   m_env                            (env),
   m_prefix                         ((std::string)(prefix) + "tests_"),
   m_optionsDesc                    (new po::options_description("TGA test options")),

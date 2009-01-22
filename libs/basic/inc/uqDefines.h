@@ -21,14 +21,11 @@
 #define __UQ_DEFINES_H__
 
 #include <iostream>
-#include <limits>
 #include <stdlib.h> // For exit()
 
 int uqMyRank();
 
 const int UQ_UNAVAILABLE_RANK         = -1;
-const unsigned int UQ_INVALID_DOF_ID  = std::numeric_limits<unsigned int>::max();
-const unsigned int UQ_INVALID_NODE_ID = std::numeric_limits<unsigned int>::max();
 
 const int UQ_OK_RC                         =  0;
 const int UQ_INCOMPLETE_IMPLEMENTATION_RC  = -1;
