@@ -21,6 +21,7 @@
 #define __UQ_TGA_VALIDATION_H__
 
 #include <uq1D1DFunction.h>
+#include <uqTgaOptions.h>
 #include <uqTgaTestOptions.h>
 #include <uqTgaLikelihood.h>
 #include <uqTgaQoi.h>
@@ -39,19 +40,19 @@ public:
                        const char*                   prefix);
  ~uqTgaValidationClass();
 
-  void  run           ();
-  void  runTests      ();
+  void  run                   ();
 
 private:
-  void  runCalibrationStage();
-  void  runValidationStage ();
-  void  runComparisonStage ();
+  void  runTests              ();
+  void  runCalibrationStage   ();
+  void  runValidationStage    ();
+  void  runComparisonStage    ();
 
-  void  runTempTimeTest    ();
-  void  prepareRefForTests ();
-  void  runTimingTest      ();
-  void  runGradTest        ();
-  void  runOptimizationTest();
+  void  runTempTimeTest       ();
+  void  fabricateReferenceData();
+  void  runTimingTest         ();
+  void  runGradTest           ();
+  void  runOptimizationTest   ();
 
   using uqModelValidationClass<P_V,P_M,Q_V,Q_M>::m_env;
   using uqModelValidationClass<P_V,P_M,Q_V,Q_M>::m_prefix;
@@ -83,6 +84,7 @@ private:
   uqBaseScalarFunctionClass<P_V,P_M>*               m_valLikelihoodFunctionObj;
   uqTgaQoiInfoStruct<P_V,P_M,Q_V,Q_M>*              m_valQoiRoutineInfo;
 
+  uqTgaOptionsClass                                 m_options;
   uqTgaTestOptionsClass                             m_testOptions;
   uqTgaTestVarsStruct                               m_testVars;
 };
@@ -110,6 +112,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::uqTgaValidationClass(
   m_valLikelihoodInfoVector (0),
   m_valLikelihoodFunctionObj(NULL),
   m_valQoiRoutineInfo       (NULL),
+  m_options                 (env,prefix),
   m_testOptions             (env,prefix)
 {
   if (m_env.rank() == 0) {
@@ -217,9 +220,15 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::run()
               << std::endl;
   }
 
-  runCalibrationStage();
-  runValidationStage();
-  runComparisonStage();
+  m_options.scanOptionsValues();
+  if (m_options.m_runTests) {
+    runTests();
+  }
+  else {
+    runCalibrationStage();
+    runValidationStage();
+    runComparisonStage();
+  }
 
   if (m_env.rank() == 0) {
     std::cout << "Leaving uqTgaValidation::run()"

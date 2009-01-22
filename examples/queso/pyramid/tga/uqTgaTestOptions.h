@@ -25,32 +25,12 @@
 // _ODV = option default value
 #define UQ_TGA_TEST_OUTER_PREFIX_NAME_ODV            "case0_"
 #define UQ_TGA_TEST_RUN_TEMP_TIME_TEST_ODV           0
-#define UQ_TGA_TEST_CREATE_REFERENCE_ODV             0
 #define UQ_TGA_TEST_RUN_TIMING_TEST_ODV              0
 #define UQ_TGA_TEST_RUN_GRAD_TEST_ODV                0
 #define UQ_TGA_TEST_RUN_OPTIMIZATION_TEST_ODV        0
-#define UQ_TGA_TEST_REF_W1_ODV                       1.0
-#define UQ_TGA_TEST_REF_W2_ODV                       0.
-#define UQ_TGA_TEST_REF_W3_ODV                       0.
-#define UQ_TGA_TEST_REF_A1_ODV                       2.6000e+11
-#define UQ_TGA_TEST_REF_E1_ODV                       2.0000e+05
-#define UQ_TGA_TEST_REF_A2_ODV                       2.5900e+11
-#define UQ_TGA_TEST_REF_E2_ODV                       2.0010e+05
-#define UQ_TGA_TEST_REF_A3_ODV                       2.6000e+11
-#define UQ_TGA_TEST_REF_E3_ODV                       2.0000e+05
-#define UQ_TGA_TEST_REF_A4_ODV                       2.6000e+11
-#define UQ_TGA_TEST_REF_E4_ODV                       2.0000e+05
 #define UQ_TGA_TEST_GUESS_A_ODV                      2.5910e+11
 #define UQ_TGA_TEST_GUESS_E_ODV                      2.0090e+05
-#define UQ_TGA_TEST_REF_TEMPERATURE_PROFILE_ID_ODV   0
-#define UQ_TGA_TEST_REF_MAX_TIME_ODV                 0.
-#define UQ_TGA_TEST_REF_MAX_TIME_STEP_ODV            1.
-#define UQ_TGA_TEST_REF_TREAT_DATA_AS_CONTINUOUS_ODV 0
-#define UQ_TGA_TEST_REF_NUM_DISCRETE_SAMPLES_ODV     12
 #define UQ_TGA_TEST_COMPUTE_HESSIAN_ODV              1
-#define UQ_TGA_TEST_W_MAX_TIME_STEP_ODV              .1
-#define UQ_TGA_TEST_LAMBDA_MAX_TIME_STEP_ODV         .1
-#define UQ_TGA_TEST_INTEGRALS_NUM_INTERVALS_ODV      1000
 #define UQ_TGA_TEST_RELATIVE_FD_STEP_ODV             1.e-8
 #define UQ_TGA_TEST_NEWTON_MAX_ITERS_ODV             20
 #define UQ_TGA_TEST_NEWTON_ABS_TOL_ODV               1.e-7
@@ -66,39 +46,19 @@ public:
   void scanOptionsValues();
   void print            (std::ostream& os) const;
 
-  std::string  outerPrefixName;
-  bool         runTempTimeTest;
-  bool         createReference;
-  bool         runTimingTest;
-  bool         runGradTest;
-  bool         runOptimizationTest;
-  double       refW1;
-  double       refW2;
-  double       refW3;
-  double       refA1;
-  double       refE1;
-  double       refA2;
-  double       refE2;
-  double       refA3;
-  double       refE3;
-  double       refA4;
-  double       refE4;
-  double       guessA;
-  double       guessE;
-  unsigned int refTemperatureProfileId;
-  double       refMaxTime;
-  double       refMaxTimeStep;
-  bool         refTreatDataAsContinuous;
-  unsigned int refNumDiscreteSamples;
-  bool         computeHessian;
-  double       wMaxTimeStep;
-  double       lambdaMaxTimeStep;
-  unsigned int integralsNumIntervals;
-  double       relativeFDStep;
-  unsigned int NewtonMaxIters;
-  double       NewtonAbsTol;
-  double       criticalTemperature;
-  bool         writeOutput;
+  std::string  m_outerPrefixName;
+  bool         m_runTempTimeTest;
+  bool         m_runTimingTest;
+  bool         m_runGradTest;
+  bool         m_runOptimizationTest;
+  double       m_guessA;
+  double       m_guessE;
+  bool         m_computeHessian;
+  double       m_relativeFDStep;
+  unsigned int m_NewtonMaxIters;
+  double       m_NewtonAbsTol;
+  double       m_criticalTemperature;
+  bool         m_writeOutput;
 
 private:
   void   defineMyOptions  (po::options_description& optionsDesc);
@@ -111,32 +71,12 @@ private:
   std::string              m_option_help;
   std::string              m_option_outerPrefixName;
   std::string              m_option_runTempTimeTest;
-  std::string              m_option_createReference;
   std::string              m_option_runTimingTest;
   std::string              m_option_runGradTest;
   std::string              m_option_runOptimizationTest;
-  std::string              m_option_refW1;
-  std::string              m_option_refW2;
-  std::string              m_option_refW3;
-  std::string              m_option_refA1;
-  std::string              m_option_refE1;
-  std::string              m_option_refA2;
-  std::string              m_option_refE2;
-  std::string              m_option_refA3;
-  std::string              m_option_refE3;
-  std::string              m_option_refA4;
-  std::string              m_option_refE4;
   std::string              m_option_guessA;
   std::string              m_option_guessE;
-  std::string              m_option_refTemperatureProfileId;
-  std::string              m_option_refMaxTime;
-  std::string              m_option_refMaxTimeStep;
-  std::string              m_option_refTreatDataAsContinuous;
-  std::string              m_option_refNumDiscreteSamples;
   std::string              m_option_computeHessian;
-  std::string              m_option_wMaxTimeStep;
-  std::string              m_option_lambdaMaxTimeStep;
-  std::string              m_option_integralsNumIntervals;
   std::string              m_option_relativeFDStep;
   std::string              m_option_NewtonMaxIters;
   std::string              m_option_NewtonAbsTol;
@@ -154,32 +94,12 @@ uqTgaTestOptionsClass::uqTgaTestOptionsClass(const uqBaseEnvironmentClass& env, 
   m_option_help                    (m_prefix + "help"                    ),
   m_option_outerPrefixName         (m_prefix + "outerPrefixName"         ),
   m_option_runTempTimeTest         (m_prefix + "runTempTimeTest"         ),
-  m_option_createReference         (m_prefix + "createReference"         ),
   m_option_runTimingTest           (m_prefix + "runTimingTest"           ),
   m_option_runGradTest             (m_prefix + "runGradTest"             ),
   m_option_runOptimizationTest     (m_prefix + "runOptimizationTest"     ),
-  m_option_refW1                   (m_prefix + "refW1"                   ),
-  m_option_refW2                   (m_prefix + "refW2"                   ),
-  m_option_refW3                   (m_prefix + "refW3"                   ),
-  m_option_refA1                   (m_prefix + "refA1"                   ),
-  m_option_refE1                   (m_prefix + "refE1"                   ),
-  m_option_refA2                   (m_prefix + "refA2"                   ),
-  m_option_refE2                   (m_prefix + "refE2"                   ),
-  m_option_refA3                   (m_prefix + "refA3"                   ),
-  m_option_refE3                   (m_prefix + "refE3"                   ),
-  m_option_refA4                   (m_prefix + "refA4"                   ),
-  m_option_refE4                   (m_prefix + "refE4"                   ),
   m_option_guessA                  (m_prefix + "guessA"                  ),
   m_option_guessE                  (m_prefix + "guessE"                  ),
-  m_option_refTemperatureProfileId (m_prefix + "refTemperatureProfileId" ),
-  m_option_refMaxTime              (m_prefix + "refMaxTime"              ),
-  m_option_refMaxTimeStep          (m_prefix + "refMaxTimeStep"          ),
-  m_option_refTreatDataAsContinuous(m_prefix + "refTreatDataAsContinuous"),
-  m_option_refNumDiscreteSamples   (m_prefix + "refNumDiscreteSamples"   ),
   m_option_computeHessian          (m_prefix + "computeHessian"          ),
-  m_option_wMaxTimeStep            (m_prefix + "wMaxTimeStep"            ),
-  m_option_lambdaMaxTimeStep       (m_prefix + "lambdaMaxTimeStep"       ),
-  m_option_integralsNumIntervals   (m_prefix + "integralsNumIntervals"   ),
   m_option_relativeFDStep          (m_prefix + "relativeFDStep"          ),
   m_option_NewtonMaxIters          (m_prefix + "NewtonMaxIters"          ),
   m_option_NewtonAbsTol            (m_prefix + "NewtonAbsTol"            ),
@@ -216,32 +136,12 @@ uqTgaTestOptionsClass::defineMyOptions(po::options_description& optionsDesc)
     (m_option_help.c_str(),                                                                                                            "produce help message for TGA test options")
     (m_option_outerPrefixName.c_str(),         po::value<std::string >()->default_value(UQ_TGA_TEST_OUTER_PREFIX_NAME_ODV),            "prefix on output variables"               )
     (m_option_runTempTimeTest.c_str(),         po::value<bool        >()->default_value(UQ_TGA_TEST_RUN_TEMP_TIME_TEST_ODV),           "run tempTime() test"                      )
-    (m_option_createReference.c_str(),         po::value<bool        >()->default_value(UQ_TGA_TEST_CREATE_REFERENCE_ODV),             "create reference"                         )
     (m_option_runTimingTest.c_str(),           po::value<bool        >()->default_value(UQ_TGA_TEST_RUN_TIMING_TEST_ODV),              "run timing() test"                        )
     (m_option_runGradTest.c_str(),             po::value<bool        >()->default_value(UQ_TGA_TEST_RUN_GRAD_TEST_ODV),                "run grad() test"                          )
     (m_option_runOptimizationTest.c_str(),     po::value<bool        >()->default_value(UQ_TGA_TEST_RUN_OPTIMIZATION_TEST_ODV),        "run optimization() test"                  )
-    (m_option_refW1.c_str(),                   po::value<double      >()->default_value(UQ_TGA_TEST_REF_W1_ODV),                       "reference W1"                             )
-    (m_option_refW2.c_str(),                   po::value<double      >()->default_value(UQ_TGA_TEST_REF_W2_ODV),                       "reference W2"                             )
-    (m_option_refW3.c_str(),                   po::value<double      >()->default_value(UQ_TGA_TEST_REF_W3_ODV),                       "reference W3"                             )
-    (m_option_refA1.c_str(),                   po::value<double      >()->default_value(UQ_TGA_TEST_REF_A1_ODV),                       "reference A1"                             )
-    (m_option_refE1.c_str(),                   po::value<double      >()->default_value(UQ_TGA_TEST_REF_E1_ODV),                       "reference E1"                             )
-    (m_option_refA2.c_str(),                   po::value<double      >()->default_value(UQ_TGA_TEST_REF_A2_ODV),                       "reference A2"                             )
-    (m_option_refE2.c_str(),                   po::value<double      >()->default_value(UQ_TGA_TEST_REF_E2_ODV),                       "reference E2"                             )
-    (m_option_refA3.c_str(),                   po::value<double      >()->default_value(UQ_TGA_TEST_REF_A3_ODV),                       "reference A3"                             )
-    (m_option_refE3.c_str(),                   po::value<double      >()->default_value(UQ_TGA_TEST_REF_E3_ODV),                       "reference E3"                             )
-    (m_option_refA4.c_str(),                   po::value<double      >()->default_value(UQ_TGA_TEST_REF_A4_ODV),                       "reference A4"                             )
-    (m_option_refE4.c_str(),                   po::value<double      >()->default_value(UQ_TGA_TEST_REF_E4_ODV),                       "reference E4"                             )
     (m_option_guessA.c_str(),                  po::value<double      >()->default_value(UQ_TGA_TEST_GUESS_A_ODV),                      "guess A"                                  )
     (m_option_guessE.c_str(),                  po::value<double      >()->default_value(UQ_TGA_TEST_GUESS_E_ODV),                      "guess E"                                  )
-    (m_option_refTemperatureProfileId.c_str(), po::value<unsigned int>()->default_value(UQ_TGA_TEST_REF_TEMPERATURE_PROFILE_ID_ODV),   "refTemperatureProfileId"                  )
-    (m_option_refMaxTime.c_str(),              po::value<double      >()->default_value(UQ_TGA_TEST_REF_MAX_TIME_ODV),                 "refMaxTime"                               )
-    (m_option_refMaxTimeStep.c_str(),          po::value<double      >()->default_value(UQ_TGA_TEST_REF_MAX_TIME_STEP_ODV),            "refMaxTimeStep"                           )
-    (m_option_refTreatDataAsContinuous.c_str(),po::value<bool        >()->default_value(UQ_TGA_TEST_REF_TREAT_DATA_AS_CONTINUOUS_ODV), "refTreatDataAsContinuous"                 )
-    (m_option_refNumDiscreteSamples.c_str(),   po::value<unsigned int>()->default_value(UQ_TGA_TEST_REF_NUM_DISCRETE_SAMPLES_ODV),     "refNumDiscreteSamples"                    )
     (m_option_computeHessian.c_str(),          po::value<bool        >()->default_value(UQ_TGA_TEST_COMPUTE_HESSIAN_ODV),              "computeHessian"                           )
-    (m_option_wMaxTimeStep.c_str(),            po::value<double      >()->default_value(UQ_TGA_TEST_W_MAX_TIME_STEP_ODV),              "wMaxTimeStep"                             )
-    (m_option_lambdaMaxTimeStep.c_str(),       po::value<double      >()->default_value(UQ_TGA_TEST_LAMBDA_MAX_TIME_STEP_ODV),         "lambdaMaxTimeStep"                        )
-    (m_option_integralsNumIntervals.c_str(),   po::value<unsigned int>()->default_value(UQ_TGA_TEST_INTEGRALS_NUM_INTERVALS_ODV),      "integralsNumIntervals"                    )
     (m_option_relativeFDStep.c_str(),          po::value<double      >()->default_value(UQ_TGA_TEST_RELATIVE_FD_STEP_ODV),             "relativeFDStep"                           )
     (m_option_NewtonMaxIters.c_str(),          po::value<unsigned int>()->default_value(UQ_TGA_TEST_NEWTON_MAX_ITERS_ODV),             "Newton max number of iterations"          )
     (m_option_NewtonAbsTol.c_str(),            po::value<double      >()->default_value(UQ_TGA_TEST_NEWTON_ABS_TOL_ODV),               "Newton absolute tolerance"                )
@@ -261,136 +161,56 @@ uqTgaTestOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
   }
 
   if (m_env.allOptionsMap().count(m_option_outerPrefixName.c_str())) {
-    outerPrefixName = m_env.allOptionsMap()[m_option_outerPrefixName.c_str()].as<std::string>();
+    m_outerPrefixName = m_env.allOptionsMap()[m_option_outerPrefixName.c_str()].as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_runTempTimeTest.c_str())) {
-    runTempTimeTest = m_env.allOptionsMap()[m_option_runTempTimeTest.c_str()].as<bool>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_createReference.c_str())) {
-    createReference = m_env.allOptionsMap()[m_option_createReference.c_str()].as<bool>();
+    m_runTempTimeTest = m_env.allOptionsMap()[m_option_runTempTimeTest.c_str()].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_runTimingTest.c_str())) {
-    runTimingTest = m_env.allOptionsMap()[m_option_runTimingTest.c_str()].as<bool>();
+    m_runTimingTest = m_env.allOptionsMap()[m_option_runTimingTest.c_str()].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_runGradTest.c_str())) {
-    runGradTest = m_env.allOptionsMap()[m_option_runGradTest.c_str()].as<bool>();
+    m_runGradTest = m_env.allOptionsMap()[m_option_runGradTest.c_str()].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_runOptimizationTest.c_str())) {
-    runOptimizationTest = m_env.allOptionsMap()[m_option_runOptimizationTest.c_str()].as<bool>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_refW1.c_str())) {
-    refW1 = m_env.allOptionsMap()[m_option_refW1.c_str()].as<double>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_refW2.c_str())) {
-    refW2 = m_env.allOptionsMap()[m_option_refW2.c_str()].as<double>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_refW3.c_str())) {
-    refW3 = m_env.allOptionsMap()[m_option_refW3.c_str()].as<double>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_refA1.c_str())) {
-    refA1 = m_env.allOptionsMap()[m_option_refA1.c_str()].as<double>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_refE1.c_str())) {
-    refE1 = m_env.allOptionsMap()[m_option_refE1.c_str()].as<double>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_refA2.c_str())) {
-    refA2 = m_env.allOptionsMap()[m_option_refA2.c_str()].as<double>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_refE2.c_str())) {
-    refE2 = m_env.allOptionsMap()[m_option_refE2.c_str()].as<double>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_refA3.c_str())) {
-    refA3 = m_env.allOptionsMap()[m_option_refA3.c_str()].as<double>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_refE3.c_str())) {
-    refE3 = m_env.allOptionsMap()[m_option_refE3.c_str()].as<double>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_refA4.c_str())) {
-    refA4 = m_env.allOptionsMap()[m_option_refA4.c_str()].as<double>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_refE4.c_str())) {
-    refE4 = m_env.allOptionsMap()[m_option_refE4.c_str()].as<double>();
+    m_runOptimizationTest = m_env.allOptionsMap()[m_option_runOptimizationTest.c_str()].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_guessA.c_str())) {
-    guessA = m_env.allOptionsMap()[m_option_guessA.c_str()].as<double>();
+    m_guessA = m_env.allOptionsMap()[m_option_guessA.c_str()].as<double>();
   }
 
   if (m_env.allOptionsMap().count(m_option_guessE.c_str())) {
-    guessE = m_env.allOptionsMap()[m_option_guessE.c_str()].as<double>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_refTemperatureProfileId.c_str())) {
-    refTemperatureProfileId = m_env.allOptionsMap()[m_option_refTemperatureProfileId.c_str()].as<unsigned int>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_refMaxTime.c_str())) {
-    refMaxTime = m_env.allOptionsMap()[m_option_refMaxTime.c_str()].as<double>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_refMaxTimeStep.c_str())) {
-    refMaxTimeStep = m_env.allOptionsMap()[m_option_refMaxTimeStep.c_str()].as<double>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_refTreatDataAsContinuous.c_str())) {
-    refTreatDataAsContinuous = m_env.allOptionsMap()[m_option_refTreatDataAsContinuous.c_str()].as<bool>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_refNumDiscreteSamples.c_str())) {
-    refNumDiscreteSamples = m_env.allOptionsMap()[m_option_refNumDiscreteSamples.c_str()].as<unsigned int>();
+    m_guessE = m_env.allOptionsMap()[m_option_guessE.c_str()].as<double>();
   }
 
   if (m_env.allOptionsMap().count(m_option_computeHessian.c_str())) {
-    computeHessian = m_env.allOptionsMap()[m_option_computeHessian.c_str()].as<bool>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_wMaxTimeStep.c_str())) {
-    wMaxTimeStep = m_env.allOptionsMap()[m_option_wMaxTimeStep.c_str()].as<double>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_lambdaMaxTimeStep.c_str())) {
-    lambdaMaxTimeStep = m_env.allOptionsMap()[m_option_lambdaMaxTimeStep.c_str()].as<double>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_integralsNumIntervals.c_str())) {
-    integralsNumIntervals = m_env.allOptionsMap()[m_option_integralsNumIntervals.c_str()].as<unsigned int>();
+    m_computeHessian = m_env.allOptionsMap()[m_option_computeHessian.c_str()].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_relativeFDStep.c_str())) {
-    relativeFDStep = m_env.allOptionsMap()[m_option_relativeFDStep.c_str()].as<double>();
+    m_relativeFDStep = m_env.allOptionsMap()[m_option_relativeFDStep.c_str()].as<double>();
   }
 
   if (m_env.allOptionsMap().count(m_option_NewtonMaxIters.c_str())) {
-    NewtonMaxIters = m_env.allOptionsMap()[m_option_NewtonMaxIters.c_str()].as<unsigned int>();
+    m_NewtonMaxIters = m_env.allOptionsMap()[m_option_NewtonMaxIters.c_str()].as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_NewtonAbsTol.c_str())) {
-    NewtonAbsTol = m_env.allOptionsMap()[m_option_NewtonAbsTol.c_str()].as<double>();
+    m_NewtonAbsTol = m_env.allOptionsMap()[m_option_NewtonAbsTol.c_str()].as<double>();
   }
 
   if (m_env.allOptionsMap().count(m_option_criticalTemperature.c_str())) {
-    criticalTemperature = m_env.allOptionsMap()[m_option_criticalTemperature.c_str()].as<double>();
-    globalTgaCriticalTemperature = criticalTemperature;
+    m_criticalTemperature = m_env.allOptionsMap()[m_option_criticalTemperature.c_str()].as<double>();
+    globalTgaCriticalTemperature = m_criticalTemperature;
   }
 
   if (m_env.allOptionsMap().count(m_option_writeOutput.c_str())) {
-    writeOutput = m_env.allOptionsMap()[m_option_writeOutput.c_str()].as<bool>();
+    m_writeOutput = m_env.allOptionsMap()[m_option_writeOutput.c_str()].as<bool>();
   }
 
   return;
@@ -399,39 +219,19 @@ uqTgaTestOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
 void
 uqTgaTestOptionsClass::print(std::ostream& os) const
 {
-  os <<         m_option_outerPrefixName          << " = " << outerPrefixName
-     << "\n" << m_option_runTempTimeTest          << " = " << runTempTimeTest
-     << "\n" << m_option_createReference          << " = " << createReference
-     << "\n" << m_option_runTimingTest            << " = " << runTimingTest
-     << "\n" << m_option_runGradTest              << " = " << runGradTest
-     << "\n" << m_option_runOptimizationTest      << " = " << runOptimizationTest
-     << "\n" << m_option_refW1                    << " = " << refW1
-     << "\n" << m_option_refW2                    << " = " << refW2
-     << "\n" << m_option_refW3                    << " = " << refW3
-     << "\n" << m_option_refA1                    << " = " << refA1
-     << "\n" << m_option_refE1                    << " = " << refE1
-     << "\n" << m_option_refA2                    << " = " << refA2
-     << "\n" << m_option_refE2                    << " = " << refE2
-     << "\n" << m_option_refA3                    << " = " << refA3
-     << "\n" << m_option_refE3                    << " = " << refE3
-     << "\n" << m_option_refA4                    << " = " << refA4
-     << "\n" << m_option_refE4                    << " = " << refE4
-     << "\n" << m_option_guessA                   << " = " << guessA
-     << "\n" << m_option_guessE                   << " = " << guessE
-     << "\n" << m_option_refTemperatureProfileId  << " = " << refTemperatureProfileId
-     << "\n" << m_option_refMaxTime               << " = " << refMaxTime
-     << "\n" << m_option_refMaxTimeStep           << " = " << refMaxTimeStep
-     << "\n" << m_option_refTreatDataAsContinuous << " = " << refTreatDataAsContinuous
-     << "\n" << m_option_refNumDiscreteSamples    << " = " << refNumDiscreteSamples
-     << "\n" << m_option_computeHessian           << " = " << computeHessian
-     << "\n" << m_option_wMaxTimeStep             << " = " << wMaxTimeStep
-     << "\n" << m_option_lambdaMaxTimeStep        << " = " << lambdaMaxTimeStep
-     << "\n" << m_option_integralsNumIntervals    << " = " << integralsNumIntervals
-     << "\n" << m_option_relativeFDStep           << " = " << relativeFDStep
-     << "\n" << m_option_NewtonMaxIters           << " = " << NewtonMaxIters
-     << "\n" << m_option_NewtonAbsTol             << " = " << NewtonAbsTol   
-     << "\n" << m_option_criticalTemperature      << " = " << criticalTemperature   
-     << "\n" << m_option_writeOutput              << " = " << writeOutput
+  os <<         m_option_outerPrefixName          << " = " << m_outerPrefixName
+     << "\n" << m_option_runTempTimeTest          << " = " << m_runTempTimeTest
+     << "\n" << m_option_runTimingTest            << " = " << m_runTimingTest
+     << "\n" << m_option_runGradTest              << " = " << m_runGradTest
+     << "\n" << m_option_runOptimizationTest      << " = " << m_runOptimizationTest
+     << "\n" << m_option_guessA                   << " = " << m_guessA
+     << "\n" << m_option_guessE                   << " = " << m_guessE
+     << "\n" << m_option_computeHessian           << " = " << m_computeHessian
+     << "\n" << m_option_relativeFDStep           << " = " << m_relativeFDStep
+     << "\n" << m_option_NewtonMaxIters           << " = " << m_NewtonMaxIters
+     << "\n" << m_option_NewtonAbsTol             << " = " << m_NewtonAbsTol   
+     << "\n" << m_option_criticalTemperature      << " = " << m_criticalTemperature   
+     << "\n" << m_option_writeOutput              << " = " << m_writeOutput
      << std::endl;
 
   return;
@@ -452,12 +252,12 @@ struct uqTgaTestVarsStruct {
  ~uqTgaTestVarsStruct();
 
   const uqBase1D1DFunctionClass* tempFunction;
-  uqSampled1D1DFunctionClass*  refW;
-  std::ofstream*               ofs;
-  uqSampled1D1DFunctionClass*  continuousWeightFunction;
-  uqSampled1D1DFunctionClass*  tildeContinuousWeightFunction;
-  uqDeltaSeq1D1DFunctionClass* deltaWeightFunction;
-  uqDeltaSeq1D1DFunctionClass* tildeDeltaWeightFunction;
+  uqSampled1D1DFunctionClass*    refW;
+  std::ofstream*                 ofs;
+  uqSampled1D1DFunctionClass*    continuousWeightFunction;
+  uqSampled1D1DFunctionClass*    tildeContinuousWeightFunction;
+  uqDeltaSeq1D1DFunctionClass*   deltaWeightFunction;
+  uqDeltaSeq1D1DFunctionClass*   tildeDeltaWeightFunction;
 };
 
 uqTgaTestVarsStruct::uqTgaTestVarsStruct()

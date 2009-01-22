@@ -44,11 +44,7 @@ int main(int argc, char* argv[])
                        uqGslVectorClass, // type for qoi vectors
                        uqGslMatrixClass  // type for qoi matrices
                       > tgaValidation(*env,"tga_");
-#if 1
   tgaValidation.run();
-#else
-  tgaValidation.runTests();
-#endif
 
 #if 0
   uqTurValidationClass<uqGslVectorClass, // type for parameter vectors
