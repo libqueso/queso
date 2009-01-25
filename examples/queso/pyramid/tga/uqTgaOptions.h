@@ -24,7 +24,7 @@
 
 // _ODV = option default value
 #define UQ_TGA_OPTION_RUN_TESTS_ODV                    0
-#define UQ_TGA_OPTION_CREATE_REFERENCE_ODV             0
+#define UQ_TGA_OPTION_REF_CREATE_ODV                   0
 #define UQ_TGA_OPTION_REF_W1_ODV                       1.0
 #define UQ_TGA_OPTION_REF_W2_ODV                       0.
 #define UQ_TGA_OPTION_REF_W3_ODV                       0.
@@ -55,7 +55,7 @@ public:
   void print            (std::ostream& os) const;
 
   bool         m_runTests;
-  bool         m_createReference;
+  bool         m_refCreate;
   double       m_refW1;
   double       m_refW2;
   double       m_refW3;
@@ -86,7 +86,7 @@ private:
 
   std::string              m_option_help;
   std::string              m_option_runTests;
-  std::string              m_option_createReference;
+  std::string              m_option_refCreate;
   std::string              m_option_refW1;
   std::string              m_option_refW2;
   std::string              m_option_refW3;
@@ -117,7 +117,7 @@ uqTgaOptionsClass::uqTgaOptionsClass(const uqBaseEnvironmentClass& env, const ch
   m_optionsDesc                    (new po::options_description("TGA options")),
   m_option_help                    (m_prefix + "help"                    ),
   m_option_runTests                (m_prefix + "runTests"                ),
-  m_option_createReference         (m_prefix + "createReference"         ),
+  m_option_refCreate               (m_prefix + "refCreate"               ),
   m_option_refW1                   (m_prefix + "refW1"                   ),
   m_option_refW2                   (m_prefix + "refW2"                   ),
   m_option_refW3                   (m_prefix + "refW3"                   ),
@@ -167,7 +167,7 @@ uqTgaOptionsClass::defineMyOptions(po::options_description& optionsDesc)
   optionsDesc.add_options()     
     (m_option_help.c_str(),                                                                                                              "produce help message for TGA options"     )
     (m_option_runTests.c_str(),                po::value<bool        >()->default_value(UQ_TGA_OPTION_RUN_TESTS_ODV),                    "run tests"                                )
-    (m_option_createReference.c_str(),         po::value<bool        >()->default_value(UQ_TGA_OPTION_CREATE_REFERENCE_ODV),             "create reference"                         )
+    (m_option_refCreate.c_str(),               po::value<bool        >()->default_value(UQ_TGA_OPTION_REF_CREATE_ODV),                   "create reference"                         )
     (m_option_refW1.c_str(),                   po::value<double      >()->default_value(UQ_TGA_OPTION_REF_W1_ODV),                       "reference W1"                             )
     (m_option_refW2.c_str(),                   po::value<double      >()->default_value(UQ_TGA_OPTION_REF_W2_ODV),                       "reference W2"                             )
     (m_option_refW3.c_str(),                   po::value<double      >()->default_value(UQ_TGA_OPTION_REF_W3_ODV),                       "reference W3"                             )
@@ -204,8 +204,8 @@ uqTgaOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
     m_runTests = m_env.allOptionsMap()[m_option_runTests.c_str()].as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_createReference.c_str())) {
-    m_createReference = m_env.allOptionsMap()[m_option_createReference.c_str()].as<bool>();
+  if (m_env.allOptionsMap().count(m_option_refCreate.c_str())) {
+    m_refCreate = m_env.allOptionsMap()[m_option_refCreate.c_str()].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_refW1.c_str())) {
@@ -291,7 +291,7 @@ void
 uqTgaOptionsClass::print(std::ostream& os) const
 {
   os <<         m_option_runTests                 << " = " << m_runTests
-     << "\n" << m_option_createReference          << " = " << m_createReference
+     << "\n" << m_option_refCreate                << " = " << m_refCreate
      << "\n" << m_option_refW1                    << " = " << m_refW1
      << "\n" << m_option_refW2                    << " = " << m_refW2
      << "\n" << m_option_refW3                    << " = " << m_refW3

@@ -159,14 +159,40 @@ uqConstant1D1DFunctionClass::~uqConstant1D1DFunctionClass()
 double
 uqConstant1D1DFunctionClass::value(double domainValue) const
 {
-  // FIX ME: check range of domainValue
+  if ((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)) {
+    std::cerr << "In uqConstant1D1DFunctionClass::value()"
+              << ": requested x ("             << domainValue
+              << ") is out of the intervarl (" << m_minDomainValue
+              << ", "                          << m_maxDomainValue
+              << ")"
+              << std::endl;
+  }
+
+  UQ_FATAL_TEST_MACRO(((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)),
+                      UQ_UNAVAILABLE_RANK,
+                      "uqConstant1D1DFunctionClass::value()",
+                      "x out of range");
+
   return m_constantValue;
 }
 
 double
 uqConstant1D1DFunctionClass::deriv(double domainValue) const
 {
-  // FIX ME: check range of domainValue
+  if ((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)) {
+    std::cerr << "In uqConstant1D1DFunctionClass::deriv()"
+              << ": requested x ("             << domainValue
+              << ") is out of the intervarl (" << m_minDomainValue
+              << ", "                          << m_maxDomainValue
+              << ")"
+              << std::endl;
+  }
+
+  UQ_FATAL_TEST_MACRO(((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)),
+                      UQ_UNAVAILABLE_RANK,
+                      "uqConstant1D1DFunctionClass::deriv()",
+                      "x out of range");
+
   return 0.;
 }
 
@@ -226,6 +252,64 @@ uqLinear1D1DFunctionClass::deriv(double domainValue) const
 {
   // FIX ME: check range of domainValue
   return m_rateValue;
+}
+
+//*****************************************************
+// Quadratic 1D->1D class
+//*****************************************************
+class uqQuadratic1D1DFunctionClass : public uqBase1D1DFunctionClass {
+public:
+  uqQuadratic1D1DFunctionClass(double minDomainValue,
+                               double maxDomainValue,
+                               double a,
+                               double b,
+                               double c);
+ ~uqQuadratic1D1DFunctionClass();
+
+  double value(double domainValue) const;
+  double deriv(double domainValue) const;
+
+protected:
+  using uqBase1D1DFunctionClass::m_minDomainValue;
+  using uqBase1D1DFunctionClass::m_maxDomainValue;
+
+  double m_a;
+  double m_b;
+  double m_c;
+};
+
+uqQuadratic1D1DFunctionClass::uqQuadratic1D1DFunctionClass(
+  double minDomainValue,
+  double maxDomainValue,
+  double a,
+  double b,
+  double c)
+  :
+  uqBase1D1DFunctionClass(minDomainValue,maxDomainValue),
+  m_a                    (a),
+  m_b                    (b),
+  m_c                    (c)
+{
+}
+
+uqQuadratic1D1DFunctionClass::~uqQuadratic1D1DFunctionClass()
+{
+}
+
+double
+uqQuadratic1D1DFunctionClass::value(double domainValue) const
+{
+  // FIX ME: check range of domainValue
+  double imageValue = m_a*domainValue*domainValue + m_b*domainValue + m_c;
+
+  return imageValue;
+}
+
+double
+uqQuadratic1D1DFunctionClass::deriv(double domainValue) const
+{
+  // FIX ME: check range of domainValue
+  return 2.*m_a*domainValue + m_b;
 }
 
 //*****************************************************

@@ -90,7 +90,7 @@ uqTgaTestOptionsClass::uqTgaTestOptionsClass(const uqBaseEnvironmentClass& env, 
   :
   m_outerPrefixName                (UQ_TGA_TEST_OUTER_PREFIX_NAME_ODV    ),
   m_runTempTimeTest                (UQ_TGA_TEST_RUN_TEMP_TIME_TEST_ODV   ),
-  m_runTimingTest                  (UQ_TGA_TEST_RUN_TIMINING_TEST_ODV    ),
+  m_runTimingTest                  (UQ_TGA_TEST_RUN_TIMING_TEST_ODV      ),
   m_runGradTest                    (UQ_TGA_TEST_RUN_GRAD_TEST_ODV        ),
   m_runOptimizationTest            (UQ_TGA_TEST_RUN_OPTIMIZATION_TEST_ODV),
   m_guessA                         (UQ_TGA_TEST_GUESS_A_ODV              ),

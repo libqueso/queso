@@ -20,6 +20,7 @@
 #ifndef __UQ_SCALAR_FUNCTION_H__
 #define __UQ_SCALAR_FUNCTION_H__
 
+#include <uqVectorSet.h>
 #include <uqEnvironment.h>
 #include <uqDefines.h>
 
