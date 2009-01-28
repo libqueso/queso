@@ -21,6 +21,7 @@
 #define __UQ_SCALAR_FUNCTION_H__
 
 #include <uqVectorSet.h>
+#include <uqVectorSubset.h>
 #include <uqEnvironment.h>
 #include <uqDefines.h>
 

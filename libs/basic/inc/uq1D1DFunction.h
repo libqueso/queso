@@ -75,7 +75,9 @@ uqBase1D1DFunctionClass::maxDomainValue() const
 //*****************************************************
 class uqGeneric1D1DFunctionClass : public uqBase1D1DFunctionClass {
 public:
-  uqGeneric1D1DFunctionClass(double (*valueRoutinePtr)(double domainValue, const void* routinesDataPtr),
+  uqGeneric1D1DFunctionClass(double minDomainValue,
+                             double maxDomainValue,
+                             double (*valueRoutinePtr)(double domainValue, const void* routinesDataPtr),
                              double (*derivRoutinePtr)(double domainValue, const void* routinesDataPtr),
                              const void* routinesDataPtr);
  ~uqGeneric1D1DFunctionClass();
@@ -93,11 +95,13 @@ protected:
 };
 
 uqGeneric1D1DFunctionClass::uqGeneric1D1DFunctionClass(
+  double minDomainValue,
+  double maxDomainValue,
   double (*valueRoutinePtr)(double domainValue, const void* routinesDataPtr),
   double (*derivRoutinePtr)(double domainValue, const void* routinesDataPtr),
   const void* routinesDataPtr)
   :
-  uqBase1D1DFunctionClass(-INFINITY,INFINITY),
+  uqBase1D1DFunctionClass(minDomainValue,maxDomainValue),
   m_valueRoutinePtr      (valueRoutinePtr),
   m_derivRoutinePtr      (derivRoutinePtr),
   m_routinesDataPtr      (routinesDataPtr)

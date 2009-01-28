@@ -472,6 +472,46 @@ uqTgaLikelihoodRoutine(
                               tmpVector,
                               tmpMatrix,
                               tmpEffect);
+
+      double a = (*tmpMatrix)(0,0);
+      double b = (*tmpMatrix)(0,1);
+      double c = (*tmpMatrix)(1,0);
+      double d = (*tmpMatrix)(1,1);
+      double determinant = a*d - b*c;
+      if (determinant < 0.) {
+        double frobNorm = sqrt(a*a + b*b + c*c + d*d);
+
+        //double e2 = .5*(a + d + sqrt( (a-d)*(a-d) + 4*b*c ));
+        //double e1 = .5*(a + d - sqrt( (a-d)*(a-d) + 4*b*c ));
+        //if (m_env.rank() == 0) {
+        //  char stringA[64];
+        //  char stringE[64];
+        //  sprintf(stringA,"%12.6e",paramValues[0]);
+        //  sprintf(stringE,"%12.6e",paramValues[1]);
+        //  std::cout << "In uqTgaLikelihoodRoutine<P_V,P_M>()"
+        //            << ", with params = " << stringA << " " << stringE
+        //            << ": Hessian = \n"   << *tmpMatrix
+        //            << ", determinant = " << determinant
+        //            << ", frobNorm = "    << frobNorm
+        //            << ", e2 = "          << e2
+        //            << ", e1 = "          << e1
+        //            << ", e2*e1 = "       << e2*e1
+        //            << std::endl;
+        //}
+
+        double tau = 0.;
+        double newA = 0.;
+        double newD = 0.;
+        while (determinant <= 0.) {
+          tau += frobNorm;
+          newA = a + tau;
+          newD = d + tau;
+          determinant = newA*newD - b*c;
+        }
+        (*tmpMatrix)(0,0) = newA;
+        (*tmpMatrix)(1,1) = newD;
+      }
+
       if (gradVector)    *gradVector    += *tmpVector;
       if (hessianMatrix) *hessianMatrix += *tmpMatrix;
       if (hessianEffect) *hessianEffect += *tmpEffect;
