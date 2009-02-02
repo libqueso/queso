@@ -6,14 +6,14 @@ uqEnv_verbosity = 2
 uqEnv_seed      = 0
 
 ###############################################
-# Stage I: Calibration problem
+# Calibration (cal) stage: statistical inverse problem (ip)
 ###############################################
 cal_ip_help            = anything
 cal_ip_computeSolution = 1
 cal_ip_outputFileName  = s1Output.m
 
 ###############################################
-# Stage I: Calibration problem: information for Markov Chain algorithm
+# 'cal_ip_': information for Markov Chain algorithm
 #
 # '_sizes' examples 16K   128K   1M      2M      16M
 #                   16384 131072 1048576 2097152 16777216
@@ -114,14 +114,14 @@ cal_ip_mc_filteredChain_stats_kde_compute              = 1
 cal_ip_mc_filteredChain_stats_kde_numEvalPositions     = 250
 
 ###############################################
-# Stage I: Propagation problem
+# Calibration (cal) stage: statistical forward problem (fp)
 ###############################################
 cal_fp_help            = anything
 cal_fp_computeSolution = 1
 cal_fp_outputFileName  = s1Output.m
 
 ###############################################
-# Stage I: Propagation problem: information for Monte Carlo algorithm
+# 'cal_fp_': information for Monte Carlo algorithm
 #
 # '_numSamples' examples 16K   128K   1M      2M      16M
 #                        16384 131072 1048576 2097152 16777216
@@ -171,14 +171,14 @@ cal_fp_mc_seq_stats_kde_compute              = 1
 cal_fp_mc_seq_stats_kde_numEvalPositions     = 250
 
 ###############################################
-# Stage II: Calibration problem
+# Validation (val) stage: statistical inverse problem (ip)
 ###############################################
 val_ip_help            = anything
 val_ip_computeSolution = 1
 val_ip_outputFileName  = s2Output.m
 
 ###############################################
-# Stage II: Calibration problem: information for Markov Chain algorithm
+# 'val_ip_': information for Markov Chain algorithm
 #
 # '_sizes' examples 16K   128K   1M      2M      16M
 #                   16384 131072 1048576 2097152 16777216
@@ -279,14 +279,14 @@ val_ip_mc_filteredChain_stats_kde_compute              = 1
 val_ip_mc_filteredChain_stats_kde_numEvalPositions     = 250
 
 ###############################################
-# Stage II: Propagation problem
+# Validation (val) stage: statistical forward problem (fp)
 ###############################################
 val_fp_help            = anything
 val_fp_computeSolution = 1
 val_fp_outputFileName  = s2Output.m
 
 ###############################################
-# Stage II: Propagation problem: information for Monte Carlo algorithm
+# 'val_fp_': information for Monte Carlo algorithm
 #
 # '_numSamples' examples 16K   128K   1M      2M      16M
 #                        16384 131072 1048576 2097152 16777216

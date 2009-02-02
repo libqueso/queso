@@ -28,7 +28,9 @@
 
 #define R_CONSTANT 8.314472
 
+//********************************************************
 // The ODE (state dot) function
+//********************************************************
 int func(double t, const double Mass[], double f[], void *info)
 {
   double* params = (double *)info;
@@ -42,12 +44,9 @@ int func(double t, const double Mass[], double f[], void *info)
 }
 
 //********************************************************
-// Likelihood function object for both inverse problems of the validation cycle.
-// A likelihood function object is provided by user and is called by the UQ library.
-// This likelihood function object consists of data and routine.
+// The (user defined) data class that carries the data
+// needed by the (user defined) likelihood routine
 //********************************************************
-
-// The (user defined) data class that carries the data needed by the (user defined) likelihood routine
 template<class P_V, class P_M>
 struct
 likelihoodRoutine_DataClass
@@ -202,10 +201,18 @@ likelihoodRoutine_DataClass<P_V,P_M>::~likelihoodRoutine_DataClass()
 {
 }
 
+//********************************************************
 // The actual (user defined) likelihood routine
+//********************************************************
 template<class P_V,class P_M>
 double
-likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
+likelihoodRoutine(
+  const P_V&  paramValues,
+  const P_V*  paramDirection,
+  const void* functionDataPtr,
+  P_V*        gradVector,
+  P_M*        hessianMatrix,
+  P_V*        hessianEffect)
 {
   double resultValue = 0.;
 
@@ -402,11 +409,9 @@ likelihoodRoutine(const P_V& paramValues, const void* functionDataPtr)
 }
 
 //********************************************************
-// QoI function object for both forward problems of the validation cycle.
-// A QoI function object is provided by user and is called by the UQ library.
-// This QoI function object consists of data and routine.
+// The (user defined) data class that carries the data
+// needed by the (user defined) qoi routine
 //********************************************************
-// The (user defined) data class that carries the data needed by the (user defined) qoi routine
 template<class P_V,class P_M,class Q_V, class Q_M>
 struct
 qoiRoutine_DataClass
@@ -480,7 +485,7 @@ void qoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiVal
 }
 
 //********************************************************
-// The 'comparison stage' of the driving routine "uqAppl()":
+// The 'comparison stage' of the driving routine "uqAppl()"
 //********************************************************
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
@@ -567,9 +572,10 @@ uqAppl_ComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
 
 //********************************************************
 // The driving routine "uqAppl()": called by main()
-// Stage   I: the 'calibration stage'
-// Stage  II: the 'validation stage'
-// Stage III: the 'comparison stage'
+// There are 3 main stages:
+// --> the 'calibration stage'
+// --> the 'validation stage'
+// --> the 'comparison stage'
 //********************************************************
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
@@ -590,7 +596,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   struct timeval timevalNow;
 
   //******************************************************
-  // TGA validation cycle: instantiation
+  // Task 1 of 5: instantiation of basic classes
   //******************************************************
 
   // Read Ascii file with information on parameters
@@ -640,7 +646,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                                 qoiSpace);
 
   //********************************************************
-  // TGA validation cycle: calibration stage
+  // Task 2 of 5: calibration stage
   //********************************************************
 
   iRC = gettimeofday(&timevalRef, NULL);
@@ -652,10 +658,8 @@ uqAppl(const uqBaseEnvironmentClass& env)
   // Deal with inverse problem
   uqUniformVectorRVClass<P_V,P_M> calPriorRv("cal_prior_", // Extra prefix before the default "rv_" prefix
                                              paramDomain);
-                                             //paramSpace,
-                                             //paramMinValues,
-                                             //paramMaxValues);
 
+  // Instantiate a likelihood function object (data + routine), to be used by the UQ library.
   likelihoodRoutine_DataClass<P_V,P_M> calLikelihoodRoutine_Data(env,
                                                                  "scenario_5_K_min.dat",
                                                                  "scenario_25_K_min.dat",
@@ -664,8 +668,6 @@ uqAppl(const uqBaseEnvironmentClass& env)
   uqGenericScalarFunctionClass<P_V,P_M> calLikelihoodFunctionObj("cal_like_",
                                                                  paramDomain,
                                                                  likelihoodRoutine<P_V,P_M>,
-                                                                 NULL,
-                                                                 NULL,
                                                                  (void *) &calLikelihoodRoutine_Data,
                                                                  true); // the routine computes [-2.*ln(function)]
 
@@ -700,7 +702,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   }
 
   //********************************************************
-  // TGA validation cycle: validation stage
+  // Task 3 of 5: validation stage
   //********************************************************
 
   iRC = gettimeofday(&timevalRef, NULL);
@@ -710,6 +712,10 @@ uqAppl(const uqBaseEnvironmentClass& env)
   }
 
   // Deal with inverse problem
+  // Prior rv of validation inverse problem = posterior rv of calibration inverse problem
+  // So, it is not necessary to instantiate a new rv here
+
+  // Instantiate a likelihood function object (data + routine), to be used by the UQ library.
   likelihoodRoutine_DataClass<P_V,P_M> valLikelihoodRoutine_Data(env,
                                                                   "scenario_100_K_min.dat",
                                                                   NULL,
@@ -718,8 +724,6 @@ uqAppl(const uqBaseEnvironmentClass& env)
   uqGenericScalarFunctionClass<P_V,P_M> valLikelihoodFunctionObj("val_like_",
                                                                  paramDomain,
                                                                  likelihoodRoutine<P_V,P_M>,
-                                                                 NULL,
-                                                                 NULL,
                                                                  (void *) &valLikelihoodRoutine_Data,
                                                                  true); // the routine computes [-2.*ln(function)]
 
@@ -734,9 +738,9 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
   // Deal with forward problem
   qoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> valQoiRoutine_Data;
-  valQoiRoutine_Data.m_beta          = beta_prediction;
-  valQoiRoutine_Data.m_criticalMass  = criticalMass_prediction;
-  valQoiRoutine_Data.m_criticalTime  = criticalTime_prediction;
+  valQoiRoutine_Data.m_beta         = beta_prediction;
+  valQoiRoutine_Data.m_criticalMass = criticalMass_prediction;
+  valQoiRoutine_Data.m_criticalTime = criticalTime_prediction;
 
   cycle.setValFP(qoiRoutine<P_V,P_M,Q_V,Q_M>,
                  (void *) &valQoiRoutine_Data);
@@ -753,7 +757,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   }
 
   //********************************************************
-  // TGA validation cycle: comparison stage
+  // Task 4 of 5: comparison stage
   //********************************************************
 
   iRC = gettimeofday(&timevalRef, NULL);
@@ -773,7 +777,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   }
 
   //******************************************************
-  // Release memory before leaving routine.
+  // Task 5 of 5: release memory before leaving routine.
   //******************************************************
 
   if (env.rank() == 0) {

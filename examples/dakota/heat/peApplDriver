@@ -1,2 +1,0 @@
-#!/bin/sh
-uqHeatEx_gsl --peDakotaDriven $1 $2

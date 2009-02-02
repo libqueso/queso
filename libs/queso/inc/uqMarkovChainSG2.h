@@ -349,6 +349,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
   if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalTargetD, NULL);
   double logTarget = -0.5 * m_targetPdf.minus2LnValue(valuesOf1stPosition,NULL,NULL,NULL,NULL);
   if (m_chainMeasureRunTimes) targetDRunTime += uqMiscGetEllapsedSeconds(&timevalTargetD);
+  std::cout << "AQUI 001" << std::endl;
   uqMarkovChainPositionDataClass<P_V> currentPositionData(m_env,
                                                           valuesOf1stPosition,
                                                           outOfTargetSupport,
@@ -375,6 +376,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
     m_logTargets    [0] = currentPositionData.logTarget();
     m_alphaQuotients[0] = 1.;
   }
+  std::cout << "AQUI 002" << std::endl;
 
   for (unsigned int positionId = 1; positionId < workingChain.sequenceSize(); ++positionId) {
     if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
@@ -385,10 +387,13 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
     }
     unsigned int stageId = 0;
 
+    std::cout << "AQUI 003" << std::endl;
 #ifdef UQ_USES_TK_CLASS
     m_tk->clearPreComputingPositions();
+    std::cout << "AQUI 004" << std::endl;
     m_tk->setPreComputingPosition(currentPositionData.vecValues(),0);
 #endif
+    std::cout << "AQUI 005" << std::endl;
 
     //****************************************************
     // Loop: generate new position
@@ -396,12 +401,15 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
     if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
 #ifdef UQ_USES_TK_CLASS
     m_tk->rv(0).realizer().realization(tmpVecValues);
+    std::cout << "AQUI 006" << std::endl;
     m_tk->setPreComputingPosition(tmpVecValues,stageId+1);
 #else
     gaussianVector.cwSetGaussian(m_env.rng(),0.,1.);
     tmpVecValues = currentPositionData.vecValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
 #endif
     if (m_chainMeasureRunTimes) candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
+
+    std::cout << "AQUI 007" << std::endl;
 
     outOfTargetSupport = !m_targetPdf.domainSet().contains(tmpVecValues);
     if (outOfTargetSupport) {
