@@ -33,9 +33,7 @@ int main(int argc, char* argv[])
   // Call application
   //************************************************
   uqAppl<uqGslVectorClass, // type for parameter vectors
-         uqGslMatrixClass, // type for parameter matrices
-         uqGslVectorClass, // type for likelihood vectors
-         uqGslMatrixClass  // type for likelihood matrices
+         uqGslMatrixClass  // type for parameter matrices
         >(*env);
 
   //************************************************
