@@ -33,7 +33,7 @@
 #ifndef __UQ_MAC_SG1_H__
 #define __UQ_MAC_SG1_H__
 
-#define UQ_USES_TK_CLASS
+#undef  UQ_USES_TK_CLASS
 #undef  UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
 #define UQ_MAC_SG_REQUIRES_TARGET_DISTRIBUTION_ONLY
 
@@ -1008,7 +1008,7 @@ template<class P_V,class P_M>
 int
 uqMarkovChainSGClass<P_V,P_M>::writeInfo(
   const uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
-  std::ofstream&                        ofs) const
+  std::ofstream&                            ofs) const
 //const P_M*                   mahalanobisMatrix,
 //bool                         applyMahalanobisInvert) const
 {

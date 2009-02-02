@@ -81,17 +81,19 @@ uqAppl(const uqBaseEnvironmentClass& env)
                       "uqAppl()",
                       "input file must be specified in command line, after the '-i' option");
 
+  //******************************************************
   // Read Ascii file with information on parameters
+  //******************************************************
   uqAsciiTableClass<P_V,P_M> paramsTable(env,
-                                         2,    // # of rows
+                                         4,    // # of rows
                                          3,    // # of cols after 'parameter name': min + max + initial value for Markov chain
                                          NULL, // All extra columns are of 'double' type
                                          "params.tab");
 
   const EpetraExt::DistArray<std::string>& paramNames = paramsTable.stringColumn(0);
-  P_V                                      paramMinValues    (paramsTable.doubleColumn(1));
-  P_V                                      paramMaxValues    (paramsTable.doubleColumn(2));
-  P_V                                      paramInitialValues(paramsTable.doubleColumn(3));
+  P_V                                      paramMins    (paramsTable.doubleColumn(1));
+  P_V                                      paramMaxs    (paramsTable.doubleColumn(2));
+  P_V                                      paramInitials(paramsTable.doubleColumn(3));
 
   uqVectorSpaceClass<P_V,P_M> paramSpace(env,
                                          "param_", // Extra prefix before the default "space_" prefix
@@ -100,17 +102,12 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
   uqBoxSubsetClass<P_V,P_M> paramDomain("param_",
                                         paramSpace,
-                                        paramMinValues,
-                                        paramMaxValues);
+                                        paramMins,
+                                        paramMaxs);
 
-  // Deal with inverse problem
-  uqUniformVectorRVClass<P_V,P_M> priorRv("prior_", // Extra prefix before the default "rv_" prefix
-                                          paramDomain);
-
-  uqGenericVectorRVClass<P_V,P_M> postRv("post_", // Extra prefix before the default "rv_" prefix
-                                         paramSpace);
-
+  //******************************************************
   // Instantiate a likelihood function object (data + routine), to be used by QUESO.
+  //******************************************************
   double condNumber = 100.0;
   P_V direction(paramSpace.zeroVector());
   direction.cwSet(1.);
@@ -118,8 +115,16 @@ uqAppl(const uqBaseEnvironmentClass& env)
   P_M* covMatrix        = paramSpace.newMatrix();
   uqCovCond(condNumber,direction,*covMatrix,*covMatrixInverse);
 
+  std::cout << "covMatrix = [" << *covMatrix
+            << "];"
+            << std::endl;
+
+  std::cout << "covMatrixInverse = [" << *covMatrixInverse
+            << "];"
+            << std::endl;
+
   likelihoodRoutine_DataType<P_V,P_M> likelihoodRoutine_Data;
-  likelihoodRoutine_Data.paramMeans        = &paramInitialValues;
+  likelihoodRoutine_Data.paramMeans        = &paramInitials;
   likelihoodRoutine_Data.matrix            = covMatrixInverse;
   likelihoodRoutine_Data.applyMatrixInvert = false;
 
@@ -129,17 +134,45 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                                               (void *) &likelihoodRoutine_Data,
                                                               true); // the routine computes [-2.*ln(function)]
 
+  //******************************************************
+  // Deal with inverse problem
+  //******************************************************
+  uqUniformVectorRVClass<P_V,P_M> priorRv("prior_", // Extra prefix before the default "rv_" prefix
+                                          paramDomain);
+
+  uqGenericVectorRVClass<P_V,P_M> postRv("post_", // Extra prefix before the default "rv_" prefix
+                                         paramSpace);
+
   uqStatisticalInverseProblemClass<P_V,P_M> ip("", // No extra prefix before the default "ip_" prefix
                                                priorRv,
                                                likelihoodFunctionObj,
                                                postRv);
 
+  //******************************************************
   // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
+  //******************************************************
   P_M* proposalCovMatrix = postRv.imageSet().vectorSpace().newGaussianMatrix(priorRv.pdf().domainVarVector(),
-                                                                             paramInitialValues);
-  ip.solveWithBayesMarkovChain(paramInitialValues,
+                                                                             paramInitials);
+  ip.solveWithBayesMarkovChain(paramInitials,
                                proposalCovMatrix);
   delete proposalCovMatrix;
+
+  P_V tmpVec (paramSpace.zeroVector());
+  P_V meanVec(paramInitials);
+  P_V diffVec(paramSpace.zeroVector());
+  const uqBaseVectorRealizerClass<P_V,P_M>& postRealizer = postRv.realizer();
+  for (unsigned int i = 0; i < postRealizer.period(); ++i) {
+    postRealizer.realization(tmpVec);
+    diffVec = tmpVec - meanVec;
+    std::cout << "12345 " << scalarProduct(diffVec, *covMatrixInverse * diffVec)
+              << std::endl;
+  }
+
+  //******************************************************
+  // Release memory before leaving routine.
+  //******************************************************
+  delete covMatrixInverse;
+  delete covMatrix;
 
 #if 0
   //******************************************************
@@ -147,13 +180,13 @@ uqAppl(const uqBaseEnvironmentClass& env)
   //******************************************************
   uqVectorSpaceClass<P_V,P_M> paramSpace     (env,"calib_",4,NULL);
 
-  P_V paramMinValues    (paramSpace.zeroVector());
-  P_V paramMaxValues    (paramSpace.zeroVector());
-  P_V paramInitialValues(paramSpace.zeroVector());
+  P_V paramMins    (paramSpace.zeroVector());
+  P_V paramMaxs    (paramSpace.zeroVector());
+  P_V paramInitials(paramSpace.zeroVector());
   uqBoxSubsetClass<P_V,P_M> paramDomain("param_",
                                         paramSpace,
-                                        paramMinValues,
-                                        paramMaxValues);
+                                        paramMins,
+                                        paramMaxs);
 
   //******************************************************
   // Step 2 of 6: Define the prior prob. density function object: -2*ln[prior]
@@ -214,11 +247,6 @@ uqAppl(const uqBaseEnvironmentClass& env)
                      covMatrix,
                      true);
 
-  //******************************************************
-  // Release memory before leaving routine.
-  //******************************************************
-  delete covMatrixInverse;
-  delete covMatrix;
 #endif
   if (env.rank() == 0) {
     std::cout << "Finishing run of 'uqNormalEx' example"
