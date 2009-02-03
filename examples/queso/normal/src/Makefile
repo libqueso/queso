@@ -24,10 +24,10 @@ clean_lib:
 clean_exec:
 	rm -f *~
 	rm -f *.o
-	rm -f uqNormalEx_$(UQBT)
+	rm -f uqNormalExample_$(UQBT)
 
-uqNormalEx: libs uqNormalEx_$(UQBT).o
-	$(CXX) uqNormalEx_$(UQBT).o -o uqNormalEx_$(UQBT) $(LIBS)
+uqNormalEx: libs uqNormalExample_$(UQBT).o
+	$(CXX) uqNormalExample_$(UQBT).o -o uqNormalExample_$(UQBT) $(LIBS)
 
 libs:
 	cd ../../../../libs/basic/src; make libuq_basic_all UQBT=$(UQBT)

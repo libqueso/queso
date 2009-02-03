@@ -9,22 +9,15 @@ override LOWERCASE_EXAMPLE_NAME=$(n1)
 override MIXED_EXAMPLE_NAME=$(n2)
 override CAPITAL_EXAMPLE_NAME=$(n3)
 
-#all:	all_normal all_chem all_algae all_tga all_etc
-all:	all_tga all_pyramid
+all:	all_normal all_tga all_pyramid
 
 echo_basic_type:
 	@echo 'UQBT = ' $(UQBT)
 
-clean_all: echo_basic_type clean_normal clean_chem clean_algae clean_tga clean_etc clean_pyramid clean_exec
+clean_all: echo_basic_type clean_normal clean_tga clean_pyramid clean_exec
 
 clean_normal:
 	cd normal; make clean_all UQBT=$(UQBT)
-
-clean_chem:
-	cd chemicalReactions; make clean_all UQBT=$(UQBT)
-
-clean_algae:
-	cd algae; make clean_all UQBT=$(UQBT)
 
 clean_tga:
 	cd tga; make clean_all UQBT=$(UQBT)
@@ -32,29 +25,17 @@ clean_tga:
 clean_pyramid:
 	cd pyramid; make clean_all UQBT=$(UQBT)
 
-clean_etc:
-	cd etc; make clean_all UQBT=$(UQBT)
-
 clean_exec:
 	rm -f *~
 
 all_normal:
 	cd normal; make UQBT=$(UQBT)
 
-all_chem:
-	cd chemicalReactions; make UQBT=$(UQBT)
-
-all_algae:
-	cd algae; make UQBT=$(UQBT)
-
 all_tga:
 	cd tga; make UQBT=$(UQBT)
 
 all_pyramid:
 	cd pyramid; make UQBT=$(UQBT)
-
-all_etc:
-	cd etc; make UQBT=$(UQBT)
 
 create_example:
 	@echo 'NAME OF EXAMPLE =' $(LOWERCASE_EXAMPLE_NAME)

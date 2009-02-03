@@ -27,8 +27,8 @@ clean_exec:
 	rm -f *.o
 	rm -f uqTgaEx_$(UQBT)
 
-uqTgaEx: libs uqTgaEx4_$(UQBT).o
-	$(CXX) uqTgaEx4_$(UQBT).o -o uqTgaEx4_$(UQBT) $(LIBS)
+uqTgaEx: libs uqTgaExample_$(UQBT).o
+	$(CXX) uqTgaExample_$(UQBT).o -o uqTgaExample_$(UQBT) $(LIBS)
 
 libs:
 	cd ../../../../libs/basic/src; make libuq_basic_all UQBT=$(UQBT)
