@@ -30,9 +30,7 @@
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-double globalTgaCriticalTemperature = 0.;
-
-#include <uqTgaValidation.h>
+#include <uqPhysics1Validation.h>
 #include <uqGslMatrix.h>
 #include <stdlib.h>
 
@@ -52,27 +50,27 @@ int main(int argc, char* argv[])
   //************************************************
   // Check for the invalidation of model(s): either 'invalid' or 'not invalid'
   //************************************************
-  uqTgaValidationClass<uqGslVectorClass, // type for parameter vectors
-                       uqGslMatrixClass, // type for parameter matrices
-                       uqGslVectorClass, // type for qoi vectors
-                       uqGslMatrixClass  // type for qoi matrices
-                      > tgaValidation(*env,"tga_");
-  tgaValidation.run();
+  uqPhysics1ValidationClass<uqGslVectorClass, // type for parameter vectors
+                            uqGslMatrixClass, // type for parameter matrices
+                            uqGslVectorClass, // type for qoi vectors
+                            uqGslMatrixClass  // type for qoi matrices
+                           > physics1Validation(*env,"physics1_");
+  physics1Validation.run();
 
 #if 0
-  uqTurValidationClass<uqGslVectorClass, // type for parameter vectors
-                       uqGslMatrixClass, // type for parameter matrices
-                       uqGslVectorClass, // type for qoi vectors
-                       uqGslMatrixClass  // type for qoi matrices
-                      > turValidation(*env);
-  turValidation.run();
+  uqPhysics2ValidationClass<uqGslVectorClass, // type for parameter vectors
+                            uqGslMatrixClass, // type for parameter matrices
+                            uqGslVectorClass, // type for qoi vectors
+                            uqGslMatrixClass  // type for qoi matrices
+                           > physics2Validation(*env);
+  physics2Validation.run();
 
-  uqTgaTurValidationClass<uqGslVectorClass, // type for parameter vectors
-                          uqGslMatrixClass, // type for parameter matrices
-                          uqGslVectorClass, // type for qoi vectors
-                          uqGslMatrixClass  // type for qoi matrices
-                         > tgaTurValidation(tgaValidation,turValidation);
-  tgaTurValidation.run();
+  uqPhysics1And2ValidationClass<uqGslVectorClass, // type for parameter vectors
+                                uqGslMatrixClass, // type for parameter matrices
+                                uqGslVectorClass, // type for qoi vectors
+                                uqGslMatrixClass  // type for qoi matrices
+                               > physics1And2Validation(physics1Validation,physics2Validation);
+  physics1And2Validation.run();
 #endif
 
   //************************************************

@@ -1,28 +1,40 @@
-/* uq/examples/queso/pyramid/uqTgaValidation.h
+/*--------------------------------------------------------------------------
+ *--------------------------------------------------------------------------
  *
- * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu
+ * Copyright (C) 2008 The PECOS Development Team
  *
- * This program is free software; you can redistribute it and/or modify
+ * Please see http://pecos.ices.utexas.edu for more information.
+ *
+ * This file is part of the QUESO Library (Quantification of Uncertainty
+ * for Estimation, Simulation and Optimization).
+ *
+ * QUESO is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or (at
- * your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- * 
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * QUESO is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- */
+ * along with QUESO. If not, see <http://www.gnu.org/licenses/>.
+ *
+ *--------------------------------------------------------------------------
+ *
+ * $Id$
+ *
+ * Brief description of this file: 
+ * 
+ *--------------------------------------------------------------------------
+ *-------------------------------------------------------------------------- */
 
-#ifndef __UQ_TGA_VALIDATION_H__
-#define __UQ_TGA_VALIDATION_H__
+#ifndef __UQ_PHYSICS_1_VALIDATION_H__
+#define __UQ_PHYSICS_1_VALIDATION_H__
 
 #include <uq1D1DFunction.h>
 #include <uqTgaOptions.h>
-#include <uqTgaTestOptions.h>
 #include <uqTgaLikelihood.h>
 #include <uqTgaQoi.h>
 #include <uqModelValidation.h>
@@ -43,16 +55,9 @@ public:
   void  run                   ();
 
 private:
-  void  runTests              ();
   void  runCalibrationStage   ();
   void  runValidationStage    ();
   void  runComparisonStage    ();
-
-  void  runTempTimeTest       ();
-  void  fabricateReferenceData();
-  void  runTimingTest         ();
-  void  runGradTest           ();
-  void  runOptimizationTest   ();
 
   using uqModelValidationClass<P_V,P_M,Q_V,Q_M>::m_env;
   using uqModelValidationClass<P_V,P_M,Q_V,Q_M>::m_prefix;
@@ -85,8 +90,6 @@ private:
   uqTgaQoiInfoStruct<P_V,P_M,Q_V,Q_M>*              m_valQoiRoutineInfo;
 
   uqTgaOptionsClass                                 m_options;
-  uqTgaTestOptionsClass                             m_testOptions;
-  uqTgaTestVarsStruct                               m_testVars;
 };
 
 template <class P_V,class P_M,class Q_V,class Q_M>
@@ -112,8 +115,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::uqTgaValidationClass(
   m_valLikelihoodInfoVector (0),
   m_valLikelihoodFunctionObj(NULL),
   m_valQoiRoutineInfo       (NULL),
-  m_options                 (env,prefix),
-  m_testOptions             (env,prefix)
+  m_options                 (env,prefix)
 {
   if (m_env.rank() == 0) {
     std::cout << "Entering uqTgaValidation::constructor()\n"
@@ -221,14 +223,9 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::run()
   }
 
   m_options.scanOptionsValues();
-  if (m_options.m_runTests) {
-    runTests();
-  }
-  else {
-    runCalibrationStage();
-    runValidationStage();
-    runComparisonStage();
-  }
+  runCalibrationStage();
+  runValidationStage();
+  runComparisonStage();
 
   if (m_env.rank() == 0) {
     std::cout << "Leaving uqTgaValidation::run()"
@@ -256,15 +253,10 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
   m_calPriorRv = new uqUniformVectorRVClass<P_V,P_M> ("cal_prior_", // Extra prefix before the default "rv_" prefix
                                                       *m_paramDomain);
 
-#ifdef QUESO_TEST_OCTOBER_2008
   m_calLikelihoodInfoVector.resize(3,NULL);
   m_calLikelihoodInfoVector[0] = new uqTgaLikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"tgaData/scenario_5_K_min.dat", NULL,NULL,NULL);
   m_calLikelihoodInfoVector[1] = new uqTgaLikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"tgaData/scenario_25_K_min.dat",NULL,NULL,NULL);
   m_calLikelihoodInfoVector[2] = new uqTgaLikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"tgaData/scenario_50_K_min.dat",NULL,NULL,NULL);
-#endif
-#ifdef QUESO_TEST_REPORT1_2009
-  this->runTests(); // Just to create reference data
-#endif
 
   m_calLikelihoodFunctionObj = new uqGenericScalarFunctionClass<P_V,P_M>("cal_like_",
                                                                          *m_paramDomain,
@@ -321,14 +313,8 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
   }
 
   // Deal with inverse problem
-#ifdef QUESO_TEST_OCTOBER_2008
   m_valLikelihoodInfoVector.resize(1,NULL);
   m_valLikelihoodInfoVector[0] = new uqTgaLikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"tgaData/scenario_100_K_min.dat",NULL,NULL,NULL);
-#endif
-#ifdef QUESO_TEST_REPORT1_2009
-  m_valLikelihoodInfoVector.resize(1,NULL);
-  m_valLikelihoodInfoVector[0] = new uqTgaLikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"tgaData/scenario_10_K_min.dat",NULL,NULL,NULL);
-#endif
 
   m_valLikelihoodFunctionObj = new uqGenericScalarFunctionClass<P_V,P_M>("val_like_",
                                                                          *m_paramDomain,
@@ -470,6 +456,4 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runComparisonStage()
   return;
 }
 
-#include <uqTgaTests.h>
-
-#endif // __UQ_TGA_VALIDATION_H__
+#endif // __UQ_PHYSICS_1_VALIDATION_H__
