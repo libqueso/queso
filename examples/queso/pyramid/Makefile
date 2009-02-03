@@ -2,9 +2,9 @@ include ../../../Make.common
 
 INC_PATHS = \
 	-I. \
-	-I./tga \
-	-I./tur \
-	-I../inc \
+	-I./physics_1 \
+	-I./physics_2 \
+	-I./physics_1_2 \
 	-I../../../libs/basic/inc \
 	-I../../../libs/queso/inc \
 	$(QUESO_TOOL_INCLUDE)
@@ -18,7 +18,7 @@ LIBS = \
 	-luq_basic_any \
 	$(QUESO_TOOL_LIBS)
 
-all:	uqTgaEx
+all:	uqPyramidEx
 
 clean_lib:
 	cd ../../../libs/basic/src; make clean_all UQBT=$(UQBT)
@@ -29,7 +29,7 @@ clean_exec:
 	rm -f *.o
 	rm -f uqPyramid_$(UQBT)
 
-uqTgaEx: libs uqPyramid_$(UQBT).o
+uqPyramidEx: libs uqPyramid_$(UQBT).o
 	$(CXX) uqPyramid_$(UQBT).o -o uqPyramid_$(UQBT) $(LIBS)
 
 libs:

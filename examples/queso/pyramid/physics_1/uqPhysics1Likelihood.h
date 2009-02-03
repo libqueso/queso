@@ -33,6 +33,7 @@
 #ifndef __UQ_PHYSICS_1_LIKELIHOOD_H__
 #define __UQ_PHYSICS_1_LIKELIHOOD_H__
 
+#include <uqVectorSpace.h>
 #include <uqDefines.h>
 #include <gsl/gsl_odeiv.h>
 #include <gsl/gsl_errno.h>

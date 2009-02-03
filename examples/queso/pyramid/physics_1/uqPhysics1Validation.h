@@ -34,23 +34,22 @@
 #define __UQ_PHYSICS_1_VALIDATION_H__
 
 #include <uq1D1DFunction.h>
-#include <uqTgaOptions.h>
-#include <uqTgaLikelihood.h>
-#include <uqTgaQoi.h>
+#include <uqPhysics1Likelihood.h>
+#include <uqPhysics1Qoi.h>
 #include <uqModelValidation.h>
 #include <uqVectorSubset.h>
 #include <uqAsciiTable.h>
 
 //********************************************************
-// Class "uqTgaValidation", instantiated by main()
+// Class "uqPhysics1Validation", instantiated by main()
 //********************************************************
 template <class P_V,class P_M,class Q_V,class Q_M>
-class uqTgaValidationClass : public uqModelValidationClass<P_V,P_M,Q_V,Q_M>
+class uqPhysics1ValidationClass : public uqModelValidationClass<P_V,P_M,Q_V,Q_M>
 {
 public:
-  uqTgaValidationClass(const uqBaseEnvironmentClass& env,
-                       const char*                   prefix);
- ~uqTgaValidationClass();
+  uqPhysics1ValidationClass(const uqBaseEnvironmentClass& env,
+                            const char*                   prefix);
+ ~uqPhysics1ValidationClass();
 
   void  run                   ();
 
@@ -63,37 +62,35 @@ private:
   using uqModelValidationClass<P_V,P_M,Q_V,Q_M>::m_prefix;
   using uqModelValidationClass<P_V,P_M,Q_V,Q_M>::m_cycle;
 
-  uqAsciiTableClass<P_V,P_M>*                       m_paramsTable;
-  const EpetraExt::DistArray<std::string>*          m_paramNames;         // instantiated outside this class!!
-  P_V*                                              m_paramMinValues;     // instantiated outside this class!!
-  P_V*                                              m_paramMaxValues;     // instantiated outside this class!!
-  P_V*                                              m_paramInitialValues; // instantiated outside this class!!
-  uqVectorSpaceClass<P_V,P_M>*                      m_paramSpace;
-  uqVectorSetClass<P_V,P_M>*                        m_paramDomain;
+  uqAsciiTableClass<P_V,P_M>*                            m_paramsTable;
+  const EpetraExt::DistArray<std::string>*               m_paramNames;         // instantiated outside this class!!
+  P_V*                                                   m_paramMinValues;     // instantiated outside this class!!
+  P_V*                                                   m_paramMaxValues;     // instantiated outside this class!!
+  P_V*                                                   m_paramInitialValues; // instantiated outside this class!!
+  uqVectorSpaceClass<P_V,P_M>*                           m_paramSpace;
+  uqVectorSetClass<P_V,P_M>*                             m_paramDomain;
 
-  uqAsciiTableClass<P_V,P_M>*                       m_qoisTable;
-  const EpetraExt::DistArray<std::string>*          m_qoiNames; // instantiated outside this class!!
-  uqVectorSpaceClass<Q_V,Q_M>*                      m_qoiSpace;
+  uqAsciiTableClass<P_V,P_M>*                            m_qoisTable;
+  const EpetraExt::DistArray<std::string>*               m_qoiNames; // instantiated outside this class!!
+  uqVectorSpaceClass<Q_V,Q_M>*                           m_qoiSpace;
 
-  double                                            m_predBeta;
-  double                                            m_predInitialTemp;
-  double                                            m_predCriticalW;
-  double                                            m_predCriticalTime;
+  double                                                 m_predBeta;
+  double                                                 m_predInitialTemp;
+  double                                                 m_predCriticalW;
+  double                                                 m_predCriticalTime;
 
-  uqBaseVectorRVClass<P_V,P_M>*                     m_calPriorRv;
-  std::vector<uqTgaLikelihoodInfoStruct<P_V,P_M>* > m_calLikelihoodInfoVector;
-  uqBaseScalarFunctionClass<P_V,P_M>*               m_calLikelihoodFunctionObj;
-  uqTgaQoiInfoStruct<P_V,P_M,Q_V,Q_M>*              m_calQoiRoutineInfo;
+  uqBaseVectorRVClass<P_V,P_M>*                          m_calPriorRv;
+  std::vector<uqPhysics1LikelihoodInfoStruct<P_V,P_M>* > m_calLikelihoodInfoVector;
+  uqBaseScalarFunctionClass<P_V,P_M>*                    m_calLikelihoodFunctionObj;
+  uqPhysics1QoiInfoStruct<P_V,P_M,Q_V,Q_M>*              m_calQoiRoutineInfo;
 
-  std::vector<uqTgaLikelihoodInfoStruct<P_V,P_M>* > m_valLikelihoodInfoVector;
-  uqBaseScalarFunctionClass<P_V,P_M>*               m_valLikelihoodFunctionObj;
-  uqTgaQoiInfoStruct<P_V,P_M,Q_V,Q_M>*              m_valQoiRoutineInfo;
-
-  uqTgaOptionsClass                                 m_options;
+  std::vector<uqPhysics1LikelihoodInfoStruct<P_V,P_M>* > m_valLikelihoodInfoVector;
+  uqBaseScalarFunctionClass<P_V,P_M>*                    m_valLikelihoodFunctionObj;
+  uqPhysics1QoiInfoStruct<P_V,P_M,Q_V,Q_M>*              m_valQoiRoutineInfo;
 };
 
 template <class P_V,class P_M,class Q_V,class Q_M>
-uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::uqTgaValidationClass(
+uqPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::uqPhysics1ValidationClass(
   const uqBaseEnvironmentClass& env,
   const char*                   prefix)
   :
@@ -114,11 +111,10 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::uqTgaValidationClass(
   m_calQoiRoutineInfo       (NULL),
   m_valLikelihoodInfoVector (0),
   m_valLikelihoodFunctionObj(NULL),
-  m_valQoiRoutineInfo       (NULL),
-  m_options                 (env,prefix)
+  m_valQoiRoutineInfo       (NULL)
 {
   if (m_env.rank() == 0) {
-    std::cout << "Entering uqTgaValidation::constructor()\n"
+    std::cout << "Entering uqPhysics1Validation::constructor()\n"
               << std::endl;
   }
 
@@ -170,7 +166,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::uqTgaValidationClass(
   m_predCriticalTime = 3.9;
 
   if (m_env.rank() == 0) {
-    std::cout << "Leaving uqTgaValidation::constructor()\n"
+    std::cout << "Leaving uqPhysics1Validation::constructor()\n"
               << std::endl;
   }
 
@@ -178,10 +174,10 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::uqTgaValidationClass(
 }
 
 template <class P_V,class P_M,class Q_V,class Q_M>
-uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::~uqTgaValidationClass()
+uqPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::~uqPhysics1ValidationClass()
 {
   if (m_env.rank() == 0) {
-    std::cout << "Entering uqTgaValidation::destructor()"
+    std::cout << "Entering uqPhysics1Validation::destructor()"
               << std::endl;
   }
 
@@ -208,27 +204,26 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::~uqTgaValidationClass()
   if (m_paramsTable)               delete m_paramsTable;
 
   if (m_env.rank() == 0) {
-    std::cout << "Leaving uqTgaValidation::destructor()"
+    std::cout << "Leaving uqPhysics1Validation::destructor()"
               << std::endl;
   }
 }
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::run()
+uqPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::run()
 {
   if (m_env.rank() == 0) {
-    std::cout << "Entering uqTgaValidation::run()"
+    std::cout << "Entering uqPhysics1Validation::run()"
               << std::endl;
   }
 
-  m_options.scanOptionsValues();
   runCalibrationStage();
   runValidationStage();
   runComparisonStage();
 
   if (m_env.rank() == 0) {
-    std::cout << "Leaving uqTgaValidation::run()"
+    std::cout << "Leaving uqPhysics1Validation::run()"
               << std::endl;
   }
 
@@ -237,7 +232,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::run()
 
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
-uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
+uqPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
 {
   int iRC;
   struct timeval timevalRef;
@@ -245,7 +240,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
 
   iRC = gettimeofday(&timevalRef, NULL);
   if (m_env.rank() == 0) {
-    std::cout << "Entering uqTgaValidation::runCalibrationStage() at " << ctime(&timevalRef.tv_sec)
+    std::cout << "Entering uqPhysics1Validation::runCalibrationStage() at " << ctime(&timevalRef.tv_sec)
               << std::endl;
   }
 
@@ -254,13 +249,13 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
                                                       *m_paramDomain);
 
   m_calLikelihoodInfoVector.resize(3,NULL);
-  m_calLikelihoodInfoVector[0] = new uqTgaLikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"tgaData/scenario_5_K_min.dat", NULL,NULL,NULL);
-  m_calLikelihoodInfoVector[1] = new uqTgaLikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"tgaData/scenario_25_K_min.dat",NULL,NULL,NULL);
-  m_calLikelihoodInfoVector[2] = new uqTgaLikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"tgaData/scenario_50_K_min.dat",NULL,NULL,NULL);
+  m_calLikelihoodInfoVector[0] = new uqPhysics1LikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"tgaData/scenario_5_K_min.dat" );
+  m_calLikelihoodInfoVector[1] = new uqPhysics1LikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"tgaData/scenario_25_K_min.dat");
+  m_calLikelihoodInfoVector[2] = new uqPhysics1LikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"tgaData/scenario_50_K_min.dat");
 
   m_calLikelihoodFunctionObj = new uqGenericScalarFunctionClass<P_V,P_M>("cal_like_",
                                                                          *m_paramDomain,
-                                                                         uqTgaLikelihoodRoutine<P_V,P_M>,
+                                                                         uqPhysics1LikelihoodRoutine<P_V,P_M>,
                                                                          (void *) &m_calLikelihoodInfoVector,
                                                                          true); // the routine computes [-2.*ln(function)]
 
@@ -275,13 +270,13 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
   delete calProposalCovMatrix;
 
   // Deal with forward problem
-  m_calQoiRoutineInfo = new uqTgaQoiInfoStruct<P_V,P_M,Q_V,Q_M>(*m_paramSpace,
-                                                                m_predInitialTemp,
-                                                                m_predBeta,
-                                                                m_predCriticalW,
-                                                                m_predCriticalTime);
+  m_calQoiRoutineInfo = new uqPhysics1QoiInfoStruct<P_V,P_M,Q_V,Q_M>(*m_paramSpace,
+                                                                     m_predInitialTemp,
+                                                                     m_predBeta,
+                                                                     m_predCriticalW,
+                                                                     m_predCriticalTime);
 
-  m_cycle->setCalFP(uqTgaQoiRoutine<P_V,P_M,Q_V,Q_M>,
+  m_cycle->setCalFP(uqPhysics1QoiRoutine<P_V,P_M,Q_V,Q_M>,
                     (void *) m_calQoiRoutineInfo);
 
   // Solve forward problem = set 'realizer' and 'cdf' of 'qoiRv'
@@ -289,8 +284,8 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
 
   iRC = gettimeofday(&timevalNow, NULL);
   if (m_env.rank() == 0) {
-    std::cout << "Leaving uqTgaValidation::runCalibrationStage() at " << ctime(&timevalNow.tv_sec)
-              << "Total uqTgaValidation::runCalibrationStage() run time = " << timevalNow.tv_sec - timevalRef.tv_sec
+    std::cout << "Leaving uqPhysics1Validation::runCalibrationStage() at " << ctime(&timevalNow.tv_sec)
+              << "Total uqPhysics1Validation::runCalibrationStage() run time = " << timevalNow.tv_sec - timevalRef.tv_sec
               << " seconds"
               << std::endl;
   }
@@ -300,7 +295,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
 
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
-uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
+uqPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
 {
   int iRC;
   struct timeval timevalRef;
@@ -308,17 +303,17 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
 
   iRC = gettimeofday(&timevalRef, NULL);
   if (m_env.rank() == 0) {
-    std::cout << "Entering uqTgaValidation::runValidationStage() at " << ctime(&timevalRef.tv_sec)
+    std::cout << "Entering uqPhysics1Validation::runValidationStage() at " << ctime(&timevalRef.tv_sec)
               << std::endl;
   }
 
   // Deal with inverse problem
   m_valLikelihoodInfoVector.resize(1,NULL);
-  m_valLikelihoodInfoVector[0] = new uqTgaLikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"tgaData/scenario_100_K_min.dat",NULL,NULL,NULL);
+  m_valLikelihoodInfoVector[0] = new uqPhysics1LikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"tgaData/scenario_100_K_min.dat");
 
   m_valLikelihoodFunctionObj = new uqGenericScalarFunctionClass<P_V,P_M>("val_like_",
                                                                          *m_paramDomain,
-                                                                         uqTgaLikelihoodRoutine<P_V,P_M>,
+                                                                         uqPhysics1LikelihoodRoutine<P_V,P_M>,
                                                                          (void *) &m_valLikelihoodInfoVector,
                                                                          true); // the routine computes [-2.*ln(function)]
 
@@ -332,13 +327,13 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
   delete valProposalCovMatrix;
 
   // Deal with forward problem
-  m_valQoiRoutineInfo = new uqTgaQoiInfoStruct<P_V,P_M,Q_V,Q_M>(*m_paramSpace,
-                                                                m_predInitialTemp,
-                                                                m_predBeta,
-                                                                m_predCriticalW,
-                                                                m_predCriticalTime);
+  m_valQoiRoutineInfo = new uqPhysics1QoiInfoStruct<P_V,P_M,Q_V,Q_M>(*m_paramSpace,
+                                                                     m_predInitialTemp,
+                                                                     m_predBeta,
+                                                                     m_predCriticalW,
+                                                                     m_predCriticalTime);
 
-  m_cycle->setValFP(uqTgaQoiRoutine<P_V,P_M,Q_V,Q_M>,
+  m_cycle->setValFP(uqPhysics1QoiRoutine<P_V,P_M,Q_V,Q_M>,
                     (void *) m_valQoiRoutineInfo);
 
   // Solve forward problem = set 'realizer' and 'cdf' of 'qoiRv'
@@ -346,8 +341,8 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
 
   iRC = gettimeofday(&timevalNow, NULL);
   if (m_env.rank() == 0) {
-    std::cout << "Leaving uqTgaValidation::runValidationStage() at " << ctime(&timevalNow.tv_sec)
-              << "Total uqTgaValidation::runValidationStage() run time = " << timevalNow.tv_sec - timevalRef.tv_sec
+    std::cout << "Leaving uqPhysics1Validation::runValidationStage() at " << ctime(&timevalNow.tv_sec)
+              << "Total uqPhysics1Validation::runValidationStage() run time = " << timevalNow.tv_sec - timevalRef.tv_sec
               << " seconds"
               << std::endl;
   }
@@ -357,7 +352,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
 
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
-uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runComparisonStage()
+uqPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runComparisonStage()
 {
   int iRC;
   struct timeval timevalRef;
@@ -365,7 +360,7 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runComparisonStage()
 
   iRC = gettimeofday(&timevalRef, NULL);
   if (m_env.rank() == 0) {
-    std::cout << "Entering uqTgaValidation::runComparisonStage() at " << ctime(&timevalRef.tv_sec)
+    std::cout << "Entering uqPhysics1Validation::runComparisonStage() at " << ctime(&timevalRef.tv_sec)
               << std::endl;
   }
 
@@ -447,8 +442,8 @@ uqTgaValidationClass<P_V,P_M,Q_V,Q_M>::runComparisonStage()
 
   iRC = gettimeofday(&timevalNow, NULL);
   if (m_env.rank() == 0) {
-    std::cout << "Leaving uqTgaValidation::runComparisonStage() at " << ctime(&timevalNow.tv_sec)
-              << "Total uqTgaValidation::runComparisonStage() run time = " << timevalNow.tv_sec - timevalRef.tv_sec
+    std::cout << "Leaving uqPhysics1Validation::runComparisonStage() at " << ctime(&timevalNow.tv_sec)
+              << "Total uqPhysics1Validation::runComparisonStage() run time = " << timevalNow.tv_sec - timevalRef.tv_sec
               << " seconds"
               << std::endl;
   }
