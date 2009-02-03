@@ -342,6 +342,11 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
                                                          m_vectorSpace,
                                                          m_drScalesForCovMatrices,
                                                          m_targetPdf);
+    if (m_env.rank() == 0) {
+      std::cout << "In uqMarkovChainSGClass<P_V,P_M>::constructor()"
+                << ": just instantiated a 'HessianCovMatrices' TK class"
+                << std::endl;
+    }
   }
   else {
     if (m_initialProposalCovMatrix == NULL) {
@@ -355,6 +360,11 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
                                                       m_vectorSpace,
                                                       m_drScalesForCovMatrices,
                                                       *m_initialProposalCovMatrix);
+    if (m_env.rank() == 0) {
+      std::cout << "In uqMarkovChainSGClass<P_V,P_M>::constructor()"
+                << ": just instantiated a 'ScaledCovMatrix' TK class"
+                << std::endl;
+    }
   }
 
 

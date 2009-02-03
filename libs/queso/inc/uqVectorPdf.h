@@ -1,21 +1,34 @@
-/* uq/libs/queso/inc/uqVectorPdf.h
+/*--------------------------------------------------------------------------
+ *--------------------------------------------------------------------------
  *
- * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu/
+ * Copyright (C) 2008 The PECOS Development Team
  *
- * This program is free software; you can redistribute it and/or modify
+ * Please see http://pecos.ices.utexas.edu for more information.
+ *
+ * This file is part of the QUESO Library (Quantification of Uncertainty
+ * for Estimation, Simulation and Optimization).
+ *
+ * QUESO is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or (at
- * your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- * 
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * QUESO is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- */
+ * along with QUESO. If not, see <http://www.gnu.org/licenses/>.
+ *
+ *--------------------------------------------------------------------------
+ *
+ * $Id$
+ *
+ * Brief description of this file: 
+ * 
+ *--------------------------------------------------------------------------
+ *-------------------------------------------------------------------------- */
 
 #ifndef __UQ_VECTOR_PROB_DENSITY_H__
 #define __UQ_VECTOR_PROB_DENSITY_H__
@@ -341,6 +354,32 @@ uqBayesianVectorPdfClass<V,M>::minus2LnValue(
 
   double value1 = m_priorDensity.minus2LnValue      (domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect);
   double value2 = m_likelihoodFunction.minus2LnValue(domainVector,domainDirection,gradV     ,hessianM     ,hessianE     );
+
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "In uqBayesianVectorPdfClass<P_V,P_M>::minus2LnValue()"
+              << ": value1 = " << value1
+              << ", value2 = " << value2
+              << std::endl;
+    if (gradVector) {
+      std::cout << "In uqBayesianVectorPdfClass<P_V,P_M>::minus2LnValue()"
+                << ": gradVector = " << *gradVector
+                << ", gradV = "      << *gradV
+                << std::endl;
+    }
+    if (hessianMatrix) {
+      std::cout << "In uqBayesianVectorPdfClass<P_V,P_M>::minus2LnValue()"
+                << ": hessianMatrix = " << *hessianMatrix
+                << ", hessianM = "      << *hessianM
+                << std::endl;
+    }
+    if (hessianEffect) {
+      std::cout << "In uqBayesianVectorPdfClass<P_V,P_M>::minus2LnValue()"
+                << ": hessianEffect = " << *hessianEffect
+                << ", hessianE = "      << *hessianE
+                << std::endl;
+    }
+  }
+
   if (gradVector   ) *gradVector    += *gradV;
   if (hessianMatrix) *hessianMatrix += *hessianM;
   if (hessianEffect) *hessianEffect += *hessianE;

@@ -1,21 +1,34 @@
-/* uq/libs/queso/inc/uqMarkovChainSG2.h
+/*--------------------------------------------------------------------------
+ *--------------------------------------------------------------------------
  *
- * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu
+ * Copyright (C) 2008 The PECOS Development Team
  *
- * This program is free software; you can redistribute it and/or modify
+ * Please see http://pecos.ices.utexas.edu for more information.
+ *
+ * This file is part of the QUESO Library (Quantification of Uncertainty
+ * for Estimation, Simulation and Optimization).
+ *
+ * QUESO is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or (at
- * your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- * 
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * QUESO is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- */
+ * along with QUESO. If not, see <http://www.gnu.org/licenses/>.
+ *
+ *--------------------------------------------------------------------------
+ *
+ * $Id$
+ *
+ * Brief description of this file: 
+ * 
+ *--------------------------------------------------------------------------
+ *-------------------------------------------------------------------------- */
 
 #ifndef __UQ_MAC_SG2_H__
 #define __UQ_MAC_SG2_H__
@@ -393,13 +406,13 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
     }
     unsigned int stageId = 0;
 
-    //std::cout << "AQUI 003" << std::endl;
 #ifdef UQ_USES_TK_CLASS
+    std::cout << "AQUI 003" << std::endl;
     m_tk->clearPreComputingPositions();
-    //std::cout << "AQUI 004" << std::endl;
+    std::cout << "AQUI 004" << std::endl;
     m_tk->setPreComputingPosition(currentPositionData.vecValues(),0);
+    std::cout << "AQUI 005" << std::endl;
 #endif
-    //std::cout << "AQUI 005" << std::endl;
 
     //****************************************************
     // Loop: generate new position
@@ -407,15 +420,15 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
     if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
 #ifdef UQ_USES_TK_CLASS
     m_tk->rv(0).realizer().realization(tmpVecValues);
-    //std::cout << "AQUI 006" << std::endl;
+    std::cout << "AQUI 006" << std::endl;
     m_tk->setPreComputingPosition(tmpVecValues,stageId+1);
+    std::cout << "AQUI 007" << std::endl;
 #else
     gaussianVector.cwSetGaussian(m_env.rng(),0.,1.);
     tmpVecValues = currentPositionData.vecValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
 #endif
     if (m_chainMeasureRunTimes) candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
 
-    //std::cout << "AQUI 007" << std::endl;
 
     outOfTargetSupport = !m_targetPdf.domainSet().contains(tmpVecValues);
     if (outOfTargetSupport) {

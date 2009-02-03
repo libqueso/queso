@@ -18,7 +18,7 @@ LIBS = \
 	-luq_basic_any \
 	$(QUESO_TOOL_LIBS)
 
-all:	uqPyramidEx
+all:	uqPyramidExample
 
 clean_lib:
 	cd ../../../../libs/basic/src; make clean_all UQBT=$(UQBT)
@@ -27,10 +27,10 @@ clean_lib:
 clean_exec:
 	rm -f *~
 	rm -f *.o
-	rm -f uqPyramid_$(UQBT)
+	rm -f uqPyramidExample_$(UQBT)
 
-uqPyramidEx: libs uqPyramid_$(UQBT).o
-	$(CXX) uqPyramid_$(UQBT).o -o uqPyramid_$(UQBT) $(LIBS)
+uqPyramidExample: libs uqPyramidExample_$(UQBT).o
+	$(CXX) uqPyramidExample_$(UQBT).o -o uqPyramidExample_$(UQBT) $(LIBS)
 
 libs:
 	cd ../../../../libs/basic/src; make libuq_basic_all UQBT=$(UQBT)
