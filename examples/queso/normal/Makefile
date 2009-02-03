@@ -1,38 +1,20 @@
-include ../../../Make.common
+ifeq ($(UQBT),)
+override UQBT = gsl
+else ifeq ($(UQBT),gsl)
+else
+override UQBT = tri
+endif
 
-INC_PATHS = \
-	-I. \
-	-I../inc \
-	-I../../../libs/basic/inc \
-	-I../../../libs/queso/inc \
-	$(QUESO_TOOL_INCLUDE)
+all:	all_src
 
-LIBS = \
-	-L../../../libs/basic/lib \
-	-L../../../libs/queso/lib \
-	-luq_queso_$(UQBT) \
-	-luq_queso_any \
-	-luq_basic_$(UQBT) \
-	-luq_basic_any \
-	$(QUESO_TOOL_LIBS)
+echo_basic_type:
+	@echo 'UQBT = ' $(UQBT)
 
-all:	uqNormalEx
+clean_all: echo_basic_type clean_src
 
-clean_lib:
-	cd ../../../libs/basic/src; make clean_all UQBT=$(UQBT)
-	cd ../../../libs/queso/src; make clean_all UQBT=$(UQBT)
+clean_src:
+	cd src; make clean_all UQBT=$(UQBT)
 
-clean_exec:
-	rm -f *~
-	rm -f *.o
-	rm -f uqNormalEx_$(UQBT)
+all_src:
+	cd src; make UQBT=$(UQBT)
 
-uqNormalEx: libs uqNormalEx_$(UQBT).o
-	$(CXX) uqNormalEx_$(UQBT).o -o uqNormalEx_$(UQBT) $(LIBS)
-
-libs:
-	cd ../../../libs/basic/src; make libuq_basic_all UQBT=$(UQBT)
-	cd ../../../libs/queso/src; make libuq_queso_all UQBT=$(UQBT)
-
-%.o: %.C
-	$(CXX) $(DEFINES) $(INC_PATHS) $(CXXFLAGS) $<
