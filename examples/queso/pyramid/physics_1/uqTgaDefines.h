@@ -1,4 +1,4 @@
-/* uq/examples/queso/chemicalReactions/uqChemEx_tri.C
+/* uq/examples/queso/pyramid/uqTgaDefines.h
  *
  * Copyright (C) 2008 The QUESO Team, http://queso.ices.utexas.edu
  *
@@ -17,27 +17,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <uqChemEx.h>
-#include <uqTrilinosMatrix.h>
+#ifndef __UQ_TGA_DEFINES_H__
+#define __UQ_TGA_DEFINES_H__
 
-int main(int argc, char* argv[])
-{
-  //************************************************
-  // Initialize environment
-  //************************************************
-  MPI_Init(&argc,&argv);
-  uqFullEnvironmentClass* env = new uqFullEnvironmentClass(argc,argv);
+#define R_CONSTANT 8.314472
+#define GSL_ODE_CONTROL_ABS_PRECISION_FOR_QUESO 1.0e-6
+#undef  QUESO_TGA_USES_OLD_COMPATIBLE_CODE
+#define QUESO_TEST_OCTOBER_2008
+#undef  QUESO_TEST_REPORT1_2009
 
-  //************************************************
-  // Call application
-  //************************************************
-  uqAppl<uqTrilinosVectorClass,uqTrilinosMatrixClass>(*env);
+extern double globalTgaCriticalTemperature;
 
-  //************************************************
-  // Finalize environment
-  //************************************************
-  delete env;
-  MPI_Finalize();
-
-  return 0;
-}
+#endif // __UQ_TGA_DEFINES_H__
