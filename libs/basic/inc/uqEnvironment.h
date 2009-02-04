@@ -24,6 +24,7 @@
 
 #define UQ_ENV_VERBOSITY_ODV        0
 #define UQ_ENV_SEED_ODV             0
+#define UQ_ENV_RUN_NAME_ODV         ""
 #define UQ_ENV_NUM_DEBUG_PARAMS_ODV 0
 #define UQ_ENV_DEBUG_PARAM_ODV      0.
 
@@ -43,6 +44,7 @@ struct uqEnvOptionsStruct {
 
   unsigned int        m_verbosity;
   int                 m_seed;
+  std::string         m_runName;
   unsigned int        m_numDebugParams;
   std::vector<double> m_debugParams;
 };
@@ -68,6 +70,7 @@ public:
           po::variables_map&      allOptionsMap            () const;
           void                    scanInputFileForMyOptions(const po::options_description& optionsDesc) const;
           unsigned int            verbosity                () const;
+          const std::string&      runName                  () const;
           const gsl_rng*          rng                      () const;
           bool                    isThereInputFile         () const;
   virtual void                    print                    (std::ostream& os) const = 0;
@@ -86,6 +89,7 @@ protected:
   po::variables_map*       m_allOptionsMap;
   unsigned int             m_verbosity;
   int                      m_seed;
+  std::string              m_runName;
   unsigned int             m_numDebugParams;
   std::vector<double>      m_debugParams;
   gsl_rng*                 m_rng;

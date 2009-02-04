@@ -33,7 +33,7 @@
 #ifndef __UQ_MAC_SG1_H__
 #define __UQ_MAC_SG1_H__
 
-#undef  UQ_USES_TK_CLASS
+#define UQ_USES_TK_CLASS
 #undef  UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
 #define UQ_MAC_SG_REQUIRES_TARGET_DISTRIBUTION_ONLY
 
@@ -337,6 +337,15 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   /////////////////////////////////////////////////////////////////
   // Instantiate the appropriate TK
   /////////////////////////////////////////////////////////////////
+#ifdef UQ_USES_TK_CLASS
+  if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::constructor()"
+                                   << ": running with UQ_USES_TK_CLASS flag defined"
+                                   << std::endl;
+#else
+  if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::constructor()"
+                                   << ": running with UQ_USES_TK_CLASS flag undefined"
+                                   << std::endl;
+#endif
   if (m_tkUseLocalHessian) {
     m_tk = new uqHessianCovMatricesTKGroupClass<P_V,P_M>(m_prefix.c_str(),
                                                          m_vectorSpace,

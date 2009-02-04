@@ -35,6 +35,7 @@ uqEnvOptionsStruct::uqEnvOptionsStruct(
   :
   m_verbosity     (verbosity),
   m_seed          (seed),
+  m_runName       (UQ_ENV_RUN_NAME_ODV),
   m_numDebugParams(0),
   m_debugParams   (0,0.)
 {
@@ -62,6 +63,7 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass()
   m_allOptionsMap   (NULL),
   m_verbosity       (UQ_ENV_VERBOSITY_ODV),
   m_seed            (UQ_ENV_SEED_ODV),
+  m_runName         (UQ_ENV_RUN_NAME_ODV),
   m_numDebugParams  (UQ_ENV_NUM_DEBUG_PARAMS_ODV),
   m_debugParams     (m_numDebugParams,0.),
   m_rng             (NULL)
@@ -85,6 +87,7 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_allOptionsMap   (NULL),
   m_verbosity       (UQ_ENV_VERBOSITY_ODV),
   m_seed            (UQ_ENV_SEED_ODV),
+  m_runName         (UQ_ENV_RUN_NAME_ODV),
   m_numDebugParams  (UQ_ENV_NUM_DEBUG_PARAMS_ODV),
   m_debugParams     (m_numDebugParams,0.),
   m_rng             (NULL)
@@ -107,6 +110,7 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_allOptionsMap   (NULL),
   m_verbosity       (options.m_verbosity),
   m_seed            (options.m_seed),
+  m_runName         (UQ_ENV_RUN_NAME_ODV),
   m_numDebugParams  (options.m_numDebugParams),
   m_debugParams     (options.m_debugParams),
   m_rng             (NULL)
@@ -227,6 +231,12 @@ unsigned int
 uqBaseEnvironmentClass::verbosity() const
 {
   return m_verbosity;
+}
+
+const std::string&
+uqBaseEnvironmentClass::runName() const
+{
+  return m_runName;
 }
 
 const gsl_rng*
@@ -436,6 +446,7 @@ uqFullEnvironmentClass::defineMyOptions(po::options_description& options) const
     ("uqEnv_help", "produce help message for uq environment")
     ("uqEnv_verbosity",      po::value<unsigned int>()->default_value(UQ_ENV_VERBOSITY_ODV),       "set verbosity"                 )
     ("uqEnv_seed",           po::value<int         >()->default_value(UQ_ENV_SEED_ODV),            "set seed"                      )
+    ("uqEnv_runName",        po::value<std::string >()->default_value(UQ_ENV_RUN_NAME_ODV),        "set run name"                  )
     //("uqEnv_numDebugParams", po::value<unsigned int>()->default_value(UQ_ENV_NUM_DEBUG_PARAMS_ODV),"set number of debug parameters")
   ;
 
@@ -458,6 +469,10 @@ uqFullEnvironmentClass::getMyOptionValues(po::options_description& optionsDesc)
     m_seed = (*m_allOptionsMap)["uqEnv_seed"].as<int>();
   }
 
+  if (m_allOptionsMap->count("uqEnv_runName")) {
+    m_runName = (*m_allOptionsMap)["uqEnv_runName"].as<std::string >();
+  }
+
   //if (m_allOptionsMap->count("uqEnv_numDebugParams")) {
   //  m_seed = (*m_allOptionsMap)["uqEnv_numDebugParams"].as<unsigned int>();
   //}
@@ -474,9 +489,10 @@ uqFullEnvironmentClass::getMyOptionValues(po::options_description& optionsDesc)
 void
 uqFullEnvironmentClass::print(std::ostream& os) const
 {
-  os << "m_verbosity = "        << m_verbosity
-     << "\nm_seed = "           << m_seed
-    //<< "\nm_numDebugParams = " << m_numDebugParams
+  os <<         "m_verbosity = "     << m_verbosity
+     << "\n" << "m_seed = "          << m_seed
+     << "\n" << "m_runName = "       << m_runName
+   //<< "\n" << m_numDebugParams = " << m_numDebugParams
      << std::endl;
   return;
 }
