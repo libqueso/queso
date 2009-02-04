@@ -343,6 +343,11 @@ uqBayesianVectorPdfClass<V,M>::minus2LnValue(
         M* hessianMatrix,
         V* hessianEffect) const
 {
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Entering uqBayesianVectorPdfClass<P_V,P_M>::minus2LnValue()"
+              << std::endl;
+  }
+
   V* gradV = NULL;
   if (gradVector) gradV = &m_tmpVector1;
 
@@ -353,6 +358,13 @@ uqBayesianVectorPdfClass<V,M>::minus2LnValue(
   if (hessianEffect) hessianE = &m_tmpVector2;
 
   double value1 = m_priorDensity.minus2LnValue      (domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect);
+
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "In uqBayesianVectorPdfClass<P_V,P_M>::minus2LnValue()"
+              << ": about to call likelihood()"
+              << std::endl;
+  }
+
   double value2 = m_likelihoodFunction.minus2LnValue(domainVector,domainDirection,gradV     ,hessianM     ,hessianE     );
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
@@ -384,12 +396,10 @@ uqBayesianVectorPdfClass<V,M>::minus2LnValue(
   if (hessianMatrix) *hessianMatrix += *hessianM;
   if (hessianEffect) *hessianEffect += *hessianE;
 
-  //if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-  //  std::cout << "In uqBayesianVectorPdfClass<P_V,P_M>::minus2LnValue()"
-  //            << ", -2ln(prior) = " << value1
-  //            << ", -2ln(like) = "  << value2
-  //            << std::endl;
-  //}
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Leaving uqBayesianVectorPdfClass<P_V,P_M>::minus2LnValue()"
+              << std::endl;
+  }
 
   return value1+value2;
 }

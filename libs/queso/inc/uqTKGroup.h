@@ -92,7 +92,7 @@ uqBaseTKGroupClass<V,M>::uqBaseTKGroupClass(
   m_vectorSpace          (&vectorSpace),
   m_scales               (scales.size(),1.),
   m_preComputingPositions(scales.size()+1,NULL), // Yes, +1
-  m_rvs                  (scales.size(),NULL)
+  m_rvs                  (scales.size(),NULL) // IMPORTANT: like this for scaledTK, overwritten to '+1' by hessianTK constructor
 {
   for (unsigned int i = 0; i < m_scales.size(); ++i) {
     m_scales[i] = scales[i];
@@ -164,6 +164,7 @@ uqBaseTKGroupClass<V,M>::clearPreComputingPositions()
       m_preComputingPositions[i] = NULL;
     }
   }
+
   return;
 }
 
@@ -195,6 +196,7 @@ public:
         void                          print                     (std::ostream& os) const;
 
 private:
+        void                          setRVsWithZeroMean        ();
   using uqBaseTKGroupClass<V,M>::m_env;
   using uqBaseTKGroupClass<V,M>::m_prefix;
   using uqBaseTKGroupClass<V,M>::m_vectorSpace;
@@ -215,18 +217,60 @@ uqScaledCovMatrixTKGroupClass<V,M>::uqScaledCovMatrixTKGroupClass(
   uqBaseTKGroupClass<V,M>(prefix,vectorSpace,scales),
   m_covMatrix            (covMatrix)
 {
-  for (unsigned int i = 0; i < m_scales.size(); ++i) {
-    double factor = 1./m_scales[i]/m_scales[i];
-    m_rvs[i] = new uqGaussianVectorRVClass<V,M>(m_prefix.c_str(),
-                                                *m_vectorSpace,
-                                                m_vectorSpace->zeroVector(),
-                                                factor*covMatrix);
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Entering uqScaledCovMatrixTKGroupClass<V,M>::constructor()"
+              << std::endl;
+  }
+
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "In uqScaledCovMatrixTKGroupClass<V,M>::constructor()"
+              << ": m_scales.size() = "                << m_scales.size()
+              << ", m_preComputingPositions.size() = " << m_preComputingPositions.size()
+              << ", m_rvs.size() = "                   << m_rvs.size()
+              << ", m_covMatrix = "                    << m_covMatrix
+              << std::endl;
+  }
+
+  setRVsWithZeroMean();
+
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Leaving uqScaledCovMatrixTKGroupClass<V,M>::constructor()"
+              << std::endl;
   }
 }
 
 template<class V, class M>
 uqScaledCovMatrixTKGroupClass<V,M>::~uqScaledCovMatrixTKGroupClass()
 {
+}
+
+template<class V, class M>
+void
+uqScaledCovMatrixTKGroupClass<V,M>::setRVsWithZeroMean()
+{
+  UQ_FATAL_TEST_MACRO(m_rvs.size() == 0,
+                      m_env.rank(),
+                      "uqScaledCovMatrixTKGroupClass<V,M>::setRVsWithZeroMean()",
+                      "m_rvs.size() = 0");
+
+  UQ_FATAL_TEST_MACRO(m_rvs.size() != m_scales.size(),
+                      m_env.rank(),
+                      "uqScaledCovMatrixTKGroupClass<V,M>::setRVsWithZeroMean()",
+                      "m_rvs.size() != m_scales.size()");
+
+  for (unsigned int i = 0; i < m_scales.size(); ++i) {
+    double factor = 1./m_scales[i]/m_scales[i];
+    UQ_FATAL_TEST_MACRO(m_rvs[i] != NULL,
+                        m_env.rank(),
+                        "uqScaledCovMatrixTKGroupClass<V,M>::setRVsWithZeroMean()",
+                        "m_rvs[i] != NULL");
+    m_rvs[i] = new uqGaussianVectorRVClass<V,M>(m_prefix.c_str(),
+                                                *m_vectorSpace,
+                                                m_vectorSpace->zeroVector(),
+                                                factor*m_covMatrix);
+  }
+
+  return;
 }
 
 template<class V, class M>
@@ -299,6 +343,7 @@ void
 uqScaledCovMatrixTKGroupClass<V,M>::setPreComputingPosition(const V& position, unsigned int stageId)
 {
   uqBaseTKGroupClass<V,M>::setPreComputingPosition(position,stageId);
+  //setRVsWithZeroMean();
   return;
 }
 
@@ -374,6 +419,26 @@ uqHessianCovMatricesTKGroupClass<V,M>::uqHessianCovMatricesTKGroupClass(
   m_preComputedPosPlusNewton(scales.size()+1,NULL) // Yes, +1
 //m_preComputedHessians     (scales.size()+1,NULL) // Yes, +1
 {
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Entering uqHessianCovMatricesTKGroupClass<V,M>::constructor()"
+              << std::endl;
+  }
+
+  m_rvs.resize(scales.size()+1,NULL); // Yes, +1: IMPORTANT: overwrite initialization done by uqBaseTKGroupClass<V,M>
+
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "In uqHessianCovMatricesTKGroupClass<V,M>::constructor()"
+              << ": m_scales.size() = "                   << m_scales.size()
+              << ", m_preComputingPositions.size() = "    << m_preComputingPositions.size()
+              << ", m_rvs.size() = "                      << m_rvs.size()
+              << ", m_preComputedPosPlusNewton.size() = " << m_preComputedPosPlusNewton.size()
+              << std::endl;
+  }
+
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Leaving uqHessianCovMatricesTKGroupClass<V,M>::constructor()"
+              << std::endl;
+  }
 }
 
 template<class V, class M>
@@ -450,6 +515,13 @@ template<class V, class M>
 void
 uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position, unsigned int stageId)
 {
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Entering uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"
+              << ": position = " << position
+              << ", stageId = "  << stageId
+              << std::endl;
+  }
+
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() != m_preComputedPosPlusNewton.size(),
                       m_env.rank(),
                       "uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
@@ -485,13 +557,10 @@ uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position
                       "uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
                       "m_preComputedPosPlusNewton[stageId] != NULL");
 
-  std::cout << "In uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(): pos 000" << std::endl;
-
   uqBaseTKGroupClass<V,M>::setPreComputingPosition(position,stageId);
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "In uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"
-              << ", pos 001"
               << ": m_preComputedPosPlusNewton.size() = " << m_preComputedPosPlusNewton.size()
               << ", m_preComputingPositions.size() = "    << m_preComputingPositions.size()
               << ", m_rvs.size() = "                      << m_rvs.size()
@@ -500,6 +569,24 @@ uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position
 
   M* tmpHessian = m_vectorSpace->newMatrix();
   V* tmpGrad    = m_vectorSpace->newVector();
+#if 1
+  m_targetPdf.minus2LnValue(position,NULL,tmpGrad,tmpHessian,NULL);
+  //double factor = 1./m_scales[stageId]/m_scales[stageId];
+  //*tmpHessian *= factor;
+
+  m_preComputedPosPlusNewton[stageId] = m_vectorSpace->newVector();
+
+  UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageId] == NULL,
+                      m_env.rank(),
+                      "uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
+                      "m_preComputingPositions[stageId] == NULL");
+  *(m_preComputedPosPlusNewton[stageId]) = *m_preComputingPositions[stageId] - tmpHessian->invertMultiply(*tmpGrad);
+
+  m_rvs[stageId] = new uqGaussianVectorRVClass<V,M>(m_prefix.c_str(),
+                                                    *m_vectorSpace,
+                                                    *m_preComputedPosPlusNewton[stageId],
+                                                    *tmpHessian);
+#else
   for (unsigned int i = 0; i < m_preComputedPosPlusNewton.size(); ++i) {
     std::cout << "In uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(): pos 002, i = " << i << std::endl;
     m_targetPdf.minus2LnValue(position,NULL,tmpGrad,tmpHessian,NULL);
@@ -516,8 +603,16 @@ uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position
                                                 *tmpHessian);
     std::cout << "In uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(): pos 004, i = " << i << std::endl;
   }
+#endif
   delete tmpGrad;
   delete tmpHessian;
+
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Leaving uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"
+              << ": position = " << position
+              << ", stageId = "  << stageId
+              << std::endl;
+  }
 
   return;
 }
@@ -532,6 +627,15 @@ uqHessianCovMatricesTKGroupClass<V,M>::clearPreComputingPositions()
                       "m_preComputingPositions.size() != m_preComputedPosPlusNewton.size()");
 
   uqBaseTKGroupClass<V,M>::clearPreComputingPositions();
+
+  // RVs are not deleted in base class because the cov matrices are constant in the case of scaledTK class
+  for (unsigned int i = 0; i < m_rvs.size(); ++i) {
+    if (m_rvs[i]) {
+      delete m_rvs[i];
+      m_rvs[i] = NULL;
+    }
+  }
+
   for (unsigned int i = 0; i < m_preComputedPosPlusNewton.size(); ++i) {
     if (m_preComputedPosPlusNewton[i]) {
       delete m_preComputedPosPlusNewton[i];

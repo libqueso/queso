@@ -397,6 +397,13 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
   }
   //std::cout << "AQUI 002" << std::endl;
 
+  if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
+    std::cout << "\n"
+              << "\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+              << "\n"
+              << std::endl;
+  }
+
   for (unsigned int positionId = 1; positionId < workingChain.sequenceSize(); ++positionId) {
     if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
       std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
@@ -407,11 +414,21 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
     unsigned int stageId = 0;
 
 #ifdef UQ_USES_TK_CLASS
-    std::cout << "AQUI 003" << std::endl;
     m_tk->clearPreComputingPositions();
-    std::cout << "AQUI 004" << std::endl;
+
+    if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+      std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
+                << ": about to set TK pre computing position of id " << 0
+                << ", values = " << currentPositionData.vecValues()
+                << std::endl;
+    }
     m_tk->setPreComputingPosition(currentPositionData.vecValues(),0);
-    std::cout << "AQUI 005" << std::endl;
+    if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+      std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
+                << ": successfully set TK pre computing position of id " << 0
+                << ", values = " << currentPositionData.vecValues()
+                << std::endl;
+    }
 #endif
 
     //****************************************************
@@ -420,9 +437,20 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
     if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
 #ifdef UQ_USES_TK_CLASS
     m_tk->rv(0).realizer().realization(tmpVecValues);
-    std::cout << "AQUI 006" << std::endl;
+
+    if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+      std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
+                << ": about to set TK pre computing position of id " << stageId+1
+                << ", values = " << tmpVecValues
+                << std::endl;
+    }
     m_tk->setPreComputingPosition(tmpVecValues,stageId+1);
-    std::cout << "AQUI 007" << std::endl;
+    if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+      std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
+                << ": successfully set TK pre computing position of id " << stageId+1
+                << ", values = " << tmpVecValues
+                << std::endl;
+    }
 #else
     gaussianVector.cwSetGaussian(m_env.rng(),0.,1.);
     tmpVecValues = currentPositionData.vecValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
@@ -445,7 +473,9 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
                              logTarget);
 
     if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-      std::cout << "\n-----------------------------------------------------------\n"
+      std::cout << "\n"
+                << "\n-----------------------------------------------------------\n"
+                << "\n"
                 << std::endl;
     }
     bool accept = false;
@@ -492,7 +522,9 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
                                        << std::endl;
     }
     if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-      std::cout << "\n-----------------------------------------------------------\n"
+      std::cout << "\n"
+                << "\n-----------------------------------------------------------\n"
+                << "\n"
                 << std::endl;
     }
 
@@ -511,6 +543,12 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
       tkStageIds[1]  = 1;
 
       while ((accept == false) && (stageId < m_drMaxNumExtraStages)) {
+        if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
+          std::cout << "\n"
+                    << "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-"
+                    << "\n"
+                    << std::endl;
+        }
         stageId++;
         if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
           std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
@@ -522,7 +560,19 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
         if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
 #ifdef UQ_USES_TK_CLASS
         m_tk->rv(tkStageIds).realizer().realization(tmpVecValues);
+        if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+          std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
+                    << ": about to set TK pre computing position of id " << stageId+1
+                    << ", values = " << tmpVecValues
+                    << std::endl;
+        }
         m_tk->setPreComputingPosition(tmpVecValues,stageId+1);
+        if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+          std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
+                    << ": successfully set TK pre computing position of id " << stageId+1
+                    << ", values = " << tmpVecValues
+                    << std::endl;
+        }
 #else
         gaussianVector.cwSetGaussian(m_env.rng(),0.,1.);
         tmpVecValues = currentPositionData.vecValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
@@ -768,6 +818,13 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
                   << " positions"
                   << std::endl;
       }
+    }
+
+    if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
+      std::cout << "\n"
+                << "\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+                << "\n"
+                << std::endl;
     }
   } // end chain loop
 
