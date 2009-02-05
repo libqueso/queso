@@ -236,6 +236,12 @@ uqGslMatrixClass::chol()
   return iRC;
 }
 
+gsl_matrix*
+uqGslMatrixClass::data() const
+{
+  return m_mat;
+}
+
 void
 uqGslMatrixClass::zeroLower(bool includeDiagonal)
 {

@@ -59,6 +59,7 @@ public:
   uqGslVectorClass  invertMultiply(const uqGslVectorClass& b) const;
   void              invertMultiply(const uqGslVectorClass& b, uqGslVectorClass& x) const;
   void              print         (std::ostream& os) const;
+  gsl_matrix*       data          () const;
 
 private:
   void              copy          (const uqGslMatrixClass& src);
