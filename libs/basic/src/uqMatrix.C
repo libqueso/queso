@@ -33,8 +33,9 @@ uqMatrixClass::uqMatrixClass()
 
 uqMatrixClass::uqMatrixClass(const uqBaseEnvironmentClass& env, const Epetra_Map& map)
   :
-  m_env(env),
-  m_map(map)
+  m_env              (env),
+  m_map              (map),
+  m_printHorizontally(true)
 {
 }
 
@@ -58,6 +59,7 @@ uqMatrixClass::copy(const uqMatrixClass& src)
 {
   //m_env = src.env;
   //m_map = src.map;
+  m_printHorizontally = src.m_printHorizontally;
 
   return;
 }
@@ -113,4 +115,17 @@ uqMatrixClass::map() const
 {
   return m_map;
   //return (const Epetra_Map&) (m_mat->Map());
+}
+
+void
+uqMatrixClass::setPrintHorizontally(bool value) const
+{
+  m_printHorizontally = value;
+  return;
+}
+
+bool
+uqMatrixClass::getPrintHorizontally() const
+{
+  return m_printHorizontally;
 }

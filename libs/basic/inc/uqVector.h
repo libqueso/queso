@@ -40,23 +40,23 @@ public:
   uqVectorClass& operator-=(const uqVectorClass& rhs);
 
     const uqBaseEnvironmentClass& env                 ()           const;
-    const Epetra_Map&         map                 ()           const;
-          void                setPrintHorizontally(bool value) const; // Yes, 'const'
-          bool                getPrintHorizontally()           const;
+    const Epetra_Map&             map                 ()           const;
+          void                    setPrintHorizontally(bool value) const; // Yes, 'const'
+          bool                    getPrintHorizontally()           const;
 
-  virtual unsigned int        size                () const = 0;
-  virtual void                cwSet               (double value) = 0;
-  virtual void                cwSetGaussian       (const gsl_rng* rng, double mean, double stdDev) = 0;
-  virtual void                cwInvert            () = 0;
-  virtual void                sort                () = 0;
-  virtual void                print               (std::ostream& os) const = 0;
+  virtual unsigned int            size                () const = 0;
+  virtual void                    cwSet               (double value) = 0;
+  virtual void                    cwSetGaussian       (const gsl_rng* rng, double mean, double stdDev) = 0;
+  virtual void                    cwInvert            () = 0;
+  virtual void                    sort                () = 0;
+  virtual void                    print               (std::ostream& os) const = 0;
 
 protected:
-  virtual void                copy                (const uqVectorClass& src);
+  virtual void                    copy                (const uqVectorClass& src);
 
   const uqBaseEnvironmentClass& m_env;
-  const Epetra_Map&         m_map;
-  mutable bool m_printHorizontally;
+  const Epetra_Map&             m_map;
+  mutable bool                  m_printHorizontally;
 };
 
 #endif // __UQ_VECTOR_H__

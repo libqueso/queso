@@ -416,12 +416,24 @@ uqGslMatrixClass::print(std::ostream& os) const
   unsigned int nRows = this->numRows();
   unsigned int nCols = this->numCols();
 
-  for (unsigned int i = 0; i < nRows; ++i) {
-    for (unsigned int j = 0; j < nCols; ++j) {
-      os << (*this)(i,j)
-         << " ";
+  if (m_printHorizontally) {
+    for (unsigned int i = 0; i < nRows; ++i) {
+      for (unsigned int j = 0; j < nCols; ++j) {
+        os << (*this)(i,j)
+           << " ";
+      }
+      os << "# ";
     }
-    os << std::endl;
+    //os << std::endl;
+  }
+  else {
+    for (unsigned int i = 0; i < nRows; ++i) {
+      for (unsigned int j = 0; j < nCols; ++j) {
+        os << (*this)(i,j)
+           << " ";
+      }
+      os << std::endl;
+    }
   }
 
   return;

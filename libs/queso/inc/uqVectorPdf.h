@@ -486,9 +486,9 @@ uqGaussianVectorPdfClass<V,M>::uqGaussianVectorPdfClass(
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "In uqGaussianVectorPdfClass<V,M>::constructor()"
-              << ", prefix = "      << m_prefix
-              << ": Mus = "    << this->domainExpVector()
-	      << ", Variances = " << this->domainVarVector()
+              << ", prefix = "     << m_prefix
+              << ": meanVector = " << this->domainExpVector()
+	      << ", Variances = "  << this->domainVarVector()
               << std::endl;
   }
 
@@ -518,8 +518,8 @@ uqGaussianVectorPdfClass<V,M>::uqGaussianVectorPdfClass(
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "In uqGaussianVectorPdfClass<V,M>::constructor()"
-              << ", prefix = "      << m_prefix
-              << ": Mus = "    << this->domainExpVector()
+              << ", prefix = "            << m_prefix
+              << ": meanVector = "        << this->domainExpVector()
 	      << ", Covariance Matrix = " << covMatrix
               << std::endl;
   }
@@ -548,6 +548,8 @@ uqGaussianVectorPdfClass<V,M>::actualValue(
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqGaussianVectorPdfClass<P_V,P_M>::actualValue()"
+              << ", meanVector = "   << *m_domainExpVector
+	      << ", covMatrix = "    << *m_covMatrix
               << ": domainVector = " << domainVector
               << std::endl;
   }
@@ -561,6 +563,8 @@ uqGaussianVectorPdfClass<V,M>::actualValue(
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Leaving uqGaussianVectorPdfClass<P_V,P_M>::actualValue()"
+              << ", meanVector = "   << *m_domainExpVector
+	      << ", covMatrix = "    << *m_covMatrix
               << ": domainVector = " << domainVector
               << ", returnValue = "  << returnValue
               << std::endl;
@@ -580,6 +584,8 @@ uqGaussianVectorPdfClass<V,M>::minus2LnValue(
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqGaussianVectorPdfClass<P_V,P_M>::minus2LnValue()"
+              << ", meanVector = "   << *m_domainExpVector
+	      << ", covMatrix = "    << *m_covMatrix
               << ": domainVector = " << domainVector
               << std::endl;
   }
@@ -603,6 +609,8 @@ uqGaussianVectorPdfClass<V,M>::minus2LnValue(
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Leaving uqGaussianVectorPdfClass<P_V,P_M>::minus2LnValue()"
+              << ", meanVector = "   << *m_domainExpVector
+	      << ", covMatrix = "    << *m_covMatrix
               << ": domainVector = " << domainVector
               << ", returnValue = "  << returnValue
               << std::endl;

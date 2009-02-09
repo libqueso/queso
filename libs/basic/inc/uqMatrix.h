@@ -37,21 +37,24 @@ public:
   uqMatrixClass& operator+=(const uqMatrixClass& rhs);
   uqMatrixClass& operator-=(const uqMatrixClass& rhs);
 
-  const uqBaseEnvironmentClass& env() const;
-  const Epetra_Map&         map() const;
+    const uqBaseEnvironmentClass& env                 ()           const;
+    const Epetra_Map&             map                 ()           const;
+          void                    setPrintHorizontally(bool value) const; // Yes, 'const'
+          bool                    getPrintHorizontally()           const;
 
-  virtual unsigned int   numRows       () const = 0;
-  virtual unsigned int   numCols       () const = 0;
-  virtual int            chol          () = 0;
-  virtual void           zeroLower     (bool includeDiagonal = false) = 0;
-  virtual void           zeroUpper     (bool includeDiagonal = false) = 0;
-  virtual void           print         (std::ostream& os) const = 0;
+  virtual unsigned int            numRows             () const = 0;
+  virtual unsigned int            numCols             () const = 0;
+  virtual int                     chol                () = 0;
+  virtual void                    zeroLower           (bool includeDiagonal = false) = 0;
+  virtual void                    zeroUpper           (bool includeDiagonal = false) = 0;
+  virtual void                    print               (std::ostream& os) const = 0;
 
 protected:
-  virtual void           copy          (const uqMatrixClass& src);
+  virtual void                    copy                (const uqMatrixClass& src);
 
   const uqBaseEnvironmentClass& m_env;
-  const Epetra_Map&         m_map;
+  const Epetra_Map&             m_map;
+  mutable bool                  m_printHorizontally;
 };
 
 #endif // __UQ_MATRIX_H__
