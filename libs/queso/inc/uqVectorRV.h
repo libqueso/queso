@@ -427,7 +427,7 @@ template<class V, class M>
 void
 uqGaussianVectorRVClass<V,M>::updateExpVector(const V& newExpVector)
 {
-  // we are sure that m_pdf (and m_realizer, etc) point to associated Gaussian classes, so all is well
+  // We are sure that m_pdf (and m_realizer, etc) point to associated Gaussian classes, so all is well
   ( dynamic_cast< uqGaussianVectorPdfClass     <V,M>* >(m_pdf     ) )->updateExpVector(newExpVector);
   ( dynamic_cast< uqGaussianVectorRealizerClass<V,M>* >(m_realizer) )->updateExpVector(newExpVector);
   return;
@@ -437,7 +437,7 @@ template<class V, class M>
 void
 uqGaussianVectorRVClass<V,M>::updateCovMatrix(const M& newCovMatrix)
 {
-  // we are sure that m_pdf (and m_realizer, etc) point to associated Gaussian classes, so all is well
+  // We are sure that m_pdf (and m_realizer, etc) point to associated Gaussian classes, so all is well
   ( dynamic_cast< uqGaussianVectorPdfClass     <V,M>* >(m_pdf     ) )->updateCovMatrix(newCovMatrix);
 
   M newLowerCholCovMatrix(newCovMatrix);

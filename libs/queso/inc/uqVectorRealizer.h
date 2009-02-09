@@ -62,12 +62,12 @@ public:
 
   virtual ~uqBaseVectorRealizerClass();
 
-  const   uqVectorSetClass<V,M>& imageSet        ()              const;
-          unsigned int           period          ()              const;
-  virtual void                   realization     (V& nextValues) const = 0;
+  const   uqVectorSetClass<V,M>& imageSet      ()              const;
+          unsigned int           period        ()              const;
+  virtual void                   realization   (V& nextValues) const = 0;
 
-  const   V&                     imageExpVector  ()              const;
-  const   V&                     imageVarVector  ()              const;
+  const   V&                     imageExpVector()              const;
+  const   V&                     imageVarVector()              const;
 
 protected:
   const uqBaseEnvironmentClass& m_env;

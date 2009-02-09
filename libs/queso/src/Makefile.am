@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-AM_CPPFLAGS = -I$(top_srcdir)/libs/basic/inc $(MPI_CXXFLAGS)
+AM_CPPFLAGS = -I$(top_srcdir)/libs/basic/inc $(MPI_CXXFLAGS) $(BOOST_CPPFLAGS)
 
 lib_LIBRARIES = 
 

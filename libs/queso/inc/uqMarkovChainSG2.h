@@ -479,6 +479,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
                 << std::endl;
     }
     bool accept = false;
+    double alphaFirstCandidate = 0.;
     if (outOfTargetSupport) {
       if (m_chainGenerateExtra) {
         m_alphaQuotients[positionId] = 0.;
@@ -486,39 +487,33 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
     }
     else {
       if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalMhAlpha, NULL);
-      double alpha = 0.;
       if (m_chainGenerateExtra) {
-        alpha = this->alpha(currentPositionData,currentCandidateData,0,1,&m_alphaQuotients[positionId]);
+        alphaFirstCandidate = this->alpha(currentPositionData,currentCandidateData,0,1,&m_alphaQuotients[positionId]);
       }
       else {
-        alpha = this->alpha(currentPositionData,currentCandidateData,0,1,NULL);
+        alphaFirstCandidate = this->alpha(currentPositionData,currentCandidateData,0,1,NULL);
       }
       if (m_chainMeasureRunTimes) mhAlphaRunTime += uqMiscGetEllapsedSeconds(&timevalMhAlpha);
       if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
         std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
                   << ": for chain position of id = " << positionId
-                  << ", alpha = " << alpha
                   << std::endl;
       }
-      accept = acceptAlpha(alpha);
+      accept = acceptAlpha(alphaFirstCandidate);
     }
-    if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-      if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                                       << ": for chain position of id = " << positionId
-                                       << " contents of currentCandidateData.vecValues() are:"
-                                       << std::endl;
-      std::cout << currentCandidateData.vecValues();
-      if (m_env.rank() == 0) std::cout << std::endl;
-
+    if (m_env.verbosity() >= 10) {
       if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
                                        << ": for chain position of id = " << positionId
                                        << ", outOfTargetSupport = "       << outOfTargetSupport
-                                       << "\n"
+                                       << ", alpha = "                    << alphaFirstCandidate
+                                       << ", accept = "                   << accept
+                                       << ", currentCandidateData.vecValues() = ";
+      std::cout << currentCandidateData.vecValues();
+      if (m_env.rank() == 0) std::cout << "\n"
                                        << "\n curLogTarget  = "           << currentPositionData.logTarget()
                                        << "\n"
                                        << "\n canLogTarget  = "           << currentCandidateData.logTarget()
                                        << "\n"
-                                       << "\n accept = "                  << accept
                                        << std::endl;
     }
     if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
@@ -594,25 +589,24 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
 
         drPositionsData.push_back(new uqMarkovChainPositionDataClass<P_V>(currentCandidateData));
         tkStageIds.push_back     (stageId+1);
+
+        double alphaDR = 0.;
         if (outOfTargetSupport == false) {
           if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalDrAlpha, NULL);
-          double alpha = this->alpha(drPositionsData,tkStageIds);
+          alphaDR = this->alpha(drPositionsData,tkStageIds);
           if (m_chainMeasureRunTimes) drAlphaRunTime += uqMiscGetEllapsedSeconds(&timevalDrAlpha);
-          if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-            std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                      << ": for chain position of id = " << positionId
-                      << " and stageId = " << stageId
-                      << ", alpha = " << alpha
-                      << std::endl;
-          }
-          accept = acceptAlpha(alpha);
+          accept = acceptAlpha(alphaDR);
         }
-        if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-          std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                    << ": for chain position of id = " << positionId
-                    << ", finishing stageId = "        << stageId
-                    << " and accept = "                << accept
-                    << std::endl;
+        if (m_env.verbosity() >= 10) {
+          if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
+                                           << ": for chain position of id = " << positionId
+                                           << " and stageId = "               << stageId
+                                           << ", outOfTargetSupport = "       << outOfTargetSupport
+                                           << ", alpha = "                    << alphaDR
+                                           << ", accept = "                   << accept
+                                           << ", currentCandidateData.vecValues() = ";
+          std::cout << currentCandidateData.vecValues();
+          if (m_env.rank() == 0) std::cout << std::endl;
         }
       } // while
 
