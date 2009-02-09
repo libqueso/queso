@@ -92,7 +92,7 @@ uqBaseTKGroupClass<V,M>::uqBaseTKGroupClass(
   m_vectorSpace          (&vectorSpace),
   m_scales               (scales.size(),1.),
   m_preComputingPositions(scales.size()+1,NULL), // Yes, +1
-  m_rvs                  (scales.size(),NULL) // IMPORTANT: like this for scaledTK, overwritten to '+1' by hessianTK constructor
+  m_rvs                  (scales.size(),NULL) // IMPORTANT: it stays like this for scaledTK, but it will be overwritten to '+1' by hessianTK constructor
 {
   for (unsigned int i = 0; i < m_scales.size(); ++i) {
     m_scales[i] = scales[i];
@@ -424,7 +424,7 @@ uqHessianCovMatricesTKGroupClass<V,M>::uqHessianCovMatricesTKGroupClass(
               << std::endl;
   }
 
-  m_rvs.resize(scales.size()+1,NULL); // Yes, +1: IMPORTANT: overwrite initialization done by uqBaseTKGroupClass<V,M>
+  m_rvs.resize(scales.size()+1,NULL); // Yes, +1 (IMPORTANT: overwrite initialization done by uqBaseTKGroupClass<V,M>)
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "In uqHessianCovMatricesTKGroupClass<V,M>::constructor()"
@@ -568,43 +568,69 @@ uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position
   }
 
   M* tmpHessian = m_vectorSpace->newMatrix();
+  M* tmpMatrix  = m_vectorSpace->newMatrix();
   V* tmpGrad    = m_vectorSpace->newVector();
 #if 1
-  m_targetPdf.minus2LnValue(position,NULL,tmpGrad,tmpHessian,NULL);
-  //double factor = 1./m_scales[stageId]/m_scales[stageId];
-  //*tmpHessian *= factor;
+  m_targetPdf.minus2LnValue(position,
+                            NULL,
+                            tmpGrad,
+                            tmpHessian,
+                            NULL);
+
+  // IMPORTANT: covariance matrix = (Hessian)^{-1} !!!
+  V unitVector(m_vectorSpace->zeroVector());
+  V multVector(m_vectorSpace->zeroVector());
+  for (unsigned int j = 0; j < tmpHessian->numCols(); ++j) {
+    if (j > 0) unitVector[j-1] = 0.;
+    unitVector[j] = 1.;
+    tmpHessian->invertMultiply(unitVector, multVector);
+    for (unsigned int i = 0; i < tmpHessian->numRows(); ++i) {
+      (*tmpMatrix)(i,j) = multVector[i];
+    }
+  }
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "In uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"
+              << ": product of H*H^{-1} = " << (*tmpHessian)*(*tmpMatrix)
+              << "\n H^{-1}*H = "           << (*tmpMatrix)*(*tmpHessian)
+              << std::endl;
+  }
+
+  double factor = 1./m_scales[stageId]/m_scales[stageId];
+  *tmpMatrix *= factor;
 
   m_preComputedPosPlusNewton[stageId] = m_vectorSpace->newVector();
 
+  // Check existence of vector to be used
   UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageId] == NULL,
                       m_env.rank(),
                       "uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
                       "m_preComputingPositions[stageId] == NULL");
-  *(m_preComputedPosPlusNewton[stageId]) = *m_preComputingPositions[stageId] - tmpHessian->invertMultiply(*tmpGrad);
+  *(m_preComputedPosPlusNewton[stageId]) = *m_preComputingPositions[stageId] - (*tmpMatrix)*(*tmpGrad); // of tmpHessian->invertMultiply(*tmpGrad);
 
   m_rvs[stageId] = new uqGaussianVectorRVClass<V,M>(m_prefix.c_str(),
                                                     *m_vectorSpace,
                                                     *m_preComputedPosPlusNewton[stageId],
-                                                    *tmpHessian);
+                                                    *tmpMatrix);
 #else
   for (unsigned int i = 0; i < m_preComputedPosPlusNewton.size(); ++i) {
     std::cout << "In uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(): pos 002, i = " << i << std::endl;
-    m_targetPdf.minus2LnValue(position,NULL,tmpGrad,tmpHessian,NULL);
+    m_targetPdf.minus2LnValue(position,NULL,tmpGrad,tmpMatrix,NULL);
     std::cout << "In uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(): pos 003, i = " << i << std::endl;
     //double factor = 1./m_scales[i]/m_scales[i];
-    //*tmpHessian *= factor;
+    //*tmpMatrix *= factor;
 
     m_preComputedPosPlusNewton[i] = m_vectorSpace->newVector();
-    *(m_preComputedPosPlusNewton[i]) = *m_preComputingPositions[i] - tmpHessian->invertMultiply(*tmpGrad);
+    *(m_preComputedPosPlusNewton[i]) = *m_preComputingPositions[i] - tmpMatrix->invertMultiply(*tmpGrad);
 
     m_rvs[i] = new uqGaussianVectorRVClass<V,M>(m_prefix.c_str(),
                                                 *m_vectorSpace,
                                                 *m_preComputedPosPlusNewton[i],
-                                                *tmpHessian);
+                                                *tmpMatrix);
     std::cout << "In uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(): pos 004, i = " << i << std::endl;
   }
 #endif
   delete tmpGrad;
+  delete tmpMatrix;
   delete tmpHessian;
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {

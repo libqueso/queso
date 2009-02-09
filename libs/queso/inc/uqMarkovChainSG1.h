@@ -815,6 +815,8 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
       if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
         std::cout << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
                   << ": symmetric proposal case"
+                  << ", x = "               << x.vecValues()
+                  << ", y = "               << y.vecValues()
                   << ", yLogTargetToUse = " << yLogTargetToUse
                   << ", x.logTarget() = "   << x.logTarget()
                   << ", alpha = "           << alphaQuotient
@@ -824,7 +826,23 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
     else {
 #ifdef UQ_USES_TK_CLASS // AQUI
       double qyx = -.5 * m_tk->rv(yStageId).pdf().minus2LnValue(x.vecValues(),NULL,NULL,NULL,NULL);
+      if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
+        const uqGaussianVectorPdfClass<P_V,P_M>* pdfYX = dynamic_cast< const uqGaussianVectorPdfClass<P_V,P_M>* >(&(m_tk->rv(yStageId).pdf()));
+        std::cout << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
+                  << ", rvYX.domainExpVector = " << pdfYX->domainExpVector()
+                  << ", rvYX.domainVarVector = " << pdfYX->domainVarVector()
+                  << ", rvYX.covMatrix = "       << pdfYX->covMatrix()
+                  << std::endl;
+      }
       double qxy = -.5 * m_tk->rv(xStageId).pdf().minus2LnValue(y.vecValues(),NULL,NULL,NULL,NULL);
+      if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
+        const uqGaussianVectorPdfClass<P_V,P_M>* pdfXY = dynamic_cast< const uqGaussianVectorPdfClass<P_V,P_M>* >(&(m_tk->rv(xStageId).pdf()));
+        std::cout << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
+                  << ", rvXY.domainExpVector = " << pdfXY->domainExpVector()
+                  << ", rvXY.domainVarVector = " << pdfXY->domainVarVector()
+                  << ", rvXY.covMatrix = "       << pdfXY->covMatrix()
+                  << std::endl;
+      }
 #else
       double qyx = logProposal(y,x,0);
       double qxy = logProposal(x,y,0);
@@ -836,6 +854,10 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
       if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
         std::cout << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
                   << ": unsymmetric proposal case"
+                  << ", xStageId = "        << xStageId
+                  << ", yStageId = "        << yStageId
+                  << ", x = "               << x.vecValues()
+                  << ", y = "               << y.vecValues()
                   << ", yLogTargetToUse = " << yLogTargetToUse
                   << ", q(y,x) = "          << qyx
                   << ", x.logTarget() = "   << x.logTarget()

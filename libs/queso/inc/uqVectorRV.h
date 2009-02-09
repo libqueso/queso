@@ -225,7 +225,7 @@ uqGenericVectorRVClass<V,M>::uqGenericVectorRVClass(
 template<class V, class M>
 uqGenericVectorRVClass<V,M>::uqGenericVectorRVClass(
   const char*                           prefix,
-  const uqVectorSetClass       <V,M>& imageSet,
+  const uqVectorSetClass         <V,M>& imageSet,
   const uqBaseVectorPdfClass     <V,M>& pdf,
   const uqBaseVectorRealizerClass<V,M>& realizer,
   const uqBaseVectorCdfClass     <V,M>& cdf,
@@ -313,7 +313,7 @@ public:
   virtual ~uqGaussianVectorRVClass();
 
   void updateExpVector(const V& newExpVector);
-  void updateCovMatrix     (const M& newCovMatrix);
+  void updateCovMatrix(const M& newCovMatrix);
   
   void print(std::ostream& os) const;
 

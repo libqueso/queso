@@ -420,10 +420,11 @@ public:
                            const M&                     covMatrix);
  ~uqGaussianVectorPdfClass();
 
-  double actualValue      (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
-  double minus2LnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
-  void   updateExpVector  (const V& newExpVector);
-  void   updateCovMatrix  (const M& newCovMatrix);
+  double   actualValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  double   minus2LnValue  (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  void     updateExpVector(const V& newExpVector);
+  void     updateCovMatrix(const M& newCovMatrix);
+  const M& covMatrix      () const;
 
 protected:
   using uqBaseScalarFunctionClass<V,M>::m_env;
@@ -556,6 +557,13 @@ uqGaussianVectorPdfClass<V,M>::updateCovMatrix(const M& newCovMatrix)
   delete m_covMatrix;
   m_covMatrix = new M(newCovMatrix);
   return;
+}
+
+template<class V, class M>
+const M&
+uqGaussianVectorPdfClass<V,M>::covMatrix() const
+{
+  return *m_covMatrix;
 }
 
 //*****************************************************
