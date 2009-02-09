@@ -14,7 +14,15 @@ It can run over uniprocessor or multiprocessor environments.
 Installation
 ============
 
-See the Users' Manual in pdf format under subdirectory uq/docs/.
+If you do not have a `configure' script in the top level directory,
+run `bootstrap' to generate a configure script using autotools.
+
+Before compiling, you must run the `configure' script.  To run, type
+`./configure'.  Additional options may be provided if desired.  Run
+`./configure --help' for details.
+
+After successfully running `configure', type `make' to build the PECOS
+Toolkit.
 
 License
 =======
