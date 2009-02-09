@@ -320,7 +320,7 @@ uqBayesianVectorPdfClass<V,M>::actualValue(
         V* hessianEffect) const
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqBayesianVectorPdfClass<P_V,P_M>::actualValue()"
+    std::cout << "Entering uqBayesianVectorPdfClass<V,M>::actualValue()"
               << ": domainVector = " << domainVector
               << std::endl;
   }
@@ -345,7 +345,7 @@ uqBayesianVectorPdfClass<V,M>::actualValue(
   double returnValue = value1*value2;
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqBayesianVectorPdfClass<P_V,P_M>::actualValue()"
+    std::cout << "Leaving uqBayesianVectorPdfClass<V,M>::actualValue()"
               << ": domainVector = " << domainVector
               << ", returnValue = "  << returnValue
               << std::endl;
@@ -364,7 +364,7 @@ uqBayesianVectorPdfClass<V,M>::minus2LnValue(
         V* hessianEffect) const
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqBayesianVectorPdfClass<P_V,P_M>::minus2LnValue()"
+    std::cout << "Entering uqBayesianVectorPdfClass<V,M>::minus2LnValue()"
               << ": domainVector = " << domainVector
               << std::endl;
   }
@@ -381,7 +381,7 @@ uqBayesianVectorPdfClass<V,M>::minus2LnValue(
   double value1 = m_priorDensity.minus2LnValue      (domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect);
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "In uqBayesianVectorPdfClass<P_V,P_M>::minus2LnValue()"
+    std::cout << "In uqBayesianVectorPdfClass<V,M>::minus2LnValue()"
               << ", domainVector = " << domainVector
               << ": about to call likelihood()"
               << std::endl;
@@ -390,27 +390,27 @@ uqBayesianVectorPdfClass<V,M>::minus2LnValue(
   double value2 = m_likelihoodFunction.minus2LnValue(domainVector,domainDirection,gradVLike, hessianMLike, hessianELike );
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "In uqBayesianVectorPdfClass<P_V,P_M>::minus2LnValue()"
+    std::cout << "In uqBayesianVectorPdfClass<V,M>::minus2LnValue()"
               << ", domainVector = " << domainVector
               << ": value1 = "       << value1
               << ", value2 = "       << value2
               << std::endl;
     if (gradVector) {
-      std::cout << "In uqBayesianVectorPdfClass<P_V,P_M>::minus2LnValue()"
+      std::cout << "In uqBayesianVectorPdfClass<V,M>::minus2LnValue()"
                 << ", domainVector = " << domainVector
                 << ": gradVector = "   << *gradVector
                 << ", gradVLike = "    << *gradVLike
                 << std::endl;
     }
     if (hessianMatrix) {
-      std::cout << "In uqBayesianVectorPdfClass<P_V,P_M>::minus2LnValue()"
+      std::cout << "In uqBayesianVectorPdfClass<V,M>::minus2LnValue()"
                 << ", domainVector = "  << domainVector
                 << ": hessianMatrix = " << *hessianMatrix
                 << ", hessianMLike = "  << *hessianMLike
                 << std::endl;
     }
     if (hessianEffect) {
-      std::cout << "In uqBayesianVectorPdfClass<P_V,P_M>::minus2LnValue()"
+      std::cout << "In uqBayesianVectorPdfClass<V,M>::minus2LnValue()"
                 << ", domainVector = "  << domainVector
                 << ": hessianEffect = " << *hessianEffect
                 << ", hessianELike = "  << *hessianELike
@@ -425,7 +425,7 @@ uqBayesianVectorPdfClass<V,M>::minus2LnValue(
   double returnValue = value1+value2;
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqBayesianVectorPdfClass<P_V,P_M>::minus2LnValue()"
+    std::cout << "Leaving uqBayesianVectorPdfClass<V,M>::minus2LnValue()"
               << ": domainVector = " << domainVector
               << ", returnValue = "  << returnValue
               << std::endl;
@@ -486,7 +486,7 @@ uqGaussianVectorPdfClass<V,M>::uqGaussianVectorPdfClass(
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "In uqGaussianVectorPdfClass<V,M>::constructor()"
-              << ", prefix = "     << m_prefix
+      //<< ", prefix = "     << m_prefix
               << ": meanVector = " << this->domainExpVector()
 	      << ", Variances = "  << this->domainVarVector()
               << std::endl;
@@ -518,7 +518,7 @@ uqGaussianVectorPdfClass<V,M>::uqGaussianVectorPdfClass(
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "In uqGaussianVectorPdfClass<V,M>::constructor()"
-              << ", prefix = "            << m_prefix
+      //<< ", prefix = "            << m_prefix
               << ": meanVector = "        << this->domainExpVector()
 	      << ", Covariance Matrix = " << covMatrix
               << std::endl;
@@ -547,7 +547,7 @@ uqGaussianVectorPdfClass<V,M>::actualValue(
         V* hessianEffect) const
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqGaussianVectorPdfClass<P_V,P_M>::actualValue()"
+    std::cout << "Entering uqGaussianVectorPdfClass<V,M>::actualValue()"
               << ", meanVector = "   << *m_domainExpVector
 	      << ", covMatrix = "    << *m_covMatrix
               << ": domainVector = " << domainVector
@@ -562,7 +562,7 @@ uqGaussianVectorPdfClass<V,M>::actualValue(
   double returnValue = exp(-0.5*this->minus2LnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqGaussianVectorPdfClass<P_V,P_M>::actualValue()"
+    std::cout << "Leaving uqGaussianVectorPdfClass<V,M>::actualValue()"
               << ", meanVector = "   << *m_domainExpVector
 	      << ", covMatrix = "    << *m_covMatrix
               << ": domainVector = " << domainVector
@@ -583,7 +583,7 @@ uqGaussianVectorPdfClass<V,M>::minus2LnValue(
         V* hessianEffect) const
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqGaussianVectorPdfClass<P_V,P_M>::minus2LnValue()"
+    std::cout << "Entering uqGaussianVectorPdfClass<V,M>::minus2LnValue()"
               << ", meanVector = "   << *m_domainExpVector
 	      << ", covMatrix = "    << *m_covMatrix
               << ": domainVector = " << domainVector
@@ -608,7 +608,7 @@ uqGaussianVectorPdfClass<V,M>::minus2LnValue(
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqGaussianVectorPdfClass<P_V,P_M>::minus2LnValue()"
+    std::cout << "Leaving uqGaussianVectorPdfClass<V,M>::minus2LnValue()"
               << ", meanVector = "   << *m_domainExpVector
 	      << ", covMatrix = "    << *m_covMatrix
               << ": domainVector = " << domainVector
