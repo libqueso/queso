@@ -418,17 +418,22 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
 
     if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
       std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                << ": about to set TK pre computing position of id " << 0
+                << ": about to set TK pre computing position of local id " << 0
                 << ", values = " << currentPositionData.vecValues()
                 << std::endl;
     }
-    m_tk->setPreComputingPosition(currentPositionData.vecValues(),0);
+    bool validPreComputingPosition = m_tk->setPreComputingPosition(currentPositionData.vecValues(),0);
     if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
       std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                << ": successfully set TK pre computing position of id " << 0
+                << ": returned from setting TK pre computing position of local id " << 0
                 << ", values = " << currentPositionData.vecValues()
+                << ", valid = "  << validPreComputingPosition
                 << std::endl;
     }
+    UQ_FATAL_TEST_MACRO(validPreComputingPosition == false,
+                        m_env.rank(),
+                        "uqMarkovChainSGClass<P_V,P_M>::generateFullChain()",
+                        "initial position should not be an invalid pre computing position");
 #endif
 
     //****************************************************
@@ -440,15 +445,16 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
 
     if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
       std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                << ": about to set TK pre computing position of id " << stageId+1
+                << ": about to set TK pre computing position of local id " << stageId+1
                 << ", values = " << tmpVecValues
                 << std::endl;
     }
-    m_tk->setPreComputingPosition(tmpVecValues,stageId+1);
+    validPreComputingPosition = m_tk->setPreComputingPosition(tmpVecValues,stageId+1);
     if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
       std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                << ": successfully set TK pre computing position of id " << stageId+1
+                << ": returned from setting TK pre computing position of local id " << stageId+1
                 << ", values = " << tmpVecValues
+                << ", valid = "  << validPreComputingPosition
                 << std::endl;
     }
 #else
@@ -527,7 +533,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
     // Loop: delayed rejection
     //****************************************************
     std::vector<uqMarkovChainPositionDataClass<P_V>*> drPositionsData(stageId+2,NULL);
-    std::vector<unsigned int> tkStageIds (stageId+2,0   );
+    std::vector<unsigned int> tkStageIds (stageId+2,0);
     if ((accept == false) && (outOfTargetSupport == false) && (m_drMaxNumExtraStages > 0)) {
       if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalDR, NULL);
 
@@ -537,7 +543,9 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
       tkStageIds[0]  = 0;
       tkStageIds[1]  = 1;
 
-      while ((accept == false) && (stageId < m_drMaxNumExtraStages)) {
+      while ((validPreComputingPosition == true ) && 
+             (accept                    == false) &&
+             (stageId < m_drMaxNumExtraStages   )) {
         if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
           std::cout << "\n"
                     << "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-"
@@ -557,15 +565,16 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
         m_tk->rv(tkStageIds).realizer().realization(tmpVecValues);
         if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
           std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                    << ": about to set TK pre computing position of id " << stageId+1
+                    << ": about to set TK pre computing position of local id " << stageId+1
                     << ", values = " << tmpVecValues
                     << std::endl;
         }
-        m_tk->setPreComputingPosition(tmpVecValues,stageId+1);
+        validPreComputingPosition = m_tk->setPreComputingPosition(tmpVecValues,stageId+1);
         if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
           std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                    << ": successfully set TK pre computing position of id " << stageId+1
+                    << ": returned from setting TK pre computing position of local id " << stageId+1
                     << ", values = " << tmpVecValues
+                    << ", valid = "  << validPreComputingPosition
                     << std::endl;
         }
 #else

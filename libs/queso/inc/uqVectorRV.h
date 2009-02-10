@@ -348,8 +348,8 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
                                             imageVarVector);
 
   M lowerCholCovMatrix(imageVarVector);
-  int ierr = lowerCholCovMatrix.chol();
-  UQ_FATAL_TEST_MACRO(ierr != 0,
+  int iRC = lowerCholCovMatrix.chol();
+  UQ_FATAL_TEST_MACRO(iRC,
                       m_env.rank(),
                       "uqGaussianVectorRVClass<V,M>::constructor() [1]",
                       "Cholesky decomposition of covariance matrix failed.");
@@ -391,13 +391,17 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
                                             covMatrix);
 
   M lowerCholCovMatrix(covMatrix);
-  int ierr = lowerCholCovMatrix.chol();
-  if (ierr != 0) {
-    std::cout << "In uqGaussianVectorRVClass<V,M>::constructor() [2]: covMatrix contents are\n"
-              << covMatrix
-              << std::endl;
+  int iRC = lowerCholCovMatrix.chol();
+  if (iRC) {
+    if (m_env.rank() == 0) {
+      std::cout << "In uqGaussianVectorRVClass<V,M>::constructor() [2]: covMatrix contents are\n";
+    }
+    std::cout << covMatrix;
+    if (m_env.rank() == 0) {
+      std::cout << std::endl;
+    }
   }
-  UQ_FATAL_TEST_MACRO(ierr != 0,
+  UQ_FATAL_TEST_MACRO(iRC,
                       m_env.rank(),
 		      "uqGaussianVectorRVClass<V,M>::constructor() [2]",
 		      "Cholesky decomposition of covariance matrix failed.");
@@ -408,8 +412,8 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
 						      imageExpVector,
 						      lowerCholCovMatrix);
 
-  m_cdf         = NULL; // FIX ME: complete code
-  m_mdf         = NULL; // FIX ME: complete code
+  m_cdf      = NULL; // FIX ME: complete code
+  m_mdf      = NULL; // FIX ME: complete code
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Leaving uqGaussianVectorRVClass<V,M>::constructor() [2]"
@@ -441,10 +445,11 @@ uqGaussianVectorRVClass<V,M>::updateCovMatrix(const M& newCovMatrix)
   ( dynamic_cast< uqGaussianVectorPdfClass     <V,M>* >(m_pdf     ) )->updateCovMatrix(newCovMatrix);
 
   M newLowerCholCovMatrix(newCovMatrix);
-  int ierr = newLowerCholCovMatrix.chol();
-  UQ_FATAL_TEST_MACRO( (ierr!=0), m_env.rank(),
-		       "uqGaussianVectorRVClass<V,M>::updateCovMatrix()",
-		       "Cholesky decomposition of covariance matrix failed.");
+  int iRC = newLowerCholCovMatrix.chol();
+  UQ_FATAL_TEST_MACRO(iRC,
+                      m_env.rank(),
+                      "uqGaussianVectorRVClass<V,M>::updateCovMatrix()",
+                      "Cholesky decomposition of covariance matrix failed.");
   newLowerCholCovMatrix.zeroUpper(false);
   ( dynamic_cast< uqGaussianVectorRealizerClass<V,M>* >(m_realizer) )->updateLowerCholCovMatrix(newLowerCholCovMatrix);
   return;
