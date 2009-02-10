@@ -35,7 +35,6 @@
 
 #include <uqEnvironment.h>
 #include <math.h>
-#include <uqDefaultPrior.h>
 #include <uqScalarFunction.h>
 
 //*****************************************************

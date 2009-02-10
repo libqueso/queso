@@ -35,7 +35,6 @@
 
 #include <uqStatisticalInverseProblem.h>
 #include <uqAsciiTable.h>
-#include <uqDefaultPrior.h>
 #include <uqCovCond.h>
 
 //********************************************************
