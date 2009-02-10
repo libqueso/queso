@@ -1,7 +1,0 @@
-#
-# Name[P_i] Min[P_i]  Max[P_i]  P_i^{(0)}  
-#
- la_param     10.0      19.0     10.0  
-  m_param     -2.0      2.5      -2.0 
-  s_param      0.0      5e+4      0.0
-lkc_param    -20.0      20.0    -20.0    
