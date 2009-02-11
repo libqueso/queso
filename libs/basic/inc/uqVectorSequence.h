@@ -547,6 +547,15 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
                        chainMean,
                        chainSampleVariance);
 
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "In uqBaseVectorSequenceClass<V,M>::computeMeanVars()"
+              << ": chainMean.size() = "           << chainMean.size()
+              << ", chainMean = "                  << chainMean
+              << ", chainSampleVariance.size() = " << chainSampleVariance.size()
+              << ", chainSampleVariance = "        << chainSampleVariance
+              << std::endl;
+  }
+
   if (m_env.rank() == 0) {
     std::cout << "\nEstimated variance of sample mean for the whole chain " << m_name
               << ", under independence assumption:"

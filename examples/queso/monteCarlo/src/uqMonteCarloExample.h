@@ -61,15 +61,26 @@ qoiRoutine(
         EpetraExt::DistArray<P_M*>* hessianMatrices,
         EpetraExt::DistArray<P_V*>* hessianEffects)
 {
-  double a1 = ((qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->p1MultiplicativeFactor;
-  double e1 = ((qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->p1ExponentFactor;
-  double a2 = ((qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->p2MultiplicativeFactor;
-  double e2 = ((qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->p2ExponentFactor;
+  //double a1 = ((qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->p1MultiplicativeFactor;
+  //double e1 = ((qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->p1ExponentFactor;
+  //double a2 = ((qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->p2MultiplicativeFactor;
+  //double e2 = ((qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->p2ExponentFactor;
 
   double p1 = paramValues[0];
   double p2 = paramValues[1];
 
-  qoiValues[0] = a1*pow(p1,e1) + a2*pow(p2,e2);
+  //qoiValues[0] = a1*pow(p1,e1) + a2*pow(p2,e2);
+  qoiValues[0] = p1+p2;
+
+  //std::cout << "Leaving qoiRoutine()"
+  //          << ": a1 = " << a1
+  //          << ", e1 = " << e1
+  //          << ", a2 = " << a2
+  //          << ", e2 = " << e2
+  //          << ", p1 = " << p1
+  //          << ", p2 = " << p2
+  //          << ", qoi0 = " << qoiValues[0]
+  //          << std::endl;
 
   return;
 }

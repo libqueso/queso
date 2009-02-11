@@ -442,6 +442,14 @@ uqSequenceOfVectorsClass<V,M>::mean(
   unsigned int numPos,
   V&           meanVec) const
 {
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Entering uqSequenceOfVectorsClass<V,M>::mean()"
+              << ": initialPos = "         << initialPos
+              << ", numPos = "             << numPos
+              << ", full sequence size = " << this->sequenceSize()
+              << std::endl;
+  }
+
   bool bRC = ((initialPos          <  this->sequenceSize()) &&
               (0                   <  numPos              ) &&
               ((initialPos+numPos) <= this->sequenceSize()) &&
@@ -471,6 +479,15 @@ uqSequenceOfVectorsClass<V,M>::mean(
                            data);
     meanVec[i] = data.mean(0,
                            numPos);
+  }
+
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Leaving uqSequenceOfVectorsClass<V,M>::mean()"
+              << ": initialPos = "         << initialPos
+              << ", numPos = "             << numPos
+              << ", full sequence size = " << this->sequenceSize()
+              << ", meanVec = "            << meanVec
+              << std::endl;
   }
 
   return;

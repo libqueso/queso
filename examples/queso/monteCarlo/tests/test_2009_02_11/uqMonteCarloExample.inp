@@ -19,7 +19,7 @@ fp_outputFileName  = outputData/mcOutput.m
 #                        16384 131072 1048576 2097152 16777216
 ###############################################
 fp_mc_help            = anything
-fp_mc_numSamples      = 16384
+fp_mc_numSamples      = 1048576
 fp_mc_outputFileName  = outputData/mcExtraOutput.m
 fp_mc_displayPeriod   = 20000
 fp_mc_measureRunTimes = 1

@@ -1,50 +1,35 @@
-uqNormalOutput
-uqNormalExtraOutput
-load nada
+cd outputData
+mcOutput
+mcExtraOutput
+cd ..
 
-d=nada(:,2);    
-[nsimu,temp]=size(d);
-[temp,npar]=size(ip_mc_chain);
-meanVec=[0 0 0 0];
-covMatrix = [0.263584 0.0820654 0.0748222 -0.410472 
-0.0820654 0.0414596 0.0241198 -0.137645 
-0.0748222 0.0241198 0.0511172 -0.140059 
--0.410472 -0.137645 -0.140059 0.698176 
-];
+%fp_mc_seq_corrViaFft_lags = zeros(1,15);
+%fp_mc_seq_corrViaFft_initPos0 = zeros(1,15);
+%fp_mc_seq_kdeEvalPositions = zeros(1,250);
+%fp_mc_seq_gaussianKdeScaleVec = zeros(1);
+%fp_mc_seq_gaussianKdeDensities = zeros(1,250);
+%fp_mdf_0_grid = zeros(250,1);
+%fp_mdf_0_values = zeros(250,1);
+%fp_cdf_0_grid = zeros(250,1);
+%fp_cdf_0_values = zeros(250,1);
 
-path(path,'/h2/prudenci/DownloadedPackages/mcmc02Jun2008/code');    
-c50  = chiqf(0.50,npar);
-c95  = chiqf(0.95,npar);
-cc50 = sum(d<c50)./nsimu;
-cc95 = sum(d<c95)./nsimu;
-
-plot(ip_mc_chain(:,1),ip_mc_chain(:,2),'.');
-xlabel(ip_mc_componentNames(1));
-ylabel(ip_mc_componentNames(2));
-title(sprintf('Rejected = %.1f%%, c50 = %.1f%%, c95 = %.1f%%', ...
-              ip_mc_rejected*100, cc50*100, cc95*100))
-hold
-
-c50  = chiqf(0.50,2);
-c95  = chiqf(0.95,2);
-ellipse(meanVec(1:2),c50*covMatrix(1:2,1:2),'r--','LineWidth',2);
-ellipse(meanVec(1:2),c95*covMatrix(1:2,1:2),'r--','LineWidth',2);
+plot(fp_mc_seq_corrViaFft_lags,fp_mc_seq_corrViaFft_initPos0,'-o');
+title('QoI autocorrelation');
 waitforbuttonpress;
 clf;
 
-plot(ip_mc_chain_kdeEvalPositions(1,:),ip_mc_chain_gaussianKdeDensities(1,:),'-b');
-hold
-plot(ip_mc_chain_kdeEvalPositions(2,:),ip_mc_chain_gaussianKdeDensities(2,:),'-r');
-plot(ip_mc_chain_kdeEvalPositions(3,:),ip_mc_chain_gaussianKdeDensities(3,:),'--b');
-plot(ip_mc_chain_kdeEvalPositions(4,:),ip_mc_chain_gaussianKdeDensities(4,:),'--r');
+plot(fp_mc_seq_kdeEvalPositions,fp_mc_seq_gaussianKdeDensities,'-');
+title('QoI KDE');
+waitforbuttonpress;
+clf;
 
-ylabel('marginal pdf','fontsize',20);
-xlabel('Parameter values','fontsize',20);
-title('Posterior marginal pdfs of parameters','fontsize',20);
-grid minor;
-set(gca,'fontsize',20);
-legend('param1',...
-       'param2',...
-       'param3',...
-       'param4',...
-       'location','southwest');
+plot(fp_mdf_0_grid,fp_mdf_0_values,'-');
+title('QoI mdf');
+waitforbuttonpress;
+clf;
+
+plot(fp_cdf_0_grid,fp_cdf_0_values,'-');
+title('QoI cdf');
+waitforbuttonpress;
+clf;
+

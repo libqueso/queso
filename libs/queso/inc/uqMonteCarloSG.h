@@ -74,7 +74,7 @@ private:
                                  uqBaseVectorSequenceClass<P_V,P_M>& workingSeq,
                                  unsigned int                        seqSize);
 
-  const uqBaseEnvironmentClass&                         m_env;
+  const uqBaseEnvironmentClass&                     m_env;
         std::string                                 m_prefix;
   const uqBaseVectorRVClass      <P_V,P_M>&         m_paramRv;
   const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& m_qoiFunctionObj;
@@ -237,16 +237,22 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence(
   //****************************************************
   // Generate sequence of qoi values
   //****************************************************
+  unsigned int actualNumSamples = std::min(m_numSamples,paramRv.realizer().period());
   if ((m_env.verbosity() >= 0) && (m_env.rank() == 0)) {
     std::cout << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence()"
-              << ": m_numSamples = "                << m_numSamples
-              << ", paramRv.realizer().period() = " << paramRv.realizer().period()
+              << ": m_numSamples = "                                              << m_numSamples
+              << ", paramRv.realizer().period() = "                               << paramRv.realizer().period()
+              << ", about to call intGenerateSequence() with actualNumSamples = " << actualNumSamples
               << std::endl;
   }
-  unsigned int actualNumSamples = std::min(m_numSamples,paramRv.realizer().period());
   intGenerateSequence(paramRv,
                       workingSeq,
                       actualNumSamples);
+  if ((m_env.verbosity() >= 0) && (m_env.rank() == 0)) {
+    std::cout << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence()"
+              << ": returned from call to intGenerateSequence() with actualNumSamples = " << actualNumSamples
+              << std::endl;
+  }
 
   //****************************************************
   // Open file      
@@ -289,8 +295,18 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence(
   }
 
   if (m_computeStats) {
+    if ((m_env.verbosity() >= 0) && (m_env.rank() == 0)) {
+      std::cout << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence()"
+                << ": about to call 'workingSeq.computeStatistics()'"
+                << std::endl;
+    }
     workingSeq.computeStatistics(*m_statisticalOptions,
                                  ofs);
+    if ((m_env.verbosity() >= 0) && (m_env.rank() == 0)) {
+      std::cout << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence()"
+                << ": returned from call to 'workingSeq.computeStatistics()'"
+                << std::endl;
+    }
   }
 
   //****************************************************
