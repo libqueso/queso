@@ -63,6 +63,8 @@ AC_CONFIG_FILES([
 	examples/queso/pyramid/src/physics_1_2/Makefile
 	examples/queso/tga/Makefile
 	examples/queso/tga/src/Makefile
+	examples/queso/monteCarlo/Makefile
+	examples/queso/monteCarlo/src/Makefile
 ])
 
 AC_OUTPUT()

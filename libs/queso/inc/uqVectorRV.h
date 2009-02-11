@@ -97,6 +97,10 @@ uqBaseVectorRVClass<V,M>::uqBaseVectorRVClass(
 template<class V, class M>
 uqBaseVectorRVClass<V,M>::~uqBaseVectorRVClass()
 {
+  //if (m_mdf     ) delete m_mdf;
+  //if (m_cdf     ) delete m_cdf;
+  //if (m_realizer) delete m_realizer;
+  //if (m_pdf     ) delete m_pdf;
 }
 
 template<class V, class M>
@@ -498,9 +502,10 @@ uqUniformVectorRVClass<V,M>::uqUniformVectorRVClass(
               << std::endl;
   }
 
-  m_pdf = new uqUniformVectorPdfClass<V,M>(m_prefix.c_str(),
-                                           m_imageSet);
-  m_realizer    = NULL; // FIX ME: complete code
+  m_pdf         = new uqUniformVectorPdfClass<V,M>(m_prefix.c_str(),
+                                                   m_imageSet);
+  m_realizer    = new uqUniformVectorRealizerClass<V,M>(m_prefix.c_str(),
+                                                        m_imageSet);
   m_cdf         = NULL; // FIX ME: complete code
   m_mdf         = NULL; // FIX ME: complete code
 

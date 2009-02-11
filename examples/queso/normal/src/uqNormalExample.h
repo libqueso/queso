@@ -100,7 +100,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                          4,    // # of rows
                                          3,    // # of cols after 'parameter name': min + max + initial value for Markov chain
                                          NULL, // All extra columns are of 'double' type
-                                         "params.tab");
+                                         "inputData/params.tab");
 
   const EpetraExt::DistArray<std::string>& paramNames = paramsTable.stringColumn(0);
   P_V                                      paramMins    (paramsTable.doubleColumn(1));

@@ -54,7 +54,13 @@ public:
   //const void* likelihoodRoutineDataPtr,
   //bool routineComputesMinus2LogOfDensity);
 
-  void setCalFP(void (*qoiRoutinePtr)(const P_V& domainVector, const void* functionDataPtr, Q_V& imageVector),
+  void setCalFP(void (*qoiRoutinePtr)(const P_V&                        domainVector,
+                                      const P_V*                        domainDirection,
+                                      const void*                       functionDataPtr,
+                                            Q_V&                        imageVector,
+                                            EpetraExt::DistArray<P_V*>* gradVectors,
+                                            EpetraExt::DistArray<P_M*>* hessianMatrices,
+                                            EpetraExt::DistArray<P_V*>* hessianEffects),
                 const void* qoiRoutineDataPtr);
 
   const uqStatisticalInverseProblemClass<P_V,P_M>& calIP() const;
@@ -68,7 +74,13 @@ public:
   //const void* likelihoodRoutineDataPtr,
   //bool routineComputesMinus2LogOfDensity);
 
-  void setValFP(void (*qoiRoutinePtr)(const P_V& domainVector, const void* functionDataPtr, Q_V& imageVector),
+  void setValFP(void (*qoiRoutinePtr)(const P_V&                        domainVector,
+                                      const P_V*                        domainDirection,
+                                      const void*                       functionDataPtr,
+                                            Q_V&                        imageVector,
+                                            EpetraExt::DistArray<P_V*>* gradVectors,
+                                            EpetraExt::DistArray<P_M*>* hessianMatrices,
+                                            EpetraExt::DistArray<P_V*>* hessianEffects),
                 const void* qoiRoutineDataPtr);
 
   const uqStatisticalInverseProblemClass<P_V,P_M>& valIP() const;
@@ -215,7 +227,13 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::calIP()
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::setCalFP(
-  void (*qoiRoutinePtr)(const P_V& domainVector, const void* functionDataPtr, Q_V& imageVector),
+  void (*qoiRoutinePtr)(const P_V&                        domainVector,
+                        const P_V*                        domainDirection,
+                        const void*                       functionDataPtr,
+                              Q_V&                        imageVector,
+                              EpetraExt::DistArray<P_V*>* gradVectors,
+                              EpetraExt::DistArray<P_M*>* hessianMatrices,
+                              EpetraExt::DistArray<P_V*>* hessianEffects),
   const void* qoiRoutineDataPtr)
 {
   // Calibration stage: Input param vector rv for forward = output posterior vector rv of inverse
@@ -296,7 +314,13 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::valIP()
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::setValFP(
-  void (*qoiRoutinePtr)(const P_V& domainVector, const void* functionDataPtr, Q_V& imageVector),
+  void (*qoiRoutinePtr)(const P_V&                        domainVector,
+                        const P_V*                        domainDirection,
+                        const void*                       functionDataPtr,
+                              Q_V&                        imageVector,
+                              EpetraExt::DistArray<P_V*>* gradVectors,
+                              EpetraExt::DistArray<P_M*>* hessianMatrices,
+                              EpetraExt::DistArray<P_V*>* hessianEffects),
   const void* qoiRoutineDataPtr)
 {
   // Validation stage: Input param vector rv for forward = output posterior vector rv of inverse

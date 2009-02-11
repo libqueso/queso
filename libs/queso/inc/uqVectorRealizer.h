@@ -396,4 +396,63 @@ uqSequentialVectorRealizerClass<V,M>::realization(V& nextParamValues) const
 
   return;
 }
+
+//*****************************************************
+// Uniform class
+//*****************************************************
+template<class V, class M>
+class uqUniformVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
+public:
+  uqUniformVectorRealizerClass(const char*                  prefix,
+                               const uqVectorSetClass<V,M>& imageSet);
+ ~uqUniformVectorRealizerClass();
+
+  void realization(V& nextValues) const;
+
+private:
+  using uqBaseVectorRealizerClass<V,M>::m_env;
+  using uqBaseVectorRealizerClass<V,M>::m_prefix;
+  using uqBaseVectorRealizerClass<V,M>::m_imageSet;
+  using uqBaseVectorRealizerClass<V,M>::m_period;
+};
+
+template<class V, class M>
+uqUniformVectorRealizerClass<V,M>::uqUniformVectorRealizerClass(
+  const char*                  prefix,
+  const uqVectorSetClass<V,M>& imageSet)
+  :
+  uqBaseVectorRealizerClass<V,M>(((std::string)(prefix)+"gen").c_str(),imageSet,std::numeric_limits<unsigned int>::max())
+{
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Entering uqUniformVectorRealizerClass<V,M>::constructor()"
+              << ": prefix = " << m_prefix
+              << std::endl;
+  }
+
+  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
+    std::cout << "Leaving uqUniformVectorRealizerClass<V,M>::constructor()"
+              << ": prefix = " << m_prefix
+              << std::endl;
+  }
+}
+
+template<class V, class M>
+uqUniformVectorRealizerClass<V,M>::~uqUniformVectorRealizerClass()
+{
+}
+
+template<class V, class M>
+void
+uqUniformVectorRealizerClass<V,M>::realization(V& nextValues) const
+{
+  const uqBoxSubsetClass<V,M>* imageBox = dynamic_cast<const uqBoxSubsetClass<V,M>* >(&m_imageSet);
+
+  UQ_FATAL_TEST_MACRO(imageBox == NULL,
+                      m_env.rank(),
+                      "uqUniformVectorRealizerClass<V,M>::realization()",
+                      "only box images are supported right now");
+  
+  nextValues.cwSetUniform(m_env.rng(),imageBox->minValues(),imageBox->maxValues());
+  return;
+}
 #endif // __UQ_REALIZER_H__

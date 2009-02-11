@@ -436,7 +436,13 @@ qoiRoutine_DataClass
 
 // The actual (user defined) qoi routine
 template<class P_V,class P_M,class Q_V,class Q_M>
-void qoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiValues)
+void qoiRoutine(const P_V&                        paramValues,
+                const P_V*                        paramDirection,
+                const void*                       functionDataPtr,
+                      Q_V&                        qoiValues,
+                      EpetraExt::DistArray<P_V*>* gradVectors,
+                      EpetraExt::DistArray<P_M*>* hessianMatrices,
+                      EpetraExt::DistArray<P_V*>* hessianEffects)
 {
   double A             = paramValues[0];
   double E             = paramValues[1];
@@ -617,7 +623,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                          2,    // # of rows
                                          3,    // # of cols after 'parameter name': min + max + initial value for Markov chain
                                          NULL, // All extra columns are of 'double' type
-                                         "params.tab");
+                                         "inputData/params.tab");
 
   const EpetraExt::DistArray<std::string>& paramNames = paramsTable.stringColumn(0);
   P_V                                      paramMinValues    (paramsTable.doubleColumn(1));
@@ -637,9 +643,9 @@ uqAppl(const uqBaseEnvironmentClass& env)
   // Read Ascii file with information on qois
   uqAsciiTableClass<P_V,P_M> qoisTable(env,
                                        1,    // # of rows
-                                       0,    // # of cols after 'parameter name': none
+                                       0,    // # of cols after 'qoi name': none
                                        NULL, // All extra columns are of 'double' type
-                                       "qois.tab");
+                                       "inputData/qois.tab");
 
   const EpetraExt::DistArray<std::string>& qoiNames = qoisTable.stringColumn(0);
 
@@ -674,9 +680,9 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
   // Instantiate a likelihood function object (data + routine), to be used by the UQ library.
   likelihoodRoutine_DataClass<P_V,P_M> calLikelihoodRoutine_Data(env,
-                                                                 "scenario_5_K_min.dat",
-                                                                 "scenario_25_K_min.dat",
-                                                                 "scenario_50_K_min.dat");
+                                                                 "inputData/scenario_5_K_min.dat",
+                                                                 "inputData/scenario_25_K_min.dat",
+                                                                 "inputData/scenario_50_K_min.dat");
 
   uqGenericScalarFunctionClass<P_V,P_M> calLikelihoodFunctionObj("cal_like_",
                                                                  paramDomain,
@@ -730,9 +736,9 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
   // Instantiate a likelihood function object (data + routine), to be used by the UQ library.
   likelihoodRoutine_DataClass<P_V,P_M> valLikelihoodRoutine_Data(env,
-                                                                  "scenario_100_K_min.dat",
-                                                                  NULL,
-                                                                  NULL);
+                                                                 "inputData/scenario_100_K_min.dat",
+                                                                 NULL,
+                                                                 NULL);
 
   uqGenericScalarFunctionClass<P_V,P_M> valLikelihoodFunctionObj("val_like_",
                                                                  paramDomain,

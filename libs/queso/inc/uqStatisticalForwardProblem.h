@@ -33,10 +33,10 @@
 #ifndef __UQ_PROPAG_PROBLEM_H__
 #define __UQ_PROPAG_PROBLEM_H__
 
-#include <uqVectorFunction.h> // For substep 4 (or 1) in appls. with propagation
-
+#include <uqVectorFunction.h>
 #include <uqMonteCarloSG.h>
 #include <uqVectorRV.h>
+#include <uqSequenceOfVectors.h>
 
 #undef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
 

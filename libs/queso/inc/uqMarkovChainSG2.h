@@ -891,10 +891,10 @@ template <class P_V,class P_M>
 void
 uqMarkovChainSGClass<P_V,P_M>::updateAdaptedCovMatrix(
   const uqBaseVectorSequenceClass<P_V,P_M>& subChain,
-  unsigned int                          idOfFirstPositionInSubChain,
-  double&                               lastChainSize,
-  P_V&                                  lastMean,
-  P_M&                                  lastAdaptedCovMatrix)
+  unsigned int                              idOfFirstPositionInSubChain,
+  double&                                   lastChainSize,
+  P_V&                                      lastMean,
+  P_M&                                      lastAdaptedCovMatrix)
 {
   double doubleSubChainSize = (double) subChain.sequenceSize();
   if (lastChainSize == 0) {
@@ -942,4 +942,3 @@ uqMarkovChainSGClass<P_V,P_M>::updateAdaptedCovMatrix(
   return;
 }
 #endif // __UQ_MAC_SG2_H__
-

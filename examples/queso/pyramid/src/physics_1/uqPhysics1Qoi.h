@@ -78,7 +78,13 @@ uqPhysics1QoiInfoStruct<P_V,P_M,Q_V,Q_M>::~uqPhysics1QoiInfoStruct()
 
 // The actual (user defined) qoi routine
 template<class P_V,class P_M,class Q_V,class Q_M>
-void uqPhysics1QoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& qoiValues)
+void uqPhysics1QoiRoutine(const P_V&                        paramValues,
+                          const P_V*                        paramDirection,
+                          const void*                       functionDataPtr,
+                                Q_V&                        qoiValues,
+                                EpetraExt::DistArray<P_V*>* gradVectors,
+                                EpetraExt::DistArray<P_M*>* hessianMatrices,
+                                EpetraExt::DistArray<P_V*>* hessianEffects)
 {
   const uqPhysics1QoiInfoStruct<P_V,P_M,Q_V,Q_M>& info = *((const uqPhysics1QoiInfoStruct<P_V,P_M,Q_V,Q_M> *) functionDataPtr);
 

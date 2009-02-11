@@ -343,7 +343,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence(
     paramRv.realizer().realization(tmpV);
 
     if (m_measureRunTimes) iRC = gettimeofday(&timevalQoIFunction, NULL);
-    m_qoiFunctionObj.compute(tmpV,tmpQ);
+    m_qoiFunctionObj.compute(tmpV,NULL,tmpQ,NULL,NULL,NULL);
     if (m_measureRunTimes) qoiFunctionRunTime += uqMiscGetEllapsedSeconds(&timevalQoIFunction);
 
     workingSeq.setPositionValues(i,tmpQ);

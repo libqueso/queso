@@ -123,7 +123,7 @@ uqPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::uqPhysics1ValidationClass(
                                                   2,    // # of rows
                                                   3,    // # of cols after 'parameter name': min + max + initial value for Markov chain
                                                   NULL, // All extra columns are of 'double' type
-                                                  "tgaData/params.tab");
+                                                  "physics1InputData/params.tab");
 
   m_paramNames = &(m_paramsTable->stringColumn(0));
   m_paramMinValues     = new P_V(m_paramsTable->doubleColumn(1));
@@ -145,7 +145,7 @@ uqPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::uqPhysics1ValidationClass(
                                                1,    // # of rows
                                                0,    // # of cols after 'parameter name': none
                                                NULL, // All extra columns are of 'double' type
-                                               "tgaData/qois.tab");
+                                               "physics1InputData/qois.tab");
 
   m_qoiNames = &(m_qoisTable->stringColumn(0));
 
@@ -249,9 +249,9 @@ uqPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
                                                       *m_paramDomain);
 
   m_calLikelihoodInfoVector.resize(3,NULL);
-  m_calLikelihoodInfoVector[0] = new uqPhysics1LikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"tgaData/scenario_5_K_min.dat" );
-  m_calLikelihoodInfoVector[1] = new uqPhysics1LikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"tgaData/scenario_25_K_min.dat");
-  m_calLikelihoodInfoVector[2] = new uqPhysics1LikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"tgaData/scenario_50_K_min.dat");
+  m_calLikelihoodInfoVector[0] = new uqPhysics1LikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"physics1InputData/scenario_5_K_min.dat" );
+  m_calLikelihoodInfoVector[1] = new uqPhysics1LikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"physics1InputData/scenario_25_K_min.dat");
+  m_calLikelihoodInfoVector[2] = new uqPhysics1LikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"physics1InputData/scenario_50_K_min.dat");
 
   m_calLikelihoodFunctionObj = new uqGenericScalarFunctionClass<P_V,P_M>("cal_like_",
                                                                          *m_paramDomain,
@@ -309,7 +309,7 @@ uqPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
 
   // Deal with inverse problem
   m_valLikelihoodInfoVector.resize(1,NULL);
-  m_valLikelihoodInfoVector[0] = new uqPhysics1LikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"tgaData/scenario_100_K_min.dat");
+  m_valLikelihoodInfoVector[0] = new uqPhysics1LikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"physics1InputData/scenario_100_K_min.dat");
 
   m_valLikelihoodFunctionObj = new uqGenericScalarFunctionClass<P_V,P_M>("val_like_",
                                                                          *m_paramDomain,
