@@ -48,7 +48,7 @@ uqGslVectorClass::uqGslVectorClass()
 uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, const Epetra_Map& map)
   :
   uqVectorClass(env,map),
-  m_vec(gsl_vector_calloc(map.NumGlobalElements()))
+  m_vec        (gsl_vector_calloc(map.NumGlobalElements()))
 {
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
                       m_env.rank(),

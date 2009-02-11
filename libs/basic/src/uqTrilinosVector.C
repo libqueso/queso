@@ -58,6 +58,20 @@ uqTrilinosVectorClass::uqTrilinosVectorClass(const uqBaseEnvironmentClass& env, 
                       "null vector generated");
 }
 
+uqTrilinosVectorClass::uqTrilinosVectorClass(const uqBaseEnvironmentClass& env, const Epetra_Map& map, double value)
+  :
+  uqVectorClass(env,map),
+  m_map        (map),
+  //m_vec      (new Epetra_Vector(map,true))
+  m_vec        (new Epetra_SerialDenseMatrix(map.NumGlobalElements(),1))
+{
+  UQ_FATAL_TEST_MACRO((m_vec == NULL),
+                      m_env.rank(),
+                      "uqTrilinosVectorClass::constructor()",
+                      "null vector generated");
+  this->cwSet(value);
+}
+
 uqTrilinosVectorClass::uqTrilinosVectorClass(const uqBaseEnvironmentClass& env, const Epetra_Map& map, double d1, double d2, unsigned int size)
   :
   uqVectorClass(env, map),

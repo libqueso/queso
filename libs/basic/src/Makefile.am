@@ -14,6 +14,11 @@ libuq_basic_any_a_SOURCES =  uqEnvironment.C \
 	uqComplexFft.C \
 	uqChainStatisticalOptions.C
 
+lib_LIBRARIES += libuq_basic_tri.a
+libuq_basic_tri_a_SOURCES =  uqTrilinosVector.C \
+	uqTrilinosMatrix.C \
+	uqTrilinosVectorSpace.C
+
 if UQBT_GSL
 lib_LIBRARIES += libuq_basic_gsl.a
 libuq_basic_gsl_a_SOURCES = uqGslVector.C \

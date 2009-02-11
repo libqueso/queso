@@ -326,7 +326,7 @@ uqTrilinosMatrixClass diagScaling(const uqTrilinosVectorClass& vec, const uqTril
 {
   unsigned int vSize = vec.size();
   unsigned int mRows = mat.numRows();
-  unsigned int mCols = mat.numCols();
+  //unsigned int mCols = mat.numCols();
 
   UQ_FATAL_TEST_MACRO((vSize != mRows),
                       mat.env().rank(),

@@ -42,9 +42,10 @@ class uqTrilinosVectorClass : public uqVectorClass
 public:
   uqTrilinosVectorClass();
   uqTrilinosVectorClass(const uqBaseEnvironmentClass& env, const Epetra_Map& map);
+  uqTrilinosVectorClass(const uqBaseEnvironmentClass& env, const Epetra_Map& map, double value);
   uqTrilinosVectorClass(const uqBaseEnvironmentClass& env, const Epetra_Map& map, double d1, double d2, unsigned int size); // MATLAB linspace
-  uqTrilinosVectorClass(const uqTrilinosVectorClass& v,                       double d1, double d2, unsigned int size); // MATLAB linspace
-  uqTrilinosVectorClass(const uqTrilinosVectorClass& y);
+  uqTrilinosVectorClass(const uqTrilinosVectorClass&    v,                        double d1, double d2, unsigned int size); // MATLAB linspace
+  uqTrilinosVectorClass(const uqTrilinosVectorClass&    y);
  ~uqTrilinosVectorClass();
 
   uqTrilinosVectorClass& operator= (const uqTrilinosVectorClass& rhs);

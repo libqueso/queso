@@ -43,8 +43,8 @@ public:
   uqGslVectorClass(const uqBaseEnvironmentClass& env, const Epetra_Map& map);
   uqGslVectorClass(const uqBaseEnvironmentClass& env, const Epetra_Map& map, double value);
   uqGslVectorClass(const uqBaseEnvironmentClass& env, double d1, double d2, const Epetra_Map& map); // MATLAB linspace
-  uqGslVectorClass(const uqGslVectorClass&     v, double d1, double d2);                        // MATLAB linspace
-  uqGslVectorClass(const uqGslVectorClass& y);
+  uqGslVectorClass(const uqGslVectorClass&         v, double d1, double d2);                        // MATLAB linspace
+  uqGslVectorClass(const uqGslVectorClass&         y);
  ~uqGslVectorClass();
 
   uqGslVectorClass& operator= (const uqGslVectorClass& rhs);
