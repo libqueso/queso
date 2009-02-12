@@ -14,7 +14,11 @@ AX_AM_MACROS
 
 dnl Get compilers
 AC_PROG_CC
+echo "configure found CC = $CC"
+
 AC_PROG_CXX
+echo "configure found CXX = $CXX"
+
 AC_PROG_RANLIB
 
 dnl Check for mpi (FIX ME: this can't be the best way)
@@ -28,7 +32,8 @@ AC_CACHE_SAVE
 dnl Check for trilinos\
 dnl TO DO: Add AM_CONDITIONAL here to determine whether to build trilinos versions of libs
 AX_TRILINOS_BASE(8.0.7,,AC_MSG_ERROR([Could not find required Trilinos version.]))
-AX_TRILINOS_EPETRA
+# AX_TRILINOS_TEUCHOS
+AX_TRILINOS_EPETRA(AC_DEFINE(HAVE_LIBEPETRA,1,[Define if Epetra is available]),AC_MSG_ERROR([Could not find Epetra.]))
 AC_CACHE_SAVE
 
 dnl Check for gsl
