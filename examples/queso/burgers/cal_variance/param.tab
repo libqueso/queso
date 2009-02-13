@@ -1,5 +1,0 @@
-#
-# Name[P_i] Min[P_i]  Max[P_i]  P_i^{(0)}  
-#
-kappa 0.05 1.0 0.5 0.5 0.15
-logStdDev -10.0 10.0 -4.0 -4.0 3.0
