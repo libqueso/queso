@@ -54,10 +54,6 @@ dnl Generate makefiles
 AC_CONFIG_FILES([
 	Makefile
 	libs/Makefile
-	libs/basic/Makefile
-	libs/basic/inc/Makefile
-	libs/stats/Makefile
-	libs/stats/inc/Makefile
 	examples/Makefile
 	examples/queso/Makefile
 	examples/queso/normal/Makefile
