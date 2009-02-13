@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-AM_CPPFLAGS =  -I$(top_srcdir)/libs/basic/inc -I$(top_srcdir)/libs/queso/inc \
+AM_CPPFLAGS =  -I$(top_srcdir)/libs/basic/inc -I$(top_srcdir)/libs/stats/inc \
 	 $(MPI_CXXFLAGS) $(TRILINOS_INCLUDE) $(EPETRA_INCLUDES)
 AM_LDFLAGS = $(BOOST_LDFLAGS)
 
@@ -8,8 +8,8 @@ bin_PROGRAMS =
 
 bin_PROGRAMS += uqNormalExample
 uqNormalExample_SOURCES = uqNormalExample_gsl.C uqNormalExample.h
-uqNormalExample_LDADD = $(top_builddir)/libs/queso/src/libqueso_stats_gsl.a \
-	$(top_builddir)/libs/queso/src/libqueso_stats_any.a \
+uqNormalExample_LDADD = $(top_builddir)/libs/stats/src/libqueso_stats_gsl.a \
+	$(top_builddir)/libs/stats/src/libqueso_stats_any.a \
 	$(top_builddir)/libs/basic/src/libqueso_basic_gsl.a \
 	$(top_builddir)/libs/basic/src/libqueso_basic_any.a \
 	$(GSL_LIBS) $(BOOST_PROGRAM_OPTIONS_LIB) $(MPI_CXXLIBS) $(EPETRA_LIBS)

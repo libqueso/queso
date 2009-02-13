@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in
 
 # Build in these directories:
-SUBDIRS = basic queso
+SUBDIRS = basic stats
 

@@ -54,9 +54,9 @@ AC_CONFIG_FILES([
 	libs/basic/Makefile
 	libs/basic/src/Makefile
 	libs/basic/inc/Makefile
-	libs/queso/Makefile
-	libs/queso/src/Makefile
-	libs/queso/inc/Makefile
+	libs/stats/Makefile
+	libs/stats/src/Makefile
+	libs/stats/inc/Makefile
 	examples/Makefile
 	examples/queso/Makefile
 	examples/queso/normal/Makefile

@@ -1,6 +1,6 @@
 uqMonteCarloExample_gsl.o uqMonteCarloExample_gsl.o:  \
  uqMonteCarloExample_gsl.C uqMonteCarloExample.h \
-  ../../../../libs/queso/inc/uqStatisticalForwardProblem.h \
+  ../../../../libs/stats/inc/uqStatisticalForwardProblem.h \
   ../../../../libs/basic/inc/uqVectorFunction.h \
   ../../../../libs/basic/inc/uqVectorSet.h \
   ../../../../libs/basic/inc/uqEnvironment.h \
@@ -368,13 +368,13 @@ uqMonteCarloExample_gsl.o uqMonteCarloExample_gsl.o:  \
   /h2/prudenci/Installations/Trilinos_8_0_7/include/EpetraExt_Exception.h \
   /h2/prudenci/Installations/Trilinos_8_0_7/include/Epetra_DistObject.h \
   /h2/prudenci/Installations/Trilinos_8_0_7/include/Epetra_SrcDistObject.h \
-  ../../../../libs/queso/inc/uqMonteCarloSG.h \
-  ../../../../libs/queso/inc/uqVectorRV.h \
+  ../../../../libs/stats/inc/uqMonteCarloSG.h \
+  ../../../../libs/stats/inc/uqVectorRV.h \
   ../../../../libs/basic/inc/uqVectorSpace.h \
-  ../../../../libs/queso/inc/uqVectorPdf.h \
+  ../../../../libs/stats/inc/uqVectorPdf.h \
   ../../../../libs/basic/inc/uqScalarFunction.h \
   ../../../../libs/basic/inc/uqVectorSubset.h \
-  ../../../../libs/queso/inc/uqVectorRealizer.h \
+  ../../../../libs/stats/inc/uqVectorRealizer.h \
   ../../../../libs/basic/inc/uqVectorSequence.h \
   ../../../../libs/basic/inc/uqScalarSequence.h \
   ../../../../libs/basic/inc/uqFft.h \
@@ -385,12 +385,12 @@ uqMonteCarloExample_gsl.o uqMonteCarloExample_gsl.o:  \
   ../../../../libs/basic/inc/uqOneDGrid.h \
   ../../../../libs/basic/inc/uqArrayOfOneDTables.h \
   ../../../../libs/basic/inc/uq2dArrayOfStuff.h /usr/include/sys/time.h \
-  ../../../../libs/queso/inc/uqVectorCdf.h \
-  ../../../../libs/queso/inc/uqScalarCdf.h \
-  ../../../../libs/queso/inc/uqVectorMdf.h \
+  ../../../../libs/stats/inc/uqVectorCdf.h \
+  ../../../../libs/stats/inc/uqScalarCdf.h \
+  ../../../../libs/stats/inc/uqVectorMdf.h \
   ../../../../libs/basic/inc/uqSequenceOfVectors.h \
   ../../../../libs/basic/inc/uqAsciiTable.h \
-  ../../../../libs/queso/inc/uqCovCond.h \
+  ../../../../libs/stats/inc/uqCovCond.h \
   ../../../../libs/basic/inc/uqGslMatrix.h \
   ../../../../libs/basic/inc/uqMatrix.h \
   ../../../../libs/basic/inc/uqVector.h \
@@ -432,7 +432,7 @@ uqMonteCarloExample_gsl.o uqMonteCarloExample_gsl.o:  \
 
 uqMonteCarloExample.h:
 
-../../../../libs/queso/inc/uqStatisticalForwardProblem.h:
+../../../../libs/stats/inc/uqStatisticalForwardProblem.h:
 
 ../../../../libs/basic/inc/uqVectorFunction.h:
 
@@ -1318,19 +1318,19 @@ uqMonteCarloExample.h:
 
 /h2/prudenci/Installations/Trilinos_8_0_7/include/Epetra_SrcDistObject.h:
 
-../../../../libs/queso/inc/uqMonteCarloSG.h:
+../../../../libs/stats/inc/uqMonteCarloSG.h:
 
-../../../../libs/queso/inc/uqVectorRV.h:
+../../../../libs/stats/inc/uqVectorRV.h:
 
 ../../../../libs/basic/inc/uqVectorSpace.h:
 
-../../../../libs/queso/inc/uqVectorPdf.h:
+../../../../libs/stats/inc/uqVectorPdf.h:
 
 ../../../../libs/basic/inc/uqScalarFunction.h:
 
 ../../../../libs/basic/inc/uqVectorSubset.h:
 
-../../../../libs/queso/inc/uqVectorRealizer.h:
+../../../../libs/stats/inc/uqVectorRealizer.h:
 
 ../../../../libs/basic/inc/uqVectorSequence.h:
 
@@ -1354,17 +1354,17 @@ uqMonteCarloExample.h:
 
 /usr/include/sys/time.h:
 
-../../../../libs/queso/inc/uqVectorCdf.h:
+../../../../libs/stats/inc/uqVectorCdf.h:
 
-../../../../libs/queso/inc/uqScalarCdf.h:
+../../../../libs/stats/inc/uqScalarCdf.h:
 
-../../../../libs/queso/inc/uqVectorMdf.h:
+../../../../libs/stats/inc/uqVectorMdf.h:
 
 ../../../../libs/basic/inc/uqSequenceOfVectors.h:
 
 ../../../../libs/basic/inc/uqAsciiTable.h:
 
-../../../../libs/queso/inc/uqCovCond.h:
+../../../../libs/stats/inc/uqCovCond.h:
 
 ../../../../libs/basic/inc/uqGslMatrix.h:
 

@@ -6,7 +6,7 @@ AM_CPPFLAGS = -I. -I$(top_srcdir)/examples/queso/pyramid/src/physics_1 \
 	-I$(top_srcdir)/examples/queso/pyramid/src/physics_2 \
 	-I$(top_srcdir)/examples/queso/pyramid/src/physics_1_2 \
 	-I$(top_srcdir)/libs/basic/inc \
-	-I$(top_srcdir)/libs/queso/inc \
+	-I$(top_srcdir)/libs/stats/inc \
 	$(MPI_CXXFLAGS) $(TRILINOS_INCLUDE) $(EPETRA_INCLUDES)
 AM_LDFLAGS = $(BOOST_LDFLAGS)
 
@@ -14,8 +14,8 @@ bin_PROGRAMS =
 
 bin_PROGRAMS += uqPyramidExample
 uqPyramidExample_SOURCES = uqPyramidExample_gsl.C
-uqPyramidExample_LDADD = $(top_builddir)/libs/queso/src/libqueso_stats_gsl.a \
-	$(top_builddir)/libs/queso/src/libqueso_stats_any.a \
+uqPyramidExample_LDADD = $(top_builddir)/libs/stats/src/libqueso_stats_gsl.a \
+	$(top_builddir)/libs/stats/src/libqueso_stats_any.a \
 	$(top_builddir)/libs/basic/src/libqueso_basic_gsl.a \
 	$(top_builddir)/libs/basic/src/libqueso_basic_any.a \
 	$(GSL_LIBS) $(BOOST_PROGRAM_OPTIONS_LIB) $(MPI_CXXLIBS) $(EPETRA_LIBS)
