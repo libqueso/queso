@@ -1,7 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
 EXTRA_DIST = uqCovCond.h \
-	uqDefaultPrior.h \
 	uqMarkovChainPositionData.h \
 	uqMarkovChainSG1.h \
 	uqMarkovChainSG2.h \
@@ -18,3 +17,5 @@ EXTRA_DIST = uqCovCond.h \
 	uqVectorPdf.h \
 	uqVectorRealizer.h \
 	uqVectorRV.h 
+
+

@@ -14,10 +14,7 @@ bin_PROGRAMS =
 
 bin_PROGRAMS += uqPyramidExample
 uqPyramidExample_SOURCES = uqPyramidExample_gsl.C
-uqPyramidExample_LDADD = $(top_builddir)/libs/stats/src/libqueso_stats_gsl.a \
-	$(top_builddir)/libs/stats/src/libqueso_stats_any.a \
-	$(top_builddir)/libs/basic/src/libqueso_basic_gsl.a \
-	$(top_builddir)/libs/basic/src/libqueso_basic_any.a \
+uqPyramidExample_LDADD = $(top_builddir)/libs/libqueso.a \
 	$(GSL_LIBS) $(BOOST_PROGRAM_OPTIONS_LIB) $(MPI_CXXLIBS) $(EPETRA_LIBS)
 
 # Required for AX_AM_MACROS

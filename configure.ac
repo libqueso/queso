@@ -10,7 +10,7 @@ dnl Init automake
 AM_INIT_AUTOMAKE
 
 dnl Generating a libtool library
-AC_PROG_LIBTOOL
+dnl AC_PROG_LIBTOOL
 
 dnl Required for some macros
 AX_AM_MACROS
@@ -55,10 +55,8 @@ AC_CONFIG_FILES([
 	Makefile
 	libs/Makefile
 	libs/basic/Makefile
-	libs/basic/src/Makefile
 	libs/basic/inc/Makefile
 	libs/stats/Makefile
-	libs/stats/src/Makefile
 	libs/stats/inc/Makefile
 	examples/Makefile
 	examples/queso/Makefile
