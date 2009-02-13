@@ -4,8 +4,8 @@ AM_CPPFLAGS = -I$(top_srcdir)/libs/basic/inc $(MPI_CXXFLAGS) $(BOOST_CPPFLAGS)
 
 lib_LIBRARIES = 
 
-lib_LIBRARIES += libuq_basic_any.a
-libuq_basic_any_a_SOURCES =  uqEnvironment.C \
+lib_LIBRARIES += libqueso_basic_any.a
+libqueso_basic_any_a_SOURCES =  uqEnvironment.C \
 	uqDefines.C \
 	uqVector.C \
 	uqMatrix.C \
@@ -14,14 +14,14 @@ libuq_basic_any_a_SOURCES =  uqEnvironment.C \
 	uqComplexFft.C \
 	uqChainStatisticalOptions.C
 
-lib_LIBRARIES += libuq_basic_tri.a
-libuq_basic_tri_a_SOURCES =  uqTrilinosVector.C \
+lib_LIBRARIES += libqueso_basic_tri.a
+libqueso_basic_tri_a_SOURCES =  uqTrilinosVector.C \
 	uqTrilinosMatrix.C \
 	uqTrilinosVectorSpace.C
 
 if UQBT_GSL
-lib_LIBRARIES += libuq_basic_gsl.a
-libuq_basic_gsl_a_SOURCES = uqGslVector.C \
+lib_LIBRARIES += libqueso_basic_gsl.a
+libqueso_basic_gsl_a_SOURCES = uqGslVector.C \
 	uqGslMatrix.C \
 	uqGslOdeSolver.C \
 	uqGslVectorSpace.C

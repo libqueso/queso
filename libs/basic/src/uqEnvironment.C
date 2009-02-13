@@ -35,12 +35,13 @@
 #include <sys/time.h>
 #include <gsl/gsl_randist.h>
 
-// Version "0.1"  on "Aug/11/2008"
-// Version "0.11" on "Aug/15/2008"
-// Version "0.2"  on "Oct/01/2008"
-// Version "0.21" on "Oct/08/2008"
-#define QUESO_TOOLKIT_CURRENT_VERSION "0.21"
-#define QUESO_TOOLKIT_RELEASE_DATE    "Oct/08/2008"
+// Version "0.1"   on "Aug/11/2008"
+// Version "0.11"  on "Aug/15/2008"
+// Version "0.2"   on "Oct/01/2008"
+// Version "0.21"  on "Oct/08/2008"
+// Version "0.3.0" on "Feb/13/2009"
+#define QUESO_TOOLKIT_CURRENT_VERSION "0.3.0"
+#define QUESO_TOOLKIT_RELEASE_DATE    "Feb/13/2009"
 
 uqEnvOptionsStruct::uqEnvOptionsStruct(
   unsigned int verbosity,
