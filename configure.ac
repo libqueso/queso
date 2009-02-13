@@ -9,6 +9,9 @@ AC_CONFIG_AUX_DIR([build-aux])
 dnl Init automake
 AM_INIT_AUTOMAKE
 
+dnl Generating a libtool library
+AC_PROG_LIBTOOL
+
 dnl Required for some macros
 AX_AM_MACROS
 
