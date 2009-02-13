@@ -23,7 +23,7 @@
  *
  *--------------------------------------------------------------------------
  *
- * $Id: uqVectorRealizer.h 1241 2009-02-11 16:26:29Z prudenci $
+ * $Id$
  *
  * Brief description of this file: 
  * 
