@@ -1,0 +1,63 @@
+###############################################
+# UQ Environment
+###############################################
+#uqEnv_help      = anything
+uqEnv_verbosity = 2
+uqEnv_seed      = 0
+
+###############################################
+# Statistical forward problem (fp)
+###############################################
+fp_help            = anything
+fp_computeSolution = 1
+fp_outputFileName  = outputData/mcOutput.m
+
+###############################################
+# 'fp_': information for Monte Carlo algorithm
+#
+# '_numSamples' examples 16K   128K   1M      2M      16M
+#                        16384 131072 1048576 2097152 16777216
+###############################################
+fp_mc_help            = anything
+fp_mc_numSamples      = 1048576
+fp_mc_outputFileName  = outputData/mcExtraOutput.m
+fp_mc_displayPeriod   = 20000
+fp_mc_measureRunTimes = 1
+fp_mc_write           = 0
+fp_mc_computeStats    = 1
+
+#fp_mc_seq_stats_help                     = anything
+fp_mc_seq_stats_initialDiscardedPortions = 0.
+fp_mc_seq_stats_bmm_run                  = 0
+fp_mc_seq_stats_bmm_lengths              = 50 100 200 250
+fp_mc_seq_stats_fft_compute              = 0
+fp_mc_seq_stats_fft_paramId              = 0
+fp_mc_seq_stats_fft_size                 = 2048
+fp_mc_seq_stats_fft_testInversion        = 1
+fp_mc_seq_stats_fft_write                = 1
+fp_mc_seq_stats_psd_compute              = 0
+fp_mc_seq_stats_psd_numBlocks            = 8
+fp_mc_seq_stats_psd_hopSizeRatio         = .5
+fp_mc_seq_stats_psd_paramId              = 0
+fp_mc_seq_stats_psd_write                = 1
+fp_mc_seq_stats_psdAtZero_compute        = 0
+fp_mc_seq_stats_psdAtZero_numBlocks      = 32
+fp_mc_seq_stats_psdAtZero_hopSizeRatio   = .5
+fp_mc_seq_stats_psdAtZero_display        = 1
+fp_mc_seq_stats_psdAtZero_write          = 1
+fp_mc_seq_stats_geweke_compute           = 0
+fp_mc_seq_stats_geweke_naRatio           = .1
+fp_mc_seq_stats_geweke_nbRatio           = .5
+fp_mc_seq_stats_geweke_display           = 1
+fp_mc_seq_stats_geweke_write             = 1
+fp_mc_seq_stats_corr_computeViaDef       = 0
+fp_mc_seq_stats_corr_computeViaFft       = 1
+fp_mc_seq_stats_corr_secondLag           = 2
+fp_mc_seq_stats_corr_lagSpacing          = 1
+fp_mc_seq_stats_corr_numLags             = 15
+fp_mc_seq_stats_corr_display             = 1
+fp_mc_seq_stats_corr_write               = 1
+fp_mc_seq_stats_hist_compute             = 0
+fp_mc_seq_stats_hist_numInternalBins     = 250
+fp_mc_seq_stats_kde_compute              = 1
+fp_mc_seq_stats_kde_numEvalPositions     = 250
