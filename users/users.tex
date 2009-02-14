@@ -1,0 +1,65 @@
+\documentclass[12pt,letterpaper,twoside,onecolumn,portrait,leqno]{book}
+\bibliographystyle{plain}
+\usepackage{amssymb,amsfonts,amsmath,amscd,amsthm}
+%\usepackage[draft]{graphicx}
+\usepackage{graphicx}
+\usepackage[dvips]{epsfig}
+\usepackage{rotating}
+
+\setlength{\textwidth}{6.6in}
+\setlength{\topmargin}{-0.25in}
+\setlength{\textheight}{8.60in}
+\setlength{\oddsidemargin}{0.2in}
+\setlength{\evensidemargin}{-0.3in}
+
+\renewcommand{\contentsname}{\vspace*{-1.45in}\centerline{\Large\bf Contents}\vspace*{-0.4in}}
+\renewcommand{\listtablename}{\vspace*{-1.45in}\centerline{\Large\bf List of Tables}\vspace*{-0.4in}}
+\renewcommand{\listfigurename}{\vspace*{-1.45in}\centerline{\Large\bf List of Figures}\vspace*{-0.4in}}
+\renewcommand{\chaptername}{\vspace*{-1.45in}{\Huge\bf Chapter}}
+\renewcommand{\appendixname}{\vspace*{-1.45in}{\Huge\bf Appendix}}
+\renewcommand{\bibname}{\vspace*{-1.0in}{\Huge\bf Bibliography}}
+
+\begin{document}
+
+\setlength{\unitlength}{1.0in}
+\setlength{\parindent}{0cm}
+\setlength{\parskip}{2ex}
+\pagestyle{headings}
+\markright{}
+\pagenumbering{roman}
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
+
+\include{users-cover}
+
+\pagenumbering{arabic}
+
+\include{users-ch-introduction}
+
+\include{users-ch-installation}
+
+\include{users-ch-gmc}
+
+\include{users-ch-fp}
+
+\begin{appendix}
+
+\include{users-ch-prob}
+
+\include{users-ch-mcmc}
+
+\include{users-ch-rmc}
+
+\include{users-ch-fsnfd}
+
+\include{users-ch-gpl}
+
+\include{users-ch-fdl}
+
+\end{appendix}
+
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliography{./uqusers}
+
+\end{document}

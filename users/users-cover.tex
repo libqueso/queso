@@ -1,0 +1,189 @@
+%------------------------------------------------------------------
+\thispagestyle{empty}
+{\setlength{\parindent}{0cm}\bf{MCMC Tool of the QUESO Toolkit}}\hfill $~$\\
+\begin{picture}(8,0.1)
+\linethickness{3pt}
+\put(0,0.1){\line(1,0){6.6}}
+\end{picture}
+$~$\hfill User's Manual\\
+$~$\hfill Version 0.1\\
+$~$\hfill August 14, 2008\\
+
+\vfill
+$~$\\
+Toolkit:\\
+{\bf Quantification of Uncertainty for Estimation, Simulation and Optimization} (QUESO)\\
+$~$\\
+Tool:\\
+{\bf Markov-Chain Monte Carlo} (MCMC)\\
+
+\vfill
+$~$\\
+{\bf TERMINOLOGY USED IN THIS MANUAL IS SUBJECT TO CHANGE}
+
+\vfill
+$~$\\
+{\bf{Ernesto E. Prudencio}}\hfill\\
+{\bf{Chris Simmons}}\hfill\\
+{\bf{Omar Ghattas}}\hfill\\
+{\bf{Robert Moser}}\hfill\\
+Center for Predictive Engineering and Computational Sciences (PECOS) \hfill\\
+Institute for Computational and Engineering Sciences (ICES) \hfill\\
+University of Texas at Austin\hfill\\
+
+\vfill
+$~$\\
+\begin{picture}(8,0.1)
+\linethickness{1.5pt}
+\put(0,0.1){\line(1,0){6.6}}
+\end{picture}
+
+\clearpage
+%------------------------------------------------------------------
+\thispagestyle{empty}
+$~$\\
+\vfill
+Copyright \copyright\ 2008 The QUESO-MCMC Team, \texttt{http://queso.ices.utexas.edu}\\
+Permission is granted to copy, distribute and/or modify this document under the terms of
+the GNU Free Documentation License, Version 1.2 or any later version published by the Free
+Software Foundation; with the Invariant Sections being ``GNU General Public License'' and
+``Free Software Needs Free Documentation'', the Front-Cover text being ``A GNU Manual'',
+and with the Back-Cover text being ``You have the freedom to copy and modify this GNU Manual''.
+A copy of the license is included in the section entitled ``GNU Free Documentation License''.
+
+\clearpage
+%------------------------------------------------------------------
+\addcontentsline{toc}{chapter}{Abstract}
+%\thispagestyle{empty}
+\centerline{\Large\bf Abstract}
+$~$\\
+The QUESO Toolkit is a
+collection of algorithms, libraries and executables aimed for
+the validation of a model and
+the prediction of quantities of interest from such model
+along with the quantification of their uncertainties.
+
+The QUESO-MCMC Tool aimes to achieve these objectives by applying Markov-Chain Monte Carlo methodologies.
+It is designed for flexibility, portability, easiness of use and easiness of extension.
+Its software design follows an object-oriented approach and
+its code is written on C++ and over MPI.
+It can run over uniprocessor or multiprocessor environments.
+
+The QUESO-MCMC Tool contains two forms of documentation:
+a User's Manual available in pdf format
+%a Developer's Manual also available in pdf format,
+and
+a lower-level code documentation available in web based/html format.
+
+This is the User's Manual.
+It gives an overview of the tool capabilities,
+provides procedures for software execution, and includes example studies.
+
+\clearpage
+%------------------------------------------------------------------
+$~$\\
+
+\clearpage
+%------------------------------------------------------------------
+\addcontentsline{toc}{chapter}{Disclaimer}
+%\thispagestyle{empty}
+\centerline{\Large\bf Disclaimer (To be checked by Chris)}
+$~$\\
+    THIS DOCUMENT WAS PREPARED
+    BY THE UNIVERSITY OF TEXAS AT AUSTIN.
+    NEITHER THE UNIVERSITY OF TEXAS
+    AT AUSTIN, NOR ANY OF ITS INSTITUTES, DEPARTMENTS AND EMPLOYEES, MAKES ANY WARRANTY, EXPRESS OR IMPLIED,
+    OR ASSUMES ANY LEGAL LIABILITY OR RESPONSIBILITY FOR THE ACCURACY, COMPLETENESS, OR
+    USEFULNESS OF ANY INFORMATION, APPARATUS, PRODUCT, OR PROCESS DISCLOSED, OR REPRESENTS
+    THAT ITS USE WOULD NOT INFRINGE PRIVATELY OWNED RIGHTS. REFERENCE HEREIN TO ANY SPECIFIC
+    COMMERCIAL PRODUCT, PROCESS, OR SERVICE BY TRADE NAME, TRADEMARK, MANUFACTURER, OR OTHERWISE,
+    DOES NOT NECESSARILY CONSTITUTE OR IMPLY ITS ENDORSEMENT, RECOMMENDATION, OR FAVORING BY
+    THE UNIVERSITY OF TEXAS AT AUSTIN OR ANY OF ITS INSTITUTES, DEPARTMENTS AND EMPLOYEES THEREOF.
+    THE VIEW AND OPINIONS EXPRESSED HEREIN DO NOT NECESSARILY STATE OR REFLECT
+    THOSE OF THE UNIVERSITY OF TEXAS AT AUSTIN OR ANY INSTITUTE OR DEPARTMENT
+    THEREOF.
+
+\clearpage
+%------------------------------------------------------------------
+$~$\\
+
+\clearpage
+%------------------------------------------------------------------
+{\markboth{}{}
+\addtocontents{toc}{\protect\markboth{}{}}
+}
+%\addtocontents{toc}{\protect\thispagestyle{headings}}
+\tableofcontents
+
+%\clearpage
+%%------------------------------------------------------------------
+%$~$\\
+
+\clearpage
+%------------------------------------------------------------------
+\addcontentsline{toc}{chapter}{Preface}
+\thispagestyle{empty}
+\centerline{\Large\bf Preface}
+$~$\\
+The QUESO-MCMC (Predictive Engineering and Computational Sciences-Markov Chain Monte Carlo) Tool project started in 2008 as part
+of the efforts of the recently established Center for Predictive Engineering and Computational Sciences (PECOS)
+and the Center for Computational Geosciences and Optimization (CCGO), both at
+the Institute for Computational and Engineering Sciences (ICES) at the University of Texas at Austin.
+
+The PECOS Center was selected by the National Nuclear Security Administration (NNSA) as one of its new five centers of excellence
+under the Predictive Science Academic Alliance Program (PSAAP).
+The goal of the PECOS Center is
+to advance predictive science and to develop the next generation of advanced computational methods and tools
+for the calculation of reliable predictions on the behavior of complex phenomena and systems (multiscale, multidisciplinary).
+This objective demands a systematic, comprehensive treatment of the calibration and validation of the mathematical models involved,
+as well as the quantification of the uncertainties inherent in such models.
+The advancement of predictive science is essential for the application of Computational Science to the solution of realistic problems of national interest.
+
+The QUESO-MCMC Tool, since its first version, has been publicly released as open source
+under the GNU General Public License and is available for free download world-wide.
+See http://www.gnu.org/licenses/gpl.html for more information on the GPL software use agreement.
+
+The QUESO-MCMC team consists of
+Ernesto E. Prudencio (Research Associate),
+Chris Simmons (Program Director),
+Omar Ghattas (Co-PI) and
+Robert Moser (PI and Director).
+
+{\bf Contact Information:}\\
+Ernesto E. Prudencio\\
+Institute for Computational and Engineering Sciences\\
+1 University Station C0200\\
+Austin, Texas 78712
+
+email: prudenci@ices.utexas.edu\\
+web: http://queso.ices.utexas.edu\\
+$~$\\
+
+\centerline{\bf Referencing the QUESO-MCMC Tool}
+
+When referencing the QUESO-MCMC Tool in a publication, please cite the following:
+\begin{verbatim}
+@Misc{queso-mcmc-web-page,
+   Author = "Ernesto E. Prudencio and Omar Ghattas
+             and Robert Moser and Chris Simmons",
+   Title      = "The {MCMC} {T}ool of the {Q}uantification of {U}ncertainty for
+                 {E}stimation, {S}imulation and {O}ptimization ({QUESO}) {T}oolkit",
+   Note     = "http://queso.ices.utexas.edu",
+   Year     = "2008"}
+
+@TechReport{queso-mcmc-user-ref,
+   Author      = "Ernesto E. Prudencio and Omar Ghattas
+                  and Robert Moser and Chris Simmons",
+   Title      = "{QUESO-MCMC} Tool, {U}ser's {M}anual",
+   Institution = "Institute for Computational and Engineering
+                  Sciences (ICES), University of Texas at Austin",
+   Year        = "2008"}
+\end{verbatim}
+$~$\\
+$~$\\
+
+\centerline{\bf Acknowledgements}
+
+%\clearpage
+%%------------------------------------------------------------------
+%$~$\\

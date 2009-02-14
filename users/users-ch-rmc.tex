@@ -1,0 +1,329 @@
+\chapter{The Realization of a Markov Chain}\label{ch-rmc}
+\thispagestyle{headings}
+\markboth{Chapter \ref{ch-rmc}: The Realization of a Markov Chain}{Chapter \ref{ch-rmc}: The Realization of a Markov Chain}
+
+In this chapter we detail the
+Metropolis-Hastings (MH),
+Delayed Rejection (DR),
+Adaptive Metropolis (AM) and
+DRAM algorithms.
+
+While we indicated r.v.'s and their realizations by $\mathbf{Y}_k$ and $\mathbf{y}_k$ in Chapter \ref{ch-mcmc},
+in this chapter we will primarily use supper scripts and the greek letter $\theta$ to indicate r.v.'s and their realizations, e.g. $\boldsymbol{\Theta}^{(k)}$ and $\boldsymbol{\theta}^{(k)}$.
+Sub scripts will refer to components $\theta_i^{(k)}$ of $\boldsymbol{\theta}^{(k)}\in\mathbb{R}^m$.
+In this way, we return to the initial terminology used in Chapter \ref{ch-int}.
+
+\section{Preliminary Definitions}
+
+In what follows we also assume that
+we are given
+\begin{equation}\label{eq-pi-target}
+\text{a target probability density }\pi_{\text{target}}:\mathbb{R}^n\rightarrow [0,1],
+\end{equation}
+\begin{equation}\label{eq-y0}
+\text{a relization }\boldsymbol{\theta}^{(0)}\text{ of a r.v. }\boldsymbol{\Theta}^{(0)}:\Omega\rightarrow\mathbb{R}^n,
+\end{equation}
+\begin{equation}\label{eq-q1}
+\text{a proposal kernel (see Subsection \ref{subsc-proposal-kernel}) }q_1:\mathbb{R}^n\times \mathbb{R}^n\rightarrow [0,1]\text{ and}
+\end{equation}
+\begin{equation}\label{eq-n-chain}
+\text{an integer }n_{\text{chain}}\geqslant 1,
+\end{equation}
+and that
+we want to construct a {\it realization} of
+a homogeneous Markov chain of size $n_{\text{chain}}$ with a transition probability kernel $K:\mathbb{R}^n\rightarrow [0,1]$
+such that the limit density of $K$ is $\pi_{\text{target}}$.
+An example of a target is the density equal (up to a multiplicative constant) to the posterior density discussed
+at the end of Section \ref{sc-intro-qoi}.
+
+\subsection{Detailed Balance Equation and Reversibility}
+$~$\\
+
+\subsection{The Proposal Transition Probability Kernel $q$}\label{subsc-proposal-kernel}
+$~$\\
+
+\section{Algorithms}\label{sc-rmc-algs}
+
+Before we proceed to the actual algorithms, a definition is necessary.
+Given a probability density $\pi:\mathbb{R}^n\rightarrow [0,1]$,
+an integer $k\geqslant 1$ and
+$k$ proposal transition probability kernels
+\begin{equation*}
+q_i:\underbrace{\mathbb{R}^n\times\ldots\times\mathbb{R}^n}_{(i+1)\text{ times}}\rightarrow [0,1],\quad 1\leqslant i\leqslant k,
+\end{equation*}
+we recursively define
+\begin{equation}\label{eq-alphas}
+\alpha_i:\underbrace{\mathbb{R}^n\times\ldots\times\mathbb{R}^n}_{(i+1)\text{ times}}\rightarrow [0,1],\quad 1\leqslant i\leqslant k,
+\end{equation}
+by setting
+\begin{equation*}
+\alpha_1(\boldsymbol{\theta},\mathbf{c}^{(1)}) = \text{ min}
+\left\{
+1,\frac
+{\pi(\mathbf{c}^{(1)})q_1(\mathbf{c}^{(1)},\boldsymbol{\theta})}
+{\pi(\boldsymbol{\theta})q_1(\boldsymbol{\theta},\mathbf{c}^{(1)})}
+\right\},
+\end{equation*}
+and, for $i>1$,
+\begin{equation*}
+\alpha_i(\boldsymbol{\theta},\mathbf{c}^{(1)},\ldots,\mathbf{c}^{(i)}) = \text{ min}
+\left\{
+1,\frac
+{\pi(\mathbf{c}^{(i)})}
+{\pi(\boldsymbol{\theta})}
+\cdot q_{\text{fraction}}
+\cdot \alpha_{\text{fraction}}
+\right\}.
+\end{equation*}
+where
+the expressions $q_{\text{fraction}}$ and $\alpha_{\text{fraction}}$ are given by
+\begin{equation*}
+q_{\text{fraction}}=
+\frac
+{q_1(\mathbf{c}^{(i)},\mathbf{c}^{(i-1)})}
+{q_1(\boldsymbol{\theta},\mathbf{c}^{(1)})}
+\frac
+{q_2(\mathbf{c}^{(i)},\mathbf{c}^{(i-1)},\mathbf{c}^{(i-2)})}
+{q_2(\boldsymbol{\theta},\mathbf{c}^{(1)},\mathbf{c}^{(2)})}
+\ldots
+\frac
+{q_i(\mathbf{c}^{(i)},\mathbf{c}^{(i-1)},\ldots,\mathbf{c}^{(1)},\boldsymbol{\theta})}
+{q_i(\boldsymbol{\theta},\mathbf{c}^{(1)},\ldots,\mathbf{c}^{(i-1)},\mathbf{c}^{(i)})}
+\end{equation*}
+and
+\begin{equation*}
+\alpha_{\text{fraction}}=
+\frac
+{[1-\alpha_1(\mathbf{c}^{(i)},\mathbf{c}^{(i-1)})]}
+{[1-\alpha_1(\boldsymbol{\theta},\mathbf{c}^{(1)})]}
+\frac
+{[1-\alpha_2(\mathbf{c}^{(i)},\mathbf{c}^{(i-1)},\mathbf{c}^{(i-2)})]}
+{[1-\alpha_2(\boldsymbol{\theta},\mathbf{c}^{(1)},\mathbf{c}^{(2)})]}
+\ldots
+\frac
+{[1-\alpha_{i-1}(\mathbf{c}^{(i)},\mathbf{c}^{(i-1)},\ldots,\mathbf{c}^{(1)})]}
+{[1-\alpha_{i-1}(\boldsymbol{\theta},\mathbf{c}^{(1)},\ldots,\mathbf{c}^{(i-1)})]}.
+\end{equation*}
+It should be emphasized that $\boldsymbol{\theta}$ does {\it not} appear on the numerator of $\alpha_{\text{fraction}}$.
+
+\subsection{The Metropolis-Hastings (MH) Algorithm}%\label{subsc-rmc-mh-alg}
+
+The Metropolis-Hastings algorithm proceeds as follows:
+\begin{enumerate}
+\item for ($k=0$; $k < (n_{\text{chain}}-1)$; ++$k$) \{
+\item $\quad$/* Perform $(k+1)$-th iteration in order to obtain $\boldsymbol{\theta}^{(k+1)}$ */
+\item $\quad$generate a candidate $\mathbf{c}$ from $q_1(\boldsymbol{\theta}^{(k)},\cdot)$;
+\item $\quad$accept = false;
+\item $\quad$outOfBounds = ($\theta_i < \theta_{i,\text{min}}$ or $\theta_{i,\text{max}} < \theta_i$ for some $i$);
+\item $\quad$if (outOfBounds == false) \{
+\item $\quad\quad$compute the acceptance ratio $\alpha=\alpha_1(\boldsymbol{\theta}^{(k)},\mathbf{c})$ (see \eqref{eq-alphas});
+\item $\quad\quad$draw $t$ from the uniform distribution on $[0,1]$;
+\item $\quad\quad$if ($t\leqslant \alpha$) \{ $\boldsymbol{\theta}^{(k+1)}=\mathbf{c}$; accept = true; \}
+\item $\quad$\}
+\item $\quad$if (accept == false) $\boldsymbol{\theta}^{(k+1)}=\boldsymbol{\theta}^{(k)}$;
+\item \} /* end for */.
+\end{enumerate}
+
+\subsection{The Delayed Rejeciton (DR) Algorithm}%\label{subsc-rmc-dr-alg}
+
+Given
+\begin{equation}\label{eq-ne}
+n_e\geqslant 1
+\end{equation}
+extra proposal kernels $q_i:S\times S\rightarrow [0,1]$, $i=2,\ldots,n_e+1$,
+the Delayed Rejection algorithm proceeds as follows:
+\begin{enumerate}
+\item for ($k=0$; $k < (n_{\text{chain}}-1)$; ++$k$) \{
+\item $\quad$/* Perform $(k+1)$-th iteration in order to obtain $\boldsymbol{\theta}^{(k+1)}$ */
+\item $\quad$generate a candidate $\mathbf{c}^{(1)}$ from $q_1(\boldsymbol{\theta}^{(k)},\cdot)$;
+\item $\quad$accept = false; $s=1$; /* ``s'' stands for ``stage id'' */
+\item $\quad$outOfBounds = ($\theta_i < \theta_{i,\text{min}}$ or $\theta_{i,\text{max}} < \theta_i$ for some $i$);
+\item $\quad$if (outOfBounds == false) \{
+\item $\quad\quad$compute the acceptance ratio $\alpha=\alpha_1(\boldsymbol{\theta}^{(k)},\mathbf{c}^{(1)})$ (see \eqref{eq-alphas});
+\item $\quad\quad$draw $t$ from the uniform distribution on $[0,1]$;
+\item $\quad\quad$if ($t\leqslant \alpha$) \{ $\boldsymbol{\theta}^{(k+1)}=\mathbf{c}^{(s)}$; accept = true; \}
+\item $\quad\quad$else while ((accept == false) \&\& ($i\leqslant n_e$)) \{
+\item $\quad\quad\quad$/* Extra stages trying extra candidates $\mathbf{c}^{(2)},\mathbf{c}^{(3)},\ldots,\mathbf{c}^{(n_e+1)}$ (maximum) */
+\item $\quad\quad\quad$generate a candidate $\mathbf{c}^{(s+1)}$ from $q_i(\boldsymbol{\theta}^{(k)},\mathbf{c}^{(1)},\ldots,\mathbf{c}^{(s)})$;
+\item $\quad\quad\quad$compute the acceptance ratio $\alpha=\alpha_i(\boldsymbol{\theta}^{(k)},\mathbf{c}^{(1)},\ldots,\mathbf{c}^{(s)})$ (see \eqref{eq-alphas});
+\item $\quad\quad\quad$draw $t$ from the uniform distribution on $[0,1]$;
+\item $\quad\quad\quad$if ($t\leqslant \alpha$) \{ $\boldsymbol{\theta}^{(k+1)}=\mathbf{c}^{(s)}$; accept = true; \}
+\item $\quad\quad\quad$$i\leftarrow i+1$;
+\item $\quad\quad$\} /* end while */
+\item $\quad$\}
+\item $\quad$if (accept == false) $\boldsymbol{\theta}^{(k+1)}=\boldsymbol{\theta}^{(k)}$;
+\item \} /* end for */.
+\end{enumerate}
+So, if a rejection happens, the algorithm yet tries to find a suitable canditate under the same $(k+1)$-th iteration.
+If $n_e=0$ then the DR algorithm becomes the MH algorithm of the previous subsection.
+
+\subsection{The Adaptive Metropolis (AM) Algorithm}\label{subsc-rmc-am-alg}
+Given
+\begin{equation}\label{eq-C0}
+\text{a }n\times n\text{ covariance matrix }C_0,
+\end{equation}
+\begin{equation}\label{eq-eta}
+\text{a real value }\eta >0,
+\end{equation}
+\begin{equation}\label{eq-epsilon}
+\text{a real value }\epsilon>0,
+\end{equation}
+\begin{equation}\label{eq-t0}
+\text{an integer }t_0>0,
+\end{equation}
+\begin{equation}\label{eq-p0}
+\text{an integer }p_0>0,
+\end{equation}
+and, for $k > 0$ and any vectors $\boldsymbol{\theta}^{(0)},\boldsymbol{\theta}^{(1)},\ldots,\boldsymbol{\theta}^{(k)}$, the expression
+\begin{equation}\label{eq-emperical-cov}
+\text{Cov}(\boldsymbol{\theta}^{(0)},\boldsymbol{\theta}^{(1)},\ldots,\boldsymbol{\theta}^{(k)})\equiv,
+\end{equation}
+the Adaptive Metropolis algorithm proceeds as follows:
+\begin{enumerate}
+\item for ($k=0$; $k < (n_{\text{chain}}-1)$; ++$k$) \{
+\item $\quad$/* Perform $(k+1)$-th iteration in order to obtain $\boldsymbol{\theta}^{(k+1)}$ */
+\item $\quad$generate a candidate $\mathbf{c}$ from $q_1(\boldsymbol{\theta}^{(k)},\cdot)$;
+\item $\quad$compute the acceptance ratio $\alpha=\alpha_1(\boldsymbol{\theta}^{(k)},\mathbf{c})$ (see \eqref{eq-alphas});
+\item $\quad$draw $t$ from the uniform distribution on $[0,1]$;
+\item $\quad$if ($t\leqslant \alpha$) $\boldsymbol{\theta}^{(k+1)}=\mathbf{c}$;
+\item $\quad$else $\boldsymbol{\theta}^{(k+1)}=\boldsymbol{\theta}^{(k)}$;
+\item \} /* end for */.
+\end{enumerate}
+
+\begin{sidewaystable}[h]
+\begin{tabular}{|c||c|c||c|c||c|c|}
+\hline
+ Position to         & \multicolumn{2}{c||}{Metropolis-Hastings (``MH'')}                & \multicolumn{2}{c||}{Delayed Rejection (``DR'')}                         & \multicolumn{2}{c|}{Adaptive Metropolis (``AM'')}          \\
+\cline{2-7}
+ be computed         & candidate               & resulting position                      & candidate              & resulting position                              & candidate        & resulting position                      \\
+(iteration)          &                         &                                         & (stage)                &                                                 &                  &                                         \\
+\hline
+\hline
+$\boldsymbol{\theta}^{(1)}$       & $\mathbf{c}$ w/ $q$              & $\boldsymbol{\theta}^{(0)}$ or $\mathbf{c}$ w/ $\alpha_1$       & $\mathbf{c}^{(1)}$ w/ $q_1$     & $\boldsymbol{\theta}^{(0)}$ or $\mathbf{c}^{(1)}$ w/ $\alpha_1$       & $\mathbf{c}$ w/ $g_0$     & $\boldsymbol{\theta}^{(0)}$ or $\mathbf{c}$ w/ $\alpha_1$       \\
+\cline{4-5}
+                     &                         &                                         & $\mathbf{c}^{(2)}$ w/ $q_2$     & $\boldsymbol{\theta}^{(0)}$ or $\mathbf{c}^{(2)}$ w/ $\alpha_2$       &                  &                                         \\
+\cline{4-5}
+                     &                         &                                         & $\vdots$               & $\vdots$                                        &                  &                                         \\
+\cline{4-5}
+                     &                         &                                         & \multicolumn{2}{l||}{until candidate accepted}                           &                  &                                         \\
+                     &                         &                                         & \multicolumn{2}{l||}{or maximum stages achieved}                         &                  &                                         \\
+\hline 
+\hline
+$\boldsymbol{\theta}^{(2)}$       & $\mathbf{c}$ w/ $q$              & $\boldsymbol{\theta}^{(1)}$ or $\mathbf{c}$ w/ $\alpha_1$       & $\mathbf{c}^{(1)}$ w/ $q_1$     & $\boldsymbol{\theta}^{(1)}$ or $\mathbf{c}^{(1)}$ w/ $\alpha_1$       & $\mathbf{c}$ w/ $g_0$     & $\boldsymbol{\theta}^{(1)}$ or $\mathbf{c}$ w/ $\alpha_1$       \\
+\cline{4-5}
+                     &                         &                                         & $\mathbf{c}^{(2)}$ w/ $q_2$     & $\boldsymbol{\theta}^{(1)}$ or $\mathbf{c}^{(2)}$ w/ $\alpha_2$       &                  &                                         \\
+\cline{4-5}
+                     &                         &                                         & $\vdots$               & $\vdots$                                        &                  &                                         \\
+\cline{4-5}
+                     &                         &                                         & \multicolumn{2}{l||}{until candidate accepted}                           &                  &                                         \\
+                     &                         &                                         & \multicolumn{2}{l||}{or maximum stages achieved}                         &                  &                                         \\
+\hline
+\hline
+$\vdots$             & $\vdots$                & $\vdots$                                & $\vdots$               & $\vdots$                                        & $\vdots$         & $\vdots$                                \\
+\hline
+\hline
+$\boldsymbol{\theta}^{(t_0)}$     & $\mathbf{c}$ w/ $q$              & $\boldsymbol{\theta}^{(t_0-1)}$ or $\mathbf{c}$ w/ $\alpha_1$     & $\mathbf{c}^{(1)}$ w/ $q_1$     & $\boldsymbol{\theta}^{(t_0-1)}$ or $\mathbf{c}^{(1)}$ w/ $\alpha_1$     & $\mathbf{c}$ w/ $g_0$     & $\boldsymbol{\theta}^{(t_0-1)}$ or $\mathbf{c}$ w/ $\alpha_1$     \\
+\cline{4-5}
+                     &                         &                                         & $\vdots$               & $\vdots$                                        &                  &                                         \\
+\hline
+\hline
+$\boldsymbol{\theta}^{(t_0+1)}$   & $\mathbf{c}$ w/ $q$              & $\boldsymbol{\theta}^{(t_0)}$ or $\mathbf{c}$ w/ $\alpha_1$   & $\mathbf{c}^{(2)}$ w/ $q_1$     & $\boldsymbol{\theta}^{(t_0)}$ or $\mathbf{c}^{(1)}$ w/ $\alpha_1$   & $\mathbf{c}$ w/ $g_{t_0+1}$     & $\boldsymbol{\theta}^{(t_0)}$ or $\mathbf{c}$ w/ $\alpha_1$   \\
+\cline{4-5}
+                     &                         &                                         & $\vdots$               & $\vdots$                                        &                  &                                         \\
+\hline
+\hline
+$\vdots$             & $\vdots$                & $\vdots$                                & $\vdots$               & $\vdots$                                        & $\vdots$         & $\vdots$                                \\
+\hline
+\hline
+$\boldsymbol{\theta}^{(t_0+p_0+1)}$ & $\mathbf{c}$ w/ $q$              & $\boldsymbol{\theta}^{(t_0+p_0)}$ or $\mathbf{c}$ w/ $\alpha_1$ & $\mathbf{c}^{(2)}$ w/ $q_1$     & $\boldsymbol{\theta}^{(t_0+p_0)}$ or $\mathbf{c}^{(1)}$ w/ $\alpha_1$ & $\mathbf{c}$ w/ $g_{t_0+p_0+1}$     & $\boldsymbol{\theta}^{(t_0+p_0)}$ or $\mathbf{c}$ w/ $\alpha_1$ \\
+\cline{4-5}
+                     &                         &                                         & $\vdots$               & $\vdots$                                        &                  &                                         \\
+\hline
+\hline
+$\vdots$             & $\vdots$                & $\vdots$                                & $\vdots$               & $\vdots$                                        & $\vdots$         & $\vdots$                                \\
+\hline
+\hline
+$\boldsymbol{\theta}^{(t_0+2p_0+1)}$& $\mathbf{c}$ w/ $q$              & $\boldsymbol{\theta}^{(t_0+2p_0)}$ or $\mathbf{c}$ w/ $\alpha_1$& $\mathbf{c}^{(2)}$ w/ $q_1$     & $\boldsymbol{\theta}^{(t_0+2p_0)}$ or $\mathbf{c}^{(1)}$ w/ $\alpha_1$& $\mathbf{c}$ w/ $g_{t_0+2p_0+1}$     & $\boldsymbol{\theta}^{(t_0+2p_0)}$ or $\mathbf{c}$ w/ $\alpha_1$\\
+\cline{4-5}
+                     &                         &                                         & $\vdots$               & $\vdots$                                        &                  &                                         \\
+\hline
+\hline
+$\vdots$             & $\vdots$                & $\vdots$                                & $\vdots$               & $\vdots$                                        & $\vdots$         & $\vdots$                                \\
+\hline
+\end{tabular}
+\caption{Overview of three algorithms for the generation of a {\it realization} of a Markov chain 
+$\{\boldsymbol{\theta}^{(0)},\boldsymbol{\theta}^{(1)},\ldots\}$
+: Metropolis-Hastings, Delayed Rejection and Adaptive Metropolis.
+Detailed explanations are given in Section \ref{sc-rmc-algs}.
+}
+\label{tab-dram}
+\end{sidewaystable}
+
+\subsection{The DRAM Algorithm}%\label{subsc-rmc-dram-alg}
+$~$\\
+
+\subsection{The Gibbs Sampler}
+
+To be explained in future versions of the documentation.
+
+\section{Chain Statistics}\label{sc-rmc-chain-stats}
+
+After the realization
+\begin{equation}\label{eq-markov-chain-2}
+\{\boldsymbol{\theta}^{(0)},\boldsymbol{\theta}^{(1)},\ldots\,\boldsymbol{\theta}^{(n_{\text{chain}}-1)}\}
+\end{equation}
+of a chain,
+many different statistical evaluations can be performed over the parameter sequence
+\begin{equation}\label{eq-markov-chains-for-each-specific-parameter}
+\{{\theta}_i^{(0)},{\theta}_i^{(1)},\ldots,{\theta}_i^{(n_{\text{chain}}-1)}\},
+\end{equation}
+for each parameter $1\leqslant i\leqslant n_{\text{sip}}$.
+
+\subsection{Rejections}
+
+\subsection{Measurements of Central Tendency}
+
+\subsection{Measurements of Dispersion}
+
+\subsection{Convergence Diagnostics}
+
+Transient phase/bias.
+
+Equilibrium phase/autocorrelation \cite{BrRo98} \cite{So96}.
+
+\subsection{Kernel Density Estimators}
+
+After computing a chain with the user requested $n_{\text{chain}}$ samples, the toolkit might displays the following values, depending on the user options expressed in the input file:
+\begin{equation}\label{eq-dram-chain-stats-rej}
+\text{rej}(\theta_i) = 0,
+\end{equation}
+%
+\begin{equation}\label{eq-dram-chain-stats-oor}
+\text{oor}(\theta_i) = 0,
+\end{equation}
+%
+\begin{equation}\label{eq-dram-chain-stats-mean}
+\langle\theta_i\rangle = 0,
+\end{equation}
+%
+\begin{equation}\label{eq-dram-chain-stats-std}
+\sigma(\theta_i) = 0,
+\end{equation}
+%
+\begin{equation}\label{eq-dram-chain-stats-bm}
+\sigma_{\text{bm}}(\theta_i) = 0,
+\end{equation}
+%
+\begin{equation}\label{eq-dram-chain-stats-gew}
+\text{gew}(\theta_i) = 0,
+\end{equation}
+\begin{equation}\label{eq-dram-chain-stats-tau-int}
+\tau_{\text{int}}(\theta_i) = 0,
+\end{equation}
+and
+\begin{equation}\label{eq-dram-chain-stats-iqr}
+\text{iqr}(\theta_i) = 0,
+\end{equation}
+where
+
+
