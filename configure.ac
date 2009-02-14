@@ -55,18 +55,17 @@ AC_CONFIG_FILES([
 	Makefile
 	libs/Makefile
 	examples/Makefile
-	examples/queso/Makefile
-	examples/queso/normal/Makefile
-	examples/queso/normal/src/Makefile	
-	examples/queso/pyramid/Makefile
-	examples/queso/pyramid/src/Makefile
-	examples/queso/pyramid/src/physics_1/Makefile
-	examples/queso/pyramid/src/physics_2/Makefile
-	examples/queso/pyramid/src/physics_1_2/Makefile
-	examples/queso/tga/Makefile
-	examples/queso/tga/src/Makefile
-	examples/queso/monteCarlo/Makefile
-	examples/queso/monteCarlo/src/Makefile
+	examples/normal/Makefile
+	examples/normal/src/Makefile	
+	examples/pyramid/Makefile
+	examples/pyramid/src/Makefile
+	examples/pyramid/src/physics_1/Makefile
+	examples/pyramid/src/physics_2/Makefile
+	examples/pyramid/src/physics_1_2/Makefile
+	examples/tga/Makefile
+	examples/tga/src/Makefile
+	examples/monteCarlo/Makefile
+	examples/monteCarlo/src/Makefile
 ])
 
 AC_OUTPUT()

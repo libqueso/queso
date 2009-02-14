@@ -27,20 +27,19 @@ MAINTAINERCLEANFILES =     \
 	libs/basic/Makefile.in \
 	libs/basic/src/Makefile.in \
 	libs/basic/inc/Makefile.in \
-	libs/queso/Makefile.in \
-	libs/queso/src/Makefile.in \
-	libs/queso/inc/Makefile.in \
-	examples/Makefile.in   \
-	examples/queso/Makefile.in \
-	examples/queso/normal/Makefile.in \
-	examples/queso/normal/src/Makefile.in \
-	examples/queso/pyramid/Makefile.in \
-	examples/queso/pyramid/src/Makefile.in \
-	examples/queso/pyramid/src/physics_1/Makefile.in \
-	examples/queso/pyramid/src/physics_1_2/Makefile.in \
-	examples/queso/pyramid/src/physics_2/Makefile.in \
-	examples/queso/tga/Makefile.in \
-	examples/queso/tga/src/Makefile.in
+	libs/stats/Makefile.in \
+	libs/stats/src/Makefile.in \
+	libs/stats/inc/Makefile.in \
+	examples/Makefile.in \
+	examples/normal/Makefile.in \
+	examples/normal/src/Makefile.in \
+	examples/pyramid/Makefile.in \
+	examples/pyramid/src/Makefile.in \
+	examples/pyramid/src/physics_1/Makefile.in \
+	examples/pyramid/src/physics_1_2/Makefile.in \
+	examples/pyramid/src/physics_2/Makefile.in \
+	examples/tga/Makefile.in \
+	examples/tga/src/Makefile.in
 
 # Additional files to be deleted by 'make distclean'
 DISTCLEANFILES = \

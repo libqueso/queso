@@ -2,9 +2,9 @@
 
 DIST_SUBDIRS = physics_1 physics_2 physics_1_2
 
-AM_CPPFLAGS = -I. -I$(top_srcdir)/examples/queso/pyramid/src/physics_1 \
-	-I$(top_srcdir)/examples/queso/pyramid/src/physics_2 \
-	-I$(top_srcdir)/examples/queso/pyramid/src/physics_1_2 \
+AM_CPPFLAGS = -I. -I$(top_srcdir)/examples/pyramid/src/physics_1 \
+	-I$(top_srcdir)/examples/pyramid/src/physics_2 \
+	-I$(top_srcdir)/examples/pyramid/src/physics_1_2 \
 	-I$(top_srcdir)/libs/basic/inc \
 	-I$(top_srcdir)/libs/stats/inc \
 	$(MPI_CXXFLAGS) $(TRILINOS_INCLUDE) $(EPETRA_INCLUDES)
