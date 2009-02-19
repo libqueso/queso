@@ -40,8 +40,9 @@
 // Version "0.2"   on "Oct/01/2008"
 // Version "0.21"  on "Oct/08/2008"
 // Version "0.3.0" on "Feb/13/2009"
-#define QUESO_TOOLKIT_CURRENT_VERSION "0.3.0"
-#define QUESO_TOOLKIT_RELEASE_DATE    "Feb/13/2009"
+// Version "0.3.1" on "Feb/19/2009"
+#define QUESO_TOOLKIT_CURRENT_VERSION "0.3.1"
+#define QUESO_TOOLKIT_RELEASE_DATE    "Feb/19/2009"
 
 uqEnvOptionsStruct::uqEnvOptionsStruct(
   unsigned int verbosity,
