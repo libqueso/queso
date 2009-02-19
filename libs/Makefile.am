@@ -24,7 +24,6 @@ libqueso_a_SOURCES = $(top_srcdir)/libs/basic/src/uqEnvironment.C \
 if UQBT_GSL
 libqueso_a_SOURCES += $(top_srcdir)/libs/basic/src/uqGslVector.C \
 	$(top_srcdir)/libs/basic/src/uqGslMatrix.C \
-	$(top_srcdir)/libs/basic/src/uqGslOdeSolver.C \
 	$(top_srcdir)/libs/basic/src/uqGslVectorSpace.C
 endif
 
@@ -45,7 +44,6 @@ libqueso_include_HEADERS = $(top_srcdir)/libs/basic/inc/uq1D1DFunction.h \
 	$(top_srcdir)/libs/basic/inc/uqEnvironment.h \
 	$(top_srcdir)/libs/basic/inc/uqFft.h \
 	$(top_srcdir)/libs/basic/inc/uqGslMatrix.h \
-	$(top_srcdir)/libs/basic/inc/uqGslOdeSolver.h \
 	$(top_srcdir)/libs/basic/inc/uqGslVector.h \
 	$(top_srcdir)/libs/basic/inc/uqInstantiateIntersection.h \
 	$(top_srcdir)/libs/basic/inc/uqMatrix.h \
@@ -70,10 +68,9 @@ libqueso_include_HEADERS += $(top_srcdir)/libs/stats/inc/uqCovCond.h \
 	$(top_srcdir)/libs/stats/inc/uqMarkovChainSG2.h \
 	$(top_srcdir)/libs/stats/inc/uqModelValidation.h \
 	$(top_srcdir)/libs/stats/inc/uqMonteCarloSG.h \
-	$(top_srcdir)/libs/stats/inc/uqScalarCdf.h \
-	$(top_srcdir)/libs/stats/inc/uqScalarRV.h \
 	$(top_srcdir)/libs/stats/inc/uqStatisticalForwardProblem.h \
 	$(top_srcdir)/libs/stats/inc/uqStatisticalInverseProblem.h \
+	$(top_srcdir)/libs/stats/inc/uqScalarCdf.h \
 	$(top_srcdir)/libs/stats/inc/uqTKGroup.h \
 	$(top_srcdir)/libs/stats/inc/uqValidationCycle.h \
 	$(top_srcdir)/libs/stats/inc/uqVectorCdf.h \

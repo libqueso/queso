@@ -30,51 +30,13 @@
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-#ifndef __UQ_NORMAL_EX_H__
-#define __UQ_NORMAL_EX_H__
+#ifndef __UQ_NORMAL_APPL_H__
+#define __UQ_NORMAL_APPL_H__
 
+#include <uqNormalLikelihood.h>
 #include <uqStatisticalInverseProblem.h>
 #include <uqAsciiTable.h>
 #include <uqCovCond.h>
-
-//********************************************************
-// The likelihood routine: provided by user and called by QUESO
-//********************************************************
-template<class P_V,class P_M>
-struct
-likelihoodRoutine_DataType
-{
-  const P_V* paramMeans;
-  const P_M* matrix;
-  bool       applyMatrixInvert;
-};
-
-template<class P_V,class P_M>
-double
-likelihoodRoutine(
-  const P_V&  paramValues,
-  const P_V*  paramDirection,
-  const void* functionDataPtr,
-  P_V*        gradVector,
-  P_M*        hessianMatrix,
-  P_V*        hessianEffect)
-{
-  double result = 0.;
-
-  const P_V& paramMeans        = *((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->paramMeans;
-  const P_M& matrix            = *((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->matrix;
-  bool       applyMatrixInvert =  ((likelihoodRoutine_DataType<P_V,P_M> *) functionDataPtr)->applyMatrixInvert;
-
-  P_V diffVec(paramValues - paramMeans);
-  if (applyMatrixInvert) {
-    result = scalarProduct(diffVec, matrix.invertMultiply(diffVec));
-  }
-  else {
-    result = scalarProduct(diffVec, matrix * diffVec);
-  }
-
-  return result;
-}
 
 //********************************************************
 // The driving routine: called by main()
@@ -147,7 +109,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                                               true); // the routine computes [-2.*ln(function)]
 
   //******************************************************
-  // Deal with inverse problem
+  // Instantiate inverse problem
   //******************************************************
   uqUniformVectorRVClass<P_V,P_M> priorRv("prior_", // Extra prefix before the default "rv_" prefix
                                           paramDomain);
@@ -161,7 +123,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                                postRv);
 
   //******************************************************
-  // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
+  // Solve inverse problem, that is, set 'pdf' and 'realizer' of 'postRv'
   //******************************************************
   P_M* proposalCovMatrix = postRv.imageSet().vectorSpace().newGaussianMatrix(priorRv.pdf().domainVarVector(),
                                                                              paramInitials);
@@ -267,4 +229,4 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
   return;
 }
-#endif // __UQ_NORMAL_EX_H__
+#endif // __UQ_NORMAL_APPL_H__

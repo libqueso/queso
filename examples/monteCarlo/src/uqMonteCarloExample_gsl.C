@@ -30,7 +30,7 @@
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-#include <uqMonteCarloExample.h>
+#include <uqMonteCarloAppl.h>
 #include <uqGslMatrix.h>
 
 int main(int argc, char* argv[])

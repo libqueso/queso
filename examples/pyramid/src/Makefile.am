@@ -12,9 +12,9 @@ AM_LDFLAGS = $(BOOST_LDFLAGS)
 
 bin_PROGRAMS = 
 
-bin_PROGRAMS += uqPyramidExample
-uqPyramidExample_SOURCES = uqPyramidExample_gsl.C
-uqPyramidExample_LDADD = $(top_builddir)/libs/libqueso.a \
+bin_PROGRAMS += uqPyramidExample_gsl
+uqPyramidExample_gsl_SOURCES = uqPyramidExample_gsl.C
+uqPyramidExample_gsl_LDADD = $(top_builddir)/libs/libqueso.a \
 	$(GSL_LIBS) $(BOOST_PROGRAM_OPTIONS_LIB) $(MPI_CXXLIBS) $(EPETRA_LIBS)
 
 # Required for AX_AM_MACROS

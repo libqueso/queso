@@ -30,60 +30,13 @@
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-#ifndef __UQ_MONTE_CARLO_EX_H__
-#define __UQ_MONTE_CARLO_EX_H__
+#ifndef __UQ_MONTE_CARLO_APPL_H__
+#define __UQ_MONTE_CARLO_APPL_H__
 
+#include <uqMonteCarloQoi.h>
 #include <uqStatisticalForwardProblem.h>
 #include <uqAsciiTable.h>
 #include <uqCovCond.h>
-
-//********************************************************
-// The qoi routine: provided by user and called by QUESO
-//********************************************************
-template<class P_V,class P_M, class Q_V, class Q_M>
-struct
-qoiRoutine_DataType
-{
-  double p1MultiplicativeFactor;
-  double p1ExponentFactor;
-  double p2MultiplicativeFactor;
-  double p2ExponentFactor;
-};
-
-template<class P_V,class P_M, class Q_V, class Q_M>
-void
-qoiRoutine(
-  const P_V&                        paramValues,
-  const P_V*                        paramDirection,
-  const void*                       functionDataPtr,
-        Q_V&                        qoiValues,
-        EpetraExt::DistArray<P_V*>* gradVectors,
-        EpetraExt::DistArray<P_M*>* hessianMatrices,
-        EpetraExt::DistArray<P_V*>* hessianEffects)
-{
-  //double a1 = ((qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->p1MultiplicativeFactor;
-  //double e1 = ((qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->p1ExponentFactor;
-  //double a2 = ((qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->p2MultiplicativeFactor;
-  //double e2 = ((qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->p2ExponentFactor;
-
-  double p1 = paramValues[0];
-  double p2 = paramValues[1];
-
-  //qoiValues[0] = a1*pow(p1,e1) + a2*pow(p2,e2);
-  qoiValues[0] = p1+p2;
-
-  //std::cout << "Leaving qoiRoutine()"
-  //          << ": a1 = " << a1
-  //          << ", e1 = " << e1
-  //          << ", a2 = " << a2
-  //          << ", e2 = " << e2
-  //          << ", p1 = " << p1
-  //          << ", p2 = " << p2
-  //          << ", qoi0 = " << qoiValues[0]
-  //          << std::endl;
-
-  return;
-}
 
 //********************************************************
 // The driving routine: called by main()
@@ -186,4 +139,4 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
   return;
 }
-#endif // __UQ_MONTE_CARLO_EX_H__
+#endif // __UQ_MONTE_CARLO_APPL_H__
