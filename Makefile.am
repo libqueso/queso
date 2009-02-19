@@ -31,8 +31,10 @@ MAINTAINERCLEANFILES =     \
 	libs/stats/src/Makefile.in \
 	libs/stats/inc/Makefile.in \
 	examples/Makefile.in \
-	examples/normal/Makefile.in \
-	examples/normal/src/Makefile.in \
+	examples/markovChain1/Makefile.in \
+	examples/markovChain1/src/Makefile.in \
+	examples/monteCarlo/Makefile.in \
+	examples/monteCarlo/src/Makefile.in \
 	examples/pyramid/Makefile.in \
 	examples/pyramid/src/Makefile.in \
 	examples/pyramid/src/physics_1/Makefile.in \

@@ -55,8 +55,8 @@ AC_CONFIG_FILES([
 	Makefile
 	libs/Makefile
 	examples/Makefile
-	examples/normal/Makefile
-	examples/normal/src/Makefile	
+	examples/markovChain1/Makefile
+	examples/markovChain1/src/Makefile	
 	examples/pyramid/Makefile
 	examples/pyramid/src/Makefile
 	examples/pyramid/src/physics_1/Makefile
