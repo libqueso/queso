@@ -1,0 +1,76 @@
+/*! \mainpage The PECOS Toolkit for Predictive Engineering
+
+    <br>
+    <br>
+    <table>
+        <tr><th>Toolkit      <td>The PECOS Tookit for Predictive Engineering
+        <tr><th>Version      <td>0.1
+        <tr><th>Release Date <td>July 8, 2008
+        <tr><th>Author(s)    <td>The PECOS Team http://pecos.ices.utexas.edu
+        <tr><th>Copyright    <td>(C) 2008 The PECOS Team http://pecos.ices.utexas.edu
+    </table>
+
+    The PECOS Toolkit for Predictive Engineering is a
+    collection of algorithms, libraries and executables aimed for
+    the validation of a model and
+    the prediction of quantities of interest from such model
+    along with the quantification of their uncertainties.
+    It is designed for flexibility, portability, easiness of use and easiness of extension.
+    Its software design follows an object-oriented approach and
+    its code is written on C++ and over MPI.
+    It can run over uniprocessor or multiprocessor environments.
+
+    The PECOS Toolkit contains three forms of documentation:
+    a User's Manual available in pdf format,
+    a Developer's Manual also available in pdf format, and
+    this lower-level code documentation in web based/html format.
+
+    The PECOS toolkit has two main components:
+    - <A HREF="../libs/html/index.html">Libraries</A>
+    - <A HREF="../appls/html/index.html">Applications/Executables</A>
+
+    @section bugs Reporting Bugs
+
+    Bugs in the code and errors or omissions in the documentation can be reported to pecos-maint@ices.utexas.edu.
+    Requests and contributions are welcome at the same e-mail address.
+    All bug reports should include:
+    <ul>
+    <li>the version number of the PECOS toolkit,
+    <li>the hardware and operating system,
+    <li>the compiler used, including version number and compilation options,
+    <li>a description of the bug behaviour, and
+    <li>a short program which reproducibly exercises the bug.
+    </ul>
+
+    @section licence GNU General Public License
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 3 of the License, or (at
+    your option) any later version.
+   
+    This program is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    General Public License for more details.
+   
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
+    @section disclaimer Disclaimer
+ 
+    THE PECOS TOOLKIT FOR PREDICTIVE ENGINEERING WAS PREPARED AS AN ACCOUNT OF A JOINT WORK
+    BETWEEN THE UNIVERSITY OF TEXAS AT AUSTIN AND AN AGENCY OF THE UNITED STATES GOVERNMENT.
+    NEITHER THE UNITED STATES GOVERNMENT NOR ANY AGENCY THEREOF, NOR THE UNIVERSITY OF TEXAS
+    AT AUSTIN, NOR ANY OF THEIR EMPLOYEES OR OFFICERS, MAKES ANY WARRANTY, EXPRESS OR IMPLIED,
+    OR ASSUMES ANY LEGAL LIABILITY OR RESPONSIBILITY FOR THE ACCURACY, COMPLETENESS, OR
+    USEFULNESS OF ANY INFORMATION, APPARATUS, PRODUCT, OR PROCESS DISCLOSED, OR REPRESENTS
+    THAT ITS USE WOULD NOT INFRINGE PRIVATELY OWNED RIGHTS. REFERENCE HEREIN TO ANY SPECIFIC
+    COMMERCIAL PRODUCT, PROCESS, OR SERVICE BY TRADE NAME, TRADEMARK, MANUFACTURER, OR OTHERWISE,
+    DOES NOT NECESSARILY CONSTITUTE OR IMPLY ITS ENDORSEMENT, RECOMMENDATION, OR FAVORING BY
+    THE UNIVERSITY OF TEXAS AT AUSTIN, THE UNITED STATES GOVERNMENT OR ANY AGENCY THEREOF.
+    THE VIEW AND OPINIONS OF AUTHORS EXPRESSED HEREIN DO NOT NECESSARILY STATE OR REFLECT
+    THOSE OF THE UNIVERSITY OF TEXAS AT AUSTIN, THE UNITED STATES GOVERNMENT OR ANY AGENCY
+    THEREOF.
+ */
