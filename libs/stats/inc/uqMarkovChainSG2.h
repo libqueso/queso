@@ -34,11 +34,172 @@
 #define __UQ_MAC_SG2_H__
 
 template <class P_V,class P_M>
+double
+uqMarkovChainSGClass<P_V,P_M>::targetPdfBarrier(
+  const P_V* vecValues,
+  const P_V* vecDirection,
+        P_V* gradVector,
+        P_M* hessianMatrix,
+        P_V* hessianEffect) const
+{
+  double result = 0.;
+
+  bool stayInRoutine = true;
+  do {
+    const P_V* internalValues    = NULL;
+    const P_V* internalDirection = NULL;
+          P_V* internalGrad      = NULL;
+          P_M* internalHessian   = NULL;
+          P_V* internalEffect    = NULL;
+
+    /////////////////////////////////////////////////
+    // Broadcast 1 of 3
+    /////////////////////////////////////////////////
+    // bufferChar[0] = 0 or 1 (vecValues     is NULL or not)
+    // bufferChar[1] = 0 or 1 (vecDirection  is NULL or not)
+    // bufferChar[2] = 0 or 1 (gradVector    is NULL or not)
+    // bufferChar[3] = 0 or 1 (hessianMatrix is NULL or not)
+    // bufferChar[4] = 0 or 1 (hessianEffect is NULL or not)
+    std::vector<char> bufferChar(5,0);
+
+    if (m_env.myApplRank() == 0) {
+      internalValues    = vecValues;
+      internalDirection = vecDirection;
+      internalGrad      = gradVector;
+      internalHessian   = hessianMatrix;
+      internalEffect    = hessianEffect;
+
+      if (internalValues    != NULL) bufferChar[0] = 1;
+      if (internalDirection != NULL) bufferChar[1] = 1;
+      if (internalGrad      != NULL) bufferChar[2] = 1;
+      if (internalHessian   != NULL) bufferChar[3] = 1;
+      if (internalEffect    != NULL) bufferChar[4] = 1;
+    }
+
+    int count = (int) bufferChar.size();
+    int mpiRC = MPI_Bcast ((void *) &bufferChar[0], count, MPI_CHAR, 0, m_env.myApplComm().Comm());
+    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                        m_env.rank(),
+                        "uqMarkovChainSGClass<P_V,P_M>::targetPdfBarrier()",
+                        "failed broadcast 1 of 3");
+
+    if (bufferChar[0] == 1) {
+      ///////////////////////////////////////////////
+      // Broadcast 2 of 3
+      ///////////////////////////////////////////////
+
+      // bufferDouble[0...] = contents for (eventual) vecValues
+      std::vector<double> bufferDouble(m_initialPosition.size(),0);
+
+      if (m_env.myApplRank() == 0) {
+        for (unsigned int i = 0; i < internalValues->size(); ++i) {
+          bufferDouble[i] = (*internalValues)[i];
+        }
+      }
+
+      count = (int) bufferDouble.size();
+      mpiRC = MPI_Bcast ((void *) &bufferDouble[0], count, MPI_DOUBLE, 0, m_env.myApplComm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.rank(),
+                          "uqMarkovChainSGClass<P_V,P_M>::targetPdfBarrier()",
+                          "failed broadcast 2 of 3");
+
+      if (m_env.myApplRank() != 0) {
+        P_V tmpVec(m_initialPosition);
+        for (unsigned int i = 0; i < internalValues->size(); ++i) {
+          tmpVec[i] = bufferDouble[i];
+        }
+        internalValues = new P_V(tmpVec);
+      }
+
+      if (bufferChar[1] == 1) {
+        /////////////////////////////////////////////
+        // Broadcast 3 of 3
+        /////////////////////////////////////////////
+        // bufferDouble[0...] = contents for (eventual) vecDirection
+
+        if (m_env.myApplRank() == 0) {
+          for (unsigned int i = 0; i < internalDirection->size(); ++i) {
+            bufferDouble[i] = (*internalDirection)[i];
+          }
+        }
+
+        count = (int) bufferDouble.size();
+        mpiRC = MPI_Bcast ((void *) &bufferDouble[0], count, MPI_DOUBLE, 0, m_env.myApplComm().Comm());
+        UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                            m_env.rank(),
+                            "uqMarkovChainSGClass<P_V,P_M>::targetPdfBarrier()",
+                            "failed broadcast 3 of 3");
+
+        if (m_env.myApplRank() != 0) {
+          P_V tmpVec(m_initialPosition);
+          for (unsigned int i = 0; i < internalDirection->size(); ++i) {
+            tmpVec[i] = bufferDouble[i];
+          }
+          internalDirection = new P_V(tmpVec);
+        }
+      }
+
+      ///////////////////////////////////////////////
+      // All processors now call 'targetPdf()'
+      ///////////////////////////////////////////////
+      if (m_env.myApplRank() != 0) {
+        if (bufferChar[2] == 1) internalGrad    = new P_V(m_initialPosition);
+        if (bufferChar[3] == 1) internalHessian = new P_M(m_initialPosition);
+        if (bufferChar[4] == 1) internalEffect  = new P_V(m_initialPosition);
+      }
+      m_env.myApplComm().Barrier();
+
+      result = m_targetPdf.minus2LnValue(*internalValues,
+                                         internalDirection,
+                                         internalGrad,
+                                         internalHessian,
+                                         internalEffect);
+    }
+
+    /////////////////////////////////////////////////
+    // Prepare to exit routine or to stay in it
+    /////////////////////////////////////////////////
+    if (m_env.myApplRank() == 0) {
+      stayInRoutine = false; // Always for processor 0
+    }
+    else {
+      if (internalValues    != NULL) delete internalValues;
+      if (internalDirection != NULL) delete vecDirection;
+      if (internalGrad      != NULL) delete gradVector;
+      if (internalHessian   != NULL) delete hessianMatrix;
+      if (internalEffect    != NULL) delete hessianEffect;
+
+      stayInRoutine = (bufferChar[0] == 1);
+    }
+  } while (stayInRoutine);
+
+  return result;
+}
+
+template <class P_V,class P_M>
 void
 uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_M>& workingChain)
 {
+  double aux = 0.;
+  if (m_env.myApplRank() == 0) proc0GenerateSequence(workingChain);
+
+  // Proc == 0 --> Tell all other processors to exit barrier now that the chain has been fully generated
+  // Proc != 0 --> Enter the barrier and wait for processor 0 to decide to call the targetPdf
+  aux = targetPdfBarrier(NULL,
+                         NULL,
+                         NULL,
+                         NULL,
+                         NULL);
+
+  return;
+}
+template <class P_V,class P_M>
+void
+uqMarkovChainSGClass<P_V,P_M>::proc0GenerateSequence(uqBaseVectorSequenceClass<P_V,P_M>& workingChain)
+{
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqMarkovChainSGClass<P_V,P_M>::internalGenerateSequence()..."
+    std::cout << "Entering uqMarkovChainSGClass<P_V,P_M>::proc0GenerateSequence()..."
               << std::endl;
   }
 
@@ -71,7 +232,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
     iRC = computeInitialCholFactors();
     UQ_FATAL_RC_MACRO(iRC,
                       m_env.rank(),
-                      "uqMarkovChainSGClass<P_V,P_M>::internalGenerateSequence()",
+                      "uqMarkovChainSGClass<P_V,P_M>::proc0GenerateSequence()",
                       "improper computeInitialCholFactors() return");
 
     if (m_drMaxNumExtraStages > 0) updateTK();
@@ -118,7 +279,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
 
     UQ_FATAL_TEST_MACRO((ofs && ofs->is_open()) == false,
                         m_env.rank(),
-                        "uqMarkovChainSGClass<P_V,P_M>::internalGenerateSequence()",
+                        "uqMarkovChainSGClass<P_V,P_M>::proc0GenerateSequence()",
                         "failed to open file");
   }
   
@@ -135,7 +296,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
                     *ofs);
     UQ_FATAL_RC_MACRO(iRC,
                       m_env.rank(),
-                      "uqMarkovChainSGClass<P_V,P_M>::internalGenerateSequence()",
+                      "uqMarkovChainSGClass<P_V,P_M>::proc0GenerateSequence()",
                       "improper writeInfo() return");
   }
 
@@ -158,7 +319,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
     //m_uniqueChain1.erase(positionIterator,m_uniqueChain1.end());
     //UQ_FATAL_TEST_MACRO((uniquePos != m_uniqueChain1.size()),
     //                    m_env.rank(),
-    //                    "uqMarkovChainSGClass<P_V,P_M>::internalGenerateSequence()",
+    //                    "uqMarkovChainSGClass<P_V,P_M>::proc0GenerateSequence()",
     //                    "uniquePos != m_uniqueChain1.size()");
 
     // Write unique chain
@@ -226,7 +387,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
   }
 
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqMarkovChainSGClass<P_V,P_M>::internalGenerateSequence()"
+    std::cout << "Leaving uqMarkovChainSGClass<P_V,P_M>::proc0GenerateSequence()"
               << std::endl;
   }
 
@@ -366,7 +527,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
     std::cout << std::endl;
   }
   if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalTargetD, NULL);
-  double logTarget = -0.5 * m_targetPdf.minus2LnValue(valuesOf1stPosition,NULL,NULL,NULL,NULL);
+  double logTarget = -0.5 * targetPdfBarrier(&valuesOf1stPosition,NULL,NULL,NULL,NULL); // Might demand parallel environment
   if (m_chainMeasureRunTimes) targetDRunTime += uqMiscGetEllapsedSeconds(&timevalTargetD);
   //std::cout << "AQUI 001" << std::endl;
   uqMarkovChainPositionDataClass<P_V> currentPositionData(m_env,
@@ -471,7 +632,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
     }
     else {
       if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalTargetD, NULL);
-      logTarget = -0.5 * m_targetPdf.minus2LnValue(tmpVecValues,NULL,NULL,NULL,NULL);
+      logTarget = -0.5 * targetPdfBarrier(&tmpVecValues,NULL,NULL,NULL,NULL); // Might demand parallel environment
       if (m_chainMeasureRunTimes) targetDRunTime += uqMiscGetEllapsedSeconds(&timevalTargetD);
     }
     currentCandidateData.set(tmpVecValues,
@@ -589,7 +750,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
         }
         else {
           if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalTargetD, NULL);
-          logTarget = -0.5 * m_targetPdf.minus2LnValue(tmpVecValues,NULL,NULL,NULL,NULL);
+          logTarget = -0.5 * targetPdfBarrier(&tmpVecValues,NULL,NULL,NULL,NULL); // Might demand parallel environment
           if (m_chainMeasureRunTimes) targetDRunTime += uqMiscGetEllapsedSeconds(&timevalTargetD);
         }
         currentCandidateData.set(tmpVecValues,

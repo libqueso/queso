@@ -81,7 +81,7 @@ uqAsciiTableClass<V,M>::uqAsciiTableClass(
   m_numCols      (1+numExtraCols),
   m_colIsString  (1,true),
   m_fileName     (fileName),
-  m_map          (new Epetra_Map(m_numRows,0,m_env.comm())),
+  m_map          (new Epetra_Map(m_numRows,0,m_env.worldComm())),
   m_stringColumns(0),
   m_doubleColumns(0)
 {

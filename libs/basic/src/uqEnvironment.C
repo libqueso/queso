@@ -41,18 +41,20 @@
 // Version "0.21"  on "Oct/08/2008"
 // Version "0.3.0" on "Feb/13/2009"
 // Version "0.3.1" on "Feb/19/2009"
-#define QUESO_TOOLKIT_CURRENT_VERSION "0.3.1"
-#define QUESO_TOOLKIT_RELEASE_DATE    "Feb/19/2009"
+// Version "0.4.0" on "MMM/DD/2009"
+#define QUESO_TOOLKIT_CURRENT_VERSION "0.4.0"
+#define QUESO_TOOLKIT_RELEASE_DATE    "MMM/DD/2009"
 
 uqEnvOptionsStruct::uqEnvOptionsStruct(
   unsigned int verbosity,
   int          seed)
   :
-  m_verbosity     (verbosity),
-  m_seed          (seed),
-  m_runName       (UQ_ENV_RUN_NAME_ODV),
-  m_numDebugParams(0),
-  m_debugParams   (0,0.)
+  m_numApplInstances(UQ_ENV_NUM_APPL_INSTANCES_ODV),
+  m_verbosity       (verbosity),
+  m_seed            (seed),
+  m_runName         (UQ_ENV_RUN_NAME_ODV),
+  m_numDebugParams  (0),
+  m_debugParams     (0,0.)
 {
 }
 
@@ -67,20 +69,24 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass()
   :
   m_argc            (0),
   m_argv            (NULL),
-  m_comm            (NULL),
-  m_rank            (0),
-  m_commSize        (1),
+  m_worldComm       (NULL),
+  m_worldRank       (0),
+  m_worldCommSize   (1),
   m_argsWereProvided(false),
   m_thereIsInputFile(false),
   m_inputFileName   (""),
   m_allOptionsDesc  (NULL),
   m_envOptionsDesc  (NULL),
   m_allOptionsMap   (NULL),
+  m_numApplInstances(UQ_ENV_NUM_APPL_INSTANCES_ODV),
   m_verbosity       (UQ_ENV_VERBOSITY_ODV),
   m_seed            (UQ_ENV_SEED_ODV),
   m_runName         (UQ_ENV_RUN_NAME_ODV),
   m_numDebugParams  (UQ_ENV_NUM_DEBUG_PARAMS_ODV),
   m_debugParams     (m_numDebugParams,0.),
+  m_myApplComm      (NULL),
+  m_myApplRank      (0),
+  m_myApplCommSize  (1),
   m_rng             (NULL)
 {
 }
@@ -91,20 +97,24 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   :
   m_argc            (argc),
   m_argv            (argv),
-  m_comm            (NULL),
-  m_rank            (0),
-  m_commSize        (1),
+  m_worldComm       (NULL),
+  m_worldRank       (0),
+  m_worldCommSize   (1),
   m_argsWereProvided(true),
   m_thereIsInputFile(false),
   m_inputFileName   (""),
   m_allOptionsDesc  (NULL),
   m_envOptionsDesc  (NULL),
   m_allOptionsMap   (NULL),
+  m_numApplInstances(UQ_ENV_NUM_APPL_INSTANCES_ODV),
   m_verbosity       (UQ_ENV_VERBOSITY_ODV),
   m_seed            (UQ_ENV_SEED_ODV),
   m_runName         (UQ_ENV_RUN_NAME_ODV),
   m_numDebugParams  (UQ_ENV_NUM_DEBUG_PARAMS_ODV),
   m_debugParams     (m_numDebugParams,0.),
+  m_myApplComm      (NULL),
+  m_myApplRank      (0),
+  m_myApplCommSize  (1),
   m_rng             (NULL)
 {
 }
@@ -114,20 +124,24 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   :
   m_argc            (0),
   m_argv            (NULL),
-  m_comm            (NULL),
-  m_rank            (0),
-  m_commSize        (1),
+  m_worldComm       (NULL),
+  m_worldRank       (0),
+  m_worldCommSize   (1),
   m_argsWereProvided(false),
   m_thereIsInputFile(false),
   m_inputFileName   (""),
   m_allOptionsDesc  (NULL),
   m_envOptionsDesc  (NULL),
   m_allOptionsMap   (NULL),
+  m_numApplInstances(UQ_ENV_NUM_APPL_INSTANCES_ODV),
   m_verbosity       (options.m_verbosity),
   m_seed            (options.m_seed),
   m_runName         (UQ_ENV_RUN_NAME_ODV),
   m_numDebugParams  (options.m_numDebugParams),
   m_debugParams     (options.m_debugParams),
+  m_myApplComm      (NULL),
+  m_myApplRank      (0),
+  m_myApplCommSize  (1),
   m_rng             (NULL)
 {
 }
@@ -142,8 +156,8 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(const uqBaseEnvironmentClass& obj
 
 uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
 {
-  //if (m_rank == 0) std::cout << "Entering uqBaseEnvironmentClass::destructor()"
-  //                           << std::endl;
+  //if (m_worldRank == 0) std::cout << "Entering uqBaseEnvironmentClass::destructor()"
+  //                                << std::endl;
 
   if (m_allOptionsMap) {
     delete m_allOptionsMap;
@@ -156,17 +170,18 @@ uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
   int iRC;
   struct timeval timevalNow;
   iRC = gettimeofday(&timevalNow, NULL);
-  if (m_rank == 0) {
+  if (m_worldRank == 0) {
     std::cout << "Ending run at " << ctime(&timevalNow.tv_sec)
               << "Total run time = " << timevalNow.tv_sec - m_timevalBegin.tv_sec
               << " seconds"
               << std::endl;
   }
 
-  //if (m_rank == 0) std::cout << "Leaving uqBaseEnvironmentClass::destructor()"
-  //                           << std::endl;
+  //if (m_worldRank == 0) std::cout << "Leaving uqBaseEnvironmentClass::destructor()"
+  //                                << std::endl;
 
-  if (m_comm) delete m_comm;
+  if (m_myApplComm) delete m_myApplComm;
+  if (m_worldComm ) delete m_worldComm;
 }
 
 uqBaseEnvironmentClass&
@@ -182,7 +197,13 @@ uqBaseEnvironmentClass::operator= (const uqBaseEnvironmentClass& rhs)
 int
 uqBaseEnvironmentClass::rank() const
 {
-  return m_rank;
+  return m_worldRank;
+}
+
+int
+uqBaseEnvironmentClass::myApplRank() const
+{
+  return m_myApplRank;
 }
 
 void
@@ -213,19 +234,16 @@ uqBaseEnvironmentClass::scanInputFileForMyOptions(const po::options_description&
   return;
 }
 
-void
-uqBaseEnvironmentClass::barrier() const
+const Epetra_MpiComm&
+uqBaseEnvironmentClass::worldComm() const
 {
-  if (m_commSize > 1) {
-    m_comm->Barrier();
-  }
-  return;
+  return *m_worldComm;
 }
 
 const Epetra_MpiComm&
-uqBaseEnvironmentClass::comm() const
+uqBaseEnvironmentClass::myApplComm() const
 {
-  return *m_comm;
+  return *m_myApplComm;
 }
 
 #ifdef UQ_USES_COMMAND_LINE_OPTIONS
@@ -319,9 +337,14 @@ uqFullEnvironmentClass::~uqFullEnvironmentClass()
 void
 uqFullEnvironmentClass::commonConstructor()
 {
-  m_comm     = new Epetra_MpiComm(MPI_COMM_WORLD);
-  m_rank     = m_comm->MyPID();
-  m_commSize = m_comm->NumProc();
+  m_worldComm = new Epetra_MpiComm(MPI_COMM_WORLD);
+  m_worldRank     = m_worldComm->MyPID();
+  m_worldCommSize = m_worldComm->NumProc();
+  int mpiRC = MPI_Comm_group(m_worldComm->Comm(), &m_worldGroup);
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      m_worldRank,
+                      "uqFullEnvironmentClass::commonConstructor()",
+                      "failed MPI_Comm_group()");
 
   int iRC;
   iRC = gettimeofday(&m_timevalBegin, NULL);
@@ -331,7 +354,7 @@ uqFullEnvironmentClass::commonConstructor()
               << std::endl;
   }
 
-  if (m_rank == 0) {
+  if (m_worldRank == 0) {
     std::cout << "\n================================="
               << "\n QUESO toolkit, version " << QUESO_TOOLKIT_CURRENT_VERSION
               << ", released on "             << QUESO_TOOLKIT_RELEASE_DATE
@@ -340,7 +363,7 @@ uqFullEnvironmentClass::commonConstructor()
               << std::endl;
   }
 
-  if (m_rank == 0) {
+  if (m_worldRank == 0) {
     std::cout << "Beginning run at " << ctime(&m_timevalBegin.tv_sec)
               << std::endl;
   }
@@ -355,6 +378,34 @@ uqFullEnvironmentClass::commonConstructor()
   scanInputFileForMyOptions(*m_envOptionsDesc);
   getMyOptionValues        (*m_envOptionsDesc);
 
+  if (m_verbosity >= 1) {
+    if (m_worldRank == 0) std::cout << "After getting option values, state of uqFullEnvironmentClass object is:"
+                                    << "\n" << *this
+                                    << std::endl;
+  }
+
+  // Deal with multiple application instances
+  m_myApplInstanceId = m_worldRank/m_numApplInstances;
+  unsigned int numRanksPerApplGroup = m_worldCommSize/m_numApplInstances;
+  std::vector<int> worldRanksOfMyApplGroup(numRanksPerApplGroup,0);
+  for (unsigned int i = 0; i < numRanksPerApplGroup; ++i) {
+    worldRanksOfMyApplGroup[i] = m_myApplInstanceId * numRanksPerApplGroup + i;
+  }
+  mpiRC = MPI_Group_incl(m_worldGroup, (int) numRanksPerApplGroup, &worldRanksOfMyApplGroup[0], &m_myApplGroup);
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      m_worldRank,
+                      "uqFullEnvironmentClass::commonConstructor()",
+                      "failed MPI_Group_incl()");
+  mpiRC = MPI_Comm_create(m_worldComm->Comm(), m_myApplGroup, &m_myApplRawComm);
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      m_worldRank,
+                      "uqFullEnvironmentClass::commonConstructor()",
+                      "failed MPI_Comm_group()");
+  m_myApplComm = new Epetra_MpiComm(m_myApplRawComm);
+  m_myApplRank     = m_myApplComm->MyPID();
+  m_myApplCommSize = m_myApplComm->NumProc();
+
+  // Deal with seed
   if (m_seed >= 0) {
     gsl_rng_default_seed = (unsigned long int) m_seed;
   }
@@ -367,7 +418,7 @@ uqFullEnvironmentClass::commonConstructor()
 
   m_rng = gsl_rng_alloc(gsl_rng_ranlxd2);
   UQ_FATAL_TEST_MACRO((m_rng == NULL),
-                      m_rank,
+                      m_worldRank,
                       "uqFullEnvironmentClass::commonConstructor()",
                       "null m_rng");
 
@@ -415,7 +466,7 @@ uqFullEnvironmentClass::readEventualInputFile()
       std::ifstream* ifs = new std::ifstream(m_inputFileName.c_str());
       if (ifs->is_open()) {
         m_thereIsInputFile = true;
-        //if (m_rank == 0) {
+        //if (m_worldRank == 0) {
         //  int numLines = std::count(std::istreambuf_iterator<char>(*ifs),
         //                            std::istreambuf_iterator<char>(),'\n');
         //  std::cout << "Input file has " << numLines
@@ -436,18 +487,18 @@ uqFullEnvironmentClass::readEventualInputFile()
   }
 
   if (invalidCmdLineParameters) {
-    if (m_rank == 0) std::cout << "Invalid command line parameters!"
-                               << std::endl;
+    if (m_worldRank == 0) std::cout << "Invalid command line parameters!"
+                                    << std::endl;
     displayHelpMessageAndExit = true;
   }
 
   if (displayHelpMessageAndExit) {
-    if (m_rank == 0) std::cout << "\nThis is a help message of the UQ library."
-                               << "\nAn UQ application using the QUESO toolkit shall be executed by typing"
-                               << "\n  '<eventual mpi commands and options> <uqApplication> -i <uqInputFile>'"
-                               << "\nin the command line."
-                               << "\n"
-                               << std::endl;
+    if (m_worldRank == 0) std::cout << "\nThis is a help message of the QUESO library."
+                                    << "\nAn application using the QUESO toolkit shall be executed by typing"
+                                    << "\n  '<eventual mpi commands and options> <uqApplication> -i <uqInputFile>'"
+                                    << "\nin the command line."
+                                    << "\n"
+                                    << std::endl;
     exit(1);
   }
 
@@ -459,10 +510,11 @@ uqFullEnvironmentClass::defineMyOptions(po::options_description& options) const
 {
   options.add_options()
     ("uqEnv_help", "produce help message for uq environment")
-    ("uqEnv_verbosity",      po::value<unsigned int>()->default_value(UQ_ENV_VERBOSITY_ODV),       "set verbosity"                 )
-    ("uqEnv_seed",           po::value<int         >()->default_value(UQ_ENV_SEED_ODV),            "set seed"                      )
-    ("uqEnv_runName",        po::value<std::string >()->default_value(UQ_ENV_RUN_NAME_ODV),        "set run name"                  )
-    //("uqEnv_numDebugParams", po::value<unsigned int>()->default_value(UQ_ENV_NUM_DEBUG_PARAMS_ODV),"set number of debug parameters")
+    ("uqEnv_numApplInstances", po::value<unsigned int>()->default_value(UQ_ENV_NUM_APPL_INSTANCES_ODV), "number of 'application' instances")
+    ("uqEnv_verbosity",        po::value<unsigned int>()->default_value(UQ_ENV_VERBOSITY_ODV),          "set verbosity"                    )
+    ("uqEnv_seed",             po::value<int         >()->default_value(UQ_ENV_SEED_ODV),               "set seed"                         )
+    ("uqEnv_runName",          po::value<std::string >()->default_value(UQ_ENV_RUN_NAME_ODV),           "set run name"                     )
+  //("uqEnv_numDebugParams",   po::value<unsigned int>()->default_value(UQ_ENV_NUM_DEBUG_PARAMS_ODV),   "set number of debug parameters"   )
   ;
 
   return;
@@ -475,6 +527,14 @@ uqFullEnvironmentClass::getMyOptionValues(po::options_description& optionsDesc)
     std::cout << optionsDesc
               << std::endl;
   }
+
+  if (m_allOptionsMap->count("uqEnv_numApplInstances")) {
+    m_numApplInstances = (*m_allOptionsMap)["uqEnv_numApplInstances"].as<unsigned int>();
+  }
+  UQ_FATAL_TEST_MACRO((m_worldCommSize%m_numApplInstances) != 0,
+                      this->rank(),
+                      "uqBaseEnvironmentClass::getMyOptionValues()",
+                      "total number of processors must be multiple of the number of model instances");
 
   if (m_allOptionsMap->count("uqEnv_verbosity")) {
     m_verbosity = (*m_allOptionsMap)["uqEnv_verbosity"].as<unsigned int>();
@@ -492,22 +552,17 @@ uqFullEnvironmentClass::getMyOptionValues(po::options_description& optionsDesc)
   //  m_seed = (*m_allOptionsMap)["uqEnv_numDebugParams"].as<unsigned int>();
   //}
 
-  if (m_verbosity >= 1) {
-    if (m_rank == 0) std::cout << "After getting option values, state of uqFullEnvironmentClass object is:"
-                               << "\n" << *this
-                               << std::endl;
-  }
-
   return;
 }
 
 void
 uqFullEnvironmentClass::print(std::ostream& os) const
 {
-  os <<         "m_verbosity = "     << m_verbosity
-     << "\n" << "m_seed = "          << m_seed
-     << "\n" << "m_runName = "       << m_runName
-   //<< "\n" << m_numDebugParams = " << m_numDebugParams
+  os <<         "m_numApplInstances = " << m_numApplInstances
+     << "\n" << "m_verbosity = "        << m_verbosity
+     << "\n" << "m_seed = "             << m_seed
+     << "\n" << "m_runName = "          << m_runName
+   //<< "\n" << m_numDebugParams = "    << m_numDebugParams
      << std::endl;
   return;
 }

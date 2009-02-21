@@ -99,6 +99,12 @@ public:
 
 
 private:
+  void   proc0GenerateSequence    (uqBaseVectorSequenceClass<P_V,P_M>& workingChain); /*! */
+  double targetPdfBarrier         (const P_V* vecValues,
+                                   const P_V* vecDirection,
+                                         P_V* gradVector,
+                                         P_M* hessianMatrix,
+                                         P_V* hessianEffect) const;
   void   resetChainAndRelatedInfo ();
   void   defineMyOptions          (po::options_description&                             optionsDesc);
   void   getMyOptionValues        (po::options_description&                             optionsDesc);

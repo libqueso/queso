@@ -35,11 +35,12 @@
 
 #undef UQ_USES_COMMAND_LINE_OPTIONS
 
-#define UQ_ENV_VERBOSITY_ODV        0
-#define UQ_ENV_SEED_ODV             0
-#define UQ_ENV_RUN_NAME_ODV         ""
-#define UQ_ENV_NUM_DEBUG_PARAMS_ODV 0
-#define UQ_ENV_DEBUG_PARAM_ODV      0.
+#define UQ_ENV_NUM_APPL_INSTANCES_ODV 1
+#define UQ_ENV_VERBOSITY_ODV           0
+#define UQ_ENV_SEED_ODV                0
+#define UQ_ENV_RUN_NAME_ODV            ""
+#define UQ_ENV_NUM_DEBUG_PARAMS_ODV    0
+#define UQ_ENV_DEBUG_PARAM_ODV         0.
 
 #include <Epetra_MpiComm.h>
 #include <gsl/gsl_rng.h>
@@ -55,6 +56,7 @@ struct uqEnvOptionsStruct {
                      int          seed);
  ~uqEnvOptionsStruct();
 
+  unsigned int        m_numApplInstances;
   unsigned int        m_verbosity;
   int                 m_seed;
   std::string         m_runName;
@@ -74,11 +76,14 @@ public:
   virtual ~uqBaseEnvironmentClass();
 
           uqBaseEnvironmentClass& operator=                (const uqBaseEnvironmentClass& rhs);
+
           int                     rank                     () const;
-          void                    barrier                  () const;
-          const Epetra_MpiComm&   comm                     () const; 
+          int                     myApplRank               () const;
+          const Epetra_MpiComm&   worldComm                () const; 
+          const Epetra_MpiComm&   myApplComm               () const; 
+
 #ifdef UQ_USES_COMMAND_LINE_OPTIONS
-  const po::options_description&  allOptionsDesc           () const;
+          const po::options_description& allOptionsDesc    () const;
 #endif
           po::variables_map&      allOptionsMap            () const;
           void                    scanInputFileForMyOptions(const po::options_description& optionsDesc) const;
@@ -91,20 +96,32 @@ public:
 protected:
   int                      m_argc;
   char**                   m_argv;
-  Epetra_MpiComm*          m_comm;
-  int                      m_rank;
-  int                      m_commSize;
+
+  Epetra_MpiComm*          m_worldComm;
+  int                      m_worldRank;
+  int                      m_worldCommSize;
+  MPI_Group                m_worldGroup;
+
   bool                     m_argsWereProvided;
   bool                     m_thereIsInputFile;
   std::string              m_inputFileName;
   po::options_description* m_allOptionsDesc;
   po::options_description* m_envOptionsDesc;
   po::variables_map*       m_allOptionsMap;
+  unsigned int             m_numApplInstances;
   unsigned int             m_verbosity;
   int                      m_seed;
   std::string              m_runName;
   unsigned int             m_numDebugParams;
   std::vector<double>      m_debugParams;
+
+  unsigned int             m_myApplInstanceId;
+  MPI_Group                m_myApplGroup;
+  MPI_Comm                 m_myApplRawComm;
+  Epetra_MpiComm*          m_myApplComm;
+  int                      m_myApplRank;
+  int                      m_myApplCommSize;
+
   gsl_rng*                 m_rng;
   struct timeval           m_timevalBegin;
 };
