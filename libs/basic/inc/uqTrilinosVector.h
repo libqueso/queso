@@ -48,6 +48,8 @@ public:
   uqTrilinosVectorClass(const uqTrilinosVectorClass&    y);
  ~uqTrilinosVectorClass();
 
+  unsigned int numberOfProcessorsRequiredForStorage() const;
+
   uqTrilinosVectorClass& operator= (const uqTrilinosVectorClass& rhs);
   uqTrilinosVectorClass& operator*=(double a);
   uqTrilinosVectorClass& operator/=(double a);

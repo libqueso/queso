@@ -81,6 +81,7 @@ public:
           int                     myApplRank               () const;
           const Epetra_MpiComm&   worldComm                () const; 
           const Epetra_MpiComm&   myApplComm               () const; 
+          unsigned int            numApplInstances         () const;
 
 #ifdef UQ_USES_COMMAND_LINE_OPTIONS
           const po::options_description& allOptionsDesc    () const;

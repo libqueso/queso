@@ -118,6 +118,12 @@ uqGslVectorClass::~uqGslVectorClass()
   if (m_vec) gsl_vector_free(m_vec);
 }
 
+unsigned int
+uqGslVectorClass::numberOfProcessorsRequiredForStorage() const
+{
+  return 1;
+}
+
 uqGslVectorClass&
 uqGslVectorClass::operator=(const uqGslVectorClass& rhs)
 {

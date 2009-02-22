@@ -206,6 +206,12 @@ uqBaseEnvironmentClass::myApplRank() const
   return m_myApplRank;
 }
 
+unsigned int
+uqBaseEnvironmentClass::numApplInstances() const
+{
+  return m_numApplInstances;
+}
+
 void
 uqBaseEnvironmentClass::scanInputFileForMyOptions(const po::options_description& optionsDesc) const
 {
@@ -404,6 +410,26 @@ uqFullEnvironmentClass::commonConstructor()
   m_myApplComm = new Epetra_MpiComm(m_myApplRawComm);
   m_myApplRank     = m_myApplComm->MyPID();
   m_myApplCommSize = m_myApplComm->NumProc();
+
+  if (this->verbosity() >= 0) {
+    for (int i = 0; i < m_worldCommSize; ++i) {
+      if (i == m_worldRank) {
+        std::cout << "In FullEnvironmentClass::commonConstructor()"
+                  << ": worldRank " << m_worldRank
+                  << " has applInstanceId " << m_myApplInstanceId
+                  << ", belongs to communicator with world ranks";
+        for (unsigned int j = 0; j < numRanksPerApplGroup; ++j) {
+          std::cout << " " << worldRanksOfMyApplGroup[j];
+        }
+        std::cout << ", has appl rank " << m_myApplRank
+                  << std::endl;
+      }
+      m_worldComm->Barrier();
+    }
+    if (this->rank() == 0) std::cout << "Sleeping 5 seconds..."
+                                     << std::endl;
+    sleep(5);
+  }
 
   // Deal with seed
   if (m_seed >= 0) {

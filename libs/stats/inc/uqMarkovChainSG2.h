@@ -181,16 +181,54 @@ template <class P_V,class P_M>
 void
 uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_M>& workingChain)
 {
-  double aux = 0.;
-  if (m_env.myApplRank() == 0) proc0GenerateSequence(workingChain);
+  if (m_env.numApplInstances() == (unsigned int) m_env.worldComm().NumProc()) {
+    UQ_FATAL_TEST_MACRO(m_env.myApplRank() != 0,
+                        m_env.rank(),
+                        "uqMarkovChainSGClass<P_V,P_M>::generateSequence()",
+                        "there should exist only one processor per appl communicator");
+    UQ_FATAL_TEST_MACRO(m_initialPosition.numberOfProcessorsRequiredForStorage() != 1,
+                        m_env.rank(),
+                        "uqMarkovChainSGClass<P_V,P_M>::generateSequence()",
+                        "only 1 processor (per appl) should be necessary for the storage of a vector");
+    proc0GenerateSequence(workingChain);
+  }
+  else if (m_env.numApplInstances() < (unsigned int) m_env.worldComm().NumProc()) {
+    UQ_FATAL_TEST_MACRO(m_env.worldComm().NumProc()%m_env.numApplInstances() != 0,
+                        m_env.rank(),
+                        "uqMarkovChainSGClass<P_V,P_M>::generateSequence()",
+                        "total number of processors should be a multiple of the number of appl instances");
+    unsigned int numProcsPerAppl = m_env.worldComm().NumProc()/m_env.numApplInstances();
+    UQ_FATAL_TEST_MACRO(m_env.myApplComm().NumProc() != (int) numProcsPerAppl,
+                        m_env.rank(),
+                        "uqMarkovChainSGClass<P_V,P_M>::generateSequence()",
+                        "inconsistent number of processors per appl communicator");
+    if (m_initialPosition.numberOfProcessorsRequiredForStorage() == 1) {
+      double aux = 0.;
+      if (m_env.myApplRank() == 0) proc0GenerateSequence(workingChain);
 
-  // Proc == 0 --> Tell all other processors to exit barrier now that the chain has been fully generated
-  // Proc != 0 --> Enter the barrier and wait for processor 0 to decide to call the targetPdf
-  aux = targetPdfBarrier(NULL,
-                         NULL,
-                         NULL,
-                         NULL,
-                         NULL);
+      // myApplRank == 0 --> Tell all other processors to exit barrier now that the chain has been fully generated
+      // myApplRank != 0 --> Enter the barrier and wait for processor 0 to decide to call the targetPdf
+      aux = targetPdfBarrier(NULL,
+                             NULL,
+                             NULL,
+                             NULL,
+                             NULL);
+    }
+    else if (m_initialPosition.numberOfProcessorsRequiredForStorage() == numProcsPerAppl) {
+      UQ_FATAL_TEST_MACRO(true,
+                          m_env.rank(),
+                          "uqMarkovChainSGClass<P_V,P_M>::generateSequence()",
+                          "situation not supported yet");
+    }
+    else {
+      UQ_FATAL_TEST_MACRO(true,
+                          m_env.rank(),
+                          "uqMarkovChainSGClass<P_V,P_M>::generateSequence()",
+                          "number of processors required for a vector storage should be equal to the number of processors per appl communicator");
+    }
+  }
+  else {
+  }
 
   return;
 }

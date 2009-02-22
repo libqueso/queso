@@ -55,7 +55,7 @@ public:
   void         print  (std::ostream& os)                                const;
 
 private:
-  const uqBaseEnvironmentClass&                       m_env;
+  const uqBaseEnvironmentClass&                   m_env;
   unsigned int                                    m_numRows;
   unsigned int                                    m_numCols;
   std::vector<bool>                               m_colIsString;
@@ -81,7 +81,7 @@ uqAsciiTableClass<V,M>::uqAsciiTableClass(
   m_numCols      (1+numExtraCols),
   m_colIsString  (1,true),
   m_fileName     (fileName),
-  m_map          (new Epetra_Map(m_numRows,0,m_env.worldComm())),
+  m_map          (new Epetra_Map(m_numRows,0,m_env.myApplComm())),
   m_stringColumns(0),
   m_doubleColumns(0)
 {
