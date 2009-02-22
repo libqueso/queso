@@ -134,11 +134,11 @@ uqAppl(const uqBaseEnvironmentClass& env)
               << std::endl;
   }
 
-  // Deal with inverse problem
+  // Inverse problem: instantiate the prior rv
   uqUniformVectorRVClass<P_V,P_M> calPriorRv("cal_prior_", // Extra prefix before the default "rv_" prefix
                                              paramDomain);
 
-  // Instantiate a likelihood function object (data + routine), to be used by the UQ library.
+  // Inverse problem: instantiate the likelihood function object (data + routine)
   likelihoodRoutine_DataClass<P_V,P_M> calLikelihoodRoutine_Data(env,
                                                                  "inputData/scenario_5_K_min.dat",
                                                                  "inputData/scenario_25_K_min.dat",
@@ -150,26 +150,27 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                                                  (void *) &calLikelihoodRoutine_Data,
                                                                  true); // the routine computes [-2.*ln(function)]
 
-  cycle.setCalIP(calPriorRv,
-                 calLikelihoodFunctionObj);
+  // Inverse problem: instantiate it (posterior rv is instantiated internally)
+  cycle.instantiateCalIP(calPriorRv,
+                         calLikelihoodFunctionObj);
 
-  // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
+  // Inverse problem: solve it, that is, set 'pdf' and 'realizer' of the posterior rv
   P_M* calProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newGaussianMatrix(cycle.calIP().priorRv().pdf().domainVarVector(),
                                                                                                 paramInitialValues);
   cycle.calIP().solveWithBayesMarkovChain(paramInitialValues,
                                           calProposalCovMatrix);
   delete calProposalCovMatrix;
 
-  // Deal with forward problem
+  // Forward problem: instantiate it (parameter rv = posterior rv of inverse problem; qoi rv is instantiated internally)
   qoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> calQoiRoutine_Data;
   calQoiRoutine_Data.m_beta         = beta_prediction;
   calQoiRoutine_Data.m_criticalMass = criticalMass_prediction;
   calQoiRoutine_Data.m_criticalTime = criticalTime_prediction;
 
-  cycle.setCalFP(qoiRoutine<P_V,P_M,Q_V,Q_M>,
-                 (void *) &calQoiRoutine_Data);
+  cycle.instantiateCalFP(qoiRoutine<P_V,P_M,Q_V,Q_M>,
+                         (void *) &calQoiRoutine_Data);
 
-  // Solve forward problem = set 'realizer' and 'cdf' of 'qoiRv'
+  // Forward problem: solve it, that is, set 'realizer' and 'cdf' of the qoi rv
   cycle.calFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
 
   iRC = gettimeofday(&timevalNow, NULL);
@@ -190,11 +191,9 @@ uqAppl(const uqBaseEnvironmentClass& env)
               << std::endl;
   }
 
-  // Deal with inverse problem
-  // Prior rv of validation inverse problem = posterior rv of calibration inverse problem
-  // So, it is not necessary to instantiate a new rv here
+  // Inverse problem: no need to instantiate the prior rv (= posterior rv of calibration inverse problem)
 
-  // Instantiate a likelihood function object (data + routine), to be used by the UQ library.
+  // Inverse problem: instantiate the likelihood function object (data + routine)
   likelihoodRoutine_DataClass<P_V,P_M> valLikelihoodRoutine_Data(env,
                                                                  "inputData/scenario_100_K_min.dat",
                                                                  NULL,
@@ -206,25 +205,26 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                                                  (void *) &valLikelihoodRoutine_Data,
                                                                  true); // the routine computes [-2.*ln(function)]
 
-  cycle.setValIP(valLikelihoodFunctionObj);
+  // Inverse problem: instantiate it (posterior rv is instantiated internally)
+  cycle.instantiateValIP(valLikelihoodFunctionObj);
 
-  // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
+  // Inverse problem: solve it, that is, set 'pdf' and 'realizer' of the posterior rv
   P_M* valProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newGaussianMatrix(cycle.calIP().postRv().realizer().imageVarVector(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
                                                                                                 cycle.calIP().postRv().realizer().imageExpVector()); // Use these values as the initial values
   cycle.valIP().solveWithBayesMarkovChain(cycle.calIP().postRv().realizer().imageExpVector(),
                                           valProposalCovMatrix);
   delete valProposalCovMatrix;
 
-  // Deal with forward problem
+  // Forward problem: instantiate it (parameter rv = posterior rv of inverse problem; qoi rv is instantiated internally)
   qoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> valQoiRoutine_Data;
   valQoiRoutine_Data.m_beta         = beta_prediction;
   valQoiRoutine_Data.m_criticalMass = criticalMass_prediction;
   valQoiRoutine_Data.m_criticalTime = criticalTime_prediction;
 
-  cycle.setValFP(qoiRoutine<P_V,P_M,Q_V,Q_M>,
-                 (void *) &valQoiRoutine_Data);
+  cycle.instantiateValFP(qoiRoutine<P_V,P_M,Q_V,Q_M>,
+                         (void *) &valQoiRoutine_Data);
 
-  // Solve forward problem = set 'realizer' and 'cdf' of 'qoiRv'
+  // Forward problem: solve it, that is, set 'realizer' and 'cdf' of the qoi rv
   cycle.valFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
 
   iRC = gettimeofday(&timevalNow, NULL);
@@ -276,8 +276,10 @@ uqAppl_ComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
 {
   if (cycle.calFP().computeSolutionFlag() &&
       cycle.valFP().computeSolutionFlag()) {
-    Q_V* epsilonVec = cycle.calFP().qoiRv().imageSet().vectorSpace().newVector(0.02);
     Q_V cdfDistancesVec(cycle.calFP().qoiRv().imageSet().vectorSpace().zeroVector());
+
+    // Epsilon = 0.02
+    Q_V* epsilonVec = cycle.calFP().qoiRv().imageSet().vectorSpace().newVector(0.02);
     horizontalDistances(cycle.calFP().qoiRv().cdf(),
                         cycle.valFP().qoiRv().cdf(),
                         *epsilonVec,

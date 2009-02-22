@@ -35,12 +35,12 @@
 
 #undef UQ_USES_COMMAND_LINE_OPTIONS
 
-#define UQ_ENV_NUM_APPL_INSTANCES_ODV 1
-#define UQ_ENV_VERBOSITY_ODV           0
-#define UQ_ENV_SEED_ODV                0
-#define UQ_ENV_RUN_NAME_ODV            ""
-#define UQ_ENV_NUM_DEBUG_PARAMS_ODV    0
-#define UQ_ENV_DEBUG_PARAM_ODV         0.
+#define UQ_ENV_NUM_PROC_SUBSETS_ODV 1
+#define UQ_ENV_VERBOSITY_ODV        0
+#define UQ_ENV_SEED_ODV             0
+#define UQ_ENV_RUN_NAME_ODV         ""
+#define UQ_ENV_NUM_DEBUG_PARAMS_ODV 0
+#define UQ_ENV_DEBUG_PARAM_ODV      0.
 
 #include <Epetra_MpiComm.h>
 #include <gsl/gsl_rng.h>
@@ -56,7 +56,7 @@ struct uqEnvOptionsStruct {
                      int          seed);
  ~uqEnvOptionsStruct();
 
-  unsigned int        m_numApplInstances;
+  unsigned int        m_numProcSubsets;
   unsigned int        m_verbosity;
   int                 m_seed;
   std::string         m_runName;
@@ -78,10 +78,10 @@ public:
           uqBaseEnvironmentClass& operator=                (const uqBaseEnvironmentClass& rhs);
 
           int                     rank                     () const;
-          int                     myApplRank               () const;
-          const Epetra_MpiComm&   worldComm                () const; 
-          const Epetra_MpiComm&   myApplComm               () const; 
-          unsigned int            numApplInstances         () const;
+          int                     subRank                  () const;
+          const Epetra_MpiComm&   fullComm                 () const; 
+          const Epetra_MpiComm&   subComm                  () const; 
+          unsigned int            numProcSubsets           () const;
 
 #ifdef UQ_USES_COMMAND_LINE_OPTIONS
           const po::options_description& allOptionsDesc    () const;
@@ -98,10 +98,10 @@ protected:
   int                      m_argc;
   char**                   m_argv;
 
-  Epetra_MpiComm*          m_worldComm;
-  int                      m_worldRank;
-  int                      m_worldCommSize;
-  MPI_Group                m_worldGroup;
+  Epetra_MpiComm*          m_fullComm;
+  int                      m_fullRank;
+  int                      m_fullCommSize;
+  MPI_Group                m_fullGroup;
 
   bool                     m_argsWereProvided;
   bool                     m_thereIsInputFile;
@@ -109,19 +109,19 @@ protected:
   po::options_description* m_allOptionsDesc;
   po::options_description* m_envOptionsDesc;
   po::variables_map*       m_allOptionsMap;
-  unsigned int             m_numApplInstances;
+  unsigned int             m_numProcSubsets;
   unsigned int             m_verbosity;
   int                      m_seed;
   std::string              m_runName;
   unsigned int             m_numDebugParams;
   std::vector<double>      m_debugParams;
 
-  unsigned int             m_myApplInstanceId;
-  MPI_Group                m_myApplGroup;
-  MPI_Comm                 m_myApplRawComm;
-  Epetra_MpiComm*          m_myApplComm;
-  int                      m_myApplRank;
-  int                      m_myApplCommSize;
+  unsigned int             m_subId;
+  MPI_Group                m_subGroup;
+  MPI_Comm                 m_subRawComm;
+  Epetra_MpiComm*          m_subComm;
+  int                      m_subRank;
+  int                      m_subCommSize;
 
   gsl_rng*                 m_rng;
   struct timeval           m_timevalBegin;
@@ -143,15 +143,15 @@ public:
 //*****************************************************
 class uqFullEnvironmentClass : public uqBaseEnvironmentClass {
 public:
-  uqFullEnvironmentClass();
-  uqFullEnvironmentClass(int& argc, char** &argv);
-  uqFullEnvironmentClass(const uqEnvOptionsStruct& options);
+  uqFullEnvironmentClass(MPI_Comm inputComm);
+  uqFullEnvironmentClass(int& argc, char** &argv, MPI_Comm inputComm);
+  uqFullEnvironmentClass(const uqEnvOptionsStruct& options, MPI_Comm inputComm);
  ~uqFullEnvironmentClass();
 
         void                     print                    (std::ostream& os) const;
 
 private:
-        void                     commonConstructor        ();
+        void                     commonConstructor        (MPI_Comm inputComm);
         void                     readEventualInputFile    ();
         void                     defineMyOptions          (po::options_description& optionsDesc) const;
         void                     getMyOptionValues        (po::options_description& optionsDesc);

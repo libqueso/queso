@@ -62,7 +62,7 @@ uqMarkovChainSGClass<P_V,P_M>::targetPdfBarrier(
     // bufferChar[4] = 0 or 1 (hessianEffect is NULL or not)
     std::vector<char> bufferChar(5,0);
 
-    if (m_env.myApplRank() == 0) {
+    if (m_env.subRank() == 0) {
       internalValues    = vecValues;
       internalDirection = vecDirection;
       internalGrad      = gradVector;
@@ -77,7 +77,7 @@ uqMarkovChainSGClass<P_V,P_M>::targetPdfBarrier(
     }
 
     int count = (int) bufferChar.size();
-    int mpiRC = MPI_Bcast ((void *) &bufferChar[0], count, MPI_CHAR, 0, m_env.myApplComm().Comm());
+    int mpiRC = MPI_Bcast ((void *) &bufferChar[0], count, MPI_CHAR, 0, m_env.subComm().Comm());
     UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                         m_env.rank(),
                         "uqMarkovChainSGClass<P_V,P_M>::targetPdfBarrier()",
@@ -91,20 +91,20 @@ uqMarkovChainSGClass<P_V,P_M>::targetPdfBarrier(
       // bufferDouble[0...] = contents for (eventual) vecValues
       std::vector<double> bufferDouble(m_initialPosition.size(),0);
 
-      if (m_env.myApplRank() == 0) {
+      if (m_env.subRank() == 0) {
         for (unsigned int i = 0; i < internalValues->size(); ++i) {
           bufferDouble[i] = (*internalValues)[i];
         }
       }
 
       count = (int) bufferDouble.size();
-      mpiRC = MPI_Bcast ((void *) &bufferDouble[0], count, MPI_DOUBLE, 0, m_env.myApplComm().Comm());
+      mpiRC = MPI_Bcast ((void *) &bufferDouble[0], count, MPI_DOUBLE, 0, m_env.subComm().Comm());
       UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                           m_env.rank(),
                           "uqMarkovChainSGClass<P_V,P_M>::targetPdfBarrier()",
                           "failed broadcast 2 of 3");
 
-      if (m_env.myApplRank() != 0) {
+      if (m_env.subRank() != 0) {
         P_V tmpVec(m_initialPosition);
         for (unsigned int i = 0; i < internalValues->size(); ++i) {
           tmpVec[i] = bufferDouble[i];
@@ -118,20 +118,20 @@ uqMarkovChainSGClass<P_V,P_M>::targetPdfBarrier(
         /////////////////////////////////////////////
         // bufferDouble[0...] = contents for (eventual) vecDirection
 
-        if (m_env.myApplRank() == 0) {
+        if (m_env.subRank() == 0) {
           for (unsigned int i = 0; i < internalDirection->size(); ++i) {
             bufferDouble[i] = (*internalDirection)[i];
           }
         }
 
         count = (int) bufferDouble.size();
-        mpiRC = MPI_Bcast ((void *) &bufferDouble[0], count, MPI_DOUBLE, 0, m_env.myApplComm().Comm());
+        mpiRC = MPI_Bcast ((void *) &bufferDouble[0], count, MPI_DOUBLE, 0, m_env.subComm().Comm());
         UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                             m_env.rank(),
                             "uqMarkovChainSGClass<P_V,P_M>::targetPdfBarrier()",
                             "failed broadcast 3 of 3");
 
-        if (m_env.myApplRank() != 0) {
+        if (m_env.subRank() != 0) {
           P_V tmpVec(m_initialPosition);
           for (unsigned int i = 0; i < internalDirection->size(); ++i) {
             tmpVec[i] = bufferDouble[i];
@@ -143,12 +143,12 @@ uqMarkovChainSGClass<P_V,P_M>::targetPdfBarrier(
       ///////////////////////////////////////////////
       // All processors now call 'targetPdf()'
       ///////////////////////////////////////////////
-      if (m_env.myApplRank() != 0) {
+      if (m_env.subRank() != 0) {
         if (bufferChar[2] == 1) internalGrad    = new P_V(m_initialPosition);
         if (bufferChar[3] == 1) internalHessian = new P_M(m_initialPosition);
         if (bufferChar[4] == 1) internalEffect  = new P_V(m_initialPosition);
       }
-      m_env.myApplComm().Barrier();
+      m_env.subComm().Barrier();
 
       result = m_targetPdf.minus2LnValue(*internalValues,
                                          internalDirection,
@@ -160,7 +160,7 @@ uqMarkovChainSGClass<P_V,P_M>::targetPdfBarrier(
     /////////////////////////////////////////////////
     // Prepare to exit routine or to stay in it
     /////////////////////////////////////////////////
-    if (m_env.myApplRank() == 0) {
+    if (m_env.subRank() == 0) {
       stayInRoutine = false; // Always for processor 0
     }
     else {
@@ -181,40 +181,40 @@ template <class P_V,class P_M>
 void
 uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_M>& workingChain)
 {
-  if (m_env.numApplInstances() == (unsigned int) m_env.worldComm().NumProc()) {
-    UQ_FATAL_TEST_MACRO(m_env.myApplRank() != 0,
+  if (m_env.numProcSubsets() == (unsigned int) m_env.fullComm().NumProc()) {
+    UQ_FATAL_TEST_MACRO(m_env.subRank() != 0,
                         m_env.rank(),
                         "uqMarkovChainSGClass<P_V,P_M>::generateSequence()",
-                        "there should exist only one processor per appl communicator");
+                        "there should exist only one processor per processor subset communicator");
     UQ_FATAL_TEST_MACRO(m_initialPosition.numberOfProcessorsRequiredForStorage() != 1,
                         m_env.rank(),
                         "uqMarkovChainSGClass<P_V,P_M>::generateSequence()",
-                        "only 1 processor (per appl) should be necessary for the storage of a vector");
+                        "only 1 processor (per processor subset) should be necessary for the storage of a vector");
     proc0GenerateSequence(workingChain);
   }
-  else if (m_env.numApplInstances() < (unsigned int) m_env.worldComm().NumProc()) {
-    UQ_FATAL_TEST_MACRO(m_env.worldComm().NumProc()%m_env.numApplInstances() != 0,
+  else if (m_env.numProcSubsets() < (unsigned int) m_env.fullComm().NumProc()) {
+    UQ_FATAL_TEST_MACRO(m_env.fullComm().NumProc()%m_env.numProcSubsets() != 0,
                         m_env.rank(),
                         "uqMarkovChainSGClass<P_V,P_M>::generateSequence()",
-                        "total number of processors should be a multiple of the number of appl instances");
-    unsigned int numProcsPerAppl = m_env.worldComm().NumProc()/m_env.numApplInstances();
-    UQ_FATAL_TEST_MACRO(m_env.myApplComm().NumProc() != (int) numProcsPerAppl,
+                        "total number of processors should be a multiple of the number of processor subsets");
+    unsigned int numProcsPerProcSubset = m_env.fullComm().NumProc()/m_env.numProcSubsets();
+    UQ_FATAL_TEST_MACRO(m_env.subComm().NumProc() != (int) numProcsPerProcSubset,
                         m_env.rank(),
                         "uqMarkovChainSGClass<P_V,P_M>::generateSequence()",
-                        "inconsistent number of processors per appl communicator");
+                        "inconsistent number of processors per processor subset communicator");
     if (m_initialPosition.numberOfProcessorsRequiredForStorage() == 1) {
       double aux = 0.;
-      if (m_env.myApplRank() == 0) proc0GenerateSequence(workingChain);
+      if (m_env.subRank() == 0) proc0GenerateSequence(workingChain);
 
-      // myApplRank == 0 --> Tell all other processors to exit barrier now that the chain has been fully generated
-      // myApplRank != 0 --> Enter the barrier and wait for processor 0 to decide to call the targetPdf
+      // subRank == 0 --> Tell all other processors to exit barrier now that the chain has been fully generated
+      // subRank != 0 --> Enter the barrier and wait for processor 0 to decide to call the targetPdf
       aux = targetPdfBarrier(NULL,
                              NULL,
                              NULL,
                              NULL,
                              NULL);
     }
-    else if (m_initialPosition.numberOfProcessorsRequiredForStorage() == numProcsPerAppl) {
+    else if (m_initialPosition.numberOfProcessorsRequiredForStorage() == numProcsPerProcSubset) {
       UQ_FATAL_TEST_MACRO(true,
                           m_env.rank(),
                           "uqMarkovChainSGClass<P_V,P_M>::generateSequence()",
@@ -224,7 +224,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
       UQ_FATAL_TEST_MACRO(true,
                           m_env.rank(),
                           "uqMarkovChainSGClass<P_V,P_M>::generateSequence()",
-                          "number of processors required for a vector storage should be equal to the number of processors per appl communicator");
+                          "number of processors required for a vector storage should be equal to the number of processors per processor subset communicator");
     }
   }
   else {

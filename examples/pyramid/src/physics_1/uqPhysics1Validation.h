@@ -259,8 +259,8 @@ uqPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
                                                                          (void *) &m_calLikelihoodInfoVector,
                                                                          true); // the routine computes [-2.*ln(function)]
 
-  m_cycle->setCalIP(*m_calPriorRv,
-                    *m_calLikelihoodFunctionObj);
+  m_cycle->instantiateCalIP(*m_calPriorRv,
+                            *m_calLikelihoodFunctionObj);
 
   // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
   P_M* calProposalCovMatrix = m_cycle->calIP().postRv().imageSet().vectorSpace().newGaussianMatrix(m_cycle->calIP().priorRv().pdf().domainVarVector(),
@@ -276,8 +276,8 @@ uqPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
                                                                      m_predCriticalW,
                                                                      m_predCriticalTime);
 
-  m_cycle->setCalFP(uqPhysics1QoiRoutine<P_V,P_M,Q_V,Q_M>,
-                    (void *) m_calQoiRoutineInfo);
+  m_cycle->instantiateCalFP(uqPhysics1QoiRoutine<P_V,P_M,Q_V,Q_M>,
+                            (void *) m_calQoiRoutineInfo);
 
   // Solve forward problem = set 'realizer' and 'cdf' of 'qoiRv'
   m_cycle->calFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
@@ -317,7 +317,7 @@ uqPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
                                                                          (void *) &m_valLikelihoodInfoVector,
                                                                          true); // the routine computes [-2.*ln(function)]
 
-  m_cycle->setValIP(*m_valLikelihoodFunctionObj);
+  m_cycle->instantiateValIP(*m_valLikelihoodFunctionObj);
 
   // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
   P_M* valProposalCovMatrix = m_cycle->calIP().postRv().imageSet().vectorSpace().newGaussianMatrix(m_cycle->calIP().postRv().realizer().imageVarVector(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
@@ -333,8 +333,8 @@ uqPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
                                                                      m_predCriticalW,
                                                                      m_predCriticalTime);
 
-  m_cycle->setValFP(uqPhysics1QoiRoutine<P_V,P_M,Q_V,Q_M>,
-                    (void *) m_valQoiRoutineInfo);
+  m_cycle->instantiateValFP(uqPhysics1QoiRoutine<P_V,P_M,Q_V,Q_M>,
+                            (void *) m_valQoiRoutineInfo);
 
   // Solve forward problem = set 'realizer' and 'cdf' of 'qoiRv'
   m_cycle->valFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
