@@ -50,11 +50,13 @@ libqueso_include_HEADERS = $(top_srcdir)/libs/basic/inc/uq1D1DFunction.h \
 	$(top_srcdir)/libs/basic/inc/uqMiscellaneous.h \
 	$(top_srcdir)/libs/basic/inc/uqOneDGrid.h \
 	$(top_srcdir)/libs/basic/inc/uqScalarFunction.h \
+	$(top_srcdir)/libs/basic/inc/uqScalarFunctionSynchronizer.h \
 	$(top_srcdir)/libs/basic/inc/uqScalarSequence.h \
 	$(top_srcdir)/libs/basic/inc/uqSequenceOfVectors.h \
 	$(top_srcdir)/libs/basic/inc/uqTrilinosMatrix.h \
 	$(top_srcdir)/libs/basic/inc/uqTrilinosVector.h \
 	$(top_srcdir)/libs/basic/inc/uqVectorFunction.h \
+	$(top_srcdir)/libs/basic/inc/uqVectorFunctionSynchronizer.h \
 	$(top_srcdir)/libs/basic/inc/uqVector.h \
 	$(top_srcdir)/libs/basic/inc/uqVectorSequence.h \
 	$(top_srcdir)/libs/basic/inc/uqVectorSet.h \

@@ -75,6 +75,7 @@
 #include <uqVectorRV.h>
 #include <uqVectorSpace.h>
 #include <uqMarkovChainPositionData.h>
+#include <uqScalarFunctionSynchronizer.h>
 #include <uqMiscellaneous.h>
 #include <uqSequenceOfVectors.h>
 #include <uqArrayOfSequences.h>
@@ -100,11 +101,11 @@ public:
 
 private:
   void   proc0GenerateSequence    (uqBaseVectorSequenceClass<P_V,P_M>& workingChain); /*! */
-  double targetPdfBarrier         (const P_V* vecValues,
-                                   const P_V* vecDirection,
-                                         P_V* gradVector,
-                                         P_M* hessianMatrix,
-                                         P_V* hessianEffect) const;
+  //uble targetPdfBarrier         (const P_V* vecValues,
+  //                               const P_V* vecDirection,
+  //                                     P_V* gradVector,
+  //                                     P_M* hessianMatrix,
+  //                                     P_V* hessianEffect) const;
   void   resetChainAndRelatedInfo ();
   void   defineMyOptions          (po::options_description&                             optionsDesc);
   void   getMyOptionValues        (po::options_description&                             optionsDesc);
@@ -145,13 +146,14 @@ private:
                                  //const P_M*                                               mahalanobisMatrix = NULL,
                                  //bool                                                     applyMahalanobisInvert = true) const;
 
-  const uqBaseEnvironmentClass&         m_env;
-        std::string                     m_prefix;
-  const uqVectorSpaceClass  <P_V,P_M>&  m_vectorSpace;
-  const uqBaseVectorPdfClass<P_V,P_M>&  m_targetPdf;
-        P_V                             m_initialPosition;
-  const P_M*                            m_initialProposalCovMatrix;
-        bool                            m_nullInputProposalCovMatrix;
+  const uqBaseEnvironmentClass&                     m_env;
+        std::string                                 m_prefix;
+  const uqVectorSpaceClass  <P_V,P_M>&              m_vectorSpace;
+  const uqBaseVectorPdfClass<P_V,P_M>&              m_targetPdf;
+        P_V                                         m_initialPosition;
+  const P_M*                                        m_initialProposalCovMatrix;
+        bool                                        m_nullInputProposalCovMatrix;
+  const uqScalarFunctionSynchronizerClass<P_V,P_M>* m_targetPdfSynchronizer;
 
         po::options_description*        m_optionsDesc;
         std::string                     m_option_help;
@@ -253,6 +255,7 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   m_initialPosition                      (initialPosition),
   m_initialProposalCovMatrix             (inputProposalCovMatrix),
   m_nullInputProposalCovMatrix           (inputProposalCovMatrix == NULL),
+  m_targetPdfSynchronizer                (new uqScalarFunctionSynchronizerClass<P_V,P_M>(m_targetPdf,m_initialPosition)),
   m_optionsDesc                          (new po::options_description("Bayesian Markov chain options")),
   m_option_help                          (m_prefix + "help"                          ),
   m_option_chain_type                    (m_prefix + "chain_type"                    ),
@@ -357,7 +360,7 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
     m_tk = new uqHessianCovMatricesTKGroupClass<P_V,P_M>(m_prefix.c_str(),
                                                          m_vectorSpace,
                                                          m_drScalesForCovMatrices,
-                                                         m_targetPdf);
+                                                         *m_targetPdfSynchronizer);
     if (m_env.rank() == 0) {
       std::cout << "In uqMarkovChainSGClass<P_V,P_M>::constructor()"
                 << ": just instantiated a 'HessianCovMatrices' TK class"
@@ -407,6 +410,7 @@ uqMarkovChainSGClass<P_V,P_M>::~uqMarkovChainSGClass()
   if (m_optionsDesc                    ) delete m_optionsDesc;
 
   if (m_tk                             ) delete m_tk;
+  if (m_targetPdfSynchronizer          ) delete m_targetPdfSynchronizer;
   if (m_nullInputProposalCovMatrix     ) delete m_initialProposalCovMatrix;
 
   //std::cout << "Leaving uqMarkovChainSGClass<P_V,P_M>::destructor()"

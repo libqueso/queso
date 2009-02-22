@@ -34,6 +34,7 @@
 #define __UQ_TRANSITION_KERNEL_GROUP_H__
 
 #include <uqVectorRV.h>
+#include <uqScalarFunctionSynchronizer.h>
 
 //*****************************************************
 // Base class
@@ -411,10 +412,10 @@ uqScaledCovMatrixTKGroupClass<V,M>::print(std::ostream& os) const
 template<class V, class M>
 class uqHessianCovMatricesTKGroupClass : public uqBaseTKGroupClass<V,M> {
 public:
-  uqHessianCovMatricesTKGroupClass(const char*                      prefix,
-                                   const uqVectorSpaceClass<V,M>&   vectorSpace,
-                                   const std::vector<double>&       scales,
-                                   const uqBaseVectorPdfClass<V,M>& targetPdf);
+  uqHessianCovMatricesTKGroupClass(const char*                                   prefix,
+                                   const uqVectorSpaceClass<V,M>&                vectorSpace,
+                                   const std::vector<double>&                    scales,
+                                   const uqScalarFunctionSynchronizerClass<V,M>& targetPdfSynchronizer);
  ~uqHessianCovMatricesTKGroupClass();
 
         bool                          symmetric                 () const;
@@ -432,22 +433,22 @@ private:
   using uqBaseTKGroupClass<V,M>::m_preComputingPositions;
   using uqBaseTKGroupClass<V,M>::m_rvs;
 
-  const uqBaseVectorPdfClass<V,M>& m_targetPdf;
-  std::vector<V*>                  m_originalNewtonSteps;
-  std::vector<M*>                  m_originalCovMatrices;
+  const uqScalarFunctionSynchronizerClass<V,M>& m_targetPdfSynchronizer;
+  std::vector<V*>                               m_originalNewtonSteps;
+  std::vector<M*>                               m_originalCovMatrices;
 };
 
 template<class V, class M>
 uqHessianCovMatricesTKGroupClass<V,M>::uqHessianCovMatricesTKGroupClass(
-  const char*                      prefix,
-  const uqVectorSpaceClass<V,M>&   vectorSpace,
-  const std::vector<double>&       scales,
-  const uqBaseVectorPdfClass<V,M>& targetPdf)
+  const char*                                   prefix,
+  const uqVectorSpaceClass<V,M>&                vectorSpace,
+  const std::vector<double>&                    scales,
+  const uqScalarFunctionSynchronizerClass<V,M>& targetPdfSynchronizer)
   :
-  uqBaseTKGroupClass<V,M>   (prefix,vectorSpace,scales),
-  m_targetPdf               (targetPdf),
-  m_originalNewtonSteps     (scales.size()+1,NULL), // Yes, +1
-  m_originalCovMatrices     (scales.size()+1,NULL)  // Yes, +1
+  uqBaseTKGroupClass<V,M>(prefix,vectorSpace,scales),
+  m_targetPdfSynchronizer(targetPdfSynchronizer),
+  m_originalNewtonSteps  (scales.size()+1,NULL), // Yes, +1
+  m_originalCovMatrices  (scales.size()+1,NULL)  // Yes, +1
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
     std::cout << "Entering uqHessianCovMatricesTKGroupClass<V,M>::constructor()"
@@ -613,17 +614,17 @@ uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position
               << std::endl;
   }
 
-  if (m_targetPdf.domainSet().contains(position)) {
+  if (m_targetPdfSynchronizer.domainSet().contains(position)) {
     M* tmpHessian = m_vectorSpace->newMatrix();
     M* tmpCovMat  = m_vectorSpace->newMatrix();
     V* tmpGrad    = m_vectorSpace->newVector();
 
     double logTarget = 0.;
-    logTarget = m_targetPdf.minus2LnValue(position,
-                                          NULL,
-                                          tmpGrad,
-                                          tmpHessian,
-                                          NULL);
+    logTarget = m_targetPdfSynchronizer.callFunction(&position, // Might demand parallel environment
+                                                     NULL,
+                                                     tmpGrad,
+                                                     tmpHessian,
+                                                     NULL);
 
     // IMPORTANT: covariance matrix = (Hessian)^{-1} !!!
     V unitVector(m_vectorSpace->zeroVector());
