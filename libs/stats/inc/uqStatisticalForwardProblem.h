@@ -292,23 +292,23 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
     }
 
     // Open file
-    std::ofstream* ofs = new std::ofstream(m_outputFileName.c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
-    if ((ofs            == NULL ) ||
-        (ofs->is_open() == false)) {
-      delete ofs;
-      ofs = new std::ofstream(m_outputFileName.c_str(), std::ofstream::out | std::ofstream::trunc);
+    std::ofstream* ofsvar = new std::ofstream((m_outputFileName+"_subset"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
+    if ((ofsvar            == NULL ) ||
+        (ofsvar->is_open() == false)) {
+      delete ofsvar;
+      ofsvar = new std::ofstream(m_outputFileName.c_str(), std::ofstream::out | std::ofstream::trunc);
     }
-    UQ_FATAL_TEST_MACRO((ofs && ofs->is_open()) == false,
+    UQ_FATAL_TEST_MACRO((ofsvar && ofsvar->is_open()) == false,
                         m_env.rank(),
                         "uqStatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithBayesMarkovChain()",
                         "failed to open file");
 
-    m_qoiRv.mdf().print(*ofs);
-    *ofs << m_qoiRv.cdf();
+    m_qoiRv.mdf().print(*ofsvar);
+    *ofsvar << m_qoiRv.cdf();
 
     // Close file
-    ofs->close();
-    delete ofs;
+    ofsvar->close();
+    delete ofsvar;
     if (m_env.rank() == 0) {
       std::cout << "Closed output file '" << m_outputFileName
                 << "' for propagation problem with problem with prefix = " << m_prefix

@@ -35,7 +35,7 @@
 
 uqVectorClass::uqVectorClass()
   :
-  m_env(*(new uqFullEnvironmentClass(MPI_COMM_WORLD))                  ),
+  m_env(*(new uqFullEnvironmentClass(MPI_COMM_WORLD,""))               ),
   m_map(*(new Epetra_Map( 1,0,*(new Epetra_MpiComm(MPI_COMM_WORLD)) ) ))
 {
   UQ_FATAL_TEST_MACRO(true,

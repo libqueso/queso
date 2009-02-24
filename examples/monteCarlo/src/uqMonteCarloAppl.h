@@ -118,7 +118,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   uqGenericVectorRVClass<Q_V,Q_M> qoiRv("qoi_", // Extra prefix before the default "rv_" prefix
                                          qoiSpace);
 
-  uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M> fp("", // No extra prefix before the default "ip_" prefix
+  uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M> fp("", // No extra prefix before the default "fp_" prefix
                                                        paramRv,
                                                        qoiFunctionObj,
                                                        qoiRv);

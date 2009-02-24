@@ -69,9 +69,9 @@ struct uqEnvOptionsStruct {
 //*****************************************************
 class uqBaseEnvironmentClass {
 public:
-  uqBaseEnvironmentClass();
-  uqBaseEnvironmentClass(int& argc, char** &argv);
-  uqBaseEnvironmentClass(const uqEnvOptionsStruct& options);
+  uqBaseEnvironmentClass(MPI_Comm inputComm, const char* prefix);
+  uqBaseEnvironmentClass(int& argc, char** &argv, MPI_Comm inputComm, const char* prefix);
+  uqBaseEnvironmentClass(const uqEnvOptionsStruct& options, MPI_Comm inputComm, const char* prefix);
   uqBaseEnvironmentClass(const uqBaseEnvironmentClass& obj);
   virtual ~uqBaseEnvironmentClass();
 
@@ -82,6 +82,8 @@ public:
           const Epetra_MpiComm&   fullComm                 () const; 
           const Epetra_MpiComm&   subComm                  () const; 
           unsigned int            numProcSubsets           () const;
+          unsigned int            subId                    () const;
+          const std::string&      subIdString              () const;
 
 #ifdef UQ_USES_COMMAND_LINE_OPTIONS
           const po::options_description& allOptionsDesc    () const;
@@ -97,6 +99,7 @@ public:
 protected:
   int                      m_argc;
   char**                   m_argv;
+  std::string              m_prefix;
 
   Epetra_MpiComm*          m_fullComm;
   int                      m_fullRank;
@@ -109,6 +112,13 @@ protected:
   po::options_description* m_allOptionsDesc;
   po::options_description* m_envOptionsDesc;
   po::variables_map*       m_allOptionsMap;
+
+  std::string              m_option_help;
+  std::string              m_option_numProcSubsets;
+  std::string              m_option_verbosity;
+  std::string              m_option_seed;
+  std::string              m_option_runName;
+
   unsigned int             m_numProcSubsets;
   unsigned int             m_verbosity;
   int                      m_seed;
@@ -117,6 +127,7 @@ protected:
   std::vector<double>      m_debugParams;
 
   unsigned int             m_subId;
+  std::string              m_subIdString;
   MPI_Group                m_subGroup;
   MPI_Comm                 m_subRawComm;
   Epetra_MpiComm*          m_subComm;
@@ -143,9 +154,9 @@ public:
 //*****************************************************
 class uqFullEnvironmentClass : public uqBaseEnvironmentClass {
 public:
-  uqFullEnvironmentClass(MPI_Comm inputComm);
-  uqFullEnvironmentClass(int& argc, char** &argv, MPI_Comm inputComm);
-  uqFullEnvironmentClass(const uqEnvOptionsStruct& options, MPI_Comm inputComm);
+  uqFullEnvironmentClass(MPI_Comm inputComm, const char* prefix);
+  uqFullEnvironmentClass(int& argc, char** &argv, MPI_Comm inputComm, const char* prefix);
+  uqFullEnvironmentClass(const uqEnvOptionsStruct& options, MPI_Comm inputComm, const char* prefix);
  ~uqFullEnvironmentClass();
 
         void                     print                    (std::ostream& os) const;

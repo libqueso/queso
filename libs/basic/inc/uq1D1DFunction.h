@@ -348,7 +348,7 @@ public:
           void                 set(const std::vector<double>& domainValues,
                                    const std::vector<double>& imageValues);
 
-  virtual void                 printForMatlab(std::ofstream& ofs, const std::string& prefixName) const;
+  virtual void                 printForMatlab(std::ofstream& ofsvar, const std::string& prefixName) const;
 
 protected:
   using uqBase1D1DFunctionClass::m_minDomainValue;
@@ -496,21 +496,21 @@ uqSampled1D1DFunctionClass::set(
 
 void
 uqSampled1D1DFunctionClass::printForMatlab(
-  std::ofstream&     ofs,
+  std::ofstream&     ofsvar,
   const std::string& prefixName) const
 {
   unsigned int tmpSize = m_domainValues.size();
   if (tmpSize == 0) {
     tmpSize = 1;
-    ofs << "\n" << prefixName << "Time = zeros("  << tmpSize << ",1);"
-        << "\n" << prefixName << "Value = zeros(" << tmpSize << ",1);";
+    ofsvar << "\n" << prefixName << "Time = zeros("  << tmpSize << ",1);"
+           << "\n" << prefixName << "Value = zeros(" << tmpSize << ",1);";
   }
   else {
-    ofs << "\n" << prefixName << "Time = zeros("  << tmpSize << ",1);"
-        << "\n" << prefixName << "Value = zeros(" << tmpSize << ",1);";
+    ofsvar << "\n" << prefixName << "Time = zeros("  << tmpSize << ",1);"
+           << "\n" << prefixName << "Value = zeros(" << tmpSize << ",1);";
     for (unsigned int i = 0; i < tmpSize; ++i) {
-      ofs << "\n" << prefixName << "Time("  << i+1 << ",1) = " << m_domainValues[i]  << ";"
-          << "\n" << prefixName << "Value(" << i+1 << ",1) = " << m_imageValues[i] << ";";
+      ofsvar << "\n" << prefixName << "Time("  << i+1 << ",1) = " << m_domainValues[i]  << ";"
+             << "\n" << prefixName << "Value(" << i+1 << ",1) = " << m_imageValues[i] << ";";
     }
   }
 
@@ -533,7 +533,7 @@ public:
   void                       set(const std::vector<double>& domainValues,
                                  const std::vector<double>& imageValues,
                                  const std::vector<double>& integratedValues);
-  void                       printForMatlab(std::ofstream& ofs, const std::string& prefixName) const;
+  void                       printForMatlab(std::ofstream& ofsvar, const std::string& prefixName) const;
 
 protected:
   using uqBase1D1DFunctionClass::m_minDomainValue;
@@ -639,20 +639,20 @@ uqDeltaSeq1D1DFunctionClass::set(
 
 void
 uqDeltaSeq1D1DFunctionClass::printForMatlab(
-  std::ofstream&     ofs,
+  std::ofstream&     ofsvar,
   const std::string& prefixName) const
 {
-  uqSampled1D1DFunctionClass::printForMatlab(ofs,prefixName);
+  uqSampled1D1DFunctionClass::printForMatlab(ofsvar,prefixName);
 
   unsigned int tmpSize = m_integratedValues.size();
   if (tmpSize == 0) {
     tmpSize = 1;
-    ofs << "\n" << prefixName << "intValue = zeros("  << tmpSize << ",1);";
+    ofsvar << "\n" << prefixName << "intValue = zeros("  << tmpSize << ",1);";
   }
   else {
-    ofs << "\n" << prefixName << "intValue = zeros("  << tmpSize << ",1);";
+    ofsvar << "\n" << prefixName << "intValue = zeros("  << tmpSize << ",1);";
     for (unsigned int i = 0; i < tmpSize; ++i) {
-      ofs << "\n" << prefixName << "intValue(" << i+1 << ",1) = " << m_integratedValues[i]  << ";";
+      ofsvar << "\n" << prefixName << "intValue(" << i+1 << ",1) = " << m_integratedValues[i]  << ";";
     }
   }
 

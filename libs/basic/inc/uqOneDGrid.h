@@ -50,10 +50,10 @@ public:
                                  const char* prefix);
   virtual ~uqBaseOneDGridClass();
 
-  virtual unsigned int size          ()                    const = 0;
-  virtual T            operator[]    (unsigned int i)      const = 0;
-  virtual unsigned int findIntervalId(const T& paramValue) const = 0; 
-          void         print         (std::ostream& ofs)   const;
+  virtual unsigned int size          ()                     const = 0;
+  virtual T            operator[]    (unsigned int i)       const = 0;
+  virtual unsigned int findIntervalId(const T& paramValue)  const = 0; 
+          void         print         (std::ostream& ofsvar) const;
 
 protected:
   const uqBaseEnvironmentClass& m_env;

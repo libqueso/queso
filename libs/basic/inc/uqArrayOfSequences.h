@@ -47,14 +47,14 @@ public:
                           const std::string&             name);
  ~uqArrayOfSequencesClass();
 
-        unsigned int sequenceSize      () const;
-        void         resizeSequence    (unsigned int newSequenceSize);
-        void         resetValues       (unsigned int initialPos, unsigned int numPos);
-        void         erasePositions    (unsigned int initialPos, unsigned int numPos);
-        void         getPositionValues (unsigned int posId,       V& vec) const;
-        void         setPositionValues (unsigned int posId, const V& vec);
-        void         setGaussian       (const gsl_rng* rng, const V& meanVec, const V& stdDevVec);
-        void         setUniform        (const gsl_rng* rng, const V& aVec,    const V& bVec     );
+        unsigned int sequenceSize       () const;
+        void         resizeSequence     (unsigned int newSequenceSize);
+        void         resetValues        (unsigned int initialPos, unsigned int numPos);
+        void         erasePositions     (unsigned int initialPos, unsigned int numPos);
+        void         getPositionValues  (unsigned int posId,       V& vec) const;
+        void         setPositionValues  (unsigned int posId, const V& vec);
+        void         setGaussian        (const gsl_rng* rng, const V& meanVec, const V& stdDevVec);
+        void         setUniform         (const gsl_rng* rng, const V& aVec,    const V& bVec     );
         void         uniformlySampledMdf(const V&                       numEvaluationPointsVec,
                                          uqArrayOfOneDGridsClass <V,M>& mdfGrids,
                                          uqArrayOfOneDTablesClass<V,M>& mdfValues) const;
@@ -131,7 +131,7 @@ public:
                                         const V&                 scales,
                                         const std::vector<V*>&   evaluationParamVecs,
                                         std::vector<V*>&         densityVecs) const;
-        void         write             (std::ofstream&           ofs) const;
+        void         write             (std::ofstream&           ofsvar) const;
         void         select            (const std::vector<unsigned int>& idsOfUniquePositions);
         void         filter            (unsigned int             initialPos,
                                         unsigned int             spacing);
@@ -968,23 +968,23 @@ uqArrayOfSequencesClass<V,M>::filter(
 
 template <class V, class M>
 void
-uqArrayOfSequencesClass<V,M>::write(std::ofstream& ofs) const
+uqArrayOfSequencesClass<V,M>::write(std::ofstream& ofsvar) const
 {
   // Write chain
-  ofs << m_name << " = zeros(" << this->sequenceSize()
-      << ","                   << this->vectorSize()
-      << ");"
-      << std::endl;
-  ofs << m_name << " = [";
+  ofsvar << m_name << " = zeros(" << this->sequenceSize()
+         << ","                   << this->vectorSize()
+         << ");"
+         << std::endl;
+  ofsvar << m_name << " = [";
 
   V tmpVec(m_vectorSpace.zeroVector());
   unsigned int chainSize = this->sequenceSize();
   for (unsigned int j = 0; j < chainSize; ++j) {
     this->getPositionValues(j,tmpVec);
-    ofs << tmpVec
-        << std::endl;
+    ofsvar << tmpVec
+           << std::endl;
   }
-  ofs << "];\n";
+  ofsvar << "];\n";
 
   return;
 }

@@ -65,7 +65,7 @@ protected:
 template <class V, class M>
 uqVectorSetClass<V,M>::uqVectorSetClass()
   :
-  m_env(*(new uqFullEnvironmentClass(MPI_COMM_WORLD)))
+  m_env(*(new uqFullEnvironmentClass(MPI_COMM_WORLD,"")))
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.rank(),

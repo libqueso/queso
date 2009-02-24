@@ -40,17 +40,17 @@ class uqModelValidationClass
 {
 public:
   uqModelValidationClass(const uqBaseEnvironmentClass& env,
-                         const char*               prefix);
+                         const char*                   prefix);
  ~uqModelValidationClass();
 
   virtual void run() = 0;
 
-  const uqBaseEnvironmentClass& env() const;
+  const uqBaseEnvironmentClass&                  env  () const;
   const uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle() const;
 
 protected:
   const uqBaseEnvironmentClass& m_env;
-        std::string         m_prefix;
+        std::string             m_prefix;
 
   uqValidationCycleClass<P_V,P_M,Q_V,Q_M>* m_cycle;
 };
@@ -58,7 +58,7 @@ protected:
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqModelValidationClass<P_V,P_M,Q_V,Q_M>::uqModelValidationClass(
   const uqBaseEnvironmentClass& env,
-  const char*               prefix)
+  const char*                   prefix)
   :
   m_env   (env),
   m_prefix((std::string)(prefix) + ""),

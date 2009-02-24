@@ -147,7 +147,7 @@ public:
                                                          const V&                              scaleVec,
                                                          const std::vector<V*>&                evaluationParamVecs,
                                                          std::vector<V*>&                      densityVecs) const = 0;
-  virtual  void                     printContents       (std::ofstream&                        ofs) const = 0;
+  virtual  void                     printContents       (std::ofstream&                        ofsvar) const = 0;
   virtual  void                     select              (const std::vector<unsigned int>&      idsOfUniquePositions) = 0;
   virtual  void                     filter              (unsigned int                          initialPos,
                                                          unsigned int                          spacing) = 0;
@@ -732,18 +732,18 @@ uqBaseVectorSequenceClass<V,M>::computeFFT(
                      forwardResult);
 
     if (statisticalOptions.fftWrite() && passedOfs) {
-      std::ofstream& ofs = *passedOfs;
-      ofs << m_name << "_fft_initPos" << initialPosForStatistics[initialPosId] << " = zeros(" << 1
-          << ","                                                                                 << forwardResult.size()
-          << ");"
-          << std::endl;
+      std::ofstream& ofsvar = *passedOfs;
+      ofsvar << m_name << "_fft_initPos" << initialPosForStatistics[initialPosId] << " = zeros(" << 1
+             << ","                                                                                 << forwardResult.size()
+             << ");"
+             << std::endl;
       for (unsigned int j = 0; j < forwardResult.size(); ++j) {
-        ofs << m_name << "_fft_initPos" << initialPosForStatistics[initialPosId] << "(" << 1
-            << ","                                                                         << j+1
-            << ") = "                                                                      << forwardResult[j].real()
-            << " + i*"                                                                     << forwardResult[j].imag()
-            << ";"
-            << std::endl;
+        ofsvar << m_name << "_fft_initPos" << initialPosForStatistics[initialPosId] << "(" << 1
+               << ","                                                                         << j+1
+               << ") = "                                                                      << forwardResult[j].real()
+               << " + i*"                                                                     << forwardResult[j].imag()
+               << ";"
+               << std::endl;
       }
     } // if write
 
@@ -752,18 +752,18 @@ uqBaseVectorSequenceClass<V,M>::computeFFT(
                      statisticalOptions.fftSize(),
                      inverseResult);
       if (statisticalOptions.fftWrite() && passedOfs) {
-        std::ofstream& ofs = *passedOfs;
-        ofs << m_name << "_inv_initPos" << initialPosForStatistics[initialPosId] << " = zeros(" << 1
-            << ","                                                                                 << inverseResult.size()
-            << ");"
-            << std::endl;
+        std::ofstream& ofsvar = *passedOfs;
+        ofsvar << m_name << "_inv_initPos" << initialPosForStatistics[initialPosId] << " = zeros(" << 1
+               << ","                                                                                 << inverseResult.size()
+               << ");"
+               << std::endl;
         for (unsigned int j = 0; j < inverseResult.size(); ++j) {
-          ofs << m_name << "_inv_initPos" << initialPosForStatistics[initialPosId] << "(" << 1
-              << ","                                                                         << j+1
-              << ") = "                                                                      << inverseResult[j].real()
-              << " + i*"                                                                     << inverseResult[j].imag()
-              << ";"
-              << std::endl;
+          ofsvar << m_name << "_inv_initPos" << initialPosForStatistics[initialPosId] << "(" << 1
+                 << ","                                                                         << j+1
+                 << ") = "                                                                      << inverseResult[j].real()
+                 << " + i*"                                                                     << inverseResult[j].imag()
+                 << ";"
+                 << std::endl;
         }
       } // if write
     }
@@ -807,17 +807,17 @@ uqBaseVectorSequenceClass<V,M>::computePSD(
               psdResult);
 
     if (statisticalOptions.psdWrite() && passedOfs) {
-      std::ofstream& ofs = *passedOfs;
-      ofs << m_name << "_psd_initPos" << initialPosForStatistics[initialPosId] << " = zeros(" << 1
-          << ","                                                                                 << psdResult.size()
-          << ");"
-          << std::endl;
+      std::ofstream& ofsvar = *passedOfs;
+      ofsvar << m_name << "_psd_initPos" << initialPosForStatistics[initialPosId] << " = zeros(" << 1
+             << ","                                                                                 << psdResult.size()
+             << ");"
+             << std::endl;
       for (unsigned int j = 0; j < psdResult.size(); ++j) {
-        ofs << m_name << "_psd_initPos" << initialPosForStatistics[initialPosId] << "(" << 1
-            << ","                                                                         << j+1
-            << ") = "                                                                      << psdResult[j]
-            << ";"
-            << std::endl;
+        ofsvar << m_name << "_psd_initPos" << initialPosForStatistics[initialPosId] << "(" << 1
+               << ","                                                                         << j+1
+               << ") = "                                                                      << psdResult[j]
+               << ";"
+               << std::endl;
       }
     } // if write
   }
@@ -948,31 +948,31 @@ uqBaseVectorSequenceClass<V,M>::computePSDAtZero(
 
   // Write PSD at frequency zero
   if (statisticalOptions.psdAtZeroWrite() && passedOfs) {
-    std::ofstream& ofs = *passedOfs;
-    ofs << m_name << "_psdAtZero_numBlocks = zeros(" << 1
-        << ","                                          << statisticalOptions.psdAtZeroNumBlocks().size()
-        << ");"
-        << std::endl;
+    std::ofstream& ofsvar = *passedOfs;
+    ofsvar << m_name << "_psdAtZero_numBlocks = zeros(" << 1
+           << ","                                          << statisticalOptions.psdAtZeroNumBlocks().size()
+           << ");"
+           << std::endl;
     for (unsigned int numBlocksId = 0; numBlocksId < statisticalOptions.psdAtZeroNumBlocks().size(); numBlocksId++) {
-      ofs << m_name << "_psdAtZero_numBlocks(" << 1
-          << ","                                  << numBlocksId+1
-          << ") = "                               << statisticalOptions.psdAtZeroNumBlocks()[numBlocksId]
-          << ";"
-          << std::endl;
+      ofsvar << m_name << "_psdAtZero_numBlocks(" << 1
+             << ","                                  << numBlocksId+1
+             << ") = "                               << statisticalOptions.psdAtZeroNumBlocks()[numBlocksId]
+             << ";"
+             << std::endl;
     }
 
     for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
-      ofs << m_name << "_psdAtZero_initPos" << initialPosForStatistics[initialPosId] << " = zeros(" << this->vectorSize() /*.*/
-          << ","                                                                                       << statisticalOptions.psdAtZeroNumBlocks().size()
-          << ");"
-          << std::endl;
+      ofsvar << m_name << "_psdAtZero_initPos" << initialPosForStatistics[initialPosId] << " = zeros(" << this->vectorSize() /*.*/
+             << ","                                                                                       << statisticalOptions.psdAtZeroNumBlocks().size()
+             << ");"
+             << std::endl;
       for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
         for (unsigned int numBlocksId = 0; numBlocksId < statisticalOptions.psdAtZeroNumBlocks().size(); numBlocksId++) {
-          ofs << m_name << "_psdAtZero_initPos" << initialPosForStatistics[initialPosId] << "(" << i+1
-              << ","                                                                               << numBlocksId+1
-              << ") = "                                                                            << _2dArrayOfPSDAtZero(initialPosId,numBlocksId)[i]
-              << ";"
-              << std::endl;
+          ofsvar << m_name << "_psdAtZero_initPos" << initialPosForStatistics[initialPosId] << "(" << i+1
+                 << ","                                                                               << numBlocksId+1
+                 << ") = "                                                                            << _2dArrayOfPSDAtZero(initialPosId,numBlocksId)[i]
+                 << ";"
+                 << std::endl;
         }
       }
     }
@@ -1139,31 +1139,31 @@ uqBaseVectorSequenceClass<V,M>::computeCorrViaDef(
 
   // Write autocorrelations
   if (statisticalOptions.corrWrite() && passedOfs) {
-    std::ofstream& ofs = *passedOfs;
-    ofs << m_name << "_corrViaDef_lags = zeros(" << 1
-        << ","                                      << lagsForCorrs.size()
-        << ");"
-        << std::endl;
+    std::ofstream& ofsvar = *passedOfs;
+    ofsvar << m_name << "_corrViaDef_lags = zeros(" << 1
+           << ","                                      << lagsForCorrs.size()
+           << ");"
+           << std::endl;
     for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
-      ofs << m_name << "_corrViaDef_lags(" << 1
-          << ","                              << lagId+1
-          << ") = "                           << lagsForCorrs[lagId]
-          << ";"
-          << std::endl;
+      ofsvar << m_name << "_corrViaDef_lags(" << 1
+             << ","                              << lagId+1
+             << ") = "                           << lagsForCorrs[lagId]
+             << ";"
+             << std::endl;
     }
 
     for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
-      ofs << m_name << "_corrViaDef_initPos" << initialPosForStatistics[initialPosId] << " = zeros(" << this->vectorSize() /*.*/
-          << ","                                                                                        << lagsForCorrs.size()
-          << ");"
-          << std::endl;
+      ofsvar << m_name << "_corrViaDef_initPos" << initialPosForStatistics[initialPosId] << " = zeros(" << this->vectorSize() /*.*/
+             << ","                                                                                        << lagsForCorrs.size()
+             << ");"
+             << std::endl;
       for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
         for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
-          ofs << m_name << "_corrViaDef_initPos" << initialPosForStatistics[initialPosId] << "(" << i+1
-              << ","                                                                                << lagId+1
-              << ") = "                                                                             << _2dArrayOfAutoCorrs(initialPosId,lagId)[i]
-              << ";"
-              << std::endl;
+          ofsvar << m_name << "_corrViaDef_initPos" << initialPosForStatistics[initialPosId] << "(" << i+1
+                 << ","                                                                                << lagId+1
+                 << ") = "                                                                             << _2dArrayOfAutoCorrs(initialPosId,lagId)[i]
+                 << ";"
+                 << std::endl;
         }
       }
     }
@@ -1307,31 +1307,31 @@ uqBaseVectorSequenceClass<V,M>::computeCorrViaFFT(
 
   // Write autocorrelations
   if (statisticalOptions.corrWrite() && passedOfs) {
-    std::ofstream& ofs = *passedOfs;
-    ofs << m_name << "_corrViaFft_lags = zeros(" << 1
-        << ","                                      << lagsForCorrs.size()
-        << ");"
-        << std::endl;
+    std::ofstream& ofsvar = *passedOfs;
+    ofsvar << m_name << "_corrViaFft_lags = zeros(" << 1
+           << ","                                      << lagsForCorrs.size()
+           << ");"
+           << std::endl;
     for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
-      ofs << m_name << "_corrViaFft_lags(" << 1
-          << ","                              << lagId+1
-          << ") = "                           << lagsForCorrs[lagId]
-          << ";"
-          << std::endl;
+      ofsvar << m_name << "_corrViaFft_lags(" << 1
+             << ","                              << lagId+1
+             << ") = "                           << lagsForCorrs[lagId]
+             << ";"
+             << std::endl;
     }
 
     for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
-      ofs << m_name << "_corrViaFft_initPos" << initialPosForStatistics[initialPosId] << " = zeros(" << this->vectorSize() /*.*/
-          << ","                                                                                        << lagsForCorrs.size()
-          << ");"
-          << std::endl;
+      ofsvar << m_name << "_corrViaFft_initPos" << initialPosForStatistics[initialPosId] << " = zeros(" << this->vectorSize() /*.*/
+             << ","                                                                                        << lagsForCorrs.size()
+             << ");"
+             << std::endl;
       for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
         for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
-          ofs << m_name << "_corrViaFft_initPos" << initialPosForStatistics[initialPosId] << "(" << i+1
-              << ","                                                                                << lagId+1
-              << ") = "                                                                             << _2dArrayOfAutoCorrs(initialPosId,lagId)[i]
-              << ";"
-              << std::endl;
+          ofsvar << m_name << "_corrViaFft_initPos" << initialPosForStatistics[initialPosId] << "(" << i+1
+                 << ","                                                                                << lagId+1
+                 << ") = "                                                                             << _2dArrayOfAutoCorrs(initialPosId,lagId)[i]
+                 << ";"
+                 << std::endl;
         }
       }
     }
@@ -1484,32 +1484,32 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
     // Write histograms
     // plot(queso_centersOfHistBins(1,:)',queso_histBins(1,:)','r-');
     if (passedOfs) {
-      std::ofstream& ofs = *passedOfs;
-      ofs << m_name << "_centersOfHistBins = zeros(" << this->vectorSize() /*.*/
-          << ","                                        << histCentersForAllBins.size()
-          << ");"
-          << std::endl;
+      std::ofstream& ofsvar = *passedOfs;
+      ofsvar << m_name << "_centersOfHistBins = zeros(" << this->vectorSize() /*.*/
+             << ","                                        << histCentersForAllBins.size()
+             << ");"
+             << std::endl;
       for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
         for (unsigned int j = 0; j < histCentersForAllBins.size(); ++j) {
-           ofs << m_name << "_centersOfHistBins(" << i+1
-               << ","                                << j+1
-               << ") = "                             << (*(histCentersForAllBins[j]))[i]
-               << ";"
-               << std::endl;
+           ofsvar << m_name << "_centersOfHistBins(" << i+1
+                  << ","                                << j+1
+                  << ") = "                             << (*(histCentersForAllBins[j]))[i]
+                  << ";"
+                  << std::endl;
         }
       }
 
-      ofs << m_name << "_histBins = zeros(" << this->vectorSize() /*.*/
-          << ","                               << histBinsForAllParams.size()
-          << ");"
-          << std::endl;
+      ofsvar << m_name << "_histBins = zeros(" << this->vectorSize() /*.*/
+             << ","                               << histBinsForAllParams.size()
+             << ");"
+             << std::endl;
       for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
         for (unsigned int j = 0; j < histBinsForAllParams.size(); ++j) {
-           ofs << m_name << "_histBins(" << i+1
-               << ","                       << j+1
-               << ") = "                    << (*(histBinsForAllParams[j]))[i]
-               << ";"
-               << std::endl;
+           ofsvar << m_name << "_histBins(" << i+1
+                  << ","                       << j+1
+                  << ") = "                    << (*(histBinsForAllParams[j]))[i]
+                  << ";"
+                  << std::endl;
         }
       }
     }
@@ -1596,42 +1596,42 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
     // hold
     // plot(queso_kdeEvalPositions(1,:)',7*queso_gaussianKdeDensities(1,:)','r-');
     if (passedOfs) {
-      std::ofstream& ofs = *passedOfs;
-      ofs << m_name << "_kdeEvalPositions = zeros(" << this->vectorSize() /*.*/
-          << ","                                       << kdeEvalPositions.size()
-          << ");"
-          << std::endl;
+      std::ofstream& ofsvar = *passedOfs;
+      ofsvar << m_name << "_kdeEvalPositions = zeros(" << this->vectorSize() /*.*/
+             << ","                                       << kdeEvalPositions.size()
+             << ");"
+             << std::endl;
       for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
         for (unsigned int j = 0; j < kdeEvalPositions.size(); ++j) {
-          ofs << m_name << "_kdeEvalPositions(" << i+1
-              << ","                               << j+1
-              << ") = "                            << (*(kdeEvalPositions[j]))[i]
-              << ";"
-              << std::endl;
+          ofsvar << m_name << "_kdeEvalPositions(" << i+1
+                 << ","                               << j+1
+                 << ") = "                            << (*(kdeEvalPositions[j]))[i]
+                 << ";"
+                 << std::endl;
         }
       }
 
-      ofs << m_name << "_gaussianKdeScaleVec = zeros(" << this->vectorSize() /*.*/
-          << ");"
-          << std::endl;
+      ofsvar << m_name << "_gaussianKdeScaleVec = zeros(" << this->vectorSize() /*.*/
+             << ");"
+             << std::endl;
       for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
-        ofs << m_name << "_gaussianKdeScaleVec(" << i+1
-            << ") = "                               << gaussianKdeScaleVec[i]
-            << ";"
-            << std::endl;
+        ofsvar << m_name << "_gaussianKdeScaleVec(" << i+1
+               << ") = "                               << gaussianKdeScaleVec[i]
+               << ";"
+               << std::endl;
       }
 
-      ofs << m_name << "_gaussianKdeDensities = zeros(" << this->vectorSize() /*.*/
-          << ","                                           << gaussianKdeDensities.size()
-          << ");"
-          << std::endl;
+      ofsvar << m_name << "_gaussianKdeDensities = zeros(" << this->vectorSize() /*.*/
+             << ","                                           << gaussianKdeDensities.size()
+             << ");"
+             << std::endl;
       for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
         for (unsigned int j = 0; j < gaussianKdeDensities.size(); ++j) {
-          ofs << m_name << "_gaussianKdeDensities(" << i+1
-              << ","                                   << j+1
-              << ") = "                                << (*(gaussianKdeDensities[j]))[i]
-              << ";"
-              << std::endl;
+          ofsvar << m_name << "_gaussianKdeDensities(" << i+1
+                 << ","                                   << j+1
+                 << ") = "                                << (*(gaussianKdeDensities[j]))[i]
+                 << ";"
+                 << std::endl;
         }
       }
     }

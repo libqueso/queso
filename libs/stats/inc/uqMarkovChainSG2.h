@@ -147,7 +147,7 @@ uqMarkovChainSGClass<P_V,P_M>::proc0GenerateSequence(uqBaseVectorSequenceClass<P
   //****************************************************
   // Open file      
   //****************************************************
-  std::ofstream* ofs = NULL;
+  std::ofstream* ofsvar = NULL;
   if (m_chainOutputFileName == UQ_MAC_SG_FILENAME_FOR_NO_OUTPUT_FILE) {
     if (m_env.rank() == 0) {
       std::cout << "No output file opened for chain " << workingChain.name()
@@ -164,18 +164,18 @@ uqMarkovChainSGClass<P_V,P_M>::proc0GenerateSequence(uqBaseVectorSequenceClass<P
     // Open file
 #if 0
     // Always write over an eventual pre-existing file
-    ofs = new std::ofstream(m_chainOutputFileName.c_str(), std::ofstream::out | std::ofstream::trunc);
+    ofsvar = new std::ofstream((m_chainOutputFileName+"_subset"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
 #else
     // Always write at the end of an eventual pre-existing file
-    ofs = new std::ofstream(m_chainOutputFileName.c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
-    if ((ofs            == NULL ) ||
-        (ofs->is_open() == false)) {
-      delete ofs;
-      ofs = new std::ofstream(m_chainOutputFileName.c_str(), std::ofstream::out | std::ofstream::trunc);
+    ofsvar = new std::ofstream((m_chainOutputFileName+"_subset"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
+    if ((ofsvar            == NULL ) ||
+        (ofsvar->is_open() == false)) {
+      delete ofsvar;
+      ofsvar = new std::ofstream((m_chainOutputFileName+"_subset"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
     }
 #endif
 
-    UQ_FATAL_TEST_MACRO((ofs && ofs->is_open()) == false,
+    UQ_FATAL_TEST_MACRO((ofsvar && ofsvar->is_open()) == false,
                         m_env.rank(),
                         "uqMarkovChainSGClass<P_V,P_M>::proc0GenerateSequence()",
                         "failed to open file");
@@ -186,12 +186,12 @@ uqMarkovChainSGClass<P_V,P_M>::proc0GenerateSequence(uqBaseVectorSequenceClass<P
   // --> write chain
   // --> compute statistics on it
   //****************************************************
-  if (m_chainWrite && ofs) {
-    workingChain.printContents(*ofs);
+  if (m_chainWrite && ofsvar) {
+    workingChain.printContents(*ofsvar);
 
     // Write likelihoodValues and alphaValues, if they were requested by user
     iRC = writeInfo(workingChain,
-                    *ofs);
+                    *ofsvar);
     UQ_FATAL_RC_MACRO(iRC,
                       m_env.rank(),
                       "uqMarkovChainSGClass<P_V,P_M>::proc0GenerateSequence()",
@@ -200,7 +200,7 @@ uqMarkovChainSGClass<P_V,P_M>::proc0GenerateSequence(uqBaseVectorSequenceClass<P
 
   if (m_chainComputeStats) {
     workingChain.computeStatistics(*m_chainStatisticalOptions,
-                                   ofs);
+                                   ofsvar);
   }
 
   //****************************************************
@@ -222,14 +222,14 @@ uqMarkovChainSGClass<P_V,P_M>::proc0GenerateSequence(uqBaseVectorSequenceClass<P
 
     // Write unique chain
     workingChain.setName(m_prefix + "uniqueChain");
-    if (m_uniqueChainWrite && ofs) {
-      workingChain.printContents(*ofs);
+    if (m_uniqueChainWrite && ofsvar) {
+      workingChain.printContents(*ofsvar);
     }
 
     // Compute statistics
     if (m_uniqueChainComputeStats) {
       workingChain.computeStatistics(*m_uniqueChainStatisticalOptions,
-                                     ofs);
+                                     ofsvar);
     }
   }
 
@@ -245,7 +245,7 @@ uqMarkovChainSGClass<P_V,P_M>::proc0GenerateSequence(uqBaseVectorSequenceClass<P
     unsigned int filterSpacing    = m_filteredChainLag;
     if (filterSpacing == 0) {
       workingChain.computeFilterParams(*m_filteredChainStatisticalOptions,
-                                       ofs,
+                                       ofsvar,
                                        filterInitialPos,
                                        filterSpacing);
     }
@@ -256,23 +256,23 @@ uqMarkovChainSGClass<P_V,P_M>::proc0GenerateSequence(uqBaseVectorSequenceClass<P
 
     // Write filtered chain
     workingChain.setName(m_prefix + "filteredChain");
-    if (m_filteredChainWrite && ofs) {
-      workingChain.printContents(*ofs);
+    if (m_filteredChainWrite && ofsvar) {
+      workingChain.printContents(*ofsvar);
     }
 
     // Compute statistics
     if (m_filteredChainComputeStats) {
       workingChain.computeStatistics(*m_filteredChainStatisticalOptions,
-                                     ofs);
+                                     ofsvar);
     }
   }
 
   //****************************************************
   // Close file      
   //****************************************************
-  if (ofs) {
+  if (ofsvar) {
     // Close file
-    ofs->close();
+    ofsvar->close();
 
     if (m_env.rank() == 0) {
       std::cout << "Closed output file '" << m_chainOutputFileName

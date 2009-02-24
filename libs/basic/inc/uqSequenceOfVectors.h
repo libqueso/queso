@@ -136,7 +136,7 @@ public:
                                         const V&                  scaleVec,
                                         const std::vector<V*>&    evalParamVecs,
                                         std::vector<V*>&          densityVecs) const;
-        void         printContents     (std::ofstream&            ofs) const;
+        void         printContents     (std::ofstream&            ofsvar) const;
         void         select            (const std::vector<unsigned int>& idsOfUniquePositions);
         void         filter            (unsigned int              initialPos,
                                         unsigned int              spacing);
@@ -1159,22 +1159,22 @@ uqSequenceOfVectorsClass<V,M>::filter(
 
 template <class V, class M>
 void
-uqSequenceOfVectorsClass<V,M>::printContents(std::ofstream& ofs) const
+uqSequenceOfVectorsClass<V,M>::printContents(std::ofstream& ofsvar) const
 {
-  ofs << m_name << " = zeros(" << this->sequenceSize()
-      << ","                   << this->vectorSize()
-      << ");"
-      << std::endl;
-  ofs << m_name << " = [";
+  ofsvar << m_name << " = zeros(" << this->sequenceSize()
+         << ","                   << this->vectorSize()
+         << ");"
+         << std::endl;
+  ofsvar << m_name << " = [";
   unsigned int chainSize = this->sequenceSize();
   for (unsigned int j = 0; j < chainSize; ++j) {
     bool savedVectorPrintState = m_seq[j]->getPrintHorizontally();
     m_seq[j]->setPrintHorizontally(true);
-    ofs << *(m_seq[j])
-        << std::endl;
+    ofsvar << *(m_seq[j])
+           << std::endl;
     m_seq[j]->setPrintHorizontally(savedVectorPrintState);
   }
-  ofs << "];\n";
+  ofsvar << "];\n";
 
   return;
 }

@@ -91,91 +91,67 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
         EpetraExt::DistArray<P_M*>* hessianMatrices, // Yes, 'P_M'
         EpetraExt::DistArray<P_V*>* hessianEffects) const
 {
-  bool stayInRoutine = true;
-  do {
-    const P_V*                        internalValues    = NULL;
-    const P_V*                        internalDirection = NULL;
-          Q_V*                        internalImageVec  = NULL;
-          EpetraExt::DistArray<P_V*>* internalGrads     = NULL; // Yes, 'P_V'
-          EpetraExt::DistArray<P_M*>* internalHessians  = NULL; // Yes, 'P_M'
-          EpetraExt::DistArray<P_V*>* internalEffects   = NULL;
+  if ((m_env.numProcSubsets() < (unsigned int) m_env.fullComm().NumProc()) &&
+      (m_auxPVec.numberOfProcessorsRequiredForStorage() == 1             ) &&
+      (m_auxQVec.numberOfProcessorsRequiredForStorage() == 1             )) {
+    bool stayInRoutine = true;
+    do {
+      const P_V*                        internalValues    = NULL;
+      const P_V*                        internalDirection = NULL;
+            Q_V*                        internalImageVec  = NULL;
+            EpetraExt::DistArray<P_V*>* internalGrads     = NULL; // Yes, 'P_V'
+            EpetraExt::DistArray<P_M*>* internalHessians  = NULL; // Yes, 'P_M'
+            EpetraExt::DistArray<P_V*>* internalEffects   = NULL;
 
-    /////////////////////////////////////////////////
-    // Broadcast 1 of 3
-    /////////////////////////////////////////////////
-    // bufferChar[0] = 0 or 1 (vecValues       is NULL or not)
-    // bufferChar[1] = 0 or 1 (vecDirection    is NULL or not)
-    // bufferChar[2] = 0 or 1 (imageVector     is NULL or not)
-    // bufferChar[3] = 0 or 1 (gradVectors     is NULL or not)
-    // bufferChar[4] = 0 or 1 (hessianMatrices is NULL or not)
-    // bufferChar[5] = 0 or 1 (hessianEffects  is NULL or not)
-    std::vector<char> bufferChar(6,0);
-
-    if (m_env.subRank() == 0) {
-      UQ_FATAL_TEST_MACRO((vecValues != NULL) && (imageVector == NULL),
-                          m_env.rank(),
-                          "uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction()",
-                          "imageVector should not be NULL");
-      internalValues    = vecValues;
-      internalDirection = vecDirection;
-      internalImageVec  = imageVector;
-      internalGrads     = gradVectors;
-      internalHessians  = hessianMatrices;
-      internalEffects   = hessianEffects;
-
-      if (internalValues    != NULL) bufferChar[0] = 1;
-      if (internalDirection != NULL) bufferChar[1] = 1;
-      if (internalImageVec  != NULL) bufferChar[2] = 1;
-      if (internalGrads     != NULL) bufferChar[3] = 1;
-      if (internalHessians  != NULL) bufferChar[4] = 1;
-      if (internalEffects   != NULL) bufferChar[5] = 1;
-    }
-
-    int count = (int) bufferChar.size();
-    int mpiRC = MPI_Bcast ((void *) &bufferChar[0], count, MPI_CHAR, 0, m_env.subComm().Comm());
-    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                        m_env.rank(),
-                        "uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction()",
-                        "failed broadcast 1 of 3");
-
-    if (bufferChar[0] == 1) {
-      ///////////////////////////////////////////////
-      // Broadcast 2 of 3
-      ///////////////////////////////////////////////
-
-      // bufferDouble[0...] = contents for (eventual) vecValues
-      std::vector<double> bufferDouble(m_auxPVec.size(),0);
+      /////////////////////////////////////////////////
+      // Broadcast 1 of 3
+      /////////////////////////////////////////////////
+      // bufferChar[0] = 0 or 1 (vecValues       is NULL or not)
+      // bufferChar[1] = 0 or 1 (vecDirection    is NULL or not)
+      // bufferChar[2] = 0 or 1 (imageVector     is NULL or not)
+      // bufferChar[3] = 0 or 1 (gradVectors     is NULL or not)
+      // bufferChar[4] = 0 or 1 (hessianMatrices is NULL or not)
+      // bufferChar[5] = 0 or 1 (hessianEffects  is NULL or not)
+      std::vector<char> bufferChar(6,0);
 
       if (m_env.subRank() == 0) {
-        for (unsigned int i = 0; i < internalValues->size(); ++i) {
-          bufferDouble[i] = (*internalValues)[i];
-        }
+        UQ_FATAL_TEST_MACRO((vecValues != NULL) && (imageVector == NULL),
+                            m_env.rank(),
+                            "uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction()",
+                            "imageVector should not be NULL");
+        internalValues    = vecValues;
+        internalDirection = vecDirection;
+        internalImageVec  = imageVector;
+        internalGrads     = gradVectors;
+        internalHessians  = hessianMatrices;
+        internalEffects   = hessianEffects;
+
+        if (internalValues    != NULL) bufferChar[0] = 1;
+        if (internalDirection != NULL) bufferChar[1] = 1;
+        if (internalImageVec  != NULL) bufferChar[2] = 1;
+        if (internalGrads     != NULL) bufferChar[3] = 1;
+        if (internalHessians  != NULL) bufferChar[4] = 1;
+        if (internalEffects   != NULL) bufferChar[5] = 1;
       }
 
-      count = (int) bufferDouble.size();
-      mpiRC = MPI_Bcast ((void *) &bufferDouble[0], count, MPI_DOUBLE, 0, m_env.subComm().Comm());
+      int count = (int) bufferChar.size();
+      int mpiRC = MPI_Bcast ((void *) &bufferChar[0], count, MPI_CHAR, 0, m_env.subComm().Comm());
       UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                           m_env.rank(),
                           "uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction()",
-                          "failed broadcast 2 of 3");
+                          "failed broadcast 1 of 3");
 
-      if (m_env.subRank() != 0) {
-        P_V tmpPVec(m_auxPVec);
-        for (unsigned int i = 0; i < internalValues->size(); ++i) {
-          tmpPVec[i] = bufferDouble[i];
-        }
-        internalValues = new P_V(tmpPVec);
-      }
+      if (bufferChar[0] == 1) {
+        ///////////////////////////////////////////////
+        // Broadcast 2 of 3
+        ///////////////////////////////////////////////
 
-      if (bufferChar[1] == 1) {
-        /////////////////////////////////////////////
-        // Broadcast 3 of 3
-        /////////////////////////////////////////////
-        // bufferDouble[0...] = contents for (eventual) vecDirection
+        // bufferDouble[0...] = contents for (eventual) vecValues
+        std::vector<double> bufferDouble(m_auxPVec.size(),0);
 
         if (m_env.subRank() == 0) {
-          for (unsigned int i = 0; i < internalDirection->size(); ++i) {
-            bufferDouble[i] = (*internalDirection)[i];
+          for (unsigned int i = 0; i < internalValues->size(); ++i) {
+            bufferDouble[i] = (*internalValues)[i];
           }
         }
 
@@ -184,53 +160,97 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
         UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                             m_env.rank(),
                             "uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction()",
-                            "failed broadcast 3 of 3");
+                            "failed broadcast 2 of 3");
 
         if (m_env.subRank() != 0) {
           P_V tmpPVec(m_auxPVec);
-          for (unsigned int i = 0; i < internalDirection->size(); ++i) {
+          for (unsigned int i = 0; i < internalValues->size(); ++i) {
             tmpPVec[i] = bufferDouble[i];
           }
-          internalDirection = new P_V(tmpPVec);
+          internalValues = new P_V(tmpPVec);
         }
+
+        if (bufferChar[1] == 1) {
+          /////////////////////////////////////////////
+          // Broadcast 3 of 3
+          /////////////////////////////////////////////
+          // bufferDouble[0...] = contents for (eventual) vecDirection
+
+          if (m_env.subRank() == 0) {
+            for (unsigned int i = 0; i < internalDirection->size(); ++i) {
+              bufferDouble[i] = (*internalDirection)[i];
+            }
+          }
+
+          count = (int) bufferDouble.size();
+          mpiRC = MPI_Bcast ((void *) &bufferDouble[0], count, MPI_DOUBLE, 0, m_env.subComm().Comm());
+          UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                              m_env.rank(),
+                              "uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction()",
+                              "failed broadcast 3 of 3");
+
+          if (m_env.subRank() != 0) {
+            P_V tmpPVec(m_auxPVec);
+            for (unsigned int i = 0; i < internalDirection->size(); ++i) {
+              tmpPVec[i] = bufferDouble[i];
+            }
+            internalDirection = new P_V(tmpPVec);
+          }
+        }
+
+        ///////////////////////////////////////////////
+        // All processors now call 'vectorFunction()'
+        ///////////////////////////////////////////////
+        if (m_env.subRank() != 0) {
+          if (bufferChar[2] == 1) internalImageVec = new Q_V(m_auxQVec);
+        //if (bufferChar[3] == 1) internalGrads    = new P_V(m_auxPVec);
+        //if (bufferChar[4] == 1) internalHessians = new P_M(m_auxPVec);
+        //if (bufferChar[5] == 1) internalEffects  = new P_V(m_auxPVec);
+        }
+        m_env.subComm().Barrier();
+
+        m_vectorFunction.compute(*internalValues,
+                                 internalDirection,
+                                 *internalImageVec,
+                                 internalGrads,
+                                 internalHessians,
+                                 internalEffects);
       }
 
-      ///////////////////////////////////////////////
-      // All processors now call 'vectorFunction()'
-      ///////////////////////////////////////////////
-      if (m_env.subRank() != 0) {
-        if (bufferChar[2] == 1) internalImageVec = new Q_V(m_auxQVec);
-      //if (bufferChar[3] == 1) internalGrads    = new P_V(m_auxPVec);
-      //if (bufferChar[4] == 1) internalHessians = new P_M(m_auxPVec);
-      //if (bufferChar[5] == 1) internalEffects  = new P_V(m_auxPVec);
+      /////////////////////////////////////////////////
+      // Prepare to exit routine or to stay in it
+      /////////////////////////////////////////////////
+      if (m_env.subRank() == 0) {
+        stayInRoutine = false; // Always for processor 0
       }
-      m_env.subComm().Barrier();
+      else {
+        if (internalValues    != NULL) delete internalValues;
+        if (internalDirection != NULL) delete internalDirection;
+        if (internalImageVec  != NULL) delete internalImageVec;
+      //if (internalGrads     != NULL) delete internalGrads;
+      //if (internalHessians  != NULL) delete internalHessians;
+      //if (internalEffects   != NULL) delete internalEffects;
 
-      m_vectorFunction.compute(*internalValues,
-                               internalDirection,
-                               *internalImageVec,
-                               internalGrads,
-                               internalHessians,
-                               internalEffects);
-    }
-
-    /////////////////////////////////////////////////
-    // Prepare to exit routine or to stay in it
-    /////////////////////////////////////////////////
-    if (m_env.subRank() == 0) {
-      stayInRoutine = false; // Always for processor 0
-    }
-    else {
-      if (internalValues    != NULL) delete internalValues;
-      if (internalDirection != NULL) delete internalDirection;
-      if (internalImageVec  != NULL) delete internalImageVec;
-    //if (internalGrads     != NULL) delete internalGrads;
-    //if (internalHessians  != NULL) delete internalHessians;
-    //if (internalEffects   != NULL) delete internalEffects;
-
-      stayInRoutine = (bufferChar[0] == 1);
-    }
-  } while (stayInRoutine);
+        stayInRoutine = (bufferChar[0] == 1);
+      }
+    } while (stayInRoutine);
+  }
+  else {
+    UQ_FATAL_TEST_MACRO((vecValues == NULL) || (imageVector == NULL),
+                        m_env.rank(),
+                        "uqVectorFunctionSynchronizerClass<V,M>::callFunction()",
+                        "Neither vecValues nor imageVector should not be NULL");
+    UQ_FATAL_TEST_MACRO((m_auxPVec.numberOfProcessorsRequiredForStorage() != m_auxQVec.numberOfProcessorsRequiredForStorage()),
+                        m_env.rank(),
+                        "uqVectorFunctionSynchronizerClass<V,M>::callFunction()",
+                        "Number of processors required for storage should be the same");
+    m_vectorFunction.compute(*vecValues,
+                             vecDirection,
+                             *imageVector,
+                             gradVectors,
+                             hessianMatrices,
+                             hessianEffects);
+  }
 
   return;
 }

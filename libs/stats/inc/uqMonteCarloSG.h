@@ -313,7 +313,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::proc0GenerateSequence(
   //****************************************************
   // Open file      
   //****************************************************
-  std::ofstream* ofs = NULL;
+  std::ofstream* ofsvar = NULL;
   if (m_outputFileName == UQ_MOC_SG_FILENAME_FOR_NO_OUTPUT_FILE) {
     if (m_env.rank() == 0) {
       std::cout << "No output file opened for qoi sequence " << workingSeq.name() 
@@ -328,14 +328,14 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::proc0GenerateSequence(
     }
 
     // Open file
-    ofs = new std::ofstream(m_outputFileName.c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
-    if ((ofs            == NULL ) ||
-        (ofs->is_open() == false)) {
-      delete ofs;
-      ofs = new std::ofstream(m_outputFileName.c_str(), std::ofstream::out | std::ofstream::trunc);
+    ofsvar = new std::ofstream((m_outputFileName+"_subset"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
+    if ((ofsvar            == NULL ) ||
+        (ofsvar->is_open() == false)) {
+      delete ofsvar;
+      ofsvar = new std::ofstream((m_outputFileName+"_subset"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
     }
 
-    UQ_FATAL_TEST_MACRO((ofs && ofs->is_open()) == false,
+    UQ_FATAL_TEST_MACRO((ofsvar && ofsvar->is_open()) == false,
                         m_env.rank(),
                         "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::proc0GenerateSequence()",
                         "failed to open file");
@@ -346,8 +346,8 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::proc0GenerateSequence(
   // --> write sequence
   // --> compute statistics on it
   //****************************************************
-  if (m_write && ofs) {
-    workingSeq.printContents(*ofs);
+  if (m_write && ofsvar) {
+    workingSeq.printContents(*ofsvar);
   }
 
   if (m_computeStats) {
@@ -357,7 +357,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::proc0GenerateSequence(
                 << std::endl;
     }
     workingSeq.computeStatistics(*m_statisticalOptions,
-                                 ofs);
+                                 ofsvar);
     if ((m_env.verbosity() >= 0) && (m_env.rank() == 0)) {
       std::cout << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::proc0GenerateSequence()"
                 << ": returned from call to 'workingSeq.computeStatistics()'"
@@ -368,9 +368,9 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::proc0GenerateSequence(
   //****************************************************
   // Close file      
   //****************************************************
-  if (ofs) {
+  if (ofsvar) {
     // Close file
-    ofs->close();
+    ofsvar->close();
 
     if (m_env.rank() == 0) {
       std::cout << "Closed output file '" << m_outputFileName
@@ -409,13 +409,13 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence(
   iRC = gettimeofday(&timevalSeq, NULL);
 
   workingSeq.resizeSequence(seqSize);
-  P_V tmpV(m_paramSpace.zeroVector());
+  P_V tmpP(m_paramSpace.zeroVector());
   Q_V tmpQ(m_qoiSpace.zeroVector());
   for (unsigned int i = 0; i < seqSize; ++i) {
-    paramRv.realizer().realization(tmpV);
+    paramRv.realizer().realization(tmpP);
 
     if (m_measureRunTimes) iRC = gettimeofday(&timevalQoIFunction, NULL);
-    m_qoiFunctionSynchronizer->callFunction(&tmpV,NULL,&tmpQ,NULL,NULL,NULL); // Might demand parallel environment
+    m_qoiFunctionSynchronizer->callFunction(&tmpP,NULL,&tmpQ,NULL,NULL,NULL); // Might demand parallel environment
     if (m_measureRunTimes) qoiFunctionRunTime += uqMiscGetEllapsedSeconds(&timevalQoIFunction);
 
     workingSeq.setPositionValues(i,tmpQ);
