@@ -31,7 +31,6 @@
  *-------------------------------------------------------------------------- */
 
 #include <uqEnvironment.h>
-#include <uqDefines.h>
 #include <sys/time.h>
 #include <gsl/gsl_randist.h>
 
@@ -95,6 +94,7 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_subComm              (NULL),
   m_subRank              (0),
   m_subCommSize          (1),
+  m_selfComm             (NULL),
   m_rng                  (NULL)
 {
 }
@@ -131,6 +131,7 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_subComm              (NULL),
   m_subRank              (0),
   m_subCommSize          (1),
+  m_selfComm             (NULL),
   m_rng                  (NULL)
 {
 }
@@ -166,6 +167,7 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_subComm              (NULL),
   m_subRank              (0),
   m_subCommSize          (1),
+  m_selfComm             (NULL),
   m_rng                  (NULL)
 {
 }
@@ -204,7 +206,8 @@ uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
   //if (m_fullRank == 0) std::cout << "Leaving uqBaseEnvironmentClass::destructor()"
   //                                << std::endl;
 
-  if (m_subComm) delete m_subComm;
+  if (m_selfComm ) delete m_selfComm;
+  if (m_subComm  ) delete m_subComm;
   if (m_fullComm ) delete m_fullComm;
 }
 
@@ -224,10 +227,28 @@ uqBaseEnvironmentClass::rank() const
   return m_fullRank;
 }
 
+const Epetra_MpiComm&
+uqBaseEnvironmentClass::fullComm() const
+{
+  return *m_fullComm;
+}
+
 int
 uqBaseEnvironmentClass::subRank() const
 {
   return m_subRank;
+}
+
+const Epetra_MpiComm&
+uqBaseEnvironmentClass::subComm() const
+{
+  return *m_subComm;
+}
+
+const Epetra_MpiComm&
+uqBaseEnvironmentClass::selfComm() const
+{
+  return *m_selfComm;
 }
 
 unsigned int
@@ -274,18 +295,6 @@ uqBaseEnvironmentClass::scanInputFileForMyOptions(const po::options_description&
   }
 
   return;
-}
-
-const Epetra_MpiComm&
-uqBaseEnvironmentClass::fullComm() const
-{
-  return *m_fullComm;
-}
-
-const Epetra_MpiComm&
-uqBaseEnvironmentClass::subComm() const
-{
-  return *m_subComm;
 }
 
 #ifdef UQ_USES_COMMAND_LINE_OPTIONS
@@ -456,6 +465,9 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
   m_subRank     = m_subComm->MyPID();
   m_subCommSize = m_subComm->NumProc();
 
+  m_selfComm = new Epetra_MpiComm(MPI_COMM_SELF);
+
+#ifdef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
   if (this->verbosity() >= 0) {
     for (int i = 0; i < m_fullCommSize; ++i) {
       if (i == m_fullRank) {
@@ -471,10 +483,11 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
       }
       m_fullComm->Barrier();
     }
-    if (this->rank() == 0) std::cout << "Sleeping 5 seconds..."
+    if (this->rank() == 0) std::cout << "Sleeping 3 seconds..."
                                      << std::endl;
-    sleep(5);
+    sleep(3);
   }
+#endif
 
   // Deal with seed
   if (m_seed >= 0) {

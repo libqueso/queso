@@ -33,6 +33,8 @@
 #ifndef __UQ_ENVIRONMENT_H__
 #define __UQ_ENVIRONMENT_H__
 
+#include <uqDefines.h>
+
 #undef UQ_USES_COMMAND_LINE_OPTIONS
 
 #define UQ_ENV_NUM_PROC_SUBSETS_ODV 1
@@ -78,9 +80,13 @@ public:
           uqBaseEnvironmentClass& operator=                (const uqBaseEnvironmentClass& rhs);
 
           int                     rank                     () const;
-          int                     subRank                  () const;
           const Epetra_MpiComm&   fullComm                 () const; 
+
+          int                     subRank                  () const;
           const Epetra_MpiComm&   subComm                  () const; 
+
+          const Epetra_MpiComm&   selfComm                 () const; 
+
           unsigned int            numProcSubsets           () const;
           unsigned int            subId                    () const;
           const std::string&      subIdString              () const;
@@ -133,6 +139,8 @@ protected:
   Epetra_MpiComm*          m_subComm;
   int                      m_subRank;
   int                      m_subCommSize;
+
+  Epetra_MpiComm*          m_selfComm;
 
   gsl_rng*                 m_rng;
   struct timeval           m_timevalBegin;

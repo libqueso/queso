@@ -38,6 +38,8 @@
 
 int uqMyRank();
 
+#undef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
+
 const int UQ_UNAVAILABLE_RANK         = -1;
 
 const int UQ_OK_RC                         =  0;

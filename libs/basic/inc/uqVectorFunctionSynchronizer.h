@@ -106,13 +106,13 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
       /////////////////////////////////////////////////
       // Broadcast 1 of 3
       /////////////////////////////////////////////////
-      // bufferChar[0] = 0 or 1 (vecValues       is NULL or not)
-      // bufferChar[1] = 0 or 1 (vecDirection    is NULL or not)
-      // bufferChar[2] = 0 or 1 (imageVector     is NULL or not)
-      // bufferChar[3] = 0 or 1 (gradVectors     is NULL or not)
-      // bufferChar[4] = 0 or 1 (hessianMatrices is NULL or not)
-      // bufferChar[5] = 0 or 1 (hessianEffects  is NULL or not)
-      std::vector<char> bufferChar(6,0);
+      // bufferChar[0] = '0' or '1' (vecValues       is NULL or not)
+      // bufferChar[1] = '0' or '1' (vecDirection    is NULL or not)
+      // bufferChar[2] = '0' or '1' (imageVector     is NULL or not)
+      // bufferChar[3] = '0' or '1' (gradVectors     is NULL or not)
+      // bufferChar[4] = '0' or '1' (hessianMatrices is NULL or not)
+      // bufferChar[5] = '0' or '1' (hessianEffects  is NULL or not)
+      std::vector<char> bufferChar(6,'0');
 
       if (m_env.subRank() == 0) {
         UQ_FATAL_TEST_MACRO((vecValues != NULL) && (imageVector == NULL),
@@ -126,12 +126,12 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
         internalHessians  = hessianMatrices;
         internalEffects   = hessianEffects;
 
-        if (internalValues    != NULL) bufferChar[0] = 1;
-        if (internalDirection != NULL) bufferChar[1] = 1;
-        if (internalImageVec  != NULL) bufferChar[2] = 1;
-        if (internalGrads     != NULL) bufferChar[3] = 1;
-        if (internalHessians  != NULL) bufferChar[4] = 1;
-        if (internalEffects   != NULL) bufferChar[5] = 1;
+        if (internalValues    != NULL) bufferChar[0] = '1';
+        if (internalDirection != NULL) bufferChar[1] = '1';
+        if (internalImageVec  != NULL) bufferChar[2] = '1';
+        if (internalGrads     != NULL) bufferChar[3] = '1';
+        if (internalHessians  != NULL) bufferChar[4] = '1';
+        if (internalEffects   != NULL) bufferChar[5] = '1';
       }
 
       int count = (int) bufferChar.size();
@@ -141,7 +141,7 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
                           "uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction()",
                           "failed broadcast 1 of 3");
 
-      if (bufferChar[0] == 1) {
+      if (bufferChar[0] == '1') {
         ///////////////////////////////////////////////
         // Broadcast 2 of 3
         ///////////////////////////////////////////////
@@ -164,13 +164,13 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
 
         if (m_env.subRank() != 0) {
           P_V tmpPVec(m_auxPVec);
-          for (unsigned int i = 0; i < internalValues->size(); ++i) {
+          for (unsigned int i = 0; i < tmpPVec.size(); ++i) {
             tmpPVec[i] = bufferDouble[i];
           }
           internalValues = new P_V(tmpPVec);
         }
 
-        if (bufferChar[1] == 1) {
+        if (bufferChar[1] == '1') {
           /////////////////////////////////////////////
           // Broadcast 3 of 3
           /////////////////////////////////////////////
@@ -191,7 +191,7 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
 
           if (m_env.subRank() != 0) {
             P_V tmpPVec(m_auxPVec);
-            for (unsigned int i = 0; i < internalDirection->size(); ++i) {
+            for (unsigned int i = 0; i < tmpPVec.size(); ++i) {
               tmpPVec[i] = bufferDouble[i];
             }
             internalDirection = new P_V(tmpPVec);
@@ -202,10 +202,10 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
         // All processors now call 'vectorFunction()'
         ///////////////////////////////////////////////
         if (m_env.subRank() != 0) {
-          if (bufferChar[2] == 1) internalImageVec = new Q_V(m_auxQVec);
-        //if (bufferChar[3] == 1) internalGrads    = new P_V(m_auxPVec);
-        //if (bufferChar[4] == 1) internalHessians = new P_M(m_auxPVec);
-        //if (bufferChar[5] == 1) internalEffects  = new P_V(m_auxPVec);
+          if (bufferChar[2] == '1') internalImageVec = new Q_V(m_auxQVec);
+        //if (bufferChar[3] == '1') internalGrads    = new P_V(m_auxPVec);
+        //if (bufferChar[4] == '1') internalHessians = new P_M(m_auxPVec);
+        //if (bufferChar[5] == '1') internalEffects  = new P_V(m_auxPVec);
         }
         m_env.subComm().Barrier();
 
@@ -231,7 +231,7 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
       //if (internalHessians  != NULL) delete internalHessians;
       //if (internalEffects   != NULL) delete internalEffects;
 
-        stayInRoutine = (bufferChar[0] == 1);
+        stayInRoutine = (bufferChar[0] == '1');
       }
     } while (stayInRoutine);
   }

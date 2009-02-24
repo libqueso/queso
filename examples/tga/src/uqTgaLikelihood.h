@@ -234,6 +234,7 @@ likelihoodRoutine(
   const uqBaseEnvironmentClass& env = *(((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_env);
 
   env.subComm().Barrier();
+#ifdef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
   if (env.verbosity() >= 0) {
     for (int i = 0; i < env.subComm().NumProc(); ++i) {
       if (i == env.subRank()) {
@@ -249,6 +250,7 @@ likelihoodRoutine(
                                       << std::endl;
     sleep(5);
   }
+#endif
 
   // Compute likelihood for scenario 1
   double betaTest = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_beta1;
@@ -440,6 +442,7 @@ likelihoodRoutine(
   }
 
   env.subComm().Barrier();
+#ifdef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
   if (env.verbosity() >= 0) {
     for (int i = 0; i < env.subComm().NumProc(); ++i) {
       if (i == env.subRank()) {
@@ -455,6 +458,7 @@ likelihoodRoutine(
                                       << std::endl;
     sleep(5);
   }
+#endif
 
   return resultValue;
 }

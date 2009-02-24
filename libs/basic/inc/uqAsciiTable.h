@@ -42,17 +42,17 @@ class uqAsciiTableClass
 {
 public:
   uqAsciiTableClass(const uqBaseEnvironmentClass& env,
-                          unsigned int        numRows,
-                          unsigned int        numExtraCols,
-                    const std::vector<bool>*  extraColIsString,
-                    const std::string&        fileName);
+                          unsigned int            numRows,
+                          unsigned int            numExtraCols,
+                    const std::vector<bool>*      extraColIsString,
+                    const std::string&            fileName);
  ~uqAsciiTableClass();
 
-  unsigned int numRows()                                                const;
-  unsigned int numCols()                                                const;
-  const EpetraExt::DistArray<std::string>& stringColumn(unsigned int j) const;
-  const V&                                 doubleColumn(unsigned int j) const;
-  void         print  (std::ostream& os)                                const;
+  unsigned int                             numRows     ()                 const;
+  unsigned int                             numCols     ()                 const;
+  const EpetraExt::DistArray<std::string>& stringColumn(unsigned int j)   const;
+  const V&                                 doubleColumn(unsigned int j)   const;
+  void                                     print       (std::ostream& os) const;
 
 private:
   const uqBaseEnvironmentClass&                   m_env;
@@ -81,7 +81,7 @@ uqAsciiTableClass<V,M>::uqAsciiTableClass(
   m_numCols      (1+numExtraCols),
   m_colIsString  (1,true),
   m_fileName     (fileName),
-  m_map          (new Epetra_Map(m_numRows,0,m_env.subComm())),
+  m_map          (new Epetra_Map(m_numRows,0,m_env.selfComm())),
   m_stringColumns(0),
   m_doubleColumns(0)
 {

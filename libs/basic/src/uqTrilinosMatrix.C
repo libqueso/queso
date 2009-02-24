@@ -31,7 +31,6 @@
  *-------------------------------------------------------------------------- */
 
 #include <uqTrilinosMatrix.h>
-#include <uqTrilinosVector.h>
 #include <Epetra_MpiComm.h>
 #include <uqDefines.h>
 
@@ -40,6 +39,10 @@ uqTrilinosMatrixClass::uqTrilinosMatrixClass()
   uqMatrixClass(),
   m_map        (*(new Epetra_Map( 1,0,*(new Epetra_MpiComm(MPI_COMM_WORLD)) ) ))
 {
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.rank(),
+                      "uqTrilinosMatrixClass::constructor(), default",
+                      "should not be used by user");
 }
  
 uqTrilinosMatrixClass::uqTrilinosMatrixClass(

@@ -21,7 +21,7 @@ cal_ip_outputFileName  = outputData/s1Output
 ###############################################
 cal_ip_mc_help                  = anything
 cal_ip_mc_chain_type            = 1
-cal_ip_mc_chain_size            = 1048576
+cal_ip_mc_chain_size            = 131072
 cal_ip_mc_chain_outputFileName  = outputData/s1ExtraOutput
 cal_ip_mc_chain_generateExtra   = 0
 cal_ip_mc_chain_displayPeriod   = 20000
@@ -130,7 +130,7 @@ cal_fp_outputFileName  = outputData/s1Output
 #                        16384 131072 1048576 2097152 16777216
 ###############################################
 cal_fp_mc_help            = anything
-cal_fp_mc_numSamples      = 1048576
+cal_fp_mc_numSamples      = 131072
 cal_fp_mc_outputFileName  = outputData/s1ExtraOutput
 cal_fp_mc_displayPeriod   = 20000
 cal_fp_mc_measureRunTimes = 1
@@ -188,7 +188,7 @@ val_ip_outputFileName  = outputData/s2Output
 ###############################################
 val_ip_mc_help                  = anything
 val_ip_mc_chain_type            = 1
-val_ip_mc_chain_size            = 1048576
+val_ip_mc_chain_size            = 131072
 val_ip_mc_chain_outputFileName  = outputData/s2ExtraOutput
 val_ip_mc_chain_generateExtra   = 0
 val_ip_mc_chain_displayPeriod   = 20000
@@ -297,7 +297,7 @@ val_fp_outputFileName  = outputData/s2Output
 #                        16384 131072 1048576 2097152 16777216
 ###############################################
 val_fp_mc_help            = anything
-val_fp_mc_numSamples      = 1048576
+val_fp_mc_numSamples      = 131072
 val_fp_mc_outputFileName  = outputData/s2ExtraOutput
 val_fp_mc_displayPeriod   = 20000
 val_fp_mc_measureRunTimes = 1

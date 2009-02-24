@@ -100,12 +100,12 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
       /////////////////////////////////////////////////
       // Broadcast 1 of 3
       /////////////////////////////////////////////////
-      // bufferChar[0] = 0 or 1 (vecValues     is NULL or not)
-      // bufferChar[1] = 0 or 1 (vecDirection  is NULL or not)
-      // bufferChar[2] = 0 or 1 (gradVector    is NULL or not)
-      // bufferChar[3] = 0 or 1 (hessianMatrix is NULL or not)
-      // bufferChar[4] = 0 or 1 (hessianEffect is NULL or not)
-      std::vector<char> bufferChar(5,0);
+      // bufferChar[0] = '0' or '1' (vecValues     is NULL or not)
+      // bufferChar[1] = '0' or '1' (vecDirection  is NULL or not)
+      // bufferChar[2] = '0' or '1' (gradVector    is NULL or not)
+      // bufferChar[3] = '0' or '1' (hessianMatrix is NULL or not)
+      // bufferChar[4] = '0' or '1' (hessianEffect is NULL or not)
+      std::vector<char> bufferChar(5,'0');
 
       if (m_env.subRank() == 0) {
         internalValues    = vecValues;
@@ -114,12 +114,29 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
         internalHessian   = hessianMatrix;
         internalEffect    = hessianEffect;
 
-        if (internalValues    != NULL) bufferChar[0] = 1;
-        if (internalDirection != NULL) bufferChar[1] = 1;
-        if (internalGrad      != NULL) bufferChar[2] = 1;
-        if (internalHessian   != NULL) bufferChar[3] = 1;
-        if (internalEffect    != NULL) bufferChar[4] = 1;
+        if (internalValues    != NULL) bufferChar[0] = '1';
+        if (internalDirection != NULL) bufferChar[1] = '1';
+        if (internalGrad      != NULL) bufferChar[2] = '1';
+        if (internalHessian   != NULL) bufferChar[3] = '1';
+        if (internalEffect    != NULL) bufferChar[4] = '1';
       }
+
+#ifdef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
+      std::cout << "In uqScalarFunctionSynchronizerClass<V,M>::callFunction()"
+                << ", fullRank "               << m_env.rank()
+                << ", processor subset of id " << m_env.subId()
+                << ", subRank "                << m_env.subRank()
+                << ", just before char Bcast(): about to barrier..."
+                << std::endl;
+      m_env.subComm().Barrier();
+      if (m_env.subRank() == 0) std::cout << "Just exit callFunction() barrier: sleeping 3 seconds..."
+                                          << std::endl;
+      sleep(3);
+
+      if (m_env.subId() != 0) {
+        while (true) sleep(1);
+      }
+#endif
 
       int count = (int) bufferChar.size();
       int mpiRC = MPI_Bcast ((void *) &bufferChar[0], count, MPI_CHAR, 0, m_env.subComm().Comm());
@@ -128,19 +145,60 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
                           "uqScalarFunctionSynchronizerClass<V,M>::callFunction()",
                          "failed broadcast 1 of 3");
 
-      if (bufferChar[0] == 1) {
+#ifdef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
+      std::cout << "In uqScalarFunctionSynchronizerClass<V,M>::callFunction()"
+                << ", fullRank "               << m_env.rank()
+                << ", processor subset of id " << m_env.subId()
+                << ", subRank "                << m_env.subRank()
+                << ", just after char Bcast()"
+                << ": char contents = "        << bufferChar[0] << " " << bufferChar[1] << " " << bufferChar[2] << " " << bufferChar[3] << " " << bufferChar[4]
+                << "; about to barrier..."
+                << std::endl;
+      m_env.subComm().Barrier();
+      if (m_env.subRank() == 0) std::cout << "Just exit callFunction() barrier: sleeping 3 seconds..."
+                                          << std::endl;
+      sleep(3);
+#endif
+
+      if (bufferChar[0] == '1') {
         ///////////////////////////////////////////////
         // Broadcast 2 of 3
         ///////////////////////////////////////////////
 
         // bufferDouble[0...] = contents for (eventual) vecValues
-        std::vector<double> bufferDouble(m_auxVec.size(),0);
+        std::vector<double> bufferDouble(m_auxVec.size(),0.);
 
         if (m_env.subRank() == 0) {
           for (unsigned int i = 0; i < internalValues->size(); ++i) {
             bufferDouble[i] = (*internalValues)[i];
           }
+#ifdef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
+          std::cout << "In uqScalarFunctionSynchronizerClass<V,M>::callFunction()"
+                    << ", fullRank "               << m_env.rank()
+                    << ", processor subset of id " << m_env.subId()
+                    << ", subRank "                << m_env.subRank()
+                    << ", buffer related to first double Bcast() is ready"
+                    << ": it has size " << bufferDouble.size()
+                    << " and its contents are";
+          for (unsigned int i = 0; i < bufferDouble.size(); ++i) {
+	    std::cout << " " << bufferDouble[i];
+          }
+	  std::cout << std::endl;
+#endif
         }
+#ifdef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
+        else {
+          std::cout << "In uqScalarFunctionSynchronizerClass<V,M>::callFunction()"
+                    << ", fullRank "               << m_env.rank()
+                    << ", processor subset of id " << m_env.subId()
+                    << ", subRank "                << m_env.subRank()
+                    << ", buffer related to first double Bcast() has size " << bufferDouble.size()
+                    << std::endl;
+        }
+        if (m_env.subRank() == 0) std::cout << "Sleeping 4 seconds..."
+                                            << std::endl;
+        sleep(4);
+#endif
 
         count = (int) bufferDouble.size();
         mpiRC = MPI_Bcast ((void *) &bufferDouble[0], count, MPI_DOUBLE, 0, m_env.subComm().Comm());
@@ -151,13 +209,13 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
 
         if (m_env.subRank() != 0) {
           V tmpVec(m_auxVec);
-          for (unsigned int i = 0; i < internalValues->size(); ++i) {
+          for (unsigned int i = 0; i < tmpVec.size(); ++i) {
             tmpVec[i] = bufferDouble[i];
           }
           internalValues = new V(tmpVec);
         }
 
-        if (bufferChar[1] == 1) {
+        if (bufferChar[1] == '1') {
           /////////////////////////////////////////////
           // Broadcast 3 of 3
           /////////////////////////////////////////////
@@ -178,7 +236,7 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
 
           if (m_env.subRank() != 0) {
             V tmpVec(m_auxVec);
-            for (unsigned int i = 0; i < internalDirection->size(); ++i) {
+            for (unsigned int i = 0; i < tmpVec.size(); ++i) {
               tmpVec[i] = bufferDouble[i];
             }
             internalDirection = new V(tmpVec);
@@ -189,11 +247,25 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
         // All processors now call 'scalarFunction()'
         ///////////////////////////////////////////////
         if (m_env.subRank() != 0) {
-          if (bufferChar[2] == 1) internalGrad    = new V(m_auxVec);
-          if (bufferChar[3] == 1) internalHessian = new M(m_auxVec);
-          if (bufferChar[4] == 1) internalEffect  = new V(m_auxVec);
+          if (bufferChar[2] == '1') internalGrad    = new V(m_auxVec);
+          if (bufferChar[3] == '1') internalHessian = new M(m_auxVec);
+          if (bufferChar[4] == '1') internalEffect  = new V(m_auxVec);
         }
+
+#ifdef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
+        std::cout << "In uqScalarFunctionSynchronizerClass<V,M>::callFunction()"
+                  << ", fullRank "               << m_env.rank()
+                  << ", processor subset of id " << m_env.subId()
+                  << ", subRank "                << m_env.subRank()
+                  << ", just before actual minus2LnValue(): about to barrier..."
+                  << std::endl;
+#endif
         m_env.subComm().Barrier();
+#ifdef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
+        if (m_env.subRank() == 0) std::cout << "Just exit callFunction() barrier: sleeping 5 seconds..."
+                                            << std::endl;
+        sleep(5);
+#endif
 
         result = m_scalarFunction.minus2LnValue(*internalValues,
                                                 internalDirection,
@@ -215,7 +287,7 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
         if (internalHessian   != NULL) delete internalHessian;
         if (internalEffect    != NULL) delete internalEffect;
 
-        stayInRoutine = (bufferChar[0] == 1);
+        stayInRoutine = (bufferChar[0] == '1');
       }
     } while (stayInRoutine);
   }

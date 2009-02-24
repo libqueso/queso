@@ -59,6 +59,19 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
                         "uqMarkovChainSGClass<P_V,P_M>::generateSequence()",
                         "inconsistent number of processors per processor subset");
     if (m_initialPosition.numberOfProcessorsRequiredForStorage() == 1) {
+#ifdef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
+      std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
+                << ", fullRank "               << m_env.rank()
+                << ", processor subset of id " << m_env.subId()
+                << ", subRank "                << m_env.subRank()
+                << ": about to barrier..."
+                << std::endl;
+      m_env.subComm().Barrier();
+      if (m_env.subRank() == 0) std::cout << "Just exit generateSequence() barrier: sleeping 3 seconds..."
+                                          << std::endl;
+      sleep(3);
+#endif
+
       double aux = 0.;
       if (m_env.subRank() == 0) proc0GenerateSequence(workingChain);
 
