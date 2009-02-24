@@ -36,7 +36,7 @@ all_texs: $(OBJS_convert)
 	latex users.tex
 	latex users.tex
 	dvips -t letter users.dvi -o users.ps
-	ps2pdf users.ps users.pdf
+	ps2pdf users.ps users_0_4_0.pdf
 
 .SUFFIXES: .eps .png
 

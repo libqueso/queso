@@ -23,11 +23,12 @@ $~$\\
 
 \vfill
 $~$\\
-{\bf{Ernesto E. Prudencio}}\hfill\\
+{\bf{Paul T. Bauman}}\hfill\\
 {\bf{Todd Oliver}}\hfill\\
-{\bf{Karl Schultz}}\hfill\\
+{\bf{Ernesto E. Prudencio}}\hfill\\
+{\bf{Karl Schulz}}\hfill\\
 {\bf{Roy Stogner}}\hfill\\
-{\bf{Rhys Ulrich}}\hfill\\
+{\bf{Rhys Ulerich}}\hfill\\
 Center for Predictive Engineering and Computational Sciences (PECOS) \hfill\\
 Institute for Computational and Engineering Sciences (ICES) \hfill\\
 The University of Texas at Austin\hfill\\
@@ -44,7 +45,7 @@ $~$\\
 \thispagestyle{empty}
 $~$\\
 \vfill
-Copyright \copyright\ 2008 The PECOS Team, \texttt{http://pecos.ices.utexas.edu}\\
+Copyright \copyright\ 2008-2009 The PECOS Development Team, \texttt{http://pecos.ices.utexas.edu}\\
 Permission is granted to copy, distribute and/or modify this document under the terms of
 the GNU Free Documentation License, Version 1.2 or any later version published by the Free
 Software Foundation; with the Invariant Sections being ``GNU General Public License'' and
@@ -58,21 +59,19 @@ A copy of the license is included in the section entitled ``GNU Free Documentati
 %\thispagestyle{empty}
 \centerline{\Large\bf Abstract}
 $~$\\
-The QUESO Toolkit is a
-collection of algorithms, libraries and executables aimed for
-the validation of a model and
-the prediction of quantities of interest from such model
-along with the quantification of their uncertainties.
+QUESO is a collection of algorithms and other functionalities aimed
+for the solution of statiscal inverse problems, for the solution of
+statistical forward problems, for the validation of a model and for
+the prediction of quantities of interest from such model along with
+the quantification of their uncertainties.
 
-The QUESO-MCMC Tool aimes to achieve these objectives by applying Markov-Chain Monte Carlo methodologies.
-It is designed for flexibility, portability, easiness of use and easiness of extension.
-Its software design follows an object-oriented approach and
-its code is written on C++ and over MPI.
-It can run over uniprocessor or multiprocessor environments.
+QUESO is designed for flexibility, portability, easiness of use and
+easiness of extension. Its software design follows an object-oriented
+approach and its code is written on C++ and over MPI. It can run over
+uniprocessor or multiprocessor environments.
 
-The QUESO-MCMC Tool contains two forms of documentation:
+QUESO contains two forms of documentation:
 a User's Manual available in pdf format
-%a Developer's Manual also available in pdf format,
 and
 a lower-level code documentation available in web based/html format.
 
@@ -126,10 +125,10 @@ $~$\\
 \thispagestyle{empty}
 \centerline{\Large\bf Preface}
 $~$\\
-The QUESO-MCMC (Predictive Engineering and Computational Sciences-Markov Chain Monte Carlo) Tool project started in 2008 as part
+The QUESO project started in 2008 as part
 of the efforts of the recently established Center for Predictive Engineering and Computational Sciences (PECOS)
 and the Center for Computational Geosciences and Optimization (CCGO), both at
-the Institute for Computational and Engineering Sciences (ICES) at the University of Texas at Austin.
+the Institute for Computational and Engineering Sciences (ICES) at The University of Texas at Austin.
 
 The PECOS Center was selected by the National Nuclear Security Administration (NNSA) as one of its new five centers of excellence
 under the Predictive Science Academic Alliance Program (PSAAP).
@@ -140,15 +139,17 @@ This objective demands a systematic, comprehensive treatment of the calibration 
 as well as the quantification of the uncertainties inherent in such models.
 The advancement of predictive science is essential for the application of Computational Science to the solution of realistic problems of national interest.
 
-The QUESO-MCMC Tool, since its first version, has been publicly released as open source
+The QUESO library, since its first version, has been publicly released as open source
 under the GNU General Public License and is available for free download world-wide.
 See http://www.gnu.org/licenses/gpl.html for more information on the GPL software use agreement.
 
-The QUESO-MCMC team consists of
-Ernesto E. Prudencio (Research Associate),
-Chris Simmons (Program Director),
-Omar Ghattas (Co-PI) and
-Robert Moser (PI and Director).
+The QUESO development team consists of
+Paul T. Bauman,
+Todd Oliver,
+Ernesto E. Prudencio,
+Karl Schulz,
+Roy Stogner and
+Rhys Ulerich.
 
 {\bf Contact Information:}\\
 Ernesto E. Prudencio\\
@@ -160,25 +161,25 @@ email: prudenci@ices.utexas.edu\\
 web: http://pecos.ices.utexas.edu\\
 $~$\\
 
-\centerline{\bf Referencing the QUESO-MCMC Tool}
+\centerline{\bf Referencing the QUESO Library}
 
-When referencing the QUESO-MCMC Tool in a publication, please cite the following:
+When referencing the QUESO library in a publication, please cite the following:
 \begin{verbatim}
-@Misc{queso-mcmc-web-page,
-   Author = "Ernesto E. Prudencio and Omar Ghattas
-             and Robert Moser and Chris Simmons",
-   Title      = "The {MCMC} {T}ool of the {Q}uantification of {U}ncertainty for
-                 {E}stimation, {S}imulation and {O}ptimization ({QUESO}) {T}oolkit",
-   Note     = "http://queso.ices.utexas.edu",
-   Year     = "2008"}
+@Misc{queso-web-page,
+   Author = "Paul T. Bauman and Todd Oliver and Ernesto E. Prudencio
+             and Karl Schulz and Roy Stogner and Rhys Ulerich",
+   Title  = "{T}he {QUESO} {L}ibrary: {Q}uantification of {U}ncertainty
+             for {E}stimation, {S}imulation and {O}ptimization",
+   Note   = "http://pecos.ices.utexas.edu",
+   Year   = "2008-2009"}
 
-@TechReport{queso-mcmc-user-ref,
-   Author      = "Ernesto E. Prudencio and Omar Ghattas
-                  and Robert Moser and Chris Simmons",
-   Title      = "{QUESO-MCMC} Tool, {U}ser's {M}anual",
+@TechReport{queso-user-ref,
+   Author      = "Paul T. Bauman and Todd Oliver and Ernesto E. Prudencio
+                  and Karl Schulz and Roy Stogner and Rhys Ulerich",
+   Title       = "{T}he {QUESO} {L}ibrary, {U}ser's {M}anual",
    Institution = "Institute for Computational and Engineering
-                  Sciences (ICES), University of Texas at Austin",
-   Year        = "2008"}
+                  Sciences (ICES), The University of Texas at Austin",
+   Year        = "2008-2009"}
 \end{verbatim}
 $~$\\
 $~$\\
