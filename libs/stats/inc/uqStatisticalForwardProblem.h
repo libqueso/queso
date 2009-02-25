@@ -226,6 +226,24 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
 {
+  m_env.fullComm().Barrier();
+  if (m_env.verbosity() >= 0) {
+    for (int i = 0; i < m_env.fullComm().NumProc(); ++i) {
+      if (i == m_env.rank()) {
+        std::cout << "Entering uqStatisticalForwardProblemClass<P_V,P_M>::solveWithMonteCarlo()"
+                  << ": fullRank "         << m_env.rank()
+                  << ", processor subset " << m_env.subId()
+                  << ", subRank "          << m_env.subRank()
+                  << std::endl;
+      }
+      m_env.fullComm().Barrier();
+    }
+    if (m_env.rank() == 0) std::cout << "Sleeping 3 seconds..."
+                                     << std::endl;
+    sleep(3);
+  }
+  m_env.fullComm().Barrier();
+
   if (m_computeSolution == false) {
     if ((m_env.rank() == 0)) {
       std::cout << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
@@ -284,40 +302,60 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   m_qoiRv.setCdf(*m_solutionCdf);
 
   if (m_outputFileName != UQ_PROPAG_PROBLEM_FILENAME_FOR_NO_OUTPUT_FILE) {
-    // Write output file
-    if (m_env.rank() == 0) {
-      std::cout << "Opening output file '" << m_outputFileName
-                << "' for propagation problem with problem with prefix = " << m_prefix
-                << std::endl;
-    }
+    if (m_env.subRank() == 0) {
+      // Write output file
+      if (m_env.rank() == 0) {
+        std::cout << "Opening output file '" << m_outputFileName
+                  << "' for propagation problem with problem with prefix = " << m_prefix
+                  << std::endl;
+      }
 
-    // Open file
-    std::ofstream* ofsvar = new std::ofstream((m_outputFileName+"_subset"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
-    if ((ofsvar            == NULL ) ||
-        (ofsvar->is_open() == false)) {
+      // Open file
+      std::ofstream* ofsvar = new std::ofstream((m_outputFileName+"_subset"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
+      if ((ofsvar            == NULL ) ||
+          (ofsvar->is_open() == false)) {
+        delete ofsvar;
+        ofsvar = new std::ofstream(m_outputFileName.c_str(), std::ofstream::out | std::ofstream::trunc);
+      }
+      UQ_FATAL_TEST_MACRO((ofsvar && ofsvar->is_open()) == false,
+                          m_env.rank(),
+                          "uqStatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithBayesMarkovChain()",
+                          "failed to open file");
+
+      m_qoiRv.mdf().print(*ofsvar);
+      *ofsvar << m_qoiRv.cdf();
+
+      // Close file
+      ofsvar->close();
       delete ofsvar;
-      ofsvar = new std::ofstream(m_outputFileName.c_str(), std::ofstream::out | std::ofstream::trunc);
-    }
-    UQ_FATAL_TEST_MACRO((ofsvar && ofsvar->is_open()) == false,
-                        m_env.rank(),
-                        "uqStatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithBayesMarkovChain()",
-                        "failed to open file");
-
-    m_qoiRv.mdf().print(*ofsvar);
-    *ofsvar << m_qoiRv.cdf();
-
-    // Close file
-    ofsvar->close();
-    delete ofsvar;
-    if (m_env.rank() == 0) {
-      std::cout << "Closed output file '" << m_outputFileName
-                << "' for propagation problem with problem with prefix = " << m_prefix
-                << std::endl;
+      if (m_env.rank() == 0) {
+        std::cout << "Closed output file '" << m_outputFileName
+                  << "' for propagation problem with problem with prefix = " << m_prefix
+                  << std::endl;
+      }
     }
   }
   if (m_env.rank() == 0) {
     std::cout << std::endl;
   }
+
+  m_env.fullComm().Barrier();
+  if (m_env.verbosity() >= 0) {
+    for (int i = 0; i < m_env.fullComm().NumProc(); ++i) {
+      if (i == m_env.rank()) {
+        std::cout << "Entering uqStatisticalForwardProblemClass<P_V,P_M>::solveWithMonteCarlo()"
+                  << ": fullRank "         << m_env.rank()
+                  << ", processor subset " << m_env.subId()
+                  << ", subRank "          << m_env.subRank()
+                  << std::endl;
+      }
+      m_env.fullComm().Barrier();
+    }
+    if (m_env.rank() == 0) std::cout << "Sleeping 3 seconds..."
+                                     << std::endl;
+    sleep(3);
+  }
+  m_env.fullComm().Barrier();
 
   return;
 }

@@ -100,6 +100,7 @@ public:
           const std::string&      runName                  () const;
           const gsl_rng*          rng                      () const;
           bool                    isThereInputFile         () const;
+          void                    printSyncDebugMsg        (const char* msg, unsigned int numUSecs) const;
   virtual void                    print                    (std::ostream& os) const = 0;
 
 protected:

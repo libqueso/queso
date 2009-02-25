@@ -134,6 +134,13 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
         if (internalEffects   != NULL) bufferChar[5] = '1';
       }
 
+#ifdef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
+      m_env.printSyncDebugMsg("In uqVectorFunctionSynchronizerClass<V,M>::callFunction(), just before char Bcast()",3000000);
+      //if (m_env.subId() != 0) {
+      //  while (true) sleep(1);
+      //}
+#endif
+
       int count = (int) bufferChar.size();
       int mpiRC = MPI_Bcast ((void *) &bufferChar[0], count, MPI_CHAR, 0, m_env.subComm().Comm());
       UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
@@ -207,8 +214,8 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
         //if (bufferChar[4] == '1') internalHessians = new P_M(m_auxPVec);
         //if (bufferChar[5] == '1') internalEffects  = new P_V(m_auxPVec);
         }
-        m_env.subComm().Barrier();
 
+        m_env.subComm().Barrier();
         m_vectorFunction.compute(*internalValues,
                                  internalDirection,
                                  *internalImageVec,
@@ -231,7 +238,7 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
       //if (internalHessians  != NULL) delete internalHessians;
       //if (internalEffects   != NULL) delete internalEffects;
 
-        stayInRoutine = (bufferChar[0] == '1');
+        stayInRoutine = (vecValues == NULL) && (bufferChar[0] == '1');
       }
     } while (stayInRoutine);
   }
@@ -244,6 +251,8 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
                         m_env.rank(),
                         "uqVectorFunctionSynchronizerClass<V,M>::callFunction()",
                         "Number of processors required for storage should be the same");
+
+    m_env.subComm().Barrier();
     m_vectorFunction.compute(*vecValues,
                              vecDirection,
                              *imageVector,

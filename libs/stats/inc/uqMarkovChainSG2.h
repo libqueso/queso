@@ -37,6 +37,10 @@ template <class P_V,class P_M>
 void
 uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_M>& workingChain)
 {
+#ifdef UQ_GENERATE_PARALLEL_DUMMY_CHAINS
+  m_env.printSyncDebugMsg("In (position 1) uqMarkovChainSGClass<P_V,P_M>::generateSequence()",3000000);
+  proc0GenerateSequence(workingChain);
+#else
   if (m_env.numProcSubsets() == (unsigned int) m_env.fullComm().NumProc()) {
     UQ_FATAL_TEST_MACRO(m_env.subRank() != 0,
                         m_env.rank(),
@@ -102,7 +106,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
                         "uqMarkovChainSGClass<P_V,P_M>::generateSequence()",
                         "number of processors per processor subset is too large");
   }
-
+#endif
   return;
 }
 template <class P_V,class P_M>
@@ -174,24 +178,25 @@ uqMarkovChainSGClass<P_V,P_M>::proc0GenerateSequence(uqBaseVectorSequenceClass<P
                 << std::endl;
     }
 
-    // Open file
+    if (m_env.subRank() == 0) {
+      // Open file
 #if 0
-    // Always write over an eventual pre-existing file
-    ofsvar = new std::ofstream((m_chainOutputFileName+"_subset"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
-#else
-    // Always write at the end of an eventual pre-existing file
-    ofsvar = new std::ofstream((m_chainOutputFileName+"_subset"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
-    if ((ofsvar            == NULL ) ||
-        (ofsvar->is_open() == false)) {
-      delete ofsvar;
+      // Always write over an eventual pre-existing file
       ofsvar = new std::ofstream((m_chainOutputFileName+"_subset"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
-    }
+#else
+      // Always write at the end of an eventual pre-existing file
+      ofsvar = new std::ofstream((m_chainOutputFileName+"_subset"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
+      if ((ofsvar            == NULL ) ||
+          (ofsvar->is_open() == false)) {
+        delete ofsvar;
+        ofsvar = new std::ofstream((m_chainOutputFileName+"_subset"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
+      }
 #endif
-
-    UQ_FATAL_TEST_MACRO((ofsvar && ofsvar->is_open()) == false,
-                        m_env.rank(),
-                        "uqMarkovChainSGClass<P_V,P_M>::proc0GenerateSequence()",
-                        "failed to open file");
+      UQ_FATAL_TEST_MACRO((ofsvar && ofsvar->is_open()) == false,
+                          m_env.rank(),
+                          "uqMarkovChainSGClass<P_V,P_M>::proc0GenerateSequence()",
+                          "failed to open file");
+    }
   }
   
   //****************************************************
@@ -400,6 +405,8 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
   uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
   unsigned int                        chainSize)
 {
+  m_env.printSyncDebugMsg("Entering uqMarkovChainSGClass<P_V,P_M>::generateFullChain()",3000000);
+
   if (m_env.rank() == 0) {
     std::cout << "Starting the generation of Markov chain " << workingChain.name()
               << ", with "                                  << chainSize
@@ -476,6 +483,25 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
               << std::endl;
   }
 
+  m_env.printSyncDebugMsg("In (position 1) uqMarkovChainSGClass<P_V,P_M>::generateFullChain()",3000000);
+
+#ifdef UQ_GENERATE_PARALLEL_DUMMY_CHAINS
+  if ((m_env.numProcSubsets() < (unsigned int) m_env.fullComm().NumProc()) &&
+      (m_initialPosition.numberOfProcessorsRequiredForStorage() == 1     ) &&
+      (m_env.subRank()                                          != 0     )) {
+    double aux = 0.;
+    aux = m_targetPdfSynchronizer->callFunction(NULL,
+                                                NULL,
+                                                NULL,
+                                                NULL,
+                                                NULL);
+    for (unsigned int positionId = 1; positionId < workingChain.sequenceSize(); ++positionId) {
+      workingChain.setPositionValues(positionId,currentPositionData.vecValues());
+      m_numRejections++;
+    }
+  }
+  else {
+#endif
   for (unsigned int positionId = 1; positionId < workingChain.sequenceSize(); ++positionId) {
     if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
       std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
@@ -902,6 +928,17 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
                 << std::endl;
     }
   } // end chain loop
+#ifdef UQ_GENERATE_PARALLEL_DUMMY_CHAINS
+    // subRank == 0 --> Tell all other processors to exit barrier now that the chain has been fully generated
+    // subRank != 0 --> Enter the barrier and wait for processor 0 to decide to call the targetPdf
+    double aux = 0.;
+    aux = m_targetPdfSynchronizer->callFunction(NULL,
+                                                NULL,
+                                                NULL,
+                                                NULL,
+                                                NULL);
+  }
+#endif
 
   //****************************************************
   // Print basic information about the chain

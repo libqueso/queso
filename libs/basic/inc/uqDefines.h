@@ -35,10 +35,12 @@
 
 #include <iostream>
 #include <stdlib.h> // For exit()
+#include <Epetra_MpiComm.h>
 
 int uqMyRank();
 
 #undef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
+#define UQ_GENERATE_PARALLEL_DUMMY_CHAINS
 
 const int UQ_UNAVAILABLE_RANK         = -1;
 
@@ -111,6 +113,8 @@ const int UQ_INVALID_SPACE_COMPONENT_ID_RC = -10;
               << ": "       << what                    \
               << ". Exiting..."                        \
               << std::endl;                            \
+    int mpiRC = 0;                                     \
+    mpiRC = MPI_Abort(MPI_COMM_WORLD,-999);            \
     exit(1);                                           \
   }
 

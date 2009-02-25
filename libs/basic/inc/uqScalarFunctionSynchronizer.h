@@ -122,20 +122,10 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
       }
 
 #ifdef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
-      std::cout << "In uqScalarFunctionSynchronizerClass<V,M>::callFunction()"
-                << ", fullRank "               << m_env.rank()
-                << ", processor subset of id " << m_env.subId()
-                << ", subRank "                << m_env.subRank()
-                << ", just before char Bcast(): about to barrier..."
-                << std::endl;
-      m_env.subComm().Barrier();
-      if (m_env.subRank() == 0) std::cout << "Just exit callFunction() barrier: sleeping 3 seconds..."
-                                          << std::endl;
-      sleep(3);
-
-      if (m_env.subId() != 0) {
-        while (true) sleep(1);
-      }
+      m_env.printSyncDebugMsg("In uqScalarFunctionSynchronizerClass<V,M>::callFunction(), just before char Bcast()",3000000);
+      //if (m_env.subId() != 0) {
+      //  while (true) sleep(1);
+      //}
 #endif
 
       int count = (int) bufferChar.size();
@@ -146,18 +136,9 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
                          "failed broadcast 1 of 3");
 
 #ifdef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
-      std::cout << "In uqScalarFunctionSynchronizerClass<V,M>::callFunction()"
-                << ", fullRank "               << m_env.rank()
-                << ", processor subset of id " << m_env.subId()
-                << ", subRank "                << m_env.subRank()
-                << ", just after char Bcast()"
-                << ": char contents = "        << bufferChar[0] << " " << bufferChar[1] << " " << bufferChar[2] << " " << bufferChar[3] << " " << bufferChar[4]
-                << "; about to barrier..."
-                << std::endl;
-      m_env.subComm().Barrier();
-      if (m_env.subRank() == 0) std::cout << "Just exit callFunction() barrier: sleeping 3 seconds..."
-                                          << std::endl;
-      sleep(3);
+      m_env.printSyncDebugMsg("In uqScalarFunctionSynchronizerClass<V,M>::callFunction(), just after char Bcast()",3000000);
+      //std::cout << "char contents = " << bufferChar[0] << " " << bufferChar[1] << " " << bufferChar[2] << " " << bufferChar[3] << " " << bufferChar[4]
+      //          << std::endl;
 #endif
 
       if (bufferChar[0] == '1') {
@@ -253,20 +234,10 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
         }
 
 #ifdef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
-        std::cout << "In uqScalarFunctionSynchronizerClass<V,M>::callFunction()"
-                  << ", fullRank "               << m_env.rank()
-                  << ", processor subset of id " << m_env.subId()
-                  << ", subRank "                << m_env.subRank()
-                  << ", just before actual minus2LnValue(): about to barrier..."
-                  << std::endl;
-#endif
-        m_env.subComm().Barrier();
-#ifdef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
-        if (m_env.subRank() == 0) std::cout << "Just exit callFunction() barrier: sleeping 5 seconds..."
-                                            << std::endl;
-        sleep(5);
+        m_env.printSyncDebugMsg("In uqScalarFunctionSynchronizerClass<V,M>::callFunction(), just after actual minus2LnValue()",3000000);
 #endif
 
+        m_env.subComm().Barrier();
         result = m_scalarFunction.minus2LnValue(*internalValues,
                                                 internalDirection,
                                                 internalGrad,
@@ -287,7 +258,8 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
         if (internalHessian   != NULL) delete internalHessian;
         if (internalEffect    != NULL) delete internalEffect;
 
-        stayInRoutine = (bufferChar[0] == '1');
+        stayInRoutine = (vecValues == NULL) && (bufferChar[0] == '1');
+        if (!stayInRoutine) std::cout << "Fullrank " << m_env.rank() << " is leaving scalarFunctionSync()" << std::endl;
       }
     } while (stayInRoutine);
   }
@@ -296,6 +268,8 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
                         m_env.rank(),
                         "uqScalarFunctionSynchronizerClass<V,M>::callFunction()",
                         "vecValues should not be NULL");
+
+    m_env.subComm().Barrier();
     result = m_scalarFunction.minus2LnValue(*vecValues,
                                             vecDirection,
                                             gradVector,

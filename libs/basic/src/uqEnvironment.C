@@ -335,6 +335,30 @@ uqBaseEnvironmentClass::isThereInputFile() const
   return m_thereIsInputFile;
 }
 
+void
+uqBaseEnvironmentClass::printSyncDebugMsg(const char* msg, unsigned int numUSecs) const
+{
+  this->fullComm().Barrier();
+  if (this->verbosity() >= 0) {
+    for (int i = 0; i < this->fullComm().NumProc(); ++i) {
+      if (i == this->rank()) {
+        std::cout << msg
+                  << ": fullRank "         << this->rank()
+                  << ", processor subset " << this->subId()
+                  << ", subRank "          << this->subRank()
+                  << std::endl;
+      }
+      this->fullComm().Barrier();
+    }
+    if (this->rank() == 0) std::cout << "Sleeping " << numUSecs << " microseconds..."
+                                     << std::endl;
+    usleep(numUSecs);
+  }
+  this->fullComm().Barrier();
+
+  return;
+}
+
 //*****************************************************
 // Empty Environment
 //*****************************************************

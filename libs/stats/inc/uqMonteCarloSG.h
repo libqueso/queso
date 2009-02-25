@@ -170,7 +170,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::defineMyOptions(
   po::options_description& optionsDesc)
 {
   optionsDesc.add_options()
-    (m_option_help.c_str(),                                                                                      "produce help message for Monte Carlo distribution calculator")
+    (m_option_help.c_str(),                                                                                       "produce help message for Monte Carlo distribution calculator")
     (m_option_numSamples.c_str(),      po::value<unsigned int>()->default_value(UQ_MOC_SG_NUM_SAMPLES_ODV      ), "number of samples"                                           )
     (m_option_outputFileName.c_str(),  po::value<std::string >()->default_value(UQ_MOC_SG_OUTPUT_FILE_NAME_ODV ), "name of output file"                                         )
     (m_option_use2.c_str(),            po::value<bool        >()->default_value(UQ_MOC_SG_USE2_ODV             ), "use seq2"                                                    )
@@ -224,6 +224,9 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_M>& workingSeq)
 {
+#ifdef UQ_GENERATE_PARALLEL_DUMMY_CHAINS
+  proc0GenerateSequence(m_paramRv,workingSeq);
+#else
   if (m_env.numProcSubsets() == (unsigned int) m_env.fullComm().NumProc()) {
     UQ_FATAL_TEST_MACRO(m_env.subRank() != 0,
                         m_env.rank(),
@@ -278,7 +281,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence(uqBaseVectorSequenceClass
                         "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence()",
                         "number of processors per processor subset is too large");
   }
-
+#endif
   return;
 }
 
@@ -411,25 +414,53 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence(
   workingSeq.resizeSequence(seqSize);
   P_V tmpP(m_paramSpace.zeroVector());
   Q_V tmpQ(m_qoiSpace.zeroVector());
-  for (unsigned int i = 0; i < seqSize; ++i) {
-    paramRv.realizer().realization(tmpP);
+#if 0 // def UQ_GENERATE_PARALLEL_DUMMY_CHAINS
+  if ((m_env.numProcSubsets() < (unsigned int) m_env.fullComm().NumProc()                         ) &&
+      (m_paramRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage() == 1) &&
+      (m_qoiRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage()   == 1) &&
+      (m_env.subRank()                                                                        != 0)) {
+    m_qoiFunctionSynchronizer->callFunction(NULL,
+                                            NULL,
+                                            NULL,
+                                            NULL,
+                                            NULL,
+                                            NULL);
 
-    if (m_measureRunTimes) iRC = gettimeofday(&timevalQoIFunction, NULL);
-    m_qoiFunctionSynchronizer->callFunction(&tmpP,NULL,&tmpQ,NULL,NULL,NULL); // Might demand parallel environment
-    if (m_measureRunTimes) qoiFunctionRunTime += uqMiscGetEllapsedSeconds(&timevalQoIFunction);
-
-    workingSeq.setPositionValues(i,tmpQ);
-
-    if ((m_displayPeriod            > 0) && 
-        (((i+1) % m_displayPeriod) == 0)) {
-      if (m_env.rank() == 0) {
-        std::cout << "Finished generating " << i+1
-                  << " qoi samples"
-                  << std::endl;
-      }
+    for (unsigned int i = 0; i < seqSize; ++i) {
+      workingSeq.setPositionValues(i,m_qoiSpace.zeroVector());
     }
   }
+  else {
+#endif
+    for (unsigned int i = 0; i < seqSize; ++i) {
+      paramRv.realizer().realization(tmpP);
 
+      if (m_measureRunTimes) iRC = gettimeofday(&timevalQoIFunction, NULL);
+      m_qoiFunctionSynchronizer->callFunction(&tmpP,NULL,&tmpQ,NULL,NULL,NULL); // Might demand parallel environment
+      if (m_measureRunTimes) qoiFunctionRunTime += uqMiscGetEllapsedSeconds(&timevalQoIFunction);
+
+      workingSeq.setPositionValues(i,tmpQ);
+
+      if ((m_displayPeriod            > 0) && 
+          (((i+1) % m_displayPeriod) == 0)) {
+        if (m_env.rank() == 0) {
+          std::cout << "Finished generating " << i+1
+                    << " qoi samples"
+                    << std::endl;
+        }
+      }
+    }
+#if 0 // def UQ_GENERATE_PARALLEL_DUMMY_CHAINS
+    // subRank == 0 --> Tell all other processors to exit barrier now that the chain has been fully generated
+    // subRank != 0 --> Enter the barrier and wait for processor 0 to decide to call the qoiFunctionx
+    m_qoiFunctionSynchronizer->callFunction(NULL,
+                                            NULL,
+                                            NULL,
+                                            NULL,
+                                            NULL,
+                                            NULL);
+  }
+#endif
   seqRunTime = uqMiscGetEllapsedSeconds(&timevalSeq);
 
   if (m_env.rank() == 0) {
