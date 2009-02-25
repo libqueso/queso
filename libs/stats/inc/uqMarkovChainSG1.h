@@ -94,9 +94,10 @@ public:
                        const P_M*                          inputProposalCovMatrix); /*! Proposal covariance matrix. */ 
  ~uqMarkovChainSGClass();
 
-  void   generateSequence         (uqBaseVectorSequenceClass<P_V,P_M>& workingChain); /*! */
+  void   generateSequence           (uqBaseVectorSequenceClass<P_V,P_M>& workingChain); /*! */
+  void   checkTheParallelEnvironment();
 
-  void   print                    (std::ostream& os) const;
+  void   print                      (std::ostream& os) const;
 
 
 private:

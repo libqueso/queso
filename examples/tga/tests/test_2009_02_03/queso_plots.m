@@ -1,8 +1,8 @@
 cd outputData
-s1Output
-s1ExtraOutput
-s2Output
-s2ExtraOutput
+s1Output_subset0
+s1ExtraOutput_subset0
+s2Output_subset0
+s2ExtraOutput_subset0
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -11,19 +11,19 @@ maxPrior0 = 2.80e+11;
 numPrior0 = 200;
 numHorizPts0 = 20;
 deltaPrior0 = (maxPrior0 - minPrior0)/numPrior0;
-cal_ip_prior_0_grid   = [minPrior0-numHorizPts0*deltaPrior0 : deltaPrior0 : maxPrior0+numHorizPts0*deltaPrior0];
-cal_ip_prior_0_values = ones(1,numPrior0+2*numHorizPts0+1)./(maxPrior0-minPrior0);
-cal_ip_prior_0_values(1,1:numHorizPts0)     = 0.;
-cal_ip_prior_0_values(1,numPrior0+numHorizPts0+2:numPrior0+2*numHorizPts0+1) = 0.;
-plot(cal_ip_prior_0_grid,cal_ip_prior_0_values,'b*');
+cycle_cal_ip_prior_0_grid   = [minPrior0-numHorizPts0*deltaPrior0 : deltaPrior0 : maxPrior0+numHorizPts0*deltaPrior0];
+cycle_cal_ip_prior_0_values = ones(1,numPrior0+2*numHorizPts0+1)./(maxPrior0-minPrior0);
+cycle_cal_ip_prior_0_values(1,1:numHorizPts0)     = 0.;
+cycle_cal_ip_prior_0_values(1,numPrior0+numHorizPts0+2:numPrior0+2*numHorizPts0+1) = 0.;
+plot(cycle_cal_ip_prior_0_grid,cycle_cal_ip_prior_0_values,'b*');
 hold
 
 cal_left_vertical_line_x0 = ones(1,11)*minPrior0;
-cal_left_vertical_line_y0 = [0 : cal_ip_prior_0_values(1,numHorizPts0+1)/10 : cal_ip_prior_0_values(1,numHorizPts0+1)];
+cal_left_vertical_line_y0 = [0 : cycle_cal_ip_prior_0_values(1,numHorizPts0+1)/10 : cycle_cal_ip_prior_0_values(1,numHorizPts0+1)];
 plot(cal_left_vertical_line_x0,cal_left_vertical_line_y0,'b--','linewidth',1);
 
 cal_right_vertical_line_x0 = ones(1,11)*maxPrior0;
-cal_right_vertical_line_y0 = [0 : cal_ip_prior_0_values(1,numHorizPts0+1)/10 : cal_ip_prior_0_values(1,numHorizPts0+1)];
+cal_right_vertical_line_y0 = [0 : cycle_cal_ip_prior_0_values(1,numHorizPts0+1)/10 : cycle_cal_ip_prior_0_values(1,numHorizPts0+1)];
 plot(cal_right_vertical_line_x0,cal_right_vertical_line_y0,'b--','linewidth',1);
 
 ylabel('Prior marginal pdf','fontsize',20);
@@ -42,19 +42,19 @@ maxPrior1 = 2.20e+5;
 numPrior1 = 200;
 numHorizPts1 = 20;
 deltaPrior1 = (maxPrior1 - minPrior1)/numPrior1;
-cal_ip_prior_1_grid   = [minPrior1-numHorizPts1*deltaPrior1 : deltaPrior1 : maxPrior1+numHorizPts1*deltaPrior1];
-cal_ip_prior_1_values = ones(1,numPrior1+2*numHorizPts1+1)./(maxPrior1-minPrior1);
-cal_ip_prior_1_values(1,1:numHorizPts1)     = 0.;
-cal_ip_prior_1_values(1,numPrior1+numHorizPts1+2:numPrior1+2*numHorizPts1+1) = 0.;
-plot(cal_ip_prior_1_grid,cal_ip_prior_1_values,'b*');
+cycle_cal_ip_prior_1_grid   = [minPrior1-numHorizPts1*deltaPrior1 : deltaPrior1 : maxPrior1+numHorizPts1*deltaPrior1];
+cycle_cal_ip_prior_1_values = ones(1,numPrior1+2*numHorizPts1+1)./(maxPrior1-minPrior1);
+cycle_cal_ip_prior_1_values(1,1:numHorizPts1)     = 0.;
+cycle_cal_ip_prior_1_values(1,numPrior1+numHorizPts1+2:numPrior1+2*numHorizPts1+1) = 0.;
+plot(cycle_cal_ip_prior_1_grid,cycle_cal_ip_prior_1_values,'b*');
 hold
 
 cal_left_vertical_line_x1 = ones(1,11)*minPrior1;
-cal_left_vertical_line_y1 = [0 : cal_ip_prior_1_values(1,numHorizPts1+1)/10 : cal_ip_prior_1_values(1,numHorizPts1+1)];
+cal_left_vertical_line_y1 = [0 : cycle_cal_ip_prior_1_values(1,numHorizPts1+1)/10 : cycle_cal_ip_prior_1_values(1,numHorizPts1+1)];
 plot(cal_left_vertical_line_x1,cal_left_vertical_line_y1,'b--','linewidth',1);
 
 cal_right_vertical_line_x1 = ones(1,11)*maxPrior1;
-cal_right_vertical_line_y1 = [0 : cal_ip_prior_1_values(1,numHorizPts1+1)/10 : cal_ip_prior_1_values(1,numHorizPts1+1)];
+cal_right_vertical_line_y1 = [0 : cycle_cal_ip_prior_1_values(1,numHorizPts1+1)/10 : cycle_cal_ip_prior_1_values(1,numHorizPts1+1)];
 plot(cal_right_vertical_line_x1,cal_right_vertical_line_y1,'b--','linewidth',1);
 
 ylabel('Prior marginal pdf','fontsize',20);
@@ -68,11 +68,11 @@ clf
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%plot(cal_ip_mdf_0_grid,cal_ip_mdf_0_values,'b+');
-plot(cal_ip_mc_filteredChain_kdeEvalPositions(1,:),cal_ip_mc_filteredChain_gaussianKdeDensities(1,:),'b-','linewidth',3);
+%%plot(cycle_cal_ip_mdf_0_grid,cycle_cal_ip_mdf_0_values,'b+');
+plot(cycle_cal_ip_mc_filteredChain_kdeEvalPositions(1,:),cycle_cal_ip_mc_filteredChain_gaussianKdeDensities(1,:),'b-','linewidth',3);
 hold
-%%plot(val_ip_mdf_0_grid,val_ip_mdf_0_values,'r+');
-plot(val_ip_mc_filteredChain_kdeEvalPositions(1,:),val_ip_mc_filteredChain_gaussianKdeDensities(1,:),'r-','linewidth',3);
+%%plot(cycle_val_ip_mdf_0_grid,cycle_val_ip_mdf_0_values,'r+');
+plot(cycle_val_ip_mc_filteredChain_kdeEvalPositions(1,:),cycle_val_ip_mc_filteredChain_gaussianKdeDensities(1,:),'r-','linewidth',3);
 ylabel('Posterior marginal pdf','fontsize',20);
 xlabel('A (min^{-1})','fontsize',20);
 title('A: prior(*) and posterior (-) marginals','fontsize',20);
@@ -82,14 +82,14 @@ legend('Calibration',...
        'Validation',...
        'location','southwest');
 
-plot(cal_ip_prior_0_grid,cal_ip_prior_0_values,'b*');
+plot(cycle_cal_ip_prior_0_grid,cycle_cal_ip_prior_0_values,'b*');
 
 cal_left_vertical_line_x0 = ones(1,11)*minPrior0;
-cal_left_vertical_line_y0 = [0 : cal_ip_prior_0_values(1,numHorizPts0+1)/10 : cal_ip_prior_0_values(1,numHorizPts0+1)];
+cal_left_vertical_line_y0 = [0 : cycle_cal_ip_prior_0_values(1,numHorizPts0+1)/10 : cycle_cal_ip_prior_0_values(1,numHorizPts0+1)];
 plot(cal_left_vertical_line_x0,cal_left_vertical_line_y0,'b--','linewidth',1);
 
 cal_right_vertical_line_x0 = ones(1,11)*maxPrior0;
-cal_right_vertical_line_y0 = [0 : cal_ip_prior_0_values(1,numHorizPts0+1)/10 : cal_ip_prior_0_values(1,numHorizPts0+1)];
+cal_right_vertical_line_y0 = [0 : cycle_cal_ip_prior_0_values(1,numHorizPts0+1)/10 : cycle_cal_ip_prior_0_values(1,numHorizPts0+1)];
 plot(cal_right_vertical_line_x0,cal_right_vertical_line_y0,'b--','linewidth',1);
 
 print -dpng talk_cal_val_post_mpdf_0.png
@@ -98,11 +98,11 @@ clf
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%plot(cal_ip_mdf_1_grid,cal_ip_mdf_1_values,'b+');
-plot(cal_ip_mc_filteredChain_kdeEvalPositions(2,:),cal_ip_mc_filteredChain_gaussianKdeDensities(2,:),'b-','linewidth',3);
+%%plot(cycle_cal_ip_mdf_1_grid,cycle_cal_ip_mdf_1_values,'b+');
+plot(cycle_cal_ip_mc_filteredChain_kdeEvalPositions(2,:),cycle_cal_ip_mc_filteredChain_gaussianKdeDensities(2,:),'b-','linewidth',3);
 hold
-%%plot(val_ip_mdf_1_grid,val_ip_mdf_1_values,'r+');
-plot(val_ip_mc_filteredChain_kdeEvalPositions(2,:),val_ip_mc_filteredChain_gaussianKdeDensities(2,:),'r-','linewidth',3);
+%%plot(cycle_val_ip_mdf_1_grid,cycle_val_ip_mdf_1_values,'r+');
+plot(cycle_val_ip_mc_filteredChain_kdeEvalPositions(2,:),cycle_val_ip_mc_filteredChain_gaussianKdeDensities(2,:),'r-','linewidth',3);
 ylabel('Pdf','fontsize',20);
 xlabel('E (J/mol)','fontsize',20);
 title('E: prior(*) and posterior (-) marginals','fontsize',20);
@@ -112,14 +112,14 @@ legend('Calibration',...
        'Validation',...
        'location','northwest');
 
-plot(cal_ip_prior_1_grid,cal_ip_prior_1_values,'b*');
+plot(cycle_cal_ip_prior_1_grid,cycle_cal_ip_prior_1_values,'b*');
 
 cal_left_vertical_line_x1 = ones(1,11)*minPrior1;
-cal_left_vertical_line_y1 = [0 : cal_ip_prior_1_values(1,numHorizPts1+1)/10 : cal_ip_prior_1_values(1,numHorizPts1+1)];
+cal_left_vertical_line_y1 = [0 : cycle_cal_ip_prior_1_values(1,numHorizPts1+1)/10 : cycle_cal_ip_prior_1_values(1,numHorizPts1+1)];
 plot(cal_left_vertical_line_x1,cal_left_vertical_line_y1,'b--','linewidth',1);
 
 cal_right_vertical_line_x1 = ones(1,11)*maxPrior1;
-cal_right_vertical_line_y1 = [0 : cal_ip_prior_1_values(1,numHorizPts1+1)/10 : cal_ip_prior_1_values(1,numHorizPts1+1)];
+cal_right_vertical_line_y1 = [0 : cycle_cal_ip_prior_1_values(1,numHorizPts1+1)/10 : cycle_cal_ip_prior_1_values(1,numHorizPts1+1)];
 plot(cal_right_vertical_line_x1,cal_right_vertical_line_y1,'b--','linewidth',1);
 
 print -dpng talk_cal_val_post_mpdf_1.png
@@ -128,11 +128,11 @@ clf
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%plot(cal_fp_mdf_0_grid,cal_fp_mdf_0_values,'b+');
-plot(cal_fp_mc_seq_kdeEvalPositions(1,:),cal_fp_mc_seq_gaussianKdeDensities(1,:),'b-','linewidth',3);
+%%plot(cycle_cal_fp_mdf_0_grid,cycle_cal_fp_mdf_0_values,'b+');
+plot(cycle_cal_fp_mc_seq_kdeEvalPositions(1,:),cycle_cal_fp_mc_seq_gaussianKdeDensities(1,:),'b-','linewidth',3);
 hold
-%%plot(val_fp_mdf_0_grid,val_fp_mdf_0_values,'r+');
-plot(val_fp_mc_seq_kdeEvalPositions(1,:),val_fp_mc_seq_gaussianKdeDensities(1,:),'r-','linewidth',3);
+%%plot(cycle_val_fp_mdf_0_grid,cycle_val_fp_mdf_0_values,'r+');
+plot(cycle_val_fp_mc_seq_kdeEvalPositions(1,:),cycle_val_fp_mc_seq_gaussianKdeDensities(1,:),'r-','linewidth',3);
 ylabel('Pdf','fontsize',20);
 xlabel('Mass fraction remaining at t=3.9s','fontsize',20);
 title('QoI Pdf','fontsize',20);
@@ -147,9 +147,9 @@ clf
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-plot(cal_fp_cdf_0_grid,100*cal_fp_cdf_0_values,'b-','linewidth',3);
+plot(cycle_cal_fp_cdf_0_grid,100*cycle_cal_fp_cdf_0_values,'b-','linewidth',3);
 hold
-plot(val_fp_cdf_0_grid,100*val_fp_cdf_0_values,'r-','linewidth',3);
+plot(cycle_val_fp_cdf_0_grid,100*cycle_val_fp_cdf_0_values,'r-','linewidth',3);
 
 a=axis;
 axis([a(1) 1.0 a(3) a(4)]);
@@ -167,11 +167,11 @@ clf
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-plot(cal_fp_cdf_0_grid,100*cal_fp_cdf_0_values,'b-','linewidth',3);
+plot(cycle_cal_fp_cdf_0_grid,100*cycle_cal_fp_cdf_0_values,'b-','linewidth',3);
 hold
-plot(val_fp_cdf_0_grid,100*val_fp_cdf_0_values,'r-','linewidth',3);
+plot(cycle_val_fp_cdf_0_grid,100*cycle_val_fp_cdf_0_values,'r-','linewidth',3);
 
-[m,n] = size(cal_fp_cdf_0_grid);
+[m,n] = size(cycle_cal_fp_cdf_0_grid);
 epsilon = 0.06;
 plot([0:0.01:1],ones(101,1)*100*(0.+epsilon/2),'k--','linewidth',1);
 plot([0:0.01:1],ones(101,1)*100*(1.-epsilon/2),'k--','linewidth',1);
@@ -192,11 +192,11 @@ clf
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-plot(cal_fp_cdf_0_grid,100*cal_fp_cdf_0_values,'b-','linewidth',3);
+plot(cycle_cal_fp_cdf_0_grid,100*cycle_cal_fp_cdf_0_values,'b-','linewidth',3);
 hold
-plot(val_fp_cdf_0_grid,100*val_fp_cdf_0_values,'r-','linewidth',3);
+plot(cycle_val_fp_cdf_0_grid,100*cycle_val_fp_cdf_0_values,'r-','linewidth',3);
 
-[m,n] = size(cal_fp_cdf_0_grid);
+[m,n] = size(cycle_cal_fp_cdf_0_grid);
 epsilon = 0.06;
 plot([0:0.01:1],ones(101,1)*100*(0.+epsilon/2),'k--','linewidth',3);
 plot([0:0.01:1],ones(101,1)*100*(1.-epsilon/2),'k--','linewidth',3);
@@ -217,11 +217,11 @@ clf
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-plot(cal_fp_cdf_0_grid,100*cal_fp_cdf_0_values,'b-','linewidth',3);
+plot(cycle_cal_fp_cdf_0_grid,100*cycle_cal_fp_cdf_0_values,'b-','linewidth',3);
 hold
-plot(val_fp_cdf_0_grid,100*val_fp_cdf_0_values,'r-','linewidth',3);
+plot(cycle_val_fp_cdf_0_grid,100*cycle_val_fp_cdf_0_values,'r-','linewidth',3);
 
-[m,n] = size(cal_fp_cdf_0_grid);
+[m,n] = size(cycle_cal_fp_cdf_0_grid);
 probabilityTresholdForFailure = 0.05;
 plot([0:0.01:1],ones(101,1)*100*probabilityTresholdForFailure,'k--','linewidth',1);
 massTresholdForFailure = 0.2;
@@ -243,11 +243,11 @@ clf
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-plot(cal_fp_cdf_0_grid,100*cal_fp_cdf_0_values,'b-','linewidth',3);
+plot(cycle_cal_fp_cdf_0_grid,100*cycle_cal_fp_cdf_0_values,'b-','linewidth',3);
 hold
-plot(val_fp_cdf_0_grid,100*val_fp_cdf_0_values,'r-','linewidth',3);
+plot(cycle_val_fp_cdf_0_grid,100*cycle_val_fp_cdf_0_values,'r-','linewidth',3);
 
-[m,n] = size(cal_fp_cdf_0_grid);
+[m,n] = size(cycle_cal_fp_cdf_0_grid);
 probabilityTresholdForFailure = 0.05;
 plot([0:0.01:1],ones(101,1)*100*probabilityTresholdForFailure,'k--','linewidth',3);
 massTresholdForFailure = 0.2;

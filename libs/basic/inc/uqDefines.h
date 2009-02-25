@@ -40,9 +40,8 @@
 int uqMyRank();
 
 #undef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
-#define UQ_GENERATE_PARALLEL_DUMMY_CHAINS
 
-const int UQ_UNAVAILABLE_RANK         = -1;
+const int UQ_UNAVAILABLE_RANK = -1;
 
 const int UQ_OK_RC                         =  0;
 const int UQ_INCOMPLETE_IMPLEMENTATION_RC  = -1;

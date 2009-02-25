@@ -234,23 +234,7 @@ likelihoodRoutine(
   const uqBaseEnvironmentClass& env = *(((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_env);
 
   env.subComm().Barrier();
-#ifdef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
-  if (env.verbosity() >= 0) {
-    for (int i = 0; i < env.subComm().NumProc(); ++i) {
-      if (i == env.subRank()) {
-        std::cout << "Entering likelihoodRoutine()"
-                  << ": fullRank "                         << env.rank()
-                  << " belongs to processor subset of id " << env.subId()
-                  << " and has subRank "                   << env.subRank()
-                  << std::endl;
-      }
-      env.subComm().Barrier();
-    }
-    if (env.subRank() == 0) std::cout << "Sleeping 5 seconds..."
-                                      << std::endl;
-    sleep(5);
-  }
-#endif
+  //env.printSyncDebugMsg("Entering likelihoodRoutine()",1,env.fullComm());
 
   // Compute likelihood for scenario 1
   double betaTest = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_beta1;
@@ -442,23 +426,7 @@ likelihoodRoutine(
   }
 
   env.subComm().Barrier();
-#ifdef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
-  if (env.verbosity() >= 0) {
-    for (int i = 0; i < env.subComm().NumProc(); ++i) {
-      if (i == env.subRank()) {
-        std::cout << "Leaving likelihoodRoutine()"
-                  << ": fullRank "                         << env.rank()
-                  << " belongs to processor subset of id " << env.subId()
-                  << " and has subRank "                   << env.subRank()
-                  << std::endl;
-      }
-      env.subComm().Barrier();
-    }
-    if (env.subRank() == 0) std::cout << "Sleeping 5 seconds..."
-                                      << std::endl;
-    sleep(5);
-  }
-#endif
+  //env.printSyncDebugMsg("Leaving likelihoodRoutine()",1,env.fullComm());
 
   return resultValue;
 }

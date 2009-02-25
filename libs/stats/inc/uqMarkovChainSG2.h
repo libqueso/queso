@@ -37,86 +37,13 @@ template <class P_V,class P_M>
 void
 uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_M>& workingChain)
 {
-#ifdef UQ_GENERATE_PARALLEL_DUMMY_CHAINS
-  m_env.printSyncDebugMsg("In (position 1) uqMarkovChainSGClass<P_V,P_M>::generateSequence()",3000000);
-  proc0GenerateSequence(workingChain);
-#else
-  if (m_env.numProcSubsets() == (unsigned int) m_env.fullComm().NumProc()) {
-    UQ_FATAL_TEST_MACRO(m_env.subRank() != 0,
-                        m_env.rank(),
-                        "uqMarkovChainSGClass<P_V,P_M>::generateSequence()",
-                        "there should exist only one processor per processor subset");
-    UQ_FATAL_TEST_MACRO(m_initialPosition.numberOfProcessorsRequiredForStorage() != 1,
-                        m_env.rank(),
-                        "uqMarkovChainSGClass<P_V,P_M>::generateSequence()",
-                        "only 1 processor (per processor subset) should be necessary for the storage of a vector");
-    proc0GenerateSequence(workingChain);
-  }
-  else if (m_env.numProcSubsets() < (unsigned int) m_env.fullComm().NumProc()) {
-    UQ_FATAL_TEST_MACRO(m_env.fullComm().NumProc()%m_env.numProcSubsets() != 0,
-                        m_env.rank(),
-                        "uqMarkovChainSGClass<P_V,P_M>::generateSequence()",
-                        "total number of processors should be a multiple of the number of processor subsets");
-    unsigned int numProcsPerProcSubset = m_env.fullComm().NumProc()/m_env.numProcSubsets();
-    UQ_FATAL_TEST_MACRO(m_env.subComm().NumProc() != (int) numProcsPerProcSubset,
-                        m_env.rank(),
-                        "uqMarkovChainSGClass<P_V,P_M>::generateSequence()",
-                        "inconsistent number of processors per processor subset");
-    if (m_initialPosition.numberOfProcessorsRequiredForStorage() == 1) {
-#ifdef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
-      std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
-                << ", fullRank "               << m_env.rank()
-                << ", processor subset of id " << m_env.subId()
-                << ", subRank "                << m_env.subRank()
-                << ": about to barrier..."
-                << std::endl;
-      m_env.subComm().Barrier();
-      if (m_env.subRank() == 0) std::cout << "Just exit generateSequence() barrier: sleeping 3 seconds..."
-                                          << std::endl;
-      sleep(3);
-#endif
-
-      double aux = 0.;
-      if (m_env.subRank() == 0) proc0GenerateSequence(workingChain);
-
-      // subRank == 0 --> Tell all other processors to exit barrier now that the chain has been fully generated
-      // subRank != 0 --> Enter the barrier and wait for processor 0 to decide to call the targetPdf
-      aux = m_targetPdfSynchronizer->callFunction(NULL,
-                                                  NULL,
-                                                  NULL,
-                                                  NULL,
-                                                  NULL);
-    }
-    else if (m_initialPosition.numberOfProcessorsRequiredForStorage() == numProcsPerProcSubset) {
-      UQ_FATAL_TEST_MACRO(true,
-                          m_env.rank(),
-                          "uqMarkovChainSGClass<P_V,P_M>::generateSequence()",
-                          "parallel parameter vectors are not supported yet");
-    }
-    else {
-      UQ_FATAL_TEST_MACRO(true,
-                          m_env.rank(),
-                          "uqMarkovChainSGClass<P_V,P_M>::generateSequence()",
-                          "number of processors required for a vector storage should be equal to the number of processors in the processor subset");
-    }
-  }
-  else {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.rank(),
-                        "uqMarkovChainSGClass<P_V,P_M>::generateSequence()",
-                        "number of processors per processor subset is too large");
-  }
-#endif
-  return;
-}
-template <class P_V,class P_M>
-void
-uqMarkovChainSGClass<P_V,P_M>::proc0GenerateSequence(uqBaseVectorSequenceClass<P_V,P_M>& workingChain)
-{
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqMarkovChainSGClass<P_V,P_M>::proc0GenerateSequence()..."
+    std::cout << "Entering uqMarkovChainSGClass<P_V,P_M>::generateSequence()..."
               << std::endl;
   }
+
+  m_env.printSyncDebugMsg("Entering uqMarkovChainSGClass<P_V,P_M>::generateSequence()",3000000,m_env.fullComm());
+  checkTheParallelEnvironment();
 
   P_V valuesOf1stPosition(m_initialPosition);
   int iRC = UQ_OK_RC;
@@ -147,7 +74,7 @@ uqMarkovChainSGClass<P_V,P_M>::proc0GenerateSequence(uqBaseVectorSequenceClass<P
     iRC = computeInitialCholFactors();
     UQ_FATAL_RC_MACRO(iRC,
                       m_env.rank(),
-                      "uqMarkovChainSGClass<P_V,P_M>::proc0GenerateSequence()",
+                      "uqMarkovChainSGClass<P_V,P_M>::generateSequence()",
                       "improper computeInitialCholFactors() return");
 
     if (m_drMaxNumExtraStages > 0) updateTK();
@@ -194,7 +121,7 @@ uqMarkovChainSGClass<P_V,P_M>::proc0GenerateSequence(uqBaseVectorSequenceClass<P
 #endif
       UQ_FATAL_TEST_MACRO((ofsvar && ofsvar->is_open()) == false,
                           m_env.rank(),
-                          "uqMarkovChainSGClass<P_V,P_M>::proc0GenerateSequence()",
+                          "uqMarkovChainSGClass<P_V,P_M>::generateSequence()",
                           "failed to open file");
     }
   }
@@ -212,7 +139,7 @@ uqMarkovChainSGClass<P_V,P_M>::proc0GenerateSequence(uqBaseVectorSequenceClass<P
                     *ofsvar);
     UQ_FATAL_RC_MACRO(iRC,
                       m_env.rank(),
-                      "uqMarkovChainSGClass<P_V,P_M>::proc0GenerateSequence()",
+                      "uqMarkovChainSGClass<P_V,P_M>::generateSequence()",
                       "improper writeInfo() return");
   }
 
@@ -235,7 +162,7 @@ uqMarkovChainSGClass<P_V,P_M>::proc0GenerateSequence(uqBaseVectorSequenceClass<P
     //m_uniqueChain1.erase(positionIterator,m_uniqueChain1.end());
     //UQ_FATAL_TEST_MACRO((uniquePos != m_uniqueChain1.size()),
     //                    m_env.rank(),
-    //                    "uqMarkovChainSGClass<P_V,P_M>::proc0GenerateSequence()",
+    //                    "uqMarkovChainSGClass<P_V,P_M>::generateSequence()",
     //                    "uniquePos != m_uniqueChain1.size()");
 
     // Write unique chain
@@ -302,8 +229,10 @@ uqMarkovChainSGClass<P_V,P_M>::proc0GenerateSequence(uqBaseVectorSequenceClass<P
     std::cout << std::endl;
   }
 
+  m_env.printSyncDebugMsg("Leaving uqMarkovChainSGClass<P_V,P_M>::generateSequence()",3000000,m_env.fullComm());
+
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqMarkovChainSGClass<P_V,P_M>::proc0GenerateSequence()"
+    std::cout << "Leaving uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
               << std::endl;
   }
 
@@ -405,7 +334,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
   uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
   unsigned int                        chainSize)
 {
-  m_env.printSyncDebugMsg("Entering uqMarkovChainSGClass<P_V,P_M>::generateFullChain()",3000000);
+  m_env.printSyncDebugMsg("Entering uqMarkovChainSGClass<P_V,P_M>::generateFullChain()",3000000,m_env.fullComm());
 
   if (m_env.rank() == 0) {
     std::cout << "Starting the generation of Markov chain " << workingChain.name()
@@ -483,12 +412,12 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
               << std::endl;
   }
 
-  m_env.printSyncDebugMsg("In (position 1) uqMarkovChainSGClass<P_V,P_M>::generateFullChain()",3000000);
+  //m_env.printSyncDebugMsg("In uqMarkovChainSGClass<P_V,P_M>::generateFullChain(), right before main loop",3000000,m_env.fullComm());
 
-#ifdef UQ_GENERATE_PARALLEL_DUMMY_CHAINS
-  if ((m_env.numProcSubsets() < (unsigned int) m_env.fullComm().NumProc()) &&
-      (m_initialPosition.numberOfProcessorsRequiredForStorage() == 1     ) &&
-      (m_env.subRank()                                          != 0     )) {
+  if ((m_env.numSubEnvironments() < (unsigned int) m_env.fullComm().NumProc()) &&
+      (m_initialPosition.numberOfProcessorsRequiredForStorage() == 1         ) &&
+      (m_env.subRank()                                          != 0         )) {
+    // subRank != 0 --> Enter the barrier and wait for processor 0 to decide to call the targetPdf
     double aux = 0.;
     aux = m_targetPdfSynchronizer->callFunction(NULL,
                                                 NULL,
@@ -500,9 +429,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
       m_numRejections++;
     }
   }
-  else {
-#endif
-  for (unsigned int positionId = 1; positionId < workingChain.sequenceSize(); ++positionId) {
+  else for (unsigned int positionId = 1; positionId < workingChain.sequenceSize(); ++positionId) {
     if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
       std::cout << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
                 << ": beginning chain position of id = " << positionId
@@ -928,9 +855,11 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
                 << std::endl;
     }
   } // end chain loop
-#ifdef UQ_GENERATE_PARALLEL_DUMMY_CHAINS
+
+  if ((m_env.numSubEnvironments() < (unsigned int) m_env.fullComm().NumProc()) &&
+      (m_initialPosition.numberOfProcessorsRequiredForStorage() == 1         ) &&
+      (m_env.subRank()                                          == 0         )) {
     // subRank == 0 --> Tell all other processors to exit barrier now that the chain has been fully generated
-    // subRank != 0 --> Enter the barrier and wait for processor 0 to decide to call the targetPdf
     double aux = 0.;
     aux = m_targetPdfSynchronizer->callFunction(NULL,
                                                 NULL,
@@ -938,7 +867,6 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
                                                 NULL,
                                                 NULL);
   }
-#endif
 
   //****************************************************
   // Print basic information about the chain
@@ -992,6 +920,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
   //****************************************************
   // Release memory before leaving routine
   //****************************************************
+  m_env.printSyncDebugMsg("Leaving uqMarkovChainSGClass<P_V,P_M>::generateFullChain()",3000000,m_env.fullComm());
 
   return;
 }
@@ -1047,6 +976,56 @@ uqMarkovChainSGClass<P_V,P_M>::updateAdaptedCovMatrix(
     } 
   }
   lastChainSize += doubleSubChainSize;
+
+  return;
+}
+
+template <class P_V,class P_M>
+void
+uqMarkovChainSGClass<P_V,P_M>::checkTheParallelEnvironment()
+{
+  if (m_env.numSubEnvironments() == (unsigned int) m_env.fullComm().NumProc()) {
+    UQ_FATAL_TEST_MACRO(m_env.subRank() != 0,
+                        m_env.rank(),
+                        "uqMarkovChainSGClass<P_V,P_M>::checkTheParallelEnvironment()",
+                        "there should exist only one processor per processor subset");
+    UQ_FATAL_TEST_MACRO(m_initialPosition.numberOfProcessorsRequiredForStorage() != 1,
+                        m_env.rank(),
+                        "uqMarkovChainSGClass<P_V,P_M>::checkTheParallelEnvironment()",
+                        "only 1 processor (per processor subset) should be necessary for the storage of a vector");
+  }
+  else if (m_env.numSubEnvironments() < (unsigned int) m_env.fullComm().NumProc()) {
+    UQ_FATAL_TEST_MACRO(m_env.fullComm().NumProc()%m_env.numSubEnvironments() != 0,
+                        m_env.rank(),
+                        "uqMarkovChainSGClass<P_V,P_M>::checkTheParallelEnvironment()",
+                        "total number of processors should be a multiple of the number of processor subsets");
+    unsigned int numProcsPerSubEnvironment = m_env.fullComm().NumProc()/m_env.numSubEnvironments();
+    UQ_FATAL_TEST_MACRO(m_env.subComm().NumProc() != (int) numProcsPerSubEnvironment,
+                        m_env.rank(),
+                        "uqMarkovChainSGClass<P_V,P_M>::checkTheParallelEnvironment()",
+                        "inconsistent number of processors per processor subset");
+    if (m_initialPosition.numberOfProcessorsRequiredForStorage() == 1) {
+      // Ok
+    }
+    else if (m_initialPosition.numberOfProcessorsRequiredForStorage() == numProcsPerSubEnvironment) {
+      UQ_FATAL_TEST_MACRO(true,
+                          m_env.rank(),
+                          "uqMarkovChainSGClass<P_V,P_M>::checkTheParallelEnvironment()",
+                          "parallel parameter vectors are not supported yet");
+    }
+    else {
+      UQ_FATAL_TEST_MACRO(true,
+                          m_env.rank(),
+                          "uqMarkovChainSGClass<P_V,P_M>::checkTheParallelEnvironment()",
+                          "number of processors required for a vector storage should be equal to the number of processors in the processor subset");
+    }
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.rank(),
+                        "uqMarkovChainSGClass<P_V,P_M>::checkTheParallelEnvironment()",
+                        "number of processors per processor subset is too large");
+  }
 
   return;
 }

@@ -87,8 +87,8 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
 {
   double result = 0.;
 
-  if ((m_env.numProcSubsets() < (unsigned int) m_env.fullComm().NumProc()) &&
-      (m_auxVec.numberOfProcessorsRequiredForStorage() == 1              )) {
+  if ((m_env.numSubEnvironments() < (unsigned int) m_env.fullComm().NumProc()) &&
+      (m_auxVec.numberOfProcessorsRequiredForStorage() == 1                  )) {
     bool stayInRoutine = true;
     do {
       const V* internalValues    = NULL;
@@ -121,12 +121,8 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
         if (internalEffect    != NULL) bufferChar[4] = '1';
       }
 
-#ifdef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
-      m_env.printSyncDebugMsg("In uqScalarFunctionSynchronizerClass<V,M>::callFunction(), just before char Bcast()",3000000);
-      //if (m_env.subId() != 0) {
-      //  while (true) sleep(1);
-      //}
-#endif
+      //m_env.printSyncDebugMsg("In uqScalarFunctionSynchronizerClass<V,M>::callFunction(), just before char Bcast()",3000000,m_env.fullComm());
+      //if (m_env.subId() != 0) while (true) sleep(1);
 
       int count = (int) bufferChar.size();
       int mpiRC = MPI_Bcast ((void *) &bufferChar[0], count, MPI_CHAR, 0, m_env.subComm().Comm());
@@ -135,11 +131,9 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
                           "uqScalarFunctionSynchronizerClass<V,M>::callFunction()",
                          "failed broadcast 1 of 3");
 
-#ifdef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
-      m_env.printSyncDebugMsg("In uqScalarFunctionSynchronizerClass<V,M>::callFunction(), just after char Bcast()",3000000);
+      //m_env.printSyncDebugMsg("In uqScalarFunctionSynchronizerClass<V,M>::callFunction(), just after char Bcast()",3000000,m_env.fullComm());
       //std::cout << "char contents = " << bufferChar[0] << " " << bufferChar[1] << " " << bufferChar[2] << " " << bufferChar[3] << " " << bufferChar[4]
       //          << std::endl;
-#endif
 
       if (bufferChar[0] == '1') {
         ///////////////////////////////////////////////
@@ -153,32 +147,31 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
           for (unsigned int i = 0; i < internalValues->size(); ++i) {
             bufferDouble[i] = (*internalValues)[i];
           }
-#ifdef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
-          std::cout << "In uqScalarFunctionSynchronizerClass<V,M>::callFunction()"
-                    << ", fullRank "               << m_env.rank()
-                    << ", processor subset of id " << m_env.subId()
-                    << ", subRank "                << m_env.subRank()
-                    << ", buffer related to first double Bcast() is ready"
-                    << ": it has size " << bufferDouble.size()
-                    << " and its contents are";
-          for (unsigned int i = 0; i < bufferDouble.size(); ++i) {
-	    std::cout << " " << bufferDouble[i];
+        }
+#if 0
+        m_env.fullComm().Barrier();
+        for (int i = 0; i < m_env.fullComm().NumProc(); ++i) {
+          if (i == m_env.rank()) {
+            std::cout << " In uqScalarFunctionSynchronizerClass<V,M>::callFunction(), just before double Bcast()"
+                      << ": fullRank "         << m_env.rank()
+                      << ", processor subset " << m_env.subId()
+                      << ", subRank "          << m_env.subRank()
+                      << ": buffer related to first double Bcast() is ready to be broadcasted"
+                      << " and has size "      << bufferDouble.size()
+                      << std::endl;
+            if (m_env.subRank() == 0) {
+	      std::cout << "Buffer contents are";
+              for (unsigned int i = 0; i < bufferDouble.size(); ++i) {
+	        std::cout << " " << bufferDouble[i];
+              }
+	      std::cout << std::endl;
+            }
           }
-	  std::cout << std::endl;
-#endif
+          m_env.fullComm().Barrier();
         }
-#ifdef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
-        else {
-          std::cout << "In uqScalarFunctionSynchronizerClass<V,M>::callFunction()"
-                    << ", fullRank "               << m_env.rank()
-                    << ", processor subset of id " << m_env.subId()
-                    << ", subRank "                << m_env.subRank()
-                    << ", buffer related to first double Bcast() has size " << bufferDouble.size()
-                    << std::endl;
-        }
-        if (m_env.subRank() == 0) std::cout << "Sleeping 4 seconds..."
-                                            << std::endl;
-        sleep(4);
+        if (m_env.rank() == 0) std::cout << "Sleeping 3 seconds..."
+                                         << std::endl;
+        sleep(3);
 #endif
 
         count = (int) bufferDouble.size();
@@ -233,9 +226,7 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
           if (bufferChar[4] == '1') internalEffect  = new V(m_auxVec);
         }
 
-#ifdef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
-        m_env.printSyncDebugMsg("In uqScalarFunctionSynchronizerClass<V,M>::callFunction(), just after actual minus2LnValue()",3000000);
-#endif
+        //m_env.printSyncDebugMsg("In uqScalarFunctionSynchronizerClass<V,M>::callFunction(), just after actual minus2LnValue()",3000000,m_env.fullComm());
 
         m_env.subComm().Barrier();
         result = m_scalarFunction.minus2LnValue(*internalValues,

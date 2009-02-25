@@ -91,9 +91,9 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
         EpetraExt::DistArray<P_M*>* hessianMatrices, // Yes, 'P_M'
         EpetraExt::DistArray<P_V*>* hessianEffects) const
 {
-  if ((m_env.numProcSubsets() < (unsigned int) m_env.fullComm().NumProc()) &&
-      (m_auxPVec.numberOfProcessorsRequiredForStorage() == 1             ) &&
-      (m_auxQVec.numberOfProcessorsRequiredForStorage() == 1             )) {
+  if ((m_env.numSubEnvironments() < (unsigned int) m_env.fullComm().NumProc()) &&
+      (m_auxPVec.numberOfProcessorsRequiredForStorage() == 1                 ) &&
+      (m_auxQVec.numberOfProcessorsRequiredForStorage() == 1                 )) {
     bool stayInRoutine = true;
     do {
       const P_V*                        internalValues    = NULL;
@@ -134,12 +134,8 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
         if (internalEffects   != NULL) bufferChar[5] = '1';
       }
 
-#ifdef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
-      m_env.printSyncDebugMsg("In uqVectorFunctionSynchronizerClass<V,M>::callFunction(), just before char Bcast()",3000000);
-      //if (m_env.subId() != 0) {
-      //  while (true) sleep(1);
-      //}
-#endif
+      //m_env.printSyncDebugMsg("In uqVectorFunctionSynchronizerClass<V,M>::callFunction(), just before char Bcast()",3000000,m_env.fullComm());
+      //if (m_env.subId() != 0) while (true) sleep(1);
 
       int count = (int) bufferChar.size();
       int mpiRC = MPI_Bcast ((void *) &bufferChar[0], count, MPI_CHAR, 0, m_env.subComm().Comm());

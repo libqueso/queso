@@ -121,7 +121,7 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::uqValidationCycleClass(
   const uqVectorSpaceClass<P_V,P_M>& qoiSpace)
   :
   m_env                     (env),
-  m_prefix                  ((std::string)(prefix) + ""),
+  m_prefix                  ((std::string)(prefix) + "cycle_"),
   m_paramSpace              (paramSpace),
   m_qoiSpace                (qoiSpace),
   m_calLikelihoodFunctionObj(NULL),

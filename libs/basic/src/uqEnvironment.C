@@ -48,12 +48,11 @@ uqEnvOptionsStruct::uqEnvOptionsStruct(
   unsigned int verbosity,
   int          seed)
   :
-  m_numProcSubsets(UQ_ENV_NUM_PROC_SUBSETS_ODV),
-  m_verbosity     (verbosity),
-  m_seed          (seed),
-  m_runName       (UQ_ENV_RUN_NAME_ODV),
-  m_numDebugParams(0),
-  m_debugParams   (0,0.)
+  m_numSubEnvironments(UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),
+  m_verbosity         (verbosity),
+  m_seed              (seed),
+  m_numDebugParams    (0),
+  m_debugParams       (0,0.)
 {
 }
 
@@ -68,34 +67,32 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   MPI_Comm    inputComm,
   const char* prefix)
   :
-  m_argc                 (0),
-  m_argv                 (NULL),
-  m_prefix               ((std::string)(prefix) + "env_"),
-  m_fullComm             (NULL),
-  m_fullRank             (0),
-  m_fullCommSize         (1),
-  m_argsWereProvided     (false),
-  m_thereIsInputFile     (false),
-  m_inputFileName        (""),
-  m_allOptionsDesc       (NULL),
-  m_envOptionsDesc       (NULL),
-  m_allOptionsMap        (NULL),
-  m_option_help          (m_prefix + "help"          ),
-  m_option_numProcSubsets(m_prefix + "numProcSubsets"),
-  m_option_verbosity     (m_prefix + "verbosity"     ),
-  m_option_seed          (m_prefix + "seed"          ),
-  m_option_runName       (m_prefix + "runName"       ),
-  m_numProcSubsets       (UQ_ENV_NUM_PROC_SUBSETS_ODV),
-  m_verbosity            (UQ_ENV_VERBOSITY_ODV),
-  m_seed                 (UQ_ENV_SEED_ODV),
-  m_runName              (UQ_ENV_RUN_NAME_ODV),
-  m_numDebugParams       (UQ_ENV_NUM_DEBUG_PARAMS_ODV),
-  m_debugParams          (m_numDebugParams,0.),
-  m_subComm              (NULL),
-  m_subRank              (0),
-  m_subCommSize          (1),
-  m_selfComm             (NULL),
-  m_rng                  (NULL)
+  m_argc                     (0),
+  m_argv                     (NULL),
+  m_prefix                   ((std::string)(prefix) + "env_"),
+  m_fullComm                 (NULL),
+  m_fullRank                 (0),
+  m_fullCommSize             (1),
+  m_argsWereProvided         (false),
+  m_thereIsInputFile         (false),
+  m_inputFileName            (""),
+  m_allOptionsDesc           (NULL),
+  m_envOptionsDesc           (NULL),
+  m_allOptionsMap            (NULL),
+  m_option_help              (m_prefix + "help"              ),
+  m_option_numSubEnvironments(m_prefix + "numSubEnvironments"),
+  m_option_verbosity         (m_prefix + "verbosity"         ),
+  m_option_seed              (m_prefix + "seed"              ),
+  m_numSubEnvironments       (UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),
+  m_verbosity                (UQ_ENV_VERBOSITY_ODV),
+  m_seed                     (UQ_ENV_SEED_ODV),
+  m_numDebugParams           (UQ_ENV_NUM_DEBUG_PARAMS_ODV),
+  m_debugParams              (m_numDebugParams,0.),
+  m_subComm                  (NULL),
+  m_subRank                  (0),
+  m_subCommSize              (1),
+  m_selfComm                 (NULL),
+  m_rng                      (NULL)
 {
 }
 
@@ -105,34 +102,32 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   MPI_Comm    inputComm,
   const char* prefix)
   :
-  m_argc                 (argc),
-  m_argv                 (argv),
-  m_prefix               ((std::string)(prefix) + "env_"),
-  m_fullComm             (NULL),
-  m_fullRank             (0),
-  m_fullCommSize         (1),
-  m_argsWereProvided     (true),
-  m_thereIsInputFile     (false),
-  m_inputFileName        (""),
-  m_allOptionsDesc       (NULL),
-  m_envOptionsDesc       (NULL),
-  m_allOptionsMap        (NULL),
-  m_option_help          (m_prefix + "help"          ),
-  m_option_numProcSubsets(m_prefix + "numProcSubsets"),
-  m_option_verbosity     (m_prefix + "verbosity"     ),
-  m_option_seed          (m_prefix + "seed"          ),
-  m_option_runName       (m_prefix + "runName"       ),
-  m_numProcSubsets       (UQ_ENV_NUM_PROC_SUBSETS_ODV),
-  m_verbosity            (UQ_ENV_VERBOSITY_ODV),
-  m_seed                 (UQ_ENV_SEED_ODV),
-  m_runName              (UQ_ENV_RUN_NAME_ODV),
-  m_numDebugParams       (UQ_ENV_NUM_DEBUG_PARAMS_ODV),
-  m_debugParams          (m_numDebugParams,0.),
-  m_subComm              (NULL),
-  m_subRank              (0),
-  m_subCommSize          (1),
-  m_selfComm             (NULL),
-  m_rng                  (NULL)
+  m_argc                     (argc),
+  m_argv                     (argv),
+  m_prefix                   ((std::string)(prefix) + "env_"),
+  m_fullComm                 (NULL),
+  m_fullRank                 (0),
+  m_fullCommSize             (1),
+  m_argsWereProvided         (true),
+  m_thereIsInputFile         (false),
+  m_inputFileName            (""),
+  m_allOptionsDesc           (NULL),
+  m_envOptionsDesc           (NULL),
+  m_allOptionsMap            (NULL),
+  m_option_help              (m_prefix + "help"              ),
+  m_option_numSubEnvironments(m_prefix + "numSubEnvironments"),
+  m_option_verbosity         (m_prefix + "verbosity"         ),
+  m_option_seed              (m_prefix + "seed"              ),
+  m_numSubEnvironments       (UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),
+  m_verbosity                (UQ_ENV_VERBOSITY_ODV),
+  m_seed                     (UQ_ENV_SEED_ODV),
+  m_numDebugParams           (UQ_ENV_NUM_DEBUG_PARAMS_ODV),
+  m_debugParams              (m_numDebugParams,0.),
+  m_subComm                  (NULL),
+  m_subRank                  (0),
+  m_subCommSize              (1),
+  m_selfComm                 (NULL),
+  m_rng                      (NULL)
 {
 }
 
@@ -141,34 +136,32 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   MPI_Comm                  inputComm,
   const char*               prefix)
   :
-  m_argc                 (0),
-  m_argv                 (NULL),
-  m_prefix               ((std::string)(prefix) + "env_"),
-  m_fullComm             (NULL),
-  m_fullRank             (0),
-  m_fullCommSize         (1),
-  m_argsWereProvided     (false),
-  m_thereIsInputFile     (false),
-  m_inputFileName        (""),
-  m_allOptionsDesc       (NULL),
-  m_envOptionsDesc       (NULL),
-  m_allOptionsMap        (NULL),
-  m_option_help          (m_prefix + "help"          ),
-  m_option_numProcSubsets(m_prefix + "numProcSubsets"),
-  m_option_verbosity     (m_prefix + "verbosity"     ),
-  m_option_seed          (m_prefix + "seed"          ),
-  m_option_runName       (m_prefix + "runName"       ),
-  m_numProcSubsets       (UQ_ENV_NUM_PROC_SUBSETS_ODV),
-  m_verbosity            (options.m_verbosity),
-  m_seed                 (options.m_seed),
-  m_runName              (UQ_ENV_RUN_NAME_ODV),
-  m_numDebugParams       (options.m_numDebugParams),
-  m_debugParams          (options.m_debugParams),
-  m_subComm              (NULL),
-  m_subRank              (0),
-  m_subCommSize          (1),
-  m_selfComm             (NULL),
-  m_rng                  (NULL)
+  m_argc                     (0),
+  m_argv                     (NULL),
+  m_prefix                   ((std::string)(prefix) + "env_"),
+  m_fullComm                 (NULL),
+  m_fullRank                 (0),
+  m_fullCommSize             (1),
+  m_argsWereProvided         (false),
+  m_thereIsInputFile         (false),
+  m_inputFileName            (""),
+  m_allOptionsDesc           (NULL),
+  m_envOptionsDesc           (NULL),
+  m_allOptionsMap            (NULL),
+  m_option_help              (m_prefix + "help"              ),
+  m_option_numSubEnvironments(m_prefix + "numSubEnvironments"),
+  m_option_verbosity         (m_prefix + "verbosity"         ),
+  m_option_seed              (m_prefix + "seed"              ),
+  m_numSubEnvironments       (UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),
+  m_verbosity                (options.m_verbosity),
+  m_seed                     (options.m_seed),
+  m_numDebugParams           (options.m_numDebugParams),
+  m_debugParams              (options.m_debugParams),
+  m_subComm                  (NULL),
+  m_subRank                  (0),
+  m_subCommSize              (1),
+  m_selfComm                 (NULL),
+  m_rng                      (NULL)
 {
 }
 
@@ -252,9 +245,9 @@ uqBaseEnvironmentClass::selfComm() const
 }
 
 unsigned int
-uqBaseEnvironmentClass::numProcSubsets() const
+uqBaseEnvironmentClass::numSubEnvironments() const
 {
-  return m_numProcSubsets;
+  return m_numSubEnvironments;
 }
 
 unsigned int
@@ -317,12 +310,6 @@ uqBaseEnvironmentClass::verbosity() const
   return m_verbosity;
 }
 
-const std::string&
-uqBaseEnvironmentClass::runName() const
-{
-  return m_runName;
-}
-
 const gsl_rng*
 uqBaseEnvironmentClass::rng() const
 {
@@ -336,11 +323,11 @@ uqBaseEnvironmentClass::isThereInputFile() const
 }
 
 void
-uqBaseEnvironmentClass::printSyncDebugMsg(const char* msg, unsigned int numUSecs) const
+uqBaseEnvironmentClass::printSyncDebugMsg(const char* msg, unsigned int numUSecs, const Epetra_MpiComm& commObj) const
 {
-  this->fullComm().Barrier();
+  commObj.Barrier();
   if (this->verbosity() >= 0) {
-    for (int i = 0; i < this->fullComm().NumProc(); ++i) {
+    for (int i = 0; i < commObj.NumProc(); ++i) {
       if (i == this->rank()) {
         std::cout << msg
                   << ": fullRank "         << this->rank()
@@ -348,13 +335,13 @@ uqBaseEnvironmentClass::printSyncDebugMsg(const char* msg, unsigned int numUSecs
                   << ", subRank "          << this->subRank()
                   << std::endl;
       }
-      this->fullComm().Barrier();
+      commObj.Barrier();
     }
     if (this->rank() == 0) std::cout << "Sleeping " << numUSecs << " microseconds..."
                                      << std::endl;
     usleep(numUSecs);
   }
-  this->fullComm().Barrier();
+  commObj.Barrier();
 
   return;
 }
@@ -464,7 +451,7 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
   }
 
   // Deal with multiple subGroups
-  unsigned int numRanksPerProcSubset = m_fullCommSize/m_numProcSubsets;
+  unsigned int numRanksPerProcSubset = m_fullCommSize/m_numSubEnvironments;
 
   m_subId = m_fullRank/numRanksPerProcSubset;
   char tmpSubId[16];
@@ -491,8 +478,8 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
 
   m_selfComm = new Epetra_MpiComm(MPI_COMM_SELF);
 
-#ifdef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
-  if (this->verbosity() >= 0) {
+#if 1
+  if (this->verbosity() >= 2) {
     for (int i = 0; i < m_fullCommSize; ++i) {
       if (i == m_fullRank) {
         std::cout << "In FullEnvironmentClass::commonConstructor()"
@@ -507,9 +494,9 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
       }
       m_fullComm->Barrier();
     }
-    if (this->rank() == 0) std::cout << "Sleeping 3 seconds..."
+    if (this->rank() == 0) std::cout << "Sleeping 1 second..."
                                      << std::endl;
-    sleep(3);
+    sleep(1);
   }
 #endif
 
@@ -617,12 +604,11 @@ void
 uqFullEnvironmentClass::defineMyOptions(po::options_description& options) const
 {
   options.add_options()
-    (m_option_help.c_str(),                                                                                  "produce help message for uq environment")
-    (m_option_numProcSubsets.c_str(), po::value<unsigned int>()->default_value(UQ_ENV_NUM_PROC_SUBSETS_ODV), "number of processor subsets"            )
-    (m_option_verbosity.c_str(),      po::value<unsigned int>()->default_value(UQ_ENV_VERBOSITY_ODV),        "set verbosity"                          )
-    (m_option_seed.c_str(),           po::value<int         >()->default_value(UQ_ENV_SEED_ODV),             "set seed"                               )
-    (m_option_runName.c_str(),        po::value<std::string >()->default_value(UQ_ENV_RUN_NAME_ODV),         "set run name"                           )
-  //(m_option_numDebugParams.c_str(), po::value<unsigned int>()->default_value(UQ_ENV_NUM_DEBUG_PARAMS_ODV), "set number of debug parameters"         )
+    (m_option_help.c_str(),                                                                                          "produce help message for uq environment")
+    (m_option_numSubEnvironments.c_str(), po::value<unsigned int>()->default_value(UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV), "number of processor subsets"            )
+    (m_option_verbosity.c_str(),          po::value<unsigned int>()->default_value(UQ_ENV_VERBOSITY_ODV),            "set verbosity"                          )
+    (m_option_seed.c_str(),               po::value<int         >()->default_value(UQ_ENV_SEED_ODV),                 "set seed"                               )
+  //(m_option_numDebugParams.c_str(),     po::value<unsigned int>()->default_value(UQ_ENV_NUM_DEBUG_PARAMS_ODV),     "set number of debug parameters"         )
   ;
 
   return;
@@ -636,10 +622,10 @@ uqFullEnvironmentClass::getMyOptionValues(po::options_description& optionsDesc)
               << std::endl;
   }
 
-  if (m_allOptionsMap->count(m_option_numProcSubsets.c_str())) {
-    m_numProcSubsets = (*m_allOptionsMap)[m_option_numProcSubsets.c_str()].as<unsigned int>();
+  if (m_allOptionsMap->count(m_option_numSubEnvironments.c_str())) {
+    m_numSubEnvironments = (*m_allOptionsMap)[m_option_numSubEnvironments.c_str()].as<unsigned int>();
   }
-  UQ_FATAL_TEST_MACRO((m_fullCommSize%m_numProcSubsets) != 0,
+  UQ_FATAL_TEST_MACRO((m_fullCommSize%m_numSubEnvironments) != 0,
                       this->rank(),
                       "uqBaseEnvironmentClass::getMyOptionValues()",
                       "total number of processors in environment must be multiple of the specified number of processor subsets");
@@ -652,10 +638,6 @@ uqFullEnvironmentClass::getMyOptionValues(po::options_description& optionsDesc)
     m_seed = (*m_allOptionsMap)[m_option_seed.c_str()].as<int>();
   }
 
-  if (m_allOptionsMap->count(m_option_runName.c_str())) {
-    m_runName = (*m_allOptionsMap)[m_option_runName.c_str()].as<std::string >();
-  }
-
   //if (m_allOptionsMap->count(m_option_numDebugParams.c_str())) {
   //  m_seed = (*m_allOptionsMap)[m_option_numDebugParams.c_str()].as<unsigned int>();
   //}
@@ -666,11 +648,10 @@ uqFullEnvironmentClass::getMyOptionValues(po::options_description& optionsDesc)
 void
 uqFullEnvironmentClass::print(std::ostream& os) const
 {
-  os <<         m_option_numProcSubsets << " = " << m_numProcSubsets
-     << "\n" << m_option_verbosity      << " = " << m_verbosity
-     << "\n" << m_option_seed           << " = " << m_seed
-     << "\n" << m_option_runName        << " = " << m_runName
-   //<< "\n" << m_option_numDebugParams << " = " << m_numDebugParams
+  os <<         m_option_numSubEnvironments << " = " << m_numSubEnvironments
+     << "\n" << m_option_verbosity          << " = " << m_verbosity
+     << "\n" << m_option_seed               << " = " << m_seed
+   //<< "\n" << m_option_numDebugParams     << " = " << m_numDebugParams
      << std::endl;
   return;
 }

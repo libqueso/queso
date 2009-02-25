@@ -60,20 +60,21 @@ public:
                             uqBaseVectorRVClass  <Q_V,Q_M>&             qoiRv);         /*! The qoi rv.       */
  ~uqMonteCarloSGClass();
 
-  void generateSequence     (uqBaseVectorSequenceClass<P_V,P_M>& workingSeq);
+  void generateSequence           (uqBaseVectorSequenceClass<P_V,P_M>& workingSeq);
+  void checkTheParallelEnvironment();
 
-  void print                (std::ostream&            os) const;
+  void print                      (std::ostream& os) const;
 
 private:
-  void defineMyOptions      (po::options_description& optionsDesc);
-  void getMyOptionValues    (po::options_description& optionsDesc);
+  void defineMyOptions       (po::options_description& optionsDesc);
+  void getMyOptionValues     (po::options_description& optionsDesc);
 
-  void proc0GenerateSequence(const uqBaseVectorRVClass      <P_V,P_M>& paramRv,
-                                   uqBaseVectorSequenceClass<P_V,P_M>& workingSeq);
+  void internGenerateSequence(const uqBaseVectorRVClass      <P_V,P_M>& paramRv,
+                                    uqBaseVectorSequenceClass<P_V,P_M>& workingSeq);
 
-  void intGenerateSequence  (const uqBaseVectorRVClass      <P_V,P_M>& paramRv,
-                                   uqBaseVectorSequenceClass<P_V,P_M>& workingSeq,
-                                   unsigned int                        seqSize);
+  void actualGenerateSequence(const uqBaseVectorRVClass      <P_V,P_M>& paramRv,
+                                    uqBaseVectorSequenceClass<P_V,P_M>& workingSeq,
+                                    unsigned int                        seqSize);
 
   const uqBaseEnvironmentClass&                             m_env;
         std::string                                         m_prefix;
@@ -224,70 +225,15 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_M>& workingSeq)
 {
-#ifdef UQ_GENERATE_PARALLEL_DUMMY_CHAINS
-  proc0GenerateSequence(m_paramRv,workingSeq);
-#else
-  if (m_env.numProcSubsets() == (unsigned int) m_env.fullComm().NumProc()) {
-    UQ_FATAL_TEST_MACRO(m_env.subRank() != 0,
-                        m_env.rank(),
-                        "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence()",
-                        "there should exist only one processor per processor subset");
-    UQ_FATAL_TEST_MACRO(m_paramRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage() != 1,
-                        m_env.rank(),
-                        "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence()",
-                        "only 1 processor (per processor subset) should be necessary for the storage of a parameter vector");
-    proc0GenerateSequence(m_paramRv,workingSeq);
-  }
-  else if (m_env.numProcSubsets() < (unsigned int) m_env.fullComm().NumProc()) {
-    UQ_FATAL_TEST_MACRO(m_env.fullComm().NumProc()%m_env.numProcSubsets() != 0,
-                        m_env.rank(),
-                        "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence()",
-                        "total number of processors should be a multiple of the number of processor subsets");
-    unsigned int numProcsPerProcSubset = m_env.fullComm().NumProc()/m_env.numProcSubsets();
-    UQ_FATAL_TEST_MACRO(m_env.subComm().NumProc() != (int) numProcsPerProcSubset,
-                        m_env.rank(),
-                        "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence()",
-                        "inconsistent number of processors per processor subset");
-    if ((m_paramRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage() == 1) &&
-        (m_qoiRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage()   == 1)) {
-      if (m_env.subRank() == 0) proc0GenerateSequence(m_paramRv,workingSeq);
+  checkTheParallelEnvironment();
+  internGenerateSequence(m_paramRv,workingSeq);
 
-      // subRank == 0 --> Tell all other processors to exit barrier now that the chain has been fully generated
-      // subRank != 0 --> Enter the barrier and wait for processor 0 to decide to call the qoiFunctionx
-      m_qoiFunctionSynchronizer->callFunction(NULL,
-                                              NULL,
-                                              NULL,
-                                              NULL,
-                                              NULL,
-                                              NULL);
-    }
-    else if ((m_paramRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage() == numProcsPerProcSubset) &&
-             (m_qoiRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage()   == numProcsPerProcSubset)) {
-      UQ_FATAL_TEST_MACRO(true,
-                          m_env.rank(),
-                          "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence()",
-                          "parallel vectors are not supported yet");
-    }
-    else {
-      UQ_FATAL_TEST_MACRO(true,
-                          m_env.rank(),
-                          "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence()",
-                          "number of processors required for a vector storage should be equal to the number of processors in the processor subset");
-    }
-  }
-  else {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.rank(),
-                        "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence()",
-                        "number of processors per processor subset is too large");
-  }
-#endif
   return;
 }
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::proc0GenerateSequence(
+uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   const uqBaseVectorRVClass      <P_V,P_M>& paramRv,
         uqBaseVectorSequenceClass<P_V,P_M>& workingSeq)
 {
@@ -298,18 +244,18 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::proc0GenerateSequence(
   //****************************************************
   unsigned int actualNumSamples = std::min(m_numSamples,paramRv.realizer().period());
   if ((m_env.verbosity() >= 0) && (m_env.rank() == 0)) {
-    std::cout << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::proc0GenerateSequence()"
-              << ": m_numSamples = "                                              << m_numSamples
-              << ", paramRv.realizer().period() = "                               << paramRv.realizer().period()
-              << ", about to call intGenerateSequence() with actualNumSamples = " << actualNumSamples
+    std::cout << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+              << ": m_numSamples = "                                                 << m_numSamples
+              << ", paramRv.realizer().period() = "                                  << paramRv.realizer().period()
+              << ", about to call actualGenerateSequence() with actualNumSamples = " << actualNumSamples
               << std::endl;
   }
-  intGenerateSequence(paramRv,
-                      workingSeq,
-                      actualNumSamples);
+  actualGenerateSequence(paramRv,
+                         workingSeq,
+                         actualNumSamples);
   if ((m_env.verbosity() >= 0) && (m_env.rank() == 0)) {
-    std::cout << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::proc0GenerateSequence()"
-              << ": returned from call to intGenerateSequence() with actualNumSamples = " << actualNumSamples
+    std::cout << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+              << ": returned from call to actualGenerateSequence() with actualNumSamples = " << actualNumSamples
               << std::endl;
   }
 
@@ -340,7 +286,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::proc0GenerateSequence(
 
     UQ_FATAL_TEST_MACRO((ofsvar && ofsvar->is_open()) == false,
                         m_env.rank(),
-                        "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::proc0GenerateSequence()",
+                        "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()",
                         "failed to open file");
   }
   
@@ -355,14 +301,14 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::proc0GenerateSequence(
 
   if (m_computeStats) {
     if ((m_env.verbosity() >= 0) && (m_env.rank() == 0)) {
-      std::cout << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::proc0GenerateSequence()"
+      std::cout << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                 << ": about to call 'workingSeq.computeStatistics()'"
                 << std::endl;
     }
     workingSeq.computeStatistics(*m_statisticalOptions,
                                  ofsvar);
     if ((m_env.verbosity() >= 0) && (m_env.rank() == 0)) {
-      std::cout << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::proc0GenerateSequence()"
+      std::cout << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                 << ": returned from call to 'workingSeq.computeStatistics()'"
                 << std::endl;
     }
@@ -390,7 +336,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::proc0GenerateSequence(
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence(
+uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
   const uqBaseVectorRVClass      <P_V,P_M>& paramRv,
         uqBaseVectorSequenceClass<P_V,P_M>& workingSeq,
         unsigned int                        seqSize)
@@ -414,53 +360,26 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence(
   workingSeq.resizeSequence(seqSize);
   P_V tmpP(m_paramSpace.zeroVector());
   Q_V tmpQ(m_qoiSpace.zeroVector());
-#if 0 // def UQ_GENERATE_PARALLEL_DUMMY_CHAINS
-  if ((m_env.numProcSubsets() < (unsigned int) m_env.fullComm().NumProc()                         ) &&
-      (m_paramRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage() == 1) &&
-      (m_qoiRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage()   == 1) &&
-      (m_env.subRank()                                                                        != 0)) {
-    m_qoiFunctionSynchronizer->callFunction(NULL,
-                                            NULL,
-                                            NULL,
-                                            NULL,
-                                            NULL,
-                                            NULL);
 
-    for (unsigned int i = 0; i < seqSize; ++i) {
-      workingSeq.setPositionValues(i,m_qoiSpace.zeroVector());
-    }
-  }
-  else {
-#endif
-    for (unsigned int i = 0; i < seqSize; ++i) {
-      paramRv.realizer().realization(tmpP);
+  for (unsigned int i = 0; i < seqSize; ++i) {
+    paramRv.realizer().realization(tmpP);
 
-      if (m_measureRunTimes) iRC = gettimeofday(&timevalQoIFunction, NULL);
-      m_qoiFunctionSynchronizer->callFunction(&tmpP,NULL,&tmpQ,NULL,NULL,NULL); // Might demand parallel environment
-      if (m_measureRunTimes) qoiFunctionRunTime += uqMiscGetEllapsedSeconds(&timevalQoIFunction);
+    if (m_measureRunTimes) iRC = gettimeofday(&timevalQoIFunction, NULL);
+    m_qoiFunctionSynchronizer->callFunction(&tmpP,NULL,&tmpQ,NULL,NULL,NULL); // Might demand parallel environment
+    if (m_measureRunTimes) qoiFunctionRunTime += uqMiscGetEllapsedSeconds(&timevalQoIFunction);
 
-      workingSeq.setPositionValues(i,tmpQ);
+    workingSeq.setPositionValues(i,tmpQ);
 
-      if ((m_displayPeriod            > 0) && 
-          (((i+1) % m_displayPeriod) == 0)) {
-        if (m_env.rank() == 0) {
-          std::cout << "Finished generating " << i+1
-                    << " qoi samples"
-                    << std::endl;
-        }
+    if ((m_displayPeriod            > 0) && 
+        (((i+1) % m_displayPeriod) == 0)) {
+      if (m_env.rank() == 0) {
+        std::cout << "Finished generating " << i+1
+                  << " qoi samples"
+                  << std::endl;
       }
     }
-#if 0 // def UQ_GENERATE_PARALLEL_DUMMY_CHAINS
-    // subRank == 0 --> Tell all other processors to exit barrier now that the chain has been fully generated
-    // subRank != 0 --> Enter the barrier and wait for processor 0 to decide to call the qoiFunctionx
-    m_qoiFunctionSynchronizer->callFunction(NULL,
-                                            NULL,
-                                            NULL,
-                                            NULL,
-                                            NULL,
-                                            NULL);
   }
-#endif
+
   seqRunTime = uqMiscGetEllapsedSeconds(&timevalSeq);
 
   if (m_env.rank() == 0) {
@@ -476,6 +395,58 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::intGenerateSequence(
     std::cout << "\n  QoI function run time   = " << qoiFunctionRunTime
               << " seconds ("                     << 100.*qoiFunctionRunTime/seqRunTime
               << "%)";
+  }
+
+  return;
+}
+
+template <class P_V,class P_M,class Q_V,class Q_M>
+void
+uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::checkTheParallelEnvironment()
+{
+  if (m_env.numSubEnvironments() == (unsigned int) m_env.fullComm().NumProc()) {
+    UQ_FATAL_TEST_MACRO(m_env.subRank() != 0,
+                        m_env.rank(),
+                        "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::checkTheParallelEnvironment()",
+                        "there should exist only one processor per processor subset");
+    UQ_FATAL_TEST_MACRO(m_paramRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage() != 1,
+                        m_env.rank(),
+                        "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::checkTheParallelEnvironment()",
+                        "only 1 processor (per processor subset) should be necessary for the storage of a parameter vector");
+  }
+  else if (m_env.numSubEnvironments() < (unsigned int) m_env.fullComm().NumProc()) {
+    UQ_FATAL_TEST_MACRO(m_env.fullComm().NumProc()%m_env.numSubEnvironments() != 0,
+                        m_env.rank(),
+                        "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::checkTheParallelEnvironment()",
+                        "total number of processors should be a multiple of the number of processor subsets");
+    unsigned int numProcsPerSubEnvironment = m_env.fullComm().NumProc()/m_env.numSubEnvironments();
+    UQ_FATAL_TEST_MACRO(m_env.subComm().NumProc() != (int) numProcsPerSubEnvironment,
+                        m_env.rank(),
+                        "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::checkTheParallelEnvironment()",
+                        "inconsistent number of processors per processor subset");
+    if ((m_paramRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage() == 1) &&
+        (m_qoiRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage()   == 1)) {
+      // Ok
+    }
+    else if ((m_paramRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage() == numProcsPerSubEnvironment) &&
+             (m_qoiRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage()   == numProcsPerSubEnvironment)) {
+      UQ_FATAL_TEST_MACRO(true,
+                          m_env.rank(),
+                          "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::checkTheParallelEnvironment()",
+                          "parallel vectors are not supported yet");
+    }
+    else {
+      UQ_FATAL_TEST_MACRO(true,
+                          m_env.rank(),
+                          "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::checkTheParallelEnvironment()",
+                          "number of processors required for a vector storage should be equal to the number of processors in the processor subset");
+    }
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.rank(),
+                        "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::checkTheParallelEnvironment()",
+                        "number of processors per processor subset is too large");
   }
 
   return;

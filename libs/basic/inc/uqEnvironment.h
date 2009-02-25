@@ -37,12 +37,12 @@
 
 #undef UQ_USES_COMMAND_LINE_OPTIONS
 
-#define UQ_ENV_NUM_PROC_SUBSETS_ODV 1
-#define UQ_ENV_VERBOSITY_ODV        0
-#define UQ_ENV_SEED_ODV             0
-#define UQ_ENV_RUN_NAME_ODV         ""
-#define UQ_ENV_NUM_DEBUG_PARAMS_ODV 0
-#define UQ_ENV_DEBUG_PARAM_ODV      0.
+#define UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV 1
+#define UQ_ENV_VERBOSITY_ODV            0
+#define UQ_ENV_SEED_ODV                 0
+#define UQ_ENV_RUN_NAME_ODV             ""
+#define UQ_ENV_NUM_DEBUG_PARAMS_ODV     0
+#define UQ_ENV_DEBUG_PARAM_ODV          0.
 
 #include <Epetra_MpiComm.h>
 #include <gsl/gsl_rng.h>
@@ -58,10 +58,9 @@ struct uqEnvOptionsStruct {
                      int          seed);
  ~uqEnvOptionsStruct();
 
-  unsigned int        m_numProcSubsets;
+  unsigned int        m_numSubEnvironments;
   unsigned int        m_verbosity;
   int                 m_seed;
-  std::string         m_runName;
   unsigned int        m_numDebugParams;
   std::vector<double> m_debugParams;
 };
@@ -87,7 +86,7 @@ public:
 
           const Epetra_MpiComm&   selfComm                 () const; 
 
-          unsigned int            numProcSubsets           () const;
+          unsigned int            numSubEnvironments       () const;
           unsigned int            subId                    () const;
           const std::string&      subIdString              () const;
 
@@ -97,10 +96,9 @@ public:
           po::variables_map&      allOptionsMap            () const;
           void                    scanInputFileForMyOptions(const po::options_description& optionsDesc) const;
           unsigned int            verbosity                () const;
-          const std::string&      runName                  () const;
           const gsl_rng*          rng                      () const;
           bool                    isThereInputFile         () const;
-          void                    printSyncDebugMsg        (const char* msg, unsigned int numUSecs) const;
+          void                    printSyncDebugMsg        (const char* msg, unsigned int numUSecs, const Epetra_MpiComm& commObj) const;
   virtual void                    print                    (std::ostream& os) const = 0;
 
 protected:
@@ -121,15 +119,13 @@ protected:
   po::variables_map*       m_allOptionsMap;
 
   std::string              m_option_help;
-  std::string              m_option_numProcSubsets;
+  std::string              m_option_numSubEnvironments;
   std::string              m_option_verbosity;
   std::string              m_option_seed;
-  std::string              m_option_runName;
 
-  unsigned int             m_numProcSubsets;
+  unsigned int             m_numSubEnvironments;
   unsigned int             m_verbosity;
   int                      m_seed;
-  std::string              m_runName;
   unsigned int             m_numDebugParams;
   std::vector<double>      m_debugParams;
 
