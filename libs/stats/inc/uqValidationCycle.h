@@ -137,13 +137,17 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::uqValidationCycleClass(
   m_valQoiRv                (NULL),
   m_valFP                   (NULL)
 {
-  if (m_env.rank() == 0) std::cout << "Entering uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::constructor()"
-                                   << ": prefix = "              << m_prefix
-                                   << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Entering uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
+  }
 
-  if (m_env.rank() == 0) std::cout << "Leaving uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::constructor()"
-                                   << ": prefix = "              << m_prefix
-                                   << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Leaving uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
+  }
 
   return;
 }
@@ -151,27 +155,27 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::uqValidationCycleClass(
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::~uqValidationCycleClass()
 {
-  if (m_env.rank() == 0) {
-    std::cout << "Entering uqValidationCycle::destructor()"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Entering uqValidationCycle::destructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 
-  if (m_valFP)                    delete m_valFP;
-  if (m_valQoiRv)                 delete m_valQoiRv;
-  if (m_valQoiFunctionObj)        delete m_valQoiFunctionObj;
-  if (m_valIP)                    delete m_valIP;
-  if (m_valPostRv)                delete m_valPostRv;
-  if (m_calFP)                    delete m_calFP;
-  if (m_calQoiRv)                 delete m_calQoiRv;
-  if (m_calQoiFunctionObj)        delete m_calQoiFunctionObj;
-  if (m_calIP)                    delete m_calIP;
-  if (m_calPostRv)                delete m_calPostRv;
+  if (m_valFP)             delete m_valFP;
+  if (m_valQoiRv)          delete m_valQoiRv;
+  if (m_valQoiFunctionObj) delete m_valQoiFunctionObj;
+  if (m_valIP)             delete m_valIP;
+  if (m_valPostRv)         delete m_valPostRv;
+  if (m_calFP)             delete m_calFP;
+  if (m_calQoiRv)          delete m_calQoiRv;
+  if (m_calQoiFunctionObj) delete m_calQoiFunctionObj;
+  if (m_calIP)             delete m_calIP;
+  if (m_calPostRv)         delete m_calPostRv;
 
-  if (m_env.rank() == 0) {
-    std::cout << "Leaving uqValidationCycle::destructor()"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Leaving uqValidationCycle::destructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 }
 

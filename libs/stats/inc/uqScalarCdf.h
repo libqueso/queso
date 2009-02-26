@@ -266,11 +266,11 @@ uqSampledScalarCdfClass<T>::print(std::ostream& os) const
   os << m_cdfGrid;
 
   // Print *cdf* values *at* grid points
-  os << m_prefix << "values = zeros(" << m_cdfValues.size()
-     << ","                           << 1
+  os << m_prefix << "values_subenv" << m_env.subIdString() << " = zeros(" << m_cdfValues.size()
+     << ","                                                               << 1
      << ");"
      << std::endl;
-  os << m_prefix << "values = [";
+  os << m_prefix << "values_subenv" << m_env.subIdString() << " = [";
   for (unsigned int j = 0; j < m_cdfValues.size(); ++j) {
     os << m_cdfValues[j] << " ";
   }

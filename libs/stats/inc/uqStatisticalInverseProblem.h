@@ -232,23 +232,8 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   const P_V& initialValues,
   const P_M* proposalCovMatrix)
 {
-  m_env.fullComm().Barrier();
-  if (m_env.verbosity() >= 0) {
-    for (int i = 0; i < m_env.fullComm().NumProc(); ++i) {
-      if (i == m_env.rank()) {
-        std::cout << "Entering uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()"
-                  << ": fullRank "         << m_env.rank()
-                  << ", processor subset " << m_env.subId()
-                  << ", subRank "          << m_env.subRank()
-                  << std::endl;
-      }
-      m_env.fullComm().Barrier();
-    }
-    if (m_env.rank() == 0) std::cout << "Sleeping 3 seconds..."
-                                     << std::endl;
-    sleep(3);
-  }
-  m_env.fullComm().Barrier();
+  //m_env.fullComm().Barrier();
+  //m_env.printSyncDebugMsg("Entering uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()",3000000,m_env.fullComm());
 
   if (m_computeSolution == false) {
     if ((m_env.rank() == 0)) {
@@ -291,24 +276,8 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
                                                                    *m_chain);
   m_postRv.setRealizer(*m_solutionRealizer);
 
+  //m_env.printSyncDebugMsg("In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(), code place 1",3000000,m_env.fullComm());
   //m_env.fullComm().Barrier();
-  if (m_env.verbosity() >= 0) {
-    for (int i = 0; i < m_env.fullComm().NumProc(); ++i) {
-      if (i == m_env.rank()) {
-        std::cout << "In (position 1) uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()"
-                  << ": fullRank "         << m_env.rank()
-                  << ", processor subset " << m_env.subId()
-                  << ", subRank "          << m_env.subRank()
-                  << std::endl;
-      }
-      m_env.fullComm().Barrier();
-    }
-    if (m_env.rank() == 0) std::cout << "Sleeping 3 seconds..."
-                                     << std::endl;
-    sleep(3);
-  }
-  m_env.fullComm().Barrier();
-
 
   // Compute output mdf: uniform sampling approach
   m_mdfGrids  = new uqArrayOfOneDGridsClass <P_V,P_M>((m_prefix+"mdf_").c_str(),m_postRv.imageSet().vectorSpace());
@@ -333,11 +302,11 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
       }
 
       // Open file
-      std::ofstream* ofsvar = new std::ofstream((m_outputFileName+"_subset"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
+      std::ofstream* ofsvar = new std::ofstream((m_outputFileName+"_subenv"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
       if ((ofsvar            == NULL ) ||
           (ofsvar->is_open() == false)) {
         delete ofsvar;
-        ofsvar = new std::ofstream((m_outputFileName+"_subset"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
+        ofsvar = new std::ofstream((m_outputFileName+"_subenv"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
       }
       UQ_FATAL_TEST_MACRO((ofsvar && ofsvar->is_open()) == false,
                           m_env.rank(),
@@ -360,23 +329,8 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
     std::cout << std::endl;
   }
 
-  m_env.fullComm().Barrier();
-  if (m_env.verbosity() >= 0) {
-    for (int i = 0; i < m_env.fullComm().NumProc(); ++i) {
-      if (i == m_env.rank()) {
-        std::cout << "Leaving uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()"
-                  << ": fullRank "         << m_env.rank()
-                  << ", processor subset " << m_env.subId()
-                  << ", subRank "          << m_env.subRank()
-                  << std::endl;
-      }
-      m_env.fullComm().Barrier();
-    }
-    if (m_env.rank() == 0) std::cout << "Sleeping 3 seconds..."
-                                     << std::endl;
-    sleep(3);
-  }
-  m_env.fullComm().Barrier();
+  //m_env.printSyncDebugMsg("Leaving uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()",3000000,m_env.fullComm());
+  //m_env.fullComm().Barrier();
   
   return;
 }

@@ -55,6 +55,8 @@ public:
   void                                     print       (std::ostream& os) const;
 
 private:
+  Epetra_Map* newMap(); // See template specialization
+
   const uqBaseEnvironmentClass&                   m_env;
   unsigned int                                    m_numRows;
   unsigned int                                    m_numCols;
@@ -81,7 +83,7 @@ uqAsciiTableClass<V,M>::uqAsciiTableClass(
   m_numCols      (1+numExtraCols),
   m_colIsString  (1,true),
   m_fileName     (fileName),
-  m_map          (new Epetra_Map(m_numRows,0,m_env.selfComm())),
+  m_map          (newMap()),
   m_stringColumns(0),
   m_doubleColumns(0)
 {

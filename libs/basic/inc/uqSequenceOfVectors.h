@@ -1161,11 +1161,11 @@ template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::printContents(std::ofstream& ofsvar) const
 {
-  ofsvar << m_name << " = zeros(" << this->sequenceSize()
-         << ","                   << this->vectorSize()
+  ofsvar << m_name << "_subenv" << m_env.subIdString() << " = zeros(" << this->sequenceSize()
+         << ","                                                       << this->vectorSize()
          << ");"
          << std::endl;
-  ofsvar << m_name << " = [";
+  ofsvar << m_name << "_subenv" << m_env.subIdString() << " = [";
   unsigned int chainSize = this->sequenceSize();
   for (unsigned int j = 0; j < chainSize; ++j) {
     bool savedVectorPrintState = m_seq[j]->getPrintHorizontally();

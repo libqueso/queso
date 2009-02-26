@@ -148,31 +148,30 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
             bufferDouble[i] = (*internalValues)[i];
           }
         }
-#if 0
-        m_env.fullComm().Barrier();
-        for (int i = 0; i < m_env.fullComm().NumProc(); ++i) {
-          if (i == m_env.rank()) {
-            std::cout << " In uqScalarFunctionSynchronizerClass<V,M>::callFunction(), just before double Bcast()"
-                      << ": fullRank "         << m_env.rank()
-                      << ", processor subset " << m_env.subId()
-                      << ", subRank "          << m_env.subRank()
-                      << ": buffer related to first double Bcast() is ready to be broadcasted"
-                      << " and has size "      << bufferDouble.size()
-                      << std::endl;
-            if (m_env.subRank() == 0) {
-	      std::cout << "Buffer contents are";
-              for (unsigned int i = 0; i < bufferDouble.size(); ++i) {
-	        std::cout << " " << bufferDouble[i];
-              }
-	      std::cout << std::endl;
-            }
-          }
-          m_env.fullComm().Barrier();
-        }
-        if (m_env.rank() == 0) std::cout << "Sleeping 3 seconds..."
-                                         << std::endl;
-        sleep(3);
-#endif
+
+        //m_env.fullComm().Barrier();
+        //for (int i = 0; i < m_env.fullComm().NumProc(); ++i) {
+        //  if (i == m_env.rank()) {
+        //    std::cout << " In uqScalarFunctionSynchronizerClass<V,M>::callFunction(), just before double Bcast()"
+        //              << ": fullRank "       << m_env.rank()
+        //              << ", subEnvironment " << m_env.subId()
+        //              << ", subRank "        << m_env.subRank()
+        //              << ": buffer related to first double Bcast() is ready to be broadcasted"
+        //              << " and has size "      << bufferDouble.size()
+        //              << std::endl;
+        //    if (m_env.subRank() == 0) {
+	//      std::cout << "Buffer contents are";
+        //      for (unsigned int i = 0; i < bufferDouble.size(); ++i) {
+	//        std::cout << " " << bufferDouble[i];
+        //    }
+	//      std::cout << std::endl;
+        //    }
+        //  }
+        //  m_env.fullComm().Barrier();
+        //}
+        //if (m_env.rank() == 0) std::cout << "Sleeping 3 seconds..."
+        //                                 << std::endl;
+        //sleep(3);
 
         count = (int) bufferDouble.size();
         mpiRC = MPI_Bcast ((void *) &bufferDouble[0], count, MPI_DOUBLE, 0, m_env.subComm().Comm());
@@ -250,7 +249,7 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
         if (internalEffect    != NULL) delete internalEffect;
 
         stayInRoutine = (vecValues == NULL) && (bufferChar[0] == '1');
-        if (!stayInRoutine) std::cout << "Fullrank " << m_env.rank() << " is leaving scalarFunctionSync()" << std::endl;
+        //if (!stayInRoutine) std::cout << "Fullrank " << m_env.rank() << " is leaving scalarFunctionSync()" << std::endl;
       }
     } while (stayInRoutine);
   }

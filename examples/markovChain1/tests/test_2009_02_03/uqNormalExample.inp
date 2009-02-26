@@ -1,16 +1,19 @@
 ###############################################
 # UQ Environment
 ###############################################
-#uqEnv_help      = anything
-uqEnv_verbosity = 2
-uqEnv_seed      = 0
+env_help                    = anything
+env_numSubEnvironments      = 1
+env_subScreenWrite          = 1
+env_subScreenOutputFileName = "."
+env_verbosity               = 2
+env_seed                    = 0
 
 ###############################################
 # Statistical inverse problem (ip)
 ###############################################
 ip_help            = anything
 ip_computeSolution = 1
-ip_outputFileName  = uqNormalOutput.m
+ip_outputFileName  = uqNormalOutput
 
 ###############################################
 # 'ip_': information for Markov Chain algorithm
@@ -21,7 +24,7 @@ ip_outputFileName  = uqNormalOutput.m
 ip_mc_help                  = anything
 ip_mc_chain_type            = 1
 ip_mc_chain_size            = 131072
-ip_mc_chain_outputFileName  = uqNormalExtraOutput.m
+ip_mc_chain_outputFileName  = uqNormalExtraOutput
 ip_mc_chain_generateExtra   = 0
 ip_mc_chain_displayPeriod   = 20000
 ip_mc_chain_measureRunTimes = 1

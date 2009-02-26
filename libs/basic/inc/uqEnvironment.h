@@ -37,12 +37,15 @@
 
 #undef UQ_USES_COMMAND_LINE_OPTIONS
 
-#define UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV 1
-#define UQ_ENV_VERBOSITY_ODV            0
-#define UQ_ENV_SEED_ODV                 0
-#define UQ_ENV_RUN_NAME_ODV             ""
-#define UQ_ENV_NUM_DEBUG_PARAMS_ODV     0
-#define UQ_ENV_DEBUG_PARAM_ODV          0.
+#define UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE "."
+
+#define UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV        1
+#define UQ_ENV_SUB_SCREEN_WRITE_ODV            0
+#define UQ_ENV_SUB_SCREEN_OUTPUT_FILE_NAME_ODV UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE
+#define UQ_ENV_VERBOSITY_ODV                   0
+#define UQ_ENV_SEED_ODV                        0
+#define UQ_ENV_NUM_DEBUG_PARAMS_ODV            0
+#define UQ_ENV_DEBUG_PARAM_ODV                 0.
 
 #include <Epetra_MpiComm.h>
 #include <gsl/gsl_rng.h>
@@ -59,6 +62,8 @@ struct uqEnvOptionsStruct {
  ~uqEnvOptionsStruct();
 
   unsigned int        m_numSubEnvironments;
+  bool                m_subScreenWrite;
+  std::string         m_subScreenOutputFileName;
   unsigned int        m_verbosity;
   int                 m_seed;
   unsigned int        m_numDebugParams;
@@ -85,6 +90,8 @@ public:
           const Epetra_MpiComm&   subComm                  () const; 
 
           const Epetra_MpiComm&   selfComm                 () const; 
+
+                std::ofstream*    subScreenFile            () const;
 
           unsigned int            numSubEnvironments       () const;
           unsigned int            subId                    () const;
@@ -120,12 +127,17 @@ protected:
 
   std::string              m_option_help;
   std::string              m_option_numSubEnvironments;
+  std::string              m_option_subScreenWrite;
+  std::string              m_option_subScreenOutputFileName;
   std::string              m_option_verbosity;
   std::string              m_option_seed;
 
   unsigned int             m_numSubEnvironments;
+  bool                     m_subScreenWrite;
+  std::string              m_subScreenOutputFileName;
   unsigned int             m_verbosity;
   int                      m_seed;
+
   unsigned int             m_numDebugParams;
   std::vector<double>      m_debugParams;
 
@@ -139,6 +151,7 @@ protected:
 
   Epetra_MpiComm*          m_selfComm;
 
+  mutable std::ofstream*   m_subScreenFile;
   gsl_rng*                 m_rng;
   struct timeval           m_timevalBegin;
 };
@@ -151,7 +164,7 @@ public:
   uqEmptyEnvironmentClass();
  ~uqEmptyEnvironmentClass();
 
-        void                     print                    (std::ostream& os) const;
+        void                     print                (std::ostream& os) const;
 };
 
 //*****************************************************
@@ -164,13 +177,13 @@ public:
   uqFullEnvironmentClass(const uqEnvOptionsStruct& options, MPI_Comm inputComm, const char* prefix);
  ~uqFullEnvironmentClass();
 
-        void                     print                    (std::ostream& os) const;
+        void                     print                (std::ostream& os) const;
 
 private:
-        void                     commonConstructor        (MPI_Comm inputComm);
-        void                     readEventualInputFile    ();
-        void                     defineMyOptions          (po::options_description& optionsDesc) const;
-        void                     getMyOptionValues        (po::options_description& optionsDesc);
+        void                     commonConstructor    (MPI_Comm inputComm);
+        void                     readEventualInputFile();
+        void                     defineMyOptions      (po::options_description& optionsDesc) const;
+        void                     getMyOptionValues    (po::options_description& optionsDesc);
 };
 
 std::ostream& operator<<(std::ostream& os, const uqBaseEnvironmentClass& obj);

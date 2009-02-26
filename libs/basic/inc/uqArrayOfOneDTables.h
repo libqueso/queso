@@ -123,11 +123,11 @@ uqArrayOfOneDTablesClass<V,M>::print(std::ostream& os) const
   uqArrayOfOneDTablesClass<V,M>* tmp = const_cast<uqArrayOfOneDTablesClass<V,M>*>(this);
   for (unsigned int i = 0; i < (unsigned int) m_oneDTables.MyLength(); ++i) {
     const std::vector<double>& tmpVec = *(tmp->m_oneDTables(i,0));
-    os << m_prefix << i << "_values = zeros(" << tmpVec.size()
-       << ","                                 << 1
+    os << m_prefix << i << "_values_subenv" << m_env.subIdString() << " = zeros(" << tmpVec.size()
+       << ","                                                                     << 1
        << ");"
        << std::endl;
-    os << m_prefix << i << "_values = [";
+    os << m_prefix << i << "_values_subenv" << m_env.subIdString() << " = [";
     for (unsigned int j = 0; j < tmpVec.size(); ++j) {
       os << tmpVec[j] << " ";
     }

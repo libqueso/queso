@@ -277,11 +277,11 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
     }
 
     // Open file
-    ofsvar = new std::ofstream((m_outputFileName+"_subset"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
+    ofsvar = new std::ofstream((m_outputFileName+"_subenv"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
     if ((ofsvar            == NULL ) ||
         (ofsvar->is_open() == false)) {
       delete ofsvar;
-      ofsvar = new std::ofstream((m_outputFileName+"_subset"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
+      ofsvar = new std::ofstream((m_outputFileName+"_subenv"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
     }
 
     UQ_FATAL_TEST_MACRO((ofsvar && ofsvar->is_open()) == false,
@@ -408,22 +408,22 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::checkTheParallelEnvironment()
     UQ_FATAL_TEST_MACRO(m_env.subRank() != 0,
                         m_env.rank(),
                         "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::checkTheParallelEnvironment()",
-                        "there should exist only one processor per processor subset");
+                        "there should exist only one processor per sub environment");
     UQ_FATAL_TEST_MACRO(m_paramRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage() != 1,
                         m_env.rank(),
                         "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::checkTheParallelEnvironment()",
-                        "only 1 processor (per processor subset) should be necessary for the storage of a parameter vector");
+                        "only 1 processor (per sub environment) should be necessary for the storage of a parameter vector");
   }
   else if (m_env.numSubEnvironments() < (unsigned int) m_env.fullComm().NumProc()) {
     UQ_FATAL_TEST_MACRO(m_env.fullComm().NumProc()%m_env.numSubEnvironments() != 0,
                         m_env.rank(),
                         "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::checkTheParallelEnvironment()",
-                        "total number of processors should be a multiple of the number of processor subsets");
+                        "total number of processors should be a multiple of the number of sub environments");
     unsigned int numProcsPerSubEnvironment = m_env.fullComm().NumProc()/m_env.numSubEnvironments();
     UQ_FATAL_TEST_MACRO(m_env.subComm().NumProc() != (int) numProcsPerSubEnvironment,
                         m_env.rank(),
                         "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::checkTheParallelEnvironment()",
-                        "inconsistent number of processors per processor subset");
+                        "inconsistent number of processors per sub environment");
     if ((m_paramRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage() == 1) &&
         (m_qoiRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage()   == 1)) {
       // Ok
@@ -439,14 +439,14 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::checkTheParallelEnvironment()
       UQ_FATAL_TEST_MACRO(true,
                           m_env.rank(),
                           "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::checkTheParallelEnvironment()",
-                          "number of processors required for a vector storage should be equal to the number of processors in the processor subset");
+                          "number of processors required for a vector storage should be equal to the number of processors in the sub environment");
     }
   }
   else {
     UQ_FATAL_TEST_MACRO(true,
                         m_env.rank(),
                         "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::checkTheParallelEnvironment()",
-                        "number of processors per processor subset is too large");
+                        "number of processors per sub environment is too large");
   }
 
   return;

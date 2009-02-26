@@ -30,40 +30,11 @@
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-#include <uqVectorSpace.h>
-#include <uqTrilinosMatrix.h>
+#include <uqAsciiTable.h>
 
 template <>
 Epetra_Map*
-uqVectorSpaceClass<class uqTrilinosVectorClass, class uqTrilinosMatrixClass>::newMap()
+uqAsciiTableClass<class uqGslVectorClass, class uqGslMatrixClass>::newMap()
 {
-  return new Epetra_Map(m_dim,0,m_env.subComm());
-}
-
-template<>
-uqTrilinosVectorClass*
-uqVectorSpaceClass<uqTrilinosVectorClass,uqTrilinosMatrixClass>::newVector() const
-{
-  return new uqTrilinosVectorClass(m_env,*m_map);
-}
-
-template<>
-uqTrilinosVectorClass*
-uqVectorSpaceClass<uqTrilinosVectorClass,uqTrilinosMatrixClass>::newVector(double value) const
-{
-  return new uqTrilinosVectorClass(m_env,*m_map,value);
-}
-
-template<>
-uqTrilinosMatrixClass*
-uqVectorSpaceClass<uqTrilinosVectorClass,uqTrilinosMatrixClass>::newMatrix() const
-{
-  return new uqTrilinosMatrixClass(m_env,*m_map,this->dim());
-}
-
-template<>
-uqTrilinosMatrixClass*
-uqVectorSpaceClass<uqTrilinosVectorClass,uqTrilinosMatrixClass>::newDiagMatrix(double diagValue) const
-{
-  return new uqTrilinosMatrixClass(m_env,*m_map,diagValue);
+  return new Epetra_Map(m_numRows,0,m_env.selfComm());
 }

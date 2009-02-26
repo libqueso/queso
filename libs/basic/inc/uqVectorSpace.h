@@ -69,6 +69,8 @@ public:
           void                     print               (std::ostream& os) const;
 
 protected:
+  Epetra_Map* newMap(); // See template specialization
+
           using uqVectorSetClass<V,M>::m_env;
           using uqVectorSetClass<V,M>::m_prefix;
           using uqVectorSetClass<V,M>::m_volume;
@@ -103,7 +105,7 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
   m_dim                (dimValue),
   m_componentsNames    (componentsNames),
   m_emptyComponentName (""),
-  m_map                (new Epetra_Map(m_dim,0,m_env.selfComm())),
+  m_map                (newMap()),
   m_zeroVector         (new V(m_env,*m_map))
 {
   if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {

@@ -24,7 +24,8 @@ libqueso_a_SOURCES = $(top_srcdir)/libs/basic/src/uqEnvironment.C \
 if UQBT_GSL
 libqueso_a_SOURCES += $(top_srcdir)/libs/basic/src/uqGslVector.C \
 	$(top_srcdir)/libs/basic/src/uqGslMatrix.C \
-	$(top_srcdir)/libs/basic/src/uqGslVectorSpace.C
+	$(top_srcdir)/libs/basic/src/uqGslVectorSpace.C \
+	$(top_srcdir)/libs/basic/src/uqGslAsciiTable.C
 endif
 
 # Sources from stats/src

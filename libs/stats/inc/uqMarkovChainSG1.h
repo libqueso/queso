@@ -102,11 +102,6 @@ public:
 
 private:
   void   proc0GenerateSequence    (uqBaseVectorSequenceClass<P_V,P_M>& workingChain); /*! */
-  //uble targetPdfBarrier         (const P_V* vecValues,
-  //                               const P_V* vecDirection,
-  //                                     P_V* gradVector,
-  //                                     P_M* hessianMatrix,
-  //                                     P_V* hessianEffect) const;
   void   resetChainAndRelatedInfo ();
   void   defineMyOptions          (po::options_description&                             optionsDesc);
   void   getMyOptionValues        (po::options_description&                             optionsDesc);
@@ -1078,11 +1073,11 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
 
   if (m_chainGenerateExtra) {
     // Write m_logTargets
-    ofsvar << m_prefix << "logTargets = zeros(" << m_logTargets.size()
-           << ","                               << 1
+    ofsvar << m_prefix << "logTargets_subenv" << m_env.subIdString() << " = zeros(" << m_logTargets.size()
+           << ","                                                                   << 1
            << ");"
            << std::endl;
-    ofsvar << m_prefix << "logTargets = [";
+    ofsvar << m_prefix << "logTargets_subenv" << m_env.subIdString() << " = [";
     for (unsigned int i = 0; i < m_logTargets.size(); ++i) {
       ofsvar << m_logTargets[i]
              << std::endl;
@@ -1090,11 +1085,11 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
     ofsvar << "];\n";
 
     // Write m_alphaQuotients
-    ofsvar << m_prefix << "alphaQuotients = zeros(" << m_alphaQuotients.size()
-           << ","                                   << 1
+    ofsvar << m_prefix << "alphaQuotients_subenv" << m_env.subIdString() << " = zeros(" << m_alphaQuotients.size()
+           << ","                                                                       << 1
            << ");"
            << std::endl;
-    ofsvar << m_prefix << "alphaQuotients = [";
+    ofsvar << m_prefix << "alphaQuotients_subenv" << m_env.subIdString() << " = [";
     for (unsigned int i = 0; i < m_alphaQuotients.size(); ++i) {
       ofsvar << m_alphaQuotients[i]
              << std::endl;

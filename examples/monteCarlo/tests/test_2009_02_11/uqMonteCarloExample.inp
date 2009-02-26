@@ -1,16 +1,19 @@
 ###############################################
 # UQ Environment
 ###############################################
-#uqEnv_help      = anything
-uqEnv_verbosity = 2
-uqEnv_seed      = 0
+env_help                    = anything
+env_numSubEnvironments      = 1
+env_subScreenWrite          = 1
+env_subScreenOutputFileName = "."
+env_verbosity               = 2
+env_seed                    = 0
 
 ###############################################
 # Statistical forward problem (fp)
 ###############################################
 fp_help            = anything
 fp_computeSolution = 1
-fp_outputFileName  = outputData/mcOutput.m
+fp_outputFileName  = outputData/mcOutput
 
 ###############################################
 # 'fp_': information for Monte Carlo algorithm
@@ -20,7 +23,7 @@ fp_outputFileName  = outputData/mcOutput.m
 ###############################################
 fp_mc_help            = anything
 fp_mc_numSamples      = 1048576
-fp_mc_outputFileName  = outputData/mcExtraOutput.m
+fp_mc_outputFileName  = outputData/mcExtraOutput
 fp_mc_displayPeriod   = 20000
 fp_mc_measureRunTimes = 1
 fp_mc_write           = 0

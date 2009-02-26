@@ -1,8 +1,8 @@
 cd outputData
-s1Output_subset0
-s1ExtraOutput_subset0
-s2Output_subset0
-s2ExtraOutput_subset0
+s1Output_subenv0
+s1ExtraOutput_subenv0
+s2Output_subenv0
+s2ExtraOutput_subenv0
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -68,11 +68,11 @@ clf
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%plot(cycle_cal_ip_mdf_0_grid,cycle_cal_ip_mdf_0_values,'b+');
-plot(cycle_cal_ip_mc_filteredChain_kdeEvalPositions(1,:),cycle_cal_ip_mc_filteredChain_gaussianKdeDensities(1,:),'b-','linewidth',3);
+%%plot(cycle_cal_ip_mdf_0_grid_subenv0,cycle_cal_ip_mdf_0_values_subenv0,'b+');
+plot(cycle_cal_ip_mc_filteredChain_kdeEvalPositions_subenv0(1,:),cycle_cal_ip_mc_filteredChain_gaussianKdeDensities_subenv0(1,:),'b-','linewidth',3);
 hold
-%%plot(cycle_val_ip_mdf_0_grid,cycle_val_ip_mdf_0_values,'r+');
-plot(cycle_val_ip_mc_filteredChain_kdeEvalPositions(1,:),cycle_val_ip_mc_filteredChain_gaussianKdeDensities(1,:),'r-','linewidth',3);
+%%plot(cycle_val_ip_mdf_0_grid_subenv0,cycle_val_ip_mdf_0_values_subenv0,'r+');
+plot(cycle_val_ip_mc_filteredChain_kdeEvalPositions_subenv0(1,:),cycle_val_ip_mc_filteredChain_gaussianKdeDensities_subenv0(1,:),'r-','linewidth',3);
 ylabel('Posterior marginal pdf','fontsize',20);
 xlabel('A (min^{-1})','fontsize',20);
 title('A: prior(*) and posterior (-) marginals','fontsize',20);
@@ -98,11 +98,11 @@ clf
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%plot(cycle_cal_ip_mdf_1_grid,cycle_cal_ip_mdf_1_values,'b+');
-plot(cycle_cal_ip_mc_filteredChain_kdeEvalPositions(2,:),cycle_cal_ip_mc_filteredChain_gaussianKdeDensities(2,:),'b-','linewidth',3);
+%%plot(cycle_cal_ip_mdf_1_grid_subenv0,cycle_cal_ip_mdf_1_values_subenv0,'b+');
+plot(cycle_cal_ip_mc_filteredChain_kdeEvalPositions_subenv0(2,:),cycle_cal_ip_mc_filteredChain_gaussianKdeDensities_subenv0(2,:),'b-','linewidth',3);
 hold
-%%plot(cycle_val_ip_mdf_1_grid,cycle_val_ip_mdf_1_values,'r+');
-plot(cycle_val_ip_mc_filteredChain_kdeEvalPositions(2,:),cycle_val_ip_mc_filteredChain_gaussianKdeDensities(2,:),'r-','linewidth',3);
+%%plot(cycle_val_ip_mdf_1_grid_subenv0,cycle_val_ip_mdf_1_values_subenv0,'r+');
+plot(cycle_val_ip_mc_filteredChain_kdeEvalPositions_subenv0(2,:),cycle_val_ip_mc_filteredChain_gaussianKdeDensities_subenv0(2,:),'r-','linewidth',3);
 ylabel('Pdf','fontsize',20);
 xlabel('E (J/mol)','fontsize',20);
 title('E: prior(*) and posterior (-) marginals','fontsize',20);
@@ -128,11 +128,11 @@ clf
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%plot(cycle_cal_fp_mdf_0_grid,cycle_cal_fp_mdf_0_values,'b+');
-plot(cycle_cal_fp_mc_seq_kdeEvalPositions(1,:),cycle_cal_fp_mc_seq_gaussianKdeDensities(1,:),'b-','linewidth',3);
+%%plot(cycle_cal_fp_mdf_0_grid_subenv0,cycle_cal_fp_mdf_0_values_subenv0,'b+');
+plot(cycle_cal_fp_mc_seq_kdeEvalPositions_subenv0(1,:),cycle_cal_fp_mc_seq_gaussianKdeDensities_subenv0(1,:),'b-','linewidth',3);
 hold
-%%plot(cycle_val_fp_mdf_0_grid,cycle_val_fp_mdf_0_values,'r+');
-plot(cycle_val_fp_mc_seq_kdeEvalPositions(1,:),cycle_val_fp_mc_seq_gaussianKdeDensities(1,:),'r-','linewidth',3);
+%%plot(cycle_val_fp_mdf_0_grid_subenv0,cycle_val_fp_mdf_0_values_subenv0,'r+');
+plot(cycle_val_fp_mc_seq_kdeEvalPositions_subenv0(1,:),cycle_val_fp_mc_seq_gaussianKdeDensities_subenv0(1,:),'r-','linewidth',3);
 ylabel('Pdf','fontsize',20);
 xlabel('Mass fraction remaining at t=3.9s','fontsize',20);
 title('QoI Pdf','fontsize',20);
@@ -147,9 +147,9 @@ clf
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-plot(cycle_cal_fp_cdf_0_grid,100*cycle_cal_fp_cdf_0_values,'b-','linewidth',3);
+plot(cycle_cal_fp_cdf_0_grid_subenv0,100*cycle_cal_fp_cdf_0_values_subenv0,'b-','linewidth',3);
 hold
-plot(cycle_val_fp_cdf_0_grid,100*cycle_val_fp_cdf_0_values,'r-','linewidth',3);
+plot(cycle_val_fp_cdf_0_grid_subenv0,100*cycle_val_fp_cdf_0_values_subenv0,'r-','linewidth',3);
 
 a=axis;
 axis([a(1) 1.0 a(3) a(4)]);
@@ -167,11 +167,11 @@ clf
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-plot(cycle_cal_fp_cdf_0_grid,100*cycle_cal_fp_cdf_0_values,'b-','linewidth',3);
+plot(cycle_cal_fp_cdf_0_grid_subenv0,100*cycle_cal_fp_cdf_0_values_subenv0,'b-','linewidth',3);
 hold
-plot(cycle_val_fp_cdf_0_grid,100*cycle_val_fp_cdf_0_values,'r-','linewidth',3);
+plot(cycle_val_fp_cdf_0_grid_subenv0,100*cycle_val_fp_cdf_0_values_subenv0,'r-','linewidth',3);
 
-[m,n] = size(cycle_cal_fp_cdf_0_grid);
+[m,n] = size(cycle_cal_fp_cdf_0_grid_subenv0);
 epsilon = 0.06;
 plot([0:0.01:1],ones(101,1)*100*(0.+epsilon/2),'k--','linewidth',1);
 plot([0:0.01:1],ones(101,1)*100*(1.-epsilon/2),'k--','linewidth',1);
@@ -192,11 +192,11 @@ clf
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-plot(cycle_cal_fp_cdf_0_grid,100*cycle_cal_fp_cdf_0_values,'b-','linewidth',3);
+plot(cycle_cal_fp_cdf_0_grid_subenv0,100*cycle_cal_fp_cdf_0_values_subenv0,'b-','linewidth',3);
 hold
-plot(cycle_val_fp_cdf_0_grid,100*cycle_val_fp_cdf_0_values,'r-','linewidth',3);
+plot(cycle_val_fp_cdf_0_grid_subenv0,100*cycle_val_fp_cdf_0_values_subenv0,'r-','linewidth',3);
 
-[m,n] = size(cycle_cal_fp_cdf_0_grid);
+[m,n] = size(cycle_cal_fp_cdf_0_grid_subenv0);
 epsilon = 0.06;
 plot([0:0.01:1],ones(101,1)*100*(0.+epsilon/2),'k--','linewidth',3);
 plot([0:0.01:1],ones(101,1)*100*(1.-epsilon/2),'k--','linewidth',3);
@@ -217,11 +217,11 @@ clf
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-plot(cycle_cal_fp_cdf_0_grid,100*cycle_cal_fp_cdf_0_values,'b-','linewidth',3);
+plot(cycle_cal_fp_cdf_0_grid_subenv0,100*cycle_cal_fp_cdf_0_values_subenv0,'b-','linewidth',3);
 hold
-plot(cycle_val_fp_cdf_0_grid,100*cycle_val_fp_cdf_0_values,'r-','linewidth',3);
+plot(cycle_val_fp_cdf_0_grid_subenv0,100*cycle_val_fp_cdf_0_values_subenv0,'r-','linewidth',3);
 
-[m,n] = size(cycle_cal_fp_cdf_0_grid);
+[m,n] = size(cycle_cal_fp_cdf_0_grid_subenv0);
 probabilityTresholdForFailure = 0.05;
 plot([0:0.01:1],ones(101,1)*100*probabilityTresholdForFailure,'k--','linewidth',1);
 massTresholdForFailure = 0.2;
@@ -243,11 +243,11 @@ clf
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-plot(cycle_cal_fp_cdf_0_grid,100*cycle_cal_fp_cdf_0_values,'b-','linewidth',3);
+plot(cycle_cal_fp_cdf_0_grid_subenv0,100*cycle_cal_fp_cdf_0_values_subenv0,'b-','linewidth',3);
 hold
-plot(cycle_val_fp_cdf_0_grid,100*cycle_val_fp_cdf_0_values,'r-','linewidth',3);
+plot(cycle_val_fp_cdf_0_grid_subenv0,100*cycle_val_fp_cdf_0_values_subenv0,'r-','linewidth',3);
 
-[m,n] = size(cycle_cal_fp_cdf_0_grid);
+[m,n] = size(cycle_cal_fp_cdf_0_grid_subenv0);
 probabilityTresholdForFailure = 0.05;
 plot([0:0.01:1],ones(101,1)*100*probabilityTresholdForFailure,'k--','linewidth',3);
 massTresholdForFailure = 0.2;

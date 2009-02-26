@@ -971,11 +971,11 @@ void
 uqArrayOfSequencesClass<V,M>::write(std::ofstream& ofsvar) const
 {
   // Write chain
-  ofsvar << m_name << " = zeros(" << this->sequenceSize()
-         << ","                   << this->vectorSize()
+  ofsvar << m_name << "_subenv" << m_env.subIdString() << " = zeros(" << this->sequenceSize()
+         << ","                                                       << this->vectorSize()
          << ");"
          << std::endl;
-  ofsvar << m_name << " = [";
+  ofsvar << m_name << "_subenv" << m_env.subIdString() << " = [";
 
   V tmpVec(m_vectorSpace.zeroVector());
   unsigned int chainSize = this->sequenceSize();

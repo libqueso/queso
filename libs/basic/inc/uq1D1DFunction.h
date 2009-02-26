@@ -33,6 +33,7 @@
 #ifndef __UQ_1D_1D_FUNCTION_H__
 #define __UQ_1D_1D_FUNCTION_H__
 
+#include <uqEnvironment.h>
 #include <uqDefines.h>
 #include <vector>
 #include <math.h>
@@ -348,7 +349,7 @@ public:
           void                 set(const std::vector<double>& domainValues,
                                    const std::vector<double>& imageValues);
 
-  virtual void                 printForMatlab(std::ofstream& ofsvar, const std::string& prefixName) const;
+  virtual void                 printForMatlab(const uqBaseEnvironmentClass& env, std::ofstream& ofsvar, const std::string& prefixName) const;
 
 protected:
   using uqBase1D1DFunctionClass::m_minDomainValue;
@@ -496,21 +497,22 @@ uqSampled1D1DFunctionClass::set(
 
 void
 uqSampled1D1DFunctionClass::printForMatlab(
-  std::ofstream&     ofsvar,
-  const std::string& prefixName) const
+  const uqBaseEnvironmentClass& env,
+  std::ofstream&                ofsvar,
+  const std::string&            prefixName) const
 {
   unsigned int tmpSize = m_domainValues.size();
   if (tmpSize == 0) {
     tmpSize = 1;
-    ofsvar << "\n" << prefixName << "Time = zeros("  << tmpSize << ",1);"
-           << "\n" << prefixName << "Value = zeros(" << tmpSize << ",1);";
+    ofsvar << "\n" << prefixName << "Time_subenv" << env.subIdString() << " = zeros("  << tmpSize << ",1);"
+           << "\n" << prefixName << "Value_subenv" << env.subIdString() << " = zeros(" << tmpSize << ",1);";
   }
   else {
-    ofsvar << "\n" << prefixName << "Time = zeros("  << tmpSize << ",1);"
-           << "\n" << prefixName << "Value = zeros(" << tmpSize << ",1);";
+    ofsvar << "\n" << prefixName << "Time_subenv" << env.subIdString() << " = zeros("  << tmpSize << ",1);"
+           << "\n" << prefixName << "Value_subenv" << env.subIdString() << " = zeros(" << tmpSize << ",1);";
     for (unsigned int i = 0; i < tmpSize; ++i) {
-      ofsvar << "\n" << prefixName << "Time("  << i+1 << ",1) = " << m_domainValues[i]  << ";"
-             << "\n" << prefixName << "Value(" << i+1 << ",1) = " << m_imageValues[i] << ";";
+      ofsvar << "\n" << prefixName << "Time_subenv" << env.subIdString() << "("  << i+1 << ",1) = " << m_domainValues[i] << ";"
+             << "\n" << prefixName << "Value_subenv" << env.subIdString() << "(" << i+1 << ",1) = " << m_imageValues[i]  << ";";
     }
   }
 
@@ -533,7 +535,7 @@ public:
   void                       set(const std::vector<double>& domainValues,
                                  const std::vector<double>& imageValues,
                                  const std::vector<double>& integratedValues);
-  void                       printForMatlab(std::ofstream& ofsvar, const std::string& prefixName) const;
+  void                       printForMatlab(const uqBaseEnvironmentClass& env, std::ofstream& ofsvar, const std::string& prefixName) const;
 
 protected:
   using uqBase1D1DFunctionClass::m_minDomainValue;
@@ -639,20 +641,21 @@ uqDeltaSeq1D1DFunctionClass::set(
 
 void
 uqDeltaSeq1D1DFunctionClass::printForMatlab(
-  std::ofstream&     ofsvar,
-  const std::string& prefixName) const
+  const uqBaseEnvironmentClass& env,
+  std::ofstream&                ofsvar,
+  const std::string&            prefixName) const
 {
-  uqSampled1D1DFunctionClass::printForMatlab(ofsvar,prefixName);
+  uqSampled1D1DFunctionClass::printForMatlab(env,ofsvar,prefixName);
 
   unsigned int tmpSize = m_integratedValues.size();
   if (tmpSize == 0) {
     tmpSize = 1;
-    ofsvar << "\n" << prefixName << "intValue = zeros("  << tmpSize << ",1);";
+    ofsvar << "\n" << prefixName << "intValue_subenv" << env.subIdString() << " = zeros("  << tmpSize << ",1);";
   }
   else {
-    ofsvar << "\n" << prefixName << "intValue = zeros("  << tmpSize << ",1);";
+    ofsvar << "\n" << prefixName << "intValue_subenv" << env.subIdString() << " = zeros("  << tmpSize << ",1);";
     for (unsigned int i = 0; i < tmpSize; ++i) {
-      ofsvar << "\n" << prefixName << "intValue(" << i+1 << ",1) = " << m_integratedValues[i]  << ";";
+      ofsvar << "\n" << prefixName << "intValue_subenv" << env.subIdString() << "(" << i+1 << ",1) = " << m_integratedValues[i]  << ";";
     }
   }
 
