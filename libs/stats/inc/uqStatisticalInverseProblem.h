@@ -233,7 +233,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   const P_M* proposalCovMatrix)
 {
   //m_env.fullComm().Barrier();
-  //m_env.printSyncDebugMsg("Entering uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()",3000000,m_env.fullComm());
+  //m_env.syncPrintDebugMsg("Entering uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()",3000000,m_env.fullComm());
 
   if (m_computeSolution == false) {
     if ((m_env.rank() == 0)) {
@@ -276,7 +276,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
                                                                    *m_chain);
   m_postRv.setRealizer(*m_solutionRealizer);
 
-  //m_env.printSyncDebugMsg("In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(), code place 1",3000000,m_env.fullComm());
+  //m_env.syncPrintDebugMsg("In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(), code place 1",3000000,m_env.fullComm());
   //m_env.fullComm().Barrier();
 
   // Compute output mdf: uniform sampling approach
@@ -329,7 +329,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
     std::cout << std::endl;
   }
 
-  //m_env.printSyncDebugMsg("Leaving uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()",3000000,m_env.fullComm());
+  //m_env.syncPrintDebugMsg("Leaving uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()",3000000,m_env.fullComm());
   //m_env.fullComm().Barrier();
   
   return;

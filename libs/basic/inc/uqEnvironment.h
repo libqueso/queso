@@ -105,7 +105,7 @@ public:
           unsigned int            verbosity                () const;
           const gsl_rng*          rng                      () const;
           bool                    isThereInputFile         () const;
-          void                    printSyncDebugMsg        (const char* msg, unsigned int numUSecs, const Epetra_MpiComm& commObj) const;
+          void                    syncPrintDebugMsg        (const char* msg, unsigned int numUSecs, const Epetra_MpiComm& commObj) const;
   virtual void                    print                    (std::ostream& os) const = 0;
 
 protected:

@@ -41,8 +41,8 @@
 // Version "0.3.0" on "Feb/13/2009"
 // Version "0.3.1" on "Feb/19/2009"
 // Version "0.4.0" on "MMM/DD/2009"
-#define QUESO_TOOLKIT_CURRENT_VERSION "0.4.0"
-#define QUESO_TOOLKIT_RELEASE_DATE    "MMM/DD/2009"
+#define QUESO_LIBRARY_CURRENT_VERSION "0.4.0"
+#define QUESO_LIBRARY_RELEASE_DATE    "MMM/DD/2009"
 
 uqEnvOptionsStruct::uqEnvOptionsStruct(
   unsigned int verbosity,
@@ -192,8 +192,10 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(const uqBaseEnvironmentClass& obj
 
 uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
 {
-  //if (m_fullRank == 0) std::cout << "Entering uqBaseEnvironmentClass::destructor()"
-  //                                << std::endl;
+  //if (m_subScreenFile) {
+  //  *m_subScreenFile << "Entering uqBaseEnvironmentClass::destructor()"
+  //                   << std::endl;
+  //}
 
   if (m_allOptionsMap) {
     delete m_allOptionsMap;
@@ -221,8 +223,10 @@ uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
               << std::endl;
   }
 
-  //if (m_fullRank == 0) std::cout << "Leaving uqBaseEnvironmentClass::destructor()"
-  //                                << std::endl;
+  //if (m_subScreenFile) {
+  //  *m_subScreenFile << "Leaving uqBaseEnvironmentClass::destructor()"
+  //                   << std::endl;
+  //}
 
   if (m_subScreenFile) delete m_subScreenFile;
   if (m_selfComm     ) delete m_selfComm;
@@ -310,8 +314,10 @@ uqBaseEnvironmentClass::scanInputFileForMyOptions(const po::options_description&
 #endif
 
   m_allOptionsDesc->add(optionsDesc);
-  //std::cout << *m_allOptionsDesc
-  //          << std::endl;
+  //if (m_subScreenFile) {
+  //  *m_subScreenFile << *m_allOptionsDesc
+  //                   << std::endl;
+  //}
   if (m_thereIsInputFile) {
     std::ifstream ifs(m_inputFileName.c_str());
     po::store(po::parse_config_file(ifs, *m_allOptionsDesc, true), *m_allOptionsMap);
@@ -355,7 +361,7 @@ uqBaseEnvironmentClass::isThereInputFile() const
 }
 
 void
-uqBaseEnvironmentClass::printSyncDebugMsg(const char* msg, unsigned int numUSecs, const Epetra_MpiComm& commObj) const
+uqBaseEnvironmentClass::syncPrintDebugMsg(const char* msg, unsigned int numUSecs, const Epetra_MpiComm& commObj) const
 {
   commObj.Barrier();
   if (this->verbosity() >= 0) {
@@ -435,6 +441,9 @@ uqFullEnvironmentClass::~uqFullEnvironmentClass()
 void
 uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
 {
+  //////////////////////////////////////////////////
+  // Initialize "full" communicator
+  //////////////////////////////////////////////////
   m_fullComm = new Epetra_MpiComm(inputComm);
   m_fullRank     = m_fullComm->MyPID();
   m_fullCommSize = m_fullComm->NumProc();
@@ -444,18 +453,17 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
                       "uqFullEnvironmentClass::commonConstructor()",
                       "failed MPI_Comm_group()");
 
+  //////////////////////////////////////////////////
+  // Display main initial messages
+  // 'std::cout' is for: main trace messages + synchronized trace messages + error messages prior to 'exit()' or 'abort()'
+  //////////////////////////////////////////////////
   int iRC;
   iRC = gettimeofday(&m_timevalBegin, NULL);
 
-  if ((this->verbosity() >= 5) && (this->rank() == 0)) {
-    std::cout << "Entering uqFullEnvironmentClass::commonConstructor()"
-              << std::endl;
-  }
-
   if (m_fullRank == 0) {
     std::cout << "\n================================="
-              << "\n QUESO toolkit, version " << QUESO_TOOLKIT_CURRENT_VERSION
-              << ", released on "             << QUESO_TOOLKIT_RELEASE_DATE
+              << "\n QUESO library, version " << QUESO_LIBRARY_CURRENT_VERSION
+              << ", released on "             << QUESO_LIBRARY_RELEASE_DATE
               << "\n================================="
               << "\n"
               << std::endl;
@@ -466,6 +474,9 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
               << std::endl;
   }
 
+  //////////////////////////////////////////////////
+  // Read options
+  //////////////////////////////////////////////////
   m_allOptionsMap  = new po::variables_map();
   m_allOptionsDesc = new po::options_description("Allowed options");
   m_envOptionsDesc = new po::options_description("Environment options");
@@ -476,13 +487,15 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
   scanInputFileForMyOptions(*m_envOptionsDesc);
   getMyOptionValues        (*m_envOptionsDesc);
 
-  if (m_verbosity >= 1) {
-    if (m_fullRank == 0) std::cout << "After getting option values, state of uqFullEnvironmentClass object is:"
-                                    << "\n" << *this
-                                    << std::endl;
+  if ((m_subScreenFile) && (this->verbosity() >= 1)) {
+    *m_subScreenFile << "After getting option values, state of uqFullEnvironmentClass object is:"
+                     << "\n" << *this
+                     << std::endl;
   }
 
+  //////////////////////////////////////////////////
   // Deal with multiple subEnvironments
+  //////////////////////////////////////////////////
   unsigned int numRanksPerSubEnvironment = m_fullCommSize/m_numSubEnvironments;
 
   m_subId = m_fullRank/numRanksPerSubEnvironment;
@@ -510,7 +523,9 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
 
   m_selfComm = new Epetra_MpiComm(MPI_COMM_SELF);
 
-  // Open file
+  //////////////////////////////////////////////////
+  // Open "screen" file
+  //////////////////////////////////////////////////
   bool openFile = false;
   if ((m_subRank                 == 0                                 ) &&
     //(m_subScreenWrite          == true                              ) &&
@@ -527,8 +542,8 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
                         "failed to open sub screen file");
 
     *m_subScreenFile << "\n================================="
-                     << "\n QUESO toolkit, version " << QUESO_TOOLKIT_CURRENT_VERSION
-                     << ", released on "             << QUESO_TOOLKIT_RELEASE_DATE
+                     << "\n QUESO library, version " << QUESO_LIBRARY_CURRENT_VERSION
+                     << ", released on "             << QUESO_LIBRARY_RELEASE_DATE
                      << "\n================================="
                      << "\n"
                      << std::endl;
@@ -537,6 +552,9 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
                      << std::endl;
   }
 
+  //////////////////////////////////////////////////
+  // Debug message related to subEnvironments
+  //////////////////////////////////////////////////
 #if 1
   if (this->verbosity() >= 2) {
     for (int i = 0; i < m_fullCommSize; ++i) {
@@ -559,7 +577,9 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
   }
 #endif
 
+  //////////////////////////////////////////////////
   // Deal with seed
+  //////////////////////////////////////////////////
   if (m_seed >= 0) {
     gsl_rng_default_seed = (unsigned long int) m_seed;
   }
@@ -576,18 +596,21 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
                       "uqFullEnvironmentClass::commonConstructor()",
                       "null m_rng");
 
-  if ((this->verbosity() >= 5) && (this->rank() == 0)) {
-    std::cout << "In uqFullEnvironmentClass::commonConstructor():"
-              << "\n  m_seed = "                                              << m_seed
-              << "\n  internal seed = "                                       << gsl_rng_default_seed
-              << "\n  first generated sample from uniform distribution = "    << gsl_rng_uniform(m_rng)
-              << "\n  first generated sample from std normal distribution = " << gsl_ran_gaussian(m_rng,1.)
-              << std::endl;
+  if ((m_subScreenFile) && (this->verbosity() >= 5)) {
+    *m_subScreenFile << "In uqFullEnvironmentClass::commonConstructor():"
+                     << "\n  m_seed = "                                              << m_seed
+                     << "\n  internal seed = "                                       << gsl_rng_default_seed
+                     << "\n  first generated sample from uniform distribution = "    << gsl_rng_uniform(m_rng)
+                     << "\n  first generated sample from std normal distribution = " << gsl_ran_gaussian(m_rng,1.)
+                     << std::endl;
   }
 
-  if ((this->verbosity() >= 5) && (this->rank() == 0)) {
-    std::cout << "Leaving uqFullEnvironmentClass::commonConstructor()"
-              << std::endl;
+  //////////////////////////////////////////////////
+  // Leave commonConstructor()
+  //////////////////////////////////////////////////
+  if ((m_subScreenFile) && (this->verbosity() >= 5)) {
+    *m_subScreenFile << "Done with initializations at uqFullEnvironmentClass::commonConstructor()"
+                     << std::endl;
   }
 
   return;
@@ -620,12 +643,12 @@ uqFullEnvironmentClass::readEventualInputFile()
       std::ifstream* ifs = new std::ifstream(m_inputFileName.c_str());
       if (ifs->is_open()) {
         m_thereIsInputFile = true;
-        //if (m_fullRank == 0) {
+        //if (m_subScreenFile) {
         //  int numLines = std::count(std::istreambuf_iterator<char>(*ifs),
         //                            std::istreambuf_iterator<char>(),'\n');
-        //  std::cout << "Input file has " << numLines
-        //             << " lines."
-        //            << std::endl;
+        //  *m_subScreenFile << "Input file has " << numLines
+        //                   << " lines."
+        //                   << std::endl;
         //}
         ifs->close();
         delete ifs;
@@ -648,11 +671,13 @@ uqFullEnvironmentClass::readEventualInputFile()
 
   if (displayHelpMessageAndExit) {
     if (m_fullRank == 0) std::cout << "\nThis is a help message of the QUESO library."
-                                    << "\nAn application using the QUESO toolkit shall be executed by typing"
+                                    << "\nAn application using the QUESO library shall be executed by typing"
                                     << "\n  '<eventual mpi commands and options> <uqApplication> -i <uqInputFile>'"
                                     << "\nin the command line."
                                     << "\n"
                                     << std::endl;
+    int mpiRC = 0;
+    mpiRC = MPI_Abort(m_fullComm->Comm(),-999);
     exit(1);
   }
 
@@ -679,8 +704,9 @@ void
 uqFullEnvironmentClass::getMyOptionValues(po::options_description& optionsDesc)
 {
   if (m_allOptionsMap->count(m_option_help.c_str())) {
-    std::cout << optionsDesc
-              << std::endl;
+    // 'm_subScreenFile' is still not available at this moment. Use 'std::cout'
+    if (m_fullRank == 0) std::cout << optionsDesc
+                                   << std::endl;
   }
 
   if (m_allOptionsMap->count(m_option_numSubEnvironments.c_str())) {

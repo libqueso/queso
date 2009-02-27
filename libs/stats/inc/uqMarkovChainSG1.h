@@ -327,40 +327,48 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   m_lastMean                             (NULL),
   m_lastAdaptedCovMatrix                 (NULL)
 {
-  if (m_env.rank() == 0) std::cout << "Entering uqMarkovChainSGClass<P_V,P_M>::constructor()"
-                                   << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Entering uqMarkovChainSGClass<P_V,P_M>::constructor()"
+                           << std::endl;
+  }
 
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
 
-  if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::constructor()"
-                                   << ": after getting values of options with prefix '" << m_prefix
-                                   << "', state of  object is:"
-                                   << "\n" << *this
-                                   << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::constructor()"
+                           << ": after getting values of options with prefix '" << m_prefix
+                           << "', state of  object is:"
+                           << "\n" << *this
+                           << std::endl;
+  }
 
   /////////////////////////////////////////////////////////////////
   // Instantiate the appropriate TK
   /////////////////////////////////////////////////////////////////
 #ifdef UQ_USES_TK_CLASS
-  if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::constructor()"
-                                   << ": running with UQ_USES_TK_CLASS flag defined"
-                                   << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::constructor()"
+                           << ": running with UQ_USES_TK_CLASS flag defined"
+                           << std::endl;
+  }
 #else
-  if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::constructor()"
-                                   << ": running with UQ_USES_TK_CLASS flag undefined"
-                                   << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::constructor()"
+                           << ": running with UQ_USES_TK_CLASS flag undefined"
+                           << std::endl;
+  }
 #endif
   if (m_tkUseLocalHessian) {
     m_tk = new uqHessianCovMatricesTKGroupClass<P_V,P_M>(m_prefix.c_str(),
                                                          m_vectorSpace,
                                                          m_drScalesForCovMatrices,
                                                          *m_targetPdfSynchronizer);
-    if (m_env.rank() == 0) {
-      std::cout << "In uqMarkovChainSGClass<P_V,P_M>::constructor()"
-                << ": just instantiated a 'HessianCovMatrices' TK class"
-                << std::endl;
+    if (m_env.subScreenFile()) {
+      *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::constructor()"
+                             << ": just instantiated a 'HessianCovMatrices' TK class"
+                             << std::endl;
     }
   }
   else {
@@ -375,10 +383,10 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
                                                       m_vectorSpace,
                                                       m_drScalesForCovMatrices,
                                                       *m_initialProposalCovMatrix);
-    if (m_env.rank() == 0) {
-      std::cout << "In uqMarkovChainSGClass<P_V,P_M>::constructor()"
-                << ": just instantiated a 'ScaledCovMatrix' TK class"
-                << std::endl;
+    if (m_env.subScreenFile()) {
+      *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::constructor()"
+                             << ": just instantiated a 'ScaledCovMatrix' TK class"
+                             << std::endl;
     }
   }
 
@@ -387,15 +395,19 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   if (m_uniqueChainComputeStats  ) m_uniqueChainStatisticalOptions   = new uqChainStatisticalOptionsClass(m_env,m_prefix + "uniqueChain_"  );
   if (m_filteredChainComputeStats) m_filteredChainStatisticalOptions = new uqChainStatisticalOptionsClass(m_env,m_prefix + "filteredChain_");
 
-  if (m_env.rank() == 0) std::cout << "Leaving uqMarkovChainSGClass<P_V,P_M>::constructor()"
-                                   << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Leaving uqMarkovChainSGClass<P_V,P_M>::constructor()"
+                           << std::endl;
+  }
 }
 
 template<class P_V,class P_M>
 uqMarkovChainSGClass<P_V,P_M>::~uqMarkovChainSGClass()
 {
-  //std::cout << "Entering uqMarkovChainSGClass<P_V,P_M>::destructor()"
-  //          << std::endl;
+  //if (m_env.subScreenFile()) {
+  //  *m_env.subScreenFile() << "Entering uqMarkovChainSGClass<P_V,P_M>::destructor()"
+  //                         << std::endl;
+  //}
 
   resetChainAndRelatedInfo();
   //if (m_lowerCholProposalCovMatrices[0]) delete m_lowerCholProposalCovMatrices[0]; // Loop inside 'resetChainAndRelatedInfo()' deletes just from position '1' on
@@ -409,8 +421,10 @@ uqMarkovChainSGClass<P_V,P_M>::~uqMarkovChainSGClass()
   if (m_targetPdfSynchronizer          ) delete m_targetPdfSynchronizer;
   if (m_nullInputProposalCovMatrix     ) delete m_initialProposalCovMatrix;
 
-  //std::cout << "Leaving uqMarkovChainSGClass<P_V,P_M>::destructor()"
-  //          << std::endl;
+  //if (m_env.subScreenFile()) {
+  //  *m_env.subScreenFile() << "Leaving uqMarkovChainSGClass<P_V,P_M>::destructor()"
+  //                         << std::endl;
+  //}
 }
 
 template<class P_V,class P_M>
@@ -499,8 +513,10 @@ uqMarkovChainSGClass<P_V,P_M>::getMyOptionValues(
   po::options_description& optionsDesc)
 {
   if (m_env.allOptionsMap().count(m_option_help.c_str())) {
-    std::cout << optionsDesc
-              << std::endl;
+    if (m_env.subScreenFile()) {
+      *m_env.subScreenFile() << optionsDesc
+                             << std::endl;
+    }
   }
 
   if (m_env.allOptionsMap().count(m_option_chain_type.c_str())) {
@@ -583,11 +599,13 @@ uqMarkovChainSGClass<P_V,P_M>::getMyOptionValues(
   if (m_env.allOptionsMap().count(m_option_dr_scalesForExtraStages.c_str())) {
     std::string inputString = m_env.allOptionsMap()[m_option_dr_scalesForExtraStages.c_str()].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpScales);
-    //std::cout << "In uqMarkovChainSGClass<P_V,P_M>::getMyOptionValues(): scales =";
-    //for (unsigned int i = 0; i < tmpScales.size(); ++i) {
-    //  std::cout << " " << tmpScales[i];
+    //if (m_env.subScreenFile()) {
+    //  *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::getMyOptionValues(): scales =";
+    //  for (unsigned int i = 0; i < tmpScales.size(); ++i) {
+    //    *m_env.subScreenFile() << " " << tmpScales[i];
+    //  }
+    //  *m_env.subScreenFile() << std::endl;
     //}
-    //std::cout << std::endl;
   }
 
   if (m_drMaxNumExtraStages > 0) {
@@ -643,18 +661,20 @@ uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()
 //const P_M& proposalCovMatrix (*m_initialProposalCovMatrix);
 //const P_M& proposalPrecMatrix(...);
 
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()..."
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Entering uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()..."
               << std::endl;
   }
 
   int iRC = UQ_OK_RC;
 
-  if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()"
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()"
                                    << ": using supplied initialProposalCovMatrix, whose contents are:"
                                    << std::endl;
-  std::cout << *m_initialProposalCovMatrix;
-  if (m_env.rank() == 0) std::cout << std::endl;
+    *m_env.subScreenFile() << *m_initialProposalCovMatrix; // FIX ME: output might need to be in parallel
+    *m_env.subScreenFile() << std::endl;
+  }
 
 #ifdef UQ_USES_TK_CLASS
 #else
@@ -668,11 +688,13 @@ uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()
 
   m_proposalCovMatrices[0] = new P_M(*m_initialProposalCovMatrix);
 
-  if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()"
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()"
                                    << ", m_lowerCholProposalCovMatrices[0] contents are:"
                                    << std::endl;
-  std::cout << *(m_lowerCholProposalCovMatrices[0]);
-  if (m_env.rank() == 0) std::cout << std::endl;
+    *m_env.subScreenFile() << *(m_lowerCholProposalCovMatrices[0]); // FIX ME: output might need to be in parallel
+    *m_env.subScreenFile() << std::endl;
+  }
 
 #ifdef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
   const P_M* internalProposalPrecMatrix = proposalPrecMatrix;
@@ -693,17 +715,20 @@ uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()
 
   m_proposalPrecMatrices[0] = new P_M(proposalPrecMatrix);
 
-  //if (m_env.rank() == 0) std::cout << "In uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()"
+  //if (m_env.subScreenFile()) {
+  //  *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()"
   //                                 << ", m_upperCholProposalPrecMatrices[0] contents are:"
   //                                 << std::endl;
-  //std::cout << *(m_upperCholProposalPrecMatrices[0]);
-  //if (m_env.rank() == 0) std::cout << std::endl;
+  //  *m_env.subScreenFile() << *(m_upperCholProposalPrecMatrices[0]); // FIX ME: output might need to be in parallel
+  //  *m_env.subScreenFile() << std::endl;
+  //}
+
 #endif
 #endif
 
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()"
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Leaving uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()"
+                           << std::endl;
   }
 
   return iRC;
@@ -713,20 +738,20 @@ template<class P_V,class P_M>
 void
 uqMarkovChainSGClass<P_V,P_M>::updateTK()
 {
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqMarkovChainSGClass<P_V,P_M>::updateTK()"
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Entering uqMarkovChainSGClass<P_V,P_M>::updateTK()"
+                           << std::endl;
   }
 
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "In uqMarkovChainSGClass<P_V,P_M>::updateTK()"
-              << ": m_drMaxNumExtraStages = "                 << m_drMaxNumExtraStages
-              << ", m_drScalesForCovMatrices.size() = "       << m_drScalesForCovMatrices.size()
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::updateTK()"
+                           << ": m_drMaxNumExtraStages = "                 << m_drMaxNumExtraStages
+                           << ", m_drScalesForCovMatrices.size() = "       << m_drScalesForCovMatrices.size()
 #ifdef UQ_USES_TK_CLASS
 #else
-              << ", m_lowerCholProposalCovMatrices.size() = " << m_lowerCholProposalCovMatrices.size()
+                           << ", m_lowerCholProposalCovMatrices.size() = " << m_lowerCholProposalCovMatrices.size()
 #endif
-              << std::endl;
+                           << std::endl;
   }
 
 #ifdef UQ_USES_TK_CLASS
@@ -748,9 +773,9 @@ uqMarkovChainSGClass<P_V,P_M>::updateTK()
   }
 #endif
 
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqMarkovChainSGClass<P_V,P_M>::updateTK()"
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Leaving uqMarkovChainSGClass<P_V,P_M>::updateTK()"
+                           << std::endl;
   }
 
   return;
@@ -819,36 +844,36 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
     if (m_tkIsSymmetric) {
 #endif
       alphaQuotient = exp(yLogTargetToUse - x.logTarget());
-      if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-        std::cout << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
-                  << ": symmetric proposal case"
-                  << ", x = "               << x.vecValues()
-                  << ", y = "               << y.vecValues()
-                  << ", yLogTargetToUse = " << yLogTargetToUse
-                  << ", x.logTarget() = "   << x.logTarget()
-                  << ", alpha = "           << alphaQuotient
-                  << std::endl;
+      if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
+        *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
+                               << ": symmetric proposal case"
+                               << ", x = "               << x.vecValues()
+                               << ", y = "               << y.vecValues()
+                               << ", yLogTargetToUse = " << yLogTargetToUse
+                               << ", x.logTarget() = "   << x.logTarget()
+                               << ", alpha = "           << alphaQuotient
+                               << std::endl;
       }
     }
     else {
 #ifdef UQ_USES_TK_CLASS // AQUI
       double qyx = -.5 * m_tk->rv(yStageId).pdf().minus2LnValue(x.vecValues(),NULL,NULL,NULL,NULL);
-      if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
+      if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
         const uqGaussianVectorPdfClass<P_V,P_M>* pdfYX = dynamic_cast< const uqGaussianVectorPdfClass<P_V,P_M>* >(&(m_tk->rv(yStageId).pdf()));
-        std::cout << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
-                  << ", rvYX.domainExpVector = " << pdfYX->domainExpVector()
-                  << ", rvYX.domainVarVector = " << pdfYX->domainVarVector()
-                  << ", rvYX.covMatrix = "       << pdfYX->covMatrix()
-                  << std::endl;
+        *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
+                               << ", rvYX.domainExpVector = " << pdfYX->domainExpVector()
+                               << ", rvYX.domainVarVector = " << pdfYX->domainVarVector()
+                               << ", rvYX.covMatrix = "       << pdfYX->covMatrix()
+                               << std::endl;
       }
       double qxy = -.5 * m_tk->rv(xStageId).pdf().minus2LnValue(y.vecValues(),NULL,NULL,NULL,NULL);
-      if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
+      if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
         const uqGaussianVectorPdfClass<P_V,P_M>* pdfXY = dynamic_cast< const uqGaussianVectorPdfClass<P_V,P_M>* >(&(m_tk->rv(xStageId).pdf()));
-        std::cout << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
-                  << ", rvXY.domainExpVector = " << pdfXY->domainExpVector()
-                  << ", rvXY.domainVarVector = " << pdfXY->domainVarVector()
-                  << ", rvXY.covMatrix = "       << pdfXY->covMatrix()
-                  << std::endl;
+        *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
+                               << ", rvXY.domainExpVector = " << pdfXY->domainExpVector()
+                               << ", rvXY.domainVarVector = " << pdfXY->domainVarVector()
+                               << ", rvXY.covMatrix = "       << pdfXY->covMatrix()
+                               << std::endl;
       }
 #else
       double qyx = logProposal(y,x,0);
@@ -858,28 +883,28 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
                           qyx -
                           x.logTarget() -
                           qxy);
-      if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-        std::cout << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
-                  << ": unsymmetric proposal case"
-                  << ", xStageId = "        << xStageId
-                  << ", yStageId = "        << yStageId
-                  << ", x = "               << x.vecValues()
-                  << ", y = "               << y.vecValues()
-                  << ", yLogTargetToUse = " << yLogTargetToUse
-                  << ", q(y,x) = "          << qyx
-                  << ", x.logTarget() = "   << x.logTarget()
-                  << ", q(x,y) = "          << qxy
-                  << ", alpha = "           << alphaQuotient
-                  << std::endl;
+      if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
+        *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
+                               << ": unsymmetric proposal case"
+                               << ", xStageId = "        << xStageId
+                               << ", yStageId = "        << yStageId
+                               << ", x = "               << x.vecValues()
+                               << ", y = "               << y.vecValues()
+                               << ", yLogTargetToUse = " << yLogTargetToUse
+                               << ", q(y,x) = "          << qyx
+                               << ", x.logTarget() = "   << x.logTarget()
+                               << ", q(x,y) = "          << qxy
+                               << ", alpha = "           << alphaQuotient
+                               << std::endl;
       }
     }
   }
   else {
-    if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-      std::cout << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
-                << ": x.outOfTargetSupport = " << x.outOfTargetSupport()
-                << ", y.outOfTargetSupport = " << y.outOfTargetSupport()
-                << std::endl;
+    if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
+      *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
+                             << ": x.outOfTargetSupport = " << x.outOfTargetSupport()
+                             << ", y.outOfTargetSupport = " << y.outOfTargetSupport()
+                             << std::endl;
     }
   }
   if (alphaQuotientPtr != NULL) *alphaQuotientPtr = alphaQuotient;
@@ -894,10 +919,10 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
   const std::vector<unsigned int                        >& inputTKStageIds)
 {
   unsigned int inputSize = inputPositionsData.size();
-  if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqMarkovChainSGClass<P_V,P_M>::alpha(vec)"
-              << ", inputSize = " << inputSize
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
+    *m_env.subScreenFile() << "Entering uqMarkovChainSGClass<P_V,P_M>::alpha(vec)"
+                           << ", inputSize = " << inputSize
+                           << std::endl;
   }
   UQ_FATAL_TEST_MACRO((inputSize < 2),
                       m_env.rank(),
@@ -955,13 +980,13 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
   double numContrib = logProposal(backwardPositionsData);
   double denContrib = logProposal(        positionsData);
 #endif
-  if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-    std::cout << "In uqMarkovChainSGClass<P_V,P_M>::alpha(vec)"
-              << ", inputSize = "  << inputSize
-              << ", before loop"
-              << ": numContrib = " << numContrib
-              << ", denContrib = " << denContrib
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
+    *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::alpha(vec)"
+                           << ", inputSize = "  << inputSize
+                           << ", before loop"
+                           << ": numContrib = " << numContrib
+                           << ", denContrib = " << denContrib
+                           << std::endl;
   }
   logNumerator   += numContrib;
   logDenominator += denContrib;
@@ -986,13 +1011,13 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
     numContrib = logProposal(backwardPositionsData);
     denContrib = logProposal(        positionsData);
 #endif
-    if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-      std::cout << "In uqMarkovChainSGClass<P_V,P_M>::alpha(vec)"
-                << ", inputSize = "  << inputSize
-                << ", in loop, i = " << i
-                << ": numContrib = " << numContrib
-                << ", denContrib = " << denContrib
-                << std::endl;
+    if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
+      *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::alpha(vec)"
+                             << ", inputSize = "  << inputSize
+                             << ", in loop, i = " << i
+                             << ": numContrib = " << numContrib
+                             << ", denContrib = " << denContrib
+                             << std::endl;
     }
     logNumerator   += numContrib;
     logDenominator += denContrib;
@@ -1013,25 +1038,25 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
 #endif
   numContrib = numeratorLogTargetToUse;
   denContrib = positionsData[0]->logTarget();
-  if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-    std::cout << "In uqMarkovChainSGClass<P_V,P_M>::alpha(vec)"
-              << ", inputSize = "  << inputSize
-              << ", after loop"
-              << ": numContrib = " << numContrib
-              << ", denContrib = " << denContrib
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
+    *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::alpha(vec)"
+                           << ", inputSize = "  << inputSize
+                           << ", after loop"
+                           << ": numContrib = " << numContrib
+                           << ", denContrib = " << denContrib
+                           << std::endl;
   }
   logNumerator   += numContrib;
   logDenominator += denContrib;
 
-  if ((m_env.verbosity() >= 10) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqMarkovChainSGClass<P_V,P_M>::alpha(vec)"
-              << ", inputSize = "         << inputSize
-              << ": alphasNumerator = "   << alphasNumerator
-              << ", alphasDenominator = " << alphasDenominator
-              << ", logNumerator = "      << logNumerator
-              << ", logDenominator = "    << logDenominator
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
+    *m_env.subScreenFile() << "Leaving uqMarkovChainSGClass<P_V,P_M>::alpha(vec)"
+                           << ", inputSize = "         << inputSize
+                           << ": alphasNumerator = "   << alphasNumerator
+                           << ", alphasDenominator = " << alphasDenominator
+                           << ", logNumerator = "      << logNumerator
+                           << ", logDenominator = "    << logDenominator
+                           << std::endl;
   }
 
   // Return result
@@ -1060,13 +1085,13 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
 //const P_M*                   mahalanobisMatrix,
 //bool                         applyMahalanobisInvert) const
 {
-  if (m_env.rank() == 0) {
-    std::cout << "\n"
-              << "\n-----------------------------------------------------"
-              << "\n Writing extra information about the Markov chain " << workingChain.name() << " to output file ..."
-              << "\n-----------------------------------------------------"
-              << "\n"
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "\n"
+                           << "\n-----------------------------------------------------"
+                           << "\n Writing extra information about the Markov chain " << workingChain.name() << " to output file ..."
+                           << "\n-----------------------------------------------------"
+                           << "\n"
+                           << std::endl;
   }
 
   int iRC = UQ_OK_RC;
@@ -1215,12 +1240,12 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
          << ";\n"
          << std::endl;
 
-  if (m_env.rank() == 0) {
-    std::cout << "\n-----------------------------------------------------"
-              << "\n Finished writing extra information about the Markov chain " << workingChain.name()
-              << "\n-----------------------------------------------------"
-              << "\n"
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "\n-----------------------------------------------------"
+                           << "\n Finished writing extra information about the Markov chain " << workingChain.name()
+                           << "\n-----------------------------------------------------"
+                           << "\n"
+                           << std::endl;
   }
 
   return iRC;

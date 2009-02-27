@@ -234,7 +234,7 @@ likelihoodRoutine(
   const uqBaseEnvironmentClass& env = *(((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_env);
 
   env.subComm().Barrier();
-  //env.printSyncDebugMsg("Entering likelihoodRoutine()",1,env.fullComm());
+  //env.syncPrintDebugMsg("Entering likelihoodRoutine()",1,env.fullComm());
 
   // Compute likelihood for scenario 1
   double betaTest = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_beta1;
@@ -426,7 +426,7 @@ likelihoodRoutine(
   }
 
   env.subComm().Barrier();
-  //env.printSyncDebugMsg("Leaving likelihoodRoutine()",1,env.fullComm());
+  //env.syncPrintDebugMsg("Leaving likelihoodRoutine()",1,env.fullComm());
 
   return resultValue;
 }

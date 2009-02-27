@@ -227,7 +227,7 @@ void
 uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
 {
   //m_env.fullComm().Barrier();
-  //m_env.printSyncDebugMsg("Entering uqStatisticalForwardProblemClass<P_V,P_M>::solveWithMonteCarlo()",3000000,m_env.fullComm());
+  //m_env.syncPrintDebugMsg("Entering uqStatisticalForwardProblemClass<P_V,P_M>::solveWithMonteCarlo()",3000000,m_env.fullComm());
 
   if (m_computeSolution == false) {
     if ((m_env.rank() == 0)) {
@@ -324,7 +324,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
     std::cout << std::endl;
   }
 
-  //m_env.printSyncDebugMsg("Leaving uqStatisticalForwardProblemClass<P_V,P_M>::solveWithMonteCarlo()",3000000,m_env.fullComm());
+  //m_env.syncPrintDebugMsg("Leaving uqStatisticalForwardProblemClass<P_V,P_M>::solveWithMonteCarlo()",3000000,m_env.fullComm());
   //m_env.fullComm().Barrier();
 
   return;

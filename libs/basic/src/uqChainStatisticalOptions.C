@@ -75,9 +75,11 @@ uqChainStatisticalOptionsClass::uqChainStatisticalOptionsClass(
   m_kdeCompute              (UQ_MCMC_KDE_COMPUTE_ODV),
   m_kdeNumEvalPositions     (UQ_MCMC_KDE_NUM_EVAL_POSITIONS_ODV)
 {
-  if (m_env.rank() == 0) std::cout << "Entering uqChainStatisticalOptions::constructor()"
-                                   << ", prefix = " << m_prefix
-                                   << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Entering uqChainStatisticalOptions::constructor()"
+                           << ", prefix = " << m_prefix
+                           << std::endl;
+  }
 
   m_option_help                     = m_prefix + "help";
 
@@ -130,14 +132,18 @@ uqChainStatisticalOptionsClass::uqChainStatisticalOptionsClass(
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
 
-  if (m_env.rank() == 0) std::cout << "After getting values of options with prefix '" << m_prefix
-                                   << "', state of uqChainStatisticalOptionsClass object is:"
-                                   << "\n" << *this
-                                   << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "After getting values of options with prefix '" << m_prefix
+                           << "', state of uqChainStatisticalOptionsClass object is:"
+                           << "\n" << *this
+                           << std::endl;
+  }
 
-  if (m_env.rank() == 0) std::cout << "Leaving uqChainStatisticalOptions::constructor()"
-                                   << ", prefix = " << m_prefix
-                                   << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Leaving uqChainStatisticalOptions::constructor()"
+                           << ", prefix = " << m_prefix
+                           << std::endl;
+  }
 }
 
 uqChainStatisticalOptionsClass::~uqChainStatisticalOptionsClass()
@@ -195,8 +201,10 @@ uqChainStatisticalOptionsClass::getMyOptionValues(
   po::options_description& optionsDesc)
 {
   if (m_env.allOptionsMap().count(m_option_help.c_str())) {
-    std::cout << optionsDesc
-              << std::endl;
+    if (m_env.subScreenFile()) {
+      *m_env.subScreenFile() << optionsDesc
+                             << std::endl;
+    }
   }
 
   if (m_env.allOptionsMap().count(m_option_initialDiscardedPortions.c_str())) {
@@ -204,11 +212,13 @@ uqChainStatisticalOptionsClass::getMyOptionValues(
     std::vector<double> tmpPortions(0,0.);
     std::string inputString = m_env.allOptionsMap()[m_option_initialDiscardedPortions.c_str()].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpPortions);
-    //std::cout << "In uqChainStatisticalOptionsClass::getMyOptionValues(): percents = ";
-    //for (unsigned int i = 0; i < tmpPortions.size(); ++i) {
-    //  std::cout << " " << tmpPortions[i];
+    //if (m_env.subScreenFile()) {
+    //  *m_env.subScreenFile() << "In uqChainStatisticalOptionsClass::getMyOptionValues(): percents = ";
+    //  for (unsigned int i = 0; i < tmpPortions.size(); ++i) {
+    //    *m_env.subScreenFile() << " " << tmpPortions[i];
+    //  }
+    //  *m_env.subScreenFile() << std::endl;
     //}
-    //std::cout << std::endl;
 
     if (tmpPortions.size() > 0) {
       m_initialDiscardedPortions.resize(tmpPortions.size(),0.);
@@ -227,11 +237,13 @@ uqChainStatisticalOptionsClass::getMyOptionValues(
     std::vector<double> tmpLengths(0,0.);
     std::string inputString = m_env.allOptionsMap()[m_option_bmm_lengths.c_str()].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpLengths);
-    //std::cout << "In uqChainStatisticalOptionsClass::getMyOptionValues(): lengths for BMM = ";
-    //for (unsigned int i = 0; i < tmpLengths.size(); ++i) {
-    //  std::cout << " " << tmpLengths[i];
+    //if (m_env.subScreenFile()) {
+    //  *m_env.subScreenFile() << "In uqChainStatisticalOptionsClass::getMyOptionValues(): lengths for BMM = ";
+    //  for (unsigned int i = 0; i < tmpLengths.size(); ++i) {
+    //    *m_env.subScreenFile() << " " << tmpLengths[i];
+    //  }
+    //  *m_env.subScreenFile() << std::endl;
     //}
-    //std::cout << std::endl;
 
     if (tmpLengths.size() > 0) {
       m_bmmLengths.resize(tmpLengths.size(),0);
@@ -290,11 +302,13 @@ uqChainStatisticalOptionsClass::getMyOptionValues(
     std::vector<double> tmpNumBlocks(0,0.);
     std::string inputString = m_env.allOptionsMap()[m_option_psdAtZero_numBlocks.c_str()].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpNumBlocks);
-    //std::cout << "In uqChainStatisticalOptionsClass::getMyOptionValues(): numBlocks for psdAtZero = ";
-    //for (unsigned int i = 0; i < tmpNumBlocks.size(); ++i) {
-    //  std::cout << " " << numBlocks[i];
+    //if (m_env.subScreenFile()) {
+    //  *m_env.subScreenFile() << "In uqChainStatisticalOptionsClass::getMyOptionValues(): numBlocks for psdAtZero = ";
+    //  for (unsigned int i = 0; i < tmpNumBlocks.size(); ++i) {
+    //    *m_env.subScreenFile() << " " << numBlocks[i];
+    //  }
+    //  *m_env.subScreenFile() << std::endl;
     //}
-    //std::cout << std::endl;
 
     if (tmpNumBlocks.size() > 0) {
       m_psdAtZeroNumBlocks.resize(tmpNumBlocks.size(),0);
