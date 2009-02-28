@@ -139,22 +139,28 @@ uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
   m_mcSeqGenerator        (NULL),
   m_chain                 (NULL)
 {
-  if (m_env.rank() == 0) std::cout << "Entering uqStatisticalInverseProblemClass<P_V,P_M>::constructor()"
-                                   << ": prefix = "              << m_prefix
-                                   << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Entering uqStatisticalInverseProblemClass<P_V,P_M>::constructor()"
+                           << ": prefix = "              << m_prefix
+                           << std::endl;
+  }
 
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
 
-  if (m_env.rank() == 0) std::cout << "In uqStatisticalInverseProblemClass<P_V,P_M>::constructor()"
-                                   << ": after getting values of options, state of object is:"
-                                   << "\n" << *this
-                                   << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "In uqStatisticalInverseProblemClass<P_V,P_M>::constructor()"
+                           << ": after getting values of options, state of object is:"
+                           << "\n" << *this
+                           << std::endl;
+  }
 
-  if (m_env.rank() == 0) std::cout << "Leaving uqStatisticalInverseProblemClass<P_V,P_M>::constructor()"
-                                   << ": prefix = "              << m_prefix
-                                   << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Leaving uqStatisticalInverseProblemClass<P_V,P_M>::constructor()"
+                           << ": prefix = "              << m_prefix
+                           << std::endl;
+  }
 
   return;
 }
@@ -198,8 +204,10 @@ void
   po::options_description& optionsDesc)
 {
   if (m_env.allOptionsMap().count(m_option_help.c_str())) {
-    std::cout << optionsDesc
-              << std::endl;
+    if (m_env.subScreenFile()) {
+      *m_env.subScreenFile() << optionsDesc
+                             << std::endl;
+    }
   }
 
   if (m_env.allOptionsMap().count(m_option_computeSolution.c_str())) {
@@ -236,17 +244,17 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   //m_env.syncPrintDebugMsg("Entering uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()",3000000,m_env.fullComm());
 
   if (m_computeSolution == false) {
-    if ((m_env.rank() == 0)) {
-      std::cout << "In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()"
-                << ": avoiding solution, as requested by user"
-                << std::endl;
+    if ((m_env.subScreenFile())) {
+      *m_env.subScreenFile() << "In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()"
+                             << ": avoiding solution, as requested by user"
+                             << std::endl;
     }
     return;
   }
-  if ((m_env.rank() == 0)) {
-    std::cout << "In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()"
-              << ": computing solution, as requested by user"
-              << std::endl;
+  if ((m_env.subScreenFile())) {
+    *m_env.subScreenFile() << "In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()"
+                           << ": computing solution, as requested by user"
+                           << std::endl;
   }
 
   if (m_mcSeqGenerator  ) delete m_mcSeqGenerator;
@@ -288,17 +296,17 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
                                *m_mdfValues);    // output
   delete numIntervalsVec;
   m_solutionMdf = new uqSampledVectorMdfClass<P_V,P_M>(m_prefix.c_str(),
-                                                      *m_mdfGrids,
-                                                      *m_mdfValues);
+                                                       *m_mdfGrids,
+                                                       *m_mdfValues);
   m_postRv.setMdf(*m_solutionMdf);
 
   if (m_outputFileName != UQ_CALIB_PROBLEM_FILENAME_FOR_NO_OUTPUT_FILE) {
     if (m_env.subRank() == 0) {
       // Write output file
-      if (m_env.rank() == 0) {
-        std::cout << "Opening output file '" << m_outputFileName
-                  << "' for calibration problem with problem with prefix = " << m_prefix
-                  << std::endl;
+      if (m_env.subScreenFile()) {
+        *m_env.subScreenFile() << "Opening output file '" << m_outputFileName
+                               << "' for calibration problem with problem with prefix = " << m_prefix
+                               << std::endl;
       }
 
       // Open file
@@ -318,15 +326,15 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
       // Close file
       ofsvar->close();
       delete ofsvar;
-      if (m_env.rank() == 0) {
-        std::cout << "Closed output file '" << m_outputFileName
-                  << "' for calibration problem with problem with prefix = " << m_prefix
-                  << std::endl;
+      if (m_env.subScreenFile()) {
+        *m_env.subScreenFile() << "Closed output file '" << m_outputFileName
+                               << "' for calibration problem with problem with prefix = " << m_prefix
+                               << std::endl;
       }
     }
   }
-  if (m_env.rank() == 0) {
-    std::cout << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << std::endl;
   }
 
   //m_env.syncPrintDebugMsg("Leaving uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()",3000000,m_env.fullComm());

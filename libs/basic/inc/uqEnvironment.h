@@ -113,6 +113,8 @@ protected:
   char**                   m_argv;
   std::string              m_prefix;
 
+  int                      m_worldRank;
+
   Epetra_MpiComm*          m_fullComm;
   int                      m_fullRank;
   int                      m_fullCommSize;

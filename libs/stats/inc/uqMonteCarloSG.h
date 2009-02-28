@@ -139,23 +139,29 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::uqMonteCarloSGClass(
   m_computeStats           (UQ_MOC_SG_COMPUTE_STATS_ODV    ),
   m_statisticalOptions     (NULL)
 {
-  if (m_env.rank() == 0) std::cout << "Entering uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::constructor()"
-                                   << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Entering uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::constructor()"
+                           << std::endl;
+  }
 
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
 
-  if (m_env.rank() == 0) std::cout << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::constructor()"
-                                   << ": after getting values of options with prefix '" << m_prefix
-                                   << "', state of  object is:"
-                                   << "\n" << *this
-                                   << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::constructor()"
+                           << ": after getting values of options with prefix '" << m_prefix
+                           << "', state of  object is:"
+                           << "\n" << *this
+                           << std::endl;
+  }
 
   if (m_computeStats) m_statisticalOptions = new uqChainStatisticalOptionsClass(m_env,m_prefix + "seq_");
 
-  if (m_env.rank() == 0) std::cout << "Leaving uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::constructor()"
-                                   << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Leaving uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::constructor()"
+                           << std::endl;
+  }
 }
 
 template <class P_V,class P_M,class Q_V,class Q_M>
@@ -190,8 +196,10 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::getMyOptionValues(
   po::options_description& optionsDesc)
 {
   if (m_env.allOptionsMap().count(m_option_help.c_str())) {
-    std::cout << optionsDesc
-              << std::endl;
+    if (m_env.subScreenFile()) {
+      *m_env.subScreenFile() << optionsDesc
+                             << std::endl;
+    }
   }
 
   if (m_env.allOptionsMap().count(m_option_numSamples.c_str())) {
@@ -243,20 +251,20 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   // Generate sequence of qoi values
   //****************************************************
   unsigned int actualNumSamples = std::min(m_numSamples,paramRv.realizer().period());
-  if ((m_env.verbosity() >= 0) && (m_env.rank() == 0)) {
-    std::cout << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
-              << ": m_numSamples = "                                                 << m_numSamples
-              << ", paramRv.realizer().period() = "                                  << paramRv.realizer().period()
-              << ", about to call actualGenerateSequence() with actualNumSamples = " << actualNumSamples
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 0)) {
+    *m_env.subScreenFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+                           << ": m_numSamples = "                                                 << m_numSamples
+                           << ", paramRv.realizer().period() = "                                  << paramRv.realizer().period()
+                           << ", about to call actualGenerateSequence() with actualNumSamples = " << actualNumSamples
+                           << std::endl;
   }
   actualGenerateSequence(paramRv,
                          workingSeq,
                          actualNumSamples);
-  if ((m_env.verbosity() >= 0) && (m_env.rank() == 0)) {
-    std::cout << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
-              << ": returned from call to actualGenerateSequence() with actualNumSamples = " << actualNumSamples
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 0)) {
+    *m_env.subScreenFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+                           << ": returned from call to actualGenerateSequence() with actualNumSamples = " << actualNumSamples
+                           << std::endl;
   }
 
   //****************************************************
@@ -264,16 +272,16 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   //****************************************************
   std::ofstream* ofsvar = NULL;
   if (m_outputFileName == UQ_MOC_SG_FILENAME_FOR_NO_OUTPUT_FILE) {
-    if (m_env.rank() == 0) {
-      std::cout << "No output file opened for qoi sequence " << workingSeq.name() 
-                << std::endl;
+    if (m_env.subScreenFile()) {
+      *m_env.subScreenFile() << "No output file opened for qoi sequence " << workingSeq.name() 
+                             << std::endl;
     }
   }
   else {
-    if (m_env.rank() == 0) {
-      std::cout << "Opening output file '" << m_outputFileName
-                << "' for qoi sequence "   << workingSeq.name()
-                << std::endl;
+    if (m_env.subScreenFile()) {
+      *m_env.subScreenFile() << "Opening output file '" << m_outputFileName
+                             << "' for qoi sequence "   << workingSeq.name()
+                             << std::endl;
     }
 
     // Open file
@@ -300,17 +308,17 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   }
 
   if (m_computeStats) {
-    if ((m_env.verbosity() >= 0) && (m_env.rank() == 0)) {
-      std::cout << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
-                << ": about to call 'workingSeq.computeStatistics()'"
-                << std::endl;
+    if ((m_env.subScreenFile()) && (m_env.verbosity() >= 0)) {
+      *m_env.subScreenFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+                             << ": about to call 'workingSeq.computeStatistics()'"
+                             << std::endl;
     }
     workingSeq.computeStatistics(*m_statisticalOptions,
                                  ofsvar);
-    if ((m_env.verbosity() >= 0) && (m_env.rank() == 0)) {
-      std::cout << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
-                << ": returned from call to 'workingSeq.computeStatistics()'"
-                << std::endl;
+    if ((m_env.subScreenFile()) && (m_env.verbosity() >= 0)) {
+      *m_env.subScreenFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+                             << ": returned from call to 'workingSeq.computeStatistics()'"
+                             << std::endl;
     }
   }
 
@@ -321,14 +329,14 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
     // Close file
     ofsvar->close();
 
-    if (m_env.rank() == 0) {
-      std::cout << "Closed output file '" << m_outputFileName
-                << "' for qoi sequence "  << workingSeq.name()
-                << std::endl;
+    if (m_env.subScreenFile()) {
+      *m_env.subScreenFile() << "Closed output file '" << m_outputFileName
+                             << "' for qoi sequence "  << workingSeq.name()
+                             << std::endl;
     }
   }
-  if (m_env.rank() == 0) {
-    std::cout << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << std::endl;
   }
 
   return;
@@ -341,11 +349,11 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
         uqBaseVectorSequenceClass<P_V,P_M>& workingSeq,
         unsigned int                        seqSize)
 {
-  if (m_env.rank() == 0) {
-    std::cout << "Starting the generation of qoi sequence " << workingSeq.name()
-              << ", with "                                  << seqSize
-              << " samples..."
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Starting the generation of qoi sequence " << workingSeq.name()
+                           << ", with "                                  << seqSize
+                           << " samples..."
+                           << std::endl;
   }
 
   int iRC = UQ_OK_RC;
@@ -372,29 +380,27 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
 
     if ((m_displayPeriod            > 0) && 
         (((i+1) % m_displayPeriod) == 0)) {
-      if (m_env.rank() == 0) {
-        std::cout << "Finished generating " << i+1
-                  << " qoi samples"
-                  << std::endl;
+      if (m_env.subScreenFile()) {
+        *m_env.subScreenFile() << "Finished generating " << i+1
+                               << " qoi samples"
+                               << std::endl;
       }
     }
   }
 
   seqRunTime = uqMiscGetEllapsedSeconds(&timevalSeq);
 
-  if (m_env.rank() == 0) {
-    std::cout << "Finished the generation of qoi sequence " << workingSeq.name()
-              << ", with "                                  << workingSeq.sequenceSize()
-              << " samples";
-  }
-  std::cout << "\nSome information about this sequence:"
-            << "\n  Sequence run time = " << seqRunTime
-            << " seconds";
-  if (m_measureRunTimes) {
-    std::cout << "\n\n Breaking of the seq run time:\n";
-    std::cout << "\n  QoI function run time   = " << qoiFunctionRunTime
-              << " seconds ("                     << 100.*qoiFunctionRunTime/seqRunTime
-              << "%)";
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Finished the generation of qoi sequence " << workingSeq.name()
+                           << ", with "                                  << workingSeq.sequenceSize()
+                           << " samples";
+    *m_env.subScreenFile() << "\nSome information about this sequence:"
+                           << "\n  Sequence run time = " << seqRunTime
+                           << " seconds";
+    *m_env.subScreenFile() << "\n\n Breaking of the seq run time:\n";
+    *m_env.subScreenFile() << "\n  QoI function run time   = " << qoiFunctionRunTime
+                           << " seconds ("                     << 100.*qoiFunctionRunTime/seqRunTime
+                           << "%)";
   }
 
   return;

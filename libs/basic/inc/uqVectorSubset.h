@@ -78,13 +78,13 @@ uqVectorSubsetClass<V,M>::uqVectorSubsetClass(
   uqVectorSetClass<V,M>(vectorSpace.env(),prefix,0.),
   m_vectorSpace        (&vectorSpace)
 {
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqVectorSubsetClass<V,M>::constructor()"
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Entering uqVectorSubsetClass<V,M>::constructor()"
               << std::endl;
   }
 
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqVectorSubsetClass<V,M>::constructor()"
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Leaving uqVectorSubsetClass<V,M>::constructor()"
               << std::endl;
   }
 }
@@ -92,11 +92,15 @@ uqVectorSubsetClass<V,M>::uqVectorSubsetClass(
 template <class V, class M>
 uqVectorSubsetClass<V,M>::~uqVectorSubsetClass()
 {
-  //std::cout << "Entering uqVectorSubsetClass<V,M>::destructor()"
-  //          << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Entering uqVectorSubsetClass<V,M>::destructor()"
+                           << std::endl;
+  }
 
-  //std::cout << "Leaving uqVectorSubsetClass<V,M>::destructor()"
-  //          << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Leaving uqVectorSubsetClass<V,M>::destructor()"
+                           << std::endl;
+  }
 }
 
 template <class V, class M>

@@ -64,13 +64,17 @@ uqModelValidationClass<P_V,P_M,Q_V,Q_M>::uqModelValidationClass(
   m_prefix((std::string)(prefix) + ""),
   m_cycle (NULL)
 {
-  if (m_env.rank() == 0) std::cout << "Entering uqModelValidationClass<P_V,P_M,Q_V,Q_M>::constructor()"
-                                   << ": prefix = "              << m_prefix
-                                   << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Entering uqModelValidationClass<P_V,P_M,Q_V,Q_M>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
+  }
 
-  if (m_env.rank() == 0) std::cout << "Leaving uqModelValidationClass<P_V,P_M,Q_V,Q_M>::constructor()"
-                                   << ": prefix = "              << m_prefix
-                                   << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Leaving uqModelValidationClass<P_V,P_M,Q_V,Q_M>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
+  }
 
   return;
 }
@@ -78,18 +82,18 @@ uqModelValidationClass<P_V,P_M,Q_V,Q_M>::uqModelValidationClass(
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqModelValidationClass<P_V,P_M,Q_V,Q_M>::~uqModelValidationClass()
 {
-  if (m_env.rank() == 0) {
-    std::cout << "Entering uqModeValidation::destructor()"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Entering uqModeValidation::destructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 
   if (m_cycle) delete m_cycle;
 
-  if (m_env.rank() == 0) {
-    std::cout << "Leaving uqModeValidation::destructor()"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Leaving uqModeValidation::destructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 }
 

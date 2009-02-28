@@ -166,20 +166,26 @@ uqArrayOfSequencesClass<V,M>::uqArrayOfSequencesClass(
   m_scalarSequences             (m_vectorSpace.map(),1)
 {
 
-  //if (m_env.rank() == 0) std::cout << "Entering uqArrayOfSequencesClass<V,M>::constructor()"
-  //                                 << std::endl;
+  //if (m_env.subScreenFile()) {
+  //  *m_env.subScreenFile() << "Entering uqArrayOfSequencesClass<V,M>::constructor()"
+  //                         << std::endl;
+  //}
 
-  //if (m_env.rank() == 0) std::cout << "In uqArrayOfSequencesClass<V,M>::constructor()"
-  //                                 << "\n sequenceSize = "                 << sequenceSize
-  //                                 << "\n m_scalarSequences.MyLength() = " << m_scalarSequences.MyLength()
-  //                                 << std::endl;
+  //if (m_env.subScreenFile()) {
+  //  *m_env.subScreenFile() << "In uqArrayOfSequencesClass<V,M>::constructor()"
+  //                         << "\n sequenceSize = "                 << sequenceSize
+  //                         << "\n m_scalarSequences.MyLength() = " << m_scalarSequences.MyLength()
+  //                         << std::endl;
+  //}
 
   for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
     m_scalarSequences(i,0) = new uqScalarSequenceClass<double>(m_env,sequenceSize);
   }
 
-  //if (m_env.rank() == 0) std::cout << "Leaving uqArrayOfSequencesClass<V,M>::constructor()"
-  //                                 << std::endl;
+  //if (m_env.subScreenFile()) {
+  //  *m_env.subScreenFile() << "Leaving uqArrayOfSequencesClass<V,M>::constructor()"
+  //                         << std::endl;
+  //}
 }
 
 template <class V, class M>
@@ -700,7 +706,9 @@ uqArrayOfSequencesClass<V,M>::psdAtZero(
                  hopSizeRatio,
                  psdSequence);
         _2dArrayOfPSDAtZero(initialPosId,numsOfBlocksId)[i] = psdSequence[0];
-	std::cout << "psdSequence[0] = " << psdSequence[0] << std::endl;
+        //if (m_env.subScreenFile()) {
+	//  *m_env.subScreenFile() << "psdSequence[0] = " << psdSequence[0] << std::endl;
+        //}
       } // for 'numsOfBlocksId'
     } // for 'i'
   }

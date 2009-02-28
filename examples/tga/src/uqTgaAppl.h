@@ -177,7 +177,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   if (env.rank() == 0) {
     std::cout << "Ending 'calibration stage' at " << ctime(&timevalNow.tv_sec)
               << "Total 'calibration stage' run time = " << timevalNow.tv_sec - timevalRef.tv_sec
-              << " seconds"
+              << " seconds\n"
               << std::endl;
   }
 
@@ -231,7 +231,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   if (env.rank() == 0) {
     std::cout << "Ending 'validation stage' at " << ctime(&timevalNow.tv_sec)
               << "Total 'validation stage' run time = " << timevalNow.tv_sec - timevalRef.tv_sec
-              << " seconds"
+              << " seconds\n"
               << std::endl;
   }
 
@@ -251,7 +251,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   if (env.rank() == 0) {
     std::cout << "Ending 'comparison stage' at " << ctime(&timevalNow.tv_sec)
               << "Total 'comparison stage' run time = " << timevalNow.tv_sec - timevalRef.tv_sec
-              << " seconds"
+              << " seconds\n"
               << std::endl;
   }
 

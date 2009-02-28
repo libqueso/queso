@@ -373,13 +373,13 @@ uqBaseVectorSequenceClass<V,M>::computeStatistics(
   const uqChainStatisticalOptionsClass& statisticalOptions,
   std::ofstream*                        passedOfs)
 {
-  if (m_env.rank() == 0) {
-    std::cout << "\n"
-              << "\n-----------------------------------------------------"
-              << "\n Computing statistics for chain " << m_name << " ..."
-              << "\n-----------------------------------------------------"
-              << "\n"
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "\n"
+                           << "\n-----------------------------------------------------"
+                           << "\n Computing statistics for chain " << m_name << " ..."
+                           << "\n-----------------------------------------------------"
+                           << "\n"
+                           << std::endl;
   }
 
   int iRC = UQ_OK_RC;
@@ -392,11 +392,13 @@ uqBaseVectorSequenceClass<V,M>::computeStatistics(
   for (unsigned int i = 0; i < initialPosForStatistics.size(); ++i) {
     initialPosForStatistics[i] = (unsigned int) (statisticalOptions.initialDiscardedPortions()[i] * (double) this->sequenceSize());
   }
-  std::cout << "In uqBaseVectorSequenceClass<V,M>::computeStatistics(): initial positions for statistics =";
-  for (unsigned int i = 0; i < initialPosForStatistics.size(); ++i) {
-    std::cout << " " << initialPosForStatistics[i];
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "In uqBaseVectorSequenceClass<V,M>::computeStatistics(): initial positions for statistics =";
+    for (unsigned int i = 0; i < initialPosForStatistics.size(); ++i) {
+      *m_env.subScreenFile() << " " << initialPosForStatistics[i];
+    }
+    *m_env.subScreenFile() << std::endl;
   }
-  std::cout << std::endl;
 
   //****************************************************
   // Compute mean, sample std, population std
@@ -499,18 +501,18 @@ uqBaseVectorSequenceClass<V,M>::computeStatistics(
   }
 
   tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
-  if (m_env.rank() == 0) {
-    std::cout << "All statistics took " << tmpRunTime
-              << " seconds"
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "All statistics took " << tmpRunTime
+                           << " seconds"
+                           << std::endl;
   }
 
-  if (m_env.rank() == 0) {
-    std::cout << "\n-----------------------------------------------------"
-              << "\n Finished computing statistics for chain " << m_name
-              << "\n-----------------------------------------------------"
-              << "\n"
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "\n-----------------------------------------------------"
+                           << "\n Finished computing statistics for chain " << m_name
+                           << "\n-----------------------------------------------------"
+                           << "\n"
+                           << std::endl;
   }
 
   return;
@@ -530,10 +532,10 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
   iRC = gettimeofday(&timevalTmp, NULL);
   double tmpRunTime = 0.;
 
-  if (m_env.rank() == 0) {
-    std::cout << "\n-----------------------------------------------------"
-              << "\nComputing mean, sample variance and population variance"
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "\n-----------------------------------------------------"
+                           << "\nComputing mean, sample variance and population variance"
+                           << std::endl;
   }
 
   V chainMean(m_vectorSpace.zeroVector());
@@ -547,29 +549,29 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
                        chainMean,
                        chainSampleVariance);
 
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "In uqBaseVectorSequenceClass<V,M>::computeMeanVars()"
-              << ": chainMean.size() = "           << chainMean.size()
-              << ", chainMean = "                  << chainMean
-              << ", chainSampleVariance.size() = " << chainSampleVariance.size()
-              << ", chainSampleVariance = "        << chainSampleVariance
-              << std::endl;
+  if ((m_env.verbosity() >= 5) && (m_env.subScreenFile())) {
+    *m_env.subScreenFile() << "In uqBaseVectorSequenceClass<V,M>::computeMeanVars()"
+                           << ": chainMean.size() = "           << chainMean.size()
+                           << ", chainMean = "                  << chainMean
+                           << ", chainSampleVariance.size() = " << chainSampleVariance.size()
+                           << ", chainSampleVariance = "        << chainSampleVariance
+                           << std::endl;
   }
 
-  if (m_env.rank() == 0) {
-    std::cout << "\nEstimated variance of sample mean for the whole chain " << m_name
-              << ", under independence assumption:"
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "\nEstimated variance of sample mean for the whole chain " << m_name
+                           << ", under independence assumption:"
+                           << std::endl;
   }
   V estimatedVarianceOfSampleMean(chainSampleVariance);
   estimatedVarianceOfSampleMean /= (double) this->sequenceSize();
   bool savedVectorPrintState = estimatedVarianceOfSampleMean.getPrintHorizontally();
   estimatedVarianceOfSampleMean.setPrintHorizontally(false);
-  std::cout << estimatedVarianceOfSampleMean;
-  estimatedVarianceOfSampleMean.setPrintHorizontally(savedVectorPrintState);
-  if (m_env.rank() == 0) {
-    std::cout << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << estimatedVarianceOfSampleMean
+                           << std::endl;
   }
+  estimatedVarianceOfSampleMean.setPrintHorizontally(savedVectorPrintState);
 
   V chainPopulationVariance(m_vectorSpace.zeroVector());
   this->populationVariance(0,
@@ -578,15 +580,15 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
                            chainPopulationVariance);
 
   tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
-  if (m_env.rank() == 0) {
-    std::cout << "Mean and variances took " << tmpRunTime
-              << " seconds"
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Mean and variances took " << tmpRunTime
+                           << " seconds"
+                           << std::endl;
   }
 
-  if (m_env.rank() == 0) {
-    std::cout << "\nMean, sample std, population std"
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "\nMean, sample std, population std"
+                           << std::endl;
     char line[512];
     sprintf(line,"%s%4s%s%9s%s%9s%s",
 	    "Parameter",
@@ -596,7 +598,7 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
             "SampleStd",
             " ",
             "Popul.Std");
-    std::cout << line;
+    *m_env.subScreenFile() << line;
 
     for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
       sprintf(line,"\n%8.8s%2s%11.4e%2s%11.4e%2s%11.4e",
@@ -607,9 +609,9 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
               sqrt(chainSampleVariance[i]),
               " ",
               sqrt(chainPopulationVariance[i]));
-      std::cout << line;
+      *m_env.subScreenFile() << line;
     }
-    std::cout << std::endl;
+    *m_env.subScreenFile() << std::endl;
   }
 
   if (meanPtr     ) *meanPtr      = chainMean;
@@ -631,17 +633,19 @@ uqBaseVectorSequenceClass<V,M>::computeBMM(
   iRC = gettimeofday(&timevalTmp, NULL);
   double tmpRunTime = 0.;
 
-  if (m_env.rank() == 0) {
-    std::cout << "\n-----------------------------------------------------"
-              << "\nComputing variance of sample mean through BMM"
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "\n-----------------------------------------------------"
+                           << "\nComputing variance of sample mean through BMM"
+                           << std::endl;
   }
 
-  std::cout << "In uqBaseVectorSequenceClass<V,M>::computeBMM(): lengths for batchs in BMM =";
-  for (unsigned int i = 0; i < statisticalOptions.bmmLengths().size(); ++i) {
-    std::cout << " " << statisticalOptions.bmmLengths()[i];
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "In uqBaseVectorSequenceClass<V,M>::computeBMM(): lengths for batchs in BMM =";
+    for (unsigned int i = 0; i < statisticalOptions.bmmLengths().size(); ++i) {
+      *m_env.subScreenFile() << " " << statisticalOptions.bmmLengths()[i];
+    }
+    *m_env.subScreenFile() << std::endl;
   }
-  std::cout << std::endl;
 
   uq2dArrayOfStuff<V> _2dArrayOfBMM(initialPosForStatistics.size(),statisticalOptions.bmmLengths().size());
   for (unsigned int i = 0; i < _2dArrayOfBMM.numRows(); ++i) {
@@ -661,43 +665,43 @@ uqBaseVectorSequenceClass<V,M>::computeBMM(
     }
   }
 
-  if (m_env.rank() == 0) {
+  if (m_env.subScreenFile()) {
     for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
-      std::cout << "\nEstimated variance of sample mean, through batch means method, for subchain beggining at position " << initialPosForStatistics[initialPosId]
-                << " (each column corresponds to a batch length)"
-                << std::endl;
+      *m_env.subScreenFile() << "\nEstimated variance of sample mean, through batch means method, for subchain beggining at position " << initialPosForStatistics[initialPosId]
+                             << " (each column corresponds to a batch length)"
+                             << std::endl;
 
       char line[512];
       sprintf(line,"%s",
               "Parameter");
-      std::cout << line;
+      *m_env.subScreenFile() << line;
       for (unsigned int batchLengthId = 0; batchLengthId < statisticalOptions.bmmLengths().size(); batchLengthId++) {
         sprintf(line,"%10s%3d",
                 " ",
                 statisticalOptions.bmmLengths()[batchLengthId]);
-        std::cout << line;
+        *m_env.subScreenFile() << line;
       }
 
       for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
         sprintf(line,"\n%9.9s",
                 m_vectorSpace.componentName(i).c_str() /*.*/);
-        std::cout << line;
+        *m_env.subScreenFile() << line;
         for (unsigned int batchLengthId = 0; batchLengthId < statisticalOptions.bmmLengths().size(); batchLengthId++) {
           sprintf(line,"%2s%11.4e",
                   " ",
                   _2dArrayOfBMM(initialPosId,batchLengthId)[i]);
-          std::cout << line;
+          *m_env.subScreenFile() << line;
         }
       }
-      std::cout << std::endl;
+      *m_env.subScreenFile() << std::endl;
     }
   }
 
   tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
-  if (m_env.rank() == 0) {
-    std::cout << "Chain BMM took " << tmpRunTime
-              << " seconds"
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Chain BMM took " << tmpRunTime
+                           << " seconds"
+                           << std::endl;
   }
 
   return;
@@ -715,10 +719,10 @@ uqBaseVectorSequenceClass<V,M>::computeFFT(
   iRC = gettimeofday(&timevalTmp, NULL);
   double tmpRunTime = 0.;
 
-  if (m_env.rank() == 0) {
-    std::cout << "\n-----------------------------------------------------"
-              << "\nComputing FFT of chain on parameter of id = " << statisticalOptions.fftParamId()
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "\n-----------------------------------------------------"
+                           << "\nComputing FFT of chain on parameter of id = " << statisticalOptions.fftParamId()
+                           << std::endl;
   }
 
   std::vector<std::complex<double> > forwardResult(0,std::complex<double>(0.,0.));
@@ -770,10 +774,10 @@ uqBaseVectorSequenceClass<V,M>::computeFFT(
   } // for initialPosId
 
   tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
-  if (m_env.rank() == 0) {
-    std::cout << "Chain FFT took " << tmpRunTime
-              << " seconds"
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Chain FFT took " << tmpRunTime
+                           << " seconds"
+                           << std::endl;
   }
 
   return;
@@ -791,10 +795,10 @@ uqBaseVectorSequenceClass<V,M>::computePSD(
   iRC = gettimeofday(&timevalTmp, NULL);
   double tmpRunTime = 0.;
 
-  if (m_env.rank() == 0) {
-    std::cout << "\n-----------------------------------------------------"
-              << "\nComputing PSD of chain on parameter of id = " << statisticalOptions.psdParamId()
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "\n-----------------------------------------------------"
+                           << "\nComputing PSD of chain on parameter of id = " << statisticalOptions.psdParamId()
+                           << std::endl;
   }
 
   std::vector<double> psdResult(0,0.);
@@ -823,10 +827,10 @@ uqBaseVectorSequenceClass<V,M>::computePSD(
   }
 
   tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
-  if (m_env.rank() == 0) {
-    std::cout << "Chain PSD took " << tmpRunTime
-              << " seconds"
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Chain PSD took " << tmpRunTime
+                           << " seconds"
+                           << std::endl;
   }
 
   return;
@@ -844,10 +848,10 @@ uqBaseVectorSequenceClass<V,M>::computePSDAtZero(
   iRC = gettimeofday(&timevalTmp, NULL);
   double tmpRunTime = 0.;
 
-  if (m_env.rank() == 0) {
-    std::cout << "\n-----------------------------------------------------"
-              << "\nComputing PSD at frequency zero for all parameters"
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "\n-----------------------------------------------------"
+                           << "\nComputing PSD at frequency zero for all parameters"
+                           << std::endl;
   }
 
   uq2dArrayOfStuff<V> _2dArrayOfPSDAtZero(initialPosForStatistics.size(),statisticalOptions.psdAtZeroNumBlocks().size());
@@ -870,45 +874,45 @@ uqBaseVectorSequenceClass<V,M>::computePSDAtZero(
   }
 
   // Display PSD at frequency zero
-  if ((statisticalOptions.psdAtZeroDisplay()) && (m_env.rank() == 0)) {
+  if ((statisticalOptions.psdAtZeroDisplay()) && (m_env.subScreenFile())) {
     for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
       unsigned int initialPos = initialPosForStatistics[initialPosId];
-      std::cout << "\nComputed PSD at frequency zero for subchain beggining at position " << initialPos
-                << ", so effective data size = " << this->sequenceSize() - initialPos
-                << " (each column corresponds to a number of blocks)"
-                << std::endl;
+      *m_env.subScreenFile() << "\nComputed PSD at frequency zero for subchain beggining at position " << initialPos
+                             << ", so effective data size = " << this->sequenceSize() - initialPos
+                             << " (each column corresponds to a number of blocks)"
+                             << std::endl;
 
       char line[512];
       sprintf(line,"%s",
               "Parameter");
-      std::cout << line;
+      *m_env.subScreenFile() << line;
       for (unsigned int numBlocksId = 0; numBlocksId < statisticalOptions.psdAtZeroNumBlocks().size(); numBlocksId++) {
         sprintf(line,"%10s%3d",
                 " ",
                 statisticalOptions.psdAtZeroNumBlocks()[numBlocksId]);
-        std::cout << line;
+        *m_env.subScreenFile() << line;
       }
 
       for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
         sprintf(line,"\n%9.9s",
                 m_vectorSpace.componentName(i).c_str() /*.*/);
-        std::cout << line;
+        *m_env.subScreenFile() << line;
         for (unsigned int numBlocksId = 0; numBlocksId < statisticalOptions.psdAtZeroNumBlocks().size(); numBlocksId++) {
           sprintf(line,"%2s%11.4e",
                   " ",
                   _2dArrayOfPSDAtZero(initialPosId,numBlocksId)[i]);
-          std::cout << line;
+          *m_env.subScreenFile() << line;
         }
       }
-      std::cout << std::endl;
+      *m_env.subScreenFile() << std::endl;
     }
   }
 
   // Display estimated variance of sample mean through PSD
-  if (/*(statisticalOptions.psdAtZeroDisplay()) &&*/ (m_env.rank() == 0)) {
+  if (/*(statisticalOptions.psdAtZeroDisplay()) &&*/ (m_env.subScreenFile())) {
     for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
       unsigned int initialPos = initialPosForStatistics[initialPosId];
-      std::cout << "\nEstimated variance of sample mean, through psd, for subchain beggining at position " << initialPos
+      *m_env.subScreenFile() << "\nEstimated variance of sample mean, through psd, for subchain beggining at position " << initialPos
                 << ", so effective data size = " << this->sequenceSize() - initialPos
                 << " (each column corresponds to a number of blocks)"
                 << std::endl;
@@ -916,34 +920,34 @@ uqBaseVectorSequenceClass<V,M>::computePSDAtZero(
       char line[512];
       sprintf(line,"%s",
               "Parameter");
-      std::cout << line;
+      *m_env.subScreenFile() << line;
       for (unsigned int numBlocksId = 0; numBlocksId < statisticalOptions.psdAtZeroNumBlocks().size(); numBlocksId++) {
         sprintf(line,"%10s%3d",
                 " ",
                 statisticalOptions.psdAtZeroNumBlocks()[numBlocksId]);
-        std::cout << line;
+        *m_env.subScreenFile() << line;
       }
 
       for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
         sprintf(line,"\n%9.9s",
                 m_vectorSpace.componentName(i).c_str() /*.*/);
-        std::cout << line;
+        *m_env.subScreenFile() << line;
         for (unsigned int numBlocksId = 0; numBlocksId < statisticalOptions.psdAtZeroNumBlocks().size(); numBlocksId++) {
           sprintf(line,"%2s%11.4e",
                   " ",
                   2.*M_PI*_2dArrayOfPSDAtZero(initialPosId,numBlocksId)[i]/(double) (this->sequenceSize() - initialPos));
-          std::cout << line;
+          *m_env.subScreenFile() << line;
         }
       }
-      std::cout << std::endl;
+      *m_env.subScreenFile() << std::endl;
     }
   }
 
   tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
-  if (m_env.rank() == 0) {
-    std::cout << "Chain PSD at frequency zero took " << tmpRunTime
-              << " seconds"
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Chain PSD at frequency zero took " << tmpRunTime 
+                           << " seconds"
+                           << std::endl;
   }
 
   // Write PSD at frequency zero
@@ -993,10 +997,10 @@ uqBaseVectorSequenceClass<V,M>::computeGeweke(
   iRC = gettimeofday(&timevalTmp, NULL);
   double tmpRunTime = 0.;
 
-  if (m_env.rank() == 0) {
-    std::cout << "\n-----------------------------------------------------"
-              << "\nComputing Geweke coefficients"
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "\n-----------------------------------------------------"
+                           << "\nComputing Geweke coefficients"
+                           << std::endl;
   }
 
   std::vector<V*> vectorOfGeweke(initialPosForStatistics.size(),NULL);
@@ -1010,41 +1014,41 @@ uqBaseVectorSequenceClass<V,M>::computeGeweke(
     vectorOfGeweke[initialPosId] = new V(gewVec);
   }
 
-  if (m_env.rank() == 0) {
-    std::cout << "\nComputed Geweke coefficients with 10% and 50% percentages"
-              << " (each column corresponds to a different initial position on the full chain)"
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "\nComputed Geweke coefficients with 10% and 50% percentages"
+                           << " (each column corresponds to a different initial position on the full chain)"
+                           << std::endl;
 
     char line[512];
     sprintf(line,"%s",
             "Parameter");
-    std::cout << line;
+    *m_env.subScreenFile() << line;
     for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
       sprintf(line,"%10s%3d",
               " ",
               initialPosForStatistics[initialPosId]);
-      std::cout << line;
+      *m_env.subScreenFile() << line;
     }
 
     for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
       sprintf(line,"\n%9.9s",
               m_vectorSpace.componentName(i).c_str() /*.*/);
-      std::cout << line;
+      *m_env.subScreenFile() << line;
       for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
         sprintf(line,"%2s%11.4e",
                 " ",
                 (*(vectorOfGeweke[initialPosId]))[i]);
-        std::cout << line;
+        *m_env.subScreenFile() << line;
       }
     }
-    std::cout << std::endl;
+    *m_env.subScreenFile() << std::endl;
   }
 
   tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
-  if (m_env.rank() == 0) {
-    std::cout << "Chain Geweke took " << tmpRunTime
-              << " seconds"
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Chain Geweke took " << tmpRunTime
+                           << " seconds"
+                           << std::endl;
   }
 
   return;
@@ -1063,18 +1067,18 @@ uqBaseVectorSequenceClass<V,M>::computeCorrViaDef(
   iRC = gettimeofday(&timevalTmp, NULL);
   double tmpRunTime = 0.;
 
-  if (m_env.rank() == 0) {
-    std::cout << "\n-----------------------------------------------------"
-              << "\nComputing autocorrelation coefficients (via def)"
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "\n-----------------------------------------------------"
+                           << "\nComputing autocorrelation coefficients (via def)"
+                           << std::endl;
   }
 
-  if (statisticalOptions.corrDisplay() && (m_env.rank() == 0)) {
-    std::cout << "In uqBaseVectorSequenceClass<V,M>::computeCorrViaDef(): lags for autocorrelation (via def) = ";
+  if (statisticalOptions.corrDisplay() && (m_env.subScreenFile())) {
+    *m_env.subScreenFile() << "In uqBaseVectorSequenceClass<V,M>::computeCorrViaDef(): lags for autocorrelation (via def) = ";
     for (unsigned int i = 0; i < lagsForCorrs.size(); ++i) {
-      std::cout << " " << lagsForCorrs[i];
+      *m_env.subScreenFile() << " " << lagsForCorrs[i];
     }
-    std::cout << std::endl;
+    *m_env.subScreenFile() << std::endl;
   }
 
   uq2dArrayOfStuff<V> _2dArrayOfAutoCorrs(initialPosForStatistics.size(),lagsForCorrs.size());
@@ -1099,42 +1103,42 @@ uqBaseVectorSequenceClass<V,M>::computeCorrViaDef(
   // It is not practical to compute the variance of sample mean by computing the autocorrelations via definition for each lag
   // The code computes the variance of sample mean by computing the autocorrelations via fft, below, in another routine
 
-  if ((statisticalOptions.corrDisplay()) && (m_env.rank() == 0)) {
+  if ((statisticalOptions.corrDisplay()) && (m_env.subScreenFile())) {
     for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
-      std::cout << "\nComputed autocorrelation coefficients (via def), for subchain beggining at position " << initialPosForStatistics[initialPosId]
-                << " (each column corresponds to a different lag)"
-                << std::endl;
+      *m_env.subScreenFile() << "\nComputed autocorrelation coefficients (via def), for subchain beggining at position " << initialPosForStatistics[initialPosId]
+                             << " (each column corresponds to a different lag)"
+                             << std::endl;
       char line[512];
       sprintf(line,"%s",
               "Parameter");
-      std::cout << line;
+      *m_env.subScreenFile() << line;
       for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
         sprintf(line,"%10s%3d",
                 " ",
                 lagsForCorrs[lagId]);
-        std::cout << line;
+        *m_env.subScreenFile() << line;
       }
 
       for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
         sprintf(line,"\n%9.9s",
                 m_vectorSpace.componentName(i).c_str() /*.*/);
-        std::cout << line;
+        *m_env.subScreenFile() << line;
         for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
           sprintf(line,"%2s%11.4e",
                   " ",
                   _2dArrayOfAutoCorrs(initialPosId,lagId)[i]);
-          std::cout << line;
+          *m_env.subScreenFile() << line;
         }
       }
-      std::cout << std::endl;
+      *m_env.subScreenFile() << std::endl;
     }
   }
 
   tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
-  if (m_env.rank() == 0) {
-    std::cout << "Chain autocorrelation (via def) took " << tmpRunTime
-              << " seconds"
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Chain autocorrelation (via def) took " << tmpRunTime
+                           << " seconds"
+                           << std::endl;
   }
 
   // Write autocorrelations
@@ -1185,18 +1189,18 @@ uqBaseVectorSequenceClass<V,M>::computeCorrViaFFT(
   iRC = gettimeofday(&timevalTmp, NULL);
   double tmpRunTime = 0.;
 
-  if (m_env.rank() == 0) {
-    std::cout << "\n-----------------------------------------------------"
-              << "\nComputing autocorrelation coefficients (via fft)"
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "\n-----------------------------------------------------"
+                           << "\nComputing autocorrelation coefficients (via fft)"
+                           << std::endl;
   }
 
-  if (statisticalOptions.corrDisplay() && (m_env.rank() == 0)) {
-    std::cout << "In uqBaseVectorSequenceClass<V,M>::computeCorrViaFFT(): lags for autocorrelation (via fft) = ";
+  if (statisticalOptions.corrDisplay() && (m_env.subScreenFile())) {
+    *m_env.subScreenFile() << "In uqBaseVectorSequenceClass<V,M>::computeCorrViaFFT(): lags for autocorrelation (via fft) = ";
     for (unsigned int i = 0; i < lagsForCorrs.size(); ++i) {
-      std::cout << " " << lagsForCorrs[i];
+      *m_env.subScreenFile() << " " << lagsForCorrs[i];
      }
-     std::cout << std::endl;
+     *m_env.subScreenFile() << std::endl;
   }
 
   uq2dArrayOfStuff<V> _2dArrayOfAutoCorrs(initialPosForStatistics.size(),lagsForCorrs.size());
@@ -1213,14 +1217,14 @@ uqBaseVectorSequenceClass<V,M>::computeCorrViaFFT(
     for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
       corrVecs[lagId] = new V(m_vectorSpace.zeroVector()) /*.*/;
     }
-    if (m_env.rank() == 0) {
-      std::cout << "In uqBaseVectorSequenceClass<V,M>::computeCorrViaFFT()"
-                << ": about to call chain.autoCorrViaFft()"
-                << " with initialPos = "      << initialPos
-                << ", numPos = "              << this->sequenceSize()-initialPos
-                << ", lagsForCorrs.size() = " << lagsForCorrs.size()
-                << ", corrVecs.size() = "     << corrVecs.size()
-                << std::endl;
+    if (m_env.subScreenFile()) {
+      *m_env.subScreenFile() << "In uqBaseVectorSequenceClass<V,M>::computeCorrViaFFT()"
+                             << ": about to call chain.autoCorrViaFft()"
+                             << " with initialPos = "      << initialPos
+                             << ", numPos = "              << this->sequenceSize()-initialPos
+                             << ", lagsForCorrs.size() = " << lagsForCorrs.size()
+                             << ", corrVecs.size() = "     << corrVecs.size()
+                             << std::endl;
     }
     this->autoCorrViaFft(initialPos,
                          this->sequenceSize()-initialPos, // Use all possible data positions
@@ -1238,7 +1242,7 @@ uqBaseVectorSequenceClass<V,M>::computeCorrViaFFT(
     if (corrVecs[j] != NULL) delete corrVecs[j];
   }
 
-  if ((statisticalOptions.corrDisplay()) && (m_env.rank() == 0)) {
+  if (statisticalOptions.corrDisplay()) {
     V chainMean                    (m_vectorSpace.zeroVector());
     V chainSampleVariance          (m_vectorSpace.zeroVector());
     V estimatedVarianceOfSampleMean(m_vectorSpace.zeroVector());
@@ -1254,55 +1258,59 @@ uqBaseVectorSequenceClass<V,M>::computeCorrViaFFT(
                            chainMean,
                            chainSampleVariance);
 
-      std::cout << "\nEstimated variance of sample mean, through autocorrelation (via fft), for subchain beggining at position " << initialPosForStatistics[initialPosId]
-                << std::endl;
+      if (m_env.subScreenFile()) {
+        *m_env.subScreenFile() << "\nEstimated variance of sample mean, through autocorrelation (via fft), for subchain beggining at position " << initialPosForStatistics[initialPosId]
+                               << std::endl;
+      }
       estimatedVarianceOfSampleMean.cwSet(-1.); // Yes, '-1' because the autocorrelation at lag 0, which values '+1', is already counted in the sum
       estimatedVarianceOfSampleMean += 2.* (*corrSumVecs[initialPosId]);
       estimatedVarianceOfSampleMean *= chainSampleVariance;
       estimatedVarianceOfSampleMean /= (double) (this->sequenceSize() - initialPos);
       bool savedVectorPrintState = estimatedVarianceOfSampleMean.getPrintHorizontally();
       estimatedVarianceOfSampleMean.setPrintHorizontally(false);
-      std::cout << estimatedVarianceOfSampleMean;
+      if (m_env.subScreenFile()) {
+        *m_env.subScreenFile() << estimatedVarianceOfSampleMean
+                               << std::endl;
+      }
       estimatedVarianceOfSampleMean.setPrintHorizontally(savedVectorPrintState);
-      if (m_env.rank() == 0) {
-        std::cout << std::endl;
-      }
 
-      std::cout << "\nComputed autocorrelation coefficients (via fft), for subchain beggining at position " << initialPosForStatistics[initialPosId]
-                << " (each column corresponds to a different lag)"
-                << std::endl;
+      if (m_env.subScreenFile()) {
+        *m_env.subScreenFile() << "\nComputed autocorrelation coefficients (via fft), for subchain beggining at position " << initialPosForStatistics[initialPosId]
+                               << " (each column corresponds to a different lag)"
+                               << std::endl;
 
-      char line[512];
-      sprintf(line,"%s",
-              "Parameter");
-      std::cout << line;
-      for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
-        sprintf(line,"%10s%3d",
-                " ",
-                lagsForCorrs[lagId]);
-        std::cout << line;
-      }
-
-      for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
-        sprintf(line,"\n%9.9s",
-                m_vectorSpace.componentName(i).c_str() /*.*/);
-        std::cout << line;
+        char line[512];
+        sprintf(line,"%s",
+                "Parameter");
+        *m_env.subScreenFile() << line;
         for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
-          sprintf(line,"%2s%11.4e",
+          sprintf(line,"%10s%3d",
                   " ",
-                  _2dArrayOfAutoCorrs(initialPosId,lagId)[i]);
-          std::cout << line;
+                  lagsForCorrs[lagId]);
+          *m_env.subScreenFile() << line;
         }
+
+        for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
+          sprintf(line,"\n%9.9s",
+                  m_vectorSpace.componentName(i).c_str() /*.*/);
+          *m_env.subScreenFile() << line;
+          for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
+            sprintf(line,"%2s%11.4e",
+                    " ",
+                    _2dArrayOfAutoCorrs(initialPosId,lagId)[i]);
+            *m_env.subScreenFile() << line;
+          }
+        }
+        *m_env.subScreenFile() << std::endl;
       }
-      std::cout << std::endl;
     }
   }
 
   tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
-  if (m_env.rank() == 0) {
-    std::cout << "Chain autocorrelation (via fft) took " << tmpRunTime
-              << " seconds"
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Chain autocorrelation (via fft) took " << tmpRunTime
+                           << " seconds"
+                           << std::endl;
   }
 
   // Write autocorrelations
@@ -1348,26 +1356,26 @@ uqBaseVectorSequenceClass<V,M>::computeFilterParams(
   unsigned int&                         initialPos,
   unsigned int&                         spacing)
 {
-  if (m_env.rank() == 0) {
-    std::cout << "\n"
-              << "\n-----------------------------------------------------"
-              << "\n Computing filter parameters for chain " << m_name << " ..."
-              << "\n-----------------------------------------------------"
-              << "\n"
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "\n"
+                           << "\n-----------------------------------------------------"
+                           << "\n Computing filter parameters for chain " << m_name << " ..."
+                           << "\n-----------------------------------------------------"
+                           << "\n"
+                           << std::endl;
   }
 
   initialPos = 0;
   spacing    = 1;
 
-  if (m_env.rank() == 0) {
-    std::cout << "\n-----------------------------------------------------"
-              << "\n Finished computing filter parameters for chain " << m_name
-              << ": initialPos = " << initialPos
-              << ", spacing = "    << spacing
-              << "\n-----------------------------------------------------"
-              << "\n"
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "\n-----------------------------------------------------"
+                           << "\n Finished computing filter parameters for chain " << m_name
+                           << ": initialPos = " << initialPos
+                           << ", spacing = "    << spacing
+                           << "\n-----------------------------------------------------"
+                           << "\n"
+                           << std::endl;
   }
 
   return;
@@ -1379,13 +1387,13 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
   const uqChainStatisticalOptionsClass& statisticalOptions,
   std::ofstream*                        passedOfs)
 {
-  if (m_env.rank() == 0) {
-    std::cout << "\n"
-              << "\n-----------------------------------------------------"
-              << "\n Computing histogram and/or KDE for chain " << m_name << " ..."
-              << "\n-----------------------------------------------------"
-              << "\n"
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "\n"
+                           << "\n-----------------------------------------------------"
+                           << "\n Computing histogram and/or KDE for chain " << m_name << " ..."
+                           << "\n-----------------------------------------------------"
+                           << "\n"
+                           << std::endl;
   }
 
   int iRC = UQ_OK_RC;
@@ -1396,10 +1404,10 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
   //****************************************************
   double tmpRunTime = 0.;
   iRC = gettimeofday(&timevalTmp, NULL);
-  if (m_env.rank() == 0) {
-    std::cout << "\n-----------------------------------------------------"
-              << "\nComputing min and max for histograms and KDE"
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "\n-----------------------------------------------------"
+                           << "\nComputing min and max for histograms and KDE"
+                           << std::endl;
   }
 
   V statsMinPositions(m_vectorSpace.zeroVector());
@@ -1408,42 +1416,42 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
                statsMinPositions,
                statsMaxPositions);
 
-  if (m_env.rank() == 0) {
-    std::cout << "\nComputed min values and max values for chain " << m_name
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "\nComputed min values and max values for chain " << m_name
+                           << std::endl;
 
     char line[512];
     sprintf(line,"%s",
             "Parameter");
-    std::cout << line;
+    *m_env.subScreenFile() << line;
 
     sprintf(line,"%9s%s%9s%s",
             " ",
             "min",
             " ",
             "max");
-    std::cout << line;
+    *m_env.subScreenFile() << line;
 
     for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
       sprintf(line,"\n%8.8s",
               m_vectorSpace.componentName(i).c_str() /*.*/);
-      std::cout << line;
+      *m_env.subScreenFile() << line;
 
       sprintf(line,"%2s%11.4e%2s%11.4e",
               " ",
               statsMinPositions[i],
               " ",
               statsMaxPositions[i]);
-      std::cout << line;
+      *m_env.subScreenFile() << line;
     }
-    std::cout << std::endl;
+    *m_env.subScreenFile() << std::endl;
   }
 
   tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
-  if (m_env.rank() == 0) {
-    std::cout << "Chain min and max took " << tmpRunTime
-              << " seconds"
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Chain min and max took " << tmpRunTime
+                           << " seconds"
+                           << std::endl;
   }
 
   //****************************************************
@@ -1453,10 +1461,10 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
       (statisticalOptions.histNumInternalBins() > 0)) {
     tmpRunTime = 0.;
     iRC = gettimeofday(&timevalTmp, NULL);
-    if (m_env.rank() == 0) {
-      std::cout << "\n-----------------------------------------------------"
-                << "\nComputing histograms"
-                << std::endl;
+    if (m_env.subScreenFile()) {
+      *m_env.subScreenFile() << "\n-----------------------------------------------------"
+                             << "\nComputing histograms"
+                             << std::endl;
     }
 
     std::vector<V*> histCentersForAllBins(0);
@@ -1475,10 +1483,10 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
                     histBinsForAllParams);
 
     tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
-    if (m_env.rank() == 0) {
-      std::cout << "Chain histograms took " << tmpRunTime
-                << " seconds"
-                << std::endl;
+    if (m_env.subScreenFile()) {
+      *m_env.subScreenFile() << "Chain histograms took " << tmpRunTime
+                             << " seconds"
+                             << std::endl;
     }
 
     // Write histograms
@@ -1529,10 +1537,10 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
       (statisticalOptions.kdeNumEvalPositions() > 0)) {
     tmpRunTime = 0.;
     iRC = gettimeofday(&timevalTmp, NULL);
-    if (m_env.rank() == 0) {
-      std::cout << "\n-----------------------------------------------------"
-                << "\nComputing KDE"
-                << std::endl;
+    if (m_env.subScreenFile()) {
+      *m_env.subScreenFile() << "\n-----------------------------------------------------"
+                             << "\nComputing KDE"
+                             << std::endl;
     }
 
     std::vector<V*> kdeEvalPositions(0);
@@ -1548,31 +1556,31 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
     this->interQuantileRange(0, // Use the whole chain
                              iqrVec);
 
-    if (m_env.rank() == 0) {
-      std::cout << "\nComputed inter quantile ranges for chain " << m_name
-                  << std::endl;
+    if (m_env.subScreenFile()) {
+      *m_env.subScreenFile() << "\nComputed inter quantile ranges for chain " << m_name
+                               << std::endl;
 
       char line[512];
       sprintf(line,"%s",
               "Parameter");
-      std::cout << line;
+      *m_env.subScreenFile() << line;
 
       sprintf(line,"%9s%s",
               " ",
               "iqr");
-      std::cout << line;
+      *m_env.subScreenFile() << line;
 
       for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
         sprintf(line,"\n%8.8s",
                 m_vectorSpace.componentName(i).c_str() /*.*/);
-        std::cout << line;
+        *m_env.subScreenFile() << line;
 
         sprintf(line,"%2s%11.4e",
                 " ",
                 iqrVec[i]);
-        std::cout << line;
+        *m_env.subScreenFile() << line;
       }
-      std::cout << std::endl;
+      *m_env.subScreenFile() << std::endl;
     }
 
     this->scalesForKDE(0, // Use the whole chain
@@ -1586,10 +1594,10 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
                       gaussianKdeDensities);
 
     tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
-    if (m_env.rank() == 0) {
-      std::cout << "Chain KDE took " << tmpRunTime
-                << " seconds"
-                << std::endl;
+    if (m_env.subScreenFile()) {
+      *m_env.subScreenFile() << "Chain KDE took " << tmpRunTime
+                             << " seconds"
+                             << std::endl;
     }
 
     // Write estimations of probability densities
@@ -1644,12 +1652,12 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
     }
   }
 
-  if (m_env.rank() == 0) {
-    std::cout << "\n-----------------------------------------------------"
-              << "\n Finished computing histogram and/or KDE for chain " << m_name
-              << "\n-----------------------------------------------------"
-              << "\n"
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "\n-----------------------------------------------------"
+                           << "\n Finished computing histogram and/or KDE for chain " << m_name
+                           << "\n-----------------------------------------------------"
+                           << "\n"
+                           << std::endl;
   }
 
   return;

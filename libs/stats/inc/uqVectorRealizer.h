@@ -94,16 +94,16 @@ uqBaseVectorRealizerClass<V,M>::uqBaseVectorRealizerClass(
   m_imageExpVector(new V(imageExpVector)),
   m_imageVarVector(new V(imageVarVector))
 {
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqBaseVectorRealizerClass<V,M>::constructor() [1]"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Entering uqBaseVectorRealizerClass<V,M>::constructor() [1]"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqBaseVectorRealizerClass<V,M>::constructor() [1]"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Leaving uqBaseVectorRealizerClass<V,M>::constructor() [1]"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 }
 
@@ -121,16 +121,16 @@ uqBaseVectorRealizerClass<V,M>::uqBaseVectorRealizerClass(
   m_imageExpVector(new V(imageExpVector)    ),
   m_imageVarVector(imageSet.vectorSpace().newVector(INFINITY))
 {
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqBaseVectorRealizerClass<V,M>::constructor() [2]"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Entering uqBaseVectorRealizerClass<V,M>::constructor() [2]"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqBaseVectorRealizerClass<V,M>::constructor() [2]"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Leaving uqBaseVectorRealizerClass<V,M>::constructor() [2]"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 }
 
@@ -147,16 +147,16 @@ uqBaseVectorRealizerClass<V,M>::uqBaseVectorRealizerClass(
   m_imageExpVector(imageSet.vectorSpace().newVector(       0.)),
   m_imageVarVector(imageSet.vectorSpace().newVector( INFINITY))
 {
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqBaseVectorRealizerClass<V,M>::constructor() [4]"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Entering uqBaseVectorRealizerClass<V,M>::constructor() [4]"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqBaseVectorRealizerClass<V,M>::constructor() [4]"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Leaving uqBaseVectorRealizerClass<V,M>::constructor() [4]"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 }
 
@@ -230,16 +230,16 @@ uqGenericVectorRealizerClass<V,M>::uqGenericVectorRealizerClass(
   m_routinePtr    (routinePtr),
   m_routineDataPtr(routineDataPtr)
 {
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqGenericVectorRealizerClass<V,M>::constructor()"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Entering uqGenericVectorRealizerClass<V,M>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqGenericVectorRealizerClass<V,M>::constructor()"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Leaving uqGenericVectorRealizerClass<V,M>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 }
 
@@ -292,18 +292,18 @@ uqGaussianVectorRealizerClass<V,M>::uqGaussianVectorRealizerClass(const char* pr
   uqBaseVectorRealizerClass<V,M>( ((std::string)(prefix)+"gau").c_str(), imageSet, 0 ),
   m_lowerCholCovMatrix(new M(lowerCholCovMatrix))
 {
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqGaussianVectorRealizerClass<V,M>::constructor()"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Entering uqGaussianVectorRealizerClass<V,M>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 
   *m_imageExpVector = expVector;
 
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqGaussianVectorRealizerClass<V,M>::constructor()"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Leaving uqGaussianVectorRealizerClass<V,M>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 }
 								  
@@ -375,10 +375,10 @@ uqSequentialVectorRealizerClass<V,M>::uqSequentialVectorRealizerClass(
   m_chain          (chain),
   m_currentChainPos(0)
 {
-  if ((m_env.verbosity() >= 0) && (m_env.rank() == 0)) {
-    std::cout << "In uqSequentialVectorRealizerClass<V,M>::constructor()"
-              << ": m_chain.sequenceSize() = " << m_chain.sequenceSize()
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 0)) {
+    *m_env.subScreenFile() << "In uqSequentialVectorRealizerClass<V,M>::constructor()"
+                           << ": m_chain.sequenceSize() = " << m_chain.sequenceSize()
+                           << std::endl;
   }
 }
 
@@ -423,16 +423,16 @@ uqUniformVectorRealizerClass<V,M>::uqUniformVectorRealizerClass(
   :
   uqBaseVectorRealizerClass<V,M>(((std::string)(prefix)+"gen").c_str(),imageSet,std::numeric_limits<unsigned int>::max())
 {
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqUniformVectorRealizerClass<V,M>::constructor()"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Entering uqUniformVectorRealizerClass<V,M>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqUniformVectorRealizerClass<V,M>::constructor()"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Leaving uqUniformVectorRealizerClass<V,M>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 }
 

@@ -37,7 +37,7 @@
 #include <stdlib.h> // For exit()
 #include <Epetra_MpiComm.h>
 
-int uqMyRank();
+int uqMyWorldRank();
 
 #undef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
 
@@ -59,7 +59,7 @@ const int UQ_INVALID_SPACE_COMPONENT_ID_RC = -10;
   if (iRC) {                                           \
     int macroRank = givenRank;                         \
     if (macroRank == UQ_UNAVAILABLE_RANK) {            \
-      macroRank = uqMyRank();                          \
+      macroRank = uqMyWorldRank();                     \
     }                                                  \
     std::cerr << "UQ RC ERROR"                         \
               << ", rank "  << macroRank               \
@@ -74,7 +74,7 @@ const int UQ_INVALID_SPACE_COMPONENT_ID_RC = -10;
   if (test) {                                             \
     int macroRank = givenRank;                            \
     if (macroRank == UQ_UNAVAILABLE_RANK) {               \
-      macroRank = uqMyRank();                             \
+      macroRank = uqMyWorldRank();                        \
     }                                                     \
     std::cerr << "UQ TEST ERROR"                          \
               << ", rank " << macroRank                   \
@@ -88,7 +88,7 @@ const int UQ_INVALID_SPACE_COMPONENT_ID_RC = -10;
   if (iRC) {                                        \
     int macroRank = givenRank;                      \
     if (macroRank == UQ_UNAVAILABLE_RANK) {         \
-      macroRank = uqMyRank();                       \
+      macroRank = uqMyWorldRank();                  \
     }                                               \
     std::cerr << "UQ RC FATAL ERROR"                \
               << ", rank "  << macroRank            \
@@ -104,7 +104,7 @@ const int UQ_INVALID_SPACE_COMPONENT_ID_RC = -10;
   if (test) {                                          \
     int macroRank = givenRank;                         \
     if (macroRank == UQ_UNAVAILABLE_RANK) {            \
-      macroRank = uqMyRank();                          \
+      macroRank = uqMyWorldRank();                     \
     }                                                  \
     std::cerr << "UQ TEST FATAL ERROR"                 \
               << ", rank "  << macroRank               \

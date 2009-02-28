@@ -391,14 +391,12 @@ uqSampled1D1DFunctionClass::value(double domainValue) const
   double returnValue = 0.;
 
   unsigned int tmpSize = m_domainValues.size();
-#if 0
-  std::cout << "In uqSampled1D1DFunctionClass::value()"
-            << ": domainValue = "         << domainValue
-            << ", tmpSize = "             << tmpSize
-            << ", m_domainValues[0] = "   << m_domainValues[0]
-            << ", m_domainValues[max] = " << m_domainValues[tmpSize-1]
-            << std::endl;
-#endif
+  //std::cout << "In uqSampled1D1DFunctionClass::value()"
+  //          << ": domainValue = "         << domainValue
+  //          << ", tmpSize = "             << tmpSize
+  //          << ", m_domainValues[0] = "   << m_domainValues[0]
+  //          << ", m_domainValues[max] = " << m_domainValues[tmpSize-1]
+  //          << std::endl;
 
   UQ_FATAL_TEST_MACRO(tmpSize == 0,
                       UQ_UNAVAILABLE_RANK,

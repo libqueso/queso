@@ -73,16 +73,16 @@ uqBaseVectorMdfClass<V,M>::uqBaseVectorMdfClass(
   m_prefix   ((std::string)(prefix)+"mdf_"),
   m_domainSet(domainSet)
 {
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqBaseVectorMdfClass<V,M>::constructor()"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Entering uqBaseVectorMdfClass<V,M>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqBaseVectorMdfClass<V,M>::constructor()"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Leaving uqBaseVectorMdfClass<V,M>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 }
 
@@ -196,18 +196,18 @@ uqGaussianVectorMdfClass<V,M>::uqGaussianVectorMdfClass(
   uqBaseVectorMdfClass<V,M>(prefix,domainSet),
   m_covMatrix              (m_domainSet.newDiagMatrix(domainVarianceValues*domainVarianceValues))
 {
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqGaussianVectorMdfClass<V,M>::constructor() [1]"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Entering uqGaussianVectorMdfClass<V,M>::constructor() [1]"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 
   commonConstructor();
 
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqGaussianVectorMdfClass<V,M>::constructor() [1]"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Leaving uqGaussianVectorMdfClass<V,M>::constructor() [1]"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 }
 
@@ -221,18 +221,18 @@ uqGaussianVectorMdfClass<V,M>::uqGaussianVectorMdfClass(
   uqBaseVectorMdfClass<V,M>(prefix,domainSet),
   m_covMatrix              (new M(covMatrix))
 {
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqGaussianVectorMdfClass<V,M>::constructor() [2]"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Entering uqGaussianVectorMdfClass<V,M>::constructor() [2]"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 
   commonConstructor();
 
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqGaussianVectorMdfClass<V,M>::constructor() [2]"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Leaving uqGaussianVectorMdfClass<V,M>::constructor() [2]"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 }
 
@@ -306,16 +306,16 @@ uqSampledVectorMdfClass<V,M>::uqSampledVectorMdfClass(
   m_oneDGrids(oneDGrids),
   m_mdfValues(mdfValues)
 {
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqSampledVectorMdfClass<V,M>::constructor()"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Entering uqSampledVectorMdfClass<V,M>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqSampledVectorMdfClass<V,M>::constructor()"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Leaving uqSampledVectorMdfClass<V,M>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 }
 

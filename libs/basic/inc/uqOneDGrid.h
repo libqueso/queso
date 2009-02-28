@@ -47,7 +47,7 @@ template<class T>
 class uqBaseOneDGridClass {
 public:
            uqBaseOneDGridClass(const uqBaseEnvironmentClass& env,
-                                 const char* prefix);
+                               const char* prefix);
   virtual ~uqBaseOneDGridClass();
 
   virtual unsigned int size          ()                     const = 0;
@@ -57,27 +57,27 @@ public:
 
 protected:
   const uqBaseEnvironmentClass& m_env;
-        std::string         m_prefix;
+        std::string             m_prefix;
 };
 
 template<class T>
 uqBaseOneDGridClass<T>::uqBaseOneDGridClass(
   const uqBaseEnvironmentClass& env,
-  const char*               prefix)
+  const char*                   prefix)
   :
   m_env   (env),
   m_prefix((std::string)(prefix)+"grid")
 {
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqBaseOneDGridClass<T>::constructor()"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Entering uqBaseOneDGridClass<T>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqBaseOneDGridClass<T>::constructor()"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Leaving uqBaseOneDGridClass<T>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 }
 
@@ -151,16 +151,16 @@ uqUniformOneDGridClass<T>::uqUniformOneDGridClass(
   m_minPosition(minPosition),
   m_maxPosition(maxPosition)
 {
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqUniformOneDGridClass<T>::constructor()"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Entering uqUniformOneDGridClass<T>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqUniformOneDGridClass<T>::constructor()"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Leaving uqUniformOneDGridClass<T>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 }
 

@@ -72,6 +72,7 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_argc                          (0),
   m_argv                          (NULL),
   m_prefix                        ((std::string)(prefix) + "env_"),
+  m_worldRank                     (-1),
   m_fullComm                      (NULL),
   m_fullRank                      (0),
   m_fullCommSize                  (1),
@@ -112,6 +113,7 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_argc                          (argc),
   m_argv                          (argv),
   m_prefix                        ((std::string)(prefix) + "env_"),
+  m_worldRank                     (-1),
   m_fullComm                      (NULL),
   m_fullRank                      (0),
   m_fullCommSize                  (1),
@@ -151,6 +153,7 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_argc                          (0),
   m_argv                          (NULL),
   m_prefix                        ((std::string)(prefix) + "env_"),
+  m_worldRank                     (-1),
   m_fullComm                      (NULL),
   m_fullRank                      (0),
   m_fullCommSize                  (1),
@@ -444,10 +447,16 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
   //////////////////////////////////////////////////
   // Initialize "full" communicator
   //////////////////////////////////////////////////
+  int mpiRC = MPI_Comm_rank(MPI_COMM_WORLD,&m_worldRank);
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      UQ_UNAVAILABLE_RANK,
+                      "uqFullEnvironmentClass::commonConstructor()",
+                      "failed to get world rank()");
+
   m_fullComm = new Epetra_MpiComm(inputComm);
   m_fullRank     = m_fullComm->MyPID();
   m_fullCommSize = m_fullComm->NumProc();
-  int mpiRC = MPI_Comm_group(m_fullComm->Comm(), &m_fullGroup);
+  mpiRC = MPI_Comm_group(m_fullComm->Comm(), &m_fullGroup);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_fullRank,
                       "uqFullEnvironmentClass::commonConstructor()",
@@ -559,21 +568,24 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
   if (this->verbosity() >= 2) {
     for (int i = 0; i < m_fullCommSize; ++i) {
       if (i == m_fullRank) {
-        std::cout << "In FullEnvironmentClass::commonConstructor()"
-                  << ": fullRank " << m_fullRank
-                  << " belongs to subenvironment of id " << m_subId
-                  << ", belongs to communicator with full ranks";
+        //std::cout << "In FullEnvironmentClass::commonConstructor()"
+        std::cout << "MPI node of worldRank "             << m_worldRank
+                  << " has fullRank "                     << m_fullRank
+                  << ", belongs to subenvironment of id " << m_subId
+                  << ", and has subRank "                 << m_subRank
+                  << std::endl;
+        std::cout << "MPI node of worldRank " << m_worldRank
+                  << " belongs to communicator with full ranks";
         for (unsigned int j = 0; j < numRanksPerSubEnvironment; ++j) {
           std::cout << " " << fullRanksOfMySubEnvironment[j];
         }
-        std::cout << ", and has subRank " << m_subRank
-                  << std::endl;
+	std::cout << "\n" << std::endl;
       }
       m_fullComm->Barrier();
     }
-    if (this->rank() == 0) std::cout << "Sleeping 3 seconds..."
-                                     << std::endl;
-    sleep(3);
+    //if (this->rank() == 0) std::cout << "Sleeping 3 seconds..."
+    //                                 << std::endl;
+    //sleep(3);
   }
 #endif
 

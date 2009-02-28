@@ -559,13 +559,13 @@ uqScalarSequenceClass<T>::autoCorrViaFft(
 
   rawData.resize(fftSize,0.);
 
-  //if (m_env.rank() == 0) {
-  //  std::cout << "In uqScalarSequenceClass<T>::autoCorrViaFft()"
-  //            << ": about to call fftObj.forward()"
-  //            << " with rawData.size() = " << rawData.size()
-  //            << ", fftSize = "            << fftSize
-  //            << ", resultData.size() = "  << resultData.size()
-  //            << std::endl;
+  //if (m_env.subScreenFile()) {
+  //  *m_env.subScreenFile() << "In uqScalarSequenceClass<T>::autoCorrViaFft()"
+  //                         << ": about to call fftObj.forward()"
+  //                         << " with rawData.size() = " << rawData.size()
+  //                         << ", fftSize = "            << fftSize
+  //                         << ", resultData.size() = "  << resultData.size()
+  //                         << std::endl;
   //}
   fftObj.forward(rawData,fftSize,resultData);
 
@@ -573,19 +573,19 @@ uqScalarSequenceClass<T>::autoCorrViaFft(
   for (unsigned int j = 0; j < fftSize; ++j) {
     rawData[j] = std::norm(resultData[j]);
   }
-  //if (m_env.rank() == 0) {
-  //  std::cout << "In uqScalarSequenceClass<T>::autoCorrViaFft()"
-  //            << ": about to call fftObj.inverse()"
-  //            << " with rawData.size() = " << rawData.size()
-  //            << ", fftSize = "            << fftSize
-  //            << ", resultData.size() = "  << resultData.size()
-  //            << std::endl;
+  //if (m_env.subScreenFile()) {
+  //  *m_env.subScreenFile() << "In uqScalarSequenceClass<T>::autoCorrViaFft()"
+  //                         << ": about to call fftObj.inverse()"
+  //                         << " with rawData.size() = " << rawData.size()
+  //                         << ", fftSize = "            << fftSize
+  //                         << ", resultData.size() = "  << resultData.size()
+  //                         << std::endl;
   //}
   fftObj.inverse(rawData,fftSize,resultData);
-  //if (m_env.rank() == 0) {
-  //  std::cout << "In uqScalarSequenceClass<T>::autoCorrViaFft()"
-  //            << ": returned succesfully from fftObj.inverse()"
-  //            << std::endl;
+  //if (m_env.subScreenFile()) {
+  //  *m_env.subScreenFile() << "In uqScalarSequenceClass<T>::autoCorrViaFft()"
+  //                         << ": returned succesfully from fftObj.inverse()"
+  //                         << std::endl;
   //}
 
   // Prepare return data
@@ -606,11 +606,11 @@ uqScalarSequenceClass<T>::autoCorrViaFft(
   unsigned int numSum,
   T&           autoCorrsSum) const
 {
-  //if (m_env.rank() == 0) {
-  //  std::cout << "Entering uqScalarSequenceClass<T>::autoCorrViaFft(), for sum"
-  //            << ": initialPos = " << initialPos
-  //            << ", numPos = "     << numPos
-  //            << std::endl;
+  //if (m_env.subScreenFile()) {
+  //  *m_env.subScreenFile() << "Entering uqScalarSequenceClass<T>::autoCorrViaFft(), for sum"
+  //                         << ": initialPos = " << initialPos
+  //                         << ", numPos = "     << numPos
+  //                         << std::endl;
   //}
 
   double tmp = log((double) numPos)/log(2.);
@@ -634,13 +634,13 @@ uqScalarSequenceClass<T>::autoCorrViaFft(
   }
   rawData.resize(fftSize,0.);
 
-  //if (m_env.rank() == 0) {
-  //  std::cout << "In uqScalarSequenceClass<T>::autoCorrViaFft(), for sum"
-  //            << ": about to call fftObj.forward()"
-  //            << " with rawData.size() = " << rawData.size()
-  //            << ", fftSize = "            << fftSize
-  //            << ", resultData.size() = "  << resultData.size()
-  //            << std::endl;
+  //if (m_env.subScreenFile()) {
+  //  *m_env.subScreenFile() << "In uqScalarSequenceClass<T>::autoCorrViaFft(), for sum"
+  //                         << ": about to call fftObj.forward()"
+  //                         << " with rawData.size() = " << rawData.size()
+  //                         << ", fftSize = "            << fftSize
+  //                         << ", resultData.size() = "  << resultData.size()
+  //                         << std::endl;
   //}
   fftObj.forward(rawData,fftSize,resultData);
 
@@ -650,11 +650,11 @@ uqScalarSequenceClass<T>::autoCorrViaFft(
   }
   fftObj.inverse(rawData,fftSize,resultData);
 
-  //if (m_env.rank() == 0) {
-  //  std::cout << "In uqScalarSequenceClass<T>::autoCorrViaFft(), for sum"
-  //            << ": computed auto covariance for lag 0 = " << resultData[0].real()/((double) (numPos))
-  //            << ", computed resultData[0].imag() = "      << resultData[0].imag()
-  //            << std::endl;
+  //if (m_env.subScreenFile()) {
+  //  *m_env.subScreenFile() << "In uqScalarSequenceClass<T>::autoCorrViaFft(), for sum"
+  //                         << ": computed auto covariance for lag 0 = " << resultData[0].real()/((double) (numPos))
+  //                         << ", computed resultData[0].imag() = "      << resultData[0].imag()
+  //                         << std::endl;
   //}
 
   // Prepare return data
@@ -758,16 +758,16 @@ uqScalarSequenceClass<T>::psd(
   }
 
   int numberOfDiscardedDataElements = dataSize - (numBlocks-1)*hopSize - blockSize;
-  //if (m_env.rank() == 0) {
-  //  std::cout << "initialPos = "       << initialPos
-  //            << ", N = "              << dataSize
-  //            << ", #Blocks = "        << numBlocks
-  //            << ", R (hop size) = "   << hopSize
-  //            << ", B (block size) = " << blockSize
-  //            << ", overlap = "        << blockSize - hopSize
-  //            << ", [(#Blocks - 1) * R + B] = "       << (numBlocks-1)*hopSize + blockSize
-  //            << ", numberOfDiscardedDataElements = " << numberOfDiscardedDataElements
-  //            << std::endl;
+  //if (m_env.subScreenFile()) {
+  //  *m_env.subScreenFile() << "initialPos = "       << initialPos
+  //                         << ", N = "              << dataSize
+  //                         << ", #Blocks = "        << numBlocks
+  //                         << ", R (hop size) = "   << hopSize
+  //                         << ", B (block size) = " << blockSize
+  //                         << ", overlap = "        << blockSize - hopSize
+  //                         << ", [(#Blocks - 1) * R + B] = "       << (numBlocks-1)*hopSize + blockSize
+  //                         << ", numberOfDiscardedDataElements = " << numberOfDiscardedDataElements
+  //                         << std::endl;
   //}
   UQ_FATAL_TEST_MACRO(numberOfDiscardedDataElements < 0.,
                       UQ_UNAVAILABLE_RANK,
@@ -778,10 +778,12 @@ uqScalarSequenceClass<T>::psd(
   double fractionalPart = tmp - ((double) ((unsigned int) tmp));
   if (fractionalPart > 0.) tmp += (1. - fractionalPart);
   unsigned int fftSize = (unsigned int) pow(2.,tmp);
-  //std::cout << "fractionalPart = " << fractionalPart
-  //          << ", B = "            << blockSize
-  //          << ", fftSize = "      << fftSize
-  //          << std::endl;
+  //if (m_env.subScreenFile()) {
+  //  *m_env.subScreenFile() << "fractionalPart = " << fractionalPart
+  //                         << ", B = "            << blockSize
+  //                         << ", fftSize = "      << fftSize
+  //                         << std::endl;
+  //}
 
   double modificationScale = 0.;
   for (unsigned int j = 0; j < blockSize; ++j) {
@@ -819,12 +821,12 @@ uqScalarSequenceClass<T>::psd(
 
     fftObj.forward(blockData,fftSize,fftResult);
 
-    //if (m_env.rank() == 0) {
-    //  std::cout << "blockData.size() = "   << blockData.size()
-    //            << ", fftSize = "          << fftSize
-    //            << ", fftResult.size() = " << fftResult.size()
-    //            << ", psdResult.size() = " << psdResult.size()
-    //            << std::endl;
+    //if (m_env.subScreenFile()) {
+    //  *m_env.subScreenFile() << "blockData.size() = "   << blockData.size()
+    //                         << ", fftSize = "          << fftSize
+    //                         << ", fftResult.size() = " << fftResult.size()
+    //                         << ", psdResult.size() = " << psdResult.size()
+    //                         << std::endl;
     //}
     // Normalized spectral density: power per radians per sample
     for (unsigned int j = 0; j < psdResult.size(); ++j) {
@@ -882,22 +884,22 @@ uqScalarSequenceClass<T>::geweke(
   double psdB = psdResult[0];
   double varOfMeanB = 2.*M_PI*psdB/doubleDataSizeB;
 
-  if (m_env.rank() == 0) {
-    std::cout << "In uqScalarSequenceClass<T>::geweke()"
-              << ", before computation of gewCoef"
-              << ":\n"
-              << ", dataSizeA = "       << dataSizeA
-              << ", numBlocksA = "      << (unsigned int) sqrt((double) dataSizeA)
-              << ", meanA = "           << meanA
-              << ", psdA = "            << psdA
-              << ", varOfMeanA = "      << varOfMeanA
-              << "\n"
-              << ", dataSizeB = "       << dataSizeB
-              << ", numBlocksB = "      << (unsigned int) sqrt((double) dataSizeB)
-              << ", meanB = "           << meanB
-              << ", psdB = "            << psdB
-              << ", varOfMeanB = "      << varOfMeanB
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "In uqScalarSequenceClass<T>::geweke()"
+                           << ", before computation of gewCoef"
+                           << ":\n"
+                           << ", dataSizeA = "       << dataSizeA
+                           << ", numBlocksA = "      << (unsigned int) sqrt((double) dataSizeA)
+                           << ", meanA = "           << meanA
+                           << ", psdA = "            << psdA
+                           << ", varOfMeanA = "      << varOfMeanA
+                           << "\n"
+                           << ", dataSizeB = "       << dataSizeB
+                           << ", numBlocksB = "      << (unsigned int) sqrt((double) dataSizeB)
+                           << ", meanB = "           << meanB
+                           << ", psdB = "            << psdB
+                           << ", varOfMeanB = "      << varOfMeanB
+                           << std::endl;
   }
   double gewCoef = (meanA - meanB)/sqrt(varOfMeanA + varOfMeanB);
 
@@ -1015,14 +1017,16 @@ uqScalarSequenceClass<T>::interQuantileRange(unsigned int initialPos) const
   double fraction1 = (((double) dataSize) + 1.)*1./4. - 1. - ((double) pos1);
   double fraction3 = (((double) dataSize) + 1.)*3./4. - 1. - ((double) pos3);
 
-  //std::cout << "In uqScalarSequenceClass::interQuantileRange()"
-  //          << ", initialPos = "            << initialPos
-  //          << ", this->sequenceSize() = "  << this->sequenceSize()
-  //          << ", dataSize = "              << dataSize
-  //          << ", sortedSequence.size() = " << sortedSequence.size()
-  //          << ", pos1 = "                  << pos1
-  //          << ", pos3 = "                  << pos3
-  //          << std::endl;
+  //if (m_env.subScreenFile()) {
+  //  *m_env.subScreenFile() << "In uqScalarSequenceClass::interQuantileRange()"
+  //                         << ", initialPos = "            << initialPos
+  //                         << ", this->sequenceSize() = "  << this->sequenceSize()
+  //                         << ", dataSize = "              << dataSize
+  //                         << ", sortedSequence.size() = " << sortedSequence.size()
+  //                         << ", pos1 = "                  << pos1
+  //                         << ", pos3 = "                  << pos3
+  //                         << std::endl;
+  //}
   T value1 = (1.-fraction1) * sortedSequence[pos1] + fraction1 * sortedSequence[pos1+1];
   T value3 = (1.-fraction3) * sortedSequence[pos3] + fraction3 * sortedSequence[pos3+1];
   T iqrValue = value3 - value1;

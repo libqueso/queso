@@ -171,11 +171,15 @@ uqSequenceOfVectorsClass<V,M>::uqSequenceOfVectorsClass(
   m_seq                         (sequenceSize,NULL)
 {
 
-  //if (m_env.rank() == 0) std::cout << "Entering uqSequenceOfVectorsClass<V,M>::constructor()"
-  //                                 << std::endl;
+  //if (m_env.subScreenFile()) {
+  //  *m_env.subScreenFile() << "Entering uqSequenceOfVectorsClass<V,M>::constructor()"
+  //                         << std::endl;
+  //}
 
-  //if (m_env.rank() == 0) std::cout << "Leaving uqSequenceOfVectorsClass<V,M>::constructor()"
-  //                                 << std::endl;
+  //if (m_env.subScreenFile()) {
+  //  *m_env.subScreenFile() << "Leaving uqSequenceOfVectorsClass<V,M>::constructor()"
+  //                         << std::endl;
+  //}
 }
 
 template <class V, class M>
@@ -214,12 +218,12 @@ uqSequenceOfVectorsClass<V,M>::resetValues(unsigned int initialPos, unsigned int
   bool bRC = ((initialPos          <  this->sequenceSize()) &&
               (0                   <  numPos              ) &&
               ((initialPos+numPos) <= this->sequenceSize()));
-  if ((bRC == false) && (m_env.rank() == 0)) {
-    std::cout << "In uqSequenceOfVectorsClass<V,M>::resetValues()"
-              << ", initialPos = "           << initialPos
-              << ", this->sequenceSize() = " << this->sequenceSize()
-              << ", numPos = "               << numPos
-              << std::endl;
+  if ((bRC == false) && (m_env.subScreenFile())) {
+    *m_env.subScreenFile() << "In uqSequenceOfVectorsClass<V,M>::resetValues()"
+                           << ", initialPos = "           << initialPos
+                           << ", this->sequenceSize() = " << this->sequenceSize()
+                           << ", numPos = "               << numPos
+                           << std::endl;
   }
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
@@ -442,26 +446,26 @@ uqSequenceOfVectorsClass<V,M>::mean(
   unsigned int numPos,
   V&           meanVec) const
 {
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqSequenceOfVectorsClass<V,M>::mean()"
-              << ": initialPos = "         << initialPos
-              << ", numPos = "             << numPos
-              << ", full sequence size = " << this->sequenceSize()
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Entering uqSequenceOfVectorsClass<V,M>::mean()"
+                           << ": initialPos = "         << initialPos
+                           << ", numPos = "             << numPos
+                           << ", full sequence size = " << this->sequenceSize()
+                           << std::endl;
   }
 
   bool bRC = ((initialPos          <  this->sequenceSize()) &&
               (0                   <  numPos              ) &&
               ((initialPos+numPos) <= this->sequenceSize()) &&
               (this->vectorSize()  == meanVec.size()      ));
-  if ((bRC == false) && (m_env.rank() == 0)) {
-    std::cout << "In uqSequenceOfVectorsClass<V,M>::mean()"
-              << ", initialPos = "           << initialPos
-              << ", this->sequenceSize() = " << this->sequenceSize()
-              << ", numPos = "               << numPos
-              << ", this->vectorSize() = "   << this->vectorSize()
-              << ", meanVec.size() = "       << meanVec.size()
-              << std::endl;
+  if ((bRC == false) && (m_env.subScreenFile())) {
+    *m_env.subScreenFile() << "In uqSequenceOfVectorsClass<V,M>::mean()"
+                           << ", initialPos = "           << initialPos
+                           << ", this->sequenceSize() = " << this->sequenceSize()
+                           << ", numPos = "               << numPos
+                           << ", this->vectorSize() = "   << this->vectorSize()
+                           << ", meanVec.size() = "       << meanVec.size()
+                           << std::endl;
   }
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
@@ -481,13 +485,13 @@ uqSequenceOfVectorsClass<V,M>::mean(
                            numPos);
   }
 
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqSequenceOfVectorsClass<V,M>::mean()"
-              << ": initialPos = "         << initialPos
-              << ", numPos = "             << numPos
-              << ", full sequence size = " << this->sequenceSize()
-              << ", meanVec = "            << meanVec
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Leaving uqSequenceOfVectorsClass<V,M>::mean()"
+                           << ": initialPos = "         << initialPos
+                           << ", numPos = "             << numPos
+                           << ", full sequence size = " << this->sequenceSize()
+                           << ", meanVec = "            << meanVec
+                           << std::endl;
   }
 
   return;
@@ -674,13 +678,13 @@ uqSequenceOfVectorsClass<V,M>::autoCorrViaFft(
                            i,
                            data);
 
-    //if (m_env.rank() == 0) {
-    //  std::cout << "In uqSequenceOfVectorsClass<V,M>::autoCorrViaFft()"
-    //            << ": about to call data.autoCorrViaFft() for paramId = " << i
-    //            << ", with numPos = "      << numPos
-    //            << ", maxLag = "           << maxLag
-    //            << ", autoCorrs.size() = " << autoCorrs.size()
-    //            << std::endl;
+    //if (m_env.subScreenFile()) {
+    //  *m_env.subScreenFile() << "In uqSequenceOfVectorsClass<V,M>::autoCorrViaFft()"
+    //                         << ": about to call data.autoCorrViaFft() for paramId = " << i
+    //                         << ", with numPos = "      << numPos
+    //                         << ", maxLag = "           << maxLag
+    //                         << ", autoCorrs.size() = " << autoCorrs.size()
+    //                         << std::endl;
     //}
     data.autoCorrViaFft(0,
                         numPos,
@@ -855,7 +859,7 @@ uqSequenceOfVectorsClass<V,M>::psdAtZero(
              hopSizeRatio,
              psdResult);
     psdVec[i] = psdResult[0];
-    //std::cout << "psdResult[0] = " << psdResult[0] << std::endl;
+    //*m_env.subScreenFile() << "psdResult[0] = " << psdResult[0] << std::endl;
   }
 
   return;
@@ -1122,12 +1126,12 @@ uqSequenceOfVectorsClass<V,M>::filter(
   unsigned int initialPos,
   unsigned int spacing)
 {
-  if (m_env.rank() == 0) {
-    std::cout << "Entering uqSequenceOfVectorsClass<V,M>::filter()"
-              << ": initialPos = "   << initialPos
-              << ", spacing = "      << spacing
-              << ", sequenceSize = " << this->sequenceSize()
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Entering uqSequenceOfVectorsClass<V,M>::filter()"
+                           << ": initialPos = "   << initialPos
+                           << ", spacing = "      << spacing
+                           << ", sequenceSize = " << this->sequenceSize()
+                           << std::endl;
   }
 
   unsigned int i = 0;
@@ -1135,7 +1139,7 @@ uqSequenceOfVectorsClass<V,M>::filter(
   unsigned int originalSequenceSize = this->sequenceSize();
   while (j < originalSequenceSize) {
     if (i != j) {
-      //std::cout << i << "--" << j << " ";
+      //*m_env.subScreenFile() << i << "--" << j << " ";
       delete m_seq[i];
       m_seq[i] = new V(*(m_seq[j]));
     }
@@ -1146,12 +1150,12 @@ uqSequenceOfVectorsClass<V,M>::filter(
   this->resetValues(i,originalSequenceSize-i);
   this->resizeSequence(i);
 
-  if (m_env.rank() == 0) {
-    std::cout << "Leaving uqSequenceOfVectorsClass<V,M>::filter()"
-              << ": initialPos = "   << initialPos
-              << ", spacing = "      << spacing
-              << ", sequenceSize = " << this->sequenceSize()
-              << std::endl;
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Leaving uqSequenceOfVectorsClass<V,M>::filter()"
+                           << ": initialPos = "   << initialPos
+                           << ", spacing = "      << spacing
+                           << ", sequenceSize = " << this->sequenceSize()
+                           << std::endl;
   }
 
   return;

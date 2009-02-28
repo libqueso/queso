@@ -108,9 +108,9 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
   m_map                (newMap()),
   m_zeroVector         (new V(m_env,*m_map))
 {
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqVectorSpaceClass<V,M>::constructor()"
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Entering uqVectorSpaceClass<V,M>::constructor()"
+                           << std::endl;
   }
 
   UQ_FATAL_TEST_MACRO((m_componentsNames != NULL) && (m_componentsNames->GlobalLength() != (int) m_dim),
@@ -118,23 +118,27 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
                       "uqVectorSpaceClass<V,M>::constructor()",
                       "size of 'componentsNames' is not equal to m_dim");
 
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqVectorSpaceClass<V,M>::constructor()"
-              << std::endl;
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Leaving uqVectorSpaceClass<V,M>::constructor()"
+                           << std::endl;
   }
 }
 
 template <class V, class M>
 uqVectorSpaceClass<V,M>::~uqVectorSpaceClass()
 {
-  //std::cout << "Entering uqVectorSpaceClass<V,M>::destructor()"
-  //          << std::endl;
+  //if (m_env.subScreenFile()) {
+  //  *m_env.subScreenFile() << "Entering uqVectorSpaceClass<V,M>::destructor()"
+  //                         << std::endl;
+  //}
 
   if (m_zeroVector != NULL) delete m_zeroVector;
   if (m_map        != NULL) delete m_map;
 
-  //std::cout << "Leaving uqVectorSpaceClass<V,M>::destructor()"
-  //          << std::endl;
+  //if (m_env.subScreenFile()) {
+  //  *m_env.subScreenFile() << "Leaving uqVectorSpaceClass<V,M>::destructor()"
+  //                         << std::endl;
+  //}
 }
 
 template <class V, class M>
@@ -207,10 +211,12 @@ uqVectorSpaceClass<V,M>::newGaussianMatrix(
   V tmpVec(*m_zeroVector);
   for (unsigned int i = 0; i < m_dim; ++i) {
     double variance = varianceValues[i];
-    std::cout << "In uqVectorSpaceClass<V,M>::newGaussianMatrix()"
-              << ": i = "        << i
-              << ", variance = " << variance
-              << std::endl;
+    if (m_env.subScreenFile()) {
+      *m_env.subScreenFile() << "In uqVectorSpaceClass<V,M>::newGaussianMatrix()"
+                             << ": i = "        << i
+                             << ", variance = " << variance
+                             << std::endl;
+    }
     if ((variance == INFINITY) ||
         (variance == NAN     )) {
       tmpVec[i] = pow( fabs(initialValues[i])*0.05,2. );
