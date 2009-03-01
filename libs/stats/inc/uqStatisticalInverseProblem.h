@@ -240,7 +240,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   const P_V& initialValues,
   const P_M* proposalCovMatrix)
 {
-  //m_env.fullComm().Barrier();
+  m_env.fullComm().Barrier();
   //m_env.syncPrintDebugMsg("Entering uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()",3000000,m_env.fullComm());
 
   if (m_computeSolution == false) {
@@ -290,11 +290,9 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   // Compute output mdf: uniform sampling approach
   m_mdfGrids  = new uqArrayOfOneDGridsClass <P_V,P_M>((m_prefix+"mdf_").c_str(),m_postRv.imageSet().vectorSpace());
   m_mdfValues = new uqArrayOfOneDTablesClass<P_V,P_M>((m_prefix+"mdf_").c_str(),m_postRv.imageSet().vectorSpace());
-  P_V* numIntervalsVec = m_postRv.imageSet().vectorSpace().newVector(250.);
-  m_chain->uniformlySampledMdf(*numIntervalsVec, // input
-                               *m_mdfGrids,      // output
-                               *m_mdfValues);    // output
-  delete numIntervalsVec;
+  m_chain->uniformlySampledMdf(250,           // input
+                               *m_mdfGrids,   // output
+                               *m_mdfValues); // output
   m_solutionMdf = new uqSampledVectorMdfClass<P_V,P_M>(m_prefix.c_str(),
                                                        *m_mdfGrids,
                                                        *m_mdfValues);
@@ -338,7 +336,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   }
 
   //m_env.syncPrintDebugMsg("Leaving uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()",3000000,m_env.fullComm());
-  //m_env.fullComm().Barrier();
+  m_env.fullComm().Barrier();
   
   return;
 }

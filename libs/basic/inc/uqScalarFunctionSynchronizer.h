@@ -129,7 +129,7 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
       UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                           m_env.rank(),
                           "uqScalarFunctionSynchronizerClass<V,M>::callFunction()",
-                         "failed broadcast 1 of 3");
+                          "failed broadcast 1 of 3");
 
       //m_env.syncPrintDebugMsg("In uqScalarFunctionSynchronizerClass<V,M>::callFunction(), just after char Bcast()",3000000,m_env.fullComm());
       //std::cout << "char contents = " << bufferChar[0] << " " << bufferChar[1] << " " << bufferChar[2] << " " << bufferChar[3] << " " << bufferChar[4]

@@ -51,156 +51,159 @@ public:
                                      const std::string&             name);
   virtual ~uqBaseVectorSequenceClass();
 
-  virtual  unsigned int             sequenceSize        () const = 0;
-           unsigned int             vectorSize          () const;
-  const    uqVectorSpaceClass<V,M>& vectorSpace         () const;
-  const    std::string&             name                () const;
-           void                     setName             (const std::string& newName);
-           void                     clear               ();
-  const    V&                       minValues           () const;
-  const    V&                       maxValues           () const;
-  const    V&                       meanValues          () const;
-  const    V&                       sampleVarianceValues() const;
-  const    uqBoxSubsetClass<V,M>&   valuesBox           () const;
-           void                     deleteStoredVectors ();
+  virtual  unsigned int             sequenceSize              () const = 0;
+           unsigned int             vectorSize                () const;
+  const    uqVectorSpaceClass<V,M>& vectorSpace               () const;
+  const    std::string&             name                      () const;
+           void                     setName                   (const std::string& newName);
+           void                     clear                     ();
+  const    V&                       minValues                 () const;
+  const    V&                       maxValues                 () const;
+  const    V&                       meanValues                () const;
+  const    V&                       sampleVarianceValues      () const;
+  const    uqBoxSubsetClass<V,M>&   valuesBox                 () const;
+           void                     deleteStoredVectors       ();
 
-  virtual  void                     resizeSequence      (unsigned int newSequenceSize) = 0;
-  virtual  void                     resetValues         (unsigned int initialPos, unsigned int numPos) = 0;
-  virtual  void                     erasePositions      (unsigned int initialPos, unsigned int numPos) = 0;
-  virtual  void                     getPositionValues   (unsigned int posId,       V& vec) const = 0;
-  virtual  void                     setPositionValues   (unsigned int posId, const V& vec) = 0;
-  virtual  void                     setGaussian         (const gsl_rng* rng, const V& meanVec, const V& stdDevVec) = 0;
-  virtual  void                     setUniform          (const gsl_rng* rng, const V& aVec,    const V& bVec     ) = 0;
-  virtual  void                     uniformlySampledMdf (const V&                       numEvaluationPointsVec,
-                                                         uqArrayOfOneDGridsClass <V,M>& mdfGrids,
-                                                         uqArrayOfOneDTablesClass<V,M>& mdfValues) const = 0;
-  virtual  void                     uniformlySampledCdf (const V&                       numEvaluationPointsVec,
-                                                         uqArrayOfOneDGridsClass <V,M>& cdfGrids,
-                                                         uqArrayOfOneDTablesClass<V,M>& cdfValues) const = 0;
+  virtual  void                     resizeSequence            (unsigned int newSequenceSize) = 0;
+  virtual  void                     resetValues               (unsigned int initialPos, unsigned int numPos) = 0;
+  virtual  void                     erasePositions            (unsigned int initialPos, unsigned int numPos) = 0;
+  virtual  void                     getPositionValues         (unsigned int posId,       V& vec) const = 0;
+  virtual  void                     setPositionValues         (unsigned int posId, const V& vec) = 0;
+  virtual  void                     setGaussian               (const gsl_rng* rng, const V& meanVec, const V& stdDevVec) = 0;
+  virtual  void                     setUniform                (const gsl_rng* rng, const V& aVec,    const V& bVec     ) = 0;
+  virtual  void                     uniformlySampledMdf       (unsigned int                   numEvaluationPoints,
+                                                               uqArrayOfOneDGridsClass <V,M>& mdfGrids,
+                                                               uqArrayOfOneDTablesClass<V,M>& mdfValues) const = 0;
+  virtual  void                     uniformlySampledCdf       (unsigned int                   numEvaluationPoints,
+                                                               uqArrayOfOneDGridsClass <V,M>& cdfGrids,
+                                                               uqArrayOfOneDTablesClass<V,M>& cdfValues) const = 0;
+  virtual  void                     uniformlySampledUnifiedCdf(unsigned int                   numEvaluationPoints,
+                                                               uqArrayOfOneDGridsClass <V,M>& cdfGrids,
+                                                               uqArrayOfOneDTablesClass<V,M>& cdfValues) const = 0;
 
-  virtual  void                     mean                (unsigned int                          initialPos,
-                                                         unsigned int                          numPos,
-                                                         V&                                    meanVec) const = 0;
-  virtual  void                     sampleVariance      (unsigned int                          initialPos,
-                                                         unsigned int                          numPos,
-                                                         const V&                              meanVec,
-                                                         V&                                    samVec) const = 0;
-  virtual  void                     populationVariance  (unsigned int                          initialPos,
-                                                         unsigned int                          numPos,
-                                                         const V&                              meanVec,
-                                                         V&                                    popVec) const = 0;
-  virtual  void                     autoCovariance      (unsigned int                          initialPos,
-                                                         unsigned int                          numPos,
-                                                         const V&                              meanVec,
-                                                         unsigned int                          lag,
-                                                         V&                                    covVec) const = 0;
+  virtual  void                     mean                      (unsigned int                          initialPos,
+                                                               unsigned int                          numPos,
+                                                               V&                                    meanVec) const = 0;
+  virtual  void                     sampleVariance            (unsigned int                          initialPos,
+                                                               unsigned int                          numPos,
+                                                               const V&                              meanVec,
+                                                               V&                                    samVec) const = 0;
+  virtual  void                     populationVariance        (unsigned int                          initialPos,
+                                                               unsigned int                          numPos,
+                                                               const V&                              meanVec,
+                                                               V&                                    popVec) const = 0;
+  virtual  void                     autoCovariance            (unsigned int                          initialPos,
+                                                               unsigned int                          numPos,
+                                                               const V&                              meanVec,
+                                                               unsigned int                          lag,
+                                                               V&                                    covVec) const = 0;
 
-  virtual  void                     autoCorrViaDef      (unsigned int                          initialPos,
-                                                         unsigned int                          numPos,
-                                                         unsigned int                          lag,
-                                                         V&                                    corrVec) const = 0;
-  virtual  void                     autoCorrViaFft      (unsigned int                          initialPos,
-                                                         unsigned int                          numPos,
-                                                         const std::vector<unsigned int>&      lags,
-                                                         std::vector<V*>&                      corrVecs) const = 0;
-  virtual  void                     autoCorrViaFft      (unsigned int                          initialPos,
-                                                         unsigned int                          numPos,
-                                                         unsigned int                          numSum,
-                                                         V&                                    autoCorrsSumVec) const = 0;
-  virtual  void                     bmm                 (unsigned int                          initialPos,
-                                                         unsigned int                          batchLength,
-                                                         V&                                    bmmVec) const = 0;
-  virtual  void                     fftForward          (unsigned int                          initialPos,
-                                                         unsigned int                          fftSize,
-                                                         unsigned int                          paramId,
-                                                         std::vector<std::complex<double> >&   fftResult) const = 0;
-//virtual  void                     fftInverse          (unsigned int fftSize) = 0;
-  virtual  void                     psd                 (unsigned int                          initialPos,
-                                                         unsigned int                          numBlocks,
-                                                         double                                hopSizeRatio,
-                                                         unsigned int                          paramId,
-                                                         std::vector<double>&                  psdResult) const = 0;
-  virtual  void                     psdAtZero           (unsigned int                          initialPos,
-                                                         unsigned int                          numBlocks,
-                                                         double                                hopSizeRatio,
-                                                         V&                                    psdVec) const = 0;
-  virtual  void                     geweke              (unsigned int                          initialPos,
-                                                         double                                ratioNa,
-                                                         double                                ratioNb,
-                                                         V&                                    gewVec) const = 0;
-  virtual  void                     minMax              (unsigned int                          initialPos,
-                                                         V&                                    minVec,
-                                                         V&                                    maxVec) const = 0;
-  virtual  void                     histogram           (unsigned int                          initialPos,
-                                                         const V&                              minVec,
-                                                         const V&                              maxVec,
-                                                         std::vector<V*>&                      centersForAllBins,
-                                                         std::vector<V*>&                      binsForAllParams) const = 0;
-  virtual  void                     interQuantileRange  (unsigned int                          initialPos,
-                                                         V&                                    iqrVec) const = 0;
-  virtual  void                     scalesForKDE        (unsigned int                          initialPos,
-                                                         const V&                              iqrVec,
-                                                         V&                                    scaleVec) const = 0;
-  virtual  void                     gaussianKDE         (const V&                              evaluationParamVec,
-                                                         V&                                    densityVec) const = 0;
-  virtual  void                     gaussianKDE         (unsigned int                          initialPos,
-                                                         const V&                              scaleVec,
-                                                         const std::vector<V*>&                evaluationParamVecs,
-                                                         std::vector<V*>&                      densityVecs) const = 0;
-  virtual  void                     printContents       (std::ofstream&                        ofsvar) const = 0;
-  virtual  void                     select              (const std::vector<unsigned int>&      idsOfUniquePositions) = 0;
-  virtual  void                     filter              (unsigned int                          initialPos,
-                                                         unsigned int                          spacing) = 0;
+  virtual  void                     autoCorrViaDef            (unsigned int                          initialPos,
+                                                               unsigned int                          numPos,
+                                                               unsigned int                          lag,
+                                                               V&                                    corrVec) const = 0;
+  virtual  void                     autoCorrViaFft            (unsigned int                          initialPos,
+                                                               unsigned int                          numPos,
+                                                               const std::vector<unsigned int>&      lags,
+                                                               std::vector<V*>&                      corrVecs) const = 0;
+  virtual  void                     autoCorrViaFft            (unsigned int                          initialPos,
+                                                               unsigned int                          numPos,
+                                                               unsigned int                          numSum,
+                                                               V&                                    autoCorrsSumVec) const = 0;
+  virtual  void                     bmm                       (unsigned int                          initialPos,
+                                                               unsigned int                          batchLength,
+                                                               V&                                    bmmVec) const = 0;
+  virtual  void                     fftForward                (unsigned int                          initialPos,
+                                                               unsigned int                          fftSize,
+                                                               unsigned int                          paramId,
+                                                               std::vector<std::complex<double> >&   fftResult) const = 0;
+//virtual  void                     fftInverse                (unsigned int fftSize) = 0;
+  virtual  void                     psd                       (unsigned int                          initialPos,
+                                                               unsigned int                          numBlocks,
+                                                               double                                hopSizeRatio,
+                                                               unsigned int                          paramId,
+                                                               std::vector<double>&                  psdResult) const = 0;
+  virtual  void                     psdAtZero                 (unsigned int                          initialPos,
+                                                               unsigned int                          numBlocks,
+                                                               double                                hopSizeRatio,
+                                                               V&                                    psdVec) const = 0;
+  virtual  void                     geweke                    (unsigned int                          initialPos,
+                                                               double                                ratioNa,
+                                                               double                                ratioNb,
+                                                               V&                                    gewVec) const = 0;
+  virtual  void                     minMax                    (unsigned int                          initialPos,
+                                                               V&                                    minVec,
+                                                               V&                                    maxVec) const = 0;
+  virtual  void                     histogram                 (unsigned int                          initialPos,
+                                                               const V&                              minVec,
+                                                               const V&                              maxVec,
+                                                               std::vector<V*>&                      centersForAllBins,
+                                                               std::vector<V*>&                      binsForAllParams) const = 0;
+  virtual  void                     interQuantileRange        (unsigned int                          initialPos,
+                                                               V&                                    iqrVec) const = 0;
+  virtual  void                     scalesForKDE              (unsigned int                          initialPos,
+                                                               const V&                              iqrVec,
+                                                               V&                                    scaleVec) const = 0;
+  virtual  void                     gaussianKDE               (const V&                              evaluationParamVec,
+                                                               V&                                    densityVec) const = 0;
+  virtual  void                     gaussianKDE               (unsigned int                          initialPos,
+                                                               const V&                              scaleVec,
+                                                               const std::vector<V*>&                evaluationParamVecs,
+                                                               std::vector<V*>&                      densityVecs) const = 0;
+  virtual  void                     printContents             (std::ofstream&                        ofsvar) const = 0;
+  virtual  void                     select                    (const std::vector<unsigned int>&      idsOfUniquePositions) = 0;
+  virtual  void                     filter                    (unsigned int                          initialPos,
+                                                               unsigned int                          spacing) = 0;
 
-           void                     computeStatistics   (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                                         std::ofstream*                        passedOfs);
+           void                     computeStatistics         (const uqChainStatisticalOptionsClass& statisticalOptions,
+                                                               std::ofstream*                        passedOfs);
 
-           void                     computeFilterParams (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                                         std::ofstream*                        passedOfs,
-                                                         unsigned int&                         initialPos,
-                                                         unsigned int&                         spacing);
+           void                     computeFilterParams       (const uqChainStatisticalOptionsClass& statisticalOptions,
+                                                               std::ofstream*                        passedOfs,
+                                                               unsigned int&                         initialPos,
+                                                               unsigned int&                         spacing);
 protected:
-           void                     computeMeanVars     (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                                         std::ofstream*                        passedOfs,
-                                                         V*                                    meanPtr,
-                                                         V*                                    sampleVarPtr,
-                                                         V*                                    populVarPtr);
-           void                     computeBMM          (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                                         const std::vector<unsigned int>&      initialPosForStatistics,
-                                                         std::ofstream*                        passedOfs);
-           void                     computeFFT          (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                                         const std::vector<unsigned int>&      initialPosForStatistics,
-                                                         std::ofstream*                        passedOfs);
-           void                     computePSD          (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                                         const std::vector<unsigned int>&      initialPosForStatistics,
-                                                         std::ofstream*                        passedOfs);
-           void                     computePSDAtZero    (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                                         const std::vector<unsigned int>&      initialPosForStatistics,
-                                                         std::ofstream*                        passedOfs);
-           void                     computeGeweke       (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                                         const std::vector<unsigned int>&      initialPosForStatistics,
-                                                         std::ofstream*                        passedOfs);
-           void                     computeCorrViaDef   (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                                         const std::vector<unsigned int>&      initialPosForStatistics,
-                                                         const std::vector<unsigned int>&      lagsForCorrs,
-                                                         std::ofstream*                        passedOfs);
-           void                     computeCorrViaFFT   (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                                         const std::vector<unsigned int>&      initialPosForStatistics,
-                                                         const std::vector<unsigned int>&      lagsForCorrs,
-                                                         std::ofstream*                        passedOfs);
-           void                     computeHistKde      (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                                         std::ofstream*                        passedOfs);
+           void                     computeMeanVars           (const uqChainStatisticalOptionsClass& statisticalOptions,
+                                                               std::ofstream*                        passedOfs,
+                                                               V*                                    meanPtr,
+                                                               V*                                    sampleVarPtr,
+                                                               V*                                    populVarPtr);
+           void                     computeBMM                (const uqChainStatisticalOptionsClass& statisticalOptions,
+                                                               const std::vector<unsigned int>&      initialPosForStatistics,
+                                                               std::ofstream*                        passedOfs);
+           void                     computeFFT                (const uqChainStatisticalOptionsClass& statisticalOptions,
+                                                               const std::vector<unsigned int>&      initialPosForStatistics,
+                                                               std::ofstream*                        passedOfs);
+           void                     computePSD                (const uqChainStatisticalOptionsClass& statisticalOptions,
+                                                               const std::vector<unsigned int>&      initialPosForStatistics,
+                                                               std::ofstream*                        passedOfs);
+           void                     computePSDAtZero          (const uqChainStatisticalOptionsClass& statisticalOptions,
+                                                               const std::vector<unsigned int>&      initialPosForStatistics,
+                                                               std::ofstream*                        passedOfs);
+           void                     computeGeweke             (const uqChainStatisticalOptionsClass& statisticalOptions,
+                                                               const std::vector<unsigned int>&      initialPosForStatistics,
+                                                               std::ofstream*                        passedOfs);
+           void                     computeCorrViaDef         (const uqChainStatisticalOptionsClass& statisticalOptions,
+                                                               const std::vector<unsigned int>&      initialPosForStatistics,
+                                                               const std::vector<unsigned int>&      lagsForCorrs,
+                                                               std::ofstream*                        passedOfs);
+           void                     computeCorrViaFFT         (const uqChainStatisticalOptionsClass& statisticalOptions,
+                                                               const std::vector<unsigned int>&      initialPosForStatistics,
+                                                               const std::vector<unsigned int>&      lagsForCorrs,
+                                                               std::ofstream*                        passedOfs);
+           void                     computeHistKde            (const uqChainStatisticalOptionsClass& statisticalOptions,
+                                                               std::ofstream*                        passedOfs);
 
-  virtual  void                     extractScalarSeq    (unsigned int                          initialPos,
-                                                         unsigned int                          spacing,
-                                                         unsigned int                          numPos,
-                                                         unsigned int                          paramId,
-                                                         uqScalarSequenceClass<double>&        scalarSeq) const = 0;
-  virtual  void                     extractRawData      (unsigned int                          initialPos,
-                                                         unsigned int                          spacing,
-                                                         unsigned int                          numPos,
-                                                         unsigned int                          paramId,
-                                                         std::vector<double>&                  rawData) const = 0;
+  virtual  void                     extractScalarSeq          (unsigned int                          initialPos,
+                                                               unsigned int                          spacing,
+                                                               unsigned int                          numPos,
+                                                               unsigned int                          paramId,
+                                                               uqScalarSequenceClass<double>&        scalarSeq) const = 0;
+  virtual  void                     extractRawData            (unsigned int                          initialPos,
+                                                               unsigned int                          spacing,
+                                                               unsigned int                          numPos,
+                                                               unsigned int                          paramId,
+                                                               std::vector<double>&                  rawData) const = 0;
 
   const uqBaseEnvironmentClass&  m_env;
   const uqVectorSpaceClass<V,M>& m_vectorSpace;
@@ -1416,11 +1419,48 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
                statsMinPositions,
                statsMaxPositions);
 
+  // Compute unified histogram min-max if necessary
+  V unifiedStatsMinPositions(statsMinPositions);
+  V unifiedStatsMaxPositions(statsMaxPositions);
+  if (m_env.numSubEnvironments() > 1) {
+    if (m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+      if (m_env.intra0Rank() != -1) {
+        // Get overall mins
+        std::vector<double> sendBuf(statsMinPositions.size(),0.);
+        for (unsigned int i = 0; i < sendBuf.size(); ++i) {
+          sendBuf[i] = statsMinPositions[i];
+        }
+        int mpiRC = MPI_Allreduce((void *) &sendBuf[0], (void *) &unifiedStatsMinPositions[0], (int) sendBuf.size(), MPI_DOUBLE, MPI_MIN, m_env.intra0Comm().Comm());
+        UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                            UQ_UNAVAILABLE_RANK,
+                            "uqBaseVectorSequenceClass<V,M>::computeHistKde()",
+                            "failed MPI_Allreduce() for histogram mins");
+
+        // Get overall maxs
+        for (unsigned int i = 0; i < sendBuf.size(); ++i) {
+          sendBuf[i] = statsMaxPositions[i];
+        }
+        mpiRC = MPI_Allreduce((void *) &sendBuf[0], (void *) &unifiedStatsMaxPositions[0], (int) sendBuf.size(), MPI_DOUBLE, MPI_MAX, m_env.intra0Comm().Comm());
+        UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                            UQ_UNAVAILABLE_RANK,
+                            "uqBaseVectorSequenceClass<V,M>::computeHistKde()",
+                            "failed MPI_Allreduce() for histogram maxs");
+      }
+    }
+    else {
+      UQ_FATAL_TEST_MACRO(true,
+                          m_env.rank(),
+                          "uqBaseVectorSequenceClass<V,M>::computeHistKde()",
+                          "unified histogram min-max computing, parallel vectors not supported yet");
+    }
+  }
+
   if (m_env.subScreenFile()) {
+    char line[512];
+
     *m_env.subScreenFile() << "\nComputed min values and max values for chain " << m_name
                            << std::endl;
 
-    char line[512];
     sprintf(line,"%s",
             "Parameter");
     *m_env.subScreenFile() << line;
@@ -1445,8 +1485,50 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
       *m_env.subScreenFile() << line;
     }
     *m_env.subScreenFile() << std::endl;
+
+    // Write unified histogram min-max if necessary
+    if (m_env.numSubEnvironments() > 1) {
+      if (m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+        if (m_env.intra0Rank() == 0) {
+          *m_env.subScreenFile() << "\nComputed unified min values and max values for chain " << m_name
+                                 << std::endl;
+
+          sprintf(line,"%s",
+                  "Parameter");
+          *m_env.subScreenFile() << line;
+
+          sprintf(line,"%9s%s%9s%s",
+                  " ",
+                  "min",
+                  " ",
+                  "max");
+          *m_env.subScreenFile() << line;
+
+          for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
+            sprintf(line,"\n%8.8s",
+                    m_vectorSpace.componentName(i).c_str() /*.*/);
+            *m_env.subScreenFile() << line;
+
+            sprintf(line,"%2s%11.4e%2s%11.4e",
+                    " ",
+                    unifiedStatsMinPositions[i],
+                    " ",
+                    unifiedStatsMaxPositions[i]);
+            *m_env.subScreenFile() << line;
+          }
+          *m_env.subScreenFile() << std::endl;
+        }
+      }
+      else {
+        UQ_FATAL_TEST_MACRO(true,
+                            m_env.rank(),
+                            "uqBaseVectorSequenceClass<V,M>::computeHistKde()",
+                            "unified histogram min-max writing, parallel vectors not supported yet");
+      }
+    }
   }
 
+  m_env.fullComm().Barrier();
   tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
   if (m_env.subScreenFile()) {
     *m_env.subScreenFile() << "Chain min and max took " << tmpRunTime
@@ -1482,15 +1564,43 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
                     histCentersForAllBins,
                     histBinsForAllParams);
 
-    tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
-    if (m_env.subScreenFile()) {
-      *m_env.subScreenFile() << "Chain histograms took " << tmpRunTime
-                             << " seconds"
-                             << std::endl;
+    // Compute unified histogram if necessary
+    std::vector<V*> unifiedHistCentersForAllBins(0);
+    std::vector<V*> unifiedHistBinsForAllParams(0);
+    unifiedHistCentersForAllBins.resize(statisticalOptions.histNumInternalBins()+2,NULL);
+    unifiedHistBinsForAllParams.resize (statisticalOptions.histNumInternalBins()+2,NULL);
+    if (m_env.numSubEnvironments() > 1) {
+      if (m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+        if (m_env.intra0Rank() != -1) {
+          this->histogram(0, // Use the whole (local) chain
+                          unifiedStatsMinPositions,
+                          unifiedStatsMaxPositions,
+                          unifiedHistCentersForAllBins,
+                          unifiedHistBinsForAllParams);
+        }
+
+        // For every bin, perform MPI_Allreduce with MPI_SUM
+        for (unsigned int binId = 0; binId < unifiedHistBinsForAllParams.size(); binId++) {
+          std::vector<double> sendBuf((*unifiedHistBinsForAllParams[binId]).size(),0.);
+          for (unsigned int i = 0; i < sendBuf.size(); ++i) {
+            sendBuf[i] = (*unifiedHistBinsForAllParams[binId])[i];
+          }
+          int mpiRC = MPI_Allreduce((void *) &sendBuf[0], (void *) &(*unifiedHistBinsForAllParams[binId])[0], (int) sendBuf.size(), MPI_DOUBLE, MPI_SUM, m_env.intra0Comm().Comm());
+          UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                              UQ_UNAVAILABLE_RANK,
+                              "uqBaseVectorSequenceClass<V,M>::computeHistKde()",
+                              "failed MPI_Allreduce() for histogram bins");
+        }
+      }
+      else {
+        UQ_FATAL_TEST_MACRO(true,
+                            m_env.rank(),
+                            "uqBaseVectorSequenceClass<V,M>::computeHistKde()",
+                            "unified histogram computing, parallel vectors not supported yet");
+      }
     }
 
     // Write histograms
-    // plot(queso_centersOfHistBins(1,:)',queso_histBins(1,:)','r-');
     if (passedOfs) {
       std::ofstream& ofsvar = *passedOfs;
       ofsvar << m_name << "_centersOfHistBins_subenv" << m_env.subIdString() << " = zeros(" << this->vectorSize() /*.*/
@@ -1520,6 +1630,47 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
                   << std::endl;
         }
       }
+
+      // Write unified histogram if necessary
+      if (m_env.numSubEnvironments() > 1) {
+        if (m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+          if (m_env.intra0Rank() == 0) {
+            ofsvar << m_name << "_unifiedCentersOfHistBins_subenv" << m_env.subIdString() << " = zeros(" << this->vectorSize() /*.*/
+                   << ","                                                                                << unifiedHistCentersForAllBins.size()
+                   << ");"
+                   << std::endl;
+            for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
+              for (unsigned int j = 0; j < unifiedHistCentersForAllBins.size(); ++j) {
+                 ofsvar << m_name << "_unifiedCentersOfHistBins_subenv" << m_env.subIdString() << "(" << i+1
+                        << ","                                                                        << j+1
+                        << ") = "                                                                     << (*(unifiedHistCentersForAllBins[j]))[i]
+                        << ";"
+                        << std::endl;
+              }
+            }
+
+            ofsvar << m_name << "_unifiedHistBins_subenv" << m_env.subIdString() << " = zeros(" << this->vectorSize() /*.*/
+                   << ","                                                                       << unifiedHistBinsForAllParams.size()
+                   << ");"
+                   << std::endl;
+            for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
+              for (unsigned int j = 0; j < unifiedHistBinsForAllParams.size(); ++j) {
+                 ofsvar << m_name << "_unifiedHistBins_subenv" << m_env.subIdString() << "(" << i+1
+                        << ","                                                               << j+1
+                        << ") = "                                                            << (*(unifiedHistBinsForAllParams[j]))[i]
+                        << ";"
+                        << std::endl;
+              }
+            }
+          }
+        }
+        else {
+          UQ_FATAL_TEST_MACRO(true,
+                              m_env.rank(),
+                              "uqBaseVectorSequenceClass<V,M>::computeHistKde()",
+                              "unified histogram writing, parallel vectors not supported yet");
+        }
+      }
     }
 
     for (unsigned int i = 0; i < histBinsForAllParams.size(); ++i) {
@@ -1527,6 +1678,21 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
     }
     for (unsigned int i = 0; i < histCentersForAllBins.size(); ++i) {
       if (histCentersForAllBins[i] != NULL) delete histCentersForAllBins[i];
+    }
+
+    for (unsigned int i = 0; i < unifiedHistBinsForAllParams.size(); ++i) {
+      if (unifiedHistBinsForAllParams[i] != NULL) delete unifiedHistBinsForAllParams[i];
+    }
+    for (unsigned int i = 0; i < unifiedHistCentersForAllBins.size(); ++i) {
+      if (unifiedHistCentersForAllBins[i] != NULL) delete unifiedHistCentersForAllBins[i];
+    }
+
+    m_env.fullComm().Barrier();
+    tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
+    if (m_env.subScreenFile()) {
+      *m_env.subScreenFile() << "Chain histograms took " << tmpRunTime
+                             << " seconds"
+                             << std::endl;
     }
   }
 
@@ -1542,15 +1708,6 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
                              << "\nComputing KDE"
                              << std::endl;
     }
-
-    std::vector<V*> kdeEvalPositions(0);
-    V               gaussianKdeScaleVec(m_vectorSpace.zeroVector());
-    std::vector<V*> gaussianKdeDensities(0);
-
-    kdeEvalPositions.resize(statisticalOptions.kdeNumEvalPositions(),NULL);
-    uqMiscComputePositionsBetweenMinMax(statsMinPositions,
-                                        statsMaxPositions,
-                                        kdeEvalPositions);
 
     V iqrVec(m_vectorSpace.zeroVector());
     this->interQuantileRange(0, // Use the whole chain
@@ -1583,6 +1740,15 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
       *m_env.subScreenFile() << std::endl;
     }
 
+    std::vector<V*> kdeEvalPositions(0);
+    V               gaussianKdeScaleVec(m_vectorSpace.zeroVector());
+    std::vector<V*> gaussianKdeDensities(0);
+
+    kdeEvalPositions.resize(statisticalOptions.kdeNumEvalPositions(),NULL);
+    uqMiscComputePositionsBetweenMinMax(statsMinPositions,
+                                        statsMaxPositions,
+                                        kdeEvalPositions);
+
     this->scalesForKDE(0, // Use the whole chain
                        iqrVec,
                        gaussianKdeScaleVec);
@@ -1593,16 +1759,9 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
                       kdeEvalPositions,
                       gaussianKdeDensities);
 
-    tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
-    if (m_env.subScreenFile()) {
-      *m_env.subScreenFile() << "Chain KDE took " << tmpRunTime
-                             << " seconds"
-                             << std::endl;
-    }
+    // Compute unified KDE if necessary
 
     // Write estimations of probability densities
-    // hold
-    // plot(queso_kdeEvalPositions(1,:)',7*queso_gaussianKdeDensities(1,:)','r-');
     if (passedOfs) {
       std::ofstream& ofsvar = *passedOfs;
       ofsvar << m_name << "_kdeEvalPositions_subenv" << m_env.subIdString() << " = zeros(" << this->vectorSize() /*.*/
@@ -1644,11 +1803,21 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
       }
     }
 
+    // Write unified KDE if necessary
+
     for (unsigned int i = 0; i < gaussianKdeDensities.size(); ++i) {
       if (gaussianKdeDensities[i] != NULL) delete gaussianKdeDensities[i];
     }
     for (unsigned int i = 0; i < kdeEvalPositions.size(); ++i) {
       if (kdeEvalPositions[i] != NULL) delete kdeEvalPositions[i];
+    }
+
+    m_env.fullComm().Barrier();
+    tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
+    if (m_env.subScreenFile()) {
+      *m_env.subScreenFile() << "Chain KDE took " << tmpRunTime
+                             << " seconds"
+                             << std::endl;
     }
   }
 

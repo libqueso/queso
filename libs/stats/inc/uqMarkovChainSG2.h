@@ -368,9 +368,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
   if (m_env.subScreenFile()) {
     *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
                            << ": contents of initial position are:\n";
-  }
-  *m_env.subScreenFile() << valuesOf1stPosition; // FIX ME: might need parallelism
-  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << valuesOf1stPosition; // FIX ME: might need parallelism
     *m_env.subScreenFile() << std::endl;
   }
   if (m_chainMeasureRunTimes) iRC = gettimeofday(&timevalTargetD, NULL);
@@ -532,20 +530,20 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
       }
       accept = acceptAlpha(alphaFirstCandidate);
     }
-    if (m_env.verbosity() >= 10) {
-      if (m_env.subScreenFile()) *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                                                        << ": for chain position of id = " << positionId
-                                                        << ", outOfTargetSupport = "       << outOfTargetSupport
-                                                        << ", alpha = "                    << alphaFirstCandidate
-                                                        << ", accept = "                   << accept
-                                                        << ", currentCandidateData.vecValues() = ";
+    if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
+      *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
+                             << ": for chain position of id = " << positionId
+                             << ", outOfTargetSupport = "       << outOfTargetSupport
+                             << ", alpha = "                    << alphaFirstCandidate
+                             << ", accept = "                   << accept
+                             << ", currentCandidateData.vecValues() = ";
       *m_env.subScreenFile() << currentCandidateData.vecValues(); // FIX ME: might need parallelism
-      if (m_env.subScreenFile()) *m_env.subScreenFile() << "\n"
-                                                        << "\n curLogTarget  = "           << currentPositionData.logTarget()
-                                                        << "\n"
-                                                        << "\n canLogTarget  = "           << currentCandidateData.logTarget()
-                                                        << "\n"
-                                                        << std::endl;
+      *m_env.subScreenFile() << "\n"
+                             << "\n curLogTarget  = "           << currentPositionData.logTarget()
+                             << "\n"
+                             << "\n canLogTarget  = "           << currentCandidateData.logTarget()
+                             << "\n"
+                             << std::endl;
     }
     if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
       *m_env.subScreenFile() << "\n"
@@ -631,16 +629,16 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
           if (m_chainMeasureRunTimes) drAlphaRunTime += uqMiscGetEllapsedSeconds(&timevalDrAlpha);
           accept = acceptAlpha(alphaDR);
         }
-        if (m_env.verbosity() >= 10) {
-          if (m_env.subScreenFile()) *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                                                        << ": for chain position of id = " << positionId
-                                                        << " and stageId = "               << stageId
-                                                        << ", outOfTargetSupport = "       << outOfTargetSupport
-                                                        << ", alpha = "                    << alphaDR
-                                                        << ", accept = "                   << accept
-                                                        << ", currentCandidateData.vecValues() = ";
+        if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
+          *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
+                                 << ": for chain position of id = " << positionId
+                                 << " and stageId = "               << stageId
+                                 << ", outOfTargetSupport = "       << outOfTargetSupport
+                                 << ", alpha = "                    << alphaDR
+                                 << ", accept = "                   << accept
+                                 << ", currentCandidateData.vecValues() = ";
           *m_env.subScreenFile() << currentCandidateData.vecValues(); // FIX ME: might need parallelism
-          if (m_env.subScreenFile()) *m_env.subScreenFile() << std::endl;
+          *m_env.subScreenFile() << std::endl;
         }
       } // while
 

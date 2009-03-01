@@ -91,6 +91,9 @@ public:
 
           const Epetra_MpiComm&   selfComm                 () const; 
 
+          int                     intra0Rank               () const;
+          const Epetra_MpiComm&   intra0Comm               () const; 
+
                 std::ofstream*    subScreenFile            () const;
 
           unsigned int            numSubEnvironments       () const;
@@ -152,6 +155,12 @@ protected:
   int                      m_subCommSize;
 
   Epetra_MpiComm*          m_selfComm;
+
+  MPI_Group                m_intra0Group;
+  MPI_Comm                 m_intra0RawComm;
+  Epetra_MpiComm*          m_intra0Comm;
+  int                      m_intra0Rank;
+  int                      m_intra0CommSize;
 
   mutable std::ofstream*   m_subScreenFile;
   gsl_rng*                 m_rng;

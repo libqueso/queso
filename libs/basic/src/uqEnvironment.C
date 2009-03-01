@@ -74,7 +74,7 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_prefix                        ((std::string)(prefix) + "env_"),
   m_worldRank                     (-1),
   m_fullComm                      (NULL),
-  m_fullRank                      (0),
+  m_fullRank                      (-1),
   m_fullCommSize                  (1),
   m_argsWereProvided              (false),
   m_thereIsInputFile              (false),
@@ -96,9 +96,12 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_numDebugParams                (UQ_ENV_NUM_DEBUG_PARAMS_ODV),
   m_debugParams                   (m_numDebugParams,0.),
   m_subComm                       (NULL),
-  m_subRank                       (0),
+  m_subRank                       (-1),
   m_subCommSize                   (1),
   m_selfComm                      (NULL),
+  m_intra0Comm                    (NULL),
+  m_intra0Rank                    (-1),
+  m_intra0CommSize                (1),
   m_subScreenFile                 (NULL),
   m_rng                           (NULL)
 {
@@ -115,8 +118,8 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_prefix                        ((std::string)(prefix) + "env_"),
   m_worldRank                     (-1),
   m_fullComm                      (NULL),
-  m_fullRank                      (0),
-  m_fullCommSize                  (1),
+  m_fullRank                      (-1),
+  m_fullCommSize                  (0),
   m_argsWereProvided              (true),
   m_thereIsInputFile              (false),
   m_inputFileName                 (""),
@@ -137,9 +140,12 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_numDebugParams                (UQ_ENV_NUM_DEBUG_PARAMS_ODV),
   m_debugParams                   (m_numDebugParams,0.),
   m_subComm                       (NULL),
-  m_subRank                       (0),
-  m_subCommSize                   (1),
+  m_subRank                       (-1),
+  m_subCommSize                   (0),
   m_selfComm                      (NULL),
+  m_intra0Comm                    (NULL),
+  m_intra0Rank                    (-1),
+  m_intra0CommSize                (0),
   m_subScreenFile                 (NULL),
   m_rng                           (NULL)
 {
@@ -155,8 +161,8 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_prefix                        ((std::string)(prefix) + "env_"),
   m_worldRank                     (-1),
   m_fullComm                      (NULL),
-  m_fullRank                      (0),
-  m_fullCommSize                  (1),
+  m_fullRank                      (-1),
+  m_fullCommSize                  (0),
   m_argsWereProvided              (false),
   m_thereIsInputFile              (false),
   m_inputFileName                 (""),
@@ -177,9 +183,12 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_numDebugParams                (options.m_numDebugParams),
   m_debugParams                   (options.m_debugParams),
   m_subComm                       (NULL),
-  m_subRank                       (0),
-  m_subCommSize                   (1),
+  m_subRank                       (-1),
+  m_subCommSize                   (0),
   m_selfComm                      (NULL),
+  m_intra0Comm                    (NULL),
+  m_intra0Rank                    (-1),
+  m_intra0CommSize                (0),
   m_subScreenFile                 (NULL),
   m_rng                           (NULL)
 {
@@ -232,6 +241,7 @@ uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
   //}
 
   if (m_subScreenFile) delete m_subScreenFile;
+  if (m_intra0Comm   ) delete m_intra0Comm;
   if (m_selfComm     ) delete m_selfComm;
   if (m_subComm      ) delete m_subComm;
   if (m_fullComm     ) delete m_fullComm;
@@ -275,6 +285,18 @@ const Epetra_MpiComm&
 uqBaseEnvironmentClass::selfComm() const
 {
   return *m_selfComm;
+}
+
+int
+uqBaseEnvironmentClass::intra0Rank() const
+{
+  return m_intra0Rank;
+}
+
+const Epetra_MpiComm&
+uqBaseEnvironmentClass::intra0Comm() const
+{
+  return *m_intra0Comm;
 }
 
 std::ofstream*
@@ -470,10 +492,10 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
   iRC = gettimeofday(&m_timevalBegin, NULL);
 
   if (m_fullRank == 0) {
-    std::cout << "\n================================="
+    std::cout << "\n======================================================="
               << "\n QUESO library, version " << QUESO_LIBRARY_CURRENT_VERSION
               << ", released on "             << QUESO_LIBRARY_RELEASE_DATE
-              << "\n================================="
+              << "\n======================================================="
               << "\n"
               << std::endl;
   }
@@ -503,7 +525,7 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
   }
 
   //////////////////////////////////////////////////
-  // Deal with multiple subEnvironments
+  // Deal with multiple subEnvironments: create the sub communicators, one for each subEnvironment
   //////////////////////////////////////////////////
   unsigned int numRanksPerSubEnvironment = m_fullCommSize/m_numSubEnvironments;
 
@@ -520,17 +542,43 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_fullRank,
                       "uqFullEnvironmentClass::commonConstructor()",
-                      "failed MPI_Group_incl()");
+                      "failed MPI_Group_incl() for a subEnvironment");
   mpiRC = MPI_Comm_create(m_fullComm->Comm(), m_subGroup, &m_subRawComm);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_fullRank,
                       "uqFullEnvironmentClass::commonConstructor()",
-                      "failed MPI_Comm_group()");
+                      "failed MPI_Comm_group() for a subEnvironment");
   m_subComm = new Epetra_MpiComm(m_subRawComm);
   m_subRank     = m_subComm->MyPID();
   m_subCommSize = m_subComm->NumProc();
 
+  //////////////////////////////////////////////////
+  // Deal with multiple subEnvironments: create the self communicator
+  //////////////////////////////////////////////////
   m_selfComm = new Epetra_MpiComm(MPI_COMM_SELF);
+
+  //////////////////////////////////////////////////
+  // Deal with multiple subEnvironments: create the intra0 communicator
+  //////////////////////////////////////////////////
+  std::vector<int> fullRanksOfIntra0(m_numSubEnvironments,0);
+  for (unsigned int i = 0; i < m_numSubEnvironments; ++i) {
+    fullRanksOfIntra0[i] = i * numRanksPerSubEnvironment;
+  }
+  mpiRC = MPI_Group_incl(m_fullGroup, (int) m_numSubEnvironments, &fullRanksOfIntra0[0], &m_intra0Group);
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      m_fullRank,
+                      "uqFullEnvironmentClass::commonConstructor()",
+                      "failed MPI_Group_incl() for intra0");
+  mpiRC = MPI_Comm_create(m_fullComm->Comm(), m_intra0Group, &m_intra0RawComm);
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      m_fullRank,
+                      "uqFullEnvironmentClass::commonConstructor()",
+                      "failed MPI_Comm_group() for intra0");
+  if (m_fullRank%numRanksPerSubEnvironment == 0) {
+    m_intra0Comm = new Epetra_MpiComm(m_intra0RawComm);
+    m_intra0Rank     = m_intra0Comm->MyPID();
+    m_intra0CommSize = m_intra0Comm->NumProc();
+  }
 
   //////////////////////////////////////////////////
   // Open "screen" file
@@ -564,7 +612,6 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
   //////////////////////////////////////////////////
   // Debug message related to subEnvironments
   //////////////////////////////////////////////////
-#if 1
   if (this->verbosity() >= 2) {
     for (int i = 0; i < m_fullCommSize; ++i) {
       if (i == m_fullRank) {
@@ -574,12 +621,24 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
                   << ", belongs to subenvironment of id " << m_subId
                   << ", and has subRank "                 << m_subRank
                   << std::endl;
+
         std::cout << "MPI node of worldRank " << m_worldRank
-                  << " belongs to communicator with full ranks";
-        for (unsigned int j = 0; j < numRanksPerSubEnvironment; ++j) {
+                  << " belongs to sub communicator with full ranks";
+        for (unsigned int j = 0; j < fullRanksOfMySubEnvironment.size(); ++j) {
           std::cout << " " << fullRanksOfMySubEnvironment[j];
         }
-	std::cout << "\n" << std::endl;
+	std::cout << "\n";
+
+        if (m_intra0Comm) {
+          std::cout << "MPI node of worldRank " << m_worldRank
+                    << " also belongs to intra0 communicator with full ranks";
+          for (unsigned int j = 0; j < fullRanksOfIntra0.size(); ++j) {
+            std::cout << " " << fullRanksOfIntra0[j];
+          }
+        }
+	std::cout << "\n";
+
+	std::cout << std::endl;
       }
       m_fullComm->Barrier();
     }
@@ -587,7 +646,6 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
     //                                 << std::endl;
     //sleep(3);
   }
-#endif
 
   //////////////////////////////////////////////////
   // Deal with seed
@@ -701,7 +759,7 @@ uqFullEnvironmentClass::defineMyOptions(po::options_description& options) const
 {
   options.add_options()
     (m_option_help.c_str(),                                                                                                      "produce help message for uq environment")
-    (m_option_numSubEnvironments.c_str(),      po::value<unsigned int>()->default_value(UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),        "number of sub environments"             )
+    (m_option_numSubEnvironments.c_str(),      po::value<unsigned int>()->default_value(UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),        "number of subEnvironments"              )
   //(m_option_subScreenWrite.c_str(),          po::value<bool        >()->default_value(UQ_ENV_SUB_SCREEN_WRITE_ODV),            "write subscreen to file"                )
     (m_option_subScreenOutputFileName.c_str(), po::value<std::string >()->default_value(UQ_ENV_SUB_SCREEN_OUTPUT_FILE_NAME_ODV), "output filename for subscreen writing"  )
     (m_option_verbosity.c_str(),               po::value<unsigned int>()->default_value(UQ_ENV_VERBOSITY_ODV),                   "set verbosity"                          )
@@ -727,7 +785,7 @@ uqFullEnvironmentClass::getMyOptionValues(po::options_description& optionsDesc)
   UQ_FATAL_TEST_MACRO((m_fullCommSize%m_numSubEnvironments) != 0,
                       this->rank(),
                       "uqBaseEnvironmentClass::getMyOptionValues()",
-                      "total number of processors in environment must be multiple of the specified number of sub environments");
+                      "total number of processors in environment must be multiple of the specified number of subEnvironments");
 
   //if (m_allOptionsMap->count(m_option_subScreenWrite.c_str())) {
   //  m_subScreenWrite = (*m_allOptionsMap)[m_option_subScreenWrite.c_str()].as<bool>();

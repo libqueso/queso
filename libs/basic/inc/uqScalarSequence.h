@@ -1096,9 +1096,9 @@ uqScalarSequenceClass<T>::gaussianKDE(
   const std::vector<T>& evaluationParams,
   std::vector<double>&  densityValues) const
 {
-  bool bRC = ((initialPos                 <  this->sequenceSize()   ) &&
-              (0                          <  evaluationParams.size()) &&
-              (evaluationParams.size() == densityValues.size()      ));
+  bool bRC = ((initialPos              <  this->sequenceSize()   ) &&
+              (0                       <  evaluationParams.size()) &&
+              (evaluationParams.size() == densityValues.size()   ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
                       "uqScalarSequenceClass<V>::gaussianKDE()",
