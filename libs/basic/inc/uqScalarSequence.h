@@ -157,13 +157,13 @@ private:
                                                 std::vector<double>&       rawData) const;
 
   const uqBaseEnvironmentClass& m_env;
-  std::vector<T>            m_seq;
+  std::vector<T>                m_seq;
 };
 
 template <class T>
 uqScalarSequenceClass<T>::uqScalarSequenceClass(
   const uqBaseEnvironmentClass& env,
-        unsigned int        sequenceSize)
+        unsigned int            sequenceSize)
   :
   m_env(env),
   m_seq(sequenceSize,0.)
@@ -385,17 +385,17 @@ uqScalarSequenceClass<T>::uniformlySampledCdf(
   minDomainValue = centers[0];
   maxDomainValue = centers[centers.size()-1];
 
-  unsigned int totalCount = 0;
+  unsigned int sumOfBins = 0;
   for (unsigned int i = 0; i < numEvaluationPoints; ++i) {
-    totalCount += bins[i];
+    sumOfBins += bins[i];
   }
 
   cdfValues.clear();
   cdfValues.resize(numEvaluationPoints);
-  unsigned int partialCount = 0;
+  unsigned int partialSum = 0;
   for (unsigned int i = 0; i < numEvaluationPoints; ++i) {
-    partialCount += bins[i];
-    cdfValues[i] = ((T) partialCount)/((T) totalCount);
+    partialSum += bins[i];
+    cdfValues[i] = ((T) partialSum)/((T) sumOfBins);
   }
 
   return;
@@ -409,104 +409,72 @@ uqScalarSequenceClass<T>::unifiedUniformlySampledCdf(
   T&              unifiedMaxDomainValue,
   std::vector<T>& unifiedCdfValues) const
 {
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
-                      "uqScalarSequenceClass<T>::unifiedUniformlySampledCdf()",
-                      "not implemented yet");
-
-#if 0
   if (m_env.numSubEnvironments() == 1) {
-    this->uniformlySampledCdf(numEvaluationPointsVec,
-                              unifiedCdfGrids,
+    this->uniformlySampledCdf(numEvaluationPoints,
+                              unifiedMinDomainValue,
+                              unifiedMaxDomainValue,
                               unifiedCdfValues);
     return;
   }
 
-  if (m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
-    if (m_env.intra0Rank() != -1) {
-      // Find local mins and maxs
-      V minDomainValues(m_vectorSpace.zeroVector());
-      V maxDomainValues(m_vectorSpace.zeroVector());
-      this->minMax(0,
-                   minDomainValues,
-                   maxDomainValues);
+  if (true) { // FIX ME: m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+    if (m_env.intra0Rank() >= 0) {
+      T                         unifiedTmpMinValue;
+      T                         unifiedTmpMaxValue;
+      std::vector<T>            unifiedCenters(numEvaluationPoints,0.);
+      std::vector<unsigned int> unifiedBins   (numEvaluationPoints,0.);
 
-      // Get overall mins
-      V unifiedMinDomainValues(m_vectorSpace.zeroVector());
-      std::vector<double> sendBuf(minDomainValues.size(),0.);
-      for (unsigned int i = 0; i < sendBuf.size(); ++i) {
-        sendBuf[i] = minDomainValues[i];
+      this->unifiedMinMax(0, // initialPos
+                          unifiedTmpMinValue,
+                          unifiedTmpMaxValue);
+      this->unifiedHistogram(0, // initialPos,
+                             unifiedTmpMinValue,
+                             unifiedTmpMaxValue,
+                             unifiedCenters,
+                             unifiedBins);
+
+      unifiedMinDomainValue = unifiedCenters[0];
+      unifiedMaxDomainValue = unifiedCenters[unifiedCenters.size()-1];
+
+      unsigned int localTotalSumOfBins = 0;
+      for (unsigned int i = 0; i < numEvaluationPoints; ++i) {
+        localTotalSumOfBins += unifiedBins[i];
       }
-      int mpiRC = MPI_Allreduce((void *) &sendBuf[0], (void *) &unifiedMinDomainValues[0], (int) sendBuf.size(), MPI_DOUBLE, MPI_MIN, m_env.intra0Comm().Comm());
+
+      std::vector<unsigned int> localPartialSumsOfBins(numEvaluationPoints,0);
+      localPartialSumsOfBins[0] = unifiedBins[0];
+      for (unsigned int i = 1; i < numEvaluationPoints; ++i) { // Yes, from '1'
+        localPartialSumsOfBins[i] = localPartialSumsOfBins[i-1] + unifiedBins[i];
+      }
+
+      unsigned int unifiedTotalSumOfBins = 0;
+      int mpiRC = MPI_Allreduce((void *) &localTotalSumOfBins, (void *) &unifiedTotalSumOfBins, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.intra0Comm().Comm());
       UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                           UQ_UNAVAILABLE_RANK,
-                          "uqSequenceOfVectorsClass<V,M>::unifiedUniformlySampledCdf()",
-                          "failed MPI_Allreduce() for mins");
+                          "uqScalarSequenceClass<T>::unifiedUniformlySampledCdf()",
+                          "failed MPI_Allreduce() for total sum of bins");
 
-      // Get overall maxs
-      V unifiedMaxDomainValues(m_vectorSpace.zeroVector());
-      for (unsigned int i = 0; i < sendBuf.size(); ++i) {
-        sendBuf[i] = maxDomainValues[i];
-      }
-      mpiRC = MPI_Allreduce((void *) &sendBuf[0], (void *) &unifiedMaxDomainValues[0], (int) sendBuf.size(), MPI_DOUBLE, MPI_MAX, m_env.intra0Comm().Comm());
+      std::vector<unsigned int> unifiedPartialSumsOfBins(numEvaluationPoints,0);
+      mpiRC = MPI_Allreduce((void *) &localPartialSumsOfBins[0], (void *) &unifiedPartialSumsOfBins[0], (int) unifiedPartialSumsOfBins.size(), MPI_UNSIGNED, MPI_SUM, m_env.intra0Comm().Comm());
       UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                           UQ_UNAVAILABLE_RANK,
-                          "uqSequenceOfVectorsClass<V,M>::unifiedUniformlySampledCdf()",
-                          "failed MPI_Allreduce() for maxs");
+                          "uqScalarSequenceClass<T>::unifiedUniformlySampledCdf()",
+                          "failed MPI_Allreduce() for partial sums of bins");
 
-      // Compute 'unifiedCdfGrids'
-      unifiedCdfGrids.setUniformGrids(numEvaluationPointsVec,
-                                      unifiedMinDomainValues,
-                                      unifiedMaxDomainValues);
-
-      // Get local centers and bins using global mins and global maxs
-      std::vector<V*> unifiedCentersForAllBins(numEvaluationPointsVec[0],NULL);
-      std::vector<V*> unifiedBinsForAllParams (numEvaluationPointsVec[0],NULL);
-      this->histogram(0, // initialPos
-                      unifiedMinDomainValues,
-                      unifiedMaxDomainValues,
-                      unifiedCentersForAllBins,
-                      unifiedBinsForAllParams);
-
-      // For every bin, perform MPI_Allreduce with MPI_SUM
-      for (unsigned int binId = 0; binId < unifiedBinsForAllParams.size(); binId++) {
-        std::vector<double> sendBuf((*unifiedBinsForAllParams[binId]).size(),0.);
-        for (unsigned int i = 0; i < sendBuf.size(); ++i) {
-          sendBuf[i] = (*unifiedBinsForAllParams[binId])[i];
-        }
-        int mpiRC = MPI_Allreduce((void *) &sendBuf[0], (void *) &(*unifiedBinsForAllParams[binId])[0], (int) sendBuf.size(), MPI_DOUBLE, MPI_SUM, m_env.intra0Comm().Comm());
-        UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                            UQ_UNAVAILABLE_RANK,
-                            "uqSequenceOfVectorsClass<V,M>::unifiedUniformlySampledCdf()",
-                            "failed MPI_Allreduce() for bins");
-      }
-
-      // For every parameter, sum all bins
-      V unifiedSumOfBins(m_vectorSpace.zeroVector());
-      for (unsigned int binId = 0; binId < unifiedBinsForAllParams.size(); binId++) {
-        unifiedSumOfBins += *unifiedBinsForAllParams[binId];
-      }
-
-      // Compute 'unifiedCdfValues'
-      unsigned int numParams = this->vectorSize();
-      for (unsigned int i = 0; i < numParams; ++i) {
-        std::vector<double> aCdf(0);
-        unsigned int partialSum = 0;
-        for (unsigned int binId = 0; binId < numEvaluationPointsVec[i]; ++binId) {
-          partialSum += (*unifiedBinsForAllParams[binId])[i];
-          aCdf[binId] = ((double) partialSum)/(unifiedSumOfBins[i]);
-        }
-        unifiedCdfValues.setOneDTable(i,aCdf);
+      unifiedCdfValues.clear();
+      unifiedCdfValues.resize(numEvaluationPoints);
+      for (unsigned int i = 0; i < numEvaluationPoints; ++i) {
+        unifiedCdfValues[i] = ((T) unifiedPartialSumsOfBins[i])/((T) unifiedTotalSumOfBins);
       }
     }
   }
   else {
     UQ_FATAL_TEST_MACRO(true,
                         m_env.rank(),
-                        "uqSequenceOfVectorsClass<V,M>::unifiedUniformlySampledCdf()",
+                        "uqScalarSequenceClass<T>::unifiedUniformlySampledCdf()",
                         "parallel vectors not supported yet");
   }
-#endif
+
   return;
 }
 
@@ -1095,42 +1063,53 @@ uqScalarSequenceClass<T>::unifiedMinMax(
   T&           unifiedMinValue,
   T&           unifiedMaxValue) const
 {
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
-                      "uqScalarSequenceClass<T>::unifiedMinMax()",
-                      "not implemented yet");
-#if 0
-    if (m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
-      if (m_env.intra0Rank() != -1) {
-        // Get overall mins
-        std::vector<double> sendBuf(statsMinPositions.size(),0.);
-        for (unsigned int i = 0; i < sendBuf.size(); ++i) {
-          sendBuf[i] = statsMinPositions[i];
-        }
-        int mpiRC = MPI_Allreduce((void *) &sendBuf[0], (void *) &unifiedStatsMinPositions[0], (int) sendBuf.size(), MPI_DOUBLE, MPI_MIN, m_env.intra0Comm().Comm());
-        UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                            UQ_UNAVAILABLE_RANK,
-                            "uqBaseVectorSequenceClass<V,M>::computeHistKde()",
-                            "failed MPI_Allreduce() for histogram mins");
+  if (m_env.numSubEnvironments() == 1) {
+    this->minMax(initialPos,
+                 unifiedMinValue,
+                 unifiedMaxValue);
+    return;
+  }
 
-        // Get overall maxs
-        for (unsigned int i = 0; i < sendBuf.size(); ++i) {
-          sendBuf[i] = statsMaxPositions[i];
-        }
-        mpiRC = MPI_Allreduce((void *) &sendBuf[0], (void *) &unifiedStatsMaxPositions[0], (int) sendBuf.size(), MPI_DOUBLE, MPI_MAX, m_env.intra0Comm().Comm());
-        UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                            UQ_UNAVAILABLE_RANK,
-                            "uqBaseVectorSequenceClass<V,M>::computeHistKde()",
-                            "failed MPI_Allreduce() for histogram maxs");
+  if (true) { // FIX ME: m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+    if (m_env.intra0Rank() >= 0) {
+      // Find local min and max
+      T minValue;
+      T maxValue;
+      this->minMax(initialPos,
+                   minValue,
+                   maxValue);
+
+      // Get overall min
+      T unifiedMinValue;
+      std::vector<double> sendBuf(1,0.);
+      for (unsigned int i = 0; i < sendBuf.size(); ++i) {
+        sendBuf[i] = minValue;
       }
+      int mpiRC = MPI_Allreduce((void *) &sendBuf[0], (void *) &unifiedMinValue, (int) sendBuf.size(), MPI_DOUBLE, MPI_MIN, m_env.intra0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          UQ_UNAVAILABLE_RANK,
+                          "uqScalarSequenceClass<T>::unifiedMinMax()",
+                          "failed MPI_Allreduce() for min");
+
+      // Get overall max
+      T unifiedMaxValue;
+      for (unsigned int i = 0; i < sendBuf.size(); ++i) {
+        sendBuf[i] = maxValue;
+      }
+      mpiRC = MPI_Allreduce((void *) &sendBuf[0], (void *) &unifiedMaxValue, (int) sendBuf.size(), MPI_DOUBLE, MPI_MAX, m_env.intra0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          UQ_UNAVAILABLE_RANK,
+                          "uqScalarSequenceClass<T>::unifiedMinMax()",
+                          "failed MPI_Allreduce() for max");
     }
-    else {
-      UQ_FATAL_TEST_MACRO(true,
-                          m_env.rank(),
-                          "uqBaseVectorSequenceClass<V,M>::computeHistKde()",
-                          "unified histogram min-max computing, parallel vectors not supported yet");
-    }
-#endif
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.rank(),
+                        "uqScalarSequenceClass<T>::unifiedMinMax()",
+                        "parallel vectors not supported yet");
+  }
+
   return;
 }
 
@@ -1194,40 +1173,70 @@ uqScalarSequenceClass<T>::unifiedHistogram(
   std::vector<T>&            unifiedCenters,
   std::vector<unsigned int>& unifiedBins) const
 {
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
-                      "uqScalarSequenceClass<T>::unifiedHistogram()",
-                      "not implemented yet");
-#if 0
-      if (m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
-        if (m_env.intra0Rank() != -1) {
-          this->histogram(0, // Use the whole (local) chain
-                          unifiedStatsMinPositions,
-                          unifiedStatsMaxPositions,
-                          unifiedHistCentersForAllBins,
-                          unifiedHistBinsForAllParams);
-        }
+  if (m_env.numSubEnvironments() == 1) {
+    this->histogram(initialPos,
+                    unifiedMinHorizontalValue,
+                    unifiedMaxHorizontalValue,
+                    unifiedCenters,
+                    unifiedBins);
+    return;
+  }
 
-        // For every bin, perform MPI_Allreduce with MPI_SUM
-        for (unsigned int binId = 0; binId < unifiedHistBinsForAllParams.size(); binId++) {
-          std::vector<double> sendBuf((*unifiedHistBinsForAllParams[binId]).size(),0.);
-          for (unsigned int i = 0; i < sendBuf.size(); ++i) {
-            sendBuf[i] = (*unifiedHistBinsForAllParams[binId])[i];
-          }
-          int mpiRC = MPI_Allreduce((void *) &sendBuf[0], (void *) &(*unifiedHistBinsForAllParams[binId])[0], (int) sendBuf.size(), MPI_DOUBLE, MPI_SUM, m_env.intra0Comm().Comm());
-          UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                              UQ_UNAVAILABLE_RANK,
-                              "uqBaseVectorSequenceClass<V,M>::computeHistKde()",
-                              "failed MPI_Allreduce() for histogram bins");
+  if (true) { // FIX ME: m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+    if (m_env.intra0Rank() >= 0) {
+      UQ_FATAL_TEST_MACRO(unifiedCenters.size() != unifiedBins.size(),
+                          UQ_UNAVAILABLE_RANK,
+                          "uqScalarSequenceClass<T>::unifiedHistogram()",
+                          "vectors 'unifiedCenters' and 'unifiedBins' have different sizes");
+
+      UQ_FATAL_TEST_MACRO(unifiedBins.size() < 3,
+                          UQ_UNAVAILABLE_RANK,
+                          "uqScalarSequenceClass<T>::unifiedHistogram()",
+                          "number of 'unifiedBins' is too small: should be at least 3");
+
+      for (unsigned int j = 0; j < unifiedBins.size(); ++j) {
+        unifiedCenters[j] = 0.;
+        unifiedBins[j] = 0;
+      }
+
+      double unifiedHorizontalDelta = (unifiedMaxHorizontalValue - unifiedMinHorizontalValue)/(((double) unifiedBins.size()) - 2.); // IMPORTANT: -2
+
+      double unifiedMinCenter = unifiedMinHorizontalValue - unifiedHorizontalDelta/2.;
+      double unifiedMaxCenter = unifiedMaxHorizontalValue + unifiedHorizontalDelta/2.;
+      for (unsigned int j = 0; j < unifiedCenters.size(); ++j) {
+        double factor = ((double) j)/(((double) unifiedCenters.size()) - 1.);
+        unifiedCenters[j] = (1. - factor) * unifiedMinCenter + factor * unifiedMaxCenter;
+      }
+
+      std::vector<unsigned int> localBins(unifiedBins.size(),0);
+      unsigned int dataSize = this->sequenceSize();
+      for (unsigned int j = 0; j < dataSize; ++j) {
+        double value = m_seq[j];
+        if (value < unifiedMinHorizontalValue) {
+          localBins[0]++;
+        }
+        else if (value >= unifiedMaxHorizontalValue) {
+          localBins[localBins.size()-1]++;
+        }
+        else {
+          unsigned int index = 1 + (unsigned int) ((value - unifiedMinHorizontalValue)/unifiedHorizontalDelta);
+          localBins[index]++;
         }
       }
-      else {
-        UQ_FATAL_TEST_MACRO(true,
-                            m_env.rank(),
-                            "uqBaseVectorSequenceClass<V,M>::computeHistKde()",
-                            "unified histogram computing, parallel vectors not supported yet");
-      }
-#endif
+
+      int mpiRC = MPI_Allreduce((void *) &localBins[0], (void *) &unifiedBins[0], (int) localBins.size(), MPI_UNSIGNED, MPI_SUM, m_env.intra0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          UQ_UNAVAILABLE_RANK,
+                          "uqScalarSequenceClass<T>::unifiedHistogram()",
+                          "failed MPI_Allreduce() for bins");
+    }
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.rank(),
+                        "uqScalarSequenceClass<T>::unifiedHistogram()",
+                        "parallel vectors not supported yet");
+  }
   return;
 }
 

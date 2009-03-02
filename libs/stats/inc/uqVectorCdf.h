@@ -53,26 +53,26 @@ public:
                                 const uqVectorSetClass<V,M>& pdfSupport);
   virtual ~uqBaseVectorCdfClass();
 
-  const   uqVectorSetClass<V,M>&            pdfSupport    ()                                const;
+  const   uqVectorSetClass<V,M>&              pdfSupport     ()                                const;
   virtual void                                values         (const V& paramValues, V& cdfVec) const = 0;
   virtual const uqBaseScalarCdfClass<double>& cdf            (unsigned int rowId)              const = 0;
   virtual void                                print          (std::ostream& os)                const = 0;
 
 protected:
 
-  const   uqBaseEnvironmentClass&      m_env;
-          std::string              m_prefix;
-  const   uqVectorSetClass<V,M>& m_pdfSupport;
+  const   uqBaseEnvironmentClass& m_env;
+          std::string             m_prefix;
+  const   uqVectorSetClass<V,M>&  m_pdfSupport;
 };
 
 template<class V, class M>
 uqBaseVectorCdfClass<V,M>::uqBaseVectorCdfClass(
-  const char*                    prefix,
+  const char*                  prefix,
   const uqVectorSetClass<V,M>& pdfSupport)
   :
-  m_env            (pdfSupport.env()),
-  m_prefix         ((std::string)(prefix)+"cdf_"),
-  m_pdfSupport    (pdfSupport)
+  m_env       (pdfSupport.env()),
+  m_prefix    ((std::string)(prefix)+"Cdf_"),
+  m_pdfSupport(pdfSupport)
 {
   if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
     *m_env.subScreenFile() << "Entering uqBaseVectorCdfClass<V,M>::constructor()"
@@ -171,14 +171,14 @@ uqGenericVectorCdfClass<V,M>::print(std::ostream& os) const
 template<class V, class M>
 class uqGaussianVectorCdfClass : public uqBaseVectorCdfClass<V,M> {
 public:
-  uqGaussianVectorCdfClass(const char*                    prefix,
+  uqGaussianVectorCdfClass(const char*                  prefix,
                            const uqVectorSetClass<V,M>& pdfSupport,
-                           const V&                       domainExpectedValues,
-                           const V&                       domainVarianceValues);
-  uqGaussianVectorCdfClass(const char*                    prefix,
+                           const V&                     domainExpectedValues,
+                           const V&                     domainVarianceValues);
+  uqGaussianVectorCdfClass(const char*                  prefix,
                            const uqVectorSetClass<V,M>& pdfSupport,
-                           const V&                       domainExpectedValues,
-                           const M&                       covMatrix);
+                           const V&                     domainExpectedValues,
+                           const M&                     covMatrix);
  ~uqGaussianVectorCdfClass();
 
   void values(const V& paramValues, V& cdfVec) const;

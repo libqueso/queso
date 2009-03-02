@@ -291,8 +291,8 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   //m_env.fullComm().Barrier();
 
   // Compute output mdf: uniform sampling approach
-  m_mdfGrids  = new uqArrayOfOneDGridsClass <P_V,P_M>((m_prefix+"mdf_").c_str(),m_postRv.imageSet().vectorSpace());
-  m_mdfValues = new uqArrayOfOneDTablesClass<P_V,P_M>((m_prefix+"mdf_").c_str(),m_postRv.imageSet().vectorSpace());
+  m_mdfGrids  = new uqArrayOfOneDGridsClass <P_V,P_M>((m_prefix+"Mdf_").c_str(),m_postRv.imageSet().vectorSpace());
+  m_mdfValues = new uqArrayOfOneDTablesClass<P_V,P_M>((m_prefix+"Mdf_").c_str(),m_postRv.imageSet().vectorSpace());
   m_chain->uniformlySampledMdf(numEvaluationPointsVec, // input
                                *m_mdfGrids,            // output
                                *m_mdfValues);          // output

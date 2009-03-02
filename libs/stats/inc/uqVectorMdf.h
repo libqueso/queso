@@ -70,7 +70,7 @@ uqBaseVectorMdfClass<V,M>::uqBaseVectorMdfClass(
   const uqVectorSetClass<V,M>& domainSet)
   :
   m_env      (domainSet.env()),
-  m_prefix   ((std::string)(prefix)+"mdf_"),
+  m_prefix   ((std::string)(prefix)+"Mdf_"),
   m_domainSet(domainSet)
 {
   if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {

@@ -1555,13 +1555,13 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
     // Write histograms
     if (passedOfs) {
       std::ofstream& ofsvar = *passedOfs;
-      ofsvar << m_name << "_centersOfHistBins_subenv" << m_env.subIdString() << " = zeros(" << this->vectorSize() /*.*/
+      ofsvar << m_name << "_CentersOfHistBins_subenv" << m_env.subIdString() << " = zeros(" << this->vectorSize() /*.*/
              << ","                                                                         << histCentersForAllBins.size()
              << ");"
              << std::endl;
       for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
         for (unsigned int j = 0; j < histCentersForAllBins.size(); ++j) {
-           ofsvar << m_name << "_centersOfHistBins_subenv" << m_env.subIdString() << "(" << i+1
+           ofsvar << m_name << "_CentersOfHistBins_subenv" << m_env.subIdString() << "(" << i+1
                   << ","                                                                 << j+1
                   << ") = "                                                              << (*(histCentersForAllBins[j]))[i]
                   << ";"
@@ -1569,13 +1569,13 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
         }
       }
 
-      ofsvar << m_name << "_histBins_subenv" << m_env.subIdString() << " = zeros(" << this->vectorSize() /*.*/
+      ofsvar << m_name << "_HistBins_subenv" << m_env.subIdString() << " = zeros(" << this->vectorSize() /*.*/
              << ","                                                                << histBinsForAllParams.size()
              << ");"
              << std::endl;
       for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
         for (unsigned int j = 0; j < histBinsForAllParams.size(); ++j) {
-           ofsvar << m_name << "_histBins_subenv" << m_env.subIdString() << "(" << i+1
+           ofsvar << m_name << "_HistBins_subenv" << m_env.subIdString() << "(" << i+1
                   << ","                                                        << j+1
                   << ") = "                                                     << (*(histBinsForAllParams[j]))[i]
                   << ";"
@@ -1724,13 +1724,13 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
     // Write KDE
     if (passedOfs) {
       std::ofstream& ofsvar = *passedOfs;
-      ofsvar << m_name << "_kdeEvalPositions_subenv" << m_env.subIdString() << " = zeros(" << this->vectorSize() /*.*/
+      ofsvar << m_name << "_KdeEvalPositions_subenv" << m_env.subIdString() << " = zeros(" << this->vectorSize() /*.*/
              << ","                                                                        << kdeEvalPositions.size()
              << ");"
              << std::endl;
       for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
         for (unsigned int j = 0; j < kdeEvalPositions.size(); ++j) {
-          ofsvar << m_name << "_kdeEvalPositions_subenv" << m_env.subIdString() << "(" << i+1
+          ofsvar << m_name << "_KdeEvalPositions_subenv" << m_env.subIdString() << "(" << i+1
                  << ","                                                                << j+1
                  << ") = "                                                             << (*(kdeEvalPositions[j]))[i]
                  << ";"
@@ -1738,23 +1738,23 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
         }
       }
 
-      ofsvar << m_name << "_gaussianKdeScaleVec_subenv" << m_env.subIdString() << " = zeros(" << this->vectorSize() /*.*/
+      ofsvar << m_name << "_GaussianKdeScaleVec_subenv" << m_env.subIdString() << " = zeros(" << this->vectorSize() /*.*/
              << ");"
              << std::endl;
       for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
-        ofsvar << m_name << "_gaussianKdeScaleVec_subenv" << m_env.subIdString() << "(" << i+1
+        ofsvar << m_name << "_GaussianKdeScaleVec_subenv" << m_env.subIdString() << "(" << i+1
                << ") = "                                                                << gaussianKdeScaleVec[i]
                << ";"
                << std::endl;
       }
 
-      ofsvar << m_name << "_gaussianKdeDensities_subenv" << m_env.subIdString() << " = zeros(" << this->vectorSize() /*.*/
+      ofsvar << m_name << "_GaussianKdeDensities_subenv" << m_env.subIdString() << " = zeros(" << this->vectorSize() /*.*/
              << ","                                                                            << gaussianKdeDensities.size()
              << ");"
              << std::endl;
       for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
         for (unsigned int j = 0; j < gaussianKdeDensities.size(); ++j) {
-          ofsvar << m_name << "_gaussianKdeDensities_subenv" << m_env.subIdString() << "(" << i+1
+          ofsvar << m_name << "_GaussianKdeDensities_subenv" << m_env.subIdString() << "(" << i+1
                  << ","                                                                    << j+1
                  << ") = "                                                                 << (*(gaussianKdeDensities[j]))[i]
                  << ";"
@@ -1763,7 +1763,14 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
       }
     }
 
-    if (m_env.numSubEnvironments() > 1) {
+    for (unsigned int i = 0; i < gaussianKdeDensities.size(); ++i) {
+      if (gaussianKdeDensities[i] != NULL) delete gaussianKdeDensities[i];
+    }
+    for (unsigned int i = 0; i < kdeEvalPositions.size(); ++i) {
+      if (kdeEvalPositions[i] != NULL) delete kdeEvalPositions[i];
+    }
+
+    if ((int) m_env.numSubEnvironments() < -1) { // avoid code temporarily
       // Compute unified KDE
       V unifiedIqrVec(m_vectorSpace.zeroVector());
       this->unifiedInterQuantileRange(0, // Use the whole chain
@@ -1786,15 +1793,101 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
                                unifiedGaussianKdeDensities);
 
       // Write unified iqr
+      if (m_env.subScreenFile()) {
+        if (m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+          if (m_env.intra0Rank() == 0) {
+            *m_env.subScreenFile() << "\nComputed unified inter quantile ranges for chain " << m_name
+                                   << std::endl;
+
+            char line[512];
+            sprintf(line,"%s",
+                    "Parameter");
+            *m_env.subScreenFile() << line;
+
+            sprintf(line,"%9s%s",
+                    " ",
+                    "iqr");
+            *m_env.subScreenFile() << line;
+
+            for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
+              sprintf(line,"\n%8.8s",
+                      m_vectorSpace.componentName(i).c_str() /*.*/);
+              *m_env.subScreenFile() << line;
+
+              sprintf(line,"%2s%11.4e",
+                      " ",
+                      unifiedIqrVec[i]);
+              *m_env.subScreenFile() << line;
+            }
+            *m_env.subScreenFile() << std::endl;
+          }
+        }
+        else {
+          UQ_FATAL_TEST_MACRO(true,
+                              m_env.rank(),
+                              "uqBaseVectorSequenceClass<V,M>::computeHistKde()",
+                              "unified iqr writing, parallel vectors not supported yet");
+        }
+      }
 
       // Write unified KDE
-    }
+      if (passedOfs) {
+        if (m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+          if (m_env.intra0Rank() == 0) {
+            std::ofstream& ofsvar = *passedOfs;
+            ofsvar << m_name << "_unifiedKdeEvalPositions_subenv" << m_env.subIdString() << " = zeros(" << this->vectorSize() /*.*/
+                   << ","                                                                               << unifiedKdeEvalPositions.size()
+                   << ");"
+                   << std::endl;
+            for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
+              for (unsigned int j = 0; j < unifiedKdeEvalPositions.size(); ++j) {
+                ofsvar << m_name << "_unifiedKdeEvalPositions_subenv" << m_env.subIdString() << "(" << i+1
+                       << ","                                                                       << j+1
+                       << ") = "                                                                    << (*(unifiedKdeEvalPositions[j]))[i]
+                       << ";"
+                       << std::endl;
+              }
+            }
 
-    for (unsigned int i = 0; i < gaussianKdeDensities.size(); ++i) {
-      if (gaussianKdeDensities[i] != NULL) delete gaussianKdeDensities[i];
-    }
-    for (unsigned int i = 0; i < kdeEvalPositions.size(); ++i) {
-      if (kdeEvalPositions[i] != NULL) delete kdeEvalPositions[i];
+            ofsvar << m_name << "_unifiedGaussianKdeScaleVec_subenv" << m_env.subIdString() << " = zeros(" << this->vectorSize() /*.*/
+                   << ");"
+                   << std::endl;
+            for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
+              ofsvar << m_name << "_unifiedGaussianKdeScaleVec_subenv" << m_env.subIdString() << "(" << i+1
+                     << ") = "                                                                       << unifiedGaussianKdeScaleVec[i]
+                     << ";"
+                     << std::endl;
+            }
+
+            ofsvar << m_name << "_unifiedGaussianKdeDensities_subenv" << m_env.subIdString() << " = zeros(" << this->vectorSize() /*.*/
+                   << ","                                                                                   << unifiedGaussianKdeDensities.size()
+                   << ");"
+                   << std::endl;
+            for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
+              for (unsigned int j = 0; j < unifiedGaussianKdeDensities.size(); ++j) {
+                ofsvar << m_name << "_unifiedGaussianKdeDensities_subenv" << m_env.subIdString() << "(" << i+1
+                       << ","                                                                           << j+1
+                       << ") = "                                                                        << (*(unifiedGaussianKdeDensities[j]))[i]
+                       << ";"
+                       << std::endl;
+              }
+            }
+          }
+        }
+        else {
+          UQ_FATAL_TEST_MACRO(true,
+                              m_env.rank(),
+                              "uqBaseVectorSequenceClass<V,M>::computeHistKde()",
+                              "unified KDE writing, parallel vectors not supported yet");
+        }
+      }
+
+      for (unsigned int i = 0; i < unifiedGaussianKdeDensities.size(); ++i) {
+        if (unifiedGaussianKdeDensities[i] != NULL) delete unifiedGaussianKdeDensities[i];
+      }
+      for (unsigned int i = 0; i < unifiedKdeEvalPositions.size(); ++i) {
+        if (unifiedKdeEvalPositions[i] != NULL) delete unifiedKdeEvalPositions[i];
+      }
     }
 
     m_env.fullComm().Barrier();

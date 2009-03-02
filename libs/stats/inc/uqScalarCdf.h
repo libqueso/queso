@@ -49,21 +49,21 @@ public:
            uqBaseScalarCdfClass(const uqBaseEnvironmentClass& env, const char* prefix);
   virtual ~uqBaseScalarCdfClass();
 
-  const   uqBaseEnvironmentClass& env()    const;
-  const   std::string&        prefix() const;
-  virtual double value  (T      paramValue) const = 0;
-  virtual T      inverse(double cdfValue  ) const = 0;
-  virtual void   print  (std::ostream& os ) const = 0;
+          const uqBaseEnvironmentClass& env    () const;
+          const std::string&            prefix () const;
+  virtual       double                  value  (T             paramValue) const = 0;
+  virtual       T                       inverse(double        cdfValue  ) const = 0;
+  virtual       void                    print  (std::ostream& os        ) const = 0;
 
 protected:
   const uqBaseEnvironmentClass& m_env;
-        std::string         m_prefix;
+        std::string             m_prefix;
 };
 
 template<class T>
 uqBaseScalarCdfClass<T>::uqBaseScalarCdfClass(
   const uqBaseEnvironmentClass& env,
-  const char*               prefix)
+  const char*                   prefix)
   :
   m_env   (env),
   m_prefix((std::string)(prefix)+"")
@@ -113,15 +113,15 @@ std::ostream& operator<< (std::ostream& os, const uqBaseScalarCdfClass<T>& obj)
 template<class T>
 class uqSampledScalarCdfClass : public uqBaseScalarCdfClass<T> {
 public:
-  uqSampledScalarCdfClass(const uqBaseEnvironmentClass&     env,
+  uqSampledScalarCdfClass(const uqBaseEnvironmentClass& env,
                           const char*                   prefix,
                           const uqBaseOneDGridClass<T>& cdfGrid,
                           const std::vector<double>&    cdfValues);
  ~uqSampledScalarCdfClass();
 
-  double value  (T      paramValue) const;
-  T      inverse(double cdfValue  ) const;
-  void   print  (std::ostream& os ) const;
+  double value  (T             paramValue) const;
+  T      inverse(double        cdfValue  ) const;
+  void   print  (std::ostream& os        ) const;
 
 protected:
   using uqBaseScalarCdfClass<T>::m_env;
@@ -134,14 +134,14 @@ protected:
 
 template<class T>
 uqSampledScalarCdfClass<T>::uqSampledScalarCdfClass(
-  const uqBaseEnvironmentClass&     env,
+  const uqBaseEnvironmentClass& env,
   const char*                   prefix,
   const uqBaseOneDGridClass<T>& cdfGrid,
   const std::vector<double>&    cdfValues)
   :
   uqBaseScalarCdfClass<T>(env,((std::string)(prefix)+"").c_str()),
-  m_cdfGrid  (cdfGrid  ),
-  m_cdfValues(cdfValues)
+  m_cdfGrid              (cdfGrid  ),
+  m_cdfValues            (cdfValues)
 {
   if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
     *m_env.subScreenFile() << "Entering uqSampledScalarCdfClass<T>::constructor()"
@@ -329,7 +329,7 @@ horizontalDistance(const uqBaseScalarCdfClass<T>& cdf1,
     *cdf1.env().subScreenFile() << "In horizontalDistance()"
                                 << ", cdf1.prefix() = "   << cdf1.prefix()
                                 << ", cdf2.prefix() = "   << cdf2.prefix()
-                                << ", epsilon = "       << epsilon
+                                << ", epsilon = "         << epsilon
                                 << ": maxDistance = "     << maxDistance
                                 << ", xForMaxDistance = " << xForMaxDistance
                                 << std::endl;

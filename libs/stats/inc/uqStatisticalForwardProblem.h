@@ -301,8 +301,8 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   m_qoiRv.setRealizer(*m_solutionRealizer);
 
   // Compute output mdf: uniform sampling approach
-  m_mdfGrids  = new uqArrayOfOneDGridsClass <Q_V,Q_M>((m_prefix+"mdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
-  m_mdfValues = new uqArrayOfOneDTablesClass<Q_V,Q_M>((m_prefix+"mdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
+  m_mdfGrids  = new uqArrayOfOneDGridsClass <Q_V,Q_M>((m_prefix+"Mdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
+  m_mdfValues = new uqArrayOfOneDTablesClass<Q_V,Q_M>((m_prefix+"Mdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
   m_chain->uniformlySampledMdf(numEvaluationPointsVec, // input
                                *m_mdfGrids,            // output
                                *m_mdfValues);          // output
@@ -313,8 +313,8 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   m_qoiRv.setMdf(*m_solutionMdf);
 
   // Compute output cdf: uniform sampling approach
-  m_cdfGrids  = new uqArrayOfOneDGridsClass <Q_V,Q_M>((m_prefix+"cdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
-  m_cdfValues = new uqArrayOfOneDTablesClass<Q_V,Q_M>((m_prefix+"cdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
+  m_cdfGrids  = new uqArrayOfOneDGridsClass <Q_V,Q_M>((m_prefix+"Cdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
+  m_cdfValues = new uqArrayOfOneDTablesClass<Q_V,Q_M>((m_prefix+"Cdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
   m_chain->uniformlySampledCdf(numEvaluationPointsVec, // input
                                *m_cdfGrids,            // output
                                *m_cdfValues);          // output
@@ -332,7 +332,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
                                         *m_unifiedCdfGrids,     // output
                                         *m_unifiedCdfValues);   // output
 
-    m_unifiedSolutionCdf = new uqSampledVectorCdfClass<Q_V,Q_M>((m_prefix+"unified_").c_str(),
+    m_unifiedSolutionCdf = new uqSampledVectorCdfClass<Q_V,Q_M>((m_prefix+"unified").c_str(),
                                                                 *m_unifiedCdfGrids,
                                                                 *m_unifiedCdfValues);
   }

@@ -2,7 +2,7 @@
 # UQ Environment
 ###############################################
 #env_help                    = anything
-env_numSubEnvironments      = 1
+env_numSubEnvironments      = 2
 env_subScreenWrite          = 1
 env_subScreenOutputFileName = outputData/screen
 #env_subScreenOutputFileName = .
@@ -24,7 +24,7 @@ cycle_cal_ip_outputFileName  = outputData/s1Output
 ###############################################
 cycle_cal_ip_mc_help                  = anything
 cycle_cal_ip_mc_chain_type            = 1
-cycle_cal_ip_mc_chain_size            = 1048576
+cycle_cal_ip_mc_chain_size            = 131072
 cycle_cal_ip_mc_chain_outputFileName  = outputData/s1ExtraOutput
 cycle_cal_ip_mc_chain_generateExtra   = 0
 cycle_cal_ip_mc_chain_displayPeriod   = 20000
@@ -133,7 +133,7 @@ cycle_cal_fp_outputFileName  = outputData/s1Output
 #                        16384 131072 1048576 2097152 16777216
 ###############################################
 cycle_cal_fp_mc_help            = anything
-cycle_cal_fp_mc_numSamples      = 1048576
+cycle_cal_fp_mc_numSamples      = 131072
 cycle_cal_fp_mc_outputFileName  = outputData/s1ExtraOutput
 cycle_cal_fp_mc_displayPeriod   = 20000
 cycle_cal_fp_mc_measureRunTimes = 1
@@ -191,7 +191,7 @@ cycle_val_ip_outputFileName  = outputData/s2Output
 ###############################################
 cycle_val_ip_mc_help                  = anything
 cycle_val_ip_mc_chain_type            = 1
-cycle_val_ip_mc_chain_size            = 1048576
+cycle_val_ip_mc_chain_size            = 131072
 cycle_val_ip_mc_chain_outputFileName  = outputData/s2ExtraOutput
 cycle_val_ip_mc_chain_generateExtra   = 0
 cycle_val_ip_mc_chain_displayPeriod   = 20000
@@ -300,7 +300,7 @@ cycle_val_fp_outputFileName  = outputData/s2Output
 #                        16384 131072 1048576 2097152 16777216
 ###############################################
 cycle_val_fp_mc_help            = anything
-cycle_val_fp_mc_numSamples      = 1048576
+cycle_val_fp_mc_numSamples      = 131072
 cycle_val_fp_mc_outputFileName  = outputData/s2ExtraOutput
 cycle_val_fp_mc_displayPeriod   = 20000
 cycle_val_fp_mc_measureRunTimes = 1
