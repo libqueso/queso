@@ -71,15 +71,15 @@ public:
   virtual  void                     setPositionValues         (unsigned int posId, const V& vec) = 0;
   virtual  void                     setGaussian               (const gsl_rng* rng, const V& meanVec, const V& stdDevVec) = 0;
   virtual  void                     setUniform                (const gsl_rng* rng, const V& aVec,    const V& bVec     ) = 0;
-  virtual  void                     uniformlySampledMdf       (unsigned int                   numEvaluationPoints,
+  virtual  void                     uniformlySampledMdf       (const V&                       numEvaluationPointsVec,
                                                                uqArrayOfOneDGridsClass <V,M>& mdfGrids,
                                                                uqArrayOfOneDTablesClass<V,M>& mdfValues) const = 0;
-  virtual  void                     uniformlySampledCdf       (unsigned int                   numEvaluationPoints,
+  virtual  void                     uniformlySampledCdf       (const V&                       numEvaluationPointsVec,
                                                                uqArrayOfOneDGridsClass <V,M>& cdfGrids,
                                                                uqArrayOfOneDTablesClass<V,M>& cdfValues) const = 0;
-  virtual  void                     uniformlySampledUnifiedCdf(unsigned int                   numEvaluationPoints,
-                                                               uqArrayOfOneDGridsClass <V,M>& cdfGrids,
-                                                               uqArrayOfOneDTablesClass<V,M>& cdfValues) const = 0;
+  virtual  void                     unifiedUniformlySampledCdf(const V&                       numEvaluationPointsVec,
+                                                               uqArrayOfOneDGridsClass <V,M>& unifiedCdfGrids,
+                                                               uqArrayOfOneDTablesClass<V,M>& unifieddfValues) const = 0;
 
   virtual  void                     mean                      (unsigned int                          initialPos,
                                                                unsigned int                          numPos,
@@ -134,22 +134,39 @@ public:
   virtual  void                     minMax                    (unsigned int                          initialPos,
                                                                V&                                    minVec,
                                                                V&                                    maxVec) const = 0;
+  virtual  void                     unifiedMinMax             (unsigned int                          initialPos,
+                                                               V&                                    unifiedMinVec,
+                                                               V&                                    unifiedMaxVec) const = 0;
   virtual  void                     histogram                 (unsigned int                          initialPos,
                                                                const V&                              minVec,
                                                                const V&                              maxVec,
                                                                std::vector<V*>&                      centersForAllBins,
                                                                std::vector<V*>&                      binsForAllParams) const = 0;
+  virtual  void                     unifiedHistogram          (unsigned int                          initialPos,
+                                                               const V&                              unifiedMinVec,
+                                                               const V&                              unifiedMaxVec,
+                                                               std::vector<V*>&                      unifiedCentersForAllBins,
+                                                               std::vector<V*>&                      unifiedBinsForAllParams) const = 0;
   virtual  void                     interQuantileRange        (unsigned int                          initialPos,
                                                                V&                                    iqrVec) const = 0;
+  virtual  void                     unifiedInterQuantileRange (unsigned int                          initialPos,
+                                                               V&                                    unifiedIqrVec) const = 0;
   virtual  void                     scalesForKDE              (unsigned int                          initialPos,
                                                                const V&                              iqrVec,
                                                                V&                                    scaleVec) const = 0;
+  virtual  void                     unifiedScalesForKDE       (unsigned int                          initialPos,
+                                                               const V&                              unifiedIqrVec,
+                                                               V&                                    unifiedScaleVec) const = 0;
   virtual  void                     gaussianKDE               (const V&                              evaluationParamVec,
                                                                V&                                    densityVec) const = 0;
   virtual  void                     gaussianKDE               (unsigned int                          initialPos,
                                                                const V&                              scaleVec,
                                                                const std::vector<V*>&                evaluationParamVecs,
                                                                std::vector<V*>&                      densityVecs) const = 0;
+  virtual  void                     unifiedGaussianKDE        (unsigned int                          initialPos,
+                                                               const V&                              unifiedScaleVec,
+                                                               const std::vector<V*>&                unifiedEvaluationParamVecs,
+                                                               std::vector<V*>&                      unifiedDensityVecs) const = 0;
   virtual  void                     printContents             (std::ofstream&                        ofsvar) const = 0;
   virtual  void                     select                    (const std::vector<unsigned int>&      idsOfUniquePositions) = 0;
   virtual  void                     filter                    (unsigned int                          initialPos,
@@ -1419,48 +1436,11 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
                statsMinPositions,
                statsMaxPositions);
 
-  // Compute unified histogram min-max if necessary
-  V unifiedStatsMinPositions(statsMinPositions);
-  V unifiedStatsMaxPositions(statsMaxPositions);
-  if (m_env.numSubEnvironments() > 1) {
-    if (m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
-      if (m_env.intra0Rank() != -1) {
-        // Get overall mins
-        std::vector<double> sendBuf(statsMinPositions.size(),0.);
-        for (unsigned int i = 0; i < sendBuf.size(); ++i) {
-          sendBuf[i] = statsMinPositions[i];
-        }
-        int mpiRC = MPI_Allreduce((void *) &sendBuf[0], (void *) &unifiedStatsMinPositions[0], (int) sendBuf.size(), MPI_DOUBLE, MPI_MIN, m_env.intra0Comm().Comm());
-        UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                            UQ_UNAVAILABLE_RANK,
-                            "uqBaseVectorSequenceClass<V,M>::computeHistKde()",
-                            "failed MPI_Allreduce() for histogram mins");
-
-        // Get overall maxs
-        for (unsigned int i = 0; i < sendBuf.size(); ++i) {
-          sendBuf[i] = statsMaxPositions[i];
-        }
-        mpiRC = MPI_Allreduce((void *) &sendBuf[0], (void *) &unifiedStatsMaxPositions[0], (int) sendBuf.size(), MPI_DOUBLE, MPI_MAX, m_env.intra0Comm().Comm());
-        UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                            UQ_UNAVAILABLE_RANK,
-                            "uqBaseVectorSequenceClass<V,M>::computeHistKde()",
-                            "failed MPI_Allreduce() for histogram maxs");
-      }
-    }
-    else {
-      UQ_FATAL_TEST_MACRO(true,
-                          m_env.rank(),
-                          "uqBaseVectorSequenceClass<V,M>::computeHistKde()",
-                          "unified histogram min-max computing, parallel vectors not supported yet");
-    }
-  }
-
   if (m_env.subScreenFile()) {
-    char line[512];
-
     *m_env.subScreenFile() << "\nComputed min values and max values for chain " << m_name
                            << std::endl;
 
+    char line[512];
     sprintf(line,"%s",
             "Parameter");
     *m_env.subScreenFile() << line;
@@ -1485,14 +1465,24 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
       *m_env.subScreenFile() << line;
     }
     *m_env.subScreenFile() << std::endl;
+  }
 
-    // Write unified histogram min-max if necessary
-    if (m_env.numSubEnvironments() > 1) {
+  V unifiedStatsMinPositions(statsMinPositions);
+  V unifiedStatsMaxPositions(statsMaxPositions);
+  if (m_env.numSubEnvironments() > 1) {
+    // Compute unified min-max
+    this->unifiedMinMax(0, // Use the whole chain
+                        unifiedStatsMinPositions,
+                        unifiedStatsMaxPositions);
+
+    // Write unified min-max
+    if (m_env.subScreenFile()) {
       if (m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
         if (m_env.intra0Rank() == 0) {
           *m_env.subScreenFile() << "\nComputed unified min values and max values for chain " << m_name
                                  << std::endl;
 
+          char line[512];
           sprintf(line,"%s",
                   "Parameter");
           *m_env.subScreenFile() << line;
@@ -1523,10 +1513,10 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
         UQ_FATAL_TEST_MACRO(true,
                             m_env.rank(),
                             "uqBaseVectorSequenceClass<V,M>::computeHistKde()",
-                            "unified histogram min-max writing, parallel vectors not supported yet");
+                            "unified min-max writing, parallel vectors not supported yet");
       }
-    }
-  }
+    } // if subScreenFile
+  } // if numSubEnvs > 1
 
   m_env.fullComm().Barrier();
   tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
@@ -1549,56 +1539,18 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
                              << std::endl;
     }
 
-    std::vector<V*> histCentersForAllBins(0);
-    std::vector<V*> histBinsForAllParams(0);
-
     for (unsigned int i = 0; i < statsMaxPositions.size(); ++i) {
       statsMaxPositions[i] *= (1. + 1.e-15);
     }
 
-    histCentersForAllBins.resize(statisticalOptions.histNumInternalBins()+2,NULL);
-    histBinsForAllParams.resize (statisticalOptions.histNumInternalBins()+2,NULL);
+    // Compute histograms
+    std::vector<V*> histCentersForAllBins(statisticalOptions.histNumInternalBins()+2,NULL); // IMPORTANT: +2
+    std::vector<V*> histBinsForAllParams (statisticalOptions.histNumInternalBins()+2,NULL); // IMPORTANT: +2
     this->histogram(0, // Use the whole chain
                     statsMinPositions,
                     statsMaxPositions,
                     histCentersForAllBins,
                     histBinsForAllParams);
-
-    // Compute unified histogram if necessary
-    std::vector<V*> unifiedHistCentersForAllBins(0);
-    std::vector<V*> unifiedHistBinsForAllParams(0);
-    unifiedHistCentersForAllBins.resize(statisticalOptions.histNumInternalBins()+2,NULL);
-    unifiedHistBinsForAllParams.resize (statisticalOptions.histNumInternalBins()+2,NULL);
-    if (m_env.numSubEnvironments() > 1) {
-      if (m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
-        if (m_env.intra0Rank() != -1) {
-          this->histogram(0, // Use the whole (local) chain
-                          unifiedStatsMinPositions,
-                          unifiedStatsMaxPositions,
-                          unifiedHistCentersForAllBins,
-                          unifiedHistBinsForAllParams);
-        }
-
-        // For every bin, perform MPI_Allreduce with MPI_SUM
-        for (unsigned int binId = 0; binId < unifiedHistBinsForAllParams.size(); binId++) {
-          std::vector<double> sendBuf((*unifiedHistBinsForAllParams[binId]).size(),0.);
-          for (unsigned int i = 0; i < sendBuf.size(); ++i) {
-            sendBuf[i] = (*unifiedHistBinsForAllParams[binId])[i];
-          }
-          int mpiRC = MPI_Allreduce((void *) &sendBuf[0], (void *) &(*unifiedHistBinsForAllParams[binId])[0], (int) sendBuf.size(), MPI_DOUBLE, MPI_SUM, m_env.intra0Comm().Comm());
-          UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                              UQ_UNAVAILABLE_RANK,
-                              "uqBaseVectorSequenceClass<V,M>::computeHistKde()",
-                              "failed MPI_Allreduce() for histogram bins");
-        }
-      }
-      else {
-        UQ_FATAL_TEST_MACRO(true,
-                            m_env.rank(),
-                            "uqBaseVectorSequenceClass<V,M>::computeHistKde()",
-                            "unified histogram computing, parallel vectors not supported yet");
-      }
-    }
 
     // Write histograms
     if (passedOfs) {
@@ -1630,11 +1582,30 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
                   << std::endl;
         }
       }
+    }
 
-      // Write unified histogram if necessary
-      if (m_env.numSubEnvironments() > 1) {
+    for (unsigned int i = 0; i < histBinsForAllParams.size(); ++i) {
+      if (histBinsForAllParams[i] != NULL) delete histBinsForAllParams[i];
+    }
+    for (unsigned int i = 0; i < histCentersForAllBins.size(); ++i) {
+      if (histCentersForAllBins[i] != NULL) delete histCentersForAllBins[i];
+    }
+
+    std::vector<V*> unifiedHistCentersForAllBins(statisticalOptions.histNumInternalBins()+2,NULL); // IMPORTANT: +2
+    std::vector<V*> unifiedHistBinsForAllParams (statisticalOptions.histNumInternalBins()+2,NULL); // IMPORTANT: +2
+    if (m_env.numSubEnvironments() > 1) {
+      // Compute unified histogram
+      this->unifiedHistogram(0, // Use the whole chain
+                             unifiedStatsMinPositions,
+                             unifiedStatsMaxPositions,
+                             unifiedHistCentersForAllBins,
+                             unifiedHistBinsForAllParams);
+
+      // Write unified histogram
+      if (passedOfs) {
         if (m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
           if (m_env.intra0Rank() == 0) {
+            std::ofstream& ofsvar = *passedOfs;
             ofsvar << m_name << "_unifiedCentersOfHistBins_subenv" << m_env.subIdString() << " = zeros(" << this->vectorSize() /*.*/
                    << ","                                                                                << unifiedHistCentersForAllBins.size()
                    << ");"
@@ -1670,22 +1641,15 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
                               "uqBaseVectorSequenceClass<V,M>::computeHistKde()",
                               "unified histogram writing, parallel vectors not supported yet");
         }
+      } // if passedOfs
+
+      for (unsigned int i = 0; i < unifiedHistBinsForAllParams.size(); ++i) {
+        if (unifiedHistBinsForAllParams[i] != NULL) delete unifiedHistBinsForAllParams[i];
       }
-    }
-
-    for (unsigned int i = 0; i < histBinsForAllParams.size(); ++i) {
-      if (histBinsForAllParams[i] != NULL) delete histBinsForAllParams[i];
-    }
-    for (unsigned int i = 0; i < histCentersForAllBins.size(); ++i) {
-      if (histCentersForAllBins[i] != NULL) delete histCentersForAllBins[i];
-    }
-
-    for (unsigned int i = 0; i < unifiedHistBinsForAllParams.size(); ++i) {
-      if (unifiedHistBinsForAllParams[i] != NULL) delete unifiedHistBinsForAllParams[i];
-    }
-    for (unsigned int i = 0; i < unifiedHistCentersForAllBins.size(); ++i) {
-      if (unifiedHistCentersForAllBins[i] != NULL) delete unifiedHistCentersForAllBins[i];
-    }
+      for (unsigned int i = 0; i < unifiedHistCentersForAllBins.size(); ++i) {
+        if (unifiedHistCentersForAllBins[i] != NULL) delete unifiedHistCentersForAllBins[i];
+      }
+    } // if numSubEnvs > 1
 
     m_env.fullComm().Barrier();
     tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
@@ -1713,6 +1677,23 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
     this->interQuantileRange(0, // Use the whole chain
                              iqrVec);
 
+    V gaussianKdeScaleVec(m_vectorSpace.zeroVector());
+    this->scalesForKDE(0, // Use the whole chain
+                       iqrVec,
+                       gaussianKdeScaleVec);
+
+    std::vector<V*> kdeEvalPositions(statisticalOptions.kdeNumEvalPositions(),NULL);
+    uqMiscComputePositionsBetweenMinMax(statsMinPositions,
+                                        statsMaxPositions,
+                                        kdeEvalPositions);
+
+    std::vector<V*> gaussianKdeDensities(statisticalOptions.kdeNumEvalPositions(),NULL);
+    this->gaussianKDE(0, // Use the whole chain
+                      gaussianKdeScaleVec,
+                      kdeEvalPositions,
+                      gaussianKdeDensities);
+
+    // Write iqr
     if (m_env.subScreenFile()) {
       *m_env.subScreenFile() << "\nComputed inter quantile ranges for chain " << m_name
                                << std::endl;
@@ -1740,28 +1721,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
       *m_env.subScreenFile() << std::endl;
     }
 
-    std::vector<V*> kdeEvalPositions(0);
-    V               gaussianKdeScaleVec(m_vectorSpace.zeroVector());
-    std::vector<V*> gaussianKdeDensities(0);
-
-    kdeEvalPositions.resize(statisticalOptions.kdeNumEvalPositions(),NULL);
-    uqMiscComputePositionsBetweenMinMax(statsMinPositions,
-                                        statsMaxPositions,
-                                        kdeEvalPositions);
-
-    this->scalesForKDE(0, // Use the whole chain
-                       iqrVec,
-                       gaussianKdeScaleVec);
-
-    gaussianKdeDensities.resize(statisticalOptions.kdeNumEvalPositions(),NULL);
-    this->gaussianKDE(0, // Use the whole chain
-                      gaussianKdeScaleVec,
-                      kdeEvalPositions,
-                      gaussianKdeDensities);
-
-    // Compute unified KDE if necessary
-
-    // Write estimations of probability densities
+    // Write KDE
     if (passedOfs) {
       std::ofstream& ofsvar = *passedOfs;
       ofsvar << m_name << "_kdeEvalPositions_subenv" << m_env.subIdString() << " = zeros(" << this->vectorSize() /*.*/
@@ -1803,7 +1763,32 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
       }
     }
 
-    // Write unified KDE if necessary
+    if (m_env.numSubEnvironments() > 1) {
+      // Compute unified KDE
+      V unifiedIqrVec(m_vectorSpace.zeroVector());
+      this->unifiedInterQuantileRange(0, // Use the whole chain
+                                      unifiedIqrVec);
+
+      V unifiedGaussianKdeScaleVec(m_vectorSpace.zeroVector());
+      this->unifiedScalesForKDE(0, // Use the whole chain
+                                unifiedIqrVec,
+                                unifiedGaussianKdeScaleVec);
+
+      std::vector<V*> unifiedKdeEvalPositions(statisticalOptions.kdeNumEvalPositions(),NULL);
+      uqMiscComputePositionsBetweenMinMax(unifiedStatsMinPositions,
+                                          unifiedStatsMaxPositions,
+                                          unifiedKdeEvalPositions);
+
+      std::vector<V*> unifiedGaussianKdeDensities(statisticalOptions.kdeNumEvalPositions(),NULL);
+      this->unifiedGaussianKDE(0, // Use the whole chain
+                               unifiedGaussianKdeScaleVec,
+                               unifiedKdeEvalPositions,
+                               unifiedGaussianKdeDensities);
+
+      // Write unified iqr
+
+      // Write unified KDE
+    }
 
     for (unsigned int i = 0; i < gaussianKdeDensities.size(); ++i) {
       if (gaussianKdeDensities[i] != NULL) delete gaussianKdeDensities[i];

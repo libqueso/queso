@@ -50,84 +50,111 @@ public:
   uqScalarSequenceClass(const uqBaseEnvironmentClass& env, unsigned int sequenceSize);
  ~uqScalarSequenceClass();
 
-  const unsigned int sequenceSize       () const;
-        void         resizeSequence     (unsigned int newSequenceSize);
-        void         resetValues        (unsigned int initialPos, unsigned int numPos);
-        void         erasePositions     (unsigned int initialPos, unsigned int numPos);
-  const T&           operator[]         (unsigned int posId) const;
-        T&           operator[]         (unsigned int posId);
-        void         setGaussian        (const gsl_rng* rng, const T& mean, const T& stdDev);
-        void         setUniform         (const gsl_rng* rng, const T& a,    const T& b     );
-        void         uniformlySampledMdf(unsigned int               numIntervals,
-                                         T&                         minDomainValue,
-                                         T&                         maxDomainValue,
-                                         std::vector<T>&            mdfValues) const;
-        void         uniformlySampledCdf(unsigned int               numIntervals,
-                                         T&                         minDomainValue,
-                                         T&                         maxDomainValue,
-                                         std::vector<T>&            cdfValues) const;
+  const unsigned int sequenceSize              () const;
+        void         resizeSequence            (unsigned int newSequenceSize);
+        void         resetValues               (unsigned int initialPos, unsigned int numPos);
+        void         erasePositions            (unsigned int initialPos, unsigned int numPos);
+  const T&           operator[]                (unsigned int posId) const;
+        T&           operator[]                (unsigned int posId);
+        void         setGaussian               (const gsl_rng* rng, const T& mean, const T& stdDev);
+        void         setUniform                (const gsl_rng* rng, const T& a,    const T& b     );
+        void         uniformlySampledMdf       (unsigned int               numIntervals,
+                                                T&                         minDomainValue,
+                                                T&                         maxDomainValue,
+                                                std::vector<T>&            mdfValues) const;
+        void         uniformlySampledCdf       (unsigned int               numIntervals,
+                                                T&                         minDomainValue,
+                                                T&                         maxDomainValue,
+                                                std::vector<T>&            cdfValues) const;
+        void         unifiedUniformlySampledCdf(unsigned int               numIntervals,
+                                                T&                         unifiedMinDomainValue,
+                                                T&                         unifiedMaxDomainValue,
+                                                std::vector<T>&            unifiedCdfValues) const;
 
-        T            mean               (unsigned int               initialPos,
-                                         unsigned int               numPos) const;
-        T            sampleVariance     (unsigned int               initialPos,
-                                         unsigned int               numPos,
-                                         const T&                   meanValue) const;
-        T            populationVariance (unsigned int               initialPos,
-                                         unsigned int               numPos,
-                                         const T&                   meanValue) const;
-        T            autoCovariance     (unsigned int               initialPos,
-                                         unsigned int               numPos,
-                                         const T&                   meanValue,
-                                         unsigned int               lag) const;
-        T            autoCorrViaDef     (unsigned int               initialPos,
-                                         unsigned int               numPos,
-                                         unsigned int               lag) const;
-        void         autoCorrViaFft     (unsigned int               initialPos,
-                                         unsigned int               numPos,
-                                         unsigned int               maxLag,
-                                         std::vector<T>&            autoCorrs) const;
-        void         autoCorrViaFft     (unsigned int               initialPos,
-                                         unsigned int               numPos,
-                                         unsigned int               numSum,
-                                         T&                         autoCorrsSum) const;
-        T            bmm                (unsigned int               initialPos,
-                                         unsigned int               batchLength) const;
-        void         psd                (unsigned int               initialPos,
-                                         unsigned int               numBlocks,
-                                         double                     hopSizeRatio,
-                                         std::vector<double>&       psdSequence) const;
-        T            geweke             (unsigned int               initialPos,
-                                         double                     ratioNa,
-                                         double                     ratioNb) const;
-        void         minMax             (unsigned int               initialPos,
-                                         T&                         minValue,
-                                         T&                         maxValue) const;
-        void         histogram          (unsigned int               initialPos,
-                                         const T&                   minHorizontalValue,
-                                         const T&                   maxHorizontalValue,
-                                         std::vector<T>&            centers,
-                                         std::vector<unsigned int>& bins) const;
-        void         sort               (unsigned int               initialPos,
-                                         uqScalarSequenceClass<T>&  sortedSequence) const;
-        void         sort               ();
-        T            interQuantileRange (unsigned int               initialPos) const;
-        T            scaleForKDE        (unsigned int               initialPos,
-                                         const T&                   iqrValue) const;
-        double       gaussianKDE        (T                          evaluationParam) const;
-        void         gaussianKDE        (unsigned int               initialPos,
-                                         double                     scaleValue,
-                                         const std::vector<T>&      evaluationParams,
-                                         std::vector<double>&       densityValues) const;
+        T            mean                      (unsigned int               initialPos,
+                                                unsigned int               numPos) const;
+        T            unifiedMean               (unsigned int               initialPos,
+                                                unsigned int               numPos) const;
+        T            sampleVariance            (unsigned int               initialPos,
+                                                unsigned int               numPos,
+                                                const T&                   meanValue) const;
+        T            unifiedSampleVariance     (unsigned int               initialPos,
+                                                unsigned int               numPos,
+                                                const T&                   unifiedMeanValue) const;
+        T            populationVariance        (unsigned int               initialPos,
+                                                unsigned int               numPos,
+                                                const T&                   meanValue) const;
+        T            autoCovariance            (unsigned int               initialPos,
+                                                unsigned int               numPos,
+                                                const T&                   meanValue,
+                                                unsigned int               lag) const;
+        T            autoCorrViaDef            (unsigned int               initialPos,
+                                                unsigned int               numPos,
+                                                unsigned int               lag) const;
+        void         autoCorrViaFft            (unsigned int               initialPos,
+                                                unsigned int               numPos,
+                                                unsigned int               maxLag,
+                                                std::vector<T>&            autoCorrs) const;
+        void         autoCorrViaFft            (unsigned int               initialPos,
+                                                unsigned int               numPos,
+                                                unsigned int               numSum,
+                                                T&                         autoCorrsSum) const;
+        T            bmm                       (unsigned int               initialPos,
+                                                unsigned int               batchLength) const;
+        void         psd                       (unsigned int               initialPos,
+                                                unsigned int               numBlocks,
+                                                double                     hopSizeRatio,
+                                                std::vector<double>&       psdSequence) const;
+        T            geweke                    (unsigned int               initialPos,
+                                                double                     ratioNa,
+                                                double                     ratioNb) const;
+        void         minMax                    (unsigned int               initialPos,
+                                                T&                         minValue,
+                                                T&                         maxValue) const;
+        void         unifiedMinMax             (unsigned int               initialPos,
+                                                T&                         unifiedMinValue,
+                                                T&                         unifiedMaxValue) const;
+        void         histogram                 (unsigned int               initialPos,
+                                                const T&                   minHorizontalValue,
+                                                const T&                   maxHorizontalValue,
+                                                std::vector<T>&            centers,
+                                                std::vector<unsigned int>& bins) const;
+        void         unifiedHistogram          (unsigned int               initialPos,
+                                                const T&                   unifiedMinHorizontalValue,
+                                                const T&                   unifiedMaxHorizontalValue,
+                                                std::vector<T>&            unifiedCenters,
+                                                std::vector<unsigned int>& unifiedBins) const;
+        void         sort                      (unsigned int               initialPos,
+                                                uqScalarSequenceClass<T>&  sortedSequence) const;
+        void         unifiedSort               (unsigned int               initialPos,
+                                                uqScalarSequenceClass<T>&  unifiedSortedSequence) const;
+        void         sort                      ();
+        void         unifiedSort               ();
+        T            interQuantileRange        (unsigned int               initialPos) const;
+        T            unifiedInterQuantileRange (unsigned int               initialPos) const;
+        T            scaleForKDE               (unsigned int               initialPos,
+                                                const T&                   iqrValue) const;
+        T            unifiedScaleForKDE        (unsigned int               initialPos,
+                                                const T&                   unifiedIqrValue) const;
+        double       gaussianKDE               (T                          evaluationParam) const;
+        void         gaussianKDE               (unsigned int               initialPos,
+                                                double                     scaleValue,
+                                                const std::vector<T>&      evaluationParams,
+                                                std::vector<double>&       densityValues) const;
+        void         unifiedGaussianKDE        (unsigned int               initialPos,
+                                                double                     unifiedScaleValue,
+                                                const std::vector<T>&      unifiedEvaluationParams,
+                                                std::vector<double>&       unifiedDensityValues) const;
 
 private:
-        void         extractScalarSeq   (unsigned int               initialPos,
-                                         unsigned int               spacing,
-                                         unsigned int               numPos,
-                                         uqScalarSequenceClass<T>&  scalarSeq) const;
-        void         extractRawData     (unsigned int               initialPos,
-                                         unsigned int               spacing,
-                                         unsigned int               numPos,
-                                         std::vector<double>&       rawData) const;
+        void         extractScalarSeq          (unsigned int               initialPos,
+                                                unsigned int               spacing,
+                                                unsigned int               numPos,
+                                                uqScalarSequenceClass<T>&  scalarSeq) const;
+        void         extractRawData            (unsigned int               initialPos,
+                                                unsigned int               spacing,
+                                                unsigned int               numPos,
+                                                std::vector<double>&       rawData) const;
 
   const uqBaseEnvironmentClass& m_env;
   std::vector<T>            m_seq;
@@ -375,6 +402,115 @@ uqScalarSequenceClass<T>::uniformlySampledCdf(
 }
 
 template <class T>
+void
+uqScalarSequenceClass<T>::unifiedUniformlySampledCdf(
+  unsigned int    numEvaluationPoints,
+  T&              unifiedMinDomainValue,
+  T&              unifiedMaxDomainValue,
+  std::vector<T>& unifiedCdfValues) const
+{
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.rank(),
+                      "uqScalarSequenceClass<T>::unifiedUniformlySampledCdf()",
+                      "not implemented yet");
+
+#if 0
+  if (m_env.numSubEnvironments() == 1) {
+    this->uniformlySampledCdf(numEvaluationPointsVec,
+                              unifiedCdfGrids,
+                              unifiedCdfValues);
+    return;
+  }
+
+  if (m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+    if (m_env.intra0Rank() != -1) {
+      // Find local mins and maxs
+      V minDomainValues(m_vectorSpace.zeroVector());
+      V maxDomainValues(m_vectorSpace.zeroVector());
+      this->minMax(0,
+                   minDomainValues,
+                   maxDomainValues);
+
+      // Get overall mins
+      V unifiedMinDomainValues(m_vectorSpace.zeroVector());
+      std::vector<double> sendBuf(minDomainValues.size(),0.);
+      for (unsigned int i = 0; i < sendBuf.size(); ++i) {
+        sendBuf[i] = minDomainValues[i];
+      }
+      int mpiRC = MPI_Allreduce((void *) &sendBuf[0], (void *) &unifiedMinDomainValues[0], (int) sendBuf.size(), MPI_DOUBLE, MPI_MIN, m_env.intra0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          UQ_UNAVAILABLE_RANK,
+                          "uqSequenceOfVectorsClass<V,M>::unifiedUniformlySampledCdf()",
+                          "failed MPI_Allreduce() for mins");
+
+      // Get overall maxs
+      V unifiedMaxDomainValues(m_vectorSpace.zeroVector());
+      for (unsigned int i = 0; i < sendBuf.size(); ++i) {
+        sendBuf[i] = maxDomainValues[i];
+      }
+      mpiRC = MPI_Allreduce((void *) &sendBuf[0], (void *) &unifiedMaxDomainValues[0], (int) sendBuf.size(), MPI_DOUBLE, MPI_MAX, m_env.intra0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          UQ_UNAVAILABLE_RANK,
+                          "uqSequenceOfVectorsClass<V,M>::unifiedUniformlySampledCdf()",
+                          "failed MPI_Allreduce() for maxs");
+
+      // Compute 'unifiedCdfGrids'
+      unifiedCdfGrids.setUniformGrids(numEvaluationPointsVec,
+                                      unifiedMinDomainValues,
+                                      unifiedMaxDomainValues);
+
+      // Get local centers and bins using global mins and global maxs
+      std::vector<V*> unifiedCentersForAllBins(numEvaluationPointsVec[0],NULL);
+      std::vector<V*> unifiedBinsForAllParams (numEvaluationPointsVec[0],NULL);
+      this->histogram(0, // initialPos
+                      unifiedMinDomainValues,
+                      unifiedMaxDomainValues,
+                      unifiedCentersForAllBins,
+                      unifiedBinsForAllParams);
+
+      // For every bin, perform MPI_Allreduce with MPI_SUM
+      for (unsigned int binId = 0; binId < unifiedBinsForAllParams.size(); binId++) {
+        std::vector<double> sendBuf((*unifiedBinsForAllParams[binId]).size(),0.);
+        for (unsigned int i = 0; i < sendBuf.size(); ++i) {
+          sendBuf[i] = (*unifiedBinsForAllParams[binId])[i];
+        }
+        int mpiRC = MPI_Allreduce((void *) &sendBuf[0], (void *) &(*unifiedBinsForAllParams[binId])[0], (int) sendBuf.size(), MPI_DOUBLE, MPI_SUM, m_env.intra0Comm().Comm());
+        UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                            UQ_UNAVAILABLE_RANK,
+                            "uqSequenceOfVectorsClass<V,M>::unifiedUniformlySampledCdf()",
+                            "failed MPI_Allreduce() for bins");
+      }
+
+      // For every parameter, sum all bins
+      V unifiedSumOfBins(m_vectorSpace.zeroVector());
+      for (unsigned int binId = 0; binId < unifiedBinsForAllParams.size(); binId++) {
+        unifiedSumOfBins += *unifiedBinsForAllParams[binId];
+      }
+
+      // Compute 'unifiedCdfValues'
+      unsigned int numParams = this->vectorSize();
+      for (unsigned int i = 0; i < numParams; ++i) {
+        std::vector<double> aCdf(0);
+        unsigned int partialSum = 0;
+        for (unsigned int binId = 0; binId < numEvaluationPointsVec[i]; ++binId) {
+          partialSum += (*unifiedBinsForAllParams[binId])[i];
+          aCdf[binId] = ((double) partialSum)/(unifiedSumOfBins[i]);
+        }
+        unifiedCdfValues.setOneDTable(i,aCdf);
+      }
+    }
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.rank(),
+                        "uqSequenceOfVectorsClass<V,M>::unifiedUniformlySampledCdf()",
+                        "parallel vectors not supported yet");
+  }
+#endif
+  return;
+}
+
+template <class T>
 T
 uqScalarSequenceClass<T>::mean(
   unsigned int initialPos,
@@ -395,6 +531,19 @@ uqScalarSequenceClass<T>::mean(
   }
 
   return tmpSum/(T) numPos;
+}
+
+template <class T>
+T
+uqScalarSequenceClass<T>::unifiedMean(
+  unsigned int initialPos,
+  unsigned int numPos) const
+{
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.rank(),
+                      "uqScalarSequenceClass<T>::unifiedMean()",
+                      "not implemented yet");
+  return 0.;
 }
 
 template <class T>
@@ -423,6 +572,20 @@ uqScalarSequenceClass<T>::sampleVariance(
   samValue /= (((T) numPos) - 1.);
 
   return samValue;
+}
+
+template <class T>
+T
+uqScalarSequenceClass<T>::unifiedSampleVariance(
+  unsigned int initialPos,
+  unsigned int numPos,
+  const T&     unifiedMeanValue) const
+{
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.rank(),
+                      "uqScalarSequenceClass<T>::unifiedSampleVariance()",
+                      "not implemented yet");
+  return 0.;
 }
 
 template <class T>
@@ -927,6 +1090,52 @@ uqScalarSequenceClass<T>::minMax(
 
 template <class T>
 void
+uqScalarSequenceClass<T>::unifiedMinMax(
+  unsigned int initialPos,
+  T&           unifiedMinValue,
+  T&           unifiedMaxValue) const
+{
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.rank(),
+                      "uqScalarSequenceClass<T>::unifiedMinMax()",
+                      "not implemented yet");
+#if 0
+    if (m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+      if (m_env.intra0Rank() != -1) {
+        // Get overall mins
+        std::vector<double> sendBuf(statsMinPositions.size(),0.);
+        for (unsigned int i = 0; i < sendBuf.size(); ++i) {
+          sendBuf[i] = statsMinPositions[i];
+        }
+        int mpiRC = MPI_Allreduce((void *) &sendBuf[0], (void *) &unifiedStatsMinPositions[0], (int) sendBuf.size(), MPI_DOUBLE, MPI_MIN, m_env.intra0Comm().Comm());
+        UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                            UQ_UNAVAILABLE_RANK,
+                            "uqBaseVectorSequenceClass<V,M>::computeHistKde()",
+                            "failed MPI_Allreduce() for histogram mins");
+
+        // Get overall maxs
+        for (unsigned int i = 0; i < sendBuf.size(); ++i) {
+          sendBuf[i] = statsMaxPositions[i];
+        }
+        mpiRC = MPI_Allreduce((void *) &sendBuf[0], (void *) &unifiedStatsMaxPositions[0], (int) sendBuf.size(), MPI_DOUBLE, MPI_MAX, m_env.intra0Comm().Comm());
+        UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                            UQ_UNAVAILABLE_RANK,
+                            "uqBaseVectorSequenceClass<V,M>::computeHistKde()",
+                            "failed MPI_Allreduce() for histogram maxs");
+      }
+    }
+    else {
+      UQ_FATAL_TEST_MACRO(true,
+                          m_env.rank(),
+                          "uqBaseVectorSequenceClass<V,M>::computeHistKde()",
+                          "unified histogram min-max computing, parallel vectors not supported yet");
+    }
+#endif
+  return;
+}
+
+template <class T>
+void
 uqScalarSequenceClass<T>::histogram(
   unsigned int               initialPos,
   const T&                   minHorizontalValue,
@@ -949,7 +1158,7 @@ uqScalarSequenceClass<T>::histogram(
     bins[j] = 0;
   }
 
-  double horizontalDelta = (maxHorizontalValue - minHorizontalValue)/(((double) bins.size()) - 2.);
+  double horizontalDelta = (maxHorizontalValue - minHorizontalValue)/(((double) bins.size()) - 2.); // IMPORTANT: -2
 
   double minCenter = minHorizontalValue - horizontalDelta/2.;
   double maxCenter = maxHorizontalValue + horizontalDelta/2.;
@@ -978,6 +1187,52 @@ uqScalarSequenceClass<T>::histogram(
 
 template <class T>
 void
+uqScalarSequenceClass<T>::unifiedHistogram(
+  unsigned int               initialPos,
+  const T&                   unifiedMinHorizontalValue,
+  const T&                   unifiedMaxHorizontalValue,
+  std::vector<T>&            unifiedCenters,
+  std::vector<unsigned int>& unifiedBins) const
+{
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.rank(),
+                      "uqScalarSequenceClass<T>::unifiedHistogram()",
+                      "not implemented yet");
+#if 0
+      if (m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+        if (m_env.intra0Rank() != -1) {
+          this->histogram(0, // Use the whole (local) chain
+                          unifiedStatsMinPositions,
+                          unifiedStatsMaxPositions,
+                          unifiedHistCentersForAllBins,
+                          unifiedHistBinsForAllParams);
+        }
+
+        // For every bin, perform MPI_Allreduce with MPI_SUM
+        for (unsigned int binId = 0; binId < unifiedHistBinsForAllParams.size(); binId++) {
+          std::vector<double> sendBuf((*unifiedHistBinsForAllParams[binId]).size(),0.);
+          for (unsigned int i = 0; i < sendBuf.size(); ++i) {
+            sendBuf[i] = (*unifiedHistBinsForAllParams[binId])[i];
+          }
+          int mpiRC = MPI_Allreduce((void *) &sendBuf[0], (void *) &(*unifiedHistBinsForAllParams[binId])[0], (int) sendBuf.size(), MPI_DOUBLE, MPI_SUM, m_env.intra0Comm().Comm());
+          UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                              UQ_UNAVAILABLE_RANK,
+                              "uqBaseVectorSequenceClass<V,M>::computeHistKde()",
+                              "failed MPI_Allreduce() for histogram bins");
+        }
+      }
+      else {
+        UQ_FATAL_TEST_MACRO(true,
+                            m_env.rank(),
+                            "uqBaseVectorSequenceClass<V,M>::computeHistKde()",
+                            "unified histogram computing, parallel vectors not supported yet");
+      }
+#endif
+  return;
+}
+
+template <class T>
+void
 uqScalarSequenceClass<T>::sort(
   unsigned int              initialPos,
   uqScalarSequenceClass<T>& sortedSequence) const
@@ -995,9 +1250,37 @@ uqScalarSequenceClass<T>::sort(
 
 template <class T>
 void
+uqScalarSequenceClass<T>::unifiedSort(
+  unsigned int              initialPos,
+  uqScalarSequenceClass<T>& unifiedSortedSequence) const
+{
+  unsigned int numPos = this->sequenceSize() - initialPos;
+  unifiedSortedSequence.resizeSequence(numPos);
+  this->extractScalarSeq(initialPos,
+                         1,
+                         numPos,
+                         unifiedSortedSequence);
+  unifiedSortedSequence.unifiedSort();
+
+  return;
+}
+
+template <class T>
+void
 uqScalarSequenceClass<T>::sort()
 {
   std::sort(m_seq.begin(), m_seq.end());
+  return;
+}
+
+template <class T>
+void
+uqScalarSequenceClass<T>::unifiedSort()
+{
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.rank(),
+                      "uqScalarSequenceClass<T>::unifiedSort()",
+                      "not implemented yet");
   return;
 }
 
@@ -1036,6 +1319,19 @@ uqScalarSequenceClass<T>::interQuantileRange(unsigned int initialPos) const
 
 template <class T>
 T
+uqScalarSequenceClass<T>::unifiedInterQuantileRange(unsigned int initialPos) const
+{
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.rank(),
+                      "uqScalarSequenceClass<T>::unifiedInterQuantileRange()",
+                      "not implemented yet");
+  T unifiedIqrValue = 0.;
+
+  return unifiedIqrValue;
+}
+
+template <class T>
+T
 uqScalarSequenceClass<T>::scaleForKDE(
   unsigned int initialPos,
   const T&     iqrValue) const
@@ -1064,6 +1360,43 @@ uqScalarSequenceClass<T>::scaleForKDE(
   }
 
   return scaleValue;
+}
+
+template <class T>
+T
+uqScalarSequenceClass<T>::unifiedScaleForKDE(
+  unsigned int initialPos,
+  const T&     unifiedIqrValue) const
+{
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.rank(),
+                      "uqScalarSequenceClass<T>::unifiedScaleForKDE()",
+                      "not implemented yet");
+
+  bool bRC = (initialPos <  this->sequenceSize());
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.rank(),
+                      "uqScalarSequenceClass<V>::unifiedScalesForKDE()",
+                      "invalid input data");
+
+  unsigned int dataSize = this->sequenceSize() - initialPos;
+
+  T unifiedMeanValue = this->unifiedMean(initialPos,
+                                         dataSize);
+
+  T unifiedSamValue = this->unifiedSampleVariance(initialPos,
+                                                  dataSize,
+                                                  unifiedMeanValue);
+
+  T unifiedScaleValue;
+  if (unifiedIqrValue <= 0.) {
+    unifiedScaleValue = 1.06*sqrt(unifiedSamValue)/pow(dataSize,1./5.); // FIX ME: use total dataSize
+   }
+  else {
+    unifiedScaleValue = 1.06*std::min(sqrt(unifiedSamValue),unifiedIqrValue/1.34)/pow(dataSize,1./5.); // FIX ME: use total dataSize
+  }
+
+  return unifiedScaleValue;
 }
 
 template <class T>
@@ -1118,6 +1451,21 @@ uqScalarSequenceClass<T>::gaussianKDE(
     densityValues[j] = scaleInv * (value/(double) dataSize);
   }
 
+  return;
+}
+
+template <class T>
+void
+uqScalarSequenceClass<T>::unifiedGaussianKDE(
+  unsigned int          initialPos,
+  double                unifiedScaleValue,
+  const std::vector<T>& unifiedEvaluationParams,
+  std::vector<double>&  unifiedDensityValues) const
+{
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.rank(),
+                      "uqScalarSequenceClass<T>::unifiedGaussianKDE()",
+                      "not implemented yet");
   return;
 }
 

@@ -286,6 +286,9 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   if (m_unifiedCdfGrids   ) delete m_unifiedCdfGrids;
   if (m_unifiedCdfValues  ) delete m_unifiedCdfValues;
 
+  Q_V numEvaluationPointsVec(m_qoiRv.imageSet().vectorSpace().zeroVector());
+  numEvaluationPointsVec.cwSet(250.);
+
   // Compute output realizer: Monte Carlo approach
   m_chain = new uqSequenceOfVectorsClass<Q_V,Q_M>(m_qoiRv.imageSet().vectorSpace(),0,m_prefix+"chain");
   m_mcSeqGenerator = new uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>(m_prefix.c_str(),
@@ -300,9 +303,9 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   // Compute output mdf: uniform sampling approach
   m_mdfGrids  = new uqArrayOfOneDGridsClass <Q_V,Q_M>((m_prefix+"mdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
   m_mdfValues = new uqArrayOfOneDTablesClass<Q_V,Q_M>((m_prefix+"mdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
-  m_chain->uniformlySampledMdf(250,           // input
-                               *m_mdfGrids,   // output
-                               *m_mdfValues); // output
+  m_chain->uniformlySampledMdf(numEvaluationPointsVec, // input
+                               *m_mdfGrids,            // output
+                               *m_mdfValues);          // output
 
   m_solutionMdf = new uqSampledVectorMdfClass<Q_V,Q_M>(m_prefix.c_str(),
                                                        *m_mdfGrids,
@@ -312,9 +315,9 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   // Compute output cdf: uniform sampling approach
   m_cdfGrids  = new uqArrayOfOneDGridsClass <Q_V,Q_M>((m_prefix+"cdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
   m_cdfValues = new uqArrayOfOneDTablesClass<Q_V,Q_M>((m_prefix+"cdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
-  m_chain->uniformlySampledCdf(250,           // input
-                               *m_cdfGrids,   // output
-                               *m_cdfValues); // output
+  m_chain->uniformlySampledCdf(numEvaluationPointsVec, // input
+                               *m_cdfGrids,            // output
+                               *m_cdfValues);          // output
 
   m_solutionCdf = new uqSampledVectorCdfClass<Q_V,Q_M>(m_prefix.c_str(),
                                                        *m_cdfGrids,
@@ -325,9 +328,9 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   if (m_env.numSubEnvironments() > 1) {
     m_unifiedCdfGrids  = new uqArrayOfOneDGridsClass <Q_V,Q_M>((m_prefix+"unifiedCdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
     m_unifiedCdfValues = new uqArrayOfOneDTablesClass<Q_V,Q_M>((m_prefix+"unifiedCdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
-    m_chain->uniformlySampledUnifiedCdf(250,                  // input
-                                        *m_unifiedCdfGrids,   // output
-                                        *m_unifiedCdfValues); // output
+    m_chain->unifiedUniformlySampledCdf(numEvaluationPointsVec, // input
+                                        *m_unifiedCdfGrids,     // output
+                                        *m_unifiedCdfValues);   // output
 
     m_unifiedSolutionCdf = new uqSampledVectorCdfClass<Q_V,Q_M>((m_prefix+"unified_").c_str(),
                                                                 *m_unifiedCdfGrids,

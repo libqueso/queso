@@ -264,6 +264,9 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   if (m_solutionPdf     ) delete m_solutionPdf;
   if (m_solutionDomain  ) delete m_solutionDomain;
 
+  P_V numEvaluationPointsVec(m_priorRv.imageSet().vectorSpace().zeroVector());
+  numEvaluationPointsVec.cwSet(250.);
+
   // Compute output pdf up to a multiplicative constant: Bayesian approach
   m_solutionDomain = uqInstantiateIntersection(m_priorRv.pdf().domainSet(),m_likelihoodFunction.domainSet());
 
@@ -290,9 +293,9 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   // Compute output mdf: uniform sampling approach
   m_mdfGrids  = new uqArrayOfOneDGridsClass <P_V,P_M>((m_prefix+"mdf_").c_str(),m_postRv.imageSet().vectorSpace());
   m_mdfValues = new uqArrayOfOneDTablesClass<P_V,P_M>((m_prefix+"mdf_").c_str(),m_postRv.imageSet().vectorSpace());
-  m_chain->uniformlySampledMdf(250,           // input
-                               *m_mdfGrids,   // output
-                               *m_mdfValues); // output
+  m_chain->uniformlySampledMdf(numEvaluationPointsVec, // input
+                               *m_mdfGrids,            // output
+                               *m_mdfValues);          // output
   m_solutionMdf = new uqSampledVectorMdfClass<P_V,P_M>(m_prefix.c_str(),
                                                        *m_mdfGrids,
                                                        *m_mdfValues);
