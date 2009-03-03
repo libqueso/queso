@@ -59,16 +59,17 @@ public:
                                    uqGenericVectorRVClass         <Q_V,Q_M>&         qoiRv);
  ~uqStatisticalForwardProblemClass();
 
-        bool computeSolutionFlag() const;
-        void solveWithMonteCarlo();
-  const uqGenericVectorRVClass<Q_V,Q_M>& qoiRv() const;
+        bool                             computeSolutionFlag() const;
+        void                             solveWithMonteCarlo();
+  const uqGenericVectorRVClass<Q_V,Q_M>& qoiRv              () const;
+  const uqBaseVectorCdfClass  <Q_V,Q_M>& qoiRv_unifiedCdf   () const;
 
-        void print              (std::ostream& os) const;
+        void                             print              (std::ostream& os) const;
 
 private:
-        void commonConstructor  ();
-        void defineMyOptions    (po::options_description& optionsDesc);
-        void getMyOptionValues  (po::options_description& optionsDesc);
+        void                             commonConstructor  ();
+        void                             defineMyOptions    (po::options_description& optionsDesc);
+        void                             getMyOptionValues  (po::options_description& optionsDesc);
 
   const uqBaseEnvironmentClass&                     m_env;
         std::string                                 m_prefix;
@@ -402,6 +403,26 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::qoiRv() const
 {
   return m_qoiRv;
 }
+
+template <class P_V,class P_M,class Q_V,class Q_M>
+const uqBaseVectorCdfClass<Q_V,Q_M>&
+uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::qoiRv_unifiedCdf() const
+{
+  if (m_env.numSubEnvironments() == 1) {
+    return m_qoiRv.cdf();
+  }
+
+  if (m_env.intra0Rank() < 0) {
+    return m_qoiRv.cdf();
+  }
+
+  UQ_FATAL_TEST_MACRO(m_unifiedSolutionCdf == NULL,
+                      m_env.rank(),
+                      "uqStatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::qoiRv_unifiedCdf()",
+                      "variable is NULL");
+  return *m_unifiedSolutionCdf;
+}
+
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 void

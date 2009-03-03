@@ -44,7 +44,11 @@
 //Just declaration: actual code is below
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
-uqAppl_ComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle);
+uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle);
+
+template<class P_V,class P_M,class Q_V,class Q_M>
+void 
+uqAppl_UnifiedComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle);
 
 //********************************************************
 // The driving routine "uqAppl()": called by main()
@@ -245,7 +249,10 @@ uqAppl(const uqBaseEnvironmentClass& env)
               << std::endl;
   }
 
-  uqAppl_ComparisonStage(cycle);
+  uqAppl_LocalComparisonStage(cycle);
+  if (env.numSubEnvironments() > 1) {
+    uqAppl_UnifiedComparisonStage(cycle);
+  }
 
   iRC = gettimeofday(&timevalNow, NULL);
   if (env.rank() == 0) {
@@ -268,11 +275,11 @@ uqAppl(const uqBaseEnvironmentClass& env)
 }
 
 //********************************************************
-// The 'comparison stage' of the driving routine "uqAppl()"
+// The 'local comparison stage' of the driving routine "uqAppl()"
 //********************************************************
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
-uqAppl_ComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
+uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
 {
   if (cycle.calFP().computeSolutionFlag() &&
       cycle.valFP().computeSolutionFlag()) {
@@ -346,6 +353,94 @@ uqAppl_ComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
     if (cycle.env().rank() == 0) {
       std::cout << "For epsilonVec = "    << *epsilonVec
                 << ", cdfDistancesVec = " << cdfDistancesVec
+                << std::endl;
+    }
+
+    delete epsilonVec;
+  }
+
+  return;
+}
+
+//********************************************************
+// The 'unified comparison stage' of the driving routine "uqAppl()"
+//********************************************************
+template<class P_V,class P_M,class Q_V,class Q_M>
+void 
+uqAppl_UnifiedComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
+{
+  if (cycle.calFP().computeSolutionFlag() &&
+      cycle.valFP().computeSolutionFlag()) {
+    Q_V cdfDistancesVec(cycle.calFP().qoiRv().imageSet().vectorSpace().zeroVector());
+
+    // Epsilon = 0.02
+    Q_V* epsilonVec = cycle.calFP().qoiRv().imageSet().vectorSpace().newVector(0.02);
+    horizontalDistances(cycle.calFP().qoiRv_unifiedCdf(),
+                        cycle.valFP().qoiRv_unifiedCdf(),
+                        *epsilonVec,
+                        cdfDistancesVec);
+    if (cycle.env().rank() == 0) {
+      std::cout << "For epsilonVec = "           << *epsilonVec
+                << ", unifiedCdfDistancesVec = " << cdfDistancesVec
+                << std::endl;
+    }
+
+    // Test independence of 'distance' w.r.t. order of cdfs
+    horizontalDistances(cycle.valFP().qoiRv_unifiedCdf(),
+                        cycle.calFP().qoiRv_unifiedCdf(),
+                        *epsilonVec,
+                        cdfDistancesVec);
+    if (cycle.env().rank() == 0) {
+      std::cout << "For epsilonVec = "                                    << *epsilonVec
+                << ", unifiedCdfDistancesVec (switched order of cdfs) = " << cdfDistancesVec
+                << std::endl;
+    }
+
+    // Epsilon = 0.04
+    epsilonVec->cwSet(0.04);
+    horizontalDistances(cycle.calFP().qoiRv_unifiedCdf(),
+                        cycle.valFP().qoiRv_unifiedCdf(),
+                        *epsilonVec,
+                        cdfDistancesVec);
+    if (cycle.env().rank() == 0) {
+      std::cout << "For epsilonVec = "           << *epsilonVec
+                << ", unifiedCdfDistancesVec = " << cdfDistancesVec
+                << std::endl;
+    }
+
+    // Epsilon = 0.06
+    epsilonVec->cwSet(0.06);
+    horizontalDistances(cycle.calFP().qoiRv_unifiedCdf(),
+                        cycle.valFP().qoiRv_unifiedCdf(),
+                        *epsilonVec,
+                        cdfDistancesVec);
+    if (cycle.env().rank() == 0) {
+      std::cout << "For epsilonVec = "           << *epsilonVec
+                << ", unifiedCdfDistancesVec = " << cdfDistancesVec
+                << std::endl;
+    }
+
+    // Epsilon = 0.08
+    epsilonVec->cwSet(0.08);
+    horizontalDistances(cycle.calFP().qoiRv_unifiedCdf(),
+                        cycle.valFP().qoiRv_unifiedCdf(),
+                        *epsilonVec,
+                        cdfDistancesVec);
+    if (cycle.env().rank() == 0) {
+      std::cout << "For epsilonVec = "           << *epsilonVec
+                << ", unifiedCdfDistancesVec = " << cdfDistancesVec
+                << std::endl;
+    }
+
+    // Epsilon = 0.10
+    epsilonVec->cwSet(0.10);
+    horizontalDistances(cycle.calFP().qoiRv_unifiedCdf(),
+                        cycle.valFP().qoiRv_unifiedCdf(),
+                        *epsilonVec,
+                        cdfDistancesVec);
+    if (cycle.env().rank() == 0) {
+      std::cout << "For epsilonVec = "           << *epsilonVec
+                << ", unifiedCdfDistancesVec = " << cdfDistancesVec
                 << std::endl;
     }
 

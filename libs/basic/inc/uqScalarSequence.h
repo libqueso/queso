@@ -74,12 +74,12 @@ public:
         T            mean                      (unsigned int               initialPos,
                                                 unsigned int               numPos) const;
         T            unifiedMean               (unsigned int               initialPos,
-                                                unsigned int               numPos) const;
+                                                unsigned int               localNumPos) const;
         T            sampleVariance            (unsigned int               initialPos,
                                                 unsigned int               numPos,
                                                 const T&                   meanValue) const;
         T            unifiedSampleVariance     (unsigned int               initialPos,
-                                                unsigned int               numPos,
+                                                unsigned int               localNumPos,
                                                 const T&                   unifiedMeanValue) const;
         T            populationVariance        (unsigned int               initialPos,
                                                 unsigned int               numPos,
@@ -410,11 +410,10 @@ uqScalarSequenceClass<T>::unifiedUniformlySampledCdf(
   std::vector<T>& unifiedCdfValues) const
 {
   if (m_env.numSubEnvironments() == 1) {
-    this->uniformlySampledCdf(numEvaluationPoints,
-                              unifiedMinDomainValue,
-                              unifiedMaxDomainValue,
-                              unifiedCdfValues);
-    return;
+    return this->uniformlySampledCdf(numEvaluationPoints,
+                                     unifiedMinDomainValue,
+                                     unifiedMaxDomainValue,
+                                     unifiedCdfValues);
   }
 
   if (true) { // FIX ME: m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
@@ -507,11 +506,53 @@ uqScalarSequenceClass<T>::unifiedMean(
   unsigned int initialPos,
   unsigned int numPos) const
 {
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
-                      "uqScalarSequenceClass<T>::unifiedMean()",
-                      "not implemented yet");
-  return 0.;
+  if (m_env.numSubEnvironments() == 1) {
+    return this->mean(initialPos,
+                      numPos);
+  }
+
+  T unifiedMeanValue = 0.;
+  if (true) { // FIX ME: m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+    if (m_env.intra0Rank() >= 0) {
+      bool bRC = ((initialPos          <  this->sequenceSize()) &&
+                  (0                   <  numPos              ) &&
+                  ((initialPos+numPos) <= this->sequenceSize()));
+      UQ_FATAL_TEST_MACRO(bRC == false,
+                          m_env.rank(),
+                          "uqScalarSequenceClass<T>::unifiedMean()",
+                          "invalid input data");
+
+      unsigned int finalPosPlus1 = initialPos + numPos;
+      T localSum = 0.;
+      for (unsigned int j = initialPos; j < finalPosPlus1; ++j) {
+        localSum += m_seq[j];
+      }
+
+      unsigned int unifiedNumPos = 0;
+      int mpiRC = MPI_Allreduce((void *) &numPos, (void *) &unifiedNumPos, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.intra0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          UQ_UNAVAILABLE_RANK,
+                          "uqScalarSequenceClass<T>::unifiedMean()",
+                          "failed MPI_Allreduce() for numPos");
+
+      T unifiedSum = 0.;
+      mpiRC = MPI_Allreduce((void *) &localSum, (void *) &unifiedSum, (int) 1, MPI_DOUBLE, MPI_SUM, m_env.intra0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          UQ_UNAVAILABLE_RANK,
+                          "uqScalarSequenceClass<T>::unifiedMean()",
+                          "failed MPI_Allreduce() for sum");
+
+      unifiedMeanValue = unifiedSum/((T) unifiedNumPos);
+    }
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.rank(),
+                        "uqScalarSequenceClass<T>::unifiedMean()",
+                        "parallel vectors not supported yet");
+  }
+
+  return unifiedMeanValue;
 }
 
 template <class T>
@@ -549,11 +590,57 @@ uqScalarSequenceClass<T>::unifiedSampleVariance(
   unsigned int numPos,
   const T&     unifiedMeanValue) const
 {
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
-                      "uqScalarSequenceClass<T>::unifiedSampleVariance()",
-                      "not implemented yet");
-  return 0.;
+  if (m_env.numSubEnvironments() == 1) {
+    return this->sampleVariance(initialPos,
+                                numPos,
+                                unifiedMeanValue);
+  }
+
+  T unifiedSamValue = 0.;
+
+  if (true) { // FIX ME: m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+    if (m_env.intra0Rank() >= 0) {
+      bool bRC = ((initialPos          <  this->sequenceSize()) &&
+                  (0                   <  numPos              ) &&
+                  ((initialPos+numPos) <= this->sequenceSize()));
+      UQ_FATAL_TEST_MACRO(bRC == false,
+                          m_env.rank(),
+                          "uqScalarSequenceClass<T>::sampleVariance()",
+                          "invalid input data");
+
+      unsigned int finalPosPlus1 = initialPos + numPos;
+      T diff;
+      T localSamValue = 0.;
+      for (unsigned int j = initialPos; j < finalPosPlus1; ++j) {
+        diff = m_seq[j] - unifiedMeanValue;
+        localSamValue += diff*diff;
+      }
+
+      unsigned int unifiedNumPos = 0;
+      int mpiRC = MPI_Allreduce((void *) &numPos, (void *) &unifiedNumPos, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.intra0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          UQ_UNAVAILABLE_RANK,
+                          "uqScalarSequenceClass<T>::unifiedSampleVariance()",
+                          "failed MPI_Allreduce() for numPos");
+
+      T unifiedSamValue = 0.;
+      mpiRC = MPI_Allreduce((void *) &localSamValue, (void *) &unifiedSamValue, (int) 1, MPI_DOUBLE, MPI_SUM, m_env.intra0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          UQ_UNAVAILABLE_RANK,
+                          "uqScalarSequenceClass<T>::unifiedSampleVariance()",
+                          "failed MPI_Allreduce() for samValue");
+
+      unifiedSamValue /= (((T) unifiedNumPos) - 1.);
+    }
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.rank(),
+                        "uqScalarSequenceClass<T>::unifiedSampleVariance()",
+                        "parallel vectors not supported yet");
+  }
+
+  return unifiedSamValue;
 }
 
 template <class T>
@@ -1064,10 +1151,9 @@ uqScalarSequenceClass<T>::unifiedMinMax(
   T&           unifiedMaxValue) const
 {
   if (m_env.numSubEnvironments() == 1) {
-    this->minMax(initialPos,
-                 unifiedMinValue,
-                 unifiedMaxValue);
-    return;
+    return this->minMax(initialPos,
+                        unifiedMinValue,
+                        unifiedMaxValue);
   }
 
   if (true) { // FIX ME: m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
@@ -1174,12 +1260,11 @@ uqScalarSequenceClass<T>::unifiedHistogram(
   std::vector<unsigned int>& unifiedBins) const
 {
   if (m_env.numSubEnvironments() == 1) {
-    this->histogram(initialPos,
-                    unifiedMinHorizontalValue,
-                    unifiedMaxHorizontalValue,
-                    unifiedCenters,
-                    unifiedBins);
-    return;
+    return this->histogram(initialPos,
+                           unifiedMinHorizontalValue,
+                           unifiedMaxHorizontalValue,
+                           unifiedCenters,
+                           unifiedBins);
   }
 
   if (true) { // FIX ME: m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
@@ -1286,10 +1371,25 @@ template <class T>
 void
 uqScalarSequenceClass<T>::unifiedSort()
 {
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
-                      "uqScalarSequenceClass<T>::unifiedSort()",
-                      "not implemented yet");
+  if (m_env.numSubEnvironments() == 1) {
+    return this->sort();
+  }
+
+  if (true) { // FIX ME: m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+    if (m_env.intra0Rank() >= 0) {
+      UQ_FATAL_TEST_MACRO(true,
+                          m_env.rank(),
+                          "uqScalarSequenceClass<T>::unifiedSort()",
+                          "not implemented yet");
+    }
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.rank(),
+                        "uqScalarSequenceClass<T>::unifiedSort()",
+                        "parallel vectors not supported yet");
+  }
+
   return;
 }
 
@@ -1297,11 +1397,11 @@ template <class T>
 T
 uqScalarSequenceClass<T>::interQuantileRange(unsigned int initialPos) const
 {
-  unsigned int dataSize = this->sequenceSize() - initialPos;
-
   uqScalarSequenceClass sortedSequence(m_env,0);
   this->sort(initialPos,
              sortedSequence);
+
+  unsigned int dataSize = this->sequenceSize() - initialPos;
 
   unsigned int pos1 = (unsigned int) ( (((double) dataSize) + 1.)*1./4. - 1. );
   unsigned int pos3 = (unsigned int) ( (((double) dataSize) + 1.)*3./4. - 1. );
@@ -1330,11 +1430,43 @@ template <class T>
 T
 uqScalarSequenceClass<T>::unifiedInterQuantileRange(unsigned int initialPos) const
 {
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
-                      "uqScalarSequenceClass<T>::unifiedInterQuantileRange()",
-                      "not implemented yet");
   T unifiedIqrValue = 0.;
+
+  if (m_env.numSubEnvironments() == 1) {
+    return this->interQuantileRange(initialPos);
+  }
+
+  if (true) { // FIX ME: m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+    if (m_env.intra0Rank() >= 0) {
+      uqScalarSequenceClass sortedSequence(m_env,0);
+      this->unifiedSort(initialPos,
+                        sortedSequence);
+    
+      unsigned int localDataSize = this->sequenceSize() - initialPos;
+      unsigned int unifiedDataSize = 0;
+      int mpiRC = MPI_Allreduce((void *) &localDataSize, (void *) &unifiedDataSize, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.intra0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          UQ_UNAVAILABLE_RANK,
+                          "uqScalarSequenceClass<T>::unifiedInterQuantileRange()",
+                          "failed MPI_Allreduce() for data size");
+
+      unsigned int pos1 = (unsigned int) ( (((double) unifiedDataSize) + 1.)*1./4. - 1. );
+      unsigned int pos3 = (unsigned int) ( (((double) unifiedDataSize) + 1.)*3./4. - 1. );
+
+      double fraction1 = (((double) unifiedDataSize) + 1.)*1./4. - 1. - ((double) pos1);
+      double fraction3 = (((double) unifiedDataSize) + 1.)*3./4. - 1. - ((double) pos3);
+
+      T value1 = (1.-fraction1) * sortedSequence[pos1] + fraction1 * sortedSequence[pos1+1];
+      T value3 = (1.-fraction3) * sortedSequence[pos3] + fraction3 * sortedSequence[pos3+1];
+      unifiedIqrValue = value3 - value1;
+    }
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.rank(),
+                        "uqScalarSequenceClass<T>::unifiedInterQuantileRange()",
+                        "parallel vectors not supported yet");
+  }
 
   return unifiedIqrValue;
 }
@@ -1377,32 +1509,50 @@ uqScalarSequenceClass<T>::unifiedScaleForKDE(
   unsigned int initialPos,
   const T&     unifiedIqrValue) const
 {
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
-                      "uqScalarSequenceClass<T>::unifiedScaleForKDE()",
-                      "not implemented yet");
+  if (m_env.numSubEnvironments() == 1) {
+    return this->scaleForKDE(initialPos,
+                             unifiedIqrValue);
+  }
 
-  bool bRC = (initialPos <  this->sequenceSize());
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
-                      "uqScalarSequenceClass<V>::unifiedScalesForKDE()",
-                      "invalid input data");
+  T unifiedScaleValue = 0.;
 
-  unsigned int dataSize = this->sequenceSize() - initialPos;
+  if (true) { // FIX ME: m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+    if (m_env.intra0Rank() >= 0) {
+      bool bRC = (initialPos <  this->sequenceSize());
+      UQ_FATAL_TEST_MACRO(bRC == false,
+                          m_env.rank(),
+                          "uqScalarSequenceClass<V>::unifiedScaleForKDE()",
+                          "invalid input data");
 
-  T unifiedMeanValue = this->unifiedMean(initialPos,
-                                         dataSize);
+      unsigned int localDataSize = this->sequenceSize() - initialPos;
 
-  T unifiedSamValue = this->unifiedSampleVariance(initialPos,
-                                                  dataSize,
-                                                  unifiedMeanValue);
+      T unifiedMeanValue = this->unifiedMean(initialPos,
+                                             localDataSize);
 
-  T unifiedScaleValue;
-  if (unifiedIqrValue <= 0.) {
-    unifiedScaleValue = 1.06*sqrt(unifiedSamValue)/pow(dataSize,1./5.); // FIX ME: use total dataSize
-   }
+      T unifiedSamValue = this->unifiedSampleVariance(initialPos,
+                                                      localDataSize,
+                                                      unifiedMeanValue);
+
+      unsigned int unifiedDataSize = 0;
+      int mpiRC = MPI_Allreduce((void *) &localDataSize, (void *) &unifiedDataSize, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.intra0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          UQ_UNAVAILABLE_RANK,
+                          "uqScalarSequenceClass<T>::unifiedUniformlySampledCdf()",
+                          "failed MPI_Allreduce() for data size");
+
+      if (unifiedIqrValue <= 0.) {
+        unifiedScaleValue = 1.06*sqrt(unifiedSamValue)/pow(unifiedDataSize,1./5.);
+      }
+      else {
+        unifiedScaleValue = 1.06*std::min(sqrt(unifiedSamValue),unifiedIqrValue/1.34)/pow(unifiedDataSize,1./5.);
+      }
+    }
+  }
   else {
-    unifiedScaleValue = 1.06*std::min(sqrt(unifiedSamValue),unifiedIqrValue/1.34)/pow(dataSize,1./5.); // FIX ME: use total dataSize
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.rank(),
+                        "uqScalarSequenceClass<T>::unifiedScaleForKDE()",
+                        "parallel vectors not supported yet");
   }
 
   return unifiedScaleValue;
@@ -1471,10 +1621,60 @@ uqScalarSequenceClass<T>::unifiedGaussianKDE(
   const std::vector<T>& unifiedEvaluationParams,
   std::vector<double>&  unifiedDensityValues) const
 {
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
-                      "uqScalarSequenceClass<T>::unifiedGaussianKDE()",
-                      "not implemented yet");
+  if (m_env.numSubEnvironments() == 1) {
+    return this->gaussianKDE(initialPos,
+                             unifiedScaleValue,
+                             unifiedEvaluationParams,
+                             unifiedDensityValues);
+  }
+
+  if (true) { // FIX ME: m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+    bool bRC = ((initialPos                     <  this->sequenceSize()          ) &&
+                (0                              <  unifiedEvaluationParams.size()) &&
+                (unifiedEvaluationParams.size() == unifiedDensityValues.size()   ));
+    UQ_FATAL_TEST_MACRO(bRC == false,
+                        m_env.rank(),
+                        "uqScalarSequenceClass<V>::unifiedGaussianKDE()",
+                        "invalid input data");
+
+    unsigned int localDataSize = this->sequenceSize() - initialPos;
+    unsigned int unifiedDataSize = 0;
+    int mpiRC = MPI_Allreduce((void *) &localDataSize, (void *) &unifiedDataSize, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.intra0Comm().Comm());
+    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                        UQ_UNAVAILABLE_RANK,
+                        "uqScalarSequenceClass<T>::unifiedGaussianKDE()",
+                        "failed MPI_Allreduce() for data size");
+
+    unsigned int numEvals = unifiedEvaluationParams.size();
+
+    std::vector<double> densityValues(numEvals,0.);
+    double unifiedScaleInv = 1./unifiedScaleValue;
+    for (unsigned int j = 0; j < numEvals; ++j) {
+      double x = unifiedEvaluationParams[j];
+      double value = 0.;
+      for (unsigned int k = 0; k < localDataSize; ++k) {
+        double xk = m_seq[initialPos+k];
+        value += uqMiscGaussianDensity((x-xk)*unifiedScaleInv,0.,1.);
+      }
+      densityValues[j] = unifiedScaleInv * (value/(double) unifiedDataSize);
+    }
+
+    for (unsigned int j = 0; j < numEvals; ++j) {
+      unifiedDensityValues[j] = 0.;
+    }
+    mpiRC = MPI_Allreduce((void *) &densityValues[0], (void *) &unifiedDensityValues[0], (int) densityValues.size(), MPI_DOUBLE, MPI_SUM, m_env.intra0Comm().Comm());
+    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                        UQ_UNAVAILABLE_RANK,
+                        "uqScalarSequenceClass<T>::unifiedGaussianKDE()",
+                        "failed MPI_Allreduce() for density values");
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.rank(),
+                        "uqScalarSequenceClass<T>::unifiedGaussianKDE()",
+                        "parallel vectors not supported yet");
+  }
+
   return;
 }
 
