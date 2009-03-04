@@ -251,7 +251,8 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
         uqBaseVectorSequenceClass<P_V,P_M>& workingPSeq,
         uqBaseVectorSequenceClass<Q_V,Q_M>& workingQSeq)
 {
-  workingQSeq.setName(m_prefix+"seq");
+  workingPSeq.setName(m_prefix+"Pseq");
+  workingQSeq.setName(m_prefix+"Qseq");
 
   //****************************************************
   // Generate sequence of qoi values
@@ -374,6 +375,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
 
   iRC = gettimeofday(&timevalSeq, NULL);
 
+  workingPSeq.resizeSequence(seqSize);
   workingQSeq.resizeSequence(seqSize);
   P_V tmpP(m_paramSpace.zeroVector());
   Q_V tmpQ(m_qoiSpace.zeroVector());

@@ -363,11 +363,11 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
       if ((ofsvar            == NULL ) ||
           (ofsvar->is_open() == false)) {
         delete ofsvar;
-        ofsvar = new std::ofstream(m_outputFileName.c_str(), std::ofstream::out | std::ofstream::trunc);
+        ofsvar = new std::ofstream((m_outputFileName+"_subenv"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
       }
       UQ_FATAL_TEST_MACRO((ofsvar && ofsvar->is_open()) == false,
                           m_env.rank(),
-                          "uqStatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithBayesMarkovChain()",
+                          "uqStatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()",
                           "failed to open file");
 
       m_qoiRv.mdf().print(*ofsvar);
@@ -383,7 +383,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
         else {
           UQ_FATAL_TEST_MACRO(true,
                               m_env.rank(),
-                              "uqStatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithBayesMarkovChain()",
+                              "uqStatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()",
                               "unifed cdf writing, parallel vectors not supported yet");
         }
       }
