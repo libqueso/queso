@@ -3,7 +3,7 @@
 # Build in these directories:
 # DIST_SUBDIRS = basic stats
 
-AM_CPPFLAGS = -I$(top_srcdir)/libs/basic/inc -I$(top_srcdir)/libs/stats/inc $(MPI_CXXFLAGS) $(BOOST_CPPFLAGS) $(GSL_CFLAGS)
+AM_CPPFLAGS = -I$(top_srcdir)/libs/basic/inc -I$(top_srcdir)/libs/stats/inc $(BOOST_CPPFLAGS) $(GSL_CFLAGS)
 
 lib_LIBRARIES = libqueso.a
 

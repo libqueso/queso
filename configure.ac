@@ -24,13 +24,12 @@ echo "configure found CXX = $CXX"
 
 AC_PROG_RANLIB
 
-dnl Check for mpi (FIX ME: this can't be the best way)
-ACX_MPI
-MPI_CXXFLAGS=`mpicxx --showme:compile` 
-AC_SUBST(MPI_CXXFLAGS)
-MPI_CXXLIBS=`mpicxx --showme:link`
-AC_SUBST(MPI_CXXLIBS)
-AC_CACHE_SAVE
+dnl Check for mpi c and c++ compilers
+AC_LANG([C])
+ACX_MPI([CC="$MPICC"], [AC_MSG_ERROR([Could not find MPI.])])
+
+AC_LANG([C++])
+ACX_MPI([CXX="$MPICXX"], [AC_MSG_ERROR([Could not find MPI.])])
 
 dnl Check for trilinos\
 dnl TO DO: Add AM_CONDITIONAL here to determine whether to build trilinos versions of libs
