@@ -7,7 +7,7 @@ AM_CPPFLAGS = -I. -I$(top_srcdir)/examples/pyramid/src/physics_1 \
 	-I$(top_srcdir)/examples/pyramid/src/physics_1_2 \
 	-I$(top_srcdir)/libs/basic/inc \
 	-I$(top_srcdir)/libs/stats/inc \
-	$(MPI_CXXFLAGS) $(TRILINOS_INCLUDE) $(EPETRA_INCLUDES)
+	$(MPI_CXXFLAGS) -I$(TRILINOS_INCLUDE) $(EPETRA_INCLUDES)
 AM_LDFLAGS = $(BOOST_LDFLAGS)
 
 bin_PROGRAMS = 
