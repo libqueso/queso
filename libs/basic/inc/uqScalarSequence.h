@@ -66,19 +66,22 @@ public:
                                                 T&                         minDomainValue,
                                                 T&                         maxDomainValue,
                                                 std::vector<T>&            cdfValues) const;
-        void         unifiedUniformlySampledCdf(unsigned int               numIntervals,
+        void         unifiedUniformlySampledCdf(bool                       useOnlyIntra0Comm,
+                                                unsigned int               numIntervals,
                                                 T&                         unifiedMinDomainValue,
                                                 T&                         unifiedMaxDomainValue,
                                                 std::vector<T>&            unifiedCdfValues) const;
 
         T            mean                      (unsigned int               initialPos,
                                                 unsigned int               numPos) const;
-        T            unifiedMean               (unsigned int               initialPos,
+        T            unifiedMean               (bool                       useOnlyIntra0Comm,
+                                                unsigned int               initialPos,
                                                 unsigned int               localNumPos) const;
         T            sampleVariance            (unsigned int               initialPos,
                                                 unsigned int               numPos,
                                                 const T&                   meanValue) const;
-        T            unifiedSampleVariance     (unsigned int               initialPos,
+        T            unifiedSampleVariance     (bool                       useOnlyIntra0Comm,
+                                                unsigned int               initialPos,
                                                 unsigned int               localNumPos,
                                                 const T&                   unifiedMeanValue) const;
         T            populationVariance        (unsigned int               initialPos,
@@ -111,7 +114,8 @@ public:
         void         minMax                    (unsigned int               initialPos,
                                                 T&                         minValue,
                                                 T&                         maxValue) const;
-        void         unifiedMinMax             (unsigned int               initialPos,
+        void         unifiedMinMax             (bool                       useOnlyIntra0Comm,
+                                                unsigned int               initialPos,
                                                 T&                         unifiedMinValue,
                                                 T&                         unifiedMaxValue) const;
         void         histogram                 (unsigned int               initialPos,
@@ -119,29 +123,34 @@ public:
                                                 const T&                   maxHorizontalValue,
                                                 std::vector<T>&            centers,
                                                 std::vector<unsigned int>& bins) const;
-        void         unifiedHistogram          (unsigned int               initialPos,
+        void         unifiedHistogram          (bool                       useOnlyIntra0Comm,
+                                                unsigned int               initialPos,
                                                 const T&                   unifiedMinHorizontalValue,
                                                 const T&                   unifiedMaxHorizontalValue,
                                                 std::vector<T>&            unifiedCenters,
                                                 std::vector<unsigned int>& unifiedBins) const;
         void         sort                      (unsigned int               initialPos,
                                                 uqScalarSequenceClass<T>&  sortedSequence) const;
-        void         unifiedSort               (unsigned int               initialPos,
+        void         unifiedSort               (bool                       useOnlyIntra0Comm,
+                                                unsigned int               initialPos,
                                                 uqScalarSequenceClass<T>&  unifiedSortedSequence) const;
         void         sort                      ();
-        void         unifiedSort               ();
+        void         unifiedSort               (bool                       useOnlyIntra0Comm);
         T            interQuantileRange        (unsigned int               initialPos) const;
-        T            unifiedInterQuantileRange (unsigned int               initialPos) const;
+        T            unifiedInterQuantileRange (bool                       useOnlyIntra0Comm,
+                                                unsigned int               initialPos) const;
         T            scaleForKDE               (unsigned int               initialPos,
                                                 const T&                   iqrValue) const;
-        T            unifiedScaleForKDE        (unsigned int               initialPos,
+        T            unifiedScaleForKDE        (bool                       useOnlyIntra0Comm,
+                                                unsigned int               initialPos,
                                                 const T&                   unifiedIqrValue) const;
         double       gaussianKDE               (T                          evaluationParam) const;
         void         gaussianKDE               (unsigned int               initialPos,
                                                 double                     scaleValue,
                                                 const std::vector<T>&      evaluationParams,
                                                 std::vector<double>&       densityValues) const;
-        void         unifiedGaussianKDE        (unsigned int               initialPos,
+        void         unifiedGaussianKDE        (bool                       useOnlyIntra0Comm,
+                                                unsigned int               initialPos,
                                                 double                     unifiedScaleValue,
                                                 const std::vector<T>&      unifiedEvaluationParams,
                                                 std::vector<double>&       unifiedDensityValues) const;
@@ -331,7 +340,7 @@ uqScalarSequenceClass<T>::uniformlySampledMdf(
   T                         tmpMinValue;
   T                         tmpMaxValue;
   std::vector<T>            centers(numEvaluationPoints,0.);
-  std::vector<unsigned int> bins   (numEvaluationPoints,0.);
+  std::vector<unsigned int> bins   (numEvaluationPoints,0);
 
   minMax(0, // initialPos
          tmpMinValue,
@@ -371,7 +380,7 @@ uqScalarSequenceClass<T>::uniformlySampledCdf(
   T                         tmpMinValue;
   T                         tmpMaxValue;
   std::vector<T>            centers(numEvaluationPoints,0.);
-  std::vector<unsigned int> bins   (numEvaluationPoints,0.);
+  std::vector<unsigned int> bins   (numEvaluationPoints,0);
 
   minMax(0, // initialPos
          tmpMinValue,
@@ -404,6 +413,7 @@ uqScalarSequenceClass<T>::uniformlySampledCdf(
 template <class T>
 void
 uqScalarSequenceClass<T>::unifiedUniformlySampledCdf(
+  bool            useOnlyIntra0Comm,
   unsigned int    numEvaluationPoints,
   T&              unifiedMinDomainValue,
   T&              unifiedMaxDomainValue,
@@ -416,17 +426,24 @@ uqScalarSequenceClass<T>::unifiedUniformlySampledCdf(
                                      unifiedCdfValues);
   }
 
-  if (true) { // FIX ME: m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+  if (useOnlyIntra0Comm) {
     if (m_env.intra0Rank() >= 0) {
+      if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
+        *m_env.subScreenFile() << "Entering uqScalarSequenceClass<T>::unifiedUniformlySampledCdf()"
+                               << std::endl;
+      }
+
       T                         unifiedTmpMinValue;
       T                         unifiedTmpMaxValue;
       std::vector<T>            unifiedCenters(numEvaluationPoints,0.);
-      std::vector<unsigned int> unifiedBins   (numEvaluationPoints,0.);
+      std::vector<unsigned int> unifiedBins   (numEvaluationPoints,0);
 
-      this->unifiedMinMax(0, // initialPos
+      this->unifiedMinMax(useOnlyIntra0Comm,
+                          0, // initialPos
                           unifiedTmpMinValue,
                           unifiedTmpMaxValue);
-      this->unifiedHistogram(0, // initialPos,
+      this->unifiedHistogram(useOnlyIntra0Comm,
+                             0, // initialPos
                              unifiedTmpMinValue,
                              unifiedTmpMaxValue,
                              unifiedCenters,
@@ -435,35 +452,40 @@ uqScalarSequenceClass<T>::unifiedUniformlySampledCdf(
       unifiedMinDomainValue = unifiedCenters[0];
       unifiedMaxDomainValue = unifiedCenters[unifiedCenters.size()-1];
 
-      unsigned int localTotalSumOfBins = 0;
-      for (unsigned int i = 0; i < numEvaluationPoints; ++i) {
-        localTotalSumOfBins += unifiedBins[i];
-      }
-
-      std::vector<unsigned int> localPartialSumsOfBins(numEvaluationPoints,0);
-      localPartialSumsOfBins[0] = unifiedBins[0];
-      for (unsigned int i = 1; i < numEvaluationPoints; ++i) { // Yes, from '1'
-        localPartialSumsOfBins[i] = localPartialSumsOfBins[i-1] + unifiedBins[i];
-      }
-
       unsigned int unifiedTotalSumOfBins = 0;
-      int mpiRC = MPI_Allreduce((void *) &localTotalSumOfBins, (void *) &unifiedTotalSumOfBins, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.intra0Comm().Comm());
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          UQ_UNAVAILABLE_RANK,
-                          "uqScalarSequenceClass<T>::unifiedUniformlySampledCdf()",
-                          "failed MPI_Allreduce() for total sum of bins");
+      for (unsigned int i = 0; i < numEvaluationPoints; ++i) {
+        unifiedTotalSumOfBins += unifiedBins[i];
+      }
 
       std::vector<unsigned int> unifiedPartialSumsOfBins(numEvaluationPoints,0);
-      mpiRC = MPI_Allreduce((void *) &localPartialSumsOfBins[0], (void *) &unifiedPartialSumsOfBins[0], (int) unifiedPartialSumsOfBins.size(), MPI_UNSIGNED, MPI_SUM, m_env.intra0Comm().Comm());
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          UQ_UNAVAILABLE_RANK,
-                          "uqScalarSequenceClass<T>::unifiedUniformlySampledCdf()",
-                          "failed MPI_Allreduce() for partial sums of bins");
+      unifiedPartialSumsOfBins[0] = unifiedBins[0];
+      for (unsigned int i = 1; i < numEvaluationPoints; ++i) { // Yes, from '1'
+        unifiedPartialSumsOfBins[i] = unifiedPartialSumsOfBins[i-1] + unifiedBins[i];
+      }
 
       unifiedCdfValues.clear();
       unifiedCdfValues.resize(numEvaluationPoints);
       for (unsigned int i = 0; i < numEvaluationPoints; ++i) {
         unifiedCdfValues[i] = ((T) unifiedPartialSumsOfBins[i])/((T) unifiedTotalSumOfBins);
+      }
+
+      if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
+        for (unsigned int i = 0; i < numEvaluationPoints; ++i) {
+          *m_env.subScreenFile() << "In uqScalarSequenceClass<T>::unifiedUniformlySampledCdf()"
+                                 << ": i = " << i
+                                 << ", unifiedTmpMinValue = "       << unifiedTmpMinValue
+                                 << ", unifiedTmpMaxValue = "       << unifiedTmpMaxValue
+                                 << ", unifiedBins = "              << unifiedBins[i]
+                                 << ", unifiedCdfValue = "          << unifiedCdfValues[i]
+                                 << ", unifiedPartialSumsOfBins = " << unifiedPartialSumsOfBins[i]
+                                 << ", unifiedTotalSumOfBins = "    << unifiedTotalSumOfBins
+                                 << std::endl;
+        }
+      }
+
+      if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
+        *m_env.subScreenFile() << "Leaving uqScalarSequenceClass<T>::unifiedUniformlySampledCdf()"
+                               << std::endl;
       }
     }
   }
@@ -503,6 +525,7 @@ uqScalarSequenceClass<T>::mean(
 template <class T>
 T
 uqScalarSequenceClass<T>::unifiedMean(
+  bool         useOnlyIntra0Comm,
   unsigned int initialPos,
   unsigned int numPos) const
 {
@@ -512,7 +535,7 @@ uqScalarSequenceClass<T>::unifiedMean(
   }
 
   T unifiedMeanValue = 0.;
-  if (true) { // FIX ME: m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+  if (useOnlyIntra0Comm) {
     if (m_env.intra0Rank() >= 0) {
       bool bRC = ((initialPos          <  this->sequenceSize()) &&
                   (0                   <  numPos              ) &&
@@ -586,6 +609,7 @@ uqScalarSequenceClass<T>::sampleVariance(
 template <class T>
 T
 uqScalarSequenceClass<T>::unifiedSampleVariance(
+  bool         useOnlyIntra0Comm,
   unsigned int initialPos,
   unsigned int numPos,
   const T&     unifiedMeanValue) const
@@ -598,7 +622,7 @@ uqScalarSequenceClass<T>::unifiedSampleVariance(
 
   T unifiedSamValue = 0.;
 
-  if (true) { // FIX ME: m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+  if (useOnlyIntra0Comm) {
     if (m_env.intra0Rank() >= 0) {
       bool bRC = ((initialPos          <  this->sequenceSize()) &&
                   (0                   <  numPos              ) &&
@@ -1146,6 +1170,7 @@ uqScalarSequenceClass<T>::minMax(
 template <class T>
 void
 uqScalarSequenceClass<T>::unifiedMinMax(
+  bool         useOnlyIntra0Comm,
   unsigned int initialPos,
   T&           unifiedMinValue,
   T&           unifiedMaxValue) const
@@ -1156,7 +1181,7 @@ uqScalarSequenceClass<T>::unifiedMinMax(
                         unifiedMaxValue);
   }
 
-  if (true) { // FIX ME: m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+  if (useOnlyIntra0Comm) {
     if (m_env.intra0Rank() >= 0) {
       // Find local min and max
       T minValue;
@@ -1166,7 +1191,6 @@ uqScalarSequenceClass<T>::unifiedMinMax(
                    maxValue);
 
       // Get overall min
-      T unifiedMinValue;
       std::vector<double> sendBuf(1,0.);
       for (unsigned int i = 0; i < sendBuf.size(); ++i) {
         sendBuf[i] = minValue;
@@ -1178,7 +1202,6 @@ uqScalarSequenceClass<T>::unifiedMinMax(
                           "failed MPI_Allreduce() for min");
 
       // Get overall max
-      T unifiedMaxValue;
       for (unsigned int i = 0; i < sendBuf.size(); ++i) {
         sendBuf[i] = maxValue;
       }
@@ -1187,6 +1210,15 @@ uqScalarSequenceClass<T>::unifiedMinMax(
                           UQ_UNAVAILABLE_RANK,
                           "uqScalarSequenceClass<T>::unifiedMinMax()",
                           "failed MPI_Allreduce() for max");
+
+      if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
+        *m_env.subScreenFile() << "In uqScalarSequenceClass<T>::unifiedMinMax()"
+                               << ": localMinValue = "   << minValue
+                               << ", localMaxValue = "   << maxValue
+                               << ", unifiedMinValue = " << unifiedMinValue
+                               << ", unifiedMaxValue = " << unifiedMaxValue
+                               << std::endl;
+      }
     }
   }
   else {
@@ -1253,6 +1285,7 @@ uqScalarSequenceClass<T>::histogram(
 template <class T>
 void
 uqScalarSequenceClass<T>::unifiedHistogram(
+  bool                       useOnlyIntra0Comm,
   unsigned int               initialPos,
   const T&                   unifiedMinHorizontalValue,
   const T&                   unifiedMaxHorizontalValue,
@@ -1267,7 +1300,7 @@ uqScalarSequenceClass<T>::unifiedHistogram(
                            unifiedBins);
   }
 
-  if (true) { // FIX ME: m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+  if (useOnlyIntra0Comm) {
     if (m_env.intra0Rank() >= 0) {
       UQ_FATAL_TEST_MACRO(unifiedCenters.size() != unifiedBins.size(),
                           UQ_UNAVAILABLE_RANK,
@@ -1314,6 +1347,18 @@ uqScalarSequenceClass<T>::unifiedHistogram(
                           UQ_UNAVAILABLE_RANK,
                           "uqScalarSequenceClass<T>::unifiedHistogram()",
                           "failed MPI_Allreduce() for bins");
+
+      if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
+        for (unsigned int i = 0; i < unifiedCenters.size(); ++i) {
+          *m_env.subScreenFile() << "In uqScalarSequenceClass<T>::unifiedHistogram()"
+                                 << ": i = " << i
+                                 << ", unifiedMinHorizontalValue = " << unifiedMinHorizontalValue
+                                 << ", unifiedMaxHorizontalValue = " << unifiedMaxHorizontalValue
+                                 << ", unifiedCenters = "            << unifiedCenters[i]
+                                 << ", unifiedBins = "               << unifiedBins[i]
+                                 << std::endl;
+        }
+      }
     }
   }
   else {
@@ -1345,6 +1390,7 @@ uqScalarSequenceClass<T>::sort(
 template <class T>
 void
 uqScalarSequenceClass<T>::unifiedSort(
+  bool                      useOnlyIntra0Comm,
   unsigned int              initialPos,
   uqScalarSequenceClass<T>& unifiedSortedSequence) const
 {
@@ -1354,7 +1400,7 @@ uqScalarSequenceClass<T>::unifiedSort(
                          1,
                          numPos,
                          unifiedSortedSequence);
-  unifiedSortedSequence.unifiedSort();
+  unifiedSortedSequence.unifiedSort(useOnlyIntra0Comm);
 
   return;
 }
@@ -1369,13 +1415,13 @@ uqScalarSequenceClass<T>::sort()
 
 template <class T>
 void
-uqScalarSequenceClass<T>::unifiedSort()
+uqScalarSequenceClass<T>::unifiedSort(bool useOnlyIntra0Comm)
 {
   if (m_env.numSubEnvironments() == 1) {
     return this->sort();
   }
 
-  if (true) { // FIX ME: m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+  if (useOnlyIntra0Comm) {
     if (m_env.intra0Rank() >= 0) {
       UQ_FATAL_TEST_MACRO(true,
                           m_env.rank(),
@@ -1428,7 +1474,9 @@ uqScalarSequenceClass<T>::interQuantileRange(unsigned int initialPos) const
 
 template <class T>
 T
-uqScalarSequenceClass<T>::unifiedInterQuantileRange(unsigned int initialPos) const
+uqScalarSequenceClass<T>::unifiedInterQuantileRange(
+  bool         useOnlyIntra0Comm,
+  unsigned int initialPos) const
 {
   T unifiedIqrValue = 0.;
 
@@ -1436,10 +1484,11 @@ uqScalarSequenceClass<T>::unifiedInterQuantileRange(unsigned int initialPos) con
     return this->interQuantileRange(initialPos);
   }
 
-  if (true) { // FIX ME: m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+  if (useOnlyIntra0Comm) {
     if (m_env.intra0Rank() >= 0) {
       uqScalarSequenceClass sortedSequence(m_env,0);
-      this->unifiedSort(initialPos,
+      this->unifiedSort(useOnlyIntra0Comm,
+                        initialPos,
                         sortedSequence);
     
       unsigned int localDataSize = this->sequenceSize() - initialPos;
@@ -1506,6 +1555,7 @@ uqScalarSequenceClass<T>::scaleForKDE(
 template <class T>
 T
 uqScalarSequenceClass<T>::unifiedScaleForKDE(
+  bool         useOnlyIntra0Comm,
   unsigned int initialPos,
   const T&     unifiedIqrValue) const
 {
@@ -1516,7 +1566,7 @@ uqScalarSequenceClass<T>::unifiedScaleForKDE(
 
   T unifiedScaleValue = 0.;
 
-  if (true) { // FIX ME: m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+  if (useOnlyIntra0Comm) {
     if (m_env.intra0Rank() >= 0) {
       bool bRC = (initialPos <  this->sequenceSize());
       UQ_FATAL_TEST_MACRO(bRC == false,
@@ -1526,10 +1576,12 @@ uqScalarSequenceClass<T>::unifiedScaleForKDE(
 
       unsigned int localDataSize = this->sequenceSize() - initialPos;
 
-      T unifiedMeanValue = this->unifiedMean(initialPos,
+      T unifiedMeanValue = this->unifiedMean(useOnlyIntra0Comm,
+                                             initialPos,
                                              localDataSize);
 
-      T unifiedSamValue = this->unifiedSampleVariance(initialPos,
+      T unifiedSamValue = this->unifiedSampleVariance(useOnlyIntra0Comm,
+                                                      initialPos,
                                                       localDataSize,
                                                       unifiedMeanValue);
 
@@ -1616,6 +1668,7 @@ uqScalarSequenceClass<T>::gaussianKDE(
 template <class T>
 void
 uqScalarSequenceClass<T>::unifiedGaussianKDE(
+  bool                  useOnlyIntra0Comm,
   unsigned int          initialPos,
   double                unifiedScaleValue,
   const std::vector<T>& unifiedEvaluationParams,
@@ -1628,7 +1681,7 @@ uqScalarSequenceClass<T>::unifiedGaussianKDE(
                              unifiedDensityValues);
   }
 
-  if (true) { // FIX ME: m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+  if (useOnlyIntra0Comm) {
     bool bRC = ((initialPos                     <  this->sequenceSize()          ) &&
                 (0                              <  unifiedEvaluationParams.size()) &&
                 (unifiedEvaluationParams.size() == unifiedDensityValues.size()   ));

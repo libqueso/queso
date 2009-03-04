@@ -161,7 +161,7 @@ uqArrayOfOneDGridsClass<V,M>::setUniformGrids(
     sprintf(strI,"%d_",i);
     m_oneDGrids(i,0) = new uqUniformOneDGridClass<double>(m_env,
                                                           (m_prefix+strI).c_str(),
-                                                          sizesVec[i],
+                                                          (unsigned int) sizesVec[i],
                                                           minPositionsVec[i],
                                                           maxPositionsVec[i]);
   }

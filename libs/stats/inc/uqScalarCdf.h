@@ -240,7 +240,7 @@ uqSampledScalarCdfClass<T>::inverse(double cdfValue) const
       searchPosition = false;
     }
     else {
-      unsigned int k=(i+j)*.5;
+      unsigned int k= (unsigned int) ((i+j)*.5);
       if (cdfValue < m_cdfValues[k]) {
         j = k;
       }

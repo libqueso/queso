@@ -1,5 +1,5 @@
 dnl Init autoconf w/ Package name, version number, and developer email
-AC_INIT([queso], [0.3.1], [pecos_dev@ices.utexas.edu])
+AC_INIT([queso], [0.4.0], [pecos_dev@ices.utexas.edu])
 
 dnl configuration header
 AM_CONFIG_HEADER(config.h)

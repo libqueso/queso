@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-AM_CPPFLAGS = -I. -I$(top_srcdir)/libs/basic/inc -I$(top_srcdir)/libs/stats/inc $(MPI_CXXFLAGS) -I$(TRILINOS_INCLUDE) $(EPETRA_INCLUDES)
+AM_CPPFLAGS = -I. -I$(top_srcdir)/libs/basic/inc -I$(top_srcdir)/libs/stats/inc $(MPI_CXXFLAGS) -I$(TRILINOS_INCLUDE) $(EPETRA_INCLUDES) $(BOOST_CPPFLAGS) $(GSL_CFLAGS)
 AM_LDFLAGS = $(BOOST_LDFLAGS)
 
 bin_PROGRAMS = 

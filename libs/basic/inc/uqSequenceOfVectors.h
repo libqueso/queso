@@ -410,7 +410,7 @@ uqSequenceOfVectorsClass<V,M>::uniformlySampledMdf(
                            data);
 
     std::vector<double> aMdf(0);
-    data.uniformlySampledMdf(numEvaluationPointsVec[i],
+    data.uniformlySampledMdf((unsigned int) numEvaluationPointsVec[i],
                              minDomainValues[i],
                              maxDomainValues[i],
                              aMdf);
@@ -445,7 +445,7 @@ uqSequenceOfVectorsClass<V,M>::uniformlySampledCdf(
                            data);
 
     std::vector<double> aCdf(0);
-    data.uniformlySampledCdf(numEvaluationPointsVec[i],
+    data.uniformlySampledCdf((unsigned int) numEvaluationPointsVec[i],
                              minDomainValues[i],
                              maxDomainValues[i],
                              aCdf);
@@ -466,6 +466,11 @@ uqSequenceOfVectorsClass<V,M>::unifiedUniformlySampledCdf(
   uqArrayOfOneDGridsClass <V,M>& unifiedCdfGrids,
   uqArrayOfOneDTablesClass<V,M>& unifiedCdfValues) const
 {
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
+    *m_env.subScreenFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedUniformlySampledCdf()"
+                           << std::endl;
+  }
+
   V unifiedMinDomainValues(m_vectorSpace.zeroVector());
   V unifiedMaxDomainValues(m_vectorSpace.zeroVector());
 
@@ -480,7 +485,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedUniformlySampledCdf(
                            data);
 
     std::vector<double> aCdf(0);
-    data.unifiedUniformlySampledCdf(numEvaluationPointsVec[i],
+    data.unifiedUniformlySampledCdf(m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1,
+                                    (unsigned int) numEvaluationPointsVec[i],
                                     unifiedMinDomainValues[i],
                                     unifiedMaxDomainValues[i],
                                     aCdf);
@@ -490,6 +496,11 @@ uqSequenceOfVectorsClass<V,M>::unifiedUniformlySampledCdf(
   unifiedCdfGrids.setUniformGrids(numEvaluationPointsVec,
                                   unifiedMinDomainValues,
                                   unifiedMaxDomainValues);
+
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
+    *m_env.subScreenFile() << "Leaving uqSequenceOfVectorsClass<V,M>::unifiedUniformlySampledCdf()"
+                           << std::endl;
+  }
 
   return;
 }
@@ -1009,7 +1020,10 @@ uqSequenceOfVectorsClass<V,M>::unifiedMinMax(
                            numPos,
                            i,
                            data);
-    data.unifiedMinMax(0,unifiedMinVec[i],unifiedMaxVec[i]);
+    data.unifiedMinMax(m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1,
+                       0,
+                       unifiedMinVec[i],
+                       unifiedMaxVec[i]);
   }
 
   return;
@@ -1098,7 +1112,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedHistogram(
 
     std::vector<double      > unifiedCenters(unifiedCentersForAllBins.size(),0.);
     std::vector<unsigned int> unifiedBins   (unifiedBinsForAllParams.size(), 0 );
-    data.unifiedHistogram(0,
+    data.unifiedHistogram(m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1,
+                          0,
                           unifiedMinVec[i],
                           unifiedMaxVec[i],
                           unifiedCenters,
@@ -1165,7 +1180,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedInterQuantileRange(
                            numPos,
                            i,
                            data);
-    unifiedIqrVec[i] = data.unifiedInterQuantileRange(0);
+    unifiedIqrVec[i] = data.unifiedInterQuantileRange(m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1,
+                                                      0);
   }
 
   return;
@@ -1228,7 +1244,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedScalesForKDE(
                            numPos,
                            i,
                            data);
-    unifiedScaleVec[i] = data.unifiedScaleForKDE(0,
+    unifiedScaleVec[i] = data.unifiedScaleForKDE(m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1,
+                                                 0,
                                                  unifiedIqrVec[i]);
   }
 
@@ -1348,7 +1365,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedGaussianKDE(
       unifiedEvalParams[j] = (*unifiedEvalParamVecs[j])[i];
     }
 
-    data.unifiedGaussianKDE(0,
+    data.unifiedGaussianKDE(m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1,
+                            0,
                             unifiedScaleVec[i],
                             unifiedEvalParams,
                             unifiedDensities);

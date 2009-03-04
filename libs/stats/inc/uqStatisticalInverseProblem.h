@@ -211,16 +211,16 @@ void
   }
 
   if (m_env.allOptionsMap().count(m_option_computeSolution.c_str())) {
-    m_computeSolution = m_env.allOptionsMap()[m_option_computeSolution.c_str()].as<bool>();
+    m_computeSolution = ((const po::variable_value&) m_env.allOptionsMap()[m_option_computeSolution.c_str()]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_outputFileName.c_str())) {
-    m_outputFileName = m_env.allOptionsMap()[m_option_outputFileName.c_str()].as<std::string>();
+    m_outputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_outputFileName.c_str()]).as<std::string>();
   }
 
 #ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
   if (m_env.allOptionsMap().count(m_option_solver.c_str())) {
-    m_solverString = m_env.allOptionsMap()[m_option_solver.c_str()].as<std::string>();
+    m_solverString = ((const po::variable_value&) m_env.allOptionsMap()[m_option_solver.c_str()]).as<std::string>();
   }
 #endif
 

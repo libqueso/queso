@@ -520,84 +520,84 @@ uqMarkovChainSGClass<P_V,P_M>::getMyOptionValues(
   }
 
   if (m_env.allOptionsMap().count(m_option_chain_type.c_str())) {
-    m_chainType = m_env.allOptionsMap()[m_option_chain_type.c_str()].as<unsigned int>();
+    m_chainType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_chain_type.c_str()]).as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_chain_size.c_str())) {
-    m_chainSize = m_env.allOptionsMap()[m_option_chain_size.c_str()].as<unsigned int>();
+    m_chainSize = ((const po::variable_value&) m_env.allOptionsMap()[m_option_chain_size.c_str()]).as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_chain_displayPeriod.c_str())) {
-    m_chainDisplayPeriod = m_env.allOptionsMap()[m_option_chain_displayPeriod.c_str()].as<unsigned int>();
+    m_chainDisplayPeriod = ((const po::variable_value&) m_env.allOptionsMap()[m_option_chain_displayPeriod.c_str()]).as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_chain_measureRunTimes.c_str())) {
-    m_chainMeasureRunTimes = m_env.allOptionsMap()[m_option_chain_measureRunTimes.c_str()].as<bool>();
+    m_chainMeasureRunTimes = ((const po::variable_value&) m_env.allOptionsMap()[m_option_chain_measureRunTimes.c_str()]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_chain_write.c_str())) {
-    m_chainWrite = m_env.allOptionsMap()[m_option_chain_write.c_str()].as<bool>();
+    m_chainWrite = ((const po::variable_value&) m_env.allOptionsMap()[m_option_chain_write.c_str()]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_chain_computeStats.c_str())) {
-    m_chainComputeStats = m_env.allOptionsMap()[m_option_chain_computeStats.c_str()].as<bool>();
+    m_chainComputeStats = ((const po::variable_value&) m_env.allOptionsMap()[m_option_chain_computeStats.c_str()]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_chain_generateExtra.c_str())) {
-    m_chainGenerateExtra = m_env.allOptionsMap()[m_option_chain_generateExtra.c_str()].as<bool>();
+    m_chainGenerateExtra = ((const po::variable_value&) m_env.allOptionsMap()[m_option_chain_generateExtra.c_str()]).as<bool>();
   }
 
   //if (m_env.allOptionsMap().count(m_option_uniqueChain_generate.c_str())) {
-  //  m_uniqueChainGenerate = m_env.allOptionsMap()[m_option_uniqueChain_generate.c_str()].as<bool>();
+  //  m_uniqueChainGenerate = ((const po::variable_value&) m_env.allOptionsMap()[m_option_uniqueChain_generate.c_str()]).as<bool>();
   //}
 
   //if (m_env.allOptionsMap().count(m_option_uniqueChain_write.c_str())) {
-  //  m_uniqueChainWrite = m_env.allOptionsMap()[m_option_uniqueChain_write.c_str()].as<bool>();
+  //  m_uniqueChainWrite = ((const po::variable_value&) m_env.allOptionsMap()[m_option_uniqueChain_write.c_str()]).as<bool>();
   //}
 
   //if (m_env.allOptionsMap().count(m_option_uniqueChain_computeStats.c_str())) {
-  //  m_uniqueChainComputeStats = m_env.allOptionsMap()[m_option_uniqueChain_computeStats.c_str()].as<bool>();
+  //  m_uniqueChainComputeStats = ((const po::variable_value&) m_env.allOptionsMap()[m_option_uniqueChain_computeStats.c_str()]).as<bool>();
   //}
 
   if (m_env.allOptionsMap().count(m_option_filteredChain_generate.c_str())) {
-    m_filteredChainGenerate = m_env.allOptionsMap()[m_option_filteredChain_generate.c_str()].as<bool>();
+    m_filteredChainGenerate = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_generate.c_str()]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_filteredChain_discardedPortion.c_str())) {
-    m_filteredChainDiscardedPortion = m_env.allOptionsMap()[m_option_filteredChain_discardedPortion.c_str()].as<double>();
+    m_filteredChainDiscardedPortion = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_discardedPortion.c_str()]).as<double>();
   }
 
   if (m_env.allOptionsMap().count(m_option_filteredChain_lag.c_str())) {
-    m_filteredChainLag = m_env.allOptionsMap()[m_option_filteredChain_lag.c_str()].as<unsigned int>();
+    m_filteredChainLag = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_lag.c_str()]).as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_filteredChain_write.c_str())) {
-    m_filteredChainWrite = m_env.allOptionsMap()[m_option_filteredChain_write.c_str()].as<bool>();
+    m_filteredChainWrite = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_write.c_str()]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_filteredChain_computeStats.c_str())) {
-    m_filteredChainComputeStats = m_env.allOptionsMap()[m_option_filteredChain_computeStats.c_str()].as<bool>();
+    m_filteredChainComputeStats = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_computeStats.c_str()]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_chain_outputFileName.c_str())) {
-    m_chainOutputFileName = m_env.allOptionsMap()[m_option_chain_outputFileName.c_str()].as<std::string>();
+    m_chainOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_chain_outputFileName.c_str()]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_tk_useLocalHessian.c_str())) {
-    m_tkUseLocalHessian = m_env.allOptionsMap()[m_option_tk_useLocalHessian.c_str()].as<bool>();
+    m_tkUseLocalHessian = ((const po::variable_value&) m_env.allOptionsMap()[m_option_tk_useLocalHessian.c_str()]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_tk_useNewtonComponent.c_str())) {
-    m_tkUseNewtonComponent = m_env.allOptionsMap()[m_option_tk_useNewtonComponent.c_str()].as<bool>();
+    m_tkUseNewtonComponent = ((const po::variable_value&) m_env.allOptionsMap()[m_option_tk_useNewtonComponent.c_str()]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_dr_maxNumExtraStages.c_str())) {
-    m_drMaxNumExtraStages = m_env.allOptionsMap()[m_option_dr_maxNumExtraStages.c_str()].as<unsigned int>();
+    m_drMaxNumExtraStages = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dr_maxNumExtraStages.c_str()]).as<unsigned int>();
   }
 
   std::vector<double> tmpScales(0,0.);
   if (m_env.allOptionsMap().count(m_option_dr_scalesForExtraStages.c_str())) {
-    std::string inputString = m_env.allOptionsMap()[m_option_dr_scalesForExtraStages.c_str()].as<std::string>();
+    std::string inputString = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dr_scalesForExtraStages.c_str()]).as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpScales);
     //if (m_env.subScreenFile()) {
     //  *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::getMyOptionValues(): scales =";
@@ -634,19 +634,19 @@ uqMarkovChainSGClass<P_V,P_M>::getMyOptionValues(
   }
 
   if (m_env.allOptionsMap().count(m_option_am_initialNonAdaptInterval.c_str())) {
-    m_amInitialNonAdaptInterval = m_env.allOptionsMap()[m_option_am_initialNonAdaptInterval.c_str()].as<unsigned int>();
+    m_amInitialNonAdaptInterval = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_initialNonAdaptInterval.c_str()]).as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_am_adaptInterval.c_str())) {
-    m_amAdaptInterval = m_env.allOptionsMap()[m_option_am_adaptInterval.c_str()].as<unsigned int>();
+    m_amAdaptInterval = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_adaptInterval.c_str()]).as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_am_eta.c_str())) {
-    m_amEta = m_env.allOptionsMap()[m_option_am_eta.c_str()].as<double>();
+    m_amEta = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_eta.c_str()]).as<double>();
   }
 
   if (m_env.allOptionsMap().count(m_option_am_epsilon.c_str())) {
-    m_amEpsilon = m_env.allOptionsMap()[m_option_am_epsilon.c_str()].as<double>();
+    m_amEpsilon = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_epsilon.c_str()]).as<double>();
   }
 
   return;

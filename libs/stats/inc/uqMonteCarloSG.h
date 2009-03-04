@@ -55,12 +55,13 @@ class uqMonteCarloSGClass
 {
 public:
   uqMonteCarloSGClass(const char*                                       prefix,         /*! Prefix.           */
-                      const uqBaseVectorRVClass  <P_V,P_M>&             paramRv,        /*! The parameter rv. */
+                      const uqBaseVectorRVClass      <P_V,P_M>&         paramRv,        /*! The parameter rv. */
                       const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunctionObj, /*! The qoi function. */
-                            uqBaseVectorRVClass  <Q_V,Q_M>&             qoiRv);         /*! The qoi rv.       */
+                            uqBaseVectorRVClass      <Q_V,Q_M>&         qoiRv);         /*! The qoi rv.       */
  ~uqMonteCarloSGClass();
 
-  void generateSequence           (uqBaseVectorSequenceClass<P_V,P_M>& workingSeq);
+  void generateSequence           (uqBaseVectorSequenceClass<P_V,P_M>& workingPSeq,
+                                   uqBaseVectorSequenceClass<Q_V,Q_M>& workingQSeq);
   void checkTheParallelEnvironment();
 
   void print                      (std::ostream& os) const;
@@ -70,10 +71,12 @@ private:
   void getMyOptionValues     (po::options_description& optionsDesc);
 
   void internGenerateSequence(const uqBaseVectorRVClass      <P_V,P_M>& paramRv,
-                                    uqBaseVectorSequenceClass<P_V,P_M>& workingSeq);
+                                    uqBaseVectorSequenceClass<P_V,P_M>& workingPSeq,
+                                    uqBaseVectorSequenceClass<Q_V,Q_M>& workingQSeq);
 
   void actualGenerateSequence(const uqBaseVectorRVClass      <P_V,P_M>& paramRv,
-                                    uqBaseVectorSequenceClass<P_V,P_M>& workingSeq,
+                                    uqBaseVectorSequenceClass<P_V,P_M>& workingPSeq,
+                                    uqBaseVectorSequenceClass<Q_V,Q_M>& workingQSeq,
                                     unsigned int                        seqSize);
 
   const uqBaseEnvironmentClass&                             m_env;
@@ -203,27 +206,27 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::getMyOptionValues(
   }
 
   if (m_env.allOptionsMap().count(m_option_numSamples.c_str())) {
-    m_numSamples = m_env.allOptionsMap()[m_option_numSamples.c_str()].as<unsigned int>();
+    m_numSamples = ((const po::variable_value&) m_env.allOptionsMap()[m_option_numSamples.c_str()]).as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_outputFileName.c_str())) {
-    m_outputFileName = m_env.allOptionsMap()[m_option_outputFileName.c_str()].as<std::string>();
+    m_outputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_outputFileName.c_str()]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_displayPeriod.c_str())) {
-    m_displayPeriod = m_env.allOptionsMap()[m_option_displayPeriod.c_str()].as<unsigned int>();
+    m_displayPeriod = ((const po::variable_value&) m_env.allOptionsMap()[m_option_displayPeriod.c_str()]).as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_measureRunTimes.c_str())) {
-    m_measureRunTimes = m_env.allOptionsMap()[m_option_measureRunTimes.c_str()].as<bool>();
+    m_measureRunTimes = ((const po::variable_value&) m_env.allOptionsMap()[m_option_measureRunTimes.c_str()]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_write.c_str())) {
-    m_write = m_env.allOptionsMap()[m_option_write.c_str()].as<bool>();
+    m_write = ((const po::variable_value&) m_env.allOptionsMap()[m_option_write.c_str()]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_computeStats.c_str())) {
-    m_computeStats = m_env.allOptionsMap()[m_option_computeStats.c_str()].as<bool>();
+    m_computeStats = ((const po::variable_value&) m_env.allOptionsMap()[m_option_computeStats.c_str()]).as<bool>();
   }
 
   return;
@@ -231,10 +234,12 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::getMyOptionValues(
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_M>& workingSeq)
+uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence(
+  uqBaseVectorSequenceClass<P_V,P_M>& workingPSeq,
+  uqBaseVectorSequenceClass<Q_V,Q_M>& workingQSeq)
 {
   checkTheParallelEnvironment();
-  internGenerateSequence(m_paramRv,workingSeq);
+  internGenerateSequence(m_paramRv,workingPSeq,workingQSeq);
 
   return;
 }
@@ -243,9 +248,10 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   const uqBaseVectorRVClass      <P_V,P_M>& paramRv,
-        uqBaseVectorSequenceClass<P_V,P_M>& workingSeq)
+        uqBaseVectorSequenceClass<P_V,P_M>& workingPSeq,
+        uqBaseVectorSequenceClass<Q_V,Q_M>& workingQSeq)
 {
-  workingSeq.setName(m_prefix+"seq");
+  workingQSeq.setName(m_prefix+"seq");
 
   //****************************************************
   // Generate sequence of qoi values
@@ -259,7 +265,8 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
                            << std::endl;
   }
   actualGenerateSequence(paramRv,
-                         workingSeq,
+                         workingPSeq,
+                         workingQSeq,
                          actualNumSamples);
   if ((m_env.subScreenFile()) && (m_env.verbosity() >= 0)) {
     *m_env.subScreenFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
@@ -273,14 +280,14 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   std::ofstream* ofsvar = NULL;
   if (m_outputFileName == UQ_MOC_SG_FILENAME_FOR_NO_OUTPUT_FILE) {
     if (m_env.subScreenFile()) {
-      *m_env.subScreenFile() << "No output file opened for qoi sequence " << workingSeq.name() 
+      *m_env.subScreenFile() << "No output file opened for qoi sequence " << workingQSeq.name() 
                              << std::endl;
     }
   }
   else {
     if (m_env.subScreenFile()) {
       *m_env.subScreenFile() << "Opening output file '" << m_outputFileName
-                             << "' for qoi sequence "   << workingSeq.name()
+                             << "' for qoi sequence "   << workingQSeq.name()
                              << std::endl;
     }
 
@@ -304,20 +311,21 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   // --> compute statistics on it
   //****************************************************
   if (m_write && ofsvar) {
-    workingSeq.printContents(*ofsvar);
+    workingPSeq.printContents(*ofsvar);
+    workingQSeq.printContents(*ofsvar);
   }
 
   if (m_computeStats) {
     if ((m_env.subScreenFile()) && (m_env.verbosity() >= 0)) {
       *m_env.subScreenFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
-                             << ": about to call 'workingSeq.computeStatistics()'"
+                             << ": about to call 'workingQSeq.computeStatistics()'"
                              << std::endl;
     }
-    workingSeq.computeStatistics(*m_statisticalOptions,
+    workingQSeq.computeStatistics(*m_statisticalOptions,
                                  ofsvar);
     if ((m_env.subScreenFile()) && (m_env.verbosity() >= 0)) {
       *m_env.subScreenFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
-                             << ": returned from call to 'workingSeq.computeStatistics()'"
+                             << ": returned from call to 'workingQSeq.computeStatistics()'"
                              << std::endl;
     }
   }
@@ -331,7 +339,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
 
     if (m_env.subScreenFile()) {
       *m_env.subScreenFile() << "Closed output file '" << m_outputFileName
-                             << "' for qoi sequence "  << workingSeq.name()
+                             << "' for qoi sequence "  << workingQSeq.name()
                              << std::endl;
     }
   }
@@ -346,11 +354,12 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
   const uqBaseVectorRVClass      <P_V,P_M>& paramRv,
-        uqBaseVectorSequenceClass<P_V,P_M>& workingSeq,
+        uqBaseVectorSequenceClass<P_V,P_M>& workingPSeq,
+        uqBaseVectorSequenceClass<Q_V,Q_M>& workingQSeq,
         unsigned int                        seqSize)
 {
   if (m_env.subScreenFile()) {
-    *m_env.subScreenFile() << "Starting the generation of qoi sequence " << workingSeq.name()
+    *m_env.subScreenFile() << "Starting the generation of qoi sequence " << workingQSeq.name()
                            << ", with "                                  << seqSize
                            << " samples..."
                            << std::endl;
@@ -365,18 +374,20 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
 
   iRC = gettimeofday(&timevalSeq, NULL);
 
-  workingSeq.resizeSequence(seqSize);
+  workingQSeq.resizeSequence(seqSize);
   P_V tmpP(m_paramSpace.zeroVector());
   Q_V tmpQ(m_qoiSpace.zeroVector());
 
   for (unsigned int i = 0; i < seqSize; ++i) {
     paramRv.realizer().realization(tmpP);
 
+    workingPSeq.setPositionValues(i,tmpP);
+
     if (m_measureRunTimes) iRC = gettimeofday(&timevalQoIFunction, NULL);
     m_qoiFunctionSynchronizer->callFunction(&tmpP,NULL,&tmpQ,NULL,NULL,NULL); // Might demand parallel environment
     if (m_measureRunTimes) qoiFunctionRunTime += uqMiscGetEllapsedSeconds(&timevalQoIFunction);
 
-    workingSeq.setPositionValues(i,tmpQ);
+    workingQSeq.setPositionValues(i,tmpQ);
 
     if ((m_displayPeriod            > 0) && 
         (((i+1) % m_displayPeriod) == 0)) {
@@ -391,8 +402,8 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
   seqRunTime = uqMiscGetEllapsedSeconds(&timevalSeq);
 
   if (m_env.subScreenFile()) {
-    *m_env.subScreenFile() << "Finished the generation of qoi sequence " << workingSeq.name()
-                           << ", with "                                  << workingSeq.sequenceSize()
+    *m_env.subScreenFile() << "Finished the generation of qoi sequence " << workingQSeq.name()
+                           << ", with "                                  << workingQSeq.sequenceSize()
                            << " samples";
     *m_env.subScreenFile() << "\nSome information about this sequence:"
                            << "\n  Sequence run time = " << seqRunTime

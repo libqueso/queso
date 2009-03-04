@@ -85,14 +85,14 @@ uqAppl(const uqBaseEnvironmentClass& env)
   // Read Ascii file with information on parameters
   uqAsciiTableClass<P_V,P_M> paramsTable(env,
                                          2,    // # of rows
-                                         3,    // # of cols after 'parameter name': min + max + initial value for Markov chain
+                                         6,    // # of cols after 'parameter name': [min] + [max] + [4 columns with initial values for Markov chain]
                                          NULL, // All extra columns are of 'double' type
                                          "inputData/params.tab");
 
   const EpetraExt::DistArray<std::string>& paramNames = paramsTable.stringColumn(0);
   P_V                                      paramMinValues    (paramsTable.doubleColumn(1));
   P_V                                      paramMaxValues    (paramsTable.doubleColumn(2));
-  P_V                                      paramInitialValues(paramsTable.doubleColumn(3));
+  P_V                                      paramInitialValues(paramsTable.doubleColumn(3+env.subId()));
 
   uqVectorSpaceClass<P_V,P_M> paramSpace(env,
                                          "param_", // Extra prefix before the default "space_" prefix
@@ -291,10 +291,10 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
                         cycle.valFP().qoiRv().cdf(),
                         *epsilonVec,
                         cdfDistancesVec);
-    if (cycle.env().rank() == 0) {
-      std::cout << "For epsilonVec = "    << *epsilonVec
-                << ", cdfDistancesVec = " << cdfDistancesVec
-                << std::endl;
+    if (cycle.env().subScreenFile()) {
+      *cycle.env().subScreenFile() << "For epsilonVec = "    << *epsilonVec
+                                   << ", cdfDistancesVec = " << cdfDistancesVec
+                                   << std::endl;
     }
 
     // Test independence of 'distance' w.r.t. order of cdfs
@@ -302,10 +302,10 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
                         cycle.calFP().qoiRv().cdf(),
                         *epsilonVec,
                         cdfDistancesVec);
-    if (cycle.env().rank() == 0) {
-      std::cout << "For epsilonVec = "                             << *epsilonVec
-                << ", cdfDistancesVec (switched order of cdfs) = " << cdfDistancesVec
-                << std::endl;
+    if (cycle.env().subScreenFile()) {
+      *cycle.env().subScreenFile() << "For epsilonVec = "                             << *epsilonVec
+                                   << ", cdfDistancesVec (switched order of cdfs) = " << cdfDistancesVec
+                                   << std::endl;
     }
 
     // Epsilon = 0.04
@@ -314,10 +314,10 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
                         cycle.valFP().qoiRv().cdf(),
                         *epsilonVec,
                         cdfDistancesVec);
-    if (cycle.env().rank() == 0) {
-      std::cout << "For epsilonVec = "    << *epsilonVec
-                << ", cdfDistancesVec = " << cdfDistancesVec
-                << std::endl;
+    if (cycle.env().subScreenFile()) {
+      *cycle.env().subScreenFile() << "For epsilonVec = "    << *epsilonVec
+                                   << ", cdfDistancesVec = " << cdfDistancesVec
+                                   << std::endl;
     }
 
     // Epsilon = 0.06
@@ -326,10 +326,10 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
                         cycle.valFP().qoiRv().cdf(),
                         *epsilonVec,
                         cdfDistancesVec);
-    if (cycle.env().rank() == 0) {
-      std::cout << "For epsilonVec = "    << *epsilonVec
-                << ", cdfDistancesVec = " << cdfDistancesVec
-                << std::endl;
+    if (cycle.env().subScreenFile()) {
+      *cycle.env().subScreenFile() << "For epsilonVec = "    << *epsilonVec
+                                   << ", cdfDistancesVec = " << cdfDistancesVec
+                                   << std::endl;
     }
 
     // Epsilon = 0.08
@@ -338,10 +338,10 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
                         cycle.valFP().qoiRv().cdf(),
                         *epsilonVec,
                         cdfDistancesVec);
-    if (cycle.env().rank() == 0) {
-      std::cout << "For epsilonVec = "    << *epsilonVec
-                << ", cdfDistancesVec = " << cdfDistancesVec
-                << std::endl;
+    if (cycle.env().subScreenFile()) {
+      *cycle.env().subScreenFile() << "For epsilonVec = "    << *epsilonVec
+                                   << ", cdfDistancesVec = " << cdfDistancesVec
+                                   << std::endl;
     }
 
     // Epsilon = 0.10
@@ -350,10 +350,10 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
                         cycle.valFP().qoiRv().cdf(),
                         *epsilonVec,
                         cdfDistancesVec);
-    if (cycle.env().rank() == 0) {
-      std::cout << "For epsilonVec = "    << *epsilonVec
-                << ", cdfDistancesVec = " << cdfDistancesVec
-                << std::endl;
+    if (cycle.env().subScreenFile()) {
+      *cycle.env().subScreenFile() << "For epsilonVec = "    << *epsilonVec
+                                   << ", cdfDistancesVec = " << cdfDistancesVec
+                                   << std::endl;
     }
 
     delete epsilonVec;
