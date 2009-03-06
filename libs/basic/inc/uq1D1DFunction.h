@@ -502,15 +502,15 @@ uqSampled1D1DFunctionClass::printForMatlab(
   unsigned int tmpSize = m_domainValues.size();
   if (tmpSize == 0) {
     tmpSize = 1;
-    ofsvar << "\n" << prefixName << "Time_subenv" << env.subIdString() << " = zeros("  << tmpSize << ",1);"
-           << "\n" << prefixName << "Value_subenv" << env.subIdString() << " = zeros(" << tmpSize << ",1);";
+    ofsvar << "\n" << prefixName << "Time_sub" << env.subIdString() << " = zeros("  << tmpSize << ",1);"
+           << "\n" << prefixName << "Value_sub" << env.subIdString() << " = zeros(" << tmpSize << ",1);";
   }
   else {
-    ofsvar << "\n" << prefixName << "Time_subenv" << env.subIdString() << " = zeros("  << tmpSize << ",1);"
-           << "\n" << prefixName << "Value_subenv" << env.subIdString() << " = zeros(" << tmpSize << ",1);";
+    ofsvar << "\n" << prefixName << "Time_sub" << env.subIdString() << " = zeros("  << tmpSize << ",1);"
+           << "\n" << prefixName << "Value_sub" << env.subIdString() << " = zeros(" << tmpSize << ",1);";
     for (unsigned int i = 0; i < tmpSize; ++i) {
-      ofsvar << "\n" << prefixName << "Time_subenv" << env.subIdString() << "("  << i+1 << ",1) = " << m_domainValues[i] << ";"
-             << "\n" << prefixName << "Value_subenv" << env.subIdString() << "(" << i+1 << ",1) = " << m_imageValues[i]  << ";";
+      ofsvar << "\n" << prefixName << "Time_sub" << env.subIdString() << "("  << i+1 << ",1) = " << m_domainValues[i] << ";"
+             << "\n" << prefixName << "Value_sub" << env.subIdString() << "(" << i+1 << ",1) = " << m_imageValues[i]  << ";";
     }
   }
 
@@ -648,12 +648,12 @@ uqDeltaSeq1D1DFunctionClass::printForMatlab(
   unsigned int tmpSize = m_integratedValues.size();
   if (tmpSize == 0) {
     tmpSize = 1;
-    ofsvar << "\n" << prefixName << "intValue_subenv" << env.subIdString() << " = zeros("  << tmpSize << ",1);";
+    ofsvar << "\n" << prefixName << "intValue_sub" << env.subIdString() << " = zeros("  << tmpSize << ",1);";
   }
   else {
-    ofsvar << "\n" << prefixName << "intValue_subenv" << env.subIdString() << " = zeros("  << tmpSize << ",1);";
+    ofsvar << "\n" << prefixName << "intValue_sub" << env.subIdString() << " = zeros("  << tmpSize << ",1);";
     for (unsigned int i = 0; i < tmpSize; ++i) {
-      ofsvar << "\n" << prefixName << "intValue_subenv" << env.subIdString() << "(" << i+1 << ",1) = " << m_integratedValues[i]  << ";";
+      ofsvar << "\n" << prefixName << "intValue_sub" << env.subIdString() << "(" << i+1 << ",1) = " << m_integratedValues[i]  << ";";
     }
   }
 

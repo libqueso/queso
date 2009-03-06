@@ -91,11 +91,11 @@ void
 uqBaseOneDGridClass<T>::print(std::ostream& os) const
 {
   // Print values *of* grid points
-  os << m_prefix << "_subenv" << m_env.subIdString() << " = zeros(" << this->size()
-     << ","                                                         << 1
+  os << m_prefix << "_sub" << m_env.subIdString() << " = zeros(" << this->size()
+     << ","                                                      << 1
      << ");"
      << std::endl;
-  os << m_prefix << "_subenv" << m_env.subIdString() << " = [";
+  os << m_prefix << "_sub" << m_env.subIdString() << " = [";
   for (unsigned int j = 0; j < this->size(); ++j) {
     os << (*this)[j] << " ";
   }

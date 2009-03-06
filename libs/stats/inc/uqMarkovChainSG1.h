@@ -47,6 +47,7 @@
 #define UQ_MAC_SG_CHAIN_TYPE_ODV                       UQ_MAC_SG_MARKOV_CHAIN_TYPE
 #define UQ_MAC_SG_CHAIN_SIZE_ODV                       100
 #define UQ_MAC_SG_CHAIN_OUTPUT_FILE_NAME_ODV           UQ_MAC_SG_FILENAME_FOR_NO_OUTPUT_FILE
+#define UQ_MAC_SG_CHAIN_OUTPUT_ALLOW_ODV               "0"
 #define UQ_MAC_SG_CHAIN_USE2_ODV                       0
 #define UQ_MAC_SG_CHAIN_GENERATE_EXTRA_ODV             0
 #define UQ_MAC_SG_CHAIN_DISPLAY_PERIOD_ODV             500
@@ -156,6 +157,7 @@ private:
         std::string                     m_option_chain_type;
         std::string                     m_option_chain_size;
         std::string                     m_option_chain_outputFileName;
+        std::string                     m_option_chain_outputAllow;
         std::string                     m_option_chain_use2;
         std::string                     m_option_chain_generateExtra;
         std::string                     m_option_chain_displayPeriod;
@@ -182,6 +184,7 @@ private:
         unsigned int                    m_chainType;
         unsigned int                    m_chainSize;
         std::string                     m_chainOutputFileName;
+        std::set<unsigned int>          m_chainOutputAllow;
         bool                            m_chainGenerateExtra;
         unsigned int                    m_chainDisplayPeriod;
         bool                            m_chainMeasureRunTimes;
@@ -257,6 +260,7 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   m_option_chain_type                    (m_prefix + "chain_type"                    ),
   m_option_chain_size                    (m_prefix + "chain_size"                    ),
   m_option_chain_outputFileName          (m_prefix + "chain_outputFileName"          ),
+  m_option_chain_outputAllow             (m_prefix + "chain_outputAllow"             ),
   m_option_chain_use2                    (m_prefix + "chain_use2"                    ),
   m_option_chain_generateExtra           (m_prefix + "chain_generateExtra"           ),
   m_option_chain_displayPeriod           (m_prefix + "chain_displayPeriod"           ),
@@ -282,6 +286,7 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   m_chainType                            (UQ_MAC_SG_CHAIN_TYPE_ODV),
   m_chainSize                            (UQ_MAC_SG_CHAIN_SIZE_ODV),
   m_chainOutputFileName                  (UQ_MAC_SG_CHAIN_OUTPUT_FILE_NAME_ODV),
+//m_chainOutputAllow                     (),
   m_chainGenerateExtra                   (UQ_MAC_SG_CHAIN_GENERATE_EXTRA_ODV),
   m_chainDisplayPeriod                   (UQ_MAC_SG_CHAIN_DISPLAY_PERIOD_ODV),
   m_chainMeasureRunTimes                 (UQ_MAC_SG_CHAIN_MEASURE_RUN_TIMES_ODV),
@@ -480,6 +485,7 @@ uqMarkovChainSGClass<P_V,P_M>::defineMyOptions(
     (m_option_chain_type.c_str(),                     po::value<unsigned int>()->default_value(UQ_MAC_SG_CHAIN_TYPE_ODV                      ), "type of chain (1=Markov, 2=White noise)"                         )
     (m_option_chain_size.c_str(),                     po::value<unsigned int>()->default_value(UQ_MAC_SG_CHAIN_SIZE_ODV                      ), "size of chain"                                                   )
     (m_option_chain_outputFileName.c_str(),           po::value<std::string >()->default_value(UQ_MAC_SG_CHAIN_OUTPUT_FILE_NAME_ODV          ), "name of output file"                                             )
+    (m_option_chain_outputAllow.c_str(),              po::value<std::string >()->default_value(UQ_MAC_SG_CHAIN_OUTPUT_ALLOW_ODV              ), "subenvs that will write to output file"                          )
     (m_option_chain_use2.c_str(),                     po::value<bool        >()->default_value(UQ_MAC_SG_CHAIN_USE2_ODV                      ), "use chain2"                                                      )
     (m_option_chain_generateExtra.c_str(),            po::value<bool        >()->default_value(UQ_MAC_SG_CHAIN_GENERATE_EXTRA_ODV            ), "generate extra chains"                                           )
     (m_option_chain_displayPeriod.c_str(),            po::value<unsigned int>()->default_value(UQ_MAC_SG_CHAIN_DISPLAY_PERIOD_ODV            ), "period of message display during chain generation"               )
@@ -581,6 +587,19 @@ uqMarkovChainSGClass<P_V,P_M>::getMyOptionValues(
 
   if (m_env.allOptionsMap().count(m_option_chain_outputFileName.c_str())) {
     m_chainOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_chain_outputFileName.c_str()]).as<std::string>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_chain_outputAllow.c_str())) {
+    m_chainOutputAllow.clear();
+    std::vector<double> tmpAllow(0,0.);
+    std::string inputString = m_env.allOptionsMap()[m_option_chain_outputAllow.c_str()].as<std::string>();
+    uqMiscReadDoublesFromString(inputString,tmpAllow);
+
+    if (tmpAllow.size() > 0) {
+      for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
+        m_chainOutputAllow.insert((unsigned int) tmpAllow[i]);
+      }
+    }
   }
 
   if (m_env.allOptionsMap().count(m_option_tk_useLocalHessian.c_str())) {
@@ -1098,11 +1117,11 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
 
   if (m_chainGenerateExtra) {
     // Write m_logTargets
-    ofsvar << m_prefix << "logTargets_subenv" << m_env.subIdString() << " = zeros(" << m_logTargets.size()
-           << ","                                                                   << 1
+    ofsvar << m_prefix << "logTargets_sub" << m_env.subIdString() << " = zeros(" << m_logTargets.size()
+           << ","                                                                << 1
            << ");"
            << std::endl;
-    ofsvar << m_prefix << "logTargets_subenv" << m_env.subIdString() << " = [";
+    ofsvar << m_prefix << "logTargets_sub" << m_env.subIdString() << " = [";
     for (unsigned int i = 0; i < m_logTargets.size(); ++i) {
       ofsvar << m_logTargets[i]
              << std::endl;
@@ -1110,11 +1129,11 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
     ofsvar << "];\n";
 
     // Write m_alphaQuotients
-    ofsvar << m_prefix << "alphaQuotients_subenv" << m_env.subIdString() << " = zeros(" << m_alphaQuotients.size()
-           << ","                                                                       << 1
+    ofsvar << m_prefix << "alphaQuotients_sub" << m_env.subIdString() << " = zeros(" << m_alphaQuotients.size()
+           << ","                                                                    << 1
            << ");"
            << std::endl;
-    ofsvar << m_prefix << "alphaQuotients_subenv" << m_env.subIdString() << " = [";
+    ofsvar << m_prefix << "alphaQuotients_sub" << m_env.subIdString() << " = [";
     for (unsigned int i = 0; i < m_alphaQuotients.size(); ++i) {
       ofsvar << m_alphaQuotients[i]
              << std::endl;
@@ -1257,8 +1276,12 @@ uqMarkovChainSGClass<P_V,P_M>::print(std::ostream& os) const
 {
   os <<         m_option_chain_type            << " = " << m_chainType
      << "\n" << m_option_chain_size            << " = " << m_chainSize
-     << "\n" << m_option_chain_outputFileName  << " = " << m_chainOutputFileName
-     << "\n" << m_option_chain_generateExtra   << " = " << m_chainGenerateExtra
+     << "\n" << m_option_chain_outputFileName  << " = " << m_chainOutputFileName;
+  os << "\n" << m_option_chain_outputAllow << " = ";
+  for (std::set<unsigned int>::iterator setIt = m_chainOutputAllow.begin(); setIt != m_chainOutputAllow.end(); ++setIt) {
+    os << *setIt << " ";
+  }
+  os << "\n" << m_option_chain_generateExtra   << " = " << m_chainGenerateExtra
      << "\n" << m_option_chain_displayPeriod   << " = " << m_chainDisplayPeriod
      << "\n" << m_option_chain_measureRunTimes << " = " << m_chainMeasureRunTimes
      << "\n" << m_option_chain_write           << " = " << m_chainWrite

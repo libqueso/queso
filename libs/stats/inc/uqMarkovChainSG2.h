@@ -92,7 +92,8 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
   // Open file      
   //****************************************************
   std::ofstream* ofsvar = NULL;
-  if (m_chainOutputFileName == UQ_MAC_SG_FILENAME_FOR_NO_OUTPUT_FILE) {
+  if ((m_chainOutputFileName                  == UQ_MAC_SG_FILENAME_FOR_NO_OUTPUT_FILE) ||
+      (m_chainOutputAllow.find(m_env.subId()) == m_chainOutputAllow.end()             )) {
     if (m_env.subScreenFile()) {
       *m_env.subScreenFile() << "No output file opened for chain " << workingChain.name()
                              << std::endl;
@@ -109,14 +110,14 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
       // Open file
 #if 0
       // Always write over an eventual pre-existing file
-      ofsvar = new std::ofstream((m_chainOutputFileName+"_subenv"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
+      ofsvar = new std::ofstream((m_chainOutputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
 #else
       // Always write at the end of an eventual pre-existing file
-      ofsvar = new std::ofstream((m_chainOutputFileName+"_subenv"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
+      ofsvar = new std::ofstream((m_chainOutputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
       if ((ofsvar            == NULL ) ||
           (ofsvar->is_open() == false)) {
         delete ofsvar;
-        ofsvar = new std::ofstream((m_chainOutputFileName+"_subenv"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
+        ofsvar = new std::ofstream((m_chainOutputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
       }
 #endif
       UQ_FATAL_TEST_MACRO((ofsvar && ofsvar->is_open()) == false,
@@ -200,7 +201,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
                         filterSpacing);
 
     // Write filtered chain
-    workingChain.setName(m_prefix + "filteredChain");
+    workingChain.setName(m_prefix + "filtChain");
     if (m_filteredChainWrite && ofsvar) {
       workingChain.printContents(*ofsvar);
     }

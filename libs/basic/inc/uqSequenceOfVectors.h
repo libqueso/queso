@@ -130,12 +130,12 @@ public:
                                                 const V&                            minVec,
                                                 const V&                            maxVec,
                                                 std::vector<V*>&                    centersForAllBins,
-                                                std::vector<V*>&                    binsForAllParams) const;
+                                                std::vector<V*>&                    quanttsForAllBins) const;
         void         unifiedHistogram          (unsigned int                        initialPos,
                                                 const V&                            unifiedMinVec,
                                                 const V&                            unifiedMaxVec,
                                                 std::vector<V*>&                    unifiedCentersForAllBins,
-                                                std::vector<V*>&                    unifiedBinsForAllParams) const;
+                                                std::vector<V*>&                    unifiedQuanttsForAllBins) const;
         void         interQuantileRange        (unsigned int                        initialPos,
                                                 V&                                  iqrVec) const;
         void         unifiedInterQuantileRange (unsigned int                        initialPos,
@@ -1036,21 +1036,21 @@ uqSequenceOfVectorsClass<V,M>::histogram(
   const V&         minVec,
   const V&         maxVec,
   std::vector<V*>& centersForAllBins,
-  std::vector<V*>& binsForAllParams) const
+  std::vector<V*>& quanttsForAllBins) const
 {
   bool bRC = ((initialPos               <  this->sequenceSize()    ) &&
               (this->vectorSize()       == minVec.size()           ) &&
               (this->vectorSize()       == maxVec.size()           ) &&
               (0                        <  centersForAllBins.size()) &&
-              (centersForAllBins.size() == binsForAllParams.size() ));
+              (centersForAllBins.size() == quanttsForAllBins.size() ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
                       "uqSequenceOfVectorsClass<V,M>::histogram()",
                       "invalid input data");
 
-  for (unsigned int j = 0; j < binsForAllParams.size(); ++j) {
+  for (unsigned int j = 0; j < quanttsForAllBins.size(); ++j) {
     centersForAllBins[j] = new V(m_vectorSpace.zeroVector());
-    binsForAllParams [j] = new V(m_vectorSpace.zeroVector());
+    quanttsForAllBins [j] = new V(m_vectorSpace.zeroVector());
   }
 
   unsigned int dataSize = this->sequenceSize() - initialPos;
@@ -1062,16 +1062,16 @@ uqSequenceOfVectorsClass<V,M>::histogram(
     }
 
     std::vector<double      > centers(centersForAllBins.size(),0.);
-    std::vector<unsigned int> bins   (binsForAllParams.size(), 0 );
+    std::vector<unsigned int> quantts(quanttsForAllBins.size(), 0 );
     data.histogram(0,
                    minVec[i],
                    maxVec[i],
                    centers,
-                   bins);
+                   quantts);
 
-    for (unsigned int j = 0; j < bins.size(); ++j) {
+    for (unsigned int j = 0; j < quantts.size(); ++j) {
       (*(centersForAllBins[j]))[i] = centers[j];
-      (*(binsForAllParams [j]))[i] = (double) bins[j];
+      (*(quanttsForAllBins[j]))[i] = (double) quantts[j];
     }
   }
 
@@ -1085,21 +1085,21 @@ uqSequenceOfVectorsClass<V,M>::unifiedHistogram(
   const V&         unifiedMinVec,
   const V&         unifiedMaxVec,
   std::vector<V*>& unifiedCentersForAllBins,
-  std::vector<V*>& unifiedBinsForAllParams) const
+  std::vector<V*>& unifiedQuanttsForAllBins) const
 {
   bool bRC = ((initialPos                      <  this->sequenceSize()           ) &&
               (this->vectorSize()              == unifiedMinVec.size()           ) &&
               (this->vectorSize()              == unifiedMaxVec.size()           ) &&
               (0                               <  unifiedCentersForAllBins.size()) &&
-              (unifiedCentersForAllBins.size() == unifiedBinsForAllParams.size() ));
+              (unifiedCentersForAllBins.size() == unifiedQuanttsForAllBins.size() ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
                       "uqSequenceOfVectorsClass<V,M>::unifiedHistogram()",
                       "invalid input data");
 
-  for (unsigned int j = 0; j < unifiedBinsForAllParams.size(); ++j) {
+  for (unsigned int j = 0; j < unifiedQuanttsForAllBins.size(); ++j) {
     unifiedCentersForAllBins[j] = new V(m_vectorSpace.zeroVector());
-    unifiedBinsForAllParams [j] = new V(m_vectorSpace.zeroVector());
+    unifiedQuanttsForAllBins [j] = new V(m_vectorSpace.zeroVector());
   }
 
   unsigned int dataSize = this->sequenceSize() - initialPos;
@@ -1111,17 +1111,17 @@ uqSequenceOfVectorsClass<V,M>::unifiedHistogram(
     }
 
     std::vector<double      > unifiedCenters(unifiedCentersForAllBins.size(),0.);
-    std::vector<unsigned int> unifiedBins   (unifiedBinsForAllParams.size(), 0 );
+    std::vector<unsigned int> unifiedQuantts(unifiedQuanttsForAllBins.size(), 0 );
     data.unifiedHistogram(m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1,
                           0,
                           unifiedMinVec[i],
                           unifiedMaxVec[i],
                           unifiedCenters,
-                          unifiedBins);
+                          unifiedQuantts);
 
-    for (unsigned int j = 0; j < unifiedBins.size(); ++j) {
+    for (unsigned int j = 0; j < unifiedQuantts.size(); ++j) {
       (*(unifiedCentersForAllBins[j]))[i] = unifiedCenters[j];
-      (*(unifiedBinsForAllParams [j]))[i] = (double) unifiedBins[j];
+      (*(unifiedQuanttsForAllBins[j]))[i] = (double) unifiedQuantts[j];
     }
   }
 
@@ -1431,11 +1431,17 @@ template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::printContents(std::ofstream& ofsvar) const
 {
-  ofsvar << m_name << "_subenv" << m_env.subIdString() << " = zeros(" << this->sequenceSize()
-         << ","                                                       << this->vectorSize()
+  bool okSituation = (m_env.subRank() >= 0);
+  UQ_FATAL_TEST_MACRO(!okSituation,
+                      m_env.rank(),
+                      "uqSequenceOfVectorsClass<V,M>::printContents()",
+                      "unexpected subRank");
+
+  ofsvar << m_name << "_sub" << m_env.subIdString() << " = zeros(" << this->sequenceSize()
+         << ","                                                    << this->vectorSize()
          << ");"
          << std::endl;
-  ofsvar << m_name << "_subenv" << m_env.subIdString() << " = [";
+  ofsvar << m_name << "_sub" << m_env.subIdString() << " = [";
   unsigned int chainSize = this->sequenceSize();
   for (unsigned int j = 0; j < chainSize; ++j) {
     bool savedVectorPrintState = m_seq[j]->getPrintHorizontally();

@@ -45,6 +45,7 @@
 // _ODV = option default value
 #define UQ_PROPAG_PROBLEM_COMPUTE_SOLUTION_ODV 1
 #define UQ_PROPAG_PROBLEM_OUTPUT_FILE_NAME_ODV UQ_PROPAG_PROBLEM_FILENAME_FOR_NO_OUTPUT_FILE
+#define UQ_PROPAG_PROBLEM_OUTPUT_ALLOW_ODV     "0"
 #ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
 #define UQ_PROPAG_PROBLEM_SOLVER_ODV           "mc" // Monte Carlo
 #endif
@@ -78,12 +79,14 @@ private:
         std::string                                 m_option_help;
 	std::string                                 m_option_computeSolution;
         std::string                                 m_option_outputFileName;
+        std::string                          m_option_outputAllow;
 #ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
         std::string                                 m_option_solver;
 #endif
 
         bool                                        m_computeSolution;
         std::string                                 m_outputFileName;
+        std::set<unsigned int>               m_outputAllow;
 #ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
 	std::string                                 m_solverString;
 #endif
@@ -126,11 +129,13 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::uqStatisticalForwardProblemCl
   m_option_help           (m_prefix + "help"           ),
   m_option_computeSolution(m_prefix + "computeSolution"),
   m_option_outputFileName (m_prefix + "outputFileName" ),
+  m_option_outputAllow    (m_prefix + "outputAllow"    ),
 #ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
   m_option_solver         (m_prefix + "solver"         ),
 #endif
   m_computeSolution       (UQ_PROPAG_PROBLEM_COMPUTE_SOLUTION_ODV),
   m_outputFileName        (UQ_PROPAG_PROBLEM_OUTPUT_FILE_NAME_ODV),
+//m_outputAllow           (),
 #ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
   m_solverString          (UQ_PROPAG_PROBLEM_SOLVER_ODV),
 #endif
@@ -211,6 +216,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::defineMyOptions(
     (m_option_help.c_str(),                                                                                             "produce help message for propagation problem")
     (m_option_computeSolution.c_str(), po::value<bool       >()->default_value(UQ_PROPAG_PROBLEM_COMPUTE_SOLUTION_ODV), "compute solution process"                    )
     (m_option_outputFileName.c_str(),  po::value<std::string>()->default_value(UQ_PROPAG_PROBLEM_OUTPUT_FILE_NAME_ODV), "name of output file"                         )
+    (m_option_outputAllow.c_str(),     po::value<std::string>()->default_value(UQ_PROPAG_PROBLEM_OUTPUT_ALLOW_ODV    ), "subenvs that will write to output file"      )
 #ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
     (m_option_solver.c_str(),          po::value<std::string>()->default_value(UQ_PROPAG_PROBLEM_SOLVER_ODV          ), "algorithm for propagation"                   )
 #endif
@@ -237,6 +243,19 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::getMyOptionValues(
 
   if (m_env.allOptionsMap().count(m_option_outputFileName.c_str())) {
     m_outputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_outputFileName.c_str()]).as<std::string>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_outputAllow.c_str())) {
+    m_outputAllow.clear();
+    std::vector<double> tmpAllow(0,0.);
+    std::string inputString = m_env.allOptionsMap()[m_option_outputAllow.c_str()].as<std::string>();
+    uqMiscReadDoublesFromString(inputString,tmpAllow);
+
+    if (tmpAllow.size() > 0) {
+      for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
+        m_outputAllow.insert((unsigned int) tmpAllow[i]);
+      }
+    }
   }
 
 #ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
@@ -308,7 +327,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
                                                               m_qoiFunction,
                                                               m_qoiRv);
   m_mcSeqGenerator->generateSequence(*m_paramChain,*m_qoiChain);
-  m_solutionRealizer = new uqSequentialVectorRealizerClass<Q_V,Q_M>(m_prefix.c_str(),
+  m_solutionRealizer = new uqSequentialVectorRealizerClass<Q_V,Q_M>((m_prefix+"Qoi").c_str(),
                                                                     *m_qoiChain);
   m_qoiRv.setRealizer(*m_solutionRealizer);
 
@@ -319,7 +338,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
                                   *m_mdfGrids,            // output
                                   *m_mdfValues);          // output
 
-  m_solutionMdf = new uqSampledVectorMdfClass<Q_V,Q_M>(m_prefix.c_str(),
+  m_solutionMdf = new uqSampledVectorMdfClass<Q_V,Q_M>((m_prefix+"Qoi").c_str(),
                                                        *m_mdfGrids,
                                                        *m_mdfValues);
   m_qoiRv.setMdf(*m_solutionMdf);
@@ -331,25 +350,26 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
                                   *m_cdfGrids,            // output
                                   *m_cdfValues);          // output
 
-  m_solutionCdf = new uqSampledVectorCdfClass<Q_V,Q_M>(m_prefix.c_str(),
+  m_solutionCdf = new uqSampledVectorCdfClass<Q_V,Q_M>((m_prefix+"Qoi").c_str(),
                                                        *m_cdfGrids,
                                                        *m_cdfValues);
   m_qoiRv.setCdf(*m_solutionCdf);
 
   // Compute unified cdf if necessary
   if (m_env.numSubEnvironments() > 1) {
-    m_unifiedCdfGrids  = new uqArrayOfOneDGridsClass <Q_V,Q_M>((m_prefix+"unifiedQoiCdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
-    m_unifiedCdfValues = new uqArrayOfOneDTablesClass<Q_V,Q_M>((m_prefix+"unifiedQoiCdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
+    m_unifiedCdfGrids  = new uqArrayOfOneDGridsClass <Q_V,Q_M>((m_prefix+"unifQoiCdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
+    m_unifiedCdfValues = new uqArrayOfOneDTablesClass<Q_V,Q_M>((m_prefix+"unifQoiCdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
     m_qoiChain->unifiedUniformlySampledCdf(numEvaluationPointsVec, // input
                                            *m_unifiedCdfGrids,     // output
                                            *m_unifiedCdfValues);   // output
 
-    m_unifiedSolutionCdf = new uqSampledVectorCdfClass<Q_V,Q_M>((m_prefix+"unified").c_str(),
+    m_unifiedSolutionCdf = new uqSampledVectorCdfClass<Q_V,Q_M>((m_prefix+"unifQoi").c_str(),
                                                                 *m_unifiedCdfGrids,
                                                                 *m_unifiedCdfValues);
   }
 
-  if (m_outputFileName != UQ_PROPAG_PROBLEM_FILENAME_FOR_NO_OUTPUT_FILE) {
+  if ((m_outputFileName                  != UQ_PROPAG_PROBLEM_FILENAME_FOR_NO_OUTPUT_FILE) &&
+      (m_outputAllow.find(m_env.subId()) != m_outputAllow.end()                          )) {
     if (m_env.subRank() == 0) {
       // Write output file
       if (m_env.subScreenFile()) {
@@ -359,12 +379,18 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
       }
 
       // Open file
-      std::ofstream* ofsvar = new std::ofstream((m_outputFileName+"_subenv"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
+#if 0
+      // Always write over an eventual pre-existing file
+      std::ofstream* ofsvar = new std::ofstream((m_outputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
+#else
+      // Always write at the end of an eventual pre-existing file
+      std::ofstream* ofsvar = new std::ofstream((m_outputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
       if ((ofsvar            == NULL ) ||
           (ofsvar->is_open() == false)) {
         delete ofsvar;
-        ofsvar = new std::ofstream((m_outputFileName+"_subenv"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
+        ofsvar = new std::ofstream((m_outputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
       }
+#endif
       UQ_FATAL_TEST_MACRO((ofsvar && ofsvar->is_open()) == false,
                           m_env.rank(),
                           "uqStatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()",
@@ -440,11 +466,15 @@ void
 uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::print(std::ostream& os) const
 {
   os << "\n" << m_option_computeSolution << " = " << m_computeSolution
-     << "\n" << m_option_outputFileName  << " = " << m_outputFileName
+     << "\n" << m_option_outputFileName  << " = " << m_outputFileName;
+  os << "\n" << m_option_outputAllow << " = ";
+  for (std::set<unsigned int>::iterator setIt = m_outputAllow.begin(); setIt != m_outputAllow.end(); ++setIt) {
+    os << *setIt << " ";
+  }
 #ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
-     << "\n" << m_option_solver          << " = " << m_solverString
+     << "\n" << m_option_solver << " = " << m_solverString
 #endif
-     << std::endl;
+  os << std::endl;
 }
 
 template<class P_V,class P_M,class Q_V,class Q_M>

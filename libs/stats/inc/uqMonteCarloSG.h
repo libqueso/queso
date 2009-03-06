@@ -42,6 +42,7 @@
 // _ODV = option default value
 #define UQ_MOC_SG_NUM_SAMPLES_ODV       100
 #define UQ_MOC_SG_OUTPUT_FILE_NAME_ODV  UQ_MOC_SG_FILENAME_FOR_NO_OUTPUT_FILE
+#define UQ_MOC_SG_OUTPUT_ALLOW_ODV      "0"
 #define UQ_MOC_SG_USE2_ODV              0
 #define UQ_MOC_SG_DISPLAY_PERIOD_ODV    500
 #define UQ_MOC_SG_MEASURE_RUN_TIMES_ODV 0
@@ -92,6 +93,7 @@ private:
   std::string                     m_option_help;
   std::string                     m_option_numSamples;
   std::string                     m_option_outputFileName;
+  std::string                     m_option_outputAllow;
   std::string                     m_option_use2;
   std::string                     m_option_displayPeriod;
   std::string                     m_option_measureRunTimes;
@@ -100,6 +102,7 @@ private:
 
   unsigned int                    m_numSamples;
   std::string                     m_outputFileName;
+  std::set<unsigned int>          m_outputAllow;
   unsigned int                    m_displayPeriod;
   bool                            m_measureRunTimes;
   bool                            m_write;
@@ -129,6 +132,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::uqMonteCarloSGClass(
   m_option_help            (m_prefix + "help"           ),
   m_option_numSamples      (m_prefix + "numSamples"     ),
   m_option_outputFileName  (m_prefix + "outputFileName" ),
+  m_option_outputAllow     (m_prefix + "outputAllow"    ),
   m_option_use2            (m_prefix + "use2"           ),
   m_option_displayPeriod   (m_prefix + "displayPeriod"  ),
   m_option_measureRunTimes (m_prefix + "measureRunTimes"),
@@ -136,6 +140,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::uqMonteCarloSGClass(
   m_option_computeStats    (m_prefix + "computeStats"   ),
   m_numSamples             (UQ_MOC_SG_NUM_SAMPLES_ODV      ),
   m_outputFileName         (UQ_MOC_SG_OUTPUT_FILE_NAME_ODV ),
+//m_outputAllow            (),
   m_displayPeriod          (UQ_MOC_SG_DISPLAY_PERIOD_ODV   ),
   m_measureRunTimes        (UQ_MOC_SG_MEASURE_RUN_TIMES_ODV),
   m_write                  (UQ_MOC_SG_WRITE_ODV            ),
@@ -183,6 +188,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::defineMyOptions(
     (m_option_help.c_str(),                                                                                       "produce help message for Monte Carlo distribution calculator")
     (m_option_numSamples.c_str(),      po::value<unsigned int>()->default_value(UQ_MOC_SG_NUM_SAMPLES_ODV      ), "number of samples"                                           )
     (m_option_outputFileName.c_str(),  po::value<std::string >()->default_value(UQ_MOC_SG_OUTPUT_FILE_NAME_ODV ), "name of output file"                                         )
+    (m_option_outputAllow.c_str(),     po::value<std::string >()->default_value(UQ_MOC_SG_OUTPUT_ALLOW_ODV     ), "subenvs that will write to output file"                      )
     (m_option_use2.c_str(),            po::value<bool        >()->default_value(UQ_MOC_SG_USE2_ODV             ), "use seq2"                                                    )
     (m_option_displayPeriod.c_str(),   po::value<unsigned int>()->default_value(UQ_MOC_SG_DISPLAY_PERIOD_ODV   ), "period of message display during sequence generation"        )
     (m_option_measureRunTimes.c_str(), po::value<bool        >()->default_value(UQ_MOC_SG_MEASURE_RUN_TIMES_ODV), "measure run times"                                           )
@@ -211,6 +217,19 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::getMyOptionValues(
 
   if (m_env.allOptionsMap().count(m_option_outputFileName.c_str())) {
     m_outputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_outputFileName.c_str()]).as<std::string>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_outputAllow.c_str())) {
+    m_outputAllow.clear();
+    std::vector<double> tmpAllow(0,0.);
+    std::string inputString = m_env.allOptionsMap()[m_option_outputAllow.c_str()].as<std::string>();
+    uqMiscReadDoublesFromString(inputString,tmpAllow);
+
+    if (tmpAllow.size() > 0) {
+      for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
+        m_outputAllow.insert((unsigned int) tmpAllow[i]);
+      }
+    }
   }
 
   if (m_env.allOptionsMap().count(m_option_displayPeriod.c_str())) {
@@ -251,8 +270,8 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
         uqBaseVectorSequenceClass<P_V,P_M>& workingPSeq,
         uqBaseVectorSequenceClass<Q_V,Q_M>& workingQSeq)
 {
-  workingPSeq.setName(m_prefix+"Pseq");
-  workingQSeq.setName(m_prefix+"Qseq");
+  workingPSeq.setName(m_prefix+"ParamSeq");
+  workingQSeq.setName(m_prefix+"QoiSeq");
 
   //****************************************************
   // Generate sequence of qoi values
@@ -279,7 +298,8 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   // Open file      
   //****************************************************
   std::ofstream* ofsvar = NULL;
-  if (m_outputFileName == UQ_MOC_SG_FILENAME_FOR_NO_OUTPUT_FILE) {
+  if ((m_outputFileName                  == UQ_MOC_SG_FILENAME_FOR_NO_OUTPUT_FILE) ||
+      (m_outputAllow.find(m_env.subId()) == m_outputAllow.end()                  )) {
     if (m_env.subScreenFile()) {
       *m_env.subScreenFile() << "No output file opened for qoi sequence " << workingQSeq.name() 
                              << std::endl;
@@ -292,18 +312,25 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
                              << std::endl;
     }
 
-    // Open file
-    ofsvar = new std::ofstream((m_outputFileName+"_subenv"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
-    if ((ofsvar            == NULL ) ||
-        (ofsvar->is_open() == false)) {
-      delete ofsvar;
-      ofsvar = new std::ofstream((m_outputFileName+"_subenv"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
+    if (m_env.subRank() == 0) {
+      // Open file
+#if 0
+      // Always write over an eventual pre-existing file
+      ofsvar = new std::ofstream((m_outputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
+#else
+      // Always write at the end of an eventual pre-existing file
+      ofsvar = new std::ofstream((m_outputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
+      if ((ofsvar            == NULL ) ||
+          (ofsvar->is_open() == false)) {
+        delete ofsvar;
+        ofsvar = new std::ofstream((m_outputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
+      }
+#endif
+      UQ_FATAL_TEST_MACRO((ofsvar && ofsvar->is_open()) == false,
+                          m_env.rank(),
+                          "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()",
+                          "failed to open file");
     }
-
-    UQ_FATAL_TEST_MACRO((ofsvar && ofsvar->is_open()) == false,
-                        m_env.rank(),
-                        "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()",
-                        "failed to open file");
   }
   
   //****************************************************
@@ -476,8 +503,12 @@ void
 uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::print(std::ostream& os) const
 {
   os <<         m_option_numSamples      << " = " << m_numSamples
-     << "\n" << m_option_outputFileName  << " = " << m_outputFileName
-     << "\n" << m_option_displayPeriod   << " = " << m_displayPeriod
+     << "\n" << m_option_outputFileName  << " = " << m_outputFileName;
+  os << "\n" << m_option_outputAllow << " = ";
+  for (std::set<unsigned int>::iterator setIt = m_outputAllow.begin(); setIt != m_outputAllow.end(); ++setIt) {
+    os << *setIt << " ";
+  }
+  os << "\n" << m_option_displayPeriod   << " = " << m_displayPeriod
      << "\n" << m_option_measureRunTimes << " = " << m_measureRunTimes
      << "\n" << m_option_write           << " = " << m_write
      << "\n" << m_option_computeStats    << " = " << m_computeStats;

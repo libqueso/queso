@@ -42,6 +42,7 @@
 #define UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV        1
 #define UQ_ENV_SUB_SCREEN_WRITE_ODV            0
 #define UQ_ENV_SUB_SCREEN_OUTPUT_FILE_NAME_ODV UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE
+#define UQ_ENV_SUB_SCREEN_OUTPUT_ALLOW_ODV     "0"
 #define UQ_ENV_VERBOSITY_ODV                   0
 #define UQ_ENV_SEED_ODV                        0
 #define UQ_ENV_NUM_DEBUG_PARAMS_ODV            0
@@ -61,13 +62,13 @@ struct uqEnvOptionsStruct {
                      int          seed);
  ~uqEnvOptionsStruct();
 
-  unsigned int        m_numSubEnvironments;
-  bool                m_subScreenWrite;
-  std::string         m_subScreenOutputFileName;
-  unsigned int        m_verbosity;
-  int                 m_seed;
-  unsigned int        m_numDebugParams;
-  std::vector<double> m_debugParams;
+  unsigned int           m_numSubEnvironments;
+  std::string            m_subScreenOutputFileName;
+  std::set<unsigned int> m_subScreenOutputAllow;
+  unsigned int           m_verbosity;
+  int                    m_seed;
+  unsigned int           m_numDebugParams;
+  std::vector<double>    m_debugParams;
 };
 
 //*****************************************************
@@ -132,14 +133,14 @@ protected:
 
   std::string              m_option_help;
   std::string              m_option_numSubEnvironments;
-  std::string              m_option_subScreenWrite;
   std::string              m_option_subScreenOutputFileName;
+  std::string              m_option_subScreenOutputAllow;
   std::string              m_option_verbosity;
   std::string              m_option_seed;
 
   unsigned int             m_numSubEnvironments;
-  bool                     m_subScreenWrite;
   std::string              m_subScreenOutputFileName;
+  std::set<unsigned int>   m_subScreenOutputAllow;
   unsigned int             m_verbosity;
   int                      m_seed;
 

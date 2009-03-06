@@ -45,6 +45,7 @@
 // _ODV = option default value
 #define UQ_CALIB_PROBLEM_COMPUTE_SOLUTION_ODV 1
 #define UQ_CALIB_PROBLEM_OUTPUT_FILE_NAME_ODV UQ_CALIB_PROBLEM_FILENAME_FOR_NO_OUTPUT_FILE
+#define UQ_CALIB_PROBLEM_OUTPUT_ALLOW_ODV     "0"
 #ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
 #define UQ_CALIB_PROBLEM_SOLVER_ODV           "bayes_mc" // Bayesian formula + Markov Chain
 #endif
@@ -78,12 +79,14 @@ private:
         std::string                          m_option_help;
 	std::string                          m_option_computeSolution;
         std::string                          m_option_outputFileName;
+        std::string                          m_option_outputAllow;
 #ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
         std::string                          m_option_solver;
 #endif
 
         bool                                 m_computeSolution;
         std::string                          m_outputFileName;
+        std::set<unsigned int>               m_outputAllow;
 #ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
 	std::string                          m_solverString;
 #endif
@@ -120,11 +123,13 @@ uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
   m_option_help           (m_prefix + "help"           ),
   m_option_computeSolution(m_prefix + "computeSolution"),
   m_option_outputFileName (m_prefix + "outputFileName" ),
+  m_option_outputAllow    (m_prefix + "outputAllow"    ),
 #ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
   m_option_solver         (m_prefix + "solver"),
 #endif
   m_computeSolution       (UQ_CALIB_PROBLEM_COMPUTE_SOLUTION_ODV),
   m_outputFileName        (UQ_CALIB_PROBLEM_OUTPUT_FILE_NAME_ODV),
+//m_outputAllow           (),
 #ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
   m_solverString          (UQ_CALIB_PROBLEM_SOLVER_ODV),
 #endif
@@ -190,6 +195,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::defineMyOptions(
     (m_option_help.c_str(),                                                                                            "produce help message for calibration problem")
     (m_option_computeSolution.c_str(), po::value<bool       >()->default_value(UQ_CALIB_PROBLEM_COMPUTE_SOLUTION_ODV), "compute solution process"                    )
     (m_option_outputFileName.c_str(),  po::value<std::string>()->default_value(UQ_CALIB_PROBLEM_OUTPUT_FILE_NAME_ODV), "name of output file"                         )
+    (m_option_outputAllow.c_str(),     po::value<std::string>()->default_value(UQ_CALIB_PROBLEM_OUTPUT_ALLOW_ODV    ), "subenvs that will write to output file"      )
 #ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
     (m_option_solver.c_str(),          po::value<std::string>()->default_value(UQ_CALIB_PROBLEM_SOLVER_ODV          ), "algorithm for calibration"                   )
 #endif
@@ -216,6 +222,19 @@ void
 
   if (m_env.allOptionsMap().count(m_option_outputFileName.c_str())) {
     m_outputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_outputFileName.c_str()]).as<std::string>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_outputAllow.c_str())) {
+    m_outputAllow.clear();
+    std::vector<double> tmpAllow(0,0.);
+    std::string inputString = m_env.allOptionsMap()[m_option_outputAllow.c_str()].as<std::string>();
+    uqMiscReadDoublesFromString(inputString,tmpAllow);
+
+    if (tmpAllow.size() > 0) {
+      for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
+        m_outputAllow.insert((unsigned int) tmpAllow[i]);
+      }
+    }
   }
 
 #ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
@@ -301,7 +320,8 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
                                                        *m_mdfValues);
   m_postRv.setMdf(*m_solutionMdf);
 
-  if (m_outputFileName != UQ_CALIB_PROBLEM_FILENAME_FOR_NO_OUTPUT_FILE) {
+  if ((m_outputFileName                  != UQ_CALIB_PROBLEM_FILENAME_FOR_NO_OUTPUT_FILE) &&
+      (m_outputAllow.find(m_env.subId()) != m_outputAllow.end()                         )) {
     if (m_env.subRank() == 0) {
       // Write output file
       if (m_env.subScreenFile()) {
@@ -311,12 +331,18 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
       }
 
       // Open file
-      std::ofstream* ofsvar = new std::ofstream((m_outputFileName+"_subenv"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
+#if 0
+      // Always write over an eventual pre-existing file
+      std::ofstream* ofsvar = new std::ofstream((m_outputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
+#else
+      // Always write at the end of an eventual pre-existing file
+      std::ofstream* ofsvar = new std::ofstream((m_outputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
       if ((ofsvar            == NULL ) ||
           (ofsvar->is_open() == false)) {
         delete ofsvar;
-        ofsvar = new std::ofstream((m_outputFileName+"_subenv"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
+        ofsvar = new std::ofstream((m_outputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
       }
+#endif
       UQ_FATAL_TEST_MACRO((ofsvar && ofsvar->is_open()) == false,
                           m_env.rank(),
                           "uqStatisticalInverseProblem<P_V,P_M>::solveWithBayesMarkovChain()",
@@ -363,11 +389,15 @@ void
 uqStatisticalInverseProblemClass<P_V,P_M>::print(std::ostream& os) const
 {
   os << "\n" << m_option_computeSolution << " = " << m_computeSolution
-     << "\n" << m_option_outputFileName  << " = " << m_outputFileName
+     << "\n" << m_option_outputFileName  << " = " << m_outputFileName;
+  os << "\n" << m_option_outputAllow << " = ";
+  for (std::set<unsigned int>::iterator setIt = m_outputAllow.begin(); setIt != m_outputAllow.end(); ++setIt) {
+    os << *setIt << " ";
+  }
 #ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
-     << "\n" << m_option_solver          << " = " << m_solverString
+     << "\n" << m_option_solver << " = " << m_solverString
 #endif
-     << std::endl;
+  os << std::endl;
 }
 
 template<class P_V,class P_M>

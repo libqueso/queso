@@ -119,7 +119,7 @@ public:
                                         const V&                 minVec,
                                         const V&                 maxVec,
                                         std::vector<V*>&         centersForAllBins,
-                                        std::vector<V*>&         binsForAllParams) const;
+                                        std::vector<V*>&         quanttsForAllBins) const;
         void         interQuantileRange(unsigned int             initialPos,
                                         V&                       iqrs) const;
         void         scalesForKDE      (unsigned int             initialPos,
@@ -810,17 +810,17 @@ uqArrayOfSequencesClass<V,M>::histogram(
   const V&         minVec,
   const V&         maxVec,
   std::vector<V*>& centersForAllBins,
-  std::vector<V*>& binsForAllParams) const
+  std::vector<V*>& quanttsForAllBins) const
 {
 #if 0
-  UQ_FATAL_TEST_MACRO(centersForAllBins.size() != binsForAllParams.size(),
+  UQ_FATAL_TEST_MACRO(centersForAllBins.size() != quanttsForAllBins.size(),
                       sequence[0]->env().rank(),
                       "uqVectorSequenceHistogram<V,M>()",
-                      "vectors 'centers' and 'bins' have different sizes");
+                      "vectors 'centers' and 'quantts' have different sizes");
 
-  for (unsigned int j = 0; j < binsForAllParams.size(); ++j) {
+  for (unsigned int j = 0; j < quanttsForAllBins.size(); ++j) {
     centersForAllBins[j] = new V(*(sequence[0]));
-    binsForAllParams [j] = new V(*(sequence[0]));
+    quanttsForAllBins [j] = new V(*(sequence[0]));
   }
 
   unsigned int dataSize = sequence.size() - initialPos;
@@ -832,15 +832,15 @@ uqArrayOfSequencesClass<V,M>::histogram(
     }
 
     std::vector<double> centers(centersForAllBins.size(),0.);
-    std::vector<double> bins   (binsForAllParams.size(), 0.);
+    std::vector<double> quantts(quanttsForAllBins.size(),0.);
     data.histogram(minVec[i],
                    maxVec[i],
                    centers,
-                   bins);
+                   quantts);
 
-    for (unsigned int j = 0; j < bins.size(); ++j) {
+    for (unsigned int j = 0; j < quantts.size(); ++j) {
       (*(centersForAllBins[j]))[i] = centers[j];
-      (*(binsForAllParams [j]))[i] = bins[j];
+      (*(quanttsForAllBins[j]))[i] = quantts[j];
     }
   }
 
@@ -979,11 +979,11 @@ void
 uqArrayOfSequencesClass<V,M>::write(std::ofstream& ofsvar) const
 {
   // Write chain
-  ofsvar << m_name << "_subenv" << m_env.subIdString() << " = zeros(" << this->sequenceSize()
-         << ","                                                       << this->vectorSize()
+  ofsvar << m_name << "_sub" << m_env.subIdString() << " = zeros(" << this->sequenceSize()
+         << ","                                                    << this->vectorSize()
          << ");"
          << std::endl;
-  ofsvar << m_name << "_subenv" << m_env.subIdString() << " = [";
+  ofsvar << m_name << "_sub" << m_env.subIdString() << " = [";
 
   V tmpVec(m_vectorSpace.zeroVector());
   unsigned int chainSize = this->sequenceSize();
