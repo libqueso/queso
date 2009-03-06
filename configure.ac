@@ -54,17 +54,17 @@ AC_CONFIG_FILES([
 	Makefile
 	libs/Makefile
 	examples/Makefile
-	examples/markovChain1/Makefile
-	examples/markovChain1/src/Makefile	
-	examples/pyramid/Makefile
-	examples/pyramid/src/Makefile
-	examples/pyramid/src/physics_1/Makefile
-	examples/pyramid/src/physics_2/Makefile
-	examples/pyramid/src/physics_1_2/Makefile
-	examples/tga/Makefile
-	examples/tga/src/Makefile
-	examples/monteCarlo/Makefile
-	examples/monteCarlo/src/Makefile
+	examples/statisticalInverseProblem1/Makefile
+	examples/statisticalInverseProblem1/src/Makefile	
+	examples/validationPyramid/Makefile
+	examples/validationPyramid/src/Makefile
+	examples/validationPyramid/src/physics_1/Makefile
+	examples/validationPyramid/src/physics_2/Makefile
+	examples/validationPyramid/src/physics_1_2/Makefile
+	examples/validationCycle/Makefile
+	examples/validationCycle/src/Makefile
+	examples/statisticalForwardProblem/Makefile
+	examples/statisticalForwardProblem/src/Makefile
 ])
 
 AC_OUTPUT()

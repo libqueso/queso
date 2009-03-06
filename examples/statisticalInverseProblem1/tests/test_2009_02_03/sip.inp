@@ -3,8 +3,7 @@
 ###############################################
 env_help                    = anything
 env_numSubEnvironments      = 1
-env_subScreenWrite          = 1
-env_subScreenOutputFileName = .
+env_subScreenOutputFileName = outputData/screen
 env_subScreenOutputAllow    = 0
 env_verbosity               = 2
 env_syncVerbosity           = 0
