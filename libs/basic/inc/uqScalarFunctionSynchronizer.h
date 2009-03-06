@@ -121,7 +121,7 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
         if (internalEffect    != NULL) bufferChar[4] = '1';
       }
 
-      //m_env.syncPrintDebugMsg("In uqScalarFunctionSynchronizerClass<V,M>::callFunction(), just before char Bcast()",3000000,m_env.fullComm());
+      m_env.syncPrintDebugMsg("In uqScalarFunctionSynchronizerClass<V,M>::callFunction(), just before char Bcast()",3,3000000,m_env.fullComm());
       //if (m_env.subId() != 0) while (true) sleep(1);
 
       int count = (int) bufferChar.size();
@@ -131,7 +131,7 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
                           "uqScalarFunctionSynchronizerClass<V,M>::callFunction()",
                           "failed broadcast 1 of 3");
 
-      //m_env.syncPrintDebugMsg("In uqScalarFunctionSynchronizerClass<V,M>::callFunction(), just after char Bcast()",3000000,m_env.fullComm());
+      m_env.syncPrintDebugMsg("In uqScalarFunctionSynchronizerClass<V,M>::callFunction(), just after char Bcast()",3,3000000,m_env.fullComm());
       //std::cout << "char contents = " << bufferChar[0] << " " << bufferChar[1] << " " << bufferChar[2] << " " << bufferChar[3] << " " << bufferChar[4]
       //          << std::endl;
 
@@ -225,7 +225,7 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
           if (bufferChar[4] == '1') internalEffect  = new V(m_auxVec);
         }
 
-        //m_env.syncPrintDebugMsg("In uqScalarFunctionSynchronizerClass<V,M>::callFunction(), just after actual minus2LnValue()",3000000,m_env.fullComm());
+        m_env.syncPrintDebugMsg("In uqScalarFunctionSynchronizerClass<V,M>::callFunction(), just before actual minus2LnValue()",3,3000000,m_env.fullComm());
 
         m_env.subComm().Barrier();
         result = m_scalarFunction.minus2LnValue(*internalValues,

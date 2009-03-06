@@ -42,8 +42,9 @@
 #define UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV        1
 #define UQ_ENV_SUB_SCREEN_WRITE_ODV            0
 #define UQ_ENV_SUB_SCREEN_OUTPUT_FILE_NAME_ODV UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE
-#define UQ_ENV_SUB_SCREEN_OUTPUT_ALLOW_ODV     "0"
+#define UQ_ENV_SUB_SCREEN_OUTPUT_ALLOW_ODV     ""
 #define UQ_ENV_VERBOSITY_ODV                   0
+#define UQ_ENV_SYNC_VERBOSITY_ODV              0
 #define UQ_ENV_SEED_ODV                        0
 #define UQ_ENV_NUM_DEBUG_PARAMS_ODV            0
 #define UQ_ENV_DEBUG_PARAM_ODV                 0.
@@ -66,6 +67,7 @@ struct uqEnvOptionsStruct {
   std::string            m_subScreenOutputFileName;
   std::set<unsigned int> m_subScreenOutputAllow;
   unsigned int           m_verbosity;
+  unsigned int           m_syncVerbosity;
   int                    m_seed;
   unsigned int           m_numDebugParams;
   std::vector<double>    m_debugParams;
@@ -107,9 +109,10 @@ public:
           po::variables_map&      allOptionsMap            () const;
           void                    scanInputFileForMyOptions(const po::options_description& optionsDesc) const;
           unsigned int            verbosity                () const;
+          unsigned int            syncVerbosity            () const;
           const gsl_rng*          rng                      () const;
           bool                    isThereInputFile         () const;
-          void                    syncPrintDebugMsg        (const char* msg, unsigned int numUSecs, const Epetra_MpiComm& commObj) const;
+          void                    syncPrintDebugMsg        (const char* msg, unsigned int msgVerbosity, unsigned int numUSecs, const Epetra_MpiComm& commObj) const;
   virtual void                    print                    (std::ostream& os) const = 0;
 
 protected:
@@ -136,12 +139,14 @@ protected:
   std::string              m_option_subScreenOutputFileName;
   std::string              m_option_subScreenOutputAllow;
   std::string              m_option_verbosity;
+  std::string              m_option_syncVerbosity;
   std::string              m_option_seed;
 
   unsigned int             m_numSubEnvironments;
   std::string              m_subScreenOutputFileName;
   std::set<unsigned int>   m_subScreenOutputAllow;
   unsigned int             m_verbosity;
+  unsigned int             m_syncVerbosity;
   int                      m_seed;
 
   unsigned int             m_numDebugParams;

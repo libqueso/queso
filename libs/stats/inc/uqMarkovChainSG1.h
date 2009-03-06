@@ -47,7 +47,7 @@
 #define UQ_MAC_SG_CHAIN_TYPE_ODV                       UQ_MAC_SG_MARKOV_CHAIN_TYPE
 #define UQ_MAC_SG_CHAIN_SIZE_ODV                       100
 #define UQ_MAC_SG_CHAIN_OUTPUT_FILE_NAME_ODV           UQ_MAC_SG_FILENAME_FOR_NO_OUTPUT_FILE
-#define UQ_MAC_SG_CHAIN_OUTPUT_ALLOW_ODV               "0"
+#define UQ_MAC_SG_CHAIN_OUTPUT_ALLOW_ODV               ""
 #define UQ_MAC_SG_CHAIN_USE2_ODV                       0
 #define UQ_MAC_SG_CHAIN_GENERATE_EXTRA_ODV             0
 #define UQ_MAC_SG_CHAIN_DISPLAY_PERIOD_ODV             500
@@ -485,7 +485,7 @@ uqMarkovChainSGClass<P_V,P_M>::defineMyOptions(
     (m_option_chain_type.c_str(),                     po::value<unsigned int>()->default_value(UQ_MAC_SG_CHAIN_TYPE_ODV                      ), "type of chain (1=Markov, 2=White noise)"                         )
     (m_option_chain_size.c_str(),                     po::value<unsigned int>()->default_value(UQ_MAC_SG_CHAIN_SIZE_ODV                      ), "size of chain"                                                   )
     (m_option_chain_outputFileName.c_str(),           po::value<std::string >()->default_value(UQ_MAC_SG_CHAIN_OUTPUT_FILE_NAME_ODV          ), "name of output file"                                             )
-    (m_option_chain_outputAllow.c_str(),              po::value<std::string >()->default_value(UQ_MAC_SG_CHAIN_OUTPUT_ALLOW_ODV              ), "subenvs that will write to output file"                          )
+    (m_option_chain_outputAllow.c_str(),              po::value<std::string >()->default_value(UQ_MAC_SG_CHAIN_OUTPUT_ALLOW_ODV              ), "subEnvs that will write to output file"                          )
     (m_option_chain_use2.c_str(),                     po::value<bool        >()->default_value(UQ_MAC_SG_CHAIN_USE2_ODV                      ), "use chain2"                                                      )
     (m_option_chain_generateExtra.c_str(),            po::value<bool        >()->default_value(UQ_MAC_SG_CHAIN_GENERATE_EXTRA_ODV            ), "generate extra chains"                                           )
     (m_option_chain_displayPeriod.c_str(),            po::value<unsigned int>()->default_value(UQ_MAC_SG_CHAIN_DISPLAY_PERIOD_ODV            ), "period of message display during chain generation"               )

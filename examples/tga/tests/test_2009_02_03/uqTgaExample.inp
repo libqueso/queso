@@ -2,11 +2,11 @@
 # UQ Environment
 ###############################################
 #env_help                    = anything
-env_numSubEnvironments      = 2
+env_numSubEnvironments      = 1
 env_subScreenOutputFileName = outputData/screen
-#env_subScreenOutputFileName = .
 env_subScreenOutputAllow    = 0
 env_verbosity               = 2
+env_syncVerbosity           = 0
 env_seed                    = 0
 
 ###############################################

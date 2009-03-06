@@ -42,7 +42,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
                            << std::endl;
   }
 
-  //m_env.syncPrintDebugMsg("Entering uqMarkovChainSGClass<P_V,P_M>::generateSequence()",3000000,m_env.fullComm());
+  m_env.syncPrintDebugMsg("Entering uqMarkovChainSGClass<P_V,P_M>::generateSequence()",2,3000000,m_env.fullComm());
   checkTheParallelEnvironment();
 
   P_V valuesOf1stPosition(m_initialPosition);
@@ -230,7 +230,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
     *m_env.subScreenFile() << std::endl;
   }
 
-  //m_env.syncPrintDebugMsg("Leaving uqMarkovChainSGClass<P_V,P_M>::generateSequence()",3000000,m_env.fullComm());
+  m_env.syncPrintDebugMsg("Leaving uqMarkovChainSGClass<P_V,P_M>::generateSequence()",2,3000000,m_env.fullComm());
 
   if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
     *m_env.subScreenFile() << "Leaving uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
@@ -335,7 +335,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
   uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
   unsigned int                        chainSize)
 {
-  //m_env.syncPrintDebugMsg("Entering uqMarkovChainSGClass<P_V,P_M>::generateFullChain()",3000000,m_env.fullComm());
+  m_env.syncPrintDebugMsg("Entering uqMarkovChainSGClass<P_V,P_M>::generateFullChain()",3,3000000,m_env.fullComm());
 
   if (m_env.subScreenFile()) {
     *m_env.subScreenFile() << "Starting the generation of Markov chain " << workingChain.name()
@@ -411,7 +411,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
                            << std::endl;
   }
 
-  //m_env.syncPrintDebugMsg("In uqMarkovChainSGClass<P_V,P_M>::generateFullChain(), right before main loop",3000000,m_env.fullComm());
+  m_env.syncPrintDebugMsg("In uqMarkovChainSGClass<P_V,P_M>::generateFullChain(), right before main loop",3,3000000,m_env.fullComm());
 
   if ((m_env.numSubEnvironments() < (unsigned int) m_env.fullComm().NumProc()) &&
       (m_initialPosition.numberOfProcessorsRequiredForStorage() == 1         ) &&
@@ -919,7 +919,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
   //****************************************************
   // Release memory before leaving routine
   //****************************************************
-  //m_env.syncPrintDebugMsg("Leaving uqMarkovChainSGClass<P_V,P_M>::generateFullChain()",3000000,m_env.fullComm());
+  m_env.syncPrintDebugMsg("Leaving uqMarkovChainSGClass<P_V,P_M>::generateFullChain()",3,3000000,m_env.fullComm());
 
   return;
 }

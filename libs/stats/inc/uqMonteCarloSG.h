@@ -42,7 +42,7 @@
 // _ODV = option default value
 #define UQ_MOC_SG_NUM_SAMPLES_ODV       100
 #define UQ_MOC_SG_OUTPUT_FILE_NAME_ODV  UQ_MOC_SG_FILENAME_FOR_NO_OUTPUT_FILE
-#define UQ_MOC_SG_OUTPUT_ALLOW_ODV      "0"
+#define UQ_MOC_SG_OUTPUT_ALLOW_ODV      ""
 #define UQ_MOC_SG_USE2_ODV              0
 #define UQ_MOC_SG_DISPLAY_PERIOD_ODV    500
 #define UQ_MOC_SG_MEASURE_RUN_TIMES_ODV 0
@@ -188,7 +188,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::defineMyOptions(
     (m_option_help.c_str(),                                                                                       "produce help message for Monte Carlo distribution calculator")
     (m_option_numSamples.c_str(),      po::value<unsigned int>()->default_value(UQ_MOC_SG_NUM_SAMPLES_ODV      ), "number of samples"                                           )
     (m_option_outputFileName.c_str(),  po::value<std::string >()->default_value(UQ_MOC_SG_OUTPUT_FILE_NAME_ODV ), "name of output file"                                         )
-    (m_option_outputAllow.c_str(),     po::value<std::string >()->default_value(UQ_MOC_SG_OUTPUT_ALLOW_ODV     ), "subenvs that will write to output file"                      )
+    (m_option_outputAllow.c_str(),     po::value<std::string >()->default_value(UQ_MOC_SG_OUTPUT_ALLOW_ODV     ), "subEnvs that will write to output file"                      )
     (m_option_use2.c_str(),            po::value<bool        >()->default_value(UQ_MOC_SG_USE2_ODV             ), "use seq2"                                                    )
     (m_option_displayPeriod.c_str(),   po::value<unsigned int>()->default_value(UQ_MOC_SG_DISPLAY_PERIOD_ODV   ), "period of message display during sequence generation"        )
     (m_option_measureRunTimes.c_str(), po::value<bool        >()->default_value(UQ_MOC_SG_MEASURE_RUN_TIMES_ODV), "measure run times"                                           )

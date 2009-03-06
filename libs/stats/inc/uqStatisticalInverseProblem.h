@@ -45,7 +45,7 @@
 // _ODV = option default value
 #define UQ_CALIB_PROBLEM_COMPUTE_SOLUTION_ODV 1
 #define UQ_CALIB_PROBLEM_OUTPUT_FILE_NAME_ODV UQ_CALIB_PROBLEM_FILENAME_FOR_NO_OUTPUT_FILE
-#define UQ_CALIB_PROBLEM_OUTPUT_ALLOW_ODV     "0"
+#define UQ_CALIB_PROBLEM_OUTPUT_ALLOW_ODV     ""
 #ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
 #define UQ_CALIB_PROBLEM_SOLVER_ODV           "bayes_mc" // Bayesian formula + Markov Chain
 #endif
@@ -195,7 +195,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::defineMyOptions(
     (m_option_help.c_str(),                                                                                            "produce help message for calibration problem")
     (m_option_computeSolution.c_str(), po::value<bool       >()->default_value(UQ_CALIB_PROBLEM_COMPUTE_SOLUTION_ODV), "compute solution process"                    )
     (m_option_outputFileName.c_str(),  po::value<std::string>()->default_value(UQ_CALIB_PROBLEM_OUTPUT_FILE_NAME_ODV), "name of output file"                         )
-    (m_option_outputAllow.c_str(),     po::value<std::string>()->default_value(UQ_CALIB_PROBLEM_OUTPUT_ALLOW_ODV    ), "subenvs that will write to output file"      )
+    (m_option_outputAllow.c_str(),     po::value<std::string>()->default_value(UQ_CALIB_PROBLEM_OUTPUT_ALLOW_ODV    ), "subEnvs that will write to output file"      )
 #ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
     (m_option_solver.c_str(),          po::value<std::string>()->default_value(UQ_CALIB_PROBLEM_SOLVER_ODV          ), "algorithm for calibration"                   )
 #endif
@@ -260,7 +260,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   const P_M* proposalCovMatrix)
 {
   m_env.fullComm().Barrier();
-  //m_env.syncPrintDebugMsg("Entering uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()",3000000,m_env.fullComm());
+  m_env.syncPrintDebugMsg("Entering uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()",1,3000000,m_env.fullComm());
 
   if (m_computeSolution == false) {
     if ((m_env.subScreenFile())) {
@@ -306,7 +306,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
                                                                    *m_chain);
   m_postRv.setRealizer(*m_solutionRealizer);
 
-  //m_env.syncPrintDebugMsg("In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(), code place 1",3000000,m_env.fullComm());
+  m_env.syncPrintDebugMsg("In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(), code place 1",3,3000000,m_env.fullComm());
   //m_env.fullComm().Barrier();
 
   // Compute output mdf: uniform sampling approach
@@ -364,7 +364,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
     *m_env.subScreenFile() << std::endl;
   }
 
-  //m_env.syncPrintDebugMsg("Leaving uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()",3000000,m_env.fullComm());
+  m_env.syncPrintDebugMsg("Leaving uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()",1,3000000,m_env.fullComm());
   m_env.fullComm().Barrier();
   
   return;
