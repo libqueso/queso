@@ -6,9 +6,9 @@ AM_LDFLAGS = $(BOOST_LDFLAGS)
 
 bin_PROGRAMS = 
 
-bin_PROGRAMS += uqStatisticalInverseProblem1_gsl
-uqStatisticalInverseProblem1_gsl_SOURCES = uqStatisticalInverseProblem1_gsl.C uqStatisticalInverseProblem1_appl.h uqStatisticalInverseProblem1_likelihood.h
-uqStatisticalInverseProblem1_gsl_LDADD = $(top_builddir)/libs/libqueso.a \
+bin_PROGRAMS += exStatisticalInverseProblem1_gsl
+exStatisticalInverseProblem1_gsl_SOURCES = exStatisticalInverseProblem1_gsl.C exStatisticalInverseProblem1_appl.h exStatisticalInverseProblem1_likelihood.h
+exStatisticalInverseProblem1_gsl_LDADD = $(top_builddir)/libs/libqueso.a \
 	$(GSL_LIBS) $(BOOST_PROGRAM_OPTIONS_LIB) $(EPETRA_LIBS)
 
 # Required for AX_AM_MACROS
