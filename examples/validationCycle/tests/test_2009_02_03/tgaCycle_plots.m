@@ -1,8 +1,8 @@
 cd outputData
-calOutput_sub0
-calExtraOutput_sub0
-valOutput_sub0
-valExtraOutput_sub0
+tgaCalOutput_sub0
+tgaCalExtraOutput_sub0
+tgaValOutput_sub0
+tgaValExtraOutput_sub0
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

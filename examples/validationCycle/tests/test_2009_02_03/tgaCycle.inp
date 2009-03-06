@@ -14,7 +14,7 @@ env_seed                    = 0
 ###############################################
 cycle_cal_ip_help            = anything
 cycle_cal_ip_computeSolution = 1
-cycle_cal_ip_outputFileName  = outputData/calOutput
+cycle_cal_ip_outputFileName  = outputData/tgaCalOutput
 cycle_cal_ip_outputAllow     = 0
 
 ###############################################
@@ -26,7 +26,7 @@ cycle_cal_ip_outputAllow     = 0
 cycle_cal_ip_mc_help                  = anything
 cycle_cal_ip_mc_chain_type            = 1
 cycle_cal_ip_mc_chain_size            = 131072
-cycle_cal_ip_mc_chain_outputFileName  = outputData/calExtraOutput
+cycle_cal_ip_mc_chain_outputFileName  = outputData/tgaCalExtraOutput
 cycle_cal_ip_mc_chain_outputAllow     = 0
 cycle_cal_ip_mc_chain_generateExtra   = 0
 cycle_cal_ip_mc_chain_displayPeriod   = 20000
@@ -126,7 +126,7 @@ cycle_cal_ip_mc_filteredChain_stats_kde_numEvalPositions     = 250
 ###############################################
 cycle_cal_fp_help            = anything
 cycle_cal_fp_computeSolution = 1
-cycle_cal_fp_outputFileName  = outputData/calOutput
+cycle_cal_fp_outputFileName  = outputData/tgaCalOutput
 cycle_cal_fp_outputAllow     = 0
 
 ###############################################
@@ -137,7 +137,7 @@ cycle_cal_fp_outputAllow     = 0
 ###############################################
 cycle_cal_fp_mc_help            = anything
 cycle_cal_fp_mc_numSamples      = 131072
-cycle_cal_fp_mc_outputFileName  = outputData/calExtraOutput
+cycle_cal_fp_mc_outputFileName  = outputData/tgaCalExtraOutput
 cycle_cal_fp_mc_outputAllow     = 0
 cycle_cal_fp_mc_displayPeriod   = 20000
 cycle_cal_fp_mc_measureRunTimes = 1
@@ -185,7 +185,7 @@ cycle_cal_fp_mc_seq_stats_kde_numEvalPositions     = 250
 ###############################################
 cycle_val_ip_help            = anything
 cycle_val_ip_computeSolution = 1
-cycle_val_ip_outputFileName  = outputData/valOutput
+cycle_val_ip_outputFileName  = outputData/tgaValOutput
 cycle_val_ip_outputAllow     = 0
 
 ###############################################
@@ -197,7 +197,7 @@ cycle_val_ip_outputAllow     = 0
 cycle_val_ip_mc_help                  = anything
 cycle_val_ip_mc_chain_type            = 1
 cycle_val_ip_mc_chain_size            = 131072
-cycle_val_ip_mc_chain_outputFileName  = outputData/valExtraOutput
+cycle_val_ip_mc_chain_outputFileName  = outputData/tgaValExtraOutput
 cycle_val_ip_mc_chain_outputAllow     = 0
 cycle_val_ip_mc_chain_generateExtra   = 0
 cycle_val_ip_mc_chain_displayPeriod   = 20000
@@ -297,7 +297,7 @@ cycle_val_ip_mc_filteredChain_stats_kde_numEvalPositions     = 250
 ###############################################
 cycle_val_fp_help            = anything
 cycle_val_fp_computeSolution = 1
-cycle_val_fp_outputFileName  = outputData/valOutput
+cycle_val_fp_outputFileName  = outputData/tgaValOutput
 cycle_val_fp_outputAllow     = 0
 
 ###############################################
@@ -308,7 +308,7 @@ cycle_val_fp_outputAllow     = 0
 ###############################################
 cycle_val_fp_mc_help            = anything
 cycle_val_fp_mc_numSamples      = 131072
-cycle_val_fp_mc_outputFileName  = outputData/valExtraOutput
+cycle_val_fp_mc_outputFileName  = outputData/tgaValExtraOutput
 cycle_val_fp_mc_outputAllow     = 0
 cycle_val_fp_mc_displayPeriod   = 20000
 cycle_val_fp_mc_measureRunTimes = 1
