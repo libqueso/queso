@@ -411,7 +411,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
       // Write unified cdf if necessary
       if (m_env.numSubEnvironments() > 1) {
         if (m_qoiRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
-          if (m_env.intra0Rank() == 0) {
+          if (m_env.inter0Rank() == 0) {
             *ofsvar << *m_unifiedSolutionCdf;
           }
         }
@@ -458,7 +458,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::qoiRv_unifiedCdf() const
     return m_qoiRv.cdf();
   }
 
-  if (m_env.intra0Rank() < 0) {
+  if (m_env.inter0Rank() < 0) {
     return m_qoiRv.cdf();
   }
 

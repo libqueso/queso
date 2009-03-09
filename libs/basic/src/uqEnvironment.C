@@ -103,9 +103,9 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_subRank                       (-1),
   m_subCommSize                   (1),
   m_selfComm                      (NULL),
-  m_intra0Comm                    (NULL),
-  m_intra0Rank                    (-1),
-  m_intra0CommSize                (1),
+  m_inter0Comm                    (NULL),
+  m_inter0Rank                    (-1),
+  m_inter0CommSize                (1),
   m_subScreenFile                 (NULL),
   m_rng                           (NULL)
 {
@@ -149,9 +149,9 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_subRank                       (-1),
   m_subCommSize                   (0),
   m_selfComm                      (NULL),
-  m_intra0Comm                    (NULL),
-  m_intra0Rank                    (-1),
-  m_intra0CommSize                (0),
+  m_inter0Comm                    (NULL),
+  m_inter0Rank                    (-1),
+  m_inter0CommSize                (0),
   m_subScreenFile                 (NULL),
   m_rng                           (NULL)
 {
@@ -194,9 +194,9 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_subRank                       (-1),
   m_subCommSize                   (0),
   m_selfComm                      (NULL),
-  m_intra0Comm                    (NULL),
-  m_intra0Rank                    (-1),
-  m_intra0CommSize                (0),
+  m_inter0Comm                    (NULL),
+  m_inter0Rank                    (-1),
+  m_inter0CommSize                (0),
   m_subScreenFile                 (NULL),
   m_rng                           (NULL)
 {
@@ -249,7 +249,7 @@ uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
   //}
 
   if (m_subScreenFile) delete m_subScreenFile;
-  if (m_intra0Comm   ) delete m_intra0Comm;
+  if (m_inter0Comm   ) delete m_inter0Comm;
   if (m_selfComm     ) delete m_selfComm;
   if (m_subComm      ) delete m_subComm;
   if (m_fullComm     ) delete m_fullComm;
@@ -296,15 +296,15 @@ uqBaseEnvironmentClass::selfComm() const
 }
 
 int
-uqBaseEnvironmentClass::intra0Rank() const
+uqBaseEnvironmentClass::inter0Rank() const
 {
-  return m_intra0Rank;
+  return m_inter0Rank;
 }
 
 const Epetra_MpiComm&
-uqBaseEnvironmentClass::intra0Comm() const
+uqBaseEnvironmentClass::inter0Comm() const
 {
-  return *m_intra0Comm;
+  return *m_inter0Comm;
 }
 
 std::ofstream*
@@ -405,11 +405,12 @@ uqBaseEnvironmentClass::syncPrintDebugMsg(const char* msg, unsigned int msgVerbo
   commObj.Barrier();
   if (this->syncVerbosity() >= msgVerbosity) {
     for (int i = 0; i < commObj.NumProc(); ++i) {
-      if (i == this->rank()) {
+      if (i == commObj.MyPID()) {
         std::cout << msg
                   << ": fullRank "       << this->rank()
                   << ", subEnvironment " << this->subId()
                   << ", subRank "        << this->subRank()
+                  << ", inter0Rank "     << this->inter0Rank()
                   << std::endl;
       }
       commObj.Barrier();
@@ -573,26 +574,26 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
   m_selfComm = new Epetra_MpiComm(MPI_COMM_SELF);
 
   //////////////////////////////////////////////////
-  // Deal with multiple subEnvironments: create the intra0 communicator
+  // Deal with multiple subEnvironments: create the inter0 communicator
   //////////////////////////////////////////////////
-  std::vector<int> fullRanksOfIntra0(m_numSubEnvironments,0);
+  std::vector<int> fullRanksOfInter0(m_numSubEnvironments,0);
   for (unsigned int i = 0; i < m_numSubEnvironments; ++i) {
-    fullRanksOfIntra0[i] = i * numRanksPerSubEnvironment;
+    fullRanksOfInter0[i] = i * numRanksPerSubEnvironment;
   }
-  mpiRC = MPI_Group_incl(m_fullGroup, (int) m_numSubEnvironments, &fullRanksOfIntra0[0], &m_intra0Group);
+  mpiRC = MPI_Group_incl(m_fullGroup, (int) m_numSubEnvironments, &fullRanksOfInter0[0], &m_inter0Group);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_fullRank,
                       "uqFullEnvironmentClass::commonConstructor()",
-                      "failed MPI_Group_incl() for intra0");
-  mpiRC = MPI_Comm_create(m_fullComm->Comm(), m_intra0Group, &m_intra0RawComm);
+                      "failed MPI_Group_incl() for inter0");
+  mpiRC = MPI_Comm_create(m_fullComm->Comm(), m_inter0Group, &m_inter0RawComm);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_fullRank,
                       "uqFullEnvironmentClass::commonConstructor()",
-                      "failed MPI_Comm_group() for intra0");
+                      "failed MPI_Comm_group() for inter0");
   if (m_fullRank%numRanksPerSubEnvironment == 0) {
-    m_intra0Comm = new Epetra_MpiComm(m_intra0RawComm);
-    m_intra0Rank     = m_intra0Comm->MyPID();
-    m_intra0CommSize = m_intra0Comm->NumProc();
+    m_inter0Comm = new Epetra_MpiComm(m_inter0RawComm);
+    m_inter0Rank     = m_inter0Comm->MyPID();
+    m_inter0CommSize = m_inter0Comm->NumProc();
   }
 
   //////////////////////////////////////////////////
@@ -644,11 +645,11 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
         }
 	std::cout << "\n";
 
-        if (m_intra0Comm) {
+        if (m_inter0Comm) {
           std::cout << "MPI node of worldRank " << m_worldRank
-                    << " also belongs to intra0 communicator with full ranks";
-          for (unsigned int j = 0; j < fullRanksOfIntra0.size(); ++j) {
-            std::cout << " " << fullRanksOfIntra0[j];
+                    << " also belongs to inter0 communicator with full ranks";
+          for (unsigned int j = 0; j < fullRanksOfInter0.size(); ++j) {
+            std::cout << " " << fullRanksOfInter0[j];
           }
         }
 	std::cout << "\n";

@@ -4,7 +4,7 @@
 #env_help                    = anything
 env_numSubEnvironments      = 2
 env_subScreenOutputFileName = outputData/screen
-env_subScreenOutputAllow    = 0
+env_subScreenOutputAllow    = 0 1
 env_verbosity               = 2
 env_syncVerbosity           = 0
 env_seed                    = 0
@@ -15,7 +15,7 @@ env_seed                    = 0
 cycle_cal_ip_help            = anything
 cycle_cal_ip_computeSolution = 1
 cycle_cal_ip_outputFileName  = outputData/tgaCalOutput
-cycle_cal_ip_outputAllow     = 0
+cycle_cal_ip_outputAllow     = 0 1
 
 ###############################################
 # 'cal_ip_': information for Markov Chain algorithm
@@ -27,7 +27,7 @@ cycle_cal_ip_mc_help                  = anything
 cycle_cal_ip_mc_chain_type            = 1
 cycle_cal_ip_mc_chain_size            = 131072
 cycle_cal_ip_mc_chain_outputFileName  = outputData/tgaCalExtraOutput
-cycle_cal_ip_mc_chain_outputAllow     = 0
+cycle_cal_ip_mc_chain_outputAllow     = 0 1
 cycle_cal_ip_mc_chain_generateExtra   = 0
 cycle_cal_ip_mc_chain_displayPeriod   = 20000
 cycle_cal_ip_mc_chain_measureRunTimes = 1
@@ -127,7 +127,7 @@ cycle_cal_ip_mc_filteredChain_stats_kde_numEvalPositions     = 250
 cycle_cal_fp_help            = anything
 cycle_cal_fp_computeSolution = 1
 cycle_cal_fp_outputFileName  = outputData/tgaCalOutput
-cycle_cal_fp_outputAllow     = 0
+cycle_cal_fp_outputAllow     = 0 1
 
 ###############################################
 # 'cal_fp_': information for Monte Carlo algorithm
@@ -138,7 +138,7 @@ cycle_cal_fp_outputAllow     = 0
 cycle_cal_fp_mc_help            = anything
 cycle_cal_fp_mc_numSamples      = 131072
 cycle_cal_fp_mc_outputFileName  = outputData/tgaCalExtraOutput
-cycle_cal_fp_mc_outputAllow     = 0
+cycle_cal_fp_mc_outputAllow     = 0 1
 cycle_cal_fp_mc_displayPeriod   = 20000
 cycle_cal_fp_mc_measureRunTimes = 1
 cycle_cal_fp_mc_write           = 0
@@ -186,7 +186,7 @@ cycle_cal_fp_mc_seq_stats_kde_numEvalPositions     = 250
 cycle_val_ip_help            = anything
 cycle_val_ip_computeSolution = 1
 cycle_val_ip_outputFileName  = outputData/tgaValOutput
-cycle_val_ip_outputAllow     = 0
+cycle_val_ip_outputAllow     = 0 1
 
 ###############################################
 # 'val_ip_': information for Markov Chain algorithm
@@ -198,7 +198,7 @@ cycle_val_ip_mc_help                  = anything
 cycle_val_ip_mc_chain_type            = 1
 cycle_val_ip_mc_chain_size            = 131072
 cycle_val_ip_mc_chain_outputFileName  = outputData/tgaValExtraOutput
-cycle_val_ip_mc_chain_outputAllow     = 0
+cycle_val_ip_mc_chain_outputAllow     = 0 1
 cycle_val_ip_mc_chain_generateExtra   = 0
 cycle_val_ip_mc_chain_displayPeriod   = 20000
 cycle_val_ip_mc_chain_measureRunTimes = 1
@@ -298,7 +298,7 @@ cycle_val_ip_mc_filteredChain_stats_kde_numEvalPositions     = 250
 cycle_val_fp_help            = anything
 cycle_val_fp_computeSolution = 1
 cycle_val_fp_outputFileName  = outputData/tgaValOutput
-cycle_val_fp_outputAllow     = 0
+cycle_val_fp_outputAllow     = 0 1
 
 ###############################################
 # 'val_fp_': information for Monte Carlo algorithm
@@ -309,7 +309,7 @@ cycle_val_fp_outputAllow     = 0
 cycle_val_fp_mc_help            = anything
 cycle_val_fp_mc_numSamples      = 131072
 cycle_val_fp_mc_outputFileName  = outputData/tgaValExtraOutput
-cycle_val_fp_mc_outputAllow     = 0
+cycle_val_fp_mc_outputAllow     = 0 1
 cycle_val_fp_mc_displayPeriod   = 20000
 cycle_val_fp_mc_measureRunTimes = 1
 cycle_val_fp_mc_write           = 0

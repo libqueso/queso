@@ -1492,7 +1492,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
     // Write unified min-max
     if (m_env.subScreenFile()) {
       if (m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
-        if (m_env.intra0Rank() == 0) {
+        if (m_env.inter0Rank() == 0) {
           *m_env.subScreenFile() << "\nComputed unified min values and max values for chain " << m_name
                                  << std::endl;
 
@@ -1626,7 +1626,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
       // Write unified histogram
       if (passedOfs) {
         if (m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
-          if (m_env.intra0Rank() == 0) {
+          if (m_env.inter0Rank() == 0) {
             std::ofstream& ofsvar = *passedOfs;
             ofsvar << m_name << uniCoreName_HistCenters << " = zeros(" << this->vectorSize() /*.*/
                    << ","                                              << unifiedHistCentersForAllBins.size()
@@ -1697,15 +1697,15 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
 
     std::string subCoreName_GaussianKdePositions((std::string)(    "_GkdePosits_sub")+m_env.subIdString());
     std::string uniCoreName_GaussianKdePositions((std::string)("_unifGkdePosits_sub")+m_env.subIdString());
-    //if (m_env.numSubEnvironments() == 1) subCoreName_GaussianKdePositions = uniCoreName_GaussianKdePositions; // avoid temporarily (see '< -1' below)
+    if (m_env.numSubEnvironments() == 1) subCoreName_GaussianKdePositions = uniCoreName_GaussianKdePositions; // avoid temporarily (see '< -1' below)
 
     std::string subCoreName_GaussianKdeScaleVec ((std::string)(    "_GkdeScalev_sub")+m_env.subIdString());
     std::string uniCoreName_GaussianKdeScaleVec ((std::string)("_unifGkdeScalev_sub")+m_env.subIdString());
-    //if (m_env.numSubEnvironments() == 1) subCoreName_GaussianKdeScaleVec = uniCoreName_GaussianKdeScaleVec; // avoid temporarily (see '< -1' below)
+    if (m_env.numSubEnvironments() == 1) subCoreName_GaussianKdeScaleVec = uniCoreName_GaussianKdeScaleVec; // avoid temporarily (see '< -1' below)
 
     std::string subCoreName_GaussianKdeValues   ((std::string)(    "_GkdeValues_sub")+m_env.subIdString());
     std::string uniCoreName_GaussianKdeValues   ((std::string)("_unifGkdeValues_sub")+m_env.subIdString());
-    //if (m_env.numSubEnvironments() == 1) subCoreName_GaussianKdeValues = uniCoreName_GaussianKdeValues; // avoid temporarily (see '< -1' below)
+    if (m_env.numSubEnvironments() == 1) subCoreName_GaussianKdeValues = uniCoreName_GaussianKdeValues; // avoid temporarily (see '< -1' below)
 
     V iqrVec(m_vectorSpace.zeroVector());
     this->interQuantileRange(0, // Use the whole chain
@@ -1804,16 +1804,18 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
       if (kdeEvalPositions[i] != NULL) delete kdeEvalPositions[i];
     }
 
-    if ((int) m_env.numSubEnvironments() < -1) { // avoid code temporarily
+    if ((int) m_env.numSubEnvironments() > 1) { // avoid code temporarily
       // Compute unified KDE
       V unifiedIqrVec(m_vectorSpace.zeroVector());
       this->unifiedInterQuantileRange(0, // Use the whole chain
                                       unifiedIqrVec);
+      m_env.fullComm().Barrier();
 
       V unifiedGaussianKdeScaleVec(m_vectorSpace.zeroVector());
       this->unifiedScalesForKDE(0, // Use the whole chain
                                 unifiedIqrVec,
                                 unifiedGaussianKdeScaleVec);
+      m_env.fullComm().Barrier();
 
       std::vector<V*> unifiedKdeEvalPositions(statisticalOptions.kdeNumEvalPositions(),NULL);
       uqMiscComputePositionsBetweenMinMax(unifiedStatsMinPositions,
@@ -1825,11 +1827,12 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
                                unifiedGaussianKdeScaleVec,
                                unifiedKdeEvalPositions,
                                unifiedGaussianKdeDensities);
+      m_env.fullComm().Barrier();
 
       // Write unified iqr
       if (m_env.subScreenFile()) {
         if (m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
-          if (m_env.intra0Rank() == 0) {
+          if (m_env.inter0Rank() == 0) {
             *m_env.subScreenFile() << "\nComputed unified inter quantile ranges for chain " << m_name
                                    << std::endl;
 
@@ -1867,7 +1870,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
       // Write unified KDE
       if (passedOfs) {
         if (m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
-          if (m_env.intra0Rank() == 0) {
+          if (m_env.inter0Rank() == 0) {
             std::ofstream& ofsvar = *passedOfs;
             ofsvar << m_name << uniCoreName_GaussianKdePositions << " = zeros(" << this->vectorSize() /*.*/
                    << ","                                                       << unifiedKdeEvalPositions.size()
