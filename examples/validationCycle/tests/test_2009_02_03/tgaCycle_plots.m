@@ -68,10 +68,8 @@ clf
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%old_plot(cycle_cal_ip_unifMdf_0_grid_sub0,cycle_cal_ip_unifMdf_0_values_sub0,'b+');
 plot(cycle_cal_ip_mc_filtChain_unifGkdePosits_sub0(1,:),cycle_cal_ip_mc_filtChain_unifGkdeValues_sub0(1,:),'b-','linewidth',3);
 hold
-%%old_plot(cycle_val_ip_unifMdf_0_grid_sub0,cycle_val_ip_unifMdf_0_values_sub0,'r+');
 plot(cycle_val_ip_mc_filtChain_unifGkdePosits_sub0(1,:),cycle_val_ip_mc_filtChain_unifGkdeValues_sub0(1,:),'r-','linewidth',3);
 ylabel('Posterior marginal pdf','fontsize',20);
 xlabel('A (min^{-1})','fontsize',20);
@@ -98,10 +96,8 @@ clf
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%old_plot(cycle_cal_ip_unifMdf_1_grid_sub0,cycle_cal_ip_unifMdf_1_values_sub0,'b+');
 plot(cycle_cal_ip_mc_filtChain_unifGkdePosits_sub0(2,:),cycle_cal_ip_mc_filtChain_unifGkdeValues_sub0(2,:),'b-','linewidth',3);
 hold
-%%old_plot(cycle_val_ip_unifMdf_1_grid_sub0,cycle_val_ip_unifMdf_1_values_sub0,'r+');
 plot(cycle_val_ip_mc_filtChain_unifGkdePosits_sub0(2,:),cycle_val_ip_mc_filtChain_unifGkdeValues_sub0(2,:),'r-','linewidth',3);
 ylabel('Pdf','fontsize',20);
 xlabel('E (J/mol)','fontsize',20);
@@ -128,10 +124,8 @@ clf
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%old_plot(cycle_cal_fp_unifMdf_0_grid_sub0,cycle_cal_fp_unifMdf_0_values_sub0,'b+');
 plot(cycle_cal_fp_mc_QoiSeq_unifGkdePosits_sub0(1,:),cycle_cal_fp_mc_QoiSeq_unifGkdeValues_sub0(1,:),'b-','linewidth',3);
 hold
-%%old_plot(cycle_val_fp_unifMdf_0_grid_sub0,cycle_val_fp_unifMdf_0_values_sub0,'r+');
 plot(cycle_val_fp_mc_QoiSeq_unifGkdePosits_sub0(1,:),cycle_val_fp_mc_QoiSeq_unifGkdeValues_sub0(1,:),'r-','linewidth',3);
 ylabel('Pdf','fontsize',20);
 xlabel('Mass fraction remaining at t=3.9s','fontsize',20);
