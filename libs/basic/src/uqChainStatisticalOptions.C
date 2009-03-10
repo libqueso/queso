@@ -403,7 +403,7 @@ uqChainStatisticalOptionsClass::initialDiscardedPortions() const
   return m_initialDiscardedPortions;
 }
 
-const bool
+bool
 uqChainStatisticalOptionsClass::bmmRun() const
 {
   return m_bmmRun;
@@ -415,79 +415,79 @@ uqChainStatisticalOptionsClass::bmmLengths() const
   return m_bmmLengths;
 }
 
-const bool
+bool
 uqChainStatisticalOptionsClass::bmmDisplay() const
 {
   return m_bmmDisplay;
 }
 
-const bool
+bool
 uqChainStatisticalOptionsClass::bmmWrite() const
 {
   return m_bmmWrite;
 }
 
-const bool
+bool
 uqChainStatisticalOptionsClass::fftCompute() const
 {
   return m_fftCompute;
 }
 
-const unsigned int
+unsigned int
 uqChainStatisticalOptionsClass::fftParamId() const
 {
   return m_fftParamId;
 }
 
-const unsigned int
+unsigned int
 uqChainStatisticalOptionsClass::fftSize() const
 {
   return m_fftSize;
 }
 
-const bool
+bool
 uqChainStatisticalOptionsClass::fftTestInversion() const
 {
   return m_fftTestInversion;
 }
 
-const bool
+bool
 uqChainStatisticalOptionsClass::fftWrite() const
 {
   return m_fftWrite;
 }
 
-const bool
+bool
 uqChainStatisticalOptionsClass::psdCompute() const
 {
   return m_psdCompute;
 }
 
-const unsigned int
+unsigned int
 uqChainStatisticalOptionsClass::psdNumBlocks() const
 {
   return m_psdNumBlocks;
 }
 
-const double
+double
 uqChainStatisticalOptionsClass::psdHopSizeRatio() const
 {
   return m_psdHopSizeRatio;
 }
 
-const unsigned int
+unsigned int
 uqChainStatisticalOptionsClass::psdParamId() const
 {
   return m_psdParamId;
 }
 
-const bool
+bool
 uqChainStatisticalOptionsClass::psdWrite() const
 {
   return m_psdWrite;
 }
 
-const bool
+bool
 uqChainStatisticalOptionsClass::psdAtZeroCompute() const
 {
   return m_psdAtZeroCompute;
@@ -499,115 +499,115 @@ uqChainStatisticalOptionsClass::psdAtZeroNumBlocks() const
   return m_psdAtZeroNumBlocks;
 }
 
-const double
+double
 uqChainStatisticalOptionsClass::psdAtZeroHopSizeRatio() const
 {
   return m_psdAtZeroHopSizeRatio;
 }
 
-const bool
+bool
 uqChainStatisticalOptionsClass::psdAtZeroDisplay() const
 {
   return m_psdAtZeroDisplay;
 }
 
-const bool
+bool
 uqChainStatisticalOptionsClass::psdAtZeroWrite() const
 {
   return m_psdAtZeroWrite;
 }
 
-const bool
+bool
 uqChainStatisticalOptionsClass::gewekeCompute() const
 {
   return m_gewekeCompute;
 }
 
-const double
+double
 uqChainStatisticalOptionsClass::gewekeNaRatio() const
 {
   return m_gewekeNaRatio;
 }
 
-const double
+double
 uqChainStatisticalOptionsClass::gewekeNbRatio() const
 {
   return m_gewekeNbRatio;
 }
 
-const bool
+bool
 uqChainStatisticalOptionsClass::gewekeDisplay() const
 {
   return m_gewekeDisplay;
 }
 
-const bool
+bool
 uqChainStatisticalOptionsClass::gewekeWrite() const
 {
   return m_gewekeWrite;
 }
 
-const bool
+bool
 uqChainStatisticalOptionsClass::corrComputeViaDef() const
 {
   return m_corrComputeViaDef;
 }
 
-const bool
+bool
 uqChainStatisticalOptionsClass::corrComputeViaFft() const
 {
   return m_corrComputeViaFft;
 }
 
-const unsigned int
+unsigned int
 uqChainStatisticalOptionsClass::corrSecondLag() const
 {
   return m_corrSecondLag;
 }
 
-const unsigned int
+unsigned int
 uqChainStatisticalOptionsClass::corrLagSpacing() const
 {
   return m_corrLagSpacing;
 }
 
-const unsigned int
+unsigned int
 uqChainStatisticalOptionsClass::corrNumLags() const
 {
   return m_corrNumLags;
 }
 
-const bool
+bool
 uqChainStatisticalOptionsClass::corrDisplay() const
 {
   return m_corrDisplay;
 }
 
-const bool
+bool
 uqChainStatisticalOptionsClass::corrWrite() const
 {
   return m_corrWrite;
 }
 
-const bool
+bool
 uqChainStatisticalOptionsClass::histCompute() const
 {
   return m_histCompute;
 }
 
-const unsigned int
+unsigned int
 uqChainStatisticalOptionsClass::histNumInternalBins() const
 {
   return m_histNumInternalBins;
 }
 
-const bool
+bool
 uqChainStatisticalOptionsClass::kdeCompute() const
 {
   return m_kdeCompute;
 }
 
-const unsigned int
+unsigned int
 uqChainStatisticalOptionsClass::kdeNumEvalPositions() const
 {
   return m_kdeNumEvalPositions;
