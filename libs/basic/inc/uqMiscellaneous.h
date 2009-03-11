@@ -41,10 +41,10 @@ void   uqMiscReadDoublesFromString      (const std::string&   inputString,
                                          std::vector<double>& outputDoubles);
 void   uqMiscReadWordsFromString        (const std::string&        inputString,
                                          std::vector<std::string>& outputWords);
-void   uqMiscExtractDoubleFromString    (std::string& inputString,
-                                         double&      outputDouble);
-void   uqMiscExtractWordFromString      (std::string& inputString,
-                                         std::string& outputWord);
+//void   uqMiscExtractDoubleFromString    (std::string& inputString,
+//                                         double&      outputDouble);
+//void   uqMiscExtractWordFromString      (std::string& inputString,
+//                                         std::string& outputWord);
 int    uqMiscReadStringAndDoubleFromFile(std::ifstream& ifs,
                                          std::string&   termString,
                                          double*        termValue);

@@ -122,6 +122,7 @@ protected:
 
   int                      m_worldRank;
 
+  MPI_Comm                 m_fullRawComm;
   Epetra_MpiComm*          m_fullComm;
   int                      m_fullRank;
   int                      m_fullCommSize;

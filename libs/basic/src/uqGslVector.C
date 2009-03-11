@@ -396,7 +396,7 @@ operator<<(std::ostream& os, const uqGslVectorClass& obj)
   return os;
 }
 
-uqGslVectorClass operator/(const double a, const uqGslVectorClass& x)
+uqGslVectorClass operator/(double a, const uqGslVectorClass& x)
 {
   uqGslVectorClass answer(x);
   answer.cwInvert();
@@ -413,7 +413,7 @@ uqGslVectorClass operator/(const uqGslVectorClass& x, const uqGslVectorClass& y)
   return answer;
 }
 
-uqGslVectorClass operator*(const double a, const uqGslVectorClass& x)
+uqGslVectorClass operator*(double a, const uqGslVectorClass& x)
 {
   uqGslVectorClass answer(x);
   answer *= a;

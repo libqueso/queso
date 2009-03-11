@@ -158,7 +158,7 @@ uqArrayOfOneDGridsClass<V,M>::setUniformGrids(
 
   char strI[65];
   for (unsigned int i = 0; i < (unsigned int) m_oneDGrids.MyLength(); ++i) {
-    sprintf(strI,"%d_",i);
+    sprintf(strI,"%u_",i);
     m_oneDGrids(i,0) = new uqUniformOneDGridClass<double>(m_env,
                                                           (m_prefix+strI).c_str(),
                                                           (unsigned int) sizesVec[i],

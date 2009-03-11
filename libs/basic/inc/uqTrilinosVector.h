@@ -85,9 +85,9 @@ private:
   Epetra_SerialDenseMatrix* m_vec;
 };
 
-uqTrilinosVectorClass operator/    (const double a,                 const uqTrilinosVectorClass& x  );
+uqTrilinosVectorClass operator/    (      double a,                 const uqTrilinosVectorClass& x  );
 uqTrilinosVectorClass operator/    (const uqTrilinosVectorClass& x, const uqTrilinosVectorClass& y  );
-uqTrilinosVectorClass operator*    (const double a,                 const uqTrilinosVectorClass& x  );
+uqTrilinosVectorClass operator*    (      double a,                 const uqTrilinosVectorClass& x  );
 uqTrilinosVectorClass operator*    (const uqTrilinosVectorClass& x, const uqTrilinosVectorClass& y  );
 double                scalarProduct(const uqTrilinosVectorClass& x, const uqTrilinosVectorClass& y  );
 uqTrilinosVectorClass operator+    (const uqTrilinosVectorClass& x, const uqTrilinosVectorClass& y  );

@@ -88,6 +88,9 @@ uqTrilinosVectorClass::uqTrilinosVectorClass(const uqBaseEnvironmentClass& env, 
                     m_env.rank(),
                     "uqTrilinosVectorClass::constructor(), linspace",
                     "failed");
+
+  double x = d1+d2;   // just to avoid icpc warnings
+  x += (double) size; // just to avoid icpc warnings
 }
 
 uqTrilinosVectorClass::uqTrilinosVectorClass(const uqTrilinosVectorClass& v, double d1, double d2, unsigned int size)
@@ -106,6 +109,9 @@ uqTrilinosVectorClass::uqTrilinosVectorClass(const uqTrilinosVectorClass& v, dou
                     m_env.rank(),
                     "uqTrilinosVectorClass::constructor(), linspace",
                     "failed");
+
+  double x = d1+d2;   // just to avoid icpc warnings
+  x += (double) size; // just to avoid icpc warnings
 }
 
 uqTrilinosVectorClass::uqTrilinosVectorClass(const uqTrilinosVectorClass& v)
@@ -148,6 +154,7 @@ uqTrilinosVectorClass::operator*=(double a)
                     m_env.rank(),
                     "uqTrilinosVectorClass::operator*=()",
                     "failed");
+  double tmpA = a; tmpA += 1.; // Just to avoid icpc warnings
   return *this;
 }
 
@@ -158,30 +165,35 @@ uqTrilinosVectorClass::operator/=(double a)
                     m_env.rank(),
                     "uqTrilinosVectorClass::operator/=()",
                     "failed");
+  double tmpA = a; tmpA += 1.; // Just to avoid icpc warnings
   return *this;
 }
 
 uqTrilinosVectorClass&
 uqTrilinosVectorClass::operator*=(const uqTrilinosVectorClass& rhs)
 {
+  double tmpA = rhs[0]; tmpA += 1.; // Just to avoid icpc warnings
   return *this;
 }
 
 uqTrilinosVectorClass&
 uqTrilinosVectorClass::operator/=(const uqTrilinosVectorClass& rhs)
 {
+  double tmpA = rhs[0]; tmpA += 1.; // Just to avoid icpc warnings
   return *this;
 }
 
 uqTrilinosVectorClass&
 uqTrilinosVectorClass::operator+=(const uqTrilinosVectorClass& rhs)
 {
+  double tmpA = rhs[0]; tmpA += 1.; // Just to avoid icpc warnings
   return *this;
 }
 
 uqTrilinosVectorClass&
 uqTrilinosVectorClass::operator-=(const uqTrilinosVectorClass& rhs)
 {
+  double tmpA = rhs[0]; tmpA += 1.; // Just to avoid icpc warnings
   return *this;
 }
 
@@ -201,7 +213,7 @@ void
 uqTrilinosVectorClass::copy(const uqTrilinosVectorClass& src)
 {
   UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
-                    m_env.rank(),
+                    src.env().rank(),
                     "uqTrilinosVectorClass::copy()",
                     "failed");
 
@@ -246,12 +258,15 @@ uqTrilinosVectorClass::cwSet(double value)
                     m_env.rank(),
                     "uqTrilinosVectorClass::set()",
                     "failed");
+  double tmpA = value; tmpA += 1.; // Just to avoid icpc warnings
   return;
 }
 
 void
 uqTrilinosVectorClass::cwSetGaussian(const gsl_rng* rng, double mean, double stdDev)
 {
+  double tmpA = mean + stdDev;          // Just to avoid icpc warnings
+  tmpA += gsl_ran_gaussian(rng,stdDev); // Just to avoid icpc warnings
   return;
 }
 
@@ -282,6 +297,7 @@ uqTrilinosVectorClass::print(std::ostream& os) const
                     m_env.rank(),
                     "uqTrilinosVectorClass::print()",
                     "failed");
+  os.flush(); // just to avoid icpc warnings
   return;
 }
 
@@ -326,7 +342,7 @@ operator<<(std::ostream& os, const uqTrilinosVectorClass& obj)
   return os;
 }
 
-uqTrilinosVectorClass operator/(const double a, const uqTrilinosVectorClass& x)
+uqTrilinosVectorClass operator/(double a, const uqTrilinosVectorClass& x)
 {
   uqTrilinosVectorClass answer(x);
   answer.cwInvert();
@@ -343,7 +359,7 @@ uqTrilinosVectorClass operator/(const uqTrilinosVectorClass& x, const uqTrilinos
   return answer;
 }
 
-uqTrilinosVectorClass operator*(const double a, const uqTrilinosVectorClass& x)
+uqTrilinosVectorClass operator*(double a, const uqTrilinosVectorClass& x)
 {
   uqTrilinosVectorClass answer(x);
   answer *= a;

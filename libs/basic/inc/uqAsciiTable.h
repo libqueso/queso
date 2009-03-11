@@ -168,7 +168,7 @@ uqAsciiTableClass<V,M>::readColumnsFromFile()
                       "the first number of lines read is nonconsistent");
   if (m_numRows != numValidLines) {
     char errorExplanation[512];
-    sprintf(errorExplanation,"number of valid lines (%d) in ascii table file does not match number of rows (%d)",numValidLines,m_numRows);
+    sprintf(errorExplanation,"number of valid lines (%u) in ascii table file does not match number of rows (%u)",numValidLines,m_numRows);
     UQ_FATAL_TEST_MACRO(true,
                         m_env.rank(),
                         "uqAsciiTableClass<V,M>::readColumnsFromFile()",
@@ -229,7 +229,7 @@ uqAsciiTableClass<V,M>::readColumnsFromFile()
     // Check 'validLineId' before setting one more valid line
     if (validLineId >= numValidLines) {
       char errorExplanation[512];
-      sprintf(errorExplanation,"validLineId (%d) got too large during reading of ascii table file",validLineId);
+      sprintf(errorExplanation,"validLineId (%u) got too large during reading of ascii table file",validLineId);
       UQ_FATAL_TEST_MACRO(true,
                           m_env.rank(),
                           "uqAsciiTableClass<V,M>::readColumnsFromFile()",

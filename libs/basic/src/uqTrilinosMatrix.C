@@ -85,6 +85,7 @@ uqTrilinosMatrixClass::uqTrilinosMatrixClass(
   uqMatrixClass(env, map),
   m_map        (map)
 {
+  double x = diagValue; x += 1.; // just to avoid icpc warnings
 }
 
 uqTrilinosMatrixClass::uqTrilinosMatrixClass(
@@ -94,6 +95,7 @@ uqTrilinosMatrixClass::uqTrilinosMatrixClass(
   uqMatrixClass(v.env(), v.map()),
   m_map        (v.map())
 {
+  double x = diagValue; x += 1.; // just to avoid icpc warnings
 }
 
 uqTrilinosMatrixClass::uqTrilinosMatrixClass(const uqTrilinosVectorClass& v)
@@ -125,24 +127,28 @@ uqTrilinosMatrixClass::operator=(const uqTrilinosMatrixClass& obj)
 uqTrilinosMatrixClass&
 uqTrilinosMatrixClass::operator*=(double a)
 {
+  double x = a; x += 1.; // just to avoid icpc warnings
   return *this;
 }
 
 uqTrilinosMatrixClass&
 uqTrilinosMatrixClass::operator/=(double a)
 {
+  double x = a; x += 1.; // just to avoid icpc warnings
   return *this;
 }
 
 uqTrilinosMatrixClass&
 uqTrilinosMatrixClass::operator+=(const uqTrilinosMatrixClass& rhs)
 {
+  double tmpA = rhs(0,0); tmpA += 1.; // Just to avoid icpc warnings
   return *this;
 }
 
 uqTrilinosMatrixClass&
 uqTrilinosMatrixClass::operator-=(const uqTrilinosMatrixClass& rhs)
 {
+  double tmpA = rhs(0,0); tmpA += 1.; // Just to avoid icpc warnings
   return *this;
 }
 
@@ -161,6 +167,7 @@ uqTrilinosMatrixClass::operator()(unsigned int i, unsigned int j) const
 void
 uqTrilinosMatrixClass::copy(const uqTrilinosMatrixClass& src)
 {
+  double tmpA = src(0,0); tmpA += 1.; // Just to avoid icpc warnings
   return;
 }
 
@@ -185,12 +192,14 @@ uqTrilinosMatrixClass::chol()
 void
 uqTrilinosMatrixClass::zeroLower(bool includeDiagonal)
 {
+  double tmpA = (double) includeDiagonal; tmpA += 1.; // Just to avoid icpc warnings
   return;
 }
 
 void
 uqTrilinosMatrixClass::zeroUpper(bool includeDiagonal)
 {
+  double tmpA = (double) includeDiagonal; tmpA += 1.; // Just to avoid icpc warnings
   return;
 }
 
@@ -251,6 +260,7 @@ uqTrilinosMatrixClass::invertMultiply(
 void
 uqTrilinosMatrixClass::print(std::ostream& os) const
 {
+  os.flush(); // just to avoid icpc warnings
   return;
 }
 

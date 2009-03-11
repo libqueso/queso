@@ -148,21 +148,21 @@ uqMiscReadWordsFromString(
   return;
 }
 
-void
-uqMiscExtractDoubleFromString(
-  std::string& inputString,
-  double&      outputDouble)
-{
-  return;
-}
+//void
+//uqMiscExtractDoubleFromString(
+//  std::string& inputString,
+//  double&      outputDouble)
+//{
+//  return;
+//}
 
-void
-uqMiscExtractWordFromString(
-  std::string& inputString,
-  std::string& outputWord)
-{
-  return;
-}
+//void
+//uqMiscExtractWordFromString(
+//  std::string& inputString,
+//  std::string& outputWord)
+//{
+//  return;
+//}
 
 int
 uqMiscReadStringAndDoubleFromFile(
@@ -291,9 +291,9 @@ uqMiscGetEllapsedSeconds(struct timeval *timeval0)
 {
   double result = 0.;
 
-  int iRC;
   struct timeval timevalNow;
-  iRC = gettimeofday(&timevalNow, NULL);
+  /*int iRC;*/
+  /*iRC = */gettimeofday(&timevalNow, NULL);
 
   result  = (double) (timevalNow.tv_sec  - timeval0->tv_sec );
   result *= 1.e+6;

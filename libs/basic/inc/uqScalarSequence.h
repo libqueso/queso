@@ -54,7 +54,7 @@ public:
   uqScalarSequenceClass(const uqBaseEnvironmentClass& env, unsigned int sequenceSize);
  ~uqScalarSequenceClass();
 
-  const unsigned int sequenceSize              () const;
+        unsigned int sequenceSize              () const;
         void         resizeSequence            (unsigned int newSequenceSize);
         void         resetValues               (unsigned int initialPos, unsigned int numPos);
         void         erasePositions            (unsigned int initialPos, unsigned int numPos);
@@ -192,7 +192,7 @@ uqScalarSequenceClass<T>::~uqScalarSequenceClass()
 }
 
 template <class T>
-const unsigned int
+unsigned int
 uqScalarSequenceClass<T>::sequenceSize() const
 {
   return m_seq.size();

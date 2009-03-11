@@ -40,8 +40,8 @@ public:
   uq2dArrayOfStuff(unsigned int numRows, unsigned int numCols);
  ~uq2dArrayOfStuff();
 
-  const unsigned int numRows    ()                                 const;
-  const unsigned int numCols    ()                                 const;
+        unsigned int numRows    ()                                 const;
+        unsigned int numCols    ()                                 const;
         void         setLocation(unsigned int i, unsigned int j, T* info);
         T&           operator   ()(unsigned int i, unsigned int j);
   const T&           operator   ()(unsigned int i, unsigned int j) const;
@@ -79,14 +79,14 @@ uq2dArrayOfStuff<T>::~uq2dArrayOfStuff()
 }
 
 template <class T>
-const unsigned int
+unsigned int
 uq2dArrayOfStuff<T>::numRows() const
 {
   return m_numRows;
 }
 
 template <class T>
-const unsigned int
+unsigned int
 uq2dArrayOfStuff<T>::numCols() const
 {
   return m_numCols;

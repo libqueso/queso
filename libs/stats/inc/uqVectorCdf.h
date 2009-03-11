@@ -321,7 +321,7 @@ uqSampledVectorCdfClass<V,M>::uqSampledVectorCdfClass(
 
   char strI[65];
   for (unsigned int i = 0; i < (unsigned int) m_cdfs.MyLength(); ++i) {
-    sprintf(strI,"%d_",i);
+    sprintf(strI,"%u_",i);
     m_cdfs(i,0) = new uqSampledScalarCdfClass<double>(m_env,
                                                       ((std::string)(m_prefix)+strI).c_str(),
                                                       oneDGrids.grid(i),

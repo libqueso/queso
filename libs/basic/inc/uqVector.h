@@ -48,7 +48,7 @@ public:
 
   virtual unsigned int numberOfProcessorsRequiredForStorage() const = 0;
 
-  uqVectorClass& operator= (const uqVectorClass& rhs);
+  uqVectorClass& operator=(const uqVectorClass& rhs);
   uqVectorClass& operator*=(double a);
   uqVectorClass& operator/=(double a);
   uqVectorClass& operator+=(const uqVectorClass& rhs);

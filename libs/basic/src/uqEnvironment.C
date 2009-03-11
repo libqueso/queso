@@ -75,6 +75,7 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_argv                          (NULL),
   m_prefix                        ((std::string)(prefix) + "env_"),
   m_worldRank                     (-1),
+  m_fullRawComm                   (inputComm),
   m_fullComm                      (NULL),
   m_fullRank                      (-1),
   m_fullCommSize                  (1),
@@ -121,6 +122,7 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_argv                          (argv),
   m_prefix                        ((std::string)(prefix) + "env_"),
   m_worldRank                     (-1),
+  m_fullRawComm                   (inputComm),
   m_fullComm                      (NULL),
   m_fullRank                      (-1),
   m_fullCommSize                  (0),
@@ -166,6 +168,7 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_argv                          (NULL),
   m_prefix                        ((std::string)(prefix) + "env_"),
   m_worldRank                     (-1),
+  m_fullRawComm                   (inputComm),
   m_fullComm                      (NULL),
   m_fullRank                      (-1),
   m_fullCommSize                  (0),
@@ -205,7 +208,7 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
 uqBaseEnvironmentClass::uqBaseEnvironmentClass(const uqBaseEnvironmentClass& obj)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      this->rank(),
+                      obj.rank(),
                       "uqBaseEnvironmentClass::constructor(), copy",
                       "code should not execute through here");
 }
@@ -225,9 +228,9 @@ uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
 
   if (m_rng) gsl_rng_free(m_rng);
 
-  int iRC;
   struct timeval timevalNow;
-  iRC = gettimeofday(&timevalNow, NULL);
+  /*int iRC = 0;*/
+  /*iRC = */gettimeofday(&timevalNow, NULL);
 
   if (m_subScreenFile) {
     *m_subScreenFile << "Ending run at " << ctime(&timevalNow.tv_sec)
@@ -259,7 +262,7 @@ uqBaseEnvironmentClass&
 uqBaseEnvironmentClass::operator= (const uqBaseEnvironmentClass& rhs)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      this->rank(),
+                      rhs.rank(),
                       "uqBaseEnvironmentClass::operator=()",
                       "code should not execute through here");
   return *this;
@@ -440,6 +443,7 @@ uqEmptyEnvironmentClass::~uqEmptyEnvironmentClass()
 void
 uqEmptyEnvironmentClass::print(std::ostream& os) const
 {
+  os.flush(); // just to avoid icpc warnings
   return;
 }
 
@@ -484,7 +488,7 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
   //////////////////////////////////////////////////
   // Initialize "full" communicator
   //////////////////////////////////////////////////
-  int mpiRC = MPI_Comm_rank(MPI_COMM_WORLD,&m_worldRank);
+  int mpiRC = MPI_Comm_rank(inputComm,&m_worldRank);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       UQ_UNAVAILABLE_RANK,
                       "uqFullEnvironmentClass::commonConstructor()",
@@ -503,8 +507,8 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
   // Display main initial messages
   // 'std::cout' is for: main trace messages + synchronized trace messages + error messages prior to 'exit()' or 'abort()'
   //////////////////////////////////////////////////
-  int iRC;
-  iRC = gettimeofday(&m_timevalBegin, NULL);
+  /*int iRC = 0;*/
+  /*iRC = */gettimeofday(&m_timevalBegin, NULL);
 
   if (m_fullRank == 0) {
     std::cout << "\n======================================================="
@@ -547,7 +551,7 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
 
   m_subId = m_fullRank/numRanksPerSubEnvironment;
   char tmpSubId[16];
-  sprintf(tmpSubId,"%d",m_subId);
+  sprintf(tmpSubId,"%u",m_subId);
   m_subIdString = tmpSubId;
 
   std::vector<int> fullRanksOfMySubEnvironment(numRanksPerSubEnvironment,0);
@@ -670,9 +674,8 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
     gsl_rng_default_seed = (unsigned long int) m_seed;
   }
   else {
-    int iRC;
     struct timeval timevalNow;
-    iRC = gettimeofday(&timevalNow, NULL);
+    /*iRC = */gettimeofday(&timevalNow, NULL);
     gsl_rng_default_seed = (unsigned long int) timevalNow.tv_usec;
   }
 
@@ -762,8 +765,8 @@ uqFullEnvironmentClass::readEventualInputFile()
                                     << "\nin the command line."
                                     << "\n"
                                     << std::endl;
-    int mpiRC = 0;
-    mpiRC = MPI_Abort(m_fullComm->Comm(),-999);
+    /*int mpiRC = 0;*/
+    /*mpiRC = */MPI_Abort(m_fullComm->Comm(),-999);
     exit(1);
   }
 

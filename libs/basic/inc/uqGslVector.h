@@ -82,9 +82,9 @@ private:
   gsl_vector* m_vec;
 };
 
-uqGslVectorClass operator/    (const double a,            const uqGslVectorClass& x  );
+uqGslVectorClass operator/    (      double a,            const uqGslVectorClass& x  );
 uqGslVectorClass operator/    (const uqGslVectorClass& x, const uqGslVectorClass& y  );
-uqGslVectorClass operator*    (const double a,            const uqGslVectorClass& x  );
+uqGslVectorClass operator*    (      double a,            const uqGslVectorClass& x  );
 uqGslVectorClass operator*    (const uqGslVectorClass& x, const uqGslVectorClass& y  );
 double           scalarProduct(const uqGslVectorClass& x, const uqGslVectorClass& y  );
 uqGslVectorClass operator+    (const uqGslVectorClass& x, const uqGslVectorClass& y  );

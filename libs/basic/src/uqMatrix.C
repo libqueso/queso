@@ -81,7 +81,7 @@ uqMatrixClass&
 uqMatrixClass::operator= (const uqMatrixClass& rhs)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      m_env.rank(),
+                      rhs.m_env.rank(),
                       "uqMatrixClass::operator=()",
                       "code should not execute through here");
   return *this;
@@ -94,6 +94,7 @@ uqMatrixClass::operator*=(double a)
                       m_env.rank(),
                       "uqMatrixClass::operator*=()",
                       "code should not execute through here");
+  double tmpA = a; tmpA += 1.; // Just to avoid icpc warnings
   return *this;
 }
 
@@ -101,7 +102,7 @@ uqMatrixClass&
 uqMatrixClass::operator+=(const uqMatrixClass& rhs)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      m_env.rank(),
+                      rhs.m_env.rank(),
                       "uqMatrixClass::operator+=()",
                       "code should not execute through here");
   return *this;
@@ -111,7 +112,7 @@ uqMatrixClass&
 uqMatrixClass::operator-=(const uqMatrixClass& rhs)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      m_env.rank(),
+                      rhs.m_env.rank(),
                       "uqMatrixClass::operator-=()",
                       "code should not execute through here");
   return *this;
