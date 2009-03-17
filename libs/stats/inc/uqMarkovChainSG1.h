@@ -576,6 +576,15 @@ uqMarkovChainSGClass<P_V,P_M>::getMyOptionValues(
   if (m_env.allOptionsMap().count(m_option_filteredChain_lag.c_str())) {
     m_filteredChainLag = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_lag.c_str()]).as<unsigned int>();
   }
+  if ((m_filteredChainGenerate == true) &&
+      (m_filteredChainLag      < 2    )) {
+    std::cerr << "In uqMarkovChainSGClass<P_V,P_M>::getMyOptionsValues()"
+              << ": WARNING, forcing the value of '" << m_option_filteredChain_lag.c_str()
+              << "' from "                           << m_filteredChainLag
+              << " to "                              << 2
+              << std::endl;
+    m_filteredChainLag = 2;
+  }
 
   if (m_env.allOptionsMap().count(m_option_filteredChain_write.c_str())) {
     m_filteredChainWrite = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_write.c_str()]).as<bool>();

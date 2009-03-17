@@ -1733,25 +1733,25 @@ uqScalarSequenceClass<T>::interQuantileRange(unsigned int initialPos) const
                            << std::endl;
 
     // Save data only once into a separate file
-    std::ofstream* ofsvar = new std::ofstream(("sort_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
-    if ((ofsvar            == NULL ) ||
-        (ofsvar->is_open() == false)) {
-      delete ofsvar;
-      ofsvar = new std::ofstream(("sort_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
+    //std::ofstream* ofsvar = new std::ofstream(("sort_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
+    //if ((ofsvar            == NULL ) ||
+    //    (ofsvar->is_open() == false)) {
+    //  delete ofsvar;
+    //  ofsvar = new std::ofstream(("sort_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
 
-      *ofsvar << "var_sort_sub" << m_env.subIdString() << " = zeros(" << 1
-              << ","                                                  << dataSize
-              << ");"
-              << std::endl;
-      for (unsigned int j = 0; j < dataSize; ++j) {
-        *ofsvar << "var_sort_sub" << m_env.subIdString() << "(" << 1
-                << ","                                          << j+1
-                << ") = "                                       << sortedSequence[j]
-                << ";"
-                << std::endl;
-      }
-    }
-    delete ofsvar;
+    //  *ofsvar << "var_sort_sub" << m_env.subIdString() << " = zeros(" << 1
+    //          << ","                                                  << dataSize
+    //          << ");"
+    //          << std::endl;
+    //  for (unsigned int j = 0; j < dataSize; ++j) {
+    //    *ofsvar << "var_sort_sub" << m_env.subIdString() << "(" << 1
+    //            << ","                                          << j+1
+    //            << ") = "                                       << sortedSequence[j]
+    //            << ";"
+    //            << std::endl;
+    //  }
+    //}
+    //delete ofsvar;
   }
 
 
@@ -1815,25 +1815,25 @@ uqScalarSequenceClass<T>::unifiedInterQuantileRange(
                                << std::endl;
 
         // Save data only once into a separate file
-	std::ofstream* ofsvar = new std::ofstream(("unif_sort_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
-        if ((ofsvar            == NULL ) ||
-            (ofsvar->is_open() == false)) {
-          delete ofsvar;
-          ofsvar = new std::ofstream(("unif_sort_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
+	//std::ofstream* ofsvar = new std::ofstream(("unif_sort_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
+        //if ((ofsvar            == NULL ) ||
+        //    (ofsvar->is_open() == false)) {
+        //  delete ofsvar;
+        //  ofsvar = new std::ofstream(("unif_sort_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
 
-          *ofsvar << "var_unif_sort_sub" << m_env.subIdString() << " = zeros(" << 1
-                  << ","                                                       << unifiedDataSize
-                  << ");"
-                  << std::endl;
-          for (unsigned int j = 0; j < unifiedDataSize; ++j) {
-            *ofsvar << "var_unif_sort_sub" << m_env.subIdString() << "(" << 1
-                    << ","                                               << j+1
-                    << ") = "                                            << unifiedSortedSequence[j]
-                    << ";"
-                    << std::endl;
-          }
-        }
-        delete ofsvar;
+        //  *ofsvar << "var_unif_sort_sub" << m_env.subIdString() << " = zeros(" << 1
+        //          << ","                                                       << unifiedDataSize
+        //          << ");"
+        //          << std::endl;
+        //  for (unsigned int j = 0; j < unifiedDataSize; ++j) {
+        //    *ofsvar << "var_unif_sort_sub" << m_env.subIdString() << "(" << 1
+        //            << ","                                               << j+1
+        //            << ") = "                                            << unifiedSortedSequence[j]
+        //            << ";"
+        //            << std::endl;
+        //  }
+        //}
+        //delete ofsvar;
       }
 
       m_env.syncPrintDebugMsg("In uqScalarSequenceClass<T>::unifiedInterQuantileRange(), ending logic",3,3000000,m_env.inter0Comm());
