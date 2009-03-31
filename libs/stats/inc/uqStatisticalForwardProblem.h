@@ -402,6 +402,12 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   P_M* pqCovarianceMatrix  = NULL;
   P_M* pqCorrelationMatrix = NULL;
   if (m_computeCovariances || m_computeCorrelations) {
+    if (m_env.subScreenFile()) {
+      *m_env.subScreenFile() << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
+                             << ", prefix = " << m_prefix
+                             << ": instantiating cov and corr matrices"
+                             << std::endl;
+    }
     pqCovarianceMatrix = new P_M(m_env,
                                  m_paramRv.imageSet().vectorSpace().map(), // number of rows
                                  m_qoiRv.imageSet().vectorSpace().dim());  // number of cols
@@ -417,8 +423,10 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
 
   // Open output file
   if (m_env.subScreenFile()) {
-    *m_env.subScreenFile() << "Checking necessity of opening output file '"           << m_outputFileName
-                           << "' for propagation problem with problem with prefix = " << m_prefix
+    *m_env.subScreenFile() << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
+                           << ", prefix = "                                   << m_prefix
+                           << ": checking necessity of opening output file '" << m_outputFileName
+                           << "'"
                            << std::endl;
   }
   std::ofstream* ofsvar = NULL;
@@ -429,12 +437,32 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
                        ofsvar);
 
   // Write data out
+  if (m_env.subScreenFile()) {
+    if (m_env.subScreenFile()) {
+      *m_env.subScreenFile() << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
+                             << ", prefix = "               << m_prefix
+                             << ": pointers pqCovMatrix = " << pqCovarianceMatrix
+                             << " and pqCorrMatrix = "      << pqCorrelationMatrix
+                             << std::endl;
+    }
+    if (pqCovarianceMatrix ) {
+      *m_env.subScreenFile() << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
+                             << ": contents of covariance matrix are\n" << *pqCovarianceMatrix
+                             << std::endl;
+    }
+    if (pqCorrelationMatrix) {
+      *m_env.subScreenFile() << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
+                             << ": contents of correlation matrix are\n" << *pqCorrelationMatrix
+                             << std::endl;
+    }
+  }
+
   if (ofsvar) {
     m_qoiRv.mdf().print(*ofsvar);
     *ofsvar << m_qoiRv.cdf();
 
-    if (pqCovarianceMatrix ) *ofsvar << *pqCovarianceMatrix;
-    if (pqCorrelationMatrix) *ofsvar << *pqCorrelationMatrix;
+    //if (pqCovarianceMatrix ) *ofsvar << *pqCovarianceMatrix;  // FIX ME: output matrix in matlab format
+    //if (pqCorrelationMatrix) *ofsvar << *pqCorrelationMatrix; // FIX ME: output matrix in matlab format
 
     // Write unified cdf if necessary
     if (m_env.numSubEnvironments() > 1) {
@@ -457,8 +485,10 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
     ofsvar->close();
     delete ofsvar;
     if (m_env.subScreenFile()) {
-      *m_env.subScreenFile() << "Closed output file '" << m_outputFileName
-                             << "' for propagation problem with problem with prefix = " << m_prefix
+      *m_env.subScreenFile() << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
+                             << ", prefix = "            << m_prefix
+                             << ": closed output file '" << m_outputFileName
+                             << "'"
                              << std::endl;
     }
   }

@@ -1562,6 +1562,10 @@ template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::printUnifiedContents(std::ofstream& ofsvar) const
 {
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.rank(),
+                      "uqSequenceOfVectorsClass<V,M>::printUnifiedContents()",
+                      "not implemented yet");
   return;
 }
 

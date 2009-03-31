@@ -513,19 +513,19 @@ uqMarkovChainSGClass<P_V,P_M>::getMyOptionValues(
     }
   }
 
-  if (m_env.allOptionsMap().count(m_option_rawChain_outputFileName.c_str())) {
-    m_rawChainOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_outputFileName.c_str()]).as<std::string>();
+  if (m_env.allOptionsMap().count(m_option_outputFileName.c_str())) {
+    m_outputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_outputFileName.c_str()]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_rawChain_outputAllow.c_str())) {
-    m_rawChainOutputAllow.clear();
+  if (m_env.allOptionsMap().count(m_option_outputAllow.c_str())) {
+    m_outputAllow.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env.allOptionsMap()[m_option_rawChain_outputAllow.c_str()].as<std::string>();
+    std::string inputString = m_env.allOptionsMap()[m_option_outputAllow.c_str()].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
       for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
-        m_rawChainOutputAllow.insert((unsigned int) tmpAllow[i]);
+        m_outputAllow.insert((unsigned int) tmpAllow[i]);
       }
     }
   }

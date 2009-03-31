@@ -92,7 +92,9 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
   // Open generic output file
   //****************************************************
   if (m_env.subScreenFile()) {
-    *m_env.subScreenFile() << "Checking necessity of opening generic output file (chain name is " << workingChain.name()
+    *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
+                           << ", prefix = "                                                         << m_prefix
+                           << ": checking necessity of opening generic output file (chain name is " << workingChain.name()
                            << ") ..."
                            << std::endl;
   }
@@ -109,7 +111,9 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
   // --> compute statistics on it
   //****************************************************
   if (m_env.subScreenFile()) {
-    *m_env.subScreenFile() << "Checking necessity of opening output files for raw chain " << workingChain.name()
+    *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
+                           << ", prefix = "                                                 << m_prefix
+                           << ": checking necessity of opening output files for raw chain " << workingChain.name()
                            << "..."
                            << std::endl;
   }
@@ -129,8 +133,10 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
   if (rawChainOfsVar) {
     rawChainOfsVar->close();
     if (m_env.subScreenFile()) {
-      *m_env.subScreenFile() << "Closed output file '" << m_rawChainOutputFileName
-                             << "' for raw chain "     << workingChain.name()
+      *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
+                             << ", prefix = "            << m_prefix
+                             << ": closed output file '" << m_rawChainOutputFileName
+                             << "' for raw chain "       << workingChain.name()
                              << std::endl;
     }
   }
@@ -149,8 +155,10 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
   if (unifiedRawChainOfsVar) {
     unifiedRawChainOfsVar->close();
     if (m_env.subScreenFile()) {
-      *m_env.subScreenFile() << "Closed unified output file '" << m_rawChainOutputFileName
-                             << "' for raw chain "             << workingChain.name()
+      *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
+                             << ", prefix = "                    << m_prefix
+                             << ": closed unified output file '" << m_rawChainOutputFileName
+                             << "' for raw chain "               << workingChain.name()
                              << std::endl;
     }
   }
@@ -229,7 +237,9 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
 
     // Write filtered chain
     if (m_env.subScreenFile()) {
-      *m_env.subScreenFile() << "Checking necessity of opening output files for filtered chain " << workingChain.name()
+      *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
+                             << ", prefix = "                                                      << m_prefix
+                             << ": checking necessity of opening output files for filtered chain " << workingChain.name()
                              << "..."
                              << std::endl;
     }
@@ -249,8 +259,10 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
     if (filteredChainOfsVar) {
       filteredChainOfsVar->close();
       if (m_env.subScreenFile()) {
-        *m_env.subScreenFile() << "Closed output file '"  << m_filteredChainOutputFileName
-                               << "' for filtered chain " << workingChain.name()
+        *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
+                               << ", prefix = "            << m_prefix
+                               << ": closed output file '" << m_filteredChainOutputFileName
+                               << "' for filtered chain "  << workingChain.name()
                                << std::endl;
       }
     }
@@ -269,8 +281,10 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
     if (unifiedFilteredChainOfsVar) {
       unifiedFilteredChainOfsVar->close();
       if (m_env.subScreenFile()) {
-        *m_env.subScreenFile() << "Closed unified output file '" << m_filteredChainOutputFileName
-                               << "' for filtered chain "        << workingChain.name()
+        *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
+                               << ", prefix = "                    << m_prefix
+                               << ": closed unified output file '" << m_filteredChainOutputFileName
+                               << "' for filtered chain "          << workingChain.name()
                                << std::endl;
       }
     }
@@ -288,8 +302,10 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
   if (genericOfsVar) {
     genericOfsVar->close();
     if (m_env.subScreenFile()) {
-      *m_env.subScreenFile() << "Closed generic output file '" << m_outputFileName
-                             << "' (chain name is "            << workingChain.name()
+      *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
+                             << ", prefix = "                    << m_prefix
+                             << ": closed generic output file '" << m_outputFileName
+                             << "' (chain name is "              << workingChain.name()
                              << ")"
                              << std::endl;
     }
