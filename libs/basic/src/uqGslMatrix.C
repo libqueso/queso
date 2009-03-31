@@ -47,8 +47,8 @@ uqGslMatrixClass::uqGslMatrixClass()
 
 uqGslMatrixClass::uqGslMatrixClass(
   const uqBaseEnvironmentClass& env,
-  const Epetra_Map&         map,
-  unsigned int              numCols)
+  const Epetra_Map&             map,
+  unsigned int                  numCols)
   :
   uqMatrixClass(env,map),
   m_mat        (gsl_matrix_calloc(map.NumGlobalElements(),numCols)),

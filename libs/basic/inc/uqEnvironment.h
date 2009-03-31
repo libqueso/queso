@@ -113,6 +113,18 @@ public:
           const gsl_rng*          rng                      () const;
           bool                    isThereInputFile         () const;
           void                    syncPrintDebugMsg        (const char* msg, unsigned int msgVerbosity, unsigned int numUSecs, const Epetra_MpiComm& commObj) const;
+
+          void                    openOutputFile           (const std::string&            fileName,
+                                                            const std::string&            fileType,
+                                                            const std::set<unsigned int>& allowedSubEnvIds,
+                                                                  bool                    writeOver,
+                                                                  std::ofstream*&         ofsvar) const;
+
+          void                    openUnifiedOutputFile    (const std::string&            fileName,
+                                                            const std::string&            fileType,
+                                                                  bool                    writeOver,
+                                                                  std::ofstream*&         ofsvar) const;
+
   virtual void                    print                    (std::ostream& os) const = 0;
 
 protected:

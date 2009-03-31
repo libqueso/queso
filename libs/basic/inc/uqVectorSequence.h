@@ -84,10 +84,17 @@ public:
   virtual  void                     mean                      (unsigned int                          initialPos,
                                                                unsigned int                          numPos,
                                                                V&                                    meanVec) const = 0;
+  virtual  void                     unifiedMean               (unsigned int                          initialPos,
+                                                               unsigned int                          numPos,
+                                                               V&                                    unifiedMeanVec) const = 0;
   virtual  void                     sampleVariance            (unsigned int                          initialPos,
                                                                unsigned int                          numPos,
                                                                const V&                              meanVec,
                                                                V&                                    samVec) const = 0;
+  virtual  void                     unifiedSampleVariance     (unsigned int                          initialPos,
+                                                               unsigned int                          numPos,
+                                                               const V&                              unifiedMeanVec,
+                                                               V&                                    unifiedSamVec) const = 0;
   virtual  void                     populationVariance        (unsigned int                          initialPos,
                                                                unsigned int                          numPos,
                                                                const V&                              meanVec,
@@ -168,6 +175,7 @@ public:
                                                                const std::vector<V*>&                unifiedEvaluationParamVecs,
                                                                std::vector<V*>&                      unifiedDensityVecs) const = 0;
   virtual  void                     printContents             (std::ofstream&                        ofsvar) const = 0;
+  virtual  void                     printUnifiedContents      (std::ofstream&                        ofsvar) const = 0;
   virtual  void                     select                    (const std::vector<unsigned int>&      idsOfUniquePositions) = 0;
   virtual  void                     filter                    (unsigned int                          initialPos,
                                                                unsigned int                          spacing) = 0;
@@ -200,11 +208,11 @@ protected:
            void                     computeGeweke             (const uqChainStatisticalOptionsClass& statisticalOptions,
                                                                const std::vector<unsigned int>&      initialPosForStatistics,
                                                                std::ofstream*                        passedOfs);
-           void                     computeCorrViaDef         (const uqChainStatisticalOptionsClass& statisticalOptions,
+           void                     computeAutoCorrViaDef     (const uqChainStatisticalOptionsClass& statisticalOptions,
                                                                const std::vector<unsigned int>&      initialPosForStatistics,
                                                                const std::vector<unsigned int>&      lagsForCorrs,
                                                                std::ofstream*                        passedOfs);
-           void                     computeCorrViaFFT         (const uqChainStatisticalOptionsClass& statisticalOptions,
+           void                     computeAutoCorrViaFFT     (const uqChainStatisticalOptionsClass& statisticalOptions,
                                                                const std::vector<unsigned int>&      initialPosForStatistics,
                                                                const std::vector<unsigned int>&      lagsForCorrs,
                                                                std::ofstream*                        passedOfs);
@@ -489,33 +497,33 @@ uqBaseVectorSequenceClass<V,M>::computeStatistics(
   }
 
   // Set lags for the computation of chain autocorrelations
-  std::vector<unsigned int> lagsForCorrs(statisticalOptions.corrNumLags(),1);
+  std::vector<unsigned int> lagsForCorrs(statisticalOptions.autoCorrNumLags(),1);
   for (unsigned int i = 1; i < lagsForCorrs.size(); ++i) {
-    lagsForCorrs[i] = statisticalOptions.corrSecondLag() + (i-1)*statisticalOptions.corrLagSpacing();
+    lagsForCorrs[i] = statisticalOptions.autoCorrSecondLag() + (i-1)*statisticalOptions.autoCorrLagSpacing();
   }
 
   //****************************************************
   // Compute autocorrelation coefficients via definition
   //****************************************************
-  if ((statisticalOptions.corrComputeViaDef()) &&
+  if ((statisticalOptions.autoCorrComputeViaDef()) &&
       (initialPosForStatistics.size() > 0    ) &&
       (lagsForCorrs.size()            > 0    )) { 
-    this->computeCorrViaDef(statisticalOptions,
-                            initialPosForStatistics,
-                            lagsForCorrs,
-                            passedOfs);
+    this->computeAutoCorrViaDef(statisticalOptions,
+                                initialPosForStatistics,
+                                lagsForCorrs,
+                                passedOfs);
   }
 
   //****************************************************
   // Compute autocorrelation coefficients via FFT
   //****************************************************
-  if ((statisticalOptions.corrComputeViaFft()) &&
+  if ((statisticalOptions.autoCorrComputeViaFft()) &&
       (initialPosForStatistics.size() > 0    ) &&
       (lagsForCorrs.size()            > 0    )) { 
-    this->computeCorrViaFFT(statisticalOptions,
-                            initialPosForStatistics,
-                            lagsForCorrs,
-                            passedOfs);
+    this->computeAutoCorrViaFFT(statisticalOptions,
+                                initialPosForStatistics,
+                                lagsForCorrs,
+                                passedOfs);
   }
 
   //****************************************************
@@ -1083,7 +1091,7 @@ uqBaseVectorSequenceClass<V,M>::computeGeweke(
 
 template<class V, class M>
 void
-uqBaseVectorSequenceClass<V,M>::computeCorrViaDef(
+uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaDef(
   const uqChainStatisticalOptionsClass& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
   const std::vector<unsigned int>&      lagsForCorrs,
@@ -1100,8 +1108,8 @@ uqBaseVectorSequenceClass<V,M>::computeCorrViaDef(
                            << std::endl;
   }
 
-  if (statisticalOptions.corrDisplay() && (m_env.subScreenFile())) {
-    *m_env.subScreenFile() << "In uqBaseVectorSequenceClass<V,M>::computeCorrViaDef(): lags for autocorrelation (via def) = ";
+  if (statisticalOptions.autoCorrDisplay() && (m_env.subScreenFile())) {
+    *m_env.subScreenFile() << "In uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaDef(): lags for autocorrelation (via def) = ";
     for (unsigned int i = 0; i < lagsForCorrs.size(); ++i) {
       *m_env.subScreenFile() << " " << lagsForCorrs[i];
     }
@@ -1130,7 +1138,7 @@ uqBaseVectorSequenceClass<V,M>::computeCorrViaDef(
   // It is not practical to compute the variance of sample mean by computing the autocorrelations via definition for each lag
   // The code computes the variance of sample mean by computing the autocorrelations via fft, below, in another routine
 
-  if ((statisticalOptions.corrDisplay()) && (m_env.subScreenFile())) {
+  if ((statisticalOptions.autoCorrDisplay()) && (m_env.subScreenFile())) {
     for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
       *m_env.subScreenFile() << "\nComputed autocorrelation coefficients (via def), for subchain beggining at position " << initialPosForStatistics[initialPosId]
                              << " (each column corresponds to a different lag)"
@@ -1169,7 +1177,7 @@ uqBaseVectorSequenceClass<V,M>::computeCorrViaDef(
   }
 
   // Write autocorrelations
-  if (statisticalOptions.corrWrite() && passedOfs) {
+  if (statisticalOptions.autoCorrWrite() && passedOfs) {
     std::ofstream& ofsvar = *passedOfs;
     ofsvar << m_name << "_corrViaDefLags_sub" << m_env.subIdString() << " = zeros(" << 1
            << ","                                                                   << lagsForCorrs.size()
@@ -1205,7 +1213,7 @@ uqBaseVectorSequenceClass<V,M>::computeCorrViaDef(
 
 template<class V, class M>
 void
-uqBaseVectorSequenceClass<V,M>::computeCorrViaFFT(
+uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaFFT(
   const uqChainStatisticalOptionsClass& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
   const std::vector<unsigned int>&      lagsForCorrs,
@@ -1222,8 +1230,8 @@ uqBaseVectorSequenceClass<V,M>::computeCorrViaFFT(
                            << std::endl;
   }
 
-  if (statisticalOptions.corrDisplay() && (m_env.subScreenFile())) {
-    *m_env.subScreenFile() << "In uqBaseVectorSequenceClass<V,M>::computeCorrViaFFT(): lags for autocorrelation (via fft) = ";
+  if (statisticalOptions.autoCorrDisplay() && (m_env.subScreenFile())) {
+    *m_env.subScreenFile() << "In uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaFFT(): lags for autocorrelation (via fft) = ";
     for (unsigned int i = 0; i < lagsForCorrs.size(); ++i) {
       *m_env.subScreenFile() << " " << lagsForCorrs[i];
      }
@@ -1245,7 +1253,7 @@ uqBaseVectorSequenceClass<V,M>::computeCorrViaFFT(
       corrVecs[lagId] = new V(m_vectorSpace.zeroVector()) /*.*/;
     }
     if (m_env.subScreenFile()) {
-      *m_env.subScreenFile() << "In uqBaseVectorSequenceClass<V,M>::computeCorrViaFFT()"
+      *m_env.subScreenFile() << "In uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaFFT()"
                              << ": about to call chain.autoCorrViaFft()"
                              << " with initialPos = "      << initialPos
                              << ", numPos = "              << this->sequenceSize()-initialPos
@@ -1269,7 +1277,7 @@ uqBaseVectorSequenceClass<V,M>::computeCorrViaFFT(
     if (corrVecs[j] != NULL) delete corrVecs[j];
   }
 
-  if (statisticalOptions.corrDisplay()) {
+  if (statisticalOptions.autoCorrDisplay()) {
     V chainMean                    (m_vectorSpace.zeroVector());
     V chainSampleVariance          (m_vectorSpace.zeroVector());
     V estimatedVarianceOfSampleMean(m_vectorSpace.zeroVector());
@@ -1341,7 +1349,7 @@ uqBaseVectorSequenceClass<V,M>::computeCorrViaFFT(
   }
 
   // Write autocorrelations
-  if (statisticalOptions.corrWrite() && passedOfs) {
+  if (statisticalOptions.autoCorrWrite() && passedOfs) {
     std::ofstream& ofsvar = *passedOfs;
     ofsvar << m_name << "_corrViaFftLags_sub" << m_env.subIdString() << " = zeros(" << 1
            << ","                                                                   << lagsForCorrs.size()

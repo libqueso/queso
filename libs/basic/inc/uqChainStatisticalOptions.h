@@ -60,13 +60,13 @@
 #define UQ_MCMC_GEWEKE_NB_RATIO_ODV            .5
 #define UQ_MCMC_GEWEKE_DISPLAY_ODV             0
 #define UQ_MCMC_GEWEKE_WRITE_ODV               0
-#define UQ_MCMC_CORR_COMPUTE_VIA_DEF_ODV       0
-#define UQ_MCMC_CORR_COMPUTE_VIA_FFT_ODV       0
-#define UQ_MCMC_CORR_SECOND_LAG_ODV            0
-#define UQ_MCMC_CORR_LAG_SPACING_ODV           0
-#define UQ_MCMC_CORR_NUM_LAGS_ODV              0
-#define UQ_MCMC_CORR_DISPLAY_ODV               0
-#define UQ_MCMC_CORR_WRITE_ODV                 0
+#define UQ_MCMC_AUTO_CORR_COMPUTE_VIA_DEF_ODV  0
+#define UQ_MCMC_AUTO_CORR_COMPUTE_VIA_FFT_ODV  0
+#define UQ_MCMC_AUTO_CORR_SECOND_LAG_ODV       0
+#define UQ_MCMC_AUTO_CORR_LAG_SPACING_ODV      0
+#define UQ_MCMC_AUTO_CORR_NUM_LAGS_ODV         0
+#define UQ_MCMC_AUTO_CORR_DISPLAY_ODV          0
+#define UQ_MCMC_AUTO_CORR_WRITE_ODV            0
 #define UQ_MCMC_HIST_COMPUTE_ODV               0
 #define UQ_MCMC_HIST_NUM_INTERNAL_BINS_ODV     100
 #define UQ_MCMC_KDE_COMPUTE_ODV                0
@@ -112,13 +112,13 @@ public:
         bool                       gewekeDisplay() const;
         bool                       gewekeWrite  () const;
 
-        bool                       corrComputeViaDef() const;
-        bool                       corrComputeViaFft() const;
-        unsigned int               corrSecondLag    () const;
-        unsigned int               corrLagSpacing   () const;
-        unsigned int               corrNumLags      () const;
-        bool                       corrDisplay      () const;
-        bool                       corrWrite        () const;
+        bool                       autoCorrComputeViaDef() const;
+        bool                       autoCorrComputeViaFft() const;
+        unsigned int               autoCorrSecondLag    () const;
+        unsigned int               autoCorrLagSpacing   () const;
+        unsigned int               autoCorrNumLags      () const;
+        bool                       autoCorrDisplay      () const;
+        bool                       autoCorrWrite        () const;
 
         bool                       histCompute        () const;
         unsigned int               histNumInternalBins() const;
@@ -161,13 +161,13 @@ private:
   std::string m_option_geweke_nbRatio;
   std::string m_option_geweke_display;
   std::string m_option_geweke_write;
-  std::string m_option_corr_computeViaDef;
-  std::string m_option_corr_computeViaFft;
-  std::string m_option_corr_secondLag;
-  std::string m_option_corr_lagSpacing;
-  std::string m_option_corr_numLags;
-  std::string m_option_corr_display;
-  std::string m_option_corr_write;
+  std::string m_option_autoCorr_computeViaDef;
+  std::string m_option_autoCorr_computeViaFft;
+  std::string m_option_autoCorr_secondLag;
+  std::string m_option_autoCorr_lagSpacing;
+  std::string m_option_autoCorr_numLags;
+  std::string m_option_autoCorr_display;
+  std::string m_option_autoCorr_write;
   std::string m_option_hist_compute;
   std::string m_option_hist_numInternalBins;
   std::string m_option_kde_compute;
@@ -206,13 +206,13 @@ private:
   bool                      m_gewekeDisplay;
   bool                      m_gewekeWrite;
 
-  bool                      m_corrComputeViaDef;
-  bool                      m_corrComputeViaFft;
-  unsigned int              m_corrSecondLag;
-  unsigned int              m_corrLagSpacing;
-  unsigned int              m_corrNumLags;
-  bool                      m_corrDisplay;
-  bool                      m_corrWrite;
+  bool                      m_autoCorrComputeViaDef;
+  bool                      m_autoCorrComputeViaFft;
+  unsigned int              m_autoCorrSecondLag;
+  unsigned int              m_autoCorrLagSpacing;
+  unsigned int              m_autoCorrNumLags;
+  bool                      m_autoCorrDisplay;
+  bool                      m_autoCorrWrite;
 
   bool                      m_histCompute;
   unsigned int              m_histNumInternalBins;

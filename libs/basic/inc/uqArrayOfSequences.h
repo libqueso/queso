@@ -47,106 +47,114 @@ public:
                           const std::string&             name);
  ~uqArrayOfSequencesClass();
 
-        unsigned int sequenceSize       () const;
-        void         resizeSequence     (unsigned int newSequenceSize);
-        void         resetValues        (unsigned int initialPos, unsigned int numPos);
-        void         erasePositions     (unsigned int initialPos, unsigned int numPos);
-        void         getPositionValues  (unsigned int posId,       V& vec) const;
-        void         setPositionValues  (unsigned int posId, const V& vec);
-        void         setGaussian        (const gsl_rng* rng, const V& meanVec, const V& stdDevVec);
-        void         setUniform         (const gsl_rng* rng, const V& aVec,    const V& bVec     );
-        void         uniformlySampledMdf(const V&                       numEvaluationPointsVec,
-                                         uqArrayOfOneDGridsClass <V,M>& mdfGrids,
-                                         uqArrayOfOneDTablesClass<V,M>& mdfValues) const;
-        void         uniformlySampledCdf(const V&                       numEvaluationPointsVec,
-                                         uqArrayOfOneDGridsClass <V,M>& cdfGrids,
-                                         uqArrayOfOneDTablesClass<V,M>& cdfValues) const;
+        unsigned int sequenceSize         () const;
+        void         resizeSequence       (unsigned int newSequenceSize);
+        void         resetValues          (unsigned int initialPos, unsigned int numPos);
+        void         erasePositions       (unsigned int initialPos, unsigned int numPos);
+        void         getPositionValues    (unsigned int posId,       V& vec) const;
+        void         setPositionValues    (unsigned int posId, const V& vec);
+        void         setGaussian          (const gsl_rng* rng, const V& meanVec, const V& stdDevVec);
+        void         setUniform           (const gsl_rng* rng, const V& aVec,    const V& bVec     );
+        void         uniformlySampledMdf  (const V&                       numEvaluationPointsVec,
+                                           uqArrayOfOneDGridsClass <V,M>& mdfGrids,
+                                           uqArrayOfOneDTablesClass<V,M>& mdfValues) const;
+        void         uniformlySampledCdf  (const V&                       numEvaluationPointsVec,
+                                           uqArrayOfOneDGridsClass <V,M>& cdfGrids,
+                                           uqArrayOfOneDTablesClass<V,M>& cdfValues) const;
 
-        void         mean              (unsigned int             initialPos,
-                                        unsigned int             numPos,
-                                        V&                       meanVec) const;
-        void         sampleVariance    (unsigned int             initialPos,
-                                        unsigned int             numPos,
-                                        const V&                 meanVec,
-                                        V&                       samVec) const;
-        void         populationVariance(unsigned int             initialPos,
-                                        unsigned int             numPos,
-                                        const V&                 meanVec,
-                                        V&                       popVec) const;
-        void         autoCovariance    (unsigned int             initialPos,
-                                        unsigned int             numPos,
-                                        const V&                 meanVec,
-                                        unsigned int             lag,
-                                        V&                       covVec) const;
+        void         mean                 (unsigned int             initialPos,
+                                           unsigned int             numPos,
+                                           V&                       meanVec) const;
+        void         unifiedMean          (unsigned int             initialPos,
+                                           unsigned int             numPos,
+                                           V&                       unifiedMeanVec) const;
+        void         sampleVariance       (unsigned int             initialPos,
+                                           unsigned int             numPos,
+                                           const V&                 meanVec,
+                                           V&                       samVec) const;
+        void         unifiedSampleVariance(unsigned int             initialPos,
+                                           unsigned int             numPos,
+                                           const V&                 meanVec,
+                                           V&                       samVec) const;
+        void         populationVariance   (unsigned int             initialPos,
+                                           unsigned int             numPos,
+                                           const V&                 meanVec,
+                                           V&                       popVec) const;
+        void         autoCovariance       (unsigned int             initialPos,
+                                           unsigned int             numPos,
+                                           const V&                 meanVec,
+                                           unsigned int             lag,
+                                           V&                       covVec) const;
 
-        void         autoCorrViaDef    (unsigned int             initialPos,
-                                        unsigned int             numPos,
-                                        unsigned int             lag,
-                                        V&                       corrVec) const;
-        void         autoCorrViaFft    (unsigned int                     initialPos,
-                                        unsigned int                     numPos,
-                                        const std::vector<unsigned int>& lags,
-                                        std::vector<V*>&                 corrVecs) const;
-        void         autoCorrViaFft    (unsigned int             initialPos,
-                                        unsigned int             numPos,
-                                        unsigned int             numSum,
-                                        V&                       autoCorrsSumVec) const;
-        void         bmm               (unsigned int             initialPos,
-                                        unsigned int             batchLength,
-                                        V&                       bmmVec) const;
-        void         fftForward        (unsigned int                        initialPos,
-                                        unsigned int                        fftSize,
-                                        unsigned int                        paramId,
-                                        std::vector<std::complex<double> >& resultData) const;
-        //void         fftInverse        (unsigned int fftSize);
-        void         psd               (unsigned int             initialPos,
-                                        unsigned int             numBlocks,
-                                        double                   hopSizeRatio,
-                                        unsigned int             paramId,
-                                        std::vector<double>&     psdResult) const;
-        void         psdAtZero         (unsigned int             initialPos,
-                                        unsigned int             numBlocks,
-                                        double                   hopSizeRatio,
-                                        V&                       psdVec) const;
-        void         geweke            (unsigned int             initialPos,
-                                        double                   ratioNa,
-                                        double                   ratioNb,
-                                        V&                       gewVec) const;
-        void         minMax            (unsigned int             initialPos,
-                                        V&                       minVec,
-                                        V&                       maxVec) const;
-        void         histogram         (unsigned int             initialPos,
-                                        const V&                 minVec,
-                                        const V&                 maxVec,
-                                        std::vector<V*>&         centersForAllBins,
-                                        std::vector<V*>&         quanttsForAllBins) const;
-        void         interQuantileRange(unsigned int             initialPos,
-                                        V&                       iqrs) const;
-        void         scalesForKDE      (unsigned int             initialPos,
-                                        const V&                 iqrs,
-                                        V&                       scales) const;
-        void         gaussianKDE       (const V&                 evaluationParamVec,
-                                        V&                       densityVec) const;
-        void         gaussianKDE       (unsigned int             initialPos,
-                                        const V&                 scales,
-                                        const std::vector<V*>&   evaluationParamVecs,
-                                        std::vector<V*>&         densityVecs) const;
-        void         write             (std::ofstream&           ofsvar) const;
-        void         select            (const std::vector<unsigned int>& idsOfUniquePositions);
-        void         filter            (unsigned int             initialPos,
-                                        unsigned int             spacing);
+        void         autoCorrViaDef       (unsigned int             initialPos,
+                                           unsigned int             numPos,
+                                           unsigned int             lag,
+                                           V&                       corrVec) const;
+        void         autoCorrViaFft       (unsigned int                     initialPos,
+                                           unsigned int                     numPos,
+                                           const std::vector<unsigned int>& lags,
+                                           std::vector<V*>&                 corrVecs) const;
+        void         autoCorrViaFft       (unsigned int             initialPos,
+                                           unsigned int             numPos,
+                                           unsigned int             numSum,
+                                           V&                       autoCorrsSumVec) const;
+        void         bmm                  (unsigned int             initialPos,
+                                           unsigned int             batchLength,
+                                           V&                       bmmVec) const;
+        void         fftForward           (unsigned int                        initialPos,
+                                           unsigned int                        fftSize,
+                                           unsigned int                        paramId,
+                                           std::vector<std::complex<double> >& resultData) const;
+      //void         fftInverse           (unsigned int fftSize);
+        void         psd                  (unsigned int             initialPos,
+                                           unsigned int             numBlocks,
+                                           double                   hopSizeRatio,
+                                           unsigned int             paramId,
+                                           std::vector<double>&     psdResult) const;
+        void         psdAtZero            (unsigned int             initialPos,
+                                           unsigned int             numBlocks,
+                                           double                   hopSizeRatio,
+                                           V&                       psdVec) const;
+        void         geweke               (unsigned int             initialPos,
+                                           double                   ratioNa,
+                                           double                   ratioNb,
+                                           V&                       gewVec) const;
+        void         minMax               (unsigned int             initialPos,
+                                           V&                       minVec,
+                                           V&                       maxVec) const;
+        void         histogram            (unsigned int             initialPos,
+                                           const V&                 minVec,
+                                           const V&                 maxVec,
+                                           std::vector<V*>&         centersForAllBins,
+                                           std::vector<V*>&         quanttsForAllBins) const;
+        void         interQuantileRange   (unsigned int             initialPos,
+                                           V&                       iqrs) const;
+        void         scalesForKDE         (unsigned int             initialPos,
+                                           const V&                 iqrs,
+                                           V&                       scales) const;
+        void         gaussianKDE          (const V&                 evaluationParamVec,
+                                           V&                       densityVec) const;
+        void         gaussianKDE          (unsigned int             initialPos,
+                                           const V&                 scales,
+                                           const std::vector<V*>&   evaluationParamVecs,
+                                           std::vector<V*>&         densityVecs) const;
+        void         printContents        (std::ofstream&                      ofsvar) const;
+        void         printUnifiedContents (std::ofstream&                      ofsvar) const;
+        void         select               (const std::vector<unsigned int>& idsOfUniquePositions);
+        void         filter               (unsigned int             initialPos,
+                                           unsigned int             spacing);
 
 private:
-        void         extractScalarSeq  (unsigned int                   initialPos,
-                                        unsigned int                   spacing,
-                                        unsigned int                   numPos,
-                                        unsigned int                   paramId,
-                                        uqScalarSequenceClass<double>& scalarSeq) const;
-        void         extractRawData    (unsigned int                   initialPos,
-                                        unsigned int                   spacing,
-                                        unsigned int                   numPos,
-                                        unsigned int                   paramId,
-                                        std::vector<double>&           rawData) const;
+        void         extractScalarSeq     (unsigned int                   initialPos,
+                                           unsigned int                   spacing,
+                                           unsigned int                   numPos,
+                                           unsigned int                   paramId,
+                                           uqScalarSequenceClass<double>& scalarSeq) const;
+        void         extractRawData       (unsigned int                   initialPos,
+                                           unsigned int                   spacing,
+                                           unsigned int                   numPos,
+                                           unsigned int                   paramId,
+                                           std::vector<double>&           rawData) const;
 
   EpetraExt::DistArray<uqScalarSequenceClass<double>*> m_scalarSequences;
 
@@ -976,7 +984,7 @@ uqArrayOfSequencesClass<V,M>::filter(
 
 template <class V, class M>
 void
-uqArrayOfSequencesClass<V,M>::write(std::ofstream& ofsvar) const
+uqArrayOfSequencesClass<V,M>::printContents(std::ofstream& ofsvar) const
 {
   // Write chain
   ofsvar << m_name << "_sub" << m_env.subIdString() << " = zeros(" << this->sequenceSize()
@@ -994,6 +1002,13 @@ uqArrayOfSequencesClass<V,M>::write(std::ofstream& ofsvar) const
   }
   ofsvar << "];\n";
 
+  return;
+}
+
+template <class V, class M>
+void
+uqArrayOfSequencesClass<V,M>::printUnifiedContents(std::ofstream& ofsvar) const
+{
   return;
 }
 

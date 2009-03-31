@@ -73,10 +73,17 @@ public:
         void         mean                      (unsigned int                        initialPos,
                                                 unsigned int                        numPos,
                                                 V&                                  meanVec) const;
+        void         unifiedMean               (unsigned int                        initialPos,
+                                                unsigned int                        numPos,
+                                                V&                                  unifiedMeanVec) const;
         void         sampleVariance            (unsigned int                        initialPos,
                                                 unsigned int                        numPos,
                                                 const V&                            meanVec,
                                                 V&                                  samVec) const;
+        void         unifiedSampleVariance     (unsigned int                        initialPos,
+                                                unsigned int                        numPos,
+                                                const V&                            unifiedMeanVec,
+                                                V&                                  unifiedSamVec) const;
         void         populationVariance        (unsigned int                        initialPos,
                                                 unsigned int                        numPos,
                                                 const V&                            meanVec,
@@ -157,6 +164,7 @@ public:
                                                 const std::vector<V*>&              unifiedEvalParamVecs,
                                                 std::vector<V*>&                    unifiedDensityVecs) const;
         void         printContents             (std::ofstream&                      ofsvar) const;
+        void         printUnifiedContents      (std::ofstream&                      ofsvar) const;
         void         select                    (const std::vector<unsigned int>&    idsOfUniquePositions);
         void         filter                    (unsigned int                        initialPos,
                                                 unsigned int                        spacing);
@@ -565,6 +573,65 @@ uqSequenceOfVectorsClass<V,M>::mean(
 
 template <class V, class M>
 void
+uqSequenceOfVectorsClass<V,M>::unifiedMean(
+  unsigned int initialPos,
+  unsigned int numPos,
+  V&           unifiedMeanVec) const
+{
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedMean()"
+                           << ": initialPos = "         << initialPos
+                           << ", numPos = "             << numPos
+                           << ", full sequence size = " << this->sequenceSize()
+                           << std::endl;
+  }
+
+  bool bRC = ((initialPos          <  this->sequenceSize() ) &&
+              (0                   <  numPos               ) &&
+              ((initialPos+numPos) <= this->sequenceSize() ) &&
+              (this->vectorSize()  == unifiedMeanVec.size()));
+  if ((bRC == false) && (m_env.subScreenFile())) {
+    *m_env.subScreenFile() << "In uqSequenceOfVectorsClass<V,M>::unifiedMean()"
+                           << ", initialPos = "            << initialPos
+                           << ", this->sequenceSize() = "  << this->sequenceSize()
+                           << ", numPos = "                << numPos
+                           << ", this->vectorSize() = "    << this->vectorSize()
+                           << ", unifiedMeanVec.size() = " << unifiedMeanVec.size()
+                           << std::endl;
+  }
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.rank(),
+                      "uqSequenceOfVectorsClass<V,M>::unifiedMean()",
+                      "invalid input data");
+
+  uqScalarSequenceClass<double> data(m_env,0);
+
+  unsigned int numParams = this->vectorSize();
+  for (unsigned int i = 0; i < numParams; ++i) {
+    this->extractScalarSeq(initialPos,
+                           1, // spacing
+                           numPos,
+                           i,
+                           data);
+    unifiedMeanVec[i] = data.unifiedMean(m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1,
+                                         0,
+                                         numPos);
+  }
+
+  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+    *m_env.subScreenFile() << "Leaving uqSequenceOfVectorsClass<V,M>::unifiedMean()"
+                           << ": initialPos = "         << initialPos
+                           << ", numPos = "             << numPos
+                           << ", full sequence size = " << this->sequenceSize()
+                           << ", unifiedMeanVec = "     << unifiedMeanVec
+                           << std::endl;
+  }
+
+  return;
+}
+
+template <class V, class M>
+void
 uqSequenceOfVectorsClass<V,M>::sampleVariance(
   unsigned int initialPos,
   unsigned int numPos,
@@ -593,6 +660,42 @@ uqSequenceOfVectorsClass<V,M>::sampleVariance(
     samVec[i] = data.sampleVariance(0,
                                     numPos,
                                     meanVec[i]);
+  }
+
+  return;
+}
+
+template <class V, class M>
+void
+uqSequenceOfVectorsClass<V,M>::unifiedSampleVariance(
+  unsigned int initialPos,
+  unsigned int numPos,
+  const V&     unifiedMeanVec,
+  V&           unifiedSamVec) const
+{
+  bool bRC = ((initialPos          <  this->sequenceSize() ) &&
+              (0                   <  numPos               ) &&
+              ((initialPos+numPos) <= this->sequenceSize() ) &&
+              (this->vectorSize()  == unifiedMeanVec.size()) &&
+              (this->vectorSize()  == unifiedSamVec.size() ));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.rank(),
+                      "uqSequenceOfVectorsClass<V,M>::unifiedSampleVariance()",
+                      "invalid input data");
+
+  uqScalarSequenceClass<double> data(m_env,0);
+
+  unsigned int numParams = this->vectorSize();
+  for (unsigned int i = 0; i < numParams; ++i) {
+    this->extractScalarSeq(initialPos,
+                           1, // spacing
+                           numPos,
+                           i,
+                           data);
+    unifiedSamVec[i] = data.unifiedSampleVariance(m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1,
+                                                  0,
+                                                  numPos,
+                                                  unifiedMeanVec[i]);
   }
 
   return;
@@ -1452,6 +1555,13 @@ uqSequenceOfVectorsClass<V,M>::printContents(std::ofstream& ofsvar) const
   }
   ofsvar << "];\n";
 
+  return;
+}
+
+template <class V, class M>
+void
+uqSequenceOfVectorsClass<V,M>::printUnifiedContents(std::ofstream& ofsvar) const
+{
   return;
 }
 

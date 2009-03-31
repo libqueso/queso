@@ -63,13 +63,13 @@ uqChainStatisticalOptionsClass::uqChainStatisticalOptionsClass(
   m_gewekeNbRatio           (UQ_MCMC_GEWEKE_NB_RATIO_ODV),
   m_gewekeDisplay           (UQ_MCMC_GEWEKE_DISPLAY_ODV),
   m_gewekeWrite             (UQ_MCMC_GEWEKE_WRITE_ODV),
-  m_corrComputeViaDef       (UQ_MCMC_CORR_COMPUTE_VIA_DEF_ODV),
-  m_corrComputeViaFft       (UQ_MCMC_CORR_COMPUTE_VIA_FFT_ODV),
-  m_corrSecondLag           (UQ_MCMC_CORR_SECOND_LAG_ODV),
-  m_corrLagSpacing          (UQ_MCMC_CORR_LAG_SPACING_ODV),
-  m_corrNumLags             (UQ_MCMC_CORR_NUM_LAGS_ODV),
-  m_corrDisplay             (UQ_MCMC_CORR_DISPLAY_ODV),
-  m_corrWrite               (UQ_MCMC_CORR_WRITE_ODV),
+  m_autoCorrComputeViaDef   (UQ_MCMC_AUTO_CORR_COMPUTE_VIA_DEF_ODV),
+  m_autoCorrComputeViaFft   (UQ_MCMC_AUTO_CORR_COMPUTE_VIA_FFT_ODV),
+  m_autoCorrSecondLag       (UQ_MCMC_AUTO_CORR_SECOND_LAG_ODV),
+  m_autoCorrLagSpacing      (UQ_MCMC_AUTO_CORR_LAG_SPACING_ODV),
+  m_autoCorrNumLags         (UQ_MCMC_AUTO_CORR_NUM_LAGS_ODV),
+  m_autoCorrDisplay         (UQ_MCMC_AUTO_CORR_DISPLAY_ODV),
+  m_autoCorrWrite           (UQ_MCMC_AUTO_CORR_WRITE_ODV),
   m_histCompute             (UQ_MCMC_HIST_COMPUTE_ODV),
   m_histNumInternalBins     (UQ_MCMC_HIST_NUM_INTERNAL_BINS_ODV),
   m_kdeCompute              (UQ_MCMC_KDE_COMPUTE_ODV),
@@ -114,13 +114,13 @@ uqChainStatisticalOptionsClass::uqChainStatisticalOptionsClass(
   m_option_geweke_display           = m_prefix + "geweke_display";
   m_option_geweke_write             = m_prefix + "geweke_write";
 
-  m_option_corr_computeViaDef       = m_prefix + "corr_computeViaDef";
-  m_option_corr_computeViaFft       = m_prefix + "corr_computeViaFft";
-  m_option_corr_secondLag           = m_prefix + "corr_secondLag";
-  m_option_corr_lagSpacing          = m_prefix + "corr_lagSpacing";
-  m_option_corr_numLags             = m_prefix + "corr_numLags";
-  m_option_corr_display             = m_prefix + "corr_display";
-  m_option_corr_write               = m_prefix + "corr_write";
+  m_option_autoCorr_computeViaDef   = m_prefix + "autoCorr_computeViaDef";
+  m_option_autoCorr_computeViaFft   = m_prefix + "autoCorr_computeViaFft";
+  m_option_autoCorr_secondLag       = m_prefix + "autoCorr_secondLag";
+  m_option_autoCorr_lagSpacing      = m_prefix + "autoCorr_lagSpacing";
+  m_option_autoCorr_numLags         = m_prefix + "autoCorr_numLags";
+  m_option_autoCorr_display         = m_prefix + "autoCorr_display";
+  m_option_autoCorr_write           = m_prefix + "autoCorr_write";
 
   m_option_hist_compute             = m_prefix + "hist_compute";
   m_option_hist_numInternalBins     = m_prefix + "hist_numInternalBins";
@@ -180,13 +180,13 @@ uqChainStatisticalOptionsClass::defineMyOptions(
     (m_option_geweke_nbRatio.c_str(),                 po::value<double      >()->default_value(UQ_MCMC_GEWEKE_NB_RATIO_ODV                 ), "ratio NB for Geweke"                                            )
     (m_option_geweke_display.c_str(),                 po::value<bool        >()->default_value(UQ_MCMC_GEWEKE_DISPLAY_ODV                  ), "display computed Geweke on screen"                              )
     (m_option_geweke_write.c_str(),                   po::value<bool        >()->default_value(UQ_MCMC_GEWEKE_WRITE_ODV                    ), "write computed Geweke to the output file"                       )
-    (m_option_corr_computeViaDef.c_str(),             po::value<bool        >()->default_value(UQ_MCMC_CORR_COMPUTE_VIA_DEF_ODV            ), "compute correlations via definition"                            )
-    (m_option_corr_computeViaFft.c_str(),             po::value<bool        >()->default_value(UQ_MCMC_CORR_COMPUTE_VIA_FFT_ODV            ), "compute correlations via fft"                                   )
-    (m_option_corr_secondLag.c_str(),                 po::value<unsigned int>()->default_value(UQ_MCMC_CORR_SECOND_LAG_ODV                 ), "second lag for computation of autocorrelations"                 )
-    (m_option_corr_lagSpacing.c_str(),                po::value<unsigned int>()->default_value(UQ_MCMC_CORR_LAG_SPACING_ODV                ), "lag spacing for computation of autocorrelations"                )
-    (m_option_corr_numLags.c_str(),                   po::value<unsigned int>()->default_value(UQ_MCMC_CORR_NUM_LAGS_ODV                   ), "number of lags for computation of autocorrelations"             )
-    (m_option_corr_display.c_str(),                   po::value<bool        >()->default_value(UQ_MCMC_CORR_DISPLAY_ODV                    ), "display computed autocorrelations on the screen"                )
-    (m_option_corr_write.c_str(),                     po::value<bool        >()->default_value(UQ_MCMC_CORR_WRITE_ODV                      ), "write computed autocorrelations to the output file"             )
+    (m_option_autoCorr_computeViaDef.c_str(),         po::value<bool        >()->default_value(UQ_MCMC_AUTO_CORR_COMPUTE_VIA_DEF_ODV       ), "compute correlations via definition"                            )
+    (m_option_autoCorr_computeViaFft.c_str(),         po::value<bool        >()->default_value(UQ_MCMC_AUTO_CORR_COMPUTE_VIA_FFT_ODV       ), "compute correlations via fft"                                   )
+    (m_option_autoCorr_secondLag.c_str(),             po::value<unsigned int>()->default_value(UQ_MCMC_AUTO_CORR_SECOND_LAG_ODV            ), "second lag for computation of autocorrelations"                 )
+    (m_option_autoCorr_lagSpacing.c_str(),            po::value<unsigned int>()->default_value(UQ_MCMC_AUTO_CORR_LAG_SPACING_ODV           ), "lag spacing for computation of autocorrelations"                )
+    (m_option_autoCorr_numLags.c_str(),               po::value<unsigned int>()->default_value(UQ_MCMC_AUTO_CORR_NUM_LAGS_ODV              ), "number of lags for computation of autocorrelations"             )
+    (m_option_autoCorr_display.c_str(),               po::value<bool        >()->default_value(UQ_MCMC_AUTO_CORR_DISPLAY_ODV               ), "display computed autocorrelations on the screen"                )
+    (m_option_autoCorr_write.c_str(),                 po::value<bool        >()->default_value(UQ_MCMC_AUTO_CORR_WRITE_ODV                 ), "write computed autocorrelations to the output file"             )
     (m_option_hist_compute.c_str(),                   po::value<bool        >()->default_value(UQ_MCMC_HIST_COMPUTE_ODV                    ), "compute histograms"                                             )
     (m_option_hist_numInternalBins.c_str(),           po::value<unsigned int>()->default_value(UQ_MCMC_HIST_NUM_INTERNAL_BINS_ODV          ), "number of internal bins"                                        )
     (m_option_kde_compute.c_str(),                    po::value<bool        >()->default_value(UQ_MCMC_KDE_COMPUTE_ODV                     ), "compute kernel density estimators"                              )
@@ -350,32 +350,32 @@ uqChainStatisticalOptionsClass::getMyOptionValues(
     m_gewekeWrite = m_env.allOptionsMap()[m_option_geweke_write.c_str()].as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_corr_computeViaDef.c_str())) {
-    m_corrComputeViaDef = m_env.allOptionsMap()[m_option_corr_computeViaDef.c_str()].as<bool>();
+  if (m_env.allOptionsMap().count(m_option_autoCorr_computeViaDef.c_str())) {
+    m_autoCorrComputeViaDef = m_env.allOptionsMap()[m_option_autoCorr_computeViaDef.c_str()].as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_corr_computeViaFft.c_str())) {
-    m_corrComputeViaFft = m_env.allOptionsMap()[m_option_corr_computeViaFft.c_str()].as<bool>();
+  if (m_env.allOptionsMap().count(m_option_autoCorr_computeViaFft.c_str())) {
+    m_autoCorrComputeViaFft = m_env.allOptionsMap()[m_option_autoCorr_computeViaFft.c_str()].as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_corr_secondLag.c_str())) {
-    m_corrSecondLag = m_env.allOptionsMap()[m_option_corr_secondLag.c_str()].as<unsigned int>();
+  if (m_env.allOptionsMap().count(m_option_autoCorr_secondLag.c_str())) {
+    m_autoCorrSecondLag = m_env.allOptionsMap()[m_option_autoCorr_secondLag.c_str()].as<unsigned int>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_corr_lagSpacing.c_str())) {
-    m_corrLagSpacing = m_env.allOptionsMap()[m_option_corr_lagSpacing.c_str()].as<unsigned int>();
+  if (m_env.allOptionsMap().count(m_option_autoCorr_lagSpacing.c_str())) {
+    m_autoCorrLagSpacing = m_env.allOptionsMap()[m_option_autoCorr_lagSpacing.c_str()].as<unsigned int>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_corr_numLags.c_str())) {
-    m_corrNumLags = m_env.allOptionsMap()[m_option_corr_numLags.c_str()].as<unsigned int>();
+  if (m_env.allOptionsMap().count(m_option_autoCorr_numLags.c_str())) {
+    m_autoCorrNumLags = m_env.allOptionsMap()[m_option_autoCorr_numLags.c_str()].as<unsigned int>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_corr_display.c_str())) {
-    m_corrDisplay = m_env.allOptionsMap()[m_option_corr_display.c_str()].as<bool>();
+  if (m_env.allOptionsMap().count(m_option_autoCorr_display.c_str())) {
+    m_autoCorrDisplay = m_env.allOptionsMap()[m_option_autoCorr_display.c_str()].as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_corr_write.c_str())) {
-    m_corrWrite = m_env.allOptionsMap()[m_option_corr_write.c_str()].as<bool>();
+  if (m_env.allOptionsMap().count(m_option_autoCorr_write.c_str())) {
+    m_autoCorrWrite = m_env.allOptionsMap()[m_option_autoCorr_write.c_str()].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_hist_compute.c_str())) {
@@ -548,45 +548,45 @@ uqChainStatisticalOptionsClass::gewekeWrite() const
 }
 
 bool
-uqChainStatisticalOptionsClass::corrComputeViaDef() const
+uqChainStatisticalOptionsClass::autoCorrComputeViaDef() const
 {
-  return m_corrComputeViaDef;
+  return m_autoCorrComputeViaDef;
 }
 
 bool
-uqChainStatisticalOptionsClass::corrComputeViaFft() const
+uqChainStatisticalOptionsClass::autoCorrComputeViaFft() const
 {
-  return m_corrComputeViaFft;
+  return m_autoCorrComputeViaFft;
 }
 
 unsigned int
-uqChainStatisticalOptionsClass::corrSecondLag() const
+uqChainStatisticalOptionsClass::autoCorrSecondLag() const
 {
-  return m_corrSecondLag;
+  return m_autoCorrSecondLag;
 }
 
 unsigned int
-uqChainStatisticalOptionsClass::corrLagSpacing() const
+uqChainStatisticalOptionsClass::autoCorrLagSpacing() const
 {
-  return m_corrLagSpacing;
+  return m_autoCorrLagSpacing;
 }
 
 unsigned int
-uqChainStatisticalOptionsClass::corrNumLags() const
+uqChainStatisticalOptionsClass::autoCorrNumLags() const
 {
-  return m_corrNumLags;
+  return m_autoCorrNumLags;
 }
 
 bool
-uqChainStatisticalOptionsClass::corrDisplay() const
+uqChainStatisticalOptionsClass::autoCorrDisplay() const
 {
-  return m_corrDisplay;
+  return m_autoCorrDisplay;
 }
 
 bool
-uqChainStatisticalOptionsClass::corrWrite() const
+uqChainStatisticalOptionsClass::autoCorrWrite() const
 {
-  return m_corrWrite;
+  return m_autoCorrWrite;
 }
 
 bool
@@ -648,13 +648,13 @@ uqChainStatisticalOptionsClass::print(std::ostream& os) const
      << "\n" << m_option_geweke_nbRatio         << " = " << m_gewekeNbRatio
      << "\n" << m_option_geweke_display         << " = " << m_gewekeDisplay
      << "\n" << m_option_geweke_write           << " = " << m_gewekeWrite
-     << "\n" << m_option_corr_computeViaDef     << " = " << m_corrComputeViaDef
-     << "\n" << m_option_corr_computeViaFft     << " = " << m_corrComputeViaFft
-     << "\n" << m_option_corr_secondLag         << " = " << m_corrSecondLag
-     << "\n" << m_option_corr_lagSpacing        << " = " << m_corrLagSpacing
-     << "\n" << m_option_corr_numLags           << " = " << m_corrNumLags
-     << "\n" << m_option_corr_display           << " = " << m_corrDisplay
-     << "\n" << m_option_corr_write             << " = " << m_corrWrite
+     << "\n" << m_option_autoCorr_computeViaDef << " = " << m_autoCorrComputeViaDef
+     << "\n" << m_option_autoCorr_computeViaFft << " = " << m_autoCorrComputeViaFft
+     << "\n" << m_option_autoCorr_secondLag     << " = " << m_autoCorrSecondLag
+     << "\n" << m_option_autoCorr_lagSpacing    << " = " << m_autoCorrLagSpacing
+     << "\n" << m_option_autoCorr_numLags       << " = " << m_autoCorrNumLags
+     << "\n" << m_option_autoCorr_display       << " = " << m_autoCorrDisplay
+     << "\n" << m_option_autoCorr_write         << " = " << m_autoCorrWrite
      << "\n" << m_option_hist_compute           << " = " << m_histCompute
      << "\n" << m_option_hist_numInternalBins   << " = " << m_histNumInternalBins
      << "\n" << m_option_kde_compute            << " = " << m_kdeCompute

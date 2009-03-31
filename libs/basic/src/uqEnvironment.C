@@ -427,6 +427,119 @@ uqBaseEnvironmentClass::syncPrintDebugMsg(const char* msg, unsigned int msgVerbo
   return;
 }
 
+void
+uqBaseEnvironmentClass::openOutputFile(
+  const std::string&            baseFileName,
+  const std::string&            fileType,
+  const std::set<unsigned int>& allowedSubEnvIds,
+        bool                    writeOver,
+        std::ofstream*&         ofsvar) const
+{
+  ofsvar = NULL;
+  if ((baseFileName                         == "."                   ) ||
+      (allowedSubEnvIds.find(this->subId()) == allowedSubEnvIds.end())) {
+    if (this->subScreenFile()) {
+      *this->subScreenFile() << "In openOutputFile()"
+                             << ": no output file opened with base name '" << baseFileName
+                             << "'"
+                             << std::endl;
+    }
+  }
+  else {
+    if (this->subScreenFile()) {
+      *this->subScreenFile() << "In openOutputFile()"
+                             << ": opening output file with base name '" << baseFileName
+                             << "'"
+                             << std::endl;
+    }
+
+    if (this->subRank() == 0) {
+      // Open file
+      if (writeOver) {
+        // Write over an eventual pre-existing file
+        ofsvar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(), std::ofstream::out | std::ofstream::trunc);
+      }
+      else {
+        // Write at the end of an eventual pre-existing file
+        ofsvar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
+        if ((ofsvar            == NULL ) ||
+            (ofsvar->is_open() == false)) {
+          delete ofsvar;
+          ofsvar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(), std::ofstream::out | std::ofstream::trunc);
+        }
+      }
+      if (ofsvar == NULL) {
+        std::cerr << "In openOutputFile()"
+                  << ": failed to open output file with base name '" << baseFileName
+                  << "'"
+                  << std::endl;
+      }
+      UQ_FATAL_TEST_MACRO((ofsvar && ofsvar->is_open()) == false,
+                          this->rank(),
+                          "openOutputFile()",
+                          "failed to open output file");
+    }
+  }
+
+  return;
+}
+
+void
+uqBaseEnvironmentClass::openUnifiedOutputFile(
+  const std::string&            baseFileName,
+  const std::string&            fileType,
+        bool                    writeOver,
+        std::ofstream*&         ofsvar) const
+{
+  ofsvar = NULL;
+  if (baseFileName == ".") {
+    if (this->subScreenFile()) {
+      *this->subScreenFile() << "In openUnifiedOutputFile()"
+                             << ": no unified output file opened with base name '" << baseFileName
+                             << "'"
+                             << std::endl;
+    }
+  }
+  else {
+    if (this->subScreenFile()) {
+      *this->subScreenFile() << "In openUnifiedOutputFile()"
+                             << ": opening unified output file with base name '" << baseFileName
+                             << "'"
+                             << std::endl;
+    }
+
+    if ((this->subRank   () == 0) &&
+        (this->inter0Rank() == 0)) {
+      // Open file
+      if (writeOver) {
+        // Write over an eventual pre-existing file
+        ofsvar = new std::ofstream((baseFileName+"."+fileType).c_str(), std::ofstream::out | std::ofstream::trunc);
+      }
+      else {
+        // Write at the end of an eventual pre-existing file
+        ofsvar = new std::ofstream((baseFileName+"."+fileType).c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
+        if ((ofsvar            == NULL ) ||
+            (ofsvar->is_open() == false)) {
+          delete ofsvar;
+          ofsvar = new std::ofstream((baseFileName+"."+fileType).c_str(), std::ofstream::out | std::ofstream::trunc);
+        }
+      }
+      if (ofsvar == NULL) {
+        std::cerr << "In openUnifiedOutputFile()"
+                  << ": failed to open unified output file with base name '" << baseFileName
+                  << "'"
+                  << std::endl;
+      }
+      UQ_FATAL_TEST_MACRO((ofsvar && ofsvar->is_open()) == false,
+                          this->rank(),
+                          "openUnifiedOutputFile()",
+                          "failed to open output file");
+    }
+  }
+
+  return;
+}
+
 //*****************************************************
 // Empty Environment
 //*****************************************************

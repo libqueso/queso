@@ -65,8 +65,8 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                          "inputData/params.tab");
 
   const EpetraExt::DistArray<std::string>& paramNames = paramsTable.stringColumn(0);
-  P_V                                      paramMins    (paramsTable.doubleColumn(1));
-  P_V                                      paramMaxs    (paramsTable.doubleColumn(2));
+  P_V                                      paramMins(paramsTable.doubleColumn(1));
+  P_V                                      paramMaxs(paramsTable.doubleColumn(2));
 
   uqVectorSpaceClass<P_V,P_M> paramSpace(env,
                                          "param_", // Extra prefix before the default "space_" prefix
@@ -82,10 +82,10 @@ uqAppl(const uqBaseEnvironmentClass& env)
   // Read Ascii file with information on qois
   //******************************************************
   uqAsciiTableClass<Q_V,Q_M> qoisTable(env,
-                                         1,    // # of rows
-                                         0,    // # of cols after 'qoi name': none
-                                         NULL, // All extra columns are of 'double' type
-                                         "inputData/qois.tab");
+                                       1,    // # of rows
+                                       0,    // # of cols after 'qoi name': none
+                                       NULL, // All extra columns are of 'double' type
+                                       "inputData/qois.tab");
 
   const EpetraExt::DistArray<std::string>& qoiNames = qoisTable.stringColumn(0);
 

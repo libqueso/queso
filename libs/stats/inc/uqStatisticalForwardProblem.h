@@ -43,11 +43,13 @@
 #define UQ_PROPAG_PROBLEM_FILENAME_FOR_NO_OUTPUT_FILE "."
 
 // _ODV = option default value
-#define UQ_PROPAG_PROBLEM_COMPUTE_SOLUTION_ODV 1
-#define UQ_PROPAG_PROBLEM_OUTPUT_FILE_NAME_ODV UQ_PROPAG_PROBLEM_FILENAME_FOR_NO_OUTPUT_FILE
-#define UQ_PROPAG_PROBLEM_OUTPUT_ALLOW_ODV     ""
+#define UQ_PROPAG_PROBLEM_COMPUTE_SOLUTION_ODV     1
+#define UQ_PROPAG_PROBLEM_COMPUTE_COVARIANCES_ODV  1
+#define UQ_PROPAG_PROBLEM_COMPUTE_CORRELATIONS_ODV 1
+#define UQ_PROPAG_PROBLEM_OUTPUT_FILE_NAME_ODV     UQ_PROPAG_PROBLEM_FILENAME_FOR_NO_OUTPUT_FILE
+#define UQ_PROPAG_PROBLEM_OUTPUT_ALLOW_ODV         ""
 #ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
-#define UQ_PROPAG_PROBLEM_SOLVER_ODV           "mc" // Monte Carlo
+#define UQ_PROPAG_PROBLEM_SOLVER_ODV               "mc" // Monte Carlo
 #endif
 
 template <class P_V,class P_M,class Q_V,class Q_M>
@@ -78,15 +80,19 @@ private:
         po::options_description*                    m_optionsDesc;
         std::string                                 m_option_help;
 	std::string                                 m_option_computeSolution;
+	std::string                                 m_option_computeCovariances;
+	std::string                                 m_option_computeCorrelations;
         std::string                                 m_option_outputFileName;
-        std::string                          m_option_outputAllow;
+        std::string                                 m_option_outputAllow;
 #ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
         std::string                                 m_option_solver;
 #endif
 
         bool                                        m_computeSolution;
+        bool                                        m_computeCovariances;
+        bool                                        m_computeCorrelations;
         std::string                                 m_outputFileName;
-        std::set<unsigned int>               m_outputAllow;
+        std::set<unsigned int>                      m_outputAllow;
 #ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
 	std::string                                 m_solverString;
 #endif
@@ -123,21 +129,25 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::uqStatisticalForwardProblemCl
   const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction,
         uqGenericVectorRVClass   <Q_V,Q_M>&         qoiRv)
   :
-  m_env                   (paramRv.env()),
-  m_prefix                ((std::string)(prefix) + "fp_"),
-  m_optionsDesc           (new po::options_description("UQ Propagation Problem")),
-  m_option_help           (m_prefix + "help"           ),
-  m_option_computeSolution(m_prefix + "computeSolution"),
-  m_option_outputFileName (m_prefix + "outputFileName" ),
-  m_option_outputAllow    (m_prefix + "outputAllow"    ),
+  m_env                       (paramRv.env()),
+  m_prefix                    ((std::string)(prefix) + "fp_"),
+  m_optionsDesc               (new po::options_description("UQ Propagation Problem")),
+  m_option_help               (m_prefix + "help"               ),
+  m_option_computeSolution    (m_prefix + "computeSolution"    ),
+  m_option_computeCovariances (m_prefix + "computeCovariances" ),
+  m_option_computeCorrelations(m_prefix + "computeCorrelations"),
+  m_option_outputFileName     (m_prefix + "outputFileName"     ),
+  m_option_outputAllow        (m_prefix + "outputAllow"        ),
 #ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
-  m_option_solver         (m_prefix + "solver"         ),
+  m_option_solver             (m_prefix + "solver"             ),
 #endif
-  m_computeSolution       (UQ_PROPAG_PROBLEM_COMPUTE_SOLUTION_ODV),
-  m_outputFileName        (UQ_PROPAG_PROBLEM_OUTPUT_FILE_NAME_ODV),
+  m_computeSolution       (UQ_PROPAG_PROBLEM_COMPUTE_SOLUTION_ODV    ),
+  m_computeCovariances    (UQ_PROPAG_PROBLEM_COMPUTE_COVARIANCES_ODV ),
+  m_computeCorrelations   (UQ_PROPAG_PROBLEM_COMPUTE_CORRELATIONS_ODV),
+  m_outputFileName        (UQ_PROPAG_PROBLEM_OUTPUT_FILE_NAME_ODV    ),
 //m_outputAllow           (),
 #ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
-  m_solverString          (UQ_PROPAG_PROBLEM_SOLVER_ODV),
+  m_solverString          (UQ_PROPAG_PROBLEM_SOLVER_ODV              ),
 #endif
   m_paramRv               (paramRv),
   m_qoiFunction           (qoiFunction),
@@ -213,12 +223,14 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::defineMyOptions(
   po::options_description& optionsDesc)
 {
   optionsDesc.add_options()
-    (m_option_help.c_str(),                                                                                             "produce help message for propagation problem")
-    (m_option_computeSolution.c_str(), po::value<bool       >()->default_value(UQ_PROPAG_PROBLEM_COMPUTE_SOLUTION_ODV), "compute solution process"                    )
-    (m_option_outputFileName.c_str(),  po::value<std::string>()->default_value(UQ_PROPAG_PROBLEM_OUTPUT_FILE_NAME_ODV), "name of output file"                         )
-    (m_option_outputAllow.c_str(),     po::value<std::string>()->default_value(UQ_PROPAG_PROBLEM_OUTPUT_ALLOW_ODV    ), "subEnvs that will write to output file"      )
+    (m_option_help.c_str(),                                                                                                     "produce help message for propagation problem")
+    (m_option_computeSolution.c_str(),     po::value<bool       >()->default_value(UQ_PROPAG_PROBLEM_COMPUTE_SOLUTION_ODV    ), "compute solution process"                    )
+    (m_option_computeCovariances.c_str(),  po::value<bool       >()->default_value(UQ_PROPAG_PROBLEM_COMPUTE_COVARIANCES_ODV ), "compute pq covariances"                      )
+    (m_option_computeCorrelations.c_str(), po::value<bool       >()->default_value(UQ_PROPAG_PROBLEM_COMPUTE_CORRELATIONS_ODV), "compute pq correlations"                     )
+    (m_option_outputFileName.c_str(),      po::value<std::string>()->default_value(UQ_PROPAG_PROBLEM_OUTPUT_FILE_NAME_ODV    ), "name of output file"                         )
+    (m_option_outputAllow.c_str(),         po::value<std::string>()->default_value(UQ_PROPAG_PROBLEM_OUTPUT_ALLOW_ODV        ), "subEnvs that will write to output file"      )
 #ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
-    (m_option_solver.c_str(),          po::value<std::string>()->default_value(UQ_PROPAG_PROBLEM_SOLVER_ODV          ), "algorithm for propagation"                   )
+    (m_option_solver.c_str(),              po::value<std::string>()->default_value(UQ_PROPAG_PROBLEM_SOLVER_ODV              ), "algorithm for propagation"                   )
 #endif
   ;
 
@@ -239,6 +251,14 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::getMyOptionValues(
 
   if (m_env.allOptionsMap().count(m_option_computeSolution.c_str())) {
     m_computeSolution = ((const po::variable_value&) m_env.allOptionsMap()[m_option_computeSolution.c_str()]).as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_computeCovariances.c_str())) {
+    m_computeCovariances = ((const po::variable_value&) m_env.allOptionsMap()[m_option_computeCovariances.c_str()]).as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_computeCorrelations.c_str())) {
+    m_computeCorrelations = ((const po::variable_value&) m_env.allOptionsMap()[m_option_computeCorrelations.c_str()]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_outputFileName.c_str())) {
@@ -326,7 +346,8 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
                                                               m_paramRv,
                                                               m_qoiFunction,
                                                               m_qoiRv);
-  m_mcSeqGenerator->generateSequence(*m_paramChain,*m_qoiChain);
+  m_mcSeqGenerator->generateSequence(*m_paramChain,
+                                     *m_qoiChain);
   m_solutionRealizer = new uqSequentialVectorRealizerClass<Q_V,Q_M>((m_prefix+"Qoi").c_str(),
                                                                     *m_qoiChain);
   m_qoiRv.setRealizer(*m_solutionRealizer);
@@ -344,7 +365,6 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   m_qoiRv.setMdf(*m_solutionMdf);
 
   // Compute output cdf: uniform sampling approach
-
   std::string subCoreName_qoiCdf(m_prefix+    "QoiCdf_");
   std::string uniCoreName_qoiCdf(m_prefix+"unifQoiCdf_");
   if (m_env.numSubEnvironments() == 1) subCoreName_qoiCdf = uniCoreName_qoiCdf;
@@ -377,65 +397,77 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
                                                                 *m_unifiedCdfValues);
   }
 
-  if ((m_outputFileName                  != UQ_PROPAG_PROBLEM_FILENAME_FOR_NO_OUTPUT_FILE) &&
-      (m_outputAllow.find(m_env.subId()) != m_outputAllow.end()                          )) {
-    if (m_env.subRank() == 0) {
-      // Write output file
-      if (m_env.subScreenFile()) {
-        *m_env.subScreenFile() << "Opening output file '" << m_outputFileName
-                               << "' for propagation problem with problem with prefix = " << m_prefix
-                               << std::endl;
-      }
+  // Compute (just unified one) covariance matrix, if requested
+  // Compute (just unified one) correlation matrix, if requested
+  P_M* pqCovarianceMatrix  = NULL;
+  P_M* pqCorrelationMatrix = NULL;
+  if (m_computeCovariances || m_computeCorrelations) {
+    pqCovarianceMatrix = new P_M(m_env,
+                                 m_paramRv.imageSet().vectorSpace().map(), // number of rows
+                                 m_qoiRv.imageSet().vectorSpace().dim());  // number of cols
+    pqCorrelationMatrix = new P_M(m_env,
+                                  m_paramRv.imageSet().vectorSpace().map(), // number of rows
+                                  m_qoiRv.imageSet().vectorSpace().dim());  // number of cols
+    uqComputeCovCorrMatricesBetweenVectorRvs<P_V,P_M,Q_V,Q_M>(m_paramRv,
+                                                              m_qoiRv,
+                                                              std::min(m_paramRv.realizer().period(),m_qoiRv.realizer().period()), // FIX ME: might be INFINITY
+                                                              *pqCovarianceMatrix,
+                                                              *pqCorrelationMatrix);
+  }
 
-      // Open file
-#if 0
-      // Always write over an eventual pre-existing file
-      std::ofstream* ofsvar = new std::ofstream((m_outputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
-#else
-      // Always write at the end of an eventual pre-existing file
-      std::ofstream* ofsvar = new std::ofstream((m_outputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
-      if ((ofsvar            == NULL ) ||
-          (ofsvar->is_open() == false)) {
-        delete ofsvar;
-        ofsvar = new std::ofstream((m_outputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
-      }
-#endif
-      UQ_FATAL_TEST_MACRO((ofsvar && ofsvar->is_open()) == false,
-                          m_env.rank(),
-                          "uqStatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()",
-                          "failed to open file");
+  // Open output file
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Checking necessity of opening output file '"           << m_outputFileName
+                           << "' for propagation problem with problem with prefix = " << m_prefix
+                           << std::endl;
+  }
+  std::ofstream* ofsvar = NULL;
+  m_env.openOutputFile(m_outputFileName,
+                       "m",
+                       m_outputAllow,
+                       false,
+                       ofsvar);
 
-      m_qoiRv.mdf().print(*ofsvar);
-      *ofsvar << m_qoiRv.cdf();
+  // Write data out
+  if (ofsvar) {
+    m_qoiRv.mdf().print(*ofsvar);
+    *ofsvar << m_qoiRv.cdf();
 
-      // Write unified cdf if necessary
-      if (m_env.numSubEnvironments() > 1) {
-        if (m_qoiRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
-          if (m_env.inter0Rank() == 0) {
-            *ofsvar << *m_unifiedSolutionCdf;
-          }
+    if (pqCovarianceMatrix ) *ofsvar << *pqCovarianceMatrix;
+    if (pqCorrelationMatrix) *ofsvar << *pqCorrelationMatrix;
+
+    // Write unified cdf if necessary
+    if (m_env.numSubEnvironments() > 1) {
+      if (m_qoiRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+        if (m_env.inter0Rank() == 0) {
+          *ofsvar << *m_unifiedSolutionCdf;
         }
-        else {
-          UQ_FATAL_TEST_MACRO(true,
-                              m_env.rank(),
-                              "uqStatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()",
-                              "unifed cdf writing, parallel vectors not supported yet");
-        }
       }
+      else {
+        UQ_FATAL_TEST_MACRO(true,
+                            m_env.rank(),
+                            "uqStatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()",
+                            "unifed cdf writing, parallel vectors not supported yet");
+      }
+    }
+  }
 
-      // Close file
-      ofsvar->close();
-      delete ofsvar;
-      if (m_env.subScreenFile()) {
-        *m_env.subScreenFile() << "Closed output file '" << m_outputFileName
-                               << "' for propagation problem with problem with prefix = " << m_prefix
-                               << std::endl;
-      }
+  // Close output file
+  if (ofsvar) {
+    ofsvar->close();
+    delete ofsvar;
+    if (m_env.subScreenFile()) {
+      *m_env.subScreenFile() << "Closed output file '" << m_outputFileName
+                             << "' for propagation problem with problem with prefix = " << m_prefix
+                             << std::endl;
     }
   }
   if (m_env.subScreenFile()) {
     *m_env.subScreenFile() << std::endl;
   }
+
+  if (pqCovarianceMatrix ) delete pqCovarianceMatrix;
+  if (pqCorrelationMatrix) delete pqCorrelationMatrix;
 
   m_env.syncPrintDebugMsg("Leaving uqStatisticalForwardProblemClass<P_V,P_M>::solveWithMonteCarlo()",1,3000000,m_env.fullComm());
   m_env.fullComm().Barrier();
@@ -474,14 +506,16 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::print(std::ostream& os) const
 {
-  os << "\n" << m_option_computeSolution << " = " << m_computeSolution
-     << "\n" << m_option_outputFileName  << " = " << m_outputFileName;
-  os << "\n" << m_option_outputAllow << " = ";
+  os <<         m_option_computeSolution     << " = " << m_computeSolution
+     << "\n" << m_option_computeCovariances  << " = " << m_computeCovariances
+     << "\n" << m_option_computeCorrelations << " = " << m_computeCorrelations
+     << "\n" << m_option_outputFileName      << " = " << m_outputFileName;
+  os << "\n" << m_option_outputAllow         << " = ";
   for (std::set<unsigned int>::iterator setIt = m_outputAllow.begin(); setIt != m_outputAllow.end(); ++setIt) {
     os << *setIt << " ";
   }
 #ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
-     << "\n" << m_option_solver << " = " << m_solverString
+       << "\n" << m_option_solver << " = " << m_solverString
 #endif
   os << std::endl;
 }

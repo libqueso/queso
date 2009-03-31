@@ -52,8 +52,8 @@ int    uqMiscReadCharsAndDoubleFromFile (std::ifstream& ifs,
                                          std::string&   termString,
                                          double*        termValue,
                                          bool&          endOfLineAchieved);
-double uqMiscGammar                     (double   a,
-                                         double   b,
+double uqMiscGammar                     (double         a,
+                                         double         b,
                                          const gsl_rng* rng);
 double uqMiscGetEllapsedSeconds         (struct timeval *timeval0);
 
