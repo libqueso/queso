@@ -35,42 +35,44 @@
 
 #include <uqEnvironment.h>
 
-#define UQ_MCMC_INITIAL_DISCARDED_PORTIONS_ODV "100."
-#define UQ_MCMC_BMM_RUN_ODV                    0
-#define UQ_MCMC_BMM_LENGTHS_ODV                "0"
-#define UQ_MCMC_BMM_DISPLAY_ODV                0
-#define UQ_MCMC_BMM_WRITE_ODV                  0
-#define UQ_MCMC_FFT_COMPUTE_ODV                0
-#define UQ_MCMC_FFT_PARAM_ID_ODV               0
-#define UQ_MCMC_FFT_SIZE_ODV                   2048
-#define UQ_MCMC_FFT_TEST_INVERSION_ODV         0
-#define UQ_MCMC_FFT_WRITE_ODV                  0
-#define UQ_MCMC_PSD_COMPUTE_ODV                0
-#define UQ_MCMC_PSD_NUM_BLOCKS_ODV             0
-#define UQ_MCMC_PSD_HOP_SIZE_RATIO_ODV         0.
-#define UQ_MCMC_PSD_PARAM_ID_ODV               0
-#define UQ_MCMC_PSD_WRITE_ODV                  0
-#define UQ_MCMC_PSD_AT_ZERO_COMPUTE_ODV        0
-#define UQ_MCMC_PSD_AT_ZERO_NUM_BLOCKS_ODV     "8"
-#define UQ_MCMC_PSD_AT_ZERO_HOP_SIZE_RATIO_ODV .5
-#define UQ_MCMC_PSD_AT_ZERO_DISPLAY_ODV        0
-#define UQ_MCMC_PSD_AT_ZERO_WRITE_ODV          0
-#define UQ_MCMC_GEWEKE_COMPUTE_ODV             0
-#define UQ_MCMC_GEWEKE_NA_RATIO_ODV            .1
-#define UQ_MCMC_GEWEKE_NB_RATIO_ODV            .5
-#define UQ_MCMC_GEWEKE_DISPLAY_ODV             0
-#define UQ_MCMC_GEWEKE_WRITE_ODV               0
-#define UQ_MCMC_AUTO_CORR_COMPUTE_VIA_DEF_ODV  0
-#define UQ_MCMC_AUTO_CORR_COMPUTE_VIA_FFT_ODV  0
-#define UQ_MCMC_AUTO_CORR_SECOND_LAG_ODV       0
-#define UQ_MCMC_AUTO_CORR_LAG_SPACING_ODV      0
-#define UQ_MCMC_AUTO_CORR_NUM_LAGS_ODV         0
-#define UQ_MCMC_AUTO_CORR_DISPLAY_ODV          0
-#define UQ_MCMC_AUTO_CORR_WRITE_ODV            0
-#define UQ_MCMC_HIST_COMPUTE_ODV               0
-#define UQ_MCMC_HIST_NUM_INTERNAL_BINS_ODV     100
-#define UQ_MCMC_KDE_COMPUTE_ODV                0
-#define UQ_MCMC_KDE_NUM_EVAL_POSITIONS_ODV     100
+#define UQ_CHAIN_INITIAL_DISCARDED_PORTIONS_ODV "100."
+#define UQ_CHAIN_BMM_RUN_ODV                    0
+#define UQ_CHAIN_BMM_LENGTHS_ODV                "0"
+#define UQ_CHAIN_BMM_DISPLAY_ODV                0
+#define UQ_CHAIN_BMM_WRITE_ODV                  0
+#define UQ_CHAIN_FFT_COMPUTE_ODV                0
+#define UQ_CHAIN_FFT_PARAM_ID_ODV               0
+#define UQ_CHAIN_FFT_SIZE_ODV                   2048
+#define UQ_CHAIN_FFT_TEST_INVERSION_ODV         0
+#define UQ_CHAIN_FFT_WRITE_ODV                  0
+#define UQ_CHAIN_PSD_COMPUTE_ODV                0
+#define UQ_CHAIN_PSD_NUM_BLOCKS_ODV             0
+#define UQ_CHAIN_PSD_HOP_SIZE_RATIO_ODV         0.
+#define UQ_CHAIN_PSD_PARAM_ID_ODV               0
+#define UQ_CHAIN_PSD_WRITE_ODV                  0
+#define UQ_CHAIN_PSD_AT_ZERO_COMPUTE_ODV        0
+#define UQ_CHAIN_PSD_AT_ZERO_NUM_BLOCKS_ODV     "8"
+#define UQ_CHAIN_PSD_AT_ZERO_HOP_SIZE_RATIO_ODV .5
+#define UQ_CHAIN_PSD_AT_ZERO_DISPLAY_ODV        0
+#define UQ_CHAIN_PSD_AT_ZERO_WRITE_ODV          0
+#define UQ_CHAIN_GEWEKE_COMPUTE_ODV             0
+#define UQ_CHAIN_GEWEKE_NA_RATIO_ODV            .1
+#define UQ_CHAIN_GEWEKE_NB_RATIO_ODV            .5
+#define UQ_CHAIN_GEWEKE_DISPLAY_ODV             0
+#define UQ_CHAIN_GEWEKE_WRITE_ODV               0
+#define UQ_CHAIN_AUTO_CORR_COMPUTE_VIA_DEF_ODV  0
+#define UQ_CHAIN_AUTO_CORR_COMPUTE_VIA_FFT_ODV  0
+#define UQ_CHAIN_AUTO_CORR_SECOND_LAG_ODV       0
+#define UQ_CHAIN_AUTO_CORR_LAG_SPACING_ODV      0
+#define UQ_CHAIN_AUTO_CORR_NUM_LAGS_ODV         0
+#define UQ_CHAIN_AUTO_CORR_DISPLAY_ODV          0
+#define UQ_CHAIN_AUTO_CORR_WRITE_ODV            0
+#define UQ_CHAIN_HIST_COMPUTE_ODV               0
+#define UQ_CHAIN_HIST_NUM_INTERNAL_BINS_ODV     100
+#define UQ_CHAIN_KDE_COMPUTE_ODV                0
+#define UQ_CHAIN_KDE_NUM_EVAL_POSITIONS_ODV     100
+#define UQ_CHAIN_COV_MATRIX_COMPUTE_ODV         0
+#define UQ_CHAIN_CORR_MATRIX_COMPUTE_ODV        0
 
 /*! A templated class that stores statistical options for a chain.
  */
@@ -126,6 +128,9 @@ public:
         bool                       kdeCompute         () const;
         unsigned int               kdeNumEvalPositions() const;
 
+        bool                       covMatrixCompute () const;
+        bool                       corrMatrixCompute() const;
+
   void print                    (std::ostream& os) const;
 
 private:
@@ -172,6 +177,8 @@ private:
   std::string m_option_hist_numInternalBins;
   std::string m_option_kde_compute;
   std::string m_option_kde_numEvalPositions;
+  std::string m_option_covMatrix_compute;
+  std::string m_option_corrMatrix_compute;
 
   po::options_description*  m_optionsDesc;
 
@@ -219,6 +226,9 @@ private:
 
   bool                      m_kdeCompute;
   unsigned int              m_kdeNumEvalPositions;
+
+  bool                      m_covMatrixCompute;
+  bool                      m_corrMatrixCompute;
 };
 
 std::ostream& operator<<(std::ostream& os, const uqChainStatisticalOptionsClass& obj);

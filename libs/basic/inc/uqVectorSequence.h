@@ -218,6 +218,8 @@ protected:
                                                                std::ofstream*                        passedOfs);
            void                     computeHistKde            (const uqChainStatisticalOptionsClass& statisticalOptions,
                                                                std::ofstream*                        passedOfs);
+           void                     computeCovCorrMatrices    (const uqChainStatisticalOptionsClass& statisticalOptions,
+                                                               std::ofstream*                        passedOfs);
 
   virtual  void                     extractScalarSeq          (unsigned int                          initialPos,
                                                                unsigned int                          spacing,
@@ -533,6 +535,15 @@ uqBaseVectorSequenceClass<V,M>::computeStatistics(
       (statisticalOptions.kdeCompute() )) {
     this->computeHistKde(statisticalOptions,
                          passedOfs);
+  }
+
+  //****************************************************
+  // Compute covariance and correlation matrices
+  //****************************************************
+  if ((statisticalOptions.covMatrixCompute ()) ||
+      (statisticalOptions.corrMatrixCompute())) {
+    this->computeCovCorrMatrices(statisticalOptions,
+                                 passedOfs);
   }
 
   tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
@@ -1955,4 +1966,192 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
   return;
 }
 
+template<class V, class M>
+void
+uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices( // Use the whole chain
+  const uqChainStatisticalOptionsClass& statisticalOptions,
+  std::ofstream*                        passedOfs)
+{
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "\n"
+                           << "\n-----------------------------------------------------"
+                           << "\n Computing covariance and correlation matrices for chain " << m_name << " ..."
+                           << "\n-----------------------------------------------------"
+                           << "\n"
+                           << std::endl;
+  }
+
+  //int iRC = UQ_OK_RC;
+  //struct timeval timevalTmp;
+  M* covarianceMatrix = new M(m_env,
+                              m_vectorSpace.map(),  // number of rows
+                              m_vectorSpace.dim()); // number of cols
+  M* correlationMatrix = new M(m_env,
+                               m_vectorSpace.map(),  // number of rows
+                               m_vectorSpace.dim()); // number of cols
+
+  uqComputeCovCorrMatricesBetweenVectorSequences(*this,
+                                                 *this,
+                                                 this->sequenceSize(),
+                                                 *covarianceMatrix,
+                                                 *correlationMatrix);
+
+  if (m_env.subScreenFile()) {
+    if (m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+      // Only unified covariance matrix is written. And only one processor writes it.
+      if (m_env.inter0Rank() == 0) {
+        *m_env.subScreenFile() << "\nuqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices"
+                               << ", chain " << m_name
+                               << ": contents of covariance matrix are\n" << *covarianceMatrix
+                               << std::endl;
+
+        *m_env.subScreenFile() << "\nuqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices"
+                               << ", chain " << m_name
+                               << ": contents of correlation matrix are\n" << *correlationMatrix
+                               << std::endl;
+      }
+    }
+    else {
+      UQ_FATAL_TEST_MACRO(true,
+                          m_env.rank(),
+                          "uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices()",
+                          "parallel vectors not supported yet");
+    }
+  }
+
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "\n-----------------------------------------------------"
+                           << "\n Finished computing covariance and correlation matrices for chain " << m_name
+                           << "\n-----------------------------------------------------"
+                           << "\n"
+                           << std::endl;
+  }
+
+  return;
+}
+
+template <class P_V, class P_M, class Q_V, class Q_M>
+void
+uqComputeCovCorrMatricesBetweenVectorSequences(
+  const uqBaseVectorSequenceClass<P_V,P_M>& localPSeq,
+  const uqBaseVectorSequenceClass<Q_V,Q_M>& localQSeq,
+        unsigned int                        localNumSamples,
+        P_M&                                pqCovMatrix,
+        P_M&                                pqCorrMatrix)
+{
+  // Check input data consistency
+  const uqBaseEnvironmentClass& env = localPSeq.vectorSpace().zeroVector().env();
+
+  bool useOnlyInter0Comm = (localPSeq.vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage() == 1) &&
+                           (localQSeq.vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage() == 1);
+
+  UQ_FATAL_TEST_MACRO((useOnlyInter0Comm == false),
+                      env.rank(),
+                      "uqComputeCovCorrMatricesBetweenVectorSequences()",
+                      "parallel vectors not supported yet");
+
+  unsigned int numRows = localPSeq.vectorSpace().dim();
+  unsigned int numCols = localQSeq.vectorSpace().dim();
+
+  UQ_FATAL_TEST_MACRO((numRows != pqCovMatrix.numRows()) || (numCols != pqCovMatrix.numCols()),
+                      env.rank(),
+                      "uqComputeCovCorrMatricesBetweenVectorSequences()",
+                      "inconsistent dimensions for covariance matrix");
+
+  UQ_FATAL_TEST_MACRO((numRows != pqCorrMatrix.numRows()) || (numCols != pqCorrMatrix.numCols()),
+                      env.rank(),
+                      "uqComputeCorrelationBetweenVectorSequences()",
+                      "inconsistent dimensions for correlation matrix");
+
+  UQ_FATAL_TEST_MACRO((localNumSamples > localPSeq.sequenceSize()) || (localNumSamples > localQSeq.sequenceSize()),
+                      env.rank(),
+                      "uqComputeCovCorrMatricesBetweenVectorSequences()",
+                      "localNumSamples is too large");
+
+  // For both P and Q vector sequences: fill them
+  P_V tmpP(localPSeq.vectorSpace().zeroVector());
+  Q_V tmpQ(localQSeq.vectorSpace().zeroVector());
+
+  // For both P and Q vector sequences: compute the unified mean
+  P_V unifiedMeanP(localPSeq.vectorSpace().zeroVector());
+  localPSeq.unifiedMean(0,localNumSamples,unifiedMeanP);
+
+  Q_V unifiedMeanQ(localQSeq.vectorSpace().zeroVector());
+  localQSeq.unifiedMean(0,localNumSamples,unifiedMeanQ);
+
+  // Compute "local" covariance matrix
+  for (unsigned i = 0; i < numRows; ++i) {
+    for (unsigned j = 0; j < numCols; ++j) {
+      pqCovMatrix(i,j) = 0.;
+    }
+  }
+  for (unsigned k = 0; k < localNumSamples; ++k) {
+    // For both P and Q vector sequences: get the difference (wrt the unified mean) in them
+    localPSeq.getPositionValues(k,tmpP);
+    tmpP -= unifiedMeanP;
+
+    localQSeq.getPositionValues(k,tmpQ);
+    tmpQ -= unifiedMeanQ;
+
+    for (unsigned i = 0; i < numRows; ++i) {
+      for (unsigned j = 0; j < numCols; ++j) {
+        pqCovMatrix(i,j) += tmpP[i]*tmpQ[j];
+      }
+    }
+  }
+
+  // For both P and Q vector sequences: compute the unified variance
+  P_V unifiedSampleVarianceP(localPSeq.vectorSpace().zeroVector());
+  localPSeq.unifiedSampleVariance(0,
+                                  localNumSamples,
+                                  unifiedMeanP,
+                                  unifiedSampleVarianceP);
+
+  Q_V unifiedSampleVarianceQ(localQSeq.vectorSpace().zeroVector());
+  localQSeq.unifiedSampleVariance(0,
+                                  localNumSamples,
+                                  unifiedMeanQ,
+                                  unifiedSampleVarianceQ);
+
+  // Compute unified covariance matrix
+  if (useOnlyInter0Comm) {
+    if (env.inter0Rank() >= 0) {
+      unsigned int unifiedNumSamples = 0;
+      int mpiRC = MPI_Allreduce((void *) &localNumSamples, (void *) &unifiedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM, env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          env.rank(),
+                          "uqComputeCovCorrMatricesBetweenVectorSequences()",
+                          "failed MPI_Allreduce() for localNumSamples");
+
+      for (unsigned i = 0; i < numRows; ++i) {
+        for (unsigned j = 0; j < numCols; ++j) {
+          double aux = 0.;
+          int mpiRC = MPI_Allreduce((void *) &pqCovMatrix(i,j), (void *) &aux, (int) 1, MPI_DOUBLE, MPI_SUM, env.inter0Comm().Comm());
+          UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                              env.rank(),
+                              "uqComputeCovCorrMatricesBetweenVectorSequences()",
+                              "failed MPI_Allreduce() for a matrix position");
+          pqCovMatrix(i,j) = aux/((double) unifiedNumSamples);
+        }
+      }
+
+      for (unsigned i = 0; i < numRows; ++i) {
+        for (unsigned j = 0; j < numCols; ++j) {
+          pqCorrMatrix(i,j) = pqCovMatrix(i,j)/sqrt(unifiedSampleVarianceP[i])/sqrt(unifiedSampleVarianceQ[j]);
+        }
+      }
+    }
+    else {
+      // Node not in the 'inter0' communicator: do nothing extra
+    }
+  }
+  else {
+    UQ_FATAL_TEST_MACRO((useOnlyInter0Comm == false),
+                        env.rank(),
+                        "uqComputeCovCorrMatricesBetweenVectorSequences()",
+                        "parallel vectors not supported yet (2)");
+  }
+
+  return;
+}
 #endif // __UQ_VECTOR_SEQUENCE_H__

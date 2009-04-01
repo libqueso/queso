@@ -41,39 +41,41 @@ uqChainStatisticalOptionsClass::uqChainStatisticalOptionsClass(
   m_prefix                  ((std::string)(prefix) + "stats_"),
   m_optionsDesc             (new po::options_description("Chain statistical options")),
   m_initialDiscardedPortions(0),//,0.),
-  m_bmmRun                  (UQ_MCMC_BMM_RUN_ODV),
+  m_bmmRun                  (UQ_CHAIN_BMM_RUN_ODV),
   m_bmmLengths              (0),//,0),
-  m_fftCompute              (UQ_MCMC_FFT_COMPUTE_ODV),
-  m_fftParamId              (UQ_MCMC_FFT_PARAM_ID_ODV),
-  m_fftSize                 (UQ_MCMC_FFT_SIZE_ODV),
-  m_fftTestInversion        (UQ_MCMC_FFT_TEST_INVERSION_ODV),
-  m_fftWrite                (UQ_MCMC_FFT_WRITE_ODV),
-  m_psdCompute              (UQ_MCMC_PSD_COMPUTE_ODV),
-  m_psdNumBlocks            (UQ_MCMC_PSD_NUM_BLOCKS_ODV),
-  m_psdHopSizeRatio         (UQ_MCMC_PSD_HOP_SIZE_RATIO_ODV),
-  m_psdParamId              (UQ_MCMC_PSD_PARAM_ID_ODV),
-  m_psdWrite                (UQ_MCMC_PSD_WRITE_ODV),
-  m_psdAtZeroCompute        (UQ_MCMC_PSD_AT_ZERO_COMPUTE_ODV),
+  m_fftCompute              (UQ_CHAIN_FFT_COMPUTE_ODV),
+  m_fftParamId              (UQ_CHAIN_FFT_PARAM_ID_ODV),
+  m_fftSize                 (UQ_CHAIN_FFT_SIZE_ODV),
+  m_fftTestInversion        (UQ_CHAIN_FFT_TEST_INVERSION_ODV),
+  m_fftWrite                (UQ_CHAIN_FFT_WRITE_ODV),
+  m_psdCompute              (UQ_CHAIN_PSD_COMPUTE_ODV),
+  m_psdNumBlocks            (UQ_CHAIN_PSD_NUM_BLOCKS_ODV),
+  m_psdHopSizeRatio         (UQ_CHAIN_PSD_HOP_SIZE_RATIO_ODV),
+  m_psdParamId              (UQ_CHAIN_PSD_PARAM_ID_ODV),
+  m_psdWrite                (UQ_CHAIN_PSD_WRITE_ODV),
+  m_psdAtZeroCompute        (UQ_CHAIN_PSD_AT_ZERO_COMPUTE_ODV),
   m_psdAtZeroNumBlocks      (0),//,0),
-  m_psdAtZeroHopSizeRatio   (UQ_MCMC_PSD_AT_ZERO_HOP_SIZE_RATIO_ODV),
-  m_psdAtZeroDisplay        (UQ_MCMC_PSD_AT_ZERO_DISPLAY_ODV),
-  m_psdAtZeroWrite          (UQ_MCMC_PSD_AT_ZERO_WRITE_ODV),
-  m_gewekeCompute           (UQ_MCMC_GEWEKE_COMPUTE_ODV),
-  m_gewekeNaRatio           (UQ_MCMC_GEWEKE_NA_RATIO_ODV),
-  m_gewekeNbRatio           (UQ_MCMC_GEWEKE_NB_RATIO_ODV),
-  m_gewekeDisplay           (UQ_MCMC_GEWEKE_DISPLAY_ODV),
-  m_gewekeWrite             (UQ_MCMC_GEWEKE_WRITE_ODV),
-  m_autoCorrComputeViaDef   (UQ_MCMC_AUTO_CORR_COMPUTE_VIA_DEF_ODV),
-  m_autoCorrComputeViaFft   (UQ_MCMC_AUTO_CORR_COMPUTE_VIA_FFT_ODV),
-  m_autoCorrSecondLag       (UQ_MCMC_AUTO_CORR_SECOND_LAG_ODV),
-  m_autoCorrLagSpacing      (UQ_MCMC_AUTO_CORR_LAG_SPACING_ODV),
-  m_autoCorrNumLags         (UQ_MCMC_AUTO_CORR_NUM_LAGS_ODV),
-  m_autoCorrDisplay         (UQ_MCMC_AUTO_CORR_DISPLAY_ODV),
-  m_autoCorrWrite           (UQ_MCMC_AUTO_CORR_WRITE_ODV),
-  m_histCompute             (UQ_MCMC_HIST_COMPUTE_ODV),
-  m_histNumInternalBins     (UQ_MCMC_HIST_NUM_INTERNAL_BINS_ODV),
-  m_kdeCompute              (UQ_MCMC_KDE_COMPUTE_ODV),
-  m_kdeNumEvalPositions     (UQ_MCMC_KDE_NUM_EVAL_POSITIONS_ODV)
+  m_psdAtZeroHopSizeRatio   (UQ_CHAIN_PSD_AT_ZERO_HOP_SIZE_RATIO_ODV),
+  m_psdAtZeroDisplay        (UQ_CHAIN_PSD_AT_ZERO_DISPLAY_ODV),
+  m_psdAtZeroWrite          (UQ_CHAIN_PSD_AT_ZERO_WRITE_ODV),
+  m_gewekeCompute           (UQ_CHAIN_GEWEKE_COMPUTE_ODV),
+  m_gewekeNaRatio           (UQ_CHAIN_GEWEKE_NA_RATIO_ODV),
+  m_gewekeNbRatio           (UQ_CHAIN_GEWEKE_NB_RATIO_ODV),
+  m_gewekeDisplay           (UQ_CHAIN_GEWEKE_DISPLAY_ODV),
+  m_gewekeWrite             (UQ_CHAIN_GEWEKE_WRITE_ODV),
+  m_autoCorrComputeViaDef   (UQ_CHAIN_AUTO_CORR_COMPUTE_VIA_DEF_ODV),
+  m_autoCorrComputeViaFft   (UQ_CHAIN_AUTO_CORR_COMPUTE_VIA_FFT_ODV),
+  m_autoCorrSecondLag       (UQ_CHAIN_AUTO_CORR_SECOND_LAG_ODV),
+  m_autoCorrLagSpacing      (UQ_CHAIN_AUTO_CORR_LAG_SPACING_ODV),
+  m_autoCorrNumLags         (UQ_CHAIN_AUTO_CORR_NUM_LAGS_ODV),
+  m_autoCorrDisplay         (UQ_CHAIN_AUTO_CORR_DISPLAY_ODV),
+  m_autoCorrWrite           (UQ_CHAIN_AUTO_CORR_WRITE_ODV),
+  m_histCompute             (UQ_CHAIN_HIST_COMPUTE_ODV),
+  m_histNumInternalBins     (UQ_CHAIN_HIST_NUM_INTERNAL_BINS_ODV),
+  m_kdeCompute              (UQ_CHAIN_KDE_COMPUTE_ODV),
+  m_kdeNumEvalPositions     (UQ_CHAIN_KDE_NUM_EVAL_POSITIONS_ODV),
+  m_covMatrixCompute        (UQ_CHAIN_COV_MATRIX_COMPUTE_ODV),
+  m_corrMatrixCompute       (UQ_CHAIN_CORR_MATRIX_COMPUTE_ODV)
 {
   if (m_env.subScreenFile()) {
     *m_env.subScreenFile() << "Entering uqChainStatisticalOptions::constructor()"
@@ -128,6 +130,9 @@ uqChainStatisticalOptionsClass::uqChainStatisticalOptionsClass(
   m_option_kde_compute              = m_prefix + "kde_compute";
   m_option_kde_numEvalPositions     = m_prefix + "kde_numEvalPositions";
 
+  m_option_covMatrix_compute        = m_prefix + "covMatrix_compute";
+  m_option_corrMatrix_compute       = m_prefix + "corrMatrix_compute";
+
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
@@ -156,41 +161,43 @@ uqChainStatisticalOptionsClass::defineMyOptions(
   po::options_description& optionsDesc) const
 {
   optionsDesc.add_options()
-    (m_option_help.c_str(),                                                                                                                   "produce help message for chain statistical options"             )
-    (m_option_initialDiscardedPortions.c_str(),       po::value<std::string >()->default_value(UQ_MCMC_INITIAL_DISCARDED_PORTIONS_ODV),       "list of initial discarded portions for chain statistics"        )
-    (m_option_bmm_run.c_str(),                        po::value<bool        >()->default_value(UQ_MCMC_BMM_RUN_ODV                         ), "compute variance of sample mean with batch means method"        )
-    (m_option_bmm_lengths.c_str(),                    po::value<std::string >()->default_value(UQ_MCMC_BMM_LENGTHS_ODV                     ), "list of batch lenghts for BMM"                                  )
-    (m_option_fft_compute.c_str(),                    po::value<bool        >()->default_value(UQ_MCMC_FFT_COMPUTE_ODV                     ), "compute fft"                                                    )
-    (m_option_fft_paramId.c_str(),                    po::value<unsigned int>()->default_value(UQ_MCMC_FFT_PARAM_ID_ODV                    ), "parameter id for fft computations"                              )
-    (m_option_fft_size.c_str(),                       po::value<unsigned int>()->default_value(UQ_MCMC_FFT_SIZE_ODV                        ), "fft size"                                                       )
-    (m_option_fft_testInversion.c_str(),              po::value<bool        >()->default_value(UQ_MCMC_FFT_TEST_INVERSION_ODV              ), "test fft inversion"                                             )
-    (m_option_fft_write.c_str(),                      po::value<bool        >()->default_value(UQ_MCMC_FFT_WRITE_ODV                       ), "write fft"                                                      )
-    (m_option_psd_compute.c_str(),                    po::value<bool        >()->default_value(UQ_MCMC_PSD_COMPUTE_ODV                     ), "compute psd"                                                    )
-    (m_option_psd_numBlocks.c_str(),                  po::value<unsigned int>()->default_value(UQ_MCMC_PSD_NUM_BLOCKS_ODV                  ), "number of blocks for psd"                                       )
-    (m_option_psd_hopSizeRatio.c_str(),               po::value<double      >()->default_value(UQ_MCMC_PSD_HOP_SIZE_RATIO_ODV              ), "hop size ratio for psd"                                         )
-    (m_option_psd_paramId.c_str(),                    po::value<unsigned int>()->default_value(UQ_MCMC_PSD_PARAM_ID_ODV                    ), "parameter id for psd computations"                              )
-    (m_option_psd_write.c_str(),                      po::value<bool        >()->default_value(UQ_MCMC_PSD_WRITE_ODV                       ), "write psd"                                                      )
-    (m_option_psdAtZero_compute.c_str(),              po::value<bool        >()->default_value(UQ_MCMC_PSD_AT_ZERO_COMPUTE_ODV             ), "compute power spectral densities"                               )
-    (m_option_psdAtZero_numBlocks.c_str(),            po::value<std::string >()->default_value(UQ_MCMC_PSD_AT_ZERO_NUM_BLOCKS_ODV          ), "list of numbers of blocks for computation of psd at zero"       )
-    (m_option_psdAtZero_hopSizeRatio.c_str(),         po::value<double      >()->default_value(UQ_MCMC_PSD_AT_ZERO_HOP_SIZE_RATIO_ODV      ), "hop size ratio for psd at zero"                                 )
-    (m_option_psdAtZero_display.c_str(),              po::value<bool        >()->default_value(UQ_MCMC_PSD_AT_ZERO_DISPLAY_ODV             ), "display computed psd at frequency zero on screen"               )
-    (m_option_psdAtZero_write.c_str(),                po::value<bool        >()->default_value(UQ_MCMC_PSD_AT_ZERO_WRITE_ODV               ), "write computed psd at frequency zero to the output file"        )
-    (m_option_geweke_compute.c_str(),                 po::value<bool        >()->default_value(UQ_MCMC_GEWEKE_COMPUTE_ODV                  ), "compute Geweke coefficients"                                    )
-    (m_option_geweke_naRatio.c_str(),                 po::value<double      >()->default_value(UQ_MCMC_GEWEKE_NA_RATIO_ODV                 ), "ratio NA for Geweke"                                            ) 
-    (m_option_geweke_nbRatio.c_str(),                 po::value<double      >()->default_value(UQ_MCMC_GEWEKE_NB_RATIO_ODV                 ), "ratio NB for Geweke"                                            )
-    (m_option_geweke_display.c_str(),                 po::value<bool        >()->default_value(UQ_MCMC_GEWEKE_DISPLAY_ODV                  ), "display computed Geweke on screen"                              )
-    (m_option_geweke_write.c_str(),                   po::value<bool        >()->default_value(UQ_MCMC_GEWEKE_WRITE_ODV                    ), "write computed Geweke to the output file"                       )
-    (m_option_autoCorr_computeViaDef.c_str(),         po::value<bool        >()->default_value(UQ_MCMC_AUTO_CORR_COMPUTE_VIA_DEF_ODV       ), "compute correlations via definition"                            )
-    (m_option_autoCorr_computeViaFft.c_str(),         po::value<bool        >()->default_value(UQ_MCMC_AUTO_CORR_COMPUTE_VIA_FFT_ODV       ), "compute correlations via fft"                                   )
-    (m_option_autoCorr_secondLag.c_str(),             po::value<unsigned int>()->default_value(UQ_MCMC_AUTO_CORR_SECOND_LAG_ODV            ), "second lag for computation of autocorrelations"                 )
-    (m_option_autoCorr_lagSpacing.c_str(),            po::value<unsigned int>()->default_value(UQ_MCMC_AUTO_CORR_LAG_SPACING_ODV           ), "lag spacing for computation of autocorrelations"                )
-    (m_option_autoCorr_numLags.c_str(),               po::value<unsigned int>()->default_value(UQ_MCMC_AUTO_CORR_NUM_LAGS_ODV              ), "number of lags for computation of autocorrelations"             )
-    (m_option_autoCorr_display.c_str(),               po::value<bool        >()->default_value(UQ_MCMC_AUTO_CORR_DISPLAY_ODV               ), "display computed autocorrelations on the screen"                )
-    (m_option_autoCorr_write.c_str(),                 po::value<bool        >()->default_value(UQ_MCMC_AUTO_CORR_WRITE_ODV                 ), "write computed autocorrelations to the output file"             )
-    (m_option_hist_compute.c_str(),                   po::value<bool        >()->default_value(UQ_MCMC_HIST_COMPUTE_ODV                    ), "compute histograms"                                             )
-    (m_option_hist_numInternalBins.c_str(),           po::value<unsigned int>()->default_value(UQ_MCMC_HIST_NUM_INTERNAL_BINS_ODV          ), "number of internal bins"                                        )
-    (m_option_kde_compute.c_str(),                    po::value<bool        >()->default_value(UQ_MCMC_KDE_COMPUTE_ODV                     ), "compute kernel density estimators"                              )
-    (m_option_kde_numEvalPositions.c_str(),           po::value<unsigned int>()->default_value(UQ_MCMC_KDE_NUM_EVAL_POSITIONS_ODV          ), "number of evaluation positions"                                 )
+    (m_option_help.c_str(),                                                                                                                    "produce help message for chain statistical options"             )
+    (m_option_initialDiscardedPortions.c_str(),       po::value<std::string >()->default_value(UQ_CHAIN_INITIAL_DISCARDED_PORTIONS_ODV      ), "list of initial discarded portions for chain statistics"        )
+    (m_option_bmm_run.c_str(),                        po::value<bool        >()->default_value(UQ_CHAIN_BMM_RUN_ODV                         ), "compute variance of sample mean with batch means method"        )
+    (m_option_bmm_lengths.c_str(),                    po::value<std::string >()->default_value(UQ_CHAIN_BMM_LENGTHS_ODV                     ), "list of batch lenghts for BMM"                                  )
+    (m_option_fft_compute.c_str(),                    po::value<bool        >()->default_value(UQ_CHAIN_FFT_COMPUTE_ODV                     ), "compute fft"                                                    )
+    (m_option_fft_paramId.c_str(),                    po::value<unsigned int>()->default_value(UQ_CHAIN_FFT_PARAM_ID_ODV                    ), "parameter id for fft computations"                              )
+    (m_option_fft_size.c_str(),                       po::value<unsigned int>()->default_value(UQ_CHAIN_FFT_SIZE_ODV                        ), "fft size"                                                       )
+    (m_option_fft_testInversion.c_str(),              po::value<bool        >()->default_value(UQ_CHAIN_FFT_TEST_INVERSION_ODV              ), "test fft inversion"                                             )
+    (m_option_fft_write.c_str(),                      po::value<bool        >()->default_value(UQ_CHAIN_FFT_WRITE_ODV                       ), "write fft"                                                      )
+    (m_option_psd_compute.c_str(),                    po::value<bool        >()->default_value(UQ_CHAIN_PSD_COMPUTE_ODV                     ), "compute psd"                                                    )
+    (m_option_psd_numBlocks.c_str(),                  po::value<unsigned int>()->default_value(UQ_CHAIN_PSD_NUM_BLOCKS_ODV                  ), "number of blocks for psd"                                       )
+    (m_option_psd_hopSizeRatio.c_str(),               po::value<double      >()->default_value(UQ_CHAIN_PSD_HOP_SIZE_RATIO_ODV              ), "hop size ratio for psd"                                         )
+    (m_option_psd_paramId.c_str(),                    po::value<unsigned int>()->default_value(UQ_CHAIN_PSD_PARAM_ID_ODV                    ), "parameter id for psd computations"                              )
+    (m_option_psd_write.c_str(),                      po::value<bool        >()->default_value(UQ_CHAIN_PSD_WRITE_ODV                       ), "write psd"                                                      )
+    (m_option_psdAtZero_compute.c_str(),              po::value<bool        >()->default_value(UQ_CHAIN_PSD_AT_ZERO_COMPUTE_ODV             ), "compute power spectral densities"                               )
+    (m_option_psdAtZero_numBlocks.c_str(),            po::value<std::string >()->default_value(UQ_CHAIN_PSD_AT_ZERO_NUM_BLOCKS_ODV          ), "list of numbers of blocks for computation of psd at zero"       )
+    (m_option_psdAtZero_hopSizeRatio.c_str(),         po::value<double      >()->default_value(UQ_CHAIN_PSD_AT_ZERO_HOP_SIZE_RATIO_ODV      ), "hop size ratio for psd at zero"                                 )
+    (m_option_psdAtZero_display.c_str(),              po::value<bool        >()->default_value(UQ_CHAIN_PSD_AT_ZERO_DISPLAY_ODV             ), "display computed psd at frequency zero on screen"               )
+    (m_option_psdAtZero_write.c_str(),                po::value<bool        >()->default_value(UQ_CHAIN_PSD_AT_ZERO_WRITE_ODV               ), "write computed psd at frequency zero to the output file"        )
+    (m_option_geweke_compute.c_str(),                 po::value<bool        >()->default_value(UQ_CHAIN_GEWEKE_COMPUTE_ODV                  ), "compute Geweke coefficients"                                    )
+    (m_option_geweke_naRatio.c_str(),                 po::value<double      >()->default_value(UQ_CHAIN_GEWEKE_NA_RATIO_ODV                 ), "ratio NA for Geweke"                                            ) 
+    (m_option_geweke_nbRatio.c_str(),                 po::value<double      >()->default_value(UQ_CHAIN_GEWEKE_NB_RATIO_ODV                 ), "ratio NB for Geweke"                                            )
+    (m_option_geweke_display.c_str(),                 po::value<bool        >()->default_value(UQ_CHAIN_GEWEKE_DISPLAY_ODV                  ), "display computed Geweke on screen"                              )
+    (m_option_geweke_write.c_str(),                   po::value<bool        >()->default_value(UQ_CHAIN_GEWEKE_WRITE_ODV                    ), "write computed Geweke to the output file"                       )
+    (m_option_autoCorr_computeViaDef.c_str(),         po::value<bool        >()->default_value(UQ_CHAIN_AUTO_CORR_COMPUTE_VIA_DEF_ODV       ), "compute correlations via definition"                            )
+    (m_option_autoCorr_computeViaFft.c_str(),         po::value<bool        >()->default_value(UQ_CHAIN_AUTO_CORR_COMPUTE_VIA_FFT_ODV       ), "compute correlations via fft"                                   )
+    (m_option_autoCorr_secondLag.c_str(),             po::value<unsigned int>()->default_value(UQ_CHAIN_AUTO_CORR_SECOND_LAG_ODV            ), "second lag for computation of autocorrelations"                 )
+    (m_option_autoCorr_lagSpacing.c_str(),            po::value<unsigned int>()->default_value(UQ_CHAIN_AUTO_CORR_LAG_SPACING_ODV           ), "lag spacing for computation of autocorrelations"                )
+    (m_option_autoCorr_numLags.c_str(),               po::value<unsigned int>()->default_value(UQ_CHAIN_AUTO_CORR_NUM_LAGS_ODV              ), "number of lags for computation of autocorrelations"             )
+    (m_option_autoCorr_display.c_str(),               po::value<bool        >()->default_value(UQ_CHAIN_AUTO_CORR_DISPLAY_ODV               ), "display computed autocorrelations on the screen"                )
+    (m_option_autoCorr_write.c_str(),                 po::value<bool        >()->default_value(UQ_CHAIN_AUTO_CORR_WRITE_ODV                 ), "write computed autocorrelations to the output file"             )
+    (m_option_hist_compute.c_str(),                   po::value<bool        >()->default_value(UQ_CHAIN_HIST_COMPUTE_ODV                    ), "compute histograms"                                             )
+    (m_option_hist_numInternalBins.c_str(),           po::value<unsigned int>()->default_value(UQ_CHAIN_HIST_NUM_INTERNAL_BINS_ODV          ), "number of internal bins"                                        )
+    (m_option_kde_compute.c_str(),                    po::value<bool        >()->default_value(UQ_CHAIN_KDE_COMPUTE_ODV                     ), "compute kernel density estimators"                              )
+    (m_option_kde_numEvalPositions.c_str(),           po::value<unsigned int>()->default_value(UQ_CHAIN_KDE_NUM_EVAL_POSITIONS_ODV          ), "number of evaluation positions"                                 )
+    (m_option_covMatrix_compute.c_str(),              po::value<bool        >()->default_value(UQ_CHAIN_COV_MATRIX_COMPUTE_ODV              ), "compute covariance matrix"                                      )
+    (m_option_corrMatrix_compute.c_str(),             po::value<bool        >()->default_value(UQ_CHAIN_CORR_MATRIX_COMPUTE_ODV             ), "compute correlation matrix"                                     )
   ;
 
   return;
@@ -392,6 +399,14 @@ uqChainStatisticalOptionsClass::getMyOptionValues(
 
   if (m_env.allOptionsMap().count(m_option_kde_numEvalPositions.c_str())) {
     m_kdeNumEvalPositions = m_env.allOptionsMap()[m_option_kde_numEvalPositions.c_str()].as<unsigned int>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_covMatrix_compute.c_str())) {
+    m_covMatrixCompute = m_env.allOptionsMap()[m_option_covMatrix_compute.c_str()].as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_corrMatrix_compute.c_str())) {
+    m_corrMatrixCompute = m_env.allOptionsMap()[m_option_corrMatrix_compute.c_str()].as<bool>();
   }
 
   return;
@@ -613,6 +628,18 @@ uqChainStatisticalOptionsClass::kdeNumEvalPositions() const
   return m_kdeNumEvalPositions;
 }
 
+bool
+uqChainStatisticalOptionsClass::covMatrixCompute() const
+{
+  return m_covMatrixCompute;
+}
+
+bool
+uqChainStatisticalOptionsClass::corrMatrixCompute() const
+{
+  return m_corrMatrixCompute;
+}
+
 void
 uqChainStatisticalOptionsClass::print(std::ostream& os) const
 {
@@ -659,6 +686,8 @@ uqChainStatisticalOptionsClass::print(std::ostream& os) const
      << "\n" << m_option_hist_numInternalBins   << " = " << m_histNumInternalBins
      << "\n" << m_option_kde_compute            << " = " << m_kdeCompute
      << "\n" << m_option_kde_numEvalPositions   << " = " << m_kdeNumEvalPositions
+     << "\n" << m_option_covMatrix_compute      << " = " << m_covMatrixCompute
+     << "\n" << m_option_corrMatrix_compute     << " = " << m_corrMatrixCompute
      << std::endl;
 
   return;

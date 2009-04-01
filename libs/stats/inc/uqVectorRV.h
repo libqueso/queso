@@ -584,91 +584,11 @@ uqComputeCovCorrMatricesBetweenVectorRvs(
     localWorkingQSeq.setPositionValues(k,tmpQ);
   }
 
-  // For both P and Q vector sequences: compute the unified mean
-  P_V unifiedMeanP(paramRv.imageSet().vectorSpace().zeroVector());
-  localWorkingPSeq.unifiedMean(0,localNumSamples,unifiedMeanP);
-
-  Q_V unifiedMeanQ(qoiRv.imageSet().vectorSpace().zeroVector());
-  localWorkingQSeq.unifiedMean(0,localNumSamples,unifiedMeanQ);
-
-  // For both P and Q vector sequences: store the difference (wrt the unified mean) in them
-  for (unsigned int k = 0; k < localNumSamples; ++k) {
-    localWorkingPSeq.getPositionValues(k,tmpP);
-    tmpP -= unifiedMeanP;
-    localWorkingPSeq.setPositionValues(k,tmpP);
-
-    localWorkingQSeq.getPositionValues(k,tmpQ);
-    tmpQ -= unifiedMeanQ;
-    localWorkingQSeq.setPositionValues(k,tmpQ);
-  }
-
-  // Compute "local" covariance matrix
-  for (unsigned i = 0; i < numRows; ++i) {
-    for (unsigned j = 0; j < numCols; ++j) {
-      pqCovMatrix(i,j) = 0.;
-    }
-  }
-  for (unsigned k = 0; k < localNumSamples; ++k) {
-    localWorkingPSeq.getPositionValues(k,tmpP);
-    localWorkingQSeq.getPositionValues(k,tmpQ);
-    for (unsigned i = 0; i < numRows; ++i) {
-      for (unsigned j = 0; j < numCols; ++j) {
-        pqCovMatrix(i,j) += tmpP[i]*tmpQ[j];
-      }
-    }
-  }
-
-  // For both P and Q vector sequences: compute the unified variance
-  P_V unifiedSampleVarianceP(paramRv.imageSet().vectorSpace().zeroVector());
-  localWorkingPSeq.unifiedSampleVariance(0,
-                                         localNumSamples,
-                                         unifiedMeanP,
-                                         unifiedSampleVarianceP);
-
-  Q_V unifiedSampleVarianceQ(qoiRv.imageSet().vectorSpace().zeroVector());
-  localWorkingQSeq.unifiedSampleVariance(0,
-                                         localNumSamples,
-                                         unifiedMeanQ,
-                                         unifiedSampleVarianceQ);
-
-  // Compute unified covariance matrix
-  if (useOnlyInter0Comm) {
-    if (env.inter0Rank() >= 0) {
-      unsigned int unifiedNumSamples = 0;
-      int mpiRC = MPI_Allreduce((void *) &localNumSamples, (void *) &unifiedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM, env.inter0Comm().Comm());
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          env.rank(),
-                          "uqComputeCovCorrMatricesBetweenVectorRvs()",
-                          "failed MPI_Allreduce() for localNumSamples");
-
-      for (unsigned i = 0; i < numRows; ++i) {
-        for (unsigned j = 0; j < numCols; ++j) {
-          double aux = 0.;
-          int mpiRC = MPI_Allreduce((void *) &pqCovMatrix(i,j), (void *) &aux, (int) 1, MPI_DOUBLE, MPI_SUM, env.inter0Comm().Comm());
-          UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                              env.rank(),
-                              "uqComputeCovCorrMatricesBetweenVectorRvs()",
-                              "failed MPI_Allreduce() for a matrix position");
-          pqCovMatrix(i,j) = aux/((double) unifiedNumSamples);
-        }
-      }
-
-      for (unsigned i = 0; i < numRows; ++i) {
-        for (unsigned j = 0; j < numCols; ++j) {
-          pqCorrMatrix(i,j) = pqCovMatrix(i,j)/sqrt(unifiedSampleVarianceP[i])/sqrt(unifiedSampleVarianceQ[j]);
-        }
-      }
-    }
-    else {
-      // Node not in the 'inter0' communicator: do nothing extra
-    }
-  }
-  else {
-    UQ_FATAL_TEST_MACRO((useOnlyInter0Comm == false),
-                        env.rank(),
-                        "uqComputeCovCorrMatricesBetweenVectorRvs()",
-                        "parallel vectors not supported yet (2)");
-  }
+  uqComputeCovCorrMatricesBetweenVectorSequences(localWorkingPSeq,
+                                                 localWorkingQSeq,
+                                                 localNumSamples,
+                                                 pqCovMatrix,
+                                                 pqCorrMatrix);
 
   return;
 }

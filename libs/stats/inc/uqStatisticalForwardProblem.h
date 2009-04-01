@@ -438,20 +438,15 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
 
   // Write data out
   if (m_env.subScreenFile()) {
-    if (m_env.subScreenFile()) {
-      *m_env.subScreenFile() << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
-                             << ", prefix = "               << m_prefix
-                             << ": pointers pqCovMatrix = " << pqCovarianceMatrix
-                             << " and pqCorrMatrix = "      << pqCorrelationMatrix
-                             << std::endl;
-    }
     if (pqCovarianceMatrix ) {
       *m_env.subScreenFile() << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
+                             << ", prefix = "                           << m_prefix
                              << ": contents of covariance matrix are\n" << *pqCovarianceMatrix
                              << std::endl;
     }
     if (pqCorrelationMatrix) {
       *m_env.subScreenFile() << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
+                             << ", prefix = "                            << m_prefix
                              << ": contents of correlation matrix are\n" << *pqCorrelationMatrix
                              << std::endl;
     }

@@ -87,6 +87,8 @@ cycle_cal_ip_mc_rawChain_stats_hist_compute             = 0
 cycle_cal_ip_mc_rawChain_stats_hist_numInternalBins     = 250
 cycle_cal_ip_mc_rawChain_stats_kde_compute              = 0
 cycle_cal_ip_mc_rawChain_stats_kde_numEvalPositions     = 250
+cycle_cal_ip_mc_rawChain_stats_covMatrix_compute        = 1
+cycle_cal_ip_mc_rawChain_stats_corrMatrix_compute       = 1
 
 #cycle_cal_ip_mc_filteredChain_stats_help                     = anything
 cycle_cal_ip_mc_filteredChain_stats_initialDiscardedPortions = 0.
@@ -123,6 +125,8 @@ cycle_cal_ip_mc_filteredChain_stats_hist_compute             = 1
 cycle_cal_ip_mc_filteredChain_stats_hist_numInternalBins     = 250
 cycle_cal_ip_mc_filteredChain_stats_kde_compute              = 1
 cycle_cal_ip_mc_filteredChain_stats_kde_numEvalPositions     = 250
+cycle_cal_ip_mc_filteredChain_stats_covMatrix_compute        = 1
+cycle_cal_ip_mc_filteredChain_stats_corrMatrix_compute       = 1
 
 ###############################################
 # Calibration (cal) stage: statistical forward problem (fp)
@@ -146,7 +150,16 @@ cycle_cal_fp_mc_outputAllow    = 0 1
 
 cycle_cal_fp_mc_pseq_outputFileName  = .
 cycle_cal_fp_mc_pseq_outputAllow     = 0 1
-cycle_cal_fp_mc_pseq_computeStats    = 0
+cycle_cal_fp_mc_pseq_computeStats    = 1
+
+#cycle_cal_fp_mc_pseq_stats_help                     = anything
+cycle_cal_fp_mc_pseq_stats_initialDiscardedPortions = 0.
+cycle_cal_fp_mc_pseq_stats_hist_compute             = 1
+cycle_cal_fp_mc_pseq_stats_hist_numInternalBins     = 250
+cycle_cal_fp_mc_pseq_stats_kde_compute              = 1
+cycle_cal_fp_mc_pseq_stats_kde_numEvalPositions     = 250
+cycle_cal_fp_mc_pseq_stats_covMatrix_compute        = 1
+cycle_cal_fp_mc_pseq_stats_corrMatrix_compute       = 1
 
 cycle_cal_fp_mc_qseq_size            = 1048576
 cycle_cal_fp_mc_qseq_displayPeriod   = 20000
@@ -190,6 +203,8 @@ cycle_cal_fp_mc_qseq_stats_hist_compute             = 1
 cycle_cal_fp_mc_qseq_stats_hist_numInternalBins     = 250
 cycle_cal_fp_mc_qseq_stats_kde_compute              = 1
 cycle_cal_fp_mc_qseq_stats_kde_numEvalPositions     = 250
+cycle_cal_fp_mc_qseq_stats_covMatrix_compute        = 1
+cycle_cal_fp_mc_qseq_stats_corrMatrix_compute       = 1
 
 ###############################################
 # Validation (val) stage: statistical inverse problem (ip)
@@ -269,6 +284,8 @@ cycle_val_ip_mc_rawChain_stats_hist_compute             = 0
 cycle_val_ip_mc_rawChain_stats_hist_numInternalBins     = 250
 cycle_val_ip_mc_rawChain_stats_kde_compute              = 0
 cycle_val_ip_mc_rawChain_stats_kde_numEvalPositions     = 250
+cycle_val_ip_mc_rawChain_stats_covMatrix_compute        = 1
+cycle_val_ip_mc_rawChain_stats_corrMatrix_compute       = 1
 
 #cycle_val_ip_mc_filteredChain_stats_help                     = anything
 cycle_val_ip_mc_filteredChain_stats_initialDiscardedPortions = 0.
@@ -305,6 +322,8 @@ cycle_val_ip_mc_filteredChain_stats_hist_compute             = 1
 cycle_val_ip_mc_filteredChain_stats_hist_numInternalBins     = 250
 cycle_val_ip_mc_filteredChain_stats_kde_compute              = 1
 cycle_val_ip_mc_filteredChain_stats_kde_numEvalPositions     = 250
+cycle_val_ip_mc_filteredChain_stats_covMatrix_compute        = 1
+cycle_val_ip_mc_filteredChain_stats_corrMatrix_compute       = 1
 
 ###############################################
 # Validation (val) stage: statistical forward problem (fp)
@@ -326,9 +345,18 @@ cycle_val_fp_mc_help           = anything
 cycle_val_fp_mc_outputFileName = outputData/tgaValOutput
 cycle_val_fp_mc_outputAllow    = 0 1
 
-cycle_val_fp_mc_pseq_outputFileName  = .
-cycle_val_fp_mc_pseq_outputAllow     = 0 1
-cycle_val_fp_mc_pseq_computeStats    = 0
+cycle_val_fp_mc_pseq_outputFileName = .
+cycle_val_fp_mc_pseq_outputAllow    = 0 1
+cycle_val_fp_mc_pseq_computeStats   = 1
+
+#cycle_val_fp_mc_pseq_stats_help                     = anything
+cycle_val_fp_mc_pseq_stats_initialDiscardedPortions = 0.
+cycle_val_fp_mc_pseq_stats_hist_compute             = 1
+cycle_val_fp_mc_pseq_stats_hist_numInternalBins     = 250
+cycle_val_fp_mc_pseq_stats_kde_compute              = 1
+cycle_val_fp_mc_pseq_stats_kde_numEvalPositions     = 250
+cycle_val_fp_mc_pseq_stats_covMatrix_compute        = 1
+cycle_val_fp_mc_pseq_stats_corrMatrix_compute       = 1
 
 cycle_val_fp_mc_qseq_size            = 1048576
 cycle_val_fp_mc_qseq_displayPeriod   = 20000
@@ -372,3 +400,5 @@ cycle_val_fp_mc_qseq_stats_hist_compute             = 1
 cycle_val_fp_mc_qseq_stats_hist_numInternalBins     = 250
 cycle_val_fp_mc_qseq_stats_kde_compute              = 1
 cycle_val_fp_mc_qseq_stats_kde_numEvalPositions     = 250
+cycle_val_fp_mc_qseq_stats_covMatrix_compute        = 1
+cycle_val_fp_mc_qseq_stats_corrMatrix_compute       = 1
