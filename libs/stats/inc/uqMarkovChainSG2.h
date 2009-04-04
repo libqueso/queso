@@ -142,11 +142,12 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
   }
 
   // Take "unified" care of raw chain
+#if 0
   std::ofstream* unifiedRawChainOfsVar = NULL;
   m_env.openUnifiedOutputFile(m_rawChainOutputFileName,
                               "hdf",
                               true,
-                              rawChainOfsVar);
+                              unifiedRawChainOfsVar);
 
   if (unifiedRawChainOfsVar) {
     workingChain.printUnifiedContents(*unifiedRawChainOfsVar);
@@ -162,6 +163,18 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
                              << std::endl;
     }
   }
+#else
+  if (m_rawChainOutputFileName != ".") {
+    workingChain.printUnifiedContents(m_rawChainOutputFileName);
+    if (m_env.subScreenFile()) {
+      *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
+                             << ", prefix = "                    << m_prefix
+                             << ": closed unified output file '" << m_rawChainOutputFileName
+                             << "' for raw chain "               << workingChain.name()
+                             << std::endl;
+    }
+  }
+#endif
 
   // Take case of other aspects of raw chain
   if (genericOfsVar) {
@@ -268,11 +281,12 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
     }
 
     // Take "unified" care of filtered chain
+#if 0
     std::ofstream* unifiedFilteredChainOfsVar = NULL;
     m_env.openUnifiedOutputFile(m_filteredChainOutputFileName,
                                 "hdf",
                                 true,
-                                filteredChainOfsVar);
+                                unifiedFilteredChainOfsVar);
 
     if (unifiedFilteredChainOfsVar) {
       workingChain.printUnifiedContents(*unifiedFilteredChainOfsVar);
@@ -288,6 +302,18 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
                                << std::endl;
       }
     }
+#else
+    if (m_filteredChainOutputFileName != ".") {
+      workingChain.printUnifiedContents(m_filteredChainOutputFileName);
+      if (m_env.subScreenFile()) {
+        *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
+                               << ", prefix = "                    << m_prefix
+                               << ": closed unified output file '" << m_filteredChainOutputFileName
+                               << "' for filtered chain "          << workingChain.name()
+                               << std::endl;
+      }
+    }
+#endif
 
     // Compute statistics
     if (m_filteredChainComputeStats) {

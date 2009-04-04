@@ -176,6 +176,7 @@ public:
                                                                std::vector<V*>&                      unifiedDensityVecs) const = 0;
   virtual  void                     printContents             (std::ofstream&                        ofsvar) const = 0;
   virtual  void                     printUnifiedContents      (std::ofstream&                        ofsvar) const = 0;
+  virtual  void                     printUnifiedContents      (const std::string&                    fileName) const = 0;
   virtual  void                     select                    (const std::vector<unsigned int>&      idsOfUniquePositions) = 0;
   virtual  void                     filter                    (unsigned int                          initialPos,
                                                                unsigned int                          spacing) = 0;

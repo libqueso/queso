@@ -165,6 +165,7 @@ public:
                                                 std::vector<V*>&                    unifiedDensityVecs) const;
         void         printContents             (std::ofstream&                      ofsvar) const;
         void         printUnifiedContents      (std::ofstream&                      ofsvar) const;
+        void         printUnifiedContents      (const std::string&                  fileName) const;
         void         select                    (const std::vector<unsigned int>&    idsOfUniquePositions);
         void         filter                    (unsigned int                        initialPos,
                                                 unsigned int                        spacing);
@@ -1564,8 +1565,76 @@ uqSequenceOfVectorsClass<V,M>::printUnifiedContents(std::ofstream& ofsvar) const
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.rank(),
+                      "uqSequenceOfVectorsClass<V,M>::printUnifiedContents(1)",
+                      "not implemented yet");
+  return;
+}
+
+template <class V, class M>
+void
+uqSequenceOfVectorsClass<V,M>::printUnifiedContents(const std::string& fileName) const
+{
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.rank(),
                       "uqSequenceOfVectorsClass<V,M>::printUnifiedContents()",
                       "not implemented yet");
+
+  m_env.fullComm().Barrier();
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Entering uqSequenceOfVectorsClass<V,M>::printUnifiedContents()"
+                           << std::endl;
+  }
+
+  if (m_env.inter0Rank() >= 0) {
+    for (unsigned int r = 0; r < m_env.inter0Comm().NumProc(); ++r) {
+      if (m_env.inter0Rank() == r) {
+        // My turn
+        std::ofstream* unifiedOfsVar = NULL;
+        bool writeOver = (r == 0);
+        m_env.openUnifiedOutputFile(fileName,
+                                    "hdf",
+                                    writeOver,
+                                    unifiedOfsVar);
+
+        if (r == 0) {
+          *unifiedOfsVar << m_name << "_unified" << m_env.subIdString() << " = zeros(" << this->sequenceSize()
+                         << ","                                                        << this->vectorSize()
+                         << ");"
+                         << std::endl;
+          *unifiedOfsVar << m_name << "_unified" << m_env.subIdString() << " = [";
+        }
+
+        unsigned int chainSize = this->sequenceSize();
+        for (unsigned int j = 0; j < chainSize; ++j) {
+          bool savedVectorPrintState = m_seq[j]->getPrintHorizontally();
+          m_seq[j]->setPrintHorizontally(true);
+          *unifiedOfsVar << *(m_seq[j])
+                         << std::endl;
+          m_seq[j]->setPrintHorizontally(savedVectorPrintState);
+        }
+
+        unifiedOfsVar->close();
+      }
+      m_env.inter0Comm().Barrier();
+    }
+
+    if (m_env.inter0Rank() == 0) {
+      std::ofstream* unifiedOfsVar = NULL;
+      m_env.openUnifiedOutputFile(fileName,
+                                  "hdf",
+                                  false, // Yes, 'writeOver = false' in order to close the array for matlab
+                                  unifiedOfsVar);
+      *unifiedOfsVar << "];\n";
+      unifiedOfsVar->close();
+    }
+  }
+
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Leaving uqSequenceOfVectorsClass<V,M>::printUnifiedContents()"
+                           << std::endl;
+  }
+  m_env.fullComm().Barrier();
+
   return;
 }
 

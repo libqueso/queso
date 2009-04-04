@@ -508,8 +508,8 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
                              << std::endl;
     }
 
-    if ((this->subRank   () == 0) &&
-        (this->inter0Rank() == 0)) {
+    //if ((this->subRank   () == 0) &&
+    //    (this->inter0Rank() == 0)) {
       // Open file
       if (writeOver) {
         // Write over an eventual pre-existing file
@@ -534,7 +534,7 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
                           this->rank(),
                           "openUnifiedOutputFile()",
                           "failed to open output file");
-    }
+    //}
   }
 
   return;

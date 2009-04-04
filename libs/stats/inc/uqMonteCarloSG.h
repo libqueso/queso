@@ -412,11 +412,12 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   }
 
   // Take "unified" care of pseq
+#if 0
   std::ofstream* unifiedPSeqOfsVar = NULL;
   m_env.openUnifiedOutputFile(m_pseqOutputFileName,
                               "hdf",
                               true,
-                              pseqOfsVar);
+                              unifiedPSeqOfsVar);
 
   if (unifiedPSeqOfsVar) {
     workingPSeq.printUnifiedContents(*unifiedPSeqOfsVar);
@@ -432,6 +433,18 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
                              << std::endl;
     }
   }
+#else
+  if (m_pseqOutputFileName != ".") {
+    workingPSeq.printUnifiedContents(m_pseqOutputFileName);
+    if (m_env.subScreenFile()) {
+      *m_env.subScreenFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+                             << ", prefix = "                    << m_prefix
+                             << ": closed unified output file '" << m_pseqOutputFileName
+                             << "' for pseq "                    << workingPSeq.name()
+                             << std::endl;
+    }
+  }
+#endif
 
   // Take case of other aspects of pseq
   if (m_pseqComputeStats) {
@@ -486,11 +499,12 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   }
 
   // Take "unified" care of qseq
+#if 0
   std::ofstream* unifiedQSeqOfsVar = NULL;
   m_env.openUnifiedOutputFile(m_qseqOutputFileName,
                               "hdf",
                               true,
-                              qseqOfsVar);
+                              unifiedQSeqOfsVar);
 
   if (unifiedQSeqOfsVar) {
     workingQSeq.printUnifiedContents(*unifiedQSeqOfsVar);
@@ -506,6 +520,18 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
                              << std::endl;
     }
   }
+#else
+  if (m_qseqOutputFileName != ".") {
+    workingQSeq.printUnifiedContents(m_qseqOutputFileName);
+    if (m_env.subScreenFile()) {
+      *m_env.subScreenFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+                             << ", prefix = "                    << m_prefix
+                             << ": closed unified output file '" << m_qseqOutputFileName
+                             << "' for qseq "                    << workingQSeq.name()
+                             << std::endl;
+    }
+  }
+#endif
 
   // Take case of other aspects of qseq
   if (m_qseqComputeStats) {
