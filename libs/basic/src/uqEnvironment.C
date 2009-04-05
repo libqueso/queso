@@ -786,6 +786,9 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
   if (m_seed >= 0) {
     gsl_rng_default_seed = (unsigned long int) m_seed;
   }
+  else if (m_seed == -1) {
+    gsl_rng_default_seed = (unsigned long int) m_fullRank;
+  }
   else {
     struct timeval timevalNow;
     /*iRC = */gettimeofday(&timevalNow, NULL);
@@ -798,7 +801,7 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
                       "uqFullEnvironmentClass::commonConstructor()",
                       "null m_rng");
 
-  if ((m_subScreenFile) && (this->verbosity() >= 5)) {
+  if ((m_subScreenFile)/* && (this->verbosity() > 0)*/) {
     *m_subScreenFile << "In uqFullEnvironmentClass::commonConstructor():"
                      << "\n  m_seed = "                                              << m_seed
                      << "\n  internal seed = "                                       << gsl_rng_default_seed

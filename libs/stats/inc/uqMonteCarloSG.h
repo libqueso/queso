@@ -391,7 +391,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   // Take "sub" care of pseq
   std::ofstream* pseqOfsVar = NULL;
   m_env.openOutputFile(m_pseqOutputFileName,
-                       "hdf",
+                       UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
                        m_pseqOutputAllow,
                        true,
                        pseqOfsVar);
@@ -415,7 +415,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
 #if 0
   std::ofstream* unifiedPSeqOfsVar = NULL;
   m_env.openUnifiedOutputFile(m_pseqOutputFileName,
-                              "hdf",
+                              UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
                               true,
                               unifiedPSeqOfsVar);
 
@@ -478,7 +478,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   // Take "sub" care of qseq
   std::ofstream* qseqOfsVar = NULL;
   m_env.openOutputFile(m_qseqOutputFileName,
-                       "hdf",
+                       UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
                        m_qseqOutputAllow,
                        true,
                        qseqOfsVar);
@@ -502,7 +502,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
 #if 0
   std::ofstream* unifiedQSeqOfsVar = NULL;
   m_env.openUnifiedOutputFile(m_qseqOutputFileName,
-                              "hdf",
+                              UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
                               true,
                               unifiedQSeqOfsVar);
 

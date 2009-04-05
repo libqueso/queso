@@ -55,6 +55,9 @@ const int UQ_MATRIX_IS_NOT_POS_DEFINITE_RC = -8;
 const int UQ_FAILED_READING_FILE_RC        = -9;
 const int UQ_INVALID_SPACE_COMPONENT_ID_RC = -10;
 
+#define UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT "m"
+#define UQ_FILE_EXTENSION_FOR_HDF_FORMAT    "hdf"
+
 #define UQ_RC_MACRO(macroIRc,givenRank,where,what,retValue) \
   if (macroIRc) {                                           \
     int macroRank = givenRank;                         \

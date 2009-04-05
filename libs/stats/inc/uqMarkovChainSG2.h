@@ -121,7 +121,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
   // Take "sub" care of raw chain
   std::ofstream* rawChainOfsVar = NULL;
   m_env.openOutputFile(m_rawChainOutputFileName,
-                       "hdf",
+                       UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
                        m_rawChainOutputAllow,
                        true,
                        rawChainOfsVar);
@@ -145,7 +145,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
 #if 0
   std::ofstream* unifiedRawChainOfsVar = NULL;
   m_env.openUnifiedOutputFile(m_rawChainOutputFileName,
-                              "hdf",
+                              UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
                               true,
                               unifiedRawChainOfsVar);
 
@@ -260,7 +260,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
     // Take "sub" care of filtered chain
     std::ofstream* filteredChainOfsVar = NULL;
     m_env.openOutputFile(m_filteredChainOutputFileName,
-                         "hdf",
+                         UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
                          m_filteredChainOutputAllow,
                          true,
                          filteredChainOfsVar);
@@ -284,7 +284,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
 #if 0
     std::ofstream* unifiedFilteredChainOfsVar = NULL;
     m_env.openUnifiedOutputFile(m_filteredChainOutputFileName,
-                                "hdf",
+                                UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
                                 true,
                                 unifiedFilteredChainOfsVar);
 

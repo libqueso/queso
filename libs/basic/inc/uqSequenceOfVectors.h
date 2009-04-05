@@ -1574,11 +1574,6 @@ template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::printUnifiedContents(const std::string& fileName) const
 {
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
-                      "uqSequenceOfVectorsClass<V,M>::printUnifiedContents()",
-                      "not implemented yet");
-
   m_env.fullComm().Barrier();
   if (m_env.subScreenFile()) {
     *m_env.subScreenFile() << "Entering uqSequenceOfVectorsClass<V,M>::printUnifiedContents()"
@@ -1592,16 +1587,16 @@ uqSequenceOfVectorsClass<V,M>::printUnifiedContents(const std::string& fileName)
         std::ofstream* unifiedOfsVar = NULL;
         bool writeOver = (r == 0);
         m_env.openUnifiedOutputFile(fileName,
-                                    "hdf",
+                                    UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
                                     writeOver,
                                     unifiedOfsVar);
 
         if (r == 0) {
-          *unifiedOfsVar << m_name << "_unified" << m_env.subIdString() << " = zeros(" << this->sequenceSize()
-                         << ","                                                        << this->vectorSize()
+          *unifiedOfsVar << m_name << "_unified" << " = zeros(" << this->sequenceSize()
+                         << ","                                 << this->vectorSize()
                          << ");"
                          << std::endl;
-          *unifiedOfsVar << m_name << "_unified" << m_env.subIdString() << " = [";
+          *unifiedOfsVar << m_name << "_unified" << " = [";
         }
 
         unsigned int chainSize = this->sequenceSize();
@@ -1621,7 +1616,7 @@ uqSequenceOfVectorsClass<V,M>::printUnifiedContents(const std::string& fileName)
     if (m_env.inter0Rank() == 0) {
       std::ofstream* unifiedOfsVar = NULL;
       m_env.openUnifiedOutputFile(fileName,
-                                  "hdf",
+                                  UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
                                   false, // Yes, 'writeOver = false' in order to close the array for matlab
                                   unifiedOfsVar);
       *unifiedOfsVar << "];\n";

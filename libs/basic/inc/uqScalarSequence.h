@@ -264,6 +264,12 @@ template <class T>
 const T&
 uqScalarSequenceClass<T>::operator[](unsigned int posId) const
 {
+  if (posId >= this->sequenceSize()) {
+    std::cerr << "In uqScalarSequenceClass<T>::operator[]() const"
+              << ": posId = "                << posId
+              << ", this->sequenceSize() = " << this->sequenceSize()
+              << std::endl;
+  }
   UQ_FATAL_TEST_MACRO((posId >= this->sequenceSize()),
                       m_env.rank(),
                       "uqScalarSequences<T>::operator[] const",
@@ -276,6 +282,12 @@ template <class T>
 T&
 uqScalarSequenceClass<T>::operator[](unsigned int posId)
 {
+  if (posId >= this->sequenceSize()) {
+    std::cerr << "In uqScalarSequenceClass<T>::operator[]()"
+              << ": posId = "                << posId
+              << ", this->sequenceSize() = " << this->sequenceSize()
+              << std::endl;
+  }
   UQ_FATAL_TEST_MACRO((posId >= this->sequenceSize()),
                       m_env.rank(),
                       "uqScalarSequences<T>::operator[]",
@@ -1696,17 +1708,70 @@ template <class T>
 T
 uqScalarSequenceClass<T>::interQuantileRange(unsigned int initialPos) const
 {
+  UQ_FATAL_TEST_MACRO(initialPos >= this->sequenceSize(),
+                      m_env.rank(),
+                      "uqScalarSequenceClass<T>::interQuantileRange()",
+                      "'initialPos' is too big");
+
   uqScalarSequenceClass sortedSequence(m_env,0);
   this->sort(initialPos,
              sortedSequence);
 
+  // The test above guarantees that 'dataSize >= 1'
   unsigned int dataSize = this->sequenceSize() - initialPos;
 
+  UQ_FATAL_TEST_MACRO(dataSize != sortedSequence.sequenceSize(),
+                      m_env.rank(),
+                      "uqScalarSequenceClass<T>::interQuantileRange()",
+                      "inconsistent size variables");
+
+  bool everythingOk = true;
+
+  // pos1 = (dataSize+1)/4 - 1
+  // pos1 >= 0            <==> dataSize   >= 3
+  // pos1 <  (dataSize-1) <==> 3*dataSize >  1 
   unsigned int pos1 = (unsigned int) ( (((double) dataSize) + 1.)*1./4. - 1. );
+  if (pos1 > (dataSize-1)) {
+    pos1 = 0;
+    everythingOk = false;
+  }
+  unsigned int pos1inc = pos1+1;
+  if (pos1inc > (dataSize-1)) {
+    pos1inc = dataSize-1;
+    everythingOk = false;
+  }
+
+  // pos3 = (dataSize+1)*3/4 - 1
+  // pos3 >= 0            <==> dataSize >= 1/3
+  // pos3 <  (dataSize-1) <==> dataSize >  3 
   unsigned int pos3 = (unsigned int) ( (((double) dataSize) + 1.)*3./4. - 1. );
+  if (pos3 > (dataSize-1)) {
+    pos3 = 0;
+    everythingOk = false;
+  }
+  unsigned int pos3inc = pos3+1;
+  if (pos3inc > (dataSize-1)) {
+    pos3inc = dataSize-1;
+    everythingOk = false;
+  }
 
   double fraction1 = (((double) dataSize) + 1.)*1./4. - 1. - ((double) pos1);
+  if (fraction1 < 0.) {
+    fraction1 = 0.;
+    everythingOk = false;
+  }
   double fraction3 = (((double) dataSize) + 1.)*3./4. - 1. - ((double) pos3);
+  if (fraction3 < 0.) {
+    fraction3 = 0.;
+    everythingOk = false;
+  }
+
+  if (everythingOk == false) {
+    std::cerr << "In uqScalarSequenceClass<T>::interQuantileRange()"
+              << ", fullRank = " << m_env.rank()
+              << ": at least one adjustment was necessary"
+              << std::endl;
+  }
 
   //if (m_env.subScreenFile()) {
   //  *m_env.subScreenFile() << "In uqScalarSequenceClass::interQuantileRange()"
@@ -1718,8 +1783,9 @@ uqScalarSequenceClass<T>::interQuantileRange(unsigned int initialPos) const
   //                         << ", pos3 = "                  << pos3
   //                         << std::endl;
   //}
-  T value1 = (1.-fraction1) * sortedSequence[pos1] + fraction1 * sortedSequence[pos1+1];
-  T value3 = (1.-fraction3) * sortedSequence[pos3] + fraction3 * sortedSequence[pos3+1];
+
+  T value1 = (1.-fraction1) * sortedSequence[pos1] + fraction1 * sortedSequence[pos1inc];
+  T value3 = (1.-fraction3) * sortedSequence[pos3] + fraction3 * sortedSequence[pos3inc];
   T iqrValue = value3 - value1;
 
   if ((m_env.subScreenFile()) && (m_env.verbosity() >= 0)) {
@@ -2126,11 +2192,29 @@ uqScalarSequenceClass<T>::extractScalarSeq(
   scalarSeq.resizeSequence(numPos);
   if (spacing == 1) {
     for (unsigned int j = 0; j < numPos; ++j) {
+      //if ((initialPos+j*spacing) > m_seq.size()) {
+      //  std::cerr << "In uqScalarSequenceClass<T>::extraScalarSeq()"
+      //            << ": initialPos = " << initialPos
+      //            << ", spacing = "    << spacing
+      //            << ", numPos = "     << numPos
+      //            << ", j = "          << j
+      //            << ", position got too large"
+      //            << std::endl;
+      //}
       scalarSeq[j] = m_seq[initialPos+j        ];
     }
   }
   else {
     for (unsigned int j = 0; j < numPos; ++j) {
+      //if ((initialPos+j*spacing) > m_seq.size()) {
+      //  std::cerr << "In uqScalarSequenceClass<T>::extraScalarSeq()"
+      //            << ": initialPos = " << initialPos
+      //            << ", spacing = "    << spacing
+      //            << ", numPos = "     << numPos
+      //            << ", j = "          << j
+      //            << ", position got too large"
+      //            << std::endl;
+      //}
       scalarSeq[j] = m_seq[initialPos+j*spacing];
     }
   }
