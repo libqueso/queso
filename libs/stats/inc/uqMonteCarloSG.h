@@ -624,14 +624,15 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
   if (m_env.subScreenFile()) {
     *m_env.subScreenFile() << "Finished the generation of qoi sequence " << workingQSeq.name()
                            << ", with "                                  << workingQSeq.sequenceSize()
-                           << " samples";
-    *m_env.subScreenFile() << "\nSome information about this sequence:"
+                           << " samples"
+                           << "\nSome information about this sequence:"
                            << "\n  Sequence run time = " << seqRunTime
-                           << " seconds";
-    *m_env.subScreenFile() << "\n\n Breaking of the seq run time:\n";
-    *m_env.subScreenFile() << "\n  QoI function run time   = " << qoiFunctionRunTime
+                           << " seconds"
+                           << "\n\n Breaking of the seq run time:\n"
+                           << "\n  QoI function run time   = " << qoiFunctionRunTime
                            << " seconds ("                     << 100.*qoiFunctionRunTime/seqRunTime
-                           << "%)";
+                           << "%)"
+                           << std::endl;
   }
 
   return;

@@ -805,8 +805,8 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
     *m_subScreenFile << "In uqFullEnvironmentClass::commonConstructor():"
                      << "\n  m_seed = "                                              << m_seed
                      << "\n  internal seed = "                                       << gsl_rng_default_seed
-                     << "\n  first generated sample from uniform distribution = "    << gsl_rng_uniform(m_rng)
-                     << "\n  first generated sample from std normal distribution = " << gsl_ran_gaussian(m_rng,1.)
+      //<< "\n  first generated sample from uniform distribution = "    << gsl_rng_uniform(m_rng)
+      //<< "\n  first generated sample from std normal distribution = " << gsl_ran_gaussian(m_rng,1.)
                      << std::endl;
   }
 
@@ -876,11 +876,11 @@ uqFullEnvironmentClass::readEventualInputFile()
 
   if (displayHelpMessageAndExit) {
     if (m_fullRank == 0) std::cout << "\nThis is a help message of the QUESO library."
-                                    << "\nAn application using the QUESO library shall be executed by typing"
-                                    << "\n  '<eventual mpi commands and options> <uqApplication> -i <uqInputFile>'"
-                                    << "\nin the command line."
-                                    << "\n"
-                                    << std::endl;
+                                   << "\nAn application using the QUESO library shall be executed by typing"
+                                   << "\n  '<eventual mpi commands and options> <uqApplication> -i <uqInputFile>'"
+                                   << "\nin the command line."
+                                   << "\n"
+                                   << std::endl;
     /*int mpiRC = 0;*/
     /*mpiRC = */MPI_Abort(m_fullComm->Comm(),-999);
     exit(1);
