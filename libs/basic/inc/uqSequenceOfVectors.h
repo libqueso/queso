@@ -1577,6 +1577,11 @@ uqSequenceOfVectorsClass<V,M>::printUnifiedContents(const std::string& fileName)
   m_env.fullComm().Barrier();
   if (m_env.subScreenFile()) {
     *m_env.subScreenFile() << "Entering uqSequenceOfVectorsClass<V,M>::printUnifiedContents()"
+                           << ": fullRank "       << m_env.rank()
+                           << ", subEnvironment " << m_env.subId()
+                           << ", subRank "        << m_env.subRank()
+                           << ", inter0Rank "     << m_env.inter0Rank()
+                           << ", m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc()
                            << std::endl;
   }
 
@@ -1592,7 +1597,7 @@ uqSequenceOfVectorsClass<V,M>::printUnifiedContents(const std::string& fileName)
                                     unifiedOfsVar);
 
         if (r == 0) {
-          *unifiedOfsVar << m_name << "_unified" << " = zeros(" << this->sequenceSize()
+          *unifiedOfsVar << m_name << "_unified" << " = zeros(" << this->sequenceSize()*m_env.inter0Comm().NumProc()
                          << ","                                 << this->vectorSize()
                          << ");"
                          << std::endl;

@@ -340,21 +340,27 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   //****************************************************
   // Generate sequence of qoi values
   //****************************************************
-  unsigned int actualSize = std::min(m_qseqSize,paramRv.realizer().period());
+  unsigned int actualSizeBeforeGeneration = std::min(m_qseqSize,paramRv.realizer().period());
   if ((m_env.subScreenFile()) && (m_env.verbosity() >= 0)) {
     *m_env.subScreenFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                            << ": m_qseqSize = "                                             << m_qseqSize
                            << ", paramRv.realizer().period() = "                            << paramRv.realizer().period()
-                           << ", about to call actualGenerateSequence() with actualSize = " << actualSize
+                           << ", about to call actualGenerateSequence() with actualSize = " << actualSizeBeforeGeneration
                            << std::endl;
   }
   actualGenerateSequence(paramRv,
                          workingPSeq,
                          workingQSeq,
-                         actualSize);
+                         actualSizeBeforeGeneration);
+  unsigned int actualSizeAfterGeneration = workingPSeq.sequenceSize();
+  UQ_FATAL_TEST_MACRO(actualSizeAfterGeneration != workingQSeq.sequenceSize(),
+                      m_env.rank(),
+                      "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()",
+                      "P and Q sequences should have the same size!");
+
   if ((m_env.subScreenFile()) && (m_env.verbosity() >= 0)) {
     *m_env.subScreenFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
-                           << ": returned from call to actualGenerateSequence() with actualSize = " << actualSize
+                           << ": returned from call to actualGenerateSequence() with actualSize = " << actualSizeAfterGeneration
                            << std::endl;
   }
 
@@ -575,11 +581,11 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
   const uqBaseVectorRVClass      <P_V,P_M>& paramRv,
         uqBaseVectorSequenceClass<P_V,P_M>& workingPSeq,
         uqBaseVectorSequenceClass<Q_V,Q_M>& workingQSeq,
-        unsigned int                        seqSize)
+        unsigned int                        requestedSeqSize)
 {
   if (m_env.subScreenFile()) {
     *m_env.subScreenFile() << "Starting the generation of qoi sequence " << workingQSeq.name()
-                           << ", with "                                  << seqSize
+                           << ", with "                                  << requestedSeqSize
                            << " samples..."
                            << std::endl;
   }
@@ -593,21 +599,49 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
 
   iRC = gettimeofday(&timevalSeq, NULL);
 
-  workingPSeq.resizeSequence(seqSize);
-  workingQSeq.resizeSequence(seqSize);
+  workingPSeq.resizeSequence(requestedSeqSize);
+  workingQSeq.resizeSequence(requestedSeqSize);
   P_V tmpP(m_paramSpace.zeroVector());
   Q_V tmpQ(m_qoiSpace.zeroVector());
 
-  for (unsigned int i = 0; i < seqSize; ++i) {
+  unsigned int actualSeqSize = 0;
+  for (unsigned int i = 0; i < requestedSeqSize; ++i) {
     paramRv.realizer().realization(tmpP);
 
-    workingPSeq.setPositionValues(i,tmpP);
 
     if (m_qseqMeasureRunTimes) iRC = gettimeofday(&timevalQoIFunction, NULL);
     m_qoiFunctionSynchronizer->callFunction(&tmpP,NULL,&tmpQ,NULL,NULL,NULL); // Might demand parallel environment
     if (m_qseqMeasureRunTimes) qoiFunctionRunTime += uqMiscGetEllapsedSeconds(&timevalQoIFunction);
 
-    workingQSeq.setPositionValues(i,tmpQ);
+    bool allQsAreFinite = true;
+    for (unsigned int j = 0; j < tmpQ.size(); ++j) {
+      if ((tmpQ[j] == INFINITY) || (tmpQ[j] == -INFINITY)) {
+	std::cerr << "WARNING In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence()"
+                  << ": fullRank "       << m_env.rank()
+                  << ", subEnvironment " << m_env.subId()
+                  << ", subRank "        << m_env.subRank()
+                  << ", inter0Rank "     << m_env.inter0Rank()
+                  << ", i = "            << i
+                  << ", tmpQ[" << j << "] = " << tmpQ[j]
+                  << ", tmpP = "         << tmpP
+                  << ", tmpQ = "         << tmpQ
+                  << std::endl;
+        allQsAreFinite = false;
+
+        if (i > 0) {
+          workingPSeq.getPositionValues(i-1,tmpP); // FIXME: temporary code
+          workingQSeq.getPositionValues(i-1,tmpQ); // FIXME: temporary code
+        }
+
+        break;
+      }
+    }
+
+    //if (allQsAreFinite) { // FIXME: this will cause different processors to have sequences of different sizes
+      workingPSeq.setPositionValues(i,tmpP);
+      workingQSeq.setPositionValues(i,tmpQ);
+      actualSeqSize++;
+    //}
 
     if ((m_qseqDisplayPeriod            > 0) && 
         (((i+1) % m_qseqDisplayPeriod) == 0)) {
@@ -618,6 +652,11 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
       }
     }
   }
+
+  //if (actualSeqSize != requestedSeqSize) {
+  //  workingPSeq.resizeSequence(actualSeqSize);
+  //  workingQSeq.resizeSequence(actualSeqSize);
+  //}
 
   seqRunTime = uqMiscGetEllapsedSeconds(&timevalSeq);
 

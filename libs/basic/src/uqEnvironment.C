@@ -768,6 +768,7 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
           for (unsigned int j = 0; j < fullRanksOfInter0.size(); ++j) {
             std::cout << " " << fullRanksOfInter0[j];
           }
+          std::cout << ", and has inter0Rank " << m_inter0Rank;
         }
 	std::cout << "\n";
 
@@ -787,7 +788,7 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
     gsl_rng_default_seed = (unsigned long int) m_seed;
   }
   else if (m_seed == -1) {
-    gsl_rng_default_seed = (unsigned long int) m_fullRank;
+    gsl_rng_default_seed = (unsigned long int) (1+m_fullRank);
   }
   else {
     struct timeval timevalNow;
@@ -801,12 +802,14 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
                       "uqFullEnvironmentClass::commonConstructor()",
                       "null m_rng");
 
+  //gsl_rng_set(m_rng, gsl_rng_default_seed);
+
   if ((m_subScreenFile)/* && (this->verbosity() > 0)*/) {
     *m_subScreenFile << "In uqFullEnvironmentClass::commonConstructor():"
                      << "\n  m_seed = "                                              << m_seed
                      << "\n  internal seed = "                                       << gsl_rng_default_seed
-      //<< "\n  first generated sample from uniform distribution = "    << gsl_rng_uniform(m_rng)
-      //<< "\n  first generated sample from std normal distribution = " << gsl_ran_gaussian(m_rng,1.)
+                   //<< "\n  first generated sample from uniform distribution = "    << gsl_rng_uniform(m_rng)
+                   //<< "\n  first generated sample from std normal distribution = " << gsl_ran_gaussian(m_rng,1.)
                      << std::endl;
   }
 
