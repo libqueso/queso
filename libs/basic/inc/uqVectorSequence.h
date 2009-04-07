@@ -2132,7 +2132,7 @@ uqComputeCovCorrMatricesBetweenVectorSequences(
                               env.rank(),
                               "uqComputeCovCorrMatricesBetweenVectorSequences()",
                               "failed MPI_Allreduce() for a matrix position");
-          pqCovMatrix(i,j) = aux/((double) unifiedNumSamples);
+          pqCovMatrix(i,j) = aux/((double) (unifiedNumSamples-1)); // Yes, '-1' in order to compensate for the 'N-1' denominator factor in the calculations of sample variances above (whose square roots will be used below)
         }
       }
 

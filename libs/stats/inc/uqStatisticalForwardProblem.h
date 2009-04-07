@@ -414,11 +414,19 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
     pqCorrelationMatrix = new P_M(m_env,
                                   m_paramRv.imageSet().vectorSpace().map(), // number of rows
                                   m_qoiRv.imageSet().vectorSpace().dim());  // number of cols
+#if 0
     uqComputeCovCorrMatricesBetweenVectorRvs<P_V,P_M,Q_V,Q_M>(m_paramRv,
                                                               m_qoiRv,
                                                               std::min(m_paramRv.realizer().period(),m_qoiRv.realizer().period()), // FIX ME: might be INFINITY
                                                               *pqCovarianceMatrix,
                                                               *pqCorrelationMatrix);
+#else
+    uqComputeCovCorrMatricesBetweenVectorSequences(*m_paramChain,
+                                                   *m_qoiChain,
+                                                   std::min(m_paramRv.realizer().period(),m_qoiRv.realizer().period()), // FIX ME: might be INFINITY
+                                                   *pqCovarianceMatrix,
+                                                   *pqCorrelationMatrix);
+#endif
   }
 
   // Open output file

@@ -921,6 +921,12 @@ uqFullEnvironmentClass::getMyOptionValues(po::options_description& optionsDesc)
   if (m_allOptionsMap->count(m_option_numSubEnvironments.c_str())) {
     m_numSubEnvironments = (*m_allOptionsMap)[m_option_numSubEnvironments.c_str()].as<unsigned int>();
   }
+  if ((m_fullCommSize%m_numSubEnvironments) != 0) {
+    std::cerr << "In uqBaseEnvironmentClass::getMyOptionValues()"
+              << ": m_fullCommSize = "       << m_fullCommSize
+              << ", m_numSubEnvironments = " << m_numSubEnvironments
+              << std::endl;
+  }
   UQ_FATAL_TEST_MACRO((m_fullCommSize%m_numSubEnvironments) != 0,
                       this->rank(),
                       "uqBaseEnvironmentClass::getMyOptionValues()",
