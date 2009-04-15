@@ -48,7 +48,7 @@ public:
                            const std::string&             name);
  ~uqSequenceOfVectorsClass();
 
-        unsigned int sequenceSize              () const;
+        unsigned int subSequenceSize           () const;
         void         resizeSequence            (unsigned int newSequenceSize);
         void         resetValues               (unsigned int initialPos, unsigned int numPos);
         void         erasePositions            (unsigned int initialPos, unsigned int numPos);
@@ -60,23 +60,23 @@ public:
         void         setPositionValues         (unsigned int posId, const V& vec);
         void         setGaussian               (const gsl_rng* rng, const V& meanVec, const V& stdDevVec);
         void         setUniform                (const gsl_rng* rng, const V& aVec,    const V& bVec     );
-        void         uniformlySampledMdf       (const V&                            numEvaluationPointsVec,
+        void         subUniformlySampledMdf    (const V&                            numEvaluationPointsVec,
                                                 uqArrayOfOneDGridsClass <V,M>&      mdfGrids,
                                                 uqArrayOfOneDTablesClass<V,M>&      mdfValues) const;
-        void         uniformlySampledCdf       (const V&                            numEvaluationPointsVec,
+        void         subUniformlySampledCdf    (const V&                            numEvaluationPointsVec,
                                                 uqArrayOfOneDGridsClass <V,M>&      cdfGrids,
                                                 uqArrayOfOneDTablesClass<V,M>&      cdfValues) const;
         void         unifiedUniformlySampledCdf(const V&                            numEvaluationPointsVec,
                                                 uqArrayOfOneDGridsClass <V,M>&      unifiedCdfGrids,
                                                 uqArrayOfOneDTablesClass<V,M>&      unifiedCdfValues) const;
 
-        void         mean                      (unsigned int                        initialPos,
+        void         subMean                   (unsigned int                        initialPos,
                                                 unsigned int                        numPos,
                                                 V&                                  meanVec) const;
         void         unifiedMean               (unsigned int                        initialPos,
                                                 unsigned int                        numPos,
                                                 V&                                  unifiedMeanVec) const;
-        void         sampleVariance            (unsigned int                        initialPos,
+        void         subSampleVariance         (unsigned int                        initialPos,
                                                 unsigned int                        numPos,
                                                 const V&                            meanVec,
                                                 V&                                  samVec) const;
@@ -127,13 +127,13 @@ public:
                                                 double                              ratioNa,
                                                 double                              ratioNb,
                                                 V&                                  gewVec) const;
-        void         minMax                    (unsigned int                        initialPos,
+        void         subMinMax                 (unsigned int                        initialPos,
                                                 V&                                  minVec,
                                                 V&                                  maxVec) const;
         void         unifiedMinMax             (unsigned int                        initialPos,
                                                 V&                                  unifiedMinVec,
                                                 V&                                  unifiedMaxVec) const;
-        void         histogram                 (unsigned int                        initialPos,
+        void         subHistogram              (unsigned int                        initialPos,
                                                 const V&                            minVec,
                                                 const V&                            maxVec,
                                                 std::vector<V*>&                    centersForAllBins,
@@ -143,19 +143,19 @@ public:
                                                 const V&                            unifiedMaxVec,
                                                 std::vector<V*>&                    unifiedCentersForAllBins,
                                                 std::vector<V*>&                    unifiedQuanttsForAllBins) const;
-        void         interQuantileRange        (unsigned int                        initialPos,
+        void         subInterQuantileRange     (unsigned int                        initialPos,
                                                 V&                                  iqrVec) const;
         void         unifiedInterQuantileRange (unsigned int                        initialPos,
                                                 V&                                  unifiedIqrVec) const;
-        void         scalesForKDE              (unsigned int                        initialPos,
+        void         subScalesForKDE           (unsigned int                        initialPos,
                                                 const V&                            iqrVec,
                                                 V&                                  scaleVec) const;
         void         unifiedScalesForKDE       (unsigned int                        initialPos,
                                                 const V&                            unifiedIqrVec,
                                                 V&                                  unifiedScaleVec) const;
-        void         gaussianKDE               (const V&                            evalParamVec,
+        void         sabGaussianKDE            (const V&                            evalParamVec,
                                                 V&                                  densityVec) const;
-        void         gaussianKDE               (unsigned int                        initialPos,
+        void         subGaussianKDE            (unsigned int                        initialPos,
                                                 const V&                            scaleVec,
                                                 const std::vector<V*>&              evalParamVecs,
                                                 std::vector<V*>&                    densityVecs) const;
@@ -163,9 +163,9 @@ public:
                                                 const V&                            unifiedScaleVec,
                                                 const std::vector<V*>&              unifiedEvalParamVecs,
                                                 std::vector<V*>&                    unifiedDensityVecs) const;
-        void         printContents             (std::ofstream&                      ofsvar) const;
-        void         printUnifiedContents      (std::ofstream&                      ofsvar) const;
-        void         printUnifiedContents      (const std::string&                  fileName) const;
+        void         subPrintContents          (std::ofstream&                      ofsvar) const;
+        void         unifiedPrintContents      (std::ofstream&                      ofsvar) const;
+        void         unifiedPrintContents      (const std::string&                  fileName) const;
         void         select                    (const std::vector<unsigned int>&    idsOfUniquePositions);
         void         filter                    (unsigned int                        initialPos,
                                                 unsigned int                        spacing);
@@ -221,7 +221,7 @@ uqSequenceOfVectorsClass<V,M>::~uqSequenceOfVectorsClass()
 
 template <class V, class M>
 unsigned int
-uqSequenceOfVectorsClass<V,M>::sequenceSize() const
+uqSequenceOfVectorsClass<V,M>::subSequenceSize() const
 {
   return m_seq.size();
 }
@@ -230,7 +230,7 @@ template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::resizeSequence(unsigned int newSequenceSize)
 {
-  if (newSequenceSize != this->sequenceSize()) {
+  if (newSequenceSize != this->subSequenceSize()) {
     m_seq.resize(newSequenceSize,NULL);
     std::vector<const V*>(m_seq).swap(m_seq);
   }
@@ -244,14 +244,14 @@ template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::resetValues(unsigned int initialPos, unsigned int numPos)
 {
-  bool bRC = ((initialPos          <  this->sequenceSize()) &&
-              (0                   <  numPos              ) &&
-              ((initialPos+numPos) <= this->sequenceSize()));
+  bool bRC = ((initialPos          <  this->subSequenceSize()) &&
+              (0                   <  numPos                 ) &&
+              ((initialPos+numPos) <= this->subSequenceSize()));
   if ((bRC == false) && (m_env.subScreenFile())) {
     *m_env.subScreenFile() << "In uqSequenceOfVectorsClass<V,M>::resetValues()"
-                           << ", initialPos = "           << initialPos
-                           << ", this->sequenceSize() = " << this->sequenceSize()
-                           << ", numPos = "               << numPos
+                           << ", initialPos = "              << initialPos
+                           << ", this->subSequenceSize() = " << this->subSequenceSize()
+                           << ", numPos = "                  << numPos
                            << std::endl;
   }
   UQ_FATAL_TEST_MACRO(bRC == false,
@@ -275,9 +275,9 @@ template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::erasePositions(unsigned int initialPos, unsigned int numPos)
 {
-  bool bRC = ((initialPos          <  this->sequenceSize()) &&
-              (0                   <  numPos              ) &&
-              ((initialPos+numPos) <= this->sequenceSize()));
+  bool bRC = ((initialPos          <  this->subSequenceSize()) &&
+              (0                   <  numPos                 ) &&
+              ((initialPos+numPos) <= this->subSequenceSize()));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
                       "uqSequenceOfVectorsClass<V,M>::erasePositions()",
@@ -288,20 +288,20 @@ uqSequenceOfVectorsClass<V,M>::erasePositions(unsigned int initialPos, unsigned 
   }
 
   seqVectorPositionIteratorTypedef posIteratorBegin = m_seq.begin();
-  if (initialPos < this->sequenceSize()) std::advance(posIteratorBegin,initialPos);
-  else                                   posIteratorBegin = m_seq.end();
+  if (initialPos < this->subSequenceSize()) std::advance(posIteratorBegin,initialPos);
+  else                                      posIteratorBegin = m_seq.end();
 
   unsigned int posEnd = initialPos + numPos - 1;
   seqVectorPositionIteratorTypedef posIteratorEnd = m_seq.begin();
-  if (posEnd < this->sequenceSize()) std::advance(posIteratorEnd,posEnd);
-  else                               posIteratorEnd = m_seq.end();
+  if (posEnd < this->subSequenceSize()) std::advance(posIteratorEnd,posEnd);
+  else                                  posIteratorEnd = m_seq.end();
 
-  unsigned int oldSequenceSize = this->sequenceSize();
+  unsigned int oldSequenceSize = this->subSequenceSize();
   m_seq.erase(posIteratorBegin,posIteratorEnd);
-  UQ_FATAL_TEST_MACRO((oldSequenceSize - numPos) != this->sequenceSize(),
+  UQ_FATAL_TEST_MACRO((oldSequenceSize - numPos) != this->subSequenceSize(),
                       m_env.rank(),
                       "uqSequenceOfVectors::erasePositions()",
-                      "(oldSequenceSize - numPos) != this->sequenceSize()");
+                      "(oldSequenceSize - numPos) != this->subSequenceSize()");
 
   uqBaseVectorSequenceClass<V,M>::deleteStoredVectors();
 
@@ -313,10 +313,10 @@ template <class V, class M>
 const V*
 uqSequenceOfVectorsClass<V,M>::operator[](unsigned int posId) const
 {
-  UQ_FATAL_TEST_MACRO((posId >= this->sequenceSize()),
+  UQ_FATAL_TEST_MACRO((posId >= this->subSequenceSize()),
                       m_env.rank(),
                       "uqScalarSequences<V,M>::operator[] const",
-                      "posId > sequenceSize()");
+                      "posId > subSequenceSize()");
 
   return (const V*) (m_seq[posId]);
 }
@@ -325,10 +325,10 @@ template <class V, class M>
 const V*&
 uqSequenceOfVectorsClass<V,M>::operator[](unsigned int posId)
 {
-  UQ_FATAL_TEST_MACRO((posId >= this->sequenceSize()),
+  UQ_FATAL_TEST_MACRO((posId >= this->subSequenceSize()),
                       m_env.rank(),
                       "uqScalarSequences<V,M>::operator[] const",
-                      "posId > sequenceSize()");
+                      "posId > subSequenceSize()");
 
   return m_seq[posId];
 }
@@ -338,10 +338,10 @@ template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::getPositionValues(unsigned int posId, V& vec) const
 {
-  UQ_FATAL_TEST_MACRO((posId >= this->sequenceSize()),
+  UQ_FATAL_TEST_MACRO((posId >= this->subSequenceSize()),
                       m_env.rank(),
                       "uqScalarSequences<V,M>::getPositionValues()",
-                      "posId > sequenceSize()");
+                      "posId > subSequenceSize()");
 
   vec = *(const_cast<V*>(m_seq[posId]));
 
@@ -352,10 +352,10 @@ template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::setPositionValues(unsigned int posId, const V& vec)
 {
-  UQ_FATAL_TEST_MACRO((posId >= this->sequenceSize()),
+  UQ_FATAL_TEST_MACRO((posId >= this->subSequenceSize()),
                       m_env.rank(),
                       "uqScalarSequences<V,M>::setPositionValues()",
-                      "posId > sequenceSize()");
+                      "posId > subSequenceSize()");
 
   if (m_seq[posId] != NULL) delete m_seq[posId];
   m_seq[posId] = new V(vec);
@@ -370,7 +370,7 @@ void
 uqSequenceOfVectorsClass<V,M>::setGaussian(const gsl_rng* rng, const V& meanVec, const V& stdDevVec)
 {
   V gaussianVector(m_vectorSpace.zeroVector());
-  for (unsigned int j = 0; j < this->sequenceSize(); ++j) {
+  for (unsigned int j = 0; j < this->subSequenceSize(); ++j) {
     gaussianVector.cwSetGaussian(m_env.rng(),meanVec,stdDevVec);
     if (m_seq[j] != NULL) delete m_seq[j];
     m_seq[j] = new V(gaussianVector);
@@ -387,7 +387,7 @@ void
 uqSequenceOfVectorsClass<V,M>::setUniform(const gsl_rng* rng, const V& aVec, const V& bVec)
 {
   V uniformVector(m_vectorSpace.zeroVector());
-  for (unsigned int j = 0; j < this->sequenceSize(); ++j) {
+  for (unsigned int j = 0; j < this->subSequenceSize(); ++j) {
     uniformVector.cwSetUniform(m_env.rng(),aVec,bVec);
     if (m_seq[j] != NULL) delete m_seq[j];
     m_seq[j] = new V(uniformVector);
@@ -400,7 +400,7 @@ uqSequenceOfVectorsClass<V,M>::setUniform(const gsl_rng* rng, const V& aVec, con
 
 template <class V, class M>
 void
-uqSequenceOfVectorsClass<V,M>::uniformlySampledMdf(
+uqSequenceOfVectorsClass<V,M>::subUniformlySampledMdf(
   const V&                       numEvaluationPointsVec,
   uqArrayOfOneDGridsClass <V,M>& mdfGrids,
   uqArrayOfOneDTablesClass<V,M>& mdfValues) const
@@ -412,17 +412,17 @@ uqSequenceOfVectorsClass<V,M>::uniformlySampledMdf(
 
   unsigned int numParams = this->vectorSize();
   for (unsigned int i = 0; i < numParams; ++i) {
-    this->extractScalarSeq(0,              // initialPos
-                           1,              // spacing
-                           sequenceSize(), // numPos
+    this->extractScalarSeq(0,                 // initialPos
+                           1,                 // spacing
+                           subSequenceSize(), // numPos
                            i,
                            data);
 
     std::vector<double> aMdf(0);
-    data.uniformlySampledMdf((unsigned int) numEvaluationPointsVec[i],
-                             minDomainValues[i],
-                             maxDomainValues[i],
-                             aMdf);
+    data.subUniformlySampledMdf((unsigned int) numEvaluationPointsVec[i],
+                                minDomainValues[i],
+                                maxDomainValues[i],
+                                aMdf);
     mdfValues.setOneDTable(i,aMdf);
   }
 
@@ -435,7 +435,7 @@ uqSequenceOfVectorsClass<V,M>::uniformlySampledMdf(
 
 template <class V, class M>
 void
-uqSequenceOfVectorsClass<V,M>::uniformlySampledCdf(
+uqSequenceOfVectorsClass<V,M>::subUniformlySampledCdf(
   const V&                       numEvaluationPointsVec,
   uqArrayOfOneDGridsClass <V,M>& cdfGrids,
   uqArrayOfOneDTablesClass<V,M>& cdfValues) const
@@ -447,17 +447,17 @@ uqSequenceOfVectorsClass<V,M>::uniformlySampledCdf(
 
   unsigned int numParams = this->vectorSize();
   for (unsigned int i = 0; i < numParams; ++i) {
-    this->extractScalarSeq(0,              // initialPos
-                           1,              // spacing
-                           sequenceSize(), // numPos
+    this->extractScalarSeq(0,                 // initialPos
+                           1,                 // spacing
+                           subSequenceSize(), // numPos
                            i,
                            data);
 
     std::vector<double> aCdf(0);
-    data.uniformlySampledCdf((unsigned int) numEvaluationPointsVec[i],
-                             minDomainValues[i],
-                             maxDomainValues[i],
-                             aCdf);
+    data.subUniformlySampledCdf((unsigned int) numEvaluationPointsVec[i],
+                                minDomainValues[i],
+                                maxDomainValues[i],
+                                aCdf);
     cdfValues.setOneDTable(i,aCdf);
   }
 
@@ -487,9 +487,9 @@ uqSequenceOfVectorsClass<V,M>::unifiedUniformlySampledCdf(
 
   unsigned int numParams = this->vectorSize();
   for (unsigned int i = 0; i < numParams; ++i) {
-    this->extractScalarSeq(0,              // initialPos
-                           1,              // spacing
-                           sequenceSize(), // numPos
+    this->extractScalarSeq(0,                 // initialPos
+                           1,                 // spacing
+                           subSequenceSize(), // numPos
                            i,
                            data);
 
@@ -516,35 +516,35 @@ uqSequenceOfVectorsClass<V,M>::unifiedUniformlySampledCdf(
 
 template <class V, class M>
 void
-uqSequenceOfVectorsClass<V,M>::mean(
+uqSequenceOfVectorsClass<V,M>::subMean(
   unsigned int initialPos,
   unsigned int numPos,
   V&           meanVec) const
 {
   if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqSequenceOfVectorsClass<V,M>::mean()"
+    *m_env.subScreenFile() << "Entering uqSequenceOfVectorsClass<V,M>::subMean()"
                            << ": initialPos = "         << initialPos
                            << ", numPos = "             << numPos
-                           << ", full sequence size = " << this->sequenceSize()
+                           << ", full sequence size = " << this->subSequenceSize()
                            << std::endl;
   }
 
-  bool bRC = ((initialPos          <  this->sequenceSize()) &&
-              (0                   <  numPos              ) &&
-              ((initialPos+numPos) <= this->sequenceSize()) &&
-              (this->vectorSize()  == meanVec.size()      ));
+  bool bRC = ((initialPos          <  this->subSequenceSize()) &&
+              (0                   <  numPos                 ) &&
+              ((initialPos+numPos) <= this->subSequenceSize()) &&
+              (this->vectorSize()  == meanVec.size()         ));
   if ((bRC == false) && (m_env.subScreenFile())) {
-    *m_env.subScreenFile() << "In uqSequenceOfVectorsClass<V,M>::mean()"
-                           << ", initialPos = "           << initialPos
-                           << ", this->sequenceSize() = " << this->sequenceSize()
-                           << ", numPos = "               << numPos
-                           << ", this->vectorSize() = "   << this->vectorSize()
-                           << ", meanVec.size() = "       << meanVec.size()
+    *m_env.subScreenFile() << "In uqSequenceOfVectorsClass<V,M>::subMean()"
+                           << ", initialPos = "              << initialPos
+                           << ", this->subSequenceSize() = " << this->subSequenceSize()
+                           << ", numPos = "                  << numPos
+                           << ", this->vectorSize() = "      << this->vectorSize()
+                           << ", meanVec.size() = "          << meanVec.size()
                            << std::endl;
   }
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqSequenceOfVectorsClass<V,M>::mean()",
+                      "uqSequenceOfVectorsClass<V,M>::subMean()",
                       "invalid input data");
 
   uqScalarSequenceClass<double> data(m_env,0);
@@ -556,15 +556,15 @@ uqSequenceOfVectorsClass<V,M>::mean(
                            numPos,
                            i,
                            data);
-    meanVec[i] = data.mean(0,
-                           numPos);
+    meanVec[i] = data.subMean(0,
+                              numPos);
   }
 
   if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqSequenceOfVectorsClass<V,M>::mean()"
+    *m_env.subScreenFile() << "Leaving uqSequenceOfVectorsClass<V,M>::subMean()"
                            << ": initialPos = "         << initialPos
                            << ", numPos = "             << numPos
-                           << ", full sequence size = " << this->sequenceSize()
+                           << ", full sequence size = " << this->subSequenceSize()
                            << ", meanVec = "            << meanVec
                            << std::endl;
   }
@@ -583,21 +583,21 @@ uqSequenceOfVectorsClass<V,M>::unifiedMean(
     *m_env.subScreenFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedMean()"
                            << ": initialPos = "         << initialPos
                            << ", numPos = "             << numPos
-                           << ", full sequence size = " << this->sequenceSize()
+                           << ", full sequence size = " << this->subSequenceSize()
                            << std::endl;
   }
 
-  bool bRC = ((initialPos          <  this->sequenceSize() ) &&
-              (0                   <  numPos               ) &&
-              ((initialPos+numPos) <= this->sequenceSize() ) &&
-              (this->vectorSize()  == unifiedMeanVec.size()));
+  bool bRC = ((initialPos          <  this->subSequenceSize()) &&
+              (0                   <  numPos                 ) &&
+              ((initialPos+numPos) <= this->subSequenceSize()) &&
+              (this->vectorSize()  == unifiedMeanVec.size()  ));
   if ((bRC == false) && (m_env.subScreenFile())) {
     *m_env.subScreenFile() << "In uqSequenceOfVectorsClass<V,M>::unifiedMean()"
-                           << ", initialPos = "            << initialPos
-                           << ", this->sequenceSize() = "  << this->sequenceSize()
-                           << ", numPos = "                << numPos
-                           << ", this->vectorSize() = "    << this->vectorSize()
-                           << ", unifiedMeanVec.size() = " << unifiedMeanVec.size()
+                           << ", initialPos = "               << initialPos
+                           << ", this->subSequenceSize() = "  << this->subSequenceSize()
+                           << ", numPos = "                   << numPos
+                           << ", this->vectorSize() = "       << this->vectorSize()
+                           << ", unifiedMeanVec.size() = "    << unifiedMeanVec.size()
                            << std::endl;
   }
   UQ_FATAL_TEST_MACRO(bRC == false,
@@ -623,7 +623,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedMean(
     *m_env.subScreenFile() << "Leaving uqSequenceOfVectorsClass<V,M>::unifiedMean()"
                            << ": initialPos = "         << initialPos
                            << ", numPos = "             << numPos
-                           << ", full sequence size = " << this->sequenceSize()
+                           << ", full sequence size = " << this->subSequenceSize()
                            << ", unifiedMeanVec = "     << unifiedMeanVec
                            << std::endl;
   }
@@ -633,20 +633,20 @@ uqSequenceOfVectorsClass<V,M>::unifiedMean(
 
 template <class V, class M>
 void
-uqSequenceOfVectorsClass<V,M>::sampleVariance(
+uqSequenceOfVectorsClass<V,M>::subSampleVariance(
   unsigned int initialPos,
   unsigned int numPos,
   const V&     meanVec,
   V&           samVec) const
 {
-  bool bRC = ((initialPos          <  this->sequenceSize()) &&
-              (0                   <  numPos              ) &&
-              ((initialPos+numPos) <= this->sequenceSize()) &&
-              (this->vectorSize()  == meanVec.size()      ) &&
-              (this->vectorSize()  == samVec.size()       ));
+  bool bRC = ((initialPos          <  this->subSequenceSize()) &&
+              (0                   <  numPos                 ) &&
+              ((initialPos+numPos) <= this->subSequenceSize()) &&
+              (this->vectorSize()  == meanVec.size()         ) &&
+              (this->vectorSize()  == samVec.size()          ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqSequenceOfVectorsClass<V,M>::sampleVariance()",
+                      "uqSequenceOfVectorsClass<V,M>::subSampleVariance()",
                       "invalid input data");
 
   uqScalarSequenceClass<double> data(m_env,0);
@@ -658,9 +658,9 @@ uqSequenceOfVectorsClass<V,M>::sampleVariance(
                            numPos,
                            i,
                            data);
-    samVec[i] = data.sampleVariance(0,
-                                    numPos,
-                                    meanVec[i]);
+    samVec[i] = data.subSampleVariance(0,
+                                       numPos,
+                                       meanVec[i]);
   }
 
   return;
@@ -674,11 +674,11 @@ uqSequenceOfVectorsClass<V,M>::unifiedSampleVariance(
   const V&     unifiedMeanVec,
   V&           unifiedSamVec) const
 {
-  bool bRC = ((initialPos          <  this->sequenceSize() ) &&
-              (0                   <  numPos               ) &&
-              ((initialPos+numPos) <= this->sequenceSize() ) &&
-              (this->vectorSize()  == unifiedMeanVec.size()) &&
-              (this->vectorSize()  == unifiedSamVec.size() ));
+  bool bRC = ((initialPos          <  this->subSequenceSize()) &&
+              (0                   <  numPos                 ) &&
+              ((initialPos+numPos) <= this->subSequenceSize()) &&
+              (this->vectorSize()  == unifiedMeanVec.size()  ) &&
+              (this->vectorSize()  == unifiedSamVec.size()   ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
                       "uqSequenceOfVectorsClass<V,M>::unifiedSampleVariance()",
@@ -710,11 +710,11 @@ uqSequenceOfVectorsClass<V,M>::populationVariance(
   const V&     meanVec,
   V&           popVec) const
 {
-  bool bRC = ((initialPos          <  this->sequenceSize()) &&
-              (0                   <  numPos              ) &&
-              ((initialPos+numPos) <= this->sequenceSize()) &&
-              (this->vectorSize()  == meanVec.size()      ) &&
-              (this->vectorSize()  == popVec.size()       ));
+  bool bRC = ((initialPos          <  this->subSequenceSize()) &&
+              (0                   <  numPos                 ) &&
+              ((initialPos+numPos) <= this->subSequenceSize()) &&
+              (this->vectorSize()  == meanVec.size()         ) &&
+              (this->vectorSize()  == popVec.size()          ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
                       "uqSequenceOfVectorsClass<V,M>::populationVariance()",
@@ -746,12 +746,12 @@ uqSequenceOfVectorsClass<V,M>::autoCovariance(
   unsigned int lag,
   V&           covVec) const
 {
-  bool bRC = ((initialPos          <  this->sequenceSize()) &&
-              (0                   <  numPos              ) &&
-              ((initialPos+numPos) <= this->sequenceSize()) &&
-              (this->vectorSize()  == meanVec.size()      ) &&
-              (lag                 <  numPos              ) && // lag should not be too large
-              (this->vectorSize()  == covVec.size()       ));
+  bool bRC = ((initialPos          <  this->subSequenceSize()) &&
+              (0                   <  numPos                 ) &&
+              ((initialPos+numPos) <= this->subSequenceSize()) &&
+              (this->vectorSize()  == meanVec.size()         ) &&
+              (lag                 <  numPos                 ) && // lag should not be too large
+              (this->vectorSize()  == covVec.size()          ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
                       "uqSequenceOfVectorsClass<V,M>::autoCovariance()",
@@ -783,11 +783,11 @@ uqSequenceOfVectorsClass<V,M>::autoCorrViaDef(
   unsigned int lag,
   V&           corrVec) const
 {
-  bool bRC = ((initialPos          <  this->sequenceSize()) &&
-              (0                   <  numPos              ) &&
-              ((initialPos+numPos) <= this->sequenceSize()) &&
-              (lag                 <  numPos              ) && // lag should not be too large
-              (this->vectorSize()  == corrVec.size()      ));
+  bool bRC = ((initialPos          <  this->subSequenceSize()) &&
+              (0                   <  numPos                 ) &&
+              ((initialPos+numPos) <= this->subSequenceSize()) &&
+              (lag                 <  numPos                 ) && // lag should not be too large
+              (this->vectorSize()  == corrVec.size()         ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
                       "uqSequenceOfVectorsClass<V,M>::autoCorrViaDef()",
@@ -818,11 +818,11 @@ uqSequenceOfVectorsClass<V,M>::autoCorrViaFft(
   const std::vector<unsigned int>& lags,
   std::vector<V*>&                 corrVecs) const
 {
-  bool bRC = ((initialPos          <  this->sequenceSize()) &&
-              (0                   <  numPos              ) &&
-              ((initialPos+numPos) <= this->sequenceSize()) &&
-              (0                   < lags.size()          ) &&
-              (lags[lags.size()-1] <  numPos              )); // lag should not be too large
+  bool bRC = ((initialPos          <  this->subSequenceSize()) &&
+              (0                   <  numPos                 ) &&
+              ((initialPos+numPos) <= this->subSequenceSize()) &&
+              (0                   < lags.size()             ) &&
+              (lags[lags.size()-1] <  numPos                 )); // lag should not be too large
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
                       "uqSequenceOfVectorsClass<V,M>::autoCorrViaFft()",
@@ -877,12 +877,12 @@ uqSequenceOfVectorsClass<V,M>::autoCorrViaFft(
   unsigned int numSum,
   V&           autoCorrsSumVec) const
 {
-  bool bRC = ((initialPos             <  this->sequenceSize()) &&
-              (0                      <  numPos              ) &&
-              ((initialPos+numPos)    <= this->sequenceSize()) &&
-              (0                      <  numSum              ) &&
-              (numSum                 <= numPos              ) &&
-              (autoCorrsSumVec.size() == this->vectorSize()  ));
+  bool bRC = ((initialPos             <  this->subSequenceSize()) &&
+              (0                      <  numPos                 ) &&
+              ((initialPos+numPos)    <= this->subSequenceSize()) &&
+              (0                      <  numSum                 ) &&
+              (numSum                 <= numPos                 ) &&
+              (autoCorrsSumVec.size() == this->vectorSize()     ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
                       "uqSequenceOfVectorsClass<V,M>::autoCorrViaFft(), for sum",
@@ -914,9 +914,9 @@ uqSequenceOfVectorsClass<V,M>::bmm(
   unsigned int batchLength,
   V&           bmmVec) const
 {
-  bool bRC = ((initialPos          <  this->sequenceSize()            ) &&
-              (batchLength         < (this->sequenceSize()-initialPos)) &&
-              (this->vectorSize()  == bmmVec.size()                   ));
+  bool bRC = ((initialPos          <  this->subSequenceSize()            ) &&
+              (batchLength         < (this->subSequenceSize()-initialPos)) &&
+              (this->vectorSize()  == bmmVec.size()                      ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
                       "uqSequenceOfVectorsClass<V,M>::bmm()",
@@ -928,7 +928,7 @@ uqSequenceOfVectorsClass<V,M>::bmm(
   for (unsigned int i = 0; i < numParams; ++i) {
     this->extractScalarSeq(initialPos,
                            1, // spacing
-                           this->sequenceSize()-initialPos,
+                           this->subSequenceSize()-initialPos,
                            i,
                            data);
     bmmVec[i] = data.bmm(0,
@@ -946,11 +946,11 @@ uqSequenceOfVectorsClass<V,M>::fftForward(
   unsigned int                        paramId,
   std::vector<std::complex<double> >& fftResult) const
 {
-  bool bRC = ((initialPos           <  this->sequenceSize()) &&
-              (paramId              <  this->vectorSize()  ) &&
-              (0                    <  fftSize             ) &&
-              ((initialPos+fftSize) <= this->sequenceSize()) &&
-              (fftSize              <  this->sequenceSize()));
+  bool bRC = ((initialPos           <  this->subSequenceSize()) &&
+              (paramId              <  this->vectorSize()     ) &&
+              (0                    <  fftSize                ) &&
+              ((initialPos+fftSize) <= this->subSequenceSize()) &&
+              (fftSize              <  this->subSequenceSize()));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
                       "uqSequenceOfVectorsClass<V,M>::fftForward()",
@@ -977,8 +977,8 @@ uqSequenceOfVectorsClass<V,M>::psd(
   unsigned int         paramId,
   std::vector<double>& psdResult) const
 {
-  bool bRC = ((initialPos < this->sequenceSize()) &&
-              (paramId    < this->vectorSize()  ));
+  bool bRC = ((initialPos < this->subSequenceSize()) &&
+              (paramId    < this->vectorSize()     ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
                       "uqSequenceOfVectorsClass<V,M>::psd()",
@@ -988,7 +988,7 @@ uqSequenceOfVectorsClass<V,M>::psd(
 
   this->extractScalarSeq(initialPos,
                          1, // spacing
-                         this->sequenceSize()-initialPos,
+                         this->subSequenceSize()-initialPos,
                          paramId,
                          data);
   data.psd(0,
@@ -1007,8 +1007,8 @@ uqSequenceOfVectorsClass<V,M>::psdAtZero(
   double       hopSizeRatio,
   V&           psdVec) const
 {
-  bool bRC = ((initialPos         <  this->sequenceSize()) &&
-              (this->vectorSize() == psdVec.size()       ));
+  bool bRC = ((initialPos         <  this->subSequenceSize()) &&
+              (this->vectorSize() == psdVec.size()          ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
                       "uqSequenceOfVectorsClass<V,M>::psdAtZero()",
@@ -1021,7 +1021,7 @@ uqSequenceOfVectorsClass<V,M>::psdAtZero(
   for (unsigned int i = 0; i < numParams; ++i) {
     this->extractScalarSeq(initialPos,
                            1, // spacing
-                           this->sequenceSize()-initialPos,
+                           this->subSequenceSize()-initialPos,
                            i,
                            data);
     data.psd(0,
@@ -1043,14 +1043,14 @@ uqSequenceOfVectorsClass<V,M>::geweke(
   double       ratioNb,
   V&           gewVec) const
 {
-  bool bRC = ((initialPos         <  this->sequenceSize()) &&
-              (this->vectorSize() == gewVec.size()       ));
+  bool bRC = ((initialPos         <  this->subSequenceSize()) &&
+              (this->vectorSize() == gewVec.size()          ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
                       "uqSequenceOfVectorsClass<V,M>::geweke()",
                       "invalid input data");
 
-  unsigned int numPos = this->sequenceSize() - initialPos;
+  unsigned int numPos = this->subSequenceSize() - initialPos;
   uqScalarSequenceClass<double> data(m_env,0);
 
   unsigned int numParams = this->vectorSize();
@@ -1070,20 +1070,20 @@ uqSequenceOfVectorsClass<V,M>::geweke(
 
 template <class V, class M>
 void
-uqSequenceOfVectorsClass<V,M>::minMax(
+uqSequenceOfVectorsClass<V,M>::subMinMax(
   unsigned int initialPos,
   V&           minVec,
   V&           maxVec) const
 {
-  bool bRC = ((initialPos         <  this->sequenceSize()) &&
-              (this->vectorSize() == minVec.size()       ) &&
-              (this->vectorSize() == maxVec.size()       ));
+  bool bRC = ((initialPos         <  this->subSequenceSize()) &&
+              (this->vectorSize() == minVec.size()          ) &&
+              (this->vectorSize() == maxVec.size()          ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqSequenceOfVectorsClass<V,M>::minMax()",
+                      "uqSequenceOfVectorsClass<V,M>::subMinMax()",
                       "invalid input data");
 
-  unsigned int numPos = this->sequenceSize() - initialPos;
+  unsigned int numPos = this->subSequenceSize() - initialPos;
   unsigned int numParams = this->vectorSize();
   uqScalarSequenceClass<double> data(m_env,0);
 
@@ -1093,7 +1093,7 @@ uqSequenceOfVectorsClass<V,M>::minMax(
                            numPos,
                            i,
                            data);
-    data.minMax(0,minVec[i],maxVec[i]);
+    data.subMinMax(0,minVec[i],maxVec[i]);
   }
 
   return;
@@ -1106,15 +1106,15 @@ uqSequenceOfVectorsClass<V,M>::unifiedMinMax(
   V&           unifiedMinVec,
   V&           unifiedMaxVec) const
 {
-  bool bRC = ((initialPos         <  this->sequenceSize()) &&
-              (this->vectorSize() == unifiedMinVec.size()) &&
-              (this->vectorSize() == unifiedMaxVec.size()));
+  bool bRC = ((initialPos         <  this->subSequenceSize()) &&
+              (this->vectorSize() == unifiedMinVec.size()   ) &&
+              (this->vectorSize() == unifiedMaxVec.size()   ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
                       "uqSequenceOfVectorsClass<V,M>::unifiedMinMax()",
                       "invalid input data");
 
-  unsigned int numPos = this->sequenceSize() - initialPos;
+  unsigned int numPos = this->subSequenceSize() - initialPos;
   unsigned int numParams = this->vectorSize();
   uqScalarSequenceClass<double> data(m_env,0);
 
@@ -1135,21 +1135,21 @@ uqSequenceOfVectorsClass<V,M>::unifiedMinMax(
 
 template <class V, class M>
 void
-uqSequenceOfVectorsClass<V,M>::histogram(
+uqSequenceOfVectorsClass<V,M>::subHistogram(
   unsigned int     initialPos,
   const V&         minVec,
   const V&         maxVec,
   std::vector<V*>& centersForAllBins,
   std::vector<V*>& quanttsForAllBins) const
 {
-  bool bRC = ((initialPos               <  this->sequenceSize()    ) &&
+  bool bRC = ((initialPos               <  this->subSequenceSize() ) &&
               (this->vectorSize()       == minVec.size()           ) &&
               (this->vectorSize()       == maxVec.size()           ) &&
               (0                        <  centersForAllBins.size()) &&
-              (centersForAllBins.size() == quanttsForAllBins.size() ));
+              (centersForAllBins.size() == quanttsForAllBins.size()));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqSequenceOfVectorsClass<V,M>::histogram()",
+                      "uqSequenceOfVectorsClass<V,M>::subHistogram()",
                       "invalid input data");
 
   for (unsigned int j = 0; j < quanttsForAllBins.size(); ++j) {
@@ -1157,7 +1157,7 @@ uqSequenceOfVectorsClass<V,M>::histogram(
     quanttsForAllBins [j] = new V(m_vectorSpace.zeroVector());
   }
 
-  unsigned int dataSize = this->sequenceSize() - initialPos;
+  unsigned int dataSize = this->subSequenceSize() - initialPos;
   unsigned int numParams = this->vectorSize();
   for (unsigned int i = 0; i < numParams; ++i) {
     uqScalarSequenceClass<double> data(m_env,dataSize);
@@ -1167,11 +1167,11 @@ uqSequenceOfVectorsClass<V,M>::histogram(
 
     std::vector<double      > centers(centersForAllBins.size(),0.);
     std::vector<unsigned int> quantts(quanttsForAllBins.size(), 0 );
-    data.histogram(0,
-                   minVec[i],
-                   maxVec[i],
-                   centers,
-                   quantts);
+    data.subHistogram(0,
+                      minVec[i],
+                      maxVec[i],
+                      centers,
+                      quantts);
 
     for (unsigned int j = 0; j < quantts.size(); ++j) {
       (*(centersForAllBins[j]))[i] = centers[j];
@@ -1191,11 +1191,11 @@ uqSequenceOfVectorsClass<V,M>::unifiedHistogram(
   std::vector<V*>& unifiedCentersForAllBins,
   std::vector<V*>& unifiedQuanttsForAllBins) const
 {
-  bool bRC = ((initialPos                      <  this->sequenceSize()           ) &&
+  bool bRC = ((initialPos                      <  this->subSequenceSize()        ) &&
               (this->vectorSize()              == unifiedMinVec.size()           ) &&
               (this->vectorSize()              == unifiedMaxVec.size()           ) &&
               (0                               <  unifiedCentersForAllBins.size()) &&
-              (unifiedCentersForAllBins.size() == unifiedQuanttsForAllBins.size() ));
+              (unifiedCentersForAllBins.size() == unifiedQuanttsForAllBins.size()));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
                       "uqSequenceOfVectorsClass<V,M>::unifiedHistogram()",
@@ -1206,7 +1206,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedHistogram(
     unifiedQuanttsForAllBins [j] = new V(m_vectorSpace.zeroVector());
   }
 
-  unsigned int dataSize = this->sequenceSize() - initialPos;
+  unsigned int dataSize = this->subSequenceSize() - initialPos;
   unsigned int numParams = this->vectorSize();
   for (unsigned int i = 0; i < numParams; ++i) {
     uqScalarSequenceClass<double> data(m_env,dataSize);
@@ -1234,18 +1234,18 @@ uqSequenceOfVectorsClass<V,M>::unifiedHistogram(
 
 template <class V, class M>
 void
-uqSequenceOfVectorsClass<V,M>::interQuantileRange(
+uqSequenceOfVectorsClass<V,M>::subInterQuantileRange(
   unsigned int initialPos,
   V&           iqrVec) const
 {
-  bool bRC = ((initialPos         <  this->sequenceSize()) &&
-              (this->vectorSize() == iqrVec.size()       ));
+  bool bRC = ((initialPos         <  this->subSequenceSize()) &&
+              (this->vectorSize() == iqrVec.size()          ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqSequenceOfVectorsClass<V,M>::interQuantileRange()",
+                      "uqSequenceOfVectorsClass<V,M>::subInterQuantileRange()",
                       "invalid input data");
 
-  unsigned int numPos = this->sequenceSize() - initialPos;
+  unsigned int numPos = this->subSequenceSize() - initialPos;
   uqScalarSequenceClass<double> data(m_env,0);
 
   unsigned int numParams = this->vectorSize();
@@ -1255,7 +1255,7 @@ uqSequenceOfVectorsClass<V,M>::interQuantileRange(
                            numPos,
                            i,
                            data);
-    iqrVec[i] = data.interQuantileRange(0);
+    iqrVec[i] = data.subInterQuantileRange(0);
   }
 
   return;
@@ -1267,14 +1267,14 @@ uqSequenceOfVectorsClass<V,M>::unifiedInterQuantileRange(
   unsigned int initialPos,
   V&           unifiedIqrVec) const
 {
-  bool bRC = ((initialPos         <  this->sequenceSize()) &&
-              (this->vectorSize() == unifiedIqrVec.size()));
+  bool bRC = ((initialPos         <  this->subSequenceSize()) &&
+              (this->vectorSize() == unifiedIqrVec.size()   ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
                       "uqSequenceOfVectorsClass<V,M>::unifiedInterQuantileRange()",
                       "invalid input data");
 
-  unsigned int numPos = this->sequenceSize() - initialPos;
+  unsigned int numPos = this->subSequenceSize() - initialPos;
   uqScalarSequenceClass<double> data(m_env,0);
 
   unsigned int numParams = this->vectorSize();
@@ -1293,20 +1293,20 @@ uqSequenceOfVectorsClass<V,M>::unifiedInterQuantileRange(
 
 template <class V, class M>
 void
-uqSequenceOfVectorsClass<V,M>::scalesForKDE(
+uqSequenceOfVectorsClass<V,M>::subScalesForKDE(
   unsigned int initialPos,
   const V&     iqrVec,
   V&           scaleVec) const
 {
-  bool bRC = ((initialPos         <  this->sequenceSize()) &&
-              (this->vectorSize() == iqrVec.size()       ) &&
-              (this->vectorSize() == scaleVec.size()     ));
+  bool bRC = ((initialPos         <  this->subSequenceSize()) &&
+              (this->vectorSize() == iqrVec.size()          ) &&
+              (this->vectorSize() == scaleVec.size()        ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqSequenceOfVectorsClass<V,M>::scalesForKDE()",
+                      "uqSequenceOfVectorsClass<V,M>::subScalesForKDE()",
                       "invalid input data");
 
-  unsigned int numPos = this->sequenceSize() - initialPos;
+  unsigned int numPos = this->subSequenceSize() - initialPos;
   uqScalarSequenceClass<double> data(m_env,0);
 
   unsigned int numParams = this->vectorSize();
@@ -1316,8 +1316,8 @@ uqSequenceOfVectorsClass<V,M>::scalesForKDE(
                            numPos,
                            i,
                            data);
-    scaleVec[i] = data.scaleForKDE(0,
-                                   iqrVec[i]);
+    scaleVec[i] = data.subScaleForKDE(0,
+                                      iqrVec[i]);
   }
 
   return;
@@ -1330,15 +1330,15 @@ uqSequenceOfVectorsClass<V,M>::unifiedScalesForKDE(
   const V&     unifiedIqrVec,
   V&           unifiedScaleVec) const
 {
-  bool bRC = ((initialPos         <  this->sequenceSize()  ) &&
-              (this->vectorSize() == unifiedIqrVec.size()  ) &&
-              (this->vectorSize() == unifiedScaleVec.size()));
+  bool bRC = ((initialPos         <  this->subSequenceSize()) &&
+              (this->vectorSize() == unifiedIqrVec.size()   ) &&
+              (this->vectorSize() == unifiedScaleVec.size() ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
                       "uqSequenceOfVectorsClass<V,M>::unifiedScalesForKDE()",
                       "invalid input data");
 
-  unsigned int numPos = this->sequenceSize() - initialPos;
+  unsigned int numPos = this->subSequenceSize() - initialPos;
   uqScalarSequenceClass<double> data(m_env,0);
 
   unsigned int numParams = this->vectorSize();
@@ -1358,7 +1358,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedScalesForKDE(
 
 template <class V, class M>
 void
-uqSequenceOfVectorsClass<V,M>::gaussianKDE(
+uqSequenceOfVectorsClass<V,M>::sabGaussianKDE(
   const V& evalParamVec,
         V& densityVec) const
 {
@@ -1368,11 +1368,11 @@ uqSequenceOfVectorsClass<V,M>::gaussianKDE(
   for (unsigned int i = 0; i < numParams; ++i) {
     this->extractScalarSeq(0, // Use the whole chain
                            1, // spacing
-                           this->sequenceSize(),
+                           this->subSequenceSize(),
                            i,
                            data);
 
-    densityVec[i] = data.gaussianKDE(evalParamVec[i]);
+    densityVec[i] = data.sabGaussianKDE(evalParamVec[i]);
   }
 
   return;
@@ -1380,22 +1380,22 @@ uqSequenceOfVectorsClass<V,M>::gaussianKDE(
 
 template <class V, class M>
 void
-uqSequenceOfVectorsClass<V,M>::gaussianKDE(
+uqSequenceOfVectorsClass<V,M>::subGaussianKDE(
   unsigned int           initialPos,
   const V&               scaleVec,
   const std::vector<V*>& evalParamVecs,
   std::vector<V*>&       densityVecs) const
 {
-  bool bRC = ((initialPos           <  this->sequenceSize()) &&
-              (this->vectorSize()   == scaleVec.size()     ) &&
-              (0                    <  evalParamVecs.size()) &&
-              (evalParamVecs.size() == densityVecs.size()  ));
+  bool bRC = ((initialPos           <  this->subSequenceSize()) &&
+              (this->vectorSize()   == scaleVec.size()        ) &&
+              (0                    <  evalParamVecs.size()   ) &&
+              (evalParamVecs.size() == densityVecs.size()     ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqSequenceOfVectorsClass<V,M>::gaussianKDE()",
+                      "uqSequenceOfVectorsClass<V,M>::subGaussianKDE()",
                       "invalid input data");
 
-  unsigned int numPos = this->sequenceSize() - initialPos;
+  unsigned int numPos = this->subSequenceSize() - initialPos;
   uqScalarSequenceClass<double> data(m_env,0);
 
   unsigned int numEvals = evalParamVecs.size();
@@ -1417,10 +1417,10 @@ uqSequenceOfVectorsClass<V,M>::gaussianKDE(
       evalParams[j] = (*evalParamVecs[j])[i];
     }
 
-    data.gaussianKDE(0,
-                     scaleVec[i],
-                     evalParams,
-                     densities);
+    data.subGaussianKDE(0,
+                        scaleVec[i],
+                        evalParams,
+                        densities);
 
     for (unsigned int j = 0; j < numEvals; ++j) {
       (*densityVecs[j])[i] = densities[j];
@@ -1438,16 +1438,16 @@ uqSequenceOfVectorsClass<V,M>::unifiedGaussianKDE(
   const std::vector<V*>& unifiedEvalParamVecs,
   std::vector<V*>&       unifiedDensityVecs) const
 {
-  bool bRC = ((initialPos                  <  this->sequenceSize()       ) &&
+  bool bRC = ((initialPos                  <  this->subSequenceSize()    ) &&
               (this->vectorSize()          == unifiedScaleVec.size()     ) &&
               (0                           <  unifiedEvalParamVecs.size()) &&
               (unifiedEvalParamVecs.size() == unifiedDensityVecs.size()  ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqSequenceOfVectorsClass<V,M>::gaussianKDE()",
+                      "uqSequenceOfVectorsClass<V,M>::unifiedGaussianKDE()",
                       "invalid input data");
 
-  unsigned int numPos = this->sequenceSize() - initialPos;
+  unsigned int numPos = this->subSequenceSize() - initialPos;
   uqScalarSequenceClass<double> data(m_env,0);
 
   unsigned int numEvals = unifiedEvalParamVecs.size();
@@ -1500,13 +1500,13 @@ uqSequenceOfVectorsClass<V,M>::filter(
     *m_env.subScreenFile() << "Entering uqSequenceOfVectorsClass<V,M>::filter()"
                            << ": initialPos = "   << initialPos
                            << ", spacing = "      << spacing
-                           << ", sequenceSize = " << this->sequenceSize()
+                           << ", sequenceSize = " << this->subSequenceSize()
                            << std::endl;
   }
 
   unsigned int i = 0;
   unsigned int j = initialPos;
-  unsigned int originalSequenceSize = this->sequenceSize();
+  unsigned int originalSequenceSize = this->subSequenceSize();
   while (j < originalSequenceSize) {
     if (i != j) {
       //*m_env.subScreenFile() << i << "--" << j << " ";
@@ -1524,7 +1524,7 @@ uqSequenceOfVectorsClass<V,M>::filter(
     *m_env.subScreenFile() << "Leaving uqSequenceOfVectorsClass<V,M>::filter()"
                            << ": initialPos = "   << initialPos
                            << ", spacing = "      << spacing
-                           << ", sequenceSize = " << this->sequenceSize()
+                           << ", sequenceSize = " << this->subSequenceSize()
                            << std::endl;
   }
 
@@ -1533,20 +1533,20 @@ uqSequenceOfVectorsClass<V,M>::filter(
 
 template <class V, class M>
 void
-uqSequenceOfVectorsClass<V,M>::printContents(std::ofstream& ofsvar) const
+uqSequenceOfVectorsClass<V,M>::subPrintContents(std::ofstream& ofsvar) const
 {
   bool okSituation = (m_env.subRank() >= 0);
   UQ_FATAL_TEST_MACRO(!okSituation,
                       m_env.rank(),
-                      "uqSequenceOfVectorsClass<V,M>::printContents()",
+                      "uqSequenceOfVectorsClass<V,M>::subPrintContents()",
                       "unexpected subRank");
 
-  ofsvar << m_name << "_sub" << m_env.subIdString() << " = zeros(" << this->sequenceSize()
+  ofsvar << m_name << "_sub" << m_env.subIdString() << " = zeros(" << this->subSequenceSize()
          << ","                                                    << this->vectorSize()
          << ");"
          << std::endl;
   ofsvar << m_name << "_sub" << m_env.subIdString() << " = [";
-  unsigned int chainSize = this->sequenceSize();
+  unsigned int chainSize = this->subSequenceSize();
   for (unsigned int j = 0; j < chainSize; ++j) {
     bool savedVectorPrintState = m_seq[j]->getPrintHorizontally();
     m_seq[j]->setPrintHorizontally(true);
@@ -1561,22 +1561,22 @@ uqSequenceOfVectorsClass<V,M>::printContents(std::ofstream& ofsvar) const
 
 template <class V, class M>
 void
-uqSequenceOfVectorsClass<V,M>::printUnifiedContents(std::ofstream& ofsvar) const
+uqSequenceOfVectorsClass<V,M>::unifiedPrintContents(std::ofstream& ofsvar) const
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.rank(),
-                      "uqSequenceOfVectorsClass<V,M>::printUnifiedContents(1)",
+                      "uqSequenceOfVectorsClass<V,M>::unifiedPrintContents(1)",
                       "not implemented yet");
   return;
 }
 
 template <class V, class M>
 void
-uqSequenceOfVectorsClass<V,M>::printUnifiedContents(const std::string& fileName) const
+uqSequenceOfVectorsClass<V,M>::unifiedPrintContents(const std::string& fileName) const
 {
   m_env.fullComm().Barrier();
   if (m_env.subScreenFile()) {
-    *m_env.subScreenFile() << "Entering uqSequenceOfVectorsClass<V,M>::printUnifiedContents()"
+    *m_env.subScreenFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedPrintContents()"
                            << ": fullRank "       << m_env.rank()
                            << ", subEnvironment " << m_env.subId()
                            << ", subRank "        << m_env.subRank()
@@ -1597,14 +1597,14 @@ uqSequenceOfVectorsClass<V,M>::printUnifiedContents(const std::string& fileName)
                                     unifiedOfsVar);
 
         if (r == 0) {
-          *unifiedOfsVar << m_name << "_unified" << " = zeros(" << this->sequenceSize()*m_env.inter0Comm().NumProc()
+          *unifiedOfsVar << m_name << "_unified" << " = zeros(" << this->subSequenceSize()*m_env.inter0Comm().NumProc()
                          << ","                                 << this->vectorSize()
                          << ");"
                          << std::endl;
           *unifiedOfsVar << m_name << "_unified" << " = [";
         }
 
-        unsigned int chainSize = this->sequenceSize();
+        unsigned int chainSize = this->subSequenceSize();
         for (unsigned int j = 0; j < chainSize; ++j) {
           bool savedVectorPrintState = m_seq[j]->getPrintHorizontally();
           m_seq[j]->setPrintHorizontally(true);
@@ -1630,7 +1630,7 @@ uqSequenceOfVectorsClass<V,M>::printUnifiedContents(const std::string& fileName)
   }
 
   if (m_env.subScreenFile()) {
-    *m_env.subScreenFile() << "Leaving uqSequenceOfVectorsClass<V,M>::printUnifiedContents()"
+    *m_env.subScreenFile() << "Leaving uqSequenceOfVectorsClass<V,M>::unifiedPrintContents()"
                            << std::endl;
   }
   m_env.fullComm().Barrier();

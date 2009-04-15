@@ -139,7 +139,7 @@ public:
                                            const std::vector<V*>&   evaluationParamVecs,
                                            std::vector<V*>&         densityVecs) const;
         void         printContents        (std::ofstream&                      ofsvar) const;
-        void         printUnifiedContents (std::ofstream&                      ofsvar) const;
+        void         unifiedPrintContents (std::ofstream&                      ofsvar) const;
         void         select               (const std::vector<unsigned int>& idsOfUniquePositions);
         void         filter               (unsigned int             initialPos,
                                            unsigned int             spacing);
@@ -1007,11 +1007,11 @@ uqArrayOfSequencesClass<V,M>::printContents(std::ofstream& ofsvar) const
 
 template <class V, class M>
 void
-uqArrayOfSequencesClass<V,M>::printUnifiedContents(std::ofstream& ofsvar) const
+uqArrayOfSequencesClass<V,M>::unifiedPrintContents(std::ofstream& ofsvar) const
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.rank(),
-                      "uqArrayOfSequencesClass<V,M>::printUnifiedContents()",
+                      "uqArrayOfSequencesClass<V,M>::unifiedPrintContents()",
                       "not implemented yet");
   return;
 }

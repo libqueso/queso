@@ -102,17 +102,17 @@ private:
         uqGenericVectorRVClass   <Q_V,Q_M>&         m_qoiRv; // FIX ME: Maybe not always generic ?
 
         uqBaseVectorPdfClass     <Q_V,Q_M>*         m_solutionPdf;
-        uqBaseVectorMdfClass     <Q_V,Q_M>*         m_solutionMdf;
-        uqBaseVectorCdfClass     <Q_V,Q_M>*         m_solutionCdf;
+        uqBaseVectorMdfClass     <Q_V,Q_M>*         m_subSolutionMdf;
+        uqBaseVectorCdfClass     <Q_V,Q_M>*         m_subSolutionCdf;
         uqBaseVectorRealizerClass<Q_V,Q_M>*         m_solutionRealizer;
 
         uqMonteCarloSGClass      <P_V,P_M,Q_V,Q_M>* m_mcSeqGenerator;
         uqBaseVectorSequenceClass<Q_V,Q_M>*         m_paramChain;
         uqBaseVectorSequenceClass<Q_V,Q_M>*         m_qoiChain;
-        uqArrayOfOneDGridsClass  <Q_V,Q_M>*         m_mdfGrids;
-        uqArrayOfOneDTablesClass <Q_V,Q_M>*         m_mdfValues;
-        uqArrayOfOneDGridsClass  <Q_V,Q_M>*         m_cdfGrids;
-        uqArrayOfOneDTablesClass <Q_V,Q_M>*         m_cdfValues;
+        uqArrayOfOneDGridsClass  <Q_V,Q_M>*         m_subMdfGrids;
+        uqArrayOfOneDTablesClass <Q_V,Q_M>*         m_subMdfValues;
+        uqArrayOfOneDGridsClass  <Q_V,Q_M>*         m_subCdfGrids;
+        uqArrayOfOneDTablesClass <Q_V,Q_M>*         m_subCdfValues;
 
         uqBaseVectorCdfClass     <Q_V,Q_M>*         m_unifiedSolutionCdf;
         uqArrayOfOneDGridsClass  <Q_V,Q_M>*         m_unifiedCdfGrids;
@@ -153,16 +153,16 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::uqStatisticalForwardProblemCl
   m_qoiFunction           (qoiFunction),
   m_qoiRv                 (qoiRv),
   m_solutionPdf           (NULL),
-  m_solutionMdf           (NULL),
-  m_solutionCdf           (NULL),
+  m_subSolutionMdf        (NULL),
+  m_subSolutionCdf        (NULL),
   m_solutionRealizer      (NULL),
   m_mcSeqGenerator        (NULL),
   m_paramChain            (NULL),
   m_qoiChain              (NULL),
-  m_mdfGrids              (NULL),
-  m_mdfValues             (NULL),
-  m_cdfGrids              (NULL),
-  m_cdfValues             (NULL),
+  m_subMdfGrids           (NULL),
+  m_subMdfValues          (NULL),
+  m_subCdfGrids           (NULL),
+  m_subCdfValues          (NULL),
   m_unifiedSolutionCdf    (NULL),
   m_unifiedCdfGrids       (NULL),
   m_unifiedCdfValues      (NULL)
@@ -197,10 +197,10 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::~uqStatisticalForwardProblemC
   if (m_unifiedCdfValues  ) delete m_unifiedCdfValues;
   if (m_unifiedCdfGrids   ) delete m_unifiedCdfGrids;
   if (m_unifiedSolutionCdf) delete m_unifiedSolutionCdf;
-  if (m_cdfValues         ) delete m_cdfValues;
-  if (m_cdfGrids          ) delete m_cdfGrids;
-  if (m_mdfValues         ) delete m_mdfValues;
-  if (m_mdfGrids          ) delete m_mdfGrids;
+  if (m_subCdfValues      ) delete m_subCdfValues;
+  if (m_subCdfGrids       ) delete m_subCdfGrids;
+  if (m_subMdfValues      ) delete m_subMdfValues;
+  if (m_subMdfGrids       ) delete m_subMdfGrids;
   if (m_paramChain) {
     m_paramChain->clear();
     delete m_paramChain;
@@ -211,8 +211,8 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::~uqStatisticalForwardProblemC
   }
   if (m_mcSeqGenerator  ) delete m_mcSeqGenerator;
   if (m_solutionRealizer) delete m_solutionRealizer;
-  if (m_solutionCdf     ) delete m_solutionCdf;
-  if (m_solutionMdf     ) delete m_solutionMdf;
+  if (m_subSolutionCdf  ) delete m_subSolutionCdf;
+  if (m_subSolutionMdf  ) delete m_subSolutionMdf;
   if (m_solutionPdf     ) delete m_solutionPdf;
   if (m_optionsDesc     ) delete m_optionsDesc;
 }
@@ -316,8 +316,8 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   }
 
   if (m_solutionPdf     ) delete m_solutionPdf;
-  if (m_solutionMdf     ) delete m_solutionMdf;
-  if (m_solutionCdf     ) delete m_solutionCdf;
+  if (m_subSolutionMdf  ) delete m_subSolutionMdf;
+  if (m_subSolutionCdf  ) delete m_subSolutionCdf;
   if (m_solutionRealizer) delete m_solutionRealizer;
   if (m_mcSeqGenerator  ) delete m_mcSeqGenerator;
   if (m_paramChain) {
@@ -328,10 +328,10 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
     m_qoiChain->clear();
     delete m_qoiChain;
   }
-  if (m_mdfGrids          ) delete m_mdfGrids;
-  if (m_mdfValues         ) delete m_mdfValues;
-  if (m_cdfGrids          ) delete m_cdfGrids;
-  if (m_cdfValues         ) delete m_cdfValues;
+  if (m_subMdfGrids       ) delete m_subMdfGrids;
+  if (m_subMdfValues      ) delete m_subMdfValues;
+  if (m_subCdfGrids       ) delete m_subCdfGrids;
+  if (m_subCdfValues      ) delete m_subCdfValues;
   if (m_unifiedSolutionCdf) delete m_unifiedSolutionCdf;
   if (m_unifiedCdfGrids   ) delete m_unifiedCdfGrids;
   if (m_unifiedCdfValues  ) delete m_unifiedCdfValues;
@@ -353,16 +353,16 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   m_qoiRv.setRealizer(*m_solutionRealizer);
 
   // Compute output mdf: uniform sampling approach
-  m_mdfGrids  = new uqArrayOfOneDGridsClass <Q_V,Q_M>((m_prefix+"QoiMdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
-  m_mdfValues = new uqArrayOfOneDTablesClass<Q_V,Q_M>((m_prefix+"QoiMdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
-  m_qoiChain->uniformlySampledMdf(numEvaluationPointsVec, // input
-                                  *m_mdfGrids,            // output
-                                  *m_mdfValues);          // output
+  m_subMdfGrids  = new uqArrayOfOneDGridsClass <Q_V,Q_M>((m_prefix+"QoiMdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
+  m_subMdfValues = new uqArrayOfOneDTablesClass<Q_V,Q_M>((m_prefix+"QoiMdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
+  m_qoiChain->subUniformlySampledMdf(numEvaluationPointsVec, // input
+                                     *m_subMdfGrids,         // output
+                                     *m_subMdfValues);       // output
 
-  m_solutionMdf = new uqSampledVectorMdfClass<Q_V,Q_M>((m_prefix+"Qoi").c_str(),
-                                                       *m_mdfGrids,
-                                                       *m_mdfValues);
-  m_qoiRv.setMdf(*m_solutionMdf);
+  m_subSolutionMdf = new uqSampledVectorMdfClass<Q_V,Q_M>((m_prefix+"Qoi").c_str(),
+                                                          *m_subMdfGrids,
+                                                          *m_subMdfValues);
+  m_qoiRv.setMdf(*m_subSolutionMdf);
 
   // Compute output cdf: uniform sampling approach
   std::string subCoreName_qoiCdf(m_prefix+    "QoiCdf_");
@@ -373,16 +373,16 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   std::string uniCoreName_solutionCdf(m_prefix+"unifQoi");
   if (m_env.numSubEnvironments() == 1) subCoreName_solutionCdf = uniCoreName_solutionCdf;
 
-  m_cdfGrids  = new uqArrayOfOneDGridsClass <Q_V,Q_M>(subCoreName_qoiCdf.c_str(),m_qoiRv.imageSet().vectorSpace());
-  m_cdfValues = new uqArrayOfOneDTablesClass<Q_V,Q_M>(subCoreName_qoiCdf.c_str(),m_qoiRv.imageSet().vectorSpace());
-  m_qoiChain->uniformlySampledCdf(numEvaluationPointsVec, // input
-                                  *m_cdfGrids,            // output
-                                  *m_cdfValues);          // output
+  m_subCdfGrids  = new uqArrayOfOneDGridsClass <Q_V,Q_M>(subCoreName_qoiCdf.c_str(),m_qoiRv.imageSet().vectorSpace());
+  m_subCdfValues = new uqArrayOfOneDTablesClass<Q_V,Q_M>(subCoreName_qoiCdf.c_str(),m_qoiRv.imageSet().vectorSpace());
+  m_qoiChain->subUniformlySampledCdf(numEvaluationPointsVec, // input
+                                     *m_subCdfGrids,         // output
+                                     *m_subCdfValues);       // output
 
-  m_solutionCdf = new uqSampledVectorCdfClass<Q_V,Q_M>(subCoreName_solutionCdf.c_str(),
-                                                       *m_cdfGrids,
-                                                       *m_cdfValues);
-  m_qoiRv.setCdf(*m_solutionCdf);
+  m_subSolutionCdf = new uqSampledVectorCdfClass<Q_V,Q_M>(subCoreName_solutionCdf.c_str(),
+                                                          *m_subCdfGrids,
+                                                          *m_subCdfValues);
+  m_qoiRv.setCdf(*m_subSolutionCdf);
 
   // Compute unified cdf if necessary
   if (m_env.numSubEnvironments() > 1) {

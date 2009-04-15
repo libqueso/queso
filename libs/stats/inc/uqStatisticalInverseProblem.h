@@ -97,14 +97,14 @@ private:
 
         uqVectorSetClass          <P_V,P_M>* m_solutionDomain;
         uqBaseVectorPdfClass      <P_V,P_M>* m_solutionPdf;
-        uqBaseVectorMdfClass      <P_V,P_M>* m_solutionMdf;
-        uqBaseVectorCdfClass      <P_V,P_M>* m_solutionCdf;
+        uqBaseVectorMdfClass      <P_V,P_M>* m_subSolutionMdf;
+        uqBaseVectorCdfClass      <P_V,P_M>* m_subSolutionCdf;
         uqBaseVectorRealizerClass <P_V,P_M>* m_solutionRealizer;
 
         uqMarkovChainSGClass      <P_V,P_M>* m_mcSeqGenerator;
         uqBaseVectorSequenceClass <P_V,P_M>* m_chain;
-        uqArrayOfOneDGridsClass   <P_V,P_M>* m_mdfGrids;
-        uqArrayOfOneDTablesClass  <P_V,P_M>* m_mdfValues;
+        uqArrayOfOneDGridsClass   <P_V,P_M>* m_subMdfGrids;
+        uqArrayOfOneDTablesClass  <P_V,P_M>* m_subMdfValues;
 };
 
 template<class P_V,class P_M>
@@ -138,8 +138,8 @@ uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
   m_postRv                (postRv),
   m_solutionDomain        (NULL),
   m_solutionPdf           (NULL),
-  m_solutionMdf           (NULL),
-  m_solutionCdf           (NULL),
+  m_subSolutionMdf        (NULL),
+  m_subSolutionCdf        (NULL),
   m_solutionRealizer      (NULL),
   m_mcSeqGenerator        (NULL),
   m_chain                 (NULL)
@@ -179,8 +179,8 @@ uqStatisticalInverseProblemClass<P_V,P_M>::~uqStatisticalInverseProblemClass()
   }
   if (m_mcSeqGenerator  ) delete m_mcSeqGenerator;
   if (m_solutionRealizer) delete m_solutionRealizer;
-  if (m_solutionCdf     ) delete m_solutionCdf;
-  if (m_solutionMdf     ) delete m_solutionMdf;
+  if (m_subSolutionCdf  ) delete m_subSolutionCdf;
+  if (m_subSolutionMdf  ) delete m_subSolutionMdf;
   if (m_solutionPdf     ) delete m_solutionPdf;
   if (m_solutionDomain  ) delete m_solutionDomain;
   if (m_optionsDesc     ) delete m_optionsDesc;
@@ -278,8 +278,8 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
 
   if (m_mcSeqGenerator  ) delete m_mcSeqGenerator;
   if (m_solutionRealizer) delete m_solutionRealizer;
-  if (m_solutionCdf     ) delete m_solutionCdf;
-  if (m_solutionMdf     ) delete m_solutionMdf;
+  if (m_subSolutionCdf  ) delete m_subSolutionCdf;
+  if (m_subSolutionMdf  ) delete m_subSolutionMdf;
   if (m_solutionPdf     ) delete m_solutionPdf;
   if (m_solutionDomain  ) delete m_solutionDomain;
 
@@ -310,15 +310,15 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   //m_env.fullComm().Barrier();
 
   // Compute output mdf: uniform sampling approach
-  m_mdfGrids  = new uqArrayOfOneDGridsClass <P_V,P_M>((m_prefix+"Mdf_").c_str(),m_postRv.imageSet().vectorSpace());
-  m_mdfValues = new uqArrayOfOneDTablesClass<P_V,P_M>((m_prefix+"Mdf_").c_str(),m_postRv.imageSet().vectorSpace());
-  m_chain->uniformlySampledMdf(numEvaluationPointsVec, // input
-                               *m_mdfGrids,            // output
-                               *m_mdfValues);          // output
-  m_solutionMdf = new uqSampledVectorMdfClass<P_V,P_M>(m_prefix.c_str(),
-                                                       *m_mdfGrids,
-                                                       *m_mdfValues);
-  m_postRv.setMdf(*m_solutionMdf);
+  m_subMdfGrids  = new uqArrayOfOneDGridsClass <P_V,P_M>((m_prefix+"Mdf_").c_str(),m_postRv.imageSet().vectorSpace());
+  m_subMdfValues = new uqArrayOfOneDTablesClass<P_V,P_M>((m_prefix+"Mdf_").c_str(),m_postRv.imageSet().vectorSpace());
+  m_chain->subUniformlySampledMdf(numEvaluationPointsVec, // input
+                                  *m_subMdfGrids,         // output
+                                  *m_subMdfValues);       // output
+  m_subSolutionMdf = new uqSampledVectorMdfClass<P_V,P_M>(m_prefix.c_str(),
+                                                          *m_subMdfGrids,
+                                                          *m_subMdfValues);
+  m_postRv.setMdf(*m_subSolutionMdf);
 
   if ((m_outputFileName                  != UQ_CALIB_PROBLEM_FILENAME_FOR_NO_OUTPUT_FILE) &&
       (m_outputAllow.find(m_env.subId()) != m_outputAllow.end()                         )) {

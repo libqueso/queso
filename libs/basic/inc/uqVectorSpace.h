@@ -220,7 +220,7 @@ uqVectorSpaceClass<V,M>::newGaussianMatrix(
     if ((variance == INFINITY) ||
         (variance == NAN     )) {
       tmpVec[i] = pow( fabs(initialValues[i])*0.05,2. );
-      if ( tmpVec[i] == 0 ) tmpVec[i] = 1.;
+      if ( tmpVec[i] == 0. ) tmpVec[i] = 1.;
     }
     else if (variance == 0.) {
       tmpVec[i] = 1.;

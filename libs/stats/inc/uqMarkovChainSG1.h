@@ -61,6 +61,8 @@
 #define UQ_MAC_SG_FILTERED_CHAIN_OUTPUT_FILE_NAME_ODV  UQ_MAC_SG_FILENAME_FOR_NO_OUTPUT_FILE
 #define UQ_MAC_SG_FILTERED_CHAIN_OUTPUT_ALLOW_ODV      ""
 #define UQ_MAC_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV     0
+#define UQ_MAC_SG_MH_DISPLAY_CANDIDATES_ODV            0
+#define UQ_MAC_SG_MH_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV    1
 #define UQ_MAC_SG_TK_USE_LOCAL_HESSIAN_ODV             0
 #define UQ_MAC_SG_TK_USE_NEWTON_COMPONENT_ODV          1
 #define UQ_MAC_SG_DR_MAX_NUM_EXTRA_STAGES_ODV          0
@@ -170,6 +172,8 @@ private:
         std::string                     m_option_filteredChain_outputFileName;
         std::string                     m_option_filteredChain_outputAllow;
         std::string                     m_option_filteredChain_computeStats;
+	std::string                     m_option_mh_displayCandidates;
+	std::string                     m_option_mh_putOutOfBoundsInChain;
 	std::string                     m_option_tk_useLocalHessian;
 	std::string                     m_option_tk_useNewtonComponent;
         std::string                     m_option_dr_maxNumExtraStages;
@@ -200,6 +204,8 @@ private:
         bool                            m_filteredChainComputeStats;
         uqChainStatisticalOptionsClass* m_filteredChainStatisticalOptions;
 
+        bool                            m_mhDisplayCandidates;
+        bool                            m_mhPutOutOfBoundsInChain;
         bool                            m_tkUseLocalHessian;
         bool                            m_tkUseNewtonComponent;
         unsigned int                    m_drMaxNumExtraStages;
@@ -269,6 +275,8 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   m_option_filteredChain_outputFileName  (m_prefix + "filteredChain_outputFileName"  ),
   m_option_filteredChain_outputAllow     (m_prefix + "filteredChain_outputAllow"     ),
   m_option_filteredChain_computeStats    (m_prefix + "filteredChain_computeStats"    ),
+  m_option_mh_displayCandidates          (m_prefix + "mh_displayCandidates"          ),
+  m_option_mh_putOutOfBoundsInChain      (m_prefix + "mh_putOutOfBoundsInChain"      ),
   m_option_tk_useLocalHessian            (m_prefix + "tk_useLocalHessian"            ),
   m_option_tk_useNewtonComponent         (m_prefix + "tk_useNewtonComponent"         ),
   m_option_dr_maxNumExtraStages          (m_prefix + "dr_maxNumExtraStages"          ),
@@ -295,6 +303,8 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
 //m_filteredChainOutputAllow             (),
   m_filteredChainComputeStats            (UQ_MAC_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV),
   m_filteredChainStatisticalOptions      (NULL),
+  m_mhDisplayCandidates                  (UQ_MAC_SG_MH_DISPLAY_CANDIDATES_ODV),
+  m_mhPutOutOfBoundsInChain              (UQ_MAC_SG_MH_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV),
   m_tkUseLocalHessian                    (UQ_MAC_SG_TK_USE_LOCAL_HESSIAN_ODV),
   m_tkUseNewtonComponent                 (UQ_MAC_SG_TK_USE_NEWTON_COMPONENT_ODV),
   m_drMaxNumExtraStages                  (UQ_MAC_SG_DR_MAX_NUM_EXTRA_STAGES_ODV),
@@ -488,6 +498,8 @@ uqMarkovChainSGClass<P_V,P_M>::defineMyOptions(
     (m_option_filteredChain_outputFileName.c_str(),   po::value<std::string >()->default_value(UQ_MAC_SG_FILTERED_CHAIN_OUTPUT_FILE_NAME_ODV ), "name of output file for filtered chain"                          )
     (m_option_filteredChain_outputAllow.c_str(),      po::value<std::string >()->default_value(UQ_MAC_SG_FILTERED_CHAIN_OUTPUT_ALLOW_ODV     ), "subEnvs that will write to output file for filtered chain"       )
     (m_option_filteredChain_computeStats.c_str(),     po::value<bool        >()->default_value(UQ_MAC_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV    ), "compute statistics on filtered chain"                            )
+    (m_option_mh_displayCandidates.c_str(),           po::value<bool        >()->default_value(UQ_MAC_SG_MH_DISPLAY_CANDIDATES_ODV           ), "display candidates generated in the core MH algorithm"           )
+    (m_option_mh_putOutOfBoundsInChain.c_str(),       po::value<bool        >()->default_value(UQ_MAC_SG_MH_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV   ), "put 'out of bound' candidates in chain as well"                  )
     (m_option_tk_useLocalHessian.c_str(),             po::value<bool        >()->default_value(UQ_MAC_SG_TK_USE_LOCAL_HESSIAN_ODV            ), "'proposal' use local Hessian"                                    )
     (m_option_tk_useNewtonComponent.c_str(),          po::value<bool        >()->default_value(UQ_MAC_SG_TK_USE_NEWTON_COMPONENT_ODV         ), "'proposal' use Newton component"                                 )
     (m_option_dr_maxNumExtraStages.c_str(),           po::value<unsigned int>()->default_value(UQ_MAC_SG_DR_MAX_NUM_EXTRA_STAGES_ODV         ), "'dr' maximum number of extra stages"                             )
@@ -611,6 +623,14 @@ uqMarkovChainSGClass<P_V,P_M>::getMyOptionValues(
 
   if (m_env.allOptionsMap().count(m_option_filteredChain_computeStats.c_str())) {
     m_filteredChainComputeStats = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_computeStats.c_str()]).as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_mh_displayCandidates.c_str())) {
+    m_mhDisplayCandidates = ((const po::variable_value&) m_env.allOptionsMap()[m_option_mh_displayCandidates.c_str()]).as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_mh_putOutOfBoundsInChain.c_str())) {
+    m_mhPutOutOfBoundsInChain = ((const po::variable_value&) m_env.allOptionsMap()[m_option_mh_putOutOfBoundsInChain.c_str()]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_tk_useLocalHessian.c_str())) {
@@ -1166,7 +1186,7 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
       P_V tmpVec(m_vectorSpace.zeroVector());
       P_V vec0(m_vectorSpace.zeroVector());
       workingChain.getPositionValues(0,vec0);
-      for (unsigned int i = 0; i < workingChain.sequenceSize(); ++i) {
+      for (unsigned int i = 0; i < workingChain.subSequenceSize(); ++i) {
         workingChain.getPositionValues(i,tmpVec);
         diffVec = tmpVec - vec0;
         //diffVec = *(workingChain[i]) - *(workingChain[0]);
@@ -1178,7 +1198,7 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
       P_V tmpVec(m_vectorSpace.zeroVector());
       P_V vec0(m_vectorSpace.zeroVector());
       workingChain.getPositionValues(0,vec0);
-      for (unsigned int i = 0; i < workingChain.sequenceSize(); ++i) {
+      for (unsigned int i = 0; i < workingChain.subSequenceSize(); ++i) {
         workingChain.getPositionValues(i,tmpVec);
         diffVec = tmpVec - vec0;
         //diffVec = *(workingChain[i]) - *(workingChain[0]);
@@ -1237,12 +1257,12 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
   if (m_rawChainUse2) {
   }
   else {
-    bool savedVectorPrintState = workingChain[workingChain.sequenceSize()-1]->getPrintHorizontally();
-    workingChain[workingChain.sequenceSize()-1]->setPrintHorizontally(false);
+    bool savedVectorPrintState = workingChain[workingChain.subSequenceSize()-1]->getPrintHorizontally();
+    workingChain[workingChain.subSequenceSize()-1]->setPrintHorizontally(false);
     ofsvar << m_prefix << "results.theta = ["
-        << *(workingChain[workingChain.sequenceSize()-1])
+        << *(workingChain[workingChain.subSequenceSize()-1])
         << "];\n";
-    workingChain[workingChain.sequenceSize()-1]->setPrintHorizontally(savedVectorPrintState);
+    workingChain[workingChain.subSequenceSize()-1]->setPrintHorizontally(savedVectorPrintState);
   }
   
   ofsvar << m_prefix << "results.nbatch = 1.;\n"; // FIXME
@@ -1256,12 +1276,12 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
 #endif
 
   // Write number of rejections
-  ofsvar << m_prefix << "rejected = " << (double) m_numRejections/(double) (workingChain.sequenceSize()-1)
+  ofsvar << m_prefix << "rejected = " << (double) m_numRejections/(double) (workingChain.subSequenceSize()-1)
          << ";\n"
          << std::endl;
 
   // Write number of out of target support
-  ofsvar << m_prefix << "outTargetSupport = " << (double) m_numOutOfTargetSupport/(double) (workingChain.sequenceSize()-1)
+  ofsvar << m_prefix << "outTargetSupport = " << (double) m_numOutOfTargetSupport/(double) (workingChain.subSequenceSize()-1)
          << ";\n"
          << std::endl;
 
@@ -1310,6 +1330,8 @@ uqMarkovChainSGClass<P_V,P_M>::print(std::ostream& os) const
     os << *setIt << " ";
   }
   os << "\n" << m_option_filteredChain_computeStats     << " = " << m_filteredChainComputeStats
+     << "\n" << m_option_mh_displayCandidates           << " = " << m_mhDisplayCandidates
+     << "\n" << m_option_mh_putOutOfBoundsInChain       << " = " << m_mhPutOutOfBoundsInChain
      << "\n" << m_option_tk_useLocalHessian             << " = " << m_tkUseLocalHessian
      << "\n" << m_option_tk_useNewtonComponent          << " = " << m_tkUseNewtonComponent
      << "\n" << m_option_dr_maxNumExtraStages           << " = " << m_drMaxNumExtraStages

@@ -51,17 +51,17 @@ public:
                                      const std::string&             name);
   virtual ~uqBaseVectorSequenceClass();
 
-  virtual  unsigned int             sequenceSize              () const = 0;
+  virtual  unsigned int             subSequenceSize           () const = 0;
            unsigned int             vectorSize                () const;
   const    uqVectorSpaceClass<V,M>& vectorSpace               () const;
   const    std::string&             name                      () const;
            void                     setName                   (const std::string& newName);
            void                     clear                     ();
-  const    V&                       minValues                 () const;
-  const    V&                       maxValues                 () const;
-  const    V&                       meanValues                () const;
-  const    V&                       sampleVarianceValues      () const;
-  const    uqBoxSubsetClass<V,M>&   valuesBox                 () const;
+  const    V&                       subMinValues              () const;
+  const    V&                       subMaxValues              () const;
+  const    V&                       subMeanValues             () const;
+  const    V&                       subSampleVarianceValues   () const;
+  const    uqBoxSubsetClass<V,M>&   subValuesBox              () const;
            void                     deleteStoredVectors       ();
 
   virtual  void                     resizeSequence            (unsigned int newSequenceSize) = 0;
@@ -71,23 +71,23 @@ public:
   virtual  void                     setPositionValues         (unsigned int posId, const V& vec) = 0;
   virtual  void                     setGaussian               (const gsl_rng* rng, const V& meanVec, const V& stdDevVec) = 0;
   virtual  void                     setUniform                (const gsl_rng* rng, const V& aVec,    const V& bVec     ) = 0;
-  virtual  void                     uniformlySampledMdf       (const V&                       numEvaluationPointsVec,
+  virtual  void                     subUniformlySampledMdf    (const V&                       numEvaluationPointsVec,
                                                                uqArrayOfOneDGridsClass <V,M>& mdfGrids,
                                                                uqArrayOfOneDTablesClass<V,M>& mdfValues) const = 0;
-  virtual  void                     uniformlySampledCdf       (const V&                       numEvaluationPointsVec,
+  virtual  void                     subUniformlySampledCdf    (const V&                       numEvaluationPointsVec,
                                                                uqArrayOfOneDGridsClass <V,M>& cdfGrids,
                                                                uqArrayOfOneDTablesClass<V,M>& cdfValues) const = 0;
   virtual  void                     unifiedUniformlySampledCdf(const V&                       numEvaluationPointsVec,
                                                                uqArrayOfOneDGridsClass <V,M>& unifiedCdfGrids,
                                                                uqArrayOfOneDTablesClass<V,M>& unifieddfValues) const = 0;
 
-  virtual  void                     mean                      (unsigned int                          initialPos,
+  virtual  void                     subMean                   (unsigned int                          initialPos,
                                                                unsigned int                          numPos,
                                                                V&                                    meanVec) const = 0;
   virtual  void                     unifiedMean               (unsigned int                          initialPos,
                                                                unsigned int                          numPos,
                                                                V&                                    unifiedMeanVec) const = 0;
-  virtual  void                     sampleVariance            (unsigned int                          initialPos,
+  virtual  void                     subSampleVariance         (unsigned int                          initialPos,
                                                                unsigned int                          numPos,
                                                                const V&                              meanVec,
                                                                V&                                    samVec) const = 0;
@@ -138,13 +138,13 @@ public:
                                                                double                                ratioNa,
                                                                double                                ratioNb,
                                                                V&                                    gewVec) const = 0;
-  virtual  void                     minMax                    (unsigned int                          initialPos,
+  virtual  void                     subMinMax                 (unsigned int                          initialPos,
                                                                V&                                    minVec,
                                                                V&                                    maxVec) const = 0;
   virtual  void                     unifiedMinMax             (unsigned int                          initialPos,
                                                                V&                                    unifiedMinVec,
                                                                V&                                    unifiedMaxVec) const = 0;
-  virtual  void                     histogram                 (unsigned int                          initialPos,
+  virtual  void                     subHistogram              (unsigned int                          initialPos,
                                                                const V&                              minVec,
                                                                const V&                              maxVec,
                                                                std::vector<V*>&                      centersForAllBins,
@@ -154,19 +154,19 @@ public:
                                                                const V&                              unifiedMaxVec,
                                                                std::vector<V*>&                      unifiedCentersForAllBins,
                                                                std::vector<V*>&                      unifiedQuanttsForAllBins) const = 0;
-  virtual  void                     interQuantileRange        (unsigned int                          initialPos,
+  virtual  void                     subInterQuantileRange     (unsigned int                          initialPos,
                                                                V&                                    iqrVec) const = 0;
   virtual  void                     unifiedInterQuantileRange (unsigned int                          initialPos,
                                                                V&                                    unifiedIqrVec) const = 0;
-  virtual  void                     scalesForKDE              (unsigned int                          initialPos,
+  virtual  void                     subScalesForKDE           (unsigned int                          initialPos,
                                                                const V&                              iqrVec,
                                                                V&                                    scaleVec) const = 0;
   virtual  void                     unifiedScalesForKDE       (unsigned int                          initialPos,
                                                                const V&                              unifiedIqrVec,
                                                                V&                                    unifiedScaleVec) const = 0;
-  virtual  void                     gaussianKDE               (const V&                              evaluationParamVec,
+  virtual  void                     sabGaussianKDE            (const V&                              evaluationParamVec,
                                                                V&                                    densityVec) const = 0;
-  virtual  void                     gaussianKDE               (unsigned int                          initialPos,
+  virtual  void                     subGaussianKDE            (unsigned int                          initialPos,
                                                                const V&                              scaleVec,
                                                                const std::vector<V*>&                evaluationParamVecs,
                                                                std::vector<V*>&                      densityVecs) const = 0;
@@ -174,9 +174,9 @@ public:
                                                                const V&                              unifiedScaleVec,
                                                                const std::vector<V*>&                unifiedEvaluationParamVecs,
                                                                std::vector<V*>&                      unifiedDensityVecs) const = 0;
-  virtual  void                     printContents             (std::ofstream&                        ofsvar) const = 0;
-  virtual  void                     printUnifiedContents      (std::ofstream&                        ofsvar) const = 0;
-  virtual  void                     printUnifiedContents      (const std::string&                    fileName) const = 0;
+  virtual  void                     subPrintContents          (std::ofstream&                        ofsvar) const = 0;
+  virtual  void                     unifiedPrintContents      (std::ofstream&                        ofsvar) const = 0;
+  virtual  void                     unifiedPrintContents      (const std::string&                    fileName) const = 0;
   virtual  void                     select                    (const std::vector<unsigned int>&      idsOfUniquePositions) = 0;
   virtual  void                     filter                    (unsigned int                          initialPos,
                                                                unsigned int                          spacing) = 0;
@@ -308,7 +308,7 @@ template <class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::clear()
 {
-  unsigned int numPos = this->sequenceSize();
+  unsigned int numPos = this->subSequenceSize();
   if (numPos) {
     this->resetValues(0,numPos);
     this->resizeSequence(0);
@@ -319,12 +319,12 @@ uqBaseVectorSequenceClass<V,M>::clear()
 
 template <class V, class M>
 const V&
-uqBaseVectorSequenceClass<V,M>::minValues() const
+uqBaseVectorSequenceClass<V,M>::subMinValues() const
 {
   if (m_minValues == NULL) {
     m_minValues = m_vectorSpace.newVector();
     if (m_maxValues == NULL) m_maxValues = m_vectorSpace.newVector();
-    minMax(0,*m_minValues,*m_maxValues);
+    subMinMax(0,*m_minValues,*m_maxValues);
   }
 
   return *m_minValues;
@@ -332,12 +332,12 @@ uqBaseVectorSequenceClass<V,M>::minValues() const
 
 template <class V, class M>
 const V&
-uqBaseVectorSequenceClass<V,M>::maxValues() const
+uqBaseVectorSequenceClass<V,M>::subMaxValues() const
 {
   if (m_maxValues == NULL) {
     if (m_minValues == NULL) m_minValues = m_vectorSpace.newVector();
     m_maxValues = m_vectorSpace.newVector();
-    minMax(0,*m_minValues,*m_maxValues);
+    subMinMax(0,*m_minValues,*m_maxValues);
   }
 
   return *m_maxValues;
@@ -345,11 +345,11 @@ uqBaseVectorSequenceClass<V,M>::maxValues() const
 
 template <class V, class M>
 const V&
-uqBaseVectorSequenceClass<V,M>::meanValues() const
+uqBaseVectorSequenceClass<V,M>::subMeanValues() const
 {
   if (m_meanValues == NULL) {
     m_meanValues = m_vectorSpace.newVector();
-    mean(0,sequenceSize(),*m_meanValues);
+    subMean(0,subSequenceSize(),*m_meanValues);
   }
 
   return *m_meanValues;
@@ -357,11 +357,11 @@ uqBaseVectorSequenceClass<V,M>::meanValues() const
 
 template <class V, class M>
 const V&
-uqBaseVectorSequenceClass<V,M>::sampleVarianceValues() const
+uqBaseVectorSequenceClass<V,M>::subSampleVarianceValues() const
 {
   if (m_sampleVarianceValues == NULL) {
     m_sampleVarianceValues = m_vectorSpace.newVector();
-    sampleVariance(0,sequenceSize(),meanValues(),*m_sampleVarianceValues);
+    subSampleVariance(0,subSequenceSize(),subMeanValues(),*m_sampleVarianceValues);
   }
 
   return *m_sampleVarianceValues;
@@ -369,13 +369,13 @@ uqBaseVectorSequenceClass<V,M>::sampleVarianceValues() const
 
 template <class V, class M>
 const uqBoxSubsetClass<V,M>&
-uqBaseVectorSequenceClass<V,M>::valuesBox() const
+uqBaseVectorSequenceClass<V,M>::subValuesBox() const
 {
   if (m_valuesBox == NULL) {
     m_valuesBox = new uqBoxSubsetClass<V,M>(m_name.c_str(),
                                             m_vectorSpace,
-                                            this->minValues(),
-                                            this->maxValues());
+                                            this->subMinValues(),
+                                            this->subMaxValues());
   }
 
   return *m_valuesBox;
@@ -428,7 +428,7 @@ uqBaseVectorSequenceClass<V,M>::computeStatistics(
   // Set initial positions for the computation of chain statistics
   std::vector<unsigned int> initialPosForStatistics(statisticalOptions.initialDiscardedPortions().size(),0);
   for (unsigned int i = 0; i < initialPosForStatistics.size(); ++i) {
-    initialPosForStatistics[i] = (unsigned int) (statisticalOptions.initialDiscardedPortions()[i] * (double) this->sequenceSize());
+    initialPosForStatistics[i] = (unsigned int) (statisticalOptions.initialDiscardedPortions()[i] * (double) this->subSequenceSize());
   }
   if (m_env.subScreenFile()) {
     *m_env.subScreenFile() << "In uqBaseVectorSequenceClass<V,M>::computeStatistics(): initial positions for statistics =";
@@ -586,15 +586,15 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
   }
 
   V chainMean(m_vectorSpace.zeroVector());
-  this->mean(0,
-             this->sequenceSize(),
-             chainMean);
+  this->subMean(0,
+                this->subSequenceSize(),
+                chainMean);
 
   V chainSampleVariance(m_vectorSpace.zeroVector());
-  this->sampleVariance(0,
-                       this->sequenceSize(),
-                       chainMean,
-                       chainSampleVariance);
+  this->subSampleVariance(0,
+                          this->subSequenceSize(),
+                          chainMean,
+                          chainSampleVariance);
 
   if ((m_env.verbosity() >= 5) && (m_env.subScreenFile())) {
     *m_env.subScreenFile() << "In uqBaseVectorSequenceClass<V,M>::computeMeanVars()"
@@ -611,7 +611,7 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
                            << std::endl;
   }
   V estimatedVarianceOfSampleMean(chainSampleVariance);
-  estimatedVarianceOfSampleMean /= (double) this->sequenceSize();
+  estimatedVarianceOfSampleMean /= (double) this->subSequenceSize();
   bool savedVectorPrintState = estimatedVarianceOfSampleMean.getPrintHorizontally();
   estimatedVarianceOfSampleMean.setPrintHorizontally(false);
   if (m_env.subScreenFile()) {
@@ -622,7 +622,7 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
 
   V chainPopulationVariance(m_vectorSpace.zeroVector());
   this->populationVariance(0,
-                           this->sequenceSize(),
+                           this->subSequenceSize(),
                            chainMean,
                            chainPopulationVariance);
 
@@ -925,7 +925,7 @@ uqBaseVectorSequenceClass<V,M>::computePSDAtZero(
     for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
       unsigned int initialPos = initialPosForStatistics[initialPosId];
       *m_env.subScreenFile() << "\nComputed PSD at frequency zero for subchain beggining at position " << initialPos
-                             << ", so effective data size = " << this->sequenceSize() - initialPos
+                             << ", so effective data size = " << this->subSequenceSize() - initialPos
                              << " (each column corresponds to a number of blocks)"
                              << std::endl;
 
@@ -960,7 +960,7 @@ uqBaseVectorSequenceClass<V,M>::computePSDAtZero(
     for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
       unsigned int initialPos = initialPosForStatistics[initialPosId];
       *m_env.subScreenFile() << "\nEstimated variance of sample mean, through psd, for subchain beggining at position " << initialPos
-                << ", so effective data size = " << this->sequenceSize() - initialPos
+                << ", so effective data size = " << this->subSequenceSize() - initialPos
                 << " (each column corresponds to a number of blocks)"
                 << std::endl;
 
@@ -982,7 +982,7 @@ uqBaseVectorSequenceClass<V,M>::computePSDAtZero(
         for (unsigned int numBlocksId = 0; numBlocksId < statisticalOptions.psdAtZeroNumBlocks().size(); numBlocksId++) {
           sprintf(line,"%2s%11.4e",
                   " ",
-                  2.*M_PI*_2dArrayOfPSDAtZero(initialPosId,numBlocksId)[i]/(double) (this->sequenceSize() - initialPos));
+                  2.*M_PI*_2dArrayOfPSDAtZero(initialPosId,numBlocksId)[i]/(double) (this->subSequenceSize() - initialPos));
           *m_env.subScreenFile() << line;
         }
       }
@@ -1140,7 +1140,7 @@ uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaDef(
     for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
       unsigned int lag = lagsForCorrs[lagId];
       this->autoCorrViaDef(initialPos,
-                           this->sequenceSize()-initialPos,
+                           this->subSequenceSize()-initialPos,
                            lag,
                            _2dArrayOfAutoCorrs(initialPosId,lagId));
       //_2dArrayOfAutoCorrs(initialPosId,lagId) = corrVec;
@@ -1268,18 +1268,18 @@ uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaFFT(
       *m_env.subScreenFile() << "In uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaFFT()"
                              << ": about to call chain.autoCorrViaFft()"
                              << " with initialPos = "      << initialPos
-                             << ", numPos = "              << this->sequenceSize()-initialPos
+                             << ", numPos = "              << this->subSequenceSize()-initialPos
                              << ", lagsForCorrs.size() = " << lagsForCorrs.size()
                              << ", corrVecs.size() = "     << corrVecs.size()
                              << std::endl;
     }
     this->autoCorrViaFft(initialPos,
-                         this->sequenceSize()-initialPos, // Use all possible data positions
+                         this->subSequenceSize()-initialPos, // Use all possible data positions
                          lagsForCorrs,
                          corrVecs);
     this->autoCorrViaFft(initialPos,
-                         this->sequenceSize()-initialPos, // Use all possible data positions
-                         (unsigned int) (1.0 * (double) (this->sequenceSize()-initialPos)), // CHECK
+                         this->subSequenceSize()-initialPos, // Use all possible data positions
+                         (unsigned int) (1.0 * (double) (this->subSequenceSize()-initialPos)), // CHECK
                          *corrSumVecs[initialPosId]); // Sum of all possibly computable autocorrelations, not only the asked ones in lagsForCorrs
     for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
       _2dArrayOfAutoCorrs(initialPosId,lagId) = *(corrVecs[lagId]);
@@ -1296,14 +1296,14 @@ uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaFFT(
     for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
       unsigned int initialPos = initialPosForStatistics[initialPosId];
 
-      this->mean(initialPos,
-                 this->sequenceSize()-initialPos,
-                 chainMean);
+      this->subMean(initialPos,
+                    this->subSequenceSize()-initialPos,
+                    chainMean);
 
-      this->sampleVariance(initialPos,
-                           this->sequenceSize()-initialPos,
-                           chainMean,
-                           chainSampleVariance);
+      this->subSampleVariance(initialPos,
+                              this->subSequenceSize()-initialPos,
+                              chainMean,
+                              chainSampleVariance);
 
       if (m_env.subScreenFile()) {
         *m_env.subScreenFile() << "\nEstimated variance of sample mean, through autocorrelation (via fft), for subchain beggining at position " << initialPosForStatistics[initialPosId]
@@ -1312,7 +1312,7 @@ uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaFFT(
       estimatedVarianceOfSampleMean.cwSet(-1.); // Yes, '-1' because the autocorrelation at lag 0, which values '+1', is already counted in the sum
       estimatedVarianceOfSampleMean += 2.* (*corrSumVecs[initialPosId]);
       estimatedVarianceOfSampleMean *= chainSampleVariance;
-      estimatedVarianceOfSampleMean /= (double) (this->sequenceSize() - initialPos);
+      estimatedVarianceOfSampleMean /= (double) (this->subSequenceSize() - initialPos);
       bool savedVectorPrintState = estimatedVarianceOfSampleMean.getPrintHorizontally();
       estimatedVarianceOfSampleMean.setPrintHorizontally(false);
       if (m_env.subScreenFile()) {
@@ -1466,9 +1466,9 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
 
   V statsMinPositions(m_vectorSpace.zeroVector());
   V statsMaxPositions(m_vectorSpace.zeroVector());
-  this->minMax(0, // Use the whole chain
-               statsMinPositions,
-               statsMaxPositions);
+  this->subMinMax(0, // Use the whole chain
+                  statsMinPositions,
+                  statsMaxPositions);
 
   if (m_env.subScreenFile()) {
     *m_env.subScreenFile() << "\nComputed min values and max values for chain " << m_name
@@ -1588,11 +1588,11 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
     // Compute histograms
     std::vector<V*> histCentersForAllBins(statisticalOptions.histNumInternalBins()+2,NULL); // IMPORTANT: +2
     std::vector<V*> histQuanttsForAllBins(statisticalOptions.histNumInternalBins()+2,NULL); // IMPORTANT: +2
-    this->histogram(0, // Use the whole chain
-                    statsMinPositions,
-                    statsMaxPositions,
-                    histCentersForAllBins,
-                    histQuanttsForAllBins);
+    this->subHistogram(0, // Use the whole chain
+                       statsMinPositions,
+                       statsMaxPositions,
+                       histCentersForAllBins,
+                       histQuanttsForAllBins);
 
     // Write histograms
     if (passedOfs) {
@@ -1728,13 +1728,13 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
     if (m_env.numSubEnvironments() == 1) subCoreName_GaussianKdeValues = uniCoreName_GaussianKdeValues; // avoid temporarily (see '< -1' below)
 
     V iqrVec(m_vectorSpace.zeroVector());
-    this->interQuantileRange(0, // Use the whole chain
-                             iqrVec);
+    this->subInterQuantileRange(0, // Use the whole chain
+                                iqrVec);
 
     V gaussianKdeScaleVec(m_vectorSpace.zeroVector());
-    this->scalesForKDE(0, // Use the whole chain
-                       iqrVec,
-                       gaussianKdeScaleVec);
+    this->subScalesForKDE(0, // Use the whole chain
+                          iqrVec,
+                          gaussianKdeScaleVec);
 
     std::vector<V*> kdeEvalPositions(statisticalOptions.kdeNumEvalPositions(),NULL);
     uqMiscComputePositionsBetweenMinMax(statsMinPositions,
@@ -1742,10 +1742,10 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
                                         kdeEvalPositions);
 
     std::vector<V*> gaussianKdeDensities(statisticalOptions.kdeNumEvalPositions(),NULL);
-    this->gaussianKDE(0, // Use the whole chain
-                      gaussianKdeScaleVec,
-                      kdeEvalPositions,
-                      gaussianKdeDensities);
+    this->subGaussianKDE(0, // Use the whole chain
+                         gaussianKdeScaleVec,
+                         kdeEvalPositions,
+                         gaussianKdeDensities);
 
     // Write iqr
     if (m_env.subScreenFile()) {
@@ -1993,7 +1993,7 @@ uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices( // Use the whole chain
 
   uqComputeCovCorrMatricesBetweenVectorSequences(*this,
                                                  *this,
-                                                 this->sequenceSize(),
+                                                 this->subSequenceSize(),
                                                  *covarianceMatrix,
                                                  *correlationMatrix);
 
@@ -2034,25 +2034,25 @@ uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices( // Use the whole chain
 template <class P_V, class P_M, class Q_V, class Q_M>
 void
 uqComputeCovCorrMatricesBetweenVectorSequences(
-  const uqBaseVectorSequenceClass<P_V,P_M>& localPSeq,
-  const uqBaseVectorSequenceClass<Q_V,Q_M>& localQSeq,
-        unsigned int                        localNumSamples,
+  const uqBaseVectorSequenceClass<P_V,P_M>& subPSeq,
+  const uqBaseVectorSequenceClass<Q_V,Q_M>& subQSeq,
+        unsigned int                        subNumSamples,
         P_M&                                pqCovMatrix,
         P_M&                                pqCorrMatrix)
 {
   // Check input data consistency
-  const uqBaseEnvironmentClass& env = localPSeq.vectorSpace().zeroVector().env();
+  const uqBaseEnvironmentClass& env = subPSeq.vectorSpace().zeroVector().env();
 
-  bool useOnlyInter0Comm = (localPSeq.vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage() == 1) &&
-                           (localQSeq.vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage() == 1);
+  bool useOnlyInter0Comm = (subPSeq.vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage() == 1) &&
+                           (subQSeq.vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage() == 1);
 
   UQ_FATAL_TEST_MACRO((useOnlyInter0Comm == false),
                       env.rank(),
                       "uqComputeCovCorrMatricesBetweenVectorSequences()",
                       "parallel vectors not supported yet");
 
-  unsigned int numRows = localPSeq.vectorSpace().dim();
-  unsigned int numCols = localQSeq.vectorSpace().dim();
+  unsigned int numRows = subPSeq.vectorSpace().dim();
+  unsigned int numCols = subQSeq.vectorSpace().dim();
 
   UQ_FATAL_TEST_MACRO((numRows != pqCovMatrix.numRows()) || (numCols != pqCovMatrix.numCols()),
                       env.rank(),
@@ -2064,34 +2064,34 @@ uqComputeCovCorrMatricesBetweenVectorSequences(
                       "uqComputeCorrelationBetweenVectorSequences()",
                       "inconsistent dimensions for correlation matrix");
 
-  UQ_FATAL_TEST_MACRO((localNumSamples > localPSeq.sequenceSize()) || (localNumSamples > localQSeq.sequenceSize()),
+  UQ_FATAL_TEST_MACRO((subNumSamples > subPSeq.subSequenceSize()) || (subNumSamples > subQSeq.subSequenceSize()),
                       env.rank(),
                       "uqComputeCovCorrMatricesBetweenVectorSequences()",
-                      "localNumSamples is too large");
+                      "subNumSamples is too large");
 
   // For both P and Q vector sequences: fill them
-  P_V tmpP(localPSeq.vectorSpace().zeroVector());
-  Q_V tmpQ(localQSeq.vectorSpace().zeroVector());
+  P_V tmpP(subPSeq.vectorSpace().zeroVector());
+  Q_V tmpQ(subQSeq.vectorSpace().zeroVector());
 
   // For both P and Q vector sequences: compute the unified mean
-  P_V unifiedMeanP(localPSeq.vectorSpace().zeroVector());
-  localPSeq.unifiedMean(0,localNumSamples,unifiedMeanP);
+  P_V unifiedMeanP(subPSeq.vectorSpace().zeroVector());
+  subPSeq.unifiedMean(0,subNumSamples,unifiedMeanP);
 
-  Q_V unifiedMeanQ(localQSeq.vectorSpace().zeroVector());
-  localQSeq.unifiedMean(0,localNumSamples,unifiedMeanQ);
+  Q_V unifiedMeanQ(subQSeq.vectorSpace().zeroVector());
+  subQSeq.unifiedMean(0,subNumSamples,unifiedMeanQ);
 
-  // Compute "local" covariance matrix
+  // Compute "sub" covariance matrix
   for (unsigned i = 0; i < numRows; ++i) {
     for (unsigned j = 0; j < numCols; ++j) {
       pqCovMatrix(i,j) = 0.;
     }
   }
-  for (unsigned k = 0; k < localNumSamples; ++k) {
+  for (unsigned k = 0; k < subNumSamples; ++k) {
     // For both P and Q vector sequences: get the difference (wrt the unified mean) in them
-    localPSeq.getPositionValues(k,tmpP);
+    subPSeq.getPositionValues(k,tmpP);
     tmpP -= unifiedMeanP;
 
-    localQSeq.getPositionValues(k,tmpQ);
+    subQSeq.getPositionValues(k,tmpQ);
     tmpQ -= unifiedMeanQ;
 
     for (unsigned i = 0; i < numRows; ++i) {
@@ -2102,27 +2102,27 @@ uqComputeCovCorrMatricesBetweenVectorSequences(
   }
 
   // For both P and Q vector sequences: compute the unified variance
-  P_V unifiedSampleVarianceP(localPSeq.vectorSpace().zeroVector());
-  localPSeq.unifiedSampleVariance(0,
-                                  localNumSamples,
-                                  unifiedMeanP,
-                                  unifiedSampleVarianceP);
+  P_V unifiedSampleVarianceP(subPSeq.vectorSpace().zeroVector());
+  subPSeq.unifiedSampleVariance(0,
+                                subNumSamples,
+                                unifiedMeanP,
+                                unifiedSampleVarianceP);
 
-  Q_V unifiedSampleVarianceQ(localQSeq.vectorSpace().zeroVector());
-  localQSeq.unifiedSampleVariance(0,
-                                  localNumSamples,
-                                  unifiedMeanQ,
-                                  unifiedSampleVarianceQ);
+  Q_V unifiedSampleVarianceQ(subQSeq.vectorSpace().zeroVector());
+  subQSeq.unifiedSampleVariance(0,
+                                subNumSamples,
+                                unifiedMeanQ,
+                                unifiedSampleVarianceQ);
 
   // Compute unified covariance matrix
   if (useOnlyInter0Comm) {
     if (env.inter0Rank() >= 0) {
       unsigned int unifiedNumSamples = 0;
-      int mpiRC = MPI_Allreduce((void *) &localNumSamples, (void *) &unifiedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM, env.inter0Comm().Comm());
+      int mpiRC = MPI_Allreduce((void *) &subNumSamples, (void *) &unifiedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM, env.inter0Comm().Comm());
       UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                           env.rank(),
                           "uqComputeCovCorrMatricesBetweenVectorSequences()",
-                          "failed MPI_Allreduce() for localNumSamples");
+                          "failed MPI_Allreduce() for subNumSamples");
 
       for (unsigned i = 0; i < numRows; ++i) {
         for (unsigned j = 0; j < numCols; ++j) {

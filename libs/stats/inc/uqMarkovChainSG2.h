@@ -127,7 +127,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
                        rawChainOfsVar);
 
   if (rawChainOfsVar) {
-    workingChain.printContents(*rawChainOfsVar);
+    workingChain.subPrintContents(*rawChainOfsVar);
   }
 
   if (rawChainOfsVar) {
@@ -150,7 +150,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
                               unifiedRawChainOfsVar);
 
   if (unifiedRawChainOfsVar) {
-    workingChain.printUnifiedContents(*unifiedRawChainOfsVar);
+    workingChain.unifiedPrintContents(*unifiedRawChainOfsVar);
   }
 
   if (unifiedRawChainOfsVar) {
@@ -165,7 +165,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
   }
 #else
   if (m_rawChainOutputFileName != ".") {
-    workingChain.printUnifiedContents(m_rawChainOutputFileName);
+    workingChain.unifiedPrintContents(m_rawChainOutputFileName);
     if (m_env.subScreenFile()) {
       *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
                              << ", prefix = "                    << m_prefix
@@ -215,7 +215,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
     // Write unique chain
     workingChain.setName(m_prefix + "uniqueChain");
     if (uniqueChainOfsVar) {
-      workingChain.printContents(*uniqueChainOfsVar);
+      workingChain.subPrintContents(*uniqueChainOfsVar);
     }
 
     // Compute statistics
@@ -234,7 +234,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
   //****************************************************
   if (m_filteredChainGenerate) {
     // Compute filter parameters
-    unsigned int filterInitialPos = (unsigned int) (m_filteredChainDiscardedPortion * (double) workingChain.sequenceSize());
+    unsigned int filterInitialPos = (unsigned int) (m_filteredChainDiscardedPortion * (double) workingChain.subSequenceSize());
     unsigned int filterSpacing    = m_filteredChainLag;
     if (filterSpacing == 0) {
       workingChain.computeFilterParams(*m_filteredChainStatisticalOptions,
@@ -266,7 +266,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
                          filteredChainOfsVar);
 
     if (filteredChainOfsVar) {
-      workingChain.printContents(*filteredChainOfsVar);
+      workingChain.subPrintContents(*filteredChainOfsVar);
     }
 
     if (filteredChainOfsVar) {
@@ -289,7 +289,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
                                 unifiedFilteredChainOfsVar);
 
     if (unifiedFilteredChainOfsVar) {
-      workingChain.printUnifiedContents(*unifiedFilteredChainOfsVar);
+      workingChain.unifiedPrintContents(*unifiedFilteredChainOfsVar);
     }
 
     if (unifiedFilteredChainOfsVar) {
@@ -304,7 +304,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
     }
 #else
     if (m_filteredChainOutputFileName != ".") {
-      workingChain.printUnifiedContents(m_filteredChainOutputFileName);
+      workingChain.unifiedPrintContents(m_filteredChainOutputFileName);
       if (m_env.subScreenFile()) {
         *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
                                << ", prefix = "                    << m_prefix
@@ -382,7 +382,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateWhiteNoiseChain(
 
   if (m_env.subScreenFile()) {
     *m_env.subScreenFile() << "Finished the generation of white noise chain " << workingChain.name()
-                           << ", with "                                       << workingChain.sequenceSize()
+                           << ", with sub "                                   << workingChain.subSequenceSize()
                            << " positions";
   }
 
@@ -426,7 +426,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateUniformChain(
 
   if (m_env.subScreenFile()) {
     *m_env.subScreenFile() << "Finished the generation of white noise chain " << workingChain.name()
-                           << ", with "                                       << workingChain.sequenceSize()
+                           << ", with sub "                                   << workingChain.subSequenceSize()
                            << " positions";
   }
 
@@ -534,12 +534,12 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
                                                 NULL,
                                                 NULL,
                                                 NULL);
-    for (unsigned int positionId = 1; positionId < workingChain.sequenceSize(); ++positionId) {
+    for (unsigned int positionId = 1; positionId < workingChain.subSequenceSize(); ++positionId) {
       workingChain.setPositionValues(positionId,currentPositionData.vecValues());
       m_numRejections++;
     }
   }
-  else for (unsigned int positionId = 1; positionId < workingChain.sequenceSize(); ++positionId) {
+  else for (unsigned int positionId = 1; positionId < workingChain.subSequenceSize(); ++positionId) {
     if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
       *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
                              << ": beginning chain position of id = " << positionId
@@ -574,32 +574,47 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
     //****************************************************
     // Loop: generate new position
     //****************************************************
-    if (m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
+    bool keepGeneratingCandidates = true;
+    while (keepGeneratingCandidates) {
+      if (m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
 #ifdef UQ_USES_TK_CLASS
-    m_tk->rv(0).realizer().realization(tmpVecValues);
+      m_tk->rv(0).realizer().realization(tmpVecValues);
 
-    if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-      *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                             << ": about to set TK pre computing position of local id " << stageId+1
-                             << ", values = " << tmpVecValues
-                             << std::endl;
-    }
-    validPreComputingPosition = m_tk->setPreComputingPosition(tmpVecValues,stageId+1);
-    if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-      *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                             << ": returned from setting TK pre computing position of local id " << stageId+1
-                             << ", values = " << tmpVecValues
-                             << ", valid = "  << validPreComputingPosition
-                             << std::endl;
-    }
+      if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+        *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
+                               << ": about to set TK pre computing position of local id " << stageId+1
+                               << ", values = " << tmpVecValues
+                               << std::endl;
+      }
+      validPreComputingPosition = m_tk->setPreComputingPosition(tmpVecValues,stageId+1);
+      if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+        *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
+                               << ": returned from setting TK pre computing position of local id " << stageId+1
+                               << ", values = " << tmpVecValues
+                               << ", valid = "  << validPreComputingPosition
+                               << std::endl;
+      }
 #else
-    gaussianVector.cwSetGaussian(m_env.rng(),0.,1.);
-    tmpVecValues = currentPositionData.vecValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
+      gaussianVector.cwSetGaussian(m_env.rng(),0.,1.);
+      tmpVecValues = currentPositionData.vecValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
 #endif
-    if (m_rawChainMeasureRunTimes) candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
+      if (m_rawChainMeasureRunTimes) candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
 
+      outOfTargetSupport = !m_targetPdf.domainSet().contains(tmpVecValues);
 
-    outOfTargetSupport = !m_targetPdf.domainSet().contains(tmpVecValues);
+      bool displayDetail = (m_env.verbosity() >= 10/*99*/) || m_mhDisplayCandidates;
+      if ((m_env.subScreenFile()) && displayDetail) {
+        *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
+                               << ": for chain position of id = " << positionId
+                               << ", candidate = "                << tmpVecValues // FIX ME: might need parallelism
+                               << ", outOfTargetSupport = "       << outOfTargetSupport
+                               << std::endl;
+      }
+
+      if (m_mhPutOutOfBoundsInChain) keepGeneratingCandidates = false;
+      else                           keepGeneratingCandidates = outOfTargetSupport;
+    }
+
     if (outOfTargetSupport) {
       m_numOutOfTargetSupport++;
       logTarget = -INFINITY;
@@ -642,7 +657,9 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
       }
       accept = acceptAlpha(alphaFirstCandidate);
     }
-    if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
+
+    bool displayDetail = (m_env.verbosity() >= 10/*99*/) || m_mhDisplayCandidates;
+    if ((m_env.subScreenFile()) && displayDetail) {
       *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
                              << ": for chain position of id = " << positionId
                              << ", outOfTargetSupport = "       << outOfTargetSupport
@@ -695,30 +712,37 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
                                  << std::endl;
         }
 
-        if (m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
+        keepGeneratingCandidates = true;
+        while (keepGeneratingCandidates) {
+          if (m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
 #ifdef UQ_USES_TK_CLASS
-        m_tk->rv(tkStageIds).realizer().realization(tmpVecValues);
-        if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-          *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                                 << ": about to set TK pre computing position of local id " << stageId+1
-                                 << ", values = " << tmpVecValues
-                                 << std::endl;
-        }
-        validPreComputingPosition = m_tk->setPreComputingPosition(tmpVecValues,stageId+1);
-        if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-          *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                                 << ": returned from setting TK pre computing position of local id " << stageId+1
-                                 << ", values = " << tmpVecValues
-                                 << ", valid = "  << validPreComputingPosition
-                                 << std::endl;
-        }
+          m_tk->rv(tkStageIds).realizer().realization(tmpVecValues);
+          if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+            *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
+                                   << ": about to set TK pre computing position of local id " << stageId+1
+                                   << ", values = " << tmpVecValues
+                                   << std::endl;
+          }
+          validPreComputingPosition = m_tk->setPreComputingPosition(tmpVecValues,stageId+1);
+          if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+            *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
+                                   << ": returned from setting TK pre computing position of local id " << stageId+1
+                                   << ", values = " << tmpVecValues
+                                   << ", valid = "  << validPreComputingPosition
+                                   << std::endl;
+          }
 #else
-        gaussianVector.cwSetGaussian(m_env.rng(),0.,1.);
-        tmpVecValues = currentPositionData.vecValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
+          gaussianVector.cwSetGaussian(m_env.rng(),0.,1.);
+          tmpVecValues = currentPositionData.vecValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
 #endif
-        if (m_rawChainMeasureRunTimes) candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
+          if (m_rawChainMeasureRunTimes) candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
 
-        outOfTargetSupport = !m_targetPdf.domainSet().contains(tmpVecValues);
+          outOfTargetSupport = !m_targetPdf.domainSet().contains(tmpVecValues);
+
+          if (m_mhPutOutOfBoundsInChain) keepGeneratingCandidates = false;
+          else                           keepGeneratingCandidates = outOfTargetSupport;
+        }
+
         if (outOfTargetSupport) {
           logTarget = -INFINITY;
         }
@@ -741,7 +765,9 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
           if (m_rawChainMeasureRunTimes) drAlphaRunTime += uqMiscGetEllapsedSeconds(&timevalDrAlpha);
           accept = acceptAlpha(alphaDR);
         }
-        if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
+
+        displayDetail = (m_env.verbosity() >= 10/*99*/) || m_mhDisplayCandidates;
+        if ((m_env.subScreenFile()) && displayDetail) {
           *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
                                  << ": for chain position of id = " << positionId
                                  << " and stageId = "               << stageId
@@ -826,7 +852,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
 
       // Now might be the moment to adapt
       unsigned int idOfFirstPositionInSubChain = 0;
-      uqSequenceOfVectorsClass<P_V,P_M> subChain(m_vectorSpace,0,m_prefix+"subChain");
+      uqSequenceOfVectorsClass<P_V,P_M> partialChain(m_vectorSpace,0,m_prefix+"partialChain");
 
       // Check if now is indeed the moment to adapt
       if (positionId < m_amInitialNonAdaptInterval) {
@@ -834,7 +860,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
       }
       else if (positionId == m_amInitialNonAdaptInterval) {
         idOfFirstPositionInSubChain = 0;
-        subChain.resizeSequence(m_amInitialNonAdaptInterval+1);
+        partialChain.resizeSequence(m_amInitialNonAdaptInterval+1);
         m_lastMean             = m_vectorSpace.newVector();
         m_lastAdaptedCovMatrix = m_vectorSpace.newMatrix();
       }
@@ -842,18 +868,18 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
         unsigned int interval = positionId - m_amInitialNonAdaptInterval;
         if ((interval % m_amAdaptInterval) == 0) {
           idOfFirstPositionInSubChain = positionId - m_amAdaptInterval;
-          subChain.resizeSequence(m_amAdaptInterval);
+          partialChain.resizeSequence(m_amAdaptInterval);
         }
       }
 
       // If now is indeed the moment to adapt, then do it!
-      if (subChain.sequenceSize() > 0) {
+      if (partialChain.subSequenceSize() > 0) {
         P_V transporterVec(m_vectorSpace.zeroVector());
-        for (unsigned int i = 0; i < subChain.sequenceSize(); ++i) {
+        for (unsigned int i = 0; i < partialChain.subSequenceSize(); ++i) {
           workingChain.getPositionValues(idOfFirstPositionInSubChain+i,transporterVec);
-          subChain.setPositionValues(i,transporterVec);
+          partialChain.setPositionValues(i,transporterVec);
         }
-        updateAdaptedCovMatrix(subChain,
+        updateAdaptedCovMatrix(partialChain,
                                idOfFirstPositionInSubChain,
                                m_lastChainSize,
                               *m_lastMean,
@@ -935,8 +961,8 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
 #endif
         }
 
-        //for (unsigned int i = 0; i < subChain.sequenceSize(); ++i) {
-        //  if (subChain[i]) delete subChain[i];
+        //for (unsigned int i = 0; i < partialChain.subSequenceSize(); ++i) {
+        //  if (partialChain[i]) delete partialChain[i];
         //}
       }
 
@@ -984,7 +1010,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
   m_rawChainRunTime += uqMiscGetEllapsedSeconds(&timevalChain);
   if (m_env.subScreenFile()) {
     *m_env.subScreenFile() << "Finished the generation of Markov chain " << workingChain.name()
-                           << ", with "                                  << workingChain.sequenceSize()
+                           << ", with sub "                              << workingChain.subSequenceSize()
                            << " positions";
     *m_env.subScreenFile() << "\nSome information about this chain:"
                            << "\n  Chain run time       = " << m_rawChainRunTime
@@ -1016,9 +1042,9 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
                              << " seconds ("                  << 100.*amRunTime/m_rawChainRunTime
                              << "%)";
     }
-    *m_env.subScreenFile() << "\n  Rejection percentage = "   << 100. * (double) m_numRejections/(double) workingChain.sequenceSize()
+    *m_env.subScreenFile() << "\n  Rejection percentage = "   << 100. * (double) m_numRejections/(double) workingChain.subSequenceSize()
                            << " %";
-    *m_env.subScreenFile() << "\n  Out of target support percentage = " << 100. * (double) m_numOutOfTargetSupport/(double) workingChain.sequenceSize()
+    *m_env.subScreenFile() << "\n  Out of target support percentage = " << 100. * (double) m_numOutOfTargetSupport/(double) workingChain.subSequenceSize()
                            << " %";
     *m_env.subScreenFile() << std::endl;
   }
@@ -1034,34 +1060,34 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
 template <class P_V,class P_M>
 void
 uqMarkovChainSGClass<P_V,P_M>::updateAdaptedCovMatrix(
-  const uqBaseVectorSequenceClass<P_V,P_M>& subChain,
+  const uqBaseVectorSequenceClass<P_V,P_M>& partialChain,
   unsigned int                              idOfFirstPositionInSubChain,
   double&                                   lastChainSize,
   P_V&                                      lastMean,
   P_M&                                      lastAdaptedCovMatrix)
 {
-  double doubleSubChainSize = (double) subChain.sequenceSize();
+  double doubleSubChainSize = (double) partialChain.subSequenceSize();
   if (lastChainSize == 0) {
-    UQ_FATAL_TEST_MACRO(subChain.sequenceSize() < 2,
+    UQ_FATAL_TEST_MACRO(partialChain.subSequenceSize() < 2,
                         m_env.rank(),
                         "uqMarkovChainSGClass<P_V,P_M>::updateAdaptedCovMatrix()",
-                        "'subChain.sequenceSize()' should be >= 2");
+                        "'partialChain.subSequenceSize()' should be >= 2");
 
-    subChain.mean(0,subChain.sequenceSize(),lastMean);
+    partialChain.subMean(0,partialChain.subSequenceSize(),lastMean);
 
     P_V tmpVec(m_vectorSpace.zeroVector());
     lastAdaptedCovMatrix = -doubleSubChainSize * matrixProduct(lastMean,lastMean);
-    for (unsigned int i = 0; i < subChain.sequenceSize(); ++i) {
-      subChain.getPositionValues(i,tmpVec);
+    for (unsigned int i = 0; i < partialChain.subSequenceSize(); ++i) {
+      partialChain.getPositionValues(i,tmpVec);
       lastAdaptedCovMatrix += matrixProduct(tmpVec,tmpVec);
     }
-    lastAdaptedCovMatrix /= (doubleSubChainSize - 1.); // That is why subChain size must be >= 2
+    lastAdaptedCovMatrix /= (doubleSubChainSize - 1.); // That is why partialChain size must be >= 2
   }
   else {
-    UQ_FATAL_TEST_MACRO(subChain.sequenceSize() < 1,
+    UQ_FATAL_TEST_MACRO(partialChain.subSequenceSize() < 1,
                         m_env.rank(),
                         "uqMarkovChainSGClass<P_V,P_M>::updateAdaptedCovMatrix()",
-                        "'subChain.sequenceSize()' should be >= 1");
+                        "'partialChain.subSequenceSize()' should be >= 1");
 
     UQ_FATAL_TEST_MACRO(idOfFirstPositionInSubChain < 1,
                         m_env.rank(),
@@ -1070,9 +1096,9 @@ uqMarkovChainSGClass<P_V,P_M>::updateAdaptedCovMatrix(
 
     P_V tmpVec (m_vectorSpace.zeroVector());
     P_V diffVec(m_vectorSpace.zeroVector());
-    for (unsigned int i = 0; i < subChain.sequenceSize(); ++i) {
+    for (unsigned int i = 0; i < partialChain.subSequenceSize(); ++i) {
       double doubleCurrentId  = (double) (idOfFirstPositionInSubChain+i);
-      subChain.getPositionValues(i,tmpVec);
+      partialChain.getPositionValues(i,tmpVec);
       diffVec = tmpVec - lastMean;
 
       double ratio1         = (1. - 1./doubleCurrentId); // That is why idOfFirstPositionInSubChain must be >= 1

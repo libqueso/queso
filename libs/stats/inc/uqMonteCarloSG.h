@@ -340,27 +340,27 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   //****************************************************
   // Generate sequence of qoi values
   //****************************************************
-  unsigned int actualSizeBeforeGeneration = std::min(m_qseqSize,paramRv.realizer().period());
+  unsigned int subActualSizeBeforeGeneration = std::min(m_qseqSize,paramRv.realizer().period());
   if ((m_env.subScreenFile()) && (m_env.verbosity() >= 0)) {
     *m_env.subScreenFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
-                           << ": m_qseqSize = "                                             << m_qseqSize
-                           << ", paramRv.realizer().period() = "                            << paramRv.realizer().period()
-                           << ", about to call actualGenerateSequence() with actualSize = " << actualSizeBeforeGeneration
+                           << ": m_qseqSize = "                                                << m_qseqSize
+                           << ", paramRv.realizer().period() = "                               << paramRv.realizer().period()
+                           << ", about to call actualGenerateSequence() with subActualSize = " << subActualSizeBeforeGeneration
                            << std::endl;
   }
   actualGenerateSequence(paramRv,
                          workingPSeq,
                          workingQSeq,
-                         actualSizeBeforeGeneration);
-  unsigned int actualSizeAfterGeneration = workingPSeq.sequenceSize();
-  UQ_FATAL_TEST_MACRO(actualSizeAfterGeneration != workingQSeq.sequenceSize(),
+                         subActualSizeBeforeGeneration);
+  unsigned int subActualSizeAfterGeneration = workingPSeq.subSequenceSize();
+  UQ_FATAL_TEST_MACRO(subActualSizeAfterGeneration != workingQSeq.subSequenceSize(),
                       m_env.rank(),
                       "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()",
                       "P and Q sequences should have the same size!");
 
   if ((m_env.subScreenFile()) && (m_env.verbosity() >= 0)) {
     *m_env.subScreenFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
-                           << ": returned from call to actualGenerateSequence() with actualSize = " << actualSizeAfterGeneration
+                           << ": returned from call to actualGenerateSequence() with subActualSize = " << subActualSizeAfterGeneration
                            << std::endl;
   }
 
@@ -403,7 +403,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
                        pseqOfsVar);
 
   if (pseqOfsVar) {
-    workingPSeq.printContents(*pseqOfsVar);
+    workingPSeq.subPrintContents(*pseqOfsVar);
   }
 
   if (pseqOfsVar) {
@@ -426,7 +426,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
                               unifiedPSeqOfsVar);
 
   if (unifiedPSeqOfsVar) {
-    workingPSeq.printUnifiedContents(*unifiedPSeqOfsVar);
+    workingPSeq.unifiedPrintContents(*unifiedPSeqOfsVar);
   }
 
   if (unifiedPSeqOfsVar) {
@@ -441,7 +441,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   }
 #else
   if (m_pseqOutputFileName != ".") {
-    workingPSeq.printUnifiedContents(m_pseqOutputFileName);
+    workingPSeq.unifiedPrintContents(m_pseqOutputFileName);
     if (m_env.subScreenFile()) {
       *m_env.subScreenFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                              << ", prefix = "                    << m_prefix
@@ -490,7 +490,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
                        qseqOfsVar);
 
   if (qseqOfsVar) {
-    workingQSeq.printContents(*qseqOfsVar);
+    workingQSeq.subPrintContents(*qseqOfsVar);
   }
 
   if (qseqOfsVar) {
@@ -513,7 +513,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
                               unifiedQSeqOfsVar);
 
   if (unifiedQSeqOfsVar) {
-    workingQSeq.printUnifiedContents(*unifiedQSeqOfsVar);
+    workingQSeq.unifiedPrintContents(*unifiedQSeqOfsVar);
   }
 
   if (unifiedQSeqOfsVar) {
@@ -528,7 +528,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   }
 #else
   if (m_qseqOutputFileName != ".") {
-    workingQSeq.printUnifiedContents(m_qseqOutputFileName);
+    workingQSeq.unifiedPrintContents(m_qseqOutputFileName);
     if (m_env.subScreenFile()) {
       *m_env.subScreenFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                              << ", prefix = "                    << m_prefix
@@ -662,7 +662,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
 
   if (m_env.subScreenFile()) {
     *m_env.subScreenFile() << "Finished the generation of qoi sequence " << workingQSeq.name()
-                           << ", with "                                  << workingQSeq.sequenceSize()
+                           << ", with sub "                              << workingQSeq.subSequenceSize()
                            << " samples"
                            << "\nSome information about this sequence:"
                            << "\n  Sequence run time = " << seqRunTime

@@ -371,13 +371,13 @@ uqSequentialVectorRealizerClass<V,M>::uqSequentialVectorRealizerClass(
   const char*                           prefix,
   const uqBaseVectorSequenceClass<V,M>& chain)
   :
-  uqBaseVectorRealizerClass<V,M>(((std::string)(prefix)+"seq").c_str(),chain.valuesBox(),chain.sequenceSize(),chain.meanValues(),chain.sampleVarianceValues()),
+  uqBaseVectorRealizerClass<V,M>(((std::string)(prefix)+"seq").c_str(),chain.subValuesBox(),chain.subSequenceSize(),chain.subMeanValues(),chain.subSampleVarianceValues()), // IMPORTANT
   m_chain          (chain),
   m_currentChainPos(0)
 {
   if ((m_env.subScreenFile()) && (m_env.verbosity() >= 0)) {
     *m_env.subScreenFile() << "In uqSequentialVectorRealizerClass<V,M>::constructor()"
-                           << ": m_chain.sequenceSize() = " << m_chain.sequenceSize()
+                           << ": m_chain.subSequenceSize() = " << m_chain.subSequenceSize()
                            << std::endl;
   }
 }
