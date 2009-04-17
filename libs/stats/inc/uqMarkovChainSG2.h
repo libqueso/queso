@@ -579,21 +579,6 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
       if (m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
 #ifdef UQ_USES_TK_CLASS
       m_tk->rv(0).realizer().realization(tmpVecValues);
-
-      if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-        *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                               << ": about to set TK pre computing position of local id " << stageId+1
-                               << ", values = " << tmpVecValues
-                               << std::endl;
-      }
-      validPreComputingPosition = m_tk->setPreComputingPosition(tmpVecValues,stageId+1);
-      if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-        *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                               << ": returned from setting TK pre computing position of local id " << stageId+1
-                               << ", values = " << tmpVecValues
-                               << ", valid = "  << validPreComputingPosition
-                               << std::endl;
-      }
 #else
       gaussianVector.cwSetGaussian(m_env.rng(),0.,1.);
       tmpVecValues = currentPositionData.vecValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
@@ -614,6 +599,23 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
       if (m_mhPutOutOfBoundsInChain) keepGeneratingCandidates = false;
       else                           keepGeneratingCandidates = outOfTargetSupport;
     }
+
+#ifdef UQ_USES_TK_CLASS
+    if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+      *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
+                             << ": about to set TK pre computing position of local id " << stageId+1
+                             << ", values = " << tmpVecValues
+                             << std::endl;
+    }
+    validPreComputingPosition = m_tk->setPreComputingPosition(tmpVecValues,stageId+1);
+    if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+      *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
+                             << ": returned from setting TK pre computing position of local id " << stageId+1
+                             << ", values = " << tmpVecValues
+                             << ", valid = "  << validPreComputingPosition
+                             << std::endl;
+    }
+#endif
 
     if (outOfTargetSupport) {
       m_numOutOfTargetSupport++;
@@ -717,20 +719,6 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
           if (m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
 #ifdef UQ_USES_TK_CLASS
           m_tk->rv(tkStageIds).realizer().realization(tmpVecValues);
-          if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-            *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                                   << ": about to set TK pre computing position of local id " << stageId+1
-                                   << ", values = " << tmpVecValues
-                                   << std::endl;
-          }
-          validPreComputingPosition = m_tk->setPreComputingPosition(tmpVecValues,stageId+1);
-          if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-            *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                                   << ": returned from setting TK pre computing position of local id " << stageId+1
-                                   << ", values = " << tmpVecValues
-                                   << ", valid = "  << validPreComputingPosition
-                                   << std::endl;
-          }
 #else
           gaussianVector.cwSetGaussian(m_env.rng(),0.,1.);
           tmpVecValues = currentPositionData.vecValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
@@ -742,6 +730,23 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
           if (m_mhPutOutOfBoundsInChain) keepGeneratingCandidates = false;
           else                           keepGeneratingCandidates = outOfTargetSupport;
         }
+
+#ifdef UQ_USES_TK_CLASS
+        if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+          *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
+                                 << ": about to set TK pre computing position of local id " << stageId+1
+                                 << ", values = " << tmpVecValues
+                                 << std::endl;
+        }
+        validPreComputingPosition = m_tk->setPreComputingPosition(tmpVecValues,stageId+1);
+        if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
+          *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
+                                 << ": returned from setting TK pre computing position of local id " << stageId+1
+                                 << ", values = " << tmpVecValues
+                                 << ", valid = "  << validPreComputingPosition
+                                 << std::endl;
+        }
+#endif
 
         if (outOfTargetSupport) {
           logTarget = -INFINITY;
