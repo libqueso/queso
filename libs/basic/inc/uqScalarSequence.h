@@ -1145,7 +1145,7 @@ uqScalarSequenceClass<T>::geweke(
   double meanA = tmpSeq.subMean(0,
                                 dataSizeA);
   tmpSeq.psd(0,
-             (unsigned int) sqrt((double) dataSizeA),  // numBlocks
+             (unsigned int) std::sqrt((double) dataSizeA),  // numBlocks
              .5, // hopSizeRatio
              psdResult);
   double psdA = psdResult[0];
@@ -1161,7 +1161,7 @@ uqScalarSequenceClass<T>::geweke(
   double meanB = tmpSeq.subMean(0,
                                 dataSizeB);
   tmpSeq.psd(0,
-             (unsigned int) sqrt((double) dataSizeB),  // numBlocks
+             (unsigned int) std::sqrt((double) dataSizeB),  // numBlocks
              .5, // hopSizeRatio
              psdResult);
   double psdB = psdResult[0];
@@ -1172,19 +1172,19 @@ uqScalarSequenceClass<T>::geweke(
                            << ", before computation of gewCoef"
                            << ":\n"
                            << ", dataSizeA = "       << dataSizeA
-                           << ", numBlocksA = "      << (unsigned int) sqrt((double) dataSizeA)
+                           << ", numBlocksA = "      << (unsigned int) std::sqrt((double) dataSizeA)
                            << ", meanA = "           << meanA
                            << ", psdA = "            << psdA
                            << ", varOfMeanA = "      << varOfMeanA
                            << "\n"
                            << ", dataSizeB = "       << dataSizeB
-                           << ", numBlocksB = "      << (unsigned int) sqrt((double) dataSizeB)
+                           << ", numBlocksB = "      << (unsigned int) std::sqrt((double) dataSizeB)
                            << ", meanB = "           << meanB
                            << ", psdB = "            << psdB
                            << ", varOfMeanB = "      << varOfMeanB
                            << std::endl;
   }
-  double gewCoef = (meanA - meanB)/sqrt(varOfMeanA + varOfMeanB);
+  double gewCoef = (meanA - meanB)/std::sqrt(varOfMeanA + varOfMeanB);
 
   return gewCoef;
 }
@@ -1944,10 +1944,10 @@ uqScalarSequenceClass<T>::subScaleForKDE(
 
   T scaleValue;
   if (iqrValue <= 0.) {
-    scaleValue = 1.06*sqrt(samValue)/pow(dataSize,1./5.);
+    scaleValue = 1.06*std::sqrt(samValue)/pow(dataSize,1./5.);
    }
   else {
-    scaleValue = 1.06*std::min(sqrt(samValue),iqrValue/1.34)/pow(dataSize,1./5.);
+    scaleValue = 1.06*std::min(std::sqrt(samValue),iqrValue/1.34)/pow(dataSize,1./5.);
   }
 
   if ((m_env.subScreenFile()) && (m_env.verbosity() >= 0)) {
@@ -2004,10 +2004,10 @@ uqScalarSequenceClass<T>::unifiedScaleForKDE(
                           "failed MPI_Allreduce() for data size");
 
       if (unifiedIqrValue <= 0.) {
-        unifiedScaleValue = 1.06*sqrt(unifiedSamValue)/pow(unifiedDataSize,1./5.);
+        unifiedScaleValue = 1.06*std::sqrt(unifiedSamValue)/pow(unifiedDataSize,1./5.);
       }
       else {
-        unifiedScaleValue = 1.06*std::min(sqrt(unifiedSamValue),unifiedIqrValue/1.34)/pow(unifiedDataSize,1./5.);
+        unifiedScaleValue = 1.06*std::min(std::sqrt(unifiedSamValue),unifiedIqrValue/1.34)/pow(unifiedDataSize,1./5.);
       }
 
       if ((m_env.subScreenFile()) && (m_env.verbosity() >= 0)) {

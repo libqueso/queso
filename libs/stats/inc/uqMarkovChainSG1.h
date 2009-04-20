@@ -893,7 +893,7 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
 #else
     if (m_tkIsSymmetric) {
 #endif
-      alphaQuotient = exp(yLogTargetToUse - x.logTarget());
+      alphaQuotient = std::exp(yLogTargetToUse - x.logTarget());
       if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
         *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
                                << ": symmetric proposal case"
@@ -929,7 +929,7 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
       double qyx = logProposal(y,x,0);
       double qxy = logProposal(x,y,0);
 #endif
-      alphaQuotient = exp(yLogTargetToUse +
+      alphaQuotient = std::exp(yLogTargetToUse +
                           qyx -
                           x.logTarget() -
                           qxy);
@@ -1110,7 +1110,7 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
   }
 
   // Return result
-  return std::min(1.,(alphasNumerator/alphasDenominator)*exp(logNumerator-logDenominator));
+  return std::min(1.,(alphasNumerator/alphasDenominator)*std::exp(logNumerator-logDenominator));
 }
 
 template<class P_V,class P_M>

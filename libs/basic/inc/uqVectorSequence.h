@@ -653,9 +653,9 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
               " ",
 	      chainMean[i],
               " ",
-              sqrt(chainSampleVariance[i]),
+              std::sqrt(chainSampleVariance[i]),
               " ",
-              sqrt(chainPopulationVariance[i]));
+              std::sqrt(chainPopulationVariance[i]));
       *m_env.subScreenFile() << line;
     }
     *m_env.subScreenFile() << std::endl;
@@ -2138,7 +2138,7 @@ uqComputeCovCorrMatricesBetweenVectorSequences(
 
       for (unsigned i = 0; i < numRows; ++i) {
         for (unsigned j = 0; j < numCols; ++j) {
-          pqCorrMatrix(i,j) = pqCovMatrix(i,j)/sqrt(unifiedSampleVarianceP[i])/sqrt(unifiedSampleVarianceQ[j]);
+          pqCorrMatrix(i,j) = pqCovMatrix(i,j)/std::sqrt(unifiedSampleVarianceP[i])/std::sqrt(unifiedSampleVarianceQ[j]);
         }
       }
     }
