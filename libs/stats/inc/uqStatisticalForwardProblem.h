@@ -52,14 +52,16 @@
 #define UQ_PROPAG_PROBLEM_SOLVER_ODV               "mc" // Monte Carlo
 #endif
 
+/*! A templated class that represents statistical forward problems.
+ */
 template <class P_V,class P_M,class Q_V,class Q_M>
 class uqStatisticalForwardProblemClass
 {
 public:
-  uqStatisticalForwardProblemClass(const char*                                       prefix,
-                                   const uqBaseVectorRVClass      <P_V,P_M>&         paramRv,
-                                   const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction,
-                                   uqGenericVectorRVClass         <Q_V,Q_M>&         qoiRv);
+  uqStatisticalForwardProblemClass(const char*                                       prefix,      /*! The prefix.                  */
+                                   const uqBaseVectorRVClass      <P_V,P_M>&         paramRv,     /*! The input random variable.   */
+                                   const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction, /*! The function to compute qoi. */
+                                   uqGenericVectorRVClass         <Q_V,Q_M>&         qoiRv);      /*! The output random variable.  */
  ~uqStatisticalForwardProblemClass();
 
         bool                             computeSolutionFlag() const;

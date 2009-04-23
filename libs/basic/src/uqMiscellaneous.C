@@ -260,11 +260,11 @@ uqMiscGammar(
 {
   double result = 0.;
   if (a < 1.) {
-    result = uqMiscGammar(1.+a,b,rng)*pow( gsl_rng_uniform(rng),1./a );
+    result = uqMiscGammar(1.+a,b,rng)*std::pow( gsl_rng_uniform(rng),1./a );
   }
   else {
     double d = a-1./3.;
-    double c = 1./sqrt(9.*d);
+    double c = 1./std::sqrt(9.*d);
     double x = 0.;
     double w = 0.;
     while (1) {
@@ -273,11 +273,11 @@ uqMiscGammar(
         w = 1.+c*x;
         if (w > 0.) break;
       }
-      w = pow(w,3.);
+      w = std::pow(w,3.);
       double u = gsl_rng_uniform(rng);
-      double compValue = 1.-0.0331*pow(x,4.);
+      double compValue = 1.-0.0331*std::pow(x,4.);
       if (u < compValue) break;
-      compValue = 0.5*pow(x,2.)+d*(1.-w+log(w));
+      compValue = 0.5*std::pow(x,2.)+d*(1.-w+log(w));
       if (log(u) < compValue) break;
     }
     result = b*d*w;
@@ -316,5 +316,5 @@ double uqMiscGaussianDensity(double x, double mu, double sigma)
   double sigma2 = sigma*sigma;
   double diff   = x-mu;
 
-  return (1./sqrt(2*M_PI*sigma2))*exp(-.5*diff*diff/sigma2);
+  return (1./std::sqrt(2*M_PI*sigma2))*std::exp(-.5*diff*diff/sigma2);
 }

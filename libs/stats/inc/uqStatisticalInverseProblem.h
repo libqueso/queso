@@ -50,14 +50,16 @@
 #define UQ_CALIB_PROBLEM_SOLVER_ODV           "bayes_mc" // Bayesian formula + Markov Chain
 #endif
 
+/*! A templated class that represents statistical inverse problems.
+ */
 template <class P_V,class P_M>
 class uqStatisticalInverseProblemClass
 {
 public:
-  uqStatisticalInverseProblemClass(const char*                               prefix,
-                                   const uqBaseVectorRVClass      <P_V,P_M>& priorRv,
-                                   const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunction,
-                                         uqGenericVectorRVClass   <P_V,P_M>& postRv);
+  uqStatisticalInverseProblemClass(const char*                               prefix,             /*! The prefix.                             */
+                                   const uqBaseVectorRVClass      <P_V,P_M>& priorRv,            /*! The prior random variable.              */
+                                   const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunction, /*! The function to compute the likelihood. */
+                                         uqGenericVectorRVClass   <P_V,P_M>& postRv);            /*! The posterior random variable.          */
  ~uqStatisticalInverseProblemClass();
 
         bool computeSolutionFlag      () const;

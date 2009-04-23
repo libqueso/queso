@@ -84,7 +84,7 @@
 #include <sys/time.h>
 #include <fstream>
 
-/*! A templated class that implements a Bayesian Markov Chain Distribution Calculator
+/*! A templated class that represents a Markov Chain generator. 'SG' stands for 'Sequence Generator'.
  */
 template <class P_V,class P_M>
 class uqMarkovChainSGClass
@@ -96,14 +96,14 @@ public:
                        const P_M*                          inputProposalCovMatrix); /*! Proposal covariance matrix. */ 
  ~uqMarkovChainSGClass();
 
-  void   generateSequence           (uqBaseVectorSequenceClass<P_V,P_M>& workingChain); /*! */
+  void   generateSequence           (uqBaseVectorSequenceClass<P_V,P_M>& workingChain); /*! Generate the chain and store it in 'workingChain' object */
   void   checkTheParallelEnvironment();
 
   void   print                      (std::ostream& os) const;
 
 
 private:
-  void   proc0GenerateSequence    (uqBaseVectorSequenceClass<P_V,P_M>& workingChain); /*! */
+  //void   proc0GenerateSequence    (uqBaseVectorSequenceClass<P_V,P_M>& workingChain); /*! */
   void   resetChainAndRelatedInfo ();
   void   defineMyOptions          (po::options_description&                             optionsDesc);
   void   getMyOptionValues        (po::options_description&                             optionsDesc);
@@ -596,10 +596,14 @@ uqMarkovChainSGClass<P_V,P_M>::getMyOptionValues(
   }
   if ((m_filteredChainGenerate == true) &&
       (m_filteredChainLag      < 2    )) {
-    std::cerr << "In uqMarkovChainSGClass<P_V,P_M>::getMyOptionsValues()"
-              << ": WARNING, forcing the value of '" << m_option_filteredChain_lag.c_str()
-              << "' from "                           << m_filteredChainLag
-              << " to "                              << 2
+    std::cerr << "WARNING In uqMarkovChainSGClass<P_V,P_M>::getMyOptionsValues()"
+              << ", fullRank "              << m_env.rank()
+              << ", subEnvironment "        << m_env.subId()
+              << ", subRank "               << m_env.subRank()
+              << ", inter0Rank "            << m_env.inter0Rank()
+              << ": forcing the value of '" << m_option_filteredChain_lag.c_str()
+              << "' from "                  << m_filteredChainLag
+              << " to "                     << 2
               << std::endl;
     m_filteredChainLag = 2;
   }
@@ -879,75 +883,99 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
   double alphaQuotient = 0.;
   if ((x.outOfTargetSupport() == false) &&
       (y.outOfTargetSupport() == false)) {
-    double yLogTargetToUse = y.logTarget();
-#ifdef UQ_MAC_SG_REQUIRES_TARGET_DISTRIBUTION_ONLY
-#else
-    if (m_likelihoodObjComputesMisfits &&
-        m_observableSpace.shouldVariancesBeUpdated()) {
-      // Divide the misfitVector of 'y' by the misfitVarianceVector of 'x'
-      yLogTargetToUse = -0.5 * ( y.m2lPrior() + (y.misfitVector()/x.misfitVarianceVector()).sumOfComponents() );
+    if ((x.logTarget() == -INFINITY) ||
+        (x.logTarget() ==  INFINITY) ||
+        (isnan(x.logTarget())      )) {
+      std::cerr << "WARNING In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
+                << ", fullRank "        << m_env.rank()
+                << ", subEnvironment "  << m_env.subId()
+                << ", subRank "         << m_env.subRank()
+                << ", inter0Rank "      << m_env.inter0Rank()
+                << ": x.logTarget() = " << x.logTarget()
+                << std::endl;
     }
-#endif
-#ifdef UQ_USES_TK_CLASS
-    if (m_tk->symmetric()) {
-#else
-    if (m_tkIsSymmetric) {
-#endif
-      alphaQuotient = std::exp(yLogTargetToUse - x.logTarget());
-      if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
-        *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
-                               << ": symmetric proposal case"
-                               << ", x = "               << x.vecValues()
-                               << ", y = "               << y.vecValues()
-                               << ", yLogTargetToUse = " << yLogTargetToUse
-                               << ", x.logTarget() = "   << x.logTarget()
-                               << ", alpha = "           << alphaQuotient
-                               << std::endl;
-      }
+    else if ((y.logTarget() == -INFINITY) ||
+             (y.logTarget() ==  INFINITY) ||
+             (isnan(y.logTarget())      )) {
+      std::cerr << "WARNING In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
+                << ", fullRank "        << m_env.rank()
+                << ", subEnvironment "  << m_env.subId()
+                << ", subRank "         << m_env.subRank()
+                << ", inter0Rank "      << m_env.inter0Rank()
+                << ": y.logTarget() = " << y.logTarget()
+                << std::endl;
     }
     else {
-#ifdef UQ_USES_TK_CLASS // AQUI
-      double qyx = -.5 * m_tk->rv(yStageId).pdf().minus2LnValue(x.vecValues(),NULL,NULL,NULL,NULL);
-      if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
-        const uqGaussianVectorPdfClass<P_V,P_M>* pdfYX = dynamic_cast< const uqGaussianVectorPdfClass<P_V,P_M>* >(&(m_tk->rv(yStageId).pdf()));
-        *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
-                               << ", rvYX.domainExpVector = " << pdfYX->domainExpVector()
-                               << ", rvYX.domainVarVector = " << pdfYX->domainVarVector()
-                               << ", rvYX.covMatrix = "       << pdfYX->covMatrix()
-                               << std::endl;
-      }
-      double qxy = -.5 * m_tk->rv(xStageId).pdf().minus2LnValue(y.vecValues(),NULL,NULL,NULL,NULL);
-      if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
-        const uqGaussianVectorPdfClass<P_V,P_M>* pdfXY = dynamic_cast< const uqGaussianVectorPdfClass<P_V,P_M>* >(&(m_tk->rv(xStageId).pdf()));
-        *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
-                               << ", rvXY.domainExpVector = " << pdfXY->domainExpVector()
-                               << ", rvXY.domainVarVector = " << pdfXY->domainVarVector()
-                               << ", rvXY.covMatrix = "       << pdfXY->covMatrix()
-                               << std::endl;
-      }
+      double yLogTargetToUse = y.logTarget();
+#ifdef UQ_MAC_SG_REQUIRES_TARGET_DISTRIBUTION_ONLY
 #else
-      double qyx = logProposal(y,x,0);
-      double qxy = logProposal(x,y,0);
-#endif
-      alphaQuotient = std::exp(yLogTargetToUse +
-                          qyx -
-                          x.logTarget() -
-                          qxy);
-      if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
-        *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
-                               << ": unsymmetric proposal case"
-                               << ", xStageId = "        << xStageId
-                               << ", yStageId = "        << yStageId
-                               << ", x = "               << x.vecValues()
-                               << ", y = "               << y.vecValues()
-                               << ", yLogTargetToUse = " << yLogTargetToUse
-                               << ", q(y,x) = "          << qyx
-                               << ", x.logTarget() = "   << x.logTarget()
-                               << ", q(x,y) = "          << qxy
-                               << ", alpha = "           << alphaQuotient
-                               << std::endl;
+      if (m_likelihoodObjComputesMisfits &&
+          m_observableSpace.shouldVariancesBeUpdated()) {
+        // Divide the misfitVector of 'y' by the misfitVarianceVector of 'x'
+        yLogTargetToUse = -0.5 * ( y.m2lPrior() + (y.misfitVector()/x.misfitVarianceVector()).sumOfComponents() );
       }
-    }
+#endif
+#ifdef UQ_USES_TK_CLASS
+      if (m_tk->symmetric()) {
+#else
+      if (m_tkIsSymmetric) {
+#endif
+        alphaQuotient = std::exp(yLogTargetToUse - x.logTarget());
+        if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
+          *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
+                                 << ": symmetric proposal case"
+                                 << ", x = "               << x.vecValues()
+                                 << ", y = "               << y.vecValues()
+                                 << ", yLogTargetToUse = " << yLogTargetToUse
+                                 << ", x.logTarget() = "   << x.logTarget()
+                                 << ", alpha = "           << alphaQuotient
+                                 << std::endl;
+        }
+      }
+      else {
+#ifdef UQ_USES_TK_CLASS // AQUI
+        double qyx = -.5 * m_tk->rv(yStageId).pdf().minus2LnValue(x.vecValues(),NULL,NULL,NULL,NULL);
+        if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
+          const uqGaussianVectorPdfClass<P_V,P_M>* pdfYX = dynamic_cast< const uqGaussianVectorPdfClass<P_V,P_M>* >(&(m_tk->rv(yStageId).pdf()));
+          *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
+                                 << ", rvYX.domainExpVector = " << pdfYX->domainExpVector()
+                                 << ", rvYX.domainVarVector = " << pdfYX->domainVarVector()
+                                 << ", rvYX.covMatrix = "       << pdfYX->covMatrix()
+                                 << std::endl;
+        }
+        double qxy = -.5 * m_tk->rv(xStageId).pdf().minus2LnValue(y.vecValues(),NULL,NULL,NULL,NULL);
+        if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
+          const uqGaussianVectorPdfClass<P_V,P_M>* pdfXY = dynamic_cast< const uqGaussianVectorPdfClass<P_V,P_M>* >(&(m_tk->rv(xStageId).pdf()));
+          *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
+                                 << ", rvXY.domainExpVector = " << pdfXY->domainExpVector()
+                                 << ", rvXY.domainVarVector = " << pdfXY->domainVarVector()
+                                 << ", rvXY.covMatrix = "       << pdfXY->covMatrix()
+                                 << std::endl;
+        }
+#else
+        double qyx = logProposal(y,x,0);
+        double qxy = logProposal(x,y,0);
+#endif
+        alphaQuotient = std::exp(yLogTargetToUse +
+                                 qyx -
+                                 x.logTarget() -
+                                 qxy);
+        if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
+          *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
+                                 << ": unsymmetric proposal case"
+                                 << ", xStageId = "        << xStageId
+                                 << ", yStageId = "        << yStageId
+                                 << ", x = "               << x.vecValues()
+                                 << ", y = "               << y.vecValues()
+                                 << ", yLogTargetToUse = " << yLogTargetToUse
+                                 << ", q(y,x) = "          << qyx
+                                 << ", x.logTarget() = "   << x.logTarget()
+                                 << ", q(x,y) = "          << qxy
+                                 << ", alpha = "           << alphaQuotient
+                                 << std::endl;
+        }
+      }
+    } // protection logic against logTarget values
   }
   else {
     if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
@@ -982,6 +1010,32 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
   // If necessary, return 0. right away
   if (inputPositionsData[0          ]->outOfTargetSupport()) return 0.;
   if (inputPositionsData[inputSize-1]->outOfTargetSupport()) return 0.;
+
+  if (((*inputPositionsData[0]).logTarget() == -INFINITY) ||
+      ((*inputPositionsData[0]).logTarget() ==  INFINITY) ||
+      (isnan((*inputPositionsData[0]).logTarget())      )) {
+    std::cerr << "WARNING In uqMarkovChainSGClass<P_V,P_M>::alpha(vec)"
+              << ", fullRank "       << m_env.rank()
+              << ", subEnvironment " << m_env.subId()
+              << ", subRank "        << m_env.subRank()
+              << ", inter0Rank "     << m_env.inter0Rank()
+              << ": (*inputPositionsData[0]).logTarget() = " << (*inputPositionsData[0]).logTarget()
+              << std::endl;
+    return 0.;
+  }
+  else if (((*inputPositionsData[inputSize - 1]).logTarget() == -INFINITY) ||
+           ((*inputPositionsData[inputSize - 1]).logTarget() ==  INFINITY) ||
+           (isnan((*inputPositionsData[inputSize - 1]).logTarget())      )) {
+    std::cerr << "WARNING In uqMarkovChainSGClass<P_V,P_M>::alpha(vec)"
+              << ", fullRank "       << m_env.rank()
+              << ", subEnvironment " << m_env.subId()
+              << ", subRank "        << m_env.subRank()
+              << ", inter0Rank "     << m_env.inter0Rank()
+              << ": inputSize = "    << inputSize
+              << ", (*inputPositionsData[inputSize - 1]).logTarget() = " << (*inputPositionsData[inputSize - 1]).logTarget()
+              << std::endl;
+    return 0.;
+  }
 
   // If inputSize is 2, recursion is not needed
   if (inputSize == 2) return this->alpha(*(inputPositionsData[0            ]),

@@ -785,7 +785,7 @@ uqArrayOfSequencesClass<V,M>::geweke(
     double doubleDataSizeA = (double) dataSizeA;
     double doubleDataSizeB = (double) dataSizeB;
     for (unsigned int i = 0; i < numParams; ++i) {
-      (*(vectorOfGeweke[initialPosId]))[i] = (meanA[i] - meanB[i])/sqrt(psdVecA[i]/doubleDataSizeA + psdVecB[i]/doubleDataSizeB);
+      (*(vectorOfGeweke[initialPosId]))[i] = (meanA[i] - meanB[i])/std::sqrt(psdVecA[i]/doubleDataSizeA + psdVecB[i]/doubleDataSizeB);
     }
   }
 
@@ -912,10 +912,10 @@ uqArrayOfSequencesClass<V,M>::scalesForKDE(
   unsigned int numParams = sequence[0]->size();
   for (unsigned int i = 0; i < numParams; ++i) {
     if (iqrs[i] <= 0.) {
-      scales[i] = 1.06*sqrt(samVec[i])/pow(dataSize,1./5.);
+      scales[i] = 1.06*std::sqrt(samVec[i])/std::pow(dataSize,1./5.);
     }
     else {
-      scales[i] = 1.06*std::min(sqrt(samVec[i]),iqrs[i]/1.34)/pow(dataSize,1./5.);
+      scales[i] = 1.06*std::min(std::sqrt(samVec[i]),iqrs[i]/1.34)/std::pow(dataSize,1./5.);
     }
   }
 

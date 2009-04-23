@@ -250,7 +250,7 @@ uqGslVectorClass::norm2Sq() const
 double
 uqGslVectorClass::norm2() const
 {
-  return sqrt(this->norm2Sq());
+  return std::sqrt(this->norm2Sq());
 }
 
 double

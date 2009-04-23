@@ -814,13 +814,13 @@ uqScalarSequenceClass<T>::autoCorrViaFft(
     double tmp = log((double) maxLag)/log(2.);
     double fractionalPart = tmp - ((double) ((unsigned int) tmp));
     if (fractionalPart > 0.) tmp += (1. - fractionalPart);
-    unsigned int fftSize1 = (unsigned int) pow(2.,tmp+1.); // Yes, tmp+1
+    unsigned int fftSize1 = (unsigned int) std::pow(2.,tmp+1.); // Yes, tmp+1
     fftSize1 = fftSize1; // To remove warning
 
     tmp = log((double) numPos)/log(2.);
     fractionalPart = tmp - ((double) ((unsigned int) tmp));
     if (fractionalPart > 0.) tmp += (1. - fractionalPart);
-    unsigned int fftSize2 = (unsigned int) pow(2.,tmp+1);
+    unsigned int fftSize2 = (unsigned int) std::pow(2.,tmp+1);
 
     fftSize = fftSize2;
   }
@@ -899,7 +899,7 @@ uqScalarSequenceClass<T>::autoCorrViaFft(
   double tmp = log((double) numPos)/log(2.);
   double fractionalPart = tmp - ((double) ((unsigned int) tmp));
   if (fractionalPart > 0.) tmp += (1. - fractionalPart);
-  unsigned int fftSize = (unsigned int) pow(2.,tmp+1);
+  unsigned int fftSize = (unsigned int) std::pow(2.,tmp+1);
 
   std::vector<double> rawDataVec(numPos,0.);
   std::vector<std::complex<double> > resultData(0,std::complex<double>(0.,0.));
@@ -1060,7 +1060,7 @@ uqScalarSequenceClass<T>::psd(
   double tmp = log((double) blockSize)/log(2.);
   double fractionalPart = tmp - ((double) ((unsigned int) tmp));
   if (fractionalPart > 0.) tmp += (1. - fractionalPart);
-  unsigned int fftSize = (unsigned int) pow(2.,tmp);
+  unsigned int fftSize = (unsigned int) std::pow(2.,tmp);
   //if (m_env.subScreenFile()) {
   //  *m_env.subScreenFile() << "fractionalPart = " << fractionalPart
   //                         << ", B = "            << blockSize
@@ -1944,10 +1944,10 @@ uqScalarSequenceClass<T>::subScaleForKDE(
 
   T scaleValue;
   if (iqrValue <= 0.) {
-    scaleValue = 1.06*std::sqrt(samValue)/pow(dataSize,1./5.);
+    scaleValue = 1.06*std::sqrt(samValue)/std::pow(dataSize,1./5.);
    }
   else {
-    scaleValue = 1.06*std::min(std::sqrt(samValue),iqrValue/1.34)/pow(dataSize,1./5.);
+    scaleValue = 1.06*std::min(std::sqrt(samValue),iqrValue/1.34)/std::pow(dataSize,1./5.);
   }
 
   if ((m_env.subScreenFile()) && (m_env.verbosity() >= 0)) {
@@ -2004,10 +2004,10 @@ uqScalarSequenceClass<T>::unifiedScaleForKDE(
                           "failed MPI_Allreduce() for data size");
 
       if (unifiedIqrValue <= 0.) {
-        unifiedScaleValue = 1.06*std::sqrt(unifiedSamValue)/pow(unifiedDataSize,1./5.);
+        unifiedScaleValue = 1.06*std::sqrt(unifiedSamValue)/std::pow(unifiedDataSize,1./5.);
       }
       else {
-        unifiedScaleValue = 1.06*std::min(std::sqrt(unifiedSamValue),unifiedIqrValue/1.34)/pow(unifiedDataSize,1./5.);
+        unifiedScaleValue = 1.06*std::min(std::sqrt(unifiedSamValue),unifiedIqrValue/1.34)/std::pow(unifiedDataSize,1./5.);
       }
 
       if ((m_env.subScreenFile()) && (m_env.verbosity() >= 0)) {

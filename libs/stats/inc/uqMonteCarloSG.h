@@ -617,11 +617,11 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
     for (unsigned int j = 0; j < tmpQ.size(); ++j) {
       if ((tmpQ[j] == INFINITY) || (tmpQ[j] == -INFINITY)) {
 	std::cerr << "WARNING In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence()"
-                  << ": fullRank "       << m_env.rank()
+                  << ", fullRank "       << m_env.rank()
                   << ", subEnvironment " << m_env.subId()
                   << ", subRank "        << m_env.subRank()
                   << ", inter0Rank "     << m_env.inter0Rank()
-                  << ", i = "            << i
+                  << ": i = "            << i
                   << ", tmpQ[" << j << "] = " << tmpQ[j]
                   << ", tmpP = "         << tmpP
                   << ", tmpQ = "         << tmpQ

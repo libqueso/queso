@@ -949,7 +949,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
           tempTK->updateCovMatrix(m_amEta*attemptedMatrix);
 #else
           *(m_lowerCholProposalCovMatrices[0]) = tmpChol;
-          *(m_lowerCholProposalCovMatrices[0]) *= sqrt(m_amEta);
+          *(m_lowerCholProposalCovMatrices[0]) *= std::sqrt(m_amEta);
           m_lowerCholProposalCovMatrices[0]->zeroUpper(false);
 #endif
 

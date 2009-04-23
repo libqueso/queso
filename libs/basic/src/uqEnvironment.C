@@ -85,16 +85,18 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_allOptionsDesc                (NULL),
   m_envOptionsDesc                (NULL),
   m_allOptionsMap                 (NULL),
-  m_option_help                   (m_prefix + "help"              ),
-  m_option_numSubEnvironments     (m_prefix + "numSubEnvironments"),
+  m_option_help                   (m_prefix + "help"                   ),
+  m_option_numSubEnvironments     (m_prefix + "numSubEnvironments"     ),
   m_option_subScreenOutputFileName(m_prefix + "subScreenOutputFileName"),
-  m_option_subScreenOutputAllow   (m_prefix + "subScreenOutputAllow"),
-  m_option_verbosity              (m_prefix + "verbosity"         ),
-  m_option_syncVerbosity          (m_prefix + "syncVerbosity"     ),
-  m_option_seed                   (m_prefix + "seed"              ),
+  m_option_subScreenOutputAllowAll(m_prefix + "subScreenOutputAllowAll"),
+  m_option_subScreenOutputAllow   (m_prefix + "subScreenOutputAllow"   ),
+  m_option_verbosity              (m_prefix + "verbosity"              ),
+  m_option_syncVerbosity          (m_prefix + "syncVerbosity"          ),
+  m_option_seed                   (m_prefix + "seed"                   ),
   m_numSubEnvironments            (UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),
   m_subScreenOutputFileName       (UQ_ENV_SUB_SCREEN_OUTPUT_FILE_NAME_ODV),
-//m_subScreenOutputAllow          (),
+  m_subScreenOutputAllowAll       (UQ_ENV_SUB_SCREEN_OUTPUT_ALLOW_ALL_ODV),
+//m_subScreenOutputAllowSet       (),
   m_verbosity                     (UQ_ENV_VERBOSITY_ODV),
   m_syncVerbosity                 (UQ_ENV_SYNC_VERBOSITY_ODV),
   m_seed                          (UQ_ENV_SEED_ODV),
@@ -132,16 +134,18 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_allOptionsDesc                (NULL),
   m_envOptionsDesc                (NULL),
   m_allOptionsMap                 (NULL),
-  m_option_help                   (m_prefix + "help"              ),
-  m_option_numSubEnvironments     (m_prefix + "numSubEnvironments"),
+  m_option_help                   (m_prefix + "help"                   ),
+  m_option_numSubEnvironments     (m_prefix + "numSubEnvironments"     ),
   m_option_subScreenOutputFileName(m_prefix + "subScreenOutputFileName"),
-  m_option_subScreenOutputAllow   (m_prefix + "subScreenOutputAllow"),
-  m_option_verbosity              (m_prefix + "verbosity"         ),
-  m_option_syncVerbosity          (m_prefix + "syncVerbosity"     ),
-  m_option_seed                   (m_prefix + "seed"              ),
+  m_option_subScreenOutputAllowAll(m_prefix + "subScreenOutputAllowAll"),
+  m_option_subScreenOutputAllow   (m_prefix + "subScreenOutputAllow"   ),
+  m_option_verbosity              (m_prefix + "verbosity"              ),
+  m_option_syncVerbosity          (m_prefix + "syncVerbosity"          ),
+  m_option_seed                   (m_prefix + "seed"                   ),
   m_numSubEnvironments            (UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),
   m_subScreenOutputFileName       (UQ_ENV_SUB_SCREEN_OUTPUT_FILE_NAME_ODV),
-//m_subScreenOutputAllow          (),
+  m_subScreenOutputAllowAll       (UQ_ENV_SUB_SCREEN_OUTPUT_ALLOW_ALL_ODV),
+//m_subScreenOutputAllowSet       (),
   m_verbosity                     (UQ_ENV_VERBOSITY_ODV),
   m_syncVerbosity                 (UQ_ENV_SYNC_VERBOSITY_ODV),
   m_seed                          (UQ_ENV_SEED_ODV),
@@ -178,16 +182,18 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_allOptionsDesc                (NULL),
   m_envOptionsDesc                (NULL),
   m_allOptionsMap                 (NULL),
-  m_option_help                   (m_prefix + "help"              ),
-  m_option_numSubEnvironments     (m_prefix + "numSubEnvironments"),
+  m_option_help                   (m_prefix + "help"                   ),
+  m_option_numSubEnvironments     (m_prefix + "numSubEnvironments"     ),
   m_option_subScreenOutputFileName(m_prefix + "subScreenOutputFileName"),
-  m_option_subScreenOutputAllow   (m_prefix + "subScreenOutputAllow"),
-  m_option_verbosity              (m_prefix + "verbosity"         ),
-  m_option_syncVerbosity          (m_prefix + "syncVerbosity"     ),
-  m_option_seed                   (m_prefix + "seed"              ),
+  m_option_subScreenOutputAllowAll(m_prefix + "subScreenOutputAllowAll"),
+  m_option_subScreenOutputAllow   (m_prefix + "subScreenOutputAllow"   ),
+  m_option_verbosity              (m_prefix + "verbosity"              ),
+  m_option_syncVerbosity          (m_prefix + "syncVerbosity"          ),
+  m_option_seed                   (m_prefix + "seed"                   ),
   m_numSubEnvironments            (UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),
   m_subScreenOutputFileName       (UQ_ENV_SUB_SCREEN_OUTPUT_FILE_NAME_ODV),
-//m_subScreenOutputAllow          (),
+  m_subScreenOutputAllowAll       (UQ_ENV_SUB_SCREEN_OUTPUT_ALLOW_ALL_ODV),
+//m_subScreenOutputAllowSet       (),
   m_verbosity                     (options.m_verbosity),
   m_syncVerbosity                 (UQ_ENV_SYNC_VERBOSITY_ODV),
   m_seed                          (options.m_seed),
@@ -436,8 +442,8 @@ uqBaseEnvironmentClass::openOutputFile(
         std::ofstream*&         ofsvar) const
 {
   ofsvar = NULL;
-  if ((baseFileName                         == "."                   ) ||
-      (allowedSubEnvIds.find(this->subId()) == allowedSubEnvIds.end())) {
+  if ((baseFileName                         == UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE) ||
+      (allowedSubEnvIds.find(this->subId()) == allowedSubEnvIds.end()            )) {
     if (this->subScreenFile()) {
       *this->subScreenFile() << "In openOutputFile()"
                              << ": no output file opened with base name '" << baseFileName
@@ -717,9 +723,9 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
   // Open "screen" file
   //////////////////////////////////////////////////
   bool openFile = false;
-  if ((m_subRank                            == 0                                 ) &&
-      (m_subScreenOutputFileName            != UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE) &&
-      (m_subScreenOutputAllow.find(m_subId) != m_subScreenOutputAllow.end()      )) {
+  if ((m_subRank                               == 0                                 ) &&
+      (m_subScreenOutputFileName               != UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE) &&
+      (m_subScreenOutputAllowSet.find(m_subId) != m_subScreenOutputAllowSet.end()   )) {
     openFile = true;
   }
 
@@ -896,14 +902,15 @@ void
 uqFullEnvironmentClass::defineMyOptions(po::options_description& options) const
 {
   options.add_options()
-    (m_option_help.c_str(),                                                                                                      "produce help message for uq environment")
-    (m_option_numSubEnvironments.c_str(),      po::value<unsigned int>()->default_value(UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),        "number of subEnvironments"              )
-    (m_option_subScreenOutputFileName.c_str(), po::value<std::string >()->default_value(UQ_ENV_SUB_SCREEN_OUTPUT_FILE_NAME_ODV), "output filename for subscreen writing"  )
-    (m_option_subScreenOutputAllow.c_str(),    po::value<std::string >()->default_value(UQ_ENV_SUB_SCREEN_OUTPUT_ALLOW_ODV),     "subEnvs that will write to output file" )
-    (m_option_verbosity.c_str(),               po::value<unsigned int>()->default_value(UQ_ENV_VERBOSITY_ODV),                   "set verbosity"                          )
-    (m_option_syncVerbosity.c_str(),           po::value<unsigned int>()->default_value(UQ_ENV_SYNC_VERBOSITY_ODV),              "set sync verbosity"                     )
-    (m_option_seed.c_str(),                    po::value<int         >()->default_value(UQ_ENV_SEED_ODV),                        "set seed"                               )
-  //(m_option_numDebugParams.c_str(),          po::value<unsigned int>()->default_value(UQ_ENV_NUM_DEBUG_PARAMS_ODV),            "set number of debug parameters"         )
+    (m_option_help.c_str(),                                                                                                      "produce help message for uq environment"  )
+    (m_option_numSubEnvironments.c_str(),      po::value<unsigned int>()->default_value(UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),        "number of subEnvironments"                )
+    (m_option_subScreenOutputFileName.c_str(), po::value<std::string >()->default_value(UQ_ENV_SUB_SCREEN_OUTPUT_FILE_NAME_ODV), "output filename for subscreen writing"    )
+    (m_option_subScreenOutputAllowAll.c_str(), po::value<bool        >()->default_value(UQ_ENV_SUB_SCREEN_OUTPUT_ALLOW_ALL_ODV), "Allow all subEnvs to write to output file")
+    (m_option_subScreenOutputAllow.c_str(),    po::value<std::string >()->default_value(UQ_ENV_SUB_SCREEN_OUTPUT_ALLOW_ODV),     "subEnvs that will write to output file"   )
+    (m_option_verbosity.c_str(),               po::value<unsigned int>()->default_value(UQ_ENV_VERBOSITY_ODV),                   "set verbosity"                            )
+    (m_option_syncVerbosity.c_str(),           po::value<unsigned int>()->default_value(UQ_ENV_SYNC_VERBOSITY_ODV),              "set sync verbosity"                       )
+    (m_option_seed.c_str(),                    po::value<int         >()->default_value(UQ_ENV_SEED_ODV),                        "set seed"                                 )
+  //(m_option_numDebugParams.c_str(),          po::value<unsigned int>()->default_value(UQ_ENV_NUM_DEBUG_PARAMS_ODV),            "set number of debug parameters"           )
   ;
 
   return;
@@ -936,8 +943,16 @@ uqFullEnvironmentClass::getMyOptionValues(po::options_description& optionsDesc)
     m_subScreenOutputFileName = (*m_allOptionsMap)[m_option_subScreenOutputFileName.c_str()].as<std::string>();
   }
 
-  if (m_allOptionsMap->count(m_option_subScreenOutputAllow.c_str())) {
-    m_subScreenOutputAllow.clear();
+  if (m_allOptionsMap->count(m_option_subScreenOutputAllowAll.c_str())) {
+    m_subScreenOutputAllowAll = (*m_allOptionsMap)[m_option_subScreenOutputAllowAll.c_str()].as<bool>();
+  }
+
+  if (m_subScreenOutputAllowAll) {
+    m_subScreenOutputAllowSet.clear();
+    m_subScreenOutputAllowSet.insert((unsigned int) m_subId);
+  }
+  else if (m_allOptionsMap->count(m_option_subScreenOutputAllow.c_str())) {
+    m_subScreenOutputAllowSet.clear();
     std::vector<double> tmpAllow(0,0.);
     std::string inputString = (*m_allOptionsMap)[m_option_subScreenOutputAllow.c_str()].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpAllow);
@@ -951,7 +966,7 @@ uqFullEnvironmentClass::getMyOptionValues(po::options_description& optionsDesc)
 
     if (tmpAllow.size() > 0) {
       for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
-        m_subScreenOutputAllow.insert((unsigned int) tmpAllow[i]);
+        m_subScreenOutputAllowSet.insert((unsigned int) tmpAllow[i]);
       }
     }
   }
@@ -979,9 +994,10 @@ void
 uqFullEnvironmentClass::print(std::ostream& os) const
 {
   os <<         m_option_numSubEnvironments      << " = " << m_numSubEnvironments
-     << "\n" << m_option_subScreenOutputFileName << " = " << m_subScreenOutputFileName;
+     << "\n" << m_option_subScreenOutputFileName << " = " << m_subScreenOutputFileName
+     << "\n" << m_option_subScreenOutputAllowAll << " = ";
   os << "\n" << m_option_subScreenOutputAllow << " = ";
-  for (std::set<unsigned int>::iterator setIt = m_subScreenOutputAllow.begin(); setIt != m_subScreenOutputAllow.end(); ++setIt) {
+  for (std::set<unsigned int>::iterator setIt = m_subScreenOutputAllowSet.begin(); setIt != m_subScreenOutputAllowSet.end(); ++setIt) {
     os << *setIt << " ";
   }
   os << "\n" << m_option_verbosity               << " = " << m_verbosity

@@ -138,7 +138,7 @@ uqGenericScalarFunctionClass<V,M>::actualValue(const V& domainVector, const V* d
 
   double value = m_valueRoutinePtr(domainVector, domainDirection, m_routinesDataPtr, gradVector, hessianMatrix, hessianEffect);
   if (m_routinesAreForMinus2Ln) {
-    value = exp(-.5*value);
+    value = std::exp(-.5*value);
     UQ_FATAL_TEST_MACRO(true,
                         m_env.rank(),
                         "uqGenericScalarFunctionClass<V,M>::gradOfActual()",

@@ -558,7 +558,7 @@ uqGaussianVectorPdfClass<V,M>::actualValue(
                       "uqGaussianVectorPdfClass<V,M>::actualValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
-  double returnValue = exp(-0.5*this->minus2LnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
+  double returnValue = std::exp(-0.5*this->minus2LnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
 
   if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
     *m_env.subScreenFile() << "Leaving uqGaussianVectorPdfClass<V,M>::actualValue()"
