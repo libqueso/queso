@@ -673,6 +673,10 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
   sprintf(tmpSubId,"%u",m_subId);
   m_subIdString = tmpSubId;
 
+  if (m_subScreenOutputAllowAll) {
+    m_subScreenOutputAllowSet.insert((unsigned int) m_subId);
+  }
+
   std::vector<int> fullRanksOfMySubEnvironment(numRanksPerSubEnvironment,0);
   for (unsigned int i = 0; i < numRanksPerSubEnvironment; ++i) {
     fullRanksOfMySubEnvironment[i] = m_subId * numRanksPerSubEnvironment + i;
@@ -949,7 +953,8 @@ uqFullEnvironmentClass::getMyOptionValues(po::options_description& optionsDesc)
 
   if (m_subScreenOutputAllowAll) {
     m_subScreenOutputAllowSet.clear();
-    m_subScreenOutputAllowSet.insert((unsigned int) m_subId);
+    // The line below is commented because 'm_subId' is not set at this point yet
+    //m_subScreenOutputAllowSet.insert((unsigned int) m_subId);
   }
   else if (m_allOptionsMap->count(m_option_subScreenOutputAllow.c_str())) {
     m_subScreenOutputAllowSet.clear();
@@ -995,8 +1000,8 @@ uqFullEnvironmentClass::print(std::ostream& os) const
 {
   os <<         m_option_numSubEnvironments      << " = " << m_numSubEnvironments
      << "\n" << m_option_subScreenOutputFileName << " = " << m_subScreenOutputFileName
-     << "\n" << m_option_subScreenOutputAllowAll << " = ";
-  os << "\n" << m_option_subScreenOutputAllow << " = ";
+     << "\n" << m_option_subScreenOutputAllowAll << " = " << m_option_subScreenOutputAllowAll
+     << "\n" << m_option_subScreenOutputAllow << " = ";
   for (std::set<unsigned int>::iterator setIt = m_subScreenOutputAllowSet.begin(); setIt != m_subScreenOutputAllowSet.end(); ++setIt) {
     os << *setIt << " ";
   }
