@@ -1586,8 +1586,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedPrintContents(const std::string& fileName)
   }
 
   if (m_env.inter0Rank() >= 0) {
-    for (unsigned int r = 0; r < m_env.inter0Comm().NumProc(); ++r) {
-      if (m_env.inter0Rank() == r) {
+    for (unsigned int r = 0; r < (unsigned int) m_env.inter0Comm().NumProc(); ++r) {
+      if (m_env.inter0Rank() == (int) r) {
         // My turn
         std::ofstream* unifiedOfsVar = NULL;
         bool writeOver = (r == 0);

@@ -330,7 +330,7 @@ uqArrayOfSequencesClass<V,M>::uniformlySampledCdf(
 
     unsigned int numEvaluationPoints = (unsigned int) numEvaluationPointsVec[i];
     std::vector<double> aCdf(0);
-    seq.uniformlySampledCdf(numEvaluationPoints,
+    seq.subUniformlySampledCdf(numEvaluationPoints,
                             minCdfValues[i],
                             maxCdfValues[i],
                             aCdf);
@@ -368,7 +368,7 @@ uqArrayOfSequencesClass<V,M>::mean(
   uqArrayOfSequencesClass<V,M>* tmp = const_cast<uqArrayOfSequencesClass<V,M>*>(this);
   for (unsigned int i = 0; i < meanVec.size(); ++i) {
     const uqScalarSequenceClass<double>& seq = *(tmp->m_scalarSequences(i,0));
-    meanVec[i] = seq.mean(initialPos, numPos);
+    meanVec[i] = seq.subMean(initialPos, numPos);
   }
 
   return;
@@ -805,7 +805,7 @@ uqArrayOfSequencesClass<V,M>::minMax(
   unsigned int numParams = this->vectorSize();
   for (unsigned int i = 0; i < numParams; ++i) {
     uqScalarSequenceClass<double>& seq = *(tmp->m_scalarSequences(i,0));
-    seq.minMax(initialPos,minVec[i],maxVec[i]);
+    seq.subMinMax(initialPos,minVec[i],maxVec[i]);
   }
 
   return;

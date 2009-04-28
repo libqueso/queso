@@ -892,6 +892,8 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
                 << ", subRank "         << m_env.subRank()
                 << ", inter0Rank "      << m_env.inter0Rank()
                 << ": x.logTarget() = " << x.logTarget()
+                << ", x.values() = "    << x.vecValues()
+                << ", y.values() = "    << y.vecValues()
                 << std::endl;
     }
     else if ((y.logTarget() == -INFINITY) ||
@@ -903,6 +905,8 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
                 << ", subRank "         << m_env.subRank()
                 << ", inter0Rank "      << m_env.inter0Rank()
                 << ": y.logTarget() = " << y.logTarget()
+                << ", x.values() = "    << x.vecValues()
+                << ", y.values() = "    << y.vecValues()
                 << std::endl;
     }
     else {
@@ -1011,28 +1015,33 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
   if (inputPositionsData[0          ]->outOfTargetSupport()) return 0.;
   if (inputPositionsData[inputSize-1]->outOfTargetSupport()) return 0.;
 
-  if (((*inputPositionsData[0]).logTarget() == -INFINITY) ||
-      ((*inputPositionsData[0]).logTarget() ==  INFINITY) ||
-      (isnan((*inputPositionsData[0]).logTarget())      )) {
-    std::cerr << "WARNING In uqMarkovChainSGClass<P_V,P_M>::alpha(vec)"
-              << ", fullRank "       << m_env.rank()
-              << ", subEnvironment " << m_env.subId()
-              << ", subRank "        << m_env.subRank()
-              << ", inter0Rank "     << m_env.inter0Rank()
-              << ": (*inputPositionsData[0]).logTarget() = " << (*inputPositionsData[0]).logTarget()
-              << std::endl;
-    return 0.;
-  }
-  else if (((*inputPositionsData[inputSize - 1]).logTarget() == -INFINITY) ||
-           ((*inputPositionsData[inputSize - 1]).logTarget() ==  INFINITY) ||
-           (isnan((*inputPositionsData[inputSize - 1]).logTarget())      )) {
+  if ((inputPositionsData[0]->logTarget() == -INFINITY) ||
+      (inputPositionsData[0]->logTarget() ==  INFINITY) ||
+      (isnan(inputPositionsData[0]->logTarget())      )) {
     std::cerr << "WARNING In uqMarkovChainSGClass<P_V,P_M>::alpha(vec)"
               << ", fullRank "       << m_env.rank()
               << ", subEnvironment " << m_env.subId()
               << ", subRank "        << m_env.subRank()
               << ", inter0Rank "     << m_env.inter0Rank()
               << ": inputSize = "    << inputSize
-              << ", (*inputPositionsData[inputSize - 1]).logTarget() = " << (*inputPositionsData[inputSize - 1]).logTarget()
+              << ", inputPositionsData[0]->logTarget() = " << inputPositionsData[0]->logTarget()
+              << ", [0]->values() = "                      << inputPositionsData[0]->vecValues()
+              << ", [inputSize - 1]->values() = "          << inputPositionsData[inputSize-1]->vecValues()
+              << std::endl;
+    return 0.;
+  }
+  else if ((inputPositionsData[inputSize - 1]->logTarget() == -INFINITY) ||
+           (inputPositionsData[inputSize - 1]->logTarget() ==  INFINITY) ||
+           (isnan(inputPositionsData[inputSize - 1]->logTarget())      )) {
+    std::cerr << "WARNING In uqMarkovChainSGClass<P_V,P_M>::alpha(vec)"
+              << ", fullRank "       << m_env.rank()
+              << ", subEnvironment " << m_env.subId()
+              << ", subRank "        << m_env.subRank()
+              << ", inter0Rank "     << m_env.inter0Rank()
+              << ": inputSize = "    << inputSize
+              << ", inputPositionsData[inputSize - 1]->logTarget() = " << inputPositionsData[inputSize-1]->logTarget()
+              << ", [0]->values() = "                                  << inputPositionsData[0]->vecValues()
+              << ", [inputSize - 1]->values() = "                      << inputPositionsData[inputSize-1]->vecValues()
               << std::endl;
     return 0.;
   }
