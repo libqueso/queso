@@ -38,27 +38,28 @@
 #define UQ_MAC_SG_REQUIRES_TARGET_DISTRIBUTION_ONLY
 #define UQ_NOTHING_JUST_FOR_TEST_OF_SVN_ID 1
 
-#define UQ_MAC_SG_MARKOV_CHAIN_TYPE           1
-#define UQ_MAC_SG_WHITE_NOISE_CHAIN_TYPE      2
-#define UQ_MAC_SG_UNIFORM_CHAIN_TYPE          3
-#define UQ_MAC_SG_FILENAME_FOR_NO_OUTPUT_FILE "."
+#define UQ_MAC_SG_MARKOV_CHAIN_TYPE      1
+#define UQ_MAC_SG_WHITE_NOISE_CHAIN_TYPE 2
+#define UQ_MAC_SG_UNIFORM_CHAIN_TYPE     3
+#define UQ_MAC_SG_FILENAME_FOR_NO_FILE   "."
 
 // _ODV = option default value
-#define UQ_MAC_SG_OUTPUT_FILE_NAME_ODV                 UQ_MAC_SG_FILENAME_FOR_NO_OUTPUT_FILE
+#define UQ_MAC_SG_OUTPUT_FILE_NAME_ODV                 UQ_MAC_SG_FILENAME_FOR_NO_FILE
 #define UQ_MAC_SG_OUTPUT_ALLOW_ODV                     ""
 
 #define UQ_MAC_SG_CHAIN_TYPE_ODV                       UQ_MAC_SG_MARKOV_CHAIN_TYPE
+#define UQ_MAC_SG_CHAIN_INPUT_FILE_NAME_ODV            UQ_MAC_SG_FILENAME_FOR_NO_FILE
 #define UQ_MAC_SG_CHAIN_SIZE_ODV                       100
 #define UQ_MAC_SG_CHAIN_GENERATE_EXTRA_ODV             0
 #define UQ_MAC_SG_CHAIN_DISPLAY_PERIOD_ODV             500
 #define UQ_MAC_SG_CHAIN_MEASURE_RUN_TIMES_ODV          0
-#define UQ_MAC_SG_CHAIN_OUTPUT_FILE_NAME_ODV           UQ_MAC_SG_FILENAME_FOR_NO_OUTPUT_FILE
+#define UQ_MAC_SG_CHAIN_OUTPUT_FILE_NAME_ODV           UQ_MAC_SG_FILENAME_FOR_NO_FILE
 #define UQ_MAC_SG_CHAIN_OUTPUT_ALLOW_ODV               ""
 #define UQ_MAC_SG_CHAIN_COMPUTE_STATS_ODV              0
 #define UQ_MAC_SG_FILTERED_CHAIN_GENERATE_ODV          0
 #define UQ_MAC_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV 0.
 #define UQ_MAC_SG_FILTERED_CHAIN_LAG_ODV               1
-#define UQ_MAC_SG_FILTERED_CHAIN_OUTPUT_FILE_NAME_ODV  UQ_MAC_SG_FILENAME_FOR_NO_OUTPUT_FILE
+#define UQ_MAC_SG_FILTERED_CHAIN_OUTPUT_FILE_NAME_ODV  UQ_MAC_SG_FILENAME_FOR_NO_FILE
 #define UQ_MAC_SG_FILTERED_CHAIN_OUTPUT_ALLOW_ODV      ""
 #define UQ_MAC_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV     0
 #define UQ_MAC_SG_MH_DISPLAY_CANDIDATES_ODV            0
@@ -103,18 +104,21 @@ public:
 
 
 private:
-  //void   proc0GenerateSequence    (uqBaseVectorSequenceClass<P_V,P_M>& workingChain); /*! */
+//void   proc0GenerateSequence    (uqBaseVectorSequenceClass<P_V,P_M>& workingChain); /*! */
   void   resetChainAndRelatedInfo ();
   void   defineMyOptions          (po::options_description&                             optionsDesc);
   void   getMyOptionValues        (po::options_description&                             optionsDesc);
 
-  void   generateWhiteNoiseChain  (unsigned int                                         chainSize,
+  void   generateWhiteNoiseChain  (const unsigned int                                   chainSize,
                                    uqBaseVectorSequenceClass<P_V,P_M>&                  workingChain);
-  void   generateUniformChain     (unsigned int                                         chainSize,
+  void   generateUniformChain     (const unsigned int                                   chainSize,
                                    uqBaseVectorSequenceClass<P_V,P_M>&                  workingChain);
   void   generateFullChain        (const P_V&                                           valuesOf1stPosition,
-                                   uqBaseVectorSequenceClass<P_V,P_M>&                  workingChain,
-                                   unsigned int                                         chainSize);
+                                   const unsigned int                                   chainSize,
+                                   uqBaseVectorSequenceClass<P_V,P_M>&                  workingChain);
+  void   readFullChain            (const std::string&                                   inputFileName,
+                                   const unsigned int                                   chainSize,
+                                   uqBaseVectorSequenceClass<P_V,P_M>&                  workingChain);
   void   updateAdaptedCovMatrix   (const uqBaseVectorSequenceClass<P_V,P_M>&            subChain,
                                    unsigned int                                         idOfFirstPositionInSubChain,
                                    double&                                              lastChainSize,
@@ -159,6 +163,7 @@ private:
         std::string                     m_option_outputAllow;
 
         std::string                     m_option_rawChain_type;
+        std::string                     m_option_rawChain_inputFileName;
         std::string                     m_option_rawChain_size;
         std::string                     m_option_rawChain_generateExtra;
         std::string                     m_option_rawChain_displayPeriod;
@@ -187,6 +192,7 @@ private:
         std::set<unsigned int>          m_outputAllow;
 
         unsigned int                    m_rawChainType;
+	std::string                     m_rawChainInputFileName;
         unsigned int                    m_rawChainSize;
         bool                            m_rawChainGenerateExtra;
         unsigned int                    m_rawChainDisplayPeriod;
@@ -262,6 +268,7 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   m_option_outputFileName                (m_prefix + "outputFileName"                ),
   m_option_outputAllow                   (m_prefix + "outputAllow"                   ),
   m_option_rawChain_type                 (m_prefix + "rawChain_type"                 ),
+  m_option_rawChain_inputFileName        (m_prefix + "rawChain_inputFileName"        ),
   m_option_rawChain_size                 (m_prefix + "rawChain_size"                 ),
   m_option_rawChain_generateExtra        (m_prefix + "rawChain_generateExtra"        ),
   m_option_rawChain_displayPeriod        (m_prefix + "rawChain_displayPeriod"        ),
@@ -288,6 +295,7 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   m_outputFileName                       (UQ_MAC_SG_CHAIN_OUTPUT_FILE_NAME_ODV),
 //m_outputAllow                          (),
   m_rawChainType                         (UQ_MAC_SG_CHAIN_TYPE_ODV),
+  m_rawChainInputFileName                (UQ_MAC_SG_CHAIN_INPUT_FILE_NAME_ODV),
   m_rawChainSize                         (UQ_MAC_SG_CHAIN_SIZE_ODV),
   m_rawChainGenerateExtra                (UQ_MAC_SG_CHAIN_GENERATE_EXTRA_ODV),
   m_rawChainDisplayPeriod                (UQ_MAC_SG_CHAIN_DISPLAY_PERIOD_ODV),
@@ -485,6 +493,7 @@ uqMarkovChainSGClass<P_V,P_M>::defineMyOptions(
     (m_option_outputFileName.c_str(),                 po::value<std::string >()->default_value(UQ_MAC_SG_CHAIN_OUTPUT_FILE_NAME_ODV          ), "name of generic output file"                                     )
     (m_option_outputAllow.c_str(),                    po::value<std::string >()->default_value(UQ_MAC_SG_CHAIN_OUTPUT_ALLOW_ODV              ), "subEnvs that will write to generic output file"                  )
     (m_option_rawChain_type.c_str(),                  po::value<unsigned int>()->default_value(UQ_MAC_SG_CHAIN_TYPE_ODV                      ), "type of raw chain (1=Markov, 2=White noise)"                     )
+    (m_option_rawChain_inputFileName.c_str(),         po::value<std::string >()->default_value(UQ_MAC_SG_CHAIN_INPUT_FILE_NAME_ODV           ), "name of input file for raw chain "                               )
     (m_option_rawChain_size.c_str(),                  po::value<unsigned int>()->default_value(UQ_MAC_SG_CHAIN_SIZE_ODV                      ), "size of raw chain"                                               )
     (m_option_rawChain_generateExtra.c_str(),         po::value<bool        >()->default_value(UQ_MAC_SG_CHAIN_GENERATE_EXTRA_ODV            ), "generate extra information about raw chain"                      )
     (m_option_rawChain_displayPeriod.c_str(),         po::value<unsigned int>()->default_value(UQ_MAC_SG_CHAIN_DISPLAY_PERIOD_ODV            ), "period of message display during raw chain generation"           )
@@ -544,6 +553,10 @@ uqMarkovChainSGClass<P_V,P_M>::getMyOptionValues(
 
   if (m_env.allOptionsMap().count(m_option_rawChain_type.c_str())) {
     m_rawChainType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_type.c_str()]).as<unsigned int>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_rawChain_inputFileName.c_str())) {
+    m_rawChainInputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_inputFileName.c_str()]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_size.c_str())) {
@@ -1374,6 +1387,7 @@ uqMarkovChainSGClass<P_V,P_M>::print(std::ostream& os) const
     os << *setIt << " ";
   }
   os << "\n" << m_option_rawChain_type            << " = " << m_rawChainType
+     << "\n" << m_option_rawChain_inputFileName   << " = " << m_rawChainInputFileName
      << "\n" << m_option_rawChain_size            << " = " << m_rawChainSize
      << "\n" << m_option_rawChain_generateExtra   << " = " << m_rawChainGenerateExtra
      << "\n" << m_option_rawChain_displayPeriod   << " = " << m_rawChainDisplayPeriod
@@ -1383,7 +1397,7 @@ uqMarkovChainSGClass<P_V,P_M>::print(std::ostream& os) const
   for (std::set<unsigned int>::iterator setIt = m_rawChainOutputAllow.begin(); setIt != m_rawChainOutputAllow.end(); ++setIt) {
     os << *setIt << " ";
   }
-  os << "\n" << m_option_rawChain_computeStats    << " = " << m_rawChainComputeStats
+  os << "\n" << m_option_rawChain_computeStats          << " = " << m_rawChainComputeStats
      << "\n" << m_option_filteredChain_generate         << " = " << m_filteredChainGenerate
      << "\n" << m_option_filteredChain_discardedPortion << " = " << m_filteredChainDiscardedPortion
      << "\n" << m_option_filteredChain_lag              << " = " << m_filteredChainLag

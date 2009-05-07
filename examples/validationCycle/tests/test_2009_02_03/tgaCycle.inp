@@ -6,7 +6,7 @@ env_numSubEnvironments      = 1
 env_subScreenOutputFileName = outputData/screen
 env_subScreenOutputAllowAll = 0
 env_subScreenOutputAllow    = 0 1
-env_verbosity               = 20
+env_verbosity               = 2
 env_syncVerbosity           = 0
 env_seed                    = 0
 
@@ -29,11 +29,12 @@ cycle_cal_ip_mc_outputFileName = outputData/tgaCalOutput
 cycle_cal_ip_mc_outputAllow    = 0 1
 
 cycle_cal_ip_mc_rawChain_type            = 1
-cycle_cal_ip_mc_rawChain_size            = 4
+cycle_cal_ip_mc_rawChain_inputFileName   = outputData/file_cal_ip_raw1
+cycle_cal_ip_mc_rawChain_size            = 1048576
 cycle_cal_ip_mc_rawChain_generateExtra   = 0
 cycle_cal_ip_mc_rawChain_displayPeriod   = 20000
 cycle_cal_ip_mc_rawChain_measureRunTimes = 1
-cycle_cal_ip_mc_rawChain_outputFileName  = .
+cycle_cal_ip_mc_rawChain_outputFileName  = outputData/file_cal_ip_raw2
 cycle_cal_ip_mc_rawChain_outputAllow     = 0 1
 cycle_cal_ip_mc_rawChain_computeStats    = 1
 
@@ -135,7 +136,7 @@ cycle_cal_ip_mc_filteredChain_stats_corrMatrix_compute       = 1
 # Calibration (cal) stage: statistical forward problem (fp)
 ###############################################
 cycle_cal_fp_help                = anything
-cycle_cal_fp_computeSolution     = 0
+cycle_cal_fp_computeSolution     = 1
 cycle_cal_fp_computeCovariances  = 1
 cycle_cal_fp_computeCorrelations = 1
 cycle_cal_fp_outputFileName      = outputData/tgaCalOutput
@@ -164,10 +165,11 @@ cycle_cal_fp_mc_pseq_stats_kde_numEvalPositions     = 250
 cycle_cal_fp_mc_pseq_stats_covMatrix_compute        = 1
 cycle_cal_fp_mc_pseq_stats_corrMatrix_compute       = 1
 
+cycle_cal_fp_mc_qseq_inputFileName   = outputData/file_cal_fp_qoi1
 cycle_cal_fp_mc_qseq_size            = 1048576
 cycle_cal_fp_mc_qseq_displayPeriod   = 20000
 cycle_cal_fp_mc_qseq_measureRunTimes = 1
-cycle_cal_fp_mc_qseq_outputFileName  = .
+cycle_cal_fp_mc_qseq_outputFileName  = outputData/file_cal_fp_qoi2
 cycle_cal_fp_mc_qseq_outputAllow     = 0 1
 cycle_cal_fp_mc_qseq_computeStats    = 1
 
@@ -213,7 +215,7 @@ cycle_cal_fp_mc_qseq_stats_corrMatrix_compute       = 1
 # Validation (val) stage: statistical inverse problem (ip)
 ###############################################
 cycle_val_ip_help            = anything
-cycle_val_ip_computeSolution = 0
+cycle_val_ip_computeSolution = 1
 cycle_val_ip_outputFileName  = outputData/tgaValOutput
 cycle_val_ip_outputAllow     = 0 1
 
@@ -228,11 +230,12 @@ cycle_val_ip_mc_outputFileName = outputData/tgaValOutput
 cycle_val_ip_mc_outputAllow    = 0 1
 
 cycle_val_ip_mc_rawChain_type            = 1
+cycle_val_ip_mc_rawChain_inputFileName   = outputData/file_val_ip_raw1
 cycle_val_ip_mc_rawChain_size            = 1048576
 cycle_val_ip_mc_rawChain_generateExtra   = 0
 cycle_val_ip_mc_rawChain_displayPeriod   = 20000
 cycle_val_ip_mc_rawChain_measureRunTimes = 1
-cycle_val_ip_mc_rawChain_outputFileName  = .
+cycle_val_ip_mc_rawChain_outputFileName  = outputData/file_val_ip_raw2
 cycle_val_ip_mc_rawChain_outputAllow     = 0 1
 cycle_val_ip_mc_rawChain_computeStats    = 1
 
@@ -334,7 +337,7 @@ cycle_val_ip_mc_filteredChain_stats_corrMatrix_compute       = 1
 # Validation (val) stage: statistical forward problem (fp)
 ###############################################
 cycle_val_fp_help                = anything
-cycle_val_fp_computeSolution     = 0
+cycle_val_fp_computeSolution     = 1
 cycle_val_fp_computeCovariances  = 1
 cycle_val_fp_computeCorrelations = 1
 cycle_val_fp_outputFileName      = outputData/tgaValOutput
@@ -363,10 +366,11 @@ cycle_val_fp_mc_pseq_stats_kde_numEvalPositions     = 250
 cycle_val_fp_mc_pseq_stats_covMatrix_compute        = 1
 cycle_val_fp_mc_pseq_stats_corrMatrix_compute       = 1
 
+cycle_val_fp_mc_qseq_inputFileName   = outputData/file_val_fp_qoi1
 cycle_val_fp_mc_qseq_size            = 1048576
 cycle_val_fp_mc_qseq_displayPeriod   = 20000
 cycle_val_fp_mc_qseq_measureRunTimes = 1
-cycle_val_fp_mc_qseq_outputFileName  = .
+cycle_val_fp_mc_qseq_outputFileName  = outputData/file_val_fp_qoi2
 cycle_val_fp_mc_qseq_outputAllow     = 0 1
 cycle_val_fp_mc_qseq_computeStats    = 1
 

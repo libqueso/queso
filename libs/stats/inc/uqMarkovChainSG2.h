@@ -83,9 +83,16 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
     //****************************************************
     // Generate chain
     //****************************************************
-    generateFullChain(valuesOf1stPosition,
-                      workingChain,
-                      m_rawChainSize);
+    if (m_rawChainInputFileName == UQ_MAC_SG_FILENAME_FOR_NO_FILE) {
+      generateFullChain(valuesOf1stPosition,
+                        m_rawChainSize,
+                        workingChain);
+    }
+    else {
+      readFullChain(m_rawChainInputFileName,
+                    m_rawChainSize,
+                    workingChain);
+    }
   }
 
   //****************************************************
@@ -127,7 +134,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
                        rawChainOfsVar);
 
   if (rawChainOfsVar) {
-    workingChain.subPrintContents(*rawChainOfsVar);
+    workingChain.subWriteContents(*rawChainOfsVar);
   }
 
   if (rawChainOfsVar) {
@@ -150,7 +157,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
                               unifiedRawChainOfsVar);
 
   if (unifiedRawChainOfsVar) {
-    workingChain.unifiedPrintContents(*unifiedRawChainOfsVar);
+    workingChain.unifiedWriteContents(*unifiedRawChainOfsVar);
   }
 
   if (unifiedRawChainOfsVar) {
@@ -164,8 +171,8 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
     }
   }
 #else
-  if (m_rawChainOutputFileName != ".") {
-    workingChain.unifiedPrintContents(m_rawChainOutputFileName);
+  if (m_rawChainOutputFileName != UQ_MAC_SG_FILENAME_FOR_NO_FILE) {
+    workingChain.unifiedWriteContents(m_rawChainOutputFileName);
     if (m_env.subScreenFile()) {
       *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
                              << ", prefix = "                    << m_prefix
@@ -215,7 +222,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
     // Write unique chain
     workingChain.setName(m_prefix + "uniqueChain");
     if (uniqueChainOfsVar) {
-      workingChain.subPrintContents(*uniqueChainOfsVar);
+      workingChain.subWriteContents(*uniqueChainOfsVar);
     }
 
     // Compute statistics
@@ -266,7 +273,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
                          filteredChainOfsVar);
 
     if (filteredChainOfsVar) {
-      workingChain.subPrintContents(*filteredChainOfsVar);
+      workingChain.subWriteContents(*filteredChainOfsVar);
     }
 
     if (filteredChainOfsVar) {
@@ -289,7 +296,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
                                 unifiedFilteredChainOfsVar);
 
     if (unifiedFilteredChainOfsVar) {
-      workingChain.unifiedPrintContents(*unifiedFilteredChainOfsVar);
+      workingChain.unifiedWriteContents(*unifiedFilteredChainOfsVar);
     }
 
     if (unifiedFilteredChainOfsVar) {
@@ -303,8 +310,8 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
       }
     }
 #else
-    if (m_filteredChainOutputFileName != ".") {
-      workingChain.unifiedPrintContents(m_filteredChainOutputFileName);
+    if (m_filteredChainOutputFileName != UQ_MAC_SG_FILENAME_FOR_NO_FILE) {
+      workingChain.unifiedWriteContents(m_filteredChainOutputFileName);
       if (m_env.subScreenFile()) {
         *m_env.subScreenFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
                                << ", prefix = "                    << m_prefix
@@ -441,10 +448,21 @@ uqMarkovChainSGClass<P_V,P_M>::generateUniformChain(
 
 template <class P_V,class P_M>
 void
+uqMarkovChainSGClass<P_V,P_M>::readFullChain(
+  const std::string&                  inputFileName,
+  const unsigned int                  chainSize,
+  uqBaseVectorSequenceClass<P_V,P_M>& workingChain)
+{
+  workingChain.unifiedReadContents(inputFileName,chainSize);
+  return;
+}
+
+template <class P_V,class P_M>
+void
 uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
   const P_V&                          valuesOf1stPosition,
-  uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
-  unsigned int                        chainSize)
+  const unsigned int                  chainSize,
+  uqBaseVectorSequenceClass<P_V,P_M>& workingChain)
 {
   m_env.syncPrintDebugMsg("Entering uqMarkovChainSGClass<P_V,P_M>::generateFullChain()",3,3000000,m_env.fullComm());
 

@@ -138,11 +138,14 @@ public:
                                            const V&                 scales,
                                            const std::vector<V*>&   evaluationParamVecs,
                                            std::vector<V*>&         densityVecs) const;
-        void         printContents        (std::ofstream&                      ofsvar) const;
-        void         unifiedPrintContents (std::ofstream&                      ofsvar) const;
+        void         writeContents        (std::ofstream&                   ofsvar) const;
+        void         unifiedWriteContents (std::ofstream&                   ofsvar) const;
+        void         unifiedWriteContents (const std::string&               fileName) const;
+        void         unifiedReadContents  (const std::string&               fileName,
+                                           const unsigned int               subSequenceSize);
         void         select               (const std::vector<unsigned int>& idsOfUniquePositions);
-        void         filter               (unsigned int             initialPos,
-                                           unsigned int             spacing);
+        void         filter               (unsigned int                     initialPos,
+                                           unsigned int                     spacing);
 
 private:
         void         extractScalarSeq     (unsigned int                   initialPos,
@@ -984,7 +987,7 @@ uqArrayOfSequencesClass<V,M>::filter(
 
 template <class V, class M>
 void
-uqArrayOfSequencesClass<V,M>::printContents(std::ofstream& ofsvar) const
+uqArrayOfSequencesClass<V,M>::writeContents(std::ofstream& ofsvar) const
 {
   // Write chain
   ofsvar << m_name << "_sub" << m_env.subIdString() << " = zeros(" << this->sequenceSize()
@@ -1007,11 +1010,35 @@ uqArrayOfSequencesClass<V,M>::printContents(std::ofstream& ofsvar) const
 
 template <class V, class M>
 void
-uqArrayOfSequencesClass<V,M>::unifiedPrintContents(std::ofstream& ofsvar) const
+uqArrayOfSequencesClass<V,M>::unifiedWriteContents(std::ofstream& ofsvar) const
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.rank(),
-                      "uqArrayOfSequencesClass<V,M>::unifiedPrintContents()",
+                      "uqArrayOfSequencesClass<V,M>::unifiedWriteContents(1)",
+                      "not implemented yet");
+  return;
+}
+
+template <class V, class M>
+void
+uqArrayOfSequencesClass<V,M>::unifiedWriteContents(const std::string& fileName) const
+{
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.rank(),
+                      "uqArrayOfSequencesClass<V,M>::unifiedWriteContents(2)",
+                      "not implemented yet");
+  return;
+}
+
+template <class V, class M>
+void
+uqArrayOfSequencesClass<V,M>::unifiedReadContents(
+  const std::string& fileName,
+  const unsigned int subSequenceSize)
+{
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.rank(),
+                      "uqArrayOfSequencesClass<V,M>::unifiedReadContents()",
                       "not implemented yet");
   return;
 }

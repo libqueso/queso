@@ -163,9 +163,11 @@ public:
                                                 const V&                            unifiedScaleVec,
                                                 const std::vector<V*>&              unifiedEvalParamVecs,
                                                 std::vector<V*>&                    unifiedDensityVecs) const;
-        void         subPrintContents          (std::ofstream&                      ofsvar) const;
-        void         unifiedPrintContents      (std::ofstream&                      ofsvar) const;
-        void         unifiedPrintContents      (const std::string&                  fileName) const;
+        void         subWriteContents          (std::ofstream&                      ofsvar) const;
+        void         unifiedWriteContents      (std::ofstream&                      ofsvar) const;
+        void         unifiedWriteContents      (const std::string&                  fileName) const;
+        void         unifiedReadContents       (const std::string&                  fileName,
+                                                const unsigned int                  subSequenceSize);
         void         select                    (const std::vector<unsigned int>&    idsOfUniquePositions);
         void         filter                    (unsigned int                        initialPos,
                                                 unsigned int                        spacing);
@@ -1533,12 +1535,12 @@ uqSequenceOfVectorsClass<V,M>::filter(
 
 template <class V, class M>
 void
-uqSequenceOfVectorsClass<V,M>::subPrintContents(std::ofstream& ofsvar) const
+uqSequenceOfVectorsClass<V,M>::subWriteContents(std::ofstream& ofsvar) const
 {
   bool okSituation = (m_env.subRank() >= 0);
   UQ_FATAL_TEST_MACRO(!okSituation,
                       m_env.rank(),
-                      "uqSequenceOfVectorsClass<V,M>::subPrintContents()",
+                      "uqSequenceOfVectorsClass<V,M>::subWriteContents()",
                       "unexpected subRank");
 
   ofsvar << m_name << "_sub" << m_env.subIdString() << " = zeros(" << this->subSequenceSize()
@@ -1561,27 +1563,28 @@ uqSequenceOfVectorsClass<V,M>::subPrintContents(std::ofstream& ofsvar) const
 
 template <class V, class M>
 void
-uqSequenceOfVectorsClass<V,M>::unifiedPrintContents(std::ofstream& ofsvar) const
+uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(std::ofstream& ofsvar) const
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.rank(),
-                      "uqSequenceOfVectorsClass<V,M>::unifiedPrintContents(1)",
+                      "uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(1)",
                       "not implemented yet");
   return;
 }
 
 template <class V, class M>
 void
-uqSequenceOfVectorsClass<V,M>::unifiedPrintContents(const std::string& fileName) const
+uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(const std::string& fileName) const
 {
   m_env.fullComm().Barrier();
   if (m_env.subScreenFile()) {
-    *m_env.subScreenFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedPrintContents()"
+    *m_env.subScreenFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
                            << ": fullRank "       << m_env.rank()
                            << ", subEnvironment " << m_env.subId()
                            << ", subRank "        << m_env.subRank()
                            << ", inter0Rank "     << m_env.inter0Rank()
                            << ", m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc()
+                           << ", fileName = "     << fileName
                            << std::endl;
   }
 
@@ -1630,7 +1633,181 @@ uqSequenceOfVectorsClass<V,M>::unifiedPrintContents(const std::string& fileName)
   }
 
   if (m_env.subScreenFile()) {
-    *m_env.subScreenFile() << "Leaving uqSequenceOfVectorsClass<V,M>::unifiedPrintContents()"
+    *m_env.subScreenFile() << "Leaving uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
+                           << ", fileName = " << fileName
+                           << std::endl;
+  }
+  m_env.fullComm().Barrier();
+
+  return;
+}
+
+template <class V, class M>
+void
+uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
+  const std::string& fileName,
+  const unsigned int subSequenceSize)
+{
+  double unifiedSequenceSize = subSequenceSize*m_env.inter0Comm().NumProc();
+
+  m_env.fullComm().Barrier();
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedReadContents()"
+                           << ": fullRank "                       << m_env.rank()
+                           << ", subEnvironment "                 << m_env.subId()
+                           << ", subRank "                        << m_env.subRank()
+                           << ", inter0Rank "                     << m_env.inter0Rank()
+                           << ", m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc()
+                           << ", fileName = "                     << fileName
+                           << ", subSequenceSize = "              << subSequenceSize
+                           << ", unifiedSequenceSize = "          << unifiedSequenceSize
+                           << std::endl;
+  }
+
+  this->resizeSequence(subSequenceSize);
+
+  if (m_env.inter0Rank() >= 0) {
+    // In the logic below, the id of a line' begins with value 0 (zero)
+    unsigned int idOfMyFirstLine = 1 + m_env.inter0Rank()*subSequenceSize;
+    unsigned int idOfMyLastLine = (1 + m_env.inter0Rank())*subSequenceSize;
+    unsigned int numParams = this->vectorSize();
+
+    for (unsigned int r = 0; r < (unsigned int) m_env.inter0Comm().NumProc(); ++r) {
+      if (m_env.inter0Rank() == (int) r) {
+        // My turn
+        std::ifstream* ifsvar = new std::ifstream((fileName+"."+UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT).c_str(), std::ofstream::in);
+        UQ_FATAL_TEST_MACRO((ifsvar == NULL) || (ifsvar->is_open() == false),
+                            m_env.rank(),
+                            "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
+                            "file with fileName could not be found");
+
+        if (m_env.inter0Rank() == 0) {
+          // Read number of chain positions in the file by taking care of the first line,
+          // which resembles something like 'variable_name = zeros(n_positions,m_params);'
+	  std::string tmpString;
+
+          // Read 'variable name' string
+          *ifsvar >> tmpString;
+	  //std::cout << "Just read '" << tmpString << "'" << std::endl;
+
+          // Read '=' sign
+          *ifsvar >> tmpString;
+	  //std::cout << "Just read '" << tmpString << "'" << std::endl;
+          UQ_FATAL_TEST_MACRO(tmpString != "=",
+                              m_env.rank(),
+                              "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
+                              "string should be the '=' sign");
+
+          // Read     'zeros(n_positions,n_params)' string
+          // Position  0123456
+          *ifsvar >> tmpString;
+	  //std::cout << "Just read '" << tmpString << "'" << std::endl;
+          unsigned int posInTmpString = 6;
+
+          // Isolate 'n_positions' in a string
+          char nPositionsString[tmpString.size()-posInTmpString+1];
+          unsigned int posInPositionsString = 0;
+          do {
+            UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
+                                m_env.rank(),
+                                "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
+                                "symbol ',' not found in first line of file");
+            nPositionsString[posInPositionsString++] = tmpString[posInTmpString++];
+          } while (tmpString[posInTmpString] != ',');
+          nPositionsString[posInPositionsString] = '\0';
+
+          // Isolate 'n_params' in a string
+          posInTmpString++; // Avoid reading ',' char
+          char nParamsString[tmpString.size()-posInTmpString+1];
+          unsigned int posInParamsString = 0;
+          do {
+            UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
+                                m_env.rank(),
+                                "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
+                                "symbol ')' not found in first line of file");
+            nParamsString[posInParamsString++] = tmpString[posInTmpString++];
+          } while (tmpString[posInTmpString] != ')');
+          nParamsString[posInParamsString] = '\0';
+
+          // Convert 'n_positions' and 'n_params' strings to numbers
+          unsigned int sizeOfChainInFile = (unsigned int) strtod(nPositionsString,NULL);
+          unsigned int numParamsInFile   = (unsigned int) strtod(nParamsString,   NULL);
+          if (m_env.subScreenFile()) {
+            *m_env.subScreenFile() << "In uqSequenceOfVectorsClass<V,M>::unifiedReadContents()"
+                                   << ": fullRank "            << m_env.rank()
+                                   << ", sizeOfChainInFile = " << sizeOfChainInFile
+                                   << ", numParamsInFile = "   << numParamsInFile
+                                   << std::endl;
+          }
+
+          // Check if [size of chain in file] >= [requested unified sequence size]
+          UQ_FATAL_TEST_MACRO(sizeOfChainInFile < unifiedSequenceSize,
+                              m_env.rank(),
+                              "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
+                              "size of chain in file is not big enough");
+
+          // Check if [num params in file] == [num params in current chain]
+          UQ_FATAL_TEST_MACRO(numParamsInFile != numParams,
+                              m_env.rank(),
+                              "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
+                              "number of parameters of chain in file is different than number of parameters in this chain object");
+        }
+
+        // Code common to any core in 'inter0Comm', including core of rank 0
+        unsigned int maxCharsPerLine = 64*numParams; // Up to about 60 characters to represent each parameter value
+
+        unsigned int lineId = 0;
+        while (lineId < idOfMyFirstLine) {
+          ifsvar->ignore(maxCharsPerLine,'\n');
+          lineId++;
+        };
+
+        if (m_env.inter0Rank() == 0) {
+          // Take care of initial part of the first data line,
+          // which resembles something like 'variable_name = [value1 value2 ...'
+	  std::string tmpString;
+
+          // Read 'variable name' string
+          *ifsvar >> tmpString;
+	  //std::cout << "Core 0 just read '" << tmpString << "'" << std::endl;
+
+          // Read '=' sign
+          *ifsvar >> tmpString;
+	  //std::cout << "Core 0 just read '" << tmpString << "'" << std::endl;
+          UQ_FATAL_TEST_MACRO(tmpString != "=",
+                              m_env.rank(),
+                              "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
+                              "in core 0, string should be the '=' sign");
+
+          // Take into account the ' [' portion
+	  std::streampos tmpPos = ifsvar->tellg();
+          ifsvar->seekg(tmpPos+(std::streampos)2);
+        }
+
+        V tmpVec(m_vectorSpace.zeroVector());
+        while (lineId <= idOfMyLastLine) {
+          for (unsigned int i = 0; i < numParams; ++i) {
+            *ifsvar >> tmpVec[i];
+          }
+          this->setPositionValues(lineId - idOfMyFirstLine, tmpVec);
+          lineId++;
+        };
+
+        ifsvar->close();
+      }
+      m_env.inter0Comm().Barrier();
+    }
+  }
+  else {
+    V tmpVec(m_vectorSpace.zeroVector());
+    for (unsigned int i = 1; i < subSequenceSize; ++i) {
+      this->setPositionValues(i,tmpVec);
+    }
+  }
+
+  if (m_env.subScreenFile()) {
+    *m_env.subScreenFile() << "Leaving uqSequenceOfVectorsClass<V,M>::unifiedReadContents()"
+                           << ", fileName = " << fileName
                            << std::endl;
   }
   m_env.fullComm().Barrier();

@@ -37,20 +37,21 @@
 #include <uqVectorFunction.h>
 #include <uqVectorFunctionSynchronizer.h>
 
-#define UQ_MOC_SG_FILENAME_FOR_NO_OUTPUT_FILE "."
+#define UQ_MOC_SG_FILENAME_FOR_NO_FILE "."
 
 // _ODV = option default value
-#define UQ_MOC_SG_OUTPUT_FILE_NAME_ODV       UQ_MOC_SG_FILENAME_FOR_NO_OUTPUT_FILE
+#define UQ_MOC_SG_OUTPUT_FILE_NAME_ODV       UQ_MOC_SG_FILENAME_FOR_NO_FILE
 #define UQ_MOC_SG_OUTPUT_ALLOW_ODV           ""
 
-#define UQ_MOC_SG_PSEQ_OUTPUT_FILE_NAME_ODV  UQ_MOC_SG_FILENAME_FOR_NO_OUTPUT_FILE
+#define UQ_MOC_SG_PSEQ_OUTPUT_FILE_NAME_ODV  UQ_MOC_SG_FILENAME_FOR_NO_FILE
 #define UQ_MOC_SG_PSEQ_OUTPUT_ALLOW_ODV      ""
 #define UQ_MOC_SG_PSEQ_COMPUTE_STATS_ODV     0
 
+#define UQ_MOC_SG_QSEQ_INPUT_FILE_NAME_ODV   UQ_MOC_SG_FILENAME_FOR_NO_FILE
 #define UQ_MOC_SG_QSEQ_SIZE_ODV              100
 #define UQ_MOC_SG_QSEQ_DISPLAY_PERIOD_ODV    500
 #define UQ_MOC_SG_QSEQ_MEASURE_RUN_TIMES_ODV 0
-#define UQ_MOC_SG_QSEQ_OUTPUT_FILE_NAME_ODV  UQ_MOC_SG_FILENAME_FOR_NO_OUTPUT_FILE
+#define UQ_MOC_SG_QSEQ_OUTPUT_FILE_NAME_ODV  UQ_MOC_SG_FILENAME_FOR_NO_FILE
 #define UQ_MOC_SG_QSEQ_OUTPUT_ALLOW_ODV      ""
 #define UQ_MOC_SG_QSEQ_COMPUTE_STATS_ODV     0
 
@@ -84,6 +85,11 @@ private:
                                     uqBaseVectorSequenceClass<P_V,P_M>& workingPSeq,
                                     uqBaseVectorSequenceClass<Q_V,Q_M>& workingQSeq,
                                     unsigned int                        seqSize);
+  void actualReadSequence    (const uqBaseVectorRVClass      <P_V,P_M>& paramRv,
+                              const std::string&                        inputFileName,
+                                    uqBaseVectorSequenceClass<P_V,P_M>& workingPSeq,
+                                    uqBaseVectorSequenceClass<Q_V,Q_M>& workingQSeq,
+                                    unsigned int                        seqSize);
 
   const uqBaseEnvironmentClass&                             m_env;
         std::string                                         m_prefix;
@@ -103,6 +109,7 @@ private:
   std::string                     m_option_pseq_outputAllow;
   std::string                     m_option_pseq_computeStats;
 
+  std::string                     m_option_qseq_inputFileName;
   std::string                     m_option_qseq_size;
   std::string                     m_option_qseq_displayPeriod;
   std::string                     m_option_qseq_measureRunTimes;
@@ -118,6 +125,7 @@ private:
   bool                            m_pseqComputeStats;
   uqChainStatisticalOptionsClass* m_pseqStatisticalOptions;
 
+  std::string                     m_qseqInputFileName;
   unsigned int                    m_qseqSize;
   unsigned int                    m_qseqDisplayPeriod;
   bool                            m_qseqMeasureRunTimes;
@@ -152,6 +160,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::uqMonteCarloSGClass(
   m_option_pseq_outputFileName (m_prefix + "pseq_outputFileName" ),
   m_option_pseq_outputAllow    (m_prefix + "pseq_outputAllow"    ),
   m_option_pseq_computeStats   (m_prefix + "pseq_computeStats"   ),
+  m_option_qseq_inputFileName  (m_prefix + "qseq_inputFileName"  ),
   m_option_qseq_size           (m_prefix + "qseq_size"           ),
   m_option_qseq_displayPeriod  (m_prefix + "qseq_displayPeriod"  ),
   m_option_qseq_measureRunTimes(m_prefix + "qseq_measureRunTimes"),
@@ -164,6 +173,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::uqMonteCarloSGClass(
 //m_pseqOutputAllow            (),
   m_pseqComputeStats           (UQ_MOC_SG_PSEQ_COMPUTE_STATS_ODV    ),
   m_pseqStatisticalOptions     (NULL),
+  m_qseqInputFileName          (UQ_MOC_SG_QSEQ_INPUT_FILE_NAME_ODV  ),
   m_qseqSize                   (UQ_MOC_SG_QSEQ_SIZE_ODV             ),
   m_qseqDisplayPeriod          (UQ_MOC_SG_QSEQ_DISPLAY_PERIOD_ODV   ),
   m_qseqMeasureRunTimes        (UQ_MOC_SG_QSEQ_MEASURE_RUN_TIMES_ODV),
@@ -218,6 +228,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::defineMyOptions(
     (m_option_pseq_outputFileName.c_str(),  po::value<std::string >()->default_value(UQ_MOC_SG_PSEQ_OUTPUT_FILE_NAME_ODV ), "name of output file for parameters"                          )
     (m_option_pseq_outputAllow.c_str(),     po::value<std::string >()->default_value(UQ_MOC_SG_PSEQ_OUTPUT_ALLOW_ODV     ), "subEnvs that will write to output file for parameters"       )
     (m_option_pseq_computeStats.c_str(),    po::value<bool        >()->default_value(UQ_MOC_SG_PSEQ_COMPUTE_STATS_ODV    ), "compute statistics on sequence of parameter"                 )
+    (m_option_qseq_inputFileName.c_str(),   po::value<std::string >()->default_value(UQ_MOC_SG_QSEQ_INPUT_FILE_NAME_ODV  ), "name of input file for qois"                                 )
     (m_option_qseq_size.c_str(),            po::value<unsigned int>()->default_value(UQ_MOC_SG_QSEQ_SIZE_ODV             ), "size of qoi sequence"                                        )
     (m_option_qseq_displayPeriod.c_str(),   po::value<unsigned int>()->default_value(UQ_MOC_SG_QSEQ_DISPLAY_PERIOD_ODV   ), "period of message display during qoi sequence generation"    )
     (m_option_qseq_measureRunTimes.c_str(), po::value<bool        >()->default_value(UQ_MOC_SG_QSEQ_MEASURE_RUN_TIMES_ODV), "measure run times"                                           )
@@ -277,6 +288,10 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::getMyOptionValues(
 
   if (m_env.allOptionsMap().count(m_option_pseq_computeStats.c_str())) {
     m_pseqComputeStats = ((const po::variable_value&) m_env.allOptionsMap()[m_option_pseq_computeStats.c_str()]).as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_qseq_inputFileName.c_str())) {
+    m_qseqInputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_qseq_inputFileName.c_str()]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_qseq_size.c_str())) {
@@ -348,10 +363,19 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
                            << ", about to call actualGenerateSequence() with subActualSize = " << subActualSizeBeforeGeneration
                            << std::endl;
   }
-  actualGenerateSequence(paramRv,
-                         workingPSeq,
-                         workingQSeq,
-                         subActualSizeBeforeGeneration);
+  if (m_qseqInputFileName == UQ_MOC_SG_FILENAME_FOR_NO_FILE) {
+    actualGenerateSequence(paramRv,
+                           workingPSeq,
+                           workingQSeq,
+                           subActualSizeBeforeGeneration);
+  }
+  else {
+    actualReadSequence(paramRv,
+                       m_qseqInputFileName,
+                       workingPSeq,
+                       workingQSeq,
+                       subActualSizeBeforeGeneration);
+  }
   unsigned int subActualSizeAfterGeneration = workingPSeq.subSequenceSize();
   UQ_FATAL_TEST_MACRO(subActualSizeAfterGeneration != workingQSeq.subSequenceSize(),
                       m_env.rank(),
@@ -403,7 +427,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
                        pseqOfsVar);
 
   if (pseqOfsVar) {
-    workingPSeq.subPrintContents(*pseqOfsVar);
+    workingPSeq.subWriteContents(*pseqOfsVar);
   }
 
   if (pseqOfsVar) {
@@ -426,7 +450,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
                               unifiedPSeqOfsVar);
 
   if (unifiedPSeqOfsVar) {
-    workingPSeq.unifiedPrintContents(*unifiedPSeqOfsVar);
+    workingPSeq.unifiedWriteContents(*unifiedPSeqOfsVar);
   }
 
   if (unifiedPSeqOfsVar) {
@@ -441,7 +465,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   }
 #else
   if (m_pseqOutputFileName != ".") {
-    workingPSeq.unifiedPrintContents(m_pseqOutputFileName);
+    workingPSeq.unifiedWriteContents(m_pseqOutputFileName);
     if (m_env.subScreenFile()) {
       *m_env.subScreenFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                              << ", prefix = "                    << m_prefix
@@ -490,7 +514,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
                        qseqOfsVar);
 
   if (qseqOfsVar) {
-    workingQSeq.subPrintContents(*qseqOfsVar);
+    workingQSeq.subWriteContents(*qseqOfsVar);
   }
 
   if (qseqOfsVar) {
@@ -513,7 +537,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
                               unifiedQSeqOfsVar);
 
   if (unifiedQSeqOfsVar) {
-    workingQSeq.unifiedPrintContents(*unifiedQSeqOfsVar);
+    workingQSeq.unifiedWriteContents(*unifiedQSeqOfsVar);
   }
 
   if (unifiedQSeqOfsVar) {
@@ -528,7 +552,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   }
 #else
   if (m_qseqOutputFileName != ".") {
-    workingQSeq.unifiedPrintContents(m_qseqOutputFileName);
+    workingQSeq.unifiedWriteContents(m_qseqOutputFileName);
     if (m_env.subScreenFile()) {
       *m_env.subScreenFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                              << ", prefix = "                    << m_prefix
@@ -608,7 +632,6 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
   for (unsigned int i = 0; i < requestedSeqSize; ++i) {
     paramRv.realizer().realization(tmpP);
 
-
     if (m_qseqMeasureRunTimes) iRC = gettimeofday(&timevalQoIFunction, NULL);
     m_qoiFunctionSynchronizer->callFunction(&tmpP,NULL,&tmpQ,NULL,NULL,NULL); // Might demand parallel environment
     if (m_qseqMeasureRunTimes) qoiFunctionRunTime += uqMiscGetEllapsedSeconds(&timevalQoIFunction);
@@ -673,6 +696,27 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
                            << "%)"
                            << std::endl;
   }
+
+  return;
+}
+
+template <class P_V,class P_M,class Q_V,class Q_M>
+void
+uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualReadSequence(
+  const uqBaseVectorRVClass      <P_V,P_M>& paramRv,
+  const std::string&                        inputFileName,
+        uqBaseVectorSequenceClass<P_V,P_M>& workingPSeq,
+        uqBaseVectorSequenceClass<Q_V,Q_M>& workingQSeq,
+        unsigned int                        requestedSeqSize)
+{
+  workingPSeq.resizeSequence(requestedSeqSize);
+  P_V tmpP(m_paramSpace.zeroVector());
+  for (unsigned int i = 0; i < requestedSeqSize; ++i) {
+    paramRv.realizer().realization(tmpP);
+    workingPSeq.setPositionValues(i,tmpP);
+  }
+
+  workingQSeq.unifiedReadContents(inputFileName,requestedSeqSize);
 
   return;
 }
@@ -744,6 +788,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::print(std::ostream& os) const
     os << *setIt << " ";
   }
   os << "\n" << m_option_pseq_computeStats    << " = " << m_pseqComputeStats
+     << "\n" << m_option_qseq_inputFileName   << " = " << m_qseqInputFileName
      << "\n" << m_option_qseq_size            << " = " << m_qseqSize
      << "\n" << m_option_qseq_displayPeriod   << " = " << m_qseqDisplayPeriod
      << "\n" << m_option_qseq_measureRunTimes << " = " << m_qseqMeasureRunTimes

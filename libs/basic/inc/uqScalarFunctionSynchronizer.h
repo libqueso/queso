@@ -232,7 +232,7 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
                                                 internalGrad,
                                                 internalHessian,
                                                 internalEffect);
-      }
+      } // if (bufferChar[0] == '1')
 
       /////////////////////////////////////////////////
       // Prepare to exit routine or to stay in it

@@ -174,9 +174,11 @@ public:
                                                                const V&                              unifiedScaleVec,
                                                                const std::vector<V*>&                unifiedEvaluationParamVecs,
                                                                std::vector<V*>&                      unifiedDensityVecs) const = 0;
-  virtual  void                     subPrintContents          (std::ofstream&                        ofsvar) const = 0;
-  virtual  void                     unifiedPrintContents      (std::ofstream&                        ofsvar) const = 0;
-  virtual  void                     unifiedPrintContents      (const std::string&                    fileName) const = 0;
+  virtual  void                     subWriteContents          (std::ofstream&                        ofsvar) const = 0;
+  virtual  void                     unifiedWriteContents      (std::ofstream&                        ofsvar) const = 0;
+  virtual  void                     unifiedWriteContents      (const std::string&                    fileName) const = 0;
+  virtual  void                     unifiedReadContents       (const std::string&                    fileName,
+                                                               const unsigned int                    subSequenceSize) = 0;
   virtual  void                     select                    (const std::vector<unsigned int>&      idsOfUniquePositions) = 0;
   virtual  void                     filter                    (unsigned int                          initialPos,
                                                                unsigned int                          spacing) = 0;

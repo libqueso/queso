@@ -492,10 +492,10 @@ uqBaseEnvironmentClass::openOutputFile(
 
 void
 uqBaseEnvironmentClass::openUnifiedOutputFile(
-  const std::string&            baseFileName,
-  const std::string&            fileType,
-        bool                    writeOver,
-        std::ofstream*&         ofsvar) const
+  const std::string&    baseFileName,
+  const std::string&    fileType,
+        bool            writeOver,
+        std::ofstream*& ofsvar) const
 {
   ofsvar = NULL;
   if (baseFileName == ".") {
