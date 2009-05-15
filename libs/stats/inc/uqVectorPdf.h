@@ -475,7 +475,7 @@ uqGaussianVectorPdfClass<V,M>::uqGaussianVectorPdfClass(
   :
   uqBaseVectorPdfClass<V,M>(((std::string)(prefix)+"gau").c_str(),domainSet,domainExpVector,domainVarVector),
   m_diagonalCovMatrix(true),
-  m_covMatrix        (m_domainSet.newDiagMatrix(domainVarVector))
+  m_covMatrix        (m_domainSet.vectorSpace().newDiagMatrix(domainVarVector))
 {
   if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
     *m_env.subScreenFile() << "Entering uqGaussianVectorPdfClass<V,M>::constructor() [1]"
