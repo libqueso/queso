@@ -50,12 +50,13 @@ public:
                       const uqVectorSetClass<V,M>& imageSet);
   virtual ~uqBaseVectorRVClass();
 
-  const   uqBaseEnvironmentClass&         env     () const;
-  const   uqVectorSetClass         <V,M>& imageSet() const;
-  const   uqBaseVectorPdfClass     <V,M>& pdf     () const;
-  const   uqBaseVectorRealizerClass<V,M>& realizer() const;
-  const   uqBaseVectorCdfClass     <V,M>& cdf     () const;
-  const   uqBaseVectorMdfClass     <V,M>& mdf     () const;
+  const   uqBaseEnvironmentClass&         env       () const;
+  const   uqVectorSetClass         <V,M>& imageSet  () const;
+  const   uqBaseVectorPdfClass     <V,M>& pdf       () const;
+  const   uqBaseVectorRealizerClass<V,M>& realizer  () const;
+  const   uqBaseVectorCdfClass     <V,M>& subCdf    () const;
+  const   uqBaseVectorCdfClass     <V,M>& unifiedCdf() const;
+  const   uqBaseVectorMdfClass     <V,M>& mdf       () const;
 
   virtual void                            print   (std::ostream& os) const = 0;
 
@@ -65,7 +66,8 @@ protected:
   const   uqVectorSetClass         <V,M>& m_imageSet;
           uqBaseVectorPdfClass     <V,M>* m_pdf;
 	  uqBaseVectorRealizerClass<V,M>* m_realizer;
-  const   uqBaseVectorCdfClass     <V,M>* m_cdf;
+  const   uqBaseVectorCdfClass     <V,M>* m_subCdf;
+  const   uqBaseVectorCdfClass     <V,M>* m_unifiedCdf;
   const   uqBaseVectorMdfClass     <V,M>* m_mdf;
 };
 
@@ -74,13 +76,14 @@ uqBaseVectorRVClass<V,M>::uqBaseVectorRVClass(
   const char*                            prefix,
   const uqVectorSetClass          <V,M>& imageSet)
   :
-  m_env     (imageSet.env()),
-  m_prefix  ((std::string)(prefix)+"rv_"),
-  m_imageSet(imageSet),
-  m_pdf     (NULL),
-  m_realizer(NULL),
-  m_cdf     (NULL),
-  m_mdf     (NULL)
+  m_env       (imageSet.env()),
+  m_prefix    ((std::string)(prefix)+"rv_"),
+  m_imageSet  (imageSet),
+  m_pdf       (NULL),
+  m_realizer  (NULL),
+  m_subCdf    (NULL),
+  m_unifiedCdf(NULL),
+  m_mdf       (NULL)
 {
   if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
     *m_env.subScreenFile() << "Entering uqBaseVectorRVClass<V,M>::constructor()"
@@ -98,10 +101,11 @@ uqBaseVectorRVClass<V,M>::uqBaseVectorRVClass(
 template<class V, class M>
 uqBaseVectorRVClass<V,M>::~uqBaseVectorRVClass()
 {
-  //if (m_mdf     ) delete m_mdf;
-  //if (m_cdf     ) delete m_cdf;
-  //if (m_realizer) delete m_realizer;
-  //if (m_pdf     ) delete m_pdf;
+  //if (m_mdf       ) delete m_mdf;
+  //if (m_subCdf    ) delete m_subCdf;
+  //if (m_unifiedCdf) delete m_unifiedCdf;
+  //if (m_realizer  ) delete m_realizer;
+  //if (m_pdf       ) delete m_pdf;
 }
 
 template<class V, class M>
@@ -137,14 +141,26 @@ uqBaseVectorRVClass<V,M>::realizer() const
 
 template<class V, class M>
 const uqBaseVectorCdfClass<V,M>&
-uqBaseVectorRVClass<V,M>::cdf() const
+uqBaseVectorRVClass<V,M>::subCdf() const
 {
-  UQ_FATAL_TEST_MACRO(m_cdf == NULL,
+  UQ_FATAL_TEST_MACRO(m_subCdf == NULL,
                       m_env.rank(),
-                      (std::string)("uqBaseVectorRVClass<V,M>::cdf(), prefix=")+m_prefix,
-                      "m_cdf is NULL");
+                      (std::string)("uqBaseVectorRVClass<V,M>::subCdf(), prefix=")+m_prefix,
+                      "m_subCdf is NULL");
 
-  return *m_cdf;
+  return *m_subCdf;
+}
+
+template<class V, class M>
+const uqBaseVectorCdfClass<V,M>&
+uqBaseVectorRVClass<V,M>::unifiedCdf() const
+{
+  UQ_FATAL_TEST_MACRO(m_unifiedCdf == NULL,
+                      m_env.rank(),
+                      (std::string)("uqBaseVectorRVClass<V,M>::unifiedCdf(), prefix=")+m_prefix,
+                      "m_unifiedCdf is NULL");
+
+  return *m_unifiedCdf;
 }
 
 template<class V, class M>
@@ -186,14 +202,16 @@ public:
                          const uqVectorSetClass         <V,M>& imageSet,
                          const uqBaseVectorPdfClass     <V,M>& pdf,
                          const uqBaseVectorRealizerClass<V,M>& realizer,
-                         const uqBaseVectorCdfClass     <V,M>& cdf,
+                         const uqBaseVectorCdfClass     <V,M>& subCdf,
+                         const uqBaseVectorCdfClass     <V,M>& unifiedCdf,
                          const uqBaseVectorMdfClass     <V,M>& mdf);
   virtual ~uqGenericVectorRVClass();
 
-  void setPdf     (uqBaseVectorPdfClass     <V,M>& pdf     );
-  void setRealizer(uqBaseVectorRealizerClass<V,M>& realizer);
-  void setCdf     (uqBaseVectorCdfClass     <V,M>& cdf     );
-  void setMdf     (uqBaseVectorMdfClass     <V,M>& mdf     );
+  void setPdf       (uqBaseVectorPdfClass     <V,M>& pdf       );
+  void setRealizer  (uqBaseVectorRealizerClass<V,M>& realizer  );
+  void setSubCdf    (uqBaseVectorCdfClass     <V,M>& subCdf    );
+  void setUnifiedCdf(uqBaseVectorCdfClass     <V,M>& unifiedCdf);
+  void setMdf       (uqBaseVectorMdfClass     <V,M>& mdf       );
 
   void print(std::ostream& os) const;
 
@@ -203,7 +221,8 @@ private:
   using uqBaseVectorRVClass<V,M>::m_imageSet;
   using uqBaseVectorRVClass<V,M>::m_pdf;
   using uqBaseVectorRVClass<V,M>::m_realizer;
-  using uqBaseVectorRVClass<V,M>::m_cdf;
+  using uqBaseVectorRVClass<V,M>::m_subCdf;
+  using uqBaseVectorRVClass<V,M>::m_unifiedCdf;
   using uqBaseVectorRVClass<V,M>::m_mdf;
 };
 
@@ -233,7 +252,8 @@ uqGenericVectorRVClass<V,M>::uqGenericVectorRVClass(
   const uqVectorSetClass         <V,M>& imageSet,
   const uqBaseVectorPdfClass     <V,M>& pdf,
   const uqBaseVectorRealizerClass<V,M>& realizer,
-  const uqBaseVectorCdfClass     <V,M>& cdf,
+  const uqBaseVectorCdfClass     <V,M>& subCdf,
+  const uqBaseVectorCdfClass     <V,M>& unifiedCdf,
   const uqBaseVectorMdfClass     <V,M>& mdf)
   :
   uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"gen").c_str(),imageSet)
@@ -244,10 +264,11 @@ uqGenericVectorRVClass<V,M>::uqGenericVectorRVClass(
                            << std::endl;
   }
 
-  m_pdf      = &pdf;
-  m_realizer = &realizer;
-  m_cdf      = &cdf;
-  m_mdf      = &mdf;
+  m_pdf        = &pdf;
+  m_realizer   = &realizer;
+  m_subCdf     = &subCdf;
+  m_unifiedCdf = &unifiedCdf;
+  m_mdf        = &mdf;
 
   if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
     *m_env.subScreenFile() << "Leaving uqGenericVectorRVClass<V,M>::constructor() [2]"
@@ -279,9 +300,17 @@ uqGenericVectorRVClass<V,M>::setRealizer(uqBaseVectorRealizerClass<V,M>& realize
 
 template<class V, class M>
 void
-uqGenericVectorRVClass<V,M>::setCdf(uqBaseVectorCdfClass<V,M>& cdf)
+uqGenericVectorRVClass<V,M>::setSubCdf(uqBaseVectorCdfClass<V,M>& subCdf)
 {
-  m_cdf = &cdf;
+  m_subCdf = &subCdf;
+  return;
+}
+
+template<class V, class M>
+void
+uqGenericVectorRVClass<V,M>::setUnifiedCdf(uqBaseVectorCdfClass<V,M>& unifiedCdf)
+{
+  m_unifiedCdf = &unifiedCdf;
   return;
 }
 
@@ -328,7 +357,8 @@ private:
   using uqBaseVectorRVClass<V,M>::m_imageSet;
   using uqBaseVectorRVClass<V,M>::m_pdf;
   using uqBaseVectorRVClass<V,M>::m_realizer;
-  using uqBaseVectorRVClass<V,M>::m_cdf;
+  using uqBaseVectorRVClass<V,M>::m_subCdf;
+  using uqBaseVectorRVClass<V,M>::m_unifiedCdf;
   using uqBaseVectorRVClass<V,M>::m_mdf;
 };
 
@@ -365,8 +395,9 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
 						      imageExpVector,
 						      lowerCholCovMatrix);
 
-  m_cdf         = NULL; // FIX ME: complete code
-  m_mdf         = NULL; // FIX ME: complete code
+  m_subCdf     = NULL; // FIX ME: complete code
+  m_unifiedCdf = NULL; // FIX ME: complete code
+  m_mdf        = NULL; // FIX ME: complete code
 
   if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
     *m_env.subScreenFile() << "Leaving uqGaussianVectorRVClass<V,M>::constructor() [1]"
@@ -415,8 +446,9 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
 						      imageExpVector,
 						      lowerCholCovMatrix);
 
-  m_cdf      = NULL; // FIX ME: complete code
-  m_mdf      = NULL; // FIX ME: complete code
+  m_subCdf     = NULL; // FIX ME: complete code
+  m_unifiedCdf = NULL; // FIX ME: complete code
+  m_mdf        = NULL; // FIX ME: complete code
 
   if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
     *m_env.subScreenFile() << "Leaving uqGaussianVectorRVClass<V,M>::constructor() [2]"
@@ -484,7 +516,8 @@ private:
   using uqBaseVectorRVClass<V,M>::m_imageSet;
   using uqBaseVectorRVClass<V,M>::m_pdf;
   using uqBaseVectorRVClass<V,M>::m_realizer;
-  using uqBaseVectorRVClass<V,M>::m_cdf;
+  using uqBaseVectorRVClass<V,M>::m_subCdf;
+  using uqBaseVectorRVClass<V,M>::m_unifiedCdf;
   using uqBaseVectorRVClass<V,M>::m_mdf;
 };
 
@@ -501,12 +534,13 @@ uqUniformVectorRVClass<V,M>::uqUniformVectorRVClass(
                            << std::endl;
   }
 
-  m_pdf         = new uqUniformVectorPdfClass<V,M>(m_prefix.c_str(),
-                                                   m_imageSet);
-  m_realizer    = new uqUniformVectorRealizerClass<V,M>(m_prefix.c_str(),
-                                                        m_imageSet);
-  m_cdf         = NULL; // FIX ME: complete code
-  m_mdf         = NULL; // FIX ME: complete code
+  m_pdf        = new uqUniformVectorPdfClass<V,M>(m_prefix.c_str(),
+                                                  m_imageSet);
+  m_realizer   = new uqUniformVectorRealizerClass<V,M>(m_prefix.c_str(),
+                                                       m_imageSet);
+  m_subCdf     = NULL; // FIX ME: complete code
+  m_unifiedCdf = NULL; // FIX ME: complete code
+  m_mdf        = NULL; // FIX ME: complete code
 
   if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
     *m_env.subScreenFile() << "Leaving uqUniformVectorRVClass<V,M>::constructor()"

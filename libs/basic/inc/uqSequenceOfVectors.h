@@ -84,7 +84,7 @@ public:
                                                 unsigned int                        numPos,
                                                 const V&                            unifiedMeanVec,
                                                 V&                                  unifiedSamVec) const;
-        void         populationVariance        (unsigned int                        initialPos,
+        void         subPopulationVariance     (unsigned int                        initialPos,
                                                 unsigned int                        numPos,
                                                 const V&                            meanVec,
                                                 V&                                  popVec) const;
@@ -706,7 +706,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedSampleVariance(
 
 template <class V, class M>
 void
-uqSequenceOfVectorsClass<V,M>::populationVariance(
+uqSequenceOfVectorsClass<V,M>::subPopulationVariance(
   unsigned int initialPos,
   unsigned int numPos,
   const V&     meanVec,
@@ -719,7 +719,7 @@ uqSequenceOfVectorsClass<V,M>::populationVariance(
               (this->vectorSize()  == popVec.size()          ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqSequenceOfVectorsClass<V,M>::populationVariance()",
+                      "uqSequenceOfVectorsClass<V,M>::subPopulationVariance()",
                       "invalid input data");
 
   uqScalarSequenceClass<double> data(m_env,0);
@@ -731,9 +731,9 @@ uqSequenceOfVectorsClass<V,M>::populationVariance(
                            numPos,
                            i,
                            data);
-    popVec[i] = data.populationVariance(0,
-                                        numPos,
-                                        meanVec[i]);
+    popVec[i] = data.subPopulationVariance(0,
+                                           numPos,
+                                           meanVec[i]);
   }
 
   return;

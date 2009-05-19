@@ -213,9 +213,9 @@ uqAppl(const uqBaseEnvironmentClass& env)
   cycle.instantiateValIP(valLikelihoodFunctionObj);
 
   // Inverse problem: solve it, that is, set 'pdf' and 'realizer' of the posterior rv
-  P_M* valProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newGaussianMatrix(cycle.calIP().postRv().realizer().imageVarVector(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
-                                                                                                cycle.calIP().postRv().realizer().imageExpVector()); // Use these values as the initial values
-  cycle.valIP().solveWithBayesMarkovChain(cycle.calIP().postRv().realizer().imageExpVector(),
+  P_M* valProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newGaussianMatrix(cycle.calIP().postRv().realizer().unifiedImageVarVector(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
+                                                                                                cycle.calIP().postRv().realizer().unifiedImageExpVector()); // Use these values as the initial values
+  cycle.valIP().solveWithBayesMarkovChain(cycle.calIP().postRv().realizer().unifiedImageExpVector(),
                                           valProposalCovMatrix);
   delete valProposalCovMatrix;
 
@@ -287,8 +287,8 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
 
     // Epsilon = 0.02
     Q_V* epsilonVec = cycle.calFP().qoiRv().imageSet().vectorSpace().newVector(0.02);
-    horizontalDistances(cycle.calFP().qoiRv().cdf(),
-                        cycle.valFP().qoiRv().cdf(),
+    horizontalDistances(cycle.calFP().qoiRv().unifiedCdf(),
+                        cycle.valFP().qoiRv().unifiedCdf(),
                         *epsilonVec,
                         cdfDistancesVec);
     if (cycle.env().subScreenFile()) {
@@ -298,8 +298,8 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
     }
 
     // Test independence of 'distance' w.r.t. order of cdfs
-    horizontalDistances(cycle.valFP().qoiRv().cdf(),
-                        cycle.calFP().qoiRv().cdf(),
+    horizontalDistances(cycle.valFP().qoiRv().unifiedCdf(),
+                        cycle.calFP().qoiRv().unifiedCdf(),
                         *epsilonVec,
                         cdfDistancesVec);
     if (cycle.env().subScreenFile()) {
@@ -310,8 +310,8 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
 
     // Epsilon = 0.04
     epsilonVec->cwSet(0.04);
-    horizontalDistances(cycle.calFP().qoiRv().cdf(),
-                        cycle.valFP().qoiRv().cdf(),
+    horizontalDistances(cycle.calFP().qoiRv().unifiedCdf(),
+                        cycle.valFP().qoiRv().unifiedCdf(),
                         *epsilonVec,
                         cdfDistancesVec);
     if (cycle.env().subScreenFile()) {
@@ -322,8 +322,8 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
 
     // Epsilon = 0.06
     epsilonVec->cwSet(0.06);
-    horizontalDistances(cycle.calFP().qoiRv().cdf(),
-                        cycle.valFP().qoiRv().cdf(),
+    horizontalDistances(cycle.calFP().qoiRv().unifiedCdf(),
+                        cycle.valFP().qoiRv().unifiedCdf(),
                         *epsilonVec,
                         cdfDistancesVec);
     if (cycle.env().subScreenFile()) {
@@ -334,8 +334,8 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
 
     // Epsilon = 0.08
     epsilonVec->cwSet(0.08);
-    horizontalDistances(cycle.calFP().qoiRv().cdf(),
-                        cycle.valFP().qoiRv().cdf(),
+    horizontalDistances(cycle.calFP().qoiRv().unifiedCdf(),
+                        cycle.valFP().qoiRv().unifiedCdf(),
                         *epsilonVec,
                         cdfDistancesVec);
     if (cycle.env().subScreenFile()) {
@@ -346,8 +346,8 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
 
     // Epsilon = 0.10
     epsilonVec->cwSet(0.10);
-    horizontalDistances(cycle.calFP().qoiRv().cdf(),
-                        cycle.valFP().qoiRv().cdf(),
+    horizontalDistances(cycle.calFP().qoiRv().unifiedCdf(),
+                        cycle.valFP().qoiRv().unifiedCdf(),
                         *epsilonVec,
                         cdfDistancesVec);
     if (cycle.env().subScreenFile()) {

@@ -320,9 +320,9 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
   m_cycle->instantiateValIP(*m_valLikelihoodFunctionObj);
 
   // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
-  P_M* valProposalCovMatrix = m_cycle->calIP().postRv().imageSet().vectorSpace().newGaussianMatrix(m_cycle->calIP().postRv().realizer().imageVarVector(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
-                                                                                                   m_cycle->calIP().postRv().realizer().imageExpVector()); // Use these values as the initial values
-  m_cycle->valIP().solveWithBayesMarkovChain(m_cycle->calIP().postRv().realizer().imageExpVector(),
+  P_M* valProposalCovMatrix = m_cycle->calIP().postRv().imageSet().vectorSpace().newGaussianMatrix(m_cycle->calIP().postRv().realizer().unifiedImageVarVector(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
+                                                                                                   m_cycle->calIP().postRv().realizer().unifiedImageExpVector()); // Use these values as the initial values
+  m_cycle->valIP().solveWithBayesMarkovChain(m_cycle->calIP().postRv().realizer().unifiedImageExpVector(),
                                              valProposalCovMatrix);
   delete valProposalCovMatrix;
 
@@ -368,8 +368,8 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runComparisonStage()
       m_cycle->valFP().computeSolutionFlag()) {
     Q_V* epsilonVec = m_cycle->calFP().qoiRv().imageSet().vectorSpace().newVector(0.02);
     Q_V cdfDistancesVec(m_cycle->calFP().qoiRv().imageSet().vectorSpace().zeroVector());
-    horizontalDistances(m_cycle->calFP().qoiRv().cdf(),
-                        m_cycle->valFP().qoiRv().cdf(),
+    horizontalDistances(m_cycle->calFP().qoiRv().unifiedCdf(),
+                        m_cycle->valFP().qoiRv().unifiedCdf(),
                         *epsilonVec,
                         cdfDistancesVec);
     if (m_cycle->env().rank() == 0) {
@@ -379,8 +379,8 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runComparisonStage()
     }
 
     // Test independence of 'distance' w.r.t. order of cdfs
-    horizontalDistances(m_cycle->valFP().qoiRv().cdf(),
-                        m_cycle->calFP().qoiRv().cdf(),
+    horizontalDistances(m_cycle->valFP().qoiRv().unifiedCdf(),
+                        m_cycle->calFP().qoiRv().unifiedCdf(),
                         *epsilonVec,
                         cdfDistancesVec);
     if (m_cycle->env().rank() == 0) {
@@ -391,8 +391,8 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runComparisonStage()
 
     // Epsilon = 0.04
     epsilonVec->cwSet(0.04);
-    horizontalDistances(m_cycle->calFP().qoiRv().cdf(),
-                        m_cycle->valFP().qoiRv().cdf(),
+    horizontalDistances(m_cycle->calFP().qoiRv().unifiedCdf(),
+                        m_cycle->valFP().qoiRv().unifiedCdf(),
                         *epsilonVec,
                         cdfDistancesVec);
     if (m_cycle->env().rank() == 0) {
@@ -403,8 +403,8 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runComparisonStage()
 
     // Epsilon = 0.06
     epsilonVec->cwSet(0.06);
-    horizontalDistances(m_cycle->calFP().qoiRv().cdf(),
-                        m_cycle->valFP().qoiRv().cdf(),
+    horizontalDistances(m_cycle->calFP().qoiRv().unifiedCdf(),
+                        m_cycle->valFP().qoiRv().unifiedCdf(),
                         *epsilonVec,
                         cdfDistancesVec);
     if (m_cycle->env().rank() == 0) {
@@ -415,8 +415,8 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runComparisonStage()
 
     // Epsilon = 0.08
     epsilonVec->cwSet(0.08);
-    horizontalDistances(m_cycle->calFP().qoiRv().cdf(),
-                        m_cycle->valFP().qoiRv().cdf(),
+    horizontalDistances(m_cycle->calFP().qoiRv().unifiedCdf(),
+                        m_cycle->valFP().qoiRv().unifiedCdf(),
                         *epsilonVec,
                         cdfDistancesVec);
     if (m_cycle->env().rank() == 0) {
@@ -427,8 +427,8 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runComparisonStage()
 
     // Epsilon = 0.10
     epsilonVec->cwSet(0.10);
-    horizontalDistances(m_cycle->calFP().qoiRv().cdf(),
-                        m_cycle->valFP().qoiRv().cdf(),
+    horizontalDistances(m_cycle->calFP().qoiRv().unifiedCdf(),
+                        m_cycle->valFP().qoiRv().unifiedCdf(),
                         *epsilonVec,
                         cdfDistancesVec);
     if (m_cycle->env().rank() == 0) {

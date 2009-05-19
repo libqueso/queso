@@ -355,11 +355,11 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   //****************************************************
   // Generate sequence of qoi values
   //****************************************************
-  unsigned int subActualSizeBeforeGeneration = std::min(m_qseqSize,paramRv.realizer().period());
+  unsigned int subActualSizeBeforeGeneration = std::min(m_qseqSize,paramRv.realizer().subPeriod());
   if ((m_env.subScreenFile()) && (m_env.verbosity() >= 0)) {
     *m_env.subScreenFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                            << ": m_qseqSize = "                                                << m_qseqSize
-                           << ", paramRv.realizer().period() = "                               << paramRv.realizer().period()
+                           << ", paramRv.realizer().subPeriod() = "                            << paramRv.realizer().subPeriod()
                            << ", about to call actualGenerateSequence() with subActualSize = " << subActualSizeBeforeGeneration
                            << std::endl;
   }

@@ -29,7 +29,7 @@ cycle_cal_ip_mc_outputFileName = outputData/tgaCalOutput
 cycle_cal_ip_mc_outputAllow    = 0 1
 
 cycle_cal_ip_mc_rawChain_type            = 1
-cycle_cal_ip_mc_rawChain_inputFileName   = outputData/file_cal_ip_raw1
+cycle_cal_ip_mc_rawChain_inputFileName   = . # outputData/file_cal_ip_raw1
 cycle_cal_ip_mc_rawChain_size            = 1048576
 cycle_cal_ip_mc_rawChain_generateExtra   = 0
 cycle_cal_ip_mc_rawChain_displayPeriod   = 20000
@@ -165,7 +165,7 @@ cycle_cal_fp_mc_pseq_stats_kde_numEvalPositions     = 250
 cycle_cal_fp_mc_pseq_stats_covMatrix_compute        = 1
 cycle_cal_fp_mc_pseq_stats_corrMatrix_compute       = 1
 
-cycle_cal_fp_mc_qseq_inputFileName   = outputData/file_cal_fp_qoi1
+cycle_cal_fp_mc_qseq_inputFileName   = . # outputData/file_cal_fp_qoi1
 cycle_cal_fp_mc_qseq_size            = 1048576
 cycle_cal_fp_mc_qseq_displayPeriod   = 20000
 cycle_cal_fp_mc_qseq_measureRunTimes = 1
@@ -230,7 +230,7 @@ cycle_val_ip_mc_outputFileName = outputData/tgaValOutput
 cycle_val_ip_mc_outputAllow    = 0 1
 
 cycle_val_ip_mc_rawChain_type            = 1
-cycle_val_ip_mc_rawChain_inputFileName   = outputData/file_val_ip_raw1
+cycle_val_ip_mc_rawChain_inputFileName   = . # outputData/file_val_ip_raw1
 cycle_val_ip_mc_rawChain_size            = 1048576
 cycle_val_ip_mc_rawChain_generateExtra   = 0
 cycle_val_ip_mc_rawChain_displayPeriod   = 20000
@@ -366,7 +366,7 @@ cycle_val_fp_mc_pseq_stats_kde_numEvalPositions     = 250
 cycle_val_fp_mc_pseq_stats_covMatrix_compute        = 1
 cycle_val_fp_mc_pseq_stats_corrMatrix_compute       = 1
 
-cycle_val_fp_mc_qseq_inputFileName   = outputData/file_val_fp_qoi1
+cycle_val_fp_mc_qseq_inputFileName   = . # outputData/file_val_fp_qoi1
 cycle_val_fp_mc_qseq_size            = 1048576
 cycle_val_fp_mc_qseq_displayPeriod   = 20000
 cycle_val_fp_mc_qseq_measureRunTimes = 1

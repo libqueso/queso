@@ -135,7 +135,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   P_V meanVec(paramInitials);
   P_V diffVec(paramSpace.zeroVector());
   const uqBaseVectorRealizerClass<P_V,P_M>& postRealizer = postRv.realizer();
-  for (unsigned int i = 0; i < postRealizer.period(); ++i) {
+  for (unsigned int i = 0; i < postRealizer.subPeriod(); ++i) {
     postRealizer.realization(tmpVec);
     diffVec = tmpVec - meanVec;
     std::cout << "12345 " << scalarProduct(diffVec, *covMatrixInverse * diffVec)

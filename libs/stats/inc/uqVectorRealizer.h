@@ -48,51 +48,51 @@ template<class V, class M>
 class uqBaseVectorRealizerClass {
 public:
            uqBaseVectorRealizerClass(const char*                  prefix,
-                                     const uqVectorSetClass<V,M>& imageSet,
-                                     unsigned int                 period,
-                                     const V&                     imageExpVector,
-                                     const V&                     imageVarVector);
+                                     const uqVectorSetClass<V,M>& unifiedImageSet,
+                                     unsigned int                 subPeriod,
+                                     const V&                     unifiedImageExpVector,
+                                     const V&                     unifiedImageVarVector);
            uqBaseVectorRealizerClass(const char*                  prefix,
-                                     const uqVectorSetClass<V,M>& imageSet,
-                                     unsigned int                 period,
-                                     const V&                     imageExpVector);
+                                     const uqVectorSetClass<V,M>& unifiedImageSet,
+                                     unsigned int                 subPeriod,
+                                     const V&                     unifiedImageExpVector);
            uqBaseVectorRealizerClass(const char*                  prefix,
-                                     const uqVectorSetClass<V,M>& imageSet,
-                                     unsigned int                 period);
+                                     const uqVectorSetClass<V,M>& unifiedImageSet,
+                                     unsigned int                 subPeriod);
 
   virtual ~uqBaseVectorRealizerClass();
 
-  const   uqVectorSetClass<V,M>& imageSet      ()              const;
-          unsigned int           period        ()              const;
-  virtual void                   realization   (V& nextValues) const = 0;
+  const   uqVectorSetClass<V,M>& unifiedImageSet()              const;
+          unsigned int           subPeriod      ()              const;
+  virtual void                   realization    (V& nextValues) const = 0;
 
-  const   V&                     imageExpVector()              const;
-  const   V&                     imageVarVector()              const;
+  const   V&                     unifiedImageExpVector()        const;
+  const   V&                     unifiedImageVarVector()        const;
 
 protected:
   const uqBaseEnvironmentClass& m_env;
         std::string             m_prefix;
-  const uqVectorSetClass<V,M>&  m_imageSet;
-        unsigned int            m_period;
+  const uqVectorSetClass<V,M>&  m_unifiedImageSet;
+        unsigned int            m_subPeriod;
 
-        V*                      m_imageExpVector;
-        V*                      m_imageVarVector;
+        V*                      m_unifiedImageExpVector;
+        V*                      m_unifiedImageVarVector;
 };
 
 template<class V, class M>
 uqBaseVectorRealizerClass<V,M>::uqBaseVectorRealizerClass(
   const char*                  prefix,
-  const uqVectorSetClass<V,M>& imageSet,
-  unsigned int                 period,
-  const V&                     imageExpVector,
-  const V&                     imageVarVector)
+  const uqVectorSetClass<V,M>& unifiedImageSet,
+  unsigned int                 subPeriod,
+  const V&                     unifiedImageExpVector,
+  const V&                     unifiedImageVarVector)
   :
-  m_env           (imageSet.env()),
-  m_prefix        ((std::string)(prefix)+"re_"),
-  m_imageSet      (imageSet),
-  m_period        (period),
-  m_imageExpVector(new V(imageExpVector)),
-  m_imageVarVector(new V(imageVarVector))
+  m_env                  (unifiedImageSet.env()),
+  m_prefix               ((std::string)(prefix)+"re_"),
+  m_unifiedImageSet      (unifiedImageSet),
+  m_subPeriod            (subPeriod),
+  m_unifiedImageExpVector(new V(unifiedImageExpVector)),
+  m_unifiedImageVarVector(new V(unifiedImageVarVector))
 {
   if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
     *m_env.subScreenFile() << "Entering uqBaseVectorRealizerClass<V,M>::constructor() [1]"
@@ -110,16 +110,16 @@ uqBaseVectorRealizerClass<V,M>::uqBaseVectorRealizerClass(
 template<class V, class M>
 uqBaseVectorRealizerClass<V,M>::uqBaseVectorRealizerClass(
   const char*                  prefix,
-  const uqVectorSetClass<V,M>& imageSet,
-  unsigned int                 period,
-  const V&                     imageExpVector)
+  const uqVectorSetClass<V,M>& unifiedImageSet,
+  unsigned int                 subPeriod,
+  const V&                     unifiedImageExpVector)
   :
-  m_env           (imageSet.env()),
-  m_prefix        ((std::string)(prefix)+"re_"),
-  m_imageSet      (imageSet),
-  m_period        (period),
-  m_imageExpVector(new V(imageExpVector)    ),
-  m_imageVarVector(imageSet.vectorSpace().newVector(INFINITY))
+  m_env                  (unifiedImageSet.env()),
+  m_prefix               ((std::string)(prefix)+"re_"),
+  m_unifiedImageSet      (unifiedImageSet),
+  m_subPeriod            (subPeriod),
+  m_unifiedImageExpVector(new V(unifiedImageExpVector)),
+  m_unifiedImageVarVector(unifiedImageSet.vectorSpace().newVector(INFINITY))
 {
   if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
     *m_env.subScreenFile() << "Entering uqBaseVectorRealizerClass<V,M>::constructor() [2]"
@@ -137,15 +137,15 @@ uqBaseVectorRealizerClass<V,M>::uqBaseVectorRealizerClass(
 template<class V, class M>
 uqBaseVectorRealizerClass<V,M>::uqBaseVectorRealizerClass(
   const char*                  prefix,
-  const uqVectorSetClass<V,M>& imageSet,
-  unsigned int                 period)
+  const uqVectorSetClass<V,M>& unifiedImageSet,
+  unsigned int                 subPeriod)
   :
-  m_env           (imageSet.env()),
-  m_prefix        ((std::string)(prefix)+"re_"),
-  m_imageSet      (imageSet),
-  m_period        (period),
-  m_imageExpVector(imageSet.vectorSpace().newVector(       0.)),
-  m_imageVarVector(imageSet.vectorSpace().newVector( INFINITY))
+  m_env                  (unifiedImageSet.env()),
+  m_prefix               ((std::string)(prefix)+"re_"),
+  m_unifiedImageSet      (unifiedImageSet),
+  m_subPeriod            (subPeriod),
+  m_unifiedImageExpVector(unifiedImageSet.vectorSpace().newVector(       0.)),
+  m_unifiedImageVarVector(unifiedImageSet.vectorSpace().newVector( INFINITY))
 {
   if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
     *m_env.subScreenFile() << "Entering uqBaseVectorRealizerClass<V,M>::constructor() [4]"
@@ -167,30 +167,30 @@ uqBaseVectorRealizerClass<V,M>::~uqBaseVectorRealizerClass()
 
 template<class V, class M>
 unsigned int
-uqBaseVectorRealizerClass<V,M>::period() const
+uqBaseVectorRealizerClass<V,M>::subPeriod() const
 {
-  return m_period;
+  return m_subPeriod;
 }
 
 template <class V, class M>
 const V&
-uqBaseVectorRealizerClass<V,M>::imageExpVector() const
+uqBaseVectorRealizerClass<V,M>::unifiedImageExpVector() const
 {
-  return *m_imageExpVector;
+  return *m_unifiedImageExpVector;
 }
 
 template <class V, class M>
 const V&
-uqBaseVectorRealizerClass<V,M>::imageVarVector() const
+uqBaseVectorRealizerClass<V,M>::unifiedImageVarVector() const
 {
-  return *m_imageVarVector;
+  return *m_unifiedImageVarVector;
 }
 
 template<class V, class M>
 const uqVectorSetClass<V,M>&
-uqBaseVectorRealizerClass<V,M>::imageSet() const
+uqBaseVectorRealizerClass<V,M>::unifiedImageSet() const
 {
-  return m_imageSet;
+  return m_unifiedImageSet;
 }
 
 //*****************************************************
@@ -200,8 +200,8 @@ template<class V, class M>
 class uqGenericVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
 public:
   uqGenericVectorRealizerClass(const char*                  prefix,
-                               const uqVectorSetClass<V,M>& imageSet,
-                               unsigned int                 period,
+                               const uqVectorSetClass<V,M>& unifiedImageSet,
+                               unsigned int                 subPeriod,
                                double (*routinePtr)(const void* routineDataPtr, V& nextParamValues),
                                const void* routineDataPtr);
  ~uqGenericVectorRealizerClass();
@@ -214,19 +214,19 @@ private:
 
   using uqBaseVectorRealizerClass<V,M>::m_env;
   using uqBaseVectorRealizerClass<V,M>::m_prefix;
-  using uqBaseVectorRealizerClass<V,M>::m_imageSet;
-  using uqBaseVectorRealizerClass<V,M>::m_period;
+  using uqBaseVectorRealizerClass<V,M>::m_unifiedImageSet;
+  using uqBaseVectorRealizerClass<V,M>::m_subPeriod;
 };
 
 template<class V, class M>
 uqGenericVectorRealizerClass<V,M>::uqGenericVectorRealizerClass(
   const char*                  prefix,
-  const uqVectorSetClass<V,M>& imageSet,
-  unsigned int                 period,
+  const uqVectorSetClass<V,M>& unifiedImageSet,
+  unsigned int                 subPeriod,
   double (*routinePtr)(const void* routineDataPtr, V& nextParamValues),
   const void* routineDataPtr)
   :
-  uqBaseVectorRealizerClass<V,M>(((std::string)(prefix)+"gen").c_str(),imageSet,period),
+  uqBaseVectorRealizerClass<V,M>(((std::string)(prefix)+"gen").c_str(),unifiedImageSet,subPeriod),
   m_routinePtr    (routinePtr),
   m_routineDataPtr(routineDataPtr)
 {
@@ -263,7 +263,7 @@ template<class V, class M>
 class uqGaussianVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
 public:
   uqGaussianVectorRealizerClass(const char* prefix,
-				const uqVectorSetClass<V,M>& imageSet,
+				const uqVectorSetClass<V,M>& unifiedImageSet,
 				const V& expVector, // vector of mean values
 				const M& lowerCholCovMatrix); // lower triangular matrix resulting from Cholesky decomposition of the covariance matrix
 
@@ -278,18 +278,18 @@ private:
 
   using uqBaseVectorRealizerClass<V,M>::m_env;
   using uqBaseVectorRealizerClass<V,M>::m_prefix;
-  using uqBaseVectorRealizerClass<V,M>::m_imageSet;
-  using uqBaseVectorRealizerClass<V,M>::m_period;
-  using uqBaseVectorRealizerClass<V,M>::m_imageExpVector;
+  using uqBaseVectorRealizerClass<V,M>::m_unifiedImageSet;
+  using uqBaseVectorRealizerClass<V,M>::m_subPeriod;
+  using uqBaseVectorRealizerClass<V,M>::m_unifiedImageExpVector;
 };
 
 template<class V, class M>
 uqGaussianVectorRealizerClass<V,M>::uqGaussianVectorRealizerClass(const char* prefix,
-								  const uqVectorSetClass<V,M>& imageSet,
+								  const uqVectorSetClass<V,M>& unifiedImageSet,
 								  const V& expVector,
 								  const M& lowerCholCovMatrix)
   :
-  uqBaseVectorRealizerClass<V,M>( ((std::string)(prefix)+"gau").c_str(), imageSet, 0 ),
+  uqBaseVectorRealizerClass<V,M>( ((std::string)(prefix)+"gau").c_str(), unifiedImageSet, 0 ),
   m_lowerCholCovMatrix(new M(lowerCholCovMatrix))
 {
   if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
@@ -298,7 +298,7 @@ uqGaussianVectorRealizerClass<V,M>::uqGaussianVectorRealizerClass(const char* pr
                            << std::endl;
   }
 
-  *m_imageExpVector = expVector;
+  *m_unifiedImageExpVector = expVector;
 
   if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
     *m_env.subScreenFile() << "Leaving uqGaussianVectorRealizerClass<V,M>::constructor()"
@@ -317,10 +317,10 @@ template<class V, class M>
 void
 uqGaussianVectorRealizerClass<V,M>::realization(V& nextValues) const
 {
-  V iidGaussianVector(m_imageSet.vectorSpace().zeroVector());
+  V iidGaussianVector(m_unifiedImageSet.vectorSpace().zeroVector());
   iidGaussianVector.cwSetGaussian(m_env.rng(), 0.0, 1.0);
 
-  nextValues = (*m_imageExpVector) + (*m_lowerCholCovMatrix)*iidGaussianVector;
+  nextValues = (*m_unifiedImageExpVector) + (*m_lowerCholCovMatrix)*iidGaussianVector;
   return;
 }
 
@@ -329,8 +329,8 @@ void
 uqGaussianVectorRealizerClass<V,M>::updateExpVector(const V& newExpVector)
 {
   // delete old expected values (alloced at construction or last call to this function)
-  delete m_imageExpVector;
-  m_imageExpVector = new V(newExpVector);
+  delete m_unifiedImageExpVector;
+  m_unifiedImageExpVector = new V(newExpVector);
   return;
 }
 
@@ -362,8 +362,8 @@ private:
 
   using uqBaseVectorRealizerClass<V,M>::m_env;
   using uqBaseVectorRealizerClass<V,M>::m_prefix;
-  using uqBaseVectorRealizerClass<V,M>::m_imageSet;
-  using uqBaseVectorRealizerClass<V,M>::m_period;
+  using uqBaseVectorRealizerClass<V,M>::m_unifiedImageSet;
+  using uqBaseVectorRealizerClass<V,M>::m_subPeriod;
 };
 
 template<class V, class M>
@@ -371,7 +371,7 @@ uqSequentialVectorRealizerClass<V,M>::uqSequentialVectorRealizerClass(
   const char*                           prefix,
   const uqBaseVectorSequenceClass<V,M>& chain)
   :
-  uqBaseVectorRealizerClass<V,M>(((std::string)(prefix)+"seq").c_str(),chain.subValuesBox(),chain.subSequenceSize(),chain.subMeanValues(),chain.subSampleVarianceValues()), // IMPORTANT
+  uqBaseVectorRealizerClass<V,M>(((std::string)(prefix)+"seq").c_str(),chain.unifiedValuesBox(),chain.subSequenceSize(),chain.unifiedMeanValues(),chain.unifiedSampleVarianceValues()), // IMPORTANT
   m_chain          (chain),
   m_currentChainPos(0)
 {
@@ -392,7 +392,7 @@ void
 uqSequentialVectorRealizerClass<V,M>::realization(V& nextParamValues) const
 {
   m_chain.getPositionValues(m_currentChainPos++,nextParamValues);
-  if (m_currentChainPos >= m_period) m_currentChainPos = 0;
+  if (m_currentChainPos >= m_subPeriod) m_currentChainPos = 0;
 
   return;
 }
@@ -404,7 +404,7 @@ template<class V, class M>
 class uqUniformVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
 public:
   uqUniformVectorRealizerClass(const char*                  prefix,
-                               const uqVectorSetClass<V,M>& imageSet);
+                               const uqVectorSetClass<V,M>& unifiedImageSet);
  ~uqUniformVectorRealizerClass();
 
   void realization(V& nextValues) const;
@@ -412,16 +412,16 @@ public:
 private:
   using uqBaseVectorRealizerClass<V,M>::m_env;
   using uqBaseVectorRealizerClass<V,M>::m_prefix;
-  using uqBaseVectorRealizerClass<V,M>::m_imageSet;
-  using uqBaseVectorRealizerClass<V,M>::m_period;
+  using uqBaseVectorRealizerClass<V,M>::m_unifiedImageSet;
+  using uqBaseVectorRealizerClass<V,M>::m_subPeriod;
 };
 
 template<class V, class M>
 uqUniformVectorRealizerClass<V,M>::uqUniformVectorRealizerClass(
   const char*                  prefix,
-  const uqVectorSetClass<V,M>& imageSet)
+  const uqVectorSetClass<V,M>& unifiedImageSet)
   :
-  uqBaseVectorRealizerClass<V,M>(((std::string)(prefix)+"gen").c_str(),imageSet,std::numeric_limits<unsigned int>::max())
+  uqBaseVectorRealizerClass<V,M>(((std::string)(prefix)+"gen").c_str(),unifiedImageSet,std::numeric_limits<unsigned int>::max())
 {
   if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
     *m_env.subScreenFile() << "Entering uqUniformVectorRealizerClass<V,M>::constructor()"
@@ -445,7 +445,7 @@ template<class V, class M>
 void
 uqUniformVectorRealizerClass<V,M>::realization(V& nextValues) const
 {
-  const uqBoxSubsetClass<V,M>* imageBox = dynamic_cast<const uqBoxSubsetClass<V,M>* >(&m_imageSet);
+  const uqBoxSubsetClass<V,M>* imageBox = dynamic_cast<const uqBoxSubsetClass<V,M>* >(&m_unifiedImageSet);
 
   UQ_FATAL_TEST_MACRO(imageBox == NULL,
                       m_env.rank(),

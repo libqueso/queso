@@ -384,10 +384,13 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   m_subSolutionCdf = new uqSampledVectorCdfClass<Q_V,Q_M>(subCoreName_solutionCdf.c_str(),
                                                           *m_subCdfGrids,
                                                           *m_subCdfValues);
-  m_qoiRv.setCdf(*m_subSolutionCdf);
+  m_qoiRv.setSubCdf(*m_subSolutionCdf);
 
   // Compute unified cdf if necessary
-  if (m_env.numSubEnvironments() > 1) {
+  if (m_env.numSubEnvironments() == 1) {
+    m_qoiRv.setUnifiedCdf(*m_subSolutionCdf);
+  }
+  else {
     m_unifiedCdfGrids  = new uqArrayOfOneDGridsClass <Q_V,Q_M>(uniCoreName_qoiCdf.c_str(),m_qoiRv.imageSet().vectorSpace());
     m_unifiedCdfValues = new uqArrayOfOneDTablesClass<Q_V,Q_M>(uniCoreName_qoiCdf.c_str(),m_qoiRv.imageSet().vectorSpace());
     m_qoiChain->unifiedUniformlySampledCdf(numEvaluationPointsVec, // input
@@ -397,6 +400,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
     m_unifiedSolutionCdf = new uqSampledVectorCdfClass<Q_V,Q_M>(uniCoreName_solutionCdf.c_str(),
                                                                 *m_unifiedCdfGrids,
                                                                 *m_unifiedCdfValues);
+    m_qoiRv.setUnifiedCdf(*m_unifiedSolutionCdf);
   }
 
   // Compute (just unified one) covariance matrix, if requested
@@ -419,13 +423,13 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
 #if 0
     uqComputeCovCorrMatricesBetweenVectorRvs<P_V,P_M,Q_V,Q_M>(m_paramRv,
                                                               m_qoiRv,
-                                                              std::min(m_paramRv.realizer().period(),m_qoiRv.realizer().period()), // FIX ME: might be INFINITY
+                                                              std::min(m_paramRv.realizer().subPeriod(),m_qoiRv.realizer().subPeriod()), // FIX ME: might be INFINITY
                                                               *pqCovarianceMatrix,
                                                               *pqCorrelationMatrix);
 #else
     uqComputeCovCorrMatricesBetweenVectorSequences(*m_paramChain,
                                                    *m_qoiChain,
-                                                   std::min(m_paramRv.realizer().period(),m_qoiRv.realizer().period()), // FIX ME: might be INFINITY
+                                                   std::min(m_paramRv.realizer().subPeriod(),m_qoiRv.realizer().subPeriod()), // FIX ME: might be INFINITY
                                                    *pqCovarianceMatrix,
                                                    *pqCorrelationMatrix);
 #endif
@@ -464,7 +468,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
 
   if (ofsvar) {
     m_qoiRv.mdf().print(*ofsvar);
-    *ofsvar << m_qoiRv.cdf();
+    *ofsvar << m_qoiRv.subCdf();
 
     //if (pqCovarianceMatrix ) *ofsvar << *pqCovarianceMatrix;  // FIX ME: output matrix in matlab format
     //if (pqCorrelationMatrix) *ofsvar << *pqCorrelationMatrix; // FIX ME: output matrix in matlab format
@@ -473,7 +477,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
     if (m_env.numSubEnvironments() > 1) {
       if (m_qoiRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
         if (m_env.inter0Rank() == 0) {
-          *ofsvar << *m_unifiedSolutionCdf;
+          *ofsvar << m_qoiRv.unifiedCdf(); //*m_unifiedSolutionCdf;
         }
       }
       else {
@@ -522,18 +526,18 @@ const uqBaseVectorCdfClass<Q_V,Q_M>&
 uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::qoiRv_unifiedCdf() const
 {
   if (m_env.numSubEnvironments() == 1) {
-    return m_qoiRv.cdf();
+    return m_qoiRv.subCdf();
   }
 
   if (m_env.inter0Rank() < 0) {
-    return m_qoiRv.cdf();
+    return m_qoiRv.subCdf();
   }
 
-  UQ_FATAL_TEST_MACRO(m_unifiedSolutionCdf == NULL,
-                      m_env.rank(),
-                      "uqStatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::qoiRv_unifiedCdf()",
-                      "variable is NULL");
-  return *m_unifiedSolutionCdf;
+  //UQ_FATAL_TEST_MACRO(m_unifiedSolutionCdf == NULL,
+  //                    m_env.rank(),
+  //                    "uqStatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::qoiRv_unifiedCdf()",
+  //                    "variable is NULL");
+  return m_qoiRv.unifiedCdf(); //*m_unifiedSolutionCdf;
 }
 
 

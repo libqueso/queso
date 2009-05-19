@@ -88,7 +88,7 @@ public:
                                                 unsigned int               initialPos,
                                                 unsigned int               localNumPos,
                                                 const T&                   unifiedMeanValue) const;
-        T            populationVariance        (unsigned int               initialPos,
+        T            subPopulationVariance     (unsigned int               initialPos,
                                                 unsigned int               numPos,
                                                 const T&                   meanValue) const;
         T            autoCovariance            (unsigned int               initialPos,
@@ -710,7 +710,7 @@ uqScalarSequenceClass<T>::unifiedSampleVariance(
 
 template <class T>
 T
-uqScalarSequenceClass<T>::populationVariance(
+uqScalarSequenceClass<T>::subPopulationVariance(
   unsigned int initialPos,
   unsigned int numPos,
   const T&     meanValue) const
@@ -720,7 +720,7 @@ uqScalarSequenceClass<T>::populationVariance(
               ((initialPos+numPos) <= this->subSequenceSize()));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.rank(),
-                      "uqScalarSequenceClass<T>::populationVariance()",
+                      "uqScalarSequenceClass<T>::subPopulationVariance()",
                       "invalid input data");
 
   unsigned int finalPosPlus1 = initialPos + numPos;
