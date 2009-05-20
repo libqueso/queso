@@ -4,7 +4,7 @@
 AUTOMAKE_OPTIONS = foreign
 
 # Build in these directories:
-SUBDIRS = libs examples
+SUBDIRS = libs examples test/valid_cycle test
 
 # Tools in the auxillary directory
 AUX_DIST = build-aux/install-sh    \
