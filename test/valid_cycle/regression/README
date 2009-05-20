@@ -1,0 +1,9 @@
+This directory houses simple regression solutions for the baseline TGA
+validation cycle. A time record of the resulting Matlab style solutions
+are maintained here along with this log which documents changes to the
+reference solution.
+
+Notes:
+
+-> May 2009: initial reference solution checked in for use with
+   automatic regression testing. 

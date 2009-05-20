@@ -1,0 +1,1 @@
+TESTS = rtest.sh
