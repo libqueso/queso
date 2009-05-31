@@ -9,6 +9,7 @@ lib_LIBRARIES = libqueso.a
 
 # Sources from basic/src
 libqueso_a_SOURCES = $(top_srcdir)/libs/basic/src/uqEnvironment.C \
+	$(top_srcdir)/libs/basic/src/uqEnvironmentOptions.C \
 	$(top_srcdir)/libs/basic/src/uqDefines.C \
 	$(top_srcdir)/libs/basic/src/uqVector.C \
 	$(top_srcdir)/libs/basic/src/uqMatrix.C \

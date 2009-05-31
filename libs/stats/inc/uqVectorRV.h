@@ -85,14 +85,14 @@ uqBaseVectorRVClass<V,M>::uqBaseVectorRVClass(
   m_unifiedCdf(NULL),
   m_mdf       (NULL)
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqBaseVectorRVClass<V,M>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqBaseVectorRVClass<V,M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqBaseVectorRVClass<V,M>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqBaseVectorRVClass<V,M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -120,7 +120,7 @@ const uqBaseVectorPdfClass<V,M>&
 uqBaseVectorRVClass<V,M>::pdf() const
 {
   UQ_FATAL_TEST_MACRO(m_pdf == NULL,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqBaseVectorRVClass<V,M>::pdf()",
                       "m_pdf is NULL");
 
@@ -132,7 +132,7 @@ const uqBaseVectorRealizerClass<V,M>&
 uqBaseVectorRVClass<V,M>::realizer() const
 {
   UQ_FATAL_TEST_MACRO(m_realizer == NULL,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       (std::string)("uqBaseVectorRVClass<V,M>::realizer(), prefix=")+m_prefix,
                       "m_realizer is NULL");
 
@@ -144,7 +144,7 @@ const uqBaseVectorCdfClass<V,M>&
 uqBaseVectorRVClass<V,M>::subCdf() const
 {
   UQ_FATAL_TEST_MACRO(m_subCdf == NULL,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       (std::string)("uqBaseVectorRVClass<V,M>::subCdf(), prefix=")+m_prefix,
                       "m_subCdf is NULL");
 
@@ -156,7 +156,7 @@ const uqBaseVectorCdfClass<V,M>&
 uqBaseVectorRVClass<V,M>::unifiedCdf() const
 {
   UQ_FATAL_TEST_MACRO(m_unifiedCdf == NULL,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       (std::string)("uqBaseVectorRVClass<V,M>::unifiedCdf(), prefix=")+m_prefix,
                       "m_unifiedCdf is NULL");
 
@@ -168,7 +168,7 @@ const uqBaseVectorMdfClass<V,M>&
 uqBaseVectorRVClass<V,M>::mdf() const
 {
   UQ_FATAL_TEST_MACRO(m_mdf == NULL,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       (std::string)("uqBaseVectorRVClass<V,M>::mdf(), prefix=")+m_prefix,
                       "m_mdf is NULL");
 
@@ -233,14 +233,14 @@ uqGenericVectorRVClass<V,M>::uqGenericVectorRVClass(
   :
   uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"gen").c_str(),imageSet)
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqGenericVectorRVClass<V,M>::constructor() [1]"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqGenericVectorRVClass<V,M>::constructor() [1]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqGenericVectorRVClass<V,M>::constructor() [1]"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqGenericVectorRVClass<V,M>::constructor() [1]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -258,8 +258,8 @@ uqGenericVectorRVClass<V,M>::uqGenericVectorRVClass(
   :
   uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"gen").c_str(),imageSet)
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqGenericVectorRVClass<V,M>::constructor() [2]"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqGenericVectorRVClass<V,M>::constructor() [2]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -270,8 +270,8 @@ uqGenericVectorRVClass<V,M>::uqGenericVectorRVClass(
   m_unifiedCdf = &unifiedCdf;
   m_mdf        = &mdf;
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqGenericVectorRVClass<V,M>::constructor() [2]"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqGenericVectorRVClass<V,M>::constructor() [2]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -371,8 +371,8 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
   :
   uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"gau").c_str(),imageSet)
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqGaussianVectorRVClass<V,M>::constructor() [1]"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqGaussianVectorRVClass<V,M>::constructor() [1]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -385,7 +385,7 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
   M lowerCholCovMatrix(imageVarVector);
   int iRC = lowerCholCovMatrix.chol();
   UQ_FATAL_TEST_MACRO(iRC,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGaussianVectorRVClass<V,M>::constructor() [1]",
                       "Cholesky decomposition of covariance matrix failed.");
   lowerCholCovMatrix.zeroUpper(false);
@@ -399,8 +399,8 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
   m_unifiedCdf = NULL; // FIX ME: complete code
   m_mdf        = NULL; // FIX ME: complete code
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqGaussianVectorRVClass<V,M>::constructor() [1]"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqGaussianVectorRVClass<V,M>::constructor() [1]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -415,8 +415,8 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
   :
   uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"gau").c_str(),imageSet)
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqGaussianVectorRVClass<V,M>::constructor() [2]"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqGaussianVectorRVClass<V,M>::constructor() [2]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -429,14 +429,14 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
   M lowerCholCovMatrix(covMatrix);
   int iRC = lowerCholCovMatrix.chol();
   if (iRC) {
-    if (m_env.subScreenFile()) {
-      *m_env.subScreenFile() << "In uqGaussianVectorRVClass<V,M>::constructor() [2]: covMatrix contents are\n";
-      *m_env.subScreenFile() << covMatrix; // FIX ME: might demand parallelism
-      *m_env.subScreenFile() << std::endl;
+    if (m_env.subDisplayOutputFile()) {
+      *m_env.subDisplayOutputFile() << "In uqGaussianVectorRVClass<V,M>::constructor() [2]: covMatrix contents are\n";
+      *m_env.subDisplayOutputFile() << covMatrix; // FIX ME: might demand parallelism
+      *m_env.subDisplayOutputFile() << std::endl;
     }
   }
   UQ_FATAL_TEST_MACRO(iRC,
-                      m_env.rank(),
+                      m_env.fullRank(),
 		      "uqGaussianVectorRVClass<V,M>::constructor() [2]",
 		      "Cholesky decomposition of covariance matrix failed.");
   lowerCholCovMatrix.zeroUpper(false);
@@ -450,8 +450,8 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
   m_unifiedCdf = NULL; // FIX ME: complete code
   m_mdf        = NULL; // FIX ME: complete code
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqGaussianVectorRVClass<V,M>::constructor() [2]"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqGaussianVectorRVClass<V,M>::constructor() [2]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -482,7 +482,7 @@ uqGaussianVectorRVClass<V,M>::updateCovMatrix(const M& newCovMatrix)
   M newLowerCholCovMatrix(newCovMatrix);
   int iRC = newLowerCholCovMatrix.chol();
   UQ_FATAL_TEST_MACRO(iRC,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGaussianVectorRVClass<V,M>::updateCovMatrix()",
                       "Cholesky decomposition of covariance matrix failed.");
   newLowerCholCovMatrix.zeroUpper(false);
@@ -528,10 +528,10 @@ uqUniformVectorRVClass<V,M>::uqUniformVectorRVClass(
   :
   uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"uni").c_str(),imageSet)
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqUniformVectorRVClass<V,M>::constructor()"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqUniformVectorRVClass<V,M>::constructor()"
+                                  << ": prefix = " << m_prefix
+                                  << std::endl;
   }
 
   m_pdf        = new uqUniformVectorPdfClass<V,M>(m_prefix.c_str(),
@@ -542,10 +542,10 @@ uqUniformVectorRVClass<V,M>::uqUniformVectorRVClass(
   m_unifiedCdf = NULL; // FIX ME: complete code
   m_mdf        = NULL; // FIX ME: complete code
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqUniformVectorRVClass<V,M>::constructor()"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqUniformVectorRVClass<V,M>::constructor()"
+                                  << ": prefix = " << m_prefix
+                                  << std::endl;
   }
 }
 
@@ -578,7 +578,7 @@ uqComputeCovCorrMatricesBetweenVectorRvs(
                            (qoiRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage()   == 1);
 
   UQ_FATAL_TEST_MACRO((useOnlyInter0Comm == false),
-                      env.rank(),
+                      env.fullRank(),
                       "uqComputeCovCorrMatricesBetweenVectorRvs()",
                       "parallel vectors not supported yet");
 
@@ -586,17 +586,17 @@ uqComputeCovCorrMatricesBetweenVectorRvs(
   unsigned int numCols = qoiRv.imageSet().vectorSpace().dim();
 
   UQ_FATAL_TEST_MACRO((numRows != pqCovMatrix.numRows()) || (numCols != pqCovMatrix.numCols()),
-                      env.rank(),
+                      env.fullRank(),
                       "uqComputeCovCorrMatricesBetweenVectorRvs()",
                       "inconsistent dimensions for covariance matrix");
 
   UQ_FATAL_TEST_MACRO((numRows != pqCorrMatrix.numRows()) || (numCols != pqCorrMatrix.numCols()),
-                      env.rank(),
+                      env.fullRank(),
                       "uqComputeCorrelationBetweenVectorRvs()",
                       "inconsistent dimensions for correlation matrix");
 
   UQ_FATAL_TEST_MACRO((localNumSamples > paramRv.realizer().period()) || (localNumSamples > qoiRv.realizer().period()),
-                      env.rank(),
+                      env.fullRank(),
                       "uqComputeCovCorrMatricesBetweenVectorRvs()",
                       "localNumSamples is too large");
 

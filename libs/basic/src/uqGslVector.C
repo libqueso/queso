@@ -40,7 +40,7 @@ uqGslVectorClass::uqGslVectorClass()
   uqVectorClass()
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGslVectorClass::constructor(), default",
                       "should not be used by user");
 }
@@ -51,7 +51,7 @@ uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, const Epet
   m_vec        (gsl_vector_calloc(map.NumGlobalElements()))
 {
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGslVectorClass::constructor()",
                       "null vector generated");
 }
@@ -62,7 +62,7 @@ uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, const Epet
   m_vec(gsl_vector_calloc(map.NumGlobalElements()))
 {
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGslVectorClass::constructor()",
                       "null vector generated");
   this->cwSet(value);
@@ -74,7 +74,7 @@ uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, double d1,
   m_vec(gsl_vector_calloc(map.NumGlobalElements()))
 {
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGslVectorClass::constructor(), linspace",
                       "null vector generated");
 
@@ -90,7 +90,7 @@ uqGslVectorClass::uqGslVectorClass(const uqGslVectorClass& v, double d1, double 
   m_vec(gsl_vector_calloc(v.size()))
 {
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGslVectorClass::constructor(), linspace",
                       "null vector generated");
 
@@ -106,7 +106,7 @@ uqGslVectorClass::uqGslVectorClass(const uqGslVectorClass& v)
   m_vec(gsl_vector_calloc(v.size()))
 {
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGslVectorClass::constructor(), copy",
                       "null vector generated");
   this->uqVectorClass::copy(v);
@@ -137,7 +137,7 @@ uqGslVectorClass::operator*=(double a)
   int iRC;
   iRC = gsl_vector_scale(m_vec,a);
   UQ_FATAL_RC_MACRO(iRC,
-                    m_env.rank(),
+                    m_env.fullRank(),
                     "uqGslVectorClass::operator*=()",
                     "failed");
   return *this;
@@ -157,7 +157,7 @@ uqGslVectorClass::operator*=(const uqGslVectorClass& rhs)
   unsigned int size1 = this->size();
   unsigned int size2 = rhs.size();
   UQ_FATAL_TEST_MACRO((size1 != size2),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGslVectorClass::operator*=()",
                       "different sizes of this and rhs");
 
@@ -174,7 +174,7 @@ uqGslVectorClass::operator/=(const uqGslVectorClass& rhs)
   unsigned int size1 = this->size();
   unsigned int size2 = rhs.size();
   UQ_FATAL_TEST_MACRO((size1 != size2),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGslVectorClass::operator/=()",
                       "different sizes of this and rhs");
 
@@ -191,7 +191,7 @@ uqGslVectorClass::operator+=(const uqGslVectorClass& rhs)
   int iRC;
   iRC = gsl_vector_add(m_vec,rhs.m_vec);
   UQ_FATAL_RC_MACRO(iRC,
-                    m_env.rank(),
+                    m_env.fullRank(),
                     "uqGslVectorClass::operator+=()",
                     "failed");
   return *this;
@@ -203,7 +203,7 @@ uqGslVectorClass::operator-=(const uqGslVectorClass& rhs)
   int iRC;
   iRC = gsl_vector_sub(m_vec,rhs.m_vec);
   UQ_FATAL_RC_MACRO(iRC,
-                    m_env.rank(),
+                    m_env.fullRank(),
                     "uqGslVectorClass::operator-=()",
                     "failed");
 
@@ -228,7 +228,7 @@ uqGslVectorClass::copy(const uqGslVectorClass& src)
   int iRC;
   iRC = gsl_vector_memcpy(this->m_vec, src.m_vec);
   UQ_FATAL_RC_MACRO(iRC,
-                    m_env.rank(),
+                    m_env.fullRank(),
                     "uqGslVectorClass::copy()",
                     "failed");
 
@@ -354,7 +354,7 @@ bool
 uqGslVectorClass::atLeastOneComponentSmallerThan(const uqGslVectorClass& rhs) const
 {
   UQ_FATAL_TEST_MACRO((this->size() != rhs.size()),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGslVectorClass::atLeastOneComponentSmallerThan()",
                       "vectors have different sizes");
 
@@ -373,7 +373,7 @@ bool
 uqGslVectorClass::atLeastOneComponentBiggerThan (const uqGslVectorClass& rhs) const
 {
   UQ_FATAL_TEST_MACRO((this->size() != rhs.size()),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGslVectorClass::atLeastOneComponentBiggerThan()",
                       "vectors have different sizes");
 
@@ -434,7 +434,7 @@ double scalarProduct(const uqGslVectorClass& x, const uqGslVectorClass& y)
   unsigned int size1 = x.size();
   unsigned int size2 = y.size();
   UQ_FATAL_TEST_MACRO((size1 != size2),
-                      x.env().rank(),
+                      x.env().fullRank(),
                       "scalarProduct()",
                       "different sizes of x and y");
 

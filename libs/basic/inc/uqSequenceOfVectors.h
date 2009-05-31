@@ -202,13 +202,13 @@ uqSequenceOfVectorsClass<V,M>::uqSequenceOfVectorsClass(
   m_seq                         (sequenceSize,NULL)
 {
 
-  //if (m_env.subScreenFile()) {
-  //  *m_env.subScreenFile() << "Entering uqSequenceOfVectorsClass<V,M>::constructor()"
+  //if (m_env.subDisplayOutputFile()) {
+  //  *m_env.subDisplayOutputFile() << "Entering uqSequenceOfVectorsClass<V,M>::constructor()"
   //                         << std::endl;
   //}
 
-  //if (m_env.subScreenFile()) {
-  //  *m_env.subScreenFile() << "Leaving uqSequenceOfVectorsClass<V,M>::constructor()"
+  //if (m_env.subDisplayOutputFile()) {
+  //  *m_env.subDisplayOutputFile() << "Leaving uqSequenceOfVectorsClass<V,M>::constructor()"
   //                         << std::endl;
   //}
 }
@@ -249,15 +249,15 @@ uqSequenceOfVectorsClass<V,M>::resetValues(unsigned int initialPos, unsigned int
   bool bRC = ((initialPos          <  this->subSequenceSize()) &&
               (0                   <  numPos                 ) &&
               ((initialPos+numPos) <= this->subSequenceSize()));
-  if ((bRC == false) && (m_env.subScreenFile())) {
-    *m_env.subScreenFile() << "In uqSequenceOfVectorsClass<V,M>::resetValues()"
+  if ((bRC == false) && (m_env.subDisplayOutputFile())) {
+    *m_env.subDisplayOutputFile() << "In uqSequenceOfVectorsClass<V,M>::resetValues()"
                            << ", initialPos = "              << initialPos
                            << ", this->subSequenceSize() = " << this->subSequenceSize()
                            << ", numPos = "                  << numPos
                            << std::endl;
   }
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::resetValues()",
                       "invalid input data");
 
@@ -281,7 +281,7 @@ uqSequenceOfVectorsClass<V,M>::erasePositions(unsigned int initialPos, unsigned 
               (0                   <  numPos                 ) &&
               ((initialPos+numPos) <= this->subSequenceSize()));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::erasePositions()",
                       "invalid input data");
 
@@ -301,7 +301,7 @@ uqSequenceOfVectorsClass<V,M>::erasePositions(unsigned int initialPos, unsigned 
   unsigned int oldSequenceSize = this->subSequenceSize();
   m_seq.erase(posIteratorBegin,posIteratorEnd);
   UQ_FATAL_TEST_MACRO((oldSequenceSize - numPos) != this->subSequenceSize(),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSequenceOfVectors::erasePositions()",
                       "(oldSequenceSize - numPos) != this->subSequenceSize()");
 
@@ -316,7 +316,7 @@ const V*
 uqSequenceOfVectorsClass<V,M>::operator[](unsigned int posId) const
 {
   UQ_FATAL_TEST_MACRO((posId >= this->subSequenceSize()),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqScalarSequences<V,M>::operator[] const",
                       "posId > subSequenceSize()");
 
@@ -328,7 +328,7 @@ const V*&
 uqSequenceOfVectorsClass<V,M>::operator[](unsigned int posId)
 {
   UQ_FATAL_TEST_MACRO((posId >= this->subSequenceSize()),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqScalarSequences<V,M>::operator[] const",
                       "posId > subSequenceSize()");
 
@@ -341,7 +341,7 @@ void
 uqSequenceOfVectorsClass<V,M>::getPositionValues(unsigned int posId, V& vec) const
 {
   UQ_FATAL_TEST_MACRO((posId >= this->subSequenceSize()),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqScalarSequences<V,M>::getPositionValues()",
                       "posId > subSequenceSize()");
 
@@ -355,7 +355,7 @@ void
 uqSequenceOfVectorsClass<V,M>::setPositionValues(unsigned int posId, const V& vec)
 {
   UQ_FATAL_TEST_MACRO((posId >= this->subSequenceSize()),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqScalarSequences<V,M>::setPositionValues()",
                       "posId > subSequenceSize()");
 
@@ -477,8 +477,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedUniformlySampledCdf(
   uqArrayOfOneDGridsClass <V,M>& unifiedCdfGrids,
   uqArrayOfOneDTablesClass<V,M>& unifiedCdfValues) const
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
-    *m_env.subScreenFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedUniformlySampledCdf()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 10)) {
+    *m_env.subDisplayOutputFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedUniformlySampledCdf()"
                            << std::endl;
   }
 
@@ -508,8 +508,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedUniformlySampledCdf(
                                   unifiedMinDomainValues,
                                   unifiedMaxDomainValues);
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 10)) {
-    *m_env.subScreenFile() << "Leaving uqSequenceOfVectorsClass<V,M>::unifiedUniformlySampledCdf()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 10)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqSequenceOfVectorsClass<V,M>::unifiedUniformlySampledCdf()"
                            << std::endl;
   }
 
@@ -523,8 +523,8 @@ uqSequenceOfVectorsClass<V,M>::subMean(
   unsigned int numPos,
   V&           meanVec) const
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqSequenceOfVectorsClass<V,M>::subMean()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqSequenceOfVectorsClass<V,M>::subMean()"
                            << ": initialPos = "         << initialPos
                            << ", numPos = "             << numPos
                            << ", full sequence size = " << this->subSequenceSize()
@@ -535,8 +535,8 @@ uqSequenceOfVectorsClass<V,M>::subMean(
               (0                   <  numPos                 ) &&
               ((initialPos+numPos) <= this->subSequenceSize()) &&
               (this->vectorSize()  == meanVec.size()         ));
-  if ((bRC == false) && (m_env.subScreenFile())) {
-    *m_env.subScreenFile() << "In uqSequenceOfVectorsClass<V,M>::subMean()"
+  if ((bRC == false) && (m_env.subDisplayOutputFile())) {
+    *m_env.subDisplayOutputFile() << "In uqSequenceOfVectorsClass<V,M>::subMean()"
                            << ", initialPos = "              << initialPos
                            << ", this->subSequenceSize() = " << this->subSequenceSize()
                            << ", numPos = "                  << numPos
@@ -545,7 +545,7 @@ uqSequenceOfVectorsClass<V,M>::subMean(
                            << std::endl;
   }
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::subMean()",
                       "invalid input data");
 
@@ -562,8 +562,8 @@ uqSequenceOfVectorsClass<V,M>::subMean(
                               numPos);
   }
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqSequenceOfVectorsClass<V,M>::subMean()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqSequenceOfVectorsClass<V,M>::subMean()"
                            << ": initialPos = "         << initialPos
                            << ", numPos = "             << numPos
                            << ", full sequence size = " << this->subSequenceSize()
@@ -581,8 +581,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedMean(
   unsigned int numPos,
   V&           unifiedMeanVec) const
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedMean()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedMean()"
                            << ": initialPos = "         << initialPos
                            << ", numPos = "             << numPos
                            << ", full sequence size = " << this->subSequenceSize()
@@ -593,8 +593,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedMean(
               (0                   <  numPos                 ) &&
               ((initialPos+numPos) <= this->subSequenceSize()) &&
               (this->vectorSize()  == unifiedMeanVec.size()  ));
-  if ((bRC == false) && (m_env.subScreenFile())) {
-    *m_env.subScreenFile() << "In uqSequenceOfVectorsClass<V,M>::unifiedMean()"
+  if ((bRC == false) && (m_env.subDisplayOutputFile())) {
+    *m_env.subDisplayOutputFile() << "In uqSequenceOfVectorsClass<V,M>::unifiedMean()"
                            << ", initialPos = "               << initialPos
                            << ", this->subSequenceSize() = "  << this->subSequenceSize()
                            << ", numPos = "                   << numPos
@@ -603,7 +603,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedMean(
                            << std::endl;
   }
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::unifiedMean()",
                       "invalid input data");
 
@@ -621,8 +621,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedMean(
                                          numPos);
   }
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqSequenceOfVectorsClass<V,M>::unifiedMean()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqSequenceOfVectorsClass<V,M>::unifiedMean()"
                            << ": initialPos = "         << initialPos
                            << ", numPos = "             << numPos
                            << ", full sequence size = " << this->subSequenceSize()
@@ -647,7 +647,7 @@ uqSequenceOfVectorsClass<V,M>::subSampleVariance(
               (this->vectorSize()  == meanVec.size()         ) &&
               (this->vectorSize()  == samVec.size()          ));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::subSampleVariance()",
                       "invalid input data");
 
@@ -682,7 +682,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedSampleVariance(
               (this->vectorSize()  == unifiedMeanVec.size()  ) &&
               (this->vectorSize()  == unifiedSamVec.size()   ));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::unifiedSampleVariance()",
                       "invalid input data");
 
@@ -718,7 +718,7 @@ uqSequenceOfVectorsClass<V,M>::subPopulationVariance(
               (this->vectorSize()  == meanVec.size()         ) &&
               (this->vectorSize()  == popVec.size()          ));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::subPopulationVariance()",
                       "invalid input data");
 
@@ -755,7 +755,7 @@ uqSequenceOfVectorsClass<V,M>::autoCovariance(
               (lag                 <  numPos                 ) && // lag should not be too large
               (this->vectorSize()  == covVec.size()          ));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::autoCovariance()",
                       "invalid input data");
 
@@ -791,7 +791,7 @@ uqSequenceOfVectorsClass<V,M>::autoCorrViaDef(
               (lag                 <  numPos                 ) && // lag should not be too large
               (this->vectorSize()  == corrVec.size()         ));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::autoCorrViaDef()",
                       "invalid input data");
 
@@ -826,7 +826,7 @@ uqSequenceOfVectorsClass<V,M>::autoCorrViaFft(
               (0                   < lags.size()             ) &&
               (lags[lags.size()-1] <  numPos                 )); // lag should not be too large
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::autoCorrViaFft()",
                       "invalid input data");
 
@@ -850,8 +850,8 @@ uqSequenceOfVectorsClass<V,M>::autoCorrViaFft(
                            i,
                            data);
 
-    //if (m_env.subScreenFile()) {
-    //  *m_env.subScreenFile() << "In uqSequenceOfVectorsClass<V,M>::autoCorrViaFft()"
+    //if (m_env.subDisplayOutputFile()) {
+    //  *m_env.subDisplayOutputFile() << "In uqSequenceOfVectorsClass<V,M>::autoCorrViaFft()"
     //                         << ": about to call data.autoCorrViaFft() for paramId = " << i
     //                         << ", with numPos = "      << numPos
     //                         << ", maxLag = "           << maxLag
@@ -886,7 +886,7 @@ uqSequenceOfVectorsClass<V,M>::autoCorrViaFft(
               (numSum                 <= numPos                 ) &&
               (autoCorrsSumVec.size() == this->vectorSize()     ));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::autoCorrViaFft(), for sum",
                       "invalid input data");
 
@@ -920,7 +920,7 @@ uqSequenceOfVectorsClass<V,M>::bmm(
               (batchLength         < (this->subSequenceSize()-initialPos)) &&
               (this->vectorSize()  == bmmVec.size()                      ));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::bmm()",
                       "invalid input data");
 
@@ -954,7 +954,7 @@ uqSequenceOfVectorsClass<V,M>::fftForward(
               ((initialPos+fftSize) <= this->subSequenceSize()) &&
               (fftSize              <  this->subSequenceSize()));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::fftForward()",
                       "invalid input data");
 
@@ -982,7 +982,7 @@ uqSequenceOfVectorsClass<V,M>::psd(
   bool bRC = ((initialPos < this->subSequenceSize()) &&
               (paramId    < this->vectorSize()     ));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::psd()",
                       "invalid input data");
 
@@ -1012,7 +1012,7 @@ uqSequenceOfVectorsClass<V,M>::psdAtZero(
   bool bRC = ((initialPos         <  this->subSequenceSize()) &&
               (this->vectorSize() == psdVec.size()          ));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::psdAtZero()",
                       "invalid input data");
 
@@ -1031,7 +1031,7 @@ uqSequenceOfVectorsClass<V,M>::psdAtZero(
              hopSizeRatio,
              psdResult);
     psdVec[i] = psdResult[0];
-    //*m_env.subScreenFile() << "psdResult[0] = " << psdResult[0] << std::endl;
+    //*m_env.subDisplayOutputFile() << "psdResult[0] = " << psdResult[0] << std::endl;
   }
 
   return;
@@ -1048,7 +1048,7 @@ uqSequenceOfVectorsClass<V,M>::geweke(
   bool bRC = ((initialPos         <  this->subSequenceSize()) &&
               (this->vectorSize() == gewVec.size()          ));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::geweke()",
                       "invalid input data");
 
@@ -1081,7 +1081,7 @@ uqSequenceOfVectorsClass<V,M>::subMinMax(
               (this->vectorSize() == minVec.size()          ) &&
               (this->vectorSize() == maxVec.size()          ));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::subMinMax()",
                       "invalid input data");
 
@@ -1112,7 +1112,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedMinMax(
               (this->vectorSize() == unifiedMinVec.size()   ) &&
               (this->vectorSize() == unifiedMaxVec.size()   ));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::unifiedMinMax()",
                       "invalid input data");
 
@@ -1150,7 +1150,7 @@ uqSequenceOfVectorsClass<V,M>::subHistogram(
               (0                        <  centersForAllBins.size()) &&
               (centersForAllBins.size() == quanttsForAllBins.size()));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::subHistogram()",
                       "invalid input data");
 
@@ -1199,7 +1199,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedHistogram(
               (0                               <  unifiedCentersForAllBins.size()) &&
               (unifiedCentersForAllBins.size() == unifiedQuanttsForAllBins.size()));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::unifiedHistogram()",
                       "invalid input data");
 
@@ -1243,7 +1243,7 @@ uqSequenceOfVectorsClass<V,M>::subInterQuantileRange(
   bool bRC = ((initialPos         <  this->subSequenceSize()) &&
               (this->vectorSize() == iqrVec.size()          ));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::subInterQuantileRange()",
                       "invalid input data");
 
@@ -1272,7 +1272,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedInterQuantileRange(
   bool bRC = ((initialPos         <  this->subSequenceSize()) &&
               (this->vectorSize() == unifiedIqrVec.size()   ));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::unifiedInterQuantileRange()",
                       "invalid input data");
 
@@ -1304,7 +1304,7 @@ uqSequenceOfVectorsClass<V,M>::subScalesForKDE(
               (this->vectorSize() == iqrVec.size()          ) &&
               (this->vectorSize() == scaleVec.size()        ));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::subScalesForKDE()",
                       "invalid input data");
 
@@ -1336,7 +1336,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedScalesForKDE(
               (this->vectorSize() == unifiedIqrVec.size()   ) &&
               (this->vectorSize() == unifiedScaleVec.size() ));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::unifiedScalesForKDE()",
                       "invalid input data");
 
@@ -1393,7 +1393,7 @@ uqSequenceOfVectorsClass<V,M>::subGaussianKDE(
               (0                    <  evalParamVecs.size()   ) &&
               (evalParamVecs.size() == densityVecs.size()     ));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::subGaussianKDE()",
                       "invalid input data");
 
@@ -1445,7 +1445,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedGaussianKDE(
               (0                           <  unifiedEvalParamVecs.size()) &&
               (unifiedEvalParamVecs.size() == unifiedDensityVecs.size()  ));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::unifiedGaussianKDE()",
                       "invalid input data");
 
@@ -1498,8 +1498,8 @@ uqSequenceOfVectorsClass<V,M>::filter(
   unsigned int initialPos,
   unsigned int spacing)
 {
-  if (m_env.subScreenFile()) {
-    *m_env.subScreenFile() << "Entering uqSequenceOfVectorsClass<V,M>::filter()"
+  if (m_env.subDisplayOutputFile()) {
+    *m_env.subDisplayOutputFile() << "Entering uqSequenceOfVectorsClass<V,M>::filter()"
                            << ": initialPos = "   << initialPos
                            << ", spacing = "      << spacing
                            << ", sequenceSize = " << this->subSequenceSize()
@@ -1511,7 +1511,7 @@ uqSequenceOfVectorsClass<V,M>::filter(
   unsigned int originalSequenceSize = this->subSequenceSize();
   while (j < originalSequenceSize) {
     if (i != j) {
-      //*m_env.subScreenFile() << i << "--" << j << " ";
+      //*m_env.subDisplayOutputFile() << i << "--" << j << " ";
       delete m_seq[i];
       m_seq[i] = new V(*(m_seq[j]));
     }
@@ -1522,8 +1522,8 @@ uqSequenceOfVectorsClass<V,M>::filter(
   this->resetValues(i,originalSequenceSize-i);
   this->resizeSequence(i);
 
-  if (m_env.subScreenFile()) {
-    *m_env.subScreenFile() << "Leaving uqSequenceOfVectorsClass<V,M>::filter()"
+  if (m_env.subDisplayOutputFile()) {
+    *m_env.subDisplayOutputFile() << "Leaving uqSequenceOfVectorsClass<V,M>::filter()"
                            << ": initialPos = "   << initialPos
                            << ", spacing = "      << spacing
                            << ", sequenceSize = " << this->subSequenceSize()
@@ -1539,7 +1539,7 @@ uqSequenceOfVectorsClass<V,M>::subWriteContents(std::ofstream& ofsvar) const
 {
   bool okSituation = (m_env.subRank() >= 0);
   UQ_FATAL_TEST_MACRO(!okSituation,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::subWriteContents()",
                       "unexpected subRank");
 
@@ -1566,7 +1566,7 @@ void
 uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(std::ofstream& ofsvar) const
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(1)",
                       "not implemented yet");
   return;
@@ -1577,9 +1577,9 @@ void
 uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(const std::string& fileName) const
 {
   m_env.fullComm().Barrier();
-  if (m_env.subScreenFile()) {
-    *m_env.subScreenFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
-                           << ": fullRank "       << m_env.rank()
+  if (m_env.subDisplayOutputFile()) {
+    *m_env.subDisplayOutputFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
+                           << ": fullRank "       << m_env.fullRank()
                            << ", subEnvironment " << m_env.subId()
                            << ", subRank "        << m_env.subRank()
                            << ", inter0Rank "     << m_env.inter0Rank()
@@ -1632,8 +1632,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(const std::string& fileName)
     }
   }
 
-  if (m_env.subScreenFile()) {
-    *m_env.subScreenFile() << "Leaving uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
+  if (m_env.subDisplayOutputFile()) {
+    *m_env.subDisplayOutputFile() << "Leaving uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
                            << ", fileName = " << fileName
                            << std::endl;
   }
@@ -1651,9 +1651,9 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
   double unifiedSequenceSize = subSequenceSize*m_env.inter0Comm().NumProc();
 
   m_env.fullComm().Barrier();
-  if (m_env.subScreenFile()) {
-    *m_env.subScreenFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedReadContents()"
-                           << ": fullRank "                       << m_env.rank()
+  if (m_env.subDisplayOutputFile()) {
+    *m_env.subDisplayOutputFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedReadContents()"
+                           << ": fullRank "                       << m_env.fullRank()
                            << ", subEnvironment "                 << m_env.subId()
                            << ", subRank "                        << m_env.subRank()
                            << ", inter0Rank "                     << m_env.inter0Rank()
@@ -1677,7 +1677,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
         // My turn
         std::ifstream* ifsvar = new std::ifstream((fileName+"."+UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT).c_str(), std::ofstream::in);
         UQ_FATAL_TEST_MACRO((ifsvar == NULL) || (ifsvar->is_open() == false),
-                            m_env.rank(),
+                            m_env.fullRank(),
                             "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
                             "file with fileName could not be found");
 
@@ -1694,7 +1694,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
           *ifsvar >> tmpString;
 	  //std::cout << "Just read '" << tmpString << "'" << std::endl;
           UQ_FATAL_TEST_MACRO(tmpString != "=",
-                              m_env.rank(),
+                              m_env.fullRank(),
                               "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
                               "string should be the '=' sign");
 
@@ -1709,7 +1709,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
           unsigned int posInPositionsString = 0;
           do {
             UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
-                                m_env.rank(),
+                                m_env.fullRank(),
                                 "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
                                 "symbol ',' not found in first line of file");
             nPositionsString[posInPositionsString++] = tmpString[posInTmpString++];
@@ -1722,7 +1722,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
           unsigned int posInParamsString = 0;
           do {
             UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
-                                m_env.rank(),
+                                m_env.fullRank(),
                                 "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
                                 "symbol ')' not found in first line of file");
             nParamsString[posInParamsString++] = tmpString[posInTmpString++];
@@ -1732,9 +1732,9 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
           // Convert 'n_positions' and 'n_params' strings to numbers
           unsigned int sizeOfChainInFile = (unsigned int) strtod(nPositionsString,NULL);
           unsigned int numParamsInFile   = (unsigned int) strtod(nParamsString,   NULL);
-          if (m_env.subScreenFile()) {
-            *m_env.subScreenFile() << "In uqSequenceOfVectorsClass<V,M>::unifiedReadContents()"
-                                   << ": fullRank "            << m_env.rank()
+          if (m_env.subDisplayOutputFile()) {
+            *m_env.subDisplayOutputFile() << "In uqSequenceOfVectorsClass<V,M>::unifiedReadContents()"
+                                   << ": fullRank "            << m_env.fullRank()
                                    << ", sizeOfChainInFile = " << sizeOfChainInFile
                                    << ", numParamsInFile = "   << numParamsInFile
                                    << std::endl;
@@ -1742,13 +1742,13 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
 
           // Check if [size of chain in file] >= [requested unified sequence size]
           UQ_FATAL_TEST_MACRO(sizeOfChainInFile < unifiedSequenceSize,
-                              m_env.rank(),
+                              m_env.fullRank(),
                               "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
                               "size of chain in file is not big enough");
 
           // Check if [num params in file] == [num params in current chain]
           UQ_FATAL_TEST_MACRO(numParamsInFile != numParams,
-                              m_env.rank(),
+                              m_env.fullRank(),
                               "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
                               "number of parameters of chain in file is different than number of parameters in this chain object");
         }
@@ -1775,7 +1775,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
           *ifsvar >> tmpString;
 	  //std::cout << "Core 0 just read '" << tmpString << "'" << std::endl;
           UQ_FATAL_TEST_MACRO(tmpString != "=",
-                              m_env.rank(),
+                              m_env.fullRank(),
                               "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
                               "in core 0, string should be the '=' sign");
 
@@ -1805,8 +1805,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
     }
   }
 
-  if (m_env.subScreenFile()) {
-    *m_env.subScreenFile() << "Leaving uqSequenceOfVectorsClass<V,M>::unifiedReadContents()"
+  if (m_env.subDisplayOutputFile()) {
+    *m_env.subDisplayOutputFile() << "Leaving uqSequenceOfVectorsClass<V,M>::unifiedReadContents()"
                            << ", fileName = " << fileName
                            << std::endl;
   }

@@ -45,15 +45,10 @@ template<class P_V,class P_M>
 void 
 uqAppl(const uqBaseEnvironmentClass& env)
 {
-  if (env.rank() == 0) {
+  if (env.fullRank() == 0) {
     std::cout << "Beginning run of 'exStatisticalInverseProblem1_example'\n"
               << std::endl;
   }
-
-  UQ_FATAL_TEST_MACRO(env.isThereInputFile() == false,
-                      env.rank(),
-                      "uqAppl()",
-                      "input file must be specified in command line, after the '-i' option");
 
   //******************************************************
   // Read Ascii file with information on parameters
@@ -222,7 +217,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
                      true);
 
 #endif
-  if (env.rank() == 0) {
+  if (env.fullRank() == 0) {
     std::cout << "Finishing run of 'exStatisticalInverseProblem1_example'"
               << std::endl;
   }

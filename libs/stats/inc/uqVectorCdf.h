@@ -74,14 +74,14 @@ uqBaseVectorCdfClass<V,M>::uqBaseVectorCdfClass(
   m_prefix    ((std::string)(prefix)+"Cdf_"),
   m_pdfSupport(pdfSupport)
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqBaseVectorCdfClass<V,M>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqBaseVectorCdfClass<V,M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqBaseVectorCdfClass<V,M>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqBaseVectorCdfClass<V,M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -204,16 +204,16 @@ uqGaussianVectorCdfClass<V,M>::uqGaussianVectorCdfClass(
   uqBaseVectorCdfClass<V,M>(prefix,pdfSupport),
   m_covMatrix              (m_pdfSupport.newDiagMatrix(domainVarianceValues*domainVarianceValues))
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqGaussianVectorCdfClass<V,M>::constructor() [1]"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqGaussianVectorCdfClass<V,M>::constructor() [1]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
   commonConstructor();
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqGaussianVectorCdfClass<V,M>::constructor() [1]"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqGaussianVectorCdfClass<V,M>::constructor() [1]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -229,16 +229,16 @@ uqGaussianVectorCdfClass<V,M>::uqGaussianVectorCdfClass(
   uqBaseVectorCdfClass<V,M>(prefix,pdfSupport),
   m_covMatrix              (new M(covMatrix))
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqGaussianVectorCdfClass<V,M>::constructor() [2]"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqGaussianVectorCdfClass<V,M>::constructor() [2]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
   commonConstructor();
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqGaussianVectorCdfClass<V,M>::constructor() [2]"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqGaussianVectorCdfClass<V,M>::constructor() [2]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -249,7 +249,7 @@ void
 uqGaussianVectorCdfClass<V,M>::commonConstructor()
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGaussianVectorCdfClass<V,M>::commonConstructor()",
                       "incomplete code");
   return;
@@ -268,7 +268,7 @@ uqGaussianVectorCdfClass<V,M>::values(
         V& cdfVec) const
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGaussianVectorCdfClass<V,M>::cdfVec()",
                       "incomplete code");
   return;
@@ -313,8 +313,8 @@ uqSampledVectorCdfClass<V,M>::uqSampledVectorCdfClass(
   uqBaseVectorCdfClass<V,M>(prefix,oneDGrids.rowSpace()),
   m_cdfs(m_pdfSupport.vectorSpace().map(),1)
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqSampledVectorCdfClass<V,M>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqSampledVectorCdfClass<V,M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -328,8 +328,8 @@ uqSampledVectorCdfClass<V,M>::uqSampledVectorCdfClass(
                                                       cdfValues.oneDTable(i));
   }
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqSampledVectorCdfClass<V,M>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqSampledVectorCdfClass<V,M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -350,7 +350,7 @@ uqSampledVectorCdfClass<V,M>::values(
         V& cdfVec) const
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSampledVectorCdfClass<V,M>::cdfVec()",
                       "incomplete code");
   return;
@@ -361,7 +361,7 @@ const uqBaseScalarCdfClass<double>&
 uqSampledVectorCdfClass<V,M>::cdf(unsigned int rowId) const
 {
   UQ_FATAL_TEST_MACRO(rowId >= m_pdfSupport.vectorSpace().dim(),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSampledVectorCdfClass<T>::cdf()",
                       "rowId is out of range");
 

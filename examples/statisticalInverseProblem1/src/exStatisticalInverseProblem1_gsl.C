@@ -39,7 +39,12 @@ int main(int argc, char* argv[])
   // Initialize environment
   //************************************************
   MPI_Init(&argc,&argv);
-  uqFullEnvironmentClass* env = new uqFullEnvironmentClass(argc,argv,MPI_COMM_WORLD,"");
+
+  UQ_FATAL_TEST_MACRO(argc != 2,
+                      UQ_UNAVAILABLE_RANK,
+                      "main()",
+                      "input file must be specified in command line as argv[1], just after executable argv[0]");
+  uqFullEnvironmentClass* env = new uqFullEnvironmentClass(MPI_COMM_WORLD,argv[1],"");
 
   //************************************************
   // Call application

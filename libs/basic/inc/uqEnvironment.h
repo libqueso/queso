@@ -34,21 +34,9 @@
 #define __UQ_ENVIRONMENT_H__
 
 #include <uqDefines.h>
+class uqEnvironmentOptionsClass;
 
 #undef UQ_USES_COMMAND_LINE_OPTIONS
-
-#define UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE "."
-
-#define UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV        1
-#define UQ_ENV_SUB_SCREEN_WRITE_ODV            0
-#define UQ_ENV_SUB_SCREEN_OUTPUT_FILE_NAME_ODV UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE
-#define UQ_ENV_SUB_SCREEN_OUTPUT_ALLOW_ALL_ODV 0
-#define UQ_ENV_SUB_SCREEN_OUTPUT_ALLOW_ODV     ""
-#define UQ_ENV_VERBOSITY_ODV                   0
-#define UQ_ENV_SYNC_VERBOSITY_ODV              0
-#define UQ_ENV_SEED_ODV                        0
-#define UQ_ENV_NUM_DEBUG_PARAMS_ODV            0
-#define UQ_ENV_DEBUG_PARAM_ODV                 0.
 
 #include <Epetra_MpiComm.h>
 #include <gsl/gsl_rng.h>
@@ -59,36 +47,20 @@ namespace po = boost::program_options;
 
 extern unsigned long int gsl_rng_default_seed;
 
-struct uqEnvOptionsStruct {
-  uqEnvOptionsStruct(unsigned int verbosity,
-                     int          seed);
- ~uqEnvOptionsStruct();
-
-  unsigned int           m_numSubEnvironments;
-  std::string            m_subScreenOutputFileName;
-  bool                   m_subScreenOutputAllowAll;
-  std::set<unsigned int> m_subScreenOutputAllowSet;
-  unsigned int           m_verbosity;
-  unsigned int           m_syncVerbosity;
-  int                    m_seed;
-  unsigned int           m_numDebugParams;
-  std::vector<double>    m_debugParams;
-};
-
 //*****************************************************
 // Base class
 //*****************************************************
 class uqBaseEnvironmentClass {
 public:
-  uqBaseEnvironmentClass(MPI_Comm inputComm, const char* prefix);
-  uqBaseEnvironmentClass(int& argc, char** &argv, MPI_Comm inputComm, const char* prefix);
-  uqBaseEnvironmentClass(const uqEnvOptionsStruct& options, MPI_Comm inputComm, const char* prefix);
+  uqBaseEnvironmentClass(MPI_Comm inputComm, const char* inputFileName);
   uqBaseEnvironmentClass(const uqBaseEnvironmentClass& obj);
   virtual ~uqBaseEnvironmentClass();
 
           uqBaseEnvironmentClass& operator=                (const uqBaseEnvironmentClass& rhs);
 
-          int                     rank                     () const;
+          int                     worldRank                () const;
+
+          int                     fullRank                 () const;
           const Epetra_MpiComm&   fullComm                 () const; 
 
           int                     subRank                  () const;
@@ -99,7 +71,7 @@ public:
           int                     inter0Rank               () const;
           const Epetra_MpiComm&   inter0Comm               () const; 
 
-                std::ofstream*    subScreenFile            () const;
+                std::ofstream*    subDisplayOutputFile     () const;
 
           unsigned int            numSubEnvironments       () const;
           unsigned int            subId                    () const;
@@ -110,7 +82,7 @@ public:
 #endif
           po::variables_map&      allOptionsMap            () const;
           void                    scanInputFileForMyOptions(const po::options_description& optionsDesc) const;
-          unsigned int            verbosity                () const;
+          unsigned int            displayVerbosity         () const;
           unsigned int            syncVerbosity            () const;
           const gsl_rng*          rng                      () const;
           bool                    isThereInputFile         () const;
@@ -130,10 +102,6 @@ public:
   virtual void                    print                    (std::ostream& os) const = 0;
 
 protected:
-  int                      m_argc;
-  char**                   m_argv;
-  std::string              m_prefix;
-
   int                      m_worldRank;
 
   MPI_Comm                 m_fullRawComm;
@@ -142,32 +110,9 @@ protected:
   int                      m_fullCommSize;
   MPI_Group                m_fullGroup;
 
-  bool                     m_argsWereProvided;
-  bool                     m_thereIsInputFile;
-  std::string              m_inputFileName;
+  std::string              m_optionsInputFileName;
   po::options_description* m_allOptionsDesc;
-  po::options_description* m_envOptionsDesc;
   po::variables_map*       m_allOptionsMap;
-
-  std::string              m_option_help;
-  std::string              m_option_numSubEnvironments;
-  std::string              m_option_subScreenOutputFileName;
-  std::string              m_option_subScreenOutputAllowAll;
-  std::string              m_option_subScreenOutputAllow;
-  std::string              m_option_verbosity;
-  std::string              m_option_syncVerbosity;
-  std::string              m_option_seed;
-
-  unsigned int             m_numSubEnvironments;
-  std::string              m_subScreenOutputFileName;
-  bool                     m_subScreenOutputAllowAll;
-  std::set<unsigned int>   m_subScreenOutputAllowSet;
-  unsigned int             m_verbosity;
-  unsigned int             m_syncVerbosity;
-  int                      m_seed;
-
-  unsigned int             m_numDebugParams;
-  std::vector<double>      m_debugParams;
 
   unsigned int             m_subId;
   std::string              m_subIdString;
@@ -185,9 +130,11 @@ protected:
   int                      m_inter0Rank;
   int                      m_inter0CommSize;
 
-  mutable std::ofstream*   m_subScreenFile;
+  mutable std::ofstream*   m_subDisplayOutputFile;
   gsl_rng*                 m_rng;
   struct timeval           m_timevalBegin;
+
+  uqEnvironmentOptionsClass* m_options;
 };
 
 //*****************************************************
@@ -206,18 +153,13 @@ public:
 //*****************************************************
 class uqFullEnvironmentClass : public uqBaseEnvironmentClass {
 public:
-  uqFullEnvironmentClass(MPI_Comm inputComm, const char* prefix);
-  uqFullEnvironmentClass(int& argc, char** &argv, MPI_Comm inputComm, const char* prefix);
-  uqFullEnvironmentClass(const uqEnvOptionsStruct& options, MPI_Comm inputComm, const char* prefix);
+  uqFullEnvironmentClass(MPI_Comm inputComm, const char* optionsInputFileName, const char* prefix);
  ~uqFullEnvironmentClass();
 
         void                     print                (std::ostream& os) const;
 
 private:
-        void                     commonConstructor    (MPI_Comm inputComm);
-        void                     readEventualInputFile();
-        void                     defineMyOptions      (po::options_description& optionsDesc) const;
-        void                     getMyOptionValues    (po::options_description& optionsDesc);
+        void                     readOptionsInputFile ();
 };
 
 std::ostream& operator<<(std::ostream& os, const uqBaseEnvironmentClass& obj);

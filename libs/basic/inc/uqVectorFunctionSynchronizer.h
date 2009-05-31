@@ -116,7 +116,7 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
 
       if (m_env.subRank() == 0) {
         UQ_FATAL_TEST_MACRO((vecValues != NULL) && (imageVector == NULL),
-                            m_env.rank(),
+                            m_env.fullRank(),
                             "uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction()",
                             "imageVector should not be NULL");
         internalValues    = vecValues;
@@ -140,7 +140,7 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
       int count = (int) bufferChar.size();
       int mpiRC = MPI_Bcast ((void *) &bufferChar[0], count, MPI_CHAR, 0, m_env.subComm().Comm());
       UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.rank(),
+                          m_env.fullRank(),
                           "uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction()",
                           "failed broadcast 1 of 3");
 
@@ -161,7 +161,7 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
         count = (int) bufferDouble.size();
         mpiRC = MPI_Bcast ((void *) &bufferDouble[0], count, MPI_DOUBLE, 0, m_env.subComm().Comm());
         UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                            m_env.rank(),
+                            m_env.fullRank(),
                             "uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction()",
                             "failed broadcast 2 of 3");
 
@@ -188,7 +188,7 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
           count = (int) bufferDouble.size();
           mpiRC = MPI_Bcast ((void *) &bufferDouble[0], count, MPI_DOUBLE, 0, m_env.subComm().Comm());
           UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                              m_env.rank(),
+                              m_env.fullRank(),
                               "uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction()",
                               "failed broadcast 3 of 3");
 
@@ -240,11 +240,11 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
   }
   else {
     UQ_FATAL_TEST_MACRO((vecValues == NULL) || (imageVector == NULL),
-                        m_env.rank(),
+                        m_env.fullRank(),
                         "uqVectorFunctionSynchronizerClass<V,M>::callFunction()",
                         "Neither vecValues nor imageVector should not be NULL");
     UQ_FATAL_TEST_MACRO((m_auxPVec.numberOfProcessorsRequiredForStorage() != m_auxQVec.numberOfProcessorsRequiredForStorage()),
-                        m_env.rank(),
+                        m_env.fullRank(),
                         "uqVectorFunctionSynchronizerClass<V,M>::callFunction()",
                         "Number of processors required for storage should be the same");
 

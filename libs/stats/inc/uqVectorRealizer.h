@@ -94,14 +94,14 @@ uqBaseVectorRealizerClass<V,M>::uqBaseVectorRealizerClass(
   m_unifiedImageExpVector(new V(unifiedImageExpVector)),
   m_unifiedImageVarVector(new V(unifiedImageVarVector))
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqBaseVectorRealizerClass<V,M>::constructor() [1]"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqBaseVectorRealizerClass<V,M>::constructor() [1]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqBaseVectorRealizerClass<V,M>::constructor() [1]"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqBaseVectorRealizerClass<V,M>::constructor() [1]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -121,14 +121,14 @@ uqBaseVectorRealizerClass<V,M>::uqBaseVectorRealizerClass(
   m_unifiedImageExpVector(new V(unifiedImageExpVector)),
   m_unifiedImageVarVector(unifiedImageSet.vectorSpace().newVector(INFINITY))
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqBaseVectorRealizerClass<V,M>::constructor() [2]"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqBaseVectorRealizerClass<V,M>::constructor() [2]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqBaseVectorRealizerClass<V,M>::constructor() [2]"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqBaseVectorRealizerClass<V,M>::constructor() [2]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -147,14 +147,14 @@ uqBaseVectorRealizerClass<V,M>::uqBaseVectorRealizerClass(
   m_unifiedImageExpVector(unifiedImageSet.vectorSpace().newVector(       0.)),
   m_unifiedImageVarVector(unifiedImageSet.vectorSpace().newVector( INFINITY))
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqBaseVectorRealizerClass<V,M>::constructor() [4]"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqBaseVectorRealizerClass<V,M>::constructor() [4]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqBaseVectorRealizerClass<V,M>::constructor() [4]"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqBaseVectorRealizerClass<V,M>::constructor() [4]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -230,14 +230,14 @@ uqGenericVectorRealizerClass<V,M>::uqGenericVectorRealizerClass(
   m_routinePtr    (routinePtr),
   m_routineDataPtr(routineDataPtr)
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqGenericVectorRealizerClass<V,M>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqGenericVectorRealizerClass<V,M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqGenericVectorRealizerClass<V,M>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqGenericVectorRealizerClass<V,M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -292,16 +292,16 @@ uqGaussianVectorRealizerClass<V,M>::uqGaussianVectorRealizerClass(const char* pr
   uqBaseVectorRealizerClass<V,M>( ((std::string)(prefix)+"gau").c_str(), unifiedImageSet, 0 ),
   m_lowerCholCovMatrix(new M(lowerCholCovMatrix))
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqGaussianVectorRealizerClass<V,M>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqGaussianVectorRealizerClass<V,M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
   *m_unifiedImageExpVector = expVector;
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqGaussianVectorRealizerClass<V,M>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqGaussianVectorRealizerClass<V,M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -375,8 +375,8 @@ uqSequentialVectorRealizerClass<V,M>::uqSequentialVectorRealizerClass(
   m_chain          (chain),
   m_currentChainPos(0)
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 0)) {
-    *m_env.subScreenFile() << "In uqSequentialVectorRealizerClass<V,M>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 0)) {
+    *m_env.subDisplayOutputFile() << "In uqSequentialVectorRealizerClass<V,M>::constructor()"
                            << ": m_chain.subSequenceSize() = " << m_chain.subSequenceSize()
                            << std::endl;
   }
@@ -423,14 +423,14 @@ uqUniformVectorRealizerClass<V,M>::uqUniformVectorRealizerClass(
   :
   uqBaseVectorRealizerClass<V,M>(((std::string)(prefix)+"gen").c_str(),unifiedImageSet,std::numeric_limits<unsigned int>::max())
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqUniformVectorRealizerClass<V,M>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqUniformVectorRealizerClass<V,M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqUniformVectorRealizerClass<V,M>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqUniformVectorRealizerClass<V,M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -448,7 +448,7 @@ uqUniformVectorRealizerClass<V,M>::realization(V& nextValues) const
   const uqBoxSubsetClass<V,M>* imageBox = dynamic_cast<const uqBoxSubsetClass<V,M>* >(&m_unifiedImageSet);
 
   UQ_FATAL_TEST_MACRO(imageBox == NULL,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqUniformVectorRealizerClass<V,M>::realization()",
                       "only box images are supported right now");
   

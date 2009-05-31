@@ -90,7 +90,7 @@ void qoiRoutine(const P_V&                        paramValues,
          (Mass[0]     > criticalMass     )) {
     int status = gsl_odeiv_evolve_apply(e, c, s, &sys, &temperature, criticalTime*beta, &h, Mass);
     UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
-                        paramValues.env().rank(),
+                        paramValues.env().fullRank(),
                         "qoiRoutine()",
                         "gsl_odeiv_evolve_apply() failed");
     //printf("t = %6.1lf, mass = %10.4lf\n",t,Mass[0]);
@@ -108,7 +108,7 @@ void qoiRoutine(const P_V&                        paramValues,
   if (criticalTime > 0.) qoiValues[0] = Mass[0];                  // QoI = mass fraction remaining at critical time
 	
   //printf("loopSize = %d\n",loopSize);
-  if ((paramValues.env().verbosity() >= 3) && (paramValues.env().rank() == 0)) {
+  if ((paramValues.env().displayVerbosity() >= 3) && (paramValues.env().fullRank() == 0)) {
     printf("In qoiRoutine(), A = %g, E = %g, beta = %.3lf, criticalTime = %.3lf, criticalMass = %.3lf: qoi = %lf.\n",A,E,beta,criticalTime,criticalMass,qoiValues[0]);
   }
 

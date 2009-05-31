@@ -68,14 +68,14 @@ uqBaseScalarCdfClass<T>::uqBaseScalarCdfClass(
   m_env   (env),
   m_prefix((std::string)(prefix)+"")
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqBaseScalarCdfClass<T>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqBaseScalarCdfClass<T>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqBaseScalarCdfClass<T>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqBaseScalarCdfClass<T>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -143,8 +143,8 @@ uqSampledScalarCdfClass<T>::uqSampledScalarCdfClass(
   m_cdfGrid              (cdfGrid  ),
   m_cdfValues            (cdfValues)
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqSampledScalarCdfClass<T>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqSampledScalarCdfClass<T>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -154,8 +154,8 @@ uqSampledScalarCdfClass<T>::uqSampledScalarCdfClass(
   //}
   //std::sort(m_sortedCdfValues.begin(), m_sortedCdfValues.end());
  
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqSampledScalarCdfClass<T>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqSampledScalarCdfClass<T>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -180,18 +180,18 @@ uqSampledScalarCdfClass<T>::value(T paramValue) const
   else {
     unsigned int intervalId = m_cdfGrid.findIntervalId(paramValue);
     UQ_FATAL_TEST_MACRO(intervalId >= (m_cdfGrid.size()-1),
-                        m_env.rank(),
+                        m_env.fullRank(),
                         "uqSampledScalarCdfClass<T>::value()",
                         "invalid intervalId");
 
     double intervalLen = m_cdfGrid[intervalId+1] - m_cdfGrid[intervalId];
     double ratio = (paramValue - m_cdfGrid[intervalId])/intervalLen;
-    //*m_env.subScreenFile() << "In uqSampledScalarCdf::value(): paramValue = " << paramValue
+    //*m_env.subDisplayOutputFile() << "In uqSampledScalarCdf::value(): paramValue = " << paramValue
     //                       << ", intervalLen = "                     << intervalLen
     //                       << ", ratio = "                           << ratio
     //                       << std::endl;
     UQ_FATAL_TEST_MACRO(ratio < 0.,
-                        m_env.rank(),
+                        m_env.fullRank(),
                         "uqSampledScalarCdfClass<T>::value()",
                         "invalid ratio");
 
@@ -205,10 +205,10 @@ template<class T>
 T
 uqSampledScalarCdfClass<T>::inverse(double cdfValue) const
 {
-  //*m_env.subScreenFile() << "In uqSampledScalarCdf::inverse(): cdfValue = " << cdfValue
+  //*m_env.subDisplayOutputFile() << "In uqSampledScalarCdf::inverse(): cdfValue = " << cdfValue
   //                       << std::endl;
   UQ_FATAL_TEST_MACRO((cdfValue < 0.) || (1. < cdfValue),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSampledScalarCdfClass<T>::inverse()",
                       "invalid cdfValue");
   double result = 0.;
@@ -230,7 +230,7 @@ uqSampledScalarCdfClass<T>::inverse(double cdfValue) const
 
     if ((j-i) <= 0) {
       UQ_FATAL_TEST_MACRO(true,
-                          m_env.rank(),
+                          m_env.fullRank(),
                           "uqSampledScalarCdfClass<T>::inverse()",
                           "invalid pair of values 'i' and 'j'");
     }
@@ -291,8 +291,8 @@ horizontalDistance(const uqBaseScalarCdfClass<T>& cdf1,
 
   double x1 = cdf1.inverse(epsilon*.5);
   double x2 = cdf1.inverse(1.-epsilon*.5);
-  if (cdf1.env().subScreenFile()) {
-    *cdf1.env().subScreenFile() << "In horizontalDistance()"
+  if (cdf1.env().subDisplayOutputFile()) {
+    *cdf1.env().subDisplayOutputFile() << "In horizontalDistance()"
                                 << ", cdf1.prefix() = " << cdf1.prefix()
                                 << ", cdf2.prefix() = " << cdf2.prefix()
                                 << ", epsilon = "       << epsilon
@@ -301,8 +301,8 @@ horizontalDistance(const uqBaseScalarCdfClass<T>& cdf1,
                                 << std::endl;
   }
 
-  //if (cdf1.env().subScreenFile()) {
-  //  *cdf1.env().subScreenFile() << "In horizontalDistance: x1 = " << x1
+  //if (cdf1.env().subDisplayOutputFile()) {
+  //  *cdf1.env().subDisplayOutputFile() << "In horizontalDistance: x1 = " << x1
   //                              << ", x2 = " << x2
   //                              << std::endl;
   //}
@@ -312,8 +312,8 @@ horizontalDistance(const uqBaseScalarCdfClass<T>& cdf1,
     double ratio = i/(numEvaluationPoints-1.); // IMPORTANT: Yes, '-1.'
     double x = (1.-ratio)*x1 + ratio*x2;
     double y = cdf2.inverse(cdf1.value(x));
-    //if (cdf1.env().subScreenFile()) {
-    //  *cdf1.env().subScreenFile() << "In horizontalDistance: x = " << x
+    //if (cdf1.env().subDisplayOutputFile()) {
+    //  *cdf1.env().subDisplayOutputFile() << "In horizontalDistance: x = " << x
     //                              << ", cdf1.value(x) = "          << cdf1.value(x)
     //                              << ", y = "                      << y
     //                              << std::endl;
@@ -325,8 +325,8 @@ horizontalDistance(const uqBaseScalarCdfClass<T>& cdf1,
     }
   }
 
-  if (cdf1.env().subScreenFile()) {
-    *cdf1.env().subScreenFile() << "In horizontalDistance()"
+  if (cdf1.env().subDisplayOutputFile()) {
+    *cdf1.env().subDisplayOutputFile() << "In horizontalDistance()"
                                 << ", cdf1.prefix() = "   << cdf1.prefix()
                                 << ", cdf2.prefix() = "   << cdf2.prefix()
                                 << ", epsilon = "         << epsilon

@@ -124,12 +124,12 @@ const V&
 uqBaseTKGroupClass<V,M>::preComputingPosition(unsigned int stageId) const
 {
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageId,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqBaseTKGroupClass<V,M>::preComputingPosition()",
                       "m_preComputingPositions.size() <= stageId");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageId] == NULL,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqBaseTKGroupClass<V,M>::preComputingPosition()",
                       "m_preComputingPositions[stageId] == NULL");
 
@@ -141,12 +141,12 @@ bool
 uqBaseTKGroupClass<V,M>::setPreComputingPosition(const V& position, unsigned int stageId)
 {
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageId,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqBaseTKGroupClass<V,M>::setPreComputingPosition()",
                       "m_preComputingPositions.size() <= stageId");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageId] != NULL,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqBaseTKGroupClass<V,M>::setPreComputingPosition()",
                       "m_preComputingPositions[stageId] != NULL");
 
@@ -218,13 +218,13 @@ uqScaledCovMatrixTKGroupClass<V,M>::uqScaledCovMatrixTKGroupClass(
   uqBaseTKGroupClass<V,M>(prefix,vectorSpace,scales),
   m_originalCovMatrix    (covMatrix)
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqScaledCovMatrixTKGroupClass<V,M>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqScaledCovMatrixTKGroupClass<V,M>::constructor()"
                            << std::endl;
   }
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "In uqScaledCovMatrixTKGroupClass<V,M>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "In uqScaledCovMatrixTKGroupClass<V,M>::constructor()"
                            << ": m_scales.size() = "                << m_scales.size()
                            << ", m_preComputingPositions.size() = " << m_preComputingPositions.size()
                            << ", m_rvs.size() = "                   << m_rvs.size()
@@ -234,8 +234,8 @@ uqScaledCovMatrixTKGroupClass<V,M>::uqScaledCovMatrixTKGroupClass(
 
   setRVsWithZeroMean();
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqScaledCovMatrixTKGroupClass<V,M>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqScaledCovMatrixTKGroupClass<V,M>::constructor()"
                            << std::endl;
   }
 }
@@ -250,19 +250,19 @@ void
 uqScaledCovMatrixTKGroupClass<V,M>::setRVsWithZeroMean()
 {
   UQ_FATAL_TEST_MACRO(m_rvs.size() == 0,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqScaledCovMatrixTKGroupClass<V,M>::setRVsWithZeroMean()",
                       "m_rvs.size() = 0");
 
   UQ_FATAL_TEST_MACRO(m_rvs.size() != m_scales.size(),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqScaledCovMatrixTKGroupClass<V,M>::setRVsWithZeroMean()",
                       "m_rvs.size() != m_scales.size()");
 
   for (unsigned int i = 0; i < m_scales.size(); ++i) {
     double factor = 1./m_scales[i]/m_scales[i];
     UQ_FATAL_TEST_MACRO(m_rvs[i] != NULL,
-                        m_env.rank(),
+                        m_env.fullRank(),
                         "uqScaledCovMatrixTKGroupClass<V,M>::setRVsWithZeroMean()",
                         "m_rvs[i] != NULL");
     m_rvs[i] = new uqGaussianVectorRVClass<V,M>(m_prefix.c_str(),
@@ -286,22 +286,22 @@ const uqGaussianVectorRVClass<V,M>&
 uqScaledCovMatrixTKGroupClass<V,M>::rv(unsigned int stageId)
 {
   UQ_FATAL_TEST_MACRO(m_rvs.size() == 0,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqScaledCovMatrixTKGroupClass<V,M>::rv1()",
                       "m_rvs.size() = 0");
 
   UQ_FATAL_TEST_MACRO(m_rvs[0] == NULL, // Yes, '0', because that is the id used below
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqScaledCovMatrixTKGroupClass<V,M>::rv1()",
                       "m_rvs[0] == NULL");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageId,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqScaledCovMatrixTKGroupClass<V,M>::rv1()",
                       "m_preComputingPositions.size() <= stageId");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageId] == NULL,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqScaledCovMatrixTKGroupClass<V,M>::rv1()",
                       "m_preComputingPositions[stageId] == NULL");
 
@@ -315,22 +315,22 @@ const uqGaussianVectorRVClass<V,M>&
 uqScaledCovMatrixTKGroupClass<V,M>::rv(const std::vector<unsigned int>& stageIds)
 {
   UQ_FATAL_TEST_MACRO(m_rvs.size() < stageIds.size(),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqScaledCovMatrixTKGroupClass<V,M>::rv2()",
                       "m_rvs.size() < stageIds.size()");
 
   UQ_FATAL_TEST_MACRO(m_rvs[stageIds.size()-1] == NULL,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqScaledCovMatrixTKGroupClass<V,M>::rv2()",
                       "m_rvs[stageIds.size()-1] == NULL");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageIds[0],
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqScaledCovMatrixTKGroupClass<V,M>::rv2()",
                       "m_preComputingPositions.size() <= stageIds[0]");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageIds[0]] == NULL,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqScaledCovMatrixTKGroupClass<V,M>::rv2()",
                       "m_preComputingPositions[stageIds[0]] == NULL");
 
@@ -343,8 +343,8 @@ template<class V, class M>
 bool
 uqScaledCovMatrixTKGroupClass<V,M>::setPreComputingPosition(const V& position, unsigned int stageId)
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqScaledCovMatrixTKGroupClass<V,M>::setPreComputingPosition()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqScaledCovMatrixTKGroupClass<V,M>::setPreComputingPosition()"
                            << ": position = " << position
                            << ", stageId = "  << stageId
                            << std::endl;
@@ -353,23 +353,23 @@ uqScaledCovMatrixTKGroupClass<V,M>::setPreComputingPosition(const V& position, u
   uqBaseTKGroupClass<V,M>::setPreComputingPosition(position,stageId);
   //setRVsWithZeroMean();
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "In uqScaledCovMatrixTKGroupClass<V,M>::setPreComputingPosition()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "In uqScaledCovMatrixTKGroupClass<V,M>::setPreComputingPosition()"
                            << ", position = "        << position
                            << ", stageId = "         << stageId
                            << ": preComputingPos = " << *m_preComputingPositions[stageId];
     if (stageId < m_scales.size()) {
-      *m_env.subScreenFile() << ", factor = " << 1./m_scales[stageId]/m_scales[stageId];
+      *m_env.subDisplayOutputFile() << ", factor = " << 1./m_scales[stageId]/m_scales[stageId];
     }
     if (stageId < m_rvs.size()) {
       const uqGaussianVectorPdfClass<V,M>* pdfPtr = dynamic_cast< const uqGaussianVectorPdfClass<V,M>* >(&(m_rvs[stageId]->pdf()));
-      *m_env.subScreenFile() << ", rvCov = " << pdfPtr->covMatrix(); // FIX ME: might demand parallelism
+      *m_env.subDisplayOutputFile() << ", rvCov = " << pdfPtr->covMatrix(); // FIX ME: might demand parallelism
     }
-    *m_env.subScreenFile() << std::endl;
+    *m_env.subDisplayOutputFile() << std::endl;
   }
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqScaledCovMatrixTKGroupClass<V,M>::setPreComputingPosition()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqScaledCovMatrixTKGroupClass<V,M>::setPreComputingPosition()"
                            << ": position = " << position
                            << ", stageId = "  << stageId
                            << std::endl;
@@ -450,15 +450,15 @@ uqHessianCovMatricesTKGroupClass<V,M>::uqHessianCovMatricesTKGroupClass(
   m_originalNewtonSteps  (scales.size()+1,NULL), // Yes, +1
   m_originalCovMatrices  (scales.size()+1,NULL)  // Yes, +1
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqHessianCovMatricesTKGroupClass<V,M>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqHessianCovMatricesTKGroupClass<V,M>::constructor()"
                            << std::endl;
   }
 
   m_rvs.resize(scales.size()+1,NULL); // Yes, +1 (IMPORTANT: overwrite initialization done by uqBaseTKGroupClass<V,M>)
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "In uqHessianCovMatricesTKGroupClass<V,M>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "In uqHessianCovMatricesTKGroupClass<V,M>::constructor()"
                            << ": m_scales.size() = "                   << m_scales.size()
                            << ", m_preComputingPositions.size() = "    << m_preComputingPositions.size()
                            << ", m_rvs.size() = "                      << m_rvs.size()
@@ -467,8 +467,8 @@ uqHessianCovMatricesTKGroupClass<V,M>::uqHessianCovMatricesTKGroupClass(
                            << std::endl;
   }
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqHessianCovMatricesTKGroupClass<V,M>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqHessianCovMatricesTKGroupClass<V,M>::constructor()"
                            << std::endl;
   }
 }
@@ -490,22 +490,22 @@ const uqGaussianVectorRVClass<V,M>&
 uqHessianCovMatricesTKGroupClass<V,M>::rv(unsigned int stageId)
 {
   UQ_FATAL_TEST_MACRO(m_rvs.size() <= stageId,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqHessianCovMatricesTKGroupClass<V,M>::rv1()",
                       "m_rvs.size() <= stageId");
 
   UQ_FATAL_TEST_MACRO(m_rvs[stageId] == NULL,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqHessianCovMatricesTKGroupClass<V,M>::rv1()",
                       "m_rvs[stageId] == NULL");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageId,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqHessianCovMatricesTKGroupClass<V,M>::rv1()",
                       "m_preComputingPositions.size() <= stageId");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageId] == NULL,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqHessianCovMatricesTKGroupClass<V,M>::rv1()",
                       "m_preComputingPositions[stageId] == NULL");
 
@@ -520,22 +520,22 @@ const uqGaussianVectorRVClass<V,M>&
 uqHessianCovMatricesTKGroupClass<V,M>::rv(const std::vector<unsigned int>& stageIds)
 {
   UQ_FATAL_TEST_MACRO(m_rvs.size() <= stageIds[0],
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqHessianCovMatricesTKGroupClass<V,M>::rv2()",
                       "m_rvs.size() <= stageIds[0]");
 
   UQ_FATAL_TEST_MACRO(m_rvs[stageIds[0]] == NULL,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqHessianCovMatricesTKGroupClass<V,M>::rv2()",
                       "m_rvs[stageIds[0]] == NULL");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageIds[0],
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqHessianCovMatricesTKGroupClass<V,M>::rv2()",
                       "m_preComputingPositions.size() <= stageIds[0]");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageIds[0]] == NULL,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqHessianCovMatricesTKGroupClass<V,M>::rv2()",
                       "m_preComputingPositions[stageIds[0]] == NULL");
 
@@ -550,8 +550,8 @@ template<class V, class M>
 bool
 uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position, unsigned int stageId)
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"
                            << ": position = " << position
                            << ", stageId = "  << stageId
                            << std::endl;
@@ -561,50 +561,50 @@ uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position
 
   // Verify consistecy of sizes
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageId,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
                       "m_preComputingPositions.size() <= stageId");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() != m_rvs.size(),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
                       "m_preComputingPositions.size() != m_rvs.size()");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() != m_originalNewtonSteps.size(),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
                       "m_preComputingPositions.size() != m_originalNewtonSteps.size()");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() != m_originalCovMatrices.size(),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
                       "m_preComputingPositions.size() != m_originalCovMatrices.size()");
 
   // Verify data is not null
   UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageId] != NULL,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
                       "m_preComputingPositions[stageId] != NULL");
 
   UQ_FATAL_TEST_MACRO(m_rvs[stageId] != NULL,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
                       "m_rvs[stageId] != NULL");
 
   UQ_FATAL_TEST_MACRO(m_originalNewtonSteps[stageId] != NULL,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
                       "m_originalNewtonSteps[stageId] != NULL");
 
   UQ_FATAL_TEST_MACRO(m_originalCovMatrices[stageId] != NULL,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
                       "m_originalCovMatrices[stageId] != NULL");
 
   uqBaseTKGroupClass<V,M>::setPreComputingPosition(position,stageId);
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "In uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "In uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"
                            << ", position = "                          << position
                            << ", stageId = "                           << stageId
                            << ": m_originalNewtonSteps.size() = "      << m_originalNewtonSteps.size()
@@ -637,8 +637,8 @@ uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position
         (*tmpCovMat)(i,j) = multVector[i];
       }
     }
-    if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-      *m_env.subScreenFile() << "In uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"
+    if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+      *m_env.subDisplayOutputFile() << "In uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"
                              << ", position = "  << position
                              << ", stageId = "   << stageId
                              << ":\n H = "       << *tmpHessian
@@ -657,7 +657,7 @@ uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position
 
     if (covIsPositiveDefinite) {
       //UQ_FATAL_TEST_MACRO(stageId >= m_scales.size(),
-      //                    m_env.rank(),
+      //                    m_env.fullRank(),
       //                    "uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
       //                    "stageId is too large for m_scales");
       //double factor = 1./m_scales[stageId]/m_scales[stageId];
@@ -666,8 +666,8 @@ uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position
       m_originalNewtonSteps[stageId] = new V(-1.*(*tmpCovMat)*(*tmpGrad));
       m_originalCovMatrices[stageId] = new M(*tmpCovMat);
 
-      if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-        *m_env.subScreenFile() << "In uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"
+      if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+        *m_env.subDisplayOutputFile() << "In uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"
                                << ", position = "        << position
                                << ", stageId = "         << stageId
                                << ", about to instantiate a Gaussian rv"
@@ -709,8 +709,8 @@ uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position
                                                       tmpCovMat);
   }
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"
                            << ": position = " << position
                            << ", stageId = "  << stageId
                            << std::endl;
@@ -724,12 +724,12 @@ void
 uqHessianCovMatricesTKGroupClass<V,M>::clearPreComputingPositions()
 {
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() != m_originalNewtonSteps.size(),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqHessianCovMatricesTKGroupClass<V,M>::clearPreComputingPositions()",
                       "m_preComputingPositions.size() != m_originalNewtonSteps.size()");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() != m_originalCovMatrices.size(),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqHessianCovMatricesTKGroupClass<V,M>::clearPreComputingPositions()",
                       "m_preComputingPositions.size() != m_originalCovMatrices.size()");
 

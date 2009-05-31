@@ -68,14 +68,14 @@ uqBaseOneDGridClass<T>::uqBaseOneDGridClass(
   m_env   (env),
   m_prefix((std::string)(prefix)+"grid")
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqBaseOneDGridClass<T>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqBaseOneDGridClass<T>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqBaseOneDGridClass<T>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqBaseOneDGridClass<T>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -151,14 +151,14 @@ uqUniformOneDGridClass<T>::uqUniformOneDGridClass(
   m_minPosition(minPosition),
   m_maxPosition(maxPosition)
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqUniformOneDGridClass<T>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqUniformOneDGridClass<T>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqUniformOneDGridClass<T>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqUniformOneDGridClass<T>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -181,7 +181,7 @@ T
 uqUniformOneDGridClass<T>::operator[](unsigned int i) const
 {
   UQ_FATAL_TEST_MACRO(i >= m_size,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqUniformOneDGridClass<V,M>::operator[]",
                       "too large i");
 
@@ -195,7 +195,7 @@ unsigned int
 uqUniformOneDGridClass<T>::findIntervalId(const T& paramValue) const
 {
   UQ_FATAL_TEST_MACRO((paramValue < m_minPosition) || (m_maxPosition < paramValue),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqUniformOneDGridClass<V,M>::findIntervalId[]",
                       "paramValue is out of domain");
 

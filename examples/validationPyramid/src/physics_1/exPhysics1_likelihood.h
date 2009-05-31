@@ -56,7 +56,7 @@ exPhysics1LikelihoodInfoStruct<P_V,P_M>::exPhysics1LikelihoodInfoStruct(
   :
   m_paramSpace(paramSpace)
 {
-  if ((paramSpace.env().verbosity() >= 30) && (paramSpace.env().rank() == 0)) {
+  if ((paramSpace.env().displayVerbosity() >= 30) && (paramSpace.env().fullRank() == 0)) {
     std::cout << "Entering exPhysics1LikelihoodInfoStruct<P_V,P_M>::constructor()"
               << inpName << "'\n"
               << std::endl;
@@ -67,11 +67,11 @@ exPhysics1LikelihoodInfoStruct<P_V,P_M>::exPhysics1LikelihoodInfoStruct(
   FILE *inp;
   inp = fopen(inpName.c_str(),"r");
   if (inp == NULL) {
-    if (paramSpace.env().rank() == 0) {
+    if (paramSpace.env().fullRank() == 0) {
       std::cout << "Input file " << inpName.c_str() << " was not found" << std::endl;
     }
     UQ_FATAL_TEST_MACRO((inp == NULL),
-                        paramSpace.env().rank(),
+                        paramSpace.env().fullRank(),
                         "exPhysics1LikelihoodInfoStruct<P_V,P_M>::constructor()",
                         "input file not found");
   }
@@ -86,7 +86,7 @@ exPhysics1LikelihoodInfoStruct<P_V,P_M>::exPhysics1LikelihoodInfoStruct(
   // Close input file on experimental data
   fclose(inp);
 
-  if ((paramSpace.env().verbosity() >= 30) && (paramSpace.env().rank() == 0)) {
+  if ((paramSpace.env().displayVerbosity() >= 30) && (paramSpace.env().fullRank() == 0)) {
     std::cout << "Leaving exPhysics1LikelihoodInfoStruct<P_V,P_M>::constructor()"
               << inpName << "'\n"
               << std::endl;
@@ -110,7 +110,7 @@ exPhysics1LikelihoodRoutine(
   P_V*        hessianEffect)
 {
   UQ_FATAL_TEST_MACRO((hessianEffect != NULL) && (paramDirection == NULL),
-                      paramValues.env().rank(),
+                      paramValues.env().fullRank(),
                       "exPhysics1LikelihoodRoutine<P_V,P_M>()",
                       "hessianEffect is being requested but no paramDirection is supplied");
 
@@ -120,11 +120,11 @@ exPhysics1LikelihoodRoutine(
   if (hessianMatrix) *hessianMatrix *= 0.;
   if (hessianEffect) *hessianEffect *= 0.;
 
-  if ((paramValues.env().verbosity() >= 30) && (paramValues.env().rank() == 0)) {
+  if ((paramValues.env().displayVerbosity() >= 30) && (paramValues.env().fullRank() == 0)) {
     std::cout << "Entering exPhysics1LikelihoodRoutine()..." << std::endl;
   }
 
-  if ((paramValues.env().verbosity() >= 10) && (paramValues.env().rank() == 0)) {
+  if ((paramValues.env().displayVerbosity() >= 10) && (paramValues.env().fullRank() == 0)) {
     std::cout << "In exPhysics1LikelihoodRoutine()"
               << ", A = " << paramValues[0]
               << ", E = " << paramValues[1]
@@ -145,14 +145,14 @@ exPhysics1LikelihoodRoutine(
   // Loop on scenarios
   const std::vector<exPhysics1LikelihoodInfoStruct<P_V,P_M> *>& vecInfo = *((const std::vector<exPhysics1LikelihoodInfoStruct<P_V,P_M> *> *) functionDataPtr);
   UQ_FATAL_TEST_MACRO(vecInfo.size() == 0,
-                      paramValues.env().rank(),
+                      paramValues.env().fullRank(),
                       "exPhysics1LikelihoodRoutine<P_V,P_M>()",
                       "vecInfo has size 0");
   for (unsigned int i = 0; i < vecInfo.size(); ++i) {
     resultValue += 0.;
   } // end loop of scenarios
 
-  if ((paramValues.env().verbosity() >= 30) && (paramValues.env().rank() == 0)) {
+  if ((paramValues.env().displayVerbosity() >= 30) && (paramValues.env().fullRank() == 0)) {
     std::cout << "Leaving exPhysics1LikelihoodRoutine()..." << std::endl;
   }
 

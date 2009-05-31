@@ -113,7 +113,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::exPhysics1ValidationClass(
   m_valLikelihoodFunctionObj(NULL),
   m_valQoiRoutineInfo       (NULL)
 {
-  if (m_env.rank() == 0) {
+  if (m_env.fullRank() == 0) {
     std::cout << "Entering exPhysics1Validation::constructor()\n"
               << std::endl;
   }
@@ -165,7 +165,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::exPhysics1ValidationClass(
   m_predCriticalW    = 0.;
   m_predCriticalTime = 3.9;
 
-  if (m_env.rank() == 0) {
+  if (m_env.fullRank() == 0) {
     std::cout << "Leaving exPhysics1Validation::constructor()\n"
               << std::endl;
   }
@@ -176,7 +176,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::exPhysics1ValidationClass(
 template <class P_V,class P_M,class Q_V,class Q_M>
 exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::~exPhysics1ValidationClass()
 {
-  if (m_env.rank() == 0) {
+  if (m_env.fullRank() == 0) {
     std::cout << "Entering exPhysics1Validation::destructor()"
               << std::endl;
   }
@@ -203,7 +203,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::~exPhysics1ValidationClass()
 //if (m_paramNames)                delete m_paramNames;         // instantiated outside this class!!
   if (m_paramsTable)               delete m_paramsTable;
 
-  if (m_env.rank() == 0) {
+  if (m_env.fullRank() == 0) {
     std::cout << "Leaving exPhysics1Validation::destructor()"
               << std::endl;
   }
@@ -213,7 +213,7 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 void
 exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::run()
 {
-  if (m_env.rank() == 0) {
+  if (m_env.fullRank() == 0) {
     std::cout << "Entering exPhysics1Validation::run()"
               << std::endl;
   }
@@ -222,7 +222,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::run()
   runValidationStage();
   runComparisonStage();
 
-  if (m_env.rank() == 0) {
+  if (m_env.fullRank() == 0) {
     std::cout << "Leaving exPhysics1Validation::run()"
               << std::endl;
   }
@@ -239,7 +239,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
   struct timeval timevalNow;
 
   iRC = gettimeofday(&timevalRef, NULL);
-  if (m_env.rank() == 0) {
+  if (m_env.fullRank() == 0) {
     std::cout << "Entering exPhysics1Validation::runCalibrationStage() at " << ctime(&timevalRef.tv_sec)
               << std::endl;
   }
@@ -283,7 +283,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
   m_cycle->calFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
 
   iRC = gettimeofday(&timevalNow, NULL);
-  if (m_env.rank() == 0) {
+  if (m_env.fullRank() == 0) {
     std::cout << "Leaving exPhysics1Validation::runCalibrationStage() at " << ctime(&timevalNow.tv_sec)
               << "Total exPhysics1Validation::runCalibrationStage() run time = " << timevalNow.tv_sec - timevalRef.tv_sec
               << " seconds"
@@ -302,7 +302,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
   struct timeval timevalNow;
 
   iRC = gettimeofday(&timevalRef, NULL);
-  if (m_env.rank() == 0) {
+  if (m_env.fullRank() == 0) {
     std::cout << "Entering exPhysics1Validation::runValidationStage() at " << ctime(&timevalRef.tv_sec)
               << std::endl;
   }
@@ -340,7 +340,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
   m_cycle->valFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
 
   iRC = gettimeofday(&timevalNow, NULL);
-  if (m_env.rank() == 0) {
+  if (m_env.fullRank() == 0) {
     std::cout << "Leaving exPhysics1Validation::runValidationStage() at " << ctime(&timevalNow.tv_sec)
               << "Total exPhysics1Validation::runValidationStage() run time = " << timevalNow.tv_sec - timevalRef.tv_sec
               << " seconds"
@@ -359,7 +359,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runComparisonStage()
   struct timeval timevalNow;
 
   iRC = gettimeofday(&timevalRef, NULL);
-  if (m_env.rank() == 0) {
+  if (m_env.fullRank() == 0) {
     std::cout << "Entering exPhysics1Validation::runComparisonStage() at " << ctime(&timevalRef.tv_sec)
               << std::endl;
   }
@@ -372,7 +372,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runComparisonStage()
                         m_cycle->valFP().qoiRv().unifiedCdf(),
                         *epsilonVec,
                         cdfDistancesVec);
-    if (m_cycle->env().rank() == 0) {
+    if (m_cycle->env().fullRank() == 0) {
       std::cout << "For epsilonVec = "    << *epsilonVec
                 << ", cdfDistancesVec = " << cdfDistancesVec
                 << std::endl;
@@ -383,7 +383,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runComparisonStage()
                         m_cycle->calFP().qoiRv().unifiedCdf(),
                         *epsilonVec,
                         cdfDistancesVec);
-    if (m_cycle->env().rank() == 0) {
+    if (m_cycle->env().fullRank() == 0) {
       std::cout << "For epsilonVec = "                             << *epsilonVec
                 << ", cdfDistancesVec (switched order of cdfs) = " << cdfDistancesVec
                 << std::endl;
@@ -395,7 +395,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runComparisonStage()
                         m_cycle->valFP().qoiRv().unifiedCdf(),
                         *epsilonVec,
                         cdfDistancesVec);
-    if (m_cycle->env().rank() == 0) {
+    if (m_cycle->env().fullRank() == 0) {
       std::cout << "For epsilonVec = "    << *epsilonVec
                 << ", cdfDistancesVec = " << cdfDistancesVec
                 << std::endl;
@@ -407,7 +407,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runComparisonStage()
                         m_cycle->valFP().qoiRv().unifiedCdf(),
                         *epsilonVec,
                         cdfDistancesVec);
-    if (m_cycle->env().rank() == 0) {
+    if (m_cycle->env().fullRank() == 0) {
       std::cout << "For epsilonVec = "    << *epsilonVec
                 << ", cdfDistancesVec = " << cdfDistancesVec
                 << std::endl;
@@ -419,7 +419,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runComparisonStage()
                         m_cycle->valFP().qoiRv().unifiedCdf(),
                         *epsilonVec,
                         cdfDistancesVec);
-    if (m_cycle->env().rank() == 0) {
+    if (m_cycle->env().fullRank() == 0) {
       std::cout << "For epsilonVec = "    << *epsilonVec
                 << ", cdfDistancesVec = " << cdfDistancesVec
                 << std::endl;
@@ -431,7 +431,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runComparisonStage()
                         m_cycle->valFP().qoiRv().unifiedCdf(),
                         *epsilonVec,
                         cdfDistancesVec);
-    if (m_cycle->env().rank() == 0) {
+    if (m_cycle->env().fullRank() == 0) {
       std::cout << "For epsilonVec = "    << *epsilonVec
                 << ", cdfDistancesVec = " << cdfDistancesVec
                 << std::endl;
@@ -441,7 +441,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runComparisonStage()
   }
 
   iRC = gettimeofday(&timevalNow, NULL);
-  if (m_env.rank() == 0) {
+  if (m_env.fullRank() == 0) {
     std::cout << "Leaving exPhysics1Validation::runComparisonStage() at " << ctime(&timevalNow.tv_sec)
               << "Total exPhysics1Validation::runComparisonStage() run time = " << timevalNow.tv_sec - timevalRef.tv_sec
               << " seconds"

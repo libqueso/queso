@@ -40,7 +40,7 @@ uqTrilinosVectorClass::uqTrilinosVectorClass()
   m_map        (*(new Epetra_Map( 1,0,*(new Epetra_MpiComm(MPI_COMM_WORLD)) ) ))
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqTrilinosVectorClass::constructor(), default",
                       "should not be used by user");
 }
@@ -53,7 +53,7 @@ uqTrilinosVectorClass::uqTrilinosVectorClass(const uqBaseEnvironmentClass& env, 
   m_vec        (new Epetra_SerialDenseMatrix(map.NumGlobalElements(),1))
 {
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqTrilinosVectorClass::constructor()",
                       "null vector generated");
 }
@@ -66,7 +66,7 @@ uqTrilinosVectorClass::uqTrilinosVectorClass(const uqBaseEnvironmentClass& env, 
   m_vec        (new Epetra_SerialDenseMatrix(map.NumGlobalElements(),1))
 {
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqTrilinosVectorClass::constructor()",
                       "null vector generated");
   this->cwSet(value);
@@ -80,12 +80,12 @@ uqTrilinosVectorClass::uqTrilinosVectorClass(const uqBaseEnvironmentClass& env, 
   m_vec        (new Epetra_SerialDenseMatrix(map.NumGlobalElements(),1))
 {
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqTrilinosVectorClass::constructor(), linspace",
                       "null vector generated");
 
   UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
-                    m_env.rank(),
+                    m_env.fullRank(),
                     "uqTrilinosVectorClass::constructor(), linspace",
                     "failed");
 
@@ -101,12 +101,12 @@ uqTrilinosVectorClass::uqTrilinosVectorClass(const uqTrilinosVectorClass& v, dou
   m_vec        (new Epetra_SerialDenseMatrix(v.map().NumGlobalElements(),1))
 {
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqTrilinosVectorClass::constructor(), linspace",
                       "null vector generated");
 
   UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
-                    m_env.rank(),
+                    m_env.fullRank(),
                     "uqTrilinosVectorClass::constructor(), linspace",
                     "failed");
 
@@ -122,7 +122,7 @@ uqTrilinosVectorClass::uqTrilinosVectorClass(const uqTrilinosVectorClass& v)
   m_vec        (new Epetra_SerialDenseMatrix(v.map().NumGlobalElements(),1))
 {
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqTrilinosVectorClass::constructor(), copy",
                       "null vector generated");
   this->uqVectorClass::copy(v);
@@ -151,7 +151,7 @@ uqTrilinosVectorClass&
 uqTrilinosVectorClass::operator*=(double a)
 {
   UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
-                    m_env.rank(),
+                    m_env.fullRank(),
                     "uqTrilinosVectorClass::operator*=()",
                     "failed");
   double tmpA = a; tmpA += 1.; // Just to avoid icpc warnings
@@ -162,7 +162,7 @@ uqTrilinosVectorClass&
 uqTrilinosVectorClass::operator/=(double a)
 {
   UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
-                    m_env.rank(),
+                    m_env.fullRank(),
                     "uqTrilinosVectorClass::operator/=()",
                     "failed");
   double tmpA = a; tmpA += 1.; // Just to avoid icpc warnings
@@ -213,7 +213,7 @@ void
 uqTrilinosVectorClass::copy(const uqTrilinosVectorClass& src)
 {
   UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
-                    src.env().rank(),
+                    src.env().fullRank(),
                     "uqTrilinosVectorClass::copy()",
                     "failed");
 
@@ -224,7 +224,7 @@ unsigned int
 uqTrilinosVectorClass::size() const
 {
   UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
-                    m_env.rank(),
+                    m_env.fullRank(),
                     "uqTrilinosVectorClass::size()",
                     "failed");
 
@@ -255,7 +255,7 @@ void
 uqTrilinosVectorClass::cwSet(double value)
 {
   UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
-                    m_env.rank(),
+                    m_env.fullRank(),
                     "uqTrilinosVectorClass::set()",
                     "failed");
   double tmpA = value; tmpA += 1.; // Just to avoid icpc warnings
@@ -274,7 +274,7 @@ void
 uqTrilinosVectorClass::cwInvert()
 {
   UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
-                    m_env.rank(),
+                    m_env.fullRank(),
                     "uqTrilinosVectorClass::invert()",
                     "failed");
   return;
@@ -284,7 +284,7 @@ void
 uqTrilinosVectorClass::sort()
 {
   UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
-                    m_env.rank(),
+                    m_env.fullRank(),
                     "uqTrilinosVectorClass::sort()",
                     "failed");
   return;
@@ -294,7 +294,7 @@ void
 uqTrilinosVectorClass::print(std::ostream& os) const
 {
   UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
-                    m_env.rank(),
+                    m_env.fullRank(),
                     "uqTrilinosVectorClass::print()",
                     "failed");
   os.flush(); // just to avoid icpc warnings
@@ -312,7 +312,7 @@ bool
 uqTrilinosVectorClass::atLeastOneComponentSmallerThan(const uqTrilinosVectorClass& rhs) const
 {
   UQ_FATAL_TEST_MACRO((this->size() != rhs.size()),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqTrilinosVectorClass::atLeastOneComponentSmallerThan()",
                       "vectors have different sizes");
 
@@ -325,7 +325,7 @@ bool
 uqTrilinosVectorClass::atLeastOneComponentBiggerThan (const uqTrilinosVectorClass& rhs) const
 {
   UQ_FATAL_TEST_MACRO((this->size() != rhs.size()),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqTrilinosVectorClass::atLeastOneComponentBiggerThan()",
                       "vectors have different sizes");
 
@@ -380,7 +380,7 @@ double scalarProduct(const uqTrilinosVectorClass& x, const uqTrilinosVectorClass
   unsigned int size1 = x.size();
   unsigned int size2 = y.size();
   UQ_FATAL_TEST_MACRO((size1 != size2),
-                      x.env().rank(),
+                      x.env().fullRank(),
                       "scalarProduct()",
                       "different sizes of x and y");
 
@@ -416,7 +416,7 @@ uqTrilinosVectorClass::map() const
 }
 #if 0
 int
-uqTrilinosVectorClass::rank() const
+uqTrilinosVectorClass::fullRank() const
 {
   return m_vec->Map().Comm().MyPID();
 }

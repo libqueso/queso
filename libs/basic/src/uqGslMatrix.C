@@ -40,7 +40,7 @@ uqGslMatrixClass::uqGslMatrixClass()
   uqMatrixClass()
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGslMatrixClass::constructor(), default",
                       "should not be used by user");
 }
@@ -56,7 +56,7 @@ uqGslMatrixClass::uqGslMatrixClass(
   m_permutation(NULL)
 {
   UQ_FATAL_TEST_MACRO((m_mat == NULL),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGslMatrixClass::constructor()",
                       "null matrix generated");
 }
@@ -72,7 +72,7 @@ uqGslMatrixClass::uqGslMatrixClass(
   m_permutation(NULL)
 {
   UQ_FATAL_TEST_MACRO((m_mat == NULL),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGslMatrixClass::constructor(), eye",
                       "null matrix generated");
 
@@ -91,7 +91,7 @@ uqGslMatrixClass::uqGslMatrixClass(
   m_permutation(NULL)
 {
   UQ_FATAL_TEST_MACRO((m_mat == NULL),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGslMatrixClass::constructor(), eye",
                       "null matrix generated");
 
@@ -108,7 +108,7 @@ uqGslMatrixClass::uqGslMatrixClass(const uqGslVectorClass& v)
   m_permutation(NULL)
 {
   UQ_FATAL_TEST_MACRO((m_mat == NULL),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGslMatrixClass::constructor(), from vector",
                       "null matrix generated");
 
@@ -126,7 +126,7 @@ uqGslMatrixClass::uqGslMatrixClass(const uqGslMatrixClass& B)
   m_permutation(NULL)
 {
   UQ_FATAL_TEST_MACRO((m_mat == NULL),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGslMatrixClass::constructor(), copy",
                       "null vector generated");
   this->uqMatrixClass::copy(B);
@@ -153,7 +153,7 @@ uqGslMatrixClass::operator*=(double a)
   int iRC;
   iRC = gsl_matrix_scale(m_mat,a);
   UQ_FATAL_RC_MACRO(iRC,
-                    m_env.rank(),
+                    m_env.fullRank(),
                     "uqGslMatrixClass::operator*=()",
                     "scaling failed");
   return *this;
@@ -173,7 +173,7 @@ uqGslMatrixClass::operator+=(const uqGslMatrixClass& rhs)
   int iRC;
   iRC = gsl_matrix_add(m_mat,rhs.m_mat);
   UQ_FATAL_RC_MACRO(iRC,
-                    m_env.rank(),
+                    m_env.fullRank(),
                     "uqGslMatrixClass::operator+=()",
                     "failed");
 
@@ -186,7 +186,7 @@ uqGslMatrixClass::operator-=(const uqGslMatrixClass& rhs)
   int iRC;
   iRC = gsl_matrix_sub(m_mat,rhs.m_mat);
   UQ_FATAL_RC_MACRO(iRC,
-                    m_env.rank(),
+                    m_env.fullRank(),
                     "uqGslMatrixClass::operator-=()",
                     "failed");
 
@@ -211,7 +211,7 @@ uqGslMatrixClass::copy(const uqGslMatrixClass& src)
   int iRC;
   iRC = gsl_matrix_memcpy(this->m_mat, src.m_mat);
   UQ_FATAL_RC_MACRO(iRC,
-                    m_env.rank(),
+                    m_env.fullRank(),
                     "uqGslMatrixClass::copy()",
                     "failed");
 
@@ -241,7 +241,7 @@ uqGslMatrixClass::chol()
   gsl_set_error_handler(oldHandler);
   //std::cout << "Returned from gsl_linalg_cholesky_decomp() with iRC = " << iRC << std::endl;
   UQ_RC_MACRO(iRC, // Yes, *not* a fatal check on RC
-              m_env.rank(),
+              m_env.fullRank(),
               "uqGslMatrixClass::chol()",
               "matrix is not positive definite",
               UQ_MATRIX_IS_NOT_POS_DEFINITE_RC);
@@ -318,7 +318,7 @@ uqGslMatrixClass::multiply(
   const uqGslVectorClass& x) const
 {
   UQ_FATAL_TEST_MACRO((this->numCols() != x.size()),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGslMatrixClass::multiply(), return vector",
                       "matrix and vector have incompatible sizes");
 
@@ -334,12 +334,12 @@ uqGslMatrixClass::multiply(
         uqGslVectorClass& y) const
 {
   UQ_FATAL_TEST_MACRO((this->numCols() != x.size()),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGslMatrixClass::multiply(), vector return void",
                       "matrix and x have incompatible sizes");
 
   UQ_FATAL_TEST_MACRO((y.size() != x.size()),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGslMatrixClass::multiply(), vector return void",
                       "y and x have incompatible sizes");
 
@@ -361,7 +361,7 @@ uqGslMatrixClass::invertMultiply(
   const uqGslVectorClass& b) const
 {
   UQ_FATAL_TEST_MACRO((this->numCols() != b.size()),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGslMatrixClass::invertMultiply(), return vector",
                       "matrix and rhs have incompatible sizes");
 
@@ -377,12 +377,12 @@ uqGslMatrixClass::invertMultiply(
         uqGslVectorClass& x) const
 {
   UQ_FATAL_TEST_MACRO((this->numCols() != b.size()),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGslMatrixClass::multiply(), return void",
                       "matrix and rhs have incompatible sizes");
 
   UQ_FATAL_TEST_MACRO((x.size() != b.size()),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGslMatrixClass::multiply(), return void",
                       "solution and rhs have incompatible sizes");
 
@@ -390,33 +390,33 @@ uqGslMatrixClass::invertMultiply(
   if (m_LU == NULL) {
     m_LU = gsl_matrix_calloc(numRows(),numCols());
     UQ_FATAL_TEST_MACRO((m_LU == NULL),
-                        m_env.rank(),
+                        m_env.fullRank(),
                         "uqGslMatrixClass::invertMultiply()",
                         "gsl_matrix_calloc() failed");
 
     iRC = gsl_matrix_memcpy(m_LU, m_mat);
     UQ_FATAL_RC_MACRO(iRC,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGslMatrixClass::invertMultiply()",
                       "gsl_matrix_memcpy() failed");
 
     m_permutation = gsl_permutation_calloc(numCols());
     UQ_FATAL_TEST_MACRO((m_permutation == NULL),
-                        m_env.rank(),
+                        m_env.fullRank(),
                         "uqGslMatrixClass::invertMultiply()",
                         "gsl_permutation_calloc() failed");
 
     int signum;
     iRC = gsl_linalg_LU_decomp(m_LU,m_permutation,&signum); 
     UQ_FATAL_RC_MACRO(iRC,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGslMatrixClass::invertMultiply()",
                       "gsl_linalg_LU_decomp() failed");
   }
 
   iRC = gsl_linalg_LU_solve(m_LU,m_permutation,b.data(),x.data()); 
   UQ_FATAL_RC_MACRO(iRC,
-                    m_env.rank(),
+                    m_env.fullRank(),
                     "uqGslMatrixClass::invertMultiply()",
                     "gsl_linalg_LU_solve() failed");
 
@@ -546,7 +546,7 @@ uqGslMatrixClass operator*(const uqGslMatrixClass& m1, const uqGslMatrixClass& m
   unsigned int m2Cols = m2.numCols();
 
   UQ_FATAL_TEST_MACRO((m1Cols != m2Rows),
-                      m1.env().rank(),
+                      m1.env().fullRank(),
                       "uqGslMatrixClass operator*(matrix,matrix)",
                       "different sizes m1Cols and m2Rows");
 
@@ -596,7 +596,7 @@ uqGslMatrixClass diagScaling(const uqGslVectorClass& vec, const uqGslMatrixClass
   unsigned int mCols = mat.numCols();
 
   UQ_FATAL_TEST_MACRO((vSize != mRows),
-                      mat.env().rank(),
+                      mat.env().fullRank(),
                       "uqGslMatrixClass diagScaling(vector,matrix)",
                       "size of vector is different from the number of rows in matrix");
 

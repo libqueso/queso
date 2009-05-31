@@ -89,7 +89,7 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass()
   uqVectorSetClass<V,M>()
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqVectorSpaceClass<V,M>::constructor(), default",
                       "should not be used by user");
 }
@@ -108,18 +108,18 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
   m_map                (newMap()),
   m_zeroVector         (new V(m_env,*m_map))
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqVectorSpaceClass<V,M>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqVectorSpaceClass<V,M>::constructor()"
                            << std::endl;
   }
 
   UQ_FATAL_TEST_MACRO((m_componentsNames != NULL) && (m_componentsNames->GlobalLength() != (int) m_dim),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqVectorSpaceClass<V,M>::constructor()",
                       "size of 'componentsNames' is not equal to m_dim");
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqVectorSpaceClass<V,M>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqVectorSpaceClass<V,M>::constructor()"
                            << std::endl;
   }
 }
@@ -127,16 +127,16 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
 template <class V, class M>
 uqVectorSpaceClass<V,M>::~uqVectorSpaceClass()
 {
-  //if (m_env.subScreenFile()) {
-  //  *m_env.subScreenFile() << "Entering uqVectorSpaceClass<V,M>::destructor()"
+  //if (m_env.subDisplayOutputFile()) {
+  //  *m_env.subDisplayOutputFile() << "Entering uqVectorSpaceClass<V,M>::destructor()"
   //                         << std::endl;
   //}
 
   if (m_zeroVector != NULL) delete m_zeroVector;
   if (m_map        != NULL) delete m_map;
 
-  //if (m_env.subScreenFile()) {
-  //  *m_env.subScreenFile() << "Leaving uqVectorSpaceClass<V,M>::destructor()"
+  //if (m_env.subDisplayOutputFile()) {
+  //  *m_env.subDisplayOutputFile() << "Leaving uqVectorSpaceClass<V,M>::destructor()"
   //                         << std::endl;
   //}
 }
@@ -160,7 +160,7 @@ const Epetra_Map&
 uqVectorSpaceClass<V,M>::map() const
 {
   UQ_FATAL_TEST_MACRO(m_map == NULL,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqVectorSpaceClass<V,M>::map()",
                       "m_map is still NULL");
   return *m_map;
@@ -171,7 +171,7 @@ const V&
 uqVectorSpaceClass<V,M>::zeroVector() const
 {
   UQ_FATAL_TEST_MACRO(m_zeroVector == NULL,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqVectorSpaceClass<V,M>::zeroVector()",
                       "m_zeroVector is still NULL");
   return *m_zeroVector;
@@ -211,8 +211,8 @@ uqVectorSpaceClass<V,M>::newGaussianMatrix(
   V tmpVec(*m_zeroVector);
   for (unsigned int i = 0; i < m_dim; ++i) {
     double variance = varianceValues[i];
-    if (m_env.subScreenFile()) {
-      *m_env.subScreenFile() << "In uqVectorSpaceClass<V,M>::newGaussianMatrix()"
+    if (m_env.subDisplayOutputFile()) {
+      *m_env.subDisplayOutputFile() << "In uqVectorSpaceClass<V,M>::newGaussianMatrix()"
                              << ": i = "        << i
                              << ", variance = " << variance
                              << std::endl;
@@ -247,7 +247,7 @@ uqVectorSpaceClass<V,M>::componentName(unsigned int componentId) const
   if (m_componentsNames == NULL) return m_emptyComponentName;
 
   UQ_FATAL_TEST_MACRO(componentId > m_dim,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqVectorSpaceClass<V,M>::componentName()",
                       "componentId is too big");
 

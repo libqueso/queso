@@ -177,7 +177,7 @@ uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M>::compute(
         EpetraExt::DistArray<P_V*>* hessianEffects) const
 {
   //UQ_FATAL_TEST_MACRO(false,
-  //                    domainVector.env().rank(),
+  //                    domainVector.env().fullRank(),
   //                    "uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M>::compute()",
   //                    "this method should not be called in the case of this class");
 

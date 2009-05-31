@@ -49,9 +49,9 @@ verify_file_exists $INFILE
 # Run the model
 
 if [ $SAVELOG -eq 1 ];then
-    ./$EXE -i $INFILE
+    ./$EXE $INFILE
 else
-    ./$EXE -i $INFILE >& /dev/null
+    ./$EXE $INFILE >& /dev/null
 fi
 
 # Verify results

@@ -40,7 +40,7 @@ uqTrilinosMatrixClass::uqTrilinosMatrixClass()
   m_map        (*(new Epetra_Map( 1,0,*(new Epetra_MpiComm(MPI_COMM_WORLD)) ) ))
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqTrilinosMatrixClass::constructor(), default",
                       "should not be used by user");
 }
@@ -56,7 +56,7 @@ uqTrilinosMatrixClass::uqTrilinosMatrixClass(
   m_mat(new Epetra_SerialDenseMatrix(map.NumGlobalElements(),numCols))
 {
   UQ_FATAL_TEST_MACRO((m_mat == NULL),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqTrilinosMatrixClass::constructor()",
                       "null matrix generated");
 }
@@ -72,7 +72,7 @@ uqTrilinosMatrixClass::uqTrilinosMatrixClass(
   m_mat(new Epetra_SerialDenseMatrix(numRows,numCols))
 {
   UQ_FATAL_TEST_MACRO((m_mat == NULL),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqTrilinosMatrixClass::constructor()",
                       "null matrix generated");
 }
@@ -214,7 +214,7 @@ uqTrilinosMatrixClass::multiply(
   const uqTrilinosVectorClass& x) const
 {
   UQ_FATAL_TEST_MACRO((this->numCols() != x.size()),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqTrilinosMatrixClass::multiply(), vector",
                       "matrix and x have incompatible sizes");
 
@@ -229,7 +229,7 @@ uqTrilinosMatrixClass::invertMultiply(
   const uqTrilinosVectorClass& b) const
 {
   UQ_FATAL_TEST_MACRO((this->numCols() != b.size()),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqTrilinosMatrixClass::invertMultiply(), return vector",
                       "matrix and rhs have incompatible sizes");
 
@@ -245,12 +245,12 @@ uqTrilinosMatrixClass::invertMultiply(
         uqTrilinosVectorClass& x) const
 {
   UQ_FATAL_TEST_MACRO((this->numCols() != b.size()),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqTrilinosMatrixClass::multiply(), return void",
                       "matrix and rhs have incompatible sizes");
 
   UQ_FATAL_TEST_MACRO((x.size() != b.size()),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqTrilinosMatrixClass::multiply(), return void",
                       "solution and rhs have incompatible sizes");
 
@@ -292,7 +292,7 @@ uqTrilinosMatrixClass operator*(const uqTrilinosMatrixClass& m1, const uqTrilino
   unsigned int m2Cols = m2.numCols();
 
   UQ_FATAL_TEST_MACRO((m1Cols != m2Rows),
-                      m1.env().rank(),
+                      m1.env().fullRank(),
                       "uqTrilinosMatrixClass operator*(matrix,matrix)",
                       "different sizes m1Cols and m2Rows");
 
@@ -342,7 +342,7 @@ uqTrilinosMatrixClass diagScaling(const uqTrilinosVectorClass& vec, const uqTril
   //unsigned int mCols = mat.numCols();
 
   UQ_FATAL_TEST_MACRO((vSize != mRows),
-                      mat.env().rank(),
+                      mat.env().fullRank(),
                       "uqTrilinosMatrixClass diagScaling(vector,matrix)",
                       "size of vector is different from the number of rows in matrix");
 
@@ -359,7 +359,7 @@ uqTrilinosMatrixClass diagScaling(const uqTrilinosVectorClass& vec, const uqTril
 
 #if 0
 int
-uqTrilinosMatrixClass::rank() const
+uqTrilinosMatrixClass::fullRank() const
 {
   return this->map().Comm().MyPID();
 }

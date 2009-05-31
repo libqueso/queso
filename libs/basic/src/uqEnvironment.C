@@ -31,7 +31,7 @@
  *-------------------------------------------------------------------------- */
 
 #include <uqEnvironment.h>
-#include <uqMiscellaneous.h>
+#include <uqEnvironmentOptions.h>
 #include <sys/time.h>
 #include <gsl/gsl_randist.h>
 
@@ -45,190 +45,53 @@
 #define QUESO_LIBRARY_CURRENT_VERSION "0.4.0"
 #define QUESO_LIBRARY_RELEASE_DATE    "MMM/DD/2009"
 
-uqEnvOptionsStruct::uqEnvOptionsStruct(
-  unsigned int verbosity,
-  int          seed)
-  :
-  m_numSubEnvironments     (UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),
-  m_subScreenOutputFileName(UQ_ENV_SUB_SCREEN_OUTPUT_FILE_NAME_ODV),
-//m_subScreenOutputFilter  (),
-  m_verbosity              (verbosity),
-  m_syncVerbosity          (UQ_ENV_SYNC_VERBOSITY_ODV),
-  m_seed                   (seed),
-  m_numDebugParams         (0),
-  m_debugParams            (0,0.)
-{
-}
-
-uqEnvOptionsStruct::~uqEnvOptionsStruct()
-{
-}
-
 //*****************************************************
 // Base class
 //*****************************************************
 uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   MPI_Comm    inputComm,
-  const char* prefix)
+  const char* optionsInputFileName)
   :
-  m_argc                          (0),
-  m_argv                          (NULL),
-  m_prefix                        ((std::string)(prefix) + "env_"),
-  m_worldRank                     (-1),
-  m_fullRawComm                   (inputComm),
-  m_fullComm                      (NULL),
-  m_fullRank                      (-1),
-  m_fullCommSize                  (1),
-  m_argsWereProvided              (false),
-  m_thereIsInputFile              (false),
-  m_inputFileName                 (""),
-  m_allOptionsDesc                (NULL),
-  m_envOptionsDesc                (NULL),
-  m_allOptionsMap                 (NULL),
-  m_option_help                   (m_prefix + "help"                   ),
-  m_option_numSubEnvironments     (m_prefix + "numSubEnvironments"     ),
-  m_option_subScreenOutputFileName(m_prefix + "subScreenOutputFileName"),
-  m_option_subScreenOutputAllowAll(m_prefix + "subScreenOutputAllowAll"),
-  m_option_subScreenOutputAllow   (m_prefix + "subScreenOutputAllow"   ),
-  m_option_verbosity              (m_prefix + "verbosity"              ),
-  m_option_syncVerbosity          (m_prefix + "syncVerbosity"          ),
-  m_option_seed                   (m_prefix + "seed"                   ),
-  m_numSubEnvironments            (UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),
-  m_subScreenOutputFileName       (UQ_ENV_SUB_SCREEN_OUTPUT_FILE_NAME_ODV),
-  m_subScreenOutputAllowAll       (UQ_ENV_SUB_SCREEN_OUTPUT_ALLOW_ALL_ODV),
-//m_subScreenOutputAllowSet       (),
-  m_verbosity                     (UQ_ENV_VERBOSITY_ODV),
-  m_syncVerbosity                 (UQ_ENV_SYNC_VERBOSITY_ODV),
-  m_seed                          (UQ_ENV_SEED_ODV),
-  m_numDebugParams                (UQ_ENV_NUM_DEBUG_PARAMS_ODV),
-  m_debugParams                   (m_numDebugParams,0.),
-  m_subComm                       (NULL),
-  m_subRank                       (-1),
-  m_subCommSize                   (1),
-  m_selfComm                      (NULL),
-  m_inter0Comm                    (NULL),
-  m_inter0Rank                    (-1),
-  m_inter0CommSize                (1),
-  m_subScreenFile                 (NULL),
-  m_rng                           (NULL)
-{
-}
-
-uqBaseEnvironmentClass::uqBaseEnvironmentClass(
-  int&        argc,
-  char**      &argv,
-  MPI_Comm    inputComm,
-  const char* prefix)
-  :
-  m_argc                          (argc),
-  m_argv                          (argv),
-  m_prefix                        ((std::string)(prefix) + "env_"),
-  m_worldRank                     (-1),
-  m_fullRawComm                   (inputComm),
-  m_fullComm                      (NULL),
-  m_fullRank                      (-1),
-  m_fullCommSize                  (0),
-  m_argsWereProvided              (true),
-  m_thereIsInputFile              (false),
-  m_inputFileName                 (""),
-  m_allOptionsDesc                (NULL),
-  m_envOptionsDesc                (NULL),
-  m_allOptionsMap                 (NULL),
-  m_option_help                   (m_prefix + "help"                   ),
-  m_option_numSubEnvironments     (m_prefix + "numSubEnvironments"     ),
-  m_option_subScreenOutputFileName(m_prefix + "subScreenOutputFileName"),
-  m_option_subScreenOutputAllowAll(m_prefix + "subScreenOutputAllowAll"),
-  m_option_subScreenOutputAllow   (m_prefix + "subScreenOutputAllow"   ),
-  m_option_verbosity              (m_prefix + "verbosity"              ),
-  m_option_syncVerbosity          (m_prefix + "syncVerbosity"          ),
-  m_option_seed                   (m_prefix + "seed"                   ),
-  m_numSubEnvironments            (UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),
-  m_subScreenOutputFileName       (UQ_ENV_SUB_SCREEN_OUTPUT_FILE_NAME_ODV),
-  m_subScreenOutputAllowAll       (UQ_ENV_SUB_SCREEN_OUTPUT_ALLOW_ALL_ODV),
-//m_subScreenOutputAllowSet       (),
-  m_verbosity                     (UQ_ENV_VERBOSITY_ODV),
-  m_syncVerbosity                 (UQ_ENV_SYNC_VERBOSITY_ODV),
-  m_seed                          (UQ_ENV_SEED_ODV),
-  m_numDebugParams                (UQ_ENV_NUM_DEBUG_PARAMS_ODV),
-  m_debugParams                   (m_numDebugParams,0.),
-  m_subComm                       (NULL),
-  m_subRank                       (-1),
-  m_subCommSize                   (0),
-  m_selfComm                      (NULL),
-  m_inter0Comm                    (NULL),
-  m_inter0Rank                    (-1),
-  m_inter0CommSize                (0),
-  m_subScreenFile                 (NULL),
-  m_rng                           (NULL)
-{
-}
-
-uqBaseEnvironmentClass::uqBaseEnvironmentClass(
-  const uqEnvOptionsStruct& options,
-  MPI_Comm                  inputComm,
-  const char*               prefix)
-  :
-  m_argc                          (0),
-  m_argv                          (NULL),
-  m_prefix                        ((std::string)(prefix) + "env_"),
-  m_worldRank                     (-1),
-  m_fullRawComm                   (inputComm),
-  m_fullComm                      (NULL),
-  m_fullRank                      (-1),
-  m_fullCommSize                  (0),
-  m_argsWereProvided              (false),
-  m_thereIsInputFile              (false),
-  m_inputFileName                 (""),
-  m_allOptionsDesc                (NULL),
-  m_envOptionsDesc                (NULL),
-  m_allOptionsMap                 (NULL),
-  m_option_help                   (m_prefix + "help"                   ),
-  m_option_numSubEnvironments     (m_prefix + "numSubEnvironments"     ),
-  m_option_subScreenOutputFileName(m_prefix + "subScreenOutputFileName"),
-  m_option_subScreenOutputAllowAll(m_prefix + "subScreenOutputAllowAll"),
-  m_option_subScreenOutputAllow   (m_prefix + "subScreenOutputAllow"   ),
-  m_option_verbosity              (m_prefix + "verbosity"              ),
-  m_option_syncVerbosity          (m_prefix + "syncVerbosity"          ),
-  m_option_seed                   (m_prefix + "seed"                   ),
-  m_numSubEnvironments            (UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),
-  m_subScreenOutputFileName       (UQ_ENV_SUB_SCREEN_OUTPUT_FILE_NAME_ODV),
-  m_subScreenOutputAllowAll       (UQ_ENV_SUB_SCREEN_OUTPUT_ALLOW_ALL_ODV),
-//m_subScreenOutputAllowSet       (),
-  m_verbosity                     (options.m_verbosity),
-  m_syncVerbosity                 (UQ_ENV_SYNC_VERBOSITY_ODV),
-  m_seed                          (options.m_seed),
-  m_numDebugParams                (options.m_numDebugParams),
-  m_debugParams                   (options.m_debugParams),
-  m_subComm                       (NULL),
-  m_subRank                       (-1),
-  m_subCommSize                   (0),
-  m_selfComm                      (NULL),
-  m_inter0Comm                    (NULL),
-  m_inter0Rank                    (-1),
-  m_inter0CommSize                (0),
-  m_subScreenFile                 (NULL),
-  m_rng                           (NULL)
+  m_worldRank           (-1),
+  m_fullRawComm         (inputComm),
+  m_fullComm            (NULL),
+  m_fullRank            (-1),
+  m_fullCommSize        (1),
+  m_optionsInputFileName(optionsInputFileName),
+  m_allOptionsDesc      (NULL),
+  m_allOptionsMap       (NULL),
+  m_subComm             (NULL),
+  m_subRank             (-1),
+  m_subCommSize         (1),
+  m_selfComm            (NULL),
+  m_inter0Comm          (NULL),
+  m_inter0Rank          (-1),
+  m_inter0CommSize      (1),
+  m_subDisplayOutputFile(NULL),
+  m_rng                 (NULL),
+  m_options             (NULL)
 {
 }
 
 uqBaseEnvironmentClass::uqBaseEnvironmentClass(const uqBaseEnvironmentClass& obj)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      obj.rank(),
+                      obj.fullRank(),
                       "uqBaseEnvironmentClass::constructor(), copy",
                       "code should not execute through here");
 }
 
 uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
 {
-  //if (m_subScreenFile) {
-  //  *m_subScreenFile << "Entering uqBaseEnvironmentClass::destructor()"
-  //                   << std::endl;
+  //if (m_subDisplayOutputFile) {
+  //  *m_subDisplayOutputFile << "Entering uqBaseEnvironmentClass::destructor()"
+  //                          << std::endl;
   //}
+
+  if (m_options) delete m_options;
 
   if (m_allOptionsMap) {
     delete m_allOptionsMap;
-    delete m_envOptionsDesc;
     delete m_allOptionsDesc;
   }
 
@@ -238,11 +101,11 @@ uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
   /*int iRC = 0;*/
   /*iRC = */gettimeofday(&timevalNow, NULL);
 
-  if (m_subScreenFile) {
-    *m_subScreenFile << "Ending run at " << ctime(&timevalNow.tv_sec)
-                     << "Total run time = " << timevalNow.tv_sec - m_timevalBegin.tv_sec
-                     << " seconds"
-                     << std::endl;
+  if (m_subDisplayOutputFile) {
+    *m_subDisplayOutputFile << "Ending run at " << ctime(&timevalNow.tv_sec)
+                            << "Total run time = " << timevalNow.tv_sec - m_timevalBegin.tv_sec
+                            << " seconds"
+                            << std::endl;
   }
 
   if (m_fullRank == 0) {
@@ -252,30 +115,36 @@ uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
               << std::endl;
   }
 
-  //if (m_subScreenFile) {
-  //  *m_subScreenFile << "Leaving uqBaseEnvironmentClass::destructor()"
-  //                   << std::endl;
+  //if (m_subDisplayOutputFile) {
+  //  *m_subDisplayOutputFile << "Leaving uqBaseEnvironmentClass::destructor()"
+  //                          << std::endl;
   //}
 
-  if (m_subScreenFile) delete m_subScreenFile;
-  if (m_inter0Comm   ) delete m_inter0Comm;
-  if (m_selfComm     ) delete m_selfComm;
-  if (m_subComm      ) delete m_subComm;
-  if (m_fullComm     ) delete m_fullComm;
+  if (m_subDisplayOutputFile) delete m_subDisplayOutputFile;
+  if (m_inter0Comm          ) delete m_inter0Comm;
+  if (m_selfComm            ) delete m_selfComm;
+  if (m_subComm             ) delete m_subComm;
+  if (m_fullComm            ) delete m_fullComm;
 }
 
 uqBaseEnvironmentClass&
 uqBaseEnvironmentClass::operator= (const uqBaseEnvironmentClass& rhs)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      rhs.rank(),
+                      rhs.fullRank(),
                       "uqBaseEnvironmentClass::operator=()",
                       "code should not execute through here");
   return *this;
 }
 
 int
-uqBaseEnvironmentClass::rank() const
+uqBaseEnvironmentClass::worldRank() const
+{
+  return m_worldRank;
+}
+
+int
+uqBaseEnvironmentClass::fullRank() const
 {
   return m_fullRank;
 }
@@ -283,6 +152,10 @@ uqBaseEnvironmentClass::rank() const
 const Epetra_MpiComm&
 uqBaseEnvironmentClass::fullComm() const
 {
+  UQ_FATAL_TEST_MACRO(m_fullComm == NULL,
+                      m_fullRank,
+                      "uqBaseEnvironmentClass::fullComm()",
+                      "m_fullComm variable is NULL");
   return *m_fullComm;
 }
 
@@ -295,12 +168,20 @@ uqBaseEnvironmentClass::subRank() const
 const Epetra_MpiComm&
 uqBaseEnvironmentClass::subComm() const
 {
+  UQ_FATAL_TEST_MACRO(m_subComm == NULL,
+                      m_fullRank,
+                      "uqBaseEnvironmentClass::subComm()",
+                      "m_subComm variable is NULL");
   return *m_subComm;
 }
 
 const Epetra_MpiComm&
 uqBaseEnvironmentClass::selfComm() const
 {
+  UQ_FATAL_TEST_MACRO(m_selfComm == NULL,
+                      m_fullRank,
+                      "uqBaseEnvironmentClass::selfComm()",
+                      "m_selfComm variable is NULL");
   return *m_selfComm;
 }
 
@@ -313,19 +194,27 @@ uqBaseEnvironmentClass::inter0Rank() const
 const Epetra_MpiComm&
 uqBaseEnvironmentClass::inter0Comm() const
 {
+  UQ_FATAL_TEST_MACRO(m_inter0Comm == NULL,
+                      m_fullRank,
+                      "uqBaseEnvironmentClass::inter0Comm()",
+                      "m_inter0Comm variable is NULL");
   return *m_inter0Comm;
 }
 
 std::ofstream*
-uqBaseEnvironmentClass::subScreenFile() const
+uqBaseEnvironmentClass::subDisplayOutputFile() const
 {
-  return m_subScreenFile;
+  return m_subDisplayOutputFile;
 }
 
 unsigned int
 uqBaseEnvironmentClass::numSubEnvironments() const
 {
-  return m_numSubEnvironments;
+  UQ_FATAL_TEST_MACRO(m_options == NULL,
+                      m_fullRank,
+                      "uqBaseEnvironmentClass::numSubEnvironments()",
+                      "m_options variable is NULL");
+  return m_options->m_numSubEnvironments;
 }
 
 unsigned int
@@ -356,16 +245,14 @@ uqBaseEnvironmentClass::scanInputFileForMyOptions(const po::options_description&
 #endif
 
   m_allOptionsDesc->add(optionsDesc);
-  //if (m_subScreenFile) {
-  //  *m_subScreenFile << *m_allOptionsDesc
-  //                   << std::endl;
+  //if (m_subDisplayOutputFile) {
+  //  *m_subDisplayOutputFile << *m_allOptionsDesc
+  //                          << std::endl;
   //}
-  if (m_thereIsInputFile) {
-    std::ifstream ifs(m_inputFileName.c_str());
-    po::store(po::parse_config_file(ifs, *m_allOptionsDesc, true), *m_allOptionsMap);
-    po::notify(*m_allOptionsMap);
-    ifs.close();
-  }
+  std::ifstream ifs(m_optionsInputFileName.c_str());
+  po::store(po::parse_config_file(ifs, *m_allOptionsDesc, true), *m_allOptionsMap);
+  po::notify(*m_allOptionsMap);
+  ifs.close();
 
   return;
 }
@@ -381,31 +268,37 @@ uqBaseEnvironmentClass::allOptionsDesc() const
 po::variables_map&
 uqBaseEnvironmentClass::allOptionsMap() const
 {
+  UQ_FATAL_TEST_MACRO(m_allOptionsMap == NULL,
+                      m_fullRank,
+                      "uqBaseEnvironmentClass::allOptionsMap()",
+                      "m_allOptionsMap variable is NULL");
   return *m_allOptionsMap;
 }
 
 unsigned int
-uqBaseEnvironmentClass::verbosity() const
+uqBaseEnvironmentClass::displayVerbosity() const
 {
-  return m_verbosity;
+  UQ_FATAL_TEST_MACRO(m_options == NULL,
+                      m_fullRank,
+                      "uqBaseEnvironmentClass::displayVerbosity()",
+                      "m_options variable is NULL");
+  return m_options->m_displayVerbosity;
 }
 
 unsigned int
 uqBaseEnvironmentClass::syncVerbosity() const
 {
-  return m_syncVerbosity;
+  UQ_FATAL_TEST_MACRO(m_options == NULL,
+                      m_fullRank,
+                      "uqBaseEnvironmentClass::displayVerbosity()",
+                      "m_options variable is NULL");
+  return m_options->m_syncVerbosity;
 }
 
 const gsl_rng*
 uqBaseEnvironmentClass::rng() const
 {
   return m_rng;
-}
-
-bool
-uqBaseEnvironmentClass::isThereInputFile() const
-{
-  return m_thereIsInputFile;
 }
 
 void
@@ -416,7 +309,7 @@ uqBaseEnvironmentClass::syncPrintDebugMsg(const char* msg, unsigned int msgVerbo
     for (int i = 0; i < commObj.NumProc(); ++i) {
       if (i == commObj.MyPID()) {
         std::cout << msg
-                  << ": fullRank "       << this->rank()
+                  << ": fullRank "       << this->fullRank()
                   << ", subEnvironment " << this->subId()
                   << ", subRank "        << this->subRank()
                   << ", inter0Rank "     << this->inter0Rank()
@@ -424,7 +317,7 @@ uqBaseEnvironmentClass::syncPrintDebugMsg(const char* msg, unsigned int msgVerbo
       }
       commObj.Barrier();
     }
-    if (this->rank() == 0) std::cout << "Sleeping " << numUSecs << " microseconds..."
+    if (this->fullRank() == 0) std::cout << "Sleeping " << numUSecs << " microseconds..."
                                      << std::endl;
     usleep(numUSecs);
   }
@@ -444,19 +337,19 @@ uqBaseEnvironmentClass::openOutputFile(
   ofsvar = NULL;
   if ((baseFileName                         == UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE) ||
       (allowedSubEnvIds.find(this->subId()) == allowedSubEnvIds.end()            )) {
-    if (this->subScreenFile()) {
-      *this->subScreenFile() << "In openOutputFile()"
-                             << ": no output file opened with base name '" << baseFileName
-                             << "'"
-                             << std::endl;
+    if (this->subDisplayOutputFile()) {
+      *this->subDisplayOutputFile() << "In openOutputFile()"
+                                    << ": no output file opened with base name '" << baseFileName
+                                    << "'"
+                                    << std::endl;
     }
   }
   else {
-    if (this->subScreenFile()) {
-      *this->subScreenFile() << "In openOutputFile()"
-                             << ": opening output file with base name '" << baseFileName
-                             << "'"
-                             << std::endl;
+    if (this->subDisplayOutputFile()) {
+      *this->subDisplayOutputFile() << "In openOutputFile()"
+                                    << ": opening output file with base name '" << baseFileName
+                                    << "'"
+                                    << std::endl;
     }
 
     if (this->subRank() == 0) {
@@ -481,7 +374,7 @@ uqBaseEnvironmentClass::openOutputFile(
                   << std::endl;
       }
       UQ_FATAL_TEST_MACRO((ofsvar && ofsvar->is_open()) == false,
-                          this->rank(),
+                          this->fullRank(),
                           "openOutputFile()",
                           "failed to open output file");
     }
@@ -499,19 +392,19 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
 {
   ofsvar = NULL;
   if (baseFileName == ".") {
-    if (this->subScreenFile()) {
-      *this->subScreenFile() << "In openUnifiedOutputFile()"
-                             << ": no unified output file opened with base name '" << baseFileName
-                             << "'"
-                             << std::endl;
+    if (this->subDisplayOutputFile()) {
+      *this->subDisplayOutputFile() << "In openUnifiedOutputFile()"
+                                    << ": no unified output file opened with base name '" << baseFileName
+                                    << "'"
+                                    << std::endl;
     }
   }
   else {
-    if (this->subScreenFile()) {
-      *this->subScreenFile() << "In openUnifiedOutputFile()"
-                             << ": opening unified output file with base name '" << baseFileName
-                             << "'"
-                             << std::endl;
+    if (this->subDisplayOutputFile()) {
+      *this->subDisplayOutputFile() << "In openUnifiedOutputFile()"
+                                    << ": opening unified output file with base name '" << baseFileName
+                                    << "'"
+                                    << std::endl;
     }
 
     //if ((this->subRank   () == 0) &&
@@ -537,7 +430,7 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
                   << std::endl;
       }
       UQ_FATAL_TEST_MACRO((ofsvar && ofsvar->is_open()) == false,
-                          this->rank(),
+                          this->fullRank(),
                           "openUnifiedOutputFile()",
                           "failed to open output file");
     //}
@@ -569,51 +462,23 @@ uqEmptyEnvironmentClass::print(std::ostream& os) const
 //*****************************************************
 // Full Environment
 //*****************************************************
-uqFullEnvironmentClass::uqFullEnvironmentClass(MPI_Comm inputComm, const char* prefix)
-  :
-  uqBaseEnvironmentClass(inputComm, prefix)
-{
-  commonConstructor(inputComm);
-}
-
 uqFullEnvironmentClass::uqFullEnvironmentClass(
-  int&        argc,
-  char**      &argv,
   MPI_Comm    inputComm,
+  const char* optionsInputFileName,
   const char* prefix)
   :
-  uqBaseEnvironmentClass(argc,argv,inputComm,prefix)
-{
-  commonConstructor(inputComm);
-}
-
-uqFullEnvironmentClass::uqFullEnvironmentClass(
-  const uqEnvOptionsStruct& options,
-  MPI_Comm                  inputComm,
-  const char*               prefix)
-  :
-  uqBaseEnvironmentClass(options,inputComm,prefix)
-{
-  commonConstructor(inputComm);
-}
-
-uqFullEnvironmentClass::~uqFullEnvironmentClass()
-{
-}
-
-void
-uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
+  uqBaseEnvironmentClass(inputComm,optionsInputFileName)
 {
   //////////////////////////////////////////////////
   // Initialize "full" communicator
   //////////////////////////////////////////////////
-  int mpiRC = MPI_Comm_rank(inputComm,&m_worldRank);
+  int mpiRC = MPI_Comm_rank(MPI_COMM_WORLD,&m_worldRank);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       UQ_UNAVAILABLE_RANK,
                       "uqFullEnvironmentClass::commonConstructor()",
-                      "failed to get world rank()");
+                      "failed to get world fullRank()");
 
-  m_fullComm = new Epetra_MpiComm(inputComm);
+  m_fullComm = new Epetra_MpiComm(m_fullRawComm);
   m_fullRank     = m_fullComm->MyPID();
   m_fullCommSize = m_fullComm->NumProc();
   mpiRC = MPI_Comm_group(m_fullComm->Comm(), &m_fullGroup);
@@ -648,33 +513,24 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
   //////////////////////////////////////////////////
   m_allOptionsMap  = new po::variables_map();
   m_allOptionsDesc = new po::options_description("Allowed options");
-  m_envOptionsDesc = new po::options_description("Environment options");
+  m_options = new uqEnvironmentOptionsClass(*this,prefix);
 
-  if (m_argsWereProvided) readEventualInputFile();
+  readOptionsInputFile();
 
-  defineMyOptions          (*m_envOptionsDesc);
-  scanInputFileForMyOptions(*m_envOptionsDesc);
-  getMyOptionValues        (*m_envOptionsDesc);
-
-  // 'm_subScreenFile' is still not available at this moment. Use 'std::cout'
-  if ((m_fullRank == 0) && (this->verbosity() >= 3)) {
-    std::cout << "After getting option values, state of uqFullEnvironmentClass object is:"
-              << "\n" << *this
-              << std::endl;
-  }
+  m_options->scanOptionsValues();
 
   //////////////////////////////////////////////////
   // Deal with multiple subEnvironments: create the sub communicators, one for each subEnvironment
   //////////////////////////////////////////////////
-  unsigned int numRanksPerSubEnvironment = m_fullCommSize/m_numSubEnvironments;
+  unsigned int numRanksPerSubEnvironment = m_fullCommSize/m_options->m_numSubEnvironments;
 
   m_subId = m_fullRank/numRanksPerSubEnvironment;
   char tmpSubId[16];
   sprintf(tmpSubId,"%u",m_subId);
   m_subIdString = tmpSubId;
 
-  if (m_subScreenOutputAllowAll) {
-    m_subScreenOutputAllowSet.insert((unsigned int) m_subId);
+  if (m_options->m_subDisplayAllowAll) {
+    m_options->m_subDisplayAllowSet.insert((unsigned int) m_subId);
   }
 
   std::vector<int> fullRanksOfMySubEnvironment(numRanksPerSubEnvironment,0);
@@ -703,11 +559,11 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
   //////////////////////////////////////////////////
   // Deal with multiple subEnvironments: create the inter0 communicator
   //////////////////////////////////////////////////
-  std::vector<int> fullRanksOfInter0(m_numSubEnvironments,0);
-  for (unsigned int i = 0; i < m_numSubEnvironments; ++i) {
+  std::vector<int> fullRanksOfInter0(m_options->m_numSubEnvironments,0);
+  for (unsigned int i = 0; i < m_options->m_numSubEnvironments; ++i) {
     fullRanksOfInter0[i] = i * numRanksPerSubEnvironment;
   }
-  mpiRC = MPI_Group_incl(m_fullGroup, (int) m_numSubEnvironments, &fullRanksOfInter0[0], &m_inter0Group);
+  mpiRC = MPI_Group_incl(m_fullGroup, (int) m_options->m_numSubEnvironments, &fullRanksOfInter0[0], &m_inter0Group);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_fullRank,
                       "uqFullEnvironmentClass::commonConstructor()",
@@ -727,35 +583,35 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
   // Open "screen" file
   //////////////////////////////////////////////////
   bool openFile = false;
-  if ((m_subRank                               == 0                                 ) &&
-      (m_subScreenOutputFileName               != UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE) &&
-      (m_subScreenOutputAllowSet.find(m_subId) != m_subScreenOutputAllowSet.end()   )) {
+  if ((m_subRank                                     == 0                                    ) &&
+      (m_options->m_subDisplayFileName               != UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE   ) &&
+      (m_options->m_subDisplayAllowSet.find(m_subId) != m_options->m_subDisplayAllowSet.end())) {
     openFile = true;
   }
 
   if (openFile) {
     // Always write over an eventual pre-existing file
-    m_subScreenFile = new std::ofstream((m_subScreenOutputFileName+"_sub"+m_subIdString+".txt").c_str(), std::ofstream::out | std::ofstream::trunc);
-    UQ_FATAL_TEST_MACRO((m_subScreenFile && m_subScreenFile->is_open()) == false,
+    m_subDisplayOutputFile = new std::ofstream((m_options->m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str(), std::ofstream::out | std::ofstream::trunc);
+    UQ_FATAL_TEST_MACRO((m_subDisplayOutputFile && m_subDisplayOutputFile->is_open()) == false,
                         m_fullRank,
                         "uqEnvironment::constructor()",
                         "failed to open sub screen file");
 
-    *m_subScreenFile << "\n================================="
-                     << "\n QUESO library, version " << QUESO_LIBRARY_CURRENT_VERSION
-                     << ", released on "             << QUESO_LIBRARY_RELEASE_DATE
-                     << "\n================================="
-                     << "\n"
-                     << std::endl;
+    *m_subDisplayOutputFile << "\n================================="
+                            << "\n QUESO library, version " << QUESO_LIBRARY_CURRENT_VERSION
+                            << ", released on "             << QUESO_LIBRARY_RELEASE_DATE
+                            << "\n================================="
+                            << "\n"
+                            << std::endl;
 
-    *m_subScreenFile << "Beginning run at " << ctime(&m_timevalBegin.tv_sec)
-                     << std::endl;
+    *m_subDisplayOutputFile << "Beginning run at " << ctime(&m_timevalBegin.tv_sec)
+                            << std::endl;
   }
 
   //////////////////////////////////////////////////
   // Debug message related to subEnvironments
   //////////////////////////////////////////////////
-  if (this->verbosity() >= 2) {
+  if (this->displayVerbosity() >= 2) {
     for (int i = 0; i < m_fullCommSize; ++i) {
       if (i == m_fullRank) {
         //std::cout << "In FullEnvironmentClass::commonConstructor()"
@@ -786,7 +642,7 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
       }
       m_fullComm->Barrier();
     }
-    //if (this->rank() == 0) std::cout << "Sleeping 3 seconds..."
+    //if (this->fullRank() == 0) std::cout << "Sleeping 3 seconds..."
     //                                 << std::endl;
     //sleep(3);
   }
@@ -794,10 +650,10 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
   //////////////////////////////////////////////////
   // Deal with seed
   //////////////////////////////////////////////////
-  if (m_seed >= 0) {
-    gsl_rng_default_seed = (unsigned long int) m_seed;
+  if (m_options->m_seed >= 0) {
+    gsl_rng_default_seed = (unsigned long int) m_options->m_seed;
   }
-  else if (m_seed == -1) {
+  else if (m_options->m_seed == -1) {
     gsl_rng_default_seed = (unsigned long int) (1+m_fullRank);
   }
   else {
@@ -814,29 +670,35 @@ uqFullEnvironmentClass::commonConstructor(MPI_Comm inputComm)
 
   //gsl_rng_set(m_rng, gsl_rng_default_seed);
 
-  if ((m_subScreenFile)/* && (this->verbosity() > 0)*/) {
-    *m_subScreenFile << "In uqFullEnvironmentClass::commonConstructor():"
-                     << "\n  m_seed = "                                              << m_seed
-                     << "\n  internal seed = "                                       << gsl_rng_default_seed
-                   //<< "\n  first generated sample from uniform distribution = "    << gsl_rng_uniform(m_rng)
-                   //<< "\n  first generated sample from std normal distribution = " << gsl_ran_gaussian(m_rng,1.)
-                     << std::endl;
+  if ((m_subDisplayOutputFile)/* && (this->displayVerbosity() > 0)*/) {
+    *m_subDisplayOutputFile << "In uqFullEnvironmentClass::commonConstructor():"
+                            << "\n  m_seed = "                                              << m_options->m_seed
+                            << "\n  internal seed = "                                       << gsl_rng_default_seed
+                          //<< "\n  first generated sample from uniform distribution = "    << gsl_rng_uniform(m_rng)
+                          //<< "\n  first generated sample from std normal distribution = " << gsl_ran_gaussian(m_rng,1.)
+                            << std::endl;
   }
 
   //////////////////////////////////////////////////
   // Leave commonConstructor()
   //////////////////////////////////////////////////
-  if ((m_subScreenFile) && (this->verbosity() >= 5)) {
-    *m_subScreenFile << "Done with initializations at uqFullEnvironmentClass::commonConstructor()"
-                     << std::endl;
+  if ((m_subDisplayOutputFile) && (this->displayVerbosity() >= 5)) {
+    *m_subDisplayOutputFile << "Done with initializations at uqFullEnvironmentClass::commonConstructor()"
+                            << std::endl;
   }
 
   return;
 }
 
-void
-uqFullEnvironmentClass::readEventualInputFile()
+uqFullEnvironmentClass::~uqFullEnvironmentClass()
 {
+}
+
+void
+uqFullEnvironmentClass::readOptionsInputFile()
+{
+#if 0
+
   bool displayHelpMessageAndExit = false;
   bool invalidCmdLineParameters  = false;
   int maxArgIndex = m_argc - 1;
@@ -857,16 +719,16 @@ uqFullEnvironmentClass::readEventualInputFile()
         invalidCmdLineParameters = true;
         break;
       }
-      m_inputFileName = std::string(m_argv[curArgIndex]);
-      std::ifstream* ifs = new std::ifstream(m_inputFileName.c_str());
+      m_optionsInputFileName = std::string(m_argv[curArgIndex]);
+      std::ifstream* ifs = new std::ifstream(m_optionsInputFileName.c_str());
       if (ifs->is_open()) {
         m_thereIsInputFile = true;
-        //if (m_subScreenFile) {
+        //if (m_subDisplayOutputFile) {
         //  int numLines = std::count(std::istreambuf_iterator<char>(*ifs),
         //                            std::istreambuf_iterator<char>(),'\n');
-        //  *m_subScreenFile << "Input file has " << numLines
-        //                   << " lines."
-        //                   << std::endl;
+        //  *m_subDisplayOutputFile << "Input file has " << numLines
+        //                          << " lines."
+        //                          << std::endl;
         //}
         ifs->close();
         delete ifs;
@@ -899,124 +761,36 @@ uqFullEnvironmentClass::readEventualInputFile()
     exit(1);
   }
 
-  return;
-}
+#else
 
-void
-uqFullEnvironmentClass::defineMyOptions(po::options_description& options) const
-{
-  options.add_options()
-    (m_option_help.c_str(),                                                                                                      "produce help message for uq environment"  )
-    (m_option_numSubEnvironments.c_str(),      po::value<unsigned int>()->default_value(UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),        "number of subEnvironments"                )
-    (m_option_subScreenOutputFileName.c_str(), po::value<std::string >()->default_value(UQ_ENV_SUB_SCREEN_OUTPUT_FILE_NAME_ODV), "output filename for subscreen writing"    )
-    (m_option_subScreenOutputAllowAll.c_str(), po::value<bool        >()->default_value(UQ_ENV_SUB_SCREEN_OUTPUT_ALLOW_ALL_ODV), "Allow all subEnvs to write to output file")
-    (m_option_subScreenOutputAllow.c_str(),    po::value<std::string >()->default_value(UQ_ENV_SUB_SCREEN_OUTPUT_ALLOW_ODV),     "subEnvs that will write to output file"   )
-    (m_option_verbosity.c_str(),               po::value<unsigned int>()->default_value(UQ_ENV_VERBOSITY_ODV),                   "set verbosity"                            )
-    (m_option_syncVerbosity.c_str(),           po::value<unsigned int>()->default_value(UQ_ENV_SYNC_VERBOSITY_ODV),              "set sync verbosity"                       )
-    (m_option_seed.c_str(),                    po::value<int         >()->default_value(UQ_ENV_SEED_ODV),                        "set seed"                                 )
-  //(m_option_numDebugParams.c_str(),          po::value<unsigned int>()->default_value(UQ_ENV_NUM_DEBUG_PARAMS_ODV),            "set number of debug parameters"           )
-  ;
-
-  return;
-}
-
-void
-uqFullEnvironmentClass::getMyOptionValues(po::options_description& optionsDesc)
-{
-  if (m_allOptionsMap->count(m_option_help.c_str())) {
-    // 'm_subScreenFile' is still not available at this moment. Use 'std::cout'
-    if (m_fullRank == 0) std::cout << optionsDesc
+  std::ifstream* ifs = new std::ifstream(m_optionsInputFileName.c_str());
+  if (ifs->is_open()) {
+    ifs->close();
+    delete ifs;
+  }
+  else {
+    if (m_fullRank == 0) std::cout << "An invalid input file has been passed to the 'environment' class constructor!"
                                    << std::endl;
+
+    if (m_fullRank == 0) std::cout << "\nThis is a help message of the QUESO library."
+                                   << "\nAn application using the QUESO library shall be executed by typing"
+                                   << "\n  '<eventual mpi commands and options> <uqApplication> <uqInputFile>'"
+                                   << "\nin the command line."
+                                   << "\n"
+                                   << std::endl;
+    /*int mpiRC = 0;*/
+    /*mpiRC = */MPI_Abort(m_fullComm->Comm(),-999);
+    exit(1);
   }
 
-  if (m_allOptionsMap->count(m_option_numSubEnvironments.c_str())) {
-    m_numSubEnvironments = (*m_allOptionsMap)[m_option_numSubEnvironments.c_str()].as<unsigned int>();
-  }
-  if ((m_fullCommSize%m_numSubEnvironments) != 0) {
-    std::cerr << "In uqBaseEnvironmentClass::getMyOptionValues()"
-              << ": m_fullCommSize = "       << m_fullCommSize
-              << ", m_numSubEnvironments = " << m_numSubEnvironments
-              << std::endl;
-  }
-  UQ_FATAL_TEST_MACRO((m_fullCommSize%m_numSubEnvironments) != 0,
-                      this->rank(),
-                      "uqBaseEnvironmentClass::getMyOptionValues()",
-                      "total number of processors in environment must be multiple of the specified number of subEnvironments");
-
-  if (m_allOptionsMap->count(m_option_subScreenOutputFileName.c_str())) {
-    m_subScreenOutputFileName = (*m_allOptionsMap)[m_option_subScreenOutputFileName.c_str()].as<std::string>();
-  }
-
-  if (m_allOptionsMap->count(m_option_subScreenOutputAllowAll.c_str())) {
-    m_subScreenOutputAllowAll = (*m_allOptionsMap)[m_option_subScreenOutputAllowAll.c_str()].as<bool>();
-  }
-
-  if (m_subScreenOutputAllowAll) {
-    m_subScreenOutputAllowSet.clear();
-    // The line below is commented because 'm_subId' is not set at this point yet
-    //m_subScreenOutputAllowSet.insert((unsigned int) m_subId);
-  }
-  else if (m_allOptionsMap->count(m_option_subScreenOutputAllow.c_str())) {
-    m_subScreenOutputAllowSet.clear();
-    std::vector<double> tmpAllow(0,0.);
-    std::string inputString = (*m_allOptionsMap)[m_option_subScreenOutputAllow.c_str()].as<std::string>();
-    uqMiscReadDoublesFromString(inputString,tmpAllow);
-    //if (m_subScreenFile) {
-    //  *m_subScreenFile << "In uqFullEnvironmentClass::getMyOptionValues(): allow = ";
-    //  for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
-    //    *m_subScreenFile << " " << tmpAllow[i];
-    //  }
-    //  *m_subScreenFile << std::endl;
-    //}
-
-    if (tmpAllow.size() > 0) {
-      for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
-        m_subScreenOutputAllowSet.insert((unsigned int) tmpAllow[i]);
-      }
-    }
-  }
-
-  if (m_allOptionsMap->count(m_option_verbosity.c_str())) {
-    m_verbosity = (*m_allOptionsMap)[m_option_verbosity.c_str()].as<unsigned int>();
-  }
-
-  if (m_allOptionsMap->count(m_option_syncVerbosity.c_str())) {
-    m_syncVerbosity = (*m_allOptionsMap)[m_option_syncVerbosity.c_str()].as<unsigned int>();
-  }
-
-  if (m_allOptionsMap->count(m_option_seed.c_str())) {
-    m_seed = (*m_allOptionsMap)[m_option_seed.c_str()].as<int>();
-  }
-
-  //if (m_allOptionsMap->count(m_option_numDebugParams.c_str())) {
-  //  m_seed = (*m_allOptionsMap)[m_option_numDebugParams.c_str()].as<unsigned int>();
-  //}
-
+#endif
   return;
 }
 
 void
 uqFullEnvironmentClass::print(std::ostream& os) const
 {
-  os <<         m_option_numSubEnvironments      << " = " << m_numSubEnvironments
-     << "\n" << m_option_subScreenOutputFileName << " = " << m_subScreenOutputFileName
-     << "\n" << m_option_subScreenOutputAllowAll << " = " << m_option_subScreenOutputAllowAll
-     << "\n" << m_option_subScreenOutputAllow << " = ";
-  for (std::set<unsigned int>::iterator setIt = m_subScreenOutputAllowSet.begin(); setIt != m_subScreenOutputAllowSet.end(); ++setIt) {
-    os << *setIt << " ";
-  }
-  os << "\n" << m_option_verbosity               << " = " << m_verbosity
-     << "\n" << m_option_syncVerbosity           << " = " << m_syncVerbosity
-     << "\n" << m_option_seed                    << " = " << m_seed
-   //<< "\n" << m_option_numDebugParams          << " = " << m_numDebugParams
-     << std::endl;
+  os.flush(); // just to avoid icpc warnings
   return;
 }
 
-std::ostream&
-operator<<(std::ostream& os, const uqBaseEnvironmentClass& obj)
-{
-  obj.print(os);
-
-  return os;
-}

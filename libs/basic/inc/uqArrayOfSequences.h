@@ -177,13 +177,13 @@ uqArrayOfSequencesClass<V,M>::uqArrayOfSequencesClass(
   m_scalarSequences             (m_vectorSpace.map(),1)
 {
 
-  //if (m_env.subScreenFile()) {
-  //  *m_env.subScreenFile() << "Entering uqArrayOfSequencesClass<V,M>::constructor()"
+  //if (m_env.subDisplayOutputFile()) {
+  //  *m_env.subDisplayOutputFile() << "Entering uqArrayOfSequencesClass<V,M>::constructor()"
   //                         << std::endl;
   //}
 
-  //if (m_env.subScreenFile()) {
-  //  *m_env.subScreenFile() << "In uqArrayOfSequencesClass<V,M>::constructor()"
+  //if (m_env.subDisplayOutputFile()) {
+  //  *m_env.subDisplayOutputFile() << "In uqArrayOfSequencesClass<V,M>::constructor()"
   //                         << "\n sequenceSize = "                 << sequenceSize
   //                         << "\n m_scalarSequences.MyLength() = " << m_scalarSequences.MyLength()
   //                         << std::endl;
@@ -193,8 +193,8 @@ uqArrayOfSequencesClass<V,M>::uqArrayOfSequencesClass(
     m_scalarSequences(i,0) = new uqScalarSequenceClass<double>(m_env,sequenceSize);
   }
 
-  //if (m_env.subScreenFile()) {
-  //  *m_env.subScreenFile() << "Leaving uqArrayOfSequencesClass<V,M>::constructor()"
+  //if (m_env.subDisplayOutputFile()) {
+  //  *m_env.subDisplayOutputFile() << "Leaving uqArrayOfSequencesClass<V,M>::constructor()"
   //                         << std::endl;
   //}
 }
@@ -357,13 +357,13 @@ uqArrayOfSequencesClass<V,M>::mean(
               (0                     <  numPos                 ) &&
               ((initialPos+numPos-1) <= (this->sequenceSize()-1)));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqArrayOfSequencesClass<V,M>::mean()",
                       "invalid initial position or number of positions");
 
   bRC = (this->vectorSize() == meanVec.size());
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqArrayOfSequencesClass<V,M>::mean()",
                       "incompatible sizes between meanVec vector and vectors in sequence");
 
@@ -389,19 +389,19 @@ uqArrayOfSequencesClass<V,M>::sampleVariance(
               (0                     <  numPos                 ) &&
               ((initialPos+numPos-1) <= (this->sequenceSize()-1)));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqArrayOfSequencesClass<V,M>::sampleVariance()",
                       "invalid initial position or number of positions");
 
   bRC = (this->vectorSize() == samVec.size());
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqArrayOfSequencesClass<V,M>::sampleVariance()",
                       "incompatible sizes between samVec vector and vectors in sequence");
 
   bRC = (this->vectorSize() == meanVec.size());
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqArrayOfSequencesClass<V,M>::sampleVariance()",
                       "incompatible sizes between meanVec vector and vectors in sequence");
 
@@ -437,19 +437,19 @@ uqArrayOfSequencesClass<V,M>::populationVariance(
               (0                     <  numPos                 ) &&
               ((initialPos+numPos-1) <= (this->sequenceSize()-1)));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqArrayOfSequencesClass<V,M>::populationVariance()",
                       "invalid initial position or number of positions");
 
   bRC = (this->vectorSize() == popVec.size());
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqArrayOfSequencesClass<V,M>::populationVariance()",
                       "incompatible sizes between popVec vector and vectors in sequence");
 
   bRC = (this->vectorSize() == meanVec.size());
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqArrayOfSequencesClass<V,M>::populationVariance()",
                       "incompatible sizes between meanVec vector and vectors in sequence");
 
@@ -486,25 +486,25 @@ uqArrayOfSequencesClass<V,M>::autoCovariance(
               (0                     <  numPos                 ) &&
               ((initialPos+numPos-1) <= (this->sequenceSize()-1)));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqVectorSequenceAutoCovariance<V,M>()",
                       "invalid initial position or number of positions");
 
   bRC = (numPos > lag);
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqVectorSequenceAutoCovariance<V,M>()",
                       "lag is too large");
 
   bRC = (this->vectorSize() == covVec.size());
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqVectorSequenceAutoCovariance<V,M>()",
                       "incompatible sizes between covVec vector and vectors in sequence");
 
   bRC = (this->vectorSize() == meanVec.size());
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqVectorSequenceAutoCovariance<V,M>()",
                       "incompatible sizes between meanVec vector and vectors in sequence");
 
@@ -647,7 +647,7 @@ uqArrayOfSequencesClass<V,M>::autoCorrViaFft(
               ((initialPos+numPos)    <= this->sequenceSize()) &&
               (autoCorrsSumVec.size() == this->vectorSize()  ));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqArrayOfSequencesClass<V,M>::autoCorrViaFft(), for sum",
                       "invalid input data");
 
@@ -717,8 +717,8 @@ uqArrayOfSequencesClass<V,M>::psdAtZero(
                  hopSizeRatio,
                  psdSequence);
         _2dArrayOfPSDAtZero(initialPosId,numsOfBlocksId)[i] = psdSequence[0];
-        //if (m_env.subScreenFile()) {
-	//  *m_env.subScreenFile() << "psdSequence[0] = " << psdSequence[0] << std::endl;
+        //if (m_env.subDisplayOutputFile()) {
+	//  *m_env.subDisplayOutputFile() << "psdSequence[0] = " << psdSequence[0] << std::endl;
         //}
       } // for 'numsOfBlocksId'
     } // for 'i'
@@ -825,7 +825,7 @@ uqArrayOfSequencesClass<V,M>::histogram(
 {
 #if 0
   UQ_FATAL_TEST_MACRO(centersForAllBins.size() != quanttsForAllBins.size(),
-                      sequence[0]->env().rank(),
+                      sequence[0]->env().fullRank(),
                       "uqVectorSequenceHistogram<V,M>()",
                       "vectors 'centers' and 'quantts' have different sizes");
 
@@ -1013,7 +1013,7 @@ void
 uqArrayOfSequencesClass<V,M>::unifiedWriteContents(std::ofstream& ofsvar) const
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqArrayOfSequencesClass<V,M>::unifiedWriteContents(1)",
                       "not implemented yet");
   return;
@@ -1024,7 +1024,7 @@ void
 uqArrayOfSequencesClass<V,M>::unifiedWriteContents(const std::string& fileName) const
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqArrayOfSequencesClass<V,M>::unifiedWriteContents(2)",
                       "not implemented yet");
   return;
@@ -1037,7 +1037,7 @@ uqArrayOfSequencesClass<V,M>::unifiedReadContents(
   const unsigned int subSequenceSize)
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqArrayOfSequencesClass<V,M>::unifiedReadContents()",
                       "not implemented yet");
   return;

@@ -88,14 +88,14 @@ uqBaseVectorPdfClass<V,M>::uqBaseVectorPdfClass(
   m_domainExpVector(new V(domainExpVector)),
   m_domainVarVector(new V(domainVarVector))
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqBaseVectorPdfClass<V,M>::constructor() [1]"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqBaseVectorPdfClass<V,M>::constructor() [1]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqBaseVectorPdfClass<V,M>::constructor() [1]"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqBaseVectorPdfClass<V,M>::constructor() [1]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -111,14 +111,14 @@ uqBaseVectorPdfClass<V,M>::uqBaseVectorPdfClass(
   m_domainExpVector(new V(domainExpVector    )),
   m_domainVarVector(domainSet.vectorSpace().newVector(INFINITY))
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqBaseVectorPdfClass<V,M>::constructor() [2]"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqBaseVectorPdfClass<V,M>::constructor() [2]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqBaseVectorPdfClass<V,M>::constructor() [2]"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqBaseVectorPdfClass<V,M>::constructor() [2]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -133,14 +133,14 @@ uqBaseVectorPdfClass<V,M>::uqBaseVectorPdfClass(
   m_domainExpVector(domainSet.vectorSpace().newVector(       0.)),
   m_domainVarVector(domainSet.vectorSpace().newVector( INFINITY))
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqBaseVectorPdfClass<V,M>::constructor() [3]"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqBaseVectorPdfClass<V,M>::constructor() [3]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqBaseVectorPdfClass<V,M>::constructor() [3]"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqBaseVectorPdfClass<V,M>::constructor() [3]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -318,8 +318,8 @@ uqBayesianVectorPdfClass<V,M>::actualValue(
         M* hessianMatrix,
         V* hessianEffect) const
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqBayesianVectorPdfClass<V,M>::actualValue()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqBayesianVectorPdfClass<V,M>::actualValue()"
                            << ": domainVector = " << domainVector
                            << std::endl;
   }
@@ -337,14 +337,14 @@ uqBayesianVectorPdfClass<V,M>::actualValue(
   double value2 = m_likelihoodFunction.actualValue(domainVector,domainDirection,gradVLike ,hessianMLike ,hessianELike );
 
   UQ_FATAL_TEST_MACRO((gradVector || hessianMatrix || hessianEffect),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqBayesianVectorPdfClass<V,M>::actualValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
   double returnValue = value1*value2;
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqBayesianVectorPdfClass<V,M>::actualValue()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqBayesianVectorPdfClass<V,M>::actualValue()"
                            << ": domainVector = " << domainVector
                            << ", returnValue = "  << returnValue
                            << std::endl;
@@ -362,8 +362,8 @@ uqBayesianVectorPdfClass<V,M>::minus2LnValue(
         M* hessianMatrix,
         V* hessianEffect) const
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqBayesianVectorPdfClass<V,M>::minus2LnValue()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqBayesianVectorPdfClass<V,M>::minus2LnValue()"
                            << ": domainVector = " << domainVector
                            << std::endl;
   }
@@ -379,8 +379,8 @@ uqBayesianVectorPdfClass<V,M>::minus2LnValue(
 
   double value1 = m_priorDensity.minus2LnValue      (domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect);
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "In uqBayesianVectorPdfClass<V,M>::minus2LnValue()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "In uqBayesianVectorPdfClass<V,M>::minus2LnValue()"
                            << ", domainVector = " << domainVector
                            << ": about to call likelihood()"
                            << std::endl;
@@ -388,28 +388,28 @@ uqBayesianVectorPdfClass<V,M>::minus2LnValue(
 
   double value2 = m_likelihoodFunction.minus2LnValue(domainVector,domainDirection,gradVLike, hessianMLike, hessianELike );
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "In uqBayesianVectorPdfClass<V,M>::minus2LnValue()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "In uqBayesianVectorPdfClass<V,M>::minus2LnValue()"
                            << ", domainVector = " << domainVector
                            << ": value1 = "       << value1
                            << ", value2 = "       << value2
                            << std::endl;
     if (gradVector) {
-      *m_env.subScreenFile() << "In uqBayesianVectorPdfClass<V,M>::minus2LnValue()"
+      *m_env.subDisplayOutputFile() << "In uqBayesianVectorPdfClass<V,M>::minus2LnValue()"
                              << ", domainVector = " << domainVector
                              << ": gradVector = "   << *gradVector
                              << ", gradVLike = "    << *gradVLike
                              << std::endl;
     }
     if (hessianMatrix) {
-      *m_env.subScreenFile() << "In uqBayesianVectorPdfClass<V,M>::minus2LnValue()"
+      *m_env.subDisplayOutputFile() << "In uqBayesianVectorPdfClass<V,M>::minus2LnValue()"
                              << ", domainVector = "  << domainVector
                              << ": hessianMatrix = " << *hessianMatrix
                              << ", hessianMLike = "  << *hessianMLike
                              << std::endl;
     }
     if (hessianEffect) {
-      *m_env.subScreenFile() << "In uqBayesianVectorPdfClass<V,M>::minus2LnValue()"
+      *m_env.subDisplayOutputFile() << "In uqBayesianVectorPdfClass<V,M>::minus2LnValue()"
                              << ", domainVector = "  << domainVector
                              << ": hessianEffect = " << *hessianEffect
                              << ", hessianELike = "  << *hessianELike
@@ -423,8 +423,8 @@ uqBayesianVectorPdfClass<V,M>::minus2LnValue(
 
   double returnValue = value1+value2;
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqBayesianVectorPdfClass<V,M>::minus2LnValue()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqBayesianVectorPdfClass<V,M>::minus2LnValue()"
                            << ": domainVector = " << domainVector
                            << ", returnValue = "  << returnValue
                            << std::endl;
@@ -477,22 +477,22 @@ uqGaussianVectorPdfClass<V,M>::uqGaussianVectorPdfClass(
   m_diagonalCovMatrix(true),
   m_covMatrix        (m_domainSet.vectorSpace().newDiagMatrix(domainVarVector))
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqGaussianVectorPdfClass<V,M>::constructor() [1]"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqGaussianVectorPdfClass<V,M>::constructor() [1]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "In uqGaussianVectorPdfClass<V,M>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "In uqGaussianVectorPdfClass<V,M>::constructor()"
                          //<< ", prefix = "     << m_prefix
                            << ": meanVector = " << this->domainExpVector()
 	                   << ", Variances = "  << this->domainVarVector()
                            << std::endl;
   }
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqGaussianVectorPdfClass<V,M>::constructor() [1]"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqGaussianVectorPdfClass<V,M>::constructor() [1]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -509,22 +509,22 @@ uqGaussianVectorPdfClass<V,M>::uqGaussianVectorPdfClass(
   m_diagonalCovMatrix      (false),
   m_covMatrix              (new M(covMatrix))
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqGaussianVectorPdfClass<V,M>::constructor() [2]"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqGaussianVectorPdfClass<V,M>::constructor() [2]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "In uqGaussianVectorPdfClass<V,M>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "In uqGaussianVectorPdfClass<V,M>::constructor()"
                          //<< ", prefix = "            << m_prefix
                            << ": meanVector = "        << this->domainExpVector()
 	                   << ", Covariance Matrix = " << covMatrix
                            << std::endl;
   }
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqGaussianVectorPdfClass<V,M>::constructor() [2]"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqGaussianVectorPdfClass<V,M>::constructor() [2]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -545,8 +545,8 @@ uqGaussianVectorPdfClass<V,M>::actualValue(
         M* hessianMatrix,
         V* hessianEffect) const
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqGaussianVectorPdfClass<V,M>::actualValue()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqGaussianVectorPdfClass<V,M>::actualValue()"
                            << ", meanVector = "   << *m_domainExpVector
 	                   << ", covMatrix = "    << *m_covMatrix
                            << ": domainVector = " << domainVector
@@ -554,14 +554,14 @@ uqGaussianVectorPdfClass<V,M>::actualValue(
   }
 
   UQ_FATAL_TEST_MACRO((gradVector || hessianMatrix || hessianEffect),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGaussianVectorPdfClass<V,M>::actualValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
   double returnValue = std::exp(-0.5*this->minus2LnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqGaussianVectorPdfClass<V,M>::actualValue()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqGaussianVectorPdfClass<V,M>::actualValue()"
                            << ", meanVector = "   << *m_domainExpVector
 	                   << ", covMatrix = "    << *m_covMatrix
                            << ": domainVector = " << domainVector
@@ -581,8 +581,8 @@ uqGaussianVectorPdfClass<V,M>::minus2LnValue(
         M* hessianMatrix,
         V* hessianEffect) const
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqGaussianVectorPdfClass<V,M>::minus2LnValue()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqGaussianVectorPdfClass<V,M>::minus2LnValue()"
                            << ", meanVector = "   << *m_domainExpVector
 	                   << ", covMatrix = "    << *m_covMatrix
                            << ": domainVector = " << domainVector
@@ -602,12 +602,12 @@ uqGaussianVectorPdfClass<V,M>::minus2LnValue(
   }
 
   UQ_FATAL_TEST_MACRO((gradVector || hessianMatrix || hessianEffect),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGaussianVectorPdfClass<V,M>::minus2LnValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqGaussianVectorPdfClass<V,M>::minus2LnValue()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqGaussianVectorPdfClass<V,M>::minus2LnValue()"
                            << ", meanVector = "   << *m_domainExpVector
 	                   << ", covMatrix = "    << *m_covMatrix
                            << ": domainVector = " << domainVector
@@ -674,14 +674,14 @@ uqUniformVectorPdfClass<V,M>::uqUniformVectorPdfClass(
   uqBaseVectorPdfClass<V,M>(((std::string)(prefix)+"uni").c_str(),
                             domainSet)
 {
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Entering uqUniformVectorPdfClass<V,M>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Entering uqUniformVectorPdfClass<V,M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
-  if ((m_env.subScreenFile()) && (m_env.verbosity() >= 5)) {
-    *m_env.subScreenFile() << "Leaving uqUniformVectorPdfClass<V,M>::constructor()"
+  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayOutputFile() << "Leaving uqUniformVectorPdfClass<V,M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
