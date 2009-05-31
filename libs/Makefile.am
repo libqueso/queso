@@ -44,6 +44,7 @@ libqueso_include_HEADERS = $(top_srcdir)/libs/basic/inc/uq1D1DFunction.h \
 	$(top_srcdir)/libs/basic/inc/uqChainStatisticalOptions.h \
 	$(top_srcdir)/libs/basic/inc/uqDefines.h \
 	$(top_srcdir)/libs/basic/inc/uqEnvironment.h \
+	$(top_srcdir)/libs/basic/inc/uqEnvironmentOptions.h \
 	$(top_srcdir)/libs/basic/inc/uqFft.h \
 	$(top_srcdir)/libs/basic/inc/uqGslMatrix.h \
 	$(top_srcdir)/libs/basic/inc/uqGslVector.h \

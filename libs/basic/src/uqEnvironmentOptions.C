@@ -35,6 +35,15 @@
 
 uqEnvironmentOptionsClass::uqEnvironmentOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix)
   :
+  m_numSubEnvironments       (UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),
+  m_subDisplayFileName       (UQ_ENV_SUB_DISPLAY_FILE_NAME_ODV),
+  m_subDisplayAllowAll       (UQ_ENV_SUB_DISPLAY_ALLOW_ALL_ODV),
+//m_subDisplayAllowSet       (),
+  m_displayVerbosity         (UQ_ENV_DISPLAY_VERBOSITY_ODV),
+  m_syncVerbosity            (UQ_ENV_SYNC_VERBOSITY_ODV),
+  m_seed                     (UQ_ENV_SEED_ODV),
+  m_numDebugParams           (UQ_ENV_NUM_DEBUG_PARAMS_ODV),
+  m_debugParams              (m_numDebugParams,0.),
   m_env                      (env),
   m_prefix                   ((std::string)(prefix) + "env_"),
   m_optionsDesc              (new po::options_description("Environment options")),
@@ -45,16 +54,7 @@ uqEnvironmentOptionsClass::uqEnvironmentOptionsClass(const uqBaseEnvironmentClas
   m_option_subDisplayAllow   (m_prefix + "subDisplayAllow"   ),
   m_option_displayVerbosity  (m_prefix + "displayVerbosity"  ),
   m_option_syncVerbosity     (m_prefix + "syncVerbosity"     ),
-  m_option_seed              (m_prefix + "seed"              ),
-  m_numSubEnvironments       (UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),
-  m_subDisplayFileName       (UQ_ENV_SUB_DISPLAY_FILE_NAME_ODV),
-  m_subDisplayAllowAll       (UQ_ENV_SUB_DISPLAY_ALLOW_ALL_ODV),
-//m_subDisplayAllowSet       (),
-  m_displayVerbosity         (UQ_ENV_DISPLAY_VERBOSITY_ODV),
-  m_syncVerbosity            (UQ_ENV_SYNC_VERBOSITY_ODV),
-  m_seed                     (UQ_ENV_SEED_ODV),
-  m_numDebugParams           (UQ_ENV_NUM_DEBUG_PARAMS_ODV),
-  m_debugParams              (m_numDebugParams,0.)
+  m_option_seed              (m_prefix + "seed"              )
 {
 }
 
