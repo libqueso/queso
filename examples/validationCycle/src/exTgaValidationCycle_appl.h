@@ -286,8 +286,8 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
                         cycle.valFP().qoiRv().unifiedCdf(),
                         *epsilonVec,
                         cdfDistancesVec);
-    if (cycle.env().subDisplayOutputFile()) {
-      *cycle.env().subDisplayOutputFile() << "For epsilonVec = "    << *epsilonVec
+    if (cycle.env().subDisplayFile()) {
+      *cycle.env().subDisplayFile() << "For epsilonVec = "    << *epsilonVec
                                    << ", cdfDistancesVec = " << cdfDistancesVec
                                    << std::endl;
     }
@@ -297,8 +297,8 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
                         cycle.calFP().qoiRv().unifiedCdf(),
                         *epsilonVec,
                         cdfDistancesVec);
-    if (cycle.env().subDisplayOutputFile()) {
-      *cycle.env().subDisplayOutputFile() << "For epsilonVec = "                             << *epsilonVec
+    if (cycle.env().subDisplayFile()) {
+      *cycle.env().subDisplayFile() << "For epsilonVec = "                             << *epsilonVec
                                    << ", cdfDistancesVec (switched order of cdfs) = " << cdfDistancesVec
                                    << std::endl;
     }
@@ -309,8 +309,8 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
                         cycle.valFP().qoiRv().unifiedCdf(),
                         *epsilonVec,
                         cdfDistancesVec);
-    if (cycle.env().subDisplayOutputFile()) {
-      *cycle.env().subDisplayOutputFile() << "For epsilonVec = "    << *epsilonVec
+    if (cycle.env().subDisplayFile()) {
+      *cycle.env().subDisplayFile() << "For epsilonVec = "    << *epsilonVec
                                    << ", cdfDistancesVec = " << cdfDistancesVec
                                    << std::endl;
     }
@@ -321,8 +321,8 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
                         cycle.valFP().qoiRv().unifiedCdf(),
                         *epsilonVec,
                         cdfDistancesVec);
-    if (cycle.env().subDisplayOutputFile()) {
-      *cycle.env().subDisplayOutputFile() << "For epsilonVec = "    << *epsilonVec
+    if (cycle.env().subDisplayFile()) {
+      *cycle.env().subDisplayFile() << "For epsilonVec = "    << *epsilonVec
                                    << ", cdfDistancesVec = " << cdfDistancesVec
                                    << std::endl;
     }
@@ -333,8 +333,8 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
                         cycle.valFP().qoiRv().unifiedCdf(),
                         *epsilonVec,
                         cdfDistancesVec);
-    if (cycle.env().subDisplayOutputFile()) {
-      *cycle.env().subDisplayOutputFile() << "For epsilonVec = "    << *epsilonVec
+    if (cycle.env().subDisplayFile()) {
+      *cycle.env().subDisplayFile() << "For epsilonVec = "    << *epsilonVec
                                    << ", cdfDistancesVec = " << cdfDistancesVec
                                    << std::endl;
     }
@@ -345,8 +345,8 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
                         cycle.valFP().qoiRv().unifiedCdf(),
                         *epsilonVec,
                         cdfDistancesVec);
-    if (cycle.env().subDisplayOutputFile()) {
-      *cycle.env().subDisplayOutputFile() << "For epsilonVec = "    << *epsilonVec
+    if (cycle.env().subDisplayFile()) {
+      *cycle.env().subDisplayFile() << "For epsilonVec = "    << *epsilonVec
                                    << ", cdfDistancesVec = " << cdfDistancesVec
                                    << std::endl;
     }

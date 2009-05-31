@@ -68,14 +68,14 @@ uqBaseOneDGridClass<T>::uqBaseOneDGridClass(
   m_env   (env),
   m_prefix((std::string)(prefix)+"grid")
 {
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Entering uqBaseOneDGridClass<T>::constructor()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqBaseOneDGridClass<T>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Leaving uqBaseOneDGridClass<T>::constructor()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqBaseOneDGridClass<T>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -151,14 +151,14 @@ uqUniformOneDGridClass<T>::uqUniformOneDGridClass(
   m_minPosition(minPosition),
   m_maxPosition(maxPosition)
 {
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Entering uqUniformOneDGridClass<T>::constructor()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqUniformOneDGridClass<T>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Leaving uqUniformOneDGridClass<T>::constructor()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqUniformOneDGridClass<T>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }

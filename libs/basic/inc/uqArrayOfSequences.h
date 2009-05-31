@@ -177,13 +177,13 @@ uqArrayOfSequencesClass<V,M>::uqArrayOfSequencesClass(
   m_scalarSequences             (m_vectorSpace.map(),1)
 {
 
-  //if (m_env.subDisplayOutputFile()) {
-  //  *m_env.subDisplayOutputFile() << "Entering uqArrayOfSequencesClass<V,M>::constructor()"
+  //if (m_env.subDisplayFile()) {
+  //  *m_env.subDisplayFile() << "Entering uqArrayOfSequencesClass<V,M>::constructor()"
   //                         << std::endl;
   //}
 
-  //if (m_env.subDisplayOutputFile()) {
-  //  *m_env.subDisplayOutputFile() << "In uqArrayOfSequencesClass<V,M>::constructor()"
+  //if (m_env.subDisplayFile()) {
+  //  *m_env.subDisplayFile() << "In uqArrayOfSequencesClass<V,M>::constructor()"
   //                         << "\n sequenceSize = "                 << sequenceSize
   //                         << "\n m_scalarSequences.MyLength() = " << m_scalarSequences.MyLength()
   //                         << std::endl;
@@ -193,8 +193,8 @@ uqArrayOfSequencesClass<V,M>::uqArrayOfSequencesClass(
     m_scalarSequences(i,0) = new uqScalarSequenceClass<double>(m_env,sequenceSize);
   }
 
-  //if (m_env.subDisplayOutputFile()) {
-  //  *m_env.subDisplayOutputFile() << "Leaving uqArrayOfSequencesClass<V,M>::constructor()"
+  //if (m_env.subDisplayFile()) {
+  //  *m_env.subDisplayFile() << "Leaving uqArrayOfSequencesClass<V,M>::constructor()"
   //                         << std::endl;
   //}
 }
@@ -717,8 +717,8 @@ uqArrayOfSequencesClass<V,M>::psdAtZero(
                  hopSizeRatio,
                  psdSequence);
         _2dArrayOfPSDAtZero(initialPosId,numsOfBlocksId)[i] = psdSequence[0];
-        //if (m_env.subDisplayOutputFile()) {
-	//  *m_env.subDisplayOutputFile() << "psdSequence[0] = " << psdSequence[0] << std::endl;
+        //if (m_env.subDisplayFile()) {
+	//  *m_env.subDisplayFile() << "psdSequence[0] = " << psdSequence[0] << std::endl;
         //}
       } // for 'numsOfBlocksId'
     } // for 'i'

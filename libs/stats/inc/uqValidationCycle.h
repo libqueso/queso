@@ -137,14 +137,14 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::uqValidationCycleClass(
   m_valQoiRv                (NULL),
   m_valFP                   (NULL)
 {
-  if (m_env.subDisplayOutputFile()) {
-    *m_env.subDisplayOutputFile() << "Entering uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::constructor()"
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Entering uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
-  if (m_env.subDisplayOutputFile()) {
-    *m_env.subDisplayOutputFile() << "Leaving uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::constructor()"
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Leaving uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -155,8 +155,8 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::uqValidationCycleClass(
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::~uqValidationCycleClass()
 {
-  if (m_env.subDisplayOutputFile()) {
-    *m_env.subDisplayOutputFile() << "Entering uqValidationCycle::destructor()"
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Entering uqValidationCycle::destructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -172,8 +172,8 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::~uqValidationCycleClass()
   if (m_calIP)             delete m_calIP;
   if (m_calPostRv)         delete m_calPostRv;
 
-  if (m_env.subDisplayOutputFile()) {
-    *m_env.subDisplayOutputFile() << "Leaving uqValidationCycle::destructor()"
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Leaving uqValidationCycle::destructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }

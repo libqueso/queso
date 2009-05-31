@@ -108,8 +108,8 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
   m_map                (newMap()),
   m_zeroVector         (new V(m_env,*m_map))
 {
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Entering uqVectorSpaceClass<V,M>::constructor()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqVectorSpaceClass<V,M>::constructor()"
                            << std::endl;
   }
 
@@ -118,8 +118,8 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
                       "uqVectorSpaceClass<V,M>::constructor()",
                       "size of 'componentsNames' is not equal to m_dim");
 
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Leaving uqVectorSpaceClass<V,M>::constructor()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqVectorSpaceClass<V,M>::constructor()"
                            << std::endl;
   }
 }
@@ -127,16 +127,16 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
 template <class V, class M>
 uqVectorSpaceClass<V,M>::~uqVectorSpaceClass()
 {
-  //if (m_env.subDisplayOutputFile()) {
-  //  *m_env.subDisplayOutputFile() << "Entering uqVectorSpaceClass<V,M>::destructor()"
+  //if (m_env.subDisplayFile()) {
+  //  *m_env.subDisplayFile() << "Entering uqVectorSpaceClass<V,M>::destructor()"
   //                         << std::endl;
   //}
 
   if (m_zeroVector != NULL) delete m_zeroVector;
   if (m_map        != NULL) delete m_map;
 
-  //if (m_env.subDisplayOutputFile()) {
-  //  *m_env.subDisplayOutputFile() << "Leaving uqVectorSpaceClass<V,M>::destructor()"
+  //if (m_env.subDisplayFile()) {
+  //  *m_env.subDisplayFile() << "Leaving uqVectorSpaceClass<V,M>::destructor()"
   //                         << std::endl;
   //}
 }
@@ -211,8 +211,8 @@ uqVectorSpaceClass<V,M>::newGaussianMatrix(
   V tmpVec(*m_zeroVector);
   for (unsigned int i = 0; i < m_dim; ++i) {
     double variance = varianceValues[i];
-    if (m_env.subDisplayOutputFile()) {
-      *m_env.subDisplayOutputFile() << "In uqVectorSpaceClass<V,M>::newGaussianMatrix()"
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "In uqVectorSpaceClass<V,M>::newGaussianMatrix()"
                              << ": i = "        << i
                              << ", variance = " << variance
                              << std::endl;

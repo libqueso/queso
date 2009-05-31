@@ -73,14 +73,14 @@ uqBaseVectorMdfClass<V,M>::uqBaseVectorMdfClass(
   m_prefix   ((std::string)(prefix)+"Mdf_"),
   m_domainSet(domainSet)
 {
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Entering uqBaseVectorMdfClass<V,M>::constructor()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqBaseVectorMdfClass<V,M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Leaving uqBaseVectorMdfClass<V,M>::constructor()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqBaseVectorMdfClass<V,M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -196,16 +196,16 @@ uqGaussianVectorMdfClass<V,M>::uqGaussianVectorMdfClass(
   uqBaseVectorMdfClass<V,M>(prefix,domainSet),
   m_covMatrix              (m_domainSet.newDiagMatrix(domainVarianceValues*domainVarianceValues))
 {
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Entering uqGaussianVectorMdfClass<V,M>::constructor() [1]"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqGaussianVectorMdfClass<V,M>::constructor() [1]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
   commonConstructor();
 
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Leaving uqGaussianVectorMdfClass<V,M>::constructor() [1]"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqGaussianVectorMdfClass<V,M>::constructor() [1]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -221,16 +221,16 @@ uqGaussianVectorMdfClass<V,M>::uqGaussianVectorMdfClass(
   uqBaseVectorMdfClass<V,M>(prefix,domainSet),
   m_covMatrix              (new M(covMatrix))
 {
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Entering uqGaussianVectorMdfClass<V,M>::constructor() [2]"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqGaussianVectorMdfClass<V,M>::constructor() [2]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
   commonConstructor();
 
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Leaving uqGaussianVectorMdfClass<V,M>::constructor() [2]"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqGaussianVectorMdfClass<V,M>::constructor() [2]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -306,14 +306,14 @@ uqSampledVectorMdfClass<V,M>::uqSampledVectorMdfClass(
   m_oneDGrids(oneDGrids),
   m_mdfValues(mdfValues)
 {
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Entering uqSampledVectorMdfClass<V,M>::constructor()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqSampledVectorMdfClass<V,M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Leaving uqSampledVectorMdfClass<V,M>::constructor()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqSampledVectorMdfClass<V,M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }

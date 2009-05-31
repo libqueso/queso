@@ -202,13 +202,13 @@ uqSequenceOfVectorsClass<V,M>::uqSequenceOfVectorsClass(
   m_seq                         (sequenceSize,NULL)
 {
 
-  //if (m_env.subDisplayOutputFile()) {
-  //  *m_env.subDisplayOutputFile() << "Entering uqSequenceOfVectorsClass<V,M>::constructor()"
+  //if (m_env.subDisplayFile()) {
+  //  *m_env.subDisplayFile() << "Entering uqSequenceOfVectorsClass<V,M>::constructor()"
   //                         << std::endl;
   //}
 
-  //if (m_env.subDisplayOutputFile()) {
-  //  *m_env.subDisplayOutputFile() << "Leaving uqSequenceOfVectorsClass<V,M>::constructor()"
+  //if (m_env.subDisplayFile()) {
+  //  *m_env.subDisplayFile() << "Leaving uqSequenceOfVectorsClass<V,M>::constructor()"
   //                         << std::endl;
   //}
 }
@@ -249,8 +249,8 @@ uqSequenceOfVectorsClass<V,M>::resetValues(unsigned int initialPos, unsigned int
   bool bRC = ((initialPos          <  this->subSequenceSize()) &&
               (0                   <  numPos                 ) &&
               ((initialPos+numPos) <= this->subSequenceSize()));
-  if ((bRC == false) && (m_env.subDisplayOutputFile())) {
-    *m_env.subDisplayOutputFile() << "In uqSequenceOfVectorsClass<V,M>::resetValues()"
+  if ((bRC == false) && (m_env.subDisplayFile())) {
+    *m_env.subDisplayFile() << "In uqSequenceOfVectorsClass<V,M>::resetValues()"
                            << ", initialPos = "              << initialPos
                            << ", this->subSequenceSize() = " << this->subSequenceSize()
                            << ", numPos = "                  << numPos
@@ -477,8 +477,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedUniformlySampledCdf(
   uqArrayOfOneDGridsClass <V,M>& unifiedCdfGrids,
   uqArrayOfOneDTablesClass<V,M>& unifiedCdfValues) const
 {
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 10)) {
-    *m_env.subDisplayOutputFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedUniformlySampledCdf()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+    *m_env.subDisplayFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedUniformlySampledCdf()"
                            << std::endl;
   }
 
@@ -508,8 +508,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedUniformlySampledCdf(
                                   unifiedMinDomainValues,
                                   unifiedMaxDomainValues);
 
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 10)) {
-    *m_env.subDisplayOutputFile() << "Leaving uqSequenceOfVectorsClass<V,M>::unifiedUniformlySampledCdf()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+    *m_env.subDisplayFile() << "Leaving uqSequenceOfVectorsClass<V,M>::unifiedUniformlySampledCdf()"
                            << std::endl;
   }
 
@@ -523,8 +523,8 @@ uqSequenceOfVectorsClass<V,M>::subMean(
   unsigned int numPos,
   V&           meanVec) const
 {
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Entering uqSequenceOfVectorsClass<V,M>::subMean()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqSequenceOfVectorsClass<V,M>::subMean()"
                            << ": initialPos = "         << initialPos
                            << ", numPos = "             << numPos
                            << ", full sequence size = " << this->subSequenceSize()
@@ -535,8 +535,8 @@ uqSequenceOfVectorsClass<V,M>::subMean(
               (0                   <  numPos                 ) &&
               ((initialPos+numPos) <= this->subSequenceSize()) &&
               (this->vectorSize()  == meanVec.size()         ));
-  if ((bRC == false) && (m_env.subDisplayOutputFile())) {
-    *m_env.subDisplayOutputFile() << "In uqSequenceOfVectorsClass<V,M>::subMean()"
+  if ((bRC == false) && (m_env.subDisplayFile())) {
+    *m_env.subDisplayFile() << "In uqSequenceOfVectorsClass<V,M>::subMean()"
                            << ", initialPos = "              << initialPos
                            << ", this->subSequenceSize() = " << this->subSequenceSize()
                            << ", numPos = "                  << numPos
@@ -562,8 +562,8 @@ uqSequenceOfVectorsClass<V,M>::subMean(
                               numPos);
   }
 
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Leaving uqSequenceOfVectorsClass<V,M>::subMean()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqSequenceOfVectorsClass<V,M>::subMean()"
                            << ": initialPos = "         << initialPos
                            << ", numPos = "             << numPos
                            << ", full sequence size = " << this->subSequenceSize()
@@ -581,8 +581,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedMean(
   unsigned int numPos,
   V&           unifiedMeanVec) const
 {
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedMean()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedMean()"
                            << ": initialPos = "         << initialPos
                            << ", numPos = "             << numPos
                            << ", full sequence size = " << this->subSequenceSize()
@@ -593,8 +593,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedMean(
               (0                   <  numPos                 ) &&
               ((initialPos+numPos) <= this->subSequenceSize()) &&
               (this->vectorSize()  == unifiedMeanVec.size()  ));
-  if ((bRC == false) && (m_env.subDisplayOutputFile())) {
-    *m_env.subDisplayOutputFile() << "In uqSequenceOfVectorsClass<V,M>::unifiedMean()"
+  if ((bRC == false) && (m_env.subDisplayFile())) {
+    *m_env.subDisplayFile() << "In uqSequenceOfVectorsClass<V,M>::unifiedMean()"
                            << ", initialPos = "               << initialPos
                            << ", this->subSequenceSize() = "  << this->subSequenceSize()
                            << ", numPos = "                   << numPos
@@ -621,8 +621,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedMean(
                                          numPos);
   }
 
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Leaving uqSequenceOfVectorsClass<V,M>::unifiedMean()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqSequenceOfVectorsClass<V,M>::unifiedMean()"
                            << ": initialPos = "         << initialPos
                            << ", numPos = "             << numPos
                            << ", full sequence size = " << this->subSequenceSize()
@@ -850,8 +850,8 @@ uqSequenceOfVectorsClass<V,M>::autoCorrViaFft(
                            i,
                            data);
 
-    //if (m_env.subDisplayOutputFile()) {
-    //  *m_env.subDisplayOutputFile() << "In uqSequenceOfVectorsClass<V,M>::autoCorrViaFft()"
+    //if (m_env.subDisplayFile()) {
+    //  *m_env.subDisplayFile() << "In uqSequenceOfVectorsClass<V,M>::autoCorrViaFft()"
     //                         << ": about to call data.autoCorrViaFft() for paramId = " << i
     //                         << ", with numPos = "      << numPos
     //                         << ", maxLag = "           << maxLag
@@ -1031,7 +1031,7 @@ uqSequenceOfVectorsClass<V,M>::psdAtZero(
              hopSizeRatio,
              psdResult);
     psdVec[i] = psdResult[0];
-    //*m_env.subDisplayOutputFile() << "psdResult[0] = " << psdResult[0] << std::endl;
+    //*m_env.subDisplayFile() << "psdResult[0] = " << psdResult[0] << std::endl;
   }
 
   return;
@@ -1498,8 +1498,8 @@ uqSequenceOfVectorsClass<V,M>::filter(
   unsigned int initialPos,
   unsigned int spacing)
 {
-  if (m_env.subDisplayOutputFile()) {
-    *m_env.subDisplayOutputFile() << "Entering uqSequenceOfVectorsClass<V,M>::filter()"
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Entering uqSequenceOfVectorsClass<V,M>::filter()"
                            << ": initialPos = "   << initialPos
                            << ", spacing = "      << spacing
                            << ", sequenceSize = " << this->subSequenceSize()
@@ -1511,7 +1511,7 @@ uqSequenceOfVectorsClass<V,M>::filter(
   unsigned int originalSequenceSize = this->subSequenceSize();
   while (j < originalSequenceSize) {
     if (i != j) {
-      //*m_env.subDisplayOutputFile() << i << "--" << j << " ";
+      //*m_env.subDisplayFile() << i << "--" << j << " ";
       delete m_seq[i];
       m_seq[i] = new V(*(m_seq[j]));
     }
@@ -1522,8 +1522,8 @@ uqSequenceOfVectorsClass<V,M>::filter(
   this->resetValues(i,originalSequenceSize-i);
   this->resizeSequence(i);
 
-  if (m_env.subDisplayOutputFile()) {
-    *m_env.subDisplayOutputFile() << "Leaving uqSequenceOfVectorsClass<V,M>::filter()"
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Leaving uqSequenceOfVectorsClass<V,M>::filter()"
                            << ": initialPos = "   << initialPos
                            << ", spacing = "      << spacing
                            << ", sequenceSize = " << this->subSequenceSize()
@@ -1577,8 +1577,8 @@ void
 uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(const std::string& fileName) const
 {
   m_env.fullComm().Barrier();
-  if (m_env.subDisplayOutputFile()) {
-    *m_env.subDisplayOutputFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
                            << ": fullRank "       << m_env.fullRank()
                            << ", subEnvironment " << m_env.subId()
                            << ", subRank "        << m_env.subRank()
@@ -1632,8 +1632,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(const std::string& fileName)
     }
   }
 
-  if (m_env.subDisplayOutputFile()) {
-    *m_env.subDisplayOutputFile() << "Leaving uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Leaving uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
                            << ", fileName = " << fileName
                            << std::endl;
   }
@@ -1651,8 +1651,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
   double unifiedSequenceSize = subSequenceSize*m_env.inter0Comm().NumProc();
 
   m_env.fullComm().Barrier();
-  if (m_env.subDisplayOutputFile()) {
-    *m_env.subDisplayOutputFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedReadContents()"
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedReadContents()"
                            << ": fullRank "                       << m_env.fullRank()
                            << ", subEnvironment "                 << m_env.subId()
                            << ", subRank "                        << m_env.subRank()
@@ -1732,8 +1732,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
           // Convert 'n_positions' and 'n_params' strings to numbers
           unsigned int sizeOfChainInFile = (unsigned int) strtod(nPositionsString,NULL);
           unsigned int numParamsInFile   = (unsigned int) strtod(nParamsString,   NULL);
-          if (m_env.subDisplayOutputFile()) {
-            *m_env.subDisplayOutputFile() << "In uqSequenceOfVectorsClass<V,M>::unifiedReadContents()"
+          if (m_env.subDisplayFile()) {
+            *m_env.subDisplayFile() << "In uqSequenceOfVectorsClass<V,M>::unifiedReadContents()"
                                    << ": fullRank "            << m_env.fullRank()
                                    << ", sizeOfChainInFile = " << sizeOfChainInFile
                                    << ", numParamsInFile = "   << numParamsInFile
@@ -1805,8 +1805,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
     }
   }
 
-  if (m_env.subDisplayOutputFile()) {
-    *m_env.subDisplayOutputFile() << "Leaving uqSequenceOfVectorsClass<V,M>::unifiedReadContents()"
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Leaving uqSequenceOfVectorsClass<V,M>::unifiedReadContents()"
                            << ", fileName = " << fileName
                            << std::endl;
   }

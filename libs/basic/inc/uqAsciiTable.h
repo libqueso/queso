@@ -87,8 +87,8 @@ uqAsciiTableClass<V,M>::uqAsciiTableClass(
   m_stringColumns(0),
   m_doubleColumns(0)
 {
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Entering uqAsciiTableClass<V,M>::constructor()..."
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqAsciiTableClass<V,M>::constructor()..."
                            << std::endl;
   }
 
@@ -108,8 +108,8 @@ uqAsciiTableClass<V,M>::uqAsciiTableClass(
   m_doubleColumns.resize(m_numCols,NULL);
   readColumnsFromFile();
 
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Leaving uqAsciiTableClass<V,M>::constructor()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqAsciiTableClass<V,M>::constructor()"
                            << std::endl;
   }
 }
@@ -154,7 +154,7 @@ uqAsciiTableClass<V,M>::readColumnsFromFile()
                         m_env.fullRank(),
                         "uqAsciiTableClass<V,M>::readColumnsFromFile()",
                         "failed reading during the determination of the number of valid lines");
-    //*m_env.subDisplayOutputFile() << "lineId = "          << lineId
+    //*m_env.subDisplayFile() << "lineId = "          << lineId
     //                       << ", numValidLines = " << numValidLines
     //                       << ", tempString = "    << tempString
     //                       << std::endl;
@@ -175,8 +175,8 @@ uqAsciiTableClass<V,M>::readColumnsFromFile()
                         errorExplanation);
   }
 
-  if (m_env.subDisplayOutputFile()) {
-    *m_env.subDisplayOutputFile() << "Ascii table file '"    << m_fileName
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Ascii table file '"    << m_fileName
                            << "' has "                << numLines
                            << " lines and specifies " << numValidLines
                            << " valid lines."
@@ -185,16 +185,16 @@ uqAsciiTableClass<V,M>::readColumnsFromFile()
 
   for (unsigned int j=0; j < m_numCols; ++j) {
     if (m_colIsString[j]) {
-      if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-        *m_env.subDisplayOutputFile() << "Column j = " << j
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+        *m_env.subDisplayFile() << "Column j = " << j
                                << " is a columns of strings"
                                << std::endl;
       }
       m_stringColumns[j] = new EpetraExt::DistArray<std::string>(*m_map,1);
     }
     else {
-      if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-        *m_env.subDisplayOutputFile() << "Column j = " << j
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+        *m_env.subDisplayFile() << "Column j = " << j
                                << " is a columns of doubles"
                                << std::endl;
       }
@@ -208,7 +208,7 @@ uqAsciiTableClass<V,M>::readColumnsFromFile()
   unsigned int validLineId = 0;
   std::string tmpString;
   while ((lineId < numLines) && (ifs.eof() == false)) {
-    //*m_env.subDisplayOutputFile() << "Beginning read of line (in ascii table file) of id = " << lineId << std::endl;
+    //*m_env.subDisplayFile() << "Beginning read of line (in ascii table file) of id = " << lineId << std::endl;
     bool endOfLineAchieved = false;
 
     iRC = uqMiscReadCharsAndDoubleFromFile(ifs, tmpString, NULL, endOfLineAchieved);
@@ -236,8 +236,8 @@ uqAsciiTableClass<V,M>::readColumnsFromFile()
                           errorExplanation);
     }
 
-    if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-      *m_env.subDisplayOutputFile() << "Just read a string: table[" << validLineId
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+      *m_env.subDisplayFile() << "Just read a string: table[" << validLineId
                              << ","                          << 0 // j=0
                              << "] = "                       << firstColumn(validLineId,0)
                              << std::endl;
@@ -255,8 +255,8 @@ uqAsciiTableClass<V,M>::readColumnsFromFile()
                             m_env.fullRank(),
                             "uqAsciiTableClass<V,M>::readColumnsFromFile()",
                             "failed reading a string column in a valid line");
-        if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-          *m_env.subDisplayOutputFile() << "Just read a string: table[" << validLineId
+        if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+          *m_env.subDisplayFile() << "Just read a string: table[" << validLineId
                                  << ","                          << j
                                  << "] = "                       << arrayOfStrings(validLineId,0)
                                  << std::endl;
@@ -268,8 +268,8 @@ uqAsciiTableClass<V,M>::readColumnsFromFile()
                             m_env.fullRank(),
                             "uqAsciiTableClass<V,M>::readColumnsFromFile()",
                             "failed reading a double column in a valid line");
-        if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-          *m_env.subDisplayOutputFile() << "Just read a double: table[" << validLineId
+        if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+          *m_env.subDisplayFile() << "Just read a double: table[" << validLineId
                                  << ","                          << j
                                  << "] = "                       << (*m_doubleColumns[j])[validLineId]
                                  << std::endl;
@@ -291,12 +291,12 @@ uqAsciiTableClass<V,M>::readColumnsFromFile()
                       "the number of valid lines just read is not consistent");
 
   if (m_env.displayVerbosity() >= 5) {
-    if (m_env.subDisplayOutputFile()) {
-      *m_env.subDisplayOutputFile() << "Finished reading table '" << m_fileName
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "Finished reading table '" << m_fileName
                              << "'. Its contents per column are:"
                              << std::endl;
-      *m_env.subDisplayOutputFile() << *this; // FIX ME: output might need to be in parallel
-      *m_env.subDisplayOutputFile() << std::endl;
+      *m_env.subDisplayFile() << *this; // FIX ME: output might need to be in parallel
+      *m_env.subDisplayFile() << std::endl;
     }    
   }
 

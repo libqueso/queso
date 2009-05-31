@@ -67,7 +67,7 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_inter0Comm          (NULL),
   m_inter0Rank          (-1),
   m_inter0CommSize      (1),
-  m_subDisplayOutputFile(NULL),
+  m_subDisplayFile(NULL),
   m_rng                 (NULL),
   m_options             (NULL)
 {
@@ -83,8 +83,8 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(const uqBaseEnvironmentClass& obj
 
 uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
 {
-  //if (m_subDisplayOutputFile) {
-  //  *m_subDisplayOutputFile << "Entering uqBaseEnvironmentClass::destructor()"
+  //if (m_subDisplayFile) {
+  //  *m_subDisplayFile << "Entering uqBaseEnvironmentClass::destructor()"
   //                          << std::endl;
   //}
 
@@ -101,8 +101,8 @@ uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
   /*int iRC = 0;*/
   /*iRC = */gettimeofday(&timevalNow, NULL);
 
-  if (m_subDisplayOutputFile) {
-    *m_subDisplayOutputFile << "Ending run at " << ctime(&timevalNow.tv_sec)
+  if (m_subDisplayFile) {
+    *m_subDisplayFile << "Ending run at " << ctime(&timevalNow.tv_sec)
                             << "Total run time = " << timevalNow.tv_sec - m_timevalBegin.tv_sec
                             << " seconds"
                             << std::endl;
@@ -115,12 +115,12 @@ uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
               << std::endl;
   }
 
-  //if (m_subDisplayOutputFile) {
-  //  *m_subDisplayOutputFile << "Leaving uqBaseEnvironmentClass::destructor()"
+  //if (m_subDisplayFile) {
+  //  *m_subDisplayFile << "Leaving uqBaseEnvironmentClass::destructor()"
   //                          << std::endl;
   //}
 
-  if (m_subDisplayOutputFile) delete m_subDisplayOutputFile;
+  if (m_subDisplayFile) delete m_subDisplayFile;
   if (m_inter0Comm          ) delete m_inter0Comm;
   if (m_selfComm            ) delete m_selfComm;
   if (m_subComm             ) delete m_subComm;
@@ -202,9 +202,9 @@ uqBaseEnvironmentClass::inter0Comm() const
 }
 
 std::ofstream*
-uqBaseEnvironmentClass::subDisplayOutputFile() const
+uqBaseEnvironmentClass::subDisplayFile() const
 {
-  return m_subDisplayOutputFile;
+  return m_subDisplayFile;
 }
 
 unsigned int
@@ -245,8 +245,8 @@ uqBaseEnvironmentClass::scanInputFileForMyOptions(const po::options_description&
 #endif
 
   m_allOptionsDesc->add(optionsDesc);
-  //if (m_subDisplayOutputFile) {
-  //  *m_subDisplayOutputFile << *m_allOptionsDesc
+  //if (m_subDisplayFile) {
+  //  *m_subDisplayFile << *m_allOptionsDesc
   //                          << std::endl;
   //}
   std::ifstream ifs(m_optionsInputFileName.c_str());
@@ -337,16 +337,16 @@ uqBaseEnvironmentClass::openOutputFile(
   ofsvar = NULL;
   if ((baseFileName                         == UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE) ||
       (allowedSubEnvIds.find(this->subId()) == allowedSubEnvIds.end()            )) {
-    if (this->subDisplayOutputFile()) {
-      *this->subDisplayOutputFile() << "In openOutputFile()"
+    if (this->subDisplayFile()) {
+      *this->subDisplayFile() << "In openOutputFile()"
                                     << ": no output file opened with base name '" << baseFileName
                                     << "'"
                                     << std::endl;
     }
   }
   else {
-    if (this->subDisplayOutputFile()) {
-      *this->subDisplayOutputFile() << "In openOutputFile()"
+    if (this->subDisplayFile()) {
+      *this->subDisplayFile() << "In openOutputFile()"
                                     << ": opening output file with base name '" << baseFileName
                                     << "'"
                                     << std::endl;
@@ -392,16 +392,16 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
 {
   ofsvar = NULL;
   if (baseFileName == ".") {
-    if (this->subDisplayOutputFile()) {
-      *this->subDisplayOutputFile() << "In openUnifiedOutputFile()"
+    if (this->subDisplayFile()) {
+      *this->subDisplayFile() << "In openUnifiedOutputFile()"
                                     << ": no unified output file opened with base name '" << baseFileName
                                     << "'"
                                     << std::endl;
     }
   }
   else {
-    if (this->subDisplayOutputFile()) {
-      *this->subDisplayOutputFile() << "In openUnifiedOutputFile()"
+    if (this->subDisplayFile()) {
+      *this->subDisplayFile() << "In openUnifiedOutputFile()"
                                     << ": opening unified output file with base name '" << baseFileName
                                     << "'"
                                     << std::endl;
@@ -591,20 +591,20 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
 
   if (openFile) {
     // Always write over an eventual pre-existing file
-    m_subDisplayOutputFile = new std::ofstream((m_options->m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str(), std::ofstream::out | std::ofstream::trunc);
-    UQ_FATAL_TEST_MACRO((m_subDisplayOutputFile && m_subDisplayOutputFile->is_open()) == false,
+    m_subDisplayFile = new std::ofstream((m_options->m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str(), std::ofstream::out | std::ofstream::trunc);
+    UQ_FATAL_TEST_MACRO((m_subDisplayFile && m_subDisplayFile->is_open()) == false,
                         m_fullRank,
                         "uqEnvironment::constructor()",
                         "failed to open sub screen file");
 
-    *m_subDisplayOutputFile << "\n================================="
+    *m_subDisplayFile << "\n================================="
                             << "\n QUESO library, version " << QUESO_LIBRARY_CURRENT_VERSION
                             << ", released on "             << QUESO_LIBRARY_RELEASE_DATE
                             << "\n================================="
                             << "\n"
                             << std::endl;
 
-    *m_subDisplayOutputFile << "Beginning run at " << ctime(&m_timevalBegin.tv_sec)
+    *m_subDisplayFile << "Beginning run at " << ctime(&m_timevalBegin.tv_sec)
                             << std::endl;
   }
 
@@ -670,8 +670,8 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
 
   //gsl_rng_set(m_rng, gsl_rng_default_seed);
 
-  if ((m_subDisplayOutputFile)/* && (this->displayVerbosity() > 0)*/) {
-    *m_subDisplayOutputFile << "In uqFullEnvironmentClass::commonConstructor():"
+  if ((m_subDisplayFile)/* && (this->displayVerbosity() > 0)*/) {
+    *m_subDisplayFile << "In uqFullEnvironmentClass::commonConstructor():"
                             << "\n  m_seed = "                                              << m_options->m_seed
                             << "\n  internal seed = "                                       << gsl_rng_default_seed
                           //<< "\n  first generated sample from uniform distribution = "    << gsl_rng_uniform(m_rng)
@@ -682,8 +682,8 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   //////////////////////////////////////////////////
   // Leave commonConstructor()
   //////////////////////////////////////////////////
-  if ((m_subDisplayOutputFile) && (this->displayVerbosity() >= 5)) {
-    *m_subDisplayOutputFile << "Done with initializations at uqFullEnvironmentClass::commonConstructor()"
+  if ((m_subDisplayFile) && (this->displayVerbosity() >= 5)) {
+    *m_subDisplayFile << "Done with initializations at uqFullEnvironmentClass::commonConstructor()"
                             << std::endl;
   }
 
@@ -723,10 +723,10 @@ uqFullEnvironmentClass::readOptionsInputFile()
       std::ifstream* ifs = new std::ifstream(m_optionsInputFileName.c_str());
       if (ifs->is_open()) {
         m_thereIsInputFile = true;
-        //if (m_subDisplayOutputFile) {
+        //if (m_subDisplayFile) {
         //  int numLines = std::count(std::istreambuf_iterator<char>(*ifs),
         //                            std::istreambuf_iterator<char>(),'\n');
-        //  *m_subDisplayOutputFile << "Input file has " << numLines
+        //  *m_subDisplayFile << "Input file has " << numLines
         //                          << " lines."
         //                          << std::endl;
         //}

@@ -83,13 +83,13 @@ uqVectorSetClass<V,M>::uqVectorSetClass(
   m_prefix(prefix),
   m_volume(volume)
 {
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Entering uqVectorSetClass<V,M>::constructor()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqVectorSetClass<V,M>::constructor()"
                            << std::endl;
   }
 
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Leaving uqVectorSetClass<V,M>::constructor()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqVectorSetClass<V,M>::constructor()"
                            << std::endl;
   }
 }
@@ -97,13 +97,13 @@ uqVectorSetClass<V,M>::uqVectorSetClass(
 template <class V, class M>
 uqVectorSetClass<V,M>::~uqVectorSetClass()
 {
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Entering uqVectorSetClass<V,M>::destructor()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqVectorSetClass<V,M>::destructor()"
                            << std::endl;
   }
 
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Leaving uqVectorSetClass<V,M>::destructor()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqVectorSetClass<V,M>::destructor()"
                            << std::endl;
   }
 }

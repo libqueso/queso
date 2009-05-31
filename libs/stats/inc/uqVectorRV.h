@@ -85,14 +85,14 @@ uqBaseVectorRVClass<V,M>::uqBaseVectorRVClass(
   m_unifiedCdf(NULL),
   m_mdf       (NULL)
 {
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Entering uqBaseVectorRVClass<V,M>::constructor()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqBaseVectorRVClass<V,M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Leaving uqBaseVectorRVClass<V,M>::constructor()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqBaseVectorRVClass<V,M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -233,14 +233,14 @@ uqGenericVectorRVClass<V,M>::uqGenericVectorRVClass(
   :
   uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"gen").c_str(),imageSet)
 {
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Entering uqGenericVectorRVClass<V,M>::constructor() [1]"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqGenericVectorRVClass<V,M>::constructor() [1]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Leaving uqGenericVectorRVClass<V,M>::constructor() [1]"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqGenericVectorRVClass<V,M>::constructor() [1]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -258,8 +258,8 @@ uqGenericVectorRVClass<V,M>::uqGenericVectorRVClass(
   :
   uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"gen").c_str(),imageSet)
 {
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Entering uqGenericVectorRVClass<V,M>::constructor() [2]"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqGenericVectorRVClass<V,M>::constructor() [2]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -270,8 +270,8 @@ uqGenericVectorRVClass<V,M>::uqGenericVectorRVClass(
   m_unifiedCdf = &unifiedCdf;
   m_mdf        = &mdf;
 
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Leaving uqGenericVectorRVClass<V,M>::constructor() [2]"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqGenericVectorRVClass<V,M>::constructor() [2]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -371,8 +371,8 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
   :
   uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"gau").c_str(),imageSet)
 {
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Entering uqGaussianVectorRVClass<V,M>::constructor() [1]"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqGaussianVectorRVClass<V,M>::constructor() [1]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -399,8 +399,8 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
   m_unifiedCdf = NULL; // FIX ME: complete code
   m_mdf        = NULL; // FIX ME: complete code
 
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Leaving uqGaussianVectorRVClass<V,M>::constructor() [1]"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqGaussianVectorRVClass<V,M>::constructor() [1]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -415,8 +415,8 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
   :
   uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"gau").c_str(),imageSet)
 {
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Entering uqGaussianVectorRVClass<V,M>::constructor() [2]"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqGaussianVectorRVClass<V,M>::constructor() [2]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -429,10 +429,10 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
   M lowerCholCovMatrix(covMatrix);
   int iRC = lowerCholCovMatrix.chol();
   if (iRC) {
-    if (m_env.subDisplayOutputFile()) {
-      *m_env.subDisplayOutputFile() << "In uqGaussianVectorRVClass<V,M>::constructor() [2]: covMatrix contents are\n";
-      *m_env.subDisplayOutputFile() << covMatrix; // FIX ME: might demand parallelism
-      *m_env.subDisplayOutputFile() << std::endl;
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "In uqGaussianVectorRVClass<V,M>::constructor() [2]: covMatrix contents are\n";
+      *m_env.subDisplayFile() << covMatrix; // FIX ME: might demand parallelism
+      *m_env.subDisplayFile() << std::endl;
     }
   }
   UQ_FATAL_TEST_MACRO(iRC,
@@ -450,8 +450,8 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
   m_unifiedCdf = NULL; // FIX ME: complete code
   m_mdf        = NULL; // FIX ME: complete code
 
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Leaving uqGaussianVectorRVClass<V,M>::constructor() [2]"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqGaussianVectorRVClass<V,M>::constructor() [2]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -528,8 +528,8 @@ uqUniformVectorRVClass<V,M>::uqUniformVectorRVClass(
   :
   uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"uni").c_str(),imageSet)
 {
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Entering uqUniformVectorRVClass<V,M>::constructor()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqUniformVectorRVClass<V,M>::constructor()"
                                   << ": prefix = " << m_prefix
                                   << std::endl;
   }
@@ -542,8 +542,8 @@ uqUniformVectorRVClass<V,M>::uqUniformVectorRVClass(
   m_unifiedCdf = NULL; // FIX ME: complete code
   m_mdf        = NULL; // FIX ME: complete code
 
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Leaving uqUniformVectorRVClass<V,M>::constructor()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqUniformVectorRVClass<V,M>::constructor()"
                                   << ": prefix = " << m_prefix
                                   << std::endl;
   }

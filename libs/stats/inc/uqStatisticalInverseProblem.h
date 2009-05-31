@@ -146,8 +146,8 @@ uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
   m_mcSeqGenerator           (NULL),
   m_chain                    (NULL)
 {
-  if (m_env.subDisplayOutputFile()) {
-    *m_env.subDisplayOutputFile() << "Entering uqStatisticalInverseProblemClass<P_V,P_M>::constructor()"
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Entering uqStatisticalInverseProblemClass<P_V,P_M>::constructor()"
                            << ": prefix = "              << m_prefix
                            << std::endl;
   }
@@ -156,15 +156,15 @@ uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
 
-  if (m_env.subDisplayOutputFile()) {
-    *m_env.subDisplayOutputFile() << "In uqStatisticalInverseProblemClass<P_V,P_M>::constructor()"
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "In uqStatisticalInverseProblemClass<P_V,P_M>::constructor()"
                            << ": after getting values of options, state of object is:"
                            << "\n" << *this
                            << std::endl;
   }
 
-  if (m_env.subDisplayOutputFile()) {
-    *m_env.subDisplayOutputFile() << "Leaving uqStatisticalInverseProblemClass<P_V,P_M>::constructor()"
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Leaving uqStatisticalInverseProblemClass<P_V,P_M>::constructor()"
                            << ": prefix = "              << m_prefix
                            << std::endl;
   }
@@ -212,8 +212,8 @@ void
   po::options_description& optionsDesc)
 {
   if (m_env.allOptionsMap().count(m_option_help.c_str())) {
-    if (m_env.subDisplayOutputFile()) {
-      *m_env.subDisplayOutputFile() << optionsDesc
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << optionsDesc
                              << std::endl;
     }
   }
@@ -265,15 +265,15 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   m_env.syncPrintDebugMsg("Entering uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()",1,3000000,m_env.fullComm());
 
   if (m_computeSolution == false) {
-    if ((m_env.subDisplayOutputFile())) {
-      *m_env.subDisplayOutputFile() << "In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()"
+    if ((m_env.subDisplayFile())) {
+      *m_env.subDisplayFile() << "In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()"
                              << ": avoiding solution, as requested by user"
                              << std::endl;
     }
     return;
   }
-  if ((m_env.subDisplayOutputFile())) {
-    *m_env.subDisplayOutputFile() << "In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()"
+  if ((m_env.subDisplayFile())) {
+    *m_env.subDisplayFile() << "In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()"
                            << ": computing solution, as requested by user"
                            << std::endl;
   }
@@ -326,8 +326,8 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
       (m_dataOutputAllow.find(m_env.subId()) != m_dataOutputAllow.end()              )) {
     if (m_env.subRank() == 0) {
       // Write data output file
-      if (m_env.subDisplayOutputFile()) {
-        *m_env.subDisplayOutputFile() << "Opening data output file '" << m_dataOutputFileName
+      if (m_env.subDisplayFile()) {
+        *m_env.subDisplayFile() << "Opening data output file '" << m_dataOutputFileName
                                       << "' for calibration problem with problem with prefix = " << m_prefix
                                       << std::endl;
       }
@@ -355,15 +355,15 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
       // Close file
       ofsvar->close();
       delete ofsvar;
-      if (m_env.subDisplayOutputFile()) {
-        *m_env.subDisplayOutputFile() << "Closed data output file '" << m_dataOutputFileName
+      if (m_env.subDisplayFile()) {
+        *m_env.subDisplayFile() << "Closed data output file '" << m_dataOutputFileName
                                       << "' for calibration problem with problem with prefix = " << m_prefix
                                       << std::endl;
       }
     }
   }
-  if (m_env.subDisplayOutputFile()) {
-    *m_env.subDisplayOutputFile() << std::endl;
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << std::endl;
   }
 
   m_env.syncPrintDebugMsg("Leaving uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()",1,3000000,m_env.fullComm());

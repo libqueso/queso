@@ -71,7 +71,7 @@ public:
           int                     inter0Rank               () const;
           const Epetra_MpiComm&   inter0Comm               () const; 
 
-                std::ofstream*    subDisplayOutputFile     () const;
+                std::ofstream*    subDisplayFile           () const;
 
           unsigned int            numSubEnvironments       () const;
           unsigned int            subId                    () const;
@@ -130,7 +130,7 @@ protected:
   int                      m_inter0Rank;
   int                      m_inter0CommSize;
 
-  mutable std::ofstream*   m_subDisplayOutputFile;
+  mutable std::ofstream*   m_subDisplayFile;
   gsl_rng*                 m_rng;
   struct timeval           m_timevalBegin;
 

@@ -74,14 +74,14 @@ uqBaseVectorCdfClass<V,M>::uqBaseVectorCdfClass(
   m_prefix    ((std::string)(prefix)+"Cdf_"),
   m_pdfSupport(pdfSupport)
 {
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Entering uqBaseVectorCdfClass<V,M>::constructor()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqBaseVectorCdfClass<V,M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Leaving uqBaseVectorCdfClass<V,M>::constructor()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqBaseVectorCdfClass<V,M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -204,16 +204,16 @@ uqGaussianVectorCdfClass<V,M>::uqGaussianVectorCdfClass(
   uqBaseVectorCdfClass<V,M>(prefix,pdfSupport),
   m_covMatrix              (m_pdfSupport.newDiagMatrix(domainVarianceValues*domainVarianceValues))
 {
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Entering uqGaussianVectorCdfClass<V,M>::constructor() [1]"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqGaussianVectorCdfClass<V,M>::constructor() [1]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
   commonConstructor();
 
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Leaving uqGaussianVectorCdfClass<V,M>::constructor() [1]"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqGaussianVectorCdfClass<V,M>::constructor() [1]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -229,16 +229,16 @@ uqGaussianVectorCdfClass<V,M>::uqGaussianVectorCdfClass(
   uqBaseVectorCdfClass<V,M>(prefix,pdfSupport),
   m_covMatrix              (new M(covMatrix))
 {
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Entering uqGaussianVectorCdfClass<V,M>::constructor() [2]"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqGaussianVectorCdfClass<V,M>::constructor() [2]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
   commonConstructor();
 
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Leaving uqGaussianVectorCdfClass<V,M>::constructor() [2]"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqGaussianVectorCdfClass<V,M>::constructor() [2]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -313,8 +313,8 @@ uqSampledVectorCdfClass<V,M>::uqSampledVectorCdfClass(
   uqBaseVectorCdfClass<V,M>(prefix,oneDGrids.rowSpace()),
   m_cdfs(m_pdfSupport.vectorSpace().map(),1)
 {
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Entering uqSampledVectorCdfClass<V,M>::constructor()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqSampledVectorCdfClass<V,M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -328,8 +328,8 @@ uqSampledVectorCdfClass<V,M>::uqSampledVectorCdfClass(
                                                       cdfValues.oneDTable(i));
   }
 
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayOutputFile() << "Leaving uqSampledVectorCdfClass<V,M>::constructor()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqSampledVectorCdfClass<V,M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }

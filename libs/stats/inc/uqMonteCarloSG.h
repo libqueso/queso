@@ -182,8 +182,8 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::uqMonteCarloSGClass(
   m_qseqComputeStats              (UQ_MOC_SG_QSEQ_COMPUTE_STATS_ODV        ),
   m_qseqStatisticalOptions        (NULL)
 {
-  if (m_env.subDisplayOutputFile()) {
-    *m_env.subDisplayOutputFile() << "Entering uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::constructor()"
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Entering uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::constructor()"
                                   << std::endl;
   }
 
@@ -191,8 +191,8 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::uqMonteCarloSGClass(
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
 
-  if (m_env.subDisplayOutputFile()) {
-    *m_env.subDisplayOutputFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::constructor()"
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::constructor()"
                                   << ": after getting values of options with prefix '" << m_prefix
                                   << "', state of  object is:"
                                   << "\n" << *this
@@ -202,8 +202,8 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::uqMonteCarloSGClass(
   if (m_pseqComputeStats) m_pseqStatisticalOptions = new uqChainStatisticalOptionsClass(m_env,m_prefix + "pseq_");
   if (m_qseqComputeStats) m_qseqStatisticalOptions = new uqChainStatisticalOptionsClass(m_env,m_prefix + "qseq_");
 
-  if (m_env.subDisplayOutputFile()) {
-    *m_env.subDisplayOutputFile() << "Leaving uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::constructor()"
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Leaving uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::constructor()"
                            << std::endl;
   }
 }
@@ -246,8 +246,8 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::getMyOptionValues(
   po::options_description& optionsDesc)
 {
   if (m_env.allOptionsMap().count(m_option_help.c_str())) {
-    if (m_env.subDisplayOutputFile()) {
-      *m_env.subDisplayOutputFile() << optionsDesc
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << optionsDesc
                              << std::endl;
     }
   }
@@ -356,8 +356,8 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   // Generate sequence of qoi values
   //****************************************************
   unsigned int subActualSizeBeforeGeneration = std::min(m_qseqSize,paramRv.realizer().subPeriod());
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayOutputFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+    *m_env.subDisplayFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                                   << ": m_qseqSize = "                                                << m_qseqSize
                                   << ", paramRv.realizer().subPeriod() = "                            << paramRv.realizer().subPeriod()
                                   << ", about to call actualGenerateSequence() with subActualSize = " << subActualSizeBeforeGeneration
@@ -382,8 +382,8 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
                       "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()",
                       "P and Q sequences should have the same size!");
 
-  if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayOutputFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+    *m_env.subDisplayFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                                   << ": returned from call to actualGenerateSequence() with subActualSize = " << subActualSizeAfterGeneration
                                   << std::endl;
   }
@@ -391,8 +391,8 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   //****************************************************
   // Open generic output file      
   //****************************************************
-  if (m_env.subDisplayOutputFile()) {
-    *m_env.subDisplayOutputFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                                   << ", prefix = "                                                        << m_prefix
                                   << ": checking necessity of opening generic output file (qseq name is " << workingQSeq.name()
                                   << ") ..."
@@ -410,8 +410,8 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   // --> write parameter sequence
   // --> compute statistics on it
   //****************************************************
-  if (m_env.subDisplayOutputFile()) {
-    *m_env.subDisplayOutputFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                            << ", prefix = "                                            << m_prefix
                            << ": checking necessity of opening output files for pseq " << workingPSeq.name()
                            << "..."
@@ -432,8 +432,8 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
 
   if (pseqOfsVar) {
     pseqOfsVar->close();
-    if (m_env.subDisplayOutputFile()) {
-      *m_env.subDisplayOutputFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                              << ", prefix = "                 << m_prefix
                              << ": closed data output file '" << m_pseqDataOutputFileName
                              << "' for pseq "                 << workingPSeq.name()
@@ -455,8 +455,8 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
 
   if (unifiedPSeqOfsVar) {
     unifiedPSeqOfsVar->close();
-    if (m_env.subDisplayOutputFile()) {
-      *m_env.subDisplayOutputFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                              << ", prefix = "                         << m_prefix
                              << ": closed unified data output file '" << m_pseqDataOutputFileName
                              << "' for pseq "                         << workingPSeq.name()
@@ -466,8 +466,8 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
 #else
   if (m_pseqDataOutputFileName != UQ_MOC_SG_FILENAME_FOR_NO_FILE) {
     workingPSeq.unifiedWriteContents(m_pseqDataOutputFileName);
-    if (m_env.subDisplayOutputFile()) {
-      *m_env.subDisplayOutputFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                              << ", prefix = "                         << m_prefix
                              << ": closed unified data output file '" << m_pseqDataOutputFileName
                              << "' for pseq "                         << workingPSeq.name()
@@ -478,15 +478,15 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
 
   // Take case of other aspects of pseq
   if (m_pseqComputeStats) {
-    if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 0)) {
-      *m_env.subDisplayOutputFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+      *m_env.subDisplayFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                              << ": about to call 'workingPSeq.computeStatistics()'"
                              << std::endl;
     }
     workingPSeq.computeStatistics(*m_pseqStatisticalOptions,
                                   genericOfsVar);
-    if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 0)) {
-      *m_env.subDisplayOutputFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+      *m_env.subDisplayFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                              << ": returned from call to 'workingPSeq.computeStatistics()'"
                              << std::endl;
     }
@@ -497,8 +497,8 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   // --> write qoi sequence
   // --> compute statistics on it
   //****************************************************
-  if (m_env.subDisplayOutputFile()) {
-    *m_env.subDisplayOutputFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                            << ", prefix = "                                            << m_prefix
                            << ": checking necessity of opening output files for qseq " << workingQSeq.name()
                            << "..."
@@ -519,8 +519,8 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
 
   if (qseqOfsVar) {
     qseqOfsVar->close();
-    if (m_env.subDisplayOutputFile()) {
-      *m_env.subDisplayOutputFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                              << ", prefix = "                 << m_prefix
                              << ": closed data output file '" << m_qseqDataOutputFileName
                              << "' for qseq "                 << workingQSeq.name()
@@ -531,8 +531,8 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   // Take "unified" care of qseq
   if (m_qseqDataOutputFileName != UQ_MOC_SG_FILENAME_FOR_NO_FILE) {
     workingQSeq.unifiedWriteContents(m_qseqDataOutputFileName);
-    if (m_env.subDisplayOutputFile()) {
-      *m_env.subDisplayOutputFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                              << ", prefix = "                         << m_prefix
                              << ": closed unified data output file '" << m_qseqDataOutputFileName
                              << "' for qseq "                         << workingQSeq.name()
@@ -542,15 +542,15 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
 
   // Take case of other aspects of qseq
   if (m_qseqComputeStats) {
-    if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 0)) {
-      *m_env.subDisplayOutputFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+      *m_env.subDisplayFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                              << ": about to call 'workingQSeq.computeStatistics()'"
                              << std::endl;
     }
     workingQSeq.computeStatistics(*m_qseqStatisticalOptions,
                                   genericOfsVar);
-    if ((m_env.subDisplayOutputFile()) && (m_env.displayVerbosity() >= 0)) {
-      *m_env.subDisplayOutputFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+      *m_env.subDisplayFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                              << ": returned from call to 'workingQSeq.computeStatistics()'"
                              << std::endl;
     }
@@ -561,16 +561,16 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   //****************************************************
   if (genericOfsVar) {
     genericOfsVar->close();
-    if (m_env.subDisplayOutputFile()) {
-      *m_env.subDisplayOutputFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                              << ", prefix = "                         << m_prefix
                              << ": closed generic data output file '" << m_dataOutputFileName
                              << "' for qoi sequence "                 << workingQSeq.name()
                              << std::endl;
     }
   }
-  if (m_env.subDisplayOutputFile()) {
-    *m_env.subDisplayOutputFile() << std::endl;
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << std::endl;
   }
 
   return;
@@ -584,8 +584,8 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
         uqBaseVectorSequenceClass<Q_V,Q_M>& workingQSeq,
         unsigned int                        requestedSeqSize)
 {
-  if (m_env.subDisplayOutputFile()) {
-    *m_env.subDisplayOutputFile() << "Starting the generation of qoi sequence " << workingQSeq.name()
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Starting the generation of qoi sequence " << workingQSeq.name()
                            << ", with "                                         << requestedSeqSize
                            << " samples..."
                            << std::endl;
@@ -645,8 +645,8 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
 
     if ((m_qseqDisplayPeriod            > 0) && 
         (((i+1) % m_qseqDisplayPeriod) == 0)) {
-      if (m_env.subDisplayOutputFile()) {
-        *m_env.subDisplayOutputFile() << "Finished generating " << i+1
+      if (m_env.subDisplayFile()) {
+        *m_env.subDisplayFile() << "Finished generating " << i+1
                                << " qoi samples"
                                << std::endl;
       }
@@ -660,8 +660,8 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
 
   seqRunTime = uqMiscGetEllapsedSeconds(&timevalSeq);
 
-  if (m_env.subDisplayOutputFile()) {
-    *m_env.subDisplayOutputFile() << "Finished the generation of qoi sequence " << workingQSeq.name()
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Finished the generation of qoi sequence " << workingQSeq.name()
                                   << ", with sub "                              << workingQSeq.subSequenceSize()
                                   << " samples"
                                   << "\nSome information about this sequence:"
