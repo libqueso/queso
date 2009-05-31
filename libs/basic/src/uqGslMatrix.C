@@ -423,6 +423,72 @@ uqGslMatrixClass::invertMultiply(
   return;
 }
 
+uqGslVectorClass
+uqGslMatrixClass::invertMultiplyForceLU(
+  const uqGslVectorClass& b) const
+{
+  UQ_FATAL_TEST_MACRO((this->numCols() != b.size()),
+                      m_env.rank(),
+                      "uqGslMatrixClass::invertMultiply(), return vector",
+                      "matrix and rhs have incompatible sizes");
+
+  uqGslVectorClass x(m_env,m_map);
+  this->invertMultiplyForceLU(b,x);
+
+  return x;
+}
+
+void
+uqGslMatrixClass::invertMultiplyForceLU(
+  const uqGslVectorClass& b,
+        uqGslVectorClass& x) const
+{
+  UQ_FATAL_TEST_MACRO((this->numCols() != b.size()),
+                      m_env.rank(),
+                      "uqGslMatrixClass::multiply(), return void",
+                      "matrix and rhs have incompatible sizes");
+
+  UQ_FATAL_TEST_MACRO((x.size() != b.size()),
+                      m_env.rank(),
+                      "uqGslMatrixClass::multiply(), return void",
+                      "solution and rhs have incompatible sizes");
+
+  int iRC;
+
+  if( m_LU == NULL ) m_LU = gsl_matrix_calloc(numRows(),numCols());
+  UQ_FATAL_TEST_MACRO((m_LU == NULL),
+		      m_env.rank(),
+		      "uqGslMatrixClass::invertMultiply()",
+		      "gsl_matrix_calloc() failed");
+  
+  iRC = gsl_matrix_memcpy(m_LU, m_mat);
+  UQ_FATAL_RC_MACRO(iRC,
+		    m_env.rank(),
+		    "uqGslMatrixClass::invertMultiply()",
+		    "gsl_matrix_memcpy() failed");
+  
+  if( m_permutation == NULL ) m_permutation = gsl_permutation_calloc(numCols());
+  UQ_FATAL_TEST_MACRO((m_permutation == NULL),
+		      m_env.rank(),
+		      "uqGslMatrixClass::invertMultiply()",
+		      "gsl_permutation_calloc() failed");
+  
+  int signum;
+  iRC = gsl_linalg_LU_decomp(m_LU,m_permutation,&signum); 
+  UQ_FATAL_RC_MACRO(iRC,
+		    m_env.rank(),
+		    "uqGslMatrixClass::invertMultiply()",
+		    "gsl_linalg_LU_decomp() failed");
+
+  iRC = gsl_linalg_LU_solve(m_LU,m_permutation,b.data(),x.data()); 
+  UQ_FATAL_RC_MACRO(iRC,
+                    m_env.rank(),
+                    "uqGslMatrixClass::invertMultiply()",
+                    "gsl_linalg_LU_solve() failed");
+
+  return;
+}
+
 void
 uqGslMatrixClass::print(std::ostream& os) const
 {

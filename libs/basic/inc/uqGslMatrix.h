@@ -71,6 +71,10 @@ public:
   uqGslVectorClass  multiply      (const uqGslVectorClass& x) const;
   uqGslVectorClass  invertMultiply(const uqGslVectorClass& b) const;
   void              invertMultiply(const uqGslVectorClass& b, uqGslVectorClass& x) const;
+
+  uqGslVectorClass  invertMultiplyForceLU(const uqGslVectorClass& b) const;
+  void              invertMultiplyForceLU(const uqGslVectorClass& b, uqGslVectorClass& x) const;
+
   void              print         (std::ostream& os) const;
 
 private:
