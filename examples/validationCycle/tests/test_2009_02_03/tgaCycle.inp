@@ -13,10 +13,10 @@ env_seed               = 0
 ###############################################
 # Calibration (cal) stage: statistical inverse problem (ip)
 ###############################################
-cycle_cal_ip_help                = anything
-cycle_cal_ip_computeSolution     = 1
-cycle_cal_ip_dataOutputFileName  = outputData/tgaCalOutput
-cycle_cal_ip_dataOutputAllow     = 0 1
+cycle_cal_ip_help               = anything
+cycle_cal_ip_computeSolution    = 1
+cycle_cal_ip_dataOutputFileName = outputData/tgaCalOutput
+cycle_cal_ip_dataOutputAllow    = 0 1
 
 ###############################################
 # 'cal_ip_': information for Markov Chain algorithm

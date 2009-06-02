@@ -182,7 +182,7 @@ uqEnvironmentOptionsClass::print(std::ostream& os) const
 {
   os <<         m_option_numSubEnvironments << " = " << m_numSubEnvironments
      << "\n" << m_option_subDisplayFileName << " = " << m_subDisplayFileName
-     << "\n" << m_option_subDisplayAllowAll << " = " << m_option_subDisplayAllowAll
+     << "\n" << m_option_subDisplayAllowAll << " = " << m_subDisplayAllowAll
      << "\n" << m_option_subDisplayAllow << " = ";
   for (std::set<unsigned int>::iterator setIt = m_subDisplayAllowSet.begin(); setIt != m_subDisplayAllowSet.end(); ++setIt) {
     os << *setIt << " ";
