@@ -143,6 +143,9 @@ public:
                                                 const V&                            unifiedMaxVec,
                                                 std::vector<V*>&                    unifiedCentersForAllBins,
                                                 std::vector<V*>&                    unifiedQuanttsForAllBins) const;
+        void         subCdfStacc               (unsigned int                        initialPos,
+                                                const std::vector<V*>&              evalPositionsVecs,
+                                                std::vector<V*>&                    cdfStaccVecs) const;
         void         subInterQuantileRange     (unsigned int                        initialPos,
                                                 V&                                  iqrVec) const;
         void         unifiedInterQuantileRange (unsigned int                        initialPos,
@@ -153,8 +156,8 @@ public:
         void         unifiedScalesForKDE       (unsigned int                        initialPos,
                                                 const V&                            unifiedIqrVec,
                                                 V&                                  unifiedScaleVec) const;
-        void         sabGaussianKDE            (const V&                            evalParamVec,
-                                                V&                                  densityVec) const;
+        //void         sabGaussianKDE            (const V&                            evalParamVec,
+        //                                        V&                                  densityVec) const;
         void         subGaussianKDE            (unsigned int                        initialPos,
                                                 const V&                            scaleVec,
                                                 const std::vector<V*>&              evalParamVecs,
@@ -1236,6 +1239,20 @@ uqSequenceOfVectorsClass<V,M>::unifiedHistogram(
 
 template <class V, class M>
 void
+uqSequenceOfVectorsClass<V,M>::subCdfStacc(
+  unsigned int           initialPos,
+  const std::vector<V*>& evalPositionsVecs,
+  std::vector<V*>&       cdfStaccVecs) const
+{
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.fullRank(),
+                      "uqSequenceOfVectorsClass<V,M>::subCdfStacc()",
+                      "not implemented yet");
+  return;
+}
+
+template <class V, class M>
+void
 uqSequenceOfVectorsClass<V,M>::subInterQuantileRange(
   unsigned int initialPos,
   V&           iqrVec) const
@@ -1357,7 +1374,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedScalesForKDE(
 
   return;
 }
-
+#if 0
 template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::sabGaussianKDE(
@@ -1379,7 +1396,7 @@ uqSequenceOfVectorsClass<V,M>::sabGaussianKDE(
 
   return;
 }
-
+#endif
 template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subGaussianKDE(

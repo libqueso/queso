@@ -72,6 +72,8 @@ uqChainStatisticalOptionsClass::uqChainStatisticalOptionsClass(
   m_autoCorrWrite           (UQ_CHAIN_AUTO_CORR_WRITE_ODV),
   m_histCompute             (UQ_CHAIN_HIST_COMPUTE_ODV),
   m_histNumInternalBins     (UQ_CHAIN_HIST_NUM_INTERNAL_BINS_ODV),
+  m_cdfStaccCompute         (UQ_CHAIN_CDF_STACC_COMPUTE_ODV),
+  m_cdfStaccNumEvalPositions(UQ_CHAIN_CDF_STACC_NUM_EVAL_POSITIONS_ODV),
   m_kdeCompute              (UQ_CHAIN_KDE_COMPUTE_ODV),
   m_kdeNumEvalPositions     (UQ_CHAIN_KDE_NUM_EVAL_POSITIONS_ODV),
   m_covMatrixCompute        (UQ_CHAIN_COV_MATRIX_COMPUTE_ODV),
@@ -83,55 +85,58 @@ uqChainStatisticalOptionsClass::uqChainStatisticalOptionsClass(
                            << std::endl;
   }
 
-  m_option_help                     = m_prefix + "help";
+  m_option_help                      = m_prefix + "help";
 
-  m_option_initialDiscardedPortions = m_prefix + "initialDiscardedPortions";
+  m_option_initialDiscardedPortions  = m_prefix + "initialDiscardedPortions";
 
-  m_option_bmm_run                  = m_prefix + "bmm_run";
-  m_option_bmm_lengths              = m_prefix + "bmm_lengths";
-  m_option_bmm_display              = m_prefix + "bmm_display";
-  m_option_bmm_write                = m_prefix + "bmm_write";
+  m_option_bmm_run                   = m_prefix + "bmm_run";
+  m_option_bmm_lengths               = m_prefix + "bmm_lengths";
+  m_option_bmm_display               = m_prefix + "bmm_display";
+  m_option_bmm_write                 = m_prefix + "bmm_write";
 
-  m_option_fft_compute              = m_prefix + "fft_compute";
-  m_option_fft_paramId              = m_prefix + "fft_paramId";
-  m_option_fft_size                 = m_prefix + "fft_size";
-  m_option_fft_testInversion        = m_prefix + "fft_testInversion";
-  m_option_fft_write                = m_prefix + "fft_write";
+  m_option_fft_compute               = m_prefix + "fft_compute";
+  m_option_fft_paramId               = m_prefix + "fft_paramId";
+  m_option_fft_size                  = m_prefix + "fft_size";
+  m_option_fft_testInversion         = m_prefix + "fft_testInversion";
+  m_option_fft_write                 = m_prefix + "fft_write";
 
-  m_option_psd_compute              = m_prefix + "psd_compute";
-  m_option_psd_numBlocks            = m_prefix + "psd_numBlocks";
-  m_option_psd_hopSizeRatio         = m_prefix + "psd_hopSizeRatio";
-  m_option_psd_paramId              = m_prefix + "psd_paramId";
-  m_option_psd_write                = m_prefix + "psd_write";
+  m_option_psd_compute               = m_prefix + "psd_compute";
+  m_option_psd_numBlocks             = m_prefix + "psd_numBlocks";
+  m_option_psd_hopSizeRatio          = m_prefix + "psd_hopSizeRatio";
+  m_option_psd_paramId               = m_prefix + "psd_paramId";
+  m_option_psd_write                 = m_prefix + "psd_write";
 
-  m_option_psdAtZero_compute        = m_prefix + "psdAtZero_compute";
-  m_option_psdAtZero_numBlocks      = m_prefix + "psdAtZero_numBlocks";
-  m_option_psdAtZero_hopSizeRatio   = m_prefix + "psdAtZero_hopSizeRatio";
-  m_option_psdAtZero_display        = m_prefix + "psdAtZero_display";
-  m_option_psdAtZero_write          = m_prefix + "psdAtZero_write";
+  m_option_psdAtZero_compute         = m_prefix + "psdAtZero_compute";
+  m_option_psdAtZero_numBlocks       = m_prefix + "psdAtZero_numBlocks";
+  m_option_psdAtZero_hopSizeRatio    = m_prefix + "psdAtZero_hopSizeRatio";
+  m_option_psdAtZero_display         = m_prefix + "psdAtZero_display";
+  m_option_psdAtZero_write           = m_prefix + "psdAtZero_write";
 
-  m_option_geweke_compute           = m_prefix + "geweke_compute";
-  m_option_geweke_naRatio           = m_prefix + "geweke_naRatio";
-  m_option_geweke_nbRatio           = m_prefix + "geweke_nbRatio";
-  m_option_geweke_display           = m_prefix + "geweke_display";
-  m_option_geweke_write             = m_prefix + "geweke_write";
+  m_option_geweke_compute            = m_prefix + "geweke_compute";
+  m_option_geweke_naRatio            = m_prefix + "geweke_naRatio";
+  m_option_geweke_nbRatio            = m_prefix + "geweke_nbRatio";
+  m_option_geweke_display            = m_prefix + "geweke_display";
+  m_option_geweke_write              = m_prefix + "geweke_write";
 
-  m_option_autoCorr_computeViaDef   = m_prefix + "autoCorr_computeViaDef";
-  m_option_autoCorr_computeViaFft   = m_prefix + "autoCorr_computeViaFft";
-  m_option_autoCorr_secondLag       = m_prefix + "autoCorr_secondLag";
-  m_option_autoCorr_lagSpacing      = m_prefix + "autoCorr_lagSpacing";
-  m_option_autoCorr_numLags         = m_prefix + "autoCorr_numLags";
-  m_option_autoCorr_display         = m_prefix + "autoCorr_display";
-  m_option_autoCorr_write           = m_prefix + "autoCorr_write";
+  m_option_autoCorr_computeViaDef    = m_prefix + "autoCorr_computeViaDef";
+  m_option_autoCorr_computeViaFft    = m_prefix + "autoCorr_computeViaFft";
+  m_option_autoCorr_secondLag        = m_prefix + "autoCorr_secondLag";
+  m_option_autoCorr_lagSpacing       = m_prefix + "autoCorr_lagSpacing";
+  m_option_autoCorr_numLags          = m_prefix + "autoCorr_numLags";
+  m_option_autoCorr_display          = m_prefix + "autoCorr_display";
+  m_option_autoCorr_write            = m_prefix + "autoCorr_write";
 
-  m_option_hist_compute             = m_prefix + "hist_compute";
-  m_option_hist_numInternalBins     = m_prefix + "hist_numInternalBins";
+  m_option_hist_compute              = m_prefix + "hist_compute";
+  m_option_hist_numInternalBins      = m_prefix + "hist_numInternalBins";
 
-  m_option_kde_compute              = m_prefix + "kde_compute";
-  m_option_kde_numEvalPositions     = m_prefix + "kde_numEvalPositions";
+  m_option_cdfStacc_compute          = m_prefix + "cdfStacc_compute";
+  m_option_cdfStacc_numEvalPositions = m_prefix + "cdfStacc_numEvalPositions";
 
-  m_option_covMatrix_compute        = m_prefix + "covMatrix_compute";
-  m_option_corrMatrix_compute       = m_prefix + "corrMatrix_compute";
+  m_option_kde_compute               = m_prefix + "kde_compute";
+  m_option_kde_numEvalPositions      = m_prefix + "kde_numEvalPositions";
+
+  m_option_covMatrix_compute         = m_prefix + "covMatrix_compute";
+  m_option_corrMatrix_compute        = m_prefix + "corrMatrix_compute";
 
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
@@ -194,6 +199,8 @@ uqChainStatisticalOptionsClass::defineMyOptions(
     (m_option_autoCorr_write.c_str(),                 po::value<bool        >()->default_value(UQ_CHAIN_AUTO_CORR_WRITE_ODV                 ), "write computed autocorrelations to the output file"             )
     (m_option_hist_compute.c_str(),                   po::value<bool        >()->default_value(UQ_CHAIN_HIST_COMPUTE_ODV                    ), "compute histograms"                                             )
     (m_option_hist_numInternalBins.c_str(),           po::value<unsigned int>()->default_value(UQ_CHAIN_HIST_NUM_INTERNAL_BINS_ODV          ), "number of internal bins"                                        )
+    (m_option_cdfStacc_compute.c_str(),               po::value<bool        >()->default_value(UQ_CHAIN_CDF_STACC_COMPUTE_ODV               ), "compute histograms"                                             )
+    (m_option_cdfStacc_numEvalPositions.c_str(),      po::value<unsigned int>()->default_value(UQ_CHAIN_CDF_STACC_NUM_EVAL_POSITIONS_ODV    ), "number of internal bins"                                        )
     (m_option_kde_compute.c_str(),                    po::value<bool        >()->default_value(UQ_CHAIN_KDE_COMPUTE_ODV                     ), "compute kernel density estimators"                              )
     (m_option_kde_numEvalPositions.c_str(),           po::value<unsigned int>()->default_value(UQ_CHAIN_KDE_NUM_EVAL_POSITIONS_ODV          ), "number of evaluation positions"                                 )
     (m_option_covMatrix_compute.c_str(),              po::value<bool        >()->default_value(UQ_CHAIN_COV_MATRIX_COMPUTE_ODV              ), "compute covariance matrix"                                      )
@@ -391,6 +398,14 @@ uqChainStatisticalOptionsClass::getMyOptionValues(
 
   if (m_env.allOptionsMap().count(m_option_hist_numInternalBins.c_str())) {
     m_histNumInternalBins = m_env.allOptionsMap()[m_option_hist_numInternalBins.c_str()].as<unsigned int>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_cdfStacc_compute.c_str())) {
+    m_cdfStaccCompute = m_env.allOptionsMap()[m_option_cdfStacc_compute.c_str()].as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_cdfStacc_numEvalPositions.c_str())) {
+    m_cdfStaccNumEvalPositions = m_env.allOptionsMap()[m_option_cdfStacc_numEvalPositions.c_str()].as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_kde_compute.c_str())) {
@@ -617,6 +632,18 @@ uqChainStatisticalOptionsClass::histNumInternalBins() const
 }
 
 bool
+uqChainStatisticalOptionsClass::cdfStaccCompute() const
+{
+  return m_cdfStaccCompute;
+}
+
+unsigned int
+uqChainStatisticalOptionsClass::cdfStaccNumEvalPositions() const
+{
+  return m_cdfStaccNumEvalPositions;
+}
+
+bool
 uqChainStatisticalOptionsClass::kdeCompute() const
 {
   return m_kdeCompute;
@@ -667,27 +694,29 @@ uqChainStatisticalOptionsClass::print(std::ostream& os) const
   for (unsigned int i = 0; i < m_psdAtZeroNumBlocks.size(); ++i) {
     os << m_psdAtZeroNumBlocks[i] << " ";
   }
-  os << "\n" << m_option_psdAtZero_hopSizeRatio << " = " << m_psdAtZeroHopSizeRatio
-     << "\n" << m_option_psdAtZero_display      << " = " << m_psdAtZeroDisplay
-     << "\n" << m_option_psdAtZero_write        << " = " << m_psdAtZeroWrite
-     << "\n" << m_option_geweke_compute         << " = " << m_gewekeCompute
-     << "\n" << m_option_geweke_naRatio         << " = " << m_gewekeNaRatio
-     << "\n" << m_option_geweke_nbRatio         << " = " << m_gewekeNbRatio
-     << "\n" << m_option_geweke_display         << " = " << m_gewekeDisplay
-     << "\n" << m_option_geweke_write           << " = " << m_gewekeWrite
-     << "\n" << m_option_autoCorr_computeViaDef << " = " << m_autoCorrComputeViaDef
-     << "\n" << m_option_autoCorr_computeViaFft << " = " << m_autoCorrComputeViaFft
-     << "\n" << m_option_autoCorr_secondLag     << " = " << m_autoCorrSecondLag
-     << "\n" << m_option_autoCorr_lagSpacing    << " = " << m_autoCorrLagSpacing
-     << "\n" << m_option_autoCorr_numLags       << " = " << m_autoCorrNumLags
-     << "\n" << m_option_autoCorr_display       << " = " << m_autoCorrDisplay
-     << "\n" << m_option_autoCorr_write         << " = " << m_autoCorrWrite
-     << "\n" << m_option_hist_compute           << " = " << m_histCompute
-     << "\n" << m_option_hist_numInternalBins   << " = " << m_histNumInternalBins
-     << "\n" << m_option_kde_compute            << " = " << m_kdeCompute
-     << "\n" << m_option_kde_numEvalPositions   << " = " << m_kdeNumEvalPositions
-     << "\n" << m_option_covMatrix_compute      << " = " << m_covMatrixCompute
-     << "\n" << m_option_corrMatrix_compute     << " = " << m_corrMatrixCompute
+  os << "\n" << m_option_psdAtZero_hopSizeRatio    << " = " << m_psdAtZeroHopSizeRatio
+     << "\n" << m_option_psdAtZero_display         << " = " << m_psdAtZeroDisplay
+     << "\n" << m_option_psdAtZero_write           << " = " << m_psdAtZeroWrite
+     << "\n" << m_option_geweke_compute            << " = " << m_gewekeCompute
+     << "\n" << m_option_geweke_naRatio            << " = " << m_gewekeNaRatio
+     << "\n" << m_option_geweke_nbRatio            << " = " << m_gewekeNbRatio
+     << "\n" << m_option_geweke_display            << " = " << m_gewekeDisplay
+     << "\n" << m_option_geweke_write              << " = " << m_gewekeWrite
+     << "\n" << m_option_autoCorr_computeViaDef    << " = " << m_autoCorrComputeViaDef
+     << "\n" << m_option_autoCorr_computeViaFft    << " = " << m_autoCorrComputeViaFft
+     << "\n" << m_option_autoCorr_secondLag        << " = " << m_autoCorrSecondLag
+     << "\n" << m_option_autoCorr_lagSpacing       << " = " << m_autoCorrLagSpacing
+     << "\n" << m_option_autoCorr_numLags          << " = " << m_autoCorrNumLags
+     << "\n" << m_option_autoCorr_display          << " = " << m_autoCorrDisplay
+     << "\n" << m_option_autoCorr_write            << " = " << m_autoCorrWrite
+     << "\n" << m_option_hist_compute              << " = " << m_histCompute
+     << "\n" << m_option_hist_numInternalBins      << " = " << m_histNumInternalBins
+     << "\n" << m_option_cdfStacc_compute          << " = " << m_cdfStaccCompute
+     << "\n" << m_option_cdfStacc_numEvalPositions << " = " << m_cdfStaccNumEvalPositions
+     << "\n" << m_option_kde_compute               << " = " << m_kdeCompute
+     << "\n" << m_option_kde_numEvalPositions      << " = " << m_kdeNumEvalPositions
+     << "\n" << m_option_covMatrix_compute         << " = " << m_covMatrixCompute
+     << "\n" << m_option_corrMatrix_compute        << " = " << m_corrMatrixCompute
      << std::endl;
 
   return;

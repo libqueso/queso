@@ -100,7 +100,7 @@ public:
                                                                 unsigned int                          numPos,
                                                                 const V&                              unifiedMeanVec,
                                                                 V&                                    unifiedSamVec) const = 0;
-  virtual  void                     subPopulationVariance         (unsigned int                       initialPos,
+  virtual  void                     subPopulationVariance      (unsigned int                          initialPos,
                                                                 unsigned int                          numPos,
                                                                 const V&                              meanVec,
                                                                 V&                                    popVec) const = 0;
@@ -159,6 +159,9 @@ public:
                                                                 const V&                              unifiedMaxVec,
                                                                 std::vector<V*>&                      unifiedCentersForAllBins,
                                                                 std::vector<V*>&                      unifiedQuanttsForAllBins) const = 0;
+  virtual  void                     subCdfStacc                (unsigned int                          initialPos,
+                                                                const std::vector<V*>&                evalPositionsVecs,
+                                                                std::vector<V*>&                      cdfStaccVecs) const = 0;
   virtual  void                     subInterQuantileRange      (unsigned int                          initialPos,
                                                                 V&                                    iqrVec) const = 0;
   virtual  void                     unifiedInterQuantileRange  (unsigned int                          initialPos,
@@ -169,8 +172,8 @@ public:
   virtual  void                     unifiedScalesForKDE        (unsigned int                          initialPos,
                                                                 const V&                              unifiedIqrVec,
                                                                 V&                                    unifiedScaleVec) const = 0;
-  virtual  void                     sabGaussianKDE             (const V&                              evaluationParamVec,
-                                                                V&                                    densityVec) const = 0;
+  //virtual  void                     sabGaussianKDE             (const V&                              evaluationParamVec,
+  //                                                              V&                                    densityVec) const = 0;
   virtual  void                     subGaussianKDE             (unsigned int                          initialPos,
                                                                 const V&                              scaleVec,
                                                                 const std::vector<V*>&                evaluationParamVecs,
@@ -224,7 +227,7 @@ protected:
                                                                 const std::vector<unsigned int>&      initialPosForStatistics,
                                                                 const std::vector<unsigned int>&      lagsForCorrs,
                                                                 std::ofstream*                        passedOfs);
-           void                     computeHistKde             (const uqChainStatisticalOptionsClass& statisticalOptions,
+           void                     computeHistCdfstaccKde     (const uqChainStatisticalOptionsClass& statisticalOptions,
                                                                 std::ofstream*                        passedOfs);
            void                     computeCovCorrMatrices     (const uqChainStatisticalOptionsClass& statisticalOptions,
                                                                 std::ofstream*                        passedOfs);
@@ -628,12 +631,13 @@ uqBaseVectorSequenceClass<V,M>::computeStatistics(
   }
 
   //****************************************************
-  // Compute histogram and/or Kde
+  // Compute histogram and/or cdf stacc and/or Kde
   //****************************************************
-  if ((statisticalOptions.histCompute()) ||
-      (statisticalOptions.kdeCompute() )) {
-    this->computeHistKde(statisticalOptions,
-                         passedOfs);
+  if ((statisticalOptions.histCompute    ()) ||
+      (statisticalOptions.cdfStaccCompute()) ||
+      (statisticalOptions.kdeCompute     ())) {
+    this->computeHistCdfstaccKde(statisticalOptions,
+                                 passedOfs);
   }
 
   //****************************************************
@@ -1535,14 +1539,14 @@ uqBaseVectorSequenceClass<V,M>::computeFilterParams(
 
 template<class V, class M>
 void
-uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
+uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
   const uqChainStatisticalOptionsClass& statisticalOptions,
   std::ofstream*                        passedOfs)
 {
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "\n"
                            << "\n-----------------------------------------------------"
-                           << "\n Computing histogram and/or KDE for chain " << m_name << " ..."
+                           << "\n Computing histogram and/or cdf stacc and/or KDE for chain " << m_name << " ..."
                            << "\n-----------------------------------------------------"
                            << "\n"
                            << std::endl;
@@ -1644,7 +1648,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
       else {
         UQ_FATAL_TEST_MACRO(true,
                             m_env.fullRank(),
-                            "uqBaseVectorSequenceClass<V,M>::computeHistKde()",
+                            "uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde()",
                             "unified min-max writing, parallel vectors not supported yet");
       }
     } // if subDisplayFile
@@ -1778,7 +1782,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
         else {
           UQ_FATAL_TEST_MACRO(true,
                               m_env.fullRank(),
-                              "uqBaseVectorSequenceClass<V,M>::computeHistKde()",
+                              "uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde()",
                               "unified histogram writing, parallel vectors not supported yet");
         }
       } // if passedOfs
@@ -1797,6 +1801,38 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
       *m_env.subDisplayFile() << "Chain histograms took " << tmpRunTime
                              << " seconds"
                              << std::endl;
+    }
+  }
+
+  //****************************************************
+  // Compute cdf statistical accuracy
+  //****************************************************
+  if ((statisticalOptions.cdfStaccCompute()             ) &&
+      (statisticalOptions.cdfStaccNumEvalPositions() > 0)) {
+    tmpRunTime = 0.;
+    iRC = gettimeofday(&timevalTmp, NULL);
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "\n-----------------------------------------------------"
+                              << "\nComputing cdf statistical accuracy"
+                              << std::endl;
+    }
+
+    std::vector<V*> cdfStaccEvalPositions(statisticalOptions.cdfStaccNumEvalPositions(),NULL);
+    uqMiscComputePositionsBetweenMinMax(statsMinPositions,
+                                        statsMaxPositions,
+                                        cdfStaccEvalPositions);
+
+    std::vector<V*> cdfStaccValues(statisticalOptions.cdfStaccNumEvalPositions(),NULL);
+    this->subCdfStacc(0, // Use the whole chain
+                      cdfStaccEvalPositions,
+                      cdfStaccValues);
+
+    m_env.fullComm().Barrier();
+    tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "Chain cdf statistical accuracy took " << tmpRunTime
+                              << " seconds"
+                              << std::endl;
     }
   }
 
@@ -1980,7 +2016,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
         else {
           UQ_FATAL_TEST_MACRO(true,
                               m_env.fullRank(),
-                              "uqBaseVectorSequenceClass<V,M>::computeHistKde()",
+                              "uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde()",
                               "unified iqr writing, parallel vectors not supported yet");
         }
       }
@@ -2032,7 +2068,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
         else {
           UQ_FATAL_TEST_MACRO(true,
                               m_env.fullRank(),
-                              "uqBaseVectorSequenceClass<V,M>::computeHistKde()",
+                              "uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde()",
                               "unified KDE writing, parallel vectors not supported yet");
         }
       }
@@ -2056,7 +2092,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistKde( // Use the whole chain
 
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "\n-----------------------------------------------------"
-                           << "\n Finished computing histogram and/or KDE for chain " << m_name
+                           << "\n Finished computing histogram and/or cdf stacc and/or KDE for chain " << m_name
                            << "\n-----------------------------------------------------"
                            << "\n"
                            << std::endl;

@@ -35,51 +35,53 @@
 
 #include <uqEnvironment.h>
 
-#define UQ_CHAIN_INITIAL_DISCARDED_PORTIONS_ODV "100."
-#define UQ_CHAIN_BMM_RUN_ODV                    0
-#define UQ_CHAIN_BMM_LENGTHS_ODV                "0"
-#define UQ_CHAIN_BMM_DISPLAY_ODV                0
-#define UQ_CHAIN_BMM_WRITE_ODV                  0
-#define UQ_CHAIN_FFT_COMPUTE_ODV                0
-#define UQ_CHAIN_FFT_PARAM_ID_ODV               0
-#define UQ_CHAIN_FFT_SIZE_ODV                   2048
-#define UQ_CHAIN_FFT_TEST_INVERSION_ODV         0
-#define UQ_CHAIN_FFT_WRITE_ODV                  0
-#define UQ_CHAIN_PSD_COMPUTE_ODV                0
-#define UQ_CHAIN_PSD_NUM_BLOCKS_ODV             0
-#define UQ_CHAIN_PSD_HOP_SIZE_RATIO_ODV         0.
-#define UQ_CHAIN_PSD_PARAM_ID_ODV               0
-#define UQ_CHAIN_PSD_WRITE_ODV                  0
-#define UQ_CHAIN_PSD_AT_ZERO_COMPUTE_ODV        0
-#define UQ_CHAIN_PSD_AT_ZERO_NUM_BLOCKS_ODV     "8"
-#define UQ_CHAIN_PSD_AT_ZERO_HOP_SIZE_RATIO_ODV .5
-#define UQ_CHAIN_PSD_AT_ZERO_DISPLAY_ODV        0
-#define UQ_CHAIN_PSD_AT_ZERO_WRITE_ODV          0
-#define UQ_CHAIN_GEWEKE_COMPUTE_ODV             0
-#define UQ_CHAIN_GEWEKE_NA_RATIO_ODV            .1
-#define UQ_CHAIN_GEWEKE_NB_RATIO_ODV            .5
-#define UQ_CHAIN_GEWEKE_DISPLAY_ODV             0
-#define UQ_CHAIN_GEWEKE_WRITE_ODV               0
-#define UQ_CHAIN_AUTO_CORR_COMPUTE_VIA_DEF_ODV  0
-#define UQ_CHAIN_AUTO_CORR_COMPUTE_VIA_FFT_ODV  0
-#define UQ_CHAIN_AUTO_CORR_SECOND_LAG_ODV       0
-#define UQ_CHAIN_AUTO_CORR_LAG_SPACING_ODV      0
-#define UQ_CHAIN_AUTO_CORR_NUM_LAGS_ODV         0
-#define UQ_CHAIN_AUTO_CORR_DISPLAY_ODV          0
-#define UQ_CHAIN_AUTO_CORR_WRITE_ODV            0
-#define UQ_CHAIN_HIST_COMPUTE_ODV               0
-#define UQ_CHAIN_HIST_NUM_INTERNAL_BINS_ODV     100
-#define UQ_CHAIN_KDE_COMPUTE_ODV                0
-#define UQ_CHAIN_KDE_NUM_EVAL_POSITIONS_ODV     100
-#define UQ_CHAIN_COV_MATRIX_COMPUTE_ODV         0
-#define UQ_CHAIN_CORR_MATRIX_COMPUTE_ODV        0
+#define UQ_CHAIN_INITIAL_DISCARDED_PORTIONS_ODV   "100."
+#define UQ_CHAIN_BMM_RUN_ODV                      0
+#define UQ_CHAIN_BMM_LENGTHS_ODV                  "0"
+#define UQ_CHAIN_BMM_DISPLAY_ODV                  0
+#define UQ_CHAIN_BMM_WRITE_ODV                    0
+#define UQ_CHAIN_FFT_COMPUTE_ODV                  0
+#define UQ_CHAIN_FFT_PARAM_ID_ODV                 0
+#define UQ_CHAIN_FFT_SIZE_ODV                     2048
+#define UQ_CHAIN_FFT_TEST_INVERSION_ODV           0
+#define UQ_CHAIN_FFT_WRITE_ODV                    0
+#define UQ_CHAIN_PSD_COMPUTE_ODV                  0
+#define UQ_CHAIN_PSD_NUM_BLOCKS_ODV               0
+#define UQ_CHAIN_PSD_HOP_SIZE_RATIO_ODV           0.
+#define UQ_CHAIN_PSD_PARAM_ID_ODV                 0
+#define UQ_CHAIN_PSD_WRITE_ODV                    0
+#define UQ_CHAIN_PSD_AT_ZERO_COMPUTE_ODV          0
+#define UQ_CHAIN_PSD_AT_ZERO_NUM_BLOCKS_ODV       "8"
+#define UQ_CHAIN_PSD_AT_ZERO_HOP_SIZE_RATIO_ODV   .5
+#define UQ_CHAIN_PSD_AT_ZERO_DISPLAY_ODV          0
+#define UQ_CHAIN_PSD_AT_ZERO_WRITE_ODV            0
+#define UQ_CHAIN_GEWEKE_COMPUTE_ODV               0
+#define UQ_CHAIN_GEWEKE_NA_RATIO_ODV              .1
+#define UQ_CHAIN_GEWEKE_NB_RATIO_ODV              .5
+#define UQ_CHAIN_GEWEKE_DISPLAY_ODV               0
+#define UQ_CHAIN_GEWEKE_WRITE_ODV                 0
+#define UQ_CHAIN_AUTO_CORR_COMPUTE_VIA_DEF_ODV    0
+#define UQ_CHAIN_AUTO_CORR_COMPUTE_VIA_FFT_ODV    0
+#define UQ_CHAIN_AUTO_CORR_SECOND_LAG_ODV         0
+#define UQ_CHAIN_AUTO_CORR_LAG_SPACING_ODV        0
+#define UQ_CHAIN_AUTO_CORR_NUM_LAGS_ODV           0
+#define UQ_CHAIN_AUTO_CORR_DISPLAY_ODV            0
+#define UQ_CHAIN_AUTO_CORR_WRITE_ODV              0
+#define UQ_CHAIN_HIST_COMPUTE_ODV                 0
+#define UQ_CHAIN_HIST_NUM_INTERNAL_BINS_ODV       100
+#define UQ_CHAIN_CDF_STACC_COMPUTE_ODV            0
+#define UQ_CHAIN_CDF_STACC_NUM_EVAL_POSITIONS_ODV 50
+#define UQ_CHAIN_KDE_COMPUTE_ODV                  0
+#define UQ_CHAIN_KDE_NUM_EVAL_POSITIONS_ODV       100
+#define UQ_CHAIN_COV_MATRIX_COMPUTE_ODV           0
+#define UQ_CHAIN_CORR_MATRIX_COMPUTE_ODV          0
 
 /*! A templated class that stores statistical options for a chain.
  */
 class uqChainStatisticalOptionsClass
 {
 public:
-  uqChainStatisticalOptionsClass(const uqBaseEnvironmentClass& env,     /*! The QUESO toolkit environment.                 */
+  uqChainStatisticalOptionsClass(const uqBaseEnvironmentClass& env, /*! The QUESO toolkit environment.                 */
                                  const std::string&        prefix); /*! Prefix for reading parameters from input file. */
  ~uqChainStatisticalOptionsClass();
 
@@ -124,6 +126,9 @@ public:
 
         bool                       histCompute        () const;
         unsigned int               histNumInternalBins() const;
+
+        bool                       cdfStaccCompute         () const;
+        unsigned int               cdfStaccNumEvalPositions() const;
 
         bool                       kdeCompute         () const;
         unsigned int               kdeNumEvalPositions() const;
@@ -175,6 +180,8 @@ private:
   std::string m_option_autoCorr_write;
   std::string m_option_hist_compute;
   std::string m_option_hist_numInternalBins;
+  std::string m_option_cdfStacc_compute;
+  std::string m_option_cdfStacc_numEvalPositions;
   std::string m_option_kde_compute;
   std::string m_option_kde_numEvalPositions;
   std::string m_option_covMatrix_compute;
@@ -223,6 +230,9 @@ private:
 
   bool                      m_histCompute;
   unsigned int              m_histNumInternalBins;
+
+  bool                      m_cdfStaccCompute;
+  unsigned int              m_cdfStaccNumEvalPositions;
 
   bool                      m_kdeCompute;
   unsigned int              m_kdeNumEvalPositions;

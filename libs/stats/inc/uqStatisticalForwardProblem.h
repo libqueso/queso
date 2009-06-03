@@ -103,22 +103,25 @@ private:
   const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& m_qoiFunction;
         uqGenericVectorRVClass   <Q_V,Q_M>&         m_qoiRv; // FIX ME: Maybe not always generic ?
 
-        uqBaseVectorPdfClass     <Q_V,Q_M>*         m_solutionPdf;
-        uqBaseVectorMdfClass     <Q_V,Q_M>*         m_subSolutionMdf;
-        uqBaseVectorCdfClass     <Q_V,Q_M>*         m_subSolutionCdf;
-        uqBaseVectorRealizerClass<Q_V,Q_M>*         m_solutionRealizer;
-
-        uqMonteCarloSGClass      <P_V,P_M,Q_V,Q_M>* m_mcSeqGenerator;
         uqBaseVectorSequenceClass<Q_V,Q_M>*         m_paramChain;
         uqBaseVectorSequenceClass<Q_V,Q_M>*         m_qoiChain;
+        uqMonteCarloSGClass      <P_V,P_M,Q_V,Q_M>* m_mcSeqGenerator;
+
+        uqBaseVectorRealizerClass<Q_V,Q_M>*         m_solutionRealizer;
+ 
         uqArrayOfOneDGridsClass  <Q_V,Q_M>*         m_subMdfGrids;
         uqArrayOfOneDTablesClass <Q_V,Q_M>*         m_subMdfValues;
+        uqBaseVectorMdfClass     <Q_V,Q_M>*         m_subSolutionMdf;
+
         uqArrayOfOneDGridsClass  <Q_V,Q_M>*         m_subCdfGrids;
         uqArrayOfOneDTablesClass <Q_V,Q_M>*         m_subCdfValues;
+        uqBaseVectorCdfClass     <Q_V,Q_M>*         m_subSolutionCdf;
 
-        uqBaseVectorCdfClass     <Q_V,Q_M>*         m_unifiedSolutionCdf;
         uqArrayOfOneDGridsClass  <Q_V,Q_M>*         m_unifiedCdfGrids;
         uqArrayOfOneDTablesClass <Q_V,Q_M>*         m_unifiedCdfValues;
+        uqBaseVectorCdfClass     <Q_V,Q_M>*         m_unifiedSolutionCdf;
+
+        uqBaseVectorPdfClass     <Q_V,Q_M>*         m_solutionPdf;
 };
 
 template<class P_V,class P_M,class Q_V,class Q_M>
@@ -154,20 +157,20 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::uqStatisticalForwardProblemCl
   m_paramRv               (paramRv),
   m_qoiFunction           (qoiFunction),
   m_qoiRv                 (qoiRv),
-  m_solutionPdf           (NULL),
-  m_subSolutionMdf        (NULL),
-  m_subSolutionCdf        (NULL),
-  m_solutionRealizer      (NULL),
-  m_mcSeqGenerator        (NULL),
   m_paramChain            (NULL),
   m_qoiChain              (NULL),
+  m_mcSeqGenerator        (NULL),
+  m_solutionRealizer      (NULL),
   m_subMdfGrids           (NULL),
   m_subMdfValues          (NULL),
+  m_subSolutionMdf        (NULL),
   m_subCdfGrids           (NULL),
   m_subCdfValues          (NULL),
-  m_unifiedSolutionCdf    (NULL),
+  m_subSolutionCdf        (NULL),
   m_unifiedCdfGrids       (NULL),
-  m_unifiedCdfValues      (NULL)
+  m_unifiedCdfValues      (NULL),
+  m_unifiedSolutionCdf    (NULL),
+  m_solutionPdf           (NULL)
 {
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::constructor()"
@@ -196,27 +199,35 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::uqStatisticalForwardProblemCl
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::~uqStatisticalForwardProblemClass()
 {
+  if (m_solutionPdf       ) delete m_solutionPdf;
+
+  if (m_unifiedSolutionCdf) delete m_unifiedSolutionCdf;
   if (m_unifiedCdfValues  ) delete m_unifiedCdfValues;
   if (m_unifiedCdfGrids   ) delete m_unifiedCdfGrids;
-  if (m_unifiedSolutionCdf) delete m_unifiedSolutionCdf;
+
+  if (m_subSolutionCdf    ) delete m_subSolutionCdf;
   if (m_subCdfValues      ) delete m_subCdfValues;
   if (m_subCdfGrids       ) delete m_subCdfGrids;
+
+  if (m_subSolutionMdf    ) delete m_subSolutionMdf;
   if (m_subMdfValues      ) delete m_subMdfValues;
   if (m_subMdfGrids       ) delete m_subMdfGrids;
-  if (m_paramChain) {
-    m_paramChain->clear();
-    delete m_paramChain;
-  }
+
+  if (m_solutionRealizer  ) delete m_solutionRealizer;
+
+  if (m_mcSeqGenerator    ) delete m_mcSeqGenerator;
+
   if (m_qoiChain) {
     m_qoiChain->clear();
     delete m_qoiChain;
   }
-  if (m_mcSeqGenerator  ) delete m_mcSeqGenerator;
-  if (m_solutionRealizer) delete m_solutionRealizer;
-  if (m_subSolutionCdf  ) delete m_subSolutionCdf;
-  if (m_subSolutionMdf  ) delete m_subSolutionMdf;
-  if (m_solutionPdf     ) delete m_solutionPdf;
-  if (m_optionsDesc     ) delete m_optionsDesc;
+
+  if (m_paramChain) {
+    m_paramChain->clear();
+    delete m_paramChain;
+  }
+
+  if (m_optionsDesc       ) delete m_optionsDesc;
 }
 
 template<class P_V,class P_M,class Q_V,class Q_M>
@@ -306,37 +317,44 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   if (m_computeSolution == false) {
     if ((m_env.subDisplayFile())) {
       *m_env.subDisplayFile() << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
-                             << ": avoiding solution, as requested by user"
-                             << std::endl;
+                              << ": avoiding solution, as requested by user"
+                              << std::endl;
     }
     return;
   }
   if ((m_env.subDisplayFile())) {
     *m_env.subDisplayFile() << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
-                           << ": computing solution, as requested by user"
-                           << std::endl;
+                            << ": computing solution, as requested by user"
+                            << std::endl;
   }
 
-  if (m_solutionPdf     ) delete m_solutionPdf;
-  if (m_subSolutionMdf  ) delete m_subSolutionMdf;
-  if (m_subSolutionCdf  ) delete m_subSolutionCdf;
-  if (m_solutionRealizer) delete m_solutionRealizer;
-  if (m_mcSeqGenerator  ) delete m_mcSeqGenerator;
-  if (m_paramChain) {
-    m_paramChain->clear();
-    delete m_paramChain;
-  }
+  if (m_solutionPdf       ) delete m_solutionPdf;
+
+  if (m_unifiedSolutionCdf) delete m_unifiedSolutionCdf;
+  if (m_unifiedCdfValues  ) delete m_unifiedCdfValues;
+  if (m_unifiedCdfGrids   ) delete m_unifiedCdfGrids;
+
+  if (m_subSolutionCdf    ) delete m_subSolutionCdf;
+  if (m_subCdfValues      ) delete m_subCdfValues;
+  if (m_subCdfGrids       ) delete m_subCdfGrids;
+
+  if (m_subSolutionMdf    ) delete m_subSolutionMdf;
+  if (m_subMdfValues      ) delete m_subMdfValues;
+  if (m_subMdfGrids       ) delete m_subMdfGrids;
+
+  if (m_solutionRealizer  ) delete m_solutionRealizer;
+
+  if (m_mcSeqGenerator    ) delete m_mcSeqGenerator;
+
   if (m_qoiChain) {
     m_qoiChain->clear();
     delete m_qoiChain;
   }
-  if (m_subMdfGrids       ) delete m_subMdfGrids;
-  if (m_subMdfValues      ) delete m_subMdfValues;
-  if (m_subCdfGrids       ) delete m_subCdfGrids;
-  if (m_subCdfValues      ) delete m_subCdfValues;
-  if (m_unifiedSolutionCdf) delete m_unifiedSolutionCdf;
-  if (m_unifiedCdfGrids   ) delete m_unifiedCdfGrids;
-  if (m_unifiedCdfValues  ) delete m_unifiedCdfValues;
+
+  if (m_paramChain) {
+    m_paramChain->clear();
+    delete m_paramChain;
+  }
 
   Q_V numEvaluationPointsVec(m_qoiRv.imageSet().vectorSpace().zeroVector());
   numEvaluationPointsVec.cwSet(250.);
