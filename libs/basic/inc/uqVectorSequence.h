@@ -143,6 +143,8 @@ public:
                                                                 double                                ratioNa,
                                                                 double                                ratioNb,
                                                                 V&                                    gewVec) const = 0;
+  virtual  void                     meanStacc                  (unsigned int                          initialPos,
+                                                                V&                                    meanStaccVec) const = 0;
   virtual  void                     subMinMax                  (unsigned int                          initialPos,
                                                                 V&                                    minVec,
                                                                 V&                                    maxVec) const = 0;
@@ -217,6 +219,9 @@ protected:
                                                                 const std::vector<unsigned int>&      initialPosForStatistics,
                                                                 std::ofstream*                        passedOfs);
            void                     computeGeweke              (const uqChainStatisticalOptionsClass& statisticalOptions,
+                                                                const std::vector<unsigned int>&      initialPosForStatistics,
+                                                                std::ofstream*                        passedOfs);
+           void                     computeMeanStacc           (const uqChainStatisticalOptionsClass& statisticalOptions,
                                                                 const std::vector<unsigned int>&      initialPosForStatistics,
                                                                 std::ofstream*                        passedOfs);
            void                     computeAutoCorrViaDef      (const uqChainStatisticalOptionsClass& statisticalOptions,
@@ -598,6 +603,16 @@ uqBaseVectorSequenceClass<V,M>::computeStatistics(
     this->computeGeweke(statisticalOptions,
                         initialPosForStatistics,
                         passedOfs);
+  }
+
+  //****************************************************
+  // Compute mean statistical accuracy
+  //****************************************************
+  if ((statisticalOptions.meanStaccCompute()) &&
+      (initialPosForStatistics.size() > 0   )) {
+    this->computeMeanStacc(statisticalOptions,
+                           initialPosForStatistics,
+                           passedOfs);
   }
 
   // Set lags for the computation of chain autocorrelations
@@ -1196,6 +1211,73 @@ uqBaseVectorSequenceClass<V,M>::computeGeweke(
   tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Chain Geweke took " << tmpRunTime
+                           << " seconds"
+                           << std::endl;
+  }
+
+  return;
+}
+
+template<class V, class M>
+void
+uqBaseVectorSequenceClass<V,M>::computeMeanStacc(
+  const uqChainStatisticalOptionsClass& statisticalOptions,
+  const std::vector<unsigned int>&      initialPosForStatistics,
+  std::ofstream*                        passedOfs)
+{
+  int iRC = UQ_OK_RC;
+  struct timeval timevalTmp;
+  iRC = gettimeofday(&timevalTmp, NULL);
+  double tmpRunTime = 0.;
+
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "\n-----------------------------------------------------"
+                           << "\nComputing mean statistical accuracy"
+                           << std::endl;
+  }
+
+  std::vector<V*> vectorOfMeanStacc(initialPosForStatistics.size(),NULL);
+  V meanStaccVec(m_vectorSpace.zeroVector());
+  for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+    unsigned int initialPosition = initialPosForStatistics[initialPosId];
+    this->meanStacc(initialPosition,
+                    meanStaccVec);
+    vectorOfMeanStacc[initialPosId] = new V(meanStaccVec);
+  }
+
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "\nComputed mean statistical accuracy"
+                           << " (each column corresponds to a different initial position on the full chain)"
+                           << std::endl;
+
+    char line[512];
+    sprintf(line,"%s",
+            "Parameter");
+    *m_env.subDisplayFile() << line;
+    for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+      sprintf(line,"%10s%3d",
+              " ",
+              initialPosForStatistics[initialPosId]);
+      *m_env.subDisplayFile() << line;
+    }
+
+    for (unsigned int i = 0; i < this->vectorSize() /*.*/; ++i) {
+      sprintf(line,"\n%9.9s",
+              m_vectorSpace.componentName(i).c_str() /*.*/);
+      *m_env.subDisplayFile() << line;
+      for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+        sprintf(line,"%2s%11.4e",
+                " ",
+                (*(vectorOfMeanStacc[initialPosId]))[i]);
+        *m_env.subDisplayFile() << line;
+      }
+    }
+    *m_env.subDisplayFile() << std::endl;
+  }
+
+  tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Chain mean statistical accuracy took " << tmpRunTime
                            << " seconds"
                            << std::endl;
   }

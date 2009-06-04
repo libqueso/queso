@@ -70,6 +70,7 @@ uqChainStatisticalOptionsClass::uqChainStatisticalOptionsClass(
   m_autoCorrNumLags         (UQ_CHAIN_AUTO_CORR_NUM_LAGS_ODV),
   m_autoCorrDisplay         (UQ_CHAIN_AUTO_CORR_DISPLAY_ODV),
   m_autoCorrWrite           (UQ_CHAIN_AUTO_CORR_WRITE_ODV),
+  m_meanStaccCompute        (UQ_CHAIN_MEAN_STACC_COMPUTE_ODV),
   m_histCompute             (UQ_CHAIN_HIST_COMPUTE_ODV),
   m_histNumInternalBins     (UQ_CHAIN_HIST_NUM_INTERNAL_BINS_ODV),
   m_cdfStaccCompute         (UQ_CHAIN_CDF_STACC_COMPUTE_ODV),
@@ -126,6 +127,8 @@ uqChainStatisticalOptionsClass::uqChainStatisticalOptionsClass(
   m_option_autoCorr_display          = m_prefix + "autoCorr_display";
   m_option_autoCorr_write            = m_prefix + "autoCorr_write";
 
+  m_option_meanStacc_compute         = m_prefix + "meanStacc_compute";
+
   m_option_hist_compute              = m_prefix + "hist_compute";
   m_option_hist_numInternalBins      = m_prefix + "hist_numInternalBins";
 
@@ -176,7 +179,7 @@ uqChainStatisticalOptionsClass::defineMyOptions(
     (m_option_fft_testInversion.c_str(),              po::value<bool        >()->default_value(UQ_CHAIN_FFT_TEST_INVERSION_ODV              ), "test fft inversion"                                             )
     (m_option_fft_write.c_str(),                      po::value<bool        >()->default_value(UQ_CHAIN_FFT_WRITE_ODV                       ), "write fft"                                                      )
     (m_option_psd_compute.c_str(),                    po::value<bool        >()->default_value(UQ_CHAIN_PSD_COMPUTE_ODV                     ), "compute psd"                                                    )
-    (m_option_psd_numBlocks.c_str(),                  po::value<unsigned int>()->default_value(UQ_CHAIN_PSD_NUM_BLOCKS_ODV                  ), "number of blocks for psd"                                       )
+    (m_option_psd_numBlocks.c_str(),                  po::value<unsigned int>()->default_value(UQ_CHAIN_PSD_NUM_BLOCKS_ODV                  ), "number of blocks for computation of psd"                        )
     (m_option_psd_hopSizeRatio.c_str(),               po::value<double      >()->default_value(UQ_CHAIN_PSD_HOP_SIZE_RATIO_ODV              ), "hop size ratio for psd"                                         )
     (m_option_psd_paramId.c_str(),                    po::value<unsigned int>()->default_value(UQ_CHAIN_PSD_PARAM_ID_ODV                    ), "parameter id for psd computations"                              )
     (m_option_psd_write.c_str(),                      po::value<bool        >()->default_value(UQ_CHAIN_PSD_WRITE_ODV                       ), "write psd"                                                      )
@@ -197,10 +200,11 @@ uqChainStatisticalOptionsClass::defineMyOptions(
     (m_option_autoCorr_numLags.c_str(),               po::value<unsigned int>()->default_value(UQ_CHAIN_AUTO_CORR_NUM_LAGS_ODV              ), "number of lags for computation of autocorrelations"             )
     (m_option_autoCorr_display.c_str(),               po::value<bool        >()->default_value(UQ_CHAIN_AUTO_CORR_DISPLAY_ODV               ), "display computed autocorrelations on the screen"                )
     (m_option_autoCorr_write.c_str(),                 po::value<bool        >()->default_value(UQ_CHAIN_AUTO_CORR_WRITE_ODV                 ), "write computed autocorrelations to the output file"             )
+    (m_option_meanStacc_compute.c_str(),              po::value<bool        >()->default_value(UQ_CHAIN_MEAN_STACC_COMPUTE_ODV              ), "compute statistical accuracy of mean"                           )
     (m_option_hist_compute.c_str(),                   po::value<bool        >()->default_value(UQ_CHAIN_HIST_COMPUTE_ODV                    ), "compute histograms"                                             )
     (m_option_hist_numInternalBins.c_str(),           po::value<unsigned int>()->default_value(UQ_CHAIN_HIST_NUM_INTERNAL_BINS_ODV          ), "number of internal bins"                                        )
-    (m_option_cdfStacc_compute.c_str(),               po::value<bool        >()->default_value(UQ_CHAIN_CDF_STACC_COMPUTE_ODV               ), "compute histograms"                                             )
-    (m_option_cdfStacc_numEvalPositions.c_str(),      po::value<unsigned int>()->default_value(UQ_CHAIN_CDF_STACC_NUM_EVAL_POSITIONS_ODV    ), "number of internal bins"                                        )
+    (m_option_cdfStacc_compute.c_str(),               po::value<bool        >()->default_value(UQ_CHAIN_CDF_STACC_COMPUTE_ODV               ), "compute statisical accuracy of cdf"                             )
+    (m_option_cdfStacc_numEvalPositions.c_str(),      po::value<unsigned int>()->default_value(UQ_CHAIN_CDF_STACC_NUM_EVAL_POSITIONS_ODV    ), "number of evaluations points for statistical accuracy of cdf"   )
     (m_option_kde_compute.c_str(),                    po::value<bool        >()->default_value(UQ_CHAIN_KDE_COMPUTE_ODV                     ), "compute kernel density estimators"                              )
     (m_option_kde_numEvalPositions.c_str(),           po::value<unsigned int>()->default_value(UQ_CHAIN_KDE_NUM_EVAL_POSITIONS_ODV          ), "number of evaluation positions"                                 )
     (m_option_covMatrix_compute.c_str(),              po::value<bool        >()->default_value(UQ_CHAIN_COV_MATRIX_COMPUTE_ODV              ), "compute covariance matrix"                                      )
@@ -390,6 +394,10 @@ uqChainStatisticalOptionsClass::getMyOptionValues(
 
   if (m_env.allOptionsMap().count(m_option_autoCorr_write.c_str())) {
     m_autoCorrWrite = m_env.allOptionsMap()[m_option_autoCorr_write.c_str()].as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_meanStacc_compute.c_str())) {
+    m_meanStaccCompute = m_env.allOptionsMap()[m_option_meanStacc_compute.c_str()].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_hist_compute.c_str())) {
@@ -620,6 +628,12 @@ uqChainStatisticalOptionsClass::autoCorrWrite() const
 }
 
 bool
+uqChainStatisticalOptionsClass::meanStaccCompute() const
+{
+  return m_meanStaccCompute;
+}
+
+bool
 uqChainStatisticalOptionsClass::histCompute() const
 {
   return m_histCompute;
@@ -709,6 +723,7 @@ uqChainStatisticalOptionsClass::print(std::ostream& os) const
      << "\n" << m_option_autoCorr_numLags          << " = " << m_autoCorrNumLags
      << "\n" << m_option_autoCorr_display          << " = " << m_autoCorrDisplay
      << "\n" << m_option_autoCorr_write            << " = " << m_autoCorrWrite
+     << "\n" << m_option_meanStacc_compute         << " = " << m_meanStaccCompute
      << "\n" << m_option_hist_compute              << " = " << m_histCompute
      << "\n" << m_option_hist_numInternalBins      << " = " << m_histNumInternalBins
      << "\n" << m_option_cdfStacc_compute          << " = " << m_cdfStaccCompute

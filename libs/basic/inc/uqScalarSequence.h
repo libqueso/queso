@@ -115,6 +115,7 @@ public:
         T            geweke                    (unsigned int               initialPos,
                                                 double                     ratioNa,
                                                 double                     ratioNb) const;
+        T            meanStacc                 (unsigned int               initialPos) const;
         void         subMinMax                 (unsigned int               initialPos,
                                                 T&                         minValue,
                                                 T&                         maxValue) const;
@@ -133,6 +134,9 @@ public:
                                                 const T&                   unifiedMaxHorizontalValue,
                                                 std::vector<T>&            unifiedCenters,
                                                 std::vector<unsigned int>& unifiedBins) const;
+        void         subCdfStacc               (unsigned int               initialPos,
+                                                const std::vector<T>&      evaluationPositions,
+                                                std::vector<double>&       cdfStaccValues) const;
         void         subSort                   (unsigned int               initialPos,
                                                 uqScalarSequenceClass<T>&  sortedSequence) const;
         void         unifiedSort               (bool                       useOnlyInter0Comm,
@@ -146,7 +150,7 @@ public:
         T            unifiedScaleForKDE        (bool                       useOnlyInter0Comm,
                                                 unsigned int               initialPos,
                                                 const T&                   unifiedIqrValue) const;
-        double       sabGaussianKDE            (T                          evaluationPosition) const;
+      //double       sabGaussianKDE            (T                          evaluationPosition) const;
         void         subGaussianKDE            (unsigned int               initialPos,
                                                 double                     scaleValue,
                                                 const std::vector<T>&      evaluationPositions,
@@ -1190,6 +1194,21 @@ uqScalarSequenceClass<T>::geweke(
 }
 
 template <class T>
+T
+uqScalarSequenceClass<T>::meanStacc(
+  unsigned int initialPos) const
+{
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.fullRank(),
+                      "uqScalarSequenceClass<T>::meanStacc()",
+                      "not implemented yet"); // ERNESTO
+
+  double value = 0.;
+
+  return value;
+}
+
+template <class T>
 void
 uqScalarSequenceClass<T>::subMinMax(
   unsigned int initialPos,
@@ -1426,6 +1445,42 @@ uqScalarSequenceClass<T>::unifiedHistogram(
   }
 
   //m_env.fullComm().Barrier();
+
+  return;
+}
+
+template <class T>
+void
+uqScalarSequenceClass<T>::subCdfStacc(
+  unsigned int          initialPos,
+  const std::vector<T>& evaluationPositions,
+  std::vector<double>&  cdfStaccValues) const
+{
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.fullRank(),
+                      "uqScalarSequenceClass<T>::subCdfStacc()",
+                      "not implemented yet"); // ERNESTO
+
+  bool bRC = ((initialPos                 <  this->subSequenceSize()   ) &&
+              (0                          <  evaluationPositions.size()) &&
+              (evaluationPositions.size() == cdfStaccValues.size()     ));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.fullRank(),
+                      "uqScalarSequenceClass<V>::subGaussianKDE()",
+                      "invalid input data");
+
+  unsigned int dataSize = this->subSequenceSize() - initialPos;
+  unsigned int numEvals = evaluationPositions.size();
+
+  for (unsigned int j = 0; j < numEvals; ++j) {
+    double x = evaluationPositions[j];
+    double value = 0.;
+    for (unsigned int k = 0; k < dataSize; ++k) {
+      double xk = m_seq[initialPos+k];
+      value += 0.;//uqMiscGaussianDensity((x-xk)*scaleInv,0.,1.);
+    }
+    cdfStaccValues[j] = value/(double) dataSize;
+  }
 
   return;
 }
@@ -2037,7 +2092,7 @@ uqScalarSequenceClass<T>::unifiedScaleForKDE(
 
   return unifiedScaleValue;
 }
-
+#if 0
 template <class T>
 double
 uqScalarSequenceClass<T>::sabGaussianKDE(T evaluationPosition) const
@@ -2059,7 +2114,7 @@ uqScalarSequenceClass<T>::sabGaussianKDE(T evaluationPosition) const
 
   return scaleInv * (value/(double) dataSize);
 }
-
+#endif
 template <class T>
 void
 uqScalarSequenceClass<T>::subGaussianKDE(

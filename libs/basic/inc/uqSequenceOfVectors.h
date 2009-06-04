@@ -127,6 +127,8 @@ public:
                                                 double                              ratioNa,
                                                 double                              ratioNb,
                                                 V&                                  gewVec) const;
+        void         meanStacc                 (unsigned int                        initialPos,
+                                                V&                                  meanStaccVec) const;
         void         subMinMax                 (unsigned int                        initialPos,
                                                 V&                                  minVec,
                                                 V&                                  maxVec) const;
@@ -156,8 +158,8 @@ public:
         void         unifiedScalesForKDE       (unsigned int                        initialPos,
                                                 const V&                            unifiedIqrVec,
                                                 V&                                  unifiedScaleVec) const;
-        //void         sabGaussianKDE            (const V&                            evalParamVec,
-        //                                        V&                                  densityVec) const;
+      //void         sabGaussianKDE            (const V&                            evalParamVec,
+      //                                        V&                                  densityVec) const;
         void         subGaussianKDE            (unsigned int                        initialPos,
                                                 const V&                            scaleVec,
                                                 const std::vector<V*>&              evalParamVecs,
@@ -1075,6 +1077,35 @@ uqSequenceOfVectorsClass<V,M>::geweke(
 
 template <class V, class M>
 void
+uqSequenceOfVectorsClass<V,M>::meanStacc(
+  unsigned int initialPos,
+  V&           meanStaccVec) const
+{
+  bool bRC = ((initialPos         <  this->subSequenceSize()) &&
+              (this->vectorSize() == meanStaccVec.size()    ));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.fullRank(),
+                      "uqSequenceOfVectorsClass<V,M>::meanStacc()",
+                      "invalid input data");
+
+  unsigned int numPos = this->subSequenceSize() - initialPos;
+  uqScalarSequenceClass<double> data(m_env,0);
+
+  unsigned int numParams = this->vectorSize();
+  for (unsigned int i = 0; i < numParams; ++i) {
+    this->extractScalarSeq(initialPos,
+                           1, // spacing
+                           numPos,
+                           i,
+                           data);
+    meanStaccVec[i] = data.meanStacc(0);
+  }
+
+  return;
+}
+
+template <class V, class M>
+void
 uqSequenceOfVectorsClass<V,M>::subMinMax(
   unsigned int initialPos,
   V&           minVec,
@@ -1244,10 +1275,45 @@ uqSequenceOfVectorsClass<V,M>::subCdfStacc(
   const std::vector<V*>& evalPositionsVecs,
   std::vector<V*>&       cdfStaccVecs) const
 {
-  UQ_FATAL_TEST_MACRO(true,
+  bool bRC = ((initialPos           <  this->subSequenceSize() ) &&
+              (0                    <  evalPositionsVecs.size()) &&
+              (evalPositionsVecs.size() == cdfStaccVecs.size() ));
+  UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::subCdfStacc()",
-                      "not implemented yet");
+                      "invalid input data");
+
+  unsigned int numPos = this->subSequenceSize() - initialPos;
+  uqScalarSequenceClass<double> data(m_env,0);
+
+  unsigned int numEvals = evalPositionsVecs.size();
+  for (unsigned int j = 0; j < numEvals; ++j) {
+    cdfStaccVecs[j] = new V(m_vectorSpace.zeroVector());
+  }
+  std::vector<double> evalPositions(numEvals,0.);
+  std::vector<double> cdfStaccs    (numEvals,0.);
+
+  unsigned int numParams = this->vectorSize();
+  for (unsigned int i = 0; i < numParams; ++i) {
+    this->extractScalarSeq(initialPos,
+                           1, // spacing
+                           numPos,
+                           i,
+                           data);
+
+    for (unsigned int j = 0; j < numEvals; ++j) {
+      evalPositions[j] = (*evalPositionsVecs[j])[i];
+    }
+
+    data.subCdfStacc(0,
+                     evalPositions,
+                     cdfStaccs);
+
+    for (unsigned int j = 0; j < numEvals; ++j) {
+      (*cdfStaccVecs[j])[i] = cdfStaccs[j];
+    }
+  }
+
   return;
 }
 

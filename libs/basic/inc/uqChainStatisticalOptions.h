@@ -46,7 +46,7 @@
 #define UQ_CHAIN_FFT_TEST_INVERSION_ODV           0
 #define UQ_CHAIN_FFT_WRITE_ODV                    0
 #define UQ_CHAIN_PSD_COMPUTE_ODV                  0
-#define UQ_CHAIN_PSD_NUM_BLOCKS_ODV               0
+#define UQ_CHAIN_PSD_NUM_BLOCKS_ODV               8
 #define UQ_CHAIN_PSD_HOP_SIZE_RATIO_ODV           0.
 #define UQ_CHAIN_PSD_PARAM_ID_ODV                 0
 #define UQ_CHAIN_PSD_WRITE_ODV                    0
@@ -67,6 +67,7 @@
 #define UQ_CHAIN_AUTO_CORR_NUM_LAGS_ODV           0
 #define UQ_CHAIN_AUTO_CORR_DISPLAY_ODV            0
 #define UQ_CHAIN_AUTO_CORR_WRITE_ODV              0
+#define UQ_CHAIN_MEAN_STACC_COMPUTE_ODV           0
 #define UQ_CHAIN_HIST_COMPUTE_ODV                 0
 #define UQ_CHAIN_HIST_NUM_INTERNAL_BINS_ODV       100
 #define UQ_CHAIN_CDF_STACC_COMPUTE_ODV            0
@@ -124,6 +125,8 @@ public:
         bool                       autoCorrDisplay      () const;
         bool                       autoCorrWrite        () const;
 
+        bool                       meanStaccCompute() const;
+
         bool                       histCompute        () const;
         unsigned int               histNumInternalBins() const;
 
@@ -178,6 +181,7 @@ private:
   std::string m_option_autoCorr_numLags;
   std::string m_option_autoCorr_display;
   std::string m_option_autoCorr_write;
+  std::string m_option_meanStacc_compute;
   std::string m_option_hist_compute;
   std::string m_option_hist_numInternalBins;
   std::string m_option_cdfStacc_compute;
@@ -227,6 +231,8 @@ private:
   unsigned int              m_autoCorrNumLags;
   bool                      m_autoCorrDisplay;
   bool                      m_autoCorrWrite;
+
+  bool                      m_meanStaccCompute;
 
   bool                      m_histCompute;
   unsigned int              m_histNumInternalBins;
