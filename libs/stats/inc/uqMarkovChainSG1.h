@@ -151,7 +151,7 @@ private:
   const uqBaseEnvironmentClass&                     m_env;
         std::string                                 m_prefix;
   const uqVectorSpaceClass  <P_V,P_M>&              m_vectorSpace;
-  const uqBaseVectorPdfClass<P_V,P_M>&              m_targetPdf;
+  const uqBaseJointPdfClass<P_V,P_M>&              m_targetPdf;
         P_V                                         m_initialPosition;
   const P_M*                                        m_initialProposalCovMatrix;
         bool                                        m_nullInputProposalCovMatrix;
@@ -953,7 +953,7 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
 #ifdef UQ_USES_TK_CLASS // AQUI
         double qyx = -.5 * m_tk->rv(yStageId).pdf().minus2LnValue(x.vecValues(),NULL,NULL,NULL,NULL);
         if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
-          const uqGaussianVectorPdfClass<P_V,P_M>* pdfYX = dynamic_cast< const uqGaussianVectorPdfClass<P_V,P_M>* >(&(m_tk->rv(yStageId).pdf()));
+          const uqGaussianJointPdfClass<P_V,P_M>* pdfYX = dynamic_cast< const uqGaussianJointPdfClass<P_V,P_M>* >(&(m_tk->rv(yStageId).pdf()));
           *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
                                  << ", rvYX.domainExpVector = " << pdfYX->domainExpVector()
                                  << ", rvYX.domainVarVector = " << pdfYX->domainVarVector()
@@ -962,7 +962,7 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
         }
         double qxy = -.5 * m_tk->rv(xStageId).pdf().minus2LnValue(y.vecValues(),NULL,NULL,NULL,NULL);
         if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
-          const uqGaussianVectorPdfClass<P_V,P_M>* pdfXY = dynamic_cast< const uqGaussianVectorPdfClass<P_V,P_M>* >(&(m_tk->rv(xStageId).pdf()));
+          const uqGaussianJointPdfClass<P_V,P_M>* pdfXY = dynamic_cast< const uqGaussianJointPdfClass<P_V,P_M>* >(&(m_tk->rv(xStageId).pdf()));
           *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
                                  << ", rvXY.domainExpVector = " << pdfXY->domainExpVector()
                                  << ", rvXY.domainVarVector = " << pdfXY->domainVarVector()

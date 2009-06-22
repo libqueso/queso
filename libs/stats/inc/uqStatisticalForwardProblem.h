@@ -121,7 +121,7 @@ private:
         uqArrayOfOneDTablesClass <Q_V,Q_M>*         m_unifiedCdfValues;
         uqBaseVectorCdfClass     <Q_V,Q_M>*         m_unifiedSolutionCdf;
 
-        uqBaseVectorPdfClass     <Q_V,Q_M>*         m_solutionPdf;
+        uqBaseJointPdfClass      <Q_V,Q_M>*         m_solutionPdf;
 };
 
 template<class P_V,class P_M,class Q_V,class Q_M>
@@ -433,11 +433,11 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
                              << std::endl;
     }
     pqCovarianceMatrix = new P_M(m_env,
-                                 m_paramRv.imageSet().vectorSpace().map(), // number of rows
-                                 m_qoiRv.imageSet().vectorSpace().dim());  // number of cols
+                                 m_paramRv.imageSet().vectorSpace().map(),       // number of rows
+                                 m_qoiRv.imageSet().vectorSpace().dimGlobal());  // number of cols
     pqCorrelationMatrix = new P_M(m_env,
-                                  m_paramRv.imageSet().vectorSpace().map(), // number of rows
-                                  m_qoiRv.imageSet().vectorSpace().dim());  // number of cols
+                                  m_paramRv.imageSet().vectorSpace().map(),      // number of rows
+                                  m_qoiRv.imageSet().vectorSpace().dimGlobal()); // number of cols
 #if 0
     uqComputeCovCorrMatricesBetweenVectorRvs<P_V,P_M,Q_V,Q_M>(m_paramRv,
                                                               m_qoiRv,

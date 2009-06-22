@@ -221,11 +221,22 @@ uqTrilinosVectorClass::copy(const uqTrilinosVectorClass& src)
 }
 
 unsigned int
-uqTrilinosVectorClass::size() const
+uqTrilinosVectorClass::sizeLocal() const
 {
   UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
                     m_env.fullRank(),
-                    "uqTrilinosVectorClass::size()",
+                    "uqTrilinosVectorClass::sizeLocal()",
+                    "failed");
+
+  return 0;
+}
+
+unsigned int
+uqTrilinosVectorClass::sizeGlobal() const
+{
+  UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
+                    m_env.fullRank(),
+                    "uqTrilinosVectorClass::sizeGlobal()",
                     "failed");
 
   return 0;
@@ -311,7 +322,7 @@ uqTrilinosVectorClass::data() const
 bool
 uqTrilinosVectorClass::atLeastOneComponentSmallerThan(const uqTrilinosVectorClass& rhs) const
 {
-  UQ_FATAL_TEST_MACRO((this->size() != rhs.size()),
+  UQ_FATAL_TEST_MACRO((this->sizeLocal() != rhs.sizeLocal()),
                       m_env.fullRank(),
                       "uqTrilinosVectorClass::atLeastOneComponentSmallerThan()",
                       "vectors have different sizes");
@@ -324,7 +335,7 @@ uqTrilinosVectorClass::atLeastOneComponentSmallerThan(const uqTrilinosVectorClas
 bool
 uqTrilinosVectorClass::atLeastOneComponentBiggerThan (const uqTrilinosVectorClass& rhs) const
 {
-  UQ_FATAL_TEST_MACRO((this->size() != rhs.size()),
+  UQ_FATAL_TEST_MACRO((this->sizeLocal() != rhs.sizeLocal()),
                       m_env.fullRank(),
                       "uqTrilinosVectorClass::atLeastOneComponentBiggerThan()",
                       "vectors have different sizes");
@@ -377,8 +388,8 @@ uqTrilinosVectorClass operator*(const uqTrilinosVectorClass& x, const uqTrilinos
 
 double scalarProduct(const uqTrilinosVectorClass& x, const uqTrilinosVectorClass& y)
 {
-  unsigned int size1 = x.size();
-  unsigned int size2 = y.size();
+  unsigned int size1 = x.sizeLocal();
+  unsigned int size2 = y.sizeLocal();
   UQ_FATAL_TEST_MACRO((size1 != size2),
                       x.env().fullRank(),
                       "scalarProduct()",

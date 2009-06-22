@@ -150,10 +150,10 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
         ///////////////////////////////////////////////
 
         // bufferDouble[0...] = contents for (eventual) vecValues
-        std::vector<double> bufferDouble(m_auxPVec.size(),0);
+        std::vector<double> bufferDouble(m_auxPVec.sizeLocal(),0);
 
         if (m_env.subRank() == 0) {
-          for (unsigned int i = 0; i < internalValues->size(); ++i) {
+          for (unsigned int i = 0; i < internalValues->sizeLocal(); ++i) {
             bufferDouble[i] = (*internalValues)[i];
           }
         }
@@ -167,7 +167,7 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
 
         if (m_env.subRank() != 0) {
           P_V tmpPVec(m_auxPVec);
-          for (unsigned int i = 0; i < tmpPVec.size(); ++i) {
+          for (unsigned int i = 0; i < tmpPVec.sizeLocal(); ++i) {
             tmpPVec[i] = bufferDouble[i];
           }
           internalValues = new P_V(tmpPVec);
@@ -180,7 +180,7 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
           // bufferDouble[0...] = contents for (eventual) vecDirection
 
           if (m_env.subRank() == 0) {
-            for (unsigned int i = 0; i < internalDirection->size(); ++i) {
+            for (unsigned int i = 0; i < internalDirection->sizeLocal(); ++i) {
               bufferDouble[i] = (*internalDirection)[i];
             }
           }
@@ -194,7 +194,7 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
 
           if (m_env.subRank() != 0) {
             P_V tmpPVec(m_auxPVec);
-            for (unsigned int i = 0; i < tmpPVec.size(); ++i) {
+            for (unsigned int i = 0; i < tmpPVec.sizeLocal(); ++i) {
               tmpPVec[i] = bufferDouble[i];
             }
             internalDirection = new P_V(tmpPVec);

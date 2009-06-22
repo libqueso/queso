@@ -67,7 +67,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   uqVectorSpaceClass<P_V,P_M> paramSpace(env,
                                          "param_", // Extra prefix before the default "space_" prefix
                                          paramsTable.numRows(),
-                                         &paramNames);
+                                         &paramNames); // could be 'NULL' as well
 
   uqBoxSubsetClass<P_V,P_M> paramDomain("param_",
                                         paramSpace,

@@ -43,12 +43,13 @@ public:
           uqVectorSpaceClass();
           uqVectorSpaceClass(const uqBaseEnvironmentClass&            env,
                              const char*                              prefix,
-                             unsigned int                             dimValue,
+                             unsigned int                             dimGlobalValue,
                              const EpetraExt::DistArray<std::string>* componentsNames);
          ~uqVectorSpaceClass();
 
   const   Epetra_Map&              map                 ()                         const;
-          unsigned int             dim                 ()                         const;
+          unsigned int             dimLocal            ()                         const;
+          unsigned int             dimGlobal           ()                         const;
 
   const   V&                       zeroVector          ()                         const;
           V*                       newVector           ()                         const; // See template specialization
@@ -75,11 +76,12 @@ protected:
           using uqVectorSetClass<V,M>::m_prefix;
           using uqVectorSetClass<V,M>::m_volume;
 
-          unsigned int                       m_dim;
+          unsigned int                       m_dimGlobal;
+  const   Epetra_Map*                        m_map;
+          unsigned int                       m_dimLocal;
   const   EpetraExt::DistArray<std::string>* m_componentsNames;
           std::string                        m_emptyComponentName;
 
-  const   Epetra_Map*                        m_map;
           V*                                 m_zeroVector;
 };
 
@@ -98,14 +100,15 @@ template <class V, class M>
 uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
   const uqBaseEnvironmentClass&            env,
   const char*                              prefix,
-        unsigned int                       dimValue,
+        unsigned int                       dimGlobalValue,
   const EpetraExt::DistArray<std::string>* componentsNames)
   :
   uqVectorSetClass<V,M>(env,((std::string)(prefix) + "space_").c_str(),INFINITY),
-  m_dim                (dimValue),
+  m_dimGlobal          (dimGlobalValue),
+  m_map                (newMap()),
+  m_dimLocal           (m_map->NumMyElements()),
   m_componentsNames    (componentsNames),
   m_emptyComponentName (""),
-  m_map                (newMap()),
   m_zeroVector         (new V(m_env,*m_map))
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
@@ -113,10 +116,10 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
                            << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO((m_componentsNames != NULL) && (m_componentsNames->GlobalLength() != (int) m_dim),
+  UQ_FATAL_TEST_MACRO((m_componentsNames != NULL) && (m_componentsNames->GlobalLength() != (int) m_dimGlobal),
                       m_env.fullRank(),
                       "uqVectorSpaceClass<V,M>::constructor()",
-                      "size of 'componentsNames' is not equal to m_dim");
+                      "global size of 'componentsNames' is not equal to m_dimGlobal");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqVectorSpaceClass<V,M>::constructor()"
@@ -179,16 +182,24 @@ uqVectorSpaceClass<V,M>::zeroVector() const
 
 template <class V, class M>
 unsigned int
-uqVectorSpaceClass<V,M>::dim() const
+uqVectorSpaceClass<V,M>::dimGlobal() const
 {
-  return m_dim;
+  return m_dimGlobal;
+}
+
+template <class V, class M>
+unsigned int
+uqVectorSpaceClass<V,M>::dimLocal() const
+{
+  return m_dimLocal;
 }
 
 template <class V, class M>
 V*
 uqVectorSpaceClass<V,M>::newVector(const V& v) const
 {
-  if (v.size() != m_dim) return NULL;
+  if (v.sizeGlobal() != m_dimGlobal) return NULL;
+  if (v.sizeLocal () != m_dimLocal ) return NULL;
 
   return new V(v);
 }
@@ -197,7 +208,8 @@ template <class V, class M>
 M*
 uqVectorSpaceClass<V,M>::newDiagMatrix(const V& v) const
 {
-  if (v.size() != m_dim) return NULL;
+  if (v.sizeGlobal() != m_dimGlobal) return NULL;
+  if (v.sizeLocal () != m_dimLocal ) return NULL;
 
   return new M(v);
 }
@@ -209,7 +221,7 @@ uqVectorSpaceClass<V,M>::newGaussianMatrix(
   const V& initialValues) const
 {
   V tmpVec(*m_zeroVector);
-  for (unsigned int i = 0; i < m_dim; ++i) {
+  for (unsigned int i = 0; i < m_dimLocal; ++i) {
     double variance = varianceValues[i];
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "In uqVectorSpaceClass<V,M>::newGaussianMatrix()"
@@ -246,7 +258,7 @@ uqVectorSpaceClass<V,M>::componentName(unsigned int componentId) const
 {
   if (m_componentsNames == NULL) return m_emptyComponentName;
 
-  UQ_FATAL_TEST_MACRO(componentId > m_dim,
+  UQ_FATAL_TEST_MACRO(componentId > m_dimLocal,
                       m_env.fullRank(),
                       "uqVectorSpaceClass<V,M>::componentName()",
                       "componentId is too big");
@@ -259,13 +271,13 @@ void
 uqVectorSpaceClass<V,M>::printComponentsNames(std::ostream& os, bool printHorizontally) const
 {
   if (printHorizontally) { 
-    for (unsigned int i = 0; i < this->dim(); ++i) {
+    for (unsigned int i = 0; i < this->dimLocal(); ++i) {
       os << "'" << this->componentName(i) << "'"
          << " ";
     }
   }
   else {
-    for (unsigned int i = 0; i < this->dim(); ++i) {
+    for (unsigned int i = 0; i < this->dimLocal(); ++i) {
       os << "'" << this->componentName(i) << "'"
          << std::endl;
     }

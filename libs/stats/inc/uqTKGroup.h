@@ -362,7 +362,7 @@ uqScaledCovMatrixTKGroupClass<V,M>::setPreComputingPosition(const V& position, u
       *m_env.subDisplayFile() << ", factor = " << 1./m_scales[stageId]/m_scales[stageId];
     }
     if (stageId < m_rvs.size()) {
-      const uqGaussianVectorPdfClass<V,M>* pdfPtr = dynamic_cast< const uqGaussianVectorPdfClass<V,M>* >(&(m_rvs[stageId]->pdf()));
+      const uqGaussianJointPdfClass<V,M>* pdfPtr = dynamic_cast< const uqGaussianJointPdfClass<V,M>* >(&(m_rvs[stageId]->pdf()));
       *m_env.subDisplayFile() << ", rvCov = " << pdfPtr->covMatrix(); // FIX ME: might demand parallelism
     }
     *m_env.subDisplayFile() << std::endl;
@@ -633,7 +633,7 @@ uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position
       if (j > 0) unitVector[j-1] = 0.;
       unitVector[j] = 1.;
       tmpHessian->invertMultiply(unitVector, multVector);
-      for (unsigned int i = 0; i < tmpHessian->numRows(); ++i) {
+      for (unsigned int i = 0; i < tmpHessian->numRowsLocal(); ++i) {
         (*tmpCovMat)(i,j) = multVector[i];
       }
     }

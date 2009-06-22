@@ -98,7 +98,7 @@ private:
         uqGenericVectorRVClass    <P_V,P_M>& m_postRv;
 
         uqVectorSetClass          <P_V,P_M>* m_solutionDomain;
-        uqBaseVectorPdfClass      <P_V,P_M>* m_solutionPdf;
+        uqBaseJointPdfClass      <P_V,P_M>* m_solutionPdf;
         uqBaseVectorMdfClass      <P_V,P_M>* m_subSolutionMdf;
         uqBaseVectorCdfClass      <P_V,P_M>* m_subSolutionCdf;
         uqBaseVectorRealizerClass <P_V,P_M>* m_solutionRealizer;
@@ -291,7 +291,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   // Compute output pdf up to a multiplicative constant: Bayesian approach
   m_solutionDomain = uqInstantiateIntersection(m_priorRv.pdf().domainSet(),m_likelihoodFunction.domainSet());
 
-  m_solutionPdf = new uqBayesianVectorPdfClass<P_V,P_M>(m_prefix.c_str(),
+  m_solutionPdf = new uqBayesianJointPdfClass<P_V,P_M>(m_prefix.c_str(),
                                                         m_priorRv.pdf(),
                                                         m_likelihoodFunction,
                                                         *m_solutionDomain);

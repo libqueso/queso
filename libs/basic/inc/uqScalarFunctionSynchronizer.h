@@ -141,10 +141,10 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
         ///////////////////////////////////////////////
 
         // bufferDouble[0...] = contents for (eventual) vecValues
-        std::vector<double> bufferDouble(m_auxVec.size(),0.);
+        std::vector<double> bufferDouble(m_auxVec.sizeLocal(),0.);
 
         if (m_env.subRank() == 0) {
-          for (unsigned int i = 0; i < internalValues->size(); ++i) {
+          for (unsigned int i = 0; i < internalValues->sizeLocal(); ++i) {
             bufferDouble[i] = (*internalValues)[i];
           }
         }
@@ -182,7 +182,7 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
 
         if (m_env.subRank() != 0) {
           V tmpVec(m_auxVec);
-          for (unsigned int i = 0; i < tmpVec.size(); ++i) {
+          for (unsigned int i = 0; i < tmpVec.sizeLocal(); ++i) {
             tmpVec[i] = bufferDouble[i];
           }
           internalValues = new V(tmpVec);
@@ -195,7 +195,7 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
           // bufferDouble[0...] = contents for (eventual) vecDirection
 
           if (m_env.subRank() == 0) {
-            for (unsigned int i = 0; i < internalDirection->size(); ++i) {
+            for (unsigned int i = 0; i < internalDirection->sizeLocal(); ++i) {
               bufferDouble[i] = (*internalDirection)[i];
             }
           }
@@ -209,7 +209,7 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
 
           if (m_env.subRank() != 0) {
             V tmpVec(m_auxVec);
-            for (unsigned int i = 0; i < tmpVec.size(); ++i) {
+            for (unsigned int i = 0; i < tmpVec.sizeLocal(); ++i) {
               tmpVec[i] = bufferDouble[i];
             }
             internalDirection = new V(tmpVec);

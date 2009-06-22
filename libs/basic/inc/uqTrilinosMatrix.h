@@ -49,7 +49,7 @@ public:
 
   uqTrilinosMatrixClass(const uqBaseEnvironmentClass& env,
                         const Epetra_Map&         map,
-                        unsigned int              numRows,
+                        unsigned int              numRowsLocal,
                         unsigned int              numCols);
 
   uqTrilinosMatrixClass(const uqBaseEnvironmentClass& env,
@@ -69,7 +69,8 @@ public:
                  double& operator()(unsigned int i, unsigned int j);
            const double& operator()(unsigned int i, unsigned int j) const;
 
-  unsigned int          numRows       () const;
+  unsigned int          numRowsLocal  () const;
+  unsigned int          numRowsGlobal () const;
   unsigned int          numCols       () const;
   int                   chol          ();
   void                  zeroLower     (bool includeDiagonal = false);

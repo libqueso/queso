@@ -52,7 +52,7 @@ public:
 
   const   uqBaseEnvironmentClass&         env       () const;
   const   uqVectorSetClass         <V,M>& imageSet  () const;
-  const   uqBaseVectorPdfClass     <V,M>& pdf       () const;
+  const   uqBaseJointPdfClass     <V,M>& pdf       () const;
   const   uqBaseVectorRealizerClass<V,M>& realizer  () const;
   const   uqBaseVectorCdfClass     <V,M>& subCdf    () const;
   const   uqBaseVectorCdfClass     <V,M>& unifiedCdf() const;
@@ -64,7 +64,7 @@ protected:
   const   uqBaseEnvironmentClass&         m_env;
           std::string                     m_prefix;
   const   uqVectorSetClass         <V,M>& m_imageSet;
-          uqBaseVectorPdfClass     <V,M>* m_pdf;
+          uqBaseJointPdfClass     <V,M>* m_pdf;
 	  uqBaseVectorRealizerClass<V,M>* m_realizer;
   const   uqBaseVectorCdfClass     <V,M>* m_subCdf;
   const   uqBaseVectorCdfClass     <V,M>* m_unifiedCdf;
@@ -116,7 +116,7 @@ uqBaseVectorRVClass<V,M>::imageSet() const
 }
 
 template<class V, class M>
-const uqBaseVectorPdfClass<V,M>&
+const uqBaseJointPdfClass<V,M>&
 uqBaseVectorRVClass<V,M>::pdf() const
 {
   UQ_FATAL_TEST_MACRO(m_pdf == NULL,
@@ -200,14 +200,14 @@ public:
                          const uqVectorSetClass         <V,M>& imageSet);
   uqGenericVectorRVClass(const char*                           prefix,
                          const uqVectorSetClass         <V,M>& imageSet,
-                         const uqBaseVectorPdfClass     <V,M>& pdf,
+                         const uqBaseJointPdfClass     <V,M>& pdf,
                          const uqBaseVectorRealizerClass<V,M>& realizer,
                          const uqBaseVectorCdfClass     <V,M>& subCdf,
                          const uqBaseVectorCdfClass     <V,M>& unifiedCdf,
                          const uqBaseVectorMdfClass     <V,M>& mdf);
   virtual ~uqGenericVectorRVClass();
 
-  void setPdf       (uqBaseVectorPdfClass     <V,M>& pdf       );
+  void setPdf       (uqBaseJointPdfClass     <V,M>& pdf       );
   void setRealizer  (uqBaseVectorRealizerClass<V,M>& realizer  );
   void setSubCdf    (uqBaseVectorCdfClass     <V,M>& subCdf    );
   void setUnifiedCdf(uqBaseVectorCdfClass     <V,M>& unifiedCdf);
@@ -250,7 +250,7 @@ template<class V, class M>
 uqGenericVectorRVClass<V,M>::uqGenericVectorRVClass(
   const char*                           prefix,
   const uqVectorSetClass         <V,M>& imageSet,
-  const uqBaseVectorPdfClass     <V,M>& pdf,
+  const uqBaseJointPdfClass     <V,M>& pdf,
   const uqBaseVectorRealizerClass<V,M>& realizer,
   const uqBaseVectorCdfClass     <V,M>& subCdf,
   const uqBaseVectorCdfClass     <V,M>& unifiedCdf,
@@ -284,7 +284,7 @@ uqGenericVectorRVClass<V,M>::~uqGenericVectorRVClass()
 
 template<class V, class M>
 void
-uqGenericVectorRVClass<V,M>::setPdf(uqBaseVectorPdfClass<V,M>& pdf)
+uqGenericVectorRVClass<V,M>::setPdf(uqBaseJointPdfClass<V,M>& pdf)
 {
   m_pdf = &pdf;
   return;
@@ -377,7 +377,7 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
                            << std::endl;
   }
 
-  m_pdf = new uqGaussianVectorPdfClass<V,M>(m_prefix.c_str(),
+  m_pdf = new uqGaussianJointPdfClass<V,M>(m_prefix.c_str(),
                                             m_imageSet,
                                             imageExpVector,
                                             imageVarVector);
@@ -421,7 +421,7 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
                            << std::endl;
   }
 
-  m_pdf = new uqGaussianVectorPdfClass<V,M>(m_prefix.c_str(),
+  m_pdf = new uqGaussianJointPdfClass<V,M>(m_prefix.c_str(),
                                             m_imageSet,
                                             imageExpVector,
                                             covMatrix);
@@ -467,7 +467,7 @@ void
 uqGaussianVectorRVClass<V,M>::updateExpVector(const V& newExpVector)
 {
   // We are sure that m_pdf (and m_realizer, etc) point to associated Gaussian classes, so all is well
-  ( dynamic_cast< uqGaussianVectorPdfClass     <V,M>* >(m_pdf     ) )->updateExpVector(newExpVector);
+  ( dynamic_cast< uqGaussianJointPdfClass     <V,M>* >(m_pdf     ) )->updateExpVector(newExpVector);
   ( dynamic_cast< uqGaussianVectorRealizerClass<V,M>* >(m_realizer) )->updateExpVector(newExpVector);
   return;
 }
@@ -477,7 +477,7 @@ void
 uqGaussianVectorRVClass<V,M>::updateCovMatrix(const M& newCovMatrix)
 {
   // We are sure that m_pdf (and m_realizer, etc) point to associated Gaussian classes, so all is well
-  ( dynamic_cast< uqGaussianVectorPdfClass     <V,M>* >(m_pdf     ) )->updateCovMatrix(newCovMatrix);
+  ( dynamic_cast< uqGaussianJointPdfClass     <V,M>* >(m_pdf     ) )->updateCovMatrix(newCovMatrix);
 
   M newLowerCholCovMatrix(newCovMatrix);
   int iRC = newLowerCholCovMatrix.chol();
@@ -534,7 +534,7 @@ uqUniformVectorRVClass<V,M>::uqUniformVectorRVClass(
                                   << std::endl;
   }
 
-  m_pdf        = new uqUniformVectorPdfClass<V,M>(m_prefix.c_str(),
+  m_pdf        = new uqUniformJointPdfClass<V,M>(m_prefix.c_str(),
                                                   m_imageSet);
   m_realizer   = new uqUniformVectorRealizerClass<V,M>(m_prefix.c_str(),
                                                        m_imageSet);

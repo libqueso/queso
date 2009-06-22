@@ -173,7 +173,7 @@ template <class V, class M>
 const uqBaseOneDGridClass<double>&
 uqArrayOfOneDGridsClass<V,M>::grid(unsigned int rowId) const
 {
-  UQ_FATAL_TEST_MACRO(rowId >= m_rowSpace.dim(),
+  UQ_FATAL_TEST_MACRO(rowId >= m_rowSpace.dimLocal(),
                       m_env.fullRank(),
                       "uqArrayOfOneDUnformGridsClass<T>::grid()",
                       "rowId is out of range");

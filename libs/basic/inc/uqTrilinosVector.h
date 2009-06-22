@@ -60,7 +60,8 @@ public:
                  double& operator[](unsigned int i);
            const double& operator[](unsigned int i) const;
 
-  unsigned int   size            () const;
+  unsigned int   sizeLocal       () const;
+  unsigned int   sizeGlobal      () const;
   double         norm2Sq         () const;
   double         norm2           () const;
   double         sumOfComponents () const;

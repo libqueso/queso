@@ -87,7 +87,7 @@ uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, double d1,
 uqGslVectorClass::uqGslVectorClass(const uqGslVectorClass& v, double d1, double d2)
   :
   uqVectorClass(v.env(),v.map()),
-  m_vec(gsl_vector_calloc(v.size()))
+  m_vec(gsl_vector_calloc(v.sizeLocal()))
 {
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
                       m_env.fullRank(),
@@ -103,7 +103,7 @@ uqGslVectorClass::uqGslVectorClass(const uqGslVectorClass& v, double d1, double 
 uqGslVectorClass::uqGslVectorClass(const uqGslVectorClass& v)
   :
   uqVectorClass(v.env(),v.map()),
-  m_vec(gsl_vector_calloc(v.size()))
+  m_vec(gsl_vector_calloc(v.sizeLocal()))
 {
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
                       m_env.fullRank(),
@@ -154,8 +154,8 @@ uqGslVectorClass::operator/=(double a)
 uqGslVectorClass&
 uqGslVectorClass::operator*=(const uqGslVectorClass& rhs)
 {
-  unsigned int size1 = this->size();
-  unsigned int size2 = rhs.size();
+  unsigned int size1 = this->sizeLocal();
+  unsigned int size2 = rhs.sizeLocal();
   UQ_FATAL_TEST_MACRO((size1 != size2),
                       m_env.fullRank(),
                       "uqGslVectorClass::operator*=()",
@@ -171,8 +171,8 @@ uqGslVectorClass::operator*=(const uqGslVectorClass& rhs)
 uqGslVectorClass&
 uqGslVectorClass::operator/=(const uqGslVectorClass& rhs)
 {
-  unsigned int size1 = this->size();
-  unsigned int size2 = rhs.size();
+  unsigned int size1 = this->sizeLocal();
+  unsigned int size2 = rhs.sizeLocal();
   UQ_FATAL_TEST_MACRO((size1 != size2),
                       m_env.fullRank(),
                       "uqGslVectorClass::operator/=()",
@@ -236,7 +236,13 @@ uqGslVectorClass::copy(const uqGslVectorClass& src)
 }
 
 unsigned int
-uqGslVectorClass::size() const
+uqGslVectorClass::sizeLocal() const
+{
+  return m_vec->size;
+}
+
+unsigned int
+uqGslVectorClass::sizeGlobal() const
 {
   return m_vec->size;
 }
@@ -257,7 +263,7 @@ double
 uqGslVectorClass::sumOfComponents() const
 {
   double result = 0.;
-  unsigned int size = this->size();
+  unsigned int size = this->sizeLocal();
   for (unsigned int i = 0; i < size; ++i) {
     result += (*this)[i];
   }
@@ -268,7 +274,7 @@ uqGslVectorClass::sumOfComponents() const
 void
 uqGslVectorClass::cwSet(double value)
 {
-  unsigned int size = this->size();
+  unsigned int size = this->sizeLocal();
   for (unsigned int i = 0; i < size; ++i) {
     (*this)[i] = value;
   }
@@ -279,7 +285,7 @@ uqGslVectorClass::cwSet(double value)
 void
 uqGslVectorClass::cwSetGaussian(const gsl_rng* rng, double mean, double stdDev)
 {
-  for (unsigned int i = 0; i < this->size(); ++i) {
+  for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
     (*this)[i] = mean + gsl_ran_gaussian(rng,stdDev);
   }
 
@@ -289,7 +295,7 @@ uqGslVectorClass::cwSetGaussian(const gsl_rng* rng, double mean, double stdDev)
 void
 uqGslVectorClass::cwSetGaussian(const gsl_rng* rng, const uqGslVectorClass& meanVec, const uqGslVectorClass& stdDevVec)
 {
-  for (unsigned int i = 0; i < this->size(); ++i) {
+  for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
     (*this)[i] = meanVec[i] + gsl_ran_gaussian(rng,stdDevVec[i]);
   }
   return;
@@ -298,7 +304,7 @@ uqGslVectorClass::cwSetGaussian(const gsl_rng* rng, const uqGslVectorClass& mean
 void
 uqGslVectorClass::cwSetUniform(const gsl_rng* rng, const uqGslVectorClass& aVec, const uqGslVectorClass& bVec)
 {
-  for (unsigned int i = 0; i < this->size(); ++i) {
+  for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
     (*this)[i] = aVec[i] + (bVec[i]-aVec[i])*gsl_rng_uniform(rng);
   }
   return;
@@ -307,7 +313,7 @@ uqGslVectorClass::cwSetUniform(const gsl_rng* rng, const uqGslVectorClass& aVec,
 void
 uqGslVectorClass::cwInvert()
 {
-  unsigned int size = this->size();
+  unsigned int size = this->sizeLocal();
   for (unsigned int i = 0; i < size; ++i) {
     (*this)[i] = 1./(*this)[i];
   }
@@ -326,7 +332,7 @@ uqGslVectorClass::sort()
 void
 uqGslVectorClass::print(std::ostream& os) const
 {
-  unsigned int size = this->size();
+  unsigned int size = this->sizeLocal();
 
   if (m_printHorizontally) {
     for (unsigned int i = 0; i < size; ++i) {
@@ -353,14 +359,14 @@ uqGslVectorClass::data() const
 bool
 uqGslVectorClass::atLeastOneComponentSmallerThan(const uqGslVectorClass& rhs) const
 {
-  UQ_FATAL_TEST_MACRO((this->size() != rhs.size()),
+  UQ_FATAL_TEST_MACRO((this->sizeLocal() != rhs.sizeLocal()),
                       m_env.fullRank(),
                       "uqGslVectorClass::atLeastOneComponentSmallerThan()",
                       "vectors have different sizes");
 
   bool result = false;
   unsigned int i = 0;
-  unsigned int size = this->size();
+  unsigned int size = this->sizeLocal();
   while ((i < size) && (result == false)) {
     result = ( (*this)[i] < rhs[i] );
     i++;
@@ -372,14 +378,14 @@ uqGslVectorClass::atLeastOneComponentSmallerThan(const uqGslVectorClass& rhs) co
 bool
 uqGslVectorClass::atLeastOneComponentBiggerThan (const uqGslVectorClass& rhs) const
 {
-  UQ_FATAL_TEST_MACRO((this->size() != rhs.size()),
+  UQ_FATAL_TEST_MACRO((this->sizeLocal() != rhs.sizeLocal()),
                       m_env.fullRank(),
                       "uqGslVectorClass::atLeastOneComponentBiggerThan()",
                       "vectors have different sizes");
 
   bool result = false;
   unsigned int i = 0;
-  unsigned int size = this->size();
+  unsigned int size = this->sizeLocal();
   while ((i < size) && (result == false)) {
     result = ( (*this)[i] > rhs[i] );
     i++;
@@ -431,8 +437,8 @@ uqGslVectorClass operator*(const uqGslVectorClass& x, const uqGslVectorClass& y)
 
 double scalarProduct(const uqGslVectorClass& x, const uqGslVectorClass& y)
 {
-  unsigned int size1 = x.size();
-  unsigned int size2 = y.size();
+  unsigned int size1 = x.sizeLocal();
+  unsigned int size2 = y.sizeLocal();
   UQ_FATAL_TEST_MACRO((size1 != size2),
                       x.env().fullRank(),
                       "scalarProduct()",

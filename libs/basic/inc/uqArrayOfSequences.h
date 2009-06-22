@@ -43,12 +43,12 @@ public:
 
 
   uqArrayOfSequencesClass(const uqVectorSpaceClass<V,M>& vectorSpace,
-                          unsigned int                   sequenceSize,
+                          unsigned int                   subSequenceSize,
                           const std::string&             name);
  ~uqArrayOfSequencesClass();
 
-        unsigned int sequenceSize         () const;
-        void         resizeSequence       (unsigned int newSequenceSize);
+        unsigned int subSequenceSize      () const;
+        void         resizeSequence       (unsigned int newSubSequenceSize);
         void         resetValues          (unsigned int initialPos, unsigned int numPos);
         void         erasePositions       (unsigned int initialPos, unsigned int numPos);
         void         getPositionValues    (unsigned int posId,       V& vec) const;
@@ -170,10 +170,10 @@ private:
 template <class V, class M>
 uqArrayOfSequencesClass<V,M>::uqArrayOfSequencesClass(
   const uqVectorSpaceClass<V,M>& vectorSpace,
-  unsigned int                   sequenceSize,
+  unsigned int                   subSequenceSize,
   const std::string&             name)
   :
-  uqBaseVectorSequenceClass<V,M>(vectorSpace,sequenceSize,name),
+  uqBaseVectorSequenceClass<V,M>(vectorSpace,subSequenceSize,name),
   m_scalarSequences             (m_vectorSpace.map(),1)
 {
 
@@ -184,13 +184,13 @@ uqArrayOfSequencesClass<V,M>::uqArrayOfSequencesClass(
 
   //if (m_env.subDisplayFile()) {
   //  *m_env.subDisplayFile() << "In uqArrayOfSequencesClass<V,M>::constructor()"
-  //                         << "\n sequenceSize = "                 << sequenceSize
+  //                         << "\n subSequenceSize = "              << subSequenceSize
   //                         << "\n m_scalarSequences.MyLength() = " << m_scalarSequences.MyLength()
   //                         << std::endl;
   //}
 
   for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
-    m_scalarSequences(i,0) = new uqScalarSequenceClass<double>(m_env,sequenceSize);
+    m_scalarSequences(i,0) = new uqScalarSequenceClass<double>(m_env,subSequenceSize);
   }
 
   //if (m_env.subDisplayFile()) {
@@ -209,20 +209,20 @@ uqArrayOfSequencesClass<V,M>::~uqArrayOfSequencesClass()
 
 template <class V, class M>
 unsigned int
-uqArrayOfSequencesClass<V,M>::sequenceSize() const
+uqArrayOfSequencesClass<V,M>::subSequenceSize() const
 {
   uqArrayOfSequencesClass<V,M>* tmp = const_cast<uqArrayOfSequencesClass<V,M>*>(this);
 
-  return tmp->m_scalarSequences(0,0)->sequenceSize();
+  return tmp->m_scalarSequences(0,0)->subSequenceSize();
 }
 
 template <class V, class M>
 void
-uqArrayOfSequencesClass<V,M>::resizeSequence(unsigned int newSequenceSize)
+uqArrayOfSequencesClass<V,M>::resizeSequence(unsigned int newSubSequenceSize)
 {
-  if (newSequenceSize != this->sequenceSize()) {
+  if (newSubSequenceSize != this->subSequenceSize()) {
     for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
-      m_scalarSequences(i,0)->resizeSequence(newSequenceSize);
+      m_scalarSequences(i,0)->resizeSequence(newSubSequenceSize);
     }
   }
 
@@ -252,7 +252,7 @@ uqArrayOfSequencesClass<V,M>::erasePositions(
   unsigned int initialPos,
   unsigned int numPos)
 {
-  if (initialPos < this->sequenceSize()) {
+  if (initialPos < this->subSequenceSize()) {
     for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
       uqScalarSequenceClass<double>& seq = *(m_scalarSequences(i,0));
       seq.erasePositions(initialPos,numPos);
@@ -353,9 +353,9 @@ uqArrayOfSequencesClass<V,M>::mean(
   unsigned int numPos,
   V&           meanVec) const
 {
-  bool bRC = ((0                     <= initialPos             ) &&
-              (0                     <  numPos                 ) &&
-              ((initialPos+numPos-1) <= (this->sequenceSize()-1)));
+  bool bRC = ((0                     <= initialPos                 ) &&
+              (0                     <  numPos                     ) &&
+              ((initialPos+numPos-1) <= (this->subSequenceSize()-1)));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
                       "uqArrayOfSequencesClass<V,M>::mean()",
@@ -385,9 +385,9 @@ uqArrayOfSequencesClass<V,M>::sampleVariance(
   const V&     meanVec,
   V&           samVec) const
 {
-  bool bRC = ((0                     <= initialPos             ) &&
-              (0                     <  numPos                 ) &&
-              ((initialPos+numPos-1) <= (this->sequenceSize()-1)));
+  bool bRC = ((0                     <= initialPos                 ) &&
+              (0                     <  numPos                     ) &&
+              ((initialPos+numPos-1) <= (this->subSequenceSize()-1)));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
                       "uqArrayOfSequencesClass<V,M>::sampleVariance()",
@@ -433,9 +433,9 @@ uqArrayOfSequencesClass<V,M>::populationVariance(
   const V&     meanVec,
   V&           popVec) const
 {
-  bool bRC = ((0                     <= initialPos             ) &&
-              (0                     <  numPos                 ) &&
-              ((initialPos+numPos-1) <= (this->sequenceSize()-1)));
+  bool bRC = ((0                     <= initialPos                 ) &&
+              (0                     <  numPos                     ) &&
+              ((initialPos+numPos-1) <= (this->subSequenceSize()-1)));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
                       "uqArrayOfSequencesClass<V,M>::populationVariance()",
@@ -482,9 +482,9 @@ uqArrayOfSequencesClass<V,M>::autoCovariance(
   unsigned int lag,
   V&           covVec) const
 {
-  bool bRC = ((0                     <= initialPos             ) &&
-              (0                     <  numPos                 ) &&
-              ((initialPos+numPos-1) <= (this->sequenceSize()-1)));
+  bool bRC = ((0                     <= initialPos                 ) &&
+              (0                     <  numPos                     ) &&
+              ((initialPos+numPos-1) <= (this->subSequenceSize()-1)));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
                       "uqVectorSequenceAutoCovariance<V,M>()",
@@ -642,10 +642,10 @@ uqArrayOfSequencesClass<V,M>::autoCorrViaFft(
   V&           autoCorrsSumVec) const
 {
 #if 0
-  bool bRC = ((initialPos             <  this->sequenceSize()) &&
-              (0                      <  numPos              ) &&
-              ((initialPos+numPos)    <= this->sequenceSize()) &&
-              (autoCorrsSumVec.size() == this->vectorSize()  ));
+  bool bRC = ((initialPos             <  this->subSequenceSize()) &&
+              (0                      <  numPos                 ) &&
+              ((initialPos+numPos)    <= this->subSequenceSize()) &&
+              (autoCorrsSumVec.size() == this->vectorSize()     ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
                       "uqArrayOfSequencesClass<V,M>::autoCorrViaFft(), for sum",
@@ -990,14 +990,14 @@ void
 uqArrayOfSequencesClass<V,M>::writeContents(std::ofstream& ofsvar) const
 {
   // Write chain
-  ofsvar << m_name << "_sub" << m_env.subIdString() << " = zeros(" << this->sequenceSize()
+  ofsvar << m_name << "_sub" << m_env.subIdString() << " = zeros(" << this->subSequenceSize()
          << ","                                                    << this->vectorSize()
          << ");"
          << std::endl;
   ofsvar << m_name << "_sub" << m_env.subIdString() << " = [";
 
   V tmpVec(m_vectorSpace.zeroVector());
-  unsigned int chainSize = this->sequenceSize();
+  unsigned int chainSize = this->subSequenceSize();
   for (unsigned int j = 0; j < chainSize; ++j) {
     this->getPositionValues(j,tmpVec);
     ofsvar << tmpVec

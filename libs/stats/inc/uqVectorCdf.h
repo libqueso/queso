@@ -360,7 +360,7 @@ template<class V, class M>
 const uqBaseScalarCdfClass<double>&
 uqSampledVectorCdfClass<V,M>::cdf(unsigned int rowId) const
 {
-  UQ_FATAL_TEST_MACRO(rowId >= m_pdfSupport.vectorSpace().dim(),
+  UQ_FATAL_TEST_MACRO(rowId >= m_pdfSupport.vectorSpace().dimLocal(),
                       m_env.fullRank(),
                       "uqSampledVectorCdfClass<T>::cdf()",
                       "rowId is out of range");
@@ -391,7 +391,7 @@ horizontalDistances(const uqBaseVectorCdfClass<V,M>& cdf1,
                     const V& epsilonVec,
                     V&       distances)
 {
-  for (unsigned int i = 0; i < cdf1.pdfSupport().vectorSpace().dim(); ++i) {
+  for (unsigned int i = 0; i < cdf1.pdfSupport().vectorSpace().dimLocal(); ++i) {
     distances[i] = horizontalDistance(cdf1.cdf(i),
                                       cdf2.cdf(i),
                                       epsilonVec[i]);

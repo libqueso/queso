@@ -614,7 +614,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
     if (m_qseqMeasureRunTimes) qoiFunctionRunTime += uqMiscGetEllapsedSeconds(&timevalQoIFunction);
 
     bool allQsAreFinite = true;
-    for (unsigned int j = 0; j < tmpQ.size(); ++j) {
+    for (unsigned int j = 0; j < tmpQ.sizeLocal(); ++j) {
       if ((tmpQ[j] == INFINITY) || (tmpQ[j] == -INFINITY)) {
 	std::cerr << "WARNING In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence()"
                   << ", fullRank "       << m_env.fullRank()

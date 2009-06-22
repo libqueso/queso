@@ -51,7 +51,7 @@ class uqScalarSequenceClass
 public:
   typedef typename std::vector<T>::iterator       seqScalarPositionIteratorTypedef;
   typedef typename std::vector<T>::const_iterator seqScalarPositionConstIteratorTypedef;
-  uqScalarSequenceClass(const uqBaseEnvironmentClass& env, unsigned int sequenceSize);
+  uqScalarSequenceClass(const uqBaseEnvironmentClass& env, unsigned int subSequenceSize);
  ~uqScalarSequenceClass();
 
         unsigned int subSequenceSize           () const;
@@ -183,10 +183,10 @@ private:
 template <class T>
 uqScalarSequenceClass<T>::uqScalarSequenceClass(
   const uqBaseEnvironmentClass& env,
-        unsigned int            sequenceSize)
+        unsigned int            subSequenceSize)
   :
   m_env(env),
-  m_seq(sequenceSize,0.)
+  m_seq(subSequenceSize,0.)
 {
 }
 
@@ -1473,10 +1473,10 @@ uqScalarSequenceClass<T>::subCdfStacc(
   unsigned int numEvals = evaluationPositions.size();
 
   for (unsigned int j = 0; j < numEvals; ++j) {
-    double x = evaluationPositions[j];
+    //double x = evaluationPositions[j];
     double value = 0.;
     for (unsigned int k = 0; k < dataSize; ++k) {
-      double xk = m_seq[initialPos+k];
+      //double xk = m_seq[initialPos+k];
       value += 0.;//uqMiscGaussianDensity((x-xk)*scaleInv,0.,1.);
     }
     cdfStaccValues[j] = value/(double) dataSize;

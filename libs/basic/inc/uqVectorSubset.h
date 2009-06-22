@@ -156,7 +156,7 @@ uqBoxSubsetClass<V,M>::uqBoxSubsetClass(
   m_maxValues(maxValues)
 {
   m_volume = 1.;
-  for (unsigned int i = 0; i < m_vectorSpace->dim(); ++i) {
+  for (unsigned int i = 0; i < m_vectorSpace->dimLocal(); ++i) {
     m_volume *= (m_maxValues[i] - m_minValues[i]);
   }
 }
@@ -172,7 +172,7 @@ uqBoxSubsetClass<V,M>::contains(const V& vec) const
 {
   //bool result = true;
 
-  //for (unsigned int i = 0; (i < m_vectorSpace->dim()) && (result == true); ++i) {
+  //for (unsigned int i = 0; (i < m_vectorSpace->dimLocal()) && (result == true); ++i) {
   //  result = (m_maxValues[i] <= vec[i]) && (vec[i] <= m_minValues[i]);
   //}
 
