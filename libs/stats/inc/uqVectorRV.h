@@ -34,7 +34,7 @@
 #define __UQ_VECTOR_RV_H__
 
 #include <uqVectorSpace.h>
-#include <uqVectorPdf.h>
+#include <uqJointPdf.h>
 #include <uqVectorRealizer.h>
 #include <uqVectorCdf.h>
 #include <uqVectorMdf.h>

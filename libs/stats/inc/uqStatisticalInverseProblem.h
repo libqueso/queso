@@ -50,22 +50,31 @@
 #define UQ_CALIB_PROBLEM_SOLVER_ODV                "bayes_mc" // Bayesian formula + Markov Chain
 #endif
 
-/*! A templated class that represents statistical inverse problems.
- */
+/*! A templated class that represents statistical inverse problems. */
+/*! */
+/*! Conceptually, a statistical inverse problem has two input entities and one output entity.
+    The input entities are the prior rv and the likelihood function, and the output entity is the posterior rv, which stores the solution according the Bayesian approach.
+    A similar situation occurs e.g. in the case of a system Ax=b of linear equations, where A and b are inputs, and x is the solution of the inverse problem. */
+/*! The solution of a statistical inverse problem is computed by calling 'solveWithBayesMarkovChain(...)'.
+    Upon return from such operation, the posterior rv is available through operation 'postRv()', and such posterior rv is able to supply a joint pdf (up to a multiplicative constant) and a vector realizer. */
 template <class P_V,class P_M>
 class uqStatisticalInverseProblemClass
 {
 public:
-  uqStatisticalInverseProblemClass(const char*                               prefix,             /*! The prefix.                             */
-                                   const uqBaseVectorRVClass      <P_V,P_M>& priorRv,            /*! The prior random variable.              */
-                                   const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunction, /*! The function to compute the likelihood. */
-                                         uqGenericVectorRVClass   <P_V,P_M>& postRv);            /*! The posterior random variable.          */
+  
+  /*! Contructor: */
+  uqStatisticalInverseProblemClass(/*! The prefix              */ const char*                               prefix,             
+                                   /*! The prior rv            */ const uqBaseVectorRVClass      <P_V,P_M>& priorRv,            
+                                   /*! The likelihood function */ const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunction, 
+                                   /*! The posterior rv        */       uqGenericVectorRVClass   <P_V,P_M>& postRv);
+  /*! Destructor: */
  ~uqStatisticalInverseProblemClass();
 
         bool computeSolutionFlag      () const;
+	/*! Operation to solve the problem */
         void solveWithBayesMarkovChain(const P_V& initialValues,
                                        const P_M* proposalCovMatrix);
-  const uqBaseVectorRVClass<P_V,P_M>&    priorRv() const;
+  const uqBaseVectorRVClass   <P_V,P_M>& priorRv() const;
   const uqGenericVectorRVClass<P_V,P_M>& postRv () const;
 
         void print                    (std::ostream& os) const;
@@ -81,14 +90,14 @@ private:
         std::string                          m_option_help;
 	std::string                          m_option_computeSolution;
         std::string                          m_option_dataOutputFileName;
-        std::string                          m_option_dataOutputAllow;
+        std::string                          m_option_dataOutputAllowedSet;
 #ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
         std::string                          m_option_solver;
 #endif
 
         bool                                 m_computeSolution;
         std::string                          m_dataOutputFileName;
-        std::set<unsigned int>               m_dataOutputAllow;
+        std::set<unsigned int>               m_dataOutputAllowedSet;
 #ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
 	std::string                          m_solverString;
 #endif
@@ -98,7 +107,7 @@ private:
         uqGenericVectorRVClass    <P_V,P_M>& m_postRv;
 
         uqVectorSetClass          <P_V,P_M>* m_solutionDomain;
-        uqBaseJointPdfClass      <P_V,P_M>* m_solutionPdf;
+        uqBaseJointPdfClass       <P_V,P_M>* m_solutionPdf;
         uqBaseVectorMdfClass      <P_V,P_M>* m_subSolutionMdf;
         uqBaseVectorCdfClass      <P_V,P_M>* m_subSolutionCdf;
         uqBaseVectorRealizerClass <P_V,P_M>* m_solutionRealizer;
@@ -119,32 +128,32 @@ uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
   const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunction,
         uqGenericVectorRVClass   <P_V,P_M>& postRv)
   :
-  m_env                      (priorRv.env()),
-  m_prefix                   ((std::string)(prefix) + "ip_"),
-  m_optionsDesc              (new po::options_description("UQ Calibration Problem")),
-  m_option_help              (m_prefix + "help"              ),
-  m_option_computeSolution   (m_prefix + "computeSolution"   ),
-  m_option_dataOutputFileName(m_prefix + "dataOutputFileName"),
-  m_option_dataOutputAllow   (m_prefix + "dataOutputAllow"   ),
+  m_env                        (priorRv.env()),
+  m_prefix                     ((std::string)(prefix) + "ip_"    ),
+  m_optionsDesc                (new po::options_description("UQ Calibration Problem")),
+  m_option_help                (m_prefix + "help"                ),
+  m_option_computeSolution     (m_prefix + "computeSolution"     ),
+  m_option_dataOutputFileName  (m_prefix + "dataOutputFileName"  ),
+  m_option_dataOutputAllowedSet(m_prefix + "dataOutputAllowedSet"),
 #ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
-  m_option_solver            (m_prefix + "solver"),
+  m_option_solver              (m_prefix + "solver"              ),
 #endif
-  m_computeSolution          (UQ_CALIB_PROBLEM_COMPUTE_SOLUTION_ODV     ),
-  m_dataOutputFileName       (UQ_CALIB_PROBLEM_DATA_OUTPUT_FILE_NAME_ODV),
-//m_dataOutputAllow          (),
+  m_computeSolution            (UQ_CALIB_PROBLEM_COMPUTE_SOLUTION_ODV     ),
+  m_dataOutputFileName         (UQ_CALIB_PROBLEM_DATA_OUTPUT_FILE_NAME_ODV),
+//m_dataOutputAllowedSet       (),
 #ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
-  m_solverString             (UQ_CALIB_PROBLEM_SOLVER_ODV),
+  m_solverString               (UQ_CALIB_PROBLEM_SOLVER_ODV),
 #endif
-  m_priorRv                  (priorRv),
-  m_likelihoodFunction       (likelihoodFunction),
-  m_postRv                   (postRv),
-  m_solutionDomain           (NULL),
-  m_solutionPdf              (NULL),
-  m_subSolutionMdf           (NULL),
-  m_subSolutionCdf           (NULL),
-  m_solutionRealizer         (NULL),
-  m_mcSeqGenerator           (NULL),
-  m_chain                    (NULL)
+  m_priorRv                    (priorRv),
+  m_likelihoodFunction         (likelihoodFunction),
+  m_postRv                     (postRv),
+  m_solutionDomain             (NULL),
+  m_solutionPdf                (NULL),
+  m_subSolutionMdf             (NULL),
+  m_subSolutionCdf             (NULL),
+  m_solutionRealizer           (NULL),
+  m_mcSeqGenerator             (NULL),
+  m_chain                      (NULL)
 {
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering uqStatisticalInverseProblemClass<P_V,P_M>::constructor()"
@@ -194,12 +203,12 @@ uqStatisticalInverseProblemClass<P_V,P_M>::defineMyOptions(
   po::options_description& optionsDesc)
 {
   optionsDesc.add_options()
-    (m_option_help.c_str(),                                                                                                    "produce help message for calibration problem")
-    (m_option_computeSolution.c_str(),    po::value<bool       >()->default_value(UQ_CALIB_PROBLEM_COMPUTE_SOLUTION_ODV     ), "compute solution process"                    )
-    (m_option_dataOutputFileName.c_str(), po::value<std::string>()->default_value(UQ_CALIB_PROBLEM_DATA_OUTPUT_FILE_NAME_ODV), "name of data output file"                    )
-    (m_option_dataOutputAllow.c_str(),    po::value<std::string>()->default_value(UQ_CALIB_PROBLEM_DATA_OUTPUT_ALLOW_ODV    ), "subEnvs that will write to data output file" )
+    (m_option_help.c_str(),                                                                                                      "produce help message for calibration problem")
+    (m_option_computeSolution.c_str(),      po::value<bool       >()->default_value(UQ_CALIB_PROBLEM_COMPUTE_SOLUTION_ODV     ), "compute solution process"                    )
+    (m_option_dataOutputFileName.c_str(),   po::value<std::string>()->default_value(UQ_CALIB_PROBLEM_DATA_OUTPUT_FILE_NAME_ODV), "name of data output file"                    )
+    (m_option_dataOutputAllowedSet.c_str(), po::value<std::string>()->default_value(UQ_CALIB_PROBLEM_DATA_OUTPUT_ALLOW_ODV    ), "subEnvs that will write to data output file" )
 #ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION
-    (m_option_solver.c_str(),             po::value<std::string>()->default_value(UQ_CALIB_PROBLEM_SOLVER_ODV               ), "algorithm for calibration"                   )
+    (m_option_solver.c_str(),               po::value<std::string>()->default_value(UQ_CALIB_PROBLEM_SOLVER_ODV               ), "algorithm for calibration"                   )
 #endif
   ;
 
@@ -226,15 +235,15 @@ void
     m_dataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName.c_str()]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_dataOutputAllow.c_str())) {
-    m_dataOutputAllow.clear();
+  if (m_env.allOptionsMap().count(m_option_dataOutputAllowedSet.c_str())) {
+    m_dataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env.allOptionsMap()[m_option_dataOutputAllow.c_str()].as<std::string>();
+    std::string inputString = m_env.allOptionsMap()[m_option_dataOutputAllowedSet.c_str()].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
       for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
-        m_dataOutputAllow.insert((unsigned int) tmpAllow[i]);
+        m_dataOutputAllowedSet.insert((unsigned int) tmpAllow[i]);
       }
     }
   }
@@ -322,8 +331,8 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
                                                           *m_subMdfValues);
   m_postRv.setMdf(*m_subSolutionMdf);
 
-  if ((m_dataOutputFileName                  != UQ_CALIB_PROBLEM_FILENAME_FOR_NO_FILE) &&
-      (m_dataOutputAllow.find(m_env.subId()) != m_dataOutputAllow.end()              )) {
+  if ((m_dataOutputFileName                       != UQ_CALIB_PROBLEM_FILENAME_FOR_NO_FILE) &&
+      (m_dataOutputAllowedSet.find(m_env.subId()) != m_dataOutputAllowedSet.end()         )) {
     if (m_env.subRank() == 0) {
       // Write data output file
       if (m_env.subDisplayFile()) {
@@ -390,10 +399,10 @@ template <class P_V,class P_M>
 void
 uqStatisticalInverseProblemClass<P_V,P_M>::print(std::ostream& os) const
 {
-  os << "\n" << m_option_computeSolution    << " = " << m_computeSolution
-     << "\n" << m_option_dataOutputFileName << " = " << m_dataOutputFileName;
-  os << "\n" << m_option_dataOutputAllow    << " = ";
-  for (std::set<unsigned int>::iterator setIt = m_dataOutputAllow.begin(); setIt != m_dataOutputAllow.end(); ++setIt) {
+  os << "\n" << m_option_computeSolution      << " = " << m_computeSolution
+     << "\n" << m_option_dataOutputFileName   << " = " << m_dataOutputFileName;
+  os << "\n" << m_option_dataOutputAllowedSet << " = ";
+  for (std::set<unsigned int>::iterator setIt = m_dataOutputAllowedSet.begin(); setIt != m_dataOutputAllowedSet.end(); ++setIt) {
     os << *setIt << " ";
   }
 #ifdef UQ_CALIB_PROBLEM_READS_SOLVER_OPTION

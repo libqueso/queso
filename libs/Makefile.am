@@ -16,7 +16,7 @@ libqueso_a_SOURCES = $(top_srcdir)/libs/basic/src/uqEnvironment.C \
 	$(top_srcdir)/libs/basic/src/uqMiscellaneous.C \
 	$(top_srcdir)/libs/basic/src/uqRealFft.C \
 	$(top_srcdir)/libs/basic/src/uqComplexFft.C \
-	$(top_srcdir)/libs/basic/src/uqChainStatisticalOptions.C \
+	$(top_srcdir)/libs/basic/src/uqSequenceStatisticalOptions.C \
 	$(top_srcdir)/libs/basic/src/uqTrilinosVector.C \
 	$(top_srcdir)/libs/basic/src/uqTrilinosMatrix.C \
 	$(top_srcdir)/libs/basic/src/uqTrilinosVectorSpace.C
@@ -41,7 +41,7 @@ libqueso_include_HEADERS = $(top_srcdir)/libs/basic/inc/uq1D1DFunction.h \
 	$(top_srcdir)/libs/basic/inc/uqArrayOfOneDTables.h \
 	$(top_srcdir)/libs/basic/inc/uqArrayOfSequences.h \
 	$(top_srcdir)/libs/basic/inc/uqAsciiTable.h \
-	$(top_srcdir)/libs/basic/inc/uqChainStatisticalOptions.h \
+	$(top_srcdir)/libs/basic/inc/uqSequenceStatisticalOptions.h \
 	$(top_srcdir)/libs/basic/inc/uqDefines.h \
 	$(top_srcdir)/libs/basic/inc/uqEnvironment.h \
 	$(top_srcdir)/libs/basic/inc/uqEnvironmentOptions.h \
@@ -80,7 +80,7 @@ libqueso_include_HEADERS += $(top_srcdir)/libs/stats/inc/uqCovCond.h \
 	$(top_srcdir)/libs/stats/inc/uqValidationCycle.h \
 	$(top_srcdir)/libs/stats/inc/uqVectorCdf.h \
 	$(top_srcdir)/libs/stats/inc/uqVectorMdf.h \
-	$(top_srcdir)/libs/stats/inc/uqVectorPdf.h \
+	$(top_srcdir)/libs/stats/inc/uqJointPdf.h \
 	$(top_srcdir)/libs/stats/inc/uqVectorRealizer.h \
 	$(top_srcdir)/libs/stats/inc/uqVectorRV.h
 

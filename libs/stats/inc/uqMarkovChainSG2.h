@@ -108,7 +108,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
   std::ofstream* genericOfsVar = NULL;
   m_env.openOutputFile(m_dataOutputFileName,
                        "m",
-                       m_dataOutputAllow,
+                       m_dataOutputAllowedSet,
                        false,
                        genericOfsVar);
 
@@ -129,7 +129,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
   std::ofstream* rawChainOfsVar = NULL;
   m_env.openOutputFile(m_rawChainDataOutputFileName,
                        UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
-                       m_rawChainDataOutputAllow,
+                       m_rawChainDataOutputAllowedSet,
                        true,
                        rawChainOfsVar);
 
@@ -268,8 +268,8 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
     std::ofstream* filteredChainOfsVar = NULL;
     m_env.openOutputFile(m_filteredChainDataOutputFileName,
                          UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
-                         m_filteredChainDataOutputAllow,
-                         true,
+                         m_filteredChainDataOutputAllowedSet,
+                         true, // FIX ME: shouldn't it be false ??????
                          filteredChainOfsVar);
 
     if (filteredChainOfsVar) {
@@ -450,7 +450,7 @@ template <class P_V,class P_M>
 void
 uqMarkovChainSGClass<P_V,P_M>::readFullChain(
   const std::string&                  inputFileName,
-  const unsigned int                  chainSize,
+        unsigned int                  chainSize,
   uqBaseVectorSequenceClass<P_V,P_M>& workingChain)
 {
   workingChain.unifiedReadContents(inputFileName,chainSize);
@@ -461,7 +461,7 @@ template <class P_V,class P_M>
 void
 uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
   const P_V&                          valuesOf1stPosition,
-  const unsigned int                  chainSize,
+        unsigned int                  chainSize,
   uqBaseVectorSequenceClass<P_V,P_M>& workingChain)
 {
   m_env.syncPrintDebugMsg("Entering uqMarkovChainSGClass<P_V,P_M>::generateFullChain()",3,3000000,m_env.fullComm());

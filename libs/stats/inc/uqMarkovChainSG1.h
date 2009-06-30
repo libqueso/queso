@@ -47,15 +47,15 @@
 #define UQ_MAC_SG_OUTPUT_FILE_NAME_ODV                     UQ_MAC_SG_FILENAME_FOR_NO_FILE
 #define UQ_MAC_SG_OUTPUT_ALLOW_ODV                         ""
 
-#define UQ_MAC_SG_CHAIN_TYPE_ODV                           UQ_MAC_SG_MARKOV_CHAIN_TYPE
-#define UQ_MAC_SG_CHAIN_DATA_INPUT_FILE_NAME_ODV                UQ_MAC_SG_FILENAME_FOR_NO_FILE
-#define UQ_MAC_SG_CHAIN_SIZE_ODV                           100
-#define UQ_MAC_SG_CHAIN_GENERATE_EXTRA_ODV                 0
-#define UQ_MAC_SG_CHAIN_DISPLAY_PERIOD_ODV                 500
-#define UQ_MAC_SG_CHAIN_MEASURE_RUN_TIMES_ODV              0
-#define UQ_MAC_SG_CHAIN_DATA_OUTPUT_FILE_NAME_ODV          UQ_MAC_SG_FILENAME_FOR_NO_FILE
-#define UQ_MAC_SG_CHAIN_DATA_OUTPUT_ALLOW_ODV              ""
-#define UQ_MAC_SG_CHAIN_COMPUTE_STATS_ODV                  0
+#define UQ_MAC_SG_RAW_CHAIN_TYPE_ODV                           UQ_MAC_SG_MARKOV_CHAIN_TYPE
+#define UQ_MAC_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV                UQ_MAC_SG_FILENAME_FOR_NO_FILE
+#define UQ_MAC_SG_RAW_CHAIN_SIZE_ODV                           100
+#define UQ_MAC_SG_RAW_CHAIN_GENERATE_EXTRA_ODV                 0
+#define UQ_MAC_SG_RAW_CHAIN_DISPLAY_PERIOD_ODV                 500
+#define UQ_MAC_SG_RAW_CHAIN_MEASURE_RUN_TIMES_ODV              0
+#define UQ_MAC_SG_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV          UQ_MAC_SG_FILENAME_FOR_NO_FILE
+#define UQ_MAC_SG_RAW_CHAIN_DATA_OUTPUT_ALLOW_ODV              ""
+#define UQ_MAC_SG_RAW_CHAIN_COMPUTE_STATS_ODV                  0
 #define UQ_MAC_SG_FILTERED_CHAIN_GENERATE_ODV              0
 #define UQ_MAC_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV     0.
 #define UQ_MAC_SG_FILTERED_CHAIN_LAG_ODV                   1
@@ -74,7 +74,7 @@
 #define UQ_MAC_SG_AM_EPSILON_ODV                           1.e-5
 
 #include <uqTKGroup.h>
-#include <uqChainStatisticalOptions.h>
+#include <uqSequenceStatisticalOptions.h>
 #include <uqVectorRV.h>
 #include <uqVectorSpace.h>
 #include <uqMarkovChainPositionData.h>
@@ -109,15 +109,15 @@ private:
   void   defineMyOptions          (po::options_description&                             optionsDesc);
   void   getMyOptionValues        (po::options_description&                             optionsDesc);
 
-  void   generateWhiteNoiseChain  (const unsigned int                                   chainSize,
+  void   generateWhiteNoiseChain  (      unsigned int                                   chainSize,
                                    uqBaseVectorSequenceClass<P_V,P_M>&                  workingChain);
-  void   generateUniformChain     (const unsigned int                                   chainSize,
+  void   generateUniformChain     (      unsigned int                                   chainSize,
                                    uqBaseVectorSequenceClass<P_V,P_M>&                  workingChain);
   void   generateFullChain        (const P_V&                                           valuesOf1stPosition,
-                                   const unsigned int                                   chainSize,
+                                         unsigned int                                   chainSize,
                                    uqBaseVectorSequenceClass<P_V,P_M>&                  workingChain);
   void   readFullChain            (const std::string&                                   inputFileName,
-                                   const unsigned int                                   chainSize,
+                                         unsigned int                                   chainSize,
                                    uqBaseVectorSequenceClass<P_V,P_M>&                  workingChain);
   void   updateAdaptedCovMatrix   (const uqBaseVectorSequenceClass<P_V,P_M>&            subChain,
                                    unsigned int                                         idOfFirstPositionInSubChain,
@@ -150,97 +150,97 @@ private:
 
   const uqBaseEnvironmentClass&                     m_env;
         std::string                                 m_prefix;
-  const uqVectorSpaceClass  <P_V,P_M>&              m_vectorSpace;
-  const uqBaseJointPdfClass<P_V,P_M>&              m_targetPdf;
+  const uqVectorSpaceClass <P_V,P_M>&               m_vectorSpace;
+  const uqBaseJointPdfClass<P_V,P_M>&               m_targetPdf;
         P_V                                         m_initialPosition;
   const P_M*                                        m_initialProposalCovMatrix;
         bool                                        m_nullInputProposalCovMatrix;
   const uqScalarFunctionSynchronizerClass<P_V,P_M>* m_targetPdfSynchronizer;
 
-        po::options_description*        m_optionsDesc;
-        std::string                     m_option_help;
-        std::string                     m_option_dataOutputFileName;
-        std::string                     m_option_dataOutputAllow;
+        po::options_description*           m_optionsDesc;
+        std::string                        m_option_help;
+        std::string                        m_option_dataOutputFileName;
+        std::string                        m_option_dataOutputAllowedSet;
 
-        std::string                     m_option_rawChain_type;
-        std::string                     m_option_rawChain_dataInputFileName;
-        std::string                     m_option_rawChain_size;
-        std::string                     m_option_rawChain_generateExtra;
-        std::string                     m_option_rawChain_displayPeriod;
-        std::string                     m_option_rawChain_measureRunTimes;
-        std::string                     m_option_rawChain_dataOutputFileName;
-        std::string                     m_option_rawChain_dataOutputAllow;
-        std::string                     m_option_rawChain_computeStats;
-        std::string                     m_option_filteredChain_generate;
-        std::string                     m_option_filteredChain_discardedPortion;
-        std::string                     m_option_filteredChain_lag;
-        std::string                     m_option_filteredChain_dataOutputFileName;
-        std::string                     m_option_filteredChain_dataOutputAllow;
-        std::string                     m_option_filteredChain_computeStats;
-	std::string                     m_option_mh_displayCandidates;
-	std::string                     m_option_mh_putOutOfBoundsInChain;
-	std::string                     m_option_tk_useLocalHessian;
-	std::string                     m_option_tk_useNewtonComponent;
-        std::string                     m_option_dr_maxNumExtraStages;
-        std::string                     m_option_dr_scalesForExtraStages;
-        std::string                     m_option_am_initialNonAdaptInterval;
-        std::string                     m_option_am_adaptInterval;
-        std::string                     m_option_am_eta;
-        std::string                     m_option_am_epsilon;
+        std::string                        m_option_rawChain_type;
+        std::string                        m_option_rawChain_dataInputFileName;
+        std::string                        m_option_rawChain_size;
+        std::string                        m_option_rawChain_generateExtra;
+        std::string                        m_option_rawChain_displayPeriod;
+        std::string                        m_option_rawChain_measureRunTimes;
+        std::string                        m_option_rawChain_dataOutputFileName;
+        std::string                        m_option_rawChain_dataOutputAllowedSet;
+        std::string                        m_option_rawChain_computeStats;
+        std::string                        m_option_filteredChain_generate;
+        std::string                        m_option_filteredChain_discardedPortion;
+        std::string                        m_option_filteredChain_lag;
+        std::string                        m_option_filteredChain_dataOutputFileName;
+        std::string                        m_option_filteredChain_dataOutputAllowedSet;
+        std::string                        m_option_filteredChain_computeStats;
+	std::string                        m_option_mh_displayCandidates;
+	std::string                        m_option_mh_putOutOfBoundsInChain;
+	std::string                        m_option_tk_useLocalHessian;
+	std::string                        m_option_tk_useNewtonComponent;
+        std::string                        m_option_dr_maxNumExtraStages;
+        std::string                        m_option_dr_scalesForExtraStages;
+        std::string                        m_option_am_initialNonAdaptInterval;
+        std::string                        m_option_am_adaptInterval;
+        std::string                        m_option_am_eta;
+        std::string                        m_option_am_epsilon;
 
-        std::string                     m_dataOutputFileName;
-        std::set<unsigned int>          m_dataOutputAllow;
+        std::string                        m_dataOutputFileName;
+        std::set<unsigned int>             m_dataOutputAllowedSet;
 
-        unsigned int                    m_rawChainType;
-	std::string                     m_rawChainDataInputFileName;
-        unsigned int                    m_rawChainSize;
-        bool                            m_rawChainGenerateExtra;
-        unsigned int                    m_rawChainDisplayPeriod;
-        bool                            m_rawChainMeasureRunTimes;
-        std::string                     m_rawChainDataOutputFileName;
-        std::set<unsigned int>          m_rawChainDataOutputAllow;
-        bool                            m_rawChainComputeStats;
-        uqChainStatisticalOptionsClass* m_rawChainStatisticalOptions;
+        unsigned int                       m_rawChainType;
+	std::string                        m_rawChainDataInputFileName;
+        unsigned int                       m_rawChainSize;
+        bool                               m_rawChainGenerateExtra;
+        unsigned int                       m_rawChainDisplayPeriod;
+        bool                               m_rawChainMeasureRunTimes;
+        std::string                        m_rawChainDataOutputFileName;
+        std::set<unsigned int>             m_rawChainDataOutputAllowedSet;
+        bool                               m_rawChainComputeStats;
+        uqSequenceStatisticalOptionsClass* m_rawChainStatisticalOptions;
 
-        bool                            m_filteredChainGenerate;
-        double                          m_filteredChainDiscardedPortion; // input or set during run time
-        unsigned int                    m_filteredChainLag;              // input or set during run time
-        std::string                     m_filteredChainDataOutputFileName;
-        std::set<unsigned int>          m_filteredChainDataOutputAllow;
-        bool                            m_filteredChainComputeStats;
-        uqChainStatisticalOptionsClass* m_filteredChainStatisticalOptions;
+        bool                               m_filteredChainGenerate;
+        double                             m_filteredChainDiscardedPortion; // input or set during run time
+        unsigned int                       m_filteredChainLag;              // input or set during run time
+        std::string                        m_filteredChainDataOutputFileName;
+        std::set<unsigned int>             m_filteredChainDataOutputAllowedSet;
+        bool                               m_filteredChainComputeStats;
+        uqSequenceStatisticalOptionsClass* m_filteredChainStatisticalOptions;
 
-        bool                            m_mhDisplayCandidates;
-        bool                            m_mhPutOutOfBoundsInChain;
-        bool                            m_tkUseLocalHessian;
-        bool                            m_tkUseNewtonComponent;
-        unsigned int                    m_drMaxNumExtraStages;
-        std::vector<double>             m_drScalesForCovMatrices;
-        unsigned int                    m_amInitialNonAdaptInterval;
-        unsigned int                    m_amAdaptInterval;
-        double                          m_amEta;
-        double                          m_amEpsilon;
+        bool                               m_mhDisplayCandidates;
+        bool                               m_mhPutOutOfBoundsInChain;
+        bool                               m_tkUseLocalHessian;
+        bool                               m_tkUseNewtonComponent;
+        unsigned int                       m_drMaxNumExtraStages;
+        std::vector<double>                m_drScalesForCovMatrices;
+        unsigned int                       m_amInitialNonAdaptInterval;
+        unsigned int                       m_amAdaptInterval;
+        double                             m_amEta;
+        double                             m_amEpsilon;
 
-        uqBaseTKGroupClass<P_V,P_M>*    m_tk;
+        uqBaseTKGroupClass<P_V,P_M>*       m_tk;
 #ifdef UQ_USES_TK_CLASS
 #else
-        bool                            m_tkIsSymmetric;
-        std::vector<P_M*>               m_lowerCholProposalCovMatrices;
-        std::vector<P_M*>               m_proposalCovMatrices;
+        bool                               m_tkIsSymmetric;
+        std::vector<P_M*>                  m_lowerCholProposalCovMatrices;
+        std::vector<P_M*>                  m_proposalCovMatrices;
 #ifdef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
-        std::vector<P_M*>               m_upperCholProposalPrecMatrices;
-        std::vector<P_M*>               m_proposalPrecMatrices;
+        std::vector<P_M*>                  m_upperCholProposalPrecMatrices;
+        std::vector<P_M*>                  m_proposalPrecMatrices;
 #endif
 #endif
-        std::vector<unsigned int>       m_idsOfUniquePositions;
-        std::vector<double>             m_logTargets;
-        std::vector<double>             m_alphaQuotients;
-        double                          m_rawChainRunTime;
-        unsigned int                    m_numRejections;
-        unsigned int                    m_numOutOfTargetSupport;
-        double                          m_lastChainSize;
-        P_V*                            m_lastMean;
-        P_M*                            m_lastAdaptedCovMatrix;
+        std::vector<unsigned int>          m_idsOfUniquePositions;
+        std::vector<double>                m_logTargets;
+        std::vector<double>                m_alphaQuotients;
+        double                             m_rawChainRunTime;
+        unsigned int                       m_numRejections;
+        unsigned int                       m_numOutOfTargetSupport;
+        double                             m_lastChainSize;
+        P_V*                               m_lastMean;
+        P_M*                               m_lastAdaptedCovMatrix;
 };
 
 template<class P_V,class P_M>
@@ -255,92 +255,92 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   const P_V&                          initialPosition,
   const P_M*                          inputProposalCovMatrix)
   :
-  m_env                                    (sourceRv.env()),
-  m_prefix                                 ((std::string)(prefix) + "mc_"),
-  m_vectorSpace                            (sourceRv.imageSet().vectorSpace()),
-  m_targetPdf                              (sourceRv.pdf()),
-  m_initialPosition                        (initialPosition),
-  m_initialProposalCovMatrix               (inputProposalCovMatrix),
-  m_nullInputProposalCovMatrix             (inputProposalCovMatrix == NULL),
-  m_targetPdfSynchronizer                  (new uqScalarFunctionSynchronizerClass<P_V,P_M>(m_targetPdf,m_initialPosition)),
-  m_optionsDesc                            (new po::options_description("Bayesian Markov chain options")),
-  m_option_help                            (m_prefix + "help"                            ),
-  m_option_dataOutputFileName              (m_prefix + "dataOutputFileName"              ),
-  m_option_dataOutputAllow                 (m_prefix + "dataOutputAllow"                 ),
-  m_option_rawChain_type                   (m_prefix + "rawChain_type"                   ),
-  m_option_rawChain_dataInputFileName      (m_prefix + "rawChain_dataInputFileName"      ),
-  m_option_rawChain_size                   (m_prefix + "rawChain_size"                   ),
-  m_option_rawChain_generateExtra          (m_prefix + "rawChain_generateExtra"          ),
-  m_option_rawChain_displayPeriod          (m_prefix + "rawChain_displayPeriod"          ),
-  m_option_rawChain_measureRunTimes        (m_prefix + "rawChain_measureRunTimes"        ),
-  m_option_rawChain_dataOutputFileName     (m_prefix + "rawChain_dataOutputFileName"     ),
-  m_option_rawChain_dataOutputAllow        (m_prefix + "rawChain_dataOutputAllow"        ),
-  m_option_rawChain_computeStats           (m_prefix + "rawChain_computeStats"           ),
-  m_option_filteredChain_generate          (m_prefix + "filteredChain_generate"          ),
-  m_option_filteredChain_discardedPortion  (m_prefix + "filteredChain_discardedPortion"  ),
-  m_option_filteredChain_lag               (m_prefix + "filteredChain_lag"               ),
-  m_option_filteredChain_dataOutputFileName(m_prefix + "filteredChain_dataOutputFileName"),
-  m_option_filteredChain_dataOutputAllow   (m_prefix + "filteredChain_dataOutputAllow"   ),
-  m_option_filteredChain_computeStats      (m_prefix + "filteredChain_computeStats"      ),
-  m_option_mh_displayCandidates            (m_prefix + "mh_displayCandidates"            ),
-  m_option_mh_putOutOfBoundsInChain        (m_prefix + "mh_putOutOfBoundsInChain"        ),
-  m_option_tk_useLocalHessian              (m_prefix + "tk_useLocalHessian"              ),
-  m_option_tk_useNewtonComponent           (m_prefix + "tk_useNewtonComponent"           ),
-  m_option_dr_maxNumExtraStages            (m_prefix + "dr_maxNumExtraStages"            ),
-  m_option_dr_scalesForExtraStages         (m_prefix + "dr_scalesForExtraStages"         ),
-  m_option_am_initialNonAdaptInterval      (m_prefix + "am_initialNonAdaptInterval"      ),
-  m_option_am_adaptInterval                (m_prefix + "am_adaptInterval"                ),
-  m_option_am_eta                          (m_prefix + "am_eta"                          ),
-  m_option_am_epsilon                      (m_prefix + "am_epsilon"                      ),
-  m_dataOutputFileName                     (UQ_MAC_SG_CHAIN_DATA_OUTPUT_FILE_NAME_ODV),
-//m_dataOutputAllow                        (),
-  m_rawChainType                           (UQ_MAC_SG_CHAIN_TYPE_ODV),
-  m_rawChainDataInputFileName              (UQ_MAC_SG_CHAIN_DATA_INPUT_FILE_NAME_ODV),
-  m_rawChainSize                           (UQ_MAC_SG_CHAIN_SIZE_ODV),
-  m_rawChainGenerateExtra                  (UQ_MAC_SG_CHAIN_GENERATE_EXTRA_ODV),
-  m_rawChainDisplayPeriod                  (UQ_MAC_SG_CHAIN_DISPLAY_PERIOD_ODV),
-  m_rawChainMeasureRunTimes                (UQ_MAC_SG_CHAIN_MEASURE_RUN_TIMES_ODV),
-  m_rawChainDataOutputFileName             (UQ_MAC_SG_CHAIN_DATA_OUTPUT_FILE_NAME_ODV),
-//m_rawChainDataOutputAllow                (),
-  m_rawChainComputeStats                   (UQ_MAC_SG_CHAIN_COMPUTE_STATS_ODV),
-  m_rawChainStatisticalOptions             (NULL),
-  m_filteredChainGenerate                  (UQ_MAC_SG_FILTERED_CHAIN_GENERATE_ODV),
-  m_filteredChainDiscardedPortion          (UQ_MAC_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV),
-  m_filteredChainLag                       (UQ_MAC_SG_FILTERED_CHAIN_LAG_ODV),
-  m_filteredChainDataOutputFileName        (UQ_MAC_SG_CHAIN_DATA_OUTPUT_FILE_NAME_ODV),
-//m_filteredChainDataOutputAllow           (),
-  m_filteredChainComputeStats              (UQ_MAC_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV),
-  m_filteredChainStatisticalOptions        (NULL),
-  m_mhDisplayCandidates                    (UQ_MAC_SG_MH_DISPLAY_CANDIDATES_ODV),
-  m_mhPutOutOfBoundsInChain                (UQ_MAC_SG_MH_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV),
-  m_tkUseLocalHessian                      (UQ_MAC_SG_TK_USE_LOCAL_HESSIAN_ODV),
-  m_tkUseNewtonComponent                   (UQ_MAC_SG_TK_USE_NEWTON_COMPONENT_ODV),
-  m_drMaxNumExtraStages                    (UQ_MAC_SG_DR_MAX_NUM_EXTRA_STAGES_ODV),
-  m_drScalesForCovMatrices                 (1,1.),
-  m_amInitialNonAdaptInterval              (UQ_MAC_SG_AM_INIT_NON_ADAPT_INT_ODV),
-  m_amAdaptInterval                        (UQ_MAC_SG_AM_ADAPT_INTERVAL_ODV),
-  m_amEta                                  (UQ_MAC_SG_AM_ETA_ODV),
-  m_amEpsilon                              (UQ_MAC_SG_AM_EPSILON_ODV),
-  m_tk                                     (NULL),
+  m_env                                      (sourceRv.env()),
+  m_prefix                                   ((std::string)(prefix) + "mc_"),
+  m_vectorSpace                              (sourceRv.imageSet().vectorSpace()),
+  m_targetPdf                                (sourceRv.pdf()),
+  m_initialPosition                          (initialPosition),
+  m_initialProposalCovMatrix                 (inputProposalCovMatrix),
+  m_nullInputProposalCovMatrix               (inputProposalCovMatrix == NULL),
+  m_targetPdfSynchronizer                    (new uqScalarFunctionSynchronizerClass<P_V,P_M>(m_targetPdf,m_initialPosition)),
+  m_optionsDesc                              (new po::options_description("Bayesian Markov chain options")),
+  m_option_help                              (m_prefix + "help"                              ),
+  m_option_dataOutputFileName                (m_prefix + "dataOutputFileName"                ),
+  m_option_dataOutputAllowedSet              (m_prefix + "dataOutputAllowedSet"              ),
+  m_option_rawChain_type                     (m_prefix + "rawChain_type"                     ),
+  m_option_rawChain_dataInputFileName        (m_prefix + "rawChain_dataInputFileName"        ),
+  m_option_rawChain_size                     (m_prefix + "rawChain_size"                     ),
+  m_option_rawChain_generateExtra            (m_prefix + "rawChain_generateExtra"            ),
+  m_option_rawChain_displayPeriod            (m_prefix + "rawChain_displayPeriod"            ),
+  m_option_rawChain_measureRunTimes          (m_prefix + "rawChain_measureRunTimes"          ),
+  m_option_rawChain_dataOutputFileName       (m_prefix + "rawChain_dataOutputFileName"       ),
+  m_option_rawChain_dataOutputAllowedSet     (m_prefix + "rawChain_dataOutputAllowedSet"     ),
+  m_option_rawChain_computeStats             (m_prefix + "rawChain_computeStats"             ),
+  m_option_filteredChain_generate            (m_prefix + "filteredChain_generate"            ),
+  m_option_filteredChain_discardedPortion    (m_prefix + "filteredChain_discardedPortion"    ),
+  m_option_filteredChain_lag                 (m_prefix + "filteredChain_lag"                 ),
+  m_option_filteredChain_dataOutputFileName  (m_prefix + "filteredChain_dataOutputFileName"  ),
+  m_option_filteredChain_dataOutputAllowedSet(m_prefix + "filteredChain_dataOutputAllowedSet"),
+  m_option_filteredChain_computeStats        (m_prefix + "filteredChain_computeStats"        ),
+  m_option_mh_displayCandidates              (m_prefix + "mh_displayCandidates"              ),
+  m_option_mh_putOutOfBoundsInChain          (m_prefix + "mh_putOutOfBoundsInChain"          ),
+  m_option_tk_useLocalHessian                (m_prefix + "tk_useLocalHessian"                ),
+  m_option_tk_useNewtonComponent             (m_prefix + "tk_useNewtonComponent"             ),
+  m_option_dr_maxNumExtraStages              (m_prefix + "dr_maxNumExtraStages"              ),
+  m_option_dr_scalesForExtraStages           (m_prefix + "dr_scalesForExtraStages"           ),
+  m_option_am_initialNonAdaptInterval        (m_prefix + "am_initialNonAdaptInterval"        ),
+  m_option_am_adaptInterval                  (m_prefix + "am_adaptInterval"                  ),
+  m_option_am_eta                            (m_prefix + "am_eta"                            ),
+  m_option_am_epsilon                        (m_prefix + "am_epsilon"                        ),
+  m_dataOutputFileName                       (UQ_MAC_SG_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV  ),
+//m_dataOutputAllowedSet                     (),
+  m_rawChainType                             (UQ_MAC_SG_RAW_CHAIN_TYPE_ODV),
+  m_rawChainDataInputFileName                (UQ_MAC_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV),
+  m_rawChainSize                             (UQ_MAC_SG_RAW_CHAIN_SIZE_ODV),
+  m_rawChainGenerateExtra                    (UQ_MAC_SG_RAW_CHAIN_GENERATE_EXTRA_ODV),
+  m_rawChainDisplayPeriod                    (UQ_MAC_SG_RAW_CHAIN_DISPLAY_PERIOD_ODV),
+  m_rawChainMeasureRunTimes                  (UQ_MAC_SG_RAW_CHAIN_MEASURE_RUN_TIMES_ODV),
+  m_rawChainDataOutputFileName               (UQ_MAC_SG_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV),
+//m_rawChainDataOutputAllowedSet             (),
+  m_rawChainComputeStats                     (UQ_MAC_SG_RAW_CHAIN_COMPUTE_STATS_ODV),
+  m_rawChainStatisticalOptions               (NULL),
+  m_filteredChainGenerate                    (UQ_MAC_SG_FILTERED_CHAIN_GENERATE_ODV),
+  m_filteredChainDiscardedPortion            (UQ_MAC_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV),
+  m_filteredChainLag                         (UQ_MAC_SG_FILTERED_CHAIN_LAG_ODV),
+  m_filteredChainDataOutputFileName          (UQ_MAC_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV),
+//m_filteredChainDataOutputAllowedSet        (),
+  m_filteredChainComputeStats                (UQ_MAC_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV),
+  m_filteredChainStatisticalOptions          (NULL),
+  m_mhDisplayCandidates                      (UQ_MAC_SG_MH_DISPLAY_CANDIDATES_ODV),
+  m_mhPutOutOfBoundsInChain                  (UQ_MAC_SG_MH_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV),
+  m_tkUseLocalHessian                        (UQ_MAC_SG_TK_USE_LOCAL_HESSIAN_ODV),
+  m_tkUseNewtonComponent                     (UQ_MAC_SG_TK_USE_NEWTON_COMPONENT_ODV),
+  m_drMaxNumExtraStages                      (UQ_MAC_SG_DR_MAX_NUM_EXTRA_STAGES_ODV),
+  m_drScalesForCovMatrices                   (1,1.),
+  m_amInitialNonAdaptInterval                (UQ_MAC_SG_AM_INIT_NON_ADAPT_INT_ODV),
+  m_amAdaptInterval                          (UQ_MAC_SG_AM_ADAPT_INTERVAL_ODV),
+  m_amEta                                    (UQ_MAC_SG_AM_ETA_ODV),
+  m_amEpsilon                                (UQ_MAC_SG_AM_EPSILON_ODV),
+  m_tk                                       (NULL),
 #ifdef UQ_USES_TK_CLASS
 #else
-  m_tkIsSymmetric                          (true),
-  m_lowerCholProposalCovMatrices           (1),//NULL),
-  m_proposalCovMatrices                    (1),//NULL),
+  m_tkIsSymmetric                            (true),
+  m_lowerCholProposalCovMatrices             (1),//NULL),
+  m_proposalCovMatrices                      (1),//NULL),
 #ifdef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
-  m_upperCholProposalPrecMatrices          (1),//NULL),
-  m_proposalPrecMatrices                   (1),//NULL),
+  m_upperCholProposalPrecMatrices            (1),//NULL),
+  m_proposalPrecMatrices                     (1),//NULL),
 #endif
 #endif
-  m_idsOfUniquePositions                   (0),//0.),
-  m_logTargets                             (0),//0.),
-  m_alphaQuotients                         (0),//0.),
-  m_rawChainRunTime                        (0.),
-  m_numRejections                          (0),
-  m_numOutOfTargetSupport                  (0),
-  m_lastChainSize                          (0),
-  m_lastMean                               (NULL),
-  m_lastAdaptedCovMatrix                   (NULL)
+  m_idsOfUniquePositions                     (0),//0.),
+  m_logTargets                               (0),//0.),
+  m_alphaQuotients                           (0),//0.),
+  m_rawChainRunTime                          (0.),
+  m_numRejections                            (0),
+  m_numOutOfTargetSupport                    (0),
+  m_lastChainSize                            (0),
+  m_lastMean                                 (NULL),
+  m_lastAdaptedCovMatrix                     (NULL)
 {
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering uqMarkovChainSGClass<P_V,P_M>::constructor()"
@@ -406,8 +406,8 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   }
 
 
-  if (m_rawChainComputeStats     ) m_rawChainStatisticalOptions      = new uqChainStatisticalOptionsClass(m_env,m_prefix + "rawChain_"     );
-  if (m_filteredChainComputeStats) m_filteredChainStatisticalOptions = new uqChainStatisticalOptionsClass(m_env,m_prefix + "filteredChain_");
+  if (m_rawChainComputeStats     ) m_rawChainStatisticalOptions      = new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "rawChain_"     );
+  if (m_filteredChainComputeStats) m_filteredChainStatisticalOptions = new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "filteredChain_");
 
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Leaving uqMarkovChainSGClass<P_V,P_M>::constructor()"
@@ -489,34 +489,34 @@ uqMarkovChainSGClass<P_V,P_M>::defineMyOptions(
   po::options_description& optionsDesc)
 {
   optionsDesc.add_options()
-    (m_option_help.c_str(),                                                                                                                           "produce help message for Bayesian Markov chain distr. calculator")
-    (m_option_dataOutputFileName.c_str(),               po::value<std::string >()->default_value(UQ_MAC_SG_CHAIN_DATA_OUTPUT_FILE_NAME_ODV         ), "name of generic output file"                                     )
-    (m_option_dataOutputAllow.c_str(),                  po::value<std::string >()->default_value(UQ_MAC_SG_CHAIN_DATA_OUTPUT_ALLOW_ODV             ), "subEnvs that will write to generic output file"                  )
-    (m_option_rawChain_type.c_str(),                    po::value<unsigned int>()->default_value(UQ_MAC_SG_CHAIN_TYPE_ODV                          ), "type of raw chain (1=Markov, 2=White noise)"                     )
-    (m_option_rawChain_dataInputFileName.c_str(),       po::value<std::string >()->default_value(UQ_MAC_SG_CHAIN_DATA_INPUT_FILE_NAME_ODV          ), "name of input file for raw chain "                               )
-    (m_option_rawChain_size.c_str(),                    po::value<unsigned int>()->default_value(UQ_MAC_SG_CHAIN_SIZE_ODV                          ), "size of raw chain"                                               )
-    (m_option_rawChain_generateExtra.c_str(),           po::value<bool        >()->default_value(UQ_MAC_SG_CHAIN_GENERATE_EXTRA_ODV                ), "generate extra information about raw chain"                      )
-    (m_option_rawChain_displayPeriod.c_str(),           po::value<unsigned int>()->default_value(UQ_MAC_SG_CHAIN_DISPLAY_PERIOD_ODV                ), "period of message display during raw chain generation"           )
-    (m_option_rawChain_measureRunTimes.c_str(),         po::value<bool        >()->default_value(UQ_MAC_SG_CHAIN_MEASURE_RUN_TIMES_ODV             ), "measure run times"                                               )
-    (m_option_rawChain_dataOutputFileName.c_str(),      po::value<std::string >()->default_value(UQ_MAC_SG_CHAIN_DATA_OUTPUT_FILE_NAME_ODV         ), "name of output file for raw chain "                              )
-    (m_option_rawChain_dataOutputAllow.c_str(),         po::value<std::string >()->default_value(UQ_MAC_SG_CHAIN_DATA_OUTPUT_ALLOW_ODV             ), "subEnvs that will write to output file for raw chain"            )
-    (m_option_rawChain_computeStats.c_str(),            po::value<bool        >()->default_value(UQ_MAC_SG_CHAIN_COMPUTE_STATS_ODV                 ), "compute statistics on raw chain"                                 )
-    (m_option_filteredChain_generate.c_str(),           po::value<bool        >()->default_value(UQ_MAC_SG_FILTERED_CHAIN_GENERATE_ODV             ), "generate filtered chain"                                         )
-    (m_option_filteredChain_discardedPortion.c_str(),   po::value<double      >()->default_value(UQ_MAC_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV    ), "initial discarded portion for chain filtering"                   )
-    (m_option_filteredChain_lag.c_str(),                po::value<unsigned int>()->default_value(UQ_MAC_SG_FILTERED_CHAIN_LAG_ODV                  ), "spacing for chain filtering"                                     )
-    (m_option_filteredChain_dataOutputFileName.c_str(), po::value<std::string >()->default_value(UQ_MAC_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV), "name of output file for filtered chain"                          )
-    (m_option_filteredChain_dataOutputAllow.c_str(),    po::value<std::string >()->default_value(UQ_MAC_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOW_ODV    ), "subEnvs that will write to output file for filtered chain"       )
-    (m_option_filteredChain_computeStats.c_str(),       po::value<bool        >()->default_value(UQ_MAC_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV        ), "compute statistics on filtered chain"                            )
-    (m_option_mh_displayCandidates.c_str(),             po::value<bool        >()->default_value(UQ_MAC_SG_MH_DISPLAY_CANDIDATES_ODV               ), "display candidates generated in the core MH algorithm"           )
-    (m_option_mh_putOutOfBoundsInChain.c_str(),         po::value<bool        >()->default_value(UQ_MAC_SG_MH_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV       ), "put 'out of bound' candidates in chain as well"                  )
-    (m_option_tk_useLocalHessian.c_str(),               po::value<bool        >()->default_value(UQ_MAC_SG_TK_USE_LOCAL_HESSIAN_ODV                ), "'proposal' use local Hessian"                                    )
-    (m_option_tk_useNewtonComponent.c_str(),            po::value<bool        >()->default_value(UQ_MAC_SG_TK_USE_NEWTON_COMPONENT_ODV             ), "'proposal' use Newton component"                                 )
-    (m_option_dr_maxNumExtraStages.c_str(),             po::value<unsigned int>()->default_value(UQ_MAC_SG_DR_MAX_NUM_EXTRA_STAGES_ODV             ), "'dr' maximum number of extra stages"                             )
-    (m_option_dr_scalesForExtraStages.c_str(),          po::value<std::string >()->default_value(UQ_MAC_SG_DR_SCALES_FOR_EXTRA_STAGES_ODV          ), "'dr' list of scales for proposal cov matrices from 2nd stage on" )
-    (m_option_am_initialNonAdaptInterval.c_str(),       po::value<unsigned int>()->default_value(UQ_MAC_SG_AM_INIT_NON_ADAPT_INT_ODV               ), "'am' initial non adaptation interval"                            )
-    (m_option_am_adaptInterval.c_str(),                 po::value<unsigned int>()->default_value(UQ_MAC_SG_AM_ADAPT_INTERVAL_ODV                   ), "'am' adaptation interval"                                        )
-    (m_option_am_eta.c_str(),                           po::value<double      >()->default_value(UQ_MAC_SG_AM_ETA_ODV                              ), "'am' eta"                                                        )
-    (m_option_am_epsilon.c_str(),                       po::value<double      >()->default_value(UQ_MAC_SG_AM_EPSILON_ODV                          ), "'am' epsilon"                                                    )
+    (m_option_help.c_str(),                                                                                                                             "produce help message for Bayesian Markov chain distr. calculator")
+    (m_option_dataOutputFileName.c_str(),                 po::value<std::string >()->default_value(UQ_MAC_SG_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV     ), "name of generic output file"                                     )
+    (m_option_dataOutputAllowedSet.c_str(),               po::value<std::string >()->default_value(UQ_MAC_SG_RAW_CHAIN_DATA_OUTPUT_ALLOW_ODV         ), "subEnvs that will write to generic output file"                  )
+    (m_option_rawChain_type.c_str(),                      po::value<unsigned int>()->default_value(UQ_MAC_SG_RAW_CHAIN_TYPE_ODV                      ), "type of raw chain (1=Markov, 2=White noise)"                     )
+    (m_option_rawChain_dataInputFileName.c_str(),         po::value<std::string >()->default_value(UQ_MAC_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV      ), "name of input file for raw chain "                               )
+    (m_option_rawChain_size.c_str(),                      po::value<unsigned int>()->default_value(UQ_MAC_SG_RAW_CHAIN_SIZE_ODV                      ), "size of raw chain"                                               )
+    (m_option_rawChain_generateExtra.c_str(),             po::value<bool        >()->default_value(UQ_MAC_SG_RAW_CHAIN_GENERATE_EXTRA_ODV            ), "generate extra information about raw chain"                      )
+    (m_option_rawChain_displayPeriod.c_str(),             po::value<unsigned int>()->default_value(UQ_MAC_SG_RAW_CHAIN_DISPLAY_PERIOD_ODV            ), "period of message display during raw chain generation"           )
+    (m_option_rawChain_measureRunTimes.c_str(),           po::value<bool        >()->default_value(UQ_MAC_SG_RAW_CHAIN_MEASURE_RUN_TIMES_ODV         ), "measure run times"                                               )
+    (m_option_rawChain_dataOutputFileName.c_str(),        po::value<std::string >()->default_value(UQ_MAC_SG_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV     ), "name of output file for raw chain "                              )
+    (m_option_rawChain_dataOutputAllowedSet.c_str(),      po::value<std::string >()->default_value(UQ_MAC_SG_RAW_CHAIN_DATA_OUTPUT_ALLOW_ODV         ), "subEnvs that will write to output file for raw chain"            )
+    (m_option_rawChain_computeStats.c_str(),              po::value<bool        >()->default_value(UQ_MAC_SG_RAW_CHAIN_COMPUTE_STATS_ODV             ), "compute statistics on raw chain"                                 )
+    (m_option_filteredChain_generate.c_str(),             po::value<bool        >()->default_value(UQ_MAC_SG_FILTERED_CHAIN_GENERATE_ODV             ), "generate filtered chain"                                         )
+    (m_option_filteredChain_discardedPortion.c_str(),     po::value<double      >()->default_value(UQ_MAC_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV    ), "initial discarded portion for chain filtering"                   )
+    (m_option_filteredChain_lag.c_str(),                  po::value<unsigned int>()->default_value(UQ_MAC_SG_FILTERED_CHAIN_LAG_ODV                  ), "spacing for chain filtering"                                     )
+    (m_option_filteredChain_dataOutputFileName.c_str(),   po::value<std::string >()->default_value(UQ_MAC_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV), "name of output file for filtered chain"                          )
+    (m_option_filteredChain_dataOutputAllowedSet.c_str(), po::value<std::string >()->default_value(UQ_MAC_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOW_ODV    ), "subEnvs that will write to output file for filtered chain"       )
+    (m_option_filteredChain_computeStats.c_str(),         po::value<bool        >()->default_value(UQ_MAC_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV        ), "compute statistics on filtered chain"                            )
+    (m_option_mh_displayCandidates.c_str(),               po::value<bool        >()->default_value(UQ_MAC_SG_MH_DISPLAY_CANDIDATES_ODV               ), "display candidates generated in the core MH algorithm"           )
+    (m_option_mh_putOutOfBoundsInChain.c_str(),           po::value<bool        >()->default_value(UQ_MAC_SG_MH_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV       ), "put 'out of bound' candidates in chain as well"                  )
+    (m_option_tk_useLocalHessian.c_str(),                 po::value<bool        >()->default_value(UQ_MAC_SG_TK_USE_LOCAL_HESSIAN_ODV                ), "'proposal' use local Hessian"                                    )
+    (m_option_tk_useNewtonComponent.c_str(),              po::value<bool        >()->default_value(UQ_MAC_SG_TK_USE_NEWTON_COMPONENT_ODV             ), "'proposal' use Newton component"                                 )
+    (m_option_dr_maxNumExtraStages.c_str(),               po::value<unsigned int>()->default_value(UQ_MAC_SG_DR_MAX_NUM_EXTRA_STAGES_ODV             ), "'dr' maximum number of extra stages"                             )
+    (m_option_dr_scalesForExtraStages.c_str(),            po::value<std::string >()->default_value(UQ_MAC_SG_DR_SCALES_FOR_EXTRA_STAGES_ODV          ), "'dr' list of scales for proposal cov matrices from 2nd stage on" )
+    (m_option_am_initialNonAdaptInterval.c_str(),         po::value<unsigned int>()->default_value(UQ_MAC_SG_AM_INIT_NON_ADAPT_INT_ODV               ), "'am' initial non adaptation interval"                            )
+    (m_option_am_adaptInterval.c_str(),                   po::value<unsigned int>()->default_value(UQ_MAC_SG_AM_ADAPT_INTERVAL_ODV                   ), "'am' adaptation interval"                                        )
+    (m_option_am_eta.c_str(),                             po::value<double      >()->default_value(UQ_MAC_SG_AM_ETA_ODV                              ), "'am' eta"                                                        )
+    (m_option_am_epsilon.c_str(),                         po::value<double      >()->default_value(UQ_MAC_SG_AM_EPSILON_ODV                          ), "'am' epsilon"                                                    )
   ;
 
   return;
@@ -538,15 +538,15 @@ uqMarkovChainSGClass<P_V,P_M>::getMyOptionValues(
     m_dataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName.c_str()]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_dataOutputAllow.c_str())) {
-    m_dataOutputAllow.clear();
+  if (m_env.allOptionsMap().count(m_option_dataOutputAllowedSet.c_str())) {
+    m_dataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env.allOptionsMap()[m_option_dataOutputAllow.c_str()].as<std::string>();
+    std::string inputString = m_env.allOptionsMap()[m_option_dataOutputAllowedSet.c_str()].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
       for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
-        m_dataOutputAllow.insert((unsigned int) tmpAllow[i]);
+        m_dataOutputAllowedSet.insert((unsigned int) tmpAllow[i]);
       }
     }
   }
@@ -575,15 +575,15 @@ uqMarkovChainSGClass<P_V,P_M>::getMyOptionValues(
     m_rawChainDataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataOutputFileName.c_str()]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_rawChain_dataOutputAllow.c_str())) {
-    m_rawChainDataOutputAllow.clear();
+  if (m_env.allOptionsMap().count(m_option_rawChain_dataOutputAllowedSet.c_str())) {
+    m_rawChainDataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env.allOptionsMap()[m_option_rawChain_dataOutputAllow.c_str()].as<std::string>();
+    std::string inputString = m_env.allOptionsMap()[m_option_rawChain_dataOutputAllowedSet.c_str()].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
       for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
-        m_rawChainDataOutputAllow.insert((unsigned int) tmpAllow[i]);
+        m_rawChainDataOutputAllowedSet.insert((unsigned int) tmpAllow[i]);
       }
     }
   }
@@ -625,15 +625,15 @@ uqMarkovChainSGClass<P_V,P_M>::getMyOptionValues(
     m_filteredChainDataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_dataOutputFileName.c_str()]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_filteredChain_dataOutputAllow.c_str())) {
-    m_filteredChainDataOutputAllow.clear();
+  if (m_env.allOptionsMap().count(m_option_filteredChain_dataOutputAllowedSet.c_str())) {
+    m_filteredChainDataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env.allOptionsMap()[m_option_filteredChain_dataOutputAllow.c_str()].as<std::string>();
+    std::string inputString = m_env.allOptionsMap()[m_option_filteredChain_dataOutputAllowedSet.c_str()].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
       for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
-        m_filteredChainDataOutputAllow.insert((unsigned int) tmpAllow[i]);
+        m_filteredChainDataOutputAllowedSet.insert((unsigned int) tmpAllow[i]);
       }
     }
   }
@@ -1381,29 +1381,29 @@ template<class P_V,class P_M>
 void
 uqMarkovChainSGClass<P_V,P_M>::print(std::ostream& os) const
 {
-  os <<         m_option_dataOutputFileName << " = " << m_dataOutputFileName
-     << "\n" << m_option_dataOutputAllow    << " = ";
-  for (std::set<unsigned int>::iterator setIt = m_dataOutputAllow.begin(); setIt != m_dataOutputAllow.end(); ++setIt) {
+  os <<         m_option_dataOutputFileName   << " = " << m_dataOutputFileName
+     << "\n" << m_option_dataOutputAllowedSet << " = ";
+  for (std::set<unsigned int>::iterator setIt = m_dataOutputAllowedSet.begin(); setIt != m_dataOutputAllowedSet.end(); ++setIt) {
     os << *setIt << " ";
   }
-  os << "\n" << m_option_rawChain_type               << " = " << m_rawChainType
-     << "\n" << m_option_rawChain_dataInputFileName  << " = " << m_rawChainDataInputFileName
-     << "\n" << m_option_rawChain_size               << " = " << m_rawChainSize
-     << "\n" << m_option_rawChain_generateExtra      << " = " << m_rawChainGenerateExtra
-     << "\n" << m_option_rawChain_displayPeriod      << " = " << m_rawChainDisplayPeriod
-     << "\n" << m_option_rawChain_measureRunTimes    << " = " << m_rawChainMeasureRunTimes
-     << "\n" << m_option_rawChain_dataOutputFileName << " = " << m_rawChainDataOutputFileName
-     << "\n" << m_option_rawChain_dataOutputAllow    << " = ";
-  for (std::set<unsigned int>::iterator setIt = m_rawChainDataOutputAllow.begin(); setIt != m_rawChainDataOutputAllow.end(); ++setIt) {
+  os << "\n" << m_option_rawChain_type                 << " = " << m_rawChainType
+     << "\n" << m_option_rawChain_dataInputFileName    << " = " << m_rawChainDataInputFileName
+     << "\n" << m_option_rawChain_size                 << " = " << m_rawChainSize
+     << "\n" << m_option_rawChain_generateExtra        << " = " << m_rawChainGenerateExtra
+     << "\n" << m_option_rawChain_displayPeriod        << " = " << m_rawChainDisplayPeriod
+     << "\n" << m_option_rawChain_measureRunTimes      << " = " << m_rawChainMeasureRunTimes
+     << "\n" << m_option_rawChain_dataOutputFileName   << " = " << m_rawChainDataOutputFileName
+     << "\n" << m_option_rawChain_dataOutputAllowedSet << " = ";
+  for (std::set<unsigned int>::iterator setIt = m_rawChainDataOutputAllowedSet.begin(); setIt != m_rawChainDataOutputAllowedSet.end(); ++setIt) {
     os << *setIt << " ";
   }
-  os << "\n" << m_option_rawChain_computeStats            << " = " << m_rawChainComputeStats
-     << "\n" << m_option_filteredChain_generate           << " = " << m_filteredChainGenerate
-     << "\n" << m_option_filteredChain_discardedPortion   << " = " << m_filteredChainDiscardedPortion
-     << "\n" << m_option_filteredChain_lag                << " = " << m_filteredChainLag
-     << "\n" << m_option_filteredChain_dataOutputFileName << " = " << m_filteredChainDataOutputFileName
-     << "\n" << m_option_filteredChain_dataOutputAllow    << " = ";
-  for (std::set<unsigned int>::iterator setIt = m_filteredChainDataOutputAllow.begin(); setIt != m_filteredChainDataOutputAllow.end(); ++setIt) {
+  os << "\n" << m_option_rawChain_computeStats              << " = " << m_rawChainComputeStats
+     << "\n" << m_option_filteredChain_generate             << " = " << m_filteredChainGenerate
+     << "\n" << m_option_filteredChain_discardedPortion     << " = " << m_filteredChainDiscardedPortion
+     << "\n" << m_option_filteredChain_lag                  << " = " << m_filteredChainLag
+     << "\n" << m_option_filteredChain_dataOutputFileName   << " = " << m_filteredChainDataOutputFileName
+     << "\n" << m_option_filteredChain_dataOutputAllowedSet << " = ";
+  for (std::set<unsigned int>::iterator setIt = m_filteredChainDataOutputAllowedSet.begin(); setIt != m_filteredChainDataOutputAllowedSet.end(); ++setIt) {
     os << *setIt << " ";
   }
   os << "\n" << m_option_filteredChain_computeStats << " = " << m_filteredChainComputeStats

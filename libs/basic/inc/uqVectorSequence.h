@@ -35,7 +35,7 @@
 
 #include <uqVectorSubset.h>
 #include <uqScalarSequence.h>
-#include <uqChainStatisticalOptions.h>
+#include <uqSequenceStatisticalOptions.h>
 #include <uqArrayOfOneDGrids.h>
 #include <uqArrayOfOneDTables.h>
 #include <uq2dArrayOfStuff.h>
@@ -194,60 +194,60 @@ public:
   virtual  void                     filter                     (unsigned int                          initialPos,
                                                                 unsigned int                          spacing) = 0;
 
-           void                     computeStatistics          (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                                                std::ofstream*                        passedOfs);
+           void                     computeStatistics          (const uqSequenceStatisticalOptionsClass& statisticalOptions,
+                                                                std::ofstream*                           passedOfs);
 
-           void                     computeFilterParams        (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                                                std::ofstream*                        passedOfs,
-                                                                unsigned int&                         initialPos,
-                                                                unsigned int&                         spacing);
+           void                     computeFilterParams        (const uqSequenceStatisticalOptionsClass& statisticalOptions,
+                                                                std::ofstream*                           passedOfs,
+                                                                unsigned int&                            initialPos,
+                                                                unsigned int&                            spacing);
 protected:
-           void                     computeMeanVars            (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                                                std::ofstream*                        passedOfs,
-                                                                V*                                    subMeanPtr,
-                                                                V*                                    subSampleVarPtr,
-                                                                V*                                    subPopulVarPtr);
-           void                     computeBMM                 (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                                                const std::vector<unsigned int>&      initialPosForStatistics,
-                                                                std::ofstream*                        passedOfs);
-           void                     computeFFT                 (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                                                const std::vector<unsigned int>&      initialPosForStatistics,
-                                                                std::ofstream*                        passedOfs);
-           void                     computePSD                 (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                                                const std::vector<unsigned int>&      initialPosForStatistics,
-                                                                std::ofstream*                        passedOfs);
-           void                     computePSDAtZero           (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                                                const std::vector<unsigned int>&      initialPosForStatistics,
-                                                                std::ofstream*                        passedOfs);
-           void                     computeGeweke              (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                                                const std::vector<unsigned int>&      initialPosForStatistics,
-                                                                std::ofstream*                        passedOfs);
-           void                     computeMeanStacc           (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                                                const std::vector<unsigned int>&      initialPosForStatistics,
-                                                                std::ofstream*                        passedOfs);
-           void                     computeAutoCorrViaDef      (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                                                const std::vector<unsigned int>&      initialPosForStatistics,
-                                                                const std::vector<unsigned int>&      lagsForCorrs,
-                                                                std::ofstream*                        passedOfs);
-           void                     computeAutoCorrViaFFT      (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                                                const std::vector<unsigned int>&      initialPosForStatistics,
-                                                                const std::vector<unsigned int>&      lagsForCorrs,
-                                                                std::ofstream*                        passedOfs);
-           void                     computeHistCdfstaccKde     (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                                                std::ofstream*                        passedOfs);
-           void                     computeCovCorrMatrices     (const uqChainStatisticalOptionsClass& statisticalOptions,
-                                                                std::ofstream*                        passedOfs);
+           void                     computeMeanVars            (const uqSequenceStatisticalOptionsClass& statisticalOptions,
+                                                                std::ofstream*                           passedOfs,
+                                                                V*                                       subMeanPtr,
+                                                                V*                                       subSampleVarPtr,
+                                                                V*                                       subPopulVarPtr);
+           void                     computeBMM                 (const uqSequenceStatisticalOptionsClass& statisticalOptions,
+                                                                const std::vector<unsigned int>&         initialPosForStatistics,
+                                                                std::ofstream*                           passedOfs);
+           void                     computeFFT                 (const uqSequenceStatisticalOptionsClass& statisticalOptions,
+                                                                const std::vector<unsigned int>&         initialPosForStatistics,
+                                                                std::ofstream*                           passedOfs);
+           void                     computePSD                 (const uqSequenceStatisticalOptionsClass& statisticalOptions,
+                                                                const std::vector<unsigned int>&         initialPosForStatistics,
+                                                                std::ofstream*                           passedOfs);
+           void                     computePSDAtZero           (const uqSequenceStatisticalOptionsClass& statisticalOptions,
+                                                                const std::vector<unsigned int>&         initialPosForStatistics,
+                                                                std::ofstream*                           passedOfs);
+           void                     computeGeweke              (const uqSequenceStatisticalOptionsClass& statisticalOptions,
+                                                                const std::vector<unsigned int>&         initialPosForStatistics,
+                                                                std::ofstream*                           passedOfs);
+           void                     computeMeanStacc           (const uqSequenceStatisticalOptionsClass& statisticalOptions,
+                                                                const std::vector<unsigned int>&         initialPosForStatistics,
+                                                                std::ofstream*                           passedOfs);
+           void                     computeAutoCorrViaDef      (const uqSequenceStatisticalOptionsClass& statisticalOptions,
+                                                                const std::vector<unsigned int>&         initialPosForStatistics,
+                                                                const std::vector<unsigned int>&         lagsForCorrs,
+                                                                std::ofstream*                           passedOfs);
+           void                     computeAutoCorrViaFFT      (const uqSequenceStatisticalOptionsClass& statisticalOptions,
+                                                                const std::vector<unsigned int>&         initialPosForStatistics,
+                                                                const std::vector<unsigned int>&         lagsForCorrs,
+                                                                std::ofstream*                           passedOfs);
+           void                     computeHistCdfstaccKde     (const uqSequenceStatisticalOptionsClass& statisticalOptions,
+                                                                std::ofstream*                           passedOfs);
+           void                     computeCovCorrMatrices     (const uqSequenceStatisticalOptionsClass& statisticalOptions,
+                                                                std::ofstream*                           passedOfs);
 
-  virtual  void                     extractScalarSeq           (unsigned int                          initialPos,
-                                                                unsigned int                          spacing,
-                                                                unsigned int                          numPos,
-                                                                unsigned int                          paramId,
-                                                                uqScalarSequenceClass<double>&        scalarSeq) const = 0;
-  virtual  void                     extractRawData             (unsigned int                          initialPos,
-                                                                unsigned int                          spacing,
-                                                                unsigned int                          numPos,
-                                                                unsigned int                          paramId,
-                                                                std::vector<double>&                  rawData) const = 0;
+  virtual  void                     extractScalarSeq           (unsigned int                             initialPos,
+                                                                unsigned int                             spacing,
+                                                                unsigned int                             numPos,
+                                                                unsigned int                             paramId,
+                                                                uqScalarSequenceClass<double>&           scalarSeq) const = 0;
+  virtual  void                     extractRawData             (unsigned int                             initialPos,
+                                                                unsigned int                             spacing,
+                                                                unsigned int                             numPos,
+                                                                unsigned int                             paramId,
+                                                                std::vector<double>&                     rawData) const = 0;
 
   const uqBaseEnvironmentClass&  m_env;
   const uqVectorSpaceClass<V,M>& m_vectorSpace;
@@ -515,7 +515,7 @@ uqBaseVectorSequenceClass<V,M>::deleteStoredVectors()
 template<class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::computeStatistics(
-  const uqChainStatisticalOptionsClass& statisticalOptions,
+  const uqSequenceStatisticalOptionsClass& statisticalOptions,
   std::ofstream*                        passedOfs)
 {
   if (m_env.subDisplayFile()) {
@@ -693,7 +693,7 @@ uqBaseVectorSequenceClass<V,M>::computeStatistics(
 template<class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::computeMeanVars(
-  const uqChainStatisticalOptionsClass& statisticalOptions,
+  const uqSequenceStatisticalOptionsClass& statisticalOptions,
   std::ofstream*                        passedOfs,
   V*                                    subMeanPtr,
   V*                                    subSampleVarPtr,
@@ -796,7 +796,7 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
 template<class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::computeBMM(
-  const uqChainStatisticalOptionsClass& statisticalOptions,
+  const uqSequenceStatisticalOptionsClass& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
   std::ofstream*                        passedOfs)
 {
@@ -882,7 +882,7 @@ uqBaseVectorSequenceClass<V,M>::computeBMM(
 template<class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::computeFFT(
-  const uqChainStatisticalOptionsClass& statisticalOptions,
+  const uqSequenceStatisticalOptionsClass& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
   std::ofstream*                        passedOfs)
 {
@@ -958,7 +958,7 @@ uqBaseVectorSequenceClass<V,M>::computeFFT(
 template<class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::computePSD(
-  const uqChainStatisticalOptionsClass& statisticalOptions,
+  const uqSequenceStatisticalOptionsClass& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
   std::ofstream*                        passedOfs)
 {
@@ -1011,7 +1011,7 @@ uqBaseVectorSequenceClass<V,M>::computePSD(
 template<class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::computePSDAtZero(
-  const uqChainStatisticalOptionsClass& statisticalOptions,
+  const uqSequenceStatisticalOptionsClass& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
   std::ofstream*                        passedOfs)
 {
@@ -1160,7 +1160,7 @@ uqBaseVectorSequenceClass<V,M>::computePSDAtZero(
 template<class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::computeGeweke(
-  const uqChainStatisticalOptionsClass& statisticalOptions,
+  const uqSequenceStatisticalOptionsClass& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
   std::ofstream*                        passedOfs)
 {
@@ -1229,7 +1229,7 @@ uqBaseVectorSequenceClass<V,M>::computeGeweke(
 template<class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::computeMeanStacc(
-  const uqChainStatisticalOptionsClass& statisticalOptions,
+  const uqSequenceStatisticalOptionsClass& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
   std::ofstream*                        passedOfs)
 {
@@ -1296,7 +1296,7 @@ uqBaseVectorSequenceClass<V,M>::computeMeanStacc(
 template<class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaDef(
-  const uqChainStatisticalOptionsClass& statisticalOptions,
+  const uqSequenceStatisticalOptionsClass& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
   const std::vector<unsigned int>&      lagsForCorrs,
   std::ofstream*                        passedOfs)
@@ -1418,7 +1418,7 @@ uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaDef(
 template<class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaFFT(
-  const uqChainStatisticalOptionsClass& statisticalOptions,
+  const uqSequenceStatisticalOptionsClass& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
   const std::vector<unsigned int>&      lagsForCorrs,
   std::ofstream*                        passedOfs)
@@ -1590,7 +1590,7 @@ uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaFFT(
 template<class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::computeFilterParams(
-  const uqChainStatisticalOptionsClass& statisticalOptions,
+  const uqSequenceStatisticalOptionsClass& statisticalOptions,
   std::ofstream*                        passedOfs,
   unsigned int&                         initialPos,
   unsigned int&                         spacing)
@@ -1630,7 +1630,7 @@ uqBaseVectorSequenceClass<V,M>::computeFilterParams(
 template<class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
-  const uqChainStatisticalOptionsClass& statisticalOptions,
+  const uqSequenceStatisticalOptionsClass& statisticalOptions,
   std::ofstream*                        passedOfs)
 {
   if (m_env.subDisplayFile()) {
@@ -2194,7 +2194,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
 template<class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices( // Use the whole chain
-  const uqChainStatisticalOptionsClass& statisticalOptions,
+  const uqSequenceStatisticalOptionsClass& statisticalOptions,
   std::ofstream*                        passedOfs)
 {
   if (m_env.subDisplayFile()) {

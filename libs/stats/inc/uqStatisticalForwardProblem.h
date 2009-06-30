@@ -85,7 +85,7 @@ private:
 	std::string                                 m_option_computeCovariances;
 	std::string                                 m_option_computeCorrelations;
         std::string                                 m_option_dataOutputFileName;
-        std::string                                 m_option_dataOutputAllow;
+        std::string                                 m_option_dataOutputAllowedSet;
 #ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
         std::string                                 m_option_solver;
 #endif
@@ -94,7 +94,7 @@ private:
         bool                                        m_computeCovariances;
         bool                                        m_computeCorrelations;
         std::string                                 m_dataOutputFileName;
-        std::set<unsigned int>                      m_dataOutputAllow;
+        std::set<unsigned int>                      m_dataOutputAllowedSet;
 #ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
 	std::string                                 m_solverString;
 #endif
@@ -134,23 +134,23 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::uqStatisticalForwardProblemCl
   const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction,
         uqGenericVectorRVClass   <Q_V,Q_M>&         qoiRv)
   :
-  m_env                       (paramRv.env()),
-  m_prefix                    ((std::string)(prefix) + "fp_"),
-  m_optionsDesc               (new po::options_description("UQ Propagation Problem")),
-  m_option_help               (m_prefix + "help"               ),
-  m_option_computeSolution    (m_prefix + "computeSolution"    ),
-  m_option_computeCovariances (m_prefix + "computeCovariances" ),
-  m_option_computeCorrelations(m_prefix + "computeCorrelations"),
-  m_option_dataOutputFileName (m_prefix + "dataOutputFileName" ),
-  m_option_dataOutputAllow    (m_prefix + "dataOutputAllow"    ),
+  m_env                        (paramRv.env()),
+  m_prefix                     ((std::string)(prefix) + "fp_"),
+  m_optionsDesc                (new po::options_description("UQ Propagation Problem")),
+  m_option_help                (m_prefix + "help"                ),
+  m_option_computeSolution     (m_prefix + "computeSolution"     ),
+  m_option_computeCovariances  (m_prefix + "computeCovariances"  ),
+  m_option_computeCorrelations (m_prefix + "computeCorrelations" ),
+  m_option_dataOutputFileName  (m_prefix + "dataOutputFileName"  ),
+  m_option_dataOutputAllowedSet(m_prefix + "dataOutputAllowedSet"),
 #ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
-  m_option_solver             (m_prefix + "solver"             ),
+  m_option_solver              (m_prefix + "solver"              ),
 #endif
   m_computeSolution       (UQ_PROPAG_PROBLEM_COMPUTE_SOLUTION_ODV     ),
   m_computeCovariances    (UQ_PROPAG_PROBLEM_COMPUTE_COVARIANCES_ODV  ),
   m_computeCorrelations   (UQ_PROPAG_PROBLEM_COMPUTE_CORRELATIONS_ODV ),
   m_dataOutputFileName    (UQ_PROPAG_PROBLEM_DATA_OUTPUT_FILE_NAME_ODV),
-//m_dataOutputAllow       (),
+//m_dataOutputAllowedSet  (),
 #ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
   m_solverString          (UQ_PROPAG_PROBLEM_SOLVER_ODV               ),
 #endif
@@ -191,7 +191,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::uqStatisticalForwardProblemCl
 
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Leaving uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::constructor()"
-                           << ": prefix = "              << m_prefix
+                           << ": prefix = " << m_prefix
                            << std::endl;
   }
 }
@@ -236,14 +236,14 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::defineMyOptions(
   po::options_description& optionsDesc)
 {
   optionsDesc.add_options()
-    (m_option_help.c_str(),                                                                                                      "produce help message for propagation problem")
-    (m_option_computeSolution.c_str(),     po::value<bool       >()->default_value(UQ_PROPAG_PROBLEM_COMPUTE_SOLUTION_ODV     ), "compute solution process"                    )
-    (m_option_computeCovariances.c_str(),  po::value<bool       >()->default_value(UQ_PROPAG_PROBLEM_COMPUTE_COVARIANCES_ODV  ), "compute pq covariances"                      )
-    (m_option_computeCorrelations.c_str(), po::value<bool       >()->default_value(UQ_PROPAG_PROBLEM_COMPUTE_CORRELATIONS_ODV ), "compute pq correlations"                     )
-    (m_option_dataOutputFileName.c_str(),  po::value<std::string>()->default_value(UQ_PROPAG_PROBLEM_DATA_OUTPUT_FILE_NAME_ODV), "name of data output file"                    )
-    (m_option_dataOutputAllow.c_str(),     po::value<std::string>()->default_value(UQ_PROPAG_PROBLEM_DATA_OUTPUT_ALLOW_ODV    ), "subEnvs that will write to data output file" )
+    (m_option_help.c_str(),                                                                                                       "produce help message for propagation problem")
+    (m_option_computeSolution.c_str(),      po::value<bool       >()->default_value(UQ_PROPAG_PROBLEM_COMPUTE_SOLUTION_ODV     ), "compute solution process"                    )
+    (m_option_computeCovariances.c_str(),   po::value<bool       >()->default_value(UQ_PROPAG_PROBLEM_COMPUTE_COVARIANCES_ODV  ), "compute pq covariances"                      )
+    (m_option_computeCorrelations.c_str(),  po::value<bool       >()->default_value(UQ_PROPAG_PROBLEM_COMPUTE_CORRELATIONS_ODV ), "compute pq correlations"                     )
+    (m_option_dataOutputFileName.c_str(),   po::value<std::string>()->default_value(UQ_PROPAG_PROBLEM_DATA_OUTPUT_FILE_NAME_ODV), "name of data output file"                    )
+    (m_option_dataOutputAllowedSet.c_str(), po::value<std::string>()->default_value(UQ_PROPAG_PROBLEM_DATA_OUTPUT_ALLOW_ODV    ), "subEnvs that will write to data output file" )
 #ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
-    (m_option_solver.c_str(),              po::value<std::string>()->default_value(UQ_PROPAG_PROBLEM_SOLVER_ODV               ), "algorithm for propagation"                   )
+    (m_option_solver.c_str(),               po::value<std::string>()->default_value(UQ_PROPAG_PROBLEM_SOLVER_ODV               ), "algorithm for propagation"                   )
 #endif
   ;
 
@@ -258,7 +258,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::getMyOptionValues(
   if (m_env.allOptionsMap().count(m_option_help.c_str())) {
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << optionsDesc
-                             << std::endl;
+                              << std::endl;
     }
   }
 
@@ -278,15 +278,15 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::getMyOptionValues(
     m_dataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName.c_str()]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_dataOutputAllow.c_str())) {
-    m_dataOutputAllow.clear();
+  if (m_env.allOptionsMap().count(m_option_dataOutputAllowedSet.c_str())) {
+    m_dataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env.allOptionsMap()[m_option_dataOutputAllow.c_str()].as<std::string>();
+    std::string inputString = m_env.allOptionsMap()[m_option_dataOutputAllowedSet.c_str()].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
       for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
-        m_dataOutputAllow.insert((unsigned int) tmpAllow[i]);
+        m_dataOutputAllowedSet.insert((unsigned int) tmpAllow[i]);
       }
     }
   }
@@ -464,7 +464,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   std::ofstream* ofsvar = NULL;
   m_env.openOutputFile(m_dataOutputFileName,
                        "m",
-                       m_dataOutputAllow,
+                       m_dataOutputAllowedSet,
                        false,
                        ofsvar);
 
@@ -563,12 +563,12 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::print(std::ostream& os) const
 {
-  os <<         m_option_computeSolution     << " = " << m_computeSolution
-     << "\n" << m_option_computeCovariances  << " = " << m_computeCovariances
-     << "\n" << m_option_computeCorrelations << " = " << m_computeCorrelations
-     << "\n" << m_option_dataOutputFileName  << " = " << m_dataOutputFileName;
-  os << "\n" << m_option_dataOutputAllow     << " = ";
-  for (std::set<unsigned int>::iterator setIt = m_dataOutputAllow.begin(); setIt != m_dataOutputAllow.end(); ++setIt) {
+  os <<         m_option_computeSolution      << " = " << m_computeSolution
+     << "\n" << m_option_computeCovariances   << " = " << m_computeCovariances
+     << "\n" << m_option_computeCorrelations  << " = " << m_computeCorrelations
+     << "\n" << m_option_dataOutputFileName   << " = " << m_dataOutputFileName;
+  os << "\n" << m_option_dataOutputAllowedSet << " = ";
+  for (std::set<unsigned int>::iterator setIt = m_dataOutputAllowedSet.begin(); setIt != m_dataOutputAllowedSet.end(); ++setIt) {
     os << *setIt << " ";
   }
 #ifdef UQ_PROPAG_PROBLEM_READS_SOLVER_OPTION
