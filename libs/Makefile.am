@@ -30,7 +30,10 @@ libqueso_a_SOURCES += $(top_srcdir)/libs/basic/src/uqGslVector.C \
 endif
 
 # Sources from stats/src
-libqueso_a_SOURCES += $(top_srcdir)/libs/stats/src/uqMarkovChainSGOptions.C
+libqueso_a_SOURCES += $(top_srcdir)/libs/stats/src/uqMarkovChainSGOptions.C \
+	$(top_srcdir)/libs/stats/src/uqMonteCarloSGOptions.C \
+	$(top_srcdir)/libs/stats/src/uqStatisticalInverseProblemOptions.C \
+	$(top_srcdir)/libs/stats/src/uqStatisticalForwardProblemOptions.C
 
 libqueso_includedir = $(prefix)/include
 
