@@ -30,7 +30,7 @@ libqueso_a_SOURCES += $(top_srcdir)/libs/basic/src/uqGslVector.C \
 endif
 
 # Sources from stats/src
-# Currently none... add if necessary
+libqueso_a_SOURCES += $(top_srcdir)/libs/stats/src/uqMarkovChainSGOptions.C
 
 libqueso_includedir = $(prefix)/include
 
@@ -71,6 +71,7 @@ libqueso_include_HEADERS += $(top_srcdir)/libs/stats/inc/uqCovCond.h \
 	$(top_srcdir)/libs/stats/inc/uqMarkovChainPositionData.h \
 	$(top_srcdir)/libs/stats/inc/uqMarkovChainSG1.h \
 	$(top_srcdir)/libs/stats/inc/uqMarkovChainSG2.h \
+	$(top_srcdir)/libs/stats/inc/uqMarkovChainSGOptions.h \
 	$(top_srcdir)/libs/stats/inc/uqModelValidation.h \
 	$(top_srcdir)/libs/stats/inc/uqMonteCarloSG.h \
 	$(top_srcdir)/libs/stats/inc/uqStatisticalForwardProblem.h \
