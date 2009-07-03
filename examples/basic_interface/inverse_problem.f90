@@ -39,9 +39,9 @@ program main
 
   print *,'--> Initializing QUESO Environment...'
 
-  call QUESO_init('koomie.inp');                  ! initialize QUESO environment and define input file
-  call QUESO_statistical_inversion(my_likelihood) ! register my likelihood function with QUESO
-  call QUESO_finalize()                           ! Run MCMC  
+  call QUESO_init('queso.inp');                   ! initialize QUESO environment and define input file
+  call QUESO_statistical_inversion(my_likelihood) ! register my likelihood function with QUESO and run MCMC
+  call QUESO_finalize()                           ! finalize the analysis and output statistics 
 
   call MPI_Finalize(ierr);
   stop
