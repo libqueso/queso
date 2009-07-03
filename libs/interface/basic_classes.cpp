@@ -57,14 +57,13 @@ namespace QUESO_Basic_API {
   void QUESO_Basic_Class::Initialize(const char *inputfile)
   {
 
-    // Define new QUESO environment
+    // Define new QUESO environment and store inputfile informaiton
 
     m_env         = new uqFullEnvironmentClass(MPI_COMM_WORLD,inputfile,"");
+    m_inputfile   = new string(inputfile);
+
     m_initialized = 1;
 
-    m_inputfile = new string(inputfile);
-
-    //    memcpy(m_inputfile,inputfile,strlen()
 }
 
   void QUESO_Basic_Class:: DefineParameterSpace()
@@ -123,7 +122,7 @@ namespace QUESO_Basic_API {
     printf("--> Setup parameter search box...\n");
     m_paramDomain = new uqBoxSubsetClass<basicV, basicM> ("queso_basic_",*m_paramSpace,
 							  *m_queso_var_min,*m_queso_var_max);
-    // Clean up.
+    // un poquito de clean up.
 
     free(param_min);
     free(param_max);
@@ -162,6 +161,10 @@ namespace QUESO_Basic_API {
     
     // Default covariance matrix for now - default assumption assumes
     // 6-sigma distribution range falls over 1/3 of the max parameter range.
+    //
+    // koomie TODO: store relevant constants regarding this default
+    // assumption in input file and register as default values, but
+    // allow the savvy user to override
     
     double cov_param = 1/(3.*6.);	// 6-sigma over 1/3 of the range
     double param_range = 0.0;
@@ -169,7 +172,7 @@ namespace QUESO_Basic_API {
     printf("--> Defining default covariance matrix...\n");
     
     m_CovMatrix = m_postRV->imageSet().vectorSpace().newGaussianMatrix(m_priorRV->pdf().domainVarVector(),
-								       *m_queso_var_ini);
+								      *m_queso_var_ini);
 
     for(int i=0;i<m_num_params;i++)
       {
@@ -197,7 +200,8 @@ namespace QUESO_Basic_API {
     printf("%s\n",message);
     exit(1);
 
-    // koomie note: likely need mpi_abort and better exception handling.
+    // koomie note: likely need mpi_abort and better exception handling aqui.
+    // koomie TODO: switch to queso error macro
   }
 
   //---------------------------------------------------------------------

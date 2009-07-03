@@ -25,7 +25,7 @@
  *
  * $Id$
  *
- * Basic API: Routines for initializing QUESO.
+ * Basic API: Routines for interfacing with QUESO.
  * 
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
@@ -49,12 +49,6 @@ extern "C" void QUESO_init(const char *inputfile)
 {
   _QUESO_Basic = new QUESO_Basic_Class();
   _QUESO_Basic->Initialize(inputfile);
-  return;
-}
-
-extern "C" void QUESO_inverse_register_likelihood(double (*fp)(double*) )
-{
-  _QUESO_Basic->Likelihood_Register(fp);
   return;
 }
 
