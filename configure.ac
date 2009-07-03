@@ -78,7 +78,7 @@ AC_CONFIG_FILES([
 	examples/validationCycle/src/Makefile
 	examples/statisticalForwardProblem/Makefile
 	examples/statisticalForwardProblem/src/Makefile
-	examples/inverse_basic_api/Makefile
+	examples/basic_interface/Makefile
 	test/Makefile
         test/valid_cycle/Makefile
 ])
