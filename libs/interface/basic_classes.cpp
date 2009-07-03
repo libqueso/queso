@@ -216,7 +216,7 @@ namespace QUESO_Basic_API {
     double *uqParams;
     int num_params;
 
-    num_params = paramValue.size();
+    num_params = paramValue.sizeGlobal();
 
     if(first_entry)
       {
