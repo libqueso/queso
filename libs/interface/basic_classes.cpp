@@ -80,8 +80,6 @@ namespace QUESO_Basic_API {
 
     // Verify presence of required input file
 
-    cout << "reading from " << m_inputfile->c_str() << endl;
-
     ierr *= hpct_input_fopen(m_inputfile->c_str());
 
     if(ierr == 0)
