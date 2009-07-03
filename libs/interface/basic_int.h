@@ -32,11 +32,6 @@
 
 using namespace std;
 
-// The Basic QUESO API uses GSL for the base vector/matrix class
-
-#define basicV uqGslVectorClass
-#define basicM uqGslMatrixClass
-
 namespace QUESO_Basic_API 
 {
 

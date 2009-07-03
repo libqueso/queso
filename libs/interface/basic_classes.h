@@ -45,21 +45,20 @@ namespace QUESO_Basic_API {
 
   class QUESO_Basic_Class {
   private:
-    short int m_initialized;	                                        // basic API initialized?
-    short int m_silent; 		                                // silence error messages?
+    short int m_initialized;	                                       // basic API initialized?
+    short int m_silent; 		                               // silence error messages?
     
     //------------------------				           
     // General QUESO variables				           
     //------------------------				           
 
-    //    char *m_inputfile;		                                        // QUESO ascii input file
-    string *m_inputfile;
-    uqBaseEnvironmentClass *m_env;                                      // QUESO environment
-    int     m_num_params;	                                        // number of defined UQ parameter variables
-    basicV *m_queso_var_min;                                            // min UQ paramater values
-    basicV *m_queso_var_max;                                            // max UQ paramater values
-    basicV *m_queso_var_ini;                                            // initial UQ paramater values
-    uqVectorSpaceClass <basicV,basicM> *m_paramSpace;                   // QUESO parameter space
+    string *m_inputfile;                                               // QUESO ascii input file
+    uqBaseEnvironmentClass *m_env;                                     // QUESO environment
+    int     m_num_params;	                                       // number of defined UQ parameter variables
+    basicV *m_queso_var_min;                                           // min UQ paramater values
+    basicV *m_queso_var_max;                                           // max UQ paramater values
+    basicV *m_queso_var_ini;                                           // initial UQ paramater values
+    uqVectorSpaceClass <basicV,basicM> *m_paramSpace;                  // QUESO parameter space
     
     //--------------------------------------
     // Inverse/calibration related variables
@@ -75,7 +74,7 @@ namespace QUESO_Basic_API {
     
   public:
     QUESO_Basic_Class                 ();
-    ~QUESO_Basic_Class                 () {};
+    //    ~QUESO_Basic_Class                 () {};
     void Initialize                   (const char *inputfile);
     void VerifyInit                   ();
     void DefineParameterSpace         ();
