@@ -6,7 +6,8 @@ Simulation, and Optimization.
 Version 0.4.0 (2009)
 
   * MPI configuration support 
-  * Option to compute correlation between parameters and QOIs in statistical forward problems
+  * option to compute correlation between parameters and QOIs in statistical forward problems
+  * introduction of Basic API for statistical inverse problems (includes C/Fortran)
 
 Version 0.3.0 (13 Feb 2009)
 https://svn.ices.utexas.edu/repos/pecos/uq/queso/tags/0.3.0
