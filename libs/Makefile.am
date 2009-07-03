@@ -3,7 +3,9 @@
 # Build in these directories:
 # DIST_SUBDIRS = basic stats
 
-AM_CPPFLAGS = -I$(top_srcdir)/libs/basic/inc -I$(top_srcdir)/libs/stats/inc $(BOOST_CPPFLAGS) $(GSL_CFLAGS)
+AM_CPPFLAGS = -I$(top_srcdir)/libs/basic/inc -I$(top_srcdir)/libs/stats/inc \
+	      -I$(top_srcdir)/libs/interface $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(HPCT_CFLAGS)
+
 
 lib_LIBRARIES = libqueso.a
 
@@ -21,13 +23,22 @@ libqueso_a_SOURCES = $(top_srcdir)/libs/basic/src/uqEnvironment.C \
 	$(top_srcdir)/libs/basic/src/uqTrilinosMatrix.C \
 	$(top_srcdir)/libs/basic/src/uqTrilinosVectorSpace.C
 
+
+
 # Sources from basic/src added conditional on gsl
 if UQBT_GSL
-libqueso_a_SOURCES += $(top_srcdir)/libs/basic/src/uqGslVector.C \
-	$(top_srcdir)/libs/basic/src/uqGslMatrix.C \
-	$(top_srcdir)/libs/basic/src/uqGslVectorSpace.C \
-	$(top_srcdir)/libs/basic/src/uqGslAsciiTable.C
+libqueso_a_SOURCES += $(top_srcdir)/libs/basic/src/uqGslVector.C       \
+	              $(top_srcdir)/libs/basic/src/uqGslMatrix.C       \
+	              $(top_srcdir)/libs/basic/src/uqGslVectorSpace.C  \
+	              $(top_srcdir)/libs/basic/src/uqGslAsciiTable.C
 endif
+
+# Sources for Basic Interface 
+
+libqueso_a_SOURCES += $(top_srcdir)/libs/interface/basic_classes.cpp   \
+                      $(top_srcdir)/libs/interface/basic_interface.cpp
+
+libqueso_a_LIBADD   = $(HPCT_LIBSTATIC)
 
 # Sources from stats/src
 libqueso_a_SOURCES += $(top_srcdir)/libs/stats/src/uqMarkovChainSGOptions.C \
@@ -87,4 +98,7 @@ libqueso_include_HEADERS += $(top_srcdir)/libs/stats/inc/uqCovCond.h \
 	$(top_srcdir)/libs/stats/inc/uqJointPdf.h \
 	$(top_srcdir)/libs/stats/inc/uqVectorRealizer.h \
 	$(top_srcdir)/libs/stats/inc/uqVectorRV.h
+
+# Headers to install from Basic Interface
+libqueso_include_HEADERS += $(top_srcdir)/libs/interface/queso.h
 
