@@ -49,6 +49,19 @@ AX_BOOST_BASE(1.35)
 AX_BOOST_PROGRAM_OPTIONS
 AC_CACHE_SAVE
 
+dnl HPCT Config
+
+HPCT_PREFIX=${HPCT_DIR}
+AC_ARG_WITH(hpct,
+        [  --with-hpct=<path>      prefix of HPCT installation (default = HPCT_DIR) ], [HPCT_PREFIX="$withval"])
+
+HPCT_LIBS="-L${HPCT_PREFIX}/lib -lhpct"
+HPCT_LIBSTATIC="${HPCT_PREFIX}/lib/libhpct.a"
+HPCT_CFLAGS="-I${HPCT_PREFIX}/include"
+AC_SUBST(HPCT_LIBS)
+AC_SUBST(HPCT_LIBSTATIC)
+AC_SUBST(HPCT_CFLAGS)
+
 dnl Generate makefiles
 AC_CONFIG_FILES([
 	Makefile
@@ -65,6 +78,7 @@ AC_CONFIG_FILES([
 	examples/validationCycle/src/Makefile
 	examples/statisticalForwardProblem/Makefile
 	examples/statisticalForwardProblem/src/Makefile
+	examples/inverse_basic_api/Makefile
 	test/Makefile
         test/valid_cycle/Makefile
 ])
