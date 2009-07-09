@@ -36,6 +36,18 @@
 #include <uqEnvironment.h>
 #include <uqSequenceStatisticalOptions.h>
 
+#undef UQ_SIP_READS_SOLVER_OPTION
+
+#define UQ_SIP_FILENAME_FOR_NO_FILE "."
+
+// _ODV = option default value
+#define UQ_SIP_COMPUTE_SOLUTION_ODV      1
+#define UQ_SIP_DATA_OUTPUT_FILE_NAME_ODV UQ_SIP_FILENAME_FOR_NO_FILE
+#define UQ_SIP_DATA_OUTPUT_ALLOW_ODV     ""
+#ifdef UQ_SIP_READS_SOLVER_OPTION
+#define UQ_SIP_SOLVER_ODV                "bayes_mc" // Bayesian formula + Markov Chain
+#endif
+
 class uqStatisticalInverseProblemOptionsClass
 {
 public:
@@ -45,16 +57,29 @@ public:
   void scanOptionsValues();
   void print            (std::ostream& os) const;
 
-  std::string                        m_prefix;
+  std::string                   m_prefix;
+
+  bool                          m_computeSolution;
+  std::string                   m_dataOutputFileName;
+  std::set<unsigned int>        m_dataOutputAllowedSet;
+#ifdef UQ_SIP_READS_SOLVER_OPTION
+  std::string                   m_solverString;
+#endif
 
 private:
   void   defineMyOptions  (po::options_description& optionsDesc) const;
   void   getMyOptionValues(po::options_description& optionsDesc);
 
   const uqBaseEnvironmentClass& m_env;
-  po::options_description*      m_optionsDesc;
 
+  po::options_description*      m_optionsDesc;
   std::string                   m_option_help;
+  std::string                   m_option_computeSolution;
+  std::string                   m_option_dataOutputFileName;
+  std::string                   m_option_dataOutputAllowedSet;
+#ifdef UQ_SIP_READS_SOLVER_OPTION
+  std::string                   m_option_solver;
+#endif
 };
 
 std::ostream& operator<<(std::ostream& os, const uqStatisticalInverseProblemOptionsClass& obj);

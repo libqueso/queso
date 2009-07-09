@@ -36,6 +36,24 @@
 #include <uqEnvironment.h>
 #include <uqSequenceStatisticalOptions.h>
 
+#define UQ_MOC_SG_FILENAME_FOR_NO_FILE "."
+
+// _ODV = option default value
+#define UQ_MOC_SG_DATA_OUTPUT_FILE_NAME_ODV      UQ_MOC_SG_FILENAME_FOR_NO_FILE
+#define UQ_MOC_SG_DATA_OUTPUT_ALLOW_ODV          ""
+
+#define UQ_MOC_SG_PSEQ_DATA_OUTPUT_FILE_NAME_ODV UQ_MOC_SG_FILENAME_FOR_NO_FILE
+#define UQ_MOC_SG_PSEQ_DATA_OUTPUT_ALLOW_ODV     ""
+#define UQ_MOC_SG_PSEQ_COMPUTE_STATS_ODV         0
+
+#define UQ_MOC_SG_QSEQ_DATA_INPUT_FILE_NAME_ODV  UQ_MOC_SG_FILENAME_FOR_NO_FILE
+#define UQ_MOC_SG_QSEQ_SIZE_ODV                  100
+#define UQ_MOC_SG_QSEQ_DISPLAY_PERIOD_ODV        500
+#define UQ_MOC_SG_QSEQ_MEASURE_RUN_TIMES_ODV     0
+#define UQ_MOC_SG_QSEQ_DATA_OUTPUT_FILE_NAME_ODV UQ_MOC_SG_FILENAME_FOR_NO_FILE
+#define UQ_MOC_SG_QSEQ_DATA_OUTPUT_ALLOW_ODV     ""
+#define UQ_MOC_SG_QSEQ_COMPUTE_STATS_ODV         0
+
 class uqMonteCarloSGOptionsClass
 {
 public:
@@ -47,14 +65,45 @@ public:
 
   std::string                        m_prefix;
 
+  std::string                        m_dataOutputFileName;
+  std::set<unsigned int>             m_dataOutputAllowedSet;
+
+  std::string                        m_pseqDataOutputFileName;
+  std::set<unsigned int>             m_pseqDataOutputAllowedSet;
+  bool                               m_pseqComputeStats;
+  uqSequenceStatisticalOptionsClass* m_pseqStatisticalOptions;
+
+  std::string                        m_qseqDataInputFileName;
+  unsigned int                       m_qseqSize;
+  unsigned int                       m_qseqDisplayPeriod;
+  bool                               m_qseqMeasureRunTimes;
+  std::string                        m_qseqDataOutputFileName;
+  std::set<unsigned int>             m_qseqDataOutputAllowedSet;
+  bool                               m_qseqComputeStats;
+  uqSequenceStatisticalOptionsClass* m_qseqStatisticalOptions;
+
 private:
   void   defineMyOptions  (po::options_description& optionsDesc) const;
   void   getMyOptionValues(po::options_description& optionsDesc);
 
   const uqBaseEnvironmentClass& m_env;
-  po::options_description*      m_optionsDesc;
 
+  po::options_description*      m_optionsDesc;
   std::string                   m_option_help;
+  std::string                   m_option_dataOutputFileName;
+  std::string                   m_option_dataOutputAllowedSet;
+
+  std::string                   m_option_pseq_dataOutputFileName;
+  std::string                   m_option_pseq_dataOutputAllowedSet;
+  std::string                   m_option_pseq_computeStats;
+
+  std::string                   m_option_qseq_dataInputFileName;
+  std::string                   m_option_qseq_size;
+  std::string                   m_option_qseq_displayPeriod;
+  std::string                   m_option_qseq_measureRunTimes;
+  std::string                   m_option_qseq_dataOutputFileName;
+  std::string                   m_option_qseq_dataOutputAllowedSet;
+  std::string                   m_option_qseq_computeStats;
 };
 
 std::ostream& operator<<(std::ostream& os, const uqMonteCarloSGOptionsClass& obj);

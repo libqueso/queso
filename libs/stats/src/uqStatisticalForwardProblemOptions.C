@@ -35,16 +35,32 @@
 
 uqStatisticalForwardProblemOptionsClass::uqStatisticalForwardProblemOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix)
   :
-  m_prefix                                   ((std::string)(prefix) + "mc_"),
-  m_env                                      (env),
-  m_optionsDesc                              (new po::options_description("Statistical Forward Problem options")),
-  m_option_help                              (m_prefix + "help"                                                 )
+  m_prefix                     ((std::string)(prefix) + "fp_"   ),
+  m_computeSolution            (UQ_SFP_COMPUTE_SOLUTION_ODV     ),
+  m_computeCovariances         (UQ_SFP_COMPUTE_COVARIANCES_ODV  ),
+  m_computeCorrelations        (UQ_SFP_COMPUTE_CORRELATIONS_ODV ),
+  m_dataOutputFileName         (UQ_SFP_DATA_OUTPUT_FILE_NAME_ODV),
+//m_dataOutputAllowedSet       (),
+#ifdef UQ_SFP_READS_SOLVER_OPTION
+  m_solverString               (UQ_SFP_SOLVER_ODV               ),
+#endif
+  m_env                        (env),
+  m_optionsDesc                (new po::options_description("Statistical Forward Problem options")),
+  m_option_help                (m_prefix + "help"                ),
+  m_option_computeSolution     (m_prefix + "computeSolution"     ),
+  m_option_computeCovariances  (m_prefix + "computeCovariances"  ),
+  m_option_computeCorrelations (m_prefix + "computeCorrelations" ),
+  m_option_dataOutputFileName  (m_prefix + "dataOutputFileName"  ),
+  m_option_dataOutputAllowedSet(m_prefix + "dataOutputAllowedSet")
+#ifdef UQ_SFP_READS_SOLVER_OPTION
+  m_option_solver              (m_prefix + "solver"              )
+#endif
 {
 }
 
 uqStatisticalForwardProblemOptionsClass::~uqStatisticalForwardProblemOptionsClass()
 {
-  if (m_optionsDesc                    ) delete m_optionsDesc;
+  if (m_optionsDesc) delete m_optionsDesc;
 } 
 
 void
@@ -69,7 +85,15 @@ void
 uqStatisticalForwardProblemOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
 {
   optionsDesc.add_options()     
-    (m_option_help.c_str(),                                                                                                                             "produce help message for Bayesian Markov chain distr. calculator")
+    (m_option_help.c_str(),                                                                                            "produce help message for statistical forward problem")
+    (m_option_computeSolution.c_str(),      po::value<bool       >()->default_value(UQ_SFP_COMPUTE_SOLUTION_ODV     ), "compute solution process"                            )
+    (m_option_computeCovariances.c_str(),   po::value<bool       >()->default_value(UQ_SFP_COMPUTE_COVARIANCES_ODV  ), "compute pq covariances"                              )
+    (m_option_computeCorrelations.c_str(),  po::value<bool       >()->default_value(UQ_SFP_COMPUTE_CORRELATIONS_ODV ), "compute pq correlations"                             )
+    (m_option_dataOutputFileName.c_str(),   po::value<std::string>()->default_value(UQ_SFP_DATA_OUTPUT_FILE_NAME_ODV), "name of data output file"                            )
+    (m_option_dataOutputAllowedSet.c_str(), po::value<std::string>()->default_value(UQ_SFP_DATA_OUTPUT_ALLOW_ODV    ), "subEnvs that will write to data output file"         )
+#ifdef UQ_SFP_READS_SOLVER_OPTION
+    (m_option_solver.c_str(),               po::value<std::string>()->default_value(UQ_SFP_SOLVER_ODV               ), "algorithm for propagation"                           )
+#endif
   ;
 
   return;
@@ -85,12 +109,60 @@ uqStatisticalForwardProblemOptionsClass::getMyOptionValues(po::options_descripti
     }
   }
 
+  if (m_env.allOptionsMap().count(m_option_computeSolution.c_str())) {
+    m_computeSolution = ((const po::variable_value&) m_env.allOptionsMap()[m_option_computeSolution.c_str()]).as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_computeCovariances.c_str())) {
+    m_computeCovariances = ((const po::variable_value&) m_env.allOptionsMap()[m_option_computeCovariances.c_str()]).as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_computeCorrelations.c_str())) {
+    m_computeCorrelations = ((const po::variable_value&) m_env.allOptionsMap()[m_option_computeCorrelations.c_str()]).as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_dataOutputFileName.c_str())) {
+    m_dataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName.c_str()]).as<std::string>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_dataOutputAllowedSet.c_str())) {
+    m_dataOutputAllowedSet.clear();
+    std::vector<double> tmpAllow(0,0.);
+    std::string inputString = m_env.allOptionsMap()[m_option_dataOutputAllowedSet.c_str()].as<std::string>();
+    uqMiscReadDoublesFromString(inputString,tmpAllow);
+
+    if (tmpAllow.size() > 0) {
+      for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
+        m_dataOutputAllowedSet.insert((unsigned int) tmpAllow[i]);
+      }
+    }
+  }
+
+#ifdef UQ_SFP_READS_SOLVER_OPTION
+  if (m_env.allOptionsMap().count(m_option_solver.c_str())) {
+    m_solverString = ((const po::variable_value&) m_env.allOptionsMap()[m_option_solver.c_str()]).as<std::string>();
+  }
+#endif
+
   return;
 }
 
 void
 uqStatisticalForwardProblemOptionsClass::print(std::ostream& os) const
 {
+  os <<         m_option_computeSolution      << " = " << m_computeSolution
+     << "\n" << m_option_computeCovariances   << " = " << m_computeCovariances
+     << "\n" << m_option_computeCorrelations  << " = " << m_computeCorrelations
+     << "\n" << m_option_dataOutputFileName   << " = " << m_dataOutputFileName;
+  os << "\n" << m_option_dataOutputAllowedSet << " = ";
+  for (std::set<unsigned int>::iterator setIt = m_dataOutputAllowedSet.begin(); setIt != m_dataOutputAllowedSet.end(); ++setIt) {
+    os << *setIt << " ";
+  }
+#ifdef UQ_SFP_READS_SOLVER_OPTION
+       << "\n" << m_option_solver << " = " << m_solverString
+#endif
+  os << std::endl;
+
   return;
 }
 

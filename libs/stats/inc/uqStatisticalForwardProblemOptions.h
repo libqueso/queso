@@ -30,11 +30,25 @@
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-#ifndef __UQ_SIP_OPTIONS_H__
-#define __UQ_SIP_OPTIONS_H__
+#ifndef __UQ_SFP_OPTIONS_H__
+#define __UQ_SFP_OPTIONS_H__
 
 #include <uqEnvironment.h>
 #include <uqSequenceStatisticalOptions.h>
+
+#undef UQ_SFP_READS_SOLVER_OPTION
+
+#define UQ_SFP_FILENAME_FOR_NO_FILE "."
+
+// _ODV = option default value
+#define UQ_SFP_COMPUTE_SOLUTION_ODV      1
+#define UQ_SFP_COMPUTE_COVARIANCES_ODV   1
+#define UQ_SFP_COMPUTE_CORRELATIONS_ODV  1
+#define UQ_SFP_DATA_OUTPUT_FILE_NAME_ODV UQ_SFP_FILENAME_FOR_NO_FILE
+#define UQ_SFP_DATA_OUTPUT_ALLOW_ODV     ""
+#ifdef UQ_SFP_READS_SOLVER_OPTION
+#define UQ_SFP_SOLVER_ODV                "mc" // Monte Carlo
+#endif
 
 class uqStatisticalForwardProblemOptionsClass
 {
@@ -45,17 +59,34 @@ public:
   void scanOptionsValues();
   void print            (std::ostream& os) const;
 
-  std::string                        m_prefix;
+  std::string                   m_prefix;
+
+  bool                          m_computeSolution;
+  bool                          m_computeCovariances;
+  bool                          m_computeCorrelations;
+  std::string                   m_dataOutputFileName;
+  std::set<unsigned int>        m_dataOutputAllowedSet;
+#ifdef UQ_SFP_READS_SOLVER_OPTION
+  std::string                   m_solverString;
+#endif
 
 private:
   void   defineMyOptions  (po::options_description& optionsDesc) const;
   void   getMyOptionValues(po::options_description& optionsDesc);
 
   const uqBaseEnvironmentClass& m_env;
-  po::options_description*      m_optionsDesc;
 
+  po::options_description*      m_optionsDesc;
   std::string                   m_option_help;
+  std::string                   m_option_computeSolution;
+  std::string                   m_option_computeCovariances;
+  std::string                   m_option_computeCorrelations;
+  std::string                   m_option_dataOutputFileName;
+  std::string                   m_option_dataOutputAllowedSet;
+#ifdef UQ_SFP_READS_SOLVER_OPTION
+  std::string                   m_option_solver;
+#endif
 };
 
 std::ostream& operator<<(std::ostream& os, const uqStatisticalForwardProblemOptionsClass& obj);
-#endif // __UQ_SIP_OPTIONS_H__
+#endif // __UQ_SFP_OPTIONS_H__

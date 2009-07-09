@@ -35,10 +35,22 @@
 
 uqStatisticalInverseProblemOptionsClass::uqStatisticalInverseProblemOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix)
   :
-  m_prefix                                   ((std::string)(prefix) + "mc_"),
-  m_env                                      (env),
-  m_optionsDesc                              (new po::options_description("Statistical Inverse Problem options")),
-  m_option_help                              (m_prefix + "help"                                                 )
+  m_prefix                     ((std::string)(prefix) + "ip_"),
+  m_computeSolution            (UQ_SIP_COMPUTE_SOLUTION_ODV     ),
+  m_dataOutputFileName         (UQ_SIP_DATA_OUTPUT_FILE_NAME_ODV),
+//m_dataOutputAllowedSet       (),
+#ifdef UQ_SIP_READS_SOLVER_OPTION
+  m_solverString               (UQ_SIP_SOLVER_ODV),
+#endif
+  m_env                        (env),
+  m_optionsDesc                (new po::options_description("Statistical Inverse Problem options")),
+  m_option_help                (m_prefix + "help"                ),
+  m_option_computeSolution     (m_prefix + "computeSolution"     ),
+  m_option_dataOutputFileName  (m_prefix + "dataOutputFileName"  ),
+  m_option_dataOutputAllowedSet(m_prefix + "dataOutputAllowedSet")
+#ifdef UQ_SIP_READS_SOLVER_OPTION
+  m_option_solver              (m_prefix + "solver"              )
+#endif
 {
 }
 
@@ -69,7 +81,13 @@ void
 uqStatisticalInverseProblemOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
 {
   optionsDesc.add_options()     
-    (m_option_help.c_str(),                                                                                                                             "produce help message for Bayesian Markov chain distr. calculator")
+    (m_option_help.c_str(),                                                                                            "produce help message for statistical inverse problem")
+    (m_option_computeSolution.c_str(),      po::value<bool       >()->default_value(UQ_SIP_COMPUTE_SOLUTION_ODV     ), "compute solution process"                            )
+    (m_option_dataOutputFileName.c_str(),   po::value<std::string>()->default_value(UQ_SIP_DATA_OUTPUT_FILE_NAME_ODV), "name of data output file"                            )
+    (m_option_dataOutputAllowedSet.c_str(), po::value<std::string>()->default_value(UQ_SIP_DATA_OUTPUT_ALLOW_ODV    ), "subEnvs that will write to data output file"         )
+#ifdef UQ_SIP_READS_SOLVER_OPTION
+    (m_option_solver.c_str(),               po::value<std::string>()->default_value(UQ_SIP_SOLVER_ODV               ), "algorithm for calibration"                           )
+#endif
   ;
 
   return;
@@ -85,12 +103,50 @@ uqStatisticalInverseProblemOptionsClass::getMyOptionValues(po::options_descripti
     }
   }
 
+  if (m_env.allOptionsMap().count(m_option_computeSolution.c_str())) {
+    m_computeSolution = ((const po::variable_value&) m_env.allOptionsMap()[m_option_computeSolution.c_str()]).as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_dataOutputFileName.c_str())) {
+    m_dataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName.c_str()]).as<std::string>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_dataOutputAllowedSet.c_str())) {
+    m_dataOutputAllowedSet.clear();
+    std::vector<double> tmpAllow(0,0.);
+    std::string inputString = m_env.allOptionsMap()[m_option_dataOutputAllowedSet.c_str()].as<std::string>();
+    uqMiscReadDoublesFromString(inputString,tmpAllow);
+
+    if (tmpAllow.size() > 0) {
+      for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
+        m_dataOutputAllowedSet.insert((unsigned int) tmpAllow[i]);
+      }
+    }
+  }
+
+#ifdef UQ_SIP_READS_SOLVER_OPTION
+  if (m_env.allOptionsMap().count(m_option_solver.c_str())) {
+    m_solverString = ((const po::variable_value&) m_env.allOptionsMap()[m_option_solver.c_str()]).as<std::string>();
+  }
+#endif
+
   return;
 }
 
 void
 uqStatisticalInverseProblemOptionsClass::print(std::ostream& os) const
 {
+  os << "\n" << m_option_computeSolution      << " = " << m_computeSolution
+     << "\n" << m_option_dataOutputFileName   << " = " << m_dataOutputFileName;
+  os << "\n" << m_option_dataOutputAllowedSet << " = ";
+  for (std::set<unsigned int>::iterator setIt = m_dataOutputAllowedSet.begin(); setIt != m_dataOutputAllowedSet.end(); ++setIt) {
+    os << *setIt << " ";
+  }
+#ifdef UQ_SIP_READS_SOLVER_OPTION
+     << "\n" << m_option_solver << " = " << m_solverString
+#endif
+  os << std::endl;
+
   return;
 }
 
