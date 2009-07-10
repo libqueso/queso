@@ -15,21 +15,22 @@ clean_texs:
 clean_exec:
 	rm -f *~
 
-OBJS_convert = black_box.eps \
-	black_state.eps \
-	black_box3.eps \
-	himmelAobs.eps \
-	himmelAcomp.eps \
-	himmel_compMH_chain1.eps \
-	himmel_compMH_chain1_2d.eps \
-	himmel_compDR_chain1.eps \
-	himmel_compDR_chain1_2d.eps \
-	himmel_compAM_chain1.eps \
-	himmel_compAM_chain1_2d.eps \
-	himmel_compDRAM_chain1.eps \
-	himmel_compDRAM_chain1_2d.eps
+OBJS_convert = figs/black_box.eps \
+	figs/black_state.eps \
+	figs/black_box3.eps \
+	figs/himmelAobs.eps \
+	figs/himmelAcomp.eps \
+	figs/himmel_compMH_chain1.eps \
+	figs/himmel_compMH_chain1_2d.eps \
+	figs/himmel_compDR_chain1.eps \
+	figs/himmel_compDR_chain1_2d.eps \
+	figs/himmel_compAM_chain1.eps \
+	figs/himmel_compAM_chain1_2d.eps \
+	figs/himmel_compDRAM_chain1.eps \
+	figs/himmel_compDRAM_chain1_2d.eps
 
-all_texs: $(OBJS_convert)
+#all_texs: $(OBJS_convert)
+all_texs: 
 	latex users.tex
 	latex users.tex
 	bibtex users
