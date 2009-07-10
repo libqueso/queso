@@ -80,7 +80,7 @@ AC_CONFIG_FILES([
 	examples/statisticalForwardProblem/src/Makefile
 	examples/basic_interface/Makefile
 	test/Makefile
-        test/valid_cycle/Makefile
+        test/t01_valid_cycle/valid_cycle/Makefile
 ])
 
 AC_OUTPUT()

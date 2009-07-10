@@ -19,7 +19,7 @@ SAVELOG=0		                   # Log model output?
 
 RUNDIR=`pwd`
 
-. ./verify.sh
+. ./t01_valid_cycle/verify.sh
 
 cd $TOPDIR
 verify_file_exists $EXE
@@ -32,7 +32,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/h2/prudenci/Installations/Boost_1_35_0/
 # Regresion Test #1: Validation cycle with TGA example 
 
 VERIFY_DATE="05-19-2009"
-TEST_DIR="valid_cycle"
+TEST_DIR="t01_valid_cycle/valid_cycle"
 SOLDIR="outputData"
 EXE="./TgaValidationCycle_gsl"   # executable name
 SOLREFS="regression/$VERIFY_DATE"
@@ -65,7 +65,7 @@ igot=1
 
 for file in file_cal_ip_raw2.m file_val_ip_raw2.m file_cal_fp_qoi2.m file_val_fp_qoi2.m ; do
 
-    $RUNDIR/compare.pl $SOLDIR/$file $SOLREFS/$file
+    $RUNDIR/t01_valid_cycle/compare.pl $SOLDIR/$file $SOLREFS/$file
     let igot="$igot * $?"
 done
 
