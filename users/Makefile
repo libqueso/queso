@@ -1,6 +1,6 @@
 all:	all_texs
 
-clean_all: clean_texs clean_exec
+clean: clean_texs clean_exec
 
 clean_texs:
 	rm -f *.aux
