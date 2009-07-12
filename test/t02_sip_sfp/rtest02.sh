@@ -66,12 +66,13 @@ igot=0
 
 for file in display_sub0.txt ; do
 
-    pwd
-    echo $SOLREFS/$file
+#    pwd
+#    echo $SOLREFS/$file
     grep "e-\|e+" $SOLREFS/$file > $SOLDIR/nada0
     grep "e-\|e+" $SOLDIR/$file > $SOLDIR/nada1
     diff $SOLDIR/nada0 $SOLDIR/nada1
     let igot="$igot + $?"
+
 done
 
 cd - >& /dev/null
