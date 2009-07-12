@@ -43,6 +43,7 @@ TESTNAME='Test 1 (TGA Validation Cycle)'
 
 cd $TEST_DIR
 
+rm -f $SOLDIR/*.txt
 rm -f $SOLDIR/*.m
 verify_file_exists $INFILE
 

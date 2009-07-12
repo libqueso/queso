@@ -31,18 +31,19 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/h2/prudenci/Installations/Boost_1_35_0/
 #
 # Regresion Test #1: Validation cycle with TGA example 
 
-VERIFY_DATE="05-19-2009"
-TEST_DIR="t02_sip_sfp/valid_cycle"
+VERIFY_DATE="07-12-2009"
+TEST_DIR="t02_sip_sfp/sip_sfp"
 SOLDIR="outputData"
-EXE="./TgaValidationCycle_gsl"   # executable name
+EXE="./SipSfpExample_gsl"   # executable name
 SOLREFS="regression/$VERIFY_DATE"
-INFILE="tgaCycle.inp"
-TESTNAME='Test 1 (TGA Validation Cycle)'
+INFILE="example.inp"
+TESTNAME='Test 2 (Sip + Sfp example)'
 
 # Setup desired input for the model
 
 cd $TEST_DIR
 
+rm -f $SOLDIR/*.txt
 rm -f $SOLDIR/*.m
 verify_file_exists $INFILE
 
@@ -56,17 +57,21 @@ fi
 
 # Verify results
 
-verify_file_exists $SOLDIR/file_val_ip_raw2.m
-verify_file_exists $SOLREFS/file_val_ip_raw2.m
+verify_file_exists $SOLDIR/display_sub0.txt
+verify_file_exists $SOLREFS/display_sub0.txt
 
-igot=1
+igot=0
 
-# Compare solutions from 4 output files.
+# Compare outputs from 1 output file.
 
-for file in file_cal_ip_raw2.m file_val_ip_raw2.m file_cal_fp_qoi2.m file_val_fp_qoi2.m ; do
+for file in display_sub0.txt ; do
 
-    $RUNDIR/t02_sip_sfp/compare.pl $SOLDIR/$file $SOLREFS/$file
-    let igot="$igot * $?"
+    pwd
+    echo $SOLREFS/$file
+    grep "e-\|e+" $SOLREFS/$file > $SOLDIR/nada0
+    grep "e-\|e+" $SOLDIR/$file > $SOLDIR/nada1
+    diff $SOLDIR/nada0 $SOLDIR/nada1
+    let igot="$igot + $?"
 done
 
 cd - >& /dev/null

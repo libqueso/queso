@@ -81,6 +81,7 @@ AC_CONFIG_FILES([
 	examples/basic_interface/Makefile
 	test/Makefile
         test/t01_valid_cycle/valid_cycle/Makefile
+        test/t02_sip_sfp/sip_sfp/Makefile
 ])
 
 AC_OUTPUT()
