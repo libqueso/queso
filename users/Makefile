@@ -15,22 +15,35 @@ clean_texs:
 clean_exec:
 	rm -f *~
 
-OBJS_convert = figs/black_box.eps \
-	figs/black_state.eps \
-	figs/black_box3.eps \
-	figs/himmelAobs.eps \
-	figs/himmelAcomp.eps \
-	figs/himmel_compMH_chain1.eps \
-	figs/himmel_compMH_chain1_2d.eps \
-	figs/himmel_compDR_chain1.eps \
-	figs/himmel_compDR_chain1_2d.eps \
-	figs/himmel_compAM_chain1.eps \
-	figs/himmel_compAM_chain1_2d.eps \
-	figs/himmel_compDRAM_chain1.eps \
-	figs/himmel_compDRAM_chain1_2d.eps
+OBJS_convert = figs/uqEnvironment.eps \
+	figs/uqEnvironmentOptions.eps \
+	figs/uqVectorSet.eps \
+	figs/uqVector.eps \
+	figs/uqMatrix.eps \
+	figs/uqScalarFunction.eps \
+	figs/uqVectorFunction.eps \
+	figs/uqScalarSequence.eps \
+	figs/uqVectorSequence.eps \
+	figs/uqSip.eps \
+	figs/uqSipOptions.eps \
+	figs/uqSfp.eps \
+	figs/uqSfpOptions.eps \
+	figs/uqMarkovChainSG.eps \
+	figs/uqMarkovChainSGOptions.eps \
+	figs/uqMonteCarloSG.eps \
+	figs/uqMonteCarloSGOptions.eps \
+	figs/uqSequenceStatisticalOptions.eps \
+	figs/uqVectorRandomVariable.eps \
+	figs/paper_plot1.eps \
+	figs/paper_plot2.eps \
+	figs/paper_plot3.eps \
+	figs/paper_plot4.eps \
+	figs/paper_plot5.eps \
+	figs/queso_paper1_03.eps \
+	figs/queso_paper1_09.eps \
+	figs/queso_paper1_10.eps
 
-#all_texs: $(OBJS_convert)
-all_texs: 
+all_texs: $(OBJS_convert)
 	latex users.tex
 	latex users.tex
 	bibtex users
@@ -39,7 +52,10 @@ all_texs:
 	dvips -t letter users.dvi -o users.ps
 	ps2pdf users.ps users_0_4_0.pdf
 
-.SUFFIXES: .eps .png
+.SUFFIXES: .eps .png .dia
 
 %.eps: %.png
 	convert $< $(basename $<).eps
+
+%.eps: %.dia
+	dia -t eps $<

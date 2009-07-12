@@ -16,37 +16,279 @@
 
 \section{Basic Classes}
 
+The are four basic classes:
+\begin{itemize}
+\item environment and environment options (Figures \ref{fig-env-class} and \ref{fig-env-options-class}, pages \pageref{fig-env-class} and \pageref{fig-env-options-class}),
+\item vector (Figure \ref{fig-vector-class}, page \pageref{fig-vector-class}),
+\item matrix (Figure \ref{fig-matrix-class}, page \pageref{fig-matrix-class}).
+\end{itemize}
+
+\clearpage
 \subsection{Environment (and Options)}
 
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=0.40,clip=true]{figs/uqEnvironment.eps}
+%\includegraphics[scale=0.55,clip=true]{figs/uqEnvironment.eps}
+\end{center}
+\caption{
+The class diagram for the environment class.
+}
+\label{fig-env-class}
+\end{figure}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=0.40,clip=true]{figs/uqEnvironmentOptions.eps}
+\end{center}
+\caption{
+The environment options class.
+}
+\label{fig-env-options-class}
+\end{figure}
+
+\clearpage
 \subsection{Vector}
 
+\begin{figure}[h!]
+\centerline{
+\includegraphics[scale=0.40,clip=true]{figs/uqVector.eps}
+}
+\caption{
+The class diagram for the vector class.
+}
+\label{fig-vector-class}
+\end{figure}
+
+\clearpage
 \subsection{Matrix}
 
+\begin{figure}[h!]
+\centerline{
+\includegraphics[scale=0.40,clip=true]{figs/uqMatrix.eps}
+}
+\caption{
+The class diagram for the matrix class.
+}
+\label{fig-matrix-class}
+\end{figure}
+
+\clearpage
 \section{Templated Core Classes}
 
+The classes in this group are:
+\begin{itemize}
+\item Vector sets, subsets and spaces (see Figure \ref{fig-vector-space-subset-classes}),
+\item Scalar function (see Figure \ref{fig-scalar-function-class}),
+\item Vector function (see Figure \ref{fig-vector-function-class}),
+\item Scalar sequence (see Figure \ref{fig-scalar-sequence-class}), and
+\item Vector sequence (see Figure \ref{fig-vector-sequence-class}).
+\end{itemize}
+These classes constitute the core entities necessary for the formal
+mathematical definition and description of other entities, such as
+random variables, Bayesian solutions of inverse problems, sampling algorithms and chains.
+
+\clearpage
 \subsection{Vector Subset and Vector Space}
 
+\begin{figure}[h!]
+\centerline{
+\includegraphics[scale=0.40,clip=true]{figs/uqVectorSet.eps}
+}
+\caption{
+The class diagram for vector set, vector subset and vector space classes.
+}
+\label{fig-vector-space-subset-classes}
+\end{figure}
+
+\clearpage
 \subsection{Scalar Function}
 
+\begin{figure}[h!]
+\centerline{
+\includegraphics[scale=0.40,clip=true]{figs/uqScalarFunction.eps}
+}
+\caption{
+The class diagram for the scalar function class.
+}
+\label{fig-scalar-function-class}
+\end{figure}
+
+\clearpage
 \subsection{Vector Function}
 
+\begin{figure}[h!]
+\centerline{
+\includegraphics[scale=0.40,clip=true]{figs/uqVectorFunction.eps}
+}
+\caption{
+The class diagram for the vector function class.
+}
+\label{fig-vector-function-class}
+\end{figure}
+
+\clearpage
 \subsection{Scalar Sequence}
 
+\begin{figure}[h!]
+\centerline{
+\includegraphics[scale=0.40,clip=true]{figs/uqScalarSequence.eps}
+}
+\caption{
+The class diagram for the scalar sequence class.
+}
+\label{fig-scalar-sequence-class}
+\end{figure}
+
+\clearpage
 \subsection{Vector Sequence}
 
+\begin{figure}[h!]
+\centerline{
+\includegraphics[scale=0.40,clip=true]{figs/uqVectorSequence.eps}
+}
+\caption{
+The class diagram for the vector sequence class.
+}
+\label{fig-vector-sequence-class}
+\end{figure}
+
+\clearpage
 \section{Templated Statistical Classes}
 
+\begin{itemize}
+\item Vector random variable
+\item Statistical inverse problem (and options)
+\item Markov chain solver (and options)
+\item Statistical forward problem (and options)
+\item Monte Carlo solver (and options)
+\item Sequence statistical options
+\end{itemize}
+
+For QUESO, a statistical inverse problem has two input entities, a prior random variable and
+a likelihood routine, and one output entity, the posterior random variable, as shown in Figure \ref{fig-sip-queso}.
+
+Similarly, a statistical forward problem for QUESO has two input entities, a input random variable and
+a qoi routine, and one output entity, the output random variable, as shown in Figure \ref{fig-sfp-queso}.
+
+\clearpage
 \subsection{Vector Random Variable}
 
+\begin{figure}[h!]
+\centerline{
+\includegraphics[scale=0.40,clip=true]{figs/uqVectorRandomVariable.eps}
+}
+\caption{
+{\color{red}{The class diagram for the vector random variable class}}.
+}
+\label{fig-vector-rv-class}
+\end{figure}
+
+\clearpage
 \subsection{Statistical Inverse Problem (and Options)}
 
+\begin{figure}[h!]
+\centerline{
+\includegraphics[scale=0.40,clip=true]{figs/uqSip.eps}
+}
+\caption{
+The statistical inverse problem class. It implements the representation in Figure \ref{fig-sip-queso}.
+}
+\label{fig-sip-class}
+\end{figure}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=0.40,clip=true]{figs/uqSipOptions.eps}
+\end{center}
+\caption{
+The statistical inverse problem options class.
+}
+\label{fig-sip-options-class}
+\end{figure}
+
+\clearpage
 \subsection{Markov Chain Solver (and Options)}
 
+\begin{figure}[h!]
+\centerline{
+\includegraphics[scale=0.40,clip=true]{figs/uqMarkovChainSG.eps}
+}
+\caption{
+The Markov chain sequence generator class.
+}
+\label{fig-markov-chain-solver-class}
+\end{figure}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=0.40,clip=true]{figs/uqMarkovChainSGOptions.eps}
+\end{center}
+\caption{
+The Markov chain sequence generator options class.
+}
+\label{fig-markov-options-class}
+\end{figure}
+
+\clearpage
 \subsection{Statistical Forward Problem (and Options)}
 
+\begin{figure}[h!]
+\centerline{
+\includegraphics[scale=0.40,clip=true]{figs/uqSfp.eps}
+}
+\caption{
+The statistical forward problem class. It implements the representation in Figure \ref{fig-sfp-queso}.
+}
+\label{fig-sfp-class}
+\end{figure}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=0.40,clip=true]{figs/uqSfpOptions.eps}
+\end{center}
+\caption{
+The statistical forward problem options class.
+}
+\label{fig-sfp-options-class}
+\end{figure}
+
+\clearpage
 \subsection{Monte Carlo Solver (and Options)}
 
+\begin{figure}[h!]
+\centerline{
+\includegraphics[scale=0.40,clip=true]{figs/uqMonteCarloSG.eps}
+}
+\caption{
+{\color{red}{The Monte Carlo sequence generator class}}.
+}
+\label{fig-monte-carlo-solver-class}
+\end{figure}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=0.40,clip=true]{figs/uqMonteCarloSGOptions.eps}
+\end{center}
+\caption{
+{\color{red}{The Monte Carlo sequence generator options class}}.
+}
+\label{fig-monte-carlo-options-class}
+\end{figure}
+
+\clearpage
 \subsection{Options for Statistical Computations on Sequences}
 
+\begin{figure}[h!]
+\centerline{
+\includegraphics[scale=0.40,clip=true]{figs/uqSequenceStatisticalOptions.eps}
+}
+\caption{
+{\color{red}{The sequence statistical options class}}.
+}
+\label{fig-seq-statistical-options-class}
+\end{figure}
+
+\clearpage
 \section{Miscellaneous Classes and Routines}
 
