@@ -42,16 +42,16 @@
 /*! A templated class that represents statistical inverse problems. */
 /*! */
 /*! Conceptually, a statistical inverse problem has two input entities and one output entity.
-    The input entities are the prior rv and the likelihood function, and the output entity is the posterior rv, which stores the solution according the Bayesian approach.
+    The input entities are the prior rv and the likelihood function. The output entity is the posterior rv, which stores the solution according the Bayesian approach.
     A similar situation occurs e.g. in the case of a system Ax=b of linear equations, where A and b are inputs, and x is the solution of the inverse problem. */
 /*! The solution of a statistical inverse problem is computed by calling 'solveWithBayesMarkovChain(...)'.
-    Upon return from such operation, the posterior rv is available through operation 'postRv()', and such posterior rv is able to supply a joint pdf (up to a multiplicative constant) and a vector realizer. */
+    Upon return from such operation, the posterior rv is available through the operation 'postRv()'. Such posterior rv is able to supply a joint pdf (up to a multiplicative constant) and a vector realizer. */
 template <class P_V,class P_M>
 class uqStatisticalInverseProblemClass
 {
 public:
   
-  /*! Contructor: */
+  /*! Constructor: */
   uqStatisticalInverseProblemClass(/*! The prefix              */ const char*                               prefix,             
                                    /*! The prior rv            */ const uqBaseVectorRVClass      <P_V,P_M>& priorRv,            
                                    /*! The likelihood function */ const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunction, 

@@ -44,12 +44,16 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 class uqMonteCarloSGClass
 {
 public:
-  uqMonteCarloSGClass(const char*                                       prefix,         /*! Prefix.           */
-                      const uqBaseVectorRVClass      <P_V,P_M>&         paramRv,        /*! The parameter rv. */
-                      const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunctionObj, /*! The qoi function. */
-                            uqBaseVectorRVClass      <Q_V,Q_M>&         qoiRv);         /*! The qoi rv.       */
+
+  /*! Constructor: */
+  uqMonteCarloSGClass(/*! Prefix           */ const char*                                       prefix,         
+                      /*! The parameter rv */ const uqBaseVectorRVClass      <P_V,P_M>&         paramRv,        
+                      /*! The qoi function */ const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunctionObj, 
+                      /*! The qoi rv       */       uqBaseVectorRVClass      <Q_V,Q_M>&         qoiRv);         
+  /*! Destructor: */
  ~uqMonteCarloSGClass();
 
+  /*! Operation to generate the chain */
   void generateSequence           (uqBaseVectorSequenceClass<P_V,P_M>& workingPSeq,
                                    uqBaseVectorSequenceClass<Q_V,Q_M>& workingQSeq);
   void checkTheParallelEnvironment();

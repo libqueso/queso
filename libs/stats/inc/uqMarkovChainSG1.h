@@ -50,12 +50,16 @@ template <class P_V,class P_M>
 class uqMarkovChainSGClass
 {
 public:
-  uqMarkovChainSGClass(const char*                         prefix,                  /*! Prefix.                     */
-                       const uqBaseVectorRVClass<P_V,P_M>& sourceRv,                /*! The source random variable. */
-                       const P_V&                          initialPosition,         /*! First position of chain.    */
-                       const P_M*                          inputProposalCovMatrix); /*! Proposal covariance matrix. */ 
+
+  /*! Constructor: */
+  uqMarkovChainSGClass(/*! Prefix                 */ const char*                         prefix,                  
+                       /*! The source rv          */ const uqBaseVectorRVClass<P_V,P_M>& sourceRv,                
+                       /*! Initial chain position */ const P_V&                          initialPosition,         
+                       /*! Proposal cov. matrix   */ const P_M*                          inputProposalCovMatrix);  
+  /*! Destructor: */
  ~uqMarkovChainSGClass();
 
+  /*! Operation to generate the chain */
   void   generateSequence           (uqBaseVectorSequenceClass<P_V,P_M>& workingChain); /*! Generate the chain and store it in 'workingChain' object */
   void   checkTheParallelEnvironment();
 

@@ -41,17 +41,27 @@
 
 /*! A templated class that represents statistical forward problems.
  */
+/*! */
+/*! Conceptually, a statistical forward problem has two input entities and one output entity.
+    The input entities are the input rv and the qoi function. The output entity is the qoi rv, which stores the solution.
+    A similar situation occurs e.g. in the case of a system Ax=b of linear equations, where A and x are inputs, and b is the solution of the forward problem. */
+/*! The solution of a statistical forward problem is computed by calling 'solveWithMonteCarlo(...)'.
+    Upon return from such operation, the qoi rv is available through the operation 'qoiRv()'. Such qoi rv is able to supply marginal pdfs and a vector realizer. */
 template <class P_V,class P_M,class Q_V,class Q_M>
 class uqStatisticalForwardProblemClass
 {
 public:
-  uqStatisticalForwardProblemClass(const char*                                       prefix,      /*! The prefix.                  */
-                                   const uqBaseVectorRVClass      <P_V,P_M>&         paramRv,     /*! The input random variable.   */
-                                   const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction, /*! The function to compute qoi. */
-                                   uqGenericVectorRVClass         <Q_V,Q_M>&         qoiRv);      /*! The output random variable.  */
+
+  /*! Constructor: */
+  uqStatisticalForwardProblemClass(/*! The prefix       */ const char*                                       prefix,
+                                   /*! The input rv     */ const uqBaseVectorRVClass      <P_V,P_M>&         paramRv,
+                                   /*! The qoi function */ const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction,
+                                   /*! The qoi rv       */ uqGenericVectorRVClass         <Q_V,Q_M>&         qoiRv);
+  /*! Destructor: */
  ~uqStatisticalForwardProblemClass();
 
         bool                             computeSolutionFlag() const;
+	/*! Operation to solve the problem */
         void                             solveWithMonteCarlo();
   const uqGenericVectorRVClass<Q_V,Q_M>& qoiRv              () const;
   const uqBaseVectorCdfClass  <Q_V,Q_M>& qoiRv_unifiedCdf   () const;

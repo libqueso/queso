@@ -50,6 +50,14 @@ extern unsigned long int gsl_rng_default_seed;
 //*****************************************************
 // Base class
 //*****************************************************
+
+/*! A class that sets up the environment underlying a QUESO run:
+    - assigns rank numbers, other than the world rank, to nodes participating in a parallel job;
+    - open output files for messages that would otherwise be written to the screen; one output file per allowed rank is opened; allowed ranks are specified in the options input file; */
+/*! */
+/*! This class is virtual. It is inherited by 'uqEmptyEnvironmentClass' and 'uqFullEnvironmentClass'.
+    The environment options can be set in an input file. The name of this input file is one of the parameters in the constructor. */
+/*! The uqEnvironmentClass internally delegates the task of reading input options to uqEnvironmentOptionsClass.                   */
 class uqBaseEnvironmentClass {
 public:
   uqBaseEnvironmentClass(MPI_Comm inputComm, const char* inputFileName);
