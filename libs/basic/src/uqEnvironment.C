@@ -41,9 +41,10 @@
 // Version "0.21"  on "Oct/08/2008"
 // Version "0.3.0" on "Feb/13/2009"
 // Version "0.3.1" on "Feb/19/2009"
-// Version "0.4.0" on "MMM/DD/2009"
+// Version "0.4.0" on "Jul/13/2009"
+// Version "0.5.0" on "MMM/DD/2009"
 #define QUESO_LIBRARY_CURRENT_VERSION "0.4.0"
-#define QUESO_LIBRARY_RELEASE_DATE    "MMM/DD/2009"
+#define QUESO_LIBRARY_RELEASE_DATE    "Jul/13/2009"
 
 //*****************************************************
 // Base class
