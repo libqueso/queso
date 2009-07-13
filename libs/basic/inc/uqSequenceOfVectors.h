@@ -1676,7 +1676,9 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(const std::string& fileName)
       if (m_env.inter0Rank() == (int) r) {
         // My turn
         std::ofstream* unifiedOfsVar = NULL;
-        bool writeOver = (r == 0);
+        // bool writeOver = (r == 0);
+        bool writeOver = false; // A 'true' causes problems when the user chooses (via options
+                                // in the input file) to use just one file for all outputs.
         m_env.openUnifiedOutputFile(fileName,
                                     UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
                                     writeOver,

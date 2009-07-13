@@ -199,7 +199,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   }
   std::ofstream* genericOfsVar = NULL;
   m_env.openOutputFile(m_options.m_dataOutputFileName,
-                       "m",
+                       UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
                        m_options.m_dataOutputAllowedSet,
                        false,
                        genericOfsVar);
@@ -222,7 +222,8 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   m_env.openOutputFile(m_options.m_pseqDataOutputFileName,
                        UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
                        m_options.m_pseqDataOutputAllowedSet,
-                       true,
+                       false, // A 'true' causes problems when the user chooses (via options
+                              // in the input file) to use just one file for all outputs.
                        pseqOfsVar);
 
   if (pseqOfsVar) {
@@ -245,7 +246,8 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   std::ofstream* unifiedPSeqOfsVar = NULL;
   m_env.openUnifiedOutputFile(m_options.m_pseqDataOutputFileName,
                               UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
-                              true,
+                              false, // A 'true' causes problems when the user chooses (via options
+                                     // in the input file) to use just one file for all outputs.
                               unifiedPSeqOfsVar);
 
   if (unifiedPSeqOfsVar) {
@@ -309,7 +311,8 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   m_env.openOutputFile(m_options.m_qseqDataOutputFileName,
                        UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
                        m_options.m_qseqDataOutputAllowedSet,
-                       true,
+                       false, // A 'true' causes problems when the user chooses (via options
+                              // in the input file) to use just one file for all outputs.
                        qseqOfsVar);
 
   if (qseqOfsVar) {

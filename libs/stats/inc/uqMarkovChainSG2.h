@@ -100,14 +100,14 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
   //****************************************************
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
-                           << ", prefix = "                                                         << m_options.m_prefix
-                           << ": checking necessity of opening generic output file (chain name is " << workingChain.name()
-                           << ") ..."
-                           << std::endl;
+                            << ", prefix = "                                                         << m_options.m_prefix
+                            << ": checking necessity of opening generic output file (chain name is " << workingChain.name()
+                            << ") ..."
+                            << std::endl;
   }
   std::ofstream* genericOfsVar = NULL;
   m_env.openOutputFile(m_options.m_dataOutputFileName,
-                       "m",
+                       UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
                        m_options.m_dataOutputAllowedSet,
                        false,
                        genericOfsVar);
@@ -119,10 +119,10 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
   //****************************************************
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
-                           << ", prefix = "                                                 << m_options.m_prefix
-                           << ": checking necessity of opening output files for raw chain " << workingChain.name()
-                           << "..."
-                           << std::endl;
+                            << ", prefix = "                                                 << m_options.m_prefix
+                            << ": checking necessity of opening output files for raw chain " << workingChain.name()
+                            << "..."
+                            << std::endl;
   }
 
   // Take "sub" care of raw chain
@@ -130,7 +130,8 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
   m_env.openOutputFile(m_options.m_rawChainDataOutputFileName,
                        UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
                        m_options.m_rawChainDataOutputAllowedSet,
-                       true,
+                       false, // A 'true' causes problems when the user chooses (via options
+                              // in the input file) to use just one file for all outputs.
                        rawChainOfsVar);
 
   if (rawChainOfsVar) {
@@ -141,10 +142,10 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
     rawChainOfsVar->close();
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
-                             << ", prefix = "            << m_options.m_prefix
-                             << ": closed output file '" << m_options.m_rawChainDataOutputFileName
-                             << "' for raw chain "       << workingChain.name()
-                             << std::endl;
+                              << ", prefix = "            << m_options.m_prefix
+                              << ": closed output file '" << m_options.m_rawChainDataOutputFileName
+                              << "' for raw chain "       << workingChain.name()
+                              << std::endl;
     }
   }
 
@@ -153,7 +154,8 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
   std::ofstream* unifiedRawChainOfsVar = NULL;
   m_env.openUnifiedOutputFile(m_options.m_rawChainDataOutputFileName,
                               UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
-                              true,
+                              false, // A 'true' causes problems when the user chooses (via options
+                                     // in the input file) to use just one file for all outputs.
                               unifiedRawChainOfsVar);
 
   if (unifiedRawChainOfsVar) {
@@ -258,10 +260,10 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
     // Write filtered chain
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
-                             << ", prefix = "                                                      << m_options.m_prefix
-                             << ": checking necessity of opening output files for filtered chain " << workingChain.name()
-                             << "..."
-                             << std::endl;
+                              << ", prefix = "                                                      << m_options.m_prefix
+                              << ": checking necessity of opening output files for filtered chain " << workingChain.name()
+                              << "..."
+                              << std::endl;
     }
 
     // Take "sub" care of filtered chain
@@ -269,7 +271,8 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
     m_env.openOutputFile(m_options.m_filteredChainDataOutputFileName,
                          UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
                          m_options.m_filteredChainDataOutputAllowedSet,
-                         true, // FIX ME: shouldn't it be false ??????
+                         false, // A 'true' causes problems when the user chooses (via options
+                                // in the input file) to use just one file for all outputs.
                          filteredChainOfsVar);
 
     if (filteredChainOfsVar) {
@@ -280,10 +283,10 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
       filteredChainOfsVar->close();
       if (m_env.subDisplayFile()) {
         *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
-                               << ", prefix = "            << m_options.m_prefix
-                               << ": closed output file '" << m_options.m_filteredChainDataOutputFileName
-                               << "' for filtered chain "  << workingChain.name()
-                               << std::endl;
+                                << ", prefix = "            << m_options.m_prefix
+                                << ": closed output file '" << m_options.m_filteredChainDataOutputFileName
+                                << "' for filtered chain "  << workingChain.name()
+                                << std::endl;
       }
     }
 
@@ -292,7 +295,8 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
     std::ofstream* unifiedFilteredChainOfsVar = NULL;
     m_env.openUnifiedOutputFile(m_options.m_filteredChainDataOutputFileName,
                                 UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
-                                true,
+                                false, // A 'true' causes problems when the user chooses (via options
+                                       // in the input file) to use just one file for all outputs.
                                 unifiedFilteredChainOfsVar);
 
     if (unifiedFilteredChainOfsVar) {

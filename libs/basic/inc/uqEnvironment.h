@@ -110,37 +110,37 @@ public:
   virtual void                    print                    (std::ostream& os) const = 0;
 
 protected:
-  int                      m_worldRank;
+  int                        m_worldRank;
 
-  MPI_Comm                 m_fullRawComm;
-  Epetra_MpiComm*          m_fullComm;
-  int                      m_fullRank;
-  int                      m_fullCommSize;
-  MPI_Group                m_fullGroup;
+  MPI_Comm                   m_fullRawComm;
+  Epetra_MpiComm*            m_fullComm;
+  int                        m_fullRank;
+  int                        m_fullCommSize;
+  MPI_Group                  m_fullGroup;
 
-  std::string              m_optionsInputFileName;
-  po::options_description* m_allOptionsDesc;
-  po::variables_map*       m_allOptionsMap;
+  std::string                m_optionsInputFileName;
+  po::options_description*   m_allOptionsDesc;
+  po::variables_map*         m_allOptionsMap;
 
-  unsigned int             m_subId;
-  std::string              m_subIdString;
-  MPI_Group                m_subGroup;
-  MPI_Comm                 m_subRawComm;
-  Epetra_MpiComm*          m_subComm;
-  int                      m_subRank;
-  int                      m_subCommSize;
+  unsigned int               m_subId;
+  std::string                m_subIdString;
+  MPI_Group                  m_subGroup;
+  MPI_Comm                   m_subRawComm;
+  Epetra_MpiComm*            m_subComm;
+  int                        m_subRank;
+  int                        m_subCommSize;
 
-  Epetra_MpiComm*          m_selfComm;
+  Epetra_MpiComm*            m_selfComm;
 
-  MPI_Group                m_inter0Group;
-  MPI_Comm                 m_inter0RawComm;
-  Epetra_MpiComm*          m_inter0Comm;
-  int                      m_inter0Rank;
-  int                      m_inter0CommSize;
+  MPI_Group                  m_inter0Group;
+  MPI_Comm                   m_inter0RawComm;
+  Epetra_MpiComm*            m_inter0Comm;
+  int                        m_inter0Rank;
+  int                        m_inter0CommSize;
 
-  mutable std::ofstream*   m_subDisplayFile;
-  gsl_rng*                 m_rng;
-  struct timeval           m_timevalBegin;
+  mutable std::ofstream*     m_subDisplayFile;
+  gsl_rng*                   m_rng;
+  struct timeval             m_timevalBegin;
 
   uqEnvironmentOptionsClass* m_options;
 };

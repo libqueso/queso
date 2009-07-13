@@ -340,7 +340,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   }
   std::ofstream* ofsvar = NULL;
   m_env.openOutputFile(m_options.m_dataOutputFileName,
-                       "m",
+                       UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
                        m_options.m_dataOutputAllowedSet,
                        false,
                        ofsvar);
