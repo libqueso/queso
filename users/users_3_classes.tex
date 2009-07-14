@@ -47,6 +47,38 @@ The environment options class.
 \label{fig-env-options-class}
 \end{figure}
 
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline
+\multicolumn{1}{|c|}{Option}               & Default & Description \\
+\multicolumn{1}{|c|}{Name}                 & Value   &             \\
+\hline
+\hline
+$\langle$PREFIX$\rangle$help               &         &             \\
+\hline
+$\langle$PREFIX$\rangle$numSubEnvironments &         &             \\
+\hline
+$\langle$PREFIX$\rangle$subDisplayFileName &         &             \\
+\hline
+$\langle$PREFIX$\rangle$subDisplayAllowAll &         &             \\
+\hline
+$\langle$PREFIX$\rangle$subDisplayAllow    &         &             \\
+\hline
+$\langle$PREFIX$\rangle$displayVerbosity   &         &             \\
+\hline
+$\langle$PREFIX$\rangle$syncVerbosity      &         &             \\
+\hline
+$\langle$PREFIX$\rangle$seed               &         &             \\
+\hline
+\end{tabular}
+\end{center}
+\caption{
+Input file options for a QUESO environment.
+}
+\label{tab-env-options}
+\end{table}
+
 \clearpage
 \subsection{Vector}
 
@@ -207,6 +239,30 @@ The statistical inverse problem options class.
 \label{fig-sip-options-class}
 \end{figure}
 
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline
+\multicolumn{1}{|c|}{Option}                 & Default & Description \\
+\multicolumn{1}{|c|}{Name}                   & Value   &             \\
+\hline
+\hline
+$\langle$PREFIX$\rangle$help                 &         &             \\
+\hline
+$\langle$PREFIX$\rangle$computeSolution      &         &             \\
+\hline
+$\langle$PREFIX$\rangle$dataOutputFileName   &         &             \\
+\hline
+$\langle$PREFIX$\rangle$dataOutputAllowedSet &         &             \\
+\hline
+\end{tabular}
+\end{center}
+\caption{
+Input file options for a QUESO statistical inverse problem.
+}
+\label{tab-sip-options}
+\end{table}
+
 \clearpage
 \subsection{Markov Chain Solver (and Options)}
 
@@ -229,6 +285,78 @@ The Markov chain sequence generator options class.
 }
 \label{fig-markov-options-class}
 \end{figure}
+
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline
+\multicolumn{1}{|c|}{Option}                               & Default & Description \\
+\multicolumn{1}{|c|}{Name}                                 & Value   &             \\
+\hline
+\hline
+$\langle$PREFIX$\rangle$help                               &         &             \\
+\hline
+$\langle$PREFIX$\rangle$dataOutputFileName                 &         &             \\
+\hline
+$\langle$PREFIX$\rangle$dataOutputAllowedSet               &         &             \\
+\hline
+$\langle$PREFIX$\rangle$rawChain\_type                     &         &             \\
+\hline
+$\langle$PREFIX$\rangle$rawChain\_dataInputFileName         &         &             \\
+\hline
+$\langle$PREFIX$\rangle$rawChain\_size                      &         &             \\
+\hline
+$\langle$PREFIX$\rangle$rawChain\_generateExtra             &         &             \\
+\hline
+$\langle$PREFIX$\rangle$rawChain\_displayPeriod             &         &             \\
+\hline
+$\langle$PREFIX$\rangle$rawChain\_measureRunTimes           &         &             \\
+\hline
+$\langle$PREFIX$\rangle$rawChain\_dataOutputFileName        &         &             \\
+\hline
+$\langle$PREFIX$\rangle$rawChain\_dataOutputAllowedSet      &         &             \\
+\hline
+$\langle$PREFIX$\rangle$rawChain\_computeStats              &         &             \\
+\hline
+$\langle$PREFIX$\rangle$filteredChain\_generate             &         &             \\
+\hline
+$\langle$PREFIX$\rangle$filteredChain\_discardedPortion     &         &             \\
+\hline
+$\langle$PREFIX$\rangle$filteredChain\_lag                  &         &             \\
+\hline
+$\langle$PREFIX$\rangle$filteredChain\_dataOutputFileName   &         &             \\
+\hline
+$\langle$PREFIX$\rangle$filteredChain\_dataOutputAllowedSet &         &             \\
+\hline
+$\langle$PREFIX$\rangle$filteredChain\_computeStats         &         &             \\
+\hline
+$\langle$PREFIX$\rangle$mh\_displayCandidates               &         &             \\
+\hline
+$\langle$PREFIX$\rangle$mh\_putOutOfBoundsInChain           &         &             \\
+\hline
+$\langle$PREFIX$\rangle$tk\_useLocalHessian                 &         &             \\
+\hline
+$\langle$PREFIX$\rangle$tk\_useNewtonComponent              &         &             \\
+\hline
+$\langle$PREFIX$\rangle$dr\_maxNumExtraStages               &         &             \\
+\hline
+$\langle$PREFIX$\rangle$dr\_scalesForExtraStages            &         &             \\
+\hline
+$\langle$PREFIX$\rangle$am\_initialNonAdaptInterval         &         &             \\
+\hline
+$\langle$PREFIX$\rangle$am\_adaptInterval                   &         &             \\
+\hline
+$\langle$PREFIX$\rangle$am\_eta                             &         &             \\
+\hline
+$\langle$PREFIX$\rangle$am\_epsilon                         &         &             \\
+\hline
+\end{tabular}
+\end{center}
+\caption{
+Input file options for a QUESO Markov chain solver.
+}
+\label{tab-markov-options}
+\end{table}
 
 \clearpage
 \subsection{Statistical Forward Problem (and Options)}
@@ -253,6 +381,34 @@ The statistical forward problem options class.
 \label{fig-sfp-options-class}
 \end{figure}
 
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline
+\multicolumn{1}{|c|}{Option}                 & Default & Description \\
+\multicolumn{1}{|c|}{Name}                   & Value   &             \\
+\hline
+\hline
+$\langle$PREFIX$\rangle$help                 &         &             \\
+\hline
+$\langle$PREFIX$\rangle$computeSolution      &         &             \\
+\hline
+$\langle$PREFIX$\rangle$computeCovariances   &         &             \\
+\hline
+$\langle$PREFIX$\rangle$computeCorrelations  &         &             \\
+\hline
+$\langle$PREFIX$\rangle$dataOutputFileName   &         &             \\
+\hline
+$\langle$PREFIX$\rangle$dataOutputAllowedSet &         &             \\
+\hline
+\end{tabular}
+\end{center}
+\caption{
+Input file options for a QUESO statistical forward problem.
+}
+\label{tab-sfp-options}
+\end{table}
+
 \clearpage
 \subsection{Monte Carlo Solver (and Options)}
 
@@ -276,8 +432,50 @@ The statistical forward problem options class.
 \label{fig-monte-carlo-options-class}
 \end{figure}
 
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline
+\multicolumn{1}{|c|}{Option}                        & Default & Description \\
+\multicolumn{1}{|c|}{Name}                          & Value   &             \\
+\hline
+\hline
+$\langle$PREFIX$\rangle$help                        &         &             \\
+\hline
+$\langle$PREFIX$\rangle$dataOutputFileName          &         &             \\
+\hline
+$\langle$PREFIX$\rangle$dataOutputAllowedSet        &         &             \\
+\hline
+$\langle$PREFIX$\rangle$pseq\_dataOutputFileName     &         &             \\
+\hline
+$\langle$PREFIX$\rangle$pseq\_dataOutputAllowedSet   &         &             \\
+\hline
+$\langle$PREFIX$\rangle$pseq\_computeStats           &         &             \\
+\hline
+$\langle$PREFIX$\rangle$qseq\_dataInputFileName      &         &             \\
+\hline
+$\langle$PREFIX$\rangle$qseq\_size                   &         &             \\
+\hline
+$\langle$PREFIX$\rangle$qseq\_displayPeriod          &         &             \\
+\hline
+$\langle$PREFIX$\rangle$qseq\_measureRunTimes        &         &             \\
+\hline
+$\langle$PREFIX$\rangle$qseq\_dataOutputFileName     &         &             \\
+\hline
+$\langle$PREFIX$\rangle$qseq\_dataOutputAllowedSet   &         &             \\
+\hline
+$\langle$PREFIX$\rangle$qseq\_computeStats           &         &             \\
+\hline
+\end{tabular}
+\end{center}
+\caption{
+Input file options for a QUESO Monte Carlo solver.
+}
+\label{tab-monte-carlo-options}
+\end{table}
+
 \clearpage
-\subsection{Options for Statistical Computations on Sequences}
+\subsection{Options for Statistical Analysis of Sequences}
 
 \begin{figure}[h!]
 \centerline{
@@ -288,6 +486,117 @@ The statistical forward problem options class.
 }
 \label{fig-seq-statistical-options-class}
 \end{figure}
+
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline
+\multicolumn{1}{|c|}{Option}                      & Default & Description \\
+\multicolumn{1}{|c|}{Name}                        & Value   &             \\
+\hline
+\hline
+$\langle$PREFIX$\rangle$help                      &         &             \\
+\hline
+$\langle$PREFIX$\rangle$initialDiscardedPortions  &         &             \\
+\hline
+\hline
+$\langle$PREFIX$\rangle$bmm\_run                   &         &             \\
+\hline
+$\langle$PREFIX$\rangle$bmm\_lengths               &         &             \\
+\hline
+$\langle$PREFIX$\rangle$bmm\_display               &         &             \\
+\hline
+$\langle$PREFIX$\rangle$bmm\_write                 &         &             \\
+\hline
+\hline
+$\langle$PREFIX$\rangle$fft\_compute               &         &             \\
+\hline
+$\langle$PREFIX$\rangle$fft\_paramId               &         &             \\
+\hline
+$\langle$PREFIX$\rangle$fft\_size                  &         &             \\
+\hline
+$\langle$PREFIX$\rangle$fft\_testInversion         &         &             \\
+\hline
+$\langle$PREFIX$\rangle$fft\_write                 &         &             \\
+\hline
+\hline
+$\langle$PREFIX$\rangle$psd\_compute               &         &             \\
+\hline
+$\langle$PREFIX$\rangle$psd\_numBlocks             &         &             \\
+\hline
+$\langle$PREFIX$\rangle$psd\_hopSizeRatio          &         &             \\
+\hline
+$\langle$PREFIX$\rangle$psd\_paramId               &         &             \\
+\hline
+$\langle$PREFIX$\rangle$psd\_write                 &         &             \\
+\hline
+\hline
+$\langle$PREFIX$\rangle$psdAtZero\_compute         &         &             \\
+\hline
+$\langle$PREFIX$\rangle$psdAtZero\_numBlocks       &         &             \\
+\hline
+$\langle$PREFIX$\rangle$psdAtZero\_hopSizeRatio    &         &             \\
+\hline
+$\langle$PREFIX$\rangle$psdAtZero\_display         &         &             \\
+\hline
+$\langle$PREFIX$\rangle$psdAtZero\_write           &         &             \\
+\hline
+\hline
+$\langle$PREFIX$\rangle$geweke\_compute            &         &             \\
+\hline
+$\langle$PREFIX$\rangle$geweke\_naRatio            &         &             \\
+\hline
+$\langle$PREFIX$\rangle$geweke\_nbRatio            &         &             \\
+\hline
+$\langle$PREFIX$\rangle$geweke\_display            &         &             \\
+\hline
+$\langle$PREFIX$\rangle$geweke\_write              &         &             \\
+\hline
+\hline
+$\langle$PREFIX$\rangle$autoCorr\_computeViaDef    &         &             \\
+\hline
+$\langle$PREFIX$\rangle$autoCorr\_computeViaFft    &         &             \\
+\hline
+$\langle$PREFIX$\rangle$autoCorr\_secondLag        &         &             \\
+\hline
+$\langle$PREFIX$\rangle$autoCorr\_lagSpacing       &         &             \\
+\hline
+$\langle$PREFIX$\rangle$autoCorr\_numLags          &         &             \\
+\hline
+$\langle$PREFIX$\rangle$autoCorr\_display          &         &             \\
+\hline
+$\langle$PREFIX$\rangle$autoCorr\_write            &         &             \\
+\hline
+\hline
+$\langle$PREFIX$\rangle$meanStacc\_compute         &         &             \\
+\hline
+\hline
+$\langle$PREFIX$\rangle$hist\_compute              &         &             \\
+\hline
+$\langle$PREFIX$\rangle$hist\_numInternalBins      &         &             \\
+\hline
+\hline
+$\langle$PREFIX$\rangle$cdfStacc\_compute          &         &             \\
+\hline
+$\langle$PREFIX$\rangle$cdfStacc\_numEvalPositions &         &             \\
+\hline
+\hline
+$\langle$PREFIX$\rangle$kde\_compute               &         &             \\
+\hline
+$\langle$PREFIX$\rangle$kde\_numEvalPositions      &         &             \\
+\hline
+\hline
+$\langle$PREFIX$\rangle$covMatrix\_compute         &         &             \\
+\hline
+$\langle$PREFIX$\rangle$corrMatrix\_compute        &         &             \\
+\hline
+\end{tabular}
+\end{center}
+\caption{
+Input file options for a the statistical analysis of sequences.
+}
+\label{tab-seq-statistical-options}
+\end{table}
 
 \clearpage
 \section{Miscellaneous Classes and Routines}
