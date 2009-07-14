@@ -52,6 +52,8 @@ int    uqMiscReadCharsAndDoubleFromFile (std::ifstream& ifs,
                                          std::string&   termString,
                                          double*        termValue,
                                          bool&          endOfLineAchieved);
+int uqCheckPath                         (const char    *pathname);
+int uqCheckDir                          (const char    *dirname);
 double uqMiscGammar                     (double         a,
                                          double         b,
                                          const gsl_rng* rng);

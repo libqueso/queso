@@ -32,6 +32,7 @@
 
 #include <uqEnvironment.h>
 #include <uqEnvironmentOptions.h>
+#include <uqMiscellaneous.h>
 #include <sys/time.h>
 #include <gsl/gsl_randist.h>
 
@@ -354,18 +355,28 @@ uqBaseEnvironmentClass::openOutputFile(
     }
 
     if (this->subRank() == 0) {
+
+      // Verify parent directory exists (for cases when a user
+      // specifies a relative path for the desired output file).
+
+      int irtrn = uqCheckPath((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str());
+      UQ_FATAL_TEST_MACRO(irtrn < 0,m_fullRank,"openOutputFile()","unable to verify output path");
+
       // Open file
       if (writeOver) {
         // Write over an eventual pre-existing file
-        ofsvar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(), std::ofstream::out | std::ofstream::trunc);
+        ofsvar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(), 
+				   std::ofstream::out | std::ofstream::trunc);
       }
       else {
         // Write at the end of an eventual pre-existing file
-        ofsvar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
+        ofsvar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(), 
+				   std::ofstream::out | std::ofstream::in | std::ofstream::ate);
         if ((ofsvar            == NULL ) ||
             (ofsvar->is_open() == false)) {
           delete ofsvar;
-          ofsvar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(), std::ofstream::out | std::ofstream::trunc);
+          ofsvar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(), 
+				     std::ofstream::out | std::ofstream::trunc);
         }
       }
       if (ofsvar == NULL) {
@@ -591,6 +602,12 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   }
 
   if (openFile) {
+
+    int irtrn = uqCheckPath((m_options->m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str());
+
+    UQ_FATAL_TEST_MACRO(irtrn < 0,m_fullRank,"uqEnvironment::constructor()","unable to verify output path");
+			
+
     // Always write over an eventual pre-existing file
     m_subDisplayFile = new std::ofstream((m_options->m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str(), std::ofstream::out | std::ofstream::trunc);
     UQ_FATAL_TEST_MACRO((m_subDisplayFile && m_subDisplayFile->is_open()) == false,

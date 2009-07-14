@@ -38,6 +38,9 @@
 #include <iostream>
 #include <fstream>
 
+#include <libgen.h>
+#include <sys/stat.h>
+
 void
 uqMiscReadDoublesFromString(
   const std::string&         inputString,
@@ -317,4 +320,81 @@ double uqMiscGaussianDensity(double x, double mu, double sigma)
   double diff   = x-mu;
 
   return (1./std::sqrt(2*M_PI*sigma2))*std::exp(-.5*diff*diff/sigma2);
+}
+
+//-----------------------------------------------------------
+// uqCheckPath: checks output file path to ensure that parent
+// directories exist
+//-----------------------------------------------------------
+
+int uqCheckPath(const char *pathname)
+{
+  const int MAX_DEPTH = 50;
+
+  char *pathlocal;
+  char *parents;
+  char *dirstring;
+  char *token;
+  int depth = 0;
+  
+  // Save a copy of pathname and look for the parent directories.
+
+  pathlocal = strdup(pathname);
+  dirstring = strdup(pathname);
+
+  parents   = dirname(pathlocal);
+  
+  if( (token = strtok(parents,"/") ) )
+    {
+      if ( !uqCheckDir(token) )
+	return(-1);
+
+      // Now, search for any remaining parent directories.
+
+      sprintf(dirstring,"%s",token);
+
+      while ( (token = strtok(0,"/")) && (depth < MAX_DEPTH) )
+	{
+	  dirstring = strcat(dirstring,"/");
+	  if(!uqCheckDir(strcat(dirstring,token)))
+	    return(-1);
+	  depth++;
+	};
+
+      if(depth >= MAX_DEPTH )
+	{
+	  printf("** Error: max directory depth exceeded (limit = %i\n",MAX_DEPTH);
+	  return(-1);
+	}
+
+    }
+
+  // Clean Up
+
+  free(pathlocal);
+  free(dirstring);
+
+  return(1);
+}
+
+//-----------------------------------------------------------
+// uqCheckDir: checks for existence of specified directory 
+// and creates the directory if not present
+// -----------------------------------------------------------
+
+int uqCheckDir(const char *dirname)
+{
+  struct stat st;
+  int status = 0;
+
+  if(stat(dirname,&st) != 0)
+    {
+      if( mkdir(dirname,0700) != 0 )
+	{
+	  printf("** Error: unable to create local directory %s\n",dirname);
+	  return(-1);
+	}
+    }
+
+  return(1);
 }
