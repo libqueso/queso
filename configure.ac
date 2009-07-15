@@ -51,16 +51,11 @@ AC_CACHE_SAVE
 
 dnl HPCT Config
 
-HPCT_PREFIX=${HPCT_DIR}
-AC_ARG_WITH(hpct,
-        [  --with-hpct=<path>      prefix of HPCT installation (default = HPCT_DIR) ], [HPCT_PREFIX="$withval"])
+AX_PATH_HPCT
 
-HPCT_LIBS="-L${HPCT_PREFIX}/lib -lhpct"
-HPCT_LIBSTATIC="${HPCT_PREFIX}/lib/libhpct.a"
-HPCT_CFLAGS="-I${HPCT_PREFIX}/include"
-AC_SUBST(HPCT_LIBS)
-AC_SUBST(HPCT_LIBSTATIC)
-AC_SUBST(HPCT_CFLAGS)
+#PKG_CHECK_MODULES(hpct, hpct >= 0.23)
+#AC_SUBST(HPCT_CFLAGS)
+#AC_SUBST(HPCT_LIBS)
 
 dnl Generate makefiles
 AC_CONFIG_FILES([

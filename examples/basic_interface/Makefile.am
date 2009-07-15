@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
 AM_CPPFLAGS = -I$(top_srcdir)/libs/interface
-AM_LDFLAGS  = $(BOOST_LDFLAGS) -L${HPCT_LIB} -lhpct
+AM_LDFLAGS  = $(BOOST_LDFLAGS) ${HPCT_LIBS} -lhpct
 
 bin_PROGRAMS            = inverse_problem
 inverse_problem_SOURCES = inverse_problem.c
