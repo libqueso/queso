@@ -45,26 +45,3 @@ automake --add-missing --copy && \
 exit 0
 
 exit 1
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-##!/bin/sh
-
-#aclocal -I m4 && \
-#autoconf && \
-#automake --add-missing --copy --foreign && \
-#exit 0
-
-#exit 1
