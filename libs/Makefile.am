@@ -7,10 +7,14 @@ AM_CPPFLAGS = -I$(top_srcdir)/libs/basic/inc -I$(top_srcdir)/libs/stats/inc \
 	      -I$(top_srcdir)/libs/interface $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(HPCT_CFLAGS)
 
 
-lib_LIBRARIES = libqueso.a
+# Dynamic library build
+
+lib_LTLIBRARIES     = libqueso.la
+libqueso_la_LDFLAGS = $(all_libraries) -release $(GENERIC_RELEASE)
 
 # Sources from basic/src
-libqueso_a_SOURCES = $(top_srcdir)/libs/basic/src/uqEnvironment.C \
+
+libqueso_la_SOURCES = $(top_srcdir)/libs/basic/src/uqEnvironment.C \
 	$(top_srcdir)/libs/basic/src/uqEnvironmentOptions.C \
 	$(top_srcdir)/libs/basic/src/uqDefines.C \
 	$(top_srcdir)/libs/basic/src/uqVector.C \
@@ -27,21 +31,23 @@ libqueso_a_SOURCES = $(top_srcdir)/libs/basic/src/uqEnvironment.C \
 
 # Sources from basic/src added conditional on gsl
 if UQBT_GSL
-libqueso_a_SOURCES += $(top_srcdir)/libs/basic/src/uqGslVector.C       \
-	              $(top_srcdir)/libs/basic/src/uqGslMatrix.C       \
-	              $(top_srcdir)/libs/basic/src/uqGslVectorSpace.C  \
-	              $(top_srcdir)/libs/basic/src/uqGslAsciiTable.C
+
+libqueso_la_SOURCES += $(top_srcdir)/libs/basic/src/uqGslVector.C       \
+ 	               $(top_srcdir)/libs/basic/src/uqGslMatrix.C       \
+ 	               $(top_srcdir)/libs/basic/src/uqGslVectorSpace.C  \
+ 	               $(top_srcdir)/libs/basic/src/uqGslAsciiTable.C
 endif
 
 # Sources for Basic Interface 
 
-libqueso_a_SOURCES += $(top_srcdir)/libs/interface/basic_classes.cpp   \
+libqueso_la_SOURCES += $(top_srcdir)/libs/interface/basic_classes.cpp   \
                       $(top_srcdir)/libs/interface/basic_interface.cpp
 
-libqueso_a_LIBADD   = $(HPCT_LIBSTATIC)
+#libqueso_a_LIBADD   = $(HPCT_LIBSTATIC)
 
 # Sources from stats/src
-libqueso_a_SOURCES += $(top_srcdir)/libs/stats/src/uqMarkovChainSGOptions.C \
+
+libqueso_la_SOURCES += $(top_srcdir)/libs/stats/src/uqMarkovChainSGOptions.C \
 	$(top_srcdir)/libs/stats/src/uqMonteCarloSGOptions.C \
 	$(top_srcdir)/libs/stats/src/uqStatisticalInverseProblemOptions.C \
 	$(top_srcdir)/libs/stats/src/uqStatisticalForwardProblemOptions.C
@@ -81,6 +87,7 @@ libqueso_include_HEADERS = $(top_srcdir)/libs/basic/inc/uq1D1DFunction.h \
 	$(top_srcdir)/libs/basic/inc/uqVectorSubset.h
 
 # Headers to install from stats/inc
+
 libqueso_include_HEADERS += $(top_srcdir)/libs/stats/inc/uqCovCond.h \
 	$(top_srcdir)/libs/stats/inc/uqMarkovChainPositionData.h \
 	$(top_srcdir)/libs/stats/inc/uqMarkovChainSG1.h \
@@ -100,5 +107,6 @@ libqueso_include_HEADERS += $(top_srcdir)/libs/stats/inc/uqCovCond.h \
 	$(top_srcdir)/libs/stats/inc/uqVectorRV.h
 
 # Headers to install from Basic Interface
+
 libqueso_include_HEADERS += $(top_srcdir)/libs/interface/queso.h
 

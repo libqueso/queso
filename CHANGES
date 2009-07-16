@@ -3,14 +3,16 @@ QUESO: Quantification of Uncertainty for Estimation,
 Simulation, and Optimization.
 -----------------------------------------------------
 
-Version 0.4.0 (2009)
+Version 0.4.0 (July 2009)
+https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.4.0
 
-  * MPI configuration support 
+  * dynamic library build for libqueso via libtool
+  * configuration support for MPI and HPCT
   * option to compute correlation between parameters and QOIs in statistical forward problems
-  * introduction of Basic API for statistical inverse problems (includes C/Fortran)
+  * introduction of a Basic API for statistical inverse problems (includes C/Fortran)
 
 Version 0.3.0 (13 Feb 2009)
-https://svn.ices.utexas.edu/repos/pecos/uq/queso/tags/0.3.0
+https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.3.0
 
   * autoconf/automake based configuration
   * initial working version with Stochastic Newton

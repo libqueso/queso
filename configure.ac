@@ -10,7 +10,16 @@ dnl Init automake
 AM_INIT_AUTOMAKE
 
 dnl Generating a libtool library
-dnl AC_PROG_LIBTOOL
+
+dnl Release versioning
+
+GENERIC_MAJOR_VERSION=0
+GENERIC_MINOR_VERSION=4
+GENERIC_MICRO_VERSION=0
+
+GENERIC_RELEASE=$GENERIC_MAJOR_VERSION.$GENERIC_MINOR_VERSION
+AC_SUBST(GENERIC_RELEASE)
+AC_PROG_LIBTOOL
 
 dnl Required for some macros
 AX_AM_MACROS
@@ -22,7 +31,7 @@ echo "configure found CC = $CC"
 AC_PROG_CXX
 echo "configure found CXX = $CXX"
 
-AC_PROG_RANLIB
+#AC_PROG_RANLIB
 
 dnl Check for mpi c and c++ compilers
 AC_LANG([C])
