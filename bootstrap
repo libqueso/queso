@@ -38,6 +38,8 @@ echo "- autoconf."            && \
 autoconf                      && \
 echo "- autoheader."          && \
 autoheader                    && \
+echo "- libtool."             && \
+libtoolize --automake         && \
 echo "- automake."            && \
 automake --add-missing --copy && \
 exit 0
