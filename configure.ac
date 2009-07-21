@@ -24,12 +24,31 @@ AC_PROG_LIBTOOL
 dnl Required for some macros
 AX_AM_MACROS
 
+#-----------------------
+# Check for debug mode?
+#-----------------------
+
+AC_MSG_CHECKING(whether to enable debugging)
+debug_default="no"
+AC_ARG_ENABLE(debug, [  --enable-debug=[no/yes] turn on debugging
+                     [default=$debug_default]],, enable_debug=$debug_default)
+
+if test "x$enable_debug" = "xyes"; then
+   CFLAGS="-g -O0 -DDEBUG"
+   CXXFLAGS="-g -O0 -DDEBUG"
+   AC_MSG_RESULT(yes)
+else
+   CFLAGS="-g -O3"
+   CXXFLAGS="-g -O3"
+   AC_MSG_RESULT(no)
+fi
+
 dnl Get compilers
 AC_PROG_CC
-echo "configure found CC = $CC"
+###echo "configure found CC = $CC"
 
 AC_PROG_CXX
-echo "configure found CXX = $CXX"
+###echo "configure found CXX = $CXX"
 
 #AC_PROG_RANLIB
 
@@ -52,19 +71,26 @@ AC_LANG([C])
 AX_PATH_GSL(1.10,AM_CONDITIONAL([UQBT_GSL], [test 'TRUE']),AC_MSG_ERROR([Could not find required GSL version.]))
 AC_CACHE_SAVE
 
-dnl Check for boost
+# Check for boost
 AC_LANG([C++])
 AX_BOOST_BASE(1.35)
 AX_BOOST_PROGRAM_OPTIONS
 AC_CACHE_SAVE
 
-dnl HPCT Config
+# HPCT Config
 
 AX_PATH_HPCT
+
+
+
 
 #PKG_CHECK_MODULES(hpct, hpct >= 0.23)
 #AC_SUBST(HPCT_CFLAGS)
 #AC_SUBST(HPCT_LIBS)
+
+# Query configuration environment
+
+AX_SUMMARIZE_ENV
 
 dnl Generate makefiles
 AC_CONFIG_FILES([
@@ -88,4 +114,9 @@ AC_CONFIG_FILES([
         test/t02_sip_sfp/sip_sfp/Makefile
 ])
 
+
 AC_OUTPUT()
+
+# Final summary
+
+AX_SUMMARIZE_CONFIG
