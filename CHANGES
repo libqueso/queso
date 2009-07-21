@@ -9,7 +9,7 @@ https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.4.0
   * dynamic library build for libqueso via libtool
   * configuration support for MPI and HPCT
   * option to compute correlation between parameters and QOIs in statistical forward problems
-  * introduction of a Basic API for statistical inverse problems (includes C/Fortran)
+  * introduction of a basic API for statistical inverse problems (includes C/Fortran)
 
 Version 0.3.0 (13 Feb 2009)
 https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.3.0

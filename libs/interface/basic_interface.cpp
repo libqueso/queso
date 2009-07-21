@@ -36,6 +36,7 @@ using namespace std;
 
 #include <basic_classes.h>
 #include <basic_int.h>
+#include <hpct.h>
 
 using namespace QUESO_Basic_API;
 
@@ -63,7 +64,11 @@ extern "C" void QUESO_statistical_inversion(double (*fp)(double *) )
 extern "C" void QUESO_finalize()
 {
   delete _QUESO_Basic;
+  hpct_timer_finalize();
+
   printf("\n QUESO: Complete\n");
+
+  hpct_timer_summarize();
   return;
 }
 

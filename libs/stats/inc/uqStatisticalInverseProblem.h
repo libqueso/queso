@@ -38,6 +38,7 @@
 #include <uqInstantiateIntersection.h>
 #include <uqVectorRV.h>
 #include <uqScalarFunction.h>
+#include <hpct.h>
 
 /*! A templated class that represents statistical inverse problems. */
 /*! */
@@ -150,6 +151,8 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   const P_V& initialValues,
   const P_M* proposalCovMatrix)
 {
+
+  hpct_timer_begin("BayesMarkovChain");
   m_env.fullComm().Barrier();
   m_env.syncPrintDebugMsg("Entering uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()",1,3000000,m_env.fullComm());
 
@@ -177,14 +180,21 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   P_V numEvaluationPointsVec(m_priorRv.imageSet().vectorSpace().zeroVector());
   numEvaluationPointsVec.cwSet(250.);
 
+
+
   // Compute output pdf up to a multiplicative constant: Bayesian approach
   m_solutionDomain = uqInstantiateIntersection(m_priorRv.pdf().domainSet(),m_likelihoodFunction.domainSet());
+
+
 
   m_solutionPdf = new uqBayesianJointPdfClass<P_V,P_M>(m_options.m_prefix.c_str(),
                                                        m_priorRv.pdf(),
                                                        m_likelihoodFunction,
                                                       *m_solutionDomain);
+
+
   m_postRv.setPdf(*m_solutionPdf);
+
 
   // Compute output realizer: Markov Chain approach
   m_chain = new uqSequenceOfVectorsClass<P_V,P_M>(m_postRv.imageSet().vectorSpace(),0,m_options.m_prefix+"chain");
@@ -192,10 +202,18 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
                                                        m_postRv,
                                                        initialValues,
                                                        proposalCovMatrix);
+
+
+  hpct_timer_end("BayesMarkovChain");
   m_mcSeqGenerator->generateSequence(*m_chain);
+  hpct_timer_begin("BayesMarkovChain");
+
   m_solutionRealizer = new uqSequentialVectorRealizerClass<P_V,P_M>(m_options.m_prefix.c_str(),
                                                                    *m_chain);
+
   m_postRv.setRealizer(*m_solutionRealizer);
+
+
 
   m_env.syncPrintDebugMsg("In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(), code place 1",3,3000000,m_env.fullComm());
   //m_env.fullComm().Barrier();
@@ -257,7 +275,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
 
   m_env.syncPrintDebugMsg("Leaving uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()",1,3000000,m_env.fullComm());
   m_env.fullComm().Barrier();
-  
+  hpct_timer_end("BayesMarkovChain");  
   return;
 }
 

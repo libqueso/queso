@@ -1,14 +1,15 @@
 ## Process this file with automake to produce Makefile.in
 
-AM_CPPFLAGS = -I. -I$(top_srcdir)/libs/basic/inc -I$(top_srcdir)/libs/stats/inc -I$(TRILINOS_INCLUDE) $(EPETRA_INCLUDES) $(BOOST_CPPFLAGS) $(GSL_CFLAGS)
-AM_LDFLAGS = $(BOOST_LDFLAGS)
+AM_CPPFLAGS = -I. -I$(top_srcdir)/libs/basic/inc -I$(top_srcdir)/libs/stats/inc \
+	      -I$(TRILINOS_INCLUDE) $(EPETRA_INCLUDES) $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(HPCT_CFLAGS)
+AM_LDFLAGS  = $(BOOST_LDFLAGS) ${HPCT_LIBS} -lhpct
 
-bin_PROGRAMS = 
+LIBS        = -L$(top_builddir)/libs/.libs -lqueso $(GSL_LIBS) $(BOOST_PROGRAM_OPTIONS_LIB) $(EPETRA_LIBS)
 
-bin_PROGRAMS += exTgaValidationCycle_gsl
-exTgaValidationCycle_gsl_SOURCES = exTgaValidationCycle_gsl.C exTgaValidationCycle_appl.h exTgaValidationCycle_likelihood.h exTgaValidationCycle_qoi.h
-exTgaValidationCycle_gsl_LDADD = $(top_builddir)/libs/libqueso.a \
-	$(GSL_LIBS) $(BOOST_PROGRAM_OPTIONS_LIB) $(EPETRA_LIBS)
+bin_PROGRAMS = exTgaValidationCycle_gsl
+exTgaValidationCycle_gsl_SOURCES = exTgaValidationCycle_gsl.C exTgaValidationCycle_appl.h \
+				   exTgaValidationCycle_likelihood.h exTgaValidationCycle_qoi.h
+
 
 #bin_PROGRAMS += exTgaValidationCycle_tri
 #exTgaValidationCycle_tri_SOURCES = exTgaValidationCycle_tri.C exTgaValidationCycle_appl.h exTgaValidationCycle_likelihood.h exTgaValidationCycle_qoi.h

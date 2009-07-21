@@ -57,7 +57,9 @@ namespace QUESO_Basic_API {
   void QUESO_Basic_Class::Initialize(const char *inputfile)
   {
 
-    // Define new QUESO environment and store inputfile informaiton
+    hpct_timer_init("QUESO");
+
+    // Define new QUESO environment and store inputfile information
 
     m_env         = new uqFullEnvironmentClass(MPI_COMM_WORLD,inputfile,"");
     m_inputfile   = new string(inputfile);
@@ -237,8 +239,17 @@ namespace QUESO_Basic_API {
 	
     for(int i=0;i<num_params;i++)
       uqParams[i] = paramValue[i];
-    
-      return( _QUESO_Basic->m_user_likelihood_func(uqParams) );
+
+
+
+    hpct_timer_begin("Likelihood Routine");
+
+    double lhood_return = _QUESO_Basic->m_user_likelihood_func(uqParams);
+
+    hpct_timer_end("Likelihood Routine");
+    return(lhood_return);
+
+    //      return( _QUESO_Basic->m_user_likelihood_func(uqParams) );
       
   }
 
