@@ -31,7 +31,6 @@
  *-------------------------------------------------------------------------- */
 
 #include <uqTrilinosMatrix.h>
-#include <uqTrilinosVector.h>
 #include <Epetra_MpiComm.h>
 #include <uqDefines.h>
 
@@ -40,6 +39,10 @@ uqTrilinosMatrixClass::uqTrilinosMatrixClass()
   uqMatrixClass(),
   m_map        (*(new Epetra_Map( 1,0,*(new Epetra_MpiComm(MPI_COMM_WORLD)) ) ))
 {
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.fullRank(),
+                      "uqTrilinosMatrixClass::constructor(), default",
+                      "should not be used by user");
 }
  
 uqTrilinosMatrixClass::uqTrilinosMatrixClass(
@@ -53,7 +56,7 @@ uqTrilinosMatrixClass::uqTrilinosMatrixClass(
   m_mat(new Epetra_SerialDenseMatrix(map.NumGlobalElements(),numCols))
 {
   UQ_FATAL_TEST_MACRO((m_mat == NULL),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqTrilinosMatrixClass::constructor()",
                       "null matrix generated");
 }
@@ -61,15 +64,15 @@ uqTrilinosMatrixClass::uqTrilinosMatrixClass(
 uqTrilinosMatrixClass::uqTrilinosMatrixClass(
   const uqBaseEnvironmentClass& env,
   const Epetra_Map&         map,
-  unsigned int              numRows,
+  unsigned int              numRowsLocal,
   unsigned int              numCols)
   :
   uqMatrixClass(env, map),
   m_map        (map),
-  m_mat(new Epetra_SerialDenseMatrix(numRows,numCols))
+  m_mat(new Epetra_SerialDenseMatrix(numRowsLocal,numCols))
 {
   UQ_FATAL_TEST_MACRO((m_mat == NULL),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqTrilinosMatrixClass::constructor()",
                       "null matrix generated");
 }
@@ -82,6 +85,7 @@ uqTrilinosMatrixClass::uqTrilinosMatrixClass(
   uqMatrixClass(env, map),
   m_map        (map)
 {
+  double x = diagValue; x += 1.; // just to avoid icpc warnings
 }
 
 uqTrilinosMatrixClass::uqTrilinosMatrixClass(
@@ -91,6 +95,7 @@ uqTrilinosMatrixClass::uqTrilinosMatrixClass(
   uqMatrixClass(v.env(), v.map()),
   m_map        (v.map())
 {
+  double x = diagValue; x += 1.; // just to avoid icpc warnings
 }
 
 uqTrilinosMatrixClass::uqTrilinosMatrixClass(const uqTrilinosVectorClass& v)
@@ -122,24 +127,28 @@ uqTrilinosMatrixClass::operator=(const uqTrilinosMatrixClass& obj)
 uqTrilinosMatrixClass&
 uqTrilinosMatrixClass::operator*=(double a)
 {
+  double x = a; x += 1.; // just to avoid icpc warnings
   return *this;
 }
 
 uqTrilinosMatrixClass&
 uqTrilinosMatrixClass::operator/=(double a)
 {
+  double x = a; x += 1.; // just to avoid icpc warnings
   return *this;
 }
 
 uqTrilinosMatrixClass&
 uqTrilinosMatrixClass::operator+=(const uqTrilinosMatrixClass& rhs)
 {
+  double tmpA = rhs(0,0); tmpA += 1.; // Just to avoid icpc warnings
   return *this;
 }
 
 uqTrilinosMatrixClass&
 uqTrilinosMatrixClass::operator-=(const uqTrilinosMatrixClass& rhs)
 {
+  double tmpA = rhs(0,0); tmpA += 1.; // Just to avoid icpc warnings
   return *this;
 }
 
@@ -158,11 +167,18 @@ uqTrilinosMatrixClass::operator()(unsigned int i, unsigned int j) const
 void
 uqTrilinosMatrixClass::copy(const uqTrilinosMatrixClass& src)
 {
+  double tmpA = src(0,0); tmpA += 1.; // Just to avoid icpc warnings
   return;
 }
 
 unsigned int
-uqTrilinosMatrixClass::numRows() const
+uqTrilinosMatrixClass::numRowsLocal() const
+{
+  return 0;
+}
+
+unsigned int
+uqTrilinosMatrixClass::numRowsGlobal() const
 {
   return 0;
 }
@@ -182,12 +198,14 @@ uqTrilinosMatrixClass::chol()
 void
 uqTrilinosMatrixClass::zeroLower(bool includeDiagonal)
 {
+  double tmpA = (double) includeDiagonal; tmpA += 1.; // Just to avoid icpc warnings
   return;
 }
 
 void
 uqTrilinosMatrixClass::zeroUpper(bool includeDiagonal)
 {
+  double tmpA = (double) includeDiagonal; tmpA += 1.; // Just to avoid icpc warnings
   return;
 }
 
@@ -201,8 +219,8 @@ uqTrilinosVectorClass
 uqTrilinosMatrixClass::multiply(
   const uqTrilinosVectorClass& x) const
 {
-  UQ_FATAL_TEST_MACRO((this->numCols() != x.size()),
-                      m_env.rank(),
+  UQ_FATAL_TEST_MACRO((this->numCols() != x.sizeLocal()),
+                      m_env.fullRank(),
                       "uqTrilinosMatrixClass::multiply(), vector",
                       "matrix and x have incompatible sizes");
 
@@ -216,8 +234,8 @@ uqTrilinosVectorClass
 uqTrilinosMatrixClass::invertMultiply(
   const uqTrilinosVectorClass& b) const
 {
-  UQ_FATAL_TEST_MACRO((this->numCols() != b.size()),
-                      m_env.rank(),
+  UQ_FATAL_TEST_MACRO((this->numCols() != b.sizeLocal()),
+                      m_env.fullRank(),
                       "uqTrilinosMatrixClass::invertMultiply(), return vector",
                       "matrix and rhs have incompatible sizes");
 
@@ -232,13 +250,13 @@ uqTrilinosMatrixClass::invertMultiply(
   const uqTrilinosVectorClass& b,
         uqTrilinosVectorClass& x) const
 {
-  UQ_FATAL_TEST_MACRO((this->numCols() != b.size()),
-                      m_env.rank(),
+  UQ_FATAL_TEST_MACRO((this->numCols() != b.sizeLocal()),
+                      m_env.fullRank(),
                       "uqTrilinosMatrixClass::multiply(), return void",
                       "matrix and rhs have incompatible sizes");
 
-  UQ_FATAL_TEST_MACRO((x.size() != b.size()),
-                      m_env.rank(),
+  UQ_FATAL_TEST_MACRO((x.sizeLocal() != b.sizeLocal()),
+                      m_env.fullRank(),
                       "uqTrilinosMatrixClass::multiply(), return void",
                       "solution and rhs have incompatible sizes");
 
@@ -248,6 +266,7 @@ uqTrilinosMatrixClass::invertMultiply(
 void
 uqTrilinosMatrixClass::print(std::ostream& os) const
 {
+  os.flush(); // just to avoid icpc warnings
   return;
 }
 
@@ -273,13 +292,13 @@ uqTrilinosVectorClass operator*(const uqTrilinosMatrixClass& mat, const uqTrilin
 
 uqTrilinosMatrixClass operator*(const uqTrilinosMatrixClass& m1, const uqTrilinosMatrixClass& m2)
 {
-  unsigned int m1Rows = m1.numRows();
+  unsigned int m1Rows = m1.numRowsLocal();
   unsigned int m1Cols = m1.numCols();
-  unsigned int m2Rows = m2.numRows();
+  unsigned int m2Rows = m2.numRowsLocal();
   unsigned int m2Cols = m2.numCols();
 
   UQ_FATAL_TEST_MACRO((m1Cols != m2Rows),
-                      m1.env().rank(),
+                      m1.env().fullRank(),
                       "uqTrilinosMatrixClass operator*(matrix,matrix)",
                       "different sizes m1Cols and m2Rows");
 
@@ -308,11 +327,11 @@ uqTrilinosMatrixClass operator+(const uqTrilinosMatrixClass& m1, const uqTrilino
 
 uqTrilinosMatrixClass matrixProduct(const uqTrilinosVectorClass& v1, const uqTrilinosVectorClass& v2)
 {
-  unsigned int numRows = v1.size();
-  unsigned int numCols = v2.size();
-  uqTrilinosMatrixClass answer(v1.env(),v1.map(),numRows,numCols);
+  unsigned int numRowsLocal = v1.sizeLocal();
+  unsigned int numCols = v2.sizeLocal();
+  uqTrilinosMatrixClass answer(v1.env(),v1.map(),numRowsLocal,numCols);
 
-  //for (unsigned int i = 0; i < numRows; ++i) {
+  //for (unsigned int i = 0; i < numRowsLocal; ++i) {
   //  double value1 = v1[i];
   //  for (unsigned int j = 0; j < numCols; ++j) {
   //    answer(i,j) = value1*v2[j];
@@ -324,12 +343,12 @@ uqTrilinosMatrixClass matrixProduct(const uqTrilinosVectorClass& v1, const uqTri
 
 uqTrilinosMatrixClass diagScaling(const uqTrilinosVectorClass& vec, const uqTrilinosMatrixClass& mat)
 {
-  unsigned int vSize = vec.size();
-  unsigned int mRows = mat.numRows();
+  unsigned int vSize = vec.sizeLocal();
+  unsigned int mRows = mat.numRowsLocal();
   //unsigned int mCols = mat.numCols();
 
   UQ_FATAL_TEST_MACRO((vSize != mRows),
-                      mat.env().rank(),
+                      mat.env().fullRank(),
                       "uqTrilinosMatrixClass diagScaling(vector,matrix)",
                       "size of vector is different from the number of rows in matrix");
 
@@ -346,7 +365,7 @@ uqTrilinosMatrixClass diagScaling(const uqTrilinosVectorClass& vec, const uqTril
 
 #if 0
 int
-uqTrilinosMatrixClass::rank() const
+uqTrilinosMatrixClass::fullRank() const
 {
   return this->map().Comm().MyPID();
 }

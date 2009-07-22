@@ -1,15 +1,19 @@
-The PECOS Toolkit for Predictive Engineering
-============================================
+The QUESO Library
+=================
 
-The PECOS Toolkit for Predictive Engineering is
-a collection of algorithms, libraries and executables aimed for
-the validation of a model and
-the prediction of quantities of interest from such model
-along with the quantification of their uncertainties.
-It is designed for flexibility, portability, easiness of use and easiness of extension.
-Its software design follows an object-oriented approach and
-its code is written on C++ and over MPI.
-It can run over uniprocessor or multiprocessor environments.
+QUESO stands for Quantification of Uncertainty for Estimation,
+Simulation and Optimization.
+
+QUESO is a collection of algorithms and other functionalities aimed
+for the solution of statiscal inverse problems, for the solution of
+statistical forward problems, for the validation of a model and for
+the prediction of quantities of interest from such model along with
+the quantification of their uncertainties.
+
+QUESO is designed for flexibility, portability, easiness of use and
+easiness of extension. Its software design follows an object-oriented
+approach and its code is written on C++ and over MPI. It can run over
+uniprocessor or multiprocessor environments.
 
 Installation
 ============
@@ -21,40 +25,29 @@ Before compiling, you must run the `configure' script.  To run, type
 `./configure'.  Additional options may be provided if desired.  Run
 `./configure --help' for details.
 
-After successfully running `configure', type `make' to build the PECOS
-Toolkit.
+After successfully running `configure', type `make' to build the
+PECOS Toolkit
+
+Then type `make install' to install it in the directory previously
+specified by the '--prefix' option of the `configure' script.
 
 License
 =======
 
-The PECOS toolkit is a free software. You can redistribute it and/or modify it under
-the terms of the GNU General Public License.
+QUESO is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-The GNU General Public License does not permit this software to be
-redistributed in proprietary programs.
+QUESO is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-This toolkit is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+You should have received a copy of the GNU General Public License
+along with QUESO. If not, see <http://www.gnu.org/licenses/>.
 
-Disclaimer
-==========
-
-    THE PECOS TOOLKIT FOR PREDICTIVE ENGINEERING WAS PREPARED AS AN ACCOUNT OF A JOINT WORK
-    BETWEEN THE UNIVERSITY OF TEXAS AT AUSTIN AND AN AGENCY OF THE UNITED STATES GOVERNMENT.
-    NEITHER THE UNITED STATES GOVERNMENT NOR ANY AGENCY THEREOF, NOR THE UNIVERSITY OF TEXAS
-    AT AUSTIN, NOR ANY OF THEIR EMPLOYEES OR OFFICERS, MAKES ANY WARRANTY, EXPRESS OR IMPLIED,
-    OR ASSUMES ANY LEGAL LIABILITY OR RESPONSIBILITY FOR THE ACCURACY, COMPLETENESS, OR
-    USEFULNESS OF ANY INFORMATION, APPARATUS, PRODUCT, OR PROCESS DISCLOSED, OR REPRESENTS
-    THAT ITS USE WOULD NOT INFRINGE PRIVATELY OWNED RIGHTS. REFERENCE HEREIN TO ANY SPECIFIC
-    COMMERCIAL PRODUCT, PROCESS, OR SERVICE BY TRADE NAME, TRADEMARK, MANUFACTURER, OR OTHERWISE,
-    DOES NOT NECESSARILY CONSTITUTE OR IMPLY ITS ENDORSEMENT, RECOMMENDATION, OR FAVORING BY
-    THE UNIVERSITY OF TEXAS AT AUSTIN, THE UNITED STATES GOVERNMENT OR ANY AGENCY THEREOF.
-    THE VIEW AND OPINIONS OF AUTHORS EXPRESSED HEREIN DO NOT NECESSARILY STATE OR REFLECT
-    THOSE OF THE UNIVERSITY OF TEXAS AT AUSTIN, THE UNITED STATES GOVERNMENT OR ANY AGENCY
-    THEREOF.
-
-More information about the PECOS Toolkit
+More information about the QUESO Library
 ========================================
 
 The project homepage is http://pecos.ices.utexas.edu .

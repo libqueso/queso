@@ -47,6 +47,8 @@ public:
   uqGslVectorClass(const uqGslVectorClass&         y);
  ~uqGslVectorClass();
 
+  unsigned int numberOfProcessorsRequiredForStorage() const;
+
   uqGslVectorClass& operator= (const uqGslVectorClass& rhs);
   uqGslVectorClass& operator*=(double a);
   uqGslVectorClass& operator/=(double a);
@@ -57,32 +59,33 @@ public:
             double& operator[](unsigned int i);
       const double& operator[](unsigned int i) const;
 
-  unsigned int size             () const;
-  double       norm2Sq          () const;
-  double       norm2            () const;
-  double       sumOfComponents  () const;
-  void         cwSet            (double value);
-  void         cwSetGaussian    (const gsl_rng* rng, double mean, double stdDev);
-  void         cwSetGaussian    (const gsl_rng* rng, const uqGslVectorClass& meanVec, const uqGslVectorClass& stdDevVec);
-  void         cwSetUniform     (const gsl_rng* rng, const uqGslVectorClass& aVec,    const uqGslVectorClass& bVec     );
-  void         cwInvert         ();
-  void         sort             ();
-  void         print            (std::ostream& os) const;
+  unsigned int sizeLocal      () const;
+  unsigned int sizeGlobal     () const;
+  double       norm2Sq        () const;
+  double       norm2          () const;
+  double       sumOfComponents() const;
+  void         cwSet          (double value);
+  void         cwSetGaussian  (const gsl_rng* rng, double mean, double stdDev);
+  void         cwSetGaussian  (const gsl_rng* rng, const uqGslVectorClass& meanVec, const uqGslVectorClass& stdDevVec);
+  void         cwSetUniform   (const gsl_rng* rng, const uqGslVectorClass& aVec,    const uqGslVectorClass& bVec     );
+  void         cwInvert       ();
+  void         sort           ();
+  void         print          (std::ostream& os) const;
 
   bool         atLeastOneComponentSmallerThan(const uqGslVectorClass& rhs) const;
   bool         atLeastOneComponentBiggerThan (const uqGslVectorClass& rhs) const;
-  gsl_vector*  data             () const; // Necessary for uqGslMatrixClass::invertMultiply()
+  gsl_vector*  data           () const; // Necessary for uqGslMatrixClass::invertMultiply()
 
 private:
 
-  void         copy             (const uqGslVectorClass& src);
+  void         copy           (const uqGslVectorClass& src);
 
   gsl_vector* m_vec;
 };
 
-uqGslVectorClass operator/    (const double a,            const uqGslVectorClass& x  );
+uqGslVectorClass operator/    (      double a,            const uqGslVectorClass& x  );
 uqGslVectorClass operator/    (const uqGslVectorClass& x, const uqGslVectorClass& y  );
-uqGslVectorClass operator*    (const double a,            const uqGslVectorClass& x  );
+uqGslVectorClass operator*    (      double a,            const uqGslVectorClass& x  );
 uqGslVectorClass operator*    (const uqGslVectorClass& x, const uqGslVectorClass& y  );
 double           scalarProduct(const uqGslVectorClass& x, const uqGslVectorClass& y  );
 uqGslVectorClass operator+    (const uqGslVectorClass& x, const uqGslVectorClass& y  );

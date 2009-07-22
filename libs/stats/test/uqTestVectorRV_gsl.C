@@ -39,7 +39,7 @@ BOOST_AUTO_TEST_CASE( test_uqGaussianVectorRVClass )
 
   // change mean and check that new pdf is correct
   gaussianRV.updateExpectedValues(finalExpectedValues);
-  BOOST_REQUIRE_CLOSE(gaussianRV.pdf().actualDensity(testValues), exp(-1.0), tolClose);
+  BOOST_REQUIRE_CLOSE(gaussianRV.pdf().actualDensity(testValues), std::exp(-1.0), tolClose);
 
   //***********************************************************************
   // Test realizer

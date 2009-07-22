@@ -120,12 +120,12 @@ uqFftClass<double>::inverse(
     internalData[2*j] = data[j];
   }
 
-  //if (m_env.rank() == 0) {
-  //  std::cout << "In uqFftClass<double>::inverse()"
-  //            << ": about to call gsl_fft_complex_inverse()"
-  //            << " with fftSize = "         << fftSize
-  //            << "; internalData.size() = " << internalData.size()
-  //            << std::endl;
+  //if (m_subDisplayFile()) {
+  //  *m_subDisplayFile() << "In uqFftClass<double>::inverse()"
+  //                     << ": about to call gsl_fft_complex_inverse()"
+  //                     << " with fftSize = "         << fftSize
+  //                     << "; internalData.size() = " << internalData.size()
+  //                     << std::endl;
   //}
 
   gsl_fft_complex_workspace* complexWkSpace = gsl_fft_complex_workspace_alloc(fftSize);
@@ -140,12 +140,12 @@ uqFftClass<double>::inverse(
   gsl_fft_complex_wavetable_free(complexWvTable);
   gsl_fft_complex_workspace_free(complexWkSpace);
 
-  //if (m_env.rank() == 0) {
-  //  std::cout << "In uqFftClass<double>::inverse()"
-  //            << ": returned from gsl_fft_complex_inverse()"
-  //            << " with fftSize = "          << fftSize
-  //            << "; inverseResult.size() = " << inverseResult.size()
-  //            << std::endl;
+  //if (m_subDisplayFile()) {
+  //  *m_subDisplayFile() << "In uqFftClass<double>::inverse()"
+  //                     << ": returned from gsl_fft_complex_inverse()"
+  //                     << " with fftSize = "          << fftSize
+  //                     << "; inverseResult.size() = " << inverseResult.size()
+  //                     << std::endl;
   //}
 
   for (unsigned int j = 0; j < fftSize; ++j) {

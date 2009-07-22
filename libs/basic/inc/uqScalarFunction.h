@@ -91,7 +91,7 @@ public:
                                const uqVectorSetClass<V,M>& domainSet,
                                double (*valueRoutinePtr)(const V& domainVector, const V* domainDirection, const void* routinesDataPtr, V* gradVector, M* hessianMatrix, V* hessianEffect),
                                const void* routinesDataPtr,
-                               bool routinesAreForMinus2Ln);
+                               bool routineIsForMinus2Ln);
   virtual ~uqGenericScalarFunctionClass();
 
   double actualValue      (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
@@ -104,7 +104,7 @@ protected:
 
   double (*m_valueRoutinePtr)(const V& domainVector, const V* domainDirection, const void* routinesDataPtr, V* gradVector, M* hessianMatrix, V* hessianEffect);
   const void* m_routinesDataPtr;
-  bool m_routinesAreForMinus2Ln;
+  bool m_routineIsForMinus2Ln;
 };
 
 template<class V,class M>
@@ -113,12 +113,12 @@ uqGenericScalarFunctionClass<V,M>::uqGenericScalarFunctionClass(
   const uqVectorSetClass<V,M>& domainSet,
   double (*valueRoutinePtr)(const V& domainVector, const V* domainDirection, const void* routinesDataPtr, V* gradVector, M* hessianMatrix, V* hessianEffect),
   const void* routinesDataPtr,
-  bool routinesAreForMinus2Ln)
+  bool routineIsForMinus2Ln)
   :
   uqBaseScalarFunctionClass<V,M>(((std::string)(prefix)+"gen").c_str(), domainSet),
   m_valueRoutinePtr             (valueRoutinePtr),
   m_routinesDataPtr             (routinesDataPtr),
-  m_routinesAreForMinus2Ln      (routinesAreForMinus2Ln)
+  m_routineIsForMinus2Ln        (routineIsForMinus2Ln)
 {
 }
 
@@ -132,15 +132,15 @@ double
 uqGenericScalarFunctionClass<V,M>::actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const
 {
   UQ_FATAL_TEST_MACRO(m_valueRoutinePtr == NULL,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGenericScalarFunctionClass<V,M>::actualValue()",
                       "m_valueRoutinePtr = NULL");
 
   double value = m_valueRoutinePtr(domainVector, domainDirection, m_routinesDataPtr, gradVector, hessianMatrix, hessianEffect);
-  if (m_routinesAreForMinus2Ln) {
-    value = exp(-.5*value);
+  if (m_routineIsForMinus2Ln) {
+    value = std::exp(-.5*value);
     UQ_FATAL_TEST_MACRO(true,
-                        m_env.rank(),
+                        m_env.fullRank(),
                         "uqGenericScalarFunctionClass<V,M>::gradOfActual()",
                         "INCOMPLETE CODE");
   }
@@ -152,15 +152,15 @@ double
 uqGenericScalarFunctionClass<V,M>::minus2LnValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const
 {
   UQ_FATAL_TEST_MACRO(m_valueRoutinePtr == NULL,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGenericScalarFunctionClass<V,M>::minus2LnValue()",
                       "m_valueRoutinePtr = NULL");
 
   double value = m_valueRoutinePtr(domainVector, domainDirection, m_routinesDataPtr, gradVector, hessianMatrix, hessianEffect);
-  if (m_routinesAreForMinus2Ln == false) {
+  if (m_routineIsForMinus2Ln == false) {
     value = -2.*log(value);
     UQ_FATAL_TEST_MACRO(true,
-                        m_env.rank(),
+                        m_env.fullRank(),
                         "uqGenericScalarFunctionClass<V,M>::gradOfMinus2Ln()",
                         "INCOMPLETE CODE");
   }

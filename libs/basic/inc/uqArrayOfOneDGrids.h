@@ -109,7 +109,7 @@ const V&
 uqArrayOfOneDGridsClass<V,M>::sizes() const
 {
   UQ_FATAL_TEST_MACRO(m_sizes == NULL,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqArrayOfOneDGridsClass<T>::sizes()",
                       "sizes is still NULL");
 
@@ -121,7 +121,7 @@ const V&
 uqArrayOfOneDGridsClass<V,M>::minPositions() const
 {
   UQ_FATAL_TEST_MACRO(m_minPositions == NULL,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqArrayOfOneDGridsClass<T>::minPositions()",
                       "minPositions is still NULL");
 
@@ -133,7 +133,7 @@ const V&
 uqArrayOfOneDGridsClass<V,M>::maxPositions() const
 {
   UQ_FATAL_TEST_MACRO(m_maxPositions == NULL,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqArrayOfOneDGridsClass<T>::maxPositions()",
                       "maxPositions is still NULL");
 
@@ -158,10 +158,10 @@ uqArrayOfOneDGridsClass<V,M>::setUniformGrids(
 
   char strI[65];
   for (unsigned int i = 0; i < (unsigned int) m_oneDGrids.MyLength(); ++i) {
-    sprintf(strI,"%d_",i);
+    sprintf(strI,"%u_",i);
     m_oneDGrids(i,0) = new uqUniformOneDGridClass<double>(m_env,
                                                           (m_prefix+strI).c_str(),
-                                                          sizesVec[i],
+                                                          (unsigned int) sizesVec[i],
                                                           minPositionsVec[i],
                                                           maxPositionsVec[i]);
   }
@@ -173,8 +173,8 @@ template <class V, class M>
 const uqBaseOneDGridClass<double>&
 uqArrayOfOneDGridsClass<V,M>::grid(unsigned int rowId) const
 {
-  UQ_FATAL_TEST_MACRO(rowId >= m_rowSpace.dim(),
-                      m_env.rank(),
+  UQ_FATAL_TEST_MACRO(rowId >= m_rowSpace.dimLocal(),
+                      m_env.fullRank(),
                       "uqArrayOfOneDUnformGridsClass<T>::grid()",
                       "rowId is out of range");
 

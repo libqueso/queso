@@ -55,7 +55,8 @@ public:
           void                    setPrintHorizontally(bool value) const; // Yes, 'const'
           bool                    getPrintHorizontally()           const;
 
-  virtual unsigned int            numRows             () const = 0;
+  virtual unsigned int            numRowsLocal        () const = 0;
+  virtual unsigned int            numRowsGlobal       () const = 0;
   virtual unsigned int            numCols             () const = 0;
   virtual int                     chol                () = 0;
   virtual void                    zeroLower           (bool includeDiagonal = false) = 0;

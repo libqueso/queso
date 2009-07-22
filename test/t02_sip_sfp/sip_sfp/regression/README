@@ -1,0 +1,9 @@
+This directory houses simple regression solutions for the baseline
+sip+sfp example. A time record of the resulting "screen" output file
+is maintained here along with this log which documents changes to the
+reference output file
+
+Notes:
+
+-> 12 July 2009: initial reference output file checked in for use with
+   automatic regression testing. 

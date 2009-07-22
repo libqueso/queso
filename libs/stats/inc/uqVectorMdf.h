@@ -70,19 +70,19 @@ uqBaseVectorMdfClass<V,M>::uqBaseVectorMdfClass(
   const uqVectorSetClass<V,M>& domainSet)
   :
   m_env      (domainSet.env()),
-  m_prefix   ((std::string)(prefix)+"mdf_"),
+  m_prefix   ((std::string)(prefix)+"Mdf_"),
   m_domainSet(domainSet)
 {
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqBaseVectorMdfClass<V,M>::constructor()"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqBaseVectorMdfClass<V,M>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqBaseVectorMdfClass<V,M>::constructor()"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqBaseVectorMdfClass<V,M>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 }
 
@@ -196,18 +196,18 @@ uqGaussianVectorMdfClass<V,M>::uqGaussianVectorMdfClass(
   uqBaseVectorMdfClass<V,M>(prefix,domainSet),
   m_covMatrix              (m_domainSet.newDiagMatrix(domainVarianceValues*domainVarianceValues))
 {
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqGaussianVectorMdfClass<V,M>::constructor() [1]"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqGaussianVectorMdfClass<V,M>::constructor() [1]"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 
   commonConstructor();
 
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqGaussianVectorMdfClass<V,M>::constructor() [1]"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqGaussianVectorMdfClass<V,M>::constructor() [1]"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 }
 
@@ -221,18 +221,18 @@ uqGaussianVectorMdfClass<V,M>::uqGaussianVectorMdfClass(
   uqBaseVectorMdfClass<V,M>(prefix,domainSet),
   m_covMatrix              (new M(covMatrix))
 {
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqGaussianVectorMdfClass<V,M>::constructor() [2]"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqGaussianVectorMdfClass<V,M>::constructor() [2]"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 
   commonConstructor();
 
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqGaussianVectorMdfClass<V,M>::constructor() [2]"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqGaussianVectorMdfClass<V,M>::constructor() [2]"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 }
 
@@ -241,7 +241,7 @@ void
 uqGaussianVectorMdfClass<V,M>::commonConstructor()
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGaussianVectorMdfClass<V,M>::commonConstructor()",
                       "incomplete code");
   return;
@@ -260,7 +260,7 @@ uqGaussianVectorMdfClass<V,M>::values(
         V& mdfVec) const
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqGaussianVectorMdfClass<V,M>::mdfVec()",
                       "incomplete code");
   return;
@@ -306,16 +306,16 @@ uqSampledVectorMdfClass<V,M>::uqSampledVectorMdfClass(
   m_oneDGrids(oneDGrids),
   m_mdfValues(mdfValues)
 {
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqSampledVectorMdfClass<V,M>::constructor()"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqSampledVectorMdfClass<V,M>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqSampledVectorMdfClass<V,M>::constructor()"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqSampledVectorMdfClass<V,M>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 }
 
@@ -331,7 +331,7 @@ uqSampledVectorMdfClass<V,M>::values(
         V& mdfVec) const
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSampledVectorMdfClass<V,M>::mdfVec()",
                       "incomplete code");
   return;

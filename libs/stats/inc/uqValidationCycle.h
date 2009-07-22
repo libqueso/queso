@@ -48,20 +48,20 @@ public:
 
   const uqBaseEnvironmentClass& env() const;
 
-  void setCalIP(const uqBaseVectorRVClass      <P_V,P_M>& priorRv,
-                const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunctionObj);
+  void instantiateCalIP(const uqBaseVectorRVClass      <P_V,P_M>& priorRv,
+                        const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunctionObj);
   //double (*likelihoodRoutinePtr)(const P_V& paramValues, const void* routineDataPtr),
   //const void* likelihoodRoutineDataPtr,
   //bool routineComputesMinus2LogOfDensity);
 
-  void setCalFP(void (*qoiRoutinePtr)(const P_V&                        domainVector,
-                                      const P_V*                        domainDirection,
-                                      const void*                       functionDataPtr,
-                                            Q_V&                        imageVector,
-                                            EpetraExt::DistArray<P_V*>* gradVectors,
-                                            EpetraExt::DistArray<P_M*>* hessianMatrices,
-                                            EpetraExt::DistArray<P_V*>* hessianEffects),
-                const void* qoiRoutineDataPtr);
+  void instantiateCalFP(void (*qoiRoutinePtr)(const P_V&                        domainVector,
+                                              const P_V*                        domainDirection,
+                                              const void*                       functionDataPtr,
+                                                    Q_V&                        imageVector,
+                                                    EpetraExt::DistArray<P_V*>* gradVectors,
+                                                    EpetraExt::DistArray<P_M*>* hessianMatrices,
+                                                    EpetraExt::DistArray<P_V*>* hessianEffects),
+                        const void* qoiRoutineDataPtr);
 
   const uqStatisticalInverseProblemClass<P_V,P_M>& calIP() const;
         uqStatisticalInverseProblemClass<P_V,P_M>& calIP();
@@ -69,19 +69,19 @@ public:
   const uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>& calFP() const;
         uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>& calFP();
 
-  void setValIP(const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunctionObj);
+  void instantiateValIP(const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunctionObj);
   //double (*likelihoodRoutinePtr)(const P_V& paramValues, const void* routineDataPtr),
   //const void* likelihoodRoutineDataPtr,
   //bool routineComputesMinus2LogOfDensity);
 
-  void setValFP(void (*qoiRoutinePtr)(const P_V&                        domainVector,
-                                      const P_V*                        domainDirection,
-                                      const void*                       functionDataPtr,
-                                            Q_V&                        imageVector,
-                                            EpetraExt::DistArray<P_V*>* gradVectors,
-                                            EpetraExt::DistArray<P_M*>* hessianMatrices,
-                                            EpetraExt::DistArray<P_V*>* hessianEffects),
-                const void* qoiRoutineDataPtr);
+  void instantiateValFP(void (*qoiRoutinePtr)(const P_V&                        domainVector,
+                                              const P_V*                        domainDirection,
+                                              const void*                       functionDataPtr,
+                                                    Q_V&                        imageVector,
+                                                    EpetraExt::DistArray<P_V*>* gradVectors,
+                                                    EpetraExt::DistArray<P_M*>* hessianMatrices,
+                                                    EpetraExt::DistArray<P_V*>* hessianEffects),
+                        const void* qoiRoutineDataPtr);
 
   const uqStatisticalInverseProblemClass<P_V,P_M>& valIP() const;
         uqStatisticalInverseProblemClass<P_V,P_M>& valIP();
@@ -121,7 +121,7 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::uqValidationCycleClass(
   const uqVectorSpaceClass<P_V,P_M>& qoiSpace)
   :
   m_env                     (env),
-  m_prefix                  ((std::string)(prefix) + ""),
+  m_prefix                  ((std::string)(prefix) + "cycle_"),
   m_paramSpace              (paramSpace),
   m_qoiSpace                (qoiSpace),
   m_calLikelihoodFunctionObj(NULL),
@@ -137,13 +137,17 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::uqValidationCycleClass(
   m_valQoiRv                (NULL),
   m_valFP                   (NULL)
 {
-  if (m_env.rank() == 0) std::cout << "Entering uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::constructor()"
-                                   << ": prefix = "              << m_prefix
-                                   << std::endl;
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Entering uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
+  }
 
-  if (m_env.rank() == 0) std::cout << "Leaving uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::constructor()"
-                                   << ": prefix = "              << m_prefix
-                                   << std::endl;
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Leaving uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
+  }
 
   return;
 }
@@ -151,27 +155,27 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::uqValidationCycleClass(
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::~uqValidationCycleClass()
 {
-  if (m_env.rank() == 0) {
-    std::cout << "Entering uqValidationCycle::destructor()"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Entering uqValidationCycle::destructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 
-  if (m_valFP)                    delete m_valFP;
-  if (m_valQoiRv)                 delete m_valQoiRv;
-  if (m_valQoiFunctionObj)        delete m_valQoiFunctionObj;
-  if (m_valIP)                    delete m_valIP;
-  if (m_valPostRv)                delete m_valPostRv;
-  if (m_calFP)                    delete m_calFP;
-  if (m_calQoiRv)                 delete m_calQoiRv;
-  if (m_calQoiFunctionObj)        delete m_calQoiFunctionObj;
-  if (m_calIP)                    delete m_calIP;
-  if (m_calPostRv)                delete m_calPostRv;
+  if (m_valFP)             delete m_valFP;
+  if (m_valQoiRv)          delete m_valQoiRv;
+  if (m_valQoiFunctionObj) delete m_valQoiFunctionObj;
+  if (m_valIP)             delete m_valIP;
+  if (m_valPostRv)         delete m_valPostRv;
+  if (m_calFP)             delete m_calFP;
+  if (m_calQoiRv)          delete m_calQoiRv;
+  if (m_calQoiFunctionObj) delete m_calQoiFunctionObj;
+  if (m_calIP)             delete m_calIP;
+  if (m_calPostRv)         delete m_calPostRv;
 
-  if (m_env.rank() == 0) {
-    std::cout << "Leaving uqValidationCycle::destructor()"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Leaving uqValidationCycle::destructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 }
 
@@ -184,7 +188,7 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::env() const
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::setCalIP(
+uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateCalIP(
   const uqBaseVectorRVClass      <P_V,P_M>& priorRv,
   const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunctionObj)
   //double (*likelihoodRoutinePtr)(const P_V& paramValues, const void* routineDataPtr),
@@ -226,7 +230,7 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::calIP()
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::setCalFP(
+uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateCalFP(
   void (*qoiRoutinePtr)(const P_V&                        domainVector,
                         const P_V*                        domainDirection,
                         const void*                       functionDataPtr,
@@ -274,7 +278,7 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::calFP()
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::setValIP(const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunctionObj)
+uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateValIP(const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunctionObj)
   //double (*likelihoodRoutinePtr)(const P_V& paramValues, const void* routineDataPtr),
   //const void* likelihoodRoutineDataPtr,
   //bool routineComputesMinus2LogOfDensity)
@@ -313,7 +317,7 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::valIP()
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::setValFP(
+uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateValFP(
   void (*qoiRoutinePtr)(const P_V&                        domainVector,
                         const P_V*                        domainDirection,
                         const void*                       functionDataPtr,

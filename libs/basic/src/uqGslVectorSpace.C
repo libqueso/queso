@@ -33,6 +33,13 @@
 #include <uqVectorSpace.h>
 #include <uqGslMatrix.h>
 
+template <>
+Epetra_Map*
+uqVectorSpaceClass<class uqGslVectorClass, class uqGslMatrixClass>::newMap()
+{
+  return new Epetra_Map(m_dimGlobal,0,m_env.selfComm());
+}
+
 template<>
 uqGslVectorClass*
 uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass>::newVector() const
@@ -51,7 +58,7 @@ template<>
 uqGslMatrixClass*
 uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass>::newMatrix() const
 {
-  return new uqGslMatrixClass(m_env,*m_map,this->dim());
+  return new uqGslMatrixClass(m_env,*m_map,this->dimGlobal());
 }
 
 template<>

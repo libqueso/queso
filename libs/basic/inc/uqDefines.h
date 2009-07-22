@@ -35,10 +35,13 @@
 
 #include <iostream>
 #include <stdlib.h> // For exit()
+#include <Epetra_MpiComm.h>
 
-int uqMyRank();
+int uqMyWorldfullRank();
 
-const int UQ_UNAVAILABLE_RANK         = -1;
+#undef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
+
+const int UQ_UNAVAILABLE_RANK = -1;
 
 const int UQ_OK_RC                         =  0;
 const int UQ_INCOMPLETE_IMPLEMENTATION_RC  = -1;
@@ -52,17 +55,20 @@ const int UQ_MATRIX_IS_NOT_POS_DEFINITE_RC = -8;
 const int UQ_FAILED_READING_FILE_RC        = -9;
 const int UQ_INVALID_SPACE_COMPONENT_ID_RC = -10;
 
-#define UQ_RC_MACRO(iRC,givenRank,where,what,retValue) \
-  if (iRC) {                                           \
+#define UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT "m"
+#define UQ_FILE_EXTENSION_FOR_HDF_FORMAT    "hdf"
+
+#define UQ_RC_MACRO(macroIRc,givenRank,where,what,retValue) \
+  if (macroIRc) {                                           \
     int macroRank = givenRank;                         \
-    if (macroRank == UQ_UNAVAILABLE_RANK) {            \
-      macroRank = uqMyRank();                          \
+    if (macroRank < 0) {                               \
+      macroRank = uqMyWorldfullRank();                     \
     }                                                  \
     std::cerr << "UQ RC ERROR"                         \
               << ", rank "  << macroRank               \
               << ", in "    << where                   \
               << ": "       << what                    \
-              << ", iRC = " << iRC                     \
+              << ", iRc = " << macroIRc                \
               << std::endl;                            \
     return retValue;                                   \
   }
@@ -70,8 +76,8 @@ const int UQ_INVALID_SPACE_COMPONENT_ID_RC = -10;
 #define UQ_TEST_MACRO(test,givenRank,where,what,retValue) \
   if (test) {                                             \
     int macroRank = givenRank;                            \
-    if (macroRank == UQ_UNAVAILABLE_RANK) {               \
-      macroRank = uqMyRank();                             \
+    if (macroRank < 0) {                                  \
+      macroRank = uqMyWorldfullRank();                        \
     }                                                     \
     std::cerr << "UQ TEST ERROR"                          \
               << ", rank " << macroRank                   \
@@ -81,17 +87,17 @@ const int UQ_INVALID_SPACE_COMPONENT_ID_RC = -10;
     return retValue;                                      \
   }
 
-#define UQ_FATAL_RC_MACRO(iRC,givenRank,where,what) \
-  if (iRC) {                                        \
+#define UQ_FATAL_RC_MACRO(macroIRc,givenRank,where,what) \
+  if (macroIRc) {                                        \
     int macroRank = givenRank;                      \
-    if (macroRank == UQ_UNAVAILABLE_RANK) {         \
-      macroRank = uqMyRank();                       \
+    if (macroRank < 0) {                            \
+      macroRank = uqMyWorldfullRank();                  \
     }                                               \
     std::cerr << "UQ RC FATAL ERROR"                \
               << ", rank "  << macroRank            \
               << ", in "    << where                \
               << ": "       << what                 \
-              << ", iRC = " << iRC                  \
+              << ", iRC = " << macroIRc             \
               << ". Exiting..."                     \
               << std::endl;                         \
     exit(1);                                        \
@@ -100,8 +106,8 @@ const int UQ_INVALID_SPACE_COMPONENT_ID_RC = -10;
 #define UQ_FATAL_TEST_MACRO(test,givenRank,where,what) \
   if (test) {                                          \
     int macroRank = givenRank;                         \
-    if (macroRank == UQ_UNAVAILABLE_RANK) {            \
-      macroRank = uqMyRank();                          \
+    if (macroRank < 0) {                               \
+      macroRank = uqMyWorldfullRank();                     \
     }                                                  \
     std::cerr << "UQ TEST FATAL ERROR"                 \
               << ", rank "  << macroRank               \
@@ -109,7 +115,9 @@ const int UQ_INVALID_SPACE_COMPONENT_ID_RC = -10;
               << ": "       << what                    \
               << ". Exiting..."                        \
               << std::endl;                            \
+    /*int macroMpiRC = 0;*/                            \
+    /*macroMpiRC = */MPI_Abort(MPI_COMM_WORLD,-999);   \
     exit(1);                                           \
-  }
+  }                                                    \
 
 #endif // __UQ_DEFINES_H__

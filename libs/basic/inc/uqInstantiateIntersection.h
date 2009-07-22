@@ -42,8 +42,8 @@ uqInstantiateIntersection(const uqVectorSetClass<V,M>& domain1, const uqVectorSe
 {
   uqVectorSetClass<V,M>* result = NULL;
 
-  unsigned int dim1 = domain1.vectorSpace().dim();
-  unsigned int dim2 = domain2.vectorSpace().dim();
+  unsigned int dim1 = domain1.vectorSpace().dimGlobal();
+  unsigned int dim2 = domain2.vectorSpace().dimGlobal();
 
   if (result == NULL) {
     const uqVectorSpaceClass<V,M>* tmp1 = dynamic_cast<const uqVectorSpaceClass<V,M>* >(&domain1);
@@ -53,19 +53,19 @@ uqInstantiateIntersection(const uqVectorSetClass<V,M>& domain1, const uqVectorSe
       if (dim1 < dim2) {
         result = new uqVectorSpaceClass<V,M>(tmp1->env(),
                                              tmp1->prefix().c_str(),
-                                             tmp1->dim(),
+                                             tmp1->dimGlobal(),
                                              tmp1->componentsNames());
       }
       else if (dim1 == dim2) {
         result = new uqVectorSpaceClass<V,M>(tmp1->env(),
                                              tmp1->prefix().c_str(),
-                                             tmp1->dim(),
+                                             tmp1->dimGlobal(),
                                              tmp1->componentsNames());
       }
       else {
         result = new uqVectorSpaceClass<V,M>(tmp2->env(),
                                              tmp2->prefix().c_str(),
-                                             tmp2->dim(),
+                                             tmp2->dimGlobal(),
                                              tmp2->componentsNames());
       }
     }
@@ -106,7 +106,7 @@ uqInstantiateIntersection(const uqVectorSetClass<V,M>& domain1, const uqVectorSe
       }
       else {
         UQ_FATAL_TEST_MACRO(true,
-                            domain1.env().rank(),
+                            domain1.env().fullRank(),
                             "uqInstantiateIntersection<V,M>()",
                             "situation 001");
       }
@@ -128,14 +128,14 @@ uqInstantiateIntersection(const uqVectorSetClass<V,M>& domain1, const uqVectorSe
         }
         else {
           UQ_FATAL_TEST_MACRO(true,
-                              domain1.env().rank(),
+                              domain1.env().fullRank(),
                               "uqInstantiateIntersection<V,M>()",
                               "situation 002");
         }
       }
       else {
         UQ_FATAL_TEST_MACRO(true,
-                            domain1.env().rank(),
+                            domain1.env().fullRank(),
                             "uqInstantiateIntersection<V,M>()",
                             "situation 003");
       }
@@ -157,14 +157,14 @@ uqInstantiateIntersection(const uqVectorSetClass<V,M>& domain1, const uqVectorSe
         }
         else {
           UQ_FATAL_TEST_MACRO(true,
-                              domain1.env().rank(),
+                              domain1.env().fullRank(),
                               "uqInstantiateIntersection<V,M>()",
                               "situation 004");
         }
       }
       else {
         UQ_FATAL_TEST_MACRO(true,
-                            domain1.env().rank(),
+                            domain1.env().fullRank(),
                             "uqInstantiateIntersection<V,M>()",
                             "situation 005");
       }
@@ -173,7 +173,7 @@ uqInstantiateIntersection(const uqVectorSetClass<V,M>& domain1, const uqVectorSe
 
   if (result == NULL) {
     UQ_FATAL_TEST_MACRO(true,
-                        domain1.env().rank(),
+                        domain1.env().fullRank(),
                         "uqInstantiateIntersection<V,M>()",
                         "situation 006");
   }

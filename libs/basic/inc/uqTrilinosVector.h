@@ -48,6 +48,8 @@ public:
   uqTrilinosVectorClass(const uqTrilinosVectorClass&    y);
  ~uqTrilinosVectorClass();
 
+  unsigned int numberOfProcessorsRequiredForStorage() const;
+
   uqTrilinosVectorClass& operator= (const uqTrilinosVectorClass& rhs);
   uqTrilinosVectorClass& operator*=(double a);
   uqTrilinosVectorClass& operator/=(double a);
@@ -58,7 +60,8 @@ public:
                  double& operator[](unsigned int i);
            const double& operator[](unsigned int i) const;
 
-  unsigned int   size            () const;
+  unsigned int   sizeLocal       () const;
+  unsigned int   sizeGlobal      () const;
   double         norm2Sq         () const;
   double         norm2           () const;
   double         sumOfComponents () const;
@@ -83,9 +86,9 @@ private:
   Epetra_SerialDenseMatrix* m_vec;
 };
 
-uqTrilinosVectorClass operator/    (const double a,                 const uqTrilinosVectorClass& x  );
+uqTrilinosVectorClass operator/    (      double a,                 const uqTrilinosVectorClass& x  );
 uqTrilinosVectorClass operator/    (const uqTrilinosVectorClass& x, const uqTrilinosVectorClass& y  );
-uqTrilinosVectorClass operator*    (const double a,                 const uqTrilinosVectorClass& x  );
+uqTrilinosVectorClass operator*    (      double a,                 const uqTrilinosVectorClass& x  );
 uqTrilinosVectorClass operator*    (const uqTrilinosVectorClass& x, const uqTrilinosVectorClass& y  );
 double                scalarProduct(const uqTrilinosVectorClass& x, const uqTrilinosVectorClass& y  );
 uqTrilinosVectorClass operator+    (const uqTrilinosVectorClass& x, const uqTrilinosVectorClass& y  );

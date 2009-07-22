@@ -40,8 +40,8 @@ public:
   uq2dArrayOfStuff(unsigned int numRows, unsigned int numCols);
  ~uq2dArrayOfStuff();
 
-  const unsigned int numRows    ()                                 const;
-  const unsigned int numCols    ()                                 const;
+        unsigned int numRows    ()                                 const;
+        unsigned int numCols    ()                                 const;
         void         setLocation(unsigned int i, unsigned int j, T* info);
         T&           operator   ()(unsigned int i, unsigned int j);
   const T&           operator   ()(unsigned int i, unsigned int j) const;
@@ -79,14 +79,14 @@ uq2dArrayOfStuff<T>::~uq2dArrayOfStuff()
 }
 
 template <class T>
-const unsigned int
+unsigned int
 uq2dArrayOfStuff<T>::numRows() const
 {
   return m_numRows;
 }
 
 template <class T>
-const unsigned int
+unsigned int
 uq2dArrayOfStuff<T>::numCols() const
 {
   return m_numCols;
@@ -96,6 +96,10 @@ template <class T>
 void
 uq2dArrayOfStuff<T>::setLocation(unsigned int i, unsigned int j, T* info)
 {
+  UQ_FATAL_TEST_MACRO((i >= m_numRows) || (j >= m_numCols) || (m_data[i] == NULL),
+                      UQ_UNAVAILABLE_RANK,
+                      "uq2dArrayOfStuff<T>::setLocation()",
+                      "invalid situation");
   (*(m_data[i]))[j] = info;
   return;
 }
@@ -104,6 +108,10 @@ template <class T>
 T&
 uq2dArrayOfStuff<T>::operator()(unsigned int i, unsigned int j)
 {
+  UQ_FATAL_TEST_MACRO((i >= m_numRows) || (j >= m_numCols) || (m_data[i] == NULL) || ((*m_data[i])[j] == NULL),
+                      UQ_UNAVAILABLE_RANK,
+                      "uq2dArrayOfStuff<T>::operator(1)",
+                      "invalid situation");
   return *(*(m_data[i]))[j];
 }
 
@@ -111,6 +119,10 @@ template <class T>
 const T&
 uq2dArrayOfStuff<T>::operator()(unsigned int i, unsigned int j) const
 {
+  UQ_FATAL_TEST_MACRO((i >= m_numRows) || (j >= m_numCols) || (m_data[i] == NULL) || ((*m_data[i])[j] == NULL),
+                      UQ_UNAVAILABLE_RANK,
+                      "uq2dArrayOfStuff<T>::operator(2)",
+                      "invalid situation");
   return *(*(m_data[i]))[j];
 }
 #endif // __UQ_2D_ARRAY_OF_STUFF_H__

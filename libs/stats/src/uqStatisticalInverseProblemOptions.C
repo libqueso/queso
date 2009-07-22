@@ -1,0 +1,158 @@
+/*--------------------------------------------------------------------------
+ *--------------------------------------------------------------------------
+ *
+ * Copyright (C) 2008 The PECOS Development Team
+ *
+ * Please see http://pecos.ices.utexas.edu for more information.
+ *
+ * This file is part of the QUESO Library (Quantification of Uncertainty
+ * for Estimation, Simulation and Optimization).
+ *
+ * QUESO is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * QUESO is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with QUESO. If not, see <http://www.gnu.org/licenses/>.
+ *
+ *--------------------------------------------------------------------------
+ *
+ * $Id$
+ *
+ * Brief description of this file: 
+ * 
+ *--------------------------------------------------------------------------
+ *-------------------------------------------------------------------------- */
+
+#include <uqStatisticalInverseProblemOptions.h>
+#include <uqMiscellaneous.h>
+
+uqStatisticalInverseProblemOptionsClass::uqStatisticalInverseProblemOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix)
+  :
+  m_prefix                     ((std::string)(prefix) + "ip_"),
+  m_computeSolution            (UQ_SIP_COMPUTE_SOLUTION_ODV     ),
+  m_dataOutputFileName         (UQ_SIP_DATA_OUTPUT_FILE_NAME_ODV),
+//m_dataOutputAllowedSet       (),
+#ifdef UQ_SIP_READS_SOLVER_OPTION
+  m_solverString               (UQ_SIP_SOLVER_ODV),
+#endif
+  m_env                        (env),
+  m_optionsDesc                (new po::options_description("Statistical Inverse Problem options")),
+  m_option_help                (m_prefix + "help"                ),
+  m_option_computeSolution     (m_prefix + "computeSolution"     ),
+  m_option_dataOutputFileName  (m_prefix + "dataOutputFileName"  ),
+  m_option_dataOutputAllowedSet(m_prefix + "dataOutputAllowedSet")
+#ifdef UQ_SIP_READS_SOLVER_OPTION
+  m_option_solver              (m_prefix + "solver"              )
+#endif
+{
+}
+
+uqStatisticalInverseProblemOptionsClass::~uqStatisticalInverseProblemOptionsClass()
+{
+  if (m_optionsDesc                    ) delete m_optionsDesc;
+} 
+
+void
+uqStatisticalInverseProblemOptionsClass::scanOptionsValues()
+{
+  defineMyOptions                (*m_optionsDesc);
+  m_env.scanInputFileForMyOptions(*m_optionsDesc);
+  getMyOptionValues              (*m_optionsDesc);
+
+  if (m_env.subDisplayFile() != NULL) {
+    *m_env.subDisplayFile() << "In uqStatisticalInverseProblemOptionsClass::scanOptionsValues()"
+                            << ": after getting values of options with prefix '" << m_prefix
+                            << "', state of  object is:"
+                            << "\n" << *this
+                            << std::endl;
+  }
+
+  return;
+}
+
+void
+uqStatisticalInverseProblemOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
+{
+  optionsDesc.add_options()     
+    (m_option_help.c_str(),                                                                                            "produce help message for statistical inverse problem")
+    (m_option_computeSolution.c_str(),      po::value<bool       >()->default_value(UQ_SIP_COMPUTE_SOLUTION_ODV     ), "compute solution process"                            )
+    (m_option_dataOutputFileName.c_str(),   po::value<std::string>()->default_value(UQ_SIP_DATA_OUTPUT_FILE_NAME_ODV), "name of data output file"                            )
+    (m_option_dataOutputAllowedSet.c_str(), po::value<std::string>()->default_value(UQ_SIP_DATA_OUTPUT_ALLOW_ODV    ), "subEnvs that will write to data output file"         )
+#ifdef UQ_SIP_READS_SOLVER_OPTION
+    (m_option_solver.c_str(),               po::value<std::string>()->default_value(UQ_SIP_SOLVER_ODV               ), "algorithm for calibration"                           )
+#endif
+  ;
+
+  return;
+}
+
+void
+uqStatisticalInverseProblemOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
+{
+  if (m_env.allOptionsMap().count(m_option_help.c_str())) {
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << optionsDesc
+                              << std::endl;
+    }
+  }
+
+  if (m_env.allOptionsMap().count(m_option_computeSolution.c_str())) {
+    m_computeSolution = ((const po::variable_value&) m_env.allOptionsMap()[m_option_computeSolution.c_str()]).as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_dataOutputFileName.c_str())) {
+    m_dataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName.c_str()]).as<std::string>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_dataOutputAllowedSet.c_str())) {
+    m_dataOutputAllowedSet.clear();
+    std::vector<double> tmpAllow(0,0.);
+    std::string inputString = m_env.allOptionsMap()[m_option_dataOutputAllowedSet.c_str()].as<std::string>();
+    uqMiscReadDoublesFromString(inputString,tmpAllow);
+
+    if (tmpAllow.size() > 0) {
+      for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
+        m_dataOutputAllowedSet.insert((unsigned int) tmpAllow[i]);
+      }
+    }
+  }
+
+#ifdef UQ_SIP_READS_SOLVER_OPTION
+  if (m_env.allOptionsMap().count(m_option_solver.c_str())) {
+    m_solverString = ((const po::variable_value&) m_env.allOptionsMap()[m_option_solver.c_str()]).as<std::string>();
+  }
+#endif
+
+  return;
+}
+
+void
+uqStatisticalInverseProblemOptionsClass::print(std::ostream& os) const
+{
+  os << "\n" << m_option_computeSolution      << " = " << m_computeSolution
+     << "\n" << m_option_dataOutputFileName   << " = " << m_dataOutputFileName;
+  os << "\n" << m_option_dataOutputAllowedSet << " = ";
+  for (std::set<unsigned int>::iterator setIt = m_dataOutputAllowedSet.begin(); setIt != m_dataOutputAllowedSet.end(); ++setIt) {
+    os << *setIt << " ";
+  }
+#ifdef UQ_SIP_READS_SOLVER_OPTION
+     << "\n" << m_option_solver << " = " << m_solverString
+#endif
+  os << std::endl;
+
+  return;
+}
+
+std::ostream& operator<<(std::ostream& os, const uqStatisticalInverseProblemOptionsClass& obj)
+{
+  obj.print(os);
+
+  return os;
+}

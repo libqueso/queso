@@ -41,105 +41,152 @@
 #include <complex>
 #include <gsl/gsl_randist.h>
 
+#define SCALAR_SEQUENCE_INIT_MPI_MSG 1
+#define SCALAR_SEQUENCE_SIZE_MPI_MSG 1
+#define SCALAR_SEQUENCE_DATA_MPI_MSG 1
+
 template <class T>
 class uqScalarSequenceClass
 {
 public:
   typedef typename std::vector<T>::iterator       seqScalarPositionIteratorTypedef;
   typedef typename std::vector<T>::const_iterator seqScalarPositionConstIteratorTypedef;
-  uqScalarSequenceClass(const uqBaseEnvironmentClass& env, unsigned int sequenceSize);
+  uqScalarSequenceClass(const uqBaseEnvironmentClass& env, unsigned int subSequenceSize);
  ~uqScalarSequenceClass();
 
-  const unsigned int sequenceSize       () const;
-        void         resizeSequence     (unsigned int newSequenceSize);
-        void         resetValues        (unsigned int initialPos, unsigned int numPos);
-        void         erasePositions     (unsigned int initialPos, unsigned int numPos);
-  const T&           operator[]         (unsigned int posId) const;
-        T&           operator[]         (unsigned int posId);
-        void         setGaussian        (const gsl_rng* rng, const T& mean, const T& stdDev);
-        void         setUniform         (const gsl_rng* rng, const T& a,    const T& b     );
-        void         uniformlySampledMdf(unsigned int               numIntervals,
-                                         T&                         minDomainValue,
-                                         T&                         maxDomainValue,
-                                         std::vector<T>&            mdfValues) const;
-        void         uniformlySampledCdf(unsigned int               numIntervals,
-                                         T&                         minDomainValue,
-                                         T&                         maxDomainValue,
-                                         std::vector<T>&            cdfValues) const;
+        unsigned int subSequenceSize           () const;
+        void         resizeSequence            (unsigned int newSequenceSize);
+        void         resetValues               (unsigned int initialPos, unsigned int numPos);
+        void         erasePositions            (unsigned int initialPos, unsigned int numPos);
+  const T&           operator[]                (unsigned int posId) const;
+        T&           operator[]                (unsigned int posId);
+        void         setGaussian               (const gsl_rng* rng, const T& mean, const T& stdDev);
+        void         setUniform                (const gsl_rng* rng, const T& a,    const T& b     );
+        void         subUniformlySampledMdf    (unsigned int               numIntervals,
+                                                T&                         minDomainValue,
+                                                T&                         maxDomainValue,
+                                                std::vector<T>&            mdfValues) const;
+        void         subUniformlySampledCdf    (unsigned int               numIntervals,
+                                                T&                         minDomainValue,
+                                                T&                         maxDomainValue,
+                                                std::vector<T>&            cdfValues) const;
+        void         unifiedUniformlySampledCdf(bool                       useOnlyInter0Comm,
+                                                unsigned int               numIntervals,
+                                                T&                         unifiedMinDomainValue,
+                                                T&                         unifiedMaxDomainValue,
+                                                std::vector<T>&            unifiedCdfValues) const;
 
-        T            mean               (unsigned int               initialPos,
-                                         unsigned int               numPos) const;
-        T            sampleVariance     (unsigned int               initialPos,
-                                         unsigned int               numPos,
-                                         const T&                   meanValue) const;
-        T            populationVariance (unsigned int               initialPos,
-                                         unsigned int               numPos,
-                                         const T&                   meanValue) const;
-        T            autoCovariance     (unsigned int               initialPos,
-                                         unsigned int               numPos,
-                                         const T&                   meanValue,
-                                         unsigned int               lag) const;
-        T            autoCorrViaDef     (unsigned int               initialPos,
-                                         unsigned int               numPos,
-                                         unsigned int               lag) const;
-        void         autoCorrViaFft     (unsigned int               initialPos,
-                                         unsigned int               numPos,
-                                         unsigned int               maxLag,
-                                         std::vector<T>&            autoCorrs) const;
-        void         autoCorrViaFft     (unsigned int               initialPos,
-                                         unsigned int               numPos,
-                                         unsigned int               numSum,
-                                         T&                         autoCorrsSum) const;
-        T            bmm                (unsigned int               initialPos,
-                                         unsigned int               batchLength) const;
-        void         psd                (unsigned int               initialPos,
-                                         unsigned int               numBlocks,
-                                         double                     hopSizeRatio,
-                                         std::vector<double>&       psdSequence) const;
-        T            geweke             (unsigned int               initialPos,
-                                         double                     ratioNa,
-                                         double                     ratioNb) const;
-        void         minMax             (unsigned int               initialPos,
-                                         T&                         minValue,
-                                         T&                         maxValue) const;
-        void         histogram          (unsigned int               initialPos,
-                                         const T&                   minHorizontalValue,
-                                         const T&                   maxHorizontalValue,
-                                         std::vector<T>&            centers,
-                                         std::vector<unsigned int>& bins) const;
-        void         sort               (unsigned int               initialPos,
-                                         uqScalarSequenceClass<T>&  sortedSequence) const;
-        void         sort               ();
-        T            interQuantileRange (unsigned int               initialPos) const;
-        T            scaleForKDE        (unsigned int               initialPos,
-                                         const T&                   iqrValue) const;
-        double       gaussianKDE        (T                          evaluationParam) const;
-        void         gaussianKDE        (unsigned int               initialPos,
-                                         double                     scaleValue,
-                                         const std::vector<T>&      evaluationParams,
-                                         std::vector<double>&       densityValues) const;
+        T            subMean                   (unsigned int               initialPos,
+                                                unsigned int               numPos) const;
+        T            unifiedMean               (bool                       useOnlyInter0Comm,
+                                                unsigned int               initialPos,
+                                                unsigned int               localNumPos) const;
+        T            subSampleVariance         (unsigned int               initialPos,
+                                                unsigned int               numPos,
+                                                const T&                   meanValue) const;
+        T            unifiedSampleVariance     (bool                       useOnlyInter0Comm,
+                                                unsigned int               initialPos,
+                                                unsigned int               localNumPos,
+                                                const T&                   unifiedMeanValue) const;
+        T            subPopulationVariance     (unsigned int               initialPos,
+                                                unsigned int               numPos,
+                                                const T&                   meanValue) const;
+        T            autoCovariance            (unsigned int               initialPos,
+                                                unsigned int               numPos,
+                                                const T&                   meanValue,
+                                                unsigned int               lag) const;
+        T            autoCorrViaDef            (unsigned int               initialPos,
+                                                unsigned int               numPos,
+                                                unsigned int               lag) const;
+        void         autoCorrViaFft            (unsigned int               initialPos,
+                                                unsigned int               numPos,
+                                                unsigned int               maxLag,
+                                                std::vector<T>&            autoCorrs) const;
+        void         autoCorrViaFft            (unsigned int               initialPos,
+                                                unsigned int               numPos,
+                                                unsigned int               numSum,
+                                                T&                         autoCorrsSum) const;
+        T            bmm                       (unsigned int               initialPos,
+                                                unsigned int               batchLength) const;
+        void         psd                       (unsigned int               initialPos,
+                                                unsigned int               numBlocks,
+                                                double                     hopSizeRatio,
+                                                std::vector<double>&       psdSequence) const;
+        T            geweke                    (unsigned int               initialPos,
+                                                double                     ratioNa,
+                                                double                     ratioNb) const;
+        T            meanStacc                 (unsigned int               initialPos) const;
+        void         subMinMax                 (unsigned int               initialPos,
+                                                T&                         minValue,
+                                                T&                         maxValue) const;
+        void         unifiedMinMax             (bool                       useOnlyInter0Comm,
+                                                unsigned int               initialPos,
+                                                T&                         unifiedMinValue,
+                                                T&                         unifiedMaxValue) const;
+        void         subHistogram              (unsigned int               initialPos,
+                                                const T&                   minHorizontalValue,
+                                                const T&                   maxHorizontalValue,
+                                                std::vector<T>&            centers,
+                                                std::vector<unsigned int>& bins) const;
+        void         unifiedHistogram          (bool                       useOnlyInter0Comm,
+                                                unsigned int               initialPos,
+                                                const T&                   unifiedMinHorizontalValue,
+                                                const T&                   unifiedMaxHorizontalValue,
+                                                std::vector<T>&            unifiedCenters,
+                                                std::vector<unsigned int>& unifiedBins) const;
+        void         subCdfStacc               (unsigned int               initialPos,
+                                                const std::vector<T>&      evaluationPositions,
+                                                std::vector<double>&       cdfStaccValues) const;
+        void         subSort                   (unsigned int               initialPos,
+                                                uqScalarSequenceClass<T>&  sortedSequence) const;
+        void         unifiedSort               (bool                       useOnlyInter0Comm,
+                                                unsigned int               initialPos,
+                                                uqScalarSequenceClass<T>&  unifiedSortedSequence) const;
+        T            subInterQuantileRange     (unsigned int               initialPos) const;
+        T            unifiedInterQuantileRange (bool                       useOnlyInter0Comm,
+                                                unsigned int               initialPos) const;
+        T            subScaleForKDE            (unsigned int               initialPos,
+                                                const T&                   iqrValue) const;
+        T            unifiedScaleForKDE        (bool                       useOnlyInter0Comm,
+                                                unsigned int               initialPos,
+                                                const T&                   unifiedIqrValue) const;
+      //double       sabGaussianKDE            (T                          evaluationPosition) const;
+        void         subGaussianKDE            (unsigned int               initialPos,
+                                                double                     scaleValue,
+                                                const std::vector<T>&      evaluationPositions,
+                                                std::vector<double>&       densityValues) const;
+        void         unifiedGaussianKDE        (bool                       useOnlyInter0Comm,
+                                                unsigned int               initialPos,
+                                                double                     unifiedScaleValue,
+                                                const std::vector<T>&      unifiedEvaluationPositions,
+                                                std::vector<double>&       unifiedDensityValues) const;
 
 private:
-        void         extractScalarSeq   (unsigned int               initialPos,
-                                         unsigned int               spacing,
-                                         unsigned int               numPos,
-                                         uqScalarSequenceClass<T>&  scalarSeq) const;
-        void         extractRawData     (unsigned int               initialPos,
-                                         unsigned int               spacing,
-                                         unsigned int               numPos,
-                                         std::vector<double>&       rawData) const;
+        void         extractScalarSeq          (unsigned int               initialPos,
+                                                unsigned int               spacing,
+                                                unsigned int               numPos,
+                                                uqScalarSequenceClass<T>&  scalarSeq) const;
+        void         extractRawData            (unsigned int               initialPos,
+                                                unsigned int               spacing,
+                                                unsigned int               numPos,
+                                                std::vector<double>&       rawData) const;
+	std::vector<T>& rawData                ();
+        void         subSort                   ();
+        void         parallelMerge             (std::vector<T>&            sortedBuffer,
+                                                const std::vector<T>&      leafData,
+                                                unsigned int               treeLevel) const;
 
   const uqBaseEnvironmentClass& m_env;
-  std::vector<T>            m_seq;
+  std::vector<T>                m_seq;
 };
 
 template <class T>
 uqScalarSequenceClass<T>::uqScalarSequenceClass(
   const uqBaseEnvironmentClass& env,
-        unsigned int        sequenceSize)
+        unsigned int            subSequenceSize)
   :
   m_env(env),
-  m_seq(sequenceSize,0.)
+  m_seq(subSequenceSize,0.)
 {
 }
 
@@ -149,8 +196,8 @@ uqScalarSequenceClass<T>::~uqScalarSequenceClass()
 }
 
 template <class T>
-const unsigned int
-uqScalarSequenceClass<T>::sequenceSize() const
+unsigned int
+uqScalarSequenceClass<T>::subSequenceSize() const
 {
   return m_seq.size();
 }
@@ -159,7 +206,7 @@ template <class T>
 void
 uqScalarSequenceClass<T>::resizeSequence(unsigned int newSequenceSize)
 {
-  if (newSequenceSize != this->sequenceSize()) {
+  if (newSequenceSize != this->subSequenceSize()) {
     m_seq.resize(newSequenceSize,0.);
     std::vector<T>(m_seq).swap(m_seq);
   }
@@ -171,11 +218,11 @@ template <class T>
 void
 uqScalarSequenceClass<T>::resetValues(unsigned int initialPos, unsigned int numPos)
 {
-  bool bRC = ((initialPos          <  this->sequenceSize()) &&
-              (0                   <  numPos              ) &&
-              ((initialPos+numPos) <= this->sequenceSize()));
+  bool bRC = ((initialPos          <  this->subSequenceSize()) &&
+              (0                   <  numPos                 ) &&
+              ((initialPos+numPos) <= this->subSequenceSize()));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqScalarSequences<T>::resetValues()",
                       "invalid input data");
 
@@ -190,29 +237,29 @@ template <class T>
 void
 uqScalarSequenceClass<T>::erasePositions(unsigned int initialPos, unsigned int numPos)
 {
-  bool bRC = ((initialPos          <  this->sequenceSize()) &&
-              (0                   <  numPos              ) &&
-              ((initialPos+numPos) <= this->sequenceSize()));
+  bool bRC = ((initialPos          <  this->subSequenceSize()) &&
+              (0                   <  numPos                 ) &&
+              ((initialPos+numPos) <= this->subSequenceSize()));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqScalarSequences<T>::erasePositions()",
                       "invalid input data");
 
   seqScalarPositionIteratorTypedef posIteratorBegin = m_seq.begin();
-  if (initialPos < this->sequenceSize()) std::advance(posIteratorBegin,initialPos);
-  else                                   posIteratorBegin = m_seq.end();
+  if (initialPos < this->subSequenceSize()) std::advance(posIteratorBegin,initialPos);
+  else                                      posIteratorBegin = m_seq.end();
 
   unsigned int posEnd = initialPos + numPos - 1;
   seqScalarPositionIteratorTypedef posIteratorEnd = m_seq.begin();
-  if (posEnd < this->sequenceSize()) std::advance(posIteratorEnd,posEnd);
-  else                               posIteratorEnd = m_seq.end();
+  if (posEnd < this->subSequenceSize()) std::advance(posIteratorEnd,posEnd);
+  else                                  posIteratorEnd = m_seq.end();
 
-  unsigned int oldSequenceSize = this->sequenceSize();
+  unsigned int oldSequenceSize = this->subSequenceSize();
   m_seq.erase(posIteratorBegin,posIteratorEnd);
-  UQ_FATAL_TEST_MACRO((oldSequenceSize - numPos) != this->sequenceSize(),
-                      m_env.rank(),
+  UQ_FATAL_TEST_MACRO((oldSequenceSize - numPos) != this->subSequenceSize(),
+                      m_env.fullRank(),
                       "uqScalarSequences<T>::erasePositions()",
-                      "(oldSequenceSize - numPos) != this->sequenceSize()");
+                      "(oldSequenceSize - numPos) != this->subSequenceSize()");
 
   return;
 }
@@ -221,10 +268,16 @@ template <class T>
 const T&
 uqScalarSequenceClass<T>::operator[](unsigned int posId) const
 {
-  UQ_FATAL_TEST_MACRO((posId >= this->sequenceSize()),
-                      m_env.rank(),
+  if (posId >= this->subSequenceSize()) {
+    std::cerr << "In uqScalarSequenceClass<T>::operator[]() const"
+              << ": posId = "                   << posId
+              << ", this->subSequenceSize() = " << this->subSequenceSize()
+              << std::endl;
+  }
+  UQ_FATAL_TEST_MACRO((posId >= this->subSequenceSize()),
+                      m_env.fullRank(),
                       "uqScalarSequences<T>::operator[] const",
-                      "posId > sequenceSize()");
+                      "posId > subSequenceSize()");
 
   return m_seq[posId];
 }
@@ -233,10 +286,16 @@ template <class T>
 T&
 uqScalarSequenceClass<T>::operator[](unsigned int posId)
 {
-  UQ_FATAL_TEST_MACRO((posId >= this->sequenceSize()),
-                      m_env.rank(),
+  if (posId >= this->subSequenceSize()) {
+    std::cerr << "In uqScalarSequenceClass<T>::operator[]()"
+              << ": posId = "                   << posId
+              << ", this->subSequenceSize() = " << this->subSequenceSize()
+              << std::endl;
+  }
+  UQ_FATAL_TEST_MACRO((posId >= this->subSequenceSize()),
+                      m_env.fullRank(),
                       "uqScalarSequences<T>::operator[]",
-                      "posId > sequenceSize()");
+                      "posId > subSequenceSize()");
 
   return m_seq[posId];
 }
@@ -245,7 +304,7 @@ template <class T>
 void
 uqScalarSequenceClass<T>::setGaussian(const gsl_rng* rng, const T& meanValue, const T& stdDev)
 {
-  unsigned int maxJ = this->sequenceSize();
+  unsigned int maxJ = this->subSequenceSize();
   if (meanValue == 0.) {
     for (unsigned int j = 0; j < maxJ; ++j) {
       m_seq[j] = gsl_ran_gaussian(rng,stdDev);
@@ -264,7 +323,7 @@ template <class T>
 void
 uqScalarSequenceClass<T>::setUniform(const gsl_rng* rng, const T& a, const T& b)
 {
-  unsigned int maxJ = this->sequenceSize();
+  unsigned int maxJ = this->subSequenceSize();
   if (a == 0.) {
     if (b == 1.) {
       for (unsigned int j = 0; j < maxJ; ++j) {
@@ -295,7 +354,7 @@ uqScalarSequenceClass<T>::setUniform(const gsl_rng* rng, const T& a, const T& b)
 
 template <class T>
 void
-uqScalarSequenceClass<T>::uniformlySampledMdf(
+uqScalarSequenceClass<T>::subUniformlySampledMdf(
   unsigned int    numEvaluationPoints,
   T&              minDomainValue,
   T&              maxDomainValue,
@@ -304,16 +363,16 @@ uqScalarSequenceClass<T>::uniformlySampledMdf(
   T                         tmpMinValue;
   T                         tmpMaxValue;
   std::vector<T>            centers(numEvaluationPoints,0.);
-  std::vector<unsigned int> bins   (numEvaluationPoints,0.);
+  std::vector<unsigned int> bins   (numEvaluationPoints,0);
 
-  minMax(0, // initialPos
-         tmpMinValue,
-         tmpMaxValue);
-  histogram(0, // initialPos,
+  subMinMax(0, // initialPos
             tmpMinValue,
-            tmpMaxValue,
-            centers,
-            bins);
+            tmpMaxValue);
+  subHistogram(0, // initialPos,
+               tmpMinValue,
+               tmpMaxValue,
+               centers,
+               bins);
 
   minDomainValue = centers[0];
   maxDomainValue = centers[centers.size()-1];
@@ -335,7 +394,7 @@ uqScalarSequenceClass<T>::uniformlySampledMdf(
 
 template <class T>
 void
-uqScalarSequenceClass<T>::uniformlySampledCdf(
+uqScalarSequenceClass<T>::subUniformlySampledCdf(
   unsigned int    numEvaluationPoints,
   T&              minDomainValue,
   T&              maxDomainValue,
@@ -344,48 +403,146 @@ uqScalarSequenceClass<T>::uniformlySampledCdf(
   T                         tmpMinValue;
   T                         tmpMaxValue;
   std::vector<T>            centers(numEvaluationPoints,0.);
-  std::vector<unsigned int> bins   (numEvaluationPoints,0.);
+  std::vector<unsigned int> bins   (numEvaluationPoints,0);
 
-  minMax(0, // initialPos
-         tmpMinValue,
-         tmpMaxValue);
-  histogram(0, // initialPos,
+  subMinMax(0, // initialPos
             tmpMinValue,
-            tmpMaxValue,
-            centers,
-            bins);
+            tmpMaxValue);
+  subHistogram(0, // initialPos,
+               tmpMinValue,
+               tmpMaxValue,
+               centers,
+               bins);
 
   minDomainValue = centers[0];
   maxDomainValue = centers[centers.size()-1];
 
-  unsigned int totalCount = 0;
+  unsigned int sumOfBins = 0;
   for (unsigned int i = 0; i < numEvaluationPoints; ++i) {
-    totalCount += bins[i];
+    sumOfBins += bins[i];
   }
 
   cdfValues.clear();
   cdfValues.resize(numEvaluationPoints);
-  unsigned int partialCount = 0;
+  unsigned int partialSum = 0;
   for (unsigned int i = 0; i < numEvaluationPoints; ++i) {
-    partialCount += bins[i];
-    cdfValues[i] = ((T) partialCount)/((T) totalCount);
+    partialSum += bins[i];
+    cdfValues[i] = ((T) partialSum)/((T) sumOfBins);
   }
 
   return;
 }
 
 template <class T>
+void
+uqScalarSequenceClass<T>::unifiedUniformlySampledCdf(
+  bool            useOnlyInter0Comm,
+  unsigned int    numEvaluationPoints,
+  T&              unifiedMinDomainValue,
+  T&              unifiedMaxDomainValue,
+  std::vector<T>& unifiedCdfValues) const
+{
+  if (m_env.numSubEnvironments() == 1) {
+    return this->subUniformlySampledCdf(numEvaluationPoints,
+                                        unifiedMinDomainValue,
+                                        unifiedMaxDomainValue,
+                                        unifiedCdfValues);
+  }
+
+  if (useOnlyInter0Comm) {
+    if (m_env.inter0Rank() >= 0) {
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+        *m_env.subDisplayFile() << "Entering uqScalarSequenceClass<T>::unifiedUniformlySampledCdf()"
+                               << std::endl;
+      }
+
+      T                         unifiedTmpMinValue;
+      T                         unifiedTmpMaxValue;
+      std::vector<T>            unifiedCenters(numEvaluationPoints,0.);
+      std::vector<unsigned int> unifiedBins   (numEvaluationPoints,0);
+
+      this->unifiedMinMax(useOnlyInter0Comm,
+                          0, // initialPos
+                          unifiedTmpMinValue,
+                          unifiedTmpMaxValue);
+      this->unifiedHistogram(useOnlyInter0Comm,
+                             0, // initialPos
+                             unifiedTmpMinValue,
+                             unifiedTmpMaxValue,
+                             unifiedCenters,
+                             unifiedBins);
+
+      unifiedMinDomainValue = unifiedCenters[0];
+      unifiedMaxDomainValue = unifiedCenters[unifiedCenters.size()-1];
+
+      unsigned int unifiedTotalSumOfBins = 0;
+      for (unsigned int i = 0; i < numEvaluationPoints; ++i) {
+        unifiedTotalSumOfBins += unifiedBins[i];
+      }
+
+      std::vector<unsigned int> unifiedPartialSumsOfBins(numEvaluationPoints,0);
+      unifiedPartialSumsOfBins[0] = unifiedBins[0];
+      for (unsigned int i = 1; i < numEvaluationPoints; ++i) { // Yes, from '1'
+        unifiedPartialSumsOfBins[i] = unifiedPartialSumsOfBins[i-1] + unifiedBins[i];
+      }
+
+      unifiedCdfValues.clear();
+      unifiedCdfValues.resize(numEvaluationPoints);
+      for (unsigned int i = 0; i < numEvaluationPoints; ++i) {
+        unifiedCdfValues[i] = ((T) unifiedPartialSumsOfBins[i])/((T) unifiedTotalSumOfBins);
+      }
+
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+        for (unsigned int i = 0; i < numEvaluationPoints; ++i) {
+          *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedUniformlySampledCdf()"
+                                 << ": i = " << i
+                                 << ", unifiedTmpMinValue = "       << unifiedTmpMinValue
+                                 << ", unifiedTmpMaxValue = "       << unifiedTmpMaxValue
+                                 << ", unifiedBins = "              << unifiedBins[i]
+                                 << ", unifiedCdfValue = "          << unifiedCdfValues[i]
+                                 << ", unifiedPartialSumsOfBins = " << unifiedPartialSumsOfBins[i]
+                                 << ", unifiedTotalSumOfBins = "    << unifiedTotalSumOfBins
+                                 << std::endl;
+        }
+      }
+
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+        *m_env.subDisplayFile() << "Leaving uqScalarSequenceClass<T>::unifiedUniformlySampledCdf()"
+                               << std::endl;
+      }
+    }
+    else {
+      // Node not in the 'inter0' communicator
+      this->subUniformlySampledCdf(numEvaluationPoints,
+                                   unifiedMinDomainValue,
+                                   unifiedMaxDomainValue,
+                                   unifiedCdfValues);
+    }
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.fullRank(),
+                        "uqScalarSequenceClass<T>::unifiedUniformlySampledCdf()",
+                        "parallel vectors not supported yet");
+  }
+
+  //m_env.fullComm().Barrier();
+
+  return;
+}
+
+template <class T>
 T
-uqScalarSequenceClass<T>::mean(
+uqScalarSequenceClass<T>::subMean(
   unsigned int initialPos,
   unsigned int numPos) const
 {
-  bool bRC = ((initialPos          <  this->sequenceSize()) &&
-              (0                   <  numPos              ) &&
-              ((initialPos+numPos) <= this->sequenceSize()));
+  bool bRC = ((initialPos          <  this->subSequenceSize()) &&
+              (0                   <  numPos                 ) &&
+              ((initialPos+numPos) <= this->subSequenceSize()));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
-                      "uqScalarSequenceClass<T>::mean()",
+                      m_env.fullRank(),
+                      "uqScalarSequenceClass<T>::subMean()",
                       "invalid input data");
 
   unsigned int finalPosPlus1 = initialPos + numPos;
@@ -399,17 +556,79 @@ uqScalarSequenceClass<T>::mean(
 
 template <class T>
 T
-uqScalarSequenceClass<T>::sampleVariance(
+uqScalarSequenceClass<T>::unifiedMean(
+  bool         useOnlyInter0Comm,
+  unsigned int initialPos,
+  unsigned int numPos) const
+{
+  if (m_env.numSubEnvironments() == 1) {
+    return this->subMean(initialPos,
+                         numPos);
+  }
+
+  T unifiedMeanValue = 0.;
+  if (useOnlyInter0Comm) {
+    if (m_env.inter0Rank() >= 0) {
+      bool bRC = ((initialPos          <  this->subSequenceSize()) &&
+                  (0                   <  numPos                 ) &&
+                  ((initialPos+numPos) <= this->subSequenceSize()));
+      UQ_FATAL_TEST_MACRO(bRC == false,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::unifiedMean()",
+                          "invalid input data");
+
+      unsigned int finalPosPlus1 = initialPos + numPos;
+      T localSum = 0.;
+      for (unsigned int j = initialPos; j < finalPosPlus1; ++j) {
+        localSum += m_seq[j];
+      }
+
+      unsigned int unifiedNumPos = 0;
+      int mpiRC = MPI_Allreduce((void *) &numPos, (void *) &unifiedNumPos, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::unifiedMean()",
+                          "failed MPI_Allreduce() for numPos");
+
+      mpiRC = MPI_Allreduce((void *) &localSum, (void *) &unifiedMeanValue, (int) 1, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::unifiedMean()",
+                          "failed MPI_Allreduce() for sum");
+
+      unifiedMeanValue /= ((T) unifiedNumPos);
+    }
+    else {
+      // Node not in the 'inter0' communicator
+      this->subMean(initialPos,
+                    numPos);
+    }
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.fullRank(),
+                        "uqScalarSequenceClass<T>::unifiedMean()",
+                        "parallel vectors not supported yet");
+  }
+
+  //m_env.fullComm().Barrier();
+
+  return unifiedMeanValue;
+}
+
+template <class T>
+T
+uqScalarSequenceClass<T>::subSampleVariance(
   unsigned int initialPos,
   unsigned int numPos,
   const T&     meanValue) const
 {
-  bool bRC = ((initialPos          <  this->sequenceSize()) &&
-              (0                   <  numPos              ) &&
-              ((initialPos+numPos) <= this->sequenceSize()));
+  bool bRC = ((initialPos          <  this->subSequenceSize()) &&
+              (0                   <  numPos                 ) &&
+              ((initialPos+numPos) <= this->subSequenceSize()));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
-                      "uqScalarSequenceClass<T>::sampleVariance()",
+                      m_env.fullRank(),
+                      "uqScalarSequenceClass<T>::subSampleVariance()",
                       "invalid input data");
 
   unsigned int finalPosPlus1 = initialPos + numPos;
@@ -427,17 +646,85 @@ uqScalarSequenceClass<T>::sampleVariance(
 
 template <class T>
 T
-uqScalarSequenceClass<T>::populationVariance(
+uqScalarSequenceClass<T>::unifiedSampleVariance(
+  bool         useOnlyInter0Comm,
+  unsigned int initialPos,
+  unsigned int numPos,
+  const T&     unifiedMeanValue) const
+{
+  if (m_env.numSubEnvironments() == 1) {
+    return this->subSampleVariance(initialPos,
+                                   numPos,
+                                   unifiedMeanValue);
+  }
+
+  T unifiedSamValue = 0.;
+
+  if (useOnlyInter0Comm) {
+    if (m_env.inter0Rank() >= 0) {
+      bool bRC = ((initialPos          <  this->subSequenceSize()) &&
+                  (0                   <  numPos                 ) &&
+                  ((initialPos+numPos) <= this->subSequenceSize()));
+      UQ_FATAL_TEST_MACRO(bRC == false,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::unifiedSampleVariance()",
+                          "invalid input data");
+
+      unsigned int finalPosPlus1 = initialPos + numPos;
+      T diff;
+      T localSamValue = 0.;
+      for (unsigned int j = initialPos; j < finalPosPlus1; ++j) {
+        diff = m_seq[j] - unifiedMeanValue;
+        localSamValue += diff*diff;
+      }
+
+      unsigned int unifiedNumPos = 0;
+      int mpiRC = MPI_Allreduce((void *) &numPos, (void *) &unifiedNumPos, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::unifiedSampleVariance()",
+                          "failed MPI_Allreduce() for numPos");
+
+      mpiRC = MPI_Allreduce((void *) &localSamValue, (void *) &unifiedSamValue, (int) 1, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::unifiedSampleVariance()",
+                          "failed MPI_Allreduce() for samValue");
+
+      unifiedSamValue /= (((T) unifiedNumPos) - 1.);
+    }
+    else {
+      // Node not in the 'inter0' communicator
+      this->subSampleVariance(initialPos,
+                              numPos,
+                              unifiedMeanValue);
+    }
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.fullRank(),
+                        "uqScalarSequenceClass<T>::unifiedSampleVariance()",
+                        "parallel vectors not supported yet");
+  }
+
+  //m_env.fullComm().Barrier();
+
+  return unifiedSamValue;
+}
+
+template <class T>
+T
+uqScalarSequenceClass<T>::subPopulationVariance(
   unsigned int initialPos,
   unsigned int numPos,
   const T&     meanValue) const
 {
-  bool bRC = ((initialPos          <  this->sequenceSize()) &&
-              (0                   <  numPos              ) &&
-              ((initialPos+numPos) <= this->sequenceSize()));
+  bool bRC = ((initialPos          <  this->subSequenceSize()) &&
+              (0                   <  numPos                 ) &&
+              ((initialPos+numPos) <= this->subSequenceSize()));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
-                      "uqScalarSequenceClass<T>::populationVariance()",
+                      m_env.fullRank(),
+                      "uqScalarSequenceClass<T>::subPopulationVariance()",
                       "invalid input data");
 
   unsigned int finalPosPlus1 = initialPos + numPos;
@@ -461,12 +748,12 @@ uqScalarSequenceClass<T>::autoCovariance(
   const T&     meanValue,
   unsigned int lag) const
 {
-  bool bRC = ((initialPos          <  this->sequenceSize()) &&
-              (0                   <  numPos              ) &&
-              ((initialPos+numPos) <= this->sequenceSize()) &&
-              (lag                 <  numPos              )); // lag should not be too large
+  bool bRC = ((initialPos          <  this->subSequenceSize()) &&
+              (0                   <  numPos                 ) &&
+              ((initialPos+numPos) <= this->subSequenceSize()) &&
+              (lag                 <  numPos                 )); // lag should not be too large
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqScalarSequenceClass<T>::autoCovariance()",
                       "invalid input data");
 
@@ -493,17 +780,17 @@ uqScalarSequenceClass<T>::autoCorrViaDef(
   unsigned int numPos,
   unsigned int lag) const
 {
-  bool bRC = ((initialPos          <  this->sequenceSize()) &&
-              (0                   <  numPos              ) &&
-              ((initialPos+numPos) <= this->sequenceSize()) &&
-              (lag                 <  numPos              )); // lag should not be too large
+  bool bRC = ((initialPos          <  this->subSequenceSize()) &&
+              (0                   <  numPos                 ) &&
+              ((initialPos+numPos) <= this->subSequenceSize()) &&
+              (lag                 <  numPos                 )); // lag should not be too large
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqScalarSequenceClass<T>::autoCorrViaDef()",
                       "invalid input data");
 
-  T meanValue = this->mean(initialPos,
-                           numPos);
+  T meanValue = this->subMean(initialPos,
+                              numPos);
 
   T covValueZero = this->autoCovariance(initialPos,
                                         numPos,
@@ -531,18 +818,18 @@ uqScalarSequenceClass<T>::autoCorrViaFft(
     double tmp = log((double) maxLag)/log(2.);
     double fractionalPart = tmp - ((double) ((unsigned int) tmp));
     if (fractionalPart > 0.) tmp += (1. - fractionalPart);
-    unsigned int fftSize1 = (unsigned int) pow(2.,tmp+1.); // Yes, tmp+1
+    unsigned int fftSize1 = (unsigned int) std::pow(2.,tmp+1.); // Yes, tmp+1
     fftSize1 = fftSize1; // To remove warning
 
     tmp = log((double) numPos)/log(2.);
     fractionalPart = tmp - ((double) ((unsigned int) tmp));
     if (fractionalPart > 0.) tmp += (1. - fractionalPart);
-    unsigned int fftSize2 = (unsigned int) pow(2.,tmp+1);
+    unsigned int fftSize2 = (unsigned int) std::pow(2.,tmp+1);
 
     fftSize = fftSize2;
   }
 
-  std::vector<double> rawData(numPos,0.);
+  std::vector<double> rawDataVec(numPos,0.);
   std::vector<std::complex<double> > resultData(0,std::complex<double>(0.,0.));
   uqFftClass<T> fftObj(m_env);
 
@@ -550,42 +837,42 @@ uqScalarSequenceClass<T>::autoCorrViaFft(
   this->extractRawData(initialPos,
                        1, // spacing
                        numPos,
-                       rawData);
-  T meanValue = this->mean(initialPos,
-                           numPos);
+                       rawDataVec);
+  T meanValue = this->subMean(initialPos,
+                              numPos);
   for (unsigned int j = 0; j < numPos; ++j) {
-    rawData[j] -= meanValue; // IMPORTANT
+    rawDataVec[j] -= meanValue; // IMPORTANT
   }
 
-  rawData.resize(fftSize,0.);
+  rawDataVec.resize(fftSize,0.);
 
-  //if (m_env.rank() == 0) {
-  //  std::cout << "In uqScalarSequenceClass<T>::autoCorrViaFft()"
-  //            << ": about to call fftObj.forward()"
-  //            << " with rawData.size() = " << rawData.size()
-  //            << ", fftSize = "            << fftSize
-  //            << ", resultData.size() = "  << resultData.size()
-  //            << std::endl;
+  //if (m_env.subDisplayFile()) {
+  //  *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::autoCorrViaFft()"
+  //                         << ": about to call fftObj.forward()"
+  //                         << " with rawDataVec.size() = " << rawDataVec.size()
+  //                         << ", fftSize = "            << fftSize
+  //                         << ", resultData.size() = "  << resultData.size()
+  //                         << std::endl;
   //}
-  fftObj.forward(rawData,fftSize,resultData);
+  fftObj.forward(rawDataVec,fftSize,resultData);
 
   // Inverse FFT
   for (unsigned int j = 0; j < fftSize; ++j) {
-    rawData[j] = std::norm(resultData[j]);
+    rawDataVec[j] = std::norm(resultData[j]);
   }
-  //if (m_env.rank() == 0) {
-  //  std::cout << "In uqScalarSequenceClass<T>::autoCorrViaFft()"
-  //            << ": about to call fftObj.inverse()"
-  //            << " with rawData.size() = " << rawData.size()
-  //            << ", fftSize = "            << fftSize
-  //            << ", resultData.size() = "  << resultData.size()
-  //            << std::endl;
+  //if (m_env.subDisplayFile()) {
+  //  *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::autoCorrViaFft()"
+  //                         << ": about to call fftObj.inverse()"
+  //                         << " with rawDataVec.size() = " << rawDataVec.size()
+  //                         << ", fftSize = "            << fftSize
+  //                         << ", resultData.size() = "  << resultData.size()
+  //                         << std::endl;
   //}
-  fftObj.inverse(rawData,fftSize,resultData);
-  //if (m_env.rank() == 0) {
-  //  std::cout << "In uqScalarSequenceClass<T>::autoCorrViaFft()"
-  //            << ": returned succesfully from fftObj.inverse()"
-  //            << std::endl;
+  fftObj.inverse(rawDataVec,fftSize,resultData);
+  //if (m_env.subDisplayFile()) {
+  //  *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::autoCorrViaFft()"
+  //                         << ": returned succesfully from fftObj.inverse()"
+  //                         << std::endl;
   //}
 
   // Prepare return data
@@ -606,19 +893,19 @@ uqScalarSequenceClass<T>::autoCorrViaFft(
   unsigned int numSum,
   T&           autoCorrsSum) const
 {
-  //if (m_env.rank() == 0) {
-  //  std::cout << "Entering uqScalarSequenceClass<T>::autoCorrViaFft(), for sum"
-  //            << ": initialPos = " << initialPos
-  //            << ", numPos = "     << numPos
-  //            << std::endl;
+  //if (m_env.subDisplayFile()) {
+  //  *m_env.subDisplayFile() << "Entering uqScalarSequenceClass<T>::autoCorrViaFft(), for sum"
+  //                         << ": initialPos = " << initialPos
+  //                         << ", numPos = "     << numPos
+  //                         << std::endl;
   //}
 
   double tmp = log((double) numPos)/log(2.);
   double fractionalPart = tmp - ((double) ((unsigned int) tmp));
   if (fractionalPart > 0.) tmp += (1. - fractionalPart);
-  unsigned int fftSize = (unsigned int) pow(2.,tmp+1);
+  unsigned int fftSize = (unsigned int) std::pow(2.,tmp+1);
 
-  std::vector<double> rawData(numPos,0.);
+  std::vector<double> rawDataVec(numPos,0.);
   std::vector<std::complex<double> > resultData(0,std::complex<double>(0.,0.));
   uqFftClass<T> fftObj(m_env);
 
@@ -626,35 +913,35 @@ uqScalarSequenceClass<T>::autoCorrViaFft(
   this->extractRawData(initialPos,
                        1, // spacing
                        numPos,
-                       rawData);
-  T meanValue = this->mean(initialPos,
-                           numPos);
+                       rawDataVec);
+  T meanValue = this->subMean(initialPos,
+                              numPos);
   for (unsigned int j = 0; j < numPos; ++j) {
-    rawData[j] -= meanValue; // IMPORTANT
+    rawDataVec[j] -= meanValue; // IMPORTANT
   }
-  rawData.resize(fftSize,0.);
+  rawDataVec.resize(fftSize,0.);
 
-  //if (m_env.rank() == 0) {
-  //  std::cout << "In uqScalarSequenceClass<T>::autoCorrViaFft(), for sum"
-  //            << ": about to call fftObj.forward()"
-  //            << " with rawData.size() = " << rawData.size()
-  //            << ", fftSize = "            << fftSize
-  //            << ", resultData.size() = "  << resultData.size()
-  //            << std::endl;
+  //if (m_env.subDisplayFile()) {
+  //  *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::autoCorrViaFft(), for sum"
+  //                         << ": about to call fftObj.forward()"
+  //                         << " with rawDataVec.size() = " << rawDataVec.size()
+  //                         << ", fftSize = "            << fftSize
+  //                         << ", resultData.size() = "  << resultData.size()
+  //                         << std::endl;
   //}
-  fftObj.forward(rawData,fftSize,resultData);
+  fftObj.forward(rawDataVec,fftSize,resultData);
 
   // Inverse FFT
   for (unsigned int j = 0; j < fftSize; ++j) {
-    rawData[j] = std::norm(resultData[j]);
+    rawDataVec[j] = std::norm(resultData[j]);
   }
-  fftObj.inverse(rawData,fftSize,resultData);
+  fftObj.inverse(rawDataVec,fftSize,resultData);
 
-  //if (m_env.rank() == 0) {
-  //  std::cout << "In uqScalarSequenceClass<T>::autoCorrViaFft(), for sum"
-  //            << ": computed auto covariance for lag 0 = " << resultData[0].real()/((double) (numPos))
-  //            << ", computed resultData[0].imag() = "      << resultData[0].imag()
-  //            << std::endl;
+  //if (m_env.subDisplayFile()) {
+  //  *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::autoCorrViaFft(), for sum"
+  //                         << ": computed auto covariance for lag 0 = " << resultData[0].real()/((double) (numPos))
+  //                         << ", computed resultData[0].imag() = "      << resultData[0].imag()
+  //                         << std::endl;
   //}
 
   // Prepare return data
@@ -673,35 +960,35 @@ uqScalarSequenceClass<T>::bmm(
   unsigned int initialPos,
   unsigned int batchLength) const
 {
-  bool bRC = ((initialPos          <  this->sequenceSize()            ) &&
-              (batchLength         < (this->sequenceSize()-initialPos)));
+  bool bRC = ((initialPos          <  this->subSequenceSize()            ) &&
+              (batchLength         < (this->subSequenceSize()-initialPos)));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqScalarSequences<T>::bmm()",
                       "invalid input data");
 
-  unsigned int numberOfBatches = (this->sequenceSize() - initialPos)/batchLength;
+  unsigned int numberOfBatches = (this->subSequenceSize() - initialPos)/batchLength;
   uqScalarSequenceClass<T> batchMeans(m_env,numberOfBatches);
 
   for (unsigned int batchId = 0; batchId < numberOfBatches; batchId++) {
-    batchMeans[batchId] = this->mean(initialPos + batchId*batchLength,
-                                     batchLength);
+    batchMeans[batchId] = this->subMean(initialPos + batchId*batchLength,
+                                        batchLength);
   }
 
-  T meanOfBatchMeans = batchMeans.mean(0,
-                                       batchMeans.sequenceSize());
+  T meanOfBatchMeans = batchMeans.subMean(0,
+                                          batchMeans.subSequenceSize());
 
   //T covLag0OfBatchMeans = batchMeans.autoCovariance(0,
-  //                                                  batchMeans.sequenceSize(),
+  //                                                  batchMeans.subSequenceSize(),
   //                                                  meanOfBatchMeans,
   //                                                  0); // lag
 
-  T bmmValue = batchMeans.sampleVariance(0,
-                                         batchMeans.sequenceSize(),
-                                         meanOfBatchMeans);
+  T bmmValue = batchMeans.subSampleVariance(0,
+                                            batchMeans.subSequenceSize(),
+                                            meanOfBatchMeans);
 
-  bmmValue /= (T) batchMeans.sequenceSize();           // CHECK
-//bmmValue *= (T) (this->sequenceSize() - initialPos); // CHECK
+  bmmValue /= (T) batchMeans.subSequenceSize();           // CHECK
+//bmmValue *= (T) (this->subSequenceSize() - initialPos); // CHECK
 
   return bmmValue;
 }
@@ -714,19 +1001,19 @@ uqScalarSequenceClass<T>::psd(
   double               hopSizeRatio,
   std::vector<double>& psdResult) const
 {
-  bool bRC = ((initialPos         < this->sequenceSize()                        ) &&
-              (hopSizeRatio       != 0.                                         ) &&
-              (numBlocks          <          (this->sequenceSize() - initialPos)) &&
-              (fabs(hopSizeRatio) < (double) (this->sequenceSize() - initialPos)));
+  bool bRC = ((initialPos         < this->subSequenceSize()                        ) &&
+              (hopSizeRatio       != 0.                                            ) &&
+              (numBlocks          <          (this->subSequenceSize() - initialPos)) &&
+              (fabs(hopSizeRatio) < (double) (this->subSequenceSize() - initialPos)));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqScalarSequenceClass<T>::psd()",
                       "invalid input data");
 
-  unsigned int dataSize = this->sequenceSize() - initialPos;
+  unsigned int dataSize = this->subSequenceSize() - initialPos;
 
-  T meanValue = this->mean(initialPos,
-                           dataSize);
+  T meanValue = this->subMean(initialPos,
+                              dataSize);
 
   // Determine hopSize and blockSize
   unsigned int hopSize = 0;
@@ -743,7 +1030,7 @@ uqScalarSequenceClass<T>::psd(
   }
   else if (hopSizeRatio == 0.) {
     UQ_FATAL_TEST_MACRO(true,
-                        m_env.rank(),
+                        m_env.fullRank(),
                         "uqScalarSequenceClass<T>::psd()",
                         "hopSizeRatio == 0");
   }
@@ -758,30 +1045,32 @@ uqScalarSequenceClass<T>::psd(
   }
 
   int numberOfDiscardedDataElements = dataSize - (numBlocks-1)*hopSize - blockSize;
-  //if (m_env.rank() == 0) {
-  //  std::cout << "initialPos = "       << initialPos
-  //            << ", N = "              << dataSize
-  //            << ", #Blocks = "        << numBlocks
-  //            << ", R (hop size) = "   << hopSize
-  //            << ", B (block size) = " << blockSize
-  //            << ", overlap = "        << blockSize - hopSize
-  //            << ", [(#Blocks - 1) * R + B] = "       << (numBlocks-1)*hopSize + blockSize
-  //            << ", numberOfDiscardedDataElements = " << numberOfDiscardedDataElements
-  //            << std::endl;
+  //if (m_env.subDisplayFile()) {
+  //  *m_env.subDisplayFile() << "initialPos = "       << initialPos
+  //                         << ", N = "              << dataSize
+  //                         << ", #Blocks = "        << numBlocks
+  //                         << ", R (hop size) = "   << hopSize
+  //                         << ", B (block size) = " << blockSize
+  //                         << ", overlap = "        << blockSize - hopSize
+  //                         << ", [(#Blocks - 1) * R + B] = "       << (numBlocks-1)*hopSize + blockSize
+  //                         << ", numberOfDiscardedDataElements = " << numberOfDiscardedDataElements
+  //                         << std::endl;
   //}
   UQ_FATAL_TEST_MACRO(numberOfDiscardedDataElements < 0.,
-                      UQ_UNAVAILABLE_RANK,
+                      m_env.fullRank(),
                       "uqScalarSequenceClass<T>::psd()",
                       "eventual extra space for last block should not be negative");
 
   double tmp = log((double) blockSize)/log(2.);
   double fractionalPart = tmp - ((double) ((unsigned int) tmp));
   if (fractionalPart > 0.) tmp += (1. - fractionalPart);
-  unsigned int fftSize = (unsigned int) pow(2.,tmp);
-  //std::cout << "fractionalPart = " << fractionalPart
-  //          << ", B = "            << blockSize
-  //          << ", fftSize = "      << fftSize
-  //          << std::endl;
+  unsigned int fftSize = (unsigned int) std::pow(2.,tmp);
+  //if (m_env.subDisplayFile()) {
+  //  *m_env.subDisplayFile() << "fractionalPart = " << fractionalPart
+  //                         << ", B = "            << blockSize
+  //                         << ", fftSize = "      << fftSize
+  //                         << std::endl;
+  //}
 
   double modificationScale = 0.;
   for (unsigned int j = 0; j < blockSize; ++j) {
@@ -811,7 +1100,7 @@ uqScalarSequenceClass<T>::psd(
     for (unsigned int j = 0; j < blockSize; ++j) {
       unsigned int dataPos = initialDataPos + j;
       UQ_FATAL_TEST_MACRO(dataPos >= dataSize,
-                          UQ_UNAVAILABLE_RANK,
+                          m_env.fullRank(),
                           "uqScalarSequenceClass<T>::psd()",
                           "too large position to be accessed in data");
       blockData[j] = uqMiscHammingWindow(blockSize-1,j) * ( m_seq[dataPos] - meanValue ); // IMPORTANT
@@ -819,12 +1108,12 @@ uqScalarSequenceClass<T>::psd(
 
     fftObj.forward(blockData,fftSize,fftResult);
 
-    //if (m_env.rank() == 0) {
-    //  std::cout << "blockData.size() = "   << blockData.size()
-    //            << ", fftSize = "          << fftSize
-    //            << ", fftResult.size() = " << fftResult.size()
-    //            << ", psdResult.size() = " << psdResult.size()
-    //            << std::endl;
+    //if (m_env.subDisplayFile()) {
+    //  *m_env.subDisplayFile() << "blockData.size() = "   << blockData.size()
+    //                         << ", fftSize = "          << fftSize
+    //                         << ", fftResult.size() = " << fftResult.size()
+    //                         << ", psdResult.size() = " << psdResult.size()
+    //                         << std::endl;
     //}
     // Normalized spectral density: power per radians per sample
     for (unsigned int j = 0; j < psdResult.size(); ++j) {
@@ -846,7 +1135,7 @@ uqScalarSequenceClass<T>::geweke(
   double       ratioNa,
   double       ratioNb) const
 {
-  double doubleFullDataSize = (double) (this->sequenceSize() - initialPos);
+  double doubleFullDataSize = (double) (this->subSequenceSize() - initialPos);
   uqScalarSequenceClass<T> tmpSeq(m_env,0);
   std::vector<double> psdResult(0,0.);
 
@@ -857,10 +1146,10 @@ uqScalarSequenceClass<T>::geweke(
                          1,
                          dataSizeA,
                          tmpSeq);
-  double meanA = tmpSeq.mean(0,
-                             dataSizeA);
+  double meanA = tmpSeq.subMean(0,
+                                dataSizeA);
   tmpSeq.psd(0,
-             (unsigned int) sqrt((double) dataSizeA),  // numBlocks
+             (unsigned int) std::sqrt((double) dataSizeA),  // numBlocks
              .5, // hopSizeRatio
              psdResult);
   double psdA = psdResult[0];
@@ -868,45 +1157,60 @@ uqScalarSequenceClass<T>::geweke(
 
   unsigned int dataSizeB       = (unsigned int) (doubleFullDataSize * ratioNb);
   double       doubleDataSizeB = (double) dataSizeB;
-  unsigned int initialPosB     = this->sequenceSize() - dataSizeB;
+  unsigned int initialPosB     = this->subSequenceSize() - dataSizeB;
   this->extractScalarSeq(initialPosB,
                          1,
                          dataSizeB,
                          tmpSeq);
-  double meanB = tmpSeq.mean(0,
-                             dataSizeB);
+  double meanB = tmpSeq.subMean(0,
+                                dataSizeB);
   tmpSeq.psd(0,
-             (unsigned int) sqrt((double) dataSizeB),  // numBlocks
+             (unsigned int) std::sqrt((double) dataSizeB),  // numBlocks
              .5, // hopSizeRatio
              psdResult);
   double psdB = psdResult[0];
   double varOfMeanB = 2.*M_PI*psdB/doubleDataSizeB;
 
-  if (m_env.rank() == 0) {
-    std::cout << "In uqScalarSequenceClass<T>::geweke()"
-              << ", before computation of gewCoef"
-              << ":\n"
-              << ", dataSizeA = "       << dataSizeA
-              << ", numBlocksA = "      << (unsigned int) sqrt((double) dataSizeA)
-              << ", meanA = "           << meanA
-              << ", psdA = "            << psdA
-              << ", varOfMeanA = "      << varOfMeanA
-              << "\n"
-              << ", dataSizeB = "       << dataSizeB
-              << ", numBlocksB = "      << (unsigned int) sqrt((double) dataSizeB)
-              << ", meanB = "           << meanB
-              << ", psdB = "            << psdB
-              << ", varOfMeanB = "      << varOfMeanB
-              << std::endl;
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::geweke()"
+                           << ", before computation of gewCoef"
+                           << ":\n"
+                           << ", dataSizeA = "       << dataSizeA
+                           << ", numBlocksA = "      << (unsigned int) std::sqrt((double) dataSizeA)
+                           << ", meanA = "           << meanA
+                           << ", psdA = "            << psdA
+                           << ", varOfMeanA = "      << varOfMeanA
+                           << "\n"
+                           << ", dataSizeB = "       << dataSizeB
+                           << ", numBlocksB = "      << (unsigned int) std::sqrt((double) dataSizeB)
+                           << ", meanB = "           << meanB
+                           << ", psdB = "            << psdB
+                           << ", varOfMeanB = "      << varOfMeanB
+                           << std::endl;
   }
-  double gewCoef = (meanA - meanB)/sqrt(varOfMeanA + varOfMeanB);
+  double gewCoef = (meanA - meanB)/std::sqrt(varOfMeanA + varOfMeanB);
 
   return gewCoef;
 }
 
 template <class T>
+T
+uqScalarSequenceClass<T>::meanStacc(
+  unsigned int initialPos) const
+{
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.fullRank(),
+                      "uqScalarSequenceClass<T>::meanStacc()",
+                      "not implemented yet"); // ERNESTO
+
+  double value = 0.;
+
+  return value;
+}
+
+template <class T>
 void
-uqScalarSequenceClass<T>::minMax(
+uqScalarSequenceClass<T>::subMinMax(
   unsigned int initialPos,
   T&           minValue,
   T&           maxValue) const
@@ -925,7 +1229,79 @@ uqScalarSequenceClass<T>::minMax(
 
 template <class T>
 void
-uqScalarSequenceClass<T>::histogram(
+uqScalarSequenceClass<T>::unifiedMinMax(
+  bool         useOnlyInter0Comm,
+  unsigned int initialPos,
+  T&           unifiedMinValue,
+  T&           unifiedMaxValue) const
+{
+  if (m_env.numSubEnvironments() == 1) {
+    return this->subMinMax(initialPos,
+                           unifiedMinValue,
+                           unifiedMaxValue);
+  }
+
+  if (useOnlyInter0Comm) {
+    if (m_env.inter0Rank() >= 0) {
+      // Find local min and max
+      T minValue;
+      T maxValue;
+      this->subMinMax(initialPos,
+                      minValue,
+                      maxValue);
+
+      // Get overall min
+      std::vector<double> sendBuf(1,0.);
+      for (unsigned int i = 0; i < sendBuf.size(); ++i) {
+        sendBuf[i] = minValue;
+      }
+      int mpiRC = MPI_Allreduce((void *) &sendBuf[0], (void *) &unifiedMinValue, (int) sendBuf.size(), MPI_DOUBLE, MPI_MIN, m_env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::unifiedMinMax()",
+                          "failed MPI_Allreduce() for min");
+
+      // Get overall max
+      for (unsigned int i = 0; i < sendBuf.size(); ++i) {
+        sendBuf[i] = maxValue;
+      }
+      mpiRC = MPI_Allreduce((void *) &sendBuf[0], (void *) &unifiedMaxValue, (int) sendBuf.size(), MPI_DOUBLE, MPI_MAX, m_env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::unifiedMinMax()",
+                          "failed MPI_Allreduce() for max");
+
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+        *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedMinMax()"
+                               << ": localMinValue = "   << minValue
+                               << ", localMaxValue = "   << maxValue
+                               << ", unifiedMinValue = " << unifiedMinValue
+                               << ", unifiedMaxValue = " << unifiedMaxValue
+                               << std::endl;
+      }
+    }
+    else {
+      // Node not in the 'inter0' communicator
+      this->subMinMax(initialPos,
+                      unifiedMinValue,
+                      unifiedMaxValue);
+    }
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.fullRank(),
+                        "uqScalarSequenceClass<T>::unifiedMinMax()",
+                        "parallel vectors not supported yet");
+  }
+
+  //m_env.fullComm().Barrier();
+
+  return;
+}
+
+template <class T>
+void
+uqScalarSequenceClass<T>::subHistogram(
   unsigned int               initialPos,
   const T&                   minHorizontalValue,
   const T&                   maxHorizontalValue,
@@ -933,13 +1309,13 @@ uqScalarSequenceClass<T>::histogram(
   std::vector<unsigned int>& bins) const
 {
   UQ_FATAL_TEST_MACRO(centers.size() != bins.size(),
-                      UQ_UNAVAILABLE_RANK,
-                      "uqScalarSequenceClass<T>::histogram()",
+                      m_env.fullRank(),
+                      "uqScalarSequenceClass<T>::subHistogram()",
                       "vectors 'centers' and 'bins' have different sizes");
 
   UQ_FATAL_TEST_MACRO(bins.size() < 3,
-                      UQ_UNAVAILABLE_RANK,
-                      "uqScalarSequenceClass<T>::histogram()",
+                      m_env.fullRank(),
+                      "uqScalarSequenceClass<T>::subHistogram()",
                       "number of 'bins' is too small: should be at least 3");
 
   for (unsigned int j = 0; j < bins.size(); ++j) {
@@ -947,7 +1323,7 @@ uqScalarSequenceClass<T>::histogram(
     bins[j] = 0;
   }
 
-  double horizontalDelta = (maxHorizontalValue - minHorizontalValue)/(((double) bins.size()) - 2.);
+  double horizontalDelta = (maxHorizontalValue - minHorizontalValue)/(((double) bins.size()) - 2.); // IMPORTANT: -2
 
   double minCenter = minHorizontalValue - horizontalDelta/2.;
   double maxCenter = maxHorizontalValue + horizontalDelta/2.;
@@ -956,7 +1332,7 @@ uqScalarSequenceClass<T>::histogram(
     centers[j] = (1. - factor) * minCenter + factor * maxCenter;
   }
 
-  unsigned int dataSize = this->sequenceSize();
+  unsigned int dataSize = this->subSequenceSize();
   for (unsigned int j = 0; j < dataSize; ++j) {
     double value = m_seq[j];
     if (value < minHorizontalValue) {
@@ -976,105 +1352,760 @@ uqScalarSequenceClass<T>::histogram(
 
 template <class T>
 void
-uqScalarSequenceClass<T>::sort(
-  unsigned int              initialPos,
-  uqScalarSequenceClass<T>& sortedSequence) const
+uqScalarSequenceClass<T>::unifiedHistogram(
+  bool                       useOnlyInter0Comm,
+  unsigned int               initialPos,
+  const T&                   unifiedMinHorizontalValue,
+  const T&                   unifiedMaxHorizontalValue,
+  std::vector<T>&            unifiedCenters,
+  std::vector<unsigned int>& unifiedBins) const
 {
-  unsigned int numPos = this->sequenceSize() - initialPos;
-  sortedSequence.resizeSequence(numPos);
-  this->extractScalarSeq(initialPos,
-                         1,
-                         numPos,
-                         sortedSequence);
-  sortedSequence.sort();
+  if (m_env.numSubEnvironments() == 1) {
+    return this->subHistogram(initialPos,
+                              unifiedMinHorizontalValue,
+                              unifiedMaxHorizontalValue,
+                              unifiedCenters,
+                              unifiedBins);
+  }
+
+  if (useOnlyInter0Comm) {
+    if (m_env.inter0Rank() >= 0) {
+      UQ_FATAL_TEST_MACRO(unifiedCenters.size() != unifiedBins.size(),
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::unifiedHistogram()",
+                          "vectors 'unifiedCenters' and 'unifiedBins' have different sizes");
+
+      UQ_FATAL_TEST_MACRO(unifiedBins.size() < 3,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::unifiedHistogram()",
+                          "number of 'unifiedBins' is too small: should be at least 3");
+
+      for (unsigned int j = 0; j < unifiedBins.size(); ++j) {
+        unifiedCenters[j] = 0.;
+        unifiedBins[j] = 0;
+      }
+
+      double unifiedHorizontalDelta = (unifiedMaxHorizontalValue - unifiedMinHorizontalValue)/(((double) unifiedBins.size()) - 2.); // IMPORTANT: -2
+
+      double unifiedMinCenter = unifiedMinHorizontalValue - unifiedHorizontalDelta/2.;
+      double unifiedMaxCenter = unifiedMaxHorizontalValue + unifiedHorizontalDelta/2.;
+      for (unsigned int j = 0; j < unifiedCenters.size(); ++j) {
+        double factor = ((double) j)/(((double) unifiedCenters.size()) - 1.);
+        unifiedCenters[j] = (1. - factor) * unifiedMinCenter + factor * unifiedMaxCenter;
+      }
+
+      std::vector<unsigned int> localBins(unifiedBins.size(),0);
+      unsigned int dataSize = this->subSequenceSize();
+      for (unsigned int j = 0; j < dataSize; ++j) {
+        double value = m_seq[j];
+        if (value < unifiedMinHorizontalValue) {
+          localBins[0]++;
+        }
+        else if (value >= unifiedMaxHorizontalValue) {
+          localBins[localBins.size()-1]++;
+        }
+        else {
+          unsigned int index = 1 + (unsigned int) ((value - unifiedMinHorizontalValue)/unifiedHorizontalDelta);
+          localBins[index]++;
+        }
+      }
+
+      int mpiRC = MPI_Allreduce((void *) &localBins[0], (void *) &unifiedBins[0], (int) localBins.size(), MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::unifiedHistogram()",
+                          "failed MPI_Allreduce() for bins");
+
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+        for (unsigned int i = 0; i < unifiedCenters.size(); ++i) {
+          *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedHistogram()"
+                                 << ": i = " << i
+                                 << ", unifiedMinHorizontalValue = " << unifiedMinHorizontalValue
+                                 << ", unifiedMaxHorizontalValue = " << unifiedMaxHorizontalValue
+                                 << ", unifiedCenters = "            << unifiedCenters[i]
+                                 << ", unifiedBins = "               << unifiedBins[i]
+                                 << std::endl;
+        }
+      }
+    }
+    else {
+      // Node not in the 'inter0' communicator
+      this->subHistogram(initialPos,
+                         unifiedMinHorizontalValue,
+                         unifiedMaxHorizontalValue,
+                         unifiedCenters,
+                         unifiedBins);
+    }
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.fullRank(),
+                        "uqScalarSequenceClass<T>::unifiedHistogram()",
+                        "parallel vectors not supported yet");
+  }
+
+  //m_env.fullComm().Barrier();
 
   return;
 }
 
 template <class T>
 void
-uqScalarSequenceClass<T>::sort()
+uqScalarSequenceClass<T>::subCdfStacc(
+  unsigned int          initialPos,
+  const std::vector<T>& evaluationPositions,
+  std::vector<double>&  cdfStaccValues) const
+{
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.fullRank(),
+                      "uqScalarSequenceClass<T>::subCdfStacc()",
+                      "not implemented yet"); // ERNESTO
+
+  bool bRC = ((initialPos                 <  this->subSequenceSize()   ) &&
+              (0                          <  evaluationPositions.size()) &&
+              (evaluationPositions.size() == cdfStaccValues.size()     ));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.fullRank(),
+                      "uqScalarSequenceClass<V>::subGaussianKDE()",
+                      "invalid input data");
+
+  unsigned int dataSize = this->subSequenceSize() - initialPos;
+  unsigned int numEvals = evaluationPositions.size();
+
+  for (unsigned int j = 0; j < numEvals; ++j) {
+    //double x = evaluationPositions[j];
+    double value = 0.;
+    for (unsigned int k = 0; k < dataSize; ++k) {
+      //double xk = m_seq[initialPos+k];
+      value += 0.;//uqMiscGaussianDensity((x-xk)*scaleInv,0.,1.);
+    }
+    cdfStaccValues[j] = value/(double) dataSize;
+  }
+
+  return;
+}
+
+template <class T>
+void
+uqScalarSequenceClass<T>::subSort(
+  unsigned int              initialPos,
+  uqScalarSequenceClass<T>& sortedSequence) const
+{
+  unsigned int numPos = this->subSequenceSize() - initialPos;
+  sortedSequence.resizeSequence(numPos);
+  this->extractScalarSeq(initialPos,
+                         1,
+                         numPos,
+                         sortedSequence);
+  sortedSequence.subSort();
+
+  return;
+}
+
+template <class T>
+void
+uqScalarSequenceClass<T>::subSort()
 {
   std::sort(m_seq.begin(), m_seq.end());
   return;
 }
 
 template <class T>
-T
-uqScalarSequenceClass<T>::interQuantileRange(unsigned int initialPos) const
+void
+uqScalarSequenceClass<T>::unifiedSort(
+  bool                      useOnlyInter0Comm,
+  unsigned int              initialPos,
+  uqScalarSequenceClass<T>& unifiedSortedSequence) const
 {
-  unsigned int dataSize = this->sequenceSize() - initialPos;
+  if (m_env.numSubEnvironments() == 1) {
+    return this->subSort(initialPos,unifiedSortedSequence);
+  }
+
+  if (useOnlyInter0Comm) {
+    if (m_env.inter0Rank() >= 0) {
+      m_env.syncPrintDebugMsg("In uqScalarSequenceClass<T>::unifiedSort(), beginning logic",3,3000000,m_env.inter0Comm());
+
+      unsigned int localNumPos = this->subSequenceSize() - initialPos;
+
+      std::vector<T> leafData(localNumPos,0.);
+      this->extractRawData(0,
+                           1,
+                           localNumPos,
+                           leafData);
+
+      if (m_env.inter0Rank() == 0) {
+        int minus1NumTreeLevels = 0;
+        int power2NumTreeNodes  = 1;
+
+        while (power2NumTreeNodes < m_env.inter0Comm().NumProc()) {
+          power2NumTreeNodes += power2NumTreeNodes;
+          minus1NumTreeLevels++;
+        }
+
+        if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+          *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedSort()"
+                                 << ": sorting tree has " << m_env.inter0Comm().NumProc()
+                                 << " nodes and "         << minus1NumTreeLevels+1
+                                 << " levels"
+                                 << std::endl;
+        }
+
+        this->parallelMerge(unifiedSortedSequence.rawData(),
+                            leafData,
+                            minus1NumTreeLevels);
+      }
+      else {
+        unsigned int uintBuffer[1];
+        MPI_Status   status;
+        int mpiRC = MPI_Recv((void *) uintBuffer, 1, MPI_UNSIGNED, MPI_ANY_SOURCE, SCALAR_SEQUENCE_INIT_MPI_MSG, m_env.inter0Comm().Comm(), &status);
+        UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                            m_env.fullRank(),
+                            "uqScalarSequenceClass<T>::unifiedSort()",
+                            "failed MPI_Recv() for init");
+
+        unsigned int treeLevel = uintBuffer[0];
+        this->parallelMerge(unifiedSortedSequence.rawData(),
+                            leafData,
+                            treeLevel);
+      }
+
+      m_env.syncPrintDebugMsg("In uqScalarSequenceClass<T>::unifiedSort(), returned from parallelMerge()",3,3000000,m_env.inter0Comm());
+
+      // Broadcast
+      unsigned int unifiedDataSize = unifiedSortedSequence.subSequenceSize();
+      int mpiRC = MPI_Bcast((void *) &unifiedDataSize, (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::unifiedSort()",
+                          "failed MPI_Bcast() for unified data size");
+
+      unsigned int sumOfNumPos = 0;
+      mpiRC = MPI_Allreduce((void *) &localNumPos, (void *) &sumOfNumPos, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::unifiedSort()",
+                          "failed MPI_Allreduce() for data size");
+
+      UQ_FATAL_TEST_MACRO(sumOfNumPos != unifiedDataSize,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::unifiedSort()",
+                          "incompatible unified sizes");
+
+      unifiedSortedSequence.resizeSequence(unifiedDataSize);
+      mpiRC = MPI_Bcast((void *) &unifiedSortedSequence.rawData()[0], (int) unifiedDataSize, MPI_DOUBLE, 0, m_env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::unifiedSort()",
+                          "failed MPI_Bcast() for unified data");
+
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+        *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::parallelMerge()"
+                               << ": tree node "                                                                    << m_env.inter0Rank()
+                               << ", unifiedSortedSequence[0] = "                                                   << unifiedSortedSequence[0]
+                               << ", unifiedSortedSequence[" << unifiedSortedSequence.subSequenceSize()-1 << "] = " << unifiedSortedSequence[unifiedSortedSequence.subSequenceSize()-1]
+                               << std::endl;
+      }
+
+      m_env.syncPrintDebugMsg("In uqScalarSequenceClass<T>::unifiedSort(), ending logic",3,3000000,m_env.inter0Comm());
+    }
+    else {
+      // Node not in the 'inter0' communicator
+      this->subSort(initialPos,unifiedSortedSequence);
+    }
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.fullRank(),
+                        "uqScalarSequenceClass<T>::unifiedSort()",
+                        "parallel vectors not supported yet");
+  }
+
+  //m_env.fullComm().Barrier();
+
+  return;
+}
+
+// Acknowledgement: the tree idea in this routine was taken from
+// 'http://penguin.ewu.edu/~trolfe/ParallelMerge/ParallelMerge.html', as of March 08, 2009
+template <class T>
+void
+uqScalarSequenceClass<T>::parallelMerge(
+  std::vector<T>&       sortedBuffer,
+  const std::vector<T>& leafData,
+  unsigned int          currentTreeLevel) const
+{
+  int parentNode = m_env.inter0Rank() & ~(1 << currentTreeLevel);
+
+  if (currentTreeLevel == 0) {
+    // Leaf node: sort own local data.
+    unsigned int leafDataSize = leafData.size();
+    sortedBuffer.resize(leafDataSize,0.);
+    for (unsigned int i = 0; i < leafDataSize; ++i) {
+      sortedBuffer[i] = leafData[i];
+    }
+    std::sort(sortedBuffer.begin(), sortedBuffer.end());
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+      *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::parallelMerge()"
+                             << ": tree node "                                            << m_env.inter0Rank()
+                             << ", leaf sortedBuffer[0] = "                               << sortedBuffer[0]
+                             << ", leaf sortedBuffer[" << sortedBuffer.size()-1 << "] = " << sortedBuffer[sortedBuffer.size()-1]
+                             << std::endl;
+    }
+  }
+  else {
+    int nextTreeLevel  = currentTreeLevel - 1;
+    int rightChildNode = m_env.inter0Rank() | (1 << nextTreeLevel);
+
+    if (rightChildNode >= m_env.inter0Comm().NumProc()) { // No right child. Move down one level.
+      this->parallelMerge(sortedBuffer,
+                          leafData,
+                          nextTreeLevel);
+    }
+    else {
+      unsigned int uintBuffer[1];
+      uintBuffer[0] = nextTreeLevel;
+      int mpiRC = MPI_Send((void *) uintBuffer, 1, MPI_UNSIGNED, rightChildNode, SCALAR_SEQUENCE_INIT_MPI_MSG, m_env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::parallelMerge()",
+                          "failed MPI_Send() for init");
+
+      this->parallelMerge(sortedBuffer,
+                          leafData,
+                          nextTreeLevel);
+
+      // Prepare variable 'leftSortedBuffer': just copy own current sorted data.
+      unsigned int leftSize = sortedBuffer.size();
+      std::vector<T> leftSortedBuffer(leftSize,0.);
+      for (unsigned int i = 0; i < leftSize; ++i) {
+        leftSortedBuffer[i] = sortedBuffer[i];
+      }
+
+      // Prepare variable 'rightSortedBuffer': receive data from right child node.
+      MPI_Status   status;
+      mpiRC = MPI_Recv((void *) uintBuffer, 1, MPI_UNSIGNED, rightChildNode, SCALAR_SEQUENCE_SIZE_MPI_MSG, m_env.inter0Comm().Comm(), &status);
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::parallelMerge()",
+                          "failed MPI_Recv() for size");
+
+      unsigned int rightSize = uintBuffer[0];
+      std::vector<T> rightSortedBuffer(rightSize,0.);
+      mpiRC = MPI_Recv((void *) &rightSortedBuffer[0], (int) rightSize, MPI_DOUBLE, rightChildNode, SCALAR_SEQUENCE_DATA_MPI_MSG, m_env.inter0Comm().Comm(), &status);
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::parallelMerge()",
+                          "failed MPI_Recv() for data");
+
+      // Merge the two results into 'sortedBuffer'.
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+        *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::parallelMerge()"
+                               << ": tree node "        << m_env.inter0Rank()
+                               << " is combining "      << leftSortedBuffer.size()
+                               << " left doubles with " << rightSortedBuffer.size()
+                               << " right doubles"
+                               << std::endl;
+      }
+
+      sortedBuffer.clear();
+      sortedBuffer.resize(leftSortedBuffer.size()+rightSortedBuffer.size(),0.);
+      unsigned int i = 0;
+      unsigned int j = 0;
+      unsigned int k = 0;
+      while ((i < leftSize ) &&
+             (j < rightSize)) {
+        if (leftSortedBuffer[i] > rightSortedBuffer[j]) sortedBuffer[k++] = rightSortedBuffer[j++];
+        else                                            sortedBuffer[k++] = leftSortedBuffer [i++];
+      }
+      while (i < leftSize ) sortedBuffer[k++] = leftSortedBuffer [i++];
+      while (j < rightSize) sortedBuffer[k++] = rightSortedBuffer[j++];
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+        *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::parallelMerge()"
+                               << ": tree node "                                              << m_env.inter0Rank()
+                               << ", merged sortedBuffer[0] = "                               << sortedBuffer[0]
+                               << ", merged sortedBuffer[" << sortedBuffer.size()-1 << "] = " << sortedBuffer[sortedBuffer.size()-1]
+                               << std::endl;
+      }
+    }
+  }
+
+  if (parentNode != m_env.inter0Rank()) {
+    // Transmit data to parent node.
+    unsigned int uintBuffer[1];
+    uintBuffer[0] = sortedBuffer.size();
+    int mpiRC = MPI_Send((void *) uintBuffer, 1, MPI_UNSIGNED, parentNode, SCALAR_SEQUENCE_SIZE_MPI_MSG, m_env.inter0Comm().Comm());
+    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                        m_env.fullRank(),
+                        "uqScalarSequenceClass<T>::parallelMerge()",
+                        "failed MPI_Send() for size");
+
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+      *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::parallelMerge()"
+                             << ": tree node "                                          << m_env.inter0Rank()
+                             << " is sending "                                          << sortedBuffer.size()
+                             << " doubles to tree node "                                << parentNode 
+                             << ", with sortedBuffer[0] = "                             << sortedBuffer[0]
+                             << " and sortedBuffer[" << sortedBuffer.size()-1 << "] = " << sortedBuffer[sortedBuffer.size()-1]
+                             << std::endl;
+    }
+
+    mpiRC = MPI_Send((void *) &sortedBuffer[0], (int) sortedBuffer.size(), MPI_DOUBLE, parentNode, SCALAR_SEQUENCE_DATA_MPI_MSG, m_env.inter0Comm().Comm());
+    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                        m_env.fullRank(),
+                        "uqScalarSequenceClass<T>::parallelMerge()",
+                        "failed MPI_Send() for data");
+  }
+
+  return;
+}
+
+template <class T>
+T
+uqScalarSequenceClass<T>::subInterQuantileRange(unsigned int initialPos) const
+{
+  UQ_FATAL_TEST_MACRO(initialPos >= this->subSequenceSize(),
+                      m_env.fullRank(),
+                      "uqScalarSequenceClass<T>::subInterQuantileRange()",
+                      "'initialPos' is too big");
 
   uqScalarSequenceClass sortedSequence(m_env,0);
-  this->sort(initialPos,
-             sortedSequence);
+  this->subSort(initialPos,
+                sortedSequence);
 
+  // The test above guarantees that 'dataSize >= 1'
+  unsigned int dataSize = this->subSequenceSize() - initialPos;
+
+  UQ_FATAL_TEST_MACRO(dataSize != sortedSequence.subSequenceSize(),
+                      m_env.fullRank(),
+                      "uqScalarSequenceClass<T>::subInterQuantileRange()",
+                      "inconsistent size variables");
+
+  bool everythingOk = true;
+
+  // pos1 = (dataSize+1)/4 - 1
+  // pos1 >= 0            <==> dataSize   >= 3
+  // pos1 <  (dataSize-1) <==> 3*dataSize >  1 
   unsigned int pos1 = (unsigned int) ( (((double) dataSize) + 1.)*1./4. - 1. );
+  if (pos1 > (dataSize-1)) {
+    pos1 = 0;
+    everythingOk = false;
+  }
+  unsigned int pos1inc = pos1+1;
+  if (pos1inc > (dataSize-1)) {
+    pos1inc = dataSize-1;
+    everythingOk = false;
+  }
+
+  // pos3 = (dataSize+1)*3/4 - 1
+  // pos3 >= 0            <==> dataSize >= 1/3
+  // pos3 <  (dataSize-1) <==> dataSize >  3 
   unsigned int pos3 = (unsigned int) ( (((double) dataSize) + 1.)*3./4. - 1. );
+  if (pos3 > (dataSize-1)) {
+    pos3 = 0;
+    everythingOk = false;
+  }
+  unsigned int pos3inc = pos3+1;
+  if (pos3inc > (dataSize-1)) {
+    pos3inc = dataSize-1;
+    everythingOk = false;
+  }
 
   double fraction1 = (((double) dataSize) + 1.)*1./4. - 1. - ((double) pos1);
+  if (fraction1 < 0.) {
+    fraction1 = 0.;
+    everythingOk = false;
+  }
   double fraction3 = (((double) dataSize) + 1.)*3./4. - 1. - ((double) pos3);
+  if (fraction3 < 0.) {
+    fraction3 = 0.;
+    everythingOk = false;
+  }
 
-  //std::cout << "In uqScalarSequenceClass::interQuantileRange()"
-  //          << ", initialPos = "            << initialPos
-  //          << ", this->sequenceSize() = "  << this->sequenceSize()
-  //          << ", dataSize = "              << dataSize
-  //          << ", sortedSequence.size() = " << sortedSequence.size()
-  //          << ", pos1 = "                  << pos1
-  //          << ", pos3 = "                  << pos3
-  //          << std::endl;
-  T value1 = (1.-fraction1) * sortedSequence[pos1] + fraction1 * sortedSequence[pos1+1];
-  T value3 = (1.-fraction3) * sortedSequence[pos3] + fraction3 * sortedSequence[pos3+1];
+  if (everythingOk == false) {
+    std::cerr << "In uqScalarSequenceClass<T>::subInterQuantileRange()"
+              << ", fullRank = " << m_env.fullRank()
+              << ": at least one adjustment was necessary"
+              << std::endl;
+  }
+
+  //if (m_env.subDisplayFile()) {
+  //  *m_env.subDisplayFile() << "In uqScalarSequenceClass::subInterQuantileRange()"
+  //                         << ", initialPos = "               << initialPos
+  //                         << ", this->subSequenceSize() = "  << this->subSequenceSize()
+  //                         << ", dataSize = "                 << dataSize
+  //                         << ", sortedSequence.size() = "    << sortedSequence.size()
+  //                         << ", pos1 = "                     << pos1
+  //                         << ", pos3 = "                     << pos3
+  //                         << std::endl;
+  //}
+
+  T value1 = (1.-fraction1) * sortedSequence[pos1] + fraction1 * sortedSequence[pos1inc];
+  T value3 = (1.-fraction3) * sortedSequence[pos3] + fraction3 * sortedSequence[pos3inc];
   T iqrValue = value3 - value1;
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+    *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::subInterQuantileRange()"
+                           << ": iqrValue = " << iqrValue
+                           << ", dataSize = " << dataSize
+                           << ", pos1 = "     << pos1
+                           << ", pos3 = "     << pos3
+                           << ", value1 = "   << value1
+                           << ", value3 = "   << value3
+                           << std::endl;
+
+    // Save data only once into a separate file
+    //std::ofstream* ofsvar = new std::ofstream(("sort_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
+    //if ((ofsvar            == NULL ) ||
+    //    (ofsvar->is_open() == false)) {
+    //  delete ofsvar;
+    //  ofsvar = new std::ofstream(("sort_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
+
+    //  *ofsvar << "var_sort_sub" << m_env.subIdString() << " = zeros(" << 1
+    //          << ","                                                  << dataSize
+    //          << ");"
+    //          << std::endl;
+    //  for (unsigned int j = 0; j < dataSize; ++j) {
+    //    *ofsvar << "var_sort_sub" << m_env.subIdString() << "(" << 1
+    //            << ","                                          << j+1
+    //            << ") = "                                       << sortedSequence[j]
+    //            << ";"
+    //            << std::endl;
+    //  }
+    //}
+    //delete ofsvar;
+  }
+
 
   return iqrValue;
 }
 
 template <class T>
 T
-uqScalarSequenceClass<T>::scaleForKDE(
+uqScalarSequenceClass<T>::unifiedInterQuantileRange(
+  bool         useOnlyInter0Comm,
+  unsigned int initialPos) const
+{
+  T unifiedIqrValue = 0.;
+
+  if (m_env.numSubEnvironments() == 1) {
+    return this->subInterQuantileRange(initialPos);
+  }
+
+  if (useOnlyInter0Comm) {
+    if (m_env.inter0Rank() >= 0) {
+      m_env.syncPrintDebugMsg("In uqScalarSequenceClass<T>::unifiedInterQuantileRange(), beginning logic",3,3000000,m_env.inter0Comm());
+
+      uqScalarSequenceClass unifiedSortedSequence(m_env,0);
+      this->unifiedSort(useOnlyInter0Comm,
+                        initialPos,
+                        unifiedSortedSequence);
+      unsigned int unifiedDataSize = unifiedSortedSequence.subSequenceSize();
+    
+      unsigned int localDataSize = this->subSequenceSize() - initialPos;
+      unsigned int sumOfLocalSizes = 0;
+      int mpiRC = MPI_Allreduce((void *) &localDataSize, (void *) &sumOfLocalSizes, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::unifiedInterQuantileRange()",
+                          "failed MPI_Allreduce() for data size");
+
+      UQ_FATAL_TEST_MACRO(sumOfLocalSizes != unifiedDataSize,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::unifiedInterQuantileRange()",
+                          "incompatible unified sizes");
+
+      unsigned int pos1 = (unsigned int) ( (((double) unifiedDataSize) + 1.)*1./4. - 1. );
+      unsigned int pos3 = (unsigned int) ( (((double) unifiedDataSize) + 1.)*3./4. - 1. );
+
+      double fraction1 = (((double) unifiedDataSize) + 1.)*1./4. - 1. - ((double) pos1);
+      double fraction3 = (((double) unifiedDataSize) + 1.)*3./4. - 1. - ((double) pos3);
+
+      T value1 = (1.-fraction1) * unifiedSortedSequence[pos1] + fraction1 * unifiedSortedSequence[pos1+1];
+      T value3 = (1.-fraction3) * unifiedSortedSequence[pos3] + fraction3 * unifiedSortedSequence[pos3+1];
+      unifiedIqrValue = value3 - value1;
+
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+        *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedInterQuantileRange()"
+                               << ": unifiedIqrValue = " << unifiedIqrValue
+                               << ", localDataSize = "   << localDataSize
+                               << ", unifiedDataSize = " << unifiedDataSize
+                               << ", pos1 = "            << pos1
+                               << ", pos3 = "            << pos3
+                               << ", value1 = "          << value1
+                               << ", value3 = "          << value3
+                               << std::endl;
+
+        // Save data only once into a separate file
+	//std::ofstream* ofsvar = new std::ofstream(("unif_sort_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
+        //if ((ofsvar            == NULL ) ||
+        //    (ofsvar->is_open() == false)) {
+        //  delete ofsvar;
+        //  ofsvar = new std::ofstream(("unif_sort_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
+
+        //  *ofsvar << "var_unif_sort_sub" << m_env.subIdString() << " = zeros(" << 1
+        //          << ","                                                       << unifiedDataSize
+        //          << ");"
+        //          << std::endl;
+        //  for (unsigned int j = 0; j < unifiedDataSize; ++j) {
+        //    *ofsvar << "var_unif_sort_sub" << m_env.subIdString() << "(" << 1
+        //            << ","                                               << j+1
+        //            << ") = "                                            << unifiedSortedSequence[j]
+        //            << ";"
+        //            << std::endl;
+        //  }
+        //}
+        //delete ofsvar;
+      }
+
+      m_env.syncPrintDebugMsg("In uqScalarSequenceClass<T>::unifiedInterQuantileRange(), ending logic",3,3000000,m_env.inter0Comm());
+    }
+    else {
+      // Node not in the 'inter0' communicator
+      unifiedIqrValue = this->subInterQuantileRange(initialPos);
+    }
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.fullRank(),
+                        "uqScalarSequenceClass<T>::unifiedInterQuantileRange()",
+                        "parallel vectors not supported yet");
+  }
+
+  //m_env.fullComm().Barrier();
+
+  return unifiedIqrValue;
+}
+
+template <class T>
+T
+uqScalarSequenceClass<T>::subScaleForKDE(
   unsigned int initialPos,
   const T&     iqrValue) const
 {
-  bool bRC = (initialPos <  this->sequenceSize());
+  bool bRC = (initialPos <  this->subSequenceSize());
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
-                      "uqScalarSequenceClass<V>::scalesForKDE()",
+                      m_env.fullRank(),
+                      "uqScalarSequenceClass<V>::subScaleForKDE()",
                       "invalid input data");
 
-  unsigned int dataSize = this->sequenceSize() - initialPos;
+  unsigned int dataSize = this->subSequenceSize() - initialPos;
 
-  T meanValue = this->mean(initialPos,
-                           dataSize);
+  T meanValue = this->subMean(initialPos,
+                              dataSize);
 
-  T samValue = this->sampleVariance(initialPos,
-                                    dataSize,
-                                    meanValue);
+  T samValue = this->subSampleVariance(initialPos,
+                                       dataSize,
+                                       meanValue);
 
   T scaleValue;
   if (iqrValue <= 0.) {
-    scaleValue = 1.06*sqrt(samValue)/pow(dataSize,1./5.);
+    scaleValue = 1.06*std::sqrt(samValue)/std::pow(dataSize,1./5.);
    }
   else {
-    scaleValue = 1.06*std::min(sqrt(samValue),iqrValue/1.34)/pow(dataSize,1./5.);
+    scaleValue = 1.06*std::min(std::sqrt(samValue),iqrValue/1.34)/std::pow(dataSize,1./5.);
+  }
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+    *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::subScaleForKDE()"
+                           << ": iqrValue = "   << iqrValue
+                           << ", meanValue = "  << meanValue
+                           << ", samValue = "   << samValue
+                           << ", dataSize = "   << dataSize
+                           << ", scaleValue = " << scaleValue
+                           << std::endl;
   }
 
   return scaleValue;
 }
 
 template <class T>
-double
-uqScalarSequenceClass<T>::gaussianKDE(T evaluationParam) const
+T
+uqScalarSequenceClass<T>::unifiedScaleForKDE(
+  bool         useOnlyInter0Comm,
+  unsigned int initialPos,
+  const T&     unifiedIqrValue) const
 {
-  T iqrValue = this->interQuantileRange(0); // Use the whole chain
+  if (m_env.numSubEnvironments() == 1) {
+    return this->subScaleForKDE(initialPos,
+                                unifiedIqrValue);
+  }
 
-  T scaleValue = this->scaleForKDE(0, // Use the whole chain
-                                   iqrValue);
+  T unifiedScaleValue = 0.;
 
-  unsigned int dataSize = this->sequenceSize();
+  if (useOnlyInter0Comm) {
+    if (m_env.inter0Rank() >= 0) {
+      bool bRC = (initialPos <  this->subSequenceSize());
+      UQ_FATAL_TEST_MACRO(bRC == false,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<V>::unifiedScaleForKDE()",
+                          "invalid input data");
+
+      unsigned int localDataSize = this->subSequenceSize() - initialPos;
+
+      T unifiedMeanValue = this->unifiedMean(useOnlyInter0Comm,
+                                             initialPos,
+                                             localDataSize);
+
+      T unifiedSamValue = this->unifiedSampleVariance(useOnlyInter0Comm,
+                                                      initialPos,
+                                                      localDataSize,
+                                                      unifiedMeanValue);
+
+      unsigned int unifiedDataSize = 0;
+      int mpiRC = MPI_Allreduce((void *) &localDataSize, (void *) &unifiedDataSize, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::unifiedUniformlySampledCdf()",
+                          "failed MPI_Allreduce() for data size");
+
+      if (unifiedIqrValue <= 0.) {
+        unifiedScaleValue = 1.06*std::sqrt(unifiedSamValue)/std::pow(unifiedDataSize,1./5.);
+      }
+      else {
+        unifiedScaleValue = 1.06*std::min(std::sqrt(unifiedSamValue),unifiedIqrValue/1.34)/std::pow(unifiedDataSize,1./5.);
+      }
+
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+        *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedScaleForKDE()"
+                               << ": unifiedIqrValue = "   << unifiedIqrValue
+                               << ", unifiedMeanValue = "  << unifiedMeanValue
+                               << ", unifiedSamValue = "   << unifiedSamValue
+                               << ", unifiedDataSize = "   << unifiedDataSize
+                               << ", unifiedScaleValue = " << unifiedScaleValue
+                               << std::endl;
+      }
+    }
+    else {
+      // Node not in the 'inter0' communicator
+      unifiedScaleValue = this->subScaleForKDE(initialPos,
+                                               unifiedIqrValue);
+    }
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.fullRank(),
+                        "uqScalarSequenceClass<T>::unifiedScaleForKDE()",
+                        "parallel vectors not supported yet");
+  }
+
+  //m_env.fullComm().Barrier();
+
+  return unifiedScaleValue;
+}
+#if 0
+template <class T>
+double
+uqScalarSequenceClass<T>::sabGaussianKDE(T evaluationPosition) const
+{
+  T iqrValue = this->subInterQuantileRange(0); // Use the whole chain
+
+  T scaleValue = this->subScaleForKDE(0, // Use the whole chain
+                                      iqrValue);
+
+  unsigned int dataSize = this->subSequenceSize();
 
   double scaleInv = 1./scaleValue;
-  double x = evaluationParam;
+  double x = evaluationPosition;
   double value = 0.;
   for (unsigned int k = 0; k < dataSize; ++k) {
     double xk = m_seq[k];
@@ -1083,29 +2114,29 @@ uqScalarSequenceClass<T>::gaussianKDE(T evaluationParam) const
 
   return scaleInv * (value/(double) dataSize);
 }
-
+#endif
 template <class T>
 void
-uqScalarSequenceClass<T>::gaussianKDE(
+uqScalarSequenceClass<T>::subGaussianKDE(
   unsigned int          initialPos,
   double                scaleValue,
-  const std::vector<T>& evaluationParams,
+  const std::vector<T>& evaluationPositions,
   std::vector<double>&  densityValues) const
 {
-  bool bRC = ((initialPos                 <  this->sequenceSize()   ) &&
-              (0                          <  evaluationParams.size()) &&
-              (evaluationParams.size() == densityValues.size()      ));
+  bool bRC = ((initialPos                 <  this->subSequenceSize()   ) &&
+              (0                          <  evaluationPositions.size()) &&
+              (evaluationPositions.size() == densityValues.size()      ));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.rank(),
-                      "uqScalarSequenceClass<V>::gaussianKDE()",
+                      m_env.fullRank(),
+                      "uqScalarSequenceClass<V>::subGaussianKDE()",
                       "invalid input data");
 
-  unsigned int dataSize = this->sequenceSize() - initialPos;
-  unsigned int numEvals = evaluationParams.size();
+  unsigned int dataSize = this->subSequenceSize() - initialPos;
+  unsigned int numEvals = evaluationPositions.size();
 
   double scaleInv = 1./scaleValue;
   for (unsigned int j = 0; j < numEvals; ++j) {
-    double x = evaluationParams[j];
+    double x = evaluationPositions[j];
     double value = 0.;
     for (unsigned int k = 0; k < dataSize; ++k) {
       double xk = m_seq[initialPos+k];
@@ -1113,6 +2144,94 @@ uqScalarSequenceClass<T>::gaussianKDE(
     }
     densityValues[j] = scaleInv * (value/(double) dataSize);
   }
+
+  return;
+}
+
+template <class T>
+void
+uqScalarSequenceClass<T>::unifiedGaussianKDE(
+  bool                  useOnlyInter0Comm,
+  unsigned int          initialPos,
+  double                unifiedScaleValue,
+  const std::vector<T>& unifiedEvaluationPositions,
+  std::vector<double>&  unifiedDensityValues) const
+{
+  if (m_env.numSubEnvironments() == 1) {
+    return this->subGaussianKDE(initialPos,
+                                unifiedScaleValue,
+                                unifiedEvaluationPositions,
+                                unifiedDensityValues);
+  }
+
+  if (useOnlyInter0Comm) {
+    if (m_env.inter0Rank() >= 0) {
+      bool bRC = ((initialPos                        <  this->subSequenceSize()          ) &&
+                  (0                                 <  unifiedEvaluationPositions.size()) &&
+                  (unifiedEvaluationPositions.size() == unifiedDensityValues.size()      ));
+      UQ_FATAL_TEST_MACRO(bRC == false,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<V>::unifiedGaussianKDE()",
+                          "invalid input data");
+
+      unsigned int localDataSize = this->subSequenceSize() - initialPos;
+      unsigned int unifiedDataSize = 0;
+      int mpiRC = MPI_Allreduce((void *) &localDataSize, (void *) &unifiedDataSize, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::unifiedGaussianKDE()",
+                          "failed MPI_Allreduce() for data size");
+
+      unsigned int numEvals = unifiedEvaluationPositions.size();
+
+      std::vector<double> densityValues(numEvals,0.);
+      double unifiedScaleInv = 1./unifiedScaleValue;
+      for (unsigned int j = 0; j < numEvals; ++j) {
+        double x = unifiedEvaluationPositions[j];
+        double value = 0.;
+        for (unsigned int k = 0; k < localDataSize; ++k) {
+          double xk = m_seq[initialPos+k];
+          value += uqMiscGaussianDensity((x-xk)*unifiedScaleInv,0.,1.);
+        }
+        densityValues[j] = value;
+      }
+
+      for (unsigned int j = 0; j < numEvals; ++j) {
+        unifiedDensityValues[j] = 0.;
+      }
+      mpiRC = MPI_Allreduce((void *) &densityValues[0], (void *) &unifiedDensityValues[0], (int) numEvals, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::unifiedGaussianKDE()",
+                          "failed MPI_Allreduce() for density values");
+
+      for (unsigned int j = 0; j < numEvals; ++j) {
+        unifiedDensityValues[j] *= unifiedScaleInv/((double) unifiedDataSize);
+      }
+
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+        *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedGaussianKDE()"
+                               << ": unifiedDensityValues[0] = "                                       << unifiedDensityValues[0]
+                               << ", unifiedDensityValues[" << unifiedDensityValues.size()-1 << "] = " << unifiedDensityValues[unifiedDensityValues.size()-1]
+                               << std::endl;
+      }
+    }
+    else {
+      // Node not in the 'inter0' communicator
+      this->subGaussianKDE(initialPos,
+                           unifiedScaleValue,
+                           unifiedEvaluationPositions,
+                           unifiedDensityValues);
+    }
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.fullRank(),
+                        "uqScalarSequenceClass<T>::unifiedGaussianKDE()",
+                        "parallel vectors not supported yet");
+  }
+
+  //m_env.fullComm().Barrier();
 
   return;
 }
@@ -1128,11 +2247,29 @@ uqScalarSequenceClass<T>::extractScalarSeq(
   scalarSeq.resizeSequence(numPos);
   if (spacing == 1) {
     for (unsigned int j = 0; j < numPos; ++j) {
+      //if ((initialPos+j*spacing) > m_seq.size()) {
+      //  std::cerr << "In uqScalarSequenceClass<T>::extraScalarSeq()"
+      //            << ": initialPos = " << initialPos
+      //            << ", spacing = "    << spacing
+      //            << ", numPos = "     << numPos
+      //            << ", j = "          << j
+      //            << ", position got too large"
+      //            << std::endl;
+      //}
       scalarSeq[j] = m_seq[initialPos+j        ];
     }
   }
   else {
     for (unsigned int j = 0; j < numPos; ++j) {
+      //if ((initialPos+j*spacing) > m_seq.size()) {
+      //  std::cerr << "In uqScalarSequenceClass<T>::extraScalarSeq()"
+      //            << ": initialPos = " << initialPos
+      //            << ", spacing = "    << spacing
+      //            << ", numPos = "     << numPos
+      //            << ", j = "          << j
+      //            << ", position got too large"
+      //            << std::endl;
+      //}
       scalarSeq[j] = m_seq[initialPos+j*spacing];
     }
   }
@@ -1146,21 +2283,28 @@ uqScalarSequenceClass<T>::extractRawData(
   unsigned int         initialPos,
   unsigned int         spacing,
   unsigned int         numPos,
-  std::vector<double>& rawData) const
+  std::vector<double>& rawDataVec) const
 {
-  rawData.resize(numPos);
+  rawDataVec.resize(numPos);
   if (spacing == 1) {
     for (unsigned int j = 0; j < numPos; ++j) {
-      rawData[j] = m_seq[initialPos+j        ];
+      rawDataVec[j] = m_seq[initialPos+j        ];
     }
   }
   else {
     for (unsigned int j = 0; j < numPos; ++j) {
-      rawData[j] = m_seq[initialPos+j*spacing];
+      rawDataVec[j] = m_seq[initialPos+j*spacing];
     }
   }
 
   return;
+}
+
+template <class T>
+std::vector<T>&
+uqScalarSequenceClass<T>::rawData()
+{
+  return m_seq;
 }
 
 #endif // __UQ_SCALAR_SEQUENCE_H__

@@ -38,6 +38,9 @@
 #include <iostream>
 #include <fstream>
 
+#include <libgen.h>
+#include <sys/stat.h>
+
 void
 uqMiscReadDoublesFromString(
   const std::string&         inputString,
@@ -148,21 +151,21 @@ uqMiscReadWordsFromString(
   return;
 }
 
-void
-uqMiscExtractDoubleFromString(
-  std::string& inputString,
-  double&      outputDouble)
-{
-  return;
-}
+//void
+//uqMiscExtractDoubleFromString(
+//  std::string& inputString,
+//  double&      outputDouble)
+//{
+//  return;
+//}
 
-void
-uqMiscExtractWordFromString(
-  std::string& inputString,
-  std::string& outputWord)
-{
-  return;
-}
+//void
+//uqMiscExtractWordFromString(
+//  std::string& inputString,
+//  std::string& outputWord)
+//{
+//  return;
+//}
 
 int
 uqMiscReadStringAndDoubleFromFile(
@@ -260,11 +263,11 @@ uqMiscGammar(
 {
   double result = 0.;
   if (a < 1.) {
-    result = uqMiscGammar(1.+a,b,rng)*pow( gsl_rng_uniform(rng),1./a );
+    result = uqMiscGammar(1.+a,b,rng)*std::pow( gsl_rng_uniform(rng),1./a );
   }
   else {
     double d = a-1./3.;
-    double c = 1./sqrt(9.*d);
+    double c = 1./std::sqrt(9.*d);
     double x = 0.;
     double w = 0.;
     while (1) {
@@ -273,11 +276,11 @@ uqMiscGammar(
         w = 1.+c*x;
         if (w > 0.) break;
       }
-      w = pow(w,3.);
+      w = std::pow(w,3.);
       double u = gsl_rng_uniform(rng);
-      double compValue = 1.-0.0331*pow(x,4.);
+      double compValue = 1.-0.0331*std::pow(x,4.);
       if (u < compValue) break;
-      compValue = 0.5*pow(x,2.)+d*(1.-w+log(w));
+      compValue = 0.5*std::pow(x,2.)+d*(1.-w+log(w));
       if (log(u) < compValue) break;
     }
     result = b*d*w;
@@ -291,9 +294,9 @@ uqMiscGetEllapsedSeconds(struct timeval *timeval0)
 {
   double result = 0.;
 
-  int iRC;
   struct timeval timevalNow;
-  iRC = gettimeofday(&timevalNow, NULL);
+  /*int iRC;*/
+  /*iRC = */gettimeofday(&timevalNow, NULL);
 
   result  = (double) (timevalNow.tv_sec  - timeval0->tv_sec );
   result *= 1.e+6;
@@ -316,5 +319,81 @@ double uqMiscGaussianDensity(double x, double mu, double sigma)
   double sigma2 = sigma*sigma;
   double diff   = x-mu;
 
-  return (1./sqrt(2*M_PI*sigma2))*exp(-.5*diff*diff/sigma2);
+  return (1./std::sqrt(2*M_PI*sigma2))*std::exp(-.5*diff*diff/sigma2);
+}
+
+//-----------------------------------------------------------
+// uqCheckPath: checks output file path to ensure that parent
+// directories exist
+//-----------------------------------------------------------
+
+int uqCheckPath(const char *pathname)
+{
+  const int MAX_DEPTH = 50;
+
+  char *pathlocal;
+  char *parents;
+  char *dirstring;
+  char *token;
+  int depth = 0;
+  
+  // Save a copy of pathname and look for the parent directories.
+
+  pathlocal = strdup(pathname);
+  dirstring = strdup(pathname);
+
+  parents   = dirname(pathlocal);
+  
+  if( (token = strtok(parents,"/") ) )
+    {
+      if ( !uqCheckDir(token) )
+	return(-1);
+
+      // Now, search for any remaining parent directories.
+
+      sprintf(dirstring,"%s",token);
+
+      while ( (token = strtok(0,"/")) && (depth < MAX_DEPTH) )
+	{
+	  dirstring = strcat(dirstring,"/");
+	  if(!uqCheckDir(strcat(dirstring,token)))
+	    return(-1);
+	  depth++;
+	};
+
+      if(depth >= MAX_DEPTH )
+	{
+	  printf("** Error: max directory depth exceeded (limit = %i\n",MAX_DEPTH);
+	  return(-1);
+	}
+
+    }
+
+  // Clean Up
+
+  free(pathlocal);
+  free(dirstring);
+
+  return(1);
+}
+
+//-----------------------------------------------------------
+// uqCheckDir: checks for existence of specified directory 
+// and creates the directory if not present
+// -----------------------------------------------------------
+
+int uqCheckDir(const char *dirname)
+{
+  struct stat st;
+
+  if(stat(dirname,&st) != 0)
+    {
+      if( mkdir(dirname,0700) != 0 )
+	{
+	  printf("** Error: unable to create local directory %s\n",dirname);
+	  return(-1);
+	}
+    }
+
+  return(1);
 }

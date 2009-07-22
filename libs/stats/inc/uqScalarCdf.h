@@ -49,35 +49,35 @@ public:
            uqBaseScalarCdfClass(const uqBaseEnvironmentClass& env, const char* prefix);
   virtual ~uqBaseScalarCdfClass();
 
-  const   uqBaseEnvironmentClass& env()    const;
-  const   std::string&        prefix() const;
-  virtual double value  (T      paramValue) const = 0;
-  virtual T      inverse(double cdfValue  ) const = 0;
-  virtual void   print  (std::ostream& os ) const = 0;
+          const uqBaseEnvironmentClass& env    () const;
+          const std::string&            prefix () const;
+  virtual       double                  value  (T             paramValue) const = 0;
+  virtual       T                       inverse(double        cdfValue  ) const = 0;
+  virtual       void                    print  (std::ostream& os        ) const = 0;
 
 protected:
   const uqBaseEnvironmentClass& m_env;
-        std::string         m_prefix;
+        std::string             m_prefix;
 };
 
 template<class T>
 uqBaseScalarCdfClass<T>::uqBaseScalarCdfClass(
   const uqBaseEnvironmentClass& env,
-  const char*               prefix)
+  const char*                   prefix)
   :
   m_env   (env),
   m_prefix((std::string)(prefix)+"")
 {
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqBaseScalarCdfClass<T>::constructor()"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqBaseScalarCdfClass<T>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqBaseScalarCdfClass<T>::constructor()"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqBaseScalarCdfClass<T>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 }
 
@@ -113,15 +113,15 @@ std::ostream& operator<< (std::ostream& os, const uqBaseScalarCdfClass<T>& obj)
 template<class T>
 class uqSampledScalarCdfClass : public uqBaseScalarCdfClass<T> {
 public:
-  uqSampledScalarCdfClass(const uqBaseEnvironmentClass&     env,
+  uqSampledScalarCdfClass(const uqBaseEnvironmentClass& env,
                           const char*                   prefix,
                           const uqBaseOneDGridClass<T>& cdfGrid,
                           const std::vector<double>&    cdfValues);
  ~uqSampledScalarCdfClass();
 
-  double value  (T      paramValue) const;
-  T      inverse(double cdfValue  ) const;
-  void   print  (std::ostream& os ) const;
+  double value  (T             paramValue) const;
+  T      inverse(double        cdfValue  ) const;
+  void   print  (std::ostream& os        ) const;
 
 protected:
   using uqBaseScalarCdfClass<T>::m_env;
@@ -134,19 +134,19 @@ protected:
 
 template<class T>
 uqSampledScalarCdfClass<T>::uqSampledScalarCdfClass(
-  const uqBaseEnvironmentClass&     env,
+  const uqBaseEnvironmentClass& env,
   const char*                   prefix,
   const uqBaseOneDGridClass<T>& cdfGrid,
   const std::vector<double>&    cdfValues)
   :
   uqBaseScalarCdfClass<T>(env,((std::string)(prefix)+"").c_str()),
-  m_cdfGrid  (cdfGrid  ),
-  m_cdfValues(cdfValues)
+  m_cdfGrid              (cdfGrid  ),
+  m_cdfValues            (cdfValues)
 {
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqSampledScalarCdfClass<T>::constructor()"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqSampledScalarCdfClass<T>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 
   //for (unsigned int i = 0; i < m_cdfValues.size(); ++i) {
@@ -154,10 +154,10 @@ uqSampledScalarCdfClass<T>::uqSampledScalarCdfClass(
   //}
   //std::sort(m_sortedCdfValues.begin(), m_sortedCdfValues.end());
  
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqSampledScalarCdfClass<T>::constructor()"
-              << ": prefix = " << m_prefix
-              << std::endl;
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqSampledScalarCdfClass<T>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
   }
 }
 
@@ -180,18 +180,18 @@ uqSampledScalarCdfClass<T>::value(T paramValue) const
   else {
     unsigned int intervalId = m_cdfGrid.findIntervalId(paramValue);
     UQ_FATAL_TEST_MACRO(intervalId >= (m_cdfGrid.size()-1),
-                        m_env.rank(),
+                        m_env.fullRank(),
                         "uqSampledScalarCdfClass<T>::value()",
                         "invalid intervalId");
 
     double intervalLen = m_cdfGrid[intervalId+1] - m_cdfGrid[intervalId];
     double ratio = (paramValue - m_cdfGrid[intervalId])/intervalLen;
-    //std::cout << "In scalarCdf::value(): paramValue = " << paramValue
-    //          << ", intervalLen = "                     << intervalLen
-    //          << ", ratio = "                           << ratio
-    //          << std::endl;
+    //*m_env.subDisplayFile() << "In uqSampledScalarCdf::value(): paramValue = " << paramValue
+    //                       << ", intervalLen = "                     << intervalLen
+    //                       << ", ratio = "                           << ratio
+    //                       << std::endl;
     UQ_FATAL_TEST_MACRO(ratio < 0.,
-                        m_env.rank(),
+                        m_env.fullRank(),
                         "uqSampledScalarCdfClass<T>::value()",
                         "invalid ratio");
 
@@ -205,10 +205,10 @@ template<class T>
 T
 uqSampledScalarCdfClass<T>::inverse(double cdfValue) const
 {
-  //std::cout << "In inverse(): cdfValue = " << cdfValue
-  //          << std::endl;
+  //*m_env.subDisplayFile() << "In uqSampledScalarCdf::inverse(): cdfValue = " << cdfValue
+  //                       << std::endl;
   UQ_FATAL_TEST_MACRO((cdfValue < 0.) || (1. < cdfValue),
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqSampledScalarCdfClass<T>::inverse()",
                       "invalid cdfValue");
   double result = 0.;
@@ -230,7 +230,7 @@ uqSampledScalarCdfClass<T>::inverse(double cdfValue) const
 
     if ((j-i) <= 0) {
       UQ_FATAL_TEST_MACRO(true,
-                          m_env.rank(),
+                          m_env.fullRank(),
                           "uqSampledScalarCdfClass<T>::inverse()",
                           "invalid pair of values 'i' and 'j'");
     }
@@ -240,7 +240,7 @@ uqSampledScalarCdfClass<T>::inverse(double cdfValue) const
       searchPosition = false;
     }
     else {
-      unsigned int k=(i+j)*.5;
+      unsigned int k= (unsigned int) ((i+j)*.5);
       if (cdfValue < m_cdfValues[k]) {
         j = k;
       }
@@ -266,11 +266,11 @@ uqSampledScalarCdfClass<T>::print(std::ostream& os) const
   os << m_cdfGrid;
 
   // Print *cdf* values *at* grid points
-  os << m_prefix << "values = zeros(" << m_cdfValues.size()
-     << ","                           << 1
+  os << m_prefix << "values_sub" << m_env.subIdString() << " = zeros(" << m_cdfValues.size()
+     << ","                                                            << 1
      << ");"
      << std::endl;
-  os << m_prefix << "values = [";
+  os << m_prefix << "values_sub" << m_env.subIdString() << " = [";
   for (unsigned int j = 0; j < m_cdfValues.size(); ++j) {
     os << m_cdfValues[j] << " ";
   }
@@ -291,29 +291,33 @@ horizontalDistance(const uqBaseScalarCdfClass<T>& cdf1,
 
   double x1 = cdf1.inverse(epsilon*.5);
   double x2 = cdf1.inverse(1.-epsilon*.5);
-  if (cdf1.env().rank() == 0) {
-    std::cout << "In horizontalDistance()"
-              << ", cdf1.prefix() = " << cdf1.prefix()
-              << ", cdf2.prefix() = " << cdf2.prefix()
-              << ", epsilon = "       << epsilon
-              << ": x1 = "            << x1
-              << ", x2 = "            << x2
-              << std::endl;
+  if (cdf1.env().subDisplayFile()) {
+    *cdf1.env().subDisplayFile() << "In horizontalDistance()"
+                                << ", cdf1.prefix() = " << cdf1.prefix()
+                                << ", cdf2.prefix() = " << cdf2.prefix()
+                                << ", epsilon = "       << epsilon
+                                << ": x1 = "            << x1
+                                << ", x2 = "            << x2
+                                << std::endl;
   }
 
-  //std::cout << "In horizontalDistance: x1 = " << x1
-  //          << ", x2 = " << x2
-  //          << std::endl;
+  //if (cdf1.env().subDisplayFile()) {
+  //  *cdf1.env().subDisplayFile() << "In horizontalDistance: x1 = " << x1
+  //                              << ", x2 = " << x2
+  //                              << std::endl;
+  //}
 
   double numEvaluationPoints = 1001.;
   for (double i = 0.; i < numEvaluationPoints; ++i) {
     double ratio = i/(numEvaluationPoints-1.); // IMPORTANT: Yes, '-1.'
     double x = (1.-ratio)*x1 + ratio*x2;
     double y = cdf2.inverse(cdf1.value(x));
-    //std::cout << "In horizontalDistance: x = " << x
-    //          << ", cdf1.value(x) = "          << cdf1.value(x)
-    //          << ", y = "                      << y
-    //          << std::endl;
+    //if (cdf1.env().subDisplayFile()) {
+    //  *cdf1.env().subDisplayFile() << "In horizontalDistance: x = " << x
+    //                              << ", cdf1.value(x) = "          << cdf1.value(x)
+    //                              << ", y = "                      << y
+    //                              << std::endl;
+    //}
     double d = fabs(x-y);
     if (maxDistance < d) {
       maxDistance     = d;
@@ -321,14 +325,14 @@ horizontalDistance(const uqBaseScalarCdfClass<T>& cdf1,
     }
   }
 
-  if (cdf1.env().rank() == 0) {
-    std::cout << "In horizontalDistance()"
-              << ", cdf1.prefix() = "   << cdf1.prefix()
-              << ", cdf2.prefix() = "   << cdf2.prefix()
-              << ", epsilon = "       << epsilon
-              << ": maxDistance = "     << maxDistance
-              << ", xForMaxDistance = " << xForMaxDistance
-              << std::endl;
+  if (cdf1.env().subDisplayFile()) {
+    *cdf1.env().subDisplayFile() << "In horizontalDistance()"
+                                << ", cdf1.prefix() = "   << cdf1.prefix()
+                                << ", cdf2.prefix() = "   << cdf2.prefix()
+                                << ", epsilon = "         << epsilon
+                                << ": maxDistance = "     << maxDistance
+                                << ", xForMaxDistance = " << xForMaxDistance
+                                << std::endl;
   }
 
   return maxDistance;

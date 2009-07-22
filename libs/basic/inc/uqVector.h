@@ -46,7 +46,9 @@ public:
            uqVectorClass(const uqVectorClass& rhs);
   virtual ~uqVectorClass();
 
-  uqVectorClass& operator= (const uqVectorClass& rhs);
+  virtual unsigned int numberOfProcessorsRequiredForStorage() const = 0;
+
+  uqVectorClass& operator=(const uqVectorClass& rhs);
   uqVectorClass& operator*=(double a);
   uqVectorClass& operator/=(double a);
   uqVectorClass& operator+=(const uqVectorClass& rhs);
@@ -57,7 +59,8 @@ public:
           void                    setPrintHorizontally(bool value) const; // Yes, 'const'
           bool                    getPrintHorizontally()           const;
 
-  virtual unsigned int            size                () const = 0;
+  virtual unsigned int            sizeLocal           () const = 0;
+  virtual unsigned int            sizeGlobal          () const = 0;
   virtual void                    cwSet               (double value) = 0;
   virtual void                    cwSetGaussian       (const gsl_rng* rng, double mean, double stdDev) = 0;
   virtual void                    cwInvert            () = 0;

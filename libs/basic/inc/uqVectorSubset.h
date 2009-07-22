@@ -44,7 +44,8 @@ class uqVectorSubsetClass : public uqVectorSetClass<V,M>
 public:
            uqVectorSubsetClass();
            uqVectorSubsetClass(const char*                    prefix,
-                               const uqVectorSpaceClass<V,M>& vectorSpace);
+                               const uqVectorSpaceClass<V,M>& vectorSpace,
+                               double                         volume);
   virtual ~uqVectorSubsetClass();
 
            const uqVectorSpaceClass<V,M>& vectorSpace()                 const;
@@ -65,7 +66,7 @@ uqVectorSubsetClass<V,M>::uqVectorSubsetClass()
   m_vectorSpace        (NULL)
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqVectorSubsetClass<V,M>::constructor(), default",
                       "should not be used by user");
 }
@@ -73,18 +74,19 @@ uqVectorSubsetClass<V,M>::uqVectorSubsetClass()
 template <class V, class M>
 uqVectorSubsetClass<V,M>::uqVectorSubsetClass(
   const char*                    prefix,
-  const uqVectorSpaceClass<V,M>& vectorSpace)
+  const uqVectorSpaceClass<V,M>& vectorSpace,
+  double                         volume)
   :
-  uqVectorSetClass<V,M>(vectorSpace.env(),prefix,0.),
+  uqVectorSetClass<V,M>(vectorSpace.env(),prefix,volume),
   m_vectorSpace        (&vectorSpace)
 {
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqVectorSubsetClass<V,M>::constructor()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqVectorSubsetClass<V,M>::constructor()"
               << std::endl;
   }
 
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqVectorSubsetClass<V,M>::constructor()"
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqVectorSubsetClass<V,M>::constructor()"
               << std::endl;
   }
 }
@@ -92,11 +94,15 @@ uqVectorSubsetClass<V,M>::uqVectorSubsetClass(
 template <class V, class M>
 uqVectorSubsetClass<V,M>::~uqVectorSubsetClass()
 {
-  //std::cout << "Entering uqVectorSubsetClass<V,M>::destructor()"
-  //          << std::endl;
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqVectorSubsetClass<V,M>::destructor()"
+                           << std::endl;
+  }
 
-  //std::cout << "Leaving uqVectorSubsetClass<V,M>::destructor()"
-  //          << std::endl;
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqVectorSubsetClass<V,M>::destructor()"
+                           << std::endl;
+  }
 }
 
 template <class V, class M>
@@ -147,12 +153,12 @@ uqBoxSubsetClass<V,M>::uqBoxSubsetClass(
   const V&                       minValues,
   const V&                       maxValues)
   :
-  uqVectorSubsetClass<V,M>(prefix,vectorSpace),
+  uqVectorSubsetClass<V,M>(prefix,vectorSpace,0.),
   m_minValues(minValues),
   m_maxValues(maxValues)
 {
   m_volume = 1.;
-  for (unsigned int i = 0; i < m_vectorSpace->dim(); ++i) {
+  for (unsigned int i = 0; i < m_vectorSpace->dimLocal(); ++i) {
     m_volume *= (m_maxValues[i] - m_minValues[i]);
   }
 }
@@ -168,7 +174,7 @@ uqBoxSubsetClass<V,M>::contains(const V& vec) const
 {
   //bool result = true;
 
-  //for (unsigned int i = 0; (i < m_vectorSpace->dim()) && (result == true); ++i) {
+  //for (unsigned int i = 0; (i < m_vectorSpace->dimLocal()) && (result == true); ++i) {
   //  result = (m_maxValues[i] <= vec[i]) && (vec[i] <= m_minValues[i]);
   //}
 
@@ -233,11 +239,10 @@ uqIntersectionSubsetClass<V,M>::uqIntersectionSubsetClass(
   const uqVectorSetClass<V,M>&   set1,
   const uqVectorSetClass<V,M>&   set2)
   :
-  uqVectorSubsetClass<V,M>(prefix,vectorSpace),
+  uqVectorSubsetClass<V,M>(prefix,vectorSpace,volume),
   m_set1                  (set1),
   m_set2                  (set2)
 {
-  m_volume = volume;
 }
 
 template<class V, class M>

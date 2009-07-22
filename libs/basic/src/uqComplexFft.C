@@ -40,7 +40,14 @@ uqFftClass<std::complex<double> >::forward(
         unsigned int                        fftSize,
         std::vector<std::complex<double> >& forwardResult)
 {
-  exit(1);
+  UQ_FATAL_TEST_MACRO(true,
+                      UQ_UNAVAILABLE_RANK,
+                      "uqFftClass<complex>::forward()",
+                      "not implemented yet");
+
+  std::complex<double> z = data[0]; z += 0.; // just to avoid icpc warnings
+  unsigned int         f = fftSize; f += 1;  // just to avoid icpc warnings
+  forwardResult[0] = 0.;                     // just to avoid icpc warnings
 #if 0
   if (forwardResult.size() != fftSize) {
     forwardResult.resize(fftSize,std::complex<double>(0.,0.));

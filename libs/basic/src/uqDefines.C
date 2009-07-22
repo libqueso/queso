@@ -33,7 +33,7 @@
 #include <mpi.h>
 #include <uqDefines.h>
 
-int uqMyRank() {
+int uqMyWorldfullRank() {
   int result = 0;
 #ifdef __UQ_USES_TRILINOS__
   int iRC;

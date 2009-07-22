@@ -65,10 +65,10 @@ protected:
 template <class V, class M>
 uqVectorSetClass<V,M>::uqVectorSetClass()
   :
-  m_env(*(new uqFullEnvironmentClass()))
+  m_env(*(new uqEmptyEnvironmentClass()))
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.rank(),
+                      m_env.fullRank(),
                       "uqVectorSetClass<V,M>::constructor(), default",
                       "should not be used by user");
 }
@@ -83,25 +83,29 @@ uqVectorSetClass<V,M>::uqVectorSetClass(
   m_prefix(prefix),
   m_volume(volume)
 {
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Entering uqVectorSetClass<V,M>::constructor()"
-              << std::endl;
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqVectorSetClass<V,M>::constructor()"
+                           << std::endl;
   }
 
-  if ((m_env.verbosity() >= 5) && (m_env.rank() == 0)) {
-    std::cout << "Leaving uqVectorSetClass<V,M>::constructor()"
-              << std::endl;
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqVectorSetClass<V,M>::constructor()"
+                           << std::endl;
   }
 }
 
 template <class V, class M>
 uqVectorSetClass<V,M>::~uqVectorSetClass()
 {
-  //std::cout << "Entering uqVectorSetClass<V,M>::destructor()"
-  //          << std::endl;
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqVectorSetClass<V,M>::destructor()"
+                           << std::endl;
+  }
 
-  //std::cout << "Leaving uqVectorSetClass<V,M>::destructor()"
-  //          << std::endl;
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqVectorSetClass<V,M>::destructor()"
+                           << std::endl;
+  }
 }
 
 template <class V, class M>
