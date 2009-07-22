@@ -95,8 +95,11 @@ libqueso_include_HEADERS += $(top_srcdir)/libs/stats/inc/uqCovCond.h \
 	$(top_srcdir)/libs/stats/inc/uqMarkovChainSGOptions.h \
 	$(top_srcdir)/libs/stats/inc/uqModelValidation.h \
 	$(top_srcdir)/libs/stats/inc/uqMonteCarloSG.h \
+	$(top_srcdir)/libs/stats/inc/uqMonteCarloSGOptions.h \
 	$(top_srcdir)/libs/stats/inc/uqStatisticalForwardProblem.h \
+	$(top_srcdir)/libs/stats/inc/uqStatisticalForwardProblemOptions.h \
 	$(top_srcdir)/libs/stats/inc/uqStatisticalInverseProblem.h \
+	$(top_srcdir)/libs/stats/inc/uqStatisticalInverseProblemOptions.h \
 	$(top_srcdir)/libs/stats/inc/uqScalarCdf.h \
 	$(top_srcdir)/libs/stats/inc/uqTKGroup.h \
 	$(top_srcdir)/libs/stats/inc/uqValidationCycle.h \
