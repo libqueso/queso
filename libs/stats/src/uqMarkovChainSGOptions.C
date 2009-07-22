@@ -124,7 +124,7 @@ uqMarkovChainSGOptionsClass::scanOptionsValues()
   if (m_filteredChainComputeStats) m_filteredChainStatisticalOptions = new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "filteredChain_");
 
   return;
-};
+}
 
 void
 uqMarkovChainSGOptionsClass::defineMyOptions(po::options_description& optionsDesc) const

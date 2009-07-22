@@ -75,7 +75,7 @@ uqStatisticalInverseProblemOptionsClass::scanOptionsValues()
   }
 
   return;
-};
+}
 
 void
 uqStatisticalInverseProblemOptionsClass::defineMyOptions(po::options_description& optionsDesc) const

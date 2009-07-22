@@ -79,7 +79,7 @@ uqStatisticalForwardProblemOptionsClass::scanOptionsValues()
   }
 
   return;
-};
+}
 
 void
 uqStatisticalForwardProblemOptionsClass::defineMyOptions(po::options_description& optionsDesc) const

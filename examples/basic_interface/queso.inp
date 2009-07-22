@@ -438,7 +438,8 @@ ip_mc_filteredChain_dataOutputFileName = koomie3.out
 ip_mc_filteredChain_dataOutputAllow = 0
 ip_mc_filteredChain_computeStats = 0
 ip_mc_mh_displayCandidates = 0
-ip_mc_mh_putOutOfBoundsInChain = 1
+#ip_mc_mh_putOutOfBoundsInChain = 1
+ip_mc_mh_putOutOfBoundsInChain = 0
 ip_mc_tk_useLocalHessian = 0
 ip_mc_tk_useNewtonComponent = 1
 ip_mc_dr_maxNumExtraStages = 1
@@ -468,7 +469,8 @@ num_params  = 1
 param_names = 'alpha'
 param_mins  = '0.0'
 param_maxs  = '1.e20'
-param_inits = '1.0'
+#param_inits = '1.0'
+param_inits = '1.e10'
 
 #-------- End Parameter Definitions -----------
 #----------------------------------------------

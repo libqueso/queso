@@ -57,7 +57,9 @@ namespace QUESO_Basic_API {
   void QUESO_Basic_Class::Initialize(const char *inputfile)
   {
 
-    // Define new QUESO environment and store inputfile informaiton
+    hpct_timer_init("QUESO");
+
+    // Define new QUESO environment and store inputfile information
 
     m_env         = new uqFullEnvironmentClass(MPI_COMM_WORLD,inputfile,"");
     m_inputfile   = new string(inputfile);
@@ -68,7 +70,6 @@ namespace QUESO_Basic_API {
 
   void QUESO_Basic_Class:: DefineParameterSpace()
   {
-    int     num_params;		// # of UQ parameters 
     double *param_min;		// min value of each parameter
     double *param_max;		// max value of each parameter
     double *param_ini;		// initial value of each parameter
@@ -215,8 +216,6 @@ namespace QUESO_Basic_API {
 			    basicV *hessianE)
   {
     static int first_entry = 1;
-    double user_func_return;
-    double likelihood;
     double *uqParams;
     int num_params;
 
@@ -237,8 +236,17 @@ namespace QUESO_Basic_API {
 	
     for(int i=0;i<num_params;i++)
       uqParams[i] = paramValue[i];
-    
-      return( _QUESO_Basic->m_user_likelihood_func(uqParams) );
+
+
+
+    hpct_timer_begin("Likelihood Routine");
+
+    double lhood_return = _QUESO_Basic->m_user_likelihood_func(uqParams);
+
+    hpct_timer_end("Likelihood Routine");
+    return(lhood_return);
+
+    //      return( _QUESO_Basic->m_user_likelihood_func(uqParams) );
       
   }
 
