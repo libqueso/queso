@@ -385,7 +385,6 @@ int uqCheckPath(const char *pathname)
 int uqCheckDir(const char *dirname)
 {
   struct stat st;
-  int status = 0;
 
   if(stat(dirname,&st) != 0)
     {
