@@ -70,7 +70,6 @@ namespace QUESO_Basic_API {
 
   void QUESO_Basic_Class:: DefineParameterSpace()
   {
-    int     num_params;		// # of UQ parameters 
     double *param_min;		// min value of each parameter
     double *param_max;		// max value of each parameter
     double *param_ini;		// initial value of each parameter
@@ -217,8 +216,6 @@ namespace QUESO_Basic_API {
 			    basicV *hessianE)
   {
     static int first_entry = 1;
-    double user_func_return;
-    double likelihood;
     double *uqParams;
     int num_params;
 
