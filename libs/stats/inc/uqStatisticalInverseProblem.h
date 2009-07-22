@@ -35,6 +35,7 @@
 
 #include <uqStatisticalInverseProblemOptions.h>
 #include <uqMarkovChainSG1.h>
+#include <uqMLSampling.h>
 #include <uqInstantiateIntersection.h>
 #include <uqVectorRV.h>
 #include <uqScalarFunction.h>
@@ -63,7 +64,9 @@ public:
         bool computeSolutionFlag      () const;
 	/*! Operation to solve the problem */
         void solveWithBayesMarkovChain(const P_V& initialValues,
-                                       const P_M* proposalCovMatrix);
+                                       const P_M* initialProposalCovMatrix);
+        void solveWithMultiLevelSampling(const P_V& initialValues,
+                                         const P_M* initialProposalCovMatrix);
   const uqBaseVectorRVClass   <P_V,P_M>& priorRv() const;
   const uqGenericVectorRVClass<P_V,P_M>& postRv () const;
 
@@ -83,6 +86,7 @@ private:
         uqBaseVectorRealizerClass <P_V,P_M>* m_solutionRealizer;
 
         uqMarkovChainSGClass      <P_V,P_M>* m_mcSeqGenerator;
+        uqMLSamplingClass         <P_V,P_M>* m_mlSampler;
         uqBaseVectorSequenceClass <P_V,P_M>* m_chain;
         uqArrayOfOneDGridsClass   <P_V,P_M>* m_subMdfGrids;
         uqArrayOfOneDTablesClass  <P_V,P_M>* m_subMdfValues;
@@ -110,6 +114,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
   m_subSolutionCdf    (NULL),
   m_solutionRealizer  (NULL),
   m_mcSeqGenerator    (NULL),
+  m_mlSampler         (NULL),
   m_chain             (NULL),
   m_options           (m_env,prefix)
 {
@@ -137,6 +142,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::~uqStatisticalInverseProblemClass()
     m_chain->clear();
     delete m_chain;
   }
+  if (m_mlSampler       ) delete m_mlSampler;
   if (m_mcSeqGenerator  ) delete m_mcSeqGenerator;
   if (m_solutionRealizer) delete m_solutionRealizer;
   if (m_subSolutionCdf  ) delete m_subSolutionCdf;
@@ -149,9 +155,8 @@ template <class P_V,class P_M>
 void
 uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   const P_V& initialValues,
-  const P_M* proposalCovMatrix)
+  const P_M* initialProposalCovMatrix)
 {
-
   //hpct_timer_begin("BayesMarkovChain");     TODO: revisit timing output
 
   m_env.fullComm().Barrier();
@@ -160,17 +165,18 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   if (m_options.m_computeSolution == false) {
     if ((m_env.subDisplayFile())) {
       *m_env.subDisplayFile() << "In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()"
-                             << ": avoiding solution, as requested by user"
-                             << std::endl;
+                              << ": avoiding solution, as requested by user"
+                              << std::endl;
     }
     return;
   }
   if ((m_env.subDisplayFile())) {
     *m_env.subDisplayFile() << "In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()"
-                           << ": computing solution, as requested by user"
-                           << std::endl;
+                            << ": computing solution, as requested by user"
+                            << std::endl;
   }
 
+  if (m_mlSampler       ) delete m_mlSampler;
   if (m_mcSeqGenerator  ) delete m_mcSeqGenerator;
   if (m_solutionRealizer) delete m_solutionRealizer;
   if (m_subSolutionCdf  ) delete m_subSolutionCdf;
@@ -202,7 +208,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   m_mcSeqGenerator = new uqMarkovChainSGClass<P_V,P_M>(m_options.m_prefix.c_str(),
                                                        m_postRv,
                                                        initialValues,
-                                                       proposalCovMatrix);
+                                                       initialProposalCovMatrix);
 
 
   m_mcSeqGenerator->generateSequence(*m_chain);
@@ -275,6 +281,20 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   m_env.syncPrintDebugMsg("Leaving uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()",1,3000000,m_env.fullComm());
   m_env.fullComm().Barrier();
   //  hpct_timer_end("BayesMarkovChain");  TODO: revist timers
+  return;
+}
+
+template <class P_V,class P_M>
+void
+uqStatisticalInverseProblemClass<P_V,P_M>::solveWithMultiLevelSampling(
+  const P_V& initialValues,
+  const P_M* initialProposalCovMatrix)
+{
+  m_mlSampler = new uqMLSamplingClass<P_V,P_M>(m_options.m_prefix.c_str(),
+                                               m_postRv,
+                                               initialValues,
+                                               initialProposalCovMatrix);
+
   return;
 }
 

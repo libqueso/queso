@@ -30,57 +30,54 @@
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-#ifndef __UQ_MAC_SG_OPTIONS_H__
-#define __UQ_MAC_SG_OPTIONS_H__
+#ifndef __UQ_MULTI_LEVEL_SAMPLING_LEVEL_OPTIONS_H__
+#define __UQ_MULTI_LEVEL_SAMPLING_LEVEL_OPTIONS_H__
 
 #include <uqEnvironment.h>
 #include <uqSequenceStatisticalOptions.h>
 
-#define UQ_USES_TK_CLASS
-#undef  UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
-#define UQ_MAC_SG_REQUIRES_TARGET_DISTRIBUTION_ONLY
-#define UQ_NOTHING_JUST_FOR_TEST_OF_SVN_ID 1
+#define UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE "."
 
-#define UQ_MAC_SG_MARKOV_CHAIN_TYPE      1
-#define UQ_MAC_SG_WHITE_NOISE_CHAIN_TYPE 2
-#define UQ_MAC_SG_UNIFORM_CHAIN_TYPE     3
-#define UQ_MAC_SG_FILENAME_FOR_NO_FILE   "."
+#define UQ_ML_SAMPLING_L_MARKOV_CHAIN_TYPE      1
+#define UQ_ML_SAMPLING_L_WHITE_NOISE_CHAIN_TYPE 2
+#define UQ_ML_SAMPLING_L_UNIFORM_CHAIN_TYPE     3
+#define UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE   "."
 
 // _ODV = option default value
-#define UQ_MAC_SG_DATA_OUTPUT_FILE_NAME_ODV                UQ_MAC_SG_FILENAME_FOR_NO_FILE
-#define UQ_MAC_SG_DATA_OUTPUT_ALLOW_ODV                    ""
+#define UQ_ML_SAMPLING_L_DATA_OUTPUT_FILE_NAME_ODV                  UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
+#define UQ_ML_SAMPLING_L_DATA_OUTPUT_ALLOW_ODV                      ""
+#define UQ_ML_SAMPLING_L_RAW_CHAIN_TYPE_ODV                         UQ_ML_SAMPLING_L_MARKOV_CHAIN_TYPE
+#define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV         UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
+#define UQ_ML_SAMPLING_L_RAW_CHAIN_EFFECTIVE_SIZE_RATIO_ODV         0.9
+#define UQ_ML_SAMPLING_L_RAW_CHAIN_SIZE_ODV                         100.
+#define UQ_ML_SAMPLING_L_RAW_CHAIN_GENERATE_EXTRA_ODV               0
+#define UQ_ML_SAMPLING_L_RAW_CHAIN_DISPLAY_PERIOD_ODV               500
+#define UQ_ML_SAMPLING_L_RAW_CHAIN_MEASURE_RUN_TIMES_ODV            0
+#define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV        UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
+#define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV      ""
+#define UQ_ML_SAMPLING_L_RAW_CHAIN_COMPUTE_STATS_ODV                0
+#define UQ_ML_SAMPLING_L_FILTERED_CHAIN_GENERATE_ODV                0
+#define UQ_ML_SAMPLING_L_FILTERED_CHAIN_DISCARDED_PORTION_ODV       0.
+#define UQ_ML_SAMPLING_L_FILTERED_CHAIN_LAG_ODV                     1
+#define UQ_ML_SAMPLING_L_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV   UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
+#define UQ_ML_SAMPLING_L_FILTERED_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV ""
+#define UQ_ML_SAMPLING_L_FILTERED_CHAIN_COMPUTE_STATS_ODV           0
+#define UQ_ML_SAMPLING_L_MH_DISPLAY_CANDIDATES_ODV                  0
+#define UQ_ML_SAMPLING_L_MH_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV          1
+#define UQ_ML_SAMPLING_L_TK_USE_LOCAL_HESSIAN_ODV                   0
+#define UQ_ML_SAMPLING_L_TK_USE_NEWTON_COMPONENT_ODV                1
+#define UQ_ML_SAMPLING_L_DR_MAX_NUM_EXTRA_STAGES_ODV                0
+#define UQ_ML_SAMPLING_L_DR_LIST_OF_SCALES_FOR_EXTRA_STAGES_ODV     "1."
+#define UQ_ML_SAMPLING_L_AM_INIT_NON_ADAPT_INT_ODV                  0
+#define UQ_ML_SAMPLING_L_AM_ADAPT_INTERVAL_ODV                      0
+#define UQ_ML_SAMPLING_L_AM_ETA_ODV                                 1.
+#define UQ_ML_SAMPLING_L_AM_EPSILON_ODV                             1.e-5
 
-#define UQ_MAC_SG_RAW_CHAIN_TYPE_ODV                       UQ_MAC_SG_MARKOV_CHAIN_TYPE
-#define UQ_MAC_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV       UQ_MAC_SG_FILENAME_FOR_NO_FILE
-#define UQ_MAC_SG_RAW_CHAIN_SIZE_ODV                       100
-#define UQ_MAC_SG_RAW_CHAIN_GENERATE_EXTRA_ODV             0
-#define UQ_MAC_SG_RAW_CHAIN_DISPLAY_PERIOD_ODV             500
-#define UQ_MAC_SG_RAW_CHAIN_MEASURE_RUN_TIMES_ODV          0
-#define UQ_MAC_SG_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV      UQ_MAC_SG_FILENAME_FOR_NO_FILE
-#define UQ_MAC_SG_RAW_CHAIN_DATA_OUTPUT_ALLOW_ODV          ""
-#define UQ_MAC_SG_RAW_CHAIN_COMPUTE_STATS_ODV              0
-#define UQ_MAC_SG_FILTERED_CHAIN_GENERATE_ODV              0
-#define UQ_MAC_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV     0.
-#define UQ_MAC_SG_FILTERED_CHAIN_LAG_ODV                   1
-#define UQ_MAC_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV UQ_MAC_SG_FILENAME_FOR_NO_FILE
-#define UQ_MAC_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOW_ODV     ""
-#define UQ_MAC_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV         0
-#define UQ_MAC_SG_MH_DISPLAY_CANDIDATES_ODV                0
-#define UQ_MAC_SG_MH_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV        1
-#define UQ_MAC_SG_TK_USE_LOCAL_HESSIAN_ODV                 0
-#define UQ_MAC_SG_TK_USE_NEWTON_COMPONENT_ODV              1
-#define UQ_MAC_SG_DR_MAX_NUM_EXTRA_STAGES_ODV              0
-#define UQ_MAC_SG_DR_SCALES_FOR_EXTRA_STAGES_ODV           "1."
-#define UQ_MAC_SG_AM_INIT_NON_ADAPT_INT_ODV                0
-#define UQ_MAC_SG_AM_ADAPT_INTERVAL_ODV                    0
-#define UQ_MAC_SG_AM_ETA_ODV                               1.
-#define UQ_MAC_SG_AM_EPSILON_ODV                           1.e-5
-
-class uqMarkovChainSGOptionsClass
+class uqMLSamplingLevelOptionsClass
 {
 public:
-  uqMarkovChainSGOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix);
- ~uqMarkovChainSGOptionsClass();
+  uqMLSamplingLevelOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix);
+ ~uqMLSamplingLevelOptionsClass();
 
   void scanOptionsValues();
   void print            (std::ostream& os) const;
@@ -92,6 +89,7 @@ public:
 
   unsigned int                       m_rawChainType;
   std::string                        m_rawChainDataInputFileName;
+  double                             m_rawChainEffectiveSizeRatio;
   unsigned int                       m_rawChainSize;
   bool                               m_rawChainGenerateExtra;
   unsigned int                       m_rawChainDisplayPeriod;
@@ -131,9 +129,9 @@ private:
 
   std::string                   m_option_dataOutputFileName;
   std::string                   m_option_dataOutputAllowedSet;
-
   std::string                   m_option_rawChain_type;
   std::string                   m_option_rawChain_dataInputFileName;
+  std::string                   m_option_rawChain_effectiveSizeRatio;
   std::string                   m_option_rawChain_size;
   std::string                   m_option_rawChain_generateExtra;
   std::string                   m_option_rawChain_displayPeriod;
@@ -159,5 +157,5 @@ private:
   std::string                   m_option_am_epsilon;
 };
 
-std::ostream& operator<<(std::ostream& os, const uqMarkovChainSGOptionsClass& obj);
-#endif // __UQ_MAC_SG_OPTIONS_H__
+std::ostream& operator<<(std::ostream& os, const uqMLSamplingLevelOptionsClass& obj);
+#endif // __UQ_MULTI_LEVEL_SAMPLING_LEVEL_OPTIONS_H__

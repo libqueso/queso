@@ -30,48 +30,50 @@
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-#include <uqMarkovChainSGOptions.h>
+#include <uqMLSamplingLevelOptions.h>
 #include <uqMiscellaneous.h>
 
-uqMarkovChainSGOptionsClass::uqMarkovChainSGOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix)
+uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix)
   :
-  m_prefix                                   ((std::string)(prefix) + "mc_"),
-  m_dataOutputFileName                       (UQ_MAC_SG_DATA_OUTPUT_FILE_NAME_ODV),
+  m_prefix                                   ((std::string)(prefix) + ""),
+  m_dataOutputFileName                       (UQ_ML_SAMPLING_L_DATA_OUTPUT_FILE_NAME_ODV),
 //m_dataOutputAllowedSet                     (),
-  m_rawChainType                             (UQ_MAC_SG_RAW_CHAIN_TYPE_ODV),
-  m_rawChainDataInputFileName                (UQ_MAC_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV),
-  m_rawChainSize                             (UQ_MAC_SG_RAW_CHAIN_SIZE_ODV),
-  m_rawChainGenerateExtra                    (UQ_MAC_SG_RAW_CHAIN_GENERATE_EXTRA_ODV),
-  m_rawChainDisplayPeriod                    (UQ_MAC_SG_RAW_CHAIN_DISPLAY_PERIOD_ODV),
-  m_rawChainMeasureRunTimes                  (UQ_MAC_SG_RAW_CHAIN_MEASURE_RUN_TIMES_ODV),
-  m_rawChainDataOutputFileName               (UQ_MAC_SG_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV),
+  m_rawChainType                             (UQ_ML_SAMPLING_L_RAW_CHAIN_TYPE_ODV),
+  m_rawChainDataInputFileName                (UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV),
+  m_rawChainEffectiveSizeRatio               (UQ_ML_SAMPLING_L_RAW_CHAIN_EFFECTIVE_SIZE_RATIO_ODV),
+  m_rawChainSize                             (UQ_ML_SAMPLING_L_RAW_CHAIN_SIZE_ODV),
+  m_rawChainGenerateExtra                    (UQ_ML_SAMPLING_L_RAW_CHAIN_GENERATE_EXTRA_ODV),
+  m_rawChainDisplayPeriod                    (UQ_ML_SAMPLING_L_RAW_CHAIN_DISPLAY_PERIOD_ODV),
+  m_rawChainMeasureRunTimes                  (UQ_ML_SAMPLING_L_RAW_CHAIN_MEASURE_RUN_TIMES_ODV),
+  m_rawChainDataOutputFileName               (UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV),
 //m_rawChainDataOutputAllowedSet             (),
-  m_rawChainComputeStats                     (UQ_MAC_SG_RAW_CHAIN_COMPUTE_STATS_ODV),
+  m_rawChainComputeStats                     (UQ_ML_SAMPLING_L_RAW_CHAIN_COMPUTE_STATS_ODV),
   m_rawChainStatisticalOptions               (NULL),
-  m_filteredChainGenerate                    (UQ_MAC_SG_FILTERED_CHAIN_GENERATE_ODV),
-  m_filteredChainDiscardedPortion            (UQ_MAC_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV),
-  m_filteredChainLag                         (UQ_MAC_SG_FILTERED_CHAIN_LAG_ODV),
-  m_filteredChainDataOutputFileName          (UQ_MAC_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV),
+  m_filteredChainGenerate                    (UQ_ML_SAMPLING_L_FILTERED_CHAIN_GENERATE_ODV),
+  m_filteredChainDiscardedPortion            (UQ_ML_SAMPLING_L_FILTERED_CHAIN_DISCARDED_PORTION_ODV),
+  m_filteredChainLag                         (UQ_ML_SAMPLING_L_FILTERED_CHAIN_LAG_ODV),
+  m_filteredChainDataOutputFileName          (UQ_ML_SAMPLING_L_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV),
 //m_filteredChainDataOutputAllowedSet        (),
-  m_filteredChainComputeStats                (UQ_MAC_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV),
+  m_filteredChainComputeStats                (UQ_ML_SAMPLING_L_FILTERED_CHAIN_COMPUTE_STATS_ODV),
   m_filteredChainStatisticalOptions          (NULL),
-  m_mhDisplayCandidates                      (UQ_MAC_SG_MH_DISPLAY_CANDIDATES_ODV),
-  m_mhPutOutOfBoundsInChain                  (UQ_MAC_SG_MH_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV),
-  m_tkUseLocalHessian                        (UQ_MAC_SG_TK_USE_LOCAL_HESSIAN_ODV),
-  m_tkUseNewtonComponent                     (UQ_MAC_SG_TK_USE_NEWTON_COMPONENT_ODV),
-  m_drMaxNumExtraStages                      (UQ_MAC_SG_DR_MAX_NUM_EXTRA_STAGES_ODV),
+  m_mhDisplayCandidates                      (UQ_ML_SAMPLING_L_MH_DISPLAY_CANDIDATES_ODV),
+  m_mhPutOutOfBoundsInChain                  (UQ_ML_SAMPLING_L_MH_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV),
+  m_tkUseLocalHessian                        (UQ_ML_SAMPLING_L_TK_USE_LOCAL_HESSIAN_ODV),
+  m_tkUseNewtonComponent                     (UQ_ML_SAMPLING_L_TK_USE_NEWTON_COMPONENT_ODV),
+  m_drMaxNumExtraStages                      (UQ_ML_SAMPLING_L_DR_MAX_NUM_EXTRA_STAGES_ODV),
   m_drScalesForCovMatrices                   (1,1.),
-  m_amInitialNonAdaptInterval                (UQ_MAC_SG_AM_INIT_NON_ADAPT_INT_ODV),
-  m_amAdaptInterval                          (UQ_MAC_SG_AM_ADAPT_INTERVAL_ODV),
-  m_amEta                                    (UQ_MAC_SG_AM_ETA_ODV),
-  m_amEpsilon                                (UQ_MAC_SG_AM_EPSILON_ODV),
+  m_amInitialNonAdaptInterval                (UQ_ML_SAMPLING_L_AM_INIT_NON_ADAPT_INT_ODV),
+  m_amAdaptInterval                          (UQ_ML_SAMPLING_L_AM_ADAPT_INTERVAL_ODV),
+  m_amEta                                    (UQ_ML_SAMPLING_L_AM_ETA_ODV),
+  m_amEpsilon                                (UQ_ML_SAMPLING_L_AM_EPSILON_ODV),
   m_env                                      (env),
-  m_optionsDesc                              (new po::options_description("Bayesian Markov chain options")),
+  m_optionsDesc                              (new po::options_description("Multilevel sampling level options")),
   m_option_help                              (m_prefix + "help"                              ),
   m_option_dataOutputFileName                (m_prefix + "dataOutputFileName"                ),
   m_option_dataOutputAllowedSet              (m_prefix + "dataOutputAllowedSet"              ),
   m_option_rawChain_type                     (m_prefix + "rawChain_type"                     ),
   m_option_rawChain_dataInputFileName        (m_prefix + "rawChain_dataInputFileName"        ),
+  m_option_rawChain_effectiveSizeRatio       (m_prefix + "rawChain_effectiveSizeRatio"       ),
   m_option_rawChain_size                     (m_prefix + "rawChain_size"                     ),
   m_option_rawChain_generateExtra            (m_prefix + "rawChain_generateExtra"            ),
   m_option_rawChain_displayPeriod            (m_prefix + "rawChain_displayPeriod"            ),
@@ -90,7 +92,7 @@ uqMarkovChainSGOptionsClass::uqMarkovChainSGOptionsClass(const uqBaseEnvironment
   m_option_tk_useLocalHessian                (m_prefix + "tk_useLocalHessian"                ),
   m_option_tk_useNewtonComponent             (m_prefix + "tk_useNewtonComponent"             ),
   m_option_dr_maxNumExtraStages              (m_prefix + "dr_maxNumExtraStages"              ),
-  m_option_dr_scalesForExtraStages           (m_prefix + "dr_scalesForExtraStages"           ),
+  m_option_dr_scalesForExtraStages           (m_prefix + "dr_listOfScalesForExtraStages"     ),
   m_option_am_initialNonAdaptInterval        (m_prefix + "am_initialNonAdaptInterval"        ),
   m_option_am_adaptInterval                  (m_prefix + "am_adaptInterval"                  ),
   m_option_am_eta                            (m_prefix + "am_eta"                            ),
@@ -98,7 +100,7 @@ uqMarkovChainSGOptionsClass::uqMarkovChainSGOptionsClass(const uqBaseEnvironment
 {
 }
 
-uqMarkovChainSGOptionsClass::~uqMarkovChainSGOptionsClass()
+uqMLSamplingLevelOptionsClass::~uqMLSamplingLevelOptionsClass()
 {
   if (m_filteredChainStatisticalOptions) delete m_filteredChainStatisticalOptions;
   if (m_rawChainStatisticalOptions     ) delete m_rawChainStatisticalOptions;
@@ -106,14 +108,14 @@ uqMarkovChainSGOptionsClass::~uqMarkovChainSGOptionsClass()
 } 
 
 void
-uqMarkovChainSGOptionsClass::scanOptionsValues()
+uqMLSamplingLevelOptionsClass::scanOptionsValues()
 {
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
 
   if (m_env.subDisplayFile() != NULL) {
-    *m_env.subDisplayFile() << "In uqMarkovChainSGOptionsClass::scanOptionsValues()"
+    *m_env.subDisplayFile() << "In uqMLSamplingLevelOptionsClass::scanOptionsValues()"
                             << ": after getting values of options with prefix '" << m_prefix
                             << "', state of  object is:"
                             << "\n" << *this
@@ -124,52 +126,53 @@ uqMarkovChainSGOptionsClass::scanOptionsValues()
   if (m_filteredChainComputeStats) m_filteredChainStatisticalOptions = new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "filteredChain_");
 
   return;
-}
+};
 
 void
-uqMarkovChainSGOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
+uqMLSamplingLevelOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
 {
   optionsDesc.add_options()     
-    (m_option_help.c_str(),                                                                                                                             "produce help message for Bayesian Markov chain distr. calculator")
-    (m_option_dataOutputFileName.c_str(),                 po::value<std::string >()->default_value(UQ_MAC_SG_DATA_OUTPUT_FILE_NAME_ODV               ), "name of generic output file"                                     )
-    (m_option_dataOutputAllowedSet.c_str(),               po::value<std::string >()->default_value(UQ_MAC_SG_RAW_CHAIN_DATA_OUTPUT_ALLOW_ODV         ), "subEnvs that will write to generic output file"                  )
-    (m_option_rawChain_type.c_str(),                      po::value<unsigned int>()->default_value(UQ_MAC_SG_RAW_CHAIN_TYPE_ODV                      ), "type of raw chain (1=Markov, 2=White noise)"                     )
-    (m_option_rawChain_dataInputFileName.c_str(),         po::value<std::string >()->default_value(UQ_MAC_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV      ), "name of input file for raw chain "                               )
-    (m_option_rawChain_size.c_str(),                      po::value<unsigned int>()->default_value(UQ_MAC_SG_RAW_CHAIN_SIZE_ODV                      ), "size of raw chain"                                               )
-    (m_option_rawChain_generateExtra.c_str(),             po::value<bool        >()->default_value(UQ_MAC_SG_RAW_CHAIN_GENERATE_EXTRA_ODV            ), "generate extra information about raw chain"                      )
-    (m_option_rawChain_displayPeriod.c_str(),             po::value<unsigned int>()->default_value(UQ_MAC_SG_RAW_CHAIN_DISPLAY_PERIOD_ODV            ), "period of message display during raw chain generation"           )
-    (m_option_rawChain_measureRunTimes.c_str(),           po::value<bool        >()->default_value(UQ_MAC_SG_RAW_CHAIN_MEASURE_RUN_TIMES_ODV         ), "measure run times"                                               )
-    (m_option_rawChain_dataOutputFileName.c_str(),        po::value<std::string >()->default_value(UQ_MAC_SG_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV     ), "name of output file for raw chain "                              )
-    (m_option_rawChain_dataOutputAllowedSet.c_str(),      po::value<std::string >()->default_value(UQ_MAC_SG_RAW_CHAIN_DATA_OUTPUT_ALLOW_ODV         ), "subEnvs that will write to output file for raw chain"            )
-    (m_option_rawChain_computeStats.c_str(),              po::value<bool        >()->default_value(UQ_MAC_SG_RAW_CHAIN_COMPUTE_STATS_ODV             ), "compute statistics on raw chain"                                 )
-    (m_option_filteredChain_generate.c_str(),             po::value<bool        >()->default_value(UQ_MAC_SG_FILTERED_CHAIN_GENERATE_ODV             ), "generate filtered chain"                                         )
-    (m_option_filteredChain_discardedPortion.c_str(),     po::value<double      >()->default_value(UQ_MAC_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV    ), "initial discarded portion for chain filtering"                   )
-    (m_option_filteredChain_lag.c_str(),                  po::value<unsigned int>()->default_value(UQ_MAC_SG_FILTERED_CHAIN_LAG_ODV                  ), "spacing for chain filtering"                                     )
-    (m_option_filteredChain_dataOutputFileName.c_str(),   po::value<std::string >()->default_value(UQ_MAC_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV), "name of output file for filtered chain"                          )
-    (m_option_filteredChain_dataOutputAllowedSet.c_str(), po::value<std::string >()->default_value(UQ_MAC_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOW_ODV    ), "subEnvs that will write to output file for filtered chain"       )
-    (m_option_filteredChain_computeStats.c_str(),         po::value<bool        >()->default_value(UQ_MAC_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV        ), "compute statistics on filtered chain"                            )
-    (m_option_mh_displayCandidates.c_str(),               po::value<bool        >()->default_value(UQ_MAC_SG_MH_DISPLAY_CANDIDATES_ODV               ), "display candidates generated in the core MH algorithm"           )
-    (m_option_mh_putOutOfBoundsInChain.c_str(),           po::value<bool        >()->default_value(UQ_MAC_SG_MH_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV       ), "put 'out of bound' candidates in chain as well"                  )
-    (m_option_tk_useLocalHessian.c_str(),                 po::value<bool        >()->default_value(UQ_MAC_SG_TK_USE_LOCAL_HESSIAN_ODV                ), "'proposal' use local Hessian"                                    )
-    (m_option_tk_useNewtonComponent.c_str(),              po::value<bool        >()->default_value(UQ_MAC_SG_TK_USE_NEWTON_COMPONENT_ODV             ), "'proposal' use Newton component"                                 )
-    (m_option_dr_maxNumExtraStages.c_str(),               po::value<unsigned int>()->default_value(UQ_MAC_SG_DR_MAX_NUM_EXTRA_STAGES_ODV             ), "'dr' maximum number of extra stages"                             )
-    (m_option_dr_scalesForExtraStages.c_str(),            po::value<std::string >()->default_value(UQ_MAC_SG_DR_SCALES_FOR_EXTRA_STAGES_ODV          ), "'dr' list of scales for proposal cov matrices from 2nd stage on" )
-    (m_option_am_initialNonAdaptInterval.c_str(),         po::value<unsigned int>()->default_value(UQ_MAC_SG_AM_INIT_NON_ADAPT_INT_ODV               ), "'am' initial non adaptation interval"                            )
-    (m_option_am_adaptInterval.c_str(),                   po::value<unsigned int>()->default_value(UQ_MAC_SG_AM_ADAPT_INTERVAL_ODV                   ), "'am' adaptation interval"                                        )
-    (m_option_am_eta.c_str(),                             po::value<double      >()->default_value(UQ_MAC_SG_AM_ETA_ODV                              ), "'am' eta"                                                        )
-    (m_option_am_epsilon.c_str(),                         po::value<double      >()->default_value(UQ_MAC_SG_AM_EPSILON_ODV                          ), "'am' epsilon"                                                    )
+    (m_option_help.c_str(),                                                                                                                                      "produce help message for Bayesian Markov chain distr. calculator")
+    (m_option_dataOutputFileName.c_str(),                 po::value<std::string >()->default_value(UQ_ML_SAMPLING_L_DATA_OUTPUT_FILE_NAME_ODV                 ), "name of generic output file"                                     )
+    (m_option_dataOutputAllowedSet.c_str(),               po::value<std::string >()->default_value(UQ_ML_SAMPLING_L_DATA_OUTPUT_ALLOW_ODV                     ), "subEnvs that will write to generic output file"                  )
+    (m_option_rawChain_type.c_str(),                      po::value<unsigned int>()->default_value(UQ_ML_SAMPLING_L_RAW_CHAIN_TYPE_ODV                        ), "type of raw chain (1=Markov, 2=White noise)"                     )
+    (m_option_rawChain_dataInputFileName.c_str(),         po::value<std::string >()->default_value(UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV        ), "name of input file for raw chain "                               )
+    (m_option_rawChain_effectiveSizeRatio.c_str(),        po::value<double      >()->default_value(UQ_ML_SAMPLING_L_RAW_CHAIN_EFFECTIVE_SIZE_RATIO_ODV        ), "effective size ration wrt previous level"                        )
+    (m_option_rawChain_size.c_str(),                      po::value<unsigned int>()->default_value(UQ_ML_SAMPLING_L_RAW_CHAIN_SIZE_ODV                        ), "size of raw chain"                                               )
+    (m_option_rawChain_generateExtra.c_str(),             po::value<bool        >()->default_value(UQ_ML_SAMPLING_L_RAW_CHAIN_GENERATE_EXTRA_ODV              ), "generate extra information about raw chain"                      )
+    (m_option_rawChain_displayPeriod.c_str(),             po::value<unsigned int>()->default_value(UQ_ML_SAMPLING_L_RAW_CHAIN_DISPLAY_PERIOD_ODV              ), "period of message display during raw chain generation"           )
+    (m_option_rawChain_measureRunTimes.c_str(),           po::value<bool        >()->default_value(UQ_ML_SAMPLING_L_RAW_CHAIN_MEASURE_RUN_TIMES_ODV           ), "measure run times"                                               )
+    (m_option_rawChain_dataOutputFileName.c_str(),        po::value<std::string >()->default_value(UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV       ), "name of output file for raw chain "                              )
+    (m_option_rawChain_dataOutputAllowedSet.c_str(),      po::value<std::string >()->default_value(UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV     ), "subEnvs that will write to output file for raw chain"            )
+    (m_option_rawChain_computeStats.c_str(),              po::value<bool        >()->default_value(UQ_ML_SAMPLING_L_RAW_CHAIN_COMPUTE_STATS_ODV               ), "compute statistics on raw chain"                                 )
+    (m_option_filteredChain_generate.c_str(),             po::value<bool        >()->default_value(UQ_ML_SAMPLING_L_FILTERED_CHAIN_GENERATE_ODV               ), "generate filtered chain"                                         )
+    (m_option_filteredChain_discardedPortion.c_str(),     po::value<double      >()->default_value(UQ_ML_SAMPLING_L_FILTERED_CHAIN_DISCARDED_PORTION_ODV      ), "initial discarded portion for chain filtering"                   )
+    (m_option_filteredChain_lag.c_str(),                  po::value<unsigned int>()->default_value(UQ_ML_SAMPLING_L_FILTERED_CHAIN_LAG_ODV                    ), "spacing for chain filtering"                                     )
+    (m_option_filteredChain_dataOutputFileName.c_str(),   po::value<std::string >()->default_value(UQ_ML_SAMPLING_L_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV  ), "name of output file for filtered chain"                          )
+    (m_option_filteredChain_dataOutputAllowedSet.c_str(), po::value<std::string >()->default_value(UQ_ML_SAMPLING_L_FILTERED_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV), "subEnvs that will write to output file for filtered chain"       )
+    (m_option_filteredChain_computeStats.c_str(),         po::value<bool        >()->default_value(UQ_ML_SAMPLING_L_FILTERED_CHAIN_COMPUTE_STATS_ODV          ), "compute statistics on filtered chain"                            )
+    (m_option_mh_displayCandidates.c_str(),               po::value<bool        >()->default_value(UQ_ML_SAMPLING_L_MH_DISPLAY_CANDIDATES_ODV                 ), "display candidates generated in the core MH algorithm"           )
+    (m_option_mh_putOutOfBoundsInChain.c_str(),           po::value<bool        >()->default_value(UQ_ML_SAMPLING_L_MH_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV         ), "put 'out of bound' candidates in chain as well"                  )
+    (m_option_tk_useLocalHessian.c_str(),                 po::value<bool        >()->default_value(UQ_ML_SAMPLING_L_TK_USE_LOCAL_HESSIAN_ODV                  ), "'proposal' use local Hessian"                                    )
+    (m_option_tk_useNewtonComponent.c_str(),              po::value<bool        >()->default_value(UQ_ML_SAMPLING_L_TK_USE_NEWTON_COMPONENT_ODV               ), "'proposal' use Newton component"                                 )
+    (m_option_dr_maxNumExtraStages.c_str(),               po::value<unsigned int>()->default_value(UQ_ML_SAMPLING_L_DR_MAX_NUM_EXTRA_STAGES_ODV               ), "'dr' maximum number of extra stages"                             )
+    (m_option_dr_scalesForExtraStages.c_str(),            po::value<std::string >()->default_value(UQ_ML_SAMPLING_L_DR_LIST_OF_SCALES_FOR_EXTRA_STAGES_ODV    ), "'dr' list of scales for proposal cov matrices from 2nd stage on" )
+    (m_option_am_initialNonAdaptInterval.c_str(),         po::value<unsigned int>()->default_value(UQ_ML_SAMPLING_L_AM_INIT_NON_ADAPT_INT_ODV                 ), "'am' initial non adaptation interval"                            )
+    (m_option_am_adaptInterval.c_str(),                   po::value<unsigned int>()->default_value(UQ_ML_SAMPLING_L_AM_ADAPT_INTERVAL_ODV                     ), "'am' adaptation interval"                                        )
+    (m_option_am_eta.c_str(),                             po::value<double      >()->default_value(UQ_ML_SAMPLING_L_AM_ETA_ODV                                ), "'am' eta"                                                        )
+    (m_option_am_epsilon.c_str(),                         po::value<double      >()->default_value(UQ_ML_SAMPLING_L_AM_EPSILON_ODV                            ), "'am' epsilon"                                                    )
   ;
 
   return;
 }
 
 void
-uqMarkovChainSGOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
+uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
 {
   if (m_env.allOptionsMap().count(m_option_help.c_str())) {
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << optionsDesc
-                             << std::endl;
+                              << std::endl;
     }
   }
 
@@ -196,6 +199,10 @@ uqMarkovChainSGOptionsClass::getMyOptionValues(po::options_description& optionsD
 
   if (m_env.allOptionsMap().count(m_option_rawChain_dataInputFileName.c_str())) {
     m_rawChainDataInputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataInputFileName.c_str()]).as<std::string>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_rawChain_effectiveSizeRatio.c_str())) {
+    m_rawChainEffectiveSizeRatio = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_effectiveSizeRatio.c_str()]).as<double>();
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_size.c_str())) {
@@ -248,7 +255,7 @@ uqMarkovChainSGOptionsClass::getMyOptionValues(po::options_description& optionsD
   }
   if ((m_filteredChainGenerate == true) &&
       (m_filteredChainLag      < 2    )) {
-    std::cerr << "WARNING In uqMarkovChainSGClass<P_V,P_M>::getMyOptionsValues()"
+    std::cerr << "WARNING In uqMLSamplingClass<P_V,P_M>::getMyOptionsValues()"
               << ", fullRank "              << m_env.fullRank()
               << ", subEnvironment "        << m_env.subId()
               << ", subRank "               << m_env.subRank()
@@ -306,7 +313,7 @@ uqMarkovChainSGOptionsClass::getMyOptionValues(po::options_description& optionsD
     std::string inputString = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dr_scalesForExtraStages.c_str()]).as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpScales);
     //if (m_env.subDisplayFile()) {
-    //  *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::getMyOptionValues(): scales =";
+    //  *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::getMyOptionValues(): scales =";
     //  for (unsigned int i = 0; i < tmpScales.size(); ++i) {
     //    *m_env.subDisplayFile() << " " << tmpScales[i];
     //  }
@@ -316,21 +323,11 @@ uqMarkovChainSGOptionsClass::getMyOptionValues(po::options_description& optionsD
 
   if (m_drMaxNumExtraStages > 0) {
     m_drScalesForCovMatrices.clear();
-#ifdef UQ_USES_TK_CLASS
-#else
-    m_lowerCholProposalCovMatrices.clear();
-    m_proposalCovMatrices.clear();
-#endif
 
     double scale = 1.0;
     unsigned int tmpSize = tmpScales.size();
 
     m_drScalesForCovMatrices.resize(m_drMaxNumExtraStages+1,1.);
-#ifdef UQ_USES_TK_CLASS
-#else
-    m_lowerCholProposalCovMatrices.resize(m_drMaxNumExtraStages+1,NULL);
-    m_proposalCovMatrices.resize         (m_drMaxNumExtraStages+1,NULL);
-#endif
 
     for (unsigned int i = 1; i < (m_drMaxNumExtraStages+1); ++i) {
       if (i <= tmpSize) scale = tmpScales[i-1];
@@ -359,7 +356,7 @@ uqMarkovChainSGOptionsClass::getMyOptionValues(po::options_description& optionsD
 }
 
 void
-uqMarkovChainSGOptionsClass::print(std::ostream& os) const
+uqMLSamplingLevelOptionsClass::print(std::ostream& os) const
 {
   os <<         m_option_dataOutputFileName   << " = " << m_dataOutputFileName
      << "\n" << m_option_dataOutputAllowedSet << " = ";
@@ -368,6 +365,7 @@ uqMarkovChainSGOptionsClass::print(std::ostream& os) const
   }
   os << "\n" << m_option_rawChain_type                 << " = " << m_rawChainType
      << "\n" << m_option_rawChain_dataInputFileName    << " = " << m_rawChainDataInputFileName
+     << "\n" << m_option_rawChain_effectiveSizeRatio   << " = " << m_rawChainEffectiveSizeRatio
      << "\n" << m_option_rawChain_size                 << " = " << m_rawChainSize
      << "\n" << m_option_rawChain_generateExtra        << " = " << m_rawChainGenerateExtra
      << "\n" << m_option_rawChain_displayPeriod        << " = " << m_rawChainDisplayPeriod
@@ -405,7 +403,7 @@ uqMarkovChainSGOptionsClass::print(std::ostream& os) const
   return;
 }
 
-std::ostream& operator<<(std::ostream& os, const uqMarkovChainSGOptionsClass& obj)
+std::ostream& operator<<(std::ostream& os, const uqMLSamplingLevelOptionsClass& obj)
 {
   obj.print(os);
 
