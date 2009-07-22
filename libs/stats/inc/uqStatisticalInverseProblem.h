@@ -152,7 +152,8 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   const P_M* proposalCovMatrix)
 {
 
-  hpct_timer_begin("BayesMarkovChain");
+  //hpct_timer_begin("BayesMarkovChain");     TODO: revisit timing output
+
   m_env.fullComm().Barrier();
   m_env.syncPrintDebugMsg("Entering uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()",1,3000000,m_env.fullComm());
 
@@ -204,9 +205,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
                                                        proposalCovMatrix);
 
 
-  hpct_timer_end("BayesMarkovChain");
   m_mcSeqGenerator->generateSequence(*m_chain);
-  hpct_timer_begin("BayesMarkovChain");
 
   m_solutionRealizer = new uqSequentialVectorRealizerClass<P_V,P_M>(m_options.m_prefix.c_str(),
                                                                    *m_chain);
@@ -275,7 +274,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
 
   m_env.syncPrintDebugMsg("Leaving uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()",1,3000000,m_env.fullComm());
   m_env.fullComm().Barrier();
-  hpct_timer_end("BayesMarkovChain");  
+  //  hpct_timer_end("BayesMarkovChain");  TODO: revist timers
   return;
 }
 
