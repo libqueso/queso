@@ -6,7 +6,7 @@ LIBS         = -L$(top_builddir)/libs/.libs -lqueso $(GSL_LIBS) $(BOOST_PROGRAM_
 
 EXTRA_DIST                     = TgaValidationCycle_appl.h TgaValidationCycle_likelihood.h TgaValidationCycle_qoi.h
 
-bin_PROGRAMS                   = TgaValidationCycle_gsl
+noinst_PROGRAMS                = TgaValidationCycle_gsl
 TgaValidationCycle_gsl_SOURCES = TgaValidationCycle_gsl.C 
 
 

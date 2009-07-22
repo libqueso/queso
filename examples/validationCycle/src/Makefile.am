@@ -6,7 +6,11 @@ AM_LDFLAGS  = $(BOOST_LDFLAGS) ${HPCT_LIBS} -lhpct
 
 LIBS        = -L$(top_builddir)/libs/.libs -lqueso $(GSL_LIBS) $(BOOST_PROGRAM_OPTIONS_LIB) $(EPETRA_LIBS)
 
-bin_PROGRAMS = exTgaValidationCycle_gsl
+
+exampledir  	 = @prefix@/examples/advanced
+example_DATA     = exTgaValidationCycle_gsl.C exTgaValidationCycle_appl.h \
+		   exTgaValidationCycle_likelihood.h exTgaValidationCycle_qoi.h
+example_PROGRAMS = exTgaValidationCycle_gsl
 exTgaValidationCycle_gsl_SOURCES = exTgaValidationCycle_gsl.C exTgaValidationCycle_appl.h \
 				   exTgaValidationCycle_likelihood.h exTgaValidationCycle_qoi.h
 

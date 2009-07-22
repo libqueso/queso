@@ -6,7 +6,7 @@ AM_LDFLAGS  =  $(BOOST_LDFLAGS) $(BOOST_LDFLAGS) ${HPCT_LIBS} -lhpct
 
 LIBS        = -L$(top_builddir)/libs/.libs -lqueso $(GSL_LIBS) $(BOOST_PROGRAM_OPTIONS_LIB) $(EPETRA_LIBS)
 
-bin_PROGRAMS = exStatisticalInverseProblem1_gsl
+noinst_PROGRAMS = exStatisticalInverseProblem1_gsl
 exStatisticalInverseProblem1_gsl_SOURCES = exStatisticalInverseProblem1_gsl.C exStatisticalInverseProblem1_appl.h \
 	                                   exStatisticalInverseProblem1_likelihood.h
 

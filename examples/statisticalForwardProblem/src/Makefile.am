@@ -6,7 +6,7 @@ AM_LDFLAGS  = $(BOOST_LDFLAGS) ${HPCT_LIBS} -lhpct
 
 LIBS        = -L$(top_builddir)/libs/.libs -lqueso $(GSL_LIBS) $(BOOST_PROGRAM_OPTIONS_LIB) $(EPETRA_LIBS)
 
-bin_PROGRAMS = exStatisticalForwardProblem_gsl
+noinst_PROGRAMS = exStatisticalForwardProblem_gsl
 
 exStatisticalForwardProblem_gsl_SOURCES = exStatisticalForwardProblem_gsl.C exStatisticalForwardProblem_appl.h \
  	                                  exStatisticalForwardProblem_qoi.h
