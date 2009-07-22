@@ -32,21 +32,18 @@
 AC_DEFUN([AX_PATH_HPCT],
 [
 
-AC_ARG_VAR(HPCT_HOME,[root directory of HPCT installation])
 
-AC_ARG_WITH(HPCT, [AS_HELP_STRING([--with-hpct[=DIR]],[root directory of HPCT installation (default = HPCT_DIR)])],
-		  [with_hpct=$withval
-if test "${with_hpct}" != yes; then
-    HPCT_PREFIX=$withval
-fi
-],[
-with_hpct=$withval
-if test "x${HPCT_DIR}" != "x"; then
-   HPCT_PREFIX=${HPCT_DIR}
-fi
-])
+AC_ARG_VAR(HPCT_DIR,[root directory of HPCT installation])
+HPCT_PREFIX=${HPCT_DIR}
 
-if test "${with_hpct}" != no ; then
+AC_ARG_WITH(hpct, [AS_HELP_STRING([--with-hpct[=DIR]],[root directory of HPCT installation (default = HPCT_DIR)])],
+		  [HPCT_PREFIX="$withval"],[])
+
+echo hpct_PREFIX = $HPCT_PREFIX
+
+# HPCT is required - test for availability.
+
+#if test "${with_hpct}" != no ; then
 
     if test -d "${HPCT_PREFIX}/lib" ; then
        HPCT_LIBS="-L${HPCT_PREFIX}/lib -lhpct"
@@ -91,6 +88,6 @@ if test "${with_hpct}" != no ; then
         ifelse([$1],,,[$1])
     fi
 
-fi
+#fi
 
 ])
