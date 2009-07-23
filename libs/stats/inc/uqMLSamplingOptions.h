@@ -53,7 +53,7 @@ public:
   void scanOptionsValues();
   void print            (std::ostream& os) const;
 
-  std::string                            m_prefix;
+  std::string                                 m_prefix;
 
   std::string                                 m_dataOutputFileName;
   std::set<unsigned int>                      m_dataOutputAllowedSet;

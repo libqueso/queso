@@ -73,23 +73,23 @@ public:
         void print                    (std::ostream& os) const;
 
 private:
-  const uqBaseEnvironmentClass&              m_env;
+  const uqBaseEnvironmentClass&                 m_env;
 
-  const uqBaseVectorRVClass       <P_V,P_M>& m_priorRv;
-  const uqBaseScalarFunctionClass <P_V,P_M>& m_likelihoodFunction;
-        uqGenericVectorRVClass    <P_V,P_M>& m_postRv;
+  const uqBaseVectorRVClass       <P_V,P_M>&    m_priorRv;
+  const uqBaseScalarFunctionClass <P_V,P_M>&    m_likelihoodFunction;
+        uqGenericVectorRVClass    <P_V,P_M>&    m_postRv;
 
-        uqVectorSetClass          <P_V,P_M>* m_solutionDomain;
-        uqBaseJointPdfClass       <P_V,P_M>* m_solutionPdf;
-        uqBaseVectorMdfClass      <P_V,P_M>* m_subSolutionMdf;
-        uqBaseVectorCdfClass      <P_V,P_M>* m_subSolutionCdf;
-        uqBaseVectorRealizerClass <P_V,P_M>* m_solutionRealizer;
+        uqVectorSetClass          <P_V,P_M>*    m_solutionDomain;
+        uqBaseJointPdfClass       <P_V,P_M>*    m_solutionPdf;
+        uqBaseVectorMdfClass      <P_V,P_M>*    m_subSolutionMdf;
+        uqBaseVectorCdfClass      <P_V,P_M>*    m_subSolutionCdf;
+        uqBaseVectorRealizerClass <P_V,P_M>*    m_solutionRealizer;
 
-        uqMarkovChainSGClass      <P_V,P_M>* m_mcSeqGenerator;
-        uqMLSamplingClass         <P_V,P_M>* m_mlSampler;
-        uqBaseVectorSequenceClass <P_V,P_M>* m_chain;
-        uqArrayOfOneDGridsClass   <P_V,P_M>* m_subMdfGrids;
-        uqArrayOfOneDTablesClass  <P_V,P_M>* m_subMdfValues;
+        uqMarkovChainSGClass      <P_V,P_M>*    m_mcSeqGenerator;
+        uqMLSamplingClass         <P_V,P_M>*    m_mlSampler;
+        uqBaseVectorSequenceClass <P_V,P_M>*    m_chain;
+        uqArrayOfOneDGridsClass   <P_V,P_M>*    m_subMdfGrids;
+        uqArrayOfOneDTablesClass  <P_V,P_M>*    m_subMdfValues;
 
         uqStatisticalInverseProblemOptionsClass m_options;
 };
@@ -187,8 +187,6 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   P_V numEvaluationPointsVec(m_priorRv.imageSet().vectorSpace().zeroVector());
   numEvaluationPointsVec.cwSet(250.);
 
-
-
   // Compute output pdf up to a multiplicative constant: Bayesian approach
   m_solutionDomain = uqInstantiateIntersection(m_priorRv.pdf().domainSet(),m_likelihoodFunction.domainSet());
 
@@ -209,15 +207,12 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
                                                        initialValues,
                                                        initialProposalCovMatrix);
 
-
   m_mcSeqGenerator->generateSequence(*m_chain);
 
   m_solutionRealizer = new uqSequentialVectorRealizerClass<P_V,P_M>(m_options.m_prefix.c_str(),
                                                                    *m_chain);
 
   m_postRv.setRealizer(*m_solutionRealizer);
-
-
 
   m_env.syncPrintDebugMsg("In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(), code place 1",3,3000000,m_env.fullComm());
   //m_env.fullComm().Barrier();
@@ -306,6 +301,17 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling(
                             << std::endl;
   }
 
+  if (m_mlSampler       ) delete m_mlSampler;
+  if (m_mcSeqGenerator  ) delete m_mcSeqGenerator;
+  if (m_solutionRealizer) delete m_solutionRealizer;
+  if (m_subSolutionCdf  ) delete m_subSolutionCdf;
+  if (m_subSolutionMdf  ) delete m_subSolutionMdf;
+  if (m_solutionPdf     ) delete m_solutionPdf;
+  if (m_solutionDomain  ) delete m_solutionDomain;
+
+  P_V numEvaluationPointsVec(m_priorRv.imageSet().vectorSpace().zeroVector());
+  numEvaluationPointsVec.cwSet(250.);
+
   // Compute output pdf up to a multiplicative constant: Bayesian approach
   m_solutionDomain = uqInstantiateIntersection(m_priorRv.pdf().domainSet(),m_likelihoodFunction.domainSet());
 
@@ -317,10 +323,18 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling(
   m_postRv.setPdf(*m_solutionPdf);
 
   // Compute output realizer: ML approach
+  m_chain = new uqSequenceOfVectorsClass<P_V,P_M>(m_postRv.imageSet().vectorSpace(),0,m_options.m_prefix+"chain");
   m_mlSampler = new uqMLSamplingClass<P_V,P_M>(m_options.m_prefix.c_str(),
                                                m_postRv,
                                                initialValues,
                                                initialProposalCovMatrix);
+
+  m_mcSeqGenerator->generateSequence(*m_chain);
+
+  m_solutionRealizer = new uqSequentialVectorRealizerClass<P_V,P_M>(m_options.m_prefix.c_str(),
+                                                                   *m_chain);
+
+  m_postRv.setRealizer(*m_solutionRealizer);
 
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << std::endl;
