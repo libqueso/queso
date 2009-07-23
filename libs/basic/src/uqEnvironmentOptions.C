@@ -47,14 +47,14 @@ uqEnvironmentOptionsClass::uqEnvironmentOptionsClass(const uqBaseEnvironmentClas
   m_env                      (env),
   m_prefix                   ((std::string)(prefix) + "env_"),
   m_optionsDesc              (new po::options_description("Environment options")),
-  m_option_help              (m_prefix + "help"              ),
-  m_option_numSubEnvironments(m_prefix + "numSubEnvironments"),
-  m_option_subDisplayFileName(m_prefix + "subDisplayFileName"),
-  m_option_subDisplayAllowAll(m_prefix + "subDisplayAllowAll"),
-  m_option_subDisplayAllow   (m_prefix + "subDisplayAllow"   ),
-  m_option_displayVerbosity  (m_prefix + "displayVerbosity"  ),
-  m_option_syncVerbosity     (m_prefix + "syncVerbosity"     ),
-  m_option_seed              (m_prefix + "seed"              )
+  m_option_help              (m_prefix + "help"                ),
+  m_option_numSubEnvironments(m_prefix + "numSubEnvironments"  ),
+  m_option_subDisplayFileName(m_prefix + "subDisplayFileName"  ),
+  m_option_subDisplayAllowAll(m_prefix + "subDisplayAllowAll"  ),
+  m_option_subDisplayAllow   (m_prefix + "subDisplayAllowedSet"),
+  m_option_displayVerbosity  (m_prefix + "displayVerbosity"    ),
+  m_option_syncVerbosity     (m_prefix + "syncVerbosity"       ),
+  m_option_seed              (m_prefix + "seed"                )
 {
 }
 

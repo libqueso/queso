@@ -65,8 +65,8 @@ public:
 	/*! Operation to solve the problem */
         void solveWithBayesMarkovChain(const P_V& initialValues,
                                        const P_M* initialProposalCovMatrix);
-        void solveWithMultiLevelSampling(const P_V& initialValues,
-                                         const P_M* initialProposalCovMatrix);
+        void solveWithBayesMLSampling (const P_V& initialValues,
+                                       const P_M* initialProposalCovMatrix);
   const uqBaseVectorRVClass   <P_V,P_M>& priorRv() const;
   const uqGenericVectorRVClass<P_V,P_M>& postRv () const;
 
@@ -202,7 +202,6 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
 
   m_postRv.setPdf(*m_solutionPdf);
 
-
   // Compute output realizer: Markov Chain approach
   m_chain = new uqSequenceOfVectorsClass<P_V,P_M>(m_postRv.imageSet().vectorSpace(),0,m_options.m_prefix+"chain");
   m_mcSeqGenerator = new uqMarkovChainSGClass<P_V,P_M>(m_options.m_prefix.c_str(),
@@ -286,14 +285,49 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
 
 template <class P_V,class P_M>
 void
-uqStatisticalInverseProblemClass<P_V,P_M>::solveWithMultiLevelSampling(
+uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling(
   const P_V& initialValues,
   const P_M* initialProposalCovMatrix)
 {
+  m_env.fullComm().Barrier();
+  m_env.syncPrintDebugMsg("Entering uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling()",1,3000000,m_env.fullComm());
+
+  if (m_options.m_computeSolution == false) {
+    if ((m_env.subDisplayFile())) {
+      *m_env.subDisplayFile() << "In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling()"
+                              << ": avoiding solution, as requested by user"
+                              << std::endl;
+    }
+    return;
+  }
+  if ((m_env.subDisplayFile())) {
+    *m_env.subDisplayFile() << "In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling()"
+                            << ": computing solution, as requested by user"
+                            << std::endl;
+  }
+
+  // Compute output pdf up to a multiplicative constant: Bayesian approach
+  m_solutionDomain = uqInstantiateIntersection(m_priorRv.pdf().domainSet(),m_likelihoodFunction.domainSet());
+
+  m_solutionPdf = new uqBayesianJointPdfClass<P_V,P_M>(m_options.m_prefix.c_str(),
+                                                       m_priorRv.pdf(),
+                                                       m_likelihoodFunction,
+                                                      *m_solutionDomain);
+
+  m_postRv.setPdf(*m_solutionPdf);
+
+  // Compute output realizer: ML approach
   m_mlSampler = new uqMLSamplingClass<P_V,P_M>(m_options.m_prefix.c_str(),
                                                m_postRv,
                                                initialValues,
                                                initialProposalCovMatrix);
+
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << std::endl;
+  }
+
+  m_env.syncPrintDebugMsg("Leaving uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling()",1,3000000,m_env.fullComm());
+  m_env.fullComm().Barrier();
 
   return;
 }

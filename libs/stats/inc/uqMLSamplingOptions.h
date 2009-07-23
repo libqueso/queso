@@ -34,7 +34,7 @@
 #define __UQ_MULTI_LEVEL_SAMPLING_OPTIONS_H__
 
 #include <uqEnvironment.h>
-#include <uqSequenceStatisticalOptions.h>
+#include <uqMLSamplingLevelOptions.h>
 
 #define UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE "."
 
@@ -42,7 +42,7 @@
 #define UQ_ML_SAMPLING_DATA_OUTPUT_FILE_NAME_ODV     UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE
 #define UQ_ML_SAMPLING_DATA_OUTPUT_ALLOWED_SET_ODV   ""
 #define UQ_ML_SAMPLING_INITIAL_EXPONENT_ODV          0.2
-#define UQ_ML_SAMPLING_MAX_NUMBER_OF_LEVELS_ODV      5
+#define UQ_ML_SAMPLING_MAX_NUMBER_OF_LEVELS_ODV      1
 
 class uqMLSamplingOptionsClass
 {
@@ -53,12 +53,13 @@ public:
   void scanOptionsValues();
   void print            (std::ostream& os) const;
 
-  std::string                   m_prefix;
+  std::string                            m_prefix;
 
-  std::string                   m_dataOutputFileName;
-  std::set<unsigned int>        m_dataOutputAllowedSet;
-  double                        m_initialExponent;
-  unsigned int                  m_maxNumberOfLevels;
+  std::string                                 m_dataOutputFileName;
+  std::set<unsigned int>                      m_dataOutputAllowedSet;
+  double                                      m_initialExponent;
+  unsigned int                                m_maxNumberOfLevels;
+  std::vector<uqMLSamplingLevelOptionsClass*> m_levelOptions;
 
 private:
   void   defineMyOptions  (po::options_description& optionsDesc) const;

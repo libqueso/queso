@@ -40,6 +40,7 @@ uqMLSamplingOptionsClass::uqMLSamplingOptionsClass(const uqBaseEnvironmentClass&
 //m_dataOutputAllowedSet       (),
   m_initialExponent            (UQ_ML_SAMPLING_INITIAL_EXPONENT_ODV),
   m_maxNumberOfLevels          (UQ_ML_SAMPLING_MAX_NUMBER_OF_LEVELS_ODV),
+  m_levelOptions               (0),
   m_env                        (env),
   m_optionsDesc                (new po::options_description("Multilevel sampling options")),
   m_option_help                (m_prefix + "help"                ),
@@ -52,6 +53,12 @@ uqMLSamplingOptionsClass::uqMLSamplingOptionsClass(const uqBaseEnvironmentClass&
 
 uqMLSamplingOptionsClass::~uqMLSamplingOptionsClass()
 {
+  for (unsigned int i = 0; i < m_levelOptions.size(); ++i) {
+    if (m_levelOptions[i] != NULL) {
+      delete m_levelOptions[i];
+      m_levelOptions[i] = NULL;
+    }
+  }
   if (m_optionsDesc) delete m_optionsDesc;
 } 
 
@@ -68,6 +75,14 @@ uqMLSamplingOptionsClass::scanOptionsValues()
                             << "', state of  object is:"
                             << "\n" << *this
                             << std::endl;
+  }
+
+  char tmpSufix[256];
+  m_levelOptions.resize(m_maxNumberOfLevels,NULL);
+  for (unsigned int i = 0; i < m_levelOptions.size(); ++i) {
+    sprintf(tmpSufix,"%d_",i+1); // Yes, '+1'
+    m_levelOptions[i] = new uqMLSamplingLevelOptionsClass(m_env,(m_prefix + tmpSufix).c_str());
+    m_levelOptions[i]->scanOptionsValues();
   }
 
   return;
@@ -134,7 +149,12 @@ uqMLSamplingOptionsClass::print(std::ostream& os) const
     os << *setIt << " ";
   }
   os << "\n" << m_option_initialExponent   << " = " << m_initialExponent
-     << "\n" << m_option_maxNumberOfLevels << " = " << m_maxNumberOfLevels;
+     << "\n" << m_option_maxNumberOfLevels << " = " << m_maxNumberOfLevels
+     << "\n";
+
+  for (unsigned int i = 0; i < m_levelOptions.size(); ++i) {
+    os << "\n" << *(m_levelOptions[i]);
+  }
 
   return;
 }
