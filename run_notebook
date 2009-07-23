@@ -1,6 +1,6 @@
-./configure --prefix=/home/prudenci/Installations/queso_0_4_0_gnu \
-            --with-trilinos=/home/prudenci/Installations/Trilinos_8_0_8 \
+./configure --prefix=/home/prudenci/Installations/queso_0_5_0_gnu \
+	    --with-trilinos=/home/prudenci/Installations/Trilinos_8_0_8 \
 	    --with-hpct=/home/prudenci/Installations/hpct \
-            --with-boost=/home/prudenci/Installations/boost_1_35 \
-            --with-gsl-prefix=/home/prudenci/Installations/gsl_1_11 \
-            CXXFLAGS="-DMPICH_IGNORE_CXX_SEEK -O3 -Wall"
+	    --with-boost=/home/prudenci/Installations/boost_1_39 \
+	    --with-gsl-prefix=/home/prudenci/Installations/gsl_1_11 \
+	    CXXFLAGS="-DMPICH_IGNORE_CXX_SEEK -O3 -Wall"
