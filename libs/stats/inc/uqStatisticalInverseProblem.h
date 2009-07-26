@@ -207,7 +207,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
                                                        initialValues,
                                                        initialProposalCovMatrix);
 
-  m_mcSeqGenerator->generateSequence(*m_chain);
+  m_mcSeqGenerator->generateSequence(*m_chain,NULL);
 
   m_solutionRealizer = new uqSequentialVectorRealizerClass<P_V,P_M>(m_options.m_prefix.c_str(),
                                                                    *m_chain);
@@ -329,7 +329,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling(
                                                initialValues,
                                                initialProposalCovMatrix);
 
-  m_mcSeqGenerator->generateSequence(*m_chain);
+  m_mlSampler->generateSequence(*m_chain,NULL);
 
   m_solutionRealizer = new uqSequentialVectorRealizerClass<P_V,P_M>(m_options.m_prefix.c_str(),
                                                                    *m_chain);

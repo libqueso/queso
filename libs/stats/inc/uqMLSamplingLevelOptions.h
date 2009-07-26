@@ -46,9 +46,11 @@
 // _ODV = option default value
 #define UQ_ML_SAMPLING_L_DATA_OUTPUT_FILE_NAME_ODV                  UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
 #define UQ_ML_SAMPLING_L_DATA_OUTPUT_ALLOW_ODV                      ""
+#define UQ_ML_SAMPLING_L_MIN_EFFECTIVE_SIZE_RATIO_ODV               0.9
+#define UQ_ML_SAMPLING_L_MAX_EXPONENT_ODV                           1.
+#define UQ_ML_SAMPLING_L_MAX_NUMBER_OF_ATTEMPTS_ODV                 10
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_TYPE_ODV                         UQ_ML_SAMPLING_L_MARKOV_CHAIN_TYPE
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV         UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
-#define UQ_ML_SAMPLING_L_RAW_CHAIN_EFFECTIVE_SIZE_RATIO_ODV         0.9
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_SIZE_ODV                         100.
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_GENERATE_EXTRA_ODV               0
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_DISPLAY_PERIOD_ODV               500
@@ -86,10 +88,12 @@ public:
 
   std::string                        m_dataOutputFileName;
   std::set<unsigned int>             m_dataOutputAllowedSet;
+  double                             m_minEffectiveSizeRatio;
+  double                             m_maxExponent;
+  unsigned int                       m_maxNumberOfAttempts;
 
   unsigned int                       m_rawChainType;
   std::string                        m_rawChainDataInputFileName;
-  double                             m_rawChainEffectiveSizeRatio;
   unsigned int                       m_rawChainSize;
   bool                               m_rawChainGenerateExtra;
   unsigned int                       m_rawChainDisplayPeriod;
@@ -129,9 +133,12 @@ private:
 
   std::string                   m_option_dataOutputFileName;
   std::string                   m_option_dataOutputAllowedSet;
+  std::string                   m_option_minEffectiveSizeRatio;
+  std::string                   m_option_maxExponent;
+  std::string                   m_option_maxNumberOfAttempts;
+
   std::string                   m_option_rawChain_type;
   std::string                   m_option_rawChain_dataInputFileName;
-  std::string                   m_option_rawChain_effectiveSizeRatio;
   std::string                   m_option_rawChain_size;
   std::string                   m_option_rawChain_generateExtra;
   std::string                   m_option_rawChain_displayPeriod;
@@ -139,12 +146,14 @@ private:
   std::string                   m_option_rawChain_dataOutputFileName;
   std::string                   m_option_rawChain_dataOutputAllowedSet;
   std::string                   m_option_rawChain_computeStats;
+
   std::string                   m_option_filteredChain_generate;
   std::string                   m_option_filteredChain_discardedPortion;
   std::string                   m_option_filteredChain_lag;
   std::string                   m_option_filteredChain_dataOutputFileName;
   std::string                   m_option_filteredChain_dataOutputAllowedSet;
   std::string                   m_option_filteredChain_computeStats;
+
   std::string                   m_option_mh_displayCandidates;
   std::string                   m_option_mh_putOutOfBoundsInChain;
   std::string                   m_option_tk_useLocalHessian;

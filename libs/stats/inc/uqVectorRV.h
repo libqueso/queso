@@ -200,14 +200,14 @@ public:
                          const uqVectorSetClass         <V,M>& imageSet);
   uqGenericVectorRVClass(const char*                           prefix,
                          const uqVectorSetClass         <V,M>& imageSet,
-                         const uqBaseJointPdfClass     <V,M>& pdf,
+                         const uqBaseJointPdfClass      <V,M>& pdf,
                          const uqBaseVectorRealizerClass<V,M>& realizer,
                          const uqBaseVectorCdfClass     <V,M>& subCdf,
                          const uqBaseVectorCdfClass     <V,M>& unifiedCdf,
                          const uqBaseVectorMdfClass     <V,M>& mdf);
   virtual ~uqGenericVectorRVClass();
 
-  void setPdf       (uqBaseJointPdfClass     <V,M>& pdf       );
+  void setPdf       (uqBaseJointPdfClass      <V,M>& pdf       );
   void setRealizer  (uqBaseVectorRealizerClass<V,M>& realizer  );
   void setSubCdf    (uqBaseVectorCdfClass     <V,M>& subCdf    );
   void setUnifiedCdf(uqBaseVectorCdfClass     <V,M>& unifiedCdf);

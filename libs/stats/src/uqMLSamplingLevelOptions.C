@@ -38,9 +38,11 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(const uqBaseEnviron
   m_prefix                                   ((std::string)(prefix) + ""),
   m_dataOutputFileName                       (UQ_ML_SAMPLING_L_DATA_OUTPUT_FILE_NAME_ODV),
 //m_dataOutputAllowedSet                     (),
+  m_minEffectiveSizeRatio                    (UQ_ML_SAMPLING_L_MIN_EFFECTIVE_SIZE_RATIO_ODV),
+  m_maxExponent                              (UQ_ML_SAMPLING_L_MAX_EXPONENT_ODV),
+  m_maxNumberOfAttempts                      (UQ_ML_SAMPLING_L_MAX_NUMBER_OF_ATTEMPTS_ODV),
   m_rawChainType                             (UQ_ML_SAMPLING_L_RAW_CHAIN_TYPE_ODV),
   m_rawChainDataInputFileName                (UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV),
-  m_rawChainEffectiveSizeRatio               (UQ_ML_SAMPLING_L_RAW_CHAIN_EFFECTIVE_SIZE_RATIO_ODV),
   m_rawChainSize                             (UQ_ML_SAMPLING_L_RAW_CHAIN_SIZE_ODV),
   m_rawChainGenerateExtra                    (UQ_ML_SAMPLING_L_RAW_CHAIN_GENERATE_EXTRA_ODV),
   m_rawChainDisplayPeriod                    (UQ_ML_SAMPLING_L_RAW_CHAIN_DISPLAY_PERIOD_ODV),
@@ -71,9 +73,11 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(const uqBaseEnviron
   m_option_help                              (m_prefix + "help"                              ),
   m_option_dataOutputFileName                (m_prefix + "dataOutputFileName"                ),
   m_option_dataOutputAllowedSet              (m_prefix + "dataOutputAllowedSet"              ),
+  m_option_minEffectiveSizeRatio             (m_prefix + "minEffectiveSizeRatio"             ),
+  m_option_maxExponent                       (m_prefix + "maxExponent"                       ),
+  m_option_maxNumberOfAttempts               (m_prefix + "maxNumberOfAttempts"               ),
   m_option_rawChain_type                     (m_prefix + "rawChain_type"                     ),
   m_option_rawChain_dataInputFileName        (m_prefix + "rawChain_dataInputFileName"        ),
-  m_option_rawChain_effectiveSizeRatio       (m_prefix + "rawChain_effectiveSizeRatio"       ),
   m_option_rawChain_size                     (m_prefix + "rawChain_size"                     ),
   m_option_rawChain_generateExtra            (m_prefix + "rawChain_generateExtra"            ),
   m_option_rawChain_displayPeriod            (m_prefix + "rawChain_displayPeriod"            ),
@@ -135,9 +139,11 @@ uqMLSamplingLevelOptionsClass::defineMyOptions(po::options_description& optionsD
     (m_option_help.c_str(),                                                                                                                                      "produce help message for Bayesian Markov chain distr. calculator")
     (m_option_dataOutputFileName.c_str(),                 po::value<std::string >()->default_value(UQ_ML_SAMPLING_L_DATA_OUTPUT_FILE_NAME_ODV                 ), "name of generic output file"                                     )
     (m_option_dataOutputAllowedSet.c_str(),               po::value<std::string >()->default_value(UQ_ML_SAMPLING_L_DATA_OUTPUT_ALLOW_ODV                     ), "subEnvs that will write to generic output file"                  )
+    (m_option_minEffectiveSizeRatio.c_str(),              po::value<double      >()->default_value(UQ_ML_SAMPLING_L_MIN_EFFECTIVE_SIZE_RATIO_ODV              ), "minimum allowed effective size ratio wrt previous level"         )
+    (m_option_maxExponent.c_str(),                        po::value<double      >()->default_value(UQ_ML_SAMPLING_L_MAX_EXPONENT_ODV                          ), "maximum exponent"                                                )
+    (m_option_maxNumberOfAttempts.c_str(),                po::value<unsigned int>()->default_value(UQ_ML_SAMPLING_L_MAX_NUMBER_OF_ATTEMPTS_ODV                ), "maximum number of attempts"                                      )
     (m_option_rawChain_type.c_str(),                      po::value<unsigned int>()->default_value(UQ_ML_SAMPLING_L_RAW_CHAIN_TYPE_ODV                        ), "type of raw chain (1=Markov, 2=White noise)"                     )
     (m_option_rawChain_dataInputFileName.c_str(),         po::value<std::string >()->default_value(UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV        ), "name of input file for raw chain "                               )
-    (m_option_rawChain_effectiveSizeRatio.c_str(),        po::value<double      >()->default_value(UQ_ML_SAMPLING_L_RAW_CHAIN_EFFECTIVE_SIZE_RATIO_ODV        ), "effective size ration wrt previous level"                        )
     (m_option_rawChain_size.c_str(),                      po::value<unsigned int>()->default_value(UQ_ML_SAMPLING_L_RAW_CHAIN_SIZE_ODV                        ), "size of raw chain"                                               )
     (m_option_rawChain_generateExtra.c_str(),             po::value<bool        >()->default_value(UQ_ML_SAMPLING_L_RAW_CHAIN_GENERATE_EXTRA_ODV              ), "generate extra information about raw chain"                      )
     (m_option_rawChain_displayPeriod.c_str(),             po::value<unsigned int>()->default_value(UQ_ML_SAMPLING_L_RAW_CHAIN_DISPLAY_PERIOD_ODV              ), "period of message display during raw chain generation"           )
@@ -193,16 +199,24 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
     }
   }
 
+  if (m_env.allOptionsMap().count(m_option_minEffectiveSizeRatio.c_str())) {
+    m_minEffectiveSizeRatio = ((const po::variable_value&) m_env.allOptionsMap()[m_option_minEffectiveSizeRatio.c_str()]).as<double>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_maxExponent.c_str())) {
+    m_maxExponent = ((const po::variable_value&) m_env.allOptionsMap()[m_option_maxExponent.c_str()]).as<double>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_maxNumberOfAttempts.c_str())) {
+    m_maxNumberOfAttempts = ((const po::variable_value&) m_env.allOptionsMap()[m_option_maxNumberOfAttempts.c_str()]).as<unsigned int>();
+  }
+
   if (m_env.allOptionsMap().count(m_option_rawChain_type.c_str())) {
     m_rawChainType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_type.c_str()]).as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_dataInputFileName.c_str())) {
     m_rawChainDataInputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataInputFileName.c_str()]).as<std::string>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_rawChain_effectiveSizeRatio.c_str())) {
-    m_rawChainEffectiveSizeRatio = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_effectiveSizeRatio.c_str()]).as<double>();
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_size.c_str())) {
@@ -363,15 +377,17 @@ uqMLSamplingLevelOptionsClass::print(std::ostream& os) const
   for (std::set<unsigned int>::iterator setIt = m_dataOutputAllowedSet.begin(); setIt != m_dataOutputAllowedSet.end(); ++setIt) {
     os << *setIt << " ";
   }
-  os << "\n" << m_option_rawChain_type                 << " = " << m_rawChainType
-     << "\n" << m_option_rawChain_dataInputFileName    << " = " << m_rawChainDataInputFileName
-     << "\n" << m_option_rawChain_effectiveSizeRatio   << " = " << m_rawChainEffectiveSizeRatio
-     << "\n" << m_option_rawChain_size                 << " = " << m_rawChainSize
-     << "\n" << m_option_rawChain_generateExtra        << " = " << m_rawChainGenerateExtra
-     << "\n" << m_option_rawChain_displayPeriod        << " = " << m_rawChainDisplayPeriod
-     << "\n" << m_option_rawChain_measureRunTimes      << " = " << m_rawChainMeasureRunTimes
-     << "\n" << m_option_rawChain_dataOutputFileName   << " = " << m_rawChainDataOutputFileName
-     << "\n" << m_option_rawChain_dataOutputAllowedSet << " = ";
+  os << "\n" << m_option_minEffectiveSizeRatio          << " = " << m_minEffectiveSizeRatio
+     << "\n" << m_option_maxExponent                    << " = " << m_maxExponent
+     << "\n" << m_option_maxNumberOfAttempts            << " = " << m_maxNumberOfAttempts
+     << "\n" << m_option_rawChain_type                  << " = " << m_rawChainType
+     << "\n" << m_option_rawChain_dataInputFileName     << " = " << m_rawChainDataInputFileName
+     << "\n" << m_option_rawChain_size                  << " = " << m_rawChainSize
+     << "\n" << m_option_rawChain_generateExtra         << " = " << m_rawChainGenerateExtra
+     << "\n" << m_option_rawChain_displayPeriod         << " = " << m_rawChainDisplayPeriod
+     << "\n" << m_option_rawChain_measureRunTimes       << " = " << m_rawChainMeasureRunTimes
+     << "\n" << m_option_rawChain_dataOutputFileName    << " = " << m_rawChainDataOutputFileName
+     << "\n" << m_option_rawChain_dataOutputAllowedSet  << " = ";
   for (std::set<unsigned int>::iterator setIt = m_rawChainDataOutputAllowedSet.begin(); setIt != m_rawChainDataOutputAllowedSet.end(); ++setIt) {
     os << *setIt << " ";
   }

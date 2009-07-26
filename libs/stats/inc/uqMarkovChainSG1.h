@@ -60,7 +60,8 @@ public:
  ~uqMarkovChainSGClass();
 
   /*! Operation to generate the chain */
-  void   generateSequence           (uqBaseVectorSequenceClass<P_V,P_M>& workingChain); /*! Generate the chain and store it in 'workingChain' object */
+  void   generateSequence           (uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
+                                     uqScalarSequenceClass<double>*      workingTargetValues);
   void   checkTheParallelEnvironment();
 
   void   print                      (std::ostream& os) const;
@@ -217,12 +218,10 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
     }
   }
   else {
-    if (m_initialProposalCovMatrix == NULL) {
-      UQ_FATAL_TEST_MACRO(true,
-                          m_env.fullRank(),
-                          "uqMarkovChainSGClass<P_V,P_M>::constructor()",
-                          "proposal cov matrix should have been passed by user, since, according to the input algorithm options, local Hessians will not be used in the proposal");
-    }
+    UQ_FATAL_TEST_MACRO((m_initialProposalCovMatrix == NULL),
+                        m_env.fullRank(),
+                        "uqMarkovChainSGClass<P_V,P_M>::constructor()",
+                        "proposal cov matrix should have been passed by user, since, according to the input algorithm options, local Hessians will not be used in the proposal");
 
     m_tk = new uqScaledCovMatrixTKGroupClass<P_V,P_M>(m_options.m_prefix.c_str(),
                                                       m_vectorSpace,
