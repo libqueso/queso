@@ -545,8 +545,8 @@ uqSequenceOfVectorsClass<V,M>::subMean(
                            << ", initialPos = "              << initialPos
                            << ", this->subSequenceSize() = " << this->subSequenceSize()
                            << ", numPos = "                  << numPos
-                           << ", this->vectorSizeLocal() = "      << this->vectorSizeLocal()
-                           << ", meanVec.sizeLocal() = "          << meanVec.sizeLocal()
+                           << ", this->vectorSizeLocal() = " << this->vectorSizeLocal()
+                           << ", meanVec.sizeLocal() = "     << meanVec.sizeLocal()
                            << std::endl;
   }
   UQ_FATAL_TEST_MACRO(bRC == false,
@@ -600,11 +600,11 @@ uqSequenceOfVectorsClass<V,M>::unifiedMean(
               (this->vectorSizeLocal()  == unifiedMeanVec.sizeLocal()  ));
   if ((bRC == false) && (m_env.subDisplayFile())) {
     *m_env.subDisplayFile() << "In uqSequenceOfVectorsClass<V,M>::unifiedMean()"
-                           << ", initialPos = "               << initialPos
-                           << ", this->subSequenceSize() = "  << this->subSequenceSize()
-                           << ", numPos = "                   << numPos
-                           << ", this->vectorSizeLocal() = "       << this->vectorSizeLocal()
-                           << ", unifiedMeanVec.sizeLocal() = "    << unifiedMeanVec.sizeLocal()
+                           << ", initialPos = "                 << initialPos
+                           << ", this->subSequenceSize() = "    << this->subSequenceSize()
+                           << ", numPos = "                     << numPos
+                           << ", this->vectorSizeLocal() = "    << this->vectorSizeLocal()
+                           << ", unifiedMeanVec.sizeLocal() = " << unifiedMeanVec.sizeLocal()
                            << std::endl;
   }
   UQ_FATAL_TEST_MACRO(bRC == false,
@@ -646,11 +646,11 @@ uqSequenceOfVectorsClass<V,M>::subSampleVariance(
   const V&     meanVec,
   V&           samVec) const
 {
-  bool bRC = ((initialPos          <  this->subSequenceSize()) &&
-              (0                   <  numPos                 ) &&
-              ((initialPos+numPos) <= this->subSequenceSize()) &&
-              (this->vectorSizeLocal()  == meanVec.sizeLocal()         ) &&
-              (this->vectorSizeLocal()  == samVec.sizeLocal()          ));
+  bool bRC = ((initialPos              <  this->subSequenceSize()) &&
+              (0                       <  numPos                 ) &&
+              ((initialPos+numPos)     <= this->subSequenceSize()) &&
+              (this->vectorSizeLocal() == meanVec.sizeLocal()    ) &&
+              (this->vectorSizeLocal() == samVec.sizeLocal()     ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::subSampleVariance()",
@@ -681,11 +681,11 @@ uqSequenceOfVectorsClass<V,M>::unifiedSampleVariance(
   const V&     unifiedMeanVec,
   V&           unifiedSamVec) const
 {
-  bool bRC = ((initialPos          <  this->subSequenceSize()) &&
-              (0                   <  numPos                 ) &&
-              ((initialPos+numPos) <= this->subSequenceSize()) &&
-              (this->vectorSizeLocal()  == unifiedMeanVec.sizeLocal()  ) &&
-              (this->vectorSizeLocal()  == unifiedSamVec.sizeLocal()   ));
+  bool bRC = ((initialPos              <  this->subSequenceSize()   ) &&
+              (0                       <  numPos                    ) &&
+              ((initialPos+numPos)     <= this->subSequenceSize()   ) &&
+              (this->vectorSizeLocal() == unifiedMeanVec.sizeLocal()) &&
+              (this->vectorSizeLocal() == unifiedSamVec.sizeLocal() ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::unifiedSampleVariance()",
@@ -717,11 +717,11 @@ uqSequenceOfVectorsClass<V,M>::subPopulationVariance(
   const V&     meanVec,
   V&           popVec) const
 {
-  bool bRC = ((initialPos          <  this->subSequenceSize()) &&
-              (0                   <  numPos                 ) &&
-              ((initialPos+numPos) <= this->subSequenceSize()) &&
-              (this->vectorSizeLocal()  == meanVec.sizeLocal()         ) &&
-              (this->vectorSizeLocal()  == popVec.sizeLocal()          ));
+  bool bRC = ((initialPos              <  this->subSequenceSize()) &&
+              (0                       <  numPos                 ) &&
+              ((initialPos+numPos)     <= this->subSequenceSize()) &&
+              (this->vectorSizeLocal() == meanVec.sizeLocal()    ) &&
+              (this->vectorSizeLocal() == popVec.sizeLocal()     ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::subPopulationVariance()",
@@ -753,12 +753,12 @@ uqSequenceOfVectorsClass<V,M>::autoCovariance(
   unsigned int lag,
   V&           covVec) const
 {
-  bool bRC = ((initialPos          <  this->subSequenceSize()) &&
-              (0                   <  numPos                 ) &&
-              ((initialPos+numPos) <= this->subSequenceSize()) &&
-              (this->vectorSizeLocal()  == meanVec.sizeLocal()         ) &&
-              (lag                 <  numPos                 ) && // lag should not be too large
-              (this->vectorSizeLocal()  == covVec.sizeLocal()          ));
+  bool bRC = ((initialPos              <  this->subSequenceSize()) &&
+              (0                       <  numPos                 ) &&
+              ((initialPos+numPos)     <= this->subSequenceSize()) &&
+              (this->vectorSizeLocal() == meanVec.sizeLocal()    ) &&
+              (lag                     <  numPos                 ) && // lag should not be too large
+              (this->vectorSizeLocal() == covVec.sizeLocal()     ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::autoCovariance()",
@@ -790,11 +790,11 @@ uqSequenceOfVectorsClass<V,M>::autoCorrViaDef(
   unsigned int lag,
   V&           corrVec) const
 {
-  bool bRC = ((initialPos          <  this->subSequenceSize()) &&
-              (0                   <  numPos                 ) &&
-              ((initialPos+numPos) <= this->subSequenceSize()) &&
-              (lag                 <  numPos                 ) && // lag should not be too large
-              (this->vectorSizeLocal()  == corrVec.sizeLocal()         ));
+  bool bRC = ((initialPos              <  this->subSequenceSize()) &&
+              (0                       <  numPos                 ) &&
+              ((initialPos+numPos)     <= this->subSequenceSize()) &&
+              (lag                     <  numPos                 ) && // lag should not be too large
+              (this->vectorSizeLocal() == corrVec.sizeLocal()    ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::autoCorrViaDef()",
@@ -828,7 +828,7 @@ uqSequenceOfVectorsClass<V,M>::autoCorrViaFft(
   bool bRC = ((initialPos          <  this->subSequenceSize()) &&
               (0                   <  numPos                 ) &&
               ((initialPos+numPos) <= this->subSequenceSize()) &&
-              (0                   < lags.size()             ) &&
+              (0                   <  lags.size()            ) &&
               (lags[lags.size()-1] <  numPos                 )); // lag should not be too large
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
@@ -921,9 +921,9 @@ uqSequenceOfVectorsClass<V,M>::bmm(
   unsigned int batchLength,
   V&           bmmVec) const
 {
-  bool bRC = ((initialPos          <  this->subSequenceSize()            ) &&
-              (batchLength         < (this->subSequenceSize()-initialPos)) &&
-              (this->vectorSizeLocal()  == bmmVec.sizeLocal()                      ));
+  bool bRC = ((initialPos              <  this->subSequenceSize()            ) &&
+              (batchLength             < (this->subSequenceSize()-initialPos)) &&
+              (this->vectorSizeLocal() == bmmVec.sizeLocal()                 ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::bmm()",
@@ -954,7 +954,7 @@ uqSequenceOfVectorsClass<V,M>::fftForward(
   std::vector<std::complex<double> >& fftResult) const
 {
   bool bRC = ((initialPos           <  this->subSequenceSize()) &&
-              (paramId              <  this->vectorSizeLocal()     ) &&
+              (paramId              <  this->vectorSizeLocal()) &&
               (0                    <  fftSize                ) &&
               ((initialPos+fftSize) <= this->subSequenceSize()) &&
               (fftSize              <  this->subSequenceSize()));
@@ -985,7 +985,7 @@ uqSequenceOfVectorsClass<V,M>::psd(
   std::vector<double>& psdResult) const
 {
   bool bRC = ((initialPos < this->subSequenceSize()) &&
-              (paramId    < this->vectorSizeLocal()     ));
+              (paramId    < this->vectorSizeLocal()));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::psd()",
@@ -1015,7 +1015,7 @@ uqSequenceOfVectorsClass<V,M>::psdAtZero(
   V&           psdVec) const
 {
   bool bRC = ((initialPos         <  this->subSequenceSize()) &&
-              (this->vectorSizeLocal() == psdVec.sizeLocal()          ));
+              (this->vectorSizeLocal() == psdVec.sizeLocal()));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::psdAtZero()",
@@ -1050,8 +1050,8 @@ uqSequenceOfVectorsClass<V,M>::geweke(
   double       ratioNb,
   V&           gewVec) const
 {
-  bool bRC = ((initialPos         <  this->subSequenceSize()) &&
-              (this->vectorSizeLocal() == gewVec.sizeLocal()          ));
+  bool bRC = ((initialPos              <  this->subSequenceSize()) &&
+              (this->vectorSizeLocal() == gewVec.sizeLocal()     ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::geweke()",
@@ -1081,8 +1081,8 @@ uqSequenceOfVectorsClass<V,M>::meanStacc(
   unsigned int initialPos,
   V&           meanStaccVec) const
 {
-  bool bRC = ((initialPos         <  this->subSequenceSize()) &&
-              (this->vectorSizeLocal() == meanStaccVec.sizeLocal()    ));
+  bool bRC = ((initialPos              <  this->subSequenceSize() ) &&
+              (this->vectorSizeLocal() == meanStaccVec.sizeLocal()));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::meanStacc()",
@@ -1111,9 +1111,9 @@ uqSequenceOfVectorsClass<V,M>::subMinMax(
   V&           minVec,
   V&           maxVec) const
 {
-  bool bRC = ((initialPos         <  this->subSequenceSize()) &&
-              (this->vectorSizeLocal() == minVec.sizeLocal()          ) &&
-              (this->vectorSizeLocal() == maxVec.sizeLocal()          ));
+  bool bRC = ((initialPos              <  this->subSequenceSize()) &&
+              (this->vectorSizeLocal() == minVec.sizeLocal()     ) &&
+              (this->vectorSizeLocal() == maxVec.sizeLocal()     ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::subMinMax()",
@@ -1142,9 +1142,9 @@ uqSequenceOfVectorsClass<V,M>::unifiedMinMax(
   V&           unifiedMinVec,
   V&           unifiedMaxVec) const
 {
-  bool bRC = ((initialPos         <  this->subSequenceSize()) &&
-              (this->vectorSizeLocal() == unifiedMinVec.sizeLocal()   ) &&
-              (this->vectorSizeLocal() == unifiedMaxVec.sizeLocal()   ));
+  bool bRC = ((initialPos              <  this->subSequenceSize()  ) &&
+              (this->vectorSizeLocal() == unifiedMinVec.sizeLocal()) &&
+              (this->vectorSizeLocal() == unifiedMaxVec.sizeLocal()));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::unifiedMinMax()",
@@ -1179,8 +1179,8 @@ uqSequenceOfVectorsClass<V,M>::subHistogram(
   std::vector<V*>& quanttsForAllBins) const
 {
   bool bRC = ((initialPos               <  this->subSequenceSize() ) &&
-              (this->vectorSizeLocal()       == minVec.sizeLocal()           ) &&
-              (this->vectorSizeLocal()       == maxVec.sizeLocal()           ) &&
+              (this->vectorSizeLocal()  == minVec.sizeLocal()      ) &&
+              (this->vectorSizeLocal()  == maxVec.sizeLocal()      ) &&
               (0                        <  centersForAllBins.size()) &&
               (centersForAllBins.size() == quanttsForAllBins.size()));
   UQ_FATAL_TEST_MACRO(bRC == false,
@@ -1228,8 +1228,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedHistogram(
   std::vector<V*>& unifiedQuanttsForAllBins) const
 {
   bool bRC = ((initialPos                      <  this->subSequenceSize()        ) &&
-              (this->vectorSizeLocal()              == unifiedMinVec.sizeLocal()           ) &&
-              (this->vectorSizeLocal()              == unifiedMaxVec.sizeLocal()           ) &&
+              (this->vectorSizeLocal()         == unifiedMinVec.sizeLocal()      ) &&
+              (this->vectorSizeLocal()         == unifiedMaxVec.sizeLocal()      ) &&
               (0                               <  unifiedCentersForAllBins.size()) &&
               (unifiedCentersForAllBins.size() == unifiedQuanttsForAllBins.size()));
   UQ_FATAL_TEST_MACRO(bRC == false,
@@ -1275,9 +1275,9 @@ uqSequenceOfVectorsClass<V,M>::subCdfStacc(
   const std::vector<V*>& evalPositionsVecs,
   std::vector<V*>&       cdfStaccVecs) const
 {
-  bool bRC = ((initialPos           <  this->subSequenceSize() ) &&
-              (0                    <  evalPositionsVecs.size()) &&
-              (evalPositionsVecs.size() == cdfStaccVecs.size() ));
+  bool bRC = ((initialPos               <  this->subSequenceSize() ) &&
+              (0                        <  evalPositionsVecs.size()) &&
+              (evalPositionsVecs.size() == cdfStaccVecs.size()     ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::subCdfStacc()",
@@ -1323,8 +1323,8 @@ uqSequenceOfVectorsClass<V,M>::subInterQuantileRange(
   unsigned int initialPos,
   V&           iqrVec) const
 {
-  bool bRC = ((initialPos         <  this->subSequenceSize()) &&
-              (this->vectorSizeLocal() == iqrVec.sizeLocal()          ));
+  bool bRC = ((initialPos              <  this->subSequenceSize()) &&
+              (this->vectorSizeLocal() == iqrVec.sizeLocal()     ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::subInterQuantileRange()",
@@ -1352,8 +1352,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedInterQuantileRange(
   unsigned int initialPos,
   V&           unifiedIqrVec) const
 {
-  bool bRC = ((initialPos         <  this->subSequenceSize()) &&
-              (this->vectorSizeLocal() == unifiedIqrVec.sizeLocal()   ));
+  bool bRC = ((initialPos              <  this->subSequenceSize()  ) &&
+              (this->vectorSizeLocal() == unifiedIqrVec.sizeLocal()));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::unifiedInterQuantileRange()",
@@ -1383,9 +1383,9 @@ uqSequenceOfVectorsClass<V,M>::subScalesForKDE(
   const V&     iqrVec,
   V&           scaleVec) const
 {
-  bool bRC = ((initialPos         <  this->subSequenceSize()) &&
-              (this->vectorSizeLocal() == iqrVec.sizeLocal()          ) &&
-              (this->vectorSizeLocal() == scaleVec.sizeLocal()        ));
+  bool bRC = ((initialPos              <  this->subSequenceSize()) &&
+              (this->vectorSizeLocal() == iqrVec.sizeLocal()     ) &&
+              (this->vectorSizeLocal() == scaleVec.sizeLocal()   ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::subScalesForKDE()",
@@ -1415,9 +1415,9 @@ uqSequenceOfVectorsClass<V,M>::unifiedScalesForKDE(
   const V&     unifiedIqrVec,
   V&           unifiedScaleVec) const
 {
-  bool bRC = ((initialPos         <  this->subSequenceSize()) &&
-              (this->vectorSizeLocal() == unifiedIqrVec.sizeLocal()   ) &&
-              (this->vectorSizeLocal() == unifiedScaleVec.sizeLocal() ));
+  bool bRC = ((initialPos              <  this->subSequenceSize()    ) &&
+              (this->vectorSizeLocal() == unifiedIqrVec.sizeLocal()  ) &&
+              (this->vectorSizeLocal() == unifiedScaleVec.sizeLocal()));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::unifiedScalesForKDE()",
@@ -1471,10 +1471,10 @@ uqSequenceOfVectorsClass<V,M>::subGaussianKDE(
   const std::vector<V*>& evalParamVecs,
   std::vector<V*>&       densityVecs) const
 {
-  bool bRC = ((initialPos           <  this->subSequenceSize()) &&
-              (this->vectorSizeLocal()   == scaleVec.sizeLocal()        ) &&
-              (0                    <  evalParamVecs.size()   ) &&
-              (evalParamVecs.size() == densityVecs.size()     ));
+  bool bRC = ((initialPos              <  this->subSequenceSize()) &&
+              (this->vectorSizeLocal() == scaleVec.sizeLocal()   ) &&
+              (0                       <  evalParamVecs.size()   ) &&
+              (evalParamVecs.size()    == densityVecs.size()     ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::subGaussianKDE()",
@@ -1524,7 +1524,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedGaussianKDE(
   std::vector<V*>&       unifiedDensityVecs) const
 {
   bool bRC = ((initialPos                  <  this->subSequenceSize()    ) &&
-              (this->vectorSizeLocal()          == unifiedScaleVec.sizeLocal()     ) &&
+              (this->vectorSizeLocal()     == unifiedScaleVec.sizeLocal()) &&
               (0                           <  unifiedEvalParamVecs.size()) &&
               (unifiedEvalParamVecs.size() == unifiedDensityVecs.size()  ));
   UQ_FATAL_TEST_MACRO(bRC == false,
@@ -1731,9 +1731,9 @@ template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
   const std::string& fileName,
-  const unsigned int subSequenceSize)
+  const unsigned int subReadSize)
 {
-  double unifiedSequenceSize = subSequenceSize*m_env.inter0Comm().NumProc();
+  double unifiedReadSize = subReadSize*m_env.inter0Comm().NumProc();
 
   m_env.fullComm().Barrier();
   if (m_env.subDisplayFile()) {
@@ -1744,17 +1744,17 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
                            << ", inter0Rank "                     << m_env.inter0Rank()
                            << ", m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc()
                            << ", fileName = "                     << fileName
-                           << ", subSequenceSize = "              << subSequenceSize
-                           << ", unifiedSequenceSize = "          << unifiedSequenceSize
+                           << ", subReadSize = "              << subReadSize
+                           << ", unifiedReadSize = "          << unifiedReadSize
                            << std::endl;
   }
 
-  this->resizeSequence(subSequenceSize);
+  this->resizeSequence(subReadSize);
 
   if (m_env.inter0Rank() >= 0) {
     // In the logic below, the id of a line' begins with value 0 (zero)
-    unsigned int idOfMyFirstLine = 1 + m_env.inter0Rank()*subSequenceSize;
-    unsigned int idOfMyLastLine = (1 + m_env.inter0Rank())*subSequenceSize;
+    unsigned int idOfMyFirstLine = 1 + m_env.inter0Rank()*subReadSize;
+    unsigned int idOfMyLastLine = (1 + m_env.inter0Rank())*subReadSize;
     unsigned int numParams = this->vectorSizeLocal();
 
     for (unsigned int r = 0; r < (unsigned int) m_env.inter0Comm().NumProc(); ++r) {
@@ -1826,7 +1826,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
           }
 
           // Check if [size of chain in file] >= [requested unified sequence size]
-          UQ_FATAL_TEST_MACRO(sizeOfChainInFile < unifiedSequenceSize,
+          UQ_FATAL_TEST_MACRO(sizeOfChainInFile < unifiedReadSize,
                               m_env.fullRank(),
                               "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
                               "size of chain in file is not big enough");
@@ -1885,7 +1885,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
   }
   else {
     V tmpVec(m_vectorSpace.zeroVector());
-    for (unsigned int i = 1; i < subSequenceSize; ++i) {
+    for (unsigned int i = 1; i < subReadSize; ++i) {
       this->setPositionValues(i,tmpVec);
     }
   }

@@ -52,6 +52,7 @@ public:
   virtual ~uqBaseVectorSequenceClass();
 
   virtual  unsigned int             subSequenceSize            () const = 0;
+           unsigned int             unifiedSequenceSize        () const;
            unsigned int             vectorSizeLocal            () const;
            unsigned int             vectorSizeGlobal           () const;
   const    uqVectorSpaceClass<V,M>& vectorSpace                () const;
@@ -304,6 +305,21 @@ uqBaseVectorSequenceClass<V,M>::~uqBaseVectorSequenceClass()
   if (m_unifiedMinValues           ) delete m_unifiedMinValues;
   if (m_subMinValues               ) delete m_subMinValues;
   if (m_fftObj != NULL             ) delete m_fftObj;
+}
+
+template <class V, class M>
+unsigned int
+uqBaseVectorSequenceClass<V,M>::unifiedSequenceSize() const
+{
+  unsigned int subNumSamples = this->subSequenceSize();
+  unsigned int unifiedNumSamples = 0;
+  int mpiRC = MPI_Allreduce((void *) &subNumSamples, (void *) &unifiedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      m_env.fullRank(),
+                      "uqBaseVectorSequenceClass<V,M>::unifiedSequenceSize()",
+                      "failed MPI_Allreduce() for unifiedSequenceSize()");
+
+  return unifiedNumSamples;
 }
 
 template <class V, class M>

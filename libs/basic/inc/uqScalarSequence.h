@@ -56,6 +56,7 @@ public:
 
         void         clear                     ();
         unsigned int subSequenceSize           () const;
+        unsigned int unifiedSequenceSize       () const;
         void         resizeSequence            (unsigned int newSequenceSize);
         void         resetValues               (unsigned int initialPos, unsigned int numPos);
         void         erasePositions            (unsigned int initialPos, unsigned int numPos);
@@ -214,6 +215,21 @@ unsigned int
 uqScalarSequenceClass<T>::subSequenceSize() const
 {
   return m_seq.size();
+}
+
+template <class T>
+unsigned int
+uqScalarSequenceClass<T>::unifiedSequenceSize() const
+{
+  unsigned int subNumSamples = this->subSequenceSize();
+  unsigned int unifiedNumSamples = 0;
+  int mpiRC = MPI_Allreduce((void *) &subNumSamples, (void *) &unifiedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      m_env.fullRank(),
+                      "uqScalarSequenceClass<T>::unifiedSequenceSize()",
+                      "failed MPI_Allreduce() for unifiedSequenceSize()");
+
+  return unifiedNumSamples;
 }
 
 template <class T>

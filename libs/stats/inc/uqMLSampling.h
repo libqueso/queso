@@ -124,156 +124,153 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
   //***********************************************************
   // Declaration of Variables
   //***********************************************************
-  uqBaseJointPdfClass      <P_V,P_M>* currPdf          = NULL;
-  uqGenericVectorRVClass   <P_V,P_M>* currRv           = NULL;
-  uqMarkovChainSGClass     <P_V,P_M>* mcSeqGenerator   = NULL;
-  P_M*                                unifiedCovMatrix = NULL;
-
-  double                              prevExponent = -1.;
-  double                              currExponent = m_options.m_initialExponent;
-
-  uqSequenceOfVectorsClass<P_V,P_M>  prevChain(m_sourceRv.imageSet().vectorSpace(),
-                                               0,
-                                               m_options.m_prefix+"prev_chain");
-  uqSequenceOfVectorsClass<P_V,P_M>  currChain(m_sourceRv.imageSet().vectorSpace(),
-                                               0,
-                                               m_options.m_prefix+"curr_chain");
-
-  uqScalarSequenceClass    <double>   prevTargetValues(m_env,0);
-  uqScalarSequenceClass    <double>   currTargetValues(m_env,0);
-
-  uqScalarSequenceClass    <double>   weightSequence  (m_env,0);
+  double                            currExponent = m_options.m_initialExponent;
+  uqSequenceOfVectorsClass<P_V,P_M> currChain(m_sourceRv.imageSet().vectorSpace(),
+                                              0,
+                                              m_options.m_prefix+"curr_chain");
+  uqScalarSequenceClass<double>     currTargetValues(m_env,0);
 
   //***********************************************************
-  // Actual loop
+  // Take care of first level
+  //***********************************************************
+  {
+    uqPoweredJointPdfClass<P_V,P_M> currPdf(m_options.m_prefix.c_str(),
+                                            m_sourceRv.pdf(),
+                                            currExponent);
+
+    uqGenericVectorRVClass<P_V,P_M> currRv(m_options.m_prefix.c_str(),
+                                           m_sourceRv.pdf().domainSet());
+
+    currRv.setPdf(currPdf);
+
+    uqMarkovChainSGClass<P_V,P_M> mcSeqGenerator(m_options.m_prefix.c_str(),
+                                                 currRv,
+                                                 m_initialPosition,
+                                                 m_initialProposalCovMatrix);
+
+    mcSeqGenerator.generateSequence(currChain,
+                                    &currTargetValues);
+  }
+
+  //***********************************************************
+  // Take care of remaining levels
   //***********************************************************
   unsigned int currLevel = 0;
-  do {
-    // Step 1 of 7: save [chain and corresponding target pdf values] from previous level
-    if (currLevel > 0) {
-      prevExponent = currExponent;
-
-      prevChain.clear();
-      //prevChain = currChain; FIX ME
-      currChain.clear();
-
-      prevTargetValues.clear();
-      //prevTargetValues = currTargetValues; FIX ME
-      currTargetValues.clear();
-
-      weightSequence.clear();
-      weightSequence.resizeSequence(prevTargetValues.subSequenceSize());
-
-      if (currLevel > 1) delete unifiedCovMatrix;
-      delete mcSeqGenerator;
-      delete currRv;
-      delete currPdf;
-    }
-
-    // Step 2 of 7: loop until [currExponent and vector of weights] are set for current level
-    if (currLevel > 0) {
-      double exponentQuanta = std::min(1.,m_options.m_levelOptions[currLevel]->m_maxExponent) - prevExponent;
-      exponentQuanta /= (double) m_options.m_levelOptions[currLevel]->m_maxNumberOfAttempts;
-
-      unsigned int currAttempt = 0;
-      bool testResult = false;
-      do {
-        currExponent = m_options.m_levelOptions[currLevel]->m_maxExponent - currAttempt*exponentQuanta;
-        double auxExp = (currExponent/prevExponent) - 1.;
-        double weightSum = 0.;
-        for (unsigned int i = 0; i < weightSequence.subSequenceSize(); ++i) {
-          weightSequence[i] = pow(prevTargetValues[i],auxExp);
-          weightSum += weightSequence[i];
-        }
-        double effectiveSampleSize = 0.;
-        for (unsigned int i = 0; i < weightSequence.subSequenceSize(); ++i) {
-          weightSequence[i] /= weightSum;
-          effectiveSampleSize += 1/weightSequence[i]/weightSequence[i];
-        }
-        double auxRatio = effectiveSampleSize/(double) weightSequence.subSequenceSize();
-        testResult = (auxRatio >= m_options.m_levelOptions[currLevel]->m_minEffectiveSizeRatio);
-        currAttempt++;
-      } while ((currAttempt < m_options.m_levelOptions[currLevel]->m_maxNumberOfAttempts) &&
-               (testResult == false));
-
-      UQ_FATAL_TEST_MACRO((testResult == false),
-                          m_env.fullRank(),
-                          "uqMLSamplingClass<P_V,P_M>::generateSequence()",
-                          "test for next exponent failed even after maximum number of attempts");
-    }
-
-    // Step 3 of 7: create vector RV for current level
-    currPdf = new uqPoweredJointPdfClass<P_V,P_M>(m_options.m_prefix.c_str(),
-                                                  m_sourceRv.pdf(),
-                                                  currExponent);
-
-    currRv = new uqGenericVectorRVClass<P_V,P_M>(m_options.m_prefix.c_str(),
-                                                 m_sourceRv.pdf().domainSet());
-    currRv->setPdf(*currPdf);
-
-    // Step 4 of 7: create covariance matrix for current level
-    if (currLevel > 0) {
-      P_V auxVec(m_sourceRv.imageSet().vectorSpace().zeroVector());
-      P_V weightedMeanVec(m_sourceRv.imageSet().vectorSpace().zeroVector());
-      for (unsigned int i = 0; i < weightSequence.subSequenceSize(); ++i) {
-        prevChain.getPositionValues(i,auxVec);
-        weightedMeanVec += weightSequence[i]*auxVec;
-      }
-
-      P_V diffVec(m_sourceRv.imageSet().vectorSpace().zeroVector());
-      P_M* subCovMatrix = m_sourceRv.imageSet().vectorSpace().newMatrix();
-      for (unsigned int i = 0; i < weightSequence.subSequenceSize(); ++i) {
-        prevChain.getPositionValues(i,auxVec);
-        diffVec = auxVec - weightedMeanVec;
-        *subCovMatrix += weightSequence[i]*matrixProduct(diffVec,diffVec);
-      }
-
-      unifiedCovMatrix = m_sourceRv.imageSet().vectorSpace().newMatrix();
-      *unifiedCovMatrix = *subCovMatrix; // FIX ME
-      delete subCovMatrix;
-    }
-
-    // Step 5 of 7: create discrete RV for current level
-    if (currLevel > 0) {
-    }
-
-    // Step 6 of 7: sample vector RV of current level
-    if (currLevel == 0) {
-      mcSeqGenerator = new uqMarkovChainSGClass<P_V,P_M>(m_options.m_prefix.c_str(),
-                                                         *currRv,
-                                                         m_initialPosition,
-                                                         m_initialProposalCovMatrix);
-    }
-    else {
-      mcSeqGenerator = new uqMarkovChainSGClass<P_V,P_M>(m_options.m_prefix.c_str(),
-                                                         *currRv,
-                                                         m_initialPosition,
-                                                         unifiedCovMatrix);
-    }
-
-    mcSeqGenerator->generateSequence(currChain,
-                                     &currTargetValues);
-
-    // Step 7 of 7: prepare for next cycle in the loop
+  while ((currLevel    < (m_options.m_maxNumberOfLevels-1)) &&
+         (currExponent < 1                                )) {
     currLevel++;
-  } while ((currLevel    < m_options.m_maxNumberOfLevels) &&
-           (currExponent < 1                            ));
+
+    // Step 1 of 6: save [chain and corresponding target pdf values] from previous level
+    double prevExponent = currExponent;
+
+    uqSequenceOfVectorsClass<P_V,P_M> prevChain(m_sourceRv.imageSet().vectorSpace(),
+                                                0,
+                                                m_options.m_prefix+"prev_chain");
+    //prevChain = currChain; FIX ME
+
+    uqScalarSequenceClass<double> prevTargetValues(m_env,0);
+    //prevTargetValues = currTargetValues; FIX ME
+
+    // Step 2 of 6: create [currExponent and sequence of weights] for current level
+    uqScalarSequenceClass<double> weightSequence(m_env,prevTargetValues.subSequenceSize());
+    double exponentQuanta = std::min(1.,m_options.m_levelOptions[currLevel]->m_maxExponent) - prevExponent;
+    exponentQuanta /= (double) m_options.m_levelOptions[currLevel]->m_maxNumberOfAttempts;
+
+    unsigned int currAttempt = 0;
+    bool testResult = false;
+    do {
+      currExponent = m_options.m_levelOptions[currLevel]->m_maxExponent - currAttempt*exponentQuanta;
+      double auxExp = (currExponent/prevExponent) - 1.;
+      double weightSum = 0.;
+      for (unsigned int i = 0; i < weightSequence.subSequenceSize(); ++i) {
+        weightSequence[i] = pow(prevTargetValues[i],auxExp);
+        weightSum += weightSequence[i];
+      }
+      double effectiveSampleSize = 0.;
+      for (unsigned int i = 0; i < weightSequence.subSequenceSize(); ++i) {
+        weightSequence[i] /= weightSum;
+        effectiveSampleSize += 1/weightSequence[i]/weightSequence[i];
+      }
+      double auxRatio = effectiveSampleSize/((double) weightSequence.subSequenceSize());
+      testResult = (auxRatio >= m_options.m_levelOptions[currLevel]->m_minEffectiveSizeRatio);
+      currAttempt++;
+    } while ((currAttempt < m_options.m_levelOptions[currLevel]->m_maxNumberOfAttempts) &&
+             (testResult == false));
+
+    UQ_FATAL_TEST_MACRO((testResult == false),
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                        "test for next exponent failed even after maximum number of attempts");
+
+    // Step 3 of 6: create covariance matrix for current level
+    P_V auxVec(m_sourceRv.imageSet().vectorSpace().zeroVector());
+    P_V weightedMeanVec(m_sourceRv.imageSet().vectorSpace().zeroVector());
+    for (unsigned int i = 0; i < weightSequence.subSequenceSize(); ++i) {
+      prevChain.getPositionValues(i,auxVec);
+      weightedMeanVec += weightSequence[i]*auxVec;
+    }
+
+    P_V diffVec(m_sourceRv.imageSet().vectorSpace().zeroVector());
+    P_M* subCovMatrix = m_sourceRv.imageSet().vectorSpace().newMatrix();
+    for (unsigned int i = 0; i < weightSequence.subSequenceSize(); ++i) {
+      prevChain.getPositionValues(i,auxVec);
+      diffVec = auxVec - weightedMeanVec;
+      *subCovMatrix += weightSequence[i]*matrixProduct(diffVec,diffVec);
+    }
+
+    P_M* unifiedCovMatrix = m_sourceRv.imageSet().vectorSpace().newMatrix();
+    *unifiedCovMatrix = *subCovMatrix; // FIX ME
+    delete subCovMatrix;
+
+    // Step 4 of 6: create *unified* discrete RV for current level
+    std::vector<double> unifiedWeightStdVector(weightSequence.unifiedSequenceSize(),0.);
+    // FIX ME: do MPI stuff...
+    // FIX ME: uqDiscreteRVClass<P_V,P_M> discreteRv(m_env,unifiedWeightStdVector);
+
+    std::vector<unsigned int> unifiedIndexCounters(weightSequence.unifiedSequenceSize(),0);
+    for (unsigned int i = 0; i < unifiedIndexCounters.size(); ++i) {
+      // FIX ME: unsigned int index = discreteRv.sample();
+      // FIX ME: unifiedIndexCounters[index] += 1;
+    }
+
+    // FIX ME: do MPI stuff...
+
+    // FIX ME: load balancing
+  
+    // Step 5 of 6: create vector RV for current level
+    uqPoweredJointPdfClass<P_V,P_M> currPdf(m_options.m_prefix.c_str(),
+                                            m_sourceRv.pdf(),
+                                            currExponent);
+
+    uqGenericVectorRVClass<P_V,P_M> currRv(m_options.m_prefix.c_str(),
+                                           m_sourceRv.pdf().domainSet());
+
+    currRv.setPdf(currPdf);
+
+    // Step 6 of 6: sample vector RV of current level
+    uqMarkovChainSGClass<P_V,P_M> mcSeqGenerator(m_options.m_prefix.c_str(),
+                                                 currRv,
+                                                 m_initialPosition, // FIX ME
+                                                 unifiedCovMatrix);
+
+    // FIX ME: linked chains
+
+    mcSeqGenerator.generateSequence(currChain,
+                                    &currTargetValues);
+
+    delete unifiedCovMatrix;
+  }
+
+  UQ_FATAL_TEST_MACRO((currExponent < 1),
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                      "exponent has not achieved value '1' even after maximum number of leves");
 
   //***********************************************************
   // Prepare to return
   //***********************************************************
   //workingChain                                  = currChain; FIX ME
   //if (workingTargetValues) *workingTargetValues = currTargetValues; FIX ME
-
-  prevChain.clear();
-  currChain.clear();
-  prevTargetValues.clear();
-  currTargetValues.clear();
-  weightSequence.clear();
-  delete unifiedCovMatrix;
-  delete mcSeqGenerator;
-  delete currRv;
-  delete currPdf;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqMLSamplingClass<P_V,P_M>::generateSequence()"
