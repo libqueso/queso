@@ -263,5 +263,68 @@ uqIntersectionSubsetClass<V,M>::print(std::ostream& os) const
 {
   return;
 }
+
+//*****************************************************
+// Discrete class
+//*****************************************************
+template<class V, class M>
+class uqDiscreteSubsetClass : public uqVectorSubsetClass<V,M> {
+public:
+  uqDiscreteSubsetClass(const char*                    prefix,
+                        const uqVectorSpaceClass<V,M>& vectorSpace,
+                        const std::vector<V*>&         elements);
+ ~uqDiscreteSubsetClass();
+
+        bool contains (const V& vec)     const;
+        void print    (std::ostream& os) const;
+
+protected:
+  using uqVectorSetClass   <V,M>::m_env;
+  using uqVectorSetClass   <V,M>::m_prefix;
+  using uqVectorSetClass   <V,M>::m_volume;
+  using uqVectorSubsetClass<V,M>::m_vectorSpace;
+
+  std::vector<V*> m_elements;
+};
+
+template<class V, class M>
+uqDiscreteSubsetClass<V,M>::uqDiscreteSubsetClass(
+  const char*                    prefix,
+  const uqVectorSpaceClass<V,M>& vectorSpace,
+  const std::vector<V*>&         elements)
+  :
+  uqVectorSubsetClass<V,M>(prefix,vectorSpace,0.),
+  m_elements(elements.size(),NULL)
+{
+  m_volume = 0.;
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.fullRank(),
+                      "uqDiscreteSubsetClass<V,M>::contains()",
+                      "incomplete code");
+}
+
+template<class V, class M>
+uqDiscreteSubsetClass<V,M>::~uqDiscreteSubsetClass()
+{
+}
+
+template<class V, class M>
+bool
+uqDiscreteSubsetClass<V,M>::contains(const V& vec) const
+{
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.fullRank(),
+                      "uqDiscreteSubsetClass<V,M>::contains()",
+                      "incomplete code");
+
+  return false;
+}
+
+template <class V, class M>
+void
+uqDiscreteSubsetClass<V,M>::print(std::ostream& os) const
+{
+  return;
+}
 #endif // __UQ_VECTOR_SUBSET_H__
 

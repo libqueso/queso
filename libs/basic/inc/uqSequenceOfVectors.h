@@ -48,6 +48,8 @@ public:
                            const std::string&             name);
  ~uqSequenceOfVectorsClass();
 
+  uqSequenceOfVectorsClass<V,M>& operator= (const uqSequenceOfVectorsClass<V,M>& rhs);
+
         unsigned int subSequenceSize           () const;
         void         resizeSequence            (unsigned int newSubSequenceSize);
         void         resetValues               (unsigned int initialPos, unsigned int numPos);
@@ -178,6 +180,7 @@ public:
                                                 unsigned int                        spacing);
 
 private:
+        void         copy                      (const uqSequenceOfVectorsClass<V,M>& src);
         void         extractScalarSeq          (unsigned int                        initialPos,
                                                 unsigned int                        spacing,
                                                 unsigned int                        numPos,
@@ -224,6 +227,30 @@ uqSequenceOfVectorsClass<V,M>::~uqSequenceOfVectorsClass()
   for (unsigned int i = 0; i < (unsigned int) m_seq.size(); ++i) {
     if (m_seq[i]) delete m_seq[i];
   }
+}
+
+template <class V, class M>
+uqSequenceOfVectorsClass<V,M>&
+uqSequenceOfVectorsClass<V,M>::operator= (const uqSequenceOfVectorsClass<V,M>& rhs)
+{
+  this->copy(rhs);
+  return *this;
+}
+
+template <class V, class M>
+void
+uqSequenceOfVectorsClass<V,M>::copy(const uqSequenceOfVectorsClass<V,M>& src)
+{
+  uqBaseVectorSequenceClass<V,M>::copy(src);
+  for (unsigned int i = 0; i < (unsigned int) m_seq.size(); ++i) {
+    if (m_seq[i]) delete m_seq[i];
+  }
+  m_seq.resize(src.subSequenceSize(),NULL);
+  for (unsigned int i = 0; i < m_seq.size(); ++i) {
+    m_seq[i] = new V(*(src.m_seq[i]));
+  }
+
+  return;
 }
 
 template <class V, class M>

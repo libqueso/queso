@@ -34,6 +34,7 @@
 #define __UQ_MULTI_LEVEL_SAMPLING_H__
 
 #include <uqMLSamplingOptions.h>
+#include <uqFiniteDistribution.h>
 #include <uqVectorRV.h>
 #include <uqVectorSpace.h>
 #include <uqMarkovChainPositionData.h>
@@ -166,10 +167,10 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     uqSequenceOfVectorsClass<P_V,P_M> prevChain(m_sourceRv.imageSet().vectorSpace(),
                                                 0,
                                                 m_options.m_prefix+"prev_chain");
-    //prevChain = currChain; FIX ME
+    prevChain = currChain;
 
     uqScalarSequenceClass<double> prevTargetValues(m_env,0);
-    //prevTargetValues = currTargetValues; FIX ME
+    prevTargetValues = currTargetValues;
 
     // Step 2 of 6: create [currExponent and sequence of weights] for current level
     uqScalarSequenceClass<double> weightSequence(m_env,prevTargetValues.subSequenceSize());
@@ -219,23 +220,48 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     }
 
     P_M* unifiedCovMatrix = m_sourceRv.imageSet().vectorSpace().newMatrix();
-    *unifiedCovMatrix = *subCovMatrix; // FIX ME
+    for (unsigned int i = 0; i < unifiedCovMatrix->numRowsLocal(); ++i) {
+      for (unsigned int j = 0; j < unifiedCovMatrix->numCols(); ++j) {
+        double localValue = (*subCovMatrix)(i,j);
+        double sumValue = 0.;
+        int mpiRC = MPI_Allreduce((void *) &localValue, (void *) &sumValue, (int) 1, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm());
+        UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                            m_env.fullRank(),
+                            "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                            "failed MPI_Allreduce() for cov matrix");
+        (*unifiedCovMatrix)(i,j) = sumValue;
+      }
+    }
     delete subCovMatrix;
 
-    // Step 4 of 6: create *unified* discrete RV for current level
-    std::vector<double> unifiedWeightStdVector(weightSequence.unifiedSequenceSize(),0.);
-    // FIX ME: do MPI stuff...
-    // FIX ME: uqDiscreteRVClass<P_V,P_M> discreteRv(m_env,unifiedWeightStdVector);
+    // Step 4 of 6: create *unified* finite distribution for current level
+    std::vector<double> unifiedSampleStdVector(weightSequence.unifiedSequenceSize(),0.);
+    for (unsigned int i = 0; i < weightSequence.unifiedSequenceSize(); ++i) {
+      unifiedSampleStdVector[i] = i;
+    }
+    std::vector<double> unifiedWeightStdVector(0);
+    weightSequence.getUnifiedContents(unifiedWeightStdVector);
+    uqFiniteDistributionClass tmpFd(m_env,
+                                    "",
+                                    unifiedWeightStdVector);
 
-    std::vector<unsigned int> unifiedIndexCounters(weightSequence.unifiedSequenceSize(),0);
-    for (unsigned int i = 0; i < unifiedIndexCounters.size(); ++i) {
-      // FIX ME: unsigned int index = discreteRv.sample();
-      // FIX ME: unifiedIndexCounters[index] += 1;
+    unsigned int subChainSize = m_options.m_levelOptions[currLevel]->m_rawChainSize;
+    unsigned int unifiedChainSize = m_env.inter0Comm().NumProc() * subChainSize;
+    std::vector<unsigned int> unifiedIndexCounters(unifiedChainSize,0);
+    if (m_env.fullRank() == 0) {
+      for (unsigned int i = 0; i < unifiedIndexCounters.size(); ++i) {
+        unsigned int index = tmpFd.sample();
+        unifiedIndexCounters[index] += 1;
+      }
     }
 
-    // FIX ME: do MPI stuff...
+    int mpiRC = MPI_Bcast((void *) &unifiedIndexCounters[0], (int) unifiedIndexCounters.size(), MPI_UNSIGNED, 0, m_env.inter0Comm().Comm());
+    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                        "failed MPI_Bcast() for unified index counters");
 
-    // FIX ME: load balancing
+    // FIX ME: load balancing = [subChainSize indexes + corresponding positions] for each node
   
     // Step 5 of 6: create vector RV for current level
     uqPoweredJointPdfClass<P_V,P_M> currPdf(m_options.m_prefix.c_str(),
@@ -270,7 +296,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
   // Prepare to return
   //***********************************************************
   //workingChain                                  = currChain; FIX ME
-  //if (workingTargetValues) *workingTargetValues = currTargetValues; FIX ME
+  if (workingTargetValues) *workingTargetValues = currTargetValues;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqMLSamplingClass<P_V,P_M>::generateSequence()"

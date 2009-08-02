@@ -203,6 +203,7 @@ public:
                                                                 unsigned int&                            initialPos,
                                                                 unsigned int&                            spacing);
 protected:
+           void                     copy                       (const uqBaseVectorSequenceClass<V,M>& src);
            void                     computeMeanVars            (const uqSequenceStatisticalOptionsClass& statisticalOptions,
                                                                 std::ofstream*                           passedOfs,
                                                                 V*                                       subMeanPtr,
@@ -294,17 +295,35 @@ template <class V, class M>
 uqBaseVectorSequenceClass<V,M>::~uqBaseVectorSequenceClass()
 {
   //clear();
-  if (m_unifiedValuesBox           ) delete m_unifiedValuesBox;
-  if (m_subValuesBox               ) delete m_subValuesBox;
-  if (m_unifiedSampleVarianceValues) delete m_unifiedSampleVarianceValues;
-  if (m_subSampleVarianceValues    ) delete m_subSampleVarianceValues;
-  if (m_unifiedMeanValues          ) delete m_unifiedMeanValues;
-  if (m_subMeanValues              ) delete m_subMeanValues;
-  if (m_unifiedMaxValues           ) delete m_unifiedMaxValues;
-  if (m_subMaxValues               ) delete m_subMaxValues;
-  if (m_unifiedMinValues           ) delete m_unifiedMinValues;
-  if (m_subMinValues               ) delete m_subMinValues;
+  deleteStoredVectors();
+  //if (m_unifiedValuesBox           ) delete m_unifiedValuesBox;
+  //if (m_subValuesBox               ) delete m_subValuesBox;
+  //if (m_unifiedSampleVarianceValues) delete m_unifiedSampleVarianceValues;
+  //if (m_subSampleVarianceValues    ) delete m_subSampleVarianceValues;
+  //if (m_unifiedMeanValues          ) delete m_unifiedMeanValues;
+  //if (m_subMeanValues              ) delete m_subMeanValues;
+  //if (m_unifiedMaxValues           ) delete m_unifiedMaxValues;
+  //if (m_subMaxValues               ) delete m_subMaxValues;
+  //if (m_unifiedMinValues           ) delete m_unifiedMinValues;
+  //if (m_subMinValues               ) delete m_subMinValues;
   if (m_fftObj != NULL             ) delete m_fftObj;
+}
+
+template <class V, class M>
+void
+uqBaseVectorSequenceClass<V,M>::copy(const uqBaseVectorSequenceClass<V,M>& src)
+{
+  // FIX ME: should environments be checke as well ???
+
+  UQ_FATAL_TEST_MACRO(m_vectorSpace.dimLocal() != src.m_vectorSpace.dimLocal(),
+                      m_env.fullRank(),
+                      "uqSequenceOfVectorsClass<V,M>::copy()",
+                      "incompatible vector space dimensions");
+
+  m_name = src.m_name;
+  deleteStoredVectors();
+
+  return;
 }
 
 template <class V, class M>

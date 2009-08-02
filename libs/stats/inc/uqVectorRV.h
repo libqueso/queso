@@ -64,7 +64,7 @@ protected:
   const   uqBaseEnvironmentClass&         m_env;
           std::string                     m_prefix;
   const   uqVectorSetClass         <V,M>& m_imageSet;
-          uqBaseJointPdfClass     <V,M>* m_pdf;
+          uqBaseJointPdfClass      <V,M>* m_pdf;
 	  uqBaseVectorRealizerClass<V,M>* m_realizer;
   const   uqBaseVectorCdfClass     <V,M>* m_subCdf;
   const   uqBaseVectorCdfClass     <V,M>* m_unifiedCdf;

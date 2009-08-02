@@ -54,6 +54,8 @@ public:
   uqScalarSequenceClass(const uqBaseEnvironmentClass& env, unsigned int subSequenceSize);
  ~uqScalarSequenceClass();
 
+  uqScalarSequenceClass<T>& operator= (const uqScalarSequenceClass<T>& rhs);
+
         void         clear                     ();
         unsigned int subSequenceSize           () const;
         unsigned int unifiedSequenceSize       () const;
@@ -62,6 +64,7 @@ public:
         void         erasePositions            (unsigned int initialPos, unsigned int numPos);
   const T&           operator[]                (unsigned int posId) const;
         T&           operator[]                (unsigned int posId);
+        void         getUnifiedContents        (std::vector<T>& outputVec) const;
         void         setGaussian               (const gsl_rng* rng, const T& mean, const T& stdDev);
         void         setUniform                (const gsl_rng* rng, const T& a,    const T& b     );
         void         subUniformlySampledMdf    (unsigned int               numIntervals,
@@ -164,6 +167,7 @@ public:
                                                 std::vector<double>&       unifiedDensityValues) const;
 
 private:
+        void         copy                      (const uqScalarSequenceClass<T>& src);
         void         extractScalarSeq          (unsigned int               initialPos,
                                                 unsigned int               spacing,
                                                 unsigned int               numPos,
@@ -195,6 +199,27 @@ uqScalarSequenceClass<T>::uqScalarSequenceClass(
 template <class T>
 uqScalarSequenceClass<T>::~uqScalarSequenceClass()
 {
+}
+
+template <class T>
+uqScalarSequenceClass<T>&
+uqScalarSequenceClass<T>::operator= (const uqScalarSequenceClass<T>& rhs)
+{
+  this->copy(rhs);
+  return *this;
+}
+
+template <class T>
+void
+uqScalarSequenceClass<T>::copy(const uqScalarSequenceClass<T>& src)
+{
+  m_seq.clear();
+  m_seq.resize(src.subSequenceSize(),0.);
+  for (unsigned int i = 0; i < m_seq.size(); ++i) {
+    m_seq[i] = src.m_seq[i];
+  }
+
+  return;
 }
 
 template <class T>
@@ -328,6 +353,20 @@ uqScalarSequenceClass<T>::operator[](unsigned int posId)
                       "posId > subSequenceSize()");
 
   return m_seq[posId];
+}
+
+template <class T>
+void
+uqScalarSequenceClass<T>::getUnifiedContents(std::vector<T>& outputVec) const
+{
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.fullRank(),
+                      "uqScalarSequenceClass<T>::getUnifiedContents()",
+                      "incomplete code");
+
+  // FIX ME: do MPI stuff...
+
+  return;
 }
 
 template <class T>
