@@ -50,5 +50,7 @@ protected:
   const uqBaseEnvironmentClass& m_env;
         std::string             m_prefix;
 	std::vector<double>     m_weights;
+
+	std::map<double,unsigned int> m_map;
 };
 #endif // __UQ_FINITE_DISTRIBUTION_H__

@@ -77,7 +77,8 @@ private:
                                    uqBaseVectorSequenceClass<P_V,P_M>&                  workingChain);
   void   generateFullChain        (const P_V&                                           valuesOf1stPosition,
                                          unsigned int                                   chainSize,
-                                   uqBaseVectorSequenceClass<P_V,P_M>&                  workingChain);
+                                   uqBaseVectorSequenceClass<P_V,P_M>&                  workingChain,
+                                   uqScalarSequenceClass<double>*                       workingTargetValues);
   void   readFullChain            (const std::string&                                   inputFileName,
                                          unsigned int                                   chainSize,
                                    uqBaseVectorSequenceClass<P_V,P_M>&                  workingChain);

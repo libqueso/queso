@@ -56,21 +56,21 @@ public:
 
   uqScalarSequenceClass<T>& operator= (const uqScalarSequenceClass<T>& rhs);
 
-        void         clear                     ();
-        unsigned int subSequenceSize           () const;
-        unsigned int unifiedSequenceSize       () const;
-        void         resizeSequence            (unsigned int newSequenceSize);
-        void         resetValues               (unsigned int initialPos, unsigned int numPos);
-        void         erasePositions            (unsigned int initialPos, unsigned int numPos);
-  const T&           operator[]                (unsigned int posId) const;
-        T&           operator[]                (unsigned int posId);
-        void         getUnifiedContents        (std::vector<T>& outputVec) const;
-        void         setGaussian               (const gsl_rng* rng, const T& mean, const T& stdDev);
-        void         setUniform                (const gsl_rng* rng, const T& a,    const T& b     );
-        void         subUniformlySampledMdf    (unsigned int               numIntervals,
-                                                T&                         minDomainValue,
-                                                T&                         maxDomainValue,
-                                                std::vector<T>&            mdfValues) const;
+        void         clear                        ();
+        unsigned int subSequenceSize              () const;
+        unsigned int unifiedSequenceSize          () const;
+        void         resizeSequence               (unsigned int newSequenceSize);
+        void         resetValues                  (unsigned int initialPos, unsigned int numPos);
+        void         erasePositions               (unsigned int initialPos, unsigned int numPos);
+  const T&           operator[]                   (unsigned int posId) const;
+        T&           operator[]                   (unsigned int posId);
+        void         getUnifiedContentsAtProc0Only(std::vector<T>& outputVec) const;
+        void         setGaussian                  (const gsl_rng* rng, const T& mean, const T& stdDev);
+        void         setUniform                   (const gsl_rng* rng, const T& a,    const T& b     );
+        void         subUniformlySampledMdf       (unsigned int               numIntervals,
+                                                   T&                         minDomainValue,
+                                                   T&                         maxDomainValue,
+                                                   std::vector<T>&            mdfValues) const;
         void         subUniformlySampledCdf    (unsigned int               numIntervals,
                                                 T&                         minDomainValue,
                                                 T&                         maxDomainValue,
@@ -357,14 +357,17 @@ uqScalarSequenceClass<T>::operator[](unsigned int posId)
 
 template <class T>
 void
-uqScalarSequenceClass<T>::getUnifiedContents(std::vector<T>& outputVec) const
+uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only(std::vector<T>& outputVec) const
 {
-  UQ_FATAL_TEST_MACRO(true,
+  unsigned int auxSubSize     = this->subSequenceSize();
+  unsigned int auxUnifiedSize = this->unifiedSequenceSize();
+  outputVec.resize(auxUnifiedSize,0.);
+  // FIX ME: use MPI_Gatherv for the case different nodes have different amount of data
+  int mpiRC = MPI_Gather((void *) &m_seq[0], auxSubSize, MPI_UNSIGNED, (void *) &outputVec[0], auxSubSize, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm());
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_env.fullRank(),
-                      "uqScalarSequenceClass<T>::getUnifiedContents()",
-                      "incomplete code");
-
-  // FIX ME: do MPI stuff...
+                      "uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only()",
+                      "failed MPI_Gather()");
 
   return;
 }

@@ -44,7 +44,18 @@
 #include <sys/time.h>
 #include <fstream>
 
-/*! A templated class that represents a Markov Chain generator. 'SG' stands for 'Sequence Generator'.
+struct uqLinkedChainControlStruct
+{
+  unsigned int initialPositionIndexInPreviousChain;
+  unsigned int numberOfPositions;
+};
+
+struct uqLinkedChainsPerNodeStruct
+{
+  std::vector<uqLinkedChainControlStruct> linkedChains;
+};
+
+/*! A templated class that represents a Multi Level sampler.
  */
 template <class P_V,class P_M>
 class uqMLSamplingClass
@@ -134,7 +145,15 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
   //***********************************************************
   // Take care of first level
   //***********************************************************
+  unsigned int currLevel = 0;
   {
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+      *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                              << ": beginning level " << currLevel+1
+                              << ", m_options.m_levelOptions[currLevel]->m_rawChainSize = " << m_options.m_levelOptions[currLevel]->m_rawChainSize
+                              << std::endl;
+    }
+
     uqPoweredJointPdfClass<P_V,P_M> currPdf(m_options.m_prefix.c_str(),
                                             m_sourceRv.pdf(),
                                             currExponent);
@@ -151,28 +170,59 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
 
     mcSeqGenerator.generateSequence(currChain,
                                     &currTargetValues);
+
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+      *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                              << ": ending level " << currLevel+1
+                              << ", m_options.m_levelOptions[currLevel]->m_rawChainSize = " << m_options.m_levelOptions[currLevel]->m_rawChainSize
+                              << std::endl;
+    }
+
   }
 
   //***********************************************************
   // Take care of remaining levels
   //***********************************************************
-  unsigned int currLevel = 0;
   while ((currLevel    < (m_options.m_maxNumberOfLevels-1)) &&
          (currExponent < 1                                )) {
     currLevel++;
 
-    // Step 1 of 6: save [chain and corresponding target pdf values] from previous level
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+      *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                              << ": beginning level " << currLevel+1
+                              << ", m_options.m_levelOptions[currLevel]->m_rawChainSize = " << m_options.m_levelOptions[currLevel]->m_rawChainSize
+                              << std::endl;
+    }
+
+    // Step 1 of 8: save [chain and corresponding target pdf values] from previous level
     double prevExponent = currExponent;
 
     uqSequenceOfVectorsClass<P_V,P_M> prevChain(m_sourceRv.imageSet().vectorSpace(),
                                                 0,
                                                 m_options.m_prefix+"prev_chain");
     prevChain = currChain;
+    currChain.clear();
 
     uqScalarSequenceClass<double> prevTargetValues(m_env,0);
     prevTargetValues = currTargetValues;
+    currTargetValues.clear();
 
-    // Step 2 of 6: create [currExponent and sequence of weights] for current level
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+      *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                              << ", level " << currLevel+1
+                              << ": prevChain.unifiedSequenceSize() = " << prevChain.unifiedSequenceSize()
+                              << ", currChain.unifiedSequenceSize() = " << currChain.unifiedSequenceSize()
+                              << ", prevTargetValues.unifiedSequenceSize() = " << prevTargetValues.unifiedSequenceSize()
+                              << ", currTargetValues.unifiedSequenceSize() = " << currTargetValues.unifiedSequenceSize()
+                              << std::endl;
+    }
+
+    UQ_FATAL_TEST_MACRO((prevChain.subSequenceSize() != prevTargetValues.subSequenceSize()),
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                        "different sizes between previous chain and previous sequence of target values");
+
+    // Step 2 of 8: create [currExponent and sequence of weights] for current level
     uqScalarSequenceClass<double> weightSequence(m_env,prevTargetValues.subSequenceSize());
     double exponentQuanta = std::min(1.,m_options.m_levelOptions[currLevel]->m_maxExponent) - prevExponent;
     exponentQuanta /= (double) m_options.m_levelOptions[currLevel]->m_maxNumberOfAttempts;
@@ -203,7 +253,15 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                         "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                         "test for next exponent failed even after maximum number of attempts");
 
-    // Step 3 of 6: create covariance matrix for current level
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+      *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                              << ", level " << currLevel+1
+                              << ": weightSequence.subSequenceSize() = "     << weightSequence.subSequenceSize()
+                              << ", weightSequence.unifiedSequenceSize() = " << weightSequence.unifiedSequenceSize()
+                              << std::endl;
+    }
+
+    // Step 3 of 8: create covariance matrix for current level
     P_V auxVec(m_sourceRv.imageSet().vectorSpace().zeroVector());
     P_V weightedMeanVec(m_sourceRv.imageSet().vectorSpace().zeroVector());
     for (unsigned int i = 0; i < weightSequence.subSequenceSize(); ++i) {
@@ -234,22 +292,33 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     }
     delete subCovMatrix;
 
-    // Step 4 of 6: create *unified* finite distribution for current level
+    // Step 4 of 8: create *unified* finite distribution for current level
     std::vector<double> unifiedSampleStdVector(weightSequence.unifiedSequenceSize(),0.);
     for (unsigned int i = 0; i < weightSequence.unifiedSequenceSize(); ++i) {
       unifiedSampleStdVector[i] = i;
     }
-    std::vector<double> unifiedWeightStdVector(0);
-    weightSequence.getUnifiedContents(unifiedWeightStdVector);
-    uqFiniteDistributionClass tmpFd(m_env,
-                                    "",
-                                    unifiedWeightStdVector);
 
-    unsigned int subChainSize = m_options.m_levelOptions[currLevel]->m_rawChainSize;
-    unsigned int unifiedChainSize = m_env.inter0Comm().NumProc() * subChainSize;
-    std::vector<unsigned int> unifiedIndexCounters(unifiedChainSize,0);
-    if (m_env.fullRank() == 0) {
-      for (unsigned int i = 0; i < unifiedIndexCounters.size(); ++i) {
+    std::vector<unsigned int> unifiedIndexCounters(weightSequence.unifiedSequenceSize(),0);
+    std::vector<double> unifiedWeightStdVector(0);
+    weightSequence.getUnifiedContentsAtProc0Only(unifiedWeightStdVector);
+
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+      *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                              << ", level " << currLevel+1
+                              << ": unifiedWeightStdVector.size() = " << unifiedWeightStdVector.size()
+                              << std::endl;
+    }
+
+    if (m_env.inter0Rank() == 0) {
+      uqFiniteDistributionClass tmpFd(m_env,
+                                      "",
+                                      unifiedWeightStdVector);
+
+      unsigned int subChainSize = m_options.m_levelOptions[currLevel]->m_rawChainSize;
+      unsigned int unifiedChainSize = m_env.inter0Comm().NumProc() * subChainSize;
+
+      // Generate 'unifiedChainSize' samples from 'tmpFD'
+      for (unsigned int i = 0; i < unifiedChainSize; ++i) {
         unsigned int index = tmpFd.sample();
         unifiedIndexCounters[index] += 1;
       }
@@ -261,9 +330,61 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                         "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                         "failed MPI_Bcast() for unified index counters");
 
-    // FIX ME: load balancing = [subChainSize indexes + corresponding positions] for each node
+    // Step 5 of 8: plan for number of linked chains for each node so that
+    //              each node generates the same number of positions
+    std::vector<uqLinkedChainsPerNodeStruct> nodes(m_env.inter0Comm().NumProc());
+    unsigned int auxNode = 0;
+    unsigned int numberOfPositionsToGuaranteeForNode = m_options.m_levelOptions[currLevel]->m_rawChainSize;
+    for (unsigned int i = 0; i < unifiedIndexCounters.size(); ++i) {
+      while (unifiedIndexCounters[i] != 0) {
+        UQ_FATAL_TEST_MACRO(auxNode >= (unsigned int) m_env.inter0Comm().NumProc(),
+                            m_env.fullRank(),
+                            "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                            "auxNode got too large");
+        if (unifiedIndexCounters[i] < numberOfPositionsToGuaranteeForNode) {
+          uqLinkedChainControlStruct auxControl;
+          auxControl.initialPositionIndexInPreviousChain = i;
+          auxControl.numberOfPositions = unifiedIndexCounters[i];
+          nodes[auxNode].linkedChains.push_back(auxControl);
+
+          numberOfPositionsToGuaranteeForNode -= unifiedIndexCounters[i];
+          unifiedIndexCounters[i] = 0;
+        }
+        else {
+          uqLinkedChainControlStruct auxControl;
+          auxControl.initialPositionIndexInPreviousChain = i;
+          auxControl.numberOfPositions = numberOfPositionsToGuaranteeForNode;
+          nodes[auxNode].linkedChains.push_back(auxControl);
+
+          numberOfPositionsToGuaranteeForNode = 0;
+          unifiedIndexCounters[i] -= numberOfPositionsToGuaranteeForNode;
+
+          // Go to next node
+          auxNode++;
+          numberOfPositionsToGuaranteeForNode = m_options.m_levelOptions[currLevel]->m_rawChainSize;
+        }
+      }
+    }
+    UQ_FATAL_TEST_MACRO(auxNode != (unsigned int) m_env.inter0Comm().NumProc(),
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                        "auxNode exited loop with wrong value");
+    UQ_FATAL_TEST_MACRO(numberOfPositionsToGuaranteeForNode != m_options.m_levelOptions[currLevel]->m_rawChainSize,
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                        "numberOfPositionsToGuaranteeForNode exited loop with wrong value");
+
+    // FIX ME: swap trick to save memory
+
+    // Step 6 of 8: load balancing = subChainSize [indexes + corresponding positions] for each node
+    if (m_env.inter0Comm().NumProc() > 1) {
+      UQ_FATAL_TEST_MACRO(true,
+                          m_env.fullRank(),
+                          "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                          "incomplete code for load balancing");
+    }
   
-    // Step 5 of 6: create vector RV for current level
+    // Step 7 of 8: create vector RV for current level
     uqPoweredJointPdfClass<P_V,P_M> currPdf(m_options.m_prefix.c_str(),
                                             m_sourceRv.pdf(),
                                             currExponent);
@@ -273,18 +394,34 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
 
     currRv.setPdf(currPdf);
 
-    // Step 6 of 6: sample vector RV of current level
-    uqMarkovChainSGClass<P_V,P_M> mcSeqGenerator(m_options.m_prefix.c_str(),
-                                                 currRv,
-                                                 m_initialPosition, // FIX ME
-                                                 unifiedCovMatrix);
+    // Step 8 of 8: sample vector RV of current level
+    P_V auxInitialPosition(m_sourceRv.imageSet().vectorSpace().zeroVector());
+    if (m_env.inter0Rank() > 0) {
+      unsigned int myInter0Rank = (unsigned int) m_env.inter0Rank();
+      for (unsigned int chainId = 0; chainId < nodes[myInter0Rank].linkedChains.size(); ++chainId) {
+        unsigned int auxIndex = nodes[myInter0Rank].linkedChains[chainId].initialPositionIndexInPreviousChain;
+        prevChain.getPositionValues(auxIndex,auxInitialPosition); // FIX ME
 
-    // FIX ME: linked chains
+        //unsigned int auxNumPositions = nodes[myInter0Rank].linkedChains[chainId].numberOfPositions;
 
-    mcSeqGenerator.generateSequence(currChain,
-                                    &currTargetValues);
+        uqMarkovChainSGClass<P_V,P_M> mcSeqGenerator(m_options.m_prefix.c_str(),
+                                                     currRv,
+                                                     auxInitialPosition,
+                                                     unifiedCovMatrix);
+
+        mcSeqGenerator.generateSequence(currChain, // FIX ME: linked chains
+                                        &currTargetValues);
+      }
+    }
 
     delete unifiedCovMatrix;
+
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+      *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                              << ": ending level " << currLevel+1
+                              << ", m_options.m_levelOptions[currLevel]->m_rawChainSize = " << m_options.m_levelOptions[currLevel]->m_rawChainSize
+                              << std::endl;
+    }
   }
 
   UQ_FATAL_TEST_MACRO((currExponent < 1),
@@ -295,7 +432,14 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
   //***********************************************************
   // Prepare to return
   //***********************************************************
-  //workingChain                                  = currChain; FIX ME
+  workingChain.clear();
+  workingChain.resizeSequence(currChain.subSequenceSize());
+  P_V auxVec(m_sourceRv.imageSet().vectorSpace().zeroVector());
+  for (unsigned int i = 0; i < workingChain.subSequenceSize(); ++i) {
+    currChain.getPositionValues(i,auxVec);
+    workingChain.setPositionValues(i,auxVec);
+  }
+
   if (workingTargetValues) *workingTargetValues = currTargetValues;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
