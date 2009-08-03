@@ -259,6 +259,9 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
                         filterSpacing);
     workingChain.setName(m_options.m_prefix + "filtChain");
 
+    if (workingTargetValues) workingTargetValues->filter(filterInitialPos,
+                                                         filterSpacing);
+
     // Write filtered chain
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"

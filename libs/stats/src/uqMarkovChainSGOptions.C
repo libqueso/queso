@@ -33,7 +33,9 @@
 #include <uqMarkovChainSGOptions.h>
 #include <uqMiscellaneous.h>
 
-uqMarkovChainSGOptionsClass::uqMarkovChainSGOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix)
+uqMarkovChainSGOptionsClass::uqMarkovChainSGOptionsClass(
+  const uqBaseEnvironmentClass& env,
+  const char* prefix)
   :
   m_prefix                                   ((std::string)(prefix) + "mc_"),
   m_dataOutputFileName                       (UQ_MAC_SG_DATA_OUTPUT_FILE_NAME_ODV),
@@ -98,6 +100,80 @@ uqMarkovChainSGOptionsClass::uqMarkovChainSGOptionsClass(const uqBaseEnvironment
 {
 }
 
+uqMarkovChainSGOptionsClass::uqMarkovChainSGOptionsClass(
+  const uqBaseEnvironmentClass&        env,
+  const uqMLSamplingLevelOptionsClass& inputOptions)
+  :
+  m_prefix                           (inputOptions.m_prefix),
+  m_dataOutputFileName               (inputOptions.m_dataOutputFileName),
+  m_dataOutputAllowedSet             (inputOptions.m_dataOutputAllowedSet),
+  m_rawChainType                     (inputOptions.m_rawChainType),
+  m_rawChainDataInputFileName        (inputOptions.m_rawChainDataInputFileName),
+  m_rawChainSize                     (inputOptions.m_rawChainSize),
+  m_rawChainGenerateExtra            (inputOptions.m_rawChainGenerateExtra),
+  m_rawChainDisplayPeriod            (inputOptions.m_rawChainDisplayPeriod),
+  m_rawChainMeasureRunTimes          (inputOptions.m_rawChainMeasureRunTimes),
+  m_rawChainDataOutputFileName       (inputOptions.m_rawChainDataOutputFileName),
+  m_rawChainDataOutputAllowedSet     (inputOptions.m_rawChainDataOutputAllowedSet),
+  m_rawChainComputeStats             (inputOptions.m_rawChainComputeStats),
+  m_rawChainStatisticalOptions       (inputOptions.m_rawChainStatisticalOptions),
+  m_filteredChainGenerate            (inputOptions.m_filteredChainGenerate),
+  m_filteredChainDiscardedPortion    (inputOptions.m_filteredChainDiscardedPortion),
+  m_filteredChainLag                 (inputOptions.m_filteredChainLag),
+  m_filteredChainDataOutputFileName  (inputOptions.m_filteredChainDataOutputFileName),
+  m_filteredChainDataOutputAllowedSet(inputOptions.m_filteredChainDataOutputAllowedSet),
+  m_filteredChainComputeStats        (inputOptions.m_filteredChainComputeStats),
+  m_filteredChainStatisticalOptions  (inputOptions.m_filteredChainStatisticalOptions),
+  m_mhDisplayCandidates              (inputOptions.m_mhDisplayCandidates),
+  m_mhPutOutOfBoundsInChain          (inputOptions.m_mhPutOutOfBoundsInChain),
+  m_tkUseLocalHessian                (inputOptions.m_tkUseLocalHessian),
+  m_tkUseNewtonComponent             (inputOptions.m_tkUseNewtonComponent),
+  m_drMaxNumExtraStages              (inputOptions.m_drMaxNumExtraStages),
+  m_drScalesForCovMatrices           (inputOptions.m_drScalesForCovMatrices),
+  m_amInitialNonAdaptInterval        (inputOptions.m_amInitialNonAdaptInterval),
+  m_amAdaptInterval                  (inputOptions.m_amAdaptInterval),
+  m_amEta                            (inputOptions.m_amEta),
+  m_amEpsilon                        (inputOptions.m_amEpsilon),
+  m_env                              (env),
+  m_optionsDesc                      (NULL),
+  m_option_help                              (m_prefix + "help"                              ),
+  m_option_dataOutputFileName                (m_prefix + "dataOutputFileName"                ),
+  m_option_dataOutputAllowedSet              (m_prefix + "dataOutputAllowedSet"              ),
+  m_option_rawChain_type                     (m_prefix + "rawChain_type"                     ),
+  m_option_rawChain_dataInputFileName        (m_prefix + "rawChain_dataInputFileName"        ),
+  m_option_rawChain_size                     (m_prefix + "rawChain_size"                     ),
+  m_option_rawChain_generateExtra            (m_prefix + "rawChain_generateExtra"            ),
+  m_option_rawChain_displayPeriod            (m_prefix + "rawChain_displayPeriod"            ),
+  m_option_rawChain_measureRunTimes          (m_prefix + "rawChain_measureRunTimes"          ),
+  m_option_rawChain_dataOutputFileName       (m_prefix + "rawChain_dataOutputFileName"       ),
+  m_option_rawChain_dataOutputAllowedSet     (m_prefix + "rawChain_dataOutputAllowedSet"     ),
+  m_option_rawChain_computeStats             (m_prefix + "rawChain_computeStats"             ),
+  m_option_filteredChain_generate            (m_prefix + "filteredChain_generate"            ),
+  m_option_filteredChain_discardedPortion    (m_prefix + "filteredChain_discardedPortion"    ),
+  m_option_filteredChain_lag                 (m_prefix + "filteredChain_lag"                 ),
+  m_option_filteredChain_dataOutputFileName  (m_prefix + "filteredChain_dataOutputFileName"  ),
+  m_option_filteredChain_dataOutputAllowedSet(m_prefix + "filteredChain_dataOutputAllowedSet"),
+  m_option_filteredChain_computeStats        (m_prefix + "filteredChain_computeStats"        ),
+  m_option_mh_displayCandidates              (m_prefix + "mh_displayCandidates"              ),
+  m_option_mh_putOutOfBoundsInChain          (m_prefix + "mh_putOutOfBoundsInChain"          ),
+  m_option_tk_useLocalHessian                (m_prefix + "tk_useLocalHessian"                ),
+  m_option_tk_useNewtonComponent             (m_prefix + "tk_useNewtonComponent"             ),
+  m_option_dr_maxNumExtraStages              (m_prefix + "dr_maxNumExtraStages"              ),
+  m_option_dr_scalesForExtraStages           (m_prefix + "dr_scalesForExtraStages"           ),
+  m_option_am_initialNonAdaptInterval        (m_prefix + "am_initialNonAdaptInterval"        ),
+  m_option_am_adaptInterval                  (m_prefix + "am_adaptInterval"                  ),
+  m_option_am_eta                            (m_prefix + "am_eta"                            ),
+  m_option_am_epsilon                        (m_prefix + "am_epsilon"                        )
+{
+  if (m_env.subDisplayFile() != NULL) {
+    *m_env.subDisplayFile() << "In uqMarkovChainSGOptionsClass::constructor(2)"
+                            << ": after copying values of options with prefix '" << m_prefix
+                            << "', state of object is:"
+                            << "\n" << *this
+                            << std::endl;
+  }
+}
+
 uqMarkovChainSGOptionsClass::~uqMarkovChainSGOptionsClass()
 {
   if (m_filteredChainStatisticalOptions) delete m_filteredChainStatisticalOptions;
@@ -115,7 +191,7 @@ uqMarkovChainSGOptionsClass::scanOptionsValues()
   if (m_env.subDisplayFile() != NULL) {
     *m_env.subDisplayFile() << "In uqMarkovChainSGOptionsClass::scanOptionsValues()"
                             << ": after getting values of options with prefix '" << m_prefix
-                            << "', state of  object is:"
+                            << "', state of object is:"
                             << "\n" << *this
                             << std::endl;
   }

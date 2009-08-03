@@ -296,24 +296,14 @@ uqBaseVectorSequenceClass<V,M>::~uqBaseVectorSequenceClass()
 {
   //clear();
   deleteStoredVectors();
-  //if (m_unifiedValuesBox           ) delete m_unifiedValuesBox;
-  //if (m_subValuesBox               ) delete m_subValuesBox;
-  //if (m_unifiedSampleVarianceValues) delete m_unifiedSampleVarianceValues;
-  //if (m_subSampleVarianceValues    ) delete m_subSampleVarianceValues;
-  //if (m_unifiedMeanValues          ) delete m_unifiedMeanValues;
-  //if (m_subMeanValues              ) delete m_subMeanValues;
-  //if (m_unifiedMaxValues           ) delete m_unifiedMaxValues;
-  //if (m_subMaxValues               ) delete m_subMaxValues;
-  //if (m_unifiedMinValues           ) delete m_unifiedMinValues;
-  //if (m_subMinValues               ) delete m_subMinValues;
-  if (m_fftObj != NULL             ) delete m_fftObj;
+  if (m_fftObj != NULL) delete m_fftObj;
 }
 
 template <class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::copy(const uqBaseVectorSequenceClass<V,M>& src)
 {
-  // FIX ME: should environments be checke as well ???
+  // FIX ME: should check environments as well ???
 
   UQ_FATAL_TEST_MACRO(m_vectorSpace.dimLocal() != src.m_vectorSpace.dimLocal(),
                       m_env.fullRank(),
@@ -387,7 +377,7 @@ uqBaseVectorSequenceClass<V,M>::clear()
     this->resizeSequence(0);
   }
 
- return;
+  return;
 }
 
 template <class V, class M>

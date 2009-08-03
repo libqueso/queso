@@ -166,6 +166,9 @@ public:
                                                 const std::vector<T>&      unifiedEvaluationPositions,
                                                 std::vector<double>&       unifiedDensityValues) const;
 
+        void         filter                    (unsigned int                    initialPos,
+                                                unsigned int                    spacing);
+        void         append                    (const uqScalarSequenceClass<T>& src);
 private:
         void         copy                      (const uqScalarSequenceClass<T>& src);
         void         extractScalarSeq          (unsigned int               initialPos,
@@ -217,6 +220,59 @@ uqScalarSequenceClass<T>::copy(const uqScalarSequenceClass<T>& src)
   m_seq.resize(src.subSequenceSize(),0.);
   for (unsigned int i = 0; i < m_seq.size(); ++i) {
     m_seq[i] = src.m_seq[i];
+  }
+
+  return;
+}
+
+template <class T>
+void
+uqScalarSequenceClass<T>::filter(
+  unsigned int initialPos,
+  unsigned int spacing)
+{
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Entering uqScalarSequenceClass<V,M>::filter()"
+                           << ": initialPos = "      << initialPos
+                           << ", spacing = "         << spacing
+                           << ", subSequenceSize = " << this->subSequenceSize()
+                           << std::endl;
+  }
+
+  unsigned int i = 0;
+  unsigned int j = initialPos;
+  unsigned int originalSubSequenceSize = this->subSequenceSize();
+  while (j < originalSubSequenceSize) {
+    if (i != j) {
+      //*m_env.subDisplayFile() << i << "--" << j << " ";
+      m_seq[i] = m_seq[j];
+    }
+    i++;
+    j += spacing;
+  }
+
+  this->resizeSequence(i);
+
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Leaving uqScalarSequenceClass<V,M>::filter()"
+                           << ": initialPos = "      << initialPos
+                           << ", spacing = "         << spacing
+                           << ", subSequenceSize = " << this->subSequenceSize()
+                           << std::endl;
+  }
+
+  return;
+}
+
+template <class T>
+void
+uqScalarSequenceClass<T>::append(const uqScalarSequenceClass<T>& src)
+{
+  unsigned int currentSize = this->subSequenceSize();
+  unsigned int addedSize   = src.subSequenceSize();
+  m_seq.resize(currentSize+addedSize,0.);
+  for (unsigned int i = 0; i < addedSize; ++i) {
+    m_seq[currentSize+i] = src.m_seq[i];
   }
 
   return;

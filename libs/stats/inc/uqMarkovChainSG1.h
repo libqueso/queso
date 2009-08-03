@@ -52,10 +52,14 @@ class uqMarkovChainSGClass
 public:
 
   /*! Constructor: */
-  uqMarkovChainSGClass(/*! Prefix                 */ const char*                         prefix,                  
-                       /*! The source rv          */ const uqBaseVectorRVClass<P_V,P_M>& sourceRv,                
-                       /*! Initial chain position */ const P_V&                          initialPosition,         
-                       /*! Proposal cov. matrix   */ const P_M*                          inputProposalCovMatrix);  
+  uqMarkovChainSGClass(/*! Prefix                 */ const char*                         prefix,
+                       /*! The source rv          */ const uqBaseVectorRVClass<P_V,P_M>& sourceRv,
+                       /*! Initial chain position */ const P_V&                          initialPosition,
+                       /*! Proposal cov. matrix   */ const P_M*                          inputProposalCovMatrix);
+  uqMarkovChainSGClass(/*! Options                */ const uqMLSamplingLevelOptionsClass& inputOptions,
+                       /*! The source rv          */ const uqBaseVectorRVClass<P_V,P_M>&  sourceRv,
+                       /*! Initial chain position */ const P_V&                           initialPosition,
+                       /*! Proposal cov. matrix   */ const P_M*                           inputProposalCovMatrix);
   /*! Destructor: */
  ~uqMarkovChainSGClass();
 
@@ -68,6 +72,7 @@ public:
 
 
 private:
+  void   commonConstructor        ();
 //void   proc0GenerateSequence    (uqBaseVectorSequenceClass<P_V,P_M>& workingChain); /*! */
   void   resetChainAndRelatedInfo ();
 
@@ -185,12 +190,73 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   m_options                      (m_env,prefix)
 {
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Entering uqMarkovChainSGClass<P_V,P_M>::constructor()"
+    *m_env.subDisplayFile() << "Entering uqMarkovChainSGClass<P_V,P_M>::constructor(1)"
                             << std::endl;
   }
 
   m_options.scanOptionsValues();
 
+  commonConstructor();
+
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Leaving uqMarkovChainSGClass<P_V,P_M>::constructor(1)"
+                           << std::endl;
+  }
+}
+
+template<class P_V,class P_M>
+uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
+  const uqMLSamplingLevelOptionsClass& inputOptions,
+  const uqBaseVectorRVClass<P_V,P_M>&  sourceRv,
+  const P_V&                           initialPosition,
+  const P_M*                           inputProposalCovMatrix)
+  :
+  m_env                          (sourceRv.env()),
+  m_vectorSpace                  (sourceRv.imageSet().vectorSpace()),
+  m_targetPdf                    (sourceRv.pdf()),
+  m_initialPosition              (initialPosition),
+  m_initialProposalCovMatrix     (inputProposalCovMatrix),
+  m_nullInputProposalCovMatrix   (inputProposalCovMatrix == NULL),
+  m_targetPdfSynchronizer        (new uqScalarFunctionSynchronizerClass<P_V,P_M>(m_targetPdf,m_initialPosition)),
+  m_tk                           (NULL),
+#ifdef UQ_USES_TK_CLASS
+#else
+  m_tkIsSymmetric                (true),
+  m_lowerCholProposalCovMatrices (1),//NULL),
+  m_proposalCovMatrices          (1),//NULL),
+#ifdef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
+  m_upperCholProposalPrecMatrices(1),//NULL),
+  m_proposalPrecMatrices         (1),//NULL),
+#endif
+#endif
+  m_idsOfUniquePositions         (0),//0.),
+  m_logTargets                   (0),//0.),
+  m_alphaQuotients               (0),//0.),
+  m_rawChainRunTime              (0.),
+  m_numRejections                (0),
+  m_numOutOfTargetSupport        (0),
+  m_lastChainSize                (0),
+  m_lastMean                     (NULL),
+  m_lastAdaptedCovMatrix         (NULL),
+  m_options                      (m_env,inputOptions)
+{
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Entering uqMarkovChainSGClass<P_V,P_M>::constructor(2)"
+                            << std::endl;
+  }
+
+  commonConstructor();
+
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Leaving uqMarkovChainSGClass<P_V,P_M>::constructor(2)"
+                           << std::endl;
+  }
+}
+
+template<class P_V,class P_M>
+void
+uqMarkovChainSGClass<P_V,P_M>::commonConstructor()
+{
   /////////////////////////////////////////////////////////////////
   // Instantiate the appropriate TK
   /////////////////////////////////////////////////////////////////
@@ -230,15 +296,12 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
                                                       *m_initialProposalCovMatrix);
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::constructor()"
-                             << ": just instantiated a 'ScaledCovMatrix' TK class"
-                             << std::endl;
+                              << ": just instantiated a 'ScaledCovMatrix' TK class"
+                              << std::endl;
     }
   }
 
-  if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Leaving uqMarkovChainSGClass<P_V,P_M>::constructor()"
-                           << std::endl;
-  }
+  return;
 }
 
 template<class P_V,class P_M>
@@ -398,13 +461,13 @@ uqMarkovChainSGClass<P_V,P_M>::updateTK()
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::updateTK()"
-                           << ": m_options.m_drMaxNumExtraStages = "                 << m_options.m_drMaxNumExtraStages
-                           << ", m_options.m_drScalesForCovMatrices.size() = "       << m_options.m_drScalesForCovMatrices.size()
+                            << ": m_options.m_drMaxNumExtraStages = "           << m_options.m_drMaxNumExtraStages
+                            << ", m_options.m_drScalesForCovMatrices.size() = " << m_options.m_drScalesForCovMatrices.size()
 #ifdef UQ_USES_TK_CLASS
 #else
-                           << ", m_lowerCholProposalCovMatrices.size() = " << m_lowerCholProposalCovMatrices.size()
+                            << ", m_lowerCholProposalCovMatrices.size() = " << m_lowerCholProposalCovMatrices.size()
 #endif
-                           << std::endl;
+                            << std::endl;
   }
 
 #ifdef UQ_USES_TK_CLASS
@@ -811,7 +874,7 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
   if (m_options.m_rawChainGenerateExtra) {
     // Write m_logTargets
     ofsvar << m_options.m_prefix << "logTargets_sub" << m_env.subIdString() << " = zeros(" << m_logTargets.size()
-           << ","                                                                << 1
+           << ","                                                           << 1
            << ");"
            << std::endl;
     ofsvar << m_options.m_prefix << "logTargets_sub" << m_env.subIdString() << " = [";
@@ -823,7 +886,7 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
 
     // Write m_alphaQuotients
     ofsvar << m_options.m_prefix << "alphaQuotients_sub" << m_env.subIdString() << " = zeros(" << m_alphaQuotients.size()
-           << ","                                                                    << 1
+           << ","                                                               << 1
            << ");"
            << std::endl;
     ofsvar << m_options.m_prefix << "alphaQuotients_sub" << m_env.subIdString() << " = [";

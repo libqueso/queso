@@ -36,11 +36,14 @@
 uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix)
   :
   m_prefix                                   ((std::string)(prefix) + ""),
+#if 1
   m_dataOutputFileName                       (UQ_ML_SAMPLING_L_DATA_OUTPUT_FILE_NAME_ODV),
 //m_dataOutputAllowedSet                     (),
+#endif
   m_minEffectiveSizeRatio                    (UQ_ML_SAMPLING_L_MIN_EFFECTIVE_SIZE_RATIO_ODV),
   m_maxExponent                              (UQ_ML_SAMPLING_L_MAX_EXPONENT_ODV),
   m_maxNumberOfAttempts                      (UQ_ML_SAMPLING_L_MAX_NUMBER_OF_ATTEMPTS_ODV),
+#if 1
   m_rawChainType                             (UQ_ML_SAMPLING_L_RAW_CHAIN_TYPE_ODV),
   m_rawChainDataInputFileName                (UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV),
   m_rawChainSize                             (UQ_ML_SAMPLING_L_RAW_CHAIN_SIZE_ODV),
@@ -68,14 +71,18 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(const uqBaseEnviron
   m_amAdaptInterval                          (UQ_ML_SAMPLING_L_AM_ADAPT_INTERVAL_ODV),
   m_amEta                                    (UQ_ML_SAMPLING_L_AM_ETA_ODV),
   m_amEpsilon                                (UQ_ML_SAMPLING_L_AM_EPSILON_ODV),
+#endif
   m_env                                      (env),
   m_optionsDesc                              (new po::options_description("Multilevel sampling level options")),
   m_option_help                              (m_prefix + "help"                              ),
+#if 1
   m_option_dataOutputFileName                (m_prefix + "dataOutputFileName"                ),
   m_option_dataOutputAllowedSet              (m_prefix + "dataOutputAllowedSet"              ),
+#endif
   m_option_minEffectiveSizeRatio             (m_prefix + "minEffectiveSizeRatio"             ),
   m_option_maxExponent                       (m_prefix + "maxExponent"                       ),
   m_option_maxNumberOfAttempts               (m_prefix + "maxNumberOfAttempts"               ),
+#if 1
   m_option_rawChain_type                     (m_prefix + "rawChain_type"                     ),
   m_option_rawChain_dataInputFileName        (m_prefix + "rawChain_dataInputFileName"        ),
   m_option_rawChain_size                     (m_prefix + "rawChain_size"                     ),
@@ -101,13 +108,16 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(const uqBaseEnviron
   m_option_am_adaptInterval                  (m_prefix + "am_adaptInterval"                  ),
   m_option_am_eta                            (m_prefix + "am_eta"                            ),
   m_option_am_epsilon                        (m_prefix + "am_epsilon"                        )
+#endif
 {
 }
 
 uqMLSamplingLevelOptionsClass::~uqMLSamplingLevelOptionsClass()
 {
+#if 1
   if (m_filteredChainStatisticalOptions) delete m_filteredChainStatisticalOptions;
   if (m_rawChainStatisticalOptions     ) delete m_rawChainStatisticalOptions;
+#endif
   if (m_optionsDesc                    ) delete m_optionsDesc;
 } 
 
@@ -126,8 +136,10 @@ uqMLSamplingLevelOptionsClass::scanOptionsValues()
                             << std::endl;
   }
 
+#if 1
   if (m_rawChainComputeStats     ) m_rawChainStatisticalOptions      = new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "rawChain_"     );
   if (m_filteredChainComputeStats) m_filteredChainStatisticalOptions = new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "filteredChain_");
+#endif
 
   return;
 };

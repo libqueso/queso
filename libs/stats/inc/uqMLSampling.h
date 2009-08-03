@@ -163,7 +163,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
 
     currRv.setPdf(currPdf);
 
-    uqMarkovChainSGClass<P_V,P_M> mcSeqGenerator(m_options.m_prefix.c_str(),
+    uqMarkovChainSGClass<P_V,P_M> mcSeqGenerator(*(m_options.m_levelOptions[currLevel]),
                                                  currRv,
                                                  m_initialPosition,
                                                  m_initialProposalCovMatrix);
@@ -173,11 +173,22 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
       *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                              << ": ending level " << currLevel+1
-                              << ", m_options.m_levelOptions[currLevel]->m_rawChainSize = " << m_options.m_levelOptions[currLevel]->m_rawChainSize
+                              << ", level " << currLevel+1
+                              << ": finished generating " << currChain.subSequenceSize()
+                              << " chain positions"
                               << std::endl;
     }
 
+    //UQ_FATAL_TEST_MACRO((currChain.subSequenceSize() != m_options.m_levelOptions[currLevel]->m_rawChainSize),
+    //                    m_env.fullRank(),
+    //                    "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+    //                    "currChain (first one) has been generated with invalid size");
+
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+      *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                              << ": ending level " << currLevel+1
+                              << std::endl;
+    }
   }
 
   //***********************************************************
@@ -396,30 +407,65 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
 
     // Step 8 of 8: sample vector RV of current level
     P_V auxInitialPosition(m_sourceRv.imageSet().vectorSpace().zeroVector());
+    unsigned int savedRawChainSize          = m_options.m_levelOptions[currLevel]->m_rawChainSize;
+    bool         savedFilteredChainGenerate = m_options.m_levelOptions[currLevel]->m_filteredChainGenerate;
     if (m_env.inter0Rank() > 0) {
       unsigned int myInter0Rank = (unsigned int) m_env.inter0Rank();
       for (unsigned int chainId = 0; chainId < nodes[myInter0Rank].linkedChains.size(); ++chainId) {
         unsigned int auxIndex = nodes[myInter0Rank].linkedChains[chainId].initialPositionIndexInPreviousChain;
         prevChain.getPositionValues(auxIndex,auxInitialPosition); // FIX ME
 
-        //unsigned int auxNumPositions = nodes[myInter0Rank].linkedChains[chainId].numberOfPositions;
+        unsigned int auxNumPositions = nodes[myInter0Rank].linkedChains[chainId].numberOfPositions;
+        m_options.m_levelOptions[currLevel]->m_rawChainSize          = auxNumPositions;
+        m_options.m_levelOptions[currLevel]->m_filteredChainGenerate = false;
 
-        uqMarkovChainSGClass<P_V,P_M> mcSeqGenerator(m_options.m_prefix.c_str(),
+        uqSequenceOfVectorsClass<P_V,P_M> tmpChain(m_sourceRv.imageSet().vectorSpace(),
+                                                   0,
+                                                   m_options.m_prefix+"tmp_chain");
+        uqScalarSequenceClass<double> tmpTargetValues(m_env,0);
+
+        uqMarkovChainSGClass<P_V,P_M> mcSeqGenerator(*(m_options.m_levelOptions[currLevel]),
                                                      currRv,
                                                      auxInitialPosition,
                                                      unifiedCovMatrix);
 
-        mcSeqGenerator.generateSequence(currChain, // FIX ME: linked chains
-                                        &currTargetValues);
+        mcSeqGenerator.generateSequence(tmpChain,
+                                        &tmpTargetValues);
+        
+        if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+          *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                                  << ", level "               << currLevel+1
+                                  << ", chainId = "           << chainId
+                                  << ": finished generating " << tmpChain.subSequenceSize()
+                                  << " chain positions"
+                                  << std::endl;
+        }
+
+        currChain.append(tmpChain);
+        tmpTargetValues.append(tmpTargetValues);
       }
+    }
+    m_options.m_levelOptions[currLevel]->m_rawChainSize          = savedRawChainSize;
+    m_options.m_levelOptions[currLevel]->m_filteredChainGenerate = savedFilteredChainGenerate; // FIX ME
+
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+      *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                              << ", level " << currLevel+1
+                              << ": finished generating " << currChain.subSequenceSize()
+                              << " chain positions"
+                              << std::endl;
     }
 
     delete unifiedCovMatrix;
 
+    //UQ_FATAL_TEST_MACRO((currChain.subSequenceSize() != m_options.m_levelOptions[currLevel]->m_rawChainSize),
+    //                    m_env.fullRank(),
+    //                    "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+    //                    "currChain (a linked one) has been generated with invalid size");
+
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
       *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
                               << ": ending level " << currLevel+1
-                              << ", m_options.m_levelOptions[currLevel]->m_rawChainSize = " << m_options.m_levelOptions[currLevel]->m_rawChainSize
                               << std::endl;
     }
   }

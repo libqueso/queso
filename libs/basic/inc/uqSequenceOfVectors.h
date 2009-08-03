@@ -179,6 +179,7 @@ public:
         void         filter                    (unsigned int                        initialPos,
                                                 unsigned int                        spacing);
 
+        void         append                    (const uqSequenceOfVectorsClass<V,M>& src);
 private:
         void         copy                      (const uqSequenceOfVectorsClass<V,M>& src);
         void         extractScalarSeq          (unsigned int                        initialPos,
@@ -254,6 +255,21 @@ uqSequenceOfVectorsClass<V,M>::copy(const uqSequenceOfVectorsClass<V,M>& src)
 }
 
 template <class V, class M>
+void
+uqSequenceOfVectorsClass<V,M>::append(const uqSequenceOfVectorsClass<V,M>& src)
+{
+  uqBaseVectorSequenceClass<V,M>::deleteStoredVectors();
+  unsigned int currentSize = this->subSequenceSize();
+  unsigned int addedSize   = src.subSequenceSize();
+  m_seq.resize(currentSize+addedSize,NULL);
+  for (unsigned int i = 0; i < addedSize; ++i) {
+    m_seq[currentSize+i] = new V(*(src.m_seq[i]));
+  }
+
+  return;
+}
+
+template <class V, class M>
 unsigned int
 uqSequenceOfVectorsClass<V,M>::subSequenceSize() const
 {
@@ -265,6 +281,9 @@ void
 uqSequenceOfVectorsClass<V,M>::resizeSequence(unsigned int newSubSequenceSize)
 {
   if (newSubSequenceSize != this->subSequenceSize()) {
+    if (newSubSequenceSize < this->subSequenceSize()) {
+      this->resetValues(newSubSequenceSize,this->subSequenceSize()-newSubSequenceSize);
+    }
     m_seq.resize(newSubSequenceSize,NULL);
     std::vector<const V*>(m_seq).swap(m_seq);
   }
