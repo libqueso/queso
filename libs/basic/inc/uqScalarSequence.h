@@ -419,7 +419,7 @@ uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only(std::vector<T>& outputVe
   unsigned int auxUnifiedSize = this->unifiedSequenceSize();
   outputVec.resize(auxUnifiedSize,0.);
   // FIX ME: use MPI_Gatherv for the case different nodes have different amount of data
-  int mpiRC = MPI_Gather((void *) &m_seq[0], auxSubSize, MPI_UNSIGNED, (void *) &outputVec[0], auxSubSize, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm());
+  int mpiRC = MPI_Gather((void *) &m_seq[0], auxSubSize, MPI_DOUBLE, (void *) &outputVec[0], auxSubSize, MPI_DOUBLE, 0, m_env.inter0Comm().Comm());
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_env.fullRank(),
                       "uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only()",

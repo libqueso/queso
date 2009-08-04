@@ -49,17 +49,34 @@ uqFiniteDistributionClass::uqFiniteDistributionClass(
 
   unsigned int numOfZeroWeights = 0;
   double sumCheck = 0.;
-  for (unsigned int i = 0; i < m_weights.size(); ++i) {
-    m_weights[i] = inpWeights[i];
-    sumCheck += m_weights[i];
-    m_map.insert(std::map<double,unsigned int>::value_type(sumCheck,i));
-    if (inpWeights[i] == 0.) numOfZeroWeights++;
+  unsigned int j = 0;
+  for (unsigned int i = 0; i < inpWeights.size(); ++i) {
+    double previousSum = sumCheck;
+    sumCheck += inpWeights[i];
+    if (sumCheck == previousSum) {
+      numOfZeroWeights++;
+    }
+    else {
+      m_weights[j] = inpWeights[i];
+      m_map.insert(std::map<double,unsigned int>::value_type(sumCheck,j));
+      j++;
+    }
+  }
+  m_weights.resize(j,0.);
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+    *m_env.subDisplayFile() << "In uqFiniteDistributionClass::constructor()"
+                            << ": inpWeights.size() = " << inpWeights.size()
+                            << ", numOfZeroWeights = "  << numOfZeroWeights
+                            << ", m_map.size() = "      << m_map.size()
+                            << ", m_weights.size() = "  << m_weights.size()
+                            << std::endl;
   }
 
-  std::cout << "\n  numOfZeroWeights = " << numOfZeroWeights
-            << "\n  m_map.size() = "     << m_map.size()
-            << "\n  m_weights.size() = " << m_weights.size()
-            << std::endl;
+  UQ_FATAL_TEST_MACRO((inpWeights.size() != (m_weights.size()+numOfZeroWeights)),
+                      m_env.fullRank(),
+                      "uqFiniteDistributionClass::constructor()",
+                      "number of input weights was not conserved");
 
   UQ_FATAL_TEST_MACRO((m_map.size() != m_weights.size()),
                       m_env.fullRank(),
