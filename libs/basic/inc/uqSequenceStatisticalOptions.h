@@ -82,8 +82,8 @@
 class uqSequenceStatisticalOptionsClass
 {
 public:
-  uqSequenceStatisticalOptionsClass(const uqBaseEnvironmentClass& env, /*! The QUESO toolkit environment.                 */
-                                 const std::string&        prefix); /*! Prefix for reading parameters from input file. */
+  uqSequenceStatisticalOptionsClass(/*! The QUESO environment.                      */ const uqBaseEnvironmentClass& env,
+                                    /*! Prefix for reading options from input file. */ const std::string&            prefix);
  ~uqSequenceStatisticalOptionsClass();
 
   const std::vector<double>&       initialDiscardedPortions() const;

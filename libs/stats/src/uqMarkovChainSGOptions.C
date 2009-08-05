@@ -50,6 +50,7 @@ uqMarkovChainSGOptionsClass::uqMarkovChainSGOptionsClass(
 //m_rawChainDataOutputAllowedSet             (),
   m_rawChainComputeStats                     (UQ_MAC_SG_RAW_CHAIN_COMPUTE_STATS_ODV),
   m_rawChainStatisticalOptions               (NULL),
+  m_rawChainStatOptsInstantiated             (false),
   m_filteredChainGenerate                    (UQ_MAC_SG_FILTERED_CHAIN_GENERATE_ODV),
   m_filteredChainDiscardedPortion            (UQ_MAC_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV),
   m_filteredChainLag                         (UQ_MAC_SG_FILTERED_CHAIN_LAG_ODV),
@@ -57,6 +58,7 @@ uqMarkovChainSGOptionsClass::uqMarkovChainSGOptionsClass(
 //m_filteredChainDataOutputAllowedSet        (),
   m_filteredChainComputeStats                (UQ_MAC_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV),
   m_filteredChainStatisticalOptions          (NULL),
+  m_filteredChainStatOptsInstantiated        (false),
   m_mhDisplayCandidates                      (UQ_MAC_SG_MH_DISPLAY_CANDIDATES_ODV),
   m_mhPutOutOfBoundsInChain                  (UQ_MAC_SG_MH_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV),
   m_tkUseLocalHessian                        (UQ_MAC_SG_TK_USE_LOCAL_HESSIAN_ODV),
@@ -117,6 +119,7 @@ uqMarkovChainSGOptionsClass::uqMarkovChainSGOptionsClass(
   m_rawChainDataOutputAllowedSet     (inputOptions.m_rawChainDataOutputAllowedSet),
   m_rawChainComputeStats             (inputOptions.m_rawChainComputeStats),
   m_rawChainStatisticalOptions       (inputOptions.m_rawChainStatisticalOptions),
+  m_rawChainStatOptsInstantiated     (false),
   m_filteredChainGenerate            (inputOptions.m_filteredChainGenerate),
   m_filteredChainDiscardedPortion    (inputOptions.m_filteredChainDiscardedPortion),
   m_filteredChainLag                 (inputOptions.m_filteredChainLag),
@@ -124,6 +127,7 @@ uqMarkovChainSGOptionsClass::uqMarkovChainSGOptionsClass(
   m_filteredChainDataOutputAllowedSet(inputOptions.m_filteredChainDataOutputAllowedSet),
   m_filteredChainComputeStats        (inputOptions.m_filteredChainComputeStats),
   m_filteredChainStatisticalOptions  (inputOptions.m_filteredChainStatisticalOptions),
+  m_filteredChainStatOptsInstantiated(false),
   m_mhDisplayCandidates              (inputOptions.m_mhDisplayCandidates),
   m_mhPutOutOfBoundsInChain          (inputOptions.m_mhPutOutOfBoundsInChain),
   m_tkUseLocalHessian                (inputOptions.m_tkUseLocalHessian),
@@ -176,9 +180,9 @@ uqMarkovChainSGOptionsClass::uqMarkovChainSGOptionsClass(
 
 uqMarkovChainSGOptionsClass::~uqMarkovChainSGOptionsClass()
 {
-  if (m_filteredChainStatisticalOptions) delete m_filteredChainStatisticalOptions;
-  if (m_rawChainStatisticalOptions     ) delete m_rawChainStatisticalOptions;
-  if (m_optionsDesc                    ) delete m_optionsDesc;
+  if (m_filteredChainStatOptsInstantiated) delete m_filteredChainStatisticalOptions;
+  if (m_rawChainStatOptsInstantiated     ) delete m_rawChainStatisticalOptions;
+  if (m_optionsDesc                      ) delete m_optionsDesc;
 } 
 
 void
@@ -196,8 +200,14 @@ uqMarkovChainSGOptionsClass::scanOptionsValues()
                             << std::endl;
   }
 
-  if (m_rawChainComputeStats     ) m_rawChainStatisticalOptions      = new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "rawChain_"     );
-  if (m_filteredChainComputeStats) m_filteredChainStatisticalOptions = new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "filteredChain_");
+  if (m_rawChainComputeStats     ) {
+    m_rawChainStatisticalOptions   = new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "rawChain_");
+    m_rawChainStatOptsInstantiated = true;
+  }
+  if (m_filteredChainComputeStats) {
+    m_filteredChainStatisticalOptions   = new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "filteredChain_");
+    m_filteredChainStatOptsInstantiated = true;
+  }
 
   return;
 }

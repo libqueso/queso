@@ -553,15 +553,16 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
 
       P_V auxInitialPosition(m_sourceRv.imageSet().vectorSpace().zeroVector());
       unsigned int savedRawChainSize          = m_options.m_levelOptions[currLevel]->m_rawChainSize;
+      bool         savedRawChainComputeStats  = m_options.m_levelOptions[currLevel]->m_rawChainComputeStats;
       bool         savedFilteredChainGenerate = m_options.m_levelOptions[currLevel]->m_filteredChainGenerate;
       if (m_env.inter0Rank() >= 0) { // FIX ME
-        unsigned int myInter0Rank = (unsigned int) m_env.inter0Rank();
-        for (unsigned int chainId = 0; chainId < nodes[myInter0Rank].linkedChains.size(); ++chainId) {
-          unsigned int auxIndex = nodes[myInter0Rank].linkedChains[chainId].initialPositionIndexInPreviousChain;
+        for (unsigned int chainId = 0; chainId < nodes[m_env.subId()].linkedChains.size(); ++chainId) {
+          unsigned int auxIndex = nodes[m_env.subId()].linkedChains[chainId].initialPositionIndexInPreviousChain;
           prevChain.getPositionValues(auxIndex,auxInitialPosition); // FIX ME
 
-          unsigned int auxNumPositions = nodes[myInter0Rank].linkedChains[chainId].numberOfPositions;
+          unsigned int auxNumPositions = nodes[m_env.subId()].linkedChains[chainId].numberOfPositions;
           m_options.m_levelOptions[currLevel]->m_rawChainSize          = auxNumPositions;
+          m_options.m_levelOptions[currLevel]->m_rawChainComputeStats  = false;
           m_options.m_levelOptions[currLevel]->m_filteredChainGenerate = false;
 
           uqSequenceOfVectorsClass<P_V,P_M> tmpChain(m_sourceRv.imageSet().vectorSpace(),
@@ -591,6 +592,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
         }
       }
       m_options.m_levelOptions[currLevel]->m_rawChainSize          = savedRawChainSize;
+      m_options.m_levelOptions[currLevel]->m_rawChainComputeStats  = savedRawChainComputeStats;
       m_options.m_levelOptions[currLevel]->m_filteredChainGenerate = savedFilteredChainGenerate; // FIX ME
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {

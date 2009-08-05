@@ -102,6 +102,7 @@ public:
   std::set<unsigned int>             m_rawChainDataOutputAllowedSet;
   bool                               m_rawChainComputeStats;
   uqSequenceStatisticalOptionsClass* m_rawChainStatisticalOptions;
+  bool                               m_rawChainStatOptsInstantiated;
 
   bool                               m_filteredChainGenerate;
   double                             m_filteredChainDiscardedPortion; // input or set during run time
@@ -110,6 +111,7 @@ public:
   std::set<unsigned int>             m_filteredChainDataOutputAllowedSet;
   bool                               m_filteredChainComputeStats;
   uqSequenceStatisticalOptionsClass* m_filteredChainStatisticalOptions;
+  bool                               m_filteredChainStatOptsInstantiated;
 
   bool                               m_mhDisplayCandidates;
   bool                               m_mhPutOutOfBoundsInChain;
