@@ -83,6 +83,21 @@ AX_PATH_HPCT
 #AC_SUBST(HPCT_CFLAGS)
 #AC_SUBST(HPCT_LIBS)
 
+
+#------------------------------------------------
+# Documentation generation (via doxygen)
+#------------------------------------------------
+DX_DOXYGEN_FEATURE([ON])
+DX_HTML_FEATURE([ON])
+DX_CHM_FEATURE([OFF])
+DX_CHI_FEATURE([OFF])
+DX_MAN_FEATURE([OFF])
+DX_RTF_FEATURE([OFF])
+DX_XML_FEATURE([OFF])
+DX_PDF_FEATURE([OFF])
+DX_PS_FEATURE([OFF])
+DX_INIT_DOXYGEN([queso],[queso.dox],[doxygen-doc])
+
 # Query configuration environment
 
 AX_SUMMARIZE_ENV

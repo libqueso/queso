@@ -10,6 +10,8 @@ SUBDIRS = libs examples test/t01_valid_cycle/valid_cycle test/t02_sip_sfp/sip_sf
 AUX_DIST = build-aux/install-sh    \
            build-aux/missing
 
+EXTRA_DIST = $(DX_CONFIG)
+
 # Files to be deleted by 'make maintainer-clean'
 MAINTAINERCLEANFILES =     \
 	aclocal.m4             \
@@ -43,6 +45,17 @@ MAINTAINERCLEANFILES =     \
 	examples/tga/Makefile.in \
 	examples/tga/src/Makefile.in
 
+MOSTLYCLEANFILES = $(DX_CLEANFILES)
+
+# Documentation hooks in with the 'html' target
+html-local: doxygen-run
+
+# Required for AX_PROG_DOXYGEN
+include doxygen.am
+
 # Additional files to be deleted by 'make distclean'
 DISTCLEANFILES = \
 	aminclude.am
+
+# Required for AX_AM_MACROS
+@INC_AMINCLUDE@
