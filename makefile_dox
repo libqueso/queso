@@ -1,7 +1,0 @@
-all:
-	doxygen queso.dox
-	cd libs; doxygen quesoLibs.dox
-
-clean:
-	rm -fR html
-	cd libs; rm -fR html

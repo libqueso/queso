@@ -23,10 +23,6 @@
     a User's Manual available in pdf format and
     this lower-level code documentation in web based/html format.
 
-#    The QUESO library has two main components:
-#    - <A HREF="../libs/html/index.html">Libraries</A>
-#    - <A HREF="../examples/html/index.html">Examples (Executables)</A>
-
     @section bugs Reporting Bugs
 
     Bugs in the code and errors or omissions in the documentation can be reported to pecos-maint@ices.utexas.edu.
