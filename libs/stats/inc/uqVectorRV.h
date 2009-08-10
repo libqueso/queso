@@ -504,7 +504,7 @@ uqGaussianVectorRVClass<V,M>::print(std::ostream& os) const
 template<class V, class M>
 class uqUniformVectorRVClass : public uqBaseVectorRVClass<V,M> {
 public:
-  uqUniformVectorRVClass(const char*                     prefix,
+  uqUniformVectorRVClass(const char*                  prefix,
                          const uqVectorSetClass<V,M>& imageSet);
   virtual ~uqUniformVectorRVClass();
 
@@ -535,7 +535,7 @@ uqUniformVectorRVClass<V,M>::uqUniformVectorRVClass(
   }
 
   m_pdf        = new uqUniformJointPdfClass<V,M>(m_prefix.c_str(),
-                                                  m_imageSet);
+                                                 m_imageSet);
   m_realizer   = new uqUniformVectorRealizerClass<V,M>(m_prefix.c_str(),
                                                        m_imageSet);
   m_subCdf     = NULL; // FIX ME: complete code

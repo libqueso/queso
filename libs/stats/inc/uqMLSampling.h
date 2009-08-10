@@ -588,12 +588,54 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
           }
 
           currChain.append(tmpChain);
-          tmpTargetValues.append(tmpTargetValues);
+          currTargetValues.append(tmpTargetValues);
         }
       }
       m_options.m_levelOptions[currLevel]->m_rawChainSize          = savedRawChainSize;
       m_options.m_levelOptions[currLevel]->m_rawChainComputeStats  = savedRawChainComputeStats;
       m_options.m_levelOptions[currLevel]->m_filteredChainGenerate = savedFilteredChainGenerate; // FIX ME
+
+      if (m_options.m_levelOptions[currLevel]->m_rawChainComputeStats) {
+        std::ofstream* genericOfsVar = NULL;
+        m_env.openOutputFile(m_options.m_levelOptions[currLevel]->m_dataOutputFileName,
+                             UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                             m_options.m_levelOptions[currLevel]->m_dataOutputAllowedSet,
+                             false,
+                             genericOfsVar);
+
+        currChain.computeStatistics(*m_options.m_levelOptions[currLevel]->m_rawChainStatisticalOptions,
+                                    genericOfsVar);
+
+        genericOfsVar->close();
+      }
+
+      if (m_options.m_levelOptions[currLevel]->m_filteredChainGenerate) {
+        std::ofstream* genericOfsVar = NULL;
+        m_env.openOutputFile(m_options.m_levelOptions[currLevel]->m_dataOutputFileName,
+                             UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                             m_options.m_levelOptions[currLevel]->m_dataOutputAllowedSet,
+                             false,
+                             genericOfsVar);
+
+        unsigned int filterInitialPos = (unsigned int) (m_options.m_levelOptions[currLevel]->m_filteredChainDiscardedPortion * (double) currChain.subSequenceSize());
+        unsigned int filterSpacing    = m_options.m_levelOptions[currLevel]->m_filteredChainLag;
+        if (filterSpacing == 0) {
+          currChain.computeFilterParams(*m_options.m_levelOptions[currLevel]->m_filteredChainStatisticalOptions,
+                                        genericOfsVar,
+                                        filterInitialPos,
+                                        filterSpacing);
+        }
+
+        // Filter positions from the converged portion of the chain
+        currChain.filter(filterInitialPos,
+                         filterSpacing);
+        currChain.setName(m_options.m_levelOptions[currLevel]->m_prefix + "filtChain");
+
+        currTargetValues.filter(filterInitialPos,
+                                filterSpacing);
+
+        genericOfsVar->close();
+      }
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
