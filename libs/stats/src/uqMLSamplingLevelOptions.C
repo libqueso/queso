@@ -44,6 +44,7 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(const uqBaseEnviron
   m_maxExponent                              (UQ_ML_SAMPLING_L_MAX_EXPONENT_ODV),
   m_maxNumberOfAttempts                      (UQ_ML_SAMPLING_L_MAX_NUMBER_OF_ATTEMPTS_ODV),
 #if 1
+  m_totallyMute                              (UQ_ML_SAMPLING_L_TOTALLY_MUTE_ODV),
   m_rawChainType                             (UQ_ML_SAMPLING_L_RAW_CHAIN_TYPE_ODV),
   m_rawChainDataInputFileName                (UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV),
   m_rawChainSize                             (UQ_ML_SAMPLING_L_RAW_CHAIN_SIZE_ODV),
@@ -83,6 +84,7 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(const uqBaseEnviron
   m_option_maxExponent                       (m_prefix + "maxExponent"                       ),
   m_option_maxNumberOfAttempts               (m_prefix + "maxNumberOfAttempts"               ),
 #if 1
+  m_option_totallyMute                       (m_prefix + "totallyMute"                       ),
   m_option_rawChain_type                     (m_prefix + "rawChain_type"                     ),
   m_option_rawChain_dataInputFileName        (m_prefix + "rawChain_dataInputFileName"        ),
   m_option_rawChain_size                     (m_prefix + "rawChain_size"                     ),
@@ -128,7 +130,8 @@ uqMLSamplingLevelOptionsClass::scanOptionsValues()
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
 
-  if (m_env.subDisplayFile() != NULL) {
+  if ((m_env.subDisplayFile() != NULL ) &&
+      (m_totallyMute          == false)) {
     *m_env.subDisplayFile() << "In uqMLSamplingLevelOptionsClass::scanOptionsValues()"
                             << ": after getting values of options with prefix '" << m_prefix
                             << "', state of  object is:"
@@ -154,6 +157,7 @@ uqMLSamplingLevelOptionsClass::defineMyOptions(po::options_description& optionsD
     (m_option_minEffectiveSizeRatio.c_str(),              po::value<double      >()->default_value(UQ_ML_SAMPLING_L_MIN_EFFECTIVE_SIZE_RATIO_ODV              ), "minimum allowed effective size ratio wrt previous level"         )
     (m_option_maxExponent.c_str(),                        po::value<double      >()->default_value(UQ_ML_SAMPLING_L_MAX_EXPONENT_ODV                          ), "maximum exponent"                                                )
     (m_option_maxNumberOfAttempts.c_str(),                po::value<unsigned int>()->default_value(UQ_ML_SAMPLING_L_MAX_NUMBER_OF_ATTEMPTS_ODV                ), "maximum number of attempts"                                      )
+    (m_option_totallyMute.c_str(),                        po::value<bool        >()->default_value(UQ_ML_SAMPLING_L_TOTALLY_MUTE_ODV                          ), "totally mute (no printout message)"                              )
     (m_option_rawChain_type.c_str(),                      po::value<unsigned int>()->default_value(UQ_ML_SAMPLING_L_RAW_CHAIN_TYPE_ODV                        ), "type of raw chain (1=Markov, 2=White noise)"                     )
     (m_option_rawChain_dataInputFileName.c_str(),         po::value<std::string >()->default_value(UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV        ), "name of input file for raw chain "                               )
     (m_option_rawChain_size.c_str(),                      po::value<unsigned int>()->default_value(UQ_ML_SAMPLING_L_RAW_CHAIN_SIZE_ODV                        ), "size of raw chain"                                               )
@@ -221,6 +225,10 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
 
   if (m_env.allOptionsMap().count(m_option_maxNumberOfAttempts.c_str())) {
     m_maxNumberOfAttempts = ((const po::variable_value&) m_env.allOptionsMap()[m_option_maxNumberOfAttempts.c_str()]).as<unsigned int>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_totallyMute.c_str())) {
+    m_totallyMute = ((const po::variable_value&) m_env.allOptionsMap()[m_option_totallyMute.c_str()]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_type.c_str())) {
@@ -392,6 +400,7 @@ uqMLSamplingLevelOptionsClass::print(std::ostream& os) const
   os << "\n" << m_option_minEffectiveSizeRatio          << " = " << m_minEffectiveSizeRatio
      << "\n" << m_option_maxExponent                    << " = " << m_maxExponent
      << "\n" << m_option_maxNumberOfAttempts            << " = " << m_maxNumberOfAttempts
+     << "\n" << m_option_totallyMute                    << " = " << m_totallyMute
      << "\n" << m_option_rawChain_type                  << " = " << m_rawChainType
      << "\n" << m_option_rawChain_dataInputFileName     << " = " << m_rawChainDataInputFileName
      << "\n" << m_option_rawChain_size                  << " = " << m_rawChainSize

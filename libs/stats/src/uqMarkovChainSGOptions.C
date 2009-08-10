@@ -40,6 +40,7 @@ uqMarkovChainSGOptionsClass::uqMarkovChainSGOptionsClass(
   m_prefix                                   ((std::string)(prefix) + "mc_"),
   m_dataOutputFileName                       (UQ_MAC_SG_DATA_OUTPUT_FILE_NAME_ODV),
 //m_dataOutputAllowedSet                     (),
+  m_totallyMute                              (UQ_MAC_SG_TOTALLY_MUTE_ODV),
   m_rawChainType                             (UQ_MAC_SG_RAW_CHAIN_TYPE_ODV),
   m_rawChainDataInputFileName                (UQ_MAC_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV),
   m_rawChainSize                             (UQ_MAC_SG_RAW_CHAIN_SIZE_ODV),
@@ -74,6 +75,7 @@ uqMarkovChainSGOptionsClass::uqMarkovChainSGOptionsClass(
   m_option_help                              (m_prefix + "help"                              ),
   m_option_dataOutputFileName                (m_prefix + "dataOutputFileName"                ),
   m_option_dataOutputAllowedSet              (m_prefix + "dataOutputAllowedSet"              ),
+  m_option_totallyMute                       (m_prefix + "totallyMute"                       ),
   m_option_rawChain_type                     (m_prefix + "rawChain_type"                     ),
   m_option_rawChain_dataInputFileName        (m_prefix + "rawChain_dataInputFileName"        ),
   m_option_rawChain_size                     (m_prefix + "rawChain_size"                     ),
@@ -109,6 +111,7 @@ uqMarkovChainSGOptionsClass::uqMarkovChainSGOptionsClass(
   m_prefix                           (inputOptions.m_prefix),
   m_dataOutputFileName               (inputOptions.m_dataOutputFileName),
   m_dataOutputAllowedSet             (inputOptions.m_dataOutputAllowedSet),
+  m_totallyMute                      (inputOptions.m_totallyMute),
   m_rawChainType                     (inputOptions.m_rawChainType),
   m_rawChainDataInputFileName        (inputOptions.m_rawChainDataInputFileName),
   m_rawChainSize                     (inputOptions.m_rawChainSize),
@@ -143,6 +146,7 @@ uqMarkovChainSGOptionsClass::uqMarkovChainSGOptionsClass(
   m_option_help                              (m_prefix + "help"                              ),
   m_option_dataOutputFileName                (m_prefix + "dataOutputFileName"                ),
   m_option_dataOutputAllowedSet              (m_prefix + "dataOutputAllowedSet"              ),
+  m_option_totallyMute                       (m_prefix + "totallyMute"                       ),
   m_option_rawChain_type                     (m_prefix + "rawChain_type"                     ),
   m_option_rawChain_dataInputFileName        (m_prefix + "rawChain_dataInputFileName"        ),
   m_option_rawChain_size                     (m_prefix + "rawChain_size"                     ),
@@ -169,7 +173,8 @@ uqMarkovChainSGOptionsClass::uqMarkovChainSGOptionsClass(
   m_option_am_eta                            (m_prefix + "am_eta"                            ),
   m_option_am_epsilon                        (m_prefix + "am_epsilon"                        )
 {
-  if (m_env.subDisplayFile() != NULL) {
+  if ((m_env.subDisplayFile() != NULL) &&
+      (m_totallyMute == false        )) {
     *m_env.subDisplayFile() << "In uqMarkovChainSGOptionsClass::constructor(2)"
                             << ": after copying values of options with prefix '" << m_prefix
                             << "', state of object is:"
@@ -192,7 +197,8 @@ uqMarkovChainSGOptionsClass::scanOptionsValues()
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
 
-  if (m_env.subDisplayFile() != NULL) {
+  if ((m_env.subDisplayFile() != NULL) &&
+      (m_totallyMute == false        )) {
     *m_env.subDisplayFile() << "In uqMarkovChainSGOptionsClass::scanOptionsValues()"
                             << ": after getting values of options with prefix '" << m_prefix
                             << "', state of object is:"
@@ -219,6 +225,7 @@ uqMarkovChainSGOptionsClass::defineMyOptions(po::options_description& optionsDes
     (m_option_help.c_str(),                                                                                                                             "produce help message for Bayesian Markov chain distr. calculator")
     (m_option_dataOutputFileName.c_str(),                 po::value<std::string >()->default_value(UQ_MAC_SG_DATA_OUTPUT_FILE_NAME_ODV               ), "name of generic output file"                                     )
     (m_option_dataOutputAllowedSet.c_str(),               po::value<std::string >()->default_value(UQ_MAC_SG_RAW_CHAIN_DATA_OUTPUT_ALLOW_ODV         ), "subEnvs that will write to generic output file"                  )
+    (m_option_totallyMute.c_str(),                        po::value<bool        >()->default_value(UQ_MAC_SG_TOTALLY_MUTE_ODV                        ), "totally mute (no printout message)"                              )
     (m_option_rawChain_type.c_str(),                      po::value<unsigned int>()->default_value(UQ_MAC_SG_RAW_CHAIN_TYPE_ODV                      ), "type of raw chain (1=Markov, 2=White noise)"                     )
     (m_option_rawChain_dataInputFileName.c_str(),         po::value<std::string >()->default_value(UQ_MAC_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV      ), "name of input file for raw chain "                               )
     (m_option_rawChain_size.c_str(),                      po::value<unsigned int>()->default_value(UQ_MAC_SG_RAW_CHAIN_SIZE_ODV                      ), "size of raw chain"                                               )
@@ -253,7 +260,8 @@ void
 uqMarkovChainSGOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
 {
   if (m_env.allOptionsMap().count(m_option_help.c_str())) {
-    if (m_env.subDisplayFile()) {
+    if ((m_env.subDisplayFile()) &&
+        (m_totallyMute == false)) {
       *m_env.subDisplayFile() << optionsDesc
                              << std::endl;
     }
@@ -274,6 +282,10 @@ uqMarkovChainSGOptionsClass::getMyOptionValues(po::options_description& optionsD
         m_dataOutputAllowedSet.insert((unsigned int) tmpAllow[i]);
       }
     }
+  }
+
+  if (m_env.allOptionsMap().count(m_option_totallyMute.c_str())) {
+    m_totallyMute = ((const po::variable_value&) m_env.allOptionsMap()[m_option_totallyMute.c_str()]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_type.c_str())) {
@@ -452,7 +464,8 @@ uqMarkovChainSGOptionsClass::print(std::ostream& os) const
   for (std::set<unsigned int>::iterator setIt = m_dataOutputAllowedSet.begin(); setIt != m_dataOutputAllowedSet.end(); ++setIt) {
     os << *setIt << " ";
   }
-  os << "\n" << m_option_rawChain_type                 << " = " << m_rawChainType
+  os << "\n" << m_option_totallyMute                   << " = " << m_totallyMute
+     << "\n" << m_option_rawChain_type                 << " = " << m_rawChainType
      << "\n" << m_option_rawChain_dataInputFileName    << " = " << m_rawChainDataInputFileName
      << "\n" << m_option_rawChain_size                 << " = " << m_rawChainSize
      << "\n" << m_option_rawChain_generateExtra        << " = " << m_rawChainGenerateExtra

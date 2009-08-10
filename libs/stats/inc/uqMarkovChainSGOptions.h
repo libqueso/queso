@@ -51,6 +51,7 @@
 #define UQ_MAC_SG_DATA_OUTPUT_FILE_NAME_ODV                UQ_MAC_SG_FILENAME_FOR_NO_FILE
 #define UQ_MAC_SG_DATA_OUTPUT_ALLOW_ODV                    ""
 
+#define UQ_MAC_SG_TOTALLY_MUTE_ODV                         0
 #define UQ_MAC_SG_RAW_CHAIN_TYPE_ODV                       UQ_MAC_SG_MARKOV_CHAIN_TYPE
 #define UQ_MAC_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV       UQ_MAC_SG_FILENAME_FOR_NO_FILE
 #define UQ_MAC_SG_RAW_CHAIN_SIZE_ODV                       100
@@ -92,6 +93,7 @@ public:
   std::string                        m_dataOutputFileName;
   std::set<unsigned int>             m_dataOutputAllowedSet;
 
+  bool                               m_totallyMute;
   unsigned int                       m_rawChainType;
   std::string                        m_rawChainDataInputFileName;
   unsigned int                       m_rawChainSize;
@@ -136,6 +138,7 @@ private:
   std::string                   m_option_dataOutputFileName;
   std::string                   m_option_dataOutputAllowedSet;
 
+  std::string                   m_option_totallyMute;
   std::string                   m_option_rawChain_type;
   std::string                   m_option_rawChain_dataInputFileName;
   std::string                   m_option_rawChain_size;

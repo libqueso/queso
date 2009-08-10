@@ -52,6 +52,7 @@
 #define UQ_ML_SAMPLING_L_MAX_EXPONENT_ODV                           1.
 #define UQ_ML_SAMPLING_L_MAX_NUMBER_OF_ATTEMPTS_ODV                 10
 #if 1
+#define UQ_ML_SAMPLING_L_TOTALLY_MUTE_ODV                           1
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_TYPE_ODV                         UQ_ML_SAMPLING_L_MARKOV_CHAIN_TYPE
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV         UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_SIZE_ODV                         100.
@@ -98,6 +99,7 @@ public:
   double                             m_maxExponent;
   unsigned int                       m_maxNumberOfAttempts;
 #if 1
+  bool                               m_totallyMute;
   unsigned int                       m_rawChainType;
   std::string                        m_rawChainDataInputFileName;
   unsigned int                       m_rawChainSize;
@@ -145,6 +147,7 @@ private:
   std::string                   m_option_maxExponent;
   std::string                   m_option_maxNumberOfAttempts;
 #if 1
+  std::string                   m_option_totallyMute;
   std::string                   m_option_rawChain_type;
   std::string                   m_option_rawChain_dataInputFileName;
   std::string                   m_option_rawChain_size;

@@ -1706,15 +1706,15 @@ void
 uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(const std::string& fileName) const
 {
   m_env.fullComm().Barrier();
-  if (m_env.subDisplayFile()) {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
     *m_env.subDisplayFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
-                           << ": fullRank "       << m_env.fullRank()
-                           << ", subEnvironment " << m_env.subId()
-                           << ", subRank "        << m_env.subRank()
-                           << ", inter0Rank "     << m_env.inter0Rank()
-                           << ", m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc()
-                           << ", fileName = "     << fileName
-                           << std::endl;
+                            << ": fullRank "       << m_env.fullRank()
+                            << ", subEnvironment " << m_env.subId()
+                            << ", subRank "        << m_env.subRank()
+                            << ", inter0Rank "     << m_env.inter0Rank()
+                            << ", m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc()
+                            << ", fileName = "     << fileName
+                            << std::endl;
   }
 
   if (m_env.inter0Rank() >= 0) {
@@ -1763,10 +1763,10 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(const std::string& fileName)
     }
   }
 
-  if (m_env.subDisplayFile()) {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
     *m_env.subDisplayFile() << "Leaving uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
-                           << ", fileName = " << fileName
-                           << std::endl;
+                            << ", fileName = " << fileName
+                            << std::endl;
   }
   m_env.fullComm().Barrier();
 
@@ -1784,15 +1784,15 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
   m_env.fullComm().Barrier();
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedReadContents()"
-                           << ": fullRank "                       << m_env.fullRank()
-                           << ", subEnvironment "                 << m_env.subId()
-                           << ", subRank "                        << m_env.subRank()
-                           << ", inter0Rank "                     << m_env.inter0Rank()
-                           << ", m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc()
-                           << ", fileName = "                     << fileName
-                           << ", subReadSize = "              << subReadSize
-                           << ", unifiedReadSize = "          << unifiedReadSize
-                           << std::endl;
+                            << ": fullRank "                       << m_env.fullRank()
+                            << ", subEnvironment "                 << m_env.subId()
+                            << ", subRank "                        << m_env.subRank()
+                            << ", inter0Rank "                     << m_env.inter0Rank()
+                            << ", m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc()
+                            << ", fileName = "                     << fileName
+                            << ", subReadSize = "              << subReadSize
+                            << ", unifiedReadSize = "          << unifiedReadSize
+                            << std::endl;
   }
 
   this->resizeSequence(subReadSize);
@@ -1938,8 +1938,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
 
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Leaving uqSequenceOfVectorsClass<V,M>::unifiedReadContents()"
-                           << ", fileName = " << fileName
-                           << std::endl;
+                            << ", fileName = " << fileName
+                            << std::endl;
   }
   m_env.fullComm().Barrier();
 

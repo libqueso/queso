@@ -105,9 +105,9 @@ uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
 
   if (m_subDisplayFile) {
     *m_subDisplayFile << "Ending run at " << ctime(&timevalNow.tv_sec)
-                            << "Total run time = " << timevalNow.tv_sec - m_timevalBegin.tv_sec
-                            << " seconds"
-                            << std::endl;
+                      << "Total run time = " << timevalNow.tv_sec - m_timevalBegin.tv_sec
+                      << " seconds"
+                      << std::endl;
   }
 
   if (m_fullRank == 0) {
@@ -339,19 +339,19 @@ uqBaseEnvironmentClass::openOutputFile(
   ofsvar = NULL;
   if ((baseFileName                         == UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE) ||
       (allowedSubEnvIds.find(this->subId()) == allowedSubEnvIds.end()            )) {
-    if (this->subDisplayFile()) {
+    if ((m_subDisplayFile) && (this->displayVerbosity() >= 10)) {
       *this->subDisplayFile() << "In openOutputFile()"
-                                    << ": no output file opened with base name '" << baseFileName
-                                    << "'"
-                                    << std::endl;
+                              << ": no output file opened with base name '" << baseFileName
+                              << "'"
+                              << std::endl;
     }
   }
   else {
-    if (this->subDisplayFile()) {
+    if ((m_subDisplayFile) && (this->displayVerbosity() >= 10)) {
       *this->subDisplayFile() << "In openOutputFile()"
-                                    << ": opening output file with base name '" << baseFileName
-                                    << "'"
-                                    << std::endl;
+                              << ": opening output file with base name '" << baseFileName
+                              << "'"
+                              << std::endl;
     }
 
     if (this->subRank() == 0) {
@@ -404,19 +404,19 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
 {
   ofsvar = NULL;
   if (baseFileName == ".") {
-    if (this->subDisplayFile()) {
+    if ((m_subDisplayFile) && (this->displayVerbosity() >= 10)) {
       *this->subDisplayFile() << "In openUnifiedOutputFile()"
-                                    << ": no unified output file opened with base name '" << baseFileName
-                                    << "'"
-                                    << std::endl;
+                              << ": no unified output file opened with base name '" << baseFileName
+                              << "'"
+                              << std::endl;
     }
   }
   else {
-    if (this->subDisplayFile()) {
+    if ((m_subDisplayFile) && (this->displayVerbosity() >= 10)) {
       *this->subDisplayFile() << "In openUnifiedOutputFile()"
-                                    << ": opening unified output file with base name '" << baseFileName
-                                    << "'"
-                                    << std::endl;
+                              << ": opening unified output file with base name '" << baseFileName
+                              << "'"
+                              << std::endl;
     }
 
     //if ((this->subRank   () == 0) &&
@@ -690,11 +690,11 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
 
   if ((m_subDisplayFile)/* && (this->displayVerbosity() > 0)*/) {
     *m_subDisplayFile << "In uqFullEnvironmentClass::commonConstructor():"
-                            << "\n  m_seed = "                                              << m_options->m_seed
-                            << "\n  internal seed = "                                       << gsl_rng_default_seed
-                          //<< "\n  first generated sample from uniform distribution = "    << gsl_rng_uniform(m_rng)
-                          //<< "\n  first generated sample from std normal distribution = " << gsl_ran_gaussian(m_rng,1.)
-                            << std::endl;
+                      << "\n  m_seed = "                                              << m_options->m_seed
+                      << "\n  internal seed = "                                       << gsl_rng_default_seed
+                    //<< "\n  first generated sample from uniform distribution = "    << gsl_rng_uniform(m_rng)
+                    //<< "\n  first generated sample from std normal distribution = " << gsl_ran_gaussian(m_rng,1.)
+                      << std::endl;
   }
 
   //////////////////////////////////////////////////

@@ -151,6 +151,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
       *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
                               << ": beginning level " << currLevel+1
                               << ", m_options.m_levelOptions[currLevel]->m_rawChainSize = " << m_options.m_levelOptions[currLevel]->m_rawChainSize
+                              << ", currExponent = "  << currExponent
                               << std::endl;
     }
 
@@ -416,11 +417,11 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                           "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                           "failed MPI_Bcast() for unified index counters");
 
-      for (unsigned int i = 0; i < unifiedIndexCounters.size(); ++i) {
-        *m_env.subDisplayFile() << "unifiedIndexCounters[" << i
-                                << "] = " << unifiedIndexCounters[i]
-                                << std::endl;
-      }
+      //for (unsigned int i = 0; i < unifiedIndexCounters.size(); ++i) {
+      //  *m_env.subDisplayFile() << "unifiedIndexCounters[" << i
+      //                          << "] = " << unifiedIndexCounters[i]
+      //                          << std::endl;
+      //}
     } // end of step 4
 
     //***********************************************************
@@ -446,13 +447,13 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
       }
       for (unsigned int i = 0; i < unifiedIndexCounters.size(); ++i) {
         while (unifiedIndexCounters[i] != 0) {
-          if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-            *m_env.subDisplayFile() << "auxNode = "                               << auxNode
-                                    << ", numberOfPositionsToGuaranteeForNode = " << numberOfPositionsToGuaranteeForNode
-                                    << ", unifiedIndexCounters["                  << i
-                                    << "] = "                                     << unifiedIndexCounters[i]
-                                    << std::endl;
-          }
+          //if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 30)) {
+          //  *m_env.subDisplayFile() << "auxNode = "                               << auxNode
+          //                          << ", numberOfPositionsToGuaranteeForNode = " << numberOfPositionsToGuaranteeForNode
+          //                          << ", unifiedIndexCounters["                  << i
+          //                          << "] = "                                     << unifiedIndexCounters[i]
+          //                          << std::endl;
+          //}
           UQ_FATAL_TEST_MACRO(auxNode >= (unsigned int) m_env.inter0Comm().NumProc(),
                               m_env.fullRank(),
                               "uqMLSamplingClass<P_V,P_M>::generateSequence()",
@@ -578,7 +579,9 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
           mcSeqGenerator.generateSequence(tmpChain,
                                           &tmpTargetValues);
         
-          if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+          if ((m_env.subDisplayFile()                                     ) &&
+              (m_env.displayVerbosity() >= 0                              ) &&
+              (m_options.m_levelOptions[currLevel]->m_totallyMute == false)) {
             *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
                                     << ", level "               << currLevel+1
                                     << ", chainId = "           << chainId
