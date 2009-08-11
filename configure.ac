@@ -122,6 +122,7 @@ AC_CONFIG_FILES([
 	test/Makefile
         test/t01_valid_cycle/valid_cycle/Makefile
         test/t02_sip_sfp/sip_sfp/Makefile
+        test/t03_sequence/sequence/Makefile
 ])
 
 

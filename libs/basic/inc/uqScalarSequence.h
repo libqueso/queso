@@ -67,104 +67,104 @@ public:
         void         getUnifiedContentsAtProc0Only(std::vector<T>& outputVec) const;
         void         setGaussian                  (const gsl_rng* rng, const T& mean, const T& stdDev);
         void         setUniform                   (const gsl_rng* rng, const T& a,    const T& b     );
-        void         subUniformlySampledMdf       (unsigned int               numIntervals,
-                                                   T&                         minDomainValue,
-                                                   T&                         maxDomainValue,
-                                                   std::vector<T>&            mdfValues) const;
-        void         subUniformlySampledCdf       (unsigned int               numIntervals,
-                                                   T&                         minDomainValue,
-                                                   T&                         maxDomainValue,
-                                                   std::vector<T>&            cdfValues) const;
-        void         unifiedUniformlySampledCdf   (bool                       useOnlyInter0Comm,
-                                                   unsigned int               numIntervals,
-                                                   T&                         unifiedMinDomainValue,
-                                                   T&                         unifiedMaxDomainValue,
-                                                   std::vector<T>&            unifiedCdfValues) const;
+        void         subUniformlySampledMdf       (unsigned int                    numIntervals,
+                                                   T&                              minDomainValue,
+                                                   T&                              maxDomainValue,
+                                                   std::vector<T>&                 mdfValues) const;
+        void         subUniformlySampledCdf       (unsigned int                    numIntervals,
+                                                   T&                              minDomainValue,
+                                                   T&                              maxDomainValue,
+                                                   std::vector<T>&                 cdfValues) const;
+        void         unifiedUniformlySampledCdf   (bool                            useOnlyInter0Comm,
+                                                   unsigned int                    numIntervals,
+                                                   T&                              unifiedMinDomainValue,
+                                                   T&                              unifiedMaxDomainValue,
+                                                   std::vector<T>&                 unifiedCdfValues) const;
 
-        T            subMean                      (unsigned int               initialPos,
-                                                   unsigned int               numPos) const;
-        T            unifiedMean                  (bool                       useOnlyInter0Comm,
-                                                   unsigned int               initialPos,
-                                                   unsigned int               localNumPos) const;
-        T            subSampleVariance            (unsigned int               initialPos,
-                                                   unsigned int               numPos,
-                                                   const T&                   meanValue) const;
-        T            unifiedSampleVariance        (bool                       useOnlyInter0Comm,
-                                                   unsigned int               initialPos,
-                                                   unsigned int               localNumPos,
-                                                   const T&                   unifiedMeanValue) const;
-        T            subPopulationVariance        (unsigned int               initialPos,
-                                                   unsigned int               numPos,
-                                                   const T&                   meanValue) const;
-        T            autoCovariance               (unsigned int               initialPos,
-                                                   unsigned int               numPos,
-                                                   const T&                   meanValue,
-                                                   unsigned int               lag) const;
-        T            autoCorrViaDef               (unsigned int               initialPos,
-                                                   unsigned int               numPos,
-                                                   unsigned int               lag) const;
-        void         autoCorrViaFft               (unsigned int               initialPos,
-                                                   unsigned int               numPos,
-                                                   unsigned int               maxLag,
-                                                   std::vector<T>&            autoCorrs) const;
-        void         autoCorrViaFft               (unsigned int               initialPos,
-                                                   unsigned int               numPos,
-                                                   unsigned int               numSum,
-                                                   T&                         autoCorrsSum) const;
-        T            bmm                          (unsigned int               initialPos,
-                                                   unsigned int               batchLength) const;
-        void         psd                          (unsigned int               initialPos,
-                                                   unsigned int               numBlocks,
-                                                   double                     hopSizeRatio,
-                                                   std::vector<double>&       psdSequence) const;
-        T            geweke                       (unsigned int               initialPos,
-                                                   double                     ratioNa,
-                                                   double                     ratioNb) const;
-        T            meanStacc                    (unsigned int               initialPos) const;
-        void         subMinMax                    (unsigned int               initialPos,
-                                                   T&                         minValue,
-                                                   T&                         maxValue) const;
-        void         unifiedMinMax                (bool                       useOnlyInter0Comm,
-                                                   unsigned int               initialPos,
-                                                   T&                         unifiedMinValue,
-                                                   T&                         unifiedMaxValue) const;
-        void         subHistogram                 (unsigned int               initialPos,
-                                                   const T&                   minHorizontalValue,
-                                                   const T&                   maxHorizontalValue,
-                                                   std::vector<T>&            centers,
-                                                   std::vector<unsigned int>& bins) const;
-        void         unifiedHistogram             (bool                       useOnlyInter0Comm,
-                                                   unsigned int               initialPos,
-                                                   const T&                   unifiedMinHorizontalValue,
-                                                   const T&                   unifiedMaxHorizontalValue,
-                                                   std::vector<T>&            unifiedCenters,
-                                                   std::vector<unsigned int>& unifiedBins) const;
-        void         subCdfStacc                  (unsigned int               initialPos,
-                                                   const std::vector<T>&      evaluationPositions,
-                                                   std::vector<double>&       cdfStaccValues) const;
-        void         subSort                      (unsigned int               initialPos,
-                                                   uqScalarSequenceClass<T>&  sortedSequence) const;
-        void         unifiedSort                  (bool                       useOnlyInter0Comm,
-                                                   unsigned int               initialPos,
-                                                   uqScalarSequenceClass<T>&  unifiedSortedSequence) const;
-        T            subInterQuantileRange        (unsigned int               initialPos) const;
-        T            unifiedInterQuantileRange    (bool                       useOnlyInter0Comm,
-                                                   unsigned int               initialPos) const;
-        T            subScaleForKDE               (unsigned int               initialPos,
-                                                   const T&                   iqrValue) const;
-        T            unifiedScaleForKDE           (bool                       useOnlyInter0Comm,
-                                                   unsigned int               initialPos,
-                                                   const T&                   unifiedIqrValue) const;
-      //double       sabGaussianKDE               (T                          evaluationPosition) const;
-        void         subGaussianKDE               (unsigned int               initialPos,
-                                                   double                     scaleValue,
-                                                   const std::vector<T>&      evaluationPositions,
-                                                   std::vector<double>&       densityValues) const;
-        void         unifiedGaussianKDE           (bool                       useOnlyInter0Comm,
-                                                   unsigned int               initialPos,
-                                                   double                     unifiedScaleValue,
-                                                   const std::vector<T>&      unifiedEvaluationPositions,
-                                                   std::vector<double>&       unifiedDensityValues) const;
+        T            subMean                      (unsigned int                    initialPos,
+                                                   unsigned int                    numPos) const;
+        T            unifiedMean                  (bool                            useOnlyInter0Comm,
+                                                   unsigned int                    initialPos,
+                                                   unsigned int                    localNumPos) const;
+        T            subSampleVariance            (unsigned int                    initialPos,
+                                                   unsigned int                    numPos,
+                                                   const T&                        meanValue) const;
+        T            unifiedSampleVariance        (bool                            useOnlyInter0Comm,
+                                                   unsigned int                    initialPos,
+                                                   unsigned int                    localNumPos,
+                                                   const T&                        unifiedMeanValue) const;
+        T            subPopulationVariance        (unsigned int                    initialPos,
+                                                   unsigned int                    numPos,
+                                                   const T&                        meanValue) const;
+        T            autoCovariance               (unsigned int                    initialPos,
+                                                   unsigned int                    numPos,
+                                                   const T&                        meanValue,
+                                                   unsigned int                    lag) const;
+        T            autoCorrViaDef               (unsigned int                    initialPos,
+                                                   unsigned int                    numPos,
+                                                   unsigned int                    lag) const;
+        void         autoCorrViaFft               (unsigned int                    initialPos,
+                                                   unsigned int                    numPos,
+                                                   unsigned int                    maxLag,
+                                                   std::vector<T>&                 autoCorrs) const;
+        void         autoCorrViaFft               (unsigned int                    initialPos,
+                                                   unsigned int                    numPos,
+                                                   unsigned int                    numSum,
+                                                   T&                              autoCorrsSum) const;
+        T            bmm                          (unsigned int                    initialPos,
+                                                   unsigned int                    batchLength) const;
+        void         psd                          (unsigned int                    initialPos,
+                                                   unsigned int                    numBlocks,
+                                                   double                          hopSizeRatio,
+                                                   std::vector<double>&            psdSequence) const;
+        T            geweke                       (unsigned int                    initialPos,
+                                                   double                          ratioNa,
+                                                   double                          ratioNb) const;
+        T            meanStacc                    (unsigned int                    initialPos) const;
+        void         subMinMax                    (unsigned int                    initialPos,
+                                                   T&                              minValue,
+                                                   T&                              maxValue) const;
+        void         unifiedMinMax                (bool                            useOnlyInter0Comm,
+                                                   unsigned int                    initialPos,
+                                                   T&                              unifiedMinValue,
+                                                   T&                              unifiedMaxValue) const;
+        void         subHistogram                 (unsigned int                    initialPos,
+                                                   const T&                        minHorizontalValue,
+                                                   const T&                        maxHorizontalValue,
+                                                   std::vector<T>&                 centers,
+                                                   std::vector<unsigned int>&      bins) const;
+        void         unifiedHistogram             (bool                            useOnlyInter0Comm,
+                                                   unsigned int                    initialPos,
+                                                   const T&                        unifiedMinHorizontalValue,
+                                                   const T&                        unifiedMaxHorizontalValue,
+                                                   std::vector<T>&                 unifiedCenters,
+                                                   std::vector<unsigned int>&      unifiedBins) const;
+        void         subCdfStacc                  (unsigned int                    initialPos,
+                                                   const std::vector<T>&           evaluationPositions,
+                                                   std::vector<double>&            cdfStaccValues) const;
+        void         subSort                      (unsigned int                    initialPos,
+                                                   uqScalarSequenceClass<T>&       sortedSequence) const;
+        void         unifiedSort                  (bool                            useOnlyInter0Comm,
+                                                   unsigned int                    initialPos,
+                                                   uqScalarSequenceClass<T>&       unifiedSortedSequence) const;
+        T            subInterQuantileRange        (unsigned int                    initialPos) const;
+        T            unifiedInterQuantileRange    (bool                            useOnlyInter0Comm,
+                                                   unsigned int                    initialPos) const;
+        T            subScaleForKDE               (unsigned int                    initialPos,
+                                                   const T&                        iqrValue) const;
+        T            unifiedScaleForKDE           (bool                            useOnlyInter0Comm,
+                                                   unsigned int                    initialPos,
+                                                   const T&                        unifiedIqrValue) const;
+      //double       sabGaussianKDE               (T                               evaluationPosition) const;
+        void         subGaussianKDE               (unsigned int                    initialPos,
+                                                   double                          scaleValue,
+                                                   const std::vector<T>&           evaluationPositions,
+                                                   std::vector<double>&            densityValues) const;
+        void         unifiedGaussianKDE           (bool                            useOnlyInter0Comm,
+                                                   unsigned int                    initialPos,
+                                                   double                          unifiedScaleValue,
+                                                   const std::vector<T>&           unifiedEvaluationPositions,
+                                                   std::vector<double>&            unifiedDensityValues) const;
         void         subCompute2dGaussianKDE      (const uqScalarSequenceClass<T>& scalarSeq2,
                                                    unsigned int                    initialPos,
                                                    double                          scaleValue1,
@@ -183,6 +183,11 @@ public:
 
         void         filter                       (unsigned int                    initialPos,
                                                    unsigned int                    spacing);
+
+        T            brooksGelmanConvMeasure      (bool                            useOnlyInter0Comm,
+                                                   unsigned int                    initialPos,
+                                                   unsigned int                    spacing) const;
+
         void         append                       (const uqScalarSequenceClass<T>& src);
 private:
         void         copy                         (const uqScalarSequenceClass<T>& src);
@@ -277,6 +282,39 @@ uqScalarSequenceClass<T>::filter(
   }
 
   return;
+}
+
+template <class T>
+T
+uqScalarSequenceClass<T>::brooksGelmanConvMeasure(
+  bool         useOnlyInter0Comm,
+  unsigned int initialPos,
+  unsigned int spacing) const
+{
+  double resultValue = 0.;
+
+  if (useOnlyInter0Comm) {
+    if (m_env.inter0Rank() >= 0) {
+      UQ_FATAL_TEST_MACRO(true,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::brooksGelmanConvMeasure()",
+                          "not implemented yet");
+    }
+    else {
+      // Node not in the 'inter0' communicator
+      // Do nothing
+    }
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.fullRank(),
+                        "uqScalarSequenceClass<T>::brooksGelmanConvMeasure()",
+                        "parallel vectors not supported yet");
+  }
+
+  //m_env.fullComm().Barrier();
+
+  return resultValue;
 }
 
 template <class T>
