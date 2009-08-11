@@ -119,6 +119,11 @@ uqFiniteDistributionClass::sample() const
   unsigned int result = 0;
 
   double aux = gsl_rng_uniform(m_env.rng());
+  UQ_FATAL_TEST_MACRO((aux < 0) || (aux > 1.),
+                      m_env.fullRank(),
+                      "uqFiniteDistributionClass::sample()",
+                      "invalid uniform");
+
   if (aux == 0.) {
     result = 0;
   }
@@ -126,9 +131,21 @@ uqFiniteDistributionClass::sample() const
     result = m_map.size()-1;
   }
   else {
-    result = m_map.upper_bound(aux)->second-1;
+    if (m_map.upper_bound(aux)->second == 0) {
+      result = 0;
+    }
+    else {
+      result = m_map.upper_bound(aux)->second-1;
+    }
   }
 
+  if (result >= m_map.size()) {
+    std::cerr << "In uqFiniteDistributionClass::sample()"
+              << ": aux = "          << aux
+              << ", m_map.size() = " << m_map.size()
+              << ", result = "       << result
+              << std::endl;
+  }
   UQ_FATAL_TEST_MACRO((result >= m_map.size()),
                       m_env.fullRank(),
                       "uqFiniteDistributionClass::sample()",

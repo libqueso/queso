@@ -170,8 +170,10 @@ public:
                                                  const V&                             unifiedScaleVec,
                                                  const std::vector<V*>&               unifiedEvalParamVecs,
                                                  std::vector<V*>&                     unifiedDensityVecs) const;
-        void         subWriteContents           (std::ofstream&                       ofsvar) const;
-        void         unifiedWriteContents       (std::ofstream&                       ofsvar) const;
+      //void         subWriteContents           (std::ofstream&                       ofsvar) const;
+      //void         unifiedWriteContents       (std::ofstream&                       ofsvar) const;
+        void         subWriteContents           (const std::string&                   fileName,
+                                                 const std::set<unsigned int>&        allowedSubEnvIds) const;
         void         unifiedWriteContents       (const std::string&                   fileName) const;
         void         unifiedReadContents        (const std::string&                   fileName,
                                                  const unsigned int                   subSequenceSize);
@@ -1692,6 +1694,48 @@ uqSequenceOfVectorsClass<V,M>::cwBrooksGelmanConvMeasures(
 
 template <class V, class M>
 void
+uqSequenceOfVectorsClass<V,M>::subWriteContents(
+  const std::string&            fileName,
+  const std::set<unsigned int>& allowedSubEnvIds) const
+{
+  bool okSituation = (m_env.subRank() >= 0);
+  UQ_FATAL_TEST_MACRO(!okSituation,
+                      m_env.fullRank(),
+                      "uqSequenceOfVectorsClass<V,M>::subWriteContents()",
+                      "unexpected subRank");
+
+  std::ofstream* ofsVar = NULL;
+  m_env.openOutputFile(fileName,
+                       UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                       allowedSubEnvIds,
+                       false, // A 'true' causes problems when the user chooses (via options
+                              // in the input file) to use just one file for all outputs.
+                       ofsVar);
+
+  if (ofsVar) {
+    *ofsVar << m_name << "_sub" << m_env.subIdString() << " = zeros(" << this->subSequenceSize()
+            << ","                                                    << this->vectorSizeLocal()
+            << ");"
+            << std::endl;
+    *ofsVar << m_name << "_sub" << m_env.subIdString() << " = [";
+    unsigned int chainSize = this->subSequenceSize();
+    for (unsigned int j = 0; j < chainSize; ++j) {
+      bool savedVectorPrintState = m_seq[j]->getPrintHorizontally();
+      m_seq[j]->setPrintHorizontally(true);
+      *ofsVar << *(m_seq[j])
+              << std::endl;
+      m_seq[j]->setPrintHorizontally(savedVectorPrintState);
+    }
+    *ofsVar << "];\n";
+  }
+
+  if (ofsVar) {
+    ofsVar->close();
+  }
+}
+#if 0
+template <class V, class M>
+void
 uqSequenceOfVectorsClass<V,M>::subWriteContents(std::ofstream& ofsvar) const
 {
   bool okSituation = (m_env.subRank() >= 0);
@@ -1717,7 +1761,6 @@ uqSequenceOfVectorsClass<V,M>::subWriteContents(std::ofstream& ofsvar) const
 
   return;
 }
-
 template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(std::ofstream& ofsvar) const
@@ -1728,6 +1771,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(std::ofstream& ofsvar) const
                       "not implemented yet");
   return;
 }
+#endif
 
 template <class V, class M>
 void

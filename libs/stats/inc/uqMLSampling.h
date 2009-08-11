@@ -225,6 +225,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     int iRC = UQ_OK_RC;
     struct timeval timevalLevel;
     iRC = gettimeofday(&timevalLevel, NULL);
+    double cumulativeRawChainRunTime = 0.;
 
     //***********************************************************
     // Step 1 of 8: save [chain and corresponding target pdf values] from previous level
@@ -589,6 +590,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
 
           mcSeqGenerator.generateSequence(tmpChain,
                                           &tmpTargetValues);
+          cumulativeRawChainRunTime += mcSeqGenerator.rawChainRunTime();
         
           if ((m_env.subDisplayFile()                                     ) &&
               (m_env.displayVerbosity() >= 0                              ) &&
@@ -681,6 +683,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
       *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
                               << ": ending level " << currLevel+1
                               << " after " << levelRunTime << " seconds"
+                              << "; cumulativeRawChainRunTime = " << cumulativeRawChainRunTime << " seconds"
                               << std::endl;
     }
   } // end of level loop

@@ -186,8 +186,10 @@ public:
                                                                 const V&                                 unifiedScaleVec,
                                                                 const std::vector<V*>&                   unifiedEvaluationParamVecs,
                                                                 std::vector<V*>&                         unifiedDensityVecs) const = 0;
-  virtual  void                     subWriteContents           (std::ofstream&                           ofsvar) const = 0;
-  virtual  void                     unifiedWriteContents       (std::ofstream&                           ofsvar) const = 0;
+//virtual  void                     subWriteContents           (std::ofstream&                           ofsvar) const = 0;
+//virtual  void                     unifiedWriteContents       (std::ofstream&                           ofsvar) const = 0;
+  virtual  void                     subWriteContents           (const std::string&                       fileName,
+                                                                const std::set<unsigned int>&            allowedSubEnvIds) const = 0;
   virtual  void                     unifiedWriteContents       (const std::string&                       fileName) const = 0;
   virtual  void                     unifiedReadContents        (const std::string&                       fileName,
                                                                 const unsigned int                       subSequenceSize) = 0;

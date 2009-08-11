@@ -67,6 +67,7 @@ public:
   void   generateSequence           (uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
                                      uqScalarSequenceClass<double>*      workingTargetValues);
   void   checkTheParallelEnvironment();
+  double rawChainRunTime            ();
 
   void   print                      (std::ostream& os) const;
 
@@ -1082,6 +1083,13 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
   }
 
   return iRC;
+}
+
+template<class P_V,class P_M>
+double
+uqMarkovChainSGClass<P_V,P_M>::rawChainRunTime()
+{
+  return m_rawChainRunTime;
 }
 
 template<class P_V,class P_M>
