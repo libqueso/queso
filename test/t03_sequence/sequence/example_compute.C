@@ -57,7 +57,65 @@ void compute(const uqFullEnvironmentClass& env) {
   uqGaussianVectorRVClass<uqGslVectorClass,uqGslMatrixClass>
     auxRv("", paramDomain,meanVector,*covMatrix);
 
+  // Step 4 of 9: Instantiate the vector sequence
+  uqSequenceOfVectorsClass<uqGslVectorClass,uqGslMatrixClass>
+    auxSeq(paramSpace,1000,"");
+
+  // Step 5 of 9: Populate the vector sequence
+  uqGslVectorClass auxVec(paramSpace.zeroVector());
+  for (unsigned int i = 0; i < auxSeq.subSequenceSize(); ++i) {
+    auxRv.realizer().realization(auxVec);
+    auxSeq.setPositionValues(i,auxVec);
+  }
+
+  // Step 6 of 9: Compute min, max, mean, covariance and correlation matrices
+  uqGslVectorClass minVec (paramSpace.zeroVector());
+  uqGslVectorClass maxVec (paramSpace.zeroVector());
+  auxSeq.unifiedMinMax(0,minVec,maxVec);
+
+  uqGslVectorClass meanVec(paramSpace.zeroVector());
+  auxSeq.unifiedMean(0,auxSeq.subSequenceSize(),meanVec);
+
+  uqGslMatrixClass* covarianceMatrix  = paramSpace.newMatrix();
+  uqGslMatrixClass* correlationMatrix = paramSpace.newMatrix();
+  uqComputeCovCorrMatricesBetweenVectorSequences(auxSeq,
+                                                 auxSeq,
+                                                 auxSeq.subSequenceSize(),
+                                                 *covarianceMatrix,
+                                                 *correlationMatrix);
+  if (env.fullRank() == 0) {
+    std::cout << "\n minVec = "  << minVec
+              << "\n maxVec = "  << maxVec
+              << "\n meanVec = " << meanVec
+              << "\n covMat = "  << *covarianceMatrix
+              << "\n corrMat = " << *correlationMatrix
+              << std::endl;
+  }
+
+  // Step 7 of 9: Compute cdf accuracy
+  unsigned int auxSize = 101;
+  uqGslVectorClass deltaVec(maxVec-minVec);
+  deltaVec *= (1./(double) (auxSize-1));
+  std::vector<uqGslVectorClass*> evalPositionsVecs(auxSize,NULL);
+  std::vector<uqGslVectorClass*> cdfStaccVecs     (auxSize,NULL);
+  for (unsigned int i = 0; i < auxSize; ++i) {
+    evalPositionsVecs[i] = new uqGslVectorClass(paramSpace.zeroVector());
+    *(evalPositionsVecs[i]) = minVec + ((double) i)*deltaVec;
+    cdfStaccVecs     [i] = new uqGslVectorClass(paramSpace.zeroVector());
+  }
+  //auxSeq.subCdfStacc(0,evalPositionsVecs,cdfStaccVecs);
+
+  // Step 8 of 9: Compute Brooks-Gelman convergence measure
+  //uqGslVectorClass convMeasureVec(paramSpace.zeroVector());
+  //auxSeq.cwBrooksGelmanConvMeasures(0,auxSeq.subSequenceSize(),convMeasureVec);
+
   // Return
+  for (unsigned int i = 0; i < auxSize; ++i) {
+    delete evalPositionsVecs[i];
+    delete cdfStaccVecs     [i];
+  }
+  delete correlationMatrix;
+  delete covarianceMatrix;
   delete covMatrix;
 
   return;
