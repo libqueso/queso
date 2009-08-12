@@ -195,6 +195,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   m_solutionPdf = new uqBayesianJointPdfClass<P_V,P_M>(m_options.m_prefix.c_str(),
                                                        m_priorRv.pdf(),
                                                        m_likelihoodFunction,
+                                                       1.,
                                                       *m_solutionDomain);
 
 
@@ -318,6 +319,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling(
   m_solutionPdf = new uqBayesianJointPdfClass<P_V,P_M>(m_options.m_prefix.c_str(),
                                                        m_priorRv.pdf(),
                                                        m_likelihoodFunction,
+                                                       1.,
                                                       *m_solutionDomain);
 
   m_postRv.setPdf(*m_solutionPdf);
@@ -325,7 +327,9 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling(
   // Compute output realizer: ML approach
   m_chain = new uqSequenceOfVectorsClass<P_V,P_M>(m_postRv.imageSet().vectorSpace(),0,m_options.m_prefix+"chain");
   m_mlSampler = new uqMLSamplingClass<P_V,P_M>(m_options.m_prefix.c_str(),
-                                               m_postRv,
+                                             //m_postRv,
+                                               m_priorRv,
+                                               m_likelihoodFunction,
                                                initialValues,
                                                initialProposalCovMatrix);
 

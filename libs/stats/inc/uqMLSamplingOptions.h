@@ -41,7 +41,7 @@
 // _ODV = option default value
 #define UQ_ML_SAMPLING_DATA_OUTPUT_FILE_NAME_ODV   UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE
 #define UQ_ML_SAMPLING_DATA_OUTPUT_ALLOWED_SET_ODV ""
-#define UQ_ML_SAMPLING_INITIAL_EXPONENT_ODV        0.2
+//#define UQ_ML_SAMPLING_INITIAL_EXPONENT_ODV        0.2
 #define UQ_ML_SAMPLING_MAX_NUMBER_OF_LEVELS_ODV    1
 
 class uqMLSamplingOptionsClass
@@ -57,7 +57,7 @@ public:
 
   std::string                                 m_dataOutputFileName;
   std::set<unsigned int>                      m_dataOutputAllowedSet;
-  double                                      m_initialExponent;
+//double                                      m_initialExponent;
   unsigned int                                m_maxNumberOfLevels;
   std::vector<uqMLSamplingLevelOptionsClass*> m_levelOptions;
 
@@ -72,7 +72,7 @@ private:
 
   std::string                   m_option_dataOutputFileName;
   std::string                   m_option_dataOutputAllowedSet;
-  std::string                   m_option_initialExponent;
+//std::string                   m_option_initialExponent;
   std::string                   m_option_maxNumberOfLevels;
 };
 

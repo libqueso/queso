@@ -63,10 +63,12 @@ class uqMLSamplingClass
 public:
 
   /*! Constructor: */
-  uqMLSamplingClass(/*! Prefix                 */ const char*                         prefix,                  
-                    /*! The source rv          */ const uqBaseVectorRVClass<P_V,P_M>& sourceRv,                
-                    /*! Initial chain position */ const P_V&                          initialPosition,
-                    /*! Proposal cov. matrix   */ const P_M*                          inputProposalCovMatrix);  
+  uqMLSamplingClass(/*! Prefix                  */ const char*                               prefix,                  
+                    /*! The source rv           */ //const uqBaseVectorRVClass      <P_V,P_M>& sourceRv,                
+                    /*! The prior rv            */ const uqBaseVectorRVClass      <P_V,P_M>& priorRv,            
+                    /*! The likelihood function */ const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunction, 
+                    /*! Initial chain position  */ const P_V&                                initialPosition,
+                    /*! Proposal cov. matrix    */ const P_M*                                inputProposalCovMatrix);  
   /*! Destructor: */
  ~uqMLSamplingClass();
 
@@ -77,31 +79,51 @@ public:
   void   print          (std::ostream& os) const;
 
 private:
-  const uqBaseEnvironmentClass&       m_env;
-  const uqBaseVectorRVClass<P_V,P_M>& m_sourceRv;
-        P_V                           m_initialPosition;
-  const P_M*                          m_initialProposalCovMatrix;
-        bool                          m_nullInputProposalCovMatrix;
+  const uqBaseEnvironmentClass&             m_env;
+//const uqBaseVectorRVClass      <P_V,P_M>& m_sourceRv;
+  const uqBaseVectorRVClass      <P_V,P_M>& m_priorRv;
+  const uqBaseScalarFunctionClass<P_V,P_M>& m_likelihoodFunction;
+  const uqVectorSpaceClass       <P_V,P_M>& m_vectorSpace;
+        uqVectorSetClass         <P_V,P_M>* m_targetDomain;
+        P_V                                 m_initialPosition;
+  const P_M*                                m_initialProposalCovMatrix;
+        bool                                m_nullInputProposalCovMatrix;
 
-        uqMLSamplingOptionsClass      m_options;
+        uqMLSamplingOptionsClass            m_options;
+
+	std::vector<double>                 m_evidences;
+        double                              m_totalEvidence;
 };
+
+#if 0
+  uqGenericVectorRVClass    <P_V,P_M>&    m_postRv;
+  m_postRv.setPdf(*m_solutionPdf);
+#endif
 
 template<class P_V,class P_M>
 std::ostream& operator<<(std::ostream& os, const uqMLSamplingClass<P_V,P_M>& obj);
 
 template<class P_V,class P_M>
 uqMLSamplingClass<P_V,P_M>::uqMLSamplingClass(
-  const char*                         prefix,
-  const uqBaseVectorRVClass<P_V,P_M>& sourceRv,
-  const P_V&                          initialPosition,
-  const P_M*                          inputProposalCovMatrix)
+  const char*                               prefix,
+//const uqBaseVectorRVClass      <P_V,P_M>& sourceRv,
+  const uqBaseVectorRVClass      <P_V,P_M>& priorRv,            
+  const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunction, 
+  const P_V&                                initialPosition,
+  const P_M*                                inputProposalCovMatrix)
   :
-  m_env                       (sourceRv.env()),
-  m_sourceRv                  (sourceRv),
+  m_env                       (priorRv.env()),
+//m_sourceRv                  (sourceRv),
+  m_priorRv                   (priorRv),
+  m_likelihoodFunction        (likelihoodFunction),
+  m_vectorSpace               (m_priorRv.imageSet().vectorSpace()),
+  m_targetDomain              (uqInstantiateIntersection(m_priorRv.pdf().domainSet(),m_likelihoodFunction.domainSet())),
   m_initialPosition           (initialPosition),
   m_initialProposalCovMatrix  (inputProposalCovMatrix),
   m_nullInputProposalCovMatrix(inputProposalCovMatrix == NULL),
-  m_options                   (m_env,prefix)
+  m_options                   (m_env,prefix),
+  m_evidences                 (0),
+  m_totalEvidence             (1.)
 {
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering uqMLSamplingClass<P_V,P_M>::constructor()"
@@ -109,6 +131,8 @@ uqMLSamplingClass<P_V,P_M>::uqMLSamplingClass(
   }
 
   m_options.scanOptionsValues();
+
+  m_evidences.resize(m_options.m_maxNumberOfLevels,1.); // Yes, '1'
 
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Leaving uqMLSamplingClass<P_V,P_M>::constructor()"
@@ -120,6 +144,7 @@ template<class P_V,class P_M>
 uqMLSamplingClass<P_V,P_M>::~uqMLSamplingClass()
 {
   if (m_nullInputProposalCovMatrix) delete m_initialProposalCovMatrix;
+  if (m_targetDomain              ) delete m_targetDomain;
 }
 
 template <class P_V,class P_M>
@@ -136,8 +161,8 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
   //***********************************************************
   // Declaration of Variables
   //***********************************************************
-  double                            currExponent = m_options.m_initialExponent;
-  uqSequenceOfVectorsClass<P_V,P_M> currChain(m_sourceRv.imageSet().vectorSpace(),
+  double                            currExponent = 0.;
+  uqSequenceOfVectorsClass<P_V,P_M> currChain(m_vectorSpace,
                                               0,
                                               m_options.m_prefix+"curr_chain");
   uqScalarSequenceClass<double>     currTargetValues(m_env,0);
@@ -158,13 +183,18 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     int iRC = UQ_OK_RC;
     struct timeval timevalLevel;
     iRC = gettimeofday(&timevalLevel, NULL);
-
-    uqPoweredJointPdfClass<P_V,P_M> currPdf(m_options.m_prefix.c_str(),
-                                            m_sourceRv.pdf(),
-                                            currExponent);
+#if 0
+    uqBayesianJointPdfClass<P_V,P_M> currPdf(m_options.m_prefix.c_str(),
+                                             m_priorRv.pdf(),
+                                             m_likelihoodFunction,
+                                             currExponent,
+                                            *m_targetDomain);
+  //uqPoweredJointPdfClass<P_V,P_M> currPdf(m_options.m_prefix.c_str(),
+  //                                        m_sourceRv.pdf(),
+  //                                        currExponent);
 
     uqGenericVectorRVClass<P_V,P_M> currRv(m_options.m_prefix.c_str(),
-                                           m_sourceRv.pdf().domainSet());
+                                           *m_targetDomain);
 
     currRv.setPdf(currPdf);
 
@@ -175,7 +205,14 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
 
     mcSeqGenerator.generateSequence(currChain,
                                     &currTargetValues);
-
+#else
+    currChain.resizeSequence(m_options.m_levelOptions[currLevel]->m_rawChainSize);
+    P_V auxVec(m_vectorSpace.zeroVector());
+    for (unsigned int i = 0; i < currChain.subChainSize(); ++i) {
+      m_priorRv.realizer().realization(auxVec);
+      currChain.setPositionValues(i,auxVec);
+    }
+#endif
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
       *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
                               << ", level " << currLevel+1
@@ -231,7 +268,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     // Step 1 of 8: save [chain and corresponding target pdf values] from previous level
     //***********************************************************
     double prevExponent = currExponent;
-    uqSequenceOfVectorsClass<P_V,P_M> prevChain(m_sourceRv.imageSet().vectorSpace(),
+    uqSequenceOfVectorsClass<P_V,P_M> prevChain(m_vectorSpace,
                                                 0,
                                                 m_options.m_prefix+"prev_chain");
     uqScalarSequenceClass<double> prevTargetValues(m_env,0);
@@ -284,6 +321,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
 
       unsigned int currAttempt = 0;
       bool testResult = false;
+      double auxRatio = 0.;
       do {
         if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
           *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
@@ -298,12 +336,13 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
           weightSequence[i] = pow(prevTargetValues[i],auxExp);
           weightSum += weightSequence[i];
         }
+        m_evidences[currLevel] = weightSum/m_options.m_levelOptions[currLevel]->m_rawChainSize; // FIX ME: unified
         double effectiveSampleSize = 0.;
         for (unsigned int i = 0; i < weightSequence.subSequenceSize(); ++i) {
           weightSequence[i] /= weightSum;
           effectiveSampleSize += 1/weightSequence[i]/weightSequence[i];
         }
-        double auxRatio = effectiveSampleSize/((double) weightSequence.subSequenceSize());
+        auxRatio = effectiveSampleSize/((double) weightSequence.subSequenceSize());
         testResult = (auxRatio >= m_options.m_levelOptions[currLevel]->m_minEffectiveSizeRatio);
         currAttempt++;
       } while ((currAttempt < m_options.m_levelOptions[currLevel]->m_maxNumberOfAttempts) &&
@@ -316,10 +355,12 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                                << ", level " << currLevel+1
+                                << ", level "                                  << currLevel+1
                                 << ": weightSequence.subSequenceSize() = "     << weightSequence.subSequenceSize()
                                 << ", weightSequence.unifiedSequenceSize() = " << weightSequence.unifiedSequenceSize()
                                 << ", currExponent = "                         << currExponent
+                                << ", effective ratio = "                      << auxRatio
+                                << ", evidence = "                             << m_evidences[currLevel]
                                 << std::endl;
 
         //unsigned int numZeros = 0;
@@ -337,7 +378,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     //***********************************************************
     // Step 3 of 8: create covariance matrix for current level
     //***********************************************************
-    P_M* unifiedCovMatrix = m_sourceRv.imageSet().vectorSpace().newMatrix();
+    P_M* unifiedCovMatrix = m_vectorSpace.newMatrix();
     {
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
@@ -346,15 +387,15 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                                 << std::endl;
       }
 
-      P_V auxVec(m_sourceRv.imageSet().vectorSpace().zeroVector());
-      P_V weightedMeanVec(m_sourceRv.imageSet().vectorSpace().zeroVector());
+      P_V auxVec(m_vectorSpace.zeroVector());
+      P_V weightedMeanVec(m_vectorSpace.zeroVector());
       for (unsigned int i = 0; i < weightSequence.subSequenceSize(); ++i) {
         prevChain.getPositionValues(i,auxVec);
         weightedMeanVec += weightSequence[i]*auxVec;
       }
 
-      P_V diffVec(m_sourceRv.imageSet().vectorSpace().zeroVector());
-      P_M* subCovMatrix = m_sourceRv.imageSet().vectorSpace().newMatrix();
+      P_V diffVec(m_vectorSpace.zeroVector());
+      P_M* subCovMatrix = m_vectorSpace.newMatrix();
       for (unsigned int i = 0; i < weightSequence.subSequenceSize(); ++i) {
         prevChain.getPositionValues(i,auxVec);
         diffVec = auxVec - weightedMeanVec;
@@ -535,12 +576,17 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     //***********************************************************
     // Step 7 of 8: create vector RV for current level
     //***********************************************************
-    uqPoweredJointPdfClass<P_V,P_M> currPdf(m_options.m_prefix.c_str(),
-                                            m_sourceRv.pdf(),
-                                            currExponent);
+    uqBayesianJointPdfClass<P_V,P_M> currPdf(m_options.m_prefix.c_str(),
+                                             m_priorRv.pdf(),
+                                             m_likelihoodFunction,
+                                             currExponent,
+                                            *m_targetDomain);
+  //uqPoweredJointPdfClass<P_V,P_M> currPdf(m_options.m_prefix.c_str(),
+  //                                        m_sourceRv.pdf(),
+  //                                        currExponent);
 
     uqGenericVectorRVClass<P_V,P_M> currRv(m_options.m_prefix.c_str(),
-                                           m_sourceRv.pdf().domainSet());
+                                           *m_targetDomain);
 
     {
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -564,7 +610,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                                 << std::endl;
       }
 
-      P_V auxInitialPosition(m_sourceRv.imageSet().vectorSpace().zeroVector());
+      P_V auxInitialPosition(m_vectorSpace.zeroVector());
       unsigned int savedRawChainSize          = m_options.m_levelOptions[currLevel]->m_rawChainSize;
       bool         savedRawChainComputeStats  = m_options.m_levelOptions[currLevel]->m_rawChainComputeStats;
       bool         savedFilteredChainGenerate = m_options.m_levelOptions[currLevel]->m_filteredChainGenerate;
@@ -578,7 +624,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
           m_options.m_levelOptions[currLevel]->m_rawChainComputeStats  = false;
           m_options.m_levelOptions[currLevel]->m_filteredChainGenerate = false;
 
-          uqSequenceOfVectorsClass<P_V,P_M> tmpChain(m_sourceRv.imageSet().vectorSpace(),
+          uqSequenceOfVectorsClass<P_V,P_M> tmpChain(m_vectorSpace,
                                                      0,
                                                      m_options.m_prefix+"tmp_chain");
           uqScalarSequenceClass<double> tmpTargetValues(m_env,0);
@@ -691,14 +737,24 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
   UQ_FATAL_TEST_MACRO((currExponent < 1),
                       m_env.fullRank(),
                       "uqMLSamplingClass<P_V,P_M>::generateSequence()",
-                      "exponent has not achieved value '1' even after maximum number of leves");
+                      "exponent has not achieved value '1' even after maximum number of levels");
+
+  m_totalEvidence = 1.;
+  for (unsigned int i = 0; i < m_options.m_maxNumberOfLevels; ++i) {
+    m_totalEvidence *= m_evidences[i];
+  }
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+    *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                            << ", m_totalEvidence = " << m_totalEvidence
+                            << std::endl;
+  }
 
   //***********************************************************
   // Prepare to return
   //***********************************************************
   workingChain.clear();
   workingChain.resizeSequence(currChain.subSequenceSize());
-  P_V auxVec(m_sourceRv.imageSet().vectorSpace().zeroVector());
+  P_V auxVec(m_vectorSpace.zeroVector());
   for (unsigned int i = 0; i < workingChain.subSequenceSize(); ++i) {
     currChain.getPositionValues(i,auxVec);
     workingChain.setPositionValues(i,auxVec);

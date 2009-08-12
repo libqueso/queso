@@ -263,14 +263,15 @@ uqGenericJointPdfClass<V,M>::minus2LnValue(
 template<class V, class M>
 class uqBayesianJointPdfClass : public uqBaseJointPdfClass<V,M> {
 public:
-  uqBayesianJointPdfClass(const char*                            prefix,
-                           const uqBaseJointPdfClass     <V,M>&  priorDensity,
-                           const uqBaseScalarFunctionClass<V,M>& likelihoodFunction,
-                           const uqVectorSetClass         <V,M>& intersectionDomain); 
+  uqBayesianJointPdfClass(const char*                           prefix,
+                          const uqBaseJointPdfClass      <V,M>& priorDensity,
+                          const uqBaseScalarFunctionClass<V,M>& likelihoodFunction,
+                                double                          likelihoodExponent,
+                          const uqVectorSetClass         <V,M>& intersectionDomain); 
  ~uqBayesianJointPdfClass();
 
-  double actualValue      (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
-  double minus2LnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  double actualValue     (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  double minus2LnValue   (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
 
 protected:
   using uqBaseScalarFunctionClass<V,M>::m_env;
@@ -279,8 +280,9 @@ protected:
   using uqBaseJointPdfClass<V,M>::m_domainExpVector;
   using uqBaseJointPdfClass<V,M>::m_domainVarVector;
 
-  const uqBaseJointPdfClass     <V,M>& m_priorDensity;
+  const uqBaseJointPdfClass      <V,M>& m_priorDensity;
   const uqBaseScalarFunctionClass<V,M>& m_likelihoodFunction;
+        double                          m_likelihoodExponent;
 
   mutable V  m_tmpVector1;
   mutable V  m_tmpVector2;
@@ -290,13 +292,15 @@ protected:
 template<class V,class M>
 uqBayesianJointPdfClass<V,M>::uqBayesianJointPdfClass(
   const char*                           prefix,
-  const uqBaseJointPdfClass     <V,M>& priorDensity,
+  const uqBaseJointPdfClass     <V,M>&  priorDensity,
   const uqBaseScalarFunctionClass<V,M>& likelihoodFunction,
+        double                          likelihoodExponent,
   const uqVectorSetClass         <V,M>& intersectionDomain)
   :
   uqBaseJointPdfClass<V,M>(((std::string)(prefix)+"bay").c_str(),intersectionDomain),
   m_priorDensity           (priorDensity),
   m_likelihoodFunction     (likelihoodFunction),
+  m_likelihoodExponent     (likelihoodExponent),
   m_tmpVector1             (m_domainSet.vectorSpace().zeroVector()),
   m_tmpVector2             (m_domainSet.vectorSpace().zeroVector()),
   m_tmpMatrix              (m_domainSet.vectorSpace().newMatrix())
@@ -341,7 +345,16 @@ uqBayesianJointPdfClass<V,M>::actualValue(
                       "uqBayesianJointPdfClass<V,M>::actualValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
-  double returnValue = value1*value2;
+  double returnValue = value1;
+  if (m_likelihoodExponent == 0.) {
+    // Do nothing
+  }
+  else if (m_likelihoodExponent == 1.) {
+    returnValue *= value2;
+  }
+  else {
+    returnValue *= pow(value2,m_likelihoodExponent);
+  }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqBayesianJointPdfClass<V,M>::actualValue()"
@@ -421,7 +434,16 @@ uqBayesianJointPdfClass<V,M>::minus2LnValue(
   if (hessianMatrix) *hessianMatrix += *hessianMLike;
   if (hessianEffect) *hessianEffect += *hessianELike;
 
-  double returnValue = value1+value2;
+  double returnValue = value1;
+  if (m_likelihoodExponent == 0.) {
+    // Do nothing
+  }
+  else if (m_likelihoodExponent == 1.) {
+    returnValue += value2;
+  }
+  else {
+    returnValue += value2*m_likelihoodExponent;
+  }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqBayesianJointPdfClass<V,M>::minus2LnValue()"
