@@ -64,7 +64,7 @@ public:
 
   /*! Constructor: */
   uqMLSamplingClass(/*! Prefix                  */ const char*                               prefix,                  
-                    /*! The source rv           */ //const uqBaseVectorRVClass      <P_V,P_M>& sourceRv,                
+                    /*! The source rv          *///const uqBaseVectorRVClass      <P_V,P_M>& sourceRv,                
                     /*! The prior rv            */ const uqBaseVectorRVClass      <P_V,P_M>& priorRv,            
                     /*! The likelihood function */ const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunction, 
                     /*! Initial chain position  */ const P_V&                                initialPosition,
@@ -206,11 +206,13 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     mcSeqGenerator.generateSequence(currChain,
                                     &currTargetValues);
 #else
-    currChain.resizeSequence(m_options.m_levelOptions[currLevel]->m_rawChainSize);
+    currChain.resizeSequence       (m_options.m_levelOptions[currLevel]->m_rawChainSize);
+    currTargetValues.resizeSequence(m_options.m_levelOptions[currLevel]->m_rawChainSize);
     P_V auxVec(m_vectorSpace.zeroVector());
-    for (unsigned int i = 0; i < currChain.subChainSize(); ++i) {
+    for (unsigned int i = 0; i < currChain.subSequenceSize(); ++i) {
       m_priorRv.realizer().realization(auxVec);
       currChain.setPositionValues(i,auxVec);
+      currTargetValues[i] = m_likelihoodFunction.actualValue(auxVec,NULL,NULL,NULL,NULL);
     }
 #endif
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -330,19 +332,37 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                                   << std::endl;
         }
         currExponent = m_options.m_levelOptions[currLevel]->m_maxExponent - currAttempt*exponentQuanta;
-        double auxExp = (currExponent/prevExponent) - 1.;
+        double auxExp = currExponent;
+        if (prevExponent != 0.) {
+          auxExp /= prevExponent;
+          auxExp -= 1.;
+        }
         double weightSum = 0.;
         for (unsigned int i = 0; i < weightSequence.subSequenceSize(); ++i) {
           weightSequence[i] = pow(prevTargetValues[i],auxExp);
           weightSum += weightSequence[i];
+          *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                                  << ", level "              << currLevel+1
+                                  << ": auxExp = "           << auxExp
+                                  << ", 'prev'TargetValues[" << i
+                                  << "] = "                  << prevTargetValues[i]
+                                  << ", weightSequence["     << i
+                                  << "] = "                  << weightSequence[i]
+                                  << ", weightSum = "        << weightSum
+                                  << std::endl;
         }
         m_evidences[currLevel] = weightSum/m_options.m_levelOptions[currLevel]->m_rawChainSize; // FIX ME: unified
         double effectiveSampleSize = 0.;
         for (unsigned int i = 0; i < weightSequence.subSequenceSize(); ++i) {
           weightSequence[i] /= weightSum;
           effectiveSampleSize += 1/weightSequence[i]/weightSequence[i];
+          *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                                  << ", level "                 << currLevel+1
+                                  << ": i = "                   << i
+                                  << ", effectiveSampleSize = " << effectiveSampleSize
+                                  << std::endl;
         }
-        auxRatio = effectiveSampleSize/((double) weightSequence.subSequenceSize());
+        auxRatio = effectiveSampleSize/((double) weightSequence.subSequenceSize()); // FIX ME: unified
         testResult = (auxRatio >= m_options.m_levelOptions[currLevel]->m_minEffectiveSizeRatio);
         currAttempt++;
       } while ((currAttempt < m_options.m_levelOptions[currLevel]->m_maxNumberOfAttempts) &&
