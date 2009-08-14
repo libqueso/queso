@@ -707,16 +707,16 @@ uqBaseVectorSequenceClass<V,M>::computeStatistics(
   tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "All statistics took " << tmpRunTime
-                           << " seconds"
-                           << std::endl;
+                            << " seconds"
+                            << std::endl;
   }
 
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "\n-----------------------------------------------------"
-                           << "\n Finished computing statistics for chain " << m_name
-                           << "\n-----------------------------------------------------"
-                           << "\n"
-                           << std::endl;
+                            << "\n Finished computing statistics for chain " << m_name
+                            << "\n-----------------------------------------------------"
+                            << "\n"
+                            << std::endl;
   }
 
   return;
@@ -2395,6 +2395,24 @@ uqComputeCovCorrMatricesBetweenVectorSequences(
       for (unsigned i = 0; i < numRowsLocal; ++i) {
         for (unsigned j = 0; j < numCols; ++j) {
           pqCorrMatrix(i,j) = pqCovMatrix(i,j)/std::sqrt(unifiedSampleVarianceP[i])/std::sqrt(unifiedSampleVarianceQ[j]);
+          if (((pqCorrMatrix(i,j) + 1.) < -1.e-8) ||
+              ((pqCorrMatrix(i,j) - 1.) >  1.e-8)) {
+            if (env.inter0Rank() == 0) {
+              std::cerr << "In uqComputeCovCorrMatricesBetweenVectorSequences()"
+                        << ": fullRank = "            << env.fullRank()
+                        << ", i = "                   << i
+                        << ", j = "                   << j
+                        << ", pqCorrMatrix(i,j)+1 = " << pqCorrMatrix(i,j)+1.
+                        << ", pqCorrMatrix(i,j)-1 = " << pqCorrMatrix(i,j)-1.
+                        << std::endl;
+            }
+            env.inter0Comm().Barrier();
+          }
+          UQ_FATAL_TEST_MACRO(((pqCorrMatrix(i,j) + 1.) < -1.e-8) ||
+                              ((pqCorrMatrix(i,j) - 1.) >  1.e-8),
+                               env.fullRank(),
+                               "uqComputeCovCorrMatricesBetweenVectorSequences()",
+                               "computed correlation is out of range");
         }
       }
     }

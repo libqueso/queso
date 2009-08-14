@@ -80,7 +80,7 @@ uqMLSamplingOptionsClass::scanOptionsValues()
   char tmpSufix[256];
   m_levelOptions.resize(m_maxNumberOfLevels,NULL);
   for (unsigned int i = 0; i < m_levelOptions.size(); ++i) {
-    sprintf(tmpSufix,"%d_",i+1); // Yes, '+1'
+    sprintf(tmpSufix,"%d_",i+REF_ID); // Yes, '+0'
     m_levelOptions[i] = new uqMLSamplingLevelOptionsClass(m_env,(m_prefix + tmpSufix).c_str());
     m_levelOptions[i]->scanOptionsValues();
   }

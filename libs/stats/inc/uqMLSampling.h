@@ -174,7 +174,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
   {
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
       *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                              << ": beginning level " << currLevel+1
+                              << ": beginning level " << currLevel+REF_ID
                               << ", m_options.m_levelOptions[currLevel]->m_rawChainSize = " << m_options.m_levelOptions[currLevel]->m_rawChainSize
                               << ", currExponent = "  << currExponent
                               << std::endl;
@@ -214,10 +214,24 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
       currChain.setPositionValues(i,auxVec);
       currTargetValues[i] = m_likelihoodFunction.actualValue(auxVec,NULL,NULL,NULL,NULL);
     }
+
+    if (m_options.m_levelOptions[currLevel]->m_rawChainComputeStats) {
+      std::ofstream* genericOfsVar = NULL;
+      m_env.openOutputFile(m_options.m_levelOptions[currLevel]->m_dataOutputFileName,
+                           UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                           m_options.m_levelOptions[currLevel]->m_dataOutputAllowedSet,
+                           false,
+                           genericOfsVar);
+
+      currChain.computeStatistics(*m_options.m_levelOptions[currLevel]->m_rawChainStatisticalOptions,
+                                  genericOfsVar);
+
+      genericOfsVar->close();
+    }
 #endif
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
       *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                              << ", level " << currLevel+1
+                              << ", level " << currLevel+REF_ID
                               << ": finished generating " << currChain.subSequenceSize()
                               << " chain positions"
                               << std::endl;
@@ -241,7 +255,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
       *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                              << ": ending level " << currLevel+1
+                              << ": ending level " << currLevel+REF_ID
                               << " after " << levelRunTime << " seconds"
                               << std::endl;
     }
@@ -256,7 +270,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
       *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                              << ": beginning level " << currLevel+1
+                              << ": beginning level " << currLevel+REF_ID
                               << ", m_options.m_levelOptions[currLevel]->m_rawChainSize = " << m_options.m_levelOptions[currLevel]->m_rawChainSize
                               << std::endl;
     }
@@ -278,7 +292,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     {
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                                << ", level " << currLevel+1
+                                << ", level " << currLevel+REF_ID
                                 << ": beginning step 1"
                                 << std::endl;
       }
@@ -292,7 +306,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                                << ", level " << currLevel+1
+                                << ", level " << currLevel+REF_ID
                                 << ": prevChain.unifiedSequenceSize() = " << prevChain.unifiedSequenceSize()
                                 << ", currChain.unifiedSequenceSize() = " << currChain.unifiedSequenceSize()
                                 << ", prevTargetValues.unifiedSequenceSize() = " << prevTargetValues.unifiedSequenceSize()
@@ -313,7 +327,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     {
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                                << ", level " << currLevel+1
+                                << ", level " << currLevel+REF_ID
                                 << ": beginning step 2"
                                 << std::endl;
       }
@@ -327,7 +341,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
       do {
         if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
           *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                                  << ", level " << currLevel+1
+                                  << ", level " << currLevel+REF_ID
                                   << ": entering loop for computing next exponent, with currAttempt = " << currAttempt
                                   << std::endl;
         }
@@ -341,29 +355,44 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
         for (unsigned int i = 0; i < weightSequence.subSequenceSize(); ++i) {
           weightSequence[i] = pow(prevTargetValues[i],auxExp);
           weightSum += weightSequence[i];
-          *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                                  << ", level "              << currLevel+1
-                                  << ": auxExp = "           << auxExp
-                                  << ", 'prev'TargetValues[" << i
-                                  << "] = "                  << prevTargetValues[i]
-                                  << ", weightSequence["     << i
-                                  << "] = "                  << weightSequence[i]
-                                  << ", weightSum = "        << weightSum
-                                  << std::endl;
+          //if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+          //  *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+          //                          << ", level "              << currLevel+REF_ID
+          //                          << ": auxExp = "           << auxExp
+          //                          << ", 'prev'TargetValues[" << i
+          //                          << "] = "                  << prevTargetValues[i]
+          //                          << ", weightSequence["     << i
+          //                          << "] = "                  << weightSequence[i]
+          //                          << ", weightSum = "        << weightSum
+          //                          << std::endl;
+          //}
         }
         m_evidences[currLevel] = weightSum/m_options.m_levelOptions[currLevel]->m_rawChainSize; // FIX ME: unified
         double effectiveSampleSize = 0.;
         for (unsigned int i = 0; i < weightSequence.subSequenceSize(); ++i) {
           weightSequence[i] /= weightSum;
-          effectiveSampleSize += 1/weightSequence[i]/weightSequence[i];
-          *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                                  << ", level "                 << currLevel+1
-                                  << ": i = "                   << i
-                                  << ", effectiveSampleSize = " << effectiveSampleSize
-                                  << std::endl;
+          effectiveSampleSize += weightSequence[i]*weightSequence[i];
+          //if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+          //  *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+          //                          << ", level "                 << currLevel+REF_ID
+          //                          << ": i = "                   << i
+          //                          << ", effectiveSampleSize = " << effectiveSampleSize
+          //                          << std::endl;
+          //}
         }
+        effectiveSampleSize = 1./effectiveSampleSize;
         auxRatio = effectiveSampleSize/((double) weightSequence.subSequenceSize()); // FIX ME: unified
         testResult = (auxRatio >= m_options.m_levelOptions[currLevel]->m_minEffectiveSizeRatio);
+        if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+          *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                                  << ", level "                   << currLevel+REF_ID
+                                  << ": currAttemtp = "           << currAttempt
+                                  << ", effectiveSampleSize = "   << effectiveSampleSize
+                                  << ", weightSequenceSize = "    << weightSequence.subSequenceSize()
+                                  << ", auxRatio = "              << auxRatio
+                                  << ", minEffectiveSizeRatio = " << m_options.m_levelOptions[currLevel]->m_minEffectiveSizeRatio
+                                  << std::endl;
+        }
         currAttempt++;
       } while ((currAttempt < m_options.m_levelOptions[currLevel]->m_maxNumberOfAttempts) &&
                (testResult == false));
@@ -375,7 +404,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                                << ", level "                                  << currLevel+1
+                                << ", level "                                  << currLevel+REF_ID
                                 << ": weightSequence.subSequenceSize() = "     << weightSequence.subSequenceSize()
                                 << ", weightSequence.unifiedSequenceSize() = " << weightSequence.unifiedSequenceSize()
                                 << ", currExponent = "                         << currExponent
@@ -402,7 +431,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     {
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                                << ", level " << currLevel+1
+                                << ", level " << currLevel+REF_ID
                                 << ": beginning step 3"
                                 << std::endl;
       }
@@ -444,7 +473,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     {
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                                << ", level " << currLevel+1
+                                << ", level " << currLevel+REF_ID
                                 << ": beginning step 4"
                                 << std::endl;
       }
@@ -455,7 +484,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
       if (m_env.inter0Rank() == 0) {
         if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
           *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                                  << ", level " << currLevel+1
+                                  << ", level " << currLevel+REF_ID
                                   << ": unifiedWeightStdVector.size() = " << unifiedWeightStdVector.size()
                                   << std::endl;
 
@@ -505,7 +534,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     {
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                                << ", level " << currLevel+1
+                                << ", level " << currLevel+REF_ID
                                 << ": beginning step 5"
                                 << std::endl;
       }
@@ -514,7 +543,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
       unsigned int numberOfPositionsToGuaranteeForNode = m_options.m_levelOptions[currLevel]->m_rawChainSize;
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                                << ", level " << currLevel+1
+                                << ", level " << currLevel+REF_ID
                                 << ": numberOfPositionsToGuaranteeForNode = " << numberOfPositionsToGuaranteeForNode
                                 << std::endl;
       }
@@ -566,7 +595,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                                << ", level " << currLevel+1
+                                << ", level " << currLevel+REF_ID
                                 << ": nodes[m_env.subId()].linkedChains.size() = " << nodes[m_env.subId()].linkedChains.size()
                                 << std::endl;
       }
@@ -580,7 +609,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     {
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                                << ", level " << currLevel+1
+                                << ", level " << currLevel+REF_ID
                                 << ": beginning step 6"
                                 << std::endl;
       }
@@ -611,7 +640,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     {
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                                << ", level " << currLevel+1
+                                << ", level " << currLevel+REF_ID
                                 << ": beginning step 7"
                                 << std::endl;
       }
@@ -625,7 +654,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     {
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                                << ", level " << currLevel+1
+                                << ", level " << currLevel+REF_ID
                                 << ": beginning step 8"
                                 << std::endl;
       }
@@ -662,7 +691,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
               (m_env.displayVerbosity() >= 0                              ) &&
               (m_options.m_levelOptions[currLevel]->m_totallyMute == false)) {
             *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                                    << ", level "               << currLevel+1
+                                    << ", level "               << currLevel+REF_ID
                                     << ", chainId = "           << chainId
                                     << ": finished generating " << tmpChain.subSequenceSize()
                                     << " chain positions"
@@ -726,7 +755,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                                << ", level " << currLevel+1
+                                << ", level " << currLevel+REF_ID
                                 << ": finished generating " << currChain.subSequenceSize()
                                 << " chain positions"
                                 << std::endl;
@@ -747,7 +776,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
       *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                              << ": ending level " << currLevel+1
+                              << ": ending level " << currLevel+REF_ID
                               << " after " << levelRunTime << " seconds"
                               << "; cumulativeRawChainRunTime = " << cumulativeRawChainRunTime << " seconds"
                               << std::endl;
