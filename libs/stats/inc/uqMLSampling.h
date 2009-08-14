@@ -386,7 +386,8 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
         if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
           *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
                                   << ", level "                   << currLevel+REF_ID
-                                  << ": currAttemtp = "           << currAttempt
+                                  << ": currAttempt = "           << currAttempt
+                                  << ", attemptedExponent = "     << currExponent
                                   << ", effectiveSampleSize = "   << effectiveSampleSize
                                   << ", weightSequenceSize = "    << weightSequence.subSequenceSize()
                                   << ", auxRatio = "              << auxRatio

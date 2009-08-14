@@ -83,7 +83,15 @@ uqFiniteDistributionClass::uqFiniteDistributionClass(
                       "uqFiniteDistributionClass::constructor()",
                       "map and inpWeights have different sizes");
 
-  UQ_FATAL_TEST_MACRO(((1 - sumCheck) > 1.e-12) || ((sumCheck - 1) > 1.e-12),
+  if (((1 - sumCheck) > 1.e-8) ||
+      ((sumCheck - 1) > 1.e-8)) {
+    std::cerr << "In uqFiniteDistributionClass::constructor()"
+              << ": 1 - sumCheck = " << 1. - sumCheck
+              << ", sumCheck - 1 = " << sumCheck - 1.
+              << std::endl;
+  }
+  UQ_FATAL_TEST_MACRO(((1 - sumCheck) > 1.e-8) ||
+                      ((sumCheck - 1) > 1.e-8),
                       m_env.fullRank(),
                       "uqFiniteDistributionClass::constructor()",
                       "weights sum is too far from 1.");
