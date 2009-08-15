@@ -35,8 +35,10 @@
 
 template <class P_V,class P_M>
 void
-uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
-                                                uqScalarSequenceClass<double>*      workingTargetValues)
+uqMarkovChainSGClass<P_V,P_M>::generateSequence(
+  uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
+  uqScalarSequenceClass<double>*      workingTargetValues,
+  uqScalarSequenceClass<double>*      workingLogTargetValues)
 {
   if ((m_env.subDisplayFile()          ) &&
       (m_env.displayVerbosity() >= 5   ) &&
@@ -90,7 +92,8 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
       generateFullChain(valuesOf1stPosition,
                         m_options.m_rawChainSize,
                         workingChain,
-                        workingTargetValues);
+                        workingTargetValues,
+                        workingLogTargetValues);
     }
     else {
       readFullChain(m_options.m_rawChainDataInputFileName,
@@ -260,8 +263,11 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
                         filterSpacing);
     workingChain.setName(m_options.m_prefix + "filtChain");
 
-    if (workingTargetValues) workingTargetValues->filter(filterInitialPos,
-                                                         filterSpacing);
+    if (workingTargetValues)    workingTargetValues->filter   (filterInitialPos,
+                                                               filterSpacing);
+
+    if (workingLogTargetValues) workingLogTargetValues->filter(filterInitialPos,
+                                                               filterSpacing);
 
     // Write filtered chain
     if ((m_env.subDisplayFile()          ) &&
@@ -480,7 +486,8 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
   const P_V&                          valuesOf1stPosition,
         unsigned int                  chainSize,
   uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
-  uqScalarSequenceClass<double>*      workingTargetValues)
+  uqScalarSequenceClass<double>*      workingTargetValues,
+  uqScalarSequenceClass<double>*      workingLogTargetValues)
 {
   m_env.syncPrintDebugMsg("Entering uqMarkovChainSGClass<P_V,P_M>::generateFullChain()",3,3000000,m_env.fullComm());
 
@@ -503,6 +510,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
 
   m_positionIdForDebugging = 0;
   m_stageIdForDebugging    = 0;
+  m_numRejections          = 0;
   double candidateRunTime = 0;
   double targetDRunTime   = 0;
   double mhAlphaRunTime   = 0;
@@ -540,7 +548,8 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
   // Begin chain loop from positionId = 1
   //****************************************************
   workingChain.resizeSequence(chainSize); 
-  if (workingTargetValues) workingTargetValues->resizeSequence(chainSize);
+  if (workingTargetValues   ) workingTargetValues->resizeSequence   (chainSize);
+  if (workingLogTargetValues) workingLogTargetValues->resizeSequence(chainSize);
   if (true/*m_uniqueChainGenerate*/) m_idsOfUniquePositions.resize(chainSize,0); 
   if (m_options.m_rawChainGenerateExtra) {
     m_logTargets.resize    (chainSize,0.);
@@ -549,7 +558,8 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
 
   unsigned int uniquePos = 0;
   workingChain.setPositionValues(0,currentPositionData.vecValues());
-  if (workingTargetValues) (*workingTargetValues)[0] = exp(currentPositionData.logTarget());
+  if (workingTargetValues   ) (*workingTargetValues   )[0] = exp(currentPositionData.logTarget());
+  if (workingLogTargetValues) (*workingLogTargetValues)[0] =     currentPositionData.logTarget();
   if (true/*m_uniqueChainGenerate*/) m_idsOfUniquePositions[uniquePos++] = 0;
   if (m_options.m_rawChainGenerateExtra) {
     m_logTargets    [0] = currentPositionData.logTarget();
@@ -884,7 +894,8 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
       m_numRejections++;
     }
 
-    if (workingTargetValues) (*workingTargetValues)[positionId] = exp(currentPositionData.logTarget());
+    if (workingTargetValues   ) (*workingTargetValues   )[positionId] = exp(currentPositionData.logTarget());
+    if (workingLogTargetValues) (*workingLogTargetValues)[positionId] =     currentPositionData.logTarget();
 
     if (m_options.m_rawChainGenerateExtra) {
       m_logTargets[positionId] = currentPositionData.logTarget();

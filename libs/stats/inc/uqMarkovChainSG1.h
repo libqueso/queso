@@ -65,9 +65,11 @@ public:
 
   /*! Operation to generate the chain */
   void   generateSequence           (uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
-                                     uqScalarSequenceClass<double>*      workingTargetValues);
+                                     uqScalarSequenceClass<double>*      workingTargetValues,
+                                     uqScalarSequenceClass<double>*      workingLogTargetValues);
   void   checkTheParallelEnvironment();
-  double rawChainRunTime            ();
+  double rawChainRunTime            () const;
+  unsigned int numRejections        () const;
 
   void   print                      (std::ostream& os) const;
 
@@ -77,22 +79,23 @@ private:
 //void   proc0GenerateSequence    (uqBaseVectorSequenceClass<P_V,P_M>& workingChain); /*! */
   void   resetChainAndRelatedInfo ();
 
-  void   generateWhiteNoiseChain  (      unsigned int                                   chainSize,
-                                   uqBaseVectorSequenceClass<P_V,P_M>&                  workingChain);
-  void   generateUniformChain     (      unsigned int                                   chainSize,
-                                   uqBaseVectorSequenceClass<P_V,P_M>&                  workingChain);
-  void   generateFullChain        (const P_V&                                           valuesOf1stPosition,
-                                         unsigned int                                   chainSize,
-                                   uqBaseVectorSequenceClass<P_V,P_M>&                  workingChain,
-                                   uqScalarSequenceClass<double>*                       workingTargetValues);
-  void   readFullChain            (const std::string&                                   inputFileName,
-                                         unsigned int                                   chainSize,
-                                   uqBaseVectorSequenceClass<P_V,P_M>&                  workingChain);
-  void   updateAdaptedCovMatrix   (const uqBaseVectorSequenceClass<P_V,P_M>&            subChain,
-                                   unsigned int                                         idOfFirstPositionInSubChain,
-                                   double&                                              lastChainSize,
-                                   P_V&                                                 lastMean,
-                                   P_M&                                                 lastAdaptedCovMatrix);
+  void   generateWhiteNoiseChain  (      unsigned int                                       chainSize,
+                                   uqBaseVectorSequenceClass<P_V,P_M>&                      workingChain);
+  void   generateUniformChain     (      unsigned int                                       chainSize,
+                                   uqBaseVectorSequenceClass<P_V,P_M>&                      workingChain);
+  void   generateFullChain        (const P_V&                                               valuesOf1stPosition,
+                                         unsigned int                                       chainSize,
+                                   uqBaseVectorSequenceClass<P_V,P_M>&                      workingChain,
+                                   uqScalarSequenceClass<double>*                           workingTargetValues,
+                                   uqScalarSequenceClass<double>*                           workingLogTargetValues);
+  void   readFullChain            (const std::string&                                       inputFileName,
+                                         unsigned int                                       chainSize,
+                                   uqBaseVectorSequenceClass<P_V,P_M>&                      workingChain);
+  void   updateAdaptedCovMatrix   (const uqBaseVectorSequenceClass<P_V,P_M>&                subChain,
+                                   unsigned int                                             idOfFirstPositionInSubChain,
+                                   double&                                                  lastChainSize,
+                                   P_V&                                                     lastMean,
+                                   P_M&                                                     lastAdaptedCovMatrix);
 
 #ifdef UQ_USES_TK_CLASS
 #else
@@ -1087,9 +1090,16 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
 
 template<class P_V,class P_M>
 double
-uqMarkovChainSGClass<P_V,P_M>::rawChainRunTime()
+uqMarkovChainSGClass<P_V,P_M>::rawChainRunTime() const
 {
   return m_rawChainRunTime;
+}
+
+template<class P_V,class P_M>
+unsigned int
+uqMarkovChainSGClass<P_V,P_M>::numRejections() const
+{
+  return m_numRejections;
 }
 
 template<class P_V,class P_M>

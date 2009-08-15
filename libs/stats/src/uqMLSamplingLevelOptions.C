@@ -131,7 +131,7 @@ uqMLSamplingLevelOptionsClass::scanOptionsValues()
   getMyOptionValues              (*m_optionsDesc);
 
   if ((m_env.subDisplayFile() != NULL ) &&
-      (m_totallyMute          == false)) {
+      (1)) { //m_totallyMute          == false)) {
     *m_env.subDisplayFile() << "In uqMLSamplingLevelOptionsClass::scanOptionsValues()"
                             << ": after getting values of options with prefix '" << m_prefix
                             << "', state of  object is:"
