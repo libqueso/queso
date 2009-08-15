@@ -189,7 +189,9 @@ public:
                                                    unsigned int                    initialPos,
                                                    unsigned int                    spacing) const;
 
-        void         append                       (const uqScalarSequenceClass<T>& src);
+        void         append                       (const uqScalarSequenceClass<T>& src,
+                                                   unsigned int                    initialPos,
+                                                   unsigned int                    numPos);
 private:
         void         copy                         (const uqScalarSequenceClass<T>& src);
         void         extractScalarSeq             (unsigned int                    initialPos,
@@ -320,13 +322,25 @@ uqScalarSequenceClass<T>::brooksGelmanConvMeasure(
 
 template <class T>
 void
-uqScalarSequenceClass<T>::append(const uqScalarSequenceClass<T>& src)
+uqScalarSequenceClass<T>::append(
+  const uqScalarSequenceClass<T>& src,
+  unsigned int                    initialPos,
+  unsigned int                    numPos)
 {
+  UQ_FATAL_TEST_MACRO((src.subSequenceSize() < (initialPos+1)),
+                      m_env.fullRank(),
+                      "uqScalarSequenceClass<T>::append()",
+                      "initialPos is too big");
+
+  UQ_FATAL_TEST_MACRO((src.subSequenceSize() < (initialPos+numPos)),
+                      m_env.fullRank(),
+                      "uqScalarSequenceClass<T>::append()",
+                      "numPos is too big");
+
   unsigned int currentSize = this->subSequenceSize();
-  unsigned int addedSize   = src.subSequenceSize();
-  m_seq.resize(currentSize+addedSize,0.);
-  for (unsigned int i = 0; i < addedSize; ++i) {
-    m_seq[currentSize+i] = src.m_seq[i];
+  m_seq.resize(currentSize+numPos,0.);
+  for (unsigned int i = 0; i < numPos; ++i) {
+    m_seq[currentSize+i] = src.m_seq[initialPos+i];
   }
 
   return;

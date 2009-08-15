@@ -185,7 +185,9 @@ public:
                                                  unsigned int                         numPos,
                                                  V&                                   convMeasureVec) const;
 
-        void         append                     (const uqSequenceOfVectorsClass<V,M>& src);
+        void         append                     (const uqSequenceOfVectorsClass<V,M>& src,
+                                                 unsigned int                         initialPos,
+                                                 unsigned int                         numPos);
 private:
         void         copy                       (const uqSequenceOfVectorsClass<V,M>& src);
         void         extractScalarSeq           (unsigned int                         initialPos,
@@ -262,14 +264,26 @@ uqSequenceOfVectorsClass<V,M>::copy(const uqSequenceOfVectorsClass<V,M>& src)
 
 template <class V, class M>
 void
-uqSequenceOfVectorsClass<V,M>::append(const uqSequenceOfVectorsClass<V,M>& src)
+uqSequenceOfVectorsClass<V,M>::append(
+  const uqSequenceOfVectorsClass<V,M>& src,
+  unsigned int                         initialPos,
+  unsigned int                         numPos)
 {
+  UQ_FATAL_TEST_MACRO((src.subSequenceSize() < (initialPos+1)),
+                      m_env.fullRank(),
+                      "uqSequenceOfVectorsClass<T>::append()",
+                      "initialPos is too big");
+
+  UQ_FATAL_TEST_MACRO((src.subSequenceSize() < (initialPos+numPos)),
+                      m_env.fullRank(),
+                      "uqSequenceOfVectorsClass<T>::append()",
+                      "numPos is too big");
+
   uqBaseVectorSequenceClass<V,M>::deleteStoredVectors();
   unsigned int currentSize = this->subSequenceSize();
-  unsigned int addedSize   = src.subSequenceSize();
-  m_seq.resize(currentSize+addedSize,NULL);
-  for (unsigned int i = 0; i < addedSize; ++i) {
-    m_seq[currentSize+i] = new V(*(src.m_seq[i]));
+  m_seq.resize(currentSize+numPos,NULL);
+  for (unsigned int i = 0; i < numPos; ++i) {
+    m_seq[currentSize+i] = new V(*(src.m_seq[initialPos+i]));
   }
 
   return;

@@ -336,8 +336,8 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
       exponentQuanta /= (double) m_options.m_levelOptions[currLevel]->m_maxNumberOfAttempts;
 
       unsigned int currAttempt = 0;
-      bool testResult = false;
       double auxRatio = 0.;
+      bool testResult = false;
       do {
         if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
           *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
@@ -382,6 +382,11 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
         }
         effectiveSampleSize = 1./effectiveSampleSize;
         auxRatio = effectiveSampleSize/((double) weightSequence.subSequenceSize()); // FIX ME: unified
+        UQ_FATAL_TEST_MACRO((auxRatio > (1.+1.e-8)),
+                            m_env.fullRank(),
+                            "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                            "effective sample size ratio cannot be > 1");
+
         testResult = (auxRatio >= m_options.m_levelOptions[currLevel]->m_minEffectiveSizeRatio);
         if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
           *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
@@ -390,7 +395,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                                   << ", attemptedExponent = "     << currExponent
                                   << ", effectiveSampleSize = "   << effectiveSampleSize
                                   << ", weightSequenceSize = "    << weightSequence.subSequenceSize()
-                                  << ", auxRatio = "              << auxRatio
+                                  << ", effectiveSizeRatio = "    << auxRatio
                                   << ", minEffectiveSizeRatio = " << m_options.m_levelOptions[currLevel]->m_minEffectiveSizeRatio
                                   << std::endl;
         }
@@ -465,6 +470,14 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
         }
       }
       delete subCovMatrix;
+
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+        *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                                << ", level "              << currLevel+REF_ID
+                                << ": unifiedCovMatrix = " << *unifiedCovMatrix
+                                << std::endl;
+      }
+
     } // end of step 3
 
     //***********************************************************
@@ -670,7 +683,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
           prevChain.getPositionValues(auxIndex,auxInitialPosition); // FIX ME
 
           unsigned int auxNumPositions = nodes[m_env.subId()].linkedChains[chainId].numberOfPositions;
-          m_options.m_levelOptions[currLevel]->m_rawChainSize          = auxNumPositions;
+          m_options.m_levelOptions[currLevel]->m_rawChainSize          = auxNumPositions+1; // IMPORTANT: '+1' in order to discard initial position afterwards
           m_options.m_levelOptions[currLevel]->m_rawChainComputeStats  = false;
           m_options.m_levelOptions[currLevel]->m_filteredChainGenerate = false;
 
@@ -699,8 +712,9 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                                     << std::endl;
           }
 
-          currChain.append(tmpChain);
-          currTargetValues.append(tmpTargetValues);
+          // FIX ME: unified
+          currChain.append       (tmpChain,       1,tmpChain.subSequenceSize()-1       ); // IMPORTANT: '1' in order to discard initial position
+          currTargetValues.append(tmpTargetValues,1,tmpTargetValues.subSequenceSize()-1); // IMPORTANT: '1' in order to discard initial position
         }
       }
       m_options.m_levelOptions[currLevel]->m_rawChainSize          = savedRawChainSize;
