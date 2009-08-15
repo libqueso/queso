@@ -57,14 +57,36 @@ uqFiniteDistributionClass::uqFiniteDistributionClass(
       numOfZeroWeights++;
     }
     else {
+      if ((sumCheck - 1) > 1.e-8) {
+        std::cerr << "In uqFiniteDistributionClass::constructor()"
+                  << ": sumCheck - 1 = " << sumCheck - 1.
+                  << std::endl;
+      }
+      UQ_FATAL_TEST_MACRO((sumCheck - 1) > 1.e-8,
+                          m_env.fullRank(),
+                          "uqFiniteDistributionClass::constructor()",
+                          "weights sum is too bigger than 1.");
+
+      if (sumCheck > 1.) sumCheck = 1.;
       m_weights[j] = inpWeights[i];
-      m_map.insert(std::map<double,unsigned int>::value_type(sumCheck,j));
+      m_map.insert(std::map<double,unsigned int>::value_type(sumCheck,i));
       j++;
     }
   }
   m_weights.resize(j,0.);
 
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+  if ((1 - sumCheck) > 1.e-8) {
+    std::cerr << "In uqFiniteDistributionClass::constructor()"
+              << ": 1 - sumCheck = " << 1. - sumCheck
+              << std::endl;
+  }
+  UQ_FATAL_TEST_MACRO((1 - sumCheck) > 1.e-8,
+                      m_env.fullRank(),
+                      "uqFiniteDistributionClass::constructor()",
+                      "weights sum is too smaller than 1.");
+
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
     *m_env.subDisplayFile() << "In uqFiniteDistributionClass::constructor()"
                             << ": inpWeights.size() = " << inpWeights.size()
                             << ", numOfZeroWeights = "  << numOfZeroWeights
@@ -82,19 +104,6 @@ uqFiniteDistributionClass::uqFiniteDistributionClass(
                       m_env.fullRank(),
                       "uqFiniteDistributionClass::constructor()",
                       "map and inpWeights have different sizes");
-
-  if (((1 - sumCheck) > 1.e-8) ||
-      ((sumCheck - 1) > 1.e-8)) {
-    std::cerr << "In uqFiniteDistributionClass::constructor()"
-              << ": 1 - sumCheck = " << 1. - sumCheck
-              << ", sumCheck - 1 = " << sumCheck - 1.
-              << std::endl;
-  }
-  UQ_FATAL_TEST_MACRO(((1 - sumCheck) > 1.e-8) ||
-                      ((sumCheck - 1) > 1.e-8),
-                      m_env.fullRank(),
-                      "uqFiniteDistributionClass::constructor()",
-                      "weights sum is too far from 1.");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqFiniteDistributionClass::constructor()"
@@ -136,17 +145,18 @@ uqFiniteDistributionClass::sample() const
     result = 0;
   }
   else if (aux == 1.) {
-    result = m_map.size()-1;
+    result = m_map.find(aux)->second;
   }
   else {
-    if (m_map.upper_bound(aux)->second == 0) {
-      result = 0;
-    }
-    else {
-      result = m_map.upper_bound(aux)->second-1;
-    }
+    result = m_map.upper_bound(aux)->second;
+    //if (m_map.upper_bound(aux)->second == 0) {
+    //  result = 0;
+    //}
+    //else {
+    //  result = m_map.upper_bound(aux)->second-1;
+    //}
   }
-
+#if 0 // WE insert 'i' in map, not 'j'. So, the tests below don't make sense
   if (result >= m_map.size()) {
     std::cerr << "In uqFiniteDistributionClass::sample()"
               << ": aux = "          << aux
@@ -158,6 +168,7 @@ uqFiniteDistributionClass::sample() const
                       m_env.fullRank(),
                       "uqFiniteDistributionClass::sample()",
                       "invalid result");
+#endif
 
   return result;
 }

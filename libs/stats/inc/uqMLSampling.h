@@ -66,9 +66,9 @@ public:
   uqMLSamplingClass(/*! Prefix                  */ const char*                               prefix,                  
                     /*! The source rv          *///const uqBaseVectorRVClass      <P_V,P_M>& sourceRv,                
                     /*! The prior rv            */ const uqBaseVectorRVClass      <P_V,P_M>& priorRv,            
-                    /*! The likelihood function */ const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunction, 
-                    /*! Initial chain position  */ const P_V&                                initialPosition,
-                    /*! Proposal cov. matrix    */ const P_M*                                inputProposalCovMatrix);  
+                    /*! The likelihood function */ const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunction);
+                    /*! Initial chain position *///const P_V&                                initialPosition,
+                    /*! Proposal cov. matrix   *///const P_M*                                inputProposalCovMatrix);  
   /*! Destructor: */
  ~uqMLSamplingClass();
 
@@ -85,9 +85,9 @@ private:
   const uqBaseScalarFunctionClass<P_V,P_M>& m_likelihoodFunction;
   const uqVectorSpaceClass       <P_V,P_M>& m_vectorSpace;
         uqVectorSetClass         <P_V,P_M>* m_targetDomain;
-        P_V                                 m_initialPosition;
-  const P_M*                                m_initialProposalCovMatrix;
-        bool                                m_nullInputProposalCovMatrix;
+//      P_V                                 m_initialPosition;
+//const P_M*                                m_initialProposalCovMatrix;
+//      bool                                m_nullInputProposalCovMatrix;
 
         uqMLSamplingOptionsClass            m_options;
 
@@ -108,9 +108,9 @@ uqMLSamplingClass<P_V,P_M>::uqMLSamplingClass(
   const char*                               prefix,
 //const uqBaseVectorRVClass      <P_V,P_M>& sourceRv,
   const uqBaseVectorRVClass      <P_V,P_M>& priorRv,            
-  const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunction, 
-  const P_V&                                initialPosition,
-  const P_M*                                inputProposalCovMatrix)
+  const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunction)
+//const P_V&                                initialPosition,
+//const P_M*                                inputProposalCovMatrix)
   :
   m_env                       (priorRv.env()),
 //m_sourceRv                  (sourceRv),
@@ -118,9 +118,9 @@ uqMLSamplingClass<P_V,P_M>::uqMLSamplingClass(
   m_likelihoodFunction        (likelihoodFunction),
   m_vectorSpace               (m_priorRv.imageSet().vectorSpace()),
   m_targetDomain              (uqInstantiateIntersection(m_priorRv.pdf().domainSet(),m_likelihoodFunction.domainSet())),
-  m_initialPosition           (initialPosition),
-  m_initialProposalCovMatrix  (inputProposalCovMatrix),
-  m_nullInputProposalCovMatrix(inputProposalCovMatrix == NULL),
+//m_initialPosition           (initialPosition),
+//m_initialProposalCovMatrix  (inputProposalCovMatrix),
+//m_nullInputProposalCovMatrix(inputProposalCovMatrix == NULL),
   m_options                   (m_env,prefix),
   m_evidences                 (0),
   m_totalEvidence             (1.)
@@ -143,7 +143,7 @@ uqMLSamplingClass<P_V,P_M>::uqMLSamplingClass(
 template<class P_V,class P_M>
 uqMLSamplingClass<P_V,P_M>::~uqMLSamplingClass()
 {
-  if (m_nullInputProposalCovMatrix) delete m_initialProposalCovMatrix;
+//if (m_nullInputProposalCovMatrix) delete m_initialProposalCovMatrix;
   if (m_targetDomain              ) delete m_targetDomain;
 }
 

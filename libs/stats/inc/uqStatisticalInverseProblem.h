@@ -65,8 +65,9 @@ public:
 	/*! Operation to solve the problem */
         void solveWithBayesMarkovChain(const P_V& initialValues,
                                        const P_M* initialProposalCovMatrix);
-        void solveWithBayesMLSampling (const P_V& initialValues,
-                                       const P_M* initialProposalCovMatrix);
+        void solveWithBayesMLSampling ();
+                                     //const P_V& initialValues,
+                                     //const P_M* initialProposalCovMatrix);
   const uqBaseVectorRVClass   <P_V,P_M>& priorRv() const;
   const uqGenericVectorRVClass<P_V,P_M>& postRv () const;
 
@@ -281,9 +282,9 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
 
 template <class P_V,class P_M>
 void
-uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling(
-  const P_V& initialValues,
-  const P_M* initialProposalCovMatrix)
+uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling()
+//const P_V& initialValues,
+//const P_M* initialProposalCovMatrix)
 {
   m_env.fullComm().Barrier();
   m_env.syncPrintDebugMsg("Entering uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling()",1,3000000,m_env.fullComm());
@@ -329,9 +330,9 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling(
   m_mlSampler = new uqMLSamplingClass<P_V,P_M>(m_options.m_prefix.c_str(),
                                              //m_postRv,
                                                m_priorRv,
-                                               m_likelihoodFunction,
-                                               initialValues,
-                                               initialProposalCovMatrix);
+                                               m_likelihoodFunction);
+  //                                           initialValues,
+  //                                           initialProposalCovMatrix);
 
   m_mlSampler->generateSequence(*m_chain,NULL);
 
