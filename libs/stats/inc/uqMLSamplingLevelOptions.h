@@ -126,7 +126,7 @@ public:
   bool                               m_tkUseLocalHessian;
   bool                               m_tkUseNewtonComponent;
   unsigned int                       m_drMaxNumExtraStages;
-  std::vector<double>                m_drScalesForCovMatrices;
+  std::vector<double>                m_drScalesForExtraStages;
   unsigned int                       m_amInitialNonAdaptInterval;
   unsigned int                       m_amAdaptInterval;
   double                             m_amEta;
@@ -172,7 +172,7 @@ private:
   std::string                   m_option_tk_useLocalHessian;
   std::string                   m_option_tk_useNewtonComponent;
   std::string                   m_option_dr_maxNumExtraStages;
-  std::string                   m_option_dr_scalesForExtraStages;
+  std::string                   m_option_dr_listOfScalesForExtraStages;
   std::string                   m_option_am_initialNonAdaptInterval;
   std::string                   m_option_am_adaptInterval;
   std::string                   m_option_am_eta;

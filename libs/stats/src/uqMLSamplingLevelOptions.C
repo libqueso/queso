@@ -67,7 +67,7 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(const uqBaseEnviron
   m_tkUseLocalHessian                        (UQ_ML_SAMPLING_L_TK_USE_LOCAL_HESSIAN_ODV),
   m_tkUseNewtonComponent                     (UQ_ML_SAMPLING_L_TK_USE_NEWTON_COMPONENT_ODV),
   m_drMaxNumExtraStages                      (UQ_ML_SAMPLING_L_DR_MAX_NUM_EXTRA_STAGES_ODV),
-  m_drScalesForCovMatrices                   (1,1.),
+  m_drScalesForExtraStages                   (1,1.),
   m_amInitialNonAdaptInterval                (UQ_ML_SAMPLING_L_AM_INIT_NON_ADAPT_INT_ODV),
   m_amAdaptInterval                          (UQ_ML_SAMPLING_L_AM_ADAPT_INTERVAL_ODV),
   m_amEta                                    (UQ_ML_SAMPLING_L_AM_ETA_ODV),
@@ -105,7 +105,7 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(const uqBaseEnviron
   m_option_tk_useLocalHessian                (m_prefix + "tk_useLocalHessian"                ),
   m_option_tk_useNewtonComponent             (m_prefix + "tk_useNewtonComponent"             ),
   m_option_dr_maxNumExtraStages              (m_prefix + "dr_maxNumExtraStages"              ),
-  m_option_dr_scalesForExtraStages           (m_prefix + "dr_listOfScalesForExtraStages"     ),
+  m_option_dr_listOfScalesForExtraStages     (m_prefix + "dr_listOfScalesForExtraStages"     ),
   m_option_am_initialNonAdaptInterval        (m_prefix + "am_initialNonAdaptInterval"        ),
   m_option_am_adaptInterval                  (m_prefix + "am_adaptInterval"                  ),
   m_option_am_eta                            (m_prefix + "am_eta"                            ),
@@ -178,7 +178,7 @@ uqMLSamplingLevelOptionsClass::defineMyOptions(po::options_description& optionsD
     (m_option_tk_useLocalHessian.c_str(),                 po::value<bool        >()->default_value(UQ_ML_SAMPLING_L_TK_USE_LOCAL_HESSIAN_ODV                  ), "'proposal' use local Hessian"                                    )
     (m_option_tk_useNewtonComponent.c_str(),              po::value<bool        >()->default_value(UQ_ML_SAMPLING_L_TK_USE_NEWTON_COMPONENT_ODV               ), "'proposal' use Newton component"                                 )
     (m_option_dr_maxNumExtraStages.c_str(),               po::value<unsigned int>()->default_value(UQ_ML_SAMPLING_L_DR_MAX_NUM_EXTRA_STAGES_ODV               ), "'dr' maximum number of extra stages"                             )
-    (m_option_dr_scalesForExtraStages.c_str(),            po::value<std::string >()->default_value(UQ_ML_SAMPLING_L_DR_LIST_OF_SCALES_FOR_EXTRA_STAGES_ODV    ), "'dr' list of scales for proposal cov matrices from 2nd stage on" )
+    (m_option_dr_listOfScalesForExtraStages.c_str(),      po::value<std::string >()->default_value(UQ_ML_SAMPLING_L_DR_LIST_OF_SCALES_FOR_EXTRA_STAGES_ODV    ), "'dr' list of scales for proposal cov matrices from 2nd stage on" )
     (m_option_am_initialNonAdaptInterval.c_str(),         po::value<unsigned int>()->default_value(UQ_ML_SAMPLING_L_AM_INIT_NON_ADAPT_INT_ODV                 ), "'am' initial non adaptation interval"                            )
     (m_option_am_adaptInterval.c_str(),                   po::value<unsigned int>()->default_value(UQ_ML_SAMPLING_L_AM_ADAPT_INTERVAL_ODV                     ), "'am' adaptation interval"                                        )
     (m_option_am_eta.c_str(),                             po::value<double      >()->default_value(UQ_ML_SAMPLING_L_AM_ETA_ODV                                ), "'am' eta"                                                        )
@@ -343,8 +343,8 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
   }
 
   std::vector<double> tmpScales(0,0.);
-  if (m_env.allOptionsMap().count(m_option_dr_scalesForExtraStages.c_str())) {
-    std::string inputString = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dr_scalesForExtraStages.c_str()]).as<std::string>();
+  if (m_env.allOptionsMap().count(m_option_dr_listOfScalesForExtraStages.c_str())) {
+    std::string inputString = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dr_listOfScalesForExtraStages.c_str()]).as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpScales);
     //if (m_env.subDisplayFile()) {
     //  *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::getMyOptionValues(): scales =";
@@ -356,16 +356,16 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
   }
 
   if (m_drMaxNumExtraStages > 0) {
-    m_drScalesForCovMatrices.clear();
+    m_drScalesForExtraStages.clear();
 
     double scale = 1.0;
     unsigned int tmpSize = tmpScales.size();
 
-    m_drScalesForCovMatrices.resize(m_drMaxNumExtraStages+1,1.);
+    m_drScalesForExtraStages.resize(m_drMaxNumExtraStages+1,1.);
 
     for (unsigned int i = 1; i < (m_drMaxNumExtraStages+1); ++i) {
       if (i <= tmpSize) scale = tmpScales[i-1];
-      m_drScalesForCovMatrices[i] = scale;
+      m_drScalesForExtraStages[i] = scale;
     }
     //updateTK();
   }
@@ -421,15 +421,15 @@ uqMLSamplingLevelOptionsClass::print(std::ostream& os) const
   for (std::set<unsigned int>::iterator setIt = m_filteredChainDataOutputAllowedSet.begin(); setIt != m_filteredChainDataOutputAllowedSet.end(); ++setIt) {
     os << *setIt << " ";
   }
-  os << "\n" << m_option_filteredChain_computeStats << " = " << m_filteredChainComputeStats
-     << "\n" << m_option_mh_displayCandidates       << " = " << m_mhDisplayCandidates
-     << "\n" << m_option_mh_putOutOfBoundsInChain   << " = " << m_mhPutOutOfBoundsInChain
-     << "\n" << m_option_tk_useLocalHessian         << " = " << m_tkUseLocalHessian
-     << "\n" << m_option_tk_useNewtonComponent      << " = " << m_tkUseNewtonComponent
-     << "\n" << m_option_dr_maxNumExtraStages       << " = " << m_drMaxNumExtraStages
-     << "\n" << m_option_dr_scalesForExtraStages    << " = ";
-  for (unsigned int i = 0; i < m_drScalesForCovMatrices.size(); ++i) {
-    os << m_drScalesForCovMatrices[i] << " ";
+  os << "\n" << m_option_filteredChain_computeStats    << " = " << m_filteredChainComputeStats
+     << "\n" << m_option_mh_displayCandidates          << " = " << m_mhDisplayCandidates
+     << "\n" << m_option_mh_putOutOfBoundsInChain      << " = " << m_mhPutOutOfBoundsInChain
+     << "\n" << m_option_tk_useLocalHessian            << " = " << m_tkUseLocalHessian
+     << "\n" << m_option_tk_useNewtonComponent         << " = " << m_tkUseNewtonComponent
+     << "\n" << m_option_dr_maxNumExtraStages          << " = " << m_drMaxNumExtraStages
+     << "\n" << m_option_dr_listOfScalesForExtraStages << " = ";
+  for (unsigned int i = 0; i < m_drScalesForExtraStages.size(); ++i) {
+    os << m_drScalesForExtraStages[i] << " ";
   }
   os << "\n" << m_option_am_initialNonAdaptInterval << " = " << m_amInitialNonAdaptInterval
      << "\n" << m_option_am_adaptInterval           << " = " << m_amAdaptInterval

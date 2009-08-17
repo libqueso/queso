@@ -292,7 +292,7 @@ uqMarkovChainSGClass<P_V,P_M>::commonConstructor()
   if (m_options.m_tkUseLocalHessian) {
     m_tk = new uqHessianCovMatricesTKGroupClass<P_V,P_M>(m_options.m_prefix.c_str(),
                                                          m_vectorSpace,
-                                                         m_options.m_drScalesForCovMatrices,
+                                                         m_options.m_drScalesForExtraStages,
                                                          *m_targetPdfSynchronizer);
     if ((m_env.subDisplayFile()          ) &&
         (m_options.m_totallyMute == false)) {
@@ -309,7 +309,7 @@ uqMarkovChainSGClass<P_V,P_M>::commonConstructor()
 
     m_tk = new uqScaledCovMatrixTKGroupClass<P_V,P_M>(m_options.m_prefix.c_str(),
                                                       m_vectorSpace,
-                                                      m_options.m_drScalesForCovMatrices,
+                                                      m_options.m_drScalesForExtraStages,
                                                       *m_initialProposalCovMatrix);
     if ((m_env.subDisplayFile()          ) &&
         (m_options.m_totallyMute == false)) {
@@ -492,7 +492,7 @@ uqMarkovChainSGClass<P_V,P_M>::updateTK()
       (m_options.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::updateTK()"
                             << ": m_options.m_drMaxNumExtraStages = "           << m_options.m_drMaxNumExtraStages
-                            << ", m_options.m_drScalesForCovMatrices.size() = " << m_options.m_drScalesForCovMatrices.size()
+                            << ", m_options.m_drScalesForExtraStages.size() = " << m_options.m_drScalesForExtraStages.size()
 #ifdef UQ_USES_TK_CLASS
 #else
                             << ", m_lowerCholProposalCovMatrices.size() = " << m_lowerCholProposalCovMatrices.size()
@@ -503,7 +503,7 @@ uqMarkovChainSGClass<P_V,P_M>::updateTK()
 #ifdef UQ_USES_TK_CLASS
 #else
   for (unsigned int i = 1; i < (m_options.m_drMaxNumExtraStages+1); ++i) {
-    double scale = m_options.m_drScalesForCovMatrices[i];
+    double scale = m_options.m_drScalesForExtraStages[i];
     if (m_lowerCholProposalCovMatrices[i]) delete m_lowerCholProposalCovMatrices[i];
     m_lowerCholProposalCovMatrices [i]   = new P_M(*(m_lowerCholProposalCovMatrices[i-1]));
   *(m_lowerCholProposalCovMatrices [i]) /= scale;
