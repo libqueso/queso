@@ -37,23 +37,18 @@
 
 #include <uqEnvironment.h>
 #include <uqSequenceStatisticalOptions.h>
-#if 1
 #define UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE "."
 
 #define UQ_ML_SAMPLING_L_MARKOV_CHAIN_TYPE      1
 #define UQ_ML_SAMPLING_L_WHITE_NOISE_CHAIN_TYPE 2
 #define UQ_ML_SAMPLING_L_UNIFORM_CHAIN_TYPE     3
 #define UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE   "."
-#endif
 // _ODV = option default value
-#if 1
 #define UQ_ML_SAMPLING_L_DATA_OUTPUT_FILE_NAME_ODV                  UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
 #define UQ_ML_SAMPLING_L_DATA_OUTPUT_ALLOW_ODV                      ""
-#endif
 #define UQ_ML_SAMPLING_L_MIN_EFFECTIVE_SIZE_RATIO_ODV               0.5
 #define UQ_ML_SAMPLING_L_MAX_EXPONENT_ODV                           1.
 #define UQ_ML_SAMPLING_L_MAX_NUMBER_OF_ATTEMPTS_ODV                 1000
-#if 1
 #define UQ_ML_SAMPLING_L_TOTALLY_MUTE_ODV                           1
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_TYPE_ODV                         UQ_ML_SAMPLING_L_MARKOV_CHAIN_TYPE
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV         UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
@@ -80,27 +75,25 @@
 #define UQ_ML_SAMPLING_L_AM_ADAPT_INTERVAL_ODV                      0
 #define UQ_ML_SAMPLING_L_AM_ETA_ODV                                 1.
 #define UQ_ML_SAMPLING_L_AM_EPSILON_ODV                             1.e-5
-#endif
 
 class uqMLSamplingLevelOptionsClass
 {
 public:
   uqMLSamplingLevelOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix);
+  uqMLSamplingLevelOptionsClass(const uqMLSamplingLevelOptionsClass& inputOptions);
  ~uqMLSamplingLevelOptionsClass();
 
+  const uqBaseEnvironmentClass& env() const;
   void scanOptionsValues();
   void print            (std::ostream& os) const;
 
   std::string                        m_prefix;
 
-#if 1
   std::string                        m_dataOutputFileName;
   std::set<unsigned int>             m_dataOutputAllowedSet;
-#endif
   double                             m_minEffectiveSizeRatio;
   double                             m_maxExponent;
   unsigned int                       m_maxNumberOfAttempts;
-#if 1
   bool                               m_totallyMute;
   unsigned int                       m_rawChainType;
   std::string                        m_rawChainDataInputFileName;
@@ -112,6 +105,7 @@ public:
   std::set<unsigned int>             m_rawChainDataOutputAllowedSet;
   bool                               m_rawChainComputeStats;
   uqSequenceStatisticalOptionsClass* m_rawChainStatisticalOptions;
+  bool                               m_rawChainStatOptsInstantiated;
 
   bool                               m_filteredChainGenerate;
   double                             m_filteredChainDiscardedPortion; // input or set during run time
@@ -120,6 +114,7 @@ public:
   std::set<unsigned int>             m_filteredChainDataOutputAllowedSet;
   bool                               m_filteredChainComputeStats;
   uqSequenceStatisticalOptionsClass* m_filteredChainStatisticalOptions;
+  bool                               m_filteredChainStatOptsInstantiated;
 
   bool                               m_mhDisplayCandidates;
   bool                               m_mhPutOutOfBoundsInChain;
@@ -131,7 +126,7 @@ public:
   unsigned int                       m_amAdaptInterval;
   double                             m_amEta;
   double                             m_amEpsilon;
-#endif
+
 private:
   void   defineMyOptions  (po::options_description& optionsDesc) const;
   void   getMyOptionValues(po::options_description& optionsDesc);
@@ -141,14 +136,11 @@ private:
 
   std::string                   m_option_help;
 
-#if 1
   std::string                   m_option_dataOutputFileName;
   std::string                   m_option_dataOutputAllowedSet;
-#endif
   std::string                   m_option_minEffectiveSizeRatio;
   std::string                   m_option_maxExponent;
   std::string                   m_option_maxNumberOfAttempts;
-#if 1
   std::string                   m_option_totallyMute;
   std::string                   m_option_rawChain_type;
   std::string                   m_option_rawChain_dataInputFileName;
@@ -177,7 +169,6 @@ private:
   std::string                   m_option_am_adaptInterval;
   std::string                   m_option_am_eta;
   std::string                   m_option_am_epsilon;
-#endif
 };
 
 std::ostream& operator<<(std::ostream& os, const uqMLSamplingLevelOptionsClass& obj);

@@ -250,7 +250,7 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   m_lastChainSize                (0),
   m_lastMean                     (NULL),
   m_lastAdaptedCovMatrix         (NULL),
-  m_options                      (m_env,inputOptions)
+  m_options                      (inputOptions)
 {
   if ((m_env.subDisplayFile()          ) &&
       (m_options.m_totallyMute == false)) {

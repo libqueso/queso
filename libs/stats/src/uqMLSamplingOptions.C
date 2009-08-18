@@ -55,7 +55,16 @@ uqMLSamplingOptionsClass::~uqMLSamplingOptionsClass()
 {
   for (unsigned int i = 0; i < m_levelOptions.size(); ++i) {
     if (m_levelOptions[i] != NULL) {
+      //std::cout << "In uqMLSamplingOptionsClass::destructor()"
+      //          << ": i = " << i
+      //          << ", before delete"
+      //          << std::endl;
+      //sleep(1);
       delete m_levelOptions[i];
+      //std::cout << "In uqMLSamplingOptionsClass::destructor()"
+      //          << ": i = " << i
+      //          << ", after delete"
+      //          << std::endl;
       m_levelOptions[i] = NULL;
     }
   }

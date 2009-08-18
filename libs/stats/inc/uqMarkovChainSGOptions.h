@@ -82,7 +82,7 @@ class uqMarkovChainSGOptionsClass
 {
 public:
   uqMarkovChainSGOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix);
-  uqMarkovChainSGOptionsClass(const uqBaseEnvironmentClass& env, const uqMLSamplingLevelOptionsClass& inputOptions);
+  uqMarkovChainSGOptionsClass(const uqMLSamplingLevelOptionsClass& inputOptions);
  ~uqMarkovChainSGOptionsClass();
 
   void scanOptionsValues();

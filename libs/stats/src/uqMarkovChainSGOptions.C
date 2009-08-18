@@ -105,7 +105,6 @@ uqMarkovChainSGOptionsClass::uqMarkovChainSGOptionsClass(
 }
 
 uqMarkovChainSGOptionsClass::uqMarkovChainSGOptionsClass(
-  const uqBaseEnvironmentClass&        env,
   const uqMLSamplingLevelOptionsClass& inputOptions)
   :
   m_prefix                           (inputOptions.m_prefix),
@@ -141,7 +140,7 @@ uqMarkovChainSGOptionsClass::uqMarkovChainSGOptionsClass(
   m_amAdaptInterval                  (inputOptions.m_amAdaptInterval),
   m_amEta                            (inputOptions.m_amEta),
   m_amEpsilon                        (inputOptions.m_amEpsilon),
-  m_env                              (env),
+  m_env                              (inputOptions.env()),
   m_optionsDesc                      (NULL),
   m_option_help                              (m_prefix + "help"                              ),
   m_option_dataOutputFileName                (m_prefix + "dataOutputFileName"                ),
@@ -206,7 +205,7 @@ uqMarkovChainSGOptionsClass::scanOptionsValues()
                             << std::endl;
   }
 
-  if (m_rawChainComputeStats     ) {
+  if (m_rawChainComputeStats) {
     m_rawChainStatisticalOptions   = new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "rawChain_");
     m_rawChainStatOptsInstantiated = true;
   }

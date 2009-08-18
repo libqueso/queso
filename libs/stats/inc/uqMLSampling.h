@@ -64,11 +64,8 @@ public:
 
   /*! Constructor: */
   uqMLSamplingClass(/*! Prefix                  */ const char*                               prefix,                  
-                    /*! The source rv          *///const uqBaseVectorRVClass      <P_V,P_M>& sourceRv,                
                     /*! The prior rv            */ const uqBaseVectorRVClass      <P_V,P_M>& priorRv,            
                     /*! The likelihood function */ const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunction);
-                    /*! Initial chain position *///const P_V&                                initialPosition,
-                    /*! Proposal cov. matrix   *///const P_M*                                inputProposalCovMatrix);  
   /*! Destructor: */
  ~uqMLSamplingClass();
 
@@ -81,14 +78,10 @@ public:
 
 private:
   const uqBaseEnvironmentClass&             m_env;
-//const uqBaseVectorRVClass      <P_V,P_M>& m_sourceRv;
   const uqBaseVectorRVClass      <P_V,P_M>& m_priorRv;
   const uqBaseScalarFunctionClass<P_V,P_M>& m_likelihoodFunction;
   const uqVectorSpaceClass       <P_V,P_M>& m_vectorSpace;
         uqVectorSetClass         <P_V,P_M>* m_targetDomain;
-//      P_V                                 m_initialPosition;
-//const P_M*                                m_initialProposalCovMatrix;
-//      bool                                m_nullInputProposalCovMatrix;
 
         uqMLSamplingOptionsClass            m_options;
 
@@ -96,35 +89,23 @@ private:
         double                              m_totalEvidence;
 };
 
-#if 0
-  uqGenericVectorRVClass    <P_V,P_M>&    m_postRv;
-  m_postRv.setPdf(*m_solutionPdf);
-#endif
-
 template<class P_V,class P_M>
 std::ostream& operator<<(std::ostream& os, const uqMLSamplingClass<P_V,P_M>& obj);
 
 template<class P_V,class P_M>
 uqMLSamplingClass<P_V,P_M>::uqMLSamplingClass(
   const char*                               prefix,
-//const uqBaseVectorRVClass      <P_V,P_M>& sourceRv,
   const uqBaseVectorRVClass      <P_V,P_M>& priorRv,            
   const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunction)
-//const P_V&                                initialPosition,
-//const P_M*                                inputProposalCovMatrix)
   :
-  m_env                       (priorRv.env()),
-//m_sourceRv                  (sourceRv),
-  m_priorRv                   (priorRv),
-  m_likelihoodFunction        (likelihoodFunction),
-  m_vectorSpace               (m_priorRv.imageSet().vectorSpace()),
-  m_targetDomain              (uqInstantiateIntersection(m_priorRv.pdf().domainSet(),m_likelihoodFunction.domainSet())),
-//m_initialPosition           (initialPosition),
-//m_initialProposalCovMatrix  (inputProposalCovMatrix),
-//m_nullInputProposalCovMatrix(inputProposalCovMatrix == NULL),
-  m_options                   (m_env,prefix),
-  m_evidences                 (0),
-  m_totalEvidence             (1.)
+  m_env               (priorRv.env()),
+  m_priorRv           (priorRv),
+  m_likelihoodFunction(likelihoodFunction),
+  m_vectorSpace       (m_priorRv.imageSet().vectorSpace()),
+  m_targetDomain      (uqInstantiateIntersection(m_priorRv.pdf().domainSet(),m_likelihoodFunction.domainSet())),
+  m_options           (m_env,prefix),
+  m_evidences         (0),
+  m_totalEvidence     (1.)
 {
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering uqMLSamplingClass<P_V,P_M>::constructor()"
@@ -144,7 +125,6 @@ uqMLSamplingClass<P_V,P_M>::uqMLSamplingClass(
 template<class P_V,class P_M>
 uqMLSamplingClass<P_V,P_M>::~uqMLSamplingClass()
 {
-//if (m_nullInputProposalCovMatrix) delete m_initialProposalCovMatrix;
   if (m_targetDomain              ) delete m_targetDomain;
 }
 
@@ -174,10 +154,11 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
   //***********************************************************
   unsigned int currLevel = 0;
   {
+    uqMLSamplingLevelOptionsClass currOptions(*(m_options.m_levelOptions[currLevel]));
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
       *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
                               << ": beginning level " << currLevel+REF_ID
-                              << ", m_options.m_levelOptions[currLevel]->m_rawChainSize = " << m_options.m_levelOptions[currLevel]->m_rawChainSize
+                              << ", m_options.m_levelOptions[currLevel]->m_rawChainSize = " << currOptions.m_rawChainSize
                               << ", currExponent = "  << currExponent
                               << std::endl;
     }
@@ -185,30 +166,6 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     int iRC = UQ_OK_RC;
     struct timeval timevalLevel;
     iRC = gettimeofday(&timevalLevel, NULL);
-#if 0
-    uqBayesianJointPdfClass<P_V,P_M> currPdf(m_options.m_prefix.c_str(),
-                                             m_priorRv.pdf(),
-                                             m_likelihoodFunction,
-                                             currExponent,
-                                            *m_targetDomain);
-  //uqPoweredJointPdfClass<P_V,P_M> currPdf(m_options.m_prefix.c_str(),
-  //                                        m_sourceRv.pdf(),
-  //                                        currExponent);
-
-    uqGenericVectorRVClass<P_V,P_M> currRv(m_options.m_prefix.c_str(),
-                                           *m_targetDomain);
-
-    currRv.setPdf(currPdf);
-
-    uqMarkovChainSGClass<P_V,P_M> mcSeqGenerator(*(m_options.m_levelOptions[currLevel]),
-                                                 currRv,
-                                                 m_initialPosition,
-                                                 m_initialProposalCovMatrix);
-
-    mcSeqGenerator.generateSequence(currChain,
-                                    NULL,
-                                    &currLogTargetValues);
-#else
     currChain.resizeSequence          (m_options.m_levelOptions[currLevel]->m_rawChainSize);
     currLogTargetValues.resizeSequence(m_options.m_levelOptions[currLevel]->m_rawChainSize);
     P_V auxVec(m_vectorSpace.zeroVector());
@@ -231,7 +188,6 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
 
       genericOfsVar->close();
     }
-#endif
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
       *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
                               << ", level " << currLevel+REF_ID
