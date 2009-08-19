@@ -80,20 +80,20 @@ class uqMLSamplingLevelOptionsClass
 {
 public:
   uqMLSamplingLevelOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix);
-  uqMLSamplingLevelOptionsClass(const uqMLSamplingLevelOptionsClass& inputOptions);
+//uqMLSamplingLevelOptionsClass(const uqMLSamplingLevelOptionsClass& inputOptions);
  ~uqMLSamplingLevelOptionsClass();
 
   const uqBaseEnvironmentClass& env() const;
-  void scanOptionsValues();
+//void changePrefix     (const char* prefix);
+  void scanOptionsValues(const uqMLSamplingLevelOptionsClass* defaultOptions);
   void print            (std::ostream& os) const;
 
   std::string                        m_prefix;
 
   std::string                        m_dataOutputFileName;
   std::set<unsigned int>             m_dataOutputAllowedSet;
+  std::string                        m_str1;
   double                             m_minEffectiveSizeRatio;
-  double                             m_maxExponent;
-  unsigned int                       m_maxNumberOfAttempts;
   bool                               m_totallyMute;
   unsigned int                       m_rawChainType;
   std::string                        m_rawChainDataInputFileName;
@@ -103,6 +103,7 @@ public:
   bool                               m_rawChainMeasureRunTimes;
   std::string                        m_rawChainDataOutputFileName;
   std::set<unsigned int>             m_rawChainDataOutputAllowedSet;
+  std::string                        m_str2;
   bool                               m_rawChainComputeStats;
   uqSequenceStatisticalOptionsClass* m_rawChainStatisticalOptions;
   bool                               m_rawChainStatOptsInstantiated;
@@ -112,6 +113,7 @@ public:
   unsigned int                       m_filteredChainLag;              // input or set during run time
   std::string                        m_filteredChainDataOutputFileName;
   std::set<unsigned int>             m_filteredChainDataOutputAllowedSet;
+  std::string                        m_str3;
   bool                               m_filteredChainComputeStats;
   uqSequenceStatisticalOptionsClass* m_filteredChainStatisticalOptions;
   bool                               m_filteredChainStatOptsInstantiated;
@@ -122,12 +124,14 @@ public:
   bool                               m_tkUseNewtonComponent;
   unsigned int                       m_drMaxNumExtraStages;
   std::vector<double>                m_drScalesForExtraStages;
+  std::string                        m_str4;
   unsigned int                       m_amInitialNonAdaptInterval;
   unsigned int                       m_amAdaptInterval;
   double                             m_amEta;
   double                             m_amEpsilon;
 
 private:
+  void   copyOptionsValues(const uqMLSamplingLevelOptionsClass& srcOptions);
   void   defineMyOptions  (po::options_description& optionsDesc) const;
   void   getMyOptionValues(po::options_description& optionsDesc);
 

@@ -58,8 +58,8 @@ public:
   std::string                                 m_dataOutputFileName;
   std::set<unsigned int>                      m_dataOutputAllowedSet;
 //double                                      m_initialExponent;
-  unsigned int                                m_maxNumberOfLevels;
-  std::vector<uqMLSamplingLevelOptionsClass*> m_levelOptions;
+//unsigned int                                m_maxNumberOfLevels;
+//std::vector<uqMLSamplingLevelOptionsClass*> m_levelOptions;
 
 private:
   void   defineMyOptions  (po::options_description& optionsDesc) const;
@@ -73,7 +73,7 @@ private:
   std::string                   m_option_dataOutputFileName;
   std::string                   m_option_dataOutputAllowedSet;
 //std::string                   m_option_initialExponent;
-  std::string                   m_option_maxNumberOfLevels;
+//std::string                   m_option_maxNumberOfLevels;
 };
 
 std::ostream& operator<<(std::ostream& os, const uqMLSamplingOptionsClass& obj);

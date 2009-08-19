@@ -63,18 +63,18 @@ class uqMLSamplingClass
 public:
 
   /*! Constructor: */
-  uqMLSamplingClass(/*! Prefix                  */ const char*                               prefix,                  
-                    /*! The prior rv            */ const uqBaseVectorRVClass      <P_V,P_M>& priorRv,            
+  uqMLSamplingClass(/*! Prefix                  */ const char*                               prefix,
+                    /*! The prior rv            */ const uqBaseVectorRVClass      <P_V,P_M>& priorRv,
                     /*! The likelihood function */ const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunction);
   /*! Destructor: */
  ~uqMLSamplingClass();
 
   /*! Operation to generate the chain */
- void   generateSequence(uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
-                         uqScalarSequenceClass<double>*      workingTargetValues,
-                         uqScalarSequenceClass<double>*      workingLogTargetValues);
+  void   generateSequence(uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
+                          uqScalarSequenceClass<double>*      workingTargetValues,
+                          uqScalarSequenceClass<double>*      workingLogTargetValues);
 
-  void   print          (std::ostream& os) const;
+  void   print           (std::ostream& os) const;
 
 private:
   const uqBaseEnvironmentClass&             m_env;
@@ -85,8 +85,8 @@ private:
 
         uqMLSamplingOptionsClass            m_options;
 
-	std::vector<double>                 m_evidences;
-        double                              m_totalEvidence;
+	std::vector<double>                 m_logEvidenceFactors;
+        double                              m_logEvidence;
 };
 
 template<class P_V,class P_M>
@@ -104,8 +104,8 @@ uqMLSamplingClass<P_V,P_M>::uqMLSamplingClass(
   m_vectorSpace       (m_priorRv.imageSet().vectorSpace()),
   m_targetDomain      (uqInstantiateIntersection(m_priorRv.pdf().domainSet(),m_likelihoodFunction.domainSet())),
   m_options           (m_env,prefix),
-  m_evidences         (0),
-  m_totalEvidence     (1.)
+  m_logEvidenceFactors(0),
+  m_logEvidence       (0.)
 {
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering uqMLSamplingClass<P_V,P_M>::constructor()"
@@ -113,8 +113,6 @@ uqMLSamplingClass<P_V,P_M>::uqMLSamplingClass(
   }
 
   m_options.scanOptionsValues();
-
-  m_evidences.resize(m_options.m_maxNumberOfLevels,1.); // Yes, '1'
 
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Leaving uqMLSamplingClass<P_V,P_M>::constructor()"
@@ -152,22 +150,33 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
   //***********************************************************
   // Take care of first level
   //***********************************************************
+  uqMLSamplingLevelOptionsClass defaultLevelOptions(m_env,(m_options.m_prefix + "default_").c_str());
+  defaultLevelOptions.scanOptionsValues(NULL);
+
+  uqMLSamplingLevelOptionsClass lastLevelOptions(m_env,(m_options.m_prefix + "last_").c_str());
+  lastLevelOptions.scanOptionsValues(&defaultLevelOptions);
+
+  char tmpSufix[256];
+
   unsigned int currLevel = 0;
   {
-    uqMLSamplingLevelOptionsClass currOptions(*(m_options.m_levelOptions[currLevel]));
+    sprintf(tmpSufix,"%d_",currLevel+REF_ID); // Yes, '+0'
+    uqMLSamplingLevelOptionsClass currOptions(m_env,(m_options.m_prefix + tmpSufix).c_str());
+    currOptions.scanOptionsValues(&defaultLevelOptions);
+
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
       *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                              << ": beginning level " << currLevel+REF_ID
-                              << ", m_options.m_levelOptions[currLevel]->m_rawChainSize = " << currOptions.m_rawChainSize
-                              << ", currExponent = "  << currExponent
+                              << ": beginning level "              << currLevel+REF_ID
+                              << ", currOptions.m_rawChainSize = " << currOptions.m_rawChainSize
+                              << ", currExponent = "               << currExponent
                               << std::endl;
     }
 
     int iRC = UQ_OK_RC;
     struct timeval timevalLevel;
     iRC = gettimeofday(&timevalLevel, NULL);
-    currChain.resizeSequence          (m_options.m_levelOptions[currLevel]->m_rawChainSize);
-    currLogTargetValues.resizeSequence(m_options.m_levelOptions[currLevel]->m_rawChainSize);
+    currChain.resizeSequence          (currOptions.m_rawChainSize);
+    currLogTargetValues.resizeSequence(currOptions.m_rawChainSize);
     P_V auxVec(m_vectorSpace.zeroVector());
     for (unsigned int i = 0; i < currChain.subSequenceSize(); ++i) {
       m_priorRv.realizer().realization(auxVec);
@@ -175,15 +184,15 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
       currLogTargetValues[i] = -.5*m_likelihoodFunction.minus2LnValue(auxVec,NULL,NULL,NULL,NULL);
     }
 
-    if (m_options.m_levelOptions[currLevel]->m_rawChainComputeStats) {
+    if (currOptions.m_rawChainComputeStats) {
       std::ofstream* genericOfsVar = NULL;
-      m_env.openOutputFile(m_options.m_levelOptions[currLevel]->m_dataOutputFileName,
+      m_env.openOutputFile(currOptions.m_dataOutputFileName,
                            UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
-                           m_options.m_levelOptions[currLevel]->m_dataOutputAllowedSet,
+                           currOptions.m_dataOutputAllowedSet,
                            false,
                            genericOfsVar);
 
-      currChain.computeStatistics(*m_options.m_levelOptions[currLevel]->m_rawChainStatisticalOptions,
+      currChain.computeStatistics(*currOptions.m_rawChainStatisticalOptions,
                                   genericOfsVar);
 
       genericOfsVar->close();
@@ -206,7 +215,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
       //                        << std::endl;
     }
 
-    //UQ_FATAL_TEST_MACRO((currChain.subSequenceSize() != m_options.m_levelOptions[currLevel]->m_rawChainSize),
+    //UQ_FATAL_TEST_MACRO((currChain.subSequenceSize() != currOptions.m_rawChainSize),
     //                    m_env.fullRank(),
     //                    "uqMLSamplingClass<P_V,P_M>::generateSequence()",
     //                    "currChain (first one) has been generated with invalid size");
@@ -223,14 +232,19 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
   //***********************************************************
   // Take care of remaining levels
   //***********************************************************
-  while ((currLevel    < (m_options.m_maxNumberOfLevels-1)) &&
-         (currExponent < 1                                )) {
+//  while ((currLevel    < (m_options.m_maxNumberOfLevels-1)) &&
+//         (currExponent < 1                                )) {
+  while (currExponent < 1.) {
     currLevel++;
+
+    sprintf(tmpSufix,"%d_",currLevel+REF_ID); // Yes, '+0'
+    uqMLSamplingLevelOptionsClass* currOptions = new uqMLSamplingLevelOptionsClass(m_env,(m_options.m_prefix + tmpSufix).c_str());
+    currOptions->scanOptionsValues(&defaultLevelOptions);
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
       *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                              << ": beginning level " << currLevel+REF_ID
-                              << ", m_options.m_levelOptions[currLevel]->m_rawChainSize = " << m_options.m_levelOptions[currLevel]->m_rawChainSize
+                              << ": beginning level "               << currLevel+REF_ID
+                              << ", currOptions->m_rawChainSize = " << currOptions->m_rawChainSize
                               << std::endl;
     }
 
@@ -259,7 +273,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
 
       prevChain = currChain;
       currChain.clear();
-      currChain.setName(m_options.m_levelOptions[currLevel]->m_prefix + "rawChain");
+      currChain.setName(currOptions->m_prefix + "rawChain");
 
       prevLogTargetValues = currLogTargetValues;
       currLogTargetValues.clear();
@@ -292,12 +306,14 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                                 << std::endl;
       }
 
-      double exponentQuanta = std::min(1.,m_options.m_levelOptions[currLevel]->m_maxExponent) - prevExponent;
-      exponentQuanta /= (double) m_options.m_levelOptions[currLevel]->m_maxNumberOfAttempts;
+      double exponentQuanta = 1. - prevExponent;
+      unsigned int numQuanta = 1000;
+      exponentQuanta /= (double) numQuanta;
 
       unsigned int currAttempt = 0;
       double auxRatio = 0.;
       bool testResult = false;
+      double tmpEvidenceFactor = 0.;
       do {
         if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
           *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
@@ -305,7 +321,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                                   << ": entering loop for computing next exponent, with currAttempt = " << currAttempt
                                   << std::endl;
         }
-        currExponent = m_options.m_levelOptions[currLevel]->m_maxExponent - currAttempt*exponentQuanta;
+        currExponent = 1. - currAttempt*exponentQuanta;
         double auxExp = currExponent;
         if (prevExponent != 0.) {
           auxExp /= prevExponent;
@@ -327,7 +343,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
           //                          << std::endl;
           //}
         }
-        m_evidences[currLevel] = weightSum/m_options.m_levelOptions[currLevel-1]->m_rawChainSize; // FIX ME: unified
+        tmpEvidenceFactor = weightSum/prevChain.unifiedSequenceSize(); // FIX ME: unified
         double effectiveSampleSize = 0.;
         for (unsigned int i = 0; i < weightSequence.subSequenceSize(); ++i) {
           weightSequence[i] /= weightSum;
@@ -347,7 +363,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                             "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                             "effective sample size ratio cannot be > 1");
 
-        testResult = (auxRatio >= m_options.m_levelOptions[currLevel]->m_minEffectiveSizeRatio);
+        testResult = (auxRatio >= currOptions->m_minEffectiveSizeRatio);
         if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
           *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
                                   << ", level "                   << currLevel+REF_ID
@@ -356,17 +372,19 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                                   << ", effectiveSampleSize = "   << effectiveSampleSize
                                   << ", weightSequenceSize = "    << weightSequence.subSequenceSize()
                                   << ", effectiveSizeRatio = "    << auxRatio
-                                  << ", minEffectiveSizeRatio = " << m_options.m_levelOptions[currLevel]->m_minEffectiveSizeRatio
+                                  << ", minEffectiveSizeRatio = " << currOptions->m_minEffectiveSizeRatio
                                   << std::endl;
         }
         currAttempt++;
-      } while ((currAttempt < m_options.m_levelOptions[currLevel]->m_maxNumberOfAttempts) &&
-               (testResult == false));
+      } while ((currAttempt < numQuanta) &&
+               (testResult == false    ));
 
       UQ_FATAL_TEST_MACRO((testResult == false),
                           m_env.fullRank(),
                           "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                           "test for next exponent failed even after maximum number of attempts");
+
+      m_logEvidenceFactors.push_back(log(tmpEvidenceFactor));
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
@@ -375,7 +393,8 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                                 << ", weightSequence.unifiedSequenceSize() = " << weightSequence.unifiedSequenceSize()
                                 << ", currExponent = "                         << currExponent
                                 << ", effective ratio = "                      << auxRatio
-                                << ", evidence = "                             << m_evidences[currLevel]
+                                << ", log(evidence factor) = "                 << m_logEvidenceFactors[m_logEvidenceFactors.size()-1]
+                                << ", evidence factor = "                      << exp(m_logEvidenceFactors[m_logEvidenceFactors.size()-1])
                                 << std::endl;
 
         //unsigned int numZeros = 0;
@@ -387,6 +406,17 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
         //}
         //*m_env.subDisplayFile() << "Number of zeros in weightSequence = " << numZeros
         //                        << std::endl;
+      }
+
+      if (currExponent == 1.) {
+        if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+          *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                                  << ", level " << currLevel+REF_ID
+                                  << ": copying 'last' level options to current options"
+                                  << std::endl;
+        }
+        delete currOptions;
+        currOptions = &lastLevelOptions;
       }
     } // end of step 2
 
@@ -477,7 +507,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                                         "",
                                         unifiedWeightStdVector);
 
-        unsigned int subChainSize = m_options.m_levelOptions[currLevel]->m_rawChainSize;
+        unsigned int subChainSize = currOptions->m_rawChainSize;
         unsigned int unifiedChainSize = m_env.inter0Comm().NumProc() * subChainSize;
 
         // Generate 'unifiedChainSize' samples from 'tmpFD'
@@ -514,7 +544,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
       }
 
       unsigned int auxNode = 0;
-      unsigned int numberOfPositionsToGuaranteeForNode = m_options.m_levelOptions[currLevel]->m_rawChainSize;
+      unsigned int numberOfPositionsToGuaranteeForNode = currOptions->m_rawChainSize;
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
                                 << ", level " << currLevel+REF_ID
@@ -554,7 +584,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
 
             // Go to next node
             auxNode++;
-            numberOfPositionsToGuaranteeForNode = m_options.m_levelOptions[currLevel]->m_rawChainSize;
+            numberOfPositionsToGuaranteeForNode = currOptions->m_rawChainSize;
           }
         }
       }
@@ -562,7 +592,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                           m_env.fullRank(),
                           "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                           "auxNode exited loop with wrong value");
-      UQ_FATAL_TEST_MACRO(numberOfPositionsToGuaranteeForNode != m_options.m_levelOptions[currLevel]->m_rawChainSize,
+      UQ_FATAL_TEST_MACRO(numberOfPositionsToGuaranteeForNode != currOptions->m_rawChainSize,
                           m_env.fullRank(),
                           "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                           "numberOfPositionsToGuaranteeForNode exited loop with wrong value");
@@ -604,9 +634,6 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                                              m_likelihoodFunction,
                                              currExponent,
                                             *m_targetDomain);
-  //uqPoweredJointPdfClass<P_V,P_M> currPdf(m_options.m_prefix.c_str(),
-  //                                        m_sourceRv.pdf(),
-  //                                        currExponent);
 
     uqGenericVectorRVClass<P_V,P_M> currRv(m_options.m_prefix.c_str(),
                                            *m_targetDomain);
@@ -634,27 +661,27 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
       }
 
       P_V auxInitialPosition(m_vectorSpace.zeroVector());
-      bool         savedTotallyMute           = m_options.m_levelOptions[currLevel]->m_totallyMute;
-      unsigned int savedRawChainSize          = m_options.m_levelOptions[currLevel]->m_rawChainSize;
-      bool         savedRawChainComputeStats  = m_options.m_levelOptions[currLevel]->m_rawChainComputeStats;
-      bool         savedFilteredChainGenerate = m_options.m_levelOptions[currLevel]->m_filteredChainGenerate;
+      bool         savedTotallyMute           = currOptions->m_totallyMute;
+      unsigned int savedRawChainSize          = currOptions->m_rawChainSize;
+      bool         savedRawChainComputeStats  = currOptions->m_rawChainComputeStats;
+      bool         savedFilteredChainGenerate = currOptions->m_filteredChainGenerate;
       if (m_env.inter0Rank() >= 0) { // FIX ME
         for (unsigned int chainId = 0; chainId < nodes[m_env.subId()].linkedChains.size(); ++chainId) {
           unsigned int auxIndex = nodes[m_env.subId()].linkedChains[chainId].initialPositionIndexInPreviousChain;
           prevChain.getPositionValues(auxIndex,auxInitialPosition); // FIX ME
 
           unsigned int auxNumPositions = nodes[m_env.subId()].linkedChains[chainId].numberOfPositions;
-          m_options.m_levelOptions[currLevel]->m_totallyMute           = true;
-          m_options.m_levelOptions[currLevel]->m_rawChainSize          = auxNumPositions+1; // IMPORTANT: '+1' in order to discard initial position afterwards
-          m_options.m_levelOptions[currLevel]->m_rawChainComputeStats  = false;
-          m_options.m_levelOptions[currLevel]->m_filteredChainGenerate = false;
+          currOptions->m_totallyMute           = true;
+          currOptions->m_rawChainSize          = auxNumPositions+1; // IMPORTANT: '+1' in order to discard initial position afterwards
+          currOptions->m_rawChainComputeStats  = false;
+          currOptions->m_filteredChainGenerate = false;
 
           uqSequenceOfVectorsClass<P_V,P_M> tmpChain(m_vectorSpace,
                                                      0,
                                                      m_options.m_prefix+"tmp_chain");
           uqScalarSequenceClass<double> tmpLogTargetValues(m_env,0);
 
-          uqMarkovChainSGClass<P_V,P_M> mcSeqGenerator(*(m_options.m_levelOptions[currLevel]),
+          uqMarkovChainSGClass<P_V,P_M> mcSeqGenerator(*currOptions,
                                                        currRv,
                                                        auxInitialPosition,
                                                        unifiedCovMatrix);
@@ -665,9 +692,9 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
           cumulativeRawChainRunTime += mcSeqGenerator.rawChainRunTime();
           cumulativeNumRejections   += mcSeqGenerator.numRejections();
         
-          if ((m_env.subDisplayFile()                                     ) &&
-              (m_env.displayVerbosity() >= 0                              ) &&
-              (m_options.m_levelOptions[currLevel]->m_totallyMute == false)) {
+          if ((m_env.subDisplayFile()            ) &&
+              (m_env.displayVerbosity() >= 0     ) &&
+              (currOptions->m_totallyMute == false)) {
             *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
                                     << ", level "               << currLevel+REF_ID
                                     << ", chainId = "           << chainId
@@ -681,37 +708,40 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
           currLogTargetValues.append(tmpLogTargetValues,1,tmpLogTargetValues.subSequenceSize()-1); // IMPORTANT: '1' in order to discard initial position
         }
       }
-      m_options.m_levelOptions[currLevel]->m_totallyMute           = savedTotallyMute;
-      m_options.m_levelOptions[currLevel]->m_rawChainSize          = savedRawChainSize;
-      m_options.m_levelOptions[currLevel]->m_rawChainComputeStats  = savedRawChainComputeStats;
-      m_options.m_levelOptions[currLevel]->m_filteredChainGenerate = savedFilteredChainGenerate; // FIX ME
+      currOptions->m_totallyMute           = savedTotallyMute;
+      currOptions->m_rawChainSize          = savedRawChainSize;
+      currOptions->m_rawChainComputeStats  = savedRawChainComputeStats;
+      currOptions->m_filteredChainGenerate = savedFilteredChainGenerate; // FIX ME
 
-      if (m_options.m_levelOptions[currLevel]->m_rawChainComputeStats) {
+      if (currOptions->m_rawChainComputeStats) {
         std::ofstream* genericOfsVar = NULL;
-        m_env.openOutputFile(m_options.m_levelOptions[currLevel]->m_dataOutputFileName,
+        m_env.openOutputFile(currOptions->m_dataOutputFileName,
                              UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
-                             m_options.m_levelOptions[currLevel]->m_dataOutputAllowedSet,
+                             currOptions->m_dataOutputAllowedSet,
                              false,
                              genericOfsVar);
 
-        currChain.computeStatistics(*m_options.m_levelOptions[currLevel]->m_rawChainStatisticalOptions,
+        currChain.computeStatistics(*currOptions->m_rawChainStatisticalOptions,
                                     genericOfsVar);
 
         genericOfsVar->close();
       }
 
-      if (m_options.m_levelOptions[currLevel]->m_filteredChainGenerate) {
+      //std::cout << "In loop, pos 1" << std::endl;
+      //sleep(1);
+
+      if (currOptions->m_filteredChainGenerate) {
         std::ofstream* genericOfsVar = NULL;
-        m_env.openOutputFile(m_options.m_levelOptions[currLevel]->m_dataOutputFileName,
+        m_env.openOutputFile(currOptions->m_dataOutputFileName,
                              UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
-                             m_options.m_levelOptions[currLevel]->m_dataOutputAllowedSet,
+                             currOptions->m_dataOutputAllowedSet,
                              false,
                              genericOfsVar);
 
-        unsigned int filterInitialPos = (unsigned int) (m_options.m_levelOptions[currLevel]->m_filteredChainDiscardedPortion * (double) currChain.subSequenceSize());
-        unsigned int filterSpacing    = m_options.m_levelOptions[currLevel]->m_filteredChainLag;
+        unsigned int filterInitialPos = (unsigned int) (currOptions->m_filteredChainDiscardedPortion * (double) currChain.subSequenceSize());
+        unsigned int filterSpacing    = currOptions->m_filteredChainLag;
         if (filterSpacing == 0) {
-          currChain.computeFilterParams(*m_options.m_levelOptions[currLevel]->m_filteredChainStatisticalOptions,
+          currChain.computeFilterParams(*currOptions->m_filteredChainStatisticalOptions,
                                         genericOfsVar,
                                         filterInitialPos,
                                         filterSpacing);
@@ -720,13 +750,13 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
         // Filter positions from the converged portion of the chain
         currChain.filter(filterInitialPos,
                          filterSpacing);
-        currChain.setName(m_options.m_levelOptions[currLevel]->m_prefix + "filtChain");
+        currChain.setName(currOptions->m_prefix + "filtChain");
 
         currLogTargetValues.filter(filterInitialPos,
                                    filterSpacing);
 
-        if (m_options.m_levelOptions[currLevel]->m_filteredChainComputeStats) {
-          currChain.computeStatistics(*m_options.m_levelOptions[currLevel]->m_filteredChainStatisticalOptions,
+        if (currOptions->m_filteredChainComputeStats) {
+          currChain.computeStatistics(*currOptions->m_filteredChainStatisticalOptions,
                                       genericOfsVar);
         }
 
@@ -741,7 +771,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                                 << std::endl;
       }
 
-      //UQ_FATAL_TEST_MACRO((currChain.subSequenceSize() != m_options.m_levelOptions[currLevel]->m_rawChainSize),
+      //UQ_FATAL_TEST_MACRO((currChain.subSequenceSize() != currOptions->m_rawChainSize),
       //                    m_env.fullRank(),
       //                    "uqMLSamplingClass<P_V,P_M>::generateSequence()",
       //                    "currChain (a linked one) has been generated with invalid size");
@@ -760,24 +790,31 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                               << " after " << levelRunTime << " seconds"
                               << ", cumulativeRawChainRunTime = " << cumulativeRawChainRunTime << " seconds"
                               << ", cumulativeNumRejections = "   << cumulativeNumRejections
-                              << "(" << 100.*((double) cumulativeNumRejections)/((double) m_options.m_levelOptions[currLevel]->m_rawChainSize)
+                              << " (" << 100.*((double) cumulativeNumRejections)/((double) currOptions->m_rawChainSize)
                               << "%)" // FIX ME: unified
                               << std::endl;
     }
-  } // end of level loop
+    if (currExponent != 1.) delete currOptions;
+  } // end of level while
 
   UQ_FATAL_TEST_MACRO((currExponent < 1),
                       m_env.fullRank(),
                       "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                       "exponent has not achieved value '1' even after maximum number of levels");
 
-  m_totalEvidence = 1.;
-  for (unsigned int i = 0; i < m_options.m_maxNumberOfLevels; ++i) {
-    m_totalEvidence *= m_evidences[i];
+  UQ_FATAL_TEST_MACRO((currLevel != m_logEvidenceFactors.size()),
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                      "exponent has not achieved value '1' even after maximum number of levels");
+
+  m_logEvidence = 0.;
+  for (unsigned int i = 0; i < m_logEvidenceFactors.size(); ++i) {
+    m_logEvidence += m_logEvidenceFactors[i];
   }
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                            << ", m_totalEvidence = " << m_totalEvidence
+                            << ", log(evidence) = " << m_logEvidence
+                            << ", evidence = "      << exp(m_logEvidence)
                             << std::endl;
   }
 
