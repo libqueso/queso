@@ -41,8 +41,6 @@
 // _ODV = option default value
 #define UQ_ML_SAMPLING_DATA_OUTPUT_FILE_NAME_ODV   UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE
 #define UQ_ML_SAMPLING_DATA_OUTPUT_ALLOWED_SET_ODV ""
-//#define UQ_ML_SAMPLING_INITIAL_EXPONENT_ODV        0.2
-#define UQ_ML_SAMPLING_MAX_NUMBER_OF_LEVELS_ODV    1
 
 class uqMLSamplingOptionsClass
 {
@@ -53,13 +51,10 @@ public:
   void scanOptionsValues();
   void print            (std::ostream& os) const;
 
-  std::string                                 m_prefix;
+  std::string            m_prefix;
 
-  std::string                                 m_dataOutputFileName;
-  std::set<unsigned int>                      m_dataOutputAllowedSet;
-//double                                      m_initialExponent;
-//unsigned int                                m_maxNumberOfLevels;
-//std::vector<uqMLSamplingLevelOptionsClass*> m_levelOptions;
+  std::string            m_dataOutputFileName;
+  std::set<unsigned int> m_dataOutputAllowedSet;
 
 private:
   void   defineMyOptions  (po::options_description& optionsDesc) const;
@@ -69,11 +64,8 @@ private:
   po::options_description*      m_optionsDesc;
 
   std::string                   m_option_help;
-
   std::string                   m_option_dataOutputFileName;
   std::string                   m_option_dataOutputAllowedSet;
-//std::string                   m_option_initialExponent;
-//std::string                   m_option_maxNumberOfLevels;
 };
 
 std::ostream& operator<<(std::ostream& os, const uqMLSamplingOptionsClass& obj);

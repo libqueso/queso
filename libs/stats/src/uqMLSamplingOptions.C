@@ -38,38 +38,16 @@ uqMLSamplingOptionsClass::uqMLSamplingOptionsClass(const uqBaseEnvironmentClass&
   m_prefix                     ((std::string)(prefix) + "ml_"),
   m_dataOutputFileName         (UQ_ML_SAMPLING_DATA_OUTPUT_FILE_NAME_ODV),
 //m_dataOutputAllowedSet       (),
-//m_initialExponent            (UQ_ML_SAMPLING_INITIAL_EXPONENT_ODV),
-//m_maxNumberOfLevels          (UQ_ML_SAMPLING_MAX_NUMBER_OF_LEVELS_ODV),
-//m_levelOptions               (0),
   m_env                        (env),
   m_optionsDesc                (new po::options_description("Multilevel sampling options")),
   m_option_help                (m_prefix + "help"                ),
   m_option_dataOutputFileName  (m_prefix + "dataOutputFileName"  ),
   m_option_dataOutputAllowedSet(m_prefix + "dataOutputAllowedSet")
-//m_option_initialExponent     (m_prefix + "initialExponent"     ),
-//m_option_maxNumberOfLevels   (m_prefix + "maxNumberOfLevels"   )
 {
 }
 
 uqMLSamplingOptionsClass::~uqMLSamplingOptionsClass()
 {
-#if 0
-  for (unsigned int i = 0; i < m_levelOptions.size(); ++i) {
-    if (m_levelOptions[i] != NULL) {
-      //std::cout << "In uqMLSamplingOptionsClass::destructor()"
-      //          << ": i = " << i
-      //          << ", before delete"
-      //          << std::endl;
-      //sleep(1);
-      delete m_levelOptions[i];
-      //std::cout << "In uqMLSamplingOptionsClass::destructor()"
-      //          << ": i = " << i
-      //          << ", after delete"
-      //          << std::endl;
-      m_levelOptions[i] = NULL;
-    }
-  }
-#endif
   if (m_optionsDesc) delete m_optionsDesc;
 } 
 
@@ -87,15 +65,7 @@ uqMLSamplingOptionsClass::scanOptionsValues()
                             << "\n" << *this
                             << std::endl;
   }
-#if 0
-  char tmpSufix[256];
-  m_levelOptions.resize(m_maxNumberOfLevels,NULL);
-  for (unsigned int i = 0; i < m_levelOptions.size(); ++i) {
-    sprintf(tmpSufix,"%d_",i+REF_ID); // Yes, '+0'
-    m_levelOptions[i] = new uqMLSamplingLevelOptionsClass(m_env,(m_prefix + tmpSufix).c_str());
-    m_levelOptions[i]->scanOptionsValues();
-  }
-#endif
+
   return;
 };
 
@@ -106,8 +76,6 @@ uqMLSamplingOptionsClass::defineMyOptions(po::options_description& optionsDesc) 
     (m_option_help.c_str(),                                                                                                       "produce help message for multilevel sampling options")
     (m_option_dataOutputFileName.c_str(),   po::value<std::string >()->default_value(UQ_ML_SAMPLING_DATA_OUTPUT_FILE_NAME_ODV  ), "name of generic output file"                         )
     (m_option_dataOutputAllowedSet.c_str(), po::value<std::string >()->default_value(UQ_ML_SAMPLING_DATA_OUTPUT_ALLOWED_SET_ODV), "subEnvs that will write to generic output file"      )
-  //(m_option_initialExponent.c_str(),      po::value<double      >()->default_value(UQ_ML_SAMPLING_INITIAL_EXPONENT_ODV       ), "initial exponent"                                    )
-  //(m_option_maxNumberOfLevels.c_str(),    po::value<unsigned int>()->default_value(UQ_ML_SAMPLING_MAX_NUMBER_OF_LEVELS_ODV   ), "maximum number of levels"                            )
   ;
 
   return;
@@ -140,14 +108,6 @@ uqMLSamplingOptionsClass::getMyOptionValues(po::options_description& optionsDesc
     }
   }
 
-//if (m_env.allOptionsMap().count(m_option_initialExponent.c_str())) {
-//  m_initialExponent = ((const po::variable_value&) m_env.allOptionsMap()[m_option_initialExponent.c_str()]).as<double>();
-//}
-
-//if (m_env.allOptionsMap().count(m_option_maxNumberOfLevels.c_str())) {
-//  m_maxNumberOfLevels = ((const po::variable_value&) m_env.allOptionsMap()[m_option_maxNumberOfLevels.c_str()]).as<unsigned int>();
-//}
-
   return;
 }
 
@@ -159,13 +119,7 @@ uqMLSamplingOptionsClass::print(std::ostream& os) const
   for (std::set<unsigned int>::iterator setIt = m_dataOutputAllowedSet.begin(); setIt != m_dataOutputAllowedSet.end(); ++setIt) {
     os << *setIt << " ";
   }
-//os << "\n" << m_option_initialExponent   << " = " << m_initialExponent
-//os << "\n" << m_option_maxNumberOfLevels << " = " << m_maxNumberOfLevels
-//   << "\n";
-
-//for (unsigned int i = 0; i < m_levelOptions.size(); ++i) {
-//  os << "\n" << *(m_levelOptions[i]);
-//}
+  os << "\n";
 
   return;
 }

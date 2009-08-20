@@ -33,7 +33,7 @@
 #ifndef __UQ_MULTI_LEVEL_SAMPLING_LEVEL_OPTIONS_H__
 #define __UQ_MULTI_LEVEL_SAMPLING_LEVEL_OPTIONS_H__
 
-#define REF_ID 0
+#define LEVEL_REF_ID 0
 
 #include <uqEnvironment.h>
 #include <uqSequenceStatisticalOptions.h>
