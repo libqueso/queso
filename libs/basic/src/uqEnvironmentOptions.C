@@ -38,7 +38,7 @@ uqEnvironmentOptionsClass::uqEnvironmentOptionsClass(const uqBaseEnvironmentClas
   m_numSubEnvironments       (UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),
   m_subDisplayFileName       (UQ_ENV_SUB_DISPLAY_FILE_NAME_ODV),
   m_subDisplayAllowAll       (UQ_ENV_SUB_DISPLAY_ALLOW_ALL_ODV),
-//m_subDisplayAllowSet       (),
+//m_subDisplayAllowedSet     (),
   m_displayVerbosity         (UQ_ENV_DISPLAY_VERBOSITY_ODV),
   m_syncVerbosity            (UQ_ENV_SYNC_VERBOSITY_ODV),
   m_seed                     (UQ_ENV_SEED_ODV),
@@ -88,15 +88,15 @@ void
 uqEnvironmentOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
 {
   optionsDesc.add_options()
-    (m_option_help.c_str(),                                                                                           "produce help message for uq environment"  )
-    (m_option_numSubEnvironments.c_str(), po::value<unsigned int>()->default_value(UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),  "number of subEnvironments"                )
-    (m_option_subDisplayFileName.c_str(), po::value<std::string >()->default_value(UQ_ENV_SUB_DISPLAY_FILE_NAME_ODV), "output filename for subscreen writing"    )
-    (m_option_subDisplayAllowAll.c_str(), po::value<bool        >()->default_value(UQ_ENV_SUB_DISPLAY_ALLOW_ALL_ODV), "Allow all subEnvs to write to output file")
-    (m_option_subDisplayAllow.c_str(),    po::value<std::string >()->default_value(UQ_ENV_SUB_DISPLAY_ALLOW_ODV),     "subEnvs that will write to output file"   )
-    (m_option_displayVerbosity.c_str(),   po::value<unsigned int>()->default_value(UQ_ENV_DISPLAY_VERBOSITY_ODV),     "set verbosity"                            )
-    (m_option_syncVerbosity.c_str(),      po::value<unsigned int>()->default_value(UQ_ENV_SYNC_VERBOSITY_ODV),        "set sync verbosity"                       )
-    (m_option_seed.c_str(),               po::value<int         >()->default_value(UQ_ENV_SEED_ODV),                  "set seed"                                 )
-  //(m_option_numDebugParams.c_str(),     po::value<unsigned int>()->default_value(UQ_ENV_NUM_DEBUG_PARAMS_ODV),      "set number of debug parameters"           )
+    (m_option_help.c_str(),                                                                                             "produce help message for uq environment"  )
+    (m_option_numSubEnvironments.c_str(), po::value<unsigned int>()->default_value(UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),    "number of subEnvironments"                )
+    (m_option_subDisplayFileName.c_str(), po::value<std::string >()->default_value(UQ_ENV_SUB_DISPLAY_FILE_NAME_ODV),   "output filename for subscreen writing"    )
+    (m_option_subDisplayAllowAll.c_str(), po::value<bool        >()->default_value(UQ_ENV_SUB_DISPLAY_ALLOW_ALL_ODV),   "Allow all subEnvs to write to output file")
+    (m_option_subDisplayAllow.c_str(),    po::value<std::string >()->default_value(UQ_ENV_SUB_DISPLAY_ALLOWED_SET_ODV), "subEnvs that will write to output file"   )
+    (m_option_displayVerbosity.c_str(),   po::value<unsigned int>()->default_value(UQ_ENV_DISPLAY_VERBOSITY_ODV),       "set verbosity"                            )
+    (m_option_syncVerbosity.c_str(),      po::value<unsigned int>()->default_value(UQ_ENV_SYNC_VERBOSITY_ODV),          "set sync verbosity"                       )
+    (m_option_seed.c_str(),               po::value<int         >()->default_value(UQ_ENV_SEED_ODV),                    "set seed"                                 )
+  //(m_option_numDebugParams.c_str(),     po::value<unsigned int>()->default_value(UQ_ENV_NUM_DEBUG_PARAMS_ODV),        "set number of debug parameters"           )
   ;
 
   return;
@@ -134,12 +134,12 @@ uqEnvironmentOptionsClass::getMyOptionValues(po::options_description& optionsDes
   }
 
   if (m_subDisplayAllowAll) {
-    m_subDisplayAllowSet.clear();
+    m_subDisplayAllowedSet.clear();
     // The line below is commented because 'm_subId' is not set at this point yet
-    //m_subDisplayAllowSet.insert((unsigned int) m_subId);
+    //m_subDisplayAllowedSet.insert((unsigned int) m_subId);
   }
   else if (m_env.allOptionsMap().count(m_option_subDisplayAllow.c_str())) {
-    m_subDisplayAllowSet.clear();
+    m_subDisplayAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
     std::string inputString = m_env.allOptionsMap()[m_option_subDisplayAllow.c_str()].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpAllow);
@@ -153,7 +153,7 @@ uqEnvironmentOptionsClass::getMyOptionValues(po::options_description& optionsDes
 
     if (tmpAllow.size() > 0) {
       for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
-        m_subDisplayAllowSet.insert((unsigned int) tmpAllow[i]);
+        m_subDisplayAllowedSet.insert((unsigned int) tmpAllow[i]);
       }
     }
   }
@@ -184,7 +184,7 @@ uqEnvironmentOptionsClass::print(std::ostream& os) const
      << "\n" << m_option_subDisplayFileName << " = " << m_subDisplayFileName
      << "\n" << m_option_subDisplayAllowAll << " = " << m_subDisplayAllowAll
      << "\n" << m_option_subDisplayAllow << " = ";
-  for (std::set<unsigned int>::iterator setIt = m_subDisplayAllowSet.begin(); setIt != m_subDisplayAllowSet.end(); ++setIt) {
+  for (std::set<unsigned int>::iterator setIt = m_subDisplayAllowedSet.begin(); setIt != m_subDisplayAllowedSet.end(); ++setIt) {
     os << *setIt << " ";
   }
   os << "\n" << m_option_displayVerbosity  << " = " << m_displayVerbosity

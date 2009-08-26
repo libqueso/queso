@@ -81,12 +81,12 @@ void
 uqStatisticalInverseProblemOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
 {
   optionsDesc.add_options()     
-    (m_option_help.c_str(),                                                                                            "produce help message for statistical inverse problem")
-    (m_option_computeSolution.c_str(),      po::value<bool       >()->default_value(UQ_SIP_COMPUTE_SOLUTION_ODV     ), "compute solution process"                            )
-    (m_option_dataOutputFileName.c_str(),   po::value<std::string>()->default_value(UQ_SIP_DATA_OUTPUT_FILE_NAME_ODV), "name of data output file"                            )
-    (m_option_dataOutputAllowedSet.c_str(), po::value<std::string>()->default_value(UQ_SIP_DATA_OUTPUT_ALLOW_ODV    ), "subEnvs that will write to data output file"         )
+    (m_option_help.c_str(),                                                                                              "produce help message for statistical inverse problem")
+    (m_option_computeSolution.c_str(),      po::value<bool       >()->default_value(UQ_SIP_COMPUTE_SOLUTION_ODV       ), "compute solution process"                            )
+    (m_option_dataOutputFileName.c_str(),   po::value<std::string>()->default_value(UQ_SIP_DATA_OUTPUT_FILE_NAME_ODV  ), "name of data output file"                            )
+    (m_option_dataOutputAllowedSet.c_str(), po::value<std::string>()->default_value(UQ_SIP_DATA_OUTPUT_ALLOWED_SET_ODV), "subEnvs that will write to data output file"         )
 #ifdef UQ_SIP_READS_SOLVER_OPTION
-    (m_option_solver.c_str(),               po::value<std::string>()->default_value(UQ_SIP_SOLVER_ODV               ), "algorithm for calibration"                           )
+    (m_option_solver.c_str(),               po::value<std::string>()->default_value(UQ_SIP_SOLVER_ODV                 ), "algorithm for calibration"                           )
 #endif
   ;
 

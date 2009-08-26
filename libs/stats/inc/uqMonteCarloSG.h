@@ -218,30 +218,6 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   }
 
   // Take "sub" care of pseq
-#if 0
-  std::ofstream* pseqOfsVar = NULL;
-  m_env.openOutputFile(m_options.m_pseqDataOutputFileName,
-                       UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
-                       m_options.m_pseqDataOutputAllowedSet,
-                       false, // A 'true' causes problems when the user chooses (via options
-                              // in the input file) to use just one file for all outputs.
-                       pseqOfsVar);
-
-  if (pseqOfsVar) {
-    workingPSeq.subWriteContents(*pseqOfsVar);
-  }
-
-  if (pseqOfsVar) {
-    pseqOfsVar->close();
-    if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
-                              << ", prefix = "                 << m_options.m_prefix
-                              << ": closed data output file '" << m_options.m_pseqDataOutputFileName
-                              << "' for pseq "                 << workingPSeq.name()
-                              << std::endl;
-    }
-  }
-#else
   if (m_options.m_pseqDataOutputFileName != UQ_MOC_SG_FILENAME_FOR_NO_FILE) {
     workingPSeq.subWriteContents(m_options.m_pseqDataOutputFileName,
                                  m_options.m_pseqDataOutputAllowedSet);
@@ -253,7 +229,6 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
     //                          << std::endl;
     //}
   }
-#endif
 
   // Take "unified" care of pseq
   if (m_options.m_pseqDataOutputFileName != UQ_MOC_SG_FILENAME_FOR_NO_FILE) {
@@ -297,30 +272,6 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   }
 
   // Take "sub" care of qseq
-#if 0
-  std::ofstream* qseqOfsVar = NULL;
-  m_env.openOutputFile(m_options.m_qseqDataOutputFileName,
-                       UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
-                       m_options.m_qseqDataOutputAllowedSet,
-                       false, // A 'true' causes problems when the user chooses (via options
-                              // in the input file) to use just one file for all outputs.
-                       qseqOfsVar);
-
-  if (qseqOfsVar) {
-    workingQSeq.subWriteContents(*qseqOfsVar);
-  }
-
-  if (qseqOfsVar) {
-    qseqOfsVar->close();
-    if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
-                              << ", prefix = "                 << m_options.m_prefix
-                              << ": closed data output file '" << m_options.m_qseqDataOutputFileName
-                              << "' for qseq "                 << workingQSeq.name()
-                              << std::endl;
-    }
-  }
-#else
   if (m_options.m_qseqDataOutputFileName != UQ_MOC_SG_FILENAME_FOR_NO_FILE) {
     workingQSeq.subWriteContents(m_options.m_qseqDataOutputFileName,
                                  m_options.m_qseqDataOutputAllowedSet);
@@ -332,7 +283,6 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
     //                          << std::endl;
     //}
   }
-#endif
 
   // Take "unified" care of qseq
   if (m_options.m_qseqDataOutputFileName != UQ_MOC_SG_FILENAME_FOR_NO_FILE) {

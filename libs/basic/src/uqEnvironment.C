@@ -123,10 +123,10 @@ uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
   //}
 
   if (m_subDisplayFile) delete m_subDisplayFile;
-  if (m_inter0Comm          ) delete m_inter0Comm;
-  if (m_selfComm            ) delete m_selfComm;
-  if (m_subComm             ) delete m_subComm;
-  if (m_fullComm            ) delete m_fullComm;
+  if (m_inter0Comm    ) delete m_inter0Comm;
+  if (m_selfComm      ) delete m_selfComm;
+  if (m_subComm       ) delete m_subComm;
+  if (m_fullComm      ) delete m_fullComm;
 }
 
 uqBaseEnvironmentClass&
@@ -359,6 +359,7 @@ uqBaseEnvironmentClass::openOutputFile(
       // Verify parent directory exists (for cases when a user
       // specifies a relative path for the desired output file).
 
+      //std::cout << "checking " << baseFileName+"_sub"+this->subIdString()+"."+fileType << std::endl;
       int irtrn = uqCheckPath((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str());
       UQ_FATAL_TEST_MACRO(irtrn < 0,m_fullRank,"openOutputFile()","unable to verify output path");
 
@@ -542,7 +543,7 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   m_subIdString = tmpSubId;
 
   if (m_options->m_subDisplayAllowAll) {
-    m_options->m_subDisplayAllowSet.insert((unsigned int) m_subId);
+    m_options->m_subDisplayAllowedSet.insert((unsigned int) m_subId);
   }
 
   std::vector<int> fullRanksOfMySubEnvironment(numRanksPerSubEnvironment,0);
@@ -595,9 +596,9 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   // Open "screen" file
   //////////////////////////////////////////////////
   bool openFile = false;
-  if ((m_subRank                                     == 0                                    ) &&
-      (m_options->m_subDisplayFileName               != UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE   ) &&
-      (m_options->m_subDisplayAllowSet.find(m_subId) != m_options->m_subDisplayAllowSet.end())) {
+  if ((m_subRank                                       == 0                                      ) &&
+      (m_options->m_subDisplayFileName                 != UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE     ) &&
+      (m_options->m_subDisplayAllowedSet.find(m_subId) != m_options->m_subDisplayAllowedSet.end())) {
     openFile = true;
   }
 

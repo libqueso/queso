@@ -41,13 +41,13 @@
 #define UQ_SFP_FILENAME_FOR_NO_FILE "."
 
 // _ODV = option default value
-#define UQ_SFP_COMPUTE_SOLUTION_ODV      1
-#define UQ_SFP_COMPUTE_COVARIANCES_ODV   1
-#define UQ_SFP_COMPUTE_CORRELATIONS_ODV  1
-#define UQ_SFP_DATA_OUTPUT_FILE_NAME_ODV UQ_SFP_FILENAME_FOR_NO_FILE
-#define UQ_SFP_DATA_OUTPUT_ALLOW_ODV     ""
+#define UQ_SFP_COMPUTE_SOLUTION_ODV        1
+#define UQ_SFP_COMPUTE_COVARIANCES_ODV     1
+#define UQ_SFP_COMPUTE_CORRELATIONS_ODV    1
+#define UQ_SFP_DATA_OUTPUT_FILE_NAME_ODV   UQ_SFP_FILENAME_FOR_NO_FILE
+#define UQ_SFP_DATA_OUTPUT_ALLOWED_SET_ODV ""
 #ifdef UQ_SFP_READS_SOLVER_OPTION
-#define UQ_SFP_SOLVER_ODV                "mc" // Monte Carlo
+#define UQ_SFP_SOLVER_ODV                  "mc" // Monte Carlo
 #endif
 
 class uqStatisticalForwardProblemOptionsClass

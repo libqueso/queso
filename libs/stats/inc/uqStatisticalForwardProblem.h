@@ -132,16 +132,16 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::uqStatisticalForwardProblemCl
 {
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::constructor()"
-                           << ": prefix = " << m_options.m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_options.m_prefix
+                            << std::endl;
   }
 
   m_options.scanOptionsValues();
 
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Leaving uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::constructor()"
-                           << ": prefix = " << m_options.m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_options.m_prefix
+                            << std::endl;
   }
 }
 
@@ -305,9 +305,9 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   if (m_options.m_computeCovariances || m_options.m_computeCorrelations) {
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
-                             << ", prefix = " << m_options.m_prefix
-                             << ": instantiating cov and corr matrices"
-                             << std::endl;
+                              << ", prefix = " << m_options.m_prefix
+                              << ": instantiating cov and corr matrices"
+                              << std::endl;
     }
     pqCovarianceMatrix = new P_M(m_env,
                                  m_paramRv.imageSet().vectorSpace().map(),       // number of rows
@@ -333,10 +333,10 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   // Open data output file
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
-                           << ", prefix = "                                        << m_options.m_prefix
-                           << ": checking necessity of opening data output file '" << m_options.m_dataOutputFileName
-                           << "'"
-                           << std::endl;
+                            << ", prefix = "                                        << m_options.m_prefix
+                            << ": checking necessity of opening data output file '" << m_options.m_dataOutputFileName
+                            << "'"
+                            << std::endl;
   }
   std::ofstream* ofsvar = NULL;
   m_env.openOutputFile(m_options.m_dataOutputFileName,
@@ -349,15 +349,15 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   if (m_env.subDisplayFile()) {
     if (pqCovarianceMatrix ) {
       *m_env.subDisplayFile() << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
-                             << ", prefix = "                           << m_options.m_prefix
-                             << ": contents of covariance matrix are\n" << *pqCovarianceMatrix
-                             << std::endl;
+                              << ", prefix = "                           << m_options.m_prefix
+                              << ": contents of covariance matrix are\n" << *pqCovarianceMatrix
+                              << std::endl;
     }
     if (pqCorrelationMatrix) {
       *m_env.subDisplayFile() << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
-                             << ", prefix = "                            << m_options.m_prefix
-                             << ": contents of correlation matrix are\n" << *pqCorrelationMatrix
-                             << std::endl;
+                              << ", prefix = "                            << m_options.m_prefix
+                              << ": contents of correlation matrix are\n" << *pqCorrelationMatrix
+                              << std::endl;
     }
   }
 
@@ -390,10 +390,10 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
     delete ofsvar;
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
-                             << ", prefix = "                 << m_options.m_prefix
-                             << ": closed data output file '" << m_options.m_dataOutputFileName
-                             << "'"
-                             << std::endl;
+                              << ", prefix = "                 << m_options.m_prefix
+                              << ": closed data output file '" << m_options.m_dataOutputFileName
+                              << "'"
+                              << std::endl;
     }
   }
   if (m_env.subDisplayFile()) {

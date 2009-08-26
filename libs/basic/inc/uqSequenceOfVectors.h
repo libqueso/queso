@@ -1746,6 +1746,8 @@ uqSequenceOfVectorsClass<V,M>::subWriteContents(
   if (ofsVar) {
     ofsVar->close();
   }
+
+  return;
 }
 #if 0
 template <class V, class M>
@@ -1775,6 +1777,7 @@ uqSequenceOfVectorsClass<V,M>::subWriteContents(std::ofstream& ofsvar) const
 
   return;
 }
+
 template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(std::ofstream& ofsvar) const
