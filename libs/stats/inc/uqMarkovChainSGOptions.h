@@ -34,7 +34,6 @@
 #define __UQ_MAC_SG_OPTIONS_H__
 
 #include <uqEnvironment.h>
-#include <uqMLSamplingLevelOptions.h>
 #include <uqSequenceStatisticalOptions.h>
 
 #define UQ_USES_TK_CLASS
@@ -82,7 +81,6 @@ class uqMarkovChainSGOptionsClass
 {
 public:
   uqMarkovChainSGOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix);
-  uqMarkovChainSGOptionsClass(const uqMLSamplingLevelOptionsClass& inputOptions);
  ~uqMarkovChainSGOptionsClass();
 
   void scanOptionsValues();

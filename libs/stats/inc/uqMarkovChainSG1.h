@@ -56,10 +56,6 @@ public:
                        /*! The source rv          */ const uqBaseVectorRVClass<P_V,P_M>& sourceRv,
                        /*! Initial chain position */ const P_V&                          initialPosition,
                        /*! Proposal cov. matrix   */ const P_M*                          inputProposalCovMatrix);
-  uqMarkovChainSGClass(/*! Options                */ const uqMLSamplingLevelOptionsClass& inputOptions,
-                       /*! The source rv          */ const uqBaseVectorRVClass<P_V,P_M>&  sourceRv,
-                       /*! Initial chain position */ const P_V&                           initialPosition,
-                       /*! Proposal cov. matrix   */ const P_M*                           inputProposalCovMatrix);
   /*! Destructor: */
  ~uqMarkovChainSGClass();
 
@@ -210,59 +206,6 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   if ((m_env.subDisplayFile()          ) &&
       (m_options.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "Leaving uqMarkovChainSGClass<P_V,P_M>::constructor(1)"
-                            << std::endl;
-  }
-}
-
-template<class P_V,class P_M>
-uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
-  const uqMLSamplingLevelOptionsClass& inputOptions,
-  const uqBaseVectorRVClass<P_V,P_M>&  sourceRv,
-  const P_V&                           initialPosition,
-  const P_M*                           inputProposalCovMatrix)
-  :
-  m_env                          (sourceRv.env()),
-  m_vectorSpace                  (sourceRv.imageSet().vectorSpace()),
-  m_targetPdf                    (sourceRv.pdf()),
-  m_initialPosition              (initialPosition),
-  m_initialProposalCovMatrix     (inputProposalCovMatrix),
-  m_nullInputProposalCovMatrix   (inputProposalCovMatrix == NULL),
-  m_targetPdfSynchronizer        (new uqScalarFunctionSynchronizerClass<P_V,P_M>(m_targetPdf,m_initialPosition)),
-  m_tk                           (NULL),
-#ifdef UQ_USES_TK_CLASS
-#else
-  m_tkIsSymmetric                (true),
-  m_lowerCholProposalCovMatrices (1),//NULL),
-  m_proposalCovMatrices          (1),//NULL),
-#ifdef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
-  m_upperCholProposalPrecMatrices(1),//NULL),
-  m_proposalPrecMatrices         (1),//NULL),
-#endif
-#endif
-  m_positionIdForDebugging       (0),
-  m_stageIdForDebugging          (0),
-  m_idsOfUniquePositions         (0),//0.),
-  m_logTargets                   (0),//0.),
-  m_alphaQuotients               (0),//0.),
-  m_rawChainRunTime              (0.),
-  m_numRejections                (0),
-  m_numOutOfTargetSupport        (0),
-  m_lastChainSize                (0),
-  m_lastMean                     (NULL),
-  m_lastAdaptedCovMatrix         (NULL),
-  m_options                      (inputOptions)
-{
-  if ((m_env.subDisplayFile()          ) &&
-      (m_options.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "Entering uqMarkovChainSGClass<P_V,P_M>::constructor(2)"
-                            << std::endl;
-  }
-
-  commonConstructor();
-
-  if ((m_env.subDisplayFile()          ) &&
-      (m_options.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "Leaving uqMarkovChainSGClass<P_V,P_M>::constructor(2)"
                             << std::endl;
   }
 }
