@@ -559,8 +559,8 @@ uqBaseVectorSequenceClass<V,M>::computeStatistics(
                             << std::endl;
   }
 
-  bool okSituation = ((passedOfs == NULL                          ) ||
-                      (passedOfs != NULL) && (m_env.subRank() >= 0));
+  bool okSituation = ((passedOfs == NULL                            ) ||
+                      ((passedOfs != NULL) && (m_env.subRank() >= 0)));
   UQ_FATAL_TEST_MACRO(!okSituation,
                       m_env.fullRank(),
                       "uqBaseVectorSequenceClass<V,M>::computeStatistics()",
@@ -1636,8 +1636,8 @@ uqBaseVectorSequenceClass<V,M>::computeFilterParams(
                             << std::endl;
   }
 
-  bool okSituation = ((passedOfs == NULL                          ) ||
-                      (passedOfs != NULL) && (m_env.subRank() >= 0));
+  bool okSituation = ((passedOfs == NULL                            ) ||
+                      ((passedOfs != NULL) && (m_env.subRank() >= 0)));
   UQ_FATAL_TEST_MACRO(!okSituation,
                       m_env.fullRank(),
                       "uqBaseVectorSequenceClass<V,M>::computeFilterParams()",
