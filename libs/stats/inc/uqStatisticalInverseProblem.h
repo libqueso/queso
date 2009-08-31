@@ -40,28 +40,49 @@
 #include <uqScalarFunction.h>
 #include <hpct.h>
 
-/*! A templated class that represents statistical inverse problems. */
-/*! */
+/*! This templated class represents a statistical inverse problem. It is templated on the type P_V of vector and type P_M of matrix. The 'P_' stands for 'parameter'.
+*/
+/*!
+*/
 /*! Conceptually, a statistical inverse problem has two input entities and one output entity.
-    The input entities are the prior rv and the likelihood function. The output entity is the posterior rv, which stores the solution according the Bayesian approach.
-    A similar situation occurs e.g. in the case of a system Ax=b of linear equations, where A and b are inputs, and x is the solution of the inverse problem. */
-/*! The solution of a statistical inverse problem is computed by calling 'solveWithBayesMarkovChain(...)'.
-    Upon return from such operation, the posterior rv is available through the operation 'postRv()'. Such posterior rv is able to supply a joint pdf (up to a multiplicative constant) and a vector realizer. */
+    The input entities are:
+<list type=number>
+<item> the prior rv, an instance of class 'uqBaseVectorRVClass<P_V,P_M>', and
+<item> the likelihood function, an instance of class 'uqBaseScalarFunctionClass<P_V,P_M>'.
+</list>   
+    The output entity is:
+<list type=number>
+<item> the posterior rv, another instance of class 'uqBaseVectorRVClass<P_V,P_M>'.
+</list>   
+    The posterior rv stores the solution according to the Bayesian approach.
+    A similar situation occurs e.g. in the case of a system Ax=b of linear equations, where 'A' and 'b' are inputs, and 'x' stores the solution of the inverse problem.
+*/
+/*! The solution of a statistical inverse problem is computed by calling one of the following operations:
+<list type=number>
+<item> 'solveWithBayesMarkovChain(...)'.
+</list> 
+    More operations, with different methods, will be available in the future.
+*/
+/*! The solution process might demand extra objects to be passed through the chosen solution operation interface.
+    This distinction is important: this class separates 'what the problem is' from 'how the problem is solved'.
+*/
+/*! Upon return from a solution operation, the posterior rv is available through the operation 'postRv()'. Such posterior rv is able to:
+<list type=number>
+<item> supply a joint pdf (up to a multiplicative constant) through the operation 'postRv().pdf()', which returns an instance of the class 'uqBaseJointPdfClass<P_V,P_M>', and
+<item> a vector realizer through the operation 'postRv().realizer()', which returns an instance of the class 'uqBaseVectorRealizerClass<P_V,P_M>'.
+</list>
+*/
 template <class P_V,class P_M>
 class uqStatisticalInverseProblemClass
 {
 public:
-  
-  /*! Constructor: */
-  uqStatisticalInverseProblemClass(/*! The prefix              */ const char*                               prefix,             
-                                   /*! The prior rv            */ const uqBaseVectorRVClass      <P_V,P_M>& priorRv,            
-                                   /*! The likelihood function */ const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunction, 
-                                   /*! The posterior rv        */       uqGenericVectorRVClass   <P_V,P_M>& postRv);
-  /*! Destructor: */
+  uqStatisticalInverseProblemClass(const char*                               prefix,
+                                   const uqBaseVectorRVClass      <P_V,P_M>& priorRv,            
+                                   const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunction, 
+                                         uqGenericVectorRVClass   <P_V,P_M>& postRv);
  ~uqStatisticalInverseProblemClass();
 
         bool                             computeSolutionFlag      () const;
-	/*! Operation to solve the problem */
         void                             solveWithBayesMarkovChain(const P_V& initialValues,
                                                                    const P_M* initialProposalCovMatrix);
   const uqBaseVectorRVClass   <P_V,P_M>& priorRv                  () const;
@@ -93,12 +114,29 @@ private:
 template<class P_V,class P_M>
 std::ostream& operator<<(std::ostream& os, const uqStatisticalInverseProblemClass<P_V,P_M>& obj);
 
+/*! Constructor. */
+/*! Requirements:
+<list type=number>
+<item> the image set of the vector random variable 'priorRv',
+       the domain set of the likelihood function 'likelihoodFunction' and
+       the image set of the vector random variable 'postRv'
+       should belong to vector spaces of equal dimensions.
+</list>
+*/
+/*! If the requirements are satisfied, the constructor then reads input options that begin with the string '\<prefix\>ip_'.
+    For instance, if 'prefix' is 'pROblem_775_', then the constructor will read all options that begin with 'pROblem_775_ip_'.
+    Options reading is handled by class 'uqStatisticalInverseProblemOptionsClass'.
+*/
+/*! Input options are read from the QUESO input file, whose name is required by the constructor of the QUESO environment class.
+    The QUESO environment class is instantiated at the application level, right after 'MPI_Init(&argc,&argv)'. 
+    The QUESO environment is required by reference by many constructors in the QUESO library, and is available by reference from many classes as well.
+*/
 template <class P_V,class P_M>
 uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
-  const char*                               prefix,
-  const uqBaseVectorRVClass      <P_V,P_M>& priorRv,
-  const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunction,
-        uqGenericVectorRVClass   <P_V,P_M>& postRv)
+  /*! The prefix              */ const char*                               prefix,
+  /*! The prior rv            */ const uqBaseVectorRVClass      <P_V,P_M>& priorRv,
+  /*! The likelihood function */ const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunction,
+  /*! The posterior rv        */       uqGenericVectorRVClass   <P_V,P_M>& postRv)
   :
   m_env               (priorRv.env()),
   m_priorRv           (priorRv),
@@ -119,6 +157,16 @@ uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
                             << std::endl;
   }
 
+  UQ_FATAL_TEST_MACRO(priorRv.imageSet().vectorSpace().dimLocal() != likelihoodFunction.domainSet().vectorSpace().dimLocal(),
+                      m_env.fullRank(),
+                      "uqStatisticalInverseProblemClass<P_V,P_M>::constructor()",
+                      "'priorRv' and 'likelihoodFunction' are related to vector spaces of different dimensions");
+
+  UQ_FATAL_TEST_MACRO(priorRv.imageSet().vectorSpace().dimLocal() != postRv.imageSet().vectorSpace().dimLocal(),
+                      m_env.fullRank(),
+                      "uqStatisticalInverseProblemClass<P_V,P_M>::constructor()",
+                      "'priorRv' and 'postRv' are related to vector spaces of different dimensions");
+
   m_options.scanOptionsValues();
 
   if (m_env.subDisplayFile()) {
@@ -130,6 +178,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
   return;
 }
 
+/*! Destructor. */
 template <class P_V,class P_M>
 uqStatisticalInverseProblemClass<P_V,P_M>::~uqStatisticalInverseProblemClass()
 {
@@ -145,14 +194,33 @@ uqStatisticalInverseProblemClass<P_V,P_M>::~uqStatisticalInverseProblemClass()
   if (m_solutionDomain  ) delete m_solutionDomain;
 }
 
+/*! Operation to solve the problem through Bayes formula and a Markov Chain algorithm. */
+/*! Requirements:
+<list type=number>
+<item> 'initialValues' should have the same number of components as member variable 'm_priorRv'
+<item> if 'initialProposalCovMatrix' is not NULL, it should be square and its size should be equal to the size of 'initialValues'
+</list>
+*/
+/*! If the requirements are satisfied, this operation checks the member flag 'm_computeSolution' (one of the options read from the input file during construction).
+*/
+/*! If the flag is 'false', the operation returns immediately, computing nothing.
+ */
+/*! If the flag is 'true', the operation sets the member variable 'm_postRv' accordingly. The operation:
+<list type=number>
+<item> sets the pdf of 'm_postRv' equal to an instance of 'uqBayesianJointPdfClass<P_V,P_M>',
+<item> instantiates 'uqSequenceOfVectorsClass<P_V,P_M>' (the chain),
+<item> instantiates 'uqMarkovChainSGClass<P_V,P_M>' (tha Markov Chain algorithm),
+<item> populates the chain with the Markov Chain algorithm, and
+<item> sets the realizer of 'm_postRv' with the contents of the chain.
+</list>
+*/
 template <class P_V,class P_M>
 void
 uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   const P_V& initialValues,
   const P_M* initialProposalCovMatrix)
 {
-  //hpct_timer_begin("BayesMarkovChain");     TODO: revisit timing output
-
+  //hpct_timer_begin("BayesMarkovChain"); TODO: revisit timing output
   m_env.fullComm().Barrier();
   m_env.syncPrintDebugMsg("Entering uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()",1,3000000,m_env.fullComm());
 
@@ -170,6 +238,22 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
                             << std::endl;
   }
 
+  UQ_FATAL_TEST_MACRO(m_priorRv.imageSet().vectorSpace().dimLocal() != initialValues.sizeLocal(),
+                      m_env.fullRank(),
+                      "uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()",
+                      "'m_priorRv' and 'initialValues' should have equal dimensions");
+
+  if (initialProposalCovMatrix) {
+    UQ_FATAL_TEST_MACRO(m_priorRv.imageSet().vectorSpace().dimLocal() != initialProposalCovMatrix->numRowsLocal(),
+                        m_env.fullRank(),
+                        "uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()",
+                        "'m_priorRv' and 'initialProposalCovMatrix' should have equal dimensions");
+    UQ_FATAL_TEST_MACRO(initialProposalCovMatrix->numCols() != initialProposalCovMatrix->numRowsGlobal(),
+                        m_env.fullRank(),
+                        "uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()",
+                        "'initialProposalCovMatrix' should be a square matrix");
+  }
+
   if (m_mcSeqGenerator  ) delete m_mcSeqGenerator;
   if (m_solutionRealizer) delete m_solutionRealizer;
   if (m_subSolutionCdf  ) delete m_subSolutionCdf;
@@ -183,14 +267,11 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   // Compute output pdf up to a multiplicative constant: Bayesian approach
   m_solutionDomain = uqInstantiateIntersection(m_priorRv.pdf().domainSet(),m_likelihoodFunction.domainSet());
 
-
-
   m_solutionPdf = new uqBayesianJointPdfClass<P_V,P_M>(m_options.m_prefix.c_str(),
                                                        m_priorRv.pdf(),
                                                        m_likelihoodFunction,
                                                        1.,
                                                       *m_solutionDomain);
-
 
   m_postRv.setPdf(*m_solutionPdf);
 
@@ -222,8 +303,8 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
                                                           *m_subMdfValues);
   m_postRv.setMdf(*m_subSolutionMdf);
 
-  if ((m_options.m_dataOutputFileName                       != UQ_SIP_FILENAME_FOR_NO_FILE) &&
-      (m_options.m_dataOutputAllowedSet.find(m_env.subId()) != m_options.m_dataOutputAllowedSet.end()       )) {
+  if ((m_options.m_dataOutputFileName                       != UQ_SIP_FILENAME_FOR_NO_FILE           ) &&
+      (m_options.m_dataOutputAllowedSet.find(m_env.subId()) != m_options.m_dataOutputAllowedSet.end())) {
     if (m_env.subRank() == 0) {
       // Write data output file
       if (m_env.subDisplayFile()) {
@@ -268,7 +349,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
 
   m_env.syncPrintDebugMsg("Leaving uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()",1,3000000,m_env.fullComm());
   m_env.fullComm().Barrier();
-  //  hpct_timer_end("BayesMarkovChain");  TODO: revist timers
+  //  hpct_timer_end("BayesMarkovChain"); TODO: revist timers
   return;
 }
 

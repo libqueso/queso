@@ -157,6 +157,21 @@ uqBoxSubsetClass<V,M>::uqBoxSubsetClass(
   m_minValues(minValues),
   m_maxValues(maxValues)
 {
+  UQ_FATAL_TEST_MACRO(minValues.sizeLocal() != maxValues.sizeLocal(),
+                      m_env.fullRank(),
+                      "uqBoxSubsetClass<V,M>::uqBoxSubsetClass()",
+                      "vectors 'minValues' and 'maxValues' should have the same size");
+  UQ_FATAL_TEST_MACRO(minValues.sizeLocal() != vectorSpace.dimLocal(),
+                      m_env.fullRank(),
+                      "uqBoxSubsetClass<V,M>::uqBoxSubsetClass()",
+                      "sizes of vectors 'minValues' and 'maxValues' should be equal to dimension of the vector space");
+  for (unsigned int i = 0; i < m_vectorSpace->dimLocal(); ++i) {
+    UQ_FATAL_TEST_MACRO(minValues[i] > maxValues[i],
+                        m_env.fullRank(),
+                        "uqBoxSubsetClass<V,M>::uqBoxSubsetClass()",
+                        "it should happen minValue <= maxValue for all dimensions");
+  }
+
   m_volume = 1.;
   for (unsigned int i = 0; i < m_vectorSpace->dimLocal(); ++i) {
     m_volume *= (m_maxValues[i] - m_minValues[i]);

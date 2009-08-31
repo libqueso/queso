@@ -1,4 +1,9 @@
-AM_CPPFLAGS  = -I. -I$(top_srcdir)/libs/basic/inc -I$(top_srcdir)/libs/stats/inc -I$(TRILINOS_INCLUDE) \
+AM_CPPFLAGS  = -I. \
+	-I$(top_srcdir)/libs/core/inc \
+	-I$(top_srcdir)/libs/misc/inc \
+	-I$(top_srcdir)/libs/basic/inc \
+	-I$(top_srcdir)/libs/stats/inc \
+	-I$(TRILINOS_INCLUDE) \
 	      $(EPETRA_INCLUDES) $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(HPCT_CFLAGS)
 AM_LDFLAGS   = $(BOOST_LDFLAGS) ${HPCT_LIBS} -lhpct
 
