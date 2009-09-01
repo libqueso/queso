@@ -1,7 +1,7 @@
 ###############################################
 # UQ Environment
 ###############################################
-#env_help                = anything
+#env_help                 = anything
 env_numSubEnvironments   = 1
 env_subDisplayFileName   = outputData/display
 env_subDisplayAllowAll   = 0

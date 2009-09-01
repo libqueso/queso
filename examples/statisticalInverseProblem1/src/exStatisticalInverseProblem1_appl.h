@@ -51,51 +51,39 @@ uqAppl(const uqBaseEnvironmentClass& env)
   }
 
   //******************************************************
-  // Read Ascii file with information on parameters
+  // Step 1 of 5: Instantiate the parameter space
   //******************************************************
-  uqAsciiTableClass<P_V,P_M> paramsTable(env,
-                                         4,    // # of rows
-                                         3,    // # of cols after 'parameter name': min + max + initial value for Markov chain
-                                         NULL, // All extra columns are of 'double' type
-                                         "inputData/params.tab");
-
-  const EpetraExt::DistArray<std::string>& paramNames = paramsTable.stringColumn(0);
-  P_V                                      paramMins    (paramsTable.doubleColumn(1));
-  P_V                                      paramMaxs    (paramsTable.doubleColumn(2));
-  P_V                                      paramInitials(paramsTable.doubleColumn(3));
-
-  uqVectorSpaceClass<P_V,P_M> paramSpace(env,
-                                         "param_", // Extra prefix before the default "space_" prefix
-                                         paramsTable.numRows(),
-                                         &paramNames); // could be 'NULL' as well
-
-  // m_stringColumns[j] = new EpetraExt::DistArray<std::string>(*m_map,1);
-
-  uqBoxSubsetClass<P_V,P_M> paramDomain("param_",
-                                        paramSpace,
-                                        paramMins,
-                                        paramMaxs);
+  uqVectorSpaceClass<P_V,P_M> paramSpace(env,"param_",4,NULL);
 
   //******************************************************
-  // Instantiate a likelihood function object (data + routine), to be used by QUESO.
+  // Step 2 of 5: Instantiate the parameter domain
   //******************************************************
+  P_V paramMins(paramSpace.zeroVector());
+  paramMins.cwSet(-INFINITY);
+  P_V paramMaxs(paramSpace.zeroVector());
+  paramMaxs.cwSet( INFINITY);
+  uqBoxSubsetClass<P_V,P_M> paramDomain("param_",paramSpace,paramMins,paramMaxs);
+
+  //******************************************************
+  // Step 3 of 5: Instantiate the likelihood function object (data + routine), to be used by QUESO.
+  //******************************************************
+  P_V paramMeans(paramSpace.zeroVector());
+
   double condNumber = 100.0;
   P_V direction(paramSpace.zeroVector());
   direction.cwSet(1.);
   P_M* covMatrixInverse = paramSpace.newMatrix();
   P_M* covMatrix        = paramSpace.newMatrix();
   uqCovCond(condNumber,direction,*covMatrix,*covMatrixInverse);
-
   std::cout << "covMatrix = [" << *covMatrix
             << "];"
-            << std::endl;
-
-  std::cout << "covMatrixInverse = [" << *covMatrixInverse
+            << "\n"
+            << "covMatrixInverse = [" << *covMatrixInverse
             << "];"
             << std::endl;
 
   likelihoodRoutine_DataType<P_V,P_M> likelihoodRoutine_Data;
-  likelihoodRoutine_Data.paramMeans        = &paramInitials;
+  likelihoodRoutine_Data.paramMeans        = &paramMeans;
   likelihoodRoutine_Data.matrix            = covMatrixInverse;
   likelihoodRoutine_Data.applyMatrixInvert = false;
 
@@ -106,7 +94,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                                               true); // the routine computes [-2.*ln(function)]
 
   //******************************************************
-  // Instantiate inverse problem
+  // Step 4 of 5: Instantiate the inverse problem
   //******************************************************
   uqUniformVectorRVClass<P_V,P_M> priorRv("prior_", // Extra prefix before the default "rv_" prefix
                                           paramDomain);
@@ -120,20 +108,20 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                                postRv);
 
   //******************************************************
-  // Solve inverse problem, that is, set 'pdf' and 'realizer' of 'postRv'
+  // Step 5 of 5: Solve the inverse problem
   //******************************************************
+  P_V paramInitials(paramSpace.zeroVector());
   P_M* proposalCovMatrix = postRv.imageSet().vectorSpace().newGaussianMatrix(NULL,&paramInitials);
   ip.solveWithBayesMarkovChain(paramInitials,
                                proposalCovMatrix);
   delete proposalCovMatrix;
 
   P_V tmpVec (paramSpace.zeroVector());
-  P_V meanVec(paramInitials);
   P_V diffVec(paramSpace.zeroVector());
   const uqBaseVectorRealizerClass<P_V,P_M>& postRealizer = postRv.realizer();
   for (unsigned int i = 0; i < postRealizer.subPeriod(); ++i) {
     postRealizer.realization(tmpVec);
-    diffVec = tmpVec - meanVec;
+    diffVec = tmpVec - paramMeans;
     std::cout << "12345 " << scalarProduct(diffVec, *covMatrixInverse * diffVec)
               << std::endl;
   }
@@ -144,80 +132,6 @@ uqAppl(const uqBaseEnvironmentClass& env)
   delete covMatrixInverse;
   delete covMatrix;
 
-#if 0
-  //******************************************************
-  // Step 1 of 6: Define the finite dimensional linear spaces.
-  //******************************************************
-  uqVectorSpaceClass<P_V,P_M> paramSpace     (env,"calib_",4,NULL);
-
-  P_V paramMins    (paramSpace.zeroVector());
-  P_V paramMaxs    (paramSpace.zeroVector());
-  P_V paramInitials(paramSpace.zeroVector());
-  uqBoxSubsetClass<P_V,P_M> paramDomain("param_",
-                                        paramSpace,
-                                        paramMins,
-                                        paramMaxs);
-
-  //******************************************************
-  // Step 2 of 6: Define the prior prob. density function object: -2*ln[prior]
-  //******************************************************
-  uqDefault_M2lPriorRoutine_DataType<P_V,P_M> calib_M2lPriorRoutine_Data; // use default prior() routine
-  P_V calib_ParamPriorMus   (paramSpace.priorMuValues   ());
-  P_V calib_ParamPriorSigmas(paramSpace.priorSigmaValues());
-  calib_M2lPriorRoutine_Data.paramPriorMus    = &calib_ParamPriorMus;
-  calib_M2lPriorRoutine_Data.paramPriorSigmas = &calib_ParamPriorSigmas;
-
-  uqM2lProbDensity_Class<P_V,P_M> calib_M2lPriorProbDensity_Obj(uqDefault_M2lPriorRoutine<P_V,P_M>, // use default prior() routine
-                                                                (void *) &calib_M2lPriorRoutine_Data); 
-  //******************************************************
-  // Step 3 of 6: Define the likelihood prob. density function object: just misfits
-  //******************************************************
-  double condNumber = 100.0;
-  P_V direction(paramSpace.zeroVector());
-  direction.cwSet(1.);
-  P_M* covMatrixInverse = paramSpace.newMatrix();
-  P_M* covMatrix        = paramSpace.newMatrix();
-  uqCovCond(condNumber,direction,*covMatrix,*covMatrixInverse);
-
-  likelihoodRoutine_DataType<P_V,P_M> likelihoodRoutine_Data;
-  P_V calib_ParamInitials(paramSpace.initialValues());
-  likelihoodRoutine_Data.paramMeans        = &calib_ParamInitials;
-  likelihoodRoutine_Data.matrix            = covMatrixInverse;
-  likelihoodRoutine_Data.applyMatrixInvert = false;
-
-  uqMisfitLikelihoodFunction_Class<P_V,P_M likelihoodFunction_Obj(likelihoodRoutine<P_V,P_M>,
-                                                                  (void *) &likelihoodRoutine_Data);
-
-  uqGenericScalarFunctionClass<P_V,P_M> likelihoodFunctionObj("like_",
-                                                                 paramDomain,
-                                                                 likelihoodRoutine<P_V,P_M>,
-                                                                 (void *) &likelihoodRoutine_Data,
-                                                                 true); // the routine computes [-2.*ln(function)]
-  //******************************************************
-  // Step 4 of 6: Define the Markov chain generator.
-  //******************************************************
-  uqDRAM_MarkovChainGeneratorClass<P_V,P_M> mcg(env,
-                                                "calib_",
-                                                paramSpace,
-                                                calib_M2lPriorProbDensity_Obj,
-                                                likelihoodFunction_Obj);
-
-  //******************************************************
-  // Step 5 of 6: Compute the proposal covariance matrix.
-  //******************************************************
-  P_M proposalCovMatrix(*covMatrix);
-  proposalCovMatrix *= (2.4*2.4/(double) paramSpace.dim());
-
-  //******************************************************
-  // Step 6 of 6: Generate chains.
-  //              Output data is written (in MATLAB format) to the file
-  //              with name specified by the user in the input file.
-  //******************************************************
-  mcg.generateChains(&proposalCovMatrix,
-                     covMatrix,
-                     true);
-
-#endif
   if (env.fullRank() == 0) {
     std::cout << "Finishing run of 'exStatisticalInverseProblem1_example'"
               << std::endl;
