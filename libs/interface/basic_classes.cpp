@@ -172,8 +172,8 @@ namespace QUESO_Basic_API {
     
     printf("--> Defining default covariance matrix...\n");
     
-    m_CovMatrix = m_postRV->imageSet().vectorSpace().newGaussianMatrix(m_priorRV->pdf().domainVarVector(),
-								      *m_queso_var_ini);
+    m_CovMatrix = m_postRV->imageSet().vectorSpace().newGaussianMatrix(NULL, //m_priorRV->pdf().domainVarVector(),
+								       m_queso_var_ini);
 
     for(int i=0;i<m_num_params;i++)
       {

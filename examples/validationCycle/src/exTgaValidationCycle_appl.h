@@ -154,8 +154,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
                          calLikelihoodFunctionObj);
 
   // Inverse problem: solve it, that is, set 'pdf' and 'realizer' of the posterior rv
-  P_M* calProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newGaussianMatrix(cycle.calIP().priorRv().pdf().domainVarVector(),
-                                                                                                paramInitialValues);
+  P_M* calProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newGaussianMatrix(NULL,&paramInitialValues);
   cycle.calIP().solveWithBayesMarkovChain(paramInitialValues,
                                           calProposalCovMatrix);
   delete calProposalCovMatrix;
@@ -208,9 +207,10 @@ uqAppl(const uqBaseEnvironmentClass& env)
   cycle.instantiateValIP(valLikelihoodFunctionObj);
 
   // Inverse problem: solve it, that is, set 'pdf' and 'realizer' of the posterior rv
-  P_M* valProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newGaussianMatrix(cycle.calIP().postRv().realizer().unifiedImageVarVector(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
-                                                                                                cycle.calIP().postRv().realizer().unifiedImageExpVector()); // Use these values as the initial values
-  cycle.valIP().solveWithBayesMarkovChain(cycle.calIP().postRv().realizer().unifiedImageExpVector(),
+  const uqSequentialVectorRealizerClass<P_V,P_M>* tmpRealizer = dynamic_cast< const uqSequentialVectorRealizerClass<P_V,P_M>* >(&(cycle.calIP().postRv().realizer()));
+  P_M* valProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newGaussianMatrix(&tmpRealizer->unifiedSampleVarVector(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
+                                                                                                &tmpRealizer->unifiedSampleExpVector()); // Use these values as the initial values
+  cycle.valIP().solveWithBayesMarkovChain(tmpRealizer->unifiedSampleExpVector(),
                                           valProposalCovMatrix);
   delete valProposalCovMatrix;
 

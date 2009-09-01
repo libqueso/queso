@@ -124,30 +124,30 @@ private:
         bool                                        m_nullInputProposalCovMatrix;
   const uqScalarFunctionSynchronizerClass<P_V,P_M>* m_targetPdfSynchronizer;
 
-        uqBaseTKGroupClass<P_V,P_M>*       m_tk;
+        uqBaseTKGroupClass<P_V,P_M>*                m_tk;
 #ifdef UQ_USES_TK_CLASS
 #else
-        bool                               m_tkIsSymmetric;
-        std::vector<P_M*>                  m_lowerCholProposalCovMatrices;
-        std::vector<P_M*>                  m_proposalCovMatrices;
+        bool                                        m_tkIsSymmetric;
+        std::vector<P_M*>                           m_lowerCholProposalCovMatrices;
+        std::vector<P_M*>                           m_proposalCovMatrices;
 #ifdef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
-        std::vector<P_M*>                  m_upperCholProposalPrecMatrices;
-        std::vector<P_M*>                  m_proposalPrecMatrices;
+        std::vector<P_M*>                           m_upperCholProposalPrecMatrices;
+        std::vector<P_M*>                           m_proposalPrecMatrices;
 #endif
 #endif
-        unsigned int                       m_positionIdForDebugging;
-        unsigned int                       m_stageIdForDebugging;
-        std::vector<unsigned int>          m_idsOfUniquePositions;
-        std::vector<double>                m_logTargets;
-        std::vector<double>                m_alphaQuotients;
-        double                             m_rawChainRunTime;
-        unsigned int                       m_numRejections;
-        unsigned int                       m_numOutOfTargetSupport;
-        double                             m_lastChainSize;
-        P_V*                               m_lastMean;
-        P_M*                               m_lastAdaptedCovMatrix;
+        unsigned int                                m_positionIdForDebugging;
+        unsigned int                                m_stageIdForDebugging;
+        std::vector<unsigned int>                   m_idsOfUniquePositions;
+        std::vector<double>                         m_logTargets;
+        std::vector<double>                         m_alphaQuotients;
+        double                                      m_rawChainRunTime;
+        unsigned int                                m_numRejections;
+        unsigned int                                m_numOutOfTargetSupport;
+        double                                      m_lastChainSize;
+        P_V*                                        m_lastMean;
+        P_M*                                        m_lastAdaptedCovMatrix;
 
-        uqMarkovChainSGOptionsClass        m_options;
+        uqMarkovChainSGOptionsClass                 m_options;
 };
 
 template<class P_V,class P_M>
@@ -587,9 +587,9 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
             (m_options.m_totallyMute == false)) {
           const uqGaussianJointPdfClass<P_V,P_M>* pdfYX = dynamic_cast< const uqGaussianJointPdfClass<P_V,P_M>* >(&(m_tk->rv(yStageId).pdf()));
           *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
-                                 << ", rvYX.domainExpVector = " << pdfYX->domainExpVector()
-                                 << ", rvYX.domainVarVector = " << pdfYX->domainVarVector()
-                                 << ", rvYX.covMatrix = "       << pdfYX->covMatrix()
+                                 << ", rvYX.lawExpVector = " << pdfYX->lawExpVector()
+                                 << ", rvYX.lawVarVector = " << pdfYX->lawVarVector()
+                                 << ", rvYX.lawCovMatrix = " << pdfYX->lawCovMatrix()
                                  << std::endl;
         }
         double qxy = -.5 * m_tk->rv(xStageId).pdf().minus2LnValue(y.vecValues(),NULL,NULL,NULL,NULL);
@@ -598,9 +598,9 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
             (m_options.m_totallyMute == false)) {
           const uqGaussianJointPdfClass<P_V,P_M>* pdfXY = dynamic_cast< const uqGaussianJointPdfClass<P_V,P_M>* >(&(m_tk->rv(xStageId).pdf()));
           *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
-                                 << ", rvXY.domainExpVector = " << pdfXY->domainExpVector()
-                                 << ", rvXY.domainVarVector = " << pdfXY->domainVarVector()
-                                 << ", rvXY.covMatrix = "       << pdfXY->covMatrix()
+                                 << ", rvXY.lawExpVector = " << pdfXY->lawExpVector()
+                                 << ", rvXY.lawVarVector = " << pdfXY->lawVarVector()
+                                 << ", rvXY.lawCovMatrix = " << pdfXY->lawCovMatrix()
                                  << std::endl;
         }
 #else

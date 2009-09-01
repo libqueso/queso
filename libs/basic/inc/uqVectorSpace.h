@@ -40,49 +40,49 @@ template <class V, class M>
 class uqVectorSpaceClass : public uqVectorSetClass<V,M>
 {
 public:
-          uqVectorSpaceClass();
-          uqVectorSpaceClass(const uqBaseEnvironmentClass&            env,
-                             const char*                              prefix,
-                             unsigned int                             dimGlobalValue,
-                             const EpetraExt::DistArray<std::string>* componentsNames);
-         ~uqVectorSpaceClass();
+        uqVectorSpaceClass();
+        uqVectorSpaceClass(const uqBaseEnvironmentClass&            env,
+                           const char*                              prefix,
+                           unsigned int                             dimGlobalValue,
+                           const EpetraExt::DistArray<std::string>* componentsNames);
+       ~uqVectorSpaceClass();
 
-  const   Epetra_Map&              map                 ()                         const;
-          unsigned int             dimLocal            ()                         const;
-          unsigned int             dimGlobal           ()                         const;
+  const Epetra_Map&                        map                 () const;
+        unsigned int                       dimLocal            () const;
+        unsigned int                       dimGlobal           () const;
 
-  const   V&                       zeroVector          ()                         const;
-          V*                       newVector           ()                         const; // See template specialization
-          V*                       newVector           (double value)             const; // See template specialization
-          V*                       newVector           (const V& v)               const;
-          M*                       newMatrix           ()                         const; // See template specialization
-          M*                       newDiagMatrix       (const V& v)               const;
-          M*                       newDiagMatrix       (double diagValue)         const; // See template specialization
-          M*                       newGaussianMatrix   (const V& varianceValues,
-                                                        const V& initialValues)   const;
+  const V&                                 zeroVector          () const;
+        V*                                 newVector           () const; // See template specialization
+        V*                                 newVector           (double value) const; // See template specialization
+        V*                                 newVector           (const V& v) const;
+        M*                                 newMatrix           () const; // See template specialization
+        M*                                 newDiagMatrix       (const V& v) const;
+        M*                                 newDiagMatrix       (double diagValue) const; // See template specialization
+        M*                                 newGaussianMatrix   (const V* varVec,
+                                                                const V* auxVec) const;
 
-  const   uqVectorSpaceClass<V,M>& vectorSpace         ()                         const;
-          bool                     contains            (const V& vec)             const;
+  const uqVectorSpaceClass<V,M>&           vectorSpace         () const;
+        bool                               contains            (const V& vec) const;
 
-  const   EpetraExt::DistArray<std::string>* componentsNames() const;
-  const   std::string&             componentName       (unsigned int componentId) const;
-          void                     printComponentsNames(std::ostream& os, bool printHorizontally) const;
-          void                     print               (std::ostream& os) const;
+  const EpetraExt::DistArray<std::string>* componentsNames     () const;
+  const std::string&                       componentName       (unsigned int componentId) const;
+        void                               printComponentsNames(std::ostream& os, bool printHorizontally) const;
+        void                               print               (std::ostream& os) const;
 
 protected:
-  Epetra_Map* newMap(); // See template specialization
+        Epetra_Map*                        newMap              (); // See template specialization
 
-          using uqVectorSetClass<V,M>::m_env;
-          using uqVectorSetClass<V,M>::m_prefix;
-          using uqVectorSetClass<V,M>::m_volume;
+        using uqVectorSetClass<V,M>::m_env;
+        using uqVectorSetClass<V,M>::m_prefix;
+        using uqVectorSetClass<V,M>::m_volume;
 
-          unsigned int                       m_dimGlobal;
-  const   Epetra_Map*                        m_map;
-          unsigned int                       m_dimLocal;
-  const   EpetraExt::DistArray<std::string>* m_componentsNames;
-          std::string                        m_emptyComponentName;
+        unsigned int                       m_dimGlobal;
+  const Epetra_Map*                        m_map;
+        unsigned int                       m_dimLocal;
+  const EpetraExt::DistArray<std::string>* m_componentsNames;
+        std::string                        m_emptyComponentName;
 
-          V*                                 m_zeroVector;
+        V*                                 m_zeroVector;
 };
 
 template <class V, class M>
@@ -113,17 +113,23 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqVectorSpaceClass<V,M>::constructor()"
-                           << std::endl;
+                            << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO((m_componentsNames != NULL) && (m_componentsNames->GlobalLength() != (int) m_dimGlobal),
-                      m_env.fullRank(),
-                      "uqVectorSpaceClass<V,M>::constructor()",
-                      "global size of 'componentsNames' is not equal to m_dimGlobal");
+  if (m_componentsNames != NULL) {
+    UQ_FATAL_TEST_MACRO((m_componentsNames->GlobalLength() != (int) m_dimGlobal),
+                        m_env.fullRank(),
+                        "uqVectorSpaceClass<V,M>::constructor()",
+                        "global size of 'componentsNames' is not equal to m_dimGlobal");
+    UQ_FATAL_TEST_MACRO((m_componentsNames->MyLength() != (int) m_dimLocal),
+                        m_env.fullRank(),
+                        "uqVectorSpaceClass<V,M>::constructor()",
+                        "local size of 'componentsNames' is not equal to m_dimLocal");
+  }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqVectorSpaceClass<V,M>::constructor()"
-                           << std::endl;
+                            << std::endl;
   }
 }
 
@@ -132,7 +138,7 @@ uqVectorSpaceClass<V,M>::~uqVectorSpaceClass()
 {
   //if (m_env.subDisplayFile()) {
   //  *m_env.subDisplayFile() << "Entering uqVectorSpaceClass<V,M>::destructor()"
-  //                         << std::endl;
+  //                          << std::endl;
   //}
 
   if (m_zeroVector != NULL) delete m_zeroVector;
@@ -140,7 +146,7 @@ uqVectorSpaceClass<V,M>::~uqVectorSpaceClass()
 
   //if (m_env.subDisplayFile()) {
   //  *m_env.subDisplayFile() << "Leaving uqVectorSpaceClass<V,M>::destructor()"
-  //                         << std::endl;
+  //                          << std::endl;
   //}
 }
 
@@ -217,22 +223,32 @@ uqVectorSpaceClass<V,M>::newDiagMatrix(const V& v) const
 template <class V, class M>
 M*
 uqVectorSpaceClass<V,M>::newGaussianMatrix(
-  const V& varianceValues,
-  const V& initialValues) const
+  const V* varVec,
+  const V* auxVec) const
 {
   V tmpVec(*m_zeroVector);
   for (unsigned int i = 0; i < m_dimLocal; ++i) {
-    double variance = varianceValues[i];
+    double variance = INFINITY;
+    if (varVec) variance = (*varVec)[i];
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "In uqVectorSpaceClass<V,M>::newGaussianMatrix()"
-                             << ": i = "        << i
-                             << ", variance = " << variance
-                             << std::endl;
+                              << ": i = "        << i
+                              << ", variance = " << variance
+                              << std::endl;
     }
     if ((variance == INFINITY) ||
         (variance == NAN     )) {
-      tmpVec[i] = std::pow( fabs(initialValues[i])*0.05,2. );
-      if ( tmpVec[i] == 0. ) tmpVec[i] = 1.;
+      if (auxVec) {
+        tmpVec[i] = std::pow( fabs((*auxVec)[i])*0.05,2. );
+        if ((tmpVec[i] == 0.      ) ||
+            (tmpVec[i] == INFINITY) ||
+            (tmpVec[i] == NAN     )) {
+          tmpVec[i] = 1.;
+        }
+      }
+      else {
+        tmpVec[i] = 1.;
+      }
     }
     else if (variance == 0.) {
       tmpVec[i] = 1.;

@@ -338,16 +338,16 @@ class uqGaussianVectorRVClass : public uqBaseVectorRVClass<V,M> {
 public:
   uqGaussianVectorRVClass(const char*                  prefix,
                           const uqVectorSetClass<V,M>& imageSet,
-                          const V&                     imageExpVector,
-                          const V&                     imageVarVector);
+                          const V&                     lawExpVector,
+                          const V&                     lawVarVector);
   uqGaussianVectorRVClass(const char*                  prefix,
                           const uqVectorSetClass<V,M>& imageSet,
-                          const V&                     imageExpVector,
-                          const M&                     covMatrix);
+                          const V&                     lawExpVector,
+                          const M&                     lawCovMatrix);
   virtual ~uqGaussianVectorRVClass();
 
-  void updateExpVector(const V& newExpVector);
-  void updateCovMatrix(const M& newCovMatrix);
+  void updateLawExpVector(const V& newLawExpVector);
+  void updateLawCovMatrix(const M& newLawCovMatrix);
   
   void print(std::ostream& os) const;
 
@@ -366,8 +366,8 @@ template<class V, class M>
 uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
   const char*                  prefix,
   const uqVectorSetClass<V,M>& imageSet,
-  const V&                     imageExpVector,
-  const V&                     imageVarVector)
+  const V&                     lawExpVector,
+  const V&                     lawVarVector)
   :
   uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"gau").c_str(),imageSet)
 {
@@ -379,21 +379,21 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
 
   m_pdf = new uqGaussianJointPdfClass<V,M>(m_prefix.c_str(),
                                             m_imageSet,
-                                            imageExpVector,
-                                            imageVarVector);
+                                            lawExpVector,
+                                            lawVarVector);
 
-  M lowerCholCovMatrix(imageVarVector);
-  int iRC = lowerCholCovMatrix.chol();
+  M lowerCholLawCovMatrix(lawVarVector);
+  int iRC = lowerCholLawCovMatrix.chol();
   UQ_FATAL_TEST_MACRO(iRC,
                       m_env.fullRank(),
                       "uqGaussianVectorRVClass<V,M>::constructor() [1]",
                       "Cholesky decomposition of covariance matrix failed.");
-  lowerCholCovMatrix.zeroUpper(false);
+  lowerCholLawCovMatrix.zeroUpper(false);
 
   m_realizer = new uqGaussianVectorRealizerClass<V,M>(m_prefix.c_str(),
 						      m_imageSet,
-						      imageExpVector,
-						      lowerCholCovMatrix);
+						      lawExpVector,
+						      lowerCholLawCovMatrix);
 
   m_subCdf     = NULL; // FIX ME: complete code
   m_unifiedCdf = NULL; // FIX ME: complete code
@@ -410,8 +410,8 @@ template<class V, class M>
 uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
   const char*                  prefix,
   const uqVectorSetClass<V,M>& imageSet,
-  const V&                     imageExpVector,
-  const M&                     covMatrix)
+  const V&                     lawExpVector,
+  const M&                     lawCovMatrix)
   :
   uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"gau").c_str(),imageSet)
 {
@@ -423,15 +423,15 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
 
   m_pdf = new uqGaussianJointPdfClass<V,M>(m_prefix.c_str(),
                                             m_imageSet,
-                                            imageExpVector,
-                                            covMatrix);
+                                            lawExpVector,
+                                            lawCovMatrix);
 
-  M lowerCholCovMatrix(covMatrix);
-  int iRC = lowerCholCovMatrix.chol();
+  M lowerCholLawCovMatrix(lawCovMatrix);
+  int iRC = lowerCholLawCovMatrix.chol();
   if (iRC) {
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In uqGaussianVectorRVClass<V,M>::constructor() [2]: covMatrix contents are\n";
-      *m_env.subDisplayFile() << covMatrix; // FIX ME: might demand parallelism
+      *m_env.subDisplayFile() << "In uqGaussianVectorRVClass<V,M>::constructor() [2]: lawCovMatrix contents are\n";
+      *m_env.subDisplayFile() << lawCovMatrix; // FIX ME: might demand parallelism
       *m_env.subDisplayFile() << std::endl;
     }
   }
@@ -439,12 +439,12 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
                       m_env.fullRank(),
 		      "uqGaussianVectorRVClass<V,M>::constructor() [2]",
 		      "Cholesky decomposition of covariance matrix failed.");
-  lowerCholCovMatrix.zeroUpper(false);
+  lowerCholLawCovMatrix.zeroUpper(false);
 
   m_realizer = new uqGaussianVectorRealizerClass<V,M>(m_prefix.c_str(),
 						      m_imageSet,
-						      imageExpVector,
-						      lowerCholCovMatrix);
+						      lawExpVector,
+						      lowerCholLawCovMatrix);
 
   m_subCdf     = NULL; // FIX ME: complete code
   m_unifiedCdf = NULL; // FIX ME: complete code
@@ -464,29 +464,29 @@ uqGaussianVectorRVClass<V,M>::~uqGaussianVectorRVClass()
 
 template<class V, class M>
 void
-uqGaussianVectorRVClass<V,M>::updateExpVector(const V& newExpVector)
+uqGaussianVectorRVClass<V,M>::updateLawExpVector(const V& newLawExpVector)
 {
   // We are sure that m_pdf (and m_realizer, etc) point to associated Gaussian classes, so all is well
-  ( dynamic_cast< uqGaussianJointPdfClass     <V,M>* >(m_pdf     ) )->updateExpVector(newExpVector);
-  ( dynamic_cast< uqGaussianVectorRealizerClass<V,M>* >(m_realizer) )->updateExpVector(newExpVector);
+  ( dynamic_cast< uqGaussianJointPdfClass      <V,M>* >(m_pdf     ) )->updateLawExpVector(newLawExpVector);
+  ( dynamic_cast< uqGaussianVectorRealizerClass<V,M>* >(m_realizer) )->updateLawExpVector(newLawExpVector);
   return;
 }
 
 template<class V, class M>
 void
-uqGaussianVectorRVClass<V,M>::updateCovMatrix(const M& newCovMatrix)
+uqGaussianVectorRVClass<V,M>::updateLawCovMatrix(const M& newLawCovMatrix)
 {
   // We are sure that m_pdf (and m_realizer, etc) point to associated Gaussian classes, so all is well
-  ( dynamic_cast< uqGaussianJointPdfClass     <V,M>* >(m_pdf     ) )->updateCovMatrix(newCovMatrix);
+  ( dynamic_cast< uqGaussianJointPdfClass<V,M>* >(m_pdf) )->updateLawCovMatrix(newLawCovMatrix);
 
-  M newLowerCholCovMatrix(newCovMatrix);
-  int iRC = newLowerCholCovMatrix.chol();
+  M newLowerCholLawCovMatrix(newLawCovMatrix);
+  int iRC = newLowerCholLawCovMatrix.chol();
   UQ_FATAL_TEST_MACRO(iRC,
                       m_env.fullRank(),
-                      "uqGaussianVectorRVClass<V,M>::updateCovMatrix()",
+                      "uqGaussianVectorRVClass<V,M>::updateLawCovMatrix()",
                       "Cholesky decomposition of covariance matrix failed.");
-  newLowerCholCovMatrix.zeroUpper(false);
-  ( dynamic_cast< uqGaussianVectorRealizerClass<V,M>* >(m_realizer) )->updateLowerCholCovMatrix(newLowerCholCovMatrix);
+  newLowerCholLawCovMatrix.zeroUpper(false);
+  ( dynamic_cast< uqGaussianVectorRealizerClass<V,M>* >(m_realizer) )->updateLowerCholLawCovMatrix(newLowerCholLawCovMatrix);
   return;
 }
 

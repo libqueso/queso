@@ -1038,7 +1038,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
         if (tmpCholIsPositiveDefinite) {
 #ifdef UQ_USES_TK_CLASS
           uqScaledCovMatrixTKGroupClass<P_V,P_M>* tempTK = dynamic_cast<uqScaledCovMatrixTKGroupClass<P_V,P_M>* >(m_tk);
-          tempTK->updateCovMatrix(m_options.m_amEta*attemptedMatrix);
+          tempTK->updateLawCovMatrix(m_options.m_amEta*attemptedMatrix);
 #else
           *(m_lowerCholProposalCovMatrices[0]) = tmpChol;
           *(m_lowerCholProposalCovMatrices[0]) *= std::sqrt(m_options.m_amEta);

@@ -49,15 +49,6 @@ class uqBaseVectorRealizerClass {
 public:
            uqBaseVectorRealizerClass(const char*                  prefix,
                                      const uqVectorSetClass<V,M>& unifiedImageSet,
-                                     unsigned int                 subPeriod,
-                                     const V&                     unifiedImageExpVector,
-                                     const V&                     unifiedImageVarVector);
-           uqBaseVectorRealizerClass(const char*                  prefix,
-                                     const uqVectorSetClass<V,M>& unifiedImageSet,
-                                     unsigned int                 subPeriod,
-                                     const V&                     unifiedImageExpVector);
-           uqBaseVectorRealizerClass(const char*                  prefix,
-                                     const uqVectorSetClass<V,M>& unifiedImageSet,
                                      unsigned int                 subPeriod);
 
   virtual ~uqBaseVectorRealizerClass();
@@ -66,73 +57,12 @@ public:
           unsigned int           subPeriod      ()              const;
   virtual void                   realization    (V& nextValues) const = 0;
 
-  const   V&                     unifiedImageExpVector()        const;
-  const   V&                     unifiedImageVarVector()        const;
-
 protected:
   const uqBaseEnvironmentClass& m_env;
         std::string             m_prefix;
   const uqVectorSetClass<V,M>&  m_unifiedImageSet;
         unsigned int            m_subPeriod;
-
-        V*                      m_unifiedImageExpVector;
-        V*                      m_unifiedImageVarVector;
 };
-
-template<class V, class M>
-uqBaseVectorRealizerClass<V,M>::uqBaseVectorRealizerClass(
-  const char*                  prefix,
-  const uqVectorSetClass<V,M>& unifiedImageSet,
-  unsigned int                 subPeriod,
-  const V&                     unifiedImageExpVector,
-  const V&                     unifiedImageVarVector)
-  :
-  m_env                  (unifiedImageSet.env()),
-  m_prefix               ((std::string)(prefix)+"re_"),
-  m_unifiedImageSet      (unifiedImageSet),
-  m_subPeriod            (subPeriod),
-  m_unifiedImageExpVector(new V(unifiedImageExpVector)),
-  m_unifiedImageVarVector(new V(unifiedImageVarVector))
-{
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering uqBaseVectorRealizerClass<V,M>::constructor() [1]"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
-  }
-
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving uqBaseVectorRealizerClass<V,M>::constructor() [1]"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
-  }
-}
-
-template<class V, class M>
-uqBaseVectorRealizerClass<V,M>::uqBaseVectorRealizerClass(
-  const char*                  prefix,
-  const uqVectorSetClass<V,M>& unifiedImageSet,
-  unsigned int                 subPeriod,
-  const V&                     unifiedImageExpVector)
-  :
-  m_env                  (unifiedImageSet.env()),
-  m_prefix               ((std::string)(prefix)+"re_"),
-  m_unifiedImageSet      (unifiedImageSet),
-  m_subPeriod            (subPeriod),
-  m_unifiedImageExpVector(new V(unifiedImageExpVector)),
-  m_unifiedImageVarVector(unifiedImageSet.vectorSpace().newVector(INFINITY))
-{
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering uqBaseVectorRealizerClass<V,M>::constructor() [2]"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
-  }
-
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving uqBaseVectorRealizerClass<V,M>::constructor() [2]"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
-  }
-}
 
 template<class V, class M>
 uqBaseVectorRealizerClass<V,M>::uqBaseVectorRealizerClass(
@@ -140,12 +70,10 @@ uqBaseVectorRealizerClass<V,M>::uqBaseVectorRealizerClass(
   const uqVectorSetClass<V,M>& unifiedImageSet,
   unsigned int                 subPeriod)
   :
-  m_env                  (unifiedImageSet.env()),
-  m_prefix               ((std::string)(prefix)+"re_"),
-  m_unifiedImageSet      (unifiedImageSet),
-  m_subPeriod            (subPeriod),
-  m_unifiedImageExpVector(unifiedImageSet.vectorSpace().newVector(       0.)),
-  m_unifiedImageVarVector(unifiedImageSet.vectorSpace().newVector( INFINITY))
+  m_env            (unifiedImageSet.env()),
+  m_prefix         ((std::string)(prefix)+"re_"),
+  m_unifiedImageSet(unifiedImageSet),
+  m_subPeriod      (subPeriod)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqBaseVectorRealizerClass<V,M>::constructor() [4]"
@@ -170,20 +98,6 @@ unsigned int
 uqBaseVectorRealizerClass<V,M>::subPeriod() const
 {
   return m_subPeriod;
-}
-
-template <class V, class M>
-const V&
-uqBaseVectorRealizerClass<V,M>::unifiedImageExpVector() const
-{
-  return *m_unifiedImageExpVector;
-}
-
-template <class V, class M>
-const V&
-uqBaseVectorRealizerClass<V,M>::unifiedImageVarVector() const
-{
-  return *m_unifiedImageVarVector;
 }
 
 template<class V, class M>
@@ -262,35 +176,40 @@ uqGenericVectorRealizerClass<V,M>::realization(V& nextValues) const
 template<class V, class M>
 class uqGaussianVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
 public:
-  uqGaussianVectorRealizerClass(const char* prefix,
-				const uqVectorSetClass<V,M>& unifiedImageSet,
-				const V& expVector, // vector of mean values
-				const M& lowerCholCovMatrix); // lower triangular matrix resulting from Cholesky decomposition of the covariance matrix
+  uqGaussianVectorRealizerClass(const char*                  prefix,
+                                const uqVectorSetClass<V,M>& unifiedImageSet,
+                                const V&                     lawExpVector, // vector of mean values
+                                const M&                     lowerCholLawCovMatrix); // lower triangular matrix resulting from Cholesky decomposition of the covariance matrix
 
   ~uqGaussianVectorRealizerClass();
 
-  void realization             (V& nextValues) const;
-  void updateExpVector         (const V& newExpVector);
-  void updateLowerCholCovMatrix(const M& newLowerCholCovMatrix);
+  const V&   unifiedLawExpVector        ()              const;
+  const V&   unifiedLawVarVector        ()              const;
+        void realization                (V& nextValues) const;
+        void updateLawExpVector         (const V& newLawExpVector);
+        void updateLowerCholLawCovMatrix(const M& newLowerCholLawCovMatrix);
     
 private:
-  M* m_lowerCholCovMatrix;
+  M* m_lowerCholLawCovMatrix;
+  V* m_unifiedLawExpVector;
+  V* m_unifiedLawVarVector;
 
   using uqBaseVectorRealizerClass<V,M>::m_env;
   using uqBaseVectorRealizerClass<V,M>::m_prefix;
   using uqBaseVectorRealizerClass<V,M>::m_unifiedImageSet;
   using uqBaseVectorRealizerClass<V,M>::m_subPeriod;
-  using uqBaseVectorRealizerClass<V,M>::m_unifiedImageExpVector;
 };
 
 template<class V, class M>
 uqGaussianVectorRealizerClass<V,M>::uqGaussianVectorRealizerClass(const char* prefix,
 								  const uqVectorSetClass<V,M>& unifiedImageSet,
-								  const V& expVector,
-								  const M& lowerCholCovMatrix)
+								  const V& lawExpVector,
+								  const M& lowerCholLawCovMatrix)
   :
   uqBaseVectorRealizerClass<V,M>( ((std::string)(prefix)+"gau").c_str(), unifiedImageSet, 0 ),
-  m_lowerCholCovMatrix(new M(lowerCholCovMatrix))
+  m_lowerCholLawCovMatrix(new M(lowerCholLawCovMatrix)),
+  m_unifiedLawExpVector  (new V(lawExpVector)),
+  m_unifiedLawVarVector  (unifiedImageSet.vectorSpace().newVector( INFINITY)) // FIX ME
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqGaussianVectorRealizerClass<V,M>::constructor()"
@@ -298,7 +217,7 @@ uqGaussianVectorRealizerClass<V,M>::uqGaussianVectorRealizerClass(const char* pr
                            << std::endl;
   }
 
-  *m_unifiedImageExpVector = expVector;
+  *m_unifiedLawExpVector = lawExpVector;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqGaussianVectorRealizerClass<V,M>::constructor()"
@@ -310,7 +229,21 @@ uqGaussianVectorRealizerClass<V,M>::uqGaussianVectorRealizerClass(const char* pr
 template<class V, class M>
 uqGaussianVectorRealizerClass<V,M>::~uqGaussianVectorRealizerClass()
 {
-  delete m_lowerCholCovMatrix;
+  delete m_lowerCholLawCovMatrix;
+}
+
+template <class V, class M>
+const V&
+uqGaussianVectorRealizerClass<V,M>::unifiedLawExpVector() const
+{
+  return *m_unifiedLawExpVector;
+}
+
+template <class V, class M>
+const V&
+uqGaussianVectorRealizerClass<V,M>::unifiedLawVarVector() const
+{
+  return *m_unifiedLawVarVector;
 }
 
 template<class V, class M>
@@ -320,27 +253,27 @@ uqGaussianVectorRealizerClass<V,M>::realization(V& nextValues) const
   V iidGaussianVector(m_unifiedImageSet.vectorSpace().zeroVector());
   iidGaussianVector.cwSetGaussian(m_env.rng(), 0.0, 1.0);
 
-  nextValues = (*m_unifiedImageExpVector) + (*m_lowerCholCovMatrix)*iidGaussianVector;
+  nextValues = (*m_unifiedLawExpVector) + (*m_lowerCholLawCovMatrix)*iidGaussianVector;
   return;
 }
 
 template<class V, class M>
 void
-uqGaussianVectorRealizerClass<V,M>::updateExpVector(const V& newExpVector)
+uqGaussianVectorRealizerClass<V,M>::updateLawExpVector(const V& newLawExpVector)
 {
   // delete old expected values (alloced at construction or last call to this function)
-  delete m_unifiedImageExpVector;
-  m_unifiedImageExpVector = new V(newExpVector);
+  delete m_unifiedLawExpVector;
+  m_unifiedLawExpVector = new V(newLawExpVector);
   return;
 }
 
 template<class V, class M>
 void
-uqGaussianVectorRealizerClass<V,M>::updateLowerCholCovMatrix(const M& newLowerCholCovMatrix)
+uqGaussianVectorRealizerClass<V,M>::updateLowerCholLawCovMatrix(const M& newLowerCholLawCovMatrix)
 {
   // delete old expected values (alloced at construction or last call to this function)
-  delete m_lowerCholCovMatrix;
-  m_lowerCholCovMatrix = new M(newLowerCholCovMatrix);
+  delete m_lowerCholLawCovMatrix;
+  m_lowerCholLawCovMatrix = new M(newLowerCholLawCovMatrix);
   return;
 }
 
@@ -354,11 +287,15 @@ public:
                                   const uqBaseVectorSequenceClass<V,M>& chain);
  ~uqSequentialVectorRealizerClass();
 
-  void realization(V& nextValues) const;
+  const V&   unifiedSampleExpVector()              const;
+  const V&   unifiedSampleVarVector()              const;
+        void realization           (V& nextValues) const;
 
 private:
-  const uqBaseVectorSequenceClass<V,M>& m_chain;
-  mutable unsigned int                  m_currentChainPos;
+  const   uqBaseVectorSequenceClass<V,M>& m_chain;
+  mutable unsigned int                    m_currentChainPos;
+          V*                              m_unifiedSampleExpVector;
+          V*                              m_unifiedSampleVarVector;
 
   using uqBaseVectorRealizerClass<V,M>::m_env;
   using uqBaseVectorRealizerClass<V,M>::m_prefix;
@@ -371,9 +308,11 @@ uqSequentialVectorRealizerClass<V,M>::uqSequentialVectorRealizerClass(
   const char*                           prefix,
   const uqBaseVectorSequenceClass<V,M>& chain)
   :
-  uqBaseVectorRealizerClass<V,M>(((std::string)(prefix)+"seq").c_str(),chain.unifiedValuesBox(),chain.subSequenceSize(),chain.unifiedMeanValues(),chain.unifiedSampleVarianceValues()), // IMPORTANT
-  m_chain          (chain),
-  m_currentChainPos(0)
+  uqBaseVectorRealizerClass<V,M>(((std::string)(prefix)+"seq").c_str(),chain.unifiedValuesBox(),chain.subSequenceSize()),
+  m_chain                 (chain),
+  m_currentChainPos       (0),
+  m_unifiedSampleExpVector(new V(chain.unifiedMeanValues()          )), // IMPORTANT
+  m_unifiedSampleVarVector(new V(chain.unifiedSampleVarianceValues()))  // IMPORTANT
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "In uqSequentialVectorRealizerClass<V,M>::constructor()"
@@ -395,6 +334,20 @@ uqSequentialVectorRealizerClass<V,M>::realization(V& nextParamValues) const
   if (m_currentChainPos >= m_subPeriod) m_currentChainPos = 0;
 
   return;
+}
+
+template <class V, class M>
+const V&
+uqSequentialVectorRealizerClass<V,M>::unifiedSampleExpVector() const
+{
+  return *m_unifiedSampleExpVector;
+}
+
+template <class V, class M>
+const V&
+uqSequentialVectorRealizerClass<V,M>::unifiedSampleVarVector() const
+{
+  return *m_unifiedSampleVarVector;
 }
 
 //*****************************************************

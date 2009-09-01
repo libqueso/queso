@@ -69,6 +69,8 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                          paramsTable.numRows(),
                                          &paramNames); // could be 'NULL' as well
 
+  // m_stringColumns[j] = new EpetraExt::DistArray<std::string>(*m_map,1);
+
   uqBoxSubsetClass<P_V,P_M> paramDomain("param_",
                                         paramSpace,
                                         paramMins,
@@ -120,8 +122,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   //******************************************************
   // Solve inverse problem, that is, set 'pdf' and 'realizer' of 'postRv'
   //******************************************************
-  P_M* proposalCovMatrix = postRv.imageSet().vectorSpace().newGaussianMatrix(priorRv.pdf().domainVarVector(),
-                                                                             paramInitials);
+  P_M* proposalCovMatrix = postRv.imageSet().vectorSpace().newGaussianMatrix(NULL,&paramInitials);
   ip.solveWithBayesMarkovChain(paramInitials,
                                proposalCovMatrix);
   delete proposalCovMatrix;
