@@ -35,6 +35,7 @@
 #include <uqMiscellaneous.h>
 #include <sys/time.h>
 #include <gsl/gsl_randist.h>
+#include <hpct.h>
 
 // Version "0.1"   on "Aug/11/2008"
 // Version "0.11"  on "Aug/15/2008"
@@ -361,7 +362,7 @@ uqBaseEnvironmentClass::openOutputFile(
       // specifies a relative path for the desired output file).
 
       //std::cout << "checking " << baseFileName+"_sub"+this->subIdString()+"."+fileType << std::endl;
-      int irtrn = uqCheckPath((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str());
+      int irtrn = hpct_check_file_path((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str());
       UQ_FATAL_TEST_MACRO(irtrn < 0,m_fullRank,"openOutputFile()","unable to verify output path");
 
       // Open file
@@ -605,7 +606,7 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
 
   if (openFile) {
 
-    int irtrn = uqCheckPath((m_options->m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str());
+    int irtrn = hpct_check_file_path((m_options->m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str());
 
     UQ_FATAL_TEST_MACRO(irtrn < 0,m_fullRank,"uqEnvironment::constructor()","unable to verify output path");
 			
