@@ -76,11 +76,14 @@ public:
   uqGslVectorClass  invertMultiplyForceLU(const uqGslVectorClass& b) const;
   void              invertMultiplyForceLU(const uqGslVectorClass& b, uqGslVectorClass& x) const;
 
-  void              print         (std::ostream& os) const;
+  void              print                (std::ostream& os) const;
+  void              subWriteContents     (const std::string&            varNamePrefix,
+                                          const std::string&            fileName,
+                                          const std::set<unsigned int>& allowedSubEnvIds) const;
 
 private:
-  void              copy          (const uqGslMatrixClass& src);
-  void              multiply      (const uqGslVectorClass& x, uqGslVectorClass& y) const;
+  void              copy                 (const uqGslMatrixClass& src);
+  void              multiply             (const uqGslVectorClass& x, uqGslVectorClass& y) const;
 
           gsl_matrix*      m_mat;
   mutable gsl_matrix*      m_LU;

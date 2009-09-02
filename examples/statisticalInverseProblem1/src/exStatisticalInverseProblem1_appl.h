@@ -53,11 +53,21 @@ uqAppl(const uqBaseEnvironmentClass& env)
   //******************************************************
   // Step 1 of 5: Instantiate the parameter space
   //******************************************************
+  if (env.fullRank() == 0) {
+    std::cout << "Executing step 1 of 5: instantiation of parameter space ...\n"
+              << std::endl;
+  }
+
   uqVectorSpaceClass<P_V,P_M> paramSpace(env,"param_",4,NULL);
 
   //******************************************************
   // Step 2 of 5: Instantiate the parameter domain
   //******************************************************
+  if (env.fullRank() == 0) {
+    std::cout << "Executing step 2 of 5: instantiation of parameter domain ...\n"
+              << std::endl;
+  }
+
   P_V paramMins(paramSpace.zeroVector());
   paramMins.cwSet(-INFINITY);
   P_V paramMaxs(paramSpace.zeroVector());
@@ -67,6 +77,11 @@ uqAppl(const uqBaseEnvironmentClass& env)
   //******************************************************
   // Step 3 of 5: Instantiate the likelihood function object (data + routine), to be used by QUESO.
   //******************************************************
+  if (env.fullRank() == 0) {
+    std::cout << "Executing step 3 of 5: instantiation of likelihood function object ...\n"
+              << std::endl;
+  }
+
   P_V paramMeans(paramSpace.zeroVector());
 
   double condNumber = 100.0;
@@ -75,12 +90,6 @@ uqAppl(const uqBaseEnvironmentClass& env)
   P_M* covMatrixInverse = paramSpace.newMatrix();
   P_M* covMatrix        = paramSpace.newMatrix();
   uqCovCond(condNumber,direction,*covMatrix,*covMatrixInverse);
-  std::cout << "covMatrix = [" << *covMatrix
-            << "];"
-            << "\n"
-            << "covMatrixInverse = [" << *covMatrixInverse
-            << "];"
-            << std::endl;
 
   likelihoodRoutine_DataType<P_V,P_M> likelihoodRoutine_Data;
   likelihoodRoutine_Data.paramMeans        = &paramMeans;
@@ -96,6 +105,11 @@ uqAppl(const uqBaseEnvironmentClass& env)
   //******************************************************
   // Step 4 of 5: Instantiate the inverse problem
   //******************************************************
+  if (env.fullRank() == 0) {
+    std::cout << "Executing step 4 of 5: instantiation of inverse problem ...\n"
+              << std::endl;
+  }
+
   uqUniformVectorRVClass<P_V,P_M> priorRv("prior_", // Extra prefix before the default "rv_" prefix
                                           paramDomain);
 
@@ -110,21 +124,75 @@ uqAppl(const uqBaseEnvironmentClass& env)
   //******************************************************
   // Step 5 of 5: Solve the inverse problem
   //******************************************************
+  if (env.fullRank() == 0) {
+    std::cout << "Executing step 5 of 5: solution of inverse problem ...\n"
+              << std::endl;
+  }
+
+  //******************************************************
+  // According to options in the input file 'sip.inp', the following output files
+  // will be created during the solution of the inverse problem:
+  // --> ...
+  //******************************************************
   P_V paramInitials(paramSpace.zeroVector());
   P_M* proposalCovMatrix = postRv.imageSet().vectorSpace().newGaussianMatrix(NULL,&paramInitials);
   ip.solveWithBayesMarkovChain(paramInitials,
                                proposalCovMatrix);
   delete proposalCovMatrix;
 
-  P_V tmpVec (paramSpace.zeroVector());
-  P_V diffVec(paramSpace.zeroVector());
-  const uqBaseVectorRealizerClass<P_V,P_M>& postRealizer = postRv.realizer();
-  for (unsigned int i = 0; i < postRealizer.subPeriod(); ++i) {
-    postRealizer.realization(tmpVec);
-    diffVec = tmpVec - paramMeans;
-    std::cout << "12345 " << scalarProduct(diffVec, *covMatrixInverse * diffVec)
+  //******************************************************
+  // Write data to disk, to be used by 'sip_plot.m' afterwards
+  //******************************************************
+  if (env.fullRank() == 0) {
+    std::cout << "Inverse problem solved. Writing data to disk now ...\n"
               << std::endl;
   }
+
+  char varPrefixName[64+1];
+  std::set<unsigned int> auxSet;
+  auxSet.insert(0);
+
+  sprintf(varPrefixName,"sip_appl_paramMeans");
+  paramMeans.subWriteContents(varPrefixName,
+                              "outputData/appl_output",
+                              auxSet);
+  sprintf(varPrefixName,"sip_appl_covMatrix");
+  covMatrix->subWriteContents(varPrefixName,
+                              "outputData/appl_output",
+                              auxSet);
+  sprintf(varPrefixName,"sip_appl_covMatrixInverse");
+  covMatrixInverse->subWriteContents(varPrefixName,
+                                     "outputData/appl_output",
+                                     auxSet);
+  //std::cout << "covMatrix = [" << *covMatrix
+  //          << "];"
+  //          << "\n"
+  //          << "covMatrixInverse = [" << *covMatrixInverse
+  //          << "];"
+  //          << std::endl;
+
+  //******************************************************
+  // Write weighted squared norm to disk, to be used by 'sip_plot.m' afterwards
+  //******************************************************
+  // Define auxVec
+  const uqBaseVectorRealizerClass<P_V,P_M>& postRealizer = postRv.realizer();
+  uqVectorSpaceClass<P_V,P_M> auxSpace(env,"",postRealizer.subPeriod(),NULL);
+  P_V auxVec(auxSpace.zeroVector());
+
+  // Populate auxVec
+  P_V tmpVec (paramSpace.zeroVector());
+  P_V diffVec(paramSpace.zeroVector());
+  for (unsigned int i = 0; i < auxSpace.dimLocal(); ++i) {
+    postRealizer.realization(tmpVec);
+    diffVec = tmpVec - paramMeans;
+    auxVec[i] = scalarProduct(diffVec, *covMatrixInverse * diffVec);
+  }
+
+  // Write auxVec to disk
+  sprintf(varPrefixName,"sip_appl_d");
+  auxVec.subWriteContents(varPrefixName,
+                          "outputData/appl_output",
+                          auxSet);
 
   //******************************************************
   // Release memory before leaving routine.

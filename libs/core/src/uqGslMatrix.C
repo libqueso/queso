@@ -524,6 +524,48 @@ uqGslMatrixClass::print(std::ostream& os) const
   return;
 }
 
+void
+uqGslMatrixClass::subWriteContents(
+  const std::string&            varNamePrefix,
+  const std::string&            fileName,
+  const std::set<unsigned int>& allowedSubEnvIds) const
+{
+  bool okSituation = (m_env.subRank() >= 0);
+  UQ_FATAL_TEST_MACRO(!okSituation,
+                      m_env.fullRank(),
+                      "uqGslMatrixClass::subWriteContents()",
+                      "unexpected subRank");
+
+  std::ofstream* ofsVar = NULL;
+  m_env.openOutputFile(fileName,
+                       UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                       allowedSubEnvIds,
+                       false,
+                       ofsVar);
+
+  if (ofsVar) {
+    unsigned int nRows = this->numRowsLocal();
+    unsigned int nCols = this->numCols();
+    *ofsVar << varNamePrefix << "_sub" << m_env.subIdString() << " = zeros(" << nRows
+            << ","                                                           << nCols
+            << ");"
+            << std::endl;
+    *ofsVar << varNamePrefix << "_sub" << m_env.subIdString() << " = [";
+
+    for (unsigned int i = 0; i < nRows; ++i) {
+      for (unsigned int j = 0; j < nCols; ++j) {
+        *ofsVar << (*this)(i,j)
+                << " ";
+      }
+      *ofsVar << "\n";
+    }
+    *ofsVar << "];\n";
+    ofsVar->close();
+  }
+
+  return;
+}
+
 std::ostream&
 operator<<(std::ostream& os, const uqGslMatrixClass& obj)
 {

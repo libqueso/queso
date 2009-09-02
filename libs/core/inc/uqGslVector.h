@@ -71,7 +71,7 @@ public:
   void         cwInvert            ();
   void         sort                ();
   void         print               (std::ostream& os) const;
-  void         writeContents       (const std::string&            varNamePrefix,
+  void         subWriteContents    (const std::string&            varNamePrefix,
                                     const std::string&            fileName,
                                     const std::set<unsigned int>& allowedSubEnvIds) const;
 

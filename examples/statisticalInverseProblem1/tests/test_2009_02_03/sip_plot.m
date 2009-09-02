@@ -1,23 +1,24 @@
 cd outputData
 sipOutput_sub0
 file_sip_raw
-cd ..
-load nada
+appl_output_sub0
+%cd ..
+%load nada
 
-d=nada(:,1);    
-[nsimu,temp]=size(d);
+%d=nada(:,1);    
+[nsimu,temp]=size(sip_appl_d_sub0);
 [temp,npar]=size(ip_mc_rawChain_unified);
-meanVec=[0 0 0 0];
-covMatrix = [0.263584 0.0820654 0.0748222 -0.410472 
-0.0820654 0.0414596 0.0241198 -0.137645 
-0.0748222 0.0241198 0.0511172 -0.140059 
--0.410472 -0.137645 -0.140059 0.698176 
-];
+%meanVec=[0 0 0 0];
+%covMatrix = [0.263584 0.0820654 0.0748222 -0.410472 
+%0.0820654 0.0414596 0.0241198 -0.137645 
+%0.0748222 0.0241198 0.0511172 -0.140059 
+%-0.410472 -0.137645 -0.140059 0.698176 
+%];
 
 c50  = chi2inv(0.50,npar);
 c95  = chi2inv(0.95,npar);
-cc50 = sum(d<c50)./nsimu;
-cc95 = sum(d<c95)./nsimu;
+cc50 = sum(sip_appl_d_sub0<c50)./nsimu;
+cc95 = sum(sip_appl_d_sub0<c95)./nsimu;
 
 plot(ip_mc_rawChain_unified(:,1),ip_mc_rawChain_unified(:,2),'.');
 xlabel('\theta_1');
@@ -30,18 +31,18 @@ c50  = chi2inv(0.50,2);
 c95  = chi2inv(0.95,2);
 
 t = linspace(0,2*pi)'; %'
-R = chol(c50*covMatrix(1:2,1:2));
-x = meanVec(1) + R(1,1).*cos(t);
-y = meanVec(2) + R(1,2).*cos(t) + R(2,2).*sin(t);
+R = chol(c50*sip_appl_covMatrix_sub0(1:2,1:2));
+x = sip_appl_paramMeans_sub0(1) + R(1,1).*cos(t);
+y = sip_appl_paramMeans_sub0(2) + R(1,2).*cos(t) + R(2,2).*sin(t);
 plot(x,y,'r--','LineWidth',2);
 
-R = chol(c95*covMatrix(1:2,1:2));
-x = meanVec(1) + R(1,1).*cos(t);
-y = meanVec(2) + R(1,2).*cos(t) + R(2,2).*sin(t);
+R = chol(c95*sip_appl_covMatrix_sub0(1:2,1:2));
+x = sip_appl_paramMeans_sub0(1) + R(1,1).*cos(t);
+y = sip_appl_paramMeans_sub0(2) + R(1,2).*cos(t) + R(2,2).*sin(t);
 plot(x,y,'r--','LineWidth',2);
 
 print -dpng fig1.png
-waitforbuttonpress;
+%waitforbuttonpress;
 clf;
 
 plot(ip_mc_rawChain_unifGkdePosits_sub0(1,:),ip_mc_rawChain_unifGkdeValues_sub0(1,:),'-b');

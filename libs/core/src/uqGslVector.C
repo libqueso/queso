@@ -351,7 +351,7 @@ uqGslVectorClass::print(std::ostream& os) const
 }
 
 void
-uqGslVectorClass::writeContents(
+uqGslVectorClass::subWriteContents(
   const std::string&            varNamePrefix,
   const std::string&            fileName,
   const std::set<unsigned int>& allowedSubEnvIds) const
@@ -359,7 +359,7 @@ uqGslVectorClass::writeContents(
   bool okSituation = (m_env.subRank() >= 0);
   UQ_FATAL_TEST_MACRO(!okSituation,
                       m_env.fullRank(),
-                      "uqSequenceOfVectorsClass<V,M>::subWriteContents()",
+                      "uqGslVectorsClass::subWriteContents()",
                       "unexpected subRank");
 
   std::ofstream* ofsVar = NULL;
@@ -383,9 +383,6 @@ uqGslVectorClass::writeContents(
     this->setPrintHorizontally(savedVectorPrintState);
 
     *ofsVar << "];\n";
-  }
-
-  if (ofsVar) {
     ofsVar->close();
   }
 
