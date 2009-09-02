@@ -52,6 +52,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
   //******************************************************
   // Step 1 of 5: Instantiate the parameter space
+  // It has dimension equal to 4
   //******************************************************
   if (env.fullRank() == 0) {
     std::cout << "Executing step 1 of 5: instantiation of parameter space ...\n"

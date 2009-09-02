@@ -88,7 +88,7 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
   double result = 0.;
 
   if ((m_env.numSubEnvironments() < (unsigned int) m_env.fullComm().NumProc()) &&
-      (m_auxVec.numberOfProcessorsRequiredForStorage() == 1                  )) {
+      (m_auxVec.numOfProcsForStorage() == 1                                  )) {
     bool stayInRoutine = true;
     do {
       const V* internalValues    = NULL;

@@ -579,8 +579,8 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
   m_env.syncPrintDebugMsg("In uqMarkovChainSGClass<P_V,P_M>::generateFullChain(), right before main loop",3,3000000,m_env.fullComm());
 
   if ((m_env.numSubEnvironments() < (unsigned int) m_env.fullComm().NumProc()) &&
-      (m_initialPosition.numberOfProcessorsRequiredForStorage() == 1         ) &&
-      (m_env.subRank()                                          != 0         )) {
+      (m_initialPosition.numOfProcsForStorage() == 1                         ) &&
+      (m_env.subRank()                          != 0                         )) {
     // subRank != 0 --> Enter the barrier and wait for processor 0 to decide to call the targetPdf
     double aux = 0.;
     aux = m_targetPdfSynchronizer->callFunction(NULL,
@@ -1095,8 +1095,8 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
   } // end chain loop
 
   if ((m_env.numSubEnvironments() < (unsigned int) m_env.fullComm().NumProc()) &&
-      (m_initialPosition.numberOfProcessorsRequiredForStorage() == 1         ) &&
-      (m_env.subRank()                                          == 0         )) {
+      (m_initialPosition.numOfProcsForStorage() == 1                         ) &&
+      (m_env.subRank()                          == 0                         )) {
     // subRank == 0 --> Tell all other processors to exit barrier now that the chain has been fully generated
     double aux = 0.;
     aux = m_targetPdfSynchronizer->callFunction(NULL,
@@ -1224,7 +1224,7 @@ uqMarkovChainSGClass<P_V,P_M>::checkTheParallelEnvironment()
                         m_env.fullRank(),
                         "uqMarkovChainSGClass<P_V,P_M>::checkTheParallelEnvironment()",
                         "there should exist only one processor per sub environment");
-    UQ_FATAL_TEST_MACRO(m_initialPosition.numberOfProcessorsRequiredForStorage() != 1,
+    UQ_FATAL_TEST_MACRO(m_initialPosition.numOfProcsForStorage() != 1,
                         m_env.fullRank(),
                         "uqMarkovChainSGClass<P_V,P_M>::checkTheParallelEnvironment()",
                         "only 1 processor (per sub environment) should be necessary for the storage of a vector");
@@ -1239,10 +1239,10 @@ uqMarkovChainSGClass<P_V,P_M>::checkTheParallelEnvironment()
                         m_env.fullRank(),
                         "uqMarkovChainSGClass<P_V,P_M>::checkTheParallelEnvironment()",
                         "inconsistent number of processors per sub environment");
-    if (m_initialPosition.numberOfProcessorsRequiredForStorage() == 1) {
+    if (m_initialPosition.numOfProcsForStorage() == 1) {
       // Ok
     }
-    else if (m_initialPosition.numberOfProcessorsRequiredForStorage() == numProcsPerSubEnvironment) {
+    else if (m_initialPosition.numOfProcsForStorage() == numProcsPerSubEnvironment) {
       UQ_FATAL_TEST_MACRO(true,
                           m_env.fullRank(),
                           "uqMarkovChainSGClass<P_V,P_M>::checkTheParallelEnvironment()",

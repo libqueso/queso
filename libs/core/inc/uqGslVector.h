@@ -47,8 +47,6 @@ public:
   uqGslVectorClass(const uqGslVectorClass&         y);
  ~uqGslVectorClass();
 
-  unsigned int numberOfProcessorsRequiredForStorage() const;
-
   uqGslVectorClass& operator= (const uqGslVectorClass& rhs);
   uqGslVectorClass& operator*=(double a);
   uqGslVectorClass& operator/=(double a);

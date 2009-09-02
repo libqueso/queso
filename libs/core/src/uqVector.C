@@ -141,6 +141,12 @@ uqVectorClass::map() const
   return m_map;
 }
 
+unsigned int
+uqVectorClass::numOfProcsForStorage() const
+{
+  return m_map.Comm().NumProc();
+}
+
 void
 uqVectorClass::setPrintHorizontally(bool value) const
 {

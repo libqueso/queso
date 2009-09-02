@@ -463,7 +463,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::checkTheParallelEnvironment()
                         m_env.fullRank(),
                         "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::checkTheParallelEnvironment()",
                         "there should exist only one processor per sub environment");
-    UQ_FATAL_TEST_MACRO(m_paramRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage() != 1,
+    UQ_FATAL_TEST_MACRO(m_paramRv.imageSet().vectorSpace().numOfProcsForStorage() != 1,
                         m_env.fullRank(),
                         "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::checkTheParallelEnvironment()",
                         "only 1 processor (per sub environment) should be necessary for the storage of a parameter vector");
@@ -478,12 +478,12 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::checkTheParallelEnvironment()
                         m_env.fullRank(),
                         "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::checkTheParallelEnvironment()",
                         "inconsistent number of processors per sub environment");
-    if ((m_paramRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage() == 1) &&
-        (m_qoiRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage()   == 1)) {
+    if ((m_paramRv.imageSet().vectorSpace().numOfProcsForStorage() == 1) &&
+        (m_qoiRv.imageSet().vectorSpace().numOfProcsForStorage()   == 1)) {
       // Ok
     }
-    else if ((m_paramRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage() == numProcsPerSubEnvironment) &&
-             (m_qoiRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage()   == numProcsPerSubEnvironment)) {
+    else if ((m_paramRv.imageSet().vectorSpace().numOfProcsForStorage() == numProcsPerSubEnvironment) &&
+             (m_qoiRv.imageSet().vectorSpace().numOfProcsForStorage()   == numProcsPerSubEnvironment)) {
       UQ_FATAL_TEST_MACRO(true,
                           m_env.fullRank(),
                           "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::checkTheParallelEnvironment()",

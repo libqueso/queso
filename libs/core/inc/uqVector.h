@@ -46,8 +46,6 @@ public:
            uqVectorClass(const uqVectorClass& rhs);
   virtual ~uqVectorClass();
 
-  virtual unsigned int numberOfProcessorsRequiredForStorage() const = 0;
-
   uqVectorClass& operator=(const uqVectorClass& rhs);
   uqVectorClass& operator*=(double a);
   uqVectorClass& operator/=(double a);
@@ -56,6 +54,7 @@ public:
 
     const uqBaseEnvironmentClass& env                 ()           const;
     const Epetra_Map&             map                 ()           const;
+          unsigned int            numOfProcsForStorage()           const;
           void                    setPrintHorizontally(bool value) const; // Yes, 'const'
           bool                    getPrintHorizontally()           const;
 

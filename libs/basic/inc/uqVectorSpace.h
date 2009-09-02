@@ -47,9 +47,12 @@ public:
                            const EpetraExt::DistArray<std::string>* componentsNames);
        ~uqVectorSpaceClass();
 
+  const uqBaseEnvironmentClass&            env                 () const;
   const Epetra_Map&                        map                 () const;
+        unsigned int                       numOfProcsForStorage() const;
         unsigned int                       dimLocal            () const;
         unsigned int                       dimGlobal           () const;
+        unsigned int                       globalIdOfFirstComponent() const;
 
   const V&                                 zeroVector          () const;
         V*                                 newVector           () const; // See template specialization
@@ -61,11 +64,11 @@ public:
         M*                                 newGaussianMatrix   (const V* varVec,
                                                                 const V* auxVec) const;
 
-  const uqVectorSpaceClass<V,M>&           vectorSpace         () const;
+  const uqVectorSpaceClass<V,M>&           vectorSpace         () const; // It is virtual in the base class 'uqVectorSetClass'
         bool                               contains            (const V& vec) const;
 
   const EpetraExt::DistArray<std::string>* componentsNames     () const;
-  const std::string&                       componentName       (unsigned int componentId) const;
+  const std::string&                       localComponentName  (unsigned int localComponentId) const;
         void                               printComponentsNames(std::ostream& os, bool printHorizontally) const;
         void                               print               (std::ostream& os) const;
 
@@ -165,6 +168,13 @@ uqVectorSpaceClass<V,M>::contains(const V& vec) const
 }
 
 template <class V, class M>
+const uqBaseEnvironmentClass&
+uqVectorSpaceClass<V,M>::env() const
+{
+  return m_env;
+}
+
+template <class V, class M>
 const Epetra_Map&
 uqVectorSpaceClass<V,M>::map() const
 {
@@ -173,6 +183,13 @@ uqVectorSpaceClass<V,M>::map() const
                       "uqVectorSpaceClass<V,M>::map()",
                       "m_map is still NULL");
   return *m_map;
+}
+
+template <class V, class M>
+unsigned int
+uqVectorSpaceClass<V,M>::numOfProcsForStorage() const
+{
+  return m_map->Comm().NumProc();
 }
 
 template<class V, class M>
@@ -191,6 +208,13 @@ unsigned int
 uqVectorSpaceClass<V,M>::dimGlobal() const
 {
   return m_dimGlobal;
+}
+
+template <class V, class M>
+unsigned int
+uqVectorSpaceClass<V,M>::globalIdOfFirstComponent() const
+{
+  return m_map->MinMyGID();
 }
 
 template <class V, class M>
@@ -270,16 +294,16 @@ uqVectorSpaceClass<V,M>::componentsNames() const
 
 template <class V, class M>
 const std::string&
-uqVectorSpaceClass<V,M>::componentName(unsigned int componentId) const
+uqVectorSpaceClass<V,M>::localComponentName(unsigned int localComponentId) const
 {
   if (m_componentsNames == NULL) return m_emptyComponentName;
 
-  UQ_FATAL_TEST_MACRO(componentId > m_dimLocal,
+  UQ_FATAL_TEST_MACRO(localComponentId > m_dimLocal,
                       m_env.fullRank(),
-                      "uqVectorSpaceClass<V,M>::componentName()",
-                      "componentId is too big");
+                      "uqVectorSpaceClass<V,M>::localComponentName()",
+                      "localComponentId is too big");
 
-  return (*(const_cast<EpetraExt::DistArray<std::string>*>(m_componentsNames)))(componentId,0);
+  return (*(const_cast<EpetraExt::DistArray<std::string>*>(m_componentsNames)))(localComponentId,0);
 }
 
 template<class V, class M>
@@ -288,13 +312,13 @@ uqVectorSpaceClass<V,M>::printComponentsNames(std::ostream& os, bool printHorizo
 {
   if (printHorizontally) { 
     for (unsigned int i = 0; i < this->dimLocal(); ++i) {
-      os << "'" << this->componentName(i) << "'"
+      os << "'" << this->localComponentName(i) << "'"
          << " ";
     }
   }
   else {
     for (unsigned int i = 0; i < this->dimLocal(); ++i) {
-      os << "'" << this->componentName(i) << "'"
+      os << "'" << this->localComponentName(i) << "'"
          << std::endl;
     }
   }

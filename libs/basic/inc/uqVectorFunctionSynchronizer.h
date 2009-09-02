@@ -92,8 +92,8 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
         EpetraExt::DistArray<P_V*>* hessianEffects) const
 {
   if ((m_env.numSubEnvironments() < (unsigned int) m_env.fullComm().NumProc()) &&
-      (m_auxPVec.numberOfProcessorsRequiredForStorage() == 1                 ) &&
-      (m_auxQVec.numberOfProcessorsRequiredForStorage() == 1                 )) {
+      (m_auxPVec.numOfProcsForStorage() == 1                 ) &&
+      (m_auxQVec.numOfProcsForStorage() == 1                 )) {
     bool stayInRoutine = true;
     do {
       const P_V*                        internalValues    = NULL;
@@ -243,7 +243,7 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
                         m_env.fullRank(),
                         "uqVectorFunctionSynchronizerClass<V,M>::callFunction()",
                         "Neither vecValues nor imageVector should not be NULL");
-    UQ_FATAL_TEST_MACRO((m_auxPVec.numberOfProcessorsRequiredForStorage() != m_auxQVec.numberOfProcessorsRequiredForStorage()),
+    UQ_FATAL_TEST_MACRO((m_auxPVec.numOfProcsForStorage() != m_auxQVec.numOfProcsForStorage()),
                         m_env.fullRank(),
                         "uqVectorFunctionSynchronizerClass<V,M>::callFunction()",
                         "Number of processors required for storage should be the same");

@@ -134,12 +134,6 @@ uqTrilinosVectorClass::~uqTrilinosVectorClass()
   if (m_vec) delete m_vec;
 }
 
-unsigned int
-uqTrilinosVectorClass::numberOfProcessorsRequiredForStorage() const
-{
-  return m_map.Comm().NumProc();
-}
-
 uqTrilinosVectorClass&
 uqTrilinosVectorClass::operator=(const uqTrilinosVectorClass& obj)
 {

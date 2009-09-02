@@ -530,11 +530,15 @@ uqGslMatrixClass::subWriteContents(
   const std::string&            fileName,
   const std::set<unsigned int>& allowedSubEnvIds) const
 {
-  bool okSituation = (m_env.subRank() >= 0);
-  UQ_FATAL_TEST_MACRO(!okSituation,
+  UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
                       m_env.fullRank(),
                       "uqGslMatrixClass::subWriteContents()",
                       "unexpected subRank");
+
+  UQ_FATAL_TEST_MACRO(this->numOfProcsForStorage() > 1,
+                      m_env.fullRank(),
+                      "uqGslMatrixClass::subWriteContents()",
+                      "implemented just for sequential vectors for now");
 
   std::ofstream* ofsVar = NULL;
   m_env.openOutputFile(fileName,

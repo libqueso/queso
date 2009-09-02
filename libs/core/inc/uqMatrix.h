@@ -52,6 +52,7 @@ public:
 
     const uqBaseEnvironmentClass& env                 ()           const;
     const Epetra_Map&             map                 ()           const;
+          unsigned int            numOfProcsForStorage()           const;
           void                    setPrintHorizontally(bool value) const; // Yes, 'const'
           bool                    getPrintHorizontally()           const;
 

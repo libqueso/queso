@@ -1,7 +1,7 @@
 cd outputData
 sfpOutput_sub0
-sfpExtraOutput_sub0
-cd ..
+%sfpExtraOutput_sub0
+%cd ..
 
 plot(fp_mc_QoiSeq_corrViaFftLags_sub0,fp_mc_QoiSeq_corrViaFftInitPos0_sub0,'-o');
 title('QoI autocorrelation');

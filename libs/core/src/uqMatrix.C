@@ -131,6 +131,12 @@ uqMatrixClass::map() const
   //return (const Epetra_Map&) (m_mat->Map());
 }
 
+unsigned int
+uqMatrixClass::numOfProcsForStorage() const
+{
+  return m_map.Comm().NumProc();
+}
+
 void
 uqMatrixClass::setPrintHorizontally(bool value) const
 {

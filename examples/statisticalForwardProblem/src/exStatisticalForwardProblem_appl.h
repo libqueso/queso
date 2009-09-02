@@ -51,47 +51,51 @@ uqAppl(const uqBaseEnvironmentClass& env)
   }
 
   //******************************************************
-  // Read Ascii file with information on parameters
+  // Step 1 of 6: Instantiate the parameter space (witt P_V and P_M)
+  // It has dimension equal to 2
   //******************************************************
-  uqAsciiTableClass<P_V,P_M> paramsTable(env,
-                                         2,    // # of rows
-                                         2,    // # of cols after 'parameter name': min + max
-                                         NULL, // All extra columns are of 'double' type
-                                         "inputData/params.tab");
+  if (env.fullRank() == 0) {
+    std::cout << "Executing step 1 of 6: instantiation of parameter space ...\n"
+              << std::endl;
+  }
 
-  const EpetraExt::DistArray<std::string>& paramNames = paramsTable.stringColumn(0);
-  P_V                                      paramMins(paramsTable.doubleColumn(1));
-  P_V                                      paramMaxs(paramsTable.doubleColumn(2));
-
-  uqVectorSpaceClass<P_V,P_M> paramSpace(env,
-                                         "param_", // Extra prefix before the default "space_" prefix
-                                         paramsTable.numRows(),
-                                         &paramNames);
-
-  uqBoxSubsetClass<P_V,P_M> paramDomain("param_",
-                                        paramSpace,
-                                        paramMins,
-                                        paramMaxs);
+  uqVectorSpaceClass<P_V,P_M> paramSpace(env,"param_",2,NULL);
 
   //******************************************************
-  // Read Ascii file with information on qois
+  // Step 2 of 6: Instantiate the parameter domain
   //******************************************************
-  uqAsciiTableClass<Q_V,Q_M> qoisTable(env,
-                                       1,    // # of rows
-                                       0,    // # of cols after 'qoi name': none
-                                       NULL, // All extra columns are of 'double' type
-                                       "inputData/qois.tab");
+  if (env.fullRank() == 0) {
+    std::cout << "Executing step 2 of 6: instantiation of parameter domain ...\n"
+              << std::endl;
+  }
 
-  const EpetraExt::DistArray<std::string>& qoiNames = qoisTable.stringColumn(0);
-
-  uqVectorSpaceClass<Q_V,Q_M> qoiSpace(env,
-                                       "qoi_", // Extra prefix before the default "space_" prefix
-                                       qoisTable.numRows(),
-                                       &qoiNames);
+  P_V paramMins(paramSpace.zeroVector());
+  paramMins[0] = 3.1;
+  paramMins[1] = 0.7;
+  P_V paramMaxs(paramSpace.zeroVector());
+  paramMaxs[0] = 101.;
+  paramMaxs[1] = 99.;
+  uqBoxSubsetClass<P_V,P_M> paramDomain("param_",paramSpace,paramMins,paramMaxs);
 
   //******************************************************
-  // Instantiate a qoi function object (data + routine), to be used by QUESO.
+  // Step 3 of 6: Instantiate the qoi space (with Q_V and Q_M)
+  // It has dimension equal to 1
   //******************************************************
+  if (env.fullRank() == 0) {
+    std::cout << "Executing step 3 of 6: instantiation of qoi space ...\n"
+              << std::endl;
+  }
+
+  uqVectorSpaceClass<Q_V,Q_M> qoiSpace(env,"qoi_",1,NULL);
+
+  //******************************************************
+  // Step 4 of 6: Instantiate the qoi function object (data + routine), to be used by QUESO.
+  //******************************************************
+  if (env.fullRank() == 0) {
+    std::cout << "Executing step 4 of 6: instantiation of qoi function object ...\n"
+              << std::endl;
+  }
+
   qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> qoiRoutine_Data;
   qoiRoutine_Data.p1MultiplicativeFactor = 1000.;
   qoiRoutine_Data.p1ExponentFactor       = 2.;
@@ -105,8 +109,13 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                                                (void *) &qoiRoutine_Data);
 
   //******************************************************
-  // Deal with forward problem
+  // Step 5 of 6: Instantiate the inverse problem
   //******************************************************
+  if (env.fullRank() == 0) {
+    std::cout << "Executing step 5 of 6: instantiation of forward problem ...\n"
+              << std::endl;
+  }
+
   uqUniformVectorRVClass<P_V,P_M> paramRv("param_", // Extra prefix before the default "rv_" prefix
                                           paramDomain);
 
@@ -119,8 +128,13 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                                        qoiRv);
 
   //******************************************************
-  // Solve forward problem = set 'pdf' and 'realizer' of 'qoiRv'
+  // Step 6 of 6: Solve the inverse problem
   //******************************************************
+  if (env.fullRank() == 0) {
+    std::cout << "Executing step 6 of 6: solution of forward problem ...\n"
+              << std::endl;
+  }
+
   fp.solveWithMonteCarlo();
 
   //******************************************************

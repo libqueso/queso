@@ -52,13 +52,13 @@ uqAppl_UnifiedComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle);
 
 //********************************************************
 // The driving routine "uqAppl()": called by main()
-// There are 5 main stages:
+// There are 5 main tasks:
 // 1) initilization
 // 2) the 'calibration stage'
 // 3) the 'validation stage'
 // 4) the 'comparison stage'
-// 5) release memory
-// Stages 2, 3 and 4 constitute the actual validation cycle.
+// 5) memory release
+// Tasks 2, 3 and 4 constitute the actual validation cycle.
 //********************************************************
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
@@ -76,6 +76,9 @@ uqAppl(const uqBaseEnvironmentClass& env)
   //******************************************************
   // Task 1 of 5: instantiation of basic classes
   //******************************************************
+
+  //m_paramInitialValues  = new P_V(m_paramSpace->zeroVector());
+  //m_calPriorRv->realizer().realization(*m_paramInitialValues);
 
   // Read Ascii file with information on parameters
   uqAsciiTableClass<P_V,P_M> paramsTable(env,
@@ -173,7 +176,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
   iRC = gettimeofday(&timevalNow, NULL);
   if (env.fullRank() == 0) {
-    std::cout << "Ending 'calibration stage' at " << ctime(&timevalNow.tv_sec)
+    std::cout << "Ending 'calibration stage' at "        << ctime(&timevalNow.tv_sec)
               << "Total 'calibration stage' run time = " << timevalNow.tv_sec - timevalRef.tv_sec
               << " seconds\n"
               << std::endl;
@@ -228,7 +231,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
   iRC = gettimeofday(&timevalNow, NULL);
   if (env.fullRank() == 0) {
-    std::cout << "Ending 'validation stage' at " << ctime(&timevalNow.tv_sec)
+    std::cout << "Ending 'validation stage' at "        << ctime(&timevalNow.tv_sec)
               << "Total 'validation stage' run time = " << timevalNow.tv_sec - timevalRef.tv_sec
               << " seconds\n"
               << std::endl;
@@ -251,7 +254,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
   iRC = gettimeofday(&timevalNow, NULL);
   if (env.fullRank() == 0) {
-    std::cout << "Ending 'comparison stage' at " << ctime(&timevalNow.tv_sec)
+    std::cout << "Ending 'comparison stage' at "        << ctime(&timevalNow.tv_sec)
               << "Total 'comparison stage' run time = " << timevalNow.tv_sec - timevalRef.tv_sec
               << " seconds\n"
               << std::endl;
@@ -288,8 +291,8 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
                         cdfDistancesVec);
     if (cycle.env().subDisplayFile()) {
       *cycle.env().subDisplayFile() << "For epsilonVec = "    << *epsilonVec
-                                   << ", cdfDistancesVec = " << cdfDistancesVec
-                                   << std::endl;
+                                    << ", cdfDistancesVec = " << cdfDistancesVec
+                                    << std::endl;
     }
 
     // Test independence of 'distance' w.r.t. order of cdfs
@@ -299,8 +302,8 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
                         cdfDistancesVec);
     if (cycle.env().subDisplayFile()) {
       *cycle.env().subDisplayFile() << "For epsilonVec = "                             << *epsilonVec
-                                   << ", cdfDistancesVec (switched order of cdfs) = " << cdfDistancesVec
-                                   << std::endl;
+                                    << ", cdfDistancesVec (switched order of cdfs) = " << cdfDistancesVec
+                                    << std::endl;
     }
 
     // Epsilon = 0.04
@@ -311,8 +314,8 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
                         cdfDistancesVec);
     if (cycle.env().subDisplayFile()) {
       *cycle.env().subDisplayFile() << "For epsilonVec = "    << *epsilonVec
-                                   << ", cdfDistancesVec = " << cdfDistancesVec
-                                   << std::endl;
+                                    << ", cdfDistancesVec = " << cdfDistancesVec
+                                    << std::endl;
     }
 
     // Epsilon = 0.06
@@ -323,8 +326,8 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
                         cdfDistancesVec);
     if (cycle.env().subDisplayFile()) {
       *cycle.env().subDisplayFile() << "For epsilonVec = "    << *epsilonVec
-                                   << ", cdfDistancesVec = " << cdfDistancesVec
-                                   << std::endl;
+                                    << ", cdfDistancesVec = " << cdfDistancesVec
+                                    << std::endl;
     }
 
     // Epsilon = 0.08
@@ -335,8 +338,8 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
                         cdfDistancesVec);
     if (cycle.env().subDisplayFile()) {
       *cycle.env().subDisplayFile() << "For epsilonVec = "    << *epsilonVec
-                                   << ", cdfDistancesVec = " << cdfDistancesVec
-                                   << std::endl;
+                                    << ", cdfDistancesVec = " << cdfDistancesVec
+                                    << std::endl;
     }
 
     // Epsilon = 0.10
@@ -347,8 +350,8 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
                         cdfDistancesVec);
     if (cycle.env().subDisplayFile()) {
       *cycle.env().subDisplayFile() << "For epsilonVec = "    << *epsilonVec
-                                   << ", cdfDistancesVec = " << cdfDistancesVec
-                                   << std::endl;
+                                    << ", cdfDistancesVec = " << cdfDistancesVec
+                                    << std::endl;
     }
 
     delete epsilonVec;
