@@ -77,45 +77,28 @@ uqAppl(const uqBaseEnvironmentClass& env)
   // Task 1 of 5: instantiation of basic classes
   //******************************************************
 
-  // Read Ascii file with information on parameters
-  uqAsciiTableClass<P_V,P_M> paramsTable(env,
-                                         2,    // # of rows
-                                         6,    // # of cols after 'parameter name': [min] + [max] + [4 columns with initial values for Markov chain]
-                                         NULL, // All extra columns are of 'double' type
-                                         "inputData/params.tab");
+  // Instantiate the parameter space
+  std::vector<std::string> paramNames(2,"");
+  paramNames[0] = "A_param";
+  paramNames[1] = "E_param";
+  uqVectorSpaceClass<P_V,P_M> paramSpace(env,"param_",paramNames.size(),&paramNames);
 
-  const EpetraExt::DistArray<std::string>& paramNames = paramsTable.stringColumn(0);
-  P_V                                      paramMinValues    (paramsTable.doubleColumn(1));
-  P_V                                      paramMaxValues    (paramsTable.doubleColumn(2));
-  P_V                                      paramInitialValues(paramsTable.doubleColumn(3+env.subId()));
-
-  uqVectorSpaceClass<P_V,P_M> paramSpace(env,
-                                         "param_", // Extra prefix before the default "space_" prefix
-                                         paramsTable.numRows(),
-                                         &paramNames);
-
+  // Instantiate the parameter domain
+  P_V paramMinValues    (paramSpace.zeroVector());
+  paramMinValues[0] = 2.40e+11;
+  paramMinValues[1] = 1.80e+05;
+  P_V paramMaxValues    (paramSpace.zeroVector());
+  paramMaxValues[0] = 2.80e+11;
+  paramMaxValues[1] = 2.20e+05;
   uqBoxSubsetClass<P_V,P_M> paramDomain("param_",
                                         paramSpace,
                                         paramMinValues,
                                         paramMaxValues);
 
-  // Read Ascii file with information on qois
-  uqAsciiTableClass<P_V,P_M> qoisTable(env,
-                                       1,    // # of rows
-                                       0,    // # of cols after 'qoi name': none
-                                       NULL, // All extra columns are of 'double' type
-                                       "inputData/qois.tab");
-
-  const EpetraExt::DistArray<std::string>& qoiNames = qoisTable.stringColumn(0);
-
-  double beta_prediction         = 250.;
-  double criticalMass_prediction = 0.;
-  double criticalTime_prediction = 3.9;
-
-  uqVectorSpaceClass<Q_V,Q_M> qoiSpace(env,
-                                       "qoi_", // Extra prefix before the default "space_" prefix
-                                       qoisTable.numRows(),
-                                       &qoiNames);
+  // Instantiate the qoi space
+  std::vector<std::string> qoiNames(1,"");
+  qoiNames[0] = "TimeFor25PercentOfMass";
+  uqVectorSpaceClass<Q_V,Q_M> qoiSpace(env,"qoi_",qoiNames.size(),&qoiNames);
 
   // Instantiate the validation cycle
   uqValidationCycleClass<P_V,P_M,Q_V,Q_M> cycle(env,
@@ -154,12 +137,26 @@ uqAppl(const uqBaseEnvironmentClass& env)
                          calLikelihoodFunctionObj);
 
   // Inverse problem: solve it, that is, set 'pdf' and 'realizer' of the posterior rv
+  P_V paramInitialValues(paramSpace.zeroVector());
+  if (env.numSubEnvironments() == 1) {
+    // For regression test purposes
+    paramInitialValues[0] = 2.41e+11;
+    paramInitialValues[1] = 2.19e+05;
+  }
+  else {
+    calPriorRv.realizer().realization(paramInitialValues);
+  }
+
   P_M* calProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newGaussianMatrix(NULL,&paramInitialValues);
   cycle.calIP().solveWithBayesMarkovChain(paramInitialValues,
                                           calProposalCovMatrix);
   delete calProposalCovMatrix;
 
   // Forward problem: instantiate it (parameter rv = posterior rv of inverse problem; qoi rv is instantiated internally)
+  double beta_prediction         = 250.;
+  double criticalMass_prediction = 0.;
+  double criticalTime_prediction = 3.9;
+
   qoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> calQoiRoutine_Data;
   calQoiRoutine_Data.m_beta         = beta_prediction;
   calQoiRoutine_Data.m_criticalMass = criticalMass_prediction;

@@ -62,9 +62,11 @@ public:
         void         setPositionValues          (unsigned int posId, const V& vec);
         void         setGaussian                (const gsl_rng* rng, const V& meanVec, const V& stdDevVec);
         void         setUniform                 (const gsl_rng* rng, const V& aVec,    const V& bVec     );
+#ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
         void         subUniformlySampledMdf     (const V&                             numEvaluationPointsVec,
                                                  uqArrayOfOneDGridsClass <V,M>&       mdfGrids,
                                                  uqArrayOfOneDTablesClass<V,M>&       mdfValues) const;
+#endif
         void         subUniformlySampledCdf     (const V&                             numEvaluationPointsVec,
                                                  uqArrayOfOneDGridsClass <V,M>&       cdfGrids,
                                                  uqArrayOfOneDTablesClass<V,M>&       cdfValues) const;
@@ -471,6 +473,7 @@ uqSequenceOfVectorsClass<V,M>::setUniform(const gsl_rng* rng, const V& aVec, con
   return;
 }
 
+#ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
 template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subUniformlySampledMdf(
@@ -505,7 +508,7 @@ uqSequenceOfVectorsClass<V,M>::subUniformlySampledMdf(
 
   return;
 }
-
+#endif
 template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subUniformlySampledCdf(

@@ -35,7 +35,6 @@
 
 #include <exStatisticalInverseProblem1_likelihood.h>
 #include <uqStatisticalInverseProblem.h>
-#include <uqAsciiTable.h>
 #include <uqCovCond.h>
 
 //********************************************************

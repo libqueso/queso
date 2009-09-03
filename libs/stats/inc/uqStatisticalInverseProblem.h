@@ -105,8 +105,10 @@ private:
 
         uqMarkovChainSGClass     <P_V,P_M>*     m_mcSeqGenerator;
         uqBaseVectorSequenceClass<P_V,P_M>*     m_chain;
+#ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
         uqArrayOfOneDGridsClass  <P_V,P_M>*     m_subMdfGrids;
         uqArrayOfOneDTablesClass <P_V,P_M>*     m_subMdfValues;
+#endif
 
         uqStatisticalInverseProblemOptionsClass m_options;
 };
@@ -293,6 +295,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
   //m_env.fullComm().Barrier();
 
   // Compute output mdf: uniform sampling approach
+#ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
   m_subMdfGrids  = new uqArrayOfOneDGridsClass <P_V,P_M>((m_options.m_prefix+"Mdf_").c_str(),m_postRv.imageSet().vectorSpace());
   m_subMdfValues = new uqArrayOfOneDTablesClass<P_V,P_M>((m_options.m_prefix+"Mdf_").c_str(),m_postRv.imageSet().vectorSpace());
   m_chain->subUniformlySampledMdf(numEvaluationPointsVec, // input
@@ -343,6 +346,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
       }
     }
   }
+#endif
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << std::endl;
   }

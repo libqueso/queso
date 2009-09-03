@@ -1,20 +1,25 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Read data
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 cd outputData
 sipOutput_sub0
 file_sip_raw
 appl_output_sub0
-%cd ..
-%load nada
 
-%d=nada(:,1);    
 [nsimu,temp]=size(sip_appl_d_sub0);
 [temp,npar]=size(ip_mc_rawChain_unified);
-%meanVec=[0 0 0 0];
-%covMatrix = [0.263584 0.0820654 0.0748222 -0.410472 
-%0.0820654 0.0414596 0.0241198 -0.137645 
-%0.0748222 0.0241198 0.0511172 -0.140059 
-%-0.410472 -0.137645 -0.140059 0.698176 
-%];
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Plot samples of first two parameters on the plane
+%
+% Acknowledgments:
+% ===============
+% Figure 'fig1.png' has the purpose of being compared with
+% the output of the normal test at the MCMC toolbox for
+% MATLAB, available at www.helsinki.fi/~mjlaine/mcmc/.
+% Some of the commands below indeed resamble part of
+% the code available at such toolbox.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 c50  = chi2inv(0.50,npar);
 c95  = chi2inv(0.95,npar);
 cc50 = sum(sip_appl_d_sub0<c50)./nsimu;
@@ -27,6 +32,9 @@ title(sprintf('Rejected = %.1f%%, c50 = %.1f%%, c95 = %.1f%%', ...
               ip_mc_rejected*100, cc50*100, cc95*100))
 hold
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Plot 50% and 95% ellipses on the same plane
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 c50  = chi2inv(0.50,2);
 c95  = chi2inv(0.95,2);
 
@@ -42,9 +50,12 @@ y = sip_appl_paramMeans_sub0(2) + R(1,2).*cos(t) + R(2,2).*sin(t);
 plot(x,y,'r--','LineWidth',2);
 
 print -dpng fig1.png
-%waitforbuttonpress;
+waitforbuttonpress;
 clf;
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Plot marginal posterior pdfs of all 4 parameters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 plot(ip_mc_rawChain_unifGkdePosits_sub0(1,:),ip_mc_rawChain_unifGkdeValues_sub0(1,:),'-b');
 hold
 plot(ip_mc_rawChain_unifGkdePosits_sub0(2,:),ip_mc_rawChain_unifGkdeValues_sub0(2,:),'-r');

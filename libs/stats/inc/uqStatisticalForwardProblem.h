@@ -83,10 +83,11 @@ private:
 
         uqBaseVectorRealizerClass<Q_V,Q_M>*         m_solutionRealizer;
  
+#ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
         uqArrayOfOneDGridsClass  <Q_V,Q_M>*         m_subMdfGrids;
         uqArrayOfOneDTablesClass <Q_V,Q_M>*         m_subMdfValues;
+#endif
         uqBaseVectorMdfClass     <Q_V,Q_M>*         m_subSolutionMdf;
-
         uqArrayOfOneDGridsClass  <Q_V,Q_M>*         m_subCdfGrids;
         uqArrayOfOneDTablesClass <Q_V,Q_M>*         m_subCdfValues;
         uqBaseVectorCdfClass     <Q_V,Q_M>*         m_subSolutionCdf;
@@ -118,8 +119,10 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::uqStatisticalForwardProblemCl
   m_qoiChain          (NULL),
   m_mcSeqGenerator    (NULL),
   m_solutionRealizer  (NULL),
+#ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
   m_subMdfGrids       (NULL),
   m_subMdfValues      (NULL),
+#endif
   m_subSolutionMdf    (NULL),
   m_subCdfGrids       (NULL),
   m_subCdfValues      (NULL),
@@ -159,9 +162,10 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::~uqStatisticalForwardProblemC
   if (m_subCdfGrids       ) delete m_subCdfGrids;
 
   if (m_subSolutionMdf    ) delete m_subSolutionMdf;
+#ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
   if (m_subMdfValues      ) delete m_subMdfValues;
   if (m_subMdfGrids       ) delete m_subMdfGrids;
-
+#endif
   if (m_solutionRealizer  ) delete m_solutionRealizer;
 
   if (m_mcSeqGenerator    ) delete m_mcSeqGenerator;
@@ -216,9 +220,10 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   if (m_subCdfGrids       ) delete m_subCdfGrids;
 
   if (m_subSolutionMdf    ) delete m_subSolutionMdf;
+#ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
   if (m_subMdfValues      ) delete m_subMdfValues;
   if (m_subMdfGrids       ) delete m_subMdfGrids;
-
+#endif
   if (m_solutionRealizer  ) delete m_solutionRealizer;
 
   if (m_mcSeqGenerator    ) delete m_mcSeqGenerator;
@@ -250,6 +255,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   m_qoiRv.setRealizer(*m_solutionRealizer);
 
   // Compute output mdf: uniform sampling approach
+#ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
   m_subMdfGrids  = new uqArrayOfOneDGridsClass <Q_V,Q_M>((m_options.m_prefix+"QoiMdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
   m_subMdfValues = new uqArrayOfOneDTablesClass<Q_V,Q_M>((m_options.m_prefix+"QoiMdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
   m_qoiChain->subUniformlySampledMdf(numEvaluationPointsVec, // input
@@ -260,6 +266,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
                                                           *m_subMdfGrids,
                                                           *m_subMdfValues);
   m_qoiRv.setMdf(*m_subSolutionMdf);
+#endif
 
   // Compute output cdf: uniform sampling approach
   std::string subCoreName_qoiCdf(m_options.m_prefix+    "QoiCdf_");
@@ -315,35 +322,12 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
     pqCorrelationMatrix = new P_M(m_env,
                                   m_paramRv.imageSet().vectorSpace().map(),      // number of rows
                                   m_qoiRv.imageSet().vectorSpace().dimGlobal()); // number of cols
-#if 0
-    uqComputeCovCorrMatricesBetweenVectorRvs<P_V,P_M,Q_V,Q_M>(m_paramRv,
-                                                              m_qoiRv,
-                                                              std::min(m_paramRv.realizer().subPeriod(),m_qoiRv.realizer().subPeriod()), // FIX ME: might be INFINITY
-                                                              *pqCovarianceMatrix,
-                                                              *pqCorrelationMatrix);
-#else
     uqComputeCovCorrMatricesBetweenVectorSequences(*m_paramChain,
                                                    *m_qoiChain,
                                                    std::min(m_paramRv.realizer().subPeriod(),m_qoiRv.realizer().subPeriod()), // FIX ME: might be INFINITY
                                                    *pqCovarianceMatrix,
                                                    *pqCorrelationMatrix);
-#endif
   }
-
-  // Open data output file
-  if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
-                            << ", prefix = "                                        << m_options.m_prefix
-                            << ": checking necessity of opening data output file '" << m_options.m_dataOutputFileName
-                            << "'"
-                            << std::endl;
-  }
-  std::ofstream* ofsvar = NULL;
-  m_env.openOutputFile(m_options.m_dataOutputFileName,
-                       UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
-                       m_options.m_dataOutputAllowedSet,
-                       false,
-                       ofsvar);
 
   // Write data out
   if (m_env.subDisplayFile()) {
@@ -361,8 +345,24 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
     }
   }
 
+  // Open data output file
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
+                            << ", prefix = "                                        << m_options.m_prefix
+                            << ": checking necessity of opening data output file '" << m_options.m_dataOutputFileName
+                            << "'"
+                            << std::endl;
+  }
+  std::ofstream* ofsvar = NULL;
+  m_env.openOutputFile(m_options.m_dataOutputFileName,
+                       UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                       m_options.m_dataOutputAllowedSet,
+                       false,
+                       ofsvar);
   if (ofsvar) {
+#ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
     m_qoiRv.mdf().print(*ofsvar);
+#endif
     *ofsvar << m_qoiRv.subCdf();
 
     //if (pqCovarianceMatrix ) *ofsvar << *pqCovarianceMatrix;  // FIX ME: output matrix in matlab format

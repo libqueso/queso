@@ -35,7 +35,6 @@
 
 #include <exStatisticalForwardProblem_qoi.h>
 #include <uqStatisticalForwardProblem.h>
-#include <uqAsciiTable.h>
 #include <uqCovCond.h>
 
 //********************************************************

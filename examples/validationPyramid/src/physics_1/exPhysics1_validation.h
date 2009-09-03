@@ -133,7 +133,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::exPhysics1ValidationClass(
   m_paramSpace = new uqVectorSpaceClass<P_V,P_M>(m_env,
                                                  "param_", // Extra prefix before the default "space_" prefix
                                                  m_paramsTable->numRows(),
-                                                 m_paramNames);
+                                                 NULL);//m_paramNames);
 
   m_paramDomain = new uqBoxSubsetClass<P_V,P_M>("param_",
                                                 *m_paramSpace,
@@ -152,7 +152,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::exPhysics1ValidationClass(
   m_qoiSpace = new uqVectorSpaceClass<Q_V,Q_M>(m_env,
                                                "qoi_", // Extra prefix before the default "space_" prefix
                                                m_qoisTable->numRows(),
-                                               m_qoiNames);
+                                               NULL);//m_qoiNames);
 
   // Instantiate the validation cycle
   m_cycle = new uqValidationCycleClass<P_V,P_M,Q_V,Q_M>(m_env,

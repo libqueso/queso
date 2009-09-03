@@ -8,13 +8,8 @@ title('QoI autocorrelation');
 waitforbuttonpress;
 clf;
 
-plot(fp_mc_QoiSeq_GkdePosits_sub0,fp_mc_QoiSeq_GkdeValues_sub0,'-');
+plot(fp_mc_QoiSeq_unifGkdePosits_sub0,fp_mc_QoiSeq_unifGkdeValues_sub0,'-');
 title('QoI KDE');
-waitforbuttonpress;
-clf;
-
-plot(fp_QoiMdf_0_grid_sub0,fp_QoiMdf_0_values_sub0,'-');
-title('QoI mdf');
 waitforbuttonpress;
 clf;
 

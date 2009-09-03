@@ -40,6 +40,7 @@
 int uqMyWorldfullRank();
 
 #undef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
+#undef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
 
 const int UQ_UNAVAILABLE_RANK = -1;
 

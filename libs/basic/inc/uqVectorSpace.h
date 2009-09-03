@@ -41,10 +41,10 @@ class uqVectorSpaceClass : public uqVectorSetClass<V,M>
 {
 public:
         uqVectorSpaceClass();
-        uqVectorSpaceClass(const uqBaseEnvironmentClass&            env,
-                           const char*                              prefix,
-                           unsigned int                             dimGlobalValue,
-                           const EpetraExt::DistArray<std::string>* componentsNames);
+        uqVectorSpaceClass(const uqBaseEnvironmentClass&   env,
+                           const char*                     prefix,
+                           unsigned int                    dimGlobalValue,
+                           const std::vector<std::string>* componentsNames);
        ~uqVectorSpaceClass();
 
   const uqBaseEnvironmentClass&            env                 () const;
@@ -82,7 +82,7 @@ protected:
         unsigned int                       m_dimGlobal;
   const Epetra_Map*                        m_map;
         unsigned int                       m_dimLocal;
-  const EpetraExt::DistArray<std::string>* m_componentsNames;
+        EpetraExt::DistArray<std::string>* m_componentsNames;
         std::string                        m_emptyComponentName;
 
         V*                                 m_zeroVector;
@@ -101,16 +101,16 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass()
 
 template <class V, class M>
 uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
-  const uqBaseEnvironmentClass&            env,
-  const char*                              prefix,
-        unsigned int                       dimGlobalValue,
-  const EpetraExt::DistArray<std::string>* componentsNames)
+  const uqBaseEnvironmentClass&   env,
+  const char*                     prefix,
+        unsigned int              dimGlobalValue,
+  const std::vector<std::string>* componentsNames)
   :
   uqVectorSetClass<V,M>(env,((std::string)(prefix) + "space_").c_str(),INFINITY),
   m_dimGlobal          (dimGlobalValue),
   m_map                (newMap()),
   m_dimLocal           (m_map->NumMyElements()),
-  m_componentsNames    (componentsNames),
+  m_componentsNames    (NULL),
   m_emptyComponentName (""),
   m_zeroVector         (new V(m_env,*m_map))
 {
@@ -119,15 +119,27 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
                             << std::endl;
   }
 
-  if (m_componentsNames != NULL) {
-    UQ_FATAL_TEST_MACRO((m_componentsNames->GlobalLength() != (int) m_dimGlobal),
+  if (componentsNames != NULL) {
+    UQ_FATAL_TEST_MACRO((componentsNames->size() != (size_t) m_dimGlobal),
                         m_env.fullRank(),
                         "uqVectorSpaceClass<V,M>::constructor()",
                         "global size of 'componentsNames' is not equal to m_dimGlobal");
+
+    m_componentsNames = new EpetraExt::DistArray<std::string>(*m_map,1);
+    unsigned int myFirstId = this->globalIdOfFirstComponent();
+    //EpetraExt::DistArray<std::string>& arrayOfStrings = *m_componentsNames;
+    for (unsigned int i = 0; i < m_dimLocal; ++i) {
+      (*m_componentsNames)(i,0) = (*componentsNames)[myFirstId+i];
+    }
+
+    UQ_FATAL_TEST_MACRO((m_componentsNames->GlobalLength() != (int) m_dimGlobal),
+                        m_env.fullRank(),
+                        "uqVectorSpaceClass<V,M>::constructor()",
+                        "global size of 'm_componentsNames' is not equal to m_dimGlobal");
     UQ_FATAL_TEST_MACRO((m_componentsNames->MyLength() != (int) m_dimLocal),
                         m_env.fullRank(),
                         "uqVectorSpaceClass<V,M>::constructor()",
-                        "local size of 'componentsNames' is not equal to m_dimLocal");
+                        "local size of 'm_componentsNames' is not equal to m_dimLocal");
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
@@ -144,8 +156,9 @@ uqVectorSpaceClass<V,M>::~uqVectorSpaceClass()
   //                          << std::endl;
   //}
 
-  if (m_zeroVector != NULL) delete m_zeroVector;
-  if (m_map        != NULL) delete m_map;
+  if (m_zeroVector      != NULL) delete m_zeroVector;
+  if (m_componentsNames != NULL) delete m_componentsNames;
+  if (m_map             != NULL) delete m_map;
 
   //if (m_env.subDisplayFile()) {
   //  *m_env.subDisplayFile() << "Leaving uqVectorSpaceClass<V,M>::destructor()"
@@ -303,7 +316,8 @@ uqVectorSpaceClass<V,M>::localComponentName(unsigned int localComponentId) const
                       "uqVectorSpaceClass<V,M>::localComponentName()",
                       "localComponentId is too big");
 
-  return (*(const_cast<EpetraExt::DistArray<std::string>*>(m_componentsNames)))(localComponentId,0);
+//return (*(const_cast<EpetraExt::DistArray<std::string>*>(m_componentsNames)))(localComponentId,0);
+  return (*m_componentsNames)(localComponentId,0);
 }
 
 template<class V, class M>
