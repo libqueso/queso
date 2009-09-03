@@ -523,7 +523,13 @@ INPUT                  = queso.page \
 			 libs/stats/inc \
 			 libs/stats/src \
 			 libs/interface \
-			 examples/statisticalInverseProblem1/src
+			 examples/statisticalInverseProblem1/src \
+			 examples/statisticalInverseProblem1/tests/test_2009_02_03/ \
+			 examples/statisticalForwardProblem1/src \
+			 examples/statisticalForwardProblem1/tests/test_2009_02_11/ \
+			 examples/validationCycle/src \
+			 examples/validationCycle/tests/test_2009_02_03 \
+			 test/t02_sip_sfp/sip_sfp
 
 # This tag can be used to specify the character encoding of the source files 
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding, which is 
@@ -540,7 +546,7 @@ INPUT_ENCODING         = UTF-8
 # *.c *.cc *.cxx *.cpp *.c++ *.java *.ii *.ixx *.ipp *.i++ *.inl *.h *.hh *.hxx 
 # *.hpp *.h++ *.idl *.odl *.cs *.php *.php3 *.inc *.m *.mm *.py *.f90
 
-FILE_PATTERNS          = *.h *.C *.cpp *.hpp
+FILE_PATTERNS          = *.h *.C *.cpp *.hpp *.m
 
 # The RECURSIVE tag can be used to turn specify whether or not subdirectories 
 # should be searched for input files as well. Possible values are YES and NO. 
