@@ -135,7 +135,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   // --> ...
   //******************************************************
   P_V paramInitials(paramSpace.zeroVector());
-  P_M* proposalCovMatrix = postRv.imageSet().vectorSpace().newGaussianMatrix(NULL,&paramInitials);
+  P_M* proposalCovMatrix = postRv.imageSet().vectorSpace().newProposalMatrix(NULL,&paramInitials);
   ip.solveWithBayesMarkovChain(paramInitials,
                                proposalCovMatrix);
   delete proposalCovMatrix;

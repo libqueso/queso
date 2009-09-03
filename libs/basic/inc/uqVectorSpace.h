@@ -61,7 +61,7 @@ public:
         M*                                 newMatrix           () const; // See template specialization
         M*                                 newDiagMatrix       (const V& v) const;
         M*                                 newDiagMatrix       (double diagValue) const; // See template specialization
-        M*                                 newGaussianMatrix   (const V* varVec,
+        M*                                 newProposalMatrix   (const V* varVec,
                                                                 const V* auxVec) const;
 
   const uqVectorSpaceClass<V,M>&           vectorSpace         () const; // It is virtual in the base class 'uqVectorSetClass'
@@ -259,7 +259,7 @@ uqVectorSpaceClass<V,M>::newDiagMatrix(const V& v) const
 
 template <class V, class M>
 M*
-uqVectorSpaceClass<V,M>::newGaussianMatrix(
+uqVectorSpaceClass<V,M>::newProposalMatrix(
   const V* varVec,
   const V* auxVec) const
 {
@@ -268,7 +268,7 @@ uqVectorSpaceClass<V,M>::newGaussianMatrix(
     double variance = INFINITY;
     if (varVec) variance = (*varVec)[i];
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In uqVectorSpaceClass<V,M>::newGaussianMatrix()"
+      *m_env.subDisplayFile() << "In uqVectorSpaceClass<V,M>::newProposalMatrix()"
                               << ": i = "        << i
                               << ", variance = " << variance
                               << std::endl;

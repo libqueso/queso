@@ -147,7 +147,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
     calPriorRv.realizer().realization(paramInitialValues);
   }
 
-  P_M* calProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newGaussianMatrix(NULL,&paramInitialValues);
+  P_M* calProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newProposalMatrix(NULL,&paramInitialValues);
   cycle.calIP().solveWithBayesMarkovChain(paramInitialValues,
                                           calProposalCovMatrix);
   delete calProposalCovMatrix;
@@ -205,7 +205,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
   // Inverse problem: solve it, that is, set 'pdf' and 'realizer' of the posterior rv
   const uqSequentialVectorRealizerClass<P_V,P_M>* tmpRealizer = dynamic_cast< const uqSequentialVectorRealizerClass<P_V,P_M>* >(&(cycle.calIP().postRv().realizer()));
-  P_M* valProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newGaussianMatrix(&tmpRealizer->unifiedSampleVarVector(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
+  P_M* valProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newProposalMatrix(&tmpRealizer->unifiedSampleVarVector(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
                                                                                                 &tmpRealizer->unifiedSampleExpVector()); // Use these values as the initial values
   cycle.valIP().solveWithBayesMarkovChain(tmpRealizer->unifiedSampleExpVector(),
                                           valProposalCovMatrix);

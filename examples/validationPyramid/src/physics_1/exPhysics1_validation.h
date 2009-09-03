@@ -263,7 +263,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
                             *m_calLikelihoodFunctionObj);
 
   // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
-  P_M* calProposalCovMatrix = m_cycle->calIP().postRv().imageSet().vectorSpace().newGaussianMatrix(NULL,
+  P_M* calProposalCovMatrix = m_cycle->calIP().postRv().imageSet().vectorSpace().newProposalMatrix(NULL,
                                                                                                    m_paramInitialValues);
   m_cycle->calIP().solveWithBayesMarkovChain(*m_paramInitialValues,
                                              calProposalCovMatrix);
@@ -321,7 +321,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
 
   // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
   const uqSequentialVectorRealizerClass<P_V,P_M>* tmpRealizer = dynamic_cast< const uqSequentialVectorRealizerClass<P_V,P_M>* >(&(m_cycle->calIP().postRv().realizer()));
-  P_M* valProposalCovMatrix = m_cycle->calIP().postRv().imageSet().vectorSpace().newGaussianMatrix(&tmpRealizer->unifiedSampleVarVector(),  // Use 'realizer()' because post. rv was computed with Markov Chain
+  P_M* valProposalCovMatrix = m_cycle->calIP().postRv().imageSet().vectorSpace().newProposalMatrix(&tmpRealizer->unifiedSampleVarVector(),  // Use 'realizer()' because post. rv was computed with Markov Chain
                                                                                                    &tmpRealizer->unifiedSampleExpVector()); // Use these values as the initial values
   m_cycle->valIP().solveWithBayesMarkovChain(tmpRealizer->unifiedSampleExpVector(),
                                              valProposalCovMatrix);
