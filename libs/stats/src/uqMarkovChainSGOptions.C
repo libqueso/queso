@@ -65,7 +65,11 @@ uqMarkovChainSGOptionsClass::uqMarkovChainSGOptionsClass(
   m_tkUseLocalHessian                        (UQ_MAC_SG_TK_USE_LOCAL_HESSIAN_ODV),
   m_tkUseNewtonComponent                     (UQ_MAC_SG_TK_USE_NEWTON_COMPONENT_ODV),
   m_drMaxNumExtraStages                      (UQ_MAC_SG_DR_MAX_NUM_EXTRA_STAGES_ODV),
+#ifdef UQ_READS_ONLY_EXTRA_STAGES
+  m_drScalesForExtraStages                   (0),
+#else
   m_drScalesForExtraStages                   (1,1.),
+#endif
   m_amInitialNonAdaptInterval                (UQ_MAC_SG_AM_INIT_NON_ADAPT_INT_ODV),
   m_amAdaptInterval                          (UQ_MAC_SG_AM_ADAPT_INTERVAL_ODV),
   m_amEta                                    (UQ_MAC_SG_AM_ETA_ODV),
@@ -344,15 +348,24 @@ uqMarkovChainSGOptionsClass::getMyOptionValues(po::options_description& optionsD
     double scale = 1.0;
     unsigned int tmpSize = tmpScales.size();
 
+#ifdef UQ_READS_ONLY_EXTRA_STAGES
+    m_drScalesForExtraStages.resize(m_drMaxNumExtraStages,1.);
+#else
     m_drScalesForExtraStages.resize(m_drMaxNumExtraStages+1,1.);
+#endif
 #ifdef UQ_USES_TK_CLASS
 #else
     m_lowerCholProposalCovMatrices.resize(m_drMaxNumExtraStages+1,NULL);
     m_proposalCovMatrices.resize         (m_drMaxNumExtraStages+1,NULL);
 #endif
 
+#ifdef UQ_READS_ONLY_EXTRA_STAGES
+    for (unsigned int i = 0; i < m_drMaxNumExtraStages; ++i) {
+      if (i < tmpSize) scale = tmpScales[i];
+#else
     for (unsigned int i = 1; i < (m_drMaxNumExtraStages+1); ++i) {
       if (i <= tmpSize) scale = tmpScales[i-1];
+#endif
       m_drScalesForExtraStages[i] = scale;
     }
     //updateTK();

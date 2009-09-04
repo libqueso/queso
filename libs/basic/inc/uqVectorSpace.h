@@ -111,9 +111,9 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
   m_map                (newMap()),
   m_dimLocal           (m_map->NumMyElements()),
   m_componentsNames    (NULL),
-  m_emptyComponentName ("")
+  m_emptyComponentName (""),
+  m_zeroVector         (new V(m_env,*m_map))
 {
-  m_zeroVector = new V(m_env,*m_map);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqVectorSpaceClass<V,M>::constructor()"
@@ -136,8 +136,6 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
                       "uqVectorSpaceClass<V,M>::constructor()",
                       "global size of 'm_zeroVector' is not equal to m_dimGlobal");
 
-  double aux = m_zeroVector->sizeLocal();
-  std::cout << "aux = " << aux << std::endl;
   if (m_zeroVector->sizeLocal() != m_dimLocal) {
     std::cerr << "In uqVectorSpaceClass<V,M>::constructor()"
               << ": m_zeroVector->sizeLocal() = " << m_zeroVector->sizeLocal()

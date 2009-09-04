@@ -37,6 +37,7 @@
 #include <uqSequenceStatisticalOptions.h>
 
 #define UQ_USES_TK_CLASS
+#define UQ_READS_ONLY_EXTRA_STAGES
 #undef  UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
 #define UQ_MAC_SG_REQUIRES_TARGET_DISTRIBUTION_ONLY
 #define UQ_NOTHING_JUST_FOR_TEST_OF_SVN_ID 1
@@ -71,7 +72,11 @@
 #define UQ_MAC_SG_TK_USE_LOCAL_HESSIAN_ODV                   0
 #define UQ_MAC_SG_TK_USE_NEWTON_COMPONENT_ODV                1
 #define UQ_MAC_SG_DR_MAX_NUM_EXTRA_STAGES_ODV                0
+#ifdef UQ_READS_ONLY_EXTRA_STAGES
+#define UQ_MAC_SG_DR_LIST_OF_SCALES_FOR_EXTRA_STAGES_ODV     ""
+#else
 #define UQ_MAC_SG_DR_LIST_OF_SCALES_FOR_EXTRA_STAGES_ODV     "1."
+#endif
 #define UQ_MAC_SG_AM_INIT_NON_ADAPT_INT_ODV                  0
 #define UQ_MAC_SG_AM_ADAPT_INTERVAL_ODV                      0
 #define UQ_MAC_SG_AM_ETA_ODV                                 1.

@@ -221,27 +221,37 @@ uqMarkovChainSGClass<P_V,P_M>::commonConstructor()
   if ((m_env.subDisplayFile()          ) &&
       (m_options.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::constructor()"
-                           << ": running with UQ_USES_TK_CLASS flag defined"
-                           << std::endl;
+                            << ": running with UQ_USES_TK_CLASS flag defined"
+                            << std::endl;
   }
 #else
   if ((m_env.subDisplayFile()          ) &&
       (m_options.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::constructor()"
-                           << ": running with UQ_USES_TK_CLASS flag undefined"
-                           << std::endl;
+                            << ": running with UQ_USES_TK_CLASS flag undefined"
+                            << std::endl;
+  }
+#endif
+#ifdef UQ_READS_ONLY_EXTRA_STAGES
+  std::vector<double> drScalesAll(m_options.m_drScalesForExtraStages.size()+1,1.);
+  for (unsigned int i = 1; i < (m_options.m_drScalesForExtraStages.size()+1); ++i) {
+    drScalesAll[i] = m_options.m_drScalesForExtraStages[i-1];
   }
 #endif
   if (m_options.m_tkUseLocalHessian) {
     m_tk = new uqHessianCovMatricesTKGroupClass<P_V,P_M>(m_options.m_prefix.c_str(),
                                                          m_vectorSpace,
+#ifdef UQ_READS_ONLY_EXTRA_STAGES
+                                                         drScalesAll,
+#else
                                                          m_options.m_drScalesForExtraStages,
+#endif
                                                          *m_targetPdfSynchronizer);
     if ((m_env.subDisplayFile()          ) &&
         (m_options.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::constructor()"
-                             << ": just instantiated a 'HessianCovMatrices' TK class"
-                             << std::endl;
+                              << ": just instantiated a 'HessianCovMatrices' TK class"
+                              << std::endl;
     }
   }
   else {
@@ -252,7 +262,11 @@ uqMarkovChainSGClass<P_V,P_M>::commonConstructor()
 
     m_tk = new uqScaledCovMatrixTKGroupClass<P_V,P_M>(m_options.m_prefix.c_str(),
                                                       m_vectorSpace,
+#ifdef UQ_READS_ONLY_EXTRA_STAGES
+                                                      drScalesAll,
+#else
                                                       m_options.m_drScalesForExtraStages,
+#endif
                                                       *m_initialProposalCovMatrix);
     if ((m_env.subDisplayFile()          ) &&
         (m_options.m_totallyMute == false)) {
@@ -445,8 +459,8 @@ uqMarkovChainSGClass<P_V,P_M>::updateTK()
 
 #ifdef UQ_USES_TK_CLASS
 #else
-  for (unsigned int i = 1; i < (m_options.m_drMaxNumExtraStages+1); ++i) {
-    double scale = m_options.m_drScalesForExtraStages[i];
+  for (unsigned int i = 1; i < (m_options.m_drMaxNumExtraStages+1); ++i) { // CAREFUL: this code is old (now, m_drScalesForExtraStages does NOT contain '1' at position 0 anymore)
+    double scale = m_options.m_drScalesForExtraStages[i];                  // CAREFUL: this code is old (now, m_drScalesForExtraStages does NOT contain '1' at position 0 anymore)
     if (m_lowerCholProposalCovMatrices[i]) delete m_lowerCholProposalCovMatrices[i];
     m_lowerCholProposalCovMatrices [i]   = new P_M(*(m_lowerCholProposalCovMatrices[i-1]));
   *(m_lowerCholProposalCovMatrices [i]) /= scale;
