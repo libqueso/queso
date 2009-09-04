@@ -574,8 +574,8 @@ uqComputeCovCorrMatricesBetweenVectorRvs(
   // Check input data consistency
   const uqBaseEnvironmentClass& env = paramRv.env();
 
-  bool useOnlyInter0Comm = (paramRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage() == 1) &&
-                           (qoiRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage()   == 1);
+  bool useOnlyInter0Comm = (paramRv.imageSet().vectorSpace().numOfProcsForStorage() == 1) &&
+                           (qoiRv.imageSet().vectorSpace().numOfProcsForStorage()   == 1);
 
   UQ_FATAL_TEST_MACRO((useOnlyInter0Comm == false),
                       env.fullRank(),

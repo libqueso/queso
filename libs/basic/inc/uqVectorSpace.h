@@ -111,13 +111,43 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
   m_map                (newMap()),
   m_dimLocal           (m_map->NumMyElements()),
   m_componentsNames    (NULL),
-  m_emptyComponentName (""),
-  m_zeroVector         (new V(m_env,*m_map))
+  m_emptyComponentName ("")
 {
+  m_zeroVector = new V(m_env,*m_map);
+
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqVectorSpaceClass<V,M>::constructor()"
+                            << "\n  m_zeroVector->sizeGlobal() = " << m_zeroVector->sizeGlobal()
+                            << "\n  m_dimGlobal                = " << m_dimGlobal
+                            << "\n  m_zeroVector->sizeLocal()  = " << m_zeroVector->sizeLocal()
+                            << "\n  m_dimLocal                 = " << m_dimLocal
+                            << "\n  m_map->NumGlobalElements() = " << m_map->NumGlobalElements()
                             << std::endl;
   }
+
+  if (m_zeroVector->sizeGlobal() != m_dimGlobal) {
+    std::cerr << "In uqVectorSpaceClass<V,M>::constructor()"
+              << ": m_zeroVector->sizeGlobal() = " << m_zeroVector->sizeGlobal()
+              << ", m_dimGlobal = "                << m_dimGlobal
+              << std::endl;
+  }
+  UQ_FATAL_TEST_MACRO((m_zeroVector->sizeGlobal() != m_dimGlobal),
+                      m_env.fullRank(),
+                      "uqVectorSpaceClass<V,M>::constructor()",
+                      "global size of 'm_zeroVector' is not equal to m_dimGlobal");
+
+  double aux = m_zeroVector->sizeLocal();
+  std::cout << "aux = " << aux << std::endl;
+  if (m_zeroVector->sizeLocal() != m_dimLocal) {
+    std::cerr << "In uqVectorSpaceClass<V,M>::constructor()"
+              << ": m_zeroVector->sizeLocal() = " << m_zeroVector->sizeLocal()
+              << ", m_dimLocal = "                << m_dimLocal
+              << std::endl;
+  }
+  UQ_FATAL_TEST_MACRO((m_zeroVector->sizeLocal() != m_dimLocal),
+                      m_env.fullRank(),
+                      "uqVectorSpaceClass<V,M>::constructor()",
+                      "local size of 'm_zeroVector' is not equal to m_dimLocal");
 
   if (componentsNames != NULL) {
     UQ_FATAL_TEST_MACRO((componentsNames->size() != (size_t) m_dimGlobal),

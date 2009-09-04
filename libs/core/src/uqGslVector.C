@@ -50,10 +50,25 @@ uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, const Epet
   uqVectorClass(env,map),
   m_vec        (gsl_vector_calloc(map.NumGlobalElements()))
 {
+  //std::cout << "Entering uqGslVectorClass::constructor(1)" << std::endl;
+
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
                       m_env.fullRank(),
                       "uqGslVectorClass::constructor()",
                       "null vector generated");
+
+  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) map.NumGlobalElements(),
+                      m_env.fullRank(),
+                      "uqGslVectorClass::constructor()",
+                      "incompatible vec size");
+
+  //std::cout << "In uqGslVectorClass::constructor(env,map)"
+  //          << "\n  m_vec->size             = " << m_vec->size
+  //          << "\n  map.NumGlobalElements() = " << map.NumGlobalElements()
+  //          << "\n  map.NumMyElements()     = " << map.NumMyElements()
+  //          << std::endl;
+
+  //std::cout << "Leaving uqGslVectorClass::constructor(1)" << std::endl;
 }
 
 uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, const Epetra_Map& map, double value)
@@ -61,11 +76,15 @@ uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, const Epet
   uqVectorClass(env,map),
   m_vec(gsl_vector_calloc(map.NumGlobalElements()))
 {
+  //std::cout << "Entering uqGslVectorClass::constructor(2)" << std::endl;
+
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
                       m_env.fullRank(),
                       "uqGslVectorClass::constructor()",
                       "null vector generated");
   this->cwSet(value);
+
+  //std::cout << "Leaving uqGslVectorClass::constructor(2)" << std::endl;
 }
 
 uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, double d1, double d2, const Epetra_Map& map)
@@ -73,6 +92,8 @@ uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, double d1,
   uqVectorClass(env,map),
   m_vec(gsl_vector_calloc(map.NumGlobalElements()))
 {
+  //std::cout << "Entering uqGslVectorClass::constructor(3)" << std::endl;
+
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
                       m_env.fullRank(),
                       "uqGslVectorClass::constructor(), linspace",
@@ -82,6 +103,8 @@ uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, double d1,
     double alpha = (double) i / ((double) m_vec->size - 1.);
     (*this)[i] = (1.-alpha)*d1 + alpha*d2;
   }
+
+  //std::cout << "Leaving uqGslVectorClass::constructor(3)" << std::endl;
 }
 
 uqGslVectorClass::uqGslVectorClass(const uqGslVectorClass& v, double d1, double d2)
@@ -89,6 +112,8 @@ uqGslVectorClass::uqGslVectorClass(const uqGslVectorClass& v, double d1, double 
   uqVectorClass(v.env(),v.map()),
   m_vec(gsl_vector_calloc(v.sizeLocal()))
 {
+  //std::cout << "Entering uqGslVectorClass::constructor(4)" << std::endl;
+
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
                       m_env.fullRank(),
                       "uqGslVectorClass::constructor(), linspace",
@@ -98,6 +123,8 @@ uqGslVectorClass::uqGslVectorClass(const uqGslVectorClass& v, double d1, double 
     double alpha = (double) i / ((double) m_vec->size - 1.);
     (*this)[i] = (1.-alpha)*d1 + alpha*d2;
   }
+
+  //std::cout << "Leaving uqGslVectorClass::constructor(4)" << std::endl;
 }
 
 uqGslVectorClass::uqGslVectorClass(const uqGslVectorClass& v)
@@ -105,12 +132,16 @@ uqGslVectorClass::uqGslVectorClass(const uqGslVectorClass& v)
   uqVectorClass(v.env(),v.map()),
   m_vec(gsl_vector_calloc(v.sizeLocal()))
 {
+  //std::cout << "Entering uqGslVectorClass::constructor(5)" << std::endl;
+
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
                       m_env.fullRank(),
                       "uqGslVectorClass::constructor(), copy",
                       "null vector generated");
   this->uqVectorClass::copy(v);
   this->copy(v);
+
+  //std::cout << "Leaving uqGslVectorClass::constructor(5)" << std::endl;
 }
 
 uqGslVectorClass::~uqGslVectorClass()
@@ -232,12 +263,20 @@ uqGslVectorClass::copy(const uqGslVectorClass& src)
 unsigned int
 uqGslVectorClass::sizeLocal() const
 {
+  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) m_map.NumMyElements(),
+                      m_env.fullRank(),
+                      "uqGslVectorClass::sizeLocal()",
+                      "incompatible vec size");
   return m_vec->size;
 }
 
 unsigned int
 uqGslVectorClass::sizeGlobal() const
 {
+  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) m_map.NumGlobalElements(),
+                      m_env.fullRank(),
+                      "uqGslVectorClass::sizeGlobal()",
+                      "incompatible vec size");
   return m_vec->size;
 }
 
