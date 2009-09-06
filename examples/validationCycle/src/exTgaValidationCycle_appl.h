@@ -147,8 +147,8 @@ uqAppl(const uqBaseEnvironmentClass& env)
   }
 
   P_M* calProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newProposalMatrix(NULL,&paramInitialValues);
-  cycle.calIP().solveWithBayesMarkovChain(paramInitialValues,
-                                          calProposalCovMatrix);
+  cycle.calIP().solveWithBayesMetropolisHastings(paramInitialValues,
+                                                 calProposalCovMatrix);
   delete calProposalCovMatrix;
 
   // Forward problem: instantiate it (parameter rv = posterior rv of inverse problem; qoi rv is instantiated internally)
@@ -206,8 +206,8 @@ uqAppl(const uqBaseEnvironmentClass& env)
   const uqSequentialVectorRealizerClass<P_V,P_M>* tmpRealizer = dynamic_cast< const uqSequentialVectorRealizerClass<P_V,P_M>* >(&(cycle.calIP().postRv().realizer()));
   P_M* valProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newProposalMatrix(&tmpRealizer->unifiedSampleVarVector(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
                                                                                                 &tmpRealizer->unifiedSampleExpVector()); // Use these values as the initial values
-  cycle.valIP().solveWithBayesMarkovChain(tmpRealizer->unifiedSampleExpVector(),
-                                          valProposalCovMatrix);
+  cycle.valIP().solveWithBayesMetropolisHastings(tmpRealizer->unifiedSampleExpVector(),
+                                                 valProposalCovMatrix);
   delete valProposalCovMatrix;
 
   // Forward problem: instantiate it (parameter rv = posterior rv of inverse problem; qoi rv is instantiated internally)

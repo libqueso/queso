@@ -24,11 +24,12 @@
 
     @section bugs Reporting Bugs
 
-    QUESO is under limited distribution at the moment, meaning that we
-    we will work only on bug reports coming from the PECOS team or from research collaborators.
+    QUESO is under limited distribution at the moment, meaning that the PECOS team
+    is not working on bug reports.
 
-    Bugs in the code and errors or omissions in the documentation can be reported to prudenci@ices.utexas.edu.
-    Requests and contributions are welcome at the same e-mail address.
+    Nonetheless, bugs in the code and errors or omissions in the documentation
+    can be reported to xyz@ices.utexas.edu.
+    Requests of features and contributions are welcome at the same e-mail address.
 
     All bug reports should include:
     <ul>

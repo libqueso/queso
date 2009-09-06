@@ -51,13 +51,45 @@ extern unsigned long int gsl_rng_default_seed;
 // Base class
 //*****************************************************
 
-/*! A class that sets up the environment underlying a QUESO run:
-    - assigns rank numbers, other than the world rank, to nodes participating in a parallel job;
-    - open output files for messages that would otherwise be written to the screen; one output file per allowed rank is opened; allowed ranks are specified in the options input file; */
-/*! */
+/*! This class sets up the environment underlying the use of the QUESO library by an executable. It:
+<list type=number>
+<item> assigns rank numbers, other than the world rank, to nodes participating in a parallel job,
+<item> provides communicators for generating a sequence of vectors in a distributed way,
+<item> provides functionality to read options from the 'options input file' (whose name is passed in the constructor of this environment class),
+<item> opens output files for messages that would otherwise be written to the screen (one output file per allowed rank is opened and allowed ranks can be specified through the 'options input file').
+</list>
+*/
+/*! -------------------------------------------------------------
+*/
 /*! This class is virtual. It is inherited by 'uqEmptyEnvironmentClass' and 'uqFullEnvironmentClass'.
-    The environment options can be set in an input file. The name of this input file is one of the parameters in the constructor. */
-/*! The uqEnvironmentClass internally delegates the task of reading input options to uqEnvironmentOptionsClass.                   */
+    The QUESO environment class is instantiated at the application level, right after 'MPI_Init(&argc,&argv)'. 
+    The QUESO environment is required by reference by many constructors in the QUESO library, and is available by reference from many classes as well.
+*/
+/*! -------------------------------------------------------------
+*/
+/*! Throughout QUESO, there are five classes whose constructors check options in the 'options input file':
+<list type=number>
+<item> uqEnvironmentClass
+<item> uqStatisticalInverseProblemClass
+<item> uqStatisticalForwardProblemClass
+<item> uqMetropolisHastingsSGClass ('SG' stands for 'sequence generator')
+<item> uqMonteCarloSGClass
+</list>
+*/
+/*! These classes rely on 'options classes' to read their options from the input file.
+    The options classes are, respectively:
+<list type=number>
+<item> uqEnvironmentOptionsClass
+<item> uqStatisticalInverseProblemOptionsClass
+<item> uqStatisticalForwardProblemOptionsClass
+<item> uqMetropolisHastingsSGOptionsClass
+<item> uqMonteCarloSGOptionsClass
+</list>
+*/
+/*! The last two classes also rely on uqSequenceStatisticalOptionsClass for reading the
+    options specifying which statistics have to be computed on the sequences of vectors
+    involved.
+*/
 class uqBaseEnvironmentClass {
 public:
   uqBaseEnvironmentClass(MPI_Comm inputComm, const char* inputFileName);

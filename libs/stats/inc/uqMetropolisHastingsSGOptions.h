@@ -30,63 +30,63 @@
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-#ifndef __UQ_MAC_SG_OPTIONS_H__
-#define __UQ_MAC_SG_OPTIONS_H__
+#ifndef __UQ_MH_SG_OPTIONS_H__
+#define __UQ_MH_SG_OPTIONS_H__
 
 #include <uqEnvironment.h>
 #include <uqSequenceStatisticalOptions.h>
 
 #define UQ_USES_TK_CLASS
 #define UQ_READS_ONLY_EXTRA_STAGES
-#undef  UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
-#define UQ_MAC_SG_REQUIRES_TARGET_DISTRIBUTION_ONLY
+#undef  UQ_MH_SG_REQUIRES_INVERTED_COV_MATRICES
+#define UQ_MH_SG_REQUIRES_TARGET_DISTRIBUTION_ONLY
 #define UQ_NOTHING_JUST_FOR_TEST_OF_SVN_ID 1
 
-#define UQ_MAC_SG_MARKOV_CHAIN_TYPE      1
-#define UQ_MAC_SG_WHITE_NOISE_CHAIN_TYPE 2
-#define UQ_MAC_SG_UNIFORM_CHAIN_TYPE     3
-#define UQ_MAC_SG_FILENAME_FOR_NO_FILE   "."
+#define UQ_MH_SG_MARKOV_CHAIN_TYPE      1
+#define UQ_MH_SG_WHITE_NOISE_CHAIN_TYPE 2
+#define UQ_MH_SG_UNIFORM_CHAIN_TYPE     3
+#define UQ_MH_SG_FILENAME_FOR_NO_FILE   "."
 
 // _ODV = option default value
-#define UQ_MAC_SG_DATA_OUTPUT_FILE_NAME_ODV                  UQ_MAC_SG_FILENAME_FOR_NO_FILE
-#define UQ_MAC_SG_DATA_OUTPUT_ALLOWED_SET_ODV                ""
+#define UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV                  UQ_MH_SG_FILENAME_FOR_NO_FILE
+#define UQ_MH_SG_DATA_OUTPUT_ALLOWED_SET_ODV                ""
 
-#define UQ_MAC_SG_TOTALLY_MUTE_ODV                           0
-#define UQ_MAC_SG_RAW_CHAIN_TYPE_ODV                         UQ_MAC_SG_MARKOV_CHAIN_TYPE
-#define UQ_MAC_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV         UQ_MAC_SG_FILENAME_FOR_NO_FILE
-#define UQ_MAC_SG_RAW_CHAIN_SIZE_ODV                         100
-#define UQ_MAC_SG_RAW_CHAIN_GENERATE_EXTRA_ODV               0
-#define UQ_MAC_SG_RAW_CHAIN_DISPLAY_PERIOD_ODV               500
-#define UQ_MAC_SG_RAW_CHAIN_MEASURE_RUN_TIMES_ODV            0
-#define UQ_MAC_SG_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV        UQ_MAC_SG_FILENAME_FOR_NO_FILE
-#define UQ_MAC_SG_RAW_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV      ""
-#define UQ_MAC_SG_RAW_CHAIN_COMPUTE_STATS_ODV                0
-#define UQ_MAC_SG_FILTERED_CHAIN_GENERATE_ODV                0
-#define UQ_MAC_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV       0.
-#define UQ_MAC_SG_FILTERED_CHAIN_LAG_ODV                     1
-#define UQ_MAC_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV   UQ_MAC_SG_FILENAME_FOR_NO_FILE
-#define UQ_MAC_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV ""
-#define UQ_MAC_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV           0
-#define UQ_MAC_SG_MH_DISPLAY_CANDIDATES_ODV                  0
-#define UQ_MAC_SG_MH_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV          0
-#define UQ_MAC_SG_TK_USE_LOCAL_HESSIAN_ODV                   0
-#define UQ_MAC_SG_TK_USE_NEWTON_COMPONENT_ODV                1
-#define UQ_MAC_SG_DR_MAX_NUM_EXTRA_STAGES_ODV                0
+#define UQ_MH_SG_TOTALLY_MUTE_ODV                           0
+#define UQ_MH_SG_RAW_CHAIN_TYPE_ODV                         UQ_MH_SG_MARKOV_CHAIN_TYPE
+#define UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV         UQ_MH_SG_FILENAME_FOR_NO_FILE
+#define UQ_MH_SG_RAW_CHAIN_SIZE_ODV                         100
+#define UQ_MH_SG_RAW_CHAIN_GENERATE_EXTRA_ODV               0
+#define UQ_MH_SG_RAW_CHAIN_DISPLAY_PERIOD_ODV               500
+#define UQ_MH_SG_RAW_CHAIN_MEASURE_RUN_TIMES_ODV            0
+#define UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV        UQ_MH_SG_FILENAME_FOR_NO_FILE
+#define UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV      ""
+#define UQ_MH_SG_RAW_CHAIN_COMPUTE_STATS_ODV                0
+#define UQ_MH_SG_FILTERED_CHAIN_GENERATE_ODV                0
+#define UQ_MH_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV       0.
+#define UQ_MH_SG_FILTERED_CHAIN_LAG_ODV                     1
+#define UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV   UQ_MH_SG_FILENAME_FOR_NO_FILE
+#define UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV ""
+#define UQ_MH_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV           0
+#define UQ_MH_SG_MH_DISPLAY_CANDIDATES_ODV                  0
+#define UQ_MH_SG_MH_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV          0
+#define UQ_MH_SG_TK_USE_LOCAL_HESSIAN_ODV                   0
+#define UQ_MH_SG_TK_USE_NEWTON_COMPONENT_ODV                1
+#define UQ_MH_SG_DR_MAX_NUM_EXTRA_STAGES_ODV                0
 #ifdef UQ_READS_ONLY_EXTRA_STAGES
-#define UQ_MAC_SG_DR_LIST_OF_SCALES_FOR_EXTRA_STAGES_ODV     ""
+#define UQ_MH_SG_DR_LIST_OF_SCALES_FOR_EXTRA_STAGES_ODV     ""
 #else
-#define UQ_MAC_SG_DR_LIST_OF_SCALES_FOR_EXTRA_STAGES_ODV     "1."
+#define UQ_MH_SG_DR_LIST_OF_SCALES_FOR_EXTRA_STAGES_ODV     "1."
 #endif
-#define UQ_MAC_SG_AM_INIT_NON_ADAPT_INT_ODV                  0
-#define UQ_MAC_SG_AM_ADAPT_INTERVAL_ODV                      0
-#define UQ_MAC_SG_AM_ETA_ODV                                 1.
-#define UQ_MAC_SG_AM_EPSILON_ODV                             1.e-5
+#define UQ_MH_SG_AM_INIT_NON_ADAPT_INT_ODV                  0
+#define UQ_MH_SG_AM_ADAPT_INTERVAL_ODV                      0
+#define UQ_MH_SG_AM_ETA_ODV                                 1.
+#define UQ_MH_SG_AM_EPSILON_ODV                             1.e-5
 
-class uqMarkovChainSGOptionsClass
+class uqMetropolisHastingsSGOptionsClass
 {
 public:
-  uqMarkovChainSGOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix);
- ~uqMarkovChainSGOptionsClass();
+  uqMetropolisHastingsSGOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix);
+ ~uqMetropolisHastingsSGOptionsClass();
 
   void scanOptionsValues();
   void print            (std::ostream& os) const;
@@ -169,5 +169,5 @@ private:
   std::string                   m_option_am_epsilon;
 };
 
-std::ostream& operator<<(std::ostream& os, const uqMarkovChainSGOptionsClass& obj);
-#endif // __UQ_MAC_SG_OPTIONS_H__
+std::ostream& operator<<(std::ostream& os, const uqMetropolisHastingsSGOptionsClass& obj);
+#endif // __UQ_MH_SG_OPTIONS_H__

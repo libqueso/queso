@@ -30,10 +30,10 @@
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-#ifndef __UQ_MAC_SG1_H__
-#define __UQ_MAC_SG1_H__
+#ifndef __UQ_MH_SG1_H__
+#define __UQ_MH_SG1_H__
 
-#include <uqMarkovChainSGOptions.h>
+#include <uqMetropolisHastingsSGOptions.h>
 #include <uqTKGroup.h>
 #include <uqVectorRV.h>
 #include <uqVectorSpace.h>
@@ -44,22 +44,18 @@
 #include <sys/time.h>
 #include <fstream>
 
-/*! A templated class that represents a Markov Chain generator. 'SG' stands for 'Sequence Generator'.
+/*! A templated class that represents a Metropolis-Hastings generator. 'SG' stands for 'Sequence Generator'.
  */
 template <class P_V,class P_M>
-class uqMarkovChainSGClass
+class uqMetropolisHastingsSGClass
 {
 public:
+  uqMetropolisHastingsSGClass(const char*                         prefix,
+                              const uqBaseVectorRVClass<P_V,P_M>& sourceRv,
+                              const P_V&                          initialPosition,
+                              const P_M*                          inputProposalCovMatrix);
+ ~uqMetropolisHastingsSGClass();
 
-  /*! Constructor: */
-  uqMarkovChainSGClass(/*! Prefix                 */ const char*                         prefix,
-                       /*! The source rv          */ const uqBaseVectorRVClass<P_V,P_M>& sourceRv,
-                       /*! Initial chain position */ const P_V&                          initialPosition,
-                       /*! Proposal cov. matrix   */ const P_M*                          inputProposalCovMatrix);
-  /*! Destructor: */
- ~uqMarkovChainSGClass();
-
-  /*! Operation to generate the chain */
   void   generateSequence           (uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
                                      uqScalarSequenceClass<double>*      workingTargetValues,
                                      uqScalarSequenceClass<double>*      workingLogTargetValues);
@@ -130,7 +126,7 @@ private:
         bool                                        m_tkIsSymmetric;
         std::vector<P_M*>                           m_lowerCholProposalCovMatrices;
         std::vector<P_M*>                           m_proposalCovMatrices;
-#ifdef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
+#ifdef UQ_MH_SG_REQUIRES_INVERTED_COV_MATRICES
         std::vector<P_M*>                           m_upperCholProposalPrecMatrices;
         std::vector<P_M*>                           m_proposalPrecMatrices;
 #endif
@@ -147,20 +143,21 @@ private:
         P_V*                                        m_lastMean;
         P_M*                                        m_lastAdaptedCovMatrix;
 
-        uqMarkovChainSGOptionsClass                 m_options;
+        uqMetropolisHastingsSGOptionsClass                 m_options;
 };
 
 template<class P_V,class P_M>
-std::ostream& operator<<(std::ostream& os, const uqMarkovChainSGClass<P_V,P_M>& obj);
+std::ostream& operator<<(std::ostream& os, const uqMetropolisHastingsSGClass<P_V,P_M>& obj);
 
-#include <uqMarkovChainSG2.h>
+#include <uqMetropolisHastingsSG2.h>
 
+/*! Constructor: */
 template<class P_V,class P_M>
-uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
-  const char*                         prefix,
-  const uqBaseVectorRVClass<P_V,P_M>& sourceRv,
-  const P_V&                          initialPosition,
-  const P_M*                          inputProposalCovMatrix)
+uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
+  /*! Prefix                 */ const char*                         prefix,
+  /*! The source rv          */ const uqBaseVectorRVClass<P_V,P_M>& sourceRv,
+  /*! Initial chain position */ const P_V&                          initialPosition,
+  /*! Proposal cov. matrix   */ const P_M*                          inputProposalCovMatrix)
   :
   m_env                          (sourceRv.env()),
   m_vectorSpace                  (sourceRv.imageSet().vectorSpace()),
@@ -175,7 +172,7 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
   m_tkIsSymmetric                (true),
   m_lowerCholProposalCovMatrices (1),//NULL),
   m_proposalCovMatrices          (1),//NULL),
-#ifdef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
+#ifdef UQ_MH_SG_REQUIRES_INVERTED_COV_MATRICES
   m_upperCholProposalPrecMatrices(1),//NULL),
   m_proposalPrecMatrices         (1),//NULL),
 #endif
@@ -195,7 +192,7 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
 {
   if ((m_env.subDisplayFile()          ) &&
       (m_options.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "Entering uqMarkovChainSGClass<P_V,P_M>::constructor(1)"
+    *m_env.subDisplayFile() << "Entering uqMetropolisHastingsSGClass<P_V,P_M>::constructor(1)"
                             << std::endl;
   }
 
@@ -205,14 +202,14 @@ uqMarkovChainSGClass<P_V,P_M>::uqMarkovChainSGClass(
 
   if ((m_env.subDisplayFile()          ) &&
       (m_options.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "Leaving uqMarkovChainSGClass<P_V,P_M>::constructor(1)"
+    *m_env.subDisplayFile() << "Leaving uqMetropolisHastingsSGClass<P_V,P_M>::constructor(1)"
                             << std::endl;
   }
 }
 
 template<class P_V,class P_M>
 void
-uqMarkovChainSGClass<P_V,P_M>::commonConstructor()
+uqMetropolisHastingsSGClass<P_V,P_M>::commonConstructor()
 {
   /////////////////////////////////////////////////////////////////
   // Instantiate the appropriate TK
@@ -220,14 +217,14 @@ uqMarkovChainSGClass<P_V,P_M>::commonConstructor()
 #ifdef UQ_USES_TK_CLASS
   if ((m_env.subDisplayFile()          ) &&
       (m_options.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::constructor()"
+    *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::constructor()"
                             << ": running with UQ_USES_TK_CLASS flag defined"
                             << std::endl;
   }
 #else
   if ((m_env.subDisplayFile()          ) &&
       (m_options.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::constructor()"
+    *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::constructor()"
                             << ": running with UQ_USES_TK_CLASS flag undefined"
                             << std::endl;
   }
@@ -249,7 +246,7 @@ uqMarkovChainSGClass<P_V,P_M>::commonConstructor()
                                                          *m_targetPdfSynchronizer);
     if ((m_env.subDisplayFile()          ) &&
         (m_options.m_totallyMute == false)) {
-      *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::constructor()"
+      *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::constructor()"
                               << ": just instantiated a 'HessianCovMatrices' TK class"
                               << std::endl;
     }
@@ -257,7 +254,7 @@ uqMarkovChainSGClass<P_V,P_M>::commonConstructor()
   else {
     UQ_FATAL_TEST_MACRO((m_initialProposalCovMatrix == NULL),
                         m_env.fullRank(),
-                        "uqMarkovChainSGClass<P_V,P_M>::constructor()",
+                        "uqMetropolisHastingsSGClass<P_V,P_M>::constructor()",
                         "proposal cov matrix should have been passed by user, since, according to the input algorithm options, local Hessians will not be used in the proposal");
 
     m_tk = new uqScaledCovMatrixTKGroupClass<P_V,P_M>(m_options.m_prefix.c_str(),
@@ -270,7 +267,7 @@ uqMarkovChainSGClass<P_V,P_M>::commonConstructor()
                                                       *m_initialProposalCovMatrix);
     if ((m_env.subDisplayFile()          ) &&
         (m_options.m_totallyMute == false)) {
-      *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::constructor()"
+      *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::constructor()"
                               << ": just instantiated a 'ScaledCovMatrix' TK class"
                               << std::endl;
     }
@@ -279,11 +276,12 @@ uqMarkovChainSGClass<P_V,P_M>::commonConstructor()
   return;
 }
 
+/*! Destructor: */
 template<class P_V,class P_M>
-uqMarkovChainSGClass<P_V,P_M>::~uqMarkovChainSGClass()
+uqMetropolisHastingsSGClass<P_V,P_M>::~uqMetropolisHastingsSGClass()
 {
   //if (m_env.subDisplayFile()) {
-  //  *m_env.subDisplayFile() << "Entering uqMarkovChainSGClass<P_V,P_M>::destructor()"
+  //  *m_env.subDisplayFile() << "Entering uqMetropolisHastingsSGClass<P_V,P_M>::destructor()"
   //                          << std::endl;
   //}
 
@@ -295,14 +293,14 @@ uqMarkovChainSGClass<P_V,P_M>::~uqMarkovChainSGClass()
   if (m_nullInputProposalCovMatrix) delete m_initialProposalCovMatrix;
 
   //if (m_env.subDisplayFile()) {
-  //  *m_env.subDisplayFile() << "Leaving uqMarkovChainSGClass<P_V,P_M>::destructor()"
+  //  *m_env.subDisplayFile() << "Leaving uqMetropolisHastingsSGClass<P_V,P_M>::destructor()"
   //                          << std::endl;
   //}
 }
 
 template<class P_V,class P_M>
 void
-uqMarkovChainSGClass<P_V,P_M>::resetChainAndRelatedInfo()
+uqMetropolisHastingsSGClass<P_V,P_M>::resetChainAndRelatedInfo()
 {
   if (m_lastAdaptedCovMatrix) delete m_lastAdaptedCovMatrix;
   if (m_lastMean)             delete m_lastMean;
@@ -318,7 +316,7 @@ uqMarkovChainSGClass<P_V,P_M>::resetChainAndRelatedInfo()
 
 #ifdef UQ_USES_TK_CLASS
 #else
-#ifdef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
+#ifdef UQ_MH_SG_REQUIRES_INVERTED_COV_MATRICES
   for (unsigned int i = 0; i < m_proposalPrecMatrices.size(); ++i) {
     if (m_proposalPrecMatrices[i]) delete m_proposalPrecMatrices[i];
   }
@@ -349,7 +347,7 @@ uqMarkovChainSGClass<P_V,P_M>::resetChainAndRelatedInfo()
 #else
 template<class P_V,class P_M>
 int
-uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()
+uqMetropolisHastingsSGClass<P_V,P_M>::computeInitialCholFactors()
 {
 //const P_M& proposalCovMatrix (*m_initialProposalCovMatrix);
 //const P_M& proposalPrecMatrix(...);
@@ -357,7 +355,7 @@ uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()
   if ((m_env.subDisplayFile()          ) &&
       (m_env.displayVerbosity() >= 5   ) &&
       (m_options.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "Entering uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()..."
+    *m_env.subDisplayFile() << "Entering uqMetropolisHastingsSGClass<P_V,P_M>::computeInitialCholFactors()..."
               << std::endl;
   }
 
@@ -365,7 +363,7 @@ uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()
 
   if ((m_env.subDisplayFile()          ) &&
       (m_options.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()"
+    *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::computeInitialCholFactors()"
                                    << ": using supplied initialProposalCovMatrix, whose contents are:"
                                    << std::endl;
     *m_env.subDisplayFile() << *m_initialProposalCovMatrix; // FIX ME: output might need to be in parallel
@@ -378,7 +376,7 @@ uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()
   iRC = m_lowerCholProposalCovMatrices[0]->chol();
   UQ_FATAL_RC_MACRO(iRC,
                     m_env.fullRank(),
-                    "uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()",
+                    "uqMetropolisHastingsSGClass<P_V,P_M>::computeInitialCholFactors()",
                     "initialProposalCovMatrix is not positive definite");
   m_lowerCholProposalCovMatrices[0]->zeroUpper(false);
 
@@ -386,19 +384,19 @@ uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()
 
   if ((m_env.subDisplayFile()          ) &&
       (m_options.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()"
+    *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::computeInitialCholFactors()"
                                    << ", m_lowerCholProposalCovMatrices[0] contents are:"
                                    << std::endl;
     *m_env.subDisplayFile() << *(m_lowerCholProposalCovMatrices[0]); // FIX ME: output might need to be in parallel
     *m_env.subDisplayFile() << std::endl;
   }
 
-#ifdef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
+#ifdef UQ_MH_SG_REQUIRES_INVERTED_COV_MATRICES
   const P_M* internalProposalPrecMatrix = proposalPrecMatrix;
   if (proposalPrecMatrix == NULL) {
     UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
                       m_env.fullRank(),
-                      "uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()",
+                      "uqMetropolisHastingsSGClass<P_V,P_M>::computeInitialCholFactors()",
                       "not yet implemented for the case 'proposalPrecMatrix == NULL'");
   }
 
@@ -406,14 +404,14 @@ uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()
   iRC = m_upperCholProposalPrecMatrices[0]->chol();
   UQ_FATAL_RC_MACRO(iRC,
                     m_env.fullRank(),
-                    "uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()",
+                    "uqMetropolisHastingsSGClass<P_V,P_M>::computeInitialCholFactors()",
                     "proposalPrecMatrix is not positive definite");
   m_upperCholProposalPrecMatrices[0]->zeroLower(false);
 
   m_proposalPrecMatrices[0] = new P_M(proposalPrecMatrix);
 
   //if (m_env.subDisplayFile()) {
-  //  *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()"
+  //  *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::computeInitialCholFactors()"
   //                                 << ", m_upperCholProposalPrecMatrices[0] contents are:"
   //                                 << std::endl;
   //  *m_env.subDisplayFile() << *(m_upperCholProposalPrecMatrices[0]); // FIX ME: output might need to be in parallel
@@ -426,7 +424,7 @@ uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()
   if ((m_env.subDisplayFile()          ) &&
       (m_env.displayVerbosity() >= 5   ) &&
       (m_options.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "Leaving uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()"
+    *m_env.subDisplayFile() << "Leaving uqMetropolisHastingsSGClass<P_V,P_M>::computeInitialCholFactors()"
                            << std::endl;
   }
 
@@ -435,19 +433,19 @@ uqMarkovChainSGClass<P_V,P_M>::computeInitialCholFactors()
 
 template<class P_V,class P_M>
 void
-uqMarkovChainSGClass<P_V,P_M>::updateTK()
+uqMetropolisHastingsSGClass<P_V,P_M>::updateTK()
 {
   if ((m_env.subDisplayFile()          ) &&
       (m_env.displayVerbosity() >= 5   ) &&
       (m_options.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "Entering uqMarkovChainSGClass<P_V,P_M>::updateTK()"
+    *m_env.subDisplayFile() << "Entering uqMetropolisHastingsSGClass<P_V,P_M>::updateTK()"
                            << std::endl;
   }
 
   if ((m_env.subDisplayFile()          ) &&
       (m_env.displayVerbosity() >= 5   ) &&
       (m_options.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::updateTK()"
+    *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::updateTK()"
                             << ": m_options.m_drMaxNumExtraStages = "           << m_options.m_drMaxNumExtraStages
                             << ", m_options.m_drScalesForExtraStages.size() = " << m_options.m_drScalesForExtraStages.size()
 #ifdef UQ_USES_TK_CLASS
@@ -467,7 +465,7 @@ uqMarkovChainSGClass<P_V,P_M>::updateTK()
     if (m_proposalCovMatrices[i]) delete m_proposalCovMatrices[i];
     m_proposalCovMatrices[i]             = new P_M(*(m_proposalCovMatrices[i-1]));
   *(m_proposalCovMatrices[i])           /= (scale*scale);
-#ifdef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
+#ifdef UQ_MH_SG_REQUIRES_INVERTED_COV_MATRICES
     m_upperCholProposalPrecMatrices[i]   = new P_M(*(m_upperCholProposalPrecMatrices[i-1]));
   *(m_upperCholProposalPrecMatrices[i]) *= scale;
     m_proposalPrecMatrices[i]            = new P_M(*(m_proposalPrecMatrices[i-1]));
@@ -479,7 +477,7 @@ uqMarkovChainSGClass<P_V,P_M>::updateTK()
   if ((m_env.subDisplayFile()          ) &&
       (m_env.displayVerbosity() >= 5   ) &&
       (m_options.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "Leaving uqMarkovChainSGClass<P_V,P_M>::updateTK()"
+    *m_env.subDisplayFile() << "Leaving uqMetropolisHastingsSGClass<P_V,P_M>::updateTK()"
                             << std::endl;
   }
 
@@ -488,7 +486,7 @@ uqMarkovChainSGClass<P_V,P_M>::updateTK()
 
 template<class P_V,class P_M>
 double
-uqMarkovChainSGClass<P_V,P_M>::logProposal(
+uqMetropolisHastingsSGClass<P_V,P_M>::logProposal(
   const uqMarkovChainPositionDataClass<P_V>& x,
   const uqMarkovChainPositionDataClass<P_V>& y,
   unsigned int                               idOfProposalCovMatrix)
@@ -497,7 +495,7 @@ uqMarkovChainSGClass<P_V,P_M>::logProposal(
   return 0.;
 #else
   P_V diffVec(y.vecValues() - x.vecValues());
-#ifdef UQ_MAC_SG_REQUIRES_INVERTED_COV_MATRICES
+#ifdef UQ_MH_SG_REQUIRES_INVERTED_COV_MATRICES
   double value = -0.5 * scalarProduct(diffVec, *(m_proposalPrecMatrices[idOfProposalCovMatrix]) * diffVec);
 #else
   double value = -0.5 * scalarProduct(diffVec, m_proposalCovMatrices[idOfProposalCovMatrix]->invertMultiply(diffVec));
@@ -508,12 +506,12 @@ uqMarkovChainSGClass<P_V,P_M>::logProposal(
 
 template<class P_V,class P_M>
 double
-uqMarkovChainSGClass<P_V,P_M>::logProposal(const std::vector<uqMarkovChainPositionDataClass<P_V>*>& inputPositions)
+uqMetropolisHastingsSGClass<P_V,P_M>::logProposal(const std::vector<uqMarkovChainPositionDataClass<P_V>*>& inputPositions)
 {
   unsigned int inputSize = inputPositions.size();
   UQ_FATAL_TEST_MACRO((inputSize < 2),
                       m_env.fullRank(),
-                      "uqMarkovChainSGClass<P_V,P_M>::logProposal()",
+                      "uqMetropolisHastingsSGClass<P_V,P_M>::logProposal()",
                       "inputPositions has size < 2");
 
   return this->logProposal(*(inputPositions[0            ]),
@@ -524,7 +522,7 @@ uqMarkovChainSGClass<P_V,P_M>::logProposal(const std::vector<uqMarkovChainPositi
 
 template<class P_V,class P_M>
 double
-uqMarkovChainSGClass<P_V,P_M>::alpha(
+uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
   const uqMarkovChainPositionDataClass<P_V>& x,
   const uqMarkovChainPositionDataClass<P_V>& y,
   unsigned int                               xStageId,
@@ -537,7 +535,7 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
     if ((x.logTarget() == -INFINITY) ||
         (x.logTarget() ==  INFINITY) ||
         (isnan(x.logTarget())      )) {
-      std::cerr << "WARNING In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
+      std::cerr << "WARNING In uqMetropolisHastingsSGClass<P_V,P_M>::alpha(x,y)"
                 << ", fullRank "        << m_env.fullRank()
                 << ", subEnvironment "  << m_env.subId()
                 << ", subRank "         << m_env.subRank()
@@ -552,7 +550,7 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
     else if ((y.logTarget() == -INFINITY) ||
              (y.logTarget() ==  INFINITY) ||
              (isnan(y.logTarget())      )) {
-      std::cerr << "WARNING In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
+      std::cerr << "WARNING In uqMetropolisHastingsSGClass<P_V,P_M>::alpha(x,y)"
                 << ", fullRank "        << m_env.fullRank()
                 << ", subEnvironment "  << m_env.subId()
                 << ", subRank "         << m_env.subRank()
@@ -566,7 +564,7 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
     }
     else {
       double yLogTargetToUse = y.logTarget();
-#ifdef UQ_MAC_SG_REQUIRES_TARGET_DISTRIBUTION_ONLY
+#ifdef UQ_MH_SG_REQUIRES_TARGET_DISTRIBUTION_ONLY
 #else
       if (m_likelihoodObjComputesMisfits &&
           m_observableSpace.shouldVariancesBeUpdated()) {
@@ -583,7 +581,7 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
         if ((m_env.subDisplayFile()          ) &&
             (m_env.displayVerbosity() >= 10  ) &&
             (m_options.m_totallyMute == false)) {
-          *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
+          *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::alpha(x,y)"
                                  << ": symmetric proposal case"
                                  << ", x = "               << x.vecValues()
                                  << ", y = "               << y.vecValues()
@@ -600,7 +598,7 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
             (m_env.displayVerbosity() >= 10  ) &&
             (m_options.m_totallyMute == false)) {
           const uqGaussianJointPdfClass<P_V,P_M>* pdfYX = dynamic_cast< const uqGaussianJointPdfClass<P_V,P_M>* >(&(m_tk->rv(yStageId).pdf()));
-          *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
+          *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::alpha(x,y)"
                                  << ", rvYX.lawExpVector = " << pdfYX->lawExpVector()
                                  << ", rvYX.lawVarVector = " << pdfYX->lawVarVector()
                                  << ", rvYX.lawCovMatrix = " << pdfYX->lawCovMatrix()
@@ -611,7 +609,7 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
             (m_env.displayVerbosity() >= 10  ) &&
             (m_options.m_totallyMute == false)) {
           const uqGaussianJointPdfClass<P_V,P_M>* pdfXY = dynamic_cast< const uqGaussianJointPdfClass<P_V,P_M>* >(&(m_tk->rv(xStageId).pdf()));
-          *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
+          *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::alpha(x,y)"
                                  << ", rvXY.lawExpVector = " << pdfXY->lawExpVector()
                                  << ", rvXY.lawVarVector = " << pdfXY->lawVarVector()
                                  << ", rvXY.lawCovMatrix = " << pdfXY->lawCovMatrix()
@@ -628,7 +626,7 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
         if ((m_env.subDisplayFile()          ) &&
             (m_env.displayVerbosity() >= 10  ) &&
             (m_options.m_totallyMute == false)) {
-          *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
+          *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::alpha(x,y)"
                                  << ": unsymmetric proposal case"
                                  << ", xStageId = "        << xStageId
                                  << ", yStageId = "        << yStageId
@@ -648,7 +646,7 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
     if ((m_env.subDisplayFile()          ) &&
         (m_env.displayVerbosity() >= 10  ) &&
         (m_options.m_totallyMute == false)) {
-      *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::alpha(x,y)"
+      *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::alpha(x,y)"
                              << ": x.outOfTargetSupport = " << x.outOfTargetSupport()
                              << ", y.outOfTargetSupport = " << y.outOfTargetSupport()
                              << std::endl;
@@ -661,7 +659,7 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
 
 template<class P_V,class P_M>
 double
-uqMarkovChainSGClass<P_V,P_M>::alpha(
+uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
   const std::vector<uqMarkovChainPositionDataClass<P_V>*>& inputPositionsData,
   const std::vector<unsigned int                        >& inputTKStageIds)
 {
@@ -669,13 +667,13 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
   if ((m_env.subDisplayFile()          ) &&
       (m_env.displayVerbosity() >= 10  ) &&
       (m_options.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "Entering uqMarkovChainSGClass<P_V,P_M>::alpha(vec)"
+    *m_env.subDisplayFile() << "Entering uqMetropolisHastingsSGClass<P_V,P_M>::alpha(vec)"
                            << ", inputSize = " << inputSize
                            << std::endl;
   }
   UQ_FATAL_TEST_MACRO((inputSize < 2),
                       m_env.fullRank(),
-                      "uqMarkovChainSGClass<P_V,P_M>::alpha(vec)",
+                      "uqMetropolisHastingsSGClass<P_V,P_M>::alpha(vec)",
                       "inputPositionsData has size < 2");
 
   // If necessary, return 0. right away
@@ -685,7 +683,7 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
   if ((inputPositionsData[0]->logTarget() == -INFINITY) ||
       (inputPositionsData[0]->logTarget() ==  INFINITY) ||
       (isnan(inputPositionsData[0]->logTarget())      )) {
-    std::cerr << "WARNING In uqMarkovChainSGClass<P_V,P_M>::alpha(vec)"
+    std::cerr << "WARNING In uqMetropolisHastingsSGClass<P_V,P_M>::alpha(vec)"
               << ", fullRank "       << m_env.fullRank()
               << ", subEnvironment " << m_env.subId()
               << ", subRank "        << m_env.subRank()
@@ -702,7 +700,7 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
   else if ((inputPositionsData[inputSize - 1]->logTarget() == -INFINITY) ||
            (inputPositionsData[inputSize - 1]->logTarget() ==  INFINITY) ||
            (isnan(inputPositionsData[inputSize - 1]->logTarget())      )) {
-    std::cerr << "WARNING In uqMarkovChainSGClass<P_V,P_M>::alpha(vec)"
+    std::cerr << "WARNING In uqMetropolisHastingsSGClass<P_V,P_M>::alpha(vec)"
               << ", fullRank "       << m_env.fullRank()
               << ", subEnvironment " << m_env.subId()
               << ", subRank "        << m_env.subRank()
@@ -767,7 +765,7 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
   if ((m_env.subDisplayFile()          ) &&
       (m_env.displayVerbosity() >= 10  ) &&
       (m_options.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::alpha(vec)"
+    *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::alpha(vec)"
                            << ", inputSize = "  << inputSize
                            << ", before loop"
                            << ": numContrib = " << numContrib
@@ -800,7 +798,7 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
     if ((m_env.subDisplayFile()          ) &&
         (m_env.displayVerbosity() >= 10  ) &&
         (m_options.m_totallyMute == false)) {
-      *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::alpha(vec)"
+      *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::alpha(vec)"
                              << ", inputSize = "  << inputSize
                              << ", in loop, i = " << i
                              << ": numContrib = " << numContrib
@@ -815,7 +813,7 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
   }
 
   double numeratorLogTargetToUse = backwardPositionsData[0]->logTarget();
-#ifdef UQ_MAC_SG_REQUIRES_TARGET_DISTRIBUTION_ONLY
+#ifdef UQ_MH_SG_REQUIRES_TARGET_DISTRIBUTION_ONLY
 #else
   if (m_likelihoodObjComputesMisfits &&
       m_observableSpace.shouldVariancesBeUpdated()) {
@@ -829,7 +827,7 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
   if ((m_env.subDisplayFile()          ) &&
       (m_env.displayVerbosity() >= 10  ) &&
       (m_options.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::alpha(vec)"
+    *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::alpha(vec)"
                            << ", inputSize = "  << inputSize
                            << ", after loop"
                            << ": numContrib = " << numContrib
@@ -842,7 +840,7 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
   if ((m_env.subDisplayFile()          ) &&
       (m_env.displayVerbosity() >= 10  ) &&
       (m_options.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "Leaving uqMarkovChainSGClass<P_V,P_M>::alpha(vec)"
+    *m_env.subDisplayFile() << "Leaving uqMetropolisHastingsSGClass<P_V,P_M>::alpha(vec)"
                            << ", inputSize = "         << inputSize
                            << ": alphasNumerator = "   << alphasNumerator
                            << ", alphasDenominator = " << alphasDenominator
@@ -857,7 +855,7 @@ uqMarkovChainSGClass<P_V,P_M>::alpha(
 
 template<class P_V,class P_M>
 bool
-uqMarkovChainSGClass<P_V,P_M>::acceptAlpha(double alpha)
+uqMetropolisHastingsSGClass<P_V,P_M>::acceptAlpha(double alpha)
 {
   bool result = false;
 
@@ -871,7 +869,7 @@ uqMarkovChainSGClass<P_V,P_M>::acceptAlpha(double alpha)
 
 template<class P_V,class P_M>
 int
-uqMarkovChainSGClass<P_V,P_M>::writeInfo(
+uqMetropolisHastingsSGClass<P_V,P_M>::writeInfo(
   const uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
   std::ofstream&                            ofsvar) const
 //const P_M*                   mahalanobisMatrix,
@@ -1047,23 +1045,23 @@ uqMarkovChainSGClass<P_V,P_M>::writeInfo(
 
 template<class P_V,class P_M>
 double
-uqMarkovChainSGClass<P_V,P_M>::rawChainRunTime() const
+uqMetropolisHastingsSGClass<P_V,P_M>::rawChainRunTime() const
 {
   return m_rawChainRunTime;
 }
 
 template<class P_V,class P_M>
 unsigned int
-uqMarkovChainSGClass<P_V,P_M>::numRejections() const
+uqMetropolisHastingsSGClass<P_V,P_M>::numRejections() const
 {
   return m_numRejections;
 }
 
 template<class P_V,class P_M>
-std::ostream& operator<<(std::ostream& os, const uqMarkovChainSGClass<P_V,P_M>& obj)
+std::ostream& operator<<(std::ostream& os, const uqMetropolisHastingsSGClass<P_V,P_M>& obj)
 {
   obj.print(os);
 
   return os;
 }
-#endif // __UQ_MAC_SG1_H__
+#endif // __UQ_MH_SG1_H__

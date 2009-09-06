@@ -34,42 +34,67 @@
 #define __UQ_SIP_H__
 
 #include <uqStatisticalInverseProblemOptions.h>
-#include <uqMarkovChainSG1.h>
+#include <uqMetropolisHastingsSG1.h>
 #include <uqInstantiateIntersection.h>
 #include <uqVectorRV.h>
 #include <uqScalarFunction.h>
 #include <hpct.h>
 
-/*! This templated class represents a statistical inverse problem. It is templated on the type P_V of vector and type P_M of matrix. The 'P_' stands for 'parameter'.
+/*! This templated class represents a statistical inverse problem.
+    It is templated on the type 'P_V' of vector and type 'P_M' of matrix,
+    where 'P_' stands for 'parameter'.
+    Some templated classes might also use 'Q_V' and 'Q_M' when referring to a vector type and a matrix type,
+    where 'Q_' stands for 'quantities of interest'.
+    See e.g. the class 'uqStatisticalForwardProblemClass'.
 */
-/*!
+/*! -------------------------------------------------------------
 */
 /*! Conceptually, a statistical inverse problem has two input entities and one output entity.
-    The input entities are:
+*/
+/*! -------------------------------------------------------------
+*/
+/*! The input entities of a statistical inverse problem are:
 <list type=number>
 <item> the prior rv, an instance of class 'uqBaseVectorRVClass<P_V,P_M>', and
 <item> the likelihood function, an instance of class 'uqBaseScalarFunctionClass<P_V,P_M>'.
-</list>   
-    The output entity is:
+</list>
+    Let '\pi(.)' denote the mathematical likelihood function and 'x' denote a vector of parameters.
+    The likelihood function object stores the routine that computes \pi(x) and whatever data necessary by such routine.
+    The routine in the likelihood function object can compute either the actual value \pi(x) or the value -2*ln[\pi(x)].
+    The constructor of the 'scalar function' asks for the user to specify which value the routine is actually computing,
+    so that the 'scalar function' class can properly implement both class operations 'actualValue()' and 'minus2LnValue()'.
+    See files 'libs/basic/inc/uqScalarFunction.h' and 'libs/stats/inc/uqJointPdf.h' for more details.
+*/
+/*! -------------------------------------------------------------
+*/
+/*! The output entity of a statistical inverse problem is:
 <list type=number>
 <item> the posterior rv, another instance of class 'uqBaseVectorRVClass<P_V,P_M>'.
 </list>   
     The posterior rv stores the solution according to the Bayesian approach.
-    A similar situation occurs e.g. in the case of a system Ax=b of linear equations, where 'A' and 'b' are inputs, and 'x' stores the solution of the inverse problem.
+    A similar situation occurs e.g. in the case of a system Ax=b of linear equations,
+    where 'A' and 'b' are inputs, and 'x' stores the solution of the inverse problem.
+*/
+/*! -------------------------------------------------------------
 */
 /*! The solution of a statistical inverse problem is computed by calling one of the following operations:
 <list type=number>
-<item> 'solveWithBayesMarkovChain(...)'.
+<item> 'solveWithBayesMetropolisHastings(...)'.
 </list> 
     More operations, with different methods, will be available in the future.
 */
 /*! The solution process might demand extra objects to be passed through the chosen solution operation interface.
     This distinction is important: this class separates 'what the problem is' from 'how the problem is solved'.
 */
-/*! Upon return from a solution operation, the posterior rv is available through the operation 'postRv()'. Such posterior rv is able to:
+/*! -------------------------------------------------------------
+*/
+/*! Upon return from a solution operation, the posterior rv is available through
+    the operation 'postRv()'. Such posterior rv is able to provide:
 <list type=number>
-<item> supply a joint pdf (up to a multiplicative constant) through the operation 'postRv().pdf()', which returns an instance of the class 'uqBaseJointPdfClass<P_V,P_M>', and
-<item> a vector realizer through the operation 'postRv().realizer()', which returns an instance of the class 'uqBaseVectorRealizerClass<P_V,P_M>'.
+<item> a joint pdf (up to a multiplicative constant) through the operation 'postRv().pdf()',
+       which returns an instance of the class 'uqBaseJointPdfClass<P_V,P_M>', and
+<item> a vector realizer through the operation 'postRv().realizer()', which returns an
+       instance of the class 'uqBaseVectorRealizerClass<P_V,P_M>'.
 </list>
 */
 template <class P_V,class P_M>
@@ -83,7 +108,7 @@ public:
  ~uqStatisticalInverseProblemClass();
 
         bool                             computeSolutionFlag      () const;
-        void                             solveWithBayesMarkovChain(const P_V& initialValues,
+        void                             solveWithBayesMetropolisHastings(const P_V& initialValues,
                                                                    const P_M* initialProposalCovMatrix);
   const uqBaseVectorRVClass   <P_V,P_M>& priorRv                  () const;
   const uqGenericVectorRVClass<P_V,P_M>& postRv                   () const;
@@ -93,21 +118,21 @@ public:
 private:
   const uqBaseEnvironmentClass&                 m_env;
 
-  const uqBaseVectorRVClass      <P_V,P_M>&     m_priorRv;
-  const uqBaseScalarFunctionClass<P_V,P_M>&     m_likelihoodFunction;
-        uqGenericVectorRVClass   <P_V,P_M>&     m_postRv;
+  const uqBaseVectorRVClass        <P_V,P_M>&   m_priorRv;
+  const uqBaseScalarFunctionClass  <P_V,P_M>&   m_likelihoodFunction;
+        uqGenericVectorRVClass     <P_V,P_M>&   m_postRv;
 
-        uqVectorSetClass         <P_V,P_M>*     m_solutionDomain;
-        uqBaseJointPdfClass      <P_V,P_M>*     m_solutionPdf;
-        uqBaseVectorMdfClass     <P_V,P_M>*     m_subSolutionMdf;
-        uqBaseVectorCdfClass     <P_V,P_M>*     m_subSolutionCdf;
-        uqBaseVectorRealizerClass<P_V,P_M>*     m_solutionRealizer;
+        uqVectorSetClass           <P_V,P_M>*   m_solutionDomain;
+        uqBaseJointPdfClass        <P_V,P_M>*   m_solutionPdf;
+        uqBaseVectorMdfClass       <P_V,P_M>*   m_subSolutionMdf;
+        uqBaseVectorCdfClass       <P_V,P_M>*   m_subSolutionCdf;
+        uqBaseVectorRealizerClass  <P_V,P_M>*   m_solutionRealizer;
 
-        uqMarkovChainSGClass     <P_V,P_M>*     m_mcSeqGenerator;
-        uqBaseVectorSequenceClass<P_V,P_M>*     m_chain;
+        uqMetropolisHastingsSGClass<P_V,P_M>*   m_mhSeqGenerator;
+        uqBaseVectorSequenceClass  <P_V,P_M>*   m_chain;
 #ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
-        uqArrayOfOneDGridsClass  <P_V,P_M>*     m_subMdfGrids;
-        uqArrayOfOneDTablesClass <P_V,P_M>*     m_subMdfValues;
+        uqArrayOfOneDGridsClass    <P_V,P_M>*   m_subMdfGrids;
+        uqArrayOfOneDTablesClass   <P_V,P_M>*   m_subMdfValues;
 #endif
 
         uqStatisticalInverseProblemOptionsClass m_options;
@@ -149,7 +174,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
   m_subSolutionMdf    (NULL),
   m_subSolutionCdf    (NULL),
   m_solutionRealizer  (NULL),
-  m_mcSeqGenerator    (NULL),
+  m_mhSeqGenerator    (NULL),
   m_chain             (NULL),
   m_options           (m_env,prefix)
 {
@@ -188,7 +213,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::~uqStatisticalInverseProblemClass()
     m_chain->clear();
     delete m_chain;
   }
-  if (m_mcSeqGenerator  ) delete m_mcSeqGenerator;
+  if (m_mhSeqGenerator  ) delete m_mhSeqGenerator;
   if (m_solutionRealizer) delete m_solutionRealizer;
   if (m_subSolutionCdf  ) delete m_subSolutionCdf;
   if (m_subSolutionMdf  ) delete m_subSolutionMdf;
@@ -196,7 +221,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::~uqStatisticalInverseProblemClass()
   if (m_solutionDomain  ) delete m_solutionDomain;
 }
 
-/*! Operation to solve the problem through Bayes formula and a Markov Chain algorithm. */
+/*! Operation to solve the problem through Bayes formula and a Metropolis-Hastings algorithm. */
 /*! Requirements:
 <list type=number>
 <item> 'initialValues' should have the same number of components as member variable 'm_priorRv'
@@ -211,52 +236,52 @@ uqStatisticalInverseProblemClass<P_V,P_M>::~uqStatisticalInverseProblemClass()
 <list type=number>
 <item> sets the pdf of 'm_postRv' equal to an instance of 'uqBayesianJointPdfClass<P_V,P_M>',
 <item> instantiates 'uqSequenceOfVectorsClass<P_V,P_M>' (the chain),
-<item> instantiates 'uqMarkovChainSGClass<P_V,P_M>' (tha Markov Chain algorithm),
-<item> populates the chain with the Markov Chain algorithm, and
+<item> instantiates 'uqMetropolisHastingsSGClass<P_V,P_M>' (tha Metropolis-Hastings algorithm),
+<item> populates the chain with the Metropolis-Hastings algorithm, and
 <item> sets the realizer of 'm_postRv' with the contents of the chain.
 </list>
 */
 template <class P_V,class P_M>
 void
-uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
+uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(
   const P_V& initialValues,
   const P_M* initialProposalCovMatrix)
 {
-  //hpct_timer_begin("BayesMarkovChain"); TODO: revisit timing output
+  //hpct_timer_begin("BayesMetropolisHastings"); TODO: revisit timing output
   m_env.fullComm().Barrier();
-  m_env.syncPrintDebugMsg("Entering uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()",1,3000000,m_env.fullComm());
+  m_env.syncPrintDebugMsg("Entering uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings()",1,3000000,m_env.fullComm());
 
   if (m_options.m_computeSolution == false) {
     if ((m_env.subDisplayFile())) {
-      *m_env.subDisplayFile() << "In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()"
+      *m_env.subDisplayFile() << "In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings()"
                               << ": avoiding solution, as requested by user"
                               << std::endl;
     }
     return;
   }
   if ((m_env.subDisplayFile())) {
-    *m_env.subDisplayFile() << "In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()"
+    *m_env.subDisplayFile() << "In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings()"
                             << ": computing solution, as requested by user"
                             << std::endl;
   }
 
   UQ_FATAL_TEST_MACRO(m_priorRv.imageSet().vectorSpace().dimLocal() != initialValues.sizeLocal(),
                       m_env.fullRank(),
-                      "uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()",
+                      "uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings()",
                       "'m_priorRv' and 'initialValues' should have equal dimensions");
 
   if (initialProposalCovMatrix) {
     UQ_FATAL_TEST_MACRO(m_priorRv.imageSet().vectorSpace().dimLocal() != initialProposalCovMatrix->numRowsLocal(),
                         m_env.fullRank(),
-                        "uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()",
+                        "uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings()",
                         "'m_priorRv' and 'initialProposalCovMatrix' should have equal dimensions");
     UQ_FATAL_TEST_MACRO(initialProposalCovMatrix->numCols() != initialProposalCovMatrix->numRowsGlobal(),
                         m_env.fullRank(),
-                        "uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()",
+                        "uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings()",
                         "'initialProposalCovMatrix' should be a square matrix");
   }
 
-  if (m_mcSeqGenerator  ) delete m_mcSeqGenerator;
+  if (m_mhSeqGenerator  ) delete m_mhSeqGenerator;
   if (m_solutionRealizer) delete m_solutionRealizer;
   if (m_subSolutionCdf  ) delete m_subSolutionCdf;
   if (m_subSolutionMdf  ) delete m_subSolutionMdf;
@@ -277,21 +302,21 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
 
   m_postRv.setPdf(*m_solutionPdf);
 
-  // Compute output realizer: Markov Chain approach
+  // Compute output realizer: Metropolis-Hastings approach
   m_chain = new uqSequenceOfVectorsClass<P_V,P_M>(m_postRv.imageSet().vectorSpace(),0,m_options.m_prefix+"chain");
-  m_mcSeqGenerator = new uqMarkovChainSGClass<P_V,P_M>(m_options.m_prefix.c_str(),
-                                                       m_postRv,
-                                                       initialValues,
-                                                       initialProposalCovMatrix);
+  m_mhSeqGenerator = new uqMetropolisHastingsSGClass<P_V,P_M>(m_options.m_prefix.c_str(),
+                                                              m_postRv,
+                                                              initialValues,
+                                                              initialProposalCovMatrix);
 
-  m_mcSeqGenerator->generateSequence(*m_chain,NULL,NULL);
+  m_mhSeqGenerator->generateSequence(*m_chain,NULL,NULL);
 
   m_solutionRealizer = new uqSequentialVectorRealizerClass<P_V,P_M>(m_options.m_prefix.c_str(),
                                                                    *m_chain);
 
   m_postRv.setRealizer(*m_solutionRealizer);
 
-  m_env.syncPrintDebugMsg("In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(), code place 1",3,3000000,m_env.fullComm());
+  m_env.syncPrintDebugMsg("In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(), code place 1",3,3000000,m_env.fullComm());
   //m_env.fullComm().Barrier();
 
   // Compute output mdf: uniform sampling approach
@@ -331,7 +356,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
 #endif
       UQ_FATAL_TEST_MACRO((ofsvar && ofsvar->is_open()) == false,
                           m_env.fullRank(),
-                          "uqStatisticalInverseProblem<P_V,P_M>::solveWithBayesMarkovChain()",
+                          "uqStatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings()",
                           "failed to open file");
 
       m_postRv.mdf().print(*ofsvar);
@@ -351,9 +376,9 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain(
     *m_env.subDisplayFile() << std::endl;
   }
 
-  m_env.syncPrintDebugMsg("Leaving uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMarkovChain()",1,3000000,m_env.fullComm());
+  m_env.syncPrintDebugMsg("Leaving uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings()",1,3000000,m_env.fullComm());
   m_env.fullComm().Barrier();
-  //  hpct_timer_end("BayesMarkovChain"); TODO: revist timers
+  //  hpct_timer_end("BayesMetropolisHastings"); TODO: revist timers
   return;
 }
 
