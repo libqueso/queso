@@ -41,7 +41,6 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_dataOutputFileName                       (UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV),
 //m_dataOutputAllowedSet                     (),
   m_totallyMute                              (UQ_MH_SG_TOTALLY_MUTE_ODV),
-  m_rawChainType                             (UQ_MH_SG_RAW_CHAIN_TYPE_ODV),
   m_rawChainDataInputFileName                (UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV),
   m_rawChainSize                             (UQ_MH_SG_RAW_CHAIN_SIZE_ODV),
   m_rawChainGenerateExtra                    (UQ_MH_SG_RAW_CHAIN_GENERATE_EXTRA_ODV),
@@ -65,11 +64,7 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_tkUseLocalHessian                        (UQ_MH_SG_TK_USE_LOCAL_HESSIAN_ODV),
   m_tkUseNewtonComponent                     (UQ_MH_SG_TK_USE_NEWTON_COMPONENT_ODV),
   m_drMaxNumExtraStages                      (UQ_MH_SG_DR_MAX_NUM_EXTRA_STAGES_ODV),
-#ifdef UQ_READS_ONLY_EXTRA_STAGES
   m_drScalesForExtraStages                   (0),
-#else
-  m_drScalesForExtraStages                   (1,1.),
-#endif
   m_amInitialNonAdaptInterval                (UQ_MH_SG_AM_INIT_NON_ADAPT_INT_ODV),
   m_amAdaptInterval                          (UQ_MH_SG_AM_ADAPT_INTERVAL_ODV),
   m_amEta                                    (UQ_MH_SG_AM_ETA_ODV),
@@ -80,7 +75,6 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_option_dataOutputFileName                (m_prefix + "dataOutputFileName"                ),
   m_option_dataOutputAllowedSet              (m_prefix + "dataOutputAllowedSet"              ),
   m_option_totallyMute                       (m_prefix + "totallyMute"                       ),
-  m_option_rawChain_type                     (m_prefix + "rawChain_type"                     ),
   m_option_rawChain_dataInputFileName        (m_prefix + "rawChain_dataInputFileName"        ),
   m_option_rawChain_size                     (m_prefix + "rawChain_size"                     ),
   m_option_rawChain_generateExtra            (m_prefix + "rawChain_generateExtra"            ),
@@ -151,7 +145,6 @@ uqMetropolisHastingsSGOptionsClass::defineMyOptions(po::options_description& opt
     (m_option_dataOutputFileName.c_str(),                 po::value<std::string >()->default_value(UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV                 ), "name of generic output file"                                     )
     (m_option_dataOutputAllowedSet.c_str(),               po::value<std::string >()->default_value(UQ_MH_SG_DATA_OUTPUT_ALLOWED_SET_ODV               ), "subEnvs that will write to generic output file"                  )
     (m_option_totallyMute.c_str(),                        po::value<bool        >()->default_value(UQ_MH_SG_TOTALLY_MUTE_ODV                          ), "totally mute (no printout message)"                              )
-    (m_option_rawChain_type.c_str(),                      po::value<unsigned int>()->default_value(UQ_MH_SG_RAW_CHAIN_TYPE_ODV                        ), "type of raw chain (1=Markov, 2=White noise)"                     )
     (m_option_rawChain_dataInputFileName.c_str(),         po::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV        ), "name of input file for raw chain "                               )
     (m_option_rawChain_size.c_str(),                      po::value<unsigned int>()->default_value(UQ_MH_SG_RAW_CHAIN_SIZE_ODV                        ), "size of raw chain"                                               )
     (m_option_rawChain_generateExtra.c_str(),             po::value<bool        >()->default_value(UQ_MH_SG_RAW_CHAIN_GENERATE_EXTRA_ODV              ), "generate extra information about raw chain"                      )
@@ -211,10 +204,6 @@ uqMetropolisHastingsSGOptionsClass::getMyOptionValues(po::options_description& o
 
   if (m_env.allOptionsMap().count(m_option_totallyMute.c_str())) {
     m_totallyMute = ((const po::variable_value&) m_env.allOptionsMap()[m_option_totallyMute.c_str()]).as<bool>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_rawChain_type.c_str())) {
-    m_rawChainType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_type.c_str()]).as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_dataInputFileName.c_str())) {
@@ -338,34 +327,13 @@ uqMetropolisHastingsSGOptionsClass::getMyOptionValues(po::options_description& o
   }
 
   if (m_drMaxNumExtraStages > 0) {
-    m_drScalesForExtraStages.clear();
-#ifdef UQ_USES_TK_CLASS
-#else
-    m_lowerCholProposalCovMatrices.clear();
-    m_proposalCovMatrices.clear();
-#endif
-
     double scale = 1.0;
     unsigned int tmpSize = tmpScales.size();
 
-#ifdef UQ_READS_ONLY_EXTRA_STAGES
+    m_drScalesForExtraStages.clear();
     m_drScalesForExtraStages.resize(m_drMaxNumExtraStages,1.);
-#else
-    m_drScalesForExtraStages.resize(m_drMaxNumExtraStages+1,1.);
-#endif
-#ifdef UQ_USES_TK_CLASS
-#else
-    m_lowerCholProposalCovMatrices.resize(m_drMaxNumExtraStages+1,NULL);
-    m_proposalCovMatrices.resize         (m_drMaxNumExtraStages+1,NULL);
-#endif
-
-#ifdef UQ_READS_ONLY_EXTRA_STAGES
     for (unsigned int i = 0; i < m_drMaxNumExtraStages; ++i) {
       if (i < tmpSize) scale = tmpScales[i];
-#else
-    for (unsigned int i = 1; i < (m_drMaxNumExtraStages+1); ++i) {
-      if (i <= tmpSize) scale = tmpScales[i-1];
-#endif
       m_drScalesForExtraStages[i] = scale;
     }
     //updateTK();
@@ -399,7 +367,6 @@ uqMetropolisHastingsSGOptionsClass::print(std::ostream& os) const
     os << *setIt << " ";
   }
   os << "\n" << m_option_totallyMute                   << " = " << m_totallyMute
-     << "\n" << m_option_rawChain_type                 << " = " << m_rawChainType
      << "\n" << m_option_rawChain_dataInputFileName    << " = " << m_rawChainDataInputFileName
      << "\n" << m_option_rawChain_size                 << " = " << m_rawChainSize
      << "\n" << m_option_rawChain_generateExtra        << " = " << m_rawChainGenerateExtra

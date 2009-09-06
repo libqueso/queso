@@ -36,15 +36,9 @@
 #include <uqEnvironment.h>
 #include <uqSequenceStatisticalOptions.h>
 
-#define UQ_USES_TK_CLASS
-#define UQ_READS_ONLY_EXTRA_STAGES
 #undef  UQ_MH_SG_REQUIRES_INVERTED_COV_MATRICES
-#define UQ_MH_SG_REQUIRES_TARGET_DISTRIBUTION_ONLY
 #define UQ_NOTHING_JUST_FOR_TEST_OF_SVN_ID 1
 
-#define UQ_MH_SG_MARKOV_CHAIN_TYPE      1
-#define UQ_MH_SG_WHITE_NOISE_CHAIN_TYPE 2
-#define UQ_MH_SG_UNIFORM_CHAIN_TYPE     3
 #define UQ_MH_SG_FILENAME_FOR_NO_FILE   "."
 
 // _ODV = option default value
@@ -52,7 +46,6 @@
 #define UQ_MH_SG_DATA_OUTPUT_ALLOWED_SET_ODV                ""
 
 #define UQ_MH_SG_TOTALLY_MUTE_ODV                           0
-#define UQ_MH_SG_RAW_CHAIN_TYPE_ODV                         UQ_MH_SG_MARKOV_CHAIN_TYPE
 #define UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV         UQ_MH_SG_FILENAME_FOR_NO_FILE
 #define UQ_MH_SG_RAW_CHAIN_SIZE_ODV                         100
 #define UQ_MH_SG_RAW_CHAIN_GENERATE_EXTRA_ODV               0
@@ -72,11 +65,7 @@
 #define UQ_MH_SG_TK_USE_LOCAL_HESSIAN_ODV                   0
 #define UQ_MH_SG_TK_USE_NEWTON_COMPONENT_ODV                1
 #define UQ_MH_SG_DR_MAX_NUM_EXTRA_STAGES_ODV                0
-#ifdef UQ_READS_ONLY_EXTRA_STAGES
 #define UQ_MH_SG_DR_LIST_OF_SCALES_FOR_EXTRA_STAGES_ODV     ""
-#else
-#define UQ_MH_SG_DR_LIST_OF_SCALES_FOR_EXTRA_STAGES_ODV     "1."
-#endif
 #define UQ_MH_SG_AM_INIT_NON_ADAPT_INT_ODV                  0
 #define UQ_MH_SG_AM_ADAPT_INTERVAL_ODV                      0
 #define UQ_MH_SG_AM_ETA_ODV                                 1.
@@ -97,7 +86,6 @@ public:
   std::set<unsigned int>             m_dataOutputAllowedSet;
 
   bool                               m_totallyMute;
-  unsigned int                       m_rawChainType;
   std::string                        m_rawChainDataInputFileName;
   unsigned int                       m_rawChainSize;
   bool                               m_rawChainGenerateExtra;
@@ -142,7 +130,6 @@ private:
   std::string                   m_option_dataOutputAllowedSet;
 
   std::string                   m_option_totallyMute;
-  std::string                   m_option_rawChain_type;
   std::string                   m_option_rawChain_dataInputFileName;
   std::string                   m_option_rawChain_size;
   std::string                   m_option_rawChain_generateExtra;

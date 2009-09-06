@@ -44,7 +44,7 @@
 #include <sys/time.h>
 #include <fstream>
 
-/*! A templated class that represents a Metropolis-Hastings generator. 'SG' stands for 'Sequence Generator'.
+/*! A templated class that represents a Metropolis-Hastings generator of samples. 'SG' stands for 'Sequence Generator'.
  */
 template <class P_V,class P_M>
 class uqMetropolisHastingsSGClass
@@ -69,12 +69,7 @@ public:
 private:
   void   commonConstructor        ();
 //void   proc0GenerateSequence    (uqBaseVectorSequenceClass<P_V,P_M>& workingChain); /*! */
-  void   resetChainAndRelatedInfo ();
 
-  void   generateWhiteNoiseChain  (      unsigned int                                       chainSize,
-                                   uqBaseVectorSequenceClass<P_V,P_M>&                      workingChain);
-  void   generateUniformChain     (      unsigned int                                       chainSize,
-                                   uqBaseVectorSequenceClass<P_V,P_M>&                      workingChain);
   void   generateFullChain        (const P_V&                                               valuesOf1stPosition,
                                          unsigned int                                       chainSize,
                                    uqBaseVectorSequenceClass<P_V,P_M>&                      workingChain,
@@ -89,15 +84,6 @@ private:
                                    P_V&                                                     lastMean,
                                    P_M&                                                     lastAdaptedCovMatrix);
 
-#ifdef UQ_USES_TK_CLASS
-#else
-  int    computeInitialCholFactors();
-  void   updateTK                 ();
-  double logProposal              (const uqMarkovChainPositionDataClass<P_V>&               x,
-                                   const uqMarkovChainPositionDataClass<P_V>&               y,
-                                   unsigned int                                             idOfProposalCovMatrix);
-  double logProposal              (const std::vector<uqMarkovChainPositionDataClass<P_V>*>& inputPositions);
-#endif
   double alpha                    (const uqMarkovChainPositionDataClass<P_V>&               x,
                                    const uqMarkovChainPositionDataClass<P_V>&               y,
                                    unsigned int                                             xStageId,
@@ -121,16 +107,6 @@ private:
   const uqScalarFunctionSynchronizerClass<P_V,P_M>* m_targetPdfSynchronizer;
 
         uqBaseTKGroupClass<P_V,P_M>*                m_tk;
-#ifdef UQ_USES_TK_CLASS
-#else
-        bool                                        m_tkIsSymmetric;
-        std::vector<P_M*>                           m_lowerCholProposalCovMatrices;
-        std::vector<P_M*>                           m_proposalCovMatrices;
-#ifdef UQ_MH_SG_REQUIRES_INVERTED_COV_MATRICES
-        std::vector<P_M*>                           m_upperCholProposalPrecMatrices;
-        std::vector<P_M*>                           m_proposalPrecMatrices;
-#endif
-#endif
         unsigned int                                m_positionIdForDebugging;
         unsigned int                                m_stageIdForDebugging;
         std::vector<unsigned int>                   m_idsOfUniquePositions;
@@ -167,16 +143,6 @@ uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
   m_nullInputProposalCovMatrix   (inputProposalCovMatrix == NULL),
   m_targetPdfSynchronizer        (new uqScalarFunctionSynchronizerClass<P_V,P_M>(m_targetPdf,m_initialPosition)),
   m_tk                           (NULL),
-#ifdef UQ_USES_TK_CLASS
-#else
-  m_tkIsSymmetric                (true),
-  m_lowerCholProposalCovMatrices (1),//NULL),
-  m_proposalCovMatrices          (1),//NULL),
-#ifdef UQ_MH_SG_REQUIRES_INVERTED_COV_MATRICES
-  m_upperCholProposalPrecMatrices(1),//NULL),
-  m_proposalPrecMatrices         (1),//NULL),
-#endif
-#endif
   m_positionIdForDebugging       (0),
   m_stageIdForDebugging          (0),
   m_idsOfUniquePositions         (0),//0.),
@@ -214,35 +180,20 @@ uqMetropolisHastingsSGClass<P_V,P_M>::commonConstructor()
   /////////////////////////////////////////////////////////////////
   // Instantiate the appropriate TK
   /////////////////////////////////////////////////////////////////
-#ifdef UQ_USES_TK_CLASS
   if ((m_env.subDisplayFile()          ) &&
       (m_options.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::constructor()"
                             << ": running with UQ_USES_TK_CLASS flag defined"
                             << std::endl;
   }
-#else
-  if ((m_env.subDisplayFile()          ) &&
-      (m_options.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::constructor()"
-                            << ": running with UQ_USES_TK_CLASS flag undefined"
-                            << std::endl;
-  }
-#endif
-#ifdef UQ_READS_ONLY_EXTRA_STAGES
   std::vector<double> drScalesAll(m_options.m_drScalesForExtraStages.size()+1,1.);
   for (unsigned int i = 1; i < (m_options.m_drScalesForExtraStages.size()+1); ++i) {
     drScalesAll[i] = m_options.m_drScalesForExtraStages[i-1];
   }
-#endif
   if (m_options.m_tkUseLocalHessian) {
     m_tk = new uqHessianCovMatricesTKGroupClass<P_V,P_M>(m_options.m_prefix.c_str(),
                                                          m_vectorSpace,
-#ifdef UQ_READS_ONLY_EXTRA_STAGES
                                                          drScalesAll,
-#else
-                                                         m_options.m_drScalesForExtraStages,
-#endif
                                                          *m_targetPdfSynchronizer);
     if ((m_env.subDisplayFile()          ) &&
         (m_options.m_totallyMute == false)) {
@@ -259,11 +210,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::commonConstructor()
 
     m_tk = new uqScaledCovMatrixTKGroupClass<P_V,P_M>(m_options.m_prefix.c_str(),
                                                       m_vectorSpace,
-#ifdef UQ_READS_ONLY_EXTRA_STAGES
                                                       drScalesAll,
-#else
-                                                      m_options.m_drScalesForExtraStages,
-#endif
                                                       *m_initialProposalCovMatrix);
     if ((m_env.subDisplayFile()          ) &&
         (m_options.m_totallyMute == false)) {
@@ -285,23 +232,6 @@ uqMetropolisHastingsSGClass<P_V,P_M>::~uqMetropolisHastingsSGClass()
   //                          << std::endl;
   //}
 
-  resetChainAndRelatedInfo();
-  //if (m_lowerCholProposalCovMatrices[0]) delete m_lowerCholProposalCovMatrices[0]; // Loop inside 'resetChainAndRelatedInfo()' deletes just from position '1' on
-
-  if (m_tk                        ) delete m_tk;
-  if (m_targetPdfSynchronizer     ) delete m_targetPdfSynchronizer;
-  if (m_nullInputProposalCovMatrix) delete m_initialProposalCovMatrix;
-
-  //if (m_env.subDisplayFile()) {
-  //  *m_env.subDisplayFile() << "Leaving uqMetropolisHastingsSGClass<P_V,P_M>::destructor()"
-  //                          << std::endl;
-  //}
-}
-
-template<class P_V,class P_M>
-void
-uqMetropolisHastingsSGClass<P_V,P_M>::resetChainAndRelatedInfo()
-{
   if (m_lastAdaptedCovMatrix) delete m_lastAdaptedCovMatrix;
   if (m_lastMean)             delete m_lastMean;
   m_lastChainSize         = 0;
@@ -314,211 +244,15 @@ uqMetropolisHastingsSGClass<P_V,P_M>::resetChainAndRelatedInfo()
   m_stageIdForDebugging    = 0;
   m_idsOfUniquePositions.clear();
 
-#ifdef UQ_USES_TK_CLASS
-#else
-#ifdef UQ_MH_SG_REQUIRES_INVERTED_COV_MATRICES
-  for (unsigned int i = 0; i < m_proposalPrecMatrices.size(); ++i) {
-    if (m_proposalPrecMatrices[i]) delete m_proposalPrecMatrices[i];
-  }
-  for (unsigned int i = 0; i < m_upperCholProposalPrecMatrices.size(); ++i) {
-    if (m_upperCholProposalPrecMatrices[i]) delete m_upperCholProposalPrecMatrices[i];
-  }
-#endif
-  for (unsigned int i = 0; i < m_proposalCovMatrices.size(); ++i) {
-    if (m_proposalCovMatrices[i]) {
-      delete m_proposalCovMatrices[i];
-      m_proposalCovMatrices[i] = NULL;
-    }
-  }
-//m_proposalCovMatrices.clear(); // Do not clear
-  for (unsigned int i = 0; i < m_lowerCholProposalCovMatrices.size(); ++i) { // Yes, from '1' on
-    if (m_lowerCholProposalCovMatrices[i]) {
-      delete m_lowerCholProposalCovMatrices[i];
-      m_lowerCholProposalCovMatrices[i] = NULL;
-    }
-  }
-//m_lowerCholProposalCovMatrices.clear(); // Do not clear
-#endif
-
-  return;
-}
-
-#ifdef UQ_USES_TK_CLASS
-#else
-template<class P_V,class P_M>
-int
-uqMetropolisHastingsSGClass<P_V,P_M>::computeInitialCholFactors()
-{
-//const P_M& proposalCovMatrix (*m_initialProposalCovMatrix);
-//const P_M& proposalPrecMatrix(...);
-
-  if ((m_env.subDisplayFile()          ) &&
-      (m_env.displayVerbosity() >= 5   ) &&
-      (m_options.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "Entering uqMetropolisHastingsSGClass<P_V,P_M>::computeInitialCholFactors()..."
-              << std::endl;
-  }
-
-  int iRC = UQ_OK_RC;
-
-  if ((m_env.subDisplayFile()          ) &&
-      (m_options.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::computeInitialCholFactors()"
-                                   << ": using supplied initialProposalCovMatrix, whose contents are:"
-                                   << std::endl;
-    *m_env.subDisplayFile() << *m_initialProposalCovMatrix; // FIX ME: output might need to be in parallel
-    *m_env.subDisplayFile() << std::endl;
-  }
-
-#ifdef UQ_USES_TK_CLASS
-#else
-  m_lowerCholProposalCovMatrices[0] = new P_M(*m_initialProposalCovMatrix); 
-  iRC = m_lowerCholProposalCovMatrices[0]->chol();
-  UQ_FATAL_RC_MACRO(iRC,
-                    m_env.fullRank(),
-                    "uqMetropolisHastingsSGClass<P_V,P_M>::computeInitialCholFactors()",
-                    "initialProposalCovMatrix is not positive definite");
-  m_lowerCholProposalCovMatrices[0]->zeroUpper(false);
-
-  m_proposalCovMatrices[0] = new P_M(*m_initialProposalCovMatrix);
-
-  if ((m_env.subDisplayFile()          ) &&
-      (m_options.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::computeInitialCholFactors()"
-                                   << ", m_lowerCholProposalCovMatrices[0] contents are:"
-                                   << std::endl;
-    *m_env.subDisplayFile() << *(m_lowerCholProposalCovMatrices[0]); // FIX ME: output might need to be in parallel
-    *m_env.subDisplayFile() << std::endl;
-  }
-
-#ifdef UQ_MH_SG_REQUIRES_INVERTED_COV_MATRICES
-  const P_M* internalProposalPrecMatrix = proposalPrecMatrix;
-  if (proposalPrecMatrix == NULL) {
-    UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
-                      m_env.fullRank(),
-                      "uqMetropolisHastingsSGClass<P_V,P_M>::computeInitialCholFactors()",
-                      "not yet implemented for the case 'proposalPrecMatrix == NULL'");
-  }
-
-  m_upperCholProposalPrecMatrices[0] = new P_M(proposalPrecMatrix); 
-  iRC = m_upperCholProposalPrecMatrices[0]->chol();
-  UQ_FATAL_RC_MACRO(iRC,
-                    m_env.fullRank(),
-                    "uqMetropolisHastingsSGClass<P_V,P_M>::computeInitialCholFactors()",
-                    "proposalPrecMatrix is not positive definite");
-  m_upperCholProposalPrecMatrices[0]->zeroLower(false);
-
-  m_proposalPrecMatrices[0] = new P_M(proposalPrecMatrix);
+  if (m_tk                        ) delete m_tk;
+  if (m_targetPdfSynchronizer     ) delete m_targetPdfSynchronizer;
+  if (m_nullInputProposalCovMatrix) delete m_initialProposalCovMatrix;
 
   //if (m_env.subDisplayFile()) {
-  //  *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::computeInitialCholFactors()"
-  //                                 << ", m_upperCholProposalPrecMatrices[0] contents are:"
-  //                                 << std::endl;
-  //  *m_env.subDisplayFile() << *(m_upperCholProposalPrecMatrices[0]); // FIX ME: output might need to be in parallel
-  //  *m_env.subDisplayFile() << std::endl;
+  //  *m_env.subDisplayFile() << "Leaving uqMetropolisHastingsSGClass<P_V,P_M>::destructor()"
+  //                          << std::endl;
   //}
-
-#endif
-#endif
-
-  if ((m_env.subDisplayFile()          ) &&
-      (m_env.displayVerbosity() >= 5   ) &&
-      (m_options.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "Leaving uqMetropolisHastingsSGClass<P_V,P_M>::computeInitialCholFactors()"
-                           << std::endl;
-  }
-
-  return iRC;
 }
-
-template<class P_V,class P_M>
-void
-uqMetropolisHastingsSGClass<P_V,P_M>::updateTK()
-{
-  if ((m_env.subDisplayFile()          ) &&
-      (m_env.displayVerbosity() >= 5   ) &&
-      (m_options.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "Entering uqMetropolisHastingsSGClass<P_V,P_M>::updateTK()"
-                           << std::endl;
-  }
-
-  if ((m_env.subDisplayFile()          ) &&
-      (m_env.displayVerbosity() >= 5   ) &&
-      (m_options.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::updateTK()"
-                            << ": m_options.m_drMaxNumExtraStages = "           << m_options.m_drMaxNumExtraStages
-                            << ", m_options.m_drScalesForExtraStages.size() = " << m_options.m_drScalesForExtraStages.size()
-#ifdef UQ_USES_TK_CLASS
-#else
-                            << ", m_lowerCholProposalCovMatrices.size() = " << m_lowerCholProposalCovMatrices.size()
-#endif
-                            << std::endl;
-  }
-
-#ifdef UQ_USES_TK_CLASS
-#else
-  for (unsigned int i = 1; i < (m_options.m_drMaxNumExtraStages+1); ++i) { // CAREFUL: this code is old (now, m_drScalesForExtraStages does NOT contain '1' at position 0 anymore)
-    double scale = m_options.m_drScalesForExtraStages[i];                  // CAREFUL: this code is old (now, m_drScalesForExtraStages does NOT contain '1' at position 0 anymore)
-    if (m_lowerCholProposalCovMatrices[i]) delete m_lowerCholProposalCovMatrices[i];
-    m_lowerCholProposalCovMatrices [i]   = new P_M(*(m_lowerCholProposalCovMatrices[i-1]));
-  *(m_lowerCholProposalCovMatrices [i]) /= scale;
-    if (m_proposalCovMatrices[i]) delete m_proposalCovMatrices[i];
-    m_proposalCovMatrices[i]             = new P_M(*(m_proposalCovMatrices[i-1]));
-  *(m_proposalCovMatrices[i])           /= (scale*scale);
-#ifdef UQ_MH_SG_REQUIRES_INVERTED_COV_MATRICES
-    m_upperCholProposalPrecMatrices[i]   = new P_M(*(m_upperCholProposalPrecMatrices[i-1]));
-  *(m_upperCholProposalPrecMatrices[i]) *= scale;
-    m_proposalPrecMatrices[i]            = new P_M(*(m_proposalPrecMatrices[i-1]));
-  *(m_proposalPrecMatrices[i])          *= (scale*scale);
-#endif
-  }
-#endif
-
-  if ((m_env.subDisplayFile()          ) &&
-      (m_env.displayVerbosity() >= 5   ) &&
-      (m_options.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "Leaving uqMetropolisHastingsSGClass<P_V,P_M>::updateTK()"
-                            << std::endl;
-  }
-
-  return;
-}
-
-template<class P_V,class P_M>
-double
-uqMetropolisHastingsSGClass<P_V,P_M>::logProposal(
-  const uqMarkovChainPositionDataClass<P_V>& x,
-  const uqMarkovChainPositionDataClass<P_V>& y,
-  unsigned int                               idOfProposalCovMatrix)
-{
-#ifdef UQ_USES_TK_CLASS
-  return 0.;
-#else
-  P_V diffVec(y.vecValues() - x.vecValues());
-#ifdef UQ_MH_SG_REQUIRES_INVERTED_COV_MATRICES
-  double value = -0.5 * scalarProduct(diffVec, *(m_proposalPrecMatrices[idOfProposalCovMatrix]) * diffVec);
-#else
-  double value = -0.5 * scalarProduct(diffVec, m_proposalCovMatrices[idOfProposalCovMatrix]->invertMultiply(diffVec));
-#endif
-  return value;
-#endif
-}
-
-template<class P_V,class P_M>
-double
-uqMetropolisHastingsSGClass<P_V,P_M>::logProposal(const std::vector<uqMarkovChainPositionDataClass<P_V>*>& inputPositions)
-{
-  unsigned int inputSize = inputPositions.size();
-  UQ_FATAL_TEST_MACRO((inputSize < 2),
-                      m_env.fullRank(),
-                      "uqMetropolisHastingsSGClass<P_V,P_M>::logProposal()",
-                      "inputPositions has size < 2");
-
-  return this->logProposal(*(inputPositions[0            ]),
-                           *(inputPositions[inputSize - 1]),
-                           inputSize-2);
-}
-#endif // UQ_USES_TK_CLASS
 
 template<class P_V,class P_M>
 double
@@ -564,19 +298,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
     }
     else {
       double yLogTargetToUse = y.logTarget();
-#ifdef UQ_MH_SG_REQUIRES_TARGET_DISTRIBUTION_ONLY
-#else
-      if (m_likelihoodObjComputesMisfits &&
-          m_observableSpace.shouldVariancesBeUpdated()) {
-        // Divide the misfitVector of 'y' by the misfitVarianceVector of 'x'
-        yLogTargetToUse = -0.5 * ( y.m2lPrior() + (y.misfitVector()/x.misfitVarianceVector()).sumOfComponents() );
-      }
-#endif
-#ifdef UQ_USES_TK_CLASS
       if (m_tk->symmetric()) {
-#else
-      if (m_tkIsSymmetric) {
-#endif
         alphaQuotient = std::exp(yLogTargetToUse - x.logTarget());
         if ((m_env.subDisplayFile()          ) &&
             (m_env.displayVerbosity() >= 10  ) &&
@@ -592,7 +314,6 @@ uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
         }
       }
       else {
-#ifdef UQ_USES_TK_CLASS // AQUI
         double qyx = -.5 * m_tk->rv(yStageId).pdf().minus2LnValue(x.vecValues(),NULL,NULL,NULL,NULL);
         if ((m_env.subDisplayFile()          ) &&
             (m_env.displayVerbosity() >= 10  ) &&
@@ -615,10 +336,6 @@ uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
                                  << ", rvXY.lawCovMatrix = " << pdfXY->lawCovMatrix()
                                  << std::endl;
         }
-#else
-        double qyx = logProposal(y,x,0);
-        double qxy = logProposal(x,y,0);
-#endif
         alphaQuotient = std::exp(yLogTargetToUse +
                                  qyx -
                                  x.logTarget() -
@@ -752,16 +469,11 @@ uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
   double alphasDenominator = 1.;
 
   // Compute cumulative variables
-#ifdef UQ_USES_TK_CLASS // AQUI
   const P_V& _lastTKPosition         = m_tk->preComputingPosition(        tkStageIds[inputSize-1]);
   const P_V& _lastBackwardTKPosition = m_tk->preComputingPosition(backwardTKStageIds[inputSize-1]);
 
   double numContrib = -.5 * m_tk->rv(backwardTKStageIdsLess1).pdf().minus2LnValue(_lastBackwardTKPosition,NULL,NULL,NULL,NULL);
   double denContrib = -.5 * m_tk->rv(        tkStageIdsLess1).pdf().minus2LnValue(_lastTKPosition        ,NULL,NULL,NULL,NULL);
-#else
-  double numContrib = logProposal(backwardPositionsData);
-  double denContrib = logProposal(        positionsData);
-#endif
   if ((m_env.subDisplayFile()          ) &&
       (m_env.displayVerbosity() >= 10  ) &&
       (m_options.m_totallyMute == false)) {
@@ -779,7 +491,6 @@ uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
             positionsData.pop_back();
     backwardPositionsData.pop_back();
 
-#ifdef UQ_USES_TK_CLASS // AQUI
     const P_V& lastTKPosition         = m_tk->preComputingPosition(        tkStageIds[inputSize-2-i]);
     const P_V& lastBackwardTKPosition = m_tk->preComputingPosition(backwardTKStageIds[inputSize-2-i]);
 
@@ -791,10 +502,6 @@ uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
 
     numContrib = -.5 * m_tk->rv(backwardTKStageIdsLess1).pdf().minus2LnValue(lastBackwardTKPosition,NULL,NULL,NULL,NULL);
     denContrib = -.5 * m_tk->rv(        tkStageIdsLess1).pdf().minus2LnValue(lastTKPosition        ,NULL,NULL,NULL,NULL);
-#else
-    numContrib = logProposal(backwardPositionsData);
-    denContrib = logProposal(        positionsData);
-#endif
     if ((m_env.subDisplayFile()          ) &&
         (m_env.displayVerbosity() >= 10  ) &&
         (m_options.m_totallyMute == false)) {
@@ -813,15 +520,6 @@ uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
   }
 
   double numeratorLogTargetToUse = backwardPositionsData[0]->logTarget();
-#ifdef UQ_MH_SG_REQUIRES_TARGET_DISTRIBUTION_ONLY
-#else
-  if (m_likelihoodObjComputesMisfits &&
-      m_observableSpace.shouldVariancesBeUpdated()) {
-    // Divide the misfitVector of 'back[0]' by the misfitVarianceVector of 'pos[0]'
-    numeratorLogTargetToUse = -0.5 * ( backwardPositionsData[0]->m2lPrior() +
-      (backwardPositionsData[0]->misfitVector()/positionsData[0]->misfitVarianceVector()).sumOfComponents() );
-  }
-#endif
   numContrib = numeratorLogTargetToUse;
   denContrib = positionsData[0]->logTarget();
   if ((m_env.subDisplayFile()          ) &&

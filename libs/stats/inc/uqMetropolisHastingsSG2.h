@@ -45,7 +45,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
       (m_env.displayVerbosity() >= 5   ) &&
       (m_options.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "Entering uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()..."
-                           << std::endl;
+                            << std::endl;
   }
 
   m_env.syncPrintDebugMsg("Entering uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()",2,3000000,m_env.fullComm());
@@ -56,51 +56,20 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
 
   workingChain.setName(m_options.m_prefix + "rawChain");
 
-  if (m_options.m_rawChainType == UQ_MH_SG_WHITE_NOISE_CHAIN_TYPE) {
-    //****************************************************
-    // Just generate white noise
-    //****************************************************
-    generateWhiteNoiseChain(m_options.m_rawChainSize,
-                            workingChain);
-  }
-  else if (m_options.m_rawChainType == UQ_MH_SG_UNIFORM_CHAIN_TYPE) {
-    //****************************************************
-    // Just generate uniform    
-    //****************************************************
-    generateUniformChain(m_options.m_rawChainSize,
-                         workingChain);
+  //****************************************************
+  // Generate chain
+  //****************************************************
+  if (m_options.m_rawChainDataInputFileName == UQ_MH_SG_FILENAME_FOR_NO_FILE) {
+    generateFullChain(valuesOf1stPosition,
+                      m_options.m_rawChainSize,
+                      workingChain,
+                      workingTargetValues,
+                      workingLogTargetValues);
   }
   else {
-    //****************************************************
-    // Initialize m_lowerCholProposalCovMatrices[0]
-    // Initialize m_proposalCovMatrices[0]
-    //****************************************************
-#ifdef UQ_USES_TK_CLASS
-#else
-    iRC = computeInitialCholFactors();
-    UQ_FATAL_RC_MACRO(iRC,
-                      m_env.fullRank(),
-                      "uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()",
-                      "improper computeInitialCholFactors() return");
-
-    if (m_options.m_drMaxNumExtraStages > 0) updateTK();
-#endif
-
-    //****************************************************
-    // Generate chain
-    //****************************************************
-    if (m_options.m_rawChainDataInputFileName == UQ_MH_SG_FILENAME_FOR_NO_FILE) {
-      generateFullChain(valuesOf1stPosition,
-                        m_options.m_rawChainSize,
-                        workingChain,
-                        workingTargetValues,
-                        workingLogTargetValues);
-    }
-    else {
-      readFullChain(m_options.m_rawChainDataInputFileName,
-                    m_options.m_rawChainSize,
-                    workingChain);
-    }
+    readFullChain(m_options.m_rawChainDataInputFileName,
+                  m_options.m_rawChainSize,
+                  workingChain);
   }
 
   //****************************************************
@@ -136,34 +105,8 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
   }
 
   // Take "sub" care of raw chain
-#if 0
-  std::ofstream* rawChainOfsVar = NULL;
-  m_env.openOutputFile(m_options.m_rawChainDataOutputFileName,
-                       UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
-                       m_options.m_rawChainDataOutputAllowedSet,
-                       false, // A 'true' causes problems when the user chooses (via options
-                              // in the input file) to use just one file for all outputs.
-                       rawChainOfsVar);
-
-  if ((rawChainOfsVar                  ) &&
-      (m_options.m_totallyMute == false)) {
-    workingChain.subWriteContents(*rawChainOfsVar);
-  }
-
-  if (rawChainOfsVar) {
-    rawChainOfsVar->close();
-    if ((m_env.subDisplayFile()          ) &&
-        (m_options.m_totallyMute == false)) {
-      *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()"
-                              << ", prefix = "            << m_options.m_prefix
-                              << ": closed output file '" << m_options.m_rawChainDataOutputFileName
-                              << "' for raw chain "       << workingChain.name()
-                              << std::endl;
-    }
-  }
-#else
   if ((m_options.m_rawChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) &&
-      (m_options.m_totallyMute == false                                        )) {
+      (m_options.m_totallyMute == false                                       )) {
     workingChain.subWriteContents(m_options.m_rawChainDataOutputFileName,
                                   m_options.m_rawChainDataOutputAllowedSet);
     //if ((m_env.subDisplayFile()          ) &&
@@ -175,11 +118,10 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
     //                          << std::endl;
     //}
   }
-#endif
 
   // Take "unified" care of raw chain
   if ((m_options.m_rawChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) &&
-      (m_options.m_totallyMute == false                                        )) {
+      (m_options.m_totallyMute == false                                       )) {
     workingChain.unifiedWriteContents(m_options.m_rawChainDataOutputFileName);
     if ((m_env.subDisplayFile()          ) &&
         (m_options.m_totallyMute == false)) {
@@ -281,34 +223,8 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
     }
 
     // Take "sub" care of filtered chain
-#if 0
-    std::ofstream* filteredChainOfsVar = NULL;
-    m_env.openOutputFile(m_options.m_filteredChainDataOutputFileName,
-                         UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
-                         m_options.m_filteredChainDataOutputAllowedSet,
-                         false, // A 'true' causes problems when the user chooses (via options
-                                // in the input file) to use just one file for all outputs.
-                         filteredChainOfsVar);
-
-    if ((filteredChainOfsVar             ) &&
-        (m_options.m_totallyMute == false)) {
-      workingChain.subWriteContents(*filteredChainOfsVar);
-    }
-
-    if (filteredChainOfsVar) {
-      filteredChainOfsVar->close();
-      if ((m_env.subDisplayFile()          ) &&
-          (m_options.m_totallyMute == false)) {
-        *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()"
-                                << ", prefix = "            << m_options.m_prefix
-                                << ": closed output file '" << m_options.m_filteredChainDataOutputFileName
-                                << "' for filtered chain "  << workingChain.name()
-                                << std::endl;
-      }
-    }
-#else
     if ((m_options.m_filteredChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) &&
-        (m_options.m_totallyMute == false                                             )) {
+        (m_options.m_totallyMute == false                                            )) {
       workingChain.subWriteContents(m_options.m_filteredChainDataOutputFileName,
                                     m_options.m_filteredChainDataOutputAllowedSet);
       //if ((m_env.subDisplayFile()          ) &&
@@ -320,11 +236,10 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
       //                          << std::endl;
       //}
     }
-#endif
 
     // Take "unified" care of filtered chain
     if ((m_options.m_filteredChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) &&
-        (m_options.m_totallyMute == false                                             )) {
+        (m_options.m_totallyMute == false                                            )) {
       workingChain.unifiedWriteContents(m_options.m_filteredChainDataOutputFileName);
       if ((m_env.subDisplayFile()          ) &&
           (m_options.m_totallyMute == false)) {
@@ -370,100 +285,6 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
       (m_env.displayVerbosity() >= 5   ) &&
       (m_options.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "Leaving uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()"
-                            << std::endl;
-  }
-
-  return;
-}
-
-template <class P_V,class P_M>
-void
-uqMetropolisHastingsSGClass<P_V,P_M>::generateWhiteNoiseChain(
-  unsigned int                        chainSize,
-  uqBaseVectorSequenceClass<P_V,P_M>& workingChain)
-{
-  if ((m_env.subDisplayFile()          ) &&
-      (m_options.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "Starting the generation of white noise chain " << workingChain.name()
-                            << ", with "                                       << chainSize
-                            << " positions ..."
-                            << std::endl;
-  }
-
-  int iRC;
-  struct timeval timevalTmp;
-  double tmpRunTime;
-
-  tmpRunTime = 0.;
-  iRC = gettimeofday(&timevalTmp, NULL);
-  workingChain.resizeSequence(chainSize); 
-
-  P_V meanVec  (m_vectorSpace.zeroVector());
-  P_V stdDevVec(m_vectorSpace.zeroVector());
-  meanVec.cwSet(0.);
-  stdDevVec.cwSet(1.);
-  workingChain.setGaussian(m_env.rng(),meanVec,stdDevVec);
-
-  tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
-
-  if ((m_env.subDisplayFile()          ) &&
-      (m_options.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "Finished the generation of white noise chain " << workingChain.name()
-                            << ", with sub "                                   << workingChain.subSequenceSize()
-                            << " positions";
-  }
-
-  if ((m_env.subDisplayFile()          ) &&
-      (m_options.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "Chain generation took " << tmpRunTime
-                            << " seconds"
-                            << std::endl;
-  }
-
-  return;
-}
-
-template <class P_V,class P_M>
-void
-uqMetropolisHastingsSGClass<P_V,P_M>::generateUniformChain(
-  unsigned int                        chainSize,
-  uqBaseVectorSequenceClass<P_V,P_M>& workingChain)
-{
-  if ((m_env.subDisplayFile()          ) &&
-      (m_options.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "Starting the generation of uniform chain " << workingChain.name()
-                            << ", with "                                   << chainSize
-                            << " positions ..."
-                            << std::endl;
-  }
-
-  int iRC;
-  struct timeval timevalTmp;
-  double tmpRunTime;
-
-  tmpRunTime = 0.;
-  iRC = gettimeofday(&timevalTmp, NULL);
-  workingChain.resizeSequence(chainSize); 
-
-  P_V aVec(m_vectorSpace.zeroVector());
-  P_V bVec(m_vectorSpace.zeroVector());
-  aVec.cwSet(0.);
-  bVec.cwSet(1.);
-  workingChain.setUniform(m_env.rng(),aVec,bVec);
-
-  tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
-
-  if ((m_env.subDisplayFile()          ) &&
-      (m_options.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "Finished the generation of white noise chain " << workingChain.name()
-                            << ", with sub "                                   << workingChain.subSequenceSize()
-                            << " positions";
-  }
-
-  if ((m_env.subDisplayFile()          ) &&
-      (m_options.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "Chain generation took " << tmpRunTime
-                            << " seconds"
                             << std::endl;
   }
 
@@ -609,7 +430,6 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
     unsigned int stageId  = 0;
     m_stageIdForDebugging = stageId;
 
-#ifdef UQ_USES_TK_CLASS
     m_tk->clearPreComputingPositions();
 
     if ((m_env.subDisplayFile()          ) &&
@@ -634,7 +454,6 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
                         m_env.fullRank(),
                         "uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()",
                         "initial position should not be an invalid pre computing position");
-#endif
 
     //****************************************************
     // Loop: generate new position
@@ -642,12 +461,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
     bool keepGeneratingCandidates = true;
     while (keepGeneratingCandidates) {
       if (m_options.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
-#ifdef UQ_USES_TK_CLASS
       m_tk->rv(0).realizer().realization(tmpVecValues);
-#else
-      gaussianVector.cwSetGaussian(m_env.rng(),0.,1.);
-      tmpVecValues = currentPositionData.vecValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
-#endif
       if (m_options.m_rawChainMeasureRunTimes) candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
 
       outOfTargetSupport = !m_targetPdf.domainSet().contains(tmpVecValues);
@@ -667,7 +481,6 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
       else                                     keepGeneratingCandidates = outOfTargetSupport;
     }
 
-#ifdef UQ_USES_TK_CLASS
     if ((m_env.subDisplayFile()          ) &&
         (m_env.displayVerbosity() >= 5   ) &&
         (m_options.m_totallyMute == false)) {
@@ -686,7 +499,6 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
                               << ", valid = "  << validPreComputingPosition
                               << std::endl;
     }
-#endif
 
     if (outOfTargetSupport) {
       m_numOutOfTargetSupport++;
@@ -729,8 +541,8 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
           (m_env.displayVerbosity() >= 10  ) &&
           (m_options.m_totallyMute == false)) {
         *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
-                               << ": for chain position of id = " << positionId
-                               << std::endl;
+                                << ": for chain position of id = " << positionId
+                                << std::endl;
       }
       accept = acceptAlpha(alphaFirstCandidate);
     }
@@ -801,12 +613,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
         keepGeneratingCandidates = true;
         while (keepGeneratingCandidates) {
           if (m_options.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
-#ifdef UQ_USES_TK_CLASS
           m_tk->rv(tkStageIds).realizer().realization(tmpVecValues);
-#else
-          gaussianVector.cwSetGaussian(m_env.rng(),0.,1.);
-          tmpVecValues = currentPositionData.vecValues() + *(m_lowerCholProposalCovMatrices[stageId]) * gaussianVector;
-#endif
           if (m_options.m_rawChainMeasureRunTimes) candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
 
           outOfTargetSupport = !m_targetPdf.domainSet().contains(tmpVecValues);
@@ -815,7 +622,6 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
           else                                     keepGeneratingCandidates = outOfTargetSupport;
         }
 
-#ifdef UQ_USES_TK_CLASS
         if ((m_env.subDisplayFile()          ) &&
             (m_env.displayVerbosity() >= 5   ) &&
             (m_options.m_totallyMute == false)) {
@@ -834,7 +640,6 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
                                   << ", valid = "  << validPreComputingPosition
                                   << std::endl;
         }
-#endif
 
         if (outOfTargetSupport) {
           logTarget = -INFINITY;
@@ -902,44 +707,6 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
       m_logTargets[positionId] = currentPositionData.logTarget();
     }
 
-#ifdef UQ_MH_SG_REQUIRES_TARGET_DISTRIBUTION_ONLY
-#else
-    if (m_likelihoodObjComputesMisfits) {
-      if (m_observableSpace.shouldVariancesBeUpdated()) {
-        L_V misfitVec    (currentPositionData.misfitVector()       );
-        L_V numbersOfObs (m_observableSpace.numbersOfObservations());
-        L_V varAccuracies(m_observableSpace.varianceAccuracies()   );
-        L_V priorVars    (m_observableSpace.priorVariances()       );
-        for (unsigned int i = 0; i < misfitVarianceVector.size(); ++i) {
-          double term1 = 0.5*( varAccuracies[i] + numbersOfObs[i]             );
-          double term2 =  2./( varAccuracies[i] * priorVars[i] + misfitVec[i] );
-          misfitVarianceVector[i] = 1./uqMiscGammar(term1,term2,m_env.rng());
-          //if (m_env.subDisplayFile()) {
-          //  *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
-          //                         << ": for chain position of id = "     << positionId
-          //                         << ", numbersOfObs = "                 << numbersOfObs
-          //                         << ", varAccuracies = "                << varAccuracies
-          //                         << ", priorVars = "                    << priorVars
-          //                         << ", (*m_misfitChain[positionId]) = " << (*m_misfitChain[positionId])
-          //                         << ", term1 = "                        << term1
-          //                         << ", term2 = "                        << term2
-          //                         << std::endl;
-          //}
-        }
-        //if (m_env.subDisplayFile()) {
-        //  *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
-        //                         << ": for chain position of id = "        << positionId
-        //                         << ", misfitVarianceVector changed from " << *(m_misfitVarianceChain[positionId])
-        //                         << " to "                                 << misfitVarianceVector
-        //                         << std::endl;
-        //}
-      }
-      if (m_options.m_rawChainGenerateExtra) {
-        m_misfitVarianceChain[positionId] = m_observableSpace.newVector(misfitVarianceVector);
-      }
-    }
-#endif
-
     //****************************************************
     // Loop: adaptive Metropolis (adaptation of covariance matrix)
     //****************************************************
@@ -988,16 +755,16 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
         P_M attemptedMatrix(tmpChol);
         //if (m_env.subDisplayFile()) {
         //  *m_env.subDisplayFile() << "DRAM"
-        //                         << ", positionId = "  << positionId
-        //                         << ": 'am' calling first tmpChol.chol()"
-        //                         << std::endl;
+        //                          << ", positionId = "  << positionId
+        //                          << ": 'am' calling first tmpChol.chol()"
+        //                          << std::endl;
         //}
         iRC = tmpChol.chol();
         //if (m_env.subDisplayFile()) {
         //  *m_env.subDisplayFile() << "DRAM"
-        //                         << ", positionId = "  << positionId
-        //                         << ": 'am' got first tmpChol.chol() with iRC = " << iRC
-        //                         << std::endl;
+        //                          << ", positionId = "  << positionId
+        //                          << ": 'am' got first tmpChol.chol() with iRC = " << iRC
+        //                          << std::endl;
         //}
         if (iRC) {
           UQ_FATAL_TEST_MACRO(iRC != UQ_MATRIX_IS_NOT_POS_DEFINITE_RC,
@@ -1011,16 +778,16 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
           delete tmpDiag;
           //if (m_env.subDisplayFile()) {
           //  *m_env.subDisplayFile() << "DRAM"
-          //                         << ", positionId = "  << positionId
-          //                         << ": 'am' calling second tmpChol.chol()"
-          //                         << std::endl;
+          //                          << ", positionId = "  << positionId
+          //                          << ": 'am' calling second tmpChol.chol()"
+          //                          << std::endl;
           //}
           iRC = tmpChol.chol();
           //if (m_env.subDisplayFile()) {
           //  *m_env.subDisplayFile() << "DRAM"
-          //                         << ", positionId = "  << positionId
-          //                         << ": 'am' got second tmpChol.chol() with iRC = " << iRC
-          //                         << std::endl;
+          //                          << ", positionId = "  << positionId
+          //                          << ": 'am' got second tmpChol.chol() with iRC = " << iRC
+          //                          << std::endl;
           //}
           if (iRC) {
             UQ_FATAL_TEST_MACRO(iRC != UQ_MATRIX_IS_NOT_POS_DEFINITE_RC,
@@ -1037,25 +804,14 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
           tmpCholIsPositiveDefinite = true;
         }
         if (tmpCholIsPositiveDefinite) {
-#ifdef UQ_USES_TK_CLASS
           uqScaledCovMatrixTKGroupClass<P_V,P_M>* tempTK = dynamic_cast<uqScaledCovMatrixTKGroupClass<P_V,P_M>* >(m_tk);
           tempTK->updateLawCovMatrix(m_options.m_amEta*attemptedMatrix);
-#else
-          *(m_lowerCholProposalCovMatrices[0]) = tmpChol;
-          *(m_lowerCholProposalCovMatrices[0]) *= std::sqrt(m_options.m_amEta);
-          m_lowerCholProposalCovMatrices[0]->zeroUpper(false);
-#endif
 
 #ifdef UQ_DRAM_MCG_REQUIRES_INVERTED_COV_MATRICES
           UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
                             m_env.fullRank(),
                             "uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()",
                             "need to code the update of m_upperCholProposalPrecMatrices");
-#endif
-
-#ifdef UQ_USES_TK_CLASS
-#else
-          if (m_options.m_drMaxNumExtraStages > 0) updateTK();
 #endif
         }
 
