@@ -19,7 +19,7 @@ ip_dataOutputFileName   = outputData/sipOutput
 ip_dataOutputAllowedSet = 0
 
 ###############################################
-# 'ip_': information for Markov Chain algorithm
+# 'ip_': information for Metropolis-Hastings algorithm
 ###############################################
 #ip_mh_help                 = anything
 ip_mh_dataOutputFileName   = outputData/sipOutput

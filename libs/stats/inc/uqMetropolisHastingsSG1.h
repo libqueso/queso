@@ -94,8 +94,6 @@ private:
 
   int    writeInfo                (const uqBaseVectorSequenceClass<P_V,P_M>&                workingChain,
                                    std::ofstream&                                           ofsvar) const;
-                                 //const P_M*                                               mahalanobisMatrix = NULL,
-                                 //bool                                                     applyMahalanobisInvert = true) const;
 
   const uqBaseEnvironmentClass&                     m_env;
   const uqVectorSpaceClass <P_V,P_M>&               m_vectorSpace;
@@ -599,14 +597,12 @@ int
 uqMetropolisHastingsSGClass<P_V,P_M>::writeInfo(
   const uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
   std::ofstream&                            ofsvar) const
-//const P_M*                   mahalanobisMatrix,
-//bool                         applyMahalanobisInvert) const
 {
   if ((m_env.subDisplayFile()          ) &&
       (m_options.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "\n"
                             << "\n-----------------------------------------------------"
-                            << "\n Writing extra information about the Markov chain " << workingChain.name() << " to output file ..."
+                            << "\n Writing more information about the Markov chain " << workingChain.name() << " to output file ..."
                             << "\n-----------------------------------------------------"
                             << "\n"
                             << std::endl;
@@ -640,128 +636,32 @@ uqMetropolisHastingsSGClass<P_V,P_M>::writeInfo(
     ofsvar << "];\n";
   }
 
-  // Write names of components
-  ofsvar << m_options.m_prefix << "componentNames = {";
-  m_vectorSpace.printComponentsNames(ofsvar,false);
-  ofsvar << "};\n";
-
-#if 0
-  // Write mahalanobis distances
-  if (mahalanobisMatrix != NULL) {
-    P_V diffVec(m_vectorSpace.zeroVector());
-    ofsvar << m_options.m_prefix << "d = [";
-    if (applyMahalanobisInvert) {
-      P_V tmpVec(m_vectorSpace.zeroVector());
-      P_V vec0(m_vectorSpace.zeroVector());
-      workingChain.getPositionValues(0,vec0);
-      for (unsigned int i = 0; i < workingChain.subSequenceSize(); ++i) {
-        workingChain.getPositionValues(i,tmpVec);
-        diffVec = tmpVec - vec0;
-        //diffVec = *(workingChain[i]) - *(workingChain[0]);
-        ofsvar << scalarProduct(diffVec, mahalanobisMatrix->invertMultiply(diffVec))
-               << std::endl;
-      }
-    }
-    else {
-      P_V tmpVec(m_vectorSpace.zeroVector());
-      P_V vec0(m_vectorSpace.zeroVector());
-      workingChain.getPositionValues(0,vec0);
-      for (unsigned int i = 0; i < workingChain.subSequenceSize(); ++i) {
-        workingChain.getPositionValues(i,tmpVec);
-        diffVec = tmpVec - vec0;
-        //diffVec = *(workingChain[i]) - *(workingChain[0]);
-        ofsvar << scalarProduct(diffVec, *mahalanobisMatrix * diffVec)
-               << std::endl;
-      }
-    }
-    ofsvar << "];\n";
-  }
-#endif
-
-#if 0
-  // Write prior mean values
-  ofsvar << m_options.m_prefix << "priorMeanValues = ["
-         << m_vectorSpace.priorMuValues()
-         << "];\n";
-
-  // Write prior sigma values
-  ofsvar << m_options.m_prefix << "priorSigmaValues = ["
-         << m_vectorSpace.priorSigmaValues()
-         << "];\n";
-
-#if 0
-  ofsvar << m_options.m_prefix << "results.prior = [queso_priorMeanValues',queso_priorSigmaValues'];\n";
-#endif
-
-  // Write vector space lower bounds
-  ofsvar << m_options.m_prefix << "minValues = ["
-         << m_vectorSpace.minValues()
-         << "];\n";
-
-  // Write vector space upper bounds
-  ofsvar << m_options.m_prefix << "maxValues = ["
-         << m_vectorSpace.maxValues()
-         << "];\n";
-#endif
-
-#if 0
-  ofsvar << m_options.m_prefix << "results.limits = [queso_low',queso_upp'];\n";
-
-  // Write out data for mcmcpred.m of MATLAB MCMC toolbox
-  ofsvar << m_options.m_prefix << "results.parind = ["; // FIXME
-  for (unsigned int i = 0; i < m_vectorSpace.dim(); ++i) {
-    ofsvar << i+1
-           << std::endl;
-  }
-  ofsvar << "];\n";
-
-  ofsvar << m_options.m_prefix << "results.local = [\n"; // FIXME
-  for (unsigned int i = 0; i < m_vectorSpace.dim(); ++i) {
-    ofsvar << " 0";
-    //<< std::endl;
-  }
-  ofsvar << "];\n";
-
-  if (m_options.m_rawChainUse2) {
-  }
-  else {
-    bool savedVectorPrintState = workingChain[workingChain.subSequenceSize()-1]->getPrintHorizontally();
-    workingChain[workingChain.subSequenceSize()-1]->setPrintHorizontally(false);
-    ofsvar << m_options.m_prefix << "results.theta = ["
-           << *(workingChain[workingChain.subSequenceSize()-1])
-           << "];\n";
-    workingChain[workingChain.subSequenceSize()-1]->setPrintHorizontally(savedVectorPrintState);
-  }
-  
-  ofsvar << m_options.m_prefix << "results.nbatch = 1.;\n"; // FIXME
-
-  if (mahalanobisMatrix != NULL) {
-    // Write covMatrix
-    ofsvar << m_options.m_prefix << "mahalanobisMatrix = ["
-           << *mahalanobisMatrix
-           << "];\n";
-  }
-#endif
-
   // Write number of rejections
   ofsvar << m_options.m_prefix << "rejected = " << (double) m_numRejections/(double) (workingChain.subSequenceSize()-1)
          << ";\n"
          << std::endl;
 
-  // Write number of out of target support
-  ofsvar << m_options.m_prefix << "outTargetSupport = " << (double) m_numOutOfTargetSupport/(double) (workingChain.subSequenceSize()-1)
-         << ";\n"
-         << std::endl;
+  if (false) { // Don't see need for code below. Let it there though, compiling, in case it is needed in the future.
+    // Write names of components
+    ofsvar << m_options.m_prefix << "componentNames = {";
+    m_vectorSpace.printComponentsNames(ofsvar,false);
+    ofsvar << "};\n";
 
-  // Write chain run time
-  ofsvar << m_options.m_prefix << "runTime = " << m_rawChainRunTime
-         << ";\n"
-         << std::endl;
+    // Write number of out of target support
+    ofsvar << m_options.m_prefix << "outTargetSupport = " << (double) m_numOutOfTargetSupport/(double) (workingChain.subSequenceSize()-1)
+           << ";\n"
+           << std::endl;
+
+    // Write chain run time
+    ofsvar << m_options.m_prefix << "runTime = " << m_rawChainRunTime
+           << ";\n"
+           << std::endl;
+  }
 
   if ((m_env.subDisplayFile()          ) &&
       (m_options.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "\n-----------------------------------------------------"
-                            << "\n Finished writing extra information about the Markov chain " << workingChain.name()
+                            << "\n Finished writing more information about the Markov chain " << workingChain.name()
                             << "\n-----------------------------------------------------"
                             << "\n"
                             << std::endl;

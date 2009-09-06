@@ -90,6 +90,11 @@
        instance of the class 'uqBaseVectorRealizerClass<Q_V,Q_M>'.
 </list>
 */
+/*! -------------------------------------------------------------
+*/
+/*! If options request data to be written in the output file (MATLAB .m format only, for now), the user can check which MATLAB variables are defined and set by
+    running 'grep zeros <OUTPUT FILE NAME>' after the solution procedure ends. THe names of the varibles are self explanatory.
+*/
 template <class P_V,class P_M,class Q_V,class Q_M>
 class uqStatisticalForwardProblemClass
 {

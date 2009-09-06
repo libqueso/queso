@@ -153,6 +153,9 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::~uqMonteCarloSGClass()
 /*! If the requirements are satisfied, this operation sets the size and the contents of 'workingPSeq' and 'workingQSeq' using the algorithm options set in the constructor.
     Options reading is handled by class 'uqMonteCarloOptionsClass'.
 */
+/*! If options request data to be written in the output file (MATLAB .m format only, for now), the user can check which MATLAB variables are defined and set by
+    running 'grep zeros <OUTPUT FILE NAME>' after the solution procedures ends. THe names of the varibles are self explanatory.
+*/
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence(

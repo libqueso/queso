@@ -19,7 +19,7 @@ ip_dataOutputFileName   = outputData/sipOutput
 ip_dataOutputAllowedSet = 0 1
 
 ###############################################
-# 'ip_': information for Markov Chain algorithm
+# 'ip_': information for Metropolis-Hastings algorithm
 #
 # '_sizes' examples 16K   128K   1M      2M      16M
 #                   16384 131072 1048576 2097152 16777216

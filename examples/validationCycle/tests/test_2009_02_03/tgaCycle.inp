@@ -19,7 +19,7 @@ cycle_cal_ip_dataOutputFileName   = outputData/tgaCalOutput
 cycle_cal_ip_dataOutputAllowedSet = 0 1
 
 ###############################################
-# 'cal_ip_': information for Markov Chain algorithm
+# 'cal_ip_': information for Metropolis-Hastings algorithm
 #
 # '_size' examples 16K   128K   1M      2M      16M
 #                  16384 131072 1048576 2097152 16777216
@@ -232,7 +232,7 @@ cycle_val_ip_dataOutputFileName   = outputData/tgaValOutput
 cycle_val_ip_dataOutputAllowedSet = 0 1
 
 ###############################################
-# 'val_ip_': information for Markov Chain algorithm
+# 'val_ip_': information for Metropolis-Hastings algorithm
 #
 # '_size' examples 16K   128K   1M      2M      16M
 #                  16384 131072 1048576 2097152 16777216

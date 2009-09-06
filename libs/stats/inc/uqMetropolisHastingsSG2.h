@@ -42,6 +42,19 @@
 /*! If the requirements are satisfied, this operation sets the size and the contents of 'workingChain' using the algorithm options set in the constructor.
     If not NULL, 'workingTargetValues' and 'workingLogTargetValues' are set accordingly.
 */
+/*! If options request data to be written in the output file (MATLAB .m format only, for now), the user can check which MATLAB variables are defined and set by
+    running 'grep zeros <OUTPUT FILE NAME>' after the solution procedure ends. THe names of the varibles are self explanatory.
+*/
+/*! Acknowledgments: this core routine begun on July of 2008 as a translation of the core routine at the MCMC toolbox for MATLAB, available at www.helsinki.fi/~mjlaine/mcmc/.
+    Indeed, the example available in examples/statisticalInverseProblem1/tests/test_2009_02_03/ is related to the 'normal example' in the toolbox.
+    Over time, though:
+<list type=number>
+<item> the whole set of QUESO classes took shape, focusing not only on Markov Chains, but on statistical forward problems and model validation as well;
+<item> the interfaces to this Metropolis-Hastings class changed;
+<item> QUESO had parallel capabilities;
+<item> we added the TK (transition Kernel) class in order to combine DRAM with Stochastic Newton (being researched by James Martin at ICES).
+</list>
+*/
 template <class P_V,class P_M>
 void
 uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
