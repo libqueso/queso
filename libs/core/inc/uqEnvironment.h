@@ -85,10 +85,42 @@ extern unsigned long int gsl_rng_default_seed;
 <item> uqMetropolisHastingsSGOptionsClass
 <item> uqMonteCarloSGOptionsClass
 </list>
-*/
-/*! The last two classes also rely on uqSequenceStatisticalOptionsClass for reading the
+    The last two classes also rely on uqSequenceStatisticalOptionsClass for reading the
     options specifying which statistics have to be computed on the sequences of vectors
     involved.
+*/
+/*! -------------------------------------------------------------
+*/
+/*! The QUESO environment class manages five types of communicators. Let:
+<list type=number>
+<item> 'W >= 1' be the size of whole world communicator involved in a parallel run;
+<item> 'N >= 1' be the size of the communicator passed to the QUESO environment constructor;
+<item> 'S >= 1' be the number of statistical problems a QUESO environment will be handling at the same time, in parallel.
+</list>
+    Usuually 'W'='N', but such equality is not necessary.
+    The number 'S' is equal to the QUESO environment option 'm_numSubEnvironments', and is equal to 1 by default.
+    The number 'N' must be a multiple of 'S', otherwise the QUESO class prints a fatal error message and MPI aborts.
+    The five types of communicators that QUESO manages are referred to as:
+<list type=number>
+<item> world = MPI_WORLD_COMM, of size W;
+<item> full = communicator passed to the constructor of uqBaseEnvironmentClass, of size N and usually equal to the world communicator;
+<item> sub = communicator of size N/S that contains the number of MPI nodes necessary to solve a statistical inverse problem or a statistical forward problem.
+<item> self = MPI_SELF_COMM, of size 1;
+<item> inter0 = communicator of size S formed by all MPI nodes that have 'sub' rank 0 in their respective 'sub' communicators.
+</list>
+    So, any given node has potentially five different ranks. Of course, if the user is solving just one statistical problem with just one MPI node, the all ranks are equal to zero.
+*/
+/*! -------------------------------------------------------------
+*/
+/*! In the QUESO library terminology, one might refer to a QUESO "full" environment composed of 'S' QUESO "sub" environments.
+    Each sub environment generates a "sub" Markov chain (a sequence) of vectors and/or a "sub" Monte Carlo sequence of output vectors.
+    The "sub" sequences can be seen as forming a "unified" sequence in a distributed way.
+    Indeed, the virtual class 'uqVectorSequenceClass' provides "sub" and "unified" statistical operations.
+
+    A QUESO "sub" environment eventually prints message to its own output file. In order for that to happen, the requirements are:
+<list type=number>
+<item>
+</list>
 */
 class uqBaseEnvironmentClass {
 public:

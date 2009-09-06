@@ -106,14 +106,14 @@ uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
   /*iRC = */gettimeofday(&timevalNow, NULL);
 
   if (m_subDisplayFile) {
-    *m_subDisplayFile << "Ending run at " << ctime(&timevalNow.tv_sec)
+    *m_subDisplayFile << "Ending run at "    << ctime(&timevalNow.tv_sec)
                       << "Total run time = " << timevalNow.tv_sec - m_timevalBegin.tv_sec
                       << " seconds"
                       << std::endl;
   }
 
   if (m_fullRank == 0) {
-    std::cout << "Ending run at " << ctime(&timevalNow.tv_sec)
+    std::cout << "Ending run at "    << ctime(&timevalNow.tv_sec)
               << "Total run time = " << timevalNow.tv_sec - m_timevalBegin.tv_sec
               << " seconds"
               << std::endl;

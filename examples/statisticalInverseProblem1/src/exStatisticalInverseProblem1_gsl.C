@@ -29,8 +29,9 @@
  * 
  * This is an example of how to define and solve a statistical inverse problem 
  * using QUESO classes and algorithms. The code itself is in the templated
- * routine uqAppl(*env), which is called right after the initialization of
- * the MPI environment and of the QUESO environment. 
+ * routine 'uqAppl(*env)'. This routine is called right after the initialization
+ * of the MPI environment and of the QUESO environment and is available in
+ * file 'exStatisticalInverseProblem1_appl.h'
  *
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
