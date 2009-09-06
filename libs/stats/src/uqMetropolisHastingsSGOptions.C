@@ -37,7 +37,7 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   const uqBaseEnvironmentClass& env,
   const char* prefix)
   :
-  m_prefix                                   ((std::string)(prefix) + "mc_"),
+  m_prefix                                   ((std::string)(prefix) + "mh_"),
   m_dataOutputFileName                       (UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV),
 //m_dataOutputAllowedSet                     (),
   m_totallyMute                              (UQ_MH_SG_TOTALLY_MUTE_ODV),
@@ -59,8 +59,8 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_filteredChainComputeStats                (UQ_MH_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV),
   m_filteredChainStatisticalOptions          (NULL),
   m_filteredChainStatOptsInstantiated        (false),
-  m_mhDisplayCandidates                      (UQ_MH_SG_MH_DISPLAY_CANDIDATES_ODV),
-  m_mhPutOutOfBoundsInChain                  (UQ_MH_SG_MH_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV),
+  m_displayCandidates                        (UQ_MH_SG_DISPLAY_CANDIDATES_ODV),
+  m_putOutOfBoundsInChain                    (UQ_MH_SG_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV),
   m_tkUseLocalHessian                        (UQ_MH_SG_TK_USE_LOCAL_HESSIAN_ODV),
   m_tkUseNewtonComponent                     (UQ_MH_SG_TK_USE_NEWTON_COMPONENT_ODV),
   m_drMaxNumExtraStages                      (UQ_MH_SG_DR_MAX_NUM_EXTRA_STAGES_ODV),
@@ -89,8 +89,8 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_option_filteredChain_dataOutputFileName  (m_prefix + "filteredChain_dataOutputFileName"  ),
   m_option_filteredChain_dataOutputAllowedSet(m_prefix + "filteredChain_dataOutputAllowedSet"),
   m_option_filteredChain_computeStats        (m_prefix + "filteredChain_computeStats"        ),
-  m_option_mh_displayCandidates              (m_prefix + "mh_displayCandidates"              ),
-  m_option_mh_putOutOfBoundsInChain          (m_prefix + "mh_putOutOfBoundsInChain"          ),
+  m_option_displayCandidates                 (m_prefix + "displayCandidates"                 ),
+  m_option_putOutOfBoundsInChain             (m_prefix + "putOutOfBoundsInChain"             ),
   m_option_tk_useLocalHessian                (m_prefix + "tk_useLocalHessian"                ),
   m_option_tk_useNewtonComponent             (m_prefix + "tk_useNewtonComponent"             ),
   m_option_dr_maxNumExtraStages              (m_prefix + "dr_maxNumExtraStages"              ),
@@ -159,8 +159,8 @@ uqMetropolisHastingsSGOptionsClass::defineMyOptions(po::options_description& opt
     (m_option_filteredChain_dataOutputFileName.c_str(),   po::value<std::string >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV  ), "name of output file for filtered chain"                          )
     (m_option_filteredChain_dataOutputAllowedSet.c_str(), po::value<std::string >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV), "subEnvs that will write to output file for filtered chain"       )
     (m_option_filteredChain_computeStats.c_str(),         po::value<bool        >()->default_value(UQ_MH_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV          ), "compute statistics on filtered chain"                            )
-    (m_option_mh_displayCandidates.c_str(),               po::value<bool        >()->default_value(UQ_MH_SG_MH_DISPLAY_CANDIDATES_ODV                 ), "display candidates generated in the core MH algorithm"           )
-    (m_option_mh_putOutOfBoundsInChain.c_str(),           po::value<bool        >()->default_value(UQ_MH_SG_MH_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV         ), "put 'out of bound' candidates in chain as well"                  )
+    (m_option_displayCandidates.c_str(),                  po::value<bool        >()->default_value(UQ_MH_SG_DISPLAY_CANDIDATES_ODV                    ), "display candidates generated in the core MH algorithm"           )
+    (m_option_putOutOfBoundsInChain.c_str(),              po::value<bool        >()->default_value(UQ_MH_SG_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV            ), "put 'out of bound' candidates in chain as well"                  )
     (m_option_tk_useLocalHessian.c_str(),                 po::value<bool        >()->default_value(UQ_MH_SG_TK_USE_LOCAL_HESSIAN_ODV                  ), "'proposal' use local Hessian"                                    )
     (m_option_tk_useNewtonComponent.c_str(),              po::value<bool        >()->default_value(UQ_MH_SG_TK_USE_NEWTON_COMPONENT_ODV               ), "'proposal' use Newton component"                                 )
     (m_option_dr_maxNumExtraStages.c_str(),               po::value<unsigned int>()->default_value(UQ_MH_SG_DR_MAX_NUM_EXTRA_STAGES_ODV               ), "'dr' maximum number of extra stages"                             )
@@ -293,12 +293,12 @@ uqMetropolisHastingsSGOptionsClass::getMyOptionValues(po::options_description& o
     m_filteredChainComputeStats = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_computeStats.c_str()]).as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_mh_displayCandidates.c_str())) {
-    m_mhDisplayCandidates = ((const po::variable_value&) m_env.allOptionsMap()[m_option_mh_displayCandidates.c_str()]).as<bool>();
+  if (m_env.allOptionsMap().count(m_option_displayCandidates.c_str())) {
+    m_displayCandidates = ((const po::variable_value&) m_env.allOptionsMap()[m_option_displayCandidates.c_str()]).as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_mh_putOutOfBoundsInChain.c_str())) {
-    m_mhPutOutOfBoundsInChain = ((const po::variable_value&) m_env.allOptionsMap()[m_option_mh_putOutOfBoundsInChain.c_str()]).as<bool>();
+  if (m_env.allOptionsMap().count(m_option_putOutOfBoundsInChain.c_str())) {
+    m_putOutOfBoundsInChain = ((const po::variable_value&) m_env.allOptionsMap()[m_option_putOutOfBoundsInChain.c_str()]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_tk_useLocalHessian.c_str())) {
@@ -387,8 +387,8 @@ uqMetropolisHastingsSGOptionsClass::print(std::ostream& os) const
     os << *setIt << " ";
   }
   os << "\n" << m_option_filteredChain_computeStats    << " = " << m_filteredChainComputeStats
-     << "\n" << m_option_mh_displayCandidates          << " = " << m_mhDisplayCandidates
-     << "\n" << m_option_mh_putOutOfBoundsInChain      << " = " << m_mhPutOutOfBoundsInChain
+     << "\n" << m_option_displayCandidates             << " = " << m_displayCandidates
+     << "\n" << m_option_putOutOfBoundsInChain         << " = " << m_putOutOfBoundsInChain
      << "\n" << m_option_tk_useLocalHessian            << " = " << m_tkUseLocalHessian
      << "\n" << m_option_tk_useNewtonComponent         << " = " << m_tkUseNewtonComponent
      << "\n" << m_option_dr_maxNumExtraStages          << " = " << m_drMaxNumExtraStages

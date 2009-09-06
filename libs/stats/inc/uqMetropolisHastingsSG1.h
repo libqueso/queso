@@ -68,7 +68,6 @@ public:
 
 private:
   void   commonConstructor        ();
-//void   proc0GenerateSequence    (uqBaseVectorSequenceClass<P_V,P_M>& workingChain); /*! */
 
   void   generateFullChain        (const P_V&                                               valuesOf1stPosition,
                                          unsigned int                                       chainSize,
@@ -119,7 +118,7 @@ private:
         P_V*                                        m_lastMean;
         P_M*                                        m_lastAdaptedCovMatrix;
 
-        uqMetropolisHastingsSGOptionsClass                 m_options;
+        uqMetropolisHastingsSGOptionsClass          m_options;
 };
 
 template<class P_V,class P_M>
@@ -127,7 +126,21 @@ std::ostream& operator<<(std::ostream& os, const uqMetropolisHastingsSGClass<P_V
 
 #include <uqMetropolisHastingsSG2.h>
 
-/*! Constructor: */
+/*! Constructor */
+/*! Requirements:
+<list type=number>
+<item> the image set of the vector random variable 'sourceRv' should belong to a vector space of dimension equal to the size of the vector 'initialPosition'
+<item> if 'inputProposalCovMatrix' is not NULL, is should be square and its size should be equal to the size of 'initialPosition'
+</list>
+*/
+/*! If the requirements are satisfied, the constructor then reads input options that begin with the string '\<prefix\>_mh_'.
+    For instance, if 'prefix' is 'pROblem_775_ip_', then the constructor will read all options that begin with 'pROblem_775_ip_mh_'.
+    Options reading is handled by class 'uqMetropolisHastingsOptionsClass'.
+*/
+/*! Input options are read from the QUESO input file, whose name is required by the constructor of the QUESO environment class.
+    The QUESO environment class is instantiated at the application level, right after 'MPI_Init(&argc,&argv)'. 
+    The QUESO environment is required by reference by many constructors in the QUESO library, and is available by reference from many classes as well.
+*/
 template<class P_V,class P_M>
 uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
   /*! Prefix                 */ const char*                         prefix,
@@ -135,31 +148,47 @@ uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
   /*! Initial chain position */ const P_V&                          initialPosition,
   /*! Proposal cov. matrix   */ const P_M*                          inputProposalCovMatrix)
   :
-  m_env                          (sourceRv.env()),
-  m_vectorSpace                  (sourceRv.imageSet().vectorSpace()),
-  m_targetPdf                    (sourceRv.pdf()),
-  m_initialPosition              (initialPosition),
-  m_initialProposalCovMatrix     (inputProposalCovMatrix),
-  m_nullInputProposalCovMatrix   (inputProposalCovMatrix == NULL),
-  m_targetPdfSynchronizer        (new uqScalarFunctionSynchronizerClass<P_V,P_M>(m_targetPdf,m_initialPosition)),
-  m_tk                           (NULL),
-  m_positionIdForDebugging       (0),
-  m_stageIdForDebugging          (0),
-  m_idsOfUniquePositions         (0),//0.),
-  m_logTargets                   (0),//0.),
-  m_alphaQuotients               (0),//0.),
-  m_rawChainRunTime              (0.),
-  m_numRejections                (0),
-  m_numOutOfTargetSupport        (0),
-  m_lastChainSize                (0),
-  m_lastMean                     (NULL),
-  m_lastAdaptedCovMatrix         (NULL),
-  m_options                      (m_env,prefix)
+  m_env                       (sourceRv.env()),
+  m_vectorSpace               (sourceRv.imageSet().vectorSpace()),
+  m_targetPdf                 (sourceRv.pdf()),
+  m_initialPosition           (initialPosition),
+  m_initialProposalCovMatrix  (inputProposalCovMatrix),
+  m_nullInputProposalCovMatrix(inputProposalCovMatrix == NULL),
+  m_targetPdfSynchronizer     (new uqScalarFunctionSynchronizerClass<P_V,P_M>(m_targetPdf,m_initialPosition)),
+  m_tk                        (NULL),
+  m_positionIdForDebugging    (0),
+  m_stageIdForDebugging       (0),
+  m_idsOfUniquePositions      (0),//0.),
+  m_logTargets                (0),//0.),
+  m_alphaQuotients            (0),//0.),
+  m_rawChainRunTime           (0.),
+  m_numRejections             (0),
+  m_numOutOfTargetSupport     (0),
+  m_lastChainSize             (0),
+  m_lastMean                  (NULL),
+  m_lastAdaptedCovMatrix      (NULL),
+  m_options                   (m_env,prefix)
 {
   if ((m_env.subDisplayFile()          ) &&
       (m_options.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "Entering uqMetropolisHastingsSGClass<P_V,P_M>::constructor(1)"
                             << std::endl;
+  }
+
+  UQ_FATAL_TEST_MACRO(sourceRv.imageSet().vectorSpace().dimLocal() != initialPosition.sizeLocal(),
+                      m_env.fullRank(),
+                      "uqMetropolisHastingsSGClass<P_V,P_M>::constructor(1)",
+                      "'sourceRv' and 'initialPosition' should have equal dimensions");
+
+  if (inputProposalCovMatrix) {
+    UQ_FATAL_TEST_MACRO(sourceRv.imageSet().vectorSpace().dimLocal() != inputProposalCovMatrix->numRowsLocal(),
+                        m_env.fullRank(),
+                        "uqMetropolisHastingsSGClass<P_V,P_M>::constructor(1)",
+                        "'sourceRv' and 'inputProposalCovMatrix' should have equal dimensions");
+    UQ_FATAL_TEST_MACRO(inputProposalCovMatrix->numCols() != inputProposalCovMatrix->numRowsGlobal(),
+                        m_env.fullRank(),
+                        "uqMetropolisHastingsSGClass<P_V,P_M>::constructor(1)",
+                        "'inputProposalCovMatrix' should be a square matrix");
   }
 
   m_options.scanOptionsValues();
@@ -178,7 +207,7 @@ void
 uqMetropolisHastingsSGClass<P_V,P_M>::commonConstructor()
 {
   /////////////////////////////////////////////////////////////////
-  // Instantiate the appropriate TK
+  // Instantiate the appropriate TK (transition kernel)
   /////////////////////////////////////////////////////////////////
   if ((m_env.subDisplayFile()          ) &&
       (m_options.m_totallyMute == false)) {

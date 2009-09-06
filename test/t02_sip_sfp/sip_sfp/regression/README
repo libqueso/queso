@@ -7,3 +7,6 @@ Notes:
 
 -> 12 July 2009: initial reference output file checked in for use with
    automatic regression testing. 
+
+-> 06 September 2009: changed ip_mc_... options to ip_mh_.... Also, then changed
+   occurances of 'mh_mh_' to 'mh_' only.

@@ -60,8 +60,8 @@
 #define UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV   UQ_MH_SG_FILENAME_FOR_NO_FILE
 #define UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV ""
 #define UQ_MH_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV           0
-#define UQ_MH_SG_MH_DISPLAY_CANDIDATES_ODV                  0
-#define UQ_MH_SG_MH_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV          0
+#define UQ_MH_SG_DISPLAY_CANDIDATES_ODV                     0
+#define UQ_MH_SG_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV             0
 #define UQ_MH_SG_TK_USE_LOCAL_HESSIAN_ODV                   0
 #define UQ_MH_SG_TK_USE_NEWTON_COMPONENT_ODV                1
 #define UQ_MH_SG_DR_MAX_NUM_EXTRA_STAGES_ODV                0
@@ -106,8 +106,8 @@ public:
   uqSequenceStatisticalOptionsClass* m_filteredChainStatisticalOptions;
   bool                               m_filteredChainStatOptsInstantiated;
 
-  bool                               m_mhDisplayCandidates;
-  bool                               m_mhPutOutOfBoundsInChain;
+  bool                               m_displayCandidates;
+  bool                               m_putOutOfBoundsInChain;
   bool                               m_tkUseLocalHessian;
   bool                               m_tkUseNewtonComponent;
   unsigned int                       m_drMaxNumExtraStages;
@@ -144,8 +144,8 @@ private:
   std::string                   m_option_filteredChain_dataOutputFileName;
   std::string                   m_option_filteredChain_dataOutputAllowedSet;
   std::string                   m_option_filteredChain_computeStats;
-  std::string                   m_option_mh_displayCandidates;
-  std::string                   m_option_mh_putOutOfBoundsInChain;
+  std::string                   m_option_displayCandidates;
+  std::string                   m_option_putOutOfBoundsInChain;
   std::string                   m_option_tk_useLocalHessian;
   std::string                   m_option_tk_useNewtonComponent;
   std::string                   m_option_dr_maxNumExtraStages;

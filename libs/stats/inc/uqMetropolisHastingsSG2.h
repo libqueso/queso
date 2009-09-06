@@ -34,6 +34,14 @@
 #define __UQ_MH_SG2_H__
 
 /*! Operation to generate the chain */
+/*! Requirements:
+<list type=number>
+<item> the vector space 'm_vectorSpace' should have dimension equal to the size of a vector in 'workingChain'
+</list>
+*/
+/*! If the requirements are satisfied, this operation sets the size and the contents of 'workingChain' using the algorithm options set in the constructor.
+    If not NULL, 'workingTargetValues' and 'workingLogTargetValues' are set accordingly.
+*/
 template <class P_V,class P_M>
 void
 uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
@@ -47,6 +55,11 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
     *m_env.subDisplayFile() << "Entering uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()..."
                             << std::endl;
   }
+
+  UQ_FATAL_TEST_MACRO(m_vectorSpace.dimLocal() != workingChain.vectorSizeLocal(),
+                      m_env.fullRank(),
+                      "uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()",
+                      "'m_vectorSpace' and 'workingChain' are related to vector spaces of different dimensions");
 
   m_env.syncPrintDebugMsg("Entering uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()",2,3000000,m_env.fullComm());
   checkTheParallelEnvironment();
@@ -466,7 +479,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
 
       outOfTargetSupport = !m_targetPdf.domainSet().contains(tmpVecValues);
 
-      bool displayDetail = (m_env.displayVerbosity() >= 10/*99*/) || m_options.m_mhDisplayCandidates;
+      bool displayDetail = (m_env.displayVerbosity() >= 10/*99*/) || m_options.m_displayCandidates;
       if ((m_env.subDisplayFile()          ) &&
           (displayDetail                   ) &&
           (m_options.m_totallyMute == false)) {
@@ -477,8 +490,8 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
                                 << std::endl;
       }
 
-      if (m_options.m_mhPutOutOfBoundsInChain) keepGeneratingCandidates = false;
-      else                                     keepGeneratingCandidates = outOfTargetSupport;
+      if (m_options.m_putOutOfBoundsInChain) keepGeneratingCandidates = false;
+      else                                   keepGeneratingCandidates = outOfTargetSupport;
     }
 
     if ((m_env.subDisplayFile()          ) &&
@@ -547,7 +560,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
       accept = acceptAlpha(alphaFirstCandidate);
     }
 
-    bool displayDetail = (m_env.displayVerbosity() >= 10/*99*/) || m_options.m_mhDisplayCandidates;
+    bool displayDetail = (m_env.displayVerbosity() >= 10/*99*/) || m_options.m_displayCandidates;
     if ((m_env.subDisplayFile()          ) &&
         (displayDetail                   ) &&
         (m_options.m_totallyMute == false)) {
@@ -618,8 +631,8 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
 
           outOfTargetSupport = !m_targetPdf.domainSet().contains(tmpVecValues);
 
-          if (m_options.m_mhPutOutOfBoundsInChain) keepGeneratingCandidates = false;
-          else                                     keepGeneratingCandidates = outOfTargetSupport;
+          if (m_options.m_putOutOfBoundsInChain) keepGeneratingCandidates = false;
+          else                                   keepGeneratingCandidates = outOfTargetSupport;
         }
 
         if ((m_env.subDisplayFile()          ) &&
@@ -664,7 +677,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
           accept = acceptAlpha(alphaDR);
         }
 
-        displayDetail = (m_env.displayVerbosity() >= 10/*99*/) || m_options.m_mhDisplayCandidates;
+        displayDetail = (m_env.displayVerbosity() >= 10/*99*/) || m_options.m_displayCandidates;
         if ((m_env.subDisplayFile()          ) &&
             (displayDetail                   ) &&
             (m_options.m_totallyMute == false)) {

@@ -336,8 +336,8 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   m_qoiChain   = new uqSequenceOfVectorsClass<Q_V,Q_M>(m_qoiRv.imageSet().vectorSpace(),  0,m_options.m_prefix+"qoiChain"  );
   m_mcSeqGenerator = new uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>(m_options.m_prefix.c_str(),
                                                               m_paramRv,
-                                                              m_qoiFunction,
-                                                              m_qoiRv);
+                                                              m_qoiFunction);
+  //m_qoiRv);
   m_mcSeqGenerator->generateSequence(*m_paramChain,
                                      *m_qoiChain);
   m_solutionRealizer = new uqSequentialVectorRealizerClass<Q_V,Q_M>((m_options.m_prefix+"Qoi").c_str(),
