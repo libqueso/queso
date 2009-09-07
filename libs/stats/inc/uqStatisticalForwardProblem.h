@@ -42,10 +42,8 @@
 /*! This templated class represents a statistical forward problem.
     It is templated on the types 'P_V' and 'Q_V' of vectors and types 'P_M' and 'Q_M' of matrices,
     where 'P_' stands for 'parameter' and 'Q_' stands for 'quantities of interest'.
-*/
-/*! -------------------------------------------------------------
-*/
-/*! Conceptually, a statistical forward problem has two input entities and one output entity.
+   
+    Conceptually, a statistical forward problem has two input entities and one output entity.
 */
 /*! -------------------------------------------------------------
 */
@@ -92,8 +90,10 @@
 */
 /*! -------------------------------------------------------------
 */
-/*! If options request data to be written in the output file (MATLAB .m format only, for now), the user can check which MATLAB variables are defined and set by
-    running 'grep zeros <OUTPUT FILE NAME>' after the solution procedure ends. THe names of the varibles are self explanatory.
+/*! If the options request data to be written in the output file (MATLAB .m format only, for now),
+    the user can run 'grep zeros \<OUTPUT FILE NAME\>' after the solution procedure ends
+    in order to check which MATLAB variables are defined and set.
+    The names of the varibles are self explanatory.
 */
 template <class P_V,class P_M,class Q_V,class Q_M>
 class uqStatisticalForwardProblemClass

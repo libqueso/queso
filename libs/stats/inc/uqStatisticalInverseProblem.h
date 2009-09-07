@@ -46,10 +46,8 @@
     Some templated classes might also use 'Q_V' and 'Q_M' when referring to a vector type and a matrix type,
     where 'Q_' stands for 'quantities of interest'.
     See e.g. the class 'uqStatisticalForwardProblemClass'.
-*/
-/*! -------------------------------------------------------------
-*/
-/*! Conceptually, a statistical inverse problem has two input entities and one output entity.
+
+    Conceptually, a statistical inverse problem has two input entities and one output entity.
 */
 /*! -------------------------------------------------------------
 */
@@ -99,8 +97,10 @@
 */
 /*! -------------------------------------------------------------
 */
-/*! If options request data to be written in the output file (MATLAB .m format only, for now), the user can check which MATLAB variables are defined and set by
-    running 'grep zeros <OUTPUT FILE NAME>' after the solution procedure ends. THe names of the varibles are self explanatory.
+/*! If the options request data to be written in the output file (MATLAB .m format only, for now),
+    the user can run 'grep zeros \<OUTPUT FILE NAME\>' after the solution procedure ends
+    in order to check which MATLAB variables are defined and set.
+    The names of the varibles are self explanatory.
 */
 template <class P_V,class P_M>
 class uqStatisticalInverseProblemClass

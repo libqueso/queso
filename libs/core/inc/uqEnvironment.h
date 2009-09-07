@@ -69,7 +69,7 @@ extern unsigned long int gsl_rng_default_seed;
 */
 /*! Throughout QUESO, there are five classes whose constructors check options in the 'options input file':
 <list type=number>
-<item> uqEnvironmentClass
+<item> uqBaseEnvironmentClass
 <item> uqStatisticalInverseProblemClass
 <item> uqStatisticalForwardProblemClass
 <item> uqMetropolisHastingsSGClass ('SG' stands for 'sequence generator')
@@ -97,7 +97,7 @@ extern unsigned long int gsl_rng_default_seed;
 <item> 'N >= 1' be the size of the communicator passed to the QUESO environment constructor;
 <item> 'S >= 1' be the number of statistical problems a QUESO environment will be handling at the same time, in parallel.
 </list>
-    Usuually 'W'='N', but such equality is not necessary.
+    Usually 'W'='N', but such equality is not necessary.
     The number 'S' is equal to the QUESO environment option 'm_numSubEnvironments', and is equal to 1 by default.
     The number 'N' must be a multiple of 'S', otherwise the QUESO class prints a fatal error message and MPI aborts.
     The five types of communicators that QUESO manages are referred to as:
@@ -113,14 +113,23 @@ extern unsigned long int gsl_rng_default_seed;
 /*! -------------------------------------------------------------
 */
 /*! In the QUESO library terminology, one might refer to a QUESO "full" environment composed of 'S' QUESO "sub" environments.
-    Each sub environment generates a "sub" Markov chain (a sequence) of vectors and/or a "sub" Monte Carlo sequence of output vectors.
+    Each sub environment is assigned a "sub" id varying from 0 (zero) to S-1.
+    Each sub environment is able to generate a statistical inverse problem and/or a statistical forward problem.
+    That is, each sub environment is able to handle a "sub" Markov chain (a sequence) of vectors and/or
+    a "sub" Monte Carlo sequence of output vectors.
     The "sub" sequences can be seen as forming a "unified" sequence in a distributed way.
     Indeed, the virtual class 'uqVectorSequenceClass' provides "sub" and "unified" statistical operations.
 
     A QUESO "sub" environment eventually prints message to its own output file. In order for that to happen, the requirements are:
 <list type=number>
-<item>
+<item> option 'm_subDisplayFileName', a string, must be different than the defaul values ".";
+<item> option 'm_subDisplayAllowedSet', a set of sub ids, must contain the id of the sub environment wanting to write a message to the output file;
+<item> the previous requirement is automatically satisfied if the option 'm_subDisplayAllowAll', a boolean, is set to 1 (the default value is 0);
+<item> the processor wanting to write a message to the output file must have sub rank 0 (zero).
 </list>
+    If all requirements are satisfied, then QUESO will generate a file with name '\<m_subDisplayFileName\>_sub\<sub id\>.txt'.
+    For instance, if 'm_subDisplayFileName' is 'pROblem_775_' then a node of sub rank 0 in sub environment 17
+    will write a message to the file 'pROblem_775_sub17.txt'.
 */
 class uqBaseEnvironmentClass {
 public:
