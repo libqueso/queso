@@ -42,6 +42,16 @@ qoiRoutine(
         EpetraExt::DistArray<uqGslMatrixClass*>* hessianMatrices,
         EpetraExt::DistArray<uqGslVectorClass*>* hessianEffects)
 {
+  // Logic just to avoid warnings from INTEL compiler
+  const uqGslVectorClass* aux1 = paramDirection;
+  if (aux1) {};
+  EpetraExt::DistArray<uqGslVectorClass*>* aux2 = gradVectors;
+  if (aux2) {};
+  aux2 = hessianEffects;
+  EpetraExt::DistArray<uqGslMatrixClass*>* aux3 = hessianMatrices;
+  if (aux3) {};
+
+  // Actual code
   double coef1 = ((qoiRoutine_DataType *) functionDataPtr)->coef1;
   double coef2 = ((qoiRoutine_DataType *) functionDataPtr)->coef2;
 

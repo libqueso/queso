@@ -40,6 +40,15 @@ double likelihoodRoutine(
   uqGslMatrixClass*       hessianMatrix,
   uqGslVectorClass*       hessianEffect)
 {
+  // Logic just to avoid warnings from INTEL compiler
+  const uqGslVectorClass* aux1 = paramDirection;
+  if (aux1) {};
+  aux1 = gradVector;
+  aux1 = hessianEffect;
+  uqGslMatrixClass* aux2 = hessianMatrix;
+  if (aux2) {};
+
+  // Actual code
   const uqGslVectorClass& meanVector =
     *((likelihoodRoutine_DataType *) functionDataPtr)->meanVector;
   const uqGslMatrixClass& covMatrix  =

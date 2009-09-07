@@ -39,7 +39,7 @@ using namespace std;
 namespace QUESO_Basic_API {
 
   void   QUESO_fatal        (const char *message);
-  double Likelihood_Wrapper (const basicV &,const basicV *,const void *,basicV *,basicM *,basicV *);
+  //double Likelihood_Wrapper (const basicV &,const basicV *,const void *,basicV *,basicM *,basicV *);
 
   //------------------
   // Member Functions
@@ -212,9 +212,20 @@ namespace QUESO_Basic_API {
 
   double Likelihood_Wrapper(const basicV &paramValue,
 			    const basicV *paramDirection,
-			    const void *Data,basicV *gradV,basicM *hesianM,
+			    const void *Data,basicV *gradV,basicM *hessianM,
 			    basicV *hessianE)
   {
+    // Logic just to avoid warnings from INTEL compiler: added by prudenci on 2009/Sep/06
+    const uqGslVectorClass* aux1 = paramDirection;
+    if (aux1) {};
+    aux1 = gradV;
+    aux1 = hessianE;
+    uqGslMatrixClass* aux2 = hessianM;
+    if (aux2) {};
+    const void* aux3 = Data;
+    if (aux3) {};
+
+    // Actual code
     static int first_entry = 1;
     double *uqParams;
     int num_params;

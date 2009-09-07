@@ -3,7 +3,7 @@
  QUESO library, version 0.4.1, released on Sep/08/2009
 =================================
 
-Beginning run at Sun Sep  6 09:42:16 2009
+Beginning run at Sun Sep  6 18:08:24 2009
 
 In uqFullEnvironmentClass::commonConstructor():
   m_seed = 0
@@ -286,19 +286,19 @@ Finished generating 1020000 positions
 Finished generating 1040000 positions
 Finished the generation of Markov chain cycle_cal_ip_mh_rawChain, with sub 1048576 positions
 Some information about this chain:
-  Chain run time       = 131.209 seconds
+  Chain run time       = 125.151 seconds
 
  Breaking of the chain run time:
 
-  Candidate run time   = 6.02038 seconds (4.58838%)
-  Target d. run time   = 109.565 seconds (83.5043%)
-  Mh alpha run time    = 0.827252 seconds (0.630483%)
-  Dr alpha run time    = 5.73919 seconds (4.37408%)
+  Candidate run time   = 6.01892 seconds (4.80933%)
+  Target d. run time   = 103.416 seconds (82.633%)
+  Mh alpha run time    = 0.814222 seconds (0.650592%)
+  Dr alpha run time    = 5.89843 seconds (4.71305%)
 ----------------------   --------------
-  Sum                  = 122.152 seconds (93.0973%)
+  Sum                  = 116.147 seconds (92.8059%)
 
  Other run times:
-  DR run time          = 53.5772 seconds (40.8334%)
+  DR run time          = 53.9978 seconds (43.1461%)
   AM run time          = 0 seconds (0%)
   Rejection percentage = 48.8276 %
   Out of target support percentage = 30.4385 %
@@ -308,12 +308,12 @@ In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = cycle_cal_
 
 
 -----------------------------------------------------
- Writing extra information about the Markov chain cycle_cal_ip_mh_rawChain to output file ...
+ Writing more information about the Markov chain cycle_cal_ip_mh_rawChain to output file ...
 -----------------------------------------------------
 
 
 -----------------------------------------------------
- Finished writing extra information about the Markov chain cycle_cal_ip_mh_rawChain
+ Finished writing more information about the Markov chain cycle_cal_ip_mh_rawChain
 -----------------------------------------------------
 
 
@@ -331,7 +331,7 @@ Estimated variance of sample mean for the whole chain cycle_cal_ip_mh_rawChain, 
 1.27328e+14
 4.57198
 
-Mean and variances took 1.21991 seconds
+Mean and variances took 1.19143 seconds
 
 Mean, sample std, population std
 Parameter    Mean         SampleStd         Popul.Std
@@ -399,7 +399,7 @@ Computed Geweke coefficients with 10% and 50% percentages (each column correspon
 Parameter            0          52428          104857          157286          209715          262144          314572          367001          419430
   A_param  -2.4488e+00  -7.2161e-01  -4.3122e-01  -1.9383e+00  -1.4254e+00  -1.3760e+00   2.6001e-01  -6.1207e-01  -7.1494e-01
   E_param  -1.3101e+00   1.5022e+00   9.2795e-01   6.6017e-01   5.0048e-01   1.5692e+00   4.9705e-01  -5.1489e-01  -2.0285e-01
-Chain Geweke took 10.3516 seconds
+Chain Geweke took 10.1753 seconds
 
 -----------------------------------------------------
 Computing autocorrelation coefficients (via fft)
@@ -503,7 +503,7 @@ Computed autocorrelation coefficients (via fft), for subchain beggining at posit
 Parameter            1            2            4            6            8           10           12           14           16           18           20           22           24           26           28
   A_param   9.2616e-01   8.5813e-01   7.3675e-01   6.3318e-01   5.4422e-01   4.6724e-01   4.0104e-01   3.4485e-01   2.9658e-01   2.5597e-01   2.2109e-01   1.9062e-01   1.6432e-01   1.4108e-01   1.2032e-01
   E_param   6.8469e-01   4.7361e-01   2.3645e-01   1.2484e-01   6.7574e-02   3.9781e-02   2.5761e-02   1.7238e-02   1.0615e-02   7.8445e-03   6.8027e-03   5.6377e-03   7.0941e-03   8.3408e-03   7.5543e-03
-Chain autocorrelation (via fft) took 119.846 seconds
+Chain autocorrelation (via fft) took 119.097 seconds
 
 
 -----------------------------------------------------
@@ -521,7 +521,7 @@ uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices, chain cycle_cal_ip_mh_ra
  Finished computing covariance and correlation matrices for chain cycle_cal_ip_mh_rawChain
 -----------------------------------------------------
 
-All statistics took 133.4 seconds
+All statistics took 132.393 seconds
 
 -----------------------------------------------------
  Finished computing statistics for chain cycle_cal_ip_mh_rawChain
@@ -545,7 +545,7 @@ Estimated variance of sample mean for the whole chain cycle_cal_ip_mh_filtChain,
 2.5433e+15
 91.1548
 
-Mean and variances took 0.044623 seconds
+Mean and variances took 0.043903 seconds
 
 Mean, sample std, population std
 Parameter    Mean         SampleStd         Popul.Std
@@ -566,7 +566,7 @@ Computed autocorrelation coefficients (via fft), for subchain beggining at posit
 Parameter            1            2            4            6            8           10           12           14           16           18           20           22           24           26           28
   A_param   2.1313e-01   5.0143e-02  -3.1299e-06  -3.8102e-03   3.0727e-03  -6.2897e-03  -4.8583e-03  -1.0663e-03   4.7217e-03  -5.2649e-03  -5.9138e-04   1.0003e-02  -4.4016e-04   5.3664e-03   2.4798e-03
   E_param   2.3731e-03   4.4271e-03  -3.7094e-03  -9.8917e-04  -2.0141e-03   3.8160e-03  -6.7300e-04  -8.0139e-03  -5.3392e-04   1.2776e-03  -7.7488e-04  -2.4427e-03  -8.0081e-06   3.4636e-03  -3.9365e-03
-Chain autocorrelation (via fft) took 0.48964 seconds
+Chain autocorrelation (via fft) took 0.501754 seconds
 
 
 -----------------------------------------------------
@@ -581,11 +581,11 @@ Computed min values and max values for chain cycle_cal_ip_mh_filtChain
 Parameter         min         max
  A_param   2.4000e+11   2.8000e+11
  E_param   1.8807e+05   2.1900e+05
-Chain min and max took 0.018335 seconds
+Chain min and max took 0.018416 seconds
 
 -----------------------------------------------------
 Computing histograms
-Chain histograms took 0.021463 seconds
+Chain histograms took 0.020431 seconds
 
 -----------------------------------------------------
 Computing KDE
@@ -598,7 +598,7 @@ Computed inter quantile ranges for chain cycle_cal_ip_mh_filtChain
 Parameter         iqr
  A_param   2.0015e+10
  E_param   2.9125e+03
-Chain KDE took 2.08548 seconds
+Chain KDE took 2.39755 seconds
 
 -----------------------------------------------------
  Finished computing histogram and/or cdf stacc and/or KDE for chain cycle_cal_ip_mh_filtChain
@@ -621,7 +621,7 @@ uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices, chain cycle_cal_ip_mh_fi
  Finished computing covariance and correlation matrices for chain cycle_cal_ip_mh_filtChain
 -----------------------------------------------------
 
-All statistics took 2.73701 seconds
+All statistics took 3.05614 seconds
 
 -----------------------------------------------------
  Finished computing statistics for chain cycle_cal_ip_mh_filtChain
@@ -789,11 +789,11 @@ Finished generating 20000 qoi samples
 Finished generating 40000 qoi samples
 Finished the generation of qoi sequence cycle_cal_fp_mc_QoiSeq, with sub 52429 samples
 Some information about this sequence:
-  Sequence run time = 1.40173 seconds
+  Sequence run time = 1.21613 seconds
 
  Breaking of the seq run time:
 
-  QoI function run time   = 1.2999 seconds (92.7357%)
+  QoI function run time   = 1.11464 seconds (91.654%)
 In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(): returned from call to actualGenerateSequence() with subActualSize = 52429
 In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(), prefix = cycle_cal_fp_mc_: checking necessity of opening generic output file (qseq name is cycle_cal_fp_mc_QoiSeq) ...
 In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(), prefix = cycle_cal_fp_mc_: checking necessity of opening output files for pseq cycle_cal_fp_mc_ParamSeq...
@@ -813,7 +813,7 @@ Estimated variance of sample mean for the whole chain cycle_cal_fp_mc_ParamSeq, 
 2.5433e+15
 91.1548
 
-Mean and variances took 0.078865 seconds
+Mean and variances took 0.047876 seconds
 
 Mean, sample std, population std
 Parameter    Mean         SampleStd         Popul.Std
@@ -833,11 +833,11 @@ Computed min values and max values for chain cycle_cal_fp_mc_ParamSeq
 Parameter         min         max
  A_param   2.4000e+11   2.8000e+11
  E_param   1.8807e+05   2.1900e+05
-Chain min and max took 0.030929 seconds
+Chain min and max took 0.019723 seconds
 
 -----------------------------------------------------
 Computing histograms
-Chain histograms took 0.033885 seconds
+Chain histograms took 0.022038 seconds
 
 -----------------------------------------------------
 Computing KDE
@@ -850,7 +850,7 @@ Computed inter quantile ranges for chain cycle_cal_fp_mc_ParamSeq
 Parameter         iqr
  A_param   2.0015e+10
  E_param   2.9125e+03
-Chain KDE took 2.08132 seconds
+Chain KDE took 2.19241 seconds
 
 -----------------------------------------------------
  Finished computing histogram and/or cdf stacc and/or KDE for chain cycle_cal_fp_mc_ParamSeq
@@ -873,7 +873,7 @@ uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices, chain cycle_cal_fp_mc_Pa
  Finished computing covariance and correlation matrices for chain cycle_cal_fp_mc_ParamSeq
 -----------------------------------------------------
 
-All statistics took 2.35069 seconds
+All statistics took 2.36251 seconds
 
 -----------------------------------------------------
  Finished computing statistics for chain cycle_cal_fp_mc_ParamSeq
@@ -897,7 +897,7 @@ Computing mean, sample variance and population variance
 Estimated variance of sample mean for the whole chain cycle_cal_fp_mc_QoiSeq, under independence assumption:
 1.82935e-07
 
-Mean and variances took 0.032414 seconds
+Mean and variances took 0.031693 seconds
 
 Mean, sample std, population std
 Parameter    Mean         SampleStd         Popul.Std
@@ -915,7 +915,7 @@ Estimated variance of sample mean, through autocorrelation (via fft), for subcha
 Computed autocorrelation coefficients (via fft), for subchain beggining at position 0 (each column corresponds to a different lag)
 Parameter            1            2            3            4            5            6            7            8            9           10           11           12           13           14           15
 TimeFor25  -2.5707e-05   3.9871e-03   4.8929e-03  -2.1343e-03   2.2217e-03   9.1549e-04  -1.1176e-02  -1.9211e-03  -2.1320e-03   3.4312e-03  -3.9557e-04  -1.8685e-03  -3.0549e-03  -6.2612e-03  -1.0007e-02
-Chain autocorrelation (via fft) took 0.295298 seconds
+Chain autocorrelation (via fft) took 0.290783 seconds
 
 
 -----------------------------------------------------
@@ -929,11 +929,11 @@ Computing min and max for histograms and KDE
 Computed min values and max values for chain cycle_cal_fp_mc_QoiSeq
 Parameter         min         max
 TimeFor2   3.0380e-02   9.4166e-01
-Chain min and max took 0.012654 seconds
+Chain min and max took 0.012415 seconds
 
 -----------------------------------------------------
 Computing histograms
-Chain histograms took 0.013537 seconds
+Chain histograms took 0.012815 seconds
 
 -----------------------------------------------------
 Computing KDE
@@ -943,7 +943,7 @@ In uqScalarSequenceClass<T>::subScaleForKDE(): iqrValue = 0.133921, meanValue = 
 Computed inter quantile ranges for chain cycle_cal_fp_mc_QoiSeq
 Parameter         iqr
 TimeFor2   1.3392e-01
-Chain KDE took 1.09942 seconds
+Chain KDE took 1.20972 seconds
 
 -----------------------------------------------------
  Finished computing histogram and/or cdf stacc and/or KDE for chain cycle_cal_fp_mc_QoiSeq
@@ -966,7 +966,7 @@ uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices, chain cycle_cal_fp_mc_Qo
  Finished computing covariance and correlation matrices for chain cycle_cal_fp_mc_QoiSeq
 -----------------------------------------------------
 
-All statistics took 1.50969 seconds
+All statistics took 1.61331 seconds
 
 -----------------------------------------------------
  Finished computing statistics for chain cycle_cal_fp_mc_QoiSeq
@@ -1260,19 +1260,19 @@ Finished generating 1020000 positions
 Finished generating 1040000 positions
 Finished the generation of Markov chain cycle_val_ip_mh_rawChain, with sub 1048576 positions
 Some information about this chain:
-  Chain run time       = 138.792 seconds
+  Chain run time       = 133.633 seconds
 
  Breaking of the chain run time:
 
-  Candidate run time   = 5.04517 seconds (3.63506%)
-  Target d. run time   = 122.639 seconds (88.3617%)
-  Mh alpha run time    = 0.913499 seconds (0.658178%)
-  Dr alpha run time    = 2.93195 seconds (2.11248%)
+  Candidate run time   = 5.08153 seconds (3.80262%)
+  Target d. run time   = 117.376 seconds (87.8346%)
+  Mh alpha run time    = 0.908361 seconds (0.679745%)
+  Dr alpha run time    = 3.03325 seconds (2.26984%)
 ----------------------   --------------
-  Sum                  = 131.53 seconds (94.7674%)
+  Sum                  = 126.399 seconds (94.5868%)
 
  Other run times:
-  DR run time          = 34.8284 seconds (25.0939%)
+  DR run time          = 34.8503 seconds (26.0792%)
   AM run time          = 0 seconds (0%)
   Rejection percentage = 27.5986 %
   Out of target support percentage = 23.0313 %
@@ -1282,12 +1282,12 @@ In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = cycle_val_
 
 
 -----------------------------------------------------
- Writing extra information about the Markov chain cycle_val_ip_mh_rawChain to output file ...
+ Writing more information about the Markov chain cycle_val_ip_mh_rawChain to output file ...
 -----------------------------------------------------
 
 
 -----------------------------------------------------
- Finished writing extra information about the Markov chain cycle_val_ip_mh_rawChain
+ Finished writing more information about the Markov chain cycle_val_ip_mh_rawChain
 -----------------------------------------------------
 
 
@@ -1305,7 +1305,7 @@ Estimated variance of sample mean for the whole chain cycle_val_ip_mh_rawChain, 
 1.27502e+14
 3.47458
 
-Mean and variances took 1.18275 seconds
+Mean and variances took 1.16548 seconds
 
 Mean, sample std, population std
 Parameter    Mean         SampleStd         Popul.Std
@@ -1373,7 +1373,7 @@ Computed Geweke coefficients with 10% and 50% percentages (each column correspon
 Parameter            0          52428          104857          157286          209715          262144          314572          367001          419430
   A_param   1.7608e+00   1.7033e+00   2.8761e-01   6.9918e-02   2.2458e-01  -6.7189e-01  -3.1759e-01   1.3681e+00  -5.4346e-01
   E_param   2.0195e+00   2.2155e+00   1.5599e+00   4.4606e-01  -2.8462e-01  -1.3343e+00   8.5098e-01  -5.0885e-01  -1.2735e+00
-Chain Geweke took 10.1826 seconds
+Chain Geweke took 10.02 seconds
 
 -----------------------------------------------------
 Computing autocorrelation coefficients (via fft)
@@ -1477,7 +1477,7 @@ Computed autocorrelation coefficients (via fft), for subchain beggining at posit
 Parameter            1            2            4            6            8           10           12           14           16           18           20           22           24           26           28
   A_param   8.1881e-01   6.7121e-01   4.5241e-01   3.0523e-01   2.0488e-01   1.3681e-01   8.9792e-02   5.8137e-02   3.7185e-02   2.3149e-02   1.4752e-02   9.5785e-03   5.9730e-03   3.9305e-03   2.9259e-03
   E_param   7.9973e-01   6.4430e-01   4.2326e-01   2.8108e-01   1.8722e-01   1.2647e-01   8.4526e-02   5.5387e-02   3.6681e-02   2.3035e-02   1.3184e-02   8.0169e-03   4.2492e-03   7.9288e-04   3.8472e-04
-Chain autocorrelation (via fft) took 119.571 seconds
+Chain autocorrelation (via fft) took 113.082 seconds
 
 
 -----------------------------------------------------
@@ -1495,7 +1495,7 @@ uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices, chain cycle_val_ip_mh_ra
  Finished computing covariance and correlation matrices for chain cycle_val_ip_mh_rawChain
 -----------------------------------------------------
 
-All statistics took 132.862 seconds
+All statistics took 126.141 seconds
 
 -----------------------------------------------------
  Finished computing statistics for chain cycle_val_ip_mh_rawChain
@@ -1519,7 +1519,7 @@ Estimated variance of sample mean for the whole chain cycle_val_ip_mh_filtChain,
 2.55134e+15
 69.2933
 
-Mean and variances took 0.05781 seconds
+Mean and variances took 0.05691 seconds
 
 Mean, sample std, population std
 Parameter    Mean         SampleStd         Popul.Std
@@ -1540,7 +1540,7 @@ Computed autocorrelation coefficients (via fft), for subchain beggining at posit
 Parameter            1            2            4            6            8           10           12           14           16           18           20           22           24           26           28
   A_param   1.7922e-02  -1.2449e-03  -2.1674e-03  -3.1076e-03   2.0031e-03  -1.2526e-03  -1.9500e-03   2.0362e-03   9.1847e-03   7.4379e-03  -3.8275e-03  -1.9763e-03   1.3573e-03  -7.1901e-03   1.5121e-03
   E_param   8.7467e-03   4.1674e-03  -1.9158e-03   3.4020e-04  -1.8619e-03   1.5115e-03   5.2282e-04  -5.0899e-03  -2.1781e-03  -1.1419e-03   7.6411e-03   3.7441e-03  -5.7153e-03  -2.5334e-04   1.0964e-02
-Chain autocorrelation (via fft) took 0.582853 seconds
+Chain autocorrelation (via fft) took 0.577685 seconds
 
 
 -----------------------------------------------------
@@ -1555,11 +1555,11 @@ Computed min values and max values for chain cycle_val_ip_mh_filtChain
 Parameter         min         max
  A_param   2.4000e+11   2.8000e+11
  E_param   1.8831e+05   2.0752e+05
-Chain min and max took 0.023119 seconds
+Chain min and max took 0.022786 seconds
 
 -----------------------------------------------------
 Computing histograms
-Chain histograms took 0.02566 seconds
+Chain histograms took 0.024492 seconds
 
 -----------------------------------------------------
 Computing KDE
@@ -1572,7 +1572,7 @@ Computed inter quantile ranges for chain cycle_val_ip_mh_filtChain
 Parameter         iqr
  A_param   2.0059e+10
  E_param   2.5519e+03
-Chain KDE took 2.21772 seconds
+Chain KDE took 2.09382 seconds
 
 -----------------------------------------------------
  Finished computing histogram and/or cdf stacc and/or KDE for chain cycle_val_ip_mh_filtChain
@@ -1595,7 +1595,7 @@ uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices, chain cycle_val_ip_mh_fi
  Finished computing covariance and correlation matrices for chain cycle_val_ip_mh_filtChain
 -----------------------------------------------------
 
-All statistics took 3.0002 seconds
+All statistics took 2.86878 seconds
 
 -----------------------------------------------------
  Finished computing statistics for chain cycle_val_ip_mh_filtChain
@@ -1763,11 +1763,11 @@ Finished generating 20000 qoi samples
 Finished generating 40000 qoi samples
 Finished the generation of qoi sequence cycle_val_fp_mc_QoiSeq, with sub 52429 samples
 Some information about this sequence:
-  Sequence run time = 1.39634 seconds
+  Sequence run time = 1.26204 seconds
 
  Breaking of the seq run time:
 
-  QoI function run time   = 1.29157 seconds (92.4966%)
+  QoI function run time   = 1.15431 seconds (91.4637%)
 In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(): returned from call to actualGenerateSequence() with subActualSize = 52429
 In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(), prefix = cycle_val_fp_mc_: checking necessity of opening generic output file (qseq name is cycle_val_fp_mc_QoiSeq) ...
 In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(), prefix = cycle_val_fp_mc_: checking necessity of opening output files for pseq cycle_val_fp_mc_ParamSeq...
@@ -1787,7 +1787,7 @@ Estimated variance of sample mean for the whole chain cycle_val_fp_mc_ParamSeq, 
 2.55134e+15
 69.2933
 
-Mean and variances took 0.078905 seconds
+Mean and variances took 0.069766 seconds
 
 Mean, sample std, population std
 Parameter    Mean         SampleStd         Popul.Std
@@ -1807,11 +1807,11 @@ Computed min values and max values for chain cycle_val_fp_mc_ParamSeq
 Parameter         min         max
  A_param   2.4000e+11   2.8000e+11
  E_param   1.8831e+05   2.0752e+05
-Chain min and max took 0.030855 seconds
+Chain min and max took 0.027015 seconds
 
 -----------------------------------------------------
 Computing histograms
-Chain histograms took 0.033748 seconds
+Chain histograms took 0.03008 seconds
 
 -----------------------------------------------------
 Computing KDE
@@ -1824,7 +1824,7 @@ Computed inter quantile ranges for chain cycle_val_fp_mc_ParamSeq
 Parameter         iqr
  A_param   2.0059e+10
  E_param   2.5519e+03
-Chain KDE took 2.20567 seconds
+Chain KDE took 2.44258 seconds
 
 -----------------------------------------------------
  Finished computing histogram and/or cdf stacc and/or KDE for chain cycle_val_fp_mc_ParamSeq
@@ -1847,7 +1847,7 @@ uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices, chain cycle_val_fp_mc_Pa
  Finished computing covariance and correlation matrices for chain cycle_val_fp_mc_ParamSeq
 -----------------------------------------------------
 
-All statistics took 2.4743 seconds
+All statistics took 2.68236 seconds
 
 -----------------------------------------------------
  Finished computing statistics for chain cycle_val_fp_mc_ParamSeq
@@ -1871,7 +1871,7 @@ Computing mean, sample variance and population variance
 Estimated variance of sample mean for the whole chain cycle_val_fp_mc_QoiSeq, under independence assumption:
 1.41327e-07
 
-Mean and variances took 0.036156 seconds
+Mean and variances took 0.033454 seconds
 
 Mean, sample std, population std
 Parameter    Mean         SampleStd         Popul.Std
@@ -1889,7 +1889,7 @@ Estimated variance of sample mean, through autocorrelation (via fft), for subcha
 Computed autocorrelation coefficients (via fft), for subchain beggining at position 0 (each column corresponds to a different lag)
 Parameter            1            2            3            4            5            6            7            8            9           10           11           12           13           14           15
 TimeFor25   4.8135e-03   4.5213e-03  -1.7610e-03  -1.6066e-03  -2.1376e-03  -1.5317e-03  -8.3099e-03  -2.7901e-03   1.8594e-03   1.9770e-03  -4.2987e-03  -1.7683e-05  -4.1227e-03  -5.4654e-03  -3.0440e-04
-Chain autocorrelation (via fft) took 0.302804 seconds
+Chain autocorrelation (via fft) took 0.294962 seconds
 
 
 -----------------------------------------------------
@@ -1903,11 +1903,11 @@ Computing min and max for histograms and KDE
 Computed min values and max values for chain cycle_val_fp_mc_QoiSeq
 Parameter         min         max
 TimeFor2   3.9126e-02   7.6817e-01
-Chain min and max took 0.01395 seconds
+Chain min and max took 0.012976 seconds
 
 -----------------------------------------------------
 Computing histograms
-Chain histograms took 0.01459 seconds
+Chain histograms took 0.013725 seconds
 
 -----------------------------------------------------
 Computing KDE
@@ -1917,7 +1917,7 @@ In uqScalarSequenceClass<T>::subScaleForKDE(): iqrValue = 0.118226, meanValue = 
 Computed inter quantile ranges for chain cycle_val_fp_mc_QoiSeq
 Parameter         iqr
 TimeFor2   1.1823e-01
-Chain KDE took 1.06658 seconds
+Chain KDE took 1.26785 seconds
 
 -----------------------------------------------------
  Finished computing histogram and/or cdf stacc and/or KDE for chain cycle_val_fp_mc_QoiSeq
@@ -1940,7 +1940,7 @@ uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices, chain cycle_val_fp_mc_Qo
  Finished computing covariance and correlation matrices for chain cycle_val_fp_mc_QoiSeq
 -----------------------------------------------------
 
-All statistics took 1.49819 seconds
+All statistics took 1.68165 seconds
 
 -----------------------------------------------------
  Finished computing statistics for chain cycle_val_fp_mc_QoiSeq
@@ -1978,5 +1978,5 @@ In horizontalDistance(), cdf1.prefix() = cycle_cal_fp_unifQoiCdf_0_, cdf2.prefix
 For epsilonVec = 0.1 , cdfDistancesVec = 0.03036 
 Entering uqValidationCycle::destructor(): prefix = cycle_
 Leaving uqValidationCycle::destructor(): prefix = cycle_
-Ending run at Sun Sep  6 09:52:00 2009
-Total run time = 584 seconds
+Ending run at Sun Sep  6 18:17:48 2009
+Total run time = 564 seconds
