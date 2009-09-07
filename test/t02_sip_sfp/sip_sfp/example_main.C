@@ -44,6 +44,8 @@
  * This example uses both statistical problem templated classes, once each,
  * since it uses the solution of the inverse problem as input to the forward problem.
  * 
+ * This example is explained in detail in the user's manual (pdf file)
+ *
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
