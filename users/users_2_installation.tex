@@ -2,11 +2,11 @@
 \thispagestyle{headings}
 \markboth{Chapter \ref{ch-install}: Installation}{Chapter \ref{ch-install}: Installation}
 
-This chapter describes how to install QUESO, test it and use it to build your application.
+This chapter describes how to install QUESO, test it and use it to create your application.
 
 \section{Installation Steps}
 
-There are nine steps to make the QUESO Library available at your LINUX computing system.
+There are eight steps to make the QUESO Library available at your LINUX computing system.
 They are listed below, with examples of commands:
 %
 \begin{enumerate}
@@ -18,8 +18,8 @@ They are listed below, with examples of commands:
 \begin{verbatim}
 setenv LD_LIBRARY_PATH \$LD_LIBRARY_PATH:
        /home/johndoe/Installations/gsl_1_12/lib:
-       /home/johndoe/Installations/Boost_1_37_0/lib:
-       /home/johndoe/Installations/hpct/lib
+       /home/johndoe/Installations/boost_1_37_0/lib:
+       /home/johndoe/Installations/hpct_0_25_1/lib
 \end{verbatim}
 }
 \item setenv CC gcc
@@ -32,21 +32,21 @@ setenv LD_LIBRARY_PATH \$LD_LIBRARY_PATH:
 }
 \item {install five packages: % item 2
 \begin{itemize}
-\item GNU Scientific Library (GSL)~\cite{Gsl},
-\item Boost C++ Libraries~\cite{Boost}, 
+\item GNU Scientific Library (GSL)~\cite{Gsl}, e.g GSL 1.12,
+\item Boost C++ Libraries~\cite{Boost}, e.g. Boost 1.37.9,
 \item MPI Library, e.g. Open MPI~\cite{Openmpi} or MPICH~\cite{Mpich},
-\item Trilinos Library~\cite{Trilinos} and
-\item {High Performance Computing Toolkit (HPCT)~\cite{Hpct}.
+\item Trilinos Library~\cite{Trilinos}, e.g. Trilinos 9.0.2, and
+\item {High Performance Computing Toolkit (HPCT)~\cite{Hpct}, e.g. HPCT 0.25.1.
 \begin{itemize}
 \item {
 \begin{verbatim}
-./configure --prefix=/home/johndoe/Installations/hpct \
-  --with-boost=/home/johndoe/Installations/1.37.0
+./configure --prefix=/home/johndoe/Installations/hpct_0_25_1 \
+  --with-boost=/home/johndoe/Installations/boost_1_37_0
 \end{verbatim}
 }
 \item make
 \item make install
-\item note: the directory '/home/johndoe/Installations/hpct' does not need to exist in advance, since it will be created by the command 'make install' above.
+\item note: the directory '/home/johndoe/Installations/hpct\_0\_25\_1' does not need to exist in advance, since it will be created by the command 'make install' above.
 \end{itemize}
 }
 \end{itemize}
@@ -68,9 +68,9 @@ setenv LD_LIBRARY_PATH \$LD_LIBRARY_PATH:
 \begin{verbatim}
 ./configure --prefix=/home/johndoe/Installations/queso_0_4_1_gnu \
   --with-trilinos=/home/johndoe/Installations/trilinos_9_0_2 \
-  --with-boost=/home/johndoe/Installations/1.37.0 \
+  --with-boost=/home/johndoe/Installations/boost_1_37_0 \
   --with-gsl-prefix=/home/johndoe/Installations/gsl_1_12 \
-  --with-hpct-prefix=/home/johndoe/Installations/hpct \
+  --with-hpct-prefix=/home/johndoe/Installations/hpct_0_25_1 \
   CXXFLAGS=''-DMPICH_IGNORE_CXX_SEEK -O3 -Wall -wd383 -wd981 -wd1572''
 \end{verbatim}
 }
@@ -97,20 +97,6 @@ setenv LD_LIBRARY_PATH \$LD_LIBRARY_PATH:
 \begin{itemize}
 \item make html
 \item firefox doxygen-doc/html/index.html
-\end{itemize}
-}
-\item {create your own application (more comments in Section \ref{sc-using-queso}): % item 9
-\begin{itemize}
-\item code your program
-\item {
-\begin{verbatim}
-setenv LD_LIBRARY_PATH \$LD_LIBRARY_PATH:
-       /home/johndoe/Installations/queso_0_4_1_gnu/lib
-\end{verbatim}
-}
-\item edit your Makefile
-\item compile and link your program
-\item execute your program
 \end{itemize}
 }
 \end{enumerate}
@@ -252,7 +238,7 @@ The 2 tests mentioned in this message are the ones under 'test/t01\_valid\_cycle
 'test/t02\_sip\_sfp'. These tests are used as part of the periodic QUESO regression tests.
 The code for 't02\_sip\_sfp' is mentioned in Subsection \ref{subsc-t02} and is explained in more detail in Chapter \ref{ch-appl-example}.
 
-\section{Running the Executables Provided with the Source Code} \label{sc-running-execs}
+\section{Running the Executables Provided with QUESO} \label{sc-running-execs}
 
 This section assumes that you have successfully executed steps 1 through 6 above.
 The codes listed in this section have explanations inside themselves, and some of them
@@ -322,6 +308,71 @@ The QUESO installed directory contains three main directories:
 }
 \end{itemize}
 
-\section{Using the installed QUESO} \label{sc-using-queso}
+\section{Create your Application with the installed QUESO} \label{sc-use-queso}
 
-More comments in Chapter \ref{ch-appl-example}.
+Prepare your environment by running
+\begin{verbatim}
+setenv LD_LIBRARY_PATH \$LD_LIBRARY_PATH:
+       /home/johndoe/Installations/queso_0_4_1_gnu/lib
+\end{verbatim}
+
+An example Makefile is given below:
+\begin{verbatim}
+# BEGIN OF MAKEFILE
+QUESO_DIR = /home/johndoe/Installations/queso_0_4_1_gnu/
+TRILINOS_DIR = /home/johndoe/Installations/trilinos_9_0_2/
+BOOST_DIR = /home/johndoe/Installations/boost_1_37_0/
+GSL_DIR = /home/johndoe/Installations/gsl_1_12/
+HPCT_DIR = /home/johndoe/Installations/hpct_0_25_1/
+
+include $(TRILINOS_DIR)/include/Makefile.export.epetra
+
+INC_PATHS = \
+	-I. \
+	-I$(QUESO_DIR)/include \
+	-I$(MPI_DIR)/include \
+	-I$(BOOST_DIR)/include/boost_1_37_0 \
+	-I$(GSL_DIR)/include \
+	-I$(HPCT_DIR)/include \
+	$(EPETRA_INCLUDES)
+
+LIBS = \
+	-L$(QUESO_DIR)/lib \
+	-lqueso \
+	-L$(MPI_DIR)/lib \
+	-L$(TRILINOS_DIR)/lib \
+	-L$(BOOST_DIR)/lib \
+	-lboost_program_options \
+	-L$(GSL_DIR)/lib \
+	-lgsl \
+	-L$(HPCT_DIR)/lib \
+	-lhpct \
+	$(EPETRA_LIBS)
+
+CXX = mpic++
+CXXFLAGS += -O3 -Wall -c
+
+default: all
+
+.SUFFIXES: .o .C
+
+all:	ex_gsl
+
+clean:
+	rm -f *~
+	rm -f *.o
+	rm -f example
+
+ex_gsl: example_main.o example_likelihood.o example_qoi.o example_compute.o
+	$(CXX) example_main.o \
+	       example_likelihood.o \
+	       example_qoi.o \
+	       example_compute.o \
+	       -o example_gsl $(LIBS)
+
+%.o: %.C
+	$(CXX) $(INC_PATHS) $(CXXFLAGS) $<
+# END OF MAKEFILE
+\end{verbatim}
+
+More documentation is provided in Chapter \ref{ch-appl-example}.
