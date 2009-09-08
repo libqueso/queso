@@ -59,7 +59,6 @@ public:
   void   generateSequence           (uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
                                      uqScalarSequenceClass<double>*      workingTargetValues,
                                      uqScalarSequenceClass<double>*      workingLogTargetValues);
-  void   checkTheParallelEnvironment();
   double rawChainRunTime            () const;
   unsigned int numRejections        () const;
 
@@ -134,8 +133,8 @@ std::ostream& operator<<(std::ostream& os, const uqMetropolisHastingsSGClass<P_V
 /*! If the requirements are satisfied, the constructor then reads input options that begin with the string '\<prefix\>_mh_'.
     For instance, if 'prefix' is 'pROblem_775_ip_', then the constructor will read all options that begin with 'pROblem_775_ip_mh_'.
     Options reading is handled by class 'uqMetropolisHastingsOptionsClass'.
-*/
-/*! Input options are read from the QUESO input file, whose name is required by the constructor of the QUESO environment class.
+  
+    Input options are read from the QUESO input file, whose name is required by the constructor of the QUESO environment class.
     The QUESO environment class is instantiated at the application level, right after 'MPI_Init(&argc,&argv)'. 
     The QUESO environment is required by reference by many constructors in the QUESO library, and is available by reference from many classes as well.
 */

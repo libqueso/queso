@@ -46,13 +46,13 @@ cal_right_vertical_line_y1 = [0 : cycle_cal_ip_prior_1_values(1,numHorizPts1+1)/
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-plot(cycle_cal_ip_mc_filtChain_unifGkdePosits_sub0(1,:),cycle_cal_ip_mc_filtChain_unifGkdeValues_sub0(1,:),'bo','linewidth',2);
+plot(cycle_cal_ip_mh_filtChain_unifGkdePosits_sub0(1,:),cycle_cal_ip_mh_filtChain_unifGkdeValues_sub0(1,:),'bo','linewidth',2);
 hold
-plot(cycle_val_ip_mc_filtChain_unifGkdePosits_sub0(1,:),cycle_val_ip_mc_filtChain_unifGkdeValues_sub0(1,:),'ro','linewidth',2);
-plot(cycle_cal_ip_mc_filtChain_GkdePosits_sub0(1,:),cycle_cal_ip_mc_filtChain_GkdeValues_sub0(1,:),'b-','linewidth',2);
-plot(cycle_val_ip_mc_filtChain_GkdePosits_sub0(1,:),cycle_val_ip_mc_filtChain_GkdeValues_sub0(1,:),'r-','linewidth',2);
-plot(cycle_cal_ip_mc_filtChain_GkdePosits_sub1(1,:),cycle_cal_ip_mc_filtChain_GkdeValues_sub1(1,:),'b--','linewidth',2);
-plot(cycle_val_ip_mc_filtChain_GkdePosits_sub1(1,:),cycle_val_ip_mc_filtChain_GkdeValues_sub1(1,:),'r--','linewidth',2);
+plot(cycle_val_ip_mh_filtChain_unifGkdePosits_sub0(1,:),cycle_val_ip_mh_filtChain_unifGkdeValues_sub0(1,:),'ro','linewidth',2);
+plot(cycle_cal_ip_mh_filtChain_GkdePosits_sub0(1,:),cycle_cal_ip_mh_filtChain_GkdeValues_sub0(1,:),'b-','linewidth',2);
+plot(cycle_val_ip_mh_filtChain_GkdePosits_sub0(1,:),cycle_val_ip_mh_filtChain_GkdeValues_sub0(1,:),'r-','linewidth',2);
+plot(cycle_cal_ip_mh_filtChain_GkdePosits_sub1(1,:),cycle_cal_ip_mh_filtChain_GkdeValues_sub1(1,:),'b--','linewidth',2);
+plot(cycle_val_ip_mh_filtChain_GkdePosits_sub1(1,:),cycle_val_ip_mh_filtChain_GkdeValues_sub1(1,:),'r--','linewidth',2);
 ylabel('Posterior marginal pdf','fontsize',20);
 xlabel('A (min^{-1})','fontsize',20);
 title('A: prior(*) and posterior (-) marginals','fontsize',20);
@@ -82,13 +82,13 @@ clf
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-plot(cycle_cal_ip_mc_filtChain_unifGkdePosits_sub0(2,:),cycle_cal_ip_mc_filtChain_unifGkdeValues_sub0(2,:),'bo','linewidth',2);
+plot(cycle_cal_ip_mh_filtChain_unifGkdePosits_sub0(2,:),cycle_cal_ip_mh_filtChain_unifGkdeValues_sub0(2,:),'bo','linewidth',2);
 hold
-plot(cycle_val_ip_mc_filtChain_unifGkdePosits_sub0(2,:),cycle_val_ip_mc_filtChain_unifGkdeValues_sub0(2,:),'ro','linewidth',2);
-plot(cycle_cal_ip_mc_filtChain_GkdePosits_sub0(2,:),cycle_cal_ip_mc_filtChain_GkdeValues_sub0(2,:),'b-','linewidth',2);
-plot(cycle_val_ip_mc_filtChain_GkdePosits_sub0(2,:),cycle_val_ip_mc_filtChain_GkdeValues_sub0(2,:),'r-','linewidth',2);
-plot(cycle_cal_ip_mc_filtChain_GkdePosits_sub1(2,:),cycle_cal_ip_mc_filtChain_GkdeValues_sub1(2,:),'b--','linewidth',2);
-plot(cycle_val_ip_mc_filtChain_GkdePosits_sub1(2,:),cycle_val_ip_mc_filtChain_GkdeValues_sub1(2,:),'r--','linewidth',2);
+plot(cycle_val_ip_mh_filtChain_unifGkdePosits_sub0(2,:),cycle_val_ip_mh_filtChain_unifGkdeValues_sub0(2,:),'ro','linewidth',2);
+plot(cycle_cal_ip_mh_filtChain_GkdePosits_sub0(2,:),cycle_cal_ip_mh_filtChain_GkdeValues_sub0(2,:),'b-','linewidth',2);
+plot(cycle_val_ip_mh_filtChain_GkdePosits_sub0(2,:),cycle_val_ip_mh_filtChain_GkdeValues_sub0(2,:),'r-','linewidth',2);
+plot(cycle_cal_ip_mh_filtChain_GkdePosits_sub1(2,:),cycle_cal_ip_mh_filtChain_GkdeValues_sub1(2,:),'b--','linewidth',2);
+plot(cycle_val_ip_mh_filtChain_GkdePosits_sub1(2,:),cycle_val_ip_mh_filtChain_GkdeValues_sub1(2,:),'r--','linewidth',2);
 ylabel('Pdf','fontsize',20);
 xlabel('E (J/mol)','fontsize',20);
 title('E: prior(*) and posterior (-) marginals','fontsize',20);

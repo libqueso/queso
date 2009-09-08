@@ -7,7 +7,7 @@ file_sip_raw
 appl_output_sub0
 
 [nsimu,temp]=size(sip_appl_d_sub0);
-[temp,npar]=size(ip_mc_rawChain_unified);
+[temp,npar]=size(ip_mh_rawChain_unified);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Plot samples of first two parameters on the plane
@@ -25,11 +25,11 @@ c95  = chi2inv(0.95,npar);
 cc50 = sum(sip_appl_d_sub0<c50)./nsimu;
 cc95 = sum(sip_appl_d_sub0<c95)./nsimu;
 
-plot(ip_mc_rawChain_unified(:,1),ip_mc_rawChain_unified(:,2),'.');
+plot(ip_mh_rawChain_unified(:,1),ip_mh_rawChain_unified(:,2),'.');
 xlabel('\theta_1');
 ylabel('\theta_2');
 title(sprintf('Rejected = %.1f%%, c50 = %.1f%%, c95 = %.1f%%', ...
-              ip_mc_rejected*100, cc50*100, cc95*100))
+              ip_mh_rejected*100, cc50*100, cc95*100))
 hold
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -56,11 +56,11 @@ clf;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Plot marginal posterior pdfs of all 4 parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-plot(ip_mc_rawChain_unifGkdePosits_sub0(1,:),ip_mc_rawChain_unifGkdeValues_sub0(1,:),'-b');
+plot(ip_mh_rawChain_unifGkdePosits_sub0(1,:),ip_mh_rawChain_unifGkdeValues_sub0(1,:),'-b');
 hold
-plot(ip_mc_rawChain_unifGkdePosits_sub0(2,:),ip_mc_rawChain_unifGkdeValues_sub0(2,:),'-r');
-plot(ip_mc_rawChain_unifGkdePosits_sub0(3,:),ip_mc_rawChain_unifGkdeValues_sub0(3,:),'--b');
-plot(ip_mc_rawChain_unifGkdePosits_sub0(4,:),ip_mc_rawChain_unifGkdeValues_sub0(4,:),'--r');
+plot(ip_mh_rawChain_unifGkdePosits_sub0(2,:),ip_mh_rawChain_unifGkdeValues_sub0(2,:),'-r');
+plot(ip_mh_rawChain_unifGkdePosits_sub0(3,:),ip_mh_rawChain_unifGkdeValues_sub0(3,:),'--b');
+plot(ip_mh_rawChain_unifGkdePosits_sub0(4,:),ip_mh_rawChain_unifGkdeValues_sub0(4,:),'--r');
 
 ylabel('marginal pdf','fontsize',20);
 xlabel('Parameter values','fontsize',20);

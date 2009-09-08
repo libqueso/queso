@@ -137,50 +137,51 @@ public:
   uqBaseEnvironmentClass(const uqBaseEnvironmentClass& obj);
   virtual ~uqBaseEnvironmentClass();
 
-          uqBaseEnvironmentClass& operator=                (const uqBaseEnvironmentClass& rhs);
+          uqBaseEnvironmentClass& operator=                  (const uqBaseEnvironmentClass& rhs);
 
-          int                     worldRank                () const;
+          int                     worldRank                  () const;
 
-          int                     fullRank                 () const;
-          const Epetra_MpiComm&   fullComm                 () const; 
+          int                     fullRank                   () const;
+          const Epetra_MpiComm&   fullComm                   () const; 
 
-          int                     subRank                  () const;
-          const Epetra_MpiComm&   subComm                  () const; 
+          int                     subRank                    () const;
+          const Epetra_MpiComm&   subComm                    () const; 
 
-          const Epetra_MpiComm&   selfComm                 () const; 
+          const Epetra_MpiComm&   selfComm                   () const; 
 
-          int                     inter0Rank               () const;
-          const Epetra_MpiComm&   inter0Comm               () const; 
+          int                     inter0Rank                 () const;
+          const Epetra_MpiComm&   inter0Comm                 () const; 
 
-                std::ofstream*    subDisplayFile           () const;
+                std::ofstream*    subDisplayFile             () const;
 
-          unsigned int            numSubEnvironments       () const;
-          unsigned int            subId                    () const;
-          const std::string&      subIdString              () const;
+          unsigned int            numSubEnvironments         () const;
+          unsigned int            subId                      () const;
+          const std::string&      subIdString                () const;
+          void                    checkTheParallelEnvironment() const;
 
 #ifdef UQ_USES_COMMAND_LINE_OPTIONS
-          const po::options_description& allOptionsDesc    () const;
+          const po::options_description& allOptionsDesc      () const;
 #endif
-          po::variables_map&      allOptionsMap            () const;
-          void                    scanInputFileForMyOptions(const po::options_description& optionsDesc) const;
-          unsigned int            displayVerbosity         () const;
-          unsigned int            syncVerbosity            () const;
-          const gsl_rng*          rng                      () const;
-          bool                    isThereInputFile         () const;
-          void                    syncPrintDebugMsg        (const char* msg, unsigned int msgVerbosity, unsigned int numUSecs, const Epetra_MpiComm& commObj) const;
+          po::variables_map&      allOptionsMap              () const;
+          void                    scanInputFileForMyOptions  (const po::options_description& optionsDesc) const;
+          unsigned int            displayVerbosity           () const;
+          unsigned int            syncVerbosity              () const;
+          const gsl_rng*          rng                        () const;
+          bool                    isThereInputFile           () const;
+          void                    syncPrintDebugMsg          (const char* msg, unsigned int msgVerbosity, unsigned int numUSecs, const Epetra_MpiComm& commObj) const;
 
-          void                    openOutputFile           (const std::string&            fileName,
-                                                            const std::string&            fileType,
-                                                            const std::set<unsigned int>& allowedSubEnvIds,
-                                                                  bool                    writeOver,
-                                                                  std::ofstream*&         ofsvar) const;
+          void                    openOutputFile             (const std::string&            fileName,
+                                                              const std::string&            fileType,
+                                                              const std::set<unsigned int>& allowedSubEnvIds,
+                                                                    bool                    writeOver,
+                                                                    std::ofstream*&         ofsvar) const;
 
-          void                    openUnifiedOutputFile    (const std::string&            fileName,
-                                                            const std::string&            fileType,
-                                                                  bool                    writeOver,
-                                                                  std::ofstream*&         ofsvar) const;
+          void                    openUnifiedOutputFile      (const std::string&            fileName,
+                                                              const std::string&            fileType,
+                                                                    bool                    writeOver,
+                                                                    std::ofstream*&         ofsvar) const;
 
-  virtual void                    print                    (std::ostream& os) const = 0;
+  virtual void                    print                      (std::ostream& os) const = 0;
 
 protected:
   int                        m_worldRank;

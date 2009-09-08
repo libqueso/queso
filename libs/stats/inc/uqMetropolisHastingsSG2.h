@@ -45,14 +45,23 @@
 /*! If options request data to be written in the output file (MATLAB .m format only, for now), the user can check which MATLAB variables are defined and set by
     running 'grep zeros <OUTPUT FILE NAME>' after the solution procedure ends. THe names of the varibles are self explanatory.
 */
-/*! Acknowledgments: this core routine begun on July of 2008 as a translation of the core routine at the MCMC toolbox for MATLAB, available at www.helsinki.fi/~mjlaine/mcmc/.
-    Indeed, the example available in examples/statisticalInverseProblem1/tests/test_2009_02_03/ is related to the 'normal example' in the toolbox.
+/*  This operation currently implements the DRAM algorithm (Heikki Haario, Marko Laine, Antonietta Mira and
+    Eero Saksman, "DRAM: Efficient Adaptive MCMC", Statistics and Computing (2006), 16:339-354).
+    It also provides support for Stochastic Newton algorithm through the TK (transition kernel) class.
+    Stochastic Newton is not totally implemented yet though, since it is being researched by James Martin and Omar Ghattas at ICES.
+*/
+/*! -------------------------------------------------------------
+*/
+/*! Acknowledgments: this operation 'generateSequence()' begun on July of 2008 as a translation
+    of the core routine at the MCMC toolbox for MATLAB, available at www.helsinki.fi/~mjlaine/mcmc/.
+    Indeed, the example available in examples/statisticalInverseProblem1/tests/test_2009_02_03/ is
+    related to the 'normal example' in the toolbox.
     Over time, though:
 <list type=number>
 <item> the whole set of QUESO classes took shape, focusing not only on Markov Chains, but on statistical forward problems and model validation as well;
 <item> the interfaces to this Metropolis-Hastings class changed;
 <item> QUESO had parallel capabilities;
-<item> we added the TK (transition Kernel) class in order to combine DRAM with Stochastic Newton (being researched by James Martin at ICES).
+<item> we added the TK class, as mentioned above, in order to have both DRAM with Stochastic Newton capabilities.
 </list>
 */
 template <class P_V,class P_M>
@@ -75,7 +84,8 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
                       "'m_vectorSpace' and 'workingChain' are related to vector spaces of different dimensions");
 
   m_env.syncPrintDebugMsg("Entering uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()",2,3000000,m_env.fullComm());
-  checkTheParallelEnvironment();
+  uqCheckTheParallelEnvironment<P_V,P_V>(m_initialPosition,
+                                         m_initialPosition);
 
   P_V valuesOf1stPosition(m_initialPosition);
   int iRC = UQ_OK_RC;
@@ -994,56 +1004,6 @@ uqMetropolisHastingsSGClass<P_V,P_M>::updateAdaptedCovMatrix(
     } 
   }
   lastChainSize += doubleSubChainSize;
-
-  return;
-}
-
-template <class P_V,class P_M>
-void
-uqMetropolisHastingsSGClass<P_V,P_M>::checkTheParallelEnvironment()
-{
-  if (m_env.numSubEnvironments() == (unsigned int) m_env.fullComm().NumProc()) {
-    UQ_FATAL_TEST_MACRO(m_env.subRank() != 0,
-                        m_env.fullRank(),
-                        "uqMetropolisHastingsSGClass<P_V,P_M>::checkTheParallelEnvironment()",
-                        "there should exist only one processor per sub environment");
-    UQ_FATAL_TEST_MACRO(m_initialPosition.numOfProcsForStorage() != 1,
-                        m_env.fullRank(),
-                        "uqMetropolisHastingsSGClass<P_V,P_M>::checkTheParallelEnvironment()",
-                        "only 1 processor (per sub environment) should be necessary for the storage of a vector");
-  }
-  else if (m_env.numSubEnvironments() < (unsigned int) m_env.fullComm().NumProc()) {
-    UQ_FATAL_TEST_MACRO(m_env.fullComm().NumProc()%m_env.numSubEnvironments() != 0,
-                        m_env.fullRank(),
-                        "uqMetropolisHastingsSGClass<P_V,P_M>::checkTheParallelEnvironment()",
-                        "total number of processors should be a multiple of the number of sub environments");
-    unsigned int numProcsPerSubEnvironment = m_env.fullComm().NumProc()/m_env.numSubEnvironments();
-    UQ_FATAL_TEST_MACRO(m_env.subComm().NumProc() != (int) numProcsPerSubEnvironment,
-                        m_env.fullRank(),
-                        "uqMetropolisHastingsSGClass<P_V,P_M>::checkTheParallelEnvironment()",
-                        "inconsistent number of processors per sub environment");
-    if (m_initialPosition.numOfProcsForStorage() == 1) {
-      // Ok
-    }
-    else if (m_initialPosition.numOfProcsForStorage() == numProcsPerSubEnvironment) {
-      UQ_FATAL_TEST_MACRO(true,
-                          m_env.fullRank(),
-                          "uqMetropolisHastingsSGClass<P_V,P_M>::checkTheParallelEnvironment()",
-                          "parallel parameter vectors are not supported yet");
-    }
-    else {
-      UQ_FATAL_TEST_MACRO(true,
-                          m_env.fullRank(),
-                          "uqMetropolisHastingsSGClass<P_V,P_M>::checkTheParallelEnvironment()",
-                          "number of processors required for a vector storage should be equal to the number of processors in the sub environment");
-    }
-  }
-  else {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.fullRank(),
-                        "uqMetropolisHastingsSGClass<P_V,P_M>::checkTheParallelEnvironment()",
-                        "number of processors per sub environment is too large");
-  }
 
   return;
 }
