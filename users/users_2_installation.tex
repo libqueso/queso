@@ -2,7 +2,7 @@
 \thispagestyle{headings}
 \markboth{Chapter \ref{ch-install}: Installation}{Chapter \ref{ch-install}: Installation}
 
-This chapter describe how to install QUESO, test it and use it to build your application.
+This chapter describes how to install QUESO, test it and use it to build your application.
 
 \section{Installation Steps}
 
@@ -10,16 +10,7 @@ There are nine steps to make the QUESO Library available at your LINUX computing
 They are listed below, with examples of commands:
 %
 \begin{enumerate}
-\item {install five packages: % item 1
-\begin{itemize}
-\item GNU Scientific Library (GSL)~\cite{gsl},
-\item Boost C++ Libraries~\cite{boost}, 
-\item MPI Library, e.g. Open MPI~\cite{Openmpi} or MPICH~\cite{Mpich},
-\item Trilinos Library~\cite{Trilinos} and
-\item High Performance Computing Toolkit (HPCT)~\cite{hpct}.
-\end{itemize}
-}
-\item {prepare your LINUX environment (assuming csh; some commands might be enough): % item 2
+\item {prepare your LINUX environment (assuming csh; some commands might be enough): % item 1
 \begin{itemize}
 \item module load gnu
 \item module load openmpi
@@ -37,6 +28,27 @@ setenv LD_LIBRARY_PATH \$LD_LIBRARY_PATH:
 \item setenv MPICXX mpic++
 \item setenv F77 f77
 \item setenv FC gfortran
+\end{itemize}
+}
+\item {install five packages: % item 2
+\begin{itemize}
+\item GNU Scientific Library (GSL)~\cite{Gsl},
+\item Boost C++ Libraries~\cite{Boost}, 
+\item MPI Library, e.g. Open MPI~\cite{Openmpi} or MPICH~\cite{Mpich},
+\item Trilinos Library~\cite{Trilinos} and
+\item {High Performance Computing Toolkit (HPCT)~\cite{Hpct}.
+\begin{itemize}
+\item {
+\begin{verbatim}
+./configure --prefix=/home/johndoe/Installations/hpct \
+  --with-boost=/home/johndoe/Installations/1.37.0
+\end{verbatim}
+}
+\item make
+\item make install
+\item note: the directory '/home/johndoe/Installations/hpct' does not need to exist in advance, since it will be created by the command 'make install' above.
+\end{itemize}
+}
 \end{itemize}
 }
 \item {untar the QUESO tar.gz file (more comments in Section \ref{sc-source-dir-structure}): % item 3
@@ -59,10 +71,11 @@ setenv LD_LIBRARY_PATH \$LD_LIBRARY_PATH:
   --with-boost=/home/johndoe/Installations/1.37.0 \
   --with-gsl-prefix=/home/johndoe/Installations/gsl_1_12 \
   --with-hpct-prefix=/home/johndoe/Installations/hpct \
-  CXXFLAGS=''-DMPICH_IGNORE_CXX_SEEK -O3 -Wall -wd383 -wd981''
+  CXXFLAGS=''-DMPICH_IGNORE_CXX_SEEK -O3 -Wall -wd383 -wd981 -wd1572''
 \end{verbatim}
 }
 \item if you want to see the full list of configure options, just run ``./configure --help''
+\item note: the directory '/home/johndoe/Installations/queso\_0\_4\_1\_gnu' does not need to exist in advance, since it will be created in step 7.
 \end{itemize}
 }
 \item {compile the QUESO source code (library, examples and tests): % item 5
@@ -89,7 +102,12 @@ setenv LD_LIBRARY_PATH \$LD_LIBRARY_PATH:
 \item {create your own application (more comments in Section \ref{sc-using-queso}): % item 9
 \begin{itemize}
 \item code your program
-\item setenv LD\_LIBRARY\_PATH \$LD\_LIBRARY\_PATH:/home/johndoe/Installations/queso\_0\_4\_1\_gnu/lib
+\item {
+\begin{verbatim}
+setenv LD_LIBRARY_PATH \$LD_LIBRARY_PATH:
+       /home/johndoe/Installations/queso_0_4_1_gnu/lib
+\end{verbatim}
+}
 \item edit your Makefile
 \item compile and link your program
 \item execute your program
@@ -211,6 +229,14 @@ information about them can be obtained with the html documentation from step 8 a
 }
 \end{itemize}
 
+The two executables under 'test/t02\_sip\_sfp/', and 'test/t03\_sequence/'
+have the majority of their codes in *.C files.
+They might then be easier to understand than
+the four exectuables in 'examples' and 'test/t01\_valid\_cycle', which
+have the majority of their codes in *.h files, with templated routines.
+It should be clear, though, that all six executables might be implemented in either *.h or *.C files.
+It is a matter of how generic you want your application to be.
+
 \section{Checking the Compiled Source} \label{sc-checks}
 
 Just run 'make ckeck' at the same directory where 'configure' and 'make' were run.
@@ -224,10 +250,66 @@ All 2 tests passed
 
 The 2 tests mentioned in this message are the ones under 'test/t01\_valid\_cycle' and
 'test/t02\_sip\_sfp'. These tests are used as part of the periodic QUESO regression tests.
-The code for 't02\_sip\_sfp' is explained in Chapter \ref{ch-appl-example}.
+The code for 't02\_sip\_sfp' is mentioned in Subsection \ref{subsc-t02} and is explained in more detail in Chapter \ref{ch-appl-example}.
 
-\section{The Installed Directory Structure} \label{sc-intalled-dir-structure}
+\section{Running the Executables Provided with the Source Code} \label{sc-running-execs}
 
+This section assumes that you have successfully executed steps 1 through 6 above.
+The codes listed in this section have explanations inside themselves, and some of them
+print messages during execution to make it clearer what is going on.
+
+\subsection{Executable at 'examples/statisticalInverseProblem1/'}
+
+Just run the following commands:
+\begin{itemize}
+\item cd /home/johndoe/queso\_download/queso-0.4.1/
+\item cd examples/statisticalInverseProblem1/tests/test\_2009\_02\_03/
+\item rm outputData/*
+\item ../../src/exStatisticalInverseProblem1\_gsl sip.inp [this will take some seconds]
+\item matlab
+\item {[inside matlab]} sip\_plot
+\item {[press the left button of the mouse at a picture displayed by 'sip\_plot.m', in order to display the next picture]}
+\item {[inside matlab]} exit
+\item ls -l outputData/*.png
+\end{itemize}
+
+\subsection{Executable at 'examples/statisticalForwardProblem/'}
+
+Just run the following commands:
+\begin{itemize}
+\item cd /home/johndoe/queso\_download/queso-0.4.1/
+\item cd examples/statisticalForwardProblem1/tests/test\_2009\_02\_11/
+\item rm outputData/*
+\item ../../src/exStatisticalForwardProblem1\_gsl sfp.inp [this will take some seconds]
+\item matlab
+\item {[inside matlab] sfp\_plot}
+\item {[press the left button of the mouse at a picture displayed by 'sfp\_plot.m', in order to display the next picture]}
+\item {[inside matlab]} exit
+\item ls -l outputData/*.png
+\end{itemize}
+
+%\subsection{Executable at 'examples/validationCycle/'}
+
+%$~$\\
+
+\subsection{Executable at 'test/t02\_sip\_sfp/sip\_sfp/'}\label{subsc-t02}
+
+Just run the following commands:
+\begin{itemize}
+\item cd /home/johndoe/queso\_download/queso-0.4.1/
+\item cd test/t02\_sip\_sfp/sip\_sfp/
+\item rm outputData/*
+\item ./SipSfpExample\_gsl example.inp [this will take some seconds]
+\item matlab
+\item {[inside matlab]} example\_plots
+\item {[press the left button of the mouse at a picture displayed by 'example\_plots.m', in order to display the next picture]}
+\item {[inside matlab]} exit
+\item ls -l outputData/*.png
+\end{itemize}
+
+\section{The Installed Directory Structure} \label{sc-installed-dir-structure}
+
+This section assumes you have successfully executed steps 1 through 7 above.
 The QUESO installed directory contains three main directories:
 \begin{itemize}
 \item 'lib',
