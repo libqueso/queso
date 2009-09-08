@@ -1,4 +1,4 @@
-\chapter{Introduction}\label{ch-introduction}
+\chapter{Introduction (Incomplete)}\label{ch-introduction}
 \thispagestyle{headings}
 \markboth{Chapter \ref{ch-introduction}: Introduction}{Chapter \ref{ch-introduction}: Introduction}
 
@@ -6,6 +6,9 @@
 %a more formal treatment of the prediction problem.
 %Section \ref{sc-intro-qoi} presents a first mathematical model of a system, as well as the applicability of Bayes' theorem to our prediction problem.
 %The chapter finishes with the presentation of a more detailed model of a system in Section \ref{sc-intro-detail}.
+
+The QUESO library is able to handle uni- and multi-processor Linux
+environments.
 
 Other docs: \cite{PrSc09} and html.
 
@@ -47,6 +50,7 @@ $\mathbf{d}$ denotes experimental data.
 }
 \caption{
 Overview of the software stack of a typical application that uses QUESO.
+The symbol $\boldsymbol{\theta}$ represents a vector of $n\geqslant 1$ parameters.
 Algorithms in the QUESO library require the supply
 of a likelihood routine $\pi_{\text{like}}:\mathbb{R}^n\rightarrow\mathbb{R}_+$ for statistical inverse problems and 
 of a qoi routine $\mathbf{q}:\mathbb{R}^n\rightarrow\mathbb{R}^m$ for statistical forward problems. These routines

@@ -28,8 +28,8 @@ OBJS_convert = figs/uqEnvironment.eps \
 	figs/uqSipOptions.eps \
 	figs/uqSfp.eps \
 	figs/uqSfpOptions.eps \
-	figs/uqMarkovChainSG.eps \
-	figs/uqMarkovChainSGOptions.eps \
+	figs/uqMetropolisHastingsSG.eps \
+	figs/uqMetropolisHastingsSGOptions.eps \
 	figs/uqMonteCarloSG.eps \
 	figs/uqMonteCarloSGOptions.eps \
 	figs/uqSequenceStatisticalOptions.eps \

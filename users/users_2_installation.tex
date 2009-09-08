@@ -2,107 +2,222 @@
 \thispagestyle{headings}
 \markboth{Chapter \ref{ch-install}: Installation}{Chapter \ref{ch-install}: Installation}
 
-The QUESO Tool currently runs over uni- and multi-processor Linux
-environments and requires the following packages to be installed in
-your computing system:
+There are nine steps to make the QUESO Library available at your LINUX computing system.
+They are listed below, with examples of commands:
 %
+\begin{enumerate}
+\item {install five packages:
 \begin{itemize}
-\item GNU Scientific Library (gsl)~\cite{gsl},
+\item GNU Scientific Library (GSL)~\cite{gsl},
 \item Boost C++ Libraries~\cite{boost}, 
-\item an MPI implementation---e.g., Open MPI~\cite{Openmpi} or MPICH~\cite{Mpich}---and
-\item Trilinos (TO DO: cite specific packages?)~\cite{Trilinos}.
+\item MPI Library, e.g. Open MPI~\cite{Openmpi} or MPICH~\cite{Mpich},
+\item Trilinos Library~\cite{Trilinos} and
+\item High Performance Computing Toolkit (HPCT)~\cite{hpct}.
 \end{itemize}
-%
-If you do not have these packages, you should download and install
-them before continuing.
-
-There are three steps to building the QUESO Tool:
-%
+}
+\item {prepare your LINUX environment (assuming csh; some commands might be enough):
 \begin{itemize}
-\item download the code,
-\item prepare the build environment, and
-\item compile.
+\item module load gnu
+\item module load openmpi
+\item {
+\begin{verbatim}
+setenv LD_LIBRARY_PATH \$LD_LIBRARY_PATH:
+       /home/johndoe/Installations/gsl_1_12/lib:
+       /home/johndoe/Installations/Boost_1_37_0/lib:
+       /home/johndoe/Installations/hpct/lib
+\end{verbatim}
+}
+\item setenv CC gcc
+\item setenv CXX g++
+\item setenv MPICC mpicc
+\item setenv MPICXX mpic++
+\item setenv F77 f77
+\item setenv FC gfortran
 \end{itemize}
-%
-These steps are described in Sections~\ref{section:download}
-through~\ref{section:compile}.
+}
+\item {untar the QUESO tar.gz file (more comments in Section \ref{sc-dir-structure}):
+\begin{itemize}
+\item cd /home/johndoe
+\item mkdir queso\_download
+\item cd /home/johndoe/queso\_download
+\item mv $<$ORIGINAL\_LOCATION$>$queso-0.4.1.tar.gz .
+\item tar -zxvf queso-0.4.1.tar
+\end{itemize}
+}
+\item {configure the QUESO building environment:
+\begin{itemize}
+\item cd /home/johndoe/queso\_download/queso-0.4.1
+\item ./bootstrap
+\item {
+\begin{verbatim}
+./configure --prefix=/home/johndoe/Installations/queso_0_4_1_gnu \
+  --with-trilinos=/home/johndoe/Installations/trilinos_9_0_2 \
+  --with-boost=/home/johndoe/Installations/1.37.0 \
+  --with-gsl-prefix=/home/johndoe/Installations/gsl_1_12 \
+  --with-hpct-prefix=/home/johndoe/Installations/hpct \
+  CXXFLAGS=''-DMPICH_IGNORE_CXX_SEEK -O3 -Wall -wd383 -wd981''
+\end{verbatim}
+}
+\item if you want to see the full list of configure options, just run ``./configure --help''
+\end{itemize}
+}
+\item {compile the QUESO code (library, examples and tests):
+\begin{itemize}
+\item make
+\end{itemize}
+}
+\item {check the installation (more comments in Section \ref{sc-checks}):
+\begin{itemize}
+\item make check
+\end{itemize}
+}
+\item {install the QUESO library:
+\begin{itemize}
+\item make install
+\end{itemize}
+}
+\item {create the documentation in html format:
+\begin{itemize}
+\item make html
+\item firefox doxygen-doc/html/index.html
+\end{itemize}
+}
+\item {execute your own application (more comments in Chapter \ref{ch-appl-example}):
+\begin{itemize}
+\item code your program
+\item setenv LD\_LIBRARY\_PATH \$LD\_LIBRARY\_PATH:/home/johndoe/Installations/queso\_0\_4\_1\_gnu/lib
+\item edit your Makefile
+\item compile and link your program
+\item execute your program
+\end{itemize}
+}
+\end{enumerate}
+%%
+%These steps are described in Sections~\ref{section:download}
+%through~\ref{section:compile}.
 
-\section{Download} \label{section:download}
-There are two methods for obtaining the QUESO source code: the PECOS
-subversion repository and downloading the latest released version from
-?? (FIX ME: Does a download location exist?).  If you have read access
-to the PECOS subversion repository, you may obtain the code directly
-from the repository:
-%
-\begin{verbatim}
-svn co https://svn.ices.utexas.edu/repos/pecos/uq/queso <WORK_DIR>
-\end{verbatim}
-%
-where \verb+<WORK_DIR>+ denotes the desired download location.  If you
-do not have access to the repository, the latest QUESO release may be
-downloaded from ??.  After
-downloading the source tarball to \verb+<WORK_DIR>+, unpack the source
-as follows:
-%
-\begin{verbatim}
-cd <WORK_DIR>
-tar -zxvf queso_0.4.1.tar.gz (FIX ME: check tarball name)
-\end{verbatim}
-%
+%\section{Download} \label{section:download}
+%There are two methods for obtaining the QUESO source code: the PECOS
+%subversion repository and downloading the latest released version from
+%?? (FIX ME: Does a download location exist?).  If you have read access
+%to the PECOS subversion repository, you may obtain the code directly
+%from the repository:
+%%
+%\begin{verbatim}
+%svn co https://svn.ices.utexas.edu/repos/pecos/uq/queso <WORK_DIR>
+%\end{verbatim}
+%%
+%where \verb+<WORK_DIR>+ denotes the desired download location.  If you
+%do not have access to the repository, the latest QUESO release may be
+%downloaded from ??.  After
+%downloading the source tarball to \verb+<WORK_DIR>+, unpack the source
+%as follows:
+%%
+%\begin{verbatim}
+%cd <WORK_DIR>
+%tar -zxvf queso_0.4.1.tar.gz (FIX ME: check tarball name)
+%\end{verbatim}
+%%
 
-\section{Configure the Build Environment} \label{section:configure}
-After downloading the source code, move into the top-level QUESO
-directory to configure the build environment.  Depending on how you
-obtained the source, this directory will be different.  If you
-obtained the source from the subversion repository,
-%
-\begin{verbatim}
-cd <WORK_DIR>/branches/0.4.1
-\end{verbatim}
-%
-If you downloaded the source from ?? and unpacked the tarball,
-%
-\begin{verbatim}
-cd <WORK_DIR>/queso_0.4.1
-\end{verbatim}
-%
+%\section{Configure the Build Environment} \label{section:configure}
+%After downloading the source code, move into the top-level QUESO
+%directory to configure the build environment.  Depending on how you
+%obtained the source, this directory will be different.  If you
+%obtained the source from the subversion repository,
+%%
+%\begin{verbatim}
+%cd <WORK_DIR>/branches/0.4.1
+%\end{verbatim}
+%%
+%If you downloaded the source from ?? and unpacked the tarball,
+%%
+%\begin{verbatim}
+%cd <WORK_DIR>/queso_0.4.1
+%\end{verbatim}
+%%
 
-To configure the build environment, the \verb+configure+ script will
-be run.  The \verb+configure+ script is not stored on the subversion
-repository.  Thus, you may need to generate it using the
-\verb+bootstrap+ utility:
-%
-\begin{verbatim}
-./bootstrap
-\end{verbatim}
-%
-Then, to prepare the build environment, run
-%
-\begin{verbatim}
-./configure
-\end{verbatim}
-%
-The \verb+configure+ script accepts many options that you may use to
-customize the build environment.  For example, specifying
-\verb+--prefix=<INSTALL_DIR>+ sets \verb+<INSTALL_DIR>+ as the
-installation location used by the \verb+make install+ target, and
-specifiying \verb+--with-trilinos=<TRI_DIR>+ indicates that
-\verb+<TRI_DIR>+ is the root directory of your Trilinos installation.
-You may also use environment variables---e.g., \verb+CXX+ and
-\verb+CXXFLAGS+---to override default choices made by the
-\verb+configure+ script.  To see the full list of options, use
-%
-\begin{verbatim}
-./configure --help
-\end{verbatim}
-%
+%To configure the build environment, the \verb+configure+ script will
+%be run.  The \verb+configure+ script is not stored on the subversion
+%repository.  Thus, you may need to generate it using the
+%\verb+bootstrap+ utility:
+%%
+%\begin{verbatim}
+%./bootstrap
+%\end{verbatim}
+%%
+%Then, to prepare the build environment, run
+%%
+%\begin{verbatim}
+%./configure
+%\end{verbatim}
+%%
+%The \verb+configure+ script accepts many options that you may use to
+%customize the build environment.  For example, specifying
+%\verb+--prefix=<INSTALL_DIR>+ sets \verb+<INSTALL_DIR>+ as the
+%installation location used by the \verb+make install+ target, and
+%specifiying \verb+--with-trilinos=<TRI_DIR>+ indicates that
+%\verb+<TRI_DIR>+ is the root directory of your Trilinos installation.
+%You may also use environment variables---e.g., \verb+CXX+ and
+%\verb+CXXFLAGS+---to override default choices made by the
+%\verb+configure+ script.
 
-\section{Compile the Code} \label{section:compile}
-After successfully running \verb+configure+, type
-%
+%To see the full list of configure options for item 3 above, use
+%\begin{verbatim}
+%./configure --help
+%\end{verbatim}
+%%
+
+%\section{Compile the Code} \label{section:compile}
+%After successfully running \verb+configure+, type
+%%
+%\begin{verbatim}
+%make
+%make install
+%\end{verbatim}
+%%
+%to build and install the QUESO Tool libraries, headers, and examples.
+
+\section{Directory Structure} \label{sc-dir-structure}
+
+The QUESO library contains three main directories. They are listed below and more
+information about them can be obtained with the html documentation (see Section \ref{sc-html}):
+\begin{itemize}
+\item {'libs', with five subdirectories:
+\begin{itemize}
+\item 'libs/core/', with 'inc' and 'src' subdirectories,
+\item 'libs/misc/', with 'inc' and 'src' subdirectories,
+\item 'libs/basic/', with 'inc' and 'src' subdirectories,
+\item 'libs/stats/', with 'inc' and 'src' subdirectories, and
+\item 'libs/interface/'.
+\end{itemize}
+}
+\item {'examples', with three subdirectories:
+\begin{itemize}
+\item 'examples/statisticalForwardProblem/',
+\item 'examples/statisticalInverseProblem1/', and
+\item 'examples/validationCycle/'.
+\end{itemize}
+}
+\item {'test', with three subdirectories:
+\begin{itemize}
+\item 'test/t01\_valid\_cycle/',
+\item 'test/t02\_sip\_sfp/', and
+\item 'test/t03\_sequence/'.
+\end{itemize}
+}
+\end{itemize}
+
+\section{Checking the Installation} \label{sc-checks}
+
+Just run 'make ckeck' at the same directory where 'configure' and 'make' were run.
+Many printouts will appear in the screen, but towards the end of them you should see
+a message like:
 \begin{verbatim}
-make
-make install
+==================
+All 2 tests passed
+==================
 \end{verbatim}
-%
-to build and install the QUESO Tool libraries, headers, and examples.
+
+The 2 tests mentioned in this message are the ones under 'test/t01\_valid\_cycle' and
+'test/t02\_sip\_sfp'. These tests are used as part of the periodic QUESO regression tests.
+The code for 't02\_sip\_sfp' is explained in Chapter \ref{ch-appl-example}.

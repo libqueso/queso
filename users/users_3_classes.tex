@@ -1,4 +1,4 @@
-\chapter{C++ Classes in the Library}\label{ch-classes}
+\chapter{C++ Classes in the Library (Incomplete)}\label{ch-classes}
 \thispagestyle{headings}
 \markboth{Chapter \ref{ch-classes}: C++ Classes in the Library}{Chapter \ref{ch-classes}: C++ Classes in the Library}
 
@@ -16,7 +16,7 @@
 
 \section{Core Classes}
 
-The are four core classes:
+There are four core classes:
 \begin{itemize}
 \item environment and environment options (Figures \ref{fig-env-class} and \ref{fig-env-options-class}, pages \pageref{fig-env-class} and \pageref{fig-env-options-class}),
 \item vector (Figure \ref{fig-vector-class}, page \pageref{fig-vector-class}),
@@ -51,25 +51,25 @@ The environment options class.
 \begin{center}
 \begin{tabular}{|l|c|c|}
 \hline
-\multicolumn{1}{|c|}{Option}               & Default & Description \\
-\multicolumn{1}{|c|}{Name}                 & Value   &             \\
+\multicolumn{1}{|c|}{Option}                      & Default & Description \\
+\multicolumn{1}{|c|}{Name}                        & Value   &             \\
 \hline
 \hline
-$\langle$PREFIX$\rangle$help               &         &             \\
+$\langle$PREFIX$\rangle$env\_help                 &         &             \\
 \hline
-$\langle$PREFIX$\rangle$numSubEnvironments &         &             \\
+$\langle$PREFIX$\rangle$env\_numSubEnvironments   &         &             \\
 \hline
-$\langle$PREFIX$\rangle$subDisplayFileName &         &             \\
+$\langle$PREFIX$\rangle$env\_subDisplayFileName   &         &             \\
 \hline
-$\langle$PREFIX$\rangle$subDisplayAllowAll &         &             \\
+$\langle$PREFIX$\rangle$env\_subDisplayAllowAll   &         &             \\
 \hline
-$\langle$PREFIX$\rangle$subDisplayAllow    &         &             \\
+$\langle$PREFIX$\rangle$env\_subDisplayAllowedSet &         &             \\
 \hline
-$\langle$PREFIX$\rangle$displayVerbosity   &         &             \\
+$\langle$PREFIX$\rangle$env\_displayVerbosity     &         &             \\
 \hline
-$\langle$PREFIX$\rangle$syncVerbosity      &         &             \\
+$\langle$PREFIX$\rangle$env\_syncVerbosity        &         &             \\
 \hline
-$\langle$PREFIX$\rangle$seed               &         &             \\
+$\langle$PREFIX$\rangle$env\_seed                 &         &             \\
 \hline
 \end{tabular}
 \end{center}
@@ -194,7 +194,7 @@ The class diagram for the vector sequence class.
 \begin{itemize}
 \item Vector random variable
 \item Statistical inverse problem (and options)
-\item Markov chain solver (and options)
+\item Metropolis-Hastings solver (and options)
 \item Statistical forward problem (and options)
 \item Monte Carlo solver (and options)
 \item Sequence statistical options
@@ -246,17 +246,17 @@ The statistical inverse problem options class.
 \begin{center}
 \begin{tabular}{|l|c|c|}
 \hline
-\multicolumn{1}{|c|}{Option}                 & Default & Description \\
-\multicolumn{1}{|c|}{Name}                   & Value   &             \\
+\multicolumn{1}{|c|}{Option}                     & Default & Description \\
+\multicolumn{1}{|c|}{Name}                       & Value   &             \\
 \hline
 \hline
-$\langle$PREFIX$\rangle$help                 &         &             \\
+$\langle$PREFIX$\rangle$ip\_help                 &         &             \\
 \hline
-$\langle$PREFIX$\rangle$computeSolution      &         &             \\
+$\langle$PREFIX$\rangle$ip\_computeSolution      &         &             \\
 \hline
-$\langle$PREFIX$\rangle$dataOutputFileName   &         &             \\
+$\langle$PREFIX$\rangle$ip\_dataOutputFileName   &         &             \\
 \hline
-$\langle$PREFIX$\rangle$dataOutputAllowedSet &         &             \\
+$\langle$PREFIX$\rangle$ip\_dataOutputAllowedSet &         &             \\
 \hline
 \end{tabular}
 \end{center}
@@ -267,98 +267,96 @@ Input file options for a QUESO statistical inverse problem.
 \end{table}
 
 \clearpage
-\subsection{Markov Chain Solver (and Options)}
+\subsection{Metropolis-Hastings Solver (and Options)}
 
 \begin{figure}[h!]
 \centerline{
-\includegraphics[scale=0.40,clip=true]{figs/uqMarkovChainSG.eps}
+\includegraphics[scale=0.40,clip=true]{figs/uqMetropolisHastingsSG.eps}
 }
 \caption{
-The Markov chain sequence generator class.
+The Metropolis-Hastings sequence generator class.
 }
-\label{fig-markov-chain-solver-class}
+\label{fig-metropolis-hastings-solver-class}
 \end{figure}
 
 \begin{figure}[h!]
 \begin{center}
-\includegraphics[scale=0.40,clip=true]{figs/uqMarkovChainSGOptions.eps}
+\includegraphics[scale=0.40,clip=true]{figs/uqMetropolisHastingsSGOptions.eps}
 \end{center}
 \caption{
-The Markov chain sequence generator options class.
+The Metropolis-Hastings sequence generator options class.
 }
-\label{fig-markov-options-class}
+\label{fig-metropolis-hastings-options-class}
 \end{figure}
 
 \begin{table}[!h]
 \begin{center}
 \begin{tabular}{|l|c|c|}
 \hline
-\multicolumn{1}{|c|}{Option}                               & Default & Description \\
-\multicolumn{1}{|c|}{Name}                                 & Value   &             \\
+\multicolumn{1}{|c|}{Option}                                    & Default & Description \\
+\multicolumn{1}{|c|}{Name}                                      & Value   &             \\
 \hline
 \hline
-$\langle$PREFIX$\rangle$help                               &         &             \\
+$\langle$PREFIX$\rangle$mh\_help                                &         &             \\
 \hline
-$\langle$PREFIX$\rangle$dataOutputFileName                 &         &             \\
+$\langle$PREFIX$\rangle$mh\_dataOutputFileName                  &         &             \\
 \hline
-$\langle$PREFIX$\rangle$dataOutputAllowedSet               &         &             \\
+$\langle$PREFIX$\rangle$mh\_dataOutputAllowedSet                &         &             \\
 \hline
-$\langle$PREFIX$\rangle$rawChain\_type                     &         &             \\
+$\langle$PREFIX$\rangle$mh\_rawChain\_dataInputFileName         &         &             \\
 \hline
-$\langle$PREFIX$\rangle$rawChain\_dataInputFileName         &         &             \\
+$\langle$PREFIX$\rangle$mh\_rawChain\_size                      &         &             \\
 \hline
-$\langle$PREFIX$\rangle$rawChain\_size                      &         &             \\
+$\langle$PREFIX$\rangle$mh\_rawChain\_generateExtra             &         &             \\
 \hline
-$\langle$PREFIX$\rangle$rawChain\_generateExtra             &         &             \\
+$\langle$PREFIX$\rangle$mh\_rawChain\_displayPeriod             &         &             \\
 \hline
-$\langle$PREFIX$\rangle$rawChain\_displayPeriod             &         &             \\
+$\langle$PREFIX$\rangle$mh\_rawChain\_measureRunTimes           &         &             \\
 \hline
-$\langle$PREFIX$\rangle$rawChain\_measureRunTimes           &         &             \\
+$\langle$PREFIX$\rangle$mh\_rawChain\_dataOutputFileName        &         &             \\
 \hline
-$\langle$PREFIX$\rangle$rawChain\_dataOutputFileName        &         &             \\
+$\langle$PREFIX$\rangle$mh\_rawChain\_dataOutputAllowedSet      &         &             \\
 \hline
-$\langle$PREFIX$\rangle$rawChain\_dataOutputAllowedSet      &         &             \\
+$\langle$PREFIX$\rangle$mh\_rawChain\_computeStats              &         &             \\
 \hline
-$\langle$PREFIX$\rangle$rawChain\_computeStats              &         &             \\
+$\langle$PREFIX$\rangle$mh\_filteredChain\_generate             &         &             \\
 \hline
-$\langle$PREFIX$\rangle$filteredChain\_generate             &         &             \\
+$\langle$PREFIX$\rangle$mh\_filteredChain\_discardedPortion     &         &             \\
 \hline
-$\langle$PREFIX$\rangle$filteredChain\_discardedPortion     &         &             \\
+$\langle$PREFIX$\rangle$mh\_filteredChain\_lag                  &         &             \\
 \hline
-$\langle$PREFIX$\rangle$filteredChain\_lag                  &         &             \\
+$\langle$PREFIX$\rangle$mh\_filteredChain\_dataOutputFileName   &         &             \\
 \hline
-$\langle$PREFIX$\rangle$filteredChain\_dataOutputFileName   &         &             \\
+$\langle$PREFIX$\rangle$mh\_filteredChain\_dataOutputAllowedSet &         &             \\
 \hline
-$\langle$PREFIX$\rangle$filteredChain\_dataOutputAllowedSet &         &             \\
+$\langle$PREFIX$\rangle$mh\_filteredChain\_computeStats         &         &             \\
 \hline
-$\langle$PREFIX$\rangle$filteredChain\_computeStats         &         &             \\
+$\langle$PREFIX$\rangle$mh\_displayCandidates                   &         &             \\
 \hline
-$\langle$PREFIX$\rangle$mh\_displayCandidates               &         &             \\
+$\langle$PREFIX$\rangle$mh\_putOutOfBoundsInChain               &         &             \\
 \hline
-$\langle$PREFIX$\rangle$mh\_putOutOfBoundsInChain           &         &             \\
+$\langle$PREFIX$\rangle$mh\_tk\_useLocalHessian                 &         &             \\
 \hline
-$\langle$PREFIX$\rangle$tk\_useLocalHessian                 &         &             \\
+$\langle$PREFIX$\rangle$mh\_tk\_useNewtonComponent              &         &             \\
 \hline
-$\langle$PREFIX$\rangle$tk\_useNewtonComponent              &         &             \\
+$\langle$PREFIX$\rangle$mh\_dr\_maxNumExtraStages               &         &             \\
 \hline
-$\langle$PREFIX$\rangle$dr\_maxNumExtraStages               &         &             \\
+$\langle$PREFIX$\rangle$mh\_dr\_scalesForExtraStages            &         &             \\
 \hline
-$\langle$PREFIX$\rangle$dr\_scalesForExtraStages            &         &             \\
+$\langle$PREFIX$\rangle$mh\_am\_initialNonAdaptInterval         &         &             \\
 \hline
-$\langle$PREFIX$\rangle$am\_initialNonAdaptInterval         &         &             \\
+$\langle$PREFIX$\rangle$mh\_am\_adaptInterval                   &         &             \\
 \hline
-$\langle$PREFIX$\rangle$am\_adaptInterval                   &         &             \\
+$\langle$PREFIX$\rangle$mh\_am\_eta                             &         &             \\
 \hline
-$\langle$PREFIX$\rangle$am\_eta                             &         &             \\
-\hline
-$\langle$PREFIX$\rangle$am\_epsilon                         &         &             \\
+$\langle$PREFIX$\rangle$mh\_am\_epsilon                         &         &             \\
 \hline
 \end{tabular}
 \end{center}
 \caption{
-Input file options for a QUESO Markov chain solver.
+Input file options for a QUESO Metropolis-Hastings solver.
 }
-\label{tab-markov-options}
+\label{tab-metropolis-hastings-options}
 \end{table}
 
 \clearpage
@@ -388,21 +386,21 @@ The statistical forward problem options class.
 \begin{center}
 \begin{tabular}{|l|c|c|}
 \hline
-\multicolumn{1}{|c|}{Option}                 & Default & Description \\
-\multicolumn{1}{|c|}{Name}                   & Value   &             \\
+\multicolumn{1}{|c|}{Option}                     & Default & Description \\
+\multicolumn{1}{|c|}{Name}                       & Value   &             \\
 \hline
 \hline
-$\langle$PREFIX$\rangle$help                 &         &             \\
+$\langle$PREFIX$\rangle$fp\_help                 &         &             \\
 \hline
-$\langle$PREFIX$\rangle$computeSolution      &         &             \\
+$\langle$PREFIX$\rangle$fp\_computeSolution      &         &             \\
 \hline
-$\langle$PREFIX$\rangle$computeCovariances   &         &             \\
+$\langle$PREFIX$\rangle$fp\_computeCovariances   &         &             \\
 \hline
-$\langle$PREFIX$\rangle$computeCorrelations  &         &             \\
+$\langle$PREFIX$\rangle$fp\_computeCorrelations  &         &             \\
 \hline
-$\langle$PREFIX$\rangle$dataOutputFileName   &         &             \\
+$\langle$PREFIX$\rangle$fp\_dataOutputFileName   &         &             \\
 \hline
-$\langle$PREFIX$\rangle$dataOutputAllowedSet &         &             \\
+$\langle$PREFIX$\rangle$fp\_dataOutputAllowedSet &         &             \\
 \hline
 \end{tabular}
 \end{center}
@@ -439,35 +437,35 @@ Input file options for a QUESO statistical forward problem.
 \begin{center}
 \begin{tabular}{|l|c|c|}
 \hline
-\multicolumn{1}{|c|}{Option}                        & Default & Description \\
-\multicolumn{1}{|c|}{Name}                          & Value   &             \\
+\multicolumn{1}{|c|}{Option}                            & Default & Description \\
+\multicolumn{1}{|c|}{Name}                              & Value   &             \\
 \hline
 \hline
-$\langle$PREFIX$\rangle$help                        &         &             \\
+$\langle$PREFIX$\rangle$mc\_help                        &         &             \\
 \hline
-$\langle$PREFIX$\rangle$dataOutputFileName          &         &             \\
+$\langle$PREFIX$\rangle$mc\_dataOutputFileName          &         &             \\
 \hline
-$\langle$PREFIX$\rangle$dataOutputAllowedSet        &         &             \\
+$\langle$PREFIX$\rangle$mc\_dataOutputAllowedSet        &         &             \\
 \hline
-$\langle$PREFIX$\rangle$pseq\_dataOutputFileName     &         &             \\
+$\langle$PREFIX$\rangle$mc\_pseq\_dataOutputFileName     &         &             \\
 \hline
-$\langle$PREFIX$\rangle$pseq\_dataOutputAllowedSet   &         &             \\
+$\langle$PREFIX$\rangle$mc\_pseq\_dataOutputAllowedSet   &         &             \\
 \hline
-$\langle$PREFIX$\rangle$pseq\_computeStats           &         &             \\
+$\langle$PREFIX$\rangle$mc\_pseq\_computeStats           &         &             \\
 \hline
-$\langle$PREFIX$\rangle$qseq\_dataInputFileName      &         &             \\
+$\langle$PREFIX$\rangle$mc\_qseq\_dataInputFileName      &         &             \\
 \hline
-$\langle$PREFIX$\rangle$qseq\_size                   &         &             \\
+$\langle$PREFIX$\rangle$mc\_qseq\_size                   &         &             \\
 \hline
-$\langle$PREFIX$\rangle$qseq\_displayPeriod          &         &             \\
+$\langle$PREFIX$\rangle$mc\_qseq\_displayPeriod          &         &             \\
 \hline
-$\langle$PREFIX$\rangle$qseq\_measureRunTimes        &         &             \\
+$\langle$PREFIX$\rangle$mc\_qseq\_measureRunTimes        &         &             \\
 \hline
-$\langle$PREFIX$\rangle$qseq\_dataOutputFileName     &         &             \\
+$\langle$PREFIX$\rangle$mc\_qseq\_dataOutputFileName     &         &             \\
 \hline
-$\langle$PREFIX$\rangle$qseq\_dataOutputAllowedSet   &         &             \\
+$\langle$PREFIX$\rangle$mc\_qseq\_dataOutputAllowedSet   &         &             \\
 \hline
-$\langle$PREFIX$\rangle$qseq\_computeStats           &         &             \\
+$\langle$PREFIX$\rangle$mc\_qseq\_computeStats           &         &             \\
 \hline
 \end{tabular}
 \end{center}
@@ -494,104 +492,104 @@ Input file options for a QUESO Monte Carlo solver.
 \begin{center}
 \begin{tabular}{|l|c|c|}
 \hline
-\multicolumn{1}{|c|}{Option}                      & Default & Description \\
-\multicolumn{1}{|c|}{Name}                        & Value   &             \\
+\multicolumn{1}{|c|}{Option}                             & Default & Description \\
+\multicolumn{1}{|c|}{Name}                               & Value   &             \\
 \hline
 \hline
-$\langle$PREFIX$\rangle$help                      &         &             \\
+$\langle$PREFIX$\rangle$stats\_help                      &         &             \\
 \hline
-$\langle$PREFIX$\rangle$initialDiscardedPortions  &         &             \\
-\hline
-\hline
-$\langle$PREFIX$\rangle$bmm\_run                   &         &             \\
-\hline
-$\langle$PREFIX$\rangle$bmm\_lengths               &         &             \\
-\hline
-$\langle$PREFIX$\rangle$bmm\_display               &         &             \\
-\hline
-$\langle$PREFIX$\rangle$bmm\_write                 &         &             \\
+$\langle$PREFIX$\rangle$stats\_initialDiscardedPortions  &         &             \\
 \hline
 \hline
-$\langle$PREFIX$\rangle$fft\_compute               &         &             \\
+$\langle$PREFIX$\rangle$stats\_bmm\_run                   &         &             \\
 \hline
-$\langle$PREFIX$\rangle$fft\_paramId               &         &             \\
+$\langle$PREFIX$\rangle$stats\_bmm\_lengths               &         &             \\
 \hline
-$\langle$PREFIX$\rangle$fft\_size                  &         &             \\
+$\langle$PREFIX$\rangle$stats\_bmm\_display               &         &             \\
 \hline
-$\langle$PREFIX$\rangle$fft\_testInversion         &         &             \\
-\hline
-$\langle$PREFIX$\rangle$fft\_write                 &         &             \\
+$\langle$PREFIX$\rangle$stats\_bmm\_write                 &         &             \\
 \hline
 \hline
-$\langle$PREFIX$\rangle$psd\_compute               &         &             \\
+$\langle$PREFIX$\rangle$stats\_fft\_compute               &         &             \\
 \hline
-$\langle$PREFIX$\rangle$psd\_numBlocks             &         &             \\
+$\langle$PREFIX$\rangle$stats\_fft\_paramId               &         &             \\
 \hline
-$\langle$PREFIX$\rangle$psd\_hopSizeRatio          &         &             \\
+$\langle$PREFIX$\rangle$stats\_fft\_size                  &         &             \\
 \hline
-$\langle$PREFIX$\rangle$psd\_paramId               &         &             \\
+$\langle$PREFIX$\rangle$stats\_fft\_testInversion         &         &             \\
 \hline
-$\langle$PREFIX$\rangle$psd\_write                 &         &             \\
-\hline
-\hline
-$\langle$PREFIX$\rangle$psdAtZero\_compute         &         &             \\
-\hline
-$\langle$PREFIX$\rangle$psdAtZero\_numBlocks       &         &             \\
-\hline
-$\langle$PREFIX$\rangle$psdAtZero\_hopSizeRatio    &         &             \\
-\hline
-$\langle$PREFIX$\rangle$psdAtZero\_display         &         &             \\
-\hline
-$\langle$PREFIX$\rangle$psdAtZero\_write           &         &             \\
+$\langle$PREFIX$\rangle$stats\_fft\_write                 &         &             \\
 \hline
 \hline
-$\langle$PREFIX$\rangle$geweke\_compute            &         &             \\
+$\langle$PREFIX$\rangle$stats\_psd\_compute               &         &             \\
 \hline
-$\langle$PREFIX$\rangle$geweke\_naRatio            &         &             \\
+$\langle$PREFIX$\rangle$stats\_psd\_numBlocks             &         &             \\
 \hline
-$\langle$PREFIX$\rangle$geweke\_nbRatio            &         &             \\
+$\langle$PREFIX$\rangle$stats\_psd\_hopSizeRatio          &         &             \\
 \hline
-$\langle$PREFIX$\rangle$geweke\_display            &         &             \\
+$\langle$PREFIX$\rangle$stats\_psd\_paramId               &         &             \\
 \hline
-$\langle$PREFIX$\rangle$geweke\_write              &         &             \\
-\hline
-\hline
-$\langle$PREFIX$\rangle$autoCorr\_computeViaDef    &         &             \\
-\hline
-$\langle$PREFIX$\rangle$autoCorr\_computeViaFft    &         &             \\
-\hline
-$\langle$PREFIX$\rangle$autoCorr\_secondLag        &         &             \\
-\hline
-$\langle$PREFIX$\rangle$autoCorr\_lagSpacing       &         &             \\
-\hline
-$\langle$PREFIX$\rangle$autoCorr\_numLags          &         &             \\
-\hline
-$\langle$PREFIX$\rangle$autoCorr\_display          &         &             \\
-\hline
-$\langle$PREFIX$\rangle$autoCorr\_write            &         &             \\
+$\langle$PREFIX$\rangle$stats\_psd\_write                 &         &             \\
 \hline
 \hline
-$\langle$PREFIX$\rangle$meanStacc\_compute         &         &             \\
+$\langle$PREFIX$\rangle$stats\_psdAtZero\_compute         &         &             \\
+\hline
+$\langle$PREFIX$\rangle$stats\_psdAtZero\_numBlocks       &         &             \\
+\hline
+$\langle$PREFIX$\rangle$stats\_psdAtZero\_hopSizeRatio    &         &             \\
+\hline
+$\langle$PREFIX$\rangle$stats\_psdAtZero\_display         &         &             \\
+\hline
+$\langle$PREFIX$\rangle$stats\_psdAtZero\_write           &         &             \\
 \hline
 \hline
-$\langle$PREFIX$\rangle$hist\_compute              &         &             \\
+$\langle$PREFIX$\rangle$stats\_geweke\_compute            &         &             \\
 \hline
-$\langle$PREFIX$\rangle$hist\_numInternalBins      &         &             \\
+$\langle$PREFIX$\rangle$stats\_geweke\_naRatio            &         &             \\
 \hline
+$\langle$PREFIX$\rangle$stats\_geweke\_nbRatio            &         &             \\
 \hline
-$\langle$PREFIX$\rangle$cdfStacc\_compute          &         &             \\
+$\langle$PREFIX$\rangle$stats\_geweke\_display            &         &             \\
 \hline
-$\langle$PREFIX$\rangle$cdfStacc\_numEvalPositions &         &             \\
-\hline
-\hline
-$\langle$PREFIX$\rangle$kde\_compute               &         &             \\
-\hline
-$\langle$PREFIX$\rangle$kde\_numEvalPositions      &         &             \\
+$\langle$PREFIX$\rangle$stats\_geweke\_write              &         &             \\
 \hline
 \hline
-$\langle$PREFIX$\rangle$covMatrix\_compute         &         &             \\
+$\langle$PREFIX$\rangle$stats\_autoCorr\_computeViaDef    &         &             \\
 \hline
-$\langle$PREFIX$\rangle$corrMatrix\_compute        &         &             \\
+$\langle$PREFIX$\rangle$stats\_autoCorr\_computeViaFft    &         &             \\
+\hline
+$\langle$PREFIX$\rangle$stats\_autoCorr\_secondLag        &         &             \\
+\hline
+$\langle$PREFIX$\rangle$stats\_autoCorr\_lagSpacing       &         &             \\
+\hline
+$\langle$PREFIX$\rangle$stats\_autoCorr\_numLags          &         &             \\
+\hline
+$\langle$PREFIX$\rangle$stats\_autoCorr\_display          &         &             \\
+\hline
+$\langle$PREFIX$\rangle$stats\_autoCorr\_write            &         &             \\
+\hline
+\hline
+$\langle$PREFIX$\rangle$stats\_meanStacc\_compute         &         &             \\
+\hline
+\hline
+$\langle$PREFIX$\rangle$stats\_hist\_compute              &         &             \\
+\hline
+$\langle$PREFIX$\rangle$stats\_hist\_numInternalBins      &         &             \\
+\hline
+\hline
+$\langle$PREFIX$\rangle$stats\_cdfStacc\_compute          &         &             \\
+\hline
+$\langle$PREFIX$\rangle$stats\_cdfStacc\_numEvalPositions &         &             \\
+\hline
+\hline
+$\langle$PREFIX$\rangle$stats\_kde\_compute               &         &             \\
+\hline
+$\langle$PREFIX$\rangle$stats\_kde\_numEvalPositions      &         &             \\
+\hline
+\hline
+$\langle$PREFIX$\rangle$stats\_covMatrix\_compute         &         &             \\
+\hline
+$\langle$PREFIX$\rangle$stats\_corrMatrix\_compute        &         &             \\
 \hline
 \end{tabular}
 \end{center}
@@ -601,3 +599,5 @@ Input file options for a the statistical analysis of sequences.
 \label{tab-seq-statistical-options}
 \end{table}
 
+\clearpage
+\section{Interface Classes}
