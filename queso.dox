@@ -525,8 +525,8 @@ INPUT                  = queso.page \
 			 libs/interface \
 			 examples/statisticalInverseProblem1/src \
 			 examples/statisticalInverseProblem1/tests/test_2009_02_03/ \
-			 examples/statisticalForwardProblem1/src \
-			 examples/statisticalForwardProblem1/tests/test_2009_02_11/ \
+			 examples/statisticalForwardProblem/src \
+			 examples/statisticalForwardProblem/tests/test_2009_02_11/ \
 			 examples/validationCycle/src \
 			 examples/validationCycle/tests/test_2009_02_03 \
 			 test/t02_sip_sfp/sip_sfp
