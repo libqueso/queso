@@ -48,13 +48,6 @@ template<class V, class M>
 class uqBaseJointPdfClass : public uqBaseScalarFunctionClass<V,M> {
 public:
            uqBaseJointPdfClass(const char*                  prefix,
-                               const uqVectorSetClass<V,M>& domainSet,
-                               const V&                     domainExpVector,
-                               const V&                     domainVarVector);
-           uqBaseJointPdfClass(const char*                  prefix,
-                               const uqVectorSetClass<V,M>& domainSet,
-                               const V&                     domainExpVector);
-           uqBaseJointPdfClass(const char*                  prefix,
                                const uqVectorSetClass<V,M>& domainSet);
   virtual ~uqBaseJointPdfClass();
 
@@ -62,16 +55,10 @@ public:
   virtual       double                        minus2LnValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const = 0;
 
 //        const uqBaseScalarPdfClass<double>& component      (unsigned int componentId) const;
-          const V&                            domainExpVector() const;
-          const V&                            domainVarVector() const;
-
 protected:
   using uqBaseScalarFunctionClass<V,M>::m_env;
   using uqBaseScalarFunctionClass<V,M>::m_prefix;
   using uqBaseScalarFunctionClass<V,M>::m_domainSet;
-
-  V* m_domainExpVector;
-  V* m_domainVarVector;
 
 //std::vector<uqBaseScalarPdfClass<double>*> m_components; // FIXME: will need to be a parallel vector in case of a very large number of components
 //uqBaseScalarPdfClass<double>               m_dummyComponent;
@@ -80,69 +67,20 @@ protected:
 template<class V, class M>
 uqBaseJointPdfClass<V,M>::uqBaseJointPdfClass(
   const char*                  prefix,
-  const uqVectorSetClass<V,M>& domainSet,
-  const V&                     domainExpVector,
-  const V&                     domainVarVector)
-  :
-  uqBaseScalarFunctionClass<V,M>(((std::string)(prefix)+"pd_").c_str(), domainSet),
-  m_domainExpVector(new V(domainExpVector)),
-  m_domainVarVector(new V(domainVarVector))
-{
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering uqBaseJointPdfClass<V,M>::constructor() [1]"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
-  }
-
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving uqBaseJointPdfClass<V,M>::constructor() [1]"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
-  }
-}
-
-template<class V, class M>
-uqBaseJointPdfClass<V,M>::uqBaseJointPdfClass(
-  const char*                  prefix,
-  const uqVectorSetClass<V,M>& domainSet,
-  const V&                     domainExpVector)
-  :
-  uqBaseScalarFunctionClass<V,M>(((std::string)(prefix)+"pd_").c_str(), domainSet),
-  m_domainExpVector(new V(domainExpVector    )),
-  m_domainVarVector(domainSet.vectorSpace().newVector(INFINITY))
-{
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering uqBaseJointPdfClass<V,M>::constructor() [2]"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
-  }
-
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving uqBaseJointPdfClass<V,M>::constructor() [2]"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
-  }
-}
-
-template<class V, class M>
-uqBaseJointPdfClass<V,M>::uqBaseJointPdfClass(
-  const char*                  prefix,
   const uqVectorSetClass<V,M>& domainSet)
   :
-  uqBaseScalarFunctionClass<V,M>(((std::string)(prefix)+"pd_").c_str(), domainSet),
-  m_domainExpVector(domainSet.vectorSpace().newVector(       0.)),
-  m_domainVarVector(domainSet.vectorSpace().newVector( INFINITY))
+  uqBaseScalarFunctionClass<V,M>(((std::string)(prefix)+"pd_").c_str(), domainSet)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqBaseJointPdfClass<V,M>::constructor() [3]"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqBaseJointPdfClass<V,M>::constructor() [3]"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 }
 
@@ -162,20 +100,6 @@ uqBaseJointPdfClass<V,M>::component(unsigned int componentId) const
 }
 #endif
 
-template <class V, class M>
-const V&
-uqBaseJointPdfClass<V,M>::domainExpVector() const
-{
-  return *m_domainExpVector;
-}
-
-template <class V, class M>
-const V&
-uqBaseJointPdfClass<V,M>::domainVarVector() const
-{
-  return *m_domainVarVector;
-}
-
 //*****************************************************
 // Generic probability density class
 //*****************************************************
@@ -183,11 +107,7 @@ template<class V, class M>
 class uqGenericJointPdfClass : public uqBaseJointPdfClass<V,M> {
 public:
   uqGenericJointPdfClass(const char*                           prefix,
-                          const uqBaseScalarFunctionClass<V,M>& scalarFunction,
-                          const V&                              domainExpVector,
-                          const V&                              domainVarVector);
-  uqGenericJointPdfClass(const char*                           prefix,
-                          const uqBaseScalarFunctionClass<V,M>& scalarFunction);
+                         const uqBaseScalarFunctionClass<V,M>& scalarFunction);
  ~uqGenericJointPdfClass();
 
   double actualValue     (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
@@ -197,26 +117,9 @@ protected:
   using uqBaseScalarFunctionClass<V,M>::m_env;
   using uqBaseScalarFunctionClass<V,M>::m_prefix;
   using uqBaseScalarFunctionClass<V,M>::m_domainSet;
-  using uqBaseJointPdfClass<V,M>::m_domainExpVector;
-  using uqBaseJointPdfClass<V,M>::m_domainVarVector;
 
   const uqBaseScalarFunctionClass<V,M>& m_scalarFunction;
 };
-
-template<class V, class M>
-uqGenericJointPdfClass<V,M>::uqGenericJointPdfClass(
-  const char*                           prefix,
-  const uqBaseScalarFunctionClass<V,M>& scalarFunction,
-  const V&                              domainExpVector,
-  const V&                              domainVarVector)
-  :
-  uqBaseJointPdfClass<V,M>(((std::string)(prefix)+"gen").c_str(),
-                            scalarFunction.domainSet(),
-                            domainExpVector,
-                            domainVarVector),
-  m_scalarFunction(scalarFunction)
-{
-}
 
 template<class V, class M>
 uqGenericJointPdfClass<V,M>::uqGenericJointPdfClass(
@@ -277,8 +180,6 @@ protected:
   using uqBaseScalarFunctionClass<V,M>::m_env;
   using uqBaseScalarFunctionClass<V,M>::m_prefix;
   using uqBaseScalarFunctionClass<V,M>::m_domainSet;
-  using uqBaseJointPdfClass<V,M>::m_domainExpVector;
-  using uqBaseJointPdfClass<V,M>::m_domainVarVector;
 
   const uqBaseJointPdfClass      <V,M>& m_priorDensity;
   const uqBaseScalarFunctionClass<V,M>& m_likelihoodFunction;
@@ -324,8 +225,8 @@ uqBayesianJointPdfClass<V,M>::actualValue(
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqBayesianJointPdfClass<V,M>::actualValue()"
-                           << ": domainVector = " << domainVector
-                           << std::endl;
+                            << ": domainVector = " << domainVector
+                            << std::endl;
   }
 
   V* gradVLike = NULL;
@@ -358,9 +259,9 @@ uqBayesianJointPdfClass<V,M>::actualValue(
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqBayesianJointPdfClass<V,M>::actualValue()"
-                           << ": domainVector = " << domainVector
-                           << ", returnValue = "  << returnValue
-                           << std::endl;
+                            << ": domainVector = " << domainVector
+                            << ", returnValue = "  << returnValue
+                            << std::endl;
   }
 
   return returnValue;
@@ -377,8 +278,8 @@ uqBayesianJointPdfClass<V,M>::minus2LnValue(
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqBayesianJointPdfClass<V,M>::minus2LnValue()"
-                           << ": domainVector = " << domainVector
-                           << std::endl;
+                            << ": domainVector = " << domainVector
+                            << std::endl;
   }
 
   V* gradVLike = NULL;
@@ -394,39 +295,39 @@ uqBayesianJointPdfClass<V,M>::minus2LnValue(
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "In uqBayesianJointPdfClass<V,M>::minus2LnValue()"
-                           << ", domainVector = " << domainVector
-                           << ": about to call likelihood()"
-                           << std::endl;
+                            << ", domainVector = " << domainVector
+                            << ": about to call likelihood()"
+                            << std::endl;
   }
 
   double value2 = m_likelihoodFunction.minus2LnValue(domainVector,domainDirection,gradVLike, hessianMLike, hessianELike );
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "In uqBayesianJointPdfClass<V,M>::minus2LnValue()"
-                           << ", domainVector = " << domainVector
-                           << ": value1 = "       << value1
-                           << ", value2 = "       << value2
-                           << std::endl;
+                            << ", domainVector = " << domainVector
+                            << ": value1 = "       << value1
+                            << ", value2 = "       << value2
+                            << std::endl;
     if (gradVector) {
       *m_env.subDisplayFile() << "In uqBayesianJointPdfClass<V,M>::minus2LnValue()"
-                             << ", domainVector = " << domainVector
-                             << ": gradVector = "   << *gradVector
-                             << ", gradVLike = "    << *gradVLike
-                             << std::endl;
+                              << ", domainVector = " << domainVector
+                              << ": gradVector = "   << *gradVector
+                              << ", gradVLike = "    << *gradVLike
+                              << std::endl;
     }
     if (hessianMatrix) {
       *m_env.subDisplayFile() << "In uqBayesianJointPdfClass<V,M>::minus2LnValue()"
-                             << ", domainVector = "  << domainVector
-                             << ": hessianMatrix = " << *hessianMatrix
-                             << ", hessianMLike = "  << *hessianMLike
-                             << std::endl;
+                              << ", domainVector = "  << domainVector
+                              << ": hessianMatrix = " << *hessianMatrix
+                              << ", hessianMLike = "  << *hessianMLike
+                              << std::endl;
     }
     if (hessianEffect) {
       *m_env.subDisplayFile() << "In uqBayesianJointPdfClass<V,M>::minus2LnValue()"
-                             << ", domainVector = "  << domainVector
-                             << ": hessianEffect = " << *hessianEffect
-                             << ", hessianELike = "  << *hessianELike
-                             << std::endl;
+                              << ", domainVector = "  << domainVector
+                              << ": hessianEffect = " << *hessianEffect
+                              << ", hessianELike = "  << *hessianELike
+                              << std::endl;
     }
   }
 
@@ -447,9 +348,9 @@ uqBayesianJointPdfClass<V,M>::minus2LnValue(
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqBayesianJointPdfClass<V,M>::minus2LnValue()"
-                           << ": domainVector = " << domainVector
-                           << ", returnValue = "  << returnValue
-                           << std::endl;
+                            << ": domainVector = " << domainVector
+                            << ", returnValue = "  << returnValue
+                            << std::endl;
   }
 
   return returnValue;
@@ -462,61 +363,65 @@ template<class V, class M>
 class uqGaussianJointPdfClass : public uqBaseJointPdfClass<V,M> {
 public:
   uqGaussianJointPdfClass(const char*                  prefix,
-                           const uqVectorSetClass<V,M>& domainSet,
-                           const V&                     domainExpVector,
-                           const V&                     domainVarVector);
+                          const uqVectorSetClass<V,M>& domainSet,
+                          const V&                     lawExpVector,
+                          const V&                     lawVarVector);
   uqGaussianJointPdfClass(const char*                  prefix,
-                           const uqVectorSetClass<V,M>& domainSet,
-                           const V&                     domainExpVector,
-                           const M&                     covMatrix);
+                          const uqVectorSetClass<V,M>& domainSet,
+                          const V&                     lawExpVector,
+                          const M&                     lawCovMatrix);
  ~uqGaussianJointPdfClass();
 
   double   actualValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
   double   minus2LnValue  (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
-  void     updateExpVector(const V& newExpVector);
-  void     updateCovMatrix(const M& newCovMatrix);
-  const M& covMatrix      () const;
+  void     updateLawExpVector(const V& newLawExpVector);
+  void     updateLawCovMatrix(const M& newLawCovMatrix);
+  const M& lawCovMatrix   () const;
+
+  const V& lawExpVector() const;
+  const V& lawVarVector() const;
 
 protected:
   using uqBaseScalarFunctionClass<V,M>::m_env;
   using uqBaseScalarFunctionClass<V,M>::m_prefix;
   using uqBaseScalarFunctionClass<V,M>::m_domainSet;
-  using uqBaseJointPdfClass<V,M>::m_domainExpVector;
-  using uqBaseJointPdfClass<V,M>::m_domainVarVector;
-
+  V*       m_lawExpVector;
+  V*       m_lawVarVector;
   bool     m_diagonalCovMatrix;
-  const M* m_covMatrix;
+  const M* m_lawCovMatrix;
 };
 
 template<class V,class M>
 uqGaussianJointPdfClass<V,M>::uqGaussianJointPdfClass(
   const char*                  prefix,
   const uqVectorSetClass<V,M>& domainSet,
-  const V&                     domainExpVector,
-  const V&                     domainVarVector)
+  const V&                     lawExpVector,
+  const V&                     lawVarVector)
   :
-  uqBaseJointPdfClass<V,M>(((std::string)(prefix)+"gau").c_str(),domainSet,domainExpVector,domainVarVector),
+  uqBaseJointPdfClass<V,M>(((std::string)(prefix)+"gau").c_str(),domainSet),
+  m_lawExpVector     (new V(lawExpVector)),
+  m_lawVarVector     (new V(lawVarVector)),
   m_diagonalCovMatrix(true),
-  m_covMatrix        (m_domainSet.vectorSpace().newDiagMatrix(domainVarVector))
+  m_lawCovMatrix     (m_domainSet.vectorSpace().newDiagMatrix(lawVarVector))
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqGaussianJointPdfClass<V,M>::constructor() [1]"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "In uqGaussianJointPdfClass<V,M>::constructor()"
-                         //<< ", prefix = "     << m_prefix
-                           << ": meanVector = " << this->domainExpVector()
-	                   << ", Variances = "  << this->domainVarVector()
-                           << std::endl;
+                          //<< ", prefix = "     << m_prefix
+                            << ": meanVector = " << this->lawExpVector()
+	                    << ", Variances = "  << this->lawVarVector()
+                            << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqGaussianJointPdfClass<V,M>::constructor() [1]"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 }
 
@@ -524,38 +429,54 @@ template<class V,class M>
 uqGaussianJointPdfClass<V,M>::uqGaussianJointPdfClass(
   const char*                  prefix,
   const uqVectorSetClass<V,M>& domainSet,
-  const V&                     domainExpVector,
-  const M&                     covMatrix)
+  const V&                     lawExpVector,
+  const M&                     lawCovMatrix)
   :
-  uqBaseJointPdfClass<V,M>(((std::string)(prefix)+"gau").c_str(),domainSet,domainExpVector),
-  m_diagonalCovMatrix      (false),
-  m_covMatrix              (new M(covMatrix))
+  uqBaseJointPdfClass<V,M>(((std::string)(prefix)+"gau").c_str(),domainSet),
+  m_lawExpVector     (new V(lawExpVector)),
+  m_lawVarVector     (domainSet.vectorSpace().newVector(INFINITY)), // FIX ME
+  m_diagonalCovMatrix(false),
+  m_lawCovMatrix     (new M(lawCovMatrix))
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqGaussianJointPdfClass<V,M>::constructor() [2]"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "In uqGaussianJointPdfClass<V,M>::constructor()"
-                         //<< ", prefix = "            << m_prefix
-                           << ": meanVector = "        << this->domainExpVector()
-	                   << ", Covariance Matrix = " << covMatrix
-                           << std::endl;
+                          //<< ", prefix = "            << m_prefix
+                            << ": meanVector = "        << this->lawExpVector()
+	                    << ", Covariance Matrix = " << lawCovMatrix
+                            << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqGaussianJointPdfClass<V,M>::constructor() [2]"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 }
 
 template<class V,class M>
 uqGaussianJointPdfClass<V,M>::~uqGaussianJointPdfClass()
 {
-  delete m_covMatrix;
+  delete m_lawCovMatrix;
+}
+
+template <class V, class M>
+const V&
+uqGaussianJointPdfClass<V,M>::lawExpVector() const
+{
+  return *m_lawExpVector;
+}
+
+template <class V, class M>
+const V&
+uqGaussianJointPdfClass<V,M>::lawVarVector() const
+{
+  return *m_lawVarVector;
 }
 
 template<class V, class M>
@@ -569,10 +490,10 @@ uqGaussianJointPdfClass<V,M>::actualValue(
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqGaussianJointPdfClass<V,M>::actualValue()"
-                           << ", meanVector = "   << *m_domainExpVector
-	                   << ", covMatrix = "    << *m_covMatrix
-                           << ": domainVector = " << domainVector
-                           << std::endl;
+                            << ", meanVector = "   << *m_lawExpVector
+	                    << ", lawCovMatrix = " << *m_lawCovMatrix
+                            << ": domainVector = " << domainVector
+                            << std::endl;
   }
 
   UQ_FATAL_TEST_MACRO((gradVector || hessianMatrix || hessianEffect),
@@ -584,11 +505,11 @@ uqGaussianJointPdfClass<V,M>::actualValue(
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqGaussianJointPdfClass<V,M>::actualValue()"
-                           << ", meanVector = "   << *m_domainExpVector
-	                   << ", covMatrix = "    << *m_covMatrix
-                           << ": domainVector = " << domainVector
-                           << ", returnValue = "  << returnValue
-                           << std::endl;
+                            << ", meanVector = "   << *m_lawExpVector
+	                    << ", lawCovMatrix = " << *m_lawCovMatrix
+                            << ": domainVector = " << domainVector
+                            << ", returnValue = "  << returnValue
+                            << std::endl;
   }
 
   return returnValue;
@@ -605,21 +526,21 @@ uqGaussianJointPdfClass<V,M>::minus2LnValue(
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqGaussianJointPdfClass<V,M>::minus2LnValue()"
-                           << ", meanVector = "   << *m_domainExpVector
-	                   << ", covMatrix = "    << *m_covMatrix
-                           << ": domainVector = " << domainVector
-                           << std::endl;
+                            << ", meanVector = "   << *m_lawExpVector
+	                    << ", lawCovMatrix = " << *m_lawCovMatrix
+                            << ": domainVector = " << domainVector
+                            << std::endl;
   }
 
   double returnValue = 0.;
 
   if (m_diagonalCovMatrix) {
-    V diffVec(domainVector - this->domainExpVector());
-    returnValue = ((diffVec*diffVec)/this->domainVarVector()).sumOfComponents();
+    V diffVec(domainVector - this->lawExpVector());
+    returnValue = ((diffVec*diffVec)/this->lawVarVector()).sumOfComponents();
   }
   else {
-    V diffVec(domainVector - this->domainExpVector());
-    V tmpVec = this->m_covMatrix->invertMultiply(diffVec);
+    V diffVec(domainVector - this->lawExpVector());
+    V tmpVec = this->m_lawCovMatrix->invertMultiply(diffVec);
     returnValue = (diffVec*tmpVec).sumOfComponents();
   }
 
@@ -630,11 +551,11 @@ uqGaussianJointPdfClass<V,M>::minus2LnValue(
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqGaussianJointPdfClass<V,M>::minus2LnValue()"
-                           << ", meanVector = "   << *m_domainExpVector
-	                   << ", covMatrix = "    << *m_covMatrix
-                           << ": domainVector = " << domainVector
-                           << ", returnValue = "  << returnValue
-                           << std::endl;
+                            << ", meanVector = "   << *m_lawExpVector
+	                    << ", lawCovMatrix = " << *m_lawCovMatrix
+                            << ": domainVector = " << domainVector
+                            << ", returnValue = "  << returnValue
+                            << std::endl;
   }
 
   return returnValue;
@@ -642,29 +563,29 @@ uqGaussianJointPdfClass<V,M>::minus2LnValue(
 
 template<class V, class M>
 void
-uqGaussianJointPdfClass<V,M>::updateExpVector(const V& newExpVector)
+uqGaussianJointPdfClass<V,M>::updateLawExpVector(const V& newLawExpVector)
 {
   // delete old expected values (alloced at construction or last call to this function)
-  delete m_domainExpVector;
-  m_domainExpVector = new V(newExpVector);
+  delete m_lawExpVector;
+  m_lawExpVector = new V(newLawExpVector);
   return;
 }
 
 template<class V, class M>
 void
-uqGaussianJointPdfClass<V,M>::updateCovMatrix(const M& newCovMatrix)
+uqGaussianJointPdfClass<V,M>::updateLawCovMatrix(const M& newLawCovMatrix)
 {
   // delete old expected values (alloced at construction or last call to this function)
-  delete m_covMatrix;
-  m_covMatrix = new M(newCovMatrix);
+  delete m_lawCovMatrix;
+  m_lawCovMatrix = new M(newLawCovMatrix);
   return;
 }
 
 template<class V, class M>
 const M&
-uqGaussianJointPdfClass<V,M>::covMatrix() const
+uqGaussianJointPdfClass<V,M>::lawCovMatrix() const
 {
-  return *m_covMatrix;
+  return *m_lawCovMatrix;
 }
 
 //*****************************************************
@@ -674,7 +595,7 @@ template<class V, class M>
 class uqUniformJointPdfClass : public uqBaseJointPdfClass<V,M> {
 public:
   uqUniformJointPdfClass(const char*                  prefix,
-                          const uqVectorSetClass<V,M>& domainSet);
+                         const uqVectorSetClass<V,M>& domainSet);
  ~uqUniformJointPdfClass();
 
   double actualValue     (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
@@ -684,8 +605,6 @@ protected:
   using uqBaseScalarFunctionClass<V,M>::m_env;
   using uqBaseScalarFunctionClass<V,M>::m_prefix;
   using uqBaseScalarFunctionClass<V,M>::m_domainSet;
-  using uqBaseJointPdfClass<V,M>::m_domainExpVector;
-  using uqBaseJointPdfClass<V,M>::m_domainVarVector;
 };
 
 template<class V,class M>
@@ -698,14 +617,14 @@ uqUniformJointPdfClass<V,M>::uqUniformJointPdfClass(
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqUniformJointPdfClass<V,M>::constructor()"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqUniformJointPdfClass<V,M>::constructor()"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 }
 
@@ -747,7 +666,7 @@ uqUniformJointPdfClass<V,M>::minus2LnValue(
 }
 
 //*****************************************************
-// Gaussian probability density class
+// Powered probability density class
 //*****************************************************
 template<class V, class M>
 class uqPoweredJointPdfClass : public uqBaseJointPdfClass<V,M> {
@@ -781,22 +700,20 @@ uqPoweredJointPdfClass<V,M>::uqPoweredJointPdfClass(
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqPoweredJointPdfClass<V,M>::constructor()"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "In uqPoweredJointPdfClass<V,M>::constructor()"
-                         //<< ", prefix = "     << m_prefix
-                           << ": meanVector = " << this->domainExpVector()
-	                   << ", Variances = "  << this->domainVarVector()
-                           << std::endl;
+                          //<< ", prefix = "     << m_prefix
+                            << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqPoweredJointPdfClass<V,M>::constructor()"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 }
 
@@ -816,8 +733,8 @@ uqPoweredJointPdfClass<V,M>::actualValue(
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqPoweredJointPdfClass<V,M>::actualValue()"
-                           << ": domainVector = " << domainVector
-                           << std::endl;
+                            << ": domainVector = " << domainVector
+                            << std::endl;
   }
 
   double value = m_srcDensity.actualValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect);
@@ -831,9 +748,9 @@ uqPoweredJointPdfClass<V,M>::actualValue(
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqPoweredJointPdfClass<V,M>::actualValue()"
-                           << ": domainVector = " << domainVector
-                           << ", returnValue = "  << returnValue
-                           << std::endl;
+                            << ": domainVector = " << domainVector
+                            << ", returnValue = "  << returnValue
+                            << std::endl;
   }
 
   return returnValue;

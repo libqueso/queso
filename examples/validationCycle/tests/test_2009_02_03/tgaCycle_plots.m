@@ -66,9 +66,9 @@ clf
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-plot(cycle_cal_ip_mc_filtChain_unifGkdePosits_sub0(1,:),cycle_cal_ip_mc_filtChain_unifGkdeValues_sub0(1,:),'b-','linewidth',3);
+plot(cycle_cal_ip_mh_filtChain_unifGkdePosits_sub0(1,:),cycle_cal_ip_mh_filtChain_unifGkdeValues_sub0(1,:),'b-','linewidth',3);
 hold
-plot(cycle_val_ip_mc_filtChain_unifGkdePosits_sub0(1,:),cycle_val_ip_mc_filtChain_unifGkdeValues_sub0(1,:),'r-','linewidth',3);
+plot(cycle_val_ip_mh_filtChain_unifGkdePosits_sub0(1,:),cycle_val_ip_mh_filtChain_unifGkdeValues_sub0(1,:),'r-','linewidth',3);
 ylabel('Posterior marginal pdf','fontsize',20);
 xlabel('A (min^{-1})','fontsize',20);
 title('A: prior(*) and posterior (-) marginals','fontsize',20);
@@ -94,9 +94,9 @@ clf
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-plot(cycle_cal_ip_mc_filtChain_unifGkdePosits_sub0(2,:),cycle_cal_ip_mc_filtChain_unifGkdeValues_sub0(2,:),'b-','linewidth',3);
+plot(cycle_cal_ip_mh_filtChain_unifGkdePosits_sub0(2,:),cycle_cal_ip_mh_filtChain_unifGkdeValues_sub0(2,:),'b-','linewidth',3);
 hold
-plot(cycle_val_ip_mc_filtChain_unifGkdePosits_sub0(2,:),cycle_val_ip_mc_filtChain_unifGkdeValues_sub0(2,:),'r-','linewidth',3);
+plot(cycle_val_ip_mh_filtChain_unifGkdePosits_sub0(2,:),cycle_val_ip_mh_filtChain_unifGkdeValues_sub0(2,:),'r-','linewidth',3);
 ylabel('Pdf','fontsize',20);
 xlabel('E (J/mol)','fontsize',20);
 title('E: prior(*) and posterior (-) marginals','fontsize',20);

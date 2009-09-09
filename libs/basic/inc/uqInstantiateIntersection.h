@@ -54,19 +54,19 @@ uqInstantiateIntersection(const uqVectorSetClass<V,M>& domain1, const uqVectorSe
         result = new uqVectorSpaceClass<V,M>(tmp1->env(),
                                              tmp1->prefix().c_str(),
                                              tmp1->dimGlobal(),
-                                             tmp1->componentsNames());
+                                             NULL);//tmp1->componentsNames());
       }
       else if (dim1 == dim2) {
         result = new uqVectorSpaceClass<V,M>(tmp1->env(),
                                              tmp1->prefix().c_str(),
                                              tmp1->dimGlobal(),
-                                             tmp1->componentsNames());
+                                             NULL);//tmp1->componentsNames());
       }
       else {
         result = new uqVectorSpaceClass<V,M>(tmp2->env(),
                                              tmp2->prefix().c_str(),
                                              tmp2->dimGlobal(),
-                                             tmp2->componentsNames());
+                                             NULL);//tmp2->componentsNames());
       }
     }
   }

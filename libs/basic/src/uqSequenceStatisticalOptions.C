@@ -34,8 +34,8 @@
 #include <uqMiscellaneous.h>
 
 uqSequenceStatisticalOptionsClass::uqSequenceStatisticalOptionsClass(
-  const uqBaseEnvironmentClass& env,
-  const std::string&        prefix)
+  /*! The QUESO environment                      */ const uqBaseEnvironmentClass& env,
+  /*! Prefix for reading options from input file */ const std::string&            prefix)
   :
   m_env                     (env),
   m_prefix                  ((std::string)(prefix) + "stats_"),

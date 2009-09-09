@@ -172,8 +172,8 @@ namespace QUESO_Basic_API {
     
     printf("--> Defining default covariance matrix...\n");
     
-    m_CovMatrix = m_postRV->imageSet().vectorSpace().newGaussianMatrix(m_priorRV->pdf().domainVarVector(),
-								      *m_queso_var_ini);
+    m_CovMatrix = m_postRV->imageSet().vectorSpace().newProposalMatrix(NULL,
+								       m_queso_var_ini);
 
     for(int i=0;i<m_num_params;i++)
       {
@@ -189,7 +189,7 @@ namespace QUESO_Basic_API {
 
     // Launch the Markov Chain 
 
-    m_ip->solveWithBayesMarkovChain(*m_queso_var_ini,m_CovMatrix);
+    m_ip->solveWithBayesMetropolisHastings(*m_queso_var_ini,m_CovMatrix);
   }
 
   //----------------------------------------------
@@ -212,9 +212,20 @@ namespace QUESO_Basic_API {
 
   double Likelihood_Wrapper(const basicV &paramValue,
 			    const basicV *paramDirection,
-			    const void *Data,basicV *gradV,basicM *hesianM,
+			    const void *Data,basicV *gradV,basicM *hessianM,
 			    basicV *hessianE)
   {
+    // Logic just to avoid warnings from INTEL compiler: added by prudenci on 2009/Sep/06
+    const uqGslVectorClass* aux1 = paramDirection;
+    if (aux1) {};
+    aux1 = gradV;
+    aux1 = hessianE;
+    uqGslMatrixClass* aux2 = hessianM;
+    if (aux2) {};
+    const void* aux3 = Data;
+    if (aux3) {};
+
+    // Actual code
     static int first_entry = 1;
     double *uqParams;
     int num_params;

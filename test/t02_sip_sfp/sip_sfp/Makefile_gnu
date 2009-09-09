@@ -1,6 +1,7 @@
-QUESO_DIR = /h2/prudenci/Installations/queso_0_4_0_gnu/
+QUESO_DIR = /h2/prudenci/Installations/queso_0_4_1_gnu/
 TRILINOS_DIR = /h2/prudenci/Installations/Trilinos_8_0_7/
 BOOST_DIR = /h2/prudenci/Installations/Boost_1_35_0/
+HPCT_DIR = /org/centers/pecos/LIBRARIES/hpct/0.24/
 
 include $(TRILINOS_DIR)/include/Makefile.export.epetra
 
@@ -10,6 +11,7 @@ INC_PATHS = \
 	-I$(MPI_DIR)/include \
 	-I$(BOOST_DIR)/include/boost-1_35_0 \
 	-I$(GSL_DIR)/include \
+	-I$(HPCT_DIR)/include \
 	$(EPETRA_INCLUDES)
 
 LIBS = \
@@ -21,6 +23,8 @@ LIBS = \
 	-lboost_program_options \
 	-L$(GSL_DIR)/lib \
 	-lgsl \
+	-L$(HPCT_DIR)/lib \
+	-lhpct \
 	$(EPETRA_LIBS)
 
 CXX = mpicxx

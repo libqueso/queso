@@ -38,25 +38,19 @@
 #include <uqVectorFunctionSynchronizer.h>
 #include <uqMonteCarloSGOptions.h>
 
-/*! A templated class that implements a Monte Carlo Distribution Calculator
+/*! A templated class that implements a Monte Carlo generateor of samples. 'SG' stands for 'Sequence Generator'.
  */
 template <class P_V,class P_M,class Q_V,class Q_M>
 class uqMonteCarloSGClass
 {
 public:
-
-  /*! Constructor: */
-  uqMonteCarloSGClass(/*! Prefix           */ const char*                                       prefix,         
-                      /*! The parameter rv */ const uqBaseVectorRVClass      <P_V,P_M>&         paramRv,        
-                      /*! The qoi function */ const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunctionObj, 
-                      /*! The qoi rv       */       uqBaseVectorRVClass      <Q_V,Q_M>&         qoiRv);         
-  /*! Destructor: */
+  uqMonteCarloSGClass(const char*                                       prefix,         
+                      const uqBaseVectorRVClass      <P_V,P_M>&         paramRv,        
+                      const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction);
  ~uqMonteCarloSGClass();
 
-  /*! Operation to generate the chain */
   void generateSequence           (uqBaseVectorSequenceClass<P_V,P_M>& workingPSeq,
                                    uqBaseVectorSequenceClass<Q_V,Q_M>& workingQSeq);
-  void checkTheParallelEnvironment();
 
   void print                      (std::ostream& os) const;
 
@@ -77,8 +71,7 @@ private:
 
   const uqBaseEnvironmentClass&                             m_env;
   const uqBaseVectorRVClass              <P_V,P_M>&         m_paramRv;
-  const uqBaseVectorFunctionClass        <P_V,P_M,Q_V,Q_M>& m_qoiFunctionObj;
-  const uqBaseVectorRVClass              <Q_V,Q_M>&         m_qoiRv;
+  const uqBaseVectorFunctionClass        <P_V,P_M,Q_V,Q_M>& m_qoiFunction;
   const uqVectorSpaceClass               <P_V,P_M>&         m_paramSpace;
   const uqVectorSpaceClass               <Q_V,Q_M>&         m_qoiSpace;
   const uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>* m_qoiFunctionSynchronizer;
@@ -89,26 +82,45 @@ private:
 template<class P_V,class P_M,class Q_V,class Q_M>
 std::ostream& operator<<(std::ostream& os, const uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>& obj);
 
+/*! Constructor: */
+/*! Requirements:
+<list type=number>
+<item> the image set of the vector random variable 'paramRv' and
+       the domain set of the qoi function 'qoiFunction'
+       should belong to vector spaces of equal dimensions.
+</list>
+*/
+/*! If the requirements are satisfied, the constructor then reads input options that begin with the string '\<prefix\>_mc_'.
+    For instance, if 'prefix' is 'pROblem_775_fp_', then the constructor will read all options that begin with 'pROblem_775_fp_mc_'.
+    Options reading is handled by class 'uqMonteCarloOptionsClass'.
+*/
+/*! Input options are read from the QUESO input file, whose name is required by the constructor of the QUESO environment class.
+    The QUESO environment class is instantiated at the application level, right after 'MPI_Init(&argc,&argv)'. 
+    The QUESO environment is required by reference by many constructors in the QUESO library, and is available by reference from many classes as well.
+*/
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::uqMonteCarloSGClass(
-  const char*                                       prefix,
-  const uqBaseVectorRVClass      <P_V,P_M>&         paramRv,
-  const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunctionObj,
-        uqBaseVectorRVClass      <Q_V,Q_M>&         qoiRv)
+  /*! Prefix           */ const char*                                       prefix,
+  /*! The parameter rv */ const uqBaseVectorRVClass      <P_V,P_M>&         paramRv,
+  /*! The qoi function */ const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction)
   :
-  m_env                             (paramRv.env()),
-  m_paramRv                         (paramRv),
-  m_qoiFunctionObj                  (qoiFunctionObj),
-  m_qoiRv                           (qoiRv),
-  m_paramSpace                      (m_paramRv.imageSet().vectorSpace()),
-  m_qoiSpace                        (m_qoiRv.imageSet().vectorSpace()),
-  m_qoiFunctionSynchronizer         (new uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>(m_qoiFunctionObj,m_paramRv.imageSet().vectorSpace().zeroVector(),m_qoiRv.imageSet().vectorSpace().zeroVector())),
-  m_options                         (m_env,prefix)
+  m_env                    (paramRv.env()),
+  m_paramRv                (paramRv),
+  m_qoiFunction            (qoiFunction),
+  m_paramSpace             (m_paramRv.imageSet().vectorSpace()),
+  m_qoiSpace               (m_qoiFunction.imageSet().vectorSpace()),
+  m_qoiFunctionSynchronizer(new uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>(m_qoiFunction,m_paramRv.imageSet().vectorSpace().zeroVector(),m_qoiFunction.imageSet().vectorSpace().zeroVector())),
+  m_options                (m_env,prefix)
 {
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::constructor()"
                             << std::endl;
   }
+
+  UQ_FATAL_TEST_MACRO(paramRv.imageSet().vectorSpace().dimLocal() != qoiFunction.domainSet().vectorSpace().dimLocal(),
+                      m_env.fullRank(),
+                      "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::constructor()",
+                      "'paramRv' and 'qoiFunction' are related to vector spaces of different dimensions");
 
   m_options.scanOptionsValues();
 
@@ -121,21 +133,46 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::uqMonteCarloSGClass(
   }
 }
 
+/*! Destructor: */
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::~uqMonteCarloSGClass()
 {
-  if (m_options.m_qseqStatisticalOptions ) delete m_options.m_qseqStatisticalOptions;
-  if (m_options.m_pseqStatisticalOptions ) delete m_options.m_pseqStatisticalOptions;
-  if (m_qoiFunctionSynchronizer) delete m_qoiFunctionSynchronizer;
+  if (m_options.m_qseqStatisticalOptions) delete m_options.m_qseqStatisticalOptions;
+  if (m_options.m_pseqStatisticalOptions) delete m_options.m_pseqStatisticalOptions;
+  if (m_qoiFunctionSynchronizer         ) delete m_qoiFunctionSynchronizer;
 }
 
+/*! Operation to generate the output sequence */
+/*! Requirements:
+<list type=number>
+<item> the vector space containing the domain set of the qoi function 'm_qoiFunction' should have dimension equal to the size of a vector in 'workingPSeq'
+<item> the vector space containing the image set of the qoi function 'm_qoiFunction' should have dimension equal to the size of a vector in 'workingQSeq'
+</list>
+*/
+/*! If the requirements are satisfied, this operation sets the size and the contents of 'workingPSeq' and 'workingQSeq' using the algorithm options set in the constructor.
+    Options reading is handled by class 'uqMonteCarloOptionsClass'.
+*/
+/*! If options request data to be written in the output file (MATLAB .m format only, for now), the user can check which MATLAB variables are defined and set by
+    running 'grep zeros <OUTPUT FILE NAME>' after the solution procedures ends. THe names of the varibles are self explanatory.
+*/
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence(
   uqBaseVectorSequenceClass<P_V,P_M>& workingPSeq,
   uqBaseVectorSequenceClass<Q_V,Q_M>& workingQSeq)
 {
-  checkTheParallelEnvironment();
+  UQ_FATAL_TEST_MACRO(m_qoiFunction.domainSet().vectorSpace().dimLocal() != workingPSeq.vectorSizeLocal(),
+                      m_env.fullRank(),
+                      "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence()",
+                      "'m_qoiFunction.domainSet' and 'workingPSeq' are related to vector spaces of different dimensions");
+
+  UQ_FATAL_TEST_MACRO(m_qoiFunction.imageSet().vectorSpace().dimLocal() != workingQSeq.vectorSizeLocal(),
+                      m_env.fullRank(),
+                      "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence()",
+                      "'m_qoiFunction.imageSet' and 'workingQSeq' are related to vector spaces of different dimensions");
+
+  uqCheckTheParallelEnvironment<P_V,Q_V>(m_paramRv.imageSet().vectorSpace().zeroVector(),
+                                         m_qoiFunction.imageSet().vectorSpace().zeroVector());
   internGenerateSequence(m_paramRv,workingPSeq,workingQSeq);
 
   return;
@@ -450,58 +487,6 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualReadSequence(
   }
 
   workingQSeq.unifiedReadContents(dataInputFileName,requestedSeqSize);
-
-  return;
-}
-
-template <class P_V,class P_M,class Q_V,class Q_M>
-void
-uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::checkTheParallelEnvironment()
-{
-  if (m_env.numSubEnvironments() == (unsigned int) m_env.fullComm().NumProc()) {
-    UQ_FATAL_TEST_MACRO(m_env.subRank() != 0,
-                        m_env.fullRank(),
-                        "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::checkTheParallelEnvironment()",
-                        "there should exist only one processor per sub environment");
-    UQ_FATAL_TEST_MACRO(m_paramRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage() != 1,
-                        m_env.fullRank(),
-                        "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::checkTheParallelEnvironment()",
-                        "only 1 processor (per sub environment) should be necessary for the storage of a parameter vector");
-  }
-  else if (m_env.numSubEnvironments() < (unsigned int) m_env.fullComm().NumProc()) {
-    UQ_FATAL_TEST_MACRO(m_env.fullComm().NumProc()%m_env.numSubEnvironments() != 0,
-                        m_env.fullRank(),
-                        "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::checkTheParallelEnvironment()",
-                        "total number of processors should be a multiple of the number of sub environments");
-    unsigned int numProcsPerSubEnvironment = m_env.fullComm().NumProc()/m_env.numSubEnvironments();
-    UQ_FATAL_TEST_MACRO(m_env.subComm().NumProc() != (int) numProcsPerSubEnvironment,
-                        m_env.fullRank(),
-                        "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::checkTheParallelEnvironment()",
-                        "inconsistent number of processors per sub environment");
-    if ((m_paramRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage() == 1) &&
-        (m_qoiRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage()   == 1)) {
-      // Ok
-    }
-    else if ((m_paramRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage() == numProcsPerSubEnvironment) &&
-             (m_qoiRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage()   == numProcsPerSubEnvironment)) {
-      UQ_FATAL_TEST_MACRO(true,
-                          m_env.fullRank(),
-                          "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::checkTheParallelEnvironment()",
-                          "parallel vectors are not supported yet");
-    }
-    else {
-      UQ_FATAL_TEST_MACRO(true,
-                          m_env.fullRank(),
-                          "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::checkTheParallelEnvironment()",
-                          "number of processors required for a vector storage should be equal to the number of processors in the sub environment");
-    }
-  }
-  else {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.fullRank(),
-                        "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::checkTheParallelEnvironment()",
-                        "number of processors per sub environment is too large");
-  }
 
   return;
 }

@@ -513,7 +513,23 @@ WARN_LOGFILE           =
 # directories like "/usr/src/myproject". Separate the files or directories 
 # with spaces.
 
-INPUT                  = queso.page libs/basic/inc libs/basic/src libs/stats/inc libs/stats/src
+INPUT                  = queso.page \
+		         libs/core/inc \
+			 libs/core/src \
+			 libs/misc/inc \
+			 libs/misc/src \
+			 libs/basic/inc \
+			 libs/basic/src \
+			 libs/stats/inc \
+			 libs/stats/src \
+			 libs/interface \
+			 examples/statisticalInverseProblem1/src \
+			 examples/statisticalInverseProblem1/tests/test_2009_02_03/ \
+			 examples/statisticalForwardProblem/src \
+			 examples/statisticalForwardProblem/tests/test_2009_02_11/ \
+			 examples/validationCycle/src \
+			 examples/validationCycle/tests/test_2009_02_03 \
+			 test/t02_sip_sfp/sip_sfp
 
 # This tag can be used to specify the character encoding of the source files 
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding, which is 
@@ -530,7 +546,7 @@ INPUT_ENCODING         = UTF-8
 # *.c *.cc *.cxx *.cpp *.c++ *.java *.ii *.ixx *.ipp *.i++ *.inl *.h *.hh *.hxx 
 # *.hpp *.h++ *.idl *.odl *.cs *.php *.php3 *.inc *.m *.mm *.py *.f90
 
-FILE_PATTERNS          = 
+FILE_PATTERNS          = *.h *.C *.cpp *.hpp *.m
 
 # The RECURSIVE tag can be used to turn specify whether or not subdirectories 
 # should be searched for input files as well. Possible values are YES and NO. 
@@ -626,7 +642,7 @@ FILTER_SOURCE_FILES    = NO
 # Note: To get rid of all source code in the generated output, make sure also 
 # VERBATIM_HEADERS is set to NO.
 
-SOURCE_BROWSER         = NO
+SOURCE_BROWSER         = YES
 
 # Setting the INLINE_SOURCES tag to YES will include the body 
 # of functions and classes directly in the documentation.

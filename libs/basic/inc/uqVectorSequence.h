@@ -78,9 +78,11 @@ public:
   virtual  void                     setPositionValues          (unsigned int posId, const V& vec) = 0;
   virtual  void                     setGaussian                (const gsl_rng* rng, const V& meanVec, const V& stdDevVec) = 0;
   virtual  void                     setUniform                 (const gsl_rng* rng, const V& aVec,    const V& bVec     ) = 0;
+#ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
   virtual  void                     subUniformlySampledMdf     (const V&                       numEvaluationPointsVec,
                                                                 uqArrayOfOneDGridsClass <V,M>& mdfGrids,
                                                                 uqArrayOfOneDTablesClass<V,M>& mdfValues) const = 0;
+#endif
   virtual  void                     subUniformlySampledCdf     (const V&                       numEvaluationPointsVec,
                                                                 uqArrayOfOneDGridsClass <V,M>& cdfGrids,
                                                                 uqArrayOfOneDTablesClass<V,M>& cdfValues) const = 0;
@@ -559,8 +561,8 @@ uqBaseVectorSequenceClass<V,M>::computeStatistics(
                             << std::endl;
   }
 
-  bool okSituation = ((passedOfs == NULL                          ) ||
-                      (passedOfs != NULL) && (m_env.subRank() >= 0));
+  bool okSituation = ((passedOfs == NULL                            ) ||
+                      ((passedOfs != NULL) && (m_env.subRank() >= 0)));
   UQ_FATAL_TEST_MACRO(!okSituation,
                       m_env.fullRank(),
                       "uqBaseVectorSequenceClass<V,M>::computeStatistics()",
@@ -806,7 +808,7 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
 
     for (unsigned int i = 0; i < this->vectorSizeLocal() /*.*/; ++i) {
       sprintf(line,"\n%8.8s%2s%11.4e%2s%11.4e%2s%11.4e",
-              m_vectorSpace.componentName(i).c_str(), /*.*/
+              m_vectorSpace.localComponentName(i).c_str(), /*.*/
               " ",
 	      subChainMean[i],
               " ",
@@ -888,7 +890,7 @@ uqBaseVectorSequenceClass<V,M>::computeBMM(
 
       for (unsigned int i = 0; i < this->vectorSizeLocal() /*.*/; ++i) {
         sprintf(line,"\n%9.9s",
-                m_vectorSpace.componentName(i).c_str() /*.*/);
+                m_vectorSpace.localComponentName(i).c_str() /*.*/);
         *m_env.subDisplayFile() << line;
         for (unsigned int batchLengthId = 0; batchLengthId < statisticalOptions.bmmLengths().size(); batchLengthId++) {
           sprintf(line,"%2s%11.4e",
@@ -1099,7 +1101,7 @@ uqBaseVectorSequenceClass<V,M>::computePSDAtZero(
 
       for (unsigned int i = 0; i < this->vectorSizeLocal() /*.*/; ++i) {
         sprintf(line,"\n%9.9s",
-                m_vectorSpace.componentName(i).c_str() /*.*/);
+                m_vectorSpace.localComponentName(i).c_str() /*.*/);
         *m_env.subDisplayFile() << line;
         for (unsigned int numBlocksId = 0; numBlocksId < statisticalOptions.psdAtZeroNumBlocks().size(); numBlocksId++) {
           sprintf(line,"%2s%11.4e",
@@ -1134,7 +1136,7 @@ uqBaseVectorSequenceClass<V,M>::computePSDAtZero(
 
       for (unsigned int i = 0; i < this->vectorSizeLocal() /*.*/; ++i) {
         sprintf(line,"\n%9.9s",
-                m_vectorSpace.componentName(i).c_str() /*.*/);
+                m_vectorSpace.localComponentName(i).c_str() /*.*/);
         *m_env.subDisplayFile() << line;
         for (unsigned int numBlocksId = 0; numBlocksId < statisticalOptions.psdAtZeroNumBlocks().size(); numBlocksId++) {
           sprintf(line,"%2s%11.4e",
@@ -1236,7 +1238,7 @@ uqBaseVectorSequenceClass<V,M>::computeGeweke(
 
     for (unsigned int i = 0; i < this->vectorSizeLocal() /*.*/; ++i) {
       sprintf(line,"\n%9.9s",
-              m_vectorSpace.componentName(i).c_str() /*.*/);
+              m_vectorSpace.localComponentName(i).c_str() /*.*/);
       *m_env.subDisplayFile() << line;
       for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
         sprintf(line,"%2s%11.4e",
@@ -1303,7 +1305,7 @@ uqBaseVectorSequenceClass<V,M>::computeMeanStacc(
 
     for (unsigned int i = 0; i < this->vectorSizeLocal() /*.*/; ++i) {
       sprintf(line,"\n%9.9s",
-              m_vectorSpace.componentName(i).c_str() /*.*/);
+              m_vectorSpace.localComponentName(i).c_str() /*.*/);
       *m_env.subDisplayFile() << line;
       for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
         sprintf(line,"%2s%11.4e",
@@ -1392,7 +1394,7 @@ uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaDef(
 
       for (unsigned int i = 0; i < this->vectorSizeLocal() /*.*/; ++i) {
         sprintf(line,"\n%9.9s",
-                m_vectorSpace.componentName(i).c_str() /*.*/);
+                m_vectorSpace.localComponentName(i).c_str() /*.*/);
         *m_env.subDisplayFile() << line;
         for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
           sprintf(line,"%2s%11.4e",
@@ -1563,7 +1565,7 @@ uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaFFT(
 
         for (unsigned int i = 0; i < this->vectorSizeLocal() /*.*/; ++i) {
           sprintf(line,"\n%9.9s",
-                  m_vectorSpace.componentName(i).c_str() /*.*/);
+                  m_vectorSpace.localComponentName(i).c_str() /*.*/);
           *m_env.subDisplayFile() << line;
           for (unsigned int lagId = 0; lagId < lagsForCorrs.size(); lagId++) {
             sprintf(line,"%2s%11.4e",
@@ -1636,8 +1638,8 @@ uqBaseVectorSequenceClass<V,M>::computeFilterParams(
                             << std::endl;
   }
 
-  bool okSituation = ((passedOfs == NULL                          ) ||
-                      (passedOfs != NULL) && (m_env.subRank() >= 0));
+  bool okSituation = ((passedOfs == NULL                            ) ||
+                      ((passedOfs != NULL) && (m_env.subRank() >= 0)));
   UQ_FATAL_TEST_MACRO(!okSituation,
                       m_env.fullRank(),
                       "uqBaseVectorSequenceClass<V,M>::computeFilterParams()",
@@ -1712,7 +1714,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
 
     for (unsigned int i = 0; i < this->vectorSizeLocal() /*.*/; ++i) {
       sprintf(line,"\n%8.8s",
-              m_vectorSpace.componentName(i).c_str() /*.*/);
+              m_vectorSpace.localComponentName(i).c_str() /*.*/);
       *m_env.subDisplayFile() << line;
 
       sprintf(line,"%2s%11.4e%2s%11.4e",
@@ -1735,7 +1737,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
 
     // Write unified min-max
     if (m_env.subDisplayFile()) {
-      if (m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+      if (m_vectorSpace.numOfProcsForStorage() == 1) {
         if (m_env.inter0Rank() == 0) {
           *m_env.subDisplayFile() << "\nComputed unified min values and max values for chain " << m_name
                                   << std::endl;
@@ -1754,7 +1756,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
 
           for (unsigned int i = 0; i < this->vectorSizeLocal() /*.*/; ++i) {
             sprintf(line,"\n%8.8s",
-                    m_vectorSpace.componentName(i).c_str() /*.*/);
+                    m_vectorSpace.localComponentName(i).c_str() /*.*/);
             *m_env.subDisplayFile() << line;
 
             sprintf(line,"%2s%11.4e%2s%11.4e",
@@ -1869,7 +1871,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
 
       // Write unified histogram
       if (passedOfs) {
-        if (m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+        if (m_vectorSpace.numOfProcsForStorage() == 1) {
           if (m_env.inter0Rank() == 0) {
             std::ofstream& ofsvar = *passedOfs;
             ofsvar << m_name << uniCoreName_HistCenters << " = zeros(" << this->vectorSizeLocal() /*.*/
@@ -2020,7 +2022,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
 
       for (unsigned int i = 0; i < this->vectorSizeLocal() /*.*/; ++i) {
         sprintf(line,"\n%8.8s",
-                m_vectorSpace.componentName(i).c_str() /*.*/);
+                m_vectorSpace.localComponentName(i).c_str() /*.*/);
         *m_env.subDisplayFile() << line;
 
         sprintf(line,"%2s%11.4e",
@@ -2107,7 +2109,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
 
       // Write unified iqr
       if (m_env.subDisplayFile()) {
-        if (m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+        if (m_vectorSpace.numOfProcsForStorage() == 1) {
           if (m_env.inter0Rank() == 0) {
             *m_env.subDisplayFile() << "\nComputed unified inter quantile ranges for chain " << m_name
                                     << std::endl;
@@ -2124,7 +2126,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
 
             for (unsigned int i = 0; i < this->vectorSizeLocal() /*.*/; ++i) {
               sprintf(line,"\n%8.8s",
-                      m_vectorSpace.componentName(i).c_str() /*.*/);
+                      m_vectorSpace.localComponentName(i).c_str() /*.*/);
               *m_env.subDisplayFile() << line;
 
               sprintf(line,"%2s%11.4e",
@@ -2145,7 +2147,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
 
       // Write unified KDE
       if (passedOfs) {
-        if (m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+        if (m_vectorSpace.numOfProcsForStorage() == 1) {
           if (m_env.inter0Rank() == 0) {
             std::ofstream& ofsvar = *passedOfs;
             ofsvar << m_name << uniCoreName_GaussianKdePositions << " = zeros(" << this->vectorSizeLocal() /*.*/
@@ -2254,7 +2256,7 @@ uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices( // Use the whole chain
                                                  *correlationMatrix);
 
   if (m_env.subDisplayFile()) {
-    if (m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+    if (m_vectorSpace.numOfProcsForStorage() == 1) {
       // Only unified covariance matrix is written. And only one processor writes it.
       if (m_env.inter0Rank() == 0) {
         *m_env.subDisplayFile() << "\nuqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices"
@@ -2299,8 +2301,8 @@ uqComputeCovCorrMatricesBetweenVectorSequences(
   // Check input data consistency
   const uqBaseEnvironmentClass& env = subPSeq.vectorSpace().zeroVector().env();
 
-  bool useOnlyInter0Comm = (subPSeq.vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage() == 1) &&
-                           (subQSeq.vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage() == 1);
+  bool useOnlyInter0Comm = (subPSeq.vectorSpace().numOfProcsForStorage() == 1) &&
+                           (subQSeq.vectorSpace().numOfProcsForStorage() == 1);
 
   UQ_FATAL_TEST_MACRO((useOnlyInter0Comm == false),
                       env.fullRank(),

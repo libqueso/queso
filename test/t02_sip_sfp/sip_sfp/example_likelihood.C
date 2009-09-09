@@ -40,12 +40,46 @@ double likelihoodRoutine(
   uqGslMatrixClass*       hessianMatrix,
   uqGslVectorClass*       hessianEffect)
 {
-  const uqGslVectorClass& meanVector =
-    *((likelihoodRoutine_DataType *) functionDataPtr)->meanVector;
-  const uqGslMatrixClass& covMatrix  =
-    *((likelihoodRoutine_DataType *) functionDataPtr)->covMatrix;
+  // Logic just to avoid warnings from INTEL compiler
+  const uqGslVectorClass* aux1 = paramDirection;
+  if (aux1) {};
+  aux1 = gradVector;
+  aux1 = hessianEffect;
+  uqGslMatrixClass* aux2 = hessianMatrix;
+  if (aux2) {};
 
-  uqGslVectorClass diffVec(paramValues - meanVector);
+  // Just checking: the user, at the application level, expects
+  // vector 'paramValues' to have size 2.
+  UQ_FATAL_TEST_MACRO(paramValues.sizeGlobal() != 2,
+                      UQ_UNAVAILABLE_RANK,
+                      "likelihoodRoutine()",
+                      "paramValues vector does not have size 2");
 
-  return scalarProduct(diffVec, covMatrix.invertMultiply(diffVec));
+  // Actual code
+  //
+  // This code exemplifies multiple Metropolis-Hastings solvers, each calling this likelihood routine.
+  //
+  // In this simple example, only node 0 in each subenvironment does the job
+  // even though there might be more than one node per subenvironment.
+  //
+  // In a more realistic situation, if the user is asking for multiple nodes per
+  // subenvironment, then the model code in the qoi and likelihood routines
+  // might really demand more than one node.
+  double result = 0.;
+  const uqBaseEnvironmentClass& env = paramValues.env();
+  if (env.subRank() == 0) {
+    const uqGslVectorClass& meanVector =
+      *((likelihoodRoutine_DataType *) functionDataPtr)->meanVector;
+    const uqGslMatrixClass& covMatrix  =
+      *((likelihoodRoutine_DataType *) functionDataPtr)->covMatrix;
+
+    uqGslVectorClass diffVec(paramValues - meanVector);
+
+    result = scalarProduct(diffVec, covMatrix.invertMultiply(diffVec));
+  }
+  else {
+    // Do nothing;
+  }
+
+  return result;
 }

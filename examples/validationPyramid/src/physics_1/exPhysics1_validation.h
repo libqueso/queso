@@ -133,7 +133,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::exPhysics1ValidationClass(
   m_paramSpace = new uqVectorSpaceClass<P_V,P_M>(m_env,
                                                  "param_", // Extra prefix before the default "space_" prefix
                                                  m_paramsTable->numRows(),
-                                                 m_paramNames);
+                                                 NULL);//m_paramNames);
 
   m_paramDomain = new uqBoxSubsetClass<P_V,P_M>("param_",
                                                 *m_paramSpace,
@@ -152,7 +152,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::exPhysics1ValidationClass(
   m_qoiSpace = new uqVectorSpaceClass<Q_V,Q_M>(m_env,
                                                "qoi_", // Extra prefix before the default "space_" prefix
                                                m_qoisTable->numRows(),
-                                               m_qoiNames);
+                                               NULL);//m_qoiNames);
 
   // Instantiate the validation cycle
   m_cycle = new uqValidationCycleClass<P_V,P_M,Q_V,Q_M>(m_env,
@@ -263,10 +263,10 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
                             *m_calLikelihoodFunctionObj);
 
   // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
-  P_M* calProposalCovMatrix = m_cycle->calIP().postRv().imageSet().vectorSpace().newGaussianMatrix(m_cycle->calIP().priorRv().pdf().domainVarVector(),
-                                                                                                   *m_paramInitialValues);
-  m_cycle->calIP().solveWithBayesMarkovChain(*m_paramInitialValues,
-                                             calProposalCovMatrix);
+  P_M* calProposalCovMatrix = m_cycle->calIP().postRv().imageSet().vectorSpace().newProposalMatrix(NULL,
+                                                                                                   m_paramInitialValues);
+  m_cycle->calIP().solveWithBayesMetropolisHastings(*m_paramInitialValues,
+                                                    calProposalCovMatrix);
   delete calProposalCovMatrix;
 
   // Deal with forward problem
@@ -320,10 +320,11 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
   m_cycle->instantiateValIP(*m_valLikelihoodFunctionObj);
 
   // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
-  P_M* valProposalCovMatrix = m_cycle->calIP().postRv().imageSet().vectorSpace().newGaussianMatrix(m_cycle->calIP().postRv().realizer().unifiedImageVarVector(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
-                                                                                                   m_cycle->calIP().postRv().realizer().unifiedImageExpVector()); // Use these values as the initial values
-  m_cycle->valIP().solveWithBayesMarkovChain(m_cycle->calIP().postRv().realizer().unifiedImageExpVector(),
-                                             valProposalCovMatrix);
+  const uqSequentialVectorRealizerClass<P_V,P_M>* tmpRealizer = dynamic_cast< const uqSequentialVectorRealizerClass<P_V,P_M>* >(&(m_cycle->calIP().postRv().realizer()));
+  P_M* valProposalCovMatrix = m_cycle->calIP().postRv().imageSet().vectorSpace().newProposalMatrix(&tmpRealizer->unifiedSampleVarVector(),  // Use 'realizer()' because post. rv was computed with Markov Chain
+                                                                                                   &tmpRealizer->unifiedSampleExpVector()); // Use these values as the initial values
+  m_cycle->valIP().solveWithBayesMetropolisHastings(tmpRealizer->unifiedSampleExpVector(),
+                                                    valProposalCovMatrix);
   delete valProposalCovMatrix;
 
   // Deal with forward problem

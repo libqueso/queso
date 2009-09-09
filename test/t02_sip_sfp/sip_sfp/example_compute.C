@@ -82,7 +82,7 @@ void compute(const uqFullEnvironmentClass& env) {
   uqGslMatrixClass* proposalCovMatrix = paramSpace.newMatrix();
   (*proposalCovMatrix)(0,0) = 8.; (*proposalCovMatrix)(0,1) = 4.;
   (*proposalCovMatrix)(1,0) = 4.; (*proposalCovMatrix)(1,1) = 16.;
-  ip.solveWithBayesMarkovChain(paramInitials, proposalCovMatrix);
+  ip.solveWithBayesMetropolisHastings(paramInitials, proposalCovMatrix);
 
   // Step 6 of 9: Instantiate the qoi space
   uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass>

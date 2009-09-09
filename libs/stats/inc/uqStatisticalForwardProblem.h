@@ -39,29 +39,74 @@
 #include <uqVectorRV.h>
 #include <uqSequenceOfVectors.h>
 
-/*! A templated class that represents statistical forward problems.
- */
-/*! */
-/*! Conceptually, a statistical forward problem has two input entities and one output entity.
-    The input entities are the input rv and the qoi function. The output entity is the qoi rv, which stores the solution.
-    A similar situation occurs e.g. in the case of a system Ax=b of linear equations, where A and x are inputs, and b is the solution of the forward problem. */
-/*! The solution of a statistical forward problem is computed by calling 'solveWithMonteCarlo(...)'.
-    Upon return from such operation, the qoi rv is available through the operation 'qoiRv()'. Such qoi rv is able to supply marginal pdfs and a vector realizer. */
+/*! This templated class represents a statistical forward problem.
+    It is templated on the types 'P_V' and 'Q_V' of vectors and types 'P_M' and 'Q_M' of matrices,
+    where 'P_' stands for 'parameter' and 'Q_' stands for 'quantities of interest'.
+   
+    Conceptually, a statistical forward problem has two input entities and one output entity.
+*/
+/*! -------------------------------------------------------------
+*/
+/*! The input entities of a statistical forward problem are:
+<list type=number>
+<item> the input (parameter) rv, an instance of class 'uqBaseVectorRVClass<P_V,P_M>', and
+<item> the qoi function, an instance of class 'uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>'.
+</list>
+    Let 'q(.)' denote the mathematical qoi function and 'x' denote a vector of parameters.
+    The qoi function object stores the routine that computes q(x) and whatever data necessary by such routine.
+    See file 'libs/basic/inc/uqVectorFunction.h' for more details.
+*/
+/*! -------------------------------------------------------------
+*/
+/*! The output entity of a statistical forward problem is:
+<list type=number>
+<item> the qoi rv, another instance of class 'uqBaseVectorRVClass<P_V,P_M>'.
+</list>   
+    The qoi rv stores the solution according to the Bayesian approach.
+    A similar situation occurs e.g. in the case of a system Ax=b of linear equations,
+    where 'A' and 'x' are inputs, and 'b' stores the solution of the forward problem.
+*/
+/*! -------------------------------------------------------------
+*/
+/*! The solution of a statistical forward problem is computed by calling one of the following operations:
+<list type=number>
+<item> 'solveWithMonteCarlo(...)'.
+</list> 
+    More operations, with different methods, will be available in the future.
+*/
+/*! The solution process might demand extra objects to be passed through the chosen solution operation interface.
+    This distinction is important: this class separates 'what the problem is' from 'how the problem is solved'.
+*/
+/*! -------------------------------------------------------------
+*/
+/*! Upon return from a solution operation, the qoi rv is available through
+    the operation 'qoiRv()'. Such qoi rv is able to provide:
+<list type=number>
+<item> cdfs of qoi components through the operation 'qoiRv().unifiedCdf()',
+       which returns an instance of the class 'uqBaseVectorCdfClass<Q_V,Q_M>', and
+<item> a vector realizer through the operation 'qoiRv().realizer()', which returns an
+       instance of the class 'uqBaseVectorRealizerClass<Q_V,Q_M>'.
+</list>
+*/
+/*! -------------------------------------------------------------
+*/
+/*! If the options request data to be written in the output file (MATLAB .m format only, for now),
+    the user can run 'grep zeros \<OUTPUT FILE NAME\>' after the solution procedure ends
+    in order to check which MATLAB variables are defined and set.
+    The names of the varibles are self explanatory.
+*/
 template <class P_V,class P_M,class Q_V,class Q_M>
 class uqStatisticalForwardProblemClass
 {
 public:
 
-  /*! Constructor: */
-  uqStatisticalForwardProblemClass(/*! The prefix       */ const char*                                       prefix,
-                                   /*! The input rv     */ const uqBaseVectorRVClass      <P_V,P_M>&         paramRv,
-                                   /*! The qoi function */ const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction,
-                                   /*! The qoi rv       */ uqGenericVectorRVClass         <Q_V,Q_M>&         qoiRv);
-  /*! Destructor: */
+  uqStatisticalForwardProblemClass(const char*                                       prefix,
+                                   const uqBaseVectorRVClass      <P_V,P_M>&         paramRv,
+                                   const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction,
+                                   uqGenericVectorRVClass         <Q_V,Q_M>&         qoiRv);
  ~uqStatisticalForwardProblemClass();
 
         bool                             computeSolutionFlag() const;
-	/*! Operation to solve the problem */
         void                             solveWithMonteCarlo();
   const uqGenericVectorRVClass<Q_V,Q_M>& qoiRv              () const;
   const uqBaseVectorCdfClass  <Q_V,Q_M>& qoiRv_unifiedCdf   () const;
@@ -83,10 +128,11 @@ private:
 
         uqBaseVectorRealizerClass<Q_V,Q_M>*         m_solutionRealizer;
  
+#ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
         uqArrayOfOneDGridsClass  <Q_V,Q_M>*         m_subMdfGrids;
         uqArrayOfOneDTablesClass <Q_V,Q_M>*         m_subMdfValues;
+#endif
         uqBaseVectorMdfClass     <Q_V,Q_M>*         m_subSolutionMdf;
-
         uqArrayOfOneDGridsClass  <Q_V,Q_M>*         m_subCdfGrids;
         uqArrayOfOneDTablesClass <Q_V,Q_M>*         m_subCdfValues;
         uqBaseVectorCdfClass     <Q_V,Q_M>*         m_subSolutionCdf;
@@ -103,12 +149,31 @@ private:
 template<class P_V,class P_M,class Q_V,class Q_M>
 std::ostream& operator<<(std::ostream& os, const uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>& obj);
 
+/*! Constructor. */
+/*! Requirements:
+<list type=number>
+<item> the image set of the vector random variable 'paramRv' and
+       the domain set of the qoi function 'qoiFunction'
+       should belong to vector spaces of equal dimensions.
+<item> the image set of the qoi function 'qoiFunction' and
+       the image set of the vector random variable 'qoiRv'
+       should belong to vector spaces of equal dimensions.
+</list>
+*/
+/*! If the requirements are satisfied, the constructor then reads input options that begin with the string '\<prefix\>fp_'.
+    For instance, if 'prefix' is 'pROblem_775_', then the constructor will read all options that begin with 'pROblem_775_fp_'.
+    Options reading is handled by class 'uqStatisticalForwardProblemOptionsClass'.
+*/
+/*! Input options are read from the QUESO input file, whose name is required by the constructor of the QUESO environment class.
+    The QUESO environment class is instantiated at the application level, right after 'MPI_Init(&argc,&argv)'. 
+    The QUESO environment is required by reference by many constructors in the QUESO library, and is available by reference from many classes as well.
+*/
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::uqStatisticalForwardProblemClass(
-  const char*                                       prefix,
-  const uqBaseVectorRVClass      <P_V,P_M>&         paramRv,
-  const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction,
-        uqGenericVectorRVClass   <Q_V,Q_M>&         qoiRv)
+  /*! The prefix       */ const char*                                       prefix,
+  /*! The input rv     */ const uqBaseVectorRVClass      <P_V,P_M>&         paramRv,
+  /*! The qoi function */ const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction,
+  /*! The qoi rv       */       uqGenericVectorRVClass   <Q_V,Q_M>&         qoiRv)
   :
   m_env               (paramRv.env()),
   m_paramRv           (paramRv),
@@ -118,8 +183,10 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::uqStatisticalForwardProblemCl
   m_qoiChain          (NULL),
   m_mcSeqGenerator    (NULL),
   m_solutionRealizer  (NULL),
+#ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
   m_subMdfGrids       (NULL),
   m_subMdfValues      (NULL),
+#endif
   m_subSolutionMdf    (NULL),
   m_subCdfGrids       (NULL),
   m_subCdfValues      (NULL),
@@ -136,6 +203,16 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::uqStatisticalForwardProblemCl
                             << std::endl;
   }
 
+  UQ_FATAL_TEST_MACRO(paramRv.imageSet().vectorSpace().dimLocal() != qoiFunction.domainSet().vectorSpace().dimLocal(),
+                      m_env.fullRank(),
+                      "uqStatisticalForwardProblemClass<P_V,P_M>::constructor()",
+                      "'paramRv' and 'qoiFunction' are related to vector spaces of different dimensions");
+
+  UQ_FATAL_TEST_MACRO(qoiFunction.imageSet().vectorSpace().dimLocal() != qoiRv.imageSet().vectorSpace().dimLocal(),
+                      m_env.fullRank(),
+                      "uqStatisticalForwardProblemClass<P_V,P_M>::constructor()",
+                      "'qoiFunction' and 'qoiRv' are related to vector spaces of different dimensions");
+
   m_options.scanOptionsValues();
 
   if (m_env.subDisplayFile()) {
@@ -145,6 +222,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::uqStatisticalForwardProblemCl
   }
 }
 
+/*! Destructor: */
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::~uqStatisticalForwardProblemClass()
 {
@@ -159,9 +237,10 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::~uqStatisticalForwardProblemC
   if (m_subCdfGrids       ) delete m_subCdfGrids;
 
   if (m_subSolutionMdf    ) delete m_subSolutionMdf;
+#ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
   if (m_subMdfValues      ) delete m_subMdfValues;
   if (m_subMdfGrids       ) delete m_subMdfGrids;
-
+#endif
   if (m_solutionRealizer  ) delete m_solutionRealizer;
 
   if (m_mcSeqGenerator    ) delete m_mcSeqGenerator;
@@ -184,6 +263,26 @@ bool
   return m_options.m_computeSolution;
 }
 
+/*! Operation to solve the problem through Monte Carlo algorithm. */
+/*! Requirements:
+<list type=number>
+<item> none at this moment
+</list>
+*/
+/*! If the requirements are satisfied, this operation checks the member flag 'm_computeSolution' (one of the options read from the input file during construction).
+*/
+/*! If the flag is 'false', the operation returns immediately, computing nothing.
+ */
+/*! If the flag is 'true', the operation sets the member variable 'm_qoiRv' accordingly. The operation:
+<list type=number>
+<item> instantiates 'uqSequenceOfVectorsClass<P_V,P_M>' (the input sequence of vectors),
+<item> instantiates 'uqSequenceOfVectorsClass<Q_V,Q_M>' (the output sequence of vectors),
+<item> instantiates 'uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>' (the Monte Carlo algorithm),
+<item> populates the output sequence with the Monte Carlo algorithm,
+<item> sets the realizer of 'm_qoiRv' with the contents of the output sequence, and
+<item> computes the cdfs of the components of 'm_qoiRv' as instances of 'uqSampledVectorCdfClass<Q_V,Q_M>'
+</list>
+*/
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
@@ -216,9 +315,10 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   if (m_subCdfGrids       ) delete m_subCdfGrids;
 
   if (m_subSolutionMdf    ) delete m_subSolutionMdf;
+#ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
   if (m_subMdfValues      ) delete m_subMdfValues;
   if (m_subMdfGrids       ) delete m_subMdfGrids;
-
+#endif
   if (m_solutionRealizer  ) delete m_solutionRealizer;
 
   if (m_mcSeqGenerator    ) delete m_mcSeqGenerator;
@@ -241,8 +341,8 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   m_qoiChain   = new uqSequenceOfVectorsClass<Q_V,Q_M>(m_qoiRv.imageSet().vectorSpace(),  0,m_options.m_prefix+"qoiChain"  );
   m_mcSeqGenerator = new uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>(m_options.m_prefix.c_str(),
                                                               m_paramRv,
-                                                              m_qoiFunction,
-                                                              m_qoiRv);
+                                                              m_qoiFunction);
+  //m_qoiRv);
   m_mcSeqGenerator->generateSequence(*m_paramChain,
                                      *m_qoiChain);
   m_solutionRealizer = new uqSequentialVectorRealizerClass<Q_V,Q_M>((m_options.m_prefix+"Qoi").c_str(),
@@ -250,6 +350,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   m_qoiRv.setRealizer(*m_solutionRealizer);
 
   // Compute output mdf: uniform sampling approach
+#ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
   m_subMdfGrids  = new uqArrayOfOneDGridsClass <Q_V,Q_M>((m_options.m_prefix+"QoiMdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
   m_subMdfValues = new uqArrayOfOneDTablesClass<Q_V,Q_M>((m_options.m_prefix+"QoiMdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
   m_qoiChain->subUniformlySampledMdf(numEvaluationPointsVec, // input
@@ -260,6 +361,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
                                                           *m_subMdfGrids,
                                                           *m_subMdfValues);
   m_qoiRv.setMdf(*m_subSolutionMdf);
+#endif
 
   // Compute output cdf: uniform sampling approach
   std::string subCoreName_qoiCdf(m_options.m_prefix+    "QoiCdf_");
@@ -315,35 +417,12 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
     pqCorrelationMatrix = new P_M(m_env,
                                   m_paramRv.imageSet().vectorSpace().map(),      // number of rows
                                   m_qoiRv.imageSet().vectorSpace().dimGlobal()); // number of cols
-#if 0
-    uqComputeCovCorrMatricesBetweenVectorRvs<P_V,P_M,Q_V,Q_M>(m_paramRv,
-                                                              m_qoiRv,
-                                                              std::min(m_paramRv.realizer().subPeriod(),m_qoiRv.realizer().subPeriod()), // FIX ME: might be INFINITY
-                                                              *pqCovarianceMatrix,
-                                                              *pqCorrelationMatrix);
-#else
     uqComputeCovCorrMatricesBetweenVectorSequences(*m_paramChain,
                                                    *m_qoiChain,
                                                    std::min(m_paramRv.realizer().subPeriod(),m_qoiRv.realizer().subPeriod()), // FIX ME: might be INFINITY
                                                    *pqCovarianceMatrix,
                                                    *pqCorrelationMatrix);
-#endif
   }
-
-  // Open data output file
-  if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
-                            << ", prefix = "                                        << m_options.m_prefix
-                            << ": checking necessity of opening data output file '" << m_options.m_dataOutputFileName
-                            << "'"
-                            << std::endl;
-  }
-  std::ofstream* ofsvar = NULL;
-  m_env.openOutputFile(m_options.m_dataOutputFileName,
-                       UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
-                       m_options.m_dataOutputAllowedSet,
-                       false,
-                       ofsvar);
 
   // Write data out
   if (m_env.subDisplayFile()) {
@@ -361,8 +440,24 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
     }
   }
 
+  // Open data output file
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
+                            << ", prefix = "                                        << m_options.m_prefix
+                            << ": checking necessity of opening data output file '" << m_options.m_dataOutputFileName
+                            << "'"
+                            << std::endl;
+  }
+  std::ofstream* ofsvar = NULL;
+  m_env.openOutputFile(m_options.m_dataOutputFileName,
+                       UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                       m_options.m_dataOutputAllowedSet,
+                       false,
+                       ofsvar);
   if (ofsvar) {
+#ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
     m_qoiRv.mdf().print(*ofsvar);
+#endif
     *ofsvar << m_qoiRv.subCdf();
 
     //if (pqCovarianceMatrix ) *ofsvar << *pqCovarianceMatrix;  // FIX ME: output matrix in matlab format
@@ -370,7 +465,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
 
     // Write unified cdf if necessary
     if (m_env.numSubEnvironments() > 1) {
-      if (m_qoiRv.imageSet().vectorSpace().zeroVector().numberOfProcessorsRequiredForStorage() == 1) {
+      if (m_qoiRv.imageSet().vectorSpace().numOfProcsForStorage() == 1) {
         if (m_env.inter0Rank() == 0) {
           *ofsvar << m_qoiRv.unifiedCdf(); //*m_unifiedSolutionCdf;
         }

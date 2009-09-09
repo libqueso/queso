@@ -77,13 +77,14 @@
 #define UQ_SEQUENCE_COV_MATRIX_COMPUTE_ODV           0
 #define UQ_SEQUENCE_CORR_MATRIX_COMPUTE_ODV          0
 
-/*! A templated class that stores statistical options for a chain.
+/*! A templated class that stores statistical options for a sequence of vectors, e.g.
+    a Markov chain, a Monte Carlo input sequence, or a Monte Carlo output sequence.
  */
 class uqSequenceStatisticalOptionsClass
 {
 public:
-  uqSequenceStatisticalOptionsClass(/*! The QUESO environment.                      */ const uqBaseEnvironmentClass& env,
-                                    /*! Prefix for reading options from input file. */ const std::string&            prefix);
+  uqSequenceStatisticalOptionsClass(const uqBaseEnvironmentClass& env,
+                                    const std::string&            prefix);
  ~uqSequenceStatisticalOptionsClass();
 
   const std::vector<double>&       initialDiscardedPortions() const;

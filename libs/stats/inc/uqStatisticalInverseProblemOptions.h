@@ -45,7 +45,7 @@
 #define UQ_SIP_DATA_OUTPUT_FILE_NAME_ODV   UQ_SIP_FILENAME_FOR_NO_FILE
 #define UQ_SIP_DATA_OUTPUT_ALLOWED_SET_ODV ""
 #ifdef UQ_SIP_READS_SOLVER_OPTION
-#define UQ_SIP_SOLVER_ODV                  "bayes_mc" // Bayesian formula + Markov Chain
+#define UQ_SIP_SOLVER_ODV                  "bayes_mc" // Bayesian formula + Metropolis-Hastings
 #endif
 
 class uqStatisticalInverseProblemOptionsClass

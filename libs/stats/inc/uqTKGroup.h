@@ -193,7 +193,7 @@ public:
   const uqGaussianVectorRVClass<V,M>& rv                        (const std::vector<unsigned int>& stageIds);
         bool                          setPreComputingPosition   (const V& position, unsigned int stageId);
         void                          clearPreComputingPositions();
-        void                          updateCovMatrix           (const M& covMatrix);
+        void                          updateLawCovMatrix           (const M& covMatrix);
         void                          print                     (std::ostream& os) const;
 
 private:
@@ -305,7 +305,7 @@ uqScaledCovMatrixTKGroupClass<V,M>::rv(unsigned int stageId)
                       "uqScaledCovMatrixTKGroupClass<V,M>::rv1()",
                       "m_preComputingPositions[stageId] == NULL");
 
-  m_rvs[0]->updateExpVector(*m_preComputingPositions[stageId]);
+  m_rvs[0]->updateLawExpVector(*m_preComputingPositions[stageId]);
 
   return (*m_rvs[0]);
 }
@@ -334,7 +334,7 @@ uqScaledCovMatrixTKGroupClass<V,M>::rv(const std::vector<unsigned int>& stageIds
                       "uqScaledCovMatrixTKGroupClass<V,M>::rv2()",
                       "m_preComputingPositions[stageIds[0]] == NULL");
 
-  m_rvs[stageIds.size()-1]->updateExpVector(*m_preComputingPositions[stageIds[0]]);
+  m_rvs[stageIds.size()-1]->updateLawExpVector(*m_preComputingPositions[stageIds[0]]);
 
   return (*m_rvs[stageIds.size()-1]);
 }
@@ -363,7 +363,7 @@ uqScaledCovMatrixTKGroupClass<V,M>::setPreComputingPosition(const V& position, u
     }
     if (stageId < m_rvs.size()) {
       const uqGaussianJointPdfClass<V,M>* pdfPtr = dynamic_cast< const uqGaussianJointPdfClass<V,M>* >(&(m_rvs[stageId]->pdf()));
-      *m_env.subDisplayFile() << ", rvCov = " << pdfPtr->covMatrix(); // FIX ME: might demand parallelism
+      *m_env.subDisplayFile() << ", rvCov = " << pdfPtr->lawCovMatrix(); // FIX ME: might demand parallelism
     }
     *m_env.subDisplayFile() << std::endl;
   }
@@ -388,11 +388,11 @@ uqScaledCovMatrixTKGroupClass<V,M>::clearPreComputingPositions()
 
 template<class V, class M>
 void
-uqScaledCovMatrixTKGroupClass<V,M>::updateCovMatrix(const M& covMatrix)
+uqScaledCovMatrixTKGroupClass<V,M>::updateLawCovMatrix(const M& covMatrix)
 {
   for (unsigned int i = 0; i < m_scales.size(); ++i) {
     double factor = 1./m_scales[i]/m_scales[i];
-    m_rvs[i]->updateCovMatrix(factor*covMatrix);
+    m_rvs[i]->updateLawCovMatrix(factor*covMatrix);
   }
 
   return;
@@ -509,8 +509,8 @@ uqHessianCovMatricesTKGroupClass<V,M>::rv(unsigned int stageId)
                       "uqHessianCovMatricesTKGroupClass<V,M>::rv1()",
                       "m_preComputingPositions[stageId] == NULL");
 
-  m_rvs[stageId]->updateExpVector(*m_preComputingPositions[stageId] + *m_originalNewtonSteps[stageId]);
-  m_rvs[stageId]->updateCovMatrix(*m_originalCovMatrices[stageId]);
+  m_rvs[stageId]->updateLawExpVector(*m_preComputingPositions[stageId] + *m_originalNewtonSteps[stageId]);
+  m_rvs[stageId]->updateLawCovMatrix(*m_originalCovMatrices[stageId]);
 
   return *m_rvs[stageId];
 }
@@ -540,8 +540,8 @@ uqHessianCovMatricesTKGroupClass<V,M>::rv(const std::vector<unsigned int>& stage
                       "m_preComputingPositions[stageIds[0]] == NULL");
 
   double factor = 1./m_scales[stageIds.size()-1]/m_scales[stageIds.size()-1];
-  m_rvs[stageIds[0]]->updateExpVector(*m_preComputingPositions[stageIds[0]] + factor*(*m_originalNewtonSteps[stageIds[0]]));
-  m_rvs[stageIds[0]]->updateCovMatrix(factor*(*m_originalCovMatrices[stageIds[0]]));
+  m_rvs[stageIds[0]]->updateLawExpVector(*m_preComputingPositions[stageIds[0]] + factor*(*m_originalNewtonSteps[stageIds[0]]));
+  m_rvs[stageIds[0]]->updateLawCovMatrix(factor*(*m_originalCovMatrices[stageIds[0]]));
 
   return *m_rvs[stageIds[0]];
 }

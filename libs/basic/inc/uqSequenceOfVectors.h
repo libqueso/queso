@@ -62,9 +62,11 @@ public:
         void         setPositionValues          (unsigned int posId, const V& vec);
         void         setGaussian                (const gsl_rng* rng, const V& meanVec, const V& stdDevVec);
         void         setUniform                 (const gsl_rng* rng, const V& aVec,    const V& bVec     );
+#ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
         void         subUniformlySampledMdf     (const V&                             numEvaluationPointsVec,
                                                  uqArrayOfOneDGridsClass <V,M>&       mdfGrids,
                                                  uqArrayOfOneDTablesClass<V,M>&       mdfValues) const;
+#endif
         void         subUniformlySampledCdf     (const V&                             numEvaluationPointsVec,
                                                  uqArrayOfOneDGridsClass <V,M>&       cdfGrids,
                                                  uqArrayOfOneDTablesClass<V,M>&       cdfValues) const;
@@ -471,6 +473,7 @@ uqSequenceOfVectorsClass<V,M>::setUniform(const gsl_rng* rng, const V& aVec, con
   return;
 }
 
+#ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
 template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subUniformlySampledMdf(
@@ -505,7 +508,7 @@ uqSequenceOfVectorsClass<V,M>::subUniformlySampledMdf(
 
   return;
 }
-
+#endif
 template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subUniformlySampledCdf(
@@ -567,7 +570,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedUniformlySampledCdf(
                            data);
 
     std::vector<double> aCdf(0);
-    data.unifiedUniformlySampledCdf(m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1,
+    data.unifiedUniformlySampledCdf(m_vectorSpace.numOfProcsForStorage() == 1,
                                     (unsigned int) numEvaluationPointsVec[i],
                                     unifiedMinDomainValues[i],
                                     unifiedMaxDomainValues[i],
@@ -687,7 +690,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedMean(
                            numPos,
                            i,
                            data);
-    unifiedMeanVec[i] = data.unifiedMean(m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1,
+    unifiedMeanVec[i] = data.unifiedMean(m_vectorSpace.numOfProcsForStorage() == 1,
                                          0,
                                          numPos);
   }
@@ -766,7 +769,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedSampleVariance(
                            numPos,
                            i,
                            data);
-    unifiedSamVec[i] = data.unifiedSampleVariance(m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1,
+    unifiedSamVec[i] = data.unifiedSampleVariance(m_vectorSpace.numOfProcsForStorage() == 1,
                                                   0,
                                                   numPos,
                                                   unifiedMeanVec[i]);
@@ -1226,7 +1229,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedMinMax(
                            numPos,
                            i,
                            data);
-    data.unifiedMinMax(m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1,
+    data.unifiedMinMax(m_vectorSpace.numOfProcsForStorage() == 1,
                        0,
                        unifiedMinVec[i],
                        unifiedMaxVec[i]);
@@ -1318,7 +1321,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedHistogram(
 
     std::vector<double      > unifiedCenters(unifiedCentersForAllBins.size(),0.);
     std::vector<unsigned int> unifiedQuantts(unifiedQuanttsForAllBins.size(), 0 );
-    data.unifiedHistogram(m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1,
+    data.unifiedHistogram(m_vectorSpace.numOfProcsForStorage() == 1,
                           0,
                           unifiedMinVec[i],
                           unifiedMaxVec[i],
@@ -1435,7 +1438,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedInterQuantileRange(
                            numPos,
                            i,
                            data);
-    unifiedIqrVec[i] = data.unifiedInterQuantileRange(m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1,
+    unifiedIqrVec[i] = data.unifiedInterQuantileRange(m_vectorSpace.numOfProcsForStorage() == 1,
                                                       0);
   }
 
@@ -1499,7 +1502,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedScalesForKDE(
                            numPos,
                            i,
                            data);
-    unifiedScaleVec[i] = data.unifiedScaleForKDE(m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1,
+    unifiedScaleVec[i] = data.unifiedScaleForKDE(m_vectorSpace.numOfProcsForStorage() == 1,
                                                  0,
                                                  unifiedIqrVec[i]);
   }
@@ -1620,7 +1623,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedGaussianKDE(
       unifiedEvalParams[j] = (*unifiedEvalParamVecs[j])[i];
     }
 
-    data.unifiedGaussianKDE(m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1,
+    data.unifiedGaussianKDE(m_vectorSpace.numOfProcsForStorage() == 1,
                             0,
                             unifiedScaleVec[i],
                             unifiedEvalParams,
@@ -1698,7 +1701,7 @@ uqSequenceOfVectorsClass<V,M>::cwBrooksGelmanConvMeasures(
                            numPos,
                            i,
                            data);
-    convMeasureVec[i] = data.brooksGelmanConvMeasure(m_vectorSpace.zeroVector().numberOfProcessorsRequiredForStorage() == 1,
+    convMeasureVec[i] = data.brooksGelmanConvMeasure(m_vectorSpace.numOfProcsForStorage() == 1,
                                                      0,
                                                      numPos);
   }

@@ -31,6 +31,12 @@ MAINTAINERCLEANFILES =     \
 	config.h.in	       \
 	Makefile.in            \
 	libs/Makefile.in       \
+	libs/core/Makefile.in \
+	libs/core/src/Makefile.in \
+	libs/core/inc/Makefile.in \
+	libs/misc/Makefile.in \
+	libs/misc/src/Makefile.in \
+	libs/misc/inc/Makefile.in \
 	libs/basic/Makefile.in \
 	libs/basic/src/Makefile.in \
 	libs/basic/inc/Makefile.in \

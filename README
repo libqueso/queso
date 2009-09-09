@@ -26,7 +26,7 @@ Before compiling, you must run the `configure' script.  To run, type
 `./configure --help' for details.
 
 After successfully running `configure', type `make' to build the
-PECOS Toolkit
+QUESO library
 
 Then type `make install' to install it in the directory previously
 specified by the '--prefix' option of the `configure' script.

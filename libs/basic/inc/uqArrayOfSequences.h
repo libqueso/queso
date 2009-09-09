@@ -55,9 +55,11 @@ public:
         void         setPositionValues    (unsigned int posId, const V& vec);
         void         setGaussian          (const gsl_rng* rng, const V& meanVec, const V& stdDevVec);
         void         setUniform           (const gsl_rng* rng, const V& aVec,    const V& bVec     );
+#ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
         void         uniformlySampledMdf  (const V&                       numEvaluationPointsVec,
                                            uqArrayOfOneDGridsClass <V,M>& mdfGrids,
                                            uqArrayOfOneDTablesClass<V,M>& mdfValues) const;
+#endif
         void         uniformlySampledCdf  (const V&                       numEvaluationPointsVec,
                                            uqArrayOfOneDGridsClass <V,M>& cdfGrids,
                                            uqArrayOfOneDTablesClass<V,M>& cdfValues) const;
