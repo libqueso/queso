@@ -35,9 +35,14 @@
 
 template <class P_V,class P_M>
 void
-uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_M>& workingChain)
+uqMarkovChainSGClass<P_V,P_M>::generateSequence(
+  uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
+  uqScalarSequenceClass<double>*      workingTargetValues,
+  uqScalarSequenceClass<double>*      workingLogTargetValues)
 {
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+  if ((m_env.subDisplayFile()          ) &&
+      (m_env.displayVerbosity() >= 5   ) &&
+      (m_options.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "Entering uqMarkovChainSGClass<P_V,P_M>::generateSequence()..."
                            << std::endl;
   }
@@ -86,7 +91,9 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
     if (m_options.m_rawChainDataInputFileName == UQ_MAC_SG_FILENAME_FOR_NO_FILE) {
       generateFullChain(valuesOf1stPosition,
                         m_options.m_rawChainSize,
-                        workingChain);
+                        workingChain,
+                        workingTargetValues,
+                        workingLogTargetValues);
     }
     else {
       readFullChain(m_options.m_rawChainDataInputFileName,
@@ -98,7 +105,8 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
   //****************************************************
   // Open generic output file
   //****************************************************
-  if (m_env.subDisplayFile()) {
+  if ((m_env.subDisplayFile()          ) &&
+      (m_options.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
                             << ", prefix = "                                                         << m_options.m_prefix
                             << ": checking necessity of opening generic output file (chain name is " << workingChain.name()
@@ -117,7 +125,8 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
   // --> write raw chain
   // --> compute statistics on it
   //****************************************************
-  if (m_env.subDisplayFile()) {
+  if ((m_env.subDisplayFile()          ) &&
+      (m_options.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
                             << ", prefix = "                                                 << m_options.m_prefix
                             << ": checking necessity of opening output files for raw chain " << workingChain.name()
@@ -126,6 +135,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
   }
 
   // Take "sub" care of raw chain
+#if 0
   std::ofstream* rawChainOfsVar = NULL;
   m_env.openOutputFile(m_options.m_rawChainDataOutputFileName,
                        UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
@@ -134,13 +144,15 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
                               // in the input file) to use just one file for all outputs.
                        rawChainOfsVar);
 
-  if (rawChainOfsVar) {
+  if ((rawChainOfsVar                  ) &&
+      (m_options.m_totallyMute == false)) {
     workingChain.subWriteContents(*rawChainOfsVar);
   }
 
   if (rawChainOfsVar) {
     rawChainOfsVar->close();
-    if (m_env.subDisplayFile()) {
+    if ((m_env.subDisplayFile()          ) &&
+        (m_options.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
                               << ", prefix = "            << m_options.m_prefix
                               << ": closed output file '" << m_options.m_rawChainDataOutputFileName
@@ -148,45 +160,39 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
                               << std::endl;
     }
   }
-
-  // Take "unified" care of raw chain
-#if 0
-  std::ofstream* unifiedRawChainOfsVar = NULL;
-  m_env.openUnifiedOutputFile(m_options.m_rawChainDataOutputFileName,
-                              UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
-                              false, // A 'true' causes problems when the user chooses (via options
-                                     // in the input file) to use just one file for all outputs.
-                              unifiedRawChainOfsVar);
-
-  if (unifiedRawChainOfsVar) {
-    workingChain.unifiedWriteContents(*unifiedRawChainOfsVar);
-  }
-
-  if (unifiedRawChainOfsVar) {
-    unifiedRawChainOfsVar->close();
-    if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
-                             << ", prefix = "                    << m_options.m_prefix
-                             << ": closed unified output file '" << m_options.m_rawChainDataOutputFileName
-                             << "' for raw chain "               << workingChain.name()
-                             << std::endl;
-    }
-  }
 #else
-  if (m_options.m_rawChainDataOutputFileName != UQ_MAC_SG_FILENAME_FOR_NO_FILE) {
-    workingChain.unifiedWriteContents(m_options.m_rawChainDataOutputFileName);
-    if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
-                             << ", prefix = "                    << m_options.m_prefix
-                             << ": closed unified output file '" << m_options.m_rawChainDataOutputFileName
-                             << "' for raw chain "               << workingChain.name()
-                             << std::endl;
-    }
+  if ((m_options.m_rawChainDataOutputFileName != UQ_MAC_SG_FILENAME_FOR_NO_FILE) &&
+      (m_options.m_totallyMute == false                                        )) {
+    workingChain.subWriteContents(m_options.m_rawChainDataOutputFileName,
+                                  m_options.m_rawChainDataOutputAllowedSet);
+    //if ((m_env.subDisplayFile()          ) &&
+    //    (m_options.m_totallyMute == false)) {
+    //  *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
+    //                          << ", prefix = "                << m_options.m_prefix
+    //                          << ": closed sub output file '" << m_options.m_rawChainDataOutputFileName
+    //                          << "' for raw chain "           << workingChain.name()
+    //                          << std::endl;
+    //}
   }
 #endif
 
+  // Take "unified" care of raw chain
+  if ((m_options.m_rawChainDataOutputFileName != UQ_MAC_SG_FILENAME_FOR_NO_FILE) &&
+      (m_options.m_totallyMute == false                                        )) {
+    workingChain.unifiedWriteContents(m_options.m_rawChainDataOutputFileName);
+    if ((m_env.subDisplayFile()          ) &&
+        (m_options.m_totallyMute == false)) {
+      *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
+                              << ", prefix = "                    << m_options.m_prefix
+                              << ": closed unified output file '" << m_options.m_rawChainDataOutputFileName
+                              << "' for raw chain "               << workingChain.name()
+                              << std::endl;
+    }
+  }
+
   // Take case of other aspects of raw chain
-  if (genericOfsVar) {
+  if ((genericOfsVar                   ) &&
+      (m_options.m_totallyMute == false)) {
     // Write likelihoodValues and alphaValues, if they were requested by user
     iRC = writeInfo(workingChain,
                     *genericOfsVar);
@@ -237,7 +243,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
 
   //****************************************************
   // Eventually:
-  // --> filter the (maybe unique) chain
+  // --> filter the raw chain
   // --> write it
   // --> compute statistics on it
   //****************************************************
@@ -257,8 +263,15 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
                         filterSpacing);
     workingChain.setName(m_options.m_prefix + "filtChain");
 
+    if (workingTargetValues)    workingTargetValues->filter   (filterInitialPos,
+                                                               filterSpacing);
+
+    if (workingLogTargetValues) workingLogTargetValues->filter(filterInitialPos,
+                                                               filterSpacing);
+
     // Write filtered chain
-    if (m_env.subDisplayFile()) {
+    if ((m_env.subDisplayFile()          ) &&
+        (m_options.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
                               << ", prefix = "                                                      << m_options.m_prefix
                               << ": checking necessity of opening output files for filtered chain " << workingChain.name()
@@ -267,6 +280,7 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
     }
 
     // Take "sub" care of filtered chain
+#if 0
     std::ofstream* filteredChainOfsVar = NULL;
     m_env.openOutputFile(m_options.m_filteredChainDataOutputFileName,
                          UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
@@ -275,13 +289,15 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
                                 // in the input file) to use just one file for all outputs.
                          filteredChainOfsVar);
 
-    if (filteredChainOfsVar) {
+    if ((filteredChainOfsVar             ) &&
+        (m_options.m_totallyMute == false)) {
       workingChain.subWriteContents(*filteredChainOfsVar);
     }
 
     if (filteredChainOfsVar) {
       filteredChainOfsVar->close();
-      if (m_env.subDisplayFile()) {
+      if ((m_env.subDisplayFile()          ) &&
+          (m_options.m_totallyMute == false)) {
         *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
                                 << ", prefix = "            << m_options.m_prefix
                                 << ": closed output file '" << m_options.m_filteredChainDataOutputFileName
@@ -289,42 +305,35 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
                                 << std::endl;
       }
     }
-
-    // Take "unified" care of filtered chain
-#if 0
-    std::ofstream* unifiedFilteredChainOfsVar = NULL;
-    m_env.openUnifiedOutputFile(m_options.m_filteredChainDataOutputFileName,
-                                UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
-                                false, // A 'true' causes problems when the user chooses (via options
-                                       // in the input file) to use just one file for all outputs.
-                                unifiedFilteredChainOfsVar);
-
-    if (unifiedFilteredChainOfsVar) {
-      workingChain.unifiedWriteContents(*unifiedFilteredChainOfsVar);
-    }
-
-    if (unifiedFilteredChainOfsVar) {
-      unifiedFilteredChainOfsVar->close();
-      if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
-                               << ", prefix = "                    << m_options.m_prefix
-                               << ": closed unified output file '" << m_options.m_filteredChainDataOutputFileName
-                               << "' for filtered chain "          << workingChain.name()
-                               << std::endl;
-      }
-    }
 #else
-    if (m_options.m_filteredChainDataOutputFileName != UQ_MAC_SG_FILENAME_FOR_NO_FILE) {
-      workingChain.unifiedWriteContents(m_options.m_filteredChainDataOutputFileName);
-      if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
-                               << ", prefix = "                    << m_options.m_prefix
-                               << ": closed unified output file '" << m_options.m_filteredChainDataOutputFileName
-                               << "' for filtered chain "          << workingChain.name()
-                               << std::endl;
-      }
+    if ((m_options.m_filteredChainDataOutputFileName != UQ_MAC_SG_FILENAME_FOR_NO_FILE) &&
+        (m_options.m_totallyMute == false                                             )) {
+      workingChain.subWriteContents(m_options.m_filteredChainDataOutputFileName,
+                                    m_options.m_filteredChainDataOutputAllowedSet);
+      //if ((m_env.subDisplayFile()          ) &&
+      //    (m_options.m_totallyMute == false)) {
+      //  *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
+      //                          << ", prefix = "                << m_options.m_prefix
+      //                          << ": closed sub output file '" << m_options.m_filteredChainDataOutputFileName
+      //                          << "' for filtered chain "      << workingChain.name()
+      //                          << std::endl;
+      //}
     }
 #endif
+
+    // Take "unified" care of filtered chain
+    if ((m_options.m_filteredChainDataOutputFileName != UQ_MAC_SG_FILENAME_FOR_NO_FILE) &&
+        (m_options.m_totallyMute == false                                             )) {
+      workingChain.unifiedWriteContents(m_options.m_filteredChainDataOutputFileName);
+      if ((m_env.subDisplayFile()          ) &&
+          (m_options.m_totallyMute == false)) {
+        *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
+                                << ", prefix = "                    << m_options.m_prefix
+                                << ": closed unified output file '" << m_options.m_filteredChainDataOutputFileName
+                                << "' for filtered chain "          << workingChain.name()
+                                << std::endl;
+      }
+    }
 
     // Compute statistics
     if (m_options.m_filteredChainComputeStats) {
@@ -338,7 +347,8 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
   //****************************************************
   if (genericOfsVar) {
     genericOfsVar->close();
-    if (m_env.subDisplayFile()) {
+    if ((m_env.subDisplayFile()          ) &&
+        (m_options.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
                               << ", prefix = "                    << m_options.m_prefix
                               << ": closed generic output file '" << m_options.m_dataOutputFileName
@@ -348,15 +358,18 @@ uqMarkovChainSGClass<P_V,P_M>::generateSequence(uqBaseVectorSequenceClass<P_V,P_
     }
   }
 
-  if (m_env.subDisplayFile()) {
+  if ((m_env.subDisplayFile()          ) &&
+      (m_options.m_totallyMute == false)) {
     *m_env.subDisplayFile() << std::endl;
   }
 
   m_env.syncPrintDebugMsg("Leaving uqMarkovChainSGClass<P_V,P_M>::generateSequence()",2,3000000,m_env.fullComm());
 
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+  if ((m_env.subDisplayFile()          ) &&
+      (m_env.displayVerbosity() >= 5   ) &&
+      (m_options.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "Leaving uqMarkovChainSGClass<P_V,P_M>::generateSequence()"
-                           << std::endl;
+                            << std::endl;
   }
 
   return;
@@ -368,11 +381,12 @@ uqMarkovChainSGClass<P_V,P_M>::generateWhiteNoiseChain(
   unsigned int                        chainSize,
   uqBaseVectorSequenceClass<P_V,P_M>& workingChain)
 {
-  if (m_env.subDisplayFile()) {
+  if ((m_env.subDisplayFile()          ) &&
+      (m_options.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "Starting the generation of white noise chain " << workingChain.name()
-                           << ", with "                                       << chainSize
-                           << " positions ..."
-                           << std::endl;
+                            << ", with "                                       << chainSize
+                            << " positions ..."
+                            << std::endl;
   }
 
   int iRC;
@@ -391,16 +405,18 @@ uqMarkovChainSGClass<P_V,P_M>::generateWhiteNoiseChain(
 
   tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
 
-  if (m_env.subDisplayFile()) {
+  if ((m_env.subDisplayFile()          ) &&
+      (m_options.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "Finished the generation of white noise chain " << workingChain.name()
-                           << ", with sub "                                   << workingChain.subSequenceSize()
-                           << " positions";
+                            << ", with sub "                                   << workingChain.subSequenceSize()
+                            << " positions";
   }
 
-  if (m_env.subDisplayFile()) {
+  if ((m_env.subDisplayFile()          ) &&
+      (m_options.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "Chain generation took " << tmpRunTime
-                           << " seconds"
-                           << std::endl;
+                            << " seconds"
+                            << std::endl;
   }
 
   return;
@@ -412,11 +428,12 @@ uqMarkovChainSGClass<P_V,P_M>::generateUniformChain(
   unsigned int                        chainSize,
   uqBaseVectorSequenceClass<P_V,P_M>& workingChain)
 {
-  if (m_env.subDisplayFile()) {
+  if ((m_env.subDisplayFile()          ) &&
+      (m_options.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "Starting the generation of uniform chain " << workingChain.name()
-                           << ", with "                                   << chainSize
-                           << " positions ..."
-                           << std::endl;
+                            << ", with "                                   << chainSize
+                            << " positions ..."
+                            << std::endl;
   }
 
   int iRC;
@@ -435,16 +452,18 @@ uqMarkovChainSGClass<P_V,P_M>::generateUniformChain(
 
   tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
 
-  if (m_env.subDisplayFile()) {
+  if ((m_env.subDisplayFile()          ) &&
+      (m_options.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "Finished the generation of white noise chain " << workingChain.name()
-                           << ", with sub "                                   << workingChain.subSequenceSize()
-                           << " positions";
+                            << ", with sub "                                   << workingChain.subSequenceSize()
+                            << " positions";
   }
 
-  if (m_env.subDisplayFile()) {
+  if ((m_env.subDisplayFile()          ) &&
+      (m_options.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "Chain generation took " << tmpRunTime
-                           << " seconds"
-                           << std::endl;
+                            << " seconds"
+                            << std::endl;
   }
 
   return;
@@ -466,15 +485,18 @@ void
 uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
   const P_V&                          valuesOf1stPosition,
         unsigned int                  chainSize,
-  uqBaseVectorSequenceClass<P_V,P_M>& workingChain)
+  uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
+  uqScalarSequenceClass<double>*      workingTargetValues,
+  uqScalarSequenceClass<double>*      workingLogTargetValues)
 {
   m_env.syncPrintDebugMsg("Entering uqMarkovChainSGClass<P_V,P_M>::generateFullChain()",3,3000000,m_env.fullComm());
 
-  if (m_env.subDisplayFile()) {
+  if ((m_env.subDisplayFile()          ) &&
+      (m_options.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "Starting the generation of Markov chain " << workingChain.name()
-                           << ", with "                                  << chainSize
-                           << " positions..."
-                           << std::endl;
+                            << ", with "                                  << chainSize
+                            << " positions..."
+                            << std::endl;
   }
 
   int iRC = UQ_OK_RC;
@@ -486,6 +508,9 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
   struct timeval timevalDR;
   struct timeval timevalAM;
 
+  m_positionIdForDebugging = 0;
+  m_stageIdForDebugging    = 0;
+  m_numRejections          = 0;
   double candidateRunTime = 0;
   double targetDRunTime   = 0;
   double mhAlphaRunTime   = 0;
@@ -499,9 +524,10 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
                       m_env.fullRank(),
                       "uqMarkovChainSGClass<P_V,P_M>::generateFullChain()",
                       "initial position should not be out of target pdf support");
-  if (m_env.subDisplayFile()) {
+  if ((m_env.subDisplayFile()          ) &&
+      (m_options.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                           << ": contents of initial position are:\n";
+                            << ": contents of initial position are:\n";
     *m_env.subDisplayFile() << valuesOf1stPosition; // FIX ME: might need parallelism
     *m_env.subDisplayFile() << std::endl;
   }
@@ -522,6 +548,8 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
   // Begin chain loop from positionId = 1
   //****************************************************
   workingChain.resizeSequence(chainSize); 
+  if (workingTargetValues   ) workingTargetValues->resizeSequence   (chainSize);
+  if (workingLogTargetValues) workingLogTargetValues->resizeSequence(chainSize);
   if (true/*m_uniqueChainGenerate*/) m_idsOfUniquePositions.resize(chainSize,0); 
   if (m_options.m_rawChainGenerateExtra) {
     m_logTargets.resize    (chainSize,0.);
@@ -530,6 +558,8 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
 
   unsigned int uniquePos = 0;
   workingChain.setPositionValues(0,currentPositionData.vecValues());
+  if (workingTargetValues   ) (*workingTargetValues   )[0] = exp(currentPositionData.logTarget());
+  if (workingLogTargetValues) (*workingLogTargetValues)[0] =     currentPositionData.logTarget();
   if (true/*m_uniqueChainGenerate*/) m_idsOfUniquePositions[uniquePos++] = 0;
   if (m_options.m_rawChainGenerateExtra) {
     m_logTargets    [0] = currentPositionData.logTarget();
@@ -537,11 +567,13 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
   }
   //*m_env.subDisplayFile() << "AQUI 002" << std::endl;
 
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+  if ((m_env.subDisplayFile()          ) &&
+      (m_env.displayVerbosity() >= 10  ) &&
+      (m_options.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "\n"
-                           << "\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-                           << "\n"
-                           << std::endl;
+                            << "\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+                            << "\n"
+                            << std::endl;
   }
 
   m_env.syncPrintDebugMsg("In uqMarkovChainSGClass<P_V,P_M>::generateFullChain(), right before main loop",3,3000000,m_env.fullComm());
@@ -557,35 +589,45 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
                                                 NULL,
                                                 NULL);
     for (unsigned int positionId = 1; positionId < workingChain.subSequenceSize(); ++positionId) {
-      workingChain.setPositionValues(positionId,currentPositionData.vecValues());
+      // Multiply by position valules by 'positionId' in order to avoid a constant sequence,
+      // which would cause zero variance and eventually OVERFLOW flags raised
+      workingChain.setPositionValues(positionId,((double) positionId) * currentPositionData.vecValues());
       m_numRejections++;
     }
   }
   else for (unsigned int positionId = 1; positionId < workingChain.subSequenceSize(); ++positionId) {
-    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+    m_positionIdForDebugging = positionId;
+    if ((m_env.subDisplayFile()          ) &&
+        (m_env.displayVerbosity() >= 10  ) &&
+        (m_options.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                             << ": beginning chain position of id = " << positionId
-                             << ", m_options.m_drMaxNumExtraStages =  "         << m_options.m_drMaxNumExtraStages
-                             << std::endl;
+                              << ": beginning chain position of id = "   << positionId
+                              << ", m_options.m_drMaxNumExtraStages =  " << m_options.m_drMaxNumExtraStages
+                              << std::endl;
     }
-    unsigned int stageId = 0;
+    unsigned int stageId  = 0;
+    m_stageIdForDebugging = stageId;
 
 #ifdef UQ_USES_TK_CLASS
     m_tk->clearPreComputingPositions();
 
-    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    if ((m_env.subDisplayFile()          ) &&
+        (m_env.displayVerbosity() >= 5   ) &&
+        (m_options.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                             << ": about to set TK pre computing position of local id " << 0
-                             << ", values = " << currentPositionData.vecValues()
-                             << std::endl;
+                              << ": about to set TK pre computing position of local id " << 0
+                              << ", values = " << currentPositionData.vecValues()
+                              << std::endl;
     }
     bool validPreComputingPosition = m_tk->setPreComputingPosition(currentPositionData.vecValues(),0);
-    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    if ((m_env.subDisplayFile()          ) &&
+        (m_env.displayVerbosity() >= 5   ) &&
+        (m_options.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                             << ": returned from setting TK pre computing position of local id " << 0
-                             << ", values = " << currentPositionData.vecValues()
-                             << ", valid = "  << validPreComputingPosition
-                             << std::endl;
+                              << ": returned from setting TK pre computing position of local id " << 0
+                              << ", values = " << currentPositionData.vecValues()
+                              << ", valid = "  << validPreComputingPosition
+                              << std::endl;
     }
     UQ_FATAL_TEST_MACRO(validPreComputingPosition == false,
                         m_env.fullRank(),
@@ -610,32 +652,38 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
       outOfTargetSupport = !m_targetPdf.domainSet().contains(tmpVecValues);
 
       bool displayDetail = (m_env.displayVerbosity() >= 10/*99*/) || m_options.m_mhDisplayCandidates;
-      if ((m_env.subDisplayFile()) && displayDetail) {
+      if ((m_env.subDisplayFile()          ) &&
+          (displayDetail                   ) &&
+          (m_options.m_totallyMute == false)) {
         *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                               << ": for chain position of id = " << positionId
-                               << ", candidate = "                << tmpVecValues // FIX ME: might need parallelism
-                               << ", outOfTargetSupport = "       << outOfTargetSupport
-                               << std::endl;
+                                << ": for chain position of id = " << positionId
+                                << ", candidate = "                << tmpVecValues // FIX ME: might need parallelism
+                                << ", outOfTargetSupport = "       << outOfTargetSupport
+                                << std::endl;
       }
 
       if (m_options.m_mhPutOutOfBoundsInChain) keepGeneratingCandidates = false;
-      else                           keepGeneratingCandidates = outOfTargetSupport;
+      else                                     keepGeneratingCandidates = outOfTargetSupport;
     }
 
 #ifdef UQ_USES_TK_CLASS
-    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    if ((m_env.subDisplayFile()          ) &&
+        (m_env.displayVerbosity() >= 5   ) &&
+        (m_options.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                             << ": about to set TK pre computing position of local id " << stageId+1
-                             << ", values = " << tmpVecValues
-                             << std::endl;
+                              << ": about to set TK pre computing position of local id " << stageId+1
+                              << ", values = " << tmpVecValues
+                              << std::endl;
     }
     validPreComputingPosition = m_tk->setPreComputingPosition(tmpVecValues,stageId+1);
-    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    if ((m_env.subDisplayFile()          ) &&
+        (m_env.displayVerbosity() >= 5   ) &&
+        (m_options.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                             << ": returned from setting TK pre computing position of local id " << stageId+1
-                             << ", values = " << tmpVecValues
-                             << ", valid = "  << validPreComputingPosition
-                             << std::endl;
+                              << ": returned from setting TK pre computing position of local id " << stageId+1
+                              << ", values = " << tmpVecValues
+                              << ", valid = "  << validPreComputingPosition
+                              << std::endl;
     }
 #endif
 
@@ -652,11 +700,13 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
                              outOfTargetSupport,
                              logTarget);
 
-    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+    if ((m_env.subDisplayFile()          ) &&
+        (m_env.displayVerbosity() >= 10  ) &&
+        (m_options.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "\n"
-                             << "\n-----------------------------------------------------------\n"
-                             << "\n"
-                             << std::endl;
+                              << "\n-----------------------------------------------------------\n"
+                              << "\n"
+                              << std::endl;
     }
     bool accept = false;
     double alphaFirstCandidate = 0.;
@@ -674,7 +724,9 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
         alphaFirstCandidate = this->alpha(currentPositionData,currentCandidateData,0,1,NULL);
       }
       if (m_options.m_rawChainMeasureRunTimes) mhAlphaRunTime += uqMiscGetEllapsedSeconds(&timevalMhAlpha);
-      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+      if ((m_env.subDisplayFile()          ) &&
+          (m_env.displayVerbosity() >= 10  ) &&
+          (m_options.m_totallyMute == false)) {
         *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
                                << ": for chain position of id = " << positionId
                                << std::endl;
@@ -683,26 +735,30 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
     }
 
     bool displayDetail = (m_env.displayVerbosity() >= 10/*99*/) || m_options.m_mhDisplayCandidates;
-    if ((m_env.subDisplayFile()) && displayDetail) {
+    if ((m_env.subDisplayFile()          ) &&
+        (displayDetail                   ) &&
+        (m_options.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                             << ": for chain position of id = " << positionId
-                             << ", outOfTargetSupport = "       << outOfTargetSupport
-                             << ", alpha = "                    << alphaFirstCandidate
-                             << ", accept = "                   << accept
-                             << ", currentCandidateData.vecValues() = ";
+                              << ": for chain position of id = " << positionId
+                              << ", outOfTargetSupport = "       << outOfTargetSupport
+                              << ", alpha = "                    << alphaFirstCandidate
+                              << ", accept = "                   << accept
+                              << ", currentCandidateData.vecValues() = ";
       *m_env.subDisplayFile() << currentCandidateData.vecValues(); // FIX ME: might need parallelism
       *m_env.subDisplayFile() << "\n"
-                             << "\n curLogTarget  = "           << currentPositionData.logTarget()
-                             << "\n"
-                             << "\n canLogTarget  = "           << currentCandidateData.logTarget()
-                             << "\n"
-                             << std::endl;
+                              << "\n curLogTarget  = "           << currentPositionData.logTarget()
+                              << "\n"
+                              << "\n canLogTarget  = "           << currentCandidateData.logTarget()
+                              << "\n"
+                              << std::endl;
     }
-    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+    if ((m_env.subDisplayFile()          ) &&
+        (m_env.displayVerbosity() >= 10  ) &&
+        (m_options.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "\n"
-                             << "\n-----------------------------------------------------------\n"
-                             << "\n"
-                             << std::endl;
+                              << "\n-----------------------------------------------------------\n"
+                              << "\n"
+                              << std::endl;
     }
 
     //****************************************************
@@ -719,21 +775,26 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
       tkStageIds[0]  = 0;
       tkStageIds[1]  = 1;
 
-      while ((validPreComputingPosition == true ) && 
-             (accept                    == false) &&
-             (stageId < m_options.m_drMaxNumExtraStages   )) {
-        if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+      while ((validPreComputingPosition == true        ) && 
+             (accept                    == false       ) &&
+             (stageId < m_options.m_drMaxNumExtraStages)) {
+        if ((m_env.subDisplayFile()          ) &&
+            (m_env.displayVerbosity() >= 10  ) &&
+            (m_options.m_totallyMute == false)) {
           *m_env.subDisplayFile() << "\n"
-                                 << "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-"
-                                 << "\n"
-                                 << std::endl;
+                                  << "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-"
+                                  << "\n"
+                                  << std::endl;
         }
         stageId++;
-        if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+        m_stageIdForDebugging = stageId;
+        if ((m_env.subDisplayFile()          ) &&
+            (m_env.displayVerbosity() >= 10  ) &&
+            (m_options.m_totallyMute == false)) {
           *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                                 << ": for chain position of id = " << positionId
-                                 << ", beginning stageId = "        << stageId
-                                 << std::endl;
+                                  << ": for chain position of id = " << positionId
+                                  << ", beginning stageId = "        << stageId
+                                  << std::endl;
         }
 
         keepGeneratingCandidates = true;
@@ -750,23 +811,27 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
           outOfTargetSupport = !m_targetPdf.domainSet().contains(tmpVecValues);
 
           if (m_options.m_mhPutOutOfBoundsInChain) keepGeneratingCandidates = false;
-          else                           keepGeneratingCandidates = outOfTargetSupport;
+          else                                     keepGeneratingCandidates = outOfTargetSupport;
         }
 
 #ifdef UQ_USES_TK_CLASS
-        if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+        if ((m_env.subDisplayFile()          ) &&
+            (m_env.displayVerbosity() >= 5   ) &&
+            (m_options.m_totallyMute == false)) {
           *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                                 << ": about to set TK pre computing position of local id " << stageId+1
-                                 << ", values = " << tmpVecValues
-                                 << std::endl;
+                                  << ": about to set TK pre computing position of local id " << stageId+1
+                                  << ", values = " << tmpVecValues
+                                  << std::endl;
         }
         validPreComputingPosition = m_tk->setPreComputingPosition(tmpVecValues,stageId+1);
-        if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+        if ((m_env.subDisplayFile()          ) &&
+            (m_env.displayVerbosity() >= 5   ) &&
+            (m_options.m_totallyMute == false)) {
           *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                                 << ": returned from setting TK pre computing position of local id " << stageId+1
-                                 << ", values = " << tmpVecValues
-                                 << ", valid = "  << validPreComputingPosition
-                                 << std::endl;
+                                  << ": returned from setting TK pre computing position of local id " << stageId+1
+                                  << ", values = " << tmpVecValues
+                                  << ", valid = "  << validPreComputingPosition
+                                  << std::endl;
         }
 #endif
 
@@ -794,14 +859,16 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
         }
 
         displayDetail = (m_env.displayVerbosity() >= 10/*99*/) || m_options.m_mhDisplayCandidates;
-        if ((m_env.subDisplayFile()) && displayDetail) {
+        if ((m_env.subDisplayFile()          ) &&
+            (displayDetail                   ) &&
+            (m_options.m_totallyMute == false)) {
           *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                                 << ": for chain position of id = " << positionId
-                                 << " and stageId = "               << stageId
-                                 << ", outOfTargetSupport = "       << outOfTargetSupport
-                                 << ", alpha = "                    << alphaDR
-                                 << ", accept = "                   << accept
-                                 << ", currentCandidateData.vecValues() = ";
+                                  << ": for chain position of id = " << positionId
+                                  << " and stageId = "               << stageId
+                                  << ", outOfTargetSupport = "       << outOfTargetSupport
+                                  << ", alpha = "                    << alphaDR
+                                  << ", accept = "                   << accept
+                                  << ", currentCandidateData.vecValues() = ";
           *m_env.subDisplayFile() << currentCandidateData.vecValues(); // FIX ME: might need parallelism
           *m_env.subDisplayFile() << std::endl;
         }
@@ -826,6 +893,9 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
       workingChain.setPositionValues(positionId,currentPositionData.vecValues());
       m_numRejections++;
     }
+
+    if (workingTargetValues   ) (*workingTargetValues   )[positionId] = exp(currentPositionData.logTarget());
+    if (workingLogTargetValues) (*workingLogTargetValues)[positionId] =     currentPositionData.logTarget();
 
     if (m_options.m_rawChainGenerateExtra) {
       m_logTargets[positionId] = currentPositionData.logTarget();
@@ -996,26 +1066,31 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
       if (m_options.m_rawChainMeasureRunTimes) amRunTime += uqMiscGetEllapsedSeconds(&timevalAM);
     } // End of 'adaptive Metropolis' logic
 
-    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+    if ((m_env.subDisplayFile()          ) &&
+        (m_env.displayVerbosity() >= 10  ) &&
+        (m_options.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In uqMarkovChainSGClass<P_V,P_M>::generateFullChain()"
-                             << ": finishing chain position of id = " << positionId
-                             << std::endl;
+                              << ": finishing chain position of id = " << positionId
+                              << std::endl;
     }
 
     if ((m_options.m_rawChainDisplayPeriod                     > 0) && 
         (((positionId+1) % m_options.m_rawChainDisplayPeriod) == 0)) {
-      if (m_env.subDisplayFile()) {
+      if ((m_env.subDisplayFile()          ) &&
+          (m_options.m_totallyMute == false)) {
         *m_env.subDisplayFile() << "Finished generating " << positionId+1
-                               << " positions"
-                               << std::endl;
+                                << " positions"
+                                << std::endl;
       }
     }
 
-    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+    if ((m_env.subDisplayFile()          ) &&
+        (m_env.displayVerbosity() >= 10  ) &&
+        (m_options.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "\n"
-                             << "\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-                             << "\n"
-                             << std::endl;
+                              << "\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+                              << "\n"
+                              << std::endl;
     }
   } // end chain loop
 
@@ -1035,44 +1110,45 @@ uqMarkovChainSGClass<P_V,P_M>::generateFullChain(
   // Print basic information about the chain
   //****************************************************
   m_rawChainRunTime += uqMiscGetEllapsedSeconds(&timevalChain);
-  if (m_env.subDisplayFile()) {
+  if ((m_env.subDisplayFile()          ) &&
+      (m_options.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "Finished the generation of Markov chain " << workingChain.name()
-                           << ", with sub "                               << workingChain.subSequenceSize()
-                           << " positions";
+                            << ", with sub "                               << workingChain.subSequenceSize()
+                            << " positions";
     *m_env.subDisplayFile() << "\nSome information about this chain:"
-                           << "\n  Chain run time       = " << m_rawChainRunTime
-                           << " seconds";
+                            << "\n  Chain run time       = " << m_rawChainRunTime
+                            << " seconds";
     if (m_options.m_rawChainMeasureRunTimes) {
       *m_env.subDisplayFile() << "\n\n Breaking of the chain run time:\n";
       *m_env.subDisplayFile() << "\n  Candidate run time   = " << candidateRunTime
-                             << " seconds ("                   << 100.*candidateRunTime/m_rawChainRunTime
-                             << "%)";
+                              << " seconds ("                   << 100.*candidateRunTime/m_rawChainRunTime
+                              << "%)";
       *m_env.subDisplayFile() << "\n  Target d. run time   = " << targetDRunTime
-                             << " seconds ("                   << 100.*targetDRunTime/m_rawChainRunTime
-                             << "%)";
+                              << " seconds ("                   << 100.*targetDRunTime/m_rawChainRunTime
+                              << "%)";
       *m_env.subDisplayFile() << "\n  Mh alpha run time    = " << mhAlphaRunTime
-                             << " seconds ("                   << 100.*mhAlphaRunTime/m_rawChainRunTime
-                             << "%)";
+                              << " seconds ("                   << 100.*mhAlphaRunTime/m_rawChainRunTime
+                              << "%)";
       *m_env.subDisplayFile() << "\n  Dr alpha run time    = " << drAlphaRunTime
-                             << " seconds ("                   << 100.*drAlphaRunTime/m_rawChainRunTime
-                             << "%)";
+                              << " seconds ("                   << 100.*drAlphaRunTime/m_rawChainRunTime
+                              << "%)";
       *m_env.subDisplayFile() << "\n----------------------   --------------";
       double sumRunTime = candidateRunTime + targetDRunTime + mhAlphaRunTime + drAlphaRunTime;
       *m_env.subDisplayFile() << "\n  Sum                  = " << sumRunTime
-                             << " seconds ("                   << 100.*sumRunTime/m_rawChainRunTime
-                             << "%)";
+                              << " seconds ("                   << 100.*sumRunTime/m_rawChainRunTime
+                              << "%)";
       *m_env.subDisplayFile() << "\n\n Other run times:";
       *m_env.subDisplayFile() << "\n  DR run time          = " << drRunTime
-                             << " seconds ("                   << 100.*drRunTime/m_rawChainRunTime
-                             << "%)";
+                              << " seconds ("                   << 100.*drRunTime/m_rawChainRunTime
+                              << "%)";
       *m_env.subDisplayFile() << "\n  AM run time          = " << amRunTime
-                             << " seconds ("                   << 100.*amRunTime/m_rawChainRunTime
-                             << "%)";
+                              << " seconds ("                   << 100.*amRunTime/m_rawChainRunTime
+                              << "%)";
     }
     *m_env.subDisplayFile() << "\n  Rejection percentage = "   << 100. * (double) m_numRejections/(double) workingChain.subSequenceSize()
-                           << " %";
+                            << " %";
     *m_env.subDisplayFile() << "\n  Out of target support percentage = " << 100. * (double) m_numOutOfTargetSupport/(double) workingChain.subSequenceSize()
-                           << " %";
+                            << " %";
     *m_env.subDisplayFile() << std::endl;
   }
 

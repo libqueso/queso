@@ -44,8 +44,8 @@
 // Version "0.3.1" on "Feb/19/2009"
 // Version "0.4.0" on "Jul/22/2009"
 // Version "0.5.0" on "MMM/DD/2009"
-#define QUESO_LIBRARY_CURRENT_VERSION "0.4.0"
-#define QUESO_LIBRARY_RELEASE_DATE    "Jul/22/2009"
+#define QUESO_LIBRARY_CURRENT_VERSION "0.5.0"
+#define QUESO_LIBRARY_RELEASE_DATE    "MMM/DD/2009"
 
 //*****************************************************
 // Base class
@@ -105,9 +105,9 @@ uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
 
   if (m_subDisplayFile) {
     *m_subDisplayFile << "Ending run at " << ctime(&timevalNow.tv_sec)
-                            << "Total run time = " << timevalNow.tv_sec - m_timevalBegin.tv_sec
-                            << " seconds"
-                            << std::endl;
+                      << "Total run time = " << timevalNow.tv_sec - m_timevalBegin.tv_sec
+                      << " seconds"
+                      << std::endl;
   }
 
   if (m_fullRank == 0) {
@@ -123,10 +123,10 @@ uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
   //}
 
   if (m_subDisplayFile) delete m_subDisplayFile;
-  if (m_inter0Comm          ) delete m_inter0Comm;
-  if (m_selfComm            ) delete m_selfComm;
-  if (m_subComm             ) delete m_subComm;
-  if (m_fullComm            ) delete m_fullComm;
+  if (m_inter0Comm    ) delete m_inter0Comm;
+  if (m_selfComm      ) delete m_selfComm;
+  if (m_subComm       ) delete m_subComm;
+  if (m_fullComm      ) delete m_fullComm;
 }
 
 uqBaseEnvironmentClass&
@@ -339,19 +339,19 @@ uqBaseEnvironmentClass::openOutputFile(
   ofsvar = NULL;
   if ((baseFileName                         == UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE) ||
       (allowedSubEnvIds.find(this->subId()) == allowedSubEnvIds.end()            )) {
-    if (this->subDisplayFile()) {
+    if ((m_subDisplayFile) && (this->displayVerbosity() >= 10)) {
       *this->subDisplayFile() << "In openOutputFile()"
-                                    << ": no output file opened with base name '" << baseFileName
-                                    << "'"
-                                    << std::endl;
+                              << ": no output file opened with base name '" << baseFileName
+                              << "'"
+                              << std::endl;
     }
   }
   else {
-    if (this->subDisplayFile()) {
+    if ((m_subDisplayFile) && (this->displayVerbosity() >= 10)) {
       *this->subDisplayFile() << "In openOutputFile()"
-                                    << ": opening output file with base name '" << baseFileName
-                                    << "'"
-                                    << std::endl;
+                              << ": opening output file with base name '" << baseFileName
+                              << "'"
+                              << std::endl;
     }
 
     if (this->subRank() == 0) {
@@ -359,6 +359,7 @@ uqBaseEnvironmentClass::openOutputFile(
       // Verify parent directory exists (for cases when a user
       // specifies a relative path for the desired output file).
 
+      //std::cout << "checking " << baseFileName+"_sub"+this->subIdString()+"."+fileType << std::endl;
       int irtrn = uqCheckPath((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str());
       UQ_FATAL_TEST_MACRO(irtrn < 0,m_fullRank,"openOutputFile()","unable to verify output path");
 
@@ -404,19 +405,19 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
 {
   ofsvar = NULL;
   if (baseFileName == ".") {
-    if (this->subDisplayFile()) {
+    if ((m_subDisplayFile) && (this->displayVerbosity() >= 10)) {
       *this->subDisplayFile() << "In openUnifiedOutputFile()"
-                                    << ": no unified output file opened with base name '" << baseFileName
-                                    << "'"
-                                    << std::endl;
+                              << ": no unified output file opened with base name '" << baseFileName
+                              << "'"
+                              << std::endl;
     }
   }
   else {
-    if (this->subDisplayFile()) {
+    if ((m_subDisplayFile) && (this->displayVerbosity() >= 10)) {
       *this->subDisplayFile() << "In openUnifiedOutputFile()"
-                                    << ": opening unified output file with base name '" << baseFileName
-                                    << "'"
-                                    << std::endl;
+                              << ": opening unified output file with base name '" << baseFileName
+                              << "'"
+                              << std::endl;
     }
 
     //if ((this->subRank   () == 0) &&
@@ -542,7 +543,7 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   m_subIdString = tmpSubId;
 
   if (m_options->m_subDisplayAllowAll) {
-    m_options->m_subDisplayAllowSet.insert((unsigned int) m_subId);
+    m_options->m_subDisplayAllowedSet.insert((unsigned int) m_subId);
   }
 
   std::vector<int> fullRanksOfMySubEnvironment(numRanksPerSubEnvironment,0);
@@ -595,9 +596,9 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   // Open "screen" file
   //////////////////////////////////////////////////
   bool openFile = false;
-  if ((m_subRank                                     == 0                                    ) &&
-      (m_options->m_subDisplayFileName               != UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE   ) &&
-      (m_options->m_subDisplayAllowSet.find(m_subId) != m_options->m_subDisplayAllowSet.end())) {
+  if ((m_subRank                                       == 0                                      ) &&
+      (m_options->m_subDisplayFileName                 != UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE     ) &&
+      (m_options->m_subDisplayAllowedSet.find(m_subId) != m_options->m_subDisplayAllowedSet.end())) {
     openFile = true;
   }
 
@@ -690,11 +691,11 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
 
   if ((m_subDisplayFile)/* && (this->displayVerbosity() > 0)*/) {
     *m_subDisplayFile << "In uqFullEnvironmentClass::commonConstructor():"
-                            << "\n  m_seed = "                                              << m_options->m_seed
-                            << "\n  internal seed = "                                       << gsl_rng_default_seed
-                          //<< "\n  first generated sample from uniform distribution = "    << gsl_rng_uniform(m_rng)
-                          //<< "\n  first generated sample from std normal distribution = " << gsl_ran_gaussian(m_rng,1.)
-                            << std::endl;
+                      << "\n  m_seed = "                                              << m_options->m_seed
+                      << "\n  internal seed = "                                       << gsl_rng_default_seed
+                    //<< "\n  first generated sample from uniform distribution = "    << gsl_rng_uniform(m_rng)
+                    //<< "\n  first generated sample from std normal distribution = " << gsl_ran_gaussian(m_rng,1.)
+                      << std::endl;
   }
 
   //////////////////////////////////////////////////

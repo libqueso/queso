@@ -52,19 +52,19 @@ public:
 
   const   uqBaseEnvironmentClass&         env       () const;
   const   uqVectorSetClass         <V,M>& imageSet  () const;
-  const   uqBaseJointPdfClass     <V,M>& pdf       () const;
+  const   uqBaseJointPdfClass      <V,M>& pdf       () const;
   const   uqBaseVectorRealizerClass<V,M>& realizer  () const;
   const   uqBaseVectorCdfClass     <V,M>& subCdf    () const;
   const   uqBaseVectorCdfClass     <V,M>& unifiedCdf() const;
   const   uqBaseVectorMdfClass     <V,M>& mdf       () const;
 
-  virtual void                            print   (std::ostream& os) const = 0;
+  virtual void                            print     (std::ostream& os) const = 0;
 
 protected:
   const   uqBaseEnvironmentClass&         m_env;
           std::string                     m_prefix;
   const   uqVectorSetClass         <V,M>& m_imageSet;
-          uqBaseJointPdfClass     <V,M>* m_pdf;
+          uqBaseJointPdfClass      <V,M>* m_pdf;
 	  uqBaseVectorRealizerClass<V,M>* m_realizer;
   const   uqBaseVectorCdfClass     <V,M>* m_subCdf;
   const   uqBaseVectorCdfClass     <V,M>* m_unifiedCdf;
@@ -87,14 +87,14 @@ uqBaseVectorRVClass<V,M>::uqBaseVectorRVClass(
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqBaseVectorRVClass<V,M>::constructor()"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqBaseVectorRVClass<V,M>::constructor()"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 }
 
@@ -200,14 +200,14 @@ public:
                          const uqVectorSetClass         <V,M>& imageSet);
   uqGenericVectorRVClass(const char*                           prefix,
                          const uqVectorSetClass         <V,M>& imageSet,
-                         const uqBaseJointPdfClass     <V,M>& pdf,
+                         const uqBaseJointPdfClass      <V,M>& pdf,
                          const uqBaseVectorRealizerClass<V,M>& realizer,
                          const uqBaseVectorCdfClass     <V,M>& subCdf,
                          const uqBaseVectorCdfClass     <V,M>& unifiedCdf,
                          const uqBaseVectorMdfClass     <V,M>& mdf);
   virtual ~uqGenericVectorRVClass();
 
-  void setPdf       (uqBaseJointPdfClass     <V,M>& pdf       );
+  void setPdf       (uqBaseJointPdfClass      <V,M>& pdf       );
   void setRealizer  (uqBaseVectorRealizerClass<V,M>& realizer  );
   void setSubCdf    (uqBaseVectorCdfClass     <V,M>& subCdf    );
   void setUnifiedCdf(uqBaseVectorCdfClass     <V,M>& unifiedCdf);
@@ -235,14 +235,14 @@ uqGenericVectorRVClass<V,M>::uqGenericVectorRVClass(
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqGenericVectorRVClass<V,M>::constructor() [1]"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqGenericVectorRVClass<V,M>::constructor() [1]"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 }
 
@@ -250,7 +250,7 @@ template<class V, class M>
 uqGenericVectorRVClass<V,M>::uqGenericVectorRVClass(
   const char*                           prefix,
   const uqVectorSetClass         <V,M>& imageSet,
-  const uqBaseJointPdfClass     <V,M>& pdf,
+  const uqBaseJointPdfClass      <V,M>& pdf,
   const uqBaseVectorRealizerClass<V,M>& realizer,
   const uqBaseVectorCdfClass     <V,M>& subCdf,
   const uqBaseVectorCdfClass     <V,M>& unifiedCdf,
@@ -260,8 +260,8 @@ uqGenericVectorRVClass<V,M>::uqGenericVectorRVClass(
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqGenericVectorRVClass<V,M>::constructor() [2]"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 
   m_pdf        = &pdf;
@@ -272,8 +272,8 @@ uqGenericVectorRVClass<V,M>::uqGenericVectorRVClass(
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqGenericVectorRVClass<V,M>::constructor() [2]"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 }
 
@@ -373,8 +373,8 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqGaussianVectorRVClass<V,M>::constructor() [1]"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 
   m_pdf = new uqGaussianJointPdfClass<V,M>(m_prefix.c_str(),
@@ -401,8 +401,8 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqGaussianVectorRVClass<V,M>::constructor() [1]"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 }
 
@@ -417,8 +417,8 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqGaussianVectorRVClass<V,M>::constructor() [2]"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 
   m_pdf = new uqGaussianJointPdfClass<V,M>(m_prefix.c_str(),
@@ -452,8 +452,8 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqGaussianVectorRVClass<V,M>::constructor() [2]"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 }
 
@@ -504,7 +504,7 @@ uqGaussianVectorRVClass<V,M>::print(std::ostream& os) const
 template<class V, class M>
 class uqUniformVectorRVClass : public uqBaseVectorRVClass<V,M> {
 public:
-  uqUniformVectorRVClass(const char*                     prefix,
+  uqUniformVectorRVClass(const char*                  prefix,
                          const uqVectorSetClass<V,M>& imageSet);
   virtual ~uqUniformVectorRVClass();
 
@@ -530,12 +530,12 @@ uqUniformVectorRVClass<V,M>::uqUniformVectorRVClass(
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqUniformVectorRVClass<V,M>::constructor()"
-                                  << ": prefix = " << m_prefix
-                                  << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 
   m_pdf        = new uqUniformJointPdfClass<V,M>(m_prefix.c_str(),
-                                                  m_imageSet);
+                                                 m_imageSet);
   m_realizer   = new uqUniformVectorRealizerClass<V,M>(m_prefix.c_str(),
                                                        m_imageSet);
   m_subCdf     = NULL; // FIX ME: complete code
@@ -544,8 +544,8 @@ uqUniformVectorRVClass<V,M>::uqUniformVectorRVClass(
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqUniformVectorRVClass<V,M>::constructor()"
-                                  << ": prefix = " << m_prefix
-                                  << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 }
 

@@ -37,16 +37,16 @@
 
 #define UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE "."
 
-#define UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV  1
-#define UQ_ENV_SUB_SCREEN_WRITE_ODV      0
-#define UQ_ENV_SUB_DISPLAY_FILE_NAME_ODV UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE
-#define UQ_ENV_SUB_DISPLAY_ALLOW_ALL_ODV 0
-#define UQ_ENV_SUB_DISPLAY_ALLOW_ODV     ""
-#define UQ_ENV_DISPLAY_VERBOSITY_ODV     0
-#define UQ_ENV_SYNC_VERBOSITY_ODV        0
-#define UQ_ENV_SEED_ODV                  0
-#define UQ_ENV_NUM_DEBUG_PARAMS_ODV      0
-#define UQ_ENV_DEBUG_PARAM_ODV           0.
+#define UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV    1
+#define UQ_ENV_SUB_SCREEN_WRITE_ODV        0
+#define UQ_ENV_SUB_DISPLAY_FILE_NAME_ODV   UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE
+#define UQ_ENV_SUB_DISPLAY_ALLOW_ALL_ODV   0
+#define UQ_ENV_SUB_DISPLAY_ALLOWED_SET_ODV ""
+#define UQ_ENV_DISPLAY_VERBOSITY_ODV       0
+#define UQ_ENV_SYNC_VERBOSITY_ODV          0
+#define UQ_ENV_SEED_ODV                    0
+#define UQ_ENV_NUM_DEBUG_PARAMS_ODV        0
+#define UQ_ENV_DEBUG_PARAM_ODV             0.
 
 class uqEnvironmentOptionsClass
 {
@@ -60,7 +60,7 @@ public:
   unsigned int             m_numSubEnvironments;
   std::string              m_subDisplayFileName;
   bool                     m_subDisplayAllowAll;
-  std::set<unsigned int>   m_subDisplayAllowSet;
+  std::set<unsigned int>   m_subDisplayAllowedSet;
   unsigned int             m_displayVerbosity;
   unsigned int             m_syncVerbosity;
   int                      m_seed;

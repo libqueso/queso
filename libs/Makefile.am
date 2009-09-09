@@ -48,9 +48,12 @@ libqueso_la_SOURCES += $(top_srcdir)/libs/interface/basic_classes.cpp   \
 # Sources from stats/src
 
 libqueso_la_SOURCES += $(top_srcdir)/libs/stats/src/uqMarkovChainSGOptions.C \
+	$(top_srcdir)/libs/stats/src/uqMLSamplingOptions.C \
+	$(top_srcdir)/libs/stats/src/uqMLSamplingLevelOptions.C \
 	$(top_srcdir)/libs/stats/src/uqMonteCarloSGOptions.C \
 	$(top_srcdir)/libs/stats/src/uqStatisticalInverseProblemOptions.C \
-	$(top_srcdir)/libs/stats/src/uqStatisticalForwardProblemOptions.C
+	$(top_srcdir)/libs/stats/src/uqStatisticalForwardProblemOptions.C \
+	$(top_srcdir)/libs/stats/src/uqFiniteDistribution.C
 
 libqueso_includedir = $(prefix)/include
 
@@ -93,6 +96,9 @@ libqueso_include_HEADERS += $(top_srcdir)/libs/stats/inc/uqCovCond.h \
 	$(top_srcdir)/libs/stats/inc/uqMarkovChainSG1.h \
 	$(top_srcdir)/libs/stats/inc/uqMarkovChainSG2.h \
 	$(top_srcdir)/libs/stats/inc/uqMarkovChainSGOptions.h \
+	$(top_srcdir)/libs/stats/inc/uqMLSampling.h \
+	$(top_srcdir)/libs/stats/inc/uqMLSamplingOptions.h \
+	$(top_srcdir)/libs/stats/inc/uqMLSamplingLevelOptions.h \
 	$(top_srcdir)/libs/stats/inc/uqModelValidation.h \
 	$(top_srcdir)/libs/stats/inc/uqMonteCarloSG.h \
 	$(top_srcdir)/libs/stats/inc/uqMonteCarloSGOptions.h \
@@ -107,7 +113,8 @@ libqueso_include_HEADERS += $(top_srcdir)/libs/stats/inc/uqCovCond.h \
 	$(top_srcdir)/libs/stats/inc/uqVectorMdf.h \
 	$(top_srcdir)/libs/stats/inc/uqJointPdf.h \
 	$(top_srcdir)/libs/stats/inc/uqVectorRealizer.h \
-	$(top_srcdir)/libs/stats/inc/uqVectorRV.h
+	$(top_srcdir)/libs/stats/inc/uqVectorRV.h \
+	$(top_srcdir)/libs/stats/inc/uqFiniteDistribution.h
 
 # Headers to install from Basic Interface
 

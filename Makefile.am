@@ -4,11 +4,18 @@
 AUTOMAKE_OPTIONS = foreign
 
 # Build in these directories:
-SUBDIRS = libs examples test/t01_valid_cycle/valid_cycle test/t02_sip_sfp/sip_sfp test
+SUBDIRS = libs \
+	examples \
+	test/t01_valid_cycle/valid_cycle \
+	test/t02_sip_sfp/sip_sfp \
+	test/t03_sequence/sequence \
+	test
 
 # Tools in the auxillary directory
 AUX_DIST = build-aux/install-sh    \
            build-aux/missing
+
+EXTRA_DIST = $(DX_CONFIG)
 
 # Files to be deleted by 'make maintainer-clean'
 MAINTAINERCLEANFILES =     \
@@ -43,6 +50,17 @@ MAINTAINERCLEANFILES =     \
 	examples/tga/Makefile.in \
 	examples/tga/src/Makefile.in
 
+MOSTLYCLEANFILES = $(DX_CLEANFILES)
+
+# Documentation hooks in with the 'html' target
+html-local: doxygen-run
+
+# Required for AX_PROG_DOXYGEN
+include doxygen.am
+
 # Additional files to be deleted by 'make distclean'
 DISTCLEANFILES = \
 	aminclude.am
+
+# Required for AX_AM_MACROS
+@INC_AMINCLUDE@

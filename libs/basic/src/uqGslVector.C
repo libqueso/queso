@@ -350,6 +350,48 @@ uqGslVectorClass::print(std::ostream& os) const
   return;
 }
 
+void
+uqGslVectorClass::writeContents(
+  const std::string&            varNamePrefix,
+  const std::string&            fileName,
+  const std::set<unsigned int>& allowedSubEnvIds) const
+{
+  bool okSituation = (m_env.subRank() >= 0);
+  UQ_FATAL_TEST_MACRO(!okSituation,
+                      m_env.fullRank(),
+                      "uqSequenceOfVectorsClass<V,M>::subWriteContents()",
+                      "unexpected subRank");
+
+  std::ofstream* ofsVar = NULL;
+  m_env.openOutputFile(fileName,
+                       UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                       allowedSubEnvIds,
+                       false,
+                       ofsVar);
+
+  if (ofsVar) {
+    *ofsVar << varNamePrefix << "_sub" << m_env.subIdString() << " = zeros(" << this->sizeLocal()
+            << ","                                                           << 1
+            << ");"
+            << std::endl;
+    *ofsVar << varNamePrefix << "_sub" << m_env.subIdString() << " = [";
+
+    bool savedVectorPrintState = this->getPrintHorizontally();
+    this->setPrintHorizontally(false);
+    *ofsVar << *this;
+          //<< std::endl; // No need for 'endl' because horizontally = 'false'
+    this->setPrintHorizontally(savedVectorPrintState);
+
+    *ofsVar << "];\n";
+  }
+
+  if (ofsVar) {
+    ofsVar->close();
+  }
+
+  return;
+}
+
 gsl_vector*
 uqGslVectorClass::data() const
 {

@@ -1,0 +1,122 @@
+/*--------------------------------------------------------------------------
+ *--------------------------------------------------------------------------
+ *
+ * Copyright (C) 2008 The PECOS Development Team
+ *
+ * Please see http://pecos.ices.utexas.edu for more information.
+ *
+ * This file is part of the QUESO Library (Quantification of Uncertainty
+ * for Estimation, Simulation and Optimization).
+ *
+ * QUESO is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * QUESO is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with QUESO. If not, see <http://www.gnu.org/licenses/>.
+ *
+ *--------------------------------------------------------------------------
+ *
+ * $Id$
+ *
+ * Brief description of this file: 
+ * 
+ *--------------------------------------------------------------------------
+ *-------------------------------------------------------------------------- */
+
+#include <example_compute.h>
+#include <uqGslMatrix.h>
+#include <uqVectorRV.h>
+
+void compute(const uqFullEnvironmentClass& env) {
+  // Step 1 of 9: Instantiate the parameter space
+  uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass>
+    paramSpace(env, "param_", 2, NULL);
+
+  // Step 2 of 9: Instantiate the parameter domain
+  uqGslVectorClass paramMins(paramSpace.zeroVector());
+  paramMins.cwSet(-INFINITY);
+  uqGslVectorClass paramMaxs(paramSpace.zeroVector());
+  paramMaxs.cwSet( INFINITY);
+  uqBoxSubsetClass<uqGslVectorClass,uqGslMatrixClass>
+    paramDomain("param_",paramSpace,paramMins,paramMaxs);
+
+  // Step 3 of 9: Instantiate the vector RV
+  uqGslVectorClass meanVector(paramSpace.zeroVector());
+  meanVector[0] = -1;
+  meanVector[1] =  2;
+  uqGslMatrixClass* covMatrix = paramSpace.newMatrix();
+  (*covMatrix)(0,0) = 4.; (*covMatrix)(0,1) = 0.;
+  (*covMatrix)(1,0) = 0.; (*covMatrix)(1,1) = 1.;
+  uqGaussianVectorRVClass<uqGslVectorClass,uqGslMatrixClass>
+    auxRv("", paramDomain,meanVector,*covMatrix);
+
+  // Step 4 of 9: Instantiate the vector sequence
+  uqSequenceOfVectorsClass<uqGslVectorClass,uqGslMatrixClass>
+    auxSeq(paramSpace,1000,"");
+
+  // Step 5 of 9: Populate the vector sequence
+  uqGslVectorClass auxVec(paramSpace.zeroVector());
+  for (unsigned int i = 0; i < auxSeq.subSequenceSize(); ++i) {
+    auxRv.realizer().realization(auxVec);
+    auxSeq.setPositionValues(i,auxVec);
+  }
+
+  // Step 6 of 9: Compute min, max, mean, covariance and correlation matrices
+  uqGslVectorClass minVec (paramSpace.zeroVector());
+  uqGslVectorClass maxVec (paramSpace.zeroVector());
+  auxSeq.unifiedMinMax(0,minVec,maxVec);
+
+  uqGslVectorClass meanVec(paramSpace.zeroVector());
+  auxSeq.unifiedMean(0,auxSeq.subSequenceSize(),meanVec);
+
+  uqGslMatrixClass* covarianceMatrix  = paramSpace.newMatrix();
+  uqGslMatrixClass* correlationMatrix = paramSpace.newMatrix();
+  uqComputeCovCorrMatricesBetweenVectorSequences(auxSeq,
+                                                 auxSeq,
+                                                 auxSeq.subSequenceSize(),
+                                                 *covarianceMatrix,
+                                                 *correlationMatrix);
+  if (env.fullRank() == 0) {
+    std::cout << "\n minVec = "  << minVec
+              << "\n maxVec = "  << maxVec
+              << "\n meanVec = " << meanVec
+              << "\n covMat = "  << *covarianceMatrix
+              << "\n corrMat = " << *correlationMatrix
+              << std::endl;
+  }
+
+  // Step 7 of 9: Compute cdf accuracy
+  unsigned int auxSize = 101;
+  uqGslVectorClass deltaVec(maxVec-minVec);
+  deltaVec *= (1./(double) (auxSize-1));
+  std::vector<uqGslVectorClass*> evalPositionsVecs(auxSize,NULL);
+  std::vector<uqGslVectorClass*> cdfStaccVecs     (auxSize,NULL);
+  for (unsigned int i = 0; i < auxSize; ++i) {
+    evalPositionsVecs[i] = new uqGslVectorClass(paramSpace.zeroVector());
+    *(evalPositionsVecs[i]) = minVec + ((double) i)*deltaVec;
+    cdfStaccVecs     [i] = new uqGslVectorClass(paramSpace.zeroVector());
+  }
+  //auxSeq.subCdfStacc(0,evalPositionsVecs,cdfStaccVecs);
+
+  // Step 8 of 9: Compute Brooks-Gelman convergence measure
+  //uqGslVectorClass convMeasureVec(paramSpace.zeroVector());
+  //auxSeq.cwBrooksGelmanConvMeasures(0,auxSeq.subSequenceSize(),convMeasureVec);
+
+  // Return
+  for (unsigned int i = 0; i < auxSize; ++i) {
+    delete evalPositionsVecs[i];
+    delete cdfStaccVecs     [i];
+  }
+  delete correlationMatrix;
+  delete covarianceMatrix;
+  delete covMatrix;
+
+  return;
+}

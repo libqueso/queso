@@ -85,14 +85,14 @@ void
 uqStatisticalForwardProblemOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
 {
   optionsDesc.add_options()     
-    (m_option_help.c_str(),                                                                                            "produce help message for statistical forward problem")
-    (m_option_computeSolution.c_str(),      po::value<bool       >()->default_value(UQ_SFP_COMPUTE_SOLUTION_ODV     ), "compute solution process"                            )
-    (m_option_computeCovariances.c_str(),   po::value<bool       >()->default_value(UQ_SFP_COMPUTE_COVARIANCES_ODV  ), "compute pq covariances"                              )
-    (m_option_computeCorrelations.c_str(),  po::value<bool       >()->default_value(UQ_SFP_COMPUTE_CORRELATIONS_ODV ), "compute pq correlations"                             )
-    (m_option_dataOutputFileName.c_str(),   po::value<std::string>()->default_value(UQ_SFP_DATA_OUTPUT_FILE_NAME_ODV), "name of data output file"                            )
-    (m_option_dataOutputAllowedSet.c_str(), po::value<std::string>()->default_value(UQ_SFP_DATA_OUTPUT_ALLOW_ODV    ), "subEnvs that will write to data output file"         )
+    (m_option_help.c_str(),                                                                                              "produce help message for statistical forward problem")
+    (m_option_computeSolution.c_str(),      po::value<bool       >()->default_value(UQ_SFP_COMPUTE_SOLUTION_ODV       ), "compute solution process"                            )
+    (m_option_computeCovariances.c_str(),   po::value<bool       >()->default_value(UQ_SFP_COMPUTE_COVARIANCES_ODV    ), "compute pq covariances"                              )
+    (m_option_computeCorrelations.c_str(),  po::value<bool       >()->default_value(UQ_SFP_COMPUTE_CORRELATIONS_ODV   ), "compute pq correlations"                             )
+    (m_option_dataOutputFileName.c_str(),   po::value<std::string>()->default_value(UQ_SFP_DATA_OUTPUT_FILE_NAME_ODV  ), "name of data output file"                            )
+    (m_option_dataOutputAllowedSet.c_str(), po::value<std::string>()->default_value(UQ_SFP_DATA_OUTPUT_ALLOWED_SET_ODV), "subEnvs that will write to data output file"         )
 #ifdef UQ_SFP_READS_SOLVER_OPTION
-    (m_option_solver.c_str(),               po::value<std::string>()->default_value(UQ_SFP_SOLVER_ODV               ), "algorithm for propagation"                           )
+    (m_option_solver.c_str(),               po::value<std::string>()->default_value(UQ_SFP_SOLVER_ODV                 ), "algorithm for propagation"                           )
 #endif
   ;
 

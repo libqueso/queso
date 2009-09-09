@@ -48,22 +48,22 @@ template<class V, class M>
 class uqBaseJointPdfClass : public uqBaseScalarFunctionClass<V,M> {
 public:
            uqBaseJointPdfClass(const char*                  prefix,
-                                const uqVectorSetClass<V,M>& domainSet,
-                                const V&                     domainExpVector,
-                                const V&                     domainVarVector);
+                               const uqVectorSetClass<V,M>& domainSet,
+                               const V&                     domainExpVector,
+                               const V&                     domainVarVector);
            uqBaseJointPdfClass(const char*                  prefix,
-                                const uqVectorSetClass<V,M>& domainSet,
-                                const V&                     domainExpVector);
+                               const uqVectorSetClass<V,M>& domainSet,
+                               const V&                     domainExpVector);
            uqBaseJointPdfClass(const char*                  prefix,
-                                const uqVectorSetClass<V,M>& domainSet);
+                               const uqVectorSetClass<V,M>& domainSet);
   virtual ~uqBaseJointPdfClass();
 
-  virtual       double                 actualValue      (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const = 0;
-  virtual       double                 minus2LnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const = 0;
+  virtual       double                        actualValue  (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const = 0;
+  virtual       double                        minus2LnValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const = 0;
 
-//const   uqBaseScalarPdfClass<double>& component           (unsigned int componentId) const;
-          const V&                      domainExpVector() const;
-          const V&                      domainVarVector() const;
+//        const uqBaseScalarPdfClass<double>& component      (unsigned int componentId) const;
+          const V&                            domainExpVector() const;
+          const V&                            domainVarVector() const;
 
 protected:
   using uqBaseScalarFunctionClass<V,M>::m_env;
@@ -264,13 +264,14 @@ template<class V, class M>
 class uqBayesianJointPdfClass : public uqBaseJointPdfClass<V,M> {
 public:
   uqBayesianJointPdfClass(const char*                           prefix,
-                           const uqBaseJointPdfClass     <V,M>& priorDensity,
-                           const uqBaseScalarFunctionClass<V,M>& likelihoodFunction,
-                           const uqVectorSetClass         <V,M>& intersectionDomain); 
+                          const uqBaseJointPdfClass      <V,M>& priorDensity,
+                          const uqBaseScalarFunctionClass<V,M>& likelihoodFunction,
+                                double                          likelihoodExponent,
+                          const uqVectorSetClass         <V,M>& intersectionDomain); 
  ~uqBayesianJointPdfClass();
 
-  double actualValue      (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
-  double minus2LnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  double actualValue     (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  double minus2LnValue   (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
 
 protected:
   using uqBaseScalarFunctionClass<V,M>::m_env;
@@ -279,24 +280,27 @@ protected:
   using uqBaseJointPdfClass<V,M>::m_domainExpVector;
   using uqBaseJointPdfClass<V,M>::m_domainVarVector;
 
-  const uqBaseJointPdfClass     <V,M>& m_priorDensity;
+  const uqBaseJointPdfClass      <V,M>& m_priorDensity;
   const uqBaseScalarFunctionClass<V,M>& m_likelihoodFunction;
+        double                          m_likelihoodExponent;
 
-  mutable V m_tmpVector1;
-  mutable V m_tmpVector2;
+  mutable V  m_tmpVector1;
+  mutable V  m_tmpVector2;
   mutable M* m_tmpMatrix;
 };
 
 template<class V,class M>
 uqBayesianJointPdfClass<V,M>::uqBayesianJointPdfClass(
   const char*                           prefix,
-  const uqBaseJointPdfClass     <V,M>& priorDensity,
+  const uqBaseJointPdfClass     <V,M>&  priorDensity,
   const uqBaseScalarFunctionClass<V,M>& likelihoodFunction,
+        double                          likelihoodExponent,
   const uqVectorSetClass         <V,M>& intersectionDomain)
   :
   uqBaseJointPdfClass<V,M>(((std::string)(prefix)+"bay").c_str(),intersectionDomain),
   m_priorDensity           (priorDensity),
   m_likelihoodFunction     (likelihoodFunction),
+  m_likelihoodExponent     (likelihoodExponent),
   m_tmpVector1             (m_domainSet.vectorSpace().zeroVector()),
   m_tmpVector2             (m_domainSet.vectorSpace().zeroVector()),
   m_tmpMatrix              (m_domainSet.vectorSpace().newMatrix())
@@ -341,7 +345,16 @@ uqBayesianJointPdfClass<V,M>::actualValue(
                       "uqBayesianJointPdfClass<V,M>::actualValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
-  double returnValue = value1*value2;
+  double returnValue = value1;
+  if (m_likelihoodExponent == 0.) {
+    // Do nothing
+  }
+  else if (m_likelihoodExponent == 1.) {
+    returnValue *= value2;
+  }
+  else {
+    returnValue *= pow(value2,m_likelihoodExponent);
+  }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqBayesianJointPdfClass<V,M>::actualValue()"
@@ -421,7 +434,16 @@ uqBayesianJointPdfClass<V,M>::minus2LnValue(
   if (hessianMatrix) *hessianMatrix += *hessianMLike;
   if (hessianEffect) *hessianEffect += *hessianELike;
 
-  double returnValue = value1+value2;
+  double returnValue = value1;
+  if (m_likelihoodExponent == 0.) {
+    // Do nothing
+  }
+  else if (m_likelihoodExponent == 1.) {
+    returnValue += value2;
+  }
+  else {
+    returnValue += value2*m_likelihoodExponent;
+  }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqBayesianJointPdfClass<V,M>::minus2LnValue()"
@@ -722,5 +744,132 @@ uqUniformJointPdfClass<V,M>::minus2LnValue(
   if (hessianEffect) *hessianEffect  = m_domainSet.vectorSpace().zeroVector();
 
   return 0.;
+}
+
+//*****************************************************
+// Gaussian probability density class
+//*****************************************************
+template<class V, class M>
+class uqPoweredJointPdfClass : public uqBaseJointPdfClass<V,M> {
+public:
+  uqPoweredJointPdfClass(const char*                     prefix,
+                         const uqBaseJointPdfClass<V,M>& srcDensity,
+                               double                    exponent);
+ ~uqPoweredJointPdfClass();
+
+  double   actualValue  (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  double   minus2LnValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+
+protected:
+  using uqBaseScalarFunctionClass<V,M>::m_env;
+  using uqBaseScalarFunctionClass<V,M>::m_prefix;
+  using uqBaseScalarFunctionClass<V,M>::m_domainSet;
+
+  const uqBaseJointPdfClass<V,M>& m_srcDensity;
+        double                    m_exponent;
+};
+
+template<class V,class M>
+uqPoweredJointPdfClass<V,M>::uqPoweredJointPdfClass(
+  const char*                     prefix,
+  const uqBaseJointPdfClass<V,M>& srcDensity,
+        double                    exponent)
+  :
+  uqBaseJointPdfClass<V,M>(((std::string)(prefix)+"pow").c_str(),srcDensity.domainSet()),
+  m_srcDensity            (srcDensity),
+  m_exponent              (exponent)
+{
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqPoweredJointPdfClass<V,M>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
+  }
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "In uqPoweredJointPdfClass<V,M>::constructor()"
+                         //<< ", prefix = "     << m_prefix
+                           << ": meanVector = " << this->domainExpVector()
+	                   << ", Variances = "  << this->domainVarVector()
+                           << std::endl;
+  }
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqPoweredJointPdfClass<V,M>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
+  }
+}
+
+template<class V,class M>
+uqPoweredJointPdfClass<V,M>::~uqPoweredJointPdfClass()
+{
+}
+
+template<class V, class M>
+double
+uqPoweredJointPdfClass<V,M>::actualValue(
+  const V& domainVector,
+  const V* domainDirection,
+        V* gradVector,
+        M* hessianMatrix,
+        V* hessianEffect) const
+{
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqPoweredJointPdfClass<V,M>::actualValue()"
+                           << ": domainVector = " << domainVector
+                           << std::endl;
+  }
+
+  double value = m_srcDensity.actualValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect);
+
+  UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
+                      m_env.fullRank(),
+                      "uqPoweredJointPdfClass<V,M>::actualValue()",
+                      "incomplete code for domainDirection, gradVector, hessianMatrix and hessianEffect calculations");
+
+  double returnValue = pow(value,m_exponent);
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqPoweredJointPdfClass<V,M>::actualValue()"
+                           << ": domainVector = " << domainVector
+                           << ", returnValue = "  << returnValue
+                           << std::endl;
+  }
+
+  return returnValue;
+}
+
+template<class V, class M>
+double
+uqPoweredJointPdfClass<V,M>::minus2LnValue(
+  const V& domainVector,
+  const V* domainDirection,
+        V* gradVector,
+        M* hessianMatrix,
+        V* hessianEffect) const
+{
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqPoweredJointPdfClass<V,M>::minus2LnValue()"
+                            << ": domainVector = " << domainVector
+                            << std::endl;
+  }
+
+  double value = m_srcDensity.minus2LnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect);
+
+  UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
+                      m_env.fullRank(),
+                      "uqPoweredJointPdfClass<V,M>::minus2LnValue()",
+                      "incomplete code for domainDirection, gradVector, hessianMatrix and hessianEffect calculations");
+
+  double returnValue = m_exponent*value;
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqPoweredJointPdfClass<V,M>::minus2LnValue()"
+                            << ": domainVector = " << domainVector
+                            << ", returnValue = "  << returnValue
+                            << std::endl;
+  }
+
+  return returnValue;
 }
 #endif // __UQ_JOINT_PROB_DENSITY_H__

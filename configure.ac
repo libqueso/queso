@@ -1,5 +1,5 @@
 dnl Init autoconf w/ Package name, version number, and developer email
-AC_INIT([queso], [0.4.0], [pecos_dev@ices.utexas.edu])
+AC_INIT([queso], [0.5.0], [pecos_dev@ices.utexas.edu])
 
 dnl configuration header
 AM_CONFIG_HEADER(config.h)
@@ -14,7 +14,7 @@ dnl Generating a libtool library
 dnl Release versioning
 
 GENERIC_MAJOR_VERSION=0
-GENERIC_MINOR_VERSION=4
+GENERIC_MINOR_VERSION=5
 GENERIC_MICRO_VERSION=0
 
 GENERIC_RELEASE=$GENERIC_MAJOR_VERSION.$GENERIC_MINOR_VERSION
@@ -83,6 +83,21 @@ AX_PATH_HPCT
 #AC_SUBST(HPCT_CFLAGS)
 #AC_SUBST(HPCT_LIBS)
 
+
+#------------------------------------------------
+# Documentation generation (via doxygen)
+#------------------------------------------------
+DX_DOXYGEN_FEATURE([ON])
+DX_HTML_FEATURE([ON])
+DX_CHM_FEATURE([OFF])
+DX_CHI_FEATURE([OFF])
+DX_MAN_FEATURE([OFF])
+DX_RTF_FEATURE([OFF])
+DX_XML_FEATURE([OFF])
+DX_PDF_FEATURE([OFF])
+DX_PS_FEATURE([OFF])
+DX_INIT_DOXYGEN([queso],[queso.dox],[doxygen-doc])
+
 # Query configuration environment
 
 AX_SUMMARIZE_ENV
@@ -107,6 +122,7 @@ AC_CONFIG_FILES([
 	test/Makefile
         test/t01_valid_cycle/valid_cycle/Makefile
         test/t02_sip_sfp/sip_sfp/Makefile
+        test/t03_sequence/sequence/Makefile
 ])
 
 
