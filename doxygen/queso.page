@@ -5,13 +5,13 @@
 
 <b>Quantification of Uncertainty for Estimation, Simulation and Optimization (QUES0) </b>
 
-The QUESO library is a collection of C++ classes and algorithms aimed
-for the validation of a model and the prediction of quantities of
-interest from such model along with the quantification of their
-uncertainties.  It is designed for flexibility, portability, easiness
-of use and easiness of extension.  Its software design follows an
-object-oriented approach.  It is written over MPI and it can run over
-uniprocessor or multiprocessor environments.
+The QUESO library is a collection of C++ classes and algorithms to
+support model validation and the prediction of quantities of interest
+with uncertainty quantification (UQ) included.  QUESO is designed for
+flexibility, portability, and extensibility and adopts an
+object-oriented software design.  QUESO supports distributed-memory
+parallelism using MPI and can run within uniprocessor or
+multiprocessor environments.
 
 The QUESO library contains two forms of documentation: a User's Manual
 available in pdf format and this lower-level code documentation in web
