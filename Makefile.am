@@ -1,5 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
+include $(top_srcdir)/doxygen/aminclude.am
+
 # Don't require GNU-style project
 AUTOMAKE_OPTIONS = foreign
 
@@ -20,7 +22,6 @@ EXTRA_DIST = $(DX_CONFIG)
 # Files to be deleted by 'make maintainer-clean'
 MAINTAINERCLEANFILES =     \
 	aclocal.m4             \
-	aminclude.am           \
 	autom4te.cache/*       \
 	$(AUX_DIST)            \
 	config.log             \
@@ -60,13 +61,15 @@ MOSTLYCLEANFILES = $(DX_CLEANFILES)
 
 # Documentation hooks in with the 'html' target
 html-local: doxygen-run
+doc:        doxygen-run
+docs:       doxygen-run
 
 # Required for AX_PROG_DOXYGEN
-include doxygen.am
+#include doxygen.am
 
 # Additional files to be deleted by 'make distclean'
-DISTCLEANFILES = \
-	aminclude.am
+DISTCLEANFILES = 
+
 
 # Required for AX_AM_MACROS
-@INC_AMINCLUDE@
+#@INC_AMINCLUDE@
