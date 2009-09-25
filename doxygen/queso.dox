@@ -565,24 +565,24 @@ WARN_LOGFILE           =
 # directories like "/usr/src/myproject". Separate the files or directories 
 # with spaces.
 
-INPUT                  = queso.page \
-			 doxygen/txt_common \
-		         libs/core/inc \
-			 libs/core/src \
-			 libs/misc/inc \
-			 libs/misc/src \
-			 libs/basic/inc \
-			 libs/basic/src \
-			 libs/stats/inc \
-			 libs/stats/src \
-			 libs/interface \
-			 examples/statisticalInverseProblem1/src \
-			 examples/statisticalInverseProblem1/tests/test_2009_02_03/ \
-			 examples/statisticalForwardProblem/src \
-			 examples/statisticalForwardProblem/tests/test_2009_02_11/ \
-			 examples/validationCycle/src \
-			 examples/validationCycle/tests/test_2009_02_03 \
-			 test/t02_sip_sfp/sip_sfp
+INPUT  = doxygen/queso.page \
+      	 doxygen/txt_common \
+         libs/core/inc \
+      	 libs/core/src \
+      	 libs/misc/inc \
+      	 libs/misc/src \
+      	 libs/basic/inc \
+      	 libs/basic/src \
+      	 libs/stats/inc \
+      	 libs/stats/src \
+      	 libs/interface \
+      	 examples/statisticalInverseProblem1/src \
+      	 examples/statisticalInverseProblem1/tests/test_2009_02_03/ \
+      	 examples/statisticalForwardProblem/src \
+      	 examples/statisticalForwardProblem/tests/test_2009_02_11/ \
+      	 examples/validationCycle/src \
+      	 examples/validationCycle/tests/test_2009_02_03 \
+      	 test/t02_sip_sfp/sip_sfp
 
 
 # This tag can be used to specify the character encoding of the source files 
@@ -606,7 +606,7 @@ FILE_PATTERNS          = *.cpp *.f90 *.F90 *.h *.c *.txt *.page
 # should be searched for input files as well. Possible values are YES and NO. 
 # If left blank NO is used.
 
-RECURSIVE              = YES
+RECURSIVE              = NO
 
 # The EXCLUDE tag can be used to specify files and/or directories that should 
 # excluded from the INPUT source files. This way you can easily exclude a 
