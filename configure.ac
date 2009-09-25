@@ -21,8 +21,8 @@ GENERIC_RELEASE=$GENERIC_MAJOR_VERSION.$GENERIC_MINOR_VERSION
 AC_SUBST(GENERIC_RELEASE)
 AC_PROG_LIBTOOL
 
-dnl Required for some macros
-AX_AM_MACROS
+# Required for some macros
+# AX_AM_MACROS
 
 #-----------------------
 # Check for debug mode?
@@ -83,20 +83,20 @@ AX_PATH_HPCT
 #AC_SUBST(HPCT_CFLAGS)
 #AC_SUBST(HPCT_LIBS)
 
+#----------------
+# Doxygen support
+#----------------
 
-#------------------------------------------------
-# Documentation generation (via doxygen)
-#------------------------------------------------
-DX_DOXYGEN_FEATURE([ON])
-DX_HTML_FEATURE([ON])
-DX_CHM_FEATURE([OFF])
-DX_CHI_FEATURE([OFF])
-DX_MAN_FEATURE([OFF])
-DX_RTF_FEATURE([OFF])
-DX_XML_FEATURE([OFF])
-DX_PDF_FEATURE([OFF])
-DX_PS_FEATURE([OFF])
-DX_INIT_DOXYGEN([queso],[queso.dox],[doxygen-doc])
+DX_HTML_FEATURE(ON)
+DX_CHM_FEATURE(OFF)
+DX_CHI_FEATURE(OFF)
+DX_MAN_FEATURE(OFF)
+DX_RTF_FEATURE(OFF)
+DX_XML_FEATURE(OFF)
+DX_PDF_FEATURE(ON)
+DX_PS_FEATURE(OFF)
+
+DX_INIT_DOXYGEN([queso],[doxygen/queso.dox],docs)
 
 # Query configuration environment
 
