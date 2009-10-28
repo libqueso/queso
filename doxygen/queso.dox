@@ -582,6 +582,7 @@ INPUT  = doxygen/queso.page \
       	 examples/statisticalForwardProblem/tests/test_2009_02_11/ \
       	 examples/validationCycle/src \
       	 examples/validationCycle/tests/test_2009_02_03 \
+	 examples/basic_interface \
       	 test/t02_sip_sfp/sip_sfp
 
 
