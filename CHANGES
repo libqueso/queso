@@ -3,7 +3,13 @@ QUESO: Quantification of Uncertainty for Estimation,
 Simulation, and Optimization.
 -----------------------------------------------------
 
+Version 0.41.0 (30 October 2009)
+https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.41
+  * initial inclusion of multi-level MCMC algorithm
+  * update to documentation system, support for "make docs"
+
 Version 0.40.2 (10 September 2009)
+https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.40.2
   * bug fix for several header files not included in "make dist" distrubtion
   * inclusion of additional example files in distribution
 
