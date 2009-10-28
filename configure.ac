@@ -1,7 +1,7 @@
-dnl Init autoconf w/ Package name, version number, and developer email
+# Init autoconf w/ Package name, version number, and developer email
 AC_INIT([queso], [0.41.0], [pecos_dev@ices.utexas.edu])
 
-dnl Set default CFLAGS & CXXFLAGS IF the user hasn't specified anything
+# Set default CFLAGS & CXXFLAGS IF the user hasn't specified anything
 AC_MSG_CHECKING(if CFLAGS is set)
 if test "x$CFLAGS" = "x"; then
    CFLAGS="-g -O2 -Wall"
@@ -18,17 +18,17 @@ else
    AC_MSG_RESULT(yes)
 fi
 
-dnl configuration header
+# configuration header
 AM_CONFIG_HEADER(config.h)
 
 AC_CONFIG_AUX_DIR([build-aux])
 
-dnl Init automake
+# Init automake
 AM_INIT_AUTOMAKE
 
-dnl Generating a libtool library
+# Generating a libtool library
 
-dnl Release versioning
+# Release versioning
 
 GENERIC_MAJOR_VERSION=0
 GENERIC_MINOR_VERSION=40
@@ -58,7 +58,7 @@ else
    AC_MSG_RESULT(no)
 fi
 
-dnl Get compilers
+# Get compilers
 AC_PROG_CC
 ###echo "configure found CC = $CC"
 
@@ -67,7 +67,7 @@ AC_PROG_CXX
 
 #AC_PROG_RANLIB
 
-dnl Check for mpi c and c++ compilers
+# Check for mpi c and c++ compilers
 AC_LANG([C])
 ACX_MPI([CC="$MPICC"], [AC_MSG_ERROR([Could not find MPI.])])
 
@@ -75,26 +75,26 @@ AC_LANG([C++])
 ACX_MPI([CXX="$MPICXX"], [AC_MSG_ERROR([Could not find MPI.])])
 
 
-dnl Check for math libraries. Makes sure we are compatible for builds on Mac OS X.
-dnl Here we force the check to only include cmath OR math.h. Note that Trilinos
-dnl checks for both, and if both are present, will include both.
-dnl
-dnl Commenting out this check below until we decide how to move forward with
-dnl this stuff.
-dnl
-dnl AC_CHECK_HEADERS([cmath], [break],
-dnl			  [AC_CHECK_HEADERS( [math.h], [break], 
-dnl			  		     [AC_MSG_ERROR([Cannot find cmath or math.h. One or the other is required.])],[])
-dnl			  ], [] )
+# Check for math libraries. Makes sure we are compatible for builds on Mac OS X.
+# Here we force the check to only include cmath OR math.h. Note that Trilinos
+# checks for both, and if both are present, will include both.
+# 
+# Commenting out this check below until we decide how to move forward with
+# this stuff.
+#
+# AC_CHECK_HEADERS([cmath], [break],
+#			  [AC_CHECK_HEADERS( [math.h], [break], 
+#			  		     [AC_MSG_ERROR([Cannot find cmath or math.h. One or the other is required.])],[])
+#			  ], [] )
 
-dnl Check for trilinos\
-dnl TO DO: Add AM_CONDITIONAL here to determine whether to build trilinos versions of libs
+# Check for trilinos\
+# TO DO: Add AM_CONDITIONAL here to determine whether to build trilinos versions of libs
 AX_TRILINOS_BASE(8.0.7,,AC_MSG_ERROR([Could not find required Trilinos version.]))
 # AX_TRILINOS_TEUCHOS
 AX_TRILINOS_EPETRA(AC_DEFINE(HAVE_LIBEPETRA,1,[Define if Epetra is available]),AC_MSG_ERROR([Could not find Epetra.]))
 AC_CACHE_SAVE
 
-dnl Check for gsl
+# Check for gsl
 AC_LANG([C])
 AX_PATH_GSL(1.10,AM_CONDITIONAL([UQBT_GSL], [test 'TRUE']),AC_MSG_ERROR([Could not find required GSL version.]))
 AC_CACHE_SAVE
@@ -132,7 +132,8 @@ DX_INIT_DOXYGEN([queso],[doxygen/queso.dox],docs)
 
 AX_SUMMARIZE_ENV
 
-dnl Generate makefiles
+# Generate makefiles
+
 AC_CONFIG_FILES([
 	Makefile
 	libs/Makefile
