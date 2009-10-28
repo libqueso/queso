@@ -37,17 +37,18 @@
 #include <gsl/gsl_randist.h>
 #include <hpct.h>
 
-// Version "0.1"   on "Aug/11/2008"
-// Version "0.11"  on "Aug/15/2008"
-// Version "0.2"   on "Oct/01/2008"
-// Version "0.21"  on "Oct/08/2008"
-// Version "0.3.0" on "Feb/13/2009"
-// Version "0.3.1" on "Feb/19/2009"
-// Version "0.4.0" on "Jul/22/2009"
-// Version "0.4.1" on "Sep/08/2009"
-// Version "0.5.0" on "MMM/DD/2009"
-#define QUESO_LIBRARY_CURRENT_VERSION "0.4.1"
-#define QUESO_LIBRARY_RELEASE_DATE    "Sep/08/2009"
+// Version "0.1"    on "Aug/11/2008"
+// Version "0.11"   on "Aug/15/2008"
+// Version "0.2"    on "Oct/01/2008"
+// Version "0.21"   on "Oct/08/2008"
+// Version "0.3.0"  on "Feb/13/2009"
+// Version "0.3.1"  on "Feb/19/2009"
+// Version "0.4.0"  on "Jul/22/2009"
+// Version "0.4.1"  on "Sep/08/2009"
+// Version "0.40.2" on "Sep/10/2009"
+// Version "0.50.0" on "MMM/DD/2009"
+#define QUESO_LIBRARY_CURRENT_VERSION "0.40.2"
+#define QUESO_LIBRARY_RELEASE_DATE    "Sep/10/2009"
 
 //*****************************************************
 // Base class

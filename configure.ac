@@ -1,5 +1,5 @@
 dnl Init autoconf w/ Package name, version number, and developer email
-AC_INIT([queso], [0.4.1], [pecos_dev@ices.utexas.edu])
+AC_INIT([queso], [0.40.2], [pecos_dev@ices.utexas.edu])
 
 dnl configuration header
 AM_CONFIG_HEADER(config.h)
@@ -14,8 +14,8 @@ dnl Generating a libtool library
 dnl Release versioning
 
 GENERIC_MAJOR_VERSION=0
-GENERIC_MINOR_VERSION=5
-GENERIC_MICRO_VERSION=0
+GENERIC_MINOR_VERSION=40
+GENERIC_MICRO_VERSION=2
 
 GENERIC_RELEASE=$GENERIC_MAJOR_VERSION.$GENERIC_MINOR_VERSION
 AC_SUBST(GENERIC_RELEASE)
@@ -120,6 +120,9 @@ AC_CONFIG_FILES([
 	examples/statisticalForwardProblem/src/Makefile
 	examples/basic_interface/Makefile
 	test/Makefile
+	test/t01_valid_cycle/Makefile
+	test/t02_sip_sfp/Makefile
+	test/t03_sequence/Makefile
         test/t01_valid_cycle/valid_cycle/Makefile
         test/t02_sip_sfp/sip_sfp/Makefile
         test/t03_sequence/sequence/Makefile
