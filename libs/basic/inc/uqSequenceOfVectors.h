@@ -92,6 +92,10 @@ public:
                                                  unsigned int                         numPos,
                                                  const V&                             meanVec,
                                                  V&                                   popVec) const;
+        void         unifiedPopulationVariance  (unsigned int                         initialPos,
+                                                 unsigned int                         numPos,
+                                                 const V&                             unifiedMeanVec,
+                                                 V&                                   unifiedPopVec) const;
         void         autoCovariance             (unsigned int                         initialPos,
                                                  unsigned int                         numPos,
                                                  const V&                             meanVec,
@@ -807,6 +811,42 @@ uqSequenceOfVectorsClass<V,M>::subPopulationVariance(
     popVec[i] = data.subPopulationVariance(0,
                                            numPos,
                                            meanVec[i]);
+  }
+
+  return;
+}
+
+template <class V, class M>
+void
+uqSequenceOfVectorsClass<V,M>::unifiedPopulationVariance(
+  unsigned int initialPos,
+  unsigned int numPos,
+  const V&     unifiedMeanVec,
+  V&           unifiedPopVec) const
+{
+  bool bRC = ((initialPos              <  this->subSequenceSize()   ) &&
+              (0                       <  numPos                    ) &&
+              ((initialPos+numPos)     <= this->subSequenceSize()   ) &&
+              (this->vectorSizeLocal() == unifiedMeanVec.sizeLocal()) &&
+              (this->vectorSizeLocal() == unifiedPopVec.sizeLocal() ));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.fullRank(),
+                      "uqSequenceOfVectorsClass<V,M>::unifiedPopulationVariance()",
+                      "invalid input data");
+
+  uqScalarSequenceClass<double> data(m_env,0,"");
+
+  unsigned int numParams = this->vectorSizeLocal();
+  for (unsigned int i = 0; i < numParams; ++i) {
+    this->extractScalarSeq(initialPos,
+                           1, // spacing
+                           numPos,
+                           i,
+                           data);
+    unifiedPopVec[i] = data.unifiedPopulationVariance(m_vectorSpace.numOfProcsForStorage() == 1,
+                                                      0,
+                                                      numPos,
+                                                      unifiedMeanVec[i]);
   }
 
   return;

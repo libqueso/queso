@@ -108,6 +108,10 @@ public:
                                                                 unsigned int                             numPos,
                                                                 const V&                                 meanVec,
                                                                 V&                                       popVec) const = 0;
+  virtual  void                     unifiedPopulationVariance  (unsigned int                             initialPos,
+                                                                unsigned int                             numPos,
+                                                                const V&                                 unifiedMeanVec,
+                                                                V&                                       unifiedPopVec) const = 0;
 
   virtual  void                     autoCovariance             (unsigned int                             initialPos,
                                                                 unsigned int                             numPos,
@@ -733,10 +737,10 @@ template<class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::computeMeanVars(
   const uqSequenceStatisticalOptionsClass& statisticalOptions,
-  std::ofstream*                        passedOfs,
-  V*                                    subMeanPtr,
-  V*                                    subSampleVarPtr,
-  V*                                    subPopulVarPtr)
+  std::ofstream*                           passedOfs,
+  V*                                       subMeanPtr,
+  V*                                       subSampleVarPtr,
+  V*                                       subPopulVarPtr)
 {
   int iRC = UQ_OK_RC;
   struct timeval timevalTmp;
@@ -758,7 +762,7 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
   this->subSampleVariance(0,
                           this->subSequenceSize(),
                           subChainMean,
-                          subChainSampleVariance);
+                         subChainSampleVariance);
 
   if ((m_env.displayVerbosity() >= 5) && (m_env.subDisplayFile())) {
     *m_env.subDisplayFile() << "In uqBaseVectorSequenceClass<V,M>::computeMeanVars()"
@@ -792,13 +796,13 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
 
   tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Mean and variances took " << tmpRunTime
+    *m_env.subDisplayFile() << "Sub Mean and variances took " << tmpRunTime
                             << " seconds"
                             << std::endl;
   }
 
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "\nMean, sample std, population std"
+    *m_env.subDisplayFile() << "\nSub mean, sample std, population std"
                             << std::endl;
     char line[512];
     sprintf(line,"%s%4s%s%9s%s%9s%s",
@@ -828,6 +832,64 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
   if (subMeanPtr     ) *subMeanPtr      = subChainMean;
   if (subSampleVarPtr) *subSampleVarPtr = subChainSampleVariance;
   if (subPopulVarPtr ) *subPopulVarPtr  = subChainPopulationVariance;
+
+  if (m_env.numSubEnvironments() > 1) {
+    // Write unified min-max
+    if (m_env.subDisplayFile()) {
+      if (m_vectorSpace.numOfProcsForStorage() == 1) {
+        V unifiedChainMean(m_vectorSpace.zeroVector());
+        this->unifiedMean(0,
+                          this->subSequenceSize(),
+                          unifiedChainMean);
+
+        V unifiedChainSampleVariance(m_vectorSpace.zeroVector());
+        this->unifiedSampleVariance(0,
+                                    this->subSequenceSize(),
+                                    unifiedChainMean,
+                                    unifiedChainSampleVariance);
+
+        V unifiedChainPopulationVariance(m_vectorSpace.zeroVector());
+        this->unifiedPopulationVariance(0,
+                                        this->subSequenceSize(),
+                                        unifiedChainMean,
+                                        unifiedChainPopulationVariance);
+
+        if (m_env.inter0Rank() == 0) {
+          *m_env.subDisplayFile() << "\nUnif mean, sample std, population std"
+                                  << std::endl;
+          char line[512];
+          sprintf(line,"%s%4s%s%9s%s%9s%s",
+	          "Parameter",
+                  " ",
+                  "Mean",
+                  " ",
+                  "SampleStd",
+                  " ",
+                  "Popul.Std");
+          *m_env.subDisplayFile() << line;
+
+          for (unsigned int i = 0; i < this->vectorSizeLocal() /*.*/; ++i) {
+            sprintf(line,"\n%8.8s%2s%11.4e%2s%11.4e%2s%11.4e",
+                    m_vectorSpace.localComponentName(i).c_str(), /*.*/
+                    " ",
+	            unifiedChainMean[i],
+                    " ",
+                    std::sqrt(unifiedChainSampleVariance[i]),
+                    " ",
+                    std::sqrt(unifiedChainPopulationVariance[i]));
+            *m_env.subDisplayFile() << line;
+          }
+          *m_env.subDisplayFile() << std::endl;
+        }
+      }
+      else {
+        UQ_FATAL_TEST_MACRO(true,
+                            m_env.fullRank(),
+                            "uqBaseVectorSequenceClass<V,M>::computeMeanVars()",
+                            "unified min-max writing, parallel vectors not supported yet");
+      }
+    } // if subDisplayFile
+  } // if numSubEnvs > 1
 
   return;
 }

@@ -103,6 +103,10 @@ public:
         T            subPopulationVariance        (unsigned int                    initialPos,
                                                    unsigned int                    numPos,
                                                    const T&                        meanValue) const;
+        T            unifiedPopulationVariance    (bool                            useOnlyInter0Comm,
+                                                   unsigned int                    initialPos,
+                                                   unsigned int                    numPos,
+                                                   const T&                        unifiedMeanValue) const;
         T            autoCovariance               (unsigned int                    initialPos,
                                                    unsigned int                    numPos,
                                                    const T&                        meanValue,
@@ -991,6 +995,74 @@ uqScalarSequenceClass<T>::subPopulationVariance(
   popValue /= (T) numPos;
 
   return popValue;
+}
+
+template <class T>
+T
+uqScalarSequenceClass<T>::unifiedPopulationVariance(
+  bool         useOnlyInter0Comm,
+  unsigned int initialPos,
+  unsigned int numPos,
+  const T&     unifiedMeanValue) const
+{
+  if (m_env.numSubEnvironments() == 1) {
+    return this->subPopulationVariance(initialPos,
+                                       numPos,
+                                       unifiedMeanValue);
+  }
+
+  T unifiedPopValue = 0.;
+
+  if (useOnlyInter0Comm) {
+    if (m_env.inter0Rank() >= 0) {
+      bool bRC = ((initialPos          <  this->subSequenceSize()) &&
+                  (0                   <  numPos                 ) &&
+                  ((initialPos+numPos) <= this->subSequenceSize()));
+      UQ_FATAL_TEST_MACRO(bRC == false,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::unifiedPopulationVariance()",
+                          "invalid input data");
+
+      unsigned int finalPosPlus1 = initialPos + numPos;
+      T diff;
+      T localPopValue = 0.;
+      for (unsigned int j = initialPos; j < finalPosPlus1; ++j) {
+        diff = m_seq[j] - unifiedMeanValue;
+        localPopValue += diff*diff;
+      }
+
+      unsigned int unifiedNumPos = 0;
+      int mpiRC = MPI_Allreduce((void *) &numPos, (void *) &unifiedNumPos, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::unifiedPopulationVariance()",
+                          "failed MPI_Allreduce() for numPos");
+
+      mpiRC = MPI_Allreduce((void *) &localPopValue, (void *) &unifiedPopValue, (int) 1, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::unifiedPopulationVariance()",
+                          "failed MPI_Allreduce() for popValue");
+
+      unifiedPopValue /= ((T) unifiedNumPos);
+    }
+    else {
+      // Node not in the 'inter0' communicator
+      this->subPopulationVariance(initialPos,
+                                  numPos,
+                                  unifiedMeanValue);
+    }
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.fullRank(),
+                        "uqScalarSequenceClass<T>::unifiedPopulationVariance()",
+                        "parallel vectors not supported yet");
+  }
+
+  //m_env.fullComm().Barrier();
+
+  return unifiedPopValue;
 }
 
 template <class T>

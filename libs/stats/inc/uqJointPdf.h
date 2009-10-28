@@ -36,6 +36,7 @@
 #include <uqEnvironment.h>
 #include <math.h>
 #include <uqScalarFunction.h>
+#include <boost/math/special_functions.hpp> // for Boost isnan. Note parantheses are important in function call.
 
 //*****************************************************
 // Classes to accomodate a probability density.
@@ -678,7 +679,15 @@ uqUniformJointPdfClass<V,M>::actualValue(
   if (hessianMatrix) *hessianMatrix *= 0.;
   if (hessianEffect) *hessianEffect  = m_domainSet.vectorSpace().zeroVector();
 
-  return 1.;
+  double volume = m_domainSet.volume();
+  if (((boost::math::isnan)(volume)) ||
+      (volume == -INFINITY         ) ||
+      (volume ==  INFINITY         ) ||
+      (volume <= 0.                )) {
+    volume = 1.;
+  }
+
+  return 1./volume;
 }
 
 template<class V, class M>
@@ -694,7 +703,15 @@ uqUniformJointPdfClass<V,M>::lnValue(
   if (hessianMatrix) *hessianMatrix *= 0.;
   if (hessianEffect) *hessianEffect  = m_domainSet.vectorSpace().zeroVector();
 
-  return 0.;
+  double volume = m_domainSet.volume();
+  if (((boost::math::isnan)(volume)) ||
+      (volume == -INFINITY         ) ||
+      (volume ==  INFINITY         ) ||
+      (volume <= 0.                )) {
+    volume = 1.;
+  }
+
+  return log(volume);
 }
 
 //*****************************************************

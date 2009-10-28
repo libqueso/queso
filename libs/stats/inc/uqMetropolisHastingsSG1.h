@@ -61,13 +61,13 @@ public:
                               const P_M*                           inputProposalCovMatrix);
  ~uqMetropolisHastingsSGClass();
 
-  void   generateSequence           (uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
-                                     uqScalarSequenceClass<double>*      workingLogLikelihoodValues,
-                                     uqScalarSequenceClass<double>*      workingLogTargetValues);
-  double rawChainRunTime            () const;
-  unsigned int numRejections        () const;
+  void   generateSequence         (uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
+                                   uqScalarSequenceClass<double>*      workingLogLikelihoodValues,
+                                   uqScalarSequenceClass<double>*      workingLogTargetValues);
+  double rawChainRunTime          () const;
+  unsigned int numRejections      () const;
 
-  void   print                      (std::ostream& os) const;
+  void   print                    (std::ostream& os) const;
 
 
 private:

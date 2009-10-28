@@ -5,7 +5,13 @@ Simulation, and Optimization.
 
 Version 0.41.0 (30 October 2009)
 https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.41
-  * initial inclusion of multi-level MCMC algorithm
+  * user likelihood routines should now return ln(value) instead of -2*ln(value)
+  * inverse Gamma random variable also available, besides usual uniform and Gaussian
+  * uniform pdf now retunrs 1/volume of domain, instead of just 1. If volume is infinit or 0., then it uniform pdf returns 1.
+  * random variables can be formed by concatenation of random variables of more basic type (uniform, Gaussian, inverse Gamma)
+  * unified mean and unified sample variance explicitly computed and printed
+  * Brooks-Gelman convergence assessment available
+  * logic code of examples/validationCycle/src is now in *.C files instead of *.h files
   * update to documentation system, support for "make docs"
 
 Version 0.40.2 (10 September 2009)
@@ -20,7 +26,6 @@ https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.40.1
 
 Version 0.40.0 (22 July 2009)
 https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.4.0
-
   * option to compute correlation between parameters and QOIs in statistical forward problems
   * dynamic library build for libqueso via libtool
   * configuration support for MPI and HPCT
@@ -29,6 +34,5 @@ https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.4.0
 
 Version 0.30.0 (13 Feb 2009)
 https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.3.0
-
   * autoconf/automake based configuration
   * initial working version with Stochastic Newton
