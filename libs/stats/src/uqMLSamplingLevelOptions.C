@@ -42,6 +42,10 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
 //m_dataOutputAllowedSet                     (),
   m_str1                                     (""),
   m_minEffectiveSizeRatio                    (UQ_ML_SAMPLING_L_MIN_EFFECTIVE_SIZE_RATIO_ODV),
+  m_maxEffectiveSizeRatio                    (UQ_ML_SAMPLING_L_MAX_EFFECTIVE_SIZE_RATIO_ODV),
+  m_minRejectionRate                         (UQ_ML_SAMPLING_L_MIN_REJECTION_RATE_ODV),
+  m_maxRejectionRate                         (UQ_ML_SAMPLING_L_MAX_REJECTION_RATE_ODV),
+  m_covRejectionRate                         (UQ_ML_SAMPLING_L_COV_REJECTION_RATE_ODV),
   m_totallyMute                              (UQ_ML_SAMPLING_L_TOTALLY_MUTE_ODV),
   m_rawChainDataInputFileName                (UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV),
   m_rawChainSize                             (UQ_ML_SAMPLING_L_RAW_CHAIN_SIZE_ODV),
@@ -80,6 +84,10 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   m_option_dataOutputFileName                (m_prefix + "dataOutputFileName"                ),
   m_option_dataOutputAllowedSet              (m_prefix + "dataOutputAllowedSet"              ),
   m_option_minEffectiveSizeRatio             (m_prefix + "minEffectiveSizeRatio"             ),
+  m_option_maxEffectiveSizeRatio             (m_prefix + "maxEffectiveSizeRatio"             ),
+  m_option_minRejectionRate                  (m_prefix + "minRejectionRate"                  ),
+  m_option_maxRejectionRate                  (m_prefix + "maxRejectionRate"                  ),
+  m_option_covRejectionRate                  (m_prefix + "covRejectionRate"                  ),
   m_option_totallyMute                       (m_prefix + "totallyMute"                       ),
   m_option_rawChain_dataInputFileName        (m_prefix + "rawChain_dataInputFileName"        ),
   m_option_rawChain_size                     (m_prefix + "rawChain_size"                     ),
@@ -115,6 +123,10 @@ uqMLSamplingLevelOptionsClass::copyOptionsValues(const uqMLSamplingLevelOptionsC
   m_dataOutputAllowedSet              = srcOptions.m_dataOutputAllowedSet;
   m_str1                              = srcOptions.m_str1;
   m_minEffectiveSizeRatio             = srcOptions.m_minEffectiveSizeRatio;
+  m_maxEffectiveSizeRatio             = srcOptions.m_maxEffectiveSizeRatio;
+  m_minRejectionRate                  = srcOptions.m_minRejectionRate;
+  m_maxRejectionRate                  = srcOptions.m_maxRejectionRate;
+  m_covRejectionRate                  = srcOptions.m_covRejectionRate;
   m_totallyMute                       = srcOptions.m_totallyMute;
   m_rawChainDataInputFileName         = srcOptions.m_rawChainDataInputFileName;
   m_rawChainSize                      = srcOptions.m_rawChainSize;
@@ -203,6 +215,10 @@ uqMLSamplingLevelOptionsClass::defineMyOptions(po::options_description& optionsD
     (m_option_dataOutputFileName.c_str(),                 po::value<std::string >()->default_value(m_dataOutputFileName               ), "name of generic output file"                                     )
     (m_option_dataOutputAllowedSet.c_str(),               po::value<std::string >()->default_value(m_str1                             ), "subEnvs that will write to generic output file"                  )
     (m_option_minEffectiveSizeRatio.c_str(),              po::value<double      >()->default_value(m_minEffectiveSizeRatio            ), "minimum allowed effective size ratio wrt previous level"         )
+    (m_option_maxEffectiveSizeRatio.c_str(),              po::value<double      >()->default_value(m_maxEffectiveSizeRatio            ), "maximum allowed effective size ratio wrt previous level"         )
+    (m_option_minRejectionRate.c_str(),                   po::value<double      >()->default_value(m_minRejectionRate                 ), "minimum allowed attempted rejection rate at current level"       )
+    (m_option_maxRejectionRate.c_str(),                   po::value<double      >()->default_value(m_maxRejectionRate                 ), "maximum allowed attempted rejection rate at current level"       )
+    (m_option_covRejectionRate.c_str(),                   po::value<double      >()->default_value(m_covRejectionRate                 ), "c.o.v. for judging attempted rejection rate at current level"    )
     (m_option_totallyMute.c_str(),                        po::value<bool        >()->default_value(m_totallyMute                      ), "totally mute (no printout message)"                              )
     (m_option_rawChain_dataInputFileName.c_str(),         po::value<std::string >()->default_value(m_rawChainDataInputFileName        ), "name of input file for raw chain "                               )
     (m_option_rawChain_size.c_str(),                      po::value<unsigned int>()->default_value(m_rawChainSize                     ), "size of raw chain"                                               )
@@ -272,7 +288,7 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
     m_minEffectiveSizeRatio = ((const po::variable_value&) m_env.allOptionsMap()[m_option_minEffectiveSizeRatio.c_str()]).as<double>();
   }
   if (m_minEffectiveSizeRatio >= 1.) {
-    std::cerr << "WARNING In uqMLSamplingClass<P_V,P_M>::getMyOptionsValues()"
+    std::cerr << "WARNING In uqMLSamplingLevelOptionsClass::getMyOptionsValues()"
               << ", fullRank "              << m_env.fullRank()
               << ", subEnvironment "        << m_env.subId()
               << ", subRank "               << m_env.subRank()
@@ -282,6 +298,70 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
               << " to "                     << .5
               << std::endl;
     m_minEffectiveSizeRatio = .5;
+  }
+
+  if (m_env.allOptionsMap().count(m_option_maxEffectiveSizeRatio.c_str())) {
+    m_maxEffectiveSizeRatio = ((const po::variable_value&) m_env.allOptionsMap()[m_option_maxEffectiveSizeRatio.c_str()]).as<double>();
+  }
+  if (m_maxEffectiveSizeRatio >= 1.) {
+    std::cerr << "WARNING In uqMLSamplingLevelOptionsClass::getMyOptionsValues()"
+              << ", fullRank "              << m_env.fullRank()
+              << ", subEnvironment "        << m_env.subId()
+              << ", subRank "               << m_env.subRank()
+              << ", inter0Rank "            << m_env.inter0Rank()
+              << ": forcing the value of '" << m_option_maxEffectiveSizeRatio.c_str()
+              << "' from "                  << m_maxEffectiveSizeRatio
+              << " to "                     << .5
+              << std::endl;
+    m_maxEffectiveSizeRatio = .5;
+  }
+
+  if (m_env.allOptionsMap().count(m_option_minRejectionRate.c_str())) {
+    m_minRejectionRate = ((const po::variable_value&) m_env.allOptionsMap()[m_option_minRejectionRate.c_str()]).as<double>();
+  }
+  if (m_minRejectionRate >= 1.) {
+    std::cerr << "WARNING In uqMLSamplingLevelOptionsClass::getMyOptionsValues()"
+              << ", fullRank "              << m_env.fullRank()
+              << ", subEnvironment "        << m_env.subId()
+              << ", subRank "               << m_env.subRank()
+              << ", inter0Rank "            << m_env.inter0Rank()
+              << ": forcing the value of '" << m_option_minRejectionRate.c_str()
+              << "' from "                  << m_minRejectionRate
+              << " to "                     << .5
+              << std::endl;
+    m_minRejectionRate = .5;
+  }
+
+  if (m_env.allOptionsMap().count(m_option_maxRejectionRate.c_str())) {
+    m_maxRejectionRate = ((const po::variable_value&) m_env.allOptionsMap()[m_option_maxRejectionRate.c_str()]).as<double>();
+  }
+  if (m_maxRejectionRate >= 1.) {
+    std::cerr << "WARNING In uqMLSamplingLevelOptionsClass::getMyOptionsValues()"
+              << ", fullRank "              << m_env.fullRank()
+              << ", subEnvironment "        << m_env.subId()
+              << ", subRank "               << m_env.subRank()
+              << ", inter0Rank "            << m_env.inter0Rank()
+              << ": forcing the value of '" << m_option_maxRejectionRate.c_str()
+              << "' from "                  << m_maxRejectionRate
+              << " to "                     << .5
+              << std::endl;
+    m_maxRejectionRate = .5;
+  }
+
+  if (m_env.allOptionsMap().count(m_option_covRejectionRate.c_str())) {
+    m_covRejectionRate = ((const po::variable_value&) m_env.allOptionsMap()[m_option_covRejectionRate.c_str()]).as<double>();
+  }
+  if (m_covRejectionRate >= 1.) {
+    std::cerr << "WARNING In uqMLSamplingLevelOptionsClass::getMyOptionsValues()"
+              << ", fullRank "              << m_env.fullRank()
+              << ", subEnvironment "        << m_env.subId()
+              << ", subRank "               << m_env.subRank()
+              << ", inter0Rank "            << m_env.inter0Rank()
+              << ": forcing the value of '" << m_option_covRejectionRate.c_str()
+              << "' from "                  << m_covRejectionRate
+              << " to "                     << .5
+              << std::endl;
+    m_covRejectionRate = .5;
   }
 
   if (m_env.allOptionsMap().count(m_option_totallyMute.c_str())) {
@@ -350,7 +430,7 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
   }
   if ((m_filteredChainGenerate == true) &&
       (m_filteredChainLag      < 2    )) {
-    std::cerr << "WARNING In uqMLSamplingClass<P_V,P_M>::getMyOptionsValues()"
+    std::cerr << "WARNING In uqMLSamplingLevelOptionsClass::getMyOptionsValues()"
               << ", fullRank "              << m_env.fullRank()
               << ", subEnvironment "        << m_env.subId()
               << ", subRank "               << m_env.subRank()
@@ -414,7 +494,7 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
     std::string inputString = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dr_listOfScalesForExtraStages.c_str()]).as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpScales);
     //if (m_env.subDisplayFile()) {
-    //  *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::getMyOptionValues(): scales =";
+    //  *m_env.subDisplayFile() << "In uqMLSamplingLevelOptionsClass::getMyOptionValues(): scales =";
     //  for (unsigned int i = 0; i < tmpScales.size(); ++i) {
     //    *m_env.subDisplayFile() << " " << tmpScales[i];
     //  }
@@ -473,6 +553,10 @@ uqMLSamplingLevelOptionsClass::print(std::ostream& os) const
     os << *setIt << " ";
   }
   os << "\n" << m_option_minEffectiveSizeRatio          << " = " << m_minEffectiveSizeRatio
+     << "\n" << m_option_maxEffectiveSizeRatio          << " = " << m_maxEffectiveSizeRatio
+     << "\n" << m_option_minRejectionRate               << " = " << m_minRejectionRate
+     << "\n" << m_option_maxRejectionRate               << " = " << m_maxRejectionRate
+     << "\n" << m_option_covRejectionRate               << " = " << m_covRejectionRate
      << "\n" << m_option_totallyMute                    << " = " << m_totallyMute
      << "\n" << m_option_rawChain_dataInputFileName     << " = " << m_rawChainDataInputFileName
      << "\n" << m_option_rawChain_size                  << " = " << m_rawChainSize

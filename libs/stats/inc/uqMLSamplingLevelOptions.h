@@ -43,9 +43,11 @@
 // _ODV = option default value
 #define UQ_ML_SAMPLING_L_DATA_OUTPUT_FILE_NAME_ODV                  UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
 #define UQ_ML_SAMPLING_L_DATA_OUTPUT_ALLOW_ODV                      ""
-#define UQ_ML_SAMPLING_L_MIN_EFFECTIVE_SIZE_RATIO_ODV               0.5
-#define UQ_ML_SAMPLING_L_MAX_EXPONENT_ODV                           1.
-#define UQ_ML_SAMPLING_L_MAX_NUMBER_OF_ATTEMPTS_ODV                 1000
+#define UQ_ML_SAMPLING_L_MIN_EFFECTIVE_SIZE_RATIO_ODV               0.49
+#define UQ_ML_SAMPLING_L_MAX_EFFECTIVE_SIZE_RATIO_ODV               0.51
+#define UQ_ML_SAMPLING_L_MIN_REJECTION_RATE_ODV                     0.24
+#define UQ_ML_SAMPLING_L_MAX_REJECTION_RATE_ODV                     0.40
+#define UQ_ML_SAMPLING_L_COV_REJECTION_RATE_ODV                     0.25
 #define UQ_ML_SAMPLING_L_TOTALLY_MUTE_ODV                           1
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV         UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_SIZE_ODV                         100.
@@ -90,6 +92,10 @@ public:
   std::set<unsigned int>             m_dataOutputAllowedSet;
   std::string                        m_str1;
   double                             m_minEffectiveSizeRatio;
+  double                             m_maxEffectiveSizeRatio;
+  double                             m_minRejectionRate;
+  double                             m_maxRejectionRate;
+  double                             m_covRejectionRate;
   bool                               m_totallyMute;
   std::string                        m_rawChainDataInputFileName;
   unsigned int                       m_rawChainSize;
@@ -138,8 +144,10 @@ private:
   std::string                   m_option_dataOutputFileName;
   std::string                   m_option_dataOutputAllowedSet;
   std::string                   m_option_minEffectiveSizeRatio;
-  std::string                   m_option_maxExponent;
-  std::string                   m_option_maxNumberOfAttempts;
+  std::string                   m_option_maxEffectiveSizeRatio;
+  std::string                   m_option_minRejectionRate;
+  std::string                   m_option_maxRejectionRate;
+  std::string                   m_option_covRejectionRate;
   std::string                   m_option_totallyMute;
   std::string                   m_option_rawChain_dataInputFileName;
   std::string                   m_option_rawChain_size;
