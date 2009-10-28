@@ -54,6 +54,10 @@ public:
                               const uqBaseVectorRVClass<P_V,P_M>& sourceRv,
                               const P_V&                          initialPosition,
                               const P_M*                          inputProposalCovMatrix);
+  uqMetropolisHastingsSGClass(const uqMLSamplingLevelOptionsClass& inputOptions,
+                              const uqBaseVectorRVClass<P_V,P_M>&  sourceRv,
+                              const P_V&                           initialPosition,
+                              const P_M*                           inputProposalCovMatrix);
  ~uqMetropolisHastingsSGClass();
 
   void   generateSequence           (uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
@@ -195,6 +199,49 @@ uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
   if ((m_env.subDisplayFile()          ) &&
       (m_options.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "Leaving uqMetropolisHastingsSGClass<P_V,P_M>::constructor(1)"
+                            << std::endl;
+  }
+}
+
+template<class P_V,class P_M>
+uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
+  const uqMLSamplingLevelOptionsClass& inputOptions,
+  const uqBaseVectorRVClass<P_V,P_M>&  sourceRv,
+  const P_V&                           initialPosition,
+  const P_M*                           inputProposalCovMatrix)
+  :
+  m_env                          (sourceRv.env()),
+  m_vectorSpace                  (sourceRv.imageSet().vectorSpace()),
+  m_targetPdf                    (sourceRv.pdf()),
+  m_initialPosition              (initialPosition),
+  m_initialProposalCovMatrix     (inputProposalCovMatrix),
+  m_nullInputProposalCovMatrix   (inputProposalCovMatrix == NULL),
+  m_targetPdfSynchronizer        (new uqScalarFunctionSynchronizerClass<P_V,P_M>(m_targetPdf,m_initialPosition)),
+  m_tk                           (NULL),
+  m_positionIdForDebugging       (0),
+  m_stageIdForDebugging          (0),
+  m_idsOfUniquePositions         (0),//0.),
+  m_logTargets                   (0),//0.),
+  m_alphaQuotients               (0),//0.),
+  m_rawChainRunTime              (0.),
+  m_numRejections                (0),
+  m_numOutOfTargetSupport        (0),
+  m_lastChainSize                (0),
+  m_lastMean                     (NULL),
+  m_lastAdaptedCovMatrix         (NULL),
+  m_options                      (inputOptions)
+{
+  if ((m_env.subDisplayFile()          ) &&
+      (m_options.m_totallyMute == false)) {
+    *m_env.subDisplayFile() << "Entering uqMetropolisHastingsSGClass<P_V,P_M>::constructor(2)"
+                            << std::endl;
+  }
+
+  commonConstructor();
+
+  if ((m_env.subDisplayFile()          ) &&
+      (m_options.m_totallyMute == false)) {
+    *m_env.subDisplayFile() << "Leaving uqMetropolisHastingsSGClass<P_V,P_M>::constructor(2)"
                             << std::endl;
   }
 }

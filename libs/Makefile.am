@@ -55,6 +55,8 @@ endif
 # (4/5) Sources from stats/src
 libqueso_la_SOURCES += $(top_srcdir)/libs/stats/src/uqFiniteDistribution.C \
 	$(top_srcdir)/libs/stats/src/uqMetropolisHastingsSGOptions.C \
+	$(top_srcdir)/libs/stats/src/uqMLSamplingOptions.C \
+	$(top_srcdir)/libs/stats/src/uqMLSamplingLevelOptions.C \
 	$(top_srcdir)/libs/stats/src/uqMonteCarloSGOptions.C \
 	$(top_srcdir)/libs/stats/src/uqStatisticalInverseProblemOptions.C \
 	$(top_srcdir)/libs/stats/src/uqStatisticalForwardProblemOptions.C
@@ -112,6 +114,9 @@ libqueso_include_HEADERS += $(top_srcdir)/libs/stats/inc/uqFiniteDistribution.h 
 	$(top_srcdir)/libs/stats/inc/uqMetropolisHastingsSG1.h \
 	$(top_srcdir)/libs/stats/inc/uqMetropolisHastingsSG2.h \
 	$(top_srcdir)/libs/stats/inc/uqMetropolisHastingsSGOptions.h \
+	$(top_srcdir)/libs/stats/inc/uqMLSampling.h \
+	$(top_srcdir)/libs/stats/inc/uqMLSamplingOptions.h \
+	$(top_srcdir)/libs/stats/inc/uqMLSamplingLevelOptions.h \
 	$(top_srcdir)/libs/stats/inc/uqModelValidation.h \
 	$(top_srcdir)/libs/stats/inc/uqMonteCarloSG.h \
 	$(top_srcdir)/libs/stats/inc/uqMonteCarloSGOptions.h \

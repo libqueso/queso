@@ -29,7 +29,6 @@ cycle_cal_ip_mh_help                 = anything
 cycle_cal_ip_mh_dataOutputFileName   = outputData/tgaCalOutput
 cycle_cal_ip_mh_dataOutputAllowedSet = 0 1
 
-cycle_cal_ip_mh_rawChain_type                 = 1
 cycle_cal_ip_mh_rawChain_dataInputFileName    = . # outputData/file_cal_ip_raw1
 cycle_cal_ip_mh_rawChain_size                 = 16384
 cycle_cal_ip_mh_rawChain_generateExtra        = 0
@@ -230,7 +229,6 @@ cycle_val_ip_mh_help                 = anything
 cycle_val_ip_mh_dataOutputFileName   = outputData/tgaValOutput
 cycle_val_ip_mh_dataOutputAllowedSet = 0 1
 
-cycle_val_ip_mh_rawChain_type                 = 1
 cycle_val_ip_mh_rawChain_dataInputFileName    = . # outputData/file_val_ip_raw1
 cycle_val_ip_mh_rawChain_size                 = 16384
 cycle_val_ip_mh_rawChain_generateExtra        = 0
@@ -421,7 +419,6 @@ ip_dataOutputFileName = koomie.out
 ip_dataOutputAllowedSet = 0
 ip_mh_dataOutputFileName = koomie.out
 ip_mh_dataOutputAllowedSet = 0
-ip_mh_rawChain_type = 1
 ip_mh_rawChain_dataInputFileName = .
 ip_mh_rawChain_size = 100000
 #ip_mh_rawChain_size = 1000

@@ -25,7 +25,6 @@ ip_dataOutputAllowedSet = 0
 ip_mh_dataOutputFileName   = outputData/sipOutput
 ip_mh_dataOutputAllowedSet = 0 1
 
-ip_mh_rawChain_type                 = 1
 ip_mh_rawChain_dataInputFileName    = .
 ip_mh_rawChain_size                 = 32768
 ip_mh_rawChain_generateExtra        = 0
