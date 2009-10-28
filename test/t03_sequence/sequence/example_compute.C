@@ -53,20 +53,59 @@ void compute(const uqFullEnvironmentClass& env) {
   meanVector[1] =  2;
   uqGslMatrixClass* covMatrix = paramSpace.newMatrix();
   (*covMatrix)(0,0) = 4.; (*covMatrix)(0,1) = 0.;
-  (*covMatrix)(1,0) = 0.; (*covMatrix)(1,1) = 1.;
+  (*covMatrix)(1,0) = 0.; (*covMatrix)(1,1) = 7.;
   uqGaussianVectorRVClass<uqGslVectorClass,uqGslMatrixClass>
     auxRv("", paramDomain,meanVector,*covMatrix);
 
   // Step 4 of 9: Instantiate the vector sequence
-  uqSequenceOfVectorsClass<uqGslVectorClass,uqGslMatrixClass>
-    auxSeq(paramSpace,1000,"");
+  const int num_samples = 1000;
 
+  uqSequenceOfVectorsClass<uqGslVectorClass,uqGslMatrixClass>
+    auxSeq(paramSpace,num_samples,"aux_seq");
+
+  std::vector<double> convMeasure(num_samples,0.0);
+  
   // Step 5 of 9: Populate the vector sequence
   uqGslVectorClass auxVec(paramSpace.zeroVector());
   for (unsigned int i = 0; i < auxSeq.subSequenceSize(); ++i) {
     auxRv.realizer().realization(auxVec);
     auxSeq.setPositionValues(i,auxVec);
+    if ((i >= 1) && (env.numSubEnvironments() > 1))
+      {
+	convMeasure[i] = auxSeq.estimateConvBrooksGelman( 0, i );
+      }
   }
+  std::set<unsigned int> auxSet;
+  auxSet.insert(0);
+  auxSet.insert(1);
+  auxSeq.subWriteContents("anyname",auxSet);
+
+  if( env.inter0Rank() == 0 )
+    {
+      std::ofstream dataout( "convergence.m", std::ios::out );
+      dataout << "clear all" << std::endl;
+      dataout << "close all" << std::endl;
+      dataout << "index = [ " << 1 << std::endl;
+      for( int i = 2; i < num_samples-1; i++)
+	{
+	  dataout << i << std::endl;
+	}
+      dataout << num_samples-1 << " ];" << std::endl;
+
+      dataout << " data = [ " << convMeasure[1] << std::endl;
+      for( int i = 2; i < num_samples-1; i++)
+	{
+	  dataout << convMeasure[i] << std::endl;
+	}
+      dataout << convMeasure[ num_samples-1] << "];" << std::endl;
+      dataout << "plot( index, data, 'b-', 'LineWidth', 2 )" << std::endl;
+      dataout << "xlabel( 'Iteration', 'FontSize', 16 )" << std::endl;
+      dataout << "ylabel( 'BG-Convergence', 'FontSize', 16 )" << std::endl;
+      dataout << "title( 'Brooks-Gelman Convergence, Gaussian RV, " 
+	      << env.numSubEnvironments() << " Sequences', 'FontSize', 16 )" << std::endl;
+      dataout << "print -depsc BGConv" << env.numSubEnvironments() << ".eps" << std::endl;
+      std::cout <<"convMeasure = " << convMeasure[num_samples-1] << std::endl;
+    }
 
   // Step 6 of 9: Compute min, max, mean, covariance and correlation matrices
   uqGslVectorClass minVec (paramSpace.zeroVector());
@@ -104,10 +143,6 @@ void compute(const uqFullEnvironmentClass& env) {
     cdfStaccVecs     [i] = new uqGslVectorClass(paramSpace.zeroVector());
   }
   //auxSeq.subCdfStacc(0,evalPositionsVecs,cdfStaccVecs);
-
-  // Step 8 of 9: Compute Brooks-Gelman convergence measure
-  //uqGslVectorClass convMeasureVec(paramSpace.zeroVector());
-  //auxSeq.cwBrooksGelmanConvMeasures(0,auxSeq.subSequenceSize(),convMeasureVec);
 
   // Return
   for (unsigned int i = 0; i < auxSize; ++i) {

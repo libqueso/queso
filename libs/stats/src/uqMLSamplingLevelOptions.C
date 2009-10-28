@@ -43,6 +43,7 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   m_str1                                     (""),
   m_minEffectiveSizeRatio                    (UQ_ML_SAMPLING_L_MIN_EFFECTIVE_SIZE_RATIO_ODV),
   m_maxEffectiveSizeRatio                    (UQ_ML_SAMPLING_L_MAX_EFFECTIVE_SIZE_RATIO_ODV),
+  m_scaleCovMatrix                           (UQ_ML_SAMPLING_L_SCALE_COV_MATRIX_ODV),
   m_minRejectionRate                         (UQ_ML_SAMPLING_L_MIN_REJECTION_RATE_ODV),
   m_maxRejectionRate                         (UQ_ML_SAMPLING_L_MAX_REJECTION_RATE_ODV),
   m_covRejectionRate                         (UQ_ML_SAMPLING_L_COV_REJECTION_RATE_ODV),
@@ -85,6 +86,7 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   m_option_dataOutputAllowedSet              (m_prefix + "dataOutputAllowedSet"              ),
   m_option_minEffectiveSizeRatio             (m_prefix + "minEffectiveSizeRatio"             ),
   m_option_maxEffectiveSizeRatio             (m_prefix + "maxEffectiveSizeRatio"             ),
+  m_option_scaleCovMatrix                    (m_prefix + "scaleCovMatrix"                    ),
   m_option_minRejectionRate                  (m_prefix + "minRejectionRate"                  ),
   m_option_maxRejectionRate                  (m_prefix + "maxRejectionRate"                  ),
   m_option_covRejectionRate                  (m_prefix + "covRejectionRate"                  ),
@@ -124,6 +126,7 @@ uqMLSamplingLevelOptionsClass::copyOptionsValues(const uqMLSamplingLevelOptionsC
   m_str1                              = srcOptions.m_str1;
   m_minEffectiveSizeRatio             = srcOptions.m_minEffectiveSizeRatio;
   m_maxEffectiveSizeRatio             = srcOptions.m_maxEffectiveSizeRatio;
+  m_scaleCovMatrix                    = srcOptions.m_scaleCovMatrix;
   m_minRejectionRate                  = srcOptions.m_minRejectionRate;
   m_maxRejectionRate                  = srcOptions.m_maxRejectionRate;
   m_covRejectionRate                  = srcOptions.m_covRejectionRate;
@@ -216,6 +219,7 @@ uqMLSamplingLevelOptionsClass::defineMyOptions(po::options_description& optionsD
     (m_option_dataOutputAllowedSet.c_str(),               po::value<std::string >()->default_value(m_str1                             ), "subEnvs that will write to generic output file"                  )
     (m_option_minEffectiveSizeRatio.c_str(),              po::value<double      >()->default_value(m_minEffectiveSizeRatio            ), "minimum allowed effective size ratio wrt previous level"         )
     (m_option_maxEffectiveSizeRatio.c_str(),              po::value<double      >()->default_value(m_maxEffectiveSizeRatio            ), "maximum allowed effective size ratio wrt previous level"         )
+    (m_option_scaleCovMatrix.c_str(),                     po::value<bool        >()->default_value(m_scaleCovMatrix                   ), "scale proposal covariance matrix"                                )
     (m_option_minRejectionRate.c_str(),                   po::value<double      >()->default_value(m_minRejectionRate                 ), "minimum allowed attempted rejection rate at current level"       )
     (m_option_maxRejectionRate.c_str(),                   po::value<double      >()->default_value(m_maxRejectionRate                 ), "maximum allowed attempted rejection rate at current level"       )
     (m_option_covRejectionRate.c_str(),                   po::value<double      >()->default_value(m_covRejectionRate                 ), "c.o.v. for judging attempted rejection rate at current level"    )
@@ -314,6 +318,10 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
               << " to "                     << .5
               << std::endl;
     m_maxEffectiveSizeRatio = .5;
+  }
+
+  if (m_env.allOptionsMap().count(m_option_scaleCovMatrix.c_str())) {
+    m_scaleCovMatrix = ((const po::variable_value&) m_env.allOptionsMap()[m_option_scaleCovMatrix.c_str()]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_minRejectionRate.c_str())) {
@@ -554,6 +562,7 @@ uqMLSamplingLevelOptionsClass::print(std::ostream& os) const
   }
   os << "\n" << m_option_minEffectiveSizeRatio          << " = " << m_minEffectiveSizeRatio
      << "\n" << m_option_maxEffectiveSizeRatio          << " = " << m_maxEffectiveSizeRatio
+     << "\n" << m_option_scaleCovMatrix                 << " = " << m_scaleCovMatrix
      << "\n" << m_option_minRejectionRate               << " = " << m_minRejectionRate
      << "\n" << m_option_maxRejectionRate               << " = " << m_maxRejectionRate
      << "\n" << m_option_covRejectionRate               << " = " << m_covRejectionRate

@@ -280,6 +280,74 @@ uqIntersectionSubsetClass<V,M>::print(std::ostream& os) const
 }
 
 //*****************************************************
+// Concatenation class
+//*****************************************************
+template<class V, class M>
+class uqConcatenationSubsetClass : public uqVectorSubsetClass<V,M> {
+public:
+  uqConcatenationSubsetClass(const char*                    prefix,
+                             const uqVectorSpaceClass<V,M>& vectorSpace,
+                             const uqVectorSetClass<V,M>&   set1,
+                             const uqVectorSetClass<V,M>&   set2);
+ ~uqConcatenationSubsetClass();
+
+  bool contains(const V& vec)     const;
+  void print   (std::ostream& os) const;
+
+protected:
+  using uqVectorSetClass   <V,M>::m_env;
+  using uqVectorSetClass   <V,M>::m_prefix;
+  using uqVectorSetClass   <V,M>::m_volume;
+  using uqVectorSubsetClass<V,M>::m_vectorSpace;
+
+  const uqVectorSetClass<V,M>& m_set1;
+  const uqVectorSetClass<V,M>& m_set2;
+};
+
+template<class V, class M>
+uqConcatenationSubsetClass<V,M>::uqConcatenationSubsetClass(
+  const char*                    prefix,
+  const uqVectorSpaceClass<V,M>& vectorSpace,
+  const uqVectorSetClass<V,M>&   set1,
+  const uqVectorSetClass<V,M>&   set2)
+  :
+  uqVectorSubsetClass<V,M>(prefix,vectorSpace,set1.volume()*set2.volume()),
+  m_set1                  (set1),
+  m_set2                  (set2)
+{
+}
+
+template<class V, class M>
+uqConcatenationSubsetClass<V,M>::~uqConcatenationSubsetClass()
+{
+}
+
+template<class V, class M>
+bool
+uqConcatenationSubsetClass<V,M>::contains(const V& vec) const
+{
+  V v1(m_set1.vectorSpace().zeroVector());
+  V v2(m_set2.vectorSpace().zeroVector());
+
+  UQ_FATAL_TEST_MACRO((vec.sizeLocal() != (v1.sizeLocal()+v2.sizeLocal())),
+                      m_env.fullRank(),
+                      "uqConcatenationSubsetClass<V,M>::contains()",
+                      "incompatible vector sizes");
+
+  vec.cwExtract(             0,v1);
+  vec.cwExtract(v1.sizeLocal(),v2);
+
+  return (m_set1.contains(v1) && m_set2.contains(v2));
+}
+
+template <class V, class M>
+void
+uqConcatenationSubsetClass<V,M>::print(std::ostream& os) const
+{
+  return;
+}
+
+//*****************************************************
 // Discrete class
 //*****************************************************
 template<class V, class M>

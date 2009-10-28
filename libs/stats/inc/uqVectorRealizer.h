@@ -77,14 +77,14 @@ uqBaseVectorRealizerClass<V,M>::uqBaseVectorRealizerClass(
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqBaseVectorRealizerClass<V,M>::constructor() [4]"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqBaseVectorRealizerClass<V,M>::constructor() [4]"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 }
 
@@ -146,14 +146,14 @@ uqGenericVectorRealizerClass<V,M>::uqGenericVectorRealizerClass(
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqGenericVectorRealizerClass<V,M>::constructor()"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqGenericVectorRealizerClass<V,M>::constructor()"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 }
 
@@ -213,16 +213,16 @@ uqGaussianVectorRealizerClass<V,M>::uqGaussianVectorRealizerClass(const char* pr
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqGaussianVectorRealizerClass<V,M>::constructor()"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 
   *m_unifiedLawExpVector = lawExpVector;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqGaussianVectorRealizerClass<V,M>::constructor()"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 }
 								  
@@ -316,8 +316,8 @@ uqSequentialVectorRealizerClass<V,M>::uqSequentialVectorRealizerClass(
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "In uqSequentialVectorRealizerClass<V,M>::constructor()"
-                           << ": m_chain.subSequenceSize() = " << m_chain.subSequenceSize()
-                           << std::endl;
+                            << ": m_chain.subSequenceSize() = " << m_chain.subSequenceSize()
+                            << std::endl;
   }
 }
 
@@ -378,14 +378,14 @@ uqUniformVectorRealizerClass<V,M>::uqUniformVectorRealizerClass(
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqUniformVectorRealizerClass<V,M>::constructor()"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqUniformVectorRealizerClass<V,M>::constructor()"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 }
 
@@ -406,6 +406,139 @@ uqUniformVectorRealizerClass<V,M>::realization(V& nextValues) const
                       "only box images are supported right now");
   
   nextValues.cwSetUniform(m_env.rng(),imageBox->minValues(),imageBox->maxValues());
+  return;
+}
+
+//*****************************************************
+// InverseGamma class
+//*****************************************************
+template<class V, class M>
+class uqInverseGammaVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
+public:
+  uqInverseGammaVectorRealizerClass(const char*                  prefix,
+                                    const uqVectorSetClass<V,M>& unifiedImageSet,
+                                    const V&                     alpha,
+                                    const V&                     beta);
+ ~uqInverseGammaVectorRealizerClass();
+
+  void realization(V& nextValues) const;
+
+private:
+  using uqBaseVectorRealizerClass<V,M>::m_env;
+  using uqBaseVectorRealizerClass<V,M>::m_prefix;
+  using uqBaseVectorRealizerClass<V,M>::m_unifiedImageSet;
+  using uqBaseVectorRealizerClass<V,M>::m_subPeriod;
+
+  V m_alpha;
+  V m_beta;
+};
+
+template<class V, class M>
+uqInverseGammaVectorRealizerClass<V,M>::uqInverseGammaVectorRealizerClass(
+  const char*                  prefix,
+  const uqVectorSetClass<V,M>& unifiedImageSet,
+  const V&                     alpha,
+  const V&                     beta)
+  :
+  uqBaseVectorRealizerClass<V,M>(((std::string)(prefix)+"gen").c_str(),unifiedImageSet,std::numeric_limits<unsigned int>::max()),
+  m_alpha(alpha),
+  m_beta (beta)
+{
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqInverseGammaVectorRealizerClass<V,M>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqInverseGammaVectorRealizerClass<V,M>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+}
+
+template<class V, class M>
+uqInverseGammaVectorRealizerClass<V,M>::~uqInverseGammaVectorRealizerClass()
+{
+}
+
+template<class V, class M>
+void
+uqInverseGammaVectorRealizerClass<V,M>::realization(V& nextValues) const
+{
+  nextValues.cwSetInverseGamma(m_env.rng(),m_alpha,m_beta);
+  return;
+}
+
+//*****************************************************
+// Concatenated class
+//*****************************************************
+template<class V, class M>
+class uqConcatenatedVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
+public:
+  uqConcatenatedVectorRealizerClass(const char*                           prefix,
+                                    const uqBaseVectorRealizerClass<V,M>& realizer1,
+                                    const uqBaseVectorRealizerClass<V,M>& realizer2,
+                                    const uqVectorSetClass<V,M>&          unifiedImageSet);
+ ~uqConcatenatedVectorRealizerClass();
+
+  void realization(V& nextValues) const;
+
+private:
+  using uqBaseVectorRealizerClass<V,M>::m_env;
+  using uqBaseVectorRealizerClass<V,M>::m_prefix;
+  using uqBaseVectorRealizerClass<V,M>::m_unifiedImageSet;
+  using uqBaseVectorRealizerClass<V,M>::m_subPeriod;
+
+  const uqBaseVectorRealizerClass<V,M>& m_realizer1;
+  const uqBaseVectorRealizerClass<V,M>& m_realizer2;
+};
+
+template<class V, class M>
+uqConcatenatedVectorRealizerClass<V,M>::uqConcatenatedVectorRealizerClass(
+  const char*                           prefix,
+  const uqBaseVectorRealizerClass<V,M>& realizer1,
+  const uqBaseVectorRealizerClass<V,M>& realizer2,
+  const uqVectorSetClass<V,M>&          unifiedImageSet)
+  :
+  uqBaseVectorRealizerClass<V,M>(((std::string)(prefix)+"gen").c_str(),unifiedImageSet,std::numeric_limits<unsigned int>::max()),
+  m_realizer1(realizer1),
+  m_realizer2(realizer2)
+{
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqConcatenatedVectorRealizerClass<V,M>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqConcatenatedVectorRealizerClass<V,M>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+}
+
+template<class V, class M>
+uqConcatenatedVectorRealizerClass<V,M>::~uqConcatenatedVectorRealizerClass()
+{
+}
+
+template<class V, class M>
+void
+uqConcatenatedVectorRealizerClass<V,M>::realization(V& nextValues) const
+{
+  V v1(m_realizer1.unifiedImageSet().vectorSpace().zeroVector());
+  V v2(m_realizer2.unifiedImageSet().vectorSpace().zeroVector());
+
+  //std::cout << "In uqConcatenatedVectorRealizerClass<V,M>::realization: v1.sizeLocal() = " << v1.sizeLocal() << std::endl;
+  m_realizer1.realization(v1);
+  //std::cout << "In uqConcatenatedVectorRealizerClass<V,M>::realization: v2.sizeLocal() = " << v2.sizeLocal() << std::endl;
+  m_realizer2.realization(v2);
+
+  //std::cout << "In uqConcatenatedVectorRealizerClass<V,M>::realization: nextValues.sizeLocal() = " << nextValues.sizeLocal() << std::endl;
+  nextValues.cwSetConcatenated(v1,v2);
+  //std::cout << "In uqConcatenatedVectorRealizerClass<V,M>::realization: succeeded" << std::endl;
+
   return;
 }
 #endif // __UQ_REALIZER_H__

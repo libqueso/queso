@@ -43,15 +43,15 @@ class uqGslMatrixClass : public uqMatrixClass
 public:
   uqGslMatrixClass();
   uqGslMatrixClass(const uqBaseEnvironmentClass& env,
-                   const Epetra_Map& map,
-                   unsigned int numCols);
+                   const Epetra_Map&             map,
+                   unsigned int                  numCols);
   uqGslMatrixClass(const uqBaseEnvironmentClass& env,
-                   const Epetra_Map& map,
-                   double diagValue); // MATLAB eye
-  uqGslMatrixClass(const uqGslVectorClass& v,
-                   double diagValue); // MATLAB eye
-  uqGslMatrixClass(const uqGslVectorClass& v); // MATLAB diag
-  uqGslMatrixClass(const uqGslMatrixClass& B);
+                   const Epetra_Map&             map,
+                   double                        diagValue); // MATLAB eye
+  uqGslMatrixClass(const uqGslVectorClass&       v,
+                   double                        diagValue); // MATLAB eye
+  uqGslMatrixClass(const uqGslVectorClass&       v);         // MATLAB diag
+  uqGslMatrixClass(const uqGslMatrixClass&       B);
  ~uqGslMatrixClass();
 
   uqGslMatrixClass& operator= (const uqGslMatrixClass& rhs);
@@ -72,6 +72,11 @@ public:
   uqGslVectorClass  multiply      (const uqGslVectorClass& x) const;
   uqGslVectorClass  invertMultiply(const uqGslVectorClass& b) const;
   void              invertMultiply(const uqGslVectorClass& b, uqGslVectorClass& x) const;
+  void              invertMultiply(const uqGslMatrixClass& B, uqGslMatrixClass& X) const;
+
+  void              eigen         (uqGslVectorClass& eigenValues, uqGslMatrixClass* eigenVectors) const;
+  void              largestEigen  (double& eigenValue, uqGslVectorClass& eigenVector) const;
+  void              smallestEigen (double& eigenValue, uqGslVectorClass& eigenVector) const;
 
   uqGslVectorClass  invertMultiplyForceLU(const uqGslVectorClass& b) const;
   void              invertMultiplyForceLU(const uqGslVectorClass& b, uqGslVectorClass& x) const;
@@ -80,6 +85,15 @@ public:
   void              subWriteContents     (const std::string&            varNamePrefix,
                                           const std::string&            fileName,
                                           const std::set<unsigned int>& allowedSubEnvIds) const;
+
+  void              getColumn            (const unsigned int column_num, uqGslVectorClass& column) const;
+  void              getRow               (const unsigned int row_num, uqGslVectorClass& row) const;
+  uqGslVectorClass  getColumn            (const unsigned int column_num ) const;
+  uqGslVectorClass  getRow               (const unsigned int row_num ) const;
+  void              setColumn            (const unsigned int column_num, const uqGslVectorClass& column);
+  void              setRow               (const unsigned int row_num, const uqGslVectorClass& row);
+
+  void              mpiSum               (const MPI_Comm& comm, uqGslMatrixClass& M_global ) const;
 
 private:
   void              copy                 (const uqGslMatrixClass& src);

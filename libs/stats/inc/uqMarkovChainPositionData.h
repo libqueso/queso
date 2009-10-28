@@ -43,6 +43,7 @@ public:
   uqMarkovChainPositionDataClass(const uqBaseEnvironmentClass& env,
                                  const V& vecValues,
                                  bool     outOfTargetSupport,
+                                 double   logLikelihood,
                                  double   logTarget);
   uqMarkovChainPositionDataClass(const uqMarkovChainPositionDataClass<V>& rhs);
  ~uqMarkovChainPositionDataClass();
@@ -51,10 +52,12 @@ public:
 
   const V& vecValues         () const;
   bool     outOfTargetSupport() const;
+  double   logLikelihood     () const;
   double   logTarget         () const;
 
   void     set               (const V& vecValues,
                               bool     outOfTargetSupport,
+                              double   logLikelihood,
                               double   logTarget);
 
   void     print             (std::ostream& os) const;
@@ -63,6 +66,7 @@ private:
   const uqBaseEnvironmentClass& m_env;
   V*     m_vecValues;
   bool   m_outOfTargetSupport;
+  double m_logLikelihood;
   double m_logTarget;
 };
 
@@ -72,6 +76,7 @@ uqMarkovChainPositionDataClass<V>::uqMarkovChainPositionDataClass(const uqBaseEn
   m_env               (env),
   m_vecValues         (NULL),
   m_outOfTargetSupport(false),
+  m_logLikelihood     (0.),
   m_logTarget         (0.)
 {
 }
@@ -81,11 +86,13 @@ uqMarkovChainPositionDataClass<V>::uqMarkovChainPositionDataClass(
   const uqBaseEnvironmentClass& env,
   const V& vecValues,
   bool     outOfTargetSupport,
+  double   logLikelihood,
   double   logTarget)
   :
   m_env               (env),
   m_vecValues         (new V(vecValues)),
   m_outOfTargetSupport(outOfTargetSupport),
+  m_logLikelihood     (logLikelihood),
   m_logTarget         (logTarget)
 {
 }
@@ -96,6 +103,7 @@ uqMarkovChainPositionDataClass<V>::uqMarkovChainPositionDataClass(const uqMarkov
   m_env               (rhs.m_env               ),
   m_vecValues         (new V(*rhs.m_vecValues )),
   m_outOfTargetSupport(rhs.m_outOfTargetSupport),
+  m_logLikelihood     (rhs.m_logLikelihood     ),
   m_logTarget         (rhs.m_logTarget         )
 {
 }
@@ -113,6 +121,7 @@ uqMarkovChainPositionDataClass<V>::operator=(const uqMarkovChainPositionDataClas
   if (m_vecValues == NULL) m_vecValues = new V(*rhs.m_vecValues);
   else                    *m_vecValues = *rhs.m_vecValues;
   m_outOfTargetSupport = rhs.m_outOfTargetSupport;
+  m_logLikelihood      = rhs.m_logLikelihood;
   m_logTarget          = rhs.m_logTarget;
 
   return *this;
@@ -138,6 +147,13 @@ uqMarkovChainPositionDataClass<V>::outOfTargetSupport() const
 
 template <class V>
 double
+uqMarkovChainPositionDataClass<V>::logLikelihood() const
+{
+  return m_logLikelihood;
+}
+
+template <class V>
+double
 uqMarkovChainPositionDataClass<V>::logTarget() const
 {
   return m_logTarget;
@@ -148,11 +164,13 @@ void
 uqMarkovChainPositionDataClass<V>::set(
   const V& vecValues,
   bool     outOfTargetSupport,
+  double   logLikelihood,
   double   logTarget)
 {
   if (m_vecValues == NULL) m_vecValues = new V(vecValues);
   else                    *m_vecValues = vecValues;
   m_outOfTargetSupport = outOfTargetSupport;
+  m_logLikelihood      = logLikelihood;
   m_logTarget          = logTarget;
 
   return;

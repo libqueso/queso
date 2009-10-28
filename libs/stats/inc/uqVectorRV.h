@@ -73,8 +73,8 @@ protected:
 
 template<class V, class M>
 uqBaseVectorRVClass<V,M>::uqBaseVectorRVClass(
-  const char*                            prefix,
-  const uqVectorSetClass          <V,M>& imageSet)
+  const char*                  prefix,
+  const uqVectorSetClass<V,M>& imageSet)
   :
   m_env       (imageSet.env()),
   m_prefix    ((std::string)(prefix)+"rv_"),
@@ -559,6 +559,156 @@ void
 uqUniformVectorRVClass<V,M>::print(std::ostream& os) const
 {
   os << "uqUniformVectorRVClass<V,M>::print() says, 'Please implement me.'" << std::endl;
+  return;
+}
+
+//*****************************************************
+// InverseGamma class
+//*****************************************************
+template<class V, class M>
+class uqInverseGammaVectorRVClass : public uqBaseVectorRVClass<V,M> {
+public:
+  uqInverseGammaVectorRVClass(const char*                  prefix,
+                              const uqVectorSetClass<V,M>& imageSet,
+                              const V&                     alpha,
+                              const V&                     beta);
+  virtual ~uqInverseGammaVectorRVClass();
+
+  void print(std::ostream& os) const;
+
+private:
+  using uqBaseVectorRVClass<V,M>::m_env;
+  using uqBaseVectorRVClass<V,M>::m_prefix;
+  using uqBaseVectorRVClass<V,M>::m_imageSet;
+  using uqBaseVectorRVClass<V,M>::m_pdf;
+  using uqBaseVectorRVClass<V,M>::m_realizer;
+  using uqBaseVectorRVClass<V,M>::m_subCdf;
+  using uqBaseVectorRVClass<V,M>::m_unifiedCdf;
+  using uqBaseVectorRVClass<V,M>::m_mdf;
+};
+
+template<class V, class M>
+uqInverseGammaVectorRVClass<V,M>::uqInverseGammaVectorRVClass(
+  const char*                  prefix,
+  const uqVectorSetClass<V,M>& imageSet,
+  const V&                     alpha,
+  const V&                     beta)
+  :
+  uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"uni").c_str(),imageSet)
+{
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqInverseGammaVectorRVClass<V,M>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+
+  m_pdf        = new uqInverseGammaJointPdfClass<V,M>(m_prefix.c_str(),
+                                                      m_imageSet,
+                                                      alpha,
+                                                      beta);
+  m_realizer   = new uqInverseGammaVectorRealizerClass<V,M>(m_prefix.c_str(),
+                                                            m_imageSet,
+                                                            alpha,
+                                                            beta);
+  m_subCdf     = NULL; // FIX ME: complete code
+  m_unifiedCdf = NULL; // FIX ME: complete code
+  m_mdf        = NULL; // FIX ME: complete code
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqInverseGammaVectorRVClass<V,M>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+}
+
+template<class V, class M>
+uqInverseGammaVectorRVClass<V,M>::~uqInverseGammaVectorRVClass()
+{
+}
+
+template <class V, class M>
+void
+uqInverseGammaVectorRVClass<V,M>::print(std::ostream& os) const
+{
+  os << "uqInverseGammaVectorRVClass<V,M>::print() says, 'Please implement me.'" << std::endl;
+  return;
+}
+
+//*****************************************************
+// Concatenated class
+//*****************************************************
+template<class V, class M>
+class uqConcatenatedVectorRVClass : public uqBaseVectorRVClass<V,M> {
+public:
+  uqConcatenatedVectorRVClass(const char*                     prefix,
+                              const uqBaseVectorRVClass<V,M>& rv1,
+                              const uqBaseVectorRVClass<V,M>& rv2,
+                              const uqVectorSetClass<V,M>&    imageSet);
+  virtual ~uqConcatenatedVectorRVClass();
+
+  void print(std::ostream& os) const;
+
+private:
+  using uqBaseVectorRVClass<V,M>::m_env;
+  using uqBaseVectorRVClass<V,M>::m_prefix;
+  using uqBaseVectorRVClass<V,M>::m_imageSet;
+  using uqBaseVectorRVClass<V,M>::m_pdf;
+  using uqBaseVectorRVClass<V,M>::m_realizer;
+  using uqBaseVectorRVClass<V,M>::m_subCdf;
+  using uqBaseVectorRVClass<V,M>::m_unifiedCdf;
+  using uqBaseVectorRVClass<V,M>::m_mdf;
+
+  const uqBaseVectorRVClass<V,M>& m_rv1;
+  const uqBaseVectorRVClass<V,M>& m_rv2;
+};
+
+template<class V, class M>
+uqConcatenatedVectorRVClass<V,M>::uqConcatenatedVectorRVClass(
+  const char*                     prefix,
+  const uqBaseVectorRVClass<V,M>& rv1,
+  const uqBaseVectorRVClass<V,M>& rv2,
+  const uqVectorSetClass<V,M>&    imageSet)
+  :
+  uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"concat").c_str(),imageSet),
+  m_rv1(rv1),
+  m_rv2(rv2)
+{
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqConcatenatedVectorRVClass<V,M>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+
+  m_pdf        = new uqConcatenatedJointPdfClass<V,M>(m_prefix.c_str(),
+                                                      m_rv1.pdf(),
+                                                      m_rv2.pdf(),
+                                                      m_imageSet);
+
+  m_realizer   = new uqConcatenatedVectorRealizerClass<V,M>(m_prefix.c_str(),
+                                                            m_rv1.realizer(),
+                                                            m_rv2.realizer(),
+                                                            m_imageSet);
+  m_subCdf     = NULL; // FIX ME: complete code
+  m_unifiedCdf = NULL; // FIX ME: complete code
+  m_mdf        = NULL; // FIX ME: complete code
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqConcatenatedVectorRVClass<V,M>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+}
+
+template<class V, class M>
+uqConcatenatedVectorRVClass<V,M>::~uqConcatenatedVectorRVClass()
+{
+}
+
+template <class V, class M>
+void
+uqConcatenatedVectorRVClass<V,M>::print(std::ostream& os) const
+{
+  os << "uqConcatenatedVectorRVClass<V,M>::print() says, 'Please implement me.'" << std::endl;
   return;
 }
 

@@ -40,7 +40,7 @@
 </list>
 */
 /*! If the requirements are satisfied, this operation sets the size and the contents of 'workingChain' using the algorithm options set in the constructor.
-    If not NULL, 'workingTargetValues' and 'workingLogTargetValues' are set accordingly.
+    If not NULL, 'workingLogLikelihoodValues' and 'workingLogTargetValues' are set accordingly.
 */
 /*! If options request data to be written in the output file (MATLAB .m format only, for now), the user can check which MATLAB variables are defined and set by
     running 'grep zeros <OUTPUT FILE NAME>' after the solution procedure ends. THe names of the varibles are self explanatory.
@@ -68,7 +68,7 @@ template <class P_V,class P_M>
 void
 uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
   uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
-  uqScalarSequenceClass<double>*      workingTargetValues,
+  uqScalarSequenceClass<double>*      workingLogLikelihoodValues,
   uqScalarSequenceClass<double>*      workingLogTargetValues)
 {
   if ((m_env.subDisplayFile()          ) &&
@@ -99,7 +99,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
     generateFullChain(valuesOf1stPosition,
                       m_options.m_rawChainSize,
                       workingChain,
-                      workingTargetValues,
+                      workingLogLikelihoodValues,
                       workingLogTargetValues);
   }
   else {
@@ -169,7 +169,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
     }
   }
 
-  // Take case of other aspects of raw chain
+  // Take care of other aspects of raw chain
   if ((genericOfsVar                   ) &&
       (m_options.m_totallyMute == false)) {
     // Write likelihoodValues and alphaValues, if they were requested by user
@@ -242,8 +242,8 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
                         filterSpacing);
     workingChain.setName(m_options.m_prefix + "filtChain");
 
-    if (workingTargetValues)    workingTargetValues->filter   (filterInitialPos,
-                                                               filterSpacing);
+    if (workingLogLikelihoodValues) workingLogLikelihoodValues->filter(filterInitialPos,
+                                                                       filterSpacing);
 
     if (workingLogTargetValues) workingLogTargetValues->filter(filterInitialPos,
                                                                filterSpacing);
@@ -344,7 +344,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
   const P_V&                          valuesOf1stPosition,
         unsigned int                  chainSize,
   uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
-  uqScalarSequenceClass<double>*      workingTargetValues,
+  uqScalarSequenceClass<double>*      workingLogLikelihoodValues,
   uqScalarSequenceClass<double>*      workingLogTargetValues)
 {
   m_env.syncPrintDebugMsg("Entering uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()",3,3000000,m_env.fullComm());
@@ -390,12 +390,18 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
     *m_env.subDisplayFile() << std::endl;
   }
   if (m_options.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalTargetD, NULL);
-  double logTarget = -0.5 * m_targetPdfSynchronizer->callFunction(&valuesOf1stPosition,NULL,NULL,NULL,NULL); // Might demand parallel environment
+  double logLikelihood = 0.;
+#ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
+  double logTarget =        m_targetPdfSynchronizer->callFunction(&valuesOf1stPosition,NULL,NULL,NULL,NULL,&logLikelihood); // Might demand parallel environment
+#else
+  double logTarget = -0.5 * m_targetPdfSynchronizer->callFunction(&valuesOf1stPosition,NULL,NULL,NULL,NULL,&logLikelihood); // Might demand parallel environment
+#endif
   if (m_options.m_rawChainMeasureRunTimes) targetDRunTime += uqMiscGetEllapsedSeconds(&timevalTargetD);
   //*m_env.subDisplayFile() << "AQUI 001" << std::endl;
   uqMarkovChainPositionDataClass<P_V> currentPositionData(m_env,
                                                           valuesOf1stPosition,
                                                           outOfTargetSupport,
+                                                          logLikelihood,
                                                           logTarget);
 
   P_V gaussianVector(m_vectorSpace.zeroVector());
@@ -406,8 +412,8 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
   // Begin chain loop from positionId = 1
   //****************************************************
   workingChain.resizeSequence(chainSize); 
-  if (workingTargetValues   ) workingTargetValues->resizeSequence   (chainSize);
-  if (workingLogTargetValues) workingLogTargetValues->resizeSequence(chainSize);
+  if (workingLogLikelihoodValues) workingLogLikelihoodValues->resizeSequence(chainSize);
+  if (workingLogTargetValues    ) workingLogTargetValues->resizeSequence    (chainSize);
   if (true/*m_uniqueChainGenerate*/) m_idsOfUniquePositions.resize(chainSize,0); 
   if (m_options.m_rawChainGenerateExtra) {
     m_logTargets.resize    (chainSize,0.);
@@ -416,8 +422,8 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
 
   unsigned int uniquePos = 0;
   workingChain.setPositionValues(0,currentPositionData.vecValues());
-  if (workingTargetValues   ) (*workingTargetValues   )[0] = exp(currentPositionData.logTarget());
-  if (workingLogTargetValues) (*workingLogTargetValues)[0] =     currentPositionData.logTarget();
+  if (workingLogLikelihoodValues) (*workingLogLikelihoodValues)[0] = currentPositionData.logLikelihood();
+  if (workingLogTargetValues    ) (*workingLogTargetValues    )[0] = currentPositionData.logTarget();
   if (true/*m_uniqueChainGenerate*/) m_idsOfUniquePositions[uniquePos++] = 0;
   if (m_options.m_rawChainGenerateExtra) {
     m_logTargets    [0] = currentPositionData.logTarget();
@@ -442,6 +448,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
     // subRank != 0 --> Enter the barrier and wait for processor 0 to decide to call the targetPdf
     double aux = 0.;
     aux = m_targetPdfSynchronizer->callFunction(NULL,
+                                                NULL,
                                                 NULL,
                                                 NULL,
                                                 NULL,
@@ -538,15 +545,21 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
 
     if (outOfTargetSupport) {
       m_numOutOfTargetSupport++;
-      logTarget = -INFINITY;
+      logLikelihood = -INFINITY;
+      logTarget     = -INFINITY;
     }
     else {
       if (m_options.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalTargetD, NULL);
-      logTarget = -0.5 * m_targetPdfSynchronizer->callFunction(&tmpVecValues,NULL,NULL,NULL,NULL); // Might demand parallel environment
+#ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
+      logTarget =        m_targetPdfSynchronizer->callFunction(&tmpVecValues,NULL,NULL,NULL,NULL,&logLikelihood); // Might demand parallel environment
+#else
+      logTarget = -0.5 * m_targetPdfSynchronizer->callFunction(&tmpVecValues,NULL,NULL,NULL,NULL,&logLikelihood); // Might demand parallel environment
+#endif
       if (m_options.m_rawChainMeasureRunTimes) targetDRunTime += uqMiscGetEllapsedSeconds(&timevalTargetD);
     }
     currentCandidateData.set(tmpVecValues,
                              outOfTargetSupport,
+                             logLikelihood,
                              logTarget);
 
     if ((m_env.subDisplayFile()          ) &&
@@ -678,15 +691,21 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
         }
 
         if (outOfTargetSupport) {
-          logTarget = -INFINITY;
+          logLikelihood = -INFINITY;
+          logTarget     = -INFINITY;
         }
         else {
           if (m_options.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalTargetD, NULL);
-          logTarget = -0.5 * m_targetPdfSynchronizer->callFunction(&tmpVecValues,NULL,NULL,NULL,NULL); // Might demand parallel environment
+#ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
+          logTarget =        m_targetPdfSynchronizer->callFunction(&tmpVecValues,NULL,NULL,NULL,NULL,&logLikelihood); // Might demand parallel environment
+#else
+          logTarget = -0.5 * m_targetPdfSynchronizer->callFunction(&tmpVecValues,NULL,NULL,NULL,NULL,&logLikelihood); // Might demand parallel environment
+#endif
           if (m_options.m_rawChainMeasureRunTimes) targetDRunTime += uqMiscGetEllapsedSeconds(&timevalTargetD);
         }
         currentCandidateData.set(tmpVecValues,
                                  outOfTargetSupport,
+                                 logLikelihood,
                                  logTarget);
 
         drPositionsData.push_back(new uqMarkovChainPositionDataClass<P_V>(currentCandidateData));
@@ -736,8 +755,8 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
       m_numRejections++;
     }
 
-    if (workingTargetValues   ) (*workingTargetValues   )[positionId] = exp(currentPositionData.logTarget());
-    if (workingLogTargetValues) (*workingLogTargetValues)[positionId] =     currentPositionData.logTarget();
+    if (workingLogLikelihoodValues) (*workingLogLikelihoodValues)[positionId] = currentPositionData.logLikelihood();
+    if (workingLogTargetValues    ) (*workingLogTargetValues    )[positionId] = currentPositionData.logTarget();
 
     if (m_options.m_rawChainGenerateExtra) {
       m_logTargets[positionId] = currentPositionData.logTarget();
@@ -893,6 +912,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
     // subRank == 0 --> Tell all other processors to exit barrier now that the chain has been fully generated
     double aux = 0.;
     aux = m_targetPdfSynchronizer->callFunction(NULL,
+                                                NULL,
                                                 NULL,
                                                 NULL,
                                                 NULL,

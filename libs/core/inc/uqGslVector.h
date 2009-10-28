@@ -57,29 +57,44 @@ public:
             double& operator[](unsigned int i);
       const double& operator[](unsigned int i) const;
 
-  unsigned int sizeLocal           () const;
-  unsigned int sizeGlobal          () const;
-  double       norm2Sq             () const;
-  double       norm2               () const;
-  double       sumOfComponents     () const;
-  void         cwSet               (double value);
-  void         cwSetGaussian       (const gsl_rng* rng, double mean, double stdDev);
-  void         cwSetGaussian       (const gsl_rng* rng, const uqGslVectorClass& meanVec, const uqGslVectorClass& stdDevVec);
-  void         cwSetUniform        (const gsl_rng* rng, const uqGslVectorClass& aVec,    const uqGslVectorClass& bVec     );
-  void         cwInvert            ();
-  void         sort                ();
-  void         print               (std::ostream& os) const;
-  void         subWriteContents    (const std::string&            varNamePrefix,
-                                    const std::string&            fileName,
-                                    const std::set<unsigned int>& allowedSubEnvIds) const;
+  unsigned int sizeLocal        () const;
+  unsigned int sizeGlobal       () const;
+  double       norm2Sq          () const;
+  double       norm2            () const;
+  double       sumOfComponents  () const;
+  void         cwSet            (double value);
+  void         cwSetGaussian    (const gsl_rng* rng, double mean, double stdDev);
+  void         cwSetGaussian    (const gsl_rng* rng, const uqGslVectorClass& meanVec, const uqGslVectorClass& stdDevVec);
+  void         cwSetUniform     (const gsl_rng* rng, const uqGslVectorClass& aVec,    const uqGslVectorClass& bVec     );
+  void         cwSetInverseGamma(const gsl_rng* rng, const uqGslVectorClass& alpha,   const uqGslVectorClass& beta     );
+  void         cwSetConcatenated(const uqGslVectorClass& v1, const uqGslVectorClass& v2);
+  void         cwExtract        (unsigned int initialPos, uqGslVectorClass& vec) const;
+  void         cwInvert         ();
+  void         matlabDiff       (unsigned int firstPositionToStoreDiff, double valueForRemainderPosition, uqGslVectorClass& outputVec) const;
+  void         sort             ();
+  void         print            (std::ostream& os) const;
+  void         subWriteContents (const std::string&            varNamePrefix,
+                                 const std::string&            fileName,
+                                 const std::set<unsigned int>& allowedSubEnvIds) const;
 
   bool         atLeastOneComponentSmallerThan(const uqGslVectorClass& rhs) const;
   bool         atLeastOneComponentBiggerThan (const uqGslVectorClass& rhs) const;
-  gsl_vector*  data                          () const; // Necessary for uqGslMatrixClass::invertMultiply()
+
+  // Necessary for uqGslMatrixClass::invertMultiply() and uqGslMatrixClass::setRow/Column
+  gsl_vector*  data                          () const; 
+
+  double       getMaxValue      () const;
+  double       getMinValue      () const;
+  int          getMaxValueIndex () const;
+  int          getMinValueIndex () const;
+  void         getMaxValueAndIndex( double& value, int& index );
+  void         getMinValueAndIndex( double& value, int& index );
+
+  uqGslVectorClass abs() const;
 
 private:
 
-  void         copy           (const uqGslVectorClass& src);
+  void         copy             (const uqGslVectorClass& src);
 
   gsl_vector* m_vec;
 };

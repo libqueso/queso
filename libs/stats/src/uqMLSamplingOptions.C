@@ -87,7 +87,7 @@ uqMLSamplingOptionsClass::getMyOptionValues(po::options_description& optionsDesc
   if (m_env.allOptionsMap().count(m_option_help.c_str())) {
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << optionsDesc
-                             << std::endl;
+                              << std::endl;
     }
   }
 

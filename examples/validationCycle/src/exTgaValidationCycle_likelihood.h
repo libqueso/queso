@@ -428,7 +428,11 @@ likelihoodRoutine(
   env.subComm().Barrier();
   //env.syncPrintDebugMsg("Leaving likelihoodRoutine()",1,env.fullComm());
 
+#ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
+  return -.5*resultValue;
+#else
   return resultValue;
+#endif
 }
 
 #endif // __EX_TGA_VALIDATION_CYCLE_LIKELIHOOD_H__

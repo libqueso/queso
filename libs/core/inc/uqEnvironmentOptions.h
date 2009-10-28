@@ -80,7 +80,7 @@ private:
   std::string              m_option_numSubEnvironments;
   std::string              m_option_subDisplayFileName;
   std::string              m_option_subDisplayAllowAll;
-  std::string              m_option_subDisplayAllow;
+  std::string              m_option_subDisplayAllowedSet;
   std::string              m_option_displayVerbosity;
   std::string              m_option_syncVerbosity;
   std::string              m_option_seed;

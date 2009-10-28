@@ -108,7 +108,7 @@ extern unsigned long int gsl_rng_default_seed;
 <item> self = MPI_SELF_COMM, of size 1;
 <item> inter0 = communicator of size S formed by all MPI nodes that have 'sub' rank 0 in their respective 'sub' communicators.
 </list>
-    So, any given node has potentially five different ranks. Of course, if the user is solving just one statistical problem with just one MPI node, the all ranks are equal to zero.
+    So, any given node has potentially five different ranks. Of course, if the user is solving just one statistical problem with just one MPI node, then all ranks are equal to zero.
 */
 /*! -------------------------------------------------------------
 */
@@ -120,9 +120,9 @@ extern unsigned long int gsl_rng_default_seed;
     The "sub" sequences can be seen as forming a "unified" sequence in a distributed way.
     Indeed, the virtual class 'uqVectorSequenceClass' provides "sub" and "unified" statistical operations.
 
-    A QUESO "sub" environment eventually prints message to its own output file. In order for that to happen, the requirements are:
+    A QUESO "sub" environment eventually prints messages to its own output file. In order for that to happen, the requirements are:
 <list type=number>
-<item> option 'm_subDisplayFileName', a string, must be different than the defaul values ".";
+<item> option 'm_subDisplayFileName', a string, must be different than the default value ".";
 <item> option 'm_subDisplayAllowedSet', a set of sub ids, must contain the id of the sub environment wanting to write a message to the output file;
 <item> the previous requirement is automatically satisfied if the option 'm_subDisplayAllowAll', a boolean, is set to 1 (the default value is 0);
 <item> the processor wanting to write a message to the output file must have sub rank 0 (zero).

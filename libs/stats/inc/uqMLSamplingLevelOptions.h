@@ -45,6 +45,7 @@
 #define UQ_ML_SAMPLING_L_DATA_OUTPUT_ALLOW_ODV                      ""
 #define UQ_ML_SAMPLING_L_MIN_EFFECTIVE_SIZE_RATIO_ODV               0.49
 #define UQ_ML_SAMPLING_L_MAX_EFFECTIVE_SIZE_RATIO_ODV               0.51
+#define UQ_ML_SAMPLING_L_SCALE_COV_MATRIX_ODV                       1
 #define UQ_ML_SAMPLING_L_MIN_REJECTION_RATE_ODV                     0.24
 #define UQ_ML_SAMPLING_L_MAX_REJECTION_RATE_ODV                     0.40
 #define UQ_ML_SAMPLING_L_COV_REJECTION_RATE_ODV                     0.25
@@ -93,6 +94,7 @@ public:
   std::string                        m_str1;
   double                             m_minEffectiveSizeRatio;
   double                             m_maxEffectiveSizeRatio;
+  bool                               m_scaleCovMatrix;
   double                             m_minRejectionRate;
   double                             m_maxRejectionRate;
   double                             m_covRejectionRate;
@@ -145,6 +147,7 @@ private:
   std::string                   m_option_dataOutputAllowedSet;
   std::string                   m_option_minEffectiveSizeRatio;
   std::string                   m_option_maxEffectiveSizeRatio;
+  std::string                   m_option_scaleCovMatrix;
   std::string                   m_option_minRejectionRate;
   std::string                   m_option_maxRejectionRate;
   std::string                   m_option_covRejectionRate;

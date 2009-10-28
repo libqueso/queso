@@ -43,6 +43,7 @@
 #include <uqArrayOfSequences.h>
 #include <sys/time.h>
 #include <fstream>
+#include <boost/math/special_functions.hpp> // for Boost isnan. Note parantheses are important in function call.
 
 /*! A templated class that represents a Metropolis-Hastings generator of samples. 'SG' stands for 'Sequence Generator'.
  */
@@ -61,7 +62,7 @@ public:
  ~uqMetropolisHastingsSGClass();
 
   void   generateSequence           (uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
-                                     uqScalarSequenceClass<double>*      workingTargetValues,
+                                     uqScalarSequenceClass<double>*      workingLogLikelihoodValues,
                                      uqScalarSequenceClass<double>*      workingLogTargetValues);
   double rawChainRunTime            () const;
   unsigned int numRejections        () const;
@@ -75,7 +76,7 @@ private:
   void   generateFullChain        (const P_V&                                               valuesOf1stPosition,
                                          unsigned int                                       chainSize,
                                    uqBaseVectorSequenceClass<P_V,P_M>&                      workingChain,
-                                   uqScalarSequenceClass<double>*                           workingTargetValues,
+                                   uqScalarSequenceClass<double>*                           workingLogLikelihoodValues,
                                    uqScalarSequenceClass<double>*                           workingLogTargetValues);
   void   readFullChain            (const std::string&                                       inputFileName,
                                          unsigned int                                       chainSize,
@@ -341,7 +342,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
       (y.outOfTargetSupport() == false)) {
     if ((x.logTarget() == -INFINITY) ||
         (x.logTarget() ==  INFINITY) ||
-        (isnan(x.logTarget())      )) {
+        ( (boost::math::isnan)(x.logTarget())      )) {
       std::cerr << "WARNING In uqMetropolisHastingsSGClass<P_V,P_M>::alpha(x,y)"
                 << ", fullRank "        << m_env.fullRank()
                 << ", subEnvironment "  << m_env.subId()
@@ -356,7 +357,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
     }
     else if ((y.logTarget() == -INFINITY) ||
              (y.logTarget() ==  INFINITY) ||
-             (isnan(y.logTarget())      )) {
+             ( (boost::math::isnan)(y.logTarget())      )) {
       std::cerr << "WARNING In uqMetropolisHastingsSGClass<P_V,P_M>::alpha(x,y)"
                 << ", fullRank "        << m_env.fullRank()
                 << ", subEnvironment "  << m_env.subId()
@@ -387,7 +388,11 @@ uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
         }
       }
       else {
-        double qyx = -.5 * m_tk->rv(yStageId).pdf().minus2LnValue(x.vecValues(),NULL,NULL,NULL,NULL);
+#ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
+        double qyx = m_tk->rv(yStageId).pdf().lnValue(x.vecValues(),NULL,NULL,NULL,NULL);
+#else
+        double qyx = -.5 * m_tk->rv(yStageId).pdf().lnValue(x.vecValues(),NULL,NULL,NULL,NULL);
+#endif
         if ((m_env.subDisplayFile()          ) &&
             (m_env.displayVerbosity() >= 10  ) &&
             (m_options.m_totallyMute == false)) {
@@ -398,7 +403,11 @@ uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
                                  << ", rvYX.lawCovMatrix = " << pdfYX->lawCovMatrix()
                                  << std::endl;
         }
-        double qxy = -.5 * m_tk->rv(xStageId).pdf().minus2LnValue(y.vecValues(),NULL,NULL,NULL,NULL);
+#ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
+        double qxy = m_tk->rv(xStageId).pdf().lnValue(y.vecValues(),NULL,NULL,NULL,NULL);
+#else
+        double qxy = -.5 * m_tk->rv(xStageId).pdf().lnValue(y.vecValues(),NULL,NULL,NULL,NULL);
+#endif
         if ((m_env.subDisplayFile()          ) &&
             (m_env.displayVerbosity() >= 10  ) &&
             (m_options.m_totallyMute == false)) {
@@ -472,7 +481,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
 
   if ((inputPositionsData[0]->logTarget() == -INFINITY) ||
       (inputPositionsData[0]->logTarget() ==  INFINITY) ||
-      (isnan(inputPositionsData[0]->logTarget())      )) {
+      ( (boost::math::isnan)(inputPositionsData[0]->logTarget())      )) {
     std::cerr << "WARNING In uqMetropolisHastingsSGClass<P_V,P_M>::alpha(vec)"
               << ", fullRank "       << m_env.fullRank()
               << ", subEnvironment " << m_env.subId()
@@ -489,7 +498,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
   }
   else if ((inputPositionsData[inputSize - 1]->logTarget() == -INFINITY) ||
            (inputPositionsData[inputSize - 1]->logTarget() ==  INFINITY) ||
-           (isnan(inputPositionsData[inputSize - 1]->logTarget())      )) {
+           ( (boost::math::isnan)(inputPositionsData[inputSize - 1]->logTarget())      )) {
     std::cerr << "WARNING In uqMetropolisHastingsSGClass<P_V,P_M>::alpha(vec)"
               << ", fullRank "       << m_env.fullRank()
               << ", subEnvironment " << m_env.subId()
@@ -545,8 +554,13 @@ uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
   const P_V& _lastTKPosition         = m_tk->preComputingPosition(        tkStageIds[inputSize-1]);
   const P_V& _lastBackwardTKPosition = m_tk->preComputingPosition(backwardTKStageIds[inputSize-1]);
 
-  double numContrib = -.5 * m_tk->rv(backwardTKStageIdsLess1).pdf().minus2LnValue(_lastBackwardTKPosition,NULL,NULL,NULL,NULL);
-  double denContrib = -.5 * m_tk->rv(        tkStageIdsLess1).pdf().minus2LnValue(_lastTKPosition        ,NULL,NULL,NULL,NULL);
+#ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
+  double numContrib = m_tk->rv(backwardTKStageIdsLess1).pdf().lnValue(_lastBackwardTKPosition,NULL,NULL,NULL,NULL);
+  double denContrib = m_tk->rv(        tkStageIdsLess1).pdf().lnValue(_lastTKPosition        ,NULL,NULL,NULL,NULL);
+#else
+  double numContrib = -.5 * m_tk->rv(backwardTKStageIdsLess1).pdf().lnValue(_lastBackwardTKPosition,NULL,NULL,NULL,NULL);
+  double denContrib = -.5 * m_tk->rv(        tkStageIdsLess1).pdf().lnValue(_lastTKPosition        ,NULL,NULL,NULL,NULL);
+#endif
   if ((m_env.subDisplayFile()          ) &&
       (m_env.displayVerbosity() >= 10  ) &&
       (m_options.m_totallyMute == false)) {
@@ -573,8 +587,13 @@ uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
             tkStageIdsLess1.pop_back();
     backwardTKStageIdsLess1.pop_back();
 
-    numContrib = -.5 * m_tk->rv(backwardTKStageIdsLess1).pdf().minus2LnValue(lastBackwardTKPosition,NULL,NULL,NULL,NULL);
-    denContrib = -.5 * m_tk->rv(        tkStageIdsLess1).pdf().minus2LnValue(lastTKPosition        ,NULL,NULL,NULL,NULL);
+#ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
+    numContrib = m_tk->rv(backwardTKStageIdsLess1).pdf().lnValue(lastBackwardTKPosition,NULL,NULL,NULL,NULL);
+    denContrib = m_tk->rv(        tkStageIdsLess1).pdf().lnValue(lastTKPosition        ,NULL,NULL,NULL,NULL);
+#else
+    numContrib = -.5 * m_tk->rv(backwardTKStageIdsLess1).pdf().lnValue(lastBackwardTKPosition,NULL,NULL,NULL,NULL);
+    denContrib = -.5 * m_tk->rv(        tkStageIdsLess1).pdf().lnValue(lastTKPosition        ,NULL,NULL,NULL,NULL);
+#endif
     if ((m_env.subDisplayFile()          ) &&
         (m_env.displayVerbosity() >= 10  ) &&
         (m_options.m_totallyMute == false)) {

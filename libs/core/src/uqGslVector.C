@@ -344,11 +344,100 @@ uqGslVectorClass::cwSetUniform(const gsl_rng* rng, const uqGslVectorClass& aVec,
 }
 
 void
+uqGslVectorClass::cwSetInverseGamma(const gsl_rng* rng, const uqGslVectorClass& alpha, const uqGslVectorClass& beta)
+{
+  UQ_FATAL_TEST_MACRO(this->sizeLocal() != alpha.sizeLocal(),
+                      m_env.fullRank(),
+                      "uqGslVectorsClass::cwSetInverseGamma()",
+                      "incompatible alpha size");
+
+  UQ_FATAL_TEST_MACRO(this->sizeLocal() != beta.sizeLocal(),
+                      m_env.fullRank(),
+                      "uqGslVectorsClass::cwSetInverseGamma()",
+                      "incompatible beta size");
+
+  for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
+    (*this)[i] = 1./gsl_ran_gamma(rng,alpha[i],1./beta[i]);
+  }
+  return;
+}
+
+void
+uqGslVectorClass::cwSetConcatenated(const uqGslVectorClass& v1, const uqGslVectorClass& v2)
+{
+  UQ_FATAL_TEST_MACRO(this->sizeLocal() != v1.sizeLocal() + v2.sizeLocal(),
+                      m_env.fullRank(),
+                      "uqGslVectorsClass::cwSetConcatenated()",
+                      "incompatible vector sizes");
+
+  for (unsigned int i = 0; i < v1.sizeLocal(); ++i) {
+    (*this)[i] = v1[i];
+  }
+
+  for (unsigned int i = 0; i < v2.sizeLocal(); ++i) {
+    (*this)[v1.sizeLocal()+i] = v2[i];
+  }
+
+  return;
+}
+
+void
+uqGslVectorClass::cwExtract(unsigned int initialPos, uqGslVectorClass& vec) const
+{
+  UQ_FATAL_TEST_MACRO(initialPos >= this->sizeLocal(),
+                      m_env.fullRank(),
+                      "uqGslVectorsClass::cwExtract()",
+                      "invalid initialPos");
+
+  UQ_FATAL_TEST_MACRO((initialPos +vec.sizeLocal()) > this->sizeLocal(),
+                      m_env.fullRank(),
+                      "uqGslVectorsClass::cwExtract()",
+                      "invalid vec.sizeLocal()");
+
+  for (unsigned int i = 0; i < vec.sizeLocal(); ++i) {
+    vec[i] = (*this)[initialPos+i];
+  }
+
+  return;
+}
+
+void
 uqGslVectorClass::cwInvert()
 {
   unsigned int size = this->sizeLocal();
   for (unsigned int i = 0; i < size; ++i) {
     (*this)[i] = 1./(*this)[i];
+  }
+
+  return;
+}
+
+void
+uqGslVectorClass::matlabDiff(
+  unsigned int      firstPositionToStoreDiff,
+  double            valueForRemainderPosition,
+  uqGslVectorClass& outputVec) const
+{
+  unsigned int size = this->sizeLocal();
+
+  UQ_FATAL_TEST_MACRO(firstPositionToStoreDiff > 1,
+                      m_env.fullRank(),
+                      "uqGslVectorsClass::matlabDiff()",
+                      "invalid firstPositionToStoreDiff");
+
+  UQ_FATAL_TEST_MACRO(size != outputVec.sizeLocal(),
+                      m_env.fullRank(),
+                      "uqGslVectorsClass::matlabDiff()",
+                      "invalid size of outputVecs");
+
+  for (unsigned int i = 0; i < (size-1); ++i) {
+    outputVec[firstPositionToStoreDiff+i] = (*this)[i+1]-(*this)[i];
+  }
+  if (firstPositionToStoreDiff == 0) {
+    outputVec[size-1] = valueForRemainderPosition;
+  }
+  else {
+    outputVec[0] = valueForRemainderPosition;
   }
 
   return;
@@ -468,6 +557,72 @@ uqGslVectorClass::atLeastOneComponentBiggerThan (const uqGslVectorClass& rhs) co
   };
 
   return result;
+}
+
+double
+uqGslVectorClass::getMaxValue( ) const
+{
+  double max_value;
+
+  return max_value = gsl_vector_max( m_vec );
+}
+
+double
+uqGslVectorClass::getMinValue( ) const
+{
+  double min_value;
+
+  return min_value = gsl_vector_min( m_vec );
+}
+
+int
+uqGslVectorClass::getMaxValueIndex( ) const
+{
+  int max_value_index;
+
+  return max_value_index = gsl_vector_max_index( m_vec );
+}
+
+int
+uqGslVectorClass::getMinValueIndex( ) const
+{
+  int min_value_index;
+
+  return min_value_index = gsl_vector_min_index( m_vec );
+}
+
+void
+uqGslVectorClass::getMaxValueAndIndex( double& max_value, int& max_value_index )
+{
+  max_value = this->getMaxValue();
+  max_value_index = this->getMaxValueIndex();
+
+  return;
+}
+
+void
+uqGslVectorClass::getMinValueAndIndex( double& min_value, int& min_value_index )
+{
+  min_value = this->getMinValue();
+  min_value_index = this->getMinValueIndex();
+
+  return;
+}
+
+uqGslVectorClass
+uqGslVectorClass::abs() const
+{
+  uqGslVectorClass abs_of_this_vec( *this );
+
+  unsigned int size = abs_of_this_vec.sizeLocal();
+
+  for( unsigned int i = 0; i < size; ++i )
+    {
+      abs_of_this_vec[i] = std::fabs( (*this)[i] );
+    }
+
+  return abs_of_this_vec;
+
 }
 
 std::ostream&

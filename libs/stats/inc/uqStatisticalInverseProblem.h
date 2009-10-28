@@ -310,7 +310,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(
                                                        m_priorRv.pdf(),
                                                        m_likelihoodFunction,
                                                        1.,
-                                                      *m_solutionDomain);
+                                                       *m_solutionDomain);
 
   m_postRv.setPdf(*m_solutionPdf);
 
@@ -428,7 +428,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling()
                                                        m_priorRv.pdf(),
                                                        m_likelihoodFunction,
                                                        1.,
-                                                      *m_solutionDomain);
+                                                       *m_solutionDomain);
 
   m_postRv.setPdf(*m_solutionPdf);
 

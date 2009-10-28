@@ -34,7 +34,8 @@ libqueso_la_SOURCES += $(top_srcdir)/libs/core/src/uqGslVector.C \
 endif
 
 # (2/5) Sources from misc/src
-libqueso_la_SOURCES += $(top_srcdir)/libs/misc/src/uqComplexFft.C \
+libqueso_la_SOURCES += $(top_srcdir)/libs/misc/src/uq1D1DFunction.C \
+	$(top_srcdir)/libs/misc/src/uqComplexFft.C \
 	$(top_srcdir)/libs/misc/src/uqMiscellaneous.C \
 	$(top_srcdir)/libs/misc/src/uqRealFft.C
 

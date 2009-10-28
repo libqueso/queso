@@ -66,7 +66,8 @@ qoiRoutine(
 
   // Actual code
   //
-  // This code exemplifies multiple Monte Carlo solvers, each calling this qoi routine.
+  // This code exemplifies multiple Monte Carlo solvers, each calling this
+  // qoi routine.
   //
   // In this simple example, only node 0 in each subenvironment does the job
   // even though there might be more than one node per subenvironment.
@@ -74,6 +75,9 @@ qoiRoutine(
   // In a more realistic situation, if the user is asking for multiple nodes per
   // subenvironment, then the model code in the qoi and likelihood routines
   // might really demand more than one node.
+  //
+  // Here we use 'env.subRank()' only. A realistic application might want to use
+  // 'env.subComm()' or 'env.subComm().Comm()'
   const uqBaseEnvironmentClass& env = paramValues.env();
   if (env.subRank() == 0) {
     double coef1 = ((qoiRoutine_DataType *) functionDataPtr)->coef1;

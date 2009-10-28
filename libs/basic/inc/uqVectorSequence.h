@@ -207,9 +207,8 @@ public:
                                                                 unsigned int   &                         initialPos,
                                                                 unsigned int   &                         spacing);
 
-  virtual  void                     cwBrooksGelmanConvMeasures (unsigned int                             initialPos,
-                                                                unsigned int                             numPos,
-                                                                V&                                       convMeasureVec) const = 0;
+  virtual  double                   estimateConvBrooksGelman   (unsigned int                             initialPos,
+                                                                unsigned int                             numPos) const = 0;
 
 protected:
            void                     copy                       (const uqBaseVectorSequenceClass<V,M>&    src);
@@ -576,7 +575,13 @@ uqBaseVectorSequenceClass<V,M>::computeStatistics(
   // Set initial positions for the computation of chain statistics
   std::vector<unsigned int> initialPosForStatistics(statisticalOptions.initialDiscardedPortions().size(),0);
   for (unsigned int i = 0; i < initialPosForStatistics.size(); ++i) {
-    initialPosForStatistics[i] = (unsigned int) (statisticalOptions.initialDiscardedPortions()[i] * (double) this->subSequenceSize());
+    initialPosForStatistics[i] = (unsigned int) (statisticalOptions.initialDiscardedPortions()[i] * (double) (this->subSequenceSize()-1));
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "In uqBaseVectorSequenceClass<V,M>::computeStatistics()"
+                              << ": statisticalOptions.initialDiscardedPortions()[" << i << "] = " << statisticalOptions.initialDiscardedPortions()[i]
+                              << ", initialPosForStatistics[" << i << "] = " << initialPosForStatistics[i]
+                              << std::endl;
+    }
   }
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "In uqBaseVectorSequenceClass<V,M>::computeStatistics(): initial positions for statistics =";

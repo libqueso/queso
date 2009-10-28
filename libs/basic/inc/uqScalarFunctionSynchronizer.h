@@ -46,10 +46,12 @@ public:
                       const V* vecDirection,
                             V* gradVector,
                             M* hessianMatrix,
-                            V* hessianEffect) const;
+                            V* hessianEffect,
+                            double* extraOutput) const;
 private:
   const uqBaseEnvironmentClass&         m_env;
   const uqBaseScalarFunctionClass<V,M>& m_scalarFunction;
+  const uqBayesianJointPdfClass<V,M>*   m_bayesianJointPdfPtr;
   const V&                              m_auxVec;
 };
 
@@ -58,9 +60,10 @@ uqScalarFunctionSynchronizerClass<V,M>::uqScalarFunctionSynchronizerClass(
   const uqBaseScalarFunctionClass<V,M>& inputFunction,
   const V&                              auxVec)
   :
-  m_env           (inputFunction.domainSet().env()),
-  m_scalarFunction(inputFunction),
-  m_auxVec        (auxVec)
+  m_env                (inputFunction.domainSet().env()),
+  m_scalarFunction     (inputFunction),
+  m_bayesianJointPdfPtr(dynamic_cast<const uqBayesianJointPdfClass<V,M>* >(&m_scalarFunction)),
+  m_auxVec             (auxVec)
 {
 }
 
@@ -83,7 +86,8 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
   const V* vecDirection,
         V* gradVector,
         M* hessianMatrix,
-        V* hessianEffect) const
+        V* hessianEffect,
+        double* extraOutput) const
 {
   double result = 0.;
 
@@ -225,13 +229,18 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
           if (bufferChar[4] == '1') internalEffect  = new V(m_auxVec);
         }
 
-        m_env.syncPrintDebugMsg("In uqScalarFunctionSynchronizerClass<V,M>::callFunction(), just before actual minus2LnValue()",3,3000000,m_env.subComm());
+        m_env.syncPrintDebugMsg("In uqScalarFunctionSynchronizerClass<V,M>::callFunction(), just before actual lnValue()",3,3000000,m_env.subComm());
         m_env.subComm().Barrier();
-        result = m_scalarFunction.minus2LnValue(*internalValues,
-                                                internalDirection,
-                                                internalGrad,
-                                                internalHessian,
-                                                internalEffect);
+        result = m_scalarFunction.lnValue(*internalValues,
+                                          internalDirection,
+                                          internalGrad,
+                                          internalHessian,
+                                          internalEffect);
+        if (extraOutput) {
+          if (m_bayesianJointPdfPtr) {
+            *extraOutput = m_bayesianJointPdfPtr->lastComputedLogLikelihood();
+          }
+        }
       } // if (bufferChar[0] == '1')
 
       /////////////////////////////////////////////////
@@ -259,11 +268,16 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
                         "vecValues should not be NULL");
 
     m_env.subComm().Barrier();
-    result = m_scalarFunction.minus2LnValue(*vecValues,
-                                            vecDirection,
-                                            gradVector,
-                                            hessianMatrix,
-                                            hessianEffect);
+    result = m_scalarFunction.lnValue(*vecValues,
+                                      vecDirection,
+                                      gradVector,
+                                      hessianMatrix,
+                                      hessianEffect);
+    if (extraOutput) {
+      if (m_bayesianJointPdfPtr) {
+        *extraOutput = m_bayesianJointPdfPtr->lastComputedLogLikelihood();
+      }
+    }
   }
 
   return result;

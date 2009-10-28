@@ -1,5 +1,22 @@
 dnl Init autoconf w/ Package name, version number, and developer email
-AC_INIT([queso], [0.40.2], [pecos_dev@ices.utexas.edu])
+AC_INIT([queso], [0.41.0], [pecos_dev@ices.utexas.edu])
+
+dnl Set default CFLAGS & CXXFLAGS IF the user hasn't specified anything
+AC_MSG_CHECKING(if CFLAGS is set)
+if test "x$CFLAGS" = "x"; then
+   CFLAGS="-g -O2 -Wall"
+   AC_MSG_RESULT(no... setting to -g -O2 -Wall)
+else
+   AC_MSG_RESULT(yes)
+fi
+
+AC_MSG_CHECKING(if CXXFLAGS is set)
+if test "x$CXXFLAGS" = "x"; then
+   CXXFLAGS="-g -O2 -Wall"
+   AC_MSG_RESULT(no... setting to -g -O2 -Wall)
+else
+   AC_MSG_RESULT(yes)
+fi
 
 dnl configuration header
 AM_CONFIG_HEADER(config.h)
@@ -56,6 +73,19 @@ ACX_MPI([CC="$MPICC"], [AC_MSG_ERROR([Could not find MPI.])])
 
 AC_LANG([C++])
 ACX_MPI([CXX="$MPICXX"], [AC_MSG_ERROR([Could not find MPI.])])
+
+
+dnl Check for math libraries. Makes sure we are compatible for builds on Mac OS X.
+dnl Here we force the check to only include cmath OR math.h. Note that Trilinos
+dnl checks for both, and if both are present, will include both.
+dnl
+dnl Commenting out this check below until we decide how to move forward with
+dnl this stuff.
+dnl
+dnl AC_CHECK_HEADERS([cmath], [break],
+dnl			  [AC_CHECK_HEADERS( [math.h], [break], 
+dnl			  		     [AC_MSG_ERROR([Cannot find cmath or math.h. One or the other is required.])],[])
+dnl			  ], [] )
 
 dnl Check for trilinos\
 dnl TO DO: Add AM_CONDITIONAL here to determine whether to build trilinos versions of libs
@@ -126,6 +156,7 @@ AC_CONFIG_FILES([
         test/t01_valid_cycle/valid_cycle/Makefile
         test/t02_sip_sfp/sip_sfp/Makefile
         test/t03_sequence/sequence/Makefile
+        test/gsl_tests/Makefile
 ])
 
 

@@ -35,7 +35,7 @@
 
 #include <uqEnvironment.h>
 
-#define UQ_SEQUENCE_INITIAL_DISCARDED_PORTIONS_ODV   "100."
+#define UQ_SEQUENCE_INITIAL_DISCARDED_PORTIONS_ODV   "0."
 #define UQ_SEQUENCE_BMM_RUN_ODV                      0
 #define UQ_SEQUENCE_BMM_LENGTHS_ODV                  "0"
 #define UQ_SEQUENCE_BMM_DISPLAY_ODV                  0

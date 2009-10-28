@@ -11,13 +11,15 @@ SUBDIRS = libs \
 	test/t01_valid_cycle/valid_cycle \
 	test/t02_sip_sfp/sip_sfp \
 	test/t03_sequence/sequence \
-	test
+        test/gsl_tests \
+        test
 
 # Tools in the auxillary directory
 AUX_DIST = build-aux/install-sh    \
            build-aux/missing
 
-EXTRA_DIST = $(DX_CONFIG)
+EXTRA_DIST = $(DX_CONFIG) \
+	queso.page
 
 # Files to be deleted by 'make maintainer-clean'
 MAINTAINERCLEANFILES =     \

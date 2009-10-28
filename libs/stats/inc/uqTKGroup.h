@@ -619,12 +619,14 @@ uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position
     M* tmpCovMat  = m_vectorSpace->newMatrix();
     V* tmpGrad    = m_vectorSpace->newVector();
 
+    double logLikelihood = 0.;
     double logTarget = 0.;
     logTarget = m_targetPdfSynchronizer.callFunction(&position, // Might demand parallel environment
                                                      NULL,
                                                      tmpGrad,
                                                      tmpHessian,
-                                                     NULL);
+                                                     NULL,
+                                                     &logLikelihood);
 
     // IMPORTANT: covariance matrix = (Hessian)^{-1} !!!
     V unitVector(m_vectorSpace->zeroVector());

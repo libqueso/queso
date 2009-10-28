@@ -51,12 +51,16 @@ class uqScalarSequenceClass
 public:
   typedef typename std::vector<T>::iterator       seqScalarPositionIteratorTypedef;
   typedef typename std::vector<T>::const_iterator seqScalarPositionConstIteratorTypedef;
-  uqScalarSequenceClass(const uqBaseEnvironmentClass& env, unsigned int subSequenceSize);
+  uqScalarSequenceClass(const uqBaseEnvironmentClass& env,
+                              unsigned int subSequenceSize,
+                        const std::string& name);
  ~uqScalarSequenceClass();
 
   uqScalarSequenceClass<T>& operator= (const uqScalarSequenceClass<T>& rhs);
 
   const uqBaseEnvironmentClass& env               () const;
+  const std::string& name                         () const;
+        void         setName                      (const std::string& newName);
         void         clear                        ();
         unsigned int subSequenceSize              () const;
         unsigned int unifiedSequenceSize          () const;
@@ -82,6 +86,8 @@ public:
                                                    T&                              unifiedMaxDomainValue,
                                                    std::vector<T>&                 unifiedCdfValues) const;
 
+        T            subMax                       (unsigned int                    initialPos,
+                                                   unsigned int                    numPos) const;
         T            subMean                      (unsigned int                    initialPos,
                                                    unsigned int                    numPos) const;
         T            unifiedMean                  (bool                            useOnlyInter0Comm,
@@ -192,6 +198,8 @@ public:
         void         append                       (const uqScalarSequenceClass<T>& src,
                                                    unsigned int                    initialPos,
                                                    unsigned int                    numPos);
+
+        void         unifiedWriteContents         (const std::string&              fileName) const;
 private:
         void         copy                         (const uqScalarSequenceClass<T>& src);
         void         extractScalarSeq             (unsigned int                    initialPos,
@@ -209,16 +217,19 @@ private:
                                                    unsigned int                    treeLevel) const;
 
   const uqBaseEnvironmentClass& m_env;
+  std::string                   m_name;
   std::vector<T>                m_seq;
 };
 
 template <class T>
 uqScalarSequenceClass<T>::uqScalarSequenceClass(
   const uqBaseEnvironmentClass& env,
-        unsigned int            subSequenceSize)
+        unsigned int            subSequenceSize,
+  const std::string&            name)
   :
-  m_env(env),
-  m_seq(subSequenceSize,0.)
+  m_env (env),
+  m_name(name),
+  m_seq (subSequenceSize,0.)
 {
 }
 
@@ -239,6 +250,7 @@ template <class T>
 void
 uqScalarSequenceClass<T>::copy(const uqScalarSequenceClass<T>& src)
 {
+  m_name = src.m_name;
   m_seq.clear();
   m_seq.resize(src.subSequenceSize(),0.);
   for (unsigned int i = 0; i < m_seq.size(); ++i) {
@@ -351,6 +363,21 @@ const uqBaseEnvironmentClass&
 uqScalarSequenceClass<T>::env() const
 {
   return m_env;
+}
+
+template <class T>
+const std::string&
+uqScalarSequenceClass<T>::name() const
+{
+  return m_name;
+}
+
+template <class T>
+void
+uqScalarSequenceClass<T>::setName(const std::string& newName)
+{
+  m_name = newName;
+  return;
 }
 
 template <class T>
@@ -732,6 +759,29 @@ uqScalarSequenceClass<T>::unifiedUniformlySampledCdf(
   //m_env.fullComm().Barrier();
 
   return;
+}
+
+template <class T>
+T
+uqScalarSequenceClass<T>::subMax(
+  unsigned int initialPos,
+  unsigned int numPos) const
+{
+  bool bRC = ((initialPos          <  this->subSequenceSize()) &&
+              (0                   <  numPos                 ) &&
+              ((initialPos+numPos) <= this->subSequenceSize()));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.fullRank(),
+                      "uqScalarSequenceClass<T>::subMax()",
+                      "invalid input data");
+
+  unsigned int finalPosPlus1 = initialPos + numPos;
+  T tmpMax = m_seq[initialPos];
+  for (unsigned int j = initialPos; j < finalPosPlus1; ++j) {
+    if (tmpMax < m_seq[j]) tmpMax = m_seq[j];
+  }
+
+  return tmpMax;
 }
 
 template <class T>
@@ -1171,7 +1221,7 @@ uqScalarSequenceClass<T>::bmm(
                       "invalid input data");
 
   unsigned int numberOfBatches = (this->subSequenceSize() - initialPos)/batchLength;
-  uqScalarSequenceClass<T> batchMeans(m_env,numberOfBatches);
+  uqScalarSequenceClass<T> batchMeans(m_env,numberOfBatches,"");
 
   for (unsigned int batchId = 0; batchId < numberOfBatches; batchId++) {
     batchMeans[batchId] = this->subMean(initialPos + batchId*batchLength,
@@ -1339,7 +1389,7 @@ uqScalarSequenceClass<T>::geweke(
   double       ratioNb) const
 {
   double doubleFullDataSize = (double) (this->subSequenceSize() - initialPos);
-  uqScalarSequenceClass<T> tmpSeq(m_env,0);
+  uqScalarSequenceClass<T> tmpSeq(m_env,0,"");
   std::vector<double> psdResult(0,0.);
 
   unsigned int dataSizeA       = (unsigned int) (doubleFullDataSize * ratioNa);
@@ -1979,7 +2029,7 @@ uqScalarSequenceClass<T>::subInterQuantileRange(unsigned int initialPos) const
                       "uqScalarSequenceClass<T>::subInterQuantileRange()",
                       "'initialPos' is too big");
 
-  uqScalarSequenceClass sortedSequence(m_env,0);
+  uqScalarSequenceClass sortedSequence(m_env,0,"");
   this->subSort(initialPos,
                 sortedSequence);
 
@@ -2106,7 +2156,7 @@ uqScalarSequenceClass<T>::unifiedInterQuantileRange(
     if (m_env.inter0Rank() >= 0) {
       m_env.syncPrintDebugMsg("In uqScalarSequenceClass<T>::unifiedInterQuantileRange(), beginning logic",3,3000000,m_env.inter0Comm());
 
-      uqScalarSequenceClass unifiedSortedSequence(m_env,0);
+      uqScalarSequenceClass unifiedSortedSequence(m_env,0,"");
       this->unifiedSort(useOnlyInter0Comm,
                         initialPos,
                         unifiedSortedSequence);
@@ -2554,6 +2604,75 @@ uqScalarSequenceClass<T>::unifiedCompute2dGaussianKDE(
   }
 
   //m_env.fullComm().Barrier();
+
+  return;
+}
+
+template <class T>
+void
+uqScalarSequenceClass<T>::unifiedWriteContents(const std::string& fileName) const
+{
+  m_env.fullComm().Barrier();
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+    *m_env.subDisplayFile() << "Entering uqScalarSequenceClass<T>::unifiedWriteContents()"
+                            << ": fullRank "       << m_env.fullRank()
+                            << ", subEnvironment " << m_env.subId()
+                            << ", subRank "        << m_env.subRank()
+                            << ", inter0Rank "     << m_env.inter0Rank()
+                            << ", m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc()
+                            << ", fileName = "     << fileName
+                            << std::endl;
+  }
+
+  if (m_env.inter0Rank() >= 0) {
+    for (unsigned int r = 0; r < (unsigned int) m_env.inter0Comm().NumProc(); ++r) {
+      if (m_env.inter0Rank() == (int) r) {
+        // My turn
+        std::ofstream* unifiedOfsVar = NULL;
+        // bool writeOver = (r == 0);
+        bool writeOver = false; // A 'true' causes problems when the user chooses (via options
+                                // in the input file) to use just one file for all outputs.
+        m_env.openUnifiedOutputFile(fileName,
+                                    UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                                    writeOver,
+                                    unifiedOfsVar);
+
+        if (r == 0) {
+          *unifiedOfsVar << m_name << "_unified" << " = zeros(" << this->subSequenceSize()*m_env.inter0Comm().NumProc()
+                         << ","                                 << 1
+                         << ");"
+                         << std::endl;
+          *unifiedOfsVar << m_name << "_unified" << " = [";
+        }
+
+        unsigned int chainSize = this->subSequenceSize();
+        for (unsigned int j = 0; j < chainSize; ++j) {
+          *unifiedOfsVar << m_seq[j]
+                         << std::endl;
+        }
+
+        unifiedOfsVar->close();
+      }
+      m_env.inter0Comm().Barrier();
+    }
+
+    if (m_env.inter0Rank() == 0) {
+      std::ofstream* unifiedOfsVar = NULL;
+      m_env.openUnifiedOutputFile(fileName,
+                                  UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                                  false, // Yes, 'writeOver = false' in order to close the array for matlab
+                                  unifiedOfsVar);
+      *unifiedOfsVar << "];\n";
+      unifiedOfsVar->close();
+    }
+  }
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+    *m_env.subDisplayFile() << "Leaving uqScalarSequenceClass<T>::unifiedWriteContents()"
+                            << ", fileName = " << fileName
+                            << std::endl;
+  }
+  m_env.fullComm().Barrier();
 
   return;
 }

@@ -46,9 +46,9 @@
 // Version "0.4.0"  on "Jul/22/2009"
 // Version "0.4.1"  on "Sep/08/2009"
 // Version "0.40.2" on "Sep/10/2009"
-// Version "0.50.0" on "MMM/DD/2009"
-#define QUESO_LIBRARY_CURRENT_VERSION "0.40.2"
-#define QUESO_LIBRARY_RELEASE_DATE    "Sep/10/2009"
+// Version "0.41.1" on "Oct/30/2009"
+#define QUESO_LIBRARY_CURRENT_VERSION "0.41.0"
+#define QUESO_LIBRARY_RELEASE_DATE    "Oct/30/2009"
 
 //*****************************************************
 // Base class
@@ -93,6 +93,30 @@ uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
   //                          << std::endl;
   //}
 
+
+  struct timeval timevalNow;
+  /*int iRC = 0;*/
+  /*iRC = */gettimeofday(&timevalNow, NULL);
+
+  if( this->displayVerbosity() > 0 )
+    {
+
+      if (m_subDisplayFile) {
+	*m_subDisplayFile << "Ending run at "    << ctime(&timevalNow.tv_sec)
+			  << "Total run time = " << timevalNow.tv_sec - m_timevalBegin.tv_sec
+			  << " seconds"
+			  << std::endl;
+      }
+
+      if (m_fullRank == 0) {
+	std::cout << "Ending run at "    << ctime(&timevalNow.tv_sec)
+		  << "Total run time = " << timevalNow.tv_sec - m_timevalBegin.tv_sec
+		  << " seconds"
+		  << std::endl;
+      }
+
+    }
+
   if (m_options) delete m_options;
 
   if (m_allOptionsMap) {
@@ -101,24 +125,6 @@ uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
   }
 
   if (m_rng) gsl_rng_free(m_rng);
-
-  struct timeval timevalNow;
-  /*int iRC = 0;*/
-  /*iRC = */gettimeofday(&timevalNow, NULL);
-
-  if (m_subDisplayFile) {
-    *m_subDisplayFile << "Ending run at "    << ctime(&timevalNow.tv_sec)
-                      << "Total run time = " << timevalNow.tv_sec - m_timevalBegin.tv_sec
-                      << " seconds"
-                      << std::endl;
-  }
-
-  if (m_fullRank == 0) {
-    std::cout << "Ending run at "    << ctime(&timevalNow.tv_sec)
-              << "Total run time = " << timevalNow.tv_sec - m_timevalBegin.tv_sec
-              << " seconds"
-              << std::endl;
-  }
 
   //if (m_subDisplayFile) {
   //  *m_subDisplayFile << "Leaving uqBaseEnvironmentClass::destructor()"
@@ -504,27 +510,6 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
                       "failed MPI_Comm_group()");
 
   //////////////////////////////////////////////////
-  // Display main initial messages
-  // 'std::cout' is for: main trace messages + synchronized trace messages + error messages prior to 'exit()' or 'abort()'
-  //////////////////////////////////////////////////
-  /*int iRC = 0;*/
-  /*iRC = */gettimeofday(&m_timevalBegin, NULL);
-
-  if (m_fullRank == 0) {
-    std::cout << "\n======================================================="
-              << "\n QUESO library, version " << QUESO_LIBRARY_CURRENT_VERSION
-              << ", released on "             << QUESO_LIBRARY_RELEASE_DATE
-              << "\n======================================================="
-              << "\n"
-              << std::endl;
-  }
-
-  if (m_fullRank == 0) {
-    std::cout << "Beginning run at " << ctime(&m_timevalBegin.tv_sec)
-              << std::endl;
-  }
-
-  //////////////////////////////////////////////////
   // Read options
   //////////////////////////////////////////////////
   m_allOptionsMap  = new po::variables_map();
@@ -534,6 +519,36 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   readOptionsInputFile();
 
   m_options->scanOptionsValues();
+
+  // Only display these messages if the user wants them
+  // NOTE: This got moved below the Read Options section
+  // because we need the options to be read to know what
+  // the verbosity level is.
+  if( this->displayVerbosity() > 0 )
+    {
+
+      //////////////////////////////////////////////////
+      // Display main initial messages
+      // 'std::cout' is for: main trace messages + synchronized trace messages + error messages prior to 'exit()' or 'abort()'
+      //////////////////////////////////////////////////
+      /*int iRC = 0;*/
+      /*iRC = */gettimeofday(&m_timevalBegin, NULL);
+      
+      if (m_fullRank == 0) {
+	std::cout << "\n======================================================="
+		  << "\n QUESO library, version " << QUESO_LIBRARY_CURRENT_VERSION
+		  << ", released on "             << QUESO_LIBRARY_RELEASE_DATE
+		  << "\n======================================================="
+		  << "\n"
+		  << std::endl;
+      }
+      
+      if (m_fullRank == 0) {
+	std::cout << "Beginning run at " << ctime(&m_timevalBegin.tv_sec)
+		  << std::endl;
+      }
+      
+    }
 
   //////////////////////////////////////////////////
   // Deal with multiple subEnvironments: create the sub communicators, one for each subEnvironment
@@ -719,72 +734,6 @@ uqFullEnvironmentClass::~uqFullEnvironmentClass()
 void
 uqFullEnvironmentClass::readOptionsInputFile()
 {
-#if 0
-
-  bool displayHelpMessageAndExit = false;
-  bool invalidCmdLineParameters  = false;
-  int maxArgIndex = m_argc - 1;
-  int curArgIndex = 1;
-
-  if (curArgIndex > maxArgIndex) {
-    invalidCmdLineParameters = true;
-  }
-  else while (curArgIndex <= maxArgIndex) {
-    if ((strcmp(m_argv[curArgIndex],"-h"    ) == 0) ||
-        (strcmp(m_argv[curArgIndex],"--help") == 0)) {
-      displayHelpMessageAndExit = true;
-    }
-    else if ((strcmp(m_argv[curArgIndex],"-i"     ) == 0) ||
-             (strcmp(m_argv[curArgIndex],"--input") == 0)) {
-      curArgIndex++;
-      if (curArgIndex > maxArgIndex) {
-        invalidCmdLineParameters = true;
-        break;
-      }
-      m_optionsInputFileName = std::string(m_argv[curArgIndex]);
-      std::ifstream* ifs = new std::ifstream(m_optionsInputFileName.c_str());
-      if (ifs->is_open()) {
-        m_thereIsInputFile = true;
-        //if (m_subDisplayFile) {
-        //  int numLines = std::count(std::istreambuf_iterator<char>(*ifs),
-        //                            std::istreambuf_iterator<char>(),'\n');
-        //  *m_subDisplayFile << "Input file has " << numLines
-        //                          << " lines."
-        //                          << std::endl;
-        //}
-        ifs->close();
-        delete ifs;
-      }
-      else {
-        invalidCmdLineParameters = true;
-      }
-    }
-    //else {
-    //  invalidCmdLineParameters = true;
-    //}
-    curArgIndex++;
-  }
-
-  if (invalidCmdLineParameters) {
-    if (m_fullRank == 0) std::cout << "Invalid command line parameters!"
-                                    << std::endl;
-    displayHelpMessageAndExit = true;
-  }
-
-  if (displayHelpMessageAndExit) {
-    if (m_fullRank == 0) std::cout << "\nThis is a help message of the QUESO library."
-                                   << "\nAn application using the QUESO library shall be executed by typing"
-                                   << "\n  '<eventual mpi commands and options> <uqApplication> -i <uqInputFile>'"
-                                   << "\nin the command line."
-                                   << "\n"
-                                   << std::endl;
-    /*int mpiRC = 0;*/
-    /*mpiRC = */MPI_Abort(m_fullComm->Comm(),-999);
-    exit(1);
-  }
-
-#else
-
   std::ifstream* ifs = new std::ifstream(m_optionsInputFileName.c_str());
   if (ifs->is_open()) {
     ifs->close();
@@ -805,7 +754,6 @@ uqFullEnvironmentClass::readOptionsInputFile()
     exit(1);
   }
 
-#endif
   return;
 }
 
