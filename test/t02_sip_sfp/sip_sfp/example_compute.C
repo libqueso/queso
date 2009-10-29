@@ -54,12 +54,12 @@ void compute(const uqFullEnvironmentClass& env) {
   uqGslVectorClass meanVector(paramSpace.zeroVector());
   meanVector[0] = -1;
   meanVector[1] =  2;
-  uqGslMatrixClass* covMatrix = paramSpace.newMatrix();
-  (*covMatrix)(0,0) = 4.; (*covMatrix)(0,1) = 0.;
-  (*covMatrix)(1,0) = 0.; (*covMatrix)(1,1) = 1.;
+  uqGslMatrixClass covMatrix(paramSpace.zeroVector());
+  covMatrix(0,0) = 4.; covMatrix(0,1) = 0.;
+  covMatrix(1,0) = 0.; covMatrix(1,1) = 1.;
   likelihoodRoutine_DataType likelihoodRoutine_Data;
   likelihoodRoutine_Data.meanVector = &meanVector;
-  likelihoodRoutine_Data.covMatrix  = covMatrix;
+  likelihoodRoutine_Data.covMatrix  = &covMatrix;
   uqGenericScalarFunctionClass<uqGslVectorClass,uqGslMatrixClass>
     likelihoodFunctionObj("like_",
                           paramDomain,
@@ -79,10 +79,10 @@ void compute(const uqFullEnvironmentClass& env) {
   uqGslVectorClass paramInitials(paramSpace.zeroVector());
   paramInitials[0] = 0.1;
   paramInitials[1] = -1.4;
-  uqGslMatrixClass* proposalCovMatrix = paramSpace.newMatrix();
-  (*proposalCovMatrix)(0,0) = 8.; (*proposalCovMatrix)(0,1) = 4.;
-  (*proposalCovMatrix)(1,0) = 4.; (*proposalCovMatrix)(1,1) = 16.;
-  ip.solveWithBayesMetropolisHastings(paramInitials, proposalCovMatrix);
+  uqGslMatrixClass proposalCovMatrix(paramSpace.zeroVector());
+  proposalCovMatrix(0,0) = 8.; proposalCovMatrix(0,1) = 4.;
+  proposalCovMatrix(1,0) = 4.; proposalCovMatrix(1,1) = 16.;
+  ip.solveWithBayesMetropolisHastings(paramInitials, &proposalCovMatrix);
 
   // Step 6 of 9: Instantiate the qoi space
   uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass>
@@ -109,10 +109,6 @@ void compute(const uqFullEnvironmentClass& env) {
 
   // Step 9 of 9: Solve the forward problem
   fp.solveWithMonteCarlo();
-
-  // Return
-  delete proposalCovMatrix;
-  delete covMatrix;
 
   return;
 }
