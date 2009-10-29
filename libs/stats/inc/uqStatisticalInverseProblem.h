@@ -59,7 +59,7 @@
 </list>
     Let '\pi(.)' denote the mathematical likelihood function and 'x' denote a vector of parameters.
     The likelihood function object stores the routine that computes \pi(x) and whatever data necessary by such routine.
-    The routine in the likelihood function object can compute either the actual value \pi(x) or the value -2*ln[\pi(x)].
+    The routine in the likelihood function object can compute either the actual value \pi(x) or the value ln[\pi(x)].
     The constructor of the 'scalar function' asks for the user to specify which value the routine is actually computing,
     so that the 'scalar function' class can properly implement both class operations 'actualValue()' and 'minus2LnValue()'.
     See files 'libs/basic/inc/uqScalarFunction.h' and 'libs/stats/inc/uqJointPdf.h' for more details.

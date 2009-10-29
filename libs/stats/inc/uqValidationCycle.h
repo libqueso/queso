@@ -198,7 +198,7 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateCalIP(
   // Calibration stage: Prior vector rv
   m_calPriorRv = &priorRv;
 
-  // Calibration stage: Likelihood function object (e.g., -2*ln[likelihood])
+  // Calibration stage: Likelihood function object (e.g., ln[likelihood])
   m_calLikelihoodFunctionObj = &likelihoodFunctionObj;
 
   // Calibration stage: Posterior vector rv
@@ -285,7 +285,7 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateValIP(const uqBaseScalarFunc
 {
   // Validation stage: Prior vector rv = posterior vector rv from calibration stage
 
-  // Validation stage: Likelihood function object (e.g., -2*ln[likelihood])
+  // Validation stage: Likelihood function object (e.g., ln[likelihood])
   m_valLikelihoodFunctionObj = &likelihoodFunctionObj;
 
   // Validation stage: Posterior vector rv
