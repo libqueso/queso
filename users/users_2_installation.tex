@@ -56,17 +56,17 @@ setenv LD_LIBRARY_PATH \$LD_LIBRARY_PATH:
 \item cd /home/johndoe
 \item mkdir queso\_download
 \item cd /home/johndoe/queso\_download
-\item mv $<$ORIGINAL\_LOCATION$>$queso-0.4.1.tar.gz .
-\item tar -zxvf queso-0.4.1.tar
+\item mv $<$ORIGINAL\_LOCATION$>$queso-0.41.0.tar.gz .
+\item tar -zxvf queso-0.41.0.tar
 \end{itemize}
 }
 \item {configure the QUESO building environment: % item 4
 \begin{itemize}
-\item cd /home/johndoe/queso\_download/queso-0.4.1
-\item ./bootstrap
+\item cd /home/johndoe/queso\_download/queso-0.41.0
+%\item ./bootstrap
 \item {
 \begin{verbatim}
-./configure --prefix=/home/johndoe/Installations/queso_0_4_1_gnu \
+./configure --prefix=/home/johndoe/Installations/queso_0_41_0_gnu \
   --with-trilinos=/home/johndoe/Installations/trilinos_9_0_2 \
   --with-boost=/home/johndoe/Installations/boost_1_37_0 \
   --with-gsl-prefix=/home/johndoe/Installations/gsl_1_12 \
@@ -75,7 +75,7 @@ setenv LD_LIBRARY_PATH \$LD_LIBRARY_PATH:
 \end{verbatim}
 }
 \item if you want to see the full list of configure options, just run ``./configure --help''
-\item note: the directory '/home/johndoe/Installations/queso\_0\_4\_1\_gnu' does not need to exist in advance, since it will be created in step 7.
+\item note: the directory '/home/johndoe/Installations/queso\_0\_41\_0\_gnu' does not need to exist in advance, since it will be created in step 7.
 \end{itemize}
 }
 \item {compile the QUESO source code (library, examples and tests): % item 5
@@ -95,8 +95,8 @@ setenv LD_LIBRARY_PATH \$LD_LIBRARY_PATH:
 }
 \item {create the documentation in html format: % item 8
 \begin{itemize}
-\item make html
-\item firefox doxygen-doc/html/index.html
+\item make docs
+\item firefox docs/html/index.html
 \end{itemize}
 }
 \end{enumerate}
@@ -123,7 +123,7 @@ setenv LD_LIBRARY_PATH \$LD_LIBRARY_PATH:
 %%
 %\begin{verbatim}
 %cd <WORK_DIR>
-%tar -zxvf queso_0.4.1.tar.gz (FIX ME: check tarball name)
+%tar -zxvf queso_0.41.0.tar.gz (FIX ME: check tarball name)
 %\end{verbatim}
 %%
 
@@ -134,13 +134,13 @@ setenv LD_LIBRARY_PATH \$LD_LIBRARY_PATH:
 %obtained the source from the subversion repository,
 %%
 %\begin{verbatim}
-%cd <WORK_DIR>/branches/0.4.1
+%cd <WORK_DIR>/branches/0.41.0
 %\end{verbatim}
 %%
 %If you downloaded the source from ?? and unpacked the tarball,
 %%
 %\begin{verbatim}
-%cd <WORK_DIR>/queso_0.4.1
+%cd <WORK_DIR>/queso_0.41.0
 %\end{verbatim}
 %%
 
@@ -199,28 +199,30 @@ information about them can be obtained with the html documentation from step 8 a
 \item 'libs/interface/'.
 \end{itemize}
 }
-\item {'examples', with three subdirectories:
+\item {'examples', with four subdirectories:
 \begin{itemize}
 \item 'examples/statisticalForwardProblem/',
-\item 'examples/statisticalInverseProblem1/', and
-\item 'examples/validationCycle/'.
+\item 'examples/statisticalInverseProblem1/',
+\item 'examples/validationCycle/', and
+\item 'examples/validationCycle2/'.
 \end{itemize}
 }
-\item {'test', with three subdirectories:
+\item {'test', with four subdirectories:
 \begin{itemize}
 \item 'test/t01\_valid\_cycle/',
-\item 'test/t02\_sip\_sfp/', and
-\item 'test/t03\_sequence/'.
+\item 'test/t02\_sip\_sfp/',
+\item 'test/t03\_sequence/', and
+\item 'text/gsl\_tests'.
 \end{itemize}
 }
 \end{itemize}
 
-The two executables under 'test/t02\_sip\_sfp/', and 'test/t03\_sequence/'
+The executables under 'examples/validationCycle2/', 'test/t02\_sip\_sfp/', 'test/t03\_sequence/' and 'test/gsl\_tests/'
 have the majority of their codes in *.C files.
 They might then be easier to understand than
-the four exectuables in 'examples' and 'test/t01\_valid\_cycle', which
+the other exectuables in 'examples' and 'test/t01\_valid\_cycle', which
 have the majority of their codes in *.h files, with templated routines.
-It should be clear, though, that all six executables might be implemented in either *.h or *.C files.
+It should be clear, though, that all executables might be implemented in either *.h or *.C files.
 It is a matter of how generic you want your application to be.
 
 \section{Checking the Compiled Source} \label{sc-checks}
@@ -248,7 +250,7 @@ print messages during execution to make it clearer what is going on.
 
 Just run the following commands:
 \begin{itemize}
-\item cd /home/johndoe/queso\_download/queso-0.4.1/
+\item cd /home/johndoe/queso\_download/queso-0.41.0/
 \item cd examples/statisticalInverseProblem1/tests/test\_2009\_02\_03/
 \item rm outputData/*
 \item ../../src/exStatisticalInverseProblem1\_gsl sip.inp [this will take some seconds]
@@ -263,7 +265,7 @@ Just run the following commands:
 
 Just run the following commands:
 \begin{itemize}
-\item cd /home/johndoe/queso\_download/queso-0.4.1/
+\item cd /home/johndoe/queso\_download/queso-0.41.0/
 \item cd examples/statisticalForwardProblem1/tests/test\_2009\_02\_11/
 \item rm outputData/*
 \item ../../src/exStatisticalForwardProblem1\_gsl sfp.inp [this will take some seconds]
@@ -282,7 +284,7 @@ Just run the following commands:
 
 Just run the following commands:
 \begin{itemize}
-\item cd /home/johndoe/queso\_download/queso-0.4.1/
+\item cd /home/johndoe/queso\_download/queso-0.41.0/
 \item cd test/t02\_sip\_sfp/sip\_sfp/
 \item rm outputData/*
 \item ./SipSfpExample\_gsl example.inp [this will take some seconds]
@@ -313,13 +315,13 @@ The QUESO installed directory contains three main directories:
 Prepare your environment by running
 \begin{verbatim}
 setenv LD_LIBRARY_PATH \$LD_LIBRARY_PATH:
-       /home/johndoe/Installations/queso_0_4_1_gnu/lib
+       /home/johndoe/Installations/queso_0_41_0_gnu/lib
 \end{verbatim}
 
 An example Makefile is given below:
 \begin{verbatim}
 # BEGIN OF MAKEFILE
-QUESO_DIR = /home/johndoe/Installations/queso_0_4_1_gnu/
+QUESO_DIR = /home/johndoe/Installations/queso_0_41_0_gnu/
 TRILINOS_DIR = /home/johndoe/Installations/trilinos_9_0_2/
 BOOST_DIR = /home/johndoe/Installations/boost_1_37_0/
 GSL_DIR = /home/johndoe/Installations/gsl_1_12/
