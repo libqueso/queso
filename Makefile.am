@@ -12,14 +12,14 @@ SUBDIRS = libs \
 	test/t02_sip_sfp/sip_sfp \
 	test/t03_sequence/sequence \
         test/gsl_tests \
-        test
+        test \
+	doxygen
 
 # Tools in the auxillary directory
 AUX_DIST = build-aux/install-sh    \
            build-aux/missing
 
-EXTRA_DIST = $(DX_CONFIG) \
-	queso.page
+EXTRA_DIST = $(DX_CONFIG)
 
 # Files to be deleted by 'make maintainer-clean'
 MAINTAINERCLEANFILES =     \
@@ -57,7 +57,8 @@ MAINTAINERCLEANFILES =     \
 	examples/pyramid/src/physics_1_2/Makefile.in \
 	examples/pyramid/src/physics_2/Makefile.in \
 	examples/tga/Makefile.in \
-	examples/tga/src/Makefile.in
+	examples/tga/src/Makefile.in \
+	doxygen/Makefile.in
 
 MOSTLYCLEANFILES = $(DX_CLEANFILES)
 
