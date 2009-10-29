@@ -96,12 +96,17 @@ uqMLSamplingClass<P_V,P_M>::uqMLSamplingClass(
   m_env               (priorRv.env()),
   m_priorRv           (priorRv),
   m_likelihoodFunction(likelihoodFunction),
-  m_vectorSpace       (m_priorRv.imageSet().vectorSpace()),
+  m_vectorSpace       (m_priorRv.imageSet().vectorSpace())
 {
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering uqMLSamplingClass<P_V,P_M>::constructor()"
                             << std::endl;
   }
+
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::constructor()",
+                      "under development yet");
 
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Leaving uqMLSamplingClass<P_V,P_M>::constructor()"
@@ -112,6 +117,10 @@ uqMLSamplingClass<P_V,P_M>::uqMLSamplingClass(
 template<class P_V,class P_M>
 uqMLSamplingClass<P_V,P_M>::~uqMLSamplingClass()
 {
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::destructor()",
+                      "under development yet");
 }
 
 template <class P_V,class P_M>
@@ -125,6 +134,11 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     *m_env.subDisplayFile() << "Entering uqMLSamplingClass<P_V,P_M>::generateSequence()..."
                             << std::endl;
   }
+
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                      "under development yet");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "Leaving uqMLSamplingClass<P_V,P_M>::generateSequence()"
