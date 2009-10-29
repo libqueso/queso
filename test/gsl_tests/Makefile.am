@@ -38,7 +38,7 @@ TESTS             = init.sh \
                     inverse_power_method \
 		    finalize.sh
 
-EXTRA_DIST = init.sh finalize.sh
+EXTRA_DIST = init.sh finalize.sh input
 
 # Required for AX_AM_MACROS
 @INC_AMINCLUDE@
