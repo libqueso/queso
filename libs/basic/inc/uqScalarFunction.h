@@ -165,7 +165,11 @@ uqGenericScalarFunctionClass<V,M>::lnValue(const V& domainVector, const V* domai
 
   double value = m_valueRoutinePtr(domainVector, domainDirection, m_routinesDataPtr, gradVector, hessianMatrix, hessianEffect);
   if (m_routineIsForLn == false) {
+#ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
+    value = log(value);
+#else
     value = -2.*log(value);
+#endif
     UQ_FATAL_TEST_MACRO((domainDirection != NULL) ||
                         (gradVector      != NULL) ||
                         (hessianMatrix   != NULL) ||

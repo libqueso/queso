@@ -257,7 +257,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
                                                                          *m_paramDomain,
                                                                          exPhysics1LikelihoodRoutine<P_V,P_M>,
                                                                          (void *) &m_calLikelihoodInfoVector,
-                                                                         true); // the routine computes [-2.*ln(function)]
+                                                                         true); // the routine computes [ln(function)]
 
   m_cycle->instantiateCalIP(*m_calPriorRv,
                             *m_calLikelihoodFunctionObj);
@@ -315,7 +315,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
                                                                          *m_paramDomain,
                                                                          exPhysics1LikelihoodRoutine<P_V,P_M>,
                                                                          (void *) &m_valLikelihoodInfoVector,
-                                                                         true); // the routine computes [-2.*ln(function)]
+                                                                         true); // the routine computes [ln(function)]
 
   m_cycle->instantiateValIP(*m_valLikelihoodFunctionObj);
 

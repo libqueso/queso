@@ -130,7 +130,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                                                  paramDomain,
                                                                  likelihoodRoutine<P_V,P_M>,
                                                                  (void *) &calLikelihoodRoutine_Data,
-                                                                 true); // the routine computes [-2.*ln(function)]
+                                                                 true); // the routine computes [ln(function)]
 
   // Inverse problem: instantiate it (posterior rv is instantiated internally)
   cycle.instantiateCalIP(calPriorRv,
@@ -198,7 +198,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                                                  paramDomain,
                                                                  likelihoodRoutine<P_V,P_M>,
                                                                  (void *) &valLikelihoodRoutine_Data,
-                                                                 true); // the routine computes [-2.*ln(function)]
+                                                                 true); // the routine computes [ln(function)]
 
   // Inverse problem: instantiate it (posterior rv is instantiated internally)
   cycle.instantiateValIP(valLikelihoodFunctionObj);

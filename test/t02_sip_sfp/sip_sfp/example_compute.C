@@ -65,7 +65,7 @@ void compute(const uqFullEnvironmentClass& env) {
                           paramDomain,
                           likelihoodRoutine,
                           (void *) &likelihoodRoutine_Data,
-                          true); // routine computes [-2.*ln(function)]
+                          true); // routine computes [ln(function)]
 
   // Step 4 of 9: Instantiate the inverse problem
   uqUniformVectorRVClass<uqGslVectorClass,uqGslMatrixClass>
@@ -94,7 +94,7 @@ void compute(const uqFullEnvironmentClass& env) {
   qoiRoutine_Data.coef2 = 1.;
   uqGenericVectorFunctionClass<uqGslVectorClass,uqGslMatrixClass,
                                uqGslVectorClass,uqGslMatrixClass>
-    qoiFunctionObj("like_",
+    qoiFunctionObj("qoi_",
                    paramDomain,
                    qoiSpace,
                    qoiRoutine,

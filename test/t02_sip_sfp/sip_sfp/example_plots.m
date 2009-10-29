@@ -69,7 +69,7 @@ waitforbuttonpress;
 clf;
 
 plot(fp_mc_QoiSeq_unifGkdePosits_sub0(1,:),fp_mc_QoiSeq_unifGkdeValues_sub0(1,:),'-b','linewidth',2);
-ylabel('Posterior marginal pdf','fontsize',20);
+ylabel('Pdf','fontsize',20);
 xlabel('QoI = \theta_1 + \theta_2','fontsize',20);
 %title('Fig 5, Pdf for QoI','fontsize',20);
 a = axis;

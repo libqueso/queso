@@ -100,7 +100,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                                               paramDomain,
                                                               likelihoodRoutine<P_V,P_M>,
                                                               (void *) &likelihoodRoutine_Data,
-                                                              true); // the routine computes [-2.*ln(function)]
+                                                              true); // the routine computes [ln(function)]
 
   //******************************************************
   // Step 4 of 5: Instantiate the inverse problem
