@@ -8,7 +8,7 @@ https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.41
 
   * user likelihood routines should now return ln(value), instead of -2*ln(value)
   * inclusion of inverse Gamma random variable (in addition to standard uniform and Gaussian options)
-  * uniform pdf now returns (1/volume) of domain, instead of just 1. If volume is infinite or zero, 
+  * uniform pdf now returns (1/volume of domain), instead of just 1. If volume is infinite or zero, 
     then the uniform pdf returns 1.
   * random variables can be now be formed by concatenation of existing random variable
     definitions (uniform, Gaussian, inverse Gamma)
