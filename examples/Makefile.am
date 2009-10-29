@@ -2,4 +2,4 @@
 
 #Build in these directories:
 SUBDIRS = statisticalForwardProblem statisticalInverseProblem1 \
-	  validationCycle validationPyramid basic_interface
+	  validationCycle validationCycle2 validationPyramid basic_interface

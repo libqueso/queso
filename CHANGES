@@ -11,7 +11,7 @@ https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.41
   * random variables can be formed by concatenation of random variables of more basic type (uniform, Gaussian, inverse Gamma)
   * unified mean and unified sample variance explicitly computed and printed
   * Brooks-Gelman convergence assessment available
-  * logic code of examples/validationCycle/src is now in *.C files instead of *.h files
+  * logic code of examples/validationCycle2/src is now in *.C files instead of *.h files
   * update to documentation system, support for "make docs"
 
 Version 0.40.2 (10 September 2009)

@@ -147,6 +147,8 @@ AC_CONFIG_FILES([
 	examples/validationPyramid/src/physics_1_2/Makefile
 	examples/validationCycle/Makefile
 	examples/validationCycle/src/Makefile
+	examples/validationCycle2/Makefile
+	examples/validationCycle2/src/Makefile
 	examples/statisticalForwardProblem/Makefile
 	examples/statisticalForwardProblem/src/Makefile
 	examples/basic_interface/Makefile

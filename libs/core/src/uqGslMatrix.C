@@ -884,6 +884,10 @@ uqGslMatrixClass::mpiSum( const MPI_Comm& comm, uqGslMatrixClass& M_global ) con
 
   int ierr = MPI_Allreduce( (void*) &local[0], (void*) &global[0],
 			    size, MPI_DOUBLE, MPI_SUM, comm );
+  UQ_FATAL_TEST_MACRO(ierr != MPI_SUCCESS,
+                      m_env.fullRank(),
+                      "uqGslMatrixClass::mpiSum()",
+                      "failed MPI_Allreduce()");
 
   for( unsigned int i = 0; i < this->numRowsLocal(); i++ )
     {
