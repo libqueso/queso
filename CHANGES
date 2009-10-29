@@ -5,27 +5,33 @@ Simulation, and Optimization.
 
 Version 0.41.0 (30 October 2009)
 https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.41
-  * user likelihood routines should now return ln(value) instead of -2*ln(value)
-  * inverse Gamma random variable also available, besides usual uniform and Gaussian
-  * uniform pdf now retunrs 1/volume of domain, instead of just 1. If volume is infinit or 0., then it uniform pdf returns 1.
-  * random variables can be formed by concatenation of random variables of more basic type (uniform, Gaussian, inverse Gamma)
+
+  * user likelihood routines should now return ln(value), instead of -2*ln(value)
+  * inclusion of inverse Gamma random variable (in addition to standard uniform and Gaussian options)
+  * uniform pdf now returns (1/volume) of domain, instead of just 1. If volume is infinite or zero, 
+    then the uniform pdf returns 1.
+  * random variables can be now be formed by concatenation of existing random variable
+    definitions (uniform, Gaussian, inverse Gamma)
   * unified mean and unified sample variance explicitly computed and printed
   * Brooks-Gelman convergence assessment available
-  * logic code of examples/validationCycle2/src is now in *.C files instead of *.h files
+  * primary code logic of examples/validationCycle2/src is now in *.C files instead of *.h files
   * update to documentation system, support for "make docs"
 
 Version 0.40.2 (10 September 2009)
 https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.40.2
-  * bug fix for several header files not included in "make dist" distrubtion
+
+  * bug fix for several header files not included in "make dist" distribution
   * inclusion of additional example files in distribution
 
 Version 0.40.1 (08 September 2009)
 https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.40.1
+
   * bug fix for output path containing a filename with no leading ./filename
   * additional examples and comments
 
 Version 0.40.0 (22 July 2009)
 https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.4.0
+
   * option to compute correlation between parameters and QOIs in statistical forward problems
   * dynamic library build for libqueso via libtool
   * configuration support for MPI and HPCT
@@ -34,5 +40,6 @@ https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.4.0
 
 Version 0.30.0 (13 Feb 2009)
 https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.3.0
+
   * autoconf/automake based configuration
   * initial working version with Stochastic Newton
