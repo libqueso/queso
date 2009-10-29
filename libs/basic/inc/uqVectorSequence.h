@@ -1712,7 +1712,7 @@ uqBaseVectorSequenceClass<V,M>::computeFilterParams(
                       "uqBaseVectorSequenceClass<V,M>::computeFilterParams()",
                       "unexpected combination of file pointer and subRank");
 
-  initialPos = 0;
+  //initialPos = 0;
   spacing    = 1;
 
   if (m_env.subDisplayFile()) {
