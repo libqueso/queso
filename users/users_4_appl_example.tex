@@ -64,8 +64,8 @@ The posterior pdf is then given by
 
 It is clear that for such problem it is possible to analytically compute the exact posterior pdf as
 \begin{eqnarray*}
-\pi_{\text{post}}(\boldsymbol{\theta}) & = & \frac{1}{6\pi} e^{-\frac{1}{2}\left\{(\boldsymbol{\theta}-\boldsymbol{\mu})^T[\mathbf{C}^{-1}](\boldsymbol{\theta}-\boldsymbol{\mu})\right\}} \\
-                                       & = & \frac{1}{6\pi} e^{-\frac{1}{8}(\theta_1+1)^2 - \frac{1}{2}(\theta_2-2)^2}, \label{eq-example-exact-joint}
+\pi_{\text{post}}(\boldsymbol{\theta}) & = & \frac{1}{4\pi} e^{-\frac{1}{2}\left\{(\boldsymbol{\theta}-\boldsymbol{\mu})^T[\mathbf{C}^{-1}](\boldsymbol{\theta}-\boldsymbol{\mu})\right\}} \\
+                                       & = & \frac{1}{4\pi} e^{-\frac{1}{8}(\theta_1+1)^2 - \frac{1}{2}(\theta_2-2)^2}, \label{eq-example-exact-joint}
 \end{eqnarray*}
 and to sample it through the formula
 \begin{equation*}
@@ -130,7 +130,7 @@ Once the code is compiled, one just needs to run ``example\_gsl example.inp''.
 \begin{figure}[h!]
 \begin{center}
 \begin{verbatim}
-#include <example\_compute.h>
+#include <example_compute.h>
 
 int main(int argc, char* argv[])
 {
@@ -197,7 +197,7 @@ The example\_likelihood.h file
 \begin{figure}[h!]
 \begin{center}
 \begin{verbatim}
-#include <example\_likelihood.h>
+#include <example_likelihood.h>
 
 double likelihoodRoutine(
   const uqGslVectorClass& paramValues,
@@ -398,7 +398,7 @@ void compute(const uqFullEnvironmentClass& env) {
                           paramDomain,
                           likelihoodRoutine,
                           (void *) &likelihoodRoutine_Data,
-                          true); // routine computes [-2.*ln(function)]
+                          true); // routine computes [ln(function)]
 
   // Step 4 of 9: Instantiate the inverse problem
   uqUniformVectorRVClass<uqGslVectorClass,uqGslMatrixClass>
@@ -437,7 +437,7 @@ Initial part of example\_compute.C file: the first 4 of the 5 steps to deal with
   qoiRoutine_Data.coef2 = 1.;
   uqGenericVectorFunctionClass<uqGslVectorClass,uqGslMatrixClass,
                                uqGslVectorClass,uqGslMatrixClass>
-    qoiFunctionObj("like_",
+    qoiFunctionObj("qoi_",
                    paramDomain,
                    qoiSpace,
                    qoiRoutine,
