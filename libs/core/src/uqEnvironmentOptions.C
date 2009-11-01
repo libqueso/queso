@@ -112,7 +112,7 @@ uqEnvironmentOptionsClass::getMyOptionValues(po::options_description& optionsDes
   }
 
   if (m_env.allOptionsMap().count(m_option_numSubEnvironments.c_str())) {
-    m_numSubEnvironments = m_env.allOptionsMap()[m_option_numSubEnvironments.c_str()].as<unsigned int>();
+    m_numSubEnvironments = m_env.allOptionsMap()[m_option_numSubEnvironments].as<unsigned int>();
   }
   if ((m_env.fullComm().NumProc()%m_numSubEnvironments) != 0) {
     std::cerr << "In uqBaseEnvironmentClass::getMyOptionValues()"
@@ -126,11 +126,11 @@ uqEnvironmentOptionsClass::getMyOptionValues(po::options_description& optionsDes
                       "total number of processors in environment must be multiple of the specified number of subEnvironments");
 
   if (m_env.allOptionsMap().count(m_option_subDisplayFileName.c_str())) {
-    m_subDisplayFileName = m_env.allOptionsMap()[m_option_subDisplayFileName.c_str()].as<std::string>();
+    m_subDisplayFileName = m_env.allOptionsMap()[m_option_subDisplayFileName].as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_subDisplayAllowAll.c_str())) {
-    m_subDisplayAllowAll = m_env.allOptionsMap()[m_option_subDisplayAllowAll.c_str()].as<bool>();
+    m_subDisplayAllowAll = m_env.allOptionsMap()[m_option_subDisplayAllowAll].as<bool>();
   }
 
   if (m_subDisplayAllowAll) {
@@ -141,7 +141,7 @@ uqEnvironmentOptionsClass::getMyOptionValues(po::options_description& optionsDes
   else if (m_env.allOptionsMap().count(m_option_subDisplayAllowedSet.c_str())) {
     m_subDisplayAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env.allOptionsMap()[m_option_subDisplayAllowedSet.c_str()].as<std::string>();
+    std::string inputString = m_env.allOptionsMap()[m_option_subDisplayAllowedSet].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpAllow);
     //if (m_subDisplayOutputFile) {
     //  *m_subDisplayOutputFile << "In uqEnvironmentOptionsClass::getMyOptionValues(): allow = ";
@@ -159,19 +159,19 @@ uqEnvironmentOptionsClass::getMyOptionValues(po::options_description& optionsDes
   }
 
   if (m_env.allOptionsMap().count(m_option_displayVerbosity.c_str())) {
-    m_displayVerbosity = m_env.allOptionsMap()[m_option_displayVerbosity.c_str()].as<unsigned int>();
+    m_displayVerbosity = m_env.allOptionsMap()[m_option_displayVerbosity].as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_syncVerbosity.c_str())) {
-    m_syncVerbosity = m_env.allOptionsMap()[m_option_syncVerbosity.c_str()].as<unsigned int>();
+    m_syncVerbosity = m_env.allOptionsMap()[m_option_syncVerbosity].as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_seed.c_str())) {
-    m_seed = m_env.allOptionsMap()[m_option_seed.c_str()].as<int>();
+    m_seed = m_env.allOptionsMap()[m_option_seed].as<int>();
   }
 
   //if (m_env.allOptionsMap().count(m_option_numDebugParams.c_str())) {
-  //  m_seed = m_env.allOptionsMap()[m_option_numDebugParams.c_str()].as<unsigned int>();
+  //  m_seed = m_env.allOptionsMap()[m_option_numDebugParams].as<unsigned int>();
   //}
 
   return;

@@ -64,7 +64,11 @@ uqStatisticalInverseProblemOptionsClass::scanOptionsValues()
 {
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
+  //std::cout << "scan 000\n"
+  //          << std::endl;
   getMyOptionValues              (*m_optionsDesc);
+  //std::cout << "scan 001\n"
+  //          << std::endl;
 
   if (m_env.subDisplayFile() != NULL) {
     *m_env.subDisplayFile() << "In uqStatisticalInverseProblemOptionsClass::scanOptionsValues()"
@@ -96,25 +100,25 @@ uqStatisticalInverseProblemOptionsClass::defineMyOptions(po::options_description
 void
 uqStatisticalInverseProblemOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
 {
-  if (m_env.allOptionsMap().count(m_option_help.c_str())) {
+  if (m_env.allOptionsMap().count(m_option_help)) {
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << optionsDesc
                               << std::endl;
     }
   }
 
-  if (m_env.allOptionsMap().count(m_option_computeSolution.c_str())) {
-    m_computeSolution = ((const po::variable_value&) m_env.allOptionsMap()[m_option_computeSolution.c_str()]).as<bool>();
+  if (m_env.allOptionsMap().count(m_option_computeSolution)) {
+    m_computeSolution = ((const po::variable_value&) m_env.allOptionsMap()[m_option_computeSolution]).as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_dataOutputFileName.c_str())) {
-    m_dataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName.c_str()]).as<std::string>();
+  if (m_env.allOptionsMap().count(m_option_dataOutputFileName)) {
+    m_dataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_dataOutputAllowedSet.c_str())) {
+  if (m_env.allOptionsMap().count(m_option_dataOutputAllowedSet)) {
     m_dataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env.allOptionsMap()[m_option_dataOutputAllowedSet.c_str()].as<std::string>();
+    std::string inputString = m_env.allOptionsMap()[m_option_dataOutputAllowedSet].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
@@ -125,8 +129,8 @@ uqStatisticalInverseProblemOptionsClass::getMyOptionValues(po::options_descripti
   }
 
 #ifdef UQ_SIP_READS_SOLVER_OPTION
-  if (m_env.allOptionsMap().count(m_option_solver.c_str())) {
-    m_solverString = ((const po::variable_value&) m_env.allOptionsMap()[m_option_solver.c_str()]).as<std::string>();
+  if (m_env.allOptionsMap().count(m_option_solver)) {
+    m_solverString = ((const po::variable_value&) m_env.allOptionsMap()[m_option_solver]).as<std::string>();
   }
 #endif
 

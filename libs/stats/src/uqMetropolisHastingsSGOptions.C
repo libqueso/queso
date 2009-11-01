@@ -253,7 +253,7 @@ uqMetropolisHastingsSGOptionsClass::defineMyOptions(po::options_description& opt
 void
 uqMetropolisHastingsSGOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
 {
-  if (m_env.allOptionsMap().count(m_option_help.c_str())) {
+  if (m_env.allOptionsMap().count(m_option_help)) {
     if ((m_env.subDisplayFile()) &&
         (m_totallyMute == false)) {
       *m_env.subDisplayFile() << optionsDesc
@@ -261,14 +261,14 @@ uqMetropolisHastingsSGOptionsClass::getMyOptionValues(po::options_description& o
     }
   }
 
-  if (m_env.allOptionsMap().count(m_option_dataOutputFileName.c_str())) {
-    m_dataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName.c_str()]).as<std::string>();
+  if (m_env.allOptionsMap().count(m_option_dataOutputFileName)) {
+    m_dataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_dataOutputAllowedSet.c_str())) {
+  if (m_env.allOptionsMap().count(m_option_dataOutputAllowedSet)) {
     m_dataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env.allOptionsMap()[m_option_dataOutputAllowedSet.c_str()].as<std::string>();
+    std::string inputString = m_env.allOptionsMap()[m_option_dataOutputAllowedSet].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
@@ -278,34 +278,34 @@ uqMetropolisHastingsSGOptionsClass::getMyOptionValues(po::options_description& o
     }
   }
 
-  if (m_env.allOptionsMap().count(m_option_totallyMute.c_str())) {
-    m_totallyMute = ((const po::variable_value&) m_env.allOptionsMap()[m_option_totallyMute.c_str()]).as<bool>();
+  if (m_env.allOptionsMap().count(m_option_totallyMute)) {
+    m_totallyMute = ((const po::variable_value&) m_env.allOptionsMap()[m_option_totallyMute]).as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_rawChain_dataInputFileName.c_str())) {
-    m_rawChainDataInputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataInputFileName.c_str()]).as<std::string>();
+  if (m_env.allOptionsMap().count(m_option_rawChain_dataInputFileName)) {
+    m_rawChainDataInputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataInputFileName]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_rawChain_size.c_str())) {
-    m_rawChainSize = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_size.c_str()]).as<unsigned int>();
+  if (m_env.allOptionsMap().count(m_option_rawChain_size)) {
+    m_rawChainSize = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_size]).as<unsigned int>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_rawChain_displayPeriod.c_str())) {
-    m_rawChainDisplayPeriod = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_displayPeriod.c_str()]).as<unsigned int>();
+  if (m_env.allOptionsMap().count(m_option_rawChain_displayPeriod)) {
+    m_rawChainDisplayPeriod = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_displayPeriod]).as<unsigned int>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_rawChain_measureRunTimes.c_str())) {
-    m_rawChainMeasureRunTimes = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_measureRunTimes.c_str()]).as<bool>();
+  if (m_env.allOptionsMap().count(m_option_rawChain_measureRunTimes)) {
+    m_rawChainMeasureRunTimes = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_measureRunTimes]).as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_rawChain_dataOutputFileName.c_str())) {
-    m_rawChainDataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataOutputFileName.c_str()]).as<std::string>();
+  if (m_env.allOptionsMap().count(m_option_rawChain_dataOutputFileName)) {
+    m_rawChainDataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataOutputFileName]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_rawChain_dataOutputAllowedSet.c_str())) {
+  if (m_env.allOptionsMap().count(m_option_rawChain_dataOutputAllowedSet)) {
     m_rawChainDataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env.allOptionsMap()[m_option_rawChain_dataOutputAllowedSet.c_str()].as<std::string>();
+    std::string inputString = m_env.allOptionsMap()[m_option_rawChain_dataOutputAllowedSet].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
@@ -315,24 +315,24 @@ uqMetropolisHastingsSGOptionsClass::getMyOptionValues(po::options_description& o
     }
   }
 
-  if (m_env.allOptionsMap().count(m_option_rawChain_computeStats.c_str())) {
-    m_rawChainComputeStats = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_computeStats.c_str()]).as<bool>();
+  if (m_env.allOptionsMap().count(m_option_rawChain_computeStats)) {
+    m_rawChainComputeStats = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_computeStats]).as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_rawChain_generateExtra.c_str())) {
-    m_rawChainGenerateExtra = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_generateExtra.c_str()]).as<bool>();
+  if (m_env.allOptionsMap().count(m_option_rawChain_generateExtra)) {
+    m_rawChainGenerateExtra = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_generateExtra]).as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_filteredChain_generate.c_str())) {
-    m_filteredChainGenerate = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_generate.c_str()]).as<bool>();
+  if (m_env.allOptionsMap().count(m_option_filteredChain_generate)) {
+    m_filteredChainGenerate = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_generate]).as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_filteredChain_discardedPortion.c_str())) {
-    m_filteredChainDiscardedPortion = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_discardedPortion.c_str()]).as<double>();
+  if (m_env.allOptionsMap().count(m_option_filteredChain_discardedPortion)) {
+    m_filteredChainDiscardedPortion = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_discardedPortion]).as<double>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_filteredChain_lag.c_str())) {
-    m_filteredChainLag = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_lag.c_str()]).as<unsigned int>();
+  if (m_env.allOptionsMap().count(m_option_filteredChain_lag)) {
+    m_filteredChainLag = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_lag]).as<unsigned int>();
   }
   if ((m_filteredChainGenerate == true) &&
       (m_filteredChainLag      < 2    )) {
@@ -341,21 +341,21 @@ uqMetropolisHastingsSGOptionsClass::getMyOptionValues(po::options_description& o
               << ", subEnvironment "        << m_env.subId()
               << ", subRank "               << m_env.subRank()
               << ", inter0Rank "            << m_env.inter0Rank()
-              << ": forcing the value of '" << m_option_filteredChain_lag.c_str()
+              << ": forcing the value of '" << m_option_filteredChain_lag
               << "' from "                  << m_filteredChainLag
               << " to "                     << 2
               << std::endl;
     m_filteredChainLag = 2;
   }
 
-  if (m_env.allOptionsMap().count(m_option_filteredChain_dataOutputFileName.c_str())) {
-    m_filteredChainDataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_dataOutputFileName.c_str()]).as<std::string>();
+  if (m_env.allOptionsMap().count(m_option_filteredChain_dataOutputFileName)) {
+    m_filteredChainDataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_dataOutputFileName]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_filteredChain_dataOutputAllowedSet.c_str())) {
+  if (m_env.allOptionsMap().count(m_option_filteredChain_dataOutputAllowedSet)) {
     m_filteredChainDataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env.allOptionsMap()[m_option_filteredChain_dataOutputAllowedSet.c_str()].as<std::string>();
+    std::string inputString = m_env.allOptionsMap()[m_option_filteredChain_dataOutputAllowedSet].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
@@ -365,33 +365,33 @@ uqMetropolisHastingsSGOptionsClass::getMyOptionValues(po::options_description& o
     }
   }
 
-  if (m_env.allOptionsMap().count(m_option_filteredChain_computeStats.c_str())) {
-    m_filteredChainComputeStats = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_computeStats.c_str()]).as<bool>();
+  if (m_env.allOptionsMap().count(m_option_filteredChain_computeStats)) {
+    m_filteredChainComputeStats = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_computeStats]).as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_displayCandidates.c_str())) {
-    m_displayCandidates = ((const po::variable_value&) m_env.allOptionsMap()[m_option_displayCandidates.c_str()]).as<bool>();
+  if (m_env.allOptionsMap().count(m_option_displayCandidates)) {
+    m_displayCandidates = ((const po::variable_value&) m_env.allOptionsMap()[m_option_displayCandidates]).as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_putOutOfBoundsInChain.c_str())) {
-    m_putOutOfBoundsInChain = ((const po::variable_value&) m_env.allOptionsMap()[m_option_putOutOfBoundsInChain.c_str()]).as<bool>();
+  if (m_env.allOptionsMap().count(m_option_putOutOfBoundsInChain)) {
+    m_putOutOfBoundsInChain = ((const po::variable_value&) m_env.allOptionsMap()[m_option_putOutOfBoundsInChain]).as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_tk_useLocalHessian.c_str())) {
-    m_tkUseLocalHessian = ((const po::variable_value&) m_env.allOptionsMap()[m_option_tk_useLocalHessian.c_str()]).as<bool>();
+  if (m_env.allOptionsMap().count(m_option_tk_useLocalHessian)) {
+    m_tkUseLocalHessian = ((const po::variable_value&) m_env.allOptionsMap()[m_option_tk_useLocalHessian]).as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_tk_useNewtonComponent.c_str())) {
-    m_tkUseNewtonComponent = ((const po::variable_value&) m_env.allOptionsMap()[m_option_tk_useNewtonComponent.c_str()]).as<bool>();
+  if (m_env.allOptionsMap().count(m_option_tk_useNewtonComponent)) {
+    m_tkUseNewtonComponent = ((const po::variable_value&) m_env.allOptionsMap()[m_option_tk_useNewtonComponent]).as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_dr_maxNumExtraStages.c_str())) {
-    m_drMaxNumExtraStages = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dr_maxNumExtraStages.c_str()]).as<unsigned int>();
+  if (m_env.allOptionsMap().count(m_option_dr_maxNumExtraStages)) {
+    m_drMaxNumExtraStages = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dr_maxNumExtraStages]).as<unsigned int>();
   }
 
   std::vector<double> tmpScales(0,0.);
-  if (m_env.allOptionsMap().count(m_option_dr_listOfScalesForExtraStages.c_str())) {
-    std::string inputString = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dr_listOfScalesForExtraStages.c_str()]).as<std::string>();
+  if (m_env.allOptionsMap().count(m_option_dr_listOfScalesForExtraStages)) {
+    std::string inputString = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dr_listOfScalesForExtraStages]).as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpScales);
     //if (m_env.subDisplayFile()) {
     //  *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::getMyOptionValues(): scales =";
@@ -415,20 +415,20 @@ uqMetropolisHastingsSGOptionsClass::getMyOptionValues(po::options_description& o
     //updateTK();
   }
 
-  if (m_env.allOptionsMap().count(m_option_am_initialNonAdaptInterval.c_str())) {
-    m_amInitialNonAdaptInterval = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_initialNonAdaptInterval.c_str()]).as<unsigned int>();
+  if (m_env.allOptionsMap().count(m_option_am_initialNonAdaptInterval)) {
+    m_amInitialNonAdaptInterval = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_initialNonAdaptInterval]).as<unsigned int>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_am_adaptInterval.c_str())) {
-    m_amAdaptInterval = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_adaptInterval.c_str()]).as<unsigned int>();
+  if (m_env.allOptionsMap().count(m_option_am_adaptInterval)) {
+    m_amAdaptInterval = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_adaptInterval]).as<unsigned int>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_am_eta.c_str())) {
-    m_amEta = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_eta.c_str()]).as<double>();
+  if (m_env.allOptionsMap().count(m_option_am_eta)) {
+    m_amEta = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_eta]).as<double>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_am_epsilon.c_str())) {
-    m_amEpsilon = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_epsilon.c_str()]).as<double>();
+  if (m_env.allOptionsMap().count(m_option_am_epsilon)) {
+    m_amEpsilon = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_epsilon]).as<double>();
   }
 
   return;

@@ -121,21 +121,21 @@ uqMonteCarloSGOptionsClass::defineMyOptions(po::options_description& optionsDesc
 void
 uqMonteCarloSGOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
 {
-  if (m_env.allOptionsMap().count(m_option_help.c_str())) {
+  if (m_env.allOptionsMap().count(m_option_help)) {
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << optionsDesc
                               << std::endl;
     }
   }
 
-  if (m_env.allOptionsMap().count(m_option_dataOutputFileName.c_str())) {
-    m_dataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName.c_str()]).as<std::string>();
+  if (m_env.allOptionsMap().count(m_option_dataOutputFileName)) {
+    m_dataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_dataOutputAllowedSet.c_str())) {
+  if (m_env.allOptionsMap().count(m_option_dataOutputAllowedSet)) {
     m_dataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env.allOptionsMap()[m_option_dataOutputAllowedSet.c_str()].as<std::string>();
+    std::string inputString = m_env.allOptionsMap()[m_option_dataOutputAllowedSet].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
@@ -145,14 +145,14 @@ uqMonteCarloSGOptionsClass::getMyOptionValues(po::options_description& optionsDe
     }
   }
 
-  if (m_env.allOptionsMap().count(m_option_pseq_dataOutputFileName.c_str())) {
-    m_pseqDataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_pseq_dataOutputFileName.c_str()]).as<std::string>();
+  if (m_env.allOptionsMap().count(m_option_pseq_dataOutputFileName)) {
+    m_pseqDataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_pseq_dataOutputFileName]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_pseq_dataOutputAllowedSet.c_str())) {
+  if (m_env.allOptionsMap().count(m_option_pseq_dataOutputAllowedSet)) {
     m_pseqDataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env.allOptionsMap()[m_option_pseq_dataOutputAllowedSet.c_str()].as<std::string>();
+    std::string inputString = m_env.allOptionsMap()[m_option_pseq_dataOutputAllowedSet].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
@@ -162,34 +162,34 @@ uqMonteCarloSGOptionsClass::getMyOptionValues(po::options_description& optionsDe
     }
   }
 
-  if (m_env.allOptionsMap().count(m_option_pseq_computeStats.c_str())) {
-    m_pseqComputeStats = ((const po::variable_value&) m_env.allOptionsMap()[m_option_pseq_computeStats.c_str()]).as<bool>();
+  if (m_env.allOptionsMap().count(m_option_pseq_computeStats)) {
+    m_pseqComputeStats = ((const po::variable_value&) m_env.allOptionsMap()[m_option_pseq_computeStats]).as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_qseq_dataInputFileName.c_str())) {
-    m_qseqDataInputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_qseq_dataInputFileName.c_str()]).as<std::string>();
+  if (m_env.allOptionsMap().count(m_option_qseq_dataInputFileName)) {
+    m_qseqDataInputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_qseq_dataInputFileName]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_qseq_size.c_str())) {
-    m_qseqSize = ((const po::variable_value&) m_env.allOptionsMap()[m_option_qseq_size.c_str()]).as<unsigned int>();
+  if (m_env.allOptionsMap().count(m_option_qseq_size)) {
+    m_qseqSize = ((const po::variable_value&) m_env.allOptionsMap()[m_option_qseq_size]).as<unsigned int>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_qseq_displayPeriod.c_str())) {
-    m_qseqDisplayPeriod = ((const po::variable_value&) m_env.allOptionsMap()[m_option_qseq_displayPeriod.c_str()]).as<unsigned int>();
+  if (m_env.allOptionsMap().count(m_option_qseq_displayPeriod)) {
+    m_qseqDisplayPeriod = ((const po::variable_value&) m_env.allOptionsMap()[m_option_qseq_displayPeriod]).as<unsigned int>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_qseq_measureRunTimes.c_str())) {
-    m_qseqMeasureRunTimes = ((const po::variable_value&) m_env.allOptionsMap()[m_option_qseq_measureRunTimes.c_str()]).as<bool>();
+  if (m_env.allOptionsMap().count(m_option_qseq_measureRunTimes)) {
+    m_qseqMeasureRunTimes = ((const po::variable_value&) m_env.allOptionsMap()[m_option_qseq_measureRunTimes]).as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_qseq_dataOutputFileName.c_str())) {
-    m_qseqDataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_qseq_dataOutputFileName.c_str()]).as<std::string>();
+  if (m_env.allOptionsMap().count(m_option_qseq_dataOutputFileName)) {
+    m_qseqDataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_qseq_dataOutputFileName]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_qseq_dataOutputAllowedSet.c_str())) {
+  if (m_env.allOptionsMap().count(m_option_qseq_dataOutputAllowedSet)) {
     m_qseqDataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env.allOptionsMap()[m_option_qseq_dataOutputAllowedSet.c_str()].as<std::string>();
+    std::string inputString = m_env.allOptionsMap()[m_option_qseq_dataOutputAllowedSet].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
@@ -199,8 +199,8 @@ uqMonteCarloSGOptionsClass::getMyOptionValues(po::options_description& optionsDe
     }
   }
 
-  if (m_env.allOptionsMap().count(m_option_qseq_computeStats.c_str())) {
-    m_qseqComputeStats = ((const po::variable_value&) m_env.allOptionsMap()[m_option_qseq_computeStats.c_str()]).as<bool>();
+  if (m_env.allOptionsMap().count(m_option_qseq_computeStats)) {
+    m_qseqComputeStats = ((const po::variable_value&) m_env.allOptionsMap()[m_option_qseq_computeStats]).as<bool>();
   }
 
   return;
