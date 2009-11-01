@@ -19,7 +19,7 @@ SUBDIRS = libs \
 AUX_DIST = build-aux/install-sh    \
            build-aux/missing
 
-EXTRA_DIST = $(DX_CONFIG)
+EXTRA_DIST = $(DX_CONFIG) users.pdf
 
 # Files to be deleted by 'make maintainer-clean'
 MAINTAINERCLEANFILES =     \
