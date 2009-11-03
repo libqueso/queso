@@ -353,7 +353,10 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   // Close generic output file      
   //****************************************************
   if (genericOfsVar) {
-    genericOfsVar->close();
+    //std::cout << "TODAY 000" << std::endl;
+    delete genericOfsVar;
+    //genericOfsVar->close();
+    //std::cout << "TODAY 001" << std::endl;
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                               << ", prefix = "                         << m_options.m_prefix

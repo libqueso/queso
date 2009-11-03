@@ -41,7 +41,7 @@ class uqModelValidationClass
 public:
   uqModelValidationClass(const uqBaseEnvironmentClass& env,
                          const char*                   prefix);
- ~uqModelValidationClass();
+  virtual ~uqModelValidationClass();
 
   virtual void run() = 0;
 

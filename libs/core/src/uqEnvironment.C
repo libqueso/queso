@@ -72,7 +72,7 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_inter0Comm          (NULL),
   m_inter0Rank          (-1),
   m_inter0CommSize      (1),
-  m_subDisplayFile(NULL),
+  m_subDisplayFile      (NULL),
   m_rng                 (NULL),
   m_options             (NULL)
 {
@@ -329,7 +329,7 @@ uqBaseEnvironmentClass::syncPrintDebugMsg(const char* msg, unsigned int msgVerbo
       commObj.Barrier();
     }
     if (this->fullRank() == 0) std::cout << "Sleeping " << numUSecs << " microseconds..."
-                                     << std::endl;
+                                         << std::endl;
     usleep(numUSecs);
   }
   commObj.Barrier();
@@ -364,11 +364,19 @@ uqBaseEnvironmentClass::openOutputFile(
     }
 
     if (this->subRank() == 0) {
+#if 0
+      std::cout << "In openOutputFile()"
+                << ": opening output file with base name '" << baseFileName
+                << "'"
+                << ", writeOver = " << writeOver
+                << std::endl;
+#endif
 
       // Verify parent directory exists (for cases when a user
       // specifies a relative path for the desired output file).
-
-      //std::cout << "checking " << baseFileName+"_sub"+this->subIdString()+"."+fileType << std::endl;
+#if 0
+      std::cout << "checking " << baseFileName+"_sub"+this->subIdString()+"."+fileType << std::endl;
+#endif
       int irtrn = hpct_check_file_path((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str());
       UQ_FATAL_TEST_MACRO(irtrn < 0,m_fullRank,"openOutputFile()","unable to verify output path");
 
@@ -380,10 +388,24 @@ uqBaseEnvironmentClass::openOutputFile(
       }
       else {
         // Write at the end of an eventual pre-existing file
+#if 0
         ofsvar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(), 
-				   std::ofstream::out | std::ofstream::in | std::ofstream::ate);
+				   std::ofstream::in);
+	std::cout << "ofsvar(1) = " << ofsvar << std::endl;
+        if (ofsvar) std::cout << "ofsvar(1)->is_open() = " << ofsvar->is_open() << std::endl;
+        if (ofsvar) delete ofsvar;
+#endif
+        ofsvar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(), 
+				   std::ofstream::out | std::ofstream::in | std::ofstream::app);
+#if 0
+	std::cout << "ofsvar(2) = " << ofsvar << std::endl;
+        if (ofsvar) std::cout << "ofsvar(2)->is_open() = " << ofsvar->is_open() << std::endl;
+#endif
         if ((ofsvar            == NULL ) ||
             (ofsvar->is_open() == false)) {
+#if 0
+	  std::cout << "Retrying 1..." << std::endl;
+#endif
           delete ofsvar;
           ofsvar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(), 
 				     std::ofstream::out | std::ofstream::trunc);
@@ -431,6 +453,13 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
 
     //if ((this->subRank   () == 0) &&
     //    (this->inter0Rank() == 0)) {
+#if 0
+      std::cout << "In openUnifiedOutputFile()"
+                << ": opening output file with base name '" << baseFileName
+                << "'"
+                << ", writeOver = " << writeOver
+                << std::endl;
+#endif
       // Open file
       if (writeOver) {
         // Write over an eventual pre-existing file
@@ -438,9 +467,12 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
       }
       else {
         // Write at the end of an eventual pre-existing file
-        ofsvar = new std::ofstream((baseFileName+"."+fileType).c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
+        ofsvar = new std::ofstream((baseFileName+"."+fileType).c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::app);
         if ((ofsvar            == NULL ) ||
             (ofsvar->is_open() == false)) {
+#if 0
+          std::cout << "Retrying 2..." << std::endl;
+#endif
           delete ofsvar;
           ofsvar = new std::ofstream((baseFileName+"."+fileType).c_str(), std::ofstream::out | std::ofstream::trunc);
         }
@@ -635,14 +667,14 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
                         "failed to open sub screen file");
 
     *m_subDisplayFile << "\n================================="
-                            << "\n QUESO library, version " << QUESO_LIBRARY_CURRENT_VERSION
-                            << ", released on "             << QUESO_LIBRARY_RELEASE_DATE
-                            << "\n================================="
-                            << "\n"
-                            << std::endl;
+                      << "\n QUESO library, version " << QUESO_LIBRARY_CURRENT_VERSION
+                      << ", released on "             << QUESO_LIBRARY_RELEASE_DATE
+                      << "\n================================="
+                      << "\n"
+                      << std::endl;
 
     *m_subDisplayFile << "Beginning run at " << ctime(&m_timevalBegin.tv_sec)
-                            << std::endl;
+                      << std::endl;
   }
 
   //////////////////////////////////////////////////
@@ -721,7 +753,7 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   //////////////////////////////////////////////////
   if ((m_subDisplayFile) && (this->displayVerbosity() >= 5)) {
     *m_subDisplayFile << "Done with initializations at uqFullEnvironmentClass::commonConstructor()"
-                            << std::endl;
+                      << std::endl;
   }
 
   return;
@@ -736,7 +768,7 @@ uqFullEnvironmentClass::readOptionsInputFile()
 {
   std::ifstream* ifs = new std::ifstream(m_optionsInputFileName.c_str());
   if (ifs->is_open()) {
-    ifs->close();
+    //ifs->close();
     delete ifs;
   }
   else {

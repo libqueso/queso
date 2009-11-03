@@ -2723,7 +2723,8 @@ uqScalarSequenceClass<T>::unifiedWriteContents(const std::string& fileName) cons
                          << std::endl;
         }
 
-        unifiedOfsVar->close();
+        //unifiedOfsVar->close();
+        delete unifiedOfsVar;
       }
       m_env.inter0Comm().Barrier();
     }
@@ -2735,7 +2736,8 @@ uqScalarSequenceClass<T>::unifiedWriteContents(const std::string& fileName) cons
                                   false, // Yes, 'writeOver = false' in order to close the array for matlab
                                   unifiedOfsVar);
       *unifiedOfsVar << "];\n";
-      unifiedOfsVar->close();
+      //unifiedOfsVar->close();
+      delete unifiedOfsVar;
     }
   }
 

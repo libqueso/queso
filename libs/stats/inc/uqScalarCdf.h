@@ -186,10 +186,17 @@ uqSampledScalarCdfClass<T>::value(T paramValue) const
 
     double intervalLen = m_cdfGrid[intervalId+1] - m_cdfGrid[intervalId];
     double ratio = (paramValue - m_cdfGrid[intervalId])/intervalLen;
-    //*m_env.subDisplayFile() << "In uqSampledScalarCdf::value(): paramValue = " << paramValue
-    //                       << ", intervalLen = "                     << intervalLen
-    //                       << ", ratio = "                           << ratio
-    //                       << std::endl;
+#if 0
+    *m_env.subDisplayFile() << "In uqSampledScalarCdf::value()"
+                            << ": paramValue = "              << paramValue
+                            << ", intervalId = "              << intervalId
+                            << ", cdfGrid.size() = "          << m_cdfGrid.size()
+                            << ", m_cdfGrid[intervalId] = "   << m_cdfGrid[intervalId]
+                            << ", m_cdfGrid[intervalId+1] = " << m_cdfGrid[intervalId+1]
+                            << ", intervalLen = "             << intervalLen
+                            << ", ratio = "                   << ratio
+                            << std::endl;
+#endif
     UQ_FATAL_TEST_MACRO(ratio < 0.,
                         m_env.fullRank(),
                         "uqSampledScalarCdfClass<T>::value()",

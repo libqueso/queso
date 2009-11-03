@@ -369,7 +369,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(
       m_postRv.mdf().print(*ofsvar);
 
       // Close file
-      ofsvar->close();
+      //ofsvar->close();
       delete ofsvar;
       if (m_env.subDisplayFile()) {
         *m_env.subDisplayFile() << "Closed data output file '" << m_options.m_dataOutputFileName

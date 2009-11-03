@@ -200,7 +200,13 @@ uqUniformOneDGridClass<T>::findIntervalId(const T& paramValue) const
                       "paramValue is out of domain");
 
   T ratio = (paramValue - m_minPosition)/(m_maxPosition - m_minPosition);
-  return (unsigned int) (ratio*(m_size-1.));
+  unsigned int i = (unsigned int) (ratio*(m_size-1.));
+  if ((i > 0                  ) && 
+      ((*this)[i] > paramValue)) {
+    i--;
+  }
+
+  return i;
 }
 
 #endif // __UQ_ONE_D_GRID_FUNCTION_H__

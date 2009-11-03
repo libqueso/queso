@@ -971,7 +971,8 @@ uqGslMatrixClass::subWriteContents(
       *ofsVar << "\n";
     }
     *ofsVar << "];\n";
-    ofsVar->close();
+    //ofsVar->close();
+    delete ofsVar;
   }
 
   return;

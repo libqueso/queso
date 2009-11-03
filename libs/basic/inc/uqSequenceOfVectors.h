@@ -1873,7 +1873,8 @@ uqSequenceOfVectorsClass<V,M>::subWriteContents(
   }
 
   if (ofsVar) {
-    ofsVar->close();
+    //ofsVar->close();
+    delete ofsVar;
   }
 
   return;
@@ -1965,7 +1966,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(const std::string& fileName)
           m_seq[j]->setPrintHorizontally(savedVectorPrintState);
         }
 
-        unifiedOfsVar->close();
+        //unifiedOfsVar->close();
+        delete unifiedOfsVar;
       }
       m_env.inter0Comm().Barrier();
     }
@@ -1977,7 +1979,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(const std::string& fileName)
                                   false, // Yes, 'writeOver = false' in order to close the array for matlab
                                   unifiedOfsVar);
       *unifiedOfsVar << "];\n";
-      unifiedOfsVar->close();
+      //unifiedOfsVar->close();
+      delete unifiedOfsVar;
     }
   }
 
@@ -2142,7 +2145,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
           lineId++;
         };
 
-        ifsvar->close();
+        //ifsvar->close();
+        delete ifsvar;
       }
       m_env.inter0Comm().Barrier();
     }

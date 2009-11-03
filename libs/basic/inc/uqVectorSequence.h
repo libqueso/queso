@@ -553,7 +553,7 @@ template<class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::computeStatistics(
   const uqSequenceStatisticalOptionsClass& statisticalOptions,
-  std::ofstream*                        passedOfs)
+  std::ofstream*                           passedOfs)
 {
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "\n"

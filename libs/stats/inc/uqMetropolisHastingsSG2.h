@@ -145,14 +145,14 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
       (m_options.m_totallyMute == false                                       )) {
     workingChain.subWriteContents(m_options.m_rawChainDataOutputFileName,
                                   m_options.m_rawChainDataOutputAllowedSet);
-    //if ((m_env.subDisplayFile()          ) &&
-    //    (m_options.m_totallyMute == false)) {
-    //  *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()"
-    //                          << ", prefix = "                << m_options.m_prefix
-    //                          << ": closed sub output file '" << m_options.m_rawChainDataOutputFileName
-    //                          << "' for raw chain "           << workingChain.name()
-    //                          << std::endl;
-    //}
+    if ((m_env.subDisplayFile()          ) &&
+        (m_options.m_totallyMute == false)) {
+      *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()"
+                              << ", prefix = "                << m_options.m_prefix
+                              << ": closed sub output file '" << m_options.m_rawChainDataOutputFileName
+                              << "' for raw chain "           << workingChain.name()
+                              << std::endl;
+    }
   }
 
   // Take "unified" care of raw chain
@@ -263,14 +263,14 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
         (m_options.m_totallyMute == false                                            )) {
       workingChain.subWriteContents(m_options.m_filteredChainDataOutputFileName,
                                     m_options.m_filteredChainDataOutputAllowedSet);
-      //if ((m_env.subDisplayFile()          ) &&
-      //    (m_options.m_totallyMute == false)) {
-      //  *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()"
-      //                          << ", prefix = "                << m_options.m_prefix
-      //                          << ": closed sub output file '" << m_options.m_filteredChainDataOutputFileName
-      //                          << "' for filtered chain "      << workingChain.name()
-      //                          << std::endl;
-      //}
+      if ((m_env.subDisplayFile()          ) &&
+          (m_options.m_totallyMute == false)) {
+        *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()"
+                                << ", prefix = "                << m_options.m_prefix
+                                << ": closed sub output file '" << m_options.m_filteredChainDataOutputFileName
+                                << "' for filtered chain "      << workingChain.name()
+                                << std::endl;
+      }
     }
 
     // Take "unified" care of filtered chain
@@ -298,7 +298,8 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
   // Close generic output file
   //****************************************************
   if (genericOfsVar) {
-    genericOfsVar->close();
+    //genericOfsVar->close();
+    delete genericOfsVar;
     if ((m_env.subDisplayFile()          ) &&
         (m_options.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()"

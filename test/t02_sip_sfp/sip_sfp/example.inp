@@ -85,7 +85,7 @@ ip_mh_filteredChain_stats_corrMatrix_compute        = 1
 ###############################################
 # Statistical forward problem (fp)
 ###############################################
-fp_help                 = anything
+#fp_help                 = anything
 fp_computeSolution      = 1
 fp_computeCovariances   = 1
 fp_computeCorrelations  = 1
@@ -95,7 +95,7 @@ fp_dataOutputAllowedSet = 0 1
 ###############################################
 # 'fp_': information for Monte Carlo algorithm
 ###############################################
-fp_mc_help                 = anything
+#fp_mc_help                 = anything
 fp_mc_dataOutputFileName   = outputData/sfpOutput
 fp_mc_dataOutputAllowedSet = 0 1
 

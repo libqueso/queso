@@ -481,7 +481,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
 
   // Close data output file
   if (ofsvar) {
-    ofsvar->close();
+    //ofsvar->close();
     delete ofsvar;
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"

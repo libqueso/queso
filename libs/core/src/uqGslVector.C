@@ -509,7 +509,8 @@ uqGslVectorClass::subWriteContents(
     this->setPrintHorizontally(savedVectorPrintState);
 
     *ofsVar << "];\n";
-    ofsVar->close();
+    //ofsVar->close();
+    delete ofsVar;
   }
 
   return;
