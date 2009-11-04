@@ -1,5 +1,5 @@
 # Init autoconf w/ Package name, version number, and developer email
-AC_INIT([queso], [0.41.0], [pecos_dev@ices.utexas.edu])
+AC_INIT([queso], [0.42.0], [pecos_dev@ices.utexas.edu])
 
 # Set default CFLAGS & CXXFLAGS IF the user hasn't specified anything
 AC_MSG_CHECKING(if CFLAGS is set)
