@@ -146,7 +146,7 @@ uqGenericJointPdfClass<V,M>::actualValue(
         M* hessianMatrix,
         V* hessianEffect) const
 {
-  return m_scalarFunction.actualValue(domainVector);
+  return m_scalarFunction.actualValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect);
 }
 
 template<class V, class M>
@@ -158,7 +158,7 @@ uqGenericJointPdfClass<V,M>::lnValue(
         M* hessianMatrix,
         V* hessianEffect) const
 {
-  return m_scalarFunction.lnValue(domainVector);
+  return m_scalarFunction.lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect);
 }
 
 //*****************************************************

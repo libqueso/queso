@@ -55,7 +55,7 @@ public:
   virtual  double deriv         (double domainValue) const = 0;
 
            template<class V, class M>
-	     void quadPtsWeigths(V& quadPositions, V& quadWeigths, M& auxMat) const;
+	     void quadPtsWeigths(unsigned int numIntervals, bool forceWeigthsToSum1, V& quadPositions, V& quadWeigths) const;
 
 protected:
   double m_minDomainValue;
@@ -64,7 +64,11 @@ protected:
 
 template<class V, class M>
 void
-uqBase1D1DFunctionClass::quadPtsWeigths(V& quadPositions, V& quadWeigths, M& auxMat) const
+uqBase1D1DFunctionClass::quadPtsWeigths(
+  unsigned int numIntervals,
+  bool         forceWeigthsToSum1,
+  V&           quadPositions,
+  V&           quadWeigths) const
 {
   const uqBaseEnvironmentClass& env = quadPositions.env();
   unsigned int n = quadPositions.sizeLocal();
@@ -79,12 +83,6 @@ uqBase1D1DFunctionClass::quadPtsWeigths(V& quadPositions, V& quadWeigths, M& aux
                       "uqBase1D1DFunctionClass::quadPtsWeigths()",
                       "different input vector sizes");
 
-  UQ_FATAL_TEST_MACRO((quadPositions.sizeLocal() != auxMat.numRowsLocal()),
-                      UQ_UNAVAILABLE_RANK,
-                      "uqBase1D1DFunctionClass::quadPtsWeigths()",
-                      "incompatible input matrix");
-
-  unsigned int numIntervals = 200;
   double delta = (m_maxDomainValue-m_minDomainValue)/((double) numIntervals);
   std::vector<double> samplePositions(numIntervals,0.);
   std::vector<double> sampleValues   (numIntervals,0.);
@@ -157,7 +155,9 @@ uqBase1D1DFunctionClass::quadPtsWeigths(V& quadPositions, V& quadWeigths, M& aux
                           << ": forming J..."
                           << std::endl;
   }
-  M mJ(auxMat);
+  V zeroVector(quadPositions);
+  zeroVector.cwSet(0.);
+  M mJ(zeroVector);
   for (unsigned int k = 0; k < n; ++k) {
     mJ(k,k) = alpha[k];
     if (mJ.numRowsGlobal() > 1) {
@@ -180,7 +180,7 @@ uqBase1D1DFunctionClass::quadPtsWeigths(V& quadPositions, V& quadWeigths, M& aux
                           << std::endl;
   }
   V eigenValues(quadPositions);
-  M eigenVectors(auxMat);
+  M eigenVectors(zeroVector);
   mJ.eigen(eigenValues,&eigenVectors);
 
   //std::set<unsigned int> auxSet;
@@ -197,6 +197,16 @@ uqBase1D1DFunctionClass::quadPtsWeigths(V& quadPositions, V& quadWeigths, M& aux
     quadPositions[k] = eigenValues[k];
     quadWeigths  [k] = beta[0] * eigenVectors(0,k) * eigenVectors(0,k);
   } 
+
+  if (forceWeigthsToSum1) {
+    double wSum = 0.;
+    for (unsigned int k = 0; k < n; ++k) {
+      wSum += quadWeigths[k];
+    } 
+    for (unsigned int k = 0; k < n; ++k) {
+      quadWeigths[k] /= wSum;
+    }
+  }
 
   return;
 }
