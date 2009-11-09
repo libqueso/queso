@@ -332,13 +332,30 @@ template <class V, class M>
 unsigned int
 uqBaseVectorSequenceClass<V,M>::unifiedSequenceSize() const
 {
-  unsigned int subNumSamples = this->subSequenceSize();
   unsigned int unifiedNumSamples = 0;
-  int mpiRC = MPI_Allreduce((void *) &subNumSamples, (void *) &unifiedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
-  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_env.fullRank(),
-                      "uqBaseVectorSequenceClass<V,M>::unifiedSequenceSize()",
-                      "failed MPI_Allreduce() for unifiedSequenceSize()");
+
+  bool useOnlyInter0Comm = (m_vectorSpace.numOfProcsForStorage() == 1);
+
+  if (useOnlyInter0Comm) {
+    if (m_env.inter0Rank() >= 0) {
+      unsigned int subNumSamples = this->subSequenceSize();
+      int mpiRC = MPI_Allreduce((void *) &subNumSamples, (void *) &unifiedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqBaseVectorSequenceClass<V,M>::unifiedSequenceSize()",
+                          "failed MPI_Allreduce() for unifiedSequenceSize()");
+    }
+    else {
+      // Node not in the 'inter0' communicator
+      unifiedNumSamples = this->subSequenceSize();
+    }
+  }
+  else {
+    UQ_FATAL_TEST_MACRO((useOnlyInter0Comm == false),
+                        m_env.fullRank(),
+                        "uqBaseVectorSequenceClass<V,M>::unifiedSequenceSize()",
+                        "parallel vectors not supported yet");
+  }
 
   return unifiedNumSamples;
 }
@@ -1845,7 +1862,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
     } // if subDisplayFile
   } // if numSubEnvs > 1
 
-  m_env.fullComm().Barrier();
+  //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
   tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Chain min and max took " << tmpRunTime
@@ -1986,7 +2003,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
       }
     } // if numSubEnvs > 1
 
-    m_env.fullComm().Barrier();
+    //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
     tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "Chain histograms took " << tmpRunTime
@@ -2018,7 +2035,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
                       cdfStaccEvalPositions,
                       cdfStaccValues);
 
-    m_env.fullComm().Barrier();
+    //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
     tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "Chain cdf statistical accuracy took " << tmpRunTime
@@ -2154,13 +2171,13 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
       V unifiedIqrVec(m_vectorSpace.zeroVector());
       this->unifiedInterQuantileRange(0, // Use the whole chain
                                       unifiedIqrVec);
-      m_env.fullComm().Barrier();
+      //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
 
       V unifiedGaussianKdeScaleVec(m_vectorSpace.zeroVector());
       this->unifiedScalesForKDE(0, // Use the whole chain
                                 unifiedIqrVec,
                                 unifiedGaussianKdeScaleVec);
-      m_env.fullComm().Barrier();
+      //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
 
       std::vector<V*> unifiedKdeEvalPositions(statisticalOptions.kdeNumEvalPositions(),NULL);
       uqMiscComputePositionsBetweenMinMax(unifiedStatsMinPositions,
@@ -2172,7 +2189,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
                                unifiedGaussianKdeScaleVec,
                                unifiedKdeEvalPositions,
                                unifiedGaussianKdeDensities);
-      m_env.fullComm().Barrier();
+      //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
 
       // Write unified iqr
       if (m_env.subDisplayFile()) {
@@ -2272,7 +2289,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
       }
     }
 
-    m_env.fullComm().Barrier();
+    //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
     tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "Chain KDE took " << tmpRunTime

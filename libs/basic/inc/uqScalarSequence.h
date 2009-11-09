@@ -63,13 +63,14 @@ public:
         void         setName                      (const std::string& newName);
         void         clear                        ();
         unsigned int subSequenceSize              () const;
-        unsigned int unifiedSequenceSize          () const;
+        unsigned int unifiedSequenceSize          (bool useOnlyInter0Comm) const;
         void         resizeSequence               (unsigned int newSequenceSize);
         void         resetValues                  (unsigned int initialPos, unsigned int numPos);
         void         erasePositions               (unsigned int initialPos, unsigned int numPos);
   const T&           operator[]                   (unsigned int posId) const;
         T&           operator[]                   (unsigned int posId);
-        void         getUnifiedContentsAtProc0Only(std::vector<T>& outputVec) const;
+        void         getUnifiedContentsAtProc0Only(bool useOnlyInter0Comm,
+                                                   std::vector<T>& outputVec) const;
         void         setGaussian                  (const gsl_rng* rng, const T& mean, const T& stdDev);
         void         setUniform                   (const gsl_rng* rng, const T& a,    const T& b     );
         void         subUniformlySampledMdf       (unsigned int                    numIntervals,
@@ -312,6 +313,8 @@ uqScalarSequenceClass<T>::brooksGelmanConvMeasure(
 {
   double resultValue = 0.;
 
+  // FIX ME: put logic if (numSubEnvs == 1) ...
+
   if (useOnlyInter0Comm) {
     if (m_env.inter0Rank() >= 0) {
       UQ_FATAL_TEST_MACRO(true,
@@ -406,15 +409,33 @@ uqScalarSequenceClass<T>::subSequenceSize() const
 
 template <class T>
 unsigned int
-uqScalarSequenceClass<T>::unifiedSequenceSize() const
+uqScalarSequenceClass<T>::unifiedSequenceSize(bool useOnlyInter0Comm) const
 {
-  unsigned int subNumSamples = this->subSequenceSize();
+  if (m_env.numSubEnvironments() == 1) {
+    return this->subSequenceSize();
+  }
+
   unsigned int unifiedNumSamples = 0;
-  int mpiRC = MPI_Allreduce((void *) &subNumSamples, (void *) &unifiedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
-  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_env.fullRank(),
-                      "uqScalarSequenceClass<T>::unifiedSequenceSize()",
-                      "failed MPI_Allreduce() for unifiedSequenceSize()");
+  if (useOnlyInter0Comm) {
+    if (m_env.inter0Rank() >= 0) {
+      unsigned int subNumSamples = this->subSequenceSize();
+      int mpiRC = MPI_Allreduce((void *) &subNumSamples, (void *) &unifiedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::unifiedSequenceSize()",
+                          "failed MPI_Allreduce() for unifiedSequenceSize()");
+    }
+    else {
+      // Node not in the 'inter0' communicator
+      unifiedNumSamples = this->subSequenceSize();
+    }
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.fullRank(),
+                        "uqScalarSequenceClass<T>::unifiedSequenceSize()",
+                        "parallel vectors not supported yet");
+  }
 
   return unifiedNumSamples;
 }
@@ -519,17 +540,38 @@ uqScalarSequenceClass<T>::operator[](unsigned int posId)
 
 template <class T>
 void
-uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only(std::vector<T>& outputVec) const
+uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only(
+  bool useOnlyInter0Comm,
+  std::vector<T>& outputVec) const
 {
-  unsigned int auxSubSize     = this->subSequenceSize();
-  unsigned int auxUnifiedSize = this->unifiedSequenceSize();
-  outputVec.resize(auxUnifiedSize,0.);
-  // FIX ME: use MPI_Gatherv for the case different nodes have different amount of data
-  int mpiRC = MPI_Gather((void *) &m_seq[0], auxSubSize, MPI_DOUBLE, (void *) &outputVec[0], auxSubSize, MPI_DOUBLE, 0, m_env.inter0Comm().Comm());
-  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_env.fullRank(),
-                      "uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only()",
-                      "failed MPI_Gather()");
+  if (m_env.numSubEnvironments() == 1) {
+    // No need to do anything
+    return;
+  }
+
+  if (useOnlyInter0Comm) {
+    if (m_env.inter0Rank() >= 0) {
+      unsigned int auxSubSize     = this->subSequenceSize();
+      unsigned int auxUnifiedSize = this->unifiedSequenceSize(useOnlyInter0Comm);
+      outputVec.resize(auxUnifiedSize,0.);
+      // FIX ME: use MPI_Gatherv for the case different nodes have different amount of data
+      int mpiRC = MPI_Gather((void *) &m_seq[0], auxSubSize, MPI_DOUBLE, (void *) &outputVec[0], auxSubSize, MPI_DOUBLE, 0, m_env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only()",
+                          "failed MPI_Gather()");
+    }
+    else {
+      // Node not in the 'inter0' communicator
+      // No need to do anything
+    }
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.fullRank(),
+                        "uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only()",
+                        "parallel vectors not supported yet");
+  }
 
   return;
 }
@@ -916,7 +958,6 @@ uqScalarSequenceClass<T>::unifiedSampleVariance(
   }
 
   T unifiedSamValue = 0.;
-
   if (useOnlyInter0Comm) {
     if (m_env.inter0Rank() >= 0) {
       bool bRC = ((initialPos          <  this->subSequenceSize()) &&
@@ -1012,7 +1053,6 @@ uqScalarSequenceClass<T>::unifiedPopulationVariance(
   }
 
   T unifiedPopValue = 0.;
-
   if (useOnlyInter0Comm) {
     if (m_env.inter0Rank() >= 0) {
       bool bRC = ((initialPos          <  this->subSequenceSize()) &&
@@ -2364,7 +2404,6 @@ uqScalarSequenceClass<T>::unifiedScaleForKDE(
   }
 
   T unifiedScaleValue = 0.;
-
   if (useOnlyInter0Comm) {
     if (m_env.inter0Rank() >= 0) {
       bool bRC = (initialPos <  this->subSequenceSize());
@@ -2684,7 +2723,7 @@ template <class T>
 void
 uqScalarSequenceClass<T>::unifiedWriteContents(const std::string& fileName) const
 {
-  m_env.fullComm().Barrier();
+  //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
     *m_env.subDisplayFile() << "Entering uqScalarSequenceClass<T>::unifiedWriteContents()"
                             << ": fullRank "       << m_env.fullRank()
@@ -2746,7 +2785,7 @@ uqScalarSequenceClass<T>::unifiedWriteContents(const std::string& fileName) cons
                             << ", fileName = " << fileName
                             << std::endl;
   }
-  m_env.fullComm().Barrier();
+  //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
 
   return;
 }

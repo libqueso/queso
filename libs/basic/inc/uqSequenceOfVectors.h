@@ -1830,7 +1830,7 @@ uqSequenceOfVectorsClass<V,M>::estimateConvBrooksGelman(
 
   //TODO: Do we need a Barrier here?
   //TODO: Error checking on MPI.
-  m_env.fullComm().Barrier();
+  //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
 
   return convMeasure;
 }
@@ -1924,7 +1924,7 @@ template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(const std::string& fileName) const
 {
-  m_env.fullComm().Barrier();
+  //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
     *m_env.subDisplayFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
                             << ": fullRank "       << m_env.fullRank()
@@ -1989,7 +1989,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(const std::string& fileName)
                             << ", fileName = " << fileName
                             << std::endl;
   }
-  m_env.fullComm().Barrier();
+  //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
 
   return;
 }
@@ -2002,7 +2002,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
 {
   double unifiedReadSize = subReadSize*m_env.inter0Comm().NumProc();
 
-  m_env.fullComm().Barrier();
+  //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedReadContents()"
                             << ": fullRank "                       << m_env.fullRank()
@@ -2163,7 +2163,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
                             << ", fileName = " << fileName
                             << std::endl;
   }
-  m_env.fullComm().Barrier();
+  //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
 
   return;
 }
