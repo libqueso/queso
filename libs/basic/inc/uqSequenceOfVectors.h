@@ -1931,7 +1931,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(const std::string& fileName)
                             << ", subEnvironment " << m_env.subId()
                             << ", subRank "        << m_env.subRank()
                             << ", inter0Rank "     << m_env.inter0Rank()
-                            << ", m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc()
+      //<< ", m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc()
                             << ", fileName = "     << fileName
                             << std::endl;
   }
@@ -2000,8 +2000,6 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
   const std::string& fileName,
   const unsigned int subReadSize)
 {
-  double unifiedReadSize = subReadSize*m_env.inter0Comm().NumProc();
-
   //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedReadContents()"
@@ -2009,16 +2007,18 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
                             << ", subEnvironment "                 << m_env.subId()
                             << ", subRank "                        << m_env.subRank()
                             << ", inter0Rank "                     << m_env.inter0Rank()
-                            << ", m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc()
+      //<< ", m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc()
                             << ", fileName = "                     << fileName
-                            << ", subReadSize = "              << subReadSize
-                            << ", unifiedReadSize = "          << unifiedReadSize
+                            << ", subReadSize = "                  << subReadSize
+      //<< ", unifiedReadSize = "              << unifiedReadSize
                             << std::endl;
   }
 
   this->resizeSequence(subReadSize);
 
   if (m_env.inter0Rank() >= 0) {
+    double unifiedReadSize = subReadSize*m_env.inter0Comm().NumProc();
+
     // In the logic below, the id of a line' begins with value 0 (zero)
     unsigned int idOfMyFirstLine = 1 + m_env.inter0Rank()*subReadSize;
     unsigned int idOfMyLastLine = (1 + m_env.inter0Rank())*subReadSize;

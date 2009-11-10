@@ -544,10 +544,11 @@ uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only(
   bool useOnlyInter0Comm,
   std::vector<T>& outputVec) const
 {
-  if (m_env.numSubEnvironments() == 1) {
-    // No need to do anything
-    return;
-  }
+  // The logic (numSubEnvs == 1) does *not* apply here because 'outputVec' needs to be filled
+  //if (m_env.numSubEnvironments() == 1) {
+  //  // No need to do anything
+  //  return;
+  //}
 
   if (useOnlyInter0Comm) {
     if (m_env.inter0Rank() >= 0) {
@@ -1927,7 +1928,7 @@ uqScalarSequenceClass<T>::unifiedSort(
                             leafData,
                             minus1NumTreeLevels);
       }
-      else {
+      else if (m_env.inter0Rank() > 0) { // KAUST
         unsigned int uintBuffer[1];
         MPI_Status   status;
         int mpiRC = MPI_Recv((void *) uintBuffer, 1, MPI_UNSIGNED, MPI_ANY_SOURCE, SCALAR_SEQUENCE_INIT_MPI_MSG, m_env.inter0Comm().Comm(), &status);
@@ -2009,6 +2010,7 @@ uqScalarSequenceClass<T>::parallelMerge(
 {
   int parentNode = m_env.inter0Rank() & ~(1 << currentTreeLevel);
 
+  if (m_env.inter0Rank() >= 0) { // KAUST
   if (currentTreeLevel == 0) {
     // Leaf node: sort own local data.
     unsigned int leafDataSize = leafData.size();
@@ -2029,7 +2031,7 @@ uqScalarSequenceClass<T>::parallelMerge(
     int nextTreeLevel  = currentTreeLevel - 1;
     int rightChildNode = m_env.inter0Rank() | (1 << nextTreeLevel);
 
-    if (rightChildNode >= m_env.inter0Comm().NumProc()) { // No right child. Move down one level.
+    if (rightChildNode >= m_env.inter0Comm().NumProc()) { // No right child. Move down one level. KAUST2
       this->parallelMerge(sortedBuffer,
                           leafData,
                           nextTreeLevel);
@@ -2128,6 +2130,7 @@ uqScalarSequenceClass<T>::parallelMerge(
                         "uqScalarSequenceClass<T>::parallelMerge()",
                         "failed MPI_Send() for data");
   }
+  } // KAUST
 
   return;
 }
@@ -2730,7 +2733,7 @@ uqScalarSequenceClass<T>::unifiedWriteContents(const std::string& fileName) cons
                             << ", subEnvironment " << m_env.subId()
                             << ", subRank "        << m_env.subRank()
                             << ", inter0Rank "     << m_env.inter0Rank()
-                            << ", m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc()
+      //<< ", m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc()
                             << ", fileName = "     << fileName
                             << std::endl;
   }
