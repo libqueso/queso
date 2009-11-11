@@ -162,9 +162,11 @@ public:
                                                  V&                                   unifiedIqrVec) const;
         void         subScalesForKDE            (unsigned int                         initialPos,
                                                  const V&                             iqrVec,
+                                                 unsigned int                         kdeDimension,
                                                  V&                                   scaleVec) const;
         void         unifiedScalesForKDE        (unsigned int                         initialPos,
                                                  const V&                             unifiedIqrVec,
+                                                 unsigned int                         kdeDimension,
                                                  V&                                   unifiedScaleVec) const;
       //void         sabGaussianKDE             (const V&                             evalParamVec,
       //                                         V&                                   densityVec) const;
@@ -1489,6 +1491,7 @@ void
 uqSequenceOfVectorsClass<V,M>::subScalesForKDE(
   unsigned int initialPos,
   const V&     iqrVec,
+  unsigned int kdeDimension,
   V&           scaleVec) const
 {
   bool bRC = ((initialPos              <  this->subSequenceSize()) &&
@@ -1510,7 +1513,8 @@ uqSequenceOfVectorsClass<V,M>::subScalesForKDE(
                            i,
                            data);
     scaleVec[i] = data.subScaleForKDE(0,
-                                      iqrVec[i]);
+                                      iqrVec[i],
+                                      kdeDimension);
   }
 
   return;
@@ -1521,6 +1525,7 @@ void
 uqSequenceOfVectorsClass<V,M>::unifiedScalesForKDE(
   unsigned int initialPos,
   const V&     unifiedIqrVec,
+  unsigned int kdeDimension,
   V&           unifiedScaleVec) const
 {
   bool bRC = ((initialPos              <  this->subSequenceSize()    ) &&
@@ -1543,7 +1548,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedScalesForKDE(
                            data);
     unifiedScaleVec[i] = data.unifiedScaleForKDE(m_vectorSpace.numOfProcsForStorage() == 1,
                                                  0,
-                                                 unifiedIqrVec[i]);
+                                                 unifiedIqrVec[i],
+                                                 kdeDimension);
   }
 
   return;

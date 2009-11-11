@@ -163,10 +163,12 @@ public:
         T            unifiedInterQuantileRange    (bool                            useOnlyInter0Comm,
                                                    unsigned int                    initialPos) const;
         T            subScaleForKDE               (unsigned int                    initialPos,
-                                                   const T&                        iqrValue) const;
+                                                   const T&                        iqrValue,
+                                                   unsigned int                    kdeDimension) const;
         T            unifiedScaleForKDE           (bool                            useOnlyInter0Comm,
                                                    unsigned int                    initialPos,
-                                                   const T&                        unifiedIqrValue) const;
+                                                   const T&                        unifiedIqrValue,
+                                                   unsigned int                    kdeDimension) const;
       //double       sabGaussianKDE               (T                               evaluationPosition) const;
         void         subGaussianKDE               (unsigned int                    initialPos,
                                                    double                          scaleValue,
@@ -2031,7 +2033,7 @@ uqScalarSequenceClass<T>::parallelMerge(
     int nextTreeLevel  = currentTreeLevel - 1;
     int rightChildNode = m_env.inter0Rank() | (1 << nextTreeLevel);
 
-    if (rightChildNode >= m_env.inter0Comm().NumProc()) { // No right child. Move down one level. KAUST2
+    if (rightChildNode >= m_env.inter0Comm().NumProc()) { // No right child. Move down one level.
       this->parallelMerge(sortedBuffer,
                           leafData,
                           nextTreeLevel);
@@ -2356,7 +2358,8 @@ template <class T>
 T
 uqScalarSequenceClass<T>::subScaleForKDE(
   unsigned int initialPos,
-  const T&     iqrValue) const
+  const T&     iqrValue,
+  unsigned int kdeDimension) const
 {
   bool bRC = (initialPos <  this->subSequenceSize());
   UQ_FATAL_TEST_MACRO(bRC == false,
@@ -2375,10 +2378,10 @@ uqScalarSequenceClass<T>::subScaleForKDE(
 
   T scaleValue;
   if (iqrValue <= 0.) {
-    scaleValue = 1.06*std::sqrt(samValue)/std::pow(dataSize,1./5.);
+    scaleValue = 1.06*std::sqrt(samValue)/std::pow(dataSize,1./(4. + ((double) kdeDimension)));
    }
   else {
-    scaleValue = 1.06*std::min(std::sqrt(samValue),iqrValue/1.34)/std::pow(dataSize,1./5.);
+    scaleValue = 1.06*std::min(std::sqrt(samValue),iqrValue/1.34)/std::pow(dataSize,1./(4. + ((double) kdeDimension)));
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -2399,11 +2402,13 @@ T
 uqScalarSequenceClass<T>::unifiedScaleForKDE(
   bool         useOnlyInter0Comm,
   unsigned int initialPos,
-  const T&     unifiedIqrValue) const
+  const T&     unifiedIqrValue,
+  unsigned int kdeDimension) const
 {
   if (m_env.numSubEnvironments() == 1) {
     return this->subScaleForKDE(initialPos,
-                                unifiedIqrValue);
+                                unifiedIqrValue,
+                                kdeDimension);
   }
 
   T unifiedScaleValue = 0.;
@@ -2453,7 +2458,8 @@ uqScalarSequenceClass<T>::unifiedScaleForKDE(
     else {
       // Node not in the 'inter0' communicator
       unifiedScaleValue = this->subScaleForKDE(initialPos,
-                                               unifiedIqrValue);
+                                               unifiedIqrValue,
+                                               kdeDimension);
     }
   }
   else {

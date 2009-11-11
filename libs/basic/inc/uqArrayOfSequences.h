@@ -133,6 +133,7 @@ public:
                                            V&                       iqrs) const;
         void         scalesForKDE         (unsigned int             initialPos,
                                            const V&                 iqrs,
+                                           unsigned int             kdeDimension,
                                            V&                       scales) const;
         void         gaussianKDE          (const V&                 evaluationParamVec,
                                            V&                       densityVec) const;
@@ -896,6 +897,7 @@ void
 uqArrayOfSequencesClass<V,M>::scalesForKDE(
   unsigned int initialPos,
   const V&     iqrs,
+  unsigned int kdeDimension,
   V&           scales) const
 {
 #if 0

@@ -178,9 +178,11 @@ public:
                                                                 V&                                       unifiedIqrVec) const = 0;
   virtual  void                     subScalesForKDE            (unsigned int                             initialPos,
                                                                 const V&                                 iqrVec,
+                                                                unsigned int                             kdeDimension,
                                                                 V&                                       scaleVec) const = 0;
   virtual  void                     unifiedScalesForKDE        (unsigned int                             initialPos,
                                                                 const V&                                 unifiedIqrVec,
+                                                                unsigned int                             kdeDimension,
                                                                 V&                                       unifiedScaleVec) const = 0;
 //virtual  void                     sabGaussianKDE             (const V&                                 evaluationParamVec,
 //                                                              V&                                       densityVec) const = 0;
@@ -2076,6 +2078,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
     V gaussianKdeScaleVec(m_vectorSpace.zeroVector());
     this->subScalesForKDE(0, // Use the whole chain
                           iqrVec,
+                          1,
                           gaussianKdeScaleVec);
 
     std::vector<V*> kdeEvalPositions(statisticalOptions.kdeNumEvalPositions(),NULL);
@@ -2176,6 +2179,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
       V unifiedGaussianKdeScaleVec(m_vectorSpace.zeroVector());
       this->unifiedScalesForKDE(0, // Use the whole chain
                                 unifiedIqrVec,
+                                1,
                                 unifiedGaussianKdeScaleVec);
       //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
 
