@@ -2317,7 +2317,7 @@ template<class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices( // Use the whole chain
   const uqSequenceStatisticalOptionsClass& statisticalOptions,
-  std::ofstream*                        passedOfs)
+  std::ofstream*                           passedOfs)
 {
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "\n"
@@ -2365,6 +2365,9 @@ uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices( // Use the whole chain
                           "parallel vectors not supported yet");
     }
   }
+
+  delete correlationMatrix;
+  delete covarianceMatrix;
 
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "\n-----------------------------------------------------"

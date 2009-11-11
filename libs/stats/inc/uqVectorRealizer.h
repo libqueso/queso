@@ -229,6 +229,8 @@ uqGaussianVectorRealizerClass<V,M>::uqGaussianVectorRealizerClass(const char* pr
 template<class V, class M>
 uqGaussianVectorRealizerClass<V,M>::~uqGaussianVectorRealizerClass()
 {
+  delete m_unifiedLawVarVector;
+  delete m_unifiedLawExpVector;
   delete m_lowerCholLawCovMatrix;
 }
 
@@ -324,6 +326,8 @@ uqSequentialVectorRealizerClass<V,M>::uqSequentialVectorRealizerClass(
 template<class V, class M>
 uqSequentialVectorRealizerClass<V,M>::~uqSequentialVectorRealizerClass()
 {
+  delete m_unifiedSampleVarVector;
+  delete m_unifiedSampleExpVector;
 }
 
 template<class V, class M>

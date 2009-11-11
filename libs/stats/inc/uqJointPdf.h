@@ -488,6 +488,8 @@ template<class V,class M>
 uqGaussianJointPdfClass<V,M>::~uqGaussianJointPdfClass()
 {
   delete m_lawCovMatrix;
+  delete m_lawVarVector;
+  delete m_lawExpVector;
 }
 
 template <class V, class M>

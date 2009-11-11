@@ -231,7 +231,8 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
       currChain.computeStatistics(*currOptions.m_rawChainStatisticalOptions,
                                   genericOfsVar);
 
-      genericOfsVar->close();
+      //genericOfsVar->close();
+      delete genericOfsVar;
     }
 
     if (currOptions.m_rawChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
@@ -1080,7 +1081,8 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
         currChain.computeStatistics(*currOptions->m_rawChainStatisticalOptions,
                                     genericOfsVar);
 
-        genericOfsVar->close();
+        //genericOfsVar->close();
+        delete genericOfsVar;
       }
 
       if (currOptions->m_rawChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
@@ -1124,7 +1126,8 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                                       genericOfsVar);
         }
 
-        genericOfsVar->close();
+        //genericOfsVar->close();
+        delete genericOfsVar;
 
         if (currOptions->m_filteredChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
           currChain.unifiedWriteContents              (currOptions->m_filteredChainDataOutputFileName);
