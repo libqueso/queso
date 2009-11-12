@@ -1395,6 +1395,19 @@ uqMLSamplingClass<P_V,P_M>::generateChain(
 
       tmpChainSize = nodes[m_env.subId()].linkedChains[chainId].numberOfPositions+1; // IMPORTANT: '+1' in order to discard initial position afterwards
     }
+    auxInitialPosition.mpiBcast(0, m_env.subComm().Comm()); // KAUST
+#if 0 // For debug only
+    for (int r = 0; r < m_env.subComm().NumProc(); ++r) {
+      if (r == m_env.subComm().MyPID()) {
+	std::cout << "Vector 'auxInitialPosition at rank " << r
+                  << " has contents "                      << auxInitialPosition
+                  << std::endl;
+      }
+      m_env.subComm().Barrier();
+    }
+    sleep(1);
+#endif
+
     // KAUST: all processors should have the same 'tmpChainSize'
     mpiRC = MPI_Bcast((void *) &tmpChainSize, (int) 1, MPI_UNSIGNED, 0, m_env.subComm().Comm());
     UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,

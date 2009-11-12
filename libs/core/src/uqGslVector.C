@@ -452,6 +452,67 @@ uqGslVectorClass::sort()
 }
 
 void
+uqGslVectorClass::mpiBcast(int srcRank, const Epetra_MpiComm& bcastComm)
+{
+  // Filter out those nodes that should not participate
+  if (bcastComm.MyPID() < 0) return;
+
+  // Check 'srcRank'
+  UQ_FATAL_TEST_MACRO((srcRank < 0) || (srcRank >= bcastComm.NumProc()),
+                      m_env.fullRank(),
+                      "uqGslVectorClass::mpiBcast()",
+                      "invalud srcRank");
+
+  // Check number of participant nodes
+  double localNumNodes = 1.;
+  double totalNumNodes = 0.;
+  int mpiRC = MPI_Allreduce((void *) &localNumNodes, (void *) &totalNumNodes, (int) 1, MPI_DOUBLE, MPI_SUM, bcastComm.Comm());
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      m_env.fullRank(),
+                      "uqGslVectorClass::mpiBcast()",
+                      "failed MPI_Allreduce() for numNodes");
+  UQ_FATAL_TEST_MACRO(totalNumNodes != (double) bcastComm.NumProc(),
+                      m_env.fullRank(),
+                      "uqGslVectorClass::mpiBcast()",
+                      "inconsistent numNodes");
+
+  // Check that all participant nodes have the same vector size
+  double localVectorSize = (double) this->sizeLocal();
+  double sumOfVectorSizes = 0.; 
+  mpiRC = MPI_Allreduce((void *) &localVectorSize, (void *) &sumOfVectorSizes, (int) 1, MPI_DOUBLE, MPI_SUM, bcastComm.Comm());
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      m_env.fullRank(),
+                      "uqGslVectorClass::mpiBcast()",
+                      "failed MPI_Allreduce() for vectorSize");
+  UQ_FATAL_TEST_MACRO(sumOfVectorSizes != (totalNumNodes * localVectorSize),
+                      m_env.fullRank(),
+                      "uqGslVectorClass::mpiBcast()",
+                      "inconsistent vectorSize");
+
+  // Ok, bcast data
+  std::vector<double> dataBuffer((unsigned int) localVectorSize, 0.);
+  if (bcastComm.MyPID() == srcRank) {
+    for (unsigned int i = 0; i < dataBuffer.size(); ++i) {
+      dataBuffer[i] = (*this)[i];
+    }
+  }
+
+  mpiRC = MPI_Bcast((void *) &dataBuffer[0], (int) localVectorSize, MPI_DOUBLE, srcRank, bcastComm.Comm());
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      m_env.fullRank(),
+                      "uqGslVectorClass::mpiBcast()",
+                      "failed MPI_Bcast()");
+
+  if (bcastComm.MyPID() != srcRank) {
+    for (unsigned int i = 0; i < dataBuffer.size(); ++i) {
+      (*this)[i] = dataBuffer[i];
+    }
+  }
+
+  return;
+}
+
+void
 uqGslVectorClass::print(std::ostream& os) const
 {
   unsigned int size = this->sizeLocal();

@@ -72,6 +72,7 @@ public:
   void         cwInvert         ();
   void         matlabDiff       (unsigned int firstPositionToStoreDiff, double valueForRemainderPosition, uqGslVectorClass& outputVec) const;
   void         sort             ();
+  void         mpiBcast         (int srcRank, const Epetra_MpiComm& bcastComm);
   void         print            (std::ostream& os) const;
   void         subWriteContents (const std::string&            varNamePrefix,
                                  const std::string&            fileName,
