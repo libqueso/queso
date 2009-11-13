@@ -55,7 +55,7 @@ public:
   virtual  double deriv         (double domainValue) const = 0;
 
            template<class V, class M>
-	     void quadPtsWeigths(unsigned int numIntervals, bool forceWeigthsToSum1, V& quadPositions, V& quadWeigths) const;
+	     void quadPtsWeights(unsigned int numIntervals, bool forceWeightsToSum1, V& quadPositions, V& quadWeights) const;
 
 protected:
   double m_minDomainValue;
@@ -64,23 +64,23 @@ protected:
 
 template<class V, class M>
 void
-uqBase1D1DFunctionClass::quadPtsWeigths(
+uqBase1D1DFunctionClass::quadPtsWeights(
   unsigned int numIntervals,
-  bool         forceWeigthsToSum1,
+  bool         forceWeightsToSum1,
   V&           quadPositions,
-  V&           quadWeigths) const
+  V&           quadWeights) const
 {
   const uqBaseEnvironmentClass& env = quadPositions.env();
   unsigned int n = quadPositions.sizeLocal();
 
   UQ_FATAL_TEST_MACRO((n == 0),
                       UQ_UNAVAILABLE_RANK,
-                      "uqBase1D1DFunctionClass::quadPtsWeigths()",
+                      "uqBase1D1DFunctionClass::quadPtsWeights()",
                       "invalid input vector size");
 
-  UQ_FATAL_TEST_MACRO((quadPositions.sizeLocal() != quadWeigths.sizeLocal()),
+  UQ_FATAL_TEST_MACRO((quadPositions.sizeLocal() != quadWeights.sizeLocal()),
                       UQ_UNAVAILABLE_RANK,
-                      "uqBase1D1DFunctionClass::quadPtsWeigths()",
+                      "uqBase1D1DFunctionClass::quadPtsWeights()",
                       "different input vector sizes");
 
   double delta = (m_maxDomainValue-m_minDomainValue)/((double) numIntervals);
@@ -91,13 +91,13 @@ uqBase1D1DFunctionClass::quadPtsWeigths(
     sampleValues   [i] = this->value(samplePositions[i]);
     UQ_FATAL_TEST_MACRO((sampleValues[i] < 0.),
                         UQ_UNAVAILABLE_RANK,
-                        "uqBase1D1DFunctionClass::quadPtsWeigths()",
+                        "uqBase1D1DFunctionClass::quadPtsWeights()",
                         "sampleValue is negative");
   }
 
   // Compute alphas and betas
   if ((env.displayVerbosity() >= 3) && (env.subDisplayFile())) {
-    *env.subDisplayFile() << "In uqBase1D1DFunctionClass::quadPtsWeigths()"
+    *env.subDisplayFile() << "In uqBase1D1DFunctionClass::quadPtsWeights()"
                           << ": computing alphas and betas ..."
                           << std::endl;
   }
@@ -129,7 +129,7 @@ uqBase1D1DFunctionClass::quadPtsWeigths(
     }
     UQ_FATAL_TEST_MACRO((beta[k] < 0.),
                         UQ_UNAVAILABLE_RANK,
-                        "uqBase1D1DFunctionClass::quadPtsWeigths()",
+                        "uqBase1D1DFunctionClass::quadPtsWeights()",
                         "beta is negative");
 
     // Prepare for next k
@@ -141,7 +141,7 @@ uqBase1D1DFunctionClass::quadPtsWeigths(
     pi_pi_m1 = pi_pi_0;
   }
   if ((env.displayVerbosity() >= 3) && (env.subDisplayFile())) {
-    *env.subDisplayFile() << "In uqBase1D1DFunctionClass::quadPtsWeigths()";
+    *env.subDisplayFile() << "In uqBase1D1DFunctionClass::quadPtsWeights()";
     for (unsigned int k = 0; k < n; ++k) {
       *env.subDisplayFile() << "\n alpha[" << k << "] = " << alpha[k]
                             << ", beta["   << k << "] = " << beta[k];
@@ -151,7 +151,7 @@ uqBase1D1DFunctionClass::quadPtsWeigths(
 
   // Form mJ
   if ((env.displayVerbosity() >= 3) && (env.subDisplayFile())) {
-    *env.subDisplayFile() << "In uqBase1D1DFunctionClass::quadPtsWeigths()"
+    *env.subDisplayFile() << "In uqBase1D1DFunctionClass::quadPtsWeights()"
                           << ": forming J..."
                           << std::endl;
   }
@@ -168,14 +168,14 @@ uqBase1D1DFunctionClass::quadPtsWeigths(
     }
   } // end for 'k'
   if ((env.displayVerbosity() >= 3) && (env.subDisplayFile())) {
-    *env.subDisplayFile() << "In uqBase1D1DFunctionClass::quadPtsWeigths():"
+    *env.subDisplayFile() << "In uqBase1D1DFunctionClass::quadPtsWeights():"
                           << "\n  mJ = " << mJ
                           << std::endl;
   }
 
   // Compute eigen values and vectors of mJ
   if ((env.displayVerbosity() >= 3) && (env.subDisplayFile())) {
-    *env.subDisplayFile() << "In uqBase1D1DFunctionClass::quadPtsWeigths()"
+    *env.subDisplayFile() << "In uqBase1D1DFunctionClass::quadPtsWeights()"
                           << ": computing eigen stuff of J..."
                           << std::endl;
   }
@@ -183,28 +183,29 @@ uqBase1D1DFunctionClass::quadPtsWeigths(
   M eigenVectors(zeroVector);
   mJ.eigen(eigenValues,&eigenVectors);
 
-  //std::set<unsigned int> auxSet;
-  //auxSet.insert(0);
+  // Prepare output information
+  for (unsigned int k = 0; k < n; ++k) {
+    quadPositions[k] = eigenValues[k];
+    quadWeights  [k] = beta[0] * eigenVectors(0,k) * eigenVectors(0,k);
+  } 
+
+  double wSum = 0.;
+  for (unsigned int k = 0; k < n; ++k) {
+    wSum += quadWeights[k];
+  } 
+
   if ((env.displayVerbosity() >= 2) && (env.subDisplayFile())) {
-    *env.subDisplayFile() << "In uqBase1D1DFunctionClass::quadPtsWeigths():"
+    *env.subDisplayFile() << "In uqBase1D1DFunctionClass::quadPtsWeights()"
+                          << ": beta[0] = " << beta[0]
+                          << ", wSum = "    << wSum
                           << "\n  eigenValues = "  << eigenValues
                           << "\n  eigenVectors = " << eigenVectors
                           << std::endl;
   }
 
-  // Prepare output information
-  for (unsigned int k = 0; k < n; ++k) {
-    quadPositions[k] = eigenValues[k];
-    quadWeigths  [k] = beta[0] * eigenVectors(0,k) * eigenVectors(0,k);
-  } 
-
-  if (forceWeigthsToSum1) {
-    double wSum = 0.;
+  if (forceWeightsToSum1) {
     for (unsigned int k = 0; k < n; ++k) {
-      wSum += quadWeigths[k];
-    } 
-    for (unsigned int k = 0; k < n; ++k) {
-      quadWeigths[k] /= wSum;
+      quadWeights[k] /= wSum;
     }
   }
 
