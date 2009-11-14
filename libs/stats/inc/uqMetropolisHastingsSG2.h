@@ -84,8 +84,8 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
                       "'m_vectorSpace' and 'workingChain' are related to vector spaces of different dimensions");
 
   m_env.syncPrintDebugMsg("Entering uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()",2,3000000,m_env.fullComm());
-  uqCheckTheParallelEnvironment<P_V,P_V>(m_initialPosition,
-                                         m_initialPosition);
+  uqMiscCheckTheParallelEnvironment<P_V,P_V>(m_initialPosition,
+                                             m_initialPosition);
 
   P_V valuesOf1stPosition(m_initialPosition);
   int iRC = UQ_OK_RC;

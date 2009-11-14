@@ -87,8 +87,8 @@ public:
                                                    T&                              unifiedMaxDomainValue,
                                                    std::vector<T>&                 unifiedCdfValues) const;
 
-        T            subMax                       (unsigned int                    initialPos,
-                                                   unsigned int                    numPos) const;
+        //T            subMax                       (unsigned int                    initialPos,
+        //                                           unsigned int                    numPos) const;
         T            subMean                      (unsigned int                    initialPos,
                                                    unsigned int                    numPos) const;
         T            unifiedMean                  (bool                            useOnlyInter0Comm,
@@ -417,6 +417,8 @@ uqScalarSequenceClass<T>::unifiedSequenceSize(bool useOnlyInter0Comm) const
     return this->subSequenceSize();
   }
 
+  // As of 14/Nov/2009, this routine does *not* require sub sequences to have equal size. Good.
+
   unsigned int unifiedNumSamples = 0;
   if (useOnlyInter0Comm) {
     if (m_env.inter0Rank() >= 0) {
@@ -728,6 +730,9 @@ uqScalarSequenceClass<T>::unifiedUniformlySampledCdf(
                                         unifiedCdfValues);
   }
 
+  // KAUST2
+  // As of 14/Nov/2009, this routine needs to be checked if it requires sub sequences to have equal size. Good.
+
   if (useOnlyInter0Comm) {
     if (m_env.inter0Rank() >= 0) {
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
@@ -809,7 +814,7 @@ uqScalarSequenceClass<T>::unifiedUniformlySampledCdf(
 
   return;
 }
-
+#if 0 // KAUST2
 template <class T>
 T
 uqScalarSequenceClass<T>::subMax(
@@ -832,7 +837,7 @@ uqScalarSequenceClass<T>::subMax(
 
   return tmpMax;
 }
-
+#endif
 template <class T>
 T
 uqScalarSequenceClass<T>::subMean(
@@ -867,6 +872,8 @@ uqScalarSequenceClass<T>::unifiedMean(
     return this->subMean(initialPos,
                          numPos);
   }
+
+  // As of 14/Nov/2009, this routine does *not* require sub sequences to have equal size. Good.
 
   T unifiedMeanValue = 0.;
   if (useOnlyInter0Comm) {
@@ -959,6 +966,8 @@ uqScalarSequenceClass<T>::unifiedSampleVariance(
                                    numPos,
                                    unifiedMeanValue);
   }
+
+  // As of 14/Nov/2009, this routine does *not* require sub sequences to have equal size. Good.
 
   T unifiedSamValue = 0.;
   if (useOnlyInter0Comm) {
@@ -1054,6 +1063,8 @@ uqScalarSequenceClass<T>::unifiedPopulationVariance(
                                        numPos,
                                        unifiedMeanValue);
   }
+
+  // As of 14/Nov/2009, this routine does *not* require sub sequences to have equal size. Good.
 
   T unifiedPopValue = 0.;
   if (useOnlyInter0Comm) {
@@ -1609,6 +1620,8 @@ uqScalarSequenceClass<T>::unifiedMinMax(
                            unifiedMaxValue);
   }
 
+  // As of 14/Nov/2009, this routine does *not* require sub sequences to have equal size. Good.
+
   if (useOnlyInter0Comm) {
     if (m_env.inter0Rank() >= 0) {
       // Find local min and max
@@ -1735,6 +1748,8 @@ uqScalarSequenceClass<T>::unifiedHistogram(
                               unifiedCenters,
                               unifiedBins);
   }
+
+  // As of 14/Nov/2009, this routine needs to be checked if it requires sub sequences to have equal size. Good.
 
   if (useOnlyInter0Comm) {
     if (m_env.inter0Rank() >= 0) {
@@ -1896,6 +1911,8 @@ uqScalarSequenceClass<T>::unifiedSort(
   if (m_env.numSubEnvironments() == 1) {
     return this->subSort(initialPos,unifiedSortedSequence);
   }
+
+  // As of 14/Nov/2009, this routine needs to be checked if it requires sub sequences to have equal size. Good.
 
   if (useOnlyInter0Comm) {
     if (m_env.inter0Rank() >= 0) {
@@ -2269,6 +2286,8 @@ uqScalarSequenceClass<T>::unifiedInterQuantileRange(
     return this->subInterQuantileRange(initialPos);
   }
 
+  // As of 14/Nov/2009, this routine needs to be checked if it requires sub sequences to have equal size. Good.
+
   if (useOnlyInter0Comm) {
     if (m_env.inter0Rank() >= 0) {
       m_env.syncPrintDebugMsg("In uqScalarSequenceClass<T>::unifiedInterQuantileRange(), beginning logic",3,3000000,m_env.inter0Comm());
@@ -2411,6 +2430,8 @@ uqScalarSequenceClass<T>::unifiedScaleForKDE(
                                 kdeDimension);
   }
 
+  // As of 14/Nov/2009, this routine needs to be checked if it requires sub sequences to have equal size. Good.
+
   T unifiedScaleValue = 0.;
   if (useOnlyInter0Comm) {
     if (m_env.inter0Rank() >= 0) {
@@ -2544,6 +2565,8 @@ uqScalarSequenceClass<T>::unifiedGaussianKDE(
                                 unifiedEvaluationPositions,
                                 unifiedDensityValues);
   }
+
+  // As of 14/Nov/2009, this routine needs to be checked if it requires sub sequences to have equal size. Good.
 
   if (useOnlyInter0Comm) {
     if (m_env.inter0Rank() >= 0) {
@@ -2698,6 +2721,8 @@ uqScalarSequenceClass<T>::unifiedCompute2dGaussianKDE(
                                          unifiedDensityValues);
   }
 
+  // As of 14/Nov/2009, this routine needs to be checked if it requires sub sequences to have equal size. Good.
+
   if (useOnlyInter0Comm) {
     if (m_env.inter0Rank() >= 0) {
       UQ_FATAL_TEST_MACRO(true,
@@ -2743,6 +2768,8 @@ uqScalarSequenceClass<T>::unifiedWriteContents(const std::string& fileName) cons
                             << ", fileName = "     << fileName
                             << std::endl;
   }
+
+  // As of 14/Nov/2009, this routine does *not* require sub sequences to have equal size. Good.
 
   if (m_env.inter0Rank() >= 0) {
     for (unsigned int r = 0; r < (unsigned int) m_env.inter0Comm().NumProc(); ++r) {

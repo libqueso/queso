@@ -33,6 +33,8 @@
 #ifndef __UQ_MULTI_LEVEL_SAMPLING_H__
 #define __UQ_MULTI_LEVEL_SAMPLING_H__
 
+#define ML_KAUST3
+
 #include <uqMLSamplingOptions.h>
 #include <uqFiniteDistribution.h>
 #include <uqVectorRV.h>
@@ -78,13 +80,13 @@ public:
   void   print              (std::ostream& os) const;
 
 private:
-  void   sampleIndexes      (unsigned int                                    subNumSamples,          // input
-                             const std::vector<double>&                      unifiedWeightStdVector, // input
-                             std::vector<unsigned int>&                      unifiedIndexCounters);  // output
+  void   sampleIndexes      (unsigned int                                    subNumSamples,                     // input
+                             const std::vector<double>&                      unifiedWeightStdVectorAtProc0Only, // input
+                             std::vector<unsigned int>&                      unifiedIndexCountersAtAllProcs);   // output
 
-  void   distribIndexSamples(unsigned int                                    subNumSamples,        // input
-                             std::vector<unsigned int>&                      unifiedIndexCounters, // input, modified
-                             std::vector<uqLinkedChainsPerNodeStruct>&       nodes);               // output
+  void   distribIndexSamples(unsigned int                                    subNumSamples,                  // input
+                             std::vector<unsigned int>&                      unifiedIndexCountersAtAllProcs, // input, modified
+                             std::vector<uqLinkedChainsPerNodeStruct>&       nodes);                         // output
 
   void   generateChain      (uqMLSamplingLevelOptionsClass&                  inputOptions,            // input, only m_rawChainSize changes
                              const std::vector<uqLinkedChainsPerNodeStruct>& nodes,                   // input
@@ -213,51 +215,51 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
       //std::cout << "In QUESO: before prior realizer with i = " << i << std::endl;
       m_priorRv.realizer().realization(auxVec);
       currChain.setPositionValues(i,auxVec);
-      // KAUST: all processors should call here
+      // KAUST: all nodes should call here
       currLogLikelihoodValues[i] = m_likelihoodFunction.lnValue(auxVec,NULL,NULL,NULL,NULL);  // likelihood is important
       currLogTargetValues[i]     = m_priorRv.pdf().lnValue(auxVec,NULL,NULL,NULL,NULL) + currLogLikelihoodValues[i];
       //std::cout << "In QUESO: currLogTargetValues[" << i << "] = " << currLogTargetValues[i] << std::endl;
     }
 
     if (m_env.inter0Rank() >= 0) { // KAUST
-    if (currOptions.m_rawChainComputeStats) {
-      std::ofstream* genericOfsVar = NULL;
-      m_env.openOutputFile(currOptions.m_dataOutputFileName,
-                           UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
-                           currOptions.m_dataOutputAllowedSet,
-                           false,
-                           genericOfsVar);
+      if (currOptions.m_rawChainComputeStats) {
+        std::ofstream* genericOfsVar = NULL;
+        m_env.openOutputFile(currOptions.m_dataOutputFileName,
+                             UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                             currOptions.m_dataOutputAllowedSet,
+                             false,
+                             genericOfsVar);
 
-      currChain.computeStatistics(*currOptions.m_rawChainStatisticalOptions,
-                                  genericOfsVar);
+        currChain.computeStatistics(*currOptions.m_rawChainStatisticalOptions,
+                                    genericOfsVar);
 
-      //genericOfsVar->close();
-      delete genericOfsVar;
-    }
+        //genericOfsVar->close();
+        delete genericOfsVar;
+      }
 
-    if (currOptions.m_rawChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
-      currChain.unifiedWriteContents              (currOptions.m_rawChainDataOutputFileName);
-      currLogLikelihoodValues.unifiedWriteContents(currOptions.m_rawChainDataOutputFileName);
-      currLogTargetValues.unifiedWriteContents    (currOptions.m_rawChainDataOutputFileName);
-    }
+      if (currOptions.m_rawChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
+        currChain.unifiedWriteContents              (currOptions.m_rawChainDataOutputFileName);
+        currLogLikelihoodValues.unifiedWriteContents(currOptions.m_rawChainDataOutputFileName);
+        currLogTargetValues.unifiedWriteContents    (currOptions.m_rawChainDataOutputFileName);
+      }
 
-    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-      *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                              << ", level " << currLevel+LEVEL_REF_ID
-                              << ": finished generating " << currChain.subSequenceSize()
-                              << " chain positions"
-                              << std::endl;
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+        *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                                << ", level " << currLevel+LEVEL_REF_ID
+                                << ": finished generating " << currChain.subSequenceSize()
+                                << " chain positions"
+                                << std::endl;
 
-      //unsigned int numZeros = 0;
-      //for (unsigned int i = 0; i < currTargetValues.subSequenceSize(); ++i) {
-      //  *m_env.subDisplayFile() << "currTargetValues[" << i
-      //                          << "] = " << currTargetValues[i]
-      //                          << std::endl;
-      //  if (currTargetValues[i] == 0.) numZeros++;
-      //}
-      //*m_env.subDisplayFile() << "Number of zeros in currTargetValues = " << numZeros
-      //                        << std::endl;
-    }
+        //unsigned int numZeros = 0;
+        //for (unsigned int i = 0; i < currTargetValues.subSequenceSize(); ++i) {
+        //  *m_env.subDisplayFile() << "currTargetValues[" << i
+        //                          << "] = " << currTargetValues[i]
+        //                          << std::endl;
+        //  if (currTargetValues[i] == 0.) numZeros++;
+        //}
+        //*m_env.subDisplayFile() << "Number of zeros in currTargetValues = " << numZeros
+        //                        << std::endl;
+      }
     } // KAUST
 
     //UQ_FATAL_TEST_MACRO((currChain.subSequenceSize() != currOptions.m_rawChainSize),
@@ -397,7 +399,13 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
       double meanEffectiveSizeRatio = .5*(currOptions->m_minEffectiveSizeRatio + currOptions->m_maxEffectiveSizeRatio);
 #ifdef UQ_ML_SAMPLING_USES_OMEGA_LN
       uqScalarSequenceClass<double> omegaLnDiffSequence(m_env,prevLogLikelihoodValues.subSequenceSize(),"");
+
+#ifdef ML_KAUST3
+      double nowUnifiedEvidenceLnFactor = 0.;
+#else
       double nowEvidenceLnFactor = 0.;
+#endif
+
 #else
       double nowEvidenceFactor = 0.;
 #endif
@@ -425,7 +433,14 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
           auxExponent -= 1.;
         }
 #ifdef UQ_ML_SAMPLING_USES_OMEGA_LN
+
+#ifdef ML_KAUST3
+        double subWeightRatioSum     = 0.;
+        double unifiedWeightRatioSum = 0.;
+#else
         double weightRatioSum = 0.;
+#endif
+
 #else
         double weightSum = 0.;
 #endif
@@ -449,20 +464,54 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
           //}
         }
 #ifdef UQ_ML_SAMPLING_USES_OMEGA_LN
-        double omegaLnMax = omegaLnDiffSequence.subMax(0,omegaLnDiffSequence.subSequenceSize()); // FIX ME: unifiedMax()
+
+#ifdef ML_KAUST3
+        double unifiedOmegaLnMax = 0.;
+        double unifiedOmegaLnMin = 0.;
+        omegaLnDiffSequence.unifiedMinMax(m_vectorSpace.numOfProcsForStorage() == 1, // KAUST3
+                                          0,
+                                          unifiedOmegaLnMin,
+                                          unifiedOmegaLnMax);
+        for (unsigned int i = 0; i < weightSequence.subSequenceSize(); ++i) {
+          omegaLnDiffSequence[i] -= unifiedOmegaLnMax;
+          weightSequence[i] = exp(omegaLnDiffSequence[i]);
+          subWeightRatioSum += weightSequence[i];
+        }
+        int mpiRC = MPI_Allreduce((void *) &subWeightRatioSum, (void *) &unifiedWeightRatioSum, (int) 1, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm());
+        UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                            m_env.fullRank(),
+                            "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                            "failed MPI_Allreduce() for weight ratio sum");
+
+        nowUnifiedEvidenceLnFactor = log(unifiedWeightRatioSum) + unifiedOmegaLnMax - log(weightSequence.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1));
+#else
+        double omegaLnMax = 0.;
+        double omegaLnMin = 0.;
+        omegaLnDiffSequence.unifiedMinMax(m_vectorSpace.numOfProcsForStorage() == 1,
+                                          0,
+                                          omegaLnMin,
+                                          omegaLnMax);
         for (unsigned int i = 0; i < weightSequence.subSequenceSize(); ++i) {
           omegaLnDiffSequence[i] -= omegaLnMax;
           weightSequence[i] = exp(omegaLnDiffSequence[i]);
           weightRatioSum += weightSequence[i];
         }
         nowEvidenceLnFactor = log(weightRatioSum) + omegaLnMax - log(weightSequence.subSequenceSize());
+#endif
+
 #else
-        nowEvidenceFactor = weightSum/prevChain.unifiedSequenceSize(); // FIX ME: unified
+        nowEvidenceFactor = weightSum/prevChain.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1);
 #endif
         double effectiveSampleSize = 0.;
         for (unsigned int i = 0; i < weightSequence.subSequenceSize(); ++i) {
 #ifdef UQ_ML_SAMPLING_USES_OMEGA_LN
+
+#ifdef ML_KAUST3
+          weightSequence[i] /= unifiedWeightRatioSum;
+#else
           weightSequence[i] /= weightRatioSum;
+#endif
+
 #else
           weightSequence[i] /= weightSum;
 #endif
@@ -475,8 +524,17 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
           //                          << std::endl;
           //}
         }
+#ifdef ML_KAUST3
+        double subQuantity = effectiveSampleSize;
+        effectiveSampleSize = 0.;
+        mpiRC = MPI_Allreduce((void *) &subQuantity, (void *) &effectiveSampleSize, (int) 1, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm());
+        UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                            m_env.fullRank(),
+                            "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                            "failed MPI_Allreduce() for effective sample size");
+#endif
         effectiveSampleSize = 1./effectiveSampleSize;
-        nowEffectiveSizeRatio = effectiveSampleSize/((double) weightSequence.subSequenceSize()); // FIX ME: unified
+        nowEffectiveSizeRatio = effectiveSampleSize/((double) weightSequence.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1));
         UQ_FATAL_TEST_MACRO((nowEffectiveSizeRatio > (1.+1.e-8)),
                             m_env.fullRank(),
                             "uqMLSamplingClass<P_V,P_M>::generateSequence()",
@@ -511,10 +569,28 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                                   << std::endl;
         }
         nowAttempt++;
+
+        // Make sure all nodes in 'inter0Comm' have the same value of 'nowExponent'
+        uqMiscCheckForSameValueInAllNodes(nowExponent,
+                                          0.,
+                                          m_env.inter0Comm(),
+                                          "uqMLSamplingClass<P_V,P_M>::generateSequence(), step 3, testResult");
+
+        // Make sure all nodes in 'inter0Comm' have the same value of 'testResult'
+        uqMiscCheckForSameValueInAllNodes(testResult,
+                                          0.,
+                                          m_env.inter0Comm(),
+                                          "uqMLSamplingClass<P_V,P_M>::generateSequence(), step 3, testResult");
       } while (testResult == false);
       currExponent = nowExponent;
 #ifdef UQ_ML_SAMPLING_USES_OMEGA_LN
+
+#ifdef ML_KAUST3
+      m_logEvidenceFactors.push_back(nowUnifiedEvidenceLnFactor);
+#else
       m_logEvidenceFactors.push_back(nowEvidenceLnFactor);
+#endif
+
 #else
       m_logEvidenceFactors.push_back(log(nowEvidenceFactor));
 #endif
@@ -551,8 +627,14 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
         delete currOptions;
         currOptions = &lastLevelOptions;
       }
+
+      // Make sure all nodes in 'inter0Comm' have the same value of 'logEvidenceFactor'
+      uqMiscCheckForSameValueInAllNodes(m_logEvidenceFactors[m_logEvidenceFactors.size()-1],
+                                        1.e-16,
+                                        m_env.inter0Comm(),
+                                        "uqMLSamplingClass<P_V,P_M>::generateSequence(), step 3, logEvidenceFactor");
     } // end of step 3
-    // KAUST: all processors should have the same 'currExponent'
+    // KAUST: all nodes in 'subComm' should have the same 'currExponent'
     int mpiRC = MPI_Bcast((void *) &currExponent, (int) 1, MPI_DOUBLE, 0, m_env.subComm().Comm());
     UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                         m_env.fullRank(),
@@ -588,16 +670,16 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
       }
 
       P_V diffVec(m_vectorSpace.zeroVector());
-      P_M* subCovMatrix = m_vectorSpace.newMatrix();
+      P_M subCovMatrix(m_vectorSpace.zeroVector());
       for (unsigned int i = 0; i < weightSequence.subSequenceSize(); ++i) {
         prevChain.getPositionValues(i,auxVec);
         diffVec = auxVec - weightedMeanVec;
-        *subCovMatrix += weightSequence[i]*matrixProduct(diffVec,diffVec);
+        subCovMatrix += weightSequence[i]*matrixProduct(diffVec,diffVec);
       }
 
-      for (unsigned int i = 0; i < unifiedCovMatrix->numRowsLocal(); ++i) {
+      for (unsigned int i = 0; i < unifiedCovMatrix->numRowsLocal(); ++i) { // KAUST5
         for (unsigned int j = 0; j < unifiedCovMatrix->numCols(); ++j) {
-          double localValue = (*subCovMatrix)(i,j);
+          double localValue = subCovMatrix(i,j);
           double sumValue = 0.;
           if (m_env.inter0Rank() >= 0) {
             int mpiRC = MPI_Allreduce((void *) &localValue, (void *) &sumValue, (int) 1, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm());
@@ -612,7 +694,6 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
           (*unifiedCovMatrix)(i,j) = sumValue;
         }
       }
-      delete subCovMatrix;
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
@@ -626,7 +707,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     //***********************************************************
     // Step 5 of 10: create *unified* finite distribution for current level
     //***********************************************************
-    std::vector<unsigned int> unifiedIndexCounters(0); // It will be resized by 'sampleIndexes()' below
+    std::vector<unsigned int> unifiedIndexCountersAtAllProcs(0); // It will be resized by 'sampleIndexes()' below
     if (m_env.inter0Rank() >= 0) { // KAUST
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
@@ -635,14 +716,14 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                                 << std::endl;
       }
 
-      std::vector<double> unifiedWeightStdVector(0);
+      std::vector<double> unifiedWeightStdVectorAtProc0Only(0);
       weightSequence.getUnifiedContentsAtProc0Only(m_vectorSpace.numOfProcsForStorage() == 1,
-                                                   unifiedWeightStdVector);
-      sampleIndexes(currOptions->m_rawChainSize, // input
-                    unifiedWeightStdVector,      // input
-                    unifiedIndexCounters);       // output
+                                                   unifiedWeightStdVectorAtProc0Only);
+      sampleIndexes(currOptions->m_rawChainSize,       // input
+                    unifiedWeightStdVectorAtProc0Only, // input
+                    unifiedIndexCountersAtAllProcs);   // output
 
-      UQ_FATAL_TEST_MACRO(unifiedIndexCounters.size() != weightSequence.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1),
+      UQ_FATAL_TEST_MACRO(unifiedIndexCountersAtAllProcs.size() != weightSequence.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1),
                           m_env.fullRank(),
                           "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                           "wrong output from sampleIndexes() in step 5");
@@ -662,9 +743,9 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                                 << std::endl;
       }
 
-      distribIndexSamples(currOptions->m_rawChainSize, // input
-                          unifiedIndexCounters,        // input, modified
-                          nodes);                      // output
+      distribIndexSamples(currOptions->m_rawChainSize,    // input
+                          unifiedIndexCountersAtAllProcs, // input, modified
+                          nodes);                         // output
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
@@ -684,6 +765,8 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                                 << ": beginning step 7 of 10"
                                 << std::endl;
       }
+
+      // KAUST5: important
 
       if (m_env.inter0Comm().NumProc() > 1) {
         UQ_FATAL_TEST_MACRO(true,
@@ -705,7 +788,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     uqGenericVectorRVClass<P_V,P_M> currRv(m_options.m_prefix.c_str(),
                                            *m_targetDomain);
 
-    //if (m_env.inter0Rank() >= 0) { // KAUST
+    //if (m_env.inter0Rank() >= 0) // KAUST
     {
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
@@ -758,9 +841,9 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
       bool useMiddlePointLogicForEta = false;
       P_M nowCovMatrix(*unifiedCovMatrix);
 
-      std::vector<double> unifiedWeightStdVector(0);
+      std::vector<double> unifiedWeightStdVectorAtProc0Only(0);
       weightSequence.getUnifiedContentsAtProc0Only(m_vectorSpace.numOfProcsForStorage() == 1,
-                                                   unifiedWeightStdVector);
+                                                   unifiedWeightStdVectorAtProc0Only);
 
       do {
         if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -787,148 +870,148 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
         }
 
         if (m_env.inter0Rank() >= 0) { // KAUST
-        if (nowAttempt > 0) {
-          if (useMiddlePointLogicForEta == false) {
-            if (nowAttempt == 1) {
-              // Ok, keep useMiddlePointLogicForEta = false
-            }
-            else if ((beforeRejectionRateIsBelowRange == true) &&
-                     (nowRejectionRateIsBelowRange    == true)) {
-              // Ok
-            }
-            else if ((beforeRejectionRateIsBelowRange == false) &&
-                     (nowRejectionRateIsBelowRange    == false)) {
-              // Ok
-            }
-            else if ((beforeRejectionRateIsBelowRange == true ) &&
-                     (nowRejectionRateIsBelowRange    == false)) {
-              useMiddlePointLogicForEta = true;
+          if (nowAttempt > 0) {
+            if (useMiddlePointLogicForEta == false) {
+              if (nowAttempt == 1) {
+                // Ok, keep useMiddlePointLogicForEta = false
+              }
+              else if ((beforeRejectionRateIsBelowRange == true) &&
+                       (nowRejectionRateIsBelowRange    == true)) {
+                // Ok
+              }
+              else if ((beforeRejectionRateIsBelowRange == false) &&
+                       (nowRejectionRateIsBelowRange    == false)) {
+                // Ok
+              }
+              else if ((beforeRejectionRateIsBelowRange == true ) &&
+                       (nowRejectionRateIsBelowRange    == false)) {
+                useMiddlePointLogicForEta = true;
 
-              // This is the first time the middle point logic will be used below
-              etas[0] = std::min(beforeEta,nowEta);
-              etas[1] = std::max(beforeEta,nowEta);
+                // This is the first time the middle point logic will be used below
+                etas[0] = std::min(beforeEta,nowEta);
+                etas[1] = std::max(beforeEta,nowEta);
 
-              if (etas[0] == beforeEta) {
-                rejs[0] = beforeRejectionRate;
-                rejs[1] = nowRejectionRate;
+                if (etas[0] == beforeEta) {
+                  rejs[0] = beforeRejectionRate;
+                  rejs[1] = nowRejectionRate;
+                }
+                else {
+                  rejs[0] = nowRejectionRate;
+                  rejs[1] = beforeRejectionRate;
+                }
+              }
+              else if ((beforeRejectionRateIsBelowRange == false) &&
+                       (nowRejectionRateIsBelowRange    == true )) {
+                useMiddlePointLogicForEta = true;
+
+                // This is the first time the middle point logic will be used below
+                etas[0] = std::min(beforeEta,nowEta);
+                etas[1] = std::max(beforeEta,nowEta);
               }
               else {
-                rejs[0] = nowRejectionRate;
-                rejs[1] = beforeRejectionRate;
+                UQ_FATAL_TEST_MACRO(true,
+                                    m_env.fullRank(),
+                                    "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                                    "before and now range flags are inconsistent");
               }
-            }
-            else if ((beforeRejectionRateIsBelowRange == false) &&
-                     (nowRejectionRateIsBelowRange    == true )) {
-              useMiddlePointLogicForEta = true;
+            } // if (useMiddlePointLogicForEta == false)
 
-              // This is the first time the middle point logic will be used below
-              etas[0] = std::min(beforeEta,nowEta);
-              etas[1] = std::max(beforeEta,nowEta);
-            }
-            else {
-              UQ_FATAL_TEST_MACRO(true,
-                                  m_env.fullRank(),
-                                  "uqMLSamplingClass<P_V,P_M>::generateSequence()",
-                                  "before and now range flags are inconsistent");
-            }
-          } // if (useMiddlePointLogicForEta == false)
-
-          beforeEta                       = nowEta;
-          beforeRejectionRate             = nowRejectionRate;
-          beforeRejectionRateIsBelowRange = nowRejectionRateIsBelowRange;
-          if (useMiddlePointLogicForEta == false) {
-            if (beforeRejectionRateIsBelowRange) nowEta *= 4.;
-            else                                 nowEta /= 4.;
-            if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-              *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                                      << ", level " << currLevel+LEVEL_REF_ID
-                                      << ": in loop for assessing rejection rate"
-                                      << ", with nowAttempt = "  << nowAttempt
-                                      << ", useMiddlePointLogicForEta = false"
-                                      << ", nowEta just updated to value (to be tested) " << nowEta
-                                      << std::endl;
-            }
-          }
-          else {
-            if (nowRejectionRate > meanRejectionRate) {
-              if (rejs[0] > meanRejectionRate) {
-                etas[0] = nowEta;
-                etas[1] = etas[1];
-              }
-              else {
-                etas[0] = etas[0];
-                etas[1] = nowEta;
+            beforeEta                       = nowEta;
+            beforeRejectionRate             = nowRejectionRate;
+            beforeRejectionRateIsBelowRange = nowRejectionRateIsBelowRange;
+            if (useMiddlePointLogicForEta == false) {
+              if (beforeRejectionRateIsBelowRange) nowEta *= 4.;
+              else                                 nowEta /= 4.;
+              if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+                *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                                        << ", level " << currLevel+LEVEL_REF_ID
+                                        << ": in loop for assessing rejection rate"
+                                        << ", with nowAttempt = "  << nowAttempt
+                                        << ", useMiddlePointLogicForEta = false"
+                                        << ", nowEta just updated to value (to be tested) " << nowEta
+                                        << std::endl;
               }
             }
             else {
-              if (rejs[0] < meanRejectionRate) {
-                etas[0] = nowEta;
-                etas[1] = etas[1];
+              if (nowRejectionRate > meanRejectionRate) {
+                if (rejs[0] > meanRejectionRate) {
+                  etas[0] = nowEta;
+                  etas[1] = etas[1];
+                }
+                else {
+                  etas[0] = etas[0];
+                  etas[1] = nowEta;
+                }
               }
               else {
-                etas[0] = etas[0];
-                etas[1] = nowEta;
+                if (rejs[0] < meanRejectionRate) {
+                  etas[0] = nowEta;
+                  etas[1] = etas[1];
+                }
+                else {
+                  etas[0] = etas[0];
+                  etas[1] = nowEta;
+                }
+              }
+              nowEta = .5*(etas[0] + etas[1]);
+              if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+                *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                                        << ", level " << currLevel+LEVEL_REF_ID
+                                        << ": in loop for assessing rejection rate"
+                                        << ", with nowAttempt = " << nowAttempt
+                                        << ", useMiddlePointLogicForEta = true"
+                                        << ", nowEta just updated to value (to be tested) " << nowEta
+                                        << ", etas[0] = " << etas[0]
+                                        << ", etas[1] = " << etas[1]
+                                        << std::endl;
               }
             }
-            nowEta = .5*(etas[0] + etas[1]);
-            if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-              *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                                      << ", level " << currLevel+LEVEL_REF_ID
-                                      << ": in loop for assessing rejection rate"
-                                      << ", with nowAttempt = " << nowAttempt
-                                      << ", useMiddlePointLogicForEta = true"
-                                      << ", nowEta just updated to value (to be tested) " << nowEta
-                                      << ", etas[0] = " << etas[0]
-                                      << ", etas[1] = " << etas[1]
-                                      << std::endl;
-            }
-          }
-        } // if (nowAttempt > 0)
+          } // if (nowAttempt > 0)
         } // KAUST
         nowCovMatrix *= nowEta;
 
         unsigned int subNumSamples = 1 + (unsigned int) ( (1.-meanRejectionRate)/meanRejectionRate/currOptions->m_covRejectionRate/currOptions->m_covRejectionRate );
 
         if (m_env.inter0Rank() >= 0) { // KAUST
-        if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-          *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                                  << ", level " << currLevel+LEVEL_REF_ID
-                                  << ": in loop for assessing rejection rate"
-                                  << ", about to sample " << subNumSamples << " indexes"
-                                  << ", meanRejectionRate = " << meanRejectionRate
-                                  << ", covRejectionRate = "  << currOptions->m_covRejectionRate
-                                  << std::endl;
-        }
+          if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+            *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                                    << ", level " << currLevel+LEVEL_REF_ID
+                                    << ": in loop for assessing rejection rate"
+                                    << ", about to sample "     << subNumSamples << " indexes"
+                                    << ", meanRejectionRate = " << meanRejectionRate
+                                    << ", covRejectionRate = "  << currOptions->m_covRejectionRate
+                                    << std::endl;
+          }
         } // KAUST
 
-        std::vector<unsigned int> nowUnifiedIndexCounters(0); // It will be resized by 'sampleIndexes()' below
+        std::vector<unsigned int> nowUnifiedIndexCountersAtAllProcs(0); // It will be resized by 'sampleIndexes()' below
 
         if (m_env.inter0Rank() >= 0) { // KAUST
-        sampleIndexes(subNumSamples,            // input
-                      unifiedWeightStdVector,   // input
-                      nowUnifiedIndexCounters); // output
+          sampleIndexes(subNumSamples,                      // input
+                        unifiedWeightStdVectorAtProc0Only,  // input
+                        nowUnifiedIndexCountersAtAllProcs); // output
 
-        UQ_FATAL_TEST_MACRO(nowUnifiedIndexCounters.size() != weightSequence.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1),
-                            m_env.fullRank(),
-                            "uqMLSamplingClass<P_V,P_M>::generateSequence()",
-                            "wrong output from sampleIndexes() in step 9");
+          UQ_FATAL_TEST_MACRO(nowUnifiedIndexCountersAtAllProcs.size() != weightSequence.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1),
+                              m_env.fullRank(),
+                              "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                              "wrong output from sampleIndexes() in step 9");
 
-        if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-          *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                                  << ", level " << currLevel+LEVEL_REF_ID
-                                  << ": in loop for assessing rejection rate"
-                                  << ", about to distribute sampled assessment indexes"
-                                  << std::endl;
-        }
+          if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+            *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                                    << ", level " << currLevel+LEVEL_REF_ID
+                                    << ": in loop for assessing rejection rate"
+                                    << ", about to distribute sampled assessment indexes"
+                                    << std::endl;
+          }
         } // KAUST
 
         std::vector<uqLinkedChainsPerNodeStruct> nowNodes(0); // KAUST
 
         if (m_env.inter0Rank() >= 0) { // KAUST
-        nowNodes.resize(m_env.inter0Comm().NumProc()); // KAUST
-        distribIndexSamples(subNumSamples,           // input
-                            nowUnifiedIndexCounters, // input, modified
-                            nowNodes);               // output
+          nowNodes.resize(m_env.inter0Comm().NumProc()); // KAUST
+          distribIndexSamples(subNumSamples,                     // input
+                              nowUnifiedIndexCountersAtAllProcs, // input, modified
+                              nowNodes);                         // output
         } // KAUST
 
         if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -945,7 +1028,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
         double       nowRunTime    = 0.;
         unsigned int nowRejections = 0;
 
-        // KAUST: all processors should call here
+        // KAUST: all nodes should call here
         bool         savedTotallyMute           = currOptions->m_totallyMute; // HERE - ENHANCEMENT
         unsigned int savedRawChainSize          = currOptions->m_rawChainSize;
         bool         savedRawChainComputeStats  = currOptions->m_rawChainComputeStats;
@@ -960,7 +1043,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
         currOptions->m_drMaxNumExtraStages   = 0;
         currOptions->m_amAdaptInterval       = 0;
 
-        // KAUST: all processors should call here
+        // KAUST: all nodes should call here
         generateChain(*currOptions,  // input, only m_rawChainSize changes
                       nowNodes,      // input
                       nowCovMatrix,  // input
@@ -972,7 +1055,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                       NULL,          // output
                       NULL);         // output
 
-        // KAUST: all processors should call here
+        // KAUST: all nodes should call here
         currOptions->m_totallyMute           = savedTotallyMute;
         currOptions->m_rawChainSize          = savedRawChainSize;
         currOptions->m_rawChainComputeStats  = savedRawChainComputeStats;
@@ -981,14 +1064,37 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
         currOptions->m_amAdaptInterval       = savedAmAdaptInterval;
 
         if (m_env.inter0Rank() >= 0) { // KAUST
-        nowRejectionRate = ((double) nowRejections) / ((double) subNumSamples); // FIX ME: rejection among all inter0rank nodes ???
-        //bool aux1 = (nowRejectionRate == meanRejectionRate);
-        bool aux2 = (nowRejectionRate >= currOptions->m_minRejectionRate)
-                    &&
-                    (nowRejectionRate <= currOptions->m_maxRejectionRate);
-        testResult = aux2;
+          // If only one cov matrix is used, then the rejection should be assessed among all inter0Comm nodes // KAUST3
+          unsigned int nowUnifiedRejections = 0;
+          int mpiRC = MPI_Allreduce((void *) &nowRejections, (void *) &nowUnifiedRejections, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
+          UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                              m_env.fullRank(),
+                              "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                              "failed MPI_Allreduce() for now rejections");
+
+          unsigned int unifiedNumSamples = 0;
+          mpiRC = MPI_Allreduce((void *) &subNumSamples, (void *) &unifiedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
+          UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                              m_env.fullRank(),
+                              "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                              "failed MPI_Allreduce() for num samples");
+
+          nowRejectionRate = ((double) nowUnifiedRejections) / ((double) unifiedNumSamples);
+
+          //bool aux1 = (nowRejectionRate == meanRejectionRate);
+          bool aux2 = (nowRejectionRate >= currOptions->m_minRejectionRate)
+                      &&
+                      (nowRejectionRate <= currOptions->m_maxRejectionRate);
+          testResult = aux2;
+
+          // Make sure all nodes in 'inter0Comm' have the same value of 'testResult'
+          uqMiscCheckForSameValueInAllNodes(testResult,
+                                            0.,
+                                            m_env.inter0Comm(),
+                                            "uqMLSamplingClass<P_V,P_M>::generateSequence(), step 9, testResult");
         }
-        // KAUST: all processors should have the same 'testResult'
+
+        // KAUST: all nodes in 'subComm' should have the same 'testResult'
         unsigned int tmpUint = (unsigned int) testResult;
         int mpiRC = MPI_Bcast((void *) &tmpUint, (int) 1, MPI_UNSIGNED, 0, m_env.subComm().Comm());
         UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
@@ -1012,6 +1118,14 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                                   << std::endl;
         }
         nowAttempt++;
+
+        if (m_env.inter0Rank() >= 0) { // KAUST
+          // Make sure all nodes in 'inter0Comm' have the same value of 'nowEta'
+          uqMiscCheckForSameValueInAllNodes(nowEta,
+                                            1.e-16,
+                                            m_env.inter0Comm(),
+                                            "uqMLSamplingClass<P_V,P_M>::generateSequence(), step 9, testResult");
+        }
       } while (testResult == false);
       currEta = nowEta;
       if (currEta != 1.) {
@@ -1040,7 +1154,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                                 << std::endl;
       }
 
-      // KAUST: all processors should call here
+      // KAUST: all nodes should call here
       bool         savedTotallyMute           = currOptions->m_totallyMute; // HERE - ENHANCEMENT
       unsigned int savedRawChainSize          = currOptions->m_rawChainSize;
       bool         savedRawChainComputeStats  = currOptions->m_rawChainComputeStats;
@@ -1051,7 +1165,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
       currOptions->m_rawChainComputeStats  = false;
       currOptions->m_filteredChainGenerate = false;
 
-      // KAUST: all processors should call here
+      // KAUST: all nodes should call here
       generateChain(*currOptions,                 // input, only m_rawChainSize changes
                     nodes,                        // input
                     *unifiedCovMatrix,            // input
@@ -1063,78 +1177,78 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                     &currLogLikelihoodValues,     // output // likelihood is important
                     &currLogTargetValues);        // output
 
-      // KAUST: all processors should call here
+      // KAUST: all nodes should call here
       currOptions->m_totallyMute           = savedTotallyMute;
       currOptions->m_rawChainSize          = savedRawChainSize;
       currOptions->m_rawChainComputeStats  = savedRawChainComputeStats;
       currOptions->m_filteredChainGenerate = savedFilteredChainGenerate; // FIX ME
 
       if (m_env.inter0Rank() >= 0) { // KAUST
-      if (currOptions->m_rawChainComputeStats) {
-        std::ofstream* genericOfsVar = NULL;
-        m_env.openOutputFile(currOptions->m_dataOutputFileName,
-                             UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
-                             currOptions->m_dataOutputAllowedSet,
-                             false,
-                             genericOfsVar);
+        if (currOptions->m_rawChainComputeStats) {
+          std::ofstream* genericOfsVar = NULL;
+          m_env.openOutputFile(currOptions->m_dataOutputFileName,
+                               UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                               currOptions->m_dataOutputAllowedSet,
+                               false,
+                               genericOfsVar);
 
-        currChain.computeStatistics(*currOptions->m_rawChainStatisticalOptions,
-                                    genericOfsVar);
-
-        //genericOfsVar->close();
-        delete genericOfsVar;
-      }
-
-      if (currOptions->m_rawChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
-        currChain.unifiedWriteContents              (currOptions->m_rawChainDataOutputFileName);
-        currLogLikelihoodValues.unifiedWriteContents(currOptions->m_rawChainDataOutputFileName);
-        currLogTargetValues.unifiedWriteContents    (currOptions->m_rawChainDataOutputFileName);
-      }
-
-      if (currOptions->m_filteredChainGenerate) {
-        std::ofstream* genericOfsVar = NULL;
-        m_env.openOutputFile(currOptions->m_dataOutputFileName,
-                             UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
-                             currOptions->m_dataOutputAllowedSet,
-                             false,
-                             genericOfsVar);
-
-        unsigned int filterInitialPos = (unsigned int) (currOptions->m_filteredChainDiscardedPortion * (double) currChain.subSequenceSize());
-        unsigned int filterSpacing    = currOptions->m_filteredChainLag;
-        if (filterSpacing == 0) {
-          currChain.computeFilterParams(*currOptions->m_filteredChainStatisticalOptions,
-                                        genericOfsVar,
-                                        filterInitialPos,
-                                        filterSpacing);
-        }
-
-        // Filter positions from the converged portion of the chain
-        currChain.filter(filterInitialPos,
-                         filterSpacing);
-        currChain.setName(currOptions->m_prefix + "filtChain");
-
-        currLogLikelihoodValues.filter(filterInitialPos,
-                                       filterSpacing);
-        currLogLikelihoodValues.setName(currOptions->m_prefix + "filtLogLikelihood");
-
-        currLogTargetValues.filter(filterInitialPos,
-                                   filterSpacing);
-        currLogTargetValues.setName(currOptions->m_prefix + "filtLogTarget");
-
-        if (currOptions->m_filteredChainComputeStats) {
-          currChain.computeStatistics(*currOptions->m_filteredChainStatisticalOptions,
+          currChain.computeStatistics(*currOptions->m_rawChainStatisticalOptions,
                                       genericOfsVar);
+
+          //genericOfsVar->close();
+          delete genericOfsVar;
         }
 
-        //genericOfsVar->close();
-        delete genericOfsVar;
-
-        if (currOptions->m_filteredChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
-          currChain.unifiedWriteContents              (currOptions->m_filteredChainDataOutputFileName);
-          currLogLikelihoodValues.unifiedWriteContents(currOptions->m_filteredChainDataOutputFileName);
-          currLogTargetValues.unifiedWriteContents    (currOptions->m_filteredChainDataOutputFileName);
+        if (currOptions->m_rawChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
+          currChain.unifiedWriteContents              (currOptions->m_rawChainDataOutputFileName); // KAUST5
+          currLogLikelihoodValues.unifiedWriteContents(currOptions->m_rawChainDataOutputFileName);
+          currLogTargetValues.unifiedWriteContents    (currOptions->m_rawChainDataOutputFileName);
         }
-      }
+
+        if (currOptions->m_filteredChainGenerate) {
+          std::ofstream* genericOfsVar = NULL;
+          m_env.openOutputFile(currOptions->m_dataOutputFileName,
+                               UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                               currOptions->m_dataOutputAllowedSet,
+                               false,
+                               genericOfsVar);
+
+          unsigned int filterInitialPos = (unsigned int) (currOptions->m_filteredChainDiscardedPortion * (double) currChain.subSequenceSize());
+          unsigned int filterSpacing    = currOptions->m_filteredChainLag;
+          if (filterSpacing == 0) {
+            currChain.computeFilterParams(*currOptions->m_filteredChainStatisticalOptions,
+                                          genericOfsVar,
+                                          filterInitialPos,
+                                          filterSpacing);
+          }
+
+          // Filter positions from the converged portion of the chain
+          currChain.filter(filterInitialPos,
+                           filterSpacing);
+          currChain.setName(currOptions->m_prefix + "filtChain");
+
+          currLogLikelihoodValues.filter(filterInitialPos,
+                                         filterSpacing);
+          currLogLikelihoodValues.setName(currOptions->m_prefix + "filtLogLikelihood");
+
+          currLogTargetValues.filter(filterInitialPos,
+                                     filterSpacing);
+          currLogTargetValues.setName(currOptions->m_prefix + "filtLogTarget");
+
+          if (currOptions->m_filteredChainComputeStats) {
+            currChain.computeStatistics(*currOptions->m_filteredChainStatisticalOptions,
+                                      genericOfsVar);
+          }
+
+          //genericOfsVar->close();
+          delete genericOfsVar;
+
+          if (currOptions->m_filteredChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
+            currChain.unifiedWriteContents              (currOptions->m_filteredChainDataOutputFileName);
+            currLogLikelihoodValues.unifiedWriteContents(currOptions->m_filteredChainDataOutputFileName);
+            currLogTargetValues.unifiedWriteContents    (currOptions->m_filteredChainDataOutputFileName);
+          }
+        }
       } // KAUST
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -1164,8 +1278,8 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                               << " after "                           << levelRunTime << " seconds"
                               << ", cumulativeRawChainRunTime = "    << cumulativeRawChainRunTime << " seconds"
                               << ", cumulativeRawChainRejections = " << cumulativeRawChainRejections
-                              << " (" << 100.*((double) cumulativeRawChainRejections)/((double) currOptions->m_rawChainSize)
-                              << "%)" // FIX ME: unified
+                              << " (" << 100.*((double) cumulativeRawChainRejections)/((double) currOptions->m_rawChainSize) // KAUST5: unified
+                              << "%)"
                               << std::endl;
     }
     if (currExponent != 1.) delete currOptions;
@@ -1219,56 +1333,75 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
 template <class P_V,class P_M>
 void
 uqMLSamplingClass<P_V,P_M>::sampleIndexes(
-  unsigned int               subNumSamples,          // input
-  const std::vector<double>& unifiedWeightStdVector, // input
-  std::vector<unsigned int>& unifiedIndexCounters)   // output
+  unsigned int               subNumSamples,                     // input
+  const std::vector<double>& unifiedWeightStdVectorAtProc0Only, // input
+  std::vector<unsigned int>& unifiedIndexCountersAtAllProcs)    // output
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "Entering uqMLSamplingClass<P_V,P_M>::sampleIndexes()..."
                             << std::endl;
   }
 
-  unifiedIndexCounters.resize(unifiedWeightStdVector.size(),0);
+  // All nodes in 'inter0Comm' should resize to the same size // KAUST3
+  unsigned int resizeSize = unifiedWeightStdVectorAtProc0Only.size();
+  int mpiRC = MPI_Bcast((void *) &resizeSize, (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm());
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::sampleIndexes()",
+                      "failed MPI_Bcast() for resizeSize");
+  unifiedIndexCountersAtAllProcs.resize(resizeSize,0);
 
   if (m_env.inter0Rank() >= 0) {
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
       *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::sampleIndexes()"
                             //<< ", level " << currLevel+LEVEL_REF_ID
-                              << ": unifiedWeightStdVector.size() = " << unifiedWeightStdVector.size()
+                              << ": unifiedWeightStdVectorAtProc0Only.size() = " << unifiedWeightStdVectorAtProc0Only.size()
                               << std::endl;
 
       //unsigned int numZeros = 0;
-      //for (unsigned int i = 0; i < unifiedWeightStdVector.size(); ++i) {
-      //  *m_env.subDisplayFile() << "unifiedWeightStdVector[" << i
-      //                          << "] = " << unifiedWeightStdVector[i]
+      //for (unsigned int i = 0; i < unifiedWeightStdVectorAtProc0Only.size(); ++i) {
+      //  *m_env.subDisplayFile() << "unifiedWeightStdVectorAtProc0Only[" << i
+      //                          << "] = " << unifiedWeightStdVectorAtProc0Only[i]
       //                          << std::endl;
-      //  if (unifiedWeightStdVector[i] == 0.) numZeros++;
+      //  if (unifiedWeightStdVectorAtProc0Only[i] == 0.) numZeros++;
       //}
-      //*m_env.subDisplayFile() << "Number of zeros in unifiedWeightStdVector = " << numZeros
+      //*m_env.subDisplayFile() << "Number of zeros in unifiedWeightStdVectorAtProc0Only = " << numZeros
       //                        << std::endl;
     }
 
-    uqFiniteDistributionClass tmpFd(m_env,
-                                    "",
-                                    unifiedWeightStdVector);
-
-    // Generate 'unifiedNumSamples' samples from 'tmpFD'
-    unsigned int unifiedNumSamples = m_env.inter0Comm().NumProc() * subNumSamples;
-    for (unsigned int i = 0; i < unifiedNumSamples; ++i) {
-      unsigned int index = tmpFd.sample();
-      unifiedIndexCounters[index] += 1;
+    uqFiniteDistributionClass* tmpFd = NULL;
+    if (m_env.inter0Rank() == 0) {
+      tmpFd = new uqFiniteDistributionClass(m_env,
+                                            "",
+                                            unifiedWeightStdVectorAtProc0Only);
     }
 
-    int mpiRC = MPI_Bcast((void *) &unifiedIndexCounters[0], (int) unifiedIndexCounters.size(), MPI_UNSIGNED, 0, m_env.inter0Comm().Comm());
+    // Generate 'unifiedNumSamples' samples from 'tmpFD'
+    unsigned int unifiedNumSamples = 0.;
+    int mpiRC = MPI_Allreduce((void *) &subNumSamples, (void *) &unifiedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm()); // KAUST3
+    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::sampleIndexes()",
+                        "failed MPI_Allreduce() for num samples");
+
+    if (m_env.inter0Rank() == 0) {
+      for (unsigned int i = 0; i < unifiedNumSamples; ++i) {
+        unsigned int index = tmpFd->sample();
+        unifiedIndexCountersAtAllProcs[index] += 1;
+      }
+      delete tmpFd;
+    }
+
+    mpiRC = MPI_Bcast((void *) &unifiedIndexCountersAtAllProcs[0], (int) unifiedIndexCountersAtAllProcs.size(), MPI_UNSIGNED, 0, m_env.inter0Comm().Comm());
     UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                         m_env.fullRank(),
                         "uqMLSamplingClass<P_V,P_M>::sampleIndexes()",
                         "failed MPI_Bcast() for unified index counters");
   }
 
-  //for (unsigned int i = 0; i < unifiedIndexCounters.size(); ++i) {
-  //  *m_env.subDisplayFile() << "unifiedIndexCounters[" << i
-  //                          << "] = " << unifiedIndexCounters[i]
+  //for (unsigned int i = 0; i < unifiedIndexCountersAtAllProcs.size(); ++i) {
+  //  *m_env.subDisplayFile() << "unifiedIndexCountersAtAllProcs[" << i
+  //                          << "] = " << unifiedIndexCountersAtAllProcs[i]
   //                          << std::endl;
   //}
 
@@ -1283,9 +1416,9 @@ uqMLSamplingClass<P_V,P_M>::sampleIndexes(
 template <class P_V,class P_M>
 void
 uqMLSamplingClass<P_V,P_M>::distribIndexSamples(
-  unsigned int                              subNumSamples,        // input
-  std::vector<unsigned int>&                unifiedIndexCounters, // input, modified
-  std::vector<uqLinkedChainsPerNodeStruct>& nodes)                // output
+  unsigned int                              subNumSamples,                  // input
+  std::vector<unsigned int>&                unifiedIndexCountersAtAllProcs, // input, modified
+  std::vector<uqLinkedChainsPerNodeStruct>& nodes)                          // output
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "Entering uqMLSamplingClass<P_V,P_M>::distribIndexSamples()..."
@@ -1300,27 +1433,27 @@ uqMLSamplingClass<P_V,P_M>::distribIndexSamples(
                             << ": numberOfPositionsToGuaranteeForNode = " << numberOfPositionsToGuaranteeForNode
                             << std::endl;
   }
-  for (unsigned int i = 0; i < unifiedIndexCounters.size(); ++i) {
-    while (unifiedIndexCounters[i] != 0) {
+  for (unsigned int i = 0; i < unifiedIndexCountersAtAllProcs.size(); ++i) { // KAUST4: important
+    while (unifiedIndexCountersAtAllProcs[i] != 0) {
       //if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 30)) {
       //  *m_env.subDisplayFile() << "auxNode = "                               << auxNode
       //                          << ", numberOfPositionsToGuaranteeForNode = " << numberOfPositionsToGuaranteeForNode
-      //                          << ", unifiedIndexCounters["                  << i
-      //                          << "] = "                                     << unifiedIndexCounters[i]
+      //                          << ", unifiedIndexCountersAtAllProcs["        << i
+      //                          << "] = "                                     << unifiedIndexCountersAtAllProcs[i]
       //                          << std::endl;
       //}
       UQ_FATAL_TEST_MACRO(auxNode >= (unsigned int) m_env.inter0Comm().NumProc(),
                           m_env.fullRank(),
                           "uqMLSamplingClass<P_V,P_M>::distribIndexSamples()",
                           "auxNode got too large");
-      if (unifiedIndexCounters[i] < numberOfPositionsToGuaranteeForNode) {
+      if (unifiedIndexCountersAtAllProcs[i] < numberOfPositionsToGuaranteeForNode) {
         uqLinkedChainControlStruct auxControl;
         auxControl.initialPositionIndexInPreviousChain = i;
-        auxControl.numberOfPositions = unifiedIndexCounters[i];
+        auxControl.numberOfPositions = unifiedIndexCountersAtAllProcs[i];
         nodes[auxNode].linkedChains.push_back(auxControl);
 
-        numberOfPositionsToGuaranteeForNode -= unifiedIndexCounters[i];
-        unifiedIndexCounters[i] = 0;
+        numberOfPositionsToGuaranteeForNode -= unifiedIndexCountersAtAllProcs[i];
+        unifiedIndexCountersAtAllProcs[i] = 0;
       }
       else {
         uqLinkedChainControlStruct auxControl;
@@ -1328,7 +1461,7 @@ uqMLSamplingClass<P_V,P_M>::distribIndexSamples(
         auxControl.numberOfPositions = numberOfPositionsToGuaranteeForNode;
         nodes[auxNode].linkedChains.push_back(auxControl);
 
-        unifiedIndexCounters[i] -= numberOfPositionsToGuaranteeForNode;
+        unifiedIndexCountersAtAllProcs[i] -= numberOfPositionsToGuaranteeForNode;
         numberOfPositionsToGuaranteeForNode = 0;
 
         // Go to next node
@@ -1380,7 +1513,7 @@ uqMLSamplingClass<P_V,P_M>::generateChain(
   if (m_env.inter0Rank() >= 0) {
     chainIdMax = nodes[m_env.subId()].linkedChains.size();
   }
-  // KAUST: all processors should have the same 'chainIdMax'
+  // KAUST: all nodes in 'subComm' should have the same 'chainIdMax'
   int mpiRC = MPI_Bcast((void *) &chainIdMax, (int) 1, MPI_UNSIGNED, 0, m_env.subComm().Comm());
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_env.fullRank(),
@@ -1391,8 +1524,7 @@ uqMLSamplingClass<P_V,P_M>::generateChain(
     unsigned int tmpChainSize = 0;
     if (m_env.inter0Rank() >= 0) {
       unsigned int auxIndex = nodes[m_env.subId()].linkedChains[chainId].initialPositionIndexInPreviousChain;
-      prevChain.getPositionValues(auxIndex,auxInitialPosition); // FIX ME
-
+      prevChain.getPositionValues(auxIndex,auxInitialPosition);
       tmpChainSize = nodes[m_env.subId()].linkedChains[chainId].numberOfPositions+1; // IMPORTANT: '+1' in order to discard initial position afterwards
     }
     auxInitialPosition.mpiBcast(0, m_env.subComm().Comm()); // KAUST
@@ -1408,7 +1540,7 @@ uqMLSamplingClass<P_V,P_M>::generateChain(
     sleep(1);
 #endif
 
-    // KAUST: all processors should have the same 'tmpChainSize'
+    // KAUST: all nodes in 'subComm' should have the same 'tmpChainSize'
     mpiRC = MPI_Bcast((void *) &tmpChainSize, (int) 1, MPI_UNSIGNED, 0, m_env.subComm().Comm());
     UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                         m_env.fullRank(),
@@ -1422,13 +1554,13 @@ uqMLSamplingClass<P_V,P_M>::generateChain(
     uqScalarSequenceClass<double> tmpLogLikelihoodValues(m_env,0,"");
     uqScalarSequenceClass<double> tmpLogTargetValues    (m_env,0,"");
 
-    // KAUST: all processors should call here
+    // KAUST: all nodes should call here
     uqMetropolisHastingsSGClass<P_V,P_M> mcSeqGenerator(inputOptions,
                                                         rv,
                                                         auxInitialPosition,
                                                         &unifiedCovMatrix);
 
-    // KAUST: all processors should call here
+    // KAUST: all nodes should call here
     mcSeqGenerator.generateSequence(tmpChain,
                                     &tmpLogLikelihoodValues, // likelihood is IMPORTANT
                                     &tmpLogTargetValues);
@@ -1453,7 +1585,7 @@ uqMLSamplingClass<P_V,P_M>::generateChain(
                                 << std::endl;
       }
 
-      // FIX ME: unified
+      // KAUST5: what if workingChain ends up with different size in different nodes? Important
       workingChain.append              (tmpChain,              1,tmpChain.subSequenceSize()-1              ); // IMPORTANT: '1' in order to discard initial position
       if (currLogLikelihoodValues) {
         currLogLikelihoodValues->append(tmpLogLikelihoodValues,1,tmpLogLikelihoodValues.subSequenceSize()-1); // IMPORTANT: '1' in order to discard initial position
