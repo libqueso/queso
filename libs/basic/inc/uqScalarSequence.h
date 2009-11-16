@@ -556,15 +556,44 @@ uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only(
 
   if (useOnlyInter0Comm) {
     if (m_env.inter0Rank() >= 0) {
-      unsigned int auxSubSize     = this->subSequenceSize();
+      int auxSubSize = (int) this->subSequenceSize();
       unsigned int auxUnifiedSize = this->unifiedSequenceSize(useOnlyInter0Comm);
       outputVec.resize(auxUnifiedSize,0.);
-      // FIX ME: use MPI_Gatherv for the case different nodes have different amount of data // KAUST4
+      // Use MPI_Gatherv for the case different nodes have different amount of data // KAUST4
+#if 0
+      //int MPI_Gather (void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
+      //                void *recvbuf, int recvcount, MPI_Datatype recvtype, 
+      //                int root, MPI_Comm comm )
       int mpiRC = MPI_Gather((void *) &m_seq[0], auxSubSize, MPI_DOUBLE, (void *) &outputVec[0], auxSubSize, MPI_DOUBLE, 0, m_env.inter0Comm().Comm());
       UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                           m_env.fullRank(),
                           "uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only()",
                           "failed MPI_Gather()");
+#else
+      //int MPI_Gather (void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
+      //                void *recvbuf, int recvcount, MPI_Datatype recvtype, 
+      //                int root, MPI_Comm comm )
+      std::vector<int> recvcnts(m_env.inter0Comm().NumProc(),0);
+      int mpiRC = MPI_Gather((void *) &auxSubSize, 1, MPI_INT, (void *) &recvcnts[0], (int) 1, MPI_INT, 0, m_env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only()",
+                          "failed MPI_Gather()");
+
+      std::vector<int> displs(m_env.inter0Comm().NumProc(),0);
+      for (unsigned int r = 1; r < (unsigned int) m_env.inter0Comm().NumProc(); ++r) { // Yes, from '1' on
+        displs[r] = displs[r-1] + recvcnts[r-1];
+      }
+
+      //int MPI_Gatherv(void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
+      //                void *recvbuf, int *recvcnts, int *displs, MPI_Datatype recvtype, 
+      //                int root, MPI_Comm comm )
+      mpiRC = MPI_Gatherv((void *) &m_seq[0], auxSubSize, MPI_DOUBLE, (void *) &outputVec[0], (int *) &recvcnts[0], (int *) &displs[0], MPI_DOUBLE, 0, m_env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only()",
+                          "failed MPI_Gatherv()");
+#endif
     }
     else {
       // Node not in the 'inter0' communicator
