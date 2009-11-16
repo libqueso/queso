@@ -559,7 +559,7 @@ uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only(
       unsigned int auxSubSize     = this->subSequenceSize();
       unsigned int auxUnifiedSize = this->unifiedSequenceSize(useOnlyInter0Comm);
       outputVec.resize(auxUnifiedSize,0.);
-      // FIX ME: use MPI_Gatherv for the case different nodes have different amount of data
+      // FIX ME: use MPI_Gatherv for the case different nodes have different amount of data // KAUST4
       int mpiRC = MPI_Gather((void *) &m_seq[0], auxSubSize, MPI_DOUBLE, (void *) &outputVec[0], auxSubSize, MPI_DOUBLE, 0, m_env.inter0Comm().Comm());
       UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                           m_env.fullRank(),
@@ -1916,7 +1916,7 @@ uqScalarSequenceClass<T>::unifiedSort(
 
   if (useOnlyInter0Comm) {
     if (m_env.inter0Rank() >= 0) {
-      m_env.syncPrintDebugMsg("In uqScalarSequenceClass<T>::unifiedSort(), beginning logic",3,3000000,m_env.inter0Comm());
+      //m_env.syncPrintDebugMsg("In uqScalarSequenceClass<T>::unifiedSort(), beginning logic",3,3000000,m_env.inter0Comm()); // Dangerous to barrier on inter0Comm ... // KAUST
 
       unsigned int localNumPos = this->subSequenceSize() - initialPos;
 
@@ -1962,7 +1962,7 @@ uqScalarSequenceClass<T>::unifiedSort(
                             treeLevel);
       }
 
-      m_env.syncPrintDebugMsg("In uqScalarSequenceClass<T>::unifiedSort(), returned from parallelMerge()",3,3000000,m_env.inter0Comm());
+      //m_env.syncPrintDebugMsg("In uqScalarSequenceClass<T>::unifiedSort(), returned from parallelMerge()",3,3000000,m_env.inter0Comm()); // Dangerous to barrier on inter0Comm ... // KAUST
 
       // Broadcast
       unsigned int unifiedDataSize = unifiedSortedSequence.subSequenceSize();
@@ -1999,7 +1999,7 @@ uqScalarSequenceClass<T>::unifiedSort(
                                 << std::endl;
       }
 
-      m_env.syncPrintDebugMsg("In uqScalarSequenceClass<T>::unifiedSort(), ending logic",3,3000000,m_env.inter0Comm());
+      //m_env.syncPrintDebugMsg("In uqScalarSequenceClass<T>::unifiedSort(), ending logic",3,3000000,m_env.inter0Comm()); // Dangerous to barrier on inter0Comm ... // KAUST
     }
     else {
       // Node not in the 'inter0' communicator
@@ -2290,7 +2290,7 @@ uqScalarSequenceClass<T>::unifiedInterQuantileRange(
 
   if (useOnlyInter0Comm) {
     if (m_env.inter0Rank() >= 0) {
-      m_env.syncPrintDebugMsg("In uqScalarSequenceClass<T>::unifiedInterQuantileRange(), beginning logic",3,3000000,m_env.inter0Comm());
+      //m_env.syncPrintDebugMsg("In uqScalarSequenceClass<T>::unifiedInterQuantileRange(), beginning logic",3,3000000,m_env.inter0Comm()); // Dangerous to barrier on inter0Comm ... // KAUST
 
       uqScalarSequenceClass unifiedSortedSequence(m_env,0,"");
       this->unifiedSort(useOnlyInter0Comm,
@@ -2354,7 +2354,7 @@ uqScalarSequenceClass<T>::unifiedInterQuantileRange(
         //delete ofsvar;
       }
 
-      m_env.syncPrintDebugMsg("In uqScalarSequenceClass<T>::unifiedInterQuantileRange(), ending logic",3,3000000,m_env.inter0Comm());
+      //m_env.syncPrintDebugMsg("In uqScalarSequenceClass<T>::unifiedInterQuantileRange(), ending logic",3,3000000,m_env.inter0Comm()); // Dangerous to barrier on inter0Comm ... // KAUST
     }
     else {
       // Node not in the 'inter0' communicator
