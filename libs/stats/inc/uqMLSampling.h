@@ -355,6 +355,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     unsigned int indexOfFirstWeight = 0;
     unsigned int indexOfLastWeight  = 0;
 
+    //std::cout << "m_env.inter0Rank() = " << m_env.inter0Rank() << std::endl;
     if (m_env.inter0Rank() >= 0) { // KAUST
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
@@ -376,15 +377,21 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
       currLogTargetValues.clear();
       currLogTargetValues.setName(currOptions->m_prefix + "rawLogTarget");
 
+      unsigned int quantity1 = prevChain.unifiedSequenceSize();
+      unsigned int quantity2 = currChain.unifiedSequenceSize();
+      unsigned int quantity3 = prevLogLikelihoodValues.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1);
+      unsigned int quantity4 = currLogLikelihoodValues.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1);
+      unsigned int quantity5 = prevLogTargetValues.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1);
+      unsigned int quantity6 = currLogTargetValues.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1);
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
                                 << ", level " << currLevel+LEVEL_REF_ID
-                                << ": prevChain.unifiedSequenceSize() = " << prevChain.unifiedSequenceSize()
-                                << ", currChain.unifiedSequenceSize() = " << currChain.unifiedSequenceSize()
-                                << ", prevLogLikelihoodValues.unifiedSequenceSize() = " << prevLogLikelihoodValues.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1)
-                                << ", currLogLikelihoodValues.unifiedSequenceSize() = " << currLogLikelihoodValues.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1)
-                                << ", prevLogTargetValues.unifiedSequenceSize() = " << prevLogTargetValues.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1)
-                                << ", currLogTargetValues.unifiedSequenceSize() = " << currLogTargetValues.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1)
+                                << ": prevChain.unifiedSequenceSize() = " << quantity1
+                                << ", currChain.unifiedSequenceSize() = " << quantity2
+                                << ", prevLogLikelihoodValues.unifiedSequenceSize() = " << quantity3
+                                << ", currLogLikelihoodValues.unifiedSequenceSize() = " << quantity4
+                                << ", prevLogTargetValues.unifiedSequenceSize() = " << quantity5
+                                << ", currLogTargetValues.unifiedSequenceSize() = " << quantity6
                                 << std::endl;
       }
 
@@ -401,11 +408,17 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
       // Set 'indexOfFirstWeight' and 'indexOfLastWeight' // KAUST
       indexOfFirstWeight = 0;
       indexOfLastWeight  = indexOfFirstWeight + prevChain.subSequenceSize()-1;
-      for (int r = 0; r < m_env.inter0Comm().NumProc(); ++r) {
+      {
+        //std::cout << "m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc() << std::endl;
+        int r = m_env.inter0Rank();
+        //std::cout << "r = " << r << std::endl;
+        m_env.inter0Comm().Barrier();
         unsigned int auxUint = 0;
         if (r > 0) {
           MPI_Status status;
+	  //std::cout << "Rank " << r << " is entering MPI_Recv()" << std::endl;
           int mpiRC = MPI_Recv((void*) &auxUint, 1, MPI_UNSIGNED, r-1, r-1, m_env.inter0Comm().Comm(), &status);
+	  //std::cout << "Rank " << r << " received auxUint = " << auxUint << std::endl;
           UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                               m_env.fullRank(),
                               "uqMLSamplingClass<P_V,P_M>::generateSequence()",
@@ -415,7 +428,9 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
         }
         if (r < (m_env.inter0Comm().NumProc()-1)) {
           auxUint = indexOfLastWeight + 1;
+	  //std::cout << "Rank " << r << " is sending auxUint = " << auxUint << std::endl;
           int mpiRC = MPI_Send((void*) &auxUint, 1, MPI_UNSIGNED, r+1, r, m_env.inter0Comm().Comm());
+	  //std::cout << "Rank " << r << " sent auxUint = " << auxUint << std::endl;
           UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                               m_env.fullRank(),
                               "uqMLSamplingClass<P_V,P_M>::generateSequence()",
@@ -645,11 +660,12 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
       m_logEvidenceFactors.push_back(log(nowEvidenceFactor));
 #endif
 
+      unsigned int quantity1 = weightSequence.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1);
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
                                 << ", level "                                  << currLevel+LEVEL_REF_ID
                                 << ": weightSequence.subSequenceSize() = "     << weightSequence.subSequenceSize()
-                                << ", weightSequence.unifiedSequenceSize() = " << weightSequence.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1)
+                                << ", weightSequence.unifiedSequenceSize() = " << quantity1
                                 << ", currExponent = "                         << currExponent
                                 << ", effective ratio = "                      << nowEffectiveSizeRatio
                                 << ", log(evidence factor) = "                 << m_logEvidenceFactors[m_logEvidenceFactors.size()-1]
@@ -1196,11 +1212,12 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
         *unifiedCovMatrix *= currEta;
       }
 
+      unsigned int quantity1 = weightSequence.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1);
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
                                 << ", level "                                  << currLevel+LEVEL_REF_ID
                                 << ": weightSequence.subSequenceSize() = "     << weightSequence.subSequenceSize()
-                                << ", weightSequence.unifiedSequenceSize() = " << weightSequence.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1)
+                                << ", weightSequence.unifiedSequenceSize() = " << quantity1
                                 << ", currEta = "                              << currEta
                                 << ", assessed rejection rate = "              << nowRejectionRate
                                 << std::endl;
@@ -1482,6 +1499,12 @@ uqMLSamplingClass<P_V,P_M>::sampleIndexes(
       delete tmpFd;
     }
 
+    mpiRC = MPI_Bcast((void *) &unifiedIndexCountersAtAllProcs[0], (int) unifiedIndexCountersAtAllProcs.size(), MPI_UNSIGNED, 0, m_env.inter0Comm().Comm());
+    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::sampleIndexes()",
+                        "failed MPI_Bcast() for unified index counters");
+
     // Use 'indexOfFirstWeight' and 'indexOfLastWeight' in order to update 'modifiedSubNumSamples'
     UQ_FATAL_TEST_MACRO(indexOfFirstWeight >= unifiedIndexCountersAtAllProcs.size(),
                         m_env.fullRank(),
@@ -1495,12 +1518,6 @@ uqMLSamplingClass<P_V,P_M>::sampleIndexes(
     for (unsigned int i = indexOfFirstWeight; i <= indexOfLastWeight; ++i) {
       modifiedSubNumSamples += unifiedIndexCountersAtAllProcs[i];
     }
-
-    mpiRC = MPI_Bcast((void *) &unifiedIndexCountersAtAllProcs[0], (int) unifiedIndexCountersAtAllProcs.size(), MPI_UNSIGNED, 0, m_env.inter0Comm().Comm());
-    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                        m_env.fullRank(),
-                        "uqMLSamplingClass<P_V,P_M>::sampleIndexes()",
-                        "failed MPI_Bcast() for unified index counters");
   }
 
   //for (unsigned int i = 0; i < unifiedIndexCountersAtAllProcs.size(); ++i) {
