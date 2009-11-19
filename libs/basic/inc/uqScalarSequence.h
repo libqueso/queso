@@ -559,17 +559,11 @@ uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only(
       int auxSubSize = (int) this->subSequenceSize();
       unsigned int auxUnifiedSize = this->unifiedSequenceSize(useOnlyInter0Comm);
       outputVec.resize(auxUnifiedSize,0.);
+
+      //******************************************************************
       // Use MPI_Gatherv for the case different nodes have different amount of data // KAUST4
-#if 0
-      //int MPI_Gather (void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
-      //                void *recvbuf, int recvcount, MPI_Datatype recvtype, 
-      //                int root, MPI_Comm comm )
-      int mpiRC = MPI_Gather((void *) &m_seq[0], auxSubSize, MPI_DOUBLE, (void *) &outputVec[0], auxSubSize, MPI_DOUBLE, 0, m_env.inter0Comm().Comm());
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.fullRank(),
-                          "uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only()",
-                          "failed MPI_Gather()");
-#else
+      //******************************************************************
+
       //int MPI_Gather (void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
       //                void *recvbuf, int recvcount, MPI_Datatype recvtype, 
       //                int root, MPI_Comm comm )
@@ -593,7 +587,6 @@ uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only(
                           m_env.fullRank(),
                           "uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only()",
                           "failed MPI_Gatherv()");
-#endif
     }
     else {
       // Node not in the 'inter0' communicator
@@ -843,30 +836,7 @@ uqScalarSequenceClass<T>::unifiedUniformlySampledCdf(
 
   return;
 }
-#if 0 // KAUST2
-template <class T>
-T
-uqScalarSequenceClass<T>::subMax(
-  unsigned int initialPos,
-  unsigned int numPos) const
-{
-  bool bRC = ((initialPos          <  this->subSequenceSize()) &&
-              (0                   <  numPos                 ) &&
-              ((initialPos+numPos) <= this->subSequenceSize()));
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.fullRank(),
-                      "uqScalarSequenceClass<T>::subMax()",
-                      "invalid input data");
 
-  unsigned int finalPosPlus1 = initialPos + numPos;
-  T tmpMax = m_seq[initialPos];
-  for (unsigned int j = initialPos; j < finalPosPlus1; ++j) {
-    if (tmpMax < m_seq[j]) tmpMax = m_seq[j];
-  }
-
-  return tmpMax;
-}
-#endif
 template <class T>
 T
 uqScalarSequenceClass<T>::subMean(
@@ -1878,7 +1848,7 @@ uqScalarSequenceClass<T>::subCdfStacc(
               (evaluationPositions.size() == cdfStaccValues.size()     ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
-                      "uqScalarSequenceClass<V>::subGaussianKDE()",
+                      "uqScalarSequenceClass<V>::subCdfStacc()",
                       "invalid input data");
 
   // For Joseph: 
@@ -2708,6 +2678,7 @@ uqScalarSequenceClass<T>::subCompute2dGaussianKDE(
 
   double scale1Inv = 1./scaleValue1;
   double scale2Inv = 1./scaleValue2;
+  //corrValue = 0.;
   double r = 1 - corrValue*corrValue;
   UQ_FATAL_TEST_MACRO(r <= 0.,
                       m_env.fullRank(),

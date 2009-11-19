@@ -195,11 +195,13 @@ uqBase1D1DFunctionClass::quadPtsWeights(
   } 
 
   if ((env.displayVerbosity() >= 2) && (env.subDisplayFile())) {
-    *env.subDisplayFile() << "In uqBase1D1DFunctionClass::quadPtsWeights()"
-                          << ": beta[0] = " << beta[0]
-                          << ", wSum = "    << wSum
-                          << "\n  eigenValues = "  << eigenValues
-                          << "\n  eigenVectors = " << eigenVectors
+    *env.subDisplayFile() << "IMPORTANT: In uqBase1D1DFunctionClass::quadPtsWeights()"
+                          << ", before consulting 'forceWeightsToSum1'"
+                          << ": forceWeightsToSum1 = " << forceWeightsToSum1
+                          << ", beta[0] = "            << beta[0]
+                          << ", wSum = "               << wSum
+                          << "\n  eigenValues = "      << eigenValues
+                          << "\n  eigenVectors = "     << eigenVectors
                           << std::endl;
   }
 
