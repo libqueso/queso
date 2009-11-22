@@ -31,6 +31,7 @@
  *-------------------------------------------------------------------------- */
 
 #include <uq1D1DFunction.h>
+#include <uq1DQuadrature.h>
 
 //*****************************************************
 // Base 1D->1D class
@@ -42,6 +43,10 @@ uqBase1D1DFunctionClass::uqBase1D1DFunctionClass(
   m_minDomainValue(minDomainValue),
   m_maxDomainValue(maxDomainValue)
 {
+  UQ_FATAL_TEST_MACRO(m_minDomainValue >= m_maxDomainValue,
+                      UQ_UNAVAILABLE_RANK,
+                      "uqBase1D1DFunctionClass::constructor()",
+                      "min >= max");
 }
 
 uqBase1D1DFunctionClass::~uqBase1D1DFunctionClass()
@@ -58,6 +63,19 @@ double
 uqBase1D1DFunctionClass::maxDomainValue() const
 {
   return m_maxDomainValue;
+}
+
+double
+uqBase1D1DFunctionClass::multiplyAndIntegrate(const uqBase1D1DFunctionClass& func, unsigned int quadratureOrder) const
+{
+  double value = 0.;
+
+  UQ_FATAL_TEST_MACRO(true,
+                      UQ_UNAVAILABLE_RANK,
+                      "uqBase1D1DFunctionClass::multiplyAndIntegrate()",
+                      "not implemented yet");
+
+  return value;
 }
 
 //*****************************************************
@@ -84,7 +102,20 @@ uqGeneric1D1DFunctionClass::~uqGeneric1D1DFunctionClass()
 double
 uqGeneric1D1DFunctionClass::value(double domainValue) const
 {
-  // FIX ME: check range of domainValue
+  if ((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)) {
+    std::cerr << "In uqGeneric1D1DFunctionClass::value()"
+              << ": requested x ("            << domainValue
+              << ") is out of the interval (" << m_minDomainValue
+              << ", "                         << m_maxDomainValue
+              << ")"
+              << std::endl;
+  }
+
+  UQ_FATAL_TEST_MACRO(((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)),
+                      UQ_UNAVAILABLE_RANK,
+                      "uqGeneric1D1DFunctionClass::value()",
+                      "x out of range");
+
   return (*m_valueRoutinePtr)(domainValue,m_routinesDataPtr);
 }
 
@@ -117,9 +148,9 @@ uqConstant1D1DFunctionClass::value(double domainValue) const
 {
   if ((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)) {
     std::cerr << "In uqConstant1D1DFunctionClass::value()"
-              << ": requested x ("             << domainValue
-              << ") is out of the intervarl (" << m_minDomainValue
-              << ", "                          << m_maxDomainValue
+              << ": requested x ("            << domainValue
+              << ") is out of the interval (" << m_minDomainValue
+              << ", "                         << m_maxDomainValue
               << ")"
               << std::endl;
   }
@@ -137,9 +168,9 @@ uqConstant1D1DFunctionClass::deriv(double domainValue) const
 {
   if ((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)) {
     std::cerr << "In uqConstant1D1DFunctionClass::deriv()"
-              << ": requested x ("             << domainValue
-              << ") is out of the intervarl (" << m_minDomainValue
-              << ", "                          << m_maxDomainValue
+              << ": requested x ("            << domainValue
+              << ") is out of the interval (" << m_minDomainValue
+              << ", "                         << m_maxDomainValue
               << ")"
               << std::endl;
   }
@@ -176,7 +207,20 @@ uqLinear1D1DFunctionClass::~uqLinear1D1DFunctionClass()
 double
 uqLinear1D1DFunctionClass::value(double domainValue) const
 {
-  // FIX ME: check range of domainValue
+  if ((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)) {
+    std::cerr << "In uqLinear1D1DFunctionClass::value()"
+              << ": requested x ("            << domainValue
+              << ") is out of the interval (" << m_minDomainValue
+              << ", "                         << m_maxDomainValue
+              << ")"
+              << std::endl;
+  }
+
+  UQ_FATAL_TEST_MACRO(((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)),
+                      UQ_UNAVAILABLE_RANK,
+                      "uqLinear1D1DFunctionClass::value()",
+                      "x out of range");
+
   double imageValue = m_referenceImageValue + m_rateValue*(domainValue - m_referenceDomainValue);
 
   return imageValue;
@@ -213,7 +257,20 @@ uqQuadratic1D1DFunctionClass::~uqQuadratic1D1DFunctionClass()
 double
 uqQuadratic1D1DFunctionClass::value(double domainValue) const
 {
-  // FIX ME: check range of domainValue
+  if ((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)) {
+    std::cerr << "In uqQuadratic1D1DFunctionClass::value()"
+              << ": requested x ("            << domainValue
+              << ") is out of the interval (" << m_minDomainValue
+              << ", "                         << m_maxDomainValue
+              << ")"
+              << std::endl;
+  }
+
+  UQ_FATAL_TEST_MACRO(((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)),
+                      UQ_UNAVAILABLE_RANK,
+                      "uqQuadratic1D1DFunctionClass::value()",
+                      "x out of range");
+
   double imageValue = m_a*domainValue*domainValue + m_b*domainValue + m_c;
 
   return imageValue;
@@ -257,7 +314,20 @@ uqSampled1D1DFunctionClass::~uqSampled1D1DFunctionClass()
 double
 uqSampled1D1DFunctionClass::value(double domainValue) const
 {
-  // FIX ME: check range of domainValue
+  if ((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)) {
+    std::cerr << "In uqSampled1D1DFunctionClass::value()"
+              << ": requested x ("            << domainValue
+              << ") is out of the interval (" << m_minDomainValue
+              << ", "                         << m_maxDomainValue
+              << ")"
+              << std::endl;
+  }
+
+  UQ_FATAL_TEST_MACRO(((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)),
+                      UQ_UNAVAILABLE_RANK,
+                      "uqSampled1D1DFunctionClass::value()",
+                      "x out of range");
+
   double returnValue = 0.;
 
   unsigned int tmpSize = m_domainValues.size();
@@ -305,7 +375,6 @@ double
 uqSampled1D1DFunctionClass::deriv(double domainValue) const
 {
   // FIX ME: check range of domainValue
-
   UQ_FATAL_TEST_MACRO(true,
                       UQ_UNAVAILABLE_RANK,
                       "uqSampled1d1DFunctionClass::deriv()",
@@ -417,7 +486,20 @@ uqDeltaSeq1D1DFunctionClass::~uqDeltaSeq1D1DFunctionClass()
 double
 uqDeltaSeq1D1DFunctionClass::value(double domainValue) const
 {
-  // FIX ME: check range of domainValue
+  if ((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)) {
+    std::cerr << "In uqDeltaSeq1D1DFunctionClass::value()"
+              << ": requested x ("            << domainValue
+              << ") is out of the interval (" << m_minDomainValue
+              << ", "                         << m_maxDomainValue
+              << ")"
+              << std::endl;
+  }
+
+  UQ_FATAL_TEST_MACRO(((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)),
+                      UQ_UNAVAILABLE_RANK,
+                      "uqDeltaSeq1D1DFunctionClass::value()",
+                      "x out of range");
+
   double returnValue = 0.;
 
   unsigned int tmpSize = m_domainValues.size();
@@ -504,4 +586,203 @@ uqDeltaSeq1D1DFunctionClass::printForMatlab(
   }
 
   return;
+}
+
+//*****************************************************
+// 1D Gaussian Kde 1D->1D class
+//*****************************************************
+uq1DGaussianKde1D1DFunctionClass::uq1DGaussianKde1D1DFunctionClass(
+  const uqScalarSequenceClass<double>* chain,
+  double chainMin,
+  double chainMax,
+  double gaussian1DScale)
+  :
+  uqBase1D1DFunctionClass(-INFINITY,INFINITY), //chainMin-4.*gaussian1DScale,chainMax+4.*gaussian1DScale),
+  m_chain          (chain),
+  m_chainMin       (chainMin),
+  m_chainMax       (chainMax),
+  m_gaussian1DScale(gaussian1DScale)
+{
+}
+
+uq1DGaussianKde1D1DFunctionClass::~uq1DGaussianKde1D1DFunctionClass()
+{
+}
+
+double                     
+uq1DGaussianKde1D1DFunctionClass::value(double domainValue) const
+{
+  double value = 0.;
+
+  double scaleInv = 1./m_gaussian1DScale;
+  unsigned int dataSize = m_chain->subSequenceSize();
+  for (unsigned int k = 0; k < dataSize; ++k) {
+    double xk = (*m_chain)[k];
+    value += uqMiscGaussianDensity((domainValue-xk)*scaleInv,0.,1.);
+  }
+  value = scaleInv * (value/(double) dataSize);
+
+  return value;
+}
+
+double                     
+uq1DGaussianKde1D1DFunctionClass::deriv(double domainValue) const
+{
+  double value = 0.;
+
+  UQ_FATAL_TEST_MACRO(true,
+                      UQ_UNAVAILABLE_RANK,
+                      "uq1DGaussianKde1D1DFunctionClass::deriv()",
+                      "not implemented yet");
+
+  return value;
+}
+
+double
+uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate(const uqBase1D1DFunctionClass& func, unsigned int quadratureOrder) const
+{
+  //std::cout << "Entering uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate()" << std::endl;
+  double value = 0.;
+
+  uqGaussianHermite1DQuadratureClass quadObj(0.,1.,quadratureOrder);
+  const std::vector<double>& quadPositions = quadObj.positions();
+  const std::vector<double>& quadWeights   = quadObj.weights  ();
+  UQ_FATAL_TEST_MACRO(quadPositions.size() != quadWeights.size(),
+                      UQ_UNAVAILABLE_RANK,
+                      "uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate()",
+                      "quadObj has invalid state");
+  unsigned int numQuadraturePositions = quadPositions.size();
+
+  unsigned int dataSize = m_chain->subSequenceSize();
+  for (unsigned int k = 0; k < dataSize; ++k) {
+    double xk = (*m_chain)[k];
+    for (unsigned int j = 0; j < numQuadraturePositions; ++j) {
+      value += func.value(m_gaussian1DScale*quadPositions[j]+xk)*quadWeights[j];
+    }
+  }
+  value *= (1./sqrt(2.*M_PI)/((double) dataSize));
+
+  //std::cout << "Leaving uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate(), value = " << value << std::endl;
+
+  return value;
+}
+
+//*****************************************************
+// 'ScalarTimesFunc' 1D->1D class
+//*****************************************************
+uqScalarTimesFunc1D1DFunctionClass::uqScalarTimesFunc1D1DFunctionClass(
+  double scalar,
+  const uqBase1D1DFunctionClass& func)
+  :
+  uqBase1D1DFunctionClass(func.minDomainValue(),func.maxDomainValue()),
+  m_scalar(scalar),
+  m_func  (func)
+{
+}
+
+uqScalarTimesFunc1D1DFunctionClass::~uqScalarTimesFunc1D1DFunctionClass()
+{
+}
+
+double
+uqScalarTimesFunc1D1DFunctionClass::value(double domainValue) const
+{
+  double value = 0.;
+
+  value += m_scalar*m_func.value(domainValue);
+
+  return value;
+}
+
+double
+uqScalarTimesFunc1D1DFunctionClass::deriv(double domainValue) const
+{
+  double value = 0.;
+
+  UQ_FATAL_TEST_MACRO(true,
+                      UQ_UNAVAILABLE_RANK,
+                      "uqScalarTimesFunc1D1DFunctionClass::deriv()",
+                      "not implemented yet");
+
+  return value;
+}
+
+//*****************************************************
+// 'FuncTimesFunc' 1D->1D class
+//*****************************************************
+uqFuncTimesFunc1D1DFunctionClass::uqFuncTimesFunc1D1DFunctionClass(
+  const uqBase1D1DFunctionClass& func1,
+  const uqBase1D1DFunctionClass& func2)
+  :
+  uqBase1D1DFunctionClass(std::max(func1.minDomainValue(),func2.minDomainValue()),std::min(func1.maxDomainValue(),func2.maxDomainValue())),
+  m_func1(func1),
+  m_func2(func2)
+{
+}
+
+uqFuncTimesFunc1D1DFunctionClass::~uqFuncTimesFunc1D1DFunctionClass()
+{
+}
+
+double
+uqFuncTimesFunc1D1DFunctionClass::value(double domainValue) const
+{
+  double value = 0.;
+
+  value += m_func1.value(domainValue)*m_func2.value(domainValue);
+
+  return value;
+}
+
+double
+uqFuncTimesFunc1D1DFunctionClass::deriv(double domainValue) const
+{
+  double value = 0.;
+
+  UQ_FATAL_TEST_MACRO(true,
+                      UQ_UNAVAILABLE_RANK,
+                      "uqFuncTimesFunc1D1DFunctionClass::deriv()",
+                      "not implemented yet");
+
+  return value;
+}
+
+//*****************************************************
+// 'FuncPlusFunc' 1D->1D class
+//*****************************************************
+uqFuncPlusFunc1D1DFunctionClass::uqFuncPlusFunc1D1DFunctionClass(
+  const uqBase1D1DFunctionClass& func1,
+  const uqBase1D1DFunctionClass& func2)
+  :
+  uqBase1D1DFunctionClass(std::max(func1.minDomainValue(),func2.minDomainValue()),std::min(func1.maxDomainValue(),func2.maxDomainValue())),
+  m_func1(func1),
+  m_func2(func2)
+{
+}
+
+uqFuncPlusFunc1D1DFunctionClass::~uqFuncPlusFunc1D1DFunctionClass()
+{
+}
+
+double
+uqFuncPlusFunc1D1DFunctionClass::value(double domainValue) const
+{
+  double value = 0.;
+
+  value += m_func1.value(domainValue) + m_func2.value(domainValue);
+
+  return value;
+}
+
+double
+uqFuncPlusFunc1D1DFunctionClass::deriv(double domainValue) const
+{
+  double value = 0.;
+
+  UQ_FATAL_TEST_MACRO(true,
+                      UQ_UNAVAILABLE_RANK,
+                      "uqFuncPlusFunc1D1DFunctionClass::deriv()",
+                      "not implemented yet");
+
+  return value;
 }
