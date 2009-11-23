@@ -786,3 +786,113 @@ uqFuncPlusFunc1D1DFunctionClass::deriv(double domainValue) const
 
   return value;
 }
+
+//*****************************************************
+// 'QuadDenominator' 1D->1D class
+//*****************************************************
+uqQuadDenominator1D1DFunctionClass::uqQuadDenominator1D1DFunctionClass(
+  const uqBase1D1DFunctionClass& func)
+  :
+  uqBase1D1DFunctionClass(func.minDomainValue(),func.maxDomainValue()),
+  m_func(func)
+{
+}
+
+uqQuadDenominator1D1DFunctionClass::~uqQuadDenominator1D1DFunctionClass()
+{
+}
+
+double
+uqQuadDenominator1D1DFunctionClass::value(double domainValue) const
+{
+  double value = m_func.value(domainValue);
+  return value*value;
+}
+
+double
+uqQuadDenominator1D1DFunctionClass::deriv(double domainValue) const
+{
+  double value = 0.;
+
+  UQ_FATAL_TEST_MACRO(true,
+                      UQ_UNAVAILABLE_RANK,
+                      "uqQuadDenominator1D1DFunctionClass::deriv()",
+                      "not implemented yet");
+
+  return value;
+}
+
+//*****************************************************
+// 'QuadNumerator' 1D->1D class
+//*****************************************************
+uqQuadNumerator1D1DFunctionClass::uqQuadNumerator1D1DFunctionClass(
+  const uqBase1D1DFunctionClass& func)
+  :
+  uqBase1D1DFunctionClass(func.minDomainValue(),func.maxDomainValue()),
+  m_func(func)
+{
+}
+
+uqQuadNumerator1D1DFunctionClass::~uqQuadNumerator1D1DFunctionClass()
+{
+}
+
+double
+uqQuadNumerator1D1DFunctionClass::value(double domainValue) const
+{
+  double value = m_func.value(domainValue);
+  return domainValue*value*value;
+}
+
+double
+uqQuadNumerator1D1DFunctionClass::deriv(double domainValue) const
+{
+  double value = 0.;
+
+  UQ_FATAL_TEST_MACRO(true,
+                      UQ_UNAVAILABLE_RANK,
+                      "uqQuadNumerator1D1DFunctionClass::deriv()",
+                      "not implemented yet");
+
+  return value;
+}
+
+//*****************************************************
+// 'QuadRecursion' 1D->1D class
+//*****************************************************
+uqQuadRecursion1D1DFunctionClass::uqQuadRecursion1D1DFunctionClass(
+  double                         alpha,
+  double                         beta,
+  const uqBase1D1DFunctionClass& pi_0,
+  const uqBase1D1DFunctionClass& pi_m1)
+  :
+  uqBase1D1DFunctionClass(std::max(pi_0.minDomainValue(),pi_m1.minDomainValue()),std::min(pi_0.maxDomainValue(),pi_m1.maxDomainValue())),
+  m_alpha(alpha),
+  m_beta (beta),
+  m_pi_0 (pi_0),
+  m_pi_m1(pi_m1)
+{
+}
+
+uqQuadRecursion1D1DFunctionClass::~uqQuadRecursion1D1DFunctionClass()
+{
+}
+
+double
+uqQuadRecursion1D1DFunctionClass::value(double domainValue) const
+{
+  return ((domainValue - m_alpha)*m_pi_0.value(domainValue) - m_beta*m_pi_m1.value(domainValue));
+}
+
+double
+uqQuadRecursion1D1DFunctionClass::deriv(double domainValue) const
+{
+  double value = 0.;
+
+  UQ_FATAL_TEST_MACRO(true,
+                      UQ_UNAVAILABLE_RANK,
+                      "uqQuadRecursion1D1DFunctionClass::deriv()",
+                      "not implemented yet");
+
+  return value;
+}

@@ -373,6 +373,7 @@ uqGaussianHermite1DQuadratureClass::uqGaussianHermite1DQuadratureClass(
   m_positions.resize(m_order+1,0.); // Yes, '+1'
   m_weights.resize  (m_order+1,0.); // Yes, '+1'
 
+  // http://www.efunda.com/math/num_integration/findgausshermite.cfm
   switch (m_order) {
     case 1:
       m_weights  [0] =  sqrt(M_PI)/2.;
@@ -405,17 +406,117 @@ uqGaussianHermite1DQuadratureClass::uqGaussianHermite1DQuadratureClass(
     break;
 
     case 4:
-      m_weights  [0] =  0.0199532;
-      m_weights  [1] =  0.393619;
-      m_weights  [2] =  0.945309;
-      m_weights  [3] =  0.393619;
-      m_weights  [4] =  0.0199532;
+      m_weights  [0] =  0.019953242049;
+      m_weights  [1] =  0.393619323152;
+      m_weights  [2] =  0.945308720483;
+      m_weights  [3] =  0.393619323152;
+      m_weights  [4] =  0.019953242059;
 
       m_positions[0] = -sqrt(2.5+sqrt(2.5));
       m_positions[1] = -sqrt(2.5-sqrt(2.5));
       m_positions[2] =  0.;
       m_positions[3] =  sqrt(2.5-sqrt(2.5));
       m_positions[4] =  sqrt(2.5+sqrt(2.5));
+    break;
+
+    case 5:
+      m_weights   [0] = 0.00453000990551;
+      m_weights   [1] = 0.157067320323;
+      m_weights   [2] = 0.724629595224;
+      m_weights   [3] = 0.724629595224;
+      m_weights   [4] = 0.157067320323;
+      m_weights   [5] = 0.00453000990551;
+
+      m_positions [0] = -2.35060497367;
+      m_positions [1] = -1.33584907401;
+      m_positions [2] = -0.436077411928;
+      m_positions [3] =  0.436077411928;
+      m_positions [4] =  1.33584907401;
+      m_positions [5] =  2.35060497367;
+    break;
+
+    case 6:
+      m_weights   [0] = 0.0009717812451;
+      m_weights   [1] = 0.0545155828191;
+      m_weights   [2] = 0.42560725261;
+      m_weights   [3] = 0.810264617557;
+      m_weights   [4] = 0.42560725261;
+      m_weights   [5] = 0.0545155828191;
+      m_weights   [6] = 0.0009717812451;
+
+      m_positions [0] = -2.65196135684;
+      m_positions [1] = -1.67355162877;
+      m_positions [2] = -0.816287882859;
+      m_positions [3] =  0.;
+      m_positions [4] =  0.816287882859;
+      m_positions [5] =  1.67355162877;
+      m_positions [6] =  2.65196135684;
+    break;
+
+    case 7:
+      m_weights   [0] = 0.000199604072211;
+      m_weights   [1] = 0.0170779830074;
+      m_weights   [2] = 0.207802325815;
+      m_weights   [3] = 0.661147012558;
+      m_weights   [4] = 0.661147012558;
+      m_weights   [5] = 0.207802325815;
+      m_weights   [6] = 0.0170779830074;
+      m_weights   [7] = 0.000199604072211;
+
+      m_positions [0] = -2.93063742026;
+      m_positions [1] = -1.9816567567;
+      m_positions [2] = -1.15719371245;
+      m_positions [3] = -0.381186990207;
+      m_positions [4] =  0.381186990207;
+      m_positions [5] =  1.15719371245;
+      m_positions [6] =  1.9816567567;
+      m_positions [7] =  2.93063742026;
+    break;
+
+    case 8:
+      m_weights   [0] = 3.96069772633e-5;
+      m_weights   [1] = 0.00494362427554;
+      m_weights   [2] = 0.0884745273944;
+      m_weights   [3] = 0.432651559003;
+      m_weights   [4] = 0.720235215606;
+      m_weights   [5] = 0.432651559003;
+      m_weights   [6] = 0.0884745273944;
+      m_weights   [7] = 0.00494362427554;
+      m_weights   [8] = 3.96069772633e-5;
+
+      m_positions [0] = -3.19099320178;
+      m_positions [1] = -2.26658058453;
+      m_positions [2] = -1.46855328922;
+      m_positions [3] = -0.723551018753;
+      m_positions [4] =  0.;
+      m_positions [5] =  0.723551018753;
+      m_positions [6] =  1.46855328922;
+      m_positions [7] =  2.26658058453;
+      m_positions [8] =  3.19099320178;
+    break;
+
+    case 9:
+      m_weights   [0] = 7.64043285523e-6;
+      m_weights   [1] = 0.00134364574678; 
+      m_weights   [2] = 0.0338743944555; 
+      m_weights   [3] = 0.240138611082; 
+      m_weights   [4] = 0.610862633735; 
+      m_weights   [5] = 0.610862633735; 
+      m_weights   [6] = 0.240138611082; 
+      m_weights   [7] = 0.0338743944555; 
+      m_weights   [8] = 0.00134364574678; 
+      m_weights   [9] = 7.64043285523e-6;
+
+      m_positions [0] = -3.43615911884;
+      m_positions [1] = -2.53273167423; 
+      m_positions [2] = -1.7566836493; 
+      m_positions [3] = -1.03661082979; 
+      m_positions [4] = -0.342901327224; 
+      m_positions [5] =  0.342901327224; 
+      m_positions [6] =  1.03661082979; 
+      m_positions [7] =  1.7566836493; 
+      m_positions [8] =  2.53273167423; 
+      m_positions [9] =  3.43615911884;
     break;
 
     case 19:

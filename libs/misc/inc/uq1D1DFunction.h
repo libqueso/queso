@@ -295,6 +295,66 @@ protected:
 };
 
 //*****************************************************
+// 'QuadDenominator' 1D->1D class
+//*****************************************************
+class uqQuadDenominator1D1DFunctionClass : public uqBase1D1DFunctionClass {
+public:
+  uqQuadDenominator1D1DFunctionClass(const uqBase1D1DFunctionClass& func);
+ ~uqQuadDenominator1D1DFunctionClass();
+
+  double value(double domainValue) const;
+  double deriv(double domainValue) const;
+
+protected:
+  using uqBase1D1DFunctionClass::m_minDomainValue;
+  using uqBase1D1DFunctionClass::m_maxDomainValue;
+
+  const uqBase1D1DFunctionClass& m_func;
+};
+
+//*****************************************************
+// 'QuadNumerator' 1D->1D class
+//*****************************************************
+class uqQuadNumerator1D1DFunctionClass : public uqBase1D1DFunctionClass {
+public:
+  uqQuadNumerator1D1DFunctionClass(const uqBase1D1DFunctionClass& func);
+ ~uqQuadNumerator1D1DFunctionClass();
+
+  double value(double domainValue) const;
+  double deriv(double domainValue) const;
+
+protected:
+  using uqBase1D1DFunctionClass::m_minDomainValue;
+  using uqBase1D1DFunctionClass::m_maxDomainValue;
+
+  const uqBase1D1DFunctionClass& m_func;
+};
+
+//*****************************************************
+// 'QuadRecursion' 1D->1D class
+//*****************************************************
+class uqQuadRecursion1D1DFunctionClass : public uqBase1D1DFunctionClass {
+public:
+  uqQuadRecursion1D1DFunctionClass(double alpha,
+                                   double beta,
+                                   const uqBase1D1DFunctionClass& pi_0,
+                                   const uqBase1D1DFunctionClass& pi_1);
+ ~uqQuadRecursion1D1DFunctionClass();
+
+  double value(double domainValue) const;
+  double deriv(double domainValue) const;
+
+protected:
+  using uqBase1D1DFunctionClass::m_minDomainValue;
+  using uqBase1D1DFunctionClass::m_maxDomainValue;
+
+  double m_alpha;
+  double m_beta;
+  const uqBase1D1DFunctionClass& m_pi_0;
+  const uqBase1D1DFunctionClass& m_pi_m1;
+};
+
+//*****************************************************
 // Templated isolated functions
 //*****************************************************
 template<class V, class M>
@@ -374,11 +434,11 @@ alphaBetaLoop(
   V&                             alpha,
   V&                             beta)
 {
-  //std::cout << "Entering alphaBetaLoop(), k = " << k << std::endl;
+  std::cout << "Entering alphaBetaLoop(), k = " << k << std::endl;
   unsigned int n = alpha.sizeLocal();
 
+#if 0
   uqFuncTimesFunc1D1DFunctionClass pi_pi_0_func(pi_0,pi_0);
-  double pi_pi_0 = rho.multiplyAndIntegrate(pi_pi_0_func,integrationOrder);
 
   uqLinear1D1DFunctionClass t_func(-INFINITY,
                                    INFINITY,
@@ -386,7 +446,13 @@ alphaBetaLoop(
                                    0.,
                                    1.);
   uqFuncTimesFunc1D1DFunctionClass t_pi_pi_0_func(t_func,pi_pi_0_func);
-  double t_pi_pi_0 = rho.multiplyAndIntegrate(t_pi_pi_0_func,integrationOrder);
+#else
+  uqQuadDenominator1D1DFunctionClass pi_pi_0_func(pi_0);
+  uqQuadNumerator1D1DFunctionClass   t_pi_pi_0_func(pi_0);
+#endif
+
+  double pi_pi_0 = rho.multiplyAndIntegrate(pi_pi_0_func,integrationOrder);//,1+((unsigned int)(k/2)) ); //;integrationOrder);
+  double t_pi_pi_0 = rho.multiplyAndIntegrate(t_pi_pi_0_func,integrationOrder);//,1+((unsigned int)((k+1)/2)) ); //integrationOrder);
 
   // Alpha and beta
   alpha[k] = t_pi_pi_0/pi_pi_0;
@@ -397,6 +463,7 @@ alphaBetaLoop(
                       "beta is negative");
 
   if (k < (n-1)) {
+#if 0
     uqLinear1D1DFunctionClass tma_func(-INFINITY,
                                        INFINITY,
                                        0.,
@@ -411,6 +478,12 @@ alphaBetaLoop(
 
     uqFuncPlusFunc1D1DFunctionClass pi_p1(tma_pi0_func,
                                           mb_pm1_func);
+#else
+    uqQuadRecursion1D1DFunctionClass pi_p1(alpha[k],
+                                           beta[k],
+                                           pi_0,
+                                           pi_m1);
+#endif
 
     alphaBetaLoop<V,M>(k+1,
                        pi_pi_0,
@@ -502,7 +575,7 @@ computeQuadPtsAndWeights(const uqBase1D1DFunctionClass& function1D1D,
                         "invalid 'quadIntegrationMethod'");
   }
 
-  if ((env.displayVerbosity() >= 3) && (env.subDisplayFile())) {
+  if ((env.displayVerbosity() >= 2) && (env.subDisplayFile())) {
     *env.subDisplayFile() << "In computeQuadPtsAndWeights<V,M>()";
     for (unsigned int k = 0; k < n; ++k) {
       *env.subDisplayFile() << "\n alpha[" << k << "] = " << alpha[k]
@@ -529,7 +602,7 @@ computeQuadPtsAndWeights(const uqBase1D1DFunctionClass& function1D1D,
       }
     }
   } // end for 'k'
-  if ((env.displayVerbosity() >= 3) && (env.subDisplayFile())) {
+  if ((env.displayVerbosity() >= 2) && (env.subDisplayFile())) {
     *env.subDisplayFile() << "In computeQuadPtsAndWeights<V,M>():"
                           << "\n  mJ = " << mJ
                           << std::endl;
