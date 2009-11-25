@@ -66,7 +66,7 @@ uqBase1D1DFunctionClass::maxDomainValue() const
 }
 
 double
-uqBase1D1DFunctionClass::multiplyAndIntegrate(const uqBase1D1DFunctionClass& func, unsigned int quadratureOrder) const
+uqBase1D1DFunctionClass::multiplyAndIntegrate(const uqBase1D1DFunctionClass& func, unsigned int quadratureOrder, double* resultWithMultiplicationByTAsWell) const
 {
   double value = 0.;
 
@@ -639,10 +639,11 @@ uq1DGaussianKde1D1DFunctionClass::deriv(double domainValue) const
 }
 
 double
-uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate(const uqBase1D1DFunctionClass& func, unsigned int quadratureOrder) const
+uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate(const uqBase1D1DFunctionClass& func, unsigned int quadratureOrder, double* resultWithMultiplicationByTAsWell) const
 {
   //std::cout << "Entering uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate()" << std::endl;
   double value = 0.;
+  double valueWithT = 0.;
 
   uqGaussianHermite1DQuadratureClass quadObj(0.,1.,quadratureOrder);
   const std::vector<double>& quadPositions = quadObj.positions();
@@ -654,13 +655,30 @@ uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate(const uqBase1D1DFunctionC
   unsigned int numQuadraturePositions = quadPositions.size();
 
   unsigned int dataSize = m_chain->subSequenceSize();
-  for (unsigned int k = 0; k < dataSize; ++k) {
-    double xk = (*m_chain)[k];
-    for (unsigned int j = 0; j < numQuadraturePositions; ++j) {
-      value += func.value(m_gaussian1DScale*quadPositions[j]+xk)*quadWeights[j];
+
+  if (resultWithMultiplicationByTAsWell) {
+    for (unsigned int k = 0; k < dataSize; ++k) {
+      double xk = (*m_chain)[k];
+      for (unsigned int j = 0; j < numQuadraturePositions; ++j) {
+        double auxX = m_gaussian1DScale*quadPositions[j]+xk;
+        double auxValue = func.value(auxX)*quadWeights[j];
+        value      +=      auxValue;
+        valueWithT += auxX*auxValue;
+      }
     }
+    value      *= (1./sqrt(2.*M_PI)/((double) dataSize));
+    valueWithT *= (1./sqrt(2.*M_PI)/((double) dataSize));
+    *resultWithMultiplicationByTAsWell = valueWithT;
   }
-  value *= (1./sqrt(2.*M_PI)/((double) dataSize));
+  else {
+    for (unsigned int k = 0; k < dataSize; ++k) {
+      double xk = (*m_chain)[k];
+      for (unsigned int j = 0; j < numQuadraturePositions; ++j) {
+        value += func.value(m_gaussian1DScale*quadPositions[j]+xk)*quadWeights[j];
+      }
+    }
+    value *= (1./sqrt(2.*M_PI)/((double) dataSize));
+  }
 
   //std::cout << "Leaving uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate(), value = " << value << std::endl;
 
@@ -1099,8 +1117,9 @@ alphaBetaCLoop(
   uqQuadDenominator1D1DFunctionClass pi_pi_0_func  (pi_0);
   uqQuadNumerator1D1DFunctionClass   t_pi_pi_0_func(pi_0);
 
-  double pi_pi_0   = rho.multiplyAndIntegrate(pi_pi_0_func,integrationOrder);//,1+((unsigned int)(k/2)) ); //;integrationOrder);
-  double t_pi_pi_0 = rho.multiplyAndIntegrate(t_pi_pi_0_func,integrationOrder);//,1+((unsigned int)((k+1)/2)) ); //integrationOrder);
+  double t_pi_pi_0 = 0.;
+  double pi_pi_0   = rho.multiplyAndIntegrate(pi_pi_0_func,integrationOrder,&t_pi_pi_0);//,1+((unsigned int)(k/2)) ); //;integrationOrder);
+  //double t_pi_pi_0 = rho.multiplyAndIntegrate(t_pi_pi_0_func,integrationOrder,NULL);//,1+((unsigned int)((k+1)/2)) ); //integrationOrder);
 
   // Alpha and beta
   alpha[k] = t_pi_pi_0/pi_pi_0;
@@ -1271,7 +1290,7 @@ uqQuadCRecursion1D1DFunctionClass::value(double domainValue) const
   else {
     double val_m1 = 0.;
     double val_0  = 1.;
-    for (unsigned int i = 0; i < m_k; ++i) {
+    for (unsigned int i = 0; i < (unsigned int) m_k; ++i) {
       value = (domainValue - m_alpha[i])*val_0 - m_beta[i]*val_m1;
       val_m1 = val_0;
       val_0 = value;

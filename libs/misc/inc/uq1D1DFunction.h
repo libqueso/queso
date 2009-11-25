@@ -54,7 +54,7 @@ public:
            double maxDomainValue() const;
   virtual  double value         (double domainValue) const = 0;
   virtual  double deriv         (double domainValue) const = 0;
-  virtual  double multiplyAndIntegrate(const uqBase1D1DFunctionClass& func, unsigned int quadratureOrder) const;
+  virtual  double multiplyAndIntegrate(const uqBase1D1DFunctionClass& func, unsigned int quadratureOrder, double* resultWithMultiplicationByTAsWell) const;
 
 protected:
   double m_minDomainValue;
@@ -222,7 +222,7 @@ public:
 
   double value(double domainValue) const;
   double deriv(double domainValue) const;
-  double multiplyAndIntegrate(const uqBase1D1DFunctionClass& func, unsigned int quadratureOrder) const;
+  double multiplyAndIntegrate(const uqBase1D1DFunctionClass& func, unsigned int quadratureOrder, double* resultWithMultiplicationByTAsWell) const;
 
 protected:
   using uqBase1D1DFunctionClass::m_minDomainValue;
@@ -534,8 +534,8 @@ alphaBetaPolLoop(
   uqQuadDenominator1D1DFunctionClass pi_pi_0_func  (pi_0);
   uqQuadNumerator1D1DFunctionClass   t_pi_pi_0_func(pi_0);
 
-  double pi_pi_0   = rho.multiplyAndIntegrate(pi_pi_0_func,integrationOrder);//,1+((unsigned int)(k/2)) ); //;integrationOrder);
-  double t_pi_pi_0 = rho.multiplyAndIntegrate(t_pi_pi_0_func,integrationOrder);//,1+((unsigned int)((k+1)/2)) ); //integrationOrder);
+  double pi_pi_0   = rho.multiplyAndIntegrate(pi_pi_0_func,integrationOrder,NULL);//,1+((unsigned int)(k/2)) ); //;integrationOrder);
+  double t_pi_pi_0 = rho.multiplyAndIntegrate(t_pi_pi_0_func,integrationOrder,NULL);//,1+((unsigned int)((k+1)/2)) ); //integrationOrder);
 
   // Alpha and beta
   alpha[k] = t_pi_pi_0/pi_pi_0;
@@ -631,8 +631,8 @@ alphaBetaLoop(
   uqQuadNumerator1D1DFunctionClass   t_pi_pi_0_func(pi_0);
 #endif
 
-  double pi_pi_0 = rho.multiplyAndIntegrate(pi_pi_0_func,integrationOrder);//,1+((unsigned int)(k/2)) ); //;integrationOrder);
-  double t_pi_pi_0 = rho.multiplyAndIntegrate(t_pi_pi_0_func,integrationOrder);//,1+((unsigned int)((k+1)/2)) ); //integrationOrder);
+  double pi_pi_0 = rho.multiplyAndIntegrate(pi_pi_0_func,integrationOrder,NULL);//,1+((unsigned int)(k/2)) ); //;integrationOrder);
+  double t_pi_pi_0 = rho.multiplyAndIntegrate(t_pi_pi_0_func,integrationOrder,NULL);//,1+((unsigned int)((k+1)/2)) ); //integrationOrder);
 
   // Alpha and beta
   alpha[k] = t_pi_pi_0/pi_pi_0;
