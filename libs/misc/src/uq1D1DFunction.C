@@ -598,10 +598,14 @@ uq1DGaussianKde1D1DFunctionClass::uq1DGaussianKde1D1DFunctionClass(
   double gaussian1DScale)
   :
   uqBase1D1DFunctionClass(-INFINITY,INFINITY), //chainMin-4.*gaussian1DScale,chainMax+4.*gaussian1DScale),
-  m_chain          (chain),
-  m_chainMin       (chainMin),
-  m_chainMax       (chainMax),
-  m_gaussian1DScale(gaussian1DScale)
+  m_chain              (chain),
+  m_chainMin           (chainMin),
+  m_chainMax           (chainMax),
+  m_gaussian1DScale    (gaussian1DScale),
+  m_lastInputK         (-1),
+  m_lastQuadratureOrder(0),
+  m_level_0            (0),
+  m_level_m1           (0)
 {
 }
 
@@ -657,15 +661,120 @@ uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate(const uqBase1D1DFunctionC
   unsigned int dataSize = m_chain->subSequenceSize();
 
   if (resultWithMultiplicationByTAsWell) {
-    for (unsigned int k = 0; k < dataSize; ++k) {
-      double xk = (*m_chain)[k];
-      for (unsigned int j = 0; j < numQuadraturePositions; ++j) {
-        double auxX = m_gaussian1DScale*quadPositions[j]+xk;
-        double auxValue = func.value(auxX)*quadWeights[j];
-        value      +=      auxValue;
-        valueWithT += auxX*auxValue;
+    bool useFasterMethod = false;
+    const uqQuadDenominator1D1DFunctionClass* functionPtr     = dynamic_cast<const uqQuadDenominator1D1DFunctionClass* >(&func);
+    const uqQuadCRecursion1D1DFunctionClass*  constitutivePtr = NULL;
+    if (functionPtr != NULL) {
+      constitutivePtr = dynamic_cast<const uqQuadCRecursion1D1DFunctionClass* >(&(functionPtr->constitutiveFunction()));
+    }
+
+    int currentK = 0;
+    if (constitutivePtr != NULL) {
+      currentK = constitutivePtr->k();
+      if (currentK == 0) {
+        useFasterMethod       = true;
+        m_lastInputK          = currentK;
+        m_lastQuadratureOrder = quadratureOrder;
+      }
+      else if (currentK == (m_lastInputK+1)) {
+        if (m_lastQuadratureOrder == quadratureOrder) {
+          useFasterMethod       = true;
+          m_lastInputK          = currentK;
+        }
+      }
+
+      if (useFasterMethod == false) {
+        std::cerr << "In uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate()"
+                  << ": weired situation"
+                  << std::endl;
+        m_lastInputK          = -1;
+        m_lastQuadratureOrder = 0;
+        m_level_0.clear();
+        m_level_m1.clear();
       }
     }
+
+    //useFasterMethod = false; // FIX ME
+    if (useFasterMethod) {
+      //std::cout << "In uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate()"
+      //          << ": using faster method for currentK = " << currentK
+      //          << std::endl;
+      if (currentK == 0) {
+        m_level_0.resize (dataSize*numQuadraturePositions,0.); // Yes, '0..'
+        m_level_m1.resize(dataSize*numQuadraturePositions,0.); // Yes, '0.'
+
+        std::cout << "In uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate()"
+                  << ": currentK = " << currentK
+                  << std::endl;
+        unsigned int auxK = 0;
+        for (unsigned int k = 0; k < dataSize; ++k) {
+          double xk = (*m_chain)[k];
+          for (unsigned int j = 0; j < numQuadraturePositions; ++j) {
+            double auxX = m_gaussian1DScale*quadPositions[j]+xk;
+            m_level_0[auxK] = 1.; // Yes, '1.'
+            double auxValue = m_level_0[auxK]*quadWeights[j];
+            value      +=      auxValue;
+            valueWithT += auxX*auxValue;
+            auxK++;
+          }
+        }
+      }
+      else {
+        double alpha = constitutivePtr->alpha()[currentK-1];
+        double beta  = constitutivePtr->beta ()[currentK-1];
+
+        std::cout << "In uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate()"
+                  << ": currentK = " << currentK
+                  << ", alpha = "    << alpha
+                  << ", beta = "     << beta
+                  << std::endl;
+        unsigned int auxK = 0;
+        for (unsigned int k = 0; k < dataSize; ++k) {
+          double xk = (*m_chain)[k];
+          for (unsigned int j = 0; j < numQuadraturePositions; ++j) {
+            double auxX = m_gaussian1DScale*quadPositions[j]+xk;
+
+            UQ_FATAL_TEST_MACRO((currentK == 1) && (m_level_0[auxK] != 1.),
+                                UQ_UNAVAILABLE_RANK,
+                                "uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate()",
+                                "invalid currentK=1a");
+
+            UQ_FATAL_TEST_MACRO((currentK == 1) && (m_level_m1[auxK] != 0.),
+                                UQ_UNAVAILABLE_RANK,
+                                "uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate()",
+                                "invalid currentK=1b");
+
+            UQ_FATAL_TEST_MACRO((currentK == 2) && (m_level_m1[auxK] != 1.),
+                                UQ_UNAVAILABLE_RANK,
+                                "uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate()",
+                                "invalid currentK=2");
+
+            //double tmpValue = (auxX - alpha)*(auxX - alpha)*m_level_0[auxK]
+            //                + beta*beta*m_level_m1[auxK]
+            //                - 2.*(auxX - alpha)*sqrt(m_level_0[auxK])*beta*sqrt(m_level_m1[auxK]);
+            double tmpValue = (auxX - alpha)*m_level_0[auxK] - beta*m_level_m1[auxK];
+            m_level_m1[auxK] = m_level_0[auxK];
+            m_level_0 [auxK] = tmpValue;
+            double auxValue = tmpValue*tmpValue*quadWeights[j];
+            value      +=      auxValue;
+            valueWithT += auxX*auxValue;
+            auxK++;
+          }
+        }
+      }
+    }
+    else {
+      for (unsigned int k = 0; k < dataSize; ++k) {
+        double xk = (*m_chain)[k];
+        for (unsigned int j = 0; j < numQuadraturePositions; ++j) {
+          double auxX = m_gaussian1DScale*quadPositions[j]+xk;
+          double auxValue = func.value(auxX)*quadWeights[j];
+          value      +=      auxValue;
+          valueWithT += auxX*auxValue;
+        }
+      }
+    }
+
     value      *= (1./sqrt(2.*M_PI)/((double) dataSize));
     valueWithT *= (1./sqrt(2.*M_PI)/((double) dataSize));
     *resultWithMultiplicationByTAsWell = valueWithT;
@@ -840,6 +949,12 @@ uqQuadDenominator1D1DFunctionClass::deriv(double domainValue) const
   return value;
 }
 
+const uqBase1D1DFunctionClass&
+uqQuadDenominator1D1DFunctionClass::constitutiveFunction() const
+{
+  return m_func;
+}
+
 //*****************************************************
 // 'QuadNumerator' 1D->1D class
 //*****************************************************
@@ -876,220 +991,7 @@ uqQuadNumerator1D1DFunctionClass::deriv(double domainValue) const
 }
 
 //*****************************************************
-// 'QuadRecursion' 1D->1D class
-//*****************************************************
-uqQuadRecursion1D1DFunctionClass::uqQuadRecursion1D1DFunctionClass(
-  double                         alpha,
-  double                         beta,
-  const uqBase1D1DFunctionClass& pi_0,
-  const uqBase1D1DFunctionClass& pi_m1)
-  :
-  uqBase1D1DFunctionClass(std::max(pi_0.minDomainValue(),pi_m1.minDomainValue()),std::min(pi_0.maxDomainValue(),pi_m1.maxDomainValue())),
-  m_alpha(alpha),
-  m_beta (beta),
-  m_pi_0 (pi_0),
-  m_pi_m1(pi_m1)
-{
-}
-
-uqQuadRecursion1D1DFunctionClass::~uqQuadRecursion1D1DFunctionClass()
-{
-}
-
-double
-uqQuadRecursion1D1DFunctionClass::value(double domainValue) const
-{
-  return ((domainValue - m_alpha)*m_pi_0.value(domainValue) - m_beta*m_pi_m1.value(domainValue));
-}
-
-double
-uqQuadRecursion1D1DFunctionClass::deriv(double domainValue) const
-{
-  double value = 0.;
-
-  UQ_FATAL_TEST_MACRO(true,
-                      UQ_UNAVAILABLE_RANK,
-                      "uqQuadRecursion1D1DFunctionClass::deriv()",
-                      "not implemented yet");
-
-  return value;
-}
-
-//*****************************************************
-// 'QuadPolRecursion' 1D->1D class
-//*****************************************************
-uqQuadPolRecursion1D1DFunctionClass::uqQuadPolRecursion1D1DFunctionClass(
-  double alpha,
-  double beta,
-  const uqQuadPolRecursion1D1DFunctionClass& pi_0,
-  const uqQuadPolRecursion1D1DFunctionClass& pi_m1)
-  :
-  uqBase1D1DFunctionClass(-INFINITY,INFINITY),
-  m_coefs(0)
-{
-  //std::cout << "Entering uqQuadPol constructor, pi_0_polOrder = " << pi_0.coefs().size()-1 << std::endl;
-
-  UQ_FATAL_TEST_MACRO(pi_m1.coefs().size() == 0,
-                      UQ_UNAVAILABLE_RANK,
-                      "uqQuadPolRecursion1D1DFunctionClass::constructor(1)",
-                      "pi_m1 has empty coefficients");
-
-  const std::vector<double>& coefs_0  = pi_0.coefs();
-  const std::vector<double>& coefs_m1 = pi_m1.coefs();
-  unsigned int polOrder = coefs_0.size();
-  m_coefs.resize(polOrder+1,0.);
-
-  //std::cout << "In uqQuadPol constructor, polOrder = " << polOrder << std::endl;
-
-  if (polOrder == 0) {
-    UQ_FATAL_TEST_MACRO(true,
-                        UQ_UNAVAILABLE_RANK,
-                        "uqQuadPolRecursion1D1DFunctionClass::constructor(1)",
-                        "pi_0 has empty coefficients");
-  }
-  else if (polOrder == 1) {
-    UQ_FATAL_TEST_MACRO(polOrder != coefs_m1.size(),
-                        UQ_UNAVAILABLE_RANK,
-                        "uqQuadPolRecursion1D1DFunctionClass::constructor(1)",
-                        "pi_m1 should be constant, as pi_0 is");
-    m_coefs[1] = coefs_0[0];
-    m_coefs[0] = - (alpha*coefs_0[0] + beta*coefs_m1[0]);
-  }
-  else {
-    UQ_FATAL_TEST_MACRO(polOrder != (coefs_m1.size()+1),
-                        UQ_UNAVAILABLE_RANK,
-                        "uqQuadPolRecursion1D1DFunctionClass::constructor(1)",
-                        "orders differ by more than 1");
-    for (int i = polOrder; i >= 0; --i) {
-      if (i == (int) polOrder) {
-        m_coefs[i] = coefs_0[i-1];
-      }
-      else if (i == (int) (polOrder-1)) {
-        m_coefs[i] = coefs_0[i-1] - alpha*coefs_0[i];
-      }
-      else if (i > 0) {
-        //m_coefs[i] = coefs_0[i-1] - (alpha*coefs_0[i] + beta*coefs_m1[i]);
-        double posValue = 0.;
-        double negValue = 0.;
-
-        double tmp = coefs_0[i-1];
-        if (tmp >= 0.) posValue += tmp;
-        else           negValue += tmp;
-
-        tmp = -alpha*coefs_0[i];
-        if (tmp >= 0.) posValue += tmp;
-        else           negValue += tmp;
-
-        tmp = -beta*coefs_m1[i];
-        if (tmp >= 0.) posValue += tmp;
-        else           negValue += tmp;
-
-        m_coefs[i] = posValue + negValue;
-      }
-      else {
-        m_coefs[i] =              - (alpha*coefs_0[i] + beta*coefs_m1[i]);
-      }
-    }
-  }
-
-  std::cout << "In uqQuadPol constructor: coefs = ";
-  for (int i = polOrder; i >= 0; --i) {
-    std::cout << " " << m_coefs[i];
-  }
-  std::cout << std::endl;
-
-  UQ_FATAL_TEST_MACRO(m_coefs[polOrder] != 1.,
-                      UQ_UNAVAILABLE_RANK,
-                      "uqQuadPolRecursion1D1DFunctionClass::constructor(1)",
-                      "coefficient of highest degree (>=1) is not 1.");
-}
-
-uqQuadPolRecursion1D1DFunctionClass::uqQuadPolRecursion1D1DFunctionClass(
-  const std::vector<double>& coefsInput)
-  :
-  uqBase1D1DFunctionClass(-INFINITY,INFINITY),
-  m_coefs(coefsInput)
-{
-  UQ_FATAL_TEST_MACRO(m_coefs.size() == 0,
-                      UQ_UNAVAILABLE_RANK,
-                      "uqQuadPolRecursion1D1DFunctionClass::constructor(2)",
-                      "empty coefficients");
-
-  unsigned int polOrder = m_coefs.size()-1;
-  if (polOrder > 0) {
-    UQ_FATAL_TEST_MACRO(m_coefs[polOrder] != 1.,
-                        UQ_UNAVAILABLE_RANK,
-                        "uqQuadPolRecursion1D1DFunctionClass::constructor(2)",
-                        "coefficient of highest degree (>=1) is not 1.");
-  }
-}
-
-uqQuadPolRecursion1D1DFunctionClass::~uqQuadPolRecursion1D1DFunctionClass()
-{
-}
-
-double
-uqQuadPolRecursion1D1DFunctionClass::value(double domainValue) const
-{
-  UQ_FATAL_TEST_MACRO(m_coefs.size() == 0,
-                      UQ_UNAVAILABLE_RANK,
-                      "uqQuadPolRecursion1D1DFunctionClass::value()",
-                      "empty coefficients");
-
-  unsigned int polOrder = m_coefs.size()-1;
-
-  double value = 0.;
-  if (polOrder == 0) {
-    value = m_coefs[0];
-  }
-  else {
-    UQ_FATAL_TEST_MACRO(m_coefs[polOrder] != 1.,
-                        UQ_UNAVAILABLE_RANK,
-                        "uqQuadPolRecursion1D1DFunctionClass::value()",
-                        "coefficient of highest degree (>=1) is not 1.");
-#if 1
-    value = 1.;
-    for (int i = (polOrder-1); i >= 0; --i) {
-      value *= domainValue;
-      value += m_coefs[i];
-    }
-#else
-    double posValue = 0.;
-    double negValue = 0.;
-    double tmp = 0.;
-    for (int i = polOrder; i >= 0; --i) {
-      if (i > 1)       tmp = m_coefs[i]*std::pow(domainValue,(double) i);
-      else if (i == 1) tmp = m_coefs[i]*domainValue;
-      else             tmp = m_coefs[i];
-
-      if (tmp >= 0.) posValue += tmp;
-      else           negValue += tmp;
-    }
-    value = posValue + negValue;
-#endif
-  }
-
-  return value;
-}
-
-double
-uqQuadPolRecursion1D1DFunctionClass::deriv(double domainValue) const
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      UQ_UNAVAILABLE_RANK,
-                      "uqQuadPolRecursion1D1DFunctionClass::deriv()",
-                      "not implemented yet");
-  return 0.;
-}
-
-const std::vector<double>& 
-uqQuadPolRecursion1D1DFunctionClass::coefs() const
-{
-  return m_coefs;
-}
-
-//*****************************************************
-// 'QuadCRecursion' 1D->1D class
+// Isolated function
 //*****************************************************
 void
 alphaBetaCLoop(
@@ -1115,11 +1017,11 @@ alphaBetaCLoop(
                       "invalid n");
 
   uqQuadDenominator1D1DFunctionClass pi_pi_0_func  (pi_0);
-  uqQuadNumerator1D1DFunctionClass   t_pi_pi_0_func(pi_0);
+//uqQuadNumerator1D1DFunctionClass   t_pi_pi_0_func(pi_0);
 
   double t_pi_pi_0 = 0.;
-  double pi_pi_0   = rho.multiplyAndIntegrate(pi_pi_0_func,integrationOrder,&t_pi_pi_0);//,1+((unsigned int)(k/2)) ); //;integrationOrder);
-  //double t_pi_pi_0 = rho.multiplyAndIntegrate(t_pi_pi_0_func,integrationOrder,NULL);//,1+((unsigned int)((k+1)/2)) ); //integrationOrder);
+  double pi_pi_0   = rho.multiplyAndIntegrate(pi_pi_0_func,integrationOrder,&t_pi_pi_0);//,1+((unsigned int) k) );
+//double t_pi_pi_0 = rho.multiplyAndIntegrate(t_pi_pi_0_func,integrationOrder,NULL);    //,1+((unsigned int) k) );
 
   // Alpha and beta
   alpha[k] = t_pi_pi_0/pi_pi_0;
@@ -1158,47 +1060,9 @@ alphaBetaCLoop(
   return;
 }
 
-#if 0
-double uqMiscQuadCRecursion(
-  double                     domainValue,
-  int                        k,
-  const std::vector<double>& alpha,
-  const std::vector<double>& beta)
-{
-  double value = 0.;
-  if (k < -1) {
-    UQ_FATAL_TEST_MACRO(true,
-                        UQ_UNAVAILABLE_RANK,
-                        "uqMiscQuadCRecursion()",
-                        "invalid k");
-  }
-  else if (k == -1) {
-    value = 0.;
-  }
-  else if (k == 0) {
-    value = 1.;
-  }
-  else if (k == 1) {
-    value = (domainValue - alpha[k-1])*uqMiscQuadCRecursion(domainValue,
-                                                            k-1,
-                                                            alpha,
-                                                            beta);
-  }
-  else {
-    value = (domainValue - alpha[k-1])*uqMiscQuadCRecursion(domainValue,
-                                                            k-1,
-                                                            alpha,
-                                                            beta);
-    value -= (beta[k-1])*uqMiscQuadCRecursion(domainValue,
-                                              k-2,
-                                              alpha,
-                                              beta);
-  }
-
-  return value;
-}
-#endif
-
+//*****************************************************
+// 'QuadCRecursion' 1D->1D class
+//*****************************************************
 uqQuadCRecursion1D1DFunctionClass::uqQuadCRecursion1D1DFunctionClass(int k)
   :
   uqBase1D1DFunctionClass(-INFINITY,INFINITY),
@@ -1268,12 +1132,6 @@ uqQuadCRecursion1D1DFunctionClass::~uqQuadCRecursion1D1DFunctionClass()
 double
 uqQuadCRecursion1D1DFunctionClass::value(double domainValue) const
 {
-#if 0
-  return uqMiscQuadCRecursion(domainValue,
-                              m_k,
-                              m_alpha,
-                              m_beta);
-#else
   double value = 0.;
   if (m_k < -1) {
     UQ_FATAL_TEST_MACRO(true,
@@ -1296,7 +1154,6 @@ uqQuadCRecursion1D1DFunctionClass::value(double domainValue) const
       val_0 = value;
     }
   }
-#endif
 
   return value;
 }
@@ -1308,5 +1165,24 @@ uqQuadCRecursion1D1DFunctionClass::deriv(double domainValue) const
                       UQ_UNAVAILABLE_RANK,
                       "uqQuadCRecursion1D1DFunctionClass::deriv()",
                       "not implemented yet");
+
   return 0.;
+}
+
+int
+uqQuadCRecursion1D1DFunctionClass::k() const
+{
+  return m_k;
+}
+
+const std::vector<double>&
+uqQuadCRecursion1D1DFunctionClass::alpha() const
+{
+  return m_alpha;
+}
+
+const std::vector<double>&
+uqQuadCRecursion1D1DFunctionClass::beta() const
+{
+  return m_beta;
 }

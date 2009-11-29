@@ -93,15 +93,55 @@ uqBase1DQuadratureClass::weights() const
 }
 
 //*****************************************************
+// Generic 1D quadrature class
+//*****************************************************
+uqGeneric1DQuadratureClass::uqGeneric1DQuadratureClass(
+  double minDomainValue,
+  double maxDomainValue,
+  const std::vector<double>& positions,
+  const std::vector<double>& weights)
+  :
+  uqBase1DQuadratureClass(minDomainValue,maxDomainValue,positions.size()-1)
+{
+  m_positions = positions;
+  m_weights   = weights;
+
+  UQ_FATAL_TEST_MACRO(m_positions.size() == 0,
+                      UQ_UNAVAILABLE_RANK,
+                      "uqGeneric1DQuadratureClass::constructor()",
+                      "invalid positions");
+
+  UQ_FATAL_TEST_MACRO(m_positions.size() != m_weights.size(),
+                      UQ_UNAVAILABLE_RANK,
+                      "uqGeneric1DQuadratureClass::constructor()",
+                      "inconsistent positions and weight");
+}
+
+uqGeneric1DQuadratureClass::~uqGeneric1DQuadratureClass()
+{
+}
+
+void
+uqGeneric1DQuadratureClass::dumbRoutine() const
+{
+  return;
+}
+
+//*****************************************************
 // UniformLegendre 1D quadrature class
 //*****************************************************
 uqUniformLegendre1DQuadratureClass::uqUniformLegendre1DQuadratureClass(
-  double minDomainValue,
-  double maxDomainValue,
-  unsigned int order)
+  double       minDomainValue,
+  double       maxDomainValue,
+  unsigned int order,
+  bool         densityIsNormalized)
   :
   uqBase1DQuadratureClass(minDomainValue,maxDomainValue,order)
 {
+  m_positions.resize(m_order+1,0.); // Yes, '+1'
+  m_weights.resize  (m_order+1,0.); // Yes, '+1'
+
+  // http://www.
   switch (m_order) {
     case 1:
       m_weights  [0] =  1.;
@@ -342,8 +382,14 @@ uqUniformLegendre1DQuadratureClass::uqUniformLegendre1DQuadratureClass(
   // Scale positions from the interval [-1, 1] to the interval [min,max]
   for (unsigned int j = 0; j < m_positions.size(); ++j) {
     m_positions[j] = .5*(m_maxDomainValue - m_minDomainValue)*m_positions[j] + .5*(m_maxDomainValue + m_minDomainValue);
-    // Since \rho is "1", we multiply by ".5 * \Delta"; if \rho were "1/\Delta" then we would just multiply by ".5"
-    m_weights[j] *= .5*(m_maxDomainValue - m_minDomainValue);
+    if (densityIsNormalized) {
+      // Since \rho is "1/\Delta", we just multiply by ".5"
+      m_weights[j] *= .5;
+    }
+    else {
+      // Since \rho is "1", we multiply by ".5 * \Delta"
+      m_weights[j] *= .5*(m_maxDomainValue - m_minDomainValue);
+    }
   }
 }
 

@@ -232,6 +232,11 @@ protected:
   double m_chainMin;
   double m_chainMax;
   double m_gaussian1DScale;
+
+  mutable int                 m_lastInputK;
+  mutable unsigned int        m_lastQuadratureOrder;
+  mutable std::vector<double> m_level_0;
+  mutable std::vector<double> m_level_m1;
 };
 
 //*****************************************************
@@ -304,6 +309,7 @@ public:
 
   double value(double domainValue) const;
   double deriv(double domainValue) const;
+  const uqBase1D1DFunctionClass& constitutiveFunction() const;
 
 protected:
   using uqBase1D1DFunctionClass::m_minDomainValue;
@@ -331,53 +337,6 @@ protected:
 };
 
 //*****************************************************
-// 'QuadRecursion' 1D->1D class
-//*****************************************************
-class uqQuadRecursion1D1DFunctionClass : public uqBase1D1DFunctionClass {
-public:
-  uqQuadRecursion1D1DFunctionClass(double alpha,
-                                   double beta,
-                                   const uqBase1D1DFunctionClass& pi_0,
-                                   const uqBase1D1DFunctionClass& pi_m1);
- ~uqQuadRecursion1D1DFunctionClass();
-
-  double value(double domainValue) const;
-  double deriv(double domainValue) const;
-
-protected:
-  using uqBase1D1DFunctionClass::m_minDomainValue;
-  using uqBase1D1DFunctionClass::m_maxDomainValue;
-
-  double m_alpha;
-  double m_beta;
-  const uqBase1D1DFunctionClass& m_pi_0;
-  const uqBase1D1DFunctionClass& m_pi_m1;
-};
-
-//*****************************************************
-// 'QuadPolRecursion' 1D->1D class
-//*****************************************************
-class uqQuadPolRecursion1D1DFunctionClass : public uqBase1D1DFunctionClass {
-public:
-  uqQuadPolRecursion1D1DFunctionClass(double alpha,
-                                      double beta,
-                                      const uqQuadPolRecursion1D1DFunctionClass& pi_0,
-                                      const uqQuadPolRecursion1D1DFunctionClass& pi_m1);
-  uqQuadPolRecursion1D1DFunctionClass(const std::vector<double>& coefsInput);
- ~uqQuadPolRecursion1D1DFunctionClass();
-
-  double value(double domainValue) const;
-  double deriv(double domainValue) const;
-
-protected:
-  using uqBase1D1DFunctionClass::m_minDomainValue;
-  using uqBase1D1DFunctionClass::m_maxDomainValue;
-  std::vector<double> m_coefs;
-
-  const std::vector<double>& coefs() const;
-};
-
-//*****************************************************
 // 'QuadCRecursion' 1D->1D class
 //*****************************************************
 class uqQuadCRecursion1D1DFunctionClass : public uqBase1D1DFunctionClass {
@@ -388,8 +347,11 @@ public:
                                     const std::vector<double>& beta);
  ~uqQuadCRecursion1D1DFunctionClass();
 
-  double value(double domainValue) const;
-  double deriv(double domainValue) const;
+        double               value(double domainValue) const;
+        double               deriv(double domainValue) const;
+        int                  k    ()                   const;
+  const std::vector<double>& alpha()                   const;
+  const std::vector<double>& beta ()                   const;
 
 protected:
   using uqBase1D1DFunctionClass::m_minDomainValue;
@@ -400,7 +362,7 @@ protected:
 };
 
 //*****************************************************
-// Templated isolated functions
+// Templated isolated function
 //*****************************************************
 template<class V>
 void
@@ -472,6 +434,9 @@ computeAlphasAndBetasWithRiemann(
   return;
 }
 
+//*****************************************************
+// Isolated function
+//*****************************************************
 void
 alphaBetaCLoop(
   int                                      k,
@@ -483,6 +448,9 @@ alphaBetaCLoop(
   std::vector<double>&                     alpha,
   std::vector<double>&                     beta);
 
+//*****************************************************
+// Isolated templated function
+//*****************************************************
 template<class V>
 void
 computeAlphasAndBetasWithCQuadrature(
@@ -513,208 +481,11 @@ computeAlphasAndBetasWithCQuadrature(
   return;
 }
 
-template<class V>
-void
-alphaBetaPolLoop(
-  unsigned int                               k,
-  double                                     pi_pi_m1,
-  const uqQuadPolRecursion1D1DFunctionClass& pi_m1,
-  const uqQuadPolRecursion1D1DFunctionClass& pi_0,
-  const uqBase1D1DFunctionClass&             rho,
-  unsigned int                               integrationOrder,
-  V&                                         alpha,
-  V&                                         beta)
-{
-  unsigned int n = alpha.sizeLocal();
-  UQ_FATAL_TEST_MACRO((n < 1),
-                      UQ_UNAVAILABLE_RANK,
-                      "alphaBetaPolLoop()",
-                      "invalid n");
+//#include <uq1D1DFunction2.h>
 
-  uqQuadDenominator1D1DFunctionClass pi_pi_0_func  (pi_0);
-  uqQuadNumerator1D1DFunctionClass   t_pi_pi_0_func(pi_0);
-
-  double pi_pi_0   = rho.multiplyAndIntegrate(pi_pi_0_func,integrationOrder,NULL);//,1+((unsigned int)(k/2)) ); //;integrationOrder);
-  double t_pi_pi_0 = rho.multiplyAndIntegrate(t_pi_pi_0_func,integrationOrder,NULL);//,1+((unsigned int)((k+1)/2)) ); //integrationOrder);
-
-  // Alpha and beta
-  alpha[k] = t_pi_pi_0/pi_pi_0;
-  beta[k]  = pi_pi_0/pi_pi_m1;
-  UQ_FATAL_TEST_MACRO((beta[k] < 0.),
-                      UQ_UNAVAILABLE_RANK,
-                      "alphaBetaPolLoop<V>()",
-                      "beta is negative");
-
-  std::cout << "In alphaBetaPolLoop()"
-            << ": k = "         << k
-            << ", pi_0(0.) = "  << pi_0.value(0.)
-            << ", pi_pi_m1 = "  << pi_pi_m1
-            << ", pi_pi_0 = "   << pi_pi_0
-            << ", t_pi_pi_0 = " << t_pi_pi_0
-            << ", alpha[k] = "  << alpha[k]
-            << ", beta[k] = "   << beta[k]
-            << std::endl;
-
-  if (k < (n-1)) {
-    uqQuadPolRecursion1D1DFunctionClass pi_p1(alpha[k],
-                                              beta[k],
-                                              pi_0,
-                                              pi_m1);
-
-    alphaBetaPolLoop<V>(k+1,
-                        pi_pi_0,
-                        pi_0,
-                        pi_p1,
-                        rho,
-                        integrationOrder,
-                        alpha,
-                        beta);
-  }
-  //std::cout << "Leaving alphaBetaPolLoop(), k = " << k << ", beta[0] = " << beta[0] << std::endl;
-
-  return;
-}
-
-template<class V>
-void
-computeAlphasAndBetasWithPolQuadrature(
-  const uqBase1D1DFunctionClass& function1D1D,
-  unsigned int integrationOrder,
-  V&           alpha,
-  V&           beta)
-{
-  std::vector<double> coefs0(1,0.);
-  std::vector<double> coefs1(1,1.);
-  const uqQuadPolRecursion1D1DFunctionClass pi_m1(coefs0);
-  const uqQuadPolRecursion1D1DFunctionClass pi_0 (coefs1);
-  alphaBetaPolLoop<V>(0, // Yes, '0'
-                      1.,
-                      pi_m1,
-                      pi_0,
-                      function1D1D,
-                      integrationOrder,
-                      alpha,
-                      beta);
-
-  return;
-}
-
-template<class V>
-void
-alphaBetaLoop(
-  unsigned int                   k,
-  double                         pi_pi_m1,
-  const uqBase1D1DFunctionClass& pi_m1,
-  const uqBase1D1DFunctionClass& pi_0,
-  const uqBase1D1DFunctionClass& rho,
-  unsigned int                   integrationOrder,
-  V&                             alpha,
-  V&                             beta)
-{
-  unsigned int n = alpha.sizeLocal();
-  UQ_FATAL_TEST_MACRO((n < 1),
-                      UQ_UNAVAILABLE_RANK,
-                      "alphaBetaLoop()",
-                      "invalid n");
-
-#if 0
-  uqFuncTimesFunc1D1DFunctionClass pi_pi_0_func(pi_0,pi_0);
-
-  uqLinear1D1DFunctionClass t_func(-INFINITY,
-                                   INFINITY,
-                                   0.,
-                                   0.,
-                                   1.);
-  uqFuncTimesFunc1D1DFunctionClass t_pi_pi_0_func(t_func,pi_pi_0_func);
-#else
-  uqQuadDenominator1D1DFunctionClass pi_pi_0_func(pi_0);
-  uqQuadNumerator1D1DFunctionClass   t_pi_pi_0_func(pi_0);
-#endif
-
-  double pi_pi_0 = rho.multiplyAndIntegrate(pi_pi_0_func,integrationOrder,NULL);//,1+((unsigned int)(k/2)) ); //;integrationOrder);
-  double t_pi_pi_0 = rho.multiplyAndIntegrate(t_pi_pi_0_func,integrationOrder,NULL);//,1+((unsigned int)((k+1)/2)) ); //integrationOrder);
-
-  // Alpha and beta
-  alpha[k] = t_pi_pi_0/pi_pi_0;
-  beta[k]  = pi_pi_0/pi_pi_m1;
-  UQ_FATAL_TEST_MACRO((beta[k] < 0.),
-                      UQ_UNAVAILABLE_RANK,
-                      "alphaBetaLoop<V>()",
-                      "beta is negative");
-
-  std::cout << "In alphaBetaLoop()"
-            << ": k = "         << k
-            << ", pi_0(0.) = "  << pi_0.value(0.)
-            << ", pi_pi_m1 = "  << pi_pi_m1
-            << ", pi_pi_0 = "   << pi_pi_0
-            << ", t_pi_pi_0 = " << t_pi_pi_0
-            << ", alpha[k] = "  << alpha[k]
-            << ", beta[k] = "   << beta[k]
-            << std::endl;
-
-  if (k < (n-1)) {
-#if 0
-    uqLinear1D1DFunctionClass tma_func(-INFINITY,
-                                       INFINITY,
-                                       0.,
-                                       -alpha[k],
-                                       1.);
-
-    uqFuncTimesFunc1D1DFunctionClass tma_pi0_func(tma_func,
-                                                  pi_0);
-
-    uqScalarTimesFunc1D1DFunctionClass mb_pm1_func(-beta[k],
-                                                   pi_m1);
-
-    uqFuncPlusFunc1D1DFunctionClass pi_p1(tma_pi0_func,
-                                          mb_pm1_func);
-#else
-    uqQuadRecursion1D1DFunctionClass pi_p1(alpha[k],
-                                           beta[k],
-                                           pi_0,
-                                           pi_m1);
-#endif
-
-    alphaBetaLoop<V>(k+1,
-                     pi_pi_0,
-                     pi_0,
-                     pi_p1,
-                     rho,
-                     integrationOrder,
-                     alpha,
-                     beta);
-  }
-  //std::cout << "Leaving alphaBetaLoop(), k = " << k << ", beta[0] = " << beta[0] << std::endl;
-
-  return;
-}
-
-template<class V>
-void
-computeAlphasAndBetasWithQuadrature(
-  const uqBase1D1DFunctionClass& function1D1D,
-  unsigned int integrationOrder,
-  V&           alpha,
-  V&           beta)
-{
-  const uqConstant1D1DFunctionClass pi_m1(-INFINITY,//function1D1D.minDomainValue(),
-                                          INFINITY, //function1D1D.maxDomainValue(),
-                                          0.);
-  const uqConstant1D1DFunctionClass pi_0 (-INFINITY,//function1D1D.minDomainValue(),
-                                          INFINITY, //function1D1D.maxDomainValue(),
-                                          1.);
-  alphaBetaLoop<V>(0, // Yes, '0'
-                   1.,
-                   pi_m1,
-                   pi_0,
-                   function1D1D,
-                   integrationOrder,
-                   alpha,
-                   beta);
-
-  return;
-}
-
+//*****************************************************
+// Isolated templated function
+//*****************************************************
 template<class V, class M>
 void
 computeQuadPtsAndWeights(const uqBase1D1DFunctionClass& function1D1D,

@@ -50,12 +50,12 @@ public:
                                    unsigned int order);
   virtual ~uqBase1DQuadratureClass();
 
-           double minDomainValue() const;
-           double maxDomainValue() const;
-           const std::vector<double>& positions() const;
-           const std::vector<double>& weights  () const;
+           double                     minDomainValue() const;
+           double                     maxDomainValue() const;
+           const std::vector<double>& positions     () const;
+           const std::vector<double>& weights       () const;
+  virtual  void                       dumbRoutine   () const = 0;
 
-  virtual  void dumbRoutine() const = 0;
 protected:
   double              m_minDomainValue;
   double              m_maxDomainValue;
@@ -65,13 +65,35 @@ protected:
 };
 
 //*****************************************************
+// Generic 1D quadrature class
+//*****************************************************
+class uqGeneric1DQuadratureClass : public uqBase1DQuadratureClass {
+public:
+  uqGeneric1DQuadratureClass(double minDomainValue,
+                             double maxDomainValue,
+                             const std::vector<double>& positions,
+                             const std::vector<double>& weights);
+ ~uqGeneric1DQuadratureClass();
+
+  void dumbRoutine() const;
+
+protected:
+  using uqBase1DQuadratureClass::m_minDomainValue;
+  using uqBase1DQuadratureClass::m_maxDomainValue;
+  using uqBase1DQuadratureClass::m_order;
+  using uqBase1DQuadratureClass::m_positions;
+  using uqBase1DQuadratureClass::m_weights;
+};
+
+//*****************************************************
 // Uniform/Legendre 1D quadrature class
 //*****************************************************
 class uqUniformLegendre1DQuadratureClass : public uqBase1DQuadratureClass {
 public:
-  uqUniformLegendre1DQuadratureClass(double minDomainValue,
-                                     double maxDomainValue,
-                                     unsigned int order);
+  uqUniformLegendre1DQuadratureClass(double       minDomainValue,
+                                     double       maxDomainValue,
+                                     unsigned int order,
+                                     bool         densityIsNormalized);
  ~uqUniformLegendre1DQuadratureClass();
 
   void dumbRoutine() const;
