@@ -350,7 +350,7 @@ uqBaseEnvironmentClass::openOutputFile(
   if ((baseFileName                         == UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE) ||
       (allowedSubEnvIds.find(this->subId()) == allowedSubEnvIds.end()            )) {
     if ((m_subDisplayFile) && (this->displayVerbosity() >= 10)) {
-      *this->subDisplayFile() << "In openOutputFile()"
+      *this->subDisplayFile() << "In uqBaseEnvironmentClass::openOutputFile()"
                               << ": no output file opened with base name '" << baseFileName
                               << "'"
                               << std::endl;
@@ -358,7 +358,7 @@ uqBaseEnvironmentClass::openOutputFile(
   }
   else {
     if ((m_subDisplayFile) && (this->displayVerbosity() >= 10)) {
-      *this->subDisplayFile() << "In openOutputFile()"
+      *this->subDisplayFile() << "In uqBaseEnvironmentClass::openOutputFile()"
                               << ": opening output file with base name '" << baseFileName
                               << "'"
                               << std::endl;
@@ -366,7 +366,7 @@ uqBaseEnvironmentClass::openOutputFile(
 
     if (this->subRank() == 0) {
 #if 0
-      std::cout << "In openOutputFile()"
+      std::cout << "In uqBaseEnvironmentClass::openOutputFile()"
                 << ": opening output file with base name '" << baseFileName
                 << "'"
                 << ", writeOver = " << writeOver
@@ -413,7 +413,7 @@ uqBaseEnvironmentClass::openOutputFile(
         }
       }
       if (ofsvar == NULL) {
-        std::cerr << "In openOutputFile()"
+        std::cerr << "In uqBaseEnvironmentClass::openOutputFile()"
                   << ": failed to open output file with base name '" << baseFileName
                   << "'"
                   << std::endl;
@@ -438,7 +438,7 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
   ofsvar = NULL;
   if (baseFileName == ".") {
     if ((m_subDisplayFile) && (this->displayVerbosity() >= 10)) {
-      *this->subDisplayFile() << "In openUnifiedOutputFile()"
+      *this->subDisplayFile() << "In uqBaseEnvironmentClass::openUnifiedOutputFile()"
                               << ": no unified output file opened with base name '" << baseFileName
                               << "'"
                               << std::endl;
@@ -446,7 +446,7 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
   }
   else {
     if ((m_subDisplayFile) && (this->displayVerbosity() >= 10)) {
-      *this->subDisplayFile() << "In openUnifiedOutputFile()"
+      *this->subDisplayFile() << "In uqBaseEnvironmentClass::openUnifiedOutputFile()"
                               << ": opening unified output file with base name '" << baseFileName
                               << "'"
                               << std::endl;
@@ -455,7 +455,7 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
     //if ((this->subRank   () == 0) &&
     //    (this->inter0Rank() == 0)) {
 #if 0
-      std::cout << "In openUnifiedOutputFile()"
+      std::cout << "In uqBaseEnvironmentClass::openUnifiedOutputFile()"
                 << ": opening output file with base name '" << baseFileName
                 << "'"
                 << ", writeOver = " << writeOver
@@ -479,7 +479,7 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
         }
       }
       if (ofsvar == NULL) {
-        std::cerr << "In openUnifiedOutputFile()"
+        std::cerr << "In uqBaseEnvironmentClass::openUnifiedOutputFile()"
                   << ": failed to open unified output file with base name '" << baseFileName
                   << "'"
                   << std::endl;
@@ -489,6 +489,49 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
                           "openUnifiedOutputFile()",
                           "failed to open output file");
     //}
+  }
+
+  return;
+}
+
+void
+uqBaseEnvironmentClass::openInputFile(
+  const std::string&            baseFileName,
+  const std::string&            fileType,
+  const std::set<unsigned int>& allowedSubEnvIds,
+        bool                    writeOver,
+        std::ifstream*&         ifsvar) const
+{
+  ifsvar = NULL;
+  if ((baseFileName                         == UQ_ENV_FILENAME_FOR_NO_INPUT_FILE) ||
+      (allowedSubEnvIds.find(this->subId()) == allowedSubEnvIds.end()           )) {
+    if ((m_subDisplayFile) && (this->displayVerbosity() >= 10)) {
+      *this->subDisplayFile() << "In uqBaseEnvironmentClass::openInputFile()"
+                              << ": no input file opened with base name '" << baseFileName
+                              << "'"
+                              << std::endl;
+    }
+  }
+  else {
+    if ((m_subDisplayFile) && (this->displayVerbosity() >= 10)) {
+      *this->subDisplayFile() << "In uqBaseEnvironmentClass::openInputFile()"
+                              << ": opening input file with base name '" << baseFileName
+                              << "'"
+                              << std::endl;
+    }
+    if (this->subRank() == 0) {
+      ifsvar = new std::ifstream((baseFileName+"."+UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT).c_str(), std::ofstream::in);
+      if (ifsvar == NULL) {
+        std::cerr << "In uqBaseEnvironmentClass::openInputFile()"
+                  << ": failed to open input file with base name '" << baseFileName
+                  << "'"
+                  << std::endl;
+      }
+      UQ_FATAL_TEST_MACRO((ifsvar == NULL) || (ifsvar->is_open() == false),
+                          this->fullRank(),
+                          "uqBaseEnvironmentClass::openInputFile()",
+                          "file with fileName could not be found");
+    }
   }
 
   return;

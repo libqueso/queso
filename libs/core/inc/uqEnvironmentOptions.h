@@ -36,6 +36,7 @@
 #include <uqEnvironment.h>
 
 #define UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE "."
+#define UQ_ENV_FILENAME_FOR_NO_INPUT_FILE  "."
 
 #define UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV    1
 #define UQ_ENV_SUB_SCREEN_WRITE_ODV        0

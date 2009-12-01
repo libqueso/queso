@@ -577,6 +577,144 @@ uqGslVectorClass::subWriteContents(
   return;
 }
 
+void
+uqGslVectorClass::subReadContents(
+  const std::string&            fileName,
+  const std::set<unsigned int>& allowedSubEnvIds)
+{
+  UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
+                      m_env.fullRank(),
+                      "uqGslVectorsClass::subReadContents()",
+                      "unexpected subRank");
+
+  UQ_FATAL_TEST_MACRO(this->numOfProcsForStorage() > 1,
+                      m_env.fullRank(),
+                      "uqGslVectorClass::subReadContents()",
+                      "implemented just for sequential vectors for now");
+
+  std::ifstream* ifsVar = NULL;
+  m_env.openInputFile(fileName,
+                      UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                      allowedSubEnvIds,
+                      false,
+                      ifsVar);
+
+  if (ifsVar) {
+    double subReadSize = this->sizeLocal();
+
+    // In the logic below, the id of a line' begins with value 0 (zero)
+    unsigned int idOfMyFirstLine = 1;
+    unsigned int idOfMyLastLine = 1 + this->sizeLocal();
+    unsigned int numParams = 1; // Yes, just '1'
+
+    // Read number of chain positions in the file by taking care of the first line,
+    // which resembles something like 'variable_name = zeros(n_positions,m_params);'
+    std::string tmpString;
+
+    // Read 'variable name' string
+    *ifsVar >> tmpString;
+    //std::cout << "Just read '" << tmpString << "'" << std::endl;
+
+    // Read '=' sign
+    *ifsVar >> tmpString;
+    //std::cout << "Just read '" << tmpString << "'" << std::endl;
+    UQ_FATAL_TEST_MACRO(tmpString != "=",
+                        m_env.fullRank(),
+                        "uqGslVectorClass::subReadContents()",
+                        "string should be the '=' sign");
+
+    // Read 'zeros(n_positions,n_params)' string
+    *ifsVar >> tmpString;
+    //std::cout << "Just read '" << tmpString << "'" << std::endl;
+    unsigned int posInTmpString = 6;
+
+    // Isolate 'n_positions' in a string
+    char nPositionsString[tmpString.size()-posInTmpString+1];
+    unsigned int posInPositionsString = 0;
+    do {
+      UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
+                          m_env.fullRank(),
+                          "uqGslVectorClass::subReadContents()",
+                          "symbol ',' not found in first line of file");
+      nPositionsString[posInPositionsString++] = tmpString[posInTmpString++];
+    } while (tmpString[posInTmpString] != ',');
+    nPositionsString[posInPositionsString] = '\0';
+
+    // Isolate 'n_params' in a string
+    posInTmpString++; // Avoid reading ',' char
+    char nParamsString[tmpString.size()-posInTmpString+1];
+    unsigned int posInParamsString = 0;
+    do {
+      UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
+                          m_env.fullRank(),
+                          "uqGslVectorClass::subReadContents()",
+                          "symbol ')' not found in first line of file");
+      nParamsString[posInParamsString++] = tmpString[posInTmpString++];
+    } while (tmpString[posInTmpString] != ')');
+    nParamsString[posInParamsString] = '\0';
+
+    // Convert 'n_positions' and 'n_params' strings to numbers
+    unsigned int sizeOfVecInFile = (unsigned int) strtod(nPositionsString,NULL);
+    unsigned int numParamsInFile = (unsigned int) strtod(nParamsString,   NULL);
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "In uqGslVectorClass::subReadContents()"
+                              << ": fullRank "          << m_env.fullRank()
+                              << ", sizeOfVecInFile = " << sizeOfVecInFile
+                              << ", numParamsInFile = " << numParamsInFile
+                              << std::endl;
+    }
+
+    // Check if [size of vec in file] >= [requested sub vec size]
+    UQ_FATAL_TEST_MACRO(sizeOfVecInFile < subReadSize,
+                        m_env.fullRank(),
+                        "uqGslVectorClass::subReadContents()",
+                        "size of vec in file is not big enough");
+
+    // Check if [num params in file] == [num params in current vec]
+    UQ_FATAL_TEST_MACRO(numParamsInFile != numParams,
+                        m_env.fullRank(),
+                        "uqGslVectorClass::subReadContents()",
+                        "number of parameters of vec in file is different than number of parameters in this vec object");
+
+    // Code common to any core in a communicator
+    unsigned int maxCharsPerLine = 64*numParams; // Up to about 60 characters to represent each parameter value
+
+    unsigned int lineId = 0;
+    while (lineId < idOfMyFirstLine) {
+      ifsVar->ignore(maxCharsPerLine,'\n');
+      lineId++;
+    };
+
+    // Take care of initial part of the first data line,
+    // which resembles something like 'variable_name = [value1 value2 ...'
+    // Read 'variable name' string
+    *ifsVar >> tmpString;
+    //std::cout << "Core 0 just read '" << tmpString << "'" << std::endl;
+
+    // Read '=' sign
+    *ifsVar >> tmpString;
+    //std::cout << "Core 0 just read '" << tmpString << "'" << std::endl;
+    UQ_FATAL_TEST_MACRO(tmpString != "=",
+                        m_env.fullRank(),
+                        "uqGslVectorClass::subReadContents()",
+                        "in core 0, string should be the '=' sign");
+
+    // Take into account the ' [' portion
+    std::streampos tmpPos = ifsVar->tellg();
+    ifsVar->seekg(tmpPos+(std::streampos)2);
+
+    while (lineId <= idOfMyLastLine) {
+      *ifsVar >> (*this)[lineId - idOfMyFirstLine];
+      lineId++;
+    };
+  }
+
+  //ifsVar->close();
+  delete ifsVar;
+
+  return;
+}
+
 gsl_vector*
 uqGslVectorClass::data() const
 {

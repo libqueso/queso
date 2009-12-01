@@ -77,6 +77,8 @@ public:
   void         subWriteContents (const std::string&            varNamePrefix,
                                  const std::string&            fileName,
                                  const std::set<unsigned int>& allowedSubEnvIds) const;
+  void         subReadContents  (const std::string&            fileName,
+                                 const std::set<unsigned int>& allowedSubEnvIds);
 
   bool         atLeastOneComponentSmallerThan(const uqGslVectorClass& rhs) const;
   bool         atLeastOneComponentBiggerThan (const uqGslVectorClass& rhs) const;

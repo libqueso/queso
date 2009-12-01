@@ -178,8 +178,6 @@ public:
                                                  const V&                             unifiedScaleVec,
                                                  const std::vector<V*>&               unifiedEvalParamVecs,
                                                  std::vector<V*>&                     unifiedDensityVecs) const;
-      //void         subWriteContents           (std::ofstream&                       ofsvar) const;
-      //void         unifiedWriteContents       (std::ofstream&                       ofsvar) const;
         void         subWriteContents           (const std::string&                   fileName,
                                                  const std::set<unsigned int>&        allowedSubEnvIds) const;
         void         unifiedWriteContents       (const std::string&                   fileName) const;
@@ -1885,46 +1883,6 @@ uqSequenceOfVectorsClass<V,M>::subWriteContents(
 
   return;
 }
-#if 0
-template <class V, class M>
-void
-uqSequenceOfVectorsClass<V,M>::subWriteContents(std::ofstream& ofsvar) const
-{
-  bool okSituation = (m_env.subRank() >= 0);
-  UQ_FATAL_TEST_MACRO(!okSituation,
-                      m_env.fullRank(),
-                      "uqSequenceOfVectorsClass<V,M>::subWriteContents()",
-                      "unexpected subRank");
-
-  ofsvar << m_name << "_sub" << m_env.subIdString() << " = zeros(" << this->subSequenceSize()
-         << ","                                                    << this->vectorSizeLocal()
-         << ");"
-         << std::endl;
-  ofsvar << m_name << "_sub" << m_env.subIdString() << " = [";
-  unsigned int chainSize = this->subSequenceSize();
-  for (unsigned int j = 0; j < chainSize; ++j) {
-    bool savedVectorPrintState = m_seq[j]->getPrintHorizontally();
-    m_seq[j]->setPrintHorizontally(true);
-    ofsvar << *(m_seq[j])
-           << std::endl;
-    m_seq[j]->setPrintHorizontally(savedVectorPrintState);
-  }
-  ofsvar << "];\n";
-
-  return;
-}
-
-template <class V, class M>
-void
-uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(std::ofstream& ofsvar) const
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.fullRank(),
-                      "uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(1)",
-                      "not implemented yet");
-  return;
-}
-#endif
 
 template <class V, class M>
 void
@@ -2056,8 +2014,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
                               "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
                               "string should be the '=' sign");
 
-          // Read     'zeros(n_positions,n_params)' string
-          // Position  0123456
+          // Read 'zeros(n_positions,n_params)' string
           *ifsvar >> tmpString;
 	  //std::cout << "Just read '" << tmpString << "'" << std::endl;
           unsigned int posInTmpString = 6;

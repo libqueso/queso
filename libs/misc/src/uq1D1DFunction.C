@@ -694,18 +694,14 @@ uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate(const uqBase1D1DFunctionC
       }
     }
 
-    //useFasterMethod = false; // FIX ME
     if (useFasterMethod) {
-      //std::cout << "In uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate()"
-      //          << ": using faster method for currentK = " << currentK
-      //          << std::endl;
       if (currentK == 0) {
         m_level_0.resize (dataSize*numQuadraturePositions,0.); // Yes, '0..'
         m_level_m1.resize(dataSize*numQuadraturePositions,0.); // Yes, '0.'
 
-        std::cout << "In uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate()"
-                  << ": currentK = " << currentK
-                  << std::endl;
+        //std::cout << "In uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate()"
+        //          << ": currentK = " << currentK
+        //          << std::endl;
         unsigned int auxK = 0;
         for (unsigned int k = 0; k < dataSize; ++k) {
           double xk = (*m_chain)[k];
@@ -723,11 +719,11 @@ uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate(const uqBase1D1DFunctionC
         double alpha = constitutivePtr->alpha()[currentK-1];
         double beta  = constitutivePtr->beta ()[currentK-1];
 
-        std::cout << "In uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate()"
-                  << ": currentK = " << currentK
-                  << ", alpha = "    << alpha
-                  << ", beta = "     << beta
-                  << std::endl;
+        //std::cout << "In uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate()"
+        //          << ": currentK = " << currentK
+        //          << ", alpha = "    << alpha
+        //          << ", beta = "     << beta
+        //          << std::endl;
         unsigned int auxK = 0;
         for (unsigned int k = 0; k < dataSize; ++k) {
           double xk = (*m_chain)[k];
@@ -1033,12 +1029,12 @@ alphaBetaCLoop(
 
   std::cout << "In alphaBetaCLoop()"
             << ": k = "         << k
-            << ", pi_0(0.) = "  << pi_0.value(0.)
-            << ", pi_pi_m1 = "  << pi_pi_m1
-            << ", pi_pi_0 = "   << pi_pi_0
-            << ", t_pi_pi_0 = " << t_pi_pi_0
-            << ", alpha[k] = "  << alpha[k]
-            << ", beta[k] = "   << beta[k]
+    //<< ", pi_0(0.) = "  << pi_0.value(0.)
+    //<< ", pi_pi_m1 = "  << pi_pi_m1
+    //<< ", pi_pi_0 = "   << pi_pi_0
+    //<< ", t_pi_pi_0 = " << t_pi_pi_0
+    //<< ", alpha[k] = "  << alpha[k]
+    //<< ", beta[k] = "   << beta[k]
             << std::endl;
 
   if (k < (int) (n-1)) {

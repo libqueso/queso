@@ -180,6 +180,12 @@ public:
                                                               const std::string&            fileType,
                                                                     bool                    writeOver,
                                                                     std::ofstream*&         ofsvar) const;
+          void                    openInputFile              (const std::string&            fileName,
+                                                              const std::string&            fileType,
+                                                              const std::set<unsigned int>& allowedSubEnvIds,
+                                                                    bool                    writeOver,
+                                                                    std::ifstream*&         ifsvar) const;
+
 
   virtual void                    print                      (std::ostream& os) const = 0;
 
