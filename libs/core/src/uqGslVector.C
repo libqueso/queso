@@ -604,7 +604,7 @@ uqGslVectorClass::subReadContents(
 
     // In the logic below, the id of a line' begins with value 0 (zero)
     unsigned int idOfMyFirstLine = 1;
-    unsigned int idOfMyLastLine = 1 + this->sizeLocal();
+    unsigned int idOfMyLastLine = this->sizeLocal();
     unsigned int numParams = 1; // Yes, just '1'
 
     // Read number of chain positions in the file by taking care of the first line,
@@ -658,9 +658,10 @@ uqGslVectorClass::subReadContents(
     unsigned int numParamsInFile = (unsigned int) strtod(nParamsString,   NULL);
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "In uqGslVectorClass::subReadContents()"
-                              << ": fullRank "          << m_env.fullRank()
-                              << ", sizeOfVecInFile = " << sizeOfVecInFile
-                              << ", numParamsInFile = " << numParamsInFile
+                              << ": fullRank "            << m_env.fullRank()
+                              << ", sizeOfVecInFile = "   << sizeOfVecInFile
+                              << ", numParamsInFile = "   << numParamsInFile
+                              << ", this->sizeLocal() = " << this->sizeLocal()
                               << std::endl;
     }
 
@@ -685,6 +686,12 @@ uqGslVectorClass::subReadContents(
       lineId++;
     };
 
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "In uqGslVectorClass::subReadContents()"
+                              << ": beginning to read input actual data"
+                              << std::endl;
+    }
+
     // Take care of initial part of the first data line,
     // which resembles something like 'variable_name = [value1 value2 ...'
     // Read 'variable name' string
@@ -702,6 +709,15 @@ uqGslVectorClass::subReadContents(
     // Take into account the ' [' portion
     std::streampos tmpPos = ifsVar->tellg();
     ifsVar->seekg(tmpPos+(std::streampos)2);
+
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "In uqGslVectorClass::subReadContents()"
+                              << ": beginning to read linear with numbers only"
+                              << ", lineId = " << lineId
+                              << ", idOfMyFirstLine = " << idOfMyFirstLine
+                              << ", idOfMyLastLine = " << idOfMyLastLine
+                              << std::endl;
+    }
 
     while (lineId <= idOfMyLastLine) {
       *ifsVar >> (*this)[lineId - idOfMyFirstLine];
