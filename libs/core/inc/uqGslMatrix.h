@@ -108,6 +108,7 @@ uqGslMatrixClass operator*    (double a,                    const uqGslMatrixCla
 uqGslVectorClass operator*    (const uqGslMatrixClass& mat, const uqGslVectorClass& vec);
 uqGslMatrixClass operator*    (const uqGslMatrixClass& m1,  const uqGslMatrixClass& m2 );
 uqGslMatrixClass operator+    (const uqGslMatrixClass& m1,  const uqGslMatrixClass& m2 );
+uqGslMatrixClass operator-    (const uqGslMatrixClass& m1,  const uqGslMatrixClass& m2 );
 uqGslMatrixClass matrixProduct(const uqGslVectorClass& v1,  const uqGslVectorClass& v2 );
 uqGslMatrixClass diagScaling  (const uqGslVectorClass& vec, const uqGslMatrixClass& mat);
 std::ostream&    operator<<   (std::ostream& os,            const uqGslMatrixClass& obj);
