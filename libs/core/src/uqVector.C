@@ -48,7 +48,8 @@ uqVectorClass::uqVectorClass(const uqBaseEnvironmentClass& env, const Epetra_Map
   :
   m_env              (env),
   m_map              (map),
-  m_printHorizontally(true)
+  m_printHorizontally(true),
+  m_printScientific  (false) // for compatibility with previous regression tests
 {
 }
 
@@ -73,6 +74,7 @@ uqVectorClass::copy(const uqVectorClass& src)
   //m_env               = src.env;
   //m_map               = src.map;
   m_printHorizontally = src.m_printHorizontally;
+  m_printScientific   = src.m_printScientific;
 
   return;
 }
@@ -158,4 +160,17 @@ bool
 uqVectorClass::getPrintHorizontally() const
 {
   return m_printHorizontally;
+}
+
+void
+uqVectorClass::setPrintScientific(bool value) const
+{
+  m_printScientific = value;
+  return;
+}
+
+bool
+uqVectorClass::getPrintScientific() const
+{
+  return m_printScientific;
 }

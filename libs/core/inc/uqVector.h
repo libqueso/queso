@@ -57,6 +57,8 @@ public:
           unsigned int            numOfProcsForStorage()           const;
           void                    setPrintHorizontally(bool value) const; // Yes, 'const'
           bool                    getPrintHorizontally()           const;
+          void                    setPrintScientific  (bool value) const; // Yes, 'const'
+          bool                    getPrintScientific  ()           const;
 
   virtual unsigned int            sizeLocal           () const = 0;
   virtual unsigned int            sizeGlobal          () const = 0;
@@ -72,6 +74,7 @@ protected:
   const uqBaseEnvironmentClass& m_env;
   const Epetra_Map&             m_map;
   mutable bool                  m_printHorizontally;
+  mutable bool                  m_printScientific;
 };
 
 #endif // __UQ_VECTOR_H__

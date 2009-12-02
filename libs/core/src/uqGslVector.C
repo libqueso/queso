@@ -517,18 +517,41 @@ uqGslVectorClass::print(std::ostream& os) const
 {
   unsigned int size = this->sizeLocal();
 
-  if (m_printHorizontally) {
-    for (unsigned int i = 0; i < size; ++i) {
-      os << (*this)[i]
-         << " ";
+  std::ostream::fmtflags curr_fmt = os.flags();
+
+  if (m_printScientific) {
+    unsigned int savedPrecision = os.precision();
+    os.precision(16);
+    if (m_printHorizontally) {
+      for (unsigned int i = 0; i < size; ++i) {
+        os << std::scientific << (*this)[i]
+           << " ";
+      }
     }
+    else {
+      for (unsigned int i = 0; i < size; ++i) {
+        os << std::scientific << (*this)[i]
+           << std::endl;
+      }
+    }
+    os.precision(savedPrecision);
   }
   else {
-    for (unsigned int i = 0; i < size; ++i) {
-      os << (*this)[i]
-         << std::endl;
+    if (m_printHorizontally) {
+      for (unsigned int i = 0; i < size; ++i) {
+        os << std::dec << (*this)[i]
+           << " ";
+      }
+    }
+    else {
+      for (unsigned int i = 0; i < size; ++i) {
+        os << std::dec << (*this)[i]
+           << std::endl;
+      }
     }
   }
+
+  os.flags(curr_fmt);
 
   return;
 }
@@ -563,11 +586,14 @@ uqGslVectorClass::subWriteContents(
             << std::endl;
     *ofsVar << varNamePrefix << "_sub" << m_env.subIdString() << " = [";
 
-    bool savedVectorPrintState = this->getPrintHorizontally();
+    bool savedVectorPrintScientific   = this->getPrintScientific();
+    bool savedVectorPrintHorizontally = this->getPrintHorizontally();
+    this->setPrintScientific  (true);
     this->setPrintHorizontally(false);
     *ofsVar << *this;
           //<< std::endl; // No need for 'endl' because horizontally = 'false'
-    this->setPrintHorizontally(savedVectorPrintState);
+    this->setPrintScientific  (savedVectorPrintScientific);
+    this->setPrintHorizontally(savedVectorPrintHorizontally);
 
     *ofsVar << "];\n";
     //ofsVar->close();
