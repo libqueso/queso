@@ -87,8 +87,6 @@ public:
                                                    T&                              unifiedMaxDomainValue,
                                                    std::vector<T>&                 unifiedCdfValues) const;
 
-        //T            subMax                       (unsigned int                    initialPos,
-        //                                           unsigned int                    numPos) const;
         T            subMean                      (unsigned int                    initialPos,
                                                    unsigned int                    numPos) const;
         T            unifiedMean                  (bool                            useOnlyInter0Comm,
