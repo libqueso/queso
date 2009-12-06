@@ -141,7 +141,7 @@ uqUniformLegendre1DQuadratureClass::uqUniformLegendre1DQuadratureClass(
   m_positions.resize(m_order+1,0.); // Yes, '+1'
   m_weights.resize  (m_order+1,0.); // Yes, '+1'
 
-  // http://www.
+  // http://www.holoborodko.com/pavel/?page_id=679
   switch (m_order) {
     case 1:
       m_weights  [0] =  1.;
@@ -185,6 +185,40 @@ uqUniformLegendre1DQuadratureClass::uqUniformLegendre1DQuadratureClass(
       m_positions[2] =  0.;
       m_positions[3] =  sqrt(5.-2.*sqrt(10./7.))/3.;
       m_positions[4] =  sqrt(5.+2.*sqrt(10./7.))/3.;
+    break;
+
+    case 5:
+      m_weights  [0] =  0.1713244923791703450402961;
+      m_weights  [1] =  0.3607615730481386075698335;
+      m_weights  [2] =  0.4679139345726910473898703;
+      m_weights  [3] =  0.4679139345726910473898703;
+      m_weights  [4] =  0.3607615730481386075698335;
+      m_weights  [5] =  0.1713244923791703450402961;
+
+      m_positions[0] = -0.9324695142031520278123016;
+      m_positions[1] = -0.6612093864662645136613996;
+      m_positions[2] = -0.2386191860831969086305017;
+      m_positions[3] =  0.2386191860831969086305017;
+      m_positions[4] =  0.6612093864662645136613996;
+      m_positions[5] =  0.9324695142031520278123016;
+    break;
+
+    case 6:
+      m_weights  [0] =  0.1294849661688696932706114;
+      m_weights  [1] =  0.2797053914892766679014678;
+      m_weights  [2] =  0.3818300505051189449503698;
+      m_weights  [3] =  0.4179591836734693877551020;
+      m_weights  [4] =  0.3818300505051189449503698;
+      m_weights  [5] =  0.2797053914892766679014678;
+      m_weights  [6] =  0.1294849661688696932706114;
+
+      m_positions[0] = -0.9491079123427585245261897;
+      m_positions[1] = -0.7415311855993944398638648;
+      m_positions[2] = -0.4058451513773971669066064;
+      m_positions[3] =  0.;
+      m_positions[4] =  0.4058451513773971669066064;
+      m_positions[5] =  0.7415311855993944398638648;
+      m_positions[6] =  0.9491079123427585245261897;
     break;
 
     case 7:
