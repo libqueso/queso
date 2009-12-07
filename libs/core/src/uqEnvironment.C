@@ -314,6 +314,34 @@ uqBaseEnvironmentClass::rng() const
 }
 
 void
+uqBaseEnvironmentClass::resetGslSeed(int newSeedOption)
+{
+  gsl_rng_free(m_rng);
+
+  if (newSeedOption >= 0) {
+    gsl_rng_default_seed = (unsigned long int) newSeedOption;
+  }
+  else if (newSeedOption == -1) {
+    gsl_rng_default_seed = (unsigned long int) (1+m_fullRank);
+  }
+  else {
+    struct timeval timevalNow;
+    /*iRC = */gettimeofday(&timevalNow, NULL);
+    gsl_rng_default_seed = (unsigned long int) timevalNow.tv_usec;
+  }
+
+  m_rng = gsl_rng_alloc(gsl_rng_ranlxd2);
+  UQ_FATAL_TEST_MACRO((m_rng == NULL),
+                      m_fullRank,
+                      "uqFullEnvironmentClass::resetGslSeed()",
+                      "null m_rng");
+
+  //gsl_rng_set(m_rng, gsl_rng_default_seed);
+
+  return;
+}
+
+void
 uqBaseEnvironmentClass::syncPrintDebugMsg(const char* msg, unsigned int msgVerbosity, unsigned int numUSecs, const Epetra_MpiComm& commObj) const
 {
   commObj.Barrier();

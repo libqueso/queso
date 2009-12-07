@@ -167,6 +167,7 @@ public:
           unsigned int            displayVerbosity           () const;
           unsigned int            syncVerbosity              () const;
           const gsl_rng*          rng                        () const;
+          void                    resetGslSeed               (int newSeedOption);
           bool                    isThereInputFile           () const;
           void                    syncPrintDebugMsg          (const char* msg, unsigned int msgVerbosity, unsigned int numUSecs, const Epetra_MpiComm& commObj) const;
 
