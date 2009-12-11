@@ -1589,7 +1589,7 @@ uqMLSamplingClass<P_V,P_M>::sampleIndexes(
     *m_env.subDisplayFile() << "KEY Leaving uqMLSamplingClass<P_V,P_M>::sampleIndexes()"
                             << ", level "                      << currLevel+LEVEL_REF_ID
                             << ": minModifiedSubNumSamples = " << minModifiedSubNumSamples
-                            << ", avgModifiedSubNumSamples = " << ((double) sumModifiedSubNumSamples)/((double) m_env.inter0Comm().Comm())
+                            << ", avgModifiedSubNumSamples = " << ((double) sumModifiedSubNumSamples)/((double) m_env.inter0Comm().NumProc())
                             << ", maxModifiedSubNumSamples = " << maxModifiedSubNumSamples
                             << std::endl;
   }
@@ -1771,7 +1771,7 @@ uqMLSamplingClass<P_V,P_M>::generateChain(
       *m_env.subDisplayFile() << "KEY In uqMLSamplingClass<P_V,P_M>::generateChain()"
                               << ", level "                      << currLevel+LEVEL_REF_ID
                               << ": minNumberOfUsefulSamples = " << minNumberOfUsefulSamples
-                              << ", avgNumberOfUsefulSamples = " << ((double) sumNumberOfUsefulSamples)/((double) m_env.inter0Comm().Comm())
+                              << ", avgNumberOfUsefulSamples = " << ((double) sumNumberOfUsefulSamples)/((double) m_env.inter0Comm().NumProc())
                               << ", maxNumberOfUsefulSamples = " << maxNumberOfUsefulSamples
                               << std::endl;
     }
