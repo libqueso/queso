@@ -200,7 +200,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     currOptions.scanOptionsValues(&defaultLevelOptions);
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-      *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+      *m_env.subDisplayFile() << "KEY In uqMLSampling<P_V,P_M>::generateSequence()"
                               << ": beginning level "              << currLevel+LEVEL_REF_ID
                               << ", currOptions.m_rawChainSize = " << currOptions.m_rawChainSize // Ok to use rawChainSize
                               << ", currExponent = "               << currExponent
@@ -340,7 +340,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                           "failed MPI_Allreduce() for requested num samples in step 1");
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-        *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+        *m_env.subDisplayFile() << "KEY In uqMLSampling<P_V,P_M>::generateSequence()"
                                 << ", level " << currLevel+LEVEL_REF_ID
                                 << ", currOptions->m_rawChainSize = " << currOptions->m_rawChainSize // Ok to use rawChainSize
                                 << std::endl;
@@ -1493,28 +1493,15 @@ uqMLSamplingClass<P_V,P_M>::sampleIndexes(
       //                        << std::endl;
     }
  
-    uqFiniteDistributionClass* tmpFd = NULL;
     if (m_env.inter0Rank() == 0) {
-      tmpFd = new uqFiniteDistributionClass(m_env,
-                                            "",
-                                            unifiedWeightStdVectorAtProc0Only);
-    }
-
-    // Generate 'unifiedNumSamples' samples from 'tmpFD'
-#if 0
-    unsigned int unifiedNumSamples = 0;
-    int mpiRC = MPI_Allreduce((void *) &originalSubNumSamples, (void *) &unifiedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm()); // KAUST3
-    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                        m_env.fullRank(),
-                        "uqMLSamplingClass<P_V,P_M>::sampleIndexes()",
-                        "failed MPI_Allreduce() for num samples");
-#endif
-    if (m_env.inter0Rank() == 0) {
+      // Generate 'unifiedNumSamples' samples from 'tmpFD'
+      uqFiniteDistributionClass tmpFd(m_env,
+                                      "",
+                                      unifiedWeightStdVectorAtProc0Only);
       for (unsigned int i = 0; i < unifiedRequestedNumSamples; ++i) {
-        unsigned int index = tmpFd->sample();
+        unsigned int index = tmpFd.sample();
         unifiedIndexCountersAtAllProcs[index] += 1;
       }
-      delete tmpFd;
     }
 
     mpiRC = MPI_Bcast((void *) &unifiedIndexCountersAtAllProcs[0], (int) unifiedIndexCountersAtAllProcs.size(), MPI_UNSIGNED, 0, m_env.inter0Comm().Comm());
@@ -1555,10 +1542,55 @@ uqMLSamplingClass<P_V,P_M>::sampleIndexes(
   //                          << std::endl;
   //}
 
+#if 0 // for debug only
+  //int MPI_Gather (void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
+  //                void *recvbuf, int recvcount, MPI_Datatype recvtype, 
+  //                int root, MPI_Comm comm )
+  std::vector<unsigned int> recvcnts(m_env.inter0Comm().NumProc(),0);
+  mpiRC = MPI_Gather((void *) &modifiedSubNumSamples, 1, MPI_UNSIGNED, (void *) &recvcnts[0], (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm());
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::sampleIndexes()",
+                      "failed MPI_Gather()");
+#endif
+
+  std::vector<unsigned int> auxBuf(1,0);
+
+  unsigned int minModifiedSubNumSamples = 0;
+  auxBuf[0] = modifiedSubNumSamples;
+  mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &minModifiedSubNumSamples, (int) auxBuf.size(), MPI_UNSIGNED, MPI_MIN, m_env.inter0Comm().Comm());
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::sampleIndexes()",
+                      "failed MPI_Allreduce() for min");
+
+  unsigned int maxModifiedSubNumSamples = 0;
+  auxBuf[0] = modifiedSubNumSamples;
+  mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &maxModifiedSubNumSamples, (int) auxBuf.size(), MPI_UNSIGNED, MPI_MAX, m_env.inter0Comm().Comm());
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::sampleIndexes()",
+                      "failed MPI_Allreduce() for max");
+
+  unsigned int sumModifiedSubNumSamples = 0;
+  auxBuf[0] = modifiedSubNumSamples;
+  mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &sumModifiedSubNumSamples, (int) auxBuf.size(), MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::sampleIndexes()",
+                      "failed MPI_Allreduce() for sum");
+
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "Leaving uqMLSamplingClass<P_V,P_M>::sampleIndexes()"
+    *m_env.subDisplayFile() << "KEY Leaving uqMLSamplingClass<P_V,P_M>::sampleIndexes()"
+                            << ", level "                                   << currLevel+LEVEL_REF_ID
                             << ": modifiedSubNumSamples = "                 << modifiedSubNumSamples
                             << ", unifiedIndexCountersAtAllProcs.size() = " << unifiedIndexCountersAtAllProcs.size()
+                            << std::endl;
+    *m_env.subDisplayFile() << "KEY Leaving uqMLSamplingClass<P_V,P_M>::sampleIndexes()"
+                            << ", level "                      << currLevel+LEVEL_REF_ID
+                            << ": minModifiedSubNumSamples = " << minModifiedSubNumSamples
+                            << ", avgModifiedSubNumSamples = " << ((double) sumModifiedSubNumSamples)/((double) m_env.inter0Comm().Comm())
+                            << ", maxModifiedSubNumSamples = " << maxModifiedSubNumSamples
                             << std::endl;
   }
 
@@ -1569,7 +1601,7 @@ template <class P_V,class P_M>
 void
 uqMLSamplingClass<P_V,P_M>::distribIndexSamples(
   unsigned int                              currLevel,                      // input
-  unsigned int                              modifiedSubNumSamples,          // input
+  unsigned int                              subNumSamples,                  // input
   unsigned int                              indexOfFirstWeight,             // input
   unsigned int                              indexOfLastWeight,              // input
   std::vector<unsigned int>&                unifiedIndexCountersAtAllProcs, // input, modified
@@ -1577,7 +1609,7 @@ uqMLSamplingClass<P_V,P_M>::distribIndexSamples(
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "Entering uqMLSamplingClass<P_V,P_M>::distribIndexSamples()"
-                            << ": modifiedSubNumSamples = "                 << modifiedSubNumSamples
+                            << ": subNumSamples = "                         << subNumSamples
                             << ", indexOfFirstWeight = "                    << indexOfFirstWeight
                             << ", indexOfLastWeight = "                     << indexOfLastWeight
                             << ", unifiedIndexCountersAtAllProcs.size() = " << unifiedIndexCountersAtAllProcs.size()
@@ -1585,10 +1617,10 @@ uqMLSamplingClass<P_V,P_M>::distribIndexSamples(
   }
 
   unsigned int auxNode = (unsigned int) m_env.inter0Rank(); // 0 // KAUST4
-  unsigned int numberOfPositionsToGuaranteeForNode = modifiedSubNumSamples;
+  unsigned int numberOfPositionsToGuaranteeForNode = subNumSamples;
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::distribIndexSamples()"
-                            << ", level " << currLevel+LEVEL_REF_ID
+    *m_env.subDisplayFile() << "KEY In uqMLSampling<P_V,P_M>::distribIndexSamples()"
+                            << ", level "                                 << currLevel+LEVEL_REF_ID
                             << ": numberOfPositionsToGuaranteeForNode = " << numberOfPositionsToGuaranteeForNode
                             << std::endl;
   }
@@ -1628,7 +1660,7 @@ uqMLSamplingClass<P_V,P_M>::distribIndexSamples(
 
         // Go to next node
         //auxNode++; // KAUST4
-        //numberOfPositionsToGuaranteeForNode = modifiedSubNumSamples; // KAUST4
+        //numberOfPositionsToGuaranteeForNode = subNumSamples; // KAUST4
       }
       else if ((unifiedIndexCountersAtAllProcs[i] == numberOfPositionsToGuaranteeForNode) &&
                (unifiedIndexCountersAtAllProcs[i] == 0                                  )) {
@@ -1646,14 +1678,15 @@ uqMLSamplingClass<P_V,P_M>::distribIndexSamples(
                       m_env.fullRank(),
                       "uqMLSamplingClass<P_V,P_M>::distribIndexSamples()",
                       "auxNode exited loop with wrong value");
-  UQ_FATAL_TEST_MACRO(numberOfPositionsToGuaranteeForNode != 0, // modifiedSubNumSamples, // KAUST4
+  UQ_FATAL_TEST_MACRO(numberOfPositionsToGuaranteeForNode != 0, // subNumSamples, // KAUST4
                       m_env.fullRank(),
                       "uqMLSamplingClass<P_V,P_M>::distribIndexSamples()",
                       "numberOfPositionsToGuaranteeForNode exited loop with wrong value");
   // FIX ME: swap trick to save memory
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "Leaving uqMLSamplingClass<P_V,P_M>::distribIndexSamples()"
+    *m_env.subDisplayFile() << "KEY Leaving uqMLSamplingClass<P_V,P_M>::distribIndexSamples()"
+                            << ", level "                << currLevel+LEVEL_REF_ID
                             << ": linkControl.size() = " << linkControl.size()
                             << std::endl;
   }
@@ -1702,10 +1735,44 @@ uqMLSamplingClass<P_V,P_M>::generateChain(
     for (unsigned int chainId = 0; chainId < chainIdMax; ++chainId) {
       numberOfUsefulSamples += linkControl[m_env.inter0Rank()].linkedChains[chainId].numberOfPositions;
     }
-    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-      *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::generateChain()"
-                              << ": chainIdMax = " << chainIdMax
+
+    std::vector<unsigned int> auxBuf(1,0);
+
+    unsigned int minNumberOfUsefulSamples = 0;
+    auxBuf[0] = numberOfUsefulSamples;
+    mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &minNumberOfUsefulSamples, (int) auxBuf.size(), MPI_UNSIGNED, MPI_MIN, m_env.inter0Comm().Comm());
+    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::generateChain()",
+                        "failed MPI_Allreduce() for min");
+
+    unsigned int maxNumberOfUsefulSamples = 0;
+    auxBuf[0] = numberOfUsefulSamples;
+    mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &maxNumberOfUsefulSamples, (int) auxBuf.size(), MPI_UNSIGNED, MPI_MAX, m_env.inter0Comm().Comm());
+    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::generateChain()",
+                        "failed MPI_Allreduce() for max");
+
+    unsigned int sumNumberOfUsefulSamples = 0;
+    auxBuf[0] = numberOfUsefulSamples;
+    mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &sumNumberOfUsefulSamples, (int) auxBuf.size(), MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
+    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::generateChain()",
+                        "failed MPI_Allreduce() for sum");
+
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+      *m_env.subDisplayFile() << "KEY In uqMLSamplingClass<P_V,P_M>::generateChain()"
+                              << ", level "                   << currLevel+LEVEL_REF_ID
+                              << ": chainIdMax = "            << chainIdMax
                               << ", numberOfUsefulSamples = " << numberOfUsefulSamples
+                              << std::endl;
+      *m_env.subDisplayFile() << "KEY In uqMLSamplingClass<P_V,P_M>::generateChain()"
+                              << ", level "                      << currLevel+LEVEL_REF_ID
+                              << ": minNumberOfUsefulSamples = " << minNumberOfUsefulSamples
+                              << ", avgNumberOfUsefulSamples = " << ((double) sumNumberOfUsefulSamples)/((double) m_env.inter0Comm().Comm())
+                              << ", maxNumberOfUsefulSamples = " << maxNumberOfUsefulSamples
                               << std::endl;
     }
   }
