@@ -52,6 +52,7 @@ public:
 
            double                     minDomainValue() const;
            double                     maxDomainValue() const;
+           unsigned int               order         () const;
            const std::vector<double>& positions     () const;
            const std::vector<double>& weights       () const;
   virtual  void                       dumbRoutine   () const = 0;

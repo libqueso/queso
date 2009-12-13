@@ -72,6 +72,12 @@ uqBase1DQuadratureClass::maxDomainValue() const
   return m_maxDomainValue;
 }
 
+unsigned int
+uqBase1DQuadratureClass::order() const
+{
+  return m_order;
+}
+
 const std::vector<double>&
 uqBase1DQuadratureClass::positions() const
 {

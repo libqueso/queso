@@ -221,12 +221,28 @@ uqGslMatrixClass::operator()(unsigned int i, unsigned int j)
     gsl_matrix_free(m_LU);
     m_LU = NULL;
   }
+  UQ_FATAL_TEST_MACRO(i >= m_mat->size1,
+                      m_env.fullRank(),
+                      "uqGslMatrixClass::operator(i,j)",
+                      "i is too large");
+  UQ_FATAL_TEST_MACRO(j >= m_mat->size2,
+                      m_env.fullRank(),
+                      "uqGslMatrixClass::operator(i,j)",
+                      "j is too large");
   return *gsl_matrix_ptr(m_mat,i,j);
 }
 
 const double&
 uqGslMatrixClass::operator()(unsigned int i, unsigned int j) const
 {
+  UQ_FATAL_TEST_MACRO(i >= m_mat->size1,
+                      m_env.fullRank(),
+                      "uqGslMatrixClass::operator(i,j) const",
+                      "i is too large");
+  UQ_FATAL_TEST_MACRO(j >= m_mat->size2,
+                      m_env.fullRank(),
+                      "uqGslMatrixClass::operator(i,j) const",
+                      "j is too large");
   return *gsl_matrix_const_ptr(m_mat,i,j);
 }
 
