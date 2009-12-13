@@ -160,37 +160,21 @@ public:
         T            subInterQuantileRange        (unsigned int                    initialPos) const;
         T            unifiedInterQuantileRange    (bool                            useOnlyInter0Comm,
                                                    unsigned int                    initialPos) const;
-        T            subScaleForKDE               (unsigned int                    initialPos,
+        T            subScaleForKde               (unsigned int                    initialPos,
                                                    const T&                        iqrValue,
                                                    unsigned int                    kdeDimension) const;
-        T            unifiedScaleForKDE           (bool                            useOnlyInter0Comm,
+        T            unifiedScaleForKde           (bool                            useOnlyInter0Comm,
                                                    unsigned int                    initialPos,
                                                    const T&                        unifiedIqrValue,
                                                    unsigned int                    kdeDimension) const;
-      //double       sabGaussianKDE               (T                               evaluationPosition) const;
-        void         subGaussianKDE               (unsigned int                    initialPos,
+        void         subGaussian1dKde             (unsigned int                    initialPos,
                                                    double                          scaleValue,
                                                    const std::vector<T>&           evaluationPositions,
                                                    std::vector<double>&            densityValues) const;
-        void         unifiedGaussianKDE           (bool                            useOnlyInter0Comm,
+        void         unifiedGaussian1dKde         (bool                            useOnlyInter0Comm,
                                                    unsigned int                    initialPos,
                                                    double                          unifiedScaleValue,
                                                    const std::vector<T>&           unifiedEvaluationPositions,
-                                                   std::vector<double>&            unifiedDensityValues) const;
-        void         subCompute2dGaussianKDE      (const uqScalarSequenceClass<T>& scalarSeq2,
-                                                   unsigned int                    initialPos,
-                                                   double                          scaleValue1,
-                                                   double                          scaleValue2,
-                                                   const std::vector<T>&           evaluationPositions1,
-                                                   const std::vector<T>&           evaluationPositions2,
-                                                   std::vector<double>&            densityValues) const;
-        void         unifiedCompute2dGaussianKDE  (bool                            useOnlyInter0Comm,
-                                                   const uqScalarSequenceClass<T>& scalarSeq2,
-                                                   unsigned int                    initialPos,
-                                                   double                          unifiedScaleValue1,
-                                                   double                          unifiedScaleValue2,
-                                                   const std::vector<T>&           unifiedEvaluationPositions1,
-                                                   const std::vector<T>&           unifiedEvaluationPositions2,
                                                    std::vector<double>&            unifiedDensityValues) const;
 
         void         filter                       (unsigned int                    initialPos,
@@ -2372,7 +2356,7 @@ uqScalarSequenceClass<T>::unifiedInterQuantileRange(
 
 template <class T>
 T
-uqScalarSequenceClass<T>::subScaleForKDE(
+uqScalarSequenceClass<T>::subScaleForKde(
   unsigned int initialPos,
   const T&     iqrValue,
   unsigned int kdeDimension) const
@@ -2380,7 +2364,7 @@ uqScalarSequenceClass<T>::subScaleForKDE(
   bool bRC = (initialPos <  this->subSequenceSize());
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
-                      "uqScalarSequenceClass<V>::subScaleForKDE()",
+                      "uqScalarSequenceClass<V>::subScaleForKde()",
                       "invalid input data");
 
   unsigned int dataSize = this->subSequenceSize() - initialPos;
@@ -2401,7 +2385,7 @@ uqScalarSequenceClass<T>::subScaleForKDE(
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::subScaleForKDE()"
+    *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::subScaleForKde()"
                             << ": iqrValue = "   << iqrValue
                             << ", meanValue = "  << meanValue
                             << ", samValue = "   << samValue
@@ -2415,14 +2399,14 @@ uqScalarSequenceClass<T>::subScaleForKDE(
 
 template <class T>
 T
-uqScalarSequenceClass<T>::unifiedScaleForKDE(
+uqScalarSequenceClass<T>::unifiedScaleForKde(
   bool         useOnlyInter0Comm,
   unsigned int initialPos,
   const T&     unifiedIqrValue,
   unsigned int kdeDimension) const
 {
   if (m_env.numSubEnvironments() == 1) {
-    return this->subScaleForKDE(initialPos,
+    return this->subScaleForKde(initialPos,
                                 unifiedIqrValue,
                                 kdeDimension);
   }
@@ -2435,7 +2419,7 @@ uqScalarSequenceClass<T>::unifiedScaleForKDE(
       bool bRC = (initialPos <  this->subSequenceSize());
       UQ_FATAL_TEST_MACRO(bRC == false,
                           m_env.fullRank(),
-                          "uqScalarSequenceClass<V>::unifiedScaleForKDE()",
+                          "uqScalarSequenceClass<V>::unifiedScaleForKde()",
                           "invalid input data");
 
       unsigned int localDataSize = this->subSequenceSize() - initialPos;
@@ -2464,7 +2448,7 @@ uqScalarSequenceClass<T>::unifiedScaleForKDE(
       }
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-        *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedScaleForKDE()"
+        *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedScaleForKde()"
                                 << ": unifiedIqrValue = "   << unifiedIqrValue
                                 << ", unifiedMeanValue = "  << unifiedMeanValue
                                 << ", unifiedSamValue = "   << unifiedSamValue
@@ -2475,7 +2459,7 @@ uqScalarSequenceClass<T>::unifiedScaleForKDE(
     }
     else {
       // Node not in the 'inter0' communicator
-      unifiedScaleValue = this->subScaleForKDE(initialPos,
+      unifiedScaleValue = this->subScaleForKde(initialPos,
                                                unifiedIqrValue,
                                                kdeDimension);
     }
@@ -2483,7 +2467,7 @@ uqScalarSequenceClass<T>::unifiedScaleForKDE(
   else {
     UQ_FATAL_TEST_MACRO(true,
                         m_env.fullRank(),
-                        "uqScalarSequenceClass<T>::unifiedScaleForKDE()",
+                        "uqScalarSequenceClass<T>::unifiedScaleForKde()",
                         "parallel vectors not supported yet");
   }
 
@@ -2491,32 +2475,10 @@ uqScalarSequenceClass<T>::unifiedScaleForKDE(
 
   return unifiedScaleValue;
 }
-#if 0
-template <class T>
-double
-uqScalarSequenceClass<T>::sabGaussianKDE(T evaluationPosition) const
-{
-  T iqrValue = this->subInterQuantileRange(0); // Use the whole chain
 
-  T scaleValue = this->subScaleForKDE(0, // Use the whole chain
-                                      iqrValue);
-
-  unsigned int dataSize = this->subSequenceSize();
-
-  double scaleInv = 1./scaleValue;
-  double x = evaluationPosition;
-  double value = 0.;
-  for (unsigned int k = 0; k < dataSize; ++k) {
-    double xk = m_seq[k];
-    value += uqMiscGaussianDensity((x-xk)*scaleInv,0.,1.);
-  }
-
-  return scaleInv * (value/(double) dataSize);
-}
-#endif
 template <class T>
 void
-uqScalarSequenceClass<T>::subGaussianKDE(
+uqScalarSequenceClass<T>::subGaussian1dKde(
   unsigned int          initialPos,
   double                scaleValue,
   const std::vector<T>& evaluationPositions,
@@ -2527,7 +2489,7 @@ uqScalarSequenceClass<T>::subGaussianKDE(
               (evaluationPositions.size() == densityValues.size()      ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
-                      "uqScalarSequenceClass<V>::subGaussianKDE()",
+                      "uqScalarSequenceClass<V>::subGaussian1dKde()",
                       "invalid input data");
 
   unsigned int dataSize = this->subSequenceSize() - initialPos;
@@ -2549,7 +2511,7 @@ uqScalarSequenceClass<T>::subGaussianKDE(
 
 template <class T>
 void
-uqScalarSequenceClass<T>::unifiedGaussianKDE(
+uqScalarSequenceClass<T>::unifiedGaussian1dKde(
   bool                  useOnlyInter0Comm,
   unsigned int          initialPos,
   double                unifiedScaleValue,
@@ -2557,10 +2519,10 @@ uqScalarSequenceClass<T>::unifiedGaussianKDE(
   std::vector<double>&  unifiedDensityValues) const
 {
   if (m_env.numSubEnvironments() == 1) {
-    return this->subGaussianKDE(initialPos,
-                                unifiedScaleValue,
-                                unifiedEvaluationPositions,
-                                unifiedDensityValues);
+    return this->subGaussian1dKde(initialPos,
+                                  unifiedScaleValue,
+                                  unifiedEvaluationPositions,
+                                  unifiedDensityValues);
   }
 
   // As of 14/Nov/2009, this routine needs to be checked if it requires sub sequences to have equal size. Good.
@@ -2572,7 +2534,7 @@ uqScalarSequenceClass<T>::unifiedGaussianKDE(
                   (unifiedEvaluationPositions.size() == unifiedDensityValues.size()      ));
       UQ_FATAL_TEST_MACRO(bRC == false,
                           m_env.fullRank(),
-                          "uqScalarSequenceClass<V>::unifiedGaussianKDE()",
+                          "uqScalarSequenceClass<V>::unifiedGaussian1dKde()",
                           "invalid input data");
 
       unsigned int localDataSize = this->subSequenceSize() - initialPos;
@@ -2580,7 +2542,7 @@ uqScalarSequenceClass<T>::unifiedGaussianKDE(
       int mpiRC = MPI_Allreduce((void *) &localDataSize, (void *) &unifiedDataSize, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
       UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                           m_env.fullRank(),
-                          "uqScalarSequenceClass<T>::unifiedGaussianKDE()",
+                          "uqScalarSequenceClass<T>::unifiedGaussian1dKde()",
                           "failed MPI_Allreduce() for data size");
 
       unsigned int numEvals = unifiedEvaluationPositions.size();
@@ -2603,7 +2565,7 @@ uqScalarSequenceClass<T>::unifiedGaussianKDE(
       mpiRC = MPI_Allreduce((void *) &densityValues[0], (void *) &unifiedDensityValues[0], (int) numEvals, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm());
       UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                           m_env.fullRank(),
-                          "uqScalarSequenceClass<T>::unifiedGaussianKDE()",
+                          "uqScalarSequenceClass<T>::unifiedGaussian1dKde()",
                           "failed MPI_Allreduce() for density values");
 
       for (unsigned int j = 0; j < numEvals; ++j) {
@@ -2611,7 +2573,7 @@ uqScalarSequenceClass<T>::unifiedGaussianKDE(
       }
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-        *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedGaussianKDE()"
+        *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedGaussian1dKde()"
                                 << ": unifiedDensityValues[0] = "                                       << unifiedDensityValues[0]
                                 << ", unifiedDensityValues[" << unifiedDensityValues.size()-1 << "] = " << unifiedDensityValues[unifiedDensityValues.size()-1]
                                 << std::endl;
@@ -2619,130 +2581,16 @@ uqScalarSequenceClass<T>::unifiedGaussianKDE(
     }
     else {
       // Node not in the 'inter0' communicator
-      this->subGaussianKDE(initialPos,
-                           unifiedScaleValue,
-                           unifiedEvaluationPositions,
-                           unifiedDensityValues);
+      this->subGaussian1dKde(initialPos,
+                             unifiedScaleValue,
+                             unifiedEvaluationPositions,
+                             unifiedDensityValues);
     }
   }
   else {
     UQ_FATAL_TEST_MACRO(true,
                         m_env.fullRank(),
-                        "uqScalarSequenceClass<T>::unifiedGaussianKDE()",
-                        "parallel vectors not supported yet");
-  }
-
-  //m_env.fullComm().Barrier();
-
-  return;
-}
-
-template <class T>
-void
-uqScalarSequenceClass<T>::subCompute2dGaussianKDE(
-  const uqScalarSequenceClass<T>& scalarSeq2,
-  unsigned int                    initialPos,
-  double                          scaleValue1,
-  double                          scaleValue2,
-  const std::vector<T>&           evaluationPositions1,
-  const std::vector<T>&           evaluationPositions2,
-  std::vector<double>&            densityValues) const
-{
-  UQ_FATAL_TEST_MACRO(initialPos != 0,
-                      m_env.fullRank(),
-                      "uqScalarSequenceClass<T>::subCompute2dGaussianKDE()",
-                      "not implemented yet for initialPos != 0");
-
-  double covValue  = 0.;
-  double corrValue = 0.;
-  uqComputeCovCorrBetweenScalarSequences(*this,
-                                         scalarSeq2,
-                                         this->subSequenceSize(),
-                                         covValue,
-                                         corrValue);
-
-  bool bRC = ((initialPos                  <  this->subSequenceSize()     ) &&
-              (this->subSequenceSize()     == scalarSeq2.subSequenceSize()) &&
-              (0                           <  evaluationPositions1.size() ) &&
-              (evaluationPositions1.size() == evaluationPositions2.size() ) &&
-              (evaluationPositions1.size() == densityValues.size()        ));
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.fullRank(),
-                      "uqScalarSequenceClass<V>::subCompute2dGaussianKDE()",
-                      "invalid input data");
-
-  unsigned int dataSize = this->subSequenceSize() - initialPos;
-  unsigned int numEvals = evaluationPositions1.size();
-
-  double scale1Inv = 1./scaleValue1;
-  double scale2Inv = 1./scaleValue2;
-  //corrValue = 0.;
-  double r = 1 - corrValue*corrValue;
-  UQ_FATAL_TEST_MACRO(r <= 0.,
-                      m_env.fullRank(),
-                      "uqScalarSequenceClass<T>::subCompute2dGaussianKDE()",
-                      "negative r");
-  for (unsigned int j = 0; j < numEvals; ++j) {
-    double x1 = evaluationPositions1[j];
-    double x2 = evaluationPositions2[j];
-    double value = 0.;
-    for (unsigned int k = 0; k < dataSize; ++k) {
-      double d1k = scale1Inv*(x1 - this->m_seq[initialPos+k]     );
-      double d2k = scale2Inv*(x2 - scalarSeq2.m_seq[initialPos+k]);
-      value += exp(-.5*( d1k*d1k + 2*corrValue*d1k*d2k + d2k*d2k )/r);
-    }
-    densityValues[j] = scale1Inv * scale2Inv * (value/(double) dataSize) / 2. / M_PI / sqrt(r);
-  }
-
-  return;
-}
-
-template <class T>
-void
-uqScalarSequenceClass<T>::unifiedCompute2dGaussianKDE(
-  bool                            useOnlyInter0Comm,
-  const uqScalarSequenceClass<T>& scalarSeq2,
-  unsigned int                    initialPos,
-  double                          unifiedScaleValue1,
-  double                          unifiedScaleValue2,
-  const std::vector<T>&           unifiedEvaluationPositions1,
-  const std::vector<T>&           unifiedEvaluationPositions2,
-  std::vector<double>&            unifiedDensityValues) const
-{
-  if (m_env.numSubEnvironments() == 1) {
-    return this->subCompute2dGaussianKDE(scalarSeq2,
-                                         initialPos,
-                                         unifiedScaleValue1,
-                                         unifiedScaleValue2,
-                                         unifiedEvaluationPositions1,
-                                         unifiedEvaluationPositions2,
-                                         unifiedDensityValues);
-  }
-
-  // As of 14/Nov/2009, this routine needs to be checked if it requires sub sequences to have equal size. Good.
-
-  if (useOnlyInter0Comm) {
-    if (m_env.inter0Rank() >= 0) {
-      UQ_FATAL_TEST_MACRO(true,
-                          m_env.fullRank(),
-                          "uqScalarSequenceClass<T>::unifiedCompute2dGaussianKDE()",
-                          "inter0 case not supported yet");
-    }
-    else {
-      // Node not in the 'inter0' communicator
-      this->subCompute2dGaussianKDE(scalarSeq2,
-                                    initialPos,
-                                    unifiedScaleValue1,
-                                    unifiedScaleValue2,
-                                    unifiedEvaluationPositions1,
-                                    unifiedEvaluationPositions2,
-                                    unifiedDensityValues);
-    }
-  }
-  else {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.fullRank(),
-                        "uqScalarSequenceClass<T>::unifiedCompute2dGaussianKDE()",
+                        "uqScalarSequenceClass<T>::unifiedGaussian1dKde()",
                         "parallel vectors not supported yet");
   }
 
@@ -2893,6 +2741,122 @@ std::vector<T>&
 uqScalarSequenceClass<T>::rawData()
 {
   return m_seq;
+}
+
+template <class T>
+void
+uqComputeSubGaussian2dKde(const uqScalarSequenceClass<T>& scalarSeq1,
+                          const uqScalarSequenceClass<T>& scalarSeq2,
+                          unsigned int                    initialPos,
+                          double                          scaleValue1,
+                          double                          scaleValue2,
+                          const std::vector<T>&           evaluationPositions1,
+                          const std::vector<T>&           evaluationPositions2,
+                          std::vector<double>&            densityValues)
+{
+  UQ_FATAL_TEST_MACRO(initialPos != 0,
+                      scalarSeq1.env().fullRank(),
+                      "uqComputeSubGaussian2dKde()",
+                      "not implemented yet for initialPos != 0");
+
+  double covValue  = 0.;
+  double corrValue = 0.;
+  uqComputeCovCorrBetweenScalarSequences(scalarSeq1,
+                                         scalarSeq2,
+                                         scalarSeq1.subSequenceSize(),
+                                         covValue,
+                                         corrValue);
+
+  bool bRC = ((initialPos                   <  scalarSeq1.subSequenceSize()) &&
+              (scalarSeq1.subSequenceSize() == scalarSeq2.subSequenceSize()) &&
+              (0                            <  evaluationPositions1.size() ) &&
+              (evaluationPositions1.size()  == evaluationPositions2.size() ) &&
+              (evaluationPositions1.size()  == densityValues.size()        ));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      scalarSeq1.env().fullRank(),
+                      "uqComputeSubGaussian2dKde()",
+                      "invalid input data");
+
+  unsigned int dataSize = scalarSeq1.subSequenceSize() - initialPos;
+  unsigned int numEvals = evaluationPositions1.size();
+
+  double scale1Inv = 1./scaleValue1;
+  double scale2Inv = 1./scaleValue2;
+  //corrValue = 0.;
+  double r = 1 - corrValue*corrValue;
+  UQ_FATAL_TEST_MACRO(r <= 0.,
+                      scalarSeq1.env().fullRank(),
+                      "uqComputeSubGaussian2dKde()",
+                      "negative r");
+  for (unsigned int j = 0; j < numEvals; ++j) {
+    double x1 = evaluationPositions1[j];
+    double x2 = evaluationPositions2[j];
+    double value = 0.;
+    for (unsigned int k = 0; k < dataSize; ++k) {
+      double d1k = scale1Inv*(x1 - scalarSeq1[initialPos+k]);
+      double d2k = scale2Inv*(x2 - scalarSeq2[initialPos+k]);
+      value += exp(-.5*( d1k*d1k + 2*corrValue*d1k*d2k + d2k*d2k )/r);
+    }
+    densityValues[j] = scale1Inv * scale2Inv * (value/(double) dataSize) / 2. / M_PI / sqrt(r);
+  }
+
+  return;
+}
+
+template <class T>
+void
+uqComputeUnifiedGaussian2dKde(bool                            useOnlyInter0Comm,
+                              const uqScalarSequenceClass<T>& scalarSeq1,
+                              const uqScalarSequenceClass<T>& scalarSeq2,
+                              unsigned int                    initialPos,
+                              double                          unifiedScaleValue1,
+                              double                          unifiedScaleValue2,
+                              const std::vector<T>&           unifiedEvaluationPositions1,
+                              const std::vector<T>&           unifiedEvaluationPositions2,
+                              std::vector<double>&            unifiedDensityValues)
+{
+  if (scalarSeq1.env().numSubEnvironments() == 1) {
+    return uqComputeSubGaussian2dKde(scalarSeq1,
+                                     scalarSeq2,
+                                     initialPos,
+                                     unifiedScaleValue1,
+                                     unifiedScaleValue2,
+                                     unifiedEvaluationPositions1,
+                                     unifiedEvaluationPositions2,
+                                     unifiedDensityValues);
+  }
+
+  // As of 14/Nov/2009, this routine needs to be checked if it requires sub sequences to have equal size. Good.
+
+  if (useOnlyInter0Comm) {
+    if (scalarSeq1.env().inter0Rank() >= 0) {
+      UQ_FATAL_TEST_MACRO(true,
+                          scalarSeq1.env().fullRank(),
+                          "uqComputeUnifiedGaussian2dKde()",
+                          "inter0 case not supported yet");
+    }
+    else {
+      // Node not in the 'inter0' communicator
+      uqComputeSubGaussian2dKde(scalarSeq1,
+                                scalarSeq2,
+                                initialPos,
+                                unifiedScaleValue1,
+                                unifiedScaleValue2,
+                                unifiedEvaluationPositions1,
+                                unifiedEvaluationPositions2,
+                                unifiedDensityValues);
+    }
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        scalarSeq1.env().fullRank(),
+                        "uqComputeUnifiedGaussian2dKde()",
+                        "parallel vectors not supported yet");
+  }
+
+  //scalarSeq1.env().fullComm().Barrier();
+
+  return;
 }
 
 template <class T>

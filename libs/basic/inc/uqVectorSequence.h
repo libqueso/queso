@@ -176,21 +176,19 @@ public:
                                                                 V&                                       iqrVec) const = 0;
   virtual  void                     unifiedInterQuantileRange  (unsigned int                             initialPos,
                                                                 V&                                       unifiedIqrVec) const = 0;
-  virtual  void                     subScalesForKDE            (unsigned int                             initialPos,
+  virtual  void                     subScalesForKde            (unsigned int                             initialPos,
                                                                 const V&                                 iqrVec,
                                                                 unsigned int                             kdeDimension,
                                                                 V&                                       scaleVec) const = 0;
-  virtual  void                     unifiedScalesForKDE        (unsigned int                             initialPos,
+  virtual  void                     unifiedScalesForKde        (unsigned int                             initialPos,
                                                                 const V&                                 unifiedIqrVec,
                                                                 unsigned int                             kdeDimension,
                                                                 V&                                       unifiedScaleVec) const = 0;
-//virtual  void                     sabGaussianKDE             (const V&                                 evaluationParamVec,
-//                                                              V&                                       densityVec) const = 0;
-  virtual  void                     subGaussianKDE             (unsigned int                             initialPos,
+  virtual  void                     subGaussian1dKde           (unsigned int                             initialPos,
                                                                 const V&                                 scaleVec,
                                                                 const std::vector<V*>&                   evaluationParamVecs,
                                                                 std::vector<V*>&                         densityVecs) const = 0;
-  virtual  void                     unifiedGaussianKDE         (unsigned int                             initialPos,
+  virtual  void                     unifiedGaussian1dKde       (unsigned int                             initialPos,
                                                                 const V&                                 unifiedScaleVec,
                                                                 const std::vector<V*>&                   unifiedEvaluationParamVecs,
                                                                 std::vector<V*>&                         unifiedDensityVecs) const = 0;
@@ -1756,7 +1754,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "\n"
                             << "\n-----------------------------------------------------"
-                            << "\n Computing histogram and/or cdf stacc and/or KDE for chain " << m_name << " ..."
+                            << "\n Computing histogram and/or cdf stacc and/or Kde for chain " << m_name << " ..."
                             << "\n-----------------------------------------------------"
                             << "\n"
                             << std::endl;
@@ -1766,13 +1764,13 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
   struct timeval timevalTmp;
 
   //****************************************************
-  // Compute MIN and MAX: for histograms and KDE
+  // Compute MIN and MAX: for histograms and Kde
   //****************************************************
   double tmpRunTime = 0.;
   iRC = gettimeofday(&timevalTmp, NULL);
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "\n-----------------------------------------------------"
-                            << "\nComputing min and max for histograms and KDE"
+                            << "\nComputing min and max for histograms and Kde"
                             << std::endl;
   }
 
@@ -2055,7 +2053,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
     iRC = gettimeofday(&timevalTmp, NULL);
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "\n-----------------------------------------------------"
-                              << "\nComputing KDE"
+                              << "\nComputing Kde"
                               << std::endl;
     }
 
@@ -2076,7 +2074,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
                                 iqrVec);
 
     V gaussianKdeScaleVec(m_vectorSpace.zeroVector());
-    this->subScalesForKDE(0, // Use the whole chain
+    this->subScalesForKde(0, // Use the whole chain
                           iqrVec,
                           1,
                           gaussianKdeScaleVec);
@@ -2087,10 +2085,10 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
                                         kdeEvalPositions);
 
     std::vector<V*> gaussianKdeDensities(statisticalOptions.kdeNumEvalPositions(),NULL);
-    this->subGaussianKDE(0, // Use the whole chain
-                         gaussianKdeScaleVec,
-                         kdeEvalPositions,
-                         gaussianKdeDensities);
+    this->subGaussian1dKde(0, // Use the whole chain
+                           gaussianKdeScaleVec,
+                           kdeEvalPositions,
+                           gaussianKdeDensities);
 
     // Write iqr
     if (m_env.subDisplayFile()) {
@@ -2120,7 +2118,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
       *m_env.subDisplayFile() << std::endl;
     }
 
-    // Write KDE
+    // Write Kde
     if (passedOfs) {
       std::ofstream& ofsvar = *passedOfs;
       ofsvar << m_name << subCoreName_GaussianKdePositions << " = zeros(" << this->vectorSizeLocal() /*.*/
@@ -2170,14 +2168,14 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
     }
 
     if ((int) m_env.numSubEnvironments() > 1) { // avoid code temporarily
-      // Compute unified KDE
+      // Compute unified Kde
       V unifiedIqrVec(m_vectorSpace.zeroVector());
       this->unifiedInterQuantileRange(0, // Use the whole chain
                                       unifiedIqrVec);
       //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
 
       V unifiedGaussianKdeScaleVec(m_vectorSpace.zeroVector());
-      this->unifiedScalesForKDE(0, // Use the whole chain
+      this->unifiedScalesForKde(0, // Use the whole chain
                                 unifiedIqrVec,
                                 1,
                                 unifiedGaussianKdeScaleVec);
@@ -2189,10 +2187,10 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
                                           unifiedKdeEvalPositions);
 
       std::vector<V*> unifiedGaussianKdeDensities(statisticalOptions.kdeNumEvalPositions(),NULL);
-      this->unifiedGaussianKDE(0, // Use the whole chain
-                               unifiedGaussianKdeScaleVec,
-                               unifiedKdeEvalPositions,
-                               unifiedGaussianKdeDensities);
+      this->unifiedGaussian1dKde(0, // Use the whole chain
+                                 unifiedGaussianKdeScaleVec,
+                                 unifiedKdeEvalPositions,
+                                 unifiedGaussianKdeDensities);
       //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
 
       // Write unified iqr
@@ -2233,7 +2231,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
         }
       }
 
-      // Write unified KDE
+      // Write unified Kde
       if (passedOfs) {
         if (m_vectorSpace.numOfProcsForStorage() == 1) {
           if (m_env.inter0Rank() == 0) {
@@ -2281,7 +2279,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
           UQ_FATAL_TEST_MACRO(true,
                               m_env.fullRank(),
                               "uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde()",
-                              "unified KDE writing, parallel vectors not supported yet");
+                              "unified Kde writing, parallel vectors not supported yet");
         }
       }
 
@@ -2296,7 +2294,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
     //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
     tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "Chain KDE took " << tmpRunTime
+      *m_env.subDisplayFile() << "Chain Kde took " << tmpRunTime
                               << " seconds"
                               << std::endl;
     }
@@ -2304,7 +2302,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
 
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "\n-----------------------------------------------------"
-                            << "\n Finished computing histogram and/or cdf stacc and/or KDE for chain " << m_name
+                            << "\n Finished computing histogram and/or cdf stacc and/or Kde for chain " << m_name
                             << "\n-----------------------------------------------------"
                             << "\n"
                             << std::endl;

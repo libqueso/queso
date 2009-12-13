@@ -160,21 +160,19 @@ public:
                                                  V&                                   iqrVec) const;
         void         unifiedInterQuantileRange  (unsigned int                         initialPos,
                                                  V&                                   unifiedIqrVec) const;
-        void         subScalesForKDE            (unsigned int                         initialPos,
+        void         subScalesForKde            (unsigned int                         initialPos,
                                                  const V&                             iqrVec,
                                                  unsigned int                         kdeDimension,
                                                  V&                                   scaleVec) const;
-        void         unifiedScalesForKDE        (unsigned int                         initialPos,
+        void         unifiedScalesForKde        (unsigned int                         initialPos,
                                                  const V&                             unifiedIqrVec,
                                                  unsigned int                         kdeDimension,
                                                  V&                                   unifiedScaleVec) const;
-      //void         sabGaussianKDE             (const V&                             evalParamVec,
-      //                                         V&                                   densityVec) const;
-        void         subGaussianKDE             (unsigned int                         initialPos,
+        void         subGaussian1dKde           (unsigned int                         initialPos,
                                                  const V&                             scaleVec,
                                                  const std::vector<V*>&               evalParamVecs,
                                                  std::vector<V*>&                     densityVecs) const;
-        void         unifiedGaussianKDE         (unsigned int                         initialPos,
+        void         unifiedGaussian1dKde       (unsigned int                         initialPos,
                                                  const V&                             unifiedScaleVec,
                                                  const std::vector<V*>&               unifiedEvalParamVecs,
                                                  std::vector<V*>&                     unifiedDensityVecs) const;
@@ -1486,7 +1484,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedInterQuantileRange(
 
 template <class V, class M>
 void
-uqSequenceOfVectorsClass<V,M>::subScalesForKDE(
+uqSequenceOfVectorsClass<V,M>::subScalesForKde(
   unsigned int initialPos,
   const V&     iqrVec,
   unsigned int kdeDimension,
@@ -1497,7 +1495,7 @@ uqSequenceOfVectorsClass<V,M>::subScalesForKDE(
               (this->vectorSizeLocal() == scaleVec.sizeLocal()   ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
-                      "uqSequenceOfVectorsClass<V,M>::subScalesForKDE()",
+                      "uqSequenceOfVectorsClass<V,M>::subScalesForKde()",
                       "invalid input data");
 
   unsigned int numPos = this->subSequenceSize() - initialPos;
@@ -1510,7 +1508,7 @@ uqSequenceOfVectorsClass<V,M>::subScalesForKDE(
                            numPos,
                            i,
                            data);
-    scaleVec[i] = data.subScaleForKDE(0,
+    scaleVec[i] = data.subScaleForKde(0,
                                       iqrVec[i],
                                       kdeDimension);
   }
@@ -1520,7 +1518,7 @@ uqSequenceOfVectorsClass<V,M>::subScalesForKDE(
 
 template <class V, class M>
 void
-uqSequenceOfVectorsClass<V,M>::unifiedScalesForKDE(
+uqSequenceOfVectorsClass<V,M>::unifiedScalesForKde(
   unsigned int initialPos,
   const V&     unifiedIqrVec,
   unsigned int kdeDimension,
@@ -1531,7 +1529,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedScalesForKDE(
               (this->vectorSizeLocal() == unifiedScaleVec.sizeLocal()));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
-                      "uqSequenceOfVectorsClass<V,M>::unifiedScalesForKDE()",
+                      "uqSequenceOfVectorsClass<V,M>::unifiedScalesForKde()",
                       "invalid input data");
 
   unsigned int numPos = this->subSequenceSize() - initialPos;
@@ -1544,7 +1542,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedScalesForKDE(
                            numPos,
                            i,
                            data);
-    unifiedScaleVec[i] = data.unifiedScaleForKDE(m_vectorSpace.numOfProcsForStorage() == 1,
+    unifiedScaleVec[i] = data.unifiedScaleForKde(m_vectorSpace.numOfProcsForStorage() == 1,
                                                  0,
                                                  unifiedIqrVec[i],
                                                  kdeDimension);
@@ -1552,32 +1550,10 @@ uqSequenceOfVectorsClass<V,M>::unifiedScalesForKDE(
 
   return;
 }
-#if 0
+
 template <class V, class M>
 void
-uqSequenceOfVectorsClass<V,M>::sabGaussianKDE(
-  const V& evalParamVec,
-        V& densityVec) const
-{
-  uqScalarSequenceClass<double> data(m_env,0,"");
-
-  unsigned int numParams = this->vectorSizeLocal();
-  for (unsigned int i = 0; i < numParams; ++i) {
-    this->extractScalarSeq(0, // Use the whole chain
-                           1, // spacing
-                           this->subSequenceSize(),
-                           i,
-                           data);
-
-    densityVec[i] = data.sabGaussianKDE(evalParamVec[i]);
-  }
-
-  return;
-}
-#endif
-template <class V, class M>
-void
-uqSequenceOfVectorsClass<V,M>::subGaussianKDE(
+uqSequenceOfVectorsClass<V,M>::subGaussian1dKde(
   unsigned int           initialPos,
   const V&               scaleVec,
   const std::vector<V*>& evalParamVecs,
@@ -1589,7 +1565,7 @@ uqSequenceOfVectorsClass<V,M>::subGaussianKDE(
               (evalParamVecs.size()    == densityVecs.size()     ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
-                      "uqSequenceOfVectorsClass<V,M>::subGaussianKDE()",
+                      "uqSequenceOfVectorsClass<V,M>::subGaussian1dKde()",
                       "invalid input data");
 
   unsigned int numPos = this->subSequenceSize() - initialPos;
@@ -1614,10 +1590,10 @@ uqSequenceOfVectorsClass<V,M>::subGaussianKDE(
       evalParams[j] = (*evalParamVecs[j])[i];
     }
 
-    data.subGaussianKDE(0,
-                        scaleVec[i],
-                        evalParams,
-                        densities);
+    data.subGaussian1dKde(0,
+                          scaleVec[i],
+                          evalParams,
+                          densities);
 
     for (unsigned int j = 0; j < numEvals; ++j) {
       (*densityVecs[j])[i] = densities[j];
@@ -1629,7 +1605,7 @@ uqSequenceOfVectorsClass<V,M>::subGaussianKDE(
 
 template <class V, class M>
 void
-uqSequenceOfVectorsClass<V,M>::unifiedGaussianKDE(
+uqSequenceOfVectorsClass<V,M>::unifiedGaussian1dKde(
   unsigned int           initialPos,
   const V&               unifiedScaleVec,
   const std::vector<V*>& unifiedEvalParamVecs,
@@ -1641,7 +1617,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedGaussianKDE(
               (unifiedEvalParamVecs.size() == unifiedDensityVecs.size()  ));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
-                      "uqSequenceOfVectorsClass<V,M>::unifiedGaussianKDE()",
+                      "uqSequenceOfVectorsClass<V,M>::unifiedGaussian1dKde()",
                       "invalid input data");
 
   unsigned int numPos = this->subSequenceSize() - initialPos;
@@ -1666,11 +1642,11 @@ uqSequenceOfVectorsClass<V,M>::unifiedGaussianKDE(
       unifiedEvalParams[j] = (*unifiedEvalParamVecs[j])[i];
     }
 
-    data.unifiedGaussianKDE(m_vectorSpace.numOfProcsForStorage() == 1,
-                            0,
-                            unifiedScaleVec[i],
-                            unifiedEvalParams,
-                            unifiedDensities);
+    data.unifiedGaussian1dKde(m_vectorSpace.numOfProcsForStorage() == 1,
+                              0,
+                              unifiedScaleVec[i],
+                              unifiedEvalParams,
+                              unifiedDensities);
 
     for (unsigned int j = 0; j < numEvals; ++j) {
       (*unifiedDensityVecs[j])[i] = unifiedDensities[j];

@@ -589,9 +589,9 @@ uqDeltaSeq1D1DFunctionClass::printForMatlab(
 }
 
 //*****************************************************
-// 1D Gaussian Kde 1D->1D class
+// Gaussian 1d Kde 1D->1D class
 //*****************************************************
-uq1DGaussianKde1D1DFunctionClass::uq1DGaussianKde1D1DFunctionClass(
+uqGaussian1dKde1D1DFunctionClass::uqGaussian1dKde1D1DFunctionClass(
   const uqScalarSequenceClass<double>* chain,
   double chainMin,
   double chainMax,
@@ -609,12 +609,12 @@ uq1DGaussianKde1D1DFunctionClass::uq1DGaussianKde1D1DFunctionClass(
 {
 }
 
-uq1DGaussianKde1D1DFunctionClass::~uq1DGaussianKde1D1DFunctionClass()
+uqGaussian1dKde1D1DFunctionClass::~uqGaussian1dKde1D1DFunctionClass()
 {
 }
 
 double                     
-uq1DGaussianKde1D1DFunctionClass::value(double domainValue) const
+uqGaussian1dKde1D1DFunctionClass::value(double domainValue) const
 {
   double value = 0.;
 
@@ -630,22 +630,22 @@ uq1DGaussianKde1D1DFunctionClass::value(double domainValue) const
 }
 
 double                     
-uq1DGaussianKde1D1DFunctionClass::deriv(double domainValue) const
+uqGaussian1dKde1D1DFunctionClass::deriv(double domainValue) const
 {
   double value = 0.;
 
   UQ_FATAL_TEST_MACRO(true,
                       UQ_UNAVAILABLE_RANK,
-                      "uq1DGaussianKde1D1DFunctionClass::deriv()",
+                      "uqGaussian1dKde1D1DFunctionClass::deriv()",
                       "not implemented yet");
 
   return value;
 }
 
 double
-uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate(const uqBase1D1DFunctionClass& func, unsigned int quadratureOrder, double* resultWithMultiplicationByTAsWell) const
+uqGaussian1dKde1D1DFunctionClass::multiplyAndIntegrate(const uqBase1D1DFunctionClass& func, unsigned int quadratureOrder, double* resultWithMultiplicationByTAsWell) const
 {
-  //std::cout << "Entering uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate()" << std::endl;
+  //std::cout << "Entering uqGaussian1dKde1D1DFunctionClass::multiplyAndIntegrate()" << std::endl;
   double value = 0.;
   double valueWithT = 0.;
 
@@ -654,7 +654,7 @@ uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate(const uqBase1D1DFunctionC
   const std::vector<double>& quadWeights   = quadObj.weights  ();
   UQ_FATAL_TEST_MACRO(quadPositions.size() != quadWeights.size(),
                       UQ_UNAVAILABLE_RANK,
-                      "uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate()",
+                      "uqGaussian1dKde1D1DFunctionClass::multiplyAndIntegrate()",
                       "quadObj has invalid state");
   unsigned int numQuadraturePositions = quadPositions.size();
 
@@ -684,7 +684,7 @@ uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate(const uqBase1D1DFunctionC
       }
 
       if (useFasterMethod == false) {
-        std::cerr << "In uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate()"
+        std::cerr << "In uqGaussian1dKde1D1DFunctionClass::multiplyAndIntegrate()"
                   << ": weired situation"
                   << std::endl;
         m_lastInputK          = -1;
@@ -699,7 +699,7 @@ uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate(const uqBase1D1DFunctionC
         m_level_0.resize (dataSize*numQuadraturePositions,0.); // Yes, '0..'
         m_level_m1.resize(dataSize*numQuadraturePositions,0.); // Yes, '0.'
 
-        //std::cout << "In uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate()"
+        //std::cout << "In uqGaussian1dKde1D1DFunctionClass::multiplyAndIntegrate()"
         //          << ": currentK = " << currentK
         //          << std::endl;
         unsigned int auxK = 0;
@@ -719,7 +719,7 @@ uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate(const uqBase1D1DFunctionC
         double alpha = constitutivePtr->alpha()[currentK-1];
         double beta  = constitutivePtr->beta ()[currentK-1];
 
-        //std::cout << "In uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate()"
+        //std::cout << "In uqGaussian1dKde1D1DFunctionClass::multiplyAndIntegrate()"
         //          << ": currentK = " << currentK
         //          << ", alpha = "    << alpha
         //          << ", beta = "     << beta
@@ -732,17 +732,17 @@ uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate(const uqBase1D1DFunctionC
 
             UQ_FATAL_TEST_MACRO((currentK == 1) && (m_level_0[auxK] != 1.),
                                 UQ_UNAVAILABLE_RANK,
-                                "uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate()",
+                                "uqGaussian1dKde1D1DFunctionClass::multiplyAndIntegrate()",
                                 "invalid currentK=1a");
 
             UQ_FATAL_TEST_MACRO((currentK == 1) && (m_level_m1[auxK] != 0.),
                                 UQ_UNAVAILABLE_RANK,
-                                "uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate()",
+                                "uqGaussian1dKde1D1DFunctionClass::multiplyAndIntegrate()",
                                 "invalid currentK=1b");
 
             UQ_FATAL_TEST_MACRO((currentK == 2) && (m_level_m1[auxK] != 1.),
                                 UQ_UNAVAILABLE_RANK,
-                                "uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate()",
+                                "uqGaussian1dKde1D1DFunctionClass::multiplyAndIntegrate()",
                                 "invalid currentK=2");
 
             //double tmpValue = (auxX - alpha)*(auxX - alpha)*m_level_0[auxK]
@@ -785,7 +785,7 @@ uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate(const uqBase1D1DFunctionC
     value *= (1./sqrt(2.*M_PI)/((double) dataSize));
   }
 
-  //std::cout << "Leaving uq1DGaussianKde1D1DFunctionClass::multiplyAndIntegrate(), value = " << value << std::endl;
+  //std::cout << "Leaving uqGaussian1dKde1D1DFunctionClass::multiplyAndIntegrate(), value = " << value << std::endl;
 
   return value;
 }

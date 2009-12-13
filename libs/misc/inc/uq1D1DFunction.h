@@ -210,15 +210,15 @@ protected:
 };
 
 //*****************************************************
-// 1D Gaussian Kde 1D->1D class
+// Gaussian 1d Kde 1D->1D class
 //*****************************************************
-class uq1DGaussianKde1D1DFunctionClass : public uqBase1D1DFunctionClass {
+class uqGaussian1dKde1D1DFunctionClass : public uqBase1D1DFunctionClass {
 public:
-  uq1DGaussianKde1D1DFunctionClass(const uqScalarSequenceClass<double>* chain,
+  uqGaussian1dKde1D1DFunctionClass(const uqScalarSequenceClass<double>* chain,
                                    double chainMin,
                                    double chainMax,
                                    double gaussian1DScale);
- ~uq1DGaussianKde1D1DFunctionClass();
+ ~uqGaussian1dKde1D1DFunctionClass();
 
   double value(double domainValue) const;
   double deriv(double domainValue) const;
