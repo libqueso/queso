@@ -281,6 +281,42 @@ uqGslMatrixClass::numCols() const
   return m_mat->size2;
 }
 
+double
+uqGslMatrixClass::normFrob() const
+{
+  double value = 0.;
+
+  unsigned int dim = this->numRowsLocal();
+  double aux = 0.;
+  for (unsigned int i = 0; i < dim; i++) {
+    for (unsigned int j = 0; j < dim; j++) {
+      aux = (*this)(i,j);
+      value += aux*aux;
+    }
+  }
+
+  return sqrt(value);
+}
+
+double
+uqGslMatrixClass::normMax() const
+{
+  double value = 0.;
+
+  unsigned int dim = this->numRowsLocal();
+  double aux = 0.;
+  for (unsigned int i = 0; i < dim; i++) {
+    for (unsigned int j = 0; j < dim; j++) {
+      aux = fabs((*this)(i,j));
+      if (aux > value) {
+        value = aux;
+      }
+    }
+  }
+
+  return value;
+}
+
 int
 uqGslMatrixClass::chol()
 {

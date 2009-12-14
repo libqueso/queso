@@ -65,6 +65,8 @@ public:
   unsigned int      numRowsLocal  () const;
   unsigned int      numRowsGlobal () const;
   unsigned int      numCols       () const;
+  double            normFrob      () const;
+  double            normMax       () const;
   int               chol          ();
   void              zeroLower     (bool includeDiagonal = false);
   void              zeroUpper     (bool includeDiagonal = false);
