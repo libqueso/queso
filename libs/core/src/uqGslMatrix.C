@@ -308,9 +308,7 @@ uqGslMatrixClass::normMax() const
   for (unsigned int i = 0; i < dim; i++) {
     for (unsigned int j = 0; j < dim; j++) {
       aux = fabs((*this)(i,j));
-      if (aux > value) {
-        value = aux;
-      }
+      if (aux > value) value = aux;
     }
   }
 

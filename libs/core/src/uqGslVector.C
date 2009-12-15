@@ -293,6 +293,34 @@ uqGslVectorClass::norm2() const
 }
 
 double
+uqGslVectorClass::norm1() const
+{
+  double result = 0.;
+
+  unsigned int size = this->sizeLocal();
+  for (unsigned int i = 0; i < size; ++i) {
+    result += fabs((*this)[i]);
+  }
+
+  return result;
+}
+
+double
+uqGslVectorClass::normInf() const
+{
+  double result = 0.;
+
+  unsigned int size = this->sizeLocal();
+  double aux = 0.;
+  for (unsigned int i = 0; i < size; ++i) {
+    aux = fabs((*this)[i]);
+    if (aux > result) result = aux;
+  }
+
+  return result;
+}
+
+double
 uqGslVectorClass::sumOfComponents() const
 {
   double result = 0.;

@@ -61,6 +61,8 @@ public:
   unsigned int sizeGlobal       () const;
   double       norm2Sq          () const;
   double       norm2            () const;
+  double       norm1            () const;
+  double       normInf          () const;
   double       sumOfComponents  () const;
   void         cwSet            (double value);
   void         cwSetGaussian    (const gsl_rng* rng, double mean, double stdDev);
