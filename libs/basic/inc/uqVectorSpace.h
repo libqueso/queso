@@ -45,6 +45,7 @@ public:
                            const char*                     prefix,
                            unsigned int                    dimGlobalValue,
                            const std::vector<std::string>* componentsNames);
+        uqVectorSpaceClass(const uqVectorSpaceClass<V,M>&  aux);
        ~uqVectorSpaceClass();
 
   const uqBaseEnvironmentClass&            env                 () const;
@@ -174,6 +175,19 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
     *m_env.subDisplayFile() << "Leaving uqVectorSpaceClass<V,M>::constructor()"
                             << std::endl;
   }
+}
+
+template <class V, class M>
+uqVectorSpaceClass<V,M>::uqVectorSpaceClass(const uqVectorSpaceClass<V,M>& aux)
+  :
+  uqVectorSetClass<V,M>(aux.env(),((std::string)(aux.m_prefix)).c_str(),INFINITY),
+  m_dimGlobal          (aux.m_dimGlobal),
+  m_map                (newMap()),
+  m_dimLocal           (m_map->NumMyElements()),
+  m_componentsNames    (new EpetraExt::DistArray<std::string>(*(aux.m_componentsNames))),
+  m_emptyComponentName (""),
+  m_zeroVector         (new V(m_env,*m_map))
+{
 }
 
 template <class V, class M>

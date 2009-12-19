@@ -214,6 +214,11 @@ public:
   virtual  double                   estimateConvBrooksGelman   (unsigned int                             initialPos,
                                                                 unsigned int                             numPos) const = 0;
 
+  virtual  void                     extractScalarSeq           (unsigned int                             initialPos,
+                                                                unsigned int                             spacing,
+                                                                unsigned int                             numPos,
+                                                                unsigned int                             paramId,
+                                                                uqScalarSequenceClass<double>&           scalarSeq) const = 0;
 protected:
            void                     copy                       (const uqBaseVectorSequenceClass<V,M>&    src);
            void                     computeMeanVars            (const uqSequenceStatisticalOptionsClass& statisticalOptions,
@@ -252,11 +257,6 @@ protected:
            void                     computeCovCorrMatrices     (const uqSequenceStatisticalOptionsClass& statisticalOptions,
                                                                 std::ofstream*                           passedOfs);
 
-  virtual  void                     extractScalarSeq           (unsigned int                             initialPos,
-                                                                unsigned int                             spacing,
-                                                                unsigned int                             numPos,
-                                                                unsigned int                             paramId,
-                                                                uqScalarSequenceClass<double>&           scalarSeq) const = 0;
   virtual  void                     extractRawData             (unsigned int                             initialPos,
                                                                 unsigned int                             spacing,
                                                                 unsigned int                             numPos,

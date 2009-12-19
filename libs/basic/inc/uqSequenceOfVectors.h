@@ -196,13 +196,14 @@ public:
         void         append                     (const uqSequenceOfVectorsClass<V,M>& src,
                                                  unsigned int                         initialPos,
                                                  unsigned int                         numPos);
-private:
-        void         copy                       (const uqSequenceOfVectorsClass<V,M>& src);
+
         void         extractScalarSeq           (unsigned int                         initialPos,
                                                  unsigned int                         spacing,
                                                  unsigned int                         numPos,
                                                  unsigned int                         paramId,
                                                  uqScalarSequenceClass<double>&       scalarSeq) const;
+private:
+        void         copy                       (const uqSequenceOfVectorsClass<V,M>& src);
         void         extractRawData             (unsigned int                         initialPos,
                                                  unsigned int                         spacing,
                                                  unsigned int                         numPos,
