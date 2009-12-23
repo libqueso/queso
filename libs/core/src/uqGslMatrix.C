@@ -46,7 +46,7 @@ uqGslMatrixClass::uqGslMatrixClass()
                       "should not be used by user");
 }
 
-uqGslMatrixClass::uqGslMatrixClass(
+uqGslMatrixClass::uqGslMatrixClass( // can be a rectangular matrix
   const uqBaseEnvironmentClass& env,
   const Epetra_Map&             map,
   unsigned int                  numCols)
@@ -62,10 +62,10 @@ uqGslMatrixClass::uqGslMatrixClass(
                       "null matrix generated");
 }
  
-uqGslMatrixClass::uqGslMatrixClass(
+uqGslMatrixClass::uqGslMatrixClass( // square matrix
   const uqBaseEnvironmentClass& env,
-  const Epetra_Map&         map,
-  double                    diagValue)
+  const Epetra_Map&             map,
+  double                        diagValue)
   :
   uqMatrixClass(env,map),
   m_mat        (gsl_matrix_calloc(map.NumGlobalElements(),map.NumGlobalElements())),
@@ -82,7 +82,7 @@ uqGslMatrixClass::uqGslMatrixClass(
   }
 }
 
-uqGslMatrixClass::uqGslMatrixClass(
+uqGslMatrixClass::uqGslMatrixClass( // square matrix
   const uqGslVectorClass& v,
   double                  diagValue)
   :
@@ -101,7 +101,7 @@ uqGslMatrixClass::uqGslMatrixClass(
   }
 }
 
-uqGslMatrixClass::uqGslMatrixClass(const uqGslVectorClass& v)
+uqGslMatrixClass::uqGslMatrixClass(const uqGslVectorClass& v) // square matrix
   :
   uqMatrixClass(v.env(),v.map()),
   m_mat        (gsl_matrix_calloc(v.sizeLocal(),v.sizeLocal())),
@@ -119,7 +119,7 @@ uqGslMatrixClass::uqGslMatrixClass(const uqGslVectorClass& v)
   }
 }
 
-uqGslMatrixClass::uqGslMatrixClass(const uqGslMatrixClass& B)
+uqGslMatrixClass::uqGslMatrixClass(const uqGslMatrixClass& B) // can be a rectangular matrix
   :
   uqMatrixClass(B.env(),B.map()),
   m_mat        (gsl_matrix_calloc(B.numRowsLocal(),B.numCols())),
@@ -431,10 +431,10 @@ uqGslMatrixClass::multiply(
                       "uqGslMatrixClass::multiply(), vector return void",
                       "matrix and x have incompatible sizes");
 
-  UQ_FATAL_TEST_MACRO((y.sizeLocal() != x.sizeLocal()),
+  UQ_FATAL_TEST_MACRO((this->numRowsLocal() != y.sizeLocal()),
                       m_env.fullRank(),
                       "uqGslMatrixClass::multiply(), vector return void",
-                      "y and x have incompatible sizes");
+                      "matrix and y have incompatible sizes");
 
   unsigned int sizeX = this->numCols();
   unsigned int sizeY = this->numRowsLocal();
