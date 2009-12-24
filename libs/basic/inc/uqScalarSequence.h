@@ -885,6 +885,13 @@ uqScalarSequenceClass<T>::unifiedMean(
                           "uqScalarSequenceClass<T>::unifiedMean()",
                           "failed MPI_Allreduce() for numPos");
 
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+        *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedMean()"
+                                << ": numPos = "        << numPos
+                                << ", unifiedNumPos = " << unifiedNumPos
+                                << std::endl;
+      }
+
       mpiRC = MPI_Allreduce((void *) &localSum, (void *) &unifiedMeanValue, (int) 1, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm());
       UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                           m_env.fullRank(),
@@ -892,6 +899,13 @@ uqScalarSequenceClass<T>::unifiedMean(
                           "failed MPI_Allreduce() for sum");
 
       unifiedMeanValue /= ((T) unifiedNumPos);
+
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+        *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedMean()"
+                                << ": localSum = "         << localSum
+                                << ", unifiedMeanValue = " << unifiedMeanValue
+                                << std::endl;
+      }
     }
     else {
       // Node not in the 'inter0' communicator

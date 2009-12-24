@@ -72,6 +72,7 @@ public:
   void         cwSetConcatenated(const uqGslVectorClass& v1, const uqGslVectorClass& v2);
   void         cwExtract        (unsigned int initialPos, uqGslVectorClass& vec) const;
   void         cwInvert         ();
+  void         cwSqrt           ();
   void         matlabDiff       (unsigned int firstPositionToStoreDiff, double valueForRemainderPosition, uqGslVectorClass& outputVec) const;
   void         sort             ();
   void         mpiBcast         (int srcRank, const Epetra_MpiComm& bcastComm);

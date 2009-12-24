@@ -441,6 +441,17 @@ uqGslVectorClass::cwInvert()
 }
 
 void
+uqGslVectorClass::cwSqrt()
+{
+  unsigned int size = this->sizeLocal();
+  for (unsigned int i = 0; i < size; ++i) {
+    (*this)[i] = sqrt((*this)[i]);
+  }
+
+  return;
+}
+
+void
 uqGslVectorClass::matlabDiff(
   unsigned int      firstPositionToStoreDiff,
   double            valueForRemainderPosition,

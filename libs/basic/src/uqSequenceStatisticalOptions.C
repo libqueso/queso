@@ -41,6 +41,7 @@ uqSequenceStatisticalOptionsClass::uqSequenceStatisticalOptionsClass(
   m_prefix                  ((std::string)(prefix) + "stats_"),
   m_optionsDesc             (new po::options_description("Chain statistical options")),
   m_initialDiscardedPortions(0),//,0.),
+  m_meanMonitorPeriod       (UQ_SEQUENCE_MEAN_MONITOR_PERIOD_ODV),
   m_bmmRun                  (UQ_SEQUENCE_BMM_RUN_ODV),
   m_bmmLengths              (0),//,0),
   m_fftCompute              (UQ_SEQUENCE_FFT_COMPUTE_ODV),
@@ -89,6 +90,8 @@ uqSequenceStatisticalOptionsClass::uqSequenceStatisticalOptionsClass(
   m_option_help                      = m_prefix + "help";
 
   m_option_initialDiscardedPortions  = m_prefix + "initialDiscardedPortions";
+
+  m_option_mean_monitorPeriod        = m_prefix + "mean_monitorPeriod";
 
   m_option_bmm_run                   = m_prefix + "bmm_run";
   m_option_bmm_lengths               = m_prefix + "bmm_lengths";
@@ -171,6 +174,7 @@ uqSequenceStatisticalOptionsClass::defineMyOptions(
   optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                                                    "produce help message for chain statistical options"             )
     (m_option_initialDiscardedPortions.c_str(),       po::value<std::string >()->default_value(UQ_SEQUENCE_INITIAL_DISCARDED_PORTIONS_ODV      ), "list of initial discarded portions for chain statistics"        )
+    (m_option_mean_monitorPeriod.c_str(),             po::value<unsigned int>()->default_value(UQ_SEQUENCE_MEAN_MONITOR_PERIOD_ODV             ), "period for monitoring mean"                                     )
     (m_option_bmm_run.c_str(),                        po::value<bool        >()->default_value(UQ_SEQUENCE_BMM_RUN_ODV                         ), "compute variance of sample mean with batch means method"        )
     (m_option_bmm_lengths.c_str(),                    po::value<std::string >()->default_value(UQ_SEQUENCE_BMM_LENGTHS_ODV                     ), "list of batch lenghts for BMM"                                  )
     (m_option_fft_compute.c_str(),                    po::value<bool        >()->default_value(UQ_SEQUENCE_FFT_COMPUTE_ODV                     ), "compute fft"                                                    )
@@ -244,6 +248,10 @@ uqSequenceStatisticalOptionsClass::getMyOptionValues(
         m_initialDiscardedPortions[i] = tmpPortions[i];
       }
     }
+  }
+
+  if (m_env.allOptionsMap().count(m_option_mean_monitorPeriod)) {
+    m_meanMonitorPeriod = m_env.allOptionsMap()[m_option_mean_monitorPeriod].as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_bmm_run)) {
@@ -439,6 +447,12 @@ const std::vector<double>&
 uqSequenceStatisticalOptionsClass::initialDiscardedPortions() const
 {
   return m_initialDiscardedPortions;
+}
+
+unsigned int
+uqSequenceStatisticalOptionsClass::meanMonitorPeriod() const
+{
+  return m_meanMonitorPeriod;
 }
 
 bool
@@ -688,8 +702,9 @@ uqSequenceStatisticalOptionsClass::print(std::ostream& os) const
   for (unsigned int i = 0; i < m_initialDiscardedPortions.size(); ++i) {
     os << m_initialDiscardedPortions[i] << " ";
   }
-  os << "\n" << m_option_bmm_run     << " = " << m_bmmRun
-     << "\n" << m_option_bmm_lengths << " = ";
+  os << "\n" << m_option_mean_monitorPeriod << " = " << m_meanMonitorPeriod
+     << "\n" << m_option_bmm_run            << " = " << m_bmmRun
+     << "\n" << m_option_bmm_lengths        << " = ";
   for (unsigned int i = 0; i < m_bmmLengths.size(); ++i) {
     os << m_bmmLengths[i] << " ";
   }

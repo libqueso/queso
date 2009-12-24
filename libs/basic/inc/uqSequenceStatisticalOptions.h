@@ -36,6 +36,7 @@
 #include <uqEnvironment.h>
 
 #define UQ_SEQUENCE_INITIAL_DISCARDED_PORTIONS_ODV   "0."
+#define UQ_SEQUENCE_MEAN_MONITOR_PERIOD_ODV          0
 #define UQ_SEQUENCE_BMM_RUN_ODV                      0
 #define UQ_SEQUENCE_BMM_LENGTHS_ODV                  "0"
 #define UQ_SEQUENCE_BMM_DISPLAY_ODV                  0
@@ -89,6 +90,8 @@ public:
 
   const std::vector<double>&       initialDiscardedPortions() const;
 
+        unsigned int               meanMonitorPeriod() const;
+
         bool                       bmmRun    () const;
   const std::vector<unsigned int>& bmmLengths() const;
         bool                       bmmDisplay() const;
@@ -140,7 +143,7 @@ public:
         bool                       covMatrixCompute () const;
         bool                       corrMatrixCompute() const;
 
-  void print                    (std::ostream& os) const;
+        void                       print(std::ostream& os) const;
 
 private:
   void   defineMyOptions        (po::options_description& optionsDesc) const;
@@ -151,6 +154,7 @@ private:
 
   std::string m_option_help;
   std::string m_option_initialDiscardedPortions;
+  std::string m_option_mean_monitorPeriod;
   std::string m_option_bmm_run;
   std::string m_option_bmm_lengths;
   std::string m_option_bmm_display;
@@ -195,6 +199,8 @@ private:
   po::options_description*  m_optionsDesc;
 
   std::vector<double>       m_initialDiscardedPortions;
+
+  unsigned int              m_meanMonitorPeriod;
 
   bool                      m_bmmRun;
   std::vector<unsigned int> m_bmmLengths;
