@@ -92,6 +92,13 @@ public:
         T            unifiedMean                  (bool                            useOnlyInter0Comm,
                                                    unsigned int                    initialPos,
                                                    unsigned int                    localNumPos) const;
+        T            subMeanCltStd                (unsigned int                    initialPos,
+                                                   unsigned int                    numPos,
+                                                   const T&                        meanValue) const;
+        T            unifiedMeanCltStd            (bool                            useOnlyInter0Comm,
+                                                   unsigned int                    initialPos,
+                                                   unsigned int                    localNumPos,
+                                                   const T&                        unifiedMeanValue) const;
         T            subSampleVariance            (unsigned int                    initialPos,
                                                    unsigned int                    numPos,
                                                    const T&                        meanValue) const;
@@ -193,6 +200,9 @@ public:
                                                    unsigned int                    initialPos,
                                                    unsigned int                    numPos);
 
+        void         subWriteContents             (const std::string&              fileName,
+                                                   const std::set<unsigned int>&   allowedSubEnvIds) const;
+        void         subWriteContents             (std::ofstream&                  ofs) const;
         void         unifiedWriteContents         (const std::string&              fileName) const;
 private:
         void         copy                         (const uqScalarSequenceClass<T>& src);
@@ -923,6 +933,107 @@ uqScalarSequenceClass<T>::unifiedMean(
   //m_env.fullComm().Barrier();
 
   return unifiedMeanValue;
+}
+
+template <class T>
+T
+uqScalarSequenceClass<T>::subMeanCltStd(
+  unsigned int initialPos,
+  unsigned int numPos,
+  const T&     meanValue) const
+{
+  bool bRC = ((initialPos          <  this->subSequenceSize()) &&
+              (0                   <  numPos                 ) &&
+              ((initialPos+numPos) <= this->subSequenceSize()));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.fullRank(),
+                      "uqScalarSequenceClass<T>::subMeanCltStd()",
+                      "invalid input data");
+
+  unsigned int finalPosPlus1 = initialPos + numPos;
+  T diff;
+  T stdValue = 0.;
+  for (unsigned int j = initialPos; j < finalPosPlus1; ++j) {
+    diff = m_seq[j] - meanValue;
+    stdValue += diff*diff;
+  }
+
+  stdValue /= (((T) numPos) - 1.);
+  stdValue /= (((T) numPos) - 1.);
+  stdValue = sqrt(stdValue);
+
+  return stdValue;
+}
+
+template <class T>
+T
+uqScalarSequenceClass<T>::unifiedMeanCltStd(
+  bool         useOnlyInter0Comm,
+  unsigned int initialPos,
+  unsigned int numPos,
+  const T&     unifiedMeanValue) const
+{
+  if (m_env.numSubEnvironments() == 1) {
+    return this->subMeanCltStd(initialPos,
+                               numPos,
+                               unifiedMeanValue);
+  }
+
+  // As of 14/Nov/2009, this routine does *not* require sub sequences to have equal size. Good.
+
+  T unifiedStdValue = 0.;
+  if (useOnlyInter0Comm) {
+    if (m_env.inter0Rank() >= 0) {
+      bool bRC = ((initialPos          <  this->subSequenceSize()) &&
+                  (0                   <  numPos                 ) &&
+                  ((initialPos+numPos) <= this->subSequenceSize()));
+      UQ_FATAL_TEST_MACRO(bRC == false,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::unifiedMeanCltStd()",
+                          "invalid input data");
+
+      unsigned int finalPosPlus1 = initialPos + numPos;
+      T diff;
+      T localStdValue = 0.;
+      for (unsigned int j = initialPos; j < finalPosPlus1; ++j) {
+        diff = m_seq[j] - unifiedMeanValue;
+        localStdValue += diff*diff;
+      }
+
+      unsigned int unifiedNumPos = 0;
+      int mpiRC = MPI_Allreduce((void *) &numPos, (void *) &unifiedNumPos, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::unifiedMeanCltStd()",
+                          "failed MPI_Allreduce() for numPos");
+
+      mpiRC = MPI_Allreduce((void *) &localStdValue, (void *) &unifiedStdValue, (int) 1, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::unifiedMeanCltStd()",
+                          "failed MPI_Allreduce() for stdValue");
+
+      unifiedStdValue /= (((T) unifiedNumPos) - 1.);
+      unifiedStdValue /= (((T) unifiedNumPos) - 1.);
+      unifiedStdValue /= sqrt(unifiedStdValue);
+    }
+    else {
+      // Node not in the 'inter0' communicator
+      this->subMeanCltStd(initialPos,
+                          numPos,
+                          unifiedMeanValue);
+    }
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.fullRank(),
+                        "uqScalarSequenceClass<T>::unifiedMeanCltStd()",
+                        "parallel vectors not supported yet");
+  }
+
+  //m_env.fullComm().Barrier();
+
+  return unifiedStdValue;
 }
 
 template <class T>
@@ -2708,6 +2819,56 @@ uqScalarSequenceClass<T>::unifiedGaussian1dKde(
   }
 
   //m_env.fullComm().Barrier();
+
+  return;
+}
+
+template <class T>
+void
+uqScalarSequenceClass<T>::subWriteContents(
+  const std::string&            fileName,
+  const std::set<unsigned int>& allowedSubEnvIds) const
+{
+  UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
+                      m_env.fullRank(),
+                      "uqScalarSequenceClass<T>::subWriteContents()",
+                      "unexpected subRank");
+
+  std::ofstream* ofsVar = NULL;
+  m_env.openOutputFile(fileName,
+                       UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                       allowedSubEnvIds,
+                       false, // A 'true' causes problems when the user chooses (via options
+                              // in the input file) to use just one file for all outputs.
+                       ofsVar);
+
+  if (ofsVar) {
+    this->subWriteContents(*ofsVar);
+  }
+
+  if (ofsVar) {
+    //ofsVar->close();
+    delete ofsVar;
+  }
+
+  return;
+}
+
+template <class T>
+void
+uqScalarSequenceClass<T>::subWriteContents(std::ofstream& ofs) const
+{
+  ofs << m_name << "_sub" << m_env.subIdString() << " = zeros(" << this->subSequenceSize()
+      << ","                                                    << 1
+      << ");"
+      << std::endl;
+  ofs << m_name << "_sub" << m_env.subIdString() << " = [";
+  unsigned int chainSize = this->subSequenceSize();
+  for (unsigned int j = 0; j < chainSize; ++j) {
+    ofs << m_seq[j]
+        << std::endl;
+  }
+  ofs << "];\n";
 
   return;
 }

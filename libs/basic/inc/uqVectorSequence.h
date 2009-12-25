@@ -192,10 +192,9 @@ public:
                                                                 const V&                                 unifiedScaleVec,
                                                                 const std::vector<V*>&                   unifiedEvaluationParamVecs,
                                                                 std::vector<V*>&                         unifiedDensityVecs) const = 0;
-//virtual  void                     subWriteContents           (std::ofstream&                           ofsvar) const = 0;
-//virtual  void                     unifiedWriteContents       (std::ofstream&                           ofsvar) const = 0;
   virtual  void                     subWriteContents           (const std::string&                       fileName,
                                                                 const std::set<unsigned int>&            allowedSubEnvIds) const = 0;
+  virtual  void                     subWriteContents           (std::ofstream&                           ofsvar) const = 0;
   virtual  void                     unifiedWriteContents       (const std::string&                       fileName) const = 0;
   virtual  void                     unifiedReadContents        (const std::string&                       fileName,
                                                                 const unsigned int                       subSequenceSize) = 0;
@@ -263,6 +262,10 @@ protected:
   virtual  void                     subMeanMonitorWrite        (std::ofstream& ofs) = 0;
   virtual  void                     subMeanInter0MonitorWrite  (std::ofstream& ofs) = 0;
   virtual  void                     unifiedMeanMonitorWrite    (std::ofstream& ofs) = 0;
+
+  virtual  void                     subMeanMonitorFree         () = 0;
+  virtual  void                     subMeanInter0MonitorFree   () = 0;
+  virtual  void                     unifiedMeanMonitorFree     () = 0;
 
            void                     computeMeanEvolution       (const uqSequenceStatisticalOptionsClass& statisticalOptions,
                                                                 std::ofstream*                           passedOfs);
@@ -1052,6 +1055,12 @@ uqBaseVectorSequenceClass<V,M>::computeMeanEvolution(
       this->subMeanInter0MonitorWrite(*passedOfs);
       this->unifiedMeanMonitorWrite(*passedOfs);
     }
+  }
+
+  this->subMeanMonitorFree();
+  if (m_env.numSubEnvironments() > 1) {
+    this->subMeanInter0MonitorFree();
+    this->unifiedMeanMonitorFree();
   }
 
   tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);

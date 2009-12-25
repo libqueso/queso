@@ -80,6 +80,14 @@ public:
         void         unifiedMean                (unsigned int                         initialPos,
                                                  unsigned int                         numPos,
                                                  V&                                   unifiedMeanVec) const;
+        void         subMeanCltStd              (unsigned int                         initialPos,
+                                                 unsigned int                         numPos,
+                                                 const V&                             meanVec,
+                                                 V&                                   samVec) const;
+        void         unifiedMeanCltStd          (unsigned int                         initialPos,
+                                                 unsigned int                         numPos,
+                                                 const V&                             unifiedMeanVec,
+                                                 V&                                   unifiedSamVec) const;
         void         subSampleVariance          (unsigned int                         initialPos,
                                                  unsigned int                         numPos,
                                                  const V&                             meanVec,
@@ -183,6 +191,7 @@ public:
                                                  std::vector<V*>&                     unifiedDensityVecs) const;
         void         subWriteContents           (const std::string&                   fileName,
                                                  const std::set<unsigned int>&        allowedSubEnvIds) const;
+        void         subWriteContents           (std::ofstream&                       ofs) const;
         void         unifiedWriteContents       (const std::string&                   fileName) const;
         void         unifiedReadContents        (const std::string&                   fileName,
                                                  const unsigned int                   subSequenceSize);
@@ -236,6 +245,10 @@ private:
                                                  V&           unifiedMeanVec,
                                                  V&           unifiedMeanCltStd);
 
+        void         subMeanMonitorFree         ();
+        void         subMeanInter0MonitorFree   ();
+        void         unifiedMeanMonitorFree     ();
+
         void         subMeanMonitorWrite        (std::ofstream& ofs);
         void         subMeanInter0MonitorWrite  (std::ofstream& ofs);
         void         unifiedMeanMonitorWrite    (std::ofstream& ofs);
@@ -247,7 +260,10 @@ private:
                                                  unsigned int                         paramId,
                                                  std::vector<double>&                 rawData) const;
 
-  std::vector<const V*> m_seq;
+  std::vector<const V*>          m_seq;
+  uqScalarSequenceClass<double>* m_subMonitorPosSeq;
+  uqSequenceOfVectorsClass<V,M>* m_subMeanVecSeq;
+  uqSequenceOfVectorsClass<V,M>* m_subMeanCltStdSeq;
 
   using uqBaseVectorSequenceClass<V,M>::m_env;
   using uqBaseVectorSequenceClass<V,M>::m_vectorSpace;
@@ -262,23 +278,29 @@ uqSequenceOfVectorsClass<V,M>::uqSequenceOfVectorsClass(
   const std::string&             name)
   :
   uqBaseVectorSequenceClass<V,M>(vectorSpace,subSequenceSize,name),
-  m_seq                         (subSequenceSize,NULL)
+  m_seq                         (subSequenceSize,NULL),
+  m_subMonitorPosSeq            (NULL),
+  m_subMeanVecSeq               (NULL),
+  m_subMeanCltStdSeq            (NULL)
 {
 
   //if (m_env.subDisplayFile()) {
   //  *m_env.subDisplayFile() << "Entering uqSequenceOfVectorsClass<V,M>::constructor()"
-  //                         << std::endl;
+  //                          << std::endl;
   //}
 
   //if (m_env.subDisplayFile()) {
   //  *m_env.subDisplayFile() << "Leaving uqSequenceOfVectorsClass<V,M>::constructor()"
-  //                         << std::endl;
+  //                          << std::endl;
   //}
 }
 
 template <class V, class M>
 uqSequenceOfVectorsClass<V,M>::~uqSequenceOfVectorsClass()
 {
+  if (m_subMonitorPosSeq) delete m_subMonitorPosSeq;
+  if (m_subMeanVecSeq   ) delete m_subMeanVecSeq;
+  if (m_subMeanCltStdSeq) delete m_subMeanCltStdSeq;
   for (unsigned int i = 0; i < (unsigned int) m_seq.size(); ++i) {
     if (m_seq[i]) delete m_seq[i];
   }
@@ -296,6 +318,10 @@ template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subMeanMonitorAlloc(unsigned int numberOfMonitorPositions)
 {
+  m_subMonitorPosSeq = new uqScalarSequenceClass<double>(m_env,numberOfMonitorPositions,(m_name+"_subMonitorPosSeq").c_str());
+  m_subMeanVecSeq    = new uqSequenceOfVectorsClass<V,M>(m_vectorSpace,numberOfMonitorPositions,(m_name+"_subMeanVecSeq").c_str());
+  m_subMeanCltStdSeq = new uqSequenceOfVectorsClass<V,M>(m_vectorSpace,numberOfMonitorPositions,(m_name+"_subMeanCltStdSeq").c_str());
+
   return;
 }
 
@@ -314,13 +340,21 @@ uqSequenceOfVectorsClass<V,M>::unifiedMeanMonitorAlloc(unsigned int numberOfMoni
   return;
 }
 
-
 template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subMeanMonitorRun(unsigned int monitorPosition,
                                                  V&           subMeanVec,
                                                  V&           subMeanCltStd)
 {
+  this->subMean(0,
+                monitorPosition,
+                subMeanVec);
+
+  this->subMeanCltStd(0,
+                      monitorPosition,
+                      subMeanVec,
+                      subMeanCltStd);
+
   return;
 }
 
@@ -345,7 +379,6 @@ uqSequenceOfVectorsClass<V,M>::unifiedMeanMonitorRun(unsigned int currentPositio
   return;
 }
 
-
 template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subMeanMonitorStore(unsigned int i,
@@ -353,6 +386,10 @@ uqSequenceOfVectorsClass<V,M>::subMeanMonitorStore(unsigned int i,
                                                    const V&     subMeanVec,
                                                    const V&     subMeanCltStd)
 {
+  (*m_subMonitorPosSeq)[i] = monitorPosition;
+  m_subMeanVecSeq->setPositionValues(i,subMeanVec);
+  m_subMeanCltStdSeq->setPositionValues(i,subMeanCltStd);
+
   return;
 }
 
@@ -384,6 +421,10 @@ template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subMeanMonitorWrite(std::ofstream& ofs)
 {
+  this->m_subMonitorPosSeq->subWriteContents(ofs);
+  this->m_subMeanVecSeq->subWriteContents(ofs);
+  this->m_subMeanCltStdSeq->subWriteContents(ofs);
+
   return;
 }
 
@@ -397,6 +438,37 @@ uqSequenceOfVectorsClass<V,M>::subMeanInter0MonitorWrite(std::ofstream& ofs)
 template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::unifiedMeanMonitorWrite(std::ofstream& ofs)
+{
+  // std::set<unsigned int> tmpSet;
+  // tmpSet.insert(0);
+  return;
+}
+
+template <class V, class M>
+void
+uqSequenceOfVectorsClass<V,M>::subMeanMonitorFree()
+{
+  delete m_subMonitorPosSeq;
+  m_subMonitorPosSeq = NULL;
+  delete m_subMeanVecSeq;
+  m_subMeanVecSeq = NULL;
+  delete m_subMeanCltStdSeq;
+  m_subMeanCltStdSeq = NULL;
+
+  return;
+}
+
+template <class V, class M>
+void
+uqSequenceOfVectorsClass<V,M>::subMeanInter0MonitorFree()
+{
+  return;
+}
+
+
+template <class V, class M>
+void
+uqSequenceOfVectorsClass<V,M>::unifiedMeanMonitorFree()
 {
   return;
 }
@@ -857,6 +929,77 @@ uqSequenceOfVectorsClass<V,M>::unifiedMean(
                            << ", unified sequence size = " << this->unifiedSequenceSize()
                            << ", unifiedMeanVec = "        << unifiedMeanVec
                            << std::endl;
+  }
+
+  return;
+}
+
+template <class V, class M>
+void
+uqSequenceOfVectorsClass<V,M>::subMeanCltStd(
+  unsigned int initialPos,
+  unsigned int numPos,
+  const V&     meanVec,
+  V&           stdVec) const
+{
+  bool bRC = ((initialPos              <  this->subSequenceSize()) &&
+              (0                       <  numPos                 ) &&
+              ((initialPos+numPos)     <= this->subSequenceSize()) &&
+              (this->vectorSizeLocal() == meanVec.sizeLocal()    ) &&
+              (this->vectorSizeLocal() == stdVec.sizeLocal()     ));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.fullRank(),
+                      "uqSequenceOfVectorsClass<V,M>::subMeanCltStd()",
+                      "invalid input data");
+
+  uqScalarSequenceClass<double> data(m_env,0,"");
+
+  unsigned int numParams = this->vectorSizeLocal();
+  for (unsigned int i = 0; i < numParams; ++i) {
+    this->extractScalarSeq(initialPos,
+                           1, // spacing
+                           numPos,
+                           i,
+                           data);
+    stdVec[i] = data.subMeanCltStd(0,
+                                   numPos,
+                                   meanVec[i]);
+  }
+
+  return;
+}
+
+template <class V, class M>
+void
+uqSequenceOfVectorsClass<V,M>::unifiedMeanCltStd(
+  unsigned int initialPos,
+  unsigned int numPos,
+  const V&     unifiedMeanVec,
+  V&           unifiedSamVec) const
+{
+  bool bRC = ((initialPos              <  this->subSequenceSize()   ) &&
+              (0                       <  numPos                    ) &&
+              ((initialPos+numPos)     <= this->subSequenceSize()   ) &&
+              (this->vectorSizeLocal() == unifiedMeanVec.sizeLocal()) &&
+              (this->vectorSizeLocal() == unifiedSamVec.sizeLocal() ));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.fullRank(),
+                      "uqSequenceOfVectorsClass<V,M>::unifiedMeanCltStd()",
+                      "invalid input data");
+
+  uqScalarSequenceClass<double> data(m_env,0,"");
+
+  unsigned int numParams = this->vectorSizeLocal();
+  for (unsigned int i = 0; i < numParams; ++i) {
+    this->extractScalarSeq(initialPos,
+                           1, // spacing
+                           numPos,
+                           i,
+                           data);
+    unifiedSamVec[i] = data.unifiedMeanCltStd(m_vectorSpace.numOfProcsForStorage() == 1,
+                                              0,
+                                              numPos,
+                                              unifiedMeanVec[i]);
   }
 
   return;
@@ -2044,26 +2187,35 @@ uqSequenceOfVectorsClass<V,M>::subWriteContents(
                        ofsVar);
 
   if (ofsVar) {
-    *ofsVar << m_name << "_sub" << m_env.subIdString() << " = zeros(" << this->subSequenceSize()
-            << ","                                                    << this->vectorSizeLocal()
-            << ");"
-            << std::endl;
-    *ofsVar << m_name << "_sub" << m_env.subIdString() << " = [";
-    unsigned int chainSize = this->subSequenceSize();
-    for (unsigned int j = 0; j < chainSize; ++j) {
-      bool savedVectorPrintState = m_seq[j]->getPrintHorizontally();
-      m_seq[j]->setPrintHorizontally(true);
-      *ofsVar << *(m_seq[j])
-              << std::endl;
-      m_seq[j]->setPrintHorizontally(savedVectorPrintState);
-    }
-    *ofsVar << "];\n";
+    this->subWriteContents(*ofsVar);
   }
 
   if (ofsVar) {
     //ofsVar->close();
     delete ofsVar;
   }
+
+  return;
+}
+
+template <class V, class M>
+void
+uqSequenceOfVectorsClass<V,M>::subWriteContents(std::ofstream& ofs) const
+{
+  ofs << m_name << "_sub" << m_env.subIdString() << " = zeros(" << this->subSequenceSize()
+      << ","                                                    << this->vectorSizeLocal()
+      << ");"
+      << std::endl;
+  ofs << m_name << "_sub" << m_env.subIdString() << " = [";
+  unsigned int chainSize = this->subSequenceSize();
+  for (unsigned int j = 0; j < chainSize; ++j) {
+    bool savedVectorPrintState = m_seq[j]->getPrintHorizontally();
+    m_seq[j]->setPrintHorizontally(true);
+    ofs << *(m_seq[j])
+        << std::endl;
+    m_seq[j]->setPrintHorizontally(savedVectorPrintState);
+  }
+  ofs << "];\n";
 
   return;
 }
