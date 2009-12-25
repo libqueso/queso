@@ -146,9 +146,11 @@ public:
         void         meanStacc                  (unsigned int                         initialPos,
                                                  V&                                   meanStaccVec) const;
         void         subMinMax                  (unsigned int                         initialPos,
+                                                 unsigned int                         numPos,
                                                  V&                                   minVec,
                                                  V&                                   maxVec) const;
         void         unifiedMinMax              (unsigned int                         initialPos,
+                                                 unsigned int                         numPos,
                                                  V&                                   unifiedMinVec,
                                                  V&                                   unifiedMaxVec) const;
         void         subHistogram               (unsigned int                         initialPos,
@@ -234,14 +236,14 @@ private:
                                                  const V&     subMeanVec,
                                                  const V&     subMeanCltStd);
         void         subMeanInter0MonitorStore  (unsigned int i,
-                                                 unsigned int currentPosition,
+                                                 unsigned int monitorPosition,
                                                  const V&     subMeanInter0Mean,
                                                  const V&     subMeanInter0Clt95,
                                                  const V&     subMeanInter0Empirical90,
                                                  const V&     subMeanInter0Min,
                                                  const V&     subMeanInter0Max);
         void         unifiedMeanMonitorStore    (unsigned int i,
-                                                 unsigned int currentPosition,
+                                                 unsigned int monitorPosition,
                                                  V&           unifiedMeanVec,
                                                  V&           unifiedMeanCltStd);
 
@@ -260,15 +262,22 @@ private:
                                                  unsigned int                         paramId,
                                                  std::vector<double>&                 rawData) const;
 
-  std::vector<const V*>          m_seq;
-  uqScalarSequenceClass<double>* m_subMonitorPosSeq;
-  uqSequenceOfVectorsClass<V,M>* m_subMeanVecSeq;
-  uqSequenceOfVectorsClass<V,M>* m_subMeanCltStdSeq;
-
   using uqBaseVectorSequenceClass<V,M>::m_env;
   using uqBaseVectorSequenceClass<V,M>::m_vectorSpace;
   using uqBaseVectorSequenceClass<V,M>::m_name;
   using uqBaseVectorSequenceClass<V,M>::m_fftObj;
+
+  std::vector<const V*>          m_seq;
+  uqScalarSequenceClass<double>* m_subMeanMonitorPosSeq;
+  uqSequenceOfVectorsClass<V,M>* m_subMeanVecSeq;
+  uqSequenceOfVectorsClass<V,M>* m_subMeanCltStdSeq;
+
+  uqScalarSequenceClass<double>* m_subMeanInter0MonitorPosSeq;
+  uqSequenceOfVectorsClass<V,M>* m_subMeanInter0Mean;
+  uqSequenceOfVectorsClass<V,M>* m_subMeanInter0Clt95;
+  uqSequenceOfVectorsClass<V,M>* m_subMeanInter0Empirical90;
+  uqSequenceOfVectorsClass<V,M>* m_subMeanInter0Min;
+  uqSequenceOfVectorsClass<V,M>* m_subMeanInter0Max;
 };
 
 template <class V, class M>
@@ -279,11 +288,16 @@ uqSequenceOfVectorsClass<V,M>::uqSequenceOfVectorsClass(
   :
   uqBaseVectorSequenceClass<V,M>(vectorSpace,subSequenceSize,name),
   m_seq                         (subSequenceSize,NULL),
-  m_subMonitorPosSeq            (NULL),
+  m_subMeanMonitorPosSeq        (NULL),
   m_subMeanVecSeq               (NULL),
-  m_subMeanCltStdSeq            (NULL)
+  m_subMeanCltStdSeq            (NULL),
+  m_subMeanInter0MonitorPosSeq  (NULL),
+  m_subMeanInter0Mean           (NULL),
+  m_subMeanInter0Clt95          (NULL),
+  m_subMeanInter0Empirical90    (NULL),
+  m_subMeanInter0Min            (NULL),
+  m_subMeanInter0Max            (NULL)
 {
-
   //if (m_env.subDisplayFile()) {
   //  *m_env.subDisplayFile() << "Entering uqSequenceOfVectorsClass<V,M>::constructor()"
   //                          << std::endl;
@@ -298,9 +312,17 @@ uqSequenceOfVectorsClass<V,M>::uqSequenceOfVectorsClass(
 template <class V, class M>
 uqSequenceOfVectorsClass<V,M>::~uqSequenceOfVectorsClass()
 {
-  if (m_subMonitorPosSeq) delete m_subMonitorPosSeq;
-  if (m_subMeanVecSeq   ) delete m_subMeanVecSeq;
-  if (m_subMeanCltStdSeq) delete m_subMeanCltStdSeq;
+  if (m_subMeanMonitorPosSeq) delete m_subMeanMonitorPosSeq;
+  if (m_subMeanVecSeq       ) delete m_subMeanVecSeq;
+  if (m_subMeanCltStdSeq    ) delete m_subMeanCltStdSeq;
+
+  if (m_subMeanInter0MonitorPosSeq) delete m_subMeanInter0MonitorPosSeq;
+  if (m_subMeanInter0Mean         ) delete m_subMeanInter0Mean;
+  if (m_subMeanInter0Clt95        ) delete m_subMeanInter0Clt95;
+  if (m_subMeanInter0Empirical90  ) delete m_subMeanInter0Empirical90;
+  if (m_subMeanInter0Min          ) delete m_subMeanInter0Min;
+  if (m_subMeanInter0Max          ) delete m_subMeanInter0Max;
+
   for (unsigned int i = 0; i < (unsigned int) m_seq.size(); ++i) {
     if (m_seq[i]) delete m_seq[i];
   }
@@ -318,9 +340,9 @@ template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subMeanMonitorAlloc(unsigned int numberOfMonitorPositions)
 {
-  m_subMonitorPosSeq = new uqScalarSequenceClass<double>(m_env,numberOfMonitorPositions,(m_name+"_subMonitorPosSeq").c_str());
-  m_subMeanVecSeq    = new uqSequenceOfVectorsClass<V,M>(m_vectorSpace,numberOfMonitorPositions,(m_name+"_subMeanVecSeq").c_str());
-  m_subMeanCltStdSeq = new uqSequenceOfVectorsClass<V,M>(m_vectorSpace,numberOfMonitorPositions,(m_name+"_subMeanCltStdSeq").c_str());
+  m_subMeanMonitorPosSeq = new uqScalarSequenceClass<double>(m_env,        numberOfMonitorPositions,(m_name+"_subMeanMonitorPosSeq").c_str());
+  m_subMeanVecSeq        = new uqSequenceOfVectorsClass<V,M>(m_vectorSpace,numberOfMonitorPositions,(m_name+"_subMeanVecSeq").c_str()       );
+  m_subMeanCltStdSeq     = new uqSequenceOfVectorsClass<V,M>(m_vectorSpace,numberOfMonitorPositions,(m_name+"_subMeanCltStdSeq").c_str()    );
 
   return;
 }
@@ -329,6 +351,13 @@ template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subMeanInter0MonitorAlloc(unsigned int numberOfMonitorPositions)
 {
+  m_subMeanInter0MonitorPosSeq = new uqScalarSequenceClass<double>(m_env,        numberOfMonitorPositions,(m_name+"_subMeanInter0MonitorPosSeq").c_str() );
+  m_subMeanInter0Mean          = new uqSequenceOfVectorsClass<V,M>(m_vectorSpace,numberOfMonitorPositions,(m_name+"_subMeanInter0MeanSeq").c_str()       );
+  m_subMeanInter0Clt95         = new uqSequenceOfVectorsClass<V,M>(m_vectorSpace,numberOfMonitorPositions,(m_name+"_subMeanInter0Clt95Seq").c_str()      );
+  m_subMeanInter0Empirical90   = new uqSequenceOfVectorsClass<V,M>(m_vectorSpace,numberOfMonitorPositions,(m_name+"_subMeanInter0Empirical90Seq").c_str());
+  m_subMeanInter0Min           = new uqSequenceOfVectorsClass<V,M>(m_vectorSpace,numberOfMonitorPositions,(m_name+"_subMeanInter0MinSeq").c_str()        );
+  m_subMeanInter0Max           = new uqSequenceOfVectorsClass<V,M>(m_vectorSpace,numberOfMonitorPositions,(m_name+"_subMeanInter0MaxSeq").c_str()        );
+
   return;
 }
 
@@ -358,21 +387,28 @@ uqSequenceOfVectorsClass<V,M>::subMeanMonitorRun(unsigned int monitorPosition,
   return;
 }
 
-template <class V, class M>
+template <class V, class M> // here
 void
-uqSequenceOfVectorsClass<V,M>::subMeanInter0MonitorRun(unsigned int currentPosition,
+uqSequenceOfVectorsClass<V,M>::subMeanInter0MonitorRun(unsigned int monitorPosition,
                                                        V&           subMeanInter0Mean,
                                                        V&           subMeanInter0Clt95,
                                                        V&           subMeanInter0Empirical90,
                                                        V&           subMeanInter0Min,
                                                        V&           subMeanInter0Max)
 {
+  // This operation assumes that both "this->subMeanMonitorRun()" and "this->subMeanMonitorStore()" were already called
+
+  this->subMinMax(0,
+                  monitorPosition,
+                  subMeanInter0Min,
+                  subMeanInter0Max);
+
   return;
 }
 
 template <class V, class M>
 void
-uqSequenceOfVectorsClass<V,M>::unifiedMeanMonitorRun(unsigned int currentPosition,
+uqSequenceOfVectorsClass<V,M>::unifiedMeanMonitorRun(unsigned int monitorPosition,
                                                      V&           unifiedMeanVec,
                                                      V&           unifiedMeanCltStd)
 {
@@ -386,7 +422,7 @@ uqSequenceOfVectorsClass<V,M>::subMeanMonitorStore(unsigned int i,
                                                    const V&     subMeanVec,
                                                    const V&     subMeanCltStd)
 {
-  (*m_subMonitorPosSeq)[i] = monitorPosition;
+  (*m_subMeanMonitorPosSeq)[i] = monitorPosition;
   m_subMeanVecSeq->setPositionValues(i,subMeanVec);
   m_subMeanCltStdSeq->setPositionValues(i,subMeanCltStd);
 
@@ -396,20 +432,27 @@ uqSequenceOfVectorsClass<V,M>::subMeanMonitorStore(unsigned int i,
 template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subMeanInter0MonitorStore(unsigned int i,
-                                                         unsigned int currentPosition,
+                                                         unsigned int monitorPosition,
                                                          const V&     subMeanInter0Mean,
                                                          const V&     subMeanInter0Clt95,
                                                          const V&     subMeanInter0Empirical90,
                                                          const V&     subMeanInter0Min,
                                                          const V&     subMeanInter0Max)
 {
+  (*m_subMeanInter0MonitorPosSeq)[i] = monitorPosition;
+  m_subMeanInter0Mean->setPositionValues(i,subMeanInter0Mean);
+  m_subMeanInter0Clt95->setPositionValues(i,subMeanInter0Clt95);
+  m_subMeanInter0Empirical90->setPositionValues(i,subMeanInter0Empirical90);
+  m_subMeanInter0Min->setPositionValues(i,subMeanInter0Min);
+  m_subMeanInter0Max->setPositionValues(i,subMeanInter0Max);
+
   return;
 }
 
 template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::unifiedMeanMonitorStore(unsigned int i,
-                                                       unsigned int currentPosition,
+                                                       unsigned int monitorPosition,
                                                        V&           unifiedMeanVec,
                                                        V&           unifiedMeanCltStd)
 {
@@ -421,9 +464,9 @@ template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subMeanMonitorWrite(std::ofstream& ofs)
 {
-  this->m_subMonitorPosSeq->subWriteContents(ofs);
-  this->m_subMeanVecSeq->subWriteContents(ofs);
-  this->m_subMeanCltStdSeq->subWriteContents(ofs);
+  m_subMeanMonitorPosSeq->subWriteContents(ofs);
+  m_subMeanVecSeq->subWriteContents(ofs);
+  m_subMeanCltStdSeq->subWriteContents(ofs);
 
   return;
 }
@@ -432,6 +475,13 @@ template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subMeanInter0MonitorWrite(std::ofstream& ofs)
 {
+  m_subMeanInter0MonitorPosSeq->subWriteContents(ofs);
+  m_subMeanInter0Mean->subWriteContents(ofs);
+  m_subMeanInter0Clt95->subWriteContents(ofs);
+  m_subMeanInter0Empirical90->subWriteContents(ofs);
+  m_subMeanInter0Min->subWriteContents(ofs);
+  m_subMeanInter0Max->subWriteContents(ofs);
+
   return;
 }
 
@@ -448,8 +498,8 @@ template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subMeanMonitorFree()
 {
-  delete m_subMonitorPosSeq;
-  m_subMonitorPosSeq = NULL;
+  delete m_subMeanMonitorPosSeq;
+  m_subMeanMonitorPosSeq = NULL;
   delete m_subMeanVecSeq;
   m_subMeanVecSeq = NULL;
   delete m_subMeanCltStdSeq;
@@ -462,6 +512,19 @@ template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subMeanInter0MonitorFree()
 {
+  delete m_subMeanInter0MonitorPosSeq;
+  m_subMeanInter0MonitorPosSeq = NULL;
+  delete m_subMeanInter0Mean;
+  m_subMeanInter0Mean = NULL;
+  delete m_subMeanInter0Clt95;
+  m_subMeanInter0Clt95 = NULL;
+  delete m_subMeanInter0Empirical90;
+  m_subMeanInter0Empirical90 = NULL;
+  delete m_subMeanInter0Min;
+  m_subMeanInter0Min = NULL;
+  delete m_subMeanInter0Max;
+  m_subMeanInter0Max = NULL;
+
   return;
 }
 
@@ -1511,10 +1574,12 @@ template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subMinMax(
   unsigned int initialPos,
+  unsigned int numPos,
   V&           minVec,
   V&           maxVec) const
 {
-  bool bRC = ((initialPos              <  this->subSequenceSize()) &&
+  bool bRC = ((0                       <  numPos                 ) &&
+              ((initialPos+numPos)     <= this->subSequenceSize()) &&
               (this->vectorSizeLocal() == minVec.sizeLocal()     ) &&
               (this->vectorSizeLocal() == maxVec.sizeLocal()     ));
   UQ_FATAL_TEST_MACRO(bRC == false,
@@ -1522,7 +1587,7 @@ uqSequenceOfVectorsClass<V,M>::subMinMax(
                       "uqSequenceOfVectorsClass<V,M>::subMinMax()",
                       "invalid input data");
 
-  unsigned int numPos = this->subSequenceSize() - initialPos;
+  //unsigned int numPos = this->subSequenceSize() - initialPos;
   unsigned int numParams = this->vectorSizeLocal();
   uqScalarSequenceClass<double> data(m_env,0,"");
 
@@ -1532,7 +1597,7 @@ uqSequenceOfVectorsClass<V,M>::subMinMax(
                            numPos,
                            i,
                            data);
-    data.subMinMax(0,minVec[i],maxVec[i]);
+    data.subMinMax(0,numPos,minVec[i],maxVec[i]);
   }
 
   return;
@@ -1542,10 +1607,12 @@ template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::unifiedMinMax(
   unsigned int initialPos,
+  unsigned int numPos,
   V&           unifiedMinVec,
   V&           unifiedMaxVec) const
 {
-  bool bRC = ((initialPos              <  this->subSequenceSize()  ) &&
+  bool bRC = ((0                       <  numPos                   ) &&
+              ((initialPos+numPos)     <= this->subSequenceSize()  ) &&
               (this->vectorSizeLocal() == unifiedMinVec.sizeLocal()) &&
               (this->vectorSizeLocal() == unifiedMaxVec.sizeLocal()));
   UQ_FATAL_TEST_MACRO(bRC == false,
@@ -1553,7 +1620,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedMinMax(
                       "uqSequenceOfVectorsClass<V,M>::unifiedMinMax()",
                       "invalid input data");
 
-  unsigned int numPos = this->subSequenceSize() - initialPos;
+  //unsigned int numPos = this->subSequenceSize() - initialPos;
   unsigned int numParams = this->vectorSizeLocal();
   uqScalarSequenceClass<double> data(m_env,0,"");
 
@@ -1565,6 +1632,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedMinMax(
                            data);
     data.unifiedMinMax(m_vectorSpace.numOfProcsForStorage() == 1,
                        0,
+                       numPos,
                        unifiedMinVec[i],
                        unifiedMaxVec[i]);
   }

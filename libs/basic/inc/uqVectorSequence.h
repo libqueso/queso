@@ -154,9 +154,11 @@ public:
   virtual  void                     meanStacc                  (unsigned int                             initialPos,
                                                                 V&                                       meanStaccVec) const = 0;
   virtual  void                     subMinMax                  (unsigned int                             initialPos,
+                                                                unsigned int                             numPos,
                                                                 V&                                       minVec,
                                                                 V&                                       maxVec) const = 0;
   virtual  void                     unifiedMinMax              (unsigned int                             initialPos,
+                                                                unsigned int                             numPos,
                                                                 V&                                       unifiedMinVec,
                                                                 V&                                       unifiedMaxVec) const = 0;
   virtual  void                     subHistogram               (unsigned int                             initialPos,
@@ -233,13 +235,13 @@ protected:
   virtual  void                     subMeanMonitorRun          (unsigned int monitorPosition,
                                                                 V&           subMeanVec,
                                                                 V&           subMeanCltStd) = 0;
-  virtual  void                     subMeanInter0MonitorRun    (unsigned int currentPosition,
+  virtual  void                     subMeanInter0MonitorRun    (unsigned int monitorPosition,
                                                                 V&           subMeanInter0Mean,
                                                                 V&           subMeanInter0Clt95,
                                                                 V&           subMeanInter0Empirical90,
                                                                 V&           subMeanInter0Min,
                                                                 V&           subMeanInter0Max) = 0;
-  virtual  void                     unifiedMeanMonitorRun      (unsigned int currentPosition,
+  virtual  void                     unifiedMeanMonitorRun      (unsigned int monitorPosition,
                                                                 V&           unifiedMeanVec,
                                                                 V&           unifiedMeanCltStd) = 0;
 
@@ -248,14 +250,14 @@ protected:
                                                                 const V&     subMeanVec,
                                                                 const V&     subMeanCltStd) = 0;
   virtual  void                     subMeanInter0MonitorStore  (unsigned int i,
-                                                                unsigned int currentPosition,
+                                                                unsigned int monitorPosition,
                                                                 const V&     subMeanInter0Mean,
                                                                 const V&     subMeanInter0Clt95,
                                                                 const V&     subMeanInter0Empirical90,
                                                                 const V&     subMeanInter0Min,
                                                                 const V&     subMeanInter0Max) = 0;
   virtual  void                     unifiedMeanMonitorStore    (unsigned int i,
-                                                                unsigned int currentPosition,
+                                                                unsigned int monitorPosition,
                                                                 V&           unifiedMeanVec,
                                                                 V&           unifiedMeanCltStd) = 0;
 
@@ -459,7 +461,7 @@ uqBaseVectorSequenceClass<V,M>::subMinValues() const
   if (m_subMinValues == NULL) {
     m_subMinValues = m_vectorSpace.newVector();
     if (m_subMaxValues == NULL) m_subMaxValues = m_vectorSpace.newVector();
-    subMinMax(0,*m_subMinValues,*m_subMaxValues);
+    subMinMax(0,this->subSequenceSize(),*m_subMinValues,*m_subMaxValues);
   }
 
   return *m_subMinValues;
@@ -472,7 +474,7 @@ uqBaseVectorSequenceClass<V,M>::unifiedMinValues() const
   if (m_unifiedMinValues == NULL) {
     m_unifiedMinValues = m_vectorSpace.newVector();
     if (m_unifiedMaxValues == NULL) m_unifiedMaxValues = m_vectorSpace.newVector();
-    unifiedMinMax(0,*m_unifiedMinValues,*m_unifiedMaxValues);
+    unifiedMinMax(0,this->subSequenceSize(),*m_unifiedMinValues,*m_unifiedMaxValues);
   }
 
   return *m_unifiedMinValues;
@@ -485,7 +487,7 @@ uqBaseVectorSequenceClass<V,M>::subMaxValues() const
   if (m_subMaxValues == NULL) {
     if (m_subMinValues == NULL) m_subMinValues = m_vectorSpace.newVector();
     m_subMaxValues = m_vectorSpace.newVector();
-    subMinMax(0,*m_subMinValues,*m_subMaxValues);
+    subMinMax(0,this->subSequenceSize(),*m_subMinValues,*m_subMaxValues);
   }
 
   return *m_subMaxValues;
@@ -498,7 +500,7 @@ uqBaseVectorSequenceClass<V,M>::unifiedMaxValues() const
   if (m_unifiedMaxValues == NULL) {
     if (m_unifiedMinValues == NULL) m_unifiedMinValues = m_vectorSpace.newVector();
     m_unifiedMaxValues = m_vectorSpace.newVector();
-    unifiedMinMax(0,*m_unifiedMinValues,*m_unifiedMaxValues);
+    unifiedMinMax(0,this->subSequenceSize(),*m_unifiedMinValues,*m_unifiedMaxValues);
   }
 
   return *m_unifiedMaxValues;
@@ -990,7 +992,12 @@ uqBaseVectorSequenceClass<V,M>::computeMeanEvolution(
   }
 
   unsigned int monitorPeriod = statisticalOptions.meanMonitorPeriod();
+  unsigned int iMin = 0;
   unsigned int iMax = (unsigned int) ( ((double) this->subSequenceSize())/((double) monitorPeriod) );
+
+  if (monitorPeriod == 1) {
+    iMin = 1;
+  }
 
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "  Sub sequence size = "                << this->subSequenceSize()
@@ -1005,7 +1012,7 @@ uqBaseVectorSequenceClass<V,M>::computeMeanEvolution(
     this->unifiedMeanMonitorAlloc(iMax);
   }
 
-  for (unsigned int i = 0; i < iMax; ++i) {
+  for (unsigned int i = iMin; i < iMax; ++i) {
     unsigned int currentMonitoredFinalPosition = (i+1)*monitorPeriod - 1; // Yes, '-1'
     V subMeanVec   (m_vectorSpace.zeroVector());
     V subMeanCltStd(m_vectorSpace.zeroVector());
@@ -1939,6 +1946,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
   V statsMinPositions(m_vectorSpace.zeroVector());
   V statsMaxPositions(m_vectorSpace.zeroVector());
   this->subMinMax(0, // Use the whole chain
+                  this->subSequenceSize(),
                   statsMinPositions,
                   statsMaxPositions);
 
@@ -1978,6 +1986,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
   if (m_env.numSubEnvironments() > 1) {
     // Compute unified min-max
     this->unifiedMinMax(0, // Use the whole chain
+                        this->subSequenceSize(),
                         unifiedStatsMinPositions,
                         unifiedStatsMaxPositions);
 

@@ -139,10 +139,12 @@ public:
                                                    double                          ratioNb) const;
         T            meanStacc                    (unsigned int                    initialPos) const;
         void         subMinMax                    (unsigned int                    initialPos,
+                                                   unsigned int                    numPos,
                                                    T&                              minValue,
                                                    T&                              maxValue) const;
         void         unifiedMinMax                (bool                            useOnlyInter0Comm,
                                                    unsigned int                    initialPos,
+                                                   unsigned int                    numPos,
                                                    T&                              unifiedMinValue,
                                                    T&                              unifiedMaxValue) const;
         void         subHistogram                 (unsigned int                    initialPos,
@@ -666,6 +668,7 @@ uqScalarSequenceClass<T>::subUniformlySampledMdf(
   std::vector<unsigned int> bins   (numEvaluationPoints,0);
 
   subMinMax(0, // initialPos
+            this->subSequenceSize(),
             tmpMinValue,
             tmpMaxValue);
   subHistogram(0, // initialPos,
@@ -706,6 +709,7 @@ uqScalarSequenceClass<T>::subUniformlySampledCdf(
   std::vector<unsigned int> bins   (numEvaluationPoints,0);
 
   subMinMax(0, // initialPos
+            this->subSequenceSize(),
             tmpMinValue,
             tmpMaxValue);
   subHistogram(0, // initialPos,
@@ -766,6 +770,7 @@ uqScalarSequenceClass<T>::unifiedUniformlySampledCdf(
 
       this->unifiedMinMax(useOnlyInter0Comm,
                           0, // initialPos
+                          this->subSequenceSize(),
                           unifiedTmpMinValue,
                           unifiedTmpMaxValue);
       this->unifiedHistogram(useOnlyInter0Comm,
@@ -1702,16 +1707,32 @@ template <class T>
 void
 uqScalarSequenceClass<T>::subMinMax(
   unsigned int initialPos,
+  unsigned int numPos,
   T&           minValue,
   T&           maxValue) const
 {
-  seqScalarPositionConstIteratorTypedef posIterator = m_seq.begin();
-  std::advance(posIterator,initialPos);
+  UQ_FATAL_TEST_MACRO((initialPos+numPos) > this->subSequenceSize(),
+                      m_env.fullRank(),
+                      "uqScalarSequenceClass<T>::subMinMax()",
+                      "invalid input");
+
+  seqScalarPositionConstIteratorTypedef pos1 = m_seq.begin();
+  std::advance(pos1,initialPos);
+
+  seqScalarPositionConstIteratorTypedef pos2 = m_seq.begin();
+  std::advance(pos2,initialPos+numPos);
+
+  if ((initialPos+numPos) == this->subSequenceSize()) {
+    UQ_FATAL_TEST_MACRO(pos2 != m_seq.end(),
+                        m_env.fullRank(),
+                        "uqScalarSequenceClass<T>::subMinMax()",
+                        "invalid state");
+  }
 
   seqScalarPositionConstIteratorTypedef pos;
-  pos = std::min_element(posIterator, m_seq.end());
+  pos = std::min_element(pos1, pos2);
   minValue = *pos;
-  pos = std::max_element(posIterator, m_seq.end());
+  pos = std::max_element(pos1, pos2);
   maxValue = *pos;
 
   return;
@@ -1722,11 +1743,13 @@ void
 uqScalarSequenceClass<T>::unifiedMinMax(
   bool         useOnlyInter0Comm,
   unsigned int initialPos,
+  unsigned int numPos,
   T&           unifiedMinValue,
   T&           unifiedMaxValue) const
 {
   if (m_env.numSubEnvironments() == 1) {
     return this->subMinMax(initialPos,
+                           numPos,
                            unifiedMinValue,
                            unifiedMaxValue);
   }
@@ -1739,6 +1762,7 @@ uqScalarSequenceClass<T>::unifiedMinMax(
       T minValue;
       T maxValue;
       this->subMinMax(initialPos,
+                      numPos,
                       minValue,
                       maxValue);
 
@@ -1775,6 +1799,7 @@ uqScalarSequenceClass<T>::unifiedMinMax(
     else {
       // Node not in the 'inter0' communicator
       this->subMinMax(initialPos,
+                      numPos,
                       unifiedMinValue,
                       unifiedMaxValue);
     }
