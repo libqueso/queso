@@ -578,6 +578,51 @@ uqGslVectorClass::mpiAllReduce(MPI_Op mpiOperation, const Epetra_MpiComm& opComm
 }
 
 void
+uqGslVectorClass::mpiAllQuantile(double probability, const Epetra_MpiComm& opComm, uqGslVectorClass& resultVec) const
+{
+  // Filter out those nodes that should not participate
+  if (opComm.MyPID() < 0) return;
+
+  UQ_FATAL_TEST_MACRO((probability < 0.) || (1. < probability),
+                      m_env.fullRank(),
+                      "uqGslVectorClass::mpiAllQuantile()",
+                      "invalid input");
+
+  unsigned int size = this->sizeLocal();
+  UQ_FATAL_TEST_MACRO(size != resultVec.sizeLocal(),
+                      m_env.fullRank(),
+                      "uqGslVectorClass::mpiAllQuantile()",
+                      "different vector sizes");
+
+  for (unsigned int i = 0; i < size; ++i) {
+    //int MPI_Gather (void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
+    //                void *recvbuf, int recvcount, MPI_Datatype recvtype, 
+    //                int root, MPI_Comm comm )
+    double auxDouble = (int) (*this)[i];
+    std::vector<double> vecOfDoubles(opComm.NumProc(),0.);
+    int mpiRC = MPI_Gather((void *) &auxDouble, 1, MPI_DOUBLE, (void *) &vecOfDoubles[0], (int) 1, MPI_DOUBLE, 0, opComm.Comm());
+    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                        m_env.fullRank(),
+                        "uqGslVectorClass::mpiAllQuantile()",
+                        "failed MPI_Gather()");
+
+    std::sort(vecOfDoubles.begin(), vecOfDoubles.end());
+
+    double result = vecOfDoubles[(unsigned int)( probability*((double)(vecOfDoubles.size()-1)) )];
+
+    mpiRC = MPI_Bcast((void *) &result, (int) 1, MPI_DOUBLE, 0, opComm.Comm());
+    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                        m_env.fullRank(),
+                        "uqGslVectorClass::mpiAllQuantile()",
+                        "failed MPI_Bcast()");
+
+    resultVec[i] = result;
+  }
+
+  return;
+}
+
+void
 uqGslVectorClass::print(std::ostream& os) const
 {
   unsigned int size = this->sizeLocal();

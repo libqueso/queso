@@ -426,7 +426,11 @@ uqSequenceOfVectorsClass<V,M>::subMeanInter0MonitorRun(unsigned int monitorPosit
   subMeanInter0Clt95.cwSqrt();
   subMeanInter0Clt95 *= 3.;
 
-  // here
+  V subMeanInter0Quantile5(m_vectorSpace.zeroVector());
+  subMeanVec.mpiAllQuantile(.05,m_env.inter0Comm(),subMeanInter0Quantile5);
+  V subMeanInter0Quantile95(m_vectorSpace.zeroVector());
+  subMeanVec.mpiAllQuantile(.95,m_env.inter0Comm(),subMeanInter0Quantile95);
+  subMeanInter0Empirical90 = subMeanInter0Quantile95 - subMeanInter0Quantile5;
 
   subMeanVec.mpiAllReduce(MPI_MIN,m_env.inter0Comm(),subMeanInter0Min);
 
