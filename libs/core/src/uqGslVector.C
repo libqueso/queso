@@ -552,6 +552,32 @@ uqGslVectorClass::mpiBcast(int srcRank, const Epetra_MpiComm& bcastComm)
 }
 
 void
+uqGslVectorClass::mpiAllReduce(MPI_Op mpiOperation, const Epetra_MpiComm& opComm, uqGslVectorClass& resultVec) const
+{
+  // Filter out those nodes that should not participate
+  if (opComm.MyPID() < 0) return;
+
+  unsigned int size = this->sizeLocal();
+  UQ_FATAL_TEST_MACRO(size != resultVec.sizeLocal(),
+                      m_env.fullRank(),
+                      "uqGslVectorClass::mpiAllReduce()",
+                      "different vector sizes");
+
+  for (unsigned int i = 0; i < size; ++i) {
+    double srcValue = (*this)[i];
+    double resultValue = 0.;
+    int mpiRC = MPI_Allreduce((void *) &srcValue, (void *) &resultValue, (int) 1, MPI_DOUBLE, mpiOperation, opComm.Comm());
+    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                        m_env.fullRank(),
+                        "uqGslVectorClass::mpiAllReduce()",
+                        "failed MPI_Allreduce()");
+    resultVec[i] = resultValue;
+  }
+
+  return;
+}
+
+void
 uqGslVectorClass::print(std::ostream& os) const
 {
   unsigned int size = this->sizeLocal();

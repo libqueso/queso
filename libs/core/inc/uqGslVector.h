@@ -76,6 +76,7 @@ public:
   void         matlabDiff       (unsigned int firstPositionToStoreDiff, double valueForRemainderPosition, uqGslVectorClass& outputVec) const;
   void         sort             ();
   void         mpiBcast         (int srcRank, const Epetra_MpiComm& bcastComm);
+  void         mpiAllReduce     (MPI_Op mpiOperation, const Epetra_MpiComm& opComm, uqGslVectorClass& resultVec) const;
   void         print            (std::ostream& os) const;
   void         subWriteContents (const std::string&            varNamePrefix,
                                  const std::string&            fileName,
