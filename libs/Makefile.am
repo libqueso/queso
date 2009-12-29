@@ -10,7 +10,8 @@ AM_CPPFLAGS = -I$(top_srcdir)/libs/core/inc \
 	-I$(top_srcdir)/libs/interface \
 	$(BOOST_CPPFLAGS) \
 	$(GSL_CFLAGS) \
-	$(HPCT_CFLAGS)
+	$(HPCT_CFLAGS) \
+	$(GLPK_CFLAGS)
 
 
 # Dynamic library build

@@ -9,9 +9,10 @@ AM_CPPFLAGS = -I. \
 	$(EPETRA_INCLUDES) \
 	$(BOOST_CPPFLAGS) \
 	$(GSL_CFLAGS) \
-	$(HPCT_CFLAGS)
+	$(HPCT_CFLAGS) \
+	$(GLPK_CFLAGS)
 
-AM_LDFLAGS  = $(BOOST_LDFLAGS) ${HPCT_LIBS} -lhpct
+AM_LDFLAGS  = $(BOOST_LDFLAGS) ${HPCT_LIBS} -lhpct ${GLPK_LIBS} -lglpk
 
 LIBS        = -L$(top_builddir)/libs/.libs -lqueso $(GSL_LIBS) $(BOOST_PROGRAM_OPTIONS_LIB) $(EPETRA_LIBS)
 
