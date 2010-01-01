@@ -150,6 +150,13 @@ private:
                                  uqScalarSequenceClass         <double>*         currLogLikelihoodValues, // output
                                  uqScalarSequenceClass         <double>*         currLogTargetValues);    // output
 
+  void   solveBIPAtProc0       (unsigned int                       currLevel,
+                                const std::vector<unsigned int>&   origNumChainsPerNode,
+                                const std::vector<unsigned int>&   origNumPositionsPerNode,
+                                std::vector<unsigned int>&         finalNumChainsPerNode,
+                                std::vector<unsigned int>&         finalNumPositionsPerNode,
+                                std::vector<uqExchangeInfoStruct>& exchangeStdVec);
+
   const uqBaseEnvironmentClass&             m_env;
   const uqBaseVectorRVClass      <P_V,P_M>& m_priorRv;
   const uqBaseScalarFunctionClass<P_V,P_M>& m_likelihoodFunction;
@@ -1533,18 +1540,19 @@ uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains(
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "Entering uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()"
+                            << ", level " << currLevel+LEVEL_REF_ID
                             << ": indexOfFirstWeight = " << indexOfFirstWeight
                             << ", indexOfLastWeight = "  << indexOfLastWeight
                             << std::endl;
   }
 
-  int nProcs = m_env.inter0Comm().NumProc();
+  unsigned int Np = (unsigned int) m_env.inter0Comm().NumProc();
 
   //int MPI_Gather (void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
   //                void *recvbuf, int recvcount, MPI_Datatype recvtype, 
   //                int root, MPI_Comm comm )
   unsigned int auxUInt = indexOfFirstWeight;
-  std::vector<unsigned int> allFirstIndexes(nProcs,0);
+  std::vector<unsigned int> allFirstIndexes(Np,0);
   int mpiRC = MPI_Gather((void *) &auxUInt, 1, MPI_INT, (void *) &allFirstIndexes[0], (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm());
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_env.fullRank(),
@@ -1552,7 +1560,7 @@ uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains(
                       "failed MPI_Gather() for first indexes");
 
   auxUInt = indexOfLastWeight;
-  std::vector<unsigned int> allLastIndexes(nProcs,0);
+  std::vector<unsigned int> allLastIndexes(Np,0);
   mpiRC = MPI_Gather((void *) &auxUInt, 1, MPI_INT, (void *) &allLastIndexes[0], (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm());
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_env.fullRank(),
@@ -1560,35 +1568,64 @@ uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains(
                       "failed MPI_Gather() for last indexes");
 
   std::vector<uqExchangeInfoStruct> exchangeStdVec(0);
+  std::vector<unsigned int> origNumChainsPerNode    (Np,0);
+  std::vector<unsigned int> origNumPositionsPerNode (Np,0);
+  std::vector<unsigned int> finalNumChainsPerNode   (Np,0);
+  std::vector<unsigned int> finalNumPositionsPerNode(Np,0);
   if (m_env.inter0Rank() == 0) {
-    for (int r = 0; r < (m_env.inter0Comm().NumProc()-1); ++r) { // Yes, '-1'
-      UQ_FATAL_TEST_MACRO(allFirstIndexes[r+1] != (allFirstIndexes[r]+1),
+    *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()"
+                            << ", level " << currLevel+LEVEL_REF_ID
+                            << ": original distribution of unified indexes in 'inter0Comm' is as follows"
+                            << std::endl;
+    for (unsigned int r = 0; r < Np; ++r) {
+      *m_env.subDisplayFile() << "  allFirstIndexes[" << r << "] = " << allFirstIndexes[r]
+                              << "  allLastIndexes["  << r << "] = " << allLastIndexes[r]
+                              << std::endl;
+    }
+    for (unsigned int r = 0; r < (Np-1); ++r) { // Yes, '-1'
+      UQ_FATAL_TEST_MACRO(allFirstIndexes[r+1] != (allLastIndexes[r]+1),
+                          m_env.fullRank(),
+                          "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
+                          "wrong indexes");
+    }
+
+    for (unsigned int r = 0; r < (Np-1); ++r) { // Yes, '-1'
+      UQ_FATAL_TEST_MACRO(allFirstIndexes[r+1] != (allLastIndexes[r]+1),
                           m_env.fullRank(),
                           "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
                           "wrong indexes");
     }
 
     int r = 0;
-    for (unsigned int i = 0; unifiedIndexCountersAtProc0Only.size(); ++i) {
-      if ((allFirstIndexes[r] <= i) && 
+    for (unsigned int i = 0; i < unifiedIndexCountersAtProc0Only.size(); ++i) {
+      if ((allFirstIndexes[r] <= i) && // FIX ME: not a robust logic
           (i <= allLastIndexes[r] )) {
         // Ok
       }
       else {
         r++;
-        if ((r < nProcs             ) &&
+        if ((r < (int) Np           ) &&
             (allFirstIndexes[r] <= i) && 
             (i <= allLastIndexes[r] )) {
           // Ok
         }
         else {
-          UQ_FATAL_TEST_MACRO(allFirstIndexes[r+1] != (allFirstIndexes[r]+1),
+	  std::cerr << "In uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()"
+                    << ": i = " << i
+                    << ", r = " << r
+                    << ", allFirstIndexes[r] = " << allFirstIndexes[r]
+                    << ", allLastIndexes[r] = "  << allLastIndexes[r]
+                    << std::endl;
+          UQ_FATAL_TEST_MACRO(true,
                               m_env.fullRank(),
                               "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
                               "wrong indexes or 'r' got too large");
         }
       }
       if (unifiedIndexCountersAtProc0Only[i] != 0) {
+        origNumChainsPerNode[r]++;
+        origNumPositionsPerNode[r] += unifiedIndexCountersAtProc0Only[i];
+
         uqExchangeInfoStruct auxInfo;
         auxInfo.originalNodeOfInitialPosition  = r;
         auxInfo.originalIndexOfInitialPosition = i - allFirstIndexes[r];
@@ -1598,60 +1635,17 @@ uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains(
       }
       // FIX ME: swap trick to save memory
     }
-    //unsigned int unifiedNLinkedChains = exchangeStdVec.size();
 
-    // aqui 2
     // Get final node responsible for a linked chain by solving BIP at node zero only
-    glp_prob *lp; 
-    lp = glp_create_prob(); 
-    glp_set_prob_name(lp, "sample"); 
+    solveBIPAtProc0(currLevel,
+                    origNumChainsPerNode,
+                    origNumPositionsPerNode,
+                    finalNumChainsPerNode,
+                    finalNumPositionsPerNode,
+                    exchangeStdVec);
+  } // if (m_env.inter0Rank() == 0)
 
-    glp_set_obj_dir(lp, GLP_MAX); 
-
-    glp_add_rows(lp, 3); 
-    glp_set_row_name(lp, 1, "p"); 
-    glp_set_row_bnds(lp, 1, GLP_UP, 0.0, 100.0); 
-    glp_set_row_name(lp, 2, "q"); 
-    glp_set_row_bnds(lp, 2, GLP_UP, 0.0, 600.0); 
-    glp_set_row_name(lp, 3, "r"); 
-    glp_set_row_bnds(lp, 3, GLP_UP, 0.0, 300.0); 
- 
-    glp_add_cols(lp, 3); 
-    glp_set_col_name(lp, 1, "x1"); 
-    glp_set_col_bnds(lp, 1, GLP_LO, 0.0, 0.0); 
-    glp_set_col_name(lp, 2, "x2"); 
-    glp_set_col_bnds(lp, 2, GLP_LO, 0.0, 0.0); 
-    glp_set_col_name(lp, 3, "x3"); 
-    glp_set_col_bnds(lp, 3, GLP_LO, 0.0, 0.0); 
-
-    glp_set_obj_coef(lp, 1, 10.0); 
-    glp_set_obj_coef(lp, 2, 6.0); 
-    glp_set_obj_coef(lp, 3, 4.0); 
-
-    int ia[1+1000], ja[1+1000]; 
-    double ar[1+1000]; 
-    ia[1] = 1, ja[1] = 1, ar[1] = 1.0;  /* a[1,1] = 1 */ 
-    ia[2] = 1, ja[2] = 2, ar[2] = 1.0;  /* a[1,2] = 1 */ 
-    ia[3] = 1, ja[3] = 3, ar[3] = 1.0;  /* a[1,3] = 1 */ 
-    ia[4] = 2, ja[4] = 1, ar[4] = 10.0; /* a[2,1] = 10 */ 
-    ia[5] = 3, ja[5] = 1, ar[5] = 2.0;  /* a[3,1] = 2 */ 
-    ia[6] = 2, ja[6] = 2, ar[6] = 4.0;  /* a[2,2] = 4 */
-    ia[7] = 3, ja[7] = 2, ar[7] = 2.0;  /* a[3,2] = 2 */ 
-    ia[8] = 2, ja[8] = 3, ar[8] = 5.0;  /* a[2,3] = 5 */ 
-    ia[9] = 3, ja[9] = 3, ar[9] = 6.0;  /* a[3,3] = 6 */ 
-
-    glp_load_matrix(lp, 9, ia, ja, ar);
-#if 0
-    glp_simplex(lp, NULL); 
-    double z, x1, x2, x3; 
-    z = glp_get_obj_val(lp); 
-    x1 = glp_get_col_prim(lp, 1); 
-    x2 = glp_get_col_prim(lp, 2); 
-    x3 = glp_get_col_prim(lp, 3); 
-    printf("\nz = %g; x1 = %g; x2 = %g; x3 = %g\n", z, x1, x2, x3); 
-#endif
-    glp_delete_prob(lp); 
-  }
+  m_env.inter0Comm().Barrier();
 
   // aqui 3
   // Mpi exchange information between nodes and properly populate balancedLinkControl.linkedChains at each node
@@ -1676,6 +1670,7 @@ uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains(
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "Entering uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains()"
+                            << ", level " << currLevel+LEVEL_REF_ID
                             << ": indexOfFirstWeight = " << indexOfFirstWeight
                             << ", indexOfLastWeight = "  << indexOfLastWeight
                             << std::endl;
@@ -1858,6 +1853,8 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains(
   uqScalarSequenceClass         <double>*         currLogLikelihoodValues, // output
   uqScalarSequenceClass         <double>*         currLogTargetValues)     // output
 {
+  m_env.fullComm().Barrier();
+
   // aqui 4
   UQ_FATAL_TEST_MACRO(true,
                       m_env.fullRank(),
@@ -2037,6 +2034,254 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains(
   }
 
   m_env.fullComm().Barrier(); // KAUST4
+
+  return;
+}
+
+template <class P_V,class P_M>
+void
+uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0(
+  unsigned int                       currLevel,
+  const std::vector<unsigned int>&   origNumChainsPerNode,
+  const std::vector<unsigned int>&   origNumPositionsPerNode,
+  std::vector<unsigned int>&         finalNumChainsPerNode,
+  std::vector<unsigned int>&         finalNumPositionsPerNode,
+  std::vector<uqExchangeInfoStruct>& exchangeStdVec)
+{
+  unsigned int Np = (unsigned int) m_env.inter0Comm().NumProc();
+  unsigned int Nc = exchangeStdVec.size();
+
+  //////////////////////////////////////////////////////////////////////////
+  // Instantiate BIP
+  //////////////////////////////////////////////////////////////////////////
+  glp_prob *lp; 
+  lp = glp_create_prob(); 
+  glp_set_prob_name(lp, "sample"); 
+
+  //////////////////////////////////////////////////////////////////////////
+  // Set rows and colums of BIP
+  //////////////////////////////////////////////////////////////////////////
+  unsigned int m = Nc+Np-1;
+  unsigned int n = Nc*Np;
+  unsigned int ne = Nc*Np + 2*(Np -1);
+
+  glp_add_rows(lp, m+1); 
+  for (int i = 1; i <= (int) Nc; ++i) {
+    glp_set_row_bnds(lp, i, GLP_FX, 1.0, 1.0); 
+    glp_set_row_name(lp, i, ""); 
+  }
+  for (int i = (Nc+1); i <= (int) (Nc+Np-1); ++i) {
+    glp_set_row_bnds(lp, i, GLP_UP, 0.0, 0.0); 
+    glp_set_row_name(lp, i, ""); 
+  }
+ 
+  glp_add_cols(lp, n+1); 
+  for (int j = 1; j <= (int) m; ++j) {
+    glp_set_col_kind(lp, j, GLP_BV);
+    glp_set_col_name(lp, j, ""); 
+  }
+
+  glp_set_obj_dir(lp, GLP_MIN); 
+  for (int chainId = 0; chainId <= (int) (Nc-1); ++chainId) {
+    glp_set_obj_coef(lp, (chainId*Np)+1, exchangeStdVec[chainId].numberOfPositions); 
+  }
+
+  // aqui 2
+  //////////////////////////////////////////////////////////////////////////
+  // Set constraint matrix
+  //////////////////////////////////////////////////////////////////////////
+  std::vector<int   > iVec(ne+1,0);
+  std::vector<int   > jVec(ne+1,0);
+  std::vector<double> aVec(ne+1,0.);
+  int coefId = 1; // Yes, '1'
+  for (int i = 1; i <= (int) Nc; ++i) {
+    for (int j = 1; j <= (int) Np; ++j) {
+      iVec[coefId] = i;
+      jVec[coefId] = (i-1)*Np + j;
+      aVec[coefId] = 1.;
+      coefId++;
+    }
+  }
+  for (int i = 1; i <= (int) (Np-1); ++i) {
+    for (int j = 1; j <= (int) Nc; ++j) {
+      iVec[coefId] = Nc+i;
+      jVec[coefId] = (j-1)*Np + i ;
+      aVec[coefId] = -exchangeStdVec[j-1].numberOfPositions;
+      coefId++;
+
+      iVec[coefId] = Nc+i;
+      jVec[coefId] = (j-1)*Np + i + 1;
+      aVec[coefId] = exchangeStdVec[j-1].numberOfPositions;
+      coefId++;
+    }
+  }
+  UQ_FATAL_TEST_MACRO(coefId != (int) (ne+2),
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                      "invalid final coefId");
+
+  glp_load_matrix(lp, ne, &iVec[0], &jVec[0], &aVec[0]);
+
+  //////////////////////////////////////////////////////////////////////////
+  // Check BIP before solving it
+  //////////////////////////////////////////////////////////////////////////
+  UQ_FATAL_TEST_MACRO(glp_get_num_rows(lp) != (int) m,
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                      "invalid number of rows");
+
+  UQ_FATAL_TEST_MACRO(glp_get_num_cols(lp) != (int) n,
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                      "invalid number of columnss");
+
+  UQ_FATAL_TEST_MACRO(glp_get_num_nz(lp) != (int) ne,
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                      "invalid number of nonzero constraint coefficients");
+
+  UQ_FATAL_TEST_MACRO(glp_get_num_int(lp) != 0,
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                      "invalid number of integer structural variables");
+
+  UQ_FATAL_TEST_MACRO(glp_get_num_bin(lp) != (int) m,
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                      "invalid number of binary structural variables");
+
+  //////////////////////////////////////////////////////////////////////////
+  // Solve BIP
+  //////////////////////////////////////////////////////////////////////////
+  glp_iocp BIP_params;
+  glp_init_iocp(&BIP_params);
+  glp_intopt(lp, &BIP_params);
+
+  //////////////////////////////////////////////////////////////////////////
+  // Check BIP status after solution
+  //////////////////////////////////////////////////////////////////////////
+  int glpStatus = glp_mip_status(lp);
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+    *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()"
+                            << ", level " << currLevel+LEVEL_REF_ID
+                            << ": glpStatus = " << glpStatus
+                            << std::endl;
+  }
+
+  switch (glpStatus) {
+    case GLP_OPT:
+      // Ok 
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+        *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()"
+                                << ", level " << currLevel+LEVEL_REF_ID
+                                << ": BIP solution is optimal"
+                                << std::endl;
+      }
+    break;
+
+    case GLP_FEAS:
+      // Ok 
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+        *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()"
+                                << ", level " << currLevel+LEVEL_REF_ID
+                                << ": BIP solution is guaranteed to be 'only' feasible"
+                                << std::endl;
+      }
+    break;
+
+    default:
+      UQ_FATAL_TEST_MACRO(glp_get_num_bin(lp) != (int) m,
+                          m_env.fullRank(),
+                          "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                          "BIP problem has an undefined solution or has no solution");
+    break;
+  }
+
+  for (int i = 1; i <= (int) Nc; ++i) {
+    UQ_FATAL_TEST_MACRO(glp_mip_row_val(lp, i) != 1,
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                        "row should have value 1 at solution");
+  }
+  for (int i = (Nc+1); i <= (int) (Nc+Np-1); ++i) {
+    UQ_FATAL_TEST_MACRO(glp_mip_row_val(lp, i) > 0,
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                        "row should have value 0 or should be negative at solution");
+  }
+
+  //////////////////////////////////////////////////////////////////////////
+  // Prepare output information, needed to for MPI distribution afterwards
+  //////////////////////////////////////////////////////////////////////////
+  for (unsigned int chainId = 0; chainId < Nc; ++chainId) {
+    for (unsigned int nodeId = 0; nodeId < Np; ++nodeId) {
+      int j = (chainId-1)*Np + nodeId + 1;
+      if (glp_mip_col_val(lp, j) == 0) {
+        // Do nothing
+      }
+      else if (glp_mip_col_val(lp, j) == 1) {
+        UQ_FATAL_TEST_MACRO(exchangeStdVec[chainId].finalNodeOfInitialPosition != -1, // important
+                            m_env.fullRank(),
+                            "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                            "chain has already been taken care of");
+        exchangeStdVec[chainId].finalNodeOfInitialPosition = nodeId;
+        finalNumChainsPerNode[nodeId]++;
+        finalNumPositionsPerNode[nodeId] += exchangeStdVec[chainId].numberOfPositions;
+      }
+      else {
+        UQ_FATAL_TEST_MACRO(true,
+                            m_env.fullRank(),
+                            "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                            "control variable should be either '0' or '1'");
+      }
+    }
+  }
+
+  //////////////////////////////////////////////////////////////////////////
+  // Printout solution information
+  //////////////////////////////////////////////////////////////////////////
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+    *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()"
+                            << ", level " << currLevel+LEVEL_REF_ID
+                            << ": BIP solution gives the following redistribution"
+                            << std::endl;
+    for (unsigned int nodeId = 0; nodeId < Np; ++nodeId) {
+      *m_env.subDisplayFile() << "  origNumChainsPerNode["     << nodeId << "] = " << origNumChainsPerNode[nodeId]
+                              << ", origNumPositionsPerNode["  << nodeId << "] = " << origNumPositionsPerNode[nodeId]
+                              << ", finalNumChainsPerNode["    << nodeId << "] = " << finalNumChainsPerNode[nodeId]
+                              << ", finalNumPositionsPerNode[" << nodeId << "] = " << finalNumPositionsPerNode[nodeId]
+                              << std::endl;
+    }
+  }
+
+  //////////////////////////////////////////////////////////////////////////
+  // Make sanity checks
+  //////////////////////////////////////////////////////////////////////////
+  UQ_FATAL_TEST_MACRO(glp_mip_obj_val(lp) != (double) finalNumPositionsPerNode[0],
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                      "Invalid objective value");
+
+  for (unsigned int nodeId = 1; nodeId < Np; ++nodeId) { // Yes, '1'
+    UQ_FATAL_TEST_MACRO(finalNumPositionsPerNode[nodeId-1] < finalNumPositionsPerNode[nodeId],
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                        "Next node should have a number of positions equal or less than the current node");
+  }
+
+  for (int i = (int) (Nc+1); i <= (int) (Nc+Np-1); ++i) {
+    unsigned int nodeId = i - Nc;
+    int diff = ((int) finalNumPositionsPerNode[nodeId]) - ((int) finalNumPositionsPerNode[nodeId-1]);
+    UQ_FATAL_TEST_MACRO(glp_mip_row_val(lp, i) != diff,
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                        "wrong state");
+  }
+    
+  //////////////////////////////////////////////////////////////////////////
+  // Free memory and return
+  //////////////////////////////////////////////////////////////////////////
+  glp_delete_prob(lp); 
 
   return;
 }
