@@ -1573,7 +1573,7 @@ uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains(
   std::vector<unsigned int> finalNumChainsPerNode   (Np,0);
   std::vector<unsigned int> finalNumPositionsPerNode(Np,0);
   if (m_env.inter0Rank() == 0) {
-    *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()"
+    *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::prepareBalLinkdeChains()"
                             << ", level " << currLevel+LEVEL_REF_ID
                             << ": original distribution of unified indexes in 'inter0Comm' is as follows"
                             << std::endl;
@@ -2051,6 +2051,14 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0(
   unsigned int Np = (unsigned int) m_env.inter0Comm().NumProc();
   unsigned int Nc = exchangeStdVec.size();
 
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+    *m_env.subDisplayFile() << "Entering uqMLSampling<P_V,P_M>::solveBIPAtProc0()"
+                            << ", level " << currLevel+LEVEL_REF_ID
+                            << ": Np = " << Np
+                            << ", Nc = " << Nc
+                            << std::endl;
+  }
+
   //////////////////////////////////////////////////////////////////////////
   // Instantiate BIP
   //////////////////////////////////////////////////////////////////////////
@@ -2059,13 +2067,13 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0(
   glp_set_prob_name(lp, "sample"); 
 
   //////////////////////////////////////////////////////////////////////////
-  // Set rows and colums of BIP
+  // Set rows and colums of BIP constraint matrix
   //////////////////////////////////////////////////////////////////////////
   unsigned int m = Nc+Np-1;
   unsigned int n = Nc*Np;
-  unsigned int ne = Nc*Np + 2*(Np -1);
+  unsigned int ne = Nc*Np + 2*Nc*(Np -1);
 
-  glp_add_rows(lp, m+1); 
+  glp_add_rows(lp, m); // Not 'm+1'
   for (int i = 1; i <= (int) Nc; ++i) {
     glp_set_row_bnds(lp, i, GLP_FX, 1.0, 1.0); 
     glp_set_row_name(lp, i, ""); 
@@ -2075,9 +2083,11 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0(
     glp_set_row_name(lp, i, ""); 
   }
  
-  glp_add_cols(lp, n+1); 
-  for (int j = 1; j <= (int) m; ++j) {
-    glp_set_col_kind(lp, j, GLP_BV);
+  glp_add_cols(lp, n); // Not 'n+1'
+  for (int j = 1; j <= (int) n; ++j) {
+    //glp_set_col_kind(lp, j, GLP_BV);
+    glp_set_col_kind(lp, j, GLP_IV);
+    glp_set_col_bnds(lp, j, GLP_DB, 0.0, 1.0); 
     glp_set_col_name(lp, j, ""); 
   }
 
@@ -2086,9 +2096,18 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0(
     glp_set_obj_coef(lp, (chainId*Np)+1, exchangeStdVec[chainId].numberOfPositions); 
   }
 
-  // aqui 2
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+    *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::solveBIPAtProc0()"
+                            << ", level " << currLevel+LEVEL_REF_ID
+                            << ": finished setting BIP rows and cols"
+                            << ", m = "  << m
+                            << ", n = "  << n
+                            << ", ne = " << ne
+                            << std::endl;
+  }
+
   //////////////////////////////////////////////////////////////////////////
-  // Set constraint matrix
+  // Load constraint matrix
   //////////////////////////////////////////////////////////////////////////
   std::vector<int   > iVec(ne+1,0);
   std::vector<int   > jVec(ne+1,0);
@@ -2105,8 +2124,8 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0(
   for (int i = 1; i <= (int) (Np-1); ++i) {
     for (int j = 1; j <= (int) Nc; ++j) {
       iVec[coefId] = Nc+i;
-      jVec[coefId] = (j-1)*Np + i ;
-      aVec[coefId] = -exchangeStdVec[j-1].numberOfPositions;
+      jVec[coefId] = (j-1)*Np + i;
+      aVec[coefId] = -((double) exchangeStdVec[j-1].numberOfPositions);
       coefId++;
 
       iVec[coefId] = Nc+i;
@@ -2115,22 +2134,43 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0(
       coefId++;
     }
   }
-  UQ_FATAL_TEST_MACRO(coefId != (int) (ne+2),
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+    *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::solveBIPAtProc0()"
+                            << ", level " << currLevel+LEVEL_REF_ID
+                            << ": finished setting BIP constraint matrix"
+                            << ", ne = "     << ne
+                            << ", coefId = " << coefId
+                            << std::endl;
+  }
+
+  UQ_FATAL_TEST_MACRO(coefId != (int) (ne+1),
                       m_env.fullRank(),
                       "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
                       "invalid final coefId");
 
   glp_load_matrix(lp, ne, &iVec[0], &jVec[0], &aVec[0]);
 
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+    *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::solveBIPAtProc0()"
+                            << ", level " << currLevel+LEVEL_REF_ID
+                            << ": finished loading BIP constraint matrix"
+                            << ", glp_get_num_rows(lp) = " << glp_get_num_rows(lp)
+                            << ", glp_get_num_cols(lp) = " << glp_get_num_cols(lp)
+                            << ", glp_get_num_nz(lp) = "   << glp_get_num_nz(lp)
+                            << ", glp_get_num_int(lp) = "  << glp_get_num_int(lp)
+                            << ", glp_get_num_bin(lp) = "  << glp_get_num_bin(lp)
+                            << std::endl;
+  }
+
   //////////////////////////////////////////////////////////////////////////
   // Check BIP before solving it
   //////////////////////////////////////////////////////////////////////////
-  UQ_FATAL_TEST_MACRO(glp_get_num_rows(lp) != (int) m,
+  UQ_FATAL_TEST_MACRO(glp_get_num_rows(lp) != (int) m, // Not 'm+1'
                       m_env.fullRank(),
                       "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
                       "invalid number of rows");
 
-  UQ_FATAL_TEST_MACRO(glp_get_num_cols(lp) != (int) n,
+  UQ_FATAL_TEST_MACRO(glp_get_num_cols(lp) != (int) n, // Not 'n+1'
                       m_env.fullRank(),
                       "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
                       "invalid number of columnss");
@@ -2140,35 +2180,101 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0(
                       "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
                       "invalid number of nonzero constraint coefficients");
 
-  UQ_FATAL_TEST_MACRO(glp_get_num_int(lp) != 0,
+  UQ_FATAL_TEST_MACRO(glp_get_num_int(lp) != (int) n, // ????
                       m_env.fullRank(),
                       "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
                       "invalid number of integer structural variables");
 
-  UQ_FATAL_TEST_MACRO(glp_get_num_bin(lp) != (int) m,
+  UQ_FATAL_TEST_MACRO(glp_get_num_bin(lp) != (int) n,
                       m_env.fullRank(),
                       "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
                       "invalid number of binary structural variables");
 
+  // aqui 2
+  //////////////////////////////////////////////////////////////////////////
+  // Set initial state
+  //////////////////////////////////////////////////////////////////////////
+  for (unsigned int chainId = 0; chainId < Nc; ++chainId) {
+    for (unsigned int nodeId = 0; nodeId < Np; ++nodeId) {
+      int j = chainId*Np + nodeId + 1;
+      if (nodeId == 0) {
+        glp_set_col_stat(lp, j, GLP_BS);
+      }
+      else {
+        glp_set_col_stat(lp, j, GLP_BS);
+      }
+    }
+  }
+#if 0
+  for (unsigned int chainId = 0; chainId < Nc; ++chainId) {
+    for (unsigned int nodeId = 0; nodeId < Np; ++nodeId) {
+      int j = chainId*Np + nodeId + 1;
+      int initialState = glp_mip_col_val(lp, j);
+      if (nodeId == 0) {
+        UQ_FATAL_TEST_MACRO(initialState != 1,
+                            m_env.fullRank(),
+                            "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                            "for nodeId = 0, initial state should be '1'");
+      }
+      else {
+        UQ_FATAL_TEST_MACRO(initialState != 0,
+                            m_env.fullRank(),
+                            "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                            "for nodeId > 0, initial state should be '0'");
+      }
+    }
+  }
+#endif
+  for (int i = 1; i <= (int) Nc; ++i) {
+    glp_set_row_stat(lp, i, GLP_NS); 
+  }
+  for (int i = (Nc+1); i <= (int) (Nc+Np-1); ++i) {
+    glp_set_row_stat(lp, i, GLP_BS); 
+  }
+
+  //glp_write_mps(lp, GLP_MPS_DECK, NULL, "nada.fixed_mps");
+  //glp_write_mps(lp, GLP_MPS_FILE, NULL, "nada.free_mps" );
+  //glp_write_lp (lp, NULL, "nada.cplex");
+
   //////////////////////////////////////////////////////////////////////////
   // Solve BIP
   //////////////////////////////////////////////////////////////////////////
+  foo_bar_struct foo_bar_info;
+  foo_bar_info.env = &m_env;
+
   glp_iocp BIP_params;
   glp_init_iocp(&BIP_params);
-  glp_intopt(lp, &BIP_params);
+  BIP_params.presolve = GLP_ON;
+  //BIP_params.binarize = GLP_ON;
+  //BIP_params.cb_func = foo_bar; 
+  //BIP_params.cb_info = (void *) (&foo_bar_info);
+  int BIP_rc = glp_intopt(lp, &BIP_params);
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+    *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::solveBIPAtProc0()"
+                            << ", level " << currLevel+LEVEL_REF_ID
+                            << ": finished solving BIP"
+                            << ", BIP_rc = " << BIP_rc
+                            << std::endl;
+  }
+
+  UQ_FATAL_TEST_MACRO(BIP_rc != 0,
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                      "BIP problem returned rc != 0");
 
   //////////////////////////////////////////////////////////////////////////
   // Check BIP status after solution
   //////////////////////////////////////////////////////////////////////////
-  int glpStatus = glp_mip_status(lp);
+  int BIP_Status = glp_mip_status(lp);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()"
                             << ", level " << currLevel+LEVEL_REF_ID
-                            << ": glpStatus = " << glpStatus
+                            << ": BIP_Status = " << BIP_Status
                             << std::endl;
   }
 
-  switch (glpStatus) {
+  switch (BIP_Status) {
     case GLP_OPT:
       // Ok 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -2190,7 +2296,7 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0(
     break;
 
     default:
-      UQ_FATAL_TEST_MACRO(glp_get_num_bin(lp) != (int) m,
+      UQ_FATAL_TEST_MACRO(true,
                           m_env.fullRank(),
                           "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
                           "BIP problem has an undefined solution or has no solution");
@@ -2215,7 +2321,7 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0(
   //////////////////////////////////////////////////////////////////////////
   for (unsigned int chainId = 0; chainId < Nc; ++chainId) {
     for (unsigned int nodeId = 0; nodeId < Np; ++nodeId) {
-      int j = (chainId-1)*Np + nodeId + 1;
+      int j = chainId*Np + nodeId + 1;
       if (glp_mip_col_val(lp, j) == 0) {
         // Do nothing
       }
@@ -2235,6 +2341,13 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0(
                             "control variable should be either '0' or '1'");
       }
     }
+  }
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+    *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::solveBIPAtProc0()"
+                            << ", level " << currLevel+LEVEL_REF_ID
+                            << ": finished preparing output information"
+                            << std::endl;
   }
 
   //////////////////////////////////////////////////////////////////////////
@@ -2282,6 +2395,12 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0(
   // Free memory and return
   //////////////////////////////////////////////////////////////////////////
   glp_delete_prob(lp); 
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+    *m_env.subDisplayFile() << "Leaving uqMLSampling<P_V,P_M>::solveBIPAtProc0()"
+                            << ", level " << currLevel+LEVEL_REF_ID
+                            << std::endl;
+  }
 
   return;
 }
