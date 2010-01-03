@@ -58,6 +58,7 @@ endif
 # (4/5) Sources from stats/src
 libqueso_la_SOURCES += $(top_srcdir)/libs/stats/src/uqFiniteDistribution.C \
 	$(top_srcdir)/libs/stats/src/uqMetropolisHastingsSGOptions.C \
+	$(top_srcdir)/libs/stats/src/uqMLSampling.C \
 	$(top_srcdir)/libs/stats/src/uqMLSamplingOptions.C \
 	$(top_srcdir)/libs/stats/src/uqMLSamplingLevelOptions.C \
 	$(top_srcdir)/libs/stats/src/uqMonteCarloSGOptions.C \

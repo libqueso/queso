@@ -35,13 +35,6 @@
 
 #include <uqEnvironment.h>
 #include <uqMLSamplingLevelOptions.h>
-#include <glpk.h>
-
-struct foo_bar_struct {
-  const uqBaseEnvironmentClass* env;
-};
-
-void foo_bar(glp_tree *tree, void *info);
 
 #define UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE "."
 

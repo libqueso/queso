@@ -36,6 +36,7 @@
 #define ML_NEW_CODE_2009_12_29
 
 #include <uqMLSamplingOptions.h>
+#include <uqMetropolisHastingsSG1.h>
 #include <uqFiniteDistribution.h>
 #include <uqVectorRV.h>
 #include <uqVectorSpace.h>
@@ -50,6 +51,13 @@
 //---------------------------------------------------------
 
 // aqui 1
+struct BIP_routine_struct {
+  const uqBaseEnvironmentClass* env;
+  unsigned int                  currLevel;
+};
+
+void BIP_routine(glp_tree *tree, void *info);
+
 struct uqExchangeInfoStruct
 {
   int          originalNodeOfInitialPosition;
@@ -156,6 +164,10 @@ private:
                                 std::vector<unsigned int>&         finalNumChainsPerNode,
                                 std::vector<unsigned int>&         finalNumPositionsPerNode,
                                 std::vector<uqExchangeInfoStruct>& exchangeStdVec);
+
+  void   mpiExchangePositions  (unsigned int                              currLevel,
+                                const std::vector<uqExchangeInfoStruct>&  exchangeStdVec,
+                                uqBalancedLinkedChainsPerNodeStruct<P_V>& balancedLinkControl);
 
   const uqBaseEnvironmentClass&             m_env;
   const uqBaseVectorRVClass      <P_V,P_M>& m_priorRv;
@@ -1548,6 +1560,9 @@ uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains(
 
   unsigned int Np = (unsigned int) m_env.inter0Comm().NumProc();
 
+  //////////////////////////////////////////////////////////////////////////
+  // Gather information at proc 0, so that it can solve BIP (binary integer problem)
+  //////////////////////////////////////////////////////////////////////////
   //int MPI_Gather (void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
   //                void *recvbuf, int recvcount, MPI_Datatype recvtype, 
   //                int root, MPI_Comm comm )
@@ -1567,6 +1582,9 @@ uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains(
                       "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
                       "failed MPI_Gather() for last indexes");
 
+  //////////////////////////////////////////////////////////////////////////
+  // Proc 0 assembles and solves BIP
+  //////////////////////////////////////////////////////////////////////////
   std::vector<uqExchangeInfoStruct> exchangeStdVec(0);
   std::vector<unsigned int> origNumChainsPerNode    (Np,0);
   std::vector<unsigned int> origNumPositionsPerNode (Np,0);
@@ -1647,12 +1665,72 @@ uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains(
 
   m_env.inter0Comm().Barrier();
 
-  // aqui 3
-  // Mpi exchange information between nodes and properly populate balancedLinkControl.linkedChains at each node
-  UQ_FATAL_TEST_MACRO(true,
+  //////////////////////////////////////////////////////////////////////////
+  // Proc 0 now broadcasts the information on 'exchangeStdVec'
+  //////////////////////////////////////////////////////////////////////////
+  unsigned int exchangeStdVecSize = exchangeStdVec.size();
+  mpiRC = MPI_Bcast((void *) &exchangeStdVecSize, (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm());
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_env.fullRank(),
                       "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
-                      "incomplete code for load balancing");
+                      "failed MPI_Bcast() for unified exchangeStdVec size");
+  if (m_env.inter0Rank() > 0) exchangeStdVec.resize(exchangeStdVecSize);
+
+  mpiRC = MPI_Bcast((void *) &exchangeStdVec[0], (int) (exchangeStdVecSize*sizeof(uqExchangeInfoStruct)), MPI_CHAR, 0, m_env.inter0Comm().Comm());
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
+                      "failed MPI_Bcast() for unified data");
+
+  //////////////////////////////////////////////////////////////////////////
+  // Sanity check
+  //////////////////////////////////////////////////////////////////////////
+  unsigned int Nc = exchangeStdVec.size();
+  if (m_env.inter0Rank() > 0) {
+    for (unsigned int chainId = 0; chainId < Nc; ++chainId) {
+      unsigned int nodeId = exchangeStdVec[chainId].finalNodeOfInitialPosition;
+      finalNumPositionsPerNode[nodeId] += exchangeStdVec[chainId].numberOfPositions;
+    }
+  }
+  unsigned int finalMinPosPerNode = *std::min_element(finalNumPositionsPerNode.begin(), finalNumPositionsPerNode.end());
+  unsigned int finalMaxPosPerNode = *std::max_element(finalNumPositionsPerNode.begin(), finalNumPositionsPerNode.end());
+  double finalRatioOfPosPerNode = ((double) finalMaxPosPerNode) / ((double)finalMinPosPerNode);
+  //std::cout << m_env.fullRank() << ", finalRatioOfPosPerNode = " << finalRatioOfPosPerNode << std::endl;
+
+  std::vector<double> auxBuf(1,0.);
+  double minRatio = 0.;
+  auxBuf[0] = finalRatioOfPosPerNode;
+  mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &minRatio, (int) auxBuf.size(), MPI_DOUBLE, MPI_MIN, m_env.inter0Comm().Comm());
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
+                      "failed MPI_Allreduce() for min");
+  //std::cout << m_env.fullRank() << ", minRatio = " << minRatio << std::endl;
+  UQ_FATAL_TEST_MACRO(minRatio != finalRatioOfPosPerNode,
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
+                      "failed minRatio sanity check");
+
+  double maxRatio = 0.;
+  auxBuf[0] = finalRatioOfPosPerNode;
+  mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &maxRatio, (int) auxBuf.size(), MPI_DOUBLE, MPI_MAX, m_env.inter0Comm().Comm());
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
+                      "failed MPI_Allreduce() for max");
+  //std::cout << m_env.fullRank() << ", maxRatio = " << maxRatio << std::endl;
+  UQ_FATAL_TEST_MACRO(maxRatio != finalRatioOfPosPerNode,
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
+                      "failed maxRatio sanity check");
+
+  //////////////////////////////////////////////////////////////////////////
+  // Mpi exchange information between nodes and properly populate
+  // balancedLinkControl.linkedChains at each node
+  //////////////////////////////////////////////////////////////////////////
+  mpiExchangePositions(currLevel,
+                       exchangeStdVec,
+                       balancedLinkControl);
 
   return;
 }
@@ -2048,6 +2126,8 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0(
   std::vector<unsigned int>&         finalNumPositionsPerNode,
   std::vector<uqExchangeInfoStruct>& exchangeStdVec)
 {
+  if (m_env.inter0Rank() < 0) return;
+
   unsigned int Np = (unsigned int) m_env.inter0Comm().NumProc();
   unsigned int Nc = exchangeStdVec.size();
 
@@ -2190,7 +2270,6 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0(
                       "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
                       "invalid number of binary structural variables");
 
-  // aqui 2
   //////////////////////////////////////////////////////////////////////////
   // Set initial state
   //////////////////////////////////////////////////////////////////////////
@@ -2239,15 +2318,17 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0(
   //////////////////////////////////////////////////////////////////////////
   // Solve BIP
   //////////////////////////////////////////////////////////////////////////
-  foo_bar_struct foo_bar_info;
-  foo_bar_info.env = &m_env;
+  BIP_routine_struct BIP_routine_info;
+  BIP_routine_info.env = &m_env;
+  BIP_routine_info.currLevel = currLevel;
 
   glp_iocp BIP_params;
   glp_init_iocp(&BIP_params);
   BIP_params.presolve = GLP_ON;
+  // aqui 2
   //BIP_params.binarize = GLP_ON;
-  //BIP_params.cb_func = foo_bar; 
-  //BIP_params.cb_info = (void *) (&foo_bar_info);
+  //BIP_params.cb_func = BIP_routine; 
+  //BIP_params.cb_info = (void *) (&BIP_routine_info);
   int BIP_rc = glp_intopt(lp, &BIP_params);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -2261,7 +2342,7 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0(
   UQ_FATAL_TEST_MACRO(BIP_rc != 0,
                       m_env.fullRank(),
                       "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
-                      "BIP problem returned rc != 0");
+                      "BIP returned rc != 0");
 
   //////////////////////////////////////////////////////////////////////////
   // Check BIP status after solution
@@ -2299,7 +2380,7 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0(
       UQ_FATAL_TEST_MACRO(true,
                           m_env.fullRank(),
                           "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
-                          "BIP problem has an undefined solution or has no solution");
+                          "BIP has an undefined solution or has no solution");
     break;
   }
 
@@ -2343,6 +2424,11 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0(
     }
   }
 
+  unsigned int origMinPosPerNode  = *std::min_element(origNumPositionsPerNode.begin(), origNumPositionsPerNode.end());
+  unsigned int origMaxPosPerNode  = *std::max_element(origNumPositionsPerNode.begin(), origNumPositionsPerNode.end());
+  unsigned int finalMinPosPerNode = *std::min_element(finalNumPositionsPerNode.begin(), finalNumPositionsPerNode.end());
+  unsigned int finalMaxPosPerNode = *std::max_element(finalNumPositionsPerNode.begin(), finalNumPositionsPerNode.end());
+
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::solveBIPAtProc0()"
                             << ", level " << currLevel+LEVEL_REF_ID
@@ -2354,17 +2440,22 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0(
   // Printout solution information
   //////////////////////////////////////////////////////////////////////////
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()"
+    *m_env.subDisplayFile() << "KEY In uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()"
                             << ", level " << currLevel+LEVEL_REF_ID
                             << ": BIP solution gives the following redistribution"
                             << std::endl;
     for (unsigned int nodeId = 0; nodeId < Np; ++nodeId) {
-      *m_env.subDisplayFile() << "  origNumChainsPerNode["     << nodeId << "] = " << origNumChainsPerNode[nodeId]
+      *m_env.subDisplayFile() << "  KEY"
+                              << ", origNumChainsPerNode["     << nodeId << "] = " << origNumChainsPerNode[nodeId]
                               << ", origNumPositionsPerNode["  << nodeId << "] = " << origNumPositionsPerNode[nodeId]
                               << ", finalNumChainsPerNode["    << nodeId << "] = " << finalNumChainsPerNode[nodeId]
                               << ", finalNumPositionsPerNode[" << nodeId << "] = " << finalNumPositionsPerNode[nodeId]
                               << std::endl;
     }
+    *m_env.subDisplayFile() << "  KEY"
+                            << ", origRatioOfPosPerNode = "  << ((double) origMaxPosPerNode ) / ((double) origMinPosPerNode)
+                            << ", finalRatioOfPosPerNode = " << ((double) finalMaxPosPerNode) / ((double)finalMinPosPerNode)
+                            << std::endl;
   }
 
   //////////////////////////////////////////////////////////////////////////
@@ -2398,6 +2489,60 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0(
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "Leaving uqMLSampling<P_V,P_M>::solveBIPAtProc0()"
+                            << ", level " << currLevel+LEVEL_REF_ID
+                            << std::endl;
+  }
+
+  return;
+}
+
+template <class P_V,class P_M>
+void
+uqMLSamplingClass<P_V,P_M>::mpiExchangePositions(
+  unsigned int                              currLevel,
+  const std::vector<uqExchangeInfoStruct>&  exchangeStdVec,
+  uqBalancedLinkedChainsPerNodeStruct<P_V>& balancedLinkControl)
+{
+  if (m_env.inter0Rank() < 0) return;
+
+  unsigned int Np = (unsigned int) m_env.inter0Comm().NumProc();
+  unsigned int Nc = exchangeStdVec.size();
+
+  for (unsigned int r = 0; r < Np; ++r) {
+    std::vector<unsigned int> numberOfPositionsNodeRHasToReceiveFromNode(Np,0);
+    std::vector<unsigned int> indexOfPositionsIHaveToSendToNodeR(0);
+    for (unsigned int i = 0; i < Nc; ++i) {
+      if ((exchangeStdVec[i].finalNodeOfInitialPosition    == (int) r) &&
+          (exchangeStdVec[i].originalNodeOfInitialPosition != (int) r)) {
+        numberOfPositionsNodeRHasToReceiveFromNode[exchangeStdVec[i].originalNodeOfInitialPosition]++;
+        if (m_env.inter0Rank() == exchangeStdVec[i].originalNodeOfInitialPosition) {
+          indexOfPositionsIHaveToSendToNodeR.push_back(exchangeStdVec[i].originalIndexOfInitialPosition);
+        }
+      }
+    }
+    UQ_FATAL_TEST_MACRO(indexOfPositionsIHaveToSendToNodeR.size() != numberOfPositionsNodeRHasToReceiveFromNode[m_env.inter0Rank()],
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::mpiExchangePositions()",
+                        "inconsiste state on number of positions to send to node 'r'");
+    m_env.inter0Comm().Barrier();
+  }
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+    *m_env.subDisplayFile() << "Entering uqMLSampling<P_V,P_M>::mpiExchangePositions()"
+                            << ", level " << currLevel+LEVEL_REF_ID
+                            << ": Np = " << Np
+                            << ", Nc = " << Nc
+                            << std::endl;
+  }
+
+  // aqui 3
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::mpiExchangePositions()",
+                      "incomplete code for load balancing");
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+    *m_env.subDisplayFile() << "Leaving uqMLSampling<P_V,P_M>::mpiExchangePositions()"
                             << ", level " << currLevel+LEVEL_REF_ID
                             << std::endl;
   }

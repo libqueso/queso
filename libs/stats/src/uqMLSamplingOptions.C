@@ -33,23 +33,6 @@
 #include <uqMLSamplingOptions.h>
 #include <uqMiscellaneous.h>
 
-void foo_bar(glp_tree *tree, void *info)
-{
-  const uqBaseEnvironmentClass& env = *(((foo_bar_struct *) info)->env);
-  int reason = glp_ios_reason(tree);
-
-  if ((env.subDisplayFile()) && (env.displayVerbosity() >= 0)) {
-    *env.subDisplayFile() << "In foo_bar()"
-      //<< ", level " << currLevel+LEVEL_REF_ID
-                          << ": glp_ios_reason() = " << reason
-                          << std::endl;
-  }
-  std::cout << "In foo_bar: reason = " << reason << std::endl;
-  sleep(1);  
-
-  return;
-}
-
 uqMLSamplingOptionsClass::uqMLSamplingOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix)
   :
   m_prefix                     ((std::string)(prefix) + "ml_"),
