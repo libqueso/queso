@@ -50,7 +50,7 @@ fi
 if test "${with_glpk}" != no ; then
 
     if test -d "${GLPK_PREFIX}/lib" ; then
-       GLPK_LIBS="-L${GLPK_PREFIX}/lib -lglpk"
+       GLPK_LIBS="-L${GLPK_PREFIX}/lib -lglpk_for_queso"
     fi
 
     if test -d "${GLPK_PREFIX}/include" ; then
