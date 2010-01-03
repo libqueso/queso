@@ -1189,6 +1189,15 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
         currOptions->m_drMaxNumExtraStages   = savedDrMaxNumExtraStages;
         currOptions->m_amAdaptInterval       = savedAmAdaptInterval;
 
+	for (unsigned int i = 0; i < nowBalLinkControl.balLinkedChains.size(); ++i) {
+          UQ_FATAL_TEST_MACRO(nowBalLinkControl.balLinkedChains[i].initialPosition == NULL,
+                              m_env.fullRank(),
+                              "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                              "Initial position pointer in step 8 should not be NULL");
+          delete nowBalLinkControl.balLinkedChains[i].initialPosition;
+          nowBalLinkControl.balLinkedChains[i].initialPosition = NULL;
+        }
+
         if (m_env.inter0Rank() >= 0) { // KAUST
           // If only one cov matrix is used, then the rejection should be assessed among all inter0Comm nodes // KAUST3
           unsigned int nowUnifiedRejections = 0;
@@ -1330,6 +1339,15 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
       currOptions->m_rawChainSize          = savedRawChainSize;
       currOptions->m_rawChainComputeStats  = savedRawChainComputeStats;
       currOptions->m_filteredChainGenerate = savedFilteredChainGenerate; // FIX ME
+
+      for (unsigned int i = 0; i < balancedLinkControl.balLinkedChains.size(); ++i) {
+        UQ_FATAL_TEST_MACRO(balancedLinkControl.balLinkedChains[i].initialPosition == NULL,
+                            m_env.fullRank(),
+                            "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                            "Initial position pointer in step 9 should not be NULL");
+        delete balancedLinkControl.balLinkedChains[i].initialPosition;
+        balancedLinkControl.balLinkedChains[i].initialPosition = NULL;
+      }
 
       if (m_env.inter0Rank() >= 0) { // KAUST
         if (currOptions->m_rawChainComputeStats) {
@@ -1961,11 +1979,159 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains(
 {
   m_env.fullComm().Barrier();
 
-  // aqui 4
-  UQ_FATAL_TEST_MACRO(true,
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+    *m_env.subDisplayFile() << "Entering uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains()"
+                            << ": balancedLinkControl.balLinkedChains.size() = " << balancedLinkControl.balLinkedChains.size()
+                            << std::endl;
+  }
+
+  P_V auxInitialPosition(m_vectorSpace.zeroVector());
+
+  unsigned int chainIdMax = 0;
+  if (m_env.inter0Rank() >= 0) {
+    chainIdMax = balancedLinkControl.balLinkedChains.size();
+  }
+  // KAUST: all nodes in 'subComm' should have the same 'chainIdMax'
+  int mpiRC = MPI_Bcast((void *) &chainIdMax, (int) 1, MPI_UNSIGNED, 0, m_env.subComm().Comm()); // Yes, 'subComm', important
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_env.fullRank(),
                       "uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains()",
-                      "incomplete code for load balancing");
+                      "failed MPI_Bcast() for chainIdMax");
+
+  if (m_env.inter0Rank() >= 0) {
+    unsigned int numberOfPositions = 0;
+    for (unsigned int chainId = 0; chainId < chainIdMax; ++chainId) {
+      numberOfPositions += balancedLinkControl.balLinkedChains[chainId].numberOfPositions;
+    }
+
+    std::vector<unsigned int> auxBuf(1,0);
+
+    unsigned int minNumberOfPositions = 0;
+    auxBuf[0] = numberOfPositions;
+    mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &minNumberOfPositions, (int) auxBuf.size(), MPI_UNSIGNED, MPI_MIN, m_env.inter0Comm().Comm());
+    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains()",
+                        "failed MPI_Allreduce() for min");
+
+    unsigned int maxNumberOfPositions = 0;
+    auxBuf[0] = numberOfPositions;
+    mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &maxNumberOfPositions, (int) auxBuf.size(), MPI_UNSIGNED, MPI_MAX, m_env.inter0Comm().Comm());
+    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains()",
+                        "failed MPI_Allreduce() for max");
+
+    unsigned int sumNumberOfPositions = 0;
+    auxBuf[0] = numberOfPositions;
+    mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &sumNumberOfPositions, (int) auxBuf.size(), MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
+    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains()",
+                        "failed MPI_Allreduce() for sum");
+
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+      *m_env.subDisplayFile() << "KEY In uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains()"
+                              << ", level "               << currLevel+LEVEL_REF_ID
+                              << ": chainIdMax = "        << chainIdMax
+                              << ", numberOfPositions = " << numberOfPositions
+                              << std::endl;
+      *m_env.subDisplayFile() << "KEY In uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains()"
+                              << ", level "                  << currLevel+LEVEL_REF_ID
+                              << ": minNumberOfPositions = " << minNumberOfPositions
+                              << ", avgNumberOfPositions = " << ((double) sumNumberOfPositions)/((double) m_env.inter0Comm().NumProc())
+                              << ", maxNumberOfPositions = " << maxNumberOfPositions
+                              << std::endl;
+    }
+  }
+  for (unsigned int chainId = 0; chainId < chainIdMax; ++chainId) {
+    unsigned int tmpChainSize = 0;
+    if (m_env.inter0Rank() >= 0) {
+      // aqui 4
+      auxInitialPosition = *(balancedLinkControl.balLinkedChains[chainId].initialPosition); // Round Rock
+      tmpChainSize = balancedLinkControl.balLinkedChains[chainId].numberOfPositions+1; // IMPORTANT: '+1' in order to discard initial position afterwards
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+        *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains()"
+                                << ": chainId = "      << chainId
+                                << ", tmpChainSize = " << tmpChainSize
+                                << std::endl;
+      }
+    }
+    auxInitialPosition.mpiBcast(0, m_env.subComm().Comm()); // Yes, 'subComm', important // KAUST
+#if 0 // For debug only
+    for (int r = 0; r < m_env.subComm().NumProc(); ++r) {
+      if (r == m_env.subComm().MyPID()) {
+	std::cout << "Vector 'auxInitialPosition at rank " << r
+                  << " has contents "                      << auxInitialPosition
+                  << std::endl;
+      }
+      m_env.subComm().Barrier();
+    }
+    sleep(1);
+#endif
+
+    // KAUST: all nodes in 'subComm' should have the same 'tmpChainSize'
+    mpiRC = MPI_Bcast((void *) &tmpChainSize, (int) 1, MPI_UNSIGNED, 0, m_env.subComm().Comm()); // Yes, 'subComm', important
+    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains()",
+                        "failed MPI_Bcast() for tmpChainSize");
+
+    inputOptions.m_rawChainSize = tmpChainSize;
+    uqSequenceOfVectorsClass<P_V,P_M> tmpChain(m_vectorSpace,
+                                               0,
+                                               m_options.m_prefix+"tmp_chain");
+    uqScalarSequenceClass<double> tmpLogLikelihoodValues(m_env,0,"");
+    uqScalarSequenceClass<double> tmpLogTargetValues    (m_env,0,"");
+
+    // KAUST: all nodes should call here
+    uqMetropolisHastingsSGClass<P_V,P_M> mcSeqGenerator(inputOptions,
+                                                        rv,
+                                                        auxInitialPosition,
+                                                        &unifiedCovMatrix);
+
+    // KAUST: all nodes should call here
+    mcSeqGenerator.generateSequence(tmpChain,
+                                    &tmpLogLikelihoodValues, // likelihood is IMPORTANT
+                                    &tmpLogTargetValues);
+    cumulativeRunTime    += mcSeqGenerator.rawChainRunTime();
+    cumulativeRejections += mcSeqGenerator.numRejections();
+
+    if (m_env.inter0Rank() >= 0) {
+      //for (unsigned int i = 0; i < tmpLogLikelihoodValues.subSequenceSize(); ++i) {
+      //  std::cout << "tmpLogLikelihoodValues[" << i << "] = " << tmpLogLikelihoodValues[i]
+      //            << ", tmpLogTargetValues["   << i << "] = " << tmpLogTargetValues[i]
+      //            << std::endl;
+      //}
+        
+      if ((m_env.subDisplayFile()             ) &&
+          (m_env.displayVerbosity()   >= 0    ) &&
+          (inputOptions.m_totallyMute == false)) {
+        *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateBalLinkedChains()"
+                                << ", level "               << currLevel+LEVEL_REF_ID
+                                << ", chainId = "           << chainId
+                                << ": finished generating " << tmpChain.subSequenceSize()
+                                << " chain positions"
+                                << std::endl;
+      }
+
+      // KAUST5: what if workingChain ends up with different size in different nodes? Important
+      workingChain.append              (tmpChain,              1,tmpChain.subSequenceSize()-1              ); // IMPORTANT: '1' in order to discard initial position
+      if (currLogLikelihoodValues) {
+        currLogLikelihoodValues->append(tmpLogLikelihoodValues,1,tmpLogLikelihoodValues.subSequenceSize()-1); // IMPORTANT: '1' in order to discard initial position
+      }
+      if (currLogTargetValues) {
+        currLogTargetValues->append    (tmpLogTargetValues,    1,tmpLogTargetValues.subSequenceSize()-1    ); // IMPORTANT: '1' in order to discard initial position
+      }
+    }
+  } // for
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+    *m_env.subDisplayFile() << "Leaving uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains()"
+                            << std::endl;
+  }
+
+  m_env.fullComm().Barrier(); // KAUST4
 
   return;
 }
@@ -2007,32 +2173,32 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains(
                       "failed MPI_Bcast() for chainIdMax");
 
   if (m_env.inter0Rank() >= 0) {
-    unsigned int numberOfUsefulSamples = 0;
+    unsigned int numberOfPositions = 0;
     for (unsigned int chainId = 0; chainId < chainIdMax; ++chainId) {
-      numberOfUsefulSamples += unbalancedLinkControl.unbLinkedChains[chainId].numberOfPositions;
+      numberOfPositions += unbalancedLinkControl.unbLinkedChains[chainId].numberOfPositions;
     }
 
     std::vector<unsigned int> auxBuf(1,0);
 
-    unsigned int minNumberOfUsefulSamples = 0;
-    auxBuf[0] = numberOfUsefulSamples;
-    mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &minNumberOfUsefulSamples, (int) auxBuf.size(), MPI_UNSIGNED, MPI_MIN, m_env.inter0Comm().Comm());
+    unsigned int minNumberOfPositions = 0;
+    auxBuf[0] = numberOfPositions;
+    mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &minNumberOfPositions, (int) auxBuf.size(), MPI_UNSIGNED, MPI_MIN, m_env.inter0Comm().Comm());
     UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                         m_env.fullRank(),
                         "uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains()",
                         "failed MPI_Allreduce() for min");
 
-    unsigned int maxNumberOfUsefulSamples = 0;
-    auxBuf[0] = numberOfUsefulSamples;
-    mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &maxNumberOfUsefulSamples, (int) auxBuf.size(), MPI_UNSIGNED, MPI_MAX, m_env.inter0Comm().Comm());
+    unsigned int maxNumberOfPositions = 0;
+    auxBuf[0] = numberOfPositions;
+    mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &maxNumberOfPositions, (int) auxBuf.size(), MPI_UNSIGNED, MPI_MAX, m_env.inter0Comm().Comm());
     UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                         m_env.fullRank(),
                         "uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains()",
                         "failed MPI_Allreduce() for max");
 
-    unsigned int sumNumberOfUsefulSamples = 0;
-    auxBuf[0] = numberOfUsefulSamples;
-    mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &sumNumberOfUsefulSamples, (int) auxBuf.size(), MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
+    unsigned int sumNumberOfPositions = 0;
+    auxBuf[0] = numberOfPositions;
+    mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &sumNumberOfPositions, (int) auxBuf.size(), MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
     UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                         m_env.fullRank(),
                         "uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains()",
@@ -2040,15 +2206,15 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains(
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
       *m_env.subDisplayFile() << "KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains()"
-                              << ", level "                   << currLevel+LEVEL_REF_ID
-                              << ": chainIdMax = "            << chainIdMax
-                              << ", numberOfUsefulSamples = " << numberOfUsefulSamples
+                              << ", level "               << currLevel+LEVEL_REF_ID
+                              << ": chainIdMax = "        << chainIdMax
+                              << ", numberOfPositions = " << numberOfPositions
                               << std::endl;
       *m_env.subDisplayFile() << "KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains()"
-                              << ", level "                      << currLevel+LEVEL_REF_ID
-                              << ": minNumberOfUsefulSamples = " << minNumberOfUsefulSamples
-                              << ", avgNumberOfUsefulSamples = " << ((double) sumNumberOfUsefulSamples)/((double) m_env.inter0Comm().NumProc())
-                              << ", maxNumberOfUsefulSamples = " << maxNumberOfUsefulSamples
+                              << ", level "                  << currLevel+LEVEL_REF_ID
+                              << ": minNumberOfPositions = " << minNumberOfPositions
+                              << ", avgNumberOfPositions = " << ((double) sumNumberOfPositions)/((double) m_env.inter0Comm().NumProc())
+                              << ", maxNumberOfPositions = " << maxNumberOfPositions
                               << std::endl;
     }
   }
