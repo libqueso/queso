@@ -123,6 +123,7 @@ private:
                                  std::vector<unsigned int>&                      unifiedIndexCountersAtProc0Only);  // output
 
   void   prepareBalLinkedChains (unsigned int                                    currLevel,                       // input
+                                 const uqSequenceOfVectorsClass<P_V,P_M>&        prevChain,                       // input
                                  unsigned int                                    indexOfFirstWeight,              // input
                                  unsigned int                                    indexOfLastWeight,               // input
                                  const std::vector<unsigned int>&                unifiedIndexCountersAtProc0Only, // input
@@ -166,7 +167,10 @@ private:
                                 std::vector<uqExchangeInfoStruct>& exchangeStdVec);
 
   void   mpiExchangePositions  (unsigned int                              currLevel,
+                                const uqSequenceOfVectorsClass<P_V,P_M>&  prevChain,
                                 const std::vector<uqExchangeInfoStruct>&  exchangeStdVec,
+                                const std::vector<unsigned int>&          finalNumChainsPerNode,
+                                const std::vector<unsigned int>&          finalNumPositionsPerNode,
                                 uqBalancedLinkedChainsPerNodeStruct<P_V>& balancedLinkControl);
 
   const uqBaseEnvironmentClass&             m_env;
@@ -837,10 +841,12 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
       if ((currOptions->m_loadBalance      ) &&
 	  (m_env.inter0Comm().NumProc() > 1)) {
         prepareBalLinkedChains(currLevel,                       // input
+                               prevChain,                       // input
                                indexOfFirstWeight,              // input
                                indexOfLastWeight,               // input
                                unifiedIndexCountersAtProc0Only, // input
                                balancedLinkControl);            // output
+        // aqui: precChain might not be needed anymore. Delete it to save memory
       }
       else {
         prepareUnbLinkedChains(currLevel,                       // input
@@ -1102,6 +1108,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
           if ((currOptions->m_loadBalance      ) &&
               (m_env.inter0Comm().NumProc() > 1)) {
             prepareBalLinkedChains(currLevel,                          // input
+                                   prevChain,                          // input
                                    indexOfFirstWeight,                 // input
                                    indexOfLastWeight,                  // input
                                    nowUnifiedIndexCountersAtProc0Only, // input
@@ -1543,6 +1550,7 @@ template <class P_V,class P_M>
 void
 uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains(
   unsigned int                              currLevel,                       // input
+  const uqSequenceOfVectorsClass<P_V,P_M>&  prevChain,                       // input
   unsigned int                              indexOfFirstWeight,              // input
   unsigned int                              indexOfLastWeight,               // input
   const std::vector<unsigned int>&          unifiedIndexCountersAtProc0Only, // input
@@ -1673,14 +1681,14 @@ uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains(
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_env.fullRank(),
                       "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
-                      "failed MPI_Bcast() for unified exchangeStdVec size");
+                      "failed MPI_Bcast() for exchangeStdVec size");
   if (m_env.inter0Rank() > 0) exchangeStdVec.resize(exchangeStdVecSize);
 
   mpiRC = MPI_Bcast((void *) &exchangeStdVec[0], (int) (exchangeStdVecSize*sizeof(uqExchangeInfoStruct)), MPI_CHAR, 0, m_env.inter0Comm().Comm());
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_env.fullRank(),
                       "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
-                      "failed MPI_Bcast() for unified data");
+                      "failed MPI_Bcast() for exchangeStdVec data");
 
   //////////////////////////////////////////////////////////////////////////
   // Sanity check
@@ -1725,11 +1733,31 @@ uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains(
                       "failed maxRatio sanity check");
 
   //////////////////////////////////////////////////////////////////////////
+  // Proc 0 now broadcasts the information on 'finalNumChainsPerNode'
+  //////////////////////////////////////////////////////////////////////////
+  unsigned int finalNumChainsPerNodeSize = finalNumChainsPerNode.size();
+  mpiRC = MPI_Bcast((void *) &finalNumChainsPerNodeSize, (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm());
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
+                      "failed MPI_Bcast() for finalNumChainsPerNode size");
+  if (m_env.inter0Rank() > 0) finalNumChainsPerNode.resize(finalNumChainsPerNodeSize);
+
+  mpiRC = MPI_Bcast((void *) &finalNumChainsPerNode[0], (int) finalNumChainsPerNodeSize, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm());
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
+                      "failed MPI_Bcast() for finalNumChainsPerNode data");
+
+  //////////////////////////////////////////////////////////////////////////
   // Mpi exchange information between nodes and properly populate
   // balancedLinkControl.linkedChains at each node
   //////////////////////////////////////////////////////////////////////////
   mpiExchangePositions(currLevel,
+                       prevChain,
                        exchangeStdVec,
+                       finalNumChainsPerNode,
+                       finalNumPositionsPerNode,
                        balancedLinkControl);
 
   return;
@@ -2500,32 +2528,16 @@ template <class P_V,class P_M>
 void
 uqMLSamplingClass<P_V,P_M>::mpiExchangePositions(
   unsigned int                              currLevel,
+  const uqSequenceOfVectorsClass<P_V,P_M>&  prevChain,
   const std::vector<uqExchangeInfoStruct>&  exchangeStdVec,
+  const std::vector<unsigned int>&          finalNumChainsPerNode,
+  const std::vector<unsigned int>&          finalNumPositionsPerNode,
   uqBalancedLinkedChainsPerNodeStruct<P_V>& balancedLinkControl)
 {
   if (m_env.inter0Rank() < 0) return;
 
   unsigned int Np = (unsigned int) m_env.inter0Comm().NumProc();
   unsigned int Nc = exchangeStdVec.size();
-
-  for (unsigned int r = 0; r < Np; ++r) {
-    std::vector<unsigned int> numberOfPositionsNodeRHasToReceiveFromNode(Np,0);
-    std::vector<unsigned int> indexOfPositionsIHaveToSendToNodeR(0);
-    for (unsigned int i = 0; i < Nc; ++i) {
-      if ((exchangeStdVec[i].finalNodeOfInitialPosition    == (int) r) &&
-          (exchangeStdVec[i].originalNodeOfInitialPosition != (int) r)) {
-        numberOfPositionsNodeRHasToReceiveFromNode[exchangeStdVec[i].originalNodeOfInitialPosition]++;
-        if (m_env.inter0Rank() == exchangeStdVec[i].originalNodeOfInitialPosition) {
-          indexOfPositionsIHaveToSendToNodeR.push_back(exchangeStdVec[i].originalIndexOfInitialPosition);
-        }
-      }
-    }
-    UQ_FATAL_TEST_MACRO(indexOfPositionsIHaveToSendToNodeR.size() != numberOfPositionsNodeRHasToReceiveFromNode[m_env.inter0Rank()],
-                        m_env.fullRank(),
-                        "uqMLSamplingClass<P_V,P_M>::mpiExchangePositions()",
-                        "inconsiste state on number of positions to send to node 'r'");
-    m_env.inter0Comm().Barrier();
-  }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "Entering uqMLSampling<P_V,P_M>::mpiExchangePositions()"
@@ -2535,11 +2547,175 @@ uqMLSamplingClass<P_V,P_M>::mpiExchangePositions(
                             << std::endl;
   }
 
-  // aqui 3
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::mpiExchangePositions()",
-                      "incomplete code for load balancing");
+  //////////////////////////////////////////////////////////////////////////
+  // Each node performs:
+  // --> a 'gatherv' for collecting all necessary initial positions from other nodes
+  // --> a 'gatherv' for collecting all necessary chain lenghts from other nodes
+  //////////////////////////////////////////////////////////////////////////
+  for (unsigned int r = 0; r < Np; ++r) {
+    //////////////////////////////////////////////////////////////////////////
+    // Prepare some counters
+    //////////////////////////////////////////////////////////////////////////
+    unsigned int              numberOfInitialPositionsNodeRAlreadyHas = 0;
+    std::vector<unsigned int> numberOfInitialPositionsNodeRHasToReceiveFromNode(Np,0);
+    std::vector<unsigned int> indexesOfInitialPositionsNodeRHasToReceiveFromMe(0);
+
+    unsigned int              sumOfChainLenghtsNodeRAlreadyHas = 0;
+    std::vector<unsigned int> chainLenghtsNodeRHasToInherit(0);
+
+    for (unsigned int i = 0; i < Nc; ++i) {
+      if (exchangeStdVec[i].finalNodeOfInitialPosition == (int) r) {
+        if (exchangeStdVec[i].originalNodeOfInitialPosition == (int) r) {
+          numberOfInitialPositionsNodeRAlreadyHas++;
+          sumOfChainLenghtsNodeRAlreadyHas += exchangeStdVec[i].numberOfPositions;
+        }
+        else {
+          numberOfInitialPositionsNodeRHasToReceiveFromNode[exchangeStdVec[i].originalNodeOfInitialPosition]++;
+          chainLenghtsNodeRHasToInherit.push_back(exchangeStdVec[i].numberOfPositions);
+          if (m_env.inter0Rank() == exchangeStdVec[i].originalNodeOfInitialPosition) {
+            indexesOfInitialPositionsNodeRHasToReceiveFromMe.push_back(exchangeStdVec[i].originalIndexOfInitialPosition);
+          }
+        }
+      }
+    }
+
+    unsigned int totalNumberOfInitialPositionsNodeRHasToReceive = 0;
+    for (unsigned int nodeId = 0; nodeId < Np; ++nodeId) {
+      totalNumberOfInitialPositionsNodeRHasToReceive += numberOfInitialPositionsNodeRHasToReceiveFromNode[nodeId];
+    }
+
+    unsigned int totalNumberOfChainLenghtsNodeRHasToInherit = chainLenghtsNodeRHasToInherit.size();
+    unsigned int totalSumOfChainLenghtsNodeRHasToInherit = 0;
+    for (unsigned int i = 0; i < totalNumberOfChainLenghtsNodeRHasToInherit; ++i) {
+      totalSumOfChainLenghtsNodeRHasToInherit += chainLenghtsNodeRHasToInherit[i];
+    }
+
+    //////////////////////////////////////////////////////////////////////////
+    // Printout important information
+    //////////////////////////////////////////////////////////////////////////
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+      *m_env.subDisplayFile() << "KEY In uqMLSamplingClass<P_V,P_M>::mpiExchangePositions()"
+                              << ", level " << currLevel+LEVEL_REF_ID
+                              << ": r = "                                              << r
+                              << ", finalNumChainsPerNode[r] = "                       << finalNumChainsPerNode[r]
+                              << ", totalNumberOfInitialPositionsNodeRHasToReceive = " << totalNumberOfInitialPositionsNodeRHasToReceive
+                              << ", numberOfInitialPositionsNodeRAlreadyHas = "        << numberOfInitialPositionsNodeRAlreadyHas
+                              << std::endl;
+      *m_env.subDisplayFile() << "KEY In uqMLSamplingClass<P_V,P_M>::mpiExchangePositions()"
+                              << ", level " << currLevel+LEVEL_REF_ID
+                              << ": r = "                                       << r
+                              << ", finalNumPositionsPerNode[r] = "             << finalNumPositionsPerNode[r]
+                              << ", totalSumOfChainLenghtsNodeRHasToInherit = " << totalSumOfChainLenghtsNodeRHasToInherit
+                              << ", sumOfChainLenghtsNodeRAlreadyHas = "        << sumOfChainLenghtsNodeRAlreadyHas
+                              << std::endl;
+    }
+
+    //////////////////////////////////////////////////////////////////////////
+    // Make sanity checks
+    //////////////////////////////////////////////////////////////////////////
+    UQ_FATAL_TEST_MACRO(indexesOfInitialPositionsNodeRHasToReceiveFromMe.size() != numberOfInitialPositionsNodeRHasToReceiveFromNode[m_env.inter0Rank()],
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::mpiExchangePositions()",
+                        "inconsistent number of initial positions to send to node 'r'");
+
+    UQ_FATAL_TEST_MACRO(finalNumChainsPerNode[r] != (totalNumberOfInitialPositionsNodeRHasToReceive + numberOfInitialPositionsNodeRAlreadyHas),
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::mpiExchangePositions()",
+                        "inconsistent number of chains in node 'r'");
+
+    UQ_FATAL_TEST_MACRO(finalNumPositionsPerNode[r] != (totalSumOfChainLenghtsNodeRHasToInherit + sumOfChainLenghtsNodeRAlreadyHas),
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::mpiExchangePositions()",
+                        "inconsistent sum of chain lenghts in node 'r'");
+
+    UQ_FATAL_TEST_MACRO(totalNumberOfInitialPositionsNodeRHasToReceive != totalNumberOfChainLenghtsNodeRHasToInherit,
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::mpiExchangePositions()",
+                        "inconsistent on total number of initial positions to receive in node 'r'");
+
+    // Optimize use of memory (FIX ME: don't need to use swap here ????)
+    indexesOfInitialPositionsNodeRHasToReceiveFromMe.resize(numberOfInitialPositionsNodeRHasToReceiveFromNode[m_env.inter0Rank()]);
+    chainLenghtsNodeRHasToInherit.resize                   (totalSumOfChainLenghtsNodeRHasToInherit);
+
+    //////////////////////////////////////////////////////////////////////////
+    // Prepare counters and buffers for gatherv of initial positions
+    //////////////////////////////////////////////////////////////////////////
+    unsigned int dimSize = m_vectorSpace.dimLocal();
+    P_V auxInitialPosition(m_vectorSpace.zeroVector());
+    std::vector<double> sendbuf(0);
+    unsigned int sendcnt = 0;
+    if (m_env.inter0Rank() != (int) r) {
+      sendcnt = numberOfInitialPositionsNodeRHasToReceiveFromNode[m_env.inter0Rank()] * dimSize;
+      sendbuf.resize(sendcnt);
+      for (unsigned int i = 0; i < numberOfInitialPositionsNodeRHasToReceiveFromNode[m_env.inter0Rank()]; ++i) {
+        unsigned int auxIndex = indexesOfInitialPositionsNodeRHasToReceiveFromMe[i];
+        prevChain.getPositionValues(auxIndex,auxInitialPosition);
+        for (unsigned int j = 0; j < dimSize; ++j) {
+          sendbuf[i*dimSize + j] = auxInitialPosition[j];
+        }
+      }
+    }
+
+    std::vector<double> recvbuf(0);
+    std::vector<int> recvcnts(Np,0);
+    if (m_env.inter0Rank() == (int) r) {
+      recvbuf.resize(totalNumberOfInitialPositionsNodeRHasToReceive * dimSize);
+      for (unsigned int nodeId = 1; nodeId < Np; ++nodeId) { // Yes, from '1' on
+        recvcnts[nodeId] = numberOfInitialPositionsNodeRHasToReceiveFromNode[m_env.inter0Rank()] * dimSize;
+      }
+    }
+
+    std::vector<int> displs(Np,0);
+    for (unsigned int nodeId = 1; nodeId < Np; ++nodeId) { // Yes, from '1' on
+      displs[nodeId] = displs[nodeId-1] + recvcnts[nodeId-1];
+    }
+
+    //int MPI_Gatherv(void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
+    //                void *recvbuf, int *recvcnts, int *displs, MPI_Datatype recvtype, 
+    //                int root, MPI_Comm comm )
+    int mpiRC = MPI_Gatherv((void *) &sendbuf[0], (int) sendcnt, MPI_DOUBLE,
+                            (void *) &recvbuf[0], (int *) &recvcnts[0], (int *) &displs[0], MPI_DOUBLE,
+                            r, m_env.inter0Comm().Comm());
+    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::mpiExchangePositions()",
+                        "failed MPI_Gatherv()");
+
+    //////////////////////////////////////////////////////////////////////////
+    // Make sanity checks
+    //////////////////////////////////////////////////////////////////////////
+
+    //////////////////////////////////////////////////////////////////////////
+    // Transfer data from 'recvbuf' to 'balancedLinkControl'
+    // Remember that finalNumChainsPerNode[r] = (totalNumberOfInitialPositionsNodeRHasToReceive + numberOfInitialPositionsNodeRAlreadyHas)
+    // Remember that totalNumberOfInitialPositionsNodeRHasToReceive = totalNumberOfChainLenghtsNodeRHasToInherit
+    //////////////////////////////////////////////////////////////////////////
+    if (m_env.inter0Rank() == (int) r) {
+      balancedLinkControl.balLinkedChains.resize(finalNumChainsPerNode[r]);
+      unsigned int auxIndex = 0;
+
+      for (unsigned int i = 0; i < Nc; ++i) {
+        if ((exchangeStdVec[i].finalNodeOfInitialPosition    == (int) r) &&
+            (exchangeStdVec[i].originalNodeOfInitialPosition == (int) r)) {
+          prevChain.getPositionValues(exchangeStdVec[i].originalIndexOfInitialPosition,auxInitialPosition);
+          balancedLinkControl.balLinkedChains[auxIndex].initialPosition = new P_V(auxInitialPosition);
+          balancedLinkControl.balLinkedChains[auxIndex].numberOfPositions = exchangeStdVec[i].numberOfPositions;
+          auxIndex++;
+	}
+      }
+
+      for (unsigned int i = 0; i < totalNumberOfInitialPositionsNodeRHasToReceive; ++i) {
+        for (unsigned int j = 0; j < dimSize; ++j) {
+          auxInitialPosition[j] = recvbuf[i*dimSize + j];
+        }
+        balancedLinkControl.balLinkedChains[auxIndex].initialPosition = new P_V(auxInitialPosition);
+        balancedLinkControl.balLinkedChains[auxIndex].numberOfPositions = chainLenghtsNodeRHasToInherit[i]; // aqui 3
+        auxIndex++;
+      }
+    }
+
+    m_env.inter0Comm().Barrier();
+  } // for 'r'
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "Leaving uqMLSampling<P_V,P_M>::mpiExchangePositions()"

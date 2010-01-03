@@ -160,7 +160,7 @@ public:
                                                    std::vector<unsigned int>&      unifiedBins) const;
         void         subCdfStacc                  (unsigned int                    initialPos,
                                                    std::vector<double>&            cdfStaccValues,
-												   std::vector<double>&            cdfStaccValuesup,
+                                                   std::vector<double>&            cdfStaccValuesup,
                                                    std::vector<double>&            cdfStaccValueslow,
                                                    uqScalarSequenceClass<T>&       xdataValues) const;
         void         subCdfStacc                  (unsigned int                    initialPos,
