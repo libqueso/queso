@@ -2898,7 +2898,7 @@ uqMLSamplingClass<P_V,P_M>::mpiExchangePositions( // EXTRA FOR LOAD BALANCE
     if (m_env.inter0Rank() == (int) r) {
       recvbuf.resize(totalNumberOfInitialPositionsNodeRHasToReceive * dimSize);
       for (unsigned int nodeId = 0; nodeId < Np; ++nodeId) { // Yes, from '0' on (for 'r', numberOf...ToReceiveFromNode[r] = 0 anyway)
-        recvcnts[nodeId] = numberOfInitialPositionsNodeRHasToReceiveFromNode[m_env.inter0Rank()] * dimSize;
+        recvcnts[nodeId] = numberOfInitialPositionsNodeRHasToReceiveFromNode[nodeId/*m_env.inter0Rank()*/] * dimSize;
       }
     }
 
@@ -2910,7 +2910,17 @@ uqMLSamplingClass<P_V,P_M>::mpiExchangePositions( // EXTRA FOR LOAD BALANCE
     //int MPI_Gatherv(void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
     //                void *recvbuf, int *recvcnts, int *displs, MPI_Datatype recvtype, 
     //                int root, MPI_Comm comm )
-    int mpiRC = MPI_Gatherv((void *) &sendbuf[0], (int) sendcnt, MPI_DOUBLE, (void *) &recvbuf[0], (int *) &recvcnts[0], (int *) &displs[0], MPI_DOUBLE, r, m_env.inter0Comm().Comm()); // LOAD BALANCE
+    int mpiRC = 0;
+#if 0
+    if (m_env.inter0Rank() == r) {
+      mpiRC = MPI_Gatherv(MPI_IN_PLACE, (int) sendcnt, MPI_DOUBLE, (void *) &recvbuf[0], (int *) &recvcnts[0], (int *) &displs[0], MPI_DOUBLE, r, m_env.inter0Comm().Comm()); // LOAD BALANCE
+    }
+    else {
+      mpiRC = MPI_Gatherv((void *) &sendbuf[0], (int) sendcnt, MPI_DOUBLE, (void *) &recvbuf[0], (int *) &recvcnts[0], (int *) &displs[0], MPI_DOUBLE, r, m_env.inter0Comm().Comm()); // LOAD BALANCE
+    }
+#else
+    mpiRC = MPI_Gatherv((void *) &sendbuf[0], (int) sendcnt, MPI_DOUBLE, (void *) &recvbuf[0], (int *) &recvcnts[0], (int *) &displs[0], MPI_DOUBLE, r, m_env.inter0Comm().Comm()); // LOAD BALANCE
+#endif
     UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                         m_env.fullRank(),
                         "uqMLSamplingClass<P_V,P_M>::mpiExchangePositions()",

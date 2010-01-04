@@ -617,6 +617,36 @@ uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only(
           *m_env.subDisplayFile() << "  (after gatherv) m_seq[" << i << "]= " << m_seq[i]
                                   << std::endl;
         }
+        for (unsigned int i = 0; i < outputVec.size(); ++i) {
+          *m_env.subDisplayFile() << "  (after gatherv) outputVec[" << i << "]= " << outputVec[i]
+                                  << std::endl;
+        }
+      }
+#endif
+
+#if 0 // for debug only
+      if (m_env.inter0Rank() == 0) {
+        for (unsigned int i = 0; i < auxSubSize; ++i) {
+          outputVec[i] = m_seq[i];
+        }
+        mpiRC = MPI_Gatherv(MPI_IN_PLACE, auxSubSize, MPI_DOUBLE, (void *) &outputVec[0], (int *) &recvcnts[0], (int *) &displs[0], MPI_DOUBLE, 0, m_env.inter0Comm().Comm());
+      }
+      else {
+        mpiRC = MPI_Gatherv((void *) &m_seq[0], auxSubSize, MPI_DOUBLE, (void *) &outputVec[0], (int *) &recvcnts[0], (int *) &displs[0], MPI_DOUBLE, 0, m_env.inter0Comm().Comm());
+      }
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only()",
+                          "failed MPI_Gatherv()");
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+        for (unsigned int i = 0; i < m_seq.size(); ++i) {
+          *m_env.subDisplayFile() << "  (after 2nd gatherv) m_seq[" << i << "]= " << m_seq[i]
+                                  << std::endl;
+        }
+        for (unsigned int i = 0; i < outputVec.size(); ++i) {
+          *m_env.subDisplayFile() << "  (after 2nd gatherv) outputVec[" << i << "]= " << outputVec[i]
+                                  << std::endl;
+        }
       }
 #endif
     }
