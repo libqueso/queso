@@ -118,8 +118,6 @@ private:
   void   sampleIndexesAtProc0   (unsigned int                                    currLevel,                         // input
                                  unsigned int                                    unifiedRequestedNumSamples,        // input
                                  const std::vector<double>&                      unifiedWeightStdVectorAtProc0Only, // input
-                                 unsigned int                                    indexOfFirstWeight,                // input
-                                 unsigned int                                    indexOfLastWeight,                 // input
                                  std::vector<unsigned int>&                      unifiedIndexCountersAtProc0Only);  // output
 
   void   prepareBalLinkedChains (unsigned int                                    currLevel,                       // input
@@ -450,6 +448,27 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
       currLogTargetValues.clear();
       currLogTargetValues.setName(currOptions->m_prefix + "rawLogTarget");
 
+#if 1 // For debug only
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+        P_V prevPosition(m_vectorSpace.zeroVector());
+        *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                                << ", level " << currLevel+LEVEL_REF_ID
+                                << ", step 2"
+                                << ":"
+                                << std::endl;
+        for (unsigned int i = 0; i < prevChain.subSequenceSize(); ++i) {
+          prevChain.getPositionValues(i,prevPosition);
+          *m_env.subDisplayFile() << "  prevChain[" << i
+                                  << "] = " << prevPosition
+                                  << ", prevLogLikelihoodValues[" << i
+                                  << "] = " << prevLogLikelihoodValues[i]
+                                  << ", prevLogTargetValues[" << i
+                                  << "] = " << prevLogTargetValues[i]
+                                  << std::endl;
+        }
+      }
+#endif
+
       unsigned int quantity1 = prevChain.unifiedSequenceSize();
       unsigned int quantity2 = currChain.unifiedSequenceSize();
       unsigned int quantity3 = prevLogLikelihoodValues.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1);
@@ -566,17 +585,6 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
 
         for (unsigned int i = 0; i < weightSequence.subSequenceSize(); ++i) {
           omegaLnDiffSequence[i] = prevLogLikelihoodValues[i]*auxExponent; // likelihood is important
-          //if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-          //  *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-          //                          << ", level "              << currLevel+LEVEL_REF_ID
-          //                          << ": auxExponent = "      << auxExponent
-          //                          << ", 'prev'TargetValues[" << i
-          //                          << "] = "                  << prevTargetValues[i]
-          //                          << ", weightSequence["     << i
-          //                          << "] = "                  << weightSequence[i]
-          //                          << ", weightSum = "        << weightSum
-          //                          << std::endl;
-          //}
         }
 
         double unifiedOmegaLnMax = 0.;
@@ -611,6 +619,24 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
           //                          << std::endl;
           //}
         }
+
+#if 1 // For debug only
+        if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+          *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                                  << ", level "         << currLevel+LEVEL_REF_ID
+                                  << ", step 3"
+                                  << ":"
+                                  << std::endl;
+        }
+        for (unsigned int i = 0; i < weightSequence.subSequenceSize(); ++i) {
+          if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+            *m_env.subDisplayFile() << "  weightSequence[" << i
+                                    << "] = "              << weightSequence[i]
+                                    << std::endl;
+          }
+        }
+#endif
+
         double subQuantity = effectiveSampleSize;
         effectiveSampleSize = 0.;
         mpiRC = MPI_Allreduce((void *) &subQuantity, (void *) &effectiveSampleSize, (int) 1, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm());
@@ -806,13 +832,45 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                                 << std::endl;
       }
 
+#if 1 // For debug only
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+        *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                                << ", level "         << currLevel+LEVEL_REF_ID
+                                << ", step 5, before weightSequence.getUnifiedContentsAtProc0Only()"
+                                << ":"
+                                << std::endl;
+      }
+      for (unsigned int i = 0; i < weightSequence.subSequenceSize(); ++i) {
+        if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+          *m_env.subDisplayFile() << ", weightSequence[" << i
+                                  << "] = "              << weightSequence[i]
+                                  << std::endl;
+        }
+      }
+#endif
+
       weightSequence.getUnifiedContentsAtProc0Only(m_vectorSpace.numOfProcsForStorage() == 1,
                                                    unifiedWeightStdVectorAtProc0Only);
+
+#if 1 // For debug only
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+        *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                                << ", level "         << currLevel+LEVEL_REF_ID
+                                << ", step 5, after weightSequence.getUnifiedContentsAtProc0Only()"
+                                << ":"
+                                << std::endl;
+      }
+      for (unsigned int i = 0; i < unifiedWeightStdVectorAtProc0Only.size(); ++i) {
+        if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+          *m_env.subDisplayFile() << "  unifiedWeightStdVectorAtProc0Only[" << i
+                                  << "] = "                                 << unifiedWeightStdVectorAtProc0Only[i]
+                                  << std::endl;
+        }
+      }
+#endif
       sampleIndexesAtProc0(currLevel,                         // input
                            unifiedRequestedNumSamples,        // input
                            unifiedWeightStdVectorAtProc0Only, // input
-                           indexOfFirstWeight,                // input
-                           indexOfLastWeight,                 // input
                            unifiedIndexCountersAtProc0Only);  // output
 
       unsigned int auxUnifiedSize = weightSequence.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1);
@@ -1080,8 +1138,6 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
           sampleIndexesAtProc0(currLevel,                           // input
                                tmpUnifiedNumSamples,                // input
                                unifiedWeightStdVectorAtProc0Only,   // input
-                               indexOfFirstWeight,                  // input
-                               indexOfLastWeight,                   // input
                                nowUnifiedIndexCountersAtProc0Only); // output
 
           unsigned int auxUnifiedSize = weightSequence.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1);
@@ -1519,8 +1575,6 @@ uqMLSamplingClass<P_V,P_M>::sampleIndexesAtProc0(
   unsigned int               currLevel,                         // input
   unsigned int               unifiedRequestedNumSamples,        // input
   const std::vector<double>& unifiedWeightStdVectorAtProc0Only, // input
-  unsigned int               indexOfFirstWeight,                // input
-  unsigned int               indexOfLastWeight,                 // input
   std::vector<unsigned int>& unifiedIndexCountersAtProc0Only)   // output
 {
   if (m_env.inter0Rank() != 0) return;
@@ -1530,22 +1584,26 @@ uqMLSamplingClass<P_V,P_M>::sampleIndexesAtProc0(
                             << ", level " << currLevel+LEVEL_REF_ID
                             << ": unifiedRequestedNumSamples = "               << unifiedRequestedNumSamples
                             << ", unifiedWeightStdVectorAtProc0Only.size() = " << unifiedWeightStdVectorAtProc0Only.size()
-                            << ", indexOfFirstWeight = "                       << indexOfFirstWeight
-                            << ", indexOfLastWeight = "                        << indexOfLastWeight
                             << std::endl;
   }
 
-  //if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    //unsigned int numZeros = 0;
-    //for (unsigned int i = 0; i < unifiedWeightStdVectorAtProc0Only.size(); ++i) {
-    //  *m_env.subDisplayFile() << "unifiedWeightStdVectorAtProc0Only[" << i
-    //                          << "] = " << unifiedWeightStdVectorAtProc0Only[i]
-    //                          << std::endl;
-    //  if (unifiedWeightStdVectorAtProc0Only[i] == 0.) numZeros++;
-    //}
-    //*m_env.subDisplayFile() << "Number of zeros in unifiedWeightStdVectorAtProc0Only = " << numZeros
-    //                        << std::endl;
-  //}
+#if 1 // For debug only
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+    *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::sampleIndexesAtProc0()"
+                            << ", level " << currLevel+LEVEL_REF_ID
+                            << ":"
+                            << std::endl;
+    unsigned int numZeros = 0;
+    for (unsigned int i = 0; i < unifiedWeightStdVectorAtProc0Only.size(); ++i) {
+      *m_env.subDisplayFile() << "  unifiedWeightStdVectorAtProc0Only[" << i
+                              << "] = " << unifiedWeightStdVectorAtProc0Only[i]
+                              << std::endl;
+      if (unifiedWeightStdVectorAtProc0Only[i] == 0.) numZeros++;
+    }
+    *m_env.subDisplayFile() << "Number of zeros in unifiedWeightStdVectorAtProc0Only = " << numZeros
+                            << std::endl;
+  }
+#endif
  
   if (m_env.inter0Rank() == 0) {
     unsigned int resizeSize = unifiedWeightStdVectorAtProc0Only.size();
@@ -1593,20 +1651,33 @@ uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains(
   //                void *recvbuf, int recvcount, MPI_Datatype recvtype, 
   //                int root, MPI_Comm comm )
   unsigned int auxUInt = indexOfFirstWeight;
-  std::vector<unsigned int> allFirstIndexes(Np,0);
+  std::vector<unsigned int> allFirstIndexes(Np,0); // '0' is already the correct value for recvcnts[0]
   int mpiRC = MPI_Gather((void *) &auxUInt, 1, MPI_INT, (void *) &allFirstIndexes[0], (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm());
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_env.fullRank(),
                       "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
                       "failed MPI_Gather() for first indexes");
+  if (m_env.inter0Rank() == 0) {
+    UQ_FATAL_TEST_MACRO(allFirstIndexes[0] != indexOfFirstWeight,
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
+                        "failed MPI_Gather() result for first indexes, at proc 0");
+  }
 
   auxUInt = indexOfLastWeight;
-  std::vector<unsigned int> allLastIndexes(Np,0);
+  std::vector<unsigned int> allLastIndexes(Np,0); // '0' is NOT the correct value for recvcnts[0]
   mpiRC = MPI_Gather((void *) &auxUInt, 1, MPI_INT, (void *) &allLastIndexes[0], (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm());
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_env.fullRank(),
                       "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
                       "failed MPI_Gather() for last indexes");
+  if (m_env.inter0Rank() == 0) {
+    //allLastIndexes[0] = indexOfLastWeight; // FIX ME: really necessary????
+    UQ_FATAL_TEST_MACRO(allLastIndexes[0] != indexOfLastWeight,
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
+                        "failed MPI_Gather() result for last indexes, at proc 0");
+  }
 
   //////////////////////////////////////////////////////////////////////////
   // Proc 0 assembles and solves BIP
@@ -1800,7 +1871,6 @@ uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains(
                             << std::endl;
   }
 
-#if 1 // Round Rock 2009 12 29
   unsigned int              subNumSamples = 0;
   std::vector<unsigned int> unifiedIndexCountersAtAllProcs(0);
 
@@ -1897,7 +1967,6 @@ uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains(
                             << ", maxModifiedSubNumSamples = " << maxModifiedSubNumSamples
                             << std::endl;
   }
-#endif
 
   unsigned int numberOfPositionsToGuaranteeForNode = subNumSamples;
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -2823,10 +2892,10 @@ uqMLSamplingClass<P_V,P_M>::mpiExchangePositions(
     }
 
     std::vector<double> recvbuf(0);
-    std::vector<int> recvcnts(Np,0);
+    std::vector<int> recvcnts(Np,0); // '0' is already the correct value for recvcnts[r]
     if (m_env.inter0Rank() == (int) r) {
       recvbuf.resize(totalNumberOfInitialPositionsNodeRHasToReceive * dimSize);
-      for (unsigned int nodeId = 1; nodeId < Np; ++nodeId) { // Yes, from '1' on
+      for (unsigned int nodeId = 0; nodeId < Np; ++nodeId) { // Yes, from '0' on (for 'r', numberOf...ToReceiveFromNode[r] = 0 anyway)
         recvcnts[nodeId] = numberOfInitialPositionsNodeRHasToReceiveFromNode[m_env.inter0Rank()] * dimSize;
       }
     }
