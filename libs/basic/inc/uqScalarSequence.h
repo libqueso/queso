@@ -585,7 +585,7 @@ uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only(
         displs[r] = displs[r-1] + recvcnts[r-1];
       }
 
-#if 1 // for debug only
+#if 0 // for debug only
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         for (unsigned int r = 0; r < (unsigned int) m_env.inter0Comm().NumProc(); ++r) {
           *m_env.subDisplayFile() << "  auxSubSize = "            << auxSubSize
@@ -596,7 +596,7 @@ uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only(
                                   << std::endl;
         }
         for (unsigned int i = 0; i < m_seq.size(); ++i) {
-          *m_env.subDisplayFile() << "  m_seq[" << i << "]= " << m_seq[i]
+          *m_env.subDisplayFile() << "  (before gatherv) m_seq[" << i << "]= " << m_seq[i]
                                   << std::endl;
         }
       }
@@ -610,6 +610,15 @@ uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only(
                           m_env.fullRank(),
                           "uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only()",
                           "failed MPI_Gatherv()");
+
+#if 0 // for debug only
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+        for (unsigned int i = 0; i < m_seq.size(); ++i) {
+          *m_env.subDisplayFile() << "  (after gatherv) m_seq[" << i << "]= " << m_seq[i]
+                                  << std::endl;
+        }
+      }
+#endif
     }
     else {
       // Node not in the 'inter0' communicator
