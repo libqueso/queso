@@ -1472,20 +1472,28 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
             currLogLikelihoodValues.unifiedWriteContents(currOptions->m_filteredChainDataOutputFileName);
             currLogTargetValues.unifiedWriteContents    (currOptions->m_filteredChainDataOutputFileName);
           }
-        }
+        } // if (currOptions->m_filteredChainGenerate)
 
-        // Check if unified size of generated chain matches the unified requested size // KAUST
-        unsigned int tmpSize = currChain.subSequenceSize();
-        unsigned int unifiedGeneratedNumSamples = 0;
-        unsigned int mpiRC = MPI_Allreduce((void *) &tmpSize, (void *) &unifiedGeneratedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
-        UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                            m_env.fullRank(),
-                            "uqMLSamplingClass<P_V,P_M>::generateSequence()",
-                            "failed MPI_Allreduce() for generated num samples in step 9");
-        UQ_FATAL_TEST_MACRO(unifiedGeneratedNumSamples != unifiedRequestedNumSamples,
-                            m_env.fullRank(),
-                            "uqMLSamplingClass<P_V,P_M>::generateSequence()",
-                            "currChain (linked one) has been generated with invalid size");
+        if (currOptions->m_filteredChainGenerate) {
+          // Do not check
+        }
+        else {
+          // Check if unified size of generated chain matches the unified requested size // KAUST
+          unsigned int tmpSize = currChain.subSequenceSize();
+          unsigned int unifiedGeneratedNumSamples = 0;
+          unsigned int mpiRC = MPI_Allreduce((void *) &tmpSize, (void *) &unifiedGeneratedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
+          UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                              m_env.fullRank(),
+                              "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                              "failed MPI_Allreduce() for generated num samples in step 9");
+          //std::cout << "unifiedGeneratedNumSamples = "   << unifiedGeneratedNumSamples
+          //          << ", unifiedRequestedNumSamples = " << unifiedRequestedNumSamples
+          //          << std::endl;
+          UQ_FATAL_TEST_MACRO(unifiedGeneratedNumSamples != unifiedRequestedNumSamples,
+                              m_env.fullRank(),
+                              "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                              "currChain (linked one) has been generated with invalid size");
+        }
 
         // Compute unified number of rejections
         mpiRC = MPI_Allreduce((void *) &cumulativeRawChainRejections, (void *) &unifiedNumberOfRejections, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
@@ -1493,7 +1501,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                             m_env.fullRank(),
                             "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                             "failed MPI_Allreduce() for number of rejections");
-      } // KAUST
+      } // if (m_env.inter0Rank() >= 0) // KAUST
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
