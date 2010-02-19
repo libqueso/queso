@@ -33,6 +33,8 @@
 #ifndef __UQ_SCALAR_FUNCTION_SYNCHRONIZER_H__
 #define __UQ_SCALAR_FUNCTION_SYNCHRONIZER_H__
 
+#include <uqMPI.h>
+
 template <class V, class M>
 class uqScalarFunctionSynchronizerClass
 {
@@ -230,7 +232,7 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
         }
 
         m_env.syncPrintDebugMsg("In uqScalarFunctionSynchronizerClass<V,M>::callFunction(), just before actual lnValue()",3,3000000,m_env.subComm());
-        m_env.subComm().Barrier();
+        UQ_MPI_Barrier(m_env.subComm());//.Barrier();
         result = m_scalarFunction.lnValue(*internalValues,
                                           internalDirection,
                                           internalGrad,
@@ -267,7 +269,7 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
                         "uqScalarFunctionSynchronizerClass<V,M>::callFunction()",
                         "vecValues should not be NULL");
 
-    m_env.subComm().Barrier();
+    UQ_MPI_Barrier(m_env.subComm());//.Barrier();
     result = m_scalarFunction.lnValue(*vecValues,
                                       vecDirection,
                                       gradVector,

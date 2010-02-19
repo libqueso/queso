@@ -32,6 +32,7 @@
 
 #include <uqEnvironment.h>
 #include <uqEnvironmentOptions.h>
+#include <uqMPI.h>
 #include <uqMiscellaneous.h>
 #include <sys/time.h>
 #include <gsl/gsl_randist.h>
@@ -344,6 +345,7 @@ uqBaseEnvironmentClass::resetGslSeed(int newSeedOption)
 void
 uqBaseEnvironmentClass::syncPrintDebugMsg(const char* msg, unsigned int msgVerbosity, unsigned int numUSecs, const Epetra_MpiComm& commObj) const
 {
+  UQ_MPI_Barrier(commObj);
   commObj.Barrier();
   if (this->syncVerbosity() >= msgVerbosity) {
     for (int i = 0; i < commObj.NumProc(); ++i) {
