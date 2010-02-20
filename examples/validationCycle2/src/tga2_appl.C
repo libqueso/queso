@@ -33,17 +33,9 @@
 #include <tga2_appl.h>
 #include <tga2_likelihood.h>
 #include <tga2_qoi.h>
-#include <uqValidationCycle.h>
 #include <uqVectorSubset.h>
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_odeiv.h>
-
-//Just declaration: actual code is below
-void 
-uqAppl_LocalComparisonStage(uqValidationCycleClass<uqGslVectorClass,uqGslMatrixClass,uqGslVectorClass,uqGslMatrixClass>& cycle);
-
-void 
-uqAppl_UnifiedComparisonStage(uqValidationCycleClass<uqGslVectorClass,uqGslMatrixClass,uqGslVectorClass,uqGslMatrixClass>& cycle);
 
 void
 uqAppl(const uqBaseEnvironmentClass& env)
@@ -53,7 +45,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
               << std::endl;
   }
 
-  int iRC;
+  //int iRC;
   struct timeval timevalRef;
   struct timeval timevalNow;
 
@@ -94,7 +86,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   // Task 2 of 5: calibration stage
   //********************************************************
 
-  iRC = gettimeofday(&timevalRef, NULL);
+  /*iRC = */gettimeofday(&timevalRef, NULL);
   if (env.fullRank() == 0) {
     std::cout << "Beginning 'calibration stage' at " << ctime(&timevalRef.tv_sec)
               << std::endl;
@@ -152,7 +144,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   // Forward problem: solve it, that is, set 'realizer' and 'cdf' of the qoi rv
   cycle.calFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
 
-  iRC = gettimeofday(&timevalNow, NULL);
+  /*iRC = */gettimeofday(&timevalNow, NULL);
   if (env.fullRank() == 0) {
     std::cout << "Ending 'calibration stage' at "        << ctime(&timevalNow.tv_sec)
               << "Total 'calibration stage' run time = " << timevalNow.tv_sec - timevalRef.tv_sec
@@ -164,7 +156,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   // Task 3 of 5: validation stage
   //********************************************************
 
-  iRC = gettimeofday(&timevalRef, NULL);
+  /*iRC = */gettimeofday(&timevalRef, NULL);
   if (env.fullRank() == 0) {
     std::cout << "Beginning 'validation stage' at " << ctime(&timevalRef.tv_sec)
               << std::endl;
@@ -207,7 +199,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   // Forward problem: solve it, that is, set 'realizer' and 'cdf' of the qoi rv
   cycle.valFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
 
-  iRC = gettimeofday(&timevalNow, NULL);
+  /*iRC = */gettimeofday(&timevalNow, NULL);
   if (env.fullRank() == 0) {
     std::cout << "Ending 'validation stage' at "        << ctime(&timevalNow.tv_sec)
               << "Total 'validation stage' run time = " << timevalNow.tv_sec - timevalRef.tv_sec
@@ -219,7 +211,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   // Task 4 of 5: comparison stage
   //********************************************************
 
-  iRC = gettimeofday(&timevalRef, NULL);
+  /*iRC = */gettimeofday(&timevalRef, NULL);
   if (env.fullRank() == 0) {
     std::cout << "Beginning 'comparison stage' at " << ctime(&timevalRef.tv_sec)
               << std::endl;
@@ -230,7 +222,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
     uqAppl_UnifiedComparisonStage(cycle);
   }
 
-  iRC = gettimeofday(&timevalNow, NULL);
+  /*iRC = */gettimeofday(&timevalNow, NULL);
   if (env.fullRank() == 0) {
     std::cout << "Ending 'comparison stage' at "        << ctime(&timevalNow.tv_sec)
               << "Total 'comparison stage' run time = " << timevalNow.tv_sec - timevalRef.tv_sec

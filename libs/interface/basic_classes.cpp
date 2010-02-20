@@ -38,9 +38,6 @@ using namespace std;
 
 namespace QUESO_Basic_API {
 
-  void   QUESO_fatal        (const char *message);
-  double Likelihood_Wrapper (const basicV &,const basicV *,const void *,basicV *,basicM *,basicV *);
-
   //------------------
   // Member Functions
   //------------------

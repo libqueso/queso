@@ -67,7 +67,7 @@ uqMLSamplingOptionsClass::scanOptionsValues()
   }
 
   return;
-};
+}
 
 void
 uqMLSamplingOptionsClass::defineMyOptions(po::options_description& optionsDesc) const

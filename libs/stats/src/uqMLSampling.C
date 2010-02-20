@@ -39,7 +39,7 @@ void BIP_routine(glp_tree *tree, void *info)
 
   int reason = glp_ios_reason(tree);
 
-  if ((env.subDisplayFile()) && (env.displayVerbosity() >= 0)) {
+  if ((env.subDisplayFile()) && (env.displayVerbosity() >= 1)) {
     *env.subDisplayFile() << "In BIP_routine()"
                           << ", level " << currLevel+LEVEL_REF_ID
                           << ": glp_ios_reason() = " << reason

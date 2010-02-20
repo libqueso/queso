@@ -33,8 +33,12 @@
 #ifndef __TGA2_APPL_H__
 #define __TGA2_APPL_H__
 
+#include <uqValidationCycle.h>
+#include <uqGslMatrix.h>
 #include <uqEnvironment.h>
 
 void uqAppl(const uqBaseEnvironmentClass& env);
+void uqAppl_LocalComparisonStage(uqValidationCycleClass<uqGslVectorClass,uqGslMatrixClass,uqGslVectorClass,uqGslMatrixClass>& cycle);
+void uqAppl_UnifiedComparisonStage(uqValidationCycleClass<uqGslVectorClass,uqGslMatrixClass,uqGslVectorClass,uqGslMatrixClass>& cycle);
 
 #endif // __TGA2_APPL_H__

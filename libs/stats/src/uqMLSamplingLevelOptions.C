@@ -211,7 +211,7 @@ uqMLSamplingLevelOptionsClass::scanOptionsValues(const uqMLSamplingLevelOptionsC
   }
 
   return;
-};
+}
 
 void
 uqMLSamplingLevelOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
@@ -287,7 +287,7 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
   }
   m_str1.clear();
   for (std::set<unsigned int>::iterator setIt = m_dataOutputAllowedSet.begin(); setIt != m_dataOutputAllowedSet.end(); ++setIt) {
-    sprintf(tmpStr,"%d",*setIt);
+    sprintf(tmpStr,"%d",(int)(*setIt));
     m_str1 += tmpStr;
     m_str1 += " ";
   }
@@ -420,7 +420,7 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
   }
   m_str2.clear();
   for (std::set<unsigned int>::iterator setIt = m_rawChainDataOutputAllowedSet.begin(); setIt != m_rawChainDataOutputAllowedSet.end(); ++setIt) {
-    sprintf(tmpStr,"%d",*setIt);
+    sprintf(tmpStr,"%d",(int)(*setIt));
     m_str2 += tmpStr;
     m_str2 += " ";
   }
@@ -476,7 +476,7 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
   }
   m_str3.clear();
   for (std::set<unsigned int>::iterator setIt = m_filteredChainDataOutputAllowedSet.begin(); setIt != m_filteredChainDataOutputAllowedSet.end(); ++setIt) {
-    sprintf(tmpStr,"%d",*setIt);
+    sprintf(tmpStr,"%d",(int)(*setIt));
     m_str3 += tmpStr;
     m_str3 += " ";
   }

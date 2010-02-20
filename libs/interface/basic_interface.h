@@ -25,47 +25,19 @@
  *
  * $Id$
  *
- * Simple toy problem to illustrate the use of the Basic QUESO
- * interface to perform a statistical inverse problem.
+ * Basic API: Class definitions for basic API (uses GSL)
  * 
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-#include <inverse_problem.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <queso.h>
-#include <mpi.h> // Added by prudenci on 2009/Sep/06 in order to avoid INTEL warning. Maybe Karl want to add that in queso.h (a hpct file?)
+#ifndef __BASIC_INTERFACE_H__
+#define __BASIC_INTERFACE_H__
 
-int main(int argc, char *argv[])
-{
+#include <basic_classes.h>
 
-  MPI_Init(&argc,&argv);
-
-  printf("--> Initializing QUESO Environment...\n");
-
-  /* Initialize QUESO environment and define input file */
-
-  QUESO_init("queso.inp");	                   
-
- /* Register an application likelihood function with QUESO and run a
-  * statistical inversion problem using MCMC sampling */
-
-  QUESO_statistical_inversion(my_likelihood);     
-
-  /* Finalize the analysis and output statistics */
-
-  QUESO_finalize();
-  
-  MPI_Finalize();
-  return 0;
-
+namespace QUESO_Basic_API {
+  //char *f2c_char(char *,int);
+  //void QUESO_init(const char *inputfile);
 }
 
-double my_likelihood(double *params)
-{
-  static double needle   = 42.;   
-  static double variance = 1.*1.;  /* sigma^2 */
-
-  return( (params[0] - needle)*(params[0] - needle)/(variance) );
-}
+#endif //  __BASIC_INTERFACE_H__

@@ -529,7 +529,6 @@ uqBaseEnvironmentClass::openInputFile(
   const std::string&            baseFileName,
   const std::string&            fileType,
   const std::set<unsigned int>& allowedSubEnvIds,
-        bool                    writeOver,
         std::ifstream*&         ifsvar) const
 {
   ifsvar = NULL;
@@ -550,7 +549,7 @@ uqBaseEnvironmentClass::openInputFile(
                               << std::endl;
     }
     if (this->subRank() == 0) {
-      ifsvar = new std::ifstream((baseFileName+"."+UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT).c_str(), std::ofstream::in);
+      ifsvar = new std::ifstream((baseFileName+"."+fileType).c_str(), std::ofstream::in);
       if (ifsvar == NULL) {
         std::cerr << "In uqBaseEnvironmentClass::openInputFile()"
                   << ": failed to open input file with base name '" << baseFileName
