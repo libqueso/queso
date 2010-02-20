@@ -30,11 +30,9 @@
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-#include <uqEnvironment.h>
+#include <get_set_row_column.h>
 #include <uqGslMatrix.h>
 #include <uqVectorRV.h>
-
-int actualChecking(const uqFullEnvironmentClass* env);
 
 int main(int argc, char* argv[]) 
 {

@@ -180,6 +180,14 @@ likelihoodRoutine(
 
   const uqBaseEnvironmentClass& env = *(((likelihoodRoutine_DataClass*) functionDataPtr)->m_env);
 
+  if (paramDirection  &&
+      functionDataPtr && 
+      gradVector      &&
+      hessianMatrix   &&
+      hessianEffect) {
+    // Just to eliminate INTEL compiler warnings
+  }
+
   env.subComm().Barrier();
   //env.syncPrintDebugMsg("Entering likelihoodRoutine()",1,env.fullComm());
 

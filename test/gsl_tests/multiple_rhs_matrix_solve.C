@@ -30,11 +30,9 @@
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-#include <uqEnvironment.h>
+#include <multiple_rhs_matrix_solve.h>
 #include <uqGslMatrix.h>
 #include <uqVectorRV.h>
-
-int actualChecking(const uqFullEnvironmentClass* env);
 
 int main(int argc, char* argv[]) 
 {
@@ -77,10 +75,10 @@ int actualChecking(const uqFullEnvironmentClass* env)
 
   Matrix->invertMultiply( (*Matrix), Result );
 
-  if( abs(Result(0,0) - 1.0) > fp_tol ||
-      abs(Result(1,1) - 1.0) > fp_tol ||
-      abs(Result(1,0))       > fp_tol ||
-      abs(Result(0,1))       > fp_tol    )
+  if( fabs(Result(0,0) - 1.0) > fp_tol ||
+      fabs(Result(1,1) - 1.0) > fp_tol ||
+      fabs(Result(1,0))       > fp_tol ||
+      fabs(Result(0,1))       > fp_tol    )
     {
       return_flag = 1;
     }
