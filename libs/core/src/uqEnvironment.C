@@ -257,15 +257,30 @@ uqBaseEnvironmentClass::scanInputFileForMyOptions(const po::options_description&
   // Line 3: env->getMyOptionValues();
 #endif
 
+#ifdef QUESO_MEMORY_DEBUGGING
+  std::cout << "Entering uqBaseEnvClass::scanInputFileForMyOptions()" << std::endl;
+#endif
+
   m_allOptionsDesc->add(optionsDesc);
   //if (m_subDisplayFile) {
   //  *m_subDisplayFile << *m_allOptionsDesc
   //                          << std::endl;
   //}
-  std::ifstream ifs(m_optionsInputFileName.c_str());
-  po::store(po::parse_config_file(ifs, *m_allOptionsDesc, true), *m_allOptionsMap);
+  //std::ifstream ifs(m_optionsInputFileName.c_str());
+  std::ifstream* ifs = new std::ifstream(m_optionsInputFileName.c_str());
+#ifdef QUESO_MEMORY_DEBUGGING
+  std::cout << "in uqBaseEnvClass::scanInputFileForMyOptions(), before store(a)" << std::endl;
+#endif
+  po::store(po::parse_config_file(*ifs, *m_allOptionsDesc, true), *m_allOptionsMap);
+#ifdef QUESO_MEMORY_DEBUGGING
+  std::cout << "in uqBaseEnvClass::scanInputFileForMyOptions(), after store(a)" << std::endl;
+#endif
   po::notify(*m_allOptionsMap);
-  ifs.close();
+  //ifs.close();
+  delete ifs;
+#ifdef QUESO_MEMORY_DEBUGGING
+  std::cout << "Leaving uqBaseEnvClass::scanInputFileForMyOptions()" << std::endl;
+#endif
 
   return;
 }
@@ -596,6 +611,10 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   :
   uqBaseEnvironmentClass(inputComm,optionsInputFileName)
 {
+#ifdef QUESO_MEMORY_DEBUGGING
+  std::cout << "Entering uqFullEnvClass" << std::endl;
+#endif
+
   //////////////////////////////////////////////////
   // Initialize "full" communicator
   //////////////////////////////////////////////////
@@ -614,6 +633,10 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
                       "uqFullEnvironmentClass::commonConstructor()",
                       "failed MPI_Comm_group()");
 
+#ifdef QUESO_MEMORY_DEBUGGING
+  std::cout << "In uqFullEnvClass, finished dealing with MPI initially" << std::endl;
+#endif
+
   //////////////////////////////////////////////////
   // Read options
   //////////////////////////////////////////////////
@@ -624,6 +647,10 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   readOptionsInputFile();
 
   m_options->scanOptionsValues();
+
+#ifdef QUESO_MEMORY_DEBUGGING
+  std::cout << "In uqFullEnvClass, finished scanning options" << std::endl;
+#endif
 
   // Only display these messages if the user wants them
   // NOTE: This got moved below the Read Options section

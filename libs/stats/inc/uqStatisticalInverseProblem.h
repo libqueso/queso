@@ -188,6 +188,9 @@ uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
   m_chain             (NULL),
   m_options           (m_env,prefix)
 {
+#ifdef QUESO_MEMORY_DEBUGGING
+  std::cout << "Entering uqSipClass" << std::endl;
+#endif
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering uqStatisticalInverseProblemClass<P_V,P_M>::constructor()"
                             << ": prefix = " << m_options.m_prefix
@@ -205,6 +208,10 @@ uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
                       "'priorRv' and 'postRv' are related to vector spaces of different dimensions");
 
   m_options.scanOptionsValues();
+
+#ifdef QUESO_MEMORY_DEBUGGING
+  std::cout << "In uqSipClass, finished scanning options" << std::endl;
+#endif
 
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Leaving uqStatisticalInverseProblemClass<P_V,P_M>::constructor()"
