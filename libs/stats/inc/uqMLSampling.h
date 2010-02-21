@@ -1761,6 +1761,8 @@ uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains( // EXTRA FOR LOAD BALANCE
       // FIX ME: swap trick to save memory
     }
 
+    // Add extra logic: check if number of procs is too large + check if ratio max/min justifies optimization
+
     // Get final node responsible for a linked chain by solving BIP at node zero only
     solveBIPAtProc0(currLevel,
                     origNumChainsPerNode,
@@ -2129,8 +2131,9 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains( // EXTRA FOR LOAD BALANCE
       // aqui 4
       auxInitialPosition = *(balancedLinkControl.balLinkedChains[chainId].initialPosition); // Round Rock
       tmpChainSize = balancedLinkControl.balLinkedChains[chainId].numberOfPositions+1; // IMPORTANT: '+1' in order to discard initial position afterwards
-      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
         *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains()"
+                                << ", level "          << currLevel+LEVEL_REF_ID
                                 << ": chainId = "      << chainId
                                 << ", tmpChainSize = " << tmpChainSize
                                 << std::endl;
@@ -2231,6 +2234,8 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains(
   uqScalarSequenceClass         <double>*      currLogLikelihoodValues, // output
   uqScalarSequenceClass         <double>*      currLogTargetValues)     // output
 {
+  m_env.fullComm().Barrier();
+
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "Entering uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains()"
                             << ": unbalancedLinkControl.unbLinkedChains.size() = " << unbalancedLinkControl.unbLinkedChains.size()
@@ -2303,8 +2308,9 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains(
       unsigned int auxIndex = unbalancedLinkControl.unbLinkedChains[chainId].initialPositionIndexInPreviousChain - indexOfFirstWeight; // KAUST4 // Round Rock
       prevChain.getPositionValues(auxIndex,auxInitialPosition); // Round Rock
       tmpChainSize = unbalancedLinkControl.unbLinkedChains[chainId].numberOfPositions+1; // IMPORTANT: '+1' in order to discard initial position afterwards
-      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
         *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains()"
+                                << ", level "          << currLevel+LEVEL_REF_ID
                                 << ": chainId = "      << chainId
                                 << ", tmpChainSize = " << tmpChainSize
                                 << std::endl;
@@ -2391,7 +2397,7 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains(
 
 template <class P_V,class P_M>
 void
-uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0( // EXTRA FOR LOAD BALANCE
+uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0( // EXTRA FOR LOAD BALANCE 
   unsigned int                       currLevel,
   const std::vector<unsigned int>&   origNumChainsPerNode,
   const std::vector<unsigned int>&   origNumPositionsPerNode,

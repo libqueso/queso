@@ -523,6 +523,15 @@ uqGslVectorClass::mpiBcast(int srcRank, const Epetra_MpiComm& bcastComm)
                       m_env.fullRank(),
                       "uqGslVectorClass::mpiBcast()",
                       "failed MPI_Allreduce() for vectorSize");
+
+  if ( ((unsigned int) sumOfVectorSizes) != (((unsigned int) totalNumNodes) * localVectorSize) ) {
+    std::cerr << "rank "                 << bcastComm.MyPID()
+              << ": sumOfVectorSizes = " << sumOfVectorSizes
+              << ", totalNumNodes = "    << totalNumNodes
+              << ", localVectorSize = "  << localVectorSize
+              << std::endl;
+  }
+  bcastComm.Barrier();
   UQ_FATAL_TEST_MACRO(((unsigned int) sumOfVectorSizes) != (((unsigned int) totalNumNodes) * localVectorSize),
                       m_env.fullRank(),
                       "uqGslVectorClass::mpiBcast()",
