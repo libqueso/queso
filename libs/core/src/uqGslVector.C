@@ -516,7 +516,7 @@ uqGslVectorClass::mpiBcast(int srcRank, const Epetra_MpiComm& bcastComm)
                       "inconsistent numNodes");
 
   // Check that all participant nodes have the same vector size
-  unsigned int localVectorSize = this->sizeLocal();
+  double localVectorSize  = this->sizeLocal();
   double sumOfVectorSizes = 0.; 
   mpiRC = MPI_Allreduce((void *) &localVectorSize, (void *) &sumOfVectorSizes, (int) 1, MPI_DOUBLE, MPI_SUM, bcastComm.Comm());
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
@@ -524,7 +524,7 @@ uqGslVectorClass::mpiBcast(int srcRank, const Epetra_MpiComm& bcastComm)
                       "uqGslVectorClass::mpiBcast()",
                       "failed MPI_Allreduce() for vectorSize");
 
-  if ( ((unsigned int) sumOfVectorSizes) != (((unsigned int) totalNumNodes) * localVectorSize) ) {
+  if ( ((unsigned int) sumOfVectorSizes) != ((unsigned int)(totalNumNodes*localVectorSize)) ) {
     std::cerr << "rank "                 << bcastComm.MyPID()
               << ": sumOfVectorSizes = " << sumOfVectorSizes
               << ", totalNumNodes = "    << totalNumNodes
@@ -532,7 +532,7 @@ uqGslVectorClass::mpiBcast(int srcRank, const Epetra_MpiComm& bcastComm)
               << std::endl;
   }
   bcastComm.Barrier();
-  UQ_FATAL_TEST_MACRO(((unsigned int) sumOfVectorSizes) != (((unsigned int) totalNumNodes) * localVectorSize),
+  UQ_FATAL_TEST_MACRO(((unsigned int) sumOfVectorSizes) != ((unsigned int)(totalNumNodes*localVectorSize)),
                       m_env.fullRank(),
                       "uqGslVectorClass::mpiBcast()",
                       "inconsistent vectorSize");
