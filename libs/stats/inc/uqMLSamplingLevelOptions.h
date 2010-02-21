@@ -44,6 +44,7 @@
 #define UQ_ML_SAMPLING_L_DATA_OUTPUT_FILE_NAME_ODV                  UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
 #define UQ_ML_SAMPLING_L_DATA_OUTPUT_ALLOW_ODV                      ""
 #define UQ_ML_SAMPLING_L_LOAD_BALANCE_ODV                           1
+#define UQ_ML_SAMPLING_L_LOAD_BALANCE_TRESHOLD_ODV                  1.
 #define UQ_ML_SAMPLING_L_MIN_EFFECTIVE_SIZE_RATIO_ODV               0.49
 #define UQ_ML_SAMPLING_L_MAX_EFFECTIVE_SIZE_RATIO_ODV               0.51
 #define UQ_ML_SAMPLING_L_SCALE_COV_MATRIX_ODV                       1
@@ -94,6 +95,7 @@ public:
   std::set<unsigned int>             m_dataOutputAllowedSet;
   std::string                        m_str1;
   bool                               m_loadBalance;
+  double                             m_loadBalanceTreshold;
   double                             m_minEffectiveSizeRatio;
   double                             m_maxEffectiveSizeRatio;
   bool                               m_scaleCovMatrix;
@@ -148,6 +150,7 @@ private:
   std::string                   m_option_dataOutputFileName;
   std::string                   m_option_dataOutputAllowedSet;
   std::string                   m_option_loadBalance;
+  std::string                   m_option_loadBalanceTreshold;
   std::string                   m_option_minEffectiveSizeRatio;
   std::string                   m_option_maxEffectiveSizeRatio;
   std::string                   m_option_scaleCovMatrix;
