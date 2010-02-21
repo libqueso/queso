@@ -123,14 +123,21 @@ private:
 
   bool   decideOnBalancedChains (unsigned int                                    currLevel,                         // input
                                  unsigned int                                    currStep,                          // input
-                                 uqMLSamplingLevelOptionsClass*                  currOptions);                      // input
-
-  void   prepareBalLinkedChains (unsigned int                                    currLevel,                         // input
-                                 unsigned int                                    currStep,                          // input
-                                 const uqSequenceOfVectorsClass<P_V,P_M>&        prevChain,                         // input
+                                 uqMLSamplingLevelOptionsClass*                  currOptions,                       // input
                                  unsigned int                                    indexOfFirstWeight,                // input
                                  unsigned int                                    indexOfLastWeight,                 // input
                                  const std::vector<unsigned int>&                unifiedIndexCountersAtProc0Only,   // input
+                                 std::vector<unsigned int>&                      origNumChainsPerNode,              // output
+                                 std::vector<unsigned int>&                      origNumPositionsPerNode,           // output
+                                 std::vector<uqExchangeInfoStruct>&              exchangeStdVec);                   // output
+
+  void   prepareBalLinkedChains (unsigned int                                    currLevel,                         // input
+                                 unsigned int                                    currStep,                          // input
+                                 uqMLSamplingLevelOptionsClass*                  currOptions,                       // input
+                                 const uqSequenceOfVectorsClass<P_V,P_M>&        prevChain,                         // input
+                                 std::vector<unsigned int>&                      origNumChainsPerNode,              // input
+                                 std::vector<unsigned int>&                      origNumPositionsPerNode,           // input
+                                 std::vector<uqExchangeInfoStruct>&              exchangeStdVec,                    // input/output
                                  uqBalancedLinkedChainsPerNodeStruct<P_V>&       balancedLinkControl);              // output
 
   void   prepareUnbLinkedChains (unsigned int                                    currLevel,                         // input
@@ -167,6 +174,14 @@ private:
                                  uqScalarSequenceClass         <double>*         currLogTargetValues);              // output
 
   void   solveBIPAtProc0        (unsigned int                                    currLevel,                         // input
+                                 unsigned int                                    currStep,                          // input
+                                 const std::vector<unsigned int>&                origNumChainsPerNode,              // input
+                                 const std::vector<unsigned int>&                origNumPositionsPerNode,           // input
+                                 std::vector<uqExchangeInfoStruct>&              exchangeStdVec,                    // input/output
+                                 std::vector<unsigned int>&                      finalNumChainsPerNode,             // output
+                                 std::vector<unsigned int>&                      finalNumPositionsPerNode);         // output
+
+  void   justBalanceAtProc0     (unsigned int                                    currLevel,                         // input
                                  unsigned int                                    currStep,                          // input
                                  const std::vector<unsigned int>&                origNumChainsPerNode,              // input
                                  const std::vector<unsigned int>&                origNumPositionsPerNode,           // input
@@ -935,10 +950,24 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     uqBalancedLinkedChainsPerNodeStruct<P_V> balancedLinkControl;
     uqUnbalancedLinkedChainsPerNodeStruct    unbalancedLinkControl; // KAUST
 
+    unsigned int Np = 0;
+    if (m_env.inter0Rank() == 0) { // Yes, '== 0'
+      Np = (unsigned int) m_env.inter0Comm().NumProc();
+    }
+    std::vector<unsigned int>         origNumChainsPerNode   (Np,0);
+    std::vector<unsigned int>         origNumPositionsPerNode(Np,0);
+    std::vector<uqExchangeInfoStruct> exchangeStdVec(0);
+
     // All processors should call this routine in order to have the same decision value
-    bool useBalancedChains = decideOnBalancedChains(currLevel,
-                                                    currStep,
-                                                    currOptions);
+    bool useBalancedChains = decideOnBalancedChains(currLevel,                       // input
+                                                    currStep,                        // input
+                                                    currOptions,                     // input
+                                                    indexOfFirstWeight,              // input
+                                                    indexOfLastWeight,               // input
+                                                    unifiedIndexCountersAtProc0Only, // input
+                                                    origNumChainsPerNode,            // output
+                                                    origNumPositionsPerNode,         // output
+                                                    exchangeStdVec);                 // output
 
     if (m_env.inter0Rank() >= 0) { // KAUST
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -952,10 +981,11 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
       if (useBalancedChains) {
         prepareBalLinkedChains(currLevel,                       // input
                                currStep,                        // input
+                               currOptions,                     // input
                                prevChain,                       // input
-                               indexOfFirstWeight,              // input
-                               indexOfLastWeight,               // input
-                               unifiedIndexCountersAtProc0Only, // input
+                               origNumChainsPerNode,            // input
+                               origNumPositionsPerNode,         // input
+                               exchangeStdVec,                  // input/output
                                balancedLinkControl);            // output
         // aqui: prevChain might not be needed anymore. Delete it to save memory
       }
@@ -1335,15 +1365,196 @@ uqMLSamplingClass<P_V,P_M>::sampleIndexesAtProc0(
 template <class P_V,class P_M>
 bool
 uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains(
-  unsigned int                   currLevel,   // input
-  unsigned int                   currStep,    // input
-  uqMLSamplingLevelOptionsClass* currOptions) // input
+  unsigned int                       currLevel,                       // input
+  unsigned int                       currStep,                        // input
+  uqMLSamplingLevelOptionsClass*     currOptions,                     // input
+  unsigned int                       indexOfFirstWeight,              // input
+  unsigned int                       indexOfLastWeight,               // input
+  const std::vector<unsigned int>&   unifiedIndexCountersAtProc0Only, // input
+  std::vector<unsigned int>&         origNumChainsPerNode,            // output
+  std::vector<unsigned int>&         origNumPositionsPerNode,         // output
+  std::vector<uqExchangeInfoStruct>& exchangeStdVec)                  // output
 {
   bool result = false;
 
-  if ((currOptions->m_loadBalance    ) &&
-      (m_env.numSubEnvironments() > 1)) { // Cannot use 'm_env.inter0Comm().NumProc()' because it might happen that not all nodes at this point of the code belong to 'inter0Comm'
-    result = true;
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+    *m_env.subDisplayFile() << "Entering uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains()"
+                            << ", level " << currLevel+LEVEL_REF_ID
+                            << ", step "  << currStep
+                            << ": indexOfFirstWeight = " << indexOfFirstWeight
+                            << ", indexOfLastWeight = "  << indexOfLastWeight
+                            << std::endl;
+  }
+
+  if ((currOptions->m_loadBalanceAlgorithmId > 0) &&
+      (m_env.numSubEnvironments()            > 1)) { // Cannot use 'm_env.inter0Comm().NumProc()' because it might happen that not all nodes at this point of the code belong to 'inter0Comm'
+    unsigned int Np = 0;
+    if (m_env.inter0Rank() >= 0) { // Yes, '>= 0'
+      Np = (unsigned int) m_env.inter0Comm().NumProc();
+    }
+    std::vector<unsigned int> allFirstIndexes(Np,0); // '0' is already the correct value for recvcnts[0]
+    std::vector<unsigned int> allLastIndexes(Np,0);  // '0' is NOT the correct value for recvcnts[0]
+
+    if (m_env.inter0Rank() >= 0) { // Yes, '>= 0'
+      //////////////////////////////////////////////////////////////////////////
+      // Gather information at proc 0: number of chains and positions per node
+      //////////////////////////////////////////////////////////////////////////
+      //int MPI_Gather (void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
+      //                void *recvbuf, int recvcount, MPI_Datatype recvtype, 
+      //                int root, MPI_Comm comm )
+      unsigned int auxUInt = indexOfFirstWeight;
+      int mpiRC = MPI_Gather((void *) &auxUInt, 1, MPI_INT, (void *) &allFirstIndexes[0], (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm()); // LOAD BALANCE
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains()",
+                          "failed MPI_Gather() for first indexes");
+
+      if (m_env.inter0Rank() == 0) {
+        UQ_FATAL_TEST_MACRO(allFirstIndexes[0] != indexOfFirstWeight,
+                            m_env.fullRank(),
+                            "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains()",
+                            "failed MPI_Gather() result for first indexes, at proc 0");
+      }
+
+      auxUInt = indexOfLastWeight;
+      mpiRC = MPI_Gather((void *) &auxUInt, 1, MPI_INT, (void *) &allLastIndexes[0], (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm()); // LOAD BALANCE
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains()",
+                          "failed MPI_Gather() for last indexes");
+
+      if (m_env.inter0Rank() == 0) { // Yes, '== 0'
+        //allLastIndexes[0] = indexOfLastWeight; // FIX ME: really necessary????
+        UQ_FATAL_TEST_MACRO(allLastIndexes[0] != indexOfLastWeight,
+                            m_env.fullRank(),
+                            "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains()",
+                            "failed MPI_Gather() result for last indexes, at proc 0");
+      }
+    }
+
+    //////////////////////////////////////////////////////////////////////////
+    // Proc 0 prepares information to decide if load balancing is needed
+    //////////////////////////////////////////////////////////////////////////
+    if (m_env.inter0Rank() == 0) {
+      *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains()"
+                              << ", level " << currLevel+LEVEL_REF_ID
+                              << ", step "  << currStep
+                              << ": original distribution of unified indexes in 'inter0Comm' is as follows"
+                              << std::endl;
+      for (unsigned int r = 0; r < Np; ++r) {
+        *m_env.subDisplayFile() << "  allFirstIndexes[" << r << "] = " << allFirstIndexes[r]
+                                << "  allLastIndexes["  << r << "] = " << allLastIndexes[r]
+                                << std::endl;
+      }
+      for (unsigned int r = 0; r < (Np-1); ++r) { // Yes, '-1'
+        UQ_FATAL_TEST_MACRO(allFirstIndexes[r+1] != (allLastIndexes[r]+1),
+                            m_env.fullRank(),
+                            "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains()",
+                            "wrong indexes");
+      }
+
+      for (unsigned int r = 0; r < (Np-1); ++r) { // Yes, '-1'
+        UQ_FATAL_TEST_MACRO(allFirstIndexes[r+1] != (allLastIndexes[r]+1),
+                            m_env.fullRank(),
+                            "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains()",
+                            "wrong indexes");
+      }
+
+      int r = 0;
+      for (unsigned int i = 0; i < unifiedIndexCountersAtProc0Only.size(); ++i) {
+        if ((allFirstIndexes[r] <= i) && // FIX ME: not a robust logic
+            (i <= allLastIndexes[r] )) {
+          // Ok
+        }
+        else {
+          r++;
+          if ((r < (int) Np           ) &&
+              (allFirstIndexes[r] <= i) && 
+              (i <= allLastIndexes[r] )) {
+            // Ok
+          }
+          else {
+	    std::cerr << "In uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains()"
+                      << ": i = " << i
+                      << ", r = " << r
+                      << ", allFirstIndexes[r] = " << allFirstIndexes[r]
+                      << ", allLastIndexes[r] = "  << allLastIndexes[r]
+                      << std::endl;
+            UQ_FATAL_TEST_MACRO(true,
+                                m_env.fullRank(),
+                                "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains()",
+                                "wrong indexes or 'r' got too large");
+          }
+        }
+        if (unifiedIndexCountersAtProc0Only[i] != 0) {
+          origNumChainsPerNode[r]++;
+          origNumPositionsPerNode[r] += unifiedIndexCountersAtProc0Only[i];
+
+          uqExchangeInfoStruct auxInfo;
+          auxInfo.originalNodeOfInitialPosition  = r;
+          auxInfo.originalIndexOfInitialPosition = i - allFirstIndexes[r];
+          auxInfo.finalNodeOfInitialPosition     = -1; // Yes, '-1' for now, important
+          auxInfo.numberOfPositions              = unifiedIndexCountersAtProc0Only[i];
+          exchangeStdVec.push_back(auxInfo);
+        }
+        // FIX ME: swap trick to save memory
+      }
+
+      // Check if number of procs is too large
+      unsigned int totalNumberOfChains = 0;
+      for (int r = 0; r < Np; ++r) {
+        totalNumberOfChains += origNumChainsPerNode[r];
+      }
+      *m_env.subDisplayFile() << "  KEY"
+                              << ", level " << currLevel+LEVEL_REF_ID
+                              << ", step "  << currStep
+                              << ", Np = "  << Np
+                              << ", totalNumberOfChains = " << totalNumberOfChains
+                              << std::endl;
+
+      // Check if ratio max/min justifies optimization
+      unsigned int origMinPosPerNode  = *std::min_element(origNumPositionsPerNode.begin(), origNumPositionsPerNode.end());
+      unsigned int origMaxPosPerNode  = *std::max_element(origNumPositionsPerNode.begin(), origNumPositionsPerNode.end());
+      for (unsigned int nodeId = 0; nodeId < Np; ++nodeId) {
+        *m_env.subDisplayFile() << "  KEY"
+                                << ", level " << currLevel+LEVEL_REF_ID
+                                << ", step "  << currStep
+                                << ", origNumChainsPerNode["     << nodeId << "] = " << origNumChainsPerNode[nodeId]
+                                << ", origNumPositionsPerNode["  << nodeId << "] = " << origNumPositionsPerNode[nodeId]
+                                << std::endl;
+      }
+      double origRatioOfPosPerNode = ((double) origMaxPosPerNode ) / ((double) origMinPosPerNode);
+      *m_env.subDisplayFile() << "  KEY"
+                              << ", level " << currLevel+LEVEL_REF_ID
+                              << ", step "  << currStep
+                              << ", origRatioOfPosPerNode = "      << origRatioOfPosPerNode
+                              << ", option loadBalanceTreshold = " << currOptions->m_loadBalanceTreshold
+                              << std::endl;
+
+      // At this point, only proc 0 is running...
+      // Set boolean 'result' for good
+      if ((                   Np < totalNumberOfChains               ) &&
+          (origRatioOfPosPerNode > currOptions->m_loadBalanceTreshold)) {
+        result = true;
+      }
+    }
+  }
+
+  m_env.fullComm().Barrier();
+  unsigned int tmpValue = result;
+  int mpiRC = MPI_Bcast((void *) &tmpValue, (int) 1, MPI_UNSIGNED, 0, m_env.fullComm().Comm()); // LOAD BALANCE
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains()",
+                      "failed MPI_Bcast() for 'result'");
+  if (m_env.inter0Rank() != 0) result = tmpValue;
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+    *m_env.subDisplayFile() << "Leaving uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains()"
+                            << ", level "    << currLevel+LEVEL_REF_ID
+                            << ", step "     << currStep
+                            << ": result = " << result
+                            << std::endl;
   }
 
   return result;
@@ -1354,10 +1565,11 @@ void
 uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains( // EXTRA FOR LOAD BALANCE
   unsigned int                              currLevel,                       // input
   unsigned int                              currStep,                        // input
+  uqMLSamplingLevelOptionsClass*            currOptions,                     // input
   const uqSequenceOfVectorsClass<P_V,P_M>&  prevChain,                       // input
-  unsigned int                              indexOfFirstWeight,              // input
-  unsigned int                              indexOfLastWeight,               // input
-  const std::vector<unsigned int>&          unifiedIndexCountersAtProc0Only, // input
+  std::vector<unsigned int>&                origNumChainsPerNode,            // input
+  std::vector<unsigned int>&                origNumPositionsPerNode,         // input
+  std::vector<uqExchangeInfoStruct>&        exchangeStdVec,                  // input/output
   uqBalancedLinkedChainsPerNodeStruct<P_V>& balancedLinkControl)             // output
 {
   if (m_env.inter0Rank() < 0) return;
@@ -1366,146 +1578,36 @@ uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains( // EXTRA FOR LOAD BALANCE
     *m_env.subDisplayFile() << "Entering uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()"
                             << ", level " << currLevel+LEVEL_REF_ID
                             << ", step "  << currStep
-                            << ": indexOfFirstWeight = " << indexOfFirstWeight
-                            << ", indexOfLastWeight = "  << indexOfLastWeight
                             << std::endl;
   }
 
   unsigned int Np = (unsigned int) m_env.inter0Comm().NumProc();
-
-  //////////////////////////////////////////////////////////////////////////
-  // Gather information at proc 0, so that it can solve BIP (binary integer problem)
-  //////////////////////////////////////////////////////////////////////////
-  //int MPI_Gather (void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
-  //                void *recvbuf, int recvcount, MPI_Datatype recvtype, 
-  //                int root, MPI_Comm comm )
-  unsigned int auxUInt = indexOfFirstWeight;
-  std::vector<unsigned int> allFirstIndexes(Np,0); // '0' is already the correct value for recvcnts[0]
-  int mpiRC = MPI_Gather((void *) &auxUInt, 1, MPI_INT, (void *) &allFirstIndexes[0], (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm()); // LOAD BALANCE
-  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
-                      "failed MPI_Gather() for first indexes");
-  if (m_env.inter0Rank() == 0) {
-    UQ_FATAL_TEST_MACRO(allFirstIndexes[0] != indexOfFirstWeight,
-                        m_env.fullRank(),
-                        "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
-                        "failed MPI_Gather() result for first indexes, at proc 0");
-  }
-
-  auxUInt = indexOfLastWeight;
-  std::vector<unsigned int> allLastIndexes(Np,0); // '0' is NOT the correct value for recvcnts[0]
-  mpiRC = MPI_Gather((void *) &auxUInt, 1, MPI_INT, (void *) &allLastIndexes[0], (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm()); // LOAD BALANCE
-  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
-                      "failed MPI_Gather() for last indexes");
-  if (m_env.inter0Rank() == 0) {
-    //allLastIndexes[0] = indexOfLastWeight; // FIX ME: really necessary????
-    UQ_FATAL_TEST_MACRO(allLastIndexes[0] != indexOfLastWeight,
-                        m_env.fullRank(),
-                        "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
-                        "failed MPI_Gather() result for last indexes, at proc 0");
-  }
-
-  //////////////////////////////////////////////////////////////////////////
-  // Proc 0 assembles and solves BIP
-  //////////////////////////////////////////////////////////////////////////
-  std::vector<uqExchangeInfoStruct> exchangeStdVec(0);
-  std::vector<unsigned int> origNumChainsPerNode    (Np,0);
-  std::vector<unsigned int> origNumPositionsPerNode (Np,0);
   std::vector<unsigned int> finalNumChainsPerNode   (Np,0);
   std::vector<unsigned int> finalNumPositionsPerNode(Np,0);
   if (m_env.inter0Rank() == 0) {
-    *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::prepareBalLinkdeChains()"
-                            << ", level " << currLevel+LEVEL_REF_ID
-                            << ", step "  << currStep
-                            << ": original distribution of unified indexes in 'inter0Comm' is as follows"
-                            << std::endl;
-    for (unsigned int r = 0; r < Np; ++r) {
-      *m_env.subDisplayFile() << "  allFirstIndexes[" << r << "] = " << allFirstIndexes[r]
-                              << "  allLastIndexes["  << r << "] = " << allLastIndexes[r]
-                              << std::endl;
+    switch (currOptions->m_loadBalanceAlgorithmId) {
+      case 2:
+        justBalanceAtProc0(currLevel,                 // input
+                           currStep,                  // input
+                           origNumChainsPerNode,      // input
+                           origNumPositionsPerNode,   // input
+                           exchangeStdVec,            // input/output
+                           finalNumChainsPerNode,     // output
+                           finalNumPositionsPerNode); // output
+      break;
+
+      case 1:
+      default:
+        // Get final node responsible for a linked chain by solving BIP at node zero only
+        solveBIPAtProc0(currLevel,                 // input
+                        currStep,                  // input
+                        origNumChainsPerNode,      // input
+                        origNumPositionsPerNode,   // input
+                        exchangeStdVec,            // input/output
+                        finalNumChainsPerNode,     // output
+                        finalNumPositionsPerNode); // output
+      break;
     }
-    for (unsigned int r = 0; r < (Np-1); ++r) { // Yes, '-1'
-      UQ_FATAL_TEST_MACRO(allFirstIndexes[r+1] != (allLastIndexes[r]+1),
-                          m_env.fullRank(),
-                          "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
-                          "wrong indexes");
-    }
-
-    for (unsigned int r = 0; r < (Np-1); ++r) { // Yes, '-1'
-      UQ_FATAL_TEST_MACRO(allFirstIndexes[r+1] != (allLastIndexes[r]+1),
-                          m_env.fullRank(),
-                          "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
-                          "wrong indexes");
-    }
-
-    int r = 0;
-    for (unsigned int i = 0; i < unifiedIndexCountersAtProc0Only.size(); ++i) {
-      if ((allFirstIndexes[r] <= i) && // FIX ME: not a robust logic // ernesto
-          (i <= allLastIndexes[r] )) {
-        // Ok
-      }
-      else {
-        r++;
-        if ((r < (int) Np           ) &&
-            (allFirstIndexes[r] <= i) && 
-            (i <= allLastIndexes[r] )) {
-          // Ok
-        }
-        else {
-	  std::cerr << "In uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()"
-                    << ": i = " << i
-                    << ", r = " << r
-                    << ", allFirstIndexes[r] = " << allFirstIndexes[r]
-                    << ", allLastIndexes[r] = "  << allLastIndexes[r]
-                    << std::endl;
-          UQ_FATAL_TEST_MACRO(true,
-                              m_env.fullRank(),
-                              "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
-                              "wrong indexes or 'r' got too large");
-        }
-      }
-      if (unifiedIndexCountersAtProc0Only[i] != 0) {
-        origNumChainsPerNode[r]++;
-        origNumPositionsPerNode[r] += unifiedIndexCountersAtProc0Only[i];
-
-        uqExchangeInfoStruct auxInfo;
-        auxInfo.originalNodeOfInitialPosition  = r;
-        auxInfo.originalIndexOfInitialPosition = i - allFirstIndexes[r];
-        auxInfo.finalNodeOfInitialPosition     = -1; // Yes, '-1' for now, important
-        auxInfo.numberOfPositions              = unifiedIndexCountersAtProc0Only[i];
-        exchangeStdVec.push_back(auxInfo);
-      }
-      // FIX ME: swap trick to save memory
-    }
-
-    // ernesto
-    // Check if number of procs is too large
-    // Check if ratio max/min justifies optimization
-    unsigned int origMinPosPerNode  = *std::min_element(origNumPositionsPerNode.begin(), origNumPositionsPerNode.end());
-    unsigned int origMaxPosPerNode  = *std::max_element(origNumPositionsPerNode.begin(), origNumPositionsPerNode.end());
-    for (unsigned int nodeId = 0; nodeId < Np; ++nodeId) {
-      *m_env.subDisplayFile() << "  KEY"
-                              << ", origNumChainsPerNode["     << nodeId << "] = " << origNumChainsPerNode[nodeId]
-                              << ", origNumPositionsPerNode["  << nodeId << "] = " << origNumPositionsPerNode[nodeId]
-                              << std::endl;
-    }
-    double origRatioOfPosPerNode = ((double) origMaxPosPerNode ) / ((double) origMinPosPerNode);
-    *m_env.subDisplayFile() << "  KEY"
-                            << ", origRatioOfPosPerNode = " << origRatioOfPosPerNode
-                            << std::endl;
-
-
-    // Get final node responsible for a linked chain by solving BIP at node zero only
-    solveBIPAtProc0(currLevel,                 // input
-                    currStep,                  // input
-                    origNumChainsPerNode,      // input
-                    origNumPositionsPerNode,   // input
-                    exchangeStdVec,            // input/output
-                    finalNumChainsPerNode,     // output
-                    finalNumPositionsPerNode); // output
   } // if (m_env.inter0Rank() == 0)
 
   m_env.inter0Comm().Barrier();
@@ -1514,7 +1616,7 @@ uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains( // EXTRA FOR LOAD BALANCE
   // Proc 0 now broadcasts the information on 'exchangeStdVec'
   //////////////////////////////////////////////////////////////////////////
   unsigned int exchangeStdVecSize = exchangeStdVec.size();
-  mpiRC = MPI_Bcast((void *) &exchangeStdVecSize, (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm()); // LOAD BALANCE
+  int mpiRC = MPI_Bcast((void *) &exchangeStdVecSize, (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm()); // LOAD BALANCE
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_env.fullRank(),
                       "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
@@ -2494,6 +2596,8 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0( // EXTRA FOR LOAD BALANCE
                             << std::endl;
     for (unsigned int nodeId = 0; nodeId < Np; ++nodeId) {
       *m_env.subDisplayFile() << "  KEY"
+                              << ", level " << currLevel+LEVEL_REF_ID
+                              << ", step "  << currStep
                               << ", origNumChainsPerNode["     << nodeId << "] = " << origNumChainsPerNode[nodeId]
                               << ", origNumPositionsPerNode["  << nodeId << "] = " << origNumPositionsPerNode[nodeId]
                               << ", finalNumChainsPerNode["    << nodeId << "] = " << finalNumChainsPerNode[nodeId]
@@ -2501,6 +2605,8 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0( // EXTRA FOR LOAD BALANCE
                               << std::endl;
     }
     *m_env.subDisplayFile() << "  KEY"
+                            << ", level " << currLevel+LEVEL_REF_ID
+                            << ", step "  << currStep
                             << ", origRatioOfPosPerNode = "  << ((double) origMaxPosPerNode ) / ((double) origMinPosPerNode)
                             << ", finalRatioOfPosPerNode = " << ((double) finalMaxPosPerNode) / ((double)finalMinPosPerNode)
                             << std::endl;
@@ -2544,6 +2650,28 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0( // EXTRA FOR LOAD BALANCE
                             << ", after " << bipRunTime << " seconds"
                             << std::endl;
   }
+
+  return;
+}
+
+template <class P_V,class P_M>
+void
+uqMLSamplingClass<P_V,P_M>::justBalanceAtProc0(
+  unsigned int                       currLevel,                // input
+  unsigned int                       currStep,                 // input
+  const std::vector<unsigned int>&   origNumChainsPerNode,     // input
+  const std::vector<unsigned int>&   origNumPositionsPerNode,  // input
+  std::vector<uqExchangeInfoStruct>& exchangeStdVec,           // input/output
+  std::vector<unsigned int>&         finalNumChainsPerNode,    // output
+  std::vector<unsigned int>&         finalNumPositionsPerNode) // output
+{
+  solveBIPAtProc0(currLevel,                 // input
+                  currStep,                  // input
+                  origNumChainsPerNode,      // input
+                  origNumPositionsPerNode,   // input
+                  exchangeStdVec,            // input/output
+                  finalNumChainsPerNode,     // output
+                  finalNumPositionsPerNode); // output
 
   return;
 }
@@ -2987,19 +3115,34 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step8(
         uqBalancedLinkedChainsPerNodeStruct<P_V> nowBalLinkControl;
         uqUnbalancedLinkedChainsPerNodeStruct    nowUnbLinkControl; // KAUST
 
+        unsigned int Np = 0;
+        if (m_env.inter0Rank() == 0) { // Yes, '== 0'
+          Np = (unsigned int) m_env.inter0Comm().NumProc();
+        }
+        std::vector<unsigned int>         origNumChainsPerNode   (Np,0);
+        std::vector<unsigned int>         origNumPositionsPerNode(Np,0);
+        std::vector<uqExchangeInfoStruct> exchangeStdVec(0);
+
         // All processors should call this routine in order to have the same decision value
-        bool useBalancedChains = decideOnBalancedChains(currLevel,
-                                                        currStep,
-                                                        currOptions);
+        bool useBalancedChains = decideOnBalancedChains(currLevel,                          // input
+                                                        currStep,                           // input
+                                                        currOptions,                        // input
+                                                        indexOfFirstWeight,                 // input
+                                                        indexOfLastWeight,                  // input
+                                                        nowUnifiedIndexCountersAtProc0Only, // input
+                                                        origNumChainsPerNode,               // output
+                                                        origNumPositionsPerNode,            // output
+                                                        exchangeStdVec);                    // output
 
         if (m_env.inter0Rank() >= 0) { // KAUST
           if (useBalancedChains) {
             prepareBalLinkedChains(currLevel,                          // input
                                    currStep,                           // input
+                                   currOptions,                        // input
                                    prevChain,                          // input
-                                   indexOfFirstWeight,                 // input
-                                   indexOfLastWeight,                  // input
-                                   nowUnifiedIndexCountersAtProc0Only, // input
+                                   origNumChainsPerNode,               // input
+                                   origNumPositionsPerNode,            // input
+                                   exchangeStdVec,                     // input/output
                                    nowBalLinkControl);                 // output
           }
           else {
