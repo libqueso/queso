@@ -175,6 +175,7 @@ private:
 
   void   justBalanceAtProc0     (unsigned int                                    currLevel,                         // input
                                  unsigned int                                    currStep,                          // input
+                                 uqMLSamplingLevelOptionsClass*                  currOptions,                       // input
                                  std::vector<uqExchangeInfoStruct>&              exchangeStdVec);                   // input/output
 
   void   mpiExchangePositions   (unsigned int                                    currLevel,                         // input
@@ -1469,7 +1470,7 @@ uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains(
           }
         }
         if (unifiedIndexCountersAtProc0Only[i] != 0) {
-          origNumChainsPerNode[r]++;
+          origNumChainsPerNode   [r] += 1;
           origNumPositionsPerNode[r] += unifiedIndexCountersAtProc0Only[i];
 
           uqExchangeInfoStruct auxInfo;
@@ -1567,6 +1568,7 @@ uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains( // EXTRA FOR LOAD BALANCE
       case 2:
         justBalanceAtProc0(currLevel,                 // input
                            currStep,                  // input
+                           currOptions,               // input
                            exchangeStdVec);           // input/output
       break;
 
@@ -2610,7 +2612,6 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0( // EXTRA FOR LOAD BALANCE
   glp_delete_prob(lp); 
 
   double bipRunTime = uqMiscGetEllapsedSeconds(&timevalBIP);
-
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "Leaving uqMLSampling<P_V,P_M>::solveBIPAtProc0()"
                             << ", level " << currLevel+LEVEL_REF_ID
@@ -2627,11 +2628,94 @@ void
 uqMLSamplingClass<P_V,P_M>::justBalanceAtProc0(
   unsigned int                       currLevel,      // input
   unsigned int                       currStep,       // input
+  uqMLSamplingLevelOptionsClass*     currOptions,    // input
   std::vector<uqExchangeInfoStruct>& exchangeStdVec) // input/output
 {
-  solveBIPAtProc0(currLevel,       // input
-                  currStep,        // input
-                  exchangeStdVec); // input/output
+  if (m_env.inter0Rank() != 0) return;
+
+  int iRC = UQ_OK_RC;
+  struct timeval timevalBal;
+  iRC = gettimeofday(&timevalBal, NULL);
+
+  unsigned int Np = m_env.numSubEnvironments();
+  unsigned int Nc = exchangeStdVec.size();
+
+  std::vector<uqExchangeInfoStruct> currExchangeStdVec(Nc);
+  for (unsigned int chainId = 0; chainId < Nc; ++chainId) {
+    currExchangeStdVec[chainId] = exchangeStdVec[chainId];
+    currExchangeStdVec[chainId].finalNodeOfInitialPosition = currExchangeStdVec[chainId].originalNodeOfInitialPosition; // final = original
+  }
+
+  // Compute original ratio of positions per node
+  std::vector<unsigned int> currNumChainsPerNode   (Np,0);
+  std::vector<unsigned int> currNumPositionsPerNode(Np,0);
+  for (unsigned int chainId = 0; chainId < Nc; ++chainId) {
+    unsigned int nodeId = currExchangeStdVec[chainId].finalNodeOfInitialPosition; // Yes, 'final'
+    currNumChainsPerNode   [nodeId] += 1;
+    currNumPositionsPerNode[nodeId] += exchangeStdVec[chainId].numberOfPositions;
+  }
+  unsigned int currMinPosPerNode = *std::min_element(currNumPositionsPerNode.begin(), currNumPositionsPerNode.end());
+  unsigned int currMaxPosPerNode = *std::max_element(currNumPositionsPerNode.begin(), currNumPositionsPerNode.end());
+  double currRatioOfPosPerNode = ((double) currMaxPosPerNode ) / ((double) currMinPosPerNode);
+
+  // Initialize information before entering while loop
+  std::vector<std::vector<double> > vectorOfChainsSizePerNode(Np);
+
+  // Loop
+  unsigned int numIter = 0;
+  while ((numIter               < 100                               ) &&
+         (currRatioOfPosPerNode > currOptions->m_loadBalanceTreshold)) {
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+      *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::justBalanceAtProc0()"
+                              << ", level "                       << currLevel+LEVEL_REF_ID
+                              << ", step "                        << currStep
+                              << ", beginning 'while iteration' " << numIter
+                              << " with currRatioOfPosPerNode = " << currRatioOfPosPerNode
+                              << std::endl;
+    }
+
+    std::vector<uqExchangeInfoStruct> newExchangeStdVec(Nc);
+    for (unsigned int chainId = 0; chainId < Nc; ++chainId) {
+      newExchangeStdVec[chainId] = currExchangeStdVec[chainId];
+    }
+
+    // Update 'final' fields in two nodes
+
+    // Compute new ratio of positions per node
+    std::vector<unsigned int> newNumChainsPerNode   (Np,0);
+    std::vector<unsigned int> newNumPositionsPerNode(Np,0);
+    for (unsigned int chainId = 0; chainId < Nc; ++chainId) {
+      unsigned int nodeId = currExchangeStdVec[chainId].finalNodeOfInitialPosition; // Yes, 'final'
+      currNumChainsPerNode   [nodeId] += 1;
+      currNumPositionsPerNode[nodeId] += exchangeStdVec[chainId].numberOfPositions;
+    }
+    unsigned int newMinPosPerNode = *std::min_element(newNumPositionsPerNode.begin(), newNumPositionsPerNode.end());
+    unsigned int newMaxPosPerNode = *std::max_element(newNumPositionsPerNode.begin(), newNumPositionsPerNode.end());
+    double newRatioOfPosPerNode = ((double) newMaxPosPerNode ) / ((double) newMinPosPerNode);
+
+    // See if we need to exit loop
+    if (newRatioOfPosPerNode > currRatioOfPosPerNode) {
+      break; // exit loop
+    }
+
+    // Prepare for next iteration
+    numIter++;
+    currRatioOfPosPerNode = newRatioOfPosPerNode;
+    for (unsigned int chainId = 0; chainId < Nc; ++chainId) {
+      newExchangeStdVec[chainId] = currExchangeStdVec[chainId];
+    }
+  }
+
+  double balRunTime = uqMiscGetEllapsedSeconds(&timevalBal);
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+    *m_env.subDisplayFile() << "Leaving uqMLSampling<P_V,P_M>::justBalanceAtProc0()"
+                            << ", level "                   << currLevel+LEVEL_REF_ID
+                            << ", step "                    << currStep
+                            << ", numIter = "               << numIter
+                            << ", currRatioOfPosPerNode = " << currRatioOfPosPerNode
+                            << ", after " << balRunTime << " seconds"
+                            << std::endl;
+  }
 
   return;
 }
