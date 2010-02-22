@@ -2722,7 +2722,7 @@ uqMLSamplingClass<P_V,P_M>::justBalanceAtProc0(
 
     unsigned int numberOfPositionsToMove = vectorOfChainSizesPerNode[nodeWithMostPositions][0];
 
-    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
       *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::justBalanceAtProc0()"
                               << ", level " << currLevel+LEVEL_REF_ID
                               << ", step "  << currStep
@@ -2761,7 +2761,7 @@ uqMLSamplingClass<P_V,P_M>::justBalanceAtProc0(
     unsigned int newMaxPosPerNode = *std::max_element(newNumPositionsPerNode.begin(), newNumPositionsPerNode.end());
     double newRatioOfPosPerNode = ((double) newMaxPosPerNode ) / ((double) newMinPosPerNode);
 
-    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
       *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::justBalanceAtProc0()"
                               << ", level " << currLevel+LEVEL_REF_ID
                               << ", step "  << currStep
