@@ -2649,12 +2649,14 @@ uqMLSamplingClass<P_V,P_M>::justBalanceAtProc0(
   //////////////////////////////////////////////////////////////////////////
   // Compute original ratio of positions per node
   //////////////////////////////////////////////////////////////////////////
+  unsigned int iterIdMax = 0;
   std::vector<unsigned int> currNumChainsPerNode   (Np,0);
   std::vector<unsigned int> currNumPositionsPerNode(Np,0);
   for (unsigned int chainId = 0; chainId < Nc; ++chainId) {
     unsigned int nodeId = currExchangeStdVec[chainId].finalNodeOfInitialPosition; // Yes, 'final'
     currNumChainsPerNode   [nodeId] += 1;
     currNumPositionsPerNode[nodeId] += currExchangeStdVec[chainId].numberOfPositions;
+    iterIdMax                       += currExchangeStdVec[chainId].numberOfPositions;
   }
   unsigned int currMinPosPerNode = *std::min_element(currNumPositionsPerNode.begin(), currNumPositionsPerNode.end());
   unsigned int currMaxPosPerNode = *std::max_element(currNumPositionsPerNode.begin(), currNumPositionsPerNode.end());
@@ -2663,6 +2665,7 @@ uqMLSamplingClass<P_V,P_M>::justBalanceAtProc0(
   //////////////////////////////////////////////////////////////////////////
   // Loop
   //////////////////////////////////////////////////////////////////////////
+  iterIdMax /= 2;
   int iterId = -1;
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::justBalanceAtProc0()"
@@ -2683,7 +2686,7 @@ uqMLSamplingClass<P_V,P_M>::justBalanceAtProc0(
   }
 
   std::vector<std::vector<double> > vectorOfChainSizesPerNode(Np);
-  while ((iterId                < 100                               ) &&
+  while ((iterId                < (int) iterIdMax                   ) &&
          (currRatioOfPosPerNode > currOptions->m_loadBalanceTreshold)) {
     iterId++;
 
