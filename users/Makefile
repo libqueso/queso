@@ -1,5 +1,7 @@
 all:	all_texs
 
+cheese: tab_mac_cheese
+
 clean: clean_texs clean_exec
 
 clean_texs:
@@ -51,6 +53,12 @@ all_texs: $(OBJS_convert)
 	latex users.tex
 	dvips -t letter users.dvi -o users.ps
 	ps2pdf users.ps users_0_41_0.pdf
+
+tab_mac_cheese:
+	latex McCheese
+	latex McCheese
+	dvips -t letter McCheese.dvi -o McCheese.ps
+	ps2pdf McCheese.ps McCheese.pdf
 
 .SUFFIXES: .eps .png .dia
 
