@@ -58,65 +58,48 @@ else
    AC_MSG_RESULT(no)
 fi
 
-# Get compilers
+# Compilers and MPI
 AC_PROG_CC
-###echo "configure found CC = $CC"
-
 AC_PROG_CXX
-###echo "configure found CXX = $CXX"
-
-#AC_PROG_RANLIB
-
-# Check for mpi c and c++ compilers
 AC_LANG([C])
 ACX_MPI([CC="$MPICC"], [AC_MSG_ERROR([Could not find MPI.])])
-
 AC_LANG([C++])
 ACX_MPI([CXX="$MPICXX"], [AC_MSG_ERROR([Could not find MPI.])])
 
+#-------------------------
+# External Library Checks
+#-------------------------
 
-# Check for math libraries. Makes sure we are compatible for builds on Mac OS X.
-# Here we force the check to only include cmath OR math.h. Note that Trilinos
-# checks for both, and if both are present, will include both.
-# 
-# Commenting out this check below until we decide how to move forward with
-# this stuff.
-#
-# AC_CHECK_HEADERS([cmath], [break],
-#			  [AC_CHECK_HEADERS( [math.h], [break], 
-#			  		     [AC_MSG_ERROR([Cannot find cmath or math.h. One or the other is required.])],[])
-#			  ], [] )
+# Check for Trilinos
+# TODO: Add AM_CONDITIONAL here to determine whether to build trilinos versions of libs
 
-# Check for trilinos\
-# TO DO: Add AM_CONDITIONAL here to determine whether to build trilinos versions of libs
 AX_TRILINOS_BASE(8.0.7,,AC_MSG_ERROR([Could not find required Trilinos version.]))
 # AX_TRILINOS_TEUCHOS
 AX_TRILINOS_EPETRA(AC_DEFINE(HAVE_LIBEPETRA,1,[Define if Epetra is available]),AC_MSG_ERROR([Could not find Epetra.]))
 AC_CACHE_SAVE
 
-# Check for gsl
+# Check for GSL
+
 AC_LANG([C])
 AX_PATH_GSL(1.10,AM_CONDITIONAL([UQBT_GSL], [test 'TRUE']),AC_MSG_ERROR([Could not find required GSL version.]))
 AC_CACHE_SAVE
 
 # Check for boost
+
 AC_LANG([C++])
 AX_BOOST_BASE(1.35)
 AX_BOOST_PROGRAM_OPTIONS
 AC_CACHE_SAVE
 
-# Check for glpk
-# AC_LANG([C])
-# AX_PATH_GLPK(4.41,AC_MSG_ERROR([Could not find required GLPK version.]))
-# AX_GLPK_BASE(4.41)
-# AX_GLPK_PROGRAM_OPTIONS
-# AC_CACHE_SAVE
+# Check for GNU Linear Programming kit
 
-AX_PATH_GLPK
+AX_PATH_GLPK(4.35,,AC_MSG_ERROR([Could not find required GLPK error]))
 
 # HPCT Config
 
 AX_PATH_HPCT
+
+AC_CACHE_SAVE
 
 #PKG_CHECK_MODULES(hpct, hpct >= 0.24)
 #AC_SUBST(HPCT_CFLAGS)
@@ -175,6 +158,8 @@ AC_CONFIG_FILES([
 
 AC_OUTPUT()
 
+#---------------
 # Final summary
+#---------------
 
 AX_SUMMARIZE_CONFIG
