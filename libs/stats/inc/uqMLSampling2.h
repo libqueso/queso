@@ -35,6 +35,32 @@
 
 template <class P_V,class P_M>
 void
+uqMLSamplingClass<P_V,P_M>::restartCurrState(
+  double&                            currExponent,
+  unsigned int&                      unifiedRequestedNumSamples,
+  uqSequenceOfVectorsClass<P_V,P_M>& currChain,
+  uqScalarSequenceClass<double>&     currLogLikelihoodValues,
+  uqScalarSequenceClass<double>&     currLogTargetValues)
+{
+  // ernesto
+  return;
+}
+
+template <class P_V,class P_M>
+void
+uqMLSamplingClass<P_V,P_M>::saveCurrState(
+  double                                   currExponent,
+  unsigned int                             unifiedRequestedNumSamples,
+  const uqSequenceOfVectorsClass<P_V,P_M>& currChain,
+  const uqScalarSequenceClass<double>&     currLogLikelihoodValues,
+  const uqScalarSequenceClass<double>&     currLogTargetValues)
+{
+  // ernesto
+  return;
+}
+
+template <class P_V,class P_M>
+void
 uqMLSamplingClass<P_V,P_M>::generateSequence_Level0(
   const uqMLSamplingLevelOptionsClass& defaultLevelOptions,        // input
   unsigned int&                        unifiedRequestedNumSamples, // output

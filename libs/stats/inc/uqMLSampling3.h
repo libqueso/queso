@@ -1387,7 +1387,7 @@ uqMLSamplingClass<P_V,P_M>::justBalanceAtProc0(
   //////////////////////////////////////////////////////////////////////////
   // Loop
   //////////////////////////////////////////////////////////////////////////
-  iterIdMax /= 2;
+  //iterIdMax /= 2;
   int iterId = -1;
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::justBalanceAtProc0()"
