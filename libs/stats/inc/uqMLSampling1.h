@@ -398,7 +398,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     //***********************************************************
     // Step 1 of 9: read options
     //***********************************************************
-    unsigned int m_currStep = 1;
+    m_currStep = 1;
     sprintf(tmpSufix,"%d_",m_currLevel+LEVEL_REF_ID); // Yes, '+0'
     uqMLSamplingLevelOptionsClass* currOptions = new uqMLSamplingLevelOptionsClass(m_env,(m_options.m_prefix + tmpSufix).c_str());
     currOptions->scanOptionsValues(&defaultLevelOptions);

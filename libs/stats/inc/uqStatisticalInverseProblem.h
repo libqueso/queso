@@ -35,7 +35,7 @@
 
 #include <uqStatisticalInverseProblemOptions.h>
 #include <uqMetropolisHastingsSG1.h>
-#include <uqMLSampling.h>
+#include <uqMLSampling1.h>
 #include <uqInstantiateIntersection.h>
 #include <uqVectorRV.h>
 #include <uqScalarFunction.h>

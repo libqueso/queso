@@ -121,7 +121,9 @@ libqueso_include_HEADERS += $(top_srcdir)/libs/stats/inc/uqFiniteDistribution.h 
 	$(top_srcdir)/libs/stats/inc/uqMetropolisHastingsSG1.h \
 	$(top_srcdir)/libs/stats/inc/uqMetropolisHastingsSG2.h \
 	$(top_srcdir)/libs/stats/inc/uqMetropolisHastingsSGOptions.h \
-	$(top_srcdir)/libs/stats/inc/uqMLSampling.h \
+	$(top_srcdir)/libs/stats/inc/uqMLSampling1.h \
+	$(top_srcdir)/libs/stats/inc/uqMLSampling2.h \
+	$(top_srcdir)/libs/stats/inc/uqMLSampling3.h \
 	$(top_srcdir)/libs/stats/inc/uqMLSamplingOptions.h \
 	$(top_srcdir)/libs/stats/inc/uqMLSamplingLevelOptions.h \
 	$(top_srcdir)/libs/stats/inc/uqModelValidation.h \
