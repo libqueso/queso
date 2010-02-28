@@ -35,7 +35,7 @@
 
 template <class P_V,class P_M>
 void
-uqMLSamplingClass<P_V,P_M>::sampleIndexesAtProc0(
+uqMLSamplingClass<P_V,P_M>::sampleIndexes_proc0(
   unsigned int               unifiedRequestedNumSamples,        // input
   const std::vector<double>& unifiedWeightStdVectorAtProc0Only, // input
   std::vector<unsigned int>& unifiedIndexCountersAtProc0Only)   // output
@@ -43,7 +43,7 @@ uqMLSamplingClass<P_V,P_M>::sampleIndexesAtProc0(
   if (m_env.inter0Rank() != 0) return;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "Entering uqMLSamplingClass<P_V,P_M>::sampleIndexesAtProc0()"
+    *m_env.subDisplayFile() << "Entering uqMLSamplingClass<P_V,P_M>::sampleIndexes_proc0()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << ": unifiedRequestedNumSamples = "               << unifiedRequestedNumSamples
@@ -53,7 +53,7 @@ uqMLSamplingClass<P_V,P_M>::sampleIndexesAtProc0(
 
 #if 0 // For debug only
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::sampleIndexesAtProc0()"
+    *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::sampleIndexes_proc0()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << ":"
@@ -89,7 +89,7 @@ uqMLSamplingClass<P_V,P_M>::sampleIndexesAtProc0(
 
 template <class P_V,class P_M>
 bool
-uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains(
+uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(
   uqMLSamplingLevelOptionsClass*     currOptions,                     // input
   unsigned int                       indexOfFirstWeight,              // input
   unsigned int                       indexOfLastWeight,               // input
@@ -99,7 +99,7 @@ uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains(
   bool result = false;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "Entering uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains()"
+    *m_env.subDisplayFile() << "Entering uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << ": indexOfFirstWeight = " << indexOfFirstWeight
@@ -127,13 +127,13 @@ uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains(
       int mpiRC = MPI_Gather((void *) &auxUInt, 1, MPI_INT, (void *) &allFirstIndexes[0], (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm()); // LOAD BALANCE
       UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                           m_env.fullRank(),
-                          "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains()",
+                          "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
                           "failed MPI_Gather() for first indexes");
 
       if (m_env.inter0Rank() == 0) {
         UQ_FATAL_TEST_MACRO(allFirstIndexes[0] != indexOfFirstWeight,
                             m_env.fullRank(),
-                            "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains()",
+                            "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
                             "failed MPI_Gather() result for first indexes, at proc 0");
       }
 
@@ -141,14 +141,14 @@ uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains(
       mpiRC = MPI_Gather((void *) &auxUInt, 1, MPI_INT, (void *) &allLastIndexes[0], (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm()); // LOAD BALANCE
       UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                           m_env.fullRank(),
-                          "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains()",
+                          "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
                           "failed MPI_Gather() for last indexes");
 
       if (m_env.inter0Rank() == 0) { // Yes, '== 0'
         //allLastIndexes[0] = indexOfLastWeight; // FIX ME: really necessary????
         UQ_FATAL_TEST_MACRO(allLastIndexes[0] != indexOfLastWeight,
                             m_env.fullRank(),
-                            "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains()",
+                            "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
                             "failed MPI_Gather() result for last indexes, at proc 0");
       }
     }
@@ -157,7 +157,7 @@ uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains(
     // Proc 0 prepares information to decide if load balancing is needed
     //////////////////////////////////////////////////////////////////////////
     if (m_env.inter0Rank() == 0) {
-      *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains()"
+      *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()"
                               << ", level " << m_currLevel+LEVEL_REF_ID
                               << ", step "  << m_currStep
                               << ": original distribution of unified indexes in 'inter0Comm' is as follows"
@@ -170,14 +170,14 @@ uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains(
       for (unsigned int r = 0; r < (Np-1); ++r) { // Yes, '-1'
         UQ_FATAL_TEST_MACRO(allFirstIndexes[r+1] != (allLastIndexes[r]+1),
                             m_env.fullRank(),
-                            "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains()",
+                            "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
                             "wrong indexes");
       }
 
       for (unsigned int r = 0; r < (Np-1); ++r) { // Yes, '-1'
         UQ_FATAL_TEST_MACRO(allFirstIndexes[r+1] != (allLastIndexes[r]+1),
                             m_env.fullRank(),
-                            "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains()",
+                            "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
                             "wrong indexes");
       }
 
@@ -197,7 +197,7 @@ uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains(
             // Ok
           }
           else {
-	    std::cerr << "In uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains()"
+	    std::cerr << "In uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()"
                       << ": i = " << i
                       << ", r = " << r
                       << ", allFirstIndexes[r] = " << allFirstIndexes[r]
@@ -205,7 +205,7 @@ uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains(
                       << std::endl;
             UQ_FATAL_TEST_MACRO(true,
                                 m_env.fullRank(),
-                                "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains()",
+                                "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
                                 "wrong indexes or 'r' got too large");
           }
         }
@@ -268,12 +268,12 @@ uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains(
   int mpiRC = MPI_Bcast((void *) &tmpValue, (int) 1, MPI_UNSIGNED, 0, m_env.fullComm().Comm()); // LOAD BALANCE
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains()",
+                      "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
                       "failed MPI_Bcast() for 'result'");
   if (m_env.inter0Rank() != 0) result = tmpValue;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "Leaving uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains()"
+    *m_env.subDisplayFile() << "Leaving uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()"
                             << ", level "    << m_currLevel+LEVEL_REF_ID
                             << ", step "     << m_currStep
                             << ": result = " << result
@@ -285,16 +285,16 @@ uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains(
 
 template <class P_V,class P_M>
 void
-uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains( // EXTRA FOR LOAD BALANCE
-  uqMLSamplingLevelOptionsClass*            currOptions,                     // input
-  const uqSequenceOfVectorsClass<P_V,P_M>&  prevChain,                       // input
-  std::vector<uqExchangeInfoStruct>&        exchangeStdVec,                  // input/output
-  uqBalancedLinkedChainsPerNodeStruct<P_V>& balancedLinkControl)             // output
+uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0( // EXTRA FOR LOAD BALANCE
+  uqMLSamplingLevelOptionsClass*            currOptions,         // input
+  const uqSequenceOfVectorsClass<P_V,P_M>&  prevChain,           // input
+  std::vector<uqExchangeInfoStruct>&        exchangeStdVec,      // input/output
+  uqBalancedLinkedChainsPerNodeStruct<P_V>& balancedLinkControl) // output
 {
   if (m_env.inter0Rank() < 0) return;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "Entering uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()"
+    *m_env.subDisplayFile() << "Entering uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << std::endl;
@@ -304,14 +304,14 @@ uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains( // EXTRA FOR LOAD BALANCE
   if (m_env.inter0Rank() == 0) {
     switch (currOptions->m_loadBalanceAlgorithmId) {
       case 2:
-        justBalanceAtProc0(currOptions,               // input
-                           exchangeStdVec);           // input/output
+        justBalance_proc0(currOptions,     // input
+                          exchangeStdVec); // input/output
       break;
 
       case 1:
       default:
         // Get final node responsible for a linked chain by solving BIP at node zero only
-        solveBIPAtProc0(exchangeStdVec);           // input/output
+        solveBIP_proc0(exchangeStdVec); // input/output
       break;
     }
   } // if (m_env.inter0Rank() == 0)
@@ -325,14 +325,14 @@ uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains( // EXTRA FOR LOAD BALANCE
   int mpiRC = MPI_Bcast((void *) &exchangeStdVecSize, (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm()); // LOAD BALANCE
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
+                      "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0()",
                       "failed MPI_Bcast() for exchangeStdVec size");
   if (m_env.inter0Rank() > 0) exchangeStdVec.resize(exchangeStdVecSize);
 
   mpiRC = MPI_Bcast((void *) &exchangeStdVec[0], (int) (exchangeStdVecSize*sizeof(uqExchangeInfoStruct)), MPI_CHAR, 0, m_env.inter0Comm().Comm()); // LOAD BALANCE
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
+                      "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0()",
                       "failed MPI_Bcast() for exchangeStdVec data");
 
   //////////////////////////////////////////////////////////////////////////
@@ -361,12 +361,12 @@ uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains( // EXTRA FOR LOAD BALANCE
   mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &minRatio, (int) auxBuf.size(), MPI_DOUBLE, MPI_MIN, m_env.inter0Comm().Comm()); // LOAD BALANCE
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
+                      "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0()",
                       "failed MPI_Allreduce() for min");
   //std::cout << m_env.fullRank() << ", minRatio = " << minRatio << std::endl;
   UQ_FATAL_TEST_MACRO(minRatio != finalRatioOfPosPerNode,
                       m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
+                      "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0()",
                       "failed minRatio sanity check");
 
   double maxRatio = 0.;
@@ -374,12 +374,12 @@ uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains( // EXTRA FOR LOAD BALANCE
   mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &maxRatio, (int) auxBuf.size(), MPI_DOUBLE, MPI_MAX, m_env.inter0Comm().Comm()); // LOAD BALANCE
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
+                      "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0()",
                       "failed MPI_Allreduce() for max");
   //std::cout << m_env.fullRank() << ", maxRatio = " << maxRatio << std::endl;
   UQ_FATAL_TEST_MACRO(maxRatio != finalRatioOfPosPerNode,
                       m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
+                      "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0()",
                       "failed maxRatio sanity check");
 
   //////////////////////////////////////////////////////////////////////////
@@ -389,32 +389,32 @@ uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains( // EXTRA FOR LOAD BALANCE
   mpiRC = MPI_Bcast((void *) &finalNumChainsPerNodeSize, (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm()); // LOAD BALANCE
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
+                      "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0()",
                       "failed MPI_Bcast() for finalNumChainsPerNode size");
   if (m_env.inter0Rank() > 0) finalNumChainsPerNode.resize(finalNumChainsPerNodeSize);
 
   mpiRC = MPI_Bcast((void *) &finalNumChainsPerNode[0], (int) finalNumChainsPerNodeSize, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm()); // LOAD BALANCE
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains()",
+                      "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0()",
                       "failed MPI_Bcast() for finalNumChainsPerNode data");
 
   //////////////////////////////////////////////////////////////////////////
   // Mpi exchange information between nodes and properly populate
   // balancedLinkControl.linkedChains at each node
   //////////////////////////////////////////////////////////////////////////
-  mpiExchangePositions(prevChain,
-                       exchangeStdVec,
-                       finalNumChainsPerNode,
-                       finalNumPositionsPerNode, // It is already valid at all "management" nodes (not only at node 0) because of the sanity check above
-                       balancedLinkControl);
+  mpiExchangePositions_inter0(prevChain,
+                              exchangeStdVec,
+                              finalNumChainsPerNode,
+                              finalNumPositionsPerNode, // It is already valid at all "management" nodes (not only at node 0) because of the sanity check above
+                              balancedLinkControl);
 
   return;
 }
 
 template <class P_V,class P_M>
 void
-uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains(
+uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(
   unsigned int                           indexOfFirstWeight,              // input
   unsigned int                           indexOfLastWeight,               // input
   const std::vector<unsigned int>&       unifiedIndexCountersAtProc0Only, // input
@@ -423,7 +423,7 @@ uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains(
   if (m_env.inter0Rank() < 0) return;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "Entering uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains()"
+    *m_env.subDisplayFile() << "Entering uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << ": indexOfFirstWeight = " << indexOfFirstWeight
@@ -439,7 +439,7 @@ uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains(
   int mpiRC = MPI_Bcast((void *) &resizeSize, (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm());
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains()",
+                      "uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()",
                       "failed MPI_Bcast() for resizeSize");
   unifiedIndexCountersAtAllProcs.resize(resizeSize,0);
 
@@ -449,11 +449,11 @@ uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains(
   mpiRC = MPI_Bcast((void *) &unifiedIndexCountersAtAllProcs[0], (int) unifiedIndexCountersAtAllProcs.size(), MPI_UNSIGNED, 0, m_env.inter0Comm().Comm());
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains()",
+                      "uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()",
                       "failed MPI_Bcast() for unified index counters");
 #if 0 // Use allgatherv ??? for subNumSamples instead
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::prepareUnbLinkedChains()"
+    *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << ":"
@@ -473,11 +473,11 @@ uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains(
   // Use 'indexOfFirstWeight' and 'indexOfLastWeight' in order to update 'subNumSamples'
   UQ_FATAL_TEST_MACRO(indexOfFirstWeight >= unifiedIndexCountersAtAllProcs.size(),
                       m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains()",
+                      "uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()",
                       "invalid indexOfFirstWeight");
   UQ_FATAL_TEST_MACRO(indexOfLastWeight >= unifiedIndexCountersAtAllProcs.size(),
                       m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains()",
+                      "uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()",
                       "invalid indexOfLastWeight");
   subNumSamples = 0;
   for (unsigned int i = indexOfFirstWeight; i <= indexOfLastWeight; ++i) {
@@ -491,7 +491,7 @@ uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains(
   mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &minModifiedSubNumSamples, (int) auxBuf.size(), MPI_UNSIGNED, MPI_MIN, m_env.inter0Comm().Comm());
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains()",
+                      "uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()",
                       "failed MPI_Allreduce() for min");
 
   unsigned int maxModifiedSubNumSamples = 0;
@@ -499,7 +499,7 @@ uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains(
   mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &maxModifiedSubNumSamples, (int) auxBuf.size(), MPI_UNSIGNED, MPI_MAX, m_env.inter0Comm().Comm());
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains()",
+                      "uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()",
                       "failed MPI_Allreduce() for max");
 
   unsigned int sumModifiedSubNumSamples = 0;
@@ -507,22 +507,22 @@ uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains(
   mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &sumModifiedSubNumSamples, (int) auxBuf.size(), MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains()",
+                      "uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()",
                       "failed MPI_Allreduce() for sum");
 
   //UQ_FATAL_TEST_MACRO(unifiedRequestedNumSamples != sumModifiedSubNumSamples,
   //                    m_env.fullRank(),
-  //                    "uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains()",
+  //                    "uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()",
   //                    "invalid state");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains()"
+    *m_env.subDisplayFile() << "KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()"
                             << ", level "                                   << m_currLevel+LEVEL_REF_ID
                             << ", step "                                    << m_currStep
                             << ": subNumSamples = "                         << subNumSamples
                             << ", unifiedIndexCountersAtAllProcs.size() = " << unifiedIndexCountersAtAllProcs.size()
                             << std::endl;
-    *m_env.subDisplayFile() << "KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains()"
+    *m_env.subDisplayFile() << "KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()"
                             << ", level "                      << m_currLevel+LEVEL_REF_ID
                             << ", step "                       << m_currStep
                             << ": minModifiedSubNumSamples = " << minModifiedSubNumSamples
@@ -533,7 +533,7 @@ uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains(
 
   unsigned int numberOfPositionsToGuaranteeForNode = subNumSamples;
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "KEY In uqMLSampling<P_V,P_M>::prepareUnbLinkedChains()"
+    *m_env.subDisplayFile() << "KEY In uqMLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0()"
                             << ", level "                                 << m_currLevel+LEVEL_REF_ID
                             << ", step "                                  << m_currStep
                             << ": numberOfPositionsToGuaranteeForNode = " << numberOfPositionsToGuaranteeForNode
@@ -575,19 +575,19 @@ uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains(
       else {
         UQ_FATAL_TEST_MACRO(true, // KAUST4
                             m_env.fullRank(),
-                            "uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains()",
+                            "uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()",
                             "should never get here");
       }
     }
   }
   UQ_FATAL_TEST_MACRO(numberOfPositionsToGuaranteeForNode != 0, // subNumSamples, // KAUST4
                       m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains()",
+                      "uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()",
                       "numberOfPositionsToGuaranteeForNode exited loop with wrong value");
   // FIX ME: swap trick to save memory
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains()"
+    *m_env.subDisplayFile() << "KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()"
                             << ", level "                                          << m_currLevel+LEVEL_REF_ID
                             << ", step "                                           << m_currStep
                             << ": unbalancedLinkControl.unbLinkedChains.size() = " << unbalancedLinkControl.unbLinkedChains.size()
@@ -599,7 +599,7 @@ uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains(
 
 template <class P_V,class P_M>
 void
-uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains( // EXTRA FOR LOAD BALANCE
+uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALANCE
   uqMLSamplingLevelOptionsClass&                  inputOptions,            // input, only m_rawChainSize changes
   const P_M&                                      unifiedCovMatrix,        // input
   const uqGenericVectorRVClass  <P_V,P_M>&        rv,                      // input
@@ -613,7 +613,7 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains( // EXTRA FOR LOAD BALANCE
   m_env.fullComm().Barrier();
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "Entering uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains()"
+    *m_env.subDisplayFile() << "Entering uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()"
                             << ": balancedLinkControl.balLinkedChains.size() = " << balancedLinkControl.balLinkedChains.size()
                             << std::endl;
   }
@@ -628,7 +628,7 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains( // EXTRA FOR LOAD BALANCE
   int mpiRC = MPI_Bcast((void *) &chainIdMax, (int) 1, MPI_UNSIGNED, 0, m_env.subComm().Comm()); // Yes, 'subComm', important // LOAD BALANCE
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains()",
+                      "uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()",
                       "failed MPI_Bcast() for chainIdMax");
 
   if (m_env.inter0Rank() >= 0) {
@@ -644,7 +644,7 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains( // EXTRA FOR LOAD BALANCE
     mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &minNumberOfPositions, (int) auxBuf.size(), MPI_UNSIGNED, MPI_MIN, m_env.inter0Comm().Comm()); // LOAD BALANCE
     UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                         m_env.fullRank(),
-                        "uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains()",
+                        "uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()",
                         "failed MPI_Allreduce() for min");
 
     unsigned int maxNumberOfPositions = 0;
@@ -652,7 +652,7 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains( // EXTRA FOR LOAD BALANCE
     mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &maxNumberOfPositions, (int) auxBuf.size(), MPI_UNSIGNED, MPI_MAX, m_env.inter0Comm().Comm()); // LOAD BALANCE
     UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                         m_env.fullRank(),
-                        "uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains()",
+                        "uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()",
                         "failed MPI_Allreduce() for max");
 
     unsigned int sumNumberOfPositions = 0;
@@ -660,17 +660,17 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains( // EXTRA FOR LOAD BALANCE
     mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &sumNumberOfPositions, (int) auxBuf.size(), MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm()); // LOAD BALANCE
     UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                         m_env.fullRank(),
-                        "uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains()",
+                        "uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()",
                         "failed MPI_Allreduce() for sum");
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-      *m_env.subDisplayFile() << "KEY In uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains()"
+      *m_env.subDisplayFile() << "KEY In uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()"
                               << ", level "               << m_currLevel+LEVEL_REF_ID
                               << ", step "                << m_currStep
                               << ": chainIdMax = "        << chainIdMax
                               << ", numberOfPositions = " << numberOfPositions
                               << std::endl;
-      *m_env.subDisplayFile() << "KEY In uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains()"
+      *m_env.subDisplayFile() << "KEY In uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()"
                               << ", level "                  << m_currLevel+LEVEL_REF_ID
                               << ", step "                   << m_currStep
                               << ": minNumberOfPositions = " << minNumberOfPositions
@@ -686,7 +686,7 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains( // EXTRA FOR LOAD BALANCE
       auxInitialPosition = *(balancedLinkControl.balLinkedChains[chainId].initialPosition); // Round Rock
       tmpChainSize = balancedLinkControl.balLinkedChains[chainId].numberOfPositions+1; // IMPORTANT: '+1' in order to discard initial position afterwards
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99/*2*/)) {
-        *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains()"
+        *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()"
                                 << ", level "          << m_currLevel+LEVEL_REF_ID
                                 << ", step "           << m_currStep
                                 << ": chainId = "      << chainId
@@ -711,7 +711,7 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains( // EXTRA FOR LOAD BALANCE
     mpiRC = MPI_Bcast((void *) &tmpChainSize, (int) 1, MPI_UNSIGNED, 0, m_env.subComm().Comm()); // Yes, 'subComm', important // LOAD BALANCE
     UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                         m_env.fullRank(),
-                        "uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains()",
+                        "uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()",
                         "failed MPI_Bcast() for tmpChainSize");
 
     inputOptions.m_rawChainSize = tmpChainSize;
@@ -744,7 +744,7 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains( // EXTRA FOR LOAD BALANCE
       if ((m_env.subDisplayFile()             ) &&
           (m_env.displayVerbosity()   >= 0    ) &&
           (inputOptions.m_totallyMute == false)) {
-        *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateBalLinkedChains()"
+        *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateBalLinkedChains_all()"
                                 << ", level "               << m_currLevel+LEVEL_REF_ID
                                 << ", step "                << m_currStep
                                 << ", chainId = "           << chainId
@@ -765,7 +765,7 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains( // EXTRA FOR LOAD BALANCE
   } // for
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "Leaving uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains()"
+    *m_env.subDisplayFile() << "Leaving uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()"
                             << std::endl;
   }
 
@@ -776,7 +776,7 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains( // EXTRA FOR LOAD BALANCE
 
 template <class P_V,class P_M>
 void
-uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains(
+uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
   uqMLSamplingLevelOptionsClass&               inputOptions,            // input, only m_rawChainSize changes
   const P_M&                                   unifiedCovMatrix,        // input
   const uqGenericVectorRVClass  <P_V,P_M>&     rv,                      // input
@@ -792,7 +792,7 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains(
   m_env.fullComm().Barrier();
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "Entering uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains()"
+    *m_env.subDisplayFile() << "Entering uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()"
                             << ": unbalancedLinkControl.unbLinkedChains.size() = " << unbalancedLinkControl.unbLinkedChains.size()
                             << ", indexOfFirstWeight = "                           << indexOfFirstWeight
                             << std::endl;
@@ -808,7 +808,7 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains(
   int mpiRC = MPI_Bcast((void *) &chainIdMax, (int) 1, MPI_UNSIGNED, 0, m_env.subComm().Comm()); // Yes, 'subComm', important
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains()",
+                      "uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()",
                       "failed MPI_Bcast() for chainIdMax");
 
   if (m_env.inter0Rank() >= 0) {
@@ -824,7 +824,7 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains(
     mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &minNumberOfPositions, (int) auxBuf.size(), MPI_UNSIGNED, MPI_MIN, m_env.inter0Comm().Comm());
     UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                         m_env.fullRank(),
-                        "uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains()",
+                        "uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()",
                         "failed MPI_Allreduce() for min");
 
     unsigned int maxNumberOfPositions = 0;
@@ -832,7 +832,7 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains(
     mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &maxNumberOfPositions, (int) auxBuf.size(), MPI_UNSIGNED, MPI_MAX, m_env.inter0Comm().Comm());
     UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                         m_env.fullRank(),
-                        "uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains()",
+                        "uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()",
                         "failed MPI_Allreduce() for max");
 
     unsigned int sumNumberOfPositions = 0;
@@ -840,17 +840,17 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains(
     mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &sumNumberOfPositions, (int) auxBuf.size(), MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
     UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                         m_env.fullRank(),
-                        "uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains()",
+                        "uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()",
                         "failed MPI_Allreduce() for sum");
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-      *m_env.subDisplayFile() << "KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains()"
+      *m_env.subDisplayFile() << "KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()"
                               << ", level "               << m_currLevel+LEVEL_REF_ID
                               << ", step "                << m_currStep
                               << ": chainIdMax = "        << chainIdMax
                               << ", numberOfPositions = " << numberOfPositions
                               << std::endl;
-      *m_env.subDisplayFile() << "KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains()"
+      *m_env.subDisplayFile() << "KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()"
                               << ", level "                  << m_currLevel+LEVEL_REF_ID
                               << ", step "                   << m_currStep
                               << ": minNumberOfPositions = " << minNumberOfPositions
@@ -866,7 +866,7 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains(
       prevChain.getPositionValues(auxIndex,auxInitialPosition); // Round Rock
       tmpChainSize = unbalancedLinkControl.unbLinkedChains[chainId].numberOfPositions+1; // IMPORTANT: '+1' in order to discard initial position afterwards
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99/*2*/)) {
-        *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains()"
+        *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()"
                                 << ", level "          << m_currLevel+LEVEL_REF_ID
                                 << ", step "           << m_currStep
                                 << ": chainId = "      << chainId
@@ -891,7 +891,7 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains(
     mpiRC = MPI_Bcast((void *) &tmpChainSize, (int) 1, MPI_UNSIGNED, 0, m_env.subComm().Comm()); // Yes, 'subComm', important
     UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                         m_env.fullRank(),
-                        "uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains()",
+                        "uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()",
                         "failed MPI_Bcast() for tmpChainSize");
 
     inputOptions.m_rawChainSize = tmpChainSize;
@@ -924,7 +924,7 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains(
       if ((m_env.subDisplayFile()             ) &&
           (m_env.displayVerbosity()   >= 0    ) &&
           (inputOptions.m_totallyMute == false)) {
-        *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateUnbLinkedChains()"
+        *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateUnbLinkedChains_all()"
                                 << ", level "               << m_currLevel+LEVEL_REF_ID
                                 << ", step "                << m_currStep
                                 << ", chainId = "           << chainId
@@ -945,7 +945,7 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains(
   } // for
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "Leaving uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains()"
+    *m_env.subDisplayFile() << "Leaving uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()"
                             << std::endl;
   }
 
@@ -956,7 +956,7 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains(
 
 template <class P_V,class P_M>
 void
-uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0( // EXTRA FOR LOAD BALANCE 
+uqMLSamplingClass<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE 
   std::vector<uqExchangeInfoStruct>& exchangeStdVec) // input/output
 {
   if (m_env.inter0Rank() != 0) return;
@@ -969,7 +969,7 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0( // EXTRA FOR LOAD BALANCE
   unsigned int Nc = exchangeStdVec.size();
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "Entering uqMLSampling<P_V,P_M>::solveBIPAtProc0()"
+    *m_env.subDisplayFile() << "Entering uqMLSampling<P_V,P_M>::solveBIP_proc0()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << ": Np = "  << Np
@@ -1015,7 +1015,7 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0( // EXTRA FOR LOAD BALANCE
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::solveBIPAtProc0()"
+    *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::solveBIP_proc0()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << ": finished setting BIP rows and cols"
@@ -1054,7 +1054,7 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0( // EXTRA FOR LOAD BALANCE
     }
   }
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::solveBIPAtProc0()"
+    *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::solveBIP_proc0()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << ": finished setting BIP constraint matrix"
@@ -1065,13 +1065,13 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0( // EXTRA FOR LOAD BALANCE
 
   UQ_FATAL_TEST_MACRO(coefId != (int) (ne+1),
                       m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                      "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                       "invalid final coefId");
 
   glp_load_matrix(lp, ne, &iVec[0], &jVec[0], &aVec[0]);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::solveBIPAtProc0()"
+    *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::solveBIP_proc0()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << ": finished loading BIP constraint matrix"
@@ -1088,27 +1088,27 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0( // EXTRA FOR LOAD BALANCE
   //////////////////////////////////////////////////////////////////////////
   UQ_FATAL_TEST_MACRO(glp_get_num_rows(lp) != (int) m, // Not 'm+1'
                       m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                      "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                       "invalid number of rows");
 
   UQ_FATAL_TEST_MACRO(glp_get_num_cols(lp) != (int) n, // Not 'n+1'
                       m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                      "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                       "invalid number of columnss");
 
   UQ_FATAL_TEST_MACRO(glp_get_num_nz(lp) != (int) ne,
                       m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                      "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                       "invalid number of nonzero constraint coefficients");
 
   UQ_FATAL_TEST_MACRO(glp_get_num_int(lp) != (int) n, // ????
                       m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                      "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                       "invalid number of integer structural variables");
 
   UQ_FATAL_TEST_MACRO(glp_get_num_bin(lp) != (int) n,
                       m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                      "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                       "invalid number of binary structural variables");
 
   //////////////////////////////////////////////////////////////////////////
@@ -1133,13 +1133,13 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0( // EXTRA FOR LOAD BALANCE
       if (nodeId == 0) {
         UQ_FATAL_TEST_MACRO(initialState != 1,
                             m_env.fullRank(),
-                            "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                            "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                             "for nodeId = 0, initial state should be '1'");
       }
       else {
         UQ_FATAL_TEST_MACRO(initialState != 0,
                             m_env.fullRank(),
-                            "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                            "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                             "for nodeId > 0, initial state should be '0'");
       }
     }
@@ -1173,7 +1173,7 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0( // EXTRA FOR LOAD BALANCE
   int BIP_rc = glp_intopt(lp, &BIP_params);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::solveBIPAtProc0()"
+    *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::solveBIP_proc0()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << ": finished solving BIP"
@@ -1183,7 +1183,7 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0( // EXTRA FOR LOAD BALANCE
 
   UQ_FATAL_TEST_MACRO(BIP_rc != 0,
                       m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                      "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                       "BIP returned rc != 0");
 
   //////////////////////////////////////////////////////////////////////////
@@ -1191,7 +1191,7 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0( // EXTRA FOR LOAD BALANCE
   //////////////////////////////////////////////////////////////////////////
   int BIP_Status = glp_mip_status(lp);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()"
+    *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << ": BIP_Status = " << BIP_Status
@@ -1202,7 +1202,7 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0( // EXTRA FOR LOAD BALANCE
     case GLP_OPT:
       // Ok 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-        *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()"
+        *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()"
                                 << ", level " << m_currLevel+LEVEL_REF_ID
                                 << ", step "  << m_currStep
                                 << ": BIP solution is optimal"
@@ -1213,7 +1213,7 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0( // EXTRA FOR LOAD BALANCE
     case GLP_FEAS:
       // Ok 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-        *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()"
+        *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()"
                                 << ", level " << m_currLevel+LEVEL_REF_ID
                                 << ", step "  << m_currStep
                                 << ": BIP solution is guaranteed to be 'only' feasible"
@@ -1224,7 +1224,7 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0( // EXTRA FOR LOAD BALANCE
     default:
       UQ_FATAL_TEST_MACRO(true,
                           m_env.fullRank(),
-                          "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                          "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                           "BIP has an undefined solution or has no solution");
     break;
   }
@@ -1232,13 +1232,13 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0( // EXTRA FOR LOAD BALANCE
   for (int i = 1; i <= (int) Nc; ++i) {
     UQ_FATAL_TEST_MACRO(glp_mip_row_val(lp, i) != 1,
                         m_env.fullRank(),
-                        "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                        "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                         "row should have value 1 at solution");
   }
   for (int i = (Nc+1); i <= (int) (Nc+Np-1); ++i) {
     UQ_FATAL_TEST_MACRO(glp_mip_row_val(lp, i) > 0,
                         m_env.fullRank(),
-                        "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                        "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                         "row should have value 0 or should be negative at solution");
   }
 
@@ -1256,7 +1256,7 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0( // EXTRA FOR LOAD BALANCE
       else if (glp_mip_col_val(lp, j) == 1) {
         UQ_FATAL_TEST_MACRO(exchangeStdVec[chainId].finalNodeOfInitialPosition != -1, // important
                             m_env.fullRank(),
-                            "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                            "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                             "chain has already been taken care of");
         exchangeStdVec[chainId].finalNodeOfInitialPosition = nodeId;
         finalNumChainsPerNode   [nodeId] += 1;
@@ -1265,7 +1265,7 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0( // EXTRA FOR LOAD BALANCE
       else {
         UQ_FATAL_TEST_MACRO(true,
                             m_env.fullRank(),
-                            "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                            "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                             "control variable should be either '0' or '1'");
       }
     }
@@ -1275,7 +1275,7 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0( // EXTRA FOR LOAD BALANCE
   unsigned int finalMaxPosPerNode = *std::max_element(finalNumPositionsPerNode.begin(), finalNumPositionsPerNode.end());
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::solveBIPAtProc0()"
+    *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::solveBIP_proc0()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << ": finished preparing output information"
@@ -1286,20 +1286,20 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0( // EXTRA FOR LOAD BALANCE
   // Printout solution information
   //////////////////////////////////////////////////////////////////////////
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "KEY In uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()"
+    *m_env.subDisplayFile() << "KEY In uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << ": solution gives the following redistribution"
                             << std::endl;
     for (unsigned int nodeId = 0; nodeId < Np; ++nodeId) {
-      *m_env.subDisplayFile() << "  KEY In uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()"
+      *m_env.subDisplayFile() << "  KEY In uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()"
                               << ", level " << m_currLevel+LEVEL_REF_ID
                               << ", step "  << m_currStep
                               << ", finalNumChainsPerNode["    << nodeId << "] = " << finalNumChainsPerNode[nodeId]
                               << ", finalNumPositionsPerNode[" << nodeId << "] = " << finalNumPositionsPerNode[nodeId]
                               << std::endl;
     }
-    *m_env.subDisplayFile() << "  KEY In uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()"
+    *m_env.subDisplayFile() << "  KEY In uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << ", finalRatioOfPosPerNode = " << ((double) finalMaxPosPerNode) / ((double)finalMinPosPerNode)
@@ -1311,13 +1311,13 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0( // EXTRA FOR LOAD BALANCE
   //////////////////////////////////////////////////////////////////////////
   UQ_FATAL_TEST_MACRO(glp_mip_obj_val(lp) != (double) finalNumPositionsPerNode[0],
                       m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                      "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                       "Invalid objective value");
 
   for (unsigned int nodeId = 1; nodeId < Np; ++nodeId) { // Yes, '1'
     UQ_FATAL_TEST_MACRO(finalNumPositionsPerNode[nodeId-1] < finalNumPositionsPerNode[nodeId],
                         m_env.fullRank(),
-                        "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                        "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                         "Next node should have a number of positions equal or less than the current node");
   }
 
@@ -1326,7 +1326,7 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0( // EXTRA FOR LOAD BALANCE
     int diff = ((int) finalNumPositionsPerNode[nodeId]) - ((int) finalNumPositionsPerNode[nodeId-1]);
     UQ_FATAL_TEST_MACRO(glp_mip_row_val(lp, i) != diff,
                         m_env.fullRank(),
-                        "uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0()",
+                        "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                         "wrong state");
   }
     
@@ -1337,7 +1337,7 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0( // EXTRA FOR LOAD BALANCE
 
   double bipRunTime = uqMiscGetEllapsedSeconds(&timevalBIP);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "Leaving uqMLSampling<P_V,P_M>::solveBIPAtProc0()"
+    *m_env.subDisplayFile() << "Leaving uqMLSampling<P_V,P_M>::solveBIP_proc0()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << ", after " << bipRunTime << " seconds"
@@ -1349,7 +1349,7 @@ uqMLSamplingClass<P_V,P_M>::solveBIPAtProc0( // EXTRA FOR LOAD BALANCE
 
 template <class P_V,class P_M>
 void
-uqMLSamplingClass<P_V,P_M>::justBalanceAtProc0(
+uqMLSamplingClass<P_V,P_M>::justBalance_proc0(
   uqMLSamplingLevelOptionsClass*     currOptions,    // input
   std::vector<uqExchangeInfoStruct>& exchangeStdVec) // input/output
 {
@@ -1390,14 +1390,14 @@ uqMLSamplingClass<P_V,P_M>::justBalanceAtProc0(
   //iterIdMax /= 2;
   int iterId = -1;
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::justBalanceAtProc0()"
+    *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::justBalance_proc0()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << ", iter "  << iterId
                             << ", currRatioOfPosPerNode = " << currRatioOfPosPerNode
                             << std::endl;
     for (unsigned int nodeId = 0; nodeId < Np; ++nodeId) {
-      *m_env.subDisplayFile() << "  KEY In uqMLSamplingClass<P_V,P_M>::justBalanceAtProc0()"
+      *m_env.subDisplayFile() << "  KEY In uqMLSamplingClass<P_V,P_M>::justBalance_proc0()"
                               << ", level " << m_currLevel+LEVEL_REF_ID
                               << ", step "  << m_currStep
                               << ", iter "  << iterId
@@ -1425,7 +1425,7 @@ uqMLSamplingClass<P_V,P_M>::justBalanceAtProc0(
       std::sort(vectorOfChainSizesPerNode[nodeId].begin(), vectorOfChainSizesPerNode[nodeId].end());
       UQ_FATAL_TEST_MACRO(vectorOfChainSizesPerNode[nodeId].size() != currNumChainsPerNode[nodeId],
                           m_env.fullRank(),
-                          "uqMLSamplingClass<P_V,P_M>::justBalanceAtProc0()",
+                          "uqMLSamplingClass<P_V,P_M>::justBalance_proc0()",
                           "inconsistent number of chains in node");
     }
    
@@ -1448,7 +1448,7 @@ uqMLSamplingClass<P_V,P_M>::justBalanceAtProc0(
     unsigned int numberOfPositionsToMove = vectorOfChainSizesPerNode[nodeWithMostPositions][0];
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::justBalanceAtProc0()"
+      *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::justBalance_proc0()"
                               << ", level " << m_currLevel+LEVEL_REF_ID
                               << ", step "  << m_currStep
                               << ", iter "  << iterId
@@ -1487,14 +1487,14 @@ uqMLSamplingClass<P_V,P_M>::justBalanceAtProc0(
     double newRatioOfPosPerNode = ((double) newMaxPosPerNode ) / ((double) newMinPosPerNode);
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::justBalanceAtProc0()"
+      *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::justBalance_proc0()"
                               << ", level " << m_currLevel+LEVEL_REF_ID
                               << ", step "  << m_currStep
                               << ", iter "  << iterId
                               << ", newRatioOfPosPerNode = " << newRatioOfPosPerNode
                               << std::endl;
       for (unsigned int nodeId = 0; nodeId < Np; ++nodeId) {
-        *m_env.subDisplayFile() << "  KEY In uqMLSamplingClass<P_V,P_M>::justBalanceAtProc0()"
+        *m_env.subDisplayFile() << "  KEY In uqMLSamplingClass<P_V,P_M>::justBalance_proc0()"
                                 << ", level " << m_currLevel+LEVEL_REF_ID
                                 << ", step "  << m_currStep
                                 << ", iter "  << iterId
@@ -1548,20 +1548,20 @@ uqMLSamplingClass<P_V,P_M>::justBalanceAtProc0(
   double finalRatioOfPosPerNode = ((double) finalMaxPosPerNode ) / ((double) finalMinPosPerNode);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "KEY In uqMLSamplingClass<P_V,P_M>::justBalanceAtProc0()"
+    *m_env.subDisplayFile() << "KEY In uqMLSamplingClass<P_V,P_M>::justBalance_proc0()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << ": solution gives the following redistribution"
                             << std::endl;
     for (unsigned int nodeId = 0; nodeId < Np; ++nodeId) {
-      *m_env.subDisplayFile() << "  KEY In uqMLSamplingClass<P_V,P_M>::justBalanceAtProc0()"
+      *m_env.subDisplayFile() << "  KEY In uqMLSamplingClass<P_V,P_M>::justBalance_proc0()"
                               << ", level " << m_currLevel+LEVEL_REF_ID
                               << ", step "  << m_currStep
                               << ", finalNumChainsPerNode["    << nodeId << "] = " << finalNumChainsPerNode[nodeId]
                               << ", finalNumPositionsPerNode[" << nodeId << "] = " << finalNumPositionsPerNode[nodeId]
                               << std::endl;
     }
-    *m_env.subDisplayFile() << "  KEY In uqMLSamplingClass<P_V,P_M>::justBalanceAtProc0()"
+    *m_env.subDisplayFile() << "  KEY In uqMLSamplingClass<P_V,P_M>::justBalance_proc0()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << ", finalRatioOfPosPerNode = " << finalRatioOfPosPerNode
@@ -1573,7 +1573,7 @@ uqMLSamplingClass<P_V,P_M>::justBalanceAtProc0(
   //////////////////////////////////////////////////////////////////////////
   double balRunTime = uqMiscGetEllapsedSeconds(&timevalBal);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "Leaving uqMLSampling<P_V,P_M>::justBalanceAtProc0()"
+    *m_env.subDisplayFile() << "Leaving uqMLSampling<P_V,P_M>::justBalance_proc0()"
                             << ", level "                   << m_currLevel+LEVEL_REF_ID
                             << ", step "                    << m_currStep
                             << ", iterId = "                << iterId
@@ -1587,7 +1587,7 @@ uqMLSamplingClass<P_V,P_M>::justBalanceAtProc0(
 
 template <class P_V,class P_M>
 void
-uqMLSamplingClass<P_V,P_M>::mpiExchangePositions( // EXTRA FOR LOAD BALANCE
+uqMLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0( // EXTRA FOR LOAD BALANCE
   const uqSequenceOfVectorsClass<P_V,P_M>&  prevChain,                // input
   const std::vector<uqExchangeInfoStruct>&  exchangeStdVec,           // input
   const std::vector<unsigned int>&          finalNumChainsPerNode,    // input
@@ -1600,7 +1600,7 @@ uqMLSamplingClass<P_V,P_M>::mpiExchangePositions( // EXTRA FOR LOAD BALANCE
   unsigned int Nc = exchangeStdVec.size();
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "Entering uqMLSampling<P_V,P_M>::mpiExchangePositions()"
+    *m_env.subDisplayFile() << "Entering uqMLSampling<P_V,P_M>::mpiExchangePositions_inter0()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << ": Np = " << Np
@@ -1655,7 +1655,7 @@ uqMLSamplingClass<P_V,P_M>::mpiExchangePositions( // EXTRA FOR LOAD BALANCE
     // Printout important information
     //////////////////////////////////////////////////////////////////////////
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-      *m_env.subDisplayFile() << "KEY In uqMLSamplingClass<P_V,P_M>::mpiExchangePositions()"
+      *m_env.subDisplayFile() << "KEY In uqMLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0()"
                               << ", level " << m_currLevel+LEVEL_REF_ID
                               << ", step "  << m_currStep
                               << ": r = "                                              << r
@@ -1663,7 +1663,7 @@ uqMLSamplingClass<P_V,P_M>::mpiExchangePositions( // EXTRA FOR LOAD BALANCE
                               << ", totalNumberOfInitialPositionsNodeRHasToReceive = " << totalNumberOfInitialPositionsNodeRHasToReceive
                               << ", numberOfInitialPositionsNodeRAlreadyHas = "        << numberOfInitialPositionsNodeRAlreadyHas
                               << std::endl;
-      *m_env.subDisplayFile() << "KEY In uqMLSamplingClass<P_V,P_M>::mpiExchangePositions()"
+      *m_env.subDisplayFile() << "KEY In uqMLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0()"
                               << ", level " << m_currLevel+LEVEL_REF_ID
                               << ", step "  << m_currStep
                               << ": r = "                                       << r
@@ -1678,22 +1678,22 @@ uqMLSamplingClass<P_V,P_M>::mpiExchangePositions( // EXTRA FOR LOAD BALANCE
     //////////////////////////////////////////////////////////////////////////
     UQ_FATAL_TEST_MACRO(indexesOfInitialPositionsNodeRHasToReceiveFromMe.size() != numberOfInitialPositionsNodeRHasToReceiveFromNode[m_env.inter0Rank()],
                         m_env.fullRank(),
-                        "uqMLSamplingClass<P_V,P_M>::mpiExchangePositions()",
+                        "uqMLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0()",
                         "inconsistent number of initial positions to send to node 'r'");
 
     UQ_FATAL_TEST_MACRO(finalNumChainsPerNode[r] != (totalNumberOfInitialPositionsNodeRHasToReceive + numberOfInitialPositionsNodeRAlreadyHas),
                         m_env.fullRank(),
-                        "uqMLSamplingClass<P_V,P_M>::mpiExchangePositions()",
+                        "uqMLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0()",
                         "inconsistent number of chains in node 'r'");
 
     UQ_FATAL_TEST_MACRO(finalNumPositionsPerNode[r] != (totalSumOfChainLenghtsNodeRHasToInherit + sumOfChainLenghtsNodeRAlreadyHas),
                         m_env.fullRank(),
-                        "uqMLSamplingClass<P_V,P_M>::mpiExchangePositions()",
+                        "uqMLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0()",
                         "inconsistent sum of chain lenghts in node 'r'");
 
     UQ_FATAL_TEST_MACRO(totalNumberOfInitialPositionsNodeRHasToReceive != totalNumberOfChainLenghtsNodeRHasToInherit,
                         m_env.fullRank(),
-                        "uqMLSamplingClass<P_V,P_M>::mpiExchangePositions()",
+                        "uqMLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0()",
                         "inconsistent on total number of initial positions to receive in node 'r'");
 
     // Optimize use of memory (FIX ME: don't need to use swap here ????)
@@ -1749,7 +1749,7 @@ uqMLSamplingClass<P_V,P_M>::mpiExchangePositions( // EXTRA FOR LOAD BALANCE
 #endif
     UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                         m_env.fullRank(),
-                        "uqMLSamplingClass<P_V,P_M>::mpiExchangePositions()",
+                        "uqMLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0()",
                         "failed MPI_Gatherv()");
 
     //////////////////////////////////////////////////////////////////////////
@@ -1789,7 +1789,7 @@ uqMLSamplingClass<P_V,P_M>::mpiExchangePositions( // EXTRA FOR LOAD BALANCE
   } // for 'r'
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "Leaving uqMLSampling<P_V,P_M>::mpiExchangePositions()"
+    *m_env.subDisplayFile() << "Leaving uqMLSampling<P_V,P_M>::mpiExchangePositions_inter0()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << std::endl;
