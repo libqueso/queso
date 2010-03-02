@@ -651,18 +651,78 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     // Prepare to end current level
     //***********************************************************
     double levelRunTime = uqMiscGetEllapsedSeconds(&timevalLevel);
+
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
       *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
                               << ": ending level "                   << m_currLevel+LEVEL_REF_ID
                               << ", having generated "               << currChain.subSequenceSize()
-                              << " chain positions after "           << levelRunTime              << " seconds"
+                              << " chain positions"
                               << ", cumulativeRawChainRunTime = "    << cumulativeRawChainRunTime << " seconds"
+                              << ", total level time = "             << levelRunTime              << " seconds"
                               << ", cumulativeRawChainRejections = " << cumulativeRawChainRejections
                               << " (" << 100.*((double) cumulativeRawChainRejections)/((double) currOptions->m_rawChainSize)
                               << "% at this processor)"
                               << " (" << 100.*((double) unifiedNumberOfRejections)/((double) unifiedRequestedNumSamples)
                               << "% over all processors)"
                               << std::endl;
+    }
+
+    if (m_env.inter0Rank() >= 0) {
+      double minCumulativeRawChainRunTime = 0.;
+      mpiRC = MPI_Allreduce((void *) &cumulativeRawChainRunTime, (void *) &minCumulativeRawChainRunTime, (int) 1, MPI_DOUBLE, MPI_MIN, m_env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                          "failed MPI_Allreduce() for min cumulative raw chain run time");
+
+      double maxCumulativeRawChainRunTime = 0.;
+      mpiRC = MPI_Allreduce((void *) &cumulativeRawChainRunTime, (void *) &maxCumulativeRawChainRunTime, (int) 1, MPI_DOUBLE, MPI_MAX, m_env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                          "failed MPI_Allreduce() for max cumulative raw chain run time");
+
+      double avgCumulativeRawChainRunTime = 0.;
+      mpiRC = MPI_Allreduce((void *) &cumulativeRawChainRunTime, (void *) &avgCumulativeRawChainRunTime, (int) 1, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                          "failed MPI_Allreduce() for sum cumulative raw chain run time");
+      avgCumulativeRawChainRunTime /= ((double) m_env.inter0Comm().NumProc());
+
+      double minLevelRunTime = 0.;
+      mpiRC = MPI_Allreduce((void *) &levelRunTime, (void *) &minLevelRunTime, (int) 1, MPI_DOUBLE, MPI_MIN, m_env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                          "failed MPI_Allreduce() for min level run time");
+
+      double maxLevelRunTime = 0.;
+      mpiRC = MPI_Allreduce((void *) &levelRunTime, (void *) &maxLevelRunTime, (int) 1, MPI_DOUBLE, MPI_MAX, m_env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                          "failed MPI_Allreduce() for max level run time");
+
+      double avgLevelRunTime = 0.;
+      mpiRC = MPI_Allreduce((void *) &levelRunTime, (void *) &avgLevelRunTime, (int) 1, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                          "failed MPI_Allreduce() for sum level run time");
+      avgLevelRunTime /= ((double) m_env.inter0Comm().NumProc());
+
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+        *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                                << ", level "               << m_currLevel+LEVEL_REF_ID
+                                << ": min cumul seconds = " << minCumulativeRawChainRunTime
+                                << ", avg cumul seconds = " << avgCumulativeRawChainRunTime
+                                << ", max cumul seconds = " << maxCumulativeRawChainRunTime
+                                << ", min level seconds = " << minLevelRunTime
+                                << ", avg level seconds = " << avgLevelRunTime
+                                << ", max level seconds = " << maxLevelRunTime
+                                << std::endl;
+      }
     }
 
     if (currExponent != 1.) delete currOptions;

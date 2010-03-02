@@ -1412,7 +1412,9 @@ uqMLSamplingClass<P_V,P_M>::justBalance_proc0(
          (currRatioOfPosPerNode > currOptions->m_loadBalanceTreshold)) {
     iterId++;
 
+    //////////////////////////////////////////////////////////////////////////
     // Initialize information
+    //////////////////////////////////////////////////////////////////////////
     for (unsigned int nodeId = 0; nodeId < Np; ++nodeId) {
       vectorOfChainSizesPerNode[nodeId].clear(); // make sure vectors have size 0
     }
@@ -1429,52 +1431,69 @@ uqMLSamplingClass<P_V,P_M>::justBalance_proc0(
                           "inconsistent number of chains in node");
     }
    
+    //////////////////////////////////////////////////////////////////////////
     // Find [node with most postions], [node with least positions] and [number of positions to move]
-    unsigned int biggestAmountOfPositionsPerNode  = currNumPositionsPerNode[0];
-    unsigned int smallestAmountOfPositionsPerNode = currNumPositionsPerNode[0];
-    unsigned int nodeWithMostPositions = 0;
-    unsigned int nodeWithLeastPositions = 0;
+    //////////////////////////////////////////////////////////////////////////
+    unsigned int currBiggestAmountOfPositionsPerNode  = currNumPositionsPerNode[0];
+    unsigned int currSmallestAmountOfPositionsPerNode = currNumPositionsPerNode[0];
+    unsigned int currNodeWithMostPositions = 0;
+    unsigned int currNodeWithLeastPositions = 0;
     for (unsigned int nodeId = 0; nodeId < Np; ++nodeId) {
-      if (currNumPositionsPerNode[nodeId] > biggestAmountOfPositionsPerNode) {
-        biggestAmountOfPositionsPerNode = currNumPositionsPerNode[nodeId];
-        nodeWithMostPositions = nodeId;
+      if (currNumPositionsPerNode[nodeId] > currBiggestAmountOfPositionsPerNode) {
+        currBiggestAmountOfPositionsPerNode = currNumPositionsPerNode[nodeId];
+        currNodeWithMostPositions = nodeId;
       }
-      if (currNumPositionsPerNode[nodeId] < smallestAmountOfPositionsPerNode) {
-        smallestAmountOfPositionsPerNode = currNumPositionsPerNode[nodeId];
-        nodeWithLeastPositions = nodeId;
+      if (currNumPositionsPerNode[nodeId] < currSmallestAmountOfPositionsPerNode) {
+        currSmallestAmountOfPositionsPerNode = currNumPositionsPerNode[nodeId];
+        currNodeWithLeastPositions = nodeId;
       }
     }
 
-    unsigned int numberOfPositionsToMove = vectorOfChainSizesPerNode[nodeWithMostPositions][0];
+    UQ_FATAL_TEST_MACRO(currMinPosPerNode != currNumPositionsPerNode[currNodeWithLeastPositions],
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::justBalance_proc0()",
+                        "inconsistent currMinPosPerNode");
+
+    UQ_FATAL_TEST_MACRO(currMaxPosPerNode != currNumPositionsPerNode[currNodeWithMostPositions],
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::justBalance_proc0()",
+                        "inconsistent currMaxPosPerNode");
+
+    unsigned int numberOfPositionsToMove = vectorOfChainSizesPerNode[currNodeWithMostPositions][0];
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
       *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::justBalance_proc0()"
                               << ", level " << m_currLevel+LEVEL_REF_ID
                               << ", step "  << m_currStep
                               << ", iter "  << iterId
-                              << ", node with most positions is "
-                              << nodeWithMostPositions << "(cs=" << currNumChainsPerNode[nodeWithMostPositions  ] << ", ps=" << currNumPositionsPerNode[nodeWithMostPositions ] << ")"
-                              << ", node with least positions is "
-                              << nodeWithLeastPositions << "(cs=" << currNumChainsPerNode[nodeWithLeastPositions] << ", ps=" << currNumPositionsPerNode[nodeWithLeastPositions] << ")"
-                              << ", number of positions to move = " << numberOfPositionsToMove
+                              << ", before update"
+                              << ", node w/ most pos is "
+                              << currNodeWithMostPositions  << "(cs=" << currNumChainsPerNode[currNodeWithMostPositions ] << ", ps=" << currNumPositionsPerNode[currNodeWithMostPositions ] << ")"
+                              << ", node w/ least pos is "
+                              << currNodeWithLeastPositions << "(cs=" << currNumChainsPerNode[currNodeWithLeastPositions] << ", ps=" << currNumPositionsPerNode[currNodeWithLeastPositions] << ")"
+                              << ", number of pos to move = " << numberOfPositionsToMove
                               << std::endl;
     }
 
+    //////////////////////////////////////////////////////////////////////////
     // Update 'final' fields in the two nodes
+    //////////////////////////////////////////////////////////////////////////
     std::vector<uqExchangeInfoStruct> newExchangeStdVec(Nc);
     for (unsigned int chainId = 0; chainId < Nc; ++chainId) {
       newExchangeStdVec[chainId] = currExchangeStdVec[chainId];
     }
 
     for (unsigned int chainId = 0; chainId < Nc; ++chainId) {
-      if ((newExchangeStdVec[chainId].finalNodeOfInitialPosition == (int) nodeWithMostPositions) &&
-          (newExchangeStdVec[chainId].numberOfPositions          == numberOfPositionsToMove    )) {
-        newExchangeStdVec[chainId].finalNodeOfInitialPosition = nodeWithLeastPositions;
+      if ((newExchangeStdVec[chainId].finalNodeOfInitialPosition == (int) currNodeWithMostPositions) &&
+          (newExchangeStdVec[chainId].numberOfPositions          == numberOfPositionsToMove        )) {
+        newExchangeStdVec[chainId].finalNodeOfInitialPosition = currNodeWithLeastPositions;
         break; // exit 'for'
       }
     }
 
+    //////////////////////////////////////////////////////////////////////////
     // Compute new ratio of positions per node
+    //////////////////////////////////////////////////////////////////////////
     std::vector<unsigned int> newNumChainsPerNode   (Np,0);
     std::vector<unsigned int> newNumPositionsPerNode(Np,0);
     for (unsigned int chainId = 0; chainId < Nc; ++chainId) {
@@ -1482,15 +1501,56 @@ uqMLSamplingClass<P_V,P_M>::justBalance_proc0(
       newNumChainsPerNode   [nodeId] += 1;
       newNumPositionsPerNode[nodeId] += newExchangeStdVec[chainId].numberOfPositions;
     }
-    unsigned int newMinPosPerNode = *std::min_element(newNumPositionsPerNode.begin(), newNumPositionsPerNode.end());
-    unsigned int newMaxPosPerNode = *std::max_element(newNumPositionsPerNode.begin(), newNumPositionsPerNode.end());
-    double newRatioOfPosPerNode = ((double) newMaxPosPerNode ) / ((double) newMinPosPerNode);
+
+    unsigned int newBiggestAmountOfPositionsPerNode  = newNumPositionsPerNode[0];
+    unsigned int newSmallestAmountOfPositionsPerNode = newNumPositionsPerNode[0];
+    unsigned int newNodeWithMostPositions = 0;
+    unsigned int newNodeWithLeastPositions = 0;
+    for (unsigned int nodeId = 0; nodeId < Np; ++nodeId) {
+      if (newNumPositionsPerNode[nodeId] > newBiggestAmountOfPositionsPerNode) {
+        newBiggestAmountOfPositionsPerNode = newNumPositionsPerNode[nodeId];
+        newNodeWithMostPositions = nodeId;
+      }
+      if (newNumPositionsPerNode[nodeId] < newSmallestAmountOfPositionsPerNode) {
+        newSmallestAmountOfPositionsPerNode = newNumPositionsPerNode[nodeId];
+        newNodeWithLeastPositions = nodeId;
+      }
+    }
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
       *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::justBalance_proc0()"
                               << ", level " << m_currLevel+LEVEL_REF_ID
                               << ", step "  << m_currStep
                               << ", iter "  << iterId
+                              << ", after update"
+                              << ", node w/ most pos is "
+                              << newNodeWithMostPositions  << "(cs=" << newNumChainsPerNode[newNodeWithMostPositions ] << ", ps=" << newNumPositionsPerNode[newNodeWithMostPositions ] << ")"
+                              << ", node w/ least pos is "
+                              << newNodeWithLeastPositions << "(cs=" << newNumChainsPerNode[newNodeWithLeastPositions] << ", ps=" << newNumPositionsPerNode[newNodeWithLeastPositions] << ")"
+                              << std::endl;
+    }
+
+    unsigned int newMinPosPerNode = *std::min_element(newNumPositionsPerNode.begin(), newNumPositionsPerNode.end());
+    unsigned int newMaxPosPerNode = *std::max_element(newNumPositionsPerNode.begin(), newNumPositionsPerNode.end());
+    double newRatioOfPosPerNode = ((double) newMaxPosPerNode ) / ((double) newMinPosPerNode);
+
+    UQ_FATAL_TEST_MACRO(newMinPosPerNode != newNumPositionsPerNode[newNodeWithLeastPositions],
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::justBalance_proc0()",
+                        "inconsistent newMinPosPerNode");
+
+    UQ_FATAL_TEST_MACRO(newMaxPosPerNode != newNumPositionsPerNode[newNodeWithMostPositions],
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::justBalance_proc0()",
+                        "inconsistent newMaxPosPerNode");
+
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
+      *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::justBalance_proc0()"
+                              << ", level " << m_currLevel+LEVEL_REF_ID
+                              << ", step "  << m_currStep
+                              << ", iter "  << iterId
+                              << ", newMaxPosPerNode = "     << newMaxPosPerNode
+                              << ", newMinPosPerNode = "     << newMinPosPerNode
                               << ", newRatioOfPosPerNode = " << newRatioOfPosPerNode
                               << std::endl;
       for (unsigned int nodeId = 0; nodeId < Np; ++nodeId) {
@@ -1504,12 +1564,16 @@ uqMLSamplingClass<P_V,P_M>::justBalance_proc0(
       }
     }
 
+    //////////////////////////////////////////////////////////////////////////
     // See if we need to exit 'while'
-    if (newRatioOfPosPerNode >= currRatioOfPosPerNode) {
+    //////////////////////////////////////////////////////////////////////////
+    if (newRatioOfPosPerNode > currRatioOfPosPerNode) {
       break; // exit 'while'
     }
 
+    //////////////////////////////////////////////////////////////////////////
     // Prepare for next iteration
+    //////////////////////////////////////////////////////////////////////////
     for (unsigned int nodeId = 0; nodeId < Np; ++nodeId) {
       currNumChainsPerNode   [nodeId] = 0;
       currNumPositionsPerNode[nodeId] = 0;
