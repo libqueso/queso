@@ -90,11 +90,11 @@ uqMLSamplingClass<P_V,P_M>::sampleIndexes_proc0(
 template <class P_V,class P_M>
 bool
 uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(
-  uqMLSamplingLevelOptionsClass*     currOptions,                     // input
-  unsigned int                       indexOfFirstWeight,              // input
-  unsigned int                       indexOfLastWeight,               // input
-  const std::vector<unsigned int>&   unifiedIndexCountersAtProc0Only, // input
-  std::vector<uqExchangeInfoStruct>& exchangeStdVec)                  // output
+  const uqMLSamplingLevelOptionsClass* currOptions,                     // input
+  unsigned int                         indexOfFirstWeight,              // input
+  unsigned int                         indexOfLastWeight,               // input
+  const std::vector<unsigned int>&     unifiedIndexCountersAtProc0Only, // input
+  std::vector<uqExchangeInfoStruct>&   exchangeStdVec)                  // output
 {
   bool result = false;
 
@@ -286,7 +286,7 @@ uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(
 template <class P_V,class P_M>
 void
 uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0( // EXTRA FOR LOAD BALANCE
-  uqMLSamplingLevelOptionsClass*            currOptions,         // input
+  const uqMLSamplingLevelOptionsClass*      currOptions,         // input
   const uqSequenceOfVectorsClass<P_V,P_M>&  prevChain,           // input
   std::vector<uqExchangeInfoStruct>&        exchangeStdVec,      // input/output
   uqBalancedLinkedChainsPerNodeStruct<P_V>& balancedLinkControl) // output
@@ -1350,8 +1350,8 @@ uqMLSamplingClass<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
 template <class P_V,class P_M>
 void
 uqMLSamplingClass<P_V,P_M>::justBalance_proc0(
-  uqMLSamplingLevelOptionsClass*     currOptions,    // input
-  std::vector<uqExchangeInfoStruct>& exchangeStdVec) // input/output
+  const uqMLSamplingLevelOptionsClass* currOptions,    // input
+  std::vector<uqExchangeInfoStruct>&   exchangeStdVec) // input/output
 {
   if (m_env.inter0Rank() != 0) return;
 
