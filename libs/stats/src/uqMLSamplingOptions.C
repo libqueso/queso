@@ -35,22 +35,16 @@
 
 uqMLSamplingOptionsClass::uqMLSamplingOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix)
   :
-  m_prefix                         ((std::string)(prefix) + "ml_"                 ),
-  m_checkpointLevel                (UQ_ML_SAMPLING_CHECKPOINT_LEVEL_ODV           ),
-  m_checkpointOutputFileName       (UQ_ML_SAMPLING_CHECKPOINT_OUTPUT_FILE_NAME_ODV),
-  m_restartLevel                   (UQ_ML_SAMPLING_RESTART_LEVEL_ODV              ),
-  m_restartInputFileName           (UQ_ML_SAMPLING_RESTART_INPUT_FILE_NAME_ODV    ),
-  m_dataOutputFileName             (UQ_ML_SAMPLING_DATA_OUTPUT_FILE_NAME_ODV      ),
-//m_dataOutputAllowedSet           (),
-  m_env                            (env),
-  m_optionsDesc                    (new po::options_description("Multilevel sampling options")),
-  m_option_help                    (m_prefix + "help"                    ),
-  m_option_checkpointLevel         (m_prefix + "checkpointLevel"         ),
-  m_option_checkpointOutputFileName(m_prefix + "checkpointOutputFileName"),
-  m_option_restartLevel            (m_prefix + "restartLevel"            ),
-  m_option_restartInputFileName    (m_prefix + "restartInputFileName"    ),
-  m_option_dataOutputFileName      (m_prefix + "dataOutputFileName"      ),
-  m_option_dataOutputAllowedSet    (m_prefix + "dataOutputAllowedSet"    )
+  m_prefix                     ((std::string)(prefix) + "ml_"             ),
+  m_restartInputFileName       (UQ_ML_SAMPLING_RESTART_INPUT_FILE_NAME_ODV),
+  m_dataOutputFileName         (UQ_ML_SAMPLING_DATA_OUTPUT_FILE_NAME_ODV  ),
+//m_dataOutputAllowedSet       (),
+  m_env                        (env),
+  m_optionsDesc                (new po::options_description("Multilevel sampling options")),
+  m_option_help                (m_prefix + "help"                ),
+  m_option_restartInputFileName(m_prefix + "restartInputFileName"),
+  m_option_dataOutputFileName  (m_prefix + "dataOutputFileName"  ),
+  m_option_dataOutputAllowedSet(m_prefix + "dataOutputAllowedSet")
 {
 }
 
@@ -80,9 +74,9 @@ uqMLSamplingOptionsClass::scanOptionsValues()
 void
 uqMLSamplingOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
 {
-  // ernesto
   optionsDesc.add_options()     
     (m_option_help.c_str(),                                                                                                       "produce help message for multilevel sampling options")
+    (m_option_restartInputFileName.c_str(), po::value<std::string >()->default_value(UQ_ML_SAMPLING_RESTART_INPUT_FILE_NAME_ODV), "name of restart input file"                          )
     (m_option_dataOutputFileName.c_str(),   po::value<std::string >()->default_value(UQ_ML_SAMPLING_DATA_OUTPUT_FILE_NAME_ODV  ), "name of generic output file"                         )
     (m_option_dataOutputAllowedSet.c_str(), po::value<std::string >()->default_value(UQ_ML_SAMPLING_DATA_OUTPUT_ALLOWED_SET_ODV), "subEnvs that will write to generic output file"      )
   ;
@@ -100,7 +94,9 @@ uqMLSamplingOptionsClass::getMyOptionValues(po::options_description& optionsDesc
     }
   }
 
-  // ernesto
+  if (m_env.allOptionsMap().count(m_option_restartInputFileName.c_str())) {
+    m_restartInputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_restartInputFileName.c_str()]).as<std::string>();
+  }
 
   if (m_env.allOptionsMap().count(m_option_dataOutputFileName.c_str())) {
     m_dataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName.c_str()]).as<std::string>();
@@ -125,8 +121,8 @@ uqMLSamplingOptionsClass::getMyOptionValues(po::options_description& optionsDesc
 void
 uqMLSamplingOptionsClass::print(std::ostream& os) const
 {
-  // ernesto
-  os <<         m_option_dataOutputFileName   << " = " << m_dataOutputFileName
+  os <<         m_option_restartInputFileName << " = " << m_restartInputFileName
+     << "\n" << m_option_dataOutputFileName   << " = " << m_dataOutputFileName
      << "\n" << m_option_dataOutputAllowedSet << " = ";
   for (std::set<unsigned int>::iterator setIt = m_dataOutputAllowedSet.begin(); setIt != m_dataOutputAllowedSet.end(); ++setIt) {
     os << *setIt << " ";

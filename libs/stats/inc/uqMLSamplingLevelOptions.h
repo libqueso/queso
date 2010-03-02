@@ -39,8 +39,9 @@
 #include <uqSequenceStatisticalOptions.h>
 #define UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE "."
 
-#define UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE   "."
 // _ODV = option default value
+#define UQ_ML_SAMPLING_L_CHECKPOINT_OUTPUT_FILE_NAME_ODV            UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
+#define UQ_ML_SAMPLING_L_STOP_AT_END_ODV                            0
 #define UQ_ML_SAMPLING_L_DATA_OUTPUT_FILE_NAME_ODV                  UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
 #define UQ_ML_SAMPLING_L_DATA_OUTPUT_ALLOW_ODV                      ""
 #define UQ_ML_SAMPLING_L_LOAD_BALANCE_ALGORITHM_ID_ODV              1
@@ -91,6 +92,8 @@ public:
 
   std::string                        m_prefix;
 
+  std::string                        m_checkpointOutputFileName;
+  bool                               m_stopAtEnd;
   std::string                        m_dataOutputFileName;
   std::set<unsigned int>             m_dataOutputAllowedSet;
   std::string                        m_str1;
@@ -147,6 +150,8 @@ private:
 
   std::string                   m_option_help;
 
+  std::string                   m_option_checkpointOutputFileName;
+  std::string                   m_option_stopAtEnd;
   std::string                   m_option_dataOutputFileName;
   std::string                   m_option_dataOutputAllowedSet;
   std::string                   m_option_loadBalanceAlgorithmId;

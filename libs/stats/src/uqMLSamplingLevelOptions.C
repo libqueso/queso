@@ -38,6 +38,8 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   const char*                   prefix)
   :
   m_prefix                                   ((std::string)(prefix) + ""),
+  m_checkpointOutputFileName                 (UQ_ML_SAMPLING_L_CHECKPOINT_OUTPUT_FILE_NAME_ODV),
+  m_stopAtEnd                                (UQ_ML_SAMPLING_L_STOP_AT_END_ODV),
   m_dataOutputFileName                       (UQ_ML_SAMPLING_L_DATA_OUTPUT_FILE_NAME_ODV),
 //m_dataOutputAllowedSet                     (),
   m_str1                                     (""),
@@ -84,6 +86,8 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   m_env                                      (env),
   m_optionsDesc                              (new po::options_description("Multilevel sampling level options")),
   m_option_help                              (m_prefix + "help"                              ),
+  m_option_checkpointOutputFileName          (m_prefix + "checkpointOutputFileName"          ),
+  m_option_stopAtEnd                         (m_prefix + "stopAtEnd"                         ),
   m_option_dataOutputFileName                (m_prefix + "dataOutputFileName"                ),
   m_option_dataOutputAllowedSet              (m_prefix + "dataOutputAllowedSet"              ),
   m_option_loadBalanceAlgorithmId            (m_prefix + "loadBalanceAlgorithmId"            ),
@@ -125,6 +129,8 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
 void
 uqMLSamplingLevelOptionsClass::copyOptionsValues(const uqMLSamplingLevelOptionsClass& srcOptions)
 {
+  m_checkpointOutputFileName          = srcOptions.m_checkpointOutputFileName;
+  m_stopAtEnd                         = srcOptions.m_stopAtEnd;
   m_dataOutputFileName                = srcOptions.m_dataOutputFileName;
   m_dataOutputAllowedSet              = srcOptions.m_dataOutputAllowedSet;
   m_str1                              = srcOptions.m_str1;
@@ -220,7 +226,9 @@ void
 uqMLSamplingLevelOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
 {
   optionsDesc.add_options()     
-    (m_option_help.c_str(),                                                                                                                                      "produce help message for Bayesian Markov chain distr. calculator")
+    (m_option_help.c_str(),                                                                                                              "produce help message for Bayesian Markov chain distr. calculator")
+    (m_option_checkpointOutputFileName.c_str(),           po::value<std::string >()->default_value(m_checkpointOutputFileName         ), "name of checpoint output file"                                   )
+    (m_option_stopAtEnd.c_str(),                          po::value<bool        >()->default_value(m_stopAtEnd                        ), "stop at end of such level"                                       )
     (m_option_dataOutputFileName.c_str(),                 po::value<std::string >()->default_value(m_dataOutputFileName               ), "name of generic output file"                                     )
     (m_option_dataOutputAllowedSet.c_str(),               po::value<std::string >()->default_value(m_str1                             ), "subEnvs that will write to generic output file"                  )
     (m_option_loadBalanceAlgorithmId.c_str(),             po::value<unsigned int>()->default_value(m_loadBalanceAlgorithmId           ), "Perform load balancing with chosen algorithm (0 = no balancing)" )
@@ -271,6 +279,14 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
       *m_env.subDisplayFile() << optionsDesc
                               << std::endl;
     }
+  }
+
+  if (m_env.allOptionsMap().count(m_option_checkpointOutputFileName.c_str())) {
+    m_checkpointOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_checkpointOutputFileName.c_str()]).as<std::string>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_stopAtEnd.c_str())) {
+    m_stopAtEnd = ((const po::variable_value&) m_env.allOptionsMap()[m_option_stopAtEnd.c_str()]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_dataOutputFileName.c_str())) {
@@ -571,8 +587,10 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
 void
 uqMLSamplingLevelOptionsClass::print(std::ostream& os) const
 {
-  os <<         m_option_dataOutputFileName   << " = " << m_dataOutputFileName
-     << "\n" << m_option_dataOutputAllowedSet << " = ";
+  os <<         m_option_checkpointOutputFileName << " = " << m_checkpointOutputFileName
+     << "\n" << m_option_stopAtEnd                << " = " << m_stopAtEnd
+     << "\n" << m_option_dataOutputFileName       << " = " << m_dataOutputFileName
+     << "\n" << m_option_dataOutputAllowedSet     << " = ";
   for (std::set<unsigned int>::iterator setIt = m_dataOutputAllowedSet.begin(); setIt != m_dataOutputAllowedSet.end(); ++setIt) {
     os << *setIt << " ";
   }

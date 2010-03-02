@@ -123,7 +123,7 @@ private:
                                         uqScalarSequenceClass<double>&                  currLogLikelihoodValues,            // output
                                         uqScalarSequenceClass<double>&                  currLogTargetValues);               // output
 
-  void   saveCurrState                 (double                                          currExponent,                       // input
+  void   checkpointCurrState           (double                                          currExponent,                       // input
                                         double                                          currEta,                            // input
                                         unsigned int                                    unifiedRequestedNumSamples,         // input
                                         const uqSequenceOfVectorsClass<P_V,P_M>&        currChain,                          // input
@@ -283,7 +283,6 @@ private:
         unsigned int                        m_currLevel;
         unsigned int                        m_currStep;
 	std::vector<double>                 m_logEvidenceFactors;
-        double                              m_logEvidence;
 };
 
 template<class P_V,class P_M>
@@ -306,8 +305,7 @@ uqMLSamplingClass<P_V,P_M>::uqMLSamplingClass(
   m_options           (m_env,prefix),
   m_currLevel         (0),
   m_currStep          (0),
-  m_logEvidenceFactors(0),
-  m_logEvidence       (0.)
+  m_logEvidenceFactors(0)
 {
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering uqMLSamplingClass<P_V,P_M>::constructor()"
@@ -362,14 +360,14 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
   uqMLSamplingLevelOptionsClass lastLevelOptions(m_env,(m_options.m_prefix + "last_").c_str());
   lastLevelOptions.scanOptionsValues(&defaultLevelOptions);
 
-  if (m_options.m_restartLevel == ((int) m_currLevel)) {
+  if (m_options.m_restartInputFileName != ".") {
     // Recover 'currExponent', 'm_currLevel', 'currChain' etc from input file
-    restartCurrState(currExponent,
-                     currEta,
-                     unifiedRequestedNumSamples,
-                     currChain,
-                     currLogLikelihoodValues,
-                     currLogTargetValues);
+    restartCurrState(currExponent,               // output
+                     currEta,                    // output
+                     unifiedRequestedNumSamples, // output
+                     currChain,                  // output
+                     currLogLikelihoodValues,    // output
+                     currLogTargetValues);       // output
   }
   else {
     generateSequence_Level0_all(defaultLevelOptions,        // input
@@ -384,19 +382,9 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
   //***********************************************************
   // Take care of next levels
   //***********************************************************
+  bool stopAtEndOfLevel = false;
   char tmpSufix[256];
-  while (currExponent < 1.) {
-    if (m_options.m_checkpointLevel == ((int) m_currLevel)) {
-      // Save 'currExponent', 'm_currLevel', 'currChain' etc into output file
-      saveCurrState(currExponent,
-                    currEta,
-                    unifiedRequestedNumSamples,
-                    currChain,
-                    currLogLikelihoodValues,
-                    currLogTargetValues);
-      break; // exit 'while'
-    }
-
+  do { // begin level while
     m_currLevel++;
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -454,6 +442,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
 
     //***********************************************************
     // Step 3 of 11: compute [currExponent and sequence of weights] for current level
+    //               update 'm_logEvidenceFactors'
     //***********************************************************
     m_currStep++;
     uqScalarSequenceClass<double> weightSequence(m_env,prevLogLikelihoodValues.subSequenceSize(),"");
@@ -545,7 +534,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
 
     //***********************************************************
     // Step 7 of 11: plan for number of linked chains for each node so that all
-    //              nodes generate the closest possible to the same number of positions
+    //               nodes generate the closest possible to the same number of positions
     //***********************************************************
     m_currStep++;
     uqBalancedLinkedChainsPerNodeStruct<P_V> balancedLinkControl;
@@ -615,6 +604,16 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                                 &currLogLikelihoodValues,     // output // likelihood is important
                                 &currLogTargetValues);        // output);
 
+    if (currOptions->m_checkpointOutputFileName != ".") {
+      // Checkpoint 'currExponent', 'm_currLevel', 'currChain' etc into output file
+      checkpointCurrState(currExponent,               // input
+                          currEta,                    // input
+                          unifiedRequestedNumSamples, // input
+                          currChain,                  // input
+                          currLogLikelihoodValues,    // input
+                          currLogTargetValues);       // input
+    }
+
     //***********************************************************
     // Just free some memory
     //***********************************************************
@@ -650,6 +649,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     //***********************************************************
     // Prepare to end current level
     //***********************************************************
+    stopAtEndOfLevel = currOptions->m_stopAtEnd;
     double levelRunTime = uqMiscGetEllapsedSeconds(&timevalLevel);
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -664,6 +664,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                               << "% at this processor)"
                               << " (" << 100.*((double) unifiedNumberOfRejections)/((double) unifiedRequestedNumSamples)
                               << "% over all processors)"
+                              << ", stopAtEndOfLevel = " << stopAtEndOfLevel
                               << std::endl;
     }
 
@@ -726,7 +727,8 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     }
 
     if (currExponent != 1.) delete currOptions;
-  } // end of level while
+  } while ((currExponent     <  1.   ) &&
+           (stopAtEndOfLevel == false)); // end of level while
 
   UQ_FATAL_TEST_MACRO((currExponent < 1.),
                       m_env.fullRank(),
@@ -738,15 +740,15 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                         m_env.fullRank(),
                         "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                         "invalid m_currLevel at the exit of the level loop");
-    m_logEvidence = 0.;
+    double logEvidence = 0.;
     for (unsigned int i = 0; i < m_logEvidenceFactors.size(); ++i) {
-      m_logEvidence += m_logEvidenceFactors[i];
+      logEvidence += m_logEvidenceFactors[i];
     }
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
       *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                              << ", log(evidence) = " << m_logEvidence
-                              << ", evidence = "      << exp(m_logEvidence)
+                              << ", log(evidence) = " << logEvidence
+                              << ", evidence = "      << exp(logEvidence)
                               << std::endl;
     }
   }

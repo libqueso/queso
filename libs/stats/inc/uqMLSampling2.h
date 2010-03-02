@@ -49,7 +49,7 @@ uqMLSamplingClass<P_V,P_M>::restartCurrState(
 
 template <class P_V,class P_M>
 void
-uqMLSamplingClass<P_V,P_M>::saveCurrState(
+uqMLSamplingClass<P_V,P_M>::checkpointCurrState(
   double                                   currExponent,               // input
   double                                   currEta,                    // input
   unsigned int                             unifiedRequestedNumSamples, // input
