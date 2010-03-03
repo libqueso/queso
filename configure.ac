@@ -1,5 +1,23 @@
-# Init autoconf w/ Package name, version number, and developer email
+# -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script. 
+
+AC_PREREQ(2.61)
 AC_INIT([queso], [0.42.0], [pecos_dev@ices.utexas.edu])
+AM_CONFIG_HEADER(config.h)
+AC_CONFIG_AUX_DIR([build-aux])
+AM_INIT_AUTOMAKE
+
+# Release versioning
+
+GENERIC_MAJOR_VERSION=0
+GENERIC_MINOR_VERSION=40
+GENERIC_MICRO_VERSION=2
+
+# Generating a libtool library
+
+GENERIC_RELEASE=$GENERIC_MAJOR_VERSION.$GENERIC_MINOR_VERSION
+AC_SUBST(GENERIC_RELEASE)
+AC_PROG_LIBTOOL
 
 # Set default CFLAGS & CXXFLAGS IF the user hasn't specified anything
 AC_MSG_CHECKING(if CFLAGS is set)
@@ -18,25 +36,6 @@ else
    AC_MSG_RESULT(yes)
 fi
 
-# configuration header
-AM_CONFIG_HEADER(config.h)
-
-AC_CONFIG_AUX_DIR([build-aux])
-
-# Init automake
-AM_INIT_AUTOMAKE
-
-# Generating a libtool library
-
-# Release versioning
-
-GENERIC_MAJOR_VERSION=0
-GENERIC_MINOR_VERSION=40
-GENERIC_MICRO_VERSION=2
-
-GENERIC_RELEASE=$GENERIC_MAJOR_VERSION.$GENERIC_MINOR_VERSION
-AC_SUBST(GENERIC_RELEASE)
-AC_PROG_LIBTOOL
 
 # Required for some macros
 # AX_AM_MACROS
@@ -58,7 +57,10 @@ else
    AC_MSG_RESULT(no)
 fi
 
+#-------------------
 # Compilers and MPI
+#-------------------
+
 AC_PROG_CC
 AC_PROG_CXX
 AC_LANG([C])
