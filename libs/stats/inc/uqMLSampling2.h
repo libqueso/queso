@@ -35,13 +35,9 @@
 
 template <class P_V,class P_M>
 void
-uqMLSamplingClass<P_V,P_M>::restartCurrState(
-  double&                            currExponent,               // output
-  double&                            currEta,                    // output
-  unsigned int&                      unifiedRequestedNumSamples, // output
-  uqSequenceOfVectorsClass<P_V,P_M>& currChain,                  // output
-  uqScalarSequenceClass<double>&     currLogLikelihoodValues,    // output
-  uqScalarSequenceClass<double>&     currLogTargetValues)        // output
+uqMLSamplingClass<P_V,P_M>::restartML(
+  uqMLStateStruct<P_V,P_M>& restartPrevState, // output
+  uqMLStateStruct<P_V,P_M>& restartCurrState) // output
 {
   // ernesto
   return;
@@ -49,14 +45,44 @@ uqMLSamplingClass<P_V,P_M>::restartCurrState(
 
 template <class P_V,class P_M>
 void
-uqMLSamplingClass<P_V,P_M>::checkpointCurrState(
-  double                                   currExponent,               // input
-  double                                   currEta,                    // input
-  unsigned int                             unifiedRequestedNumSamples, // input
-  const uqSequenceOfVectorsClass<P_V,P_M>& currChain,                  // input
-  const uqScalarSequenceClass<double>&     currLogLikelihoodValues,    // input
-  const uqScalarSequenceClass<double>&     currLogTargetValues)        // input
+uqMLSamplingClass<P_V,P_M>::checkpointML(
+  double                                   currExponent,                   // input
+  double                                   currEta,                        // input
+  unsigned int                             currUnifiedRequestedNumSamples, // input
+  const uqSequenceOfVectorsClass<P_V,P_M>& currChain,                      // input
+  const uqScalarSequenceClass<double>&     currLogLikelihoodValues,        // input
+  const uqScalarSequenceClass<double>&     currLogTargetValues)            // input
 {
+  UQ_FATAL_TEST_MACRO(m_currLevel != 0,
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::checkpointML(1)",
+                      "m_currLevel should be zero");
+
+  // ernesto
+  return;
+}
+
+template <class P_V,class P_M>
+void
+uqMLSamplingClass<P_V,P_M>::checkpointML(
+  double                                   prevExponent,                   // input
+  double                                   prevEta,                        // input
+  unsigned int                             prevUnifiedRequestedNumSamples, // input
+  const uqSequenceOfVectorsClass<P_V,P_M>& prevChain,                      // input
+  const uqScalarSequenceClass<double>&     prevLogLikelihoodValues,        // input
+  const uqScalarSequenceClass<double>&     prevLogTargetValues,            // input
+  double                                   currExponent,                   // input
+  double                                   currEta,                        // input
+  unsigned int                             currUnifiedRequestedNumSamples, // input
+  const uqSequenceOfVectorsClass<P_V,P_M>& currChain,                      // input
+  const uqScalarSequenceClass<double>&     currLogLikelihoodValues,        // input
+  const uqScalarSequenceClass<double>&     currLogTargetValues)            // input
+{
+  UQ_FATAL_TEST_MACRO(m_currLevel == 0,
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::checkpointML(2)",
+                      "m_currLevel should not be zero");
+
   // ernesto
   return;
 }
@@ -163,12 +189,21 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Level0_all(
                         m_env.fullRank(),
                         "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                         "currChain (first one) has been generated with invalid size");
-
+#if 0 // ernesto
+    if (currOptions.m_checkpointOutputFileName != ".") {
+      checkpointML(currExponent,                   // input
+                   currEta,                        // input
+                   currUnifiedRequestedNumSamples, // input
+                   currChain,                      // input
+                   currLogLikelihoodValues,        // input
+                   currLogTargetValues);           // input
+    }
+#endif
     double levelRunTime = uqMiscGetEllapsedSeconds(&timevalLevel);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
       *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
                               << ": ending level " << m_currLevel+LEVEL_REF_ID
-                              << " after " << levelRunTime << " seconds"
+                              << ", total level time = " << levelRunTime << " seconds"
                               << std::endl;
     }
 
@@ -389,7 +424,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
       double meanEffectiveSizeRatio = .5*(currOptions->m_minEffectiveSizeRatio + currOptions->m_maxEffectiveSizeRatio);
       uqScalarSequenceClass<double> omegaLnDiffSequence(m_env,prevLogLikelihoodValues.subSequenceSize(),"");
 
-      double nowUnifiedEvidenceLnFactor = 0.;
+      double nowUnifiedEvidenceLnFactor = 0.; // todd 0
       do {
         if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
           *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
@@ -433,7 +468,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
           weightSequence[i] = exp(omegaLnDiffSequence[i]);
           subWeightRatioSum += weightSequence[i];
         }
-        int mpiRC = MPI_Allreduce((void *) &subWeightRatioSum, (void *) &unifiedWeightRatioSum, (int) 1, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm());
+        int mpiRC = MPI_Allreduce((void *) &subWeightRatioSum, (void *) &unifiedWeightRatioSum, (int) 1, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm()); // todd 1
         UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                             m_env.fullRank(),
                             "uqMLSamplingClass<P_V,P_M>::generateSequence()",
@@ -474,7 +509,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
 
         double subQuantity = effectiveSampleSize;
         effectiveSampleSize = 0.;
-        mpiRC = MPI_Allreduce((void *) &subQuantity, (void *) &effectiveSampleSize, (int) 1, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm());
+        mpiRC = MPI_Allreduce((void *) &subQuantity, (void *) &effectiveSampleSize, (int) 1, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm()); // todd 2
         UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                             m_env.fullRank(),
                             "uqMLSamplingClass<P_V,P_M>::generateSequence()",
@@ -519,16 +554,34 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
         nowAttempt++;
 
         // Make sure all nodes in 'inter0Comm' have the same value of 'nowExponent'
-        uqMiscCheckForSameValueInAllNodes(nowExponent,
-                                          0.,
-                                          m_env.inter0Comm(),
-                                          "uqMLSamplingClass<P_V,P_M>::generateSequence(), step 3, testResult");
+        if (uqMiscCheckForSameValueInAllNodes(nowExponent,
+                                              0.,
+                                              m_env.inter0Comm(),
+                                              "uqMLSamplingClass<P_V,P_M>::generateSequence(), step 3, nowExponent") == false) {
+          if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+            *m_env.subDisplayFile() << "WARNING, In uqMLSampling<P_V,P_M>::generateSequence()"
+                                    << ", level "        << m_currLevel+LEVEL_REF_ID
+                                    << ", step "         << m_currStep
+                                    << ": nowAttempt = " << nowAttempt
+                                    << ", uqMiscCheck for 'nowExponent' detected a problem"
+                                    << std::endl;
+          }
+        }
 
         // Make sure all nodes in 'inter0Comm' have the same value of 'testResult'
-        uqMiscCheckForSameValueInAllNodes(testResult,
-                                          0.,
-                                          m_env.inter0Comm(),
-                                          "uqMLSamplingClass<P_V,P_M>::generateSequence(), step 3, testResult");
+        if (uqMiscCheckForSameValueInAllNodes(testResult,
+                                              0.,
+                                              m_env.inter0Comm(),
+                                              "uqMLSamplingClass<P_V,P_M>::generateSequence(), step 3, testResult") == false) {
+          if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+            *m_env.subDisplayFile() << "WARNING, In uqMLSampling<P_V,P_M>::generateSequence()"
+                                    << ", level "        << m_currLevel+LEVEL_REF_ID
+                                    << ", step "         << m_currStep
+                                    << ": nowAttempt = " << nowAttempt
+                                    << ", uqMiscCheck for 'testResult' detected a problem"
+                                    << std::endl;
+          }
+        }
       } while (testResult == false);
       currExponent = nowExponent;
       m_logEvidenceFactors.push_back(nowUnifiedEvidenceLnFactor);
@@ -558,10 +611,19 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
       }
 
       // Make sure all nodes in 'inter0Comm' have the same value of 'logEvidenceFactor'
-      uqMiscCheckForSameValueInAllNodes(m_logEvidenceFactors[m_logEvidenceFactors.size()-1],
-                                        1.e-16,
-                                        m_env.inter0Comm(),
-                                        "uqMLSamplingClass<P_V,P_M>::generateSequence(), step 3, logEvidenceFactor");
+      if (uqMiscCheckForSameValueInAllNodes(m_logEvidenceFactors[m_logEvidenceFactors.size()-1], // todd 3
+                                            1.e-16,
+                                            m_env.inter0Comm(),
+                                            "uqMLSamplingClass<P_V,P_M>::generateSequence(), step 3, logEvidenceFactor") == false) {
+        if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+          *m_env.subDisplayFile() << "WARNING, In uqMLSampling<P_V,P_M>::generateSequence()"
+                                  << ", level "        << m_currLevel+LEVEL_REF_ID
+                                  << ", step "         << m_currStep
+                                  << ": nowAttempt = " << nowAttempt
+                                  << ", uqMiscCheck for 'logEvidenceFactor' detected a problem"
+                                  << std::endl;
+        }
+      }
 
   double stepRunTime = uqMiscGetEllapsedSeconds(&timevalStep);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -1211,10 +1273,19 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all(
           testResult = aux2;
 
           // Make sure all nodes in 'inter0Comm' have the same value of 'testResult'
-          uqMiscCheckForSameValueInAllNodes(testResult,
-                                            0.,
-                                            m_env.inter0Comm(),
-                                            "uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all(), step 9, testResult");
+          if (uqMiscCheckForSameValueInAllNodes(testResult,
+                                                0.,
+                                                m_env.inter0Comm(),
+                                                "uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all(), step 9, testResult") == false) {
+            if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+              *m_env.subDisplayFile() << "WARNING, In uqMLSampling<P_V,P_M>::generateSequence()"
+                                      << ", level "        << m_currLevel+LEVEL_REF_ID
+                                      << ", step "         << m_currStep
+                                      << ": nowAttempt = " << nowAttempt
+                                      << ", uqMiscCheck for 'testResult' detected a problem"
+                                      << std::endl;
+            }
+	  }
         } // if (m_env.inter0Rank() >= 0) { // KAUST
 
         // KAUST: all nodes in 'subComm' should have the same 'testResult'
@@ -1245,10 +1316,19 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all(
 
         if (m_env.inter0Rank() >= 0) { // KAUST
           // Make sure all nodes in 'inter0Comm' have the same value of 'nowEta'
-          uqMiscCheckForSameValueInAllNodes(nowEta,
-                                            1.e-16,
-                                            m_env.inter0Comm(),
-                                            "uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all(), step 9, testResult");
+          if (uqMiscCheckForSameValueInAllNodes(nowEta,
+                                                1.e-16,
+                                                m_env.inter0Comm(),
+                                                "uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all(), step 9, nowEta") == false) {
+            if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+              *m_env.subDisplayFile() << "WARNING, In uqMLSampling<P_V,P_M>::generateSequence()"
+                                      << ", level "        << m_currLevel+LEVEL_REF_ID
+                                      << ", step "         << m_currStep
+                                      << ": nowAttempt = " << nowAttempt
+                                      << ", uqMiscCheck for 'nowEta' detected a problem"
+                                      << std::endl;
+            }
+          }
         }
       } while (testResult == false);
       currEta = nowEta;
