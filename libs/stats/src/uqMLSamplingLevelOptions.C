@@ -587,7 +587,8 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
 void
 uqMLSamplingLevelOptionsClass::print(std::ostream& os) const
 {
-  os <<         m_option_checkpointOutputFileName << " = " << m_checkpointOutputFileName
+  os <<        "m_prefix"                         << " = " << m_prefix
+     << "\n" << m_option_checkpointOutputFileName << " = " << m_checkpointOutputFileName
      << "\n" << m_option_stopAtEnd                << " = " << m_stopAtEnd
      << "\n" << m_option_dataOutputFileName       << " = " << m_dataOutputFileName
      << "\n" << m_option_dataOutputAllowedSet     << " = ";

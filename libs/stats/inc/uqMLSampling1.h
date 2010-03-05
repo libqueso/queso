@@ -564,6 +564,15 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
       delete currOptions;
       currOptions = &lastLevelOptions;
 
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+        *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                                << ", level " << m_currLevel+LEVEL_REF_ID
+                                << ", step "  << m_currStep
+                                << ": after copying 'last' level options to current options, the current options are"
+                                << "\n" << *currOptions
+                                << std::endl;
+      }
+
       if (m_env.inter0Rank() >= 0) {
         // It is necessary to recompute 'currUnifiedRequestedNumSamples' because
         // 'currOptions' has just been replaced by 'lastLevelOptions'

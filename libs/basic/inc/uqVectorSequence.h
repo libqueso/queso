@@ -2296,6 +2296,12 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
     }
 
     // Write Kde
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() > 10)) { // output debug
+      *m_env.subDisplayFile() << "In uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde()"
+                              << ", for chain '" << m_name << "'"
+                              << ", about to write sub kde to ofstream with pointer = " << passedOfs
+                              << std::endl;
+    }
     if (passedOfs) {
       std::ofstream& ofsvar = *passedOfs;
       ofsvar << m_name << subCoreName_GaussianKdePositions << " = zeros(" << this->vectorSizeLocal() /*.*/
@@ -2409,6 +2415,12 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
       }
 
       // Write unified Kde
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() > 10)) { // output debug
+        *m_env.subDisplayFile() << "In uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde()"
+                                << ", for chain '" << m_name << "'"
+                                << ", about to write unified kde to ofstream with pointer = " << passedOfs
+                                << std::endl;
+      }
       if (passedOfs) {
         if (m_vectorSpace.numOfProcsForStorage() == 1) {
           if (m_env.inter0Rank() == 0) {
@@ -2417,6 +2429,12 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
                    << ","                                                       << unifiedKdeEvalPositions.size()
                    << ");"
                    << std::endl;
+            if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() > 10)) { // output debug
+              *m_env.subDisplayFile() << "In uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde()"
+                                      << ", for chain '" << m_name << "'"
+                                      << ": just wrote '... = zeros(.,.);' line to output file, which has pointer = " << passedOfs
+                                      << std::endl;
+            }
             for (unsigned int i = 0; i < this->vectorSizeLocal() /*.*/; ++i) {
               for (unsigned int j = 0; j < unifiedKdeEvalPositions.size(); ++j) {
                 ofsvar << m_name << uniCoreName_GaussianKdePositions << "(" << i+1

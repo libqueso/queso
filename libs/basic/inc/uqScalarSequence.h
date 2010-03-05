@@ -941,7 +941,7 @@ uqScalarSequenceClass<T>::unifiedMean(
 
   T unifiedMeanValue = 0.;
   if (useOnlyInter0Comm) {
-    if (m_env.inter0Rank() >= 0) { // ernesto
+    if (m_env.inter0Rank() >= 0) {
       bool bRC = ((initialPos          <  this->subSequenceSize()) &&
                   (0                   <  numPos                 ) &&
                   ((initialPos+numPos) <= this->subSequenceSize()));

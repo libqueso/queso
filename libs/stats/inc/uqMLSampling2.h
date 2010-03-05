@@ -153,6 +153,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Level0_all(
                              false,
                              genericOfsVar);
 
+        //m_env.syncPrintDebugMsg("At level 0, calling computeStatistics for chain",1,10,m_env.inter0Comm()); // output debug
         currChain.computeStatistics(*currOptions.m_rawChainStatisticalOptions,
                                     genericOfsVar);
 
@@ -424,7 +425,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
       double meanEffectiveSizeRatio = .5*(currOptions->m_minEffectiveSizeRatio + currOptions->m_maxEffectiveSizeRatio);
       uqScalarSequenceClass<double> omegaLnDiffSequence(m_env,prevLogLikelihoodValues.subSequenceSize(),"");
 
-      double nowUnifiedEvidenceLnFactor = 0.; // todd 0
+      double nowUnifiedEvidenceLnFactor = 0.;
       do {
         if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
           *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
@@ -468,7 +469,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
           weightSequence[i] = exp(omegaLnDiffSequence[i]);
           subWeightRatioSum += weightSequence[i];
         }
-        int mpiRC = MPI_Allreduce((void *) &subWeightRatioSum, (void *) &unifiedWeightRatioSum, (int) 1, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm()); // todd 1
+        int mpiRC = MPI_Allreduce((void *) &subWeightRatioSum, (void *) &unifiedWeightRatioSum, (int) 1, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm());
         UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                             m_env.fullRank(),
                             "uqMLSamplingClass<P_V,P_M>::generateSequence()",
@@ -509,7 +510,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
 
         double subQuantity = effectiveSampleSize;
         effectiveSampleSize = 0.;
-        mpiRC = MPI_Allreduce((void *) &subQuantity, (void *) &effectiveSampleSize, (int) 1, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm()); // todd 2
+        mpiRC = MPI_Allreduce((void *) &subQuantity, (void *) &effectiveSampleSize, (int) 1, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm());
         UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                             m_env.fullRank(),
                             "uqMLSamplingClass<P_V,P_M>::generateSequence()",
@@ -555,7 +556,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
 
         // Make sure all nodes in 'inter0Comm' have the same value of 'nowExponent'
         if (uqMiscCheckForSameValueInAllNodes(nowExponent,
-                                              0.,
+                                              0., // kept 'zero' on 2010/03/05
                                               m_env.inter0Comm(),
                                               "uqMLSamplingClass<P_V,P_M>::generateSequence(), step 3, nowExponent") == false) {
           if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -570,7 +571,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
 
         // Make sure all nodes in 'inter0Comm' have the same value of 'testResult'
         if (uqMiscCheckForSameValueInAllNodes(testResult,
-                                              0.,
+                                              0., // kept 'zero' on 2010/03/05
                                               m_env.inter0Comm(),
                                               "uqMLSamplingClass<P_V,P_M>::generateSequence(), step 3, testResult") == false) {
           if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -611,8 +612,8 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
       }
 
       // Make sure all nodes in 'inter0Comm' have the same value of 'logEvidenceFactor'
-      if (uqMiscCheckForSameValueInAllNodes(m_logEvidenceFactors[m_logEvidenceFactors.size()-1], // todd 3
-                                            1.e-16,
+      if (uqMiscCheckForSameValueInAllNodes(m_logEvidenceFactors[m_logEvidenceFactors.size()-1],
+                                            3.0e-16, // changed from 'zero' on 2010/03/03
                                             m_env.inter0Comm(),
                                             "uqMLSamplingClass<P_V,P_M>::generateSequence(), step 3, logEvidenceFactor") == false) {
         if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -1274,7 +1275,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all(
 
           // Make sure all nodes in 'inter0Comm' have the same value of 'testResult'
           if (uqMiscCheckForSameValueInAllNodes(testResult,
-                                                0.,
+                                                0., // kept 'zero' on 2010/03/03
                                                 m_env.inter0Comm(),
                                                 "uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all(), step 9, testResult") == false) {
             if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -1317,7 +1318,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all(
         if (m_env.inter0Rank() >= 0) { // KAUST
           // Make sure all nodes in 'inter0Comm' have the same value of 'nowEta'
           if (uqMiscCheckForSameValueInAllNodes(nowEta,
-                                                1.e-16,
+                                                1.0e-16, // changed from 'zero' on 2009/11/dd
                                                 m_env.inter0Comm(),
                                                 "uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all(), step 9, nowEta") == false) {
             if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -1468,6 +1469,17 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
                                false,
                                genericOfsVar);
 
+          if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) { // output debug
+            *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence_Step()"
+                                    << ", level " << m_currLevel+LEVEL_REF_ID
+                                    << ", step "  << m_currStep
+                                    << ", calling computeStatistics for raw chain"
+                                    << ". Ofstream pointer value = " << genericOfsVar
+                                    << ", statistical options are"
+                                    << "\n" << *currOptions->m_rawChainStatisticalOptions
+                                    << std::endl;
+          }
+          //m_env.syncPrintDebugMsg("At step 11, calling computeStatistics for raw chain",1,10,m_env.inter0Comm()); // output debug
           currChain.computeStatistics(*currOptions->m_rawChainStatisticalOptions,
                                       genericOfsVar);
 
@@ -1512,8 +1524,20 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
           currLogTargetValues.setName(currOptions->m_prefix + "filtLogTarget");
 
           if (currOptions->m_filteredChainComputeStats) {
+            if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) { // output debug
+              *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence_Step()"
+                                      << ", level " << m_currLevel+LEVEL_REF_ID
+                                      << ", step "  << m_currStep
+                                      << ", calling computeStatistics for filtered chain"
+                                      << ". Ofstream pointer value = " << genericOfsVar
+                                      << ", statistical options are"
+                                      << "\n" << *currOptions->m_rawChainStatisticalOptions
+                                      << std::endl;
+            }
+
+            //m_env.syncPrintDebugMsg("At step 11, calling computeStatistics for filtered chain",1,10,m_env.inter0Comm()); // output debug
             currChain.computeStatistics(*currOptions->m_filteredChainStatisticalOptions,
-                                      genericOfsVar);
+                                        genericOfsVar);
           }
 
           //genericOfsVar->close();
