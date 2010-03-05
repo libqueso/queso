@@ -941,7 +941,7 @@ uqScalarSequenceClass<T>::unifiedMean(
 
   T unifiedMeanValue = 0.;
   if (useOnlyInter0Comm) {
-    if (m_env.inter0Rank() >= 0) {
+    if (m_env.inter0Rank() >= 0) { // ernesto
       bool bRC = ((initialPos          <  this->subSequenceSize()) &&
                   (0                   <  numPos                 ) &&
                   ((initialPos+numPos) <= this->subSequenceSize()));
@@ -956,6 +956,16 @@ uqScalarSequenceClass<T>::unifiedMean(
         localSum += m_seq[j];
       }
 
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+        *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedMean()"
+                                << ": initialPos = " << initialPos
+                                << ", numPos = "     << numPos
+                                << ", before MPI_Allreduce"
+                                << std::endl;
+      }
+      //std::cout << m_env.inter0Comm().MyPID()
+      //          << std::endl;
+      //sleep(1);
       unsigned int unifiedNumPos = 0;
       int mpiRC = MPI_Allreduce((void *) &numPos, (void *) &unifiedNumPos, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
       UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,

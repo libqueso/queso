@@ -999,27 +999,28 @@ uqSequenceOfVectorsClass<V,M>::unifiedMean(
   unsigned int numPos,
   V&           unifiedMeanVec) const
 {
+  unsigned int tmpUnif = this->unifiedSequenceSize();
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedMean()"
-                           << ": initialPos = "            << initialPos
-                           << ", numPos = "                << numPos
-                           << ", sub sequence size = "     << this->subSequenceSize()
-                           << ", unified sequence size = " << this->unifiedSequenceSize()
-                           << std::endl;
+                            << ": initialPos = "            << initialPos
+                            << ", numPos = "                << numPos
+                            << ", sub sequence size = "     << this->subSequenceSize()
+                            << ", unified sequence size = " << tmpUnif
+                            << std::endl;
   }
 
-  bool bRC = ((initialPos          <  this->subSequenceSize()) &&
-              (0                   <  numPos                 ) &&
-              ((initialPos+numPos) <= this->subSequenceSize()) &&
-              (this->vectorSizeLocal()  == unifiedMeanVec.sizeLocal()  ));
+  bool bRC = ((initialPos              <  this->subSequenceSize()   ) &&
+              (0                       <  numPos                    ) &&
+              ((initialPos+numPos)     <= this->subSequenceSize()   ) &&
+              (this->vectorSizeLocal() == unifiedMeanVec.sizeLocal()));
   if ((bRC == false) && (m_env.subDisplayFile())) {
     *m_env.subDisplayFile() << "In uqSequenceOfVectorsClass<V,M>::unifiedMean()"
-                           << ", initialPos = "                 << initialPos
-                           << ", this->subSequenceSize() = "    << this->subSequenceSize()
-                           << ", numPos = "                     << numPos
-                           << ", this->vectorSizeLocal() = "    << this->vectorSizeLocal()
-                           << ", unifiedMeanVec.sizeLocal() = " << unifiedMeanVec.sizeLocal()
-                           << std::endl;
+                            << ", initialPos = "                 << initialPos
+                            << ", this->subSequenceSize() = "    << this->subSequenceSize()
+                            << ", numPos = "                     << numPos
+                            << ", this->vectorSizeLocal() = "    << this->vectorSizeLocal()
+                            << ", unifiedMeanVec.sizeLocal() = " << unifiedMeanVec.sizeLocal()
+                            << std::endl;
   }
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
@@ -1045,7 +1046,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedMean(
                            << ": initialPos = "            << initialPos
                            << ", numPos = "                << numPos
                            << ", sub sequence size = "     << this->subSequenceSize()
-                           << ", unified sequence size = " << this->unifiedSequenceSize()
+                           << ", unified sequence size = " << tmpUnif
                            << ", unifiedMeanVec = "        << unifiedMeanVec
                            << std::endl;
   }

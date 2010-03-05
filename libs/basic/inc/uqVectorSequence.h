@@ -915,26 +915,26 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
 
   if (m_env.numSubEnvironments() > 1) {
     // Write unified min-max
-    if (m_env.subDisplayFile()) {
-      if (m_vectorSpace.numOfProcsForStorage() == 1) {
-        V unifiedChainMean(m_vectorSpace.zeroVector());
-        this->unifiedMean(0,
-                          this->subSequenceSize(),
-                          unifiedChainMean);
+    if (m_vectorSpace.numOfProcsForStorage() == 1) {
+      V unifiedChainMean(m_vectorSpace.zeroVector());
+      this->unifiedMean(0,
+                        this->subSequenceSize(),
+                        unifiedChainMean);
 
-        V unifiedChainSampleVariance(m_vectorSpace.zeroVector());
-        this->unifiedSampleVariance(0,
-                                    this->subSequenceSize(),
-                                    unifiedChainMean,
-                                    unifiedChainSampleVariance);
+      V unifiedChainSampleVariance(m_vectorSpace.zeroVector());
+      this->unifiedSampleVariance(0,
+                                  this->subSequenceSize(),
+                                  unifiedChainMean,
+                                  unifiedChainSampleVariance);
 
-        V unifiedChainPopulationVariance(m_vectorSpace.zeroVector());
-        this->unifiedPopulationVariance(0,
-                                        this->subSequenceSize(),
-                                        unifiedChainMean,
-                                        unifiedChainPopulationVariance);
+      V unifiedChainPopulationVariance(m_vectorSpace.zeroVector());
+      this->unifiedPopulationVariance(0,
+                                      this->subSequenceSize(),
+                                      unifiedChainMean,
+                                      unifiedChainPopulationVariance);
 
-        if (m_env.inter0Rank() == 0) {
+      if (m_env.inter0Rank() == 0) {
+        if (m_env.subDisplayFile()) {
           *m_env.subDisplayFile() << "\nUnif mean, sample std, population std"
                                   << std::endl;
           char line[512];
@@ -960,16 +960,22 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
             *m_env.subDisplayFile() << line;
           }
           *m_env.subDisplayFile() << std::endl;
-        }
+        } // if subDisplayFile
       }
-      else {
-        UQ_FATAL_TEST_MACRO(true,
-                            m_env.fullRank(),
-                            "uqBaseVectorSequenceClass<V,M>::computeMeanVars()",
-                            "unified min-max writing, parallel vectors not supported yet");
-      }
-    } // if subDisplayFile
+    }
+    else {
+      UQ_FATAL_TEST_MACRO(true,
+                          m_env.fullRank(),
+                          "uqBaseVectorSequenceClass<V,M>::computeMeanVars()",
+                          "unified min-max writing, parallel vectors not supported yet");
+    }
   } // if numSubEnvs > 1
+
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "\nEnded computing mean, sample variance and population variance"
+                            << "\n-----------------------------------------------------"
+                            << std::endl;
+  }
 
   return;
 }
@@ -1060,7 +1066,7 @@ uqBaseVectorSequenceClass<V,M>::computeMeanEvolution(
     this->subMeanMonitorWrite(*passedOfs);
     if (m_env.numSubEnvironments() > 1) {
       this->subMeanInter0MonitorWrite(*passedOfs);
-      this->unifiedMeanMonitorWrite(*passedOfs);
+      this->unifiedMeanMonitorWrite(*passedOfs); // Yes, call 'unified' even though not all nodes might have 'passedOfs != NULL' ????????????? ernesto
     }
   }
 
