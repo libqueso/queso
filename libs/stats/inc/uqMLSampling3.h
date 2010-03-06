@@ -735,11 +735,14 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALAN
     cumulativeRejections += mcSeqGenerator.numRejections();
 
     if (m_env.inter0Rank() >= 0) {
-      //for (unsigned int i = 0; i < tmpLogLikelihoodValues.subSequenceSize(); ++i) {
-      //  std::cout << "tmpLogLikelihoodValues[" << i << "] = " << tmpLogLikelihoodValues[i]
-      //            << ", tmpLogTargetValues["   << i << "] = " << tmpLogTargetValues[i]
-      //            << std::endl;
-      //}
+      if ((m_env.subDisplayFile()        ) &&
+          (m_env.displayVerbosity() >= 99)) {
+        for (unsigned int i = 0; i < tmpLogLikelihoodValues.subSequenceSize(); ++i) {
+          *m_env.subDisplayFile() << "tmpLogLikelihoodValues[" << i << "] = " << tmpLogLikelihoodValues[i]
+                                  << ", tmpLogTargetValues["   << i << "] = " << tmpLogTargetValues[i]
+                                  << std::endl;
+        }
+      }
         
       if ((m_env.subDisplayFile()             ) &&
           (m_env.displayVerbosity()   >= 0    ) &&
@@ -757,6 +760,19 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALAN
       workingChain.append              (tmpChain,              1,tmpChain.subSequenceSize()-1              ); // IMPORTANT: '1' in order to discard initial position
       if (currLogLikelihoodValues) {
         currLogLikelihoodValues->append(tmpLogLikelihoodValues,1,tmpLogLikelihoodValues.subSequenceSize()-1); // IMPORTANT: '1' in order to discard initial position
+        if ((m_env.subDisplayFile()        ) &&
+            (m_env.displayVerbosity() >= 99) &&
+            (chainId == 0                  )) {
+          *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateBalLinkedChains_all()"
+                                  << ", level "     << m_currLevel+LEVEL_REF_ID
+                                  << ", step "      << m_currStep
+                                  << ", chainId = " << chainId
+                                  << ", tmpLogLikelihoodValues.subSequenceSize() = " << tmpLogLikelihoodValues.subSequenceSize()
+                                  << ", tmpLogLikelihoodValues[0] = "                << tmpLogLikelihoodValues[0]
+                                  << ", tmpLogLikelihoodValues[1] = "                << tmpLogLikelihoodValues[1]
+                                  << ", currLogLikelihoodValues[0] = "               << (*currLogLikelihoodValues)[0]
+                                  << std::endl;
+        }
       }
       if (currLogTargetValues) {
         currLogTargetValues->append    (tmpLogTargetValues,    1,tmpLogTargetValues.subSequenceSize()-1    ); // IMPORTANT: '1' in order to discard initial position
@@ -915,11 +931,14 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
     cumulativeRejections += mcSeqGenerator.numRejections();
 
     if (m_env.inter0Rank() >= 0) {
-      //for (unsigned int i = 0; i < tmpLogLikelihoodValues.subSequenceSize(); ++i) {
-      //  std::cout << "tmpLogLikelihoodValues[" << i << "] = " << tmpLogLikelihoodValues[i]
-      //            << ", tmpLogTargetValues["   << i << "] = " << tmpLogTargetValues[i]
-      //            << std::endl;
-      //}
+      if ((m_env.subDisplayFile()        ) &&
+          (m_env.displayVerbosity() >= 99)) {
+        for (unsigned int i = 0; i < tmpLogLikelihoodValues.subSequenceSize(); ++i) {
+          *m_env.subDisplayFile() << "tmpLogLikelihoodValues[" << i << "] = " << tmpLogLikelihoodValues[i]
+                                  << ", tmpLogTargetValues["   << i << "] = " << tmpLogTargetValues[i]
+                                  << std::endl;
+        }
+      }
         
       if ((m_env.subDisplayFile()             ) &&
           (m_env.displayVerbosity()   >= 0    ) &&
@@ -937,6 +956,19 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
       workingChain.append              (tmpChain,              1,tmpChain.subSequenceSize()-1              ); // IMPORTANT: '1' in order to discard initial position
       if (currLogLikelihoodValues) {
         currLogLikelihoodValues->append(tmpLogLikelihoodValues,1,tmpLogLikelihoodValues.subSequenceSize()-1); // IMPORTANT: '1' in order to discard initial position
+        if ((m_env.subDisplayFile()        ) &&
+            (m_env.displayVerbosity() >= 99) &&
+            (chainId == 0                  )) {
+          *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateUnbLinkedChains_all()"
+                                  << ", level "     << m_currLevel+LEVEL_REF_ID
+                                  << ", step "      << m_currStep
+                                  << ", chainId = " << chainId
+                                  << ", tmpLogLikelihoodValues.subSequenceSize() = " << tmpLogLikelihoodValues.subSequenceSize()
+                                  << ", tmpLogLikelihoodValues[0] = "                << tmpLogLikelihoodValues[0]
+                                  << ", tmpLogLikelihoodValues[1] = "                << tmpLogLikelihoodValues[1]
+                                  << ", currLogLikelihoodValues[0] = "               << (*currLogLikelihoodValues)[0]
+                                  << std::endl;
+        }
       }
       if (currLogTargetValues) {
         currLogTargetValues->append    (tmpLogTargetValues,    1,tmpLogTargetValues.subSequenceSize()-1    ); // IMPORTANT: '1' in order to discard initial position

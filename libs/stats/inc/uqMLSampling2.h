@@ -288,6 +288,13 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step02_inter0(
       currChain.setName(currOptions->m_prefix + "rawChain");
 
       prevLogLikelihoodValues = currLogLikelihoodValues; // likelihood is important
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+        *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence_Step()"
+                                << ", level " << m_currLevel+LEVEL_REF_ID
+                                << ", step "  << m_currStep
+                                << ", prevLogLikelihoodValues[0] = " << prevLogLikelihoodValues[0]
+                                << std::endl;
+      }
       prevLogTargetValues     = currLogTargetValues;
 
       currLogLikelihoodValues.clear();
@@ -1388,6 +1395,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step10_all(
                                 << ", level " << m_currLevel+LEVEL_REF_ID
                                 << ", step "  << m_currStep
                                 << ": beginning step 10 of 11"
+                                << ", currLogLikelihoodValues = " << currLogLikelihoodValues
                                 << std::endl;
       }
 
@@ -1426,6 +1434,17 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step10_all(
                                     cumulativeRawChainRejections, // output
                                     currLogLikelihoodValues,      // output // likelihood is important
                                     currLogTargetValues);         // output
+      }
+
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+        double tmpValue = INFINITY;
+        if (currLogLikelihoodValues) tmpValue = (*currLogLikelihoodValues)[0];
+        *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence_Step()"
+                                << ", level " << m_currLevel+LEVEL_REF_ID
+                                << ", step "  << m_currStep
+                                << ", after chain generatrion"
+                                << ", currLogLikelihoodValues[0] = " << tmpValue
+                                << std::endl;
       }
 
       // All nodes should call here
@@ -1489,6 +1508,14 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
 
         if (currOptions->m_rawChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
           currChain.unifiedWriteContents              (currOptions->m_rawChainDataOutputFileName); // KAUST5
+          if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+            *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence_Step()"
+                                    << ", level " << m_currLevel+LEVEL_REF_ID
+                                    << ", step "  << m_currStep
+                                    << ", before calling currLogLikelihoodValues.unifiedWriteContents()"
+                                    << ", currLogLikelihoodValues[0] = " << currLogLikelihoodValues[0]
+                                    << std::endl;
+          }
           currLogLikelihoodValues.unifiedWriteContents(currOptions->m_rawChainDataOutputFileName);
           currLogTargetValues.unifiedWriteContents    (currOptions->m_rawChainDataOutputFileName);
         }
