@@ -90,12 +90,14 @@ public:
 
   void              getColumn            (const unsigned int column_num, uqGslVectorClass& column) const;
   void              getRow               (const unsigned int row_num, uqGslVectorClass& row) const;
-  uqGslVectorClass  getColumn            (const unsigned int column_num ) const;
-  uqGslVectorClass  getRow               (const unsigned int row_num ) const;
+  uqGslVectorClass  getColumn            (const unsigned int column_num) const;
+  uqGslVectorClass  getRow               (const unsigned int row_num) const;
   void              setColumn            (const unsigned int column_num, const uqGslVectorClass& column);
   void              setRow               (const unsigned int row_num, const uqGslVectorClass& row);
 
-  void              mpiSum               (const MPI_Comm& comm, uqGslMatrixClass& M_global ) const;
+  void              mpiSum               (const MPI_Comm& comm, uqGslMatrixClass& M_global) const;
+
+  gsl_matrix*       data                 ();
 
 private:
   void              copy                 (const uqGslMatrixClass& src);

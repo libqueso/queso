@@ -1014,6 +1014,12 @@ uqGslMatrixClass::mpiSum( const MPI_Comm& comm, uqGslMatrixClass& M_global ) con
   return;
 }
 
+gsl_matrix*
+uqGslMatrixClass::data()
+{
+  return m_mat;
+}
+
 void
 uqGslMatrixClass::print(std::ostream& os) const
 {
