@@ -876,7 +876,7 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
     }
   }
   if ((m_debugExponent == 1.) && 
-      (m_step          == 10)) {
+      (m_currStep      == 10)) {
     //m_env.setExceptionalCircunstance(true);
   }
   unsigned int cumulativeNumPositions = 0;
