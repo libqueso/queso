@@ -338,6 +338,7 @@ private:
 
         unsigned int                        m_currLevel;
         unsigned int                        m_currStep;
+        double                              m_debugExponent;
 	std::vector<double>                 m_logEvidenceFactors;
 };
 
@@ -361,6 +362,7 @@ uqMLSamplingClass<P_V,P_M>::uqMLSamplingClass(
   m_options           (m_env,prefix),
   m_currLevel         (0),
   m_currStep          (0),
+  m_debugExponent     (0.),
   m_logEvidenceFactors(0)
 {
   if (m_env.subDisplayFile()) {
@@ -552,6 +554,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                         m_env.fullRank(),
                         "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                         "failed MPI_Bcast() for currExponent");
+    m_debugExponent = currExponent;
 
     if (currExponent == 1.) {
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {

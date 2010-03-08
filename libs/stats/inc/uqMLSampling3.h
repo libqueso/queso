@@ -735,8 +735,8 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALAN
     cumulativeRejections += mcSeqGenerator.numRejections();
 
     if (m_env.inter0Rank() >= 0) {
-      if ((m_env.subDisplayFile()        ) &&
-          (m_env.displayVerbosity() >= 99)) {
+      if ((m_env.subDisplayFile()       ) &&
+          (m_env.displayVerbosity() >= 0)) { // detailed output debug
         for (unsigned int i = 0; i < tmpLogLikelihoodValues.subSequenceSize(); ++i) {
           *m_env.subDisplayFile() << "tmpLogLikelihoodValues[" << i << "] = " << tmpLogLikelihoodValues[i]
                                   << ", tmpLogTargetValues["   << i << "] = " << tmpLogTargetValues[i]
@@ -875,6 +875,11 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
                               << std::endl;
     }
   }
+  if ((m_debugExponent == 1.) && 
+      (m_step          == 10)) {
+    //m_env.setExceptionalCircunstance(true);
+  }
+  unsigned int cumulativeNumPositions = 0;
   for (unsigned int chainId = 0; chainId < chainIdMax; ++chainId) {
     unsigned int tmpChainSize = 0;
     if (m_env.inter0Rank() >= 0) {
@@ -931,14 +936,23 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
     cumulativeRejections += mcSeqGenerator.numRejections();
 
     if (m_env.inter0Rank() >= 0) {
-      if ((m_env.subDisplayFile()        ) &&
-          (m_env.displayVerbosity() >= 99)) {
-        for (unsigned int i = 0; i < tmpLogLikelihoodValues.subSequenceSize(); ++i) {
-          *m_env.subDisplayFile() << "tmpLogLikelihoodValues[" << i << "] = " << tmpLogLikelihoodValues[i]
-                                  << ", tmpLogTargetValues["   << i << "] = " << tmpLogTargetValues[i]
-                                  << std::endl;
+      if (m_env.exceptionalCircunstance()) {
+        if ((m_env.subDisplayFile()       ) &&
+            (m_env.displayVerbosity() >= 0)) { // detailed output debug
+          P_V tmpVec(m_vectorSpace.zeroVector());
+          for (unsigned int i = 0; i < tmpLogLikelihoodValues.subSequenceSize(); ++i) {
+            tmpChain.getPositionValues(i,tmpVec);
+            *m_env.subDisplayFile() << "DEBUG finalChain[" << cumulativeNumPositions+i << "] "
+                                    << "= tmpChain["               << i << "] = " << tmpVec 
+                                    << ", tmpLogLikelihoodValues[" << i << "] = " << tmpLogLikelihoodValues[i]
+                                    << ", tmpLogTargetValues["     << i << "] = " << tmpLogTargetValues[i]
+                                    << std::endl;
+          }
         }
-      }
+      } // exceptional
+    
+      cumulativeNumPositions += tmpChainSize;
+      if (cumulativeNumPositions > 100) m_env.setExceptionalCircunstance(false);
         
       if ((m_env.subDisplayFile()             ) &&
           (m_env.displayVerbosity()   >= 0    ) &&

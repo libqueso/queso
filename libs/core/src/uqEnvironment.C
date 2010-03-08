@@ -59,24 +59,25 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   MPI_Comm    inputComm,
   const char* optionsInputFileName)
   :
-  m_worldRank           (-1),
-  m_fullRawComm         (inputComm),
-  m_fullComm            (NULL),
-  m_fullRank            (-1),
-  m_fullCommSize        (1),
-  m_optionsInputFileName(optionsInputFileName),
-  m_allOptionsDesc      (NULL),
-  m_allOptionsMap       (NULL),
-  m_subComm             (NULL),
-  m_subRank             (-1),
-  m_subCommSize         (1),
-  m_selfComm            (NULL),
-  m_inter0Comm          (NULL),
-  m_inter0Rank          (-1),
-  m_inter0CommSize      (1),
-  m_subDisplayFile      (NULL),
-  m_rng                 (NULL),
-  m_options             (NULL)
+  m_worldRank              (-1),
+  m_fullRawComm            (inputComm),
+  m_fullComm               (NULL),
+  m_fullRank               (-1),
+  m_fullCommSize           (1),
+  m_optionsInputFileName   (optionsInputFileName),
+  m_allOptionsDesc         (NULL),
+  m_allOptionsMap          (NULL),
+  m_subComm                (NULL),
+  m_subRank                (-1),
+  m_subCommSize            (1),
+  m_selfComm               (NULL),
+  m_inter0Comm             (NULL),
+  m_inter0Rank             (-1),
+  m_inter0CommSize         (1),
+  m_subDisplayFile         (NULL),
+  m_rng                    (NULL),
+  m_exceptionalCircunstance(false),
+  m_options                (NULL)
 {
 }
 
@@ -644,6 +645,19 @@ uqBaseEnvironmentClass::openInputFile(
   }
 
   return;
+}
+
+void
+uqBaseEnvironmentClass::setExceptionalCircunstance(bool value) const
+{
+  m_exceptionalCircunstance = value;
+  return;
+}
+
+bool
+uqBaseEnvironmentClass::exceptionalCircunstance() const
+{
+  return m_exceptionalCircunstance;
 }
 
 //*****************************************************

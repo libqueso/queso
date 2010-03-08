@@ -185,6 +185,8 @@ public:
                                                               const std::string&            fileType,
                                                               const std::set<unsigned int>& allowedSubEnvIds,
                                                                     std::ifstream*&         ifsvar) const;
+          void                    setExceptionalCircunstance (bool value) const;
+          bool                    exceptionalCircunstance    () const;
 
 
   virtual void                    print                      (std::ostream& os) const = 0;
@@ -221,6 +223,7 @@ protected:
   mutable std::ofstream*     m_subDisplayFile;
   gsl_rng*                   m_rng;
   struct timeval             m_timevalBegin;
+  mutable bool               m_exceptionalCircunstance;
 
   uqEnvironmentOptionsClass* m_options;
 };
