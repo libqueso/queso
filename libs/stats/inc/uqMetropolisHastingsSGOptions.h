@@ -62,7 +62,7 @@
 #define UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV ""
 #define UQ_MH_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV           0
 #define UQ_MH_SG_DISPLAY_CANDIDATES_ODV                     0
-#define UQ_MH_SG_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV             0
+#define UQ_MH_SG_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV             1
 #define UQ_MH_SG_TK_USE_LOCAL_HESSIAN_ODV                   0
 #define UQ_MH_SG_TK_USE_NEWTON_COMPONENT_ODV                1
 #define UQ_MH_SG_DR_MAX_NUM_EXTRA_STAGES_ODV                0
