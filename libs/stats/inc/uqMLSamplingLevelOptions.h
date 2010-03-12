@@ -50,7 +50,7 @@
 #define UQ_ML_SAMPLING_L_MAX_EFFECTIVE_SIZE_RATIO_ODV               0.50
 #define UQ_ML_SAMPLING_L_SCALE_COV_MATRIX_ODV                       1
 #define UQ_ML_SAMPLING_L_MIN_REJECTION_RATE_ODV                     0.40
-#define UQ_ML_SAMPLING_L_MAX_REJECTION_RATE_ODV                     0.60
+#define UQ_ML_SAMPLING_L_MAX_REJECTION_RATE_ODV                     0.50
 #define UQ_ML_SAMPLING_L_COV_REJECTION_RATE_ODV                     0.25
 #define UQ_ML_SAMPLING_L_TOTALLY_MUTE_ODV                           1
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV         UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
