@@ -46,8 +46,8 @@
 #define UQ_ML_SAMPLING_L_DATA_OUTPUT_ALLOW_ODV                      ""
 #define UQ_ML_SAMPLING_L_LOAD_BALANCE_ALGORITHM_ID_ODV              1
 #define UQ_ML_SAMPLING_L_LOAD_BALANCE_TRESHOLD_ODV                  1.
-#define UQ_ML_SAMPLING_L_MIN_EFFECTIVE_SIZE_RATIO_ODV               0.40
-#define UQ_ML_SAMPLING_L_MAX_EFFECTIVE_SIZE_RATIO_ODV               0.50
+#define UQ_ML_SAMPLING_L_MIN_EFFECTIVE_SIZE_RATIO_ODV               0.45
+#define UQ_ML_SAMPLING_L_MAX_EFFECTIVE_SIZE_RATIO_ODV               0.55
 #define UQ_ML_SAMPLING_L_SCALE_COV_MATRIX_ODV                       1
 #define UQ_ML_SAMPLING_L_MIN_REJECTION_RATE_ODV                     0.40
 #define UQ_ML_SAMPLING_L_MAX_REJECTION_RATE_ODV                     0.50
