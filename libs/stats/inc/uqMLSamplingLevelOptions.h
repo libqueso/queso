@@ -49,7 +49,7 @@
 #define UQ_ML_SAMPLING_L_MIN_EFFECTIVE_SIZE_RATIO_ODV               0.85
 #define UQ_ML_SAMPLING_L_MAX_EFFECTIVE_SIZE_RATIO_ODV               0.91
 #define UQ_ML_SAMPLING_L_SCALE_COV_MATRIX_ODV                       1
-#define UQ_ML_SAMPLING_L_MIN_REJECTION_RATE_ODV                     0.45
+#define UQ_ML_SAMPLING_L_MIN_REJECTION_RATE_ODV                     0.50
 #define UQ_ML_SAMPLING_L_MAX_REJECTION_RATE_ODV                     0.75
 #define UQ_ML_SAMPLING_L_COV_REJECTION_RATE_ODV                     0.25
 #define UQ_ML_SAMPLING_L_TOTALLY_MUTE_ODV                           1
