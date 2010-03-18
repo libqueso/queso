@@ -396,6 +396,84 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                             << std::endl;
   }
 
+  // ernesto
+  if (m_options.m_restartInputFileName != ".") {
+    workingChain.unifiedReadContents(m_options.m_restartInputFileName,
+                                     m_options.m_restartChainSize);
+
+    uqMLSamplingLevelOptionsClass defaultLevelOptions(m_env,(m_options.m_prefix + "default_").c_str());
+    defaultLevelOptions.scanOptionsValues(NULL);
+
+    uqMLSamplingLevelOptionsClass lastLevelOptions(m_env,(m_options.m_prefix + "last_").c_str());
+    lastLevelOptions.scanOptionsValues(&defaultLevelOptions);
+
+        if (lastLevelOptions.m_rawChainComputeStats) {
+          std::ofstream* genericOfsVar = NULL;
+          m_env.openOutputFile(lastLevelOptions.m_dataOutputFileName,
+                               UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                               lastLevelOptions.m_dataOutputAllowedSet,
+                               false,
+                               genericOfsVar);
+
+          workingChain.computeStatistics(*lastLevelOptions.m_rawChainStatisticalOptions,
+                                      genericOfsVar);
+
+          //genericOfsVar->close();
+          delete genericOfsVar;
+        }
+
+        if (lastLevelOptions.m_rawChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
+          workingChain.unifiedWriteContents              (lastLevelOptions.m_rawChainDataOutputFileName); // KAUST5
+          //currLogLikelihoodValues.unifiedWriteContents(lastLevelOptions.m_rawChainDataOutputFileName);
+          //currLogTargetValues.unifiedWriteContents    (lastLevelOptions.m_rawChainDataOutputFileName);
+        }
+
+        if (lastLevelOptions.m_filteredChainGenerate) {
+          std::ofstream* genericOfsVar = NULL;
+          m_env.openOutputFile(lastLevelOptions.m_dataOutputFileName,
+                               UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                               lastLevelOptions.m_dataOutputAllowedSet,
+                               false,
+                               genericOfsVar);
+
+          unsigned int filterInitialPos = (unsigned int) (lastLevelOptions.m_filteredChainDiscardedPortion * (double) workingChain.subSequenceSize());
+          unsigned int filterSpacing    = lastLevelOptions.m_filteredChainLag;
+          if (filterSpacing == 0) {
+            workingChain.computeFilterParams(*lastLevelOptions.m_filteredChainStatisticalOptions,
+                                          genericOfsVar,
+                                          filterInitialPos,
+                                          filterSpacing);
+          }
+
+          // Filter positions from the converged portion of the chain
+          workingChain.filter(filterInitialPos,
+                           filterSpacing);
+          workingChain.setName(lastLevelOptions.m_prefix + "filtChain");
+
+          //currLogLikelihoodValues.filter(filterInitialPos,
+          //                               filterSpacing);
+          //currLogLikelihoodValues.setName(lastLevelOptions.m_prefix + "filtLogLikelihood");
+
+          //currLogTargetValues.filter(filterInitialPos,
+          //                           filterSpacing);
+          //currLogTargetValues.setName(lastLevelOptions.m_prefix + "filtLogTarget");
+
+          if (lastLevelOptions.m_filteredChainComputeStats) {
+            workingChain.computeStatistics(*lastLevelOptions.m_filteredChainStatisticalOptions,
+                                        genericOfsVar);
+          }
+
+          //genericOfsVar->close();
+          delete genericOfsVar;
+
+          if (lastLevelOptions.m_filteredChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
+            workingChain.unifiedWriteContents              (lastLevelOptions.m_filteredChainDataOutputFileName);
+            //currLogLikelihoodValues.unifiedWriteContents(lastLevelOptions.m_filteredChainDataOutputFileName);
+            //currLogTargetValues.unifiedWriteContents    (lastLevelOptions.m_filteredChainDataOutputFileName);
+          }
+        } // if (lastLevelOptions.m_filteredChainGenerate)
+  }
+  else {
   //***********************************************************
   // Declaration of Variables
   //***********************************************************
@@ -875,6 +953,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
 
   if (workingLogLikelihoodValues) *workingLogLikelihoodValues = currLogLikelihoodValues;
   if (workingLogTargetValues    ) *workingLogTargetValues     = currLogTargetValues;
+  } // ernesto
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "Leaving uqMLSamplingClass<P_V,P_M>::generateSequence()"
