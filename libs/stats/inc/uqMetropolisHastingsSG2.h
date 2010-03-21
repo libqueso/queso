@@ -825,6 +825,14 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
                                   << ", positionId = "  << positionId
                                   << ": 'am' got first tmpChol.chol() with iRC = " << iRC
                                   << std::endl;
+          if (iRC == 0) {
+            double diagMult = 1.;
+            for (unsigned int j = 0; j < tmpChol.numRowsLocal(); ++j) {
+              diagMult *= tmpChol(j,j);
+            }
+            *m_env.subDisplayFile() << "diagMult = " << diagMult
+                                    << std::endl;
+	  }
         }
         if (iRC) {
           UQ_FATAL_TEST_MACRO(iRC != UQ_MATRIX_IS_NOT_POS_DEFINITE_RC,
@@ -849,9 +857,21 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
               (m_env.displayVerbosity() >= 10  )) {
 	    //(m_options.m_totallyMute == false)) {
             *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
-                                    << ", positionId = "  << positionId
+                                    << ", positionId = " << positionId
                                     << ": 'am' got second tmpChol.chol() with iRC = " << iRC
                                     << std::endl;
+            if (iRC == 0) {
+              double diagMult = 1.;
+              for (unsigned int j = 0; j < tmpChol.numRowsLocal(); ++j) {
+                diagMult *= tmpChol(j,j);
+              }
+              *m_env.subDisplayFile() << "diagMult = " << diagMult
+                                      << std::endl;
+            }
+            else {
+              *m_env.subDisplayFile() << "attemptedMatrix = " << attemptedMatrix // FIX ME: might demand parallelism
+                                      << std::endl;
+            }
           }
           if (iRC) {
             UQ_FATAL_TEST_MACRO(iRC != UQ_MATRIX_IS_NOT_POS_DEFINITE_RC,
