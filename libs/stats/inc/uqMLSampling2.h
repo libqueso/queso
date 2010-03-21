@@ -1203,6 +1203,9 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all(
         unsigned int savedAmAdaptInterval       = currOptions->m_amAdaptInterval;
 
         currOptions->m_totallyMute           = true;
+        if (m_env.displayVerbosity() >= 100) {
+          currOptions->m_totallyMute = false;
+        }
         currOptions->m_rawChainSize          = 0; // will be set inside generateXYZLinkedChains()
         currOptions->m_rawChainComputeStats  = false;
         currOptions->m_filteredChainGenerate = false;
@@ -1406,6 +1409,9 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step10_all(
       bool         savedFilteredChainGenerate = currOptions.m_filteredChainGenerate;
 
       currOptions.m_totallyMute           = true;
+      if (m_env.displayVerbosity() >= 100) {
+        currOptions.m_totallyMute = false;
+      }
       currOptions.m_rawChainSize          = 0; // will be set inside generateXYZLinkedChains()
       currOptions.m_rawChainComputeStats  = false;
       currOptions.m_filteredChainGenerate = false;

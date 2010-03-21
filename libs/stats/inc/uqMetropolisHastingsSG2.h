@@ -809,19 +809,23 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
         bool tmpCholIsPositiveDefinite = false;
         P_M tmpChol(*m_lastAdaptedCovMatrix);
         P_M attemptedMatrix(tmpChol);
-        //if (m_env.subDisplayFile()) {
-        //  *m_env.subDisplayFile() << "DRAM"
-        //                          << ", positionId = "  << positionId
-        //                          << ": 'am' calling first tmpChol.chol()"
-        //                          << std::endl;
-        //}
+        if ((m_env.subDisplayFile()          ) &&
+            (m_env.displayVerbosity() >= 10  )) {
+	  //(m_options.m_totallyMute == false)) {
+          *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
+                                  << ", positionId = "  << positionId
+                                  << ": 'am' calling first tmpChol.chol()"
+                                  << std::endl;
+        }
         iRC = tmpChol.chol();
-        //if (m_env.subDisplayFile()) {
-        //  *m_env.subDisplayFile() << "DRAM"
-        //                          << ", positionId = "  << positionId
-        //                          << ": 'am' got first tmpChol.chol() with iRC = " << iRC
-        //                          << std::endl;
-        //}
+        if ((m_env.subDisplayFile()          ) &&
+            (m_env.displayVerbosity() >= 10  )) {
+	  //(m_options.m_totallyMute == false)) {
+          *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
+                                  << ", positionId = "  << positionId
+                                  << ": 'am' got first tmpChol.chol() with iRC = " << iRC
+                                  << std::endl;
+        }
         if (iRC) {
           UQ_FATAL_TEST_MACRO(iRC != UQ_MATRIX_IS_NOT_POS_DEFINITE_RC,
                               m_env.fullRank(),
@@ -832,19 +836,23 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
           tmpChol = *m_lastAdaptedCovMatrix + *tmpDiag;
           attemptedMatrix = tmpChol;
           delete tmpDiag;
-          //if (m_env.subDisplayFile()) {
-          //  *m_env.subDisplayFile() << "DRAM"
-          //                          << ", positionId = "  << positionId
-          //                          << ": 'am' calling second tmpChol.chol()"
-          //                          << std::endl;
-          //}
+          if ((m_env.subDisplayFile()          ) &&
+              (m_env.displayVerbosity() >= 10  )) {
+	    //(m_options.m_totallyMute == false)) {
+            *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
+                                    << ", positionId = "  << positionId
+                                    << ": 'am' calling second tmpChol.chol()"
+                                    << std::endl;
+          }
           iRC = tmpChol.chol();
-          //if (m_env.subDisplayFile()) {
-          //  *m_env.subDisplayFile() << "DRAM"
-          //                          << ", positionId = "  << positionId
-          //                          << ": 'am' got second tmpChol.chol() with iRC = " << iRC
-          //                          << std::endl;
-          //}
+          if ((m_env.subDisplayFile()          ) &&
+              (m_env.displayVerbosity() >= 10  )) {
+	    //(m_options.m_totallyMute == false)) {
+            *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
+                                    << ", positionId = "  << positionId
+                                    << ": 'am' got second tmpChol.chol() with iRC = " << iRC
+                                    << std::endl;
+          }
           if (iRC) {
             UQ_FATAL_TEST_MACRO(iRC != UQ_MATRIX_IS_NOT_POS_DEFINITE_RC,
                                 m_env.fullRank(),

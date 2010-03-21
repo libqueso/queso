@@ -655,7 +655,26 @@ uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position
 
     // Test if covariance matrix is positive definite
     M lowerChol(*tmpCovMat);
-    bool covIsPositiveDefinite = !(lowerChol.chol());
+    if ((m_env.subDisplayFile()        ) &&
+        (m_env.displayVerbosity() >= 10)) {
+      *m_env.subDisplayFile() << "In uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"
+                              << ", position = "  << position
+                              << ", stageId = "   << stageId
+                              << ": calling lowerChol.chol()"
+                              << ", lowerChol = " << lowerChol
+                              << std::endl;
+    }
+    int iRC = lowerChol.chol();
+    if ((m_env.subDisplayFile()        ) &&
+        (m_env.displayVerbosity() >= 10)) {
+      *m_env.subDisplayFile() << "In uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"
+                              << ", position = "  << position
+                              << ", stageId = "   << stageId
+                              << ": got lowerChol.chol() with iRC = " << iRC
+                              << std::endl;
+    }
+
+    bool covIsPositiveDefinite = !iRC;
 
     if (covIsPositiveDefinite) {
       //UQ_FATAL_TEST_MACRO(stageId >= m_scales.size(),
