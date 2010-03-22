@@ -832,8 +832,20 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
             }
             *m_env.subDisplayFile() << "diagMult = " << diagMult
                                     << std::endl;
-	  }
+          }
         }
+#if 0 // tentative logic
+        if (iRC == 0) {
+          double diagMult = 1.;
+          for (unsigned int j = 0; j < tmpChol.numRowsLocal(); ++j) {
+            diagMult *= tmpChol(j,j);
+          }
+          if (diagMult < 1.e-40) {
+            iRC = UQ_MATRIX_IS_NOT_POS_DEFINITE_RC;
+          }
+        }
+#endif
+
         if (iRC) {
           UQ_FATAL_TEST_MACRO(iRC != UQ_MATRIX_IS_NOT_POS_DEFINITE_RC,
                               m_env.fullRank(),
