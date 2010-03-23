@@ -79,6 +79,7 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   m_drMaxNumExtraStages                      (UQ_ML_SAMPLING_L_DR_MAX_NUM_EXTRA_STAGES_ODV),
   m_drScalesForExtraStages                   (0),
   m_str4                                     ("1. "),
+  m_amKeepInitialMatrix                      (UQ_ML_SAMPLING_L_AM_KEEP_INITIAL_MATRIX_ODV),
   m_amInitialNonAdaptInterval                (UQ_ML_SAMPLING_L_AM_INIT_NON_ADAPT_INT_ODV),
   m_amAdaptInterval                          (UQ_ML_SAMPLING_L_AM_ADAPT_INTERVAL_ODV),
   m_amEta                                    (UQ_ML_SAMPLING_L_AM_ETA_ODV),
@@ -119,6 +120,7 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   m_option_tk_useNewtonComponent             (m_prefix + "tk_useNewtonComponent"             ),
   m_option_dr_maxNumExtraStages              (m_prefix + "dr_maxNumExtraStages"              ),
   m_option_dr_listOfScalesForExtraStages     (m_prefix + "dr_listOfScalesForExtraStages"     ),
+  m_option_am_keepInitialMatrix              (m_prefix + "am_keepInitialMatrix"              ),
   m_option_am_initialNonAdaptInterval        (m_prefix + "am_initialNonAdaptInterval"        ),
   m_option_am_adaptInterval                  (m_prefix + "am_adaptInterval"                  ),
   m_option_am_eta                            (m_prefix + "am_eta"                            ),
@@ -171,6 +173,7 @@ uqMLSamplingLevelOptionsClass::copyOptionsValues(const uqMLSamplingLevelOptionsC
   m_drMaxNumExtraStages               = srcOptions.m_drMaxNumExtraStages;
   m_drScalesForExtraStages            = srcOptions.m_drScalesForExtraStages;
   m_str4                              = srcOptions.m_str4;
+  m_amKeepInitialMatrix               = srcOptions.m_amKeepInitialMatrix;
   m_amInitialNonAdaptInterval         = srcOptions.m_amInitialNonAdaptInterval;
   m_amAdaptInterval                   = srcOptions.m_amAdaptInterval;
   m_amEta                             = srcOptions.m_amEta;
@@ -260,6 +263,7 @@ uqMLSamplingLevelOptionsClass::defineMyOptions(po::options_description& optionsD
     (m_option_tk_useNewtonComponent.c_str(),              po::value<bool        >()->default_value(m_tkUseNewtonComponent             ), "'proposal' use Newton component"                                 )
     (m_option_dr_maxNumExtraStages.c_str(),               po::value<unsigned int>()->default_value(m_drMaxNumExtraStages              ), "'dr' maximum number of extra stages"                             )
     (m_option_dr_listOfScalesForExtraStages.c_str(),      po::value<std::string >()->default_value(m_str4                             ), "'dr' list of scales for proposal cov matrices from 2nd stage on" )
+    (m_option_am_keepInitialMatrix.c_str(),               po::value<bool        >()->default_value(m_amKeepInitialMatrix              ), "'am' keep initial (given) matrix"                                )
     (m_option_am_initialNonAdaptInterval.c_str(),         po::value<unsigned int>()->default_value(m_amInitialNonAdaptInterval        ), "'am' initial non adaptation interval"                            )
     (m_option_am_adaptInterval.c_str(),                   po::value<unsigned int>()->default_value(m_amAdaptInterval                  ), "'am' adaptation interval"                                        )
     (m_option_am_eta.c_str(),                             po::value<double      >()->default_value(m_amEta                            ), "'am' eta"                                                        )
@@ -565,6 +569,10 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
   }
 //std::cout << "m_str4 = " << m_str4 << std::endl;
 
+  if (m_env.allOptionsMap().count(m_option_am_keepInitialMatrix.c_str())) {
+    m_amKeepInitialMatrix = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_keepInitialMatrix.c_str()]).as<bool>();
+  }
+
   if (m_env.allOptionsMap().count(m_option_am_initialNonAdaptInterval.c_str())) {
     m_amInitialNonAdaptInterval = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_initialNonAdaptInterval.c_str()]).as<unsigned int>();
   }
@@ -633,7 +641,8 @@ uqMLSamplingLevelOptionsClass::print(std::ostream& os) const
   for (unsigned int i = 0; i < m_drScalesForExtraStages.size(); ++i) {
     os << m_drScalesForExtraStages[i] << " ";
   }
-  os << "\n" << m_option_am_initialNonAdaptInterval << " = " << m_amInitialNonAdaptInterval
+  os << "\n" << m_option_am_keepInitialMatrix       << " = " << m_amKeepInitialMatrix
+     << "\n" << m_option_am_initialNonAdaptInterval << " = " << m_amInitialNonAdaptInterval
      << "\n" << m_option_am_adaptInterval           << " = " << m_amAdaptInterval
      << "\n" << m_option_am_eta                     << " = " << m_amEta
      << "\n" << m_option_am_epsilon                 << " = " << m_amEpsilon

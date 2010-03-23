@@ -65,6 +65,7 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_tkUseNewtonComponent                     (UQ_MH_SG_TK_USE_NEWTON_COMPONENT_ODV),
   m_drMaxNumExtraStages                      (UQ_MH_SG_DR_MAX_NUM_EXTRA_STAGES_ODV),
   m_drScalesForExtraStages                   (0),
+  m_amKeepInitialMatrix                      (UQ_MH_SG_AM_KEEP_INITIAL_MATRIX_ODV),
   m_amInitialNonAdaptInterval                (UQ_MH_SG_AM_INIT_NON_ADAPT_INT_ODV),
   m_amAdaptInterval                          (UQ_MH_SG_AM_ADAPT_INTERVAL_ODV),
   m_amEta                                    (UQ_MH_SG_AM_ETA_ODV),
@@ -95,6 +96,7 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_option_tk_useNewtonComponent             (m_prefix + "tk_useNewtonComponent"             ),
   m_option_dr_maxNumExtraStages              (m_prefix + "dr_maxNumExtraStages"              ),
   m_option_dr_listOfScalesForExtraStages     (m_prefix + "dr_listOfScalesForExtraStages"     ),
+  m_option_am_keepInitialMatrix              (m_prefix + "am_keepInitialMatrix"              ),
   m_option_am_initialNonAdaptInterval        (m_prefix + "am_initialNonAdaptInterval"        ),
   m_option_am_adaptInterval                  (m_prefix + "am_adaptInterval"                  ),
   m_option_am_eta                            (m_prefix + "am_eta"                            ),
@@ -133,6 +135,7 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_tkUseNewtonComponent             (inputOptions.m_tkUseNewtonComponent),
   m_drMaxNumExtraStages              (inputOptions.m_drMaxNumExtraStages),
   m_drScalesForExtraStages           (inputOptions.m_drScalesForExtraStages),
+  m_amKeepInitialMatrix              (inputOptions.m_amKeepInitialMatrix),
   m_amInitialNonAdaptInterval        (inputOptions.m_amInitialNonAdaptInterval),
   m_amAdaptInterval                  (inputOptions.m_amAdaptInterval),
   m_amEta                            (inputOptions.m_amEta),
@@ -163,6 +166,7 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_option_tk_useNewtonComponent             (m_prefix + "tk_useNewtonComponent"             ),
   m_option_dr_maxNumExtraStages              (m_prefix + "dr_maxNumExtraStages"              ),
   m_option_dr_listOfScalesForExtraStages     (m_prefix + "dr_listOfScalesForExtraStages"     ),
+  m_option_am_keepInitialMatrix              (m_prefix + "am_keepInitialMatrix"              ),
   m_option_am_initialNonAdaptInterval        (m_prefix + "am_initialNonAdaptInterval"        ),
   m_option_am_adaptInterval                  (m_prefix + "am_adaptInterval"                  ),
   m_option_am_eta                            (m_prefix + "am_eta"                            ),
@@ -241,6 +245,7 @@ uqMetropolisHastingsSGOptionsClass::defineMyOptions(po::options_description& opt
     (m_option_tk_useNewtonComponent.c_str(),              po::value<bool        >()->default_value(UQ_MH_SG_TK_USE_NEWTON_COMPONENT_ODV               ), "'proposal' use Newton component"                                 )
     (m_option_dr_maxNumExtraStages.c_str(),               po::value<unsigned int>()->default_value(UQ_MH_SG_DR_MAX_NUM_EXTRA_STAGES_ODV               ), "'dr' maximum number of extra stages"                             )
     (m_option_dr_listOfScalesForExtraStages.c_str(),      po::value<std::string >()->default_value(UQ_MH_SG_DR_LIST_OF_SCALES_FOR_EXTRA_STAGES_ODV    ), "'dr' list of scales for proposal cov matrices from 2nd stage on" )
+    (m_option_am_keepInitialMatrix.c_str(),               po::value<bool        >()->default_value(UQ_MH_SG_AM_KEEP_INITIAL_MATRIX_ODV                ), "'am' keep initial (given) matrix"                                )
     (m_option_am_initialNonAdaptInterval.c_str(),         po::value<unsigned int>()->default_value(UQ_MH_SG_AM_INIT_NON_ADAPT_INT_ODV                 ), "'am' initial non adaptation interval"                            )
     (m_option_am_adaptInterval.c_str(),                   po::value<unsigned int>()->default_value(UQ_MH_SG_AM_ADAPT_INTERVAL_ODV                     ), "'am' adaptation interval"                                        )
     (m_option_am_eta.c_str(),                             po::value<double      >()->default_value(UQ_MH_SG_AM_ETA_ODV                                ), "'am' eta"                                                        )
@@ -415,6 +420,10 @@ uqMetropolisHastingsSGOptionsClass::getMyOptionValues(po::options_description& o
     //updateTK();
   }
 
+  if (m_env.allOptionsMap().count(m_option_am_keepInitialMatrix)) {
+    m_amKeepInitialMatrix = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_keepInitialMatrix]).as<bool>();
+  }
+
   if (m_env.allOptionsMap().count(m_option_am_initialNonAdaptInterval)) {
     m_amInitialNonAdaptInterval = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_initialNonAdaptInterval]).as<unsigned int>();
   }
@@ -472,7 +481,8 @@ uqMetropolisHastingsSGOptionsClass::print(std::ostream& os) const
   for (unsigned int i = 0; i < m_drScalesForExtraStages.size(); ++i) {
     os << m_drScalesForExtraStages[i] << " ";
   }
-  os << "\n" << m_option_am_initialNonAdaptInterval << " = " << m_amInitialNonAdaptInterval
+  os << "\n" << m_option_am_keepInitialMatrix       << " = " << m_amKeepInitialMatrix
+     << "\n" << m_option_am_initialNonAdaptInterval << " = " << m_amInitialNonAdaptInterval
      << "\n" << m_option_am_adaptInterval           << " = " << m_amAdaptInterval
      << "\n" << m_option_am_eta                     << " = " << m_amEta
      << "\n" << m_option_am_epsilon                 << " = " << m_amEpsilon

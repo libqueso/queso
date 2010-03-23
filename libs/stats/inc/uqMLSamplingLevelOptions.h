@@ -73,6 +73,7 @@
 #define UQ_ML_SAMPLING_L_TK_USE_NEWTON_COMPONENT_ODV                1
 #define UQ_ML_SAMPLING_L_DR_MAX_NUM_EXTRA_STAGES_ODV                0
 #define UQ_ML_SAMPLING_L_DR_LIST_OF_SCALES_FOR_EXTRA_STAGES_ODV     "1."
+#define UQ_ML_SAMPLING_L_AM_KEEP_INITIAL_MATRIX_ODV                 0
 #define UQ_ML_SAMPLING_L_AM_INIT_NON_ADAPT_INT_ODV                  0
 #define UQ_ML_SAMPLING_L_AM_ADAPT_INTERVAL_ODV                      0
 #define UQ_ML_SAMPLING_L_AM_ETA_ODV                                 1.
@@ -135,6 +136,7 @@ public:
   unsigned int                       m_drMaxNumExtraStages;
   std::vector<double>                m_drScalesForExtraStages;
   std::string                        m_str4;
+  bool                               m_amKeepInitialMatrix;
   unsigned int                       m_amInitialNonAdaptInterval;
   unsigned int                       m_amAdaptInterval;
   double                             m_amEta;
@@ -185,6 +187,7 @@ private:
   std::string                   m_option_tk_useNewtonComponent;
   std::string                   m_option_dr_maxNumExtraStages;
   std::string                   m_option_dr_listOfScalesForExtraStages;
+  std::string                   m_option_am_keepInitialMatrix;
   std::string                   m_option_am_initialNonAdaptInterval;
   std::string                   m_option_am_adaptInterval;
   std::string                   m_option_am_eta;
