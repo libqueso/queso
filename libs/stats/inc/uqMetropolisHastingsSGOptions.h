@@ -67,7 +67,7 @@
 #define UQ_MH_SG_TK_USE_NEWTON_COMPONENT_ODV                1
 #define UQ_MH_SG_DR_MAX_NUM_EXTRA_STAGES_ODV                0
 #define UQ_MH_SG_DR_LIST_OF_SCALES_FOR_EXTRA_STAGES_ODV     ""
-#define UQ_MH_SG_DR_DURING_AM_NON_ADAPTIVE_INT_ODV          0
+#define UQ_MH_SG_DR_DURING_AM_NON_ADAPTIVE_INT_ODV          1
 #define UQ_MH_SG_AM_KEEP_INITIAL_MATRIX_ODV                 0
 #define UQ_MH_SG_AM_INIT_NON_ADAPT_INT_ODV                  0
 #define UQ_MH_SG_AM_ADAPT_INTERVAL_ODV                      0
