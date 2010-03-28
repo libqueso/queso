@@ -467,8 +467,8 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
         (m_env.displayVerbosity() >= 10  ) &&
         (m_options.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
-                              << ": beginning chain position of id = "   << positionId
-                              << ", m_options.m_drMaxNumExtraStages =  " << m_options.m_drMaxNumExtraStages
+                              << ": beginning chain position of id = "  << positionId
+                              << ", m_options.m_drMaxNumExtraStages = " << m_options.m_drMaxNumExtraStages
                               << std::endl;
     }
     unsigned int stageId  = 0;
@@ -629,114 +629,125 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
     //****************************************************
     std::vector<uqMarkovChainPositionDataClass<P_V>*> drPositionsData(stageId+2,NULL);
     std::vector<unsigned int> tkStageIds (stageId+2,0);
-    if ((accept == false) && (outOfTargetSupport == false) && (m_options.m_drMaxNumExtraStages > 0)) {
-      if (m_options.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalDR, NULL);
+    if ((accept                          == false) &&
+        (outOfTargetSupport              == false) &&
+        (m_options.m_drMaxNumExtraStages >  0    )) {
+      if ((m_options.m_drDuringAmNonAdaptiveInt  == false     ) &&
+          (m_options.m_tkUseLocalHessian         == false     ) &&
+          (m_options.m_amInitialNonAdaptInterval >  0         ) &&
+          (m_options.m_amAdaptInterval           >  0         ) &&
+          (positionId <= m_options.m_amInitialNonAdaptInterval)) {
+        // Avoid DR now
+      }
+      else {
+        if (m_options.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalDR, NULL);
 
-      drPositionsData[0] = new uqMarkovChainPositionDataClass<P_V>(currentPositionData );
-      drPositionsData[1] = new uqMarkovChainPositionDataClass<P_V>(currentCandidateData);
+        drPositionsData[0] = new uqMarkovChainPositionDataClass<P_V>(currentPositionData );
+        drPositionsData[1] = new uqMarkovChainPositionDataClass<P_V>(currentCandidateData);
 
-      tkStageIds[0]  = 0;
-      tkStageIds[1]  = 1;
+        tkStageIds[0]  = 0;
+        tkStageIds[1]  = 1;
 
-      while ((validPreComputingPosition == true        ) && 
-             (accept                    == false       ) &&
-             (stageId < m_options.m_drMaxNumExtraStages)) {
-        if ((m_env.subDisplayFile()          ) &&
-            (m_env.displayVerbosity() >= 10  ) &&
-            (m_options.m_totallyMute == false)) {
-          *m_env.subDisplayFile() << "\n"
-                                  << "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-"
-                                  << "\n"
-                                  << std::endl;
-        }
-        stageId++;
-        m_stageIdForDebugging = stageId;
-        if ((m_env.subDisplayFile()          ) &&
-            (m_env.displayVerbosity() >= 10  ) &&
-            (m_options.m_totallyMute == false)) {
-          *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
-                                  << ": for chain position of id = " << positionId
-                                  << ", beginning stageId = "        << stageId
-                                  << std::endl;
-        }
+        while ((validPreComputingPosition == true        ) && 
+               (accept                    == false       ) &&
+               (stageId < m_options.m_drMaxNumExtraStages)) {
+          if ((m_env.subDisplayFile()          ) &&
+              (m_env.displayVerbosity() >= 10  ) &&
+              (m_options.m_totallyMute == false)) {
+            *m_env.subDisplayFile() << "\n"
+                                    << "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-"
+                                    << "\n"
+                                    << std::endl;
+          }
+          stageId++;
+          m_stageIdForDebugging = stageId;
+          if ((m_env.subDisplayFile()          ) &&
+              (m_env.displayVerbosity() >= 10  ) &&
+              (m_options.m_totallyMute == false)) {
+            *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
+                                    << ": for chain position of id = " << positionId
+                                    << ", beginning stageId = "        << stageId
+                                    << std::endl;
+          }
 
-        keepGeneratingCandidates = true;
-        while (keepGeneratingCandidates) {
-          if (m_options.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
-          m_tk->rv(tkStageIds).realizer().realization(tmpVecValues);
-          if (m_options.m_rawChainMeasureRunTimes) candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
+          keepGeneratingCandidates = true;
+          while (keepGeneratingCandidates) {
+            if (m_options.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
+            m_tk->rv(tkStageIds).realizer().realization(tmpVecValues);
+            if (m_options.m_rawChainMeasureRunTimes) candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
 
-          outOfTargetSupport = !m_targetPdf.domainSet().contains(tmpVecValues);
+            outOfTargetSupport = !m_targetPdf.domainSet().contains(tmpVecValues);
 
-          if (m_options.m_putOutOfBoundsInChain) keepGeneratingCandidates = false;
-          else                                   keepGeneratingCandidates = outOfTargetSupport;
-        }
+            if (m_options.m_putOutOfBoundsInChain) keepGeneratingCandidates = false;
+            else                                   keepGeneratingCandidates = outOfTargetSupport;
+          }
+  
+          if ((m_env.subDisplayFile()          ) &&
+              (m_env.displayVerbosity() >= 5   ) &&
+              (m_options.m_totallyMute == false)) {
+            *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
+                                    << ": about to set TK pre computing position of local id " << stageId+1
+                                    << ", values = " << tmpVecValues
+                                    << std::endl;
+          }
+          validPreComputingPosition = m_tk->setPreComputingPosition(tmpVecValues,stageId+1);
+          if ((m_env.subDisplayFile()          ) &&
+              (m_env.displayVerbosity() >= 5   ) &&
+              (m_options.m_totallyMute == false)) {
+            *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
+                                    << ": returned from setting TK pre computing position of local id " << stageId+1
+                                    << ", values = " << tmpVecValues
+                                    << ", valid = "  << validPreComputingPosition
+                                    << std::endl;
+          }
 
-        if ((m_env.subDisplayFile()          ) &&
-            (m_env.displayVerbosity() >= 5   ) &&
-            (m_options.m_totallyMute == false)) {
-          *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
-                                  << ": about to set TK pre computing position of local id " << stageId+1
-                                  << ", values = " << tmpVecValues
-                                  << std::endl;
-        }
-        validPreComputingPosition = m_tk->setPreComputingPosition(tmpVecValues,stageId+1);
-        if ((m_env.subDisplayFile()          ) &&
-            (m_env.displayVerbosity() >= 5   ) &&
-            (m_options.m_totallyMute == false)) {
-          *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
-                                  << ": returned from setting TK pre computing position of local id " << stageId+1
-                                  << ", values = " << tmpVecValues
-                                  << ", valid = "  << validPreComputingPosition
-                                  << std::endl;
-        }
-
-        if (outOfTargetSupport) {
-          logLikelihood = -INFINITY;
-          logTarget     = -INFINITY;
-        }
-        else {
-          if (m_options.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalTargetD, NULL);
+          if (outOfTargetSupport) {
+            logLikelihood = -INFINITY;
+            logTarget     = -INFINITY;
+          }
+          else {
+            if (m_options.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalTargetD, NULL);
 #ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
-          logTarget =        m_targetPdfSynchronizer->callFunction(&tmpVecValues,NULL,NULL,NULL,NULL,&logLikelihood); // Might demand parallel environment
+            logTarget =        m_targetPdfSynchronizer->callFunction(&tmpVecValues,NULL,NULL,NULL,NULL,&logLikelihood); // Might demand parallel environment
 #else
-          logTarget = -0.5 * m_targetPdfSynchronizer->callFunction(&tmpVecValues,NULL,NULL,NULL,NULL,&logLikelihood); // Might demand parallel environment
+            logTarget = -0.5 * m_targetPdfSynchronizer->callFunction(&tmpVecValues,NULL,NULL,NULL,NULL,&logLikelihood); // Might demand parallel environment
 #endif
-          if (m_options.m_rawChainMeasureRunTimes) targetDRunTime += uqMiscGetEllapsedSeconds(&timevalTargetD);
-        }
-        currentCandidateData.set(tmpVecValues,
-                                 outOfTargetSupport,
-                                 logLikelihood,
-                                 logTarget);
+            if (m_options.m_rawChainMeasureRunTimes) targetDRunTime += uqMiscGetEllapsedSeconds(&timevalTargetD);
+          }
+          currentCandidateData.set(tmpVecValues,
+                                   outOfTargetSupport,
+                                   logLikelihood,
+                                   logTarget);
 
-        drPositionsData.push_back(new uqMarkovChainPositionDataClass<P_V>(currentCandidateData));
-        tkStageIds.push_back     (stageId+1);
+          drPositionsData.push_back(new uqMarkovChainPositionDataClass<P_V>(currentCandidateData));
+          tkStageIds.push_back     (stageId+1);
 
-        double alphaDR = 0.;
-        if (outOfTargetSupport == false) {
-          if (m_options.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalDrAlpha, NULL);
-          alphaDR = this->alpha(drPositionsData,tkStageIds);
-          if (m_options.m_rawChainMeasureRunTimes) drAlphaRunTime += uqMiscGetEllapsedSeconds(&timevalDrAlpha);
-          accept = acceptAlpha(alphaDR);
-        }
+          double alphaDR = 0.;
+          if (outOfTargetSupport == false) {
+            if (m_options.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalDrAlpha, NULL);
+            alphaDR = this->alpha(drPositionsData,tkStageIds);
+            if (m_options.m_rawChainMeasureRunTimes) drAlphaRunTime += uqMiscGetEllapsedSeconds(&timevalDrAlpha);
+            accept = acceptAlpha(alphaDR);
+          }
 
-        displayDetail = (m_env.displayVerbosity() >= 10/*99*/) || m_options.m_displayCandidates;
-        if ((m_env.subDisplayFile()          ) &&
-            (displayDetail                   ) &&
-            (m_options.m_totallyMute == false)) {
-          *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
-                                  << ": for chain position of id = " << positionId
-                                  << " and stageId = "               << stageId
-                                  << ", outOfTargetSupport = "       << outOfTargetSupport
-                                  << ", alpha = "                    << alphaDR
-                                  << ", accept = "                   << accept
-                                  << ", currentCandidateData.vecValues() = ";
-          *m_env.subDisplayFile() << currentCandidateData.vecValues(); // FIX ME: might need parallelism
-          *m_env.subDisplayFile() << std::endl;
-        }
-      } // while
+          displayDetail = (m_env.displayVerbosity() >= 10/*99*/) || m_options.m_displayCandidates;
+          if ((m_env.subDisplayFile()          ) &&
+              (displayDetail                   ) &&
+              (m_options.m_totallyMute == false)) {
+            *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
+                                    << ": for chain position of id = " << positionId
+                                    << " and stageId = "               << stageId
+                                    << ", outOfTargetSupport = "       << outOfTargetSupport
+                                    << ", alpha = "                    << alphaDR
+                                    << ", accept = "                   << accept
+                                    << ", currentCandidateData.vecValues() = ";
+            *m_env.subDisplayFile() << currentCandidateData.vecValues(); // FIX ME: might need parallelism
+            *m_env.subDisplayFile() << std::endl;
+          }
+        } // while
 
-      if (m_options.m_rawChainMeasureRunTimes) drRunTime += uqMiscGetEllapsedSeconds(&timevalDR);
+        if (m_options.m_rawChainMeasureRunTimes) drRunTime += uqMiscGetEllapsedSeconds(&timevalDR);
+      } // if-else "Avoid DR now"
     } // end of 'delayed rejection' logic
 
     for (unsigned int i = 0; i < drPositionsData.size(); ++i) {
