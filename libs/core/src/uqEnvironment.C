@@ -968,6 +968,12 @@ uqFullEnvironmentClass::readOptionsInputFile()
   return;
 }
 
+std::string
+uqFullEnvironmentClass::optionsInputFileName() const
+{
+  return m_optionsInputFileName;
+}
+
 void
 uqFullEnvironmentClass::print(std::ostream& os) const
 {

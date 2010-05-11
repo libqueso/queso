@@ -248,6 +248,7 @@ public:
  ~uqFullEnvironmentClass();
 
         void                     print                (std::ostream& os) const;
+	std::string              optionsInputFileName () const;
 
 private:
         void                     readOptionsInputFile ();
