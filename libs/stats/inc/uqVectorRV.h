@@ -390,6 +390,28 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
       *m_env.subDisplayFile() << lawVarVector; // FIX ME: might demand parallelism
       *m_env.subDisplayFile() << std::endl;
     }
+    M matU (lawVarVector);
+    M matVt(m_imageSet.vectorSpace().zeroVector());
+    V vecS (m_imageSet.vectorSpace().zeroVector());
+    iRC = matU.svd(matVt,vecS);
+    vecS.cwSqrt();
+    lowerCholLawCovMatrix = matU * leftDiagScaling(vecS,matVt);
+#if 1 // For debug only
+    M matOrig (lawVarVector);
+    M matCheck(lowerCholLawCovMatrix * lowerCholLawCovMatrix.transpose());
+    M matDiff (matOrig - matCheck);
+    double frobOrig  = matOrig.normFrob();
+    double frobCheck = matCheck.normFrob();
+    double frobDiff  = matDiff.normFrob();
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "In uqGaussianVectorRVClass<V,M>::constructor() [1]"
+                              << ": frobOrig = "  << frobOrig
+                              << ", frobCheck = " << frobCheck
+                              << ", frobDiff = "  << frobDiff
+                              << ", diff/orig = " << frobDiff/frobOrig
+                              << std::endl;
+    }
+#endif
   }
   UQ_FATAL_TEST_MACRO(iRC,
                       m_env.fullRank(),
@@ -441,6 +463,28 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
       *m_env.subDisplayFile() << lawCovMatrix; // FIX ME: might demand parallelism
       *m_env.subDisplayFile() << std::endl;
     }
+    M matU (lawCovMatrix);
+    M matVt(m_imageSet.vectorSpace().zeroVector());
+    V vecS (m_imageSet.vectorSpace().zeroVector());
+    iRC = matU.svd(matVt,vecS);
+    vecS.cwSqrt();
+    lowerCholLawCovMatrix = matU * leftDiagScaling(vecS,matVt);
+#if 1 // For debug only
+    M matOrig (lawCovMatrix);
+    M matCheck(lowerCholLawCovMatrix * lowerCholLawCovMatrix.transpose());
+    M matDiff (matOrig - matCheck);
+    double frobOrig  = matOrig.normFrob();
+    double frobCheck = matCheck.normFrob();
+    double frobDiff  = matDiff.normFrob();
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "In uqGaussianVectorRVClass<V,M>::constructor() [2]"
+                              << ": frobOrig = "  << frobOrig
+                              << ", frobCheck = " << frobCheck
+                              << ", frobDiff = "  << frobDiff
+                              << ", diff/orig = " << frobDiff/frobOrig
+                              << std::endl;
+    }
+#endif
   }
   UQ_FATAL_TEST_MACRO(iRC,
                       m_env.fullRank(),
@@ -495,10 +539,32 @@ uqGaussianVectorRVClass<V,M>::updateLawCovMatrix(const M& newLawCovMatrix)
   int iRC = newLowerCholLawCovMatrix.chol();
   if (iRC) {
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In uqGaussianVectorRVClass<V,M>::updateLawCovVector(): newLawCovMatrix contents are\n";
+      *m_env.subDisplayFile() << "In uqGaussianVectorRVClass<V,M>::updateLawCovMatrix(): newLawCovMatrix contents are\n";
       *m_env.subDisplayFile() << newLawCovMatrix; // FIX ME: might demand parallelism
       *m_env.subDisplayFile() << std::endl;
     }
+    M matU (newLawCovMatrix);
+    M matVt(m_imageSet.vectorSpace().zeroVector());
+    V vecS (m_imageSet.vectorSpace().zeroVector());
+    iRC = matU.svd(matVt,vecS);
+    vecS.cwSqrt();
+    newLowerCholLawCovMatrix = matU * leftDiagScaling(vecS,matVt);
+#if 1 // For debug only
+    M matOrig (newLawCovMatrix);
+    M matCheck(newLowerCholLawCovMatrix * newLowerCholLawCovMatrix.transpose());
+    M matDiff (matOrig - matCheck);
+    double frobOrig  = matOrig.normFrob();
+    double frobCheck = matCheck.normFrob();
+    double frobDiff  = matDiff.normFrob();
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "In uqGaussianVectorRVClass<V,M>::updateLawCovMatrix()"
+                              << ": frobOrig = "  << frobOrig
+                              << ", frobCheck = " << frobCheck
+                              << ", frobDiff = "  << frobDiff
+                              << ", diff/orig = " << frobDiff/frobOrig
+                              << std::endl;
+    }
+#endif
   }
   UQ_FATAL_TEST_MACRO(iRC,
                       m_env.fullRank(),
