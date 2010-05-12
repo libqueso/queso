@@ -35,6 +35,7 @@
 #include <uqDefines.h>
 #include <gsl/gsl_linalg.h>
 #include <gsl/gsl_eigen.h>
+#include <sys/time.h>
 
 uqGslMatrixClass::uqGslMatrixClass()
   :
@@ -338,18 +339,32 @@ int
 uqGslMatrixClass::svd(uqGslMatrixClass& matVt, uqGslVectorClass& vecS)
 {
   int iRC;
+  uqGslMatrixClass matV(matVt);
+  //uqGslVectorClass vecWork(vecS);
   std::cout << "Calling gsl_linalg_SV_decomp_jacobi()..." << std::endl;
+
+  struct timeval timevalBegin;
+  gettimeofday(&timevalBegin, NULL);
   gsl_error_handler_t* oldHandler;
   oldHandler = gsl_set_error_handler_off();
-  iRC = gsl_linalg_SV_decomp_jacobi(m_mat, matVt.data(), vecS.data());
+#if 1
+  iRC = gsl_linalg_SV_decomp_jacobi(m_mat, matV.data(), vecS.data());
+#else
+  iRC = gsl_linalg_SV_decomp(m_mat, matV.data(), vecS.data(), vecWork.data());
+#endif
   gsl_set_error_handler(oldHandler);
-  std::cout << "Returned from gsl_linalg_SV_decomp_jacobi() with iRC = " << iRC << std::endl;
+  struct timeval timevalNow;
+  gettimeofday(&timevalNow, NULL);
+  std::cout << "Returned from gsl_linalg_SV_decomp_jacobi() with iRC = " << iRC
+            << " after " << timevalNow.tv_sec - timevalBegin.tv_sec
+            << " seconds"
+            << std::endl;
   UQ_RC_MACRO(iRC, // Yes, *not* a fatal check on RC
               m_env.fullRank(),
               "uqGslMatrixClass::svd()",
               "matrix svd failed",
               UQ_MATRIX_IS_NOT_POS_DEFINITE_RC);
-  matVt.transpose();
+  matVt = matV.transpose();
 
   return iRC;
 }
@@ -1150,6 +1165,8 @@ uqGslMatrixClass operator*(const uqGslMatrixClass& m1, const uqGslMatrixClass& m
 
   uqGslMatrixClass mat(m1.env(),m1.map(),m2Cols);
 
+  std::cout << "In uqGslMatrixClass(mat * mat): m1Cols = " << m1Cols << std::endl;
+
   unsigned int commonSize = m1Cols;
   for (unsigned int row1 = 0; row1 < m1Rows; ++row1) {
     for (unsigned int col2 = 0; col2 < m2Cols; ++col2) {
@@ -1159,6 +1176,7 @@ uqGslMatrixClass operator*(const uqGslMatrixClass& m1, const uqGslMatrixClass& m
       }
       mat(row1,col2) = result;
     }
+    std::cout << "In uqGslMatrixClass(mat * mat): ended row " << row1 << std::endl;
   }
 
   return mat;

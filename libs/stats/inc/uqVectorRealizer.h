@@ -181,6 +181,13 @@ public:
                                 const V&                     lawExpVector, // vector of mean values
                                 const M&                     lowerCholLawCovMatrix); // lower triangular matrix resulting from Cholesky decomposition of the covariance matrix
 
+  uqGaussianVectorRealizerClass(const char*                  prefix,
+                                const uqVectorSetClass<V,M>& unifiedImageSet,
+                                const V&                     lawExpVector, // vector of mean values
+                                const M&                     matU,
+                                const V&                     vecSsqrt,
+                                const M&                     matVt);
+
   ~uqGaussianVectorRealizerClass();
 
   const V&   unifiedLawExpVector        ()              const;
@@ -188,11 +195,17 @@ public:
         void realization                (V& nextValues) const;
         void updateLawExpVector         (const V& newLawExpVector);
         void updateLowerCholLawCovMatrix(const M& newLowerCholLawCovMatrix);
+        void updateLowerCholLawCovMatrix(const M& matU,
+                                         const V& vecSsqrt,
+                                         const M& matVt);
     
 private:
-  M* m_lowerCholLawCovMatrix;
   V* m_unifiedLawExpVector;
   V* m_unifiedLawVarVector;
+  M* m_lowerCholLawCovMatrix;
+  M* m_matU;
+  V* m_vecSsqrt;
+  M* m_matVt;
 
   using uqBaseVectorRealizerClass<V,M>::m_env;
   using uqBaseVectorRealizerClass<V,M>::m_prefix;
@@ -207,20 +220,54 @@ uqGaussianVectorRealizerClass<V,M>::uqGaussianVectorRealizerClass(const char* pr
 								  const M& lowerCholLawCovMatrix)
   :
   uqBaseVectorRealizerClass<V,M>( ((std::string)(prefix)+"gau").c_str(), unifiedImageSet, 0 ),
-  m_lowerCholLawCovMatrix(new M(lowerCholLawCovMatrix)),
   m_unifiedLawExpVector  (new V(lawExpVector)),
-  m_unifiedLawVarVector  (unifiedImageSet.vectorSpace().newVector( INFINITY)) // FIX ME
+  m_unifiedLawVarVector  (unifiedImageSet.vectorSpace().newVector( INFINITY)), // FIX ME
+  m_lowerCholLawCovMatrix(new M(lowerCholLawCovMatrix)),
+  m_matU                 (NULL),
+  m_vecSsqrt             (NULL),
+  m_matVt                (NULL)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering uqGaussianVectorRealizerClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering uqGaussianVectorRealizerClass<V,M>::constructor() [1]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
-  *m_unifiedLawExpVector = lawExpVector;
+  *m_unifiedLawExpVector = lawExpVector; // ????
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving uqGaussianVectorRealizerClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving uqGaussianVectorRealizerClass<V,M>::constructor() [1]"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+}
+								  
+template<class V, class M>
+uqGaussianVectorRealizerClass<V,M>::uqGaussianVectorRealizerClass(const char* prefix,
+								  const uqVectorSetClass<V,M>& unifiedImageSet,
+								  const V& lawExpVector,
+								  const M& matU,
+								  const V& vecSsqrt,
+								  const M& matVt)
+  :
+  uqBaseVectorRealizerClass<V,M>( ((std::string)(prefix)+"gau").c_str(), unifiedImageSet, 0 ),
+  m_unifiedLawExpVector  (new V(lawExpVector)),
+  m_unifiedLawVarVector  (unifiedImageSet.vectorSpace().newVector( INFINITY)), // FIX ME
+  m_lowerCholLawCovMatrix(NULL),
+  m_matU                 (new M(matU)),
+  m_vecSsqrt             (new V(vecSsqrt)),
+  m_matVt                (new M(matVt))
+{
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqGaussianVectorRealizerClass<V,M>::constructor() [2]"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+
+  *m_unifiedLawExpVector = lawExpVector; // ????
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqGaussianVectorRealizerClass<V,M>::constructor() [2]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
@@ -229,9 +276,12 @@ uqGaussianVectorRealizerClass<V,M>::uqGaussianVectorRealizerClass(const char* pr
 template<class V, class M>
 uqGaussianVectorRealizerClass<V,M>::~uqGaussianVectorRealizerClass()
 {
+  delete m_matVt;
+  delete m_vecSsqrt;
+  delete m_matU;
+  delete m_lowerCholLawCovMatrix;
   delete m_unifiedLawVarVector;
   delete m_unifiedLawExpVector;
-  delete m_lowerCholLawCovMatrix;
 }
 
 template <class V, class M>
@@ -255,7 +305,19 @@ uqGaussianVectorRealizerClass<V,M>::realization(V& nextValues) const
   V iidGaussianVector(m_unifiedImageSet.vectorSpace().zeroVector());
   iidGaussianVector.cwSetGaussian(m_env.rng(), 0.0, 1.0);
 
-  nextValues = (*m_unifiedLawExpVector) + (*m_lowerCholLawCovMatrix)*iidGaussianVector;
+  if (m_lowerCholLawCovMatrix) {
+    nextValues = (*m_unifiedLawExpVector) + (*m_lowerCholLawCovMatrix)*iidGaussianVector;
+  }
+  else if (m_matU && m_vecSsqrt && m_matVt) {
+    nextValues = (*m_unifiedLawExpVector) + (*m_matU)*( (*m_vecSsqrt) * ((*m_matVt)*iidGaussianVector) );
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.fullRank(),
+                        "uqGaussianVectorRealizerClass<V,M>::realization()",
+                        "inconsistent internal state");
+  }
+
   return;
 }
 
@@ -265,7 +327,9 @@ uqGaussianVectorRealizerClass<V,M>::updateLawExpVector(const V& newLawExpVector)
 {
   // delete old expected values (alloced at construction or last call to this function)
   delete m_unifiedLawExpVector;
+
   m_unifiedLawExpVector = new V(newLawExpVector);
+ 
   return;
 }
 
@@ -275,7 +339,36 @@ uqGaussianVectorRealizerClass<V,M>::updateLowerCholLawCovMatrix(const M& newLowe
 {
   // delete old expected values (alloced at construction or last call to this function)
   delete m_lowerCholLawCovMatrix;
+  delete m_matU;
+  delete m_vecSsqrt;
+  delete m_matVt;
+
   m_lowerCholLawCovMatrix = new M(newLowerCholLawCovMatrix);
+  m_matU                  = NULL;
+  m_vecSsqrt              = NULL;
+  m_matVt                 = NULL;
+
+  return;
+}
+
+template<class V, class M>
+void
+uqGaussianVectorRealizerClass<V,M>::updateLowerCholLawCovMatrix(
+  const M& matU,
+  const V& vecSsqrt,
+  const M& matVt)
+{
+  // delete old expected values (alloced at construction or last call to this function)
+  delete m_lowerCholLawCovMatrix;
+  delete m_matU;
+  delete m_vecSsqrt;
+  delete m_matVt;
+
+  m_lowerCholLawCovMatrix = NULL;
+  m_matU                  = new M(matU);
+  m_vecSsqrt              = new V(vecSsqrt);
+  m_matVt                 = new M(matVt);
+
   return;
 }
 

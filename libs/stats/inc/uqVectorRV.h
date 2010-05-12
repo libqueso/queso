@@ -384,6 +384,7 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
 
   M lowerCholLawCovMatrix(lawVarVector);
   int iRC = lowerCholLawCovMatrix.chol();
+  lowerCholLawCovMatrix.zeroUpper(false);
   if (iRC) {
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "In uqGaussianVectorRVClass<V,M>::constructor() [1]: lawVarVector contents are\n";
@@ -394,35 +395,26 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
     M matVt(m_imageSet.vectorSpace().zeroVector());
     V vecS (m_imageSet.vectorSpace().zeroVector());
     iRC = matU.svd(matVt,vecS);
-    vecS.cwSqrt();
-    lowerCholLawCovMatrix = matU * leftDiagScaling(vecS,matVt);
-#if 1 // For debug only
-    M matOrig (lawVarVector);
-    M matCheck(lowerCholLawCovMatrix * lowerCholLawCovMatrix.transpose());
-    M matDiff (matOrig - matCheck);
-    double frobOrig  = matOrig.normFrob();
-    double frobCheck = matCheck.normFrob();
-    double frobDiff  = matDiff.normFrob();
-    if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In uqGaussianVectorRVClass<V,M>::constructor() [1]"
-                              << ": frobOrig = "  << frobOrig
-                              << ", frobCheck = " << frobCheck
-                              << ", frobDiff = "  << frobDiff
-                              << ", diff/orig = " << frobDiff/frobOrig
-                              << std::endl;
-    }
-#endif
-  }
-  UQ_FATAL_TEST_MACRO(iRC,
-                      m_env.fullRank(),
-                      "uqGaussianVectorRVClass<V,M>::constructor() [1]",
-                      "Cholesky decomposition of covariance matrix failed.");
-  lowerCholLawCovMatrix.zeroUpper(false);
+    UQ_FATAL_TEST_MACRO(iRC,
+                        m_env.fullRank(),
+                        "uqGaussianVectorRVClass<V,M>::constructor() [1]",
+                        "Cholesky decomposition of covariance matrix failed.");
 
-  m_realizer = new uqGaussianVectorRealizerClass<V,M>(m_prefix.c_str(),
-						      m_imageSet,
-						      lawExpVector,
-						      lowerCholLawCovMatrix);
+    vecS.cwSqrt();
+    m_realizer = new uqGaussianVectorRealizerClass<V,M>(m_prefix.c_str(),
+                                                        m_imageSet,
+                                                        lawExpVector,
+                                                        matU,
+                                                        vecS, // already square rooted
+                                                        matVt);
+    //lowerCholLawCovMatrix = matU * leftDiagScaling(vecS,matVt);
+  }
+  else {
+    m_realizer = new uqGaussianVectorRealizerClass<V,M>(m_prefix.c_str(),
+                                                        m_imageSet,
+                                                        lawExpVector,
+                                                        lowerCholLawCovMatrix);
+  }
 
   m_subCdf     = NULL; // FIX ME: complete code
   m_unifiedCdf = NULL; // FIX ME: complete code
@@ -451,12 +443,13 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
   }
 
   m_pdf = new uqGaussianJointPdfClass<V,M>(m_prefix.c_str(),
-                                            m_imageSet,
-                                            lawExpVector,
-                                            lawCovMatrix);
+                                           m_imageSet,
+                                           lawExpVector,
+                                           lawCovMatrix);
 
   M lowerCholLawCovMatrix(lawCovMatrix);
   int iRC = lowerCholLawCovMatrix.chol();
+  lowerCholLawCovMatrix.zeroUpper(false);
   if (iRC) {
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "In uqGaussianVectorRVClass<V,M>::constructor() [2]: lawCovMatrix contents are\n";
@@ -467,35 +460,25 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
     M matVt(m_imageSet.vectorSpace().zeroVector());
     V vecS (m_imageSet.vectorSpace().zeroVector());
     iRC = matU.svd(matVt,vecS);
-    vecS.cwSqrt();
-    lowerCholLawCovMatrix = matU * leftDiagScaling(vecS,matVt);
-#if 1 // For debug only
-    M matOrig (lawCovMatrix);
-    M matCheck(lowerCholLawCovMatrix * lowerCholLawCovMatrix.transpose());
-    M matDiff (matOrig - matCheck);
-    double frobOrig  = matOrig.normFrob();
-    double frobCheck = matCheck.normFrob();
-    double frobDiff  = matDiff.normFrob();
-    if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In uqGaussianVectorRVClass<V,M>::constructor() [2]"
-                              << ": frobOrig = "  << frobOrig
-                              << ", frobCheck = " << frobCheck
-                              << ", frobDiff = "  << frobDiff
-                              << ", diff/orig = " << frobDiff/frobOrig
-                              << std::endl;
-    }
-#endif
-  }
-  UQ_FATAL_TEST_MACRO(iRC,
-                      m_env.fullRank(),
-		      "uqGaussianVectorRVClass<V,M>::constructor() [2]",
-		      "Cholesky decomposition of covariance matrix failed.");
-  lowerCholLawCovMatrix.zeroUpper(false);
+    UQ_FATAL_TEST_MACRO(iRC,
+                        m_env.fullRank(),
+                        "uqGaussianVectorRVClass<V,M>::constructor() [2]",
+		        "Cholesky decomposition of covariance matrix failed.");
 
-  m_realizer = new uqGaussianVectorRealizerClass<V,M>(m_prefix.c_str(),
-						      m_imageSet,
-						      lawExpVector,
-						      lowerCholLawCovMatrix);
+    vecS.cwSqrt();
+    m_realizer = new uqGaussianVectorRealizerClass<V,M>(m_prefix.c_str(),
+                                                        m_imageSet,
+                                                        lawExpVector,
+                                                        matU,
+                                                        vecS, // already square rooted
+                                                        matVt);
+  }
+  else {
+    m_realizer = new uqGaussianVectorRealizerClass<V,M>(m_prefix.c_str(),
+                                                        m_imageSet,
+                                                        lawExpVector,
+                                                        lowerCholLawCovMatrix);
+  }
 
   m_subCdf     = NULL; // FIX ME: complete code
   m_unifiedCdf = NULL; // FIX ME: complete code
@@ -537,6 +520,7 @@ uqGaussianVectorRVClass<V,M>::updateLawCovMatrix(const M& newLawCovMatrix)
 
   M newLowerCholLawCovMatrix(newLawCovMatrix);
   int iRC = newLowerCholLawCovMatrix.chol();
+  newLowerCholLawCovMatrix.zeroUpper(false);
   if (iRC) {
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "In uqGaussianVectorRVClass<V,M>::updateLawCovMatrix(): newLawCovMatrix contents are\n";
@@ -547,31 +531,19 @@ uqGaussianVectorRVClass<V,M>::updateLawCovMatrix(const M& newLawCovMatrix)
     M matVt(m_imageSet.vectorSpace().zeroVector());
     V vecS (m_imageSet.vectorSpace().zeroVector());
     iRC = matU.svd(matVt,vecS);
+    UQ_FATAL_TEST_MACRO(iRC,
+                        m_env.fullRank(),
+                        "uqGaussianVectorRVClass<V,M>::updateLawCovMatrix()",
+                        "Cholesky decomposition of covariance matrix failed.");
+
     vecS.cwSqrt();
-    newLowerCholLawCovMatrix = matU * leftDiagScaling(vecS,matVt);
-#if 1 // For debug only
-    M matOrig (newLawCovMatrix);
-    M matCheck(newLowerCholLawCovMatrix * newLowerCholLawCovMatrix.transpose());
-    M matDiff (matOrig - matCheck);
-    double frobOrig  = matOrig.normFrob();
-    double frobCheck = matCheck.normFrob();
-    double frobDiff  = matDiff.normFrob();
-    if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In uqGaussianVectorRVClass<V,M>::updateLawCovMatrix()"
-                              << ": frobOrig = "  << frobOrig
-                              << ", frobCheck = " << frobCheck
-                              << ", frobDiff = "  << frobDiff
-                              << ", diff/orig = " << frobDiff/frobOrig
-                              << std::endl;
-    }
-#endif
+    ( dynamic_cast< uqGaussianVectorRealizerClass<V,M>* >(m_realizer) )->updateLowerCholLawCovMatrix(matU,
+                                                                                                     vecS, // already square rooted
+                                                                                                     matVt);
   }
-  UQ_FATAL_TEST_MACRO(iRC,
-                      m_env.fullRank(),
-                      "uqGaussianVectorRVClass<V,M>::updateLawCovMatrix()",
-                      "Cholesky decomposition of covariance matrix failed.");
-  newLowerCholLawCovMatrix.zeroUpper(false);
-  ( dynamic_cast< uqGaussianVectorRealizerClass<V,M>* >(m_realizer) )->updateLowerCholLawCovMatrix(newLowerCholLawCovMatrix);
+  else {
+    ( dynamic_cast< uqGaussianVectorRealizerClass<V,M>* >(m_realizer) )->updateLowerCholLawCovMatrix(newLowerCholLawCovMatrix);
+  }
   return;
 }
 
