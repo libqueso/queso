@@ -1165,7 +1165,7 @@ uqGslMatrixClass operator*(const uqGslMatrixClass& m1, const uqGslMatrixClass& m
 
   uqGslMatrixClass mat(m1.env(),m1.map(),m2Cols);
 
-  std::cout << "In uqGslMatrixClass(mat * mat): m1Cols = " << m1Cols << std::endl;
+  //std::cout << "In uqGslMatrixClass(mat * mat): m1Cols = " << m1Cols << std::endl;
 
   unsigned int commonSize = m1Cols;
   for (unsigned int row1 = 0; row1 < m1Rows; ++row1) {
@@ -1176,7 +1176,7 @@ uqGslMatrixClass operator*(const uqGslMatrixClass& m1, const uqGslMatrixClass& m
       }
       mat(row1,col2) = result;
     }
-    std::cout << "In uqGslMatrixClass(mat * mat): ended row " << row1 << std::endl;
+    //std::cout << "In uqGslMatrixClass(mat * mat): ended row " << row1 << std::endl;
   }
 
   return mat;
