@@ -369,6 +369,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
 
   m_positionIdForDebugging = 0;
   m_stageIdForDebugging    = 0;
+  m_numDRs                 = 0;
   m_numRejections          = 0;
   double candidateRunTime = 0;
   double targetDRunTime   = 0;
@@ -659,6 +660,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
                                     << "\n"
                                     << std::endl;
           }
+          m_numDRs++;
           stageId++;
           m_stageIdForDebugging = stageId;
           if ((m_env.subDisplayFile()          ) &&
@@ -702,6 +704,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
           }
 
           if (outOfTargetSupport) {
+            m_numOutOfTargetSupportInDR++; // new 2010/May/12
             logLikelihood = -INFINITY;
             logTarget     = -INFINITY;
           }
@@ -829,6 +832,9 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
                                   << std::endl;
         }
         iRC = tmpChol.chol();
+        if (iRC) {
+          std::cerr << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(): first chol failed\n";
+        }
         if ((m_env.subDisplayFile()          ) &&
             (m_env.displayVerbosity() >= 10  )) {
 	  //(m_options.m_totallyMute == false)) {
@@ -876,6 +882,9 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
                                     << std::endl;
           }
           iRC = tmpChol.chol();
+          if (iRC) {
+            std::cerr << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(): second chol failed\n";
+          }
           if ((m_env.subDisplayFile()          ) &&
               (m_env.displayVerbosity() >= 10  )) {
 	    //(m_options.m_totallyMute == false)) {
@@ -1010,6 +1019,9 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
                               << " seconds ("                   << 100.*amRunTime/m_rawChainRunTime
                               << "%)";
     }
+    *m_env.subDisplayFile() << "\n  Number of DRs = "  << m_numDRs << "(num_DRs/chain_size = " << (double) m_numDRs/(double) workingChain.subSequenceSize()
+                            << ")";
+    *m_env.subDisplayFile() << "\n  Out of target support in DR = " << m_numOutOfTargetSupportInDR;
     *m_env.subDisplayFile() << "\n  Rejection percentage = "   << 100. * (double) m_numRejections/(double) workingChain.subSequenceSize()
                             << " %";
     *m_env.subDisplayFile() << "\n  Out of target support percentage = " << 100. * (double) m_numOutOfTargetSupport/(double) workingChain.subSequenceSize()

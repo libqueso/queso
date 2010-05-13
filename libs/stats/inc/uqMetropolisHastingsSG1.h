@@ -61,13 +61,16 @@ public:
                               const P_M*                           inputProposalCovMatrix);
  ~uqMetropolisHastingsSGClass();
 
-  void   generateSequence         (uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
-                                   uqScalarSequenceClass<double>*      workingLogLikelihoodValues,
-                                   uqScalarSequenceClass<double>*      workingLogTargetValues);
-  double rawChainRunTime          () const;
-  unsigned int numRejections      () const;
+  void         generateSequence         (uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
+                                         uqScalarSequenceClass<double>*      workingLogLikelihoodValues,
+                                         uqScalarSequenceClass<double>*      workingLogTargetValues);
+  double       rawChainRunTime          () const;
+  unsigned int numDRs                   () const;
+  unsigned int numOutOfTargetSupport    () const;
+  unsigned int numOutOfTargetSupportInDR() const;
+  unsigned int numRejections            () const;
 
-  void   print                    (std::ostream& os) const;
+  void   print                          (std::ostream& os) const;
 
 
 private:
@@ -114,8 +117,10 @@ private:
         std::vector<double>                         m_logTargets;
         std::vector<double>                         m_alphaQuotients;
         double                                      m_rawChainRunTime;
-        unsigned int                                m_numRejections;
+        unsigned int                                m_numDRs;
         unsigned int                                m_numOutOfTargetSupport;
+        unsigned int                                m_numOutOfTargetSupportInDR;
+        unsigned int                                m_numRejections;
         double                                      m_lastChainSize;
         P_V*                                        m_lastMean;
         P_M*                                        m_lastAdaptedCovMatrix;
@@ -164,8 +169,10 @@ uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
   m_logTargets                (0),//0.),
   m_alphaQuotients            (0),//0.),
   m_rawChainRunTime           (0.),
-  m_numRejections             (0),
+  m_numDRs                    (0),
   m_numOutOfTargetSupport     (0),
+  m_numOutOfTargetSupportInDR (0),
+  m_numRejections             (0),
   m_lastChainSize             (0),
   m_lastMean                  (NULL),
   m_lastAdaptedCovMatrix      (NULL),
@@ -225,8 +232,10 @@ uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
   m_logTargets                   (0),//0.),
   m_alphaQuotients               (0),//0.),
   m_rawChainRunTime              (0.),
-  m_numRejections                (0),
+  m_numDRs                       (0),
   m_numOutOfTargetSupport        (0),
+  m_numOutOfTargetSupportInDR    (0),
+  m_numRejections                (0),
   m_lastChainSize                (0),
   m_lastMean                     (NULL),
   m_lastAdaptedCovMatrix         (NULL),
@@ -308,10 +317,12 @@ uqMetropolisHastingsSGClass<P_V,P_M>::~uqMetropolisHastingsSGClass()
 
   if (m_lastAdaptedCovMatrix) delete m_lastAdaptedCovMatrix;
   if (m_lastMean)             delete m_lastMean;
-  m_lastChainSize         = 0;
-  m_numOutOfTargetSupport = 0;
-  m_rawChainRunTime       = 0.;
-  m_numRejections         = 0;
+  m_lastChainSize             = 0;
+  m_rawChainRunTime           = 0.;
+  m_numDRs                    = 0;
+  m_numOutOfTargetSupport     = 0;
+  m_numOutOfTargetSupportInDR = 0;
+  m_numRejections             = 0;
   m_alphaQuotients.clear();
   m_logTargets.clear();
   m_positionIdForDebugging = 0;
@@ -740,6 +751,27 @@ double
 uqMetropolisHastingsSGClass<P_V,P_M>::rawChainRunTime() const
 {
   return m_rawChainRunTime;
+}
+
+template<class P_V,class P_M>
+unsigned int
+uqMetropolisHastingsSGClass<P_V,P_M>::numDRs() const
+{
+  return m_numDRs;
+}
+
+template<class P_V,class P_M>
+unsigned int
+uqMetropolisHastingsSGClass<P_V,P_M>::numOutOfTargetSupport() const
+{
+  return m_numOutOfTargetSupport;
+}
+
+template<class P_V,class P_M>
+unsigned int
+uqMetropolisHastingsSGClass<P_V,P_M>::numOutOfTargetSupportInDR() const
+{
+  return m_numOutOfTargetSupportInDR;
 }
 
 template<class P_V,class P_M>

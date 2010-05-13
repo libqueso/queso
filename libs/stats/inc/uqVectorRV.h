@@ -386,8 +386,9 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
   int iRC = lowerCholLawCovMatrix.chol();
   lowerCholLawCovMatrix.zeroUpper(false);
   if (iRC) {
+    std::cerr << "In uqGaussianVectorRVClass<V,M>::constructor() [1]: chol failed, will use svd\n";
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In uqGaussianVectorRVClass<V,M>::constructor() [1]: lawVarVector contents are\n";
+      *m_env.subDisplayFile() << "In uqGaussianVectorRVClass<V,M>::constructor() [1]: chol failed; will use svd; lawVarVector contents are\n";
       *m_env.subDisplayFile() << lawVarVector; // FIX ME: might demand parallelism
       *m_env.subDisplayFile() << std::endl;
     }
@@ -451,8 +452,9 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
   int iRC = lowerCholLawCovMatrix.chol();
   lowerCholLawCovMatrix.zeroUpper(false);
   if (iRC) {
+    std::cerr << "In uqGaussianVectorRVClass<V,M>::constructor() [2]: chol failed, will use svd\n";
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In uqGaussianVectorRVClass<V,M>::constructor() [2]: lawCovMatrix contents are\n";
+      *m_env.subDisplayFile() << "In uqGaussianVectorRVClass<V,M>::constructor() [2]: chol failed; will use svd; lawCovMatrix contents are\n";
       *m_env.subDisplayFile() << lawCovMatrix; // FIX ME: might demand parallelism
       *m_env.subDisplayFile() << std::endl;
     }
@@ -522,8 +524,9 @@ uqGaussianVectorRVClass<V,M>::updateLawCovMatrix(const M& newLawCovMatrix)
   int iRC = newLowerCholLawCovMatrix.chol();
   newLowerCholLawCovMatrix.zeroUpper(false);
   if (iRC) {
+    std::cerr << "In uqGaussianVectorRVClass<V,M>::updateLawCovMatrix(): chol failed, will use svd\n";
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In uqGaussianVectorRVClass<V,M>::updateLawCovMatrix(): newLawCovMatrix contents are\n";
+      *m_env.subDisplayFile() << "In uqGaussianVectorRVClass<V,M>::updateLawCovMatrix(): chol failed; will use svd; newLawCovMatrix contents are\n";
       *m_env.subDisplayFile() << newLawCovMatrix; // FIX ME: might demand parallelism
       *m_env.subDisplayFile() << std::endl;
     }
