@@ -361,7 +361,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
   int iRC = UQ_OK_RC;
   struct timeval timevalChain;
   struct timeval timevalCandidate;
-  struct timeval timevalTargetD;
+  struct timeval timevalTarget;
   struct timeval timevalMhAlpha;
   struct timeval timevalDrAlpha;
   struct timeval timevalDR;
@@ -369,14 +369,8 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
 
   m_positionIdForDebugging = 0;
   m_stageIdForDebugging    = 0;
-  m_numDRs                 = 0;
-  m_numRejections          = 0;
-  double candidateRunTime = 0;
-  double targetDRunTime   = 0;
-  double mhAlphaRunTime   = 0;
-  double drAlphaRunTime   = 0;
-  double drRunTime        = 0;
-  double amRunTime        = 0;
+
+  m_rawChainInfo.reset();
 
   iRC = gettimeofday(&timevalChain, NULL);
   bool outOfTargetSupport = !m_targetPdf.domainSet().contains(valuesOf1stPosition);
@@ -391,14 +385,16 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
     *m_env.subDisplayFile() << valuesOf1stPosition; // FIX ME: might need parallelism
     *m_env.subDisplayFile() << std::endl;
   }
-  if (m_options.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalTargetD, NULL);
+  if (m_options.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalTarget, NULL);
   double logLikelihood = 0.;
 #ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
   double logTarget =        m_targetPdfSynchronizer->callFunction(&valuesOf1stPosition,NULL,NULL,NULL,NULL,&logLikelihood); // Might demand parallel environment
 #else
   double logTarget = -0.5 * m_targetPdfSynchronizer->callFunction(&valuesOf1stPosition,NULL,NULL,NULL,NULL,&logLikelihood); // Might demand parallel environment
 #endif
-  if (m_options.m_rawChainMeasureRunTimes) targetDRunTime += uqMiscGetEllapsedSeconds(&timevalTargetD);
+  if (m_options.m_rawChainMeasureRunTimes) m_rawChainInfo.targetRunTime += uqMiscGetEllapsedSeconds(&timevalTarget);
+  m_rawChainInfo.numTargetCalls++;
+
   //*m_env.subDisplayFile() << "AQUI 001" << std::endl;
   uqMarkovChainPositionDataClass<P_V> currentPositionData(m_env,
                                                           valuesOf1stPosition,
@@ -459,7 +455,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
       // Multiply by position valules by 'positionId' in order to avoid a constant sequence,
       // which would cause zero variance and eventually OVERFLOW flags raised
       workingChain.setPositionValues(positionId,((double) positionId) * currentPositionData.vecValues());
-      m_numRejections++;
+      m_rawChainInfo.numRejections++;
     }
   }
   else for (unsigned int positionId = 1; positionId < workingChain.subSequenceSize(); ++positionId) {
@@ -507,7 +503,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
     while (keepGeneratingCandidates) {
       if (m_options.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
       m_tk->rv(0).realizer().realization(tmpVecValues);
-      if (m_options.m_rawChainMeasureRunTimes) candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
+      if (m_options.m_rawChainMeasureRunTimes) m_rawChainInfo.candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
 
       outOfTargetSupport = !m_targetPdf.domainSet().contains(tmpVecValues);
 
@@ -546,18 +542,19 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
     }
 
     if (outOfTargetSupport) {
-      m_numOutOfTargetSupport++;
+      m_rawChainInfo.numOutOfTargetSupport++;
       logLikelihood = -INFINITY;
       logTarget     = -INFINITY;
     }
     else {
-      if (m_options.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalTargetD, NULL);
+      if (m_options.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalTarget, NULL);
 #ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
       logTarget =        m_targetPdfSynchronizer->callFunction(&tmpVecValues,NULL,NULL,NULL,NULL,&logLikelihood); // Might demand parallel environment
 #else
       logTarget = -0.5 * m_targetPdfSynchronizer->callFunction(&tmpVecValues,NULL,NULL,NULL,NULL,&logLikelihood); // Might demand parallel environment
 #endif
-      if (m_options.m_rawChainMeasureRunTimes) targetDRunTime += uqMiscGetEllapsedSeconds(&timevalTargetD);
+      if (m_options.m_rawChainMeasureRunTimes) m_rawChainInfo.targetRunTime += uqMiscGetEllapsedSeconds(&timevalTarget);
+      m_rawChainInfo.numTargetCalls++;
     }
     currentCandidateData.set(tmpVecValues,
                              outOfTargetSupport,
@@ -587,7 +584,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
       else {
         alphaFirstCandidate = this->alpha(currentPositionData,currentCandidateData,0,1,NULL);
       }
-      if (m_options.m_rawChainMeasureRunTimes) mhAlphaRunTime += uqMiscGetEllapsedSeconds(&timevalMhAlpha);
+      if (m_options.m_rawChainMeasureRunTimes) m_rawChainInfo.mhAlphaRunTime += uqMiscGetEllapsedSeconds(&timevalMhAlpha);
       if ((m_env.subDisplayFile()          ) &&
           (m_env.displayVerbosity() >= 10  ) &&
           (m_options.m_totallyMute == false)) {
@@ -660,7 +657,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
                                     << "\n"
                                     << std::endl;
           }
-          m_numDRs++;
+          m_rawChainInfo.numDRs++;
           stageId++;
           m_stageIdForDebugging = stageId;
           if ((m_env.subDisplayFile()          ) &&
@@ -676,7 +673,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
           while (keepGeneratingCandidates) {
             if (m_options.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
             m_tk->rv(tkStageIds).realizer().realization(tmpVecValues);
-            if (m_options.m_rawChainMeasureRunTimes) candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
+            if (m_options.m_rawChainMeasureRunTimes) m_rawChainInfo.candidateRunTime += uqMiscGetEllapsedSeconds(&timevalCandidate);
 
             outOfTargetSupport = !m_targetPdf.domainSet().contains(tmpVecValues);
 
@@ -704,18 +701,19 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
           }
 
           if (outOfTargetSupport) {
-            m_numOutOfTargetSupportInDR++; // new 2010/May/12
+            m_rawChainInfo.numOutOfTargetSupportInDR++; // new 2010/May/12
             logLikelihood = -INFINITY;
             logTarget     = -INFINITY;
           }
           else {
-            if (m_options.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalTargetD, NULL);
+            if (m_options.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalTarget, NULL);
 #ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
             logTarget =        m_targetPdfSynchronizer->callFunction(&tmpVecValues,NULL,NULL,NULL,NULL,&logLikelihood); // Might demand parallel environment
 #else
             logTarget = -0.5 * m_targetPdfSynchronizer->callFunction(&tmpVecValues,NULL,NULL,NULL,NULL,&logLikelihood); // Might demand parallel environment
 #endif
-            if (m_options.m_rawChainMeasureRunTimes) targetDRunTime += uqMiscGetEllapsedSeconds(&timevalTargetD);
+            if (m_options.m_rawChainMeasureRunTimes) m_rawChainInfo.targetRunTime += uqMiscGetEllapsedSeconds(&timevalTarget);
+            m_rawChainInfo.numTargetCalls++;
           }
           currentCandidateData.set(tmpVecValues,
                                    outOfTargetSupport,
@@ -729,7 +727,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
           if (outOfTargetSupport == false) {
             if (m_options.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalDrAlpha, NULL);
             alphaDR = this->alpha(drPositionsData,tkStageIds);
-            if (m_options.m_rawChainMeasureRunTimes) drAlphaRunTime += uqMiscGetEllapsedSeconds(&timevalDrAlpha);
+            if (m_options.m_rawChainMeasureRunTimes) m_rawChainInfo.drAlphaRunTime += uqMiscGetEllapsedSeconds(&timevalDrAlpha);
             accept = acceptAlpha(alphaDR);
           }
 
@@ -749,7 +747,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
           }
         } // while
 
-        if (m_options.m_rawChainMeasureRunTimes) drRunTime += uqMiscGetEllapsedSeconds(&timevalDR);
+        if (m_options.m_rawChainMeasureRunTimes) m_rawChainInfo.drRunTime += uqMiscGetEllapsedSeconds(&timevalDR);
       } // if-else "Avoid DR now"
     } // end of 'delayed rejection' logic
 
@@ -767,7 +765,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
     }
     else {
       workingChain.setPositionValues(positionId,currentPositionData.vecValues());
-      m_numRejections++;
+      m_rawChainInfo.numRejections++;
     }
 
     if (workingLogLikelihoodValues) (*workingLogLikelihoodValues)[positionId] = currentPositionData.logLikelihood();
@@ -936,7 +934,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
         //}
       }
 
-      if (m_options.m_rawChainMeasureRunTimes) amRunTime += uqMiscGetEllapsedSeconds(&timevalAM);
+      if (m_options.m_rawChainMeasureRunTimes) m_rawChainInfo.amRunTime += uqMiscGetEllapsedSeconds(&timevalAM);
     } // End of 'adaptive Metropolis' logic
 
     if ((m_env.subDisplayFile()          ) &&
@@ -983,48 +981,51 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
   //****************************************************
   // Print basic information about the chain
   //****************************************************
-  m_rawChainRunTime += uqMiscGetEllapsedSeconds(&timevalChain);
+  m_rawChainInfo.runTime += uqMiscGetEllapsedSeconds(&timevalChain);
   if ((m_env.subDisplayFile()          ) &&
       (m_options.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "Finished the generation of Markov chain " << workingChain.name()
                             << ", with sub "                               << workingChain.subSequenceSize()
                             << " positions";
     *m_env.subDisplayFile() << "\nSome information about this chain:"
-                            << "\n  Chain run time       = " << m_rawChainRunTime
+                            << "\n  Chain run time       = " << m_rawChainInfo.runTime
                             << " seconds";
     if (m_options.m_rawChainMeasureRunTimes) {
       *m_env.subDisplayFile() << "\n\n Breaking of the chain run time:\n";
-      *m_env.subDisplayFile() << "\n  Candidate run time   = " << candidateRunTime
-                              << " seconds ("                   << 100.*candidateRunTime/m_rawChainRunTime
+      *m_env.subDisplayFile() << "\n  Candidate run time   = " << m_rawChainInfo.candidateRunTime
+                              << " seconds ("                   << 100.*m_rawChainInfo.candidateRunTime/m_rawChainInfo.runTime
                               << "%)";
-      *m_env.subDisplayFile() << "\n  Target d. run time   = " << targetDRunTime
-                              << " seconds ("                   << 100.*targetDRunTime/m_rawChainRunTime
+      *m_env.subDisplayFile() << "\n  Num target calls  = "    << m_rawChainInfo.numTargetCalls;
+      *m_env.subDisplayFile() << "\n  Target d. run time   = " << m_rawChainInfo.targetRunTime
+                              << " seconds ("                   << 100.*m_rawChainInfo.targetRunTime/m_rawChainInfo.runTime
                               << "%)";
-      *m_env.subDisplayFile() << "\n  Mh alpha run time    = " << mhAlphaRunTime
-                              << " seconds ("                   << 100.*mhAlphaRunTime/m_rawChainRunTime
+      *m_env.subDisplayFile() << "\n  Avg target run time   = " << m_rawChainInfo.targetRunTime/((double) m_rawChainInfo.numTargetCalls)
+                              << " seconds";
+      *m_env.subDisplayFile() << "\n  Mh alpha run time    = " << m_rawChainInfo.mhAlphaRunTime
+                              << " seconds ("                   << 100.*m_rawChainInfo.mhAlphaRunTime/m_rawChainInfo.runTime
                               << "%)";
-      *m_env.subDisplayFile() << "\n  Dr alpha run time    = " << drAlphaRunTime
-                              << " seconds ("                   << 100.*drAlphaRunTime/m_rawChainRunTime
+      *m_env.subDisplayFile() << "\n  Dr alpha run time    = " << m_rawChainInfo.drAlphaRunTime
+                              << " seconds ("                   << 100.*m_rawChainInfo.drAlphaRunTime/m_rawChainInfo.runTime
                               << "%)";
       *m_env.subDisplayFile() << "\n----------------------   --------------";
-      double sumRunTime = candidateRunTime + targetDRunTime + mhAlphaRunTime + drAlphaRunTime;
+      double sumRunTime = m_rawChainInfo.candidateRunTime + m_rawChainInfo.targetRunTime + m_rawChainInfo.mhAlphaRunTime + m_rawChainInfo.drAlphaRunTime;
       *m_env.subDisplayFile() << "\n  Sum                  = " << sumRunTime
-                              << " seconds ("                   << 100.*sumRunTime/m_rawChainRunTime
+                              << " seconds ("                   << 100.*sumRunTime/m_rawChainInfo.runTime
                               << "%)";
       *m_env.subDisplayFile() << "\n\n Other run times:";
-      *m_env.subDisplayFile() << "\n  DR run time          = " << drRunTime
-                              << " seconds ("                   << 100.*drRunTime/m_rawChainRunTime
+      *m_env.subDisplayFile() << "\n  DR run time          = " << m_rawChainInfo.drRunTime
+                              << " seconds ("                   << 100.*m_rawChainInfo.drRunTime/m_rawChainInfo.runTime
                               << "%)";
-      *m_env.subDisplayFile() << "\n  AM run time          = " << amRunTime
-                              << " seconds ("                   << 100.*amRunTime/m_rawChainRunTime
+      *m_env.subDisplayFile() << "\n  AM run time          = " << m_rawChainInfo.amRunTime
+                              << " seconds ("                   << 100.*m_rawChainInfo.amRunTime/m_rawChainInfo.runTime
                               << "%)";
     }
-    *m_env.subDisplayFile() << "\n  Number of DRs = "  << m_numDRs << "(num_DRs/chain_size = " << (double) m_numDRs/(double) workingChain.subSequenceSize()
+    *m_env.subDisplayFile() << "\n  Number of DRs = "  << m_rawChainInfo.numDRs << "(num_DRs/chain_size = " << (double) m_rawChainInfo.numDRs/(double) workingChain.subSequenceSize()
                             << ")";
-    *m_env.subDisplayFile() << "\n  Out of target support in DR = " << m_numOutOfTargetSupportInDR;
-    *m_env.subDisplayFile() << "\n  Rejection percentage = "   << 100. * (double) m_numRejections/(double) workingChain.subSequenceSize()
+    *m_env.subDisplayFile() << "\n  Out of target support in DR = " << m_rawChainInfo.numOutOfTargetSupportInDR;
+    *m_env.subDisplayFile() << "\n  Rejection percentage = "   << 100. * (double) m_rawChainInfo.numRejections/(double) workingChain.subSequenceSize()
                             << " %";
-    *m_env.subDisplayFile() << "\n  Out of target support percentage = " << 100. * (double) m_numOutOfTargetSupport/(double) workingChain.subSequenceSize()
+    *m_env.subDisplayFile() << "\n  Out of target support percentage = " << 100. * (double) m_rawChainInfo.numOutOfTargetSupport/(double) workingChain.subSequenceSize()
                             << " %";
     *m_env.subDisplayFile() << std::endl;
   }
