@@ -731,8 +731,10 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALAN
     mcSeqGenerator.generateSequence(tmpChain,
                                     &tmpLogLikelihoodValues, // likelihood is IMPORTANT
                                     &tmpLogTargetValues);
-    cumulativeRunTime    += mcSeqGenerator.rawChainRunTime();
-    cumulativeRejections += mcSeqGenerator.numRejections();
+    uqMHRawChainInfoStruct mcRawInfo;
+    mcSeqGenerator.getRawChainInfo(mcRawInfo);
+    cumulativeRunTime    += mcRawInfo.runTime;
+    cumulativeRejections += mcRawInfo.numRejections;
 
     if (m_env.inter0Rank() >= 0) {
       if ((m_env.subDisplayFile()       ) &&
@@ -932,8 +934,10 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
     mcSeqGenerator.generateSequence(tmpChain,
                                     &tmpLogLikelihoodValues, // likelihood is IMPORTANT
                                     &tmpLogTargetValues);
-    cumulativeRunTime    += mcSeqGenerator.rawChainRunTime();
-    cumulativeRejections += mcSeqGenerator.numRejections();
+    uqMHRawChainInfoStruct mcRawInfo;
+    mcSeqGenerator.getRawChainInfo(mcRawInfo);
+    cumulativeRunTime    += mcRawInfo.runTime;
+    cumulativeRejections += mcRawInfo.numRejections;
 
     if (m_env.inter0Rank() >= 0) {
       if (m_env.exceptionalCircunstance()) {
