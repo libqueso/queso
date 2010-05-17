@@ -80,7 +80,7 @@ namespace QUESO_Basic_API {
     
   public:
     QUESO_Basic_Class                 ();
-    //    ~QUESO_Basic_Class                 () {};
+   ~QUESO_Basic_Class                 (); // prudenci 2010-05-17
     void Initialize                   (const char *inputfile);
     void VerifyInit                   ();
     void DefineParameterSpace         ();
