@@ -80,12 +80,12 @@ uqVectorSubsetClass<V,M>::uqVectorSubsetClass(
   uqVectorSetClass<V,M>(vectorSpace.env(),prefix,volume),
   m_vectorSpace        (&vectorSpace)
 {
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Entering uqVectorSubsetClass<V,M>::constructor()"
               << std::endl;
   }
 
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Leaving uqVectorSubsetClass<V,M>::constructor()"
               << std::endl;
   }
@@ -94,12 +94,12 @@ uqVectorSubsetClass<V,M>::uqVectorSubsetClass(
 template <class V, class M>
 uqVectorSubsetClass<V,M>::~uqVectorSubsetClass()
 {
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Entering uqVectorSubsetClass<V,M>::destructor()"
                            << std::endl;
   }
 
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Leaving uqVectorSubsetClass<V,M>::destructor()"
                            << std::endl;
   }
@@ -217,6 +217,12 @@ template <class V, class M>
 void
 uqBoxSubsetClass<V,M>::print(std::ostream& os) const
 {
+  os << "In uqBoxSubsetClass<V,M>::print()"
+     << ": m_minValues = " << m_minValues
+     << ", m_maxValues = " << m_maxValues
+     << ", m_volume = "    << m_volume
+     << std::endl;
+
   return;
 }
 
@@ -276,6 +282,11 @@ template <class V, class M>
 void
 uqIntersectionSubsetClass<V,M>::print(std::ostream& os) const
 {
+  os << "In uqIntersectionSubsetClass<V,M>::print()"
+     << ": m_set1 = " << m_set1
+     << ", m_set2 = " << m_set2
+     << std::endl;
+
   return;
 }
 
@@ -344,6 +355,11 @@ template <class V, class M>
 void
 uqConcatenationSubsetClass<V,M>::print(std::ostream& os) const
 {
+  os << "In uqConcatenationSubsetClass<V,M>::print()"
+     << ": m_set1 = " << m_set1
+     << ", m_set2 = " << m_set2
+     << std::endl;
+
   return;
 }
 
@@ -407,6 +423,10 @@ template <class V, class M>
 void
 uqDiscreteSubsetClass<V,M>::print(std::ostream& os) const
 {
+  os << "In uqBoxSubsetClass<V,M>::print()"
+     << ": nothing to print"
+     << std::endl;
+
   return;
 }
 #endif // __UQ_VECTOR_SUBSET_H__

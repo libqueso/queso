@@ -373,18 +373,23 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
   m_rawChainInfo.reset();
 
   iRC = gettimeofday(&timevalChain, NULL);
-  bool outOfTargetSupport = !m_targetPdf.domainSet().contains(valuesOf1stPosition);
-  UQ_FATAL_TEST_MACRO(outOfTargetSupport,
-                      m_env.fullRank(),
-                      "uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()",
-                      "initial position should not be out of target pdf support");
+
   if ((m_env.subDisplayFile()          ) &&
       (m_options.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
                             << ": contents of initial position are:\n";
     *m_env.subDisplayFile() << valuesOf1stPosition; // FIX ME: might need parallelism
+    *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
+                            << ": targetPdf.domaintSet() info is:\n"
+                            << m_targetPdf.domainSet();
     *m_env.subDisplayFile() << std::endl;
   }
+
+  bool outOfTargetSupport = !m_targetPdf.domainSet().contains(valuesOf1stPosition);
+  UQ_FATAL_TEST_MACRO(outOfTargetSupport,
+                      m_env.fullRank(),
+                      "uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()",
+                      "initial position should not be out of target pdf support");
   if (m_options.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalTarget, NULL);
   double logLikelihood = 0.;
 #ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
