@@ -386,6 +386,16 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
   }
 
   bool outOfTargetSupport = !m_targetPdf.domainSet().contains(valuesOf1stPosition);
+  if ((m_env.subDisplayFile()) &&
+      (outOfTargetSupport    )) {
+    *m_env.subDisplayFile() << "ERROR: In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
+                            << ": contents of initial position are:\n";
+    *m_env.subDisplayFile() << valuesOf1stPosition; // FIX ME: might need parallelism
+    *m_env.subDisplayFile() << "ERROR: In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
+                            << ": targetPdf.domaintSet() info is:\n"
+                            << m_targetPdf.domainSet();
+    *m_env.subDisplayFile() << std::endl;
+  }
   UQ_FATAL_TEST_MACRO(outOfTargetSupport,
                       m_env.fullRank(),
                       "uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()",
