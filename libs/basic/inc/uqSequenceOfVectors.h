@@ -165,9 +165,9 @@ public:
                                                  std::vector<V*>&                     unifiedQuanttsForAllBins) const;
         void         subCdfStacc                (unsigned int                         initialPos,
                                                  std::vector<V*>&                     cdfStaccVecs,
-                                                 std::vector<V*>&                     cdfStaccVecsup,
-                                                 std::vector<V*>&                     cdfStaccVecslow,												 
-                                                 std::vector<V*>&                     xdataVecs) const;
+                                                 std::vector<V*>&                     cdfStaccVecsUp,
+                                                 std::vector<V*>&                     cdfStaccVecsLow,												 
+                                                 std::vector<V*>&                     sortedDataVecs) const;
         void         subCdfStacc                (unsigned int                         initialPos,
                                                  const std::vector<V*>&               evalPositionsVecs,
                                                  std::vector<V*>&                     cdfStaccVecs) const;
@@ -1799,52 +1799,52 @@ uqSequenceOfVectorsClass<V,M>::unifiedHistogram(
 template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subCdfStacc(
-  unsigned int           initialPos,
-  std::vector<V*>&       cdfStaccVecs,
-  std::vector<V*>&       cdfStaccVecsup,
-  std::vector<V*>&       cdfStaccVecslow,  
-  std::vector<V*>&       xdataVecs) const
+  unsigned int     initialPos,
+  std::vector<V*>& cdfStaccVecs,
+  std::vector<V*>& cdfStaccVecsUp,
+  std::vector<V*>& cdfStaccVecsLow,  
+  std::vector<V*>& sortedDataVecs) const
 {
-  bool bRC = (initialPos               <  this->subSequenceSize() );
+  bool bRC = (initialPos < this->subSequenceSize());
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.fullRank(),
                       "uqSequenceOfVectorsClass<V,M>::subCdfStacc()",
                       "invalid input data");
 
   unsigned int numPos = this->subSequenceSize() - initialPos;
-  uqScalarSequenceClass<double> data(m_env,0,"");
-  uqScalarSequenceClass<double> sdata(m_env,0,"");
-   
-
-  unsigned int numEvals = numPos;//evalPositionsVecs.size();
+  unsigned int numEvals = numPos;
   for (unsigned int j = 0; j < numEvals; ++j) {
-    cdfStaccVecs[j] = new V(m_vectorSpace.zeroVector());
-	cdfStaccVecsup[j] = new V(m_vectorSpace.zeroVector());
-	cdfStaccVecslow[j] = new V(m_vectorSpace.zeroVector());
-        xdataVecs[j]=new V(m_vectorSpace.zeroVector());
+    cdfStaccVecs   [j] = new V(m_vectorSpace.zeroVector());
+    cdfStaccVecsUp [j] = new V(m_vectorSpace.zeroVector());
+    cdfStaccVecsLow[j] = new V(m_vectorSpace.zeroVector());
+    sortedDataVecs [j] = new V(m_vectorSpace.zeroVector());
   }
-  std::vector<double> cdfStaccs      (numEvals,0.);
-  std::vector<double> cdfStaccsup    (numEvals,0.);
-  std::vector<double> cdfStaccslow   (numEvals,0.);
-  //std::vector<double> sdata       (numEvals,0.);
+  std::vector<double> cdfStaccs   (numEvals,0.);
+  std::vector<double> cdfStaccsup (numEvals,0.);
+  std::vector<double> cdfStaccslow(numEvals,0.);
 
+  uqScalarSequenceClass<double> data      (m_env,0,"");
+  uqScalarSequenceClass<double> sortedData(m_env,0,"");
   unsigned int numParams = this->vectorSizeLocal();
-   
   for (unsigned int i = 0; i < numParams; ++i) {
     this->extractScalarSeq(initialPos,
                            1, // spacing
                            numPos,
                            i,
                            data);
-    //std::cout << "x-data" << data<< std::endl;  
-    data.subSort(initialPos,sdata);
-    data.subCdfStacc(0,cdfStaccs,cdfStaccsup,cdfStaccslow,sdata);
+    //std::cout << "x-data" << data<< std::endl;
+    data.subSort(initialPos,sortedData);
+    data.subCdfStacc(initialPos,
+                     cdfStaccs,
+                     cdfStaccsup,
+                     cdfStaccslow,
+                     sortedData);
 
     for (unsigned int j = 0; j < numEvals; ++j) {
-          (*xdataVecs[j])[i]=sdata[j];  
-          (*cdfStaccVecs[j])[i] = cdfStaccs[j];
-	  (*cdfStaccVecsup[j])[i] = cdfStaccsup[j];
-	  (*cdfStaccVecslow[j])[i] = cdfStaccslow[j];
+      (*sortedDataVecs [j])[i] = sortedData  [j];
+      (*cdfStaccVecs   [j])[i] = cdfStaccs   [j];
+      (*cdfStaccVecsUp [j])[i] = cdfStaccsup [j];
+      (*cdfStaccVecsLow[j])[i] = cdfStaccslow[j];
     }
   }
 
