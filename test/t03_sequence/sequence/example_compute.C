@@ -51,71 +51,62 @@ void compute(const uqFullEnvironmentClass& env) {
   uqGslVectorClass meanVector(paramSpace.zeroVector());
   meanVector[0] = -1;
   meanVector[1] =  2;
-  uqGslMatrixClass* covMatrix = paramSpace.newMatrix();
-  (*covMatrix)(0,0) = 4.; (*covMatrix)(0,1) = 0.;
-  (*covMatrix)(1,0) = 0.; (*covMatrix)(1,1) = 7.;
+  uqGslMatrixClass covMatrix = uqGslMatrixClass(paramSpace.zeroVector());
+  covMatrix(0,0) = 4.; covMatrix(0,1) = 0.;
+  covMatrix(1,0) = 0.; covMatrix(1,1) = 7.;
   uqGaussianVectorRVClass<uqGslVectorClass,uqGslMatrixClass>
-    auxRv("", paramDomain,meanVector,*covMatrix);
+    auxRv("", paramDomain,meanVector,covMatrix);
 
   // Step 4 of 9: Instantiate the vector sequence
-  const int num_samples = 1000;
+  const unsigned int numSamples = 1000;
 
   uqSequenceOfVectorsClass<uqGslVectorClass,uqGslMatrixClass>
-    auxSeq(paramSpace,num_samples,"aux_seq");
+    auxSeq(paramSpace,numSamples,"aux_seq");
 
-  //std::vector<double> convMeasure(num_samples,0.0);
-  
   // Step 5 of 9: Populate the vector sequence
   uqGslVectorClass auxVec(paramSpace.zeroVector());
   for (unsigned int i = 0; i < auxSeq.subSequenceSize(); ++i) {
     auxRv.realizer().realization(auxVec);
     auxSeq.setPositionValues(i,auxVec);
-//<<<<<<< .mine
-    //if (( i >= 1 ) && (env.numSubEnvironments() > 1))
-      //{
-	//convMeasure[i] = auxSeq.estimateConvBrooksGelman( 0, i );
-      //}
-//=======
-  //  if ((i >= 1) && (env.numSubEnvironments() > 1))
-    //  {
-	//convMeasure[i] = auxSeq.estimateConvBrooksGelman( 0, i );
-      //}
-//>>>>>>> .r5927
   }
+
+#if 0
+  // Step 6 of 9: Deal with BrooksGelman
+  std::vector<double> convMeasure(numSamples,0.0);
+  for (unsigned int i = 0; i < auxSeq.subSequenceSize(); ++i) {
+    if ((i >= 1) && (env.numSubEnvironments() > 1)) {
+      convMeasure[i] = auxSeq.estimateConvBrooksGelman(0,i);
+    }
+  }
+  std::set<unsigned int> auxSet;
+  auxSet.insert(0);
+  auxSet.insert(1);
+  auxSeq.subWriteContents("anyname",auxSet);
+  if (env.inter0Rank() == 0) {
+    std::ofstream dataout( "convergence.m", std::ios::out );
+    dataout << "clear all" << std::endl;
+    dataout << "close all" << std::endl;
+    dataout << "index = [ " << 1 << std::endl;
+    for (int i = 2; i < numSamples-1; i++) {
+      dataout << i << std::endl;
+    }
+    dataout << numSamples-1 << " ];" << std::endl;
+    dataout << " data = [ " << convMeasure[1] << std::endl;
+    for (int i = 2; i < numSamples-1; i++) {
+      dataout << convMeasure[i] << std::endl;
+    }
+    dataout << convMeasure[ numSamples-1] << "];" << std::endl;
+    dataout << "plot( index, data, 'b-', 'LineWidth', 2 )" << std::endl;
+    dataout << "xlabel( 'Iteration', 'FontSize', 16 )" << std::endl;
+    dataout << "ylabel( 'BG-Convergence', 'FontSize', 16 )" << std::endl;
+    dataout << "title( 'Brooks-Gelman Convergence, Gaussian RV, " 
+	    << env.numSubEnvironments() << " Sequences', 'FontSize', 16 )" << std::endl;
+    dataout << "print -depsc BGConv" << env.numSubEnvironments() << ".eps" << std::endl;
+    std::cout <<"convMeasure = " << convMeasure[numSamples-1] << std::endl;
+  }
+#endif
   
-//std::set<unsigned int> auxSet;
-  //auxSet.insert(0);
-  //auxSet.insert(1);
-  //auxSeq.subWriteContents("anyname",auxSet);
-
-  //if( env.inter0Rank() == 0 )
-    //{
-      //std::ofstream dataout( "convergence.m", std::ios::out );
-      //dataout << "clear all" << std::endl;
-      //dataout << "close all" << std::endl;
-      //dataout << "index = [ " << 1 << std::endl;
-      //for( int i = 2; i < num_samples-1; i++)
-	//{
-	  //dataout << i << std::endl;
-	//}
-      //dataout << num_samples-1 << " ];" << std::endl;
-
-      //dataout << " data = [ " << convMeasure[1] << std::endl;
-      //for( int i = 2; i < num_samples-1; i++)
-	//{
-	  //dataout << convMeasure[i] << std::endl;
-	//}
-      //dataout << convMeasure[ num_samples-1] << "];" << std::endl;
-      //dataout << "plot( index, data, 'b-', 'LineWidth', 2 )" << std::endl;
-      //dataout << "xlabel( 'Iteration', 'FontSize', 16 )" << std::endl;
-      //dataout << "ylabel( 'BG-Convergence', 'FontSize', 16 )" << std::endl;
-      //dataout << "title( 'Brooks-Gelman Convergence, Gaussian RV, " 
-	//      << env.numSubEnvironments() << " Sequences', 'FontSize', 16 )" << std::endl;
-      //dataout << "print -depsc BGConv" << env.numSubEnvironments() << ".eps" << std::endl;
-      //std::cout <<"convMeasure = " << convMeasure[num_samples-1] << std::endl;
-    //}
-
-  // Step 6 of 9: Compute min, max, mean, covariance and correlation matrices
+  // Step 7 of 9: Compute min, max, mean, covariance and correlation matrices
   uqGslVectorClass minVec (paramSpace.zeroVector());
   uqGslVectorClass maxVec (paramSpace.zeroVector());
   auxSeq.unifiedMinMax(0,auxSeq.subSequenceSize(),minVec,maxVec);
@@ -123,74 +114,88 @@ void compute(const uqFullEnvironmentClass& env) {
   uqGslVectorClass meanVec(paramSpace.zeroVector());
   auxSeq.unifiedMean(0,auxSeq.subSequenceSize(),meanVec);
 
-  uqGslMatrixClass* covarianceMatrix  = paramSpace.newMatrix();
-  uqGslMatrixClass* correlationMatrix = paramSpace.newMatrix();
+  uqGslMatrixClass covarianceMatrix  = uqGslMatrixClass(paramSpace.zeroVector());
+  uqGslMatrixClass correlationMatrix = uqGslMatrixClass(paramSpace.zeroVector());
   uqComputeCovCorrMatricesBetweenVectorSequences(auxSeq,
                                                  auxSeq,
                                                  auxSeq.subSequenceSize(),
-                                                 *covarianceMatrix,
-                                                 *correlationMatrix);
-  
-  // Step 7 of 9: Compute cdf accuracy
-  unsigned int auxSize = 1000;
-  //uqGslVectorClass deltaVec(maxVec-minVec);
-  //deltaVec *= (1./(double) (auxSize-1));
-  //std::vector<uqGslVectorClass*> evalPositionsVecs(auxSize,NULL);
-  std::vector<uqGslVectorClass*> cdfStaccVecs(auxSize,NULL);
-  std::vector<uqGslVectorClass*> cdfStaccVecsup(auxSize,NULL);
-  std::vector<uqGslVectorClass*> cdfStaccVecslow(auxSize,NULL);
-  std::vector<uqGslVectorClass*> xdataVecs(auxSize,NULL);
-  std::ofstream outdata;
-  std::ofstream outdata2;
-  std::ofstream outdata3;
-  std::ofstream outdata4;
-  outdata.open("./cdf.dat");
-  outdata2.open("./cdfup.dat");
-  outdata3.open("./cdfdown.dat");
-  outdata4.open("./xdata.dat");
-  auxSeq.subCdfStacc(0,cdfStaccVecs,cdfStaccVecsup,cdfStaccVecslow,xdataVecs);
-//if (env.fullRank() == 0) {
-  for (unsigned int i = 0; i < 1000; ++i) {
-    //evalPositionsVecs[i] = new uqGslVectorClass(paramSpace.zeroVector());
-    //*(evalPositionsVecs[i]) = minVec + ((double) i)*deltaVec;
-        //std::cout <<*cdfStaccVecs[i]<< std::endl;
-	//std::cout <<*cdfStaccVecsup[i]<< std::endl;
-	//std::cout <<*cdfStaccVecslow[i]<< std::endl;
-        //std::cout <<*xdataVecs[i]<< std::endl; 
-   outdata <<*cdfStaccVecs[i]<< std::endl;
-   outdata2 <<*cdfStaccVecsup[i]<< std::endl;
-   outdata3 <<*cdfStaccVecslow[i]<< std::endl;
-   outdata4 <<*xdataVecs[i]<< std::endl;
-    // std::cout <<auxVec[i]<<std::endl;
-    //cdfStaccVecs     [i] = new uqGslVectorClass(paramSpace.zeroVector());
-  }
- outdata.close();
- outdata2.close();
- outdata3.close();
- outdata4.close();
-//}
-  //uqGslVectorClass cdfStaccVecs(paramSpace.zeroVector());
-  
-//if (env.fullRank() == 0) {
-  //  std::cout << "\n minVec = "  << minVec
-    //          << "\n maxVec = "  << maxVec
-      //        << "\n meanVec = " << meanVec
-        //      << "\n covMat = "  << *covarianceMatrix
-          //    << "\n corrMat = " << *correlationMatrix
-            //  << std::endl;
-  //}
+                                                 covarianceMatrix,
+                                                 correlationMatrix);
 
- //std::cout << "\n cdfmean = "  << cdfStaccVecs<< std::endl;
-  
-  // Return
-  
-for (unsigned int i = 0; i < auxSize; ++i) {
-  //  delete evalPositionsVecs[i];
-    delete cdfStaccVecs     [i];
+  if (env.fullRank() == 0) {
+    std::cout << "\n minVec = "  << minVec
+              << "\n maxVec = "  << maxVec
+              << "\n meanVec = " << meanVec
+              << "\n covMat = "  << covarianceMatrix
+              << "\n corrMat = " << correlationMatrix
+              << std::endl;
   }
-  delete correlationMatrix;
-  delete covarianceMatrix;
-  delete covMatrix;
+  
+  // Step 8 of 9: Compute cdf accuracy
+  std::vector<uqGslVectorClass*> cdfStaccVecs   (numSamples,NULL);
+  std::vector<uqGslVectorClass*> cdfStaccVecsUp (numSamples,NULL);
+  std::vector<uqGslVectorClass*> cdfStaccVecsLow(numSamples,NULL);
+  std::vector<uqGslVectorClass*> sortedDataVecs (numSamples,NULL);
+  std::cout << "Calling subCdfStacc()..."
+            << std::endl;
+  struct timeval timevalBegin;
+  gettimeofday(&timevalBegin, NULL);
+  auxSeq.subCdfStacc(0,
+                     cdfStaccVecs,
+                     cdfStaccVecsUp,
+                     cdfStaccVecsLow,
+                     sortedDataVecs);
+  double traceT = uqMiscGetEllapsedSeconds(&timevalBegin);
+  std::cout << "Returned from subCdfStacc()"
+            << " after " << traceT << " seconds"
+            << std::endl;
 
+  if (env.fullRank() == 0) {
+    std::ofstream outdata1;
+    std::ofstream outdata2;
+    std::ofstream outdata3;
+    std::ofstream outdata4;
+    outdata1.open("./cdf.dat"       );
+    outdata2.open("./cdfup.dat"     );
+    outdata3.open("./cdfdown.dat"   );
+    outdata4.open("./sortedData.dat");
+    for (unsigned int i = 0; i < numSamples; ++i) {
+      //std::cout << *cdfStaccVecs   [i] << std::endl;
+      //std::cout << *cdfStaccVecsUp [i] << std::endl;
+      //std::cout << *cdfStaccVecsLow[i] << std::endl;
+      //std::cout << *sortedDataVecs [i] << std::endl;
+      outdata1 << *cdfStaccVecs   [i] << std::endl;
+      outdata2 << *cdfStaccVecsUp [i] << std::endl;
+      outdata3 << *cdfStaccVecsLow[i] << std::endl;
+      outdata4 << *sortedDataVecs [i] << std::endl;
+    }
+    outdata1.close();
+    outdata2.close();
+    outdata3.close();
+    outdata4.close();
+    //std::cout << "\n cdfmean = " << cdfStaccVecs << std::endl;
+  }
+
+  for (unsigned int i = 0; i < numSamples; ++i) {
+    delete cdfStaccVecs   [i];
+    delete cdfStaccVecsUp [i];
+    delete cdfStaccVecsLow[i];
+    delete sortedDataVecs [i];
+  }
+
+#if 0
+  uqGslVectorClass deltaVec(maxVec-minVec);
+  deltaVec *= (1./(double) (auxSize-1));
+  std::vector<uqGslVectorClass*> evalPositionsVecs(auxSize,NULL);
+  for (unsigned int i = 0; i < auxSize; ++i) {
+    evalPositionsVecs[i] = new uqGslVectorClass(paramSpace.zeroVector());
+    *(evalPositionsVecs[i]) = minVec + ((double) i)*deltaVec;
+  }
+  for (unsigned int i = 0; i < auxSize; ++i) {
+    delete evalPositionsVecs[i];
+  }
+#endif
+
+  //Return
   return;
 }
