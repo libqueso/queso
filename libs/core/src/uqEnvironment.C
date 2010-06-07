@@ -358,6 +358,18 @@ uqBaseEnvironmentClass::resetGslSeed(int newSeedOption)
   return;
 }
 
+int
+uqBaseEnvironmentClass::seed() const
+{
+  return m_options->m_seed;
+}
+
+std::string
+uqBaseEnvironmentClass::identifyingString() const
+{
+  return m_options->m_identifyingString;
+}
+
 void
 uqBaseEnvironmentClass::syncPrintDebugMsg(const char* msg, unsigned int msgVerbosity, unsigned int numUSecs, const Epetra_MpiComm& commObj) const
 {

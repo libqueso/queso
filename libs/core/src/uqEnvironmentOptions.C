@@ -42,6 +42,7 @@ uqEnvironmentOptionsClass::uqEnvironmentOptionsClass(const uqBaseEnvironmentClas
   m_displayVerbosity           (UQ_ENV_DISPLAY_VERBOSITY_ODV),
   m_syncVerbosity              (UQ_ENV_SYNC_VERBOSITY_ODV),
   m_seed                       (UQ_ENV_SEED_ODV),
+  m_identifyingString          (UQ_ENV_IDENTIFYING_STRING_ODV),
   m_numDebugParams             (UQ_ENV_NUM_DEBUG_PARAMS_ODV),
   m_debugParams                (m_numDebugParams,0.),
   m_env                        (env),
@@ -54,7 +55,8 @@ uqEnvironmentOptionsClass::uqEnvironmentOptionsClass(const uqBaseEnvironmentClas
   m_option_subDisplayAllowedSet(m_prefix + "subDisplayAllowedSet"),
   m_option_displayVerbosity    (m_prefix + "displayVerbosity"    ),
   m_option_syncVerbosity       (m_prefix + "syncVerbosity"       ),
-  m_option_seed                (m_prefix + "seed"                )
+  m_option_seed                (m_prefix + "seed"                ),
+  m_option_identifyingString   (m_prefix + "identifyingString"   )
 {
 }
 
@@ -99,6 +101,7 @@ uqEnvironmentOptionsClass::defineMyOptions(po::options_description& optionsDesc)
     (m_option_displayVerbosity.c_str(),     po::value<unsigned int>()->default_value(UQ_ENV_DISPLAY_VERBOSITY_ODV),       "set verbosity"                            )
     (m_option_syncVerbosity.c_str(),        po::value<unsigned int>()->default_value(UQ_ENV_SYNC_VERBOSITY_ODV),          "set sync verbosity"                       )
     (m_option_seed.c_str(),                 po::value<int         >()->default_value(UQ_ENV_SEED_ODV),                    "set seed"                                 )
+    (m_option_identifyingString.c_str(),    po::value<std::string >()->default_value(UQ_ENV_IDENTIFYING_STRING_ODV),      "identifying string"                       )
   //(m_option_numDebugParams.c_str(),       po::value<unsigned int>()->default_value(UQ_ENV_NUM_DEBUG_PARAMS_ODV),        "set number of debug parameters"           )
   ;
 #ifdef QUESO_MEMORY_DEBUGGING
@@ -179,6 +182,10 @@ uqEnvironmentOptionsClass::getMyOptionValues(po::options_description& optionsDes
     m_seed = m_env.allOptionsMap()[m_option_seed].as<int>();
   }
 
+  if (m_env.allOptionsMap().count(m_option_identifyingString.c_str())) {
+    m_identifyingString = m_env.allOptionsMap()[m_option_identifyingString].as<std::string>();
+  }
+
   //if (m_env.allOptionsMap().count(m_option_numDebugParams.c_str())) {
   //  m_seed = m_env.allOptionsMap()[m_option_numDebugParams].as<unsigned int>();
   //}
@@ -203,6 +210,7 @@ uqEnvironmentOptionsClass::print(std::ostream& os) const
   os << "\n" << m_option_displayVerbosity  << " = " << m_displayVerbosity
      << "\n" << m_option_syncVerbosity     << " = " << m_syncVerbosity
      << "\n" << m_option_seed              << " = " << m_seed
+     << "\n" << m_option_identifyingString << " = " << m_identifyingString
    //<< "\n" << m_option_numDebugParams    << " = " << m_numDebugParams
      << std::endl;
   return;

@@ -150,7 +150,7 @@ public:
           const Epetra_MpiComm&   selfComm                   () const; 
 
           int                     inter0Rank                 () const;
-          const Epetra_MpiComm&   inter0Comm                 () const; 
+          const Epetra_MpiComm&   inter0Comm                 () const;
 
                 std::ofstream*    subDisplayFile             () const;
 
@@ -168,6 +168,8 @@ public:
           unsigned int            syncVerbosity              () const;
           const gsl_rng*          rng                        () const;
           void                    resetGslSeed               (int newSeedOption);
+          int                     seed                       () const;
+	  std::string             identifyingString          () const;
           bool                    isThereInputFile           () const;
           void                    syncPrintDebugMsg          (const char* msg, unsigned int msgVerbosity, unsigned int numUSecs, const Epetra_MpiComm& commObj) const;
 

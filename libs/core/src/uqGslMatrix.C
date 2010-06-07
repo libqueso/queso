@@ -1067,7 +1067,7 @@ uqGslMatrixClass::print(std::ostream& os) const
         os << (*this)(i,j)
            << " ";
       }
-      os << "# ";
+      if (i != (nRows-1)) os << "; ";
     }
     //os << std::endl;
   }
