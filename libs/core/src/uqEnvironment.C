@@ -330,6 +330,12 @@ uqBaseEnvironmentClass::rng() const
   return m_rng;
 }
 
+int
+uqBaseEnvironmentClass::seed() const
+{
+  return m_options->m_seed;
+}
+
 void
 uqBaseEnvironmentClass::resetGslSeed(int newSeedOption)
 {
@@ -358,16 +364,17 @@ uqBaseEnvironmentClass::resetGslSeed(int newSeedOption)
   return;
 }
 
-int
-uqBaseEnvironmentClass::seed() const
-{
-  return m_options->m_seed;
-}
-
 std::string
 uqBaseEnvironmentClass::identifyingString() const
 {
   return m_options->m_identifyingString;
+}
+
+void
+uqBaseEnvironmentClass::resetIdentifyingString(const std::string& newString) const // Yes, const
+{
+  m_options->m_identifyingString = newString;
+  return;
 }
 
 void

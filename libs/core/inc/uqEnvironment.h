@@ -167,9 +167,10 @@ public:
           unsigned int            displayVerbosity           () const;
           unsigned int            syncVerbosity              () const;
           const gsl_rng*          rng                        () const;
-          void                    resetGslSeed               (int newSeedOption);
           int                     seed                       () const;
+          void                    resetGslSeed               (int newSeedOption);
 	  std::string             identifyingString          () const;
+          void                    resetIdentifyingString     (const std::string& newString) const; // Yes, const
           bool                    isThereInputFile           () const;
           void                    syncPrintDebugMsg          (const char* msg, unsigned int msgVerbosity, unsigned int numUSecs, const Epetra_MpiComm& commObj) const;
 
