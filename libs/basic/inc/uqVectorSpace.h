@@ -118,6 +118,7 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqVectorSpaceClass<V,M>::constructor()"
+                            << ", with m_prefix = " << m_prefix
                             << "\n  m_zeroVector->sizeGlobal() = " << m_zeroVector->sizeGlobal()
                             << "\n  m_dimGlobal                = " << m_dimGlobal
                             << "\n  m_zeroVector->sizeLocal()  = " << m_zeroVector->sizeLocal()
@@ -128,6 +129,7 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
 
   if (m_zeroVector->sizeGlobal() != m_dimGlobal) {
     std::cerr << "In uqVectorSpaceClass<V,M>::constructor()"
+              << ", with m_prefix = " << m_prefix
               << ": m_zeroVector->sizeGlobal() = " << m_zeroVector->sizeGlobal()
               << ", m_dimGlobal = "                << m_dimGlobal
               << std::endl;
@@ -139,6 +141,7 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
 
   if (m_zeroVector->sizeLocal() != m_dimLocal) {
     std::cerr << "In uqVectorSpaceClass<V,M>::constructor()"
+              << ", with m_prefix = " << m_prefix
               << ": m_zeroVector->sizeLocal() = " << m_zeroVector->sizeLocal()
               << ", m_dimLocal = "                << m_dimLocal
               << std::endl;
@@ -173,6 +176,7 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqVectorSpaceClass<V,M>::constructor()"
+                            << ", with m_prefix = " << m_prefix
                             << std::endl;
   }
 }

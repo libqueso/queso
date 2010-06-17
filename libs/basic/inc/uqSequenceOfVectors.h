@@ -762,7 +762,7 @@ uqSequenceOfVectorsClass<V,M>::getPositionValues(unsigned int posId, V& vec) con
                       "uqSequenceOfVectorss<V,M>::getPositionValues()",
                       "posId > subSequenceSize()");
 
-  vec = *(const_cast<V*>(m_seq[posId]));
+  vec = *(m_seq[posId]); // *(const_cast<V*>(m_seq[posId])); // prudenci 2010-06-17 mox
 
   return;
 }
@@ -778,6 +778,11 @@ uqSequenceOfVectorsClass<V,M>::setPositionValues(unsigned int posId, const V& ve
 
   if (m_seq[posId] != NULL) delete m_seq[posId];
   m_seq[posId] = new V(vec);
+
+  //if (posId == 0) {
+  //  std::cout << "In uqSequenceOfVectorsClass<V,M>::setPositionValues(): m_seq[0] = " << m_seq[0] << ", *(m_seq[0]) = " << *(m_seq[0])
+  //            << std::endl;
+  //}
 
   uqBaseVectorSequenceClass<V,M>::deleteStoredVectors();
 
@@ -2356,7 +2361,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(const std::string& fileName)
                             << ", subEnvironment " << m_env.subId()
                             << ", subRank "        << m_env.subRank()
                             << ", inter0Rank "     << m_env.inter0Rank()
-      //<< ", m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc()
+                          //<< ", m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc()
                             << ", fileName = "     << fileName
                             << std::endl;
   }
@@ -2384,6 +2389,17 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(const std::string& fileName)
 
         unsigned int chainSize = this->subSequenceSize();
         for (unsigned int j = 0; j < chainSize; ++j) {
+	  //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(): m_seq[" << j << "] = " << m_seq[j]
+          //          << std::endl;
+	  //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(): &(m_seq[" << j << "].map()) = " << &(m_seq[j]->map())
+          //          << std::endl;
+	  //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(): (m_seq[" << j << "].map().NumMyElements = " << m_seq[j]->map().NumMyElements()
+          //          << std::endl;
+          V tmpVec(*(m_seq[j]));
+	  //std::cout << "*(m_seq[" << j << "]) = " << tmpVec
+          //          << std::endl;
+	  //std::cout << "*(m_seq[" << j << "]) = " << *(m_seq[j])
+          //          << std::endl;
           bool savedVectorPrintState = m_seq[j]->getPrintHorizontally();
           m_seq[j]->setPrintHorizontally(true);
           *unifiedOfsVar << *(m_seq[j])

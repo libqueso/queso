@@ -51,6 +51,9 @@ uqVectorClass::uqVectorClass(const uqBaseEnvironmentClass& env, const Epetra_Map
   m_printHorizontally(true),
   m_printScientific  (false) // for compatibility with previous regression tests
 {
+  //std::cout << "Entering uqVectorClass::constructor(env,map)" << std::endl;
+
+  //std::cout << "Leaving uqVectorClass::constructor(env,map)" << std::endl;
 }
 
 uqVectorClass::uqVectorClass(const uqVectorClass& rhs)
@@ -72,7 +75,7 @@ void
 uqVectorClass::copy(const uqVectorClass& src)
 {
   //m_env               = src.env;
-  //m_map               = src.map;
+  //m_map               = src.map; // prudenci 2010-06-17
   m_printHorizontally = src.m_printHorizontally;
   m_printScientific   = src.m_printScientific;
 

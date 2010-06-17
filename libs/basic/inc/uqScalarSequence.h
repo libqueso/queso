@@ -3169,15 +3169,15 @@ uqComputeSubGaussian2dKde(const uqScalarSequenceClass<T>& scalarSeq1,
 
 template <class T>
 void
-uqComputeUnifiedGaussian2dKde(bool                            useOnlyInter0Comm,
-                              const uqScalarSequenceClass<T>& scalarSeq1,
-                              const uqScalarSequenceClass<T>& scalarSeq2,
-                              unsigned int                    initialPos,
-                              double                          unifiedScaleValue1,
-                              double                          unifiedScaleValue2,
-                              const std::vector<T>&           unifiedEvaluationPositions1,
-                              const std::vector<T>&           unifiedEvaluationPositions2,
-                              std::vector<double>&            unifiedDensityValues)
+uqComputeUnifiedGaussian2dKde(bool                            useOnlyInter0Comm,           // INPUT
+                              const uqScalarSequenceClass<T>& scalarSeq1,                  // INPUT
+                              const uqScalarSequenceClass<T>& scalarSeq2,                  // INPUT
+                              unsigned int                    initialPos,                  // INPUT
+                              double                          unifiedScaleValue1,          // INPUT
+                              double                          unifiedScaleValue2,          // INPUT
+                              const std::vector<T>&           unifiedEvaluationPositions1, // INPUT
+                              const std::vector<T>&           unifiedEvaluationPositions2, // INPUT
+                              std::vector<double>&            unifiedDensityValues)        // OUTPUT
 {
   if (scalarSeq1.env().numSubEnvironments() == 1) {
     return uqComputeSubGaussian2dKde(scalarSeq1,
