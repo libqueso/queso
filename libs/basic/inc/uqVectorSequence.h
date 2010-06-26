@@ -195,10 +195,14 @@ public:
                                                                 const std::vector<V*>&                   unifiedEvaluationParamVecs,
                                                                 std::vector<V*>&                         unifiedDensityVecs) const = 0;
   virtual  void                     subWriteContents           (const std::string&                       fileName,
+                                                                const std::string&                       fileType,
                                                                 const std::set<unsigned int>&            allowedSubEnvIds) const = 0;
-  virtual  void                     subWriteContents           (std::ofstream&                           ofsvar) const = 0;
-  virtual  void                     unifiedWriteContents       (const std::string&                       fileName) const = 0;
+  virtual  void                     subWriteContents           (std::ofstream&                           ofsvar,
+                                                                const std::string&                       fileType) const = 0;
+  virtual  void                     unifiedWriteContents       (const std::string&                       fileName,
+                                                                const std::string&                       fileType) const = 0;
   virtual  void                     unifiedReadContents        (const std::string&                       fileName,
+                                                                const std::string&                       fileType,
                                                                 const unsigned int                       subSequenceSize) = 0;
   virtual  void                     select                     (const std::vector<unsigned int>&         idsOfUniquePositions) = 0;
   virtual  void                     filter                     (unsigned int                             initialPos,

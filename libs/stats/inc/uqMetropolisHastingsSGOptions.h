@@ -48,17 +48,20 @@
 
 #define UQ_MH_SG_TOTALLY_MUTE_ODV                           0
 #define UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV         UQ_MH_SG_FILENAME_FOR_NO_FILE
+#define UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_TYPE_ODV         "m"
 #define UQ_MH_SG_RAW_CHAIN_SIZE_ODV                         100
 #define UQ_MH_SG_RAW_CHAIN_GENERATE_EXTRA_ODV               0
 #define UQ_MH_SG_RAW_CHAIN_DISPLAY_PERIOD_ODV               500
 #define UQ_MH_SG_RAW_CHAIN_MEASURE_RUN_TIMES_ODV            1
 #define UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV        UQ_MH_SG_FILENAME_FOR_NO_FILE
+#define UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV        "m"
 #define UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV      ""
 #define UQ_MH_SG_RAW_CHAIN_COMPUTE_STATS_ODV                0
 #define UQ_MH_SG_FILTERED_CHAIN_GENERATE_ODV                0
 #define UQ_MH_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV       0.
 #define UQ_MH_SG_FILTERED_CHAIN_LAG_ODV                     1
 #define UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV   UQ_MH_SG_FILENAME_FOR_NO_FILE
+#define UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV   "m"
 #define UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV ""
 #define UQ_MH_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV           0
 #define UQ_MH_SG_DISPLAY_CANDIDATES_ODV                     0
@@ -91,11 +94,13 @@ public:
 
   bool                               m_totallyMute;
   std::string                        m_rawChainDataInputFileName;
+  std::string                        m_rawChainDataInputFileType;
   unsigned int                       m_rawChainSize;
   bool                               m_rawChainGenerateExtra;
   unsigned int                       m_rawChainDisplayPeriod;
   bool                               m_rawChainMeasureRunTimes;
   std::string                        m_rawChainDataOutputFileName;
+  std::string                        m_rawChainDataOutputFileType;
   std::set<unsigned int>             m_rawChainDataOutputAllowedSet;
   bool                               m_rawChainComputeStats;
   uqSequenceStatisticalOptionsClass* m_rawChainStatisticalOptions;
@@ -105,6 +110,7 @@ public:
   double                             m_filteredChainDiscardedPortion; // input or set during run time
   unsigned int                       m_filteredChainLag;              // input or set during run time
   std::string                        m_filteredChainDataOutputFileName;
+  std::string                        m_filteredChainDataOutputFileType;
   std::set<unsigned int>             m_filteredChainDataOutputAllowedSet;
   bool                               m_filteredChainComputeStats;
   uqSequenceStatisticalOptionsClass* m_filteredChainStatisticalOptions;
@@ -137,17 +143,20 @@ private:
 
   std::string                   m_option_totallyMute;
   std::string                   m_option_rawChain_dataInputFileName;
+  std::string                   m_option_rawChain_dataInputFileType;
   std::string                   m_option_rawChain_size;
   std::string                   m_option_rawChain_generateExtra;
   std::string                   m_option_rawChain_displayPeriod;
   std::string                   m_option_rawChain_measureRunTimes;
   std::string                   m_option_rawChain_dataOutputFileName;
+  std::string                   m_option_rawChain_dataOutputFileType;
   std::string                   m_option_rawChain_dataOutputAllowedSet;
   std::string                   m_option_rawChain_computeStats;
   std::string                   m_option_filteredChain_generate;
   std::string                   m_option_filteredChain_discardedPortion;
   std::string                   m_option_filteredChain_lag;
   std::string                   m_option_filteredChain_dataOutputFileName;
+  std::string                   m_option_filteredChain_dataOutputFileType;
   std::string                   m_option_filteredChain_dataOutputAllowedSet;
   std::string                   m_option_filteredChain_computeStats;
   std::string                   m_option_displayCandidates;

@@ -1088,6 +1088,7 @@ void
 uqGslMatrixClass::subWriteContents(
   const std::string&            varNamePrefix,
   const std::string&            fileName,
+  const std::string&            fileType,
   const std::set<unsigned int>& allowedSubEnvIds) const
 {
   UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
@@ -1102,7 +1103,7 @@ uqGslMatrixClass::subWriteContents(
 
   std::ofstream* ofsVar = NULL;
   m_env.openOutputFile(fileName,
-                       UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                       fileType, // "m or hdf"
                        allowedSubEnvIds,
                        false,
                        ofsVar);

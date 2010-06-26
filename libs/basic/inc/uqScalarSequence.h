@@ -203,9 +203,12 @@ public:
                                                    unsigned int                    numPos);
 
         void         subWriteContents             (const std::string&              fileName,
+                                                   const std::string&              fileType,
                                                    const std::set<unsigned int>&   allowedSubEnvIds) const;
-        void         subWriteContents             (std::ofstream&                  ofs) const;
-        void         unifiedWriteContents         (const std::string&              fileName) const;
+        void         subWriteContents             (std::ofstream&                  ofs,
+                                                   const std::string&              fileType) const;
+        void         unifiedWriteContents         (const std::string&              fileName,
+                                                   const std::string&              fileType) const;
 private:
         void         copy                         (const uqScalarSequenceClass<T>& src);
         void         extractScalarSeq             (unsigned int                    initialPos,
@@ -2917,6 +2920,7 @@ template <class T>
 void
 uqScalarSequenceClass<T>::subWriteContents(
   const std::string&            fileName,
+  const std::string&            fileType,
   const std::set<unsigned int>& allowedSubEnvIds) const
 {
   UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
@@ -2926,14 +2930,14 @@ uqScalarSequenceClass<T>::subWriteContents(
 
   std::ofstream* ofsVar = NULL;
   m_env.openOutputFile(fileName,
-                       UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                       fileType,
                        allowedSubEnvIds,
                        false, // A 'true' causes problems when the user chooses (via options
                               // in the input file) to use just one file for all outputs.
                        ofsVar);
 
   if (ofsVar) {
-    this->subWriteContents(*ofsVar);
+    this->subWriteContents(*ofsVar,fileType);
   }
 
   if (ofsVar) {
@@ -2946,7 +2950,9 @@ uqScalarSequenceClass<T>::subWriteContents(
 
 template <class T>
 void
-uqScalarSequenceClass<T>::subWriteContents(std::ofstream& ofs) const
+uqScalarSequenceClass<T>::subWriteContents(
+  std::ofstream&     ofs,
+  const std::string& fileType) const // "m or hdf"
 {
   ofs << m_name << "_sub" << m_env.subIdString() << " = zeros(" << this->subSequenceSize()
       << ","                                                    << 1
@@ -2965,7 +2971,9 @@ uqScalarSequenceClass<T>::subWriteContents(std::ofstream& ofs) const
 
 template <class T>
 void
-uqScalarSequenceClass<T>::unifiedWriteContents(const std::string& fileName) const
+uqScalarSequenceClass<T>::unifiedWriteContents(
+  const std::string& fileName,
+  const std::string& fileType) const
 {
   //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
@@ -2976,6 +2984,7 @@ uqScalarSequenceClass<T>::unifiedWriteContents(const std::string& fileName) cons
                             << ", inter0Rank "     << m_env.inter0Rank()
       //<< ", m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc()
                             << ", fileName = "     << fileName
+                            << ", fileType = "     << fileType
                             << std::endl;
   }
 
@@ -2990,7 +2999,7 @@ uqScalarSequenceClass<T>::unifiedWriteContents(const std::string& fileName) cons
         bool writeOver = false; // A 'true' causes problems when the user chooses (via options
                                 // in the input file) to use just one file for all outputs.
         m_env.openUnifiedOutputFile(fileName,
-                                    UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                                    fileType, // "m or hdf"
                                     writeOver,
                                     unifiedOfsVar);
 
@@ -3017,7 +3026,7 @@ uqScalarSequenceClass<T>::unifiedWriteContents(const std::string& fileName) cons
     if (m_env.inter0Rank() == 0) {
       std::ofstream* unifiedOfsVar = NULL;
       m_env.openUnifiedOutputFile(fileName,
-                                  UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                                  fileType,
                                   false, // Yes, 'writeOver = false' in order to close the array for matlab
                                   unifiedOfsVar);
       *unifiedOfsVar << "];\n";
@@ -3029,6 +3038,7 @@ uqScalarSequenceClass<T>::unifiedWriteContents(const std::string& fileName) cons
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
     *m_env.subDisplayFile() << "Leaving uqScalarSequenceClass<T>::unifiedWriteContents()"
                             << ", fileName = " << fileName
+                            << ", fileType = " << fileType
                             << std::endl;
   }
   //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...

@@ -42,11 +42,13 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
 //m_dataOutputAllowedSet                     (),
   m_totallyMute                              (UQ_MH_SG_TOTALLY_MUTE_ODV),
   m_rawChainDataInputFileName                (UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV),
+  m_rawChainDataInputFileType                (UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_TYPE_ODV),
   m_rawChainSize                             (UQ_MH_SG_RAW_CHAIN_SIZE_ODV),
   m_rawChainGenerateExtra                    (UQ_MH_SG_RAW_CHAIN_GENERATE_EXTRA_ODV),
   m_rawChainDisplayPeriod                    (UQ_MH_SG_RAW_CHAIN_DISPLAY_PERIOD_ODV),
   m_rawChainMeasureRunTimes                  (UQ_MH_SG_RAW_CHAIN_MEASURE_RUN_TIMES_ODV),
   m_rawChainDataOutputFileName               (UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV),
+  m_rawChainDataOutputFileType               (UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV),
 //m_rawChainDataOutputAllowedSet             (),
   m_rawChainComputeStats                     (UQ_MH_SG_RAW_CHAIN_COMPUTE_STATS_ODV),
   m_rawChainStatisticalOptions               (NULL),
@@ -55,6 +57,7 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_filteredChainDiscardedPortion            (UQ_MH_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV),
   m_filteredChainLag                         (UQ_MH_SG_FILTERED_CHAIN_LAG_ODV),
   m_filteredChainDataOutputFileName          (UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV),
+  m_filteredChainDataOutputFileType          (UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV),
 //m_filteredChainDataOutputAllowedSet        (),
   m_filteredChainComputeStats                (UQ_MH_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV),
   m_filteredChainStatisticalOptions          (NULL),
@@ -78,17 +81,20 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_option_dataOutputAllowedSet              (m_prefix + "dataOutputAllowedSet"              ),
   m_option_totallyMute                       (m_prefix + "totallyMute"                       ),
   m_option_rawChain_dataInputFileName        (m_prefix + "rawChain_dataInputFileName"        ),
+  m_option_rawChain_dataInputFileType        (m_prefix + "rawChain_dataInputFileType"        ),
   m_option_rawChain_size                     (m_prefix + "rawChain_size"                     ),
   m_option_rawChain_generateExtra            (m_prefix + "rawChain_generateExtra"            ),
   m_option_rawChain_displayPeriod            (m_prefix + "rawChain_displayPeriod"            ),
   m_option_rawChain_measureRunTimes          (m_prefix + "rawChain_measureRunTimes"          ),
   m_option_rawChain_dataOutputFileName       (m_prefix + "rawChain_dataOutputFileName"       ),
+  m_option_rawChain_dataOutputFileType       (m_prefix + "rawChain_dataOutputFileType"       ),
   m_option_rawChain_dataOutputAllowedSet     (m_prefix + "rawChain_dataOutputAllowedSet"     ),
   m_option_rawChain_computeStats             (m_prefix + "rawChain_computeStats"             ),
   m_option_filteredChain_generate            (m_prefix + "filteredChain_generate"            ),
   m_option_filteredChain_discardedPortion    (m_prefix + "filteredChain_discardedPortion"    ),
   m_option_filteredChain_lag                 (m_prefix + "filteredChain_lag"                 ),
   m_option_filteredChain_dataOutputFileName  (m_prefix + "filteredChain_dataOutputFileName"  ),
+  m_option_filteredChain_dataOutputFileType  (m_prefix + "filteredChain_dataOutputFileType"  ),
   m_option_filteredChain_dataOutputAllowedSet(m_prefix + "filteredChain_dataOutputAllowedSet"),
   m_option_filteredChain_computeStats        (m_prefix + "filteredChain_computeStats"        ),
   m_option_displayCandidates                 (m_prefix + "displayCandidates"                 ),
@@ -114,11 +120,13 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_dataOutputAllowedSet             (inputOptions.m_dataOutputAllowedSet),
   m_totallyMute                      (inputOptions.m_totallyMute),
   m_rawChainDataInputFileName        (inputOptions.m_rawChainDataInputFileName),
+  m_rawChainDataInputFileType        (inputOptions.m_rawChainDataInputFileType),
   m_rawChainSize                     (inputOptions.m_rawChainSize),
   m_rawChainGenerateExtra            (inputOptions.m_rawChainGenerateExtra),
   m_rawChainDisplayPeriod            (inputOptions.m_rawChainDisplayPeriod),
   m_rawChainMeasureRunTimes          (inputOptions.m_rawChainMeasureRunTimes),
   m_rawChainDataOutputFileName       (inputOptions.m_rawChainDataOutputFileName),
+  m_rawChainDataOutputFileType       (inputOptions.m_rawChainDataOutputFileType),
   m_rawChainDataOutputAllowedSet     (inputOptions.m_rawChainDataOutputAllowedSet),
   m_rawChainComputeStats             (inputOptions.m_rawChainComputeStats),
   m_rawChainStatisticalOptions       (inputOptions.m_rawChainStatisticalOptions),
@@ -127,6 +135,7 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_filteredChainDiscardedPortion    (inputOptions.m_filteredChainDiscardedPortion),
   m_filteredChainLag                 (inputOptions.m_filteredChainLag),
   m_filteredChainDataOutputFileName  (inputOptions.m_filteredChainDataOutputFileName),
+  m_filteredChainDataOutputFileType  (inputOptions.m_filteredChainDataOutputFileType),
   m_filteredChainDataOutputAllowedSet(inputOptions.m_filteredChainDataOutputAllowedSet),
   m_filteredChainComputeStats        (inputOptions.m_filteredChainComputeStats),
   m_filteredChainStatisticalOptions  (inputOptions.m_filteredChainStatisticalOptions),
@@ -150,17 +159,20 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_option_dataOutputAllowedSet              (m_prefix + "dataOutputAllowedSet"              ),
   m_option_totallyMute                       (m_prefix + "totallyMute"                       ),
   m_option_rawChain_dataInputFileName        (m_prefix + "rawChain_dataInputFileName"        ),
+  m_option_rawChain_dataInputFileType        (m_prefix + "rawChain_dataInputFileType"        ),
   m_option_rawChain_size                     (m_prefix + "rawChain_size"                     ),
   m_option_rawChain_generateExtra            (m_prefix + "rawChain_generateExtra"            ),
   m_option_rawChain_displayPeriod            (m_prefix + "rawChain_displayPeriod"            ),
   m_option_rawChain_measureRunTimes          (m_prefix + "rawChain_measureRunTimes"          ),
   m_option_rawChain_dataOutputFileName       (m_prefix + "rawChain_dataOutputFileName"       ),
+  m_option_rawChain_dataOutputFileType       (m_prefix + "rawChain_dataOutputFileType"       ),
   m_option_rawChain_dataOutputAllowedSet     (m_prefix + "rawChain_dataOutputAllowedSet"     ),
   m_option_rawChain_computeStats             (m_prefix + "rawChain_computeStats"             ),
   m_option_filteredChain_generate            (m_prefix + "filteredChain_generate"            ),
   m_option_filteredChain_discardedPortion    (m_prefix + "filteredChain_discardedPortion"    ),
   m_option_filteredChain_lag                 (m_prefix + "filteredChain_lag"                 ),
   m_option_filteredChain_dataOutputFileName  (m_prefix + "filteredChain_dataOutputFileName"  ),
+  m_option_filteredChain_dataOutputFileType  (m_prefix + "filteredChain_dataOutputFileType"  ),
   m_option_filteredChain_dataOutputAllowedSet(m_prefix + "filteredChain_dataOutputAllowedSet"),
   m_option_filteredChain_computeStats        (m_prefix + "filteredChain_computeStats"        ),
   m_option_displayCandidates                 (m_prefix + "displayCandidates"                 ),
@@ -230,17 +242,20 @@ uqMetropolisHastingsSGOptionsClass::defineMyOptions(po::options_description& opt
     (m_option_dataOutputAllowedSet.c_str(),               po::value<std::string >()->default_value(UQ_MH_SG_DATA_OUTPUT_ALLOWED_SET_ODV               ), "subEnvs that will write to generic output file"                  )
     (m_option_totallyMute.c_str(),                        po::value<bool        >()->default_value(UQ_MH_SG_TOTALLY_MUTE_ODV                          ), "totally mute (no printout message)"                              )
     (m_option_rawChain_dataInputFileName.c_str(),         po::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV        ), "name of input file for raw chain "                               )
+    (m_option_rawChain_dataInputFileType.c_str(),         po::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_TYPE_ODV        ), "type of input file for raw chain "                               )
     (m_option_rawChain_size.c_str(),                      po::value<unsigned int>()->default_value(UQ_MH_SG_RAW_CHAIN_SIZE_ODV                        ), "size of raw chain"                                               )
     (m_option_rawChain_generateExtra.c_str(),             po::value<bool        >()->default_value(UQ_MH_SG_RAW_CHAIN_GENERATE_EXTRA_ODV              ), "generate extra information about raw chain"                      )
     (m_option_rawChain_displayPeriod.c_str(),             po::value<unsigned int>()->default_value(UQ_MH_SG_RAW_CHAIN_DISPLAY_PERIOD_ODV              ), "period of message display during raw chain generation"           )
     (m_option_rawChain_measureRunTimes.c_str(),           po::value<bool        >()->default_value(UQ_MH_SG_RAW_CHAIN_MEASURE_RUN_TIMES_ODV           ), "measure run times"                                               )
     (m_option_rawChain_dataOutputFileName.c_str(),        po::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV       ), "name of output file for raw chain "                              )
+    (m_option_rawChain_dataOutputFileType.c_str(),        po::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV       ), "type of output file for raw chain "                              )
     (m_option_rawChain_dataOutputAllowedSet.c_str(),      po::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV     ), "subEnvs that will write to output file for raw chain"            )
     (m_option_rawChain_computeStats.c_str(),              po::value<bool        >()->default_value(UQ_MH_SG_RAW_CHAIN_COMPUTE_STATS_ODV               ), "compute statistics on raw chain"                                 )
     (m_option_filteredChain_generate.c_str(),             po::value<bool        >()->default_value(UQ_MH_SG_FILTERED_CHAIN_GENERATE_ODV               ), "generate filtered chain"                                         )
     (m_option_filteredChain_discardedPortion.c_str(),     po::value<double      >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV      ), "initial discarded portion for chain filtering"                   )
     (m_option_filteredChain_lag.c_str(),                  po::value<unsigned int>()->default_value(UQ_MH_SG_FILTERED_CHAIN_LAG_ODV                    ), "spacing for chain filtering"                                     )
     (m_option_filteredChain_dataOutputFileName.c_str(),   po::value<std::string >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV  ), "name of output file for filtered chain"                          )
+    (m_option_filteredChain_dataOutputFileType.c_str(),   po::value<std::string >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV  ), "type of output file for filtered chain"                          )
     (m_option_filteredChain_dataOutputAllowedSet.c_str(), po::value<std::string >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV), "subEnvs that will write to output file for filtered chain"       )
     (m_option_filteredChain_computeStats.c_str(),         po::value<bool        >()->default_value(UQ_MH_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV          ), "compute statistics on filtered chain"                            )
     (m_option_displayCandidates.c_str(),                  po::value<bool        >()->default_value(UQ_MH_SG_DISPLAY_CANDIDATES_ODV                    ), "display candidates generated in the core MH algorithm"           )
@@ -296,6 +311,10 @@ uqMetropolisHastingsSGOptionsClass::getMyOptionValues(po::options_description& o
     m_rawChainDataInputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataInputFileName]).as<std::string>();
   }
 
+  if (m_env.allOptionsMap().count(m_option_rawChain_dataInputFileType)) {
+    m_rawChainDataInputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataInputFileType]).as<std::string>();
+  }
+
   if (m_env.allOptionsMap().count(m_option_rawChain_size)) {
     m_rawChainSize = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_size]).as<unsigned int>();
   }
@@ -310,6 +329,10 @@ uqMetropolisHastingsSGOptionsClass::getMyOptionValues(po::options_description& o
 
   if (m_env.allOptionsMap().count(m_option_rawChain_dataOutputFileName)) {
     m_rawChainDataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataOutputFileName]).as<std::string>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_rawChain_dataOutputFileType)) {
+    m_rawChainDataOutputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataOutputFileType]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_dataOutputAllowedSet)) {
@@ -360,6 +383,10 @@ uqMetropolisHastingsSGOptionsClass::getMyOptionValues(po::options_description& o
 
   if (m_env.allOptionsMap().count(m_option_filteredChain_dataOutputFileName)) {
     m_filteredChainDataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_dataOutputFileName]).as<std::string>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_filteredChain_dataOutputFileType)) {
+    m_filteredChainDataOutputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_dataOutputFileType]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_filteredChain_dataOutputAllowedSet)) {
@@ -462,11 +489,13 @@ uqMetropolisHastingsSGOptionsClass::print(std::ostream& os) const
   }
   os << "\n" << m_option_totallyMute                   << " = " << m_totallyMute
      << "\n" << m_option_rawChain_dataInputFileName    << " = " << m_rawChainDataInputFileName
+     << "\n" << m_option_rawChain_dataInputFileType    << " = " << m_rawChainDataInputFileType
      << "\n" << m_option_rawChain_size                 << " = " << m_rawChainSize
      << "\n" << m_option_rawChain_generateExtra        << " = " << m_rawChainGenerateExtra
      << "\n" << m_option_rawChain_displayPeriod        << " = " << m_rawChainDisplayPeriod
      << "\n" << m_option_rawChain_measureRunTimes      << " = " << m_rawChainMeasureRunTimes
      << "\n" << m_option_rawChain_dataOutputFileName   << " = " << m_rawChainDataOutputFileName
+     << "\n" << m_option_rawChain_dataOutputFileType   << " = " << m_rawChainDataOutputFileType
      << "\n" << m_option_rawChain_dataOutputAllowedSet << " = ";
   for (std::set<unsigned int>::iterator setIt = m_rawChainDataOutputAllowedSet.begin(); setIt != m_rawChainDataOutputAllowedSet.end(); ++setIt) {
     os << *setIt << " ";
@@ -476,6 +505,7 @@ uqMetropolisHastingsSGOptionsClass::print(std::ostream& os) const
      << "\n" << m_option_filteredChain_discardedPortion     << " = " << m_filteredChainDiscardedPortion
      << "\n" << m_option_filteredChain_lag                  << " = " << m_filteredChainLag
      << "\n" << m_option_filteredChain_dataOutputFileName   << " = " << m_filteredChainDataOutputFileName
+     << "\n" << m_option_filteredChain_dataOutputFileType   << " = " << m_filteredChainDataOutputFileType
      << "\n" << m_option_filteredChain_dataOutputAllowedSet << " = ";
   for (std::set<unsigned int>::iterator setIt = m_filteredChainDataOutputAllowedSet.begin(); setIt != m_filteredChainDataOutputAllowedSet.end(); ++setIt) {
     os << *setIt << " ";

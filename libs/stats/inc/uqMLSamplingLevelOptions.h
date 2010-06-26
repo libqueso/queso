@@ -54,17 +54,20 @@
 #define UQ_ML_SAMPLING_L_COV_REJECTION_RATE_ODV                     0.25
 #define UQ_ML_SAMPLING_L_TOTALLY_MUTE_ODV                           1
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV         UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
+#define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_INPUT_FILE_TYPE_ODV         "m"
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_SIZE_ODV                         100
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_GENERATE_EXTRA_ODV               0
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_DISPLAY_PERIOD_ODV               500
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_MEASURE_RUN_TIMES_ODV            1
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV        UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
+#define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV        "m"
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV      ""
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_COMPUTE_STATS_ODV                0
 #define UQ_ML_SAMPLING_L_FILTERED_CHAIN_GENERATE_ODV                0
 #define UQ_ML_SAMPLING_L_FILTERED_CHAIN_DISCARDED_PORTION_ODV       0.
 #define UQ_ML_SAMPLING_L_FILTERED_CHAIN_LAG_ODV                     1
 #define UQ_ML_SAMPLING_L_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV   UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
+#define UQ_ML_SAMPLING_L_FILTERED_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV   "m"
 #define UQ_ML_SAMPLING_L_FILTERED_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV ""
 #define UQ_ML_SAMPLING_L_FILTERED_CHAIN_COMPUTE_STATS_ODV           0
 #define UQ_ML_SAMPLING_L_DISPLAY_CANDIDATES_ODV                     0
@@ -109,11 +112,13 @@ public:
   double                             m_covRejectionRate;
   bool                               m_totallyMute;
   std::string                        m_rawChainDataInputFileName;
+  std::string                        m_rawChainDataInputFileType;
   unsigned int                       m_rawChainSize;
   bool                               m_rawChainGenerateExtra;
   unsigned int                       m_rawChainDisplayPeriod;
   bool                               m_rawChainMeasureRunTimes;
   std::string                        m_rawChainDataOutputFileName;
+  std::string                        m_rawChainDataOutputFileType;
   std::set<unsigned int>             m_rawChainDataOutputAllowedSet;
   std::string                        m_str2;
   bool                               m_rawChainComputeStats;
@@ -124,6 +129,7 @@ public:
   double                             m_filteredChainDiscardedPortion; // input or set during run time
   unsigned int                       m_filteredChainLag;              // input or set during run time
   std::string                        m_filteredChainDataOutputFileName;
+  std::string                        m_filteredChainDataOutputFileType;
   std::set<unsigned int>             m_filteredChainDataOutputAllowedSet;
   std::string                        m_str3;
   bool                               m_filteredChainComputeStats;
@@ -168,11 +174,13 @@ private:
   std::string                   m_option_covRejectionRate;
   std::string                   m_option_totallyMute;
   std::string                   m_option_rawChain_dataInputFileName;
+  std::string                   m_option_rawChain_dataInputFileType;
   std::string                   m_option_rawChain_size;
   std::string                   m_option_rawChain_generateExtra;
   std::string                   m_option_rawChain_displayPeriod;
   std::string                   m_option_rawChain_measureRunTimes;
   std::string                   m_option_rawChain_dataOutputFileName;
+  std::string                   m_option_rawChain_dataOutputFileType;
   std::string                   m_option_rawChain_dataOutputAllowedSet;
   std::string                   m_option_rawChain_computeStats;
 
@@ -180,6 +188,7 @@ private:
   std::string                   m_option_filteredChain_discardedPortion;
   std::string                   m_option_filteredChain_lag;
   std::string                   m_option_filteredChain_dataOutputFileName;
+  std::string                   m_option_filteredChain_dataOutputFileType;
   std::string                   m_option_filteredChain_dataOutputAllowedSet;
   std::string                   m_option_filteredChain_computeStats;
 

@@ -40,6 +40,7 @@
 
 // _ODV = option default value
 #define UQ_ML_SAMPLING_RESTART_INPUT_FILE_NAME_ODV UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE
+#define UQ_ML_SAMPLING_RESTART_INPUT_FILE_TYPE_ODV "m"
 #define UQ_ML_SAMPLING_RESTART_CHAIN_SIZE_ODV      100
 #define UQ_ML_SAMPLING_DATA_OUTPUT_FILE_NAME_ODV   UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE
 #define UQ_ML_SAMPLING_DATA_OUTPUT_ALLOWED_SET_ODV ""
@@ -56,6 +57,7 @@ public:
   std::string            m_prefix;
 
   std::string            m_restartInputFileName;
+  std::string            m_restartInputFileType;
   unsigned int           m_restartChainSize;
   std::string            m_dataOutputFileName;
   std::set<unsigned int> m_dataOutputAllowedSet;
@@ -69,6 +71,7 @@ private:
 
   std::string                   m_option_help;
   std::string                   m_option_restartInputFileName;
+  std::string                   m_option_restartInputFileType;
   std::string                   m_option_restartChainSize;
   std::string                   m_option_dataOutputFileName;
   std::string                   m_option_dataOutputAllowedSet;

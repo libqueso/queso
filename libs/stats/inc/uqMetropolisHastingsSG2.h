@@ -104,6 +104,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
   }
   else {
     readFullChain(m_options.m_rawChainDataInputFileName,
+                  m_options.m_rawChainDataInputFileType,
                   m_options.m_rawChainSize,
                   workingChain);
   }
@@ -121,7 +122,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
   }
   std::ofstream* genericOfsVar = NULL;
   m_env.openOutputFile(m_options.m_dataOutputFileName,
-                       UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                       UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT, // Yes, always ".m"
                        m_options.m_dataOutputAllowedSet,
                        false,
                        genericOfsVar);
@@ -144,6 +145,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
   if ((m_options.m_rawChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) &&
       (m_options.m_totallyMute == false                                       )) {
     workingChain.subWriteContents(m_options.m_rawChainDataOutputFileName,
+                                  m_options.m_rawChainDataOutputFileType,
                                   m_options.m_rawChainDataOutputAllowedSet);
     if ((m_env.subDisplayFile()          ) &&
         (m_options.m_totallyMute == false)) {
@@ -158,7 +160,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
   // Take "unified" care of raw chain
   if ((m_options.m_rawChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) &&
       (m_options.m_totallyMute == false                                       )) {
-    workingChain.unifiedWriteContents(m_options.m_rawChainDataOutputFileName);
+    workingChain.unifiedWriteContents(m_options.m_rawChainDataOutputFileName,m_options.m_rawChainDataOutputFileType);
     if ((m_env.subDisplayFile()          ) &&
         (m_options.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()"
@@ -262,6 +264,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
     if ((m_options.m_filteredChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) &&
         (m_options.m_totallyMute == false                                            )) {
       workingChain.subWriteContents(m_options.m_filteredChainDataOutputFileName,
+                                    m_options.m_filteredChainDataOutputFileType,
                                     m_options.m_filteredChainDataOutputAllowedSet);
       if ((m_env.subDisplayFile()          ) &&
           (m_options.m_totallyMute == false)) {
@@ -276,7 +279,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
     // Take "unified" care of filtered chain
     if ((m_options.m_filteredChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) &&
         (m_options.m_totallyMute == false                                            )) {
-      workingChain.unifiedWriteContents(m_options.m_filteredChainDataOutputFileName);
+      workingChain.unifiedWriteContents(m_options.m_filteredChainDataOutputFileName,m_options.m_filteredChainDataOutputFileType);
       if ((m_env.subDisplayFile()          ) &&
           (m_options.m_totallyMute == false)) {
         *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()"
@@ -332,10 +335,11 @@ template <class P_V,class P_M>
 void
 uqMetropolisHastingsSGClass<P_V,P_M>::readFullChain(
   const std::string&                  inputFileName,
+  const std::string&                  inputFileType,
         unsigned int                  chainSize,
   uqBaseVectorSequenceClass<P_V,P_M>& workingChain)
 {
-  workingChain.unifiedReadContents(inputFileName,chainSize);
+  workingChain.unifiedReadContents(inputFileName,inputFileType,chainSize);
   return;
 }
 

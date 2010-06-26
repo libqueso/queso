@@ -192,10 +192,14 @@ public:
                                                  const std::vector<V*>&               unifiedEvalParamVecs,
                                                  std::vector<V*>&                     unifiedDensityVecs) const;
         void         subWriteContents           (const std::string&                   fileName,
+                                                 const std::string&                   fileType,
                                                  const std::set<unsigned int>&        allowedSubEnvIds) const;
-        void         subWriteContents           (std::ofstream&                       ofs) const;
-        void         unifiedWriteContents       (const std::string&                   fileName) const;
+        void         subWriteContents           (std::ofstream&                       ofs,
+                                                 const std::string&                   fileType) const;
+        void         unifiedWriteContents       (const std::string&                   fileName,
+                                                 const std::string&                   fileType) const;
         void         unifiedReadContents        (const std::string&                   fileName,
+                                                 const std::string&                   fileType,
                                                  const unsigned int                   subSequenceSize);
         void         select                     (const std::vector<unsigned int>&     idsOfUniquePositions);
         void         filter                     (unsigned int                         initialPos,
@@ -509,9 +513,9 @@ template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subMeanMonitorWrite(std::ofstream& ofs)
 {
-  m_subMeanMonitorPosSeq->subWriteContents(ofs);
-  m_subMeanVecSeq->subWriteContents(ofs);
-  m_subMeanCltStdSeq->subWriteContents(ofs);
+  m_subMeanMonitorPosSeq->subWriteContents(ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m"
+  m_subMeanVecSeq->subWriteContents(ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m"
+  m_subMeanCltStdSeq->subWriteContents(ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m"
 
   return;
 }
@@ -520,12 +524,12 @@ template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subMeanInter0MonitorWrite(std::ofstream& ofs)
 {
-  m_subMeanInter0MonitorPosSeq->subWriteContents(ofs);
-  m_subMeanInter0Mean->subWriteContents(ofs);
-  m_subMeanInter0Clt95->subWriteContents(ofs);
-  m_subMeanInter0Empirical90->subWriteContents(ofs);
-  m_subMeanInter0Min->subWriteContents(ofs);
-  m_subMeanInter0Max->subWriteContents(ofs);
+  m_subMeanInter0MonitorPosSeq->subWriteContents(ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m"
+  m_subMeanInter0Mean->subWriteContents(ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m"
+  m_subMeanInter0Clt95->subWriteContents(ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m"
+  m_subMeanInter0Empirical90->subWriteContents(ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m"
+  m_subMeanInter0Min->subWriteContents(ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m"
+  m_subMeanInter0Max->subWriteContents(ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m"
 
   return;
 }
@@ -536,9 +540,9 @@ uqSequenceOfVectorsClass<V,M>::unifiedMeanMonitorWrite(std::ofstream& ofs)
 {
   // std::set<unsigned int> tmpSet;
   // tmpSet.insert(0);
-  m_unifiedMeanMonitorPosSeq->subWriteContents(ofs); // Yes, 'subWriteContents()'
-  m_unifiedMeanVecSeq->subWriteContents(ofs);        // Yes, 'subWriteContents()'
-  m_unifiedMeanCltStdSeq->subWriteContents(ofs);     // Yes, 'subWriteContents()'
+  m_unifiedMeanMonitorPosSeq->subWriteContents(ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m" // Yes, 'subWriteContents()'
+  m_unifiedMeanVecSeq->subWriteContents(ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m"        // Yes, 'subWriteContents()'
+  m_unifiedMeanCltStdSeq->subWriteContents(ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m"     // Yes, 'subWriteContents()'
 
   return;
 }
@@ -2301,6 +2305,7 @@ template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subWriteContents(
   const std::string&            fileName,
+  const std::string&            fileType,
   const std::set<unsigned int>& allowedSubEnvIds) const
 {
   UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
@@ -2310,14 +2315,14 @@ uqSequenceOfVectorsClass<V,M>::subWriteContents(
 
   std::ofstream* ofsVar = NULL;
   m_env.openOutputFile(fileName,
-                       UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                       fileType,
                        allowedSubEnvIds,
                        false, // A 'true' causes problems when the user chooses (via options
                               // in the input file) to use just one file for all outputs.
                        ofsVar);
 
   if (ofsVar) {
-    this->subWriteContents(*ofsVar);
+    this->subWriteContents(*ofsVar,fileType);
   }
 
   if (ofsVar) {
@@ -2330,7 +2335,9 @@ uqSequenceOfVectorsClass<V,M>::subWriteContents(
 
 template <class V, class M>
 void
-uqSequenceOfVectorsClass<V,M>::subWriteContents(std::ofstream& ofs) const
+uqSequenceOfVectorsClass<V,M>::subWriteContents(
+  std::ofstream&     ofs,
+  const std::string& fileType) const // "m or hdf"
 {
   ofs << m_name << "_sub" << m_env.subIdString() << " = zeros(" << this->subSequenceSize()
       << ","                                                    << this->vectorSizeLocal()
@@ -2352,7 +2359,9 @@ uqSequenceOfVectorsClass<V,M>::subWriteContents(std::ofstream& ofs) const
 
 template <class V, class M>
 void
-uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(const std::string& fileName) const
+uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
+  const std::string& fileName,
+  const std::string& fileType) const
 {
   //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
@@ -2375,7 +2384,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(const std::string& fileName)
         bool writeOver = false; // A 'true' causes problems when the user chooses (via options
                                 // in the input file) to use just one file for all outputs.
         m_env.openUnifiedOutputFile(fileName,
-                                    UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                                    fileType, // "m or hdf"
                                     writeOver,
                                     unifiedOfsVar);
 
@@ -2416,7 +2425,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(const std::string& fileName)
     if (m_env.inter0Rank() == 0) {
       std::ofstream* unifiedOfsVar = NULL;
       m_env.openUnifiedOutputFile(fileName,
-                                  UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                                  fileType,
                                   false, // Yes, 'writeOver = false' in order to close the array for matlab
                                   unifiedOfsVar);
       *unifiedOfsVar << "];\n";
@@ -2439,6 +2448,7 @@ template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
   const std::string& fileName,
+  const std::string& fileType,
   const unsigned int subReadSize)
 {
   //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
@@ -2465,10 +2475,10 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
     unsigned int idOfMyLastLine = (1 + m_env.inter0Rank())*subReadSize;
     unsigned int numParams = this->vectorSizeLocal();
 
-    for (unsigned int r = 0; r < (unsigned int) m_env.inter0Comm().NumProc(); ++r) {
+    for (unsigned int r = 0; r < (unsigned int) m_env.inter0Comm().NumProc(); ++r) { // "m or hdf"
       if (m_env.inter0Rank() == (int) r) {
         // My turn
-        std::ifstream* ifsvar = new std::ifstream((fileName+"."+UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT).c_str(), std::ofstream::in);
+        std::ifstream* ifsvar = new std::ifstream((fileName+"."+fileType).c_str(), std::ofstream::in);
         UQ_FATAL_TEST_MACRO((ifsvar == NULL) || (ifsvar->is_open() == false),
                             m_env.fullRank(),
                             "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",

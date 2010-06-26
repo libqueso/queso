@@ -148,7 +148,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Level0_all(
       if (currOptions.m_rawChainComputeStats) {
         std::ofstream* genericOfsVar = NULL;
         m_env.openOutputFile(currOptions.m_dataOutputFileName,
-                             UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                             UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT, // Yes, always ".m"
                              currOptions.m_dataOutputAllowedSet,
                              false,
                              genericOfsVar);
@@ -162,9 +162,9 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Level0_all(
       }
 
       if (currOptions.m_rawChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
-        currChain.unifiedWriteContents              (currOptions.m_rawChainDataOutputFileName);
-        currLogLikelihoodValues.unifiedWriteContents(currOptions.m_rawChainDataOutputFileName);
-        currLogTargetValues.unifiedWriteContents    (currOptions.m_rawChainDataOutputFileName);
+        currChain.unifiedWriteContents              (currOptions.m_rawChainDataOutputFileName,currOptions.m_rawChainDataOutputFileType);
+        currLogLikelihoodValues.unifiedWriteContents(currOptions.m_rawChainDataOutputFileName,currOptions.m_rawChainDataOutputFileType);
+        currLogTargetValues.unifiedWriteContents    (currOptions.m_rawChainDataOutputFileName,currOptions.m_rawChainDataOutputFileType);
       }
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -1489,7 +1489,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
         if (currOptions->m_rawChainComputeStats) {
           std::ofstream* genericOfsVar = NULL;
           m_env.openOutputFile(currOptions->m_dataOutputFileName,
-                               UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                               UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT, // Yes, always ".m"
                                currOptions->m_dataOutputAllowedSet,
                                false,
                                genericOfsVar);
@@ -1513,7 +1513,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
         }
 
         if (currOptions->m_rawChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
-          currChain.unifiedWriteContents              (currOptions->m_rawChainDataOutputFileName); // KAUST5
+          currChain.unifiedWriteContents              (currOptions->m_rawChainDataOutputFileName,currOptions->m_rawChainDataOutputFileType); // KAUST5
           if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
             *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence_Step()"
                                     << ", level " << m_currLevel+LEVEL_REF_ID
@@ -1522,14 +1522,14 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
                                     << ", currLogLikelihoodValues[0] = " << currLogLikelihoodValues[0]
                                     << std::endl;
           }
-          currLogLikelihoodValues.unifiedWriteContents(currOptions->m_rawChainDataOutputFileName);
-          currLogTargetValues.unifiedWriteContents    (currOptions->m_rawChainDataOutputFileName);
+          currLogLikelihoodValues.unifiedWriteContents(currOptions->m_rawChainDataOutputFileName,currOptions->m_rawChainDataOutputFileType);
+          currLogTargetValues.unifiedWriteContents    (currOptions->m_rawChainDataOutputFileName,currOptions->m_rawChainDataOutputFileType);
         }
 
         if (currOptions->m_filteredChainGenerate) {
           std::ofstream* genericOfsVar = NULL;
           m_env.openOutputFile(currOptions->m_dataOutputFileName,
-                               UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                               UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT, // Yes, always ".m"
                                currOptions->m_dataOutputAllowedSet,
                                false,
                                genericOfsVar);
@@ -1577,9 +1577,9 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
           delete genericOfsVar;
 
           if (currOptions->m_filteredChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
-            currChain.unifiedWriteContents              (currOptions->m_filteredChainDataOutputFileName);
-            currLogLikelihoodValues.unifiedWriteContents(currOptions->m_filteredChainDataOutputFileName);
-            currLogTargetValues.unifiedWriteContents    (currOptions->m_filteredChainDataOutputFileName);
+            currChain.unifiedWriteContents              (currOptions->m_filteredChainDataOutputFileName,currOptions->m_filteredChainDataOutputFileType);
+            currLogLikelihoodValues.unifiedWriteContents(currOptions->m_filteredChainDataOutputFileName,currOptions->m_filteredChainDataOutputFileType);
+            currLogTargetValues.unifiedWriteContents    (currOptions->m_filteredChainDataOutputFileName,currOptions->m_filteredChainDataOutputFileType);
           }
         } // if (currOptions->m_filteredChainGenerate)
 

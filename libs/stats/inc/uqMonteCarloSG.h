@@ -65,6 +65,7 @@ private:
                                     unsigned int                        seqSize);
   void actualReadSequence    (const uqBaseVectorRVClass      <P_V,P_M>& paramRv,
                               const std::string&                        dataInputFileName,
+                              const std::string&                        dataInputFileType,
                                     uqBaseVectorSequenceClass<P_V,P_M>& workingPSeq,
                                     uqBaseVectorSequenceClass<Q_V,Q_M>& workingQSeq,
                                     unsigned int                        seqSize);
@@ -208,6 +209,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   else {
     actualReadSequence(paramRv,
                        m_options.m_qseqDataInputFileName,
+                       m_options.m_qseqDataInputFileType,
                        workingPSeq,
                        workingQSeq,
                        subActualSizeBeforeGeneration);
@@ -236,7 +238,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   }
   std::ofstream* genericOfsVar = NULL;
   m_env.openOutputFile(m_options.m_dataOutputFileName,
-                       UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                       UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT, // Yes, always ".m"
                        m_options.m_dataOutputAllowedSet,
                        false,
                        genericOfsVar);
@@ -257,6 +259,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   // Take "sub" care of pseq
   if (m_options.m_pseqDataOutputFileName != UQ_MOC_SG_FILENAME_FOR_NO_FILE) {
     workingPSeq.subWriteContents(m_options.m_pseqDataOutputFileName,
+                                 m_options.m_pseqDataOutputFileType,
                                  m_options.m_pseqDataOutputAllowedSet);
     //if (m_env.subDisplayFile()) {
     //  *m_env.subDisplayFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
@@ -269,7 +272,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
 
   // Take "unified" care of pseq
   if (m_options.m_pseqDataOutputFileName != UQ_MOC_SG_FILENAME_FOR_NO_FILE) {
-    workingPSeq.unifiedWriteContents(m_options.m_pseqDataOutputFileName);
+    workingPSeq.unifiedWriteContents(m_options.m_pseqDataOutputFileName,m_options.m_pseqDataOutputFileType);
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                               << ", prefix = "                         << m_options.m_prefix
@@ -311,6 +314,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   // Take "sub" care of qseq
   if (m_options.m_qseqDataOutputFileName != UQ_MOC_SG_FILENAME_FOR_NO_FILE) {
     workingQSeq.subWriteContents(m_options.m_qseqDataOutputFileName,
+                                 m_options.m_qseqDataOutputFileType,
                                  m_options.m_qseqDataOutputAllowedSet);
     //if (m_env.subDisplayFile()) {
     //  *m_env.subDisplayFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
@@ -323,7 +327,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
 
   // Take "unified" care of qseq
   if (m_options.m_qseqDataOutputFileName != UQ_MOC_SG_FILENAME_FOR_NO_FILE) {
-    workingQSeq.unifiedWriteContents(m_options.m_qseqDataOutputFileName);
+    workingQSeq.unifiedWriteContents(m_options.m_qseqDataOutputFileName,m_options.m_qseqDataOutputFileType);
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                               << ", prefix = "                         << m_options.m_prefix
@@ -478,6 +482,7 @@ void
 uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualReadSequence(
   const uqBaseVectorRVClass      <P_V,P_M>& paramRv,
   const std::string&                        dataInputFileName,
+  const std::string&                        dataInputFileType,
         uqBaseVectorSequenceClass<P_V,P_M>& workingPSeq,
         uqBaseVectorSequenceClass<Q_V,Q_M>& workingQSeq,
         unsigned int                        requestedSeqSize)
@@ -489,7 +494,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualReadSequence(
     workingPSeq.setPositionValues(i,tmpP);
   }
 
-  workingQSeq.unifiedReadContents(dataInputFileName,requestedSeqSize);
+  workingQSeq.unifiedReadContents(dataInputFileName,dataInputFileType,requestedSeqSize);
 
   return;
 }
