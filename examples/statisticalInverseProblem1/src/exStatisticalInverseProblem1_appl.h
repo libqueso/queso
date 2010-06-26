@@ -155,14 +155,17 @@ uqAppl(const uqBaseEnvironmentClass& env)
   sprintf(varPrefixName,"sip_appl_paramMeans");
   paramMeans.subWriteContents(varPrefixName,
                               "outputData/appl_output",
+                              UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
                               auxSet);
   sprintf(varPrefixName,"sip_appl_covMatrix");
   covMatrix->subWriteContents(varPrefixName,
                               "outputData/appl_output",
+                              UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
                               auxSet);
   sprintf(varPrefixName,"sip_appl_covMatrixInverse");
   covMatrixInverse->subWriteContents(varPrefixName,
                                      "outputData/appl_output",
+                                     UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
                                      auxSet);
   //std::cout << "covMatrix = [" << *covMatrix
   //          << "];"
@@ -192,6 +195,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   sprintf(varPrefixName,"sip_appl_d");
   auxVec.subWriteContents(varPrefixName,
                           "outputData/appl_output",
+                          UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
                           auxSet);
 
   //******************************************************
