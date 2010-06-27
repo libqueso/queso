@@ -727,13 +727,11 @@ uqGslVectorClass::subWriteContents(
                       "implemented just for sequential vectors for now");
 
   uqFilePtrSetStruct filePtrSet;
-  m_env.openOutputFile(fileName,
-                       fileType, // "m or hdf"
-                       allowedSubEnvIds,
-                       false,
-                       filePtrSet);
-
-  if (filePtrSet.ofsVar) {
+  if (m_env.openOutputFile(fileName,
+                           fileType, // "m or hdf"
+                           allowedSubEnvIds,
+                           false,
+                           filePtrSet)) {
     *filePtrSet.ofsVar << varNamePrefix << "_sub" << m_env.subIdString() << " = zeros(" << this->sizeLocal()
             << ","                                                           << 1
             << ");"
@@ -750,9 +748,9 @@ uqGslVectorClass::subWriteContents(
     this->setPrintHorizontally(savedVectorPrintHorizontally);
 
     *filePtrSet.ofsVar << "];\n";
-  }
 
-  m_env.closeFile(filePtrSet,fileType);
+    m_env.closeFile(filePtrSet,fileType);
+  }
 
   return;
 }
@@ -774,12 +772,10 @@ uqGslVectorClass::subReadContents(
                       "implemented just for sequential vectors for now");
 
   uqFilePtrSetStruct filePtrSet;
-  m_env.openInputFile(fileName,
-                      fileType, // "m or hdf"
-                      allowedSubEnvIds,
-                      filePtrSet);
-
-  if (filePtrSet.ifsVar) {
+  if (m_env.openInputFile(fileName,
+                          fileType, // "m or hdf"
+                          allowedSubEnvIds,
+                          filePtrSet)) {
     double subReadSize = this->sizeLocal();
 
     // In the logic below, the id of a line' begins with value 0 (zero)
@@ -903,9 +899,9 @@ uqGslVectorClass::subReadContents(
       *filePtrSet.ifsVar >> (*this)[lineId - idOfMyFirstLine];
       lineId++;
     };
-  }
 
-  m_env.closeFile(filePtrSet,fileType);
+    m_env.closeFile(filePtrSet,fileType);
+  }
 
   return;
 }

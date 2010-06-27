@@ -2316,16 +2316,15 @@ uqSequenceOfVectorsClass<V,M>::subWriteContents(
                       "unexpected subRank");
 
   uqFilePtrSetStruct filePtrSet;
-  m_env.openOutputFile(fileName,
-                       fileType,
-                       allowedSubEnvIds,
-                       false, // A 'true' causes problems when the user chooses (via options
-                              // in the input file) to use just one file for all outputs.
-                       filePtrSet);
-
-  this->subWriteContents(filePtrSet,fileType);
-
-  m_env.closeFile(filePtrSet,fileType);
+  if (m_env.openOutputFile(fileName,
+                           fileType,
+                           allowedSubEnvIds,
+                           false, // A 'true' causes problems when the user chooses (via options
+                                  // in the input file) to use just one file for all outputs.
+                           filePtrSet)) {
+    this->subWriteContents(filePtrSet,fileType);
+    m_env.closeFile(filePtrSet,fileType);
+  }
 
   return;
 }

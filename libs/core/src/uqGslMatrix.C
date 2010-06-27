@@ -1102,13 +1102,11 @@ uqGslMatrixClass::subWriteContents(
                       "implemented just for sequential vectors for now");
 
   uqFilePtrSetStruct filePtrSet;
-  m_env.openOutputFile(fileName,
-                       fileType, // "m or hdf"
-                       allowedSubEnvIds,
-                       false,
-                       filePtrSet);
-
-  if (filePtrSet.ofsVar) {
+  if (m_env.openOutputFile(fileName,
+                           fileType, // "m or hdf"
+                           allowedSubEnvIds,
+                           false,
+                           filePtrSet)) {
     unsigned int nRows = this->numRowsLocal();
     unsigned int nCols = this->numCols();
     *filePtrSet.ofsVar << varNamePrefix << "_sub" << m_env.subIdString() << " = zeros(" << nRows
@@ -1125,9 +1123,9 @@ uqGslMatrixClass::subWriteContents(
       *filePtrSet.ofsVar << "\n";
     }
     *filePtrSet.ofsVar << "];\n";
-  }
 
-  m_env.closeFile(filePtrSet,fileType);
+    m_env.closeFile(filePtrSet,fileType);
+  }
 
   return;
 }

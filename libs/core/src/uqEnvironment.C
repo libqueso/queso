@@ -414,7 +414,7 @@ uqBaseEnvironmentClass::syncPrintDebugMsg(const char* msg, unsigned int msgVerbo
   return;
 }
 
-void
+bool
 uqBaseEnvironmentClass::openOutputFile(
   const std::string&            baseFileName,
   const std::string&            fileType,
@@ -422,6 +422,7 @@ uqBaseEnvironmentClass::openOutputFile(
         bool                    writeOver,
         uqFilePtrSetStruct&     filePtrSet) const
 {
+  bool returnValue = true;
   filePtrSet.ofsVar = NULL;
   if ((baseFileName                         == UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE) ||
       (allowedSubEnvIds.find(this->subId()) == allowedSubEnvIds.end()            )) {
@@ -432,6 +433,7 @@ uqBaseEnvironmentClass::openOutputFile(
                               << ", writeOver = " << writeOver
                               << std::endl;
     }
+    returnValue = false;
   }
   else {
     //////////////////////////////////////////////////////////////////
@@ -567,16 +569,17 @@ uqBaseEnvironmentClass::openOutputFile(
     }
   }
 
-  return;
+  return returnValue;
 }
 
-void
+bool
 uqBaseEnvironmentClass::openUnifiedOutputFile(
   const std::string&        baseFileName,
   const std::string&        fileType,
         bool                writeOver,
         uqFilePtrSetStruct& filePtrSet) const
 {
+  bool returnValue = true;
   filePtrSet.ofsVar = NULL;
   if (baseFileName == ".") {
     if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
@@ -586,6 +589,7 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
                               << ", writeOver = " << writeOver
                               << std::endl;
     }
+    returnValue = false;
   }
   else {
     //////////////////////////////////////////////////////////////////
@@ -712,16 +716,17 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
     //}
   }
 
-  return;
+  return returnValue;
 }
 
-void
+bool
 uqBaseEnvironmentClass::openInputFile(
   const std::string&            baseFileName,
   const std::string&            fileType,
   const std::set<unsigned int>& allowedSubEnvIds,
         uqFilePtrSetStruct&     filePtrSet) const
 {
+  bool returnValue = true;
   filePtrSet.ifsVar = NULL;
   if ((baseFileName                         == UQ_ENV_FILENAME_FOR_NO_INPUT_FILE) ||
       (allowedSubEnvIds.find(this->subId()) == allowedSubEnvIds.end()           )) {
@@ -731,6 +736,7 @@ uqBaseEnvironmentClass::openInputFile(
                               << "'"
                               << std::endl;
     }
+    returnValue = false;
   }
   else {
     //////////////////////////////////////////////////////////////////
@@ -783,7 +789,7 @@ uqBaseEnvironmentClass::openInputFile(
     }
   }
 
-  return;
+  return returnValue;
 }
 
 void

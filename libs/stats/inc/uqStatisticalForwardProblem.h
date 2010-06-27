@@ -449,12 +449,11 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
                             << std::endl;
   }
   uqFilePtrSetStruct filePtrSet;
-  m_env.openOutputFile(m_options.m_dataOutputFileName,
-                       UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT, // Yes, always ".m"
-                       m_options.m_dataOutputAllowedSet,
-                       false,
-                       filePtrSet);
-  if (filePtrSet.ofsVar) {
+  if (m_env.openOutputFile(m_options.m_dataOutputFileName,
+                           UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT, // Yes, always ".m"
+                           m_options.m_dataOutputAllowedSet,
+                           false,
+                           filePtrSet)) {
 #ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
     m_qoiRv.mdf().print(*filePtrSet.ofsVar);
 #endif
@@ -477,12 +476,9 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
                             "unifed cdf writing, parallel vectors not supported yet");
       }
     }
-  }
 
-  // Close data output file
-  if (filePtrSet.ofsVar) {
-    //filePtrSet.ofsVar->close();
-    delete filePtrSet.ofsVar;
+    // Close data output file
+    m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
                               << ", prefix = "                 << m_options.m_prefix

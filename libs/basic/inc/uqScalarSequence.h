@@ -2928,21 +2928,15 @@ uqScalarSequenceClass<T>::subWriteContents(
                       "uqScalarSequenceClass<T>::subWriteContents()",
                       "unexpected subRank");
 
-  std::ofstream* ofsVar = NULL;
-  m_env.openOutputFile(fileName,
-                       fileType,
-                       allowedSubEnvIds,
-                       false, // A 'true' causes problems when the user chooses (via options
-                              // in the input file) to use just one file for all outputs.
-                       ofsVar);
-
-  if (ofsVar) {
-    this->subWriteContents(*ofsVar,fileType);
-  }
-
-  if (ofsVar) {
-    //ofsVar->close();
-    delete ofsVar;
+  uqFilePtrSetStruct filePtrSet;
+  if (m_env.openOutputFile(fileName,
+                           fileType,
+                           allowedSubEnvIds,
+                           false, // A 'true' causes problems when the user chooses (via options
+                                  // in the input file) to use just one file for all outputs.
+                           filePtrSet)) {
+    this->subWriteContents(filePtrSet,fileType);
+    this->closeFile(filePtrSet,fileType);
   }
 
   return;

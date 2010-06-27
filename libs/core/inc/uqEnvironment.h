@@ -184,17 +184,17 @@ public:
           bool                    isThereInputFile           () const;
           void                    syncPrintDebugMsg          (const char* msg, unsigned int msgVerbosity, unsigned int numUSecs, const Epetra_MpiComm& commObj) const;
 
-          void                    openOutputFile             (const std::string&            fileName,
+          bool                    openOutputFile             (const std::string&            fileName,
                                                               const std::string&            fileType,
                                                               const std::set<unsigned int>& allowedSubEnvIds,
                                                                     bool                    writeOver,
                                                                     uqFilePtrSetStruct&     filePtrSet) const;
 
-          void                    openUnifiedOutputFile      (const std::string&            fileName,
+          bool                    openUnifiedOutputFile      (const std::string&            fileName,
                                                               const std::string&            fileType,
                                                                     bool                    writeOver,
                                                                     uqFilePtrSetStruct&     filePtrSet) const;
-          void                    openInputFile              (const std::string&            fileName,
+          bool                    openInputFile              (const std::string&            fileName,
                                                               const std::string&            fileType,
                                                               const std::set<unsigned int>& allowedSubEnvIds,
                                                                     uqFilePtrSetStruct&     filePtrSet) const;
