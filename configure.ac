@@ -97,6 +97,10 @@ AC_CACHE_SAVE
 
 AX_PATH_GLPK(4.35,,AC_MSG_ERROR([Could not find required GLPK error]))
 
+# Check for HDF5 library
+
+AX_PATH_HDF5(1.8.5,,AC_MSG_ERROR([Could not find required HDF5 error]))
+
 # HPCT Config
 
 AX_PATH_HPCT

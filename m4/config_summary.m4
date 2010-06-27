@@ -27,6 +27,7 @@ echo C++ compiler flags............ : $CXXFLAGS
 echo GSL_LIBS...................... : $GSL_LIBS
 echo HPCT DIR...................... : $HPCT_PREFIX
 echo GLPK DIR...................... : $GLPK_PREFIX
+echo HDF5 DIR...................... : $HDF5_PREFIX
 echo Install dir................... : $prefix 
 echo Build user.................... : $USER
 echo Build host.................... : $BUILD_HOST

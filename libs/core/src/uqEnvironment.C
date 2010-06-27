@@ -37,6 +37,7 @@
 #include <sys/time.h>
 #include <gsl/gsl_randist.h>
 #include <hpct.h>
+#include <hdf5.h>
 
 // Version "0.1"    on "Aug/11/2008"
 // Version "0.11"   on "Aug/15/2008"
@@ -416,16 +417,19 @@ uqBaseEnvironmentClass::openOutputFile(
       (allowedSubEnvIds.find(this->subId()) == allowedSubEnvIds.end()            )) {
     if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
       *this->subDisplayFile() << "In uqBaseEnvironmentClass::openOutputFile()"
-                              << ": no output file opened with base name '" << baseFileName
+                              << ": no output file opened with base name '" << baseFileName << "." << fileType
                               << "'"
                               << ", writeOver = " << writeOver
                               << std::endl;
     }
   }
   else {
+    //////////////////////////////////////////////////////////////////
+    // Open file
+    //////////////////////////////////////////////////////////////////
     if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
       *this->subDisplayFile() << "In uqBaseEnvironmentClass::openOutputFile()"
-                              << ": opening output file with base name '" << baseFileName
+                              << ": opening output file with base name '" << baseFileName << "." << fileType
                               << "'"
                               << ", writeOver = " << writeOver
                               << std::endl;
@@ -434,28 +438,46 @@ uqBaseEnvironmentClass::openOutputFile(
     if (this->subRank() == 0) {
 #if 0
       std::cout << "In uqBaseEnvironmentClass::openOutputFile()"
-                << ": opening output file with base name '" << baseFileName
+                << ": opening output file with base name '" << baseFileName << "." << fileType
                 << "'"
                 << ", writeOver = " << writeOver
                 << std::endl;
 #endif
 
+      ////////////////////////////////////////////////////////////////
       // Verify parent directory exists (for cases when a user
       // specifies a relative path for the desired output file).
-#if 0
-      std::cout << "checking " << baseFileName+"_sub"+this->subIdString()+"."+fileType << std::endl;
-#endif
+      ////////////////////////////////////////////////////////////////
+      // std::cout << "checking " << baseFileName+"_sub"+this->subIdString()+"."+fileType << std::endl;
       int irtrn = hpct_check_file_path((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str());
-      UQ_FATAL_TEST_MACRO(irtrn < 0,m_fullRank,"openOutputFile()","unable to verify output path");
+      UQ_FATAL_TEST_MACRO(irtrn < 0,
+                          m_fullRank,
+                          "uqBaseEnvironmentClass::openOutputFile()",
+                          "unable to verify output path");
 
-      // Open file
       if (writeOver) {
+        //////////////////////////////////////////////////////////////
         // Write over an eventual pre-existing file
-        ofsvar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(), 
-				   std::ofstream::out | std::ofstream::trunc);
+        //////////////////////////////////////////////////////////////
+        if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+          ofsvar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(), 
+                                     std::ofstream::out | std::ofstream::trunc);
+        }
+        else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
+          UQ_FATAL_TEST_MACRO(true,
+                              m_fullRank,
+                              "uqBaseEnvironmentClass::openOutputFile(), writeOver=true",
+                              "hdf file type not supported yet");
+        }
+        else {
+          UQ_FATAL_TEST_MACRO(true,
+                              m_fullRank,
+                              "uqBaseEnvironmentClass::openOutputFile(), writeOver=true",
+                              "invalid file type");
+        }
         if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
           *this->subDisplayFile() << "In uqBaseEnvironmentClass::openOutputFile()"
-                                  << ": just opened output file with base name '" << baseFileName
+                                  << ": just opened output file with base name '" << baseFileName << "." << fileType
                                   << "'"
                                   << ", writeOver = " << writeOver
                                   << ", options 'out|trunc'"
@@ -464,20 +486,36 @@ uqBaseEnvironmentClass::openOutputFile(
         }
       }
       else {
+        //////////////////////////////////////////////////////////////
         // Write at the end of an eventual pre-existing file
+        //////////////////////////////////////////////////////////////
+        if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
 #if 0
-        ofsvar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(), 
-				   std::ofstream::in);
-	std::cout << "ofsvar(1) = " << ofsvar << std::endl;
-        if (ofsvar) std::cout << "ofsvar(1)->is_open() = " << ofsvar->is_open() << std::endl;
-        if (ofsvar) delete ofsvar;
+          ofsvar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(), 
+                                     std::ofstream::in);
+          std::cout << "ofsvar(1) = " << ofsvar << std::endl;
+          if (ofsvar) std::cout << "ofsvar(1)->is_open() = " << ofsvar->is_open() << std::endl;
+          if (ofsvar) delete ofsvar;
 #endif
-        // 'uqm' and Ranger nodes behave differently on ofstream constructor... prudenci 2010/03/05
-        ofsvar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(), 
-	                           std::ofstream::out /*| std::ofstream::in*/ | std::ofstream::app);
+          // 'uqm' and Ranger nodes behave differently on ofstream constructor... prudenci 2010/03/05
+          ofsvar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(), 
+	                             std::ofstream::out /*| std::ofstream::in*/ | std::ofstream::app);
+        }
+        else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
+          UQ_FATAL_TEST_MACRO(true,
+                              m_fullRank,
+                              "uqBaseEnvironmentClass::openOutputFile(), writeOver=false",
+                              "hdf file type not supported yet");
+        }
+        else {
+          UQ_FATAL_TEST_MACRO(true,
+                              m_fullRank,
+                              "uqBaseEnvironmentClass::openOutputFile(), writeOver=false",
+                              "invalid file type");
+        }
         if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
           *this->subDisplayFile() << "In uqBaseEnvironmentClass::openOutputFile()"
-                                  << ": just opened output file with base name '" << baseFileName
+                                  << ": just opened output file with base name '" << baseFileName << "." << fileType
                                   << "'"
                                   << ", writeOver = " << writeOver
                                   << ", options 'out|in|app'"
@@ -485,32 +523,30 @@ uqBaseEnvironmentClass::openOutputFile(
                                   << std::endl;
         }
 
-#if 0
-	std::cout << "ofsvar(2) = " << ofsvar << std::endl;
-        if (ofsvar) std::cout << "ofsvar(2)->is_open() = " << ofsvar->is_open() << std::endl;
-#endif
-        if ((ofsvar            == NULL ) ||
-            (ofsvar->is_open() == false)) {
-#if 0
-	  std::cout << "Retrying 1..." << std::endl;
-#endif
-          delete ofsvar;
-          ofsvar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(), 
-				     std::ofstream::out | std::ofstream::trunc);
-          if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
-            *this->subDisplayFile() << "In uqBaseEnvironmentClass::openOutputFile()"
-                                    << ": just opened output file with base name '" << baseFileName
-                                    << "'"
-                                    << ", writeOver = " << writeOver
-                                    << ", options 'out|trunc'"
-                                    << ", osfvar = " << ofsvar
-                                    << std::endl;
+        if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+          //std::cout << "ofsvar(2) = " << ofsvar << std::endl;
+          //if (ofsvar) std::cout << "ofsvar(2)->is_open() = " << ofsvar->is_open() << std::endl;
+          if ((ofsvar            == NULL ) ||
+              (ofsvar->is_open() == false)) {
+            //std::cout << "Retrying 1..." << std::endl;
+            delete ofsvar;
+            ofsvar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(), 
+                                       std::ofstream::out | std::ofstream::trunc);
+            if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
+              *this->subDisplayFile() << "In uqBaseEnvironmentClass::openOutputFile()"
+                                      << ": just opened output file with base name '" << baseFileName << "." << fileType
+                                      << "'"
+                                      << ", writeOver = " << writeOver
+                                      << ", options 'out|trunc'"
+                                      << ", osfvar = " << ofsvar
+                                      << std::endl;
+            }
           }
-        }
+        } // only for matlab formats
       }
       if (ofsvar == NULL) {
         std::cerr << "In uqBaseEnvironmentClass::openOutputFile()"
-                  << ": failed to open output file with base name '" << baseFileName
+                  << ": failed to open output file with base name '" << baseFileName << "." << fileType
                   << "'"
                   << std::endl;
       }
@@ -535,16 +571,19 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
   if (baseFileName == ".") {
     if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
       *this->subDisplayFile() << "In uqBaseEnvironmentClass::openUnifiedOutputFile()"
-                              << ": no unified output file opened with base name '" << baseFileName
+                              << ": no unified output file opened with base name '" << baseFileName << "." << fileType
                               << "'"
                               << ", writeOver = " << writeOver
                               << std::endl;
     }
   }
   else {
+    //////////////////////////////////////////////////////////////////
+    // Open file
+    //////////////////////////////////////////////////////////////////
     if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
       *this->subDisplayFile() << "In uqBaseEnvironmentClass::openUnifiedOutputFile()"
-                              << ": opening unified output file with base name '" << baseFileName
+                              << ": opening unified output file with base name '" << baseFileName << "." << fileType
                               << "'"
                               << ", writeOver = " << writeOver
                               << std::endl;
@@ -555,19 +594,46 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
     //    (this->inter0Rank() == 0)) {
 #if 0
       std::cout << "In uqBaseEnvironmentClass::openUnifiedOutputFile()"
-                << ": opening output file with base name '" << baseFileName
+                << ": opening output file with base name '" << baseFileName << "." << fileType
                 << "'"
                 << ", writeOver = " << writeOver
                 << std::endl;
 #endif
-      // Open file
+      ////////////////////////////////////////////////////////////////
+      // Verify parent directory exists (for cases when a user
+      // specifies a relative path for the desired output file). prudenci 2010/06/26
+      ////////////////////////////////////////////////////////////////
+      // std::cout << "checking " << baseFileName+"."+fileType << std::endl;
+      int irtrn = hpct_check_file_path((baseFileName+"."+fileType).c_str());
+      UQ_FATAL_TEST_MACRO(irtrn < 0,
+                          m_fullRank,
+                          "uqBaseEnvironmentClass::openUnifiedOutputFile()",
+                          "unable to verify output path");
+
       if (writeOver) {
+        ////////////////////////////////////////////////////////////////
         // Write over an eventual pre-existing file
-        ofsvar = new std::ofstream((baseFileName+"."+fileType).c_str(),
-                                   std::ofstream::out | std::ofstream::trunc);
+        ////////////////////////////////////////////////////////////////
+        if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+          ofsvar = new std::ofstream((baseFileName+"."+fileType).c_str(),
+                                     std::ofstream::out | std::ofstream::trunc);
+        }
+        else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
+          hid_t file = H5Fcreate("SDS.h5", H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
+          UQ_FATAL_TEST_MACRO(true,
+                              m_fullRank,
+                              "uqBaseEnvironmentClass::openUnifiedOutputFile(), writeOver=true",
+                              "hdf file type not supported yet");
+        }
+        else {
+          UQ_FATAL_TEST_MACRO(true,
+                              m_fullRank,
+                              "uqBaseEnvironmentClass::openUnifiedOutputFile(), writeOver=true",
+                              "invalid file type");
+        }
         if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
           *this->subDisplayFile() << "In uqBaseEnvironmentClass::openUnifiedOutputFile()"
-                                  << ": just opened output file with base name '" << baseFileName
+                                  << ": just opened output file with base name '" << baseFileName << "." << fileType
                                   << "'"
                                   << ", writeOver = " << writeOver
                                   << ", options 'out|trunc'"
@@ -576,13 +642,29 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
         }
       }
       else {
+        ////////////////////////////////////////////////////////////////
         // Write at the end of an eventual pre-existing file
         // 'uqm' and Ranger nodes behave differently on ofstream constructor... prudenci 2010/03/05
-        ofsvar = new std::ofstream((baseFileName+"."+fileType).c_str(),
-                                   std::ofstream::out /*| std::ofstream::in*/ | std::ofstream::app);
+        ////////////////////////////////////////////////////////////////
+        if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+          ofsvar = new std::ofstream((baseFileName+"."+fileType).c_str(),
+                                     std::ofstream::out /*| std::ofstream::in*/ | std::ofstream::app);
+        }
+        else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
+          UQ_FATAL_TEST_MACRO(true,
+                              m_fullRank,
+                              "uqBaseEnvironmentClass::openUnifiedOutputFile(), writeOver=false",
+                              "hdf file type not supported yet");
+        }
+        else {
+          UQ_FATAL_TEST_MACRO(true,
+                              m_fullRank,
+                              "uqBaseEnvironmentClass::openUnifiedOutputFile(), writeOver=false",
+                              "invalid file type");
+        }
         if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
           *this->subDisplayFile() << "In uqBaseEnvironmentClass::openUnifiedOutputFile()"
-                                  << ": just opened output file with base name '" << baseFileName
+                                  << ": just opened output file with base name '" << baseFileName << "." << fileType
                                   << "'"
                                   << ", writeOver = " << writeOver
                                   << ", options 'out|in|app'"
@@ -599,7 +681,7 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
                                      std::ofstream::out | std::ofstream::trunc);
           if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
             *this->subDisplayFile() << "In uqBaseEnvironmentClass::openUnifiedOutputFile()"
-                                    << ": just opened output file with base name '" << baseFileName
+                                    << ": just opened output file with base name '" << baseFileName << "." << fileType
                                     << "'"
                                     << ", writeOver = " << writeOver
                                     << ", options 'out|trunc'"
@@ -610,7 +692,7 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
       }
       if (ofsvar == NULL) {
         std::cerr << "In uqBaseEnvironmentClass::openUnifiedOutputFile()"
-                  << ": failed to open unified output file with base name '" << baseFileName
+                  << ": failed to open unified output file with base name '" << baseFileName << "." << fileType
                   << "'"
                   << std::endl;
       }
@@ -636,30 +718,58 @@ uqBaseEnvironmentClass::openInputFile(
       (allowedSubEnvIds.find(this->subId()) == allowedSubEnvIds.end()           )) {
     if ((m_subDisplayFile) && (this->displayVerbosity() >= 10)) {
       *this->subDisplayFile() << "In uqBaseEnvironmentClass::openInputFile()"
-                              << ": no input file opened with base name '" << baseFileName
+                              << ": no input file opened with base name '" << baseFileName << "." << fileType
                               << "'"
                               << std::endl;
     }
   }
   else {
+    //////////////////////////////////////////////////////////////////
+    // Open file
+    //////////////////////////////////////////////////////////////////
     if ((m_subDisplayFile) && (this->displayVerbosity() >= 10)) {
       *this->subDisplayFile() << "In uqBaseEnvironmentClass::openInputFile()"
-                              << ": opening input file with base name '" << baseFileName
+                              << ": opening input file with base name '" << baseFileName << "." << fileType
                               << "'"
                               << std::endl;
     }
     if (this->subRank() == 0) {
-      ifsvar = new std::ifstream((baseFileName+"."+fileType).c_str(), std::ofstream::in);
-      if (ifsvar == NULL) {
-        std::cerr << "In uqBaseEnvironmentClass::openInputFile()"
-                  << ": failed to open input file with base name '" << baseFileName
-                  << "'"
-                  << std::endl;
-      }
-      UQ_FATAL_TEST_MACRO((ifsvar == NULL) || (ifsvar->is_open() == false),
-                          this->fullRank(),
+      ////////////////////////////////////////////////////////////////
+      // Verify parent directory exists (for cases when a user
+      // specifies a relative path for the desired output file). prudenci 2010/06/26
+      ////////////////////////////////////////////////////////////////
+      // std::cout << "checking " << baseFileName+"."+fileType << std::endl;
+      int irtrn = hpct_check_file_path((baseFileName+"."+fileType).c_str());
+      UQ_FATAL_TEST_MACRO(irtrn < 0,
+                          m_fullRank,
                           "uqBaseEnvironmentClass::openInputFile()",
-                          "file with fileName could not be found");
+                          "unable to verify input path");
+
+      if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+        ifsvar = new std::ifstream((baseFileName+"."+fileType).c_str(), std::ofstream::in);
+        if (ifsvar == NULL) {
+          std::cerr << "In uqBaseEnvironmentClass::openInputFile()"
+                    << ": failed to open input file with base name '" << baseFileName << "." << fileType
+                    << "'"
+                    << std::endl;
+        }
+        UQ_FATAL_TEST_MACRO((ifsvar == NULL) || (ifsvar->is_open() == false),
+                            this->fullRank(),
+                            "uqBaseEnvironmentClass::openInputFile()",
+                            "file with fileName could not be found");
+      }
+      else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
+        UQ_FATAL_TEST_MACRO(true,
+                            m_fullRank,
+                            "uqBaseEnvironmentClass::openInputFile()",
+                            "hdf file type not supported yet");
+      }
+      else {
+        UQ_FATAL_TEST_MACRO(true,
+                            m_fullRank,
+                            "uqBaseEnvironmentClass::openInputFile()",
+                            "invalid file type");
+      }
     }
   }
 
@@ -851,12 +961,16 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   }
 
   if (openFile) {
-
+    //////////////////////////////////////////////////////////////////
+    // Verify parent directory exists (for cases when a user
+    // specifies a relative path for the desired output file).
+    //////////////////////////////////////////////////////////////////
     int irtrn = hpct_check_file_path((m_options->m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str());
-
-    UQ_FATAL_TEST_MACRO(irtrn < 0,m_fullRank,"uqEnvironment::constructor()","unable to verify output path");
+    UQ_FATAL_TEST_MACRO(irtrn < 0,
+                        m_fullRank,
+                        "uqEnvironment::constructor()",
+                        "unable to verify output path");
 			
-
     // Always write over an eventual pre-existing file
     m_subDisplayFile = new std::ofstream((m_options->m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str(), std::ofstream::out | std::ofstream::trunc);
     UQ_FATAL_TEST_MACRO((m_subDisplayFile && m_subDisplayFile->is_open()) == false,
