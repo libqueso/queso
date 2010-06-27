@@ -196,6 +196,8 @@ public:
                                                  const std::set<unsigned int>&        allowedSubEnvIds) const;
         void         subWriteContents           (std::ofstream&                       ofs,
                                                  const std::string&                   fileType) const;
+        void         subWriteContents           (uqFilePtrSetStruct&                  filePtrSet,
+                                                 const std::string&                   fileType) const;
         void         unifiedWriteContents       (const std::string&                   fileName,
                                                  const std::string&                   fileType) const;
         void         unifiedReadContents        (const std::string&                   fileName,
@@ -2313,22 +2315,17 @@ uqSequenceOfVectorsClass<V,M>::subWriteContents(
                       "uqSequenceOfVectorsClass<V,M>::subWriteContents()",
                       "unexpected subRank");
 
-  std::ofstream* ofsVar = NULL;
+  uqFilePtrSetStruct filePtrSet;
   m_env.openOutputFile(fileName,
                        fileType,
                        allowedSubEnvIds,
                        false, // A 'true' causes problems when the user chooses (via options
                               // in the input file) to use just one file for all outputs.
-                       ofsVar);
+                       filePtrSet);
 
-  if (ofsVar) {
-    this->subWriteContents(*ofsVar,fileType);
-  }
+  this->subWriteContents(filePtrSet,fileType);
 
-  if (ofsVar) {
-    //ofsVar->close();
-    delete ofsVar;
-  }
+  m_env.closeFile(filePtrSet,fileType);
 
   return;
 }
@@ -2359,6 +2356,31 @@ uqSequenceOfVectorsClass<V,M>::subWriteContents(
 
 template <class V, class M>
 void
+uqSequenceOfVectorsClass<V,M>::subWriteContents(
+  uqFilePtrSetStruct& filePtrSet,
+  const std::string&  fileType) const // "m or hdf"
+{
+  if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+    this->subWriteContents(*filePtrSet.ofsVar,fileType);
+  }
+  else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.fullRank(),
+                        "uqSequenceOfVectorsClass<V,M>::subWriteContents()",
+                        "hdf file type not supported yet");
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.fullRank(),
+                        "uqSequenceOfVectorsClass<V,M>::subWriteContents()",
+                        "invalid file type");
+  }
+
+  return;
+}
+
+template <class V, class M>
+void
 uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
   const std::string& fileName,
   const std::string& fileType) const
@@ -2379,22 +2401,22 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
     for (unsigned int r = 0; r < (unsigned int) m_env.inter0Comm().NumProc(); ++r) {
       if (m_env.inter0Rank() == (int) r) {
         // My turn
-        std::ofstream* unifiedOfsVar = NULL;
+        uqFilePtrSetStruct unifiedFilePtrSet;
         // bool writeOver = (r == 0);
         bool writeOver = false; // A 'true' causes problems when the user chooses (via options
                                 // in the input file) to use just one file for all outputs.
         m_env.openUnifiedOutputFile(fileName,
                                     fileType, // "m or hdf"
                                     writeOver,
-                                    unifiedOfsVar);
+                                    unifiedFilePtrSet);
 
         if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
           if (r == 0) {
-            *unifiedOfsVar << m_name << "_unified" << " = zeros(" << this->subSequenceSize()*m_env.inter0Comm().NumProc()
+            *unifiedFilePtrSet.ofsVar << m_name << "_unified" << " = zeros(" << this->subSequenceSize()*m_env.inter0Comm().NumProc()
                            << ","                                 << this->vectorSizeLocal()
                            << ");"
                            << std::endl;
-            *unifiedOfsVar << m_name << "_unified" << " = [";
+            *unifiedFilePtrSet.ofsVar << m_name << "_unified" << " = [";
           }
 
           unsigned int chainSize = this->subSequenceSize();
@@ -2412,13 +2434,12 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
             //          << std::endl;
             bool savedVectorPrintState = m_seq[j]->getPrintHorizontally();
             m_seq[j]->setPrintHorizontally(true);
-            *unifiedOfsVar << *(m_seq[j])
+            *unifiedFilePtrSet.ofsVar << *(m_seq[j])
                            << std::endl;
             m_seq[j]->setPrintHorizontally(savedVectorPrintState);
           }
 
-          //unifiedOfsVar->close();
-          delete unifiedOfsVar;
+          m_env.closeFile(unifiedFilePtrSet,fileType);
         }
         else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
           UQ_FATAL_TEST_MACRO(true,
@@ -2437,13 +2458,13 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
     }
 
     if (m_env.inter0Rank() == 0) {
-      std::ofstream* unifiedOfsVar = NULL;
+      uqFilePtrSetStruct unifiedFilePtrSet;
       m_env.openUnifiedOutputFile(fileName,
                                   fileType,
                                   false, // Yes, 'writeOver = false' in order to close the array for matlab
-                                  unifiedOfsVar);
+                                  unifiedFilePtrSet);
       if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
-        *unifiedOfsVar << "];\n";
+        *unifiedFilePtrSet.ofsVar << "];\n";
       }
       else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
         UQ_FATAL_TEST_MACRO(true,
@@ -2457,8 +2478,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
                             "uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(), final",
                             "invalid file type");
       }
-      //unifiedOfsVar->close();
-      delete unifiedOfsVar;
+      m_env.closeFile(unifiedFilePtrSet,fileType);
     }
   }
 

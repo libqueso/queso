@@ -2994,44 +2994,42 @@ uqScalarSequenceClass<T>::unifiedWriteContents(
     for (unsigned int r = 0; r < (unsigned int) m_env.inter0Comm().NumProc(); ++r) {
       if (m_env.inter0Rank() == (int) r) {
         // My turn
-        std::ofstream* unifiedOfsVar = NULL;
+        uqFilePtrSetStruct unifiedFilePtrSet;
         // bool writeOver = (r == 0);
         bool writeOver = false; // A 'true' causes problems when the user chooses (via options
                                 // in the input file) to use just one file for all outputs.
         m_env.openUnifiedOutputFile(fileName,
                                     fileType, // "m or hdf"
                                     writeOver,
-                                    unifiedOfsVar);
+                                    unifiedFilePtrSet);
 
         if (r == 0) {
-          *unifiedOfsVar << m_name << "_unified" << " = zeros(" << this->subSequenceSize()*m_env.inter0Comm().NumProc()
+          *unifiedFilePtrSet.ofsVar << m_name << "_unified" << " = zeros(" << this->subSequenceSize()*m_env.inter0Comm().NumProc()
                          << ","                                 << 1
                          << ");"
                          << std::endl;
-          *unifiedOfsVar << m_name << "_unified" << " = [";
+          *unifiedFilePtrSet.ofsVar << m_name << "_unified" << " = [";
         }
 
         unsigned int chainSize = this->subSequenceSize();
         for (unsigned int j = 0; j < chainSize; ++j) {
-          *unifiedOfsVar << m_seq[j]
+          *unifiedFilePtrSet.ofsVar << m_seq[j]
                          << std::endl;
         }
 
-        //unifiedOfsVar->close();
-        delete unifiedOfsVar;
+        m_env.closeFile(unifiedFilePtrSet,fileType);
       }
       m_env.inter0Comm().Barrier();
     }
 
     if (m_env.inter0Rank() == 0) {
-      std::ofstream* unifiedOfsVar = NULL;
+      uqFilePtrSetStruct unifiedFilePtrSet;
       m_env.openUnifiedOutputFile(fileName,
                                   fileType,
                                   false, // Yes, 'writeOver = false' in order to close the array for matlab
-                                  unifiedOfsVar);
-      *unifiedOfsVar << "];\n";
-      //unifiedOfsVar->close();
-      delete unifiedOfsVar;
+                                  unifiedFilePtrSet);
+      *unifiedFilePtrSet.ofsVar << "];\n";
+      m_env.closeFile(unifiedFilePtrSet,fileType);
     }
   }
 

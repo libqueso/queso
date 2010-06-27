@@ -48,12 +48,13 @@ namespace po = boost::program_options;
 
 extern unsigned long int gsl_rng_default_seed;
 
-struct filePtrSetStruct {
-  filePtrSetStruct();
- ~filePtrSetStruct();
+struct uqFilePtrSetStruct {
+  uqFilePtrSetStruct();
+ ~uqFilePtrSetStruct();
 
-  std::fstream* fsVar;
-  hid_t         h5Var;
+  std::ofstream* ofsVar;
+  std::ifstream* ifsVar;
+  hid_t          h5Var;
 };
 
 //*****************************************************
@@ -187,17 +188,17 @@ public:
                                                               const std::string&            fileType,
                                                               const std::set<unsigned int>& allowedSubEnvIds,
                                                                     bool                    writeOver,
-                                                                    std::ofstream*&         ofsvar) const;
+                                                                    uqFilePtrSetStruct&     filePtrSet) const;
 
           void                    openUnifiedOutputFile      (const std::string&            fileName,
                                                               const std::string&            fileType,
                                                                     bool                    writeOver,
-                                                                    std::ofstream*&         ofsvar) const;
+                                                                    uqFilePtrSetStruct&     filePtrSet) const;
           void                    openInputFile              (const std::string&            fileName,
                                                               const std::string&            fileType,
                                                               const std::set<unsigned int>& allowedSubEnvIds,
-                                                                    std::ifstream*&         ifsvar) const;
-          void                    closeFile                  (      filePtrSetStruct&       filePtrSet,
+                                                                    uqFilePtrSetStruct&     filePtrSet) const;
+          void                    closeFile                  (      uqFilePtrSetStruct&     filePtrSet,
                                                               const std::string&            fileType) const; 
           void                    setExceptionalCircunstance (bool value) const;
           bool                    exceptionalCircunstance    () const;

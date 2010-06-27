@@ -409,18 +409,17 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     lastLevelOptions.scanOptionsValues(&defaultLevelOptions);
 
         if (lastLevelOptions.m_rawChainComputeStats) {
-          std::ofstream* genericOfsVar = NULL;
+          uqFilePtrSetStruct filePtrSet;
           m_env.openOutputFile(lastLevelOptions.m_dataOutputFileName,
                                UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT, // Yes, always ".m"
                                lastLevelOptions.m_dataOutputAllowedSet,
                                false,
-                               genericOfsVar);
+                               filePtrSet);
 
           workingChain.computeStatistics(*lastLevelOptions.m_rawChainStatisticalOptions,
-                                         genericOfsVar);
+                                         filePtrSet.ofsVar);
 
-          //genericOfsVar->close();
-          delete genericOfsVar;
+          m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);
         }
 
         if (lastLevelOptions.m_rawChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
@@ -430,18 +429,18 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
         }
 
         if (lastLevelOptions.m_filteredChainGenerate) {
-          std::ofstream* genericOfsVar = NULL;
+          uqFilePtrSetStruct filePtrSet;
           m_env.openOutputFile(lastLevelOptions.m_dataOutputFileName,
                                UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT, // Yes, always ".m"
                                lastLevelOptions.m_dataOutputAllowedSet,
                                false,
-                               genericOfsVar);
+                               filePtrSet);
 
           unsigned int filterInitialPos = (unsigned int) (lastLevelOptions.m_filteredChainDiscardedPortion * (double) workingChain.subSequenceSize());
           unsigned int filterSpacing    = lastLevelOptions.m_filteredChainLag;
           if (filterSpacing == 0) {
             workingChain.computeFilterParams(*lastLevelOptions.m_filteredChainStatisticalOptions,
-                                             genericOfsVar,
+                                             filePtrSet.ofsVar,
                                              filterInitialPos,
                                              filterSpacing);
           }
@@ -461,11 +460,10 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
 
           if (lastLevelOptions.m_filteredChainComputeStats) {
             workingChain.computeStatistics(*lastLevelOptions.m_filteredChainStatisticalOptions,
-                                           genericOfsVar);
+                                           filePtrSet.ofsVar);
           }
 
-          //genericOfsVar->close();
-          delete genericOfsVar;
+          m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);
 
           if (lastLevelOptions.m_filteredChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
             workingChain.unifiedWriteContents              (lastLevelOptions.m_filteredChainDataOutputFileName,lastLevelOptions.m_filteredChainDataOutputFileType);

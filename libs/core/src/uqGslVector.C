@@ -726,33 +726,33 @@ uqGslVectorClass::subWriteContents(
                       "uqGslVectorClass::subWriteContents()",
                       "implemented just for sequential vectors for now");
 
-  std::ofstream* ofsVar = NULL;
+  uqFilePtrSetStruct filePtrSet;
   m_env.openOutputFile(fileName,
                        fileType, // "m or hdf"
                        allowedSubEnvIds,
                        false,
-                       ofsVar);
+                       filePtrSet);
 
-  if (ofsVar) {
-    *ofsVar << varNamePrefix << "_sub" << m_env.subIdString() << " = zeros(" << this->sizeLocal()
+  if (filePtrSet.ofsVar) {
+    *filePtrSet.ofsVar << varNamePrefix << "_sub" << m_env.subIdString() << " = zeros(" << this->sizeLocal()
             << ","                                                           << 1
             << ");"
             << std::endl;
-    *ofsVar << varNamePrefix << "_sub" << m_env.subIdString() << " = [";
+    *filePtrSet.ofsVar << varNamePrefix << "_sub" << m_env.subIdString() << " = [";
 
     bool savedVectorPrintScientific   = this->getPrintScientific();
     bool savedVectorPrintHorizontally = this->getPrintHorizontally();
     this->setPrintScientific  (true);
     this->setPrintHorizontally(false);
-    *ofsVar << *this;
+    *filePtrSet.ofsVar << *this;
           //<< std::endl; // No need for 'endl' because horizontally = 'false'
     this->setPrintScientific  (savedVectorPrintScientific);
     this->setPrintHorizontally(savedVectorPrintHorizontally);
 
-    *ofsVar << "];\n";
-    //ofsVar->close();
-    delete ofsVar;
+    *filePtrSet.ofsVar << "];\n";
   }
+
+  m_env.closeFile(filePtrSet,fileType);
 
   return;
 }
@@ -773,13 +773,13 @@ uqGslVectorClass::subReadContents(
                       "uqGslVectorClass::subReadContents()",
                       "implemented just for sequential vectors for now");
 
-  std::ifstream* ifsVar = NULL;
+  uqFilePtrSetStruct filePtrSet;
   m_env.openInputFile(fileName,
                       fileType, // "m or hdf"
                       allowedSubEnvIds,
-                      ifsVar);
+                      filePtrSet);
 
-  if (ifsVar) {
+  if (filePtrSet.ifsVar) {
     double subReadSize = this->sizeLocal();
 
     // In the logic below, the id of a line' begins with value 0 (zero)
@@ -792,11 +792,11 @@ uqGslVectorClass::subReadContents(
     std::string tmpString;
 
     // Read 'variable name' string
-    *ifsVar >> tmpString;
+    *filePtrSet.ifsVar >> tmpString;
     //std::cout << "Just read '" << tmpString << "'" << std::endl;
 
     // Read '=' sign
-    *ifsVar >> tmpString;
+    *filePtrSet.ifsVar >> tmpString;
     //std::cout << "Just read '" << tmpString << "'" << std::endl;
     UQ_FATAL_TEST_MACRO(tmpString != "=",
                         m_env.fullRank(),
@@ -804,7 +804,7 @@ uqGslVectorClass::subReadContents(
                         "string should be the '=' sign");
 
     // Read 'zeros(n_positions,n_params)' string
-    *ifsVar >> tmpString;
+    *filePtrSet.ifsVar >> tmpString;
     //std::cout << "Just read '" << tmpString << "'" << std::endl;
     unsigned int posInTmpString = 6;
 
@@ -862,7 +862,7 @@ uqGslVectorClass::subReadContents(
 
     unsigned int lineId = 0;
     while (lineId < idOfMyFirstLine) {
-      ifsVar->ignore(maxCharsPerLine,'\n');
+      filePtrSet.ifsVar->ignore(maxCharsPerLine,'\n');
       lineId++;
     };
 
@@ -875,11 +875,11 @@ uqGslVectorClass::subReadContents(
     // Take care of initial part of the first data line,
     // which resembles something like 'variable_name = [value1 value2 ...'
     // Read 'variable name' string
-    *ifsVar >> tmpString;
+    *filePtrSet.ifsVar >> tmpString;
     //std::cout << "Core 0 just read '" << tmpString << "'" << std::endl;
 
     // Read '=' sign
-    *ifsVar >> tmpString;
+    *filePtrSet.ifsVar >> tmpString;
     //std::cout << "Core 0 just read '" << tmpString << "'" << std::endl;
     UQ_FATAL_TEST_MACRO(tmpString != "=",
                         m_env.fullRank(),
@@ -887,8 +887,8 @@ uqGslVectorClass::subReadContents(
                         "in core 0, string should be the '=' sign");
 
     // Take into account the ' [' portion
-    std::streampos tmpPos = ifsVar->tellg();
-    ifsVar->seekg(tmpPos+(std::streampos)2);
+    std::streampos tmpPos = filePtrSet.ifsVar->tellg();
+    filePtrSet.ifsVar->seekg(tmpPos+(std::streampos)2);
 
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "In uqGslVectorClass::subReadContents()"
@@ -900,13 +900,12 @@ uqGslVectorClass::subReadContents(
     }
 
     while (lineId <= idOfMyLastLine) {
-      *ifsVar >> (*this)[lineId - idOfMyFirstLine];
+      *filePtrSet.ifsVar >> (*this)[lineId - idOfMyFirstLine];
       lineId++;
     };
   }
 
-  //ifsVar->close();
-  delete ifsVar;
+  m_env.closeFile(filePtrSet,fileType);
 
   return;
 }
