@@ -664,10 +664,14 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
                                                 std::ofstream::out /*| std::ofstream::in*/ | std::ofstream::app);
         }
         else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
-          UQ_FATAL_TEST_MACRO(true,
-                              m_fullRank,
-                              "uqBaseEnvironmentClass::openUnifiedOutputFile(), writeOver=false",
-                              "hdf file type not supported yet");
+          filePtrSet.h5Var = H5Fcreate((baseFileName+"."+fileType).c_str(), // TEMPORARY - FIX ME
+                                       H5F_ACC_TRUNC,
+                                       H5P_DEFAULT,
+                                       H5P_DEFAULT);
+          //UQ_FATAL_TEST_MACRO(true,
+          //                    m_fullRank,
+          //                    "uqBaseEnvironmentClass::openUnifiedOutputFile(), writeOver=false",
+          //                    "hdf file type not supported yet");
         }
         else {
           UQ_FATAL_TEST_MACRO(true,
