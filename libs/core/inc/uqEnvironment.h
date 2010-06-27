@@ -198,6 +198,9 @@ public:
                                                               const std::string&            fileType,
                                                               const std::set<unsigned int>& allowedSubEnvIds,
                                                                     uqFilePtrSetStruct&     filePtrSet) const;
+          bool                    openUnifiedInputFile       (const std::string&            fileName,
+                                                              const std::string&            fileType,
+                                                                    uqFilePtrSetStruct&     filePtrSet) const;
           void                    closeFile                  (      uqFilePtrSetStruct&     filePtrSet,
                                                               const std::string&            fileType) const; 
           void                    setExceptionalCircunstance (bool value) const;

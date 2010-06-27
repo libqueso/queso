@@ -763,7 +763,7 @@ uqBaseEnvironmentClass::openInputFile(
       if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
         filePtrSet.ifsVar = new std::ifstream((baseFileName+"."+fileType).c_str(),
                                               std::ofstream::in);
-        if (filePtrSet.ifsVar == NULL) {
+        if ((filePtrSet.ifsVar == NULL) || (filePtrSet.ifsVar->is_open() == false)) {
           std::cerr << "In uqBaseEnvironmentClass::openInputFile()"
                     << ": failed to open input file with base name '" << baseFileName << "." << fileType
                     << "'"
@@ -784,6 +784,77 @@ uqBaseEnvironmentClass::openInputFile(
         UQ_FATAL_TEST_MACRO(true,
                             m_fullRank,
                             "uqBaseEnvironmentClass::openInputFile()",
+                            "invalid file type");
+      }
+    }
+  }
+
+  return returnValue;
+}
+
+bool
+uqBaseEnvironmentClass::openUnifiedInputFile(
+  const std::string&        baseFileName,
+  const std::string&        fileType,
+        uqFilePtrSetStruct& filePtrSet) const
+{
+  bool returnValue = true;
+  filePtrSet.ifsVar = NULL;
+  if (baseFileName == UQ_ENV_FILENAME_FOR_NO_INPUT_FILE) {
+    if ((m_subDisplayFile) && (this->displayVerbosity() >= 10)) {
+      *this->subDisplayFile() << "In uqBaseEnvironmentClass::openUnifiedInputFile()"
+                              << ": no input file opened with base name '" << baseFileName << "." << fileType
+                              << "'"
+                              << std::endl;
+    }
+    returnValue = false;
+  }
+  else {
+    //////////////////////////////////////////////////////////////////
+    // Open file
+    //////////////////////////////////////////////////////////////////
+    if ((m_subDisplayFile) && (this->displayVerbosity() >= 10)) {
+      *this->subDisplayFile() << "In uqBaseEnvironmentClass::openUnifiedInputFile()"
+                              << ": opening input file with base name '" << baseFileName << "." << fileType
+                              << "'"
+                              << std::endl;
+    }
+    if (this->subRank() == 0) {
+      ////////////////////////////////////////////////////////////////
+      // Verify parent directory exists (for cases when a user
+      // specifies a relative path for the desired output file). prudenci 2010/06/26
+      ////////////////////////////////////////////////////////////////
+      // std::cout << "checking " << baseFileName+"."+fileType << std::endl;
+      int irtrn = hpct_check_file_path((baseFileName+"."+fileType).c_str());
+      UQ_FATAL_TEST_MACRO(irtrn < 0,
+                          m_fullRank,
+                          "uqBaseEnvironmentClass::openUnifiedInputFile()",
+                          "unable to verify input path");
+
+      if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+        filePtrSet.ifsVar = new std::ifstream((baseFileName+"."+fileType).c_str(),
+                                              std::ofstream::in);
+        if ((filePtrSet.ifsVar == NULL) || (filePtrSet.ifsVar->is_open() == false)) {
+          std::cerr << "In uqBaseEnvironmentClass::openUnifiedInputFile()"
+                    << ": failed to open input file with base name '" << baseFileName << "." << fileType
+                    << "'"
+                    << std::endl;
+        }
+        UQ_FATAL_TEST_MACRO((filePtrSet.ifsVar == NULL) || (filePtrSet.ifsVar->is_open() == false),
+                            this->fullRank(),
+                            "uqBaseEnvironmentClass::openUnifiedInputFile()",
+                            "file with fileName could not be found");
+      }
+      else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
+        filePtrSet.h5Var = H5Fcreate((baseFileName+"."+fileType).c_str(),
+                                     H5F_ACC_RDONLY,
+                                     H5P_DEFAULT,
+                                     H5P_DEFAULT);
+      }
+      else {
+        UQ_FATAL_TEST_MACRO(true,
+                            m_fullRank,
+                            "uqBaseEnvironmentClass::openUnifiedInputFile()",
                             "invalid file type");
       }
     }

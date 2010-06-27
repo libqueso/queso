@@ -2400,86 +2400,89 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
     for (unsigned int r = 0; r < (unsigned int) m_env.inter0Comm().NumProc(); ++r) {
       if (m_env.inter0Rank() == (int) r) {
         // My turn
-        uqFilePtrSetStruct unifiedFilePtrSet;
         // bool writeOver = (r == 0);
         bool writeOver = false; // A 'true' causes problems when the user chooses (via options
                                 // in the input file) to use just one file for all outputs.
-        m_env.openUnifiedOutputFile(fileName,
-                                    fileType, // "m or hdf"
-                                    writeOver,
-                                    unifiedFilePtrSet);
+        uqFilePtrSetStruct unifiedFilePtrSet;
+        if (m_env.openUnifiedOutputFile(fileName,
+                                        fileType, // "m or hdf"
+                                        writeOver,
+                                        unifiedFilePtrSet)) {
+          if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+            if (r == 0) {
+              *unifiedFilePtrSet.ofsVar << m_name << "_unified" << " = zeros(" << this->subSequenceSize()*m_env.inter0Comm().NumProc()
+                                        << ","                                 << this->vectorSizeLocal()
+                                        << ");"
+                                        << std::endl;
+              *unifiedFilePtrSet.ofsVar << m_name << "_unified" << " = [";
+            }
 
-        if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
-          if (r == 0) {
-            *unifiedFilePtrSet.ofsVar << m_name << "_unified" << " = zeros(" << this->subSequenceSize()*m_env.inter0Comm().NumProc()
-                           << ","                                 << this->vectorSizeLocal()
-                           << ");"
-                           << std::endl;
-            *unifiedFilePtrSet.ofsVar << m_name << "_unified" << " = [";
+            unsigned int chainSize = this->subSequenceSize();
+            for (unsigned int j = 0; j < chainSize; ++j) {
+	      //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(): m_seq[" << j << "] = " << m_seq[j]
+              //          << std::endl;
+    	      //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(): &(m_seq[" << j << "].map()) = " << &(m_seq[j]->map())
+              //          << std::endl;
+              //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(): (m_seq[" << j << "].map().NumMyElements = " << m_seq[j]->map().NumMyElements()
+              //          << std::endl;
+              V tmpVec(*(m_seq[j]));
+	      //std::cout << "*(m_seq[" << j << "]) = " << tmpVec
+              //          << std::endl;
+	      //std::cout << "*(m_seq[" << j << "]) = " << *(m_seq[j])
+              //          << std::endl;
+              bool savedVectorPrintState = m_seq[j]->getPrintHorizontally();
+              m_seq[j]->setPrintHorizontally(true);
+              *unifiedFilePtrSet.ofsVar << *(m_seq[j])
+                                        << std::endl;
+              m_seq[j]->setPrintHorizontally(savedVectorPrintState);
+            }
           }
-
-          unsigned int chainSize = this->subSequenceSize();
-          for (unsigned int j = 0; j < chainSize; ++j) {
-	    //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(): m_seq[" << j << "] = " << m_seq[j]
-            //          << std::endl;
-  	    //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(): &(m_seq[" << j << "].map()) = " << &(m_seq[j]->map())
-            //          << std::endl;
-            //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(): (m_seq[" << j << "].map().NumMyElements = " << m_seq[j]->map().NumMyElements()
-            //          << std::endl;
-            V tmpVec(*(m_seq[j]));
-	    //std::cout << "*(m_seq[" << j << "]) = " << tmpVec
-            //          << std::endl;
-	    //std::cout << "*(m_seq[" << j << "]) = " << *(m_seq[j])
-            //          << std::endl;
-            bool savedVectorPrintState = m_seq[j]->getPrintHorizontally();
-            m_seq[j]->setPrintHorizontally(true);
-            *unifiedFilePtrSet.ofsVar << *(m_seq[j])
-                           << std::endl;
-            m_seq[j]->setPrintHorizontally(savedVectorPrintState);
+          else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
+            if (r == 0) {
+            }
+            UQ_FATAL_TEST_MACRO(true,
+                                m_env.fullRank(),
+                                "uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()",
+                                "hdf file type not supported yet");
           }
-
+          else {
+            UQ_FATAL_TEST_MACRO(true,
+                                m_env.fullRank(),
+                                "uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()",
+                                "invalid file type");
+          }
           m_env.closeFile(unifiedFilePtrSet,fileType);
+        } // if (m_env.openUnifiedOutputFile())
+      } // if (m_env.inter0Rank() == (int) r)
+      m_env.inter0Comm().Barrier();
+    } // for r
+
+    if (m_env.inter0Rank() == 0) {
+      uqFilePtrSetStruct unifiedFilePtrSet;
+      if (m_env.openUnifiedOutputFile(fileName,
+                                      fileType,
+                                      false, // Yes, 'writeOver = false' in order to close the array for matlab
+                                      unifiedFilePtrSet)) {
+        if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+          *unifiedFilePtrSet.ofsVar << "];\n";
         }
         else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
+          // Do nothing ???
           UQ_FATAL_TEST_MACRO(true,
                               m_env.fullRank(),
-                              "uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()",
+                              "uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(), final",
                               "hdf file type not supported yet");
         }
         else {
           UQ_FATAL_TEST_MACRO(true,
                               m_env.fullRank(),
-                              "uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()",
+                              "uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(), final",
                               "invalid file type");
         }
+        m_env.closeFile(unifiedFilePtrSet,fileType);
       }
-      m_env.inter0Comm().Barrier();
     }
-
-    if (m_env.inter0Rank() == 0) {
-      uqFilePtrSetStruct unifiedFilePtrSet;
-      m_env.openUnifiedOutputFile(fileName,
-                                  fileType,
-                                  false, // Yes, 'writeOver = false' in order to close the array for matlab
-                                  unifiedFilePtrSet);
-      if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
-        *unifiedFilePtrSet.ofsVar << "];\n";
-      }
-      else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
-        UQ_FATAL_TEST_MACRO(true,
-                            m_env.fullRank(),
-                            "uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(), final",
-                            "hdf file type not supported yet");
-      }
-      else {
-        UQ_FATAL_TEST_MACRO(true,
-                            m_env.fullRank(),
-                            "uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(), final",
-                            "invalid file type");
-      }
-      m_env.closeFile(unifiedFilePtrSet,fileType);
-    }
-  }
+  } // if (m_env.inter0Rank() >= 0)
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
     *m_env.subDisplayFile() << "Leaving uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
@@ -2525,143 +2528,142 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
     for (unsigned int r = 0; r < (unsigned int) m_env.inter0Comm().NumProc(); ++r) { // "m or hdf"
       if (m_env.inter0Rank() == (int) r) {
         // My turn
-        if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
-          std::ifstream* ifsvar = new std::ifstream((fileName+"."+fileType).c_str(), std::ofstream::in);
-          UQ_FATAL_TEST_MACRO((ifsvar == NULL) || (ifsvar->is_open() == false),
-                              m_env.fullRank(),
-                              "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
-                              "file with fileName could not be found");
+        uqFilePtrSetStruct unifiedFilePtrSet;
+        if (m_env.openUnifiedInputFile(fileName,
+                                       fileType,
+                                       unifiedFilePtrSet)) {
+          if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+            if (r == 0) {
+              // Read number of chain positions in the file by taking care of the first line,
+              // which resembles something like 'variable_name = zeros(n_positions,m_params);'
+	      std::string tmpString;
 
-          if (m_env.inter0Rank() == 0) {
-            // Read number of chain positions in the file by taking care of the first line,
-            // which resembles something like 'variable_name = zeros(n_positions,m_params);'
-	    std::string tmpString;
+              // Read 'variable name' string
+              *unifiedFilePtrSet.ifsVar >> tmpString;
+	      //std::cout << "Just read '" << tmpString << "'" << std::endl;
 
-            // Read 'variable name' string
-            *ifsvar >> tmpString;
-	    //std::cout << "Just read '" << tmpString << "'" << std::endl;
-
-            // Read '=' sign
-            *ifsvar >> tmpString;
-	    //std::cout << "Just read '" << tmpString << "'" << std::endl;
-            UQ_FATAL_TEST_MACRO(tmpString != "=",
-                                m_env.fullRank(),
-                                "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
-                                "string should be the '=' sign");
-
-            // Read 'zeros(n_positions,n_params)' string
-            *ifsvar >> tmpString;
-	    //std::cout << "Just read '" << tmpString << "'" << std::endl;
-            unsigned int posInTmpString = 6;
-
-            // Isolate 'n_positions' in a string
-            char nPositionsString[tmpString.size()-posInTmpString+1];
-            unsigned int posInPositionsString = 0;
-            do {
-              UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
+              // Read '=' sign
+              *unifiedFilePtrSet.ifsVar >> tmpString;
+  	      //std::cout << "Just read '" << tmpString << "'" << std::endl;
+              UQ_FATAL_TEST_MACRO(tmpString != "=",
                                   m_env.fullRank(),
                                   "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
-                                  "symbol ',' not found in first line of file");
-              nPositionsString[posInPositionsString++] = tmpString[posInTmpString++];
-            } while (tmpString[posInTmpString] != ',');
-            nPositionsString[posInPositionsString] = '\0';
+                                  "string should be the '=' sign");
 
-            // Isolate 'n_params' in a string
-            posInTmpString++; // Avoid reading ',' char
-            char nParamsString[tmpString.size()-posInTmpString+1];
-            unsigned int posInParamsString = 0;
-            do {
-              UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
+              // Read 'zeros(n_positions,n_params)' string
+              *unifiedFilePtrSet.ifsVar >> tmpString;
+	      //std::cout << "Just read '" << tmpString << "'" << std::endl;
+              unsigned int posInTmpString = 6;
+
+              // Isolate 'n_positions' in a string
+              char nPositionsString[tmpString.size()-posInTmpString+1];
+              unsigned int posInPositionsString = 0;
+              do {
+                UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
+                                    m_env.fullRank(),
+                                    "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
+                                    "symbol ',' not found in first line of file");
+                nPositionsString[posInPositionsString++] = tmpString[posInTmpString++];
+              } while (tmpString[posInTmpString] != ',');
+              nPositionsString[posInPositionsString] = '\0';
+
+              // Isolate 'n_params' in a string
+              posInTmpString++; // Avoid reading ',' char
+              char nParamsString[tmpString.size()-posInTmpString+1];
+              unsigned int posInParamsString = 0;
+              do {
+                UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
+                                    m_env.fullRank(),
+                                    "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
+                                    "symbol ')' not found in first line of file");
+                nParamsString[posInParamsString++] = tmpString[posInTmpString++];
+              } while (tmpString[posInTmpString] != ')');
+              nParamsString[posInParamsString] = '\0';
+
+              // Convert 'n_positions' and 'n_params' strings to numbers
+              unsigned int sizeOfChainInFile = (unsigned int) strtod(nPositionsString,NULL);
+              unsigned int numParamsInFile   = (unsigned int) strtod(nParamsString,   NULL);
+              if (m_env.subDisplayFile()) {
+                *m_env.subDisplayFile() << "In uqSequenceOfVectorsClass<V,M>::unifiedReadContents()"
+                                        << ": fullRank "            << m_env.fullRank()
+                                        << ", sizeOfChainInFile = " << sizeOfChainInFile
+                                        << ", numParamsInFile = "   << numParamsInFile
+                                        << std::endl;
+              }
+
+              // Check if [size of chain in file] >= [requested unified sequence size]
+              UQ_FATAL_TEST_MACRO(sizeOfChainInFile < unifiedReadSize,
                                   m_env.fullRank(),
                                   "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
-                                  "symbol ')' not found in first line of file");
-              nParamsString[posInParamsString++] = tmpString[posInTmpString++];
-            } while (tmpString[posInTmpString] != ')');
-            nParamsString[posInParamsString] = '\0';
+                                  "size of chain in file is not big enough");
 
-            // Convert 'n_positions' and 'n_params' strings to numbers
-            unsigned int sizeOfChainInFile = (unsigned int) strtod(nPositionsString,NULL);
-            unsigned int numParamsInFile   = (unsigned int) strtod(nParamsString,   NULL);
-            if (m_env.subDisplayFile()) {
-              *m_env.subDisplayFile() << "In uqSequenceOfVectorsClass<V,M>::unifiedReadContents()"
-                                      << ": fullRank "            << m_env.fullRank()
-                                      << ", sizeOfChainInFile = " << sizeOfChainInFile
-                                      << ", numParamsInFile = "   << numParamsInFile
-                                      << std::endl;
+              // Check if [num params in file] == [num params in current chain]
+              UQ_FATAL_TEST_MACRO(numParamsInFile != numParams,
+                                  m_env.fullRank(),
+                                  "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
+                                  "number of parameters of chain in file is different than number of parameters in this chain object");
+            } // if (r == 0)
+
+            // Code common to any core in 'inter0Comm', including core of rank 0
+            unsigned int maxCharsPerLine = 64*numParams; // Up to about 60 characters to represent each parameter value
+
+            unsigned int lineId = 0;
+            while (lineId < idOfMyFirstLine) {
+              unifiedFilePtrSet.ifsVar->ignore(maxCharsPerLine,'\n');
+              lineId++;
+            };
+
+            if (r == 0) {
+              // Take care of initial part of the first data line,
+              // which resembles something like 'variable_name = [value1 value2 ...'
+	      std::string tmpString;
+
+              // Read 'variable name' string
+              *unifiedFilePtrSet.ifsVar >> tmpString;
+  	      //std::cout << "Core 0 just read '" << tmpString << "'" << std::endl;
+
+              // Read '=' sign
+              *unifiedFilePtrSet.ifsVar >> tmpString;
+	      //std::cout << "Core 0 just read '" << tmpString << "'" << std::endl;
+              UQ_FATAL_TEST_MACRO(tmpString != "=",
+                                  m_env.fullRank(),
+                                  "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
+                                  "in core 0, string should be the '=' sign");
+
+              // Take into account the ' [' portion
+	      std::streampos tmpPos = unifiedFilePtrSet.ifsVar->tellg();
+              unifiedFilePtrSet.ifsVar->seekg(tmpPos+(std::streampos)2);
             }
 
-            // Check if [size of chain in file] >= [requested unified sequence size]
-            UQ_FATAL_TEST_MACRO(sizeOfChainInFile < unifiedReadSize,
-                                m_env.fullRank(),
-                                "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
-                                "size of chain in file is not big enough");
-
-            // Check if [num params in file] == [num params in current chain]
-            UQ_FATAL_TEST_MACRO(numParamsInFile != numParams,
-                                m_env.fullRank(),
-                                "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
-                                "number of parameters of chain in file is different than number of parameters in this chain object");
+            V tmpVec(m_vectorSpace.zeroVector());
+            while (lineId <= idOfMyLastLine) {
+              for (unsigned int i = 0; i < numParams; ++i) {
+                *unifiedFilePtrSet.ifsVar >> tmpVec[i];
+              }
+              this->setPositionValues(lineId - idOfMyFirstLine, tmpVec);
+              lineId++;
+            };
           }
-
-          // Code common to any core in 'inter0Comm', including core of rank 0
-          unsigned int maxCharsPerLine = 64*numParams; // Up to about 60 characters to represent each parameter value
-
-          unsigned int lineId = 0;
-          while (lineId < idOfMyFirstLine) {
-            ifsvar->ignore(maxCharsPerLine,'\n');
-            lineId++;
-          };
-
-          if (m_env.inter0Rank() == 0) {
-            // Take care of initial part of the first data line,
-            // which resembles something like 'variable_name = [value1 value2 ...'
-	    std::string tmpString;
-
-            // Read 'variable name' string
-            *ifsvar >> tmpString;
-	    //std::cout << "Core 0 just read '" << tmpString << "'" << std::endl;
-
-            // Read '=' sign
-            *ifsvar >> tmpString;
-	    //std::cout << "Core 0 just read '" << tmpString << "'" << std::endl;
-            UQ_FATAL_TEST_MACRO(tmpString != "=",
-                                m_env.fullRank(),
-                                "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
-                                "in core 0, string should be the '=' sign");
-
-            // Take into account the ' [' portion
-	    std::streampos tmpPos = ifsvar->tellg();
-            ifsvar->seekg(tmpPos+(std::streampos)2);
-          }
-
-          V tmpVec(m_vectorSpace.zeroVector());
-          while (lineId <= idOfMyLastLine) {
-            for (unsigned int i = 0; i < numParams; ++i) {
-              *ifsvar >> tmpVec[i];
+          else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
+            if (r == 0) {
             }
-            this->setPositionValues(lineId - idOfMyFirstLine, tmpVec);
-            lineId++;
-          };
-
-          //ifsvar->close();
-          delete ifsvar;
-        }
-        else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
-          UQ_FATAL_TEST_MACRO(true,
-                              m_env.fullRank(),
-                              "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
-                              "hdf file type not supported yet");
-        }
-        else {
-          UQ_FATAL_TEST_MACRO(true,
-                              m_env.fullRank(),
-                              "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
-                              "invalid file type");
-        }
-      }
+            UQ_FATAL_TEST_MACRO(true,
+                                m_env.fullRank(),
+                                "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
+                                "hdf file type not supported yet");
+          }
+          else {
+            UQ_FATAL_TEST_MACRO(true,
+                                m_env.fullRank(),
+                                "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
+                                "invalid file type");
+          }
+          m_env.closeFile(unifiedFilePtrSet,fileType);
+        } // if (m_env.openUnifiedInputFile())
+      } // if (m_env.inter0Rank() == (int) r)
       m_env.inter0Comm().Barrier();
-    }
-  }
+    } // for r
+  } // if (m_env.inter0Rank() >= 0)
   else {
     V tmpVec(m_vectorSpace.zeroVector());
     for (unsigned int i = 1; i < subReadSize; ++i) {
