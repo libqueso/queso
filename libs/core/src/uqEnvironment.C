@@ -798,7 +798,7 @@ uqBaseEnvironmentClass::closeFile(
   const std::string&  fileType) const
 {
   if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
-    //filePtrSet.ofsVar->close();
+    //filePtrSet.ofsVar->close(); // close() crashes on Mac; need to use delete(); why? prudenci 2010/June
     delete filePtrSet.ofsVar;
     filePtrSet.ofsVar = NULL;
 
