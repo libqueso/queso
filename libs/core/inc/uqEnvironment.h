@@ -38,6 +38,7 @@ class uqEnvironmentOptionsClass;
 
 #undef UQ_USES_COMMAND_LINE_OPTIONS
 
+#include <hdf5.h>
 #include <Epetra_MpiComm.h>
 #include <gsl/gsl_rng.h>
 #include <boost/program_options.hpp>
@@ -46,6 +47,14 @@ namespace po = boost::program_options;
 #include <fstream>
 
 extern unsigned long int gsl_rng_default_seed;
+
+struct filePtrSetStruct {
+  filePtrSetStruct();
+ ~filePtrSetStruct();
+
+  std::fstream* fsVar;
+  hid_t         h5Var;
+};
 
 //*****************************************************
 // Base class
@@ -188,6 +197,8 @@ public:
                                                               const std::string&            fileType,
                                                               const std::set<unsigned int>& allowedSubEnvIds,
                                                                     std::ifstream*&         ifsvar) const;
+          void                    closeFile                  (      filePtrSetStruct&       filePtrSet,
+                                                              const std::string&            fileType) const; 
           void                    setExceptionalCircunstance (bool value) const;
           bool                    exceptionalCircunstance    () const;
 

@@ -37,7 +37,6 @@
 #include <sys/time.h>
 #include <gsl/gsl_randist.h>
 #include <hpct.h>
-#include <hdf5.h>
 
 // Version "0.1"    on "Aug/11/2008"
 // Version "0.11"   on "Aug/15/2008"
@@ -52,6 +51,16 @@
 // Version "0.42.0" on "MMM/DD/20YY"
 #define QUESO_LIBRARY_CURRENT_VERSION "0.42.0"
 #define QUESO_LIBRARY_RELEASE_DATE    "MMM/DD/20YY"
+
+filePtrSetStruct::filePtrSetStruct()
+  :
+  fsVar(NULL)
+{
+}
+
+filePtrSetStruct::~filePtrSetStruct()
+{
+}
 
 //*****************************************************
 // Base class
@@ -771,6 +780,29 @@ uqBaseEnvironmentClass::openInputFile(
                             "invalid file type");
       }
     }
+  }
+
+  return;
+}
+
+void
+uqBaseEnvironmentClass::closeFile(
+  filePtrSetStruct&  filePtrSet,
+  const std::string& fileType) const
+{
+  if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+    //filePtrSet.fsVar->close();
+    delete filePtrSet.fsVar;
+    filePtrSet.fsVar = NULL;
+  }
+  else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
+    H5Fclose(filePtrSet.h5Var);
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_fullRank,
+                        "uqBaseEnvironmentClass::closeFile()",
+                        "invalid file type");
   }
 
   return;

@@ -11,7 +11,7 @@ AM_CPPFLAGS = -I. \
 	$(GSL_CFLAGS) \
 	$(HPCT_CFLAGS) \
 	$(GLPK_CFLAGS) \
-	$(GLPK_CFLAGS)
+	$(HDF5_CFLAGS)
 
 AM_LDFLAGS  = $(BOOST_LDFLAGS) ${HPCT_LIBS} -lhpct ${GLPK_LIBS} -lglpk ${HDF5_LIBS} -lhdf5
 
