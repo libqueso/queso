@@ -2440,19 +2440,6 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
           else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
             unsigned int numParams = m_vectorSpace.dimLocal();
             if (r == 0) {
-              double* dataOut[numParams];
-              dataOut[0] = (double*) malloc(numParams*chainSize*sizeof(double));
-              for (unsigned int i = 1; i < numParams; ++i) { // Yes, from '1'
-                dataOut[i] = dataOut[i-1] + chainSize; // Yes, just 'chainSize', not 'chainSize*sizeof(double)'
-              }
-              //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(): h5 case, memory allocated" << std::endl;
-              for (unsigned int j = 0; j < chainSize; ++j) {
-                V tmpVec(*(m_seq[j]));
-                for (unsigned int i = 0; i < numParams; ++i) {
-                  dataOut[i][j] = tmpVec[i];
-                }
-              }
-              //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(): h5 case, memory filled" << std::endl;
               hid_t datatype = H5Tcopy(H5T_NATIVE_DOUBLE);
               //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(): h5 case, data type created" << std::endl;
               hsize_t dimsf[2];
@@ -2468,6 +2455,25 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
                                          H5P_DEFAULT,  // Dataset creation property list
                                          H5P_DEFAULT); // Dataset access property list 
               //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(): h5 case, data set created" << std::endl;
+
+              struct timeval timevalBegin;
+              int iRC = UQ_OK_RC;
+              iRC = gettimeofday(&timevalBegin,NULL);
+
+              double* dataOut[numParams];
+              dataOut[0] = (double*) malloc(numParams*chainSize*sizeof(double));
+              for (unsigned int i = 1; i < numParams; ++i) { // Yes, from '1'
+                dataOut[i] = dataOut[i-1] + chainSize; // Yes, just 'chainSize', not 'chainSize*sizeof(double)'
+              }
+              //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(): h5 case, memory allocated" << std::endl;
+              for (unsigned int j = 0; j < chainSize; ++j) {
+                V tmpVec(*(m_seq[j]));
+                for (unsigned int i = 0; i < numParams; ++i) {
+                  dataOut[i][j] = tmpVec[i];
+                }
+              }
+              //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(): h5 case, memory filled" << std::endl;
+
               herr_t status;
               status = H5Dwrite(dataset,
                                 H5T_NATIVE_DOUBLE,
@@ -2476,6 +2482,21 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
                                 H5P_DEFAULT,
                                 (void*) dataOut[0]);
               //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(): h5 case, data written" << std::endl;
+
+              double writeTime = uqMiscGetEllapsedSeconds(&timevalBegin);
+              if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+                *m_env.subDisplayFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
+                                        << ": fullRank "       << m_env.fullRank()
+                                        << ", subEnvironment " << m_env.subId()
+                                        << ", subRank "        << m_env.subRank()
+                                        << ", inter0Rank "     << m_env.inter0Rank()
+                                        << ", fileName = "     << fileName
+                                        << ", numParams = "    << numParams
+                                        << ", chainSize = "    << chainSize
+                                        << ", writeTime = "    << writeTime << " seconds"
+                                        << std::endl;
+              }
+
               H5Dclose(dataset);
               //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(): h5 case, data set closed" << std::endl;
               H5Sclose(dataspace);
@@ -2718,6 +2739,11 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
                                   m_env.fullRank(),
                                   "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
                                   "dims_in[1] is smaller that requested 'subReadSize'");
+
+              struct timeval timevalBegin;
+              int iRC = UQ_OK_RC;
+              iRC = gettimeofday(&timevalBegin,NULL);
+
               unsigned int chainSizeIn = (unsigned int) dims_in[1];
               double* dataIn[numParams];
               dataIn[0] = (double*) malloc(numParams*chainSizeIn*sizeof(double));
@@ -2732,6 +2758,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
                                dataspace,
                                H5P_DEFAULT,
                                dataIn[0]);
+              //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedReadContents(): h5 case, data read" << std::endl;
               V tmpVec(m_vectorSpace.zeroVector());
               for (unsigned int j = 0; j < subReadSize; ++j) { // Yes, 'subReadSize', not 'chainSizeIn'
                 for (unsigned int i = 0; i < numParams; ++i) {
@@ -2739,6 +2766,22 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
                 }
                 this->setPositionValues(j, tmpVec);
               }
+
+              double readTime = uqMiscGetEllapsedSeconds(&timevalBegin);
+              if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+                *m_env.subDisplayFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedReadContents()"
+                                        << ": fullRank "       << m_env.fullRank()
+                                        << ", subEnvironment " << m_env.subId()
+                                        << ", subRank "        << m_env.subRank()
+                                        << ", inter0Rank "     << m_env.inter0Rank()
+                                        << ", fileName = "     << fileName
+                                        << ", numParams = "    << numParams
+                                        << ", chainSizeIn = "  << chainSizeIn
+                                        << ", subReadSize = "  << subReadSize
+                                        << ", readTime = "     << readTime << " seconds"
+                                        << std::endl;
+              }
+
               H5Sclose(dataspace);
               H5Tclose(datatype);
               H5Dclose(dataset);
