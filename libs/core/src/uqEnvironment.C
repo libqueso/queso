@@ -779,10 +779,9 @@ uqBaseEnvironmentClass::openInputFile(
                             "file with fileName could not be found");
       }
       else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
-        filePtrSet.h5Var = H5Fcreate((baseFileName+"."+fileType).c_str(),
-                                     H5F_ACC_RDONLY,
-                                     H5P_DEFAULT,
-                                     H5P_DEFAULT);
+        filePtrSet.h5Var = H5Fopen((baseFileName+"."+fileType).c_str(),
+                                   H5F_ACC_RDONLY,
+                                   H5P_DEFAULT);
       }
       else {
         UQ_FATAL_TEST_MACRO(true,
@@ -850,10 +849,9 @@ uqBaseEnvironmentClass::openUnifiedInputFile(
                             "file with fileName could not be found");
       }
       else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
-        filePtrSet.h5Var = H5Fcreate((baseFileName+"."+fileType).c_str(),
-                                     H5F_ACC_RDONLY,
-                                     H5P_DEFAULT,
-                                     H5P_DEFAULT);
+        filePtrSet.h5Var = H5Fopen((baseFileName+"."+fileType).c_str(),
+                                   H5F_ACC_RDONLY,
+                                   H5P_DEFAULT);
       }
       else {
         UQ_FATAL_TEST_MACRO(true,

@@ -2440,16 +2440,16 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
           else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
             unsigned int numParams = m_vectorSpace.dimLocal();
             if (r == 0) {
-              double* data[numParams];
-              data[0] = (double*) malloc(numParams*chainSize*sizeof(double));
+              double* dataOut[numParams];
+              dataOut[0] = (double*) malloc(numParams*chainSize*sizeof(double));
               for (unsigned int i = 1; i < numParams; ++i) { // Yes, from '1'
-                data[i] = data[i-1] + chainSize; // Yes, just 'chainSize', not 'chainSize*sizeof(double)'
+                dataOut[i] = dataOut[i-1] + chainSize; // Yes, just 'chainSize', not 'chainSize*sizeof(double)'
               }
               //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(): h5 case, memory allocated" << std::endl;
               for (unsigned int j = 0; j < chainSize; ++j) {
                 V tmpVec(*(m_seq[j]));
                 for (unsigned int i = 0; i < numParams; ++i) {
-                  data[i][j] = tmpVec[i];
+                  dataOut[i][j] = tmpVec[i];
                 }
               }
               //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(): h5 case, memory filled" << std::endl;
@@ -2460,10 +2460,21 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
               dimsf[1] = chainSize;
               hid_t dataspace = H5Screate_simple(2, dimsf, NULL); // HDF5_rank = 2
               //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(): h5 case, data space created" << std::endl;
-              hid_t dataset = H5Dcreate2(unifiedFilePtrSet.h5Var, "seq_of_vectors", datatype, dataspace, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+              hid_t dataset = H5Dcreate2(unifiedFilePtrSet.h5Var,
+                                         "seq_of_vectors",
+                                         datatype,
+                                         dataspace,
+                                         H5P_DEFAULT,  // Link creation property list
+                                         H5P_DEFAULT,  // Dataset creation property list
+                                         H5P_DEFAULT); // Dataset access property list 
               //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(): h5 case, data set created" << std::endl;
               herr_t status;
-              status = H5Dwrite(dataset, H5T_NATIVE_INT, H5S_ALL, H5S_ALL, H5P_DEFAULT, (void*) data[0]);
+              status = H5Dwrite(dataset,
+                                H5T_NATIVE_DOUBLE,
+                                H5S_ALL,
+                                H5S_ALL,
+                                H5P_DEFAULT,
+                                (void*) dataOut[0]);
               //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(): h5 case, data written" << std::endl;
               H5Dclose(dataset);
               //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(): h5 case, data set closed" << std::endl;
@@ -2471,7 +2482,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
               //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(): h5 case, data space closed" << std::endl;
               H5Tclose(datatype);
               //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(): h5 case, data type closed" << std::endl;
-              free(data[0]);
+              free(dataOut[0]);
             }
             else {
               UQ_FATAL_TEST_MACRO(true,
@@ -2677,112 +2688,61 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
           }
           else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
             if (r == 0) {
-#if 0
-#define DATASETNAME "IntArray"
-#define NX_SUB  3           /* hyperslab dimensions */
-#define NY_SUB  4
-#define NX 7           /* output buffer dimensions */
-#define NY 7
-#define NZ  3
-#define RANK         2
-#define RANK_OUT     3
-
-    hid_t       file, dataset;         /* handles */
-    hid_t       datatype, dataspace;
-    hid_t       memspace;
-    H5T_class_t t_class;                 /* data type class */
-    H5T_order_t order;                 /* data order */
-    size_t      size;                  /*
-				        * size of the data element
-				        * stored in file
-				        */
-    hsize_t     dimsm[3];              /* memory space dimensions */
-    hsize_t     dims_out[2];           /* dataset dimensions */
-    herr_t      status;
-
-    int         data_out[NX][NY][NZ ]; /* output buffer */
-
-    hsize_t      count[2];              /* size of the hyperslab in the file */
-    hsize_t      offset[2];             /* hyperslab offset in the file */
-    hsize_t      count_out[3];          /* size of the hyperslab in memory */
-    hsize_t      offset_out[3];         /* hyperslab offset in memory */
-    int          i, j, k, status_n, rank;
-
-    for (j = 0; j < NX; j++) {
-	for (i = 0; i < NY; i++) {
-	    for (k = 0; k < NZ ; k++)
-		data_out[j][i][k] = 0;
-	}
-    }
-
-    /*
-     * Open the file and the dataset.
-     */
-    file = H5Fopen(H5FILE_NAME, H5F_ACC_RDONLY, H5P_DEFAULT);
-    dataset = H5Dopen2(file, DATASETNAME, H5P_DEFAULT);
-
-    /*
-     * Get datatype and dataspace handles and then query
-     * dataset class, order, size, rank and dimensions.
-     */
-    datatype  = H5Dget_type(dataset);     /* datatype handle */
-    t_class     = H5Tget_class(datatype);
-    if (t_class == H5T_INTEGER) printf("Data set has INTEGER type \n");
-    order     = H5Tget_order(datatype);
-    if (order == H5T_ORDER_LE) printf("Little endian order \n");
-
-    size  = H5Tget_size(datatype);
-    printf(" Data size is %d \n", (int)size);
-
-    dataspace = H5Dget_space(dataset);    /* dataspace handle */
-    rank      = H5Sget_simple_extent_ndims(dataspace);
-    status_n  = H5Sget_simple_extent_dims(dataspace, dims_out, NULL);
-    printf("rank %d, dimensions %lu x %lu \n", rank,
-	   (unsigned long)(dims_out[0]), (unsigned long)(dims_out[1]));
-
-    /*
-     * Define hyperslab in the dataset.
-     */
-    offset[0] = 1;
-    offset[1] = 2;
-    count[0]  = NX_SUB;
-    count[1]  = NY_SUB;
-    status = H5Sselect_hyperslab(dataspace, H5S_SELECT_SET, offset, NULL,
-				 count, NULL);
-
-    /*
-     * Define the memory dataspace.
-     */
-    dimsm[0] = NX;
-    dimsm[1] = NY;
-    dimsm[2] = NZ ;
-    memspace = H5Screate_simple(RANK_OUT,dimsm,NULL);
-
-    /*
-     * Define memory hyperslab.
-     */
-    offset_out[0] = 3;
-    offset_out[1] = 0;
-    offset_out[2] = 0;
-    count_out[0]  = NX_SUB;
-    count_out[1]  = NY_SUB;
-    count_out[2]  = 1;
-    status = H5Sselect_hyperslab(memspace, H5S_SELECT_SET, offset_out, NULL,
-				 count_out, NULL);
-
-    /*
-     * Read data from hyperslab in the file into the hyperslab in
-     * memory and display.
-     */
-    status = H5Dread(dataset, H5T_NATIVE_INT, memspace, dataspace, H5P_DEFAULT, data_out);
-    for (j = 0; j < NX; j++) {
-	for (i = 0; i < NY; i++) printf("%d ", data_out[j][i][0]);
-    }
-    H5Tclose(datatype);
-    H5Dclose(dataset);
-    H5Sclose(dataspace);
-    H5Sclose(memspace);
-#endif
+              hid_t dataset = H5Dopen2(unifiedFilePtrSet.h5Var,
+                                       "seq_of_vectors",
+                                       H5P_DEFAULT); // Dataset access property list 
+              hid_t datatype  = H5Dget_type(dataset);
+              H5T_class_t t_class = H5Tget_class(datatype);
+              UQ_FATAL_TEST_MACRO(t_class != H5T_FLOAT,
+                                  m_env.fullRank(),
+                                  "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
+                                  "t_class is not H5T_DOUBLE");
+              hid_t dataspace = H5Dget_space(dataset);
+              int   rank      = H5Sget_simple_extent_ndims(dataspace);
+              UQ_FATAL_TEST_MACRO(rank != 2,
+                                  m_env.fullRank(),
+                                  "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
+                                  "hdf rank is not 2");
+              hsize_t dims_in[2];
+              int     status_n;
+              status_n  = H5Sget_simple_extent_dims(dataspace, dims_in, NULL);
+	      //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedReadContents()"
+              //          << ": dims_in[0] = " << dims_in[0]
+              //          << ", dims_in[1] = " << dims_in[1]
+              //          << std::endl;
+              UQ_FATAL_TEST_MACRO(dims_in[0] != numParams,
+                                  m_env.fullRank(),
+                                  "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
+                                  "dims_in[0] is not equal to 'numParams'");
+              UQ_FATAL_TEST_MACRO(dims_in[1] < subReadSize,
+                                  m_env.fullRank(),
+                                  "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
+                                  "dims_in[1] is smaller that requested 'subReadSize'");
+              unsigned int chainSizeIn = (unsigned int) dims_in[1];
+              double* dataIn[numParams];
+              dataIn[0] = (double*) malloc(numParams*chainSizeIn*sizeof(double));
+              for (unsigned int i = 1; i < numParams; ++i) { // Yes, from '1'
+                dataIn[i] = dataIn[i-1] + chainSizeIn; // Yes, just 'chainSizeIn', not 'chainSizeIn*sizeof(double)'
+              }
+              //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedReadContents(): h5 case, memory allocated" << std::endl;
+              herr_t status;
+              status = H5Dread(dataset,
+                               H5T_NATIVE_DOUBLE,
+                               H5S_ALL,
+                               dataspace,
+                               H5P_DEFAULT,
+                               dataIn[0]);
+              V tmpVec(m_vectorSpace.zeroVector());
+              for (unsigned int j = 0; j < subReadSize; ++j) { // Yes, 'subReadSize', not 'chainSizeIn'
+                for (unsigned int i = 0; i < numParams; ++i) {
+                  tmpVec[i] = dataIn[i][j];
+                }
+                this->setPositionValues(j, tmpVec);
+              }
+              H5Sclose(dataspace);
+              H5Tclose(datatype);
+              H5Dclose(dataset);
+              free(dataIn[0]);
             }
             else {
               UQ_FATAL_TEST_MACRO(true,
