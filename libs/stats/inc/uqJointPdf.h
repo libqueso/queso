@@ -939,6 +939,99 @@ uqPoweredJointPdfClass<V,M>::lnValue(
 }
 
 //*****************************************************
+// Circular probability density class
+//*****************************************************
+template<class V, class M>
+class uqCircularJointPdfClass : public uqBaseJointPdfClass<V,M> {
+public:
+  uqCircularJointPdfClass(const char*                  prefix,
+                          const uqVectorSetClass<V,M>& domainSet,
+                          const V&                     centerPos,
+                          double                       radius);
+ ~uqCircularJointPdfClass();
+
+  double actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  double lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+
+protected:
+  using uqBaseScalarFunctionClass<V,M>::m_env;
+  using uqBaseScalarFunctionClass<V,M>::m_prefix;
+  using uqBaseScalarFunctionClass<V,M>::m_domainSet;
+  V*     m_centerPos;
+  double m_radius;
+};
+
+template<class V,class M>
+uqCircularJointPdfClass<V,M>::uqCircularJointPdfClass(
+  const char*                  prefix,
+  const uqVectorSetClass<V,M>& domainSet,
+  const V&                     centerPos,
+  double                       radius)
+  :
+  uqBaseJointPdfClass<V,M>(((std::string)(prefix)+"uni").c_str(),
+			   domainSet),
+  m_centerPos(new V(centerPos)),
+  m_radius   (radius)    
+{
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
+    *m_env.subDisplayFile() << "Entering uqCircularJointPdfClass<V,M>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
+    *m_env.subDisplayFile() << "Leaving uqCircularJointPdfClass<V,M>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+}
+
+template<class V,class M>
+uqCircularJointPdfClass<V,M>::~uqCircularJointPdfClass()
+{
+  delete m_centerPos;
+}
+
+template<class V, class M>
+double
+uqCircularJointPdfClass<V,M>::actualValue(
+  const V& domainVector,
+  const V* domainDirection,
+        V* gradVector,
+        M* hessianMatrix,
+        V* hessianEffect) const
+{
+  if (gradVector   ) *gradVector     = m_domainSet.vectorSpace().zeroVector();
+  if (hessianMatrix) *hessianMatrix *= 0.;
+  if (hessianEffect) *hessianEffect  = m_domainSet.vectorSpace().zeroVector();
+
+  double returnValue = 0.;
+  double distanceRatio = (domainVector-m_centerPos).norm2()/m_radius;
+  if (distanceRatio < 1.) {
+    returnValue = m_radius*sqrt(1. - distanceRatio*distanceRatio);
+    //returnValue /= // prudencio July
+  }
+
+  return returnValue;
+}
+
+template<class V, class M>
+double
+uqCircularJointPdfClass<V,M>::lnValue(
+  const V& domainVector,
+  const V* domainDirection,
+        V* gradVector,
+        M* hessianMatrix,
+        V* hessianEffect) const
+{
+  if (gradVector   ) *gradVector     = m_domainSet.vectorSpace().zeroVector();
+  if (hessianMatrix) *hessianMatrix *= 0.;
+  if (hessianEffect) *hessianEffect  = m_domainSet.vectorSpace().zeroVector();
+
+  return log(this->actualValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
+}
+
+//*****************************************************
 // Concatenated probability density class
 //*****************************************************
 template<class V, class M>

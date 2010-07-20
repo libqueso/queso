@@ -129,5 +129,25 @@ protected:
   double m_mean;
   double m_stddev;
 };
+
+//*****************************************************
+// Sqrt/Chebyshev 1D quadrature class
+//*****************************************************
+class uqSqrtChebyshev1st1DQuadratureClass : public uqBase1DQuadratureClass {
+public:
+  uqSqrtChebyshev1st1DQuadratureClass(double       minDomainValue,
+                                      double       maxDomainValue,
+                                      unsigned int order);
+ ~uqSqrtChebyshev1st1DQuadratureClass();
+
+  void dumbRoutine() const;
+
+protected:
+  using uqBase1DQuadratureClass::m_minDomainValue;
+  using uqBase1DQuadratureClass::m_maxDomainValue;
+  using uqBase1DQuadratureClass::m_order;
+  using uqBase1DQuadratureClass::m_positions;
+  using uqBase1DQuadratureClass::m_weights;
+};
 #endif // __UQ_1D_1D_QUADRATURE_H__
 

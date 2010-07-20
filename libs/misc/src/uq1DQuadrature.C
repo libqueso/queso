@@ -671,3 +671,45 @@ uqGaussianHermite1DQuadratureClass::dumbRoutine() const
 {
   return;
 }
+
+//*****************************************************
+// SqrtChebyshev1st 1D quadrature class
+//*****************************************************
+uqSqrtChebyshev1st1DQuadratureClass::uqSqrtChebyshev1st1DQuadratureClass(
+  double       minDomainValue,
+  double       maxDomainValue,
+  unsigned int order)
+  :
+  uqBase1DQuadratureClass(minDomainValue,maxDomainValue,order)
+{
+  m_positions.resize(m_order+1,0.); // Yes, '+1'
+  m_weights.resize  (m_order+1,0.); // Yes, '+1'
+
+  // prudencio July
+  // http://www.holoborodko.com/pavel/?page_id=679
+  switch (m_order) {
+    default:
+      UQ_FATAL_TEST_MACRO(true,
+                          UQ_UNAVAILABLE_RANK,
+                          "uqSqrtChebyshev1st1DQuadratureClass::constructor()",
+                          "order not supported");
+    break;
+  }
+
+  // Scale positions from the interval [-1, 1] to the interval [min,max]
+  for (unsigned int j = 0; j < m_positions.size(); ++j) {
+    m_positions[j] = .5*(m_maxDomainValue - m_minDomainValue)*m_positions[j] + .5*(m_maxDomainValue + m_minDomainValue);
+    m_weights[j] *= .5*(m_maxDomainValue - m_minDomainValue);
+  }
+}
+
+uqSqrtChebyshev1st1DQuadratureClass::~uqSqrtChebyshev1st1DQuadratureClass()
+{
+}
+
+void
+uqSqrtChebyshev1st1DQuadratureClass::dumbRoutine() const
+{
+  return;
+}
+

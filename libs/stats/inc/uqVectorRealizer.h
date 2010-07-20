@@ -568,6 +568,74 @@ uqInverseGammaVectorRealizerClass<V,M>::realization(V& nextValues) const
 }
 
 //*****************************************************
+// Circular class
+//*****************************************************
+template<class V, class M>
+class uqCircularVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
+public:
+  uqCircularVectorRealizerClass(const char*                  prefix,
+                                const uqVectorSetClass<V,M>& unifiedImageSet,
+                                const V&                     centerPos,
+                                double                       radius);
+ ~uqCircularVectorRealizerClass();
+
+  void realization(V& nextValues) const;
+
+private:
+  using uqBaseVectorRealizerClass<V,M>::m_env;
+  using uqBaseVectorRealizerClass<V,M>::m_prefix;
+  using uqBaseVectorRealizerClass<V,M>::m_unifiedImageSet;
+  using uqBaseVectorRealizerClass<V,M>::m_subPeriod;
+  V*     m_centerPos;
+  double m_radius;
+};
+
+template<class V, class M>
+uqCircularVectorRealizerClass<V,M>::uqCircularVectorRealizerClass(
+  const char*                  prefix,
+  const uqVectorSetClass<V,M>& unifiedImageSet,
+  const V&                     centerPos,
+  double                       radius)
+  :
+  uqBaseVectorRealizerClass<V,M>(((std::string)(prefix)+"gen").c_str(),unifiedImageSet,std::numeric_limits<unsigned int>::max()),
+  m_centerPos(new V(centerPos)),
+  m_radius   (radius)    
+{
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqCircularVectorRealizerClass<V,M>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqCircularVectorRealizerClass<V,M>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+}
+
+template<class V, class M>
+uqCircularVectorRealizerClass<V,M>::~uqCircularVectorRealizerClass()
+{
+  delete m_centerPos;
+}
+
+template<class V, class M>
+void
+uqCircularVectorRealizerClass<V,M>::realization(V& nextValues) const
+{
+  const uqBoxSubsetClass<V,M>* imageBox = dynamic_cast<const uqBoxSubsetClass<V,M>* >(&m_unifiedImageSet);
+
+  UQ_FATAL_TEST_MACRO(imageBox == NULL,
+                      m_env.fullRank(),
+                      "uqCircularVectorRealizerClass<V,M>::realization()",
+                      "only box images are supported right now");
+  
+  nextValues.cwSet(0.); // prudencio July
+  return;
+}
+
+//*****************************************************
 // Concatenated class
 //*****************************************************
 template<class V, class M>
