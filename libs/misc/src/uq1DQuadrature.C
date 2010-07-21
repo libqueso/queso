@@ -673,9 +673,9 @@ uqGaussianHermite1DQuadratureClass::dumbRoutine() const
 }
 
 //*****************************************************
-// SqrtChebyshev1st 1D quadrature class
+// WignerInverseChebyshev1st 1D quadrature class
 //*****************************************************
-uqSqrtChebyshev1st1DQuadratureClass::uqSqrtChebyshev1st1DQuadratureClass(
+uqWignerInverseChebyshev1st1DQuadratureClass::uqWignerInverseChebyshev1st1DQuadratureClass(
   double       minDomainValue,
   double       maxDomainValue,
   unsigned int order)
@@ -685,13 +685,12 @@ uqSqrtChebyshev1st1DQuadratureClass::uqSqrtChebyshev1st1DQuadratureClass(
   m_positions.resize(m_order+1,0.); // Yes, '+1'
   m_weights.resize  (m_order+1,0.); // Yes, '+1'
 
-  // prudencio July
-  // http://www.holoborodko.com/pavel/?page_id=679
+  // http://en.wikipedia.org/wiki/Chebyshev-Gauss_quadrature
   switch (m_order) {
     default:
       UQ_FATAL_TEST_MACRO(true,
                           UQ_UNAVAILABLE_RANK,
-                          "uqSqrtChebyshev1st1DQuadratureClass::constructor()",
+                          "uqWignerInverseChebyshev1st1DQuadratureClass::constructor()",
                           "order not supported");
     break;
   }
@@ -703,12 +702,52 @@ uqSqrtChebyshev1st1DQuadratureClass::uqSqrtChebyshev1st1DQuadratureClass(
   }
 }
 
-uqSqrtChebyshev1st1DQuadratureClass::~uqSqrtChebyshev1st1DQuadratureClass()
+uqWignerInverseChebyshev1st1DQuadratureClass::~uqWignerInverseChebyshev1st1DQuadratureClass()
 {
 }
 
 void
-uqSqrtChebyshev1st1DQuadratureClass::dumbRoutine() const
+uqWignerInverseChebyshev1st1DQuadratureClass::dumbRoutine() const
+{
+  return;
+}
+
+//*****************************************************
+// WignerChebyshev2nd 1D quadrature class
+//*****************************************************
+uqWignerChebyshev2nd1DQuadratureClass::uqWignerChebyshev2nd1DQuadratureClass(
+  double       minDomainValue,
+  double       maxDomainValue,
+  unsigned int order)
+  :
+  uqBase1DQuadratureClass(minDomainValue,maxDomainValue,order)
+{
+  m_positions.resize(m_order+1,0.); // Yes, '+1'
+  m_weights.resize  (m_order+1,0.); // Yes, '+1'
+
+  // http://en.wikipedia.org/wiki/Chebyshev-Gauss_quadrature
+  unsigned int n = m_order+1;
+  for (unsigned int i = 0; i < n; ++i) {
+    double angle = M_PI*((double)(i+1))/((double)(n+1));
+    double cosValue = cos(angle);
+    double sinValue = sin(angle);
+    m_positions[i] = cosValue;
+    m_weights[i] = ( M_PI/((double)(n+1)) )*sinValue*sinValue;
+  }
+
+  // Scale positions from the interval [-1, 1] to the interval [min,max]
+  for (unsigned int j = 0; j < m_positions.size(); ++j) {
+    m_positions[j] = .5*(m_maxDomainValue - m_minDomainValue)*m_positions[j] + .5*(m_maxDomainValue + m_minDomainValue);
+    m_weights[j] *= .5*(m_maxDomainValue - m_minDomainValue);
+  }
+}
+
+uqWignerChebyshev2nd1DQuadratureClass::~uqWignerChebyshev2nd1DQuadratureClass()
+{
+}
+
+void
+uqWignerChebyshev2nd1DQuadratureClass::dumbRoutine() const
 {
   return;
 }

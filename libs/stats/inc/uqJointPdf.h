@@ -939,16 +939,16 @@ uqPoweredJointPdfClass<V,M>::lnValue(
 }
 
 //*****************************************************
-// Circular probability density class
+// Wigner probability density class
 //*****************************************************
 template<class V, class M>
-class uqCircularJointPdfClass : public uqBaseJointPdfClass<V,M> {
+class uqWignerJointPdfClass : public uqBaseJointPdfClass<V,M> {
 public:
-  uqCircularJointPdfClass(const char*                  prefix,
-                          const uqVectorSetClass<V,M>& domainSet,
-                          const V&                     centerPos,
-                          double                       radius);
- ~uqCircularJointPdfClass();
+  uqWignerJointPdfClass(const char*                  prefix,
+                        const uqVectorSetClass<V,M>& domainSet,
+                        const V&                     centerPos,
+                        double                       radius);
+ ~uqWignerJointPdfClass();
 
   double actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
   double lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
@@ -962,7 +962,7 @@ protected:
 };
 
 template<class V,class M>
-uqCircularJointPdfClass<V,M>::uqCircularJointPdfClass(
+uqWignerJointPdfClass<V,M>::uqWignerJointPdfClass(
   const char*                  prefix,
   const uqVectorSetClass<V,M>& domainSet,
   const V&                     centerPos,
@@ -974,27 +974,32 @@ uqCircularJointPdfClass<V,M>::uqCircularJointPdfClass(
   m_radius   (radius)    
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering uqCircularJointPdfClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering uqWignerJointPdfClass<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
+  UQ_FATAL_TEST_MACRO(m_radius <= 0.,
+                      m_env.fullRank(),
+                      "uqWignerJointPdfClass<V,M>::constructor()",
+                      "invalid radius");
+
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving uqCircularJointPdfClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving uqWignerJointPdfClass<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 
 template<class V,class M>
-uqCircularJointPdfClass<V,M>::~uqCircularJointPdfClass()
+uqWignerJointPdfClass<V,M>::~uqWignerJointPdfClass()
 {
   delete m_centerPos;
 }
 
 template<class V, class M>
 double
-uqCircularJointPdfClass<V,M>::actualValue(
+uqWignerJointPdfClass<V,M>::actualValue(
   const V& domainVector,
   const V* domainDirection,
         V* gradVector,
@@ -1006,10 +1011,9 @@ uqCircularJointPdfClass<V,M>::actualValue(
   if (hessianEffect) *hessianEffect  = m_domainSet.vectorSpace().zeroVector();
 
   double returnValue = 0.;
-  double distanceRatio = (domainVector-m_centerPos).norm2()/m_radius;
+  double distanceRatio = (domainVector - *m_centerPos).norm2()/m_radius;
   if (distanceRatio < 1.) {
-    returnValue = m_radius*sqrt(1. - distanceRatio*distanceRatio);
-    //returnValue /= // prudencio July
+    returnValue = 2.*m_radius*m_radius*sqrt(1. - distanceRatio*distanceRatio)/M_PI;
   }
 
   return returnValue;
@@ -1017,7 +1021,7 @@ uqCircularJointPdfClass<V,M>::actualValue(
 
 template<class V, class M>
 double
-uqCircularJointPdfClass<V,M>::lnValue(
+uqWignerJointPdfClass<V,M>::lnValue(
   const V& domainVector,
   const V* domainDirection,
         V* gradVector,

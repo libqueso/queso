@@ -705,16 +705,16 @@ uqInverseGammaVectorRVClass<V,M>::print(std::ostream& os) const
 }
 
 //*****************************************************
-// Circular class
+// Wigner class
 //*****************************************************
 template<class V, class M>
-class uqCircularVectorRVClass : public uqBaseVectorRVClass<V,M> {
+class uqWignerVectorRVClass : public uqBaseVectorRVClass<V,M> {
 public:
-  uqCircularVectorRVClass(const char*                  prefix,
-                          const uqVectorSetClass<V,M>& imageSet,
-                          const V&                     centerPos,
-                          double                       radius);
-  virtual ~uqCircularVectorRVClass();
+  uqWignerVectorRVClass(const char*                  prefix,
+                        const uqVectorSetClass<V,M>& imageSet,
+                        const V&                     centerPos,
+                        double                       radius);
+  virtual ~uqWignerVectorRVClass();
 
   void print(std::ostream& os) const;
 
@@ -730,7 +730,7 @@ private:
 };
 
 template<class V, class M>
-uqCircularVectorRVClass<V,M>::uqCircularVectorRVClass(
+uqWignerVectorRVClass<V,M>::uqWignerVectorRVClass(
   const char*                  prefix,
   const uqVectorSetClass<V,M>& imageSet,
   const V&                     centerPos,
@@ -739,31 +739,37 @@ uqCircularVectorRVClass<V,M>::uqCircularVectorRVClass(
   uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"uni").c_str(),imageSet)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering uqCircularVectorRVClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering uqWignerVectorRVClass<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
-  m_pdf        = new uqCircularJointPdfClass<V,M>(m_prefix.c_str(),
-                                                  m_imageSet,
-                                                  centerPos,
-                                                  radius);
-  m_realizer   = new uqCircularVectorRealizerClass<V,M>(m_prefix.c_str(),
-                                                        m_imageSet,
-                                                        centerPos,
-                                                        radius);
+
+  UQ_FATAL_TEST_MACRO(radius <= 0.,
+                      m_env.fullRank(),
+                      "uqWignerVectorRVClass<V,M>::constructor()",
+                      "invalid radius");
+
+  m_pdf        = new uqWignerJointPdfClass<V,M>(m_prefix.c_str(),
+                                                m_imageSet,
+                                                centerPos,
+                                                radius);
+  m_realizer   = new uqWignerVectorRealizerClass<V,M>(m_prefix.c_str(),
+                                                      m_imageSet,
+                                                      centerPos,
+                                                      radius);
   m_subCdf     = NULL; // FIX ME: complete code
   m_unifiedCdf = NULL; // FIX ME: complete code
   m_mdf        = NULL; // FIX ME: complete code
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving uqCircularVectorRVClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving uqWignerVectorRVClass<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 
 template<class V, class M>
-uqCircularVectorRVClass<V,M>::~uqCircularVectorRVClass()
+uqWignerVectorRVClass<V,M>::~uqWignerVectorRVClass()
 {
   delete m_mdf;
   delete m_unifiedCdf;
@@ -774,9 +780,9 @@ uqCircularVectorRVClass<V,M>::~uqCircularVectorRVClass()
 
 template <class V, class M>
 void
-uqCircularVectorRVClass<V,M>::print(std::ostream& os) const
+uqWignerVectorRVClass<V,M>::print(std::ostream& os) const
 {
-  os << "uqCircularVectorRVClass<V,M>::print() says, 'Please implement me.'" << std::endl;
+  os << "uqWignerVectorRVClass<V,M>::print() says, 'Please implement me.'" << std::endl;
   return;
 }
 

@@ -568,16 +568,16 @@ uqInverseGammaVectorRealizerClass<V,M>::realization(V& nextValues) const
 }
 
 //*****************************************************
-// Circular class
+// Wigner class
 //*****************************************************
 template<class V, class M>
-class uqCircularVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
+class uqWignerVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
 public:
-  uqCircularVectorRealizerClass(const char*                  prefix,
-                                const uqVectorSetClass<V,M>& unifiedImageSet,
-                                const V&                     centerPos,
-                                double                       radius);
- ~uqCircularVectorRealizerClass();
+  uqWignerVectorRealizerClass(const char*                  prefix,
+                              const uqVectorSetClass<V,M>& unifiedImageSet,
+                              const V&                     centerPos,
+                              double                       radius);
+ ~uqWignerVectorRealizerClass();
 
   void realization(V& nextValues) const;
 
@@ -591,7 +591,7 @@ private:
 };
 
 template<class V, class M>
-uqCircularVectorRealizerClass<V,M>::uqCircularVectorRealizerClass(
+uqWignerVectorRealizerClass<V,M>::uqWignerVectorRealizerClass(
   const char*                  prefix,
   const uqVectorSetClass<V,M>& unifiedImageSet,
   const V&                     centerPos,
@@ -602,36 +602,39 @@ uqCircularVectorRealizerClass<V,M>::uqCircularVectorRealizerClass(
   m_radius   (radius)    
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering uqCircularVectorRealizerClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering uqWignerVectorRealizerClass<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
+  UQ_FATAL_TEST_MACRO(m_radius <= 0.,
+                      m_env.fullRank(),
+                      "uqWignerVectorRealizerClass<V,M>::constructor()",
+                      "invalid radius");
+
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving uqCircularVectorRealizerClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving uqWignerVectorRealizerClass<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 
 template<class V, class M>
-uqCircularVectorRealizerClass<V,M>::~uqCircularVectorRealizerClass()
+uqWignerVectorRealizerClass<V,M>::~uqWignerVectorRealizerClass()
 {
   delete m_centerPos;
 }
 
 template<class V, class M>
 void
-uqCircularVectorRealizerClass<V,M>::realization(V& nextValues) const
+uqWignerVectorRealizerClass<V,M>::realization(V& nextValues) const
 {
-  const uqBoxSubsetClass<V,M>* imageBox = dynamic_cast<const uqBoxSubsetClass<V,M>* >(&m_unifiedImageSet);
-
-  UQ_FATAL_TEST_MACRO(imageBox == NULL,
+  UQ_FATAL_TEST_MACRO(true,
                       m_env.fullRank(),
-                      "uqCircularVectorRealizerClass<V,M>::realization()",
-                      "only box images are supported right now");
+                      "uqWignerVectorRealizerClass<V,M>::realization()",
+                      "not implemented yet");
   
-  nextValues.cwSet(0.); // prudencio July
+  nextValues.cwSet(0.);
   return;
 }
 

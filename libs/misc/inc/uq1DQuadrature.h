@@ -112,8 +112,8 @@ protected:
 //*****************************************************
 class uqGaussianHermite1DQuadratureClass : public uqBase1DQuadratureClass {
 public:
-  uqGaussianHermite1DQuadratureClass(double mean,
-                                     double stddev,
+  uqGaussianHermite1DQuadratureClass(double       mean,
+                                     double       stddev,
                                      unsigned int order);
  ~uqGaussianHermite1DQuadratureClass();
 
@@ -131,14 +131,34 @@ protected:
 };
 
 //*****************************************************
-// Sqrt/Chebyshev 1D quadrature class
+// Wigner/Chebyshev1st 1D quadrature class
 //*****************************************************
-class uqSqrtChebyshev1st1DQuadratureClass : public uqBase1DQuadratureClass {
+class uqWignerInverseChebyshev1st1DQuadratureClass : public uqBase1DQuadratureClass {
 public:
-  uqSqrtChebyshev1st1DQuadratureClass(double       minDomainValue,
-                                      double       maxDomainValue,
-                                      unsigned int order);
- ~uqSqrtChebyshev1st1DQuadratureClass();
+  uqWignerInverseChebyshev1st1DQuadratureClass(double       minDomainValue,
+                                               double       maxDomainValue,
+                                               unsigned int order);
+ ~uqWignerInverseChebyshev1st1DQuadratureClass();
+
+  void dumbRoutine() const;
+
+protected:
+  using uqBase1DQuadratureClass::m_minDomainValue;
+  using uqBase1DQuadratureClass::m_maxDomainValue;
+  using uqBase1DQuadratureClass::m_order;
+  using uqBase1DQuadratureClass::m_positions;
+  using uqBase1DQuadratureClass::m_weights;
+};
+
+//*****************************************************
+// Wigner/Chebyshev2nd 1D quadrature class
+//*****************************************************
+class uqWignerChebyshev2nd1DQuadratureClass : public uqBase1DQuadratureClass {
+public:
+  uqWignerChebyshev2nd1DQuadratureClass(double       minDomainValue,
+                                        double       maxDomainValue,
+                                        unsigned int order);
+ ~uqWignerChebyshev2nd1DQuadratureClass();
 
   void dumbRoutine() const;
 
