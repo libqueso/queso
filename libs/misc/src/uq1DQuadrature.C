@@ -412,6 +412,9 @@ uqUniformLegendre1DQuadratureClass::uqUniformLegendre1DQuadratureClass(
     break;
 
     default:
+      std::cerr << "In uqUniformLegendre1DQuadratureClass::constructor()"
+                << ": m_order = " << m_order
+                << std::endl;
       UQ_FATAL_TEST_MACRO(true,
                           UQ_UNAVAILABLE_RANK,
                           "uqUniformLegendre1DQuadratureClass::constructor()",
