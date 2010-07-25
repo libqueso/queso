@@ -35,25 +35,30 @@
 #include <stdio.h>
 #include <queso.h>
 #include <mpi.h> 
+#include <string.h>
 #include "grvy.h"
 
-char *queso_inputfile = "queso.inp";
 
-double latency_likelihood(double *params);
-void read_data(char *ifile,double *data, int *hops);
 
-//static int num_data_pts = 3936;
-static int num_data_pts = 3892;
-static int model = 2;
+double latency_likelihood (double *params);
+void   read_data          (char *ifile,double *data, int *hops);
+int    scan_data          (char *ifile);
+
+/* Globals */
+
+char *queso_inputfile = "queso.inp";    /* QUESO control file */
+char datafile[2048];			/* User-provided latency measurements */
+int   num_data_pts;			/* # of latency measurements */
+static int model = 2;			/* Model choice */
 
 int main(int argc, char *argv[])
 {
 
   MPI_Init(&argc,&argv);
 
-  if(argc < 2)
+  if(argc < 3)
     {
-      printf("\nUsage: %s <input-file>\n\n",argv[0]);
+      printf("\nUsage: %s <queso-input-file> <latency-datafile>\n\n",argv[0]);
       exit(1);
     }
   
@@ -64,6 +69,10 @@ int main(int argc, char *argv[])
   /* Initialize QUESO environment and define input file */
 
   QUESO_init(argv[1]);	                   
+
+  /* Save input datafile name */
+
+  strcpy(datafile,argv[2]);	
 
  /* Register an application likelihood function with QUESO and run a
   * statistical inversion problem using MCMC sampling */
@@ -95,6 +104,13 @@ double latency_likelihood(double *params)
 
   if(first_flag)
     {
+
+      /* Scan data file to detect number of available measurements */
+
+      num_data_pts = scan_data(datafile);
+
+      /* Setup space for data measurements */
+
       data = (double *)calloc(num_data_pts,sizeof(double));
       hops =    (int *)calloc(num_data_pts,sizeof(int));
 
@@ -104,7 +120,9 @@ double latency_likelihood(double *params)
 	  exit(1);
 	}
 
-      read_data("results.original",data,hops);  
+      /* Now, read the raw data */
+
+      read_data(datafile,data,hops);  
       first_flag = 0;
       printf("num_data_pts = %i\n",num_data_pts);
       printf("** End of first likelihood iteration\n");
@@ -139,6 +157,37 @@ double latency_likelihood(double *params)
   likelihood = likelihood/(1.*num_data_pts);
 
   return( (-likelihood)/(variance) );
+}
+
+int scan_data(char *ifile)
+{
+  FILE *fp;
+  char ch ='\0';
+  char * line = NULL;
+  size_t len = 0;
+  ssize_t read;
+  int count = 0;
+
+  fp = fopen(ifile,"r");
+
+  if(fp == NULL)
+    {
+      printf("** Error: unable to open file %s",ifile);
+      exit(1);
+    }
+
+  while(ch != EOF )
+    {
+      ch = fgetc(fp);
+      if(ch == '\n') count++;
+    }
+
+  printf("read %i lines\n",count);
+
+  fclose(fp);
+
+  return(count);
+
 }
 
 void read_data(char *ifile,double *data, int *hops)

@@ -427,7 +427,8 @@ ip_mh_rawChain_type = 1
 ip_mh_rawChain_dataInputFileName = .
 #ip_mh_rawChain_size = 50000
 #ip_mh_rawChain_size = 100000
-ip_mh_rawChain_size = 500000
+ip_mh_rawChain_size  = 200000
+#ip_mh_rawChain_size = 500000
 #ip_mh_rawChain_size = 1000000
 
 ip_mh_rawChain_generateExtra = 0
