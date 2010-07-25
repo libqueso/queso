@@ -3150,10 +3150,15 @@ uqComputeSubGaussian2dKde(const uqScalarSequenceClass<T>& scalarSeq1,
   double scale2Inv = 1./scaleValue2;
   //corrValue = 0.;
   double r = 1 - corrValue*corrValue;
-  UQ_FATAL_TEST_MACRO(r <= 0.,
-                      scalarSeq1.env().fullRank(),
-                      "uqComputeSubGaussian2dKde()",
-                      "negative r");
+  if (r <= 0.) { // prudencio 2010-07-23
+    std::cerr << "In uqComputeSubGaussian2dKde()"
+              << ": WARNING, r = " << r
+              << std::endl;
+  }
+  //UQ_FATAL_TEST_MACRO(r < 0.,
+  //                    scalarSeq1.env().fullRank(),
+  //                    "uqComputeSubGaussian2dKde()",
+  //                    "negative r");
   for (unsigned int j = 0; j < numEvals; ++j) {
     double x1 = evaluationPositions1[j];
     double x2 = evaluationPositions2[j];
@@ -3289,10 +3294,15 @@ uqComputeCovCorrBetweenScalarSequences(
 
     corrValue = covValue/std::sqrt(unifiedSampleVarianceP)/std::sqrt(unifiedSampleVarianceQ);
 
-    UQ_FATAL_TEST_MACRO((corrValue < -1.) || (corrValue > 1.),
-                        env.fullRank(),
-                        "uqComputeCovCorrBetweenScalarSequences()",
-                        "computed correlation is out of range");
+    if ((corrValue < -1.) || (corrValue > 1.)) { // prudencio 2010-07-23
+      std::cerr << "In uqComputeCovCorrBetweenScalarSequences()"
+                << ": computed correlation is out of range, corrValue = " << corrValue
+                << std::endl;
+    }
+    //UQ_FATAL_TEST_MACRO((corrValue < -1.) || (corrValue > 1.),
+    //                    env.fullRank(),
+    //                    "uqComputeCovCorrBetweenScalarSequences()",
+    //                    "computed correlation is out of range");
   }
   else {
     // Node not in the 'inter0' communicator: do nothing extra
