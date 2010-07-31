@@ -101,14 +101,14 @@ uqAppl(const uqBaseEnvironmentClass& env)
   qoiRoutine_Data.p2MultiplicativeFactor = 3.;
   qoiRoutine_Data.p2ExponentFactor       = 1.1;
 
-  uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M> qoiFunctionObj("like_",
+  uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M> qoiFunctionObj("qoi_",
                                                                paramDomain,
                                                                qoiSpace,
                                                                qoiRoutine<P_V,P_M,Q_V,Q_M>,
                                                                (void *) &qoiRoutine_Data);
 
   //******************************************************
-  // Step 5 of 6: Instantiate the inverse problem
+  // Step 5 of 6: Instantiate the forward problem
   //******************************************************
   if (env.fullRank() == 0) {
     std::cout << "Executing step 5 of 6: instantiation of forward problem ...\n"
@@ -127,7 +127,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                                        qoiRv);
 
   //******************************************************
-  // Step 6 of 6: Solve the inverse problem
+  // Step 6 of 6: Solve the forward problem
   //******************************************************
   if (env.fullRank() == 0) {
     std::cout << "Executing step 6 of 6: solution of forward problem ...\n"

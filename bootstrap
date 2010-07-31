@@ -39,7 +39,7 @@ autoconf                      && \
 echo "- autoheader."          && \
 autoheader                    && \
 echo "- libtool."             && \
-libtoolize --automake         && \
+glibtoolize --automake         && \
 echo "- automake."            && \
 automake --add-missing --copy && \
 exit 0

@@ -31,7 +31,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/h2/prudenci/Installations/Boost_1_35_0/
 #
 # Regresion Test #1: Validation cycle with TGA example 
 
-VERIFY_DATE="05-19-2009"
+VERIFY_DATE="07-30-2010"
 TEST_DIR="t01_valid_cycle/valid_cycle"
 SOLDIR="outputData"
 EXE="./TgaValidationCycle_gsl"   # executable name
