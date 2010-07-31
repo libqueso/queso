@@ -669,6 +669,7 @@ uqGslVectorClass::print(std::ostream& os) const
   if (m_printScientific) {
     unsigned int savedPrecision = os.precision();
     os.precision(16);
+
     if (m_printHorizontally) {
       for (unsigned int i = 0; i < size; ++i) {
         os << std::scientific << (*this)[i]
@@ -681,6 +682,7 @@ uqGslVectorClass::print(std::ostream& os) const
            << std::endl;
       }
     }
+
     os.precision(savedPrecision);
   }
   else {
@@ -733,9 +735,9 @@ uqGslVectorClass::subWriteContents(
                            false,
                            filePtrSet)) {
     *filePtrSet.ofsVar << varNamePrefix << "_sub" << m_env.subIdString() << " = zeros(" << this->sizeLocal()
-            << ","                                                           << 1
-            << ");"
-            << std::endl;
+                       << ","                                                           << 1
+                       << ");"
+                       << std::endl;
     *filePtrSet.ofsVar << varNamePrefix << "_sub" << m_env.subIdString() << " = [";
 
     bool savedVectorPrintScientific   = this->getPrintScientific();
@@ -743,9 +745,9 @@ uqGslVectorClass::subWriteContents(
     this->setPrintScientific  (true);
     this->setPrintHorizontally(false);
     *filePtrSet.ofsVar << *this;
-          //<< std::endl; // No need for 'endl' because horizontally = 'false'
-    this->setPrintScientific  (savedVectorPrintScientific);
+                     //<< std::endl; // No need for 'endl' because horizontally = 'false'
     this->setPrintHorizontally(savedVectorPrintHorizontally);
+    this->setPrintScientific  (savedVectorPrintScientific);
 
     *filePtrSet.ofsVar << "];\n";
 

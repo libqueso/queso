@@ -2340,13 +2340,19 @@ uqSequenceOfVectorsClass<V,M>::subWriteContents(
       << ");"
       << std::endl;
   ofs << m_name << "_sub" << m_env.subIdString() << " = [";
+
   unsigned int chainSize = this->subSequenceSize();
   for (unsigned int j = 0; j < chainSize; ++j) {
-    bool savedVectorPrintState = m_seq[j]->getPrintHorizontally();
+    bool savedVectorPrintScientific = m_seq[j]->getPrintScientific();
+    bool savedVectorPrintState      = m_seq[j]->getPrintHorizontally();
+    m_seq[j]->setPrintScientific  (true);
     m_seq[j]->setPrintHorizontally(true);
+
     ofs << *(m_seq[j])
         << std::endl;
+
     m_seq[j]->setPrintHorizontally(savedVectorPrintState);
+    m_seq[j]->setPrintScientific  (savedVectorPrintScientific);
   }
   ofs << "];\n";
 
@@ -2425,16 +2431,22 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
               //          << std::endl;
               //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(): (m_seq[" << j << "].map().NumMyElements = " << m_seq[j]->map().NumMyElements()
               //          << std::endl;
-              V tmpVec(*(m_seq[j]));
+              //V tmpVec(*(m_seq[j]));
 	      //std::cout << "*(m_seq[" << j << "]) = " << tmpVec
               //          << std::endl;
 	      //std::cout << "*(m_seq[" << j << "]) = " << *(m_seq[j])
               //          << std::endl;
-              bool savedVectorPrintState = m_seq[j]->getPrintHorizontally();
+
+              bool savedVectorPrintScientific = m_seq[j]->getPrintScientific();
+              bool savedVectorPrintState      = m_seq[j]->getPrintHorizontally();
+              m_seq[j]->setPrintScientific  (true);
               m_seq[j]->setPrintHorizontally(true);
+
               *unifiedFilePtrSet.ofsVar << *(m_seq[j])
                                         << std::endl;
+
               m_seq[j]->setPrintHorizontally(savedVectorPrintState);
+              m_seq[j]->setPrintScientific  (savedVectorPrintScientific);
             }
           }
           else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
