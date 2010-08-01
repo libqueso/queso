@@ -134,12 +134,18 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Level0_all(
     currLogTargetValues.resizeSequence    (currOptions.m_rawChainSize); // Ok to use rawChainSize
 
     P_V auxVec(m_vectorSpace.zeroVector());
+    uqScalarFunctionSynchronizerClass<P_V,P_M> likelihoodSynchronizer(m_likelihoodFunction,auxVec); // prudencio 2010-08-01
     for (unsigned int i = 0; i < currChain.subSequenceSize(); ++i) {
       //std::cout << "In QUESO: before prior realizer with i = " << i << std::endl;
       m_priorRv.realizer().realization(auxVec);
+      auxVec.mpiBcast(0, m_env.subComm().Comm()); // prudencio 2010-08-01
       currChain.setPositionValues(i,auxVec);
-      // KAUST: all nodes should call here
-      currLogLikelihoodValues[i] = m_likelihoodFunction.lnValue(auxVec,NULL,NULL,NULL,NULL);  // likelihood is important
+      // KAUST: all nodes should call likelihood
+#if 1 // prudencio 2010-08-01
+      currLogLikelihoodValues[i] = likelihoodSynchronizer.callFunction(&auxVec,NULL,NULL,NULL,NULL,NULL); // likelihood is important
+#else
+      currLogLikelihoodValues[i] = m_likelihoodFunction.lnValue(auxVec,NULL,NULL,NULL,NULL); // likelihood is important
+#endif
       currLogTargetValues[i]     = m_priorRv.pdf().lnValue(auxVec,NULL,NULL,NULL,NULL) + currLogLikelihoodValues[i];
       //std::cout << "In QUESO: currLogTargetValues[" << i << "] = " << currLogTargetValues[i] << std::endl;
     }

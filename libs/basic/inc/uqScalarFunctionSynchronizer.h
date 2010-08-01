@@ -192,6 +192,7 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
             tmpVec[i] = bufferDouble[i];
           }
           internalValues = new V(tmpVec);
+          //if (vecValues) *vecValues = tmpVec; // prudencio 2010-08-01
         }
 
         if (bufferChar[1] == '1') {
