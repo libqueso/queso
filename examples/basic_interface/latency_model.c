@@ -96,11 +96,18 @@ double latency_likelihood(double *params)
   double likelihood;
   double model_latency;
   static double *data;
-  static    int *hops;
+  static int *hops;
   static int     first_flag = 1;
-  //  static double  variance = 1.*1.;  /* sigma^2 */
-  //  static double  variance = 0.5;  /* sigma^2 */
-  static double  variance = 0.01;  /* sigma^2 */
+  int ierr;
+
+  static double variance;		/* likelihood denominator (input) */
+
+  //static double  variance = 1e2;  /* sigma^2 */
+  //static double  variance = 1.*1.;  /* sigma^2 */
+  //static double  variance = 0.5;  /* sigma^2 */
+  //static double  variance = 0.1;  /* sigma^2 */
+  //static double  variance = 0.01;  /* sigma^2 */
+  //static double  variance = 1e-3;  /* sigma^2 */
 
   if(first_flag)
     {
@@ -117,6 +124,24 @@ double latency_likelihood(double *params)
       if(data == NULL)
 	{
 	  printf("** Error: unable to alloc space for data array\n");
+	  exit(1);
+	}
+
+      /* Read likelihood variance from queso input file */
+
+#if 1
+      char *ifile = "queso.latency.inp";
+      ierr  = grvy_input_fopen(ifile);
+      ierr *= grvy_input_fread_double("queso/parameters/variance",&variance);
+      ierr  = grvy_input_fclose();
+
+      printf("variance = %f\n",variance);
+#endif
+
+
+      if(ierr == 0)
+	{
+	  printf("** Error: unable to parse input file %s",ifile);
 	  exit(1);
 	}
 
