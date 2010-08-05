@@ -427,7 +427,7 @@ ip_mh_dataOutputFileName = koomie.out
 ip_mh_dataOutputAllowedSet = 0
 ip_mh_rawChain_type = 1
 ip_mh_rawChain_dataInputFileName = .
-ip_mh_rawChain_size = 10000000
+ip_mh_rawChain_size = 1000000
 #ip_mh_rawChain_size = 100000
 ###ip_mh_rawChain_size  = 200000
 #ip_mh_rawChain_size = 500000
@@ -493,7 +493,8 @@ param_mins  = '0.0 0.0'
 param_maxs  = '5 5'
 param_inits = '0. 0.'
 
-variance    = 1e-2
+sigma       = 0.3
+#variance    = 1e-2
 
 #-------- End Parameter Definitions -----------
 #----------------------------------------------

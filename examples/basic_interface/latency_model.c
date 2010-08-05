@@ -100,6 +100,7 @@ double latency_likelihood(double *params)
   static int     first_flag = 1;
   int ierr;
 
+  static double sigma;                  /* sigma in likelihood denominator (input) 8/
   static double variance;		/* likelihood denominator (input) */
 
   //static double  variance = 1e2;  /* sigma^2 */
@@ -129,14 +130,12 @@ double latency_likelihood(double *params)
 
       /* Read likelihood variance from queso input file */
 
-#if 1
       char *ifile = "queso.latency.inp";
       ierr  = grvy_input_fopen(ifile);
-      ierr *= grvy_input_fread_double("queso/parameters/variance",&variance);
+      ierr *= grvy_input_fread_double("queso/parameters/sigma",&sigma);
       ierr  = grvy_input_fclose();
 
-      printf("variance = %f\n",variance);
-#endif
+      printf("sigma = %f\n",sigma);
 
 
       if(ierr == 0)
@@ -181,7 +180,7 @@ double latency_likelihood(double *params)
       
   likelihood = likelihood/(1.*num_data_pts);
 
-  return( (-likelihood)/(variance) );
+  return( (-likelihood)/(sigma*sigma) );
 }
 
 int scan_data(char *ifile)
