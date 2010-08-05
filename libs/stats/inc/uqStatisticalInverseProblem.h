@@ -39,7 +39,7 @@
 #include <uqInstantiateIntersection.h>
 #include <uqVectorRV.h>
 #include <uqScalarFunction.h>
-#include <hpct.h>
+//#include <grvy.h>
 
 /*! This templated class represents a statistical inverse problem.
     It is templated on the type 'P_V' of vector and type 'P_M' of matrix,
@@ -265,7 +265,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(
   const P_V& initialValues,
   const P_M* initialProposalCovMatrix)
 {
-  //hpct_timer_begin("BayesMetropolisHastings"); TODO: revisit timing output
+  //grvy_timer_begin("BayesMetropolisHastings"); TODO: revisit timing output
   m_env.fullComm().Barrier();
   m_env.syncPrintDebugMsg("Entering uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings()",1,3000000,m_env.fullComm());
 
@@ -392,7 +392,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(
 
   m_env.syncPrintDebugMsg("Leaving uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings()",1,3000000,m_env.fullComm());
   m_env.fullComm().Barrier();
-  //  hpct_timer_end("BayesMetropolisHastings"); TODO: revist timers
+  // grvy_timer_end("BayesMetropolisHastings"); TODO: revist timers
   return;
 }
 

@@ -10,7 +10,7 @@ AM_CPPFLAGS = -I$(top_srcdir)/libs/core/inc \
 	-I$(top_srcdir)/libs/interface \
 	$(BOOST_CPPFLAGS) \
 	$(GSL_CFLAGS) \
-	$(HPCT_CFLAGS) \
+	$(GRVY_CFLAGS) \
 	$(GLPK_CFLAGS) \
 	$(HDF5_CFLAGS)
 
@@ -75,7 +75,7 @@ libqueso_includedir = $(prefix)/include
 libqueso_la_SOURCES += $(top_srcdir)/libs/interface/basic_classes.cpp \
 	$(top_srcdir)/libs/interface/basic_interface.cpp
 
-#libqueso_a_LIBADD   = $(HPCT_LIBSTATIC)
+#libqueso_a_LIBADD   = $(GRVY_LIBSTATIC)
 
 # (1/5) Headers to install from core/inc
 libqueso_include_HEADERS = $(top_srcdir)/libs/core/inc/uqDefines.h \
