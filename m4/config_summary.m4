@@ -33,8 +33,7 @@ echo Build user.................... : $USER
 echo Build host.................... : $BUILD_HOST
 echo Configure date................ : $BUILD_DATE
 echo Build architecture............ : $BUILD_ARCH
-echo SVN revision number........... : $BUILD_REV
-echo SVN status.................... : $BUILD_STATUS
+echo SVN revision number........... : $BUILD_VERSION
 echo
 echo Optional Features:
 if test "$HAVE_BOOST" == "no"; then
