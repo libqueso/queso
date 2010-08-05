@@ -25,7 +25,7 @@ echo Debug mode.................... : $enable_debug
 echo C++ compiler.................. : $CXX
 echo C++ compiler flags............ : $CXXFLAGS
 echo GSL_LIBS...................... : $GSL_LIBS
-echo HPCT DIR...................... : $HPCT_PREFIX
+echo GRVY DIR...................... : $GRVY_PREFIX
 echo GLPK DIR...................... : $GLPK_PREFIX
 echo HDF5 DIR...................... : $HDF5_PREFIX
 echo Install dir................... : $prefix 
