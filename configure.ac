@@ -107,7 +107,7 @@ AX_PATH_GRVY
 
 AC_CACHE_SAVE
 
-#PKG_CHECK_MODULES(hpct, hpct >= 0.24)
+#PKG_CHECK_MODULES(grvy, grvy >= 0.24)
 
 #----------------
 # Doxygen support
