@@ -74,6 +74,7 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_amAdaptInterval                          (UQ_MH_SG_AM_ADAPT_INTERVAL_ODV),
   m_amEta                                    (UQ_MH_SG_AM_ETA_ODV),
   m_amEpsilon                                (UQ_MH_SG_AM_EPSILON_ODV),
+  m_enableBrooksGelmanConvMonitor            (false),
   m_env                                      (env),
   m_optionsDesc                              (new po::options_description("Bayesian Metropolis-Hastings options")),
   m_option_help                              (m_prefix + "help"                              ),
@@ -108,7 +109,8 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_option_am_initialNonAdaptInterval        (m_prefix + "am_initialNonAdaptInterval"        ),
   m_option_am_adaptInterval                  (m_prefix + "am_adaptInterval"                  ),
   m_option_am_eta                            (m_prefix + "am_eta"                            ),
-  m_option_am_epsilon                        (m_prefix + "am_epsilon"                        )
+  m_option_am_epsilon                        (m_prefix + "am_epsilon"                        ),
+  m_option_enableBrooksGelmanConvMonitor     (m_prefix + "enableBrooksGelmanConvMonitor"     )
 {
 }
 
@@ -152,6 +154,7 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_amAdaptInterval                  (inputOptions.m_amAdaptInterval),
   m_amEta                            (inputOptions.m_amEta),
   m_amEpsilon                        (inputOptions.m_amEpsilon),
+  m_enableBrooksGelmanConvMonitor    (false),
   m_env                              (inputOptions.env()),
   m_optionsDesc                      (NULL),
   m_option_help                              (m_prefix + "help"                              ),
@@ -186,7 +189,8 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_option_am_initialNonAdaptInterval        (m_prefix + "am_initialNonAdaptInterval"        ),
   m_option_am_adaptInterval                  (m_prefix + "am_adaptInterval"                  ),
   m_option_am_eta                            (m_prefix + "am_eta"                            ),
-  m_option_am_epsilon                        (m_prefix + "am_epsilon"                        )
+  m_option_am_epsilon                        (m_prefix + "am_epsilon"                        ),
+  m_option_enableBrooksGelmanConvMonitor     (m_prefix + "enableBrooksGelmanConvMonitor"     )
 {
   if ((m_env.subDisplayFile() != NULL) &&
       (m_totallyMute == false        )) {
@@ -270,6 +274,7 @@ uqMetropolisHastingsSGOptionsClass::defineMyOptions(po::options_description& opt
     (m_option_am_adaptInterval.c_str(),                   po::value<unsigned int>()->default_value(UQ_MH_SG_AM_ADAPT_INTERVAL_ODV                     ), "'am' adaptation interval"                           )
     (m_option_am_eta.c_str(),                             po::value<double      >()->default_value(UQ_MH_SG_AM_ETA_ODV                                ), "'am' eta"                                           )
     (m_option_am_epsilon.c_str(),                         po::value<double      >()->default_value(UQ_MH_SG_AM_EPSILON_ODV                            ), "'am' epsilon"                                       )
+    (m_option_enableBrooksGelmanConvMonitor.c_str(),      po::value<bool        >()->default_value(UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR         ), "assess convergence using Brooks-Gelman metric"      )
   ;
 
   return;
@@ -476,6 +481,9 @@ uqMetropolisHastingsSGOptionsClass::getMyOptionValues(po::options_description& o
     m_amEpsilon = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_epsilon]).as<double>();
   }
 
+  if (m_env.allOptionsMap().count(m_option_enableBrooksGelmanConvMonitor)) {
+    m_enableBrooksGelmanConvMonitor = ((const po::variable_value&) m_env.allOptionsMap()[m_option_enableBrooksGelmanConvMonitor]).as<bool>();
+  }
   return;
 }
 
@@ -520,12 +528,13 @@ uqMetropolisHastingsSGOptionsClass::print(std::ostream& os) const
   for (unsigned int i = 0; i < m_drScalesForExtraStages.size(); ++i) {
     os << m_drScalesForExtraStages[i] << " ";
   }
-  os << "\n" << m_option_dr_duringAmNonAdaptiveInt  << " = " << m_drDuringAmNonAdaptiveInt
-     << "\n" << m_option_am_keepInitialMatrix       << " = " << m_amKeepInitialMatrix
-     << "\n" << m_option_am_initialNonAdaptInterval << " = " << m_amInitialNonAdaptInterval
-     << "\n" << m_option_am_adaptInterval           << " = " << m_amAdaptInterval
-     << "\n" << m_option_am_eta                     << " = " << m_amEta
-     << "\n" << m_option_am_epsilon                 << " = " << m_amEpsilon
+  os << "\n" << m_option_dr_duringAmNonAdaptiveInt     << " = " << m_drDuringAmNonAdaptiveInt
+     << "\n" << m_option_am_keepInitialMatrix          << " = " << m_amKeepInitialMatrix
+     << "\n" << m_option_am_initialNonAdaptInterval    << " = " << m_amInitialNonAdaptInterval
+     << "\n" << m_option_am_adaptInterval              << " = " << m_amAdaptInterval
+     << "\n" << m_option_am_eta                        << " = " << m_amEta
+     << "\n" << m_option_am_epsilon                    << " = " << m_amEpsilon
+     << "\n" << m_option_enableBrooksGelmanConvMonitor << " = " << m_enableBrooksGelmanConvMonitor
      << std::endl;
 
   return;
