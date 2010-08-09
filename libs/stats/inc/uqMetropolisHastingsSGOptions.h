@@ -130,7 +130,7 @@ public:
   double                             m_amEta;
   double                             m_amEpsilon;
 
-  bool                               m_enableBrooksGelmanConvMonitor;
+  unsigned int                       m_enableBrooksGelmanConvMonitor;
 
 private:
   void   defineMyOptions  (po::options_description& optionsDesc) const;

@@ -74,7 +74,7 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_amAdaptInterval                          (UQ_MH_SG_AM_ADAPT_INTERVAL_ODV),
   m_amEta                                    (UQ_MH_SG_AM_ETA_ODV),
   m_amEpsilon                                (UQ_MH_SG_AM_EPSILON_ODV),
-  m_enableBrooksGelmanConvMonitor            (false),
+  m_enableBrooksGelmanConvMonitor            (0),
   m_env                                      (env),
   m_optionsDesc                              (new po::options_description("Bayesian Metropolis-Hastings options")),
   m_option_help                              (m_prefix + "help"                              ),
@@ -154,7 +154,7 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_amAdaptInterval                  (inputOptions.m_amAdaptInterval),
   m_amEta                            (inputOptions.m_amEta),
   m_amEpsilon                        (inputOptions.m_amEpsilon),
-  m_enableBrooksGelmanConvMonitor    (false),
+  m_enableBrooksGelmanConvMonitor    (0),
   m_env                              (inputOptions.env()),
   m_optionsDesc                      (NULL),
   m_option_help                              (m_prefix + "help"                              ),
@@ -274,7 +274,7 @@ uqMetropolisHastingsSGOptionsClass::defineMyOptions(po::options_description& opt
     (m_option_am_adaptInterval.c_str(),                   po::value<unsigned int>()->default_value(UQ_MH_SG_AM_ADAPT_INTERVAL_ODV                     ), "'am' adaptation interval"                           )
     (m_option_am_eta.c_str(),                             po::value<double      >()->default_value(UQ_MH_SG_AM_ETA_ODV                                ), "'am' eta"                                           )
     (m_option_am_epsilon.c_str(),                         po::value<double      >()->default_value(UQ_MH_SG_AM_EPSILON_ODV                            ), "'am' epsilon"                                       )
-    (m_option_enableBrooksGelmanConvMonitor.c_str(),      po::value<bool        >()->default_value(UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR         ), "assess convergence using Brooks-Gelman metric"      )
+    (m_option_enableBrooksGelmanConvMonitor.c_str(),      po::value<unsigned int>()->default_value(UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR         ), "assess convergence using Brooks-Gelman metric"      )
   ;
 
   return;
@@ -482,7 +482,7 @@ uqMetropolisHastingsSGOptionsClass::getMyOptionValues(po::options_description& o
   }
 
   if (m_env.allOptionsMap().count(m_option_enableBrooksGelmanConvMonitor)) {
-    m_enableBrooksGelmanConvMonitor = ((const po::variable_value&) m_env.allOptionsMap()[m_option_enableBrooksGelmanConvMonitor]).as<bool>();
+    m_enableBrooksGelmanConvMonitor = ((const po::variable_value&) m_env.allOptionsMap()[m_option_enableBrooksGelmanConvMonitor]).as<unsigned int>();
   }
   return;
 }
