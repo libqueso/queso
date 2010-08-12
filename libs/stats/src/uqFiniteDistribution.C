@@ -51,6 +51,7 @@ uqFiniteDistributionClass::uqFiniteDistributionClass(
   unsigned int numOfZeroWeights = 0;
   double sumCheck = 0.;
   unsigned int j = 0;
+  m_map.empty(); // prudenci 2010-08-11
   for (unsigned int i = 0; i < inpWeights.size(); ++i) {
     double previousSum = sumCheck;
     sumCheck += inpWeights[i];
@@ -70,8 +71,16 @@ uqFiniteDistributionClass::uqFiniteDistributionClass(
 
       if (sumCheck > 1.) sumCheck = 1.;
       m_weights[j] = inpWeights[i];
-      m_map.insert(std::map<double,unsigned int>::value_type(sumCheck,i));
-      j++;
+      std::pair<std::map<double,unsigned int>::iterator,bool> ret;
+      ret = m_map.insert(std::map<double,unsigned int>::value_type(sumCheck,i));
+      if (ret.second == true) {
+        j++;
+      }
+      else {
+	std::cerr << "In uqFiniteDistributionClass::constructor()"
+                  << ": WARNING, map insertion failed"
+                  << std::endl;
+      }
     }
   }
   m_weights.resize(j,0.);
