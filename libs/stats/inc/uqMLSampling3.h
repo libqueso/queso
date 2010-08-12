@@ -124,7 +124,7 @@ uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(
       //                void *recvbuf, int recvcount, MPI_Datatype recvtype, 
       //                int root, MPI_Comm comm )
       unsigned int auxUInt = indexOfFirstWeight;
-      int mpiRC = MPI_Gather((void *) &auxUInt, 1, MPI_INT, (void *) &allFirstIndexes[0], (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm()); // LOAD BALANCE
+      int mpiRC = MPI_Gather((void *) &auxUInt, 1, MPI_UNSIGNED, (void *) &allFirstIndexes[0], (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm()); // LOAD BALANCE
       UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                           m_env.fullRank(),
                           "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
@@ -138,7 +138,7 @@ uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(
       }
 
       auxUInt = indexOfLastWeight;
-      mpiRC = MPI_Gather((void *) &auxUInt, 1, MPI_INT, (void *) &allLastIndexes[0], (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm()); // LOAD BALANCE
+      mpiRC = MPI_Gather((void *) &auxUInt, 1, MPI_UNSIGNED, (void *) &allLastIndexes[0], (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm()); // LOAD BALANCE
       UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                           m_env.fullRank(),
                           "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
