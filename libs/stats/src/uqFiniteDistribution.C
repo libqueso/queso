@@ -49,6 +49,7 @@ uqFiniteDistributionClass::uqFiniteDistributionClass(
   }
 
   unsigned int numOfZeroWeights = 0;
+  unsigned int numRareCases = 0;
   double sumCheck = 0.;
   unsigned int j = 0;
   m_map.empty(); // prudenci 2010-08-11
@@ -77,9 +78,12 @@ uqFiniteDistributionClass::uqFiniteDistributionClass(
         j++;
       }
       else {
-	std::cerr << "In uqFiniteDistributionClass::constructor()"
-                  << ": WARNING, map insertion failed"
-                  << std::endl;
+        numRareCases++;
+        if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+           *m_env.subDisplayFile() << "In uqFiniteDistributionClass::constructor()"
+                                   << ": WARNING, map insertion failed"
+                                   << std::endl;
+        }
       }
     }
   }
@@ -100,12 +104,13 @@ uqFiniteDistributionClass::uqFiniteDistributionClass(
     *m_env.subDisplayFile() << "In uqFiniteDistributionClass::constructor()"
                             << ": inpWeights.size() = " << inpWeights.size()
                             << ", numOfZeroWeights = "  << numOfZeroWeights
+                            << ", numRareCases = "      << numRareCases
                             << ", m_map.size() = "      << m_map.size()
                             << ", m_weights.size() = "  << m_weights.size()
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO((inpWeights.size() != (m_weights.size()+numOfZeroWeights)),
+  UQ_FATAL_TEST_MACRO((inpWeights.size() != (m_weights.size()+numOfZeroWeights+numRareCases)),
                       m_env.fullRank(),
                       "uqFiniteDistributionClass::constructor()",
                       "number of input weights was not conserved");
