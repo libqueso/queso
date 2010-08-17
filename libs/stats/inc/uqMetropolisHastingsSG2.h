@@ -795,9 +795,12 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
     }
 
     if( m_options.m_enableBrooksGelmanConvMonitor > 0 ) {
-      if( positionId > 1 && positionId%m_options.m_enableBrooksGelmanConvMonitor == 0) {
-	double conv_est = workingChain.estimateConvBrooksGelman( 1, // Initial chain position is 1
-								 positionId );
+      if( positionId%m_options.m_enableBrooksGelmanConvMonitor == 0 &&
+	  positionId > m_options.m_BrooksGelmanLag ) {
+	
+	double conv_est = workingChain.estimateConvBrooksGelman( m_options.m_BrooksGelmanLag,
+								 positionId - m_options.m_BrooksGelmanLag );
+
 	if ( m_env.subDisplayFile() ) {
 	    *m_env.subDisplayFile() << "positionId = " << positionId 
 				    << ", conv_est = " << conv_est << std::endl;
