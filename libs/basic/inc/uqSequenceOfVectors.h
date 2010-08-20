@@ -2230,6 +2230,11 @@ uqSequenceOfVectorsClass<V,M>::estimateConvBrooksGelman(
       this->subMean( initialPos, numPos , psi_j_dot );
       this->unifiedMean( initialPos, numPos, psi_dot_dot );
 
+#if 0
+      std::cout << "psi_j_dot = " << psi_j_dot << std::endl;
+      std::cout << "psi_dot_dot = " << psi_dot_dot << std::endl;
+#endif
+
       /* W = \frac{1}{m*(n-1)}*\sum_{j=1}^m \sum{t=1}^n 
 	 (\psi_{jt} - \overline{\psi_{j\cdot}})*(\psi_{jt} - \overline{\psi_{j\cdot}})^T
 	 This corresponds to the "within-sequence" covariance matrix. */
@@ -2253,6 +2258,12 @@ uqSequenceOfVectorsClass<V,M>::estimateConvBrooksGelman(
 
       (*W) = 1.0/(double(m)*(double(n)-1.0)) * (*W);
 
+#if 0
+      std::cout << "n, m = " << n << ", " << m << std::endl;
+      std::cout << "W_local = " << *W_local << std::endl;
+      std::cout << "W = " << *W << std::endl;
+#endif
+
       // Need to delete pointers to temporary covariance matrices
       delete W_local;
 
@@ -2273,12 +2284,21 @@ uqSequenceOfVectorsClass<V,M>::estimateConvBrooksGelman(
 
       (*B_over_n) = 1.0/(double(m)-1.0) * (*B_over_n); 
 
+#if 0
+      std::cout << "B_over_n = " << *B_over_n << std::endl;
+#endif
+      
+
       /* R_p = (n-1)/n + (m+1)/m * \lambda
 	 \lambda = largest eigenvalue of W^{-1}*B/n */
       M* A = m_vectorSpace.newDiagMatrix( m_vectorSpace.zeroVector() );
 
       W->invertMultiply( *B_over_n, *A );
 
+#if 0
+      std::cout << "A = " << *A << std::endl;
+      std::cout.flush();
+#endif
       // Need to delete pointers to temporary covariance matrices
       delete W;
       delete B_over_n;

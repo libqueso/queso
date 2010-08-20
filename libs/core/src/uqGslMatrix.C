@@ -726,7 +726,7 @@ uqGslMatrixClass::largestEigen(double& eigenValue, uqGslVectorClass& eigenVector
 
   // Some parameters associated with the algorithm
   // TODO: Do we want to add the ability to have these set by the user?
-  const unsigned int max_num_iterations = 1000;
+  const unsigned int max_num_iterations = 10000;
   const double tolerance = 1.0e-13;
 
   // Create temporary working vectors.
