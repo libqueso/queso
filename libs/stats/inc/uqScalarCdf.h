@@ -145,8 +145,8 @@ uqSampledScalarCdfClass<T>::uqSampledScalarCdfClass(
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqSampledScalarCdfClass<T>::constructor()"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 
   //for (unsigned int i = 0; i < m_cdfValues.size(); ++i) {
@@ -156,8 +156,8 @@ uqSampledScalarCdfClass<T>::uqSampledScalarCdfClass(
  
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqSampledScalarCdfClass<T>::constructor()"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 }
 

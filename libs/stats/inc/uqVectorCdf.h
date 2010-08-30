@@ -53,10 +53,14 @@ public:
                                 const uqVectorSetClass<V,M>& pdfSupport);
   virtual ~uqBaseVectorCdfClass();
 
-  const   uqVectorSetClass<V,M>&              pdfSupport     ()                                const;
-  virtual void                                values         (const V& paramValues, V& cdfVec) const = 0;
-  virtual const uqBaseScalarCdfClass<double>& cdf            (unsigned int rowId)              const = 0;
-  virtual void                                print          (std::ostream& os)                const = 0;
+          const uqVectorSetClass<V,M>&        pdfSupport      ()                                const;
+  virtual void                                values          (const V& paramValues, V& cdfVec) const = 0;
+  virtual const uqBaseScalarCdfClass<double>& cdf             (unsigned int rowId)              const = 0;
+  virtual void                                print           (std::ostream& os)                const = 0;
+  virtual void                                subWriteContents(const std::string&            varNamePrefix,
+                                                               const std::string&            fileName,
+                                                               const std::string&            fileType,
+                                                               const std::set<unsigned int>& allowedSubEnvIds) const;
 
 protected:
 
@@ -99,6 +103,19 @@ uqBaseVectorCdfClass<V,M>::pdfSupport() const
   return m_pdfSupport;
 }
 
+template<class V, class M>
+void
+uqBaseVectorCdfClass<V,M>::subWriteContents(
+  const std::string&            varNamePrefix,
+  const std::string&            fileName,
+  const std::string&            fileType,
+  const std::set<unsigned int>& allowedSubEnvIds) const
+{
+  std::cerr << "WARNING: uqBaseVectorCdfClass<V,M>::subWriteContents() being used..."
+            << std::endl;
+  return;
+}
+
 template <class V, class M>
   std::ostream& operator<< (std::ostream& os, const uqBaseVectorCdfClass<V,M>& obj)
 {
@@ -112,10 +129,10 @@ template <class V, class M>
 template<class V, class M>
 class uqGenericVectorCdfClass : public uqBaseVectorCdfClass<V,M> {
 public:
-  uqGenericVectorCdfClass(const char*                    prefix,
+  uqGenericVectorCdfClass(const char*                  prefix,
                           const uqVectorSetClass<V,M>& pdfSupport,
                           double (*routinePtr)(const V& paramValues, const void* routineDataPtr, V& cdfVec),
-                          const void* routineDataPtr);
+                          const void*                  routineDataPtr);
  ~uqGenericVectorCdfClass();
 
   void values(const V& paramValues, V& cdfVec) const;
@@ -295,6 +312,10 @@ public:
         void                          values(const V& paramValues, V& cdfVec) const;
   const uqBaseScalarCdfClass<double>& cdf   (unsigned int rowId)              const;
         void                          print (std::ostream& os)                const;
+        void                          subWriteContents(const std::string&            varNamePrefix,
+                                                       const std::string&            fileName,
+                                                       const std::string&            fileType,
+                                                       const std::set<unsigned int>& allowedSubEnvIds) const;
 
 protected:
   using uqBaseVectorCdfClass<V,M>::m_env;
@@ -379,6 +400,44 @@ uqSampledVectorCdfClass<V,M>::print(std::ostream& os) const
   for (unsigned int i = 0; i < (unsigned int) m_cdfs.MyLength(); ++i) {
     os << (*tmp->m_cdfs(i,0))
        << std::endl;
+  }
+
+  return;
+}
+
+template<class V, class M>
+void
+uqSampledVectorCdfClass<V,M>::subWriteContents(
+  const std::string&            varNamePrefix,
+  const std::string&            fileName,
+  const std::string&            fileType,
+  const std::set<unsigned int>& allowedSubEnvIds) const
+{
+  UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
+                      m_env.fullRank(),
+                      "uqSampledVectorCdfClass<V,M>::subWriteContents()",
+                      "unexpected subRank");
+
+  uqFilePtrSetStruct filePtrSet;
+  if (m_env.openOutputFile(fileName,
+                           fileType, // "m or hdf"
+                           allowedSubEnvIds,
+                           false,
+                           filePtrSet)) {
+    *filePtrSet.ofsVar << varNamePrefix << "_sub" << m_env.subIdString() << " = zeros(" << m_cdfs.MyLength()
+                       << ","                                                           << 1
+                       << ");"
+                       << std::endl;
+    *filePtrSet.ofsVar << varNamePrefix << "_sub" << m_env.subIdString() << " = [";
+
+    unsigned int savedPrecision = filePtrSet.ofsVar->precision();
+    filePtrSet.ofsVar->precision(16);
+    *filePtrSet.ofsVar << *this;
+    filePtrSet.ofsVar->precision(savedPrecision);
+
+    *filePtrSet.ofsVar << "];\n";
+
+    m_env.closeFile(filePtrSet,fileType);
   }
 
   return;
