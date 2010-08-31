@@ -418,26 +418,11 @@ uqSampledVectorCdfClass<V,M>::subWriteContents(
                       "uqSampledVectorCdfClass<V,M>::subWriteContents()",
                       "unexpected subRank");
 
-  uqFilePtrSetStruct filePtrSet;
-  if (m_env.openOutputFile(fileName,
-                           fileType, // "m or hdf"
-                           allowedSubEnvIds,
-                           false,
-                           filePtrSet)) {
-    *filePtrSet.ofsVar << varNamePrefix << "_sub" << m_env.subIdString() << " = zeros(" << m_cdfs.MyLength()
-                       << ","                                                           << 1
-                       << ");"
-                       << std::endl;
-    *filePtrSet.ofsVar << varNamePrefix << "_sub" << m_env.subIdString() << " = [";
-
-    unsigned int savedPrecision = filePtrSet.ofsVar->precision();
-    filePtrSet.ofsVar->precision(16);
-    *filePtrSet.ofsVar << *this;
-    filePtrSet.ofsVar->precision(savedPrecision);
-
-    *filePtrSet.ofsVar << "];\n";
-
-    m_env.closeFile(filePtrSet,fileType);
+  uqSampledVectorCdfClass<V,M>* tmp = const_cast<uqSampledVectorCdfClass<V,M>*>(this);
+  char compId[16+1];
+  for (unsigned int i = 0; i < (unsigned int) m_cdfs.MyLength(); ++i) {
+    sprintf(compId,"%d",i);
+    tmp->m_cdfs(i,0)->subWriteContents(varNamePrefix+compId,fileName,fileType,allowedSubEnvIds);
   }
 
   return;

@@ -49,11 +49,15 @@ public:
            uqBaseScalarCdfClass(const uqBaseEnvironmentClass& env, const char* prefix);
   virtual ~uqBaseScalarCdfClass();
 
-          const uqBaseEnvironmentClass& env    () const;
-          const std::string&            prefix () const;
-  virtual       double                  value  (T             paramValue) const = 0;
-  virtual       T                       inverse(double        cdfValue  ) const = 0;
-  virtual       void                    print  (std::ostream& os        ) const = 0;
+          const uqBaseEnvironmentClass& env             () const;
+          const std::string&            prefix          () const;
+  virtual       double                  value           (T             paramValue) const = 0;
+  virtual       T                       inverse         (double        cdfValue  ) const = 0;
+  virtual       void                    print           (std::ostream& os        ) const = 0;
+  virtual       void                    subWriteContents(const std::string&            varNamePrefix,
+                                                         const std::string&            fileName,
+                                                         const std::string&            fileType,
+                                                         const std::set<unsigned int>& allowedSubEnvIds) const;
 
 protected:
   const uqBaseEnvironmentClass& m_env;
@@ -100,6 +104,19 @@ uqBaseScalarCdfClass<T>::prefix() const
   return m_prefix;
 }
 
+template<class T>
+void
+uqBaseScalarCdfClass<T>::subWriteContents(
+  const std::string&            varNamePrefix,
+  const std::string&            fileName,
+  const std::string&            fileType,
+  const std::set<unsigned int>& allowedSubEnvIds) const
+{
+  std::cerr << "WARNING: uqBaseScalarCdfClass<T>::subWriteContents() being used..."
+            << std::endl;
+  return;
+}
+
 template <class T>
 std::ostream& operator<< (std::ostream& os, const uqBaseScalarCdfClass<T>& obj)
 {
@@ -119,9 +136,13 @@ public:
                           const std::vector<double>&    cdfValues);
  ~uqSampledScalarCdfClass();
 
-  double value  (T             paramValue) const;
-  T      inverse(double        cdfValue  ) const;
-  void   print  (std::ostream& os        ) const;
+  double value           (T             paramValue) const;
+  T      inverse         (double        cdfValue  ) const;
+  void   print           (std::ostream& os        ) const;
+  void   subWriteContents(const std::string&            varNamePrefix,
+                          const std::string&            fileName,
+                          const std::string&            fileType,
+                          const std::set<unsigned int>& allowedSubEnvIds) const;
 
 protected:
   using uqBaseScalarCdfClass<T>::m_env;
@@ -283,6 +304,46 @@ uqSampledScalarCdfClass<T>::print(std::ostream& os) const
   }
   os << "];"
      << std::endl;
+
+  return;
+}
+
+template<class T>
+void
+uqSampledScalarCdfClass<T>::subWriteContents(
+  const std::string&            varNamePrefix,
+  const std::string&            fileName,
+  const std::string&            fileType,
+  const std::set<unsigned int>& allowedSubEnvIds) const
+{
+  UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
+                      m_env.fullRank(),
+                      "uqSampledScalarCdfClass<T>::subWriteContents()",
+                      "unexpected subRank");
+
+  uqFilePtrSetStruct filePtrSet;
+  if (m_env.openOutputFile(fileName,
+                           fileType, // "m or hdf"
+                           allowedSubEnvIds,
+                           false,
+                           filePtrSet)) {
+    *filePtrSet.ofsVar << varNamePrefix << "_sub" << m_env.subIdString() << " = zeros(" << m_cdfValues.size()
+                       << ","                                                           << 1
+                       << ");"
+                       << std::endl;
+    *filePtrSet.ofsVar << varNamePrefix << "_sub" << m_env.subIdString() << " = [";
+
+    unsigned int savedPrecision = filePtrSet.ofsVar->precision();
+    filePtrSet.ofsVar->precision(16);
+    for (unsigned int j = 0; j < m_cdfValues.size(); ++j) {
+      *filePtrSet.ofsVar << m_cdfValues[j] << " ";
+    }
+    filePtrSet.ofsVar->precision(savedPrecision);
+
+    *filePtrSet.ofsVar << "];\n";
+
+    m_env.closeFile(filePtrSet,fileType);
+  }
 
   return;
 }
