@@ -327,13 +327,31 @@ uqSampledScalarCdfClass<T>::subWriteContents(
                            allowedSubEnvIds,
                            false,
                            filePtrSet)) {
-    *filePtrSet.ofsVar << varNamePrefix << "_sub" << m_env.subIdString() << " = zeros(" << m_cdfValues.size()
-                       << ","                                                           << 1
+
+    // Grid
+    *filePtrSet.ofsVar << varNamePrefix << "grid_sub" << m_env.subIdString() << " = zeros(" << m_cdfGrid.size()
+                       << ","                                                               << 1
                        << ");"
                        << std::endl;
-    *filePtrSet.ofsVar << varNamePrefix << "_sub" << m_env.subIdString() << " = [";
+    *filePtrSet.ofsVar << varNamePrefix << "grid_sub" << m_env.subIdString() << " = [";
 
     unsigned int savedPrecision = filePtrSet.ofsVar->precision();
+    filePtrSet.ofsVar->precision(16);
+    for (unsigned int j = 0; j < m_cdfGrid.size(); ++j) {
+      *filePtrSet.ofsVar << m_cdfGrid[j] << " ";
+    }
+    filePtrSet.ofsVar->precision(savedPrecision);
+
+    *filePtrSet.ofsVar << "];\n";
+
+    // Values
+    *filePtrSet.ofsVar << varNamePrefix << "values_sub" << m_env.subIdString() << " = zeros(" << m_cdfValues.size()
+                       << ","                                                                 << 1
+                       << ");"
+                       << std::endl;
+    *filePtrSet.ofsVar << varNamePrefix << "values_sub" << m_env.subIdString() << " = [";
+
+    savedPrecision = filePtrSet.ofsVar->precision();
     filePtrSet.ofsVar->precision(16);
     for (unsigned int j = 0; j < m_cdfValues.size(); ++j) {
       *filePtrSet.ofsVar << m_cdfValues[j] << " ";
@@ -342,6 +360,7 @@ uqSampledScalarCdfClass<T>::subWriteContents(
 
     *filePtrSet.ofsVar << "];\n";
 
+    // Close file
     m_env.closeFile(filePtrSet,fileType);
   }
 
