@@ -422,7 +422,7 @@ uqSampledVectorCdfClass<V,M>::subWriteContents(
   char compId[16+1];
   for (unsigned int i = 0; i < (unsigned int) m_cdfs.MyLength(); ++i) {
     sprintf(compId,"%d",i);
-    tmp->m_cdfs(i,0)->subWriteContents(varNamePrefix+compId,fileName,fileType,allowedSubEnvIds);
+    tmp->m_cdfs(i,0)->subWriteContents(varNamePrefix+"comp"+compId,fileName,fileType,allowedSubEnvIds);
   }
 
   return;
