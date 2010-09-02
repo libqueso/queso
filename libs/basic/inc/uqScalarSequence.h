@@ -88,7 +88,7 @@ public:
                                                    T&                              unifiedMaxDomainValue,
                                                    std::vector<T>&                 unifiedCdfValues) const;
         void         subWeigthCdf                 (unsigned int                    numIntervals,
-                                                   uqUniformOneDGridClass<T>*      gridValues,
+                                                   uqUniformOneDGridClass<T>*&     gridValues,
                                                    std::vector<T>&                 cdfValues) const;
 
         T            subMean                      (unsigned int                    initialPos,
@@ -165,7 +165,7 @@ public:
         void         subWeigthHistogram           (unsigned int                    initialPos,
                                                    const T&                        minHorizontalValue,
                                                    const T&                        maxHorizontalValue,
-                                                   uqUniformOneDGridClass<T>*      gridValues,
+                                                   uqUniformOneDGridClass<T>*&     gridValues,
                                                    std::vector<unsigned int>&      bins) const;
         void         subCdfStacc                  (unsigned int                    initialPos,
                                                    std::vector<double>&            cdfStaccValues,
@@ -917,9 +917,9 @@ uqScalarSequenceClass<T>::unifiedUniformlySampledCdf(
 template <class T>
 void
 uqScalarSequenceClass<T>::subWeigthCdf(
-  unsigned int               numEvaluationPoints,
-  uqUniformOneDGridClass<T>* gridValues,
-  std::vector<T>&            cdfValues) const
+  unsigned int                numEvaluationPoints,
+  uqUniformOneDGridClass<T>*& gridValues,
+  std::vector<T>&             cdfValues) const
 {
   T                         tmpMinValue;
   T                         tmpMaxValue;
@@ -2093,11 +2093,11 @@ uqScalarSequenceClass<T>::unifiedHistogram(
 template <class T>
 void
 uqScalarSequenceClass<T>::subWeigthHistogram(
-  unsigned int               initialPos,
-  const T&                   minHorizontalValue,
-  const T&                   maxHorizontalValue,
-  uqUniformOneDGridClass<T>* gridValues,
-  std::vector<unsigned int>& bins) const
+  unsigned int                initialPos,
+  const T&                    minHorizontalValue,
+  const T&                    maxHorizontalValue,
+  uqUniformOneDGridClass<T>*& gridValues,
+  std::vector<unsigned int>&  bins) const
 {
   UQ_FATAL_TEST_MACRO(bins.size() < 3,
                       m_env.fullRank(),
