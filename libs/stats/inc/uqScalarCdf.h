@@ -380,12 +380,12 @@ horizontalDistance(const uqBaseScalarCdfClass<T>& cdf1,
   double x2 = cdf1.inverse(1.-epsilon*.5);
   if (cdf1.env().subDisplayFile()) {
     *cdf1.env().subDisplayFile() << "In horizontalDistance()"
-                                << ", cdf1.prefix() = " << cdf1.prefix()
-                                << ", cdf2.prefix() = " << cdf2.prefix()
-                                << ", epsilon = "       << epsilon
-                                << ": x1 = "            << x1
-                                << ", x2 = "            << x2
-                                << std::endl;
+                                 << ", cdf1.prefix() = " << cdf1.prefix()
+                                 << ", cdf2.prefix() = " << cdf2.prefix()
+                                 << ", epsilon = "       << epsilon
+                                 << ": x1 = "            << x1
+                                 << ", x2 = "            << x2
+                                 << std::endl;
   }
 
   //if (cdf1.env().subDisplayFile()) {
@@ -399,27 +399,38 @@ horizontalDistance(const uqBaseScalarCdfClass<T>& cdf1,
     double ratio = i/(numEvaluationPoints-1.); // IMPORTANT: Yes, '-1.'
     double x = (1.-ratio)*x1 + ratio*x2;
     double y = cdf2.inverse(cdf1.value(x));
-    //if (cdf1.env().subDisplayFile()) {
-    //  *cdf1.env().subDisplayFile() << "In horizontalDistance: x = " << x
-    //                              << ", cdf1.value(x) = "          << cdf1.value(x)
-    //                              << ", y = "                      << y
-    //                              << std::endl;
-    //}
     double d = fabs(x-y);
+    if ((cdf1.env().subDisplayFile()) && (cdf1.env().displayVerbosity() >= 3)) {
+      *cdf1.env().subDisplayFile() << "In horizontalDistance"
+                                   << ": i = "                  << i
+                                   << ", x = "                  << x
+                                   << ", cdf1.value(x) = "      << cdf1.value(x)
+                                   << ", y = "                  << y
+                                   << ", d = "                  << d
+                                   << ", currentMaxDistance = " << maxDistance
+                                   << std::endl;
+    }
     if (maxDistance < d) {
       maxDistance     = d;
       xForMaxDistance = x;
+      if ((cdf1.env().subDisplayFile()) && (cdf1.env().displayVerbosity() >= 3)) {
+        *cdf1.env().subDisplayFile() << "In horizontalDistance"
+                                     << ": i = "               << i
+                                     << ", NOW maxDistance = " << maxDistance
+                                     << ", xForMaxDistance = " << xForMaxDistance
+                                     << std::endl;
+      }
     }
   }
 
   if (cdf1.env().subDisplayFile()) {
     *cdf1.env().subDisplayFile() << "In horizontalDistance()"
-                                << ", cdf1.prefix() = "   << cdf1.prefix()
-                                << ", cdf2.prefix() = "   << cdf2.prefix()
-                                << ", epsilon = "         << epsilon
-                                << ": maxDistance = "     << maxDistance
-                                << ", xForMaxDistance = " << xForMaxDistance
-                                << std::endl;
+                                 << ", cdf1.prefix() = "   << cdf1.prefix()
+                                 << ", cdf2.prefix() = "   << cdf2.prefix()
+                                 << ", epsilon = "         << epsilon
+                                 << ": maxDistance = "     << maxDistance
+                                 << ", xForMaxDistance = " << xForMaxDistance
+                                 << std::endl;
   }
 
   return maxDistance;
