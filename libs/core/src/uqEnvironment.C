@@ -403,11 +403,12 @@ uqBaseEnvironmentClass::syncPrintDebugMsg(const char* msg, unsigned int msgVerbo
                   << ", inter0Rank "     << this->inter0Rank()
                   << std::endl;
       }
+      usleep(numUSecs);
       commObj.Barrier();
     }
-    if (this->fullRank() == 0) std::cout << "Sleeping " << numUSecs << " microseconds..."
-                                         << std::endl;
-    usleep(numUSecs);
+    //if (this->fullRank() == 0) std::cout << "Sleeping " << numUSecs << " microseconds..."
+    //                                     << std::endl;
+    //usleep(numUSecs);
     commObj.Barrier();
   }
 
