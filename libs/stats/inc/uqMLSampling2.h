@@ -670,17 +670,26 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step04_inter0(
       }
 
       P_V auxVec(m_vectorSpace.zeroVector());
-      P_V weightedMeanVec(m_vectorSpace.zeroVector());
+      P_V subWeightedMeanVec(m_vectorSpace.zeroVector());
       for (unsigned int i = 0; i < weightSequence.subSequenceSize(); ++i) {
         prevChain.getPositionValues(i,auxVec);
-        weightedMeanVec += weightSequence[i]*auxVec;
+        subWeightedMeanVec += weightSequence[i]*auxVec;
+      }
+
+      // Todd Oliver 2010-09-07: compute weighted mean over all processors
+      P_V unifiedWeightedMeanVec(m_vectorSpace.zeroVector());
+      if (m_env.inter0Rank() >= 0) {
+        subWeightedMeanVec.mpiAllReduce(MPI_SUM,m_env.inter0Comm(),unifiedWeightedMeanVec);
+      }
+      else {
+        unifiedWeightedMeanVec = subWeightedMeanVec;
       }
 
       P_V diffVec(m_vectorSpace.zeroVector());
       P_M subCovMatrix(m_vectorSpace.zeroVector());
       for (unsigned int i = 0; i < weightSequence.subSequenceSize(); ++i) {
         prevChain.getPositionValues(i,auxVec);
-        diffVec = auxVec - weightedMeanVec;
+        diffVec = auxVec - unifiedWeightedMeanVec;
         subCovMatrix += weightSequence[i]*matrixProduct(diffVec,diffVec);
       }
 
