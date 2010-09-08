@@ -19,6 +19,8 @@ Version 0.42.0
   * using now grvy library in place of hpct library
   * added Wigner pdf
   * added finite distribution capability
+  * force LU decomposition on matrix class to run again once a matrix is changed
+  * added eigenvalue and eigenvector capabilities to vector class
 
 Version 0.41.0 (30 October 2009)
 https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.41
