@@ -67,8 +67,9 @@ uqFilePtrSetStruct::~uqFilePtrSetStruct()
 // Base class
 //*****************************************************
 uqBaseEnvironmentClass::uqBaseEnvironmentClass(
-  MPI_Comm    inputComm,
-  const char* optionsInputFileName)
+  MPI_Comm                       inputComm,
+  const char*                    optionsInputFileName,
+  const uqEnvOptionsValuesClass* optionsValues)
   :
   m_worldRank              (-1),
   m_fullRawComm            (inputComm),
@@ -88,8 +89,10 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_subDisplayFile         (NULL),
   m_rng                    (NULL),
   m_exceptionalCircunstance(false),
-  m_options                (NULL)
+  m_optionsObj             (NULL),
+  m_optionsValues          (new uqEnvOptionsValuesClass)
 {
+  if (optionsValues) *m_optionsValues = *optionsValues;
 }
 
 uqBaseEnvironmentClass::uqBaseEnvironmentClass(const uqBaseEnvironmentClass& obj)
@@ -131,7 +134,8 @@ uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
 
     }
 
-  if (m_options) delete m_options;
+  if (m_optionsObj   ) delete m_optionsObj;
+  if (m_optionsValues) delete m_optionsValues;
 
   if (m_allOptionsMap) {
     delete m_allOptionsMap;
@@ -235,11 +239,11 @@ uqBaseEnvironmentClass::subDisplayFile() const
 unsigned int
 uqBaseEnvironmentClass::numSubEnvironments() const
 {
-  UQ_FATAL_TEST_MACRO(m_options == NULL,
+  UQ_FATAL_TEST_MACRO(m_optionsObj == NULL,
                       m_fullRank,
                       "uqBaseEnvironmentClass::numSubEnvironments()",
-                      "m_options variable is NULL");
-  return m_options->m_numSubEnvironments;
+                      "m_optionsObj variable is NULL");
+  return m_optionsObj->m_optionsValues.m_numSubEnvironments;
 }
 
 unsigned int
@@ -273,21 +277,32 @@ uqBaseEnvironmentClass::scanInputFileForMyOptions(const po::options_description&
   std::cout << "Entering uqBaseEnvClass::scanInputFileForMyOptions()" << std::endl;
 #endif
 
+  UQ_FATAL_TEST_MACRO(m_allOptionsDesc == NULL,
+                      m_fullRank,
+                      "uqBaseEnvironmentClass::scanInputFileForMyOptions()",
+                      "m_allOptionsDesc variable is NULL");
   m_allOptionsDesc->add(optionsDesc);
   //if (m_subDisplayFile) {
   //  *m_subDisplayFile << *m_allOptionsDesc
-  //                          << std::endl;
+  //                    << std::endl;
   //}
+
   //std::ifstream ifs(m_optionsInputFileName.c_str());
   std::ifstream* ifs = new std::ifstream(m_optionsInputFileName.c_str());
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "in uqBaseEnvClass::scanInputFileForMyOptions(), before store(a)" << std::endl;
 #endif
+
+  UQ_FATAL_TEST_MACRO(m_allOptionsMap == NULL,
+                      m_fullRank,
+                      "uqBaseEnvironmentClass::scanInputFileForMyOptions()",
+                      "m_allOptionsMap variable is NULL");
   po::store(po::parse_config_file(*ifs, *m_allOptionsDesc, true), *m_allOptionsMap);
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "in uqBaseEnvClass::scanInputFileForMyOptions(), after store(a)" << std::endl;
 #endif
   po::notify(*m_allOptionsMap);
+
   //ifs.close();
   delete ifs;
 #ifdef QUESO_MEMORY_DEBUGGING
@@ -318,21 +333,21 @@ uqBaseEnvironmentClass::allOptionsMap() const
 unsigned int
 uqBaseEnvironmentClass::displayVerbosity() const
 {
-  UQ_FATAL_TEST_MACRO(m_options == NULL,
+  UQ_FATAL_TEST_MACRO(m_optionsObj == NULL,
                       m_fullRank,
                       "uqBaseEnvironmentClass::displayVerbosity()",
-                      "m_options variable is NULL");
-  return m_options->m_displayVerbosity;
+                      "m_optionsObj variable is NULL");
+  return m_optionsObj->m_optionsValues.m_displayVerbosity;
 }
 
 unsigned int
 uqBaseEnvironmentClass::syncVerbosity() const
 {
-  UQ_FATAL_TEST_MACRO(m_options == NULL,
+  UQ_FATAL_TEST_MACRO(m_optionsObj == NULL,
                       m_fullRank,
                       "uqBaseEnvironmentClass::displayVerbosity()",
-                      "m_options variable is NULL");
-  return m_options->m_syncVerbosity;
+                      "m_optionsObj variable is NULL");
+  return m_optionsObj->m_optionsValues.m_syncVerbosity;
 }
 
 const gsl_rng*
@@ -344,7 +359,7 @@ uqBaseEnvironmentClass::rng() const
 int
 uqBaseEnvironmentClass::seed() const
 {
-  return m_options->m_seed;
+  return m_optionsObj->m_optionsValues.m_seed;
 }
 
 void
@@ -378,13 +393,13 @@ uqBaseEnvironmentClass::resetGslSeed(int newSeedOption)
 std::string
 uqBaseEnvironmentClass::identifyingString() const
 {
-  return m_options->m_identifyingString;
+  return m_optionsObj->m_optionsValues.m_identifyingString;
 }
 
 void
 uqBaseEnvironmentClass::resetIdentifyingString(const std::string& newString) const // Yes, const
 {
-  m_options->m_identifyingString = newString;
+  m_optionsObj->m_optionsValues.m_identifyingString = newString;
   return;
 }
 
@@ -911,7 +926,7 @@ uqBaseEnvironmentClass::exceptionalCircunstance() const
 //*****************************************************
 uqEmptyEnvironmentClass::uqEmptyEnvironmentClass()
   :
-  uqBaseEnvironmentClass(MPI_COMM_WORLD,"")
+  uqBaseEnvironmentClass(MPI_COMM_WORLD,"",NULL)
 {
 }
 
@@ -930,11 +945,12 @@ uqEmptyEnvironmentClass::print(std::ostream& os) const
 // Full Environment
 //*****************************************************
 uqFullEnvironmentClass::uqFullEnvironmentClass(
-  MPI_Comm    inputComm,
-  const char* optionsInputFileName,
-  const char* prefix)
+  MPI_Comm                       inputComm,
+  const char*                    optionsInputFileName,
+  const char*                    prefix,
+  const uqEnvOptionsValuesClass* optionsValues)
   :
-  uqBaseEnvironmentClass(inputComm,optionsInputFileName)
+  uqBaseEnvironmentClass(inputComm,optionsInputFileName,optionsValues)
 {
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "Entering uqFullEnvClass" << std::endl;
@@ -965,13 +981,18 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   //////////////////////////////////////////////////
   // Read options
   //////////////////////////////////////////////////
-  m_allOptionsMap  = new po::variables_map();
-  m_allOptionsDesc = new po::options_description("Allowed options");
-  m_options = new uqEnvironmentOptionsClass(*this,prefix);
+  if (optionsInputFileName == NULL) {
+    m_optionsObj = new uqEnvironmentOptionsClass(*this,prefix,*m_optionsValues);
+  }
+  else {
+    m_allOptionsMap  = new po::variables_map();
+    m_allOptionsDesc = new po::options_description("Allowed options");
+    m_optionsObj = new uqEnvironmentOptionsClass(*this,prefix);
 
-  readOptionsInputFile();
+    readOptionsInputFile();
 
-  m_options->scanOptionsValues();
+    m_optionsObj->scanOptionsValues();
+  }
 
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "In uqFullEnvClass, finished scanning options" << std::endl;
@@ -1010,15 +1031,15 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   //////////////////////////////////////////////////
   // Deal with multiple subEnvironments: create the sub communicators, one for each subEnvironment
   //////////////////////////////////////////////////
-  unsigned int numRanksPerSubEnvironment = m_fullCommSize/m_options->m_numSubEnvironments;
+  unsigned int numRanksPerSubEnvironment = m_fullCommSize/m_optionsObj->m_optionsValues.m_numSubEnvironments;
 
   m_subId = m_fullRank/numRanksPerSubEnvironment;
   char tmpSubId[16];
   sprintf(tmpSubId,"%u",m_subId);
   m_subIdString = tmpSubId;
 
-  if (m_options->m_subDisplayAllowAll) {
-    m_options->m_subDisplayAllowedSet.insert((unsigned int) m_subId);
+  if (m_optionsObj->m_optionsValues.m_subDisplayAllowAll) {
+    m_optionsObj->m_optionsValues.m_subDisplayAllowedSet.insert((unsigned int) m_subId);
   }
 
   std::vector<int> fullRanksOfMySubEnvironment(numRanksPerSubEnvironment,0);
@@ -1047,11 +1068,11 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   //////////////////////////////////////////////////
   // Deal with multiple subEnvironments: create the inter0 communicator
   //////////////////////////////////////////////////
-  std::vector<int> fullRanksOfInter0(m_options->m_numSubEnvironments,0);
-  for (unsigned int i = 0; i < m_options->m_numSubEnvironments; ++i) {
+  std::vector<int> fullRanksOfInter0(m_optionsObj->m_optionsValues.m_numSubEnvironments,0);
+  for (unsigned int i = 0; i < m_optionsObj->m_optionsValues.m_numSubEnvironments; ++i) {
     fullRanksOfInter0[i] = i * numRanksPerSubEnvironment;
   }
-  mpiRC = MPI_Group_incl(m_fullGroup, (int) m_options->m_numSubEnvironments, &fullRanksOfInter0[0], &m_inter0Group);
+  mpiRC = MPI_Group_incl(m_fullGroup, (int) m_optionsObj->m_optionsValues.m_numSubEnvironments, &fullRanksOfInter0[0], &m_inter0Group);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_fullRank,
                       "uqFullEnvironmentClass::commonConstructor()",
@@ -1071,9 +1092,9 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   // Open "screen" file
   //////////////////////////////////////////////////
   bool openFile = false;
-  if ((m_subRank                                       == 0                                      ) &&
-      (m_options->m_subDisplayFileName                 != UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE     ) &&
-      (m_options->m_subDisplayAllowedSet.find(m_subId) != m_options->m_subDisplayAllowedSet.end())) {
+  if ((m_subRank                                                          == 0                                                         ) &&
+      (m_optionsObj->m_optionsValues.m_subDisplayFileName                 != UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE                        ) &&
+      (m_optionsObj->m_optionsValues.m_subDisplayAllowedSet.find(m_subId) != m_optionsObj->m_optionsValues.m_subDisplayAllowedSet.end())) {
     openFile = true;
   }
 
@@ -1082,14 +1103,14 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
     // Verify parent directory exists (for cases when a user
     // specifies a relative path for the desired output file).
     //////////////////////////////////////////////////////////////////
-    int irtrn = grvy_check_file_path((m_options->m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str());
+    int irtrn = grvy_check_file_path((m_optionsObj->m_optionsValues.m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str());
     UQ_FATAL_TEST_MACRO(irtrn < 0,
                         m_fullRank,
                         "uqEnvironment::constructor()",
                         "unable to verify output path");
 			
     // Always write over an eventual pre-existing file
-    m_subDisplayFile = new std::ofstream((m_options->m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str(),
+    m_subDisplayFile = new std::ofstream((m_optionsObj->m_optionsValues.m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str(),
                                          std::ofstream::out | std::ofstream::trunc);
     UQ_FATAL_TEST_MACRO((m_subDisplayFile && m_subDisplayFile->is_open()) == false,
                         m_fullRank,
@@ -1149,11 +1170,11 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   //////////////////////////////////////////////////
   // Deal with seed
   //////////////////////////////////////////////////
-  if (m_options->m_seed >= 0) {
-    gsl_rng_default_seed = (unsigned long int) m_options->m_seed;
+  if (m_optionsObj->m_optionsValues.m_seed >= 0) {
+    gsl_rng_default_seed = (unsigned long int) m_optionsObj->m_optionsValues.m_seed;
   }
-  else if (m_options->m_seed < 0) {
-    gsl_rng_default_seed = (unsigned long int) (-m_options->m_seed+m_fullRank);
+  else if (m_optionsObj->m_optionsValues.m_seed < 0) {
+    gsl_rng_default_seed = (unsigned long int) (-m_optionsObj->m_optionsValues.m_seed+m_fullRank);
   }
   else {
     struct timeval timevalNow;
@@ -1171,7 +1192,7 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
 
   if ((m_subDisplayFile)/* && (this->displayVerbosity() > 0)*/) {
     *m_subDisplayFile << "In uqFullEnvironmentClass::commonConstructor():"
-                      << "\n  m_seed = "                                              << m_options->m_seed
+                      << "\n  m_seed = "                                              << m_optionsObj->m_optionsValues.m_seed
                       << "\n  internal seed = "                                       << gsl_rng_default_seed
                     //<< "\n  first generated sample from uniform distribution = "    << gsl_rng_uniform(m_rng)
                     //<< "\n  first generated sample from std normal distribution = " << gsl_ran_gaussian(m_rng,1.)

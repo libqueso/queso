@@ -33,21 +33,82 @@
 #include <uqEnvironmentOptions.h>
 #include <uqMiscellaneous.h>
 
-uqEnvironmentOptionsClass::uqEnvironmentOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix)
+uqEnvOptionsValuesClass::uqEnvOptionsValuesClass()
   :
-  m_numSubEnvironments         (UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),
-  m_subDisplayFileName         (UQ_ENV_SUB_DISPLAY_FILE_NAME_ODV),
-  m_subDisplayAllowAll         (UQ_ENV_SUB_DISPLAY_ALLOW_ALL_ODV),
-//m_subDisplayAllowedSet       (),
-  m_displayVerbosity           (UQ_ENV_DISPLAY_VERBOSITY_ODV),
-  m_syncVerbosity              (UQ_ENV_SYNC_VERBOSITY_ODV),
-  m_seed                       (UQ_ENV_SEED_ODV),
-  m_identifyingString          (UQ_ENV_IDENTIFYING_STRING_ODV),
-  m_numDebugParams             (UQ_ENV_NUM_DEBUG_PARAMS_ODV),
-  m_debugParams                (m_numDebugParams,0.),
+  m_numSubEnvironments  (UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),
+  m_subDisplayFileName  (UQ_ENV_SUB_DISPLAY_FILE_NAME_ODV),
+  m_subDisplayAllowAll  (UQ_ENV_SUB_DISPLAY_ALLOW_ALL_ODV),
+//m_subDisplayAllowedSet(),
+  m_displayVerbosity    (UQ_ENV_DISPLAY_VERBOSITY_ODV),
+  m_syncVerbosity       (UQ_ENV_SYNC_VERBOSITY_ODV),
+  m_seed                (UQ_ENV_SEED_ODV),
+  m_identifyingString   (UQ_ENV_IDENTIFYING_STRING_ODV),
+  m_numDebugParams      (UQ_ENV_NUM_DEBUG_PARAMS_ODV),
+  m_debugParams         (m_numDebugParams,0.)
+{
+}
+
+uqEnvOptionsValuesClass::~uqEnvOptionsValuesClass()
+{
+}
+
+uqEnvOptionsValuesClass::uqEnvOptionsValuesClass(const uqEnvOptionsValuesClass& src)
+{
+  this->copy(src);
+}
+
+uqEnvOptionsValuesClass&
+uqEnvOptionsValuesClass::operator=(const uqEnvOptionsValuesClass& rhs)
+{
+  this->copy(rhs);
+  return *this;
+}
+
+void
+uqEnvOptionsValuesClass::copy(const uqEnvOptionsValuesClass& src)
+{
+  m_numSubEnvironments   = src.m_numSubEnvironments;
+  m_subDisplayFileName   = src.m_subDisplayFileName;
+  m_subDisplayAllowAll   = src.m_subDisplayAllowAll;
+  m_subDisplayAllowedSet = src.m_subDisplayAllowedSet;
+  m_displayVerbosity     = src.m_displayVerbosity;
+  m_syncVerbosity        = src.m_syncVerbosity;
+  m_seed                 = src.m_seed;
+  m_identifyingString    = src.m_identifyingString;
+  m_numDebugParams       = src.m_numDebugParams;
+  m_debugParams          = src.m_debugParams;
+
+  return;
+}
+
+uqEnvironmentOptionsClass::uqEnvironmentOptionsClass(
+  const uqBaseEnvironmentClass& env,
+  const char*                   prefix)
+  :
   m_env                        (env),
   m_prefix                     ((std::string)(prefix) + "env_"),
   m_optionsDesc                (new po::options_description("Environment options")),
+  m_option_help                (m_prefix + "help"                ),
+  m_option_numSubEnvironments  (m_prefix + "numSubEnvironments"  ),
+  m_option_subDisplayFileName  (m_prefix + "subDisplayFileName"  ),
+  m_option_subDisplayAllowAll  (m_prefix + "subDisplayAllowAll"  ),
+  m_option_subDisplayAllowedSet(m_prefix + "subDisplayAllowedSet"),
+  m_option_displayVerbosity    (m_prefix + "displayVerbosity"    ),
+  m_option_syncVerbosity       (m_prefix + "syncVerbosity"       ),
+  m_option_seed                (m_prefix + "seed"                ),
+  m_option_identifyingString   (m_prefix + "identifyingString"   )
+{
+}
+
+uqEnvironmentOptionsClass::uqEnvironmentOptionsClass(
+  const uqBaseEnvironmentClass&  env,
+  const char*                    prefix,
+  const uqEnvOptionsValuesClass& optionsValues)
+  :
+  m_optionsValues              (optionsValues),
+  m_env                        (env),
+  m_prefix                     ((std::string)(prefix) + "env_"),
+  m_optionsDesc                (NULL),
   m_option_help                (m_prefix + "help"                ),
   m_option_numSubEnvironments  (m_prefix + "numSubEnvironments"  ),
   m_option_subDisplayFileName  (m_prefix + "subDisplayFileName"  ),
@@ -68,6 +129,10 @@ uqEnvironmentOptionsClass::~uqEnvironmentOptionsClass()
 void
 uqEnvironmentOptionsClass::scanOptionsValues()
 {
+  UQ_FATAL_TEST_MACRO(m_optionsDesc == NULL,
+                      m_env.fullRank(),
+                      "uqEnvironmentOptionsClass::scanOptionsValues()",
+                      "m_optionsDesc variable is NULL");
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
@@ -124,34 +189,34 @@ uqEnvironmentOptionsClass::getMyOptionValues(po::options_description& optionsDes
   }
 
   if (m_env.allOptionsMap().count(m_option_numSubEnvironments.c_str())) {
-    m_numSubEnvironments = m_env.allOptionsMap()[m_option_numSubEnvironments].as<unsigned int>();
+    m_optionsValues.m_numSubEnvironments = m_env.allOptionsMap()[m_option_numSubEnvironments].as<unsigned int>();
   }
-  if ((m_env.fullComm().NumProc()%m_numSubEnvironments) != 0) {
+  if ((m_env.fullComm().NumProc()%m_optionsValues.m_numSubEnvironments) != 0) {
     std::cerr << "In uqBaseEnvironmentClass::getMyOptionValues()"
               << ": m_env.fullComm().NumProc() = " << m_env.fullComm().NumProc()
-              << ", m_numSubEnvironments = "       << m_numSubEnvironments
+              << ", m_numSubEnvironments = "       << m_optionsValues.m_numSubEnvironments
               << std::endl;
   }
-  UQ_FATAL_TEST_MACRO((m_env.fullComm().NumProc()%m_numSubEnvironments) != 0,
+  UQ_FATAL_TEST_MACRO((m_env.fullComm().NumProc()%m_optionsValues.m_numSubEnvironments) != 0,
                       m_env.fullRank(),
                       "uqBaseEnvironmentClass::getMyOptionValues()",
                       "total number of processors in environment must be multiple of the specified number of subEnvironments");
 
   if (m_env.allOptionsMap().count(m_option_subDisplayFileName.c_str())) {
-    m_subDisplayFileName = m_env.allOptionsMap()[m_option_subDisplayFileName].as<std::string>();
+    m_optionsValues.m_subDisplayFileName = m_env.allOptionsMap()[m_option_subDisplayFileName].as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_subDisplayAllowAll.c_str())) {
-    m_subDisplayAllowAll = m_env.allOptionsMap()[m_option_subDisplayAllowAll].as<bool>();
+    m_optionsValues.m_subDisplayAllowAll = m_env.allOptionsMap()[m_option_subDisplayAllowAll].as<bool>();
   }
 
-  if (m_subDisplayAllowAll) {
-    m_subDisplayAllowedSet.clear();
+  if (m_optionsValues.m_subDisplayAllowAll) {
+    m_optionsValues.m_subDisplayAllowedSet.clear();
     // The line below is commented because 'm_subId' is not set at this point yet
     //m_subDisplayAllowedSet.insert((unsigned int) m_subId);
   }
   else if (m_env.allOptionsMap().count(m_option_subDisplayAllowedSet.c_str())) {
-    m_subDisplayAllowedSet.clear();
+    m_optionsValues.m_subDisplayAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
     std::string inputString = m_env.allOptionsMap()[m_option_subDisplayAllowedSet].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpAllow);
@@ -165,25 +230,25 @@ uqEnvironmentOptionsClass::getMyOptionValues(po::options_description& optionsDes
 
     if (tmpAllow.size() > 0) {
       for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
-        m_subDisplayAllowedSet.insert((unsigned int) tmpAllow[i]);
+        m_optionsValues.m_subDisplayAllowedSet.insert((unsigned int) tmpAllow[i]);
       }
     }
   }
 
   if (m_env.allOptionsMap().count(m_option_displayVerbosity.c_str())) {
-    m_displayVerbosity = m_env.allOptionsMap()[m_option_displayVerbosity].as<unsigned int>();
+    m_optionsValues.m_displayVerbosity = m_env.allOptionsMap()[m_option_displayVerbosity].as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_syncVerbosity.c_str())) {
-    m_syncVerbosity = m_env.allOptionsMap()[m_option_syncVerbosity].as<unsigned int>();
+    m_optionsValues.m_syncVerbosity = m_env.allOptionsMap()[m_option_syncVerbosity].as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_seed.c_str())) {
-    m_seed = m_env.allOptionsMap()[m_option_seed].as<int>();
+    m_optionsValues.m_seed = m_env.allOptionsMap()[m_option_seed].as<int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_identifyingString.c_str())) {
-    m_identifyingString = m_env.allOptionsMap()[m_option_identifyingString].as<std::string>();
+    m_optionsValues.m_identifyingString = m_env.allOptionsMap()[m_option_identifyingString].as<std::string>();
   }
 
   //if (m_env.allOptionsMap().count(m_option_numDebugParams.c_str())) {
@@ -200,18 +265,18 @@ uqEnvironmentOptionsClass::getMyOptionValues(po::options_description& optionsDes
 void
 uqEnvironmentOptionsClass::print(std::ostream& os) const
 {
-  os <<         m_option_numSubEnvironments   << " = " << m_numSubEnvironments
-     << "\n" << m_option_subDisplayFileName   << " = " << m_subDisplayFileName
-     << "\n" << m_option_subDisplayAllowAll   << " = " << m_subDisplayAllowAll
+  os <<         m_option_numSubEnvironments   << " = " << m_optionsValues.m_numSubEnvironments
+     << "\n" << m_option_subDisplayFileName   << " = " << m_optionsValues.m_subDisplayFileName
+     << "\n" << m_option_subDisplayAllowAll   << " = " << m_optionsValues.m_subDisplayAllowAll
      << "\n" << m_option_subDisplayAllowedSet << " = ";
-  for (std::set<unsigned int>::iterator setIt = m_subDisplayAllowedSet.begin(); setIt != m_subDisplayAllowedSet.end(); ++setIt) {
+  for (std::set<unsigned int>::iterator setIt = m_optionsValues.m_subDisplayAllowedSet.begin(); setIt != m_optionsValues.m_subDisplayAllowedSet.end(); ++setIt) {
     os << *setIt << " ";
   }
-  os << "\n" << m_option_displayVerbosity  << " = " << m_displayVerbosity
-     << "\n" << m_option_syncVerbosity     << " = " << m_syncVerbosity
-     << "\n" << m_option_seed              << " = " << m_seed
-     << "\n" << m_option_identifyingString << " = " << m_identifyingString
-   //<< "\n" << m_option_numDebugParams    << " = " << m_numDebugParams
+  os << "\n" << m_option_displayVerbosity  << " = " << m_optionsValues.m_displayVerbosity
+     << "\n" << m_option_syncVerbosity     << " = " << m_optionsValues.m_syncVerbosity
+     << "\n" << m_option_seed              << " = " << m_optionsValues.m_seed
+     << "\n" << m_option_identifyingString << " = " << m_optionsValues.m_identifyingString
+   //<< "\n" << m_option_numDebugParams    << " = " << m_optionsValues.m_numDebugParams
      << std::endl;
   return;
 }

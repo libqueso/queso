@@ -50,25 +50,40 @@
 #define UQ_ENV_NUM_DEBUG_PARAMS_ODV        0
 #define UQ_ENV_DEBUG_PARAM_ODV             0.
 
+class uqEnvOptionsValuesClass
+{
+public:
+  uqEnvOptionsValuesClass            ();
+  uqEnvOptionsValuesClass            (const uqEnvOptionsValuesClass& src);
+  uqEnvOptionsValuesClass& operator= (const uqEnvOptionsValuesClass& rhs);
+ ~uqEnvOptionsValuesClass            ();
+
+  unsigned int           m_numSubEnvironments;
+  std::string            m_subDisplayFileName;
+  bool                   m_subDisplayAllowAll;
+  std::set<unsigned int> m_subDisplayAllowedSet;
+  unsigned int           m_displayVerbosity;
+  unsigned int           m_syncVerbosity;
+  int                    m_seed;
+  std::string            m_identifyingString;
+  unsigned int           m_numDebugParams;
+  std::vector<double>    m_debugParams;
+
+private:
+  void copy(const uqEnvOptionsValuesClass& src);
+};
+
 class uqEnvironmentOptionsClass
 {
 public:
   uqEnvironmentOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix);
+  uqEnvironmentOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix, const uqEnvOptionsValuesClass& inputOptions);
  ~uqEnvironmentOptionsClass();
 
   void scanOptionsValues();
   void print            (std::ostream& os) const;
 
-  unsigned int             m_numSubEnvironments;
-  std::string              m_subDisplayFileName;
-  bool                     m_subDisplayAllowAll;
-  std::set<unsigned int>   m_subDisplayAllowedSet;
-  unsigned int             m_displayVerbosity;
-  unsigned int             m_syncVerbosity;
-  int                      m_seed;
-  std::string              m_identifyingString;
-  unsigned int             m_numDebugParams;
-  std::vector<double>      m_debugParams;
+  uqEnvOptionsValuesClass  m_optionsValues;
 
 private:
   void   defineMyOptions  (po::options_description& optionsDesc) const;

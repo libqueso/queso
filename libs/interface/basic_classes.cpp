@@ -66,7 +66,7 @@ namespace QUESO_Basic_API {
 
     // Define new QUESO environment and store inputfile information
 
-    m_env         = new uqFullEnvironmentClass(MPI_COMM_WORLD,inputfile,"");
+    m_env         = new uqFullEnvironmentClass(MPI_COMM_WORLD,inputfile,"",NULL);
     m_inputfile   = new string(inputfile);
 
     m_initialized = 1;

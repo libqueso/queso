@@ -34,6 +34,7 @@
 #define __UQ_ENVIRONMENT_H__
 
 #include <uqDefines.h>
+class uqEnvOptionsValuesClass;
 class uqEnvironmentOptionsClass;
 
 #undef UQ_USES_COMMAND_LINE_OPTIONS
@@ -143,7 +144,7 @@ struct uqFilePtrSetStruct {
 */
 class uqBaseEnvironmentClass {
 public:
-  uqBaseEnvironmentClass(MPI_Comm inputComm, const char* inputFileName);
+  uqBaseEnvironmentClass(MPI_Comm inputComm, const char* inputFileName, const uqEnvOptionsValuesClass* optionsValues);
   uqBaseEnvironmentClass(const uqBaseEnvironmentClass& obj);
   virtual ~uqBaseEnvironmentClass();
 
@@ -243,7 +244,8 @@ protected:
   struct timeval             m_timevalBegin;
   mutable bool               m_exceptionalCircunstance;
 
-  uqEnvironmentOptionsClass* m_options;
+  uqEnvironmentOptionsClass* m_optionsObj;
+  uqEnvOptionsValuesClass*   m_optionsValues;
 };
 
 //*****************************************************
@@ -254,7 +256,7 @@ public:
   uqEmptyEnvironmentClass();
  ~uqEmptyEnvironmentClass();
 
-        void                     print                (std::ostream& os) const;
+        void print(std::ostream& os) const;
 };
 
 //*****************************************************
@@ -262,14 +264,14 @@ public:
 //*****************************************************
 class uqFullEnvironmentClass : public uqBaseEnvironmentClass {
 public:
-  uqFullEnvironmentClass(MPI_Comm inputComm, const char* optionsInputFileName, const char* prefix);
+  uqFullEnvironmentClass(MPI_Comm inputComm, const char* optionsInputFileName, const char* prefix, const uqEnvOptionsValuesClass* optionsValues);
  ~uqFullEnvironmentClass();
 
-        void                     print                (std::ostream& os) const;
-	std::string              optionsInputFileName () const;
+        void        print               (std::ostream& os) const;
+	std::string optionsInputFileName() const;
 
 private:
-        void                     readOptionsInputFile ();
+        void        readOptionsInputFile();
 };
 
 std::ostream& operator<<(std::ostream& os, const uqBaseEnvironmentClass& obj);
