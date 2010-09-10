@@ -109,6 +109,7 @@ class uqStatisticalInverseProblemClass
 {
 public:
   uqStatisticalInverseProblemClass(const char*                               prefix,
+                                   const uqSipOptionsValuesClass*            optionsValues,
                                    const uqBaseVectorRVClass      <P_V,P_M>& priorRv,            
                                    const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunction, 
                                          uqGenericVectorRVClass   <P_V,P_M>& postRv);
@@ -121,7 +122,7 @@ public:
   const uqBaseVectorRVClass   <P_V,P_M>& priorRv                         () const;
   const uqGenericVectorRVClass<P_V,P_M>& postRv                          () const;
 
-        void                             print                    (std::ostream& os) const;
+        void                             print                           (std::ostream& os) const;
 
 private:
   const uqBaseEnvironmentClass&                 m_env;
@@ -144,7 +145,8 @@ private:
         uqArrayOfOneDTablesClass   <P_V,P_M>*   m_subMdfValues;
 #endif
 
-        uqStatisticalInverseProblemOptionsClass m_options;
+        uqSipOptionsValuesClass*                 m_optionsValues;
+        uqStatisticalInverseProblemOptionsClass* m_optionsObj;
 };
 
 template<class P_V,class P_M>
@@ -169,10 +171,11 @@ std::ostream& operator<<(std::ostream& os, const uqStatisticalInverseProblemClas
 */
 template <class P_V,class P_M>
 uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
-  /*! The prefix              */ const char*                               prefix,
-  /*! The prior rv            */ const uqBaseVectorRVClass      <P_V,P_M>& priorRv,
-  /*! The likelihood function */ const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunction,
-  /*! The posterior rv        */       uqGenericVectorRVClass   <P_V,P_M>& postRv)
+  /*! The prefix                 */ const char*                               prefix,
+  /*! Options (if no input file) */ const uqSipOptionsValuesClass*            optionsValues,
+  /*! The prior rv               */ const uqBaseVectorRVClass      <P_V,P_M>& priorRv,
+  /*! The likelihood function    */ const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunction,
+  /*! The posterior rv           */       uqGenericVectorRVClass   <P_V,P_M>& postRv)
   :
   m_env               (priorRv.env()),
   m_priorRv           (priorRv),
@@ -186,14 +189,22 @@ uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
   m_mhSeqGenerator    (NULL),
   m_mlSampler         (NULL),
   m_chain             (NULL),
-  m_options           (m_env,prefix)
+  m_optionsValues     (new uqSipOptionsValuesClass()),
+  m_optionsObj        (NULL)
 {
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "Entering uqSipClass" << std::endl;
 #endif
+  if (optionsValues) *m_optionsValues = *optionsValues;
+  if (m_env.optionsInputFileName() == "") {
+    m_optionsObj = new uqStatisticalInverseProblemOptionsClass(m_env,prefix,*m_optionsValues);
+  }
+  else {
+    m_optionsObj = new uqStatisticalInverseProblemOptionsClass(m_env,prefix);
+  }
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering uqStatisticalInverseProblemClass<P_V,P_M>::constructor()"
-                            << ": prefix = " << m_options.m_prefix
+                            << ": prefix = " << m_optionsObj->m_prefix
                             << std::endl;
   }
 
@@ -207,7 +218,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
                       "uqStatisticalInverseProblemClass<P_V,P_M>::constructor()",
                       "'priorRv' and 'postRv' are related to vector spaces of different dimensions");
 
-  m_options.scanOptionsValues();
+  m_optionsObj->scanOptionsValues();
 
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "In uqSipClass, finished scanning options" << std::endl;
@@ -215,7 +226,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
 
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Leaving uqStatisticalInverseProblemClass<P_V,P_M>::constructor()"
-                            << ": prefix = " << m_options.m_prefix
+                            << ": prefix = " << m_optionsObj->m_prefix
                             << std::endl;
   }
 
@@ -237,6 +248,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::~uqStatisticalInverseProblemClass()
   if (m_subSolutionMdf  ) delete m_subSolutionMdf;
   if (m_solutionPdf     ) delete m_solutionPdf;
   if (m_solutionDomain  ) delete m_solutionDomain;
+  if (m_optionsObj      ) delete m_optionsObj;
 }
 
 /*! Operation to solve the problem through Bayes formula and a Metropolis-Hastings algorithm. */
@@ -269,7 +281,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(
   m_env.fullComm().Barrier();
   m_env.syncPrintDebugMsg("Entering uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings()",1,3000000,m_env.fullComm());
 
-  if (m_options.m_computeSolution == false) {
+  if (m_optionsObj->m_optionsValues.m_computeSolution == false) {
     if ((m_env.subDisplayFile())) {
       *m_env.subDisplayFile() << "In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings()"
                               << ": avoiding solution, as requested by user"
@@ -313,7 +325,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(
   // Compute output pdf up to a multiplicative constant: Bayesian approach
   m_solutionDomain = uqInstantiateIntersection(m_priorRv.pdf().domainSet(),m_likelihoodFunction.domainSet());
 
-  m_solutionPdf = new uqBayesianJointPdfClass<P_V,P_M>(m_options.m_prefix.c_str(),
+  m_solutionPdf = new uqBayesianJointPdfClass<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
                                                        m_priorRv.pdf(),
                                                        m_likelihoodFunction,
                                                        1.,
@@ -322,15 +334,15 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(
   m_postRv.setPdf(*m_solutionPdf);
 
   // Compute output realizer: Metropolis-Hastings approach
-  m_chain = new uqSequenceOfVectorsClass<P_V,P_M>(m_postRv.imageSet().vectorSpace(),0,m_options.m_prefix+"chain");
-  m_mhSeqGenerator = new uqMetropolisHastingsSGClass<P_V,P_M>(m_options.m_prefix.c_str(),
+  m_chain = new uqSequenceOfVectorsClass<P_V,P_M>(m_postRv.imageSet().vectorSpace(),0,m_optionsObj->m_prefix+"chain");
+  m_mhSeqGenerator = new uqMetropolisHastingsSGClass<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
                                                               m_postRv,
                                                               initialValues,
                                                               initialProposalCovMatrix);
 
   m_mhSeqGenerator->generateSequence(*m_chain,NULL,NULL);
 
-  m_solutionRealizer = new uqSequentialVectorRealizerClass<P_V,P_M>(m_options.m_prefix.c_str(),
+  m_solutionRealizer = new uqSequentialVectorRealizerClass<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
                                                                    *m_chain);
 
   m_postRv.setRealizer(*m_solutionRealizer);
@@ -340,33 +352,33 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(
 
   // Compute output mdf: uniform sampling approach
 #ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
-  m_subMdfGrids  = new uqArrayOfOneDGridsClass <P_V,P_M>((m_options.m_prefix+"Mdf_").c_str(),m_postRv.imageSet().vectorSpace());
-  m_subMdfValues = new uqArrayOfOneDTablesClass<P_V,P_M>((m_options.m_prefix+"Mdf_").c_str(),m_postRv.imageSet().vectorSpace());
+  m_subMdfGrids  = new uqArrayOfOneDGridsClass <P_V,P_M>((m_optionsObj->m_prefix+"Mdf_").c_str(),m_postRv.imageSet().vectorSpace());
+  m_subMdfValues = new uqArrayOfOneDTablesClass<P_V,P_M>((m_optionsObj->m_prefix+"Mdf_").c_str(),m_postRv.imageSet().vectorSpace());
   m_chain->subUniformlySampledMdf(numEvaluationPointsVec, // input
                                   *m_subMdfGrids,         // output
                                   *m_subMdfValues);       // output
-  m_subSolutionMdf = new uqSampledVectorMdfClass<P_V,P_M>(m_options.m_prefix.c_str(),
+  m_subSolutionMdf = new uqSampledVectorMdfClass<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
                                                           *m_subMdfGrids,
                                                           *m_subMdfValues);
   m_postRv.setMdf(*m_subSolutionMdf);
 
-  if ((m_options.m_dataOutputFileName                       != UQ_SIP_FILENAME_FOR_NO_FILE           ) &&
-      (m_options.m_dataOutputAllowedSet.find(m_env.subId()) != m_options.m_dataOutputAllowedSet.end())) {
+  if ((m_optionsObj->m_optionsValues.m_dataOutputFileName                       != UQ_SIP_FILENAME_FOR_NO_FILE           ) &&
+      (m_optionsObj->m_optionsValues.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_optionsValues.m_dataOutputAllowedSet.end())) {
     if (m_env.subRank() == 0) {
       // Write data output file
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "Opening data output file '" << m_options.m_dataOutputFileName
-                                << "' for calibration problem with problem with prefix = " << m_options.m_prefix
+        *m_env.subDisplayFile() << "Opening data output file '" << m_optionsObj->m_optionsValues.m_dataOutputFileName
+                                << "' for calibration problem with problem with prefix = " << m_optionsObj->m_prefix
                                 << std::endl;
       }
 
       // Open file
       // Always write at the end of an eventual pre-existing file
-      std::ofstream* ofsvar = new std::ofstream((m_options.m_dataOutputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
+      std::ofstream* ofsvar = new std::ofstream((m_optionsObj->m_optionsValues.m_dataOutputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
       if ((ofsvar            == NULL ) ||
           (ofsvar->is_open() == false)) {
         delete ofsvar;
-        ofsvar = new std::ofstream((m_options.m_dataOutputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
+        ofsvar = new std::ofstream((m_optionsObj->m_optionsValues.m_dataOutputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
       }
       UQ_FATAL_TEST_MACRO((ofsvar && ofsvar->is_open()) == false,
                           m_env.fullRank(),
@@ -379,8 +391,8 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(
       //ofsvar->close();
       delete ofsvar;
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "Closed data output file '" << m_options.m_dataOutputFileName
-                                << "' for calibration problem with problem with prefix = " << m_options.m_prefix
+        *m_env.subDisplayFile() << "Closed data output file '" << m_optionsObj->m_optionsValues.m_dataOutputFileName
+                                << "' for calibration problem with problem with prefix = " << m_optionsObj->m_prefix
                                 << std::endl;
       }
     }
@@ -403,7 +415,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling()
   m_env.fullComm().Barrier();
   m_env.syncPrintDebugMsg("Entering uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling()",1,3000000,m_env.fullComm());
 
-  if (m_options.m_computeSolution == false) {
+  if (m_optionsObj->m_optionsValues.m_computeSolution == false) {
     if ((m_env.subDisplayFile())) {
       *m_env.subDisplayFile() << "In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling()"
                               << ": avoiding solution, as requested by user"
@@ -431,7 +443,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling()
   // Compute output pdf up to a multiplicative constant: Bayesian approach
   m_solutionDomain = uqInstantiateIntersection(m_priorRv.pdf().domainSet(),m_likelihoodFunction.domainSet());
 
-  m_solutionPdf = new uqBayesianJointPdfClass<P_V,P_M>(m_options.m_prefix.c_str(),
+  m_solutionPdf = new uqBayesianJointPdfClass<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
                                                        m_priorRv.pdf(),
                                                        m_likelihoodFunction,
                                                        1.,
@@ -440,8 +452,8 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling()
   m_postRv.setPdf(*m_solutionPdf);
 
   // Compute output realizer: ML approach
-  m_chain = new uqSequenceOfVectorsClass<P_V,P_M>(m_postRv.imageSet().vectorSpace(),0,m_options.m_prefix+"chain");
-  m_mlSampler = new uqMLSamplingClass<P_V,P_M>(m_options.m_prefix.c_str(),
+  m_chain = new uqSequenceOfVectorsClass<P_V,P_M>(m_postRv.imageSet().vectorSpace(),0,m_optionsObj->m_prefix+"chain");
+  m_mlSampler = new uqMLSamplingClass<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
                                              //m_postRv,
                                                m_priorRv,
                                                m_likelihoodFunction);
@@ -450,8 +462,8 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling()
 
   m_mlSampler->generateSequence(*m_chain,NULL,NULL);
 
-  m_solutionRealizer = new uqSequentialVectorRealizerClass<P_V,P_M>(m_options.m_prefix.c_str(),
-                                                                   *m_chain);
+  m_solutionRealizer = new uqSequentialVectorRealizerClass<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
+                                                                    *m_chain);
 
   m_postRv.setRealizer(*m_solutionRealizer);
 

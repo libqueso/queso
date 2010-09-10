@@ -48,23 +48,37 @@
 #define UQ_SIP_SOLVER_ODV                  "bayes_mc" // Bayesian formula + Metropolis-Hastings
 #endif
 
+class uqSipOptionsValuesClass
+{
+public:
+  uqSipOptionsValuesClass            ();
+  uqSipOptionsValuesClass            (const uqSipOptionsValuesClass& src);
+  uqSipOptionsValuesClass& operator= (const uqSipOptionsValuesClass& rhs);
+ ~uqSipOptionsValuesClass            ();
+
+  bool                   m_computeSolution;
+  std::string            m_dataOutputFileName;
+  std::set<unsigned int> m_dataOutputAllowedSet;
+#ifdef UQ_SIP_READS_SOLVER_OPTION
+  std::string            m_solverString;
+#endif
+
+private:
+  void copy(const uqSipOptionsValuesClass& src);
+};
+
 class uqStatisticalInverseProblemOptionsClass
 {
 public:
   uqStatisticalInverseProblemOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix);
+  uqStatisticalInverseProblemOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix, const uqSipOptionsValuesClass& optionsValues);
  ~uqStatisticalInverseProblemOptionsClass();
 
   void scanOptionsValues();
   void print            (std::ostream& os) const;
 
+  uqSipOptionsValuesClass       m_optionsValues;
   std::string                   m_prefix;
-
-  bool                          m_computeSolution;
-  std::string                   m_dataOutputFileName;
-  std::set<unsigned int>        m_dataOutputAllowedSet;
-#ifdef UQ_SIP_READS_SOLVER_OPTION
-  std::string                   m_solverString;
-#endif
 
 private:
   void   defineMyOptions  (po::options_description& optionsDesc) const;

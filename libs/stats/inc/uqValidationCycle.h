@@ -207,6 +207,7 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateCalIP(
 
   // Calibration stage: Inverse problem
   m_calIP = new uqStatisticalInverseProblemClass<P_V,P_M> ((m_prefix+"cal_").c_str(), // Extra prefix before the default "ip_" prefix
+                                                           NULL,
                                                            *m_calPriorRv,
                                                            *m_calLikelihoodFunctionObj,
                                                            *m_calPostRv);
@@ -294,6 +295,7 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateValIP(const uqBaseScalarFunc
 
   // Validation stage: Inverse problem
   m_valIP = new uqStatisticalInverseProblemClass<P_V,P_M> ((m_prefix+"val_").c_str(), // Extra prefix before the default "ip_" prefix
+                                                           NULL,
                                                            *m_calPostRv, // 'validation stage' inverse input = 'calibration stage' inverse output
                                                            *m_valLikelihoodFunctionObj,
                                                            *m_valPostRv);

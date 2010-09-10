@@ -117,6 +117,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                          paramSpace);
 
   uqStatisticalInverseProblemClass<P_V,P_M> ip("", // No extra prefix before the default "ip_" prefix
+                                               NULL,
                                                priorRv,
                                                likelihoodFunctionObj,
                                                postRv);

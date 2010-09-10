@@ -144,7 +144,7 @@ struct uqFilePtrSetStruct {
 */
 class uqBaseEnvironmentClass {
 public:
-  uqBaseEnvironmentClass(MPI_Comm inputComm, const char* inputFileName, const uqEnvOptionsValuesClass* optionsValues);
+  uqBaseEnvironmentClass(MPI_Comm inputComm, const char* passedOptionsInputFileName, const uqEnvOptionsValuesClass* optionsValues);
   uqBaseEnvironmentClass(const uqBaseEnvironmentClass& obj);
   virtual ~uqBaseEnvironmentClass();
 
@@ -170,6 +170,7 @@ public:
           const std::string&      subIdString                () const;
           void                    checkTheParallelEnvironment() const;
 
+          std::string             optionsInputFileName       () const;
 #ifdef UQ_USES_COMMAND_LINE_OPTIONS
           const po::options_description& allOptionsDesc      () const;
 #endif
@@ -244,8 +245,8 @@ protected:
   struct timeval             m_timevalBegin;
   mutable bool               m_exceptionalCircunstance;
 
-  uqEnvironmentOptionsClass* m_optionsObj;
   uqEnvOptionsValuesClass*   m_optionsValues;
+  uqEnvironmentOptionsClass* m_optionsObj;
 };
 
 //*****************************************************
@@ -264,11 +265,10 @@ public:
 //*****************************************************
 class uqFullEnvironmentClass : public uqBaseEnvironmentClass {
 public:
-  uqFullEnvironmentClass(MPI_Comm inputComm, const char* optionsInputFileName, const char* prefix, const uqEnvOptionsValuesClass* optionsValues);
+  uqFullEnvironmentClass(MPI_Comm inputComm, const char* passedOptionsInputFileName, const char* prefix, const uqEnvOptionsValuesClass* optionsValues);
  ~uqFullEnvironmentClass();
 
         void        print               (std::ostream& os) const;
-	std::string optionsInputFileName() const;
 
 private:
         void        readOptionsInputFile();

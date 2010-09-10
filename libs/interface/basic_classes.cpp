@@ -174,7 +174,7 @@ namespace QUESO_Basic_API {
     
     printf("--> Defining inverse problem...\n");
     
-    m_ip = new uqStatisticalInverseProblemClass <basicV,basicM> ("",*m_priorRV,*m_likelihoodObj,*m_postRV);
+    m_ip = new uqStatisticalInverseProblemClass <basicV,basicM> ("",NULL,*m_priorRV,*m_likelihoodObj,*m_postRV);
     
     // Default covariance matrix for now - default assumption assumes
     // 6-sigma distribution range falls over 1/3 of the max parameter range.

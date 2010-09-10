@@ -73,7 +73,7 @@ void compute(const uqFullEnvironmentClass& env) {
   uqGenericVectorRVClass<uqGslVectorClass,uqGslMatrixClass>
     postRv("post_", paramSpace);
   uqStatisticalInverseProblemClass<uqGslVectorClass,uqGslMatrixClass>
-    ip("", priorRv, likelihoodFunctionObj, postRv);
+    ip("", NULL, priorRv, likelihoodFunctionObj, postRv);
 
   // Step 5 of 9: Solve the inverse problem
   uqGslVectorClass paramInitials(paramSpace.zeroVector());

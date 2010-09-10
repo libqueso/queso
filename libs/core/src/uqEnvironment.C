@@ -68,7 +68,7 @@ uqFilePtrSetStruct::~uqFilePtrSetStruct()
 //*****************************************************
 uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   MPI_Comm                       inputComm,
-  const char*                    optionsInputFileName,
+  const char*                    passedOptionsInputFileName,
   const uqEnvOptionsValuesClass* optionsValues)
   :
   m_worldRank              (-1),
@@ -76,7 +76,7 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_fullComm               (NULL),
   m_fullRank               (-1),
   m_fullCommSize           (1),
-  m_optionsInputFileName   (optionsInputFileName),
+  m_optionsInputFileName   (""),
   m_allOptionsDesc         (NULL),
   m_allOptionsMap          (NULL),
   m_subComm                (NULL),
@@ -89,10 +89,11 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_subDisplayFile         (NULL),
   m_rng                    (NULL),
   m_exceptionalCircunstance(false),
-  m_optionsObj             (NULL),
-  m_optionsValues          (new uqEnvOptionsValuesClass)
+  m_optionsValues          (new uqEnvOptionsValuesClass()),
+  m_optionsObj             (NULL)
 {
-  if (optionsValues) *m_optionsValues = *optionsValues;
+  if (passedOptionsInputFileName) m_optionsInputFileName = passedOptionsInputFileName;
+  if (optionsValues             ) *m_optionsValues       = *optionsValues;
 }
 
 uqBaseEnvironmentClass::uqBaseEnvironmentClass(const uqBaseEnvironmentClass& obj)
@@ -287,6 +288,10 @@ uqBaseEnvironmentClass::scanInputFileForMyOptions(const po::options_description&
   //                    << std::endl;
   //}
 
+  UQ_FATAL_TEST_MACRO(m_optionsInputFileName == "",
+                      m_fullRank,
+                      "uqBaseEnvironmentClass::scanInputFileForMyOptions()",
+                      "m_optionsInputFileName is 'nothing'");
   //std::ifstream ifs(m_optionsInputFileName.c_str());
   std::ifstream* ifs = new std::ifstream(m_optionsInputFileName.c_str());
 #ifdef QUESO_MEMORY_DEBUGGING
@@ -310,6 +315,12 @@ uqBaseEnvironmentClass::scanInputFileForMyOptions(const po::options_description&
 #endif
 
   return;
+}
+
+std::string
+uqBaseEnvironmentClass::optionsInputFileName() const
+{
+  return m_optionsInputFileName;
 }
 
 #ifdef UQ_USES_COMMAND_LINE_OPTIONS
@@ -946,11 +957,11 @@ uqEmptyEnvironmentClass::print(std::ostream& os) const
 //*****************************************************
 uqFullEnvironmentClass::uqFullEnvironmentClass(
   MPI_Comm                       inputComm,
-  const char*                    optionsInputFileName,
+  const char*                    passedOptionsInputFileName,
   const char*                    prefix,
   const uqEnvOptionsValuesClass* optionsValues)
   :
-  uqBaseEnvironmentClass(inputComm,optionsInputFileName,optionsValues)
+  uqBaseEnvironmentClass(inputComm,passedOptionsInputFileName,optionsValues)
 {
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "Entering uqFullEnvClass" << std::endl;
@@ -981,7 +992,7 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   //////////////////////////////////////////////////
   // Read options
   //////////////////////////////////////////////////
-  if (optionsInputFileName == NULL) {
+  if (m_optionsInputFileName == "") {
     m_optionsObj = new uqEnvironmentOptionsClass(*this,prefix,*m_optionsValues);
   }
   else {
@@ -1224,6 +1235,7 @@ uqFullEnvironmentClass::readOptionsInputFile()
   }
   else {
     if (m_fullRank == 0) std::cout << "An invalid input file has been passed to the 'environment' class constructor!"
+                                   << ": name of file is '" << m_optionsInputFileName.c_str() << "'"
                                    << std::endl;
 
     if (m_fullRank == 0) std::cout << "\nThis is a help message of the QUESO library."
@@ -1238,12 +1250,6 @@ uqFullEnvironmentClass::readOptionsInputFile()
   }
 
   return;
-}
-
-std::string
-uqFullEnvironmentClass::optionsInputFileName() const
-{
-  return m_optionsInputFileName;
 }
 
 void
