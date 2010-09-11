@@ -33,11 +33,8 @@
 #include <uqMetropolisHastingsSGOptions.h>
 #include <uqMiscellaneous.h>
 
-uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
-  const uqBaseEnvironmentClass& env,
-  const char* prefix)
+uqMhOptionsValuesClass::uqMhOptionsValuesClass()
   :
-  m_prefix                                   ((std::string)(prefix) + "mh_"),
   m_dataOutputFileName                       (UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV),
 //m_dataOutputAllowedSet                     (),
   m_totallyMute                              (UQ_MH_SG_TOTALLY_MUTE_ODV),
@@ -51,7 +48,7 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_rawChainDataOutputFileType               (UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV),
 //m_rawChainDataOutputAllowedSet             (),
   m_rawChainComputeStats                     (UQ_MH_SG_RAW_CHAIN_COMPUTE_STATS_ODV),
-  m_rawChainStatisticalOptions               (NULL),
+  m_rawChainStatisticalOptionsObj            (NULL),
   m_rawChainStatOptsInstantiated             (false),
   m_filteredChainGenerate                    (UQ_MH_SG_FILTERED_CHAIN_GENERATE_ODV),
   m_filteredChainDiscardedPortion            (UQ_MH_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV),
@@ -60,7 +57,7 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_filteredChainDataOutputFileType          (UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV),
 //m_filteredChainDataOutputAllowedSet        (),
   m_filteredChainComputeStats                (UQ_MH_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV),
-  m_filteredChainStatisticalOptions          (NULL),
+  m_filteredChainStatisticalOptionsObj       (NULL),
   m_filteredChainStatOptsInstantiated        (false),
   m_displayCandidates                        (UQ_MH_SG_DISPLAY_CANDIDATES_ODV),
   m_putOutOfBoundsInChain                    (UQ_MH_SG_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV),
@@ -75,9 +72,125 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_amEta                                    (UQ_MH_SG_AM_ETA_ODV),
   m_amEpsilon                                (UQ_MH_SG_AM_EPSILON_ODV),
   m_enableBrooksGelmanConvMonitor            (UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR),
-  m_BrooksGelmanLag                          (UQ_MH_SG_BROOKS_GELMAN_LAG),
+  m_BrooksGelmanLag                          (UQ_MH_SG_BROOKS_GELMAN_LAG)
+{
+}
+
+uqMhOptionsValuesClass::~uqMhOptionsValuesClass()
+{
+}
+
+uqMhOptionsValuesClass::uqMhOptionsValuesClass(const uqMhOptionsValuesClass& src)
+{
+  this->copy(src);
+}
+
+uqMhOptionsValuesClass&
+uqMhOptionsValuesClass::operator=(const uqMhOptionsValuesClass& rhs)
+{
+  this->copy(rhs);
+  return *this;
+}
+
+void
+uqMhOptionsValuesClass::copy(const uqMhOptionsValuesClass& src)
+{
+  m_dataOutputFileName                 = src.m_dataOutputFileName;
+  m_dataOutputAllowedSet               = src.m_dataOutputAllowedSet;
+  m_totallyMute                        = src.m_totallyMute;
+  m_rawChainDataInputFileName          = src.m_rawChainDataInputFileName;
+  m_rawChainDataInputFileType          = src.m_rawChainDataInputFileType;
+  m_rawChainSize                       = src.m_rawChainSize;
+  m_rawChainGenerateExtra              =  src.m_rawChainGenerateExtra;
+  m_rawChainDisplayPeriod              = src.m_rawChainDisplayPeriod;
+  m_rawChainMeasureRunTimes            = src.m_rawChainMeasureRunTimes;
+  m_rawChainDataOutputFileName         = src.m_rawChainDataOutputFileName;
+  m_rawChainDataOutputFileType         = src.m_rawChainDataOutputFileType;
+  m_rawChainDataOutputAllowedSet       = src.m_rawChainDataOutputAllowedSet;
+  m_rawChainComputeStats               = src.m_rawChainComputeStats;
+  m_rawChainStatisticalOptionsObj      = src.m_rawChainStatisticalOptionsObj; // dakota
+  m_rawChainStatOptsInstantiated       = src.m_rawChainStatOptsInstantiated;
+  m_filteredChainGenerate              = src.m_filteredChainGenerate;
+  m_filteredChainDiscardedPortion      = src.m_filteredChainDiscardedPortion;
+  m_filteredChainLag                   = src.m_filteredChainLag;
+  m_filteredChainDataOutputFileName    = src.m_filteredChainDataOutputFileName;
+  m_filteredChainDataOutputFileType    = src.m_filteredChainDataOutputFileType;
+  m_filteredChainDataOutputAllowedSet  = src.m_filteredChainDataOutputAllowedSet;
+  m_filteredChainComputeStats          = src.m_filteredChainComputeStats;
+  m_filteredChainStatisticalOptionsObj = src.m_filteredChainStatisticalOptionsObj; // dakota
+  m_filteredChainStatOptsInstantiated  = src.m_filteredChainStatOptsInstantiated;
+  m_displayCandidates                  = src.m_displayCandidates;
+  m_putOutOfBoundsInChain              = src.m_putOutOfBoundsInChain;
+  m_tkUseLocalHessian                  = src.m_tkUseLocalHessian;
+  m_tkUseNewtonComponent               = src.m_tkUseNewtonComponent;
+  m_drMaxNumExtraStages                = src.m_drMaxNumExtraStages;
+  m_drScalesForExtraStages             = src.m_drScalesForExtraStages;
+  m_drDuringAmNonAdaptiveInt           = src.m_drDuringAmNonAdaptiveInt;
+  m_amKeepInitialMatrix                = src.m_amKeepInitialMatrix;
+  m_amInitialNonAdaptInterval          = src.m_amInitialNonAdaptInterval;
+  m_amAdaptInterval                    = src.m_amAdaptInterval;
+  m_amEta                              = src.m_amEta;
+  m_amEpsilon                          = src.m_amEpsilon;
+  m_enableBrooksGelmanConvMonitor      = src.m_enableBrooksGelmanConvMonitor;
+  m_BrooksGelmanLag                    = src.m_BrooksGelmanLag;
+
+  return;
+}
+
+uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
+  const uqBaseEnvironmentClass& env,
+  const char*                   prefix)
+  :
+  m_prefix                                   ((std::string)(prefix) + "mh_"),
   m_env                                      (env),
   m_optionsDesc                              (new po::options_description("Bayesian Metropolis-Hastings options")),
+  m_option_help                              (m_prefix + "help"                              ),
+  m_option_dataOutputFileName                (m_prefix + "dataOutputFileName"                ),
+  m_option_dataOutputAllowedSet              (m_prefix + "dataOutputAllowedSet"              ),
+  m_option_totallyMute                       (m_prefix + "totallyMute"                       ),
+  m_option_rawChain_dataInputFileName        (m_prefix + "rawChain_dataInputFileName"        ),
+  m_option_rawChain_dataInputFileType        (m_prefix + "rawChain_dataInputFileType"        ),
+  m_option_rawChain_size                     (m_prefix + "rawChain_size"                     ),
+  m_option_rawChain_generateExtra            (m_prefix + "rawChain_generateExtra"            ),
+  m_option_rawChain_displayPeriod            (m_prefix + "rawChain_displayPeriod"            ),
+  m_option_rawChain_measureRunTimes          (m_prefix + "rawChain_measureRunTimes"          ),
+  m_option_rawChain_dataOutputFileName       (m_prefix + "rawChain_dataOutputFileName"       ),
+  m_option_rawChain_dataOutputFileType       (m_prefix + "rawChain_dataOutputFileType"       ),
+  m_option_rawChain_dataOutputAllowedSet     (m_prefix + "rawChain_dataOutputAllowedSet"     ),
+  m_option_rawChain_computeStats             (m_prefix + "rawChain_computeStats"             ),
+  m_option_filteredChain_generate            (m_prefix + "filteredChain_generate"            ),
+  m_option_filteredChain_discardedPortion    (m_prefix + "filteredChain_discardedPortion"    ),
+  m_option_filteredChain_lag                 (m_prefix + "filteredChain_lag"                 ),
+  m_option_filteredChain_dataOutputFileName  (m_prefix + "filteredChain_dataOutputFileName"  ),
+  m_option_filteredChain_dataOutputFileType  (m_prefix + "filteredChain_dataOutputFileType"  ),
+  m_option_filteredChain_dataOutputAllowedSet(m_prefix + "filteredChain_dataOutputAllowedSet"),
+  m_option_filteredChain_computeStats        (m_prefix + "filteredChain_computeStats"        ),
+  m_option_displayCandidates                 (m_prefix + "displayCandidates"                 ),
+  m_option_putOutOfBoundsInChain             (m_prefix + "putOutOfBoundsInChain"             ),
+  m_option_tk_useLocalHessian                (m_prefix + "tk_useLocalHessian"                ),
+  m_option_tk_useNewtonComponent             (m_prefix + "tk_useNewtonComponent"             ),
+  m_option_dr_maxNumExtraStages              (m_prefix + "dr_maxNumExtraStages"              ),
+  m_option_dr_listOfScalesForExtraStages     (m_prefix + "dr_listOfScalesForExtraStages"     ),
+  m_option_dr_duringAmNonAdaptiveInt         (m_prefix + "dr_duringAmNonAdaptiveInt"         ),
+  m_option_am_keepInitialMatrix              (m_prefix + "am_keepInitialMatrix"              ),
+  m_option_am_initialNonAdaptInterval        (m_prefix + "am_initialNonAdaptInterval"        ),
+  m_option_am_adaptInterval                  (m_prefix + "am_adaptInterval"                  ),
+  m_option_am_eta                            (m_prefix + "am_eta"                            ),
+  m_option_am_epsilon                        (m_prefix + "am_epsilon"                        ),
+  m_option_enableBrooksGelmanConvMonitor     (m_prefix + "enableBrooksGelmanConvMonitor"     ),
+  m_option_BrooksGelmanLag                   (m_prefix + "BrooksGelmanLag"                   )
+{
+}
+
+uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
+  const uqBaseEnvironmentClass& env,
+  const char*                   prefix,
+  uqMhOptionsValuesClass&       optionsValues)
+  :
+  m_optionsValues                            (optionsValues),
+  m_prefix                                   ((std::string)(prefix) + "mh_"),
+  m_env                                      (env),
+  m_optionsDesc                              (NULL),
   m_option_help                              (m_prefix + "help"                              ),
   m_option_dataOutputFileName                (m_prefix + "dataOutputFileName"                ),
   m_option_dataOutputAllowedSet              (m_prefix + "dataOutputAllowedSet"              ),
@@ -120,44 +233,6 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   const uqMLSamplingLevelOptionsClass& inputOptions)
   :
   m_prefix                           (inputOptions.m_prefix),
-  m_dataOutputFileName               (inputOptions.m_dataOutputFileName),
-  m_dataOutputAllowedSet             (inputOptions.m_dataOutputAllowedSet),
-  m_totallyMute                      (inputOptions.m_totallyMute),
-  m_rawChainDataInputFileName        (inputOptions.m_rawChainDataInputFileName),
-  m_rawChainDataInputFileType        (inputOptions.m_rawChainDataInputFileType),
-  m_rawChainSize                     (inputOptions.m_rawChainSize),
-  m_rawChainGenerateExtra            (inputOptions.m_rawChainGenerateExtra),
-  m_rawChainDisplayPeriod            (inputOptions.m_rawChainDisplayPeriod),
-  m_rawChainMeasureRunTimes          (inputOptions.m_rawChainMeasureRunTimes),
-  m_rawChainDataOutputFileName       (inputOptions.m_rawChainDataOutputFileName),
-  m_rawChainDataOutputFileType       (inputOptions.m_rawChainDataOutputFileType),
-  m_rawChainDataOutputAllowedSet     (inputOptions.m_rawChainDataOutputAllowedSet),
-  m_rawChainComputeStats             (inputOptions.m_rawChainComputeStats),
-  m_rawChainStatisticalOptions       (inputOptions.m_rawChainStatisticalOptions),
-  m_rawChainStatOptsInstantiated     (false),
-  m_filteredChainGenerate            (inputOptions.m_filteredChainGenerate),
-  m_filteredChainDiscardedPortion    (inputOptions.m_filteredChainDiscardedPortion),
-  m_filteredChainLag                 (inputOptions.m_filteredChainLag),
-  m_filteredChainDataOutputFileName  (inputOptions.m_filteredChainDataOutputFileName),
-  m_filteredChainDataOutputFileType  (inputOptions.m_filteredChainDataOutputFileType),
-  m_filteredChainDataOutputAllowedSet(inputOptions.m_filteredChainDataOutputAllowedSet),
-  m_filteredChainComputeStats        (inputOptions.m_filteredChainComputeStats),
-  m_filteredChainStatisticalOptions  (inputOptions.m_filteredChainStatisticalOptions),
-  m_filteredChainStatOptsInstantiated(false),
-  m_displayCandidates                (inputOptions.m_displayCandidates),
-  m_putOutOfBoundsInChain            (inputOptions.m_putOutOfBoundsInChain),
-  m_tkUseLocalHessian                (inputOptions.m_tkUseLocalHessian),
-  m_tkUseNewtonComponent             (inputOptions.m_tkUseNewtonComponent),
-  m_drMaxNumExtraStages              (inputOptions.m_drMaxNumExtraStages),
-  m_drScalesForExtraStages           (inputOptions.m_drScalesForExtraStages),
-  m_drDuringAmNonAdaptiveInt         (inputOptions.m_drDuringAmNonAdaptiveInt),
-  m_amKeepInitialMatrix              (inputOptions.m_amKeepInitialMatrix),
-  m_amInitialNonAdaptInterval        (inputOptions.m_amInitialNonAdaptInterval),
-  m_amAdaptInterval                  (inputOptions.m_amAdaptInterval),
-  m_amEta                            (inputOptions.m_amEta),
-  m_amEpsilon                        (inputOptions.m_amEpsilon),
-  m_enableBrooksGelmanConvMonitor    (UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR),
-  m_BrooksGelmanLag                  (UQ_MH_SG_BROOKS_GELMAN_LAG),
   m_env                              (inputOptions.env()),
   m_optionsDesc                      (NULL),
   m_option_help                              (m_prefix + "help"                              ),
@@ -196,8 +271,47 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_option_enableBrooksGelmanConvMonitor     (m_prefix + "enableBrooksGelmanConvMonitor"     ),
   m_option_BrooksGelmanLag                   (m_prefix + "BrooksGelmanLag"                   )
 {
+  m_optionsValues.m_dataOutputFileName                 = inputOptions.m_dataOutputFileName;
+  m_optionsValues.m_dataOutputAllowedSet               = inputOptions.m_dataOutputAllowedSet;
+  m_optionsValues.m_totallyMute                        = inputOptions.m_totallyMute;
+  m_optionsValues.m_rawChainDataInputFileName          = inputOptions.m_rawChainDataInputFileName;
+  m_optionsValues.m_rawChainDataInputFileType          = inputOptions.m_rawChainDataInputFileType;
+  m_optionsValues.m_rawChainSize                       = inputOptions.m_rawChainSize;
+  m_optionsValues.m_rawChainGenerateExtra              = inputOptions.m_rawChainGenerateExtra;
+  m_optionsValues.m_rawChainDisplayPeriod              = inputOptions.m_rawChainDisplayPeriod;
+  m_optionsValues.m_rawChainMeasureRunTimes            = inputOptions.m_rawChainMeasureRunTimes;
+  m_optionsValues.m_rawChainDataOutputFileName         = inputOptions.m_rawChainDataOutputFileName;
+  m_optionsValues.m_rawChainDataOutputFileType         = inputOptions.m_rawChainDataOutputFileType;
+  m_optionsValues.m_rawChainDataOutputAllowedSet       = inputOptions.m_rawChainDataOutputAllowedSet;
+  m_optionsValues.m_rawChainComputeStats               = inputOptions.m_rawChainComputeStats;
+  m_optionsValues.m_rawChainStatisticalOptionsObj      = inputOptions.m_rawChainStatisticalOptionsObj; // dakota
+  m_optionsValues.m_rawChainStatOptsInstantiated       = false;
+  m_optionsValues.m_filteredChainGenerate              = inputOptions.m_filteredChainGenerate;
+  m_optionsValues.m_filteredChainDiscardedPortion      = inputOptions.m_filteredChainDiscardedPortion;
+  m_optionsValues.m_filteredChainLag                   = inputOptions.m_filteredChainLag;
+  m_optionsValues.m_filteredChainDataOutputFileName    = inputOptions.m_filteredChainDataOutputFileName;
+  m_optionsValues.m_filteredChainDataOutputFileType    = inputOptions.m_filteredChainDataOutputFileType;
+  m_optionsValues.m_filteredChainDataOutputAllowedSet  = inputOptions.m_filteredChainDataOutputAllowedSet;
+  m_optionsValues.m_filteredChainComputeStats          = inputOptions.m_filteredChainComputeStats;
+  m_optionsValues.m_filteredChainStatisticalOptionsObj = inputOptions.m_filteredChainStatisticalOptionsObj; // dakota
+  m_optionsValues.m_filteredChainStatOptsInstantiated  = false;
+  m_optionsValues.m_displayCandidates                  = inputOptions.m_displayCandidates;
+  m_optionsValues.m_putOutOfBoundsInChain              = inputOptions.m_putOutOfBoundsInChain;
+  m_optionsValues.m_tkUseLocalHessian                  = inputOptions.m_tkUseLocalHessian;
+  m_optionsValues.m_tkUseNewtonComponent               = inputOptions.m_tkUseNewtonComponent;
+  m_optionsValues.m_drMaxNumExtraStages                = inputOptions.m_drMaxNumExtraStages;
+  m_optionsValues.m_drScalesForExtraStages             = inputOptions.m_drScalesForExtraStages;
+  m_optionsValues.m_drDuringAmNonAdaptiveInt           = inputOptions.m_drDuringAmNonAdaptiveInt;
+  m_optionsValues.m_amKeepInitialMatrix                = inputOptions.m_amKeepInitialMatrix;
+  m_optionsValues.m_amInitialNonAdaptInterval          = inputOptions.m_amInitialNonAdaptInterval;
+  m_optionsValues.m_amAdaptInterval                    = inputOptions.m_amAdaptInterval;
+  m_optionsValues.m_amEta                              = inputOptions.m_amEta;
+  m_optionsValues.m_amEpsilon                          = inputOptions.m_amEpsilon;
+  m_optionsValues.m_enableBrooksGelmanConvMonitor      = UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR;
+  m_optionsValues.m_BrooksGelmanLag                    = UQ_MH_SG_BROOKS_GELMAN_LAG;
+
   if ((m_env.subDisplayFile() != NULL) &&
-      (m_totallyMute == false        )) {
+      (m_optionsValues.m_totallyMute == false        )) {
     *m_env.subDisplayFile() << "In uqMetropolisHastingsSGOptionsClass::constructor(2)"
                             << ": after copying values of options with prefix '" << m_prefix
                             << "', state of object is:"
@@ -208,20 +322,25 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
 
 uqMetropolisHastingsSGOptionsClass::~uqMetropolisHastingsSGOptionsClass()
 {
-  if (m_filteredChainStatOptsInstantiated) delete m_filteredChainStatisticalOptions;
-  if (m_rawChainStatOptsInstantiated     ) delete m_rawChainStatisticalOptions;
-  if (m_optionsDesc                      ) delete m_optionsDesc;
+  if (m_optionsValues.m_filteredChainStatOptsInstantiated) delete m_optionsValues.m_filteredChainStatisticalOptionsObj;
+  if (m_optionsValues.m_rawChainStatOptsInstantiated     ) delete m_optionsValues.m_rawChainStatisticalOptionsObj;
+  if (m_optionsDesc                                      ) delete m_optionsDesc;
 } 
 
 void
 uqMetropolisHastingsSGOptionsClass::scanOptionsValues()
 {
+  UQ_FATAL_TEST_MACRO(m_optionsDesc == NULL,
+                      m_env.fullRank(),
+                      "uqMetropolisHastingsSGOptionsClass::scanOptionsValues()",
+                      "m_optionsDesc variable is NULL");
+
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
 
   if ((m_env.subDisplayFile() != NULL) &&
-      (m_totallyMute == false        )) {
+      (m_optionsValues.m_totallyMute == false        )) {
     *m_env.subDisplayFile() << "In uqMetropolisHastingsSGOptionsClass::scanOptionsValues()"
                             << ": after getting values of options with prefix '" << m_prefix
                             << "', state of object is:"
@@ -229,13 +348,13 @@ uqMetropolisHastingsSGOptionsClass::scanOptionsValues()
                             << std::endl;
   }
 
-  if (m_rawChainComputeStats) {
-    m_rawChainStatisticalOptions   = new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "rawChain_");
-    m_rawChainStatOptsInstantiated = true;
+  if (m_optionsValues.m_rawChainComputeStats) {
+    m_optionsValues.m_rawChainStatisticalOptionsObj = new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "rawChain_");
+    m_optionsValues.m_rawChainStatOptsInstantiated  = true;
   }
-  if (m_filteredChainComputeStats) {
-    m_filteredChainStatisticalOptions   = new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "filteredChain_");
-    m_filteredChainStatOptsInstantiated = true;
+  if (m_optionsValues.m_filteredChainComputeStats) {
+    m_optionsValues.m_filteredChainStatisticalOptionsObj = new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "filteredChain_");
+    m_optionsValues.m_filteredChainStatOptsInstantiated  = true;
   }
 
   return;
@@ -290,150 +409,150 @@ uqMetropolisHastingsSGOptionsClass::getMyOptionValues(po::options_description& o
 {
   if (m_env.allOptionsMap().count(m_option_help)) {
     if ((m_env.subDisplayFile()) &&
-        (m_totallyMute == false)) {
+        (m_optionsValues.m_totallyMute == false)) {
       *m_env.subDisplayFile() << optionsDesc
-                             << std::endl;
+                              << std::endl;
     }
   }
 
   if (m_env.allOptionsMap().count(m_option_dataOutputFileName)) {
-    m_dataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName]).as<std::string>();
+    m_optionsValues.m_dataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_dataOutputAllowedSet)) {
-    m_dataOutputAllowedSet.clear();
+    m_optionsValues.m_dataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
     std::string inputString = m_env.allOptionsMap()[m_option_dataOutputAllowedSet].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
       for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
-        m_dataOutputAllowedSet.insert((unsigned int) tmpAllow[i]);
+        m_optionsValues.m_dataOutputAllowedSet.insert((unsigned int) tmpAllow[i]);
       }
     }
   }
 
   if (m_env.allOptionsMap().count(m_option_totallyMute)) {
-    m_totallyMute = ((const po::variable_value&) m_env.allOptionsMap()[m_option_totallyMute]).as<bool>();
+    m_optionsValues.m_totallyMute = ((const po::variable_value&) m_env.allOptionsMap()[m_option_totallyMute]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_dataInputFileName)) {
-    m_rawChainDataInputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataInputFileName]).as<std::string>();
+    m_optionsValues.m_rawChainDataInputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataInputFileName]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_dataInputFileType)) {
-    m_rawChainDataInputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataInputFileType]).as<std::string>();
+    m_optionsValues.m_rawChainDataInputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataInputFileType]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_size)) {
-    m_rawChainSize = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_size]).as<unsigned int>();
+    m_optionsValues.m_rawChainSize = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_size]).as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_displayPeriod)) {
-    m_rawChainDisplayPeriod = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_displayPeriod]).as<unsigned int>();
+    m_optionsValues.m_rawChainDisplayPeriod = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_displayPeriod]).as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_measureRunTimes)) {
-    m_rawChainMeasureRunTimes = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_measureRunTimes]).as<bool>();
+    m_optionsValues.m_rawChainMeasureRunTimes = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_measureRunTimes]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_dataOutputFileName)) {
-    m_rawChainDataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataOutputFileName]).as<std::string>();
+    m_optionsValues.m_rawChainDataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataOutputFileName]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_dataOutputFileType)) {
-    m_rawChainDataOutputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataOutputFileType]).as<std::string>();
+    m_optionsValues.m_rawChainDataOutputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataOutputFileType]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_dataOutputAllowedSet)) {
-    m_rawChainDataOutputAllowedSet.clear();
+    m_optionsValues.m_rawChainDataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
     std::string inputString = m_env.allOptionsMap()[m_option_rawChain_dataOutputAllowedSet].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
       for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
-        m_rawChainDataOutputAllowedSet.insert((unsigned int) tmpAllow[i]);
+        m_optionsValues.m_rawChainDataOutputAllowedSet.insert((unsigned int) tmpAllow[i]);
       }
     }
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_computeStats)) {
-    m_rawChainComputeStats = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_computeStats]).as<bool>();
+    m_optionsValues.m_rawChainComputeStats = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_computeStats]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_generateExtra)) {
-    m_rawChainGenerateExtra = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_generateExtra]).as<bool>();
+    m_optionsValues.m_rawChainGenerateExtra = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_generateExtra]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_filteredChain_generate)) {
-    m_filteredChainGenerate = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_generate]).as<bool>();
+    m_optionsValues.m_filteredChainGenerate = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_generate]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_filteredChain_discardedPortion)) {
-    m_filteredChainDiscardedPortion = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_discardedPortion]).as<double>();
+    m_optionsValues.m_filteredChainDiscardedPortion = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_discardedPortion]).as<double>();
   }
 
   if (m_env.allOptionsMap().count(m_option_filteredChain_lag)) {
-    m_filteredChainLag = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_lag]).as<unsigned int>();
+    m_optionsValues.m_filteredChainLag = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_lag]).as<unsigned int>();
   }
-  if ((m_filteredChainGenerate == true) &&
-      (m_filteredChainLag      < 2    )) {
+  if ((m_optionsValues.m_filteredChainGenerate == true) &&
+      (m_optionsValues.m_filteredChainLag      < 2    )) {
     std::cerr << "WARNING In uqMetropolisHastingsSGClass<P_V,P_M>::getMyOptionsValues()"
               << ", fullRank "              << m_env.fullRank()
               << ", subEnvironment "        << m_env.subId()
               << ", subRank "               << m_env.subRank()
               << ", inter0Rank "            << m_env.inter0Rank()
               << ": forcing the value of '" << m_option_filteredChain_lag
-              << "' from "                  << m_filteredChainLag
+              << "' from "                  << m_optionsValues.m_filteredChainLag
               << " to "                     << 2
               << std::endl;
-    m_filteredChainLag = 2;
+    m_optionsValues.m_filteredChainLag = 2;
   }
 
   if (m_env.allOptionsMap().count(m_option_filteredChain_dataOutputFileName)) {
-    m_filteredChainDataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_dataOutputFileName]).as<std::string>();
+    m_optionsValues.m_filteredChainDataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_dataOutputFileName]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_filteredChain_dataOutputFileType)) {
-    m_filteredChainDataOutputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_dataOutputFileType]).as<std::string>();
+    m_optionsValues.m_filteredChainDataOutputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_dataOutputFileType]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_filteredChain_dataOutputAllowedSet)) {
-    m_filteredChainDataOutputAllowedSet.clear();
+    m_optionsValues.m_filteredChainDataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
     std::string inputString = m_env.allOptionsMap()[m_option_filteredChain_dataOutputAllowedSet].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
       for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
-        m_filteredChainDataOutputAllowedSet.insert((unsigned int) tmpAllow[i]);
+        m_optionsValues.m_filteredChainDataOutputAllowedSet.insert((unsigned int) tmpAllow[i]);
       }
     }
   }
 
   if (m_env.allOptionsMap().count(m_option_filteredChain_computeStats)) {
-    m_filteredChainComputeStats = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_computeStats]).as<bool>();
+    m_optionsValues.m_filteredChainComputeStats = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_computeStats]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_displayCandidates)) {
-    m_displayCandidates = ((const po::variable_value&) m_env.allOptionsMap()[m_option_displayCandidates]).as<bool>();
+    m_optionsValues.m_displayCandidates = ((const po::variable_value&) m_env.allOptionsMap()[m_option_displayCandidates]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_putOutOfBoundsInChain)) {
-    m_putOutOfBoundsInChain = ((const po::variable_value&) m_env.allOptionsMap()[m_option_putOutOfBoundsInChain]).as<bool>();
+    m_optionsValues.m_putOutOfBoundsInChain = ((const po::variable_value&) m_env.allOptionsMap()[m_option_putOutOfBoundsInChain]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_tk_useLocalHessian)) {
-    m_tkUseLocalHessian = ((const po::variable_value&) m_env.allOptionsMap()[m_option_tk_useLocalHessian]).as<bool>();
+    m_optionsValues.m_tkUseLocalHessian = ((const po::variable_value&) m_env.allOptionsMap()[m_option_tk_useLocalHessian]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_tk_useNewtonComponent)) {
-    m_tkUseNewtonComponent = ((const po::variable_value&) m_env.allOptionsMap()[m_option_tk_useNewtonComponent]).as<bool>();
+    m_optionsValues.m_tkUseNewtonComponent = ((const po::variable_value&) m_env.allOptionsMap()[m_option_tk_useNewtonComponent]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_dr_maxNumExtraStages)) {
-    m_drMaxNumExtraStages = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dr_maxNumExtraStages]).as<unsigned int>();
+    m_optionsValues.m_drMaxNumExtraStages = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dr_maxNumExtraStages]).as<unsigned int>();
   }
 
   std::vector<double> tmpScales(0,0.);
@@ -449,49 +568,49 @@ uqMetropolisHastingsSGOptionsClass::getMyOptionValues(po::options_description& o
     //}
   }
 
-  if (m_drMaxNumExtraStages > 0) {
+  if (m_optionsValues.m_drMaxNumExtraStages > 0) {
     double scale = 1.0;
     unsigned int tmpSize = tmpScales.size();
 
-    m_drScalesForExtraStages.clear();
-    m_drScalesForExtraStages.resize(m_drMaxNumExtraStages,1.);
-    for (unsigned int i = 0; i < m_drMaxNumExtraStages; ++i) {
+    m_optionsValues.m_drScalesForExtraStages.clear();
+    m_optionsValues.m_drScalesForExtraStages.resize(m_optionsValues.m_drMaxNumExtraStages,1.);
+    for (unsigned int i = 0; i < m_optionsValues.m_drMaxNumExtraStages; ++i) {
       if (i < tmpSize) scale = tmpScales[i];
-      m_drScalesForExtraStages[i] = scale;
+      m_optionsValues.m_drScalesForExtraStages[i] = scale;
     }
     //updateTK();
   }
 
   if (m_env.allOptionsMap().count(m_option_dr_duringAmNonAdaptiveInt)) {
-    m_drDuringAmNonAdaptiveInt = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dr_duringAmNonAdaptiveInt]).as<bool>();
+    m_optionsValues.m_drDuringAmNonAdaptiveInt = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dr_duringAmNonAdaptiveInt]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_am_keepInitialMatrix)) {
-    m_amKeepInitialMatrix = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_keepInitialMatrix]).as<bool>();
+    m_optionsValues.m_amKeepInitialMatrix = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_keepInitialMatrix]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_am_initialNonAdaptInterval)) {
-    m_amInitialNonAdaptInterval = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_initialNonAdaptInterval]).as<unsigned int>();
+    m_optionsValues.m_amInitialNonAdaptInterval = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_initialNonAdaptInterval]).as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_am_adaptInterval)) {
-    m_amAdaptInterval = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_adaptInterval]).as<unsigned int>();
+    m_optionsValues.m_amAdaptInterval = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_adaptInterval]).as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_am_eta)) {
-    m_amEta = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_eta]).as<double>();
+    m_optionsValues.m_amEta = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_eta]).as<double>();
   }
 
   if (m_env.allOptionsMap().count(m_option_am_epsilon)) {
-    m_amEpsilon = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_epsilon]).as<double>();
+    m_optionsValues.m_amEpsilon = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_epsilon]).as<double>();
   }
 
   if (m_env.allOptionsMap().count(m_option_enableBrooksGelmanConvMonitor)) {
-    m_enableBrooksGelmanConvMonitor = ((const po::variable_value&) m_env.allOptionsMap()[m_option_enableBrooksGelmanConvMonitor]).as<unsigned int>();
+    m_optionsValues.m_enableBrooksGelmanConvMonitor = ((const po::variable_value&) m_env.allOptionsMap()[m_option_enableBrooksGelmanConvMonitor]).as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_BrooksGelmanLag)) {
-    m_BrooksGelmanLag = ((const po::variable_value&) m_env.allOptionsMap()[m_option_BrooksGelmanLag]).as<unsigned int>();
+    m_optionsValues.m_BrooksGelmanLag = ((const po::variable_value&) m_env.allOptionsMap()[m_option_BrooksGelmanLag]).as<unsigned int>();
   }
   return;
 }
@@ -499,52 +618,52 @@ uqMetropolisHastingsSGOptionsClass::getMyOptionValues(po::options_description& o
 void
 uqMetropolisHastingsSGOptionsClass::print(std::ostream& os) const
 {
-  os <<         m_option_dataOutputFileName   << " = " << m_dataOutputFileName
+  os <<         m_option_dataOutputFileName   << " = " << m_optionsValues.m_dataOutputFileName
      << "\n" << m_option_dataOutputAllowedSet << " = ";
-  for (std::set<unsigned int>::iterator setIt = m_dataOutputAllowedSet.begin(); setIt != m_dataOutputAllowedSet.end(); ++setIt) {
+  for (std::set<unsigned int>::iterator setIt = m_optionsValues.m_dataOutputAllowedSet.begin(); setIt != m_optionsValues.m_dataOutputAllowedSet.end(); ++setIt) {
     os << *setIt << " ";
   }
-  os << "\n" << m_option_totallyMute                   << " = " << m_totallyMute
-     << "\n" << m_option_rawChain_dataInputFileName    << " = " << m_rawChainDataInputFileName
-     << "\n" << m_option_rawChain_dataInputFileType    << " = " << m_rawChainDataInputFileType
-     << "\n" << m_option_rawChain_size                 << " = " << m_rawChainSize
-     << "\n" << m_option_rawChain_generateExtra        << " = " << m_rawChainGenerateExtra
-     << "\n" << m_option_rawChain_displayPeriod        << " = " << m_rawChainDisplayPeriod
-     << "\n" << m_option_rawChain_measureRunTimes      << " = " << m_rawChainMeasureRunTimes
-     << "\n" << m_option_rawChain_dataOutputFileName   << " = " << m_rawChainDataOutputFileName
-     << "\n" << m_option_rawChain_dataOutputFileType   << " = " << m_rawChainDataOutputFileType
+  os << "\n" << m_option_totallyMute                   << " = " << m_optionsValues.m_totallyMute
+     << "\n" << m_option_rawChain_dataInputFileName    << " = " << m_optionsValues.m_rawChainDataInputFileName
+     << "\n" << m_option_rawChain_dataInputFileType    << " = " << m_optionsValues.m_rawChainDataInputFileType
+     << "\n" << m_option_rawChain_size                 << " = " << m_optionsValues.m_rawChainSize
+     << "\n" << m_option_rawChain_generateExtra        << " = " << m_optionsValues.m_rawChainGenerateExtra
+     << "\n" << m_option_rawChain_displayPeriod        << " = " << m_optionsValues.m_rawChainDisplayPeriod
+     << "\n" << m_option_rawChain_measureRunTimes      << " = " << m_optionsValues.m_rawChainMeasureRunTimes
+     << "\n" << m_option_rawChain_dataOutputFileName   << " = " << m_optionsValues.m_rawChainDataOutputFileName
+     << "\n" << m_option_rawChain_dataOutputFileType   << " = " << m_optionsValues.m_rawChainDataOutputFileType
      << "\n" << m_option_rawChain_dataOutputAllowedSet << " = ";
-  for (std::set<unsigned int>::iterator setIt = m_rawChainDataOutputAllowedSet.begin(); setIt != m_rawChainDataOutputAllowedSet.end(); ++setIt) {
+  for (std::set<unsigned int>::iterator setIt = m_optionsValues.m_rawChainDataOutputAllowedSet.begin(); setIt != m_optionsValues.m_rawChainDataOutputAllowedSet.end(); ++setIt) {
     os << *setIt << " ";
   }
-  os << "\n" << m_option_rawChain_computeStats              << " = " << m_rawChainComputeStats
-     << "\n" << m_option_filteredChain_generate             << " = " << m_filteredChainGenerate
-     << "\n" << m_option_filteredChain_discardedPortion     << " = " << m_filteredChainDiscardedPortion
-     << "\n" << m_option_filteredChain_lag                  << " = " << m_filteredChainLag
-     << "\n" << m_option_filteredChain_dataOutputFileName   << " = " << m_filteredChainDataOutputFileName
-     << "\n" << m_option_filteredChain_dataOutputFileType   << " = " << m_filteredChainDataOutputFileType
+  os << "\n" << m_option_rawChain_computeStats              << " = " << m_optionsValues.m_rawChainComputeStats
+     << "\n" << m_option_filteredChain_generate             << " = " << m_optionsValues.m_filteredChainGenerate
+     << "\n" << m_option_filteredChain_discardedPortion     << " = " << m_optionsValues.m_filteredChainDiscardedPortion
+     << "\n" << m_option_filteredChain_lag                  << " = " << m_optionsValues.m_filteredChainLag
+     << "\n" << m_option_filteredChain_dataOutputFileName   << " = " << m_optionsValues.m_filteredChainDataOutputFileName
+     << "\n" << m_option_filteredChain_dataOutputFileType   << " = " << m_optionsValues.m_filteredChainDataOutputFileType
      << "\n" << m_option_filteredChain_dataOutputAllowedSet << " = ";
-  for (std::set<unsigned int>::iterator setIt = m_filteredChainDataOutputAllowedSet.begin(); setIt != m_filteredChainDataOutputAllowedSet.end(); ++setIt) {
+  for (std::set<unsigned int>::iterator setIt = m_optionsValues.m_filteredChainDataOutputAllowedSet.begin(); setIt != m_optionsValues.m_filteredChainDataOutputAllowedSet.end(); ++setIt) {
     os << *setIt << " ";
   }
-  os << "\n" << m_option_filteredChain_computeStats    << " = " << m_filteredChainComputeStats
-     << "\n" << m_option_displayCandidates             << " = " << m_displayCandidates
-     << "\n" << m_option_putOutOfBoundsInChain         << " = " << m_putOutOfBoundsInChain
-     << "\n" << m_option_tk_useLocalHessian            << " = " << m_tkUseLocalHessian
-     << "\n" << m_option_tk_useNewtonComponent         << " = " << m_tkUseNewtonComponent
-     << "\n" << m_option_dr_maxNumExtraStages          << " = " << m_drMaxNumExtraStages
+  os << "\n" << m_option_filteredChain_computeStats    << " = " << m_optionsValues.m_filteredChainComputeStats
+     << "\n" << m_option_displayCandidates             << " = " << m_optionsValues.m_displayCandidates
+     << "\n" << m_option_putOutOfBoundsInChain         << " = " << m_optionsValues.m_putOutOfBoundsInChain
+     << "\n" << m_option_tk_useLocalHessian            << " = " << m_optionsValues.m_tkUseLocalHessian
+     << "\n" << m_option_tk_useNewtonComponent         << " = " << m_optionsValues.m_tkUseNewtonComponent
+     << "\n" << m_option_dr_maxNumExtraStages          << " = " << m_optionsValues.m_drMaxNumExtraStages
      << "\n" << m_option_dr_listOfScalesForExtraStages << " = ";
-  for (unsigned int i = 0; i < m_drScalesForExtraStages.size(); ++i) {
-    os << m_drScalesForExtraStages[i] << " ";
+  for (unsigned int i = 0; i < m_optionsValues.m_drScalesForExtraStages.size(); ++i) {
+    os << m_optionsValues.m_drScalesForExtraStages[i] << " ";
   }
-  os << "\n" << m_option_dr_duringAmNonAdaptiveInt     << " = " << m_drDuringAmNonAdaptiveInt
-     << "\n" << m_option_am_keepInitialMatrix          << " = " << m_amKeepInitialMatrix
-     << "\n" << m_option_am_initialNonAdaptInterval    << " = " << m_amInitialNonAdaptInterval
-     << "\n" << m_option_am_adaptInterval              << " = " << m_amAdaptInterval
-     << "\n" << m_option_am_eta                        << " = " << m_amEta
-     << "\n" << m_option_am_epsilon                    << " = " << m_amEpsilon
-     << "\n" << m_option_enableBrooksGelmanConvMonitor << " = " << m_enableBrooksGelmanConvMonitor
-     << "\n" << m_option_BrooksGelmanLag               << " = " << m_BrooksGelmanLag
+  os << "\n" << m_option_dr_duringAmNonAdaptiveInt     << " = " << m_optionsValues.m_drDuringAmNonAdaptiveInt
+     << "\n" << m_option_am_keepInitialMatrix          << " = " << m_optionsValues.m_amKeepInitialMatrix
+     << "\n" << m_option_am_initialNonAdaptInterval    << " = " << m_optionsValues.m_amInitialNonAdaptInterval
+     << "\n" << m_option_am_adaptInterval              << " = " << m_optionsValues.m_amAdaptInterval
+     << "\n" << m_option_am_eta                        << " = " << m_optionsValues.m_amEta
+     << "\n" << m_option_am_epsilon                    << " = " << m_optionsValues.m_amEpsilon
+     << "\n" << m_option_enableBrooksGelmanConvMonitor << " = " << m_optionsValues.m_enableBrooksGelmanConvMonitor
+     << "\n" << m_option_BrooksGelmanLag               << " = " << m_optionsValues.m_BrooksGelmanLag
      << std::endl;
 
   return;

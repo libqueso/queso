@@ -109,7 +109,7 @@ class uqStatisticalInverseProblemClass
 {
 public:
   uqStatisticalInverseProblemClass(const char*                               prefix,
-                                   const uqSipOptionsValuesClass*            optionsValues,
+                                   const uqSipOptionsValuesClass*            optionsValues, // dakota
                                    const uqBaseVectorRVClass      <P_V,P_M>& priorRv,            
                                    const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunction, 
                                          uqGenericVectorRVClass   <P_V,P_M>& postRv);
@@ -172,7 +172,7 @@ std::ostream& operator<<(std::ostream& os, const uqStatisticalInverseProblemClas
 template <class P_V,class P_M>
 uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
   /*! The prefix                 */ const char*                               prefix,
-  /*! Options (if no input file) */ const uqSipOptionsValuesClass*            optionsValues,
+  /*! Options (if no input file) */ const uqSipOptionsValuesClass*            optionsValues, // dakota
   /*! The prior rv               */ const uqBaseVectorRVClass      <P_V,P_M>& priorRv,
   /*! The likelihood function    */ const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunction,
   /*! The posterior rv           */       uqGenericVectorRVClass   <P_V,P_M>& postRv)
@@ -335,7 +335,8 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(
 
   // Compute output realizer: Metropolis-Hastings approach
   m_chain = new uqSequenceOfVectorsClass<P_V,P_M>(m_postRv.imageSet().vectorSpace(),0,m_optionsObj->m_prefix+"chain");
-  m_mhSeqGenerator = new uqMetropolisHastingsSGClass<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
+  m_mhSeqGenerator = new uqMetropolisHastingsSGClass<P_V,P_M>(m_optionsObj->m_prefix.c_str(), // dakota
+                                                              NULL,
                                                               m_postRv,
                                                               initialValues,
                                                               initialProposalCovMatrix);

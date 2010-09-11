@@ -79,17 +79,13 @@
 #define UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR          0
 #define UQ_MH_SG_BROOKS_GELMAN_LAG                          100
 
-class uqMetropolisHastingsSGOptionsClass
+class uqMhOptionsValuesClass
 {
 public:
-  uqMetropolisHastingsSGOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix);
-  uqMetropolisHastingsSGOptionsClass(const uqMLSamplingLevelOptionsClass& inputOptions);
- ~uqMetropolisHastingsSGOptionsClass();
-
-  void scanOptionsValues();
-  void print            (std::ostream& os) const;
-
-  std::string                        m_prefix;
+  uqMhOptionsValuesClass            ();
+  uqMhOptionsValuesClass            (const uqMhOptionsValuesClass& src);
+  uqMhOptionsValuesClass& operator= (const uqMhOptionsValuesClass& rhs);
+ ~uqMhOptionsValuesClass            ();
 
   std::string                        m_dataOutputFileName;
   std::set<unsigned int>             m_dataOutputAllowedSet;
@@ -105,7 +101,8 @@ public:
   std::string                        m_rawChainDataOutputFileType;
   std::set<unsigned int>             m_rawChainDataOutputAllowedSet;
   bool                               m_rawChainComputeStats;
-  uqSequenceStatisticalOptionsClass* m_rawChainStatisticalOptions;
+  uqSsOptionsValuesClass             m_rawChainStatisticalOptionsValues;
+  uqSequenceStatisticalOptionsClass* m_rawChainStatisticalOptionsObj;
   bool                               m_rawChainStatOptsInstantiated;
 
   bool                               m_filteredChainGenerate;
@@ -115,7 +112,8 @@ public:
   std::string                        m_filteredChainDataOutputFileType;
   std::set<unsigned int>             m_filteredChainDataOutputAllowedSet;
   bool                               m_filteredChainComputeStats;
-  uqSequenceStatisticalOptionsClass* m_filteredChainStatisticalOptions;
+  uqSsOptionsValuesClass             m_fileteredChainStatisticalOptionsValues;
+  uqSequenceStatisticalOptionsClass* m_filteredChainStatisticalOptionsObj;
   bool                               m_filteredChainStatOptsInstantiated;
 
   bool                               m_displayCandidates;
@@ -133,6 +131,24 @@ public:
 
   unsigned int                       m_enableBrooksGelmanConvMonitor;
   unsigned int                       m_BrooksGelmanLag;
+
+private:
+  void copy(const uqMhOptionsValuesClass& src);
+};
+
+class uqMetropolisHastingsSGOptionsClass
+{
+public:
+  uqMetropolisHastingsSGOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix);
+  uqMetropolisHastingsSGOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix, uqMhOptionsValuesClass& optionsValues);
+  uqMetropolisHastingsSGOptionsClass(const uqMLSamplingLevelOptionsClass& inputOptions);
+ ~uqMetropolisHastingsSGOptionsClass();
+
+  void scanOptionsValues();
+  void print            (std::ostream& os) const;
+
+  uqMhOptionsValuesClass             m_optionsValues;
+  std::string                        m_prefix;
 
 private:
   void   defineMyOptions  (po::options_description& optionsDesc) const;

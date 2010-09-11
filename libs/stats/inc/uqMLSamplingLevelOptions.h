@@ -122,7 +122,7 @@ public:
   std::set<unsigned int>             m_rawChainDataOutputAllowedSet;
   std::string                        m_str2;
   bool                               m_rawChainComputeStats;
-  uqSequenceStatisticalOptionsClass* m_rawChainStatisticalOptions;
+  uqSequenceStatisticalOptionsClass* m_rawChainStatisticalOptionsObj;
   bool                               m_rawChainStatOptsInstantiated;
 
   bool                               m_filteredChainGenerate;
@@ -133,7 +133,7 @@ public:
   std::set<unsigned int>             m_filteredChainDataOutputAllowedSet;
   std::string                        m_str3;
   bool                               m_filteredChainComputeStats;
-  uqSequenceStatisticalOptionsClass* m_filteredChainStatisticalOptions;
+  uqSequenceStatisticalOptionsClass* m_filteredChainStatisticalOptionsObj;
   bool                               m_filteredChainStatOptsInstantiated;
 
   bool                               m_displayCandidates;

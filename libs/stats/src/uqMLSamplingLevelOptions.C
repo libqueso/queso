@@ -63,7 +63,7 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
 //m_rawChainDataOutputAllowedSet             (),
   m_str2                                     (""),
   m_rawChainComputeStats                     (UQ_ML_SAMPLING_L_RAW_CHAIN_COMPUTE_STATS_ODV),
-  m_rawChainStatisticalOptions               (NULL),
+  m_rawChainStatisticalOptionsObj            (NULL),
   m_rawChainStatOptsInstantiated             (false),
   m_filteredChainGenerate                    (UQ_ML_SAMPLING_L_FILTERED_CHAIN_GENERATE_ODV),
   m_filteredChainDiscardedPortion            (UQ_ML_SAMPLING_L_FILTERED_CHAIN_DISCARDED_PORTION_ODV),
@@ -73,7 +73,7 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
 //m_filteredChainDataOutputAllowedSet        (),
   m_str3                                     (""),
   m_filteredChainComputeStats                (UQ_ML_SAMPLING_L_FILTERED_CHAIN_COMPUTE_STATS_ODV),
-  m_filteredChainStatisticalOptions          (NULL),
+  m_filteredChainStatisticalOptionsObj       (NULL),
   m_filteredChainStatOptsInstantiated        (false),
   m_displayCandidates                        (UQ_ML_SAMPLING_L_DISPLAY_CANDIDATES_ODV),
   m_putOutOfBoundsInChain                    (UQ_ML_SAMPLING_L_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV),
@@ -139,57 +139,57 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
 void
 uqMLSamplingLevelOptionsClass::copyOptionsValues(const uqMLSamplingLevelOptionsClass& srcOptions)
 {
-  m_checkpointOutputFileName          = srcOptions.m_checkpointOutputFileName;
-  m_stopAtEnd                         = srcOptions.m_stopAtEnd;
-  m_dataOutputFileName                = srcOptions.m_dataOutputFileName;
-  m_dataOutputAllowedSet              = srcOptions.m_dataOutputAllowedSet;
-  m_str1                              = srcOptions.m_str1;
-  m_loadBalanceAlgorithmId            = srcOptions.m_loadBalanceAlgorithmId;
-  m_loadBalanceTreshold               = srcOptions.m_loadBalanceTreshold;
-  m_minEffectiveSizeRatio             = srcOptions.m_minEffectiveSizeRatio;
-  m_maxEffectiveSizeRatio             = srcOptions.m_maxEffectiveSizeRatio;
-  m_scaleCovMatrix                    = srcOptions.m_scaleCovMatrix;
-  m_minRejectionRate                  = srcOptions.m_minRejectionRate;
-  m_maxRejectionRate                  = srcOptions.m_maxRejectionRate;
-  m_covRejectionRate                  = srcOptions.m_covRejectionRate;
-  m_totallyMute                       = srcOptions.m_totallyMute;
-  m_rawChainDataInputFileName         = srcOptions.m_rawChainDataInputFileName;
-  m_rawChainDataInputFileType         = srcOptions.m_rawChainDataInputFileType;
-  m_rawChainSize                      = srcOptions.m_rawChainSize;
+  m_checkpointOutputFileName            = srcOptions.m_checkpointOutputFileName;
+  m_stopAtEnd                           = srcOptions.m_stopAtEnd;
+  m_dataOutputFileName                  = srcOptions.m_dataOutputFileName;
+  m_dataOutputAllowedSet                = srcOptions.m_dataOutputAllowedSet;
+  m_str1                                = srcOptions.m_str1;
+  m_loadBalanceAlgorithmId              = srcOptions.m_loadBalanceAlgorithmId;
+  m_loadBalanceTreshold                 = srcOptions.m_loadBalanceTreshold;
+  m_minEffectiveSizeRatio               = srcOptions.m_minEffectiveSizeRatio;
+  m_maxEffectiveSizeRatio               = srcOptions.m_maxEffectiveSizeRatio;
+  m_scaleCovMatrix                      = srcOptions.m_scaleCovMatrix;
+  m_minRejectionRate                    = srcOptions.m_minRejectionRate;
+  m_maxRejectionRate                    = srcOptions.m_maxRejectionRate;
+  m_covRejectionRate                    = srcOptions.m_covRejectionRate;
+  m_totallyMute                         = srcOptions.m_totallyMute;
+  m_rawChainDataInputFileName           = srcOptions.m_rawChainDataInputFileName;
+  m_rawChainDataInputFileType           = srcOptions.m_rawChainDataInputFileType;
+  m_rawChainSize                        = srcOptions.m_rawChainSize;
 //std::cout << "In copy(), rawChainSize = " << m_rawChainSize << std::endl;
-  m_rawChainGenerateExtra             = srcOptions.m_rawChainGenerateExtra;
-  m_rawChainDisplayPeriod             = srcOptions.m_rawChainDisplayPeriod;
-  m_rawChainMeasureRunTimes           = srcOptions.m_rawChainMeasureRunTimes;
-  m_rawChainDataOutputFileName        = srcOptions.m_rawChainDataOutputFileName;
-  m_rawChainDataOutputFileType        = srcOptions.m_rawChainDataOutputFileType;
-  m_rawChainDataOutputAllowedSet      = srcOptions.m_rawChainDataOutputAllowedSet;
-  m_str2                              = srcOptions.m_str2;
-  m_rawChainComputeStats              = srcOptions.m_rawChainComputeStats;
-  m_rawChainStatisticalOptions        = NULL; // Yes, 'NULL'
-  m_rawChainStatOptsInstantiated      = false;
-  m_filteredChainGenerate             = srcOptions.m_filteredChainGenerate;
-  m_filteredChainDiscardedPortion     = srcOptions.m_filteredChainDiscardedPortion;
-  m_filteredChainLag                  = srcOptions.m_filteredChainLag;
-  m_filteredChainDataOutputFileName   = srcOptions.m_filteredChainDataOutputFileName;
-  m_filteredChainDataOutputFileType   = srcOptions.m_filteredChainDataOutputFileType;
-  m_filteredChainDataOutputAllowedSet = srcOptions.m_filteredChainDataOutputAllowedSet;
-  m_str3                              = srcOptions.m_str3;
-  m_filteredChainComputeStats         = srcOptions.m_filteredChainComputeStats;
-  m_filteredChainStatisticalOptions   = NULL; // Yes, 'NULL'
-  m_filteredChainStatOptsInstantiated = false;
-  m_displayCandidates                 = srcOptions.m_displayCandidates;
-  m_putOutOfBoundsInChain             = srcOptions.m_putOutOfBoundsInChain;
-  m_tkUseLocalHessian                 = srcOptions.m_tkUseLocalHessian;
-  m_tkUseNewtonComponent              = srcOptions.m_tkUseNewtonComponent;
-  m_drMaxNumExtraStages               = srcOptions.m_drMaxNumExtraStages;
-  m_drScalesForExtraStages            = srcOptions.m_drScalesForExtraStages;
-  m_str4                              = srcOptions.m_str4;
-  m_drDuringAmNonAdaptiveInt          = srcOptions.m_drDuringAmNonAdaptiveInt;
-  m_amKeepInitialMatrix               = srcOptions.m_amKeepInitialMatrix;
-  m_amInitialNonAdaptInterval         = srcOptions.m_amInitialNonAdaptInterval;
-  m_amAdaptInterval                   = srcOptions.m_amAdaptInterval;
-  m_amEta                             = srcOptions.m_amEta;
-  m_amEpsilon                         = srcOptions.m_amEpsilon;
+  m_rawChainGenerateExtra               = srcOptions.m_rawChainGenerateExtra;
+  m_rawChainDisplayPeriod               = srcOptions.m_rawChainDisplayPeriod;
+  m_rawChainMeasureRunTimes             = srcOptions.m_rawChainMeasureRunTimes;
+  m_rawChainDataOutputFileName          = srcOptions.m_rawChainDataOutputFileName;
+  m_rawChainDataOutputFileType          = srcOptions.m_rawChainDataOutputFileType;
+  m_rawChainDataOutputAllowedSet        = srcOptions.m_rawChainDataOutputAllowedSet;
+  m_str2                                = srcOptions.m_str2;
+  m_rawChainComputeStats                = srcOptions.m_rawChainComputeStats;
+  m_rawChainStatisticalOptionsObj       = NULL; // Yes, 'NULL'
+  m_rawChainStatOptsInstantiated        = false;
+  m_filteredChainGenerate               = srcOptions.m_filteredChainGenerate;
+  m_filteredChainDiscardedPortion       = srcOptions.m_filteredChainDiscardedPortion;
+  m_filteredChainLag                    = srcOptions.m_filteredChainLag;
+  m_filteredChainDataOutputFileName     = srcOptions.m_filteredChainDataOutputFileName;
+  m_filteredChainDataOutputFileType     = srcOptions.m_filteredChainDataOutputFileType;
+  m_filteredChainDataOutputAllowedSet   = srcOptions.m_filteredChainDataOutputAllowedSet;
+  m_str3                                = srcOptions.m_str3;
+  m_filteredChainComputeStats           = srcOptions.m_filteredChainComputeStats;
+  m_filteredChainStatisticalOptionsObj  = NULL; // Yes, 'NULL'
+  m_filteredChainStatOptsInstantiated   = false;
+  m_displayCandidates                   = srcOptions.m_displayCandidates;
+  m_putOutOfBoundsInChain               = srcOptions.m_putOutOfBoundsInChain;
+  m_tkUseLocalHessian                   = srcOptions.m_tkUseLocalHessian;
+  m_tkUseNewtonComponent                = srcOptions.m_tkUseNewtonComponent;
+  m_drMaxNumExtraStages                 = srcOptions.m_drMaxNumExtraStages;
+  m_drScalesForExtraStages              = srcOptions.m_drScalesForExtraStages;
+  m_str4                                = srcOptions.m_str4;
+  m_drDuringAmNonAdaptiveInt            = srcOptions.m_drDuringAmNonAdaptiveInt;
+  m_amKeepInitialMatrix                 = srcOptions.m_amKeepInitialMatrix;
+  m_amInitialNonAdaptInterval           = srcOptions.m_amInitialNonAdaptInterval;
+  m_amAdaptInterval                     = srcOptions.m_amAdaptInterval;
+  m_amEta                               = srcOptions.m_amEta;
+  m_amEpsilon                           = srcOptions.m_amEpsilon;
 
   return;
 }
@@ -201,8 +201,8 @@ uqMLSamplingLevelOptionsClass::~uqMLSamplingLevelOptionsClass()
   //          << ", m_rawChainStatOptsInstantiated = "      << m_rawChainStatOptsInstantiated
   //          << std::endl;
   //sleep(1);
-  if (m_filteredChainStatOptsInstantiated) delete m_filteredChainStatisticalOptions;
-  if (m_rawChainStatOptsInstantiated     ) delete m_rawChainStatisticalOptions;
+  if (m_filteredChainStatOptsInstantiated) delete m_filteredChainStatisticalOptionsObj;
+  if (m_rawChainStatOptsInstantiated     ) delete m_rawChainStatisticalOptionsObj;
   if (m_optionsDesc                      ) delete m_optionsDesc;
 } 
 
@@ -226,12 +226,12 @@ uqMLSamplingLevelOptionsClass::scanOptionsValues(const uqMLSamplingLevelOptionsC
   }
 
   if (m_rawChainComputeStats) {
-    m_rawChainStatisticalOptions   = new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "rawChain_");
-    m_rawChainStatOptsInstantiated = true;
+    m_rawChainStatisticalOptionsObj = new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "rawChain_");
+    m_rawChainStatOptsInstantiated  = true;
   }
   if (m_filteredChainComputeStats) {
-    m_filteredChainStatisticalOptions   = new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "filteredChain_");
-    m_filteredChainStatOptsInstantiated = true;
+    m_filteredChainStatisticalOptionsObj = new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "filteredChain_");
+    m_filteredChainStatOptsInstantiated  = true;
   }
 
   return;

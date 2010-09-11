@@ -160,7 +160,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Level0_all(
                              filePtrSet);
 
         //m_env.syncPrintDebugMsg("At level 0, calling computeStatistics for chain",1,10,m_env.inter0Comm()); // output debug
-        currChain.computeStatistics(*currOptions.m_rawChainStatisticalOptions,
+        currChain.computeStatistics(*currOptions.m_rawChainStatisticalOptionsObj,
                                     filePtrSet.ofsVar);
 
         m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);
@@ -1515,11 +1515,11 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
                                     << ", calling computeStatistics for raw chain"
                                     << ". Ofstream pointer value = " << filePtrSet.ofsVar
                                     << ", statistical options are"
-                                    << "\n" << *currOptions->m_rawChainStatisticalOptions
+                                    << "\n" << *currOptions->m_rawChainStatisticalOptionsObj
                                     << std::endl;
           }
           //m_env.syncPrintDebugMsg("At step 11, calling computeStatistics for raw chain",1,10,m_env.inter0Comm()); // output debug
-          currChain.computeStatistics(*currOptions->m_rawChainStatisticalOptions,
+          currChain.computeStatistics(*currOptions->m_rawChainStatisticalOptionsObj,
                                       filePtrSet.ofsVar);
 
           m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);
@@ -1550,7 +1550,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
           unsigned int filterInitialPos = (unsigned int) (currOptions->m_filteredChainDiscardedPortion * (double) currChain.subSequenceSize());
           unsigned int filterSpacing    = currOptions->m_filteredChainLag;
           if (filterSpacing == 0) {
-            currChain.computeFilterParams(*currOptions->m_filteredChainStatisticalOptions,
+            currChain.computeFilterParams(*currOptions->m_filteredChainStatisticalOptionsObj,
                                           filePtrSet.ofsVar,
                                           filterInitialPos,
                                           filterSpacing);
@@ -1577,12 +1577,12 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
                                       << ", calling computeStatistics for filtered chain"
                                       << ". Ofstream pointer value = " << filePtrSet.ofsVar
                                       << ", statistical options are"
-                                      << "\n" << *currOptions->m_rawChainStatisticalOptions
+                                      << "\n" << *currOptions->m_rawChainStatisticalOptionsObj
                                       << std::endl;
             }
 
             //m_env.syncPrintDebugMsg("At step 11, calling computeStatistics for filtered chain",1,10,m_env.inter0Comm()); // output debug
-            currChain.computeStatistics(*currOptions->m_filteredChainStatisticalOptions,
+            currChain.computeStatistics(*currOptions->m_filteredChainStatisticalOptionsObj,
                                         filePtrSet.ofsVar);
           }
 

@@ -78,6 +78,73 @@
 #define UQ_SEQUENCE_COV_MATRIX_COMPUTE_ODV           0
 #define UQ_SEQUENCE_CORR_MATRIX_COMPUTE_ODV          0
 
+class uqSsOptionsValuesClass
+{
+public:
+  uqSsOptionsValuesClass            ();
+  uqSsOptionsValuesClass            (const uqSsOptionsValuesClass& src);
+  uqSsOptionsValuesClass& operator= (const uqSsOptionsValuesClass& rhs);
+ ~uqSsOptionsValuesClass            ();
+
+  std::vector<double>       m_initialDiscardedPortions;
+
+  unsigned int              m_meanMonitorPeriod;
+
+  bool                      m_bmmRun;
+  std::vector<unsigned int> m_bmmLengths;
+  bool                      m_bmmDisplay;
+  bool                      m_bmmWrite;
+
+  bool                      m_fftCompute;
+  unsigned int              m_fftParamId;
+  unsigned int              m_fftSize;
+  bool                      m_fftTestInversion;
+  bool                      m_fftWrite;
+
+  bool                      m_psdCompute;
+  unsigned int              m_psdNumBlocks;
+  double                    m_psdHopSizeRatio;
+  unsigned int              m_psdParamId;
+  bool                      m_psdWrite;
+
+  bool                      m_psdAtZeroCompute;
+  std::vector<unsigned int> m_psdAtZeroNumBlocks;
+  double                    m_psdAtZeroHopSizeRatio;
+  bool                      m_psdAtZeroDisplay;
+  bool                      m_psdAtZeroWrite;
+
+  bool                      m_gewekeCompute;
+  double                    m_gewekeNaRatio;
+  double                    m_gewekeNbRatio;
+  bool                      m_gewekeDisplay;
+  bool                      m_gewekeWrite;
+
+  bool                      m_autoCorrComputeViaDef;
+  bool                      m_autoCorrComputeViaFft;
+  unsigned int              m_autoCorrSecondLag;
+  unsigned int              m_autoCorrLagSpacing;
+  unsigned int              m_autoCorrNumLags;
+  bool                      m_autoCorrDisplay;
+  bool                      m_autoCorrWrite;
+
+  bool                      m_meanStaccCompute;
+
+  bool                      m_histCompute;
+  unsigned int              m_histNumInternalBins;
+
+  bool                      m_cdfStaccCompute;
+  unsigned int              m_cdfStaccNumEvalPositions;
+
+  bool                      m_kdeCompute;
+  unsigned int              m_kdeNumEvalPositions;
+
+  bool                      m_covMatrixCompute;
+  bool                      m_corrMatrixCompute;
+
+private:
+  void copy(const uqSsOptionsValuesClass& src);
+};
+
 /*! A templated class that stores statistical options for a sequence of vectors, e.g.
     a Markov chain, a Monte Carlo input sequence, or a Monte Carlo output sequence.
  */
@@ -145,113 +212,59 @@ public:
 
         void                       print(std::ostream& os) const;
 
+  uqSsOptionsValuesClass        m_optionsValues;
+
 private:
-  void   defineMyOptions        (po::options_description& optionsDesc) const;
-  void   getMyOptionValues      (po::options_description& optionsDesc);
+  void   defineMyOptions  (po::options_description& optionsDesc) const;
+  void   getMyOptionValues(po::options_description& optionsDesc);
 
+  std::string                   m_prefix;
   const uqBaseEnvironmentClass& m_env;
-        std::string         m_prefix;
+  po::options_description*      m_optionsDesc;
 
-  std::string m_option_help;
-  std::string m_option_initialDiscardedPortions;
-  std::string m_option_mean_monitorPeriod;
-  std::string m_option_bmm_run;
-  std::string m_option_bmm_lengths;
-  std::string m_option_bmm_display;
-  std::string m_option_bmm_write;
-  std::string m_option_fft_compute;
-  std::string m_option_fft_paramId;
-  std::string m_option_fft_size;
-  std::string m_option_fft_testInversion;
-  std::string m_option_fft_write;
-  std::string m_option_psd_compute;
-  std::string m_option_psd_numBlocks;
-  std::string m_option_psd_hopSizeRatio;
-  std::string m_option_psd_paramId;
-  std::string m_option_psd_write;
-  std::string m_option_psdAtZero_compute;
-  std::string m_option_psdAtZero_numBlocks;
-  std::string m_option_psdAtZero_hopSizeRatio;
-  std::string m_option_psdAtZero_display;
-  std::string m_option_psdAtZero_write;
-  std::string m_option_geweke_compute;
-  std::string m_option_geweke_naRatio;
-  std::string m_option_geweke_nbRatio;
-  std::string m_option_geweke_display;
-  std::string m_option_geweke_write;
-  std::string m_option_autoCorr_computeViaDef;
-  std::string m_option_autoCorr_computeViaFft;
-  std::string m_option_autoCorr_secondLag;
-  std::string m_option_autoCorr_lagSpacing;
-  std::string m_option_autoCorr_numLags;
-  std::string m_option_autoCorr_display;
-  std::string m_option_autoCorr_write;
-  std::string m_option_meanStacc_compute;
-  std::string m_option_hist_compute;
-  std::string m_option_hist_numInternalBins;
-  std::string m_option_cdfStacc_compute;
-  std::string m_option_cdfStacc_numEvalPositions;
-  std::string m_option_kde_compute;
-  std::string m_option_kde_numEvalPositions;
-  std::string m_option_covMatrix_compute;
-  std::string m_option_corrMatrix_compute;
-
-  po::options_description*  m_optionsDesc;
-
-  std::vector<double>       m_initialDiscardedPortions;
-
-  unsigned int              m_meanMonitorPeriod;
-
-  bool                      m_bmmRun;
-  std::vector<unsigned int> m_bmmLengths;
-  bool                      m_bmmDisplay;
-  bool                      m_bmmWrite;
-
-  bool                      m_fftCompute;
-  unsigned int              m_fftParamId;
-  unsigned int              m_fftSize;
-  bool                      m_fftTestInversion;
-  bool                      m_fftWrite;
-
-  bool                      m_psdCompute;
-  unsigned int              m_psdNumBlocks;
-  double                    m_psdHopSizeRatio;
-  unsigned int              m_psdParamId;
-  bool                      m_psdWrite;
-
-  bool                      m_psdAtZeroCompute;
-  std::vector<unsigned int> m_psdAtZeroNumBlocks;
-  double                    m_psdAtZeroHopSizeRatio;
-  bool                      m_psdAtZeroDisplay;
-  bool                      m_psdAtZeroWrite;
-
-  bool                      m_gewekeCompute;
-  double                    m_gewekeNaRatio;
-  double                    m_gewekeNbRatio;
-  bool                      m_gewekeDisplay;
-  bool                      m_gewekeWrite;
-
-  bool                      m_autoCorrComputeViaDef;
-  bool                      m_autoCorrComputeViaFft;
-  unsigned int              m_autoCorrSecondLag;
-  unsigned int              m_autoCorrLagSpacing;
-  unsigned int              m_autoCorrNumLags;
-  bool                      m_autoCorrDisplay;
-  bool                      m_autoCorrWrite;
-
-  bool                      m_meanStaccCompute;
-
-  bool                      m_histCompute;
-  unsigned int              m_histNumInternalBins;
-
-  bool                      m_cdfStaccCompute;
-  unsigned int              m_cdfStaccNumEvalPositions;
-
-  bool                      m_kdeCompute;
-  unsigned int              m_kdeNumEvalPositions;
-
-  bool                      m_covMatrixCompute;
-  bool                      m_corrMatrixCompute;
+  std::string                   m_option_help;
+  std::string                   m_option_initialDiscardedPortions;
+  std::string                   m_option_mean_monitorPeriod;
+  std::string                   m_option_bmm_run;
+  std::string                   m_option_bmm_lengths;
+  std::string                   m_option_bmm_display;
+  std::string                   m_option_bmm_write;
+  std::string                   m_option_fft_compute;
+  std::string                   m_option_fft_paramId;
+  std::string                   m_option_fft_size;
+  std::string                   m_option_fft_testInversion;
+  std::string                   m_option_fft_write;
+  std::string                   m_option_psd_compute;
+  std::string                   m_option_psd_numBlocks;
+  std::string                   m_option_psd_hopSizeRatio;
+  std::string                   m_option_psd_paramId;
+  std::string                   m_option_psd_write;
+  std::string                   m_option_psdAtZero_compute;
+  std::string                   m_option_psdAtZero_numBlocks;
+  std::string                   m_option_psdAtZero_hopSizeRatio;
+  std::string                   m_option_psdAtZero_display;
+  std::string                   m_option_psdAtZero_write;
+  std::string                   m_option_geweke_compute;
+  std::string                   m_option_geweke_naRatio;
+  std::string                   m_option_geweke_nbRatio;
+  std::string                   m_option_geweke_display;
+  std::string                   m_option_geweke_write;
+  std::string                   m_option_autoCorr_computeViaDef;
+  std::string                   m_option_autoCorr_computeViaFft;
+  std::string                   m_option_autoCorr_secondLag;
+  std::string                   m_option_autoCorr_lagSpacing;
+  std::string                   m_option_autoCorr_numLags;
+  std::string                   m_option_autoCorr_display;
+  std::string                   m_option_autoCorr_write;
+  std::string                   m_option_meanStacc_compute;
+  std::string                   m_option_hist_compute;
+  std::string                   m_option_hist_numInternalBins;
+  std::string                   m_option_cdfStacc_compute;
+  std::string                   m_option_cdfStacc_numEvalPositions;
+  std::string                   m_option_kde_compute;
+  std::string                   m_option_kde_numEvalPositions;
+  std::string                   m_option_covMatrix_compute;
+  std::string                   m_option_corrMatrix_compute;
 };
 
 std::ostream& operator<<(std::ostream& os, const uqSequenceStatisticalOptionsClass& obj);

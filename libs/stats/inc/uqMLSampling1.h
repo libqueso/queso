@@ -416,7 +416,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                                false,
                                filePtrSet);
 
-          workingChain.computeStatistics(*lastLevelOptions.m_rawChainStatisticalOptions,
+          workingChain.computeStatistics(*lastLevelOptions.m_rawChainStatisticalOptionsObj,
                                          filePtrSet.ofsVar);
 
           m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);
@@ -439,7 +439,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
           unsigned int filterInitialPos = (unsigned int) (lastLevelOptions.m_filteredChainDiscardedPortion * (double) workingChain.subSequenceSize());
           unsigned int filterSpacing    = lastLevelOptions.m_filteredChainLag;
           if (filterSpacing == 0) {
-            workingChain.computeFilterParams(*lastLevelOptions.m_filteredChainStatisticalOptions,
+            workingChain.computeFilterParams(*lastLevelOptions.m_filteredChainStatisticalOptionsObj,
                                              filePtrSet.ofsVar,
                                              filterInitialPos,
                                              filterSpacing);
@@ -459,7 +459,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
           //currLogTargetValues.setName(lastLevelOptions.m_prefix + "filtLogTarget");
 
           if (lastLevelOptions.m_filteredChainComputeStats) {
-            workingChain.computeStatistics(*lastLevelOptions.m_filteredChainStatisticalOptions,
+            workingChain.computeStatistics(*lastLevelOptions.m_filteredChainStatisticalOptionsObj,
                                            filePtrSet.ofsVar);
           }
 

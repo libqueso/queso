@@ -69,6 +69,7 @@ uqSipOptionsValuesClass::copy(const uqSipOptionsValuesClass& src)
 #ifdef UQ_SIP_READS_SOLVER_OPTION
   m_solverString         = src.m_solverString;
 #endif
+  m_mhOptionsValues      = src.m_mhOptionsValues;
 
   return;
 }
@@ -111,12 +112,17 @@ uqStatisticalInverseProblemOptionsClass::uqStatisticalInverseProblemOptionsClass
 
 uqStatisticalInverseProblemOptionsClass::~uqStatisticalInverseProblemOptionsClass()
 {
-  if (m_optionsDesc                    ) delete m_optionsDesc;
+  if (m_optionsDesc) delete m_optionsDesc;
 } 
 
 void
 uqStatisticalInverseProblemOptionsClass::scanOptionsValues()
 {
+  UQ_FATAL_TEST_MACRO(m_optionsDesc == NULL,
+                      m_env.fullRank(),
+                      "uqStatisticalInverseProblemOptionsClass::scanOptionsValues()",
+                      "m_optionsDesc variable is NULL");
+
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   //std::cout << "scan 000\n"
