@@ -216,6 +216,79 @@ uqSequenceStatisticalOptionsClass::uqSequenceStatisticalOptionsClass(
   }
 }
 
+uqSequenceStatisticalOptionsClass::uqSequenceStatisticalOptionsClass(
+  /*! The QUESO environment                      */ const uqBaseEnvironmentClass& env,
+  /*! Prefix for reading options from input file */ const std::string&            prefix,
+                                                    const uqSsOptionsValuesClass& optionsValues)
+  :
+  m_optionsValues(optionsValues),
+  m_prefix       ((std::string)(prefix) + "stats_"),
+  m_env          (env),
+  m_optionsDesc  (NULL),
+  m_option_help                     (m_prefix + "help"                     ),
+  m_option_initialDiscardedPortions (m_prefix + "initialDiscardedPortions" ),
+  m_option_mean_monitorPeriod       (m_prefix + "mean_monitorPeriod"       ),
+  m_option_bmm_run                  (m_prefix + "bmm_run"                  ),
+  m_option_bmm_lengths              (m_prefix + "bmm_lengths"              ),
+  m_option_bmm_display              (m_prefix + "bmm_display"              ),
+  m_option_bmm_write                (m_prefix + "bmm_write"                ),
+  m_option_fft_compute              (m_prefix + "fft_compute"              ),
+  m_option_fft_paramId              (m_prefix + "fft_paramId"              ),
+  m_option_fft_size                 (m_prefix + "fft_size"                 ),
+  m_option_fft_testInversion        (m_prefix + "fft_testInversion"        ),
+  m_option_fft_write                (m_prefix + "fft_write"                ),
+  m_option_psd_compute              (m_prefix + "psd_compute"              ),
+  m_option_psd_numBlocks            (m_prefix + "psd_numBlocks"            ),
+  m_option_psd_hopSizeRatio         (m_prefix + "psd_hopSizeRatio"         ),
+  m_option_psd_paramId              (m_prefix + "psd_paramId"              ),
+  m_option_psd_write                (m_prefix + "psd_write"                ),
+  m_option_psdAtZero_compute        (m_prefix + "psdAtZero_compute"        ),
+  m_option_psdAtZero_numBlocks      (m_prefix + "psdAtZero_numBlocks"      ),
+  m_option_psdAtZero_hopSizeRatio   (m_prefix + "psdAtZero_hopSizeRatio"   ),
+  m_option_psdAtZero_display        (m_prefix + "psdAtZero_display"        ),
+  m_option_psdAtZero_write          (m_prefix + "psdAtZero_write"          ),
+  m_option_geweke_compute           (m_prefix + "geweke_compute"           ),
+  m_option_geweke_naRatio           (m_prefix + "geweke_naRatio"           ),
+  m_option_geweke_nbRatio           (m_prefix + "geweke_nbRatio"           ),
+  m_option_geweke_display           (m_prefix + "geweke_display"           ),
+  m_option_geweke_write             (m_prefix + "geweke_write"             ),
+  m_option_autoCorr_computeViaDef   (m_prefix + "autoCorr_computeViaDef"   ),
+  m_option_autoCorr_computeViaFft   (m_prefix + "autoCorr_computeViaFft"   ),
+  m_option_autoCorr_secondLag       (m_prefix + "autoCorr_secondLag"       ),
+  m_option_autoCorr_lagSpacing      (m_prefix + "autoCorr_lagSpacing"      ),
+  m_option_autoCorr_numLags         (m_prefix + "autoCorr_numLags"         ),
+  m_option_autoCorr_display         (m_prefix + "autoCorr_display"         ),
+  m_option_autoCorr_write           (m_prefix + "autoCorr_write"           ),
+  m_option_meanStacc_compute        (m_prefix + "meanStacc_compute"        ),
+  m_option_hist_compute             (m_prefix + "hist_compute"             ),
+  m_option_hist_numInternalBins     (m_prefix + "hist_numInternalBins"     ),
+  m_option_cdfStacc_compute         (m_prefix + "cdfStacc_compute"         ),
+  m_option_cdfStacc_numEvalPositions(m_prefix + "cdfStacc_numEvalPositions"),
+  m_option_kde_compute              (m_prefix + "kde_compute"              ),
+  m_option_kde_numEvalPositions     (m_prefix + "kde_numEvalPositions"     ),
+  m_option_covMatrix_compute        (m_prefix + "covMatrix_compute"        ),
+  m_option_corrMatrix_compute       (m_prefix + "corrMatrix_compute"       )
+{
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Entering uqSequenceStatisticalOptions::constructor(2)"
+                           << ", prefix = " << m_prefix
+                           << std::endl;
+  }
+
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "After getting values of options with prefix '" << m_prefix
+                           << "', state of uqSequenceStatisticalOptionsClass object is:"
+                           << "\n" << *this
+                           << std::endl;
+  }
+
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Leaving uqSequenceStatisticalOptions::constructor(2)"
+                           << ", prefix = " << m_prefix
+                           << std::endl;
+  }
+}
+
 uqSequenceStatisticalOptionsClass::~uqSequenceStatisticalOptionsClass()
 {
   if (m_optionsDesc) delete m_optionsDesc;

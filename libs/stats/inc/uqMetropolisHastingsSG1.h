@@ -206,9 +206,10 @@ uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
   }
   else {
     m_optionsObj = new uqMetropolisHastingsSGOptionsClass(m_env,prefix);
+    m_optionsObj->scanOptionsValues();
   }
 
-  if ((m_env.subDisplayFile()          ) &&
+  if ((m_env.subDisplayFile()                              ) &&
       (m_optionsObj->m_optionsValues.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "Entering uqMetropolisHastingsSGClass<P_V,P_M>::constructor(1)"
                             << std::endl;
@@ -229,8 +230,6 @@ uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
                         "uqMetropolisHastingsSGClass<P_V,P_M>::constructor(1)",
                         "'inputProposalCovMatrix' should be a square matrix");
   }
-
-  m_optionsObj->scanOptionsValues();
 
   commonConstructor();
 

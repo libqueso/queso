@@ -101,7 +101,7 @@ uqMhOptionsValuesClass::copy(const uqMhOptionsValuesClass& src)
   m_rawChainDataInputFileName          = src.m_rawChainDataInputFileName;
   m_rawChainDataInputFileType          = src.m_rawChainDataInputFileType;
   m_rawChainSize                       = src.m_rawChainSize;
-  m_rawChainGenerateExtra              =  src.m_rawChainGenerateExtra;
+  m_rawChainGenerateExtra              = src.m_rawChainGenerateExtra;
   m_rawChainDisplayPeriod              = src.m_rawChainDisplayPeriod;
   m_rawChainMeasureRunTimes            = src.m_rawChainMeasureRunTimes;
   m_rawChainDataOutputFileName         = src.m_rawChainDataOutputFileName;
@@ -185,7 +185,7 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
 uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   const uqBaseEnvironmentClass& env,
   const char*                   prefix,
-  uqMhOptionsValuesClass&       optionsValues)
+  const uqMhOptionsValuesClass& optionsValues)
   :
   m_optionsValues                            (optionsValues),
   m_prefix                                   ((std::string)(prefix) + "mh_"),
@@ -227,6 +227,7 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_option_enableBrooksGelmanConvMonitor     (m_prefix + "enableBrooksGelmanConvMonitor"     ),
   m_option_BrooksGelmanLag                   (m_prefix + "BrooksGelmanLag"                   )
 {
+  // dakota
 }
 
 uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(

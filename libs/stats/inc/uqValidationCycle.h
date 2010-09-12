@@ -256,6 +256,7 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateCalFP(
 
   // Calibration stage: Forward problem
   m_calFP = new uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M> ((m_prefix+"cal_").c_str(), // Extra prefix before the default "fp_" prefix
+                                                                   NULL,
                                                                    *m_calPostRv, // forward input = inverse output
                                                                    *m_calQoiFunctionObj,
                                                                    *m_calQoiRv);
@@ -344,6 +345,7 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateValFP(
 
   // Validation stage: Forward problem
   m_valFP = new uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M> ((m_prefix+"val_").c_str(),       // Extra prefix before the default "fp_" prefix
+                                                                   NULL,
                                                                    *m_valPostRv, // forward input = inverse output
                                                                    *m_valQoiFunctionObj,
                                                                    *m_valQoiRv);

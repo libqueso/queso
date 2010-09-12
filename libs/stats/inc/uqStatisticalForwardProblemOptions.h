@@ -34,7 +34,7 @@
 #define __UQ_SFP_OPTIONS_H__
 
 #include <uqEnvironment.h>
-#include <uqSequenceStatisticalOptions.h>
+#include <uqMonteCarloSGOptions.h>
 
 #undef UQ_SFP_READS_SOLVER_OPTION
 
@@ -50,25 +50,41 @@
 #define UQ_SFP_SOLVER_ODV                  "mc" // Monte Carlo
 #endif
 
+class uqSfpOptionsValuesClass
+{
+public:
+  uqSfpOptionsValuesClass            ();
+  uqSfpOptionsValuesClass            (const uqSfpOptionsValuesClass& src);
+  uqSfpOptionsValuesClass& operator= (const uqSfpOptionsValuesClass& rhs);
+ ~uqSfpOptionsValuesClass            ();
+
+  bool                   m_computeSolution;
+  bool                   m_computeCovariances;
+  bool                   m_computeCorrelations;
+  std::string            m_dataOutputFileName;
+  std::set<unsigned int> m_dataOutputAllowedSet;
+#ifdef UQ_SFP_READS_SOLVER_OPTION
+  std::string            m_solverString;
+#endif
+
+  uqMcOptionsValuesClass m_mcOptionsValues;
+
+private:
+  void copy(const uqSfpOptionsValuesClass& src);
+};
+
 class uqStatisticalForwardProblemOptionsClass
 {
 public:
   uqStatisticalForwardProblemOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix);
+  uqStatisticalForwardProblemOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix, const uqSfpOptionsValuesClass& optionsValues);
  ~uqStatisticalForwardProblemOptionsClass();
 
   void scanOptionsValues();
   void print            (std::ostream& os) const;
 
+  uqSfpOptionsValuesClass       m_optionsValues;
   std::string                   m_prefix;
-
-  bool                          m_computeSolution;
-  bool                          m_computeCovariances;
-  bool                          m_computeCorrelations;
-  std::string                   m_dataOutputFileName;
-  std::set<unsigned int>        m_dataOutputAllowedSet;
-#ifdef UQ_SFP_READS_SOLVER_OPTION
-  std::string                   m_solverString;
-#endif
 
 private:
   void   defineMyOptions  (po::options_description& optionsDesc) const;

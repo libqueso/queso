@@ -140,7 +140,7 @@ class uqMetropolisHastingsSGOptionsClass
 {
 public:
   uqMetropolisHastingsSGOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix);
-  uqMetropolisHastingsSGOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix, uqMhOptionsValuesClass& optionsValues);
+  uqMetropolisHastingsSGOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix, const uqMhOptionsValuesClass& optionsValues);
   uqMetropolisHastingsSGOptionsClass(const uqMLSamplingLevelOptionsClass& inputOptions);
  ~uqMetropolisHastingsSGOptionsClass();
 

@@ -101,6 +101,7 @@ class uqStatisticalForwardProblemClass
 public:
 
   uqStatisticalForwardProblemClass(const char*                                       prefix,
+                                   const uqSfpOptionsValuesClass*                    optionsValues, // dakota
                                    const uqBaseVectorRVClass      <P_V,P_M>&         paramRv,
                                    const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction,
                                    uqGenericVectorRVClass         <Q_V,Q_M>&         qoiRv);
@@ -143,7 +144,8 @@ private:
 
         uqBaseJointPdfClass      <Q_V,Q_M>*         m_solutionPdf;
 
-        uqStatisticalForwardProblemOptionsClass     m_options;
+        uqSfpOptionsValuesClass*                    m_optionsValues;
+        uqStatisticalForwardProblemOptionsClass*    m_optionsObj;
 };
 
 template<class P_V,class P_M,class Q_V,class Q_M>
@@ -170,10 +172,11 @@ std::ostream& operator<<(std::ostream& os, const uqStatisticalForwardProblemClas
 */
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::uqStatisticalForwardProblemClass(
-  /*! The prefix       */ const char*                                       prefix,
-  /*! The input rv     */ const uqBaseVectorRVClass      <P_V,P_M>&         paramRv,
-  /*! The qoi function */ const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction,
-  /*! The qoi rv       */       uqGenericVectorRVClass   <Q_V,Q_M>&         qoiRv)
+  /*! The prefix                 */ const char*                                       prefix,
+  /*! Options (if no input file) */ const uqSfpOptionsValuesClass*                    optionsValues, // dakota
+  /*! The input rv               */ const uqBaseVectorRVClass      <P_V,P_M>&         paramRv,
+  /*! The qoi function           */ const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction,
+  /*! The qoi rv                 */       uqGenericVectorRVClass   <Q_V,Q_M>&         qoiRv)
   :
   m_env               (paramRv.env()),
   m_paramRv           (paramRv),
@@ -195,11 +198,21 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::uqStatisticalForwardProblemCl
   m_unifiedCdfValues  (NULL),
   m_unifiedSolutionCdf(NULL),
   m_solutionPdf       (NULL),
-  m_options           (m_env,prefix)
+  m_optionsValues     (new uqSfpOptionsValuesClass()),
+  m_optionsObj        (NULL)
 {
+  if (optionsValues) *m_optionsValues = *optionsValues;
+  if (m_env.optionsInputFileName() == "") {
+    m_optionsObj = new uqStatisticalForwardProblemOptionsClass(m_env,prefix,*m_optionsValues);
+  }
+  else {
+    m_optionsObj = new uqStatisticalForwardProblemOptionsClass(m_env,prefix);
+    m_optionsObj->scanOptionsValues();
+  }
+
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::constructor()"
-                            << ": prefix = " << m_options.m_prefix
+                            << ": prefix = " << m_optionsObj->m_prefix
                             << std::endl;
   }
 
@@ -213,11 +226,9 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::uqStatisticalForwardProblemCl
                       "uqStatisticalForwardProblemClass<P_V,P_M>::constructor()",
                       "'qoiFunction' and 'qoiRv' are related to vector spaces of different dimensions");
 
-  m_options.scanOptionsValues();
-
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Leaving uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::constructor()"
-                            << ": prefix = " << m_options.m_prefix
+                            << ": prefix = " << m_optionsObj->m_prefix
                             << std::endl;
   }
 }
@@ -254,13 +265,15 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::~uqStatisticalForwardProblemC
     m_paramChain->clear();
     delete m_paramChain;
   }
+
+  if (m_optionsObj        ) delete m_optionsObj;
 }
 
 template <class P_V,class P_M, class Q_V, class Q_M>
 bool
   uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::computeSolutionFlag() const
 {
-  return m_options.m_computeSolution;
+  return m_optionsObj->m_optionsValues.m_computeSolution;
 }
 
 /*! Operation to solve the problem through Monte Carlo algorithm. */
@@ -290,7 +303,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   m_env.fullComm().Barrier();
   m_env.syncPrintDebugMsg("Entering uqStatisticalForwardProblemClass<P_V,P_M>::solveWithMonteCarlo()",1,3000000,m_env.fullComm());
 
-  if (m_options.m_computeSolution == false) {
+  if (m_optionsObj->m_optionsValues.m_computeSolution == false) {
     if ((m_env.subDisplayFile())) {
       *m_env.subDisplayFile() << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
                               << ": avoiding solution, as requested by user"
@@ -337,39 +350,40 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   numEvaluationPointsVec.cwSet(250.);
 
   // Compute output realizer: Monte Carlo approach
-  m_paramChain = new uqSequenceOfVectorsClass<P_V,P_M>(m_paramRv.imageSet().vectorSpace(),0,m_options.m_prefix+"paramChain");
-  m_qoiChain   = new uqSequenceOfVectorsClass<Q_V,Q_M>(m_qoiRv.imageSet().vectorSpace(),  0,m_options.m_prefix+"qoiChain"  );
-  m_mcSeqGenerator = new uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>(m_options.m_prefix.c_str(),
+  m_paramChain = new uqSequenceOfVectorsClass<P_V,P_M>(m_paramRv.imageSet().vectorSpace(),0,m_optionsObj->m_prefix+"paramChain");
+  m_qoiChain   = new uqSequenceOfVectorsClass<Q_V,Q_M>(m_qoiRv.imageSet().vectorSpace(),  0,m_optionsObj->m_prefix+"qoiChain"  );
+  m_mcSeqGenerator = new uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>(m_optionsObj->m_prefix.c_str(),
+                                                              NULL,
                                                               m_paramRv,
                                                               m_qoiFunction);
   //m_qoiRv);
   m_mcSeqGenerator->generateSequence(*m_paramChain,
                                      *m_qoiChain);
-  m_solutionRealizer = new uqSequentialVectorRealizerClass<Q_V,Q_M>((m_options.m_prefix+"Qoi").c_str(),
+  m_solutionRealizer = new uqSequentialVectorRealizerClass<Q_V,Q_M>((m_optionsObj->m_prefix+"Qoi").c_str(),
                                                                     *m_qoiChain);
   m_qoiRv.setRealizer(*m_solutionRealizer);
 
   // Compute output mdf: uniform sampling approach
 #ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
-  m_subMdfGrids  = new uqArrayOfOneDGridsClass <Q_V,Q_M>((m_options.m_prefix+"QoiMdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
-  m_subMdfValues = new uqArrayOfOneDTablesClass<Q_V,Q_M>((m_options.m_prefix+"QoiMdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
+  m_subMdfGrids  = new uqArrayOfOneDGridsClass <Q_V,Q_M>((m_optionsObj->m_prefix+"QoiMdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
+  m_subMdfValues = new uqArrayOfOneDTablesClass<Q_V,Q_M>((m_optionsObj->m_prefix+"QoiMdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
   m_qoiChain->subUniformlySampledMdf(numEvaluationPointsVec, // input
                                      *m_subMdfGrids,         // output
                                      *m_subMdfValues);       // output
 
-  m_subSolutionMdf = new uqSampledVectorMdfClass<Q_V,Q_M>((m_options.m_prefix+"Qoi").c_str(),
+  m_subSolutionMdf = new uqSampledVectorMdfClass<Q_V,Q_M>((m_optionsObj->m_prefix+"Qoi").c_str(),
                                                           *m_subMdfGrids,
                                                           *m_subMdfValues);
   m_qoiRv.setMdf(*m_subSolutionMdf);
 #endif
 
   // Compute output cdf: uniform sampling approach
-  std::string subCoreName_qoiCdf(m_options.m_prefix+    "QoiCdf_");
-  std::string uniCoreName_qoiCdf(m_options.m_prefix+"unifQoiCdf_");
+  std::string subCoreName_qoiCdf(m_optionsObj->m_prefix+    "QoiCdf_");
+  std::string uniCoreName_qoiCdf(m_optionsObj->m_prefix+"unifQoiCdf_");
   if (m_env.numSubEnvironments() == 1) subCoreName_qoiCdf = uniCoreName_qoiCdf;
 
-  std::string subCoreName_solutionCdf(m_options.m_prefix+    "Qoi");
-  std::string uniCoreName_solutionCdf(m_options.m_prefix+"unifQoi");
+  std::string subCoreName_solutionCdf(m_optionsObj->m_prefix+    "Qoi");
+  std::string uniCoreName_solutionCdf(m_optionsObj->m_prefix+"unifQoi");
   if (m_env.numSubEnvironments() == 1) subCoreName_solutionCdf = uniCoreName_solutionCdf;
 
   m_subCdfGrids  = new uqArrayOfOneDGridsClass <Q_V,Q_M>(subCoreName_qoiCdf.c_str(),m_qoiRv.imageSet().vectorSpace());
@@ -404,10 +418,10 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   // Compute (just unified one) correlation matrix, if requested
   P_M* pqCovarianceMatrix  = NULL;
   P_M* pqCorrelationMatrix = NULL;
-  if (m_options.m_computeCovariances || m_options.m_computeCorrelations) {
+  if (m_optionsObj->m_optionsValues.m_computeCovariances || m_optionsObj->m_optionsValues.m_computeCorrelations) {
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
-                              << ", prefix = " << m_options.m_prefix
+                              << ", prefix = " << m_optionsObj->m_prefix
                               << ": instantiating cov and corr matrices"
                               << std::endl;
     }
@@ -428,13 +442,13 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   if (m_env.subDisplayFile()) {
     if (pqCovarianceMatrix ) {
       *m_env.subDisplayFile() << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
-                              << ", prefix = "                           << m_options.m_prefix
+                              << ", prefix = "                           << m_optionsObj->m_prefix
                               << ": contents of covariance matrix are\n" << *pqCovarianceMatrix
                               << std::endl;
     }
     if (pqCorrelationMatrix) {
       *m_env.subDisplayFile() << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
-                              << ", prefix = "                            << m_options.m_prefix
+                              << ", prefix = "                            << m_optionsObj->m_prefix
                               << ": contents of correlation matrix are\n" << *pqCorrelationMatrix
                               << std::endl;
     }
@@ -443,15 +457,15 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
   // Open data output file
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
-                            << ", prefix = "                                        << m_options.m_prefix
-                            << ": checking necessity of opening data output file '" << m_options.m_dataOutputFileName
+                            << ", prefix = "                                        << m_optionsObj->m_prefix
+                            << ": checking necessity of opening data output file '" << m_optionsObj->m_optionsValues.m_dataOutputFileName
                             << "'"
                             << std::endl;
   }
   uqFilePtrSetStruct filePtrSet;
-  if (m_env.openOutputFile(m_options.m_dataOutputFileName,
+  if (m_env.openOutputFile(m_optionsObj->m_optionsValues.m_dataOutputFileName,
                            UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT, // Yes, always ".m"
-                           m_options.m_dataOutputAllowedSet,
+                           m_optionsObj->m_optionsValues.m_dataOutputAllowedSet,
                            false,
                            filePtrSet)) {
 #ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
@@ -481,8 +495,8 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
     m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
-                              << ", prefix = "                 << m_options.m_prefix
-                              << ": closed data output file '" << m_options.m_dataOutputFileName
+                              << ", prefix = "                 << m_optionsObj->m_prefix
+                              << ": closed data output file '" << m_optionsObj->m_optionsValues.m_dataOutputFileName
                               << "'"
                               << std::endl;
     }

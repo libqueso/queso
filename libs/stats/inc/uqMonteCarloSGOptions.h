@@ -57,16 +57,13 @@
 #define UQ_MOC_SG_QSEQ_DATA_OUTPUT_ALLOWED_SET_ODV ""
 #define UQ_MOC_SG_QSEQ_COMPUTE_STATS_ODV           0
 
-class uqMonteCarloSGOptionsClass
+class uqMcOptionsValuesClass
 {
 public:
-  uqMonteCarloSGOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix);
- ~uqMonteCarloSGOptionsClass();
-
-  void scanOptionsValues();
-  void print            (std::ostream& os) const;
-
-  std::string                        m_prefix;
+  uqMcOptionsValuesClass            ();
+  uqMcOptionsValuesClass            (const uqMcOptionsValuesClass& src);
+  uqMcOptionsValuesClass& operator= (const uqMcOptionsValuesClass& rhs);
+ ~uqMcOptionsValuesClass            ();
 
   std::string                        m_dataOutputFileName;
   std::set<unsigned int>             m_dataOutputAllowedSet;
@@ -75,7 +72,7 @@ public:
   std::string                        m_pseqDataOutputFileType;
   std::set<unsigned int>             m_pseqDataOutputAllowedSet;
   bool                               m_pseqComputeStats;
-  uqSequenceStatisticalOptionsClass* m_pseqStatisticalOptions;
+  uqSequenceStatisticalOptionsClass* m_pseqStatisticalOptionsObj;
 
   std::string                        m_qseqDataInputFileName;
   std::string                        m_qseqDataInputFileType;
@@ -86,15 +83,32 @@ public:
   std::string                        m_qseqDataOutputFileType;
   std::set<unsigned int>             m_qseqDataOutputAllowedSet;
   bool                               m_qseqComputeStats;
-  uqSequenceStatisticalOptionsClass* m_qseqStatisticalOptions;
+  uqSequenceStatisticalOptionsClass* m_qseqStatisticalOptionsObj;
+
+private:
+  void copy(const uqMcOptionsValuesClass& src);
+};
+
+class uqMonteCarloSGOptionsClass
+{
+public:
+  uqMonteCarloSGOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix);
+  uqMonteCarloSGOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix, const uqMcOptionsValuesClass& optionsValues);
+ ~uqMonteCarloSGOptionsClass();
+
+  void scanOptionsValues();
+  void print            (std::ostream& os) const;
+
+  uqMcOptionsValuesClass             m_optionsValues;
+  std::string                        m_prefix;
 
 private:
   void   defineMyOptions  (po::options_description& optionsDesc) const;
   void   getMyOptionValues(po::options_description& optionsDesc);
 
   const uqBaseEnvironmentClass& m_env;
-
   po::options_description*      m_optionsDesc;
+
   std::string                   m_option_help;
   std::string                   m_option_dataOutputFileName;
   std::string                   m_option_dataOutputAllowedSet;

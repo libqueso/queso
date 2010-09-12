@@ -34,7 +34,6 @@
 #define __UQ_SIP_OPTIONS_H__
 
 #include <uqEnvironment.h>
-//#include <uqSequenceStatisticalOptions.h>
 #include <uqMetropolisHastingsSGOptions.h>
 
 #undef UQ_SIP_READS_SOLVER_OPTION

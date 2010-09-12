@@ -105,7 +105,7 @@ void compute(const uqFullEnvironmentClass& env) {
     qoiRv("qoi_", qoiSpace);
   uqStatisticalForwardProblemClass<uqGslVectorClass,uqGslMatrixClass,
                                    uqGslVectorClass,uqGslMatrixClass>
-    fp("", postRv, qoiFunctionObj, qoiRv);
+    fp("", NULL, postRv, qoiFunctionObj, qoiRv);
 
   // Step 9 of 9: Solve the forward problem
   fp.solveWithMonteCarlo();

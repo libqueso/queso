@@ -153,6 +153,9 @@ class uqSequenceStatisticalOptionsClass
 public:
   uqSequenceStatisticalOptionsClass(const uqBaseEnvironmentClass& env,
                                     const std::string&            prefix);
+  uqSequenceStatisticalOptionsClass(const uqBaseEnvironmentClass& env,
+                                    const std::string&            prefix,
+                                    const uqSsOptionsValuesClass& optionsValues);
  ~uqSequenceStatisticalOptionsClass();
 
   const std::vector<double>&       initialDiscardedPortions() const;

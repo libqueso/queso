@@ -195,18 +195,24 @@ uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "Entering uqSipClass" << std::endl;
 #endif
+
   if (optionsValues) *m_optionsValues = *optionsValues;
   if (m_env.optionsInputFileName() == "") {
     m_optionsObj = new uqStatisticalInverseProblemOptionsClass(m_env,prefix,*m_optionsValues);
   }
   else {
     m_optionsObj = new uqStatisticalInverseProblemOptionsClass(m_env,prefix);
+    m_optionsObj->scanOptionsValues();
   }
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering uqStatisticalInverseProblemClass<P_V,P_M>::constructor()"
                             << ": prefix = " << m_optionsObj->m_prefix
                             << std::endl;
   }
+
+#ifdef QUESO_MEMORY_DEBUGGING
+  std::cout << "In uqSipClass, finished scanning options" << std::endl;
+#endif
 
   UQ_FATAL_TEST_MACRO(priorRv.imageSet().vectorSpace().dimLocal() != likelihoodFunction.domainSet().vectorSpace().dimLocal(),
                       m_env.fullRank(),
@@ -217,12 +223,6 @@ uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
                       m_env.fullRank(),
                       "uqStatisticalInverseProblemClass<P_V,P_M>::constructor()",
                       "'priorRv' and 'postRv' are related to vector spaces of different dimensions");
-
-  m_optionsObj->scanOptionsValues();
-
-#ifdef QUESO_MEMORY_DEBUGGING
-  std::cout << "In uqSipClass, finished scanning options" << std::endl;
-#endif
 
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Leaving uqStatisticalInverseProblemClass<P_V,P_M>::constructor()"

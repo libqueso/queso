@@ -122,6 +122,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                          qoiSpace);
 
   uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M> fp("", // No extra prefix before the default "fp_" prefix
+                                                       NULL,
                                                        paramRv,
                                                        qoiFunctionObj,
                                                        qoiRv);
