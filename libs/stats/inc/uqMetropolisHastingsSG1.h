@@ -263,7 +263,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
   m_lastChainSize             (0),
   m_lastMean                  (NULL),
   m_lastAdaptedCovMatrix      (NULL),
-  m_optionsObj                   (inputOptions)
+  m_optionsObj                (new uqMetropolisHastingsSGOptionsClass(inputOptions))
 {
   if ((m_env.subDisplayFile()          ) &&
       (m_optionsObj->m_optionsValues.m_totallyMute == false)) {
