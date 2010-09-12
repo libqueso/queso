@@ -108,7 +108,7 @@ public:
  ~uqStatisticalForwardProblemClass();
 
         bool                             computeSolutionFlag() const;
-        void                             solveWithMonteCarlo();
+        void                             solveWithMonteCarlo(const uqMcOptionsValuesClass* optionsValues); // dakota
   const uqGenericVectorRVClass<Q_V,Q_M>& qoiRv              () const;
   const uqBaseVectorCdfClass  <Q_V,Q_M>& qoiRv_unifiedCdf   () const;
 
@@ -298,7 +298,8 @@ bool
 */
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
+uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
+  const uqMcOptionsValuesClass* optionsValues)
 {
   m_env.fullComm().Barrier();
   m_env.syncPrintDebugMsg("Entering uqStatisticalForwardProblemClass<P_V,P_M>::solveWithMonteCarlo()",1,3000000,m_env.fullComm());

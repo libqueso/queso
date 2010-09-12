@@ -265,7 +265,8 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
   // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
   P_M* calProposalCovMatrix = m_cycle->calIP().postRv().imageSet().vectorSpace().newProposalMatrix(NULL,
                                                                                                    m_paramInitialValues);
-  m_cycle->calIP().solveWithBayesMetropolisHastings(*m_paramInitialValues,
+  m_cycle->calIP().solveWithBayesMetropolisHastings(NULL,
+						    *m_paramInitialValues,
                                                     calProposalCovMatrix);
   delete calProposalCovMatrix;
 
@@ -280,7 +281,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
                             (void *) m_calQoiRoutineInfo);
 
   // Solve forward problem = set 'realizer' and 'cdf' of 'qoiRv'
-  m_cycle->calFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
+  m_cycle->calFP().solveWithMonteCarlo(NULL); // no extra user entities needed for Monte Carlo algorithm
 
   iRC = gettimeofday(&timevalNow, NULL);
   if (m_env.fullRank() == 0) {
@@ -323,7 +324,8 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
   const uqSequentialVectorRealizerClass<P_V,P_M>* tmpRealizer = dynamic_cast< const uqSequentialVectorRealizerClass<P_V,P_M>* >(&(m_cycle->calIP().postRv().realizer()));
   P_M* valProposalCovMatrix = m_cycle->calIP().postRv().imageSet().vectorSpace().newProposalMatrix(&tmpRealizer->unifiedSampleVarVector(),  // Use 'realizer()' because post. rv was computed with Markov Chain
                                                                                                    &tmpRealizer->unifiedSampleExpVector()); // Use these values as the initial values
-  m_cycle->valIP().solveWithBayesMetropolisHastings(tmpRealizer->unifiedSampleExpVector(),
+  m_cycle->valIP().solveWithBayesMetropolisHastings(NULL,
+                                                    tmpRealizer->unifiedSampleExpVector(),
                                                     valProposalCovMatrix);
   delete valProposalCovMatrix;
 
@@ -338,7 +340,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
                             (void *) m_valQoiRoutineInfo);
 
   // Solve forward problem = set 'realizer' and 'cdf' of 'qoiRv'
-  m_cycle->valFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
+  m_cycle->valFP().solveWithMonteCarlo(NULL); // no extra user entities needed for Monte Carlo algorithm
 
   iRC = gettimeofday(&timevalNow, NULL);
   if (m_env.fullRank() == 0) {

@@ -148,7 +148,8 @@ uqAppl(const uqBaseEnvironmentClass& env)
   }
 
   P_M* calProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newProposalMatrix(NULL,&paramInitialValues);
-  cycle.calIP().solveWithBayesMetropolisHastings(paramInitialValues,
+  cycle.calIP().solveWithBayesMetropolisHastings(NULL,
+                                                 paramInitialValues,
                                                  calProposalCovMatrix);
   delete calProposalCovMatrix;
 
@@ -166,7 +167,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
                          (void *) &calQoiRoutine_Data);
 
   // Forward problem: solve it, that is, set 'realizer' and 'cdf' of the qoi rv
-  cycle.calFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
+  cycle.calFP().solveWithMonteCarlo(NULL); // no extra user entities needed for Monte Carlo algorithm
 
   iRC = gettimeofday(&timevalNow, NULL);
   if (env.fullRank() == 0) {
@@ -207,7 +208,8 @@ uqAppl(const uqBaseEnvironmentClass& env)
   const uqSequentialVectorRealizerClass<P_V,P_M>* tmpRealizer = dynamic_cast< const uqSequentialVectorRealizerClass<P_V,P_M>* >(&(cycle.calIP().postRv().realizer()));
   P_M* valProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newProposalMatrix(&tmpRealizer->unifiedSampleVarVector(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
                                                                                                 &tmpRealizer->unifiedSampleExpVector()); // Use these values as the initial values
-  cycle.valIP().solveWithBayesMetropolisHastings(tmpRealizer->unifiedSampleExpVector(),
+  cycle.valIP().solveWithBayesMetropolisHastings(NULL,
+                                                 tmpRealizer->unifiedSampleExpVector(),
                                                  valProposalCovMatrix);
   delete valProposalCovMatrix;
 
@@ -221,7 +223,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
                          (void *) &valQoiRoutine_Data);
 
   // Forward problem: solve it, that is, set 'realizer' and 'cdf' of the qoi rv
-  cycle.valFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
+  cycle.valFP().solveWithMonteCarlo(NULL); // no extra user entities needed for Monte Carlo algorithm
 
   iRC = gettimeofday(&timevalNow, NULL);
   if (env.fullRank() == 0) {

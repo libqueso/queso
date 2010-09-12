@@ -82,7 +82,7 @@ void compute(const uqFullEnvironmentClass& env) {
   uqGslMatrixClass proposalCovMatrix(paramSpace.zeroVector());
   proposalCovMatrix(0,0) = 8.; proposalCovMatrix(0,1) = 4.;
   proposalCovMatrix(1,0) = 4.; proposalCovMatrix(1,1) = 16.;
-  ip.solveWithBayesMetropolisHastings(paramInitials, &proposalCovMatrix);
+  ip.solveWithBayesMetropolisHastings(NULL,paramInitials, &proposalCovMatrix);
 
   // Step 6 of 9: Instantiate the qoi space
   uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass>
@@ -108,7 +108,7 @@ void compute(const uqFullEnvironmentClass& env) {
     fp("", NULL, postRv, qoiFunctionObj, qoiRv);
 
   // Step 9 of 9: Solve the forward problem
-  fp.solveWithMonteCarlo();
+  fp.solveWithMonteCarlo(NULL);
 
   return;
 }

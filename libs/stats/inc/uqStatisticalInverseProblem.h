@@ -116,8 +116,9 @@ public:
  ~uqStatisticalInverseProblemClass();
 
         bool                             computeSolutionFlag             () const;
-        void                             solveWithBayesMetropolisHastings(const P_V& initialValues,
-                                                                          const P_M* initialProposalCovMatrix);
+        void                             solveWithBayesMetropolisHastings(const uqMhOptionsValuesClass* optionsValues, // dakota
+                                                                          const P_V&                     initialValues,
+                                                                          const P_M*                     initialProposalCovMatrix);
         void                             solveWithBayesMLSampling        ();
   const uqBaseVectorRVClass   <P_V,P_M>& priorRv                         () const;
   const uqGenericVectorRVClass<P_V,P_M>& postRv                          () const;
@@ -274,8 +275,9 @@ uqStatisticalInverseProblemClass<P_V,P_M>::~uqStatisticalInverseProblemClass()
 template <class P_V,class P_M>
 void
 uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(
-  const P_V& initialValues,
-  const P_M* initialProposalCovMatrix)
+  const uqMhOptionsValuesClass* optionsValues, // dakota
+  const P_V&                    initialValues,
+  const P_M*                    initialProposalCovMatrix)
 {
   //grvy_timer_begin("BayesMetropolisHastings"); TODO: revisit timing output
   m_env.fullComm().Barrier();

@@ -34,7 +34,7 @@
 #define __UQ_SFP_OPTIONS_H__
 
 #include <uqEnvironment.h>
-#include <uqMonteCarloSGOptions.h>
+//#include <uqMonteCarloSGOptions.h>
 
 #undef UQ_SFP_READS_SOLVER_OPTION
 
@@ -67,7 +67,7 @@ public:
   std::string            m_solverString;
 #endif
 
-  uqMcOptionsValuesClass m_mcOptionsValues;
+  //uqMcOptionsValuesClass m_mcOptionsValues;
 
 private:
   void copy(const uqSfpOptionsValuesClass& src);

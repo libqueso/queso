@@ -204,7 +204,7 @@ namespace QUESO_Basic_API {
 
     // Launch the Markov Chain 
 
-    m_ip->solveWithBayesMetropolisHastings(*m_queso_var_ini,m_CovMatrix);
+    m_ip->solveWithBayesMetropolisHastings(NULL,*m_queso_var_ini,m_CovMatrix);
   }
 
   //----------------------------------------------

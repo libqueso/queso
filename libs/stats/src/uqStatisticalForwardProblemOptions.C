@@ -74,7 +74,7 @@ uqSfpOptionsValuesClass::copy(const uqSfpOptionsValuesClass& src)
   m_solverString         = src.m_solverString;
 #endif
 
-  m_mcOptionsValues      = src.m_mcOptionsValues;
+  //m_mcOptionsValues      = src.m_mcOptionsValues;
 
   return;
 }

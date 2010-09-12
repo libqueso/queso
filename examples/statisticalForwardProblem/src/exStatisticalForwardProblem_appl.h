@@ -135,7 +135,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
               << std::endl;
   }
 
-  fp.solveWithMonteCarlo();
+  fp.solveWithMonteCarlo(NULL);
 
   //******************************************************
   // Release memory before leaving routine.

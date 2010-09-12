@@ -34,7 +34,7 @@
 #define __UQ_SIP_OPTIONS_H__
 
 #include <uqEnvironment.h>
-#include <uqMetropolisHastingsSGOptions.h>
+//#include <uqMetropolisHastingsSGOptions.h>
 
 #undef UQ_SIP_READS_SOLVER_OPTION
 
@@ -63,7 +63,7 @@ public:
   std::string            m_solverString;
 #endif
 
-  uqMhOptionsValuesClass m_mhOptionsValues;
+  //uqMhOptionsValuesClass m_mhOptionsValues;
 
 private:
   void copy(const uqSipOptionsValuesClass& src);

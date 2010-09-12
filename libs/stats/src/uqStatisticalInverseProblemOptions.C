@@ -69,7 +69,7 @@ uqSipOptionsValuesClass::copy(const uqSipOptionsValuesClass& src)
 #ifdef UQ_SIP_READS_SOLVER_OPTION
   m_solverString         = src.m_solverString;
 #endif
-  m_mhOptionsValues      = src.m_mhOptionsValues;
+  //m_mhOptionsValues      = src.m_mhOptionsValues;
 
   return;
 }
