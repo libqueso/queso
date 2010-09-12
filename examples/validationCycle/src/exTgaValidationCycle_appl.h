@@ -33,6 +33,8 @@
 #ifndef __EX_TGA_VALIDATION_CYCLE_APPL_H__
 #define __EX_TGA_VALIDATION_CYCLE_APPL_H__
 
+#define UQ_EXAMPLES_USES_QUESO_INPUT_FILE
+
 #include <exTgaValidationCycle_likelihood.h>
 #include <exTgaValidationCycle_qoi.h>
 #include <uqValidationCycle.h>
@@ -132,7 +134,13 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                                                  true); // the routine computes [ln(function)]
 
   // Inverse problem: instantiate it (posterior rv is instantiated internally)
-  cycle.instantiateCalIP(calPriorRv,
+  uqSipOptionsValuesClass* calIpOptionsValues = NULL;
+#ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
+#else
+  calIpOptionsValues = new uqSipOptionsValuesClass();
+#endif
+  cycle.instantiateCalIP(calIpOptionsValues,
+                         calPriorRv,
                          calLikelihoodFunctionObj);
 
   // Inverse problem: solve it, that is, set 'pdf' and 'realizer' of the posterior rv
@@ -146,11 +154,17 @@ uqAppl(const uqBaseEnvironmentClass& env)
     calPriorRv.realizer().realization(paramInitialValues);
   }
 
+  uqMhOptionsValuesClass* calIpMhOptionsValues = NULL;
   P_M* calProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newProposalMatrix(NULL,&paramInitialValues);
-  cycle.calIP().solveWithBayesMetropolisHastings(NULL,
+#ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
+#else
+  calIpMhOptionsValues = new uqMhOptionsValuesClass();
+#endif
+  cycle.calIP().solveWithBayesMetropolisHastings(calIpMhOptionsValues,
                                                  paramInitialValues,
                                                  calProposalCovMatrix);
   delete calProposalCovMatrix;
+  delete calIpMhOptionsValues;
 
   // Forward problem: instantiate it (parameter rv = posterior rv of inverse problem; qoi rv is instantiated internally)
   double beta_prediction         = 250.;
@@ -162,11 +176,23 @@ uqAppl(const uqBaseEnvironmentClass& env)
   calQoiRoutine_Data.m_criticalMass = criticalMass_prediction;
   calQoiRoutine_Data.m_criticalTime = criticalTime_prediction;
 
-  cycle.instantiateCalFP(qoiRoutine<P_V,P_M,Q_V,Q_M>,
+  uqSfpOptionsValuesClass* calFpOptionsValues = NULL;
+#ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
+#else
+  calFpOptionsValues = new uqSfpOptionsValuesClass();
+#endif
+  cycle.instantiateCalFP(calFpOptionsValues,
+                         qoiRoutine<P_V,P_M,Q_V,Q_M>,
                          (void *) &calQoiRoutine_Data);
 
   // Forward problem: solve it, that is, set 'realizer' and 'cdf' of the qoi rv
-  cycle.calFP().solveWithMonteCarlo(NULL); // no extra user entities needed for Monte Carlo algorithm
+  uqMcOptionsValuesClass* calFpMcOptionsValues = NULL;
+#ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
+#else
+  calFpMcOptionsValues = new uqMcOptionsValuesClass();
+#endif
+  cycle.calFP().solveWithMonteCarlo(calFpMcOptionsValues); // no extra user entities needed for Monte Carlo algorithm
+  delete calFpMcOptionsValues;
 
   iRC = gettimeofday(&timevalNow, NULL);
   if (env.fullRank() == 0) {
@@ -201,16 +227,29 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                                                  true); // the routine computes [ln(function)]
 
   // Inverse problem: instantiate it (posterior rv is instantiated internally)
-  cycle.instantiateValIP(valLikelihoodFunctionObj);
+  uqSipOptionsValuesClass* valIpOptionsValues = NULL;
+#ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
+#else
+  valIpOptionsValues = new uqSipOptionsValuesClass();
+#endif
+  cycle.instantiateValIP(valIpOptionsValues,
+                         valLikelihoodFunctionObj);
 
   // Inverse problem: solve it, that is, set 'pdf' and 'realizer' of the posterior rv
+  uqMhOptionsValuesClass* valIpMhOptionsValues = NULL;
+
   const uqSequentialVectorRealizerClass<P_V,P_M>* tmpRealizer = dynamic_cast< const uqSequentialVectorRealizerClass<P_V,P_M>* >(&(cycle.calIP().postRv().realizer()));
-  P_M* valProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newProposalMatrix(&tmpRealizer->unifiedSampleVarVector(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
+  P_M* valProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newProposalMatrix(&tmpRealizer->unifiedSampleVarVector(),  // Use 'realizer()' because the post. rv was computed with Metr. Hast.
                                                                                                 &tmpRealizer->unifiedSampleExpVector()); // Use these values as the initial values
-  cycle.valIP().solveWithBayesMetropolisHastings(NULL,
+#ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
+#else
+  valIpMhOptionsValues = new uqMhOptionsValuesClass();
+#endif
+  cycle.valIP().solveWithBayesMetropolisHastings(valIpMhOptionsValues,
                                                  tmpRealizer->unifiedSampleExpVector(),
                                                  valProposalCovMatrix);
   delete valProposalCovMatrix;
+  delete valIpMhOptionsValues;
 
   // Forward problem: instantiate it (parameter rv = posterior rv of inverse problem; qoi rv is instantiated internally)
   qoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> valQoiRoutine_Data;
@@ -218,11 +257,28 @@ uqAppl(const uqBaseEnvironmentClass& env)
   valQoiRoutine_Data.m_criticalMass = criticalMass_prediction;
   valQoiRoutine_Data.m_criticalTime = criticalTime_prediction;
 
-  cycle.instantiateValFP(qoiRoutine<P_V,P_M,Q_V,Q_M>,
+  uqSfpOptionsValuesClass* valFpOptionsValues = NULL;
+#ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
+#else
+  valFpOptionsValues = new uqSfpOptionsValuesClass();
+#endif
+  cycle.instantiateValFP(valFpOptionsValues,
+                         qoiRoutine<P_V,P_M,Q_V,Q_M>,
                          (void *) &valQoiRoutine_Data);
 
   // Forward problem: solve it, that is, set 'realizer' and 'cdf' of the qoi rv
-  cycle.valFP().solveWithMonteCarlo(NULL); // no extra user entities needed for Monte Carlo algorithm
+  uqMcOptionsValuesClass* valFpMcOptionsValues = NULL;
+#ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
+#else
+  valFpMcOptionsValues = new uqMcOptionsValuesClass();
+#endif
+  cycle.valFP().solveWithMonteCarlo(valFpMcOptionsValues); // no extra user entities needed for Monte Carlo algorithm
+  delete valFpMcOptionsValues;
+
+  delete valFpOptionsValues;
+  delete valIpOptionsValues;
+  delete calFpOptionsValues;
+  delete calIpOptionsValues;
 
   iRC = gettimeofday(&timevalNow, NULL);
   if (env.fullRank() == 0) {

@@ -48,13 +48,15 @@ public:
 
   const uqBaseEnvironmentClass& env() const;
 
-  void instantiateCalIP(const uqBaseVectorRVClass      <P_V,P_M>& priorRv,
+  void instantiateCalIP(uqSipOptionsValuesClass*                  optionsValues,
+                        const uqBaseVectorRVClass      <P_V,P_M>& priorRv,
                         const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunctionObj);
   //double (*likelihoodRoutinePtr)(const P_V& paramValues, const void* routineDataPtr),
   //const void* likelihoodRoutineDataPtr,
   //bool routineComputesMinus2LogOfDensity);
 
-  void instantiateCalFP(void (*qoiRoutinePtr)(const P_V&                        domainVector,
+  void instantiateCalFP(uqSfpOptionsValuesClass* optionsValues,
+                        void (*qoiRoutinePtr)(const P_V&                        domainVector,
                                               const P_V*                        domainDirection,
                                               const void*                       functionDataPtr,
                                                     Q_V&                        imageVector,
@@ -69,12 +71,14 @@ public:
   const uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>& calFP() const;
         uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>& calFP();
 
-  void instantiateValIP(const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunctionObj);
+  void instantiateValIP(uqSipOptionsValuesClass*                  optionsValues,
+                        const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunctionObj);
   //double (*likelihoodRoutinePtr)(const P_V& paramValues, const void* routineDataPtr),
   //const void* likelihoodRoutineDataPtr,
   //bool routineComputesMinus2LogOfDensity);
 
-  void instantiateValFP(void (*qoiRoutinePtr)(const P_V&                        domainVector,
+  void instantiateValFP(uqSfpOptionsValuesClass* optionsValues,
+                        void (*qoiRoutinePtr)(const P_V&                        domainVector,
                                               const P_V*                        domainDirection,
                                               const void*                       functionDataPtr,
                                                     Q_V&                        imageVector,
@@ -189,6 +193,7 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::env() const
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateCalIP(
+  uqSipOptionsValuesClass*                  optionsValues,
   const uqBaseVectorRVClass      <P_V,P_M>& priorRv,
   const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunctionObj)
   //double (*likelihoodRoutinePtr)(const P_V& paramValues, const void* routineDataPtr),
@@ -207,7 +212,7 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateCalIP(
 
   // Calibration stage: Inverse problem
   m_calIP = new uqStatisticalInverseProblemClass<P_V,P_M> ((m_prefix+"cal_").c_str(), // Extra prefix before the default "ip_" prefix
-                                                           NULL,
+                                                           optionsValues,
                                                            *m_calPriorRv,
                                                            *m_calLikelihoodFunctionObj,
                                                            *m_calPostRv);
@@ -232,6 +237,7 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::calIP()
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateCalFP(
+  uqSfpOptionsValuesClass* optionsValues,
   void (*qoiRoutinePtr)(const P_V&                        domainVector,
                         const P_V*                        domainDirection,
                         const void*                       functionDataPtr,
@@ -256,7 +262,7 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateCalFP(
 
   // Calibration stage: Forward problem
   m_calFP = new uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M> ((m_prefix+"cal_").c_str(), // Extra prefix before the default "fp_" prefix
-                                                                   NULL,
+                                                                   optionsValues,
                                                                    *m_calPostRv, // forward input = inverse output
                                                                    *m_calQoiFunctionObj,
                                                                    *m_calQoiRv);
@@ -280,7 +286,9 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::calFP()
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateValIP(const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunctionObj)
+uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateValIP(
+  uqSipOptionsValuesClass*                  optionsValues,
+  const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunctionObj)
   //double (*likelihoodRoutinePtr)(const P_V& paramValues, const void* routineDataPtr),
   //const void* likelihoodRoutineDataPtr,
   //bool routineComputesMinus2LogOfDensity)
@@ -296,7 +304,7 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateValIP(const uqBaseScalarFunc
 
   // Validation stage: Inverse problem
   m_valIP = new uqStatisticalInverseProblemClass<P_V,P_M> ((m_prefix+"val_").c_str(), // Extra prefix before the default "ip_" prefix
-                                                           NULL,
+                                                           optionsValues,
                                                            *m_calPostRv, // 'validation stage' inverse input = 'calibration stage' inverse output
                                                            *m_valLikelihoodFunctionObj,
                                                            *m_valPostRv);
@@ -321,6 +329,7 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::valIP()
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateValFP(
+  uqSfpOptionsValuesClass* optionsValues,
   void (*qoiRoutinePtr)(const P_V&                        domainVector,
                         const P_V*                        domainDirection,
                         const void*                       functionDataPtr,
@@ -345,7 +354,7 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateValFP(
 
   // Validation stage: Forward problem
   m_valFP = new uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M> ((m_prefix+"val_").c_str(),       // Extra prefix before the default "fp_" prefix
-                                                                   NULL,
+                                                                   optionsValues,
                                                                    *m_valPostRv, // forward input = inverse output
                                                                    *m_valQoiFunctionObj,
                                                                    *m_valQoiRv);

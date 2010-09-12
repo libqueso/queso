@@ -259,7 +259,8 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
                                                                          (void *) &m_calLikelihoodInfoVector,
                                                                          true); // the routine computes [ln(function)]
 
-  m_cycle->instantiateCalIP(*m_calPriorRv,
+  m_cycle->instantiateCalIP(NULL,
+                            *m_calPriorRv,
                             *m_calLikelihoodFunctionObj);
 
   // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
@@ -277,7 +278,8 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
                                                                      m_predCriticalW,
                                                                      m_predCriticalTime);
 
-  m_cycle->instantiateCalFP(exPhysics1QoiRoutine<P_V,P_M,Q_V,Q_M>,
+  m_cycle->instantiateCalFP(NULL,
+                            exPhysics1QoiRoutine<P_V,P_M,Q_V,Q_M>,
                             (void *) m_calQoiRoutineInfo);
 
   // Solve forward problem = set 'realizer' and 'cdf' of 'qoiRv'
@@ -318,7 +320,8 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
                                                                          (void *) &m_valLikelihoodInfoVector,
                                                                          true); // the routine computes [ln(function)]
 
-  m_cycle->instantiateValIP(*m_valLikelihoodFunctionObj);
+  m_cycle->instantiateValIP(NULL,
+                            *m_valLikelihoodFunctionObj);
 
   // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
   const uqSequentialVectorRealizerClass<P_V,P_M>* tmpRealizer = dynamic_cast< const uqSequentialVectorRealizerClass<P_V,P_M>* >(&(m_cycle->calIP().postRv().realizer()));
@@ -336,7 +339,8 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
                                                                      m_predCriticalW,
                                                                      m_predCriticalTime);
 
-  m_cycle->instantiateValFP(exPhysics1QoiRoutine<P_V,P_M,Q_V,Q_M>,
+  m_cycle->instantiateValFP(NULL,
+                            exPhysics1QoiRoutine<P_V,P_M,Q_V,Q_M>,
                             (void *) m_valQoiRoutineInfo);
 
   // Solve forward problem = set 'realizer' and 'cdf' of 'qoiRv'

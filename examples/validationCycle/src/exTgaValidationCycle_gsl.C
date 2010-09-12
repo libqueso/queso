@@ -55,6 +55,7 @@
 
 #include <exTgaValidationCycle_appl.h>
 #include <uqGslMatrix.h>
+#include <uqEnvironmentOptions.h>
 
 int main(int argc, char* argv[])
 {
@@ -63,11 +64,17 @@ int main(int argc, char* argv[])
   //************************************************
   MPI_Init(&argc,&argv);
 
+  uqEnvOptionsValuesClass* envOptionsValues = NULL;
+#ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
   UQ_FATAL_TEST_MACRO(argc != 2,
                       UQ_UNAVAILABLE_RANK,
                       "main()",
                       "input file must be specified in command line as argv[1], just after executable argv[0]");
-  uqFullEnvironmentClass* env = new uqFullEnvironmentClass(MPI_COMM_WORLD,argv[1],"",NULL);
+  uqFullEnvironmentClass* env = new uqFullEnvironmentClass(MPI_COMM_WORLD,argv[1],"",envOptionsValues);
+#else
+  envOptionsValues = new uqEnvOptionsValuesClass();
+  uqFullEnvironmentClass* env = new uqFullEnvironmentClass(MPI_COMM_WORLD,"","",envOptionsValues);
+#endif
 
   //************************************************
   // Run application
@@ -82,6 +89,7 @@ int main(int argc, char* argv[])
   // Finalize environment
   //************************************************
   delete env;
+  delete envOptionsValues;
   MPI_Finalize();
 
   return 0;
