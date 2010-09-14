@@ -138,6 +138,11 @@ uqAppl(const uqBaseEnvironmentClass& env)
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 #else
   calIpOptionsValues = new uqSipOptionsValuesClass();
+  calIpOptionsValues->m_help                 = "anything";
+  calIpOptionsValues->m_computeSolution      = true;
+  calIpOptionsValues->m_dataOutputFileName   = "outputData/tgaCalOutput";
+  calIpOptionsValues->m_dataOutputAllowedSet.insert(0);
+  calIpOptionsValues->m_dataOutputAllowedSet.insert(1);
 #endif
   cycle.instantiateCalIP(calIpOptionsValues,
                          calPriorRv,
@@ -159,6 +164,40 @@ uqAppl(const uqBaseEnvironmentClass& env)
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 #else
   calIpMhOptionsValues = new uqMhOptionsValuesClass();
+  calIpMhOptionsValues->m_mh_help                 = "anything";
+  calIpMhOptionsValues->m_mh_dataOutputFileName   = "outputData/tgaCalOutput";
+  calIpMhOptionsValues->m_mh_dataOutputAllowedSet.insert(0);
+  calIpMhOptionsValues->m_mh_dataOutputAllowedSet.insert(1);
+
+  calIpMhOptionsValues->m_mh_rawChain_dataInputFileName    = ".";
+  calIpMhOptionsValues->m_mh_rawChain_size                 = 1048576;
+  calIpMhOptionsValues->m_mh_rawChain_generateExtra        = false;
+  calIpMhOptionsValues->m_mh_rawChain_displayPeriod        = 20000;
+  calIpMhOptionsValues->m_mh_rawChain_measureRunTimes      = true;
+  calIpMhOptionsValues->m_mh_rawChain_dataOutputFileName   = "outputData/file_cal_ip_raw";
+  calIpMhOptionsValues->m_mh_rawChain_dataOutputAllowedSet.insert(0);
+  calIpMhOptionsValues->m_mh_rawChain_dataOutputAllowedSet.insert(1);
+  calIpMhOptionsValues->m_mh_rawChain_computeStats         = true;
+
+  calIpMhOptionsValues->m_mh_displayCandidates             = false;
+  calIpMhOptionsValues->m_mh_putOutOfBoundsInChain         = true;
+  calIpMhOptionsValues->m_mh_tk_useLocalHessian            = false;
+  calIpMhOptionsValues->m_mh_tk_useNewtonComponent         = true;
+  calIpMhOptionsValues->m_mh_dr_maxNumExtraStages          = 1;
+  calIpMhOptionsValues->m_mh_dr_listOfScalesForExtraStages.resize(1);
+  calIpMhOptionsValues->m_mh_dr_listOfScalesForExtraStages.[0] = 5.;
+  calIpMhOptionsValues->m_mh_am_initialNonAdaptInterval    = 0;
+  calIpMhOptionsValues->m_mh_am_adaptInterval              = 100;
+  calIpMhOptionsValues->m_mh_am_eta                        = 1.92;
+  calIpMhOptionsValues->m_mh_am_epsilon                    = 1.e-5;
+
+  calIpMhOptionsValues->m_mh_filteredChain_generate             = true;
+  calIpMhOptionsValues->m_mh_filteredChain_discardedPortion     = 0.;
+  calIpMhOptionsValues->m_mh_filteredChain_lag                  = 20;
+  calIpMhOptionsValues->m_mh_filteredChain_dataOutputFileName   = ".";
+  calIpMhOptionsValues->m_mh_filteredChain_dataOutputAllowedSet.insert(0);
+  calIpMhOptionsValues->m_mh_filteredChain_dataOutputAllowedSet.insert(1);
+  calIpMhOptionsValues->m_mh_filteredChain_computeStats         = true;
 #endif
   cycle.calIP().solveWithBayesMetropolisHastings(calIpMhOptionsValues,
                                                  paramInitialValues,
@@ -180,6 +219,13 @@ uqAppl(const uqBaseEnvironmentClass& env)
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 #else
   calFpOptionsValues = new uqSfpOptionsValuesClass();
+  calFpOptionsValues->m_help                 = "anything";
+  calFpOptionsValues->m_computeSolution      = true;
+  calFpOptionsValues->m_computeCovariances   = true;
+  calFpOptionsValues->m_computeCorrelations  = true;
+  calFpOptionsValues->m_dataOutputFileName   = "outputData/tgaCalOutput";
+  calFpOptionsValues->m_dataOutputAllowedSet.insert(0);
+  calFpOptionsValues->m_dataOutputAllowedSet.insert(1);
 #endif
   cycle.instantiateCalFP(calFpOptionsValues,
                          qoiRoutine<P_V,P_M,Q_V,Q_M>,
@@ -190,6 +236,24 @@ uqAppl(const uqBaseEnvironmentClass& env)
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 #else
   calFpMcOptionsValues = new uqMcOptionsValuesClass();
+  calFpMcOptionsValues->m_help                 = "anything";
+  calFpMcOptionsValues->m_dataOutputFileName   = "outputData/tgaCalOutput";
+  calFpMcOptionsValues->m_dataOutputAllowedSet.insert(0);
+  calFpMcOptionsValues->m_dataOutputAllowedSet.insert(1);
+
+  calFpMcOptionsValues->m_pseq_dataOutputFileName   = ".";
+  calFpMcOptionsValues->m_pseq_dataOutputAllowedSet.insert(0);
+  calFpMcOptionsValues->m_pseq_dataOutputAllowedSet.insert(1);
+  calFpMcOptionsValues->m_pseq_computeStats         = true;
+
+  calFpMcOptionsValues->m_qseq_dataInputFileName    = ".";
+  calFpMcOptionsValues->m_qseq_size                 = 1048576;
+  calFpMcOptionsValues->m_qseq_displayPeriod        = 20000;
+  calFpMcOptionsValues->m_qseq_measureRunTimes      = true;
+  calFpMcOptionsValues->m_qseq_dataOutputFileName   = "outputData/file_cal_fp_qoi2";
+  calFpMcOptionsValues->m_qseq_dataOutputAllowedSet.insert(0);
+  calFpMcOptionsValues->m_qseq_dataOutputAllowedSet.insert(1);
+  calFpMcOptionsValues->m_qseq_computeStats         = true;
 #endif
   cycle.calFP().solveWithMonteCarlo(calFpMcOptionsValues); // no extra user entities needed for Monte Carlo algorithm
   delete calFpMcOptionsValues;
@@ -231,6 +295,11 @@ uqAppl(const uqBaseEnvironmentClass& env)
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 #else
   valIpOptionsValues = new uqSipOptionsValuesClass();
+  valIpOptionsValues->m_help                 = "anything";
+  valIpOptionsValues->m_computeSolution      = true;
+  valIpOptionsValues->m_dataOutputFileName   = "outputData/tgaValOutput";
+  valIpOptionsValues->m_dataOutputAllowedSet.insert(0);
+  valIpOptionsValues->m_dataOutputAllowedSet.insert(1);
 #endif
   cycle.instantiateValIP(valIpOptionsValues,
                          valLikelihoodFunctionObj);
@@ -244,6 +313,40 @@ uqAppl(const uqBaseEnvironmentClass& env)
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 #else
   valIpMhOptionsValues = new uqMhOptionsValuesClass();
+  valIpMhOptionsValues->m_help                 = "anything";
+  valIpMhOptionsValues->m_dataOutputFileName   = "outputData/tgaValOutput";
+  valIpMhOptionsValues->m_dataOutputAllowedSet.insert(0);
+  valIpMhOptionsValues->m_dataOutputAllowedSet.insert(1);
+
+  valIpMhOptionsValues->m_rawChain_dataInputFileName    = ".";
+  valIpMhOptionsValues->m_rawChain_size                 = 1048576;
+  valIpMhOptionsValues->m_rawChain_generateExtra        = false;
+  valIpMhOptionsValues->m_rawChain_displayPeriod        = 20000;
+  valIpMhOptionsValues->m_rawChain_measureRunTimes      = true;
+  valIpMhOptionsValues->m_rawChain_dataOutputFileName   = "outputData/file_val_ip_raw";
+  valIpMhOptionsValues->m_rawChain_dataOutputAllowedSet.insert(0);
+  valIpMhOptionsValues->m_rawChain_dataOutputAllowedSet.insert(1);
+  valIpMhOptionsValues->m_rawChain_computeStats         = true;
+
+  valIpMhOptionsValues->m_displayCandidates             = false;
+  valIpMhOptionsValues->m_putOutOfBoundsInChain         = true;
+  valIpMhOptionsValues->m_tk_useLocalHessian            = false;
+  valIpMhOptionsValues->m_tk_useNewtonComponent         = true;
+  valIpMhOptionsValues->m_dr_maxNumExtraStages          = 1;
+  valIpMhOptionsValues->m_dr_listOfScalesForExtraStages.resize(1);
+  valIpMhOptionsValues->m_dr_listOfScalesForExtraStages[0] = 5.;
+  valIpMhOptionsValues->m_am_initialNonAdaptInterval    = 0;
+  valIpMhOptionsValues->m_am_adaptInterval              = 100;
+  valIpMhOptionsValues->m_am_eta                        = 1.92;
+  valIpMhOptionsValues->m_am_epsilon                    = 1.e-5;
+
+  valIpMhOptionsValues->m_filteredChain_generate             = true;
+  valIpMhOptionsValues->m_filteredChain_discardedPortion     = 0.;
+  valIpMhOptionsValues->m_filteredChain_lag                  = 20;
+  valIpMhOptionsValues->m_filteredChain_dataOutputFileName   = ".";
+  valIpMhOptionsValues->m_filteredChain_dataOutputAllowedSet.insert(0);
+  valIpMhOptionsValues->m_filteredChain_dataOutputAllowedSet.insert(1);
+  valIpMhOptionsValues->m_filteredChain_computeStats         = true;
 #endif
   cycle.valIP().solveWithBayesMetropolisHastings(valIpMhOptionsValues,
                                                  tmpRealizer->unifiedSampleExpVector(),
@@ -261,6 +364,13 @@ uqAppl(const uqBaseEnvironmentClass& env)
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 #else
   valFpOptionsValues = new uqSfpOptionsValuesClass();
+  valFpOptionsValues->m_help                 = "anything";
+  valFpOptionsValues->m_computeSolution      = true;
+  valFpOptionsValues->m_computeCovariances   = true;
+  valFpOptionsValues->m_computeCorrelations  = true;
+  valFpOptionsValues->m_dataOutputFileName   = "outputData/tgaValOutput";
+  valFpOptionsValues->m_dataOutputAllowedSet.insert(0);
+  valFpOptionsValues->m_dataOutputAllowedSet.insert(1);
 #endif
   cycle.instantiateValFP(valFpOptionsValues,
                          qoiRoutine<P_V,P_M,Q_V,Q_M>,
@@ -271,6 +381,24 @@ uqAppl(const uqBaseEnvironmentClass& env)
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 #else
   valFpMcOptionsValues = new uqMcOptionsValuesClass();
+  valFpMcOptionsValues->m_help                 = "anything";
+  valFpMcOptionsValues->m_dataOutputFileName   = "outputData/tgaValOutput";
+  valFpMcOptionsValues->m_dataOutputAllowedSet.insert(0);
+  valFpMcOptionsValues->m_dataOutputAllowedSet.insert(1);
+
+  valFpMcOptionsValues->m_pseq_dataOutputFileName   = ".";
+  valFpMcOptionsValues->m_pseq_dataOutputAllowedSet.insert(0);
+  valFpMcOptionsValues->m_pseq_dataOutputAllowedSet.insert(1);
+  valFpMcOptionsValues->m_pseq_computeStats         = true;
+
+  valFpMcOptionsValues->m_qseq_dataInputFileName    = ".";
+  valFpMcOptionsValues->m_qseq_size                 = 1048576;
+  valFpMcOptionsValues->m_qseq_displayPeriod        = 20000;
+  valFpMcOptionsValues->m_qseq_measureRunTimes      = true;
+  valFpMcOptionsValues->m_qseq_dataOutputFileName   = "outputData/file_val_fp_qoi2";
+  valFpMcOptionsValues->m_qseq_dataOutputAllowedSet.insert(0);
+  valFpMcOptionsValues->m_qseq_dataOutputAllowedSet.insert(1);
+  valFpMcOptionsValues->m_qseq_computeStats         = true;
 #endif
   cycle.valFP().solveWithMonteCarlo(valFpMcOptionsValues); // no extra user entities needed for Monte Carlo algorithm
   delete valFpMcOptionsValues;

@@ -73,6 +73,11 @@ int main(int argc, char* argv[])
   uqFullEnvironmentClass* env = new uqFullEnvironmentClass(MPI_COMM_WORLD,argv[1],"",envOptionsValues);
 #else
   envOptionsValues = new uqEnvOptionsValuesClass();
+  envOptionsValues->m_subDisplayFileName   = "outputData/display";
+  envOptionsValues->m_subDisplayAllowedSet.insert(0);
+  envOptionsValues->m_subDisplayAllowedSet.insert(1);
+  envOptionsValues->m_displayVerbosity     = 2;
+  envOptionsValues->m_seed                 = 0;
   uqFullEnvironmentClass* env = new uqFullEnvironmentClass(MPI_COMM_WORLD,"","",envOptionsValues);
 #endif
 
