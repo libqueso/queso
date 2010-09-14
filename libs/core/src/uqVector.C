@@ -39,7 +39,7 @@ uqVectorClass::uqVectorClass()
   m_map(*(new Epetra_Map( 1,0,*(new Epetra_MpiComm(MPI_COMM_WORLD)) ) ))
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqVectorClass::constructor(), default",
                       "should not be used by user");
 }
@@ -62,7 +62,7 @@ uqVectorClass::uqVectorClass(const uqVectorClass& rhs)
   m_map(rhs.m_map)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqVectorClass::constructor(), copy",
                       "code should not execute through here");
 }
@@ -86,7 +86,7 @@ uqVectorClass&
 uqVectorClass::operator=(const uqVectorClass& rhs)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      rhs.m_env.fullRank(),
+                      rhs.m_env.worldRank(),
                       "uqVectorClass::operator=()",
                       "code should not execute through here");
   return *this;
@@ -96,7 +96,7 @@ uqVectorClass&
 uqVectorClass::operator*=(double a)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqVectorClass::operator*=()",
                       "code should not execute through here");
   double tmpA = a; tmpA += 1.; // Just to avoid icpc warnings
@@ -107,7 +107,7 @@ uqVectorClass&
 uqVectorClass::operator/=(double a)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqVectorClass::operator/=()",
                       "code should not execute through here");
   double tmpA = a; tmpA += 1.; // Just to avoid icpc warnings
@@ -118,7 +118,7 @@ uqVectorClass&
 uqVectorClass::operator+=(const uqVectorClass& rhs)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      rhs.m_env.fullRank(),
+                      rhs.m_env.worldRank(),
                       "uqVectorClass::operator+=()",
                       "code should not execute through here");
   return *this;
@@ -128,7 +128,7 @@ uqVectorClass&
 uqVectorClass::operator-=(const uqVectorClass& rhs)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      rhs.m_env.fullRank(),
+                      rhs.m_env.worldRank(),
                       "uqVectorClass::operator-=()",
                       "code should not execute through here");
   return *this;

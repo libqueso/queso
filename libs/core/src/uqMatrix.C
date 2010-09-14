@@ -39,7 +39,7 @@ uqMatrixClass::uqMatrixClass()
   m_map(*(new Epetra_Map( 1,0,*(new Epetra_MpiComm(MPI_COMM_WORLD)) ) ))
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMatrixClass::constructor(), default",
                       "should not be used by user");
 }
@@ -59,7 +59,7 @@ uqMatrixClass::uqMatrixClass(const uqMatrixClass& rhs)
   m_map(rhs.m_map)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMatrixClass::constructor(), copy",
                       "code should not execute through here");
 }
@@ -83,7 +83,7 @@ uqMatrixClass&
 uqMatrixClass::operator= (const uqMatrixClass& rhs)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      rhs.m_env.fullRank(),
+                      rhs.m_env.worldRank(),
                       "uqMatrixClass::operator=()",
                       "code should not execute through here");
   return *this;
@@ -93,7 +93,7 @@ uqMatrixClass&
 uqMatrixClass::operator*=(double a)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMatrixClass::operator*=()",
                       "code should not execute through here");
   double tmpA = a; tmpA += 1.; // Just to avoid icpc warnings
@@ -104,7 +104,7 @@ uqMatrixClass&
 uqMatrixClass::operator+=(const uqMatrixClass& rhs)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      rhs.m_env.fullRank(),
+                      rhs.m_env.worldRank(),
                       "uqMatrixClass::operator+=()",
                       "code should not execute through here");
   return *this;
@@ -114,7 +114,7 @@ uqMatrixClass&
 uqMatrixClass::operator-=(const uqMatrixClass& rhs)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      rhs.m_env.fullRank(),
+                      rhs.m_env.worldRank(),
                       "uqMatrixClass::operator-=()",
                       "code should not execute through here");
   return *this;

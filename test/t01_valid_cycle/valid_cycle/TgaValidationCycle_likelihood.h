@@ -126,7 +126,7 @@ likelihoodRoutine_DataClass<P_V,P_M>::likelihoodRoutine_DataClass(
     double tmpMe;
     while (fscanf(inp,"%lf %lf",&tmpTe,&tmpMe) != EOF) {
       UQ_FATAL_TEST_MACRO((numObservations >= m_Te1.size()),
-                          env.fullRank(),
+                          env.worldRank(),
                           "uqAppl(), in uqTgaEx4.h",
                           "input file 1 has too many observations");
       m_Te1[numObservations] = tmpTe;
@@ -134,7 +134,7 @@ likelihoodRoutine_DataClass<P_V,P_M>::likelihoodRoutine_DataClass(
       numObservations++;
     }
     UQ_FATAL_TEST_MACRO((numObservations != m_Te1.size()),
-                        env.fullRank(),
+                        env.worldRank(),
                         "uqAppl(), in uqTgaEx4.h",
                         "input file 1 has a smaller number of observations than expected");
 
@@ -160,7 +160,7 @@ likelihoodRoutine_DataClass<P_V,P_M>::likelihoodRoutine_DataClass(
     double tmpMe;
     while (fscanf(inp,"%lf %lf",&tmpTe,&tmpMe) != EOF) {
       UQ_FATAL_TEST_MACRO((numObservations >= m_Te2.size()),
-                          env.fullRank(),
+                          env.worldRank(),
                           "uqAppl(), in uqTgaEx4.h",
                           "input file 2 has too many observations");
       m_Te2[numObservations] = tmpTe;
@@ -168,7 +168,7 @@ likelihoodRoutine_DataClass<P_V,P_M>::likelihoodRoutine_DataClass(
       numObservations++;
     }
     UQ_FATAL_TEST_MACRO((numObservations != m_Te2.size()),
-                        env.fullRank(),
+                        env.worldRank(),
                         "uqAppl(), in uqTgaEx4.h",
                         "input file 2 has a smaller number of observations than expected");
 
@@ -194,7 +194,7 @@ likelihoodRoutine_DataClass<P_V,P_M>::likelihoodRoutine_DataClass(
     double tmpMe;
     while (fscanf(inp,"%lf %lf",&tmpTe,&tmpMe) != EOF) {
       UQ_FATAL_TEST_MACRO((numObservations >= m_Te3.size()),
-                          env.fullRank(),
+                          env.worldRank(),
                           "uqAppl(), in uqTgaEx4.h",
                           "input file 3 has too many observations");
       m_Te3[numObservations] = tmpTe;
@@ -202,7 +202,7 @@ likelihoodRoutine_DataClass<P_V,P_M>::likelihoodRoutine_DataClass(
       numObservations++;
     }
     UQ_FATAL_TEST_MACRO((numObservations != m_Te3.size()),
-                        env.fullRank(),
+                        env.worldRank(),
                         "uqAppl(), in uqTgaEx4.h",
                         "input file 3 has a smaller number of observations than expected");
 
@@ -271,7 +271,7 @@ likelihoodRoutine(
     while ((t < t_final) && (i < Me.size())) {
       int status = gsl_odeiv_evolve_apply(e, c, s, &sys, &t, t_final, &h, Mass);
       UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
-                          paramValues.env().fullRank(),
+                          paramValues.env().worldRank(),
                           "likelihoodRoutine()",
                           "gsl_odeiv_evolve_apply() failed");
       //printf("t = %6.1lf, mass = %10.4lf\n",t,Mass[0]);
@@ -334,7 +334,7 @@ likelihoodRoutine(
     while ((t < t_final) && (i < Me.size())) {
       int status = gsl_odeiv_evolve_apply(e, c, s, &sys, &t, t_final, &h, Mass);
       UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
-                          paramValues.env().fullRank(),
+                          paramValues.env().worldRank(),
                           "likelihoodRoutine()",
                           "gsl_odeiv_evolve_apply() failed");
       //printf("t = %6.1lf, mass = %10.4lf\n",t,Mass[0]);
@@ -397,7 +397,7 @@ likelihoodRoutine(
     while ((t < t_final) && (i < Me.size())) {
       int status = gsl_odeiv_evolve_apply(e, c, s, &sys, &t, t_final, &h, Mass);
       UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
-                          paramValues.env().fullRank(),
+                          paramValues.env().worldRank(),
                           "likelihoodRoutine()",
                           "gsl_odeiv_evolve_apply() failed");
       //printf("t = %6.1lf, mass = %10.4lf\n",t,Mass[0]);

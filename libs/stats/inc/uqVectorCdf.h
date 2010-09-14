@@ -266,7 +266,7 @@ void
 uqGaussianVectorCdfClass<V,M>::commonConstructor()
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGaussianVectorCdfClass<V,M>::commonConstructor()",
                       "incomplete code");
   return;
@@ -285,7 +285,7 @@ uqGaussianVectorCdfClass<V,M>::values(
         V& cdfVec) const
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGaussianVectorCdfClass<V,M>::cdfVec()",
                       "incomplete code");
   return;
@@ -371,7 +371,7 @@ uqSampledVectorCdfClass<V,M>::values(
         V& cdfVec) const
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqSampledVectorCdfClass<V,M>::cdfVec()",
                       "incomplete code");
   return;
@@ -382,7 +382,7 @@ const uqBaseScalarCdfClass<double>&
 uqSampledVectorCdfClass<V,M>::cdf(unsigned int rowId) const
 {
   UQ_FATAL_TEST_MACRO(rowId >= m_pdfSupport.vectorSpace().dimLocal(),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqSampledVectorCdfClass<T>::cdf()",
                       "rowId is out of range");
 
@@ -414,7 +414,7 @@ uqSampledVectorCdfClass<V,M>::subWriteContents(
   const std::set<unsigned int>& allowedSubEnvIds) const
 {
   UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqSampledVectorCdfClass<V,M>::subWriteContents()",
                       "unexpected subRank");
 

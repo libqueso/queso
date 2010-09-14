@@ -132,7 +132,7 @@ double
 uqGenericScalarFunctionClass<V,M>::actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const
 {
   UQ_FATAL_TEST_MACRO(m_valueRoutinePtr == NULL,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGenericScalarFunctionClass<V,M>::actualValue()",
                       "m_valueRoutinePtr = NULL");
 
@@ -147,7 +147,7 @@ uqGenericScalarFunctionClass<V,M>::actualValue(const V& domainVector, const V* d
                         (gradVector      != NULL) ||
                         (hessianMatrix   != NULL) ||
                         (hessianEffect   != NULL),
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqGenericScalarFunctionClass<V,M>::gradOfActual()",
                         "INCOMPLETE CODE");
   }
@@ -159,7 +159,7 @@ double
 uqGenericScalarFunctionClass<V,M>::lnValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const
 {
   UQ_FATAL_TEST_MACRO(m_valueRoutinePtr == NULL,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGenericScalarFunctionClass<V,M>::lnValue()",
                       "m_valueRoutinePtr = NULL");
 
@@ -174,7 +174,7 @@ uqGenericScalarFunctionClass<V,M>::lnValue(const V& domainVector, const V* domai
                         (gradVector      != NULL) ||
                         (hessianMatrix   != NULL) ||
                         (hessianEffect   != NULL),
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqGenericScalarFunctionClass<V,M>::gradOfLn()",
                         "INCOMPLETE CODE");
   }

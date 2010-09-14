@@ -78,7 +78,7 @@ void BIP_routine(glp_tree *tree, void *info)
 
     default:
       UQ_FATAL_TEST_MACRO(true,
-                          env.fullRank(),
+                          env.worldRank(),
                           "BIP_routine()",
                           "invalid glp_ios_readon");
     break;

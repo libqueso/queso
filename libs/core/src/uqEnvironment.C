@@ -99,7 +99,7 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
 uqBaseEnvironmentClass::uqBaseEnvironmentClass(const uqBaseEnvironmentClass& obj)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      obj.fullRank(),
+                      obj.worldRank(),
                       "uqBaseEnvironmentClass::constructor(), copy",
                       "code should not execute through here");
 }
@@ -161,7 +161,7 @@ uqBaseEnvironmentClass&
 uqBaseEnvironmentClass::operator= (const uqBaseEnvironmentClass& rhs)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      rhs.fullRank(),
+                      rhs.worldRank(),
                       "uqBaseEnvironmentClass::operator=()",
                       "code should not execute through here");
   return *this;
@@ -183,7 +183,7 @@ const Epetra_MpiComm&
 uqBaseEnvironmentClass::fullComm() const
 {
   UQ_FATAL_TEST_MACRO(m_fullComm == NULL,
-                      m_fullRank,
+                      m_worldRank,
                       "uqBaseEnvironmentClass::fullComm()",
                       "m_fullComm variable is NULL");
   return *m_fullComm;
@@ -199,7 +199,7 @@ const Epetra_MpiComm&
 uqBaseEnvironmentClass::subComm() const
 {
   UQ_FATAL_TEST_MACRO(m_subComm == NULL,
-                      m_fullRank,
+                      m_worldRank,
                       "uqBaseEnvironmentClass::subComm()",
                       "m_subComm variable is NULL");
   return *m_subComm;
@@ -209,7 +209,7 @@ const Epetra_MpiComm&
 uqBaseEnvironmentClass::selfComm() const
 {
   UQ_FATAL_TEST_MACRO(m_selfComm == NULL,
-                      m_fullRank,
+                      m_worldRank,
                       "uqBaseEnvironmentClass::selfComm()",
                       "m_selfComm variable is NULL");
   return *m_selfComm;
@@ -225,7 +225,7 @@ const Epetra_MpiComm&
 uqBaseEnvironmentClass::inter0Comm() const
 {
   UQ_FATAL_TEST_MACRO(m_inter0Comm == NULL,
-                      m_fullRank,
+                      m_worldRank,
                       "uqBaseEnvironmentClass::inter0Comm()",
                       "m_inter0Comm variable is NULL");
   return *m_inter0Comm;
@@ -241,7 +241,7 @@ unsigned int
 uqBaseEnvironmentClass::numSubEnvironments() const
 {
   UQ_FATAL_TEST_MACRO(m_optionsObj == NULL,
-                      m_fullRank,
+                      m_worldRank,
                       "uqBaseEnvironmentClass::numSubEnvironments()",
                       "m_optionsObj variable is NULL");
   return m_optionsObj->m_optionsValues.m_numSubEnvironments;
@@ -279,7 +279,7 @@ uqBaseEnvironmentClass::scanInputFileForMyOptions(const po::options_description&
 #endif
 
   UQ_FATAL_TEST_MACRO(m_allOptionsDesc == NULL,
-                      m_fullRank,
+                      m_worldRank,
                       "uqBaseEnvironmentClass::scanInputFileForMyOptions()",
                       "m_allOptionsDesc variable is NULL");
   m_allOptionsDesc->add(optionsDesc);
@@ -289,7 +289,7 @@ uqBaseEnvironmentClass::scanInputFileForMyOptions(const po::options_description&
   //}
 
   UQ_FATAL_TEST_MACRO(m_optionsInputFileName == "",
-                      m_fullRank,
+                      m_worldRank,
                       "uqBaseEnvironmentClass::scanInputFileForMyOptions()",
                       "m_optionsInputFileName is 'nothing'");
   //std::ifstream ifs(m_optionsInputFileName.c_str());
@@ -299,7 +299,7 @@ uqBaseEnvironmentClass::scanInputFileForMyOptions(const po::options_description&
 #endif
 
   UQ_FATAL_TEST_MACRO(m_allOptionsMap == NULL,
-                      m_fullRank,
+                      m_worldRank,
                       "uqBaseEnvironmentClass::scanInputFileForMyOptions()",
                       "m_allOptionsMap variable is NULL");
   po::store(po::parse_config_file(*ifs, *m_allOptionsDesc, true), *m_allOptionsMap);
@@ -335,7 +335,7 @@ po::variables_map&
 uqBaseEnvironmentClass::allOptionsMap() const
 {
   UQ_FATAL_TEST_MACRO(m_allOptionsMap == NULL,
-                      m_fullRank,
+                      m_worldRank,
                       "uqBaseEnvironmentClass::allOptionsMap()",
                       "m_allOptionsMap variable is NULL");
   return *m_allOptionsMap;
@@ -345,7 +345,7 @@ unsigned int
 uqBaseEnvironmentClass::displayVerbosity() const
 {
   UQ_FATAL_TEST_MACRO(m_optionsObj == NULL,
-                      m_fullRank,
+                      m_worldRank,
                       "uqBaseEnvironmentClass::displayVerbosity()",
                       "m_optionsObj variable is NULL");
   return m_optionsObj->m_optionsValues.m_displayVerbosity;
@@ -355,7 +355,7 @@ unsigned int
 uqBaseEnvironmentClass::syncVerbosity() const
 {
   UQ_FATAL_TEST_MACRO(m_optionsObj == NULL,
-                      m_fullRank,
+                      m_worldRank,
                       "uqBaseEnvironmentClass::displayVerbosity()",
                       "m_optionsObj variable is NULL");
   return m_optionsObj->m_optionsValues.m_syncVerbosity;
@@ -382,7 +382,7 @@ uqBaseEnvironmentClass::resetGslSeed(int newSeedOption)
     gsl_rng_default_seed = (unsigned long int) newSeedOption;
   }
   else if (newSeedOption < 0) {
-    gsl_rng_default_seed = (unsigned long int) (-newSeedOption+m_fullRank);
+    gsl_rng_default_seed = (unsigned long int) (-newSeedOption+m_worldRank);
   }
   else {
     struct timeval timevalNow;
@@ -392,7 +392,7 @@ uqBaseEnvironmentClass::resetGslSeed(int newSeedOption)
 
   m_rng = gsl_rng_alloc(gsl_rng_ranlxd2);
   UQ_FATAL_TEST_MACRO((m_rng == NULL),
-                      m_fullRank,
+                      m_worldRank,
                       "uqFullEnvironmentClass::resetGslSeed()",
                       "null m_rng");
 
@@ -490,7 +490,7 @@ uqBaseEnvironmentClass::openOutputFile(
       // std::cout << "checking " << baseFileName+"_sub"+this->subIdString()+"."+fileType << std::endl;
       int irtrn = grvy_check_file_path((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str());
       UQ_FATAL_TEST_MACRO(irtrn < 0,
-                          m_fullRank,
+                          m_worldRank,
                           "uqBaseEnvironmentClass::openOutputFile()",
                           "unable to verify output path");
 
@@ -504,13 +504,13 @@ uqBaseEnvironmentClass::openOutputFile(
         }
         else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
           UQ_FATAL_TEST_MACRO(true,
-                              m_fullRank,
+                              m_worldRank,
                               "uqBaseEnvironmentClass::openOutputFile(), writeOver=true",
                               "hdf file type not supported yet");
         }
         else {
           UQ_FATAL_TEST_MACRO(true,
-                              m_fullRank,
+                              m_worldRank,
                               "uqBaseEnvironmentClass::openOutputFile(), writeOver=true",
                               "invalid file type");
         }
@@ -542,13 +542,13 @@ uqBaseEnvironmentClass::openOutputFile(
         }
         else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
           UQ_FATAL_TEST_MACRO(true,
-                              m_fullRank,
+                              m_worldRank,
                               "uqBaseEnvironmentClass::openOutputFile(), writeOver=false",
                               "hdf file type not supported yet");
         }
         else {
           UQ_FATAL_TEST_MACRO(true,
-                              m_fullRank,
+                              m_worldRank,
                               "uqBaseEnvironmentClass::openOutputFile(), writeOver=false",
                               "invalid file type");
         }
@@ -590,7 +590,7 @@ uqBaseEnvironmentClass::openOutputFile(
                   << std::endl;
       }
       UQ_FATAL_TEST_MACRO((filePtrSet.ofsVar && filePtrSet.ofsVar->is_open()) == false,
-                          this->fullRank(),
+                          this->worldRank(),
                           "openOutputFile()",
                           "failed to open output file");
     }
@@ -647,7 +647,7 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
       // std::cout << "checking " << baseFileName+"."+fileType << std::endl;
       int irtrn = grvy_check_file_path((baseFileName+"."+fileType).c_str());
       UQ_FATAL_TEST_MACRO(irtrn < 0,
-                          m_fullRank,
+                          m_worldRank,
                           "uqBaseEnvironmentClass::openUnifiedOutputFile()",
                           "unable to verify output path");
 
@@ -667,7 +667,7 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
         }
         else {
           UQ_FATAL_TEST_MACRO(true,
-                              m_fullRank,
+                              m_worldRank,
                               "uqBaseEnvironmentClass::openUnifiedOutputFile(), writeOver=true",
                               "invalid file type");
         }
@@ -696,13 +696,13 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
                                        H5P_DEFAULT,
                                        H5P_DEFAULT);
           //UQ_FATAL_TEST_MACRO(true,
-          //                    m_fullRank,
+          //                    m_worldRank,
           //                    "uqBaseEnvironmentClass::openUnifiedOutputFile(), writeOver=false",
           //                    "hdf file type not supported yet");
         }
         else {
           UQ_FATAL_TEST_MACRO(true,
-                              m_fullRank,
+                              m_worldRank,
                               "uqBaseEnvironmentClass::openUnifiedOutputFile(), writeOver=false",
                               "invalid file type");
         }
@@ -741,7 +741,7 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
                   << std::endl;
       }
       UQ_FATAL_TEST_MACRO((filePtrSet.ofsVar && filePtrSet.ofsVar->is_open()) == false,
-                          this->fullRank(),
+                          this->worldRank(),
                           "openUnifiedOutputFile()",
                           "failed to open output file");
     //}
@@ -787,7 +787,7 @@ uqBaseEnvironmentClass::openInputFile(
       // std::cout << "checking " << baseFileName+"."+fileType << std::endl;
       int irtrn = grvy_check_file_path((baseFileName+"."+fileType).c_str());
       UQ_FATAL_TEST_MACRO(irtrn < 0,
-                          m_fullRank,
+                          m_worldRank,
                           "uqBaseEnvironmentClass::openInputFile()",
                           "unable to verify input path");
 
@@ -801,7 +801,7 @@ uqBaseEnvironmentClass::openInputFile(
                     << std::endl;
         }
         UQ_FATAL_TEST_MACRO((filePtrSet.ifsVar == NULL) || (filePtrSet.ifsVar->is_open() == false),
-                            this->fullRank(),
+                            this->worldRank(),
                             "uqBaseEnvironmentClass::openInputFile()",
                             "file with fileName could not be found");
       }
@@ -812,7 +812,7 @@ uqBaseEnvironmentClass::openInputFile(
       }
       else {
         UQ_FATAL_TEST_MACRO(true,
-                            m_fullRank,
+                            m_worldRank,
                             "uqBaseEnvironmentClass::openInputFile()",
                             "invalid file type");
       }
@@ -857,7 +857,7 @@ uqBaseEnvironmentClass::openUnifiedInputFile(
       // std::cout << "checking " << baseFileName+"."+fileType << std::endl;
       int irtrn = grvy_check_file_path((baseFileName+"."+fileType).c_str());
       UQ_FATAL_TEST_MACRO(irtrn < 0,
-                          m_fullRank,
+                          m_worldRank,
                           "uqBaseEnvironmentClass::openUnifiedInputFile()",
                           "unable to verify input path");
 
@@ -871,7 +871,7 @@ uqBaseEnvironmentClass::openUnifiedInputFile(
                     << std::endl;
         }
         UQ_FATAL_TEST_MACRO((filePtrSet.ifsVar == NULL) || (filePtrSet.ifsVar->is_open() == false),
-                            this->fullRank(),
+                            this->worldRank(),
                             "uqBaseEnvironmentClass::openUnifiedInputFile()",
                             "file with fileName could not be found");
       }
@@ -882,7 +882,7 @@ uqBaseEnvironmentClass::openUnifiedInputFile(
       }
       else {
         UQ_FATAL_TEST_MACRO(true,
-                            m_fullRank,
+                            m_worldRank,
                             "uqBaseEnvironmentClass::openUnifiedInputFile()",
                             "invalid file type");
       }
@@ -911,7 +911,7 @@ uqBaseEnvironmentClass::closeFile(
   }
   else {
     UQ_FATAL_TEST_MACRO(true,
-                        m_fullRank,
+                        m_worldRank,
                         "uqBaseEnvironmentClass::closeFile()",
                         "invalid file type");
   }
@@ -981,7 +981,7 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   m_fullCommSize = m_fullComm->NumProc();
   mpiRC = MPI_Comm_group(m_fullComm->Comm(), &m_fullGroup);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_fullRank,
+                      m_worldRank,
                       "uqFullEnvironmentClass::commonConstructor()",
                       "failed MPI_Comm_group()");
 
@@ -1059,12 +1059,12 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   }
   mpiRC = MPI_Group_incl(m_fullGroup, (int) numRanksPerSubEnvironment, &fullRanksOfMySubEnvironment[0], &m_subGroup);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_fullRank,
+                      m_worldRank,
                       "uqFullEnvironmentClass::commonConstructor()",
                       "failed MPI_Group_incl() for a subEnvironment");
   mpiRC = MPI_Comm_create(m_fullComm->Comm(), m_subGroup, &m_subRawComm);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_fullRank,
+                      m_worldRank,
                       "uqFullEnvironmentClass::commonConstructor()",
                       "failed MPI_Comm_group() for a subEnvironment");
   m_subComm = new Epetra_MpiComm(m_subRawComm);
@@ -1085,12 +1085,12 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   }
   mpiRC = MPI_Group_incl(m_fullGroup, (int) m_optionsObj->m_optionsValues.m_numSubEnvironments, &fullRanksOfInter0[0], &m_inter0Group);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_fullRank,
+                      m_worldRank,
                       "uqFullEnvironmentClass::commonConstructor()",
                       "failed MPI_Group_incl() for inter0");
   mpiRC = MPI_Comm_create(m_fullComm->Comm(), m_inter0Group, &m_inter0RawComm);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_fullRank,
+                      m_worldRank,
                       "uqFullEnvironmentClass::commonConstructor()",
                       "failed MPI_Comm_group() for inter0");
   if (m_fullRank%numRanksPerSubEnvironment == 0) {
@@ -1116,7 +1116,7 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
     //////////////////////////////////////////////////////////////////
     int irtrn = grvy_check_file_path((m_optionsObj->m_optionsValues.m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str());
     UQ_FATAL_TEST_MACRO(irtrn < 0,
-                        m_fullRank,
+                        m_worldRank,
                         "uqEnvironment::constructor()",
                         "unable to verify output path");
 			
@@ -1124,7 +1124,7 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
     m_subDisplayFile = new std::ofstream((m_optionsObj->m_optionsValues.m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str(),
                                          std::ofstream::out | std::ofstream::trunc);
     UQ_FATAL_TEST_MACRO((m_subDisplayFile && m_subDisplayFile->is_open()) == false,
-                        m_fullRank,
+                        m_worldRank,
                         "uqEnvironment::constructor()",
                         "failed to open sub screen file");
 
@@ -1174,7 +1174,7 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
       m_fullComm->Barrier();
     }
     //if (this->fullRank() == 0) std::cout << "Sleeping 3 seconds..."
-    //                                 << std::endl;
+    //                                     << std::endl;
     //sleep(3);
   }
 
@@ -1185,7 +1185,7 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
     gsl_rng_default_seed = (unsigned long int) m_optionsObj->m_optionsValues.m_seed;
   }
   else if (m_optionsObj->m_optionsValues.m_seed < 0) {
-    gsl_rng_default_seed = (unsigned long int) (-m_optionsObj->m_optionsValues.m_seed+m_fullRank);
+    gsl_rng_default_seed = (unsigned long int) (-m_optionsObj->m_optionsValues.m_seed+m_worldRank);
   }
   else {
     struct timeval timevalNow;
@@ -1195,7 +1195,7 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
 
   m_rng = gsl_rng_alloc(gsl_rng_ranlxd2);
   UQ_FATAL_TEST_MACRO((m_rng == NULL),
-                      m_fullRank,
+                      m_worldRank,
                       "uqFullEnvironmentClass::commonConstructor()",
                       "null m_rng");
 

@@ -66,7 +66,7 @@ uqVectorSubsetClass<V,M>::uqVectorSubsetClass()
   m_vectorSpace        (NULL)
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqVectorSubsetClass<V,M>::constructor(), default",
                       "should not be used by user");
 }
@@ -158,16 +158,16 @@ uqBoxSubsetClass<V,M>::uqBoxSubsetClass(
   m_maxValues(maxValues)
 {
   UQ_FATAL_TEST_MACRO(minValues.sizeLocal() != maxValues.sizeLocal(),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqBoxSubsetClass<V,M>::uqBoxSubsetClass()",
                       "vectors 'minValues' and 'maxValues' should have the same size");
   UQ_FATAL_TEST_MACRO(minValues.sizeLocal() != vectorSpace.dimLocal(),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqBoxSubsetClass<V,M>::uqBoxSubsetClass()",
                       "sizes of vectors 'minValues' and 'maxValues' should be equal to dimension of the vector space");
   for (unsigned int i = 0; i < m_vectorSpace->dimLocal(); ++i) {
     UQ_FATAL_TEST_MACRO(minValues[i] > maxValues[i],
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqBoxSubsetClass<V,M>::uqBoxSubsetClass()",
                         "it should happen minValue <= maxValue for all dimensions");
   }
@@ -341,7 +341,7 @@ uqConcatenationSubsetClass<V,M>::contains(const V& vec) const
   V v2(m_set2.vectorSpace().zeroVector());
 
   UQ_FATAL_TEST_MACRO((vec.sizeLocal() != (v1.sizeLocal()+v2.sizeLocal())),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqConcatenationSubsetClass<V,M>::contains()",
                       "incompatible vector sizes");
 
@@ -397,7 +397,7 @@ uqDiscreteSubsetClass<V,M>::uqDiscreteSubsetClass(
 {
   m_volume = 0.;
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqDiscreteSubsetClass<V,M>::contains()",
                       "incomplete code");
 }
@@ -412,7 +412,7 @@ bool
 uqDiscreteSubsetClass<V,M>::contains(const V& vec) const
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqDiscreteSubsetClass<V,M>::contains()",
                       "incomplete code");
 

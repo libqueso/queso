@@ -181,7 +181,7 @@ T
 uqUniformOneDGridClass<T>::operator[](unsigned int i) const
 {
   UQ_FATAL_TEST_MACRO(i >= m_size,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqUniformOneDGridClass<V,M>::operator[]",
                       "too large i");
 
@@ -195,7 +195,7 @@ unsigned int
 uqUniformOneDGridClass<T>::findIntervalId(const T& paramValue) const
 {
   UQ_FATAL_TEST_MACRO((paramValue < m_minPosition) || (m_maxPosition < paramValue),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqUniformOneDGridClass<V,M>::findIntervalId[]",
                       "paramValue is out of domain");
 

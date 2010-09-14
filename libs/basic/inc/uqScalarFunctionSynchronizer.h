@@ -133,7 +133,7 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
       int count = (int) bufferChar.size();
       int mpiRC = MPI_Bcast ((void *) &bufferChar[0], count, MPI_CHAR, 0, m_env.subComm().Comm());
       UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.fullRank(),
+                          m_env.worldRank(),
                           "uqScalarFunctionSynchronizerClass<V,M>::callFunction()",
                           "failed broadcast 1 of 3");
 
@@ -182,7 +182,7 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
         count = (int) bufferDouble.size();
         mpiRC = MPI_Bcast ((void *) &bufferDouble[0], count, MPI_DOUBLE, 0, m_env.subComm().Comm());
         UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                            m_env.fullRank(),
+                            m_env.worldRank(),
                             "uqScalarFunctionSynchronizerClass<V,M>::callFunction()",
                             "failed broadcast 2 of 3");
 
@@ -210,7 +210,7 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
           count = (int) bufferDouble.size();
           mpiRC = MPI_Bcast ((void *) &bufferDouble[0], count, MPI_DOUBLE, 0, m_env.subComm().Comm());
           UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                              m_env.fullRank(),
+                              m_env.worldRank(),
                               "uqScalarFunctionSynchronizerClass<V,M>::callFunction()",
                               "failed broadcast 3 of 3");
 
@@ -266,7 +266,7 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
   }
   else {
     UQ_FATAL_TEST_MACRO(vecValues == NULL,
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqScalarFunctionSynchronizerClass<V,M>::callFunction()",
                         "vecValues should not be NULL");
 

@@ -120,7 +120,7 @@ const uqBaseJointPdfClass<V,M>&
 uqBaseVectorRVClass<V,M>::pdf() const
 {
   UQ_FATAL_TEST_MACRO(m_pdf == NULL,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqBaseVectorRVClass<V,M>::pdf()",
                       "m_pdf is NULL");
 
@@ -132,7 +132,7 @@ const uqBaseVectorRealizerClass<V,M>&
 uqBaseVectorRVClass<V,M>::realizer() const
 {
   UQ_FATAL_TEST_MACRO(m_realizer == NULL,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       (std::string)("uqBaseVectorRVClass<V,M>::realizer(), prefix=")+m_prefix,
                       "m_realizer is NULL");
 
@@ -144,7 +144,7 @@ const uqBaseVectorCdfClass<V,M>&
 uqBaseVectorRVClass<V,M>::subCdf() const
 {
   UQ_FATAL_TEST_MACRO(m_subCdf == NULL,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       (std::string)("uqBaseVectorRVClass<V,M>::subCdf(), prefix=")+m_prefix,
                       "m_subCdf is NULL");
 
@@ -156,7 +156,7 @@ const uqBaseVectorCdfClass<V,M>&
 uqBaseVectorRVClass<V,M>::unifiedCdf() const
 {
   UQ_FATAL_TEST_MACRO(m_unifiedCdf == NULL,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       (std::string)("uqBaseVectorRVClass<V,M>::unifiedCdf(), prefix=")+m_prefix,
                       "m_unifiedCdf is NULL");
 
@@ -168,7 +168,7 @@ const uqBaseVectorMdfClass<V,M>&
 uqBaseVectorRVClass<V,M>::mdf() const
 {
   UQ_FATAL_TEST_MACRO(m_mdf == NULL,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       (std::string)("uqBaseVectorRVClass<V,M>::mdf(), prefix=")+m_prefix,
                       "m_mdf is NULL");
 
@@ -397,7 +397,7 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
     V vecS (m_imageSet.vectorSpace().zeroVector());
     iRC = matU.svd(matVt,vecS);
     UQ_FATAL_TEST_MACRO(iRC,
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqGaussianVectorRVClass<V,M>::constructor() [1]",
                         "Cholesky decomposition of covariance matrix failed.");
 
@@ -463,7 +463,7 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
     V vecS (m_imageSet.vectorSpace().zeroVector());
     iRC = matU.svd(matVt,vecS);
     UQ_FATAL_TEST_MACRO(iRC,
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqGaussianVectorRVClass<V,M>::constructor() [2]",
 		        "Cholesky decomposition of covariance matrix failed.");
 
@@ -535,7 +535,7 @@ uqGaussianVectorRVClass<V,M>::updateLawCovMatrix(const M& newLawCovMatrix)
     V vecS (m_imageSet.vectorSpace().zeroVector());
     iRC = matU.svd(matVt,vecS);
     UQ_FATAL_TEST_MACRO(iRC,
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqGaussianVectorRVClass<V,M>::updateLawCovMatrix()",
                         "Cholesky decomposition of covariance matrix failed.");
 
@@ -745,7 +745,7 @@ uqWignerVectorRVClass<V,M>::uqWignerVectorRVClass(
   }
 
   UQ_FATAL_TEST_MACRO(radius <= 0.,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqWignerVectorRVClass<V,M>::constructor()",
                       "invalid radius");
 
@@ -885,7 +885,7 @@ uqComputeCovCorrMatricesBetweenVectorRvs(
                            (qoiRv.imageSet().vectorSpace().numOfProcsForStorage()   == 1);
 
   UQ_FATAL_TEST_MACRO((useOnlyInter0Comm == false),
-                      env.fullRank(),
+                      env.worldRank(),
                       "uqComputeCovCorrMatricesBetweenVectorRvs()",
                       "parallel vectors not supported yet");
 
@@ -893,17 +893,17 @@ uqComputeCovCorrMatricesBetweenVectorRvs(
   unsigned int numCols = qoiRv.imageSet().vectorSpace().dim();
 
   UQ_FATAL_TEST_MACRO((numRows != pqCovMatrix.numRows()) || (numCols != pqCovMatrix.numCols()),
-                      env.fullRank(),
+                      env.worldRank(),
                       "uqComputeCovCorrMatricesBetweenVectorRvs()",
                       "inconsistent dimensions for covariance matrix");
 
   UQ_FATAL_TEST_MACRO((numRows != pqCorrMatrix.numRows()) || (numCols != pqCorrMatrix.numCols()),
-                      env.fullRank(),
+                      env.worldRank(),
                       "uqComputeCorrelationBetweenVectorRvs()",
                       "inconsistent dimensions for correlation matrix");
 
   UQ_FATAL_TEST_MACRO((localNumSamples > paramRv.realizer().period()) || (localNumSamples > qoiRv.realizer().period()),
-                      env.fullRank(),
+                      env.worldRank(),
                       "uqComputeCovCorrMatricesBetweenVectorRvs()",
                       "localNumSamples is too large");
 

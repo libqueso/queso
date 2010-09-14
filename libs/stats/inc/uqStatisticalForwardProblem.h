@@ -217,12 +217,12 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::uqStatisticalForwardProblemCl
   }
 
   UQ_FATAL_TEST_MACRO(paramRv.imageSet().vectorSpace().dimLocal() != qoiFunction.domainSet().vectorSpace().dimLocal(),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqStatisticalForwardProblemClass<P_V,P_M>::constructor()",
                       "'paramRv' and 'qoiFunction' are related to vector spaces of different dimensions");
 
   UQ_FATAL_TEST_MACRO(qoiFunction.imageSet().vectorSpace().dimLocal() != qoiRv.imageSet().vectorSpace().dimLocal(),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqStatisticalForwardProblemClass<P_V,P_M>::constructor()",
                       "'qoiFunction' and 'qoiRv' are related to vector spaces of different dimensions");
 
@@ -486,7 +486,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
       }
       else {
         UQ_FATAL_TEST_MACRO(true,
-                            m_env.fullRank(),
+                            m_env.worldRank(),
                             "uqStatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()",
                             "unifed cdf writing, parallel vectors not supported yet");
       }
@@ -535,7 +535,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::qoiRv_unifiedCdf() const
   }
 
   //UQ_FATAL_TEST_MACRO(m_unifiedSolutionCdf == NULL,
-  //                    m_env.fullRank(),
+  //                    m_env.worldRank(),
   //                    "uqStatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::qoiRv_unifiedCdf()",
   //                    "variable is NULL");
   return m_qoiRv.unifiedCdf(); //*m_unifiedSolutionCdf;

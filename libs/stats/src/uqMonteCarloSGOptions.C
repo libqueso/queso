@@ -161,7 +161,7 @@ void
 uqMonteCarloSGOptionsClass::scanOptionsValues()
 {
   UQ_FATAL_TEST_MACRO(m_optionsDesc == NULL,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMetropolisHastingsSGOptionsClass::scanOptionsValues()",
                       "m_optionsDesc variable is NULL");
 

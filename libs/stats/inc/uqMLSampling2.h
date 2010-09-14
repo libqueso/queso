@@ -54,7 +54,7 @@ uqMLSamplingClass<P_V,P_M>::checkpointML(
   const uqScalarSequenceClass<double>&     currLogTargetValues)            // input
 {
   UQ_FATAL_TEST_MACRO(m_currLevel != 0,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMLSamplingClass<P_V,P_M>::checkpointML(1)",
                       "m_currLevel should be zero");
 
@@ -79,7 +79,7 @@ uqMLSamplingClass<P_V,P_M>::checkpointML(
   const uqScalarSequenceClass<double>&     currLogTargetValues)            // input
 {
   UQ_FATAL_TEST_MACRO(m_currLevel == 0,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMLSamplingClass<P_V,P_M>::checkpointML(2)",
                       "m_currLevel should not be zero");
 
@@ -117,7 +117,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Level0_all(
       unsigned int tmpSize = currOptions.m_rawChainSize;
       int mpiRC = MPI_Allreduce((void *) &tmpSize, (void *) &unifiedRequestedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
       UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.fullRank(),
+                          m_env.worldRank(),
                           "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                           "failed MPI_Allreduce() for requested num samples in level 0");
     }
@@ -192,7 +192,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Level0_all(
     } // KAUST
 
     UQ_FATAL_TEST_MACRO((currChain.subSequenceSize() != currOptions.m_rawChainSize), // Ok to use rawChainSize
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                         "currChain (first one) has been generated with invalid size");
 #if 0 // ernesto
@@ -239,7 +239,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step01_inter0(
       // level, when 'currOptions' is replaced by 'lastLevelOptions' (see step 3 of 11)
       int mpiRC = MPI_Allreduce((void *) &tmpSize, (void *) &unifiedRequestedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
       UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.fullRank(),
+                          m_env.worldRank(),
                           "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                           "failed MPI_Allreduce() for requested num samples in step 1");
 
@@ -349,12 +349,12 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step02_inter0(
       }
 
       UQ_FATAL_TEST_MACRO((prevChain.subSequenceSize() != prevLogLikelihoodValues.subSequenceSize()),
-                          m_env.fullRank(),
+                          m_env.worldRank(),
                           "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                           "different sizes between previous chain and previous sequence of likelihood values");
 
       UQ_FATAL_TEST_MACRO((prevChain.subSequenceSize() != prevLogTargetValues.subSequenceSize()),
-                          m_env.fullRank(),
+                          m_env.worldRank(),
                           "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                           "different sizes between previous chain and previous sequence of target values");
 
@@ -373,7 +373,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step02_inter0(
           int mpiRC = MPI_Recv((void*) &auxUint, 1, MPI_UNSIGNED, r-1, r-1, m_env.inter0Comm().Comm(), &status);
 	  //std::cout << "Rank " << r << " received auxUint = " << auxUint << std::endl;
           UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                              m_env.fullRank(),
+                              m_env.worldRank(),
                               "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                               "failed MPI_Recv()");
           indexOfFirstWeight = auxUint;
@@ -385,7 +385,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step02_inter0(
           int mpiRC = MPI_Send((void*) &auxUint, 1, MPI_UNSIGNED, r+1, r, m_env.inter0Comm().Comm());
 	  //std::cout << "Rank " << r << " sent auxUint = " << auxUint << std::endl;
           UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                              m_env.fullRank(),
+                              m_env.worldRank(),
                               "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                               "failed MPI_Send()");
         }
@@ -483,7 +483,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
         }
         int mpiRC = MPI_Allreduce((void *) &subWeightRatioSum, (void *) &unifiedWeightRatioSum, (int) 1, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm());
         UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                            m_env.fullRank(),
+                            m_env.worldRank(),
                             "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                             "failed MPI_Allreduce() for weight ratio sum");
 
@@ -524,18 +524,18 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
         effectiveSampleSize = 0.;
         mpiRC = MPI_Allreduce((void *) &subQuantity, (void *) &effectiveSampleSize, (int) 1, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm());
         UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                            m_env.fullRank(),
+                            m_env.worldRank(),
                             "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                             "failed MPI_Allreduce() for effective sample size");
 
         effectiveSampleSize = 1./effectiveSampleSize;
         nowEffectiveSizeRatio = effectiveSampleSize/((double) weightSequence.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1));
         UQ_FATAL_TEST_MACRO((nowEffectiveSizeRatio > (1.+1.e-8)),
-                            m_env.fullRank(),
+                            m_env.worldRank(),
                             "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                             "effective sample size ratio cannot be > 1");
         //UQ_FATAL_TEST_MACRO((nowEffectiveSizeRatio < (1.-1.e-8)),
-        //                    m_env.fullRank(),
+        //                    m_env.worldRank(),
         //                    "uqMLSamplingClass<P_V,P_M>::generateSequence()",
         //                    "effective sample size ratio cannot be < 1");
 
@@ -700,7 +700,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step04_inter0(
           if (m_env.inter0Rank() >= 0) {
             int mpiRC = MPI_Allreduce((void *) &localValue, (void *) &sumValue, (int) 1, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm());
             UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                                m_env.fullRank(),
+                                m_env.worldRank(),
                                 "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                                 "failed MPI_Allreduce() for cov matrix");
           }
@@ -796,7 +796,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step05_inter0(
       unsigned int auxUnifiedSize = weightSequence.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1);
       if (m_env.inter0Rank() == 0) {
         UQ_FATAL_TEST_MACRO(unifiedIndexCountersAtProc0Only.size() != auxUnifiedSize,
-                            m_env.fullRank(),
+                            m_env.worldRank(),
                             "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                             "wrong output from sampleIndexesAtProc0() in step 5");
       }
@@ -1018,7 +1018,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all(
         }
         else {
           UQ_FATAL_TEST_MACRO(true,
-                              m_env.fullRank(),
+                              m_env.worldRank(),
                               "uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all()",
                               "nowRejectionRate should be out of the requested range at this point of the logic");
         }
@@ -1064,7 +1064,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all(
               }
               else {
                 UQ_FATAL_TEST_MACRO(true,
-                                    m_env.fullRank(),
+                                    m_env.worldRank(),
                                     "uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all()",
                                     "before and now range flags are inconsistent");
               }
@@ -1152,7 +1152,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all(
           unsigned int auxUnifiedSize = weightSequence.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1);
           if (m_env.inter0Rank() == 0) {
             UQ_FATAL_TEST_MACRO(nowUnifiedIndexCountersAtProc0Only.size() != auxUnifiedSize,
-                                m_env.fullRank(),
+                                m_env.worldRank(),
                                 "uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all()",
                                 "wrong output from sampleIndexesAtProc0() in step 9");
           }
@@ -1262,7 +1262,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all(
 
         for (unsigned int i = 0; i < nowBalLinkControl.balLinkedChains.size(); ++i) {
           UQ_FATAL_TEST_MACRO(nowBalLinkControl.balLinkedChains[i].initialPosition == NULL,
-                              m_env.fullRank(),
+                              m_env.worldRank(),
                               "uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all()",
                               "Initial position pointer in step 9 should not be NULL");
           delete nowBalLinkControl.balLinkedChains[i].initialPosition;
@@ -1275,7 +1275,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all(
           unsigned int nowUnifiedRejections = 0;
           int mpiRC = MPI_Allreduce((void *) &nowRejections, (void *) &nowUnifiedRejections, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
           UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                              m_env.fullRank(),
+                              m_env.worldRank(),
                               "uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all()",
                               "failed MPI_Allreduce() for now rejections");
 
@@ -1283,7 +1283,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all(
           unsigned int tmpUnifiedNumSamples = 0;
           mpiRC = MPI_Allreduce((void *) &tmpSubNumSamples, (void *) &tmpUnifiedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
           UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                              m_env.fullRank(),
+                              m_env.worldRank(),
                               "uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all()",
                               "failed MPI_Allreduce() for num samples in step 9");
 #endif
@@ -1317,7 +1317,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all(
         unsigned int tmpUint = (unsigned int) testResult;
         int mpiRC = MPI_Bcast((void *) &tmpUint, (int) 1, MPI_UNSIGNED, 0, m_env.subComm().Comm()); // Yes, 'subComm', important
         UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                            m_env.fullRank(),
+                            m_env.worldRank(),
                             "uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all()",
                             "failed MPI_Bcast() for testResult");
         testResult = (bool) tmpUint;
@@ -1604,14 +1604,14 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
           unsigned int unifiedGeneratedNumSamples = 0;
           int mpiRC = MPI_Allreduce((void *) &tmpSize, (void *) &unifiedGeneratedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
           UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                              m_env.fullRank(),
+                              m_env.worldRank(),
                               "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                               "failed MPI_Allreduce() for generated num samples in step 11");
           //std::cout << "unifiedGeneratedNumSamples = "   << unifiedGeneratedNumSamples
           //          << ", unifiedRequestedNumSamples = " << unifiedRequestedNumSamples
           //          << std::endl;
           UQ_FATAL_TEST_MACRO(unifiedGeneratedNumSamples != unifiedRequestedNumSamples,
-                              m_env.fullRank(),
+                              m_env.worldRank(),
                               "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                               "currChain (linked one) has been generated with invalid size");
         }
@@ -1619,7 +1619,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
         // Compute unified number of rejections
         int mpiRC = MPI_Allreduce((void *) &cumulativeRawChainRejections, (void *) &unifiedNumberOfRejections, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
         UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                            m_env.fullRank(),
+                            m_env.worldRank(),
                             "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                             "failed MPI_Allreduce() for number of rejections");
 

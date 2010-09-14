@@ -66,7 +66,7 @@ uqFiniteDistributionClass::uqFiniteDistributionClass(
                   << std::endl;
       }
       UQ_FATAL_TEST_MACRO((sumCheck - 1) > 1.e-8,
-                          m_env.fullRank(),
+                          m_env.worldRank(),
                           "uqFiniteDistributionClass::constructor()",
                           "weights sum is too bigger than 1.");
 
@@ -95,7 +95,7 @@ uqFiniteDistributionClass::uqFiniteDistributionClass(
               << std::endl;
   }
   UQ_FATAL_TEST_MACRO((1 - sumCheck) > 1.e-8,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqFiniteDistributionClass::constructor()",
                       "weights sum is too smaller than 1.");
 
@@ -111,12 +111,12 @@ uqFiniteDistributionClass::uqFiniteDistributionClass(
   }
 
   UQ_FATAL_TEST_MACRO((inpWeights.size() != (m_weights.size()+numOfZeroWeights+numRareCases)),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqFiniteDistributionClass::constructor()",
                       "number of input weights was not conserved");
 
   UQ_FATAL_TEST_MACRO((m_map.size() != m_weights.size()),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqFiniteDistributionClass::constructor()",
                       "map and inpWeights have different sizes");
 
@@ -152,7 +152,7 @@ uqFiniteDistributionClass::sample() const
 
   double aux = gsl_rng_uniform(m_env.rng());
   UQ_FATAL_TEST_MACRO((aux < 0) || (aux > 1.),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqFiniteDistributionClass::sample()",
                       "invalid uniform");
 
@@ -180,7 +180,7 @@ uqFiniteDistributionClass::sample() const
               << std::endl;
   }
   UQ_FATAL_TEST_MACRO((result >= m_map.size()),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqFiniteDistributionClass::sample()",
                       "invalid result");
 #endif

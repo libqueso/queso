@@ -362,13 +362,13 @@ uqArrayOfSequencesClass<V,M>::mean(
               (0                     <  numPos                     ) &&
               ((initialPos+numPos-1) <= (this->subSequenceSize()-1)));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqArrayOfSequencesClass<V,M>::mean()",
                       "invalid initial position or number of positions");
 
   bRC = (this->vectorSize() == meanVec.size());
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqArrayOfSequencesClass<V,M>::mean()",
                       "incompatible sizes between meanVec vector and vectors in sequence");
 
@@ -394,19 +394,19 @@ uqArrayOfSequencesClass<V,M>::sampleVariance(
               (0                     <  numPos                     ) &&
               ((initialPos+numPos-1) <= (this->subSequenceSize()-1)));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqArrayOfSequencesClass<V,M>::sampleVariance()",
                       "invalid initial position or number of positions");
 
   bRC = (this->vectorSize() == samVec.size());
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqArrayOfSequencesClass<V,M>::sampleVariance()",
                       "incompatible sizes between samVec vector and vectors in sequence");
 
   bRC = (this->vectorSize() == meanVec.size());
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqArrayOfSequencesClass<V,M>::sampleVariance()",
                       "incompatible sizes between meanVec vector and vectors in sequence");
 
@@ -442,19 +442,19 @@ uqArrayOfSequencesClass<V,M>::populationVariance(
               (0                     <  numPos                     ) &&
               ((initialPos+numPos-1) <= (this->subSequenceSize()-1)));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqArrayOfSequencesClass<V,M>::populationVariance()",
                       "invalid initial position or number of positions");
 
   bRC = (this->vectorSize() == popVec.size());
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqArrayOfSequencesClass<V,M>::populationVariance()",
                       "incompatible sizes between popVec vector and vectors in sequence");
 
   bRC = (this->vectorSize() == meanVec.size());
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqArrayOfSequencesClass<V,M>::populationVariance()",
                       "incompatible sizes between meanVec vector and vectors in sequence");
 
@@ -491,25 +491,25 @@ uqArrayOfSequencesClass<V,M>::autoCovariance(
               (0                     <  numPos                     ) &&
               ((initialPos+numPos-1) <= (this->subSequenceSize()-1)));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqVectorSequenceAutoCovariance<V,M>()",
                       "invalid initial position or number of positions");
 
   bRC = (numPos > lag);
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqVectorSequenceAutoCovariance<V,M>()",
                       "lag is too large");
 
   bRC = (this->vectorSize() == covVec.size());
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqVectorSequenceAutoCovariance<V,M>()",
                       "incompatible sizes between covVec vector and vectors in sequence");
 
   bRC = (this->vectorSize() == meanVec.size());
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqVectorSequenceAutoCovariance<V,M>()",
                       "incompatible sizes between meanVec vector and vectors in sequence");
 
@@ -652,7 +652,7 @@ uqArrayOfSequencesClass<V,M>::autoCorrViaFft(
               ((initialPos+numPos)    <= this->subSequenceSize()) &&
               (autoCorrsSumVec.size() == this->vectorSize()     ));
   UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqArrayOfSequencesClass<V,M>::autoCorrViaFft(), for sum",
                       "invalid input data");
 
@@ -830,7 +830,7 @@ uqArrayOfSequencesClass<V,M>::histogram(
 {
 #if 0
   UQ_FATAL_TEST_MACRO(centersForAllBins.size() != quanttsForAllBins.size(),
-                      sequence[0]->env().fullRank(),
+                      sequence[0]->env().worldRank(),
                       "uqVectorSequenceHistogram<V,M>()",
                       "vectors 'centers' and 'quantts' have different sizes");
 
@@ -1019,7 +1019,7 @@ void
 uqArrayOfSequencesClass<V,M>::unifiedWriteContents(std::ofstream& ofsvar) const
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqArrayOfSequencesClass<V,M>::unifiedWriteContents(1)",
                       "not implemented yet");
   return;
@@ -1032,7 +1032,7 @@ uqArrayOfSequencesClass<V,M>::unifiedWriteContents(
   const std::string& fileType) const
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqArrayOfSequencesClass<V,M>::unifiedWriteContents(2)",
                       "not implemented yet");
   return;
@@ -1046,7 +1046,7 @@ uqArrayOfSequencesClass<V,M>::unifiedReadContents(
   const unsigned int subSequenceSize)
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqArrayOfSequencesClass<V,M>::unifiedReadContents()",
                       "not implemented yet");
   return;

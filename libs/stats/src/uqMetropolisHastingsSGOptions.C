@@ -332,7 +332,7 @@ void
 uqMetropolisHastingsSGOptionsClass::scanOptionsValues()
 {
   UQ_FATAL_TEST_MACRO(m_optionsDesc == NULL,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMetropolisHastingsSGOptionsClass::scanOptionsValues()",
                       "m_optionsDesc variable is NULL");
 
@@ -500,6 +500,7 @@ uqMetropolisHastingsSGOptionsClass::getMyOptionValues(po::options_description& o
   if ((m_optionsValues.m_filteredChainGenerate == true) &&
       (m_optionsValues.m_filteredChainLag      < 2    )) {
     std::cerr << "WARNING In uqMetropolisHastingsSGClass<P_V,P_M>::getMyOptionsValues()"
+              << ", worldRank "             << m_env.worldRank()
               << ", fullRank "              << m_env.fullRank()
               << ", subEnvironment "        << m_env.subId()
               << ", subRank "               << m_env.subRank()

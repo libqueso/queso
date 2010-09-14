@@ -216,12 +216,12 @@ uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
 #endif
 
   UQ_FATAL_TEST_MACRO(priorRv.imageSet().vectorSpace().dimLocal() != likelihoodFunction.domainSet().vectorSpace().dimLocal(),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqStatisticalInverseProblemClass<P_V,P_M>::constructor()",
                       "'priorRv' and 'likelihoodFunction' are related to vector spaces of different dimensions");
 
   UQ_FATAL_TEST_MACRO(priorRv.imageSet().vectorSpace().dimLocal() != postRv.imageSet().vectorSpace().dimLocal(),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqStatisticalInverseProblemClass<P_V,P_M>::constructor()",
                       "'priorRv' and 'postRv' are related to vector spaces of different dimensions");
 
@@ -298,17 +298,17 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(
   }
 
   UQ_FATAL_TEST_MACRO(m_priorRv.imageSet().vectorSpace().dimLocal() != initialValues.sizeLocal(),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings()",
                       "'m_priorRv' and 'initialValues' should have equal dimensions");
 
   if (initialProposalCovMatrix) {
     UQ_FATAL_TEST_MACRO(m_priorRv.imageSet().vectorSpace().dimLocal() != initialProposalCovMatrix->numRowsLocal(),
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings()",
                         "'m_priorRv' and 'initialProposalCovMatrix' should have equal dimensions");
     UQ_FATAL_TEST_MACRO(initialProposalCovMatrix->numCols() != initialProposalCovMatrix->numRowsGlobal(),
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings()",
                         "'initialProposalCovMatrix' should be a square matrix");
   }
@@ -384,7 +384,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(
         ofsvar = new std::ofstream((m_optionsObj->m_optionsValues.m_dataOutputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
       }
       UQ_FATAL_TEST_MACRO((ofsvar && ofsvar->is_open()) == false,
-                          m_env.fullRank(),
+                          m_env.worldRank(),
                           "uqStatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings()",
                           "failed to open file");
 

@@ -241,7 +241,7 @@ void
 uqGaussianVectorMdfClass<V,M>::commonConstructor()
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGaussianVectorMdfClass<V,M>::commonConstructor()",
                       "incomplete code");
   return;
@@ -260,7 +260,7 @@ uqGaussianVectorMdfClass<V,M>::values(
         V& mdfVec) const
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGaussianVectorMdfClass<V,M>::mdfVec()",
                       "incomplete code");
   return;
@@ -331,7 +331,7 @@ uqSampledVectorMdfClass<V,M>::values(
         V& mdfVec) const
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqSampledVectorMdfClass<V,M>::mdfVec()",
                       "incomplete code");
   return;

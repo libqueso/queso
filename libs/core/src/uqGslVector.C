@@ -40,7 +40,7 @@ uqGslVectorClass::uqGslVectorClass()
   uqVectorClass()
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorClass::constructor(), default",
                       "should not be used by user");
 }
@@ -53,12 +53,12 @@ uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, const Epet
   //std::cout << "Entering uqGslVectorClass::constructor(1)" << std::endl;
 
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorClass::constructor()",
                       "null vector generated");
 
   UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) map.NumGlobalElements(),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorClass::constructor()",
                       "incompatible vec size");
 
@@ -79,7 +79,7 @@ uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, const Epet
   //std::cout << "Entering uqGslVectorClass::constructor(2)" << std::endl;
 
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorClass::constructor()",
                       "null vector generated");
   this->cwSet(value);
@@ -95,7 +95,7 @@ uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, double d1,
   //std::cout << "Entering uqGslVectorClass::constructor(3)" << std::endl;
 
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorClass::constructor(), linspace",
                       "null vector generated");
 
@@ -115,7 +115,7 @@ uqGslVectorClass::uqGslVectorClass(const uqGslVectorClass& v, double d1, double 
   //std::cout << "Entering uqGslVectorClass::constructor(4)" << std::endl;
 
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorClass::constructor(), linspace",
                       "null vector generated");
 
@@ -136,7 +136,7 @@ uqGslVectorClass::uqGslVectorClass(const uqGslVectorClass& v)  // mox
 
   // prudenci 2010-06-17 mox
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorClass::constructor(), copy",
                       "null vector generated");
   this->copy(v);
@@ -153,7 +153,7 @@ uqGslVectorClass&
 uqGslVectorClass::operator=(const uqGslVectorClass& rhs)
 {
   UQ_FATAL_TEST_MACRO(this->sizeLocal() != rhs.sizeLocal(), // mox
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorClass::constructor(), copy",
                       "null vector generated");
   this->copy(rhs);
@@ -166,7 +166,7 @@ uqGslVectorClass::operator*=(double a)
   int iRC;
   iRC = gsl_vector_scale(m_vec,a);
   UQ_FATAL_RC_MACRO(iRC,
-                    m_env.fullRank(),
+                    m_env.worldRank(),
                     "uqGslVectorClass::operator*=()",
                     "failed");
   return *this;
@@ -186,7 +186,7 @@ uqGslVectorClass::operator*=(const uqGslVectorClass& rhs)
   unsigned int size1 = this->sizeLocal();
   unsigned int size2 = rhs.sizeLocal();
   UQ_FATAL_TEST_MACRO((size1 != size2),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorClass::operator*=()",
                       "different sizes of this and rhs");
 
@@ -203,7 +203,7 @@ uqGslVectorClass::operator/=(const uqGslVectorClass& rhs)
   unsigned int size1 = this->sizeLocal();
   unsigned int size2 = rhs.sizeLocal();
   UQ_FATAL_TEST_MACRO((size1 != size2),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorClass::operator/=()",
                       "different sizes of this and rhs");
 
@@ -220,7 +220,7 @@ uqGslVectorClass::operator+=(const uqGslVectorClass& rhs)
   int iRC;
   iRC = gsl_vector_add(m_vec,rhs.m_vec);
   UQ_FATAL_RC_MACRO(iRC,
-                    m_env.fullRank(),
+                    m_env.worldRank(),
                     "uqGslVectorClass::operator+=()",
                     "failed");
   return *this;
@@ -232,7 +232,7 @@ uqGslVectorClass::operator-=(const uqGslVectorClass& rhs)
   int iRC;
   iRC = gsl_vector_sub(m_vec,rhs.m_vec);
   UQ_FATAL_RC_MACRO(iRC,
-                    m_env.fullRank(),
+                    m_env.worldRank(),
                     "uqGslVectorClass::operator-=()",
                     "failed");
 
@@ -258,7 +258,7 @@ uqGslVectorClass::copy(const uqGslVectorClass& src)
   int iRC;
   iRC = gsl_vector_memcpy(this->m_vec, src.m_vec);
   UQ_FATAL_RC_MACRO(iRC,
-                    m_env.fullRank(),
+                    m_env.worldRank(),
                     "uqGslVectorClass::copy()",
                     "failed");
 
@@ -276,7 +276,7 @@ uqGslVectorClass::sizeLocal() const
   //          << std::endl;
 
   UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) m_map.NumMyElements(),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorClass::sizeLocal()",
                       "incompatible vec size");
 
@@ -294,7 +294,7 @@ unsigned int
 uqGslVectorClass::sizeGlobal() const
 {
   UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) m_map.NumGlobalElements(),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorClass::sizeGlobal()",
                       "incompatible vec size");
   return m_vec->size;
@@ -395,12 +395,12 @@ void
 uqGslVectorClass::cwSetInverseGamma(const gsl_rng* rng, const uqGslVectorClass& alpha, const uqGslVectorClass& beta)
 {
   UQ_FATAL_TEST_MACRO(this->sizeLocal() != alpha.sizeLocal(),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorsClass::cwSetInverseGamma()",
                       "incompatible alpha size");
 
   UQ_FATAL_TEST_MACRO(this->sizeLocal() != beta.sizeLocal(),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorsClass::cwSetInverseGamma()",
                       "incompatible beta size");
 
@@ -414,7 +414,7 @@ void
 uqGslVectorClass::cwSetConcatenated(const uqGslVectorClass& v1, const uqGslVectorClass& v2)
 {
   UQ_FATAL_TEST_MACRO(this->sizeLocal() != v1.sizeLocal() + v2.sizeLocal(),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorsClass::cwSetConcatenated()",
                       "incompatible vector sizes");
 
@@ -433,12 +433,12 @@ void
 uqGslVectorClass::cwExtract(unsigned int initialPos, uqGslVectorClass& vec) const
 {
   UQ_FATAL_TEST_MACRO(initialPos >= this->sizeLocal(),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorsClass::cwExtract()",
                       "invalid initialPos");
 
   UQ_FATAL_TEST_MACRO((initialPos +vec.sizeLocal()) > this->sizeLocal(),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorsClass::cwExtract()",
                       "invalid vec.sizeLocal()");
 
@@ -480,12 +480,12 @@ uqGslVectorClass::matlabDiff(
   unsigned int size = this->sizeLocal();
 
   UQ_FATAL_TEST_MACRO(firstPositionToStoreDiff > 1,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorsClass::matlabDiff()",
                       "invalid firstPositionToStoreDiff");
 
   UQ_FATAL_TEST_MACRO(size != outputVec.sizeLocal(),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorsClass::matlabDiff()",
                       "invalid size of outputVecs");
 
@@ -518,7 +518,7 @@ uqGslVectorClass::mpiBcast(int srcRank, const Epetra_MpiComm& bcastComm)
 
   // Check 'srcRank'
   UQ_FATAL_TEST_MACRO((srcRank < 0) || (srcRank >= bcastComm.NumProc()),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorClass::mpiBcast()",
                       "invalud srcRank");
 
@@ -527,11 +527,11 @@ uqGslVectorClass::mpiBcast(int srcRank, const Epetra_MpiComm& bcastComm)
   double totalNumNodes = 0.;
   int mpiRC = MPI_Allreduce((void *) &localNumNodes, (void *) &totalNumNodes, (int) 1, MPI_DOUBLE, MPI_SUM, bcastComm.Comm());
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorClass::mpiBcast()",
                       "failed MPI_Allreduce() for numNodes");
   UQ_FATAL_TEST_MACRO(((int) totalNumNodes) != bcastComm.NumProc(),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorClass::mpiBcast()",
                       "inconsistent numNodes");
 
@@ -540,7 +540,7 @@ uqGslVectorClass::mpiBcast(int srcRank, const Epetra_MpiComm& bcastComm)
   double sumOfVectorSizes = 0.; 
   mpiRC = MPI_Allreduce((void *) &localVectorSize, (void *) &sumOfVectorSizes, (int) 1, MPI_DOUBLE, MPI_SUM, bcastComm.Comm());
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorClass::mpiBcast()",
                       "failed MPI_Allreduce() for vectorSize");
 
@@ -553,7 +553,7 @@ uqGslVectorClass::mpiBcast(int srcRank, const Epetra_MpiComm& bcastComm)
   }
   bcastComm.Barrier();
   UQ_FATAL_TEST_MACRO(((unsigned int) sumOfVectorSizes) != ((unsigned int)(totalNumNodes*localVectorSize)),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorClass::mpiBcast()",
                       "inconsistent vectorSize");
 
@@ -567,7 +567,7 @@ uqGslVectorClass::mpiBcast(int srcRank, const Epetra_MpiComm& bcastComm)
 
   mpiRC = MPI_Bcast((void *) &dataBuffer[0], (int) localVectorSize, MPI_DOUBLE, srcRank, bcastComm.Comm());
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorClass::mpiBcast()",
                       "failed MPI_Bcast()");
 
@@ -588,7 +588,7 @@ uqGslVectorClass::mpiAllReduce(MPI_Op mpiOperation, const Epetra_MpiComm& opComm
 
   unsigned int size = this->sizeLocal();
   UQ_FATAL_TEST_MACRO(size != resultVec.sizeLocal(),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorClass::mpiAllReduce()",
                       "different vector sizes");
 
@@ -597,7 +597,7 @@ uqGslVectorClass::mpiAllReduce(MPI_Op mpiOperation, const Epetra_MpiComm& opComm
     double resultValue = 0.;
     int mpiRC = MPI_Allreduce((void *) &srcValue, (void *) &resultValue, (int) 1, MPI_DOUBLE, mpiOperation, opComm.Comm());
     UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqGslVectorClass::mpiAllReduce()",
                         "failed MPI_Allreduce()");
     resultVec[i] = resultValue;
@@ -613,13 +613,13 @@ uqGslVectorClass::mpiAllQuantile(double probability, const Epetra_MpiComm& opCom
   if (opComm.MyPID() < 0) return;
 
   UQ_FATAL_TEST_MACRO((probability < 0.) || (1. < probability),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorClass::mpiAllQuantile()",
                       "invalid input");
 
   unsigned int size = this->sizeLocal();
   UQ_FATAL_TEST_MACRO(size != resultVec.sizeLocal(),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorClass::mpiAllQuantile()",
                       "different vector sizes");
 
@@ -631,7 +631,7 @@ uqGslVectorClass::mpiAllQuantile(double probability, const Epetra_MpiComm& opCom
     std::vector<double> vecOfDoubles(opComm.NumProc(),0.);
     int mpiRC = MPI_Gather((void *) &auxDouble, 1, MPI_DOUBLE, (void *) &vecOfDoubles[0], (int) 1, MPI_DOUBLE, 0, opComm.Comm());
     UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqGslVectorClass::mpiAllQuantile()",
                         "failed MPI_Gather()");
 
@@ -641,7 +641,7 @@ uqGslVectorClass::mpiAllQuantile(double probability, const Epetra_MpiComm& opCom
 
     mpiRC = MPI_Bcast((void *) &result, (int) 1, MPI_DOUBLE, 0, opComm.Comm());
     UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqGslVectorClass::mpiAllQuantile()",
                         "failed MPI_Bcast()");
 
@@ -719,12 +719,12 @@ uqGslVectorClass::subWriteContents(
   const std::set<unsigned int>& allowedSubEnvIds) const
 {
   UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorsClass::subWriteContents()",
                       "unexpected subRank");
 
   UQ_FATAL_TEST_MACRO(this->numOfProcsForStorage() > 1,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorClass::subWriteContents()",
                       "implemented just for sequential vectors for now");
 
@@ -764,12 +764,12 @@ uqGslVectorClass::subReadContents(
   const std::set<unsigned int>& allowedSubEnvIds)
 {
   UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorsClass::subReadContents()",
                       "unexpected subRank");
 
   UQ_FATAL_TEST_MACRO(this->numOfProcsForStorage() > 1,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorClass::subReadContents()",
                       "implemented just for sequential vectors for now");
 
@@ -797,7 +797,7 @@ uqGslVectorClass::subReadContents(
     *filePtrSet.ifsVar >> tmpString;
     //std::cout << "Just read '" << tmpString << "'" << std::endl;
     UQ_FATAL_TEST_MACRO(tmpString != "=",
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqGslVectorClass::subReadContents()",
                         "string should be the '=' sign");
 
@@ -811,7 +811,7 @@ uqGslVectorClass::subReadContents(
     unsigned int posInPositionsString = 0;
     do {
       UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
-                          m_env.fullRank(),
+                          m_env.worldRank(),
                           "uqGslVectorClass::subReadContents()",
                           "symbol ',' not found in first line of file");
       nPositionsString[posInPositionsString++] = tmpString[posInTmpString++];
@@ -824,7 +824,7 @@ uqGslVectorClass::subReadContents(
     unsigned int posInParamsString = 0;
     do {
       UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
-                          m_env.fullRank(),
+                          m_env.worldRank(),
                           "uqGslVectorClass::subReadContents()",
                           "symbol ')' not found in first line of file");
       nParamsString[posInParamsString++] = tmpString[posInTmpString++];
@@ -845,13 +845,13 @@ uqGslVectorClass::subReadContents(
 
     // Check if [size of vec in file] >= [requested sub vec size]
     UQ_FATAL_TEST_MACRO(sizeOfVecInFile < subReadSize,
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqGslVectorClass::subReadContents()",
                         "size of vec in file is not big enough");
 
     // Check if [num params in file] == [num params in current vec]
     UQ_FATAL_TEST_MACRO(numParamsInFile != numParams,
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqGslVectorClass::subReadContents()",
                         "number of parameters of vec in file is different than number of parameters in this vec object");
 
@@ -880,7 +880,7 @@ uqGslVectorClass::subReadContents(
     *filePtrSet.ifsVar >> tmpString;
     //std::cout << "Core 0 just read '" << tmpString << "'" << std::endl;
     UQ_FATAL_TEST_MACRO(tmpString != "=",
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqGslVectorClass::subReadContents()",
                         "in core 0, string should be the '=' sign");
 
@@ -918,7 +918,7 @@ bool
 uqGslVectorClass::atLeastOneComponentSmallerThan(const uqGslVectorClass& rhs) const
 {
   UQ_FATAL_TEST_MACRO((this->sizeLocal() != rhs.sizeLocal()),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorClass::atLeastOneComponentSmallerThan()",
                       "vectors have different sizes");
 
@@ -937,7 +937,7 @@ bool
 uqGslVectorClass::atLeastOneComponentBiggerThan (const uqGslVectorClass& rhs) const
 {
   UQ_FATAL_TEST_MACRO((this->sizeLocal() != rhs.sizeLocal()),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGslVectorClass::atLeastOneComponentBiggerThan()",
                       "vectors have different sizes");
 
@@ -1056,7 +1056,7 @@ double scalarProduct(const uqGslVectorClass& x, const uqGslVectorClass& y)
   unsigned int size1 = x.sizeLocal();
   unsigned int size2 = y.sizeLocal();
   UQ_FATAL_TEST_MACRO((size1 != size2),
-                      x.env().fullRank(),
+                      x.env().worldRank(),
                       "scalarProduct()",
                       "different sizes of x and y");
 

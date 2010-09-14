@@ -136,7 +136,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::uqMonteCarloSGClass(
   if (m_optionsObj->m_optionsValues.m_qseqComputeStats) m_optionsObj->m_optionsValues.m_qseqStatisticalOptionsObj = new uqSequenceStatisticalOptionsClass(m_env,m_optionsObj->m_prefix + "qseq_");
 
   UQ_FATAL_TEST_MACRO(paramRv.imageSet().vectorSpace().dimLocal() != qoiFunction.domainSet().vectorSpace().dimLocal(),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::constructor()",
                       "'paramRv' and 'qoiFunction' are related to vector spaces of different dimensions");
 
@@ -175,12 +175,12 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence(
   uqBaseVectorSequenceClass<Q_V,Q_M>& workingQSeq)
 {
   UQ_FATAL_TEST_MACRO(m_qoiFunction.domainSet().vectorSpace().dimLocal() != workingPSeq.vectorSizeLocal(),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence()",
                       "'m_qoiFunction.domainSet' and 'workingPSeq' are related to vector spaces of different dimensions");
 
   UQ_FATAL_TEST_MACRO(m_qoiFunction.imageSet().vectorSpace().dimLocal() != workingQSeq.vectorSizeLocal(),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence()",
                       "'m_qoiFunction.imageSet' and 'workingQSeq' are related to vector spaces of different dimensions");
 
@@ -228,7 +228,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   }
   unsigned int subActualSizeAfterGeneration = workingPSeq.subSequenceSize();
   UQ_FATAL_TEST_MACRO(subActualSizeAfterGeneration != workingQSeq.subSequenceSize(),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()",
                       "P and Q sequences should have the same size!");
 
@@ -429,6 +429,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
     for (unsigned int j = 0; j < tmpQ.sizeLocal(); ++j) {
       if ((tmpQ[j] == INFINITY) || (tmpQ[j] == -INFINITY)) {
 	std::cerr << "WARNING In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence()"
+                  << ", worldRank "      << m_env.worldRank()
                   << ", fullRank "       << m_env.fullRank()
                   << ", subEnvironment " << m_env.subId()
                   << ", subRank "        << m_env.subRank()

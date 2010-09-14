@@ -201,7 +201,7 @@ uqSampledScalarCdfClass<T>::value(T paramValue) const
   else {
     unsigned int intervalId = m_cdfGrid.findIntervalId(paramValue);
     UQ_FATAL_TEST_MACRO(intervalId >= (m_cdfGrid.size()-1),
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqSampledScalarCdfClass<T>::value()",
                         "invalid intervalId");
 
@@ -219,7 +219,7 @@ uqSampledScalarCdfClass<T>::value(T paramValue) const
                             << std::endl;
 #endif
     UQ_FATAL_TEST_MACRO(ratio < 0.,
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqSampledScalarCdfClass<T>::value()",
                         "invalid ratio");
 
@@ -236,7 +236,7 @@ uqSampledScalarCdfClass<T>::inverse(double cdfValue) const
   //*m_env.subDisplayFile() << "In uqSampledScalarCdf::inverse(): cdfValue = " << cdfValue
   //                       << std::endl;
   UQ_FATAL_TEST_MACRO((cdfValue < 0.) || (1. < cdfValue),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqSampledScalarCdfClass<T>::inverse()",
                       "invalid cdfValue");
   double result = 0.;
@@ -258,7 +258,7 @@ uqSampledScalarCdfClass<T>::inverse(double cdfValue) const
 
     if ((j-i) <= 0) {
       UQ_FATAL_TEST_MACRO(true,
-                          m_env.fullRank(),
+                          m_env.worldRank(),
                           "uqSampledScalarCdfClass<T>::inverse()",
                           "invalid pair of values 'i' and 'j'");
     }
@@ -317,7 +317,7 @@ uqSampledScalarCdfClass<T>::subWriteContents(
   const std::set<unsigned int>& allowedSubEnvIds) const
 {
   UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqSampledScalarCdfClass<T>::subWriteContents()",
                       "unexpected subRank");
 

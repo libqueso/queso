@@ -130,7 +130,7 @@ void
 uqEnvironmentOptionsClass::scanOptionsValues()
 {
   UQ_FATAL_TEST_MACRO(m_optionsDesc == NULL,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqEnvironmentOptionsClass::scanOptionsValues()",
                       "m_optionsDesc variable is NULL");
   defineMyOptions                (*m_optionsDesc);
@@ -198,7 +198,7 @@ uqEnvironmentOptionsClass::getMyOptionValues(po::options_description& optionsDes
               << std::endl;
   }
   UQ_FATAL_TEST_MACRO((m_env.fullComm().NumProc()%m_optionsValues.m_numSubEnvironments) != 0,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqBaseEnvironmentClass::getMyOptionValues()",
                       "total number of processors in environment must be multiple of the specified number of subEnvironments");
 

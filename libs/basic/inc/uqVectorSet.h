@@ -68,7 +68,7 @@ uqVectorSetClass<V,M>::uqVectorSetClass()
   m_env(*(new uqEmptyEnvironmentClass()))
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqVectorSetClass<V,M>::constructor(), default",
                       "should not be used by user");
 }

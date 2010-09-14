@@ -132,7 +132,7 @@ const V&
 uqMarkovChainPositionDataClass<V>::vecValues() const
 {
   UQ_FATAL_TEST_MACRO((m_vecValues == NULL),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMarkovChainPositionDataClass<V>::vecValues()",
                       "m_vecValues is NULL");
   return *m_vecValues;

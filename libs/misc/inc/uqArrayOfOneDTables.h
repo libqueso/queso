@@ -81,7 +81,7 @@ void
 uqArrayOfOneDTablesClass<V,M>::setOneDTable(unsigned int rowId, const std::vector<double>& values)
 {
   UQ_FATAL_TEST_MACRO(rowId >= (unsigned int) m_oneDTables.MyLength(),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqArrayOfOneDTablesClass<T>::setOneDTable()",
                       "rowId is out of range");
 
@@ -102,14 +102,14 @@ const std::vector<double>&
 uqArrayOfOneDTablesClass<V,M>::oneDTable(unsigned int rowId) const
 {
   UQ_FATAL_TEST_MACRO(rowId >= (unsigned int) m_oneDTables.MyLength(),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqArrayOfOneDTablesClass<T>::oneDTable()",
                       "rowId is out of range");
 
   uqArrayOfOneDTablesClass<V,M>* tmp = const_cast<uqArrayOfOneDTablesClass<V,M>*>(this);
 
   UQ_FATAL_TEST_MACRO(tmp->m_oneDTables(rowId,0) == NULL,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqArrayOfOneDTablesClass<T>::oneDTable()",
                       "requested row is still NULL");
 

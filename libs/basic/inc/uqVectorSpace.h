@@ -95,7 +95,7 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass()
   uqVectorSetClass<V,M>()
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqVectorSpaceClass<V,M>::constructor(), default",
                       "should not be used by user");
 }
@@ -135,7 +135,7 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
               << std::endl;
   }
   UQ_FATAL_TEST_MACRO((m_zeroVector->sizeGlobal() != m_dimGlobal),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqVectorSpaceClass<V,M>::constructor()",
                       "global size of 'm_zeroVector' is not equal to m_dimGlobal");
 
@@ -147,13 +147,13 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
               << std::endl;
   }
   UQ_FATAL_TEST_MACRO((m_zeroVector->sizeLocal() != m_dimLocal),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqVectorSpaceClass<V,M>::constructor()",
                       "local size of 'm_zeroVector' is not equal to m_dimLocal");
 
   if (componentsNames != NULL) {
     UQ_FATAL_TEST_MACRO((componentsNames->size() != (size_t) m_dimGlobal),
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqVectorSpaceClass<V,M>::constructor()",
                         "global size of 'componentsNames' is not equal to m_dimGlobal");
 
@@ -165,11 +165,11 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
     }
 
     UQ_FATAL_TEST_MACRO((m_componentsNames->GlobalLength() != (int) m_dimGlobal),
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqVectorSpaceClass<V,M>::constructor()",
                         "global size of 'm_componentsNames' is not equal to m_dimGlobal");
     UQ_FATAL_TEST_MACRO((m_componentsNames->MyLength() != (int) m_dimLocal),
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqVectorSpaceClass<V,M>::constructor()",
                         "local size of 'm_componentsNames' is not equal to m_dimLocal");
   }
@@ -241,7 +241,7 @@ const Epetra_Map&
 uqVectorSpaceClass<V,M>::map() const
 {
   UQ_FATAL_TEST_MACRO(m_map == NULL,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqVectorSpaceClass<V,M>::map()",
                       "m_map is still NULL");
   return *m_map;
@@ -259,7 +259,7 @@ const V&
 uqVectorSpaceClass<V,M>::zeroVector() const
 {
   UQ_FATAL_TEST_MACRO(m_zeroVector == NULL,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqVectorSpaceClass<V,M>::zeroVector()",
                       "m_zeroVector is still NULL");
   return *m_zeroVector;
@@ -361,7 +361,7 @@ uqVectorSpaceClass<V,M>::localComponentName(unsigned int localComponentId) const
   if (m_componentsNames == NULL) return m_emptyComponentName;
 
   UQ_FATAL_TEST_MACRO(localComponentId > m_dimLocal,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqVectorSpaceClass<V,M>::localComponentName()",
                       "localComponentId is too big");
 

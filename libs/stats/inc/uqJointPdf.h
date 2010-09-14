@@ -256,7 +256,7 @@ uqBayesianJointPdfClass<V,M>::actualValue(
   }
 
   UQ_FATAL_TEST_MACRO((gradVector || hessianMatrix || hessianEffect),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqBayesianJointPdfClass<V,M>::actualValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
@@ -524,7 +524,7 @@ uqGaussianJointPdfClass<V,M>::actualValue(
   }
 
   UQ_FATAL_TEST_MACRO((gradVector || hessianMatrix || hessianEffect),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGaussianJointPdfClass<V,M>::actualValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
@@ -576,7 +576,7 @@ uqGaussianJointPdfClass<V,M>::lnValue(
   }
 
   UQ_FATAL_TEST_MACRO((gradVector || hessianMatrix || hessianEffect),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqGaussianJointPdfClass<V,M>::lnValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
@@ -779,7 +779,7 @@ uqInverseGammaJointPdfClass<V,M>::actualValue(
         V* hessianEffect) const
 {
   UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqInverseGammaJointPdfClass<V,M>::actualValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
@@ -800,7 +800,7 @@ uqInverseGammaJointPdfClass<V,M>::lnValue(
         V* hessianEffect) const
 {
   UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqInverseGammaJointPdfClass<V,M>::lnValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
@@ -888,7 +888,7 @@ uqPoweredJointPdfClass<V,M>::actualValue(
   double value = m_srcDensity.actualValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect);
 
   UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqPoweredJointPdfClass<V,M>::actualValue()",
                       "incomplete code for domainDirection, gradVector, hessianMatrix and hessianEffect calculations");
 
@@ -922,7 +922,7 @@ uqPoweredJointPdfClass<V,M>::lnValue(
   double value = m_srcDensity.lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect);
 
   UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqPoweredJointPdfClass<V,M>::lnValue()",
                       "incomplete code for domainDirection, gradVector, hessianMatrix and hessianEffect calculations");
 
@@ -980,7 +980,7 @@ uqWignerJointPdfClass<V,M>::uqWignerJointPdfClass(
   }
 
   UQ_FATAL_TEST_MACRO(m_radius <= 0.,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqWignerJointPdfClass<V,M>::constructor()",
                       "invalid radius");
 
@@ -1075,7 +1075,7 @@ uqConcatenatedJointPdfClass<V,M>::uqConcatenatedJointPdfClass(
   unsigned int size  = concatenatedDomain.vectorSpace().dimLocal();
 
   UQ_FATAL_TEST_MACRO((size1+size2) != size,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqConcatenatedJointPdfClass<V,M>::constructor()",
                       "incompatible dimensions");
 }
@@ -1101,7 +1101,7 @@ uqConcatenatedJointPdfClass<V,M>::actualValue(
   }
 
   UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqConcatenatedJointPdfClass<V,M>::actualValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
@@ -1141,7 +1141,7 @@ uqConcatenatedJointPdfClass<V,M>::lnValue(
   }
 
   UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqConcatenatedJointPdfClass<V,M>::lnValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 

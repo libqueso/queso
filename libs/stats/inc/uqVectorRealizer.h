@@ -313,7 +313,7 @@ uqGaussianVectorRealizerClass<V,M>::realization(V& nextValues) const
   }
   else {
     UQ_FATAL_TEST_MACRO(true,
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqGaussianVectorRealizerClass<V,M>::realization()",
                         "inconsistent internal state");
   }
@@ -498,7 +498,7 @@ uqUniformVectorRealizerClass<V,M>::realization(V& nextValues) const
   const uqBoxSubsetClass<V,M>* imageBox = dynamic_cast<const uqBoxSubsetClass<V,M>* >(&m_unifiedImageSet);
 
   UQ_FATAL_TEST_MACRO(imageBox == NULL,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqUniformVectorRealizerClass<V,M>::realization()",
                       "only box images are supported right now");
   
@@ -608,7 +608,7 @@ uqWignerVectorRealizerClass<V,M>::uqWignerVectorRealizerClass(
   }
 
   UQ_FATAL_TEST_MACRO(m_radius <= 0.,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqWignerVectorRealizerClass<V,M>::constructor()",
                       "invalid radius");
 
@@ -630,7 +630,7 @@ void
 uqWignerVectorRealizerClass<V,M>::realization(V& nextValues) const
 {
   UQ_FATAL_TEST_MACRO(true,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqWignerVectorRealizerClass<V,M>::realization()",
                       "not implemented yet");
   

@@ -345,6 +345,7 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
   }
   if (m_minEffectiveSizeRatio >= 1.) {
     std::cerr << "WARNING In uqMLSamplingLevelOptionsClass::getMyOptionsValues()"
+              << ", worldRank "             << m_env.worldRank()
               << ", fullRank "              << m_env.fullRank()
               << ", subEnvironment "        << m_env.subId()
               << ", subRank "               << m_env.subRank()
@@ -361,6 +362,7 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
   }
   if (m_maxEffectiveSizeRatio >= 1.) {
     std::cerr << "WARNING In uqMLSamplingLevelOptionsClass::getMyOptionsValues()"
+              << ", worldRank "             << m_env.worldRank()
               << ", fullRank "              << m_env.fullRank()
               << ", subEnvironment "        << m_env.subId()
               << ", subRank "               << m_env.subRank()
@@ -381,6 +383,7 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
   }
   if (m_minRejectionRate >= 1.) {
     std::cerr << "WARNING In uqMLSamplingLevelOptionsClass::getMyOptionsValues()"
+              << ", worldRank "             << m_env.worldRank()
               << ", fullRank "              << m_env.fullRank()
               << ", subEnvironment "        << m_env.subId()
               << ", subRank "               << m_env.subRank()
@@ -397,6 +400,7 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
   }
   if (m_maxRejectionRate >= 1.) {
     std::cerr << "WARNING In uqMLSamplingLevelOptionsClass::getMyOptionsValues()"
+              << ", worldRank "             << m_env.worldRank()
               << ", fullRank "              << m_env.fullRank()
               << ", subEnvironment "        << m_env.subId()
               << ", subRank "               << m_env.subRank()
@@ -413,6 +417,7 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
   }
   if (m_covRejectionRate >= 1.) {
     std::cerr << "WARNING In uqMLSamplingLevelOptionsClass::getMyOptionsValues()"
+              << ", worldRank "             << m_env.worldRank()
               << ", fullRank "              << m_env.fullRank()
               << ", subEnvironment "        << m_env.subId()
               << ", subRank "               << m_env.subRank()
@@ -499,6 +504,7 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
   if ((m_filteredChainGenerate == true) &&
       (m_filteredChainLag      < 2    )) {
     std::cerr << "WARNING In uqMLSamplingLevelOptionsClass::getMyOptionsValues()"
+              << ", worldRank "             << m_env.worldRank()
               << ", fullRank "              << m_env.fullRank()
               << ", subEnvironment "        << m_env.subId()
               << ", subRank "               << m_env.subRank()

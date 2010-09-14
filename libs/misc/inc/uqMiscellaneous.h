@@ -164,23 +164,23 @@ uqMiscCheckTheParallelEnvironment(const V1& vec1, const V2& vec2)
 
   if (env.numSubEnvironments() == (unsigned int) env.fullComm().NumProc()) {
     UQ_FATAL_TEST_MACRO(env.subRank() != 0,
-                        env.fullRank(),
+                        env.worldRank(),
                         "uqMiscCheckTheParallelEnvironment<V1,V2>()",
                         "there should exist only one processor per sub environment");
     UQ_FATAL_TEST_MACRO((vec1.numOfProcsForStorage() != 1) ||
                         (vec2.numOfProcsForStorage() != 1),
-                        env.fullRank(),
+                        env.worldRank(),
                         "uqMiscCheckTheParallelEnvironment<V1,V2>()",
                         "only 1 processor (per sub environment) should be necessary for the storage of a parameter vector");
   }
   else if (env.numSubEnvironments() < (unsigned int) env.fullComm().NumProc()) {
     UQ_FATAL_TEST_MACRO(env.fullComm().NumProc()%env.numSubEnvironments() != 0,
-                        env.fullRank(),
+                        env.worldRank(),
                         "uqMiscCheckTheParallelEnvironment<V1,V2>()",
                         "total number of processors should be a multiple of the number of sub environments");
     unsigned int numProcsPerSubEnvironment = env.fullComm().NumProc()/env.numSubEnvironments();
     UQ_FATAL_TEST_MACRO(env.subComm().NumProc() != (int) numProcsPerSubEnvironment,
-                        env.fullRank(),
+                        env.worldRank(),
                         "uqMiscCheckTheParallelEnvironment<V1,V2>()",
                         "inconsistent number of processors per sub environment");
     if ((vec1.numOfProcsForStorage() == 1) &&
@@ -190,20 +190,20 @@ uqMiscCheckTheParallelEnvironment(const V1& vec1, const V2& vec2)
     else if ((vec1.numOfProcsForStorage() == numProcsPerSubEnvironment) &&
              (vec2.numOfProcsForStorage() == numProcsPerSubEnvironment)) {
       UQ_FATAL_TEST_MACRO(true,
-                          env.fullRank(),
+                          env.worldRank(),
                           "uqMiscCheckTheParallelEnvironment<V1,V2>()",
                           "parallel vectors are not supported yet");
     }
     else {
       UQ_FATAL_TEST_MACRO(true,
-                          env.fullRank(),
+                          env.worldRank(),
                           "uqMiscCheckTheParallelEnvironment<V1,V2>()",
                           "number of processors required for a vector storage should be equal to either 1 or to the number of processors in the sub environment");
     }
   }
   else {
     UQ_FATAL_TEST_MACRO(true,
-                        env.fullRank(),
+                        env.worldRank(),
                         "uqMiscCheckTheParallelEnvironment<V1,V2>()",
                         "number of processors per sub environment is less than 1!");
   }

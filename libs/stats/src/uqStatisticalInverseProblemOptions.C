@@ -119,7 +119,7 @@ void
 uqStatisticalInverseProblemOptionsClass::scanOptionsValues()
 {
   UQ_FATAL_TEST_MACRO(m_optionsDesc == NULL,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqStatisticalInverseProblemOptionsClass::scanOptionsValues()",
                       "m_optionsDesc variable is NULL");
 

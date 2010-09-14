@@ -106,7 +106,7 @@ uqInstantiateIntersection(const uqVectorSetClass<V,M>& domain1, const uqVectorSe
       }
       else {
         UQ_FATAL_TEST_MACRO(true,
-                            domain1.env().fullRank(),
+                            domain1.env().worldRank(),
                             "uqInstantiateIntersection<V,M>()",
                             "situation 001");
       }
@@ -128,14 +128,14 @@ uqInstantiateIntersection(const uqVectorSetClass<V,M>& domain1, const uqVectorSe
         }
         else {
           UQ_FATAL_TEST_MACRO(true,
-                              domain1.env().fullRank(),
+                              domain1.env().worldRank(),
                               "uqInstantiateIntersection<V,M>()",
                               "situation 002");
         }
       }
       else {
         UQ_FATAL_TEST_MACRO(true,
-                            domain1.env().fullRank(),
+                            domain1.env().worldRank(),
                             "uqInstantiateIntersection<V,M>()",
                             "situation 003");
       }
@@ -157,14 +157,14 @@ uqInstantiateIntersection(const uqVectorSetClass<V,M>& domain1, const uqVectorSe
         }
         else {
           UQ_FATAL_TEST_MACRO(true,
-                              domain1.env().fullRank(),
+                              domain1.env().worldRank(),
                               "uqInstantiateIntersection<V,M>()",
                               "situation 004");
         }
       }
       else {
         UQ_FATAL_TEST_MACRO(true,
-                            domain1.env().fullRank(),
+                            domain1.env().worldRank(),
                             "uqInstantiateIntersection<V,M>()",
                             "situation 005");
       }
@@ -173,7 +173,7 @@ uqInstantiateIntersection(const uqVectorSetClass<V,M>& domain1, const uqVectorSe
 
   if (result == NULL) {
     UQ_FATAL_TEST_MACRO(true,
-                        domain1.env().fullRank(),
+                        domain1.env().worldRank(),
                         "uqInstantiateIntersection<V,M>()",
                         "situation 006");
   }

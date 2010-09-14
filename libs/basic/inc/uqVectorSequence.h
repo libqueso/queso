@@ -367,7 +367,7 @@ uqBaseVectorSequenceClass<V,M>::copy(const uqBaseVectorSequenceClass<V,M>& src)
   // FIX ME: should check environments as well ???
 
   UQ_FATAL_TEST_MACRO(m_vectorSpace.dimLocal() != src.m_vectorSpace.dimLocal(),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqSequenceOfVectorsClass<V,M>::copy()",
                       "incompatible vector space dimensions");
 
@@ -390,7 +390,7 @@ uqBaseVectorSequenceClass<V,M>::unifiedSequenceSize() const
       unsigned int subNumSamples = this->subSequenceSize();
       int mpiRC = MPI_Allreduce((void *) &subNumSamples, (void *) &unifiedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
       UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.fullRank(),
+                          m_env.worldRank(),
                           "uqBaseVectorSequenceClass<V,M>::unifiedSequenceSize()",
                           "failed MPI_Allreduce() for unifiedSequenceSize()");
     }
@@ -401,7 +401,7 @@ uqBaseVectorSequenceClass<V,M>::unifiedSequenceSize() const
   }
   else {
     UQ_FATAL_TEST_MACRO((useOnlyInter0Comm == false),
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqBaseVectorSequenceClass<V,M>::unifiedSequenceSize()",
                         "parallel vectors not supported yet");
   }
@@ -633,7 +633,7 @@ uqBaseVectorSequenceClass<V,M>::computeStatistics(
   bool okSituation = ((passedOfs == NULL                            ) ||
                       ((passedOfs != NULL) && (m_env.subRank() >= 0)));
   UQ_FATAL_TEST_MACRO(!okSituation,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqBaseVectorSequenceClass<V,M>::computeStatistics()",
                       "unexpected combination of file pointer and subRank");
 
@@ -969,7 +969,7 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
     }
     else {
       UQ_FATAL_TEST_MACRO(true,
-                          m_env.fullRank(),
+                          m_env.worldRank(),
                           "uqBaseVectorSequenceClass<V,M>::computeMeanVars()",
                           "unified min-max writing, parallel vectors not supported yet");
     }
@@ -1904,7 +1904,7 @@ uqBaseVectorSequenceClass<V,M>::computeFilterParams(
   bool okSituation = ((passedOfs == NULL                            ) ||
                       ((passedOfs != NULL) && (m_env.subRank() >= 0)));
   UQ_FATAL_TEST_MACRO(!okSituation,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqBaseVectorSequenceClass<V,M>::computeFilterParams()",
                       "unexpected combination of file pointer and subRank");
 
@@ -2036,7 +2036,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
       }
       else {
         UQ_FATAL_TEST_MACRO(true,
-                            m_env.fullRank(),
+                            m_env.worldRank(),
                             "uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde()",
                             "unified min-max writing, parallel vectors not supported yet");
       }
@@ -2170,7 +2170,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
         }
         else {
           UQ_FATAL_TEST_MACRO(true,
-                              m_env.fullRank(),
+                              m_env.worldRank(),
                               "uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde()",
                               "unified histogram writing, parallel vectors not supported yet");
         }
@@ -2412,7 +2412,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
         }
         else {
           UQ_FATAL_TEST_MACRO(true,
-                              m_env.fullRank(),
+                              m_env.worldRank(),
                               "uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde()",
                               "unified iqr writing, parallel vectors not supported yet");
         }
@@ -2476,7 +2476,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
         }
         else {
           UQ_FATAL_TEST_MACRO(true,
-                              m_env.fullRank(),
+                              m_env.worldRank(),
                               "uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde()",
                               "unified Kde writing, parallel vectors not supported yet");
         }
@@ -2557,7 +2557,7 @@ uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices( // Use the whole chain
     }
     else {
       UQ_FATAL_TEST_MACRO(true,
-                          m_env.fullRank(),
+                          m_env.worldRank(),
                           "uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices()",
                           "parallel vectors not supported yet");
     }
@@ -2593,7 +2593,7 @@ uqComputeCovCorrMatricesBetweenVectorSequences(
                            (subQSeq.vectorSpace().numOfProcsForStorage() == 1);
 
   UQ_FATAL_TEST_MACRO((useOnlyInter0Comm == false),
-                      env.fullRank(),
+                      env.worldRank(),
                       "uqComputeCovCorrMatricesBetweenVectorSequences()",
                       "parallel vectors not supported yet");
 
@@ -2601,17 +2601,17 @@ uqComputeCovCorrMatricesBetweenVectorSequences(
   unsigned int numCols = subQSeq.vectorSpace().dimGlobal();
 
   UQ_FATAL_TEST_MACRO((numRowsLocal != pqCovMatrix.numRowsLocal()) || (numCols != pqCovMatrix.numCols()),
-                      env.fullRank(),
+                      env.worldRank(),
                       "uqComputeCovCorrMatricesBetweenVectorSequences()",
                       "inconsistent dimensions for covariance matrix");
 
   UQ_FATAL_TEST_MACRO((numRowsLocal != pqCorrMatrix.numRowsLocal()) || (numCols != pqCorrMatrix.numCols()),
-                      env.fullRank(),
+                      env.worldRank(),
                       "uqComputeCorrelationBetweenVectorSequences()",
                       "inconsistent dimensions for correlation matrix");
 
   UQ_FATAL_TEST_MACRO((subNumSamples > subPSeq.subSequenceSize()) || (subNumSamples > subQSeq.subSequenceSize()),
-                      env.fullRank(),
+                      env.worldRank(),
                       "uqComputeCovCorrMatricesBetweenVectorSequences()",
                       "subNumSamples is too large");
 
@@ -2666,7 +2666,7 @@ uqComputeCovCorrMatricesBetweenVectorSequences(
       unsigned int unifiedNumSamples = 0;
       int mpiRC = MPI_Allreduce((void *) &subNumSamples, (void *) &unifiedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM, env.inter0Comm().Comm());
       UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          env.fullRank(),
+                          env.worldRank(),
                           "uqComputeCovCorrMatricesBetweenVectorSequences()",
                           "failed MPI_Allreduce() for subNumSamples");
 
@@ -2675,7 +2675,7 @@ uqComputeCovCorrMatricesBetweenVectorSequences(
           double aux = 0.;
           int mpiRC = MPI_Allreduce((void *) &pqCovMatrix(i,j), (void *) &aux, (int) 1, MPI_DOUBLE, MPI_SUM, env.inter0Comm().Comm());
           UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                              env.fullRank(),
+                              env.worldRank(),
                               "uqComputeCovCorrMatricesBetweenVectorSequences()",
                               "failed MPI_Allreduce() for a matrix position");
           pqCovMatrix(i,j) = aux/((double) (unifiedNumSamples-1)); // Yes, '-1' in order to compensate for the 'N-1' denominator factor in the calculations of sample variances above (whose square roots will be used below)
@@ -2689,7 +2689,7 @@ uqComputeCovCorrMatricesBetweenVectorSequences(
               ((pqCorrMatrix(i,j) - 1.) >  1.e-8)) {
             if (env.inter0Rank() == 0) {
               std::cerr << "In uqComputeCovCorrMatricesBetweenVectorSequences()"
-                        << ": fullRank = "            << env.fullRank()
+                        << ": worldRank = "            << env.worldRank()
                         << ", i = "                   << i
                         << ", j = "                   << j
                         << ", pqCorrMatrix(i,j)+1 = " << pqCorrMatrix(i,j)+1.
@@ -2700,7 +2700,7 @@ uqComputeCovCorrMatricesBetweenVectorSequences(
           }
           UQ_FATAL_TEST_MACRO(((pqCorrMatrix(i,j) + 1.) < -1.e-8) ||
                               ((pqCorrMatrix(i,j) - 1.) >  1.e-8),
-                               env.fullRank(),
+                               env.worldRank(),
                                "uqComputeCovCorrMatricesBetweenVectorSequences()",
                                "computed correlation is out of range");
         }
@@ -2712,7 +2712,7 @@ uqComputeCovCorrMatricesBetweenVectorSequences(
   }
   else {
     UQ_FATAL_TEST_MACRO((useOnlyInter0Comm == false),
-                        env.fullRank(),
+                        env.worldRank(),
                         "uqComputeCovCorrMatricesBetweenVectorSequences()",
                         "parallel vectors not supported yet (2)");
   }

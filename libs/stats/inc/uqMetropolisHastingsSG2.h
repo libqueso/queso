@@ -79,7 +79,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
   }
 
   UQ_FATAL_TEST_MACRO(m_vectorSpace.dimLocal() != workingChain.vectorSizeLocal(),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()",
                       "'m_vectorSpace' and 'workingChain' are related to vector spaces of different dimensions");
 
@@ -178,7 +178,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
     iRC = writeInfo(workingChain,
                     *genericFilePtrSet.ofsVar);
     UQ_FATAL_RC_MACRO(iRC,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()",
                       "improper writeInfo() return");
   }
@@ -204,7 +204,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
     //std::advance(positionIterator,uniquePos);
     //m_uniqueChain1.erase(positionIterator,m_uniqueChain1.end());
     //UQ_FATAL_TEST_MACRO((uniquePos != m_uniqueChain1.size()),
-    //                    m_env.fullRank(),
+    //                    m_env.worldRank(),
     //                    "uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()",
     //                    "uniquePos != m_uniqueChain1.size()");
 
@@ -401,7 +401,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
     *m_env.subDisplayFile() << std::endl;
   }
   UQ_FATAL_TEST_MACRO(outOfTargetSupport,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()",
                       "initial position should not be out of target pdf support");
   if (m_optionsObj->m_optionsValues.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalTarget, NULL);
@@ -511,7 +511,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
                               << std::endl;
     }
     UQ_FATAL_TEST_MACRO(validPreComputingPosition == false,
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()",
                         "initial position should not be an invalid pre computing position");
 
@@ -897,7 +897,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
 
         if (iRC) {
           UQ_FATAL_TEST_MACRO(iRC != UQ_MATRIX_IS_NOT_POS_DEFINITE_RC,
-                              m_env.fullRank(),
+                              m_env.worldRank(),
                               "uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()",
                               "invalid iRC returned from first chol()");
           // Matrix is not positive definite
@@ -939,7 +939,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
           }
           if (iRC) {
             UQ_FATAL_TEST_MACRO(iRC != UQ_MATRIX_IS_NOT_POS_DEFINITE_RC,
-                                m_env.fullRank(),
+                                m_env.worldRank(),
                                 "uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()",
                                 "invalid iRC returned from second chol()");
             // Do nothing
@@ -957,7 +957,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
 
 #ifdef UQ_DRAM_MCG_REQUIRES_INVERTED_COV_MATRICES
           UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
-                            m_env.fullRank(),
+                            m_env.worldRank(),
                             "uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()",
                             "need to code the update of m_upperCholProposalPrecMatrices");
 #endif
@@ -1084,7 +1084,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::updateAdaptedCovMatrix(
   double doubleSubChainSize = (double) partialChain.subSequenceSize();
   if (lastChainSize == 0) {
     UQ_FATAL_TEST_MACRO(partialChain.subSequenceSize() < 2,
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqMetropolisHastingsSGClass<P_V,P_M>::updateAdaptedCovMatrix()",
                         "'partialChain.subSequenceSize()' should be >= 2");
 
@@ -1100,12 +1100,12 @@ uqMetropolisHastingsSGClass<P_V,P_M>::updateAdaptedCovMatrix(
   }
   else {
     UQ_FATAL_TEST_MACRO(partialChain.subSequenceSize() < 1,
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqMetropolisHastingsSGClass<P_V,P_M>::updateAdaptedCovMatrix()",
                         "'partialChain.subSequenceSize()' should be >= 1");
 
     UQ_FATAL_TEST_MACRO(idOfFirstPositionInSubChain < 1,
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqMetropolisHastingsSGClass<P_V,P_M>::updateAdaptedCovMatrix()",
                         "'idOfFirstPositionInSubChain' should be >= 1");
 

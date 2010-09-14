@@ -126,13 +126,13 @@ uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(
       unsigned int auxUInt = indexOfFirstWeight;
       int mpiRC = MPI_Gather((void *) &auxUInt, 1, MPI_UNSIGNED, (void *) &allFirstIndexes[0], (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm()); // LOAD BALANCE
       UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.fullRank(),
+                          m_env.worldRank(),
                           "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
                           "failed MPI_Gather() for first indexes");
 
       if (m_env.inter0Rank() == 0) {
         UQ_FATAL_TEST_MACRO(allFirstIndexes[0] != indexOfFirstWeight,
-                            m_env.fullRank(),
+                            m_env.worldRank(),
                             "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
                             "failed MPI_Gather() result for first indexes, at proc 0");
       }
@@ -140,14 +140,14 @@ uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(
       auxUInt = indexOfLastWeight;
       mpiRC = MPI_Gather((void *) &auxUInt, 1, MPI_UNSIGNED, (void *) &allLastIndexes[0], (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm()); // LOAD BALANCE
       UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.fullRank(),
+                          m_env.worldRank(),
                           "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
                           "failed MPI_Gather() for last indexes");
 
       if (m_env.inter0Rank() == 0) { // Yes, '== 0'
         //allLastIndexes[0] = indexOfLastWeight; // FIX ME: really necessary????
         UQ_FATAL_TEST_MACRO(allLastIndexes[0] != indexOfLastWeight,
-                            m_env.fullRank(),
+                            m_env.worldRank(),
                             "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
                             "failed MPI_Gather() result for last indexes, at proc 0");
       }
@@ -169,14 +169,14 @@ uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(
       }
       for (unsigned int r = 0; r < (Np-1); ++r) { // Yes, '-1'
         UQ_FATAL_TEST_MACRO(allFirstIndexes[r+1] != (allLastIndexes[r]+1),
-                            m_env.fullRank(),
+                            m_env.worldRank(),
                             "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
                             "wrong indexes");
       }
 
       for (unsigned int r = 0; r < (Np-1); ++r) { // Yes, '-1'
         UQ_FATAL_TEST_MACRO(allFirstIndexes[r+1] != (allLastIndexes[r]+1),
-                            m_env.fullRank(),
+                            m_env.worldRank(),
                             "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
                             "wrong indexes");
       }
@@ -204,7 +204,7 @@ uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(
                       << ", allLastIndexes[r] = "  << allLastIndexes[r]
                       << std::endl;
             UQ_FATAL_TEST_MACRO(true,
-                                m_env.fullRank(),
+                                m_env.worldRank(),
                                 "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
                                 "wrong indexes or 'r' got too large");
           }
@@ -267,7 +267,7 @@ uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(
   unsigned int tmpValue = result;
   int mpiRC = MPI_Bcast((void *) &tmpValue, (int) 1, MPI_UNSIGNED, 0, m_env.fullComm().Comm()); // LOAD BALANCE
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
                       "failed MPI_Bcast() for 'result'");
   if (m_env.inter0Rank() != 0) result = tmpValue;
@@ -324,14 +324,14 @@ uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0( // EXTRA FOR LOAD BAL
   unsigned int exchangeStdVecSize = exchangeStdVec.size();
   int mpiRC = MPI_Bcast((void *) &exchangeStdVecSize, (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm()); // LOAD BALANCE
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0()",
                       "failed MPI_Bcast() for exchangeStdVec size");
   if (m_env.inter0Rank() > 0) exchangeStdVec.resize(exchangeStdVecSize);
 
   mpiRC = MPI_Bcast((void *) &exchangeStdVec[0], (int) (exchangeStdVecSize*sizeof(uqExchangeInfoStruct)), MPI_CHAR, 0, m_env.inter0Comm().Comm()); // LOAD BALANCE
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0()",
                       "failed MPI_Bcast() for exchangeStdVec data");
 
@@ -353,19 +353,19 @@ uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0( // EXTRA FOR LOAD BAL
   unsigned int finalMinPosPerNode = *std::min_element(finalNumPositionsPerNode.begin(), finalNumPositionsPerNode.end());
   unsigned int finalMaxPosPerNode = *std::max_element(finalNumPositionsPerNode.begin(), finalNumPositionsPerNode.end());
   double finalRatioOfPosPerNode = ((double) finalMaxPosPerNode) / ((double)finalMinPosPerNode);
-  //std::cout << m_env.fullRank() << ", finalRatioOfPosPerNode = " << finalRatioOfPosPerNode << std::endl;
+  //std::cout << m_env.worldRank() << ", finalRatioOfPosPerNode = " << finalRatioOfPosPerNode << std::endl;
 
   std::vector<double> auxBuf(1,0.);
   double minRatio = 0.;
   auxBuf[0] = finalRatioOfPosPerNode;
   mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &minRatio, (int) auxBuf.size(), MPI_DOUBLE, MPI_MIN, m_env.inter0Comm().Comm()); // LOAD BALANCE
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0()",
                       "failed MPI_Allreduce() for min");
-  //std::cout << m_env.fullRank() << ", minRatio = " << minRatio << std::endl;
+  //std::cout << m_env.worldRank() << ", minRatio = " << minRatio << std::endl;
   UQ_FATAL_TEST_MACRO(minRatio != finalRatioOfPosPerNode,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0()",
                       "failed minRatio sanity check");
 
@@ -373,12 +373,12 @@ uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0( // EXTRA FOR LOAD BAL
   auxBuf[0] = finalRatioOfPosPerNode;
   mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &maxRatio, (int) auxBuf.size(), MPI_DOUBLE, MPI_MAX, m_env.inter0Comm().Comm()); // LOAD BALANCE
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0()",
                       "failed MPI_Allreduce() for max");
-  //std::cout << m_env.fullRank() << ", maxRatio = " << maxRatio << std::endl;
+  //std::cout << m_env.worldRank() << ", maxRatio = " << maxRatio << std::endl;
   UQ_FATAL_TEST_MACRO(maxRatio != finalRatioOfPosPerNode,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0()",
                       "failed maxRatio sanity check");
 
@@ -388,14 +388,14 @@ uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0( // EXTRA FOR LOAD BAL
   unsigned int finalNumChainsPerNodeSize = finalNumChainsPerNode.size();
   mpiRC = MPI_Bcast((void *) &finalNumChainsPerNodeSize, (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm()); // LOAD BALANCE
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0()",
                       "failed MPI_Bcast() for finalNumChainsPerNode size");
   if (m_env.inter0Rank() > 0) finalNumChainsPerNode.resize(finalNumChainsPerNodeSize);
 
   mpiRC = MPI_Bcast((void *) &finalNumChainsPerNode[0], (int) finalNumChainsPerNodeSize, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm()); // LOAD BALANCE
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0()",
                       "failed MPI_Bcast() for finalNumChainsPerNode data");
 
@@ -438,7 +438,7 @@ uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(
   unsigned int resizeSize = unifiedIndexCountersAtProc0Only.size();
   int mpiRC = MPI_Bcast((void *) &resizeSize, (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm());
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()",
                       "failed MPI_Bcast() for resizeSize");
   unifiedIndexCountersAtAllProcs.resize(resizeSize,0);
@@ -448,7 +448,7 @@ uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(
   // Broadcast index counters to all nodes
   mpiRC = MPI_Bcast((void *) &unifiedIndexCountersAtAllProcs[0], (int) unifiedIndexCountersAtAllProcs.size(), MPI_UNSIGNED, 0, m_env.inter0Comm().Comm());
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()",
                       "failed MPI_Bcast() for unified index counters");
 #if 0 // Use allgatherv ??? for subNumSamples instead
@@ -472,11 +472,11 @@ uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(
 
   // Use 'indexOfFirstWeight' and 'indexOfLastWeight' in order to update 'subNumSamples'
   UQ_FATAL_TEST_MACRO(indexOfFirstWeight >= unifiedIndexCountersAtAllProcs.size(),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()",
                       "invalid indexOfFirstWeight");
   UQ_FATAL_TEST_MACRO(indexOfLastWeight >= unifiedIndexCountersAtAllProcs.size(),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()",
                       "invalid indexOfLastWeight");
   subNumSamples = 0;
@@ -490,7 +490,7 @@ uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(
   auxBuf[0] = subNumSamples;
   mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &minModifiedSubNumSamples, (int) auxBuf.size(), MPI_UNSIGNED, MPI_MIN, m_env.inter0Comm().Comm());
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()",
                       "failed MPI_Allreduce() for min");
 
@@ -498,7 +498,7 @@ uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(
   auxBuf[0] = subNumSamples;
   mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &maxModifiedSubNumSamples, (int) auxBuf.size(), MPI_UNSIGNED, MPI_MAX, m_env.inter0Comm().Comm());
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()",
                       "failed MPI_Allreduce() for max");
 
@@ -506,12 +506,12 @@ uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(
   auxBuf[0] = subNumSamples;
   mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &sumModifiedSubNumSamples, (int) auxBuf.size(), MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()",
                       "failed MPI_Allreduce() for sum");
 
   //UQ_FATAL_TEST_MACRO(unifiedRequestedNumSamples != sumModifiedSubNumSamples,
-  //                    m_env.fullRank(),
+  //                    m_env.worldRank(),
   //                    "uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()",
   //                    "invalid state");
 
@@ -574,14 +574,14 @@ uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(
       }
       else {
         UQ_FATAL_TEST_MACRO(true, // KAUST4
-                            m_env.fullRank(),
+                            m_env.worldRank(),
                             "uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()",
                             "should never get here");
       }
     }
   }
   UQ_FATAL_TEST_MACRO(numberOfPositionsToGuaranteeForNode != 0, // subNumSamples, // KAUST4
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()",
                       "numberOfPositionsToGuaranteeForNode exited loop with wrong value");
   // FIX ME: swap trick to save memory
@@ -627,7 +627,7 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALAN
   // KAUST: all nodes in 'subComm' should have the same 'chainIdMax'
   int mpiRC = MPI_Bcast((void *) &chainIdMax, (int) 1, MPI_UNSIGNED, 0, m_env.subComm().Comm()); // Yes, 'subComm', important // LOAD BALANCE
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()",
                       "failed MPI_Bcast() for chainIdMax");
 
@@ -643,7 +643,7 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALAN
     auxBuf[0] = numberOfPositions;
     mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &minNumberOfPositions, (int) auxBuf.size(), MPI_UNSIGNED, MPI_MIN, m_env.inter0Comm().Comm()); // LOAD BALANCE
     UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()",
                         "failed MPI_Allreduce() for min");
 
@@ -651,7 +651,7 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALAN
     auxBuf[0] = numberOfPositions;
     mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &maxNumberOfPositions, (int) auxBuf.size(), MPI_UNSIGNED, MPI_MAX, m_env.inter0Comm().Comm()); // LOAD BALANCE
     UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()",
                         "failed MPI_Allreduce() for max");
 
@@ -659,7 +659,7 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALAN
     auxBuf[0] = numberOfPositions;
     mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &sumNumberOfPositions, (int) auxBuf.size(), MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm()); // LOAD BALANCE
     UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()",
                         "failed MPI_Allreduce() for sum");
 
@@ -710,7 +710,7 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALAN
     // KAUST: all nodes in 'subComm' should have the same 'tmpChainSize'
     mpiRC = MPI_Bcast((void *) &tmpChainSize, (int) 1, MPI_UNSIGNED, 0, m_env.subComm().Comm()); // Yes, 'subComm', important // LOAD BALANCE
     UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()",
                         "failed MPI_Bcast() for tmpChainSize");
 
@@ -825,7 +825,7 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
   // KAUST: all nodes in 'subComm' should have the same 'chainIdMax'
   int mpiRC = MPI_Bcast((void *) &chainIdMax, (int) 1, MPI_UNSIGNED, 0, m_env.subComm().Comm()); // Yes, 'subComm', important
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()",
                       "failed MPI_Bcast() for chainIdMax");
 
@@ -841,7 +841,7 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
     auxBuf[0] = numberOfPositions;
     mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &minNumberOfPositions, (int) auxBuf.size(), MPI_UNSIGNED, MPI_MIN, m_env.inter0Comm().Comm());
     UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()",
                         "failed MPI_Allreduce() for min");
 
@@ -849,7 +849,7 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
     auxBuf[0] = numberOfPositions;
     mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &maxNumberOfPositions, (int) auxBuf.size(), MPI_UNSIGNED, MPI_MAX, m_env.inter0Comm().Comm());
     UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()",
                         "failed MPI_Allreduce() for max");
 
@@ -857,7 +857,7 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
     auxBuf[0] = numberOfPositions;
     mpiRC = MPI_Allreduce((void *) &auxBuf[0], (void *) &sumNumberOfPositions, (int) auxBuf.size(), MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
     UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()",
                         "failed MPI_Allreduce() for sum");
 
@@ -913,7 +913,7 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
     // KAUST: all nodes in 'subComm' should have the same 'tmpChainSize'
     mpiRC = MPI_Bcast((void *) &tmpChainSize, (int) 1, MPI_UNSIGNED, 0, m_env.subComm().Comm()); // Yes, 'subComm', important
     UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()",
                         "failed MPI_Bcast() for tmpChainSize");
 
@@ -1114,7 +1114,7 @@ uqMLSamplingClass<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
   }
 
   UQ_FATAL_TEST_MACRO(coefId != (int) (ne+1),
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                       "invalid final coefId");
 
@@ -1137,27 +1137,27 @@ uqMLSamplingClass<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
   // Check BIP before solving it
   //////////////////////////////////////////////////////////////////////////
   UQ_FATAL_TEST_MACRO(glp_get_num_rows(lp) != (int) m, // Not 'm+1'
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                       "invalid number of rows");
 
   UQ_FATAL_TEST_MACRO(glp_get_num_cols(lp) != (int) n, // Not 'n+1'
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                       "invalid number of columnss");
 
   UQ_FATAL_TEST_MACRO(glp_get_num_nz(lp) != (int) ne,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                       "invalid number of nonzero constraint coefficients");
 
   UQ_FATAL_TEST_MACRO(glp_get_num_int(lp) != (int) n, // ????
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                       "invalid number of integer structural variables");
 
   UQ_FATAL_TEST_MACRO(glp_get_num_bin(lp) != (int) n,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                       "invalid number of binary structural variables");
 
@@ -1182,13 +1182,13 @@ uqMLSamplingClass<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
       int initialState = glp_mip_col_val(lp, j);
       if (nodeId == 0) {
         UQ_FATAL_TEST_MACRO(initialState != 1,
-                            m_env.fullRank(),
+                            m_env.worldRank(),
                             "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                             "for nodeId = 0, initial state should be '1'");
       }
       else {
         UQ_FATAL_TEST_MACRO(initialState != 0,
-                            m_env.fullRank(),
+                            m_env.worldRank(),
                             "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                             "for nodeId > 0, initial state should be '0'");
       }
@@ -1232,7 +1232,7 @@ uqMLSamplingClass<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
   }
 
   UQ_FATAL_TEST_MACRO(BIP_rc != 0,
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                       "BIP returned rc != 0");
 
@@ -1273,7 +1273,7 @@ uqMLSamplingClass<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
 
     default:
       UQ_FATAL_TEST_MACRO(true,
-                          m_env.fullRank(),
+                          m_env.worldRank(),
                           "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                           "BIP has an undefined solution or has no solution");
     break;
@@ -1281,13 +1281,13 @@ uqMLSamplingClass<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
 
   for (int i = 1; i <= (int) Nc; ++i) {
     UQ_FATAL_TEST_MACRO(glp_mip_row_val(lp, i) != 1,
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                         "row should have value 1 at solution");
   }
   for (int i = (Nc+1); i <= (int) (Nc+Np-1); ++i) {
     UQ_FATAL_TEST_MACRO(glp_mip_row_val(lp, i) > 0,
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                         "row should have value 0 or should be negative at solution");
   }
@@ -1305,7 +1305,7 @@ uqMLSamplingClass<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
       }
       else if (glp_mip_col_val(lp, j) == 1) {
         UQ_FATAL_TEST_MACRO(exchangeStdVec[chainId].finalNodeOfInitialPosition != -1, // important
-                            m_env.fullRank(),
+                            m_env.worldRank(),
                             "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                             "chain has already been taken care of");
         exchangeStdVec[chainId].finalNodeOfInitialPosition = nodeId;
@@ -1314,7 +1314,7 @@ uqMLSamplingClass<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
       }
       else {
         UQ_FATAL_TEST_MACRO(true,
-                            m_env.fullRank(),
+                            m_env.worldRank(),
                             "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                             "control variable should be either '0' or '1'");
       }
@@ -1360,13 +1360,13 @@ uqMLSamplingClass<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
   // Make sanity checks
   //////////////////////////////////////////////////////////////////////////
   UQ_FATAL_TEST_MACRO(glp_mip_obj_val(lp) != (double) finalNumPositionsPerNode[0],
-                      m_env.fullRank(),
+                      m_env.worldRank(),
                       "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                       "Invalid objective value");
 
   for (unsigned int nodeId = 1; nodeId < Np; ++nodeId) { // Yes, '1'
     UQ_FATAL_TEST_MACRO(finalNumPositionsPerNode[nodeId-1] < finalNumPositionsPerNode[nodeId],
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                         "Next node should have a number of positions equal or less than the current node");
   }
@@ -1375,7 +1375,7 @@ uqMLSamplingClass<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
     unsigned int nodeId = i - Nc;
     int diff = ((int) finalNumPositionsPerNode[nodeId]) - ((int) finalNumPositionsPerNode[nodeId-1]);
     UQ_FATAL_TEST_MACRO(glp_mip_row_val(lp, i) != diff,
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqMLSamplingClass<P_V,P_M>::solveBIP_proc0()",
                         "wrong state");
   }
@@ -1476,7 +1476,7 @@ uqMLSamplingClass<P_V,P_M>::justBalance_proc0(
     for (unsigned int nodeId = 0; nodeId < Np; ++nodeId) {
       std::sort(vectorOfChainSizesPerNode[nodeId].begin(), vectorOfChainSizesPerNode[nodeId].end());
       UQ_FATAL_TEST_MACRO(vectorOfChainSizesPerNode[nodeId].size() != currNumChainsPerNode[nodeId],
-                          m_env.fullRank(),
+                          m_env.worldRank(),
                           "uqMLSamplingClass<P_V,P_M>::justBalance_proc0()",
                           "inconsistent number of chains in node");
     }
@@ -1500,12 +1500,12 @@ uqMLSamplingClass<P_V,P_M>::justBalance_proc0(
     }
 
     UQ_FATAL_TEST_MACRO(currMinPosPerNode != currNumPositionsPerNode[currNodeWithLeastPositions],
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqMLSamplingClass<P_V,P_M>::justBalance_proc0()",
                         "inconsistent currMinPosPerNode");
 
     UQ_FATAL_TEST_MACRO(currMaxPosPerNode != currNumPositionsPerNode[currNodeWithMostPositions],
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqMLSamplingClass<P_V,P_M>::justBalance_proc0()",
                         "inconsistent currMaxPosPerNode");
 
@@ -1585,12 +1585,12 @@ uqMLSamplingClass<P_V,P_M>::justBalance_proc0(
     double newRatioOfPosPerNode = ((double) newMaxPosPerNode ) / ((double) newMinPosPerNode);
 
     UQ_FATAL_TEST_MACRO(newMinPosPerNode != newNumPositionsPerNode[newNodeWithLeastPositions],
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqMLSamplingClass<P_V,P_M>::justBalance_proc0()",
                         "inconsistent newMinPosPerNode");
 
     UQ_FATAL_TEST_MACRO(newMaxPosPerNode != newNumPositionsPerNode[newNodeWithMostPositions],
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqMLSamplingClass<P_V,P_M>::justBalance_proc0()",
                         "inconsistent newMaxPosPerNode");
 
@@ -1791,22 +1791,22 @@ uqMLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0( // EXTRA FOR LOAD BALAN
     // Make sanity checks
     //////////////////////////////////////////////////////////////////////////
     UQ_FATAL_TEST_MACRO(indexesOfInitialPositionsNodeRHasToReceiveFromMe.size() != numberOfInitialPositionsNodeRHasToReceiveFromNode[m_env.inter0Rank()],
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqMLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0()",
                         "inconsistent number of initial positions to send to node 'r'");
 
     UQ_FATAL_TEST_MACRO(finalNumChainsPerNode[r] != (totalNumberOfInitialPositionsNodeRHasToReceive + numberOfInitialPositionsNodeRAlreadyHas),
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqMLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0()",
                         "inconsistent number of chains in node 'r'");
 
     UQ_FATAL_TEST_MACRO(finalNumPositionsPerNode[r] != (totalSumOfChainLenghtsNodeRHasToInherit + sumOfChainLenghtsNodeRAlreadyHas),
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqMLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0()",
                         "inconsistent sum of chain lenghts in node 'r'");
 
     UQ_FATAL_TEST_MACRO(totalNumberOfInitialPositionsNodeRHasToReceive != totalNumberOfChainLenghtsNodeRHasToInherit,
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqMLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0()",
                         "inconsistent on total number of initial positions to receive in node 'r'");
 
@@ -1862,7 +1862,7 @@ uqMLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0( // EXTRA FOR LOAD BALAN
     mpiRC = MPI_Gatherv((void *) &sendbuf[0], (int) sendcnt, MPI_DOUBLE, (void *) &recvbuf[0], (int *) &recvcnts[0], (int *) &displs[0], MPI_DOUBLE, r, m_env.inter0Comm().Comm()); // LOAD BALANCE
 #endif
     UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                        m_env.fullRank(),
+                        m_env.worldRank(),
                         "uqMLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0()",
                         "failed MPI_Gatherv()");
 
