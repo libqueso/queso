@@ -196,6 +196,13 @@ uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "Entering uqSipClass" << std::endl;
 #endif
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Entering uqStatisticalInverseProblemClass<P_V,P_M>::constructor()"
+                            << ": prefix = " << prefix
+                            << ", alternativeOptionsValues = " << alternativeOptionsValues
+                            << ", m_env.optionsInputFileName() = " << m_env.optionsInputFileName()
+                            << std::endl;
+  }
 
   if (alternativeOptionsValues) m_alternativeOptionsValues = *alternativeOptionsValues;
   if (m_env.optionsInputFileName() == "") {
@@ -205,12 +212,6 @@ uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
     m_optionsObj = new uqStatisticalInverseProblemOptionsClass(m_env,prefix);
     m_optionsObj->scanOptionsValues();
   }
-  if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Entering uqStatisticalInverseProblemClass<P_V,P_M>::constructor()"
-                            << ": prefix = " << m_optionsObj->m_prefix
-                            << std::endl;
-  }
-
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "In uqSipClass, finished scanning options" << std::endl;
 #endif
@@ -338,7 +339,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(
   // Compute output realizer: Metropolis-Hastings approach
   m_chain = new uqSequenceOfVectorsClass<P_V,P_M>(m_postRv.imageSet().vectorSpace(),0,m_optionsObj->m_prefix+"chain");
   m_mhSeqGenerator = new uqMetropolisHastingsSGClass<P_V,P_M>(m_optionsObj->m_prefix.c_str(), // dakota
-                                                              NULL,
+                                                              alternativeOptionsValues,
                                                               m_postRv,
                                                               initialValues,
                                                               initialProposalCovMatrix);

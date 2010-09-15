@@ -173,13 +173,19 @@ uqMonteCarloSGOptionsClass::uqMonteCarloSGOptionsClass(
                             << "\n" << *this
                             << std::endl;
   }
+
+  // dakota
+  if (m_ov.m_pseqComputeStats) m_pseqStatisticalOptionsObj =
+    new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "pseq_",m_ov.m_alternativePSsOptionsValues);
+  if (m_ov.m_qseqComputeStats) m_qseqStatisticalOptionsObj =
+    new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "qseq_",m_ov.m_alternativeQSsOptionsValues);
 }
 
 uqMonteCarloSGOptionsClass::~uqMonteCarloSGOptionsClass()
 {
-//if (m_filteredChainStatisticalOptionsObj) delete m_filteredChainStatisticalOptionsObj; // dakota
-//if (m_rawChainStatisticalOptionsObj     ) delete m_rawChainStatisticalOptionsObj;      // dakota
-  if (m_optionsDesc                       ) delete m_optionsDesc;
+  if (m_pseqStatisticalOptionsObj) delete m_pseqStatisticalOptionsObj; // dakota
+  if (m_qseqStatisticalOptionsObj) delete m_qseqStatisticalOptionsObj; // dakota
+  if (m_optionsDesc              ) delete m_optionsDesc;
 } 
 
 void
@@ -202,8 +208,11 @@ uqMonteCarloSGOptionsClass::scanOptionsValues()
                             << std::endl;
   }
 
-//if (m_rawChainComputeStats     ) m_rawChainStatisticalOptionsObj      = new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "rawChain_"     ); // dakota
-//if (m_filteredChainComputeStats) m_filteredChainStatisticalOptionsObj = new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "filteredChain_"); // dakota
+  // dakota
+  if (m_ov.m_pseqComputeStats) m_pseqStatisticalOptionsObj =
+    new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "pseq_");
+  if (m_ov.m_qseqComputeStats) m_qseqStatisticalOptionsObj =
+    new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "qseq_");
 
   return;
 }

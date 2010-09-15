@@ -119,6 +119,9 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::uqMonteCarloSGClass(
 {
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::constructor()"
+                            << ": prefix = " << prefix
+                            << ", alternativeOptionsValues = " << alternativeOptionsValues
+                            << ", m_env.optionsInputFileName() = " << m_env.optionsInputFileName()
                             << std::endl;
   }
 
@@ -130,10 +133,6 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::uqMonteCarloSGClass(
     m_optionsObj = new uqMonteCarloSGOptionsClass(m_env,prefix);
     m_optionsObj->scanOptionsValues();
   }
-
-  // dakota
-  if (m_optionsObj->m_ov.m_pseqComputeStats) m_optionsObj->m_pseqStatisticalOptionsObj = new uqSequenceStatisticalOptionsClass(m_env,m_optionsObj->m_prefix + "pseq_");
-  if (m_optionsObj->m_ov.m_qseqComputeStats) m_optionsObj->m_qseqStatisticalOptionsObj = new uqSequenceStatisticalOptionsClass(m_env,m_optionsObj->m_prefix + "qseq_");
 
   UQ_FATAL_TEST_MACRO(paramRv.imageSet().vectorSpace().dimLocal() != qoiFunction.domainSet().vectorSpace().dimLocal(),
                       m_env.worldRank(),
@@ -150,9 +149,8 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::uqMonteCarloSGClass(
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::~uqMonteCarloSGClass()
 {
-  if (m_optionsObj->m_qseqStatisticalOptionsObj) delete m_optionsObj->m_qseqStatisticalOptionsObj;
-  if (m_optionsObj->m_pseqStatisticalOptionsObj) delete m_optionsObj->m_pseqStatisticalOptionsObj;
-  if (m_qoiFunctionSynchronizer                ) delete m_qoiFunctionSynchronizer;
+  if (m_optionsObj             ) delete m_optionsObj;
+  if (m_qoiFunctionSynchronizer) delete m_qoiFunctionSynchronizer;
 }
 
 /*! Operation to generate the output sequence */
@@ -207,7 +205,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   unsigned int subActualSizeBeforeGeneration = std::min(m_optionsObj->m_ov.m_qseqSize,paramRv.realizer().subPeriod());
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
-                            << ": m_optionsObj->m_ov.m_qseqSize = "                                      << m_optionsObj->m_ov.m_qseqSize
+                            << ": m_optionsObj->m_ov.m_qseqSize = "                             << m_optionsObj->m_ov.m_qseqSize
                             << ", paramRv.realizer().subPeriod() = "                            << paramRv.realizer().subPeriod()
                             << ", about to call actualGenerateSequence() with subActualSize = " << subActualSizeBeforeGeneration
                             << std::endl;

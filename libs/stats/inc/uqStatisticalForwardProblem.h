@@ -201,6 +201,14 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::uqStatisticalForwardProblemCl
   m_alternativeOptionsValues(),
   m_optionsObj              (NULL)
 {
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Entering uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::constructor()"
+                            << ": prefix = " << prefix
+                            << ", alternativeOptionsValues = " << alternativeOptionsValues
+                            << ", m_env.optionsInputFileName() = " << m_env.optionsInputFileName()
+                            << std::endl;
+  }
+
   if (alternativeOptionsValues) m_alternativeOptionsValues = *alternativeOptionsValues;
   if (m_env.optionsInputFileName() == "") {
     m_optionsObj = new uqStatisticalForwardProblemOptionsClass(m_env,prefix,m_alternativeOptionsValues);
@@ -208,12 +216,6 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::uqStatisticalForwardProblemCl
   else {
     m_optionsObj = new uqStatisticalForwardProblemOptionsClass(m_env,prefix);
     m_optionsObj->scanOptionsValues();
-  }
-
-  if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Entering uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::constructor()"
-                            << ": prefix = " << m_optionsObj->m_prefix
-                            << std::endl;
   }
 
   UQ_FATAL_TEST_MACRO(paramRv.imageSet().vectorSpace().dimLocal() != qoiFunction.domainSet().vectorSpace().dimLocal(),
@@ -299,7 +301,7 @@ bool
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
-  const uqMcOptionsValuesClass* optionsValues)
+  const uqMcOptionsValuesClass* alternativeOptionsValues)
 {
   m_env.fullComm().Barrier();
   m_env.syncPrintDebugMsg("Entering uqStatisticalForwardProblemClass<P_V,P_M>::solveWithMonteCarlo()",1,3000000,m_env.fullComm());
@@ -354,7 +356,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
   m_paramChain = new uqSequenceOfVectorsClass<P_V,P_M>(m_paramRv.imageSet().vectorSpace(),0,m_optionsObj->m_prefix+"paramChain");
   m_qoiChain   = new uqSequenceOfVectorsClass<Q_V,Q_M>(m_qoiRv.imageSet().vectorSpace(),  0,m_optionsObj->m_prefix+"qoiChain"  );
   m_mcSeqGenerator = new uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>(m_optionsObj->m_prefix.c_str(),
-                                                              NULL,
+                                                              alternativeOptionsValues,
                                                               m_paramRv,
                                                               m_qoiFunction);
   //m_qoiRv);

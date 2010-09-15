@@ -90,6 +90,10 @@ uqStatisticalInverseProblemOptionsClass::uqStatisticalInverseProblemOptionsClass
   m_option_solver              (m_prefix + "solver"              )
 #endif
 {
+  UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() == "",
+                      m_env.worldRank(),
+                      "uqStatisticalInverseProblemOptionsClass::constructor(1)",
+                      "this constructor is incompatible with the abscense of an options input file");
 }
 
 uqStatisticalInverseProblemOptionsClass::uqStatisticalInverseProblemOptionsClass(
@@ -109,6 +113,18 @@ uqStatisticalInverseProblemOptionsClass::uqStatisticalInverseProblemOptionsClass
   m_option_solver              (m_prefix + "solver"              )
 #endif
 {
+  UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() != "",
+                      m_env.worldRank(),
+                      "uqStatisticalInverseProblemOptionsClass::constructor(2)",
+                      "this constructor is incompatible with the existence of an options input file");
+
+  if (m_env.subDisplayFile() != NULL) {
+    *m_env.subDisplayFile() << "In uqStatisticalInverseProblemOptionsClass::constructor(2)"
+                            << ": after setting values of options with prefix '" << m_prefix
+                            << "', state of object is:"
+                            << "\n" << *this
+                            << std::endl;
+  }
 }
 
 uqStatisticalInverseProblemOptionsClass::~uqStatisticalInverseProblemOptionsClass()
@@ -134,7 +150,7 @@ uqStatisticalInverseProblemOptionsClass::scanOptionsValues()
 
   if (m_env.subDisplayFile() != NULL) {
     *m_env.subDisplayFile() << "In uqStatisticalInverseProblemOptionsClass::scanOptionsValues()"
-                            << ": after getting values of options with prefix '" << m_prefix
+                            << ": after reading values of options with prefix '" << m_prefix
                             << "', state of  object is:"
                             << "\n" << *this
                             << std::endl;

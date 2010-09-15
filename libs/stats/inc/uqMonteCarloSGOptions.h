@@ -87,6 +87,7 @@ public:
 private:
   void copy(const uqMcOptionsValuesClass& src);
 
+  friend class uqMonteCarloSGOptionsClass;
   uqSsOptionsValuesClass             m_alternativePSsOptionsValues;
   uqSsOptionsValuesClass             m_alternativeQSsOptionsValues;
 };

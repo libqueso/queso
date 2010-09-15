@@ -194,26 +194,31 @@ uqSequenceStatisticalOptionsClass::uqSequenceStatisticalOptionsClass(
   m_option_corrMatrix_compute       (m_prefix + "corrMatrix_compute"       )
 {
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Entering uqSequenceStatisticalOptions::constructor()"
-                           << ", prefix = " << m_prefix
-                           << std::endl;
+    *m_env.subDisplayFile() << "Entering uqSequenceStatisticalOptions::constructor(1)"
+                            << ", prefix = " << m_prefix
+                            << std::endl;
   }
+
+  UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() == "",
+                      m_env.worldRank(),
+                      "uqSequenceStatisticalOptionsClass::constructor(1)",
+                      "this constructor is incompatible with the abscense of an options input file");
 
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
 
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "After getting values of options with prefix '" << m_prefix
-                           << "', state of uqSequenceStatisticalOptionsClass object is:"
-                           << "\n" << *this
-                           << std::endl;
+    *m_env.subDisplayFile() << "After reading values of options with prefix '" << m_prefix
+                            << "', state of uqSequenceStatisticalOptionsClass object is:"
+                            << "\n" << *this
+                            << std::endl;
   }
 
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Leaving uqSequenceStatisticalOptions::constructor()"
-                           << ", prefix = " << m_prefix
-                           << std::endl;
+    *m_env.subDisplayFile() << "Leaving uqSequenceStatisticalOptions::constructor(1)"
+                            << ", prefix = " << m_prefix
+                            << std::endl;
   }
 }
 
@@ -272,21 +277,26 @@ uqSequenceStatisticalOptionsClass::uqSequenceStatisticalOptionsClass(
 {
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering uqSequenceStatisticalOptions::constructor(2)"
-                           << ", prefix = " << m_prefix
-                           << std::endl;
+                            << ", prefix = " << m_prefix
+                            << std::endl;
   }
 
+  UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() != "",
+                      m_env.worldRank(),
+                      "uqSequenceStatisticalOptionsClass::constructor(2)",
+                      "this constructor is incompatible with the existence of an options input file");
+
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "After getting values of options with prefix '" << m_prefix
-                           << "', state of uqSequenceStatisticalOptionsClass object is:"
-                           << "\n" << *this
-                           << std::endl;
+    *m_env.subDisplayFile() << "After setting values of options with prefix '" << m_prefix
+                            << "', state of uqSequenceStatisticalOptionsClass object is:"
+                            << "\n" << *this
+                            << std::endl;
   }
 
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Leaving uqSequenceStatisticalOptions::constructor(2)"
-                           << ", prefix = " << m_prefix
-                           << std::endl;
+                            << ", prefix = " << m_prefix
+                            << std::endl;
   }
 }
 
