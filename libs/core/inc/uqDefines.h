@@ -36,6 +36,8 @@
 #include <iostream>
 #include <stdlib.h> // For exit()
 #include <Epetra_MpiComm.h>
+#include <set>
+#include <vector>
 
 int uqMyWorldfullRank();
 
@@ -60,6 +62,29 @@ const int UQ_INVALID_SPACE_COMPONENT_ID_RC = -10;
 
 #define UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT "m"
 #define UQ_FILE_EXTENSION_FOR_HDF_FORMAT    "h5"
+
+class uqEnvOptionsValuesClass
+{
+public:
+  uqEnvOptionsValuesClass            ();
+  uqEnvOptionsValuesClass            (const uqEnvOptionsValuesClass& src);
+  uqEnvOptionsValuesClass& operator= (const uqEnvOptionsValuesClass& rhs);
+ ~uqEnvOptionsValuesClass            ();
+
+  unsigned int           m_numSubEnvironments;
+  std::string            m_subDisplayFileName;
+  bool                   m_subDisplayAllowAll;
+  std::set<unsigned int> m_subDisplayAllowedSet;
+  unsigned int           m_displayVerbosity;
+  unsigned int           m_syncVerbosity;
+  int                    m_seed;
+  std::string            m_identifyingString;
+  unsigned int           m_numDebugParams;
+  std::vector<double>    m_debugParams;
+
+private:
+  void copy(const uqEnvOptionsValuesClass& src);
+};
 
 #define UQ_RC_MACRO(macroIRc,givenRank,where,what,retValue) \
   if (macroIRc) {                                           \

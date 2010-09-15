@@ -77,13 +77,13 @@ class uqStatisticalForwardProblemOptionsClass
 {
 public:
   uqStatisticalForwardProblemOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix);
-  uqStatisticalForwardProblemOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix, const uqSfpOptionsValuesClass& optionsValues);
+  uqStatisticalForwardProblemOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix, const uqSfpOptionsValuesClass& alternativeOptionsValues);
  ~uqStatisticalForwardProblemOptionsClass();
 
   void scanOptionsValues();
   void print            (std::ostream& os) const;
 
-  uqSfpOptionsValuesClass       m_optionsValues;
+  uqSfpOptionsValuesClass       m_ov;
   std::string                   m_prefix;
 
 private:

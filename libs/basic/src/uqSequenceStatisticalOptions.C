@@ -145,9 +145,10 @@ uqSequenceStatisticalOptionsClass::uqSequenceStatisticalOptionsClass(
   /*! The QUESO environment                      */ const uqBaseEnvironmentClass& env,
   /*! Prefix for reading options from input file */ const std::string&            prefix)
   :
-  m_prefix     ((std::string)(prefix) + "stats_"),
-  m_env        (env),
-  m_optionsDesc(new po::options_description("Chain statistical options")),
+  m_ov                              (),
+  m_prefix                          ((std::string)(prefix) + "stats_"),
+  m_env                             (env),
+  m_optionsDesc                     (new po::options_description("Chain statistical options")),
   m_option_help                     (m_prefix + "help"                     ),
   m_option_initialDiscardedPortions (m_prefix + "initialDiscardedPortions" ),
   m_option_mean_monitorPeriod       (m_prefix + "mean_monitorPeriod"       ),
@@ -219,12 +220,12 @@ uqSequenceStatisticalOptionsClass::uqSequenceStatisticalOptionsClass(
 uqSequenceStatisticalOptionsClass::uqSequenceStatisticalOptionsClass(
   /*! The QUESO environment                      */ const uqBaseEnvironmentClass& env,
   /*! Prefix for reading options from input file */ const std::string&            prefix,
-                                                    const uqSsOptionsValuesClass& optionsValues)
+                                                    const uqSsOptionsValuesClass& alternativeOptionsValues)
   :
-  m_optionsValues(optionsValues),
-  m_prefix       ((std::string)(prefix) + "stats_"),
-  m_env          (env),
-  m_optionsDesc  (NULL),
+  m_ov                              (alternativeOptionsValues),
+  m_prefix                          ((std::string)(prefix) + "stats_"),
+  m_env                             (env),
+  m_optionsDesc                     (NULL),
   m_option_help                     (m_prefix + "help"                     ),
   m_option_initialDiscardedPortions (m_prefix + "initialDiscardedPortions" ),
   m_option_mean_monitorPeriod       (m_prefix + "mean_monitorPeriod"       ),
@@ -357,7 +358,7 @@ uqSequenceStatisticalOptionsClass::getMyOptionValues(
   }
 
   if (m_env.allOptionsMap().count(m_option_initialDiscardedPortions)) {
-    m_optionsValues.m_initialDiscardedPortions.clear();
+    m_ov.m_initialDiscardedPortions.clear();
     std::vector<double> tmpPortions(0,0.);
     std::string inputString = m_env.allOptionsMap()[m_option_initialDiscardedPortions].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpPortions);
@@ -370,23 +371,23 @@ uqSequenceStatisticalOptionsClass::getMyOptionValues(
     //}
 
     if (tmpPortions.size() > 0) {
-      m_optionsValues.m_initialDiscardedPortions.resize(tmpPortions.size(),0.);
-      for (unsigned int i = 0; i < m_optionsValues.m_initialDiscardedPortions.size(); ++i) {
-        m_optionsValues.m_initialDiscardedPortions[i] = tmpPortions[i];
+      m_ov.m_initialDiscardedPortions.resize(tmpPortions.size(),0.);
+      for (unsigned int i = 0; i < m_ov.m_initialDiscardedPortions.size(); ++i) {
+        m_ov.m_initialDiscardedPortions[i] = tmpPortions[i];
       }
     }
   }
 
   if (m_env.allOptionsMap().count(m_option_mean_monitorPeriod)) {
-    m_optionsValues.m_meanMonitorPeriod = m_env.allOptionsMap()[m_option_mean_monitorPeriod].as<unsigned int>();
+    m_ov.m_meanMonitorPeriod = m_env.allOptionsMap()[m_option_mean_monitorPeriod].as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_bmm_run)) {
-    m_optionsValues.m_bmmRun = m_env.allOptionsMap()[m_option_bmm_run].as<bool>();
+    m_ov.m_bmmRun = m_env.allOptionsMap()[m_option_bmm_run].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_bmm_lengths)) {
-    m_optionsValues.m_bmmLengths.clear();
+    m_ov.m_bmmLengths.clear();
     std::vector<double> tmpLengths(0,0.);
     std::string inputString = m_env.allOptionsMap()[m_option_bmm_lengths].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpLengths);
@@ -399,59 +400,59 @@ uqSequenceStatisticalOptionsClass::getMyOptionValues(
     //}
 
     if (tmpLengths.size() > 0) {
-      m_optionsValues.m_bmmLengths.resize(tmpLengths.size(),0);
-      for (unsigned int i = 0; i < m_optionsValues.m_bmmLengths.size(); ++i) {
-        m_optionsValues.m_bmmLengths[i] = (unsigned int) tmpLengths[i];
+      m_ov.m_bmmLengths.resize(tmpLengths.size(),0);
+      for (unsigned int i = 0; i < m_ov.m_bmmLengths.size(); ++i) {
+        m_ov.m_bmmLengths[i] = (unsigned int) tmpLengths[i];
       }
     }
   }
 
   if (m_env.allOptionsMap().count(m_option_fft_compute)) {
-    m_optionsValues.m_fftCompute = m_env.allOptionsMap()[m_option_fft_compute].as<bool>();
+    m_ov.m_fftCompute = m_env.allOptionsMap()[m_option_fft_compute].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_fft_paramId)) {
-    m_optionsValues.m_fftParamId = m_env.allOptionsMap()[m_option_fft_paramId].as<unsigned int>();
+    m_ov.m_fftParamId = m_env.allOptionsMap()[m_option_fft_paramId].as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_fft_size)) {
-    m_optionsValues.m_fftSize = m_env.allOptionsMap()[m_option_fft_size].as<unsigned int>();
+    m_ov.m_fftSize = m_env.allOptionsMap()[m_option_fft_size].as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_fft_testInversion)) {
-    m_optionsValues.m_fftTestInversion = m_env.allOptionsMap()[m_option_fft_testInversion].as<bool>();
+    m_ov.m_fftTestInversion = m_env.allOptionsMap()[m_option_fft_testInversion].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_fft_write)) {
-    m_optionsValues.m_fftWrite = m_env.allOptionsMap()[m_option_fft_write].as<bool>();
+    m_ov.m_fftWrite = m_env.allOptionsMap()[m_option_fft_write].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_psd_compute)) {
-    m_optionsValues.m_psdCompute = m_env.allOptionsMap()[m_option_psd_compute].as<bool>();
+    m_ov.m_psdCompute = m_env.allOptionsMap()[m_option_psd_compute].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_psd_numBlocks)) {
-    m_optionsValues.m_psdNumBlocks = m_env.allOptionsMap()[m_option_psd_numBlocks].as<unsigned int>();
+    m_ov.m_psdNumBlocks = m_env.allOptionsMap()[m_option_psd_numBlocks].as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_psd_hopSizeRatio)) {
-    m_optionsValues.m_psdHopSizeRatio = m_env.allOptionsMap()[m_option_psd_hopSizeRatio].as<double>();
+    m_ov.m_psdHopSizeRatio = m_env.allOptionsMap()[m_option_psd_hopSizeRatio].as<double>();
   }
 
   if (m_env.allOptionsMap().count(m_option_psd_paramId)) {
-    m_optionsValues.m_psdParamId = m_env.allOptionsMap()[m_option_psd_paramId].as<unsigned int>();
+    m_ov.m_psdParamId = m_env.allOptionsMap()[m_option_psd_paramId].as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_psd_write)) {
-    m_optionsValues.m_psdWrite = m_env.allOptionsMap()[m_option_psd_write].as<bool>();
+    m_ov.m_psdWrite = m_env.allOptionsMap()[m_option_psd_write].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_psdAtZero_compute)) {
-    m_optionsValues.m_psdAtZeroCompute = m_env.allOptionsMap()[m_option_psdAtZero_compute].as<bool>();
+    m_ov.m_psdAtZeroCompute = m_env.allOptionsMap()[m_option_psdAtZero_compute].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_psdAtZero_numBlocks)) {
-    m_optionsValues.m_psdAtZeroNumBlocks.clear();
+    m_ov.m_psdAtZeroNumBlocks.clear();
     std::vector<double> tmpNumBlocks(0,0.);
     std::string inputString = m_env.allOptionsMap()[m_option_psdAtZero_numBlocks].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpNumBlocks);
@@ -464,107 +465,107 @@ uqSequenceStatisticalOptionsClass::getMyOptionValues(
     //}
 
     if (tmpNumBlocks.size() > 0) {
-      m_optionsValues.m_psdAtZeroNumBlocks.resize(tmpNumBlocks.size(),0);
-      for (unsigned int i = 0; i < m_optionsValues.m_psdAtZeroNumBlocks.size(); ++i) {
-        m_optionsValues.m_psdAtZeroNumBlocks[i] = (unsigned int) tmpNumBlocks[i];
+      m_ov.m_psdAtZeroNumBlocks.resize(tmpNumBlocks.size(),0);
+      for (unsigned int i = 0; i < m_ov.m_psdAtZeroNumBlocks.size(); ++i) {
+        m_ov.m_psdAtZeroNumBlocks[i] = (unsigned int) tmpNumBlocks[i];
       }
     }
   }
 
   if (m_env.allOptionsMap().count(m_option_psdAtZero_hopSizeRatio)) {
-    m_optionsValues.m_psdAtZeroHopSizeRatio = m_env.allOptionsMap()[m_option_psdAtZero_hopSizeRatio].as<double>();
+    m_ov.m_psdAtZeroHopSizeRatio = m_env.allOptionsMap()[m_option_psdAtZero_hopSizeRatio].as<double>();
   }
 
   if (m_env.allOptionsMap().count(m_option_psdAtZero_display)) {
-    m_optionsValues.m_psdAtZeroDisplay = m_env.allOptionsMap()[m_option_psdAtZero_display].as<bool>();
+    m_ov.m_psdAtZeroDisplay = m_env.allOptionsMap()[m_option_psdAtZero_display].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_psdAtZero_write)) {
-    m_optionsValues.m_psdAtZeroWrite = m_env.allOptionsMap()[m_option_psdAtZero_write].as<bool>();
+    m_ov.m_psdAtZeroWrite = m_env.allOptionsMap()[m_option_psdAtZero_write].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_geweke_compute)) {
-    m_optionsValues.m_gewekeCompute = m_env.allOptionsMap()[m_option_geweke_compute].as<bool>();
+    m_ov.m_gewekeCompute = m_env.allOptionsMap()[m_option_geweke_compute].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_geweke_naRatio)) {
-    m_optionsValues.m_gewekeNaRatio = m_env.allOptionsMap()[m_option_geweke_naRatio].as<double>();
+    m_ov.m_gewekeNaRatio = m_env.allOptionsMap()[m_option_geweke_naRatio].as<double>();
   }
 
   if (m_env.allOptionsMap().count(m_option_geweke_nbRatio)) {
-    m_optionsValues.m_gewekeNbRatio = m_env.allOptionsMap()[m_option_geweke_nbRatio].as<double>();
+    m_ov.m_gewekeNbRatio = m_env.allOptionsMap()[m_option_geweke_nbRatio].as<double>();
   }
 
   if (m_env.allOptionsMap().count(m_option_geweke_display)) {
-    m_optionsValues.m_gewekeDisplay = m_env.allOptionsMap()[m_option_geweke_display].as<bool>();
+    m_ov.m_gewekeDisplay = m_env.allOptionsMap()[m_option_geweke_display].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_geweke_write)) {
-    m_optionsValues.m_gewekeWrite = m_env.allOptionsMap()[m_option_geweke_write].as<bool>();
+    m_ov.m_gewekeWrite = m_env.allOptionsMap()[m_option_geweke_write].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_autoCorr_computeViaDef)) {
-    m_optionsValues.m_autoCorrComputeViaDef = m_env.allOptionsMap()[m_option_autoCorr_computeViaDef].as<bool>();
+    m_ov.m_autoCorrComputeViaDef = m_env.allOptionsMap()[m_option_autoCorr_computeViaDef].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_autoCorr_computeViaFft)) {
-    m_optionsValues.m_autoCorrComputeViaFft = m_env.allOptionsMap()[m_option_autoCorr_computeViaFft].as<bool>();
+    m_ov.m_autoCorrComputeViaFft = m_env.allOptionsMap()[m_option_autoCorr_computeViaFft].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_autoCorr_secondLag)) {
-    m_optionsValues.m_autoCorrSecondLag = m_env.allOptionsMap()[m_option_autoCorr_secondLag].as<unsigned int>();
+    m_ov.m_autoCorrSecondLag = m_env.allOptionsMap()[m_option_autoCorr_secondLag].as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_autoCorr_lagSpacing)) {
-    m_optionsValues.m_autoCorrLagSpacing = m_env.allOptionsMap()[m_option_autoCorr_lagSpacing].as<unsigned int>();
+    m_ov.m_autoCorrLagSpacing = m_env.allOptionsMap()[m_option_autoCorr_lagSpacing].as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_autoCorr_numLags)) {
-    m_optionsValues.m_autoCorrNumLags = m_env.allOptionsMap()[m_option_autoCorr_numLags].as<unsigned int>();
+    m_ov.m_autoCorrNumLags = m_env.allOptionsMap()[m_option_autoCorr_numLags].as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_autoCorr_display)) {
-    m_optionsValues.m_autoCorrDisplay = m_env.allOptionsMap()[m_option_autoCorr_display].as<bool>();
+    m_ov.m_autoCorrDisplay = m_env.allOptionsMap()[m_option_autoCorr_display].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_autoCorr_write)) {
-    m_optionsValues.m_autoCorrWrite = m_env.allOptionsMap()[m_option_autoCorr_write].as<bool>();
+    m_ov.m_autoCorrWrite = m_env.allOptionsMap()[m_option_autoCorr_write].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_meanStacc_compute)) {
-    m_optionsValues.m_meanStaccCompute = m_env.allOptionsMap()[m_option_meanStacc_compute].as<bool>();
+    m_ov.m_meanStaccCompute = m_env.allOptionsMap()[m_option_meanStacc_compute].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_hist_compute)) {
-    m_optionsValues.m_histCompute = m_env.allOptionsMap()[m_option_hist_compute].as<bool>();
+    m_ov.m_histCompute = m_env.allOptionsMap()[m_option_hist_compute].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_hist_numInternalBins)) {
-    m_optionsValues.m_histNumInternalBins = m_env.allOptionsMap()[m_option_hist_numInternalBins].as<unsigned int>();
+    m_ov.m_histNumInternalBins = m_env.allOptionsMap()[m_option_hist_numInternalBins].as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_cdfStacc_compute)) {
-    m_optionsValues.m_cdfStaccCompute = m_env.allOptionsMap()[m_option_cdfStacc_compute].as<bool>();
+    m_ov.m_cdfStaccCompute = m_env.allOptionsMap()[m_option_cdfStacc_compute].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_cdfStacc_numEvalPositions)) {
-    m_optionsValues.m_cdfStaccNumEvalPositions = m_env.allOptionsMap()[m_option_cdfStacc_numEvalPositions].as<unsigned int>();
+    m_ov.m_cdfStaccNumEvalPositions = m_env.allOptionsMap()[m_option_cdfStacc_numEvalPositions].as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_kde_compute)) {
-    m_optionsValues.m_kdeCompute = m_env.allOptionsMap()[m_option_kde_compute].as<bool>();
+    m_ov.m_kdeCompute = m_env.allOptionsMap()[m_option_kde_compute].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_kde_numEvalPositions)) {
-    m_optionsValues.m_kdeNumEvalPositions = m_env.allOptionsMap()[m_option_kde_numEvalPositions].as<unsigned int>();
+    m_ov.m_kdeNumEvalPositions = m_env.allOptionsMap()[m_option_kde_numEvalPositions].as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_covMatrix_compute)) {
-    m_optionsValues.m_covMatrixCompute = m_env.allOptionsMap()[m_option_covMatrix_compute].as<bool>();
+    m_ov.m_covMatrixCompute = m_env.allOptionsMap()[m_option_covMatrix_compute].as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_corrMatrix_compute)) {
-    m_optionsValues.m_corrMatrixCompute = m_env.allOptionsMap()[m_option_corrMatrix_compute].as<bool>();
+    m_ov.m_corrMatrixCompute = m_env.allOptionsMap()[m_option_corrMatrix_compute].as<bool>();
   }
 
   return;
@@ -573,307 +574,307 @@ uqSequenceStatisticalOptionsClass::getMyOptionValues(
 const std::vector<double>&
 uqSequenceStatisticalOptionsClass::initialDiscardedPortions() const
 {
-  return m_optionsValues.m_initialDiscardedPortions;
+  return m_ov.m_initialDiscardedPortions;
 }
 
 unsigned int
 uqSequenceStatisticalOptionsClass::meanMonitorPeriod() const
 {
-  return m_optionsValues.m_meanMonitorPeriod;
+  return m_ov.m_meanMonitorPeriod;
 }
 
 bool
 uqSequenceStatisticalOptionsClass::bmmRun() const
 {
-  return m_optionsValues.m_bmmRun;
+  return m_ov.m_bmmRun;
 }
 
 const std::vector<unsigned int>&
 uqSequenceStatisticalOptionsClass::bmmLengths() const
 {
-  return m_optionsValues.m_bmmLengths;
+  return m_ov.m_bmmLengths;
 }
 
 bool
 uqSequenceStatisticalOptionsClass::bmmDisplay() const
 {
-  return m_optionsValues.m_bmmDisplay;
+  return m_ov.m_bmmDisplay;
 }
 
 bool
 uqSequenceStatisticalOptionsClass::bmmWrite() const
 {
-  return m_optionsValues.m_bmmWrite;
+  return m_ov.m_bmmWrite;
 }
 
 bool
 uqSequenceStatisticalOptionsClass::fftCompute() const
 {
-  return m_optionsValues.m_fftCompute;
+  return m_ov.m_fftCompute;
 }
 
 unsigned int
 uqSequenceStatisticalOptionsClass::fftParamId() const
 {
-  return m_optionsValues.m_fftParamId;
+  return m_ov.m_fftParamId;
 }
 
 unsigned int
 uqSequenceStatisticalOptionsClass::fftSize() const
 {
-  return m_optionsValues.m_fftSize;
+  return m_ov.m_fftSize;
 }
 
 bool
 uqSequenceStatisticalOptionsClass::fftTestInversion() const
 {
-  return m_optionsValues.m_fftTestInversion;
+  return m_ov.m_fftTestInversion;
 }
 
 bool
 uqSequenceStatisticalOptionsClass::fftWrite() const
 {
-  return m_optionsValues.m_fftWrite;
+  return m_ov.m_fftWrite;
 }
 
 bool
 uqSequenceStatisticalOptionsClass::psdCompute() const
 {
-  return m_optionsValues.m_psdCompute;
+  return m_ov.m_psdCompute;
 }
 
 unsigned int
 uqSequenceStatisticalOptionsClass::psdNumBlocks() const
 {
-  return m_optionsValues.m_psdNumBlocks;
+  return m_ov.m_psdNumBlocks;
 }
 
 double
 uqSequenceStatisticalOptionsClass::psdHopSizeRatio() const
 {
-  return m_optionsValues.m_psdHopSizeRatio;
+  return m_ov.m_psdHopSizeRatio;
 }
 
 unsigned int
 uqSequenceStatisticalOptionsClass::psdParamId() const
 {
-  return m_optionsValues.m_psdParamId;
+  return m_ov.m_psdParamId;
 }
 
 bool
 uqSequenceStatisticalOptionsClass::psdWrite() const
 {
-  return m_optionsValues.m_psdWrite;
+  return m_ov.m_psdWrite;
 }
 
 bool
 uqSequenceStatisticalOptionsClass::psdAtZeroCompute() const
 {
-  return m_optionsValues.m_psdAtZeroCompute;
+  return m_ov.m_psdAtZeroCompute;
 }
 
 const std::vector<unsigned int>&
 uqSequenceStatisticalOptionsClass::psdAtZeroNumBlocks() const
 {
-  return m_optionsValues.m_psdAtZeroNumBlocks;
+  return m_ov.m_psdAtZeroNumBlocks;
 }
 
 double
 uqSequenceStatisticalOptionsClass::psdAtZeroHopSizeRatio() const
 {
-  return m_optionsValues.m_psdAtZeroHopSizeRatio;
+  return m_ov.m_psdAtZeroHopSizeRatio;
 }
 
 bool
 uqSequenceStatisticalOptionsClass::psdAtZeroDisplay() const
 {
-  return m_optionsValues.m_psdAtZeroDisplay;
+  return m_ov.m_psdAtZeroDisplay;
 }
 
 bool
 uqSequenceStatisticalOptionsClass::psdAtZeroWrite() const
 {
-  return m_optionsValues.m_psdAtZeroWrite;
+  return m_ov.m_psdAtZeroWrite;
 }
 
 bool
 uqSequenceStatisticalOptionsClass::gewekeCompute() const
 {
-  return m_optionsValues.m_gewekeCompute;
+  return m_ov.m_gewekeCompute;
 }
 
 double
 uqSequenceStatisticalOptionsClass::gewekeNaRatio() const
 {
-  return m_optionsValues.m_gewekeNaRatio;
+  return m_ov.m_gewekeNaRatio;
 }
 
 double
 uqSequenceStatisticalOptionsClass::gewekeNbRatio() const
 {
-  return m_optionsValues.m_gewekeNbRatio;
+  return m_ov.m_gewekeNbRatio;
 }
 
 bool
 uqSequenceStatisticalOptionsClass::gewekeDisplay() const
 {
-  return m_optionsValues.m_gewekeDisplay;
+  return m_ov.m_gewekeDisplay;
 }
 
 bool
 uqSequenceStatisticalOptionsClass::gewekeWrite() const
 {
-  return m_optionsValues.m_gewekeWrite;
+  return m_ov.m_gewekeWrite;
 }
 
 bool
 uqSequenceStatisticalOptionsClass::autoCorrComputeViaDef() const
 {
-  return m_optionsValues.m_autoCorrComputeViaDef;
+  return m_ov.m_autoCorrComputeViaDef;
 }
 
 bool
 uqSequenceStatisticalOptionsClass::autoCorrComputeViaFft() const
 {
-  return m_optionsValues.m_autoCorrComputeViaFft;
+  return m_ov.m_autoCorrComputeViaFft;
 }
 
 unsigned int
 uqSequenceStatisticalOptionsClass::autoCorrSecondLag() const
 {
-  return m_optionsValues.m_autoCorrSecondLag;
+  return m_ov.m_autoCorrSecondLag;
 }
 
 unsigned int
 uqSequenceStatisticalOptionsClass::autoCorrLagSpacing() const
 {
-  return m_optionsValues.m_autoCorrLagSpacing;
+  return m_ov.m_autoCorrLagSpacing;
 }
 
 unsigned int
 uqSequenceStatisticalOptionsClass::autoCorrNumLags() const
 {
-  return m_optionsValues.m_autoCorrNumLags;
+  return m_ov.m_autoCorrNumLags;
 }
 
 bool
 uqSequenceStatisticalOptionsClass::autoCorrDisplay() const
 {
-  return m_optionsValues.m_autoCorrDisplay;
+  return m_ov.m_autoCorrDisplay;
 }
 
 bool
 uqSequenceStatisticalOptionsClass::autoCorrWrite() const
 {
-  return m_optionsValues.m_autoCorrWrite;
+  return m_ov.m_autoCorrWrite;
 }
 
 bool
 uqSequenceStatisticalOptionsClass::meanStaccCompute() const
 {
-  return m_optionsValues.m_meanStaccCompute;
+  return m_ov.m_meanStaccCompute;
 }
 
 bool
 uqSequenceStatisticalOptionsClass::histCompute() const
 {
-  return m_optionsValues.m_histCompute;
+  return m_ov.m_histCompute;
 }
 
 unsigned int
 uqSequenceStatisticalOptionsClass::histNumInternalBins() const
 {
-  return m_optionsValues.m_histNumInternalBins;
+  return m_ov.m_histNumInternalBins;
 }
 
 bool
 uqSequenceStatisticalOptionsClass::cdfStaccCompute() const
 {
-  return m_optionsValues.m_cdfStaccCompute;
+  return m_ov.m_cdfStaccCompute;
 }
 
 unsigned int
 uqSequenceStatisticalOptionsClass::cdfStaccNumEvalPositions() const
 {
-  return m_optionsValues.m_cdfStaccNumEvalPositions;
+  return m_ov.m_cdfStaccNumEvalPositions;
 }
 
 bool
 uqSequenceStatisticalOptionsClass::kdeCompute() const
 {
-  return m_optionsValues.m_kdeCompute;
+  return m_ov.m_kdeCompute;
 }
 
 unsigned int
 uqSequenceStatisticalOptionsClass::kdeNumEvalPositions() const
 {
-  return m_optionsValues.m_kdeNumEvalPositions;
+  return m_ov.m_kdeNumEvalPositions;
 }
 
 bool
 uqSequenceStatisticalOptionsClass::covMatrixCompute() const
 {
-  return m_optionsValues.m_covMatrixCompute;
+  return m_ov.m_covMatrixCompute;
 }
 
 bool
 uqSequenceStatisticalOptionsClass::corrMatrixCompute() const
 {
-  return m_optionsValues.m_corrMatrixCompute;
+  return m_ov.m_corrMatrixCompute;
 }
 
 void
 uqSequenceStatisticalOptionsClass::print(std::ostream& os) const
 {
   os << "\n" << m_option_initialDiscardedPortions << " = ";
-  for (unsigned int i = 0; i < m_optionsValues.m_initialDiscardedPortions.size(); ++i) {
-    os << m_optionsValues.m_initialDiscardedPortions[i] << " ";
+  for (unsigned int i = 0; i < m_ov.m_initialDiscardedPortions.size(); ++i) {
+    os << m_ov.m_initialDiscardedPortions[i] << " ";
   }
-  os << "\n" << m_option_mean_monitorPeriod << " = " << m_optionsValues.m_meanMonitorPeriod
-     << "\n" << m_option_bmm_run            << " = " << m_optionsValues.m_bmmRun
+  os << "\n" << m_option_mean_monitorPeriod << " = " << m_ov.m_meanMonitorPeriod
+     << "\n" << m_option_bmm_run            << " = " << m_ov.m_bmmRun
      << "\n" << m_option_bmm_lengths        << " = ";
-  for (unsigned int i = 0; i < m_optionsValues.m_bmmLengths.size(); ++i) {
-    os << m_optionsValues.m_bmmLengths[i] << " ";
+  for (unsigned int i = 0; i < m_ov.m_bmmLengths.size(); ++i) {
+    os << m_ov.m_bmmLengths[i] << " ";
   }
-  os << "\n" << m_option_fft_compute         << " = " << m_optionsValues.m_fftCompute
-     << "\n" << m_option_fft_paramId         << " = " << m_optionsValues.m_fftParamId
-     << "\n" << m_option_fft_size            << " = " << m_optionsValues.m_fftSize
-     << "\n" << m_option_fft_testInversion   << " = " << m_optionsValues.m_fftTestInversion
-     << "\n" << m_option_fft_write           << " = " << m_optionsValues.m_fftWrite
-     << "\n" << m_option_psd_compute         << " = " << m_optionsValues.m_psdCompute
-     << "\n" << m_option_psd_paramId         << " = " << m_optionsValues.m_psdParamId
-     << "\n" << m_option_psd_numBlocks       << " = " << m_optionsValues.m_psdNumBlocks
-     << "\n" << m_option_psd_hopSizeRatio    << " = " << m_optionsValues.m_psdHopSizeRatio
-     << "\n" << m_option_psd_write           << " = " << m_optionsValues.m_psdWrite
-     << "\n" << m_option_psdAtZero_compute   << " = " << m_optionsValues.m_psdAtZeroCompute
+  os << "\n" << m_option_fft_compute         << " = " << m_ov.m_fftCompute
+     << "\n" << m_option_fft_paramId         << " = " << m_ov.m_fftParamId
+     << "\n" << m_option_fft_size            << " = " << m_ov.m_fftSize
+     << "\n" << m_option_fft_testInversion   << " = " << m_ov.m_fftTestInversion
+     << "\n" << m_option_fft_write           << " = " << m_ov.m_fftWrite
+     << "\n" << m_option_psd_compute         << " = " << m_ov.m_psdCompute
+     << "\n" << m_option_psd_paramId         << " = " << m_ov.m_psdParamId
+     << "\n" << m_option_psd_numBlocks       << " = " << m_ov.m_psdNumBlocks
+     << "\n" << m_option_psd_hopSizeRatio    << " = " << m_ov.m_psdHopSizeRatio
+     << "\n" << m_option_psd_write           << " = " << m_ov.m_psdWrite
+     << "\n" << m_option_psdAtZero_compute   << " = " << m_ov.m_psdAtZeroCompute
      << "\n" << m_option_psdAtZero_numBlocks << " = ";
-  for (unsigned int i = 0; i < m_optionsValues.m_psdAtZeroNumBlocks.size(); ++i) {
-    os << m_optionsValues.m_psdAtZeroNumBlocks[i] << " ";
+  for (unsigned int i = 0; i < m_ov.m_psdAtZeroNumBlocks.size(); ++i) {
+    os << m_ov.m_psdAtZeroNumBlocks[i] << " ";
   }
-  os << "\n" << m_option_psdAtZero_hopSizeRatio    << " = " << m_optionsValues.m_psdAtZeroHopSizeRatio
-     << "\n" << m_option_psdAtZero_display         << " = " << m_optionsValues.m_psdAtZeroDisplay
-     << "\n" << m_option_psdAtZero_write           << " = " << m_optionsValues.m_psdAtZeroWrite
-     << "\n" << m_option_geweke_compute            << " = " << m_optionsValues.m_gewekeCompute
-     << "\n" << m_option_geweke_naRatio            << " = " << m_optionsValues.m_gewekeNaRatio
-     << "\n" << m_option_geweke_nbRatio            << " = " << m_optionsValues.m_gewekeNbRatio
-     << "\n" << m_option_geweke_display            << " = " << m_optionsValues.m_gewekeDisplay
-     << "\n" << m_option_geweke_write              << " = " << m_optionsValues.m_gewekeWrite
-     << "\n" << m_option_autoCorr_computeViaDef    << " = " << m_optionsValues.m_autoCorrComputeViaDef
-     << "\n" << m_option_autoCorr_computeViaFft    << " = " << m_optionsValues.m_autoCorrComputeViaFft
-     << "\n" << m_option_autoCorr_secondLag        << " = " << m_optionsValues.m_autoCorrSecondLag
-     << "\n" << m_option_autoCorr_lagSpacing       << " = " << m_optionsValues.m_autoCorrLagSpacing
-     << "\n" << m_option_autoCorr_numLags          << " = " << m_optionsValues.m_autoCorrNumLags
-     << "\n" << m_option_autoCorr_display          << " = " << m_optionsValues.m_autoCorrDisplay
-     << "\n" << m_option_autoCorr_write            << " = " << m_optionsValues.m_autoCorrWrite
-     << "\n" << m_option_meanStacc_compute         << " = " << m_optionsValues.m_meanStaccCompute
-     << "\n" << m_option_hist_compute              << " = " << m_optionsValues.m_histCompute
-     << "\n" << m_option_hist_numInternalBins      << " = " << m_optionsValues.m_histNumInternalBins
-     << "\n" << m_option_cdfStacc_compute          << " = " << m_optionsValues.m_cdfStaccCompute
-     << "\n" << m_option_cdfStacc_numEvalPositions << " = " << m_optionsValues.m_cdfStaccNumEvalPositions
-     << "\n" << m_option_kde_compute               << " = " << m_optionsValues.m_kdeCompute
-     << "\n" << m_option_kde_numEvalPositions      << " = " << m_optionsValues.m_kdeNumEvalPositions
-     << "\n" << m_option_covMatrix_compute         << " = " << m_optionsValues.m_covMatrixCompute
-     << "\n" << m_option_corrMatrix_compute        << " = " << m_optionsValues.m_corrMatrixCompute
+  os << "\n" << m_option_psdAtZero_hopSizeRatio    << " = " << m_ov.m_psdAtZeroHopSizeRatio
+     << "\n" << m_option_psdAtZero_display         << " = " << m_ov.m_psdAtZeroDisplay
+     << "\n" << m_option_psdAtZero_write           << " = " << m_ov.m_psdAtZeroWrite
+     << "\n" << m_option_geweke_compute            << " = " << m_ov.m_gewekeCompute
+     << "\n" << m_option_geweke_naRatio            << " = " << m_ov.m_gewekeNaRatio
+     << "\n" << m_option_geweke_nbRatio            << " = " << m_ov.m_gewekeNbRatio
+     << "\n" << m_option_geweke_display            << " = " << m_ov.m_gewekeDisplay
+     << "\n" << m_option_geweke_write              << " = " << m_ov.m_gewekeWrite
+     << "\n" << m_option_autoCorr_computeViaDef    << " = " << m_ov.m_autoCorrComputeViaDef
+     << "\n" << m_option_autoCorr_computeViaFft    << " = " << m_ov.m_autoCorrComputeViaFft
+     << "\n" << m_option_autoCorr_secondLag        << " = " << m_ov.m_autoCorrSecondLag
+     << "\n" << m_option_autoCorr_lagSpacing       << " = " << m_ov.m_autoCorrLagSpacing
+     << "\n" << m_option_autoCorr_numLags          << " = " << m_ov.m_autoCorrNumLags
+     << "\n" << m_option_autoCorr_display          << " = " << m_ov.m_autoCorrDisplay
+     << "\n" << m_option_autoCorr_write            << " = " << m_ov.m_autoCorrWrite
+     << "\n" << m_option_meanStacc_compute         << " = " << m_ov.m_meanStaccCompute
+     << "\n" << m_option_hist_compute              << " = " << m_ov.m_histCompute
+     << "\n" << m_option_hist_numInternalBins      << " = " << m_ov.m_histNumInternalBins
+     << "\n" << m_option_cdfStacc_compute          << " = " << m_ov.m_cdfStaccCompute
+     << "\n" << m_option_cdfStacc_numEvalPositions << " = " << m_ov.m_cdfStaccNumEvalPositions
+     << "\n" << m_option_kde_compute               << " = " << m_ov.m_kdeCompute
+     << "\n" << m_option_kde_numEvalPositions      << " = " << m_ov.m_kdeNumEvalPositions
+     << "\n" << m_option_covMatrix_compute         << " = " << m_ov.m_covMatrixCompute
+     << "\n" << m_option_corrMatrix_compute        << " = " << m_ov.m_corrMatrixCompute
      << std::endl;
 
   return;

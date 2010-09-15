@@ -85,6 +85,7 @@ uqEnvironmentOptionsClass::uqEnvironmentOptionsClass(
   const uqBaseEnvironmentClass& env,
   const char*                   prefix)
   :
+  m_ov                         (),
   m_env                        (env),
   m_prefix                     ((std::string)(prefix) + "env_"),
   m_optionsDesc                (new po::options_description("Environment options")),
@@ -103,9 +104,9 @@ uqEnvironmentOptionsClass::uqEnvironmentOptionsClass(
 uqEnvironmentOptionsClass::uqEnvironmentOptionsClass(
   const uqBaseEnvironmentClass&  env,
   const char*                    prefix,
-  const uqEnvOptionsValuesClass& optionsValues)
+  const uqEnvOptionsValuesClass& alternativeOptionsValues)
   :
-  m_optionsValues              (optionsValues),
+  m_ov                         (alternativeOptionsValues),
   m_env                        (env),
   m_prefix                     ((std::string)(prefix) + "env_"),
   m_optionsDesc                (NULL),
@@ -189,34 +190,34 @@ uqEnvironmentOptionsClass::getMyOptionValues(po::options_description& optionsDes
   }
 
   if (m_env.allOptionsMap().count(m_option_numSubEnvironments.c_str())) {
-    m_optionsValues.m_numSubEnvironments = m_env.allOptionsMap()[m_option_numSubEnvironments].as<unsigned int>();
+    m_ov.m_numSubEnvironments = m_env.allOptionsMap()[m_option_numSubEnvironments].as<unsigned int>();
   }
-  if ((m_env.fullComm().NumProc()%m_optionsValues.m_numSubEnvironments) != 0) {
+  if ((m_env.fullComm().NumProc()%m_ov.m_numSubEnvironments) != 0) {
     std::cerr << "In uqBaseEnvironmentClass::getMyOptionValues()"
               << ": m_env.fullComm().NumProc() = " << m_env.fullComm().NumProc()
-              << ", m_numSubEnvironments = "       << m_optionsValues.m_numSubEnvironments
+              << ", m_numSubEnvironments = "       << m_ov.m_numSubEnvironments
               << std::endl;
   }
-  UQ_FATAL_TEST_MACRO((m_env.fullComm().NumProc()%m_optionsValues.m_numSubEnvironments) != 0,
+  UQ_FATAL_TEST_MACRO((m_env.fullComm().NumProc()%m_ov.m_numSubEnvironments) != 0,
                       m_env.worldRank(),
                       "uqBaseEnvironmentClass::getMyOptionValues()",
                       "total number of processors in environment must be multiple of the specified number of subEnvironments");
 
   if (m_env.allOptionsMap().count(m_option_subDisplayFileName.c_str())) {
-    m_optionsValues.m_subDisplayFileName = m_env.allOptionsMap()[m_option_subDisplayFileName].as<std::string>();
+    m_ov.m_subDisplayFileName = m_env.allOptionsMap()[m_option_subDisplayFileName].as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_subDisplayAllowAll.c_str())) {
-    m_optionsValues.m_subDisplayAllowAll = m_env.allOptionsMap()[m_option_subDisplayAllowAll].as<bool>();
+    m_ov.m_subDisplayAllowAll = m_env.allOptionsMap()[m_option_subDisplayAllowAll].as<bool>();
   }
 
-  if (m_optionsValues.m_subDisplayAllowAll) {
-    m_optionsValues.m_subDisplayAllowedSet.clear();
+  if (m_ov.m_subDisplayAllowAll) {
+    m_ov.m_subDisplayAllowedSet.clear();
     // The line below is commented because 'm_subId' is not set at this point yet
     //m_subDisplayAllowedSet.insert((unsigned int) m_subId);
   }
   else if (m_env.allOptionsMap().count(m_option_subDisplayAllowedSet.c_str())) {
-    m_optionsValues.m_subDisplayAllowedSet.clear();
+    m_ov.m_subDisplayAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
     std::string inputString = m_env.allOptionsMap()[m_option_subDisplayAllowedSet].as<std::string>();
     uqMiscReadDoublesFromString(inputString,tmpAllow);
@@ -230,25 +231,25 @@ uqEnvironmentOptionsClass::getMyOptionValues(po::options_description& optionsDes
 
     if (tmpAllow.size() > 0) {
       for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
-        m_optionsValues.m_subDisplayAllowedSet.insert((unsigned int) tmpAllow[i]);
+        m_ov.m_subDisplayAllowedSet.insert((unsigned int) tmpAllow[i]);
       }
     }
   }
 
   if (m_env.allOptionsMap().count(m_option_displayVerbosity.c_str())) {
-    m_optionsValues.m_displayVerbosity = m_env.allOptionsMap()[m_option_displayVerbosity].as<unsigned int>();
+    m_ov.m_displayVerbosity = m_env.allOptionsMap()[m_option_displayVerbosity].as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_syncVerbosity.c_str())) {
-    m_optionsValues.m_syncVerbosity = m_env.allOptionsMap()[m_option_syncVerbosity].as<unsigned int>();
+    m_ov.m_syncVerbosity = m_env.allOptionsMap()[m_option_syncVerbosity].as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_seed.c_str())) {
-    m_optionsValues.m_seed = m_env.allOptionsMap()[m_option_seed].as<int>();
+    m_ov.m_seed = m_env.allOptionsMap()[m_option_seed].as<int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_identifyingString.c_str())) {
-    m_optionsValues.m_identifyingString = m_env.allOptionsMap()[m_option_identifyingString].as<std::string>();
+    m_ov.m_identifyingString = m_env.allOptionsMap()[m_option_identifyingString].as<std::string>();
   }
 
   //if (m_env.allOptionsMap().count(m_option_numDebugParams.c_str())) {
@@ -265,18 +266,18 @@ uqEnvironmentOptionsClass::getMyOptionValues(po::options_description& optionsDes
 void
 uqEnvironmentOptionsClass::print(std::ostream& os) const
 {
-  os <<         m_option_numSubEnvironments   << " = " << m_optionsValues.m_numSubEnvironments
-     << "\n" << m_option_subDisplayFileName   << " = " << m_optionsValues.m_subDisplayFileName
-     << "\n" << m_option_subDisplayAllowAll   << " = " << m_optionsValues.m_subDisplayAllowAll
+  os <<         m_option_numSubEnvironments   << " = " << m_ov.m_numSubEnvironments
+     << "\n" << m_option_subDisplayFileName   << " = " << m_ov.m_subDisplayFileName
+     << "\n" << m_option_subDisplayAllowAll   << " = " << m_ov.m_subDisplayAllowAll
      << "\n" << m_option_subDisplayAllowedSet << " = ";
-  for (std::set<unsigned int>::iterator setIt = m_optionsValues.m_subDisplayAllowedSet.begin(); setIt != m_optionsValues.m_subDisplayAllowedSet.end(); ++setIt) {
+  for (std::set<unsigned int>::iterator setIt = m_ov.m_subDisplayAllowedSet.begin(); setIt != m_ov.m_subDisplayAllowedSet.end(); ++setIt) {
     os << *setIt << " ";
   }
-  os << "\n" << m_option_displayVerbosity  << " = " << m_optionsValues.m_displayVerbosity
-     << "\n" << m_option_syncVerbosity     << " = " << m_optionsValues.m_syncVerbosity
-     << "\n" << m_option_seed              << " = " << m_optionsValues.m_seed
-     << "\n" << m_option_identifyingString << " = " << m_optionsValues.m_identifyingString
-   //<< "\n" << m_option_numDebugParams    << " = " << m_optionsValues.m_numDebugParams
+  os << "\n" << m_option_displayVerbosity  << " = " << m_ov.m_displayVerbosity
+     << "\n" << m_option_syncVerbosity     << " = " << m_ov.m_syncVerbosity
+     << "\n" << m_option_seed              << " = " << m_ov.m_seed
+     << "\n" << m_option_identifyingString << " = " << m_ov.m_identifyingString
+   //<< "\n" << m_option_numDebugParams    << " = " << m_ov.m_numDebugParams
      << std::endl;
   return;
 }

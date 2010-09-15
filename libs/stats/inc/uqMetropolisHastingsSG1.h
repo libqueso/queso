@@ -54,8 +54,8 @@ struct uqMHRawChainInfoStruct
   uqMHRawChainInfoStruct& operator= (const uqMHRawChainInfoStruct& rhs);
   uqMHRawChainInfoStruct& operator+=(const uqMHRawChainInfoStruct& rhs);
 
-  void copy (const uqMHRawChainInfoStruct& src);
-  void reset();
+  void copy  (const uqMHRawChainInfoStruct& src);
+  void reset ();
   void mpiSum(const MPI_Comm& comm, uqMHRawChainInfoStruct& sumInfo) const;
 
   double       runTime;
@@ -81,11 +81,11 @@ class uqMetropolisHastingsSGClass
 {
 public:
   uqMetropolisHastingsSGClass(const char*                         prefix,
-                              const uqMhOptionsValuesClass*       optionsValues, // dakota
+                              const uqMhOptionsValuesClass*       alternativeOptionsValues, // dakota
                               const uqBaseVectorRVClass<P_V,P_M>& sourceRv,
                               const P_V&                          initialPosition,
                               const P_M*                          inputProposalCovMatrix);
-  uqMetropolisHastingsSGClass(const uqMLSamplingLevelOptionsClass& inputOptions,
+  uqMetropolisHastingsSGClass(const uqMLSamplingLevelOptionsClass& mlOptions,
                               const uqBaseVectorRVClass<P_V,P_M>&  sourceRv,
                               const P_V&                           initialPosition,
                               const P_M*                           inputProposalCovMatrix);
@@ -149,7 +149,7 @@ private:
 
         uqMHRawChainInfoStruct                      m_rawChainInfo;
 
-        uqMhOptionsValuesClass*                     m_optionsValues;
+        uqMhOptionsValuesClass                      m_alternativeOptionsValues;
         uqMetropolisHastingsSGOptionsClass*         m_optionsObj;
 };
 
@@ -176,7 +176,7 @@ std::ostream& operator<<(std::ostream& os, const uqMetropolisHastingsSGClass<P_V
 template<class P_V,class P_M>
 uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
   /*! Prefix                     */ const char*                         prefix,
-  /*! Options (if no input file) */ const uqMhOptionsValuesClass*       optionsValues, // dakota
+  /*! Options (if no input file) */ const uqMhOptionsValuesClass*       alternativeOptionsValues, // dakota
   /*! The source rv              */ const uqBaseVectorRVClass<P_V,P_M>& sourceRv,
   /*! Initial chain position     */ const P_V&                          initialPosition,
   /*! Proposal cov. matrix       */ const P_M*                          inputProposalCovMatrix)
@@ -197,12 +197,12 @@ uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
   m_lastChainSize             (0),
   m_lastMean                  (NULL),
   m_lastAdaptedCovMatrix      (NULL),
-  m_optionsValues             (new uqMhOptionsValuesClass(NULL,NULL)),
+  m_alternativeOptionsValues  (NULL,NULL),
   m_optionsObj                (NULL)
 {
-  if (optionsValues) *m_optionsValues = *optionsValues;
+  if (alternativeOptionsValues) m_alternativeOptionsValues = *alternativeOptionsValues;
   if (m_env.optionsInputFileName() == "") {
-    m_optionsObj = new uqMetropolisHastingsSGOptionsClass(m_env,prefix,*m_optionsValues);
+    m_optionsObj = new uqMetropolisHastingsSGOptionsClass(m_env,prefix,m_alternativeOptionsValues);
   }
   else {
     m_optionsObj = new uqMetropolisHastingsSGOptionsClass(m_env,prefix);
@@ -210,7 +210,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
   }
 
   if ((m_env.subDisplayFile()                              ) &&
-      (m_optionsObj->m_optionsValues.m_totallyMute == false)) {
+      (m_optionsObj->m_ov.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "Entering uqMetropolisHastingsSGClass<P_V,P_M>::constructor(1)"
                             << std::endl;
   }
@@ -234,7 +234,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
   commonConstructor();
 
   if ((m_env.subDisplayFile()                              ) &&
-      (m_optionsObj->m_optionsValues.m_totallyMute == false)) {
+      (m_optionsObj->m_ov.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "Leaving uqMetropolisHastingsSGClass<P_V,P_M>::constructor(1)"
                             << std::endl;
   }
@@ -242,7 +242,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
 
 template<class P_V,class P_M>
 uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
-  const uqMLSamplingLevelOptionsClass& inputOptions,
+  const uqMLSamplingLevelOptionsClass& mlOptions,
   const uqBaseVectorRVClass<P_V,P_M>&  sourceRv,
   const P_V&                           initialPosition,
   const P_M*                           inputProposalCovMatrix)
@@ -263,10 +263,11 @@ uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
   m_lastChainSize             (0),
   m_lastMean                  (NULL),
   m_lastAdaptedCovMatrix      (NULL),
-  m_optionsObj                (new uqMetropolisHastingsSGOptionsClass(inputOptions))
+  m_alternativeOptionsValues  (NULL,NULL),
+  m_optionsObj                (new uqMetropolisHastingsSGOptionsClass(mlOptions))
 {
   if ((m_env.subDisplayFile()                              ) &&
-      (m_optionsObj->m_optionsValues.m_totallyMute == false)) {
+      (m_optionsObj->m_ov.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "Entering uqMetropolisHastingsSGClass<P_V,P_M>::constructor(2)"
                             << std::endl;
   }
@@ -274,7 +275,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
   commonConstructor();
 
   if ((m_env.subDisplayFile()                              ) &&
-      (m_optionsObj->m_optionsValues.m_totallyMute == false)) {
+      (m_optionsObj->m_ov.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "Leaving uqMetropolisHastingsSGClass<P_V,P_M>::constructor(2)"
                             << std::endl;
   }
@@ -288,22 +289,22 @@ uqMetropolisHastingsSGClass<P_V,P_M>::commonConstructor()
   // Instantiate the appropriate TK (transition kernel)
   /////////////////////////////////////////////////////////////////
   if ((m_env.subDisplayFile()                              ) &&
-      (m_optionsObj->m_optionsValues.m_totallyMute == false)) {
+      (m_optionsObj->m_ov.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::constructor()"
                             << ": running with UQ_USES_TK_CLASS flag defined"
                             << std::endl;
   }
-  std::vector<double> drScalesAll(m_optionsObj->m_optionsValues.m_drScalesForExtraStages.size()+1,1.);
-  for (unsigned int i = 1; i < (m_optionsObj->m_optionsValues.m_drScalesForExtraStages.size()+1); ++i) {
-    drScalesAll[i] = m_optionsObj->m_optionsValues.m_drScalesForExtraStages[i-1];
+  std::vector<double> drScalesAll(m_optionsObj->m_ov.m_drScalesForExtraStages.size()+1,1.);
+  for (unsigned int i = 1; i < (m_optionsObj->m_ov.m_drScalesForExtraStages.size()+1); ++i) {
+    drScalesAll[i] = m_optionsObj->m_ov.m_drScalesForExtraStages[i-1];
   }
-  if (m_optionsObj->m_optionsValues.m_tkUseLocalHessian) {
+  if (m_optionsObj->m_ov.m_tkUseLocalHessian) {
     m_tk = new uqHessianCovMatricesTKGroupClass<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
                                                          m_vectorSpace,
                                                          drScalesAll,
                                                          *m_targetPdfSynchronizer);
     if ((m_env.subDisplayFile()                              ) &&
-        (m_optionsObj->m_optionsValues.m_totallyMute == false)) {
+        (m_optionsObj->m_ov.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::constructor()"
                               << ": just instantiated a 'HessianCovMatrices' TK class"
                               << std::endl;
@@ -320,7 +321,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::commonConstructor()
                                                       drScalesAll,
                                                       *m_initialProposalCovMatrix);
     if ((m_env.subDisplayFile()                              ) &&
-        (m_optionsObj->m_optionsValues.m_totallyMute == false)) {
+        (m_optionsObj->m_ov.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::constructor()"
                               << ": just instantiated a 'ScaledCovMatrix' TK class"
                               << std::endl;
@@ -410,7 +411,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
         alphaQuotient = std::exp(yLogTargetToUse - x.logTarget());
         if ((m_env.subDisplayFile()                              ) &&
             (m_env.displayVerbosity() >= 10                      ) &&
-            (m_optionsObj->m_optionsValues.m_totallyMute == false)) {
+            (m_optionsObj->m_ov.m_totallyMute == false)) {
           *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::alpha(x,y)"
                                  << ": symmetric proposal case"
                                  << ", x = "               << x.vecValues()
@@ -429,7 +430,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
 #endif
         if ((m_env.subDisplayFile()                              ) &&
             (m_env.displayVerbosity() >= 10                      ) &&
-            (m_optionsObj->m_optionsValues.m_totallyMute == false)) {
+            (m_optionsObj->m_ov.m_totallyMute == false)) {
           const uqGaussianJointPdfClass<P_V,P_M>* pdfYX = dynamic_cast< const uqGaussianJointPdfClass<P_V,P_M>* >(&(m_tk->rv(yStageId).pdf()));
           *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::alpha(x,y)"
                                  << ", rvYX.lawExpVector = " << pdfYX->lawExpVector()
@@ -444,7 +445,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
 #endif
         if ((m_env.subDisplayFile()                              ) &&
             (m_env.displayVerbosity() >= 10                      ) &&
-            (m_optionsObj->m_optionsValues.m_totallyMute == false)) {
+            (m_optionsObj->m_ov.m_totallyMute == false)) {
           const uqGaussianJointPdfClass<P_V,P_M>* pdfXY = dynamic_cast< const uqGaussianJointPdfClass<P_V,P_M>* >(&(m_tk->rv(xStageId).pdf()));
           *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::alpha(x,y)"
                                  << ", rvXY.lawExpVector = " << pdfXY->lawExpVector()
@@ -458,7 +459,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
                                  qxy);
         if ((m_env.subDisplayFile()                              ) &&
             (m_env.displayVerbosity() >= 10                      ) &&
-            (m_optionsObj->m_optionsValues.m_totallyMute == false)) {
+            (m_optionsObj->m_ov.m_totallyMute == false)) {
           *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::alpha(x,y)"
                                  << ": unsymmetric proposal case"
                                  << ", xStageId = "        << xStageId
@@ -478,7 +479,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
   else {
     if ((m_env.subDisplayFile()                              ) &&
         (m_env.displayVerbosity() >= 10                      ) &&
-        (m_optionsObj->m_optionsValues.m_totallyMute == false)) {
+        (m_optionsObj->m_ov.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::alpha(x,y)"
                              << ": x.outOfTargetSupport = " << x.outOfTargetSupport()
                              << ", y.outOfTargetSupport = " << y.outOfTargetSupport()
@@ -499,7 +500,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
   unsigned int inputSize = inputPositionsData.size();
   if ((m_env.subDisplayFile()                              ) &&
       (m_env.displayVerbosity() >= 10                      ) &&
-      (m_optionsObj->m_optionsValues.m_totallyMute == false)) {
+      (m_optionsObj->m_ov.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "Entering uqMetropolisHastingsSGClass<P_V,P_M>::alpha(vec)"
                            << ", inputSize = " << inputSize
                            << std::endl;
@@ -599,7 +600,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
 #endif
   if ((m_env.subDisplayFile()                              ) &&
       (m_env.displayVerbosity() >= 10                      ) &&
-      (m_optionsObj->m_optionsValues.m_totallyMute == false)) {
+      (m_optionsObj->m_ov.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::alpha(vec)"
                            << ", inputSize = "  << inputSize
                            << ", before loop"
@@ -632,7 +633,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
 #endif
     if ((m_env.subDisplayFile()                              ) &&
         (m_env.displayVerbosity() >= 10                      ) &&
-        (m_optionsObj->m_optionsValues.m_totallyMute == false)) {
+        (m_optionsObj->m_ov.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::alpha(vec)"
                              << ", inputSize = "  << inputSize
                              << ", in loop, i = " << i
@@ -652,7 +653,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
   denContrib = positionsData[0]->logTarget();
   if ((m_env.subDisplayFile()                              ) &&
       (m_env.displayVerbosity() >= 10                      ) &&
-      (m_optionsObj->m_optionsValues.m_totallyMute == false)) {
+      (m_optionsObj->m_ov.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::alpha(vec)"
                            << ", inputSize = "  << inputSize
                            << ", after loop"
@@ -665,7 +666,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
 
   if ((m_env.subDisplayFile()                              ) &&
       (m_env.displayVerbosity() >= 10                      ) &&
-      (m_optionsObj->m_optionsValues.m_totallyMute == false)) {
+      (m_optionsObj->m_ov.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "Leaving uqMetropolisHastingsSGClass<P_V,P_M>::alpha(vec)"
                            << ", inputSize = "         << inputSize
                            << ": alphasNumerator = "   << alphasNumerator
@@ -700,7 +701,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::writeInfo(
   std::ofstream&                            ofsvar) const
 {
   if ((m_env.subDisplayFile()                              ) &&
-      (m_optionsObj->m_optionsValues.m_totallyMute == false)) {
+      (m_optionsObj->m_ov.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "\n"
                             << "\n-----------------------------------------------------"
                             << "\n Writing more information about the Markov chain " << workingChain.name() << " to output file ..."
@@ -711,7 +712,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::writeInfo(
 
   int iRC = UQ_OK_RC;
 
-  if (m_optionsObj->m_optionsValues.m_rawChainGenerateExtra) {
+  if (m_optionsObj->m_ov.m_rawChainGenerateExtra) {
     // Write m_logTargets
     ofsvar << m_optionsObj->m_prefix << "logTargets_sub" << m_env.subIdString() << " = zeros(" << m_logTargets.size()
            << ","                    << 1
@@ -760,7 +761,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::writeInfo(
   }
 
   if ((m_env.subDisplayFile()                              ) &&
-      (m_optionsObj->m_optionsValues.m_totallyMute == false)) {
+      (m_optionsObj->m_ov.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "\n-----------------------------------------------------"
                             << "\n Finished writing more information about the Markov chain " << workingChain.name()
                             << "\n-----------------------------------------------------"

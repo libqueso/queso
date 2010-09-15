@@ -33,7 +33,7 @@
 #ifndef __EX_TGA_VALIDATION_CYCLE_APPL_H__
 #define __EX_TGA_VALIDATION_CYCLE_APPL_H__
 
-#undef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
+#define UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 
 #include <exTgaValidationCycle_likelihood.h>
 #include <exTgaValidationCycle_qoi.h>
@@ -158,13 +158,13 @@ uqAppl(const uqBaseEnvironmentClass& env)
     calPriorRv.realizer().realization(paramInitialValues);
   }
 
-  uqSsOptionsValuesClass ssOptionsValues1;
-  uqSsOptionsValuesClass ssOptionsValues2;
-
   uqMhOptionsValuesClass* calIpMhOptionsValues = NULL;
   P_M* calProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newProposalMatrix(NULL,&paramInitialValues);
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 #else
+  uqSsOptionsValuesClass ssOptionsValues1;
+  uqSsOptionsValuesClass ssOptionsValues2;
+
   ssOptionsValues1.m_initialDiscardedPortions.resize(9);
   ssOptionsValues1.m_initialDiscardedPortions[0] = 0.;
   ssOptionsValues1.m_initialDiscardedPortions[1] = 0.05;
@@ -291,7 +291,44 @@ uqAppl(const uqBaseEnvironmentClass& env)
   uqMcOptionsValuesClass* calFpMcOptionsValues = NULL;
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 #else
-  calFpMcOptionsValues = new uqMcOptionsValuesClass(NULL,NULL);
+  uqSsOptionsValuesClass ssOptionsValues3;
+  uqSsOptionsValuesClass ssOptionsValues4;
+
+  ssOptionsValues3.m_initialDiscardedPortions.resize(1);
+  ssOptionsValues3.m_initialDiscardedPortions[0] = 0.;
+  ssOptionsValues3.m_meanStaccCompute            = false;
+  ssOptionsValues3.m_histCompute                 = true;
+  ssOptionsValues3.m_histNumInternalBins         = 250;
+  ssOptionsValues3.m_cdfStaccCompute             = false;
+  ssOptionsValues3.m_kdeCompute                  = true;
+  ssOptionsValues3.m_kdeNumEvalPositions         = 250;
+  ssOptionsValues3.m_covMatrixCompute            = true;
+  ssOptionsValues3.m_corrMatrixCompute           = true;
+
+  ssOptionsValues4.m_initialDiscardedPortions.resize(1);
+  ssOptionsValues4.m_initialDiscardedPortions[0] = 0.;
+  ssOptionsValues4.m_bmmRun                      = false;
+  ssOptionsValues4.m_fftCompute                  = false;
+  ssOptionsValues4.m_psdCompute                  = false;
+  ssOptionsValues4.m_psdAtZeroCompute            = false;
+  ssOptionsValues4.m_gewekeCompute               = false;
+  ssOptionsValues4.m_autoCorrComputeViaDef       = false;
+  ssOptionsValues4.m_autoCorrComputeViaFft       = true;
+  ssOptionsValues4.m_autoCorrSecondLag           = 2;
+  ssOptionsValues4.m_autoCorrLagSpacing          = 1;
+  ssOptionsValues4.m_autoCorrNumLags             = 15;
+  ssOptionsValues4.m_autoCorrDisplay             = true;
+  ssOptionsValues4.m_autoCorrWrite               = true;
+  ssOptionsValues4.m_meanStaccCompute            = false;
+  ssOptionsValues4.m_histCompute                 = true;
+  ssOptionsValues4.m_histNumInternalBins         = 250;
+  ssOptionsValues4.m_cdfStaccCompute             = false;
+  ssOptionsValues4.m_kdeCompute                  = true;
+  ssOptionsValues4.m_kdeNumEvalPositions         = 250;
+  ssOptionsValues4.m_covMatrixCompute            = true;
+  ssOptionsValues4.m_corrMatrixCompute           = true;
+
+  calFpMcOptionsValues = new uqMcOptionsValuesClass(&ssOptionsValues3,&ssOptionsValues4);
   calFpMcOptionsValues->m_dataOutputFileName   = "outputData/tgaCalOutput";
   calFpMcOptionsValues->m_dataOutputAllowedSet.insert(0);
   calFpMcOptionsValues->m_dataOutputAllowedSet.insert(1);
@@ -366,7 +403,66 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                                                                                 &tmpRealizer->unifiedSampleExpVector()); // Use these values as the initial values
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 #else
-  valIpMhOptionsValues = new uqMhOptionsValuesClass(NULL,NULL);
+  uqSsOptionsValuesClass ssOptionsValues5;
+  uqSsOptionsValuesClass ssOptionsValues6;
+
+  ssOptionsValues5.m_initialDiscardedPortions.resize(9);
+  ssOptionsValues5.m_initialDiscardedPortions[0] = 0.;
+  ssOptionsValues5.m_initialDiscardedPortions[1] = 0.05;
+  ssOptionsValues5.m_initialDiscardedPortions[2] = 0.10;
+  ssOptionsValues5.m_initialDiscardedPortions[3] = 0.15;
+  ssOptionsValues5.m_initialDiscardedPortions[4] = 0.20;
+  ssOptionsValues5.m_initialDiscardedPortions[5] = 0.25;
+  ssOptionsValues5.m_initialDiscardedPortions[6] = 0.30;
+  ssOptionsValues5.m_initialDiscardedPortions[7] = 0.35;
+  ssOptionsValues5.m_initialDiscardedPortions[8] = 0.40;
+  ssOptionsValues5.m_bmmRun                      = false;
+  ssOptionsValues5.m_fftCompute                  = false;
+  ssOptionsValues5.m_psdCompute                  = false;
+  ssOptionsValues5.m_psdAtZeroCompute            = false;
+  ssOptionsValues5.m_gewekeCompute               = true;
+  ssOptionsValues5.m_gewekeNaRatio               = .1;
+  ssOptionsValues5.m_gewekeNbRatio               = .5;
+  ssOptionsValues5.m_gewekeDisplay               = true;
+  ssOptionsValues5.m_gewekeWrite                 = true;
+  ssOptionsValues5.m_autoCorrComputeViaDef       = false;
+  ssOptionsValues5.m_autoCorrComputeViaFft       = true;
+  ssOptionsValues5.m_autoCorrSecondLag           = 2;
+  ssOptionsValues5.m_autoCorrLagSpacing          = 2;
+  ssOptionsValues5.m_autoCorrNumLags             = 15;
+  ssOptionsValues5.m_autoCorrDisplay             = true;
+  ssOptionsValues5.m_autoCorrWrite               = true;
+  ssOptionsValues5.m_meanStaccCompute            = false;
+  ssOptionsValues5.m_histCompute                 = false;
+  ssOptionsValues5.m_cdfStaccCompute             = false;
+  ssOptionsValues5.m_kdeCompute                  = false;
+  ssOptionsValues5.m_covMatrixCompute            = true;
+  ssOptionsValues5.m_corrMatrixCompute           = true;
+
+  ssOptionsValues6.m_initialDiscardedPortions.resize(1);
+  ssOptionsValues6.m_initialDiscardedPortions[0] = 0.;
+  ssOptionsValues6.m_bmmRun                      = false;
+  ssOptionsValues6.m_fftCompute                  = false;
+  ssOptionsValues6.m_psdCompute                  = false;
+  ssOptionsValues6.m_psdAtZeroCompute            = false;
+  ssOptionsValues6.m_gewekeCompute               = false;
+  ssOptionsValues6.m_autoCorrComputeViaDef       = false;
+  ssOptionsValues6.m_autoCorrComputeViaFft       = true;
+  ssOptionsValues6.m_autoCorrSecondLag           = 2;
+  ssOptionsValues6.m_autoCorrLagSpacing          = 2;
+  ssOptionsValues6.m_autoCorrNumLags             = 15;
+  ssOptionsValues6.m_autoCorrDisplay             = true;
+  ssOptionsValues6.m_autoCorrWrite               = true;
+  ssOptionsValues6.m_meanStaccCompute            = false;
+  ssOptionsValues6.m_histCompute                 = true;
+  ssOptionsValues6.m_histNumInternalBins         = 250;
+  ssOptionsValues6.m_cdfStaccCompute             = false;
+  ssOptionsValues6.m_kdeCompute                  = true;
+  ssOptionsValues6.m_kdeNumEvalPositions         = 250;
+  ssOptionsValues6.m_covMatrixCompute            = true;
+  ssOptionsValues6.m_corrMatrixCompute           = true;
+
+  valIpMhOptionsValues = new uqMhOptionsValuesClass(&ssOptionsValues5,&ssOptionsValues6);
   valIpMhOptionsValues->m_dataOutputFileName   = "outputData/tgaValOutput";
   valIpMhOptionsValues->m_dataOutputAllowedSet.insert(0);
   valIpMhOptionsValues->m_dataOutputAllowedSet.insert(1);
@@ -432,7 +528,44 @@ uqAppl(const uqBaseEnvironmentClass& env)
   uqMcOptionsValuesClass* valFpMcOptionsValues = NULL;
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 #else
-  valFpMcOptionsValues = new uqMcOptionsValuesClass(NULL,NULL);
+  uqSsOptionsValuesClass ssOptionsValues7;
+  uqSsOptionsValuesClass ssOptionsValues8;
+
+  ssOptionsValues7.m_initialDiscardedPortions.resize(1);
+  ssOptionsValues7.m_initialDiscardedPortions[0] = 0.;
+  ssOptionsValues7.m_meanStaccCompute            = false;
+  ssOptionsValues7.m_histCompute                 = true;
+  ssOptionsValues7.m_histNumInternalBins         = 250;
+  ssOptionsValues7.m_cdfStaccCompute             = false;
+  ssOptionsValues7.m_kdeCompute                  = true;
+  ssOptionsValues7.m_kdeNumEvalPositions         = 250;
+  ssOptionsValues7.m_covMatrixCompute            = true;
+  ssOptionsValues7.m_corrMatrixCompute           = true;
+
+  ssOptionsValues8.m_initialDiscardedPortions.resize(1);
+  ssOptionsValues8.m_initialDiscardedPortions[0] = 0.;
+  ssOptionsValues8.m_bmmRun                      = false;
+  ssOptionsValues8.m_fftCompute                  = false;
+  ssOptionsValues8.m_psdCompute                  = false;
+  ssOptionsValues8.m_psdAtZeroCompute            = false;
+  ssOptionsValues8.m_gewekeCompute               = false;
+  ssOptionsValues8.m_autoCorrComputeViaDef       = false;
+  ssOptionsValues8.m_autoCorrComputeViaFft       = true;
+  ssOptionsValues8.m_autoCorrSecondLag           = 2;
+  ssOptionsValues8.m_autoCorrLagSpacing          = 1;
+  ssOptionsValues8.m_autoCorrNumLags             = 15;
+  ssOptionsValues8.m_autoCorrDisplay             = true;
+  ssOptionsValues8.m_autoCorrWrite               = true;
+  ssOptionsValues8.m_meanStaccCompute            = false;
+  ssOptionsValues8.m_histCompute                 = true;
+  ssOptionsValues8.m_histNumInternalBins         = 250;
+  ssOptionsValues8.m_cdfStaccCompute             = false;
+  ssOptionsValues8.m_kdeCompute                  = true;
+  ssOptionsValues8.m_kdeNumEvalPositions         = 250;
+  ssOptionsValues8.m_covMatrixCompute            = true;
+  ssOptionsValues8.m_corrMatrixCompute           = true;
+
+  valFpMcOptionsValues = new uqMcOptionsValuesClass(&ssOptionsValues7,&ssOptionsValues8);
   valFpMcOptionsValues->m_dataOutputFileName   = "outputData/tgaValOutput";
   valFpMcOptionsValues->m_dataOutputAllowedSet.insert(0);
   valFpMcOptionsValues->m_dataOutputAllowedSet.insert(1);

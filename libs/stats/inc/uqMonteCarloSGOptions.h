@@ -60,8 +60,8 @@
 class uqMcOptionsValuesClass
 {
 public:
-  uqMcOptionsValuesClass            (const uqSsOptionsValuesClass* pSsOptionsValues,
-                                     const uqSsOptionsValuesClass* qSsOptionsValues);
+  uqMcOptionsValuesClass            (const uqSsOptionsValuesClass* alternativePSsOptionsValues,
+                                     const uqSsOptionsValuesClass* alternativeQSsOptionsValues);
   uqMcOptionsValuesClass            (const uqMcOptionsValuesClass& src);
   uqMcOptionsValuesClass& operator= (const uqMcOptionsValuesClass& rhs);
  ~uqMcOptionsValuesClass            ();
@@ -73,7 +73,6 @@ public:
   std::string                        m_pseqDataOutputFileType;
   std::set<unsigned int>             m_pseqDataOutputAllowedSet;
   bool                               m_pseqComputeStats;
-  uqSsOptionsValuesClass             m_pseqStatisticalOptionsValues;
 
   std::string                        m_qseqDataInputFileName;
   std::string                        m_qseqDataInputFileType;
@@ -84,23 +83,25 @@ public:
   std::string                        m_qseqDataOutputFileType;
   std::set<unsigned int>             m_qseqDataOutputAllowedSet;
   bool                               m_qseqComputeStats;
-  uqSsOptionsValuesClass             m_qseqStatisticalOptionsValues;
 
 private:
   void copy(const uqMcOptionsValuesClass& src);
+
+  uqSsOptionsValuesClass             m_alternativePSsOptionsValues;
+  uqSsOptionsValuesClass             m_alternativeQSsOptionsValues;
 };
 
 class uqMonteCarloSGOptionsClass
 {
 public:
   uqMonteCarloSGOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix);
-  uqMonteCarloSGOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix, const uqMcOptionsValuesClass& optionsValues);
+  uqMonteCarloSGOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix, const uqMcOptionsValuesClass& alternativeOptionsValues);
  ~uqMonteCarloSGOptionsClass();
 
   void scanOptionsValues();
   void print            (std::ostream& os) const;
 
-  uqMcOptionsValuesClass             m_optionsValues;
+  uqMcOptionsValuesClass             m_ov;
   uqSequenceStatisticalOptionsClass* m_pseqStatisticalOptionsObj;
   uqSequenceStatisticalOptionsClass* m_qseqStatisticalOptionsObj;
   std::string                        m_prefix;

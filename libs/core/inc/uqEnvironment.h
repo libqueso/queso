@@ -34,7 +34,6 @@
 #define __UQ_ENVIRONMENT_H__
 
 #include <uqDefines.h>
-class uqEnvOptionsValuesClass;
 class uqEnvironmentOptionsClass;
 
 #undef UQ_USES_COMMAND_LINE_OPTIONS
@@ -144,7 +143,7 @@ struct uqFilePtrSetStruct {
 */
 class uqBaseEnvironmentClass {
 public:
-  uqBaseEnvironmentClass(MPI_Comm inputComm, const char* passedOptionsInputFileName, const uqEnvOptionsValuesClass* optionsValues);
+  uqBaseEnvironmentClass(MPI_Comm inputComm, const char* passedOptionsInputFileName, const uqEnvOptionsValuesClass* alternativeOptionsValues);
   uqBaseEnvironmentClass(const uqBaseEnvironmentClass& obj);
   virtual ~uqBaseEnvironmentClass();
 
@@ -245,7 +244,7 @@ protected:
   struct timeval             m_timevalBegin;
   mutable bool               m_exceptionalCircunstance;
 
-  uqEnvOptionsValuesClass*   m_optionsValues;
+  uqEnvOptionsValuesClass    m_alternativeOptionsValues;
   uqEnvironmentOptionsClass* m_optionsObj;
 };
 
@@ -265,7 +264,7 @@ public:
 //*****************************************************
 class uqFullEnvironmentClass : public uqBaseEnvironmentClass {
 public:
-  uqFullEnvironmentClass(MPI_Comm inputComm, const char* passedOptionsInputFileName, const char* prefix, const uqEnvOptionsValuesClass* optionsValues);
+  uqFullEnvironmentClass(MPI_Comm inputComm, const char* passedOptionsInputFileName, const char* prefix, const uqEnvOptionsValuesClass* alternativeOptionsValues);
  ~uqFullEnvironmentClass();
 
         void        print               (std::ostream& os) const;

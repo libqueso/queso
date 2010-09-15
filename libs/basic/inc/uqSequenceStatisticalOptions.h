@@ -155,7 +155,7 @@ public:
                                     const std::string&            prefix);
   uqSequenceStatisticalOptionsClass(const uqBaseEnvironmentClass& env,
                                     const std::string&            prefix,
-                                    const uqSsOptionsValuesClass& optionsValues);
+                                    const uqSsOptionsValuesClass& alternativeOptionsValues);
  ~uqSequenceStatisticalOptionsClass();
 
   const std::vector<double>&       initialDiscardedPortions() const;
@@ -215,7 +215,7 @@ public:
 
         void                       print(std::ostream& os) const;
 
-  uqSsOptionsValuesClass        m_optionsValues;
+  uqSsOptionsValuesClass        m_ov;
 
 private:
   void   defineMyOptions  (po::options_description& optionsDesc) const;

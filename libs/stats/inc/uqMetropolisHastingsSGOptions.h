@@ -82,8 +82,8 @@
 class uqMhOptionsValuesClass
 {
 public:
-  uqMhOptionsValuesClass            (const uqSsOptionsValuesClass* rawSsOptionsValues,
-                                     const uqSsOptionsValuesClass* filteredSsOptionsValues);
+  uqMhOptionsValuesClass            (const uqSsOptionsValuesClass* alternativeRawSsOptionsValues,
+                                     const uqSsOptionsValuesClass* alternativeFilteredSsOptionsValues);
   uqMhOptionsValuesClass            (const uqMhOptionsValuesClass& src);
   uqMhOptionsValuesClass& operator= (const uqMhOptionsValuesClass& rhs);
  ~uqMhOptionsValuesClass            ();
@@ -102,7 +102,6 @@ public:
   std::string                        m_rawChainDataOutputFileType;
   std::set<unsigned int>             m_rawChainDataOutputAllowedSet;
   bool                               m_rawChainComputeStats;
-  uqSsOptionsValuesClass             m_rawChainStatisticalOptionsValues;
 
   bool                               m_filteredChainGenerate;
   double                             m_filteredChainDiscardedPortion; // input or set during run time
@@ -111,7 +110,6 @@ public:
   std::string                        m_filteredChainDataOutputFileType;
   std::set<unsigned int>             m_filteredChainDataOutputAllowedSet;
   bool                               m_filteredChainComputeStats;
-  uqSsOptionsValuesClass             m_filteredChainStatisticalOptionsValues;
 
   bool                               m_displayCandidates;
   bool                               m_putOutOfBoundsInChain;
@@ -131,20 +129,24 @@ public:
 
 private:
   void copy(const uqMhOptionsValuesClass& src);
+
+  friend class uqMetropolisHastingsSGOptionsClass;
+  uqSsOptionsValuesClass             m_alternativeRawSsOptionsValues;
+  uqSsOptionsValuesClass             m_alternativeFilteredSsOptionsValues;
 };
 
 class uqMetropolisHastingsSGOptionsClass
 {
 public:
   uqMetropolisHastingsSGOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix);
-  uqMetropolisHastingsSGOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix, const uqMhOptionsValuesClass& optionsValues);
-  uqMetropolisHastingsSGOptionsClass(const uqMLSamplingLevelOptionsClass& inputOptions);
+  uqMetropolisHastingsSGOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix, const uqMhOptionsValuesClass& alternativeOptionsValues);
+  uqMetropolisHastingsSGOptionsClass(const uqMLSamplingLevelOptionsClass& mlOptions);
  ~uqMetropolisHastingsSGOptionsClass();
 
   void scanOptionsValues();
   void print            (std::ostream& os) const;
 
-  uqMhOptionsValuesClass             m_optionsValues;
+  uqMhOptionsValuesClass             m_ov;
   uqSequenceStatisticalOptionsClass* m_rawChainStatisticalOptionsObj;
   bool                               m_rawChainStatOptsInstantiated;
   uqSequenceStatisticalOptionsClass* m_filteredChainStatisticalOptionsObj;

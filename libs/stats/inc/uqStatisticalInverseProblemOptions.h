@@ -73,13 +73,13 @@ class uqStatisticalInverseProblemOptionsClass
 {
 public:
   uqStatisticalInverseProblemOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix);
-  uqStatisticalInverseProblemOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix, const uqSipOptionsValuesClass& optionsValues);
+  uqStatisticalInverseProblemOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix, const uqSipOptionsValuesClass& alternativeOptionsValues);
  ~uqStatisticalInverseProblemOptionsClass();
 
   void scanOptionsValues();
   void print            (std::ostream& os) const;
 
-  uqSipOptionsValuesClass       m_optionsValues;
+  uqSipOptionsValuesClass       m_ov;
   std::string                   m_prefix;
 
 private:

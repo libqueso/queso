@@ -109,16 +109,16 @@ class uqStatisticalInverseProblemClass
 {
 public:
   uqStatisticalInverseProblemClass(const char*                               prefix,
-                                   const uqSipOptionsValuesClass*            optionsValues, // dakota
+                                   const uqSipOptionsValuesClass*            alternativeOptionsValues, // dakota
                                    const uqBaseVectorRVClass      <P_V,P_M>& priorRv,            
                                    const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunction, 
                                          uqGenericVectorRVClass   <P_V,P_M>& postRv);
  ~uqStatisticalInverseProblemClass();
 
         bool                             computeSolutionFlag             () const;
-        void                             solveWithBayesMetropolisHastings(const uqMhOptionsValuesClass* optionsValues, // dakota
-                                                                          const P_V&                     initialValues,
-                                                                          const P_M*                     initialProposalCovMatrix);
+        void                             solveWithBayesMetropolisHastings(const uqMhOptionsValuesClass* alternativeOptionsValues, // dakota
+                                                                          const P_V&                    initialValues,
+                                                                          const P_M*                    initialProposalCovMatrix);
         void                             solveWithBayesMLSampling        ();
   const uqBaseVectorRVClass   <P_V,P_M>& priorRv                         () const;
   const uqGenericVectorRVClass<P_V,P_M>& postRv                          () const;
@@ -146,7 +146,7 @@ private:
         uqArrayOfOneDTablesClass   <P_V,P_M>*   m_subMdfValues;
 #endif
 
-        uqSipOptionsValuesClass*                 m_optionsValues;
+        uqSipOptionsValuesClass                  m_alternativeOptionsValues;
         uqStatisticalInverseProblemOptionsClass* m_optionsObj;
 };
 
@@ -173,33 +173,33 @@ std::ostream& operator<<(std::ostream& os, const uqStatisticalInverseProblemClas
 template <class P_V,class P_M>
 uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
   /*! The prefix                 */ const char*                               prefix,
-  /*! Options (if no input file) */ const uqSipOptionsValuesClass*            optionsValues, // dakota
+  /*! Options (if no input file) */ const uqSipOptionsValuesClass*            alternativeOptionsValues, // dakota
   /*! The prior rv               */ const uqBaseVectorRVClass      <P_V,P_M>& priorRv,
   /*! The likelihood function    */ const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunction,
   /*! The posterior rv           */       uqGenericVectorRVClass   <P_V,P_M>& postRv)
   :
-  m_env               (priorRv.env()),
-  m_priorRv           (priorRv),
-  m_likelihoodFunction(likelihoodFunction),
-  m_postRv            (postRv),
-  m_solutionDomain    (NULL),
-  m_solutionPdf       (NULL),
-  m_subSolutionMdf    (NULL),
-  m_subSolutionCdf    (NULL),
-  m_solutionRealizer  (NULL),
-  m_mhSeqGenerator    (NULL),
-  m_mlSampler         (NULL),
-  m_chain             (NULL),
-  m_optionsValues     (new uqSipOptionsValuesClass()),
-  m_optionsObj        (NULL)
+  m_env                     (priorRv.env()),
+  m_priorRv                 (priorRv),
+  m_likelihoodFunction      (likelihoodFunction),
+  m_postRv                  (postRv),
+  m_solutionDomain          (NULL),
+  m_solutionPdf             (NULL),
+  m_subSolutionMdf          (NULL),
+  m_subSolutionCdf          (NULL),
+  m_solutionRealizer        (NULL),
+  m_mhSeqGenerator          (NULL),
+  m_mlSampler               (NULL),
+  m_chain                   (NULL),
+  m_alternativeOptionsValues(),
+  m_optionsObj              (NULL)
 {
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "Entering uqSipClass" << std::endl;
 #endif
 
-  if (optionsValues) *m_optionsValues = *optionsValues;
+  if (alternativeOptionsValues) m_alternativeOptionsValues = *alternativeOptionsValues;
   if (m_env.optionsInputFileName() == "") {
-    m_optionsObj = new uqStatisticalInverseProblemOptionsClass(m_env,prefix,*m_optionsValues);
+    m_optionsObj = new uqStatisticalInverseProblemOptionsClass(m_env,prefix,m_alternativeOptionsValues);
   }
   else {
     m_optionsObj = new uqStatisticalInverseProblemOptionsClass(m_env,prefix);
@@ -275,7 +275,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::~uqStatisticalInverseProblemClass()
 template <class P_V,class P_M>
 void
 uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(
-  const uqMhOptionsValuesClass* optionsValues, // dakota
+  const uqMhOptionsValuesClass* alternativeOptionsValues, // dakota
   const P_V&                    initialValues,
   const P_M*                    initialProposalCovMatrix)
 {
@@ -283,7 +283,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(
   m_env.fullComm().Barrier();
   m_env.syncPrintDebugMsg("Entering uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings()",1,3000000,m_env.fullComm());
 
-  if (m_optionsObj->m_optionsValues.m_computeSolution == false) {
+  if (m_optionsObj->m_ov.m_computeSolution == false) {
     if ((m_env.subDisplayFile())) {
       *m_env.subDisplayFile() << "In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings()"
                               << ": avoiding solution, as requested by user"
@@ -365,23 +365,23 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(
                                                           *m_subMdfValues);
   m_postRv.setMdf(*m_subSolutionMdf);
 
-  if ((m_optionsObj->m_optionsValues.m_dataOutputFileName                       != UQ_SIP_FILENAME_FOR_NO_FILE           ) &&
-      (m_optionsObj->m_optionsValues.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_optionsValues.m_dataOutputAllowedSet.end())) {
+  if ((m_optionsObj->m_ov.m_dataOutputFileName                       != UQ_SIP_FILENAME_FOR_NO_FILE                    ) &&
+      (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end())) {
     if (m_env.subRank() == 0) {
       // Write data output file
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "Opening data output file '" << m_optionsObj->m_optionsValues.m_dataOutputFileName
+        *m_env.subDisplayFile() << "Opening data output file '" << m_optionsObj->m_ov.m_dataOutputFileName
                                 << "' for calibration problem with problem with prefix = " << m_optionsObj->m_prefix
                                 << std::endl;
       }
 
       // Open file
       // Always write at the end of an eventual pre-existing file
-      std::ofstream* ofsvar = new std::ofstream((m_optionsObj->m_optionsValues.m_dataOutputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
+      std::ofstream* ofsvar = new std::ofstream((m_optionsObj->m_ov.m_dataOutputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
       if ((ofsvar            == NULL ) ||
           (ofsvar->is_open() == false)) {
         delete ofsvar;
-        ofsvar = new std::ofstream((m_optionsObj->m_optionsValues.m_dataOutputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
+        ofsvar = new std::ofstream((m_optionsObj->m_ov.m_dataOutputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
       }
       UQ_FATAL_TEST_MACRO((ofsvar && ofsvar->is_open()) == false,
                           m_env.worldRank(),
@@ -394,7 +394,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(
       //ofsvar->close();
       delete ofsvar;
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "Closed data output file '" << m_optionsObj->m_optionsValues.m_dataOutputFileName
+        *m_env.subDisplayFile() << "Closed data output file '" << m_optionsObj->m_ov.m_dataOutputFileName
                                 << "' for calibration problem with problem with prefix = " << m_optionsObj->m_prefix
                                 << std::endl;
       }
@@ -418,7 +418,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling()
   m_env.fullComm().Barrier();
   m_env.syncPrintDebugMsg("Entering uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling()",1,3000000,m_env.fullComm());
 
-  if (m_optionsObj->m_optionsValues.m_computeSolution == false) {
+  if (m_optionsObj->m_ov.m_computeSolution == false) {
     if ((m_env.subDisplayFile())) {
       *m_env.subDisplayFile() << "In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling()"
                               << ": avoiding solution, as requested by user"
