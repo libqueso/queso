@@ -114,7 +114,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::uqMonteCarloSGClass(
   m_paramSpace             (m_paramRv.imageSet().vectorSpace()),
   m_qoiSpace               (m_qoiFunction.imageSet().vectorSpace()),
   m_qoiFunctionSynchronizer(new uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>(m_qoiFunction,m_paramRv.imageSet().vectorSpace().zeroVector(),m_qoiFunction.imageSet().vectorSpace().zeroVector())),
-  m_optionsValues          (new uqMcOptionsValuesClass()),
+  m_optionsValues          (new uqMcOptionsValuesClass(NULL,NULL)),
   m_optionsObj             (NULL)
 {
   if (m_env.subDisplayFile()) {
@@ -132,8 +132,8 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::uqMonteCarloSGClass(
   }
 
   // dakota
-  if (m_optionsObj->m_optionsValues.m_pseqComputeStats) m_optionsObj->m_optionsValues.m_pseqStatisticalOptionsObj = new uqSequenceStatisticalOptionsClass(m_env,m_optionsObj->m_prefix + "pseq_");
-  if (m_optionsObj->m_optionsValues.m_qseqComputeStats) m_optionsObj->m_optionsValues.m_qseqStatisticalOptionsObj = new uqSequenceStatisticalOptionsClass(m_env,m_optionsObj->m_prefix + "qseq_");
+  if (m_optionsObj->m_optionsValues.m_pseqComputeStats) m_optionsObj->m_pseqStatisticalOptionsObj = new uqSequenceStatisticalOptionsClass(m_env,m_optionsObj->m_prefix + "pseq_");
+  if (m_optionsObj->m_optionsValues.m_qseqComputeStats) m_optionsObj->m_qseqStatisticalOptionsObj = new uqSequenceStatisticalOptionsClass(m_env,m_optionsObj->m_prefix + "qseq_");
 
   UQ_FATAL_TEST_MACRO(paramRv.imageSet().vectorSpace().dimLocal() != qoiFunction.domainSet().vectorSpace().dimLocal(),
                       m_env.worldRank(),
@@ -150,9 +150,9 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::uqMonteCarloSGClass(
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::~uqMonteCarloSGClass()
 {
-  if (m_optionsObj->m_optionsValues.m_qseqStatisticalOptionsObj) delete m_optionsObj->m_optionsValues.m_qseqStatisticalOptionsObj;
-  if (m_optionsObj->m_optionsValues.m_pseqStatisticalOptionsObj) delete m_optionsObj->m_optionsValues.m_pseqStatisticalOptionsObj;
-  if (m_qoiFunctionSynchronizer                                ) delete m_qoiFunctionSynchronizer;
+  if (m_optionsObj->m_qseqStatisticalOptionsObj) delete m_optionsObj->m_qseqStatisticalOptionsObj;
+  if (m_optionsObj->m_pseqStatisticalOptionsObj) delete m_optionsObj->m_pseqStatisticalOptionsObj;
+  if (m_qoiFunctionSynchronizer                ) delete m_qoiFunctionSynchronizer;
 }
 
 /*! Operation to generate the output sequence */
@@ -301,7 +301,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
                               << ": about to call 'workingPSeq.computeStatistics()'"
                               << std::endl;
     }
-    workingPSeq.computeStatistics(*m_optionsObj->m_optionsValues.m_pseqStatisticalOptionsObj,
+    workingPSeq.computeStatistics(*m_optionsObj->m_pseqStatisticalOptionsObj,
                                   genericFilePtrSet.ofsVar);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
       *m_env.subDisplayFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
@@ -356,7 +356,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
                               << ": about to call 'workingQSeq.computeStatistics()'"
                               << std::endl;
     }
-    workingQSeq.computeStatistics(*m_optionsObj->m_optionsValues.m_qseqStatisticalOptionsObj,
+    workingQSeq.computeStatistics(*m_optionsObj->m_qseqStatisticalOptionsObj,
                                   genericFilePtrSet.ofsVar);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
       *m_env.subDisplayFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"

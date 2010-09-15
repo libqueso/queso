@@ -184,7 +184,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
   }
 
   if (m_optionsObj->m_optionsValues.m_rawChainComputeStats) {
-    workingChain.computeStatistics(*m_optionsObj->m_optionsValues.m_rawChainStatisticalOptionsObj,
+    workingChain.computeStatistics(*m_optionsObj->m_rawChainStatisticalOptionsObj,
                                    genericFilePtrSet.ofsVar);
   }
 
@@ -233,7 +233,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
     unsigned int filterInitialPos = (unsigned int) (m_optionsObj->m_optionsValues.m_filteredChainDiscardedPortion * (double) workingChain.subSequenceSize());
     unsigned int filterSpacing    = m_optionsObj->m_optionsValues.m_filteredChainLag;
     if (filterSpacing == 0) {
-      workingChain.computeFilterParams(*m_optionsObj->m_optionsValues.m_filteredChainStatisticalOptionsObj,
+      workingChain.computeFilterParams(*m_optionsObj->m_filteredChainStatisticalOptionsObj,
                                        genericFilePtrSet.ofsVar,
                                        filterInitialPos,
                                        filterSpacing);
@@ -292,7 +292,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
 
     // Compute statistics
     if (m_optionsObj->m_optionsValues.m_filteredChainComputeStats) {
-      workingChain.computeStatistics(*m_optionsObj->m_optionsValues.m_filteredChainStatisticalOptionsObj,
+      workingChain.computeStatistics(*m_optionsObj->m_filteredChainStatisticalOptionsObj,
                                      genericFilePtrSet.ofsVar);
     }
   }

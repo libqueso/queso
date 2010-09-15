@@ -33,7 +33,7 @@
 #ifndef __EX_TGA_VALIDATION_CYCLE_APPL_H__
 #define __EX_TGA_VALIDATION_CYCLE_APPL_H__
 
-#define UQ_EXAMPLES_USES_QUESO_INPUT_FILE
+#undef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 
 #include <exTgaValidationCycle_likelihood.h>
 #include <exTgaValidationCycle_qoi.h>
@@ -138,7 +138,6 @@ uqAppl(const uqBaseEnvironmentClass& env)
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 #else
   calIpOptionsValues = new uqSipOptionsValuesClass();
-  calIpOptionsValues->m_help                 = "anything";
   calIpOptionsValues->m_computeSolution      = true;
   calIpOptionsValues->m_dataOutputFileName   = "outputData/tgaCalOutput";
   calIpOptionsValues->m_dataOutputAllowedSet.insert(0);
@@ -159,45 +158,103 @@ uqAppl(const uqBaseEnvironmentClass& env)
     calPriorRv.realizer().realization(paramInitialValues);
   }
 
+  uqSsOptionsValuesClass ssOptionsValues1;
+  uqSsOptionsValuesClass ssOptionsValues2;
+
   uqMhOptionsValuesClass* calIpMhOptionsValues = NULL;
   P_M* calProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newProposalMatrix(NULL,&paramInitialValues);
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 #else
-  calIpMhOptionsValues = new uqMhOptionsValuesClass();
-  calIpMhOptionsValues->m_mh_help                 = "anything";
-  calIpMhOptionsValues->m_mh_dataOutputFileName   = "outputData/tgaCalOutput";
-  calIpMhOptionsValues->m_mh_dataOutputAllowedSet.insert(0);
-  calIpMhOptionsValues->m_mh_dataOutputAllowedSet.insert(1);
+  ssOptionsValues1.m_initialDiscardedPortions.resize(9);
+  ssOptionsValues1.m_initialDiscardedPortions[0] = 0.;
+  ssOptionsValues1.m_initialDiscardedPortions[1] = 0.05;
+  ssOptionsValues1.m_initialDiscardedPortions[2] = 0.10;
+  ssOptionsValues1.m_initialDiscardedPortions[3] = 0.15;
+  ssOptionsValues1.m_initialDiscardedPortions[4] = 0.20;
+  ssOptionsValues1.m_initialDiscardedPortions[5] = 0.25;
+  ssOptionsValues1.m_initialDiscardedPortions[6] = 0.30;
+  ssOptionsValues1.m_initialDiscardedPortions[7] = 0.35;
+  ssOptionsValues1.m_initialDiscardedPortions[8] = 0.40;
+  ssOptionsValues1.m_bmmRun                      = false;
+  ssOptionsValues1.m_fftCompute                  = false;
+  ssOptionsValues1.m_psdCompute                  = false;
+  ssOptionsValues1.m_psdAtZeroCompute            = false;
+  ssOptionsValues1.m_gewekeCompute               = true;
+  ssOptionsValues1.m_gewekeNaRatio               = .1;
+  ssOptionsValues1.m_gewekeNbRatio               = .5;
+  ssOptionsValues1.m_gewekeDisplay               = true;
+  ssOptionsValues1.m_gewekeWrite                 = true;
+  ssOptionsValues1.m_autoCorrComputeViaDef       = false;
+  ssOptionsValues1.m_autoCorrComputeViaFft       = true;
+  ssOptionsValues1.m_autoCorrSecondLag           = 2;
+  ssOptionsValues1.m_autoCorrLagSpacing          = 2;
+  ssOptionsValues1.m_autoCorrNumLags             = 15;
+  ssOptionsValues1.m_autoCorrDisplay             = true;
+  ssOptionsValues1.m_autoCorrWrite               = true;
+  ssOptionsValues1.m_meanStaccCompute            = false;
+  ssOptionsValues1.m_histCompute                 = false;
+  ssOptionsValues1.m_cdfStaccCompute             = false;
+  ssOptionsValues1.m_kdeCompute                  = false;
+  ssOptionsValues1.m_covMatrixCompute            = true;
+  ssOptionsValues1.m_corrMatrixCompute           = true;
 
-  calIpMhOptionsValues->m_mh_rawChain_dataInputFileName    = ".";
-  calIpMhOptionsValues->m_mh_rawChain_size                 = 1048576;
-  calIpMhOptionsValues->m_mh_rawChain_generateExtra        = false;
-  calIpMhOptionsValues->m_mh_rawChain_displayPeriod        = 20000;
-  calIpMhOptionsValues->m_mh_rawChain_measureRunTimes      = true;
-  calIpMhOptionsValues->m_mh_rawChain_dataOutputFileName   = "outputData/file_cal_ip_raw";
-  calIpMhOptionsValues->m_mh_rawChain_dataOutputAllowedSet.insert(0);
-  calIpMhOptionsValues->m_mh_rawChain_dataOutputAllowedSet.insert(1);
-  calIpMhOptionsValues->m_mh_rawChain_computeStats         = true;
+  ssOptionsValues2.m_initialDiscardedPortions.resize(1);
+  ssOptionsValues2.m_initialDiscardedPortions[0] = 0.;
+  ssOptionsValues2.m_bmmRun                      = false;
+  ssOptionsValues2.m_fftCompute                  = false;
+  ssOptionsValues2.m_psdCompute                  = false;
+  ssOptionsValues2.m_psdAtZeroCompute            = false;
+  ssOptionsValues2.m_gewekeCompute               = false;
+  ssOptionsValues2.m_autoCorrComputeViaDef       = false;
+  ssOptionsValues2.m_autoCorrComputeViaFft       = true;
+  ssOptionsValues2.m_autoCorrSecondLag           = 2;
+  ssOptionsValues2.m_autoCorrLagSpacing          = 2;
+  ssOptionsValues2.m_autoCorrNumLags             = 15;
+  ssOptionsValues2.m_autoCorrDisplay             = true;
+  ssOptionsValues2.m_autoCorrWrite               = true;
+  ssOptionsValues2.m_meanStaccCompute            = false;
+  ssOptionsValues2.m_histCompute                 = true;
+  ssOptionsValues2.m_histNumInternalBins         = 250;
+  ssOptionsValues2.m_cdfStaccCompute             = false;
+  ssOptionsValues2.m_kdeCompute                  = true;
+  ssOptionsValues2.m_kdeNumEvalPositions         = 250;
+  ssOptionsValues2.m_covMatrixCompute            = true;
+  ssOptionsValues2.m_corrMatrixCompute           = true;
 
-  calIpMhOptionsValues->m_mh_displayCandidates             = false;
-  calIpMhOptionsValues->m_mh_putOutOfBoundsInChain         = true;
-  calIpMhOptionsValues->m_mh_tk_useLocalHessian            = false;
-  calIpMhOptionsValues->m_mh_tk_useNewtonComponent         = true;
-  calIpMhOptionsValues->m_mh_dr_maxNumExtraStages          = 1;
-  calIpMhOptionsValues->m_mh_dr_listOfScalesForExtraStages.resize(1);
-  calIpMhOptionsValues->m_mh_dr_listOfScalesForExtraStages.[0] = 5.;
-  calIpMhOptionsValues->m_mh_am_initialNonAdaptInterval    = 0;
-  calIpMhOptionsValues->m_mh_am_adaptInterval              = 100;
-  calIpMhOptionsValues->m_mh_am_eta                        = 1.92;
-  calIpMhOptionsValues->m_mh_am_epsilon                    = 1.e-5;
+  calIpMhOptionsValues = new uqMhOptionsValuesClass(&ssOptionsValues1,&ssOptionsValues2);
+  calIpMhOptionsValues->m_dataOutputFileName   = "outputData/tgaCalOutput";
+  calIpMhOptionsValues->m_dataOutputAllowedSet.insert(0);
+  calIpMhOptionsValues->m_dataOutputAllowedSet.insert(1);
 
-  calIpMhOptionsValues->m_mh_filteredChain_generate             = true;
-  calIpMhOptionsValues->m_mh_filteredChain_discardedPortion     = 0.;
-  calIpMhOptionsValues->m_mh_filteredChain_lag                  = 20;
-  calIpMhOptionsValues->m_mh_filteredChain_dataOutputFileName   = ".";
-  calIpMhOptionsValues->m_mh_filteredChain_dataOutputAllowedSet.insert(0);
-  calIpMhOptionsValues->m_mh_filteredChain_dataOutputAllowedSet.insert(1);
-  calIpMhOptionsValues->m_mh_filteredChain_computeStats         = true;
+  calIpMhOptionsValues->m_rawChainDataInputFileName     = ".";
+  calIpMhOptionsValues->m_rawChainSize                  = 1048576;
+  calIpMhOptionsValues->m_rawChainGenerateExtra         = false;
+  calIpMhOptionsValues->m_rawChainDisplayPeriod         = 20000;
+  calIpMhOptionsValues->m_rawChainMeasureRunTimes       = true;
+  calIpMhOptionsValues->m_rawChainDataOutputFileName    = "outputData/file_cal_ip_raw";
+  calIpMhOptionsValues->m_rawChainDataOutputAllowedSet.insert(0);
+  calIpMhOptionsValues->m_rawChainDataOutputAllowedSet.insert(1);
+  calIpMhOptionsValues->m_rawChainComputeStats          = true;
+
+  calIpMhOptionsValues->m_displayCandidates         = false;
+  calIpMhOptionsValues->m_putOutOfBoundsInChain     = true;
+  calIpMhOptionsValues->m_tkUseLocalHessian         = false;
+  calIpMhOptionsValues->m_tkUseNewtonComponent      = true;
+  calIpMhOptionsValues->m_drMaxNumExtraStages       = 1;
+  calIpMhOptionsValues->m_drScalesForExtraStages.resize(1);
+  calIpMhOptionsValues->m_drScalesForExtraStages[0] = 5.;
+  calIpMhOptionsValues->m_amInitialNonAdaptInterval = 0;
+  calIpMhOptionsValues->m_amAdaptInterval           = 100;
+  calIpMhOptionsValues->m_amEta                     = 1.92;
+  calIpMhOptionsValues->m_amEpsilon                 = 1.e-5;
+
+  calIpMhOptionsValues->m_filteredChainGenerate              = true;
+  calIpMhOptionsValues->m_filteredChainDiscardedPortion      = 0.;
+  calIpMhOptionsValues->m_filteredChainLag                   = 20;
+  calIpMhOptionsValues->m_filteredChainDataOutputFileName    = ".";
+  calIpMhOptionsValues->m_filteredChainDataOutputAllowedSet.insert(0);
+  calIpMhOptionsValues->m_filteredChainDataOutputAllowedSet.insert(1);
+  calIpMhOptionsValues->m_filteredChainComputeStats          = true;
 #endif
   cycle.calIP().solveWithBayesMetropolisHastings(calIpMhOptionsValues,
                                                  paramInitialValues,
@@ -219,7 +276,6 @@ uqAppl(const uqBaseEnvironmentClass& env)
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 #else
   calFpOptionsValues = new uqSfpOptionsValuesClass();
-  calFpOptionsValues->m_help                 = "anything";
   calFpOptionsValues->m_computeSolution      = true;
   calFpOptionsValues->m_computeCovariances   = true;
   calFpOptionsValues->m_computeCorrelations  = true;
@@ -235,25 +291,24 @@ uqAppl(const uqBaseEnvironmentClass& env)
   uqMcOptionsValuesClass* calFpMcOptionsValues = NULL;
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 #else
-  calFpMcOptionsValues = new uqMcOptionsValuesClass();
-  calFpMcOptionsValues->m_help                 = "anything";
+  calFpMcOptionsValues = new uqMcOptionsValuesClass(NULL,NULL);
   calFpMcOptionsValues->m_dataOutputFileName   = "outputData/tgaCalOutput";
   calFpMcOptionsValues->m_dataOutputAllowedSet.insert(0);
   calFpMcOptionsValues->m_dataOutputAllowedSet.insert(1);
 
-  calFpMcOptionsValues->m_pseq_dataOutputFileName   = ".";
-  calFpMcOptionsValues->m_pseq_dataOutputAllowedSet.insert(0);
-  calFpMcOptionsValues->m_pseq_dataOutputAllowedSet.insert(1);
-  calFpMcOptionsValues->m_pseq_computeStats         = true;
+  calFpMcOptionsValues->m_pseqDataOutputFileName   = ".";
+  calFpMcOptionsValues->m_pseqDataOutputAllowedSet.insert(0);
+  calFpMcOptionsValues->m_pseqDataOutputAllowedSet.insert(1);
+  calFpMcOptionsValues->m_pseqComputeStats         = true;
 
-  calFpMcOptionsValues->m_qseq_dataInputFileName    = ".";
-  calFpMcOptionsValues->m_qseq_size                 = 1048576;
-  calFpMcOptionsValues->m_qseq_displayPeriod        = 20000;
-  calFpMcOptionsValues->m_qseq_measureRunTimes      = true;
-  calFpMcOptionsValues->m_qseq_dataOutputFileName   = "outputData/file_cal_fp_qoi2";
-  calFpMcOptionsValues->m_qseq_dataOutputAllowedSet.insert(0);
-  calFpMcOptionsValues->m_qseq_dataOutputAllowedSet.insert(1);
-  calFpMcOptionsValues->m_qseq_computeStats         = true;
+  calFpMcOptionsValues->m_qseqDataInputFileName    = ".";
+  calFpMcOptionsValues->m_qseqSize                 = 1048576;
+  calFpMcOptionsValues->m_qseqDisplayPeriod        = 20000;
+  calFpMcOptionsValues->m_qseqMeasureRunTimes      = true;
+  calFpMcOptionsValues->m_qseqDataOutputFileName   = "outputData/file_cal_fp_qoi2";
+  calFpMcOptionsValues->m_qseqDataOutputAllowedSet.insert(0);
+  calFpMcOptionsValues->m_qseqDataOutputAllowedSet.insert(1);
+  calFpMcOptionsValues->m_qseqComputeStats         = true;
 #endif
   cycle.calFP().solveWithMonteCarlo(calFpMcOptionsValues); // no extra user entities needed for Monte Carlo algorithm
   delete calFpMcOptionsValues;
@@ -295,7 +350,6 @@ uqAppl(const uqBaseEnvironmentClass& env)
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 #else
   valIpOptionsValues = new uqSipOptionsValuesClass();
-  valIpOptionsValues->m_help                 = "anything";
   valIpOptionsValues->m_computeSolution      = true;
   valIpOptionsValues->m_dataOutputFileName   = "outputData/tgaValOutput";
   valIpOptionsValues->m_dataOutputAllowedSet.insert(0);
@@ -312,41 +366,40 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                                                                                 &tmpRealizer->unifiedSampleExpVector()); // Use these values as the initial values
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 #else
-  valIpMhOptionsValues = new uqMhOptionsValuesClass();
-  valIpMhOptionsValues->m_help                 = "anything";
+  valIpMhOptionsValues = new uqMhOptionsValuesClass(NULL,NULL);
   valIpMhOptionsValues->m_dataOutputFileName   = "outputData/tgaValOutput";
   valIpMhOptionsValues->m_dataOutputAllowedSet.insert(0);
   valIpMhOptionsValues->m_dataOutputAllowedSet.insert(1);
 
-  valIpMhOptionsValues->m_rawChain_dataInputFileName    = ".";
-  valIpMhOptionsValues->m_rawChain_size                 = 1048576;
-  valIpMhOptionsValues->m_rawChain_generateExtra        = false;
-  valIpMhOptionsValues->m_rawChain_displayPeriod        = 20000;
-  valIpMhOptionsValues->m_rawChain_measureRunTimes      = true;
-  valIpMhOptionsValues->m_rawChain_dataOutputFileName   = "outputData/file_val_ip_raw";
-  valIpMhOptionsValues->m_rawChain_dataOutputAllowedSet.insert(0);
-  valIpMhOptionsValues->m_rawChain_dataOutputAllowedSet.insert(1);
-  valIpMhOptionsValues->m_rawChain_computeStats         = true;
+  valIpMhOptionsValues->m_rawChainDataInputFileName    = ".";
+  valIpMhOptionsValues->m_rawChainSize                 = 1048576;
+  valIpMhOptionsValues->m_rawChainGenerateExtra        = false;
+  valIpMhOptionsValues->m_rawChainDisplayPeriod        = 20000;
+  valIpMhOptionsValues->m_rawChainMeasureRunTimes      = true;
+  valIpMhOptionsValues->m_rawChainDataOutputFileName   = "outputData/file_val_ip_raw";
+  valIpMhOptionsValues->m_rawChainDataOutputAllowedSet.insert(0);
+  valIpMhOptionsValues->m_rawChainDataOutputAllowedSet.insert(1);
+  valIpMhOptionsValues->m_rawChainComputeStats         = true;
 
-  valIpMhOptionsValues->m_displayCandidates             = false;
-  valIpMhOptionsValues->m_putOutOfBoundsInChain         = true;
-  valIpMhOptionsValues->m_tk_useLocalHessian            = false;
-  valIpMhOptionsValues->m_tk_useNewtonComponent         = true;
-  valIpMhOptionsValues->m_dr_maxNumExtraStages          = 1;
-  valIpMhOptionsValues->m_dr_listOfScalesForExtraStages.resize(1);
-  valIpMhOptionsValues->m_dr_listOfScalesForExtraStages[0] = 5.;
-  valIpMhOptionsValues->m_am_initialNonAdaptInterval    = 0;
-  valIpMhOptionsValues->m_am_adaptInterval              = 100;
-  valIpMhOptionsValues->m_am_eta                        = 1.92;
-  valIpMhOptionsValues->m_am_epsilon                    = 1.e-5;
+  valIpMhOptionsValues->m_displayCandidates         = false;
+  valIpMhOptionsValues->m_putOutOfBoundsInChain     = true;
+  valIpMhOptionsValues->m_tkUseLocalHessian         = false;
+  valIpMhOptionsValues->m_tkUseNewtonComponent      = true;
+  valIpMhOptionsValues->m_drMaxNumExtraStages       = 1;
+  valIpMhOptionsValues->m_drScalesForExtraStages.resize(1);
+  valIpMhOptionsValues->m_drScalesForExtraStages[0] = 5.;
+  valIpMhOptionsValues->m_amInitialNonAdaptInterval = 0;
+  valIpMhOptionsValues->m_amAdaptInterval           = 100;
+  valIpMhOptionsValues->m_amEta                     = 1.92;
+  valIpMhOptionsValues->m_amEpsilon                 = 1.e-5;
 
-  valIpMhOptionsValues->m_filteredChain_generate             = true;
-  valIpMhOptionsValues->m_filteredChain_discardedPortion     = 0.;
-  valIpMhOptionsValues->m_filteredChain_lag                  = 20;
-  valIpMhOptionsValues->m_filteredChain_dataOutputFileName   = ".";
-  valIpMhOptionsValues->m_filteredChain_dataOutputAllowedSet.insert(0);
-  valIpMhOptionsValues->m_filteredChain_dataOutputAllowedSet.insert(1);
-  valIpMhOptionsValues->m_filteredChain_computeStats         = true;
+  valIpMhOptionsValues->m_filteredChainGenerate             = true;
+  valIpMhOptionsValues->m_filteredChainDiscardedPortion     = 0.;
+  valIpMhOptionsValues->m_filteredChainLag                  = 20;
+  valIpMhOptionsValues->m_filteredChainDataOutputFileName   = ".";
+  valIpMhOptionsValues->m_filteredChainDataOutputAllowedSet.insert(0);
+  valIpMhOptionsValues->m_filteredChainDataOutputAllowedSet.insert(1);
+  valIpMhOptionsValues->m_filteredChainComputeStats         = true;
 #endif
   cycle.valIP().solveWithBayesMetropolisHastings(valIpMhOptionsValues,
                                                  tmpRealizer->unifiedSampleExpVector(),
@@ -364,7 +417,6 @@ uqAppl(const uqBaseEnvironmentClass& env)
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 #else
   valFpOptionsValues = new uqSfpOptionsValuesClass();
-  valFpOptionsValues->m_help                 = "anything";
   valFpOptionsValues->m_computeSolution      = true;
   valFpOptionsValues->m_computeCovariances   = true;
   valFpOptionsValues->m_computeCorrelations  = true;
@@ -380,25 +432,24 @@ uqAppl(const uqBaseEnvironmentClass& env)
   uqMcOptionsValuesClass* valFpMcOptionsValues = NULL;
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 #else
-  valFpMcOptionsValues = new uqMcOptionsValuesClass();
-  valFpMcOptionsValues->m_help                 = "anything";
+  valFpMcOptionsValues = new uqMcOptionsValuesClass(NULL,NULL);
   valFpMcOptionsValues->m_dataOutputFileName   = "outputData/tgaValOutput";
   valFpMcOptionsValues->m_dataOutputAllowedSet.insert(0);
   valFpMcOptionsValues->m_dataOutputAllowedSet.insert(1);
 
-  valFpMcOptionsValues->m_pseq_dataOutputFileName   = ".";
-  valFpMcOptionsValues->m_pseq_dataOutputAllowedSet.insert(0);
-  valFpMcOptionsValues->m_pseq_dataOutputAllowedSet.insert(1);
-  valFpMcOptionsValues->m_pseq_computeStats         = true;
+  valFpMcOptionsValues->m_pseqDataOutputFileName   = ".";
+  valFpMcOptionsValues->m_pseqDataOutputAllowedSet.insert(0);
+  valFpMcOptionsValues->m_pseqDataOutputAllowedSet.insert(1);
+  valFpMcOptionsValues->m_pseqComputeStats         = true;
 
-  valFpMcOptionsValues->m_qseq_dataInputFileName    = ".";
-  valFpMcOptionsValues->m_qseq_size                 = 1048576;
-  valFpMcOptionsValues->m_qseq_displayPeriod        = 20000;
-  valFpMcOptionsValues->m_qseq_measureRunTimes      = true;
-  valFpMcOptionsValues->m_qseq_dataOutputFileName   = "outputData/file_val_fp_qoi2";
-  valFpMcOptionsValues->m_qseq_dataOutputAllowedSet.insert(0);
-  valFpMcOptionsValues->m_qseq_dataOutputAllowedSet.insert(1);
-  valFpMcOptionsValues->m_qseq_computeStats         = true;
+  valFpMcOptionsValues->m_qseqDataInputFileName    = ".";
+  valFpMcOptionsValues->m_qseqSize                 = 1048576;
+  valFpMcOptionsValues->m_qseqDisplayPeriod        = 20000;
+  valFpMcOptionsValues->m_qseqMeasureRunTimes      = true;
+  valFpMcOptionsValues->m_qseqDataOutputFileName   = "outputData/file_val_fp_qoi2";
+  valFpMcOptionsValues->m_qseqDataOutputAllowedSet.insert(0);
+  valFpMcOptionsValues->m_qseqDataOutputAllowedSet.insert(1);
+  valFpMcOptionsValues->m_qseqComputeStats         = true;
 #endif
   cycle.valFP().solveWithMonteCarlo(valFpMcOptionsValues); // no extra user entities needed for Monte Carlo algorithm
   delete valFpMcOptionsValues;

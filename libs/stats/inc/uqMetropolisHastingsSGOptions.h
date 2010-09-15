@@ -82,7 +82,8 @@
 class uqMhOptionsValuesClass
 {
 public:
-  uqMhOptionsValuesClass            ();
+  uqMhOptionsValuesClass            (const uqSsOptionsValuesClass* rawSsOptionsValues,
+                                     const uqSsOptionsValuesClass* filteredSsOptionsValues);
   uqMhOptionsValuesClass            (const uqMhOptionsValuesClass& src);
   uqMhOptionsValuesClass& operator= (const uqMhOptionsValuesClass& rhs);
  ~uqMhOptionsValuesClass            ();
@@ -102,8 +103,6 @@ public:
   std::set<unsigned int>             m_rawChainDataOutputAllowedSet;
   bool                               m_rawChainComputeStats;
   uqSsOptionsValuesClass             m_rawChainStatisticalOptionsValues;
-  uqSequenceStatisticalOptionsClass* m_rawChainStatisticalOptionsObj;
-  bool                               m_rawChainStatOptsInstantiated;
 
   bool                               m_filteredChainGenerate;
   double                             m_filteredChainDiscardedPortion; // input or set during run time
@@ -112,9 +111,7 @@ public:
   std::string                        m_filteredChainDataOutputFileType;
   std::set<unsigned int>             m_filteredChainDataOutputAllowedSet;
   bool                               m_filteredChainComputeStats;
-  uqSsOptionsValuesClass             m_fileteredChainStatisticalOptionsValues;
-  uqSequenceStatisticalOptionsClass* m_filteredChainStatisticalOptionsObj;
-  bool                               m_filteredChainStatOptsInstantiated;
+  uqSsOptionsValuesClass             m_filteredChainStatisticalOptionsValues;
 
   bool                               m_displayCandidates;
   bool                               m_putOutOfBoundsInChain;
@@ -148,6 +145,11 @@ public:
   void print            (std::ostream& os) const;
 
   uqMhOptionsValuesClass             m_optionsValues;
+  uqSequenceStatisticalOptionsClass* m_rawChainStatisticalOptionsObj;
+  bool                               m_rawChainStatOptsInstantiated;
+  uqSequenceStatisticalOptionsClass* m_filteredChainStatisticalOptionsObj;
+  bool                               m_filteredChainStatOptsInstantiated;
+
   std::string                        m_prefix;
 
 private:

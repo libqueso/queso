@@ -197,7 +197,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
   m_lastChainSize             (0),
   m_lastMean                  (NULL),
   m_lastAdaptedCovMatrix      (NULL),
-  m_optionsValues             (new uqMhOptionsValuesClass()),
+  m_optionsValues             (new uqMhOptionsValuesClass(NULL,NULL)),
   m_optionsObj                (NULL)
 {
   if (optionsValues) *m_optionsValues = *optionsValues;

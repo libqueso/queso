@@ -33,47 +33,49 @@
 #include <uqMetropolisHastingsSGOptions.h>
 #include <uqMiscellaneous.h>
 
-uqMhOptionsValuesClass::uqMhOptionsValuesClass()
+uqMhOptionsValuesClass::uqMhOptionsValuesClass(
+  const uqSsOptionsValuesClass* rawSsOptionsValues,
+  const uqSsOptionsValuesClass* filteredSsOptionsValues)
   :
-  m_dataOutputFileName                       (UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV),
-//m_dataOutputAllowedSet                     (),
-  m_totallyMute                              (UQ_MH_SG_TOTALLY_MUTE_ODV),
-  m_rawChainDataInputFileName                (UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV),
-  m_rawChainDataInputFileType                (UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_TYPE_ODV),
-  m_rawChainSize                             (UQ_MH_SG_RAW_CHAIN_SIZE_ODV),
-  m_rawChainGenerateExtra                    (UQ_MH_SG_RAW_CHAIN_GENERATE_EXTRA_ODV),
-  m_rawChainDisplayPeriod                    (UQ_MH_SG_RAW_CHAIN_DISPLAY_PERIOD_ODV),
-  m_rawChainMeasureRunTimes                  (UQ_MH_SG_RAW_CHAIN_MEASURE_RUN_TIMES_ODV),
-  m_rawChainDataOutputFileName               (UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV),
-  m_rawChainDataOutputFileType               (UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV),
-//m_rawChainDataOutputAllowedSet             (),
-  m_rawChainComputeStats                     (UQ_MH_SG_RAW_CHAIN_COMPUTE_STATS_ODV),
-  m_rawChainStatisticalOptionsObj            (NULL),
-  m_rawChainStatOptsInstantiated             (false),
-  m_filteredChainGenerate                    (UQ_MH_SG_FILTERED_CHAIN_GENERATE_ODV),
-  m_filteredChainDiscardedPortion            (UQ_MH_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV),
-  m_filteredChainLag                         (UQ_MH_SG_FILTERED_CHAIN_LAG_ODV),
-  m_filteredChainDataOutputFileName          (UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV),
-  m_filteredChainDataOutputFileType          (UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV),
-//m_filteredChainDataOutputAllowedSet        (),
-  m_filteredChainComputeStats                (UQ_MH_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV),
-  m_filteredChainStatisticalOptionsObj       (NULL),
-  m_filteredChainStatOptsInstantiated        (false),
-  m_displayCandidates                        (UQ_MH_SG_DISPLAY_CANDIDATES_ODV),
-  m_putOutOfBoundsInChain                    (UQ_MH_SG_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV),
-  m_tkUseLocalHessian                        (UQ_MH_SG_TK_USE_LOCAL_HESSIAN_ODV),
-  m_tkUseNewtonComponent                     (UQ_MH_SG_TK_USE_NEWTON_COMPONENT_ODV),
-  m_drMaxNumExtraStages                      (UQ_MH_SG_DR_MAX_NUM_EXTRA_STAGES_ODV),
-  m_drScalesForExtraStages                   (0),
-  m_drDuringAmNonAdaptiveInt                 (UQ_MH_SG_DR_DURING_AM_NON_ADAPTIVE_INT_ODV),
-  m_amKeepInitialMatrix                      (UQ_MH_SG_AM_KEEP_INITIAL_MATRIX_ODV),
-  m_amInitialNonAdaptInterval                (UQ_MH_SG_AM_INIT_NON_ADAPT_INT_ODV),
-  m_amAdaptInterval                          (UQ_MH_SG_AM_ADAPT_INTERVAL_ODV),
-  m_amEta                                    (UQ_MH_SG_AM_ETA_ODV),
-  m_amEpsilon                                (UQ_MH_SG_AM_EPSILON_ODV),
-  m_enableBrooksGelmanConvMonitor            (UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR),
-  m_BrooksGelmanLag                          (UQ_MH_SG_BROOKS_GELMAN_LAG)
+  m_dataOutputFileName                (UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV),
+//m_dataOutputAllowedSet              (),
+  m_totallyMute                       (UQ_MH_SG_TOTALLY_MUTE_ODV),
+  m_rawChainDataInputFileName         (UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV),
+  m_rawChainDataInputFileType         (UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_TYPE_ODV),
+  m_rawChainSize                      (UQ_MH_SG_RAW_CHAIN_SIZE_ODV),
+  m_rawChainGenerateExtra             (UQ_MH_SG_RAW_CHAIN_GENERATE_EXTRA_ODV),
+  m_rawChainDisplayPeriod             (UQ_MH_SG_RAW_CHAIN_DISPLAY_PERIOD_ODV),
+  m_rawChainMeasureRunTimes           (UQ_MH_SG_RAW_CHAIN_MEASURE_RUN_TIMES_ODV),
+  m_rawChainDataOutputFileName        (UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV),
+  m_rawChainDataOutputFileType        (UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV),
+//m_rawChainDataOutputAllowedSet      (),
+  m_rawChainComputeStats              (UQ_MH_SG_RAW_CHAIN_COMPUTE_STATS_ODV),
+  m_rawChainStatisticalOptionsValues  (),
+  m_filteredChainGenerate             (UQ_MH_SG_FILTERED_CHAIN_GENERATE_ODV),
+  m_filteredChainDiscardedPortion     (UQ_MH_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV),
+  m_filteredChainLag                  (UQ_MH_SG_FILTERED_CHAIN_LAG_ODV),
+  m_filteredChainDataOutputFileName   (UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV),
+  m_filteredChainDataOutputFileType   (UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV),
+//m_filteredChainDataOutputAllowedSet (),
+  m_filteredChainComputeStats         (UQ_MH_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV),
+  m_filteredChainStatisticalOptionsValues(),
+  m_displayCandidates                 (UQ_MH_SG_DISPLAY_CANDIDATES_ODV),
+  m_putOutOfBoundsInChain             (UQ_MH_SG_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV),
+  m_tkUseLocalHessian                 (UQ_MH_SG_TK_USE_LOCAL_HESSIAN_ODV),
+  m_tkUseNewtonComponent              (UQ_MH_SG_TK_USE_NEWTON_COMPONENT_ODV),
+  m_drMaxNumExtraStages               (UQ_MH_SG_DR_MAX_NUM_EXTRA_STAGES_ODV),
+  m_drScalesForExtraStages            (0),
+  m_drDuringAmNonAdaptiveInt          (UQ_MH_SG_DR_DURING_AM_NON_ADAPTIVE_INT_ODV),
+  m_amKeepInitialMatrix               (UQ_MH_SG_AM_KEEP_INITIAL_MATRIX_ODV),
+  m_amInitialNonAdaptInterval         (UQ_MH_SG_AM_INIT_NON_ADAPT_INT_ODV),
+  m_amAdaptInterval                   (UQ_MH_SG_AM_ADAPT_INTERVAL_ODV),
+  m_amEta                             (UQ_MH_SG_AM_ETA_ODV),
+  m_amEpsilon                         (UQ_MH_SG_AM_EPSILON_ODV),
+  m_enableBrooksGelmanConvMonitor     (UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR),
+  m_BrooksGelmanLag                   (UQ_MH_SG_BROOKS_GELMAN_LAG)
 {
+  if (rawSsOptionsValues     ) m_rawChainStatisticalOptionsValues      = *rawSsOptionsValues;
+  if (filteredSsOptionsValues) m_filteredChainStatisticalOptionsValues = *filteredSsOptionsValues;
 }
 
 uqMhOptionsValuesClass::~uqMhOptionsValuesClass()
@@ -108,8 +110,9 @@ uqMhOptionsValuesClass::copy(const uqMhOptionsValuesClass& src)
   m_rawChainDataOutputFileType         = src.m_rawChainDataOutputFileType;
   m_rawChainDataOutputAllowedSet       = src.m_rawChainDataOutputAllowedSet;
   m_rawChainComputeStats               = src.m_rawChainComputeStats;
-  m_rawChainStatisticalOptionsObj      = src.m_rawChainStatisticalOptionsObj; // dakota
-  m_rawChainStatOptsInstantiated       = src.m_rawChainStatOptsInstantiated;
+  m_rawChainStatisticalOptionsValues   = src.m_rawChainStatisticalOptionsValues;
+  //m_rawChainStatisticalOptionsObj      = src.m_rawChainStatisticalOptionsObj; // dakota
+  //m_rawChainStatOptsInstantiated       = src.m_rawChainStatOptsInstantiated; // dakota
   m_filteredChainGenerate              = src.m_filteredChainGenerate;
   m_filteredChainDiscardedPortion      = src.m_filteredChainDiscardedPortion;
   m_filteredChainLag                   = src.m_filteredChainLag;
@@ -117,8 +120,9 @@ uqMhOptionsValuesClass::copy(const uqMhOptionsValuesClass& src)
   m_filteredChainDataOutputFileType    = src.m_filteredChainDataOutputFileType;
   m_filteredChainDataOutputAllowedSet  = src.m_filteredChainDataOutputAllowedSet;
   m_filteredChainComputeStats          = src.m_filteredChainComputeStats;
-  m_filteredChainStatisticalOptionsObj = src.m_filteredChainStatisticalOptionsObj; // dakota
-  m_filteredChainStatOptsInstantiated  = src.m_filteredChainStatOptsInstantiated;
+  m_filteredChainStatisticalOptionsValues = src.m_rawChainStatisticalOptionsValues;
+  //m_filteredChainStatisticalOptionsObj = src.m_filteredChainStatisticalOptionsObj; // dakota
+  //m_filteredChainStatOptsInstantiated  = src.m_filteredChainStatOptsInstantiated; // dakota
   m_displayCandidates                  = src.m_displayCandidates;
   m_putOutOfBoundsInChain              = src.m_putOutOfBoundsInChain;
   m_tkUseLocalHessian                  = src.m_tkUseLocalHessian;
@@ -141,6 +145,11 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   const uqBaseEnvironmentClass& env,
   const char*                   prefix)
   :
+  m_optionsValues                            (NULL,NULL), // dakota
+  m_rawChainStatisticalOptionsObj            (NULL),
+  m_rawChainStatOptsInstantiated             (false),
+  m_filteredChainStatisticalOptionsObj       (NULL),
+  m_filteredChainStatOptsInstantiated        (false),
   m_prefix                                   ((std::string)(prefix) + "mh_"),
   m_env                                      (env),
   m_optionsDesc                              (new po::options_description("Bayesian Metropolis-Hastings options")),
@@ -188,6 +197,10 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   const uqMhOptionsValuesClass& optionsValues)
   :
   m_optionsValues                            (optionsValues),
+  m_rawChainStatisticalOptionsObj            (NULL),
+  m_rawChainStatOptsInstantiated             (false),
+  m_filteredChainStatisticalOptionsObj       (NULL),
+  m_filteredChainStatOptsInstantiated        (false),
   m_prefix                                   ((std::string)(prefix) + "mh_"),
   m_env                                      (env),
   m_optionsDesc                              (NULL),
@@ -233,9 +246,14 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
 uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   const uqMLSamplingLevelOptionsClass& inputOptions)
   :
-  m_prefix                           (inputOptions.m_prefix),
-  m_env                              (inputOptions.env()),
-  m_optionsDesc                      (NULL),
+  m_optionsValues                            (NULL,NULL), // dakota
+  m_rawChainStatisticalOptionsObj            (NULL),
+  m_rawChainStatOptsInstantiated             (false),
+  m_filteredChainStatisticalOptionsObj       (NULL),
+  m_filteredChainStatOptsInstantiated        (false),
+  m_prefix                                   (inputOptions.m_prefix),
+  m_env                                      (inputOptions.env()),
+  m_optionsDesc                              (NULL),
   m_option_help                              (m_prefix + "help"                              ),
   m_option_dataOutputFileName                (m_prefix + "dataOutputFileName"                ),
   m_option_dataOutputAllowedSet              (m_prefix + "dataOutputAllowedSet"              ),
@@ -285,8 +303,7 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_optionsValues.m_rawChainDataOutputFileType         = inputOptions.m_rawChainDataOutputFileType;
   m_optionsValues.m_rawChainDataOutputAllowedSet       = inputOptions.m_rawChainDataOutputAllowedSet;
   m_optionsValues.m_rawChainComputeStats               = inputOptions.m_rawChainComputeStats;
-  m_optionsValues.m_rawChainStatisticalOptionsObj      = inputOptions.m_rawChainStatisticalOptionsObj; // dakota
-  m_optionsValues.m_rawChainStatOptsInstantiated       = false;
+  //m_optionsValues.m_rawChainStatisticalOptionsValues   = inputOptions.;  // dakota
   m_optionsValues.m_filteredChainGenerate              = inputOptions.m_filteredChainGenerate;
   m_optionsValues.m_filteredChainDiscardedPortion      = inputOptions.m_filteredChainDiscardedPortion;
   m_optionsValues.m_filteredChainLag                   = inputOptions.m_filteredChainLag;
@@ -294,8 +311,7 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_optionsValues.m_filteredChainDataOutputFileType    = inputOptions.m_filteredChainDataOutputFileType;
   m_optionsValues.m_filteredChainDataOutputAllowedSet  = inputOptions.m_filteredChainDataOutputAllowedSet;
   m_optionsValues.m_filteredChainComputeStats          = inputOptions.m_filteredChainComputeStats;
-  m_optionsValues.m_filteredChainStatisticalOptionsObj = inputOptions.m_filteredChainStatisticalOptionsObj; // dakota
-  m_optionsValues.m_filteredChainStatOptsInstantiated  = false;
+  //m_optionsValues.m_filteredChainStatisticalOptionsValues = inputOptions.;  // dakota
   m_optionsValues.m_displayCandidates                  = inputOptions.m_displayCandidates;
   m_optionsValues.m_putOutOfBoundsInChain              = inputOptions.m_putOutOfBoundsInChain;
   m_optionsValues.m_tkUseLocalHessian                  = inputOptions.m_tkUseLocalHessian;
@@ -311,8 +327,13 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_optionsValues.m_enableBrooksGelmanConvMonitor      = UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR;
   m_optionsValues.m_BrooksGelmanLag                    = UQ_MH_SG_BROOKS_GELMAN_LAG;
 
-  if ((m_env.subDisplayFile() != NULL) &&
-      (m_optionsValues.m_totallyMute == false        )) {
+  m_rawChainStatisticalOptionsObj      = inputOptions.m_rawChainStatisticalOptionsObj; // dakota
+  m_rawChainStatOptsInstantiated       = false;
+  m_filteredChainStatisticalOptionsObj = inputOptions.m_filteredChainStatisticalOptionsObj; // dakota
+  m_filteredChainStatOptsInstantiated  = false;
+
+  if ((m_env.subDisplayFile()        != NULL ) &&
+      (m_optionsValues.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "In uqMetropolisHastingsSGOptionsClass::constructor(2)"
                             << ": after copying values of options with prefix '" << m_prefix
                             << "', state of object is:"
@@ -323,9 +344,9 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
 
 uqMetropolisHastingsSGOptionsClass::~uqMetropolisHastingsSGOptionsClass()
 {
-  if (m_optionsValues.m_filteredChainStatOptsInstantiated) delete m_optionsValues.m_filteredChainStatisticalOptionsObj;
-  if (m_optionsValues.m_rawChainStatOptsInstantiated     ) delete m_optionsValues.m_rawChainStatisticalOptionsObj;
-  if (m_optionsDesc                                      ) delete m_optionsDesc;
+  if (m_filteredChainStatOptsInstantiated) delete m_filteredChainStatisticalOptionsObj;
+  if (m_rawChainStatOptsInstantiated     ) delete m_rawChainStatisticalOptionsObj;
+  if (m_optionsDesc                      ) delete m_optionsDesc;
 } 
 
 void
@@ -350,12 +371,12 @@ uqMetropolisHastingsSGOptionsClass::scanOptionsValues()
   }
 
   if (m_optionsValues.m_rawChainComputeStats) {
-    m_optionsValues.m_rawChainStatisticalOptionsObj = new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "rawChain_");
-    m_optionsValues.m_rawChainStatOptsInstantiated  = true;
+    m_rawChainStatisticalOptionsObj = new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "rawChain_");
+    m_rawChainStatOptsInstantiated  = true;
   }
   if (m_optionsValues.m_filteredChainComputeStats) {
-    m_optionsValues.m_filteredChainStatisticalOptionsObj = new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "filteredChain_");
-    m_optionsValues.m_filteredChainStatOptsInstantiated  = true;
+    m_filteredChainStatisticalOptionsObj = new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "filteredChain_");
+    m_filteredChainStatOptsInstantiated  = true;
   }
 
   return;

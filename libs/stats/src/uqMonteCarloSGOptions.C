@@ -33,7 +33,9 @@
 #include <uqMonteCarloSGOptions.h>
 #include <uqMiscellaneous.h>
 
-uqMcOptionsValuesClass::uqMcOptionsValuesClass()
+uqMcOptionsValuesClass::uqMcOptionsValuesClass(
+  const uqSsOptionsValuesClass* pSsOptionsValues,
+  const uqSsOptionsValuesClass* qSsOptionsValues)
   :
   m_dataOutputFileName       (UQ_MOC_SG_DATA_OUTPUT_FILE_NAME_ODV     ),
 //m_dataOutputAllowedSet     (),
@@ -41,7 +43,6 @@ uqMcOptionsValuesClass::uqMcOptionsValuesClass()
   m_pseqDataOutputFileType   (UQ_MOC_SG_PSEQ_DATA_OUTPUT_FILE_TYPE_ODV),
 //m_pseqDataOutputAllowedSet (),
   m_pseqComputeStats         (UQ_MOC_SG_PSEQ_COMPUTE_STATS_ODV        ),
-  m_pseqStatisticalOptionsObj(NULL),
   m_qseqDataInputFileName    (UQ_MOC_SG_QSEQ_DATA_INPUT_FILE_NAME_ODV ),
   m_qseqDataInputFileType    (UQ_MOC_SG_QSEQ_DATA_INPUT_FILE_TYPE_ODV ),
   m_qseqSize                 (UQ_MOC_SG_QSEQ_SIZE_ODV                 ),
@@ -50,9 +51,10 @@ uqMcOptionsValuesClass::uqMcOptionsValuesClass()
   m_qseqDataOutputFileName   (UQ_MOC_SG_QSEQ_DATA_OUTPUT_FILE_NAME_ODV),
   m_qseqDataOutputFileType   (UQ_MOC_SG_QSEQ_DATA_OUTPUT_FILE_TYPE_ODV),
 //m_qseqDataOutputAllowedSet (),
-  m_qseqComputeStats         (UQ_MOC_SG_QSEQ_COMPUTE_STATS_ODV        ),
-  m_qseqStatisticalOptionsObj(NULL)
+  m_qseqComputeStats         (UQ_MOC_SG_QSEQ_COMPUTE_STATS_ODV        )
 {
+  if (pSsOptionsValues) m_pseqStatisticalOptionsValues = *pSsOptionsValues;
+  if (qSsOptionsValues) m_qseqStatisticalOptionsValues = *qSsOptionsValues;
 }
 
 uqMcOptionsValuesClass::~uqMcOptionsValuesClass()
@@ -74,23 +76,23 @@ uqMcOptionsValuesClass::operator=(const uqMcOptionsValuesClass& rhs)
 void
 uqMcOptionsValuesClass::copy(const uqMcOptionsValuesClass& src)
 {
-  m_dataOutputFileName        = src.m_dataOutputFileName;
-  m_dataOutputAllowedSet      = src.m_dataOutputAllowedSet;
-  m_pseqDataOutputFileName    = src.m_pseqDataOutputFileName;
-  m_pseqDataOutputFileType    = src.m_pseqDataOutputFileType;
-  m_pseqDataOutputAllowedSet  = src.m_pseqDataOutputAllowedSet; 
-  m_pseqComputeStats          = src.m_pseqComputeStats;
-  m_pseqStatisticalOptionsObj = src.m_pseqStatisticalOptionsObj;
-  m_qseqDataInputFileName     = src.m_qseqDataInputFileName;
-  m_qseqDataInputFileType     = src.m_qseqDataInputFileType;
-  m_qseqSize                  = src.m_qseqSize;
-  m_qseqDisplayPeriod         = src.m_qseqDisplayPeriod;
-  m_qseqMeasureRunTimes       = src.m_qseqMeasureRunTimes;
-  m_qseqDataOutputFileName    = src.m_qseqDataOutputFileName;
-  m_qseqDataOutputFileType    = src.m_qseqDataOutputFileType;
-  m_qseqDataOutputAllowedSet  = src.m_qseqDataOutputAllowedSet; 
-  m_qseqComputeStats          = src.m_qseqComputeStats;
-  m_qseqStatisticalOptionsObj = src.m_qseqStatisticalOptionsObj;
+  m_dataOutputFileName           = src.m_dataOutputFileName;
+  m_dataOutputAllowedSet         = src.m_dataOutputAllowedSet;
+  m_pseqDataOutputFileName       = src.m_pseqDataOutputFileName;
+  m_pseqDataOutputFileType       = src.m_pseqDataOutputFileType;
+  m_pseqDataOutputAllowedSet     = src.m_pseqDataOutputAllowedSet; 
+  m_pseqComputeStats             = src.m_pseqComputeStats;
+  m_pseqStatisticalOptionsValues = src.m_pseqStatisticalOptionsValues;
+  m_qseqDataInputFileName        = src.m_qseqDataInputFileName;
+  m_qseqDataInputFileType        = src.m_qseqDataInputFileType;
+  m_qseqSize                     = src.m_qseqSize;
+  m_qseqDisplayPeriod            = src.m_qseqDisplayPeriod;
+  m_qseqMeasureRunTimes          = src.m_qseqMeasureRunTimes;
+  m_qseqDataOutputFileName       = src.m_qseqDataOutputFileName;
+  m_qseqDataOutputFileType       = src.m_qseqDataOutputFileType;
+  m_qseqDataOutputAllowedSet     = src.m_qseqDataOutputAllowedSet; 
+  m_qseqComputeStats             = src.m_qseqComputeStats;
+  m_qseqStatisticalOptionsValues = src.m_qseqStatisticalOptionsValues;
 
   return;
 }
@@ -99,6 +101,9 @@ uqMonteCarloSGOptionsClass::uqMonteCarloSGOptionsClass(
   const uqBaseEnvironmentClass& env, 
   const char*                   prefix)
   :
+  m_optionsValues                   (NULL,NULL),
+  m_pseqStatisticalOptionsObj       (NULL),
+  m_qseqStatisticalOptionsObj       (NULL),
   m_prefix                          ((std::string)(prefix) + "mc_"),
   m_env                             (env),
   m_optionsDesc                     (new po::options_description("Monte Carlo options")),
@@ -127,6 +132,8 @@ uqMonteCarloSGOptionsClass::uqMonteCarloSGOptionsClass(
   const uqMcOptionsValuesClass& optionsValues)
   :
   m_optionsValues                   (optionsValues),
+  m_pseqStatisticalOptionsObj       (NULL),
+  m_qseqStatisticalOptionsObj       (NULL),
   m_prefix                          ((std::string)(prefix) + "mc_"),
   m_env                             (env),
   m_optionsDesc                     (NULL),
