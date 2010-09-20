@@ -36,7 +36,6 @@ else
    AC_MSG_RESULT(yes)
 fi
 
-
 # Required for some macros
 # AX_AM_MACROS
 
@@ -89,6 +88,7 @@ AC_CACHE_SAVE
 # Check for boost
 
 AC_LANG([C++])
+###BOOST_REQUIRE([1.35])
 AX_BOOST_BASE(1.35)
 AX_BOOST_PROGRAM_OPTIONS
 AC_CACHE_SAVE
@@ -125,15 +125,23 @@ DX_PS_FEATURE(OFF)
 
 DX_INIT_DOXYGEN([queso],[doxygen/queso.dox],docs)
 
+#--------------------------
+# Checks for code coverage
+#-------------------------
+
+AX_CODE_COVERAGE
+
 # Query configuration environment
 
 AX_SUMMARIZE_ENV
+
+
 
 # Generate makefiles
 
 AC_CONFIG_FILES([
 	Makefile
-	libs/Makefile
+	src/Makefile
 	examples/Makefile
 	examples/statisticalInverseProblem1/Makefile
 	examples/statisticalInverseProblem1/src/Makefile	
