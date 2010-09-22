@@ -97,7 +97,7 @@ namespace QUESO_Basic_API {
     if(ierr == 0)
       QUESO_fatal("Unable to read num_params from input file.");
 
-    grvy_log_int(GRVY_INFO,log_prefix,"Num params defined",m_num_params);
+    grvy_printf(GRVY_INFO,"%s: Num params defined\n",log_prefix,m_num_params);
     
     printf("--> Setup parameter space variables/ranges...\n");
     m_paramSpace  = new uqVectorSpaceClass <basicV,basicM> (*m_env,"queso_basic_",m_num_params,NULL);
@@ -120,9 +120,9 @@ namespace QUESO_Basic_API {
 
     for(int i = 0;i<m_num_params;i++)
       {
-	grvy_log_double(GRVY_INFO,log_prefix,"min  value",param_min[i]);
-	grvy_log_double(GRVY_INFO,log_prefix,"max  value",param_max[i]);
-	grvy_log_double(GRVY_INFO,log_prefix,"init value",param_ini[i]);
+	grvy_printf(GRVY_INFO,"%s: min  value = \n",log_prefix,param_min[i]);
+	grvy_printf(GRVY_INFO,"%s: max  value = \n",log_prefix,param_max[i]);
+	grvy_printf(GRVY_INFO,"%s: init value = \n",log_prefix,param_ini[i]);
       }
 
     m_queso_var_min = new basicV ( m_paramSpace->zeroVector() );
@@ -261,7 +261,7 @@ namespace QUESO_Basic_API {
     for(int i=0;i<num_params;i++)
       {
 	uqParams[i] = paramValue[i];
-	grvy_log_double(GRVY_DEBUG,log_prefix,"sending param to likelihood",paramValue[i]);
+	grvy_printf(GRVY_DEBUG,"%s: sending param to likelihood\n",log_prefix,paramValue[i]);
       }
 
     grvy_timer_begin("Likelihood Routine");
