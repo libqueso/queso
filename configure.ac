@@ -62,6 +62,7 @@ fi
 
 AC_PROG_CC
 AC_PROG_CXX
+AC_PROG_FC
 AC_LANG([C])
 ACX_MPI([CC="$MPICC"], [AC_MSG_ERROR([Could not find MPI.])])
 AC_LANG([C++])
