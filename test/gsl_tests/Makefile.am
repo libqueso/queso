@@ -6,11 +6,7 @@ check_PROGRAMS += get_set_row_column \
                   inverse_power_method
 
 INCLUDES     = -I$(top_srcdir)/src -I$(top_builddir)/src
-
-LIBS         = -L$(top_builddir)/src/.libs -lqueso \
-               $(GSL_LIBS) $(BOOST_PROGRAM_OPTIONS_LIB) $(EPETRA_LIBS) ${HDF5_LIBS} -lhdf5
-
-AM_LDFLAGS   = $(BOOST_LDFLAGS) ${GRVY_LIBS} -lgrvy ${GLPK_LIBS} -lglpk ${HDF5_LIBS} -lhdf5
+LIBS         = -L$(top_builddir)/src/ -lqueso 
 
 AM_CPPFLAGS  = -I. \
 	       -I$(top_srcdir)/src/core/inc \
@@ -29,7 +25,6 @@ power_method_SOURCES = power_method.C power_method.h
 inverse_power_method_SOURCES = inverse_power_method.C inverse_power_method.h
 
 # Fortran Tests
-
 
 TESTS             = init.sh \
                     get_set_row_column \
