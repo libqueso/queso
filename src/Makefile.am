@@ -14,7 +14,9 @@ AM_CPPFLAGS = -I$(top_srcdir)/src/core/inc \
 	       $(GLPK_CFLAGS) \
 	       $(HDF5_CFLAGS)
 
+if SVN_CHECKOUT
 BUILT_SOURCES = .license.stamp
+endif
 
 
 # Dynamic library build: we include external library linkage here to
@@ -193,7 +195,9 @@ version_LDADD   = -L$(top_builddir)/src -lqueso
 # Embedded license header support
 #---------------------------------
 
+if SVN_CHECKOUT
 .license.stamp: $(top_srcdir)/LICENSE
 	$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE \
 	$(libqueso_include_HEADERS) $(libqueso_la_SOURCES)
 	echo 'updated source license headers' >$@
+endif

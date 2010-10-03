@@ -1,4 +1,6 @@
+if SVN_CHECKOUT
 BUILT_SOURCES = .license.stamp
+endif
 
 check_PROGRAMS = # Append below
 check_PROGRAMS += get_set_row_column \
@@ -38,9 +40,11 @@ TESTS             = init.sh \
 
 EXTRA_DIST = init.sh finalize.sh input
 
+if SVN_CHECKOUT
 .license.stamp: $(top_srcdir)/LICENSE
 	$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE *.C *.h
 	echo 'updated source license headers' >$@
+endif
 
 # Required for AX_AM_MACROS
 @INC_AMINCLUDE@
