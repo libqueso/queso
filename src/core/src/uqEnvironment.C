@@ -44,7 +44,8 @@ namespace QUESO {
   void QUESO_version_print(std::ostream &os)
   {
     {
-      os << "--------------------------------------------------------" << std::endl;
+      os << "------------------------------------------------------------------------------------------" ;
+      os << "--------------------" << std::endl;
       os << "QUESO Library: Version = " << QUESO_LIB_VERSION;
       os << " (" << QUESO_get_numeric_version() << ")" << std::endl << std::endl;
       
@@ -57,7 +58,14 @@ namespace QUESO {
       os << "Build Rev    = " << QUESO_BUILD_VERSION  << std::endl     << std::endl;
       
       os << "C++ Config   = " << QUESO_CXX << " " << QUESO_CXXFLAGS    << std::endl;
-      os << "--------------------------------------------------------" << std::endl;
+      os << std::endl;
+      os << "Trilinos DIR = " << QUESO_TRILINOS_DIR << std::endl;
+      os << "GSL Libs     = " << QUESO_GSL_DIR  << std::endl;
+      os << "GRVY DIR     = " << QUESO_GRVY_DIR << std::endl;
+      os << "GLPK DIR     = " << QUESO_GLPK_DIR << std::endl;
+      os << "HDF5 DIR     = " << QUESO_HDF5_DIR << std::endl;
+      os << "------------------------------------------------------------------------------------------" ;
+      os << "--------------------" << std::endl;
     }
     
     return;

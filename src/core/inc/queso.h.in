@@ -48,7 +48,12 @@
 #define QUESO_CXX            "@CXX@"
 #define QUESO_CXXFLAGS       "@CXXFLAGS@"
 
-//  extern void queso_version_stdout           ();
-//  extern  int queso_get_numeric_version      ();
+// External libraries
+
+#define QUESO_TRILINOS_DIR  "@TRILINOS_HOME@"
+#define QUESO_GSL_DIR       "@GSL_LIBS@"
+#define QUESO_GRVY_DIR      "@GRVY_PREFIX@"
+#define QUESO_GLPK_DIR      "@GLPK_PREFIX@"
+#define QUESO_HDF5_DIR      "@HDF5_PREFIX@"
   
 #endif
