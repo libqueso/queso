@@ -59,24 +59,25 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   MPI_Comm    inputComm,
   const char* optionsInputFileName)
   :
-  m_worldRank           (-1),
-  m_fullRawComm         (inputComm),
-  m_fullComm            (NULL),
-  m_fullRank            (-1),
-  m_fullCommSize        (1),
-  m_optionsInputFileName(optionsInputFileName),
-  m_allOptionsDesc      (NULL),
-  m_allOptionsMap       (NULL),
-  m_subComm             (NULL),
-  m_subRank             (-1),
-  m_subCommSize         (1),
-  m_selfComm            (NULL),
-  m_inter0Comm          (NULL),
-  m_inter0Rank          (-1),
-  m_inter0CommSize      (1),
-  m_subDisplayFile      (NULL),
-  m_rng                 (NULL),
-  m_options             (NULL)
+  m_worldRank              (-1),
+  m_fullRawComm            (inputComm),
+  m_fullComm               (NULL),
+  m_fullRank               (-1),
+  m_fullCommSize           (1),
+  m_optionsInputFileName   (optionsInputFileName),
+  m_allOptionsDesc         (NULL),
+  m_allOptionsMap          (NULL),
+  m_subComm                (NULL),
+  m_subRank                (-1),
+  m_subCommSize            (1),
+  m_selfComm               (NULL),
+  m_inter0Comm             (NULL),
+  m_inter0Rank             (-1),
+  m_inter0CommSize         (1),
+  m_subDisplayFile         (NULL),
+  m_rng                    (NULL),
+  m_exceptionalCircunstance(false),
+  m_options                (NULL)
 {
 }
 
@@ -360,9 +361,9 @@ uqBaseEnvironmentClass::resetGslSeed(int newSeedOption)
 void
 uqBaseEnvironmentClass::syncPrintDebugMsg(const char* msg, unsigned int msgVerbosity, unsigned int numUSecs, const Epetra_MpiComm& commObj) const
 {
-  UQ_MPI_Barrier(commObj);
-  commObj.Barrier();
   if (this->syncVerbosity() >= msgVerbosity) {
+    UQ_MPI_Barrier(commObj);
+    commObj.Barrier();
     for (int i = 0; i < commObj.NumProc(); ++i) {
       if (i == commObj.MyPID()) {
         std::cout << msg
@@ -377,8 +378,8 @@ uqBaseEnvironmentClass::syncPrintDebugMsg(const char* msg, unsigned int msgVerbo
     if (this->fullRank() == 0) std::cout << "Sleeping " << numUSecs << " microseconds..."
                                          << std::endl;
     usleep(numUSecs);
+    commObj.Barrier();
   }
-  commObj.Barrier();
 
   return;
 }
@@ -394,18 +395,20 @@ uqBaseEnvironmentClass::openOutputFile(
   ofsvar = NULL;
   if ((baseFileName                         == UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE) ||
       (allowedSubEnvIds.find(this->subId()) == allowedSubEnvIds.end()            )) {
-    if ((m_subDisplayFile) && (this->displayVerbosity() >= 10)) {
+    if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
       *this->subDisplayFile() << "In uqBaseEnvironmentClass::openOutputFile()"
                               << ": no output file opened with base name '" << baseFileName
                               << "'"
+                              << ", writeOver = " << writeOver
                               << std::endl;
     }
   }
   else {
-    if ((m_subDisplayFile) && (this->displayVerbosity() >= 10)) {
+    if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
       *this->subDisplayFile() << "In uqBaseEnvironmentClass::openOutputFile()"
                               << ": opening output file with base name '" << baseFileName
                               << "'"
+                              << ", writeOver = " << writeOver
                               << std::endl;
     }
 
@@ -431,6 +434,15 @@ uqBaseEnvironmentClass::openOutputFile(
         // Write over an eventual pre-existing file
         ofsvar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(), 
 				   std::ofstream::out | std::ofstream::trunc);
+        if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
+          *this->subDisplayFile() << "In uqBaseEnvironmentClass::openOutputFile()"
+                                  << ": just opened output file with base name '" << baseFileName
+                                  << "'"
+                                  << ", writeOver = " << writeOver
+                                  << ", options 'out|trunc'"
+                                  << ", osfvar = " << ofsvar
+                                  << std::endl;
+        }
       }
       else {
         // Write at the end of an eventual pre-existing file
@@ -441,8 +453,19 @@ uqBaseEnvironmentClass::openOutputFile(
         if (ofsvar) std::cout << "ofsvar(1)->is_open() = " << ofsvar->is_open() << std::endl;
         if (ofsvar) delete ofsvar;
 #endif
+        // 'uqm' and Ranger nodes behave differently on ofstream constructor... prudenci 2010/03/05
         ofsvar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(), 
-				   std::ofstream::out | std::ofstream::in | std::ofstream::app);
+	                           std::ofstream::out /*| std::ofstream::in*/ | std::ofstream::app);
+        if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
+          *this->subDisplayFile() << "In uqBaseEnvironmentClass::openOutputFile()"
+                                  << ": just opened output file with base name '" << baseFileName
+                                  << "'"
+                                  << ", writeOver = " << writeOver
+                                  << ", options 'out|in|app'"
+                                  << ", osfvar = " << ofsvar
+                                  << std::endl;
+        }
+
 #if 0
 	std::cout << "ofsvar(2) = " << ofsvar << std::endl;
         if (ofsvar) std::cout << "ofsvar(2)->is_open() = " << ofsvar->is_open() << std::endl;
@@ -455,6 +478,15 @@ uqBaseEnvironmentClass::openOutputFile(
           delete ofsvar;
           ofsvar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(), 
 				     std::ofstream::out | std::ofstream::trunc);
+          if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
+            *this->subDisplayFile() << "In uqBaseEnvironmentClass::openOutputFile()"
+                                    << ": just opened output file with base name '" << baseFileName
+                                    << "'"
+                                    << ", writeOver = " << writeOver
+                                    << ", options 'out|trunc'"
+                                    << ", osfvar = " << ofsvar
+                                    << std::endl;
+          }
         }
       }
       if (ofsvar == NULL) {
@@ -482,20 +514,23 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
 {
   ofsvar = NULL;
   if (baseFileName == ".") {
-    if ((m_subDisplayFile) && (this->displayVerbosity() >= 10)) {
+    if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
       *this->subDisplayFile() << "In uqBaseEnvironmentClass::openUnifiedOutputFile()"
                               << ": no unified output file opened with base name '" << baseFileName
                               << "'"
+                              << ", writeOver = " << writeOver
                               << std::endl;
     }
   }
   else {
-    if ((m_subDisplayFile) && (this->displayVerbosity() >= 10)) {
+    if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
       *this->subDisplayFile() << "In uqBaseEnvironmentClass::openUnifiedOutputFile()"
                               << ": opening unified output file with base name '" << baseFileName
                               << "'"
+                              << ", writeOver = " << writeOver
                               << std::endl;
     }
+
 
     //if ((this->subRank   () == 0) &&
     //    (this->inter0Rank() == 0)) {
@@ -509,18 +544,49 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
       // Open file
       if (writeOver) {
         // Write over an eventual pre-existing file
-        ofsvar = new std::ofstream((baseFileName+"."+fileType).c_str(), std::ofstream::out | std::ofstream::trunc);
+        ofsvar = new std::ofstream((baseFileName+"."+fileType).c_str(),
+                                   std::ofstream::out | std::ofstream::trunc);
+        if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
+          *this->subDisplayFile() << "In uqBaseEnvironmentClass::openUnifiedOutputFile()"
+                                  << ": just opened output file with base name '" << baseFileName
+                                  << "'"
+                                  << ", writeOver = " << writeOver
+                                  << ", options 'out|trunc'"
+                                  << ", osfvar = " << ofsvar
+                                  << std::endl;
+        }
       }
       else {
         // Write at the end of an eventual pre-existing file
-        ofsvar = new std::ofstream((baseFileName+"."+fileType).c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::app);
+        // 'uqm' and Ranger nodes behave differently on ofstream constructor... prudenci 2010/03/05
+        ofsvar = new std::ofstream((baseFileName+"."+fileType).c_str(),
+                                   std::ofstream::out /*| std::ofstream::in*/ | std::ofstream::app);
+        if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
+          *this->subDisplayFile() << "In uqBaseEnvironmentClass::openUnifiedOutputFile()"
+                                  << ": just opened output file with base name '" << baseFileName
+                                  << "'"
+                                  << ", writeOver = " << writeOver
+                                  << ", options 'out|in|app'"
+                                  << ", osfvar = " << ofsvar
+                                  << std::endl;
+        }
         if ((ofsvar            == NULL ) ||
             (ofsvar->is_open() == false)) {
 #if 0
           std::cout << "Retrying 2..." << std::endl;
 #endif
           delete ofsvar;
-          ofsvar = new std::ofstream((baseFileName+"."+fileType).c_str(), std::ofstream::out | std::ofstream::trunc);
+          ofsvar = new std::ofstream((baseFileName+"."+fileType).c_str(),
+                                     std::ofstream::out | std::ofstream::trunc);
+          if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
+            *this->subDisplayFile() << "In uqBaseEnvironmentClass::openUnifiedOutputFile()"
+                                    << ": just opened output file with base name '" << baseFileName
+                                    << "'"
+                                    << ", writeOver = " << writeOver
+                                    << ", options 'out|trunc'"
+                                    << ", osfvar = " << ofsvar
+                                    << std::endl;
+          }
         }
       }
       if (ofsvar == NULL) {
@@ -579,6 +645,19 @@ uqBaseEnvironmentClass::openInputFile(
   }
 
   return;
+}
+
+void
+uqBaseEnvironmentClass::setExceptionalCircunstance(bool value) const
+{
+  m_exceptionalCircunstance = value;
+  return;
+}
+
+bool
+uqBaseEnvironmentClass::exceptionalCircunstance() const
+{
+  return m_exceptionalCircunstance;
 }
 
 //*****************************************************

@@ -915,26 +915,26 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
 
   if (m_env.numSubEnvironments() > 1) {
     // Write unified min-max
-    if (m_env.subDisplayFile()) {
-      if (m_vectorSpace.numOfProcsForStorage() == 1) {
-        V unifiedChainMean(m_vectorSpace.zeroVector());
-        this->unifiedMean(0,
-                          this->subSequenceSize(),
-                          unifiedChainMean);
+    if (m_vectorSpace.numOfProcsForStorage() == 1) {
+      V unifiedChainMean(m_vectorSpace.zeroVector());
+      this->unifiedMean(0,
+                        this->subSequenceSize(),
+                        unifiedChainMean);
 
-        V unifiedChainSampleVariance(m_vectorSpace.zeroVector());
-        this->unifiedSampleVariance(0,
-                                    this->subSequenceSize(),
-                                    unifiedChainMean,
-                                    unifiedChainSampleVariance);
+      V unifiedChainSampleVariance(m_vectorSpace.zeroVector());
+      this->unifiedSampleVariance(0,
+                                  this->subSequenceSize(),
+                                  unifiedChainMean,
+                                  unifiedChainSampleVariance);
 
-        V unifiedChainPopulationVariance(m_vectorSpace.zeroVector());
-        this->unifiedPopulationVariance(0,
-                                        this->subSequenceSize(),
-                                        unifiedChainMean,
-                                        unifiedChainPopulationVariance);
+      V unifiedChainPopulationVariance(m_vectorSpace.zeroVector());
+      this->unifiedPopulationVariance(0,
+                                      this->subSequenceSize(),
+                                      unifiedChainMean,
+                                      unifiedChainPopulationVariance);
 
-        if (m_env.inter0Rank() == 0) {
+      if (m_env.inter0Rank() == 0) {
+        if (m_env.subDisplayFile()) {
           *m_env.subDisplayFile() << "\nUnif mean, sample std, population std"
                                   << std::endl;
           char line[512];
@@ -960,16 +960,22 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
             *m_env.subDisplayFile() << line;
           }
           *m_env.subDisplayFile() << std::endl;
-        }
+        } // if subDisplayFile
       }
-      else {
-        UQ_FATAL_TEST_MACRO(true,
-                            m_env.fullRank(),
-                            "uqBaseVectorSequenceClass<V,M>::computeMeanVars()",
-                            "unified min-max writing, parallel vectors not supported yet");
-      }
-    } // if subDisplayFile
+    }
+    else {
+      UQ_FATAL_TEST_MACRO(true,
+                          m_env.fullRank(),
+                          "uqBaseVectorSequenceClass<V,M>::computeMeanVars()",
+                          "unified min-max writing, parallel vectors not supported yet");
+    }
   } // if numSubEnvs > 1
+
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "\nEnded computing mean, sample variance and population variance"
+                            << "\n-----------------------------------------------------"
+                            << std::endl;
+  }
 
   return;
 }
@@ -1060,7 +1066,7 @@ uqBaseVectorSequenceClass<V,M>::computeMeanEvolution(
     this->subMeanMonitorWrite(*passedOfs);
     if (m_env.numSubEnvironments() > 1) {
       this->subMeanInter0MonitorWrite(*passedOfs);
-      this->unifiedMeanMonitorWrite(*passedOfs);
+      this->unifiedMeanMonitorWrite(*passedOfs); // Yes, call 'unified' even though not all nodes might have 'passedOfs != NULL' ????????????? ernesto
     }
   }
 
@@ -2290,6 +2296,12 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
     }
 
     // Write Kde
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() > 10)) { // output debug
+      *m_env.subDisplayFile() << "In uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde()"
+                              << ", for chain '" << m_name << "'"
+                              << ", about to write sub kde to ofstream with pointer = " << passedOfs
+                              << std::endl;
+    }
     if (passedOfs) {
       std::ofstream& ofsvar = *passedOfs;
       ofsvar << m_name << subCoreName_GaussianKdePositions << " = zeros(" << this->vectorSizeLocal() /*.*/
@@ -2403,6 +2415,12 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
       }
 
       // Write unified Kde
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() > 10)) { // output debug
+        *m_env.subDisplayFile() << "In uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde()"
+                                << ", for chain '" << m_name << "'"
+                                << ", about to write unified kde to ofstream with pointer = " << passedOfs
+                                << std::endl;
+      }
       if (passedOfs) {
         if (m_vectorSpace.numOfProcsForStorage() == 1) {
           if (m_env.inter0Rank() == 0) {
@@ -2411,6 +2429,12 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
                    << ","                                                       << unifiedKdeEvalPositions.size()
                    << ");"
                    << std::endl;
+            if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() > 10)) { // output debug
+              *m_env.subDisplayFile() << "In uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde()"
+                                      << ", for chain '" << m_name << "'"
+                                      << ": just wrote '... = zeros(.,.);' line to output file, which has pointer = " << passedOfs
+                                      << std::endl;
+            }
             for (unsigned int i = 0; i < this->vectorSizeLocal() /*.*/; ++i) {
               for (unsigned int j = 0; j < unifiedKdeEvalPositions.size(); ++j) {
                 ofsvar << m_name << uniCoreName_GaussianKdePositions << "(" << i+1

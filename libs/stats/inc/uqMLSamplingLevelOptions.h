@@ -39,21 +39,22 @@
 #include <uqSequenceStatisticalOptions.h>
 #define UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE "."
 
-#define UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE   "."
 // _ODV = option default value
+#define UQ_ML_SAMPLING_L_CHECKPOINT_OUTPUT_FILE_NAME_ODV            UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
+#define UQ_ML_SAMPLING_L_STOP_AT_END_ODV                            0
 #define UQ_ML_SAMPLING_L_DATA_OUTPUT_FILE_NAME_ODV                  UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
 #define UQ_ML_SAMPLING_L_DATA_OUTPUT_ALLOW_ODV                      ""
 #define UQ_ML_SAMPLING_L_LOAD_BALANCE_ALGORITHM_ID_ODV              1
 #define UQ_ML_SAMPLING_L_LOAD_BALANCE_TRESHOLD_ODV                  1.
-#define UQ_ML_SAMPLING_L_MIN_EFFECTIVE_SIZE_RATIO_ODV               0.49
-#define UQ_ML_SAMPLING_L_MAX_EFFECTIVE_SIZE_RATIO_ODV               0.51
+#define UQ_ML_SAMPLING_L_MIN_EFFECTIVE_SIZE_RATIO_ODV               0.85
+#define UQ_ML_SAMPLING_L_MAX_EFFECTIVE_SIZE_RATIO_ODV               0.91
 #define UQ_ML_SAMPLING_L_SCALE_COV_MATRIX_ODV                       1
-#define UQ_ML_SAMPLING_L_MIN_REJECTION_RATE_ODV                     0.24
-#define UQ_ML_SAMPLING_L_MAX_REJECTION_RATE_ODV                     0.40
+#define UQ_ML_SAMPLING_L_MIN_REJECTION_RATE_ODV                     0.50
+#define UQ_ML_SAMPLING_L_MAX_REJECTION_RATE_ODV                     0.75
 #define UQ_ML_SAMPLING_L_COV_REJECTION_RATE_ODV                     0.25
 #define UQ_ML_SAMPLING_L_TOTALLY_MUTE_ODV                           1
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV         UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
-#define UQ_ML_SAMPLING_L_RAW_CHAIN_SIZE_ODV                         100.
+#define UQ_ML_SAMPLING_L_RAW_CHAIN_SIZE_ODV                         100
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_GENERATE_EXTRA_ODV               0
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_DISPLAY_PERIOD_ODV               500
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_MEASURE_RUN_TIMES_ODV            0
@@ -67,11 +68,13 @@
 #define UQ_ML_SAMPLING_L_FILTERED_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV ""
 #define UQ_ML_SAMPLING_L_FILTERED_CHAIN_COMPUTE_STATS_ODV           0
 #define UQ_ML_SAMPLING_L_DISPLAY_CANDIDATES_ODV                     0
-#define UQ_ML_SAMPLING_L_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV             0
+#define UQ_ML_SAMPLING_L_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV             1
 #define UQ_ML_SAMPLING_L_TK_USE_LOCAL_HESSIAN_ODV                   0
 #define UQ_ML_SAMPLING_L_TK_USE_NEWTON_COMPONENT_ODV                1
 #define UQ_ML_SAMPLING_L_DR_MAX_NUM_EXTRA_STAGES_ODV                0
 #define UQ_ML_SAMPLING_L_DR_LIST_OF_SCALES_FOR_EXTRA_STAGES_ODV     "1."
+#define UQ_ML_SAMPLING_L_DR_DURING_AM_NON_ADAPTIVE_INT_ODV          1
+#define UQ_ML_SAMPLING_L_AM_KEEP_INITIAL_MATRIX_ODV                 0
 #define UQ_ML_SAMPLING_L_AM_INIT_NON_ADAPT_INT_ODV                  0
 #define UQ_ML_SAMPLING_L_AM_ADAPT_INTERVAL_ODV                      0
 #define UQ_ML_SAMPLING_L_AM_ETA_ODV                                 1.
@@ -91,6 +94,8 @@ public:
 
   std::string                        m_prefix;
 
+  std::string                        m_checkpointOutputFileName;
+  bool                               m_stopAtEnd;
   std::string                        m_dataOutputFileName;
   std::set<unsigned int>             m_dataOutputAllowedSet;
   std::string                        m_str1;
@@ -132,6 +137,8 @@ public:
   unsigned int                       m_drMaxNumExtraStages;
   std::vector<double>                m_drScalesForExtraStages;
   std::string                        m_str4;
+  bool                               m_drDuringAmNonAdaptiveInt;
+  bool                               m_amKeepInitialMatrix;
   unsigned int                       m_amInitialNonAdaptInterval;
   unsigned int                       m_amAdaptInterval;
   double                             m_amEta;
@@ -147,6 +154,8 @@ private:
 
   std::string                   m_option_help;
 
+  std::string                   m_option_checkpointOutputFileName;
+  std::string                   m_option_stopAtEnd;
   std::string                   m_option_dataOutputFileName;
   std::string                   m_option_dataOutputAllowedSet;
   std::string                   m_option_loadBalanceAlgorithmId;
@@ -180,6 +189,8 @@ private:
   std::string                   m_option_tk_useNewtonComponent;
   std::string                   m_option_dr_maxNumExtraStages;
   std::string                   m_option_dr_listOfScalesForExtraStages;
+  std::string                   m_option_dr_duringAmNonAdaptiveInt;
+  std::string                   m_option_am_keepInitialMatrix;
   std::string                   m_option_am_initialNonAdaptInterval;
   std::string                   m_option_am_adaptInterval;
   std::string                   m_option_am_eta;

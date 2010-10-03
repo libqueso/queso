@@ -63,14 +63,14 @@ double uqMiscHammingWindow              (unsigned int N, unsigned int j);
 double uqMiscGaussianDensity            (double x, double mu, double sigma);
 
 template <class T>
-void
-uqMiscCheckForSameValueInAllNodes(const T&              inputValue,
+bool
+uqMiscCheckForSameValueInAllNodes(T&                    inputValue, // Yes, 'not' const
                                   double                acceptableTreshold,
                                   const Epetra_MpiComm& comm,
                                   const char*           whereString)
 {
   // Filter out those nodes that should not participate
-  if (comm.MyPID() < 0) return;
+  if (comm.MyPID() < 0) return true;
 
   double localValue = (double) inputValue;
   double sumValue = 0.;
@@ -82,17 +82,51 @@ uqMiscCheckForSameValueInAllNodes(const T&              inputValue,
 
   double totalNumNodes = (double) comm.NumProc();
   double testValue = fabs(1. - localValue/(sumValue/totalNumNodes));
+  unsigned int boolSum = 0;
+#if 1
+  unsigned int boolResult = 0;
+  if (testValue > acceptableTreshold) boolResult = 1;
+  mpiRC = MPI_Allreduce((void *) &boolResult, (void *) &boolSum, (int) 1, MPI_UNSIGNED, MPI_SUM, comm.Comm());
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      UQ_UNAVAILABLE_RANK,
+                      whereString,
+                      "failed MPI on 'boolSum' inside uqMiscCheckForSameValueInAllNodes()");
+
+  if (boolSum > 0) { 
+    comm.Barrier();
+    for (int i = 0; i < comm.NumProc(); ++i) {
+      if (i == comm.MyPID()) {
+        std::cerr << "WARNING, "
+                  << whereString
+                  << ", inside uqMiscCheckForSameValueInAllNodes()"
+                  << ", rank (in this communicator) = " << i
+                  << ": boolSum = "       << boolSum
+                  << ", localValue = "    << localValue
+                  << ", sumValue = "      << sumValue
+                  << ", totalNumNodes = " << totalNumNodes
+                  << ", avgValue = "      << (sumValue/totalNumNodes)
+                  << ", relativeTest = "  << testValue
+                  << std::endl;
+      }
+      comm.Barrier();
+    }
+    comm.Barrier();
+
+    mpiRC = MPI_Bcast((void *) &localValue, (int) 1, MPI_DOUBLE, 0, comm.Comm());
+    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                        UQ_UNAVAILABLE_RANK,
+                        whereString,
+                        "failed MPI on 'boolSum' inside uqMiscCheckForSameValueInAllNodes()");
+    inputValue = localValue; // IMPORTANT
+  }
+#else
   UQ_FATAL_TEST_MACRO(testValue > acceptableTreshold,
                       UQ_UNAVAILABLE_RANK,
                       whereString,
                       "not all nodes have the same value inside uqMiscCheckForSameValueInAllNodes()");
+#endif
 
-  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      UQ_UNAVAILABLE_RANK,
-                      whereString,
-                      "failed MPI on 'sumValue' inside uqMiscCheckForSameValueInAllNodes()");
-
-  return;
+  return (boolSum == 0);
 }
 
 template <class V>

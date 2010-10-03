@@ -363,13 +363,13 @@ uqBayesianJointPdfClass<V,M>::lnValue(
   }
   else {
     returnValue += value2*m_likelihoodExponent;
+  } // prudenci 2010/03/05
 
 #ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
-    m_lastComputedLogLikelihood = m_likelihoodExponent*value2;
+  m_lastComputedLogLikelihood = m_likelihoodExponent*value2;
 #else
-    m_lastComputedLogLikelihood = -.5*m_likelihoodExponent*value2;
+  m_lastComputedLogLikelihood = -.5*m_likelihoodExponent*value2;
 #endif
-  }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqBayesianJointPdfClass<V,M>::lnValue()"

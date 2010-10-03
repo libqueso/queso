@@ -38,6 +38,8 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   const char*                   prefix)
   :
   m_prefix                                   ((std::string)(prefix) + ""),
+  m_checkpointOutputFileName                 (UQ_ML_SAMPLING_L_CHECKPOINT_OUTPUT_FILE_NAME_ODV),
+  m_stopAtEnd                                (UQ_ML_SAMPLING_L_STOP_AT_END_ODV),
   m_dataOutputFileName                       (UQ_ML_SAMPLING_L_DATA_OUTPUT_FILE_NAME_ODV),
 //m_dataOutputAllowedSet                     (),
   m_str1                                     (""),
@@ -77,6 +79,8 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   m_drMaxNumExtraStages                      (UQ_ML_SAMPLING_L_DR_MAX_NUM_EXTRA_STAGES_ODV),
   m_drScalesForExtraStages                   (0),
   m_str4                                     ("1. "),
+  m_drDuringAmNonAdaptiveInt                 (UQ_ML_SAMPLING_L_DR_DURING_AM_NON_ADAPTIVE_INT_ODV),
+  m_amKeepInitialMatrix                      (UQ_ML_SAMPLING_L_AM_KEEP_INITIAL_MATRIX_ODV),
   m_amInitialNonAdaptInterval                (UQ_ML_SAMPLING_L_AM_INIT_NON_ADAPT_INT_ODV),
   m_amAdaptInterval                          (UQ_ML_SAMPLING_L_AM_ADAPT_INTERVAL_ODV),
   m_amEta                                    (UQ_ML_SAMPLING_L_AM_ETA_ODV),
@@ -84,6 +88,8 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   m_env                                      (env),
   m_optionsDesc                              (new po::options_description("Multilevel sampling level options")),
   m_option_help                              (m_prefix + "help"                              ),
+  m_option_checkpointOutputFileName          (m_prefix + "checkpointOutputFileName"          ),
+  m_option_stopAtEnd                         (m_prefix + "stopAtEnd"                         ),
   m_option_dataOutputFileName                (m_prefix + "dataOutputFileName"                ),
   m_option_dataOutputAllowedSet              (m_prefix + "dataOutputAllowedSet"              ),
   m_option_loadBalanceAlgorithmId            (m_prefix + "loadBalanceAlgorithmId"            ),
@@ -115,6 +121,8 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   m_option_tk_useNewtonComponent             (m_prefix + "tk_useNewtonComponent"             ),
   m_option_dr_maxNumExtraStages              (m_prefix + "dr_maxNumExtraStages"              ),
   m_option_dr_listOfScalesForExtraStages     (m_prefix + "dr_listOfScalesForExtraStages"     ),
+  m_option_dr_duringAmNonAdaptiveInt         (m_prefix + "dr_duringAmNonAdaptiveInt"         ),
+  m_option_am_keepInitialMatrix              (m_prefix + "am_keepInitialMatrix"              ),
   m_option_am_initialNonAdaptInterval        (m_prefix + "am_initialNonAdaptInterval"        ),
   m_option_am_adaptInterval                  (m_prefix + "am_adaptInterval"                  ),
   m_option_am_eta                            (m_prefix + "am_eta"                            ),
@@ -125,6 +133,8 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
 void
 uqMLSamplingLevelOptionsClass::copyOptionsValues(const uqMLSamplingLevelOptionsClass& srcOptions)
 {
+  m_checkpointOutputFileName          = srcOptions.m_checkpointOutputFileName;
+  m_stopAtEnd                         = srcOptions.m_stopAtEnd;
   m_dataOutputFileName                = srcOptions.m_dataOutputFileName;
   m_dataOutputAllowedSet              = srcOptions.m_dataOutputAllowedSet;
   m_str1                              = srcOptions.m_str1;
@@ -165,6 +175,8 @@ uqMLSamplingLevelOptionsClass::copyOptionsValues(const uqMLSamplingLevelOptionsC
   m_drMaxNumExtraStages               = srcOptions.m_drMaxNumExtraStages;
   m_drScalesForExtraStages            = srcOptions.m_drScalesForExtraStages;
   m_str4                              = srcOptions.m_str4;
+  m_drDuringAmNonAdaptiveInt          = srcOptions.m_drDuringAmNonAdaptiveInt;
+  m_amKeepInitialMatrix               = srcOptions.m_amKeepInitialMatrix;
   m_amInitialNonAdaptInterval         = srcOptions.m_amInitialNonAdaptInterval;
   m_amAdaptInterval                   = srcOptions.m_amAdaptInterval;
   m_amEta                             = srcOptions.m_amEta;
@@ -220,7 +232,9 @@ void
 uqMLSamplingLevelOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
 {
   optionsDesc.add_options()     
-    (m_option_help.c_str(),                                                                                                                                      "produce help message for Bayesian Markov chain distr. calculator")
+    (m_option_help.c_str(),                                                                                                              "produce help message for Bayesian Markov chain distr. calculator")
+    (m_option_checkpointOutputFileName.c_str(),           po::value<std::string >()->default_value(m_checkpointOutputFileName         ), "name of checpoint output file"                                   )
+    (m_option_stopAtEnd.c_str(),                          po::value<bool        >()->default_value(m_stopAtEnd                        ), "stop at end of such level"                                       )
     (m_option_dataOutputFileName.c_str(),                 po::value<std::string >()->default_value(m_dataOutputFileName               ), "name of generic output file"                                     )
     (m_option_dataOutputAllowedSet.c_str(),               po::value<std::string >()->default_value(m_str1                             ), "subEnvs that will write to generic output file"                  )
     (m_option_loadBalanceAlgorithmId.c_str(),             po::value<unsigned int>()->default_value(m_loadBalanceAlgorithmId           ), "Perform load balancing with chosen algorithm (0 = no balancing)" )
@@ -252,6 +266,8 @@ uqMLSamplingLevelOptionsClass::defineMyOptions(po::options_description& optionsD
     (m_option_tk_useNewtonComponent.c_str(),              po::value<bool        >()->default_value(m_tkUseNewtonComponent             ), "'proposal' use Newton component"                                 )
     (m_option_dr_maxNumExtraStages.c_str(),               po::value<unsigned int>()->default_value(m_drMaxNumExtraStages              ), "'dr' maximum number of extra stages"                             )
     (m_option_dr_listOfScalesForExtraStages.c_str(),      po::value<std::string >()->default_value(m_str4                             ), "'dr' list of scales for proposal cov matrices from 2nd stage on" )
+    (m_option_dr_duringAmNonAdaptiveInt.c_str(),          po::value<bool        >()->default_value(m_drDuringAmNonAdaptiveInt         ), "'dr' used during 'am' non adaptive interval"                     )
+    (m_option_am_keepInitialMatrix.c_str(),               po::value<bool        >()->default_value(m_amKeepInitialMatrix              ), "'am' keep initial (given) matrix"                                )
     (m_option_am_initialNonAdaptInterval.c_str(),         po::value<unsigned int>()->default_value(m_amInitialNonAdaptInterval        ), "'am' initial non adaptation interval"                            )
     (m_option_am_adaptInterval.c_str(),                   po::value<unsigned int>()->default_value(m_amAdaptInterval                  ), "'am' adaptation interval"                                        )
     (m_option_am_eta.c_str(),                             po::value<double      >()->default_value(m_amEta                            ), "'am' eta"                                                        )
@@ -271,6 +287,14 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
       *m_env.subDisplayFile() << optionsDesc
                               << std::endl;
     }
+  }
+
+  if (m_env.allOptionsMap().count(m_option_checkpointOutputFileName.c_str())) {
+    m_checkpointOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_checkpointOutputFileName.c_str()]).as<std::string>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_stopAtEnd.c_str())) {
+    m_stopAtEnd = ((const po::variable_value&) m_env.allOptionsMap()[m_option_stopAtEnd.c_str()]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_dataOutputFileName.c_str())) {
@@ -549,6 +573,14 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
   }
 //std::cout << "m_str4 = " << m_str4 << std::endl;
 
+  if (m_env.allOptionsMap().count(m_option_dr_duringAmNonAdaptiveInt)) {
+    m_drDuringAmNonAdaptiveInt = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dr_duringAmNonAdaptiveInt]).as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_am_keepInitialMatrix.c_str())) {
+    m_amKeepInitialMatrix = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_keepInitialMatrix.c_str()]).as<bool>();
+  }
+
   if (m_env.allOptionsMap().count(m_option_am_initialNonAdaptInterval.c_str())) {
     m_amInitialNonAdaptInterval = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_initialNonAdaptInterval.c_str()]).as<unsigned int>();
   }
@@ -571,8 +603,11 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
 void
 uqMLSamplingLevelOptionsClass::print(std::ostream& os) const
 {
-  os <<         m_option_dataOutputFileName   << " = " << m_dataOutputFileName
-     << "\n" << m_option_dataOutputAllowedSet << " = ";
+  os <<        "m_prefix"                         << " = " << m_prefix
+     << "\n" << m_option_checkpointOutputFileName << " = " << m_checkpointOutputFileName
+     << "\n" << m_option_stopAtEnd                << " = " << m_stopAtEnd
+     << "\n" << m_option_dataOutputFileName       << " = " << m_dataOutputFileName
+     << "\n" << m_option_dataOutputAllowedSet     << " = ";
   for (std::set<unsigned int>::iterator setIt = m_dataOutputAllowedSet.begin(); setIt != m_dataOutputAllowedSet.end(); ++setIt) {
     os << *setIt << " ";
   }
@@ -614,7 +649,9 @@ uqMLSamplingLevelOptionsClass::print(std::ostream& os) const
   for (unsigned int i = 0; i < m_drScalesForExtraStages.size(); ++i) {
     os << m_drScalesForExtraStages[i] << " ";
   }
-  os << "\n" << m_option_am_initialNonAdaptInterval << " = " << m_amInitialNonAdaptInterval
+  os << "\n" << m_option_dr_duringAmNonAdaptiveInt  << " = " << m_drDuringAmNonAdaptiveInt
+     << "\n" << m_option_am_keepInitialMatrix       << " = " << m_amKeepInitialMatrix
+     << "\n" << m_option_am_initialNonAdaptInterval << " = " << m_amInitialNonAdaptInterval
      << "\n" << m_option_am_adaptInterval           << " = " << m_amAdaptInterval
      << "\n" << m_option_am_eta                     << " = " << m_amEta
      << "\n" << m_option_am_epsilon                 << " = " << m_amEpsilon

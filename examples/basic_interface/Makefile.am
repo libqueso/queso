@@ -3,7 +3,7 @@
 exampledir		= @prefix@/examples/basic
 example_DATA            = inverse_problem.c inverse_problemf.f90 queso.inp
 
-EXTRA_DIST             = inverse_problemf.f90 queso.inp
+EXTRA_DIST             = inverse_problemf.f90 inverse_problem.h queso.inp
 
 AM_CPPFLAGS             = -I$(top_srcdir)/libs/interface
 AM_LDFLAGS              = $(BOOST_LDFLAGS) ${HPCT_LIBS} -lhpct ${GLPK_LIBS} -lglpk

@@ -144,6 +144,7 @@ libqueso_include_HEADERS += $(top_srcdir)/libs/stats/inc/uqFiniteDistribution.h 
 # (5/5) Headers to install from interface
 libqueso_include_HEADERS += $(top_srcdir)/libs/interface/queso.h \
 			    $(top_srcdir)/libs/interface/basic_classes.h \
+			    $(top_srcdir)/libs/interface/basic_interface.h \
                             $(top_srcdir)/libs/interface/basic_int.h
 
 

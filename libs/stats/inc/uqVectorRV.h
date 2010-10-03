@@ -384,6 +384,13 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
 
   M lowerCholLawCovMatrix(lawVarVector);
   int iRC = lowerCholLawCovMatrix.chol();
+  if (iRC) {
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "In uqGaussianVectorRVClass<V,M>::constructor() [1]: lawVarVector contents are\n";
+      *m_env.subDisplayFile() << lawVarVector; // FIX ME: might demand parallelism
+      *m_env.subDisplayFile() << std::endl;
+    }
+  }
   UQ_FATAL_TEST_MACRO(iRC,
                       m_env.fullRank(),
                       "uqGaussianVectorRVClass<V,M>::constructor() [1]",
@@ -486,6 +493,13 @@ uqGaussianVectorRVClass<V,M>::updateLawCovMatrix(const M& newLawCovMatrix)
 
   M newLowerCholLawCovMatrix(newLawCovMatrix);
   int iRC = newLowerCholLawCovMatrix.chol();
+  if (iRC) {
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "In uqGaussianVectorRVClass<V,M>::updateLawCovVector(): newLawCovMatrix contents are\n";
+      *m_env.subDisplayFile() << newLawCovMatrix; // FIX ME: might demand parallelism
+      *m_env.subDisplayFile() << std::endl;
+    }
+  }
   UQ_FATAL_TEST_MACRO(iRC,
                       m_env.fullRank(),
                       "uqGaussianVectorRVClass<V,M>::updateLawCovMatrix()",
