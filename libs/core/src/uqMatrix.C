@@ -48,7 +48,8 @@ uqMatrixClass::uqMatrixClass(const uqBaseEnvironmentClass& env, const Epetra_Map
   :
   m_env              (env),
   m_map              (map),
-  m_printHorizontally(true)
+  m_printHorizontally(true),
+  m_inDebugMode      (false)
 {
 }
 
@@ -73,6 +74,7 @@ uqMatrixClass::copy(const uqMatrixClass& src)
   //m_env = src.env;
   //m_map = src.map;
   m_printHorizontally = src.m_printHorizontally;
+  m_inDebugMode       = src.m_inDebugMode;
 
   return;
 }
@@ -148,4 +150,17 @@ bool
 uqMatrixClass::getPrintHorizontally() const
 {
   return m_printHorizontally;
+}
+
+void
+uqMatrixClass::setInDebugMode(bool value) const
+{
+  m_inDebugMode = value;
+  return;
+}
+
+bool
+uqMatrixClass::getInDebugMode() const
+{
+  return m_inDebugMode;
 }

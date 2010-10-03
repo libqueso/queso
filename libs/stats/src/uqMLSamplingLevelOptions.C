@@ -41,6 +41,7 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   m_dataOutputFileName                       (UQ_ML_SAMPLING_L_DATA_OUTPUT_FILE_NAME_ODV),
 //m_dataOutputAllowedSet                     (),
   m_str1                                     (""),
+  m_loadBalance                              (UQ_ML_SAMPLING_L_LOAD_BALANCE_ODV),
   m_minEffectiveSizeRatio                    (UQ_ML_SAMPLING_L_MIN_EFFECTIVE_SIZE_RATIO_ODV),
   m_maxEffectiveSizeRatio                    (UQ_ML_SAMPLING_L_MAX_EFFECTIVE_SIZE_RATIO_ODV),
   m_scaleCovMatrix                           (UQ_ML_SAMPLING_L_SCALE_COV_MATRIX_ODV),
@@ -84,6 +85,7 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   m_option_help                              (m_prefix + "help"                              ),
   m_option_dataOutputFileName                (m_prefix + "dataOutputFileName"                ),
   m_option_dataOutputAllowedSet              (m_prefix + "dataOutputAllowedSet"              ),
+  m_option_loadBalance                       (m_prefix + "loadBalance"                       ),
   m_option_minEffectiveSizeRatio             (m_prefix + "minEffectiveSizeRatio"             ),
   m_option_maxEffectiveSizeRatio             (m_prefix + "maxEffectiveSizeRatio"             ),
   m_option_scaleCovMatrix                    (m_prefix + "scaleCovMatrix"                    ),
@@ -124,6 +126,7 @@ uqMLSamplingLevelOptionsClass::copyOptionsValues(const uqMLSamplingLevelOptionsC
   m_dataOutputFileName                = srcOptions.m_dataOutputFileName;
   m_dataOutputAllowedSet              = srcOptions.m_dataOutputAllowedSet;
   m_str1                              = srcOptions.m_str1;
+  m_loadBalance                       = srcOptions.m_loadBalance;
   m_minEffectiveSizeRatio             = srcOptions.m_minEffectiveSizeRatio;
   m_maxEffectiveSizeRatio             = srcOptions.m_maxEffectiveSizeRatio;
   m_scaleCovMatrix                    = srcOptions.m_scaleCovMatrix;
@@ -217,6 +220,7 @@ uqMLSamplingLevelOptionsClass::defineMyOptions(po::options_description& optionsD
     (m_option_help.c_str(),                                                                                                                                      "produce help message for Bayesian Markov chain distr. calculator")
     (m_option_dataOutputFileName.c_str(),                 po::value<std::string >()->default_value(m_dataOutputFileName               ), "name of generic output file"                                     )
     (m_option_dataOutputAllowedSet.c_str(),               po::value<std::string >()->default_value(m_str1                             ), "subEnvs that will write to generic output file"                  )
+    (m_option_loadBalance.c_str(),                        po::value<bool        >()->default_value(m_loadBalance                      ), "Perform load balancing"                                          )
     (m_option_minEffectiveSizeRatio.c_str(),              po::value<double      >()->default_value(m_minEffectiveSizeRatio            ), "minimum allowed effective size ratio wrt previous level"         )
     (m_option_maxEffectiveSizeRatio.c_str(),              po::value<double      >()->default_value(m_maxEffectiveSizeRatio            ), "maximum allowed effective size ratio wrt previous level"         )
     (m_option_scaleCovMatrix.c_str(),                     po::value<bool        >()->default_value(m_scaleCovMatrix                   ), "scale proposal covariance matrix"                                )
@@ -286,6 +290,10 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
     sprintf(tmpStr,"%d",*setIt);
     m_str1 += tmpStr;
     m_str1 += " ";
+  }
+
+  if (m_env.allOptionsMap().count(m_option_loadBalance.c_str())) {
+    m_loadBalance = ((const po::variable_value&) m_env.allOptionsMap()[m_option_loadBalance.c_str()]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_minEffectiveSizeRatio.c_str())) {
@@ -560,7 +568,8 @@ uqMLSamplingLevelOptionsClass::print(std::ostream& os) const
   for (std::set<unsigned int>::iterator setIt = m_dataOutputAllowedSet.begin(); setIt != m_dataOutputAllowedSet.end(); ++setIt) {
     os << *setIt << " ";
   }
-  os << "\n" << m_option_minEffectiveSizeRatio          << " = " << m_minEffectiveSizeRatio
+  os << "\n" << m_option_loadBalance                    << " = " << m_loadBalance
+     << "\n" << m_option_minEffectiveSizeRatio          << " = " << m_minEffectiveSizeRatio
      << "\n" << m_option_maxEffectiveSizeRatio          << " = " << m_maxEffectiveSizeRatio
      << "\n" << m_option_scaleCovMatrix                 << " = " << m_scaleCovMatrix
      << "\n" << m_option_minRejectionRate               << " = " << m_minRejectionRate

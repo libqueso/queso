@@ -61,6 +61,8 @@ public:
   unsigned int sizeGlobal       () const;
   double       norm2Sq          () const;
   double       norm2            () const;
+  double       norm1            () const;
+  double       normInf          () const;
   double       sumOfComponents  () const;
   void         cwSet            (double value);
   void         cwSetGaussian    (const gsl_rng* rng, double mean, double stdDev);
@@ -70,12 +72,18 @@ public:
   void         cwSetConcatenated(const uqGslVectorClass& v1, const uqGslVectorClass& v2);
   void         cwExtract        (unsigned int initialPos, uqGslVectorClass& vec) const;
   void         cwInvert         ();
+  void         cwSqrt           ();
   void         matlabDiff       (unsigned int firstPositionToStoreDiff, double valueForRemainderPosition, uqGslVectorClass& outputVec) const;
   void         sort             ();
+  void         mpiBcast         (int srcRank, const Epetra_MpiComm& bcastComm);
+  void         mpiAllReduce     (MPI_Op mpiOperation, const Epetra_MpiComm& opComm, uqGslVectorClass& resultVec) const;
+  void         mpiAllQuantile   (double probability, const Epetra_MpiComm& opComm, uqGslVectorClass& resultVec) const;
   void         print            (std::ostream& os) const;
   void         subWriteContents (const std::string&            varNamePrefix,
                                  const std::string&            fileName,
                                  const std::set<unsigned int>& allowedSubEnvIds) const;
+  void         subReadContents  (const std::string&            fileName,
+                                 const std::set<unsigned int>& allowedSubEnvIds);
 
   bool         atLeastOneComponentSmallerThan(const uqGslVectorClass& rhs) const;
   bool         atLeastOneComponentBiggerThan (const uqGslVectorClass& rhs) const;

@@ -227,10 +227,8 @@ namespace QUESO_Basic_API {
 
     // Actual code
     static int first_entry = 1;
-    double *uqParams;
-    int num_params;
-
-    num_params = paramValue.sizeGlobal();
+    double *uqParams = NULL;
+    int num_params = paramValue.sizeGlobal();
 
     if(first_entry)
       {

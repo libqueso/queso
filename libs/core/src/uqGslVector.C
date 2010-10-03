@@ -293,6 +293,34 @@ uqGslVectorClass::norm2() const
 }
 
 double
+uqGslVectorClass::norm1() const
+{
+  double result = 0.;
+
+  unsigned int size = this->sizeLocal();
+  for (unsigned int i = 0; i < size; ++i) {
+    result += fabs((*this)[i]);
+  }
+
+  return result;
+}
+
+double
+uqGslVectorClass::normInf() const
+{
+  double result = 0.;
+
+  unsigned int size = this->sizeLocal();
+  double aux = 0.;
+  for (unsigned int i = 0; i < size; ++i) {
+    aux = fabs((*this)[i]);
+    if (aux > result) result = aux;
+  }
+
+  return result;
+}
+
+double
 uqGslVectorClass::sumOfComponents() const
 {
   double result = 0.;
@@ -413,6 +441,17 @@ uqGslVectorClass::cwInvert()
 }
 
 void
+uqGslVectorClass::cwSqrt()
+{
+  unsigned int size = this->sizeLocal();
+  for (unsigned int i = 0; i < size; ++i) {
+    (*this)[i] = sqrt((*this)[i]);
+  }
+
+  return;
+}
+
+void
 uqGslVectorClass::matlabDiff(
   unsigned int      firstPositionToStoreDiff,
   double            valueForRemainderPosition,
@@ -452,22 +491,177 @@ uqGslVectorClass::sort()
 }
 
 void
+uqGslVectorClass::mpiBcast(int srcRank, const Epetra_MpiComm& bcastComm)
+{
+  // Filter out those nodes that should not participate
+  if (bcastComm.MyPID() < 0) return;
+
+  // Check 'srcRank'
+  UQ_FATAL_TEST_MACRO((srcRank < 0) || (srcRank >= bcastComm.NumProc()),
+                      m_env.fullRank(),
+                      "uqGslVectorClass::mpiBcast()",
+                      "invalud srcRank");
+
+  // Check number of participant nodes
+  double localNumNodes = 1.;
+  double totalNumNodes = 0.;
+  int mpiRC = MPI_Allreduce((void *) &localNumNodes, (void *) &totalNumNodes, (int) 1, MPI_DOUBLE, MPI_SUM, bcastComm.Comm());
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      m_env.fullRank(),
+                      "uqGslVectorClass::mpiBcast()",
+                      "failed MPI_Allreduce() for numNodes");
+  UQ_FATAL_TEST_MACRO(totalNumNodes != (double) bcastComm.NumProc(),
+                      m_env.fullRank(),
+                      "uqGslVectorClass::mpiBcast()",
+                      "inconsistent numNodes");
+
+  // Check that all participant nodes have the same vector size
+  double localVectorSize = (double) this->sizeLocal();
+  double sumOfVectorSizes = 0.; 
+  mpiRC = MPI_Allreduce((void *) &localVectorSize, (void *) &sumOfVectorSizes, (int) 1, MPI_DOUBLE, MPI_SUM, bcastComm.Comm());
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      m_env.fullRank(),
+                      "uqGslVectorClass::mpiBcast()",
+                      "failed MPI_Allreduce() for vectorSize");
+  UQ_FATAL_TEST_MACRO(sumOfVectorSizes != (totalNumNodes * localVectorSize),
+                      m_env.fullRank(),
+                      "uqGslVectorClass::mpiBcast()",
+                      "inconsistent vectorSize");
+
+  // Ok, bcast data
+  std::vector<double> dataBuffer((unsigned int) localVectorSize, 0.);
+  if (bcastComm.MyPID() == srcRank) {
+    for (unsigned int i = 0; i < dataBuffer.size(); ++i) {
+      dataBuffer[i] = (*this)[i];
+    }
+  }
+
+  mpiRC = MPI_Bcast((void *) &dataBuffer[0], (int) localVectorSize, MPI_DOUBLE, srcRank, bcastComm.Comm());
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      m_env.fullRank(),
+                      "uqGslVectorClass::mpiBcast()",
+                      "failed MPI_Bcast()");
+
+  if (bcastComm.MyPID() != srcRank) {
+    for (unsigned int i = 0; i < dataBuffer.size(); ++i) {
+      (*this)[i] = dataBuffer[i];
+    }
+  }
+
+  return;
+}
+
+void
+uqGslVectorClass::mpiAllReduce(MPI_Op mpiOperation, const Epetra_MpiComm& opComm, uqGslVectorClass& resultVec) const
+{
+  // Filter out those nodes that should not participate
+  if (opComm.MyPID() < 0) return;
+
+  unsigned int size = this->sizeLocal();
+  UQ_FATAL_TEST_MACRO(size != resultVec.sizeLocal(),
+                      m_env.fullRank(),
+                      "uqGslVectorClass::mpiAllReduce()",
+                      "different vector sizes");
+
+  for (unsigned int i = 0; i < size; ++i) {
+    double srcValue = (*this)[i];
+    double resultValue = 0.;
+    int mpiRC = MPI_Allreduce((void *) &srcValue, (void *) &resultValue, (int) 1, MPI_DOUBLE, mpiOperation, opComm.Comm());
+    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                        m_env.fullRank(),
+                        "uqGslVectorClass::mpiAllReduce()",
+                        "failed MPI_Allreduce()");
+    resultVec[i] = resultValue;
+  }
+
+  return;
+}
+
+void
+uqGslVectorClass::mpiAllQuantile(double probability, const Epetra_MpiComm& opComm, uqGslVectorClass& resultVec) const
+{
+  // Filter out those nodes that should not participate
+  if (opComm.MyPID() < 0) return;
+
+  UQ_FATAL_TEST_MACRO((probability < 0.) || (1. < probability),
+                      m_env.fullRank(),
+                      "uqGslVectorClass::mpiAllQuantile()",
+                      "invalid input");
+
+  unsigned int size = this->sizeLocal();
+  UQ_FATAL_TEST_MACRO(size != resultVec.sizeLocal(),
+                      m_env.fullRank(),
+                      "uqGslVectorClass::mpiAllQuantile()",
+                      "different vector sizes");
+
+  for (unsigned int i = 0; i < size; ++i) {
+    //int MPI_Gather (void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
+    //                void *recvbuf, int recvcount, MPI_Datatype recvtype, 
+    //                int root, MPI_Comm comm )
+    double auxDouble = (int) (*this)[i];
+    std::vector<double> vecOfDoubles(opComm.NumProc(),0.);
+    int mpiRC = MPI_Gather((void *) &auxDouble, 1, MPI_DOUBLE, (void *) &vecOfDoubles[0], (int) 1, MPI_DOUBLE, 0, opComm.Comm());
+    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                        m_env.fullRank(),
+                        "uqGslVectorClass::mpiAllQuantile()",
+                        "failed MPI_Gather()");
+
+    std::sort(vecOfDoubles.begin(), vecOfDoubles.end());
+
+    double result = vecOfDoubles[(unsigned int)( probability*((double)(vecOfDoubles.size()-1)) )];
+
+    mpiRC = MPI_Bcast((void *) &result, (int) 1, MPI_DOUBLE, 0, opComm.Comm());
+    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                        m_env.fullRank(),
+                        "uqGslVectorClass::mpiAllQuantile()",
+                        "failed MPI_Bcast()");
+
+    resultVec[i] = result;
+  }
+
+  return;
+}
+
+void
 uqGslVectorClass::print(std::ostream& os) const
 {
   unsigned int size = this->sizeLocal();
 
-  if (m_printHorizontally) {
-    for (unsigned int i = 0; i < size; ++i) {
-      os << (*this)[i]
-         << " ";
+  std::ostream::fmtflags curr_fmt = os.flags();
+
+  if (m_printScientific) {
+    unsigned int savedPrecision = os.precision();
+    os.precision(16);
+    if (m_printHorizontally) {
+      for (unsigned int i = 0; i < size; ++i) {
+        os << std::scientific << (*this)[i]
+           << " ";
+      }
     }
+    else {
+      for (unsigned int i = 0; i < size; ++i) {
+        os << std::scientific << (*this)[i]
+           << std::endl;
+      }
+    }
+    os.precision(savedPrecision);
   }
   else {
-    for (unsigned int i = 0; i < size; ++i) {
-      os << (*this)[i]
-         << std::endl;
+    if (m_printHorizontally) {
+      for (unsigned int i = 0; i < size; ++i) {
+        os << std::dec << (*this)[i]
+           << " ";
+      }
+    }
+    else {
+      for (unsigned int i = 0; i < size; ++i) {
+        os << std::dec << (*this)[i]
+           << std::endl;
+      }
     }
   }
+
+  os.flags(curr_fmt);
 
   return;
 }
@@ -502,16 +696,173 @@ uqGslVectorClass::subWriteContents(
             << std::endl;
     *ofsVar << varNamePrefix << "_sub" << m_env.subIdString() << " = [";
 
-    bool savedVectorPrintState = this->getPrintHorizontally();
+    bool savedVectorPrintScientific   = this->getPrintScientific();
+    bool savedVectorPrintHorizontally = this->getPrintHorizontally();
+    this->setPrintScientific  (true);
     this->setPrintHorizontally(false);
     *ofsVar << *this;
           //<< std::endl; // No need for 'endl' because horizontally = 'false'
-    this->setPrintHorizontally(savedVectorPrintState);
+    this->setPrintScientific  (savedVectorPrintScientific);
+    this->setPrintHorizontally(savedVectorPrintHorizontally);
 
     *ofsVar << "];\n";
     //ofsVar->close();
     delete ofsVar;
   }
+
+  return;
+}
+
+void
+uqGslVectorClass::subReadContents(
+  const std::string&            fileName,
+  const std::set<unsigned int>& allowedSubEnvIds)
+{
+  UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
+                      m_env.fullRank(),
+                      "uqGslVectorsClass::subReadContents()",
+                      "unexpected subRank");
+
+  UQ_FATAL_TEST_MACRO(this->numOfProcsForStorage() > 1,
+                      m_env.fullRank(),
+                      "uqGslVectorClass::subReadContents()",
+                      "implemented just for sequential vectors for now");
+
+  std::ifstream* ifsVar = NULL;
+  m_env.openInputFile(fileName,
+                      UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                      allowedSubEnvIds,
+                      false,
+                      ifsVar);
+
+  if (ifsVar) {
+    double subReadSize = this->sizeLocal();
+
+    // In the logic below, the id of a line' begins with value 0 (zero)
+    unsigned int idOfMyFirstLine = 1;
+    unsigned int idOfMyLastLine = this->sizeLocal();
+    unsigned int numParams = 1; // Yes, just '1'
+
+    // Read number of chain positions in the file by taking care of the first line,
+    // which resembles something like 'variable_name = zeros(n_positions,m_params);'
+    std::string tmpString;
+
+    // Read 'variable name' string
+    *ifsVar >> tmpString;
+    //std::cout << "Just read '" << tmpString << "'" << std::endl;
+
+    // Read '=' sign
+    *ifsVar >> tmpString;
+    //std::cout << "Just read '" << tmpString << "'" << std::endl;
+    UQ_FATAL_TEST_MACRO(tmpString != "=",
+                        m_env.fullRank(),
+                        "uqGslVectorClass::subReadContents()",
+                        "string should be the '=' sign");
+
+    // Read 'zeros(n_positions,n_params)' string
+    *ifsVar >> tmpString;
+    //std::cout << "Just read '" << tmpString << "'" << std::endl;
+    unsigned int posInTmpString = 6;
+
+    // Isolate 'n_positions' in a string
+    char nPositionsString[tmpString.size()-posInTmpString+1];
+    unsigned int posInPositionsString = 0;
+    do {
+      UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
+                          m_env.fullRank(),
+                          "uqGslVectorClass::subReadContents()",
+                          "symbol ',' not found in first line of file");
+      nPositionsString[posInPositionsString++] = tmpString[posInTmpString++];
+    } while (tmpString[posInTmpString] != ',');
+    nPositionsString[posInPositionsString] = '\0';
+
+    // Isolate 'n_params' in a string
+    posInTmpString++; // Avoid reading ',' char
+    char nParamsString[tmpString.size()-posInTmpString+1];
+    unsigned int posInParamsString = 0;
+    do {
+      UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
+                          m_env.fullRank(),
+                          "uqGslVectorClass::subReadContents()",
+                          "symbol ')' not found in first line of file");
+      nParamsString[posInParamsString++] = tmpString[posInTmpString++];
+    } while (tmpString[posInTmpString] != ')');
+    nParamsString[posInParamsString] = '\0';
+
+    // Convert 'n_positions' and 'n_params' strings to numbers
+    unsigned int sizeOfVecInFile = (unsigned int) strtod(nPositionsString,NULL);
+    unsigned int numParamsInFile = (unsigned int) strtod(nParamsString,   NULL);
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "In uqGslVectorClass::subReadContents()"
+                              << ": fullRank "            << m_env.fullRank()
+                              << ", sizeOfVecInFile = "   << sizeOfVecInFile
+                              << ", numParamsInFile = "   << numParamsInFile
+                              << ", this->sizeLocal() = " << this->sizeLocal()
+                              << std::endl;
+    }
+
+    // Check if [size of vec in file] >= [requested sub vec size]
+    UQ_FATAL_TEST_MACRO(sizeOfVecInFile < subReadSize,
+                        m_env.fullRank(),
+                        "uqGslVectorClass::subReadContents()",
+                        "size of vec in file is not big enough");
+
+    // Check if [num params in file] == [num params in current vec]
+    UQ_FATAL_TEST_MACRO(numParamsInFile != numParams,
+                        m_env.fullRank(),
+                        "uqGslVectorClass::subReadContents()",
+                        "number of parameters of vec in file is different than number of parameters in this vec object");
+
+    // Code common to any core in a communicator
+    unsigned int maxCharsPerLine = 64*numParams; // Up to about 60 characters to represent each parameter value
+
+    unsigned int lineId = 0;
+    while (lineId < idOfMyFirstLine) {
+      ifsVar->ignore(maxCharsPerLine,'\n');
+      lineId++;
+    };
+
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "In uqGslVectorClass::subReadContents()"
+                              << ": beginning to read input actual data"
+                              << std::endl;
+    }
+
+    // Take care of initial part of the first data line,
+    // which resembles something like 'variable_name = [value1 value2 ...'
+    // Read 'variable name' string
+    *ifsVar >> tmpString;
+    //std::cout << "Core 0 just read '" << tmpString << "'" << std::endl;
+
+    // Read '=' sign
+    *ifsVar >> tmpString;
+    //std::cout << "Core 0 just read '" << tmpString << "'" << std::endl;
+    UQ_FATAL_TEST_MACRO(tmpString != "=",
+                        m_env.fullRank(),
+                        "uqGslVectorClass::subReadContents()",
+                        "in core 0, string should be the '=' sign");
+
+    // Take into account the ' [' portion
+    std::streampos tmpPos = ifsVar->tellg();
+    ifsVar->seekg(tmpPos+(std::streampos)2);
+
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "In uqGslVectorClass::subReadContents()"
+                              << ": beginning to read linear with numbers only"
+                              << ", lineId = " << lineId
+                              << ", idOfMyFirstLine = " << idOfMyFirstLine
+                              << ", idOfMyLastLine = " << idOfMyLastLine
+                              << std::endl;
+    }
+
+    while (lineId <= idOfMyLastLine) {
+      *ifsVar >> (*this)[lineId - idOfMyFirstLine];
+      lineId++;
+    };
+  }
+
+  //ifsVar->close();
+  delete ifsVar;
 
   return;
 }

@@ -10,7 +10,8 @@ AM_CPPFLAGS = -I$(top_srcdir)/libs/core/inc \
 	-I$(top_srcdir)/libs/interface \
 	$(BOOST_CPPFLAGS) \
 	$(GSL_CFLAGS) \
-	$(HPCT_CFLAGS)
+	$(HPCT_CFLAGS) \
+	$(GLPK_CFLAGS)
 
 
 # Dynamic library build
@@ -35,6 +36,7 @@ endif
 
 # (2/5) Sources from misc/src
 libqueso_la_SOURCES += $(top_srcdir)/libs/misc/src/uq1D1DFunction.C \
+	$(top_srcdir)/libs/misc/src/uq1DQuadrature.C \
 	$(top_srcdir)/libs/misc/src/uqComplexFft.C \
 	$(top_srcdir)/libs/misc/src/uqMiscellaneous.C \
 	$(top_srcdir)/libs/misc/src/uqRealFft.C
@@ -84,6 +86,7 @@ libqueso_include_HEADERS = $(top_srcdir)/libs/core/inc/uqDefines.h \
 
 # (2/5) Headers to install from misc/inc
 libqueso_include_HEADERS += $(top_srcdir)/libs/misc/inc/uq1D1DFunction.h \
+	$(top_srcdir)/libs/misc/inc/uq1DQuadrature.h \
 	$(top_srcdir)/libs/misc/inc/uq2dArrayOfStuff.h \
 	$(top_srcdir)/libs/misc/inc/uqArrayOfOneDGrids.h \
 	$(top_srcdir)/libs/misc/inc/uqArrayOfOneDTables.h \

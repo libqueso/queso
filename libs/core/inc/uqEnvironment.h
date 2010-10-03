@@ -167,6 +167,7 @@ public:
           unsigned int            displayVerbosity           () const;
           unsigned int            syncVerbosity              () const;
           const gsl_rng*          rng                        () const;
+          void                    resetGslSeed               (int newSeedOption);
           bool                    isThereInputFile           () const;
           void                    syncPrintDebugMsg          (const char* msg, unsigned int msgVerbosity, unsigned int numUSecs, const Epetra_MpiComm& commObj) const;
 
@@ -180,6 +181,12 @@ public:
                                                               const std::string&            fileType,
                                                                     bool                    writeOver,
                                                                     std::ofstream*&         ofsvar) const;
+          void                    openInputFile              (const std::string&            fileName,
+                                                              const std::string&            fileType,
+                                                              const std::set<unsigned int>& allowedSubEnvIds,
+                                                                    bool                    writeOver,
+                                                                    std::ifstream*&         ifsvar) const;
+
 
   virtual void                    print                      (std::ostream& os) const = 0;
 

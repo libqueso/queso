@@ -154,9 +154,11 @@ public:
   virtual  void                     meanStacc                  (unsigned int                             initialPos,
                                                                 V&                                       meanStaccVec) const = 0;
   virtual  void                     subMinMax                  (unsigned int                             initialPos,
+                                                                unsigned int                             numPos,
                                                                 V&                                       minVec,
                                                                 V&                                       maxVec) const = 0;
   virtual  void                     unifiedMinMax              (unsigned int                             initialPos,
+                                                                unsigned int                             numPos,
                                                                 V&                                       unifiedMinVec,
                                                                 V&                                       unifiedMaxVec) const = 0;
   virtual  void                     subHistogram               (unsigned int                             initialPos,
@@ -176,26 +178,25 @@ public:
                                                                 V&                                       iqrVec) const = 0;
   virtual  void                     unifiedInterQuantileRange  (unsigned int                             initialPos,
                                                                 V&                                       unifiedIqrVec) const = 0;
-  virtual  void                     subScalesForKDE            (unsigned int                             initialPos,
+  virtual  void                     subScalesForKde            (unsigned int                             initialPos,
                                                                 const V&                                 iqrVec,
+                                                                unsigned int                             kdeDimension,
                                                                 V&                                       scaleVec) const = 0;
-  virtual  void                     unifiedScalesForKDE        (unsigned int                             initialPos,
+  virtual  void                     unifiedScalesForKde        (unsigned int                             initialPos,
                                                                 const V&                                 unifiedIqrVec,
+                                                                unsigned int                             kdeDimension,
                                                                 V&                                       unifiedScaleVec) const = 0;
-//virtual  void                     sabGaussianKDE             (const V&                                 evaluationParamVec,
-//                                                              V&                                       densityVec) const = 0;
-  virtual  void                     subGaussianKDE             (unsigned int                             initialPos,
+  virtual  void                     subGaussian1dKde           (unsigned int                             initialPos,
                                                                 const V&                                 scaleVec,
                                                                 const std::vector<V*>&                   evaluationParamVecs,
                                                                 std::vector<V*>&                         densityVecs) const = 0;
-  virtual  void                     unifiedGaussianKDE         (unsigned int                             initialPos,
+  virtual  void                     unifiedGaussian1dKde       (unsigned int                             initialPos,
                                                                 const V&                                 unifiedScaleVec,
                                                                 const std::vector<V*>&                   unifiedEvaluationParamVecs,
                                                                 std::vector<V*>&                         unifiedDensityVecs) const = 0;
-//virtual  void                     subWriteContents           (std::ofstream&                           ofsvar) const = 0;
-//virtual  void                     unifiedWriteContents       (std::ofstream&                           ofsvar) const = 0;
   virtual  void                     subWriteContents           (const std::string&                       fileName,
                                                                 const std::set<unsigned int>&            allowedSubEnvIds) const = 0;
+  virtual  void                     subWriteContents           (std::ofstream&                           ofsvar) const = 0;
   virtual  void                     unifiedWriteContents       (const std::string&                       fileName) const = 0;
   virtual  void                     unifiedReadContents        (const std::string&                       fileName,
                                                                 const unsigned int                       subSequenceSize) = 0;
@@ -214,6 +215,11 @@ public:
   virtual  double                   estimateConvBrooksGelman   (unsigned int                             initialPos,
                                                                 unsigned int                             numPos) const = 0;
 
+  virtual  void                     extractScalarSeq           (unsigned int                             initialPos,
+                                                                unsigned int                             spacing,
+                                                                unsigned int                             numPos,
+                                                                unsigned int                             paramId,
+                                                                uqScalarSequenceClass<double>&           scalarSeq) const = 0;
 protected:
            void                     copy                       (const uqBaseVectorSequenceClass<V,M>&    src);
            void                     computeMeanVars            (const uqSequenceStatisticalOptionsClass& statisticalOptions,
@@ -221,6 +227,50 @@ protected:
                                                                 V*                                       subMeanPtr,
                                                                 V*                                       subSampleVarPtr,
                                                                 V*                                       subPopulVarPtr);
+
+  virtual  void                     subMeanMonitorAlloc        (unsigned int numberOfMonitorPositions) = 0;
+  virtual  void                     subMeanInter0MonitorAlloc  (unsigned int numberOfMonitorPositions) = 0;
+  virtual  void                     unifiedMeanMonitorAlloc    (unsigned int numberOfMonitorPositions) = 0;
+
+  virtual  void                     subMeanMonitorRun          (unsigned int monitorPosition,
+                                                                V&           subMeanVec,
+                                                                V&           subMeanCltStd) = 0;
+  virtual  void                     subMeanInter0MonitorRun    (unsigned int monitorPosition,
+                                                                V&           subMeanInter0Mean,
+                                                                V&           subMeanInter0Clt95,
+                                                                V&           subMeanInter0Empirical90,
+                                                                V&           subMeanInter0Min,
+                                                                V&           subMeanInter0Max) = 0;
+  virtual  void                     unifiedMeanMonitorRun      (unsigned int monitorPosition,
+                                                                V&           unifiedMeanVec,
+                                                                V&           unifiedMeanCltStd) = 0;
+
+  virtual  void                     subMeanMonitorStore        (unsigned int i,
+                                                                unsigned int monitorPosition,
+                                                                const V&     subMeanVec,
+                                                                const V&     subMeanCltStd) = 0;
+  virtual  void                     subMeanInter0MonitorStore  (unsigned int i,
+                                                                unsigned int monitorPosition,
+                                                                const V&     subMeanInter0Mean,
+                                                                const V&     subMeanInter0Clt95,
+                                                                const V&     subMeanInter0Empirical90,
+                                                                const V&     subMeanInter0Min,
+                                                                const V&     subMeanInter0Max) = 0;
+  virtual  void                     unifiedMeanMonitorStore    (unsigned int i,
+                                                                unsigned int monitorPosition,
+                                                                V&           unifiedMeanVec,
+                                                                V&           unifiedMeanCltStd) = 0;
+
+  virtual  void                     subMeanMonitorWrite        (std::ofstream& ofs) = 0;
+  virtual  void                     subMeanInter0MonitorWrite  (std::ofstream& ofs) = 0;
+  virtual  void                     unifiedMeanMonitorWrite    (std::ofstream& ofs) = 0;
+
+  virtual  void                     subMeanMonitorFree         () = 0;
+  virtual  void                     subMeanInter0MonitorFree   () = 0;
+  virtual  void                     unifiedMeanMonitorFree     () = 0;
+
+           void                     computeMeanEvolution       (const uqSequenceStatisticalOptionsClass& statisticalOptions,
+                                                                std::ofstream*                           passedOfs);
            void                     computeBMM                 (const uqSequenceStatisticalOptionsClass& statisticalOptions,
                                                                 const std::vector<unsigned int>&         initialPosForStatistics,
                                                                 std::ofstream*                           passedOfs);
@@ -252,11 +302,6 @@ protected:
            void                     computeCovCorrMatrices     (const uqSequenceStatisticalOptionsClass& statisticalOptions,
                                                                 std::ofstream*                           passedOfs);
 
-  virtual  void                     extractScalarSeq           (unsigned int                             initialPos,
-                                                                unsigned int                             spacing,
-                                                                unsigned int                             numPos,
-                                                                unsigned int                             paramId,
-                                                                uqScalarSequenceClass<double>&           scalarSeq) const = 0;
   virtual  void                     extractRawData             (unsigned int                             initialPos,
                                                                 unsigned int                             spacing,
                                                                 unsigned int                             numPos,
@@ -332,13 +377,30 @@ template <class V, class M>
 unsigned int
 uqBaseVectorSequenceClass<V,M>::unifiedSequenceSize() const
 {
-  unsigned int subNumSamples = this->subSequenceSize();
   unsigned int unifiedNumSamples = 0;
-  int mpiRC = MPI_Allreduce((void *) &subNumSamples, (void *) &unifiedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
-  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_env.fullRank(),
-                      "uqBaseVectorSequenceClass<V,M>::unifiedSequenceSize()",
-                      "failed MPI_Allreduce() for unifiedSequenceSize()");
+
+  bool useOnlyInter0Comm = (m_vectorSpace.numOfProcsForStorage() == 1);
+
+  if (useOnlyInter0Comm) {
+    if (m_env.inter0Rank() >= 0) {
+      unsigned int subNumSamples = this->subSequenceSize();
+      int mpiRC = MPI_Allreduce((void *) &subNumSamples, (void *) &unifiedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqBaseVectorSequenceClass<V,M>::unifiedSequenceSize()",
+                          "failed MPI_Allreduce() for unifiedSequenceSize()");
+    }
+    else {
+      // Node not in the 'inter0' communicator
+      unifiedNumSamples = this->subSequenceSize();
+    }
+  }
+  else {
+    UQ_FATAL_TEST_MACRO((useOnlyInter0Comm == false),
+                        m_env.fullRank(),
+                        "uqBaseVectorSequenceClass<V,M>::unifiedSequenceSize()",
+                        "parallel vectors not supported yet");
+  }
 
   return unifiedNumSamples;
 }
@@ -399,7 +461,7 @@ uqBaseVectorSequenceClass<V,M>::subMinValues() const
   if (m_subMinValues == NULL) {
     m_subMinValues = m_vectorSpace.newVector();
     if (m_subMaxValues == NULL) m_subMaxValues = m_vectorSpace.newVector();
-    subMinMax(0,*m_subMinValues,*m_subMaxValues);
+    subMinMax(0,this->subSequenceSize(),*m_subMinValues,*m_subMaxValues);
   }
 
   return *m_subMinValues;
@@ -412,7 +474,7 @@ uqBaseVectorSequenceClass<V,M>::unifiedMinValues() const
   if (m_unifiedMinValues == NULL) {
     m_unifiedMinValues = m_vectorSpace.newVector();
     if (m_unifiedMaxValues == NULL) m_unifiedMaxValues = m_vectorSpace.newVector();
-    unifiedMinMax(0,*m_unifiedMinValues,*m_unifiedMaxValues);
+    unifiedMinMax(0,this->subSequenceSize(),*m_unifiedMinValues,*m_unifiedMaxValues);
   }
 
   return *m_unifiedMinValues;
@@ -425,7 +487,7 @@ uqBaseVectorSequenceClass<V,M>::subMaxValues() const
   if (m_subMaxValues == NULL) {
     if (m_subMinValues == NULL) m_subMinValues = m_vectorSpace.newVector();
     m_subMaxValues = m_vectorSpace.newVector();
-    subMinMax(0,*m_subMinValues,*m_subMaxValues);
+    subMinMax(0,this->subSequenceSize(),*m_subMinValues,*m_subMaxValues);
   }
 
   return *m_subMaxValues;
@@ -438,7 +500,7 @@ uqBaseVectorSequenceClass<V,M>::unifiedMaxValues() const
   if (m_unifiedMaxValues == NULL) {
     if (m_unifiedMinValues == NULL) m_unifiedMinValues = m_vectorSpace.newVector();
     m_unifiedMaxValues = m_vectorSpace.newVector();
-    unifiedMinMax(0,*m_unifiedMinValues,*m_unifiedMaxValues);
+    unifiedMinMax(0,this->subSequenceSize(),*m_unifiedMinValues,*m_unifiedMaxValues);
   }
 
   return *m_unifiedMaxValues;
@@ -558,7 +620,7 @@ uqBaseVectorSequenceClass<V,M>::computeStatistics(
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "\n"
                             << "\n-----------------------------------------------------"
-                            << "\n Computing statistics for chain " << m_name << " ..."
+                            << "\n Computing statistics for chain '" << m_name << "' ..."
                             << "\n-----------------------------------------------------"
                             << "\n"
                             << std::endl;
@@ -598,11 +660,17 @@ uqBaseVectorSequenceClass<V,M>::computeStatistics(
   //****************************************************
   // Compute mean, sample std, population std
   //****************************************************
-  this->computeMeanVars(statisticalOptions,
-                        passedOfs,
-                        NULL,
-                        NULL,
-                        NULL);
+  if (statisticalOptions.meanMonitorPeriod() == 0) {
+    this->computeMeanVars(statisticalOptions,
+                          passedOfs,
+                          NULL,
+                          NULL,
+                          NULL);
+  }
+  else {
+    this->computeMeanEvolution(statisticalOptions,
+                               passedOfs);
+  }
 
   //****************************************************
   // Compute variance of sample mean through the 'batch means method' (BMM)
@@ -717,14 +785,15 @@ uqBaseVectorSequenceClass<V,M>::computeStatistics(
 
   tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "All statistics took " << tmpRunTime
+    *m_env.subDisplayFile() << "All statistics of chain '" << m_name << "'"
+                            << " took " << tmpRunTime
                             << " seconds"
                             << std::endl;
   }
 
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "\n-----------------------------------------------------"
-                            << "\n Finished computing statistics for chain " << m_name
+                            << "\n Finished computing statistics for chain '" << m_name << "'"
                             << "\n-----------------------------------------------------"
                             << "\n"
                             << std::endl;
@@ -762,31 +831,42 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
   this->subSampleVariance(0,
                           this->subSequenceSize(),
                           subChainMean,
-                         subChainSampleVariance);
+                          subChainSampleVariance);
 
   if ((m_env.displayVerbosity() >= 5) && (m_env.subDisplayFile())) {
     *m_env.subDisplayFile() << "In uqBaseVectorSequenceClass<V,M>::computeMeanVars()"
                             << ": subChainMean.sizeLocal() = "           << subChainMean.sizeLocal()
-                            << ", subChainMean = "                  << subChainMean
+                            << ", subChainMean = "                       << subChainMean
                             << ", subChainSampleVariance.sizeLocal() = " << subChainSampleVariance.sizeLocal()
-                            << ", subChainSampleVariance = "        << subChainSampleVariance
+                            << ", subChainSampleVariance = "             << subChainSampleVariance
                             << std::endl;
   }
 
-  if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "\nEstimated variance of sample mean for the whole chain " << m_name
-                            << ", under independence assumption:"
-                            << std::endl;
-  }
   V estimatedVarianceOfSampleMean(subChainSampleVariance);
   estimatedVarianceOfSampleMean /= (double) this->subSequenceSize();
   bool savedVectorPrintState = estimatedVarianceOfSampleMean.getPrintHorizontally();
   estimatedVarianceOfSampleMean.setPrintHorizontally(false);
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << estimatedVarianceOfSampleMean
+    *m_env.subDisplayFile() << "\nEstimated variance of sample mean for the whole chain '" << m_name << "'"
+                            << ", under independence assumption:"
+                            << "\n"
+                            << estimatedVarianceOfSampleMean
                             << std::endl;
   }
   estimatedVarianceOfSampleMean.setPrintHorizontally(savedVectorPrintState);
+
+  V estimatedStdOfSampleMean(estimatedVarianceOfSampleMean);
+  estimatedStdOfSampleMean.cwSqrt();
+  savedVectorPrintState = estimatedStdOfSampleMean.getPrintHorizontally();
+  estimatedStdOfSampleMean.setPrintHorizontally(false);
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "\nEstimated standard deviation of sample mean for the whole chain '" << m_name << "'"
+                            << ", under independence assumption:"
+                            << "\n"
+                            << estimatedStdOfSampleMean
+                            << std::endl;
+  }
+  estimatedStdOfSampleMean.setPrintHorizontally(savedVectorPrintState);
 
   V subChainPopulationVariance(m_vectorSpace.zeroVector());
   this->subPopulationVariance(0,
@@ -890,6 +970,112 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
       }
     } // if subDisplayFile
   } // if numSubEnvs > 1
+
+  return;
+}
+
+template<class V, class M>
+void
+uqBaseVectorSequenceClass<V,M>::computeMeanEvolution(
+  const uqSequenceStatisticalOptionsClass& statisticalOptions,
+  std::ofstream*                           passedOfs)
+{
+  int iRC = UQ_OK_RC;
+  struct timeval timevalTmp;
+  iRC = gettimeofday(&timevalTmp, NULL);
+  double tmpRunTime = 0.;
+
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "\n-----------------------------------------------------"
+                            << "\nComputing mean evolution"
+                            << std::endl;
+  }
+
+  unsigned int monitorPeriod = statisticalOptions.meanMonitorPeriod();
+  unsigned int iMin = 0;
+  unsigned int iMax = (unsigned int) ( ((double) this->subSequenceSize())/((double) monitorPeriod) );
+
+  if (monitorPeriod == 1) {
+    iMin = 1;
+  }
+
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "  Sub sequence size = "                << this->subSequenceSize()
+                            << "\n  Monitor period = "                 << monitorPeriod
+                            << "\n  Number of monitoring positions = " << iMax
+                            << std::endl;
+  }
+
+  this->subMeanMonitorAlloc(iMax);
+  if (m_env.numSubEnvironments() > 1) {
+    this->subMeanInter0MonitorAlloc(iMax);
+    this->unifiedMeanMonitorAlloc(iMax);
+  }
+
+  for (unsigned int i = iMin; i < iMax; ++i) {
+    unsigned int currentMonitoredFinalPosition = (i+1)*monitorPeriod - 1; // Yes, '-1'
+    V subMeanVec   (m_vectorSpace.zeroVector());
+    V subMeanCltStd(m_vectorSpace.zeroVector());
+    this->subMeanMonitorRun(currentMonitoredFinalPosition,
+                            subMeanVec,
+                            subMeanCltStd);
+    this->subMeanMonitorStore(i,
+                              currentMonitoredFinalPosition,
+                              subMeanVec,
+                              subMeanCltStd);
+
+    if (m_env.numSubEnvironments() > 1) {
+      V subMeanInter0Mean       (m_vectorSpace.zeroVector());
+      V subMeanInter0Clt95      (m_vectorSpace.zeroVector());
+      V subMeanInter0Empirical90(m_vectorSpace.zeroVector());
+      V subMeanInter0Min        (m_vectorSpace.zeroVector());
+      V subMeanInter0Max        (m_vectorSpace.zeroVector());
+      this->subMeanInter0MonitorRun(currentMonitoredFinalPosition,
+                                    subMeanInter0Mean,
+                                    subMeanInter0Clt95,
+                                    subMeanInter0Empirical90,
+                                    subMeanInter0Min,
+                                    subMeanInter0Max);
+      this->subMeanInter0MonitorStore(i,
+                                      currentMonitoredFinalPosition,
+                                      subMeanInter0Mean,
+                                      subMeanInter0Clt95,
+                                      subMeanInter0Empirical90,
+                                      subMeanInter0Min,
+                                      subMeanInter0Max);
+
+      V unifiedMeanVec   (m_vectorSpace.zeroVector());
+      V unifiedMeanCltStd(m_vectorSpace.zeroVector());
+      this->unifiedMeanMonitorRun(currentMonitoredFinalPosition,
+                                  unifiedMeanVec,
+                                  unifiedMeanCltStd);
+      this->unifiedMeanMonitorStore(i,
+                                    currentMonitoredFinalPosition,
+                                    unifiedMeanVec,
+                                    unifiedMeanCltStd);
+    }
+  }
+
+  if (passedOfs) {
+    this->subMeanMonitorWrite(*passedOfs);
+    if (m_env.numSubEnvironments() > 1) {
+      this->subMeanInter0MonitorWrite(*passedOfs);
+      this->unifiedMeanMonitorWrite(*passedOfs);
+    }
+  }
+
+  this->subMeanMonitorFree();
+  if (m_env.numSubEnvironments() > 1) {
+    this->subMeanInter0MonitorFree();
+    this->unifiedMeanMonitorFree();
+  }
+
+  tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Mean evolution took " << tmpRunTime
+                            << " seconds"
+                            << std::endl;
+  }
 
   return;
 }
@@ -1583,8 +1769,8 @@ uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaFFT(
   }
 
   if (statisticalOptions.autoCorrDisplay()) {
-    V subChainMean                    (m_vectorSpace.zeroVector());
-    V subChainSampleVariance          (m_vectorSpace.zeroVector());
+    V subChainMean                 (m_vectorSpace.zeroVector());
+    V subChainSampleVariance       (m_vectorSpace.zeroVector());
     V estimatedVarianceOfSampleMean(m_vectorSpace.zeroVector());
     for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
       unsigned int initialPos = initialPosForStatistics[initialPosId];
@@ -1699,7 +1885,7 @@ uqBaseVectorSequenceClass<V,M>::computeFilterParams(
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "\n"
                             << "\n-----------------------------------------------------"
-                            << "\n Computing filter parameters for chain " << m_name << " ..."
+                            << "\n Computing filter parameters for chain '" << m_name << "' ..."
                             << "\n-----------------------------------------------------"
                             << "\n"
                             << std::endl;
@@ -1717,7 +1903,7 @@ uqBaseVectorSequenceClass<V,M>::computeFilterParams(
 
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "\n-----------------------------------------------------"
-                            << "\n Finished computing filter parameters for chain " << m_name
+                            << "\n Finished computing filter parameters for chain '" << m_name << "'"
                             << ": initialPos = " << initialPos
                             << ", spacing = "    << spacing
                             << "\n-----------------------------------------------------"
@@ -1737,7 +1923,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "\n"
                             << "\n-----------------------------------------------------"
-                            << "\n Computing histogram and/or cdf stacc and/or KDE for chain " << m_name << " ..."
+                            << "\n Computing histogram and/or cdf stacc and/or Kde for chain '" << m_name << "' ..."
                             << "\n-----------------------------------------------------"
                             << "\n"
                             << std::endl;
@@ -1747,24 +1933,25 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
   struct timeval timevalTmp;
 
   //****************************************************
-  // Compute MIN and MAX: for histograms and KDE
+  // Compute MIN and MAX: for histograms and Kde
   //****************************************************
   double tmpRunTime = 0.;
   iRC = gettimeofday(&timevalTmp, NULL);
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "\n-----------------------------------------------------"
-                            << "\nComputing min and max for histograms and KDE"
+                            << "\nComputing min and max for histograms and Kde"
                             << std::endl;
   }
 
   V statsMinPositions(m_vectorSpace.zeroVector());
   V statsMaxPositions(m_vectorSpace.zeroVector());
   this->subMinMax(0, // Use the whole chain
+                  this->subSequenceSize(),
                   statsMinPositions,
                   statsMaxPositions);
 
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "\nComputed min values and max values for chain " << m_name
+    *m_env.subDisplayFile() << "\nComputed min values and max values for chain '" << m_name << "'"
                             << std::endl;
 
     char line[512];
@@ -1799,6 +1986,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
   if (m_env.numSubEnvironments() > 1) {
     // Compute unified min-max
     this->unifiedMinMax(0, // Use the whole chain
+                        this->subSequenceSize(),
                         unifiedStatsMinPositions,
                         unifiedStatsMaxPositions);
 
@@ -1806,7 +1994,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
     if (m_env.subDisplayFile()) {
       if (m_vectorSpace.numOfProcsForStorage() == 1) {
         if (m_env.inter0Rank() == 0) {
-          *m_env.subDisplayFile() << "\nComputed unified min values and max values for chain " << m_name
+          *m_env.subDisplayFile() << "\nComputed unified min values and max values for chain '" << m_name << "'"
                                   << std::endl;
 
           char line[512];
@@ -1845,7 +2033,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
     } // if subDisplayFile
   } // if numSubEnvs > 1
 
-  m_env.fullComm().Barrier();
+  //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
   tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Chain min and max took " << tmpRunTime
@@ -1986,7 +2174,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
       }
     } // if numSubEnvs > 1
 
-    m_env.fullComm().Barrier();
+    //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
     tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "Chain histograms took " << tmpRunTime
@@ -2018,7 +2206,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
                       cdfStaccEvalPositions,
                       cdfStaccValues);
 
-    m_env.fullComm().Barrier();
+    //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
     tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "Chain cdf statistical accuracy took " << tmpRunTime
@@ -2036,7 +2224,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
     iRC = gettimeofday(&timevalTmp, NULL);
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "\n-----------------------------------------------------"
-                              << "\nComputing KDE"
+                              << "\nComputing Kde"
                               << std::endl;
     }
 
@@ -2057,8 +2245,9 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
                                 iqrVec);
 
     V gaussianKdeScaleVec(m_vectorSpace.zeroVector());
-    this->subScalesForKDE(0, // Use the whole chain
+    this->subScalesForKde(0, // Use the whole chain
                           iqrVec,
+                          1,
                           gaussianKdeScaleVec);
 
     std::vector<V*> kdeEvalPositions(statisticalOptions.kdeNumEvalPositions(),NULL);
@@ -2067,14 +2256,14 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
                                         kdeEvalPositions);
 
     std::vector<V*> gaussianKdeDensities(statisticalOptions.kdeNumEvalPositions(),NULL);
-    this->subGaussianKDE(0, // Use the whole chain
-                         gaussianKdeScaleVec,
-                         kdeEvalPositions,
-                         gaussianKdeDensities);
+    this->subGaussian1dKde(0, // Use the whole chain
+                           gaussianKdeScaleVec,
+                           kdeEvalPositions,
+                           gaussianKdeDensities);
 
     // Write iqr
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "\nComputed inter quantile ranges for chain " << m_name
+      *m_env.subDisplayFile() << "\nComputed inter quantile ranges for chain '" << m_name << "'"
                               << std::endl;
 
       char line[512];
@@ -2100,7 +2289,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
       *m_env.subDisplayFile() << std::endl;
     }
 
-    // Write KDE
+    // Write Kde
     if (passedOfs) {
       std::ofstream& ofsvar = *passedOfs;
       ofsvar << m_name << subCoreName_GaussianKdePositions << " = zeros(" << this->vectorSizeLocal() /*.*/
@@ -2150,17 +2339,18 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
     }
 
     if ((int) m_env.numSubEnvironments() > 1) { // avoid code temporarily
-      // Compute unified KDE
+      // Compute unified Kde
       V unifiedIqrVec(m_vectorSpace.zeroVector());
       this->unifiedInterQuantileRange(0, // Use the whole chain
                                       unifiedIqrVec);
-      m_env.fullComm().Barrier();
+      //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
 
       V unifiedGaussianKdeScaleVec(m_vectorSpace.zeroVector());
-      this->unifiedScalesForKDE(0, // Use the whole chain
+      this->unifiedScalesForKde(0, // Use the whole chain
                                 unifiedIqrVec,
+                                1,
                                 unifiedGaussianKdeScaleVec);
-      m_env.fullComm().Barrier();
+      //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
 
       std::vector<V*> unifiedKdeEvalPositions(statisticalOptions.kdeNumEvalPositions(),NULL);
       uqMiscComputePositionsBetweenMinMax(unifiedStatsMinPositions,
@@ -2168,17 +2358,17 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
                                           unifiedKdeEvalPositions);
 
       std::vector<V*> unifiedGaussianKdeDensities(statisticalOptions.kdeNumEvalPositions(),NULL);
-      this->unifiedGaussianKDE(0, // Use the whole chain
-                               unifiedGaussianKdeScaleVec,
-                               unifiedKdeEvalPositions,
-                               unifiedGaussianKdeDensities);
-      m_env.fullComm().Barrier();
+      this->unifiedGaussian1dKde(0, // Use the whole chain
+                                 unifiedGaussianKdeScaleVec,
+                                 unifiedKdeEvalPositions,
+                                 unifiedGaussianKdeDensities);
+      //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
 
       // Write unified iqr
       if (m_env.subDisplayFile()) {
         if (m_vectorSpace.numOfProcsForStorage() == 1) {
           if (m_env.inter0Rank() == 0) {
-            *m_env.subDisplayFile() << "\nComputed unified inter quantile ranges for chain " << m_name
+            *m_env.subDisplayFile() << "\nComputed unified inter quantile ranges for chain '" << m_name << "'"
                                     << std::endl;
 
             char line[512];
@@ -2212,7 +2402,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
         }
       }
 
-      // Write unified KDE
+      // Write unified Kde
       if (passedOfs) {
         if (m_vectorSpace.numOfProcsForStorage() == 1) {
           if (m_env.inter0Rank() == 0) {
@@ -2260,7 +2450,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
           UQ_FATAL_TEST_MACRO(true,
                               m_env.fullRank(),
                               "uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde()",
-                              "unified KDE writing, parallel vectors not supported yet");
+                              "unified Kde writing, parallel vectors not supported yet");
         }
       }
 
@@ -2272,10 +2462,10 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
       }
     }
 
-    m_env.fullComm().Barrier();
+    //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
     tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "Chain KDE took " << tmpRunTime
+      *m_env.subDisplayFile() << "Chain Kde took " << tmpRunTime
                               << " seconds"
                               << std::endl;
     }
@@ -2283,7 +2473,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
 
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "\n-----------------------------------------------------"
-                            << "\n Finished computing histogram and/or cdf stacc and/or KDE for chain " << m_name
+                            << "\n Finished computing histogram and/or cdf stacc and/or Kde for chain '" << m_name << "'"
                             << "\n-----------------------------------------------------"
                             << "\n"
                             << std::endl;
@@ -2296,12 +2486,12 @@ template<class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices( // Use the whole chain
   const uqSequenceStatisticalOptionsClass& statisticalOptions,
-  std::ofstream*                        passedOfs)
+  std::ofstream*                           passedOfs)
 {
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "\n"
                             << "\n-----------------------------------------------------"
-                            << "\n Computing covariance and correlation matrices for chain " << m_name << " ..."
+                            << "\n Computing covariance and correlation matrices for chain '" << m_name << "' ..."
                             << "\n-----------------------------------------------------"
                             << "\n"
                             << std::endl;
@@ -2345,9 +2535,12 @@ uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices( // Use the whole chain
     }
   }
 
+  delete correlationMatrix;
+  delete covarianceMatrix;
+
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "\n-----------------------------------------------------"
-                            << "\n Finished computing covariance and correlation matrices for chain " << m_name
+                            << "\n Finished computing covariance and correlation matrices for chain '" << m_name << "'"
                             << "\n-----------------------------------------------------"
                             << "\n"
                             << std::endl;

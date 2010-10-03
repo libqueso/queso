@@ -44,6 +44,7 @@ uqFiniteDistributionClass::uqFiniteDistributionClass(
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqFiniteDistributionClass::constructor()"
                             << ": prefix = " << m_prefix
+                            << ", inpWeights.size() = " << inpWeights.size()
                             << std::endl;
   }
 

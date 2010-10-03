@@ -83,9 +83,9 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
                       "uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()",
                       "'m_vectorSpace' and 'workingChain' are related to vector spaces of different dimensions");
 
-  m_env.syncPrintDebugMsg("Entering uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()",2,3000000,m_env.fullComm());
-  uqCheckTheParallelEnvironment<P_V,P_V>(m_initialPosition,
-                                         m_initialPosition);
+  //m_env.syncPrintDebugMsg("Entering uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()",2,3000000,m_env.fullComm());  // Dangerous to barrier on fullComm ... // KAUST
+  uqMiscCheckTheParallelEnvironment<P_V,P_V>(m_initialPosition,
+                                             m_initialPosition);
 
   P_V valuesOf1stPosition(m_initialPosition);
   int iRC = UQ_OK_RC;
@@ -316,7 +316,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
     *m_env.subDisplayFile() << std::endl;
   }
 
-  m_env.syncPrintDebugMsg("Leaving uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()",2,3000000,m_env.fullComm());
+  //m_env.syncPrintDebugMsg("Leaving uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()",2,3000000,m_env.fullComm()); // Dangerous to barrier on fullComm ... // KAUST
 
   if ((m_env.subDisplayFile()          ) &&
       (m_env.displayVerbosity() >= 5   ) &&
@@ -348,7 +348,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
   uqScalarSequenceClass<double>*      workingLogLikelihoodValues,
   uqScalarSequenceClass<double>*      workingLogTargetValues)
 {
-  m_env.syncPrintDebugMsg("Entering uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()",3,3000000,m_env.fullComm());
+  //m_env.syncPrintDebugMsg("Entering uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()",3,3000000,m_env.fullComm()); // Dangerous to barrier on fullComm ... // KAUST
 
   if ((m_env.subDisplayFile()          ) &&
       (m_options.m_totallyMute == false)) {
@@ -441,7 +441,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
                             << std::endl;
   }
 
-  m_env.syncPrintDebugMsg("In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), right before main loop",3,3000000,m_env.fullComm());
+  //m_env.syncPrintDebugMsg("In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), right before main loop",3,3000000,m_env.fullComm()); // Dangerous to barrier on fullComm ... // KAUST
 
   if ((m_env.numSubEnvironments() < (unsigned int) m_env.fullComm().NumProc()) &&
       (m_initialPosition.numOfProcsForStorage() == 1                         ) &&
@@ -969,7 +969,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
   //****************************************************
   // Release memory before leaving routine
   //****************************************************
-  m_env.syncPrintDebugMsg("Leaving uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()",3,3000000,m_env.fullComm());
+  //m_env.syncPrintDebugMsg("Leaving uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()",3,3000000,m_env.fullComm()); // Dangerous to barrier on fullComm ... // KAUST
 
   return;
 }

@@ -55,6 +55,8 @@ public:
           unsigned int            numOfProcsForStorage()           const;
           void                    setPrintHorizontally(bool value) const; // Yes, 'const'
           bool                    getPrintHorizontally()           const;
+          void                    setInDebugMode      (bool value) const; // Yes, 'const'
+          bool                    getInDebugMode      ()           const;
 
   virtual unsigned int            numRowsLocal        () const = 0;
   virtual unsigned int            numRowsGlobal       () const = 0;
@@ -67,9 +69,10 @@ public:
 protected:
   virtual void                    copy                (const uqMatrixClass& src);
 
-  const uqBaseEnvironmentClass& m_env;
-  const Epetra_Map&             m_map;
-  mutable bool                  m_printHorizontally;
+  const   uqBaseEnvironmentClass& m_env;
+  const   Epetra_Map&             m_map;
+  mutable bool                    m_printHorizontally;
+  mutable bool                    m_inDebugMode;
 };
 
 #endif // __UQ_MATRIX_H__

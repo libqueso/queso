@@ -460,6 +460,11 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
 template<class V, class M>
 uqGaussianVectorRVClass<V,M>::~uqGaussianVectorRVClass()
 {
+  delete m_mdf;
+  delete m_unifiedCdf;
+  delete m_subCdf;
+  delete m_realizer;
+  delete m_pdf;
 }
 
 template<class V, class M>
@@ -552,6 +557,11 @@ uqUniformVectorRVClass<V,M>::uqUniformVectorRVClass(
 template<class V, class M>
 uqUniformVectorRVClass<V,M>::~uqUniformVectorRVClass()
 {
+  delete m_mdf;
+  delete m_unifiedCdf;
+  delete m_subCdf;
+  delete m_realizer;
+  delete m_pdf;
 }
 
 template <class V, class M>
@@ -624,6 +634,11 @@ uqInverseGammaVectorRVClass<V,M>::uqInverseGammaVectorRVClass(
 template<class V, class M>
 uqInverseGammaVectorRVClass<V,M>::~uqInverseGammaVectorRVClass()
 {
+  delete m_mdf;
+  delete m_unifiedCdf;
+  delete m_subCdf;
+  delete m_realizer;
+  delete m_pdf;
 }
 
 template <class V, class M>
@@ -702,6 +717,11 @@ uqConcatenatedVectorRVClass<V,M>::uqConcatenatedVectorRVClass(
 template<class V, class M>
 uqConcatenatedVectorRVClass<V,M>::~uqConcatenatedVectorRVClass()
 {
+  delete m_mdf;
+  delete m_unifiedCdf;
+  delete m_subCdf;
+  delete m_realizer;
+  delete m_pdf;
 }
 
 template <class V, class M>

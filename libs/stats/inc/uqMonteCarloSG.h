@@ -171,8 +171,8 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence(
                       "uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence()",
                       "'m_qoiFunction.imageSet' and 'workingQSeq' are related to vector spaces of different dimensions");
 
-  uqCheckTheParallelEnvironment<P_V,Q_V>(m_paramRv.imageSet().vectorSpace().zeroVector(),
-                                         m_qoiFunction.imageSet().vectorSpace().zeroVector());
+  uqMiscCheckTheParallelEnvironment<P_V,Q_V>(m_paramRv.imageSet().vectorSpace().zeroVector(),
+                                             m_qoiFunction.imageSet().vectorSpace().zeroVector());
   internGenerateSequence(m_paramRv,workingPSeq,workingQSeq);
 
   return;

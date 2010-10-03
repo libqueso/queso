@@ -133,6 +133,7 @@ public:
                                            V&                       iqrs) const;
         void         scalesForKDE         (unsigned int             initialPos,
                                            const V&                 iqrs,
+                                           unsigned int             kdeDimension,
                                            V&                       scales) const;
         void         gaussianKDE          (const V&                 evaluationParamVec,
                                            V&                       densityVec) const;
@@ -149,12 +150,12 @@ public:
         void         filter               (unsigned int                     initialPos,
                                            unsigned int                     spacing);
 
-private:
         void         extractScalarSeq     (unsigned int                   initialPos,
                                            unsigned int                   spacing,
                                            unsigned int                   numPos,
                                            unsigned int                   paramId,
                                            uqScalarSequenceClass<double>& scalarSeq) const;
+private:
         void         extractRawData       (unsigned int                   initialPos,
                                            unsigned int                   spacing,
                                            unsigned int                   numPos,
@@ -896,6 +897,7 @@ void
 uqArrayOfSequencesClass<V,M>::scalesForKDE(
   unsigned int initialPos,
   const V&     iqrs,
+  unsigned int kdeDimension,
   V&           scales) const
 {
 #if 0

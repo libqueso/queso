@@ -65,6 +65,8 @@ public:
   unsigned int      numRowsLocal  () const;
   unsigned int      numRowsGlobal () const;
   unsigned int      numCols       () const;
+  double            normFrob      () const;
+  double            normMax       () const;
   int               chol          ();
   void              zeroLower     (bool includeDiagonal = false);
   void              zeroUpper     (bool includeDiagonal = false);
@@ -108,6 +110,7 @@ uqGslMatrixClass operator*    (double a,                    const uqGslMatrixCla
 uqGslVectorClass operator*    (const uqGslMatrixClass& mat, const uqGslVectorClass& vec);
 uqGslMatrixClass operator*    (const uqGslMatrixClass& m1,  const uqGslMatrixClass& m2 );
 uqGslMatrixClass operator+    (const uqGslMatrixClass& m1,  const uqGslMatrixClass& m2 );
+uqGslMatrixClass operator-    (const uqGslMatrixClass& m1,  const uqGslMatrixClass& m2 );
 uqGslMatrixClass matrixProduct(const uqGslVectorClass& v1,  const uqGslVectorClass& v2 );
 uqGslMatrixClass diagScaling  (const uqGslVectorClass& vec, const uqGslMatrixClass& mat);
 std::ostream&    operator<<   (std::ostream& os,            const uqGslMatrixClass& obj);

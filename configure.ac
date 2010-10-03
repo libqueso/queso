@@ -1,5 +1,5 @@
 # Init autoconf w/ Package name, version number, and developer email
-AC_INIT([queso], [0.41.0], [pecos_dev@ices.utexas.edu])
+AC_INIT([queso], [0.42.0], [pecos_dev@ices.utexas.edu])
 
 # Set default CFLAGS & CXXFLAGS IF the user hasn't specified anything
 AC_MSG_CHECKING(if CFLAGS is set)
@@ -108,6 +108,15 @@ BOOST_TEST
 BOOST_LDFLAGS="$BOOST_PROGRAM_OPTIONS_LDFLAGS $BOOST_PROGRAM_OPTIONS_LIBS"
 AC_SUBST(BOOST_LDFLAGS)
 AC_CACHE_SAVE
+
+# Check for glpk
+# AC_LANG([C])
+# AX_PATH_GLPK(4.41,AC_MSG_ERROR([Could not find required GLPK version.]))
+# AX_GLPK_BASE(4.41)
+# AX_GLPK_PROGRAM_OPTIONS
+# AC_CACHE_SAVE
+
+AX_PATH_GLPK
 
 # HPCT Config
 
