@@ -1,3 +1,5 @@
+BUILT_SOURCES = .license.stamp
+
 AM_CPPFLAGS  = -I. \
 	-I$(top_srcdir)/src/core/inc \
 	-I$(top_srcdir)/src/misc/inc \
@@ -13,6 +15,10 @@ LIBS  = -L$(top_builddir)/src/ -lqueso
 EXTRA_DIST                = example_compute.h example_likelihood.h
 noinst_PROGRAMS           = BimodalExample_gsl
 BimodalExample_gsl_SOURCES = example_main.C example_compute.C example_likelihood.C
+
+.license.stamp: $(top_srcdir)/LICENSE
+	$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE *.C *.h
+	echo 'updated source license headers' >$@
 
 # Required for AX_AM_MACROS
 @INC_AMINCLUDE@
