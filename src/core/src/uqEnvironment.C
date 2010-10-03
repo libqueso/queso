@@ -26,6 +26,7 @@
 //
 //--------------------------------------------------------------------------
 
+#include <queso.h>
 #include <uqEnvironment.h>
 #include <uqEnvironmentOptions.h>
 #include <uqMPI.h>
@@ -34,19 +35,67 @@
 #include <gsl/gsl_randist.h>
 #include <grvy.h>
 
-// Version "0.1"    on "Aug/11/2008"
-// Version "0.11"   on "Aug/15/2008"
-// Version "0.2"    on "Oct/01/2008"
-// Version "0.21"   on "Oct/08/2008"
-// Version "0.3.0"  on "Feb/13/2009"
-// Version "0.3.1"  on "Feb/19/2009"
-// Version "0.4.0"  on "Jul/22/2009"
-// Version "0.4.1"  on "Sep/08/2009"
-// Version "0.40.2" on "Sep/10/2009"
-// Version "0.41.0" on "Oct/30/2009"
-// Version "0.42.0" on "MMM/DD/20YY"
-#define QUESO_LIBRARY_CURRENT_VERSION "0.42.0"
-#define QUESO_LIBRARY_RELEASE_DATE    "MMM/DD/20YY"
+//-----------------------------
+// Library versioning routines
+//-----------------------------
+
+namespace QUESO {
+
+  void QUESO_version_print(std::ostream &os)
+  {
+    {
+      os << "--------------------------------------------------------" << std::endl;
+      os << "QUESO Library: Version = " << QUESO_LIB_VERSION;
+      os << " (" << QUESO_get_numeric_version() << ")" << std::endl << std::endl;
+      
+      os << QUESO_LIB_RELEASE << std::endl << std::endl;
+      
+      os << "Build Date   = " << QUESO_BUILD_DATE     << std::endl;
+      os << "Build Host   = " << QUESO_BUILD_HOST     << std::endl;
+      os << "Build User   = " << QUESO_BUILD_USER     << std::endl;
+      os << "Build Arch   = " << QUESO_BUILD_ARCH     << std::endl;
+      os << "Build Rev    = " << QUESO_BUILD_VERSION  << std::endl     << std::endl;
+      
+      os << "C++ Config   = " << QUESO_CXX << " " << QUESO_CXXFLAGS    << std::endl;
+      os << "--------------------------------------------------------" << std::endl;
+    }
+    
+    return;
+  }
+  
+  int QUESO_get_numeric_version()
+  {
+    // Note: return format follows the versioning convention xx.yy.z where
+    //
+    // xx = major version number 
+    // yy = minor version number 
+    // zz = micro version number
+    //
+    // For example:
+    // v.    0.23  -> 002300 = 2300
+    // v.   0.23.1 -> 002301 = 2301
+    // v.  10.23.2 -> 102302
+    
+    int major_version = 0;
+    int minor_version = 0;
+    int micro_version = 0;
+    
+#ifdef QUESO_MAJOR_VERSION
+    major_version = QUESO_MAJOR_VERSION;
+#endif
+    
+#ifdef QUESO_MINOR_VERSION
+    minor_version = QUESO_MINOR_VERSION;
+#endif
+    
+#ifdef QUESO_MICRO_VERSION
+    micro_version = QUESO_MICRO_VERSION;
+#endif
+    
+    return(major_version*10000 + minor_version*100 + micro_version);
+  }
+
+}
 
 uqFilePtrSetStruct::uqFilePtrSetStruct()
   :
@@ -926,6 +975,7 @@ uqBaseEnvironmentClass::exceptionalCircunstance() const
   return m_exceptionalCircunstance;
 }
 
+
 //*****************************************************
 // Empty Environment
 //*****************************************************
@@ -1018,12 +1068,7 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
       /*iRC = */gettimeofday(&m_timevalBegin, NULL);
       
       if (m_fullRank == 0) {
-	std::cout << "\n======================================================="
-		  << "\n QUESO library, version " << QUESO_LIBRARY_CURRENT_VERSION
-		  << ", released on "             << QUESO_LIBRARY_RELEASE_DATE
-		  << "\n======================================================="
-		  << "\n"
-		  << std::endl;
+	QUESO::QUESO_version_print(std::cout);
       }
       
       if (m_fullRank == 0) {
@@ -1122,12 +1167,7 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
                         "uqEnvironment::constructor()",
                         "failed to open sub screen file");
 
-    *m_subDisplayFile << "\n================================="
-                      << "\n QUESO library, version " << QUESO_LIBRARY_CURRENT_VERSION
-                      << ", released on "             << QUESO_LIBRARY_RELEASE_DATE
-                      << "\n================================="
-                      << "\n"
-                      << std::endl;
+    QUESO::QUESO_version_print(*m_subDisplayFile);
 
     *m_subDisplayFile << "Beginning run at " << ctime(&m_timevalBegin.tv_sec)
                       << std::endl;

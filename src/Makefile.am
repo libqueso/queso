@@ -177,10 +177,16 @@ libqueso_include_HEADERS += \
 # Headers to install from interface
 
 libqueso_include_HEADERS += \
-	$(top_srcdir)/src/interface/queso.h \
-	$(top_srcdir)/src/interface/basic_classes.h \
+	$(top_srcdir)/src/interface/queso_basic.h     \
+	$(top_srcdir)/src/interface/basic_classes.h   \
 	$(top_srcdir)/src/interface/basic_interface.h \
         $(top_srcdir)/src/interface/basic_int.h
+
+# Standalone binaries
+
+bin_PROGRAMS    = version
+version_SOURCES = $(top_srcdir)/src/core/src/version.C
+version_LDADD   = -L$(top_builddir)/src -lqueso
 
 
 #---------------------------------

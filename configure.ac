@@ -16,7 +16,12 @@ GENERIC_MICRO_VERSION=0
 # Generating a libtool library
 
 GENERIC_RELEASE=$GENERIC_MAJOR_VERSION.$GENERIC_MINOR_VERSION
+
 AC_SUBST(GENERIC_RELEASE)
+AC_SUBST(GENERIC_MAJOR_VERSION)
+AC_SUBST(GENERIC_MINOR_VERSION)
+AC_SUBST(GENERIC_MICRO_VERSION)
+
 AC_PROG_LIBTOOL
 
 # Set default CFLAGS & CXXFLAGS IF the user hasn't specified anything
@@ -135,13 +140,12 @@ AX_CODE_COVERAGE
 
 AX_SUMMARIZE_ENV
 
-
-
 # Generate makefiles
 
 AC_CONFIG_FILES([
 	Makefile
 	src/Makefile
+	src/core/inc/queso.h
 	examples/Makefile
 	examples/statisticalInverseProblem1/Makefile
 	examples/statisticalInverseProblem1/src/Makefile	

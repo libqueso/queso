@@ -53,6 +53,18 @@ struct uqFilePtrSetStruct {
   hid_t          h5Var;
 };
 
+//------------------------------------------------------------------------
+// Library versioning routines: we include them in a QUESO namespace
+// here so that mutiple classes can use them as required (and so we
+// can have a standalone versioning binary which does not require a full
+// QUESO MPI environment.
+//------------------------------------------------------------------------
+
+namespace QUESO {
+  void QUESO_version_print       (std::ostream &os);
+  int  QUESO_get_numeric_version ();
+}
+
 //*****************************************************
 // Base class
 //*****************************************************
@@ -202,8 +214,6 @@ public:
                                                               const std::string&            fileType) const; 
           void                    setExceptionalCircunstance (bool value) const;
           bool                    exceptionalCircunstance    () const;
-
-
   virtual void                    print                      (std::ostream& os) const = 0;
 
 protected:
