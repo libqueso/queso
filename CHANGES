@@ -6,6 +6,7 @@ Simulation, and Optimization.
 Version 0.42.0 (03 October 2010)
 https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.42
 
+  * inclusion of automatic licensing header support
   * added minimum version requirement for autoconf 
   * added configuration support for the GNU Linear Programming Toolkit (GLPK)
   * added interface to hdf5 for some input and some output

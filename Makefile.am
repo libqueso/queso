@@ -3,9 +3,11 @@
 include $(top_srcdir)/doxygen/aminclude.am
 
 # Don't require GNU-style project
+
 AUTOMAKE_OPTIONS = foreign
 
 # Build in these directories:
+
 SUBDIRS = src \
 	examples \
 	test/t01_valid_cycle/valid_cycle \
@@ -17,10 +19,11 @@ SUBDIRS = src \
 	doxygen
 
 # Tools in the auxillary directory
+
 AUX_DIST = build-aux/install-sh    \
            build-aux/missing
 
-EXTRA_DIST = $(DX_CONFIG) users.pdf
+EXTRA_DIST = $(DX_CONFIG) users.pdf CHANGES AUTHORS COPYING LICENSE dist_version
 
 if CODE_COVERAGE_ENABLED
 
@@ -52,6 +55,7 @@ endif
 
 
 # Files to be deleted by 'make maintainer-clean'
+
 MAINTAINERCLEANFILES =     \
 	aclocal.m4             \
 	autom4te.cache/*       \
@@ -93,6 +97,7 @@ MAINTAINERCLEANFILES =     \
 MOSTLYCLEANFILES = $(DX_CLEANFILES)
 
 # Documentation hooks in with the 'html' target
+
 html-local: doxygen-run
 doc:        doxygen-run
 docs:       doxygen-run
