@@ -24,10 +24,14 @@ echo
 echo Debug mode.................... : $enable_debug
 echo C++ compiler.................. : $CXX
 echo C++ compiler flags............ : $CXXFLAGS
+echo ' '
 echo GSL_LIBS...................... : $GSL_LIBS
 echo GRVY DIR...................... : $GRVY_PREFIX
 echo GLPK DIR...................... : $GLPK_PREFIX
 echo HDF5 DIR...................... : $HDF5_PREFIX
+echo BOOST_DIR..................... : $BOOST_DIR
+echo Boost program options... ..... : $BOOST_PROGRAM_OPTIONS_LDFLAGS $BOOST_PROGRAM_OPTIONS_LIBS
+echo ' '
 echo Install dir................... : $prefix 
 echo Build user.................... : $USER
 echo Build host.................... : $BUILD_HOST
@@ -36,21 +40,12 @@ echo Build architecture............ : $BUILD_ARCH
 echo SVN revision number........... : $BUILD_VERSION
 echo
 echo Optional Features:
-if test "$HAVE_BOOST" == "no"; then
-  echo '   'Link with Boost............ : no
-else
-  echo '   'Link with Boost............ : yes
-  echo '   'BOOST_CPPFLAGS............. : $BOOST_CPPFLAGS
-  echo '   'BOOST_LDFLAGS.............. : $BOOST_LDFLAGS
-  echo 
-fi
 
 if test "$HAVE_TRILINOS" == "no"; then
   echo '   'Link with Trilinos......... : no
 else
   echo '   'Link with Trilinos......... : yes
-  echo '   'TRILINOS_INCLUDE........... : $TRILINOS_INCLUDE
-
+  echo '   'Trilinos include path...... : $TRILINOS_INCLUDE
 fi
 
 if test "$HAVE_GCOV_TOOLS" = "0"; then
