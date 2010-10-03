@@ -192,6 +192,7 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
             tmpVec[i] = bufferDouble[i];
           }
           internalValues = new V(tmpVec);
+          //if (vecValues) *vecValues = tmpVec; // prudencio 2010-08-01
         }
 
         if (bufferChar[1] == '1') {
@@ -233,11 +234,11 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
 
         m_env.syncPrintDebugMsg("In uqScalarFunctionSynchronizerClass<V,M>::callFunction(), just before actual lnValue()",3,3000000,m_env.subComm());
         UQ_MPI_Barrier(m_env.subComm());//.Barrier();
-        result = m_scalarFunction.lnValue(*internalValues,
-                                          internalDirection,
-                                          internalGrad,
-                                          internalHessian,
-                                          internalEffect);
+        result = m_scalarFunction.lnValue(*internalValues,   // input
+                                          internalDirection, // input
+                                          internalGrad,    // output
+                                          internalHessian, // output
+                                          internalEffect); // output
         if (extraOutput) {
           if (m_bayesianJointPdfPtr) {
             *extraOutput = m_bayesianJointPdfPtr->lastComputedLogLikelihood();

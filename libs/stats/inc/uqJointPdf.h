@@ -939,6 +939,103 @@ uqPoweredJointPdfClass<V,M>::lnValue(
 }
 
 //*****************************************************
+// Wigner probability density class
+//*****************************************************
+template<class V, class M>
+class uqWignerJointPdfClass : public uqBaseJointPdfClass<V,M> {
+public:
+  uqWignerJointPdfClass(const char*                  prefix,
+                        const uqVectorSetClass<V,M>& domainSet,
+                        const V&                     centerPos,
+                        double                       radius);
+ ~uqWignerJointPdfClass();
+
+  double actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  double lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+
+protected:
+  using uqBaseScalarFunctionClass<V,M>::m_env;
+  using uqBaseScalarFunctionClass<V,M>::m_prefix;
+  using uqBaseScalarFunctionClass<V,M>::m_domainSet;
+  V*     m_centerPos;
+  double m_radius;
+};
+
+template<class V,class M>
+uqWignerJointPdfClass<V,M>::uqWignerJointPdfClass(
+  const char*                  prefix,
+  const uqVectorSetClass<V,M>& domainSet,
+  const V&                     centerPos,
+  double                       radius)
+  :
+  uqBaseJointPdfClass<V,M>(((std::string)(prefix)+"uni").c_str(),
+			   domainSet),
+  m_centerPos(new V(centerPos)),
+  m_radius   (radius)    
+{
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
+    *m_env.subDisplayFile() << "Entering uqWignerJointPdfClass<V,M>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+
+  UQ_FATAL_TEST_MACRO(m_radius <= 0.,
+                      m_env.fullRank(),
+                      "uqWignerJointPdfClass<V,M>::constructor()",
+                      "invalid radius");
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
+    *m_env.subDisplayFile() << "Leaving uqWignerJointPdfClass<V,M>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+}
+
+template<class V,class M>
+uqWignerJointPdfClass<V,M>::~uqWignerJointPdfClass()
+{
+  delete m_centerPos;
+}
+
+template<class V, class M>
+double
+uqWignerJointPdfClass<V,M>::actualValue(
+  const V& domainVector,
+  const V* domainDirection,
+        V* gradVector,
+        M* hessianMatrix,
+        V* hessianEffect) const
+{
+  if (gradVector   ) *gradVector     = m_domainSet.vectorSpace().zeroVector();
+  if (hessianMatrix) *hessianMatrix *= 0.;
+  if (hessianEffect) *hessianEffect  = m_domainSet.vectorSpace().zeroVector();
+
+  double returnValue = 0.;
+  double distanceRatio = (domainVector - *m_centerPos).norm2()/m_radius;
+  if (distanceRatio < 1.) {
+    returnValue = 2.*m_radius*m_radius*sqrt(1. - distanceRatio*distanceRatio)/M_PI;
+  }
+
+  return returnValue;
+}
+
+template<class V, class M>
+double
+uqWignerJointPdfClass<V,M>::lnValue(
+  const V& domainVector,
+  const V* domainDirection,
+        V* gradVector,
+        M* hessianMatrix,
+        V* hessianEffect) const
+{
+  if (gradVector   ) *gradVector     = m_domainSet.vectorSpace().zeroVector();
+  if (hessianMatrix) *hessianMatrix *= 0.;
+  if (hessianEffect) *hessianEffect  = m_domainSet.vectorSpace().zeroVector();
+
+  return log(this->actualValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
+}
+
+//*****************************************************
 // Concatenated probability density class
 //*****************************************************
 template<class V, class M>

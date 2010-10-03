@@ -203,9 +203,12 @@ public:
                                                    unsigned int                    numPos);
 
         void         subWriteContents             (const std::string&              fileName,
+                                                   const std::string&              fileType,
                                                    const std::set<unsigned int>&   allowedSubEnvIds) const;
-        void         subWriteContents             (std::ofstream&                  ofs) const;
-        void         unifiedWriteContents         (const std::string&              fileName) const;
+        void         subWriteContents             (std::ofstream&                  ofs,
+                                                   const std::string&              fileType) const;
+        void         unifiedWriteContents         (const std::string&              fileName,
+                                                   const std::string&              fileType) const;
 private:
         void         copy                         (const uqScalarSequenceClass<T>& src);
         void         extractScalarSeq             (unsigned int                    initialPos,
@@ -2755,10 +2758,10 @@ uqScalarSequenceClass<T>::unifiedScaleForKde(
                           "failed MPI_Allreduce() for data size");
 
       if (unifiedIqrValue <= 0.) {
-        unifiedScaleValue = 1.06*std::sqrt(unifiedSamValue)/std::pow(unifiedDataSize,1./5.);
+        unifiedScaleValue = 1.06*std::sqrt(unifiedSamValue)/std::pow(unifiedDataSize,1./(4. + ((double) kdeDimension)));
       }
       else {
-        unifiedScaleValue = 1.06*std::min(std::sqrt(unifiedSamValue),unifiedIqrValue/1.34)/std::pow(unifiedDataSize,1./5.);
+        unifiedScaleValue = 1.06*std::min(std::sqrt(unifiedSamValue),unifiedIqrValue/1.34)/std::pow(unifiedDataSize,1./(4. + ((double) kdeDimension)));
       }
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -2917,6 +2920,7 @@ template <class T>
 void
 uqScalarSequenceClass<T>::subWriteContents(
   const std::string&            fileName,
+  const std::string&            fileType,
   const std::set<unsigned int>& allowedSubEnvIds) const
 {
   UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
@@ -2924,21 +2928,15 @@ uqScalarSequenceClass<T>::subWriteContents(
                       "uqScalarSequenceClass<T>::subWriteContents()",
                       "unexpected subRank");
 
-  std::ofstream* ofsVar = NULL;
-  m_env.openOutputFile(fileName,
-                       UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
-                       allowedSubEnvIds,
-                       false, // A 'true' causes problems when the user chooses (via options
-                              // in the input file) to use just one file for all outputs.
-                       ofsVar);
-
-  if (ofsVar) {
-    this->subWriteContents(*ofsVar);
-  }
-
-  if (ofsVar) {
-    //ofsVar->close();
-    delete ofsVar;
+  uqFilePtrSetStruct filePtrSet;
+  if (m_env.openOutputFile(fileName,
+                           fileType,
+                           allowedSubEnvIds,
+                           false, // A 'true' causes problems when the user chooses (via options
+                                  // in the input file) to use just one file for all outputs.
+                           filePtrSet)) {
+    this->subWriteContents(filePtrSet,fileType);
+    this->closeFile(filePtrSet,fileType);
   }
 
   return;
@@ -2946,7 +2944,9 @@ uqScalarSequenceClass<T>::subWriteContents(
 
 template <class T>
 void
-uqScalarSequenceClass<T>::subWriteContents(std::ofstream& ofs) const
+uqScalarSequenceClass<T>::subWriteContents(
+  std::ofstream&     ofs,
+  const std::string& fileType) const // "m or hdf"
 {
   ofs << m_name << "_sub" << m_env.subIdString() << " = zeros(" << this->subSequenceSize()
       << ","                                                    << 1
@@ -2965,7 +2965,9 @@ uqScalarSequenceClass<T>::subWriteContents(std::ofstream& ofs) const
 
 template <class T>
 void
-uqScalarSequenceClass<T>::unifiedWriteContents(const std::string& fileName) const
+uqScalarSequenceClass<T>::unifiedWriteContents(
+  const std::string& fileName,
+  const std::string& fileType) const
 {
   //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
@@ -2976,6 +2978,7 @@ uqScalarSequenceClass<T>::unifiedWriteContents(const std::string& fileName) cons
                             << ", inter0Rank "     << m_env.inter0Rank()
       //<< ", m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc()
                             << ", fileName = "     << fileName
+                            << ", fileType = "     << fileType
                             << std::endl;
   }
 
@@ -2985,50 +2988,49 @@ uqScalarSequenceClass<T>::unifiedWriteContents(const std::string& fileName) cons
     for (unsigned int r = 0; r < (unsigned int) m_env.inter0Comm().NumProc(); ++r) {
       if (m_env.inter0Rank() == (int) r) {
         // My turn
-        std::ofstream* unifiedOfsVar = NULL;
+        uqFilePtrSetStruct unifiedFilePtrSet;
         // bool writeOver = (r == 0);
         bool writeOver = false; // A 'true' causes problems when the user chooses (via options
                                 // in the input file) to use just one file for all outputs.
         m_env.openUnifiedOutputFile(fileName,
-                                    UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                                    fileType, // "m or hdf"
                                     writeOver,
-                                    unifiedOfsVar);
+                                    unifiedFilePtrSet);
 
         if (r == 0) {
-          *unifiedOfsVar << m_name << "_unified" << " = zeros(" << this->subSequenceSize()*m_env.inter0Comm().NumProc()
+          *unifiedFilePtrSet.ofsVar << m_name << "_unified" << " = zeros(" << this->subSequenceSize()*m_env.inter0Comm().NumProc()
                          << ","                                 << 1
                          << ");"
                          << std::endl;
-          *unifiedOfsVar << m_name << "_unified" << " = [";
+          *unifiedFilePtrSet.ofsVar << m_name << "_unified" << " = [";
         }
 
         unsigned int chainSize = this->subSequenceSize();
         for (unsigned int j = 0; j < chainSize; ++j) {
-          *unifiedOfsVar << m_seq[j]
+          *unifiedFilePtrSet.ofsVar << m_seq[j]
                          << std::endl;
         }
 
-        //unifiedOfsVar->close();
-        delete unifiedOfsVar;
+        m_env.closeFile(unifiedFilePtrSet,fileType);
       }
       m_env.inter0Comm().Barrier();
     }
 
     if (m_env.inter0Rank() == 0) {
-      std::ofstream* unifiedOfsVar = NULL;
+      uqFilePtrSetStruct unifiedFilePtrSet;
       m_env.openUnifiedOutputFile(fileName,
-                                  UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                                  fileType,
                                   false, // Yes, 'writeOver = false' in order to close the array for matlab
-                                  unifiedOfsVar);
-      *unifiedOfsVar << "];\n";
-      //unifiedOfsVar->close();
-      delete unifiedOfsVar;
+                                  unifiedFilePtrSet);
+      *unifiedFilePtrSet.ofsVar << "];\n";
+      m_env.closeFile(unifiedFilePtrSet,fileType);
     }
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
     *m_env.subDisplayFile() << "Leaving uqScalarSequenceClass<T>::unifiedWriteContents()"
                             << ", fileName = " << fileName
+                            << ", fileType = " << fileType
                             << std::endl;
   }
   //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
@@ -3148,10 +3150,15 @@ uqComputeSubGaussian2dKde(const uqScalarSequenceClass<T>& scalarSeq1,
   double scale2Inv = 1./scaleValue2;
   //corrValue = 0.;
   double r = 1 - corrValue*corrValue;
-  UQ_FATAL_TEST_MACRO(r <= 0.,
-                      scalarSeq1.env().fullRank(),
-                      "uqComputeSubGaussian2dKde()",
-                      "negative r");
+  if (r <= 0.) { // prudencio 2010-07-23
+    std::cerr << "In uqComputeSubGaussian2dKde()"
+              << ": WARNING, r = " << r
+              << std::endl;
+  }
+  //UQ_FATAL_TEST_MACRO(r < 0.,
+  //                    scalarSeq1.env().fullRank(),
+  //                    "uqComputeSubGaussian2dKde()",
+  //                    "negative r");
   for (unsigned int j = 0; j < numEvals; ++j) {
     double x1 = evaluationPositions1[j];
     double x2 = evaluationPositions2[j];
@@ -3287,10 +3294,15 @@ uqComputeCovCorrBetweenScalarSequences(
 
     corrValue = covValue/std::sqrt(unifiedSampleVarianceP)/std::sqrt(unifiedSampleVarianceQ);
 
-    UQ_FATAL_TEST_MACRO((corrValue < -1.) || (corrValue > 1.),
-                        env.fullRank(),
-                        "uqComputeCovCorrBetweenScalarSequences()",
-                        "computed correlation is out of range");
+    if ((corrValue < -1.) || (corrValue > 1.)) { // prudencio 2010-07-23
+      std::cerr << "In uqComputeCovCorrBetweenScalarSequences()"
+                << ": computed correlation is out of range, corrValue = " << corrValue
+                << std::endl;
+    }
+    //UQ_FATAL_TEST_MACRO((corrValue < -1.) || (corrValue > 1.),
+    //                    env.fullRank(),
+    //                    "uqComputeCovCorrBetweenScalarSequences()",
+    //                    "computed correlation is out of range");
   }
   else {
     // Node not in the 'inter0' communicator: do nothing extra

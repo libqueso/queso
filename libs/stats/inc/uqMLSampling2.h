@@ -134,37 +134,42 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Level0_all(
     currLogTargetValues.resizeSequence    (currOptions.m_rawChainSize); // Ok to use rawChainSize
 
     P_V auxVec(m_vectorSpace.zeroVector());
+    uqScalarFunctionSynchronizerClass<P_V,P_M> likelihoodSynchronizer(m_likelihoodFunction,auxVec); // prudencio 2010-08-01
     for (unsigned int i = 0; i < currChain.subSequenceSize(); ++i) {
       //std::cout << "In QUESO: before prior realizer with i = " << i << std::endl;
       m_priorRv.realizer().realization(auxVec);
+      auxVec.mpiBcast(0, m_env.subComm().Comm()); // prudencio 2010-08-01
       currChain.setPositionValues(i,auxVec);
-      // KAUST: all nodes should call here
-      currLogLikelihoodValues[i] = m_likelihoodFunction.lnValue(auxVec,NULL,NULL,NULL,NULL);  // likelihood is important
+      // KAUST: all nodes should call likelihood
+#if 1 // prudencio 2010-08-01
+      currLogLikelihoodValues[i] = likelihoodSynchronizer.callFunction(&auxVec,NULL,NULL,NULL,NULL,NULL); // likelihood is important
+#else
+      currLogLikelihoodValues[i] = m_likelihoodFunction.lnValue(auxVec,NULL,NULL,NULL,NULL); // likelihood is important
+#endif
       currLogTargetValues[i]     = m_priorRv.pdf().lnValue(auxVec,NULL,NULL,NULL,NULL) + currLogLikelihoodValues[i];
       //std::cout << "In QUESO: currLogTargetValues[" << i << "] = " << currLogTargetValues[i] << std::endl;
     }
 
     if (m_env.inter0Rank() >= 0) { // KAUST
       if (currOptions.m_rawChainComputeStats) {
-        std::ofstream* genericOfsVar = NULL;
+        uqFilePtrSetStruct filePtrSet;
         m_env.openOutputFile(currOptions.m_dataOutputFileName,
-                             UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                             UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT, // Yes, always ".m"
                              currOptions.m_dataOutputAllowedSet,
                              false,
-                             genericOfsVar);
+                             filePtrSet);
 
         //m_env.syncPrintDebugMsg("At level 0, calling computeStatistics for chain",1,10,m_env.inter0Comm()); // output debug
         currChain.computeStatistics(*currOptions.m_rawChainStatisticalOptions,
-                                    genericOfsVar);
+                                    filePtrSet.ofsVar);
 
-        //genericOfsVar->close();
-        delete genericOfsVar;
+        m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);
       }
 
       if (currOptions.m_rawChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
-        currChain.unifiedWriteContents              (currOptions.m_rawChainDataOutputFileName);
-        currLogLikelihoodValues.unifiedWriteContents(currOptions.m_rawChainDataOutputFileName);
-        currLogTargetValues.unifiedWriteContents    (currOptions.m_rawChainDataOutputFileName);
+        currChain.unifiedWriteContents              (currOptions.m_rawChainDataOutputFileName,currOptions.m_rawChainDataOutputFileType);
+        currLogLikelihoodValues.unifiedWriteContents(currOptions.m_rawChainDataOutputFileName,currOptions.m_rawChainDataOutputFileType);
+        currLogTargetValues.unifiedWriteContents    (currOptions.m_rawChainDataOutputFileName,currOptions.m_rawChainDataOutputFileType);
       }
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -1487,33 +1492,32 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
   iRC = gettimeofday(&timevalStep, NULL);
 
         if (currOptions->m_rawChainComputeStats) {
-          std::ofstream* genericOfsVar = NULL;
+          uqFilePtrSetStruct filePtrSet;
           m_env.openOutputFile(currOptions->m_dataOutputFileName,
-                               UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                               UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT, // Yes, always ".m"
                                currOptions->m_dataOutputAllowedSet,
                                false,
-                               genericOfsVar);
+                               filePtrSet);
 
           if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) { // output debug
             *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence_Step()"
                                     << ", level " << m_currLevel+LEVEL_REF_ID
                                     << ", step "  << m_currStep
                                     << ", calling computeStatistics for raw chain"
-                                    << ". Ofstream pointer value = " << genericOfsVar
+                                    << ". Ofstream pointer value = " << filePtrSet.ofsVar
                                     << ", statistical options are"
                                     << "\n" << *currOptions->m_rawChainStatisticalOptions
                                     << std::endl;
           }
           //m_env.syncPrintDebugMsg("At step 11, calling computeStatistics for raw chain",1,10,m_env.inter0Comm()); // output debug
           currChain.computeStatistics(*currOptions->m_rawChainStatisticalOptions,
-                                      genericOfsVar);
+                                      filePtrSet.ofsVar);
 
-          //genericOfsVar->close();
-          delete genericOfsVar;
+          m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);
         }
 
         if (currOptions->m_rawChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
-          currChain.unifiedWriteContents              (currOptions->m_rawChainDataOutputFileName); // KAUST5
+          currChain.unifiedWriteContents              (currOptions->m_rawChainDataOutputFileName,currOptions->m_rawChainDataOutputFileType); // KAUST5
           if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
             *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence_Step()"
                                     << ", level " << m_currLevel+LEVEL_REF_ID
@@ -1522,23 +1526,23 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
                                     << ", currLogLikelihoodValues[0] = " << currLogLikelihoodValues[0]
                                     << std::endl;
           }
-          currLogLikelihoodValues.unifiedWriteContents(currOptions->m_rawChainDataOutputFileName);
-          currLogTargetValues.unifiedWriteContents    (currOptions->m_rawChainDataOutputFileName);
+          currLogLikelihoodValues.unifiedWriteContents(currOptions->m_rawChainDataOutputFileName,currOptions->m_rawChainDataOutputFileType);
+          currLogTargetValues.unifiedWriteContents    (currOptions->m_rawChainDataOutputFileName,currOptions->m_rawChainDataOutputFileType);
         }
 
         if (currOptions->m_filteredChainGenerate) {
-          std::ofstream* genericOfsVar = NULL;
+          uqFilePtrSetStruct filePtrSet;
           m_env.openOutputFile(currOptions->m_dataOutputFileName,
-                               UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                               UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT, // Yes, always ".m"
                                currOptions->m_dataOutputAllowedSet,
                                false,
-                               genericOfsVar);
+                               filePtrSet);
 
           unsigned int filterInitialPos = (unsigned int) (currOptions->m_filteredChainDiscardedPortion * (double) currChain.subSequenceSize());
           unsigned int filterSpacing    = currOptions->m_filteredChainLag;
           if (filterSpacing == 0) {
             currChain.computeFilterParams(*currOptions->m_filteredChainStatisticalOptions,
-                                          genericOfsVar,
+                                          filePtrSet.ofsVar,
                                           filterInitialPos,
                                           filterSpacing);
           }
@@ -1562,7 +1566,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
                                       << ", level " << m_currLevel+LEVEL_REF_ID
                                       << ", step "  << m_currStep
                                       << ", calling computeStatistics for filtered chain"
-                                      << ". Ofstream pointer value = " << genericOfsVar
+                                      << ". Ofstream pointer value = " << filePtrSet.ofsVar
                                       << ", statistical options are"
                                       << "\n" << *currOptions->m_rawChainStatisticalOptions
                                       << std::endl;
@@ -1570,16 +1574,15 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
 
             //m_env.syncPrintDebugMsg("At step 11, calling computeStatistics for filtered chain",1,10,m_env.inter0Comm()); // output debug
             currChain.computeStatistics(*currOptions->m_filteredChainStatisticalOptions,
-                                        genericOfsVar);
+                                        filePtrSet.ofsVar);
           }
 
-          //genericOfsVar->close();
-          delete genericOfsVar;
+          m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);
 
           if (currOptions->m_filteredChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
-            currChain.unifiedWriteContents              (currOptions->m_filteredChainDataOutputFileName);
-            currLogLikelihoodValues.unifiedWriteContents(currOptions->m_filteredChainDataOutputFileName);
-            currLogTargetValues.unifiedWriteContents    (currOptions->m_filteredChainDataOutputFileName);
+            currChain.unifiedWriteContents              (currOptions->m_filteredChainDataOutputFileName,currOptions->m_filteredChainDataOutputFileType);
+            currLogLikelihoodValues.unifiedWriteContents(currOptions->m_filteredChainDataOutputFileName,currOptions->m_filteredChainDataOutputFileType);
+            currLogTargetValues.unifiedWriteContents    (currOptions->m_filteredChainDataOutputFileName,currOptions->m_filteredChainDataOutputFileType);
           }
         } // if (currOptions->m_filteredChainGenerate)
 

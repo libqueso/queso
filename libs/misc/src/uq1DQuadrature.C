@@ -412,6 +412,9 @@ uqUniformLegendre1DQuadratureClass::uqUniformLegendre1DQuadratureClass(
     break;
 
     default:
+      std::cerr << "In uqUniformLegendre1DQuadratureClass::constructor()"
+                << ": m_order = " << m_order
+                << std::endl;
       UQ_FATAL_TEST_MACRO(true,
                           UQ_UNAVAILABLE_RANK,
                           "uqUniformLegendre1DQuadratureClass::constructor()",
@@ -671,3 +674,84 @@ uqGaussianHermite1DQuadratureClass::dumbRoutine() const
 {
   return;
 }
+
+//*****************************************************
+// WignerInverseChebyshev1st 1D quadrature class
+//*****************************************************
+uqWignerInverseChebyshev1st1DQuadratureClass::uqWignerInverseChebyshev1st1DQuadratureClass(
+  double       minDomainValue,
+  double       maxDomainValue,
+  unsigned int order)
+  :
+  uqBase1DQuadratureClass(minDomainValue,maxDomainValue,order)
+{
+  m_positions.resize(m_order+1,0.); // Yes, '+1'
+  m_weights.resize  (m_order+1,0.); // Yes, '+1'
+
+  // http://en.wikipedia.org/wiki/Chebyshev-Gauss_quadrature
+  switch (m_order) {
+    default:
+      UQ_FATAL_TEST_MACRO(true,
+                          UQ_UNAVAILABLE_RANK,
+                          "uqWignerInverseChebyshev1st1DQuadratureClass::constructor()",
+                          "order not supported");
+    break;
+  }
+
+  // Scale positions from the interval [-1, 1] to the interval [min,max]
+  for (unsigned int j = 0; j < m_positions.size(); ++j) {
+    m_positions[j] = .5*(m_maxDomainValue - m_minDomainValue)*m_positions[j] + .5*(m_maxDomainValue + m_minDomainValue);
+    m_weights[j] *= .5*(m_maxDomainValue - m_minDomainValue);
+  }
+}
+
+uqWignerInverseChebyshev1st1DQuadratureClass::~uqWignerInverseChebyshev1st1DQuadratureClass()
+{
+}
+
+void
+uqWignerInverseChebyshev1st1DQuadratureClass::dumbRoutine() const
+{
+  return;
+}
+
+//*****************************************************
+// WignerChebyshev2nd 1D quadrature class
+//*****************************************************
+uqWignerChebyshev2nd1DQuadratureClass::uqWignerChebyshev2nd1DQuadratureClass(
+  double       minDomainValue,
+  double       maxDomainValue,
+  unsigned int order)
+  :
+  uqBase1DQuadratureClass(minDomainValue,maxDomainValue,order)
+{
+  m_positions.resize(m_order+1,0.); // Yes, '+1'
+  m_weights.resize  (m_order+1,0.); // Yes, '+1'
+
+  // http://en.wikipedia.org/wiki/Chebyshev-Gauss_quadrature
+  unsigned int n = m_order+1;
+  for (unsigned int i = 0; i < n; ++i) {
+    double angle = M_PI*((double)(i+1))/((double)(n+1));
+    double cosValue = cos(angle);
+    double sinValue = sin(angle);
+    m_positions[i] = cosValue;
+    m_weights[i] = ( M_PI/((double)(n+1)) )*sinValue*sinValue;
+  }
+
+  // Scale positions from the interval [-1, 1] to the interval [min,max]
+  for (unsigned int j = 0; j < m_positions.size(); ++j) {
+    m_positions[j] = .5*(m_maxDomainValue - m_minDomainValue)*m_positions[j] + .5*(m_maxDomainValue + m_minDomainValue);
+    m_weights[j] *= .5*(m_maxDomainValue - m_minDomainValue);
+  }
+}
+
+uqWignerChebyshev2nd1DQuadratureClass::~uqWignerChebyshev2nd1DQuadratureClass()
+{
+}
+
+void
+uqWignerChebyshev2nd1DQuadratureClass::dumbRoutine() const
+{
+  return;
+}
+

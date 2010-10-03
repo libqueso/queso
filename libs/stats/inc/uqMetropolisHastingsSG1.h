@@ -107,6 +107,7 @@ private:
                                    uqScalarSequenceClass<double>*                           workingLogLikelihoodValues,
                                    uqScalarSequenceClass<double>*                           workingLogTargetValues);
   void   readFullChain            (const std::string&                                       inputFileName,
+                                   const std::string&                                       inputFileType,
                                          unsigned int                                       chainSize,
                                    uqBaseVectorSequenceClass<P_V,P_M>&                      workingChain);
   void   updateAdaptedCovMatrix   (const uqBaseVectorSequenceClass<P_V,P_M>&                subChain,

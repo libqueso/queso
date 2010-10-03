@@ -448,26 +448,25 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
                             << "'"
                             << std::endl;
   }
-  std::ofstream* ofsvar = NULL;
-  m_env.openOutputFile(m_options.m_dataOutputFileName,
-                       UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
-                       m_options.m_dataOutputAllowedSet,
-                       false,
-                       ofsvar);
-  if (ofsvar) {
+  uqFilePtrSetStruct filePtrSet;
+  if (m_env.openOutputFile(m_options.m_dataOutputFileName,
+                           UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT, // Yes, always ".m"
+                           m_options.m_dataOutputAllowedSet,
+                           false,
+                           filePtrSet)) {
 #ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
-    m_qoiRv.mdf().print(*ofsvar);
+    m_qoiRv.mdf().print(*filePtrSet.ofsVar);
 #endif
-    *ofsvar << m_qoiRv.subCdf();
+    *filePtrSet.ofsVar << m_qoiRv.subCdf();
 
-    //if (pqCovarianceMatrix ) *ofsvar << *pqCovarianceMatrix;  // FIX ME: output matrix in matlab format
-    //if (pqCorrelationMatrix) *ofsvar << *pqCorrelationMatrix; // FIX ME: output matrix in matlab format
+    //if (pqCovarianceMatrix ) *filePtrSet.ofsVar << *pqCovarianceMatrix;  // FIX ME: output matrix in matlab format
+    //if (pqCorrelationMatrix) *filePtrSet.ofsVar << *pqCorrelationMatrix; // FIX ME: output matrix in matlab format
 
     // Write unified cdf if necessary
     if (m_env.numSubEnvironments() > 1) {
       if (m_qoiRv.imageSet().vectorSpace().numOfProcsForStorage() == 1) {
         if (m_env.inter0Rank() == 0) {
-          *ofsvar << m_qoiRv.unifiedCdf(); //*m_unifiedSolutionCdf;
+          *filePtrSet.ofsVar << m_qoiRv.unifiedCdf(); //*m_unifiedSolutionCdf;
         }
       }
       else {
@@ -477,12 +476,9 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()
                             "unifed cdf writing, parallel vectors not supported yet");
       }
     }
-  }
 
-  // Close data output file
-  if (ofsvar) {
-    //ofsvar->close();
-    delete ofsvar;
+    // Close data output file
+    m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
                               << ", prefix = "                 << m_options.m_prefix

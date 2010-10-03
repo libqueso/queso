@@ -87,6 +87,7 @@ public:
   void              print                (std::ostream& os) const;
   void              subWriteContents     (const std::string&            varNamePrefix,
                                           const std::string&            fileName,
+                                          const std::string&            fileType,
                                           const std::set<unsigned int>& allowedSubEnvIds) const;
 
   void              getColumn            (const unsigned int column_num, uqGslVectorClass& column) const;

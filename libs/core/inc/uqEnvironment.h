@@ -38,6 +38,7 @@ class uqEnvironmentOptionsClass;
 
 #undef UQ_USES_COMMAND_LINE_OPTIONS
 
+#include <hdf5.h>
 #include <Epetra_MpiComm.h>
 #include <gsl/gsl_rng.h>
 #include <boost/program_options.hpp>
@@ -46,6 +47,15 @@ namespace po = boost::program_options;
 #include <fstream>
 
 extern unsigned long int gsl_rng_default_seed;
+
+struct uqFilePtrSetStruct {
+  uqFilePtrSetStruct();
+ ~uqFilePtrSetStruct();
+
+  std::ofstream* ofsVar;
+  std::ifstream* ifsVar;
+  hid_t          h5Var;
+};
 
 //*****************************************************
 // Base class
@@ -174,20 +184,25 @@ public:
           bool                    isThereInputFile           () const;
           void                    syncPrintDebugMsg          (const char* msg, unsigned int msgVerbosity, unsigned int numUSecs, const Epetra_MpiComm& commObj) const;
 
-          void                    openOutputFile             (const std::string&            fileName,
+          bool                    openOutputFile             (const std::string&            fileName,
                                                               const std::string&            fileType,
                                                               const std::set<unsigned int>& allowedSubEnvIds,
                                                                     bool                    writeOver,
-                                                                    std::ofstream*&         ofsvar) const;
+                                                                    uqFilePtrSetStruct&     filePtrSet) const;
 
-          void                    openUnifiedOutputFile      (const std::string&            fileName,
+          bool                    openUnifiedOutputFile      (const std::string&            fileName,
                                                               const std::string&            fileType,
                                                                     bool                    writeOver,
-                                                                    std::ofstream*&         ofsvar) const;
-          void                    openInputFile              (const std::string&            fileName,
+                                                                    uqFilePtrSetStruct&     filePtrSet) const;
+          bool                    openInputFile              (const std::string&            fileName,
                                                               const std::string&            fileType,
                                                               const std::set<unsigned int>& allowedSubEnvIds,
-                                                                    std::ifstream*&         ifsvar) const;
+                                                                    uqFilePtrSetStruct&     filePtrSet) const;
+          bool                    openUnifiedInputFile       (const std::string&            fileName,
+                                                              const std::string&            fileType,
+                                                                    uqFilePtrSetStruct&     filePtrSet) const;
+          void                    closeFile                  (      uqFilePtrSetStruct&     filePtrSet,
+                                                              const std::string&            fileType) const; 
           void                    setExceptionalCircunstance (bool value) const;
           bool                    exceptionalCircunstance    () const;
 

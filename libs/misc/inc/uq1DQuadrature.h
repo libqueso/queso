@@ -112,8 +112,8 @@ protected:
 //*****************************************************
 class uqGaussianHermite1DQuadratureClass : public uqBase1DQuadratureClass {
 public:
-  uqGaussianHermite1DQuadratureClass(double mean,
-                                     double stddev,
+  uqGaussianHermite1DQuadratureClass(double       mean,
+                                     double       stddev,
                                      unsigned int order);
  ~uqGaussianHermite1DQuadratureClass();
 
@@ -128,6 +128,46 @@ protected:
 
   double m_mean;
   double m_stddev;
+};
+
+//*****************************************************
+// Wigner/Chebyshev1st 1D quadrature class
+//*****************************************************
+class uqWignerInverseChebyshev1st1DQuadratureClass : public uqBase1DQuadratureClass {
+public:
+  uqWignerInverseChebyshev1st1DQuadratureClass(double       minDomainValue,
+                                               double       maxDomainValue,
+                                               unsigned int order);
+ ~uqWignerInverseChebyshev1st1DQuadratureClass();
+
+  void dumbRoutine() const;
+
+protected:
+  using uqBase1DQuadratureClass::m_minDomainValue;
+  using uqBase1DQuadratureClass::m_maxDomainValue;
+  using uqBase1DQuadratureClass::m_order;
+  using uqBase1DQuadratureClass::m_positions;
+  using uqBase1DQuadratureClass::m_weights;
+};
+
+//*****************************************************
+// Wigner/Chebyshev2nd 1D quadrature class
+//*****************************************************
+class uqWignerChebyshev2nd1DQuadratureClass : public uqBase1DQuadratureClass {
+public:
+  uqWignerChebyshev2nd1DQuadratureClass(double       minDomainValue,
+                                        double       maxDomainValue,
+                                        unsigned int order);
+ ~uqWignerChebyshev2nd1DQuadratureClass();
+
+  void dumbRoutine() const;
+
+protected:
+  using uqBase1DQuadratureClass::m_minDomainValue;
+  using uqBase1DQuadratureClass::m_maxDomainValue;
+  using uqBase1DQuadratureClass::m_order;
+  using uqBase1DQuadratureClass::m_positions;
+  using uqBase1DQuadratureClass::m_weights;
 };
 #endif // __UQ_1D_1D_QUADRATURE_H__
 

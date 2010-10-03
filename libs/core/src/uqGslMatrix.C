@@ -1088,6 +1088,7 @@ void
 uqGslMatrixClass::subWriteContents(
   const std::string&            varNamePrefix,
   const std::string&            fileName,
+  const std::string&            fileType,
   const std::set<unsigned int>& allowedSubEnvIds) const
 {
   UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
@@ -1100,32 +1101,30 @@ uqGslMatrixClass::subWriteContents(
                       "uqGslMatrixClass::subWriteContents()",
                       "implemented just for sequential vectors for now");
 
-  std::ofstream* ofsVar = NULL;
-  m_env.openOutputFile(fileName,
-                       UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
-                       allowedSubEnvIds,
-                       false,
-                       ofsVar);
-
-  if (ofsVar) {
+  uqFilePtrSetStruct filePtrSet;
+  if (m_env.openOutputFile(fileName,
+                           fileType, // "m or hdf"
+                           allowedSubEnvIds,
+                           false,
+                           filePtrSet)) {
     unsigned int nRows = this->numRowsLocal();
     unsigned int nCols = this->numCols();
-    *ofsVar << varNamePrefix << "_sub" << m_env.subIdString() << " = zeros(" << nRows
+    *filePtrSet.ofsVar << varNamePrefix << "_sub" << m_env.subIdString() << " = zeros(" << nRows
             << ","                                                           << nCols
             << ");"
             << std::endl;
-    *ofsVar << varNamePrefix << "_sub" << m_env.subIdString() << " = [";
+    *filePtrSet.ofsVar << varNamePrefix << "_sub" << m_env.subIdString() << " = [";
 
     for (unsigned int i = 0; i < nRows; ++i) {
       for (unsigned int j = 0; j < nCols; ++j) {
-        *ofsVar << (*this)(i,j)
+        *filePtrSet.ofsVar << (*this)(i,j)
                 << " ";
       }
-      *ofsVar << "\n";
+      *filePtrSet.ofsVar << "\n";
     }
-    *ofsVar << "];\n";
-    //ofsVar->close();
-    delete ofsVar;
+    *filePtrSet.ofsVar << "];\n";
+
+    m_env.closeFile(filePtrSet,fileType);
   }
 
   return;

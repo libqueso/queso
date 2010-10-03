@@ -705,6 +705,88 @@ uqInverseGammaVectorRVClass<V,M>::print(std::ostream& os) const
 }
 
 //*****************************************************
+// Wigner class
+//*****************************************************
+template<class V, class M>
+class uqWignerVectorRVClass : public uqBaseVectorRVClass<V,M> {
+public:
+  uqWignerVectorRVClass(const char*                  prefix,
+                        const uqVectorSetClass<V,M>& imageSet,
+                        const V&                     centerPos,
+                        double                       radius);
+  virtual ~uqWignerVectorRVClass();
+
+  void print(std::ostream& os) const;
+
+private:
+  using uqBaseVectorRVClass<V,M>::m_env;
+  using uqBaseVectorRVClass<V,M>::m_prefix;
+  using uqBaseVectorRVClass<V,M>::m_imageSet;
+  using uqBaseVectorRVClass<V,M>::m_pdf;
+  using uqBaseVectorRVClass<V,M>::m_realizer;
+  using uqBaseVectorRVClass<V,M>::m_subCdf;
+  using uqBaseVectorRVClass<V,M>::m_unifiedCdf;
+  using uqBaseVectorRVClass<V,M>::m_mdf;
+};
+
+template<class V, class M>
+uqWignerVectorRVClass<V,M>::uqWignerVectorRVClass(
+  const char*                  prefix,
+  const uqVectorSetClass<V,M>& imageSet,
+  const V&                     centerPos,
+  double                       radius)
+  :
+  uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"uni").c_str(),imageSet)
+{
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
+    *m_env.subDisplayFile() << "Entering uqWignerVectorRVClass<V,M>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+
+  UQ_FATAL_TEST_MACRO(radius <= 0.,
+                      m_env.fullRank(),
+                      "uqWignerVectorRVClass<V,M>::constructor()",
+                      "invalid radius");
+
+  m_pdf        = new uqWignerJointPdfClass<V,M>(m_prefix.c_str(),
+                                                m_imageSet,
+                                                centerPos,
+                                                radius);
+  m_realizer   = new uqWignerVectorRealizerClass<V,M>(m_prefix.c_str(),
+                                                      m_imageSet,
+                                                      centerPos,
+                                                      radius);
+  m_subCdf     = NULL; // FIX ME: complete code
+  m_unifiedCdf = NULL; // FIX ME: complete code
+  m_mdf        = NULL; // FIX ME: complete code
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
+    *m_env.subDisplayFile() << "Leaving uqWignerVectorRVClass<V,M>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+}
+
+template<class V, class M>
+uqWignerVectorRVClass<V,M>::~uqWignerVectorRVClass()
+{
+  delete m_mdf;
+  delete m_unifiedCdf;
+  delete m_subCdf;
+  delete m_realizer;
+  delete m_pdf;
+}
+
+template <class V, class M>
+void
+uqWignerVectorRVClass<V,M>::print(std::ostream& os) const
+{
+  os << "uqWignerVectorRVClass<V,M>::print() says, 'Please implement me.'" << std::endl;
+  return;
+}
+
+//*****************************************************
 // Concatenated class
 //*****************************************************
 template<class V, class M>

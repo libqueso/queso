@@ -399,6 +399,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
   // ernesto
   if (m_options.m_restartInputFileName != ".") {
     workingChain.unifiedReadContents(m_options.m_restartInputFileName,
+                                     m_options.m_restartInputFileType,
                                      m_options.m_restartChainSize);
 
     uqMLSamplingLevelOptionsClass defaultLevelOptions(m_env,(m_options.m_prefix + "default_").c_str());
@@ -408,41 +409,40 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     lastLevelOptions.scanOptionsValues(&defaultLevelOptions);
 
         if (lastLevelOptions.m_rawChainComputeStats) {
-          std::ofstream* genericOfsVar = NULL;
+          uqFilePtrSetStruct filePtrSet;
           m_env.openOutputFile(lastLevelOptions.m_dataOutputFileName,
-                               UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                               UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT, // Yes, always ".m"
                                lastLevelOptions.m_dataOutputAllowedSet,
                                false,
-                               genericOfsVar);
+                               filePtrSet);
 
           workingChain.computeStatistics(*lastLevelOptions.m_rawChainStatisticalOptions,
-                                      genericOfsVar);
+                                         filePtrSet.ofsVar);
 
-          //genericOfsVar->close();
-          delete genericOfsVar;
+          m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);
         }
 
         if (lastLevelOptions.m_rawChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
-          workingChain.unifiedWriteContents              (lastLevelOptions.m_rawChainDataOutputFileName); // KAUST5
+          workingChain.unifiedWriteContents              (lastLevelOptions.m_rawChainDataOutputFileName,lastLevelOptions.m_rawChainDataOutputFileType); // KAUST5
           //currLogLikelihoodValues.unifiedWriteContents(lastLevelOptions.m_rawChainDataOutputFileName);
           //currLogTargetValues.unifiedWriteContents    (lastLevelOptions.m_rawChainDataOutputFileName);
         }
 
         if (lastLevelOptions.m_filteredChainGenerate) {
-          std::ofstream* genericOfsVar = NULL;
+          uqFilePtrSetStruct filePtrSet;
           m_env.openOutputFile(lastLevelOptions.m_dataOutputFileName,
-                               UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
+                               UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT, // Yes, always ".m"
                                lastLevelOptions.m_dataOutputAllowedSet,
                                false,
-                               genericOfsVar);
+                               filePtrSet);
 
           unsigned int filterInitialPos = (unsigned int) (lastLevelOptions.m_filteredChainDiscardedPortion * (double) workingChain.subSequenceSize());
           unsigned int filterSpacing    = lastLevelOptions.m_filteredChainLag;
           if (filterSpacing == 0) {
             workingChain.computeFilterParams(*lastLevelOptions.m_filteredChainStatisticalOptions,
-                                          genericOfsVar,
-                                          filterInitialPos,
-                                          filterSpacing);
+                                             filePtrSet.ofsVar,
+                                             filterInitialPos,
+                                             filterSpacing);
           }
 
           // Filter positions from the converged portion of the chain
@@ -460,14 +460,13 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
 
           if (lastLevelOptions.m_filteredChainComputeStats) {
             workingChain.computeStatistics(*lastLevelOptions.m_filteredChainStatisticalOptions,
-                                        genericOfsVar);
+                                           filePtrSet.ofsVar);
           }
 
-          //genericOfsVar->close();
-          delete genericOfsVar;
+          m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);
 
           if (lastLevelOptions.m_filteredChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
-            workingChain.unifiedWriteContents              (lastLevelOptions.m_filteredChainDataOutputFileName);
+            workingChain.unifiedWriteContents              (lastLevelOptions.m_filteredChainDataOutputFileName,lastLevelOptions.m_filteredChainDataOutputFileType);
             //currLogLikelihoodValues.unifiedWriteContents(lastLevelOptions.m_filteredChainDataOutputFileName);
             //currLogTargetValues.unifiedWriteContents    (lastLevelOptions.m_filteredChainDataOutputFileName);
           }

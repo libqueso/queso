@@ -568,6 +568,77 @@ uqInverseGammaVectorRealizerClass<V,M>::realization(V& nextValues) const
 }
 
 //*****************************************************
+// Wigner class
+//*****************************************************
+template<class V, class M>
+class uqWignerVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
+public:
+  uqWignerVectorRealizerClass(const char*                  prefix,
+                              const uqVectorSetClass<V,M>& unifiedImageSet,
+                              const V&                     centerPos,
+                              double                       radius);
+ ~uqWignerVectorRealizerClass();
+
+  void realization(V& nextValues) const;
+
+private:
+  using uqBaseVectorRealizerClass<V,M>::m_env;
+  using uqBaseVectorRealizerClass<V,M>::m_prefix;
+  using uqBaseVectorRealizerClass<V,M>::m_unifiedImageSet;
+  using uqBaseVectorRealizerClass<V,M>::m_subPeriod;
+  V*     m_centerPos;
+  double m_radius;
+};
+
+template<class V, class M>
+uqWignerVectorRealizerClass<V,M>::uqWignerVectorRealizerClass(
+  const char*                  prefix,
+  const uqVectorSetClass<V,M>& unifiedImageSet,
+  const V&                     centerPos,
+  double                       radius)
+  :
+  uqBaseVectorRealizerClass<V,M>(((std::string)(prefix)+"gen").c_str(),unifiedImageSet,std::numeric_limits<unsigned int>::max()),
+  m_centerPos(new V(centerPos)),
+  m_radius   (radius)    
+{
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqWignerVectorRealizerClass<V,M>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+
+  UQ_FATAL_TEST_MACRO(m_radius <= 0.,
+                      m_env.fullRank(),
+                      "uqWignerVectorRealizerClass<V,M>::constructor()",
+                      "invalid radius");
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqWignerVectorRealizerClass<V,M>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+}
+
+template<class V, class M>
+uqWignerVectorRealizerClass<V,M>::~uqWignerVectorRealizerClass()
+{
+  delete m_centerPos;
+}
+
+template<class V, class M>
+void
+uqWignerVectorRealizerClass<V,M>::realization(V& nextValues) const
+{
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.fullRank(),
+                      "uqWignerVectorRealizerClass<V,M>::realization()",
+                      "not implemented yet");
+  
+  nextValues.cwSet(0.);
+  return;
+}
+
+//*****************************************************
 // Concatenated class
 //*****************************************************
 template<class V, class M>

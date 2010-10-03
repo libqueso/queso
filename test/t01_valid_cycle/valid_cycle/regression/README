@@ -7,3 +7,5 @@ Notes:
 
 -> May 2009: initial reference solution checked in for use with
    automatic regression testing. 
+-> July 2010: new reference solution checked in (basically, it is printed
+   out to the output file with more precision)

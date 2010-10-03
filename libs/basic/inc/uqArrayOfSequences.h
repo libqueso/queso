@@ -143,8 +143,10 @@ public:
                                            std::vector<V*>&         densityVecs) const;
         void         writeContents        (std::ofstream&                   ofsvar) const;
         void         unifiedWriteContents (std::ofstream&                   ofsvar) const;
-        void         unifiedWriteContents (const std::string&               fileName) const;
+        void         unifiedWriteContents (const std::string&               fileName,
+                                           const std::string&               fileType) const;
         void         unifiedReadContents  (const std::string&               fileName,
+                                           const std::string&               fileType,
                                            const unsigned int               subSequenceSize);
         void         select               (const std::vector<unsigned int>& idsOfUniquePositions);
         void         filter               (unsigned int                     initialPos,
@@ -1025,7 +1027,9 @@ uqArrayOfSequencesClass<V,M>::unifiedWriteContents(std::ofstream& ofsvar) const
 
 template <class V, class M>
 void
-uqArrayOfSequencesClass<V,M>::unifiedWriteContents(const std::string& fileName) const
+uqArrayOfSequencesClass<V,M>::unifiedWriteContents(
+  const std::string& fileName,
+  const std::string& fileType) const
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.fullRank(),
@@ -1038,6 +1042,7 @@ template <class V, class M>
 void
 uqArrayOfSequencesClass<V,M>::unifiedReadContents(
   const std::string& fileName,
+  const std::string& fileType,
   const unsigned int subSequenceSize)
 {
   UQ_FATAL_TEST_MACRO(true,
