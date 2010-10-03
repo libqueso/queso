@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
    // Initialize environment
   MPI_Init(&argc,&argv);
   uqFullEnvironmentClass* env =
-    new uqFullEnvironmentClass(MPI_COMM_WORLD,"input","");
+    new uqFullEnvironmentClass(MPI_COMM_WORLD,"input","",NULL);
 
   return_flag = actualChecking(env);
 

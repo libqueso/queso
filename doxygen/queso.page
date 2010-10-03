@@ -32,6 +32,11 @@ All bug reports should include:
 <li>a short program which reproduces the bug.
 </ul>
 
+\section bugs Regression Testing
+<ul>
+<li> <a href="http://buildbot.ices.utexas.edu/docs/buildbot/queso-branch/build/docs/html/lcov/build/src/index.html">Build\
+bot Coverage</a>
+
 \section licence License
 \copydoc License
 

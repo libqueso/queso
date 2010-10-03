@@ -36,7 +36,6 @@ else
    AC_MSG_RESULT(yes)
 fi
 
-
 # Required for some macros
 # AX_AM_MACROS
 
@@ -63,6 +62,7 @@ fi
 
 AC_PROG_CC
 AC_PROG_CXX
+AC_PROG_FC
 AC_LANG([C])
 ACX_MPI([CC="$MPICC"], [AC_MSG_ERROR([Could not find MPI.])])
 AC_LANG([C++])
@@ -89,12 +89,15 @@ AC_CACHE_SAVE
 # Check for boost
 
 AC_LANG([C++])
-BOOST_REQUIRE(1.35)
-BOOST_MATH
-BOOST_PROGRAM_OPTIONS
-BOOST_TEST
-BOOST_LDFLAGS="$BOOST_PROGRAM_OPTIONS_LDFLAGS $BOOST_PROGRAM_OPTIONS_LIBS"
-AC_SUBST(BOOST_LDFLAGS)
+#BOOST_REQUIRE(1.35)
+#BOOST_MATH
+#BOOST_TEST
+#BOOST_LDFLAGS="$BOOST_PROGRAM_OPTIONS_LDFLAGS $BOOST_PROGRAM_OPTIONS_LIBS"
+#AC_SUBST(BOOST_LDFLAGS)
+
+###BOOST_REQUIRE([1.35])
+AX_BOOST_BASE(1.35)
+AX_BOOST_PROGRAM_OPTIONS
 AC_CACHE_SAVE
 
 # Check for GNU Linear Programming kit
@@ -104,7 +107,7 @@ AX_PATH_GLPK(4.35,,AC_MSG_ERROR([Could not find required GLPK error]))
 # Check for HDF5 library
 
 #AX_PATH_HDF5(1.8.5,,AC_MSG_ERROR([Could not find required HDF5 error]))
-AX_PATH_HDF5(1.8.4,,AC_MSG_ERROR([Could not find required HDF5 error]))
+AX_PATH_HDF5(1.8.0,,AC_MSG_ERROR([Could not find required HDF5 error]))
 
 # libGRVY Config
 
@@ -129,15 +132,23 @@ DX_PS_FEATURE(OFF)
 
 DX_INIT_DOXYGEN([queso],[doxygen/queso.dox],docs)
 
+#--------------------------
+# Checks for code coverage
+#-------------------------
+
+AX_CODE_COVERAGE
+
 # Query configuration environment
 
 AX_SUMMARIZE_ENV
+
+
 
 # Generate makefiles
 
 AC_CONFIG_FILES([
 	Makefile
-	libs/Makefile
+	src/Makefile
 	examples/Makefile
 	examples/statisticalInverseProblem1/Makefile
 	examples/statisticalInverseProblem1/src/Makefile	
@@ -157,9 +168,11 @@ AC_CONFIG_FILES([
 	test/t01_valid_cycle/Makefile
 	test/t02_sip_sfp/Makefile
 	test/t03_sequence/Makefile
+	test/t04_bimodal/Makefile
         test/t01_valid_cycle/valid_cycle/Makefile
         test/t02_sip_sfp/sip_sfp/Makefile
         test/t03_sequence/sequence/Makefile
+        test/t04_bimodal/bimodal/Makefile
         test/gsl_tests/Makefile
 	doxygen/Makefile
 ])

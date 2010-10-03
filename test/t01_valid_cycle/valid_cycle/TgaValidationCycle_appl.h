@@ -133,7 +133,8 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                                                  true); // the routine computes [ln(function)]
 
   // Inverse problem: instantiate it (posterior rv is instantiated internally)
-  cycle.instantiateCalIP(calPriorRv,
+  cycle.instantiateCalIP(NULL,
+                         calPriorRv,
                          calLikelihoodFunctionObj);
 
   // Inverse problem: solve it, that is, set 'pdf' and 'realizer' of the posterior rv
@@ -148,7 +149,8 @@ uqAppl(const uqBaseEnvironmentClass& env)
   }
 
   P_M* calProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newProposalMatrix(NULL,&paramInitialValues);
-  cycle.calIP().solveWithBayesMetropolisHastings(paramInitialValues,
+  cycle.calIP().solveWithBayesMetropolisHastings(NULL,
+                                                 paramInitialValues,
                                                  calProposalCovMatrix);
   delete calProposalCovMatrix;
 
@@ -162,11 +164,12 @@ uqAppl(const uqBaseEnvironmentClass& env)
   calQoiRoutine_Data.m_criticalMass = criticalMass_prediction;
   calQoiRoutine_Data.m_criticalTime = criticalTime_prediction;
 
-  cycle.instantiateCalFP(qoiRoutine<P_V,P_M,Q_V,Q_M>,
+  cycle.instantiateCalFP(NULL,
+                         qoiRoutine<P_V,P_M,Q_V,Q_M>,
                          (void *) &calQoiRoutine_Data);
 
   // Forward problem: solve it, that is, set 'realizer' and 'cdf' of the qoi rv
-  cycle.calFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
+  cycle.calFP().solveWithMonteCarlo(NULL); // no extra user entities needed for Monte Carlo algorithm
 
   iRC = gettimeofday(&timevalNow, NULL);
   if (env.fullRank() == 0) {
@@ -201,13 +204,15 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                                                  true); // the routine computes [ln(function)]
 
   // Inverse problem: instantiate it (posterior rv is instantiated internally)
-  cycle.instantiateValIP(valLikelihoodFunctionObj);
+  cycle.instantiateValIP(NULL,
+                         valLikelihoodFunctionObj);
 
   // Inverse problem: solve it, that is, set 'pdf' and 'realizer' of the posterior rv
   const uqSequentialVectorRealizerClass<P_V,P_M>* tmpRealizer = dynamic_cast< const uqSequentialVectorRealizerClass<P_V,P_M>* >(&(cycle.calIP().postRv().realizer()));
   P_M* valProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newProposalMatrix(&tmpRealizer->unifiedSampleVarVector(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
                                                                                                 &tmpRealizer->unifiedSampleExpVector()); // Use these values as the initial values
-  cycle.valIP().solveWithBayesMetropolisHastings(tmpRealizer->unifiedSampleExpVector(),
+  cycle.valIP().solveWithBayesMetropolisHastings(NULL,
+                                                 tmpRealizer->unifiedSampleExpVector(),
                                                  valProposalCovMatrix);
   delete valProposalCovMatrix;
 
@@ -217,11 +222,12 @@ uqAppl(const uqBaseEnvironmentClass& env)
   valQoiRoutine_Data.m_criticalMass = criticalMass_prediction;
   valQoiRoutine_Data.m_criticalTime = criticalTime_prediction;
 
-  cycle.instantiateValFP(qoiRoutine<P_V,P_M,Q_V,Q_M>,
+  cycle.instantiateValFP(NULL,
+                         qoiRoutine<P_V,P_M,Q_V,Q_M>,
                          (void *) &valQoiRoutine_Data);
 
   // Forward problem: solve it, that is, set 'realizer' and 'cdf' of the qoi rv
-  cycle.valFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
+  cycle.valFP().solveWithMonteCarlo(NULL); // no extra user entities needed for Monte Carlo algorithm
 
   iRC = gettimeofday(&timevalNow, NULL);
   if (env.fullRank() == 0) {

@@ -90,7 +90,7 @@ void qoiRoutine(const P_V&                        paramValues,
          (Mass[0]     > criticalMass     )) {
     int status = gsl_odeiv_evolve_apply(e, c, s, &sys, &temperature, criticalTime*beta, &h, Mass);
     UQ_FATAL_TEST_MACRO((status != GSL_SUCCESS),
-                        paramValues.env().fullRank(),
+                        paramValues.env().worldRank(),
                         "qoiRoutine()",
                         "gsl_odeiv_evolve_apply() failed");
     //printf("t = %6.1lf, mass = %10.4lf\n",t,Mass[0]);

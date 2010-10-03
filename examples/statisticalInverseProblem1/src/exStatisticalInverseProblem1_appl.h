@@ -117,6 +117,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                          paramSpace);
 
   uqStatisticalInverseProblemClass<P_V,P_M> ip("", // No extra prefix before the default "ip_" prefix
+                                               NULL,
                                                priorRv,
                                                likelihoodFunctionObj,
                                                postRv);
@@ -136,7 +137,8 @@ uqAppl(const uqBaseEnvironmentClass& env)
   //******************************************************
   P_V paramInitials(paramSpace.zeroVector());
   P_M* proposalCovMatrix = postRv.imageSet().vectorSpace().newProposalMatrix(NULL,&paramInitials);
-  ip.solveWithBayesMetropolisHastings(paramInitials,
+  ip.solveWithBayesMetropolisHastings(NULL,
+                                      paramInitials,
                                       proposalCovMatrix);
   delete proposalCovMatrix;
 

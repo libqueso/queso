@@ -352,11 +352,11 @@ cycle_val_ip_mh_filteredChain_stats_corrMatrix_compute        = 1
 ###############################################
 # Validation (val) stage: statistical forward problem (fp)
 ###############################################
-cycle_val_fp_help                = anything
-cycle_val_fp_computeSolution     = 1
-cycle_val_fp_computeCovariances  = 1
-cycle_val_fp_computeCorrelations = 1
-cycle_val_fp_dataOutputFileName  = outputData/tgaValOutput
+cycle_val_fp_help                 = anything
+cycle_val_fp_computeSolution      = 1
+cycle_val_fp_computeCovariances   = 1
+cycle_val_fp_computeCorrelations  = 1
+cycle_val_fp_dataOutputFileName   = outputData/tgaValOutput
 cycle_val_fp_dataOutputAllowedSet = 0 1
 
 ###############################################

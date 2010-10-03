@@ -94,22 +94,23 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
   // Inverse problem: instantiate the prior rv
   uqUniformVectorRVClass<uqGslVectorClass,uqGslMatrixClass> calPriorRv("cal_prior_", // Extra prefix before the default "rv_" prefix
-                                             paramDomain);
+                                                                       paramDomain);
 
   // Inverse problem: instantiate the likelihood function object (data + routine)
   likelihoodRoutine_DataClass calLikelihoodRoutine_Data(env,
-                                                                 "inputData/scenario_5_K_min.dat",
-                                                                 "inputData/scenario_25_K_min.dat",
-                                                                 "inputData/scenario_50_K_min.dat");
+                                                        "inputData/scenario_5_K_min.dat",
+                                                        "inputData/scenario_25_K_min.dat",
+                                                        "inputData/scenario_50_K_min.dat");
 
   uqGenericScalarFunctionClass<uqGslVectorClass,uqGslMatrixClass> calLikelihoodFunctionObj("cal_like_",
-                                                                 paramDomain,
-                                                                 likelihoodRoutine,
-                                                                 (void *) &calLikelihoodRoutine_Data,
-                                                                 true); // the routine computes [ln(function)]
+                                                                                           paramDomain,
+                                                                                           likelihoodRoutine,
+                                                                                           (void *) &calLikelihoodRoutine_Data,
+                                                                                           true); // the routine computes [ln(function)]
 
   // Inverse problem: instantiate it (posterior rv is instantiated internally)
-  cycle.instantiateCalIP(calPriorRv,
+  cycle.instantiateCalIP(NULL,
+                         calPriorRv,
                          calLikelihoodFunctionObj);
 
   // Inverse problem: solve it, that is, set 'pdf' and 'realizer' of the posterior rv
@@ -124,7 +125,8 @@ uqAppl(const uqBaseEnvironmentClass& env)
   }
 
   uqGslMatrixClass* calProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newProposalMatrix(NULL,&paramInitialValues);
-  cycle.calIP().solveWithBayesMetropolisHastings(paramInitialValues,
+  cycle.calIP().solveWithBayesMetropolisHastings(NULL,
+                                                 paramInitialValues,
                                                  calProposalCovMatrix);
   delete calProposalCovMatrix;
 
@@ -138,11 +140,12 @@ uqAppl(const uqBaseEnvironmentClass& env)
   calQoiRoutine_Data.m_criticalMass = criticalMass_prediction;
   calQoiRoutine_Data.m_criticalTime = criticalTime_prediction;
 
-  cycle.instantiateCalFP(qoiRoutine,
+  cycle.instantiateCalFP(NULL,
+                         qoiRoutine,
                          (void *) &calQoiRoutine_Data);
 
   // Forward problem: solve it, that is, set 'realizer' and 'cdf' of the qoi rv
-  cycle.calFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
+  cycle.calFP().solveWithMonteCarlo(NULL); // no extra user entities needed for Monte Carlo algorithm
 
   /*iRC = */gettimeofday(&timevalNow, NULL);
   if (env.fullRank() == 0) {
@@ -155,7 +158,6 @@ uqAppl(const uqBaseEnvironmentClass& env)
   //********************************************************
   // Task 3 of 5: validation stage
   //********************************************************
-
   /*iRC = */gettimeofday(&timevalRef, NULL);
   if (env.fullRank() == 0) {
     std::cout << "Beginning 'validation stage' at " << ctime(&timevalRef.tv_sec)
@@ -166,24 +168,25 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
   // Inverse problem: instantiate the likelihood function object (data + routine)
   likelihoodRoutine_DataClass valLikelihoodRoutine_Data(env,
-                                                                 "inputData/scenario_100_K_min.dat",
-                                                                 NULL,
-                                                                 NULL);
+                                                        "inputData/scenario_100_K_min.dat",
+                                                        NULL,
+                                                        NULL);
 
   uqGenericScalarFunctionClass<uqGslVectorClass,uqGslMatrixClass> valLikelihoodFunctionObj("val_like_",
-                                                                 paramDomain,
-                                                                 likelihoodRoutine,
-                                                                 (void *) &valLikelihoodRoutine_Data,
-                                                                 true); // the routine computes [ln(function)]
+                                                                                           paramDomain,
+                                                                                           likelihoodRoutine,
+                                                                                           (void *) &valLikelihoodRoutine_Data,
+                                                                                           true); // the routine computes [ln(function)]
 
   // Inverse problem: instantiate it (posterior rv is instantiated internally)
-  cycle.instantiateValIP(valLikelihoodFunctionObj);
+  cycle.instantiateValIP(NULL,valLikelihoodFunctionObj);
 
   // Inverse problem: solve it, that is, set 'pdf' and 'realizer' of the posterior rv
   const uqSequentialVectorRealizerClass<uqGslVectorClass,uqGslMatrixClass>* tmpRealizer = dynamic_cast< const uqSequentialVectorRealizerClass<uqGslVectorClass,uqGslMatrixClass>* >(&(cycle.calIP().postRv().realizer()));
-  uqGslMatrixClass* valProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newProposalMatrix(&tmpRealizer->unifiedSampleVarVector(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
-                                                                                                &tmpRealizer->unifiedSampleExpVector()); // Use these values as the initial values
-  cycle.valIP().solveWithBayesMetropolisHastings(tmpRealizer->unifiedSampleExpVector(),
+  uqGslMatrixClass* valProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newProposalMatrix(&tmpRealizer->unifiedSampleVarVector(),  // Use 'realizer()' because post. rv was computed with MH
+                                                                                                             &tmpRealizer->unifiedSampleExpVector()); // Use these values as the initial values
+  cycle.valIP().solveWithBayesMetropolisHastings(NULL,
+                                                 tmpRealizer->unifiedSampleExpVector(),
                                                  valProposalCovMatrix);
   delete valProposalCovMatrix;
 
@@ -193,11 +196,12 @@ uqAppl(const uqBaseEnvironmentClass& env)
   valQoiRoutine_Data.m_criticalMass = criticalMass_prediction;
   valQoiRoutine_Data.m_criticalTime = criticalTime_prediction;
 
-  cycle.instantiateValFP(qoiRoutine,
+  cycle.instantiateValFP(NULL,
+                         qoiRoutine,
                          (void *) &valQoiRoutine_Data);
 
   // Forward problem: solve it, that is, set 'realizer' and 'cdf' of the qoi rv
-  cycle.valFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
+  cycle.valFP().solveWithMonteCarlo(NULL); // no extra user entities needed for Monte Carlo algorithm
 
   /*iRC = */gettimeofday(&timevalNow, NULL);
   if (env.fullRank() == 0) {

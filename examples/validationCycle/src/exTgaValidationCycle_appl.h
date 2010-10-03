@@ -33,6 +33,8 @@
 #ifndef __EX_TGA_VALIDATION_CYCLE_APPL_H__
 #define __EX_TGA_VALIDATION_CYCLE_APPL_H__
 
+#undef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
+
 #include <exTgaValidationCycle_likelihood.h>
 #include <exTgaValidationCycle_qoi.h>
 #include <uqValidationCycle.h>
@@ -132,7 +134,17 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                                                  true); // the routine computes [ln(function)]
 
   // Inverse problem: instantiate it (posterior rv is instantiated internally)
-  cycle.instantiateCalIP(calPriorRv,
+  uqSipOptionsValuesClass* calIpOptionsValues = NULL;
+#ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
+#else
+  calIpOptionsValues = new uqSipOptionsValuesClass();
+  calIpOptionsValues->m_computeSolution      = true;
+  calIpOptionsValues->m_dataOutputFileName   = "outputData/tgaCalOutput";
+  calIpOptionsValues->m_dataOutputAllowedSet.insert(0);
+  calIpOptionsValues->m_dataOutputAllowedSet.insert(1);
+#endif
+  cycle.instantiateCalIP(calIpOptionsValues,
+                         calPriorRv,
                          calLikelihoodFunctionObj);
 
   // Inverse problem: solve it, that is, set 'pdf' and 'realizer' of the posterior rv
@@ -146,10 +158,109 @@ uqAppl(const uqBaseEnvironmentClass& env)
     calPriorRv.realizer().realization(paramInitialValues);
   }
 
+  uqMhOptionsValuesClass* calIpMhOptionsValues = NULL;
   P_M* calProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newProposalMatrix(NULL,&paramInitialValues);
-  cycle.calIP().solveWithBayesMetropolisHastings(paramInitialValues,
+#ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
+#else
+  uqSsOptionsValuesClass ssOptionsValues1;
+  uqSsOptionsValuesClass ssOptionsValues2;
+
+  ssOptionsValues1.m_initialDiscardedPortions.resize(9);
+  ssOptionsValues1.m_initialDiscardedPortions[0] = 0.;
+  ssOptionsValues1.m_initialDiscardedPortions[1] = 0.05;
+  ssOptionsValues1.m_initialDiscardedPortions[2] = 0.10;
+  ssOptionsValues1.m_initialDiscardedPortions[3] = 0.15;
+  ssOptionsValues1.m_initialDiscardedPortions[4] = 0.20;
+  ssOptionsValues1.m_initialDiscardedPortions[5] = 0.25;
+  ssOptionsValues1.m_initialDiscardedPortions[6] = 0.30;
+  ssOptionsValues1.m_initialDiscardedPortions[7] = 0.35;
+  ssOptionsValues1.m_initialDiscardedPortions[8] = 0.40;
+  ssOptionsValues1.m_bmmRun                      = false;
+  ssOptionsValues1.m_fftCompute                  = false;
+  ssOptionsValues1.m_psdCompute                  = false;
+  ssOptionsValues1.m_psdAtZeroCompute            = false;
+  ssOptionsValues1.m_gewekeCompute               = true;
+  ssOptionsValues1.m_gewekeNaRatio               = .1;
+  ssOptionsValues1.m_gewekeNbRatio               = .5;
+  ssOptionsValues1.m_gewekeDisplay               = true;
+  ssOptionsValues1.m_gewekeWrite                 = true;
+  ssOptionsValues1.m_autoCorrComputeViaDef       = false;
+  ssOptionsValues1.m_autoCorrComputeViaFft       = true;
+  ssOptionsValues1.m_autoCorrSecondLag           = 2;
+  ssOptionsValues1.m_autoCorrLagSpacing          = 2;
+  ssOptionsValues1.m_autoCorrNumLags             = 15;
+  ssOptionsValues1.m_autoCorrDisplay             = true;
+  ssOptionsValues1.m_autoCorrWrite               = true;
+  ssOptionsValues1.m_meanStaccCompute            = false;
+  ssOptionsValues1.m_histCompute                 = false;
+  ssOptionsValues1.m_cdfStaccCompute             = false;
+  ssOptionsValues1.m_kdeCompute                  = false;
+  ssOptionsValues1.m_covMatrixCompute            = true;
+  ssOptionsValues1.m_corrMatrixCompute           = true;
+
+  ssOptionsValues2.m_initialDiscardedPortions.resize(1);
+  ssOptionsValues2.m_initialDiscardedPortions[0] = 0.;
+  ssOptionsValues2.m_bmmRun                      = false;
+  ssOptionsValues2.m_fftCompute                  = false;
+  ssOptionsValues2.m_psdCompute                  = false;
+  ssOptionsValues2.m_psdAtZeroCompute            = false;
+  ssOptionsValues2.m_gewekeCompute               = false;
+  ssOptionsValues2.m_autoCorrComputeViaDef       = false;
+  ssOptionsValues2.m_autoCorrComputeViaFft       = true;
+  ssOptionsValues2.m_autoCorrSecondLag           = 2;
+  ssOptionsValues2.m_autoCorrLagSpacing          = 2;
+  ssOptionsValues2.m_autoCorrNumLags             = 15;
+  ssOptionsValues2.m_autoCorrDisplay             = true;
+  ssOptionsValues2.m_autoCorrWrite               = true;
+  ssOptionsValues2.m_meanStaccCompute            = false;
+  ssOptionsValues2.m_histCompute                 = true;
+  ssOptionsValues2.m_histNumInternalBins         = 250;
+  ssOptionsValues2.m_cdfStaccCompute             = false;
+  ssOptionsValues2.m_kdeCompute                  = true;
+  ssOptionsValues2.m_kdeNumEvalPositions         = 250;
+  ssOptionsValues2.m_covMatrixCompute            = true;
+  ssOptionsValues2.m_corrMatrixCompute           = true;
+
+  calIpMhOptionsValues = new uqMhOptionsValuesClass(&ssOptionsValues1,&ssOptionsValues2);
+  calIpMhOptionsValues->m_dataOutputFileName   = "outputData/tgaCalOutput";
+  calIpMhOptionsValues->m_dataOutputAllowedSet.insert(0);
+  calIpMhOptionsValues->m_dataOutputAllowedSet.insert(1);
+
+  calIpMhOptionsValues->m_rawChainDataInputFileName     = ".";
+  calIpMhOptionsValues->m_rawChainSize                  = 1048576;
+  calIpMhOptionsValues->m_rawChainGenerateExtra         = false;
+  calIpMhOptionsValues->m_rawChainDisplayPeriod         = 20000;
+  calIpMhOptionsValues->m_rawChainMeasureRunTimes       = true;
+  calIpMhOptionsValues->m_rawChainDataOutputFileName    = "outputData/file_cal_ip_raw";
+  calIpMhOptionsValues->m_rawChainDataOutputAllowedSet.insert(0);
+  calIpMhOptionsValues->m_rawChainDataOutputAllowedSet.insert(1);
+  calIpMhOptionsValues->m_rawChainComputeStats          = true;
+
+  calIpMhOptionsValues->m_displayCandidates         = false;
+  calIpMhOptionsValues->m_putOutOfBoundsInChain     = true;
+  calIpMhOptionsValues->m_tkUseLocalHessian         = false;
+  calIpMhOptionsValues->m_tkUseNewtonComponent      = true;
+  calIpMhOptionsValues->m_drMaxNumExtraStages       = 1;
+  calIpMhOptionsValues->m_drScalesForExtraStages.resize(1);
+  calIpMhOptionsValues->m_drScalesForExtraStages[0] = 5.;
+  calIpMhOptionsValues->m_amInitialNonAdaptInterval = 0;
+  calIpMhOptionsValues->m_amAdaptInterval           = 100;
+  calIpMhOptionsValues->m_amEta                     = 1.92;
+  calIpMhOptionsValues->m_amEpsilon                 = 1.e-5;
+
+  calIpMhOptionsValues->m_filteredChainGenerate              = true;
+  calIpMhOptionsValues->m_filteredChainDiscardedPortion      = 0.;
+  calIpMhOptionsValues->m_filteredChainLag                   = 20;
+  calIpMhOptionsValues->m_filteredChainDataOutputFileName    = ".";
+  calIpMhOptionsValues->m_filteredChainDataOutputAllowedSet.insert(0);
+  calIpMhOptionsValues->m_filteredChainDataOutputAllowedSet.insert(1);
+  calIpMhOptionsValues->m_filteredChainComputeStats          = true;
+#endif
+  cycle.calIP().solveWithBayesMetropolisHastings(calIpMhOptionsValues,
+                                                 paramInitialValues,
                                                  calProposalCovMatrix);
   delete calProposalCovMatrix;
+  delete calIpMhOptionsValues;
 
   // Forward problem: instantiate it (parameter rv = posterior rv of inverse problem; qoi rv is instantiated internally)
   double beta_prediction         = 250.;
@@ -161,11 +272,83 @@ uqAppl(const uqBaseEnvironmentClass& env)
   calQoiRoutine_Data.m_criticalMass = criticalMass_prediction;
   calQoiRoutine_Data.m_criticalTime = criticalTime_prediction;
 
-  cycle.instantiateCalFP(qoiRoutine<P_V,P_M,Q_V,Q_M>,
+  uqSfpOptionsValuesClass* calFpOptionsValues = NULL;
+#ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
+#else
+  calFpOptionsValues = new uqSfpOptionsValuesClass();
+  calFpOptionsValues->m_computeSolution      = true;
+  calFpOptionsValues->m_computeCovariances   = true;
+  calFpOptionsValues->m_computeCorrelations  = true;
+  calFpOptionsValues->m_dataOutputFileName   = "outputData/tgaCalOutput";
+  calFpOptionsValues->m_dataOutputAllowedSet.insert(0);
+  calFpOptionsValues->m_dataOutputAllowedSet.insert(1);
+#endif
+  cycle.instantiateCalFP(calFpOptionsValues,
+                         qoiRoutine<P_V,P_M,Q_V,Q_M>,
                          (void *) &calQoiRoutine_Data);
 
   // Forward problem: solve it, that is, set 'realizer' and 'cdf' of the qoi rv
-  cycle.calFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
+  uqMcOptionsValuesClass* calFpMcOptionsValues = NULL;
+#ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
+#else
+  uqSsOptionsValuesClass ssOptionsValues3;
+  uqSsOptionsValuesClass ssOptionsValues4;
+
+  ssOptionsValues3.m_initialDiscardedPortions.resize(1);
+  ssOptionsValues3.m_initialDiscardedPortions[0] = 0.;
+  ssOptionsValues3.m_meanStaccCompute            = false;
+  ssOptionsValues3.m_histCompute                 = true;
+  ssOptionsValues3.m_histNumInternalBins         = 250;
+  ssOptionsValues3.m_cdfStaccCompute             = false;
+  ssOptionsValues3.m_kdeCompute                  = true;
+  ssOptionsValues3.m_kdeNumEvalPositions         = 250;
+  ssOptionsValues3.m_covMatrixCompute            = true;
+  ssOptionsValues3.m_corrMatrixCompute           = true;
+
+  ssOptionsValues4.m_initialDiscardedPortions.resize(1);
+  ssOptionsValues4.m_initialDiscardedPortions[0] = 0.;
+  ssOptionsValues4.m_bmmRun                      = false;
+  ssOptionsValues4.m_fftCompute                  = false;
+  ssOptionsValues4.m_psdCompute                  = false;
+  ssOptionsValues4.m_psdAtZeroCompute            = false;
+  ssOptionsValues4.m_gewekeCompute               = false;
+  ssOptionsValues4.m_autoCorrComputeViaDef       = false;
+  ssOptionsValues4.m_autoCorrComputeViaFft       = true;
+  ssOptionsValues4.m_autoCorrSecondLag           = 2;
+  ssOptionsValues4.m_autoCorrLagSpacing          = 1;
+  ssOptionsValues4.m_autoCorrNumLags             = 15;
+  ssOptionsValues4.m_autoCorrDisplay             = true;
+  ssOptionsValues4.m_autoCorrWrite               = true;
+  ssOptionsValues4.m_meanStaccCompute            = false;
+  ssOptionsValues4.m_histCompute                 = true;
+  ssOptionsValues4.m_histNumInternalBins         = 250;
+  ssOptionsValues4.m_cdfStaccCompute             = false;
+  ssOptionsValues4.m_kdeCompute                  = true;
+  ssOptionsValues4.m_kdeNumEvalPositions         = 250;
+  ssOptionsValues4.m_covMatrixCompute            = true;
+  ssOptionsValues4.m_corrMatrixCompute           = true;
+
+  calFpMcOptionsValues = new uqMcOptionsValuesClass(&ssOptionsValues3,&ssOptionsValues4);
+  calFpMcOptionsValues->m_dataOutputFileName   = "outputData/tgaCalOutput";
+  calFpMcOptionsValues->m_dataOutputAllowedSet.insert(0);
+  calFpMcOptionsValues->m_dataOutputAllowedSet.insert(1);
+
+  calFpMcOptionsValues->m_pseqDataOutputFileName   = ".";
+  calFpMcOptionsValues->m_pseqDataOutputAllowedSet.insert(0);
+  calFpMcOptionsValues->m_pseqDataOutputAllowedSet.insert(1);
+  calFpMcOptionsValues->m_pseqComputeStats         = true;
+
+  calFpMcOptionsValues->m_qseqDataInputFileName    = ".";
+  calFpMcOptionsValues->m_qseqSize                 = 1048576;
+  calFpMcOptionsValues->m_qseqDisplayPeriod        = 20000;
+  calFpMcOptionsValues->m_qseqMeasureRunTimes      = true;
+  calFpMcOptionsValues->m_qseqDataOutputFileName   = "outputData/file_cal_fp_qoi2";
+  calFpMcOptionsValues->m_qseqDataOutputAllowedSet.insert(0);
+  calFpMcOptionsValues->m_qseqDataOutputAllowedSet.insert(1);
+  calFpMcOptionsValues->m_qseqComputeStats         = true;
+#endif
+  cycle.calFP().solveWithMonteCarlo(calFpMcOptionsValues); // no extra user entities needed for Monte Carlo algorithm
+  delete calFpMcOptionsValues;
 
   iRC = gettimeofday(&timevalNow, NULL);
   if (env.fullRank() == 0) {
@@ -200,15 +383,125 @@ uqAppl(const uqBaseEnvironmentClass& env)
                                                                  true); // the routine computes [ln(function)]
 
   // Inverse problem: instantiate it (posterior rv is instantiated internally)
-  cycle.instantiateValIP(valLikelihoodFunctionObj);
+  uqSipOptionsValuesClass* valIpOptionsValues = NULL;
+#ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
+#else
+  valIpOptionsValues = new uqSipOptionsValuesClass();
+  valIpOptionsValues->m_computeSolution      = true;
+  valIpOptionsValues->m_dataOutputFileName   = "outputData/tgaValOutput";
+  valIpOptionsValues->m_dataOutputAllowedSet.insert(0);
+  valIpOptionsValues->m_dataOutputAllowedSet.insert(1);
+#endif
+  cycle.instantiateValIP(valIpOptionsValues,
+                         valLikelihoodFunctionObj);
 
   // Inverse problem: solve it, that is, set 'pdf' and 'realizer' of the posterior rv
+  uqMhOptionsValuesClass* valIpMhOptionsValues = NULL;
+
   const uqSequentialVectorRealizerClass<P_V,P_M>* tmpRealizer = dynamic_cast< const uqSequentialVectorRealizerClass<P_V,P_M>* >(&(cycle.calIP().postRv().realizer()));
-  P_M* valProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newProposalMatrix(&tmpRealizer->unifiedSampleVarVector(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
+  P_M* valProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newProposalMatrix(&tmpRealizer->unifiedSampleVarVector(),  // Use 'realizer()' because the post. rv was computed with Metr. Hast.
                                                                                                 &tmpRealizer->unifiedSampleExpVector()); // Use these values as the initial values
-  cycle.valIP().solveWithBayesMetropolisHastings(tmpRealizer->unifiedSampleExpVector(),
+#ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
+#else
+  uqSsOptionsValuesClass ssOptionsValues5;
+  uqSsOptionsValuesClass ssOptionsValues6;
+
+  ssOptionsValues5.m_initialDiscardedPortions.resize(9);
+  ssOptionsValues5.m_initialDiscardedPortions[0] = 0.;
+  ssOptionsValues5.m_initialDiscardedPortions[1] = 0.05;
+  ssOptionsValues5.m_initialDiscardedPortions[2] = 0.10;
+  ssOptionsValues5.m_initialDiscardedPortions[3] = 0.15;
+  ssOptionsValues5.m_initialDiscardedPortions[4] = 0.20;
+  ssOptionsValues5.m_initialDiscardedPortions[5] = 0.25;
+  ssOptionsValues5.m_initialDiscardedPortions[6] = 0.30;
+  ssOptionsValues5.m_initialDiscardedPortions[7] = 0.35;
+  ssOptionsValues5.m_initialDiscardedPortions[8] = 0.40;
+  ssOptionsValues5.m_bmmRun                      = false;
+  ssOptionsValues5.m_fftCompute                  = false;
+  ssOptionsValues5.m_psdCompute                  = false;
+  ssOptionsValues5.m_psdAtZeroCompute            = false;
+  ssOptionsValues5.m_gewekeCompute               = true;
+  ssOptionsValues5.m_gewekeNaRatio               = .1;
+  ssOptionsValues5.m_gewekeNbRatio               = .5;
+  ssOptionsValues5.m_gewekeDisplay               = true;
+  ssOptionsValues5.m_gewekeWrite                 = true;
+  ssOptionsValues5.m_autoCorrComputeViaDef       = false;
+  ssOptionsValues5.m_autoCorrComputeViaFft       = true;
+  ssOptionsValues5.m_autoCorrSecondLag           = 2;
+  ssOptionsValues5.m_autoCorrLagSpacing          = 2;
+  ssOptionsValues5.m_autoCorrNumLags             = 15;
+  ssOptionsValues5.m_autoCorrDisplay             = true;
+  ssOptionsValues5.m_autoCorrWrite               = true;
+  ssOptionsValues5.m_meanStaccCompute            = false;
+  ssOptionsValues5.m_histCompute                 = false;
+  ssOptionsValues5.m_cdfStaccCompute             = false;
+  ssOptionsValues5.m_kdeCompute                  = false;
+  ssOptionsValues5.m_covMatrixCompute            = true;
+  ssOptionsValues5.m_corrMatrixCompute           = true;
+
+  ssOptionsValues6.m_initialDiscardedPortions.resize(1);
+  ssOptionsValues6.m_initialDiscardedPortions[0] = 0.;
+  ssOptionsValues6.m_bmmRun                      = false;
+  ssOptionsValues6.m_fftCompute                  = false;
+  ssOptionsValues6.m_psdCompute                  = false;
+  ssOptionsValues6.m_psdAtZeroCompute            = false;
+  ssOptionsValues6.m_gewekeCompute               = false;
+  ssOptionsValues6.m_autoCorrComputeViaDef       = false;
+  ssOptionsValues6.m_autoCorrComputeViaFft       = true;
+  ssOptionsValues6.m_autoCorrSecondLag           = 2;
+  ssOptionsValues6.m_autoCorrLagSpacing          = 2;
+  ssOptionsValues6.m_autoCorrNumLags             = 15;
+  ssOptionsValues6.m_autoCorrDisplay             = true;
+  ssOptionsValues6.m_autoCorrWrite               = true;
+  ssOptionsValues6.m_meanStaccCompute            = false;
+  ssOptionsValues6.m_histCompute                 = true;
+  ssOptionsValues6.m_histNumInternalBins         = 250;
+  ssOptionsValues6.m_cdfStaccCompute             = false;
+  ssOptionsValues6.m_kdeCompute                  = true;
+  ssOptionsValues6.m_kdeNumEvalPositions         = 250;
+  ssOptionsValues6.m_covMatrixCompute            = true;
+  ssOptionsValues6.m_corrMatrixCompute           = true;
+
+  valIpMhOptionsValues = new uqMhOptionsValuesClass(&ssOptionsValues5,&ssOptionsValues6);
+  valIpMhOptionsValues->m_dataOutputFileName   = "outputData/tgaValOutput";
+  valIpMhOptionsValues->m_dataOutputAllowedSet.insert(0);
+  valIpMhOptionsValues->m_dataOutputAllowedSet.insert(1);
+
+  valIpMhOptionsValues->m_rawChainDataInputFileName    = ".";
+  valIpMhOptionsValues->m_rawChainSize                 = 1048576;
+  valIpMhOptionsValues->m_rawChainGenerateExtra        = false;
+  valIpMhOptionsValues->m_rawChainDisplayPeriod        = 20000;
+  valIpMhOptionsValues->m_rawChainMeasureRunTimes      = true;
+  valIpMhOptionsValues->m_rawChainDataOutputFileName   = "outputData/file_val_ip_raw";
+  valIpMhOptionsValues->m_rawChainDataOutputAllowedSet.insert(0);
+  valIpMhOptionsValues->m_rawChainDataOutputAllowedSet.insert(1);
+  valIpMhOptionsValues->m_rawChainComputeStats         = true;
+
+  valIpMhOptionsValues->m_displayCandidates         = false;
+  valIpMhOptionsValues->m_putOutOfBoundsInChain     = true;
+  valIpMhOptionsValues->m_tkUseLocalHessian         = false;
+  valIpMhOptionsValues->m_tkUseNewtonComponent      = true;
+  valIpMhOptionsValues->m_drMaxNumExtraStages       = 1;
+  valIpMhOptionsValues->m_drScalesForExtraStages.resize(1);
+  valIpMhOptionsValues->m_drScalesForExtraStages[0] = 5.;
+  valIpMhOptionsValues->m_amInitialNonAdaptInterval = 0;
+  valIpMhOptionsValues->m_amAdaptInterval           = 100;
+  valIpMhOptionsValues->m_amEta                     = 1.92;
+  valIpMhOptionsValues->m_amEpsilon                 = 1.e-5;
+
+  valIpMhOptionsValues->m_filteredChainGenerate             = true;
+  valIpMhOptionsValues->m_filteredChainDiscardedPortion     = 0.;
+  valIpMhOptionsValues->m_filteredChainLag                  = 20;
+  valIpMhOptionsValues->m_filteredChainDataOutputFileName   = ".";
+  valIpMhOptionsValues->m_filteredChainDataOutputAllowedSet.insert(0);
+  valIpMhOptionsValues->m_filteredChainDataOutputAllowedSet.insert(1);
+  valIpMhOptionsValues->m_filteredChainComputeStats         = true;
+#endif
+  cycle.valIP().solveWithBayesMetropolisHastings(valIpMhOptionsValues,
+                                                 tmpRealizer->unifiedSampleExpVector(),
                                                  valProposalCovMatrix);
   delete valProposalCovMatrix;
+  delete valIpMhOptionsValues;
 
   // Forward problem: instantiate it (parameter rv = posterior rv of inverse problem; qoi rv is instantiated internally)
   qoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> valQoiRoutine_Data;
@@ -216,11 +509,88 @@ uqAppl(const uqBaseEnvironmentClass& env)
   valQoiRoutine_Data.m_criticalMass = criticalMass_prediction;
   valQoiRoutine_Data.m_criticalTime = criticalTime_prediction;
 
-  cycle.instantiateValFP(qoiRoutine<P_V,P_M,Q_V,Q_M>,
+  uqSfpOptionsValuesClass* valFpOptionsValues = NULL;
+#ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
+#else
+  valFpOptionsValues = new uqSfpOptionsValuesClass();
+  valFpOptionsValues->m_computeSolution      = true;
+  valFpOptionsValues->m_computeCovariances   = true;
+  valFpOptionsValues->m_computeCorrelations  = true;
+  valFpOptionsValues->m_dataOutputFileName   = "outputData/tgaValOutput";
+  valFpOptionsValues->m_dataOutputAllowedSet.insert(0);
+  valFpOptionsValues->m_dataOutputAllowedSet.insert(1);
+#endif
+  cycle.instantiateValFP(valFpOptionsValues,
+                         qoiRoutine<P_V,P_M,Q_V,Q_M>,
                          (void *) &valQoiRoutine_Data);
 
   // Forward problem: solve it, that is, set 'realizer' and 'cdf' of the qoi rv
-  cycle.valFP().solveWithMonteCarlo(); // no extra user entities needed for Monte Carlo algorithm
+  uqMcOptionsValuesClass* valFpMcOptionsValues = NULL;
+#ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
+#else
+  uqSsOptionsValuesClass ssOptionsValues7;
+  uqSsOptionsValuesClass ssOptionsValues8;
+
+  ssOptionsValues7.m_initialDiscardedPortions.resize(1);
+  ssOptionsValues7.m_initialDiscardedPortions[0] = 0.;
+  ssOptionsValues7.m_meanStaccCompute            = false;
+  ssOptionsValues7.m_histCompute                 = true;
+  ssOptionsValues7.m_histNumInternalBins         = 250;
+  ssOptionsValues7.m_cdfStaccCompute             = false;
+  ssOptionsValues7.m_kdeCompute                  = true;
+  ssOptionsValues7.m_kdeNumEvalPositions         = 250;
+  ssOptionsValues7.m_covMatrixCompute            = true;
+  ssOptionsValues7.m_corrMatrixCompute           = true;
+
+  ssOptionsValues8.m_initialDiscardedPortions.resize(1);
+  ssOptionsValues8.m_initialDiscardedPortions[0] = 0.;
+  ssOptionsValues8.m_bmmRun                      = false;
+  ssOptionsValues8.m_fftCompute                  = false;
+  ssOptionsValues8.m_psdCompute                  = false;
+  ssOptionsValues8.m_psdAtZeroCompute            = false;
+  ssOptionsValues8.m_gewekeCompute               = false;
+  ssOptionsValues8.m_autoCorrComputeViaDef       = false;
+  ssOptionsValues8.m_autoCorrComputeViaFft       = true;
+  ssOptionsValues8.m_autoCorrSecondLag           = 2;
+  ssOptionsValues8.m_autoCorrLagSpacing          = 1;
+  ssOptionsValues8.m_autoCorrNumLags             = 15;
+  ssOptionsValues8.m_autoCorrDisplay             = true;
+  ssOptionsValues8.m_autoCorrWrite               = true;
+  ssOptionsValues8.m_meanStaccCompute            = false;
+  ssOptionsValues8.m_histCompute                 = true;
+  ssOptionsValues8.m_histNumInternalBins         = 250;
+  ssOptionsValues8.m_cdfStaccCompute             = false;
+  ssOptionsValues8.m_kdeCompute                  = true;
+  ssOptionsValues8.m_kdeNumEvalPositions         = 250;
+  ssOptionsValues8.m_covMatrixCompute            = true;
+  ssOptionsValues8.m_corrMatrixCompute           = true;
+
+  valFpMcOptionsValues = new uqMcOptionsValuesClass(&ssOptionsValues7,&ssOptionsValues8);
+  valFpMcOptionsValues->m_dataOutputFileName   = "outputData/tgaValOutput";
+  valFpMcOptionsValues->m_dataOutputAllowedSet.insert(0);
+  valFpMcOptionsValues->m_dataOutputAllowedSet.insert(1);
+
+  valFpMcOptionsValues->m_pseqDataOutputFileName   = ".";
+  valFpMcOptionsValues->m_pseqDataOutputAllowedSet.insert(0);
+  valFpMcOptionsValues->m_pseqDataOutputAllowedSet.insert(1);
+  valFpMcOptionsValues->m_pseqComputeStats         = true;
+
+  valFpMcOptionsValues->m_qseqDataInputFileName    = ".";
+  valFpMcOptionsValues->m_qseqSize                 = 1048576;
+  valFpMcOptionsValues->m_qseqDisplayPeriod        = 20000;
+  valFpMcOptionsValues->m_qseqMeasureRunTimes      = true;
+  valFpMcOptionsValues->m_qseqDataOutputFileName   = "outputData/file_val_fp_qoi2";
+  valFpMcOptionsValues->m_qseqDataOutputAllowedSet.insert(0);
+  valFpMcOptionsValues->m_qseqDataOutputAllowedSet.insert(1);
+  valFpMcOptionsValues->m_qseqComputeStats         = true;
+#endif
+  cycle.valFP().solveWithMonteCarlo(valFpMcOptionsValues); // no extra user entities needed for Monte Carlo algorithm
+  delete valFpMcOptionsValues;
+
+  delete valFpOptionsValues;
+  delete valIpOptionsValues;
+  delete calFpOptionsValues;
+  delete calIpOptionsValues;
 
   iRC = gettimeofday(&timevalNow, NULL);
   if (env.fullRank() == 0) {

@@ -50,8 +50,16 @@ if test "$HAVE_TRILINOS" == "no"; then
 else
   echo '   'Link with Trilinos......... : yes
   echo '   'TRILINOS_INCLUDE........... : $TRILINOS_INCLUDE
-  echo 
+
 fi
+
+if test "$HAVE_GCOV_TOOLS" = "0"; then
+   echo '   'Enable gcov code coverage.. : no
+else
+   echo '   'Enable gcov code coverage.. : yes
+fi
+
+echo 		   
 
 echo '-------------------------------------------------------------------------------'
 
