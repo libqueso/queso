@@ -12,12 +12,12 @@ AM_CPPFLAGS = -I$(top_srcdir)/src/core/inc \
 	        $(GLPK_CFLAGS) \
 	        $(HDF5_CFLAGS)
 
-AM_LDFLAGS  =  $(BOOST_LDFLAGS) $(BOOST_LDFLAGS) ${GRVY_LIBS} -lgrvy ${GLPK_LIBS} -lglpk ${HDF5_LIBS} -lhdf5
-LIBS        = -L$(top_builddir)/src/.libs -lqueso $(GSL_LIBS) $(BOOST_PROGRAM_OPTIONS_LIB) $(EPETRA_LIBS)
+LIBS        = -L$(top_builddir)/src/ -lqueso 
 
 noinst_PROGRAMS = exStatisticalInverseProblem1_gsl
 
-exStatisticalInverseProblem1_gsl_SOURCES = exStatisticalInverseProblem1_gsl.C \
+exStatisticalInverseProblem1_gsl_SOURCES = \
+	exStatisticalInverseProblem1_gsl.C \
 	exStatisticalInverseProblem1_appl.h \
 	exStatisticalInverseProblem1_likelihood.h
 

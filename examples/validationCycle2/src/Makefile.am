@@ -13,8 +13,7 @@ AM_CPPFLAGS = -I. \
 	        $(GLPK_CFLAGS)               \
 	        $(HDF5_CFLAGS)
 
-AM_LDFLAGS  = $(BOOST_LDFLAGS) ${GRVY_LIBS} -lgrvy ${GLPK_LIBS} -lglpk ${HDF5_LIBS} -lhdf5
-LIBS        = -L$(top_builddir)/src/.libs -lqueso $(GSL_LIBS) $(BOOST_PROGRAM_OPTIONS_LIB) $(EPETRA_LIBS)
+LIBS        = -L$(top_builddir)/src/ -lqueso 
 
 
 exampledir  	 = @prefix@/examples/advanced
