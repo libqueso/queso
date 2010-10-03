@@ -49,6 +49,12 @@ namespace QUESO_Basic_API {
     m_paramSpace            = NULL;
     m_paramDomain           = NULL;
     m_user_likelihood_func  = NULL;
+    m_env                   = NULL; // prudenci 2010-05-17
+  }
+
+  QUESO_Basic_Class::~QUESO_Basic_Class()
+  {
+    if (m_env) delete m_env; // prudenci 2010-05-17
   }
 
   void QUESO_Basic_Class::Initialize(const char *inputfile)

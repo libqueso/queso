@@ -73,8 +73,8 @@ uqCovCond(
   //          << std::endl;
 
   M Zt(Z.transpose());
-  covMatrix  = Z * diagScaling(v2,   Zt);
-  precMatrix = Z * diagScaling(1./v2,Zt);
+  covMatrix  = Z * leftDiagScaling(v2,   Zt);
+  precMatrix = Z * leftDiagScaling(1./v2,Zt);
 
   //std::cout << "Leaving uqCovCond()"
   //          << std::endl;

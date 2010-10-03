@@ -712,6 +712,9 @@ uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position
                               << std::endl;
     }
     int iRC = lowerChol.chol();
+    if (iRC) {
+      std::cerr << "In uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(): chol failed\n";
+    }
     if ((m_env.subDisplayFile()        ) &&
         (m_env.displayVerbosity() >= 10)) {
       *m_env.subDisplayFile() << "In uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"

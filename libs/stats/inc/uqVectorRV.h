@@ -85,13 +85,13 @@ uqBaseVectorRVClass<V,M>::uqBaseVectorRVClass(
   m_unifiedCdf(NULL),
   m_mdf       (NULL)
 {
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Entering uqBaseVectorRVClass<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Leaving uqBaseVectorRVClass<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
@@ -233,13 +233,13 @@ uqGenericVectorRVClass<V,M>::uqGenericVectorRVClass(
   :
   uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"gen").c_str(),imageSet)
 {
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Entering uqGenericVectorRVClass<V,M>::constructor() [1]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Leaving uqGenericVectorRVClass<V,M>::constructor() [1]"
                             << ": prefix = " << m_prefix
                             << std::endl;
@@ -258,7 +258,7 @@ uqGenericVectorRVClass<V,M>::uqGenericVectorRVClass(
   :
   uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"gen").c_str(),imageSet)
 {
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Entering uqGenericVectorRVClass<V,M>::constructor() [2]"
                             << ": prefix = " << m_prefix
                             << std::endl;
@@ -270,7 +270,7 @@ uqGenericVectorRVClass<V,M>::uqGenericVectorRVClass(
   m_unifiedCdf = &unifiedCdf;
   m_mdf        = &mdf;
 
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Leaving uqGenericVectorRVClass<V,M>::constructor() [2]"
                             << ": prefix = " << m_prefix
                             << std::endl;
@@ -371,7 +371,7 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
   :
   uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"gau").c_str(),imageSet)
 {
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Entering uqGaussianVectorRVClass<V,M>::constructor() [1]"
                             << ": prefix = " << m_prefix
                             << std::endl;
@@ -384,29 +384,44 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
 
   M lowerCholLawCovMatrix(lawVarVector);
   int iRC = lowerCholLawCovMatrix.chol();
+  lowerCholLawCovMatrix.zeroUpper(false);
   if (iRC) {
+    std::cerr << "In uqGaussianVectorRVClass<V,M>::constructor() [1]: chol failed, will use svd\n";
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In uqGaussianVectorRVClass<V,M>::constructor() [1]: lawVarVector contents are\n";
+      *m_env.subDisplayFile() << "In uqGaussianVectorRVClass<V,M>::constructor() [1]: chol failed; will use svd; lawVarVector contents are\n";
       *m_env.subDisplayFile() << lawVarVector; // FIX ME: might demand parallelism
       *m_env.subDisplayFile() << std::endl;
     }
-  }
-  UQ_FATAL_TEST_MACRO(iRC,
-                      m_env.fullRank(),
-                      "uqGaussianVectorRVClass<V,M>::constructor() [1]",
-                      "Cholesky decomposition of covariance matrix failed.");
-  lowerCholLawCovMatrix.zeroUpper(false);
+    M matU (lawVarVector);
+    M matVt(m_imageSet.vectorSpace().zeroVector());
+    V vecS (m_imageSet.vectorSpace().zeroVector());
+    iRC = matU.svd(matVt,vecS);
+    UQ_FATAL_TEST_MACRO(iRC,
+                        m_env.fullRank(),
+                        "uqGaussianVectorRVClass<V,M>::constructor() [1]",
+                        "Cholesky decomposition of covariance matrix failed.");
 
-  m_realizer = new uqGaussianVectorRealizerClass<V,M>(m_prefix.c_str(),
-						      m_imageSet,
-						      lawExpVector,
-						      lowerCholLawCovMatrix);
+    vecS.cwSqrt();
+    m_realizer = new uqGaussianVectorRealizerClass<V,M>(m_prefix.c_str(),
+                                                        m_imageSet,
+                                                        lawExpVector,
+                                                        matU,
+                                                        vecS, // already square rooted
+                                                        matVt);
+    //lowerCholLawCovMatrix = matU * leftDiagScaling(vecS,matVt);
+  }
+  else {
+    m_realizer = new uqGaussianVectorRealizerClass<V,M>(m_prefix.c_str(),
+                                                        m_imageSet,
+                                                        lawExpVector,
+                                                        lowerCholLawCovMatrix);
+  }
 
   m_subCdf     = NULL; // FIX ME: complete code
   m_unifiedCdf = NULL; // FIX ME: complete code
   m_mdf        = NULL; // FIX ME: complete code
 
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Leaving uqGaussianVectorRVClass<V,M>::constructor() [1]"
                             << ": prefix = " << m_prefix
                             << std::endl;
@@ -422,42 +437,56 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
   :
   uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"gau").c_str(),imageSet)
 {
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Entering uqGaussianVectorRVClass<V,M>::constructor() [2]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   m_pdf = new uqGaussianJointPdfClass<V,M>(m_prefix.c_str(),
-                                            m_imageSet,
-                                            lawExpVector,
-                                            lawCovMatrix);
+                                           m_imageSet,
+                                           lawExpVector,
+                                           lawCovMatrix);
 
   M lowerCholLawCovMatrix(lawCovMatrix);
   int iRC = lowerCholLawCovMatrix.chol();
+  lowerCholLawCovMatrix.zeroUpper(false);
   if (iRC) {
+    std::cerr << "In uqGaussianVectorRVClass<V,M>::constructor() [2]: chol failed, will use svd\n";
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In uqGaussianVectorRVClass<V,M>::constructor() [2]: lawCovMatrix contents are\n";
+      *m_env.subDisplayFile() << "In uqGaussianVectorRVClass<V,M>::constructor() [2]: chol failed; will use svd; lawCovMatrix contents are\n";
       *m_env.subDisplayFile() << lawCovMatrix; // FIX ME: might demand parallelism
       *m_env.subDisplayFile() << std::endl;
     }
-  }
-  UQ_FATAL_TEST_MACRO(iRC,
-                      m_env.fullRank(),
-		      "uqGaussianVectorRVClass<V,M>::constructor() [2]",
-		      "Cholesky decomposition of covariance matrix failed.");
-  lowerCholLawCovMatrix.zeroUpper(false);
+    M matU (lawCovMatrix);
+    M matVt(m_imageSet.vectorSpace().zeroVector());
+    V vecS (m_imageSet.vectorSpace().zeroVector());
+    iRC = matU.svd(matVt,vecS);
+    UQ_FATAL_TEST_MACRO(iRC,
+                        m_env.fullRank(),
+                        "uqGaussianVectorRVClass<V,M>::constructor() [2]",
+		        "Cholesky decomposition of covariance matrix failed.");
 
-  m_realizer = new uqGaussianVectorRealizerClass<V,M>(m_prefix.c_str(),
-						      m_imageSet,
-						      lawExpVector,
-						      lowerCholLawCovMatrix);
+    vecS.cwSqrt();
+    m_realizer = new uqGaussianVectorRealizerClass<V,M>(m_prefix.c_str(),
+                                                        m_imageSet,
+                                                        lawExpVector,
+                                                        matU,
+                                                        vecS, // already square rooted
+                                                        matVt);
+  }
+  else {
+    m_realizer = new uqGaussianVectorRealizerClass<V,M>(m_prefix.c_str(),
+                                                        m_imageSet,
+                                                        lawExpVector,
+                                                        lowerCholLawCovMatrix);
+  }
 
   m_subCdf     = NULL; // FIX ME: complete code
   m_unifiedCdf = NULL; // FIX ME: complete code
   m_mdf        = NULL; // FIX ME: complete code
 
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Leaving uqGaussianVectorRVClass<V,M>::constructor() [2]"
                             << ": prefix = " << m_prefix
                             << std::endl;
@@ -493,19 +522,31 @@ uqGaussianVectorRVClass<V,M>::updateLawCovMatrix(const M& newLawCovMatrix)
 
   M newLowerCholLawCovMatrix(newLawCovMatrix);
   int iRC = newLowerCholLawCovMatrix.chol();
+  newLowerCholLawCovMatrix.zeroUpper(false);
   if (iRC) {
+    std::cerr << "In uqGaussianVectorRVClass<V,M>::updateLawCovMatrix(): chol failed, will use svd\n";
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In uqGaussianVectorRVClass<V,M>::updateLawCovVector(): newLawCovMatrix contents are\n";
+      *m_env.subDisplayFile() << "In uqGaussianVectorRVClass<V,M>::updateLawCovMatrix(): chol failed; will use svd; newLawCovMatrix contents are\n";
       *m_env.subDisplayFile() << newLawCovMatrix; // FIX ME: might demand parallelism
       *m_env.subDisplayFile() << std::endl;
     }
+    M matU (newLawCovMatrix);
+    M matVt(m_imageSet.vectorSpace().zeroVector());
+    V vecS (m_imageSet.vectorSpace().zeroVector());
+    iRC = matU.svd(matVt,vecS);
+    UQ_FATAL_TEST_MACRO(iRC,
+                        m_env.fullRank(),
+                        "uqGaussianVectorRVClass<V,M>::updateLawCovMatrix()",
+                        "Cholesky decomposition of covariance matrix failed.");
+
+    vecS.cwSqrt();
+    ( dynamic_cast< uqGaussianVectorRealizerClass<V,M>* >(m_realizer) )->updateLowerCholLawCovMatrix(matU,
+                                                                                                     vecS, // already square rooted
+                                                                                                     matVt);
   }
-  UQ_FATAL_TEST_MACRO(iRC,
-                      m_env.fullRank(),
-                      "uqGaussianVectorRVClass<V,M>::updateLawCovMatrix()",
-                      "Cholesky decomposition of covariance matrix failed.");
-  newLowerCholLawCovMatrix.zeroUpper(false);
-  ( dynamic_cast< uqGaussianVectorRealizerClass<V,M>* >(m_realizer) )->updateLowerCholLawCovMatrix(newLowerCholLawCovMatrix);
+  else {
+    ( dynamic_cast< uqGaussianVectorRealizerClass<V,M>* >(m_realizer) )->updateLowerCholLawCovMatrix(newLowerCholLawCovMatrix);
+  }
   return;
 }
 
@@ -547,7 +588,7 @@ uqUniformVectorRVClass<V,M>::uqUniformVectorRVClass(
   :
   uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"uni").c_str(),imageSet)
 {
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Entering uqUniformVectorRVClass<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
@@ -561,7 +602,7 @@ uqUniformVectorRVClass<V,M>::uqUniformVectorRVClass(
   m_unifiedCdf = NULL; // FIX ME: complete code
   m_mdf        = NULL; // FIX ME: complete code
 
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Leaving uqUniformVectorRVClass<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
@@ -620,7 +661,7 @@ uqInverseGammaVectorRVClass<V,M>::uqInverseGammaVectorRVClass(
   :
   uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"uni").c_str(),imageSet)
 {
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Entering uqInverseGammaVectorRVClass<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
@@ -638,7 +679,7 @@ uqInverseGammaVectorRVClass<V,M>::uqInverseGammaVectorRVClass(
   m_unifiedCdf = NULL; // FIX ME: complete code
   m_mdf        = NULL; // FIX ME: complete code
 
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Leaving uqInverseGammaVectorRVClass<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
@@ -702,7 +743,7 @@ uqConcatenatedVectorRVClass<V,M>::uqConcatenatedVectorRVClass(
   m_rv1(rv1),
   m_rv2(rv2)
 {
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Entering uqConcatenatedVectorRVClass<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
@@ -721,7 +762,7 @@ uqConcatenatedVectorRVClass<V,M>::uqConcatenatedVectorRVClass(
   m_unifiedCdf = NULL; // FIX ME: complete code
   m_mdf        = NULL; // FIX ME: complete code
 
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Leaving uqConcatenatedVectorRVClass<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;

@@ -45,6 +45,35 @@
 #include <fstream>
 #include <boost/math/special_functions.hpp> // for Boost isnan. Note parantheses are important in function call.
 
+struct uqMHRawChainInfoStruct
+{
+  uqMHRawChainInfoStruct();
+  uqMHRawChainInfoStruct(const uqMHRawChainInfoStruct& rhs);
+ ~uqMHRawChainInfoStruct();
+
+  uqMHRawChainInfoStruct& operator= (const uqMHRawChainInfoStruct& rhs);
+  uqMHRawChainInfoStruct& operator+=(const uqMHRawChainInfoStruct& rhs);
+
+  void copy (const uqMHRawChainInfoStruct& src);
+  void reset();
+  void mpiSum(const MPI_Comm& comm, uqMHRawChainInfoStruct& sumInfo) const;
+
+  double       runTime;
+  double       candidateRunTime;
+  double       targetRunTime;
+  double       mhAlphaRunTime;
+  double       drAlphaRunTime;
+  double       drRunTime;
+  double       amRunTime;
+
+  unsigned int numTargetCalls;
+  unsigned int numDRs;
+  unsigned int numOutOfTargetSupport;
+  unsigned int numOutOfTargetSupportInDR;
+  unsigned int numRejections;
+
+};
+
 /*! A templated class that represents a Metropolis-Hastings generator of samples. 'SG' stands for 'Sequence Generator'.
  */
 template <class P_V,class P_M>
@@ -61,13 +90,12 @@ public:
                               const P_M*                           inputProposalCovMatrix);
  ~uqMetropolisHastingsSGClass();
 
-  void   generateSequence         (uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
-                                   uqScalarSequenceClass<double>*      workingLogLikelihoodValues,
-                                   uqScalarSequenceClass<double>*      workingLogTargetValues);
-  double rawChainRunTime          () const;
-  unsigned int numRejections      () const;
+  void         generateSequence         (uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
+                                         uqScalarSequenceClass<double>*      workingLogLikelihoodValues,
+                                         uqScalarSequenceClass<double>*      workingLogTargetValues);
+  void         getRawChainInfo          (uqMHRawChainInfoStruct& info) const;
 
-  void   print                    (std::ostream& os) const;
+  void   print                          (std::ostream& os) const;
 
 
 private:
@@ -113,12 +141,11 @@ private:
         std::vector<unsigned int>                   m_idsOfUniquePositions;
         std::vector<double>                         m_logTargets;
         std::vector<double>                         m_alphaQuotients;
-        double                                      m_rawChainRunTime;
-        unsigned int                                m_numRejections;
-        unsigned int                                m_numOutOfTargetSupport;
         double                                      m_lastChainSize;
         P_V*                                        m_lastMean;
         P_M*                                        m_lastAdaptedCovMatrix;
+
+        uqMHRawChainInfoStruct                      m_rawChainInfo;
 
         uqMetropolisHastingsSGOptionsClass          m_options;
 };
@@ -163,9 +190,6 @@ uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
   m_idsOfUniquePositions      (0),//0.),
   m_logTargets                (0),//0.),
   m_alphaQuotients            (0),//0.),
-  m_rawChainRunTime           (0.),
-  m_numRejections             (0),
-  m_numOutOfTargetSupport     (0),
   m_lastChainSize             (0),
   m_lastMean                  (NULL),
   m_lastAdaptedCovMatrix      (NULL),
@@ -211,26 +235,23 @@ uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
   const P_V&                           initialPosition,
   const P_M*                           inputProposalCovMatrix)
   :
-  m_env                          (sourceRv.env()),
-  m_vectorSpace                  (sourceRv.imageSet().vectorSpace()),
-  m_targetPdf                    (sourceRv.pdf()),
-  m_initialPosition              (initialPosition),
-  m_initialProposalCovMatrix     (inputProposalCovMatrix),
-  m_nullInputProposalCovMatrix   (inputProposalCovMatrix == NULL),
-  m_targetPdfSynchronizer        (new uqScalarFunctionSynchronizerClass<P_V,P_M>(m_targetPdf,m_initialPosition)),
-  m_tk                           (NULL),
-  m_positionIdForDebugging       (0),
-  m_stageIdForDebugging          (0),
-  m_idsOfUniquePositions         (0),//0.),
-  m_logTargets                   (0),//0.),
-  m_alphaQuotients               (0),//0.),
-  m_rawChainRunTime              (0.),
-  m_numRejections                (0),
-  m_numOutOfTargetSupport        (0),
-  m_lastChainSize                (0),
-  m_lastMean                     (NULL),
-  m_lastAdaptedCovMatrix         (NULL),
-  m_options                      (inputOptions)
+  m_env                       (sourceRv.env()),
+  m_vectorSpace               (sourceRv.imageSet().vectorSpace()),
+  m_targetPdf                 (sourceRv.pdf()),
+  m_initialPosition           (initialPosition),
+  m_initialProposalCovMatrix  (inputProposalCovMatrix),
+  m_nullInputProposalCovMatrix(inputProposalCovMatrix == NULL),
+  m_targetPdfSynchronizer     (new uqScalarFunctionSynchronizerClass<P_V,P_M>(m_targetPdf,m_initialPosition)),
+  m_tk                        (NULL),
+  m_positionIdForDebugging    (0),
+  m_stageIdForDebugging       (0),
+  m_idsOfUniquePositions      (0),//0.),
+  m_logTargets                (0),//0.),
+  m_alphaQuotients            (0),//0.),
+  m_lastChainSize             (0),
+  m_lastMean                  (NULL),
+  m_lastAdaptedCovMatrix      (NULL),
+  m_options                   (inputOptions)
 {
   if ((m_env.subDisplayFile()          ) &&
       (m_options.m_totallyMute == false)) {
@@ -308,10 +329,8 @@ uqMetropolisHastingsSGClass<P_V,P_M>::~uqMetropolisHastingsSGClass()
 
   if (m_lastAdaptedCovMatrix) delete m_lastAdaptedCovMatrix;
   if (m_lastMean)             delete m_lastMean;
-  m_lastChainSize         = 0;
-  m_numOutOfTargetSupport = 0;
-  m_rawChainRunTime       = 0.;
-  m_numRejections         = 0;
+  m_lastChainSize             = 0;
+  m_rawChainInfo.reset();
   m_alphaQuotients.clear();
   m_logTargets.clear();
   m_positionIdForDebugging = 0;
@@ -702,7 +721,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::writeInfo(
   }
 
   // Write number of rejections
-  ofsvar << m_options.m_prefix << "rejected = " << (double) m_numRejections/(double) (workingChain.subSequenceSize()-1)
+  ofsvar << m_options.m_prefix << "rejected = " << (double) m_rawChainInfo.numRejections/(double) (workingChain.subSequenceSize()-1)
          << ";\n"
          << std::endl;
 
@@ -713,12 +732,12 @@ uqMetropolisHastingsSGClass<P_V,P_M>::writeInfo(
     ofsvar << "};\n";
 
     // Write number of out of target support
-    ofsvar << m_options.m_prefix << "outTargetSupport = " << (double) m_numOutOfTargetSupport/(double) (workingChain.subSequenceSize()-1)
+    ofsvar << m_options.m_prefix << "outTargetSupport = " << (double) m_rawChainInfo.numOutOfTargetSupport/(double) (workingChain.subSequenceSize()-1)
            << ";\n"
            << std::endl;
 
     // Write chain run time
-    ofsvar << m_options.m_prefix << "runTime = " << m_rawChainRunTime
+    ofsvar << m_options.m_prefix << "runTime = " << m_rawChainInfo.runTime
            << ";\n"
            << std::endl;
   }
@@ -736,17 +755,11 @@ uqMetropolisHastingsSGClass<P_V,P_M>::writeInfo(
 }
 
 template<class P_V,class P_M>
-double
-uqMetropolisHastingsSGClass<P_V,P_M>::rawChainRunTime() const
+void
+uqMetropolisHastingsSGClass<P_V,P_M>::getRawChainInfo(uqMHRawChainInfoStruct& info) const
 {
-  return m_rawChainRunTime;
-}
-
-template<class P_V,class P_M>
-unsigned int
-uqMetropolisHastingsSGClass<P_V,P_M>::numRejections() const
-{
-  return m_numRejections;
+  info = m_rawChainInfo;
+  return;
 }
 
 template<class P_V,class P_M>

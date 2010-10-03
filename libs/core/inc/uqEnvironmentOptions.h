@@ -46,6 +46,7 @@
 #define UQ_ENV_DISPLAY_VERBOSITY_ODV       0
 #define UQ_ENV_SYNC_VERBOSITY_ODV          0
 #define UQ_ENV_SEED_ODV                    0
+#define UQ_ENV_IDENTIFYING_STRING_ODV      ""
 #define UQ_ENV_NUM_DEBUG_PARAMS_ODV        0
 #define UQ_ENV_DEBUG_PARAM_ODV             0.
 
@@ -65,6 +66,7 @@ public:
   unsigned int             m_displayVerbosity;
   unsigned int             m_syncVerbosity;
   int                      m_seed;
+  std::string              m_identifyingString;
   unsigned int             m_numDebugParams;
   std::vector<double>      m_debugParams;
 
@@ -85,6 +87,7 @@ private:
   std::string              m_option_displayVerbosity;
   std::string              m_option_syncVerbosity;
   std::string              m_option_seed;
+  std::string              m_option_identifyingString;
 };
 
 std::ostream& operator<<(std::ostream& os, const uqEnvironmentOptionsClass& obj);

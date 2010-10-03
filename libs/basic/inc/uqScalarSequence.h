@@ -162,7 +162,7 @@ public:
                                                    std::vector<double>&            cdfStaccValues,
                                                    std::vector<double>&            cdfStaccValuesup,
                                                    std::vector<double>&            cdfStaccValueslow,
-                                                   uqScalarSequenceClass<T>&       xdataValues) const;
+                                                   const uqScalarSequenceClass<T>& sortedDataValues) const;
         void         subCdfStacc                  (unsigned int                    initialPos,
                                                    const std::vector<T>&           evaluationPositions,
                                                    std::vector<double>&            cdfStaccValues) const;
@@ -2044,11 +2044,11 @@ uqScalarSequenceClass<T>::unifiedHistogram(
 template <class T>
 void
 uqScalarSequenceClass<T>::subCdfStacc(
-  unsigned int          initialPos,
-  std::vector<double>& cdfStaccValues,
-  std::vector<double>& cdfStaccValuesup,
-  std::vector<double>& cdfStaccValueslow,
-  uqScalarSequenceClass<T>& xdataValues) const
+  unsigned int                    initialPos,
+  std::vector<double>&            cdfStaccValues,
+  std::vector<double>&            cdfStaccValuesUp,
+  std::vector<double>&            cdfStaccValuesLow,
+  const uqScalarSequenceClass<T>& sortedDataValues) const
 {
   UQ_FATAL_TEST_MACRO(false,
                       m_env.fullRank(),
@@ -2060,78 +2060,70 @@ uqScalarSequenceClass<T>::subCdfStacc(
                       "uqScalarSequenceClass<V>::subGaussianKDE()",
                       "invalid input data");
 
-unsigned int no_CDF_point = subSequenceSize()-initialPos;
-unsigned int Nsam=no_CDF_point;
-double auxno_CDF_point=no_CDF_point;
-double aNsam=Nsam;
-double ro0=0.;
-double p=0.;
-double lamb=0.;
-double maxlamb=0;
-double ro[Nsam];
-double Isam_mat[Nsam];
-//m_seq;
-//this->subSort(,sdata);
-for (unsigned int CDF_point_i=0;CDF_point_i<no_CDF_point;CDF_point_i++){
-       double auxCDF_point_i=CDF_point_i;
-       p=(auxCDF_point_i+1.0)/auxno_CDF_point;
-       cdfStaccValues[CDF_point_i]=p;   
-       ro0=p*(1.0-p);
-       
-       //std::cout << "x-data" << data[CDF_point_i]
-       //          << std::endl;       
-       
-       for (unsigned int k=0;k<Nsam;k++){
-	 if (m_seq[k]<=xdataValues[CDF_point_i]) {
-         Isam_mat[k]=1;}
-       else {
-       Isam_mat[k]=0;}
-       }  
-       for (unsigned int tau=0;tau<Nsam-1;tau++){
-	 ro[tau]=0;
-	 for (unsigned int kk=0;kk<Nsam-(tau+1);kk++){
-	   ro[tau]+=(Isam_mat[kk+tau+1]-p)*(Isam_mat[kk]-p);
-	 }
-         //double atau=tau;
-         ro[tau]*=1.0/(aNsam); 
-       }
-        lamb=0;  
-	for (unsigned int tau=0;tau<Nsam-1;tau++){
-	    double atau=tau;
-            lamb+=(1.-(atau+1.)/aNsam)*ro[tau]/ro0;
-         if (lamb>maxlamb){
-	    maxlamb=lamb;}
-        }
-        lamb=maxlamb;
-        lamb*=2;
-        //double ll=gsl_cdf_gaussian_Pinv(-0.05);
-	cdfStaccValuesup[CDF_point_i]=cdfStaccValues[CDF_point_i]+1.96*pow(ro0/aNsam*(1.+lamb),0.5);
-	cdfStaccValueslow[CDF_point_i]=cdfStaccValues[CDF_point_i]-1.96*pow(ro0/aNsam*(1.+lamb),0.5);
-        if (cdfStaccValueslow[CDF_point_i]<0.0){
-        cdfStaccValueslow[CDF_point_i]=0.0;}
-        if (cdfStaccValuesup[CDF_point_i]>1.0){
-        cdfStaccValuesup[CDF_point_i]=1.0;}
- 	//if (CDF_point_i==1 | CDF_point_i==100 | CDF_point_i==900){
-	//std::cout<<lamb<<ll<<std::endl;
-        //std::cout<<lamb<<std::endl;
-	  //}   
-}
+  unsigned int numPoints = subSequenceSize()-initialPos;
+  double       auxNumPoints = numPoints;
+  double       maxLamb = 0.;
+  std::vector<double> ro      (numPoints,0.);
+  std::vector<double> Isam_mat(numPoints,0.);
 
-//#if 0
-  //unsigned int dataSize = this->subSequenceSize() - initialPos;
-  //unsigned int numEvals = evaluationPositions.size();
+  for (unsigned int pointId = 0; pointId < numPoints; pointId++) {
+    double p = ( ((double) pointId) + 1.0 )/auxNumPoints;
+    double ro0 = p*(1.0-p);
+    cdfStaccValues[pointId] = p;
+       
+    //std::cout << "x-data" << data[pointId]
+    //          << std::endl;       
+       
+    for (unsigned int k = 0; k < numPoints; k++) {
+      if (m_seq[k] <= sortedDataValues[pointId]) {
+        Isam_mat[k] = 1;
+      }
+      else {
+        Isam_mat[k] = 0;
+      }
+    }  
 
-  //for (unsigned int j = 0; j < numEvals; ++j) {
-    ////double x = evaluationPositions[j];
-    //double value = 0.;
-    //for (unsigned int k = 0; k < dataSize; ++k) {
-     // //double xk = m_seq[initialPos+k];
-      //value += 0.;//uqMiscGaussianDensity((x-xk)*scaleInv,0.,1.);
+    for (unsigned int tau = 0; tau < (numPoints-1); tau++) {
+      ro[tau] = 0.;
+      for (unsigned int kk = 0; kk < numPoints-(tau+1); kk++) {
+        ro[tau] += (Isam_mat[kk+tau+1]-p)*(Isam_mat[kk]-p);
+      }
+      ro[tau] *= 1.0/auxNumPoints;
+    }
+    double lamb = 0.;
+    for (unsigned int tau = 0; tau < (numPoints-1); tau++) {
+      double auxTau = tau;
+      lamb += (1.-(auxTau+1.)/auxNumPoints)*ro[tau]/ro0;
+      if (lamb > maxLamb) maxLamb = lamb;
+    }
+    lamb = 2.*maxLamb;
+
+    //double ll=gsl_cdf_gaussian_Pinv(-0.05);
+    cdfStaccValuesUp [pointId] = cdfStaccValues[pointId]+1.96*sqrt(ro0/auxNumPoints*(1.+lamb));
+    cdfStaccValuesLow[pointId] = cdfStaccValues[pointId]-1.96*sqrt(ro0/auxNumPoints*(1.+lamb));
+    if (cdfStaccValuesLow[pointId] < 0.) cdfStaccValuesLow[pointId] = 0.;
+    if (cdfStaccValuesUp [pointId] > 1.) cdfStaccValuesUp [pointId] = 1.;
+    //if (pointId==1 | pointId==100 | pointId==900) {
+    //  std::cout<<lamb<<ll<<std::endl;
+    //  std::cout<<lamb<<std::endl;
     //}
-    //cdfStaccValues[j] = value/(double) dataSize;
-  //}
-//#endif
-//#endif
+  }
+
+#if 0
+  unsigned int dataSize = this->subSequenceSize() - initialPos;
+  unsigned int numEvals = evaluationPositions.size();
+
+  for (unsigned int j = 0; j < numEvals; ++j) {
+    double x = evaluationPositions[j];
+    double value = 0.;
+    for (unsigned int k = 0; k < dataSize; ++k) {
+      double xk = m_seq[initialPos+k];
+      value += 0.;//uqMiscGaussianDensity((x-xk)*scaleInv,0.,1.);
+    }
+    cdfStaccValues[j] = value/(double) dataSize;
+  }
+#endif
+
   return;
 }
 
@@ -3177,15 +3169,15 @@ uqComputeSubGaussian2dKde(const uqScalarSequenceClass<T>& scalarSeq1,
 
 template <class T>
 void
-uqComputeUnifiedGaussian2dKde(bool                            useOnlyInter0Comm,
-                              const uqScalarSequenceClass<T>& scalarSeq1,
-                              const uqScalarSequenceClass<T>& scalarSeq2,
-                              unsigned int                    initialPos,
-                              double                          unifiedScaleValue1,
-                              double                          unifiedScaleValue2,
-                              const std::vector<T>&           unifiedEvaluationPositions1,
-                              const std::vector<T>&           unifiedEvaluationPositions2,
-                              std::vector<double>&            unifiedDensityValues)
+uqComputeUnifiedGaussian2dKde(bool                            useOnlyInter0Comm,           // INPUT
+                              const uqScalarSequenceClass<T>& scalarSeq1,                  // INPUT
+                              const uqScalarSequenceClass<T>& scalarSeq2,                  // INPUT
+                              unsigned int                    initialPos,                  // INPUT
+                              double                          unifiedScaleValue1,          // INPUT
+                              double                          unifiedScaleValue2,          // INPUT
+                              const std::vector<T>&           unifiedEvaluationPositions1, // INPUT
+                              const std::vector<T>&           unifiedEvaluationPositions2, // INPUT
+                              std::vector<double>&            unifiedDensityValues)        // OUTPUT
 {
   if (scalarSeq1.env().numSubEnvironments() == 1) {
     return uqComputeSubGaussian2dKde(scalarSeq1,

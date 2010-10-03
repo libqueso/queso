@@ -330,6 +330,12 @@ uqBaseEnvironmentClass::rng() const
   return m_rng;
 }
 
+int
+uqBaseEnvironmentClass::seed() const
+{
+  return m_options->m_seed;
+}
+
 void
 uqBaseEnvironmentClass::resetGslSeed(int newSeedOption)
 {
@@ -338,8 +344,8 @@ uqBaseEnvironmentClass::resetGslSeed(int newSeedOption)
   if (newSeedOption >= 0) {
     gsl_rng_default_seed = (unsigned long int) newSeedOption;
   }
-  else if (newSeedOption == -1) {
-    gsl_rng_default_seed = (unsigned long int) (1+m_fullRank);
+  else if (newSeedOption < 0) {
+    gsl_rng_default_seed = (unsigned long int) (-newSeedOption+m_fullRank);
   }
   else {
     struct timeval timevalNow;
@@ -355,6 +361,19 @@ uqBaseEnvironmentClass::resetGslSeed(int newSeedOption)
 
   //gsl_rng_set(m_rng, gsl_rng_default_seed);
 
+  return;
+}
+
+std::string
+uqBaseEnvironmentClass::identifyingString() const
+{
+  return m_options->m_identifyingString;
+}
+
+void
+uqBaseEnvironmentClass::resetIdentifyingString(const std::string& newString) const // Yes, const
+{
+  m_options->m_identifyingString = newString;
   return;
 }
 
@@ -901,8 +920,8 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   if (m_options->m_seed >= 0) {
     gsl_rng_default_seed = (unsigned long int) m_options->m_seed;
   }
-  else if (m_options->m_seed == -1) {
-    gsl_rng_default_seed = (unsigned long int) (1+m_fullRank);
+  else if (m_options->m_seed < 0) {
+    gsl_rng_default_seed = (unsigned long int) (-m_options->m_seed+m_fullRank);
   }
   else {
     struct timeval timevalNow;
@@ -966,6 +985,12 @@ uqFullEnvironmentClass::readOptionsInputFile()
   }
 
   return;
+}
+
+std::string
+uqFullEnvironmentClass::optionsInputFileName() const
+{
+  return m_optionsInputFileName;
 }
 
 void

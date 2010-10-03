@@ -35,6 +35,7 @@
 #include <uqDefines.h>
 #include <gsl/gsl_linalg.h>
 #include <gsl/gsl_eigen.h>
+#include <sys/time.h>
 
 uqGslMatrixClass::uqGslMatrixClass()
   :
@@ -330,6 +331,40 @@ uqGslMatrixClass::chol()
               "uqGslMatrixClass::chol()",
               "matrix is not positive definite",
               UQ_MATRIX_IS_NOT_POS_DEFINITE_RC);
+
+  return iRC;
+}
+
+int
+uqGslMatrixClass::svd(uqGslMatrixClass& matVt, uqGslVectorClass& vecS)
+{
+  int iRC;
+  uqGslMatrixClass matV(matVt);
+  //uqGslVectorClass vecWork(vecS);
+  std::cout << "Calling gsl_linalg_SV_decomp_jacobi()..." << std::endl;
+
+  struct timeval timevalBegin;
+  gettimeofday(&timevalBegin, NULL);
+  gsl_error_handler_t* oldHandler;
+  oldHandler = gsl_set_error_handler_off();
+#if 1
+  iRC = gsl_linalg_SV_decomp_jacobi(m_mat, matV.data(), vecS.data());
+#else
+  iRC = gsl_linalg_SV_decomp(m_mat, matV.data(), vecS.data(), vecWork.data());
+#endif
+  gsl_set_error_handler(oldHandler);
+  struct timeval timevalNow;
+  gettimeofday(&timevalNow, NULL);
+  std::cout << "Returned from gsl_linalg_SV_decomp_jacobi() with iRC = " << iRC
+            << " after " << timevalNow.tv_sec - timevalBegin.tv_sec
+            << " seconds"
+            << std::endl;
+  UQ_RC_MACRO(iRC, // Yes, *not* a fatal check on RC
+              m_env.fullRank(),
+              "uqGslMatrixClass::svd()",
+              "matrix svd failed",
+              UQ_MATRIX_IS_NOT_POS_DEFINITE_RC);
+  matVt = matV.transpose();
 
   return iRC;
 }
@@ -1032,7 +1067,7 @@ uqGslMatrixClass::print(std::ostream& os) const
         os << (*this)(i,j)
            << " ";
       }
-      os << "# ";
+      if (i != (nRows-1)) os << "; ";
     }
     //os << std::endl;
   }
@@ -1130,6 +1165,8 @@ uqGslMatrixClass operator*(const uqGslMatrixClass& m1, const uqGslMatrixClass& m
 
   uqGslMatrixClass mat(m1.env(),m1.map(),m2Cols);
 
+  //std::cout << "In uqGslMatrixClass(mat * mat): m1Cols = " << m1Cols << std::endl;
+
   unsigned int commonSize = m1Cols;
   for (unsigned int row1 = 0; row1 < m1Rows; ++row1) {
     for (unsigned int col2 = 0; col2 < m2Cols; ++col2) {
@@ -1139,6 +1176,7 @@ uqGslMatrixClass operator*(const uqGslMatrixClass& m1, const uqGslMatrixClass& m
       }
       mat(row1,col2) = result;
     }
+    //std::cout << "In uqGslMatrixClass(mat * mat): ended row " << row1 << std::endl;
   }
 
   return mat;
@@ -1174,7 +1212,7 @@ uqGslMatrixClass matrixProduct(const uqGslVectorClass& v1, const uqGslVectorClas
   return answer;
 }
 
-uqGslMatrixClass diagScaling(const uqGslVectorClass& vec, const uqGslMatrixClass& mat)
+uqGslMatrixClass leftDiagScaling(const uqGslVectorClass& vec, const uqGslMatrixClass& mat)
 {
   unsigned int vSize = vec.sizeLocal();
   unsigned int mRows = mat.numRowsLocal();
@@ -1182,13 +1220,45 @@ uqGslMatrixClass diagScaling(const uqGslVectorClass& vec, const uqGslMatrixClass
 
   UQ_FATAL_TEST_MACRO((vSize != mRows),
                       mat.env().fullRank(),
-                      "uqGslMatrixClass diagScaling(vector,matrix)",
+                      "uqGslMatrixClass leftDiagScaling(vector,matrix)",
                       "size of vector is different from the number of rows in matrix");
+
+  UQ_FATAL_TEST_MACRO((mCols != mRows),
+                      mat.env().fullRank(),
+                      "uqGslMatrixClass leftDiagScaling(vector,matrix)",
+                      "routine currently works for square matrices only");
 
   uqGslMatrixClass answer(mat);
   for (unsigned int i = 0; i < mRows; ++i) {
     double vecValue = vec[i];
     for (unsigned int j = 0; j < mCols; ++j) {
+      answer(i,j) *= vecValue;
+    }
+  }
+
+  return answer;
+}
+
+uqGslMatrixClass rightDiagScaling(const uqGslMatrixClass& mat, const uqGslVectorClass& vec)
+{
+  unsigned int vSize = vec.sizeLocal();
+  unsigned int mRows = mat.numRowsLocal();
+  unsigned int mCols = mat.numCols();
+
+  UQ_FATAL_TEST_MACRO((vSize != mCols),
+                      mat.env().fullRank(),
+                      "uqGslMatrixClass rightDiagScaling(matrix,vector)",
+                      "size of vector is different from the number of cols in matrix");
+
+  UQ_FATAL_TEST_MACRO((mCols != mRows),
+                      mat.env().fullRank(),
+                      "uqGslMatrixClass rightDiagScaling(matrix,vector)",
+                      "routine currently works for square matrices only");
+
+  uqGslMatrixClass answer(mat);
+  for (unsigned int j = 0; j < mCols; ++j) {
+    double vecValue = vec[j];
+    for (unsigned int i = 0; i < mRows; ++i) {
       answer(i,j) *= vecValue;
     }
   }

@@ -150,7 +150,7 @@ public:
           const Epetra_MpiComm&   selfComm                   () const; 
 
           int                     inter0Rank                 () const;
-          const Epetra_MpiComm&   inter0Comm                 () const; 
+          const Epetra_MpiComm&   inter0Comm                 () const;
 
                 std::ofstream*    subDisplayFile             () const;
 
@@ -167,7 +167,10 @@ public:
           unsigned int            displayVerbosity           () const;
           unsigned int            syncVerbosity              () const;
           const gsl_rng*          rng                        () const;
+          int                     seed                       () const;
           void                    resetGslSeed               (int newSeedOption);
+	  std::string             identifyingString          () const;
+          void                    resetIdentifyingString     (const std::string& newString) const; // Yes, const
           bool                    isThereInputFile           () const;
           void                    syncPrintDebugMsg          (const char* msg, unsigned int msgVerbosity, unsigned int numUSecs, const Epetra_MpiComm& commObj) const;
 
@@ -248,6 +251,7 @@ public:
  ~uqFullEnvironmentClass();
 
         void                     print                (std::ostream& os) const;
+	std::string              optionsInputFileName () const;
 
 private:
         void                     readOptionsInputFile ();

@@ -127,18 +127,18 @@ uqGslVectorClass::uqGslVectorClass(const uqGslVectorClass& v, double d1, double 
   //std::cout << "Leaving uqGslVectorClass::constructor(4)" << std::endl;
 }
 
-uqGslVectorClass::uqGslVectorClass(const uqGslVectorClass& v)
+uqGslVectorClass::uqGslVectorClass(const uqGslVectorClass& v)  // mox
   :
   uqVectorClass(v.env(),v.map()),
   m_vec(gsl_vector_calloc(v.sizeLocal()))
 {
   //std::cout << "Entering uqGslVectorClass::constructor(5)" << std::endl;
 
+  // prudenci 2010-06-17 mox
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
                       m_env.fullRank(),
                       "uqGslVectorClass::constructor(), copy",
                       "null vector generated");
-  this->uqVectorClass::copy(v);
   this->copy(v);
 
   //std::cout << "Leaving uqGslVectorClass::constructor(5)" << std::endl;
@@ -152,6 +152,10 @@ uqGslVectorClass::~uqGslVectorClass()
 uqGslVectorClass&
 uqGslVectorClass::operator=(const uqGslVectorClass& rhs)
 {
+  UQ_FATAL_TEST_MACRO(this->sizeLocal() != rhs.sizeLocal(), // mox
+                      m_env.fullRank(),
+                      "uqGslVectorClass::constructor(), copy",
+                      "null vector generated");
   this->copy(rhs);
   return *this;
 }
@@ -250,6 +254,7 @@ uqGslVectorClass::operator[](unsigned int i) const
 void
 uqGslVectorClass::copy(const uqGslVectorClass& src)
 {
+  this->uqVectorClass::copy(src); // prudenci 2010-06-17 mox
   int iRC;
   iRC = gsl_vector_memcpy(this->m_vec, src.m_vec);
   UQ_FATAL_RC_MACRO(iRC,
@@ -263,10 +268,25 @@ uqGslVectorClass::copy(const uqGslVectorClass& src)
 unsigned int
 uqGslVectorClass::sizeLocal() const
 {
+  //std::cout << "Entering uqGslVectorClass::sizeLocal()" // mox
+  //          << ": m_vec = " << m_vec
+  //          << ", m_vec->size = " << m_vec->size
+  //          << ", &m_map = " << &m_map
+  //          << ", m_map.NumMyElements() = " << m_map.NumMyElements()
+  //          << std::endl;
+
   UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) m_map.NumMyElements(),
                       m_env.fullRank(),
                       "uqGslVectorClass::sizeLocal()",
                       "incompatible vec size");
+
+  //std::cout << "Leaving uqGslVectorClass::sizeLocal()"
+  //          << ": m_vec = " << m_vec
+  //          << ", m_vec->size = " << m_vec->size
+  //          << ", &m_map = " << &m_map
+  //          << ", m_map.NumMyElements() = " << m_map.NumMyElements()
+  //          << std::endl;
+
   return m_vec->size;
 }
 
@@ -634,9 +654,17 @@ uqGslVectorClass::mpiAllQuantile(double probability, const Epetra_MpiComm& opCom
 void
 uqGslVectorClass::print(std::ostream& os) const
 {
+  //std::cout << "In uqGslVectorClass::print(): before sizelocal()"
+  //          << std::endl;
   unsigned int size = this->sizeLocal();
+  //std::cout << "In uqGslVectorClass::print(): after sizelocal()"
+  //          << std::endl;
 
+  //std::cout << "In uqGslVectorClass::print(): before os.flags()"
+  //          << std::endl;
   std::ostream::fmtflags curr_fmt = os.flags();
+  //std::cout << "In uqGslVectorClass::print(): after os.flags()"
+  //          << std::endl;
 
   if (m_printScientific) {
     unsigned int savedPrecision = os.precision();
@@ -657,6 +685,8 @@ uqGslVectorClass::print(std::ostream& os) const
   }
   else {
     if (m_printHorizontally) {
+      //std::cout << "In uqGslVectorClass::print(): where expected"
+      //          << std::endl;
       for (unsigned int i = 0; i < size; ++i) {
         os << std::dec << (*this)[i]
            << " ";
@@ -670,7 +700,11 @@ uqGslVectorClass::print(std::ostream& os) const
     }
   }
 
+  //std::cout << "In uqGslVectorClass::print(): before os.flags(curr_fmt)"
+  //          << std::endl;
   os.flags(curr_fmt);
+  //std::cout << "In uqGslVectorClass::print(): after os.flags(curr_fmt)"
+  //          << std::endl;
 
   return;
 }
