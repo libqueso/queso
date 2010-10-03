@@ -188,5 +188,6 @@ libqueso_include_HEADERS += \
 #---------------------------------
 
 .license.stamp: $(top_srcdir)/LICENSE
-	$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE $(libqueso_include_HEADERS)
+	$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE \
+	$(libqueso_include_HEADERS) $(libqueso_la_SOURCES)
 	echo 'updated source license headers' >$@
