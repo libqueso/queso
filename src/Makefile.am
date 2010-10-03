@@ -17,14 +17,22 @@ AM_CPPFLAGS = -I$(top_srcdir)/src/core/inc \
 BUILT_SOURCES = .license.stamp
 
 
-# Dynamic library build
+# Dynamic library build: we include external library linkage here to
+# make it easier for the user.
 
 lib_LTLIBRARIES      = libqueso.la
 libqueso_includedir  = $(prefix)/include
 libqueso_la_LDFLAGS  = $(all_libraries) -release $(GENERIC_RELEASE)
-libqueso_la_LDFLAGS += $(GRVY_LIBS) $(GSL_LIBS) $(EPETRA_LIBS)
+libqueso_la_LDFLAGS += $(GRVY_LIBS)
+libqueso_la_LDFLAGS += $(GSL_LIBS) 
 libqueso_la_LDFLAGS += $(BOOST_PROGRAM_OPTIONS_LDFLAGS) $(BOOST_PROGRAM_OPTIONS_LIBS)
-LIBS                 = $(EPETRA_LIBS)
+libqueso_la_LDFLAGS += $(GLPK_LIBS)
+libqueso_la_LDFLAGS += $(HDF5_LIBS)
+
+# TODO: cleanup way epetra is handled; it looks like it is being put in LDFLAGS directly. Would like to 
+# have a EPETRA_LIBS or some such variable later.
+
+libqueso_la_LDFLAGS += -lepetra
 
 # Sources from core/src
 
@@ -180,5 +188,5 @@ libqueso_include_HEADERS += \
 #---------------------------------
 
 .license.stamp: $(top_srcdir)/LICENSE
-	$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE $(cc_sources) $(h_sources)
+	$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE $(libqueso_include_HEADERS)
 	echo 'updated source license headers' >$@
