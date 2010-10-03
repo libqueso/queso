@@ -76,6 +76,8 @@
 #define UQ_MH_SG_AM_ADAPT_INTERVAL_ODV                      0
 #define UQ_MH_SG_AM_ETA_ODV                                 1.
 #define UQ_MH_SG_AM_EPSILON_ODV                             1.e-5
+#define UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR          0
+#define UQ_MH_SG_BROOKS_GELMAN_LAG                          100
 
 class uqMetropolisHastingsSGOptionsClass
 {
@@ -129,6 +131,9 @@ public:
   double                             m_amEta;
   double                             m_amEpsilon;
 
+  unsigned int                       m_enableBrooksGelmanConvMonitor;
+  unsigned int                       m_BrooksGelmanLag;
+
 private:
   void   defineMyOptions  (po::options_description& optionsDesc) const;
   void   getMyOptionValues(po::options_description& optionsDesc);
@@ -171,6 +176,9 @@ private:
   std::string                   m_option_am_adaptInterval;
   std::string                   m_option_am_eta;
   std::string                   m_option_am_epsilon;
+
+  std::string                   m_option_enableBrooksGelmanConvMonitor;
+  std::string                   m_option_BrooksGelmanLag;
 };
 
 std::ostream& operator<<(std::ostream& os, const uqMetropolisHastingsSGOptionsClass& obj);

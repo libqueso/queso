@@ -74,6 +74,8 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_amAdaptInterval                          (UQ_MH_SG_AM_ADAPT_INTERVAL_ODV),
   m_amEta                                    (UQ_MH_SG_AM_ETA_ODV),
   m_amEpsilon                                (UQ_MH_SG_AM_EPSILON_ODV),
+  m_enableBrooksGelmanConvMonitor            (UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR),
+  m_BrooksGelmanLag                          (UQ_MH_SG_BROOKS_GELMAN_LAG),
   m_env                                      (env),
   m_optionsDesc                              (new po::options_description("Bayesian Metropolis-Hastings options")),
   m_option_help                              (m_prefix + "help"                              ),
@@ -108,7 +110,9 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_option_am_initialNonAdaptInterval        (m_prefix + "am_initialNonAdaptInterval"        ),
   m_option_am_adaptInterval                  (m_prefix + "am_adaptInterval"                  ),
   m_option_am_eta                            (m_prefix + "am_eta"                            ),
-  m_option_am_epsilon                        (m_prefix + "am_epsilon"                        )
+  m_option_am_epsilon                        (m_prefix + "am_epsilon"                        ),
+  m_option_enableBrooksGelmanConvMonitor     (m_prefix + "enableBrooksGelmanConvMonitor"     ),
+  m_option_BrooksGelmanLag                   (m_prefix + "BrooksGelmanLag"                   )
 {
 }
 
@@ -152,6 +156,8 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_amAdaptInterval                  (inputOptions.m_amAdaptInterval),
   m_amEta                            (inputOptions.m_amEta),
   m_amEpsilon                        (inputOptions.m_amEpsilon),
+  m_enableBrooksGelmanConvMonitor    (UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR),
+  m_BrooksGelmanLag                  (UQ_MH_SG_BROOKS_GELMAN_LAG),
   m_env                              (inputOptions.env()),
   m_optionsDesc                      (NULL),
   m_option_help                              (m_prefix + "help"                              ),
@@ -186,7 +192,9 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_option_am_initialNonAdaptInterval        (m_prefix + "am_initialNonAdaptInterval"        ),
   m_option_am_adaptInterval                  (m_prefix + "am_adaptInterval"                  ),
   m_option_am_eta                            (m_prefix + "am_eta"                            ),
-  m_option_am_epsilon                        (m_prefix + "am_epsilon"                        )
+  m_option_am_epsilon                        (m_prefix + "am_epsilon"                        ),
+  m_option_enableBrooksGelmanConvMonitor     (m_prefix + "enableBrooksGelmanConvMonitor"     ),
+  m_option_BrooksGelmanLag                   (m_prefix + "BrooksGelmanLag"                   )
 {
   if ((m_env.subDisplayFile() != NULL) &&
       (m_totallyMute == false        )) {
@@ -237,39 +245,41 @@ void
 uqMetropolisHastingsSGOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
 {
   optionsDesc.add_options()     
-    (m_option_help.c_str(),                                                                                                                              "produce help msg for Bayesian Metropolis-Hastings"  )
-    (m_option_dataOutputFileName.c_str(),                 po::value<std::string >()->default_value(UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV                 ), "name of generic output file"                        )
-    (m_option_dataOutputAllowedSet.c_str(),               po::value<std::string >()->default_value(UQ_MH_SG_DATA_OUTPUT_ALLOWED_SET_ODV               ), "subEnvs that will write to generic output file"     )
-    (m_option_totallyMute.c_str(),                        po::value<bool        >()->default_value(UQ_MH_SG_TOTALLY_MUTE_ODV                          ), "totally mute (no printout msg)"                     )
-    (m_option_rawChain_dataInputFileName.c_str(),         po::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV        ), "name of input file for raw chain "                  )
-    (m_option_rawChain_dataInputFileType.c_str(),         po::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_TYPE_ODV        ), "type of input file for raw chain "                  )
-    (m_option_rawChain_size.c_str(),                      po::value<unsigned int>()->default_value(UQ_MH_SG_RAW_CHAIN_SIZE_ODV                        ), "size of raw chain"                                  )
-    (m_option_rawChain_generateExtra.c_str(),             po::value<bool        >()->default_value(UQ_MH_SG_RAW_CHAIN_GENERATE_EXTRA_ODV              ), "generate extra information about raw chain"         )
-    (m_option_rawChain_displayPeriod.c_str(),             po::value<unsigned int>()->default_value(UQ_MH_SG_RAW_CHAIN_DISPLAY_PERIOD_ODV              ), "period of msg display during raw chain generation"  )
-    (m_option_rawChain_measureRunTimes.c_str(),           po::value<bool        >()->default_value(UQ_MH_SG_RAW_CHAIN_MEASURE_RUN_TIMES_ODV           ), "measure run times"                                  )
-    (m_option_rawChain_dataOutputFileName.c_str(),        po::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV       ), "name of output file for raw chain "                 )
-    (m_option_rawChain_dataOutputFileType.c_str(),        po::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV       ), "type of output file for raw chain "                 )
-    (m_option_rawChain_dataOutputAllowedSet.c_str(),      po::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV     ), "subEnvs that will write raw chain to output file"   )
-    (m_option_rawChain_computeStats.c_str(),              po::value<bool        >()->default_value(UQ_MH_SG_RAW_CHAIN_COMPUTE_STATS_ODV               ), "compute statistics on raw chain"                    )
-    (m_option_filteredChain_generate.c_str(),             po::value<bool        >()->default_value(UQ_MH_SG_FILTERED_CHAIN_GENERATE_ODV               ), "generate filtered chain"                            )
-    (m_option_filteredChain_discardedPortion.c_str(),     po::value<double      >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV      ), "initial discarded portion for chain filtering"      )
-    (m_option_filteredChain_lag.c_str(),                  po::value<unsigned int>()->default_value(UQ_MH_SG_FILTERED_CHAIN_LAG_ODV                    ), "spacing for chain filtering"                        )
-    (m_option_filteredChain_dataOutputFileName.c_str(),   po::value<std::string >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV  ), "name of output file for filtered chain"             )
-    (m_option_filteredChain_dataOutputFileType.c_str(),   po::value<std::string >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV  ), "type of output file for filtered chain"             )
-    (m_option_filteredChain_dataOutputAllowedSet.c_str(), po::value<std::string >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV), "subEnvs that will write filt chain to output file"  )
-    (m_option_filteredChain_computeStats.c_str(),         po::value<bool        >()->default_value(UQ_MH_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV          ), "compute statistics on filtered chain"               )
-    (m_option_displayCandidates.c_str(),                  po::value<bool        >()->default_value(UQ_MH_SG_DISPLAY_CANDIDATES_ODV                    ), "display candidates in the core MH algorithm"        )
-    (m_option_putOutOfBoundsInChain.c_str(),              po::value<bool        >()->default_value(UQ_MH_SG_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV            ), "put 'out of bound' candidates in chain as well"     )
-    (m_option_tk_useLocalHessian.c_str(),                 po::value<bool        >()->default_value(UQ_MH_SG_TK_USE_LOCAL_HESSIAN_ODV                  ), "'proposal' use local Hessian"                       )
-    (m_option_tk_useNewtonComponent.c_str(),              po::value<bool        >()->default_value(UQ_MH_SG_TK_USE_NEWTON_COMPONENT_ODV               ), "'proposal' use Newton component"                    )
-    (m_option_dr_maxNumExtraStages.c_str(),               po::value<unsigned int>()->default_value(UQ_MH_SG_DR_MAX_NUM_EXTRA_STAGES_ODV               ), "'dr' maximum number of extra stages"                )
-    (m_option_dr_listOfScalesForExtraStages.c_str(),      po::value<std::string >()->default_value(UQ_MH_SG_DR_LIST_OF_SCALES_FOR_EXTRA_STAGES_ODV    ), "'dr' scales for prop cov matrices from 2nd stage on")
-    (m_option_dr_duringAmNonAdaptiveInt.c_str(),          po::value<bool        >()->default_value(UQ_MH_SG_DR_DURING_AM_NON_ADAPTIVE_INT_ODV         ), "'dr' used during 'am' non adaptive interval"        )
-    (m_option_am_keepInitialMatrix.c_str(),               po::value<bool        >()->default_value(UQ_MH_SG_AM_KEEP_INITIAL_MATRIX_ODV                ), "'am' keep initial (given) matrix"                   )
-    (m_option_am_initialNonAdaptInterval.c_str(),         po::value<unsigned int>()->default_value(UQ_MH_SG_AM_INIT_NON_ADAPT_INT_ODV                 ), "'am' initial non adaptation interval"               )
-    (m_option_am_adaptInterval.c_str(),                   po::value<unsigned int>()->default_value(UQ_MH_SG_AM_ADAPT_INTERVAL_ODV                     ), "'am' adaptation interval"                           )
-    (m_option_am_eta.c_str(),                             po::value<double      >()->default_value(UQ_MH_SG_AM_ETA_ODV                                ), "'am' eta"                                           )
-    (m_option_am_epsilon.c_str(),                         po::value<double      >()->default_value(UQ_MH_SG_AM_EPSILON_ODV                            ), "'am' epsilon"                                       )
+    (m_option_help.c_str(),                                                                                                                              "produce help msg for Bayesian Metropolis-Hastings"          )
+    (m_option_dataOutputFileName.c_str(),                 po::value<std::string >()->default_value(UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV                 ), "name of generic output file"                                )
+    (m_option_dataOutputAllowedSet.c_str(),               po::value<std::string >()->default_value(UQ_MH_SG_DATA_OUTPUT_ALLOWED_SET_ODV               ), "subEnvs that will write to generic output file"             )
+    (m_option_totallyMute.c_str(),                        po::value<bool        >()->default_value(UQ_MH_SG_TOTALLY_MUTE_ODV                          ), "totally mute (no printout msg)"                             )
+    (m_option_rawChain_dataInputFileName.c_str(),         po::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV        ), "name of input file for raw chain "                          )
+    (m_option_rawChain_dataInputFileType.c_str(),         po::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_TYPE_ODV        ), "type of input file for raw chain "                          )
+    (m_option_rawChain_size.c_str(),                      po::value<unsigned int>()->default_value(UQ_MH_SG_RAW_CHAIN_SIZE_ODV                        ), "size of raw chain"                                          )
+    (m_option_rawChain_generateExtra.c_str(),             po::value<bool        >()->default_value(UQ_MH_SG_RAW_CHAIN_GENERATE_EXTRA_ODV              ), "generate extra information about raw chain"                 )
+    (m_option_rawChain_displayPeriod.c_str(),             po::value<unsigned int>()->default_value(UQ_MH_SG_RAW_CHAIN_DISPLAY_PERIOD_ODV              ), "period of msg display during raw chain generation"          )
+    (m_option_rawChain_measureRunTimes.c_str(),           po::value<bool        >()->default_value(UQ_MH_SG_RAW_CHAIN_MEASURE_RUN_TIMES_ODV           ), "measure run times"                                          )
+    (m_option_rawChain_dataOutputFileName.c_str(),        po::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV       ), "name of output file for raw chain "                         )
+    (m_option_rawChain_dataOutputFileType.c_str(),        po::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV       ), "type of output file for raw chain "                         )
+    (m_option_rawChain_dataOutputAllowedSet.c_str(),      po::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV     ), "subEnvs that will write raw chain to output file"           )
+    (m_option_rawChain_computeStats.c_str(),              po::value<bool        >()->default_value(UQ_MH_SG_RAW_CHAIN_COMPUTE_STATS_ODV               ), "compute statistics on raw chain"                            )
+    (m_option_filteredChain_generate.c_str(),             po::value<bool        >()->default_value(UQ_MH_SG_FILTERED_CHAIN_GENERATE_ODV               ), "generate filtered chain"                                    )
+    (m_option_filteredChain_discardedPortion.c_str(),     po::value<double      >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV      ), "initial discarded portion for chain filtering"              )
+    (m_option_filteredChain_lag.c_str(),                  po::value<unsigned int>()->default_value(UQ_MH_SG_FILTERED_CHAIN_LAG_ODV                    ), "spacing for chain filtering"                                )
+    (m_option_filteredChain_dataOutputFileName.c_str(),   po::value<std::string >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV  ), "name of output file for filtered chain"                     )
+    (m_option_filteredChain_dataOutputFileType.c_str(),   po::value<std::string >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV  ), "type of output file for filtered chain"                     )
+    (m_option_filteredChain_dataOutputAllowedSet.c_str(), po::value<std::string >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV), "subEnvs that will write filt chain to output file"          )
+    (m_option_filteredChain_computeStats.c_str(),         po::value<bool        >()->default_value(UQ_MH_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV          ), "compute statistics on filtered chain"                       )
+    (m_option_displayCandidates.c_str(),                  po::value<bool        >()->default_value(UQ_MH_SG_DISPLAY_CANDIDATES_ODV                    ), "display candidates in the core MH algorithm"                )
+    (m_option_putOutOfBoundsInChain.c_str(),              po::value<bool        >()->default_value(UQ_MH_SG_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV            ), "put 'out of bound' candidates in chain as well"             )
+    (m_option_tk_useLocalHessian.c_str(),                 po::value<bool        >()->default_value(UQ_MH_SG_TK_USE_LOCAL_HESSIAN_ODV                  ), "'proposal' use local Hessian"                               )
+    (m_option_tk_useNewtonComponent.c_str(),              po::value<bool        >()->default_value(UQ_MH_SG_TK_USE_NEWTON_COMPONENT_ODV               ), "'proposal' use Newton component"                            )
+    (m_option_dr_maxNumExtraStages.c_str(),               po::value<unsigned int>()->default_value(UQ_MH_SG_DR_MAX_NUM_EXTRA_STAGES_ODV               ), "'dr' maximum number of extra stages"                        )
+    (m_option_dr_listOfScalesForExtraStages.c_str(),      po::value<std::string >()->default_value(UQ_MH_SG_DR_LIST_OF_SCALES_FOR_EXTRA_STAGES_ODV    ), "'dr' scales for prop cov matrices from 2nd stage on"        )
+    (m_option_dr_duringAmNonAdaptiveInt.c_str(),          po::value<bool        >()->default_value(UQ_MH_SG_DR_DURING_AM_NON_ADAPTIVE_INT_ODV         ), "'dr' used during 'am' non adaptive interval"                )
+    (m_option_am_keepInitialMatrix.c_str(),               po::value<bool        >()->default_value(UQ_MH_SG_AM_KEEP_INITIAL_MATRIX_ODV                ), "'am' keep initial (given) matrix"                           )
+    (m_option_am_initialNonAdaptInterval.c_str(),         po::value<unsigned int>()->default_value(UQ_MH_SG_AM_INIT_NON_ADAPT_INT_ODV                 ), "'am' initial non adaptation interval"                       )
+    (m_option_am_adaptInterval.c_str(),                   po::value<unsigned int>()->default_value(UQ_MH_SG_AM_ADAPT_INTERVAL_ODV                     ), "'am' adaptation interval"                                   )
+    (m_option_am_eta.c_str(),                             po::value<double      >()->default_value(UQ_MH_SG_AM_ETA_ODV                                ), "'am' eta"                                                   )
+    (m_option_am_epsilon.c_str(),                         po::value<double      >()->default_value(UQ_MH_SG_AM_EPSILON_ODV                            ), "'am' epsilon"                                               )
+    (m_option_enableBrooksGelmanConvMonitor.c_str(),      po::value<unsigned int>()->default_value(UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR         ), "assess convergence using Brooks-Gelman metric"              )
+    (m_option_BrooksGelmanLag.c_str(),                    po::value<unsigned int>()->default_value(UQ_MH_SG_BROOKS_GELMAN_LAG                         ), "number of chain positions before starting to compute metric")
   ;
 
   return;
@@ -476,6 +486,13 @@ uqMetropolisHastingsSGOptionsClass::getMyOptionValues(po::options_description& o
     m_amEpsilon = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_epsilon]).as<double>();
   }
 
+  if (m_env.allOptionsMap().count(m_option_enableBrooksGelmanConvMonitor)) {
+    m_enableBrooksGelmanConvMonitor = ((const po::variable_value&) m_env.allOptionsMap()[m_option_enableBrooksGelmanConvMonitor]).as<unsigned int>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_BrooksGelmanLag)) {
+    m_BrooksGelmanLag = ((const po::variable_value&) m_env.allOptionsMap()[m_option_BrooksGelmanLag]).as<unsigned int>();
+  }
   return;
 }
 
@@ -520,12 +537,14 @@ uqMetropolisHastingsSGOptionsClass::print(std::ostream& os) const
   for (unsigned int i = 0; i < m_drScalesForExtraStages.size(); ++i) {
     os << m_drScalesForExtraStages[i] << " ";
   }
-  os << "\n" << m_option_dr_duringAmNonAdaptiveInt  << " = " << m_drDuringAmNonAdaptiveInt
-     << "\n" << m_option_am_keepInitialMatrix       << " = " << m_amKeepInitialMatrix
-     << "\n" << m_option_am_initialNonAdaptInterval << " = " << m_amInitialNonAdaptInterval
-     << "\n" << m_option_am_adaptInterval           << " = " << m_amAdaptInterval
-     << "\n" << m_option_am_eta                     << " = " << m_amEta
-     << "\n" << m_option_am_epsilon                 << " = " << m_amEpsilon
+  os << "\n" << m_option_dr_duringAmNonAdaptiveInt     << " = " << m_drDuringAmNonAdaptiveInt
+     << "\n" << m_option_am_keepInitialMatrix          << " = " << m_amKeepInitialMatrix
+     << "\n" << m_option_am_initialNonAdaptInterval    << " = " << m_amInitialNonAdaptInterval
+     << "\n" << m_option_am_adaptInterval              << " = " << m_amAdaptInterval
+     << "\n" << m_option_am_eta                        << " = " << m_amEta
+     << "\n" << m_option_am_epsilon                    << " = " << m_amEpsilon
+     << "\n" << m_option_enableBrooksGelmanConvMonitor << " = " << m_enableBrooksGelmanConvMonitor
+     << "\n" << m_option_BrooksGelmanLag               << " = " << m_BrooksGelmanLag
      << std::endl;
 
   return;

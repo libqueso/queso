@@ -35,7 +35,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <queso.h>
-#include <mpi.h> // Added by prudenci on 2009/Sep/06 in order to avoid INTEL warning. Maybe Karl want to add that in queso.h (a hpct file?)
+#include <mpi.h> // Added by prudenci on 2009/Sep/06 in order to avoid INTEL warning. Maybe Karl want to add that in queso.h (a grvy file?)
 
 int main(int argc, char *argv[])
 {

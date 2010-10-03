@@ -25,7 +25,7 @@ echo Debug mode.................... : $enable_debug
 echo C++ compiler.................. : $CXX
 echo C++ compiler flags............ : $CXXFLAGS
 echo GSL_LIBS...................... : $GSL_LIBS
-echo HPCT DIR...................... : $HPCT_PREFIX
+echo GRVY DIR...................... : $GRVY_PREFIX
 echo GLPK DIR...................... : $GLPK_PREFIX
 echo HDF5 DIR...................... : $HDF5_PREFIX
 echo Install dir................... : $prefix 
@@ -33,8 +33,7 @@ echo Build user.................... : $USER
 echo Build host.................... : $BUILD_HOST
 echo Configure date................ : $BUILD_DATE
 echo Build architecture............ : $BUILD_ARCH
-echo SVN revision number........... : $BUILD_REV
-echo SVN status.................... : $BUILD_STATUS
+echo SVN revision number........... : $BUILD_VERSION
 echo
 echo Optional Features:
 if test "$HAVE_BOOST" == "no"; then

@@ -34,9 +34,11 @@ using namespace std;
 
 #include <basic_classes.h>
 #include <basic_int.h>
-#include <hpct.h>
+#include <grvy.h>
 
 namespace QUESO_Basic_API {
+
+  char log_prefix[] = "queso_basic";
 
   //------------------
   // Member Functions
@@ -60,7 +62,7 @@ namespace QUESO_Basic_API {
   void QUESO_Basic_Class::Initialize(const char *inputfile)
   {
 
-    hpct_timer_init("QUESO");
+    grvy_timer_init("QUESO");
 
     // Define new QUESO environment and store inputfile information
 
@@ -83,17 +85,19 @@ namespace QUESO_Basic_API {
 
     // Verify presence of required input file
 
-    ierr *= hpct_input_fopen(m_inputfile->c_str());
+    ierr *= grvy_input_fopen(m_inputfile->c_str());
 
     if(ierr == 0)
       QUESO_fatal("Unable to access QUESO input file");
 
     // Derive the UQ parameters from input file and create QUESO parameter vector
 
-    ierr *= hpct_input_fread_int("queso/parameters/num_params",&m_num_params);
+    ierr *= grvy_input_fread_int("queso/parameters/num_params",&m_num_params);
 
     if(ierr == 0)
       QUESO_fatal("Unable to read num_params from input file.");
+
+    grvy_log_int(GRVY_INFO,log_prefix,"Num params defined",m_num_params);
     
     printf("--> Setup parameter space variables/ranges...\n");
     m_paramSpace  = new uqVectorSpaceClass <basicV,basicM> (*m_env,"queso_basic_",m_num_params,NULL);
@@ -105,12 +109,21 @@ namespace QUESO_Basic_API {
     if(param_min == NULL || param_max == NULL || param_ini == NULL)
       QUESO_fatal("Unable to allocate memory for desired parameter space");
   
-    ierr *= hpct_input_fread_double_vec("queso/parameters/param_mins",  param_min, m_num_params);
-    ierr *= hpct_input_fread_double_vec("queso/parameters/param_maxs",  param_max, m_num_params);
-    ierr *= hpct_input_fread_double_vec("queso/parameters/param_inits", param_ini, m_num_params);
-  
+    ierr *= grvy_input_fread_double_vec("queso/parameters/param_mins",  param_min, m_num_params);
+    ierr *= grvy_input_fread_double_vec("queso/parameters/param_maxs",  param_max, m_num_params);
+    ierr *= grvy_input_fread_double_vec("queso/parameters/param_inits", param_ini, m_num_params);
+
+    printf("max = %f\n",param_max[0]);
+
     if(ierr == 0)
       QUESO_fatal("Unable to read parameter min/max/init values");
+
+    for(int i = 0;i<m_num_params;i++)
+      {
+	grvy_log_double(GRVY_INFO,log_prefix,"min  value",param_min[i]);
+	grvy_log_double(GRVY_INFO,log_prefix,"max  value",param_max[i]);
+	grvy_log_double(GRVY_INFO,log_prefix,"init value",param_ini[i]);
+      }
 
     m_queso_var_min = new basicV ( m_paramSpace->zeroVector() );
     m_queso_var_max = new basicV ( m_paramSpace->zeroVector() );
@@ -132,7 +145,7 @@ namespace QUESO_Basic_API {
     free(param_max);
     free(param_ini);
 
-    hpct_input_fclose();
+    grvy_input_fclose();
 
   }
 
@@ -183,7 +196,6 @@ namespace QUESO_Basic_API {
 	param_range = (*m_queso_var_max)[i] - (*m_queso_var_min)[i];
 	(*m_CovMatrix)(i,i) = (cov_param*param_range)*(cov_param*param_range);
       }
-    
   }
 
   void QUESO_Basic_Class::SolveInverseProblem()
@@ -247,15 +259,16 @@ namespace QUESO_Basic_API {
       }
 	
     for(int i=0;i<num_params;i++)
-      uqParams[i] = paramValue[i];
+      {
+	uqParams[i] = paramValue[i];
+	grvy_log_double(GRVY_DEBUG,log_prefix,"sending param to likelihood",paramValue[i]);
+      }
 
-
-
-    hpct_timer_begin("Likelihood Routine");
+    grvy_timer_begin("Likelihood Routine");
 
     double lhood_return = _QUESO_Basic->m_user_likelihood_func(uqParams);
 
-    hpct_timer_end("Likelihood Routine");
+    grvy_timer_end("Likelihood Routine");
     return(lhood_return);
 
     //      return( _QUESO_Basic->m_user_likelihood_func(uqParams) );

@@ -794,6 +794,21 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
       m_logTargets[positionId] = currentPositionData.logTarget();
     }
 
+    if( m_options.m_enableBrooksGelmanConvMonitor > 0 ) {
+      if( positionId%m_options.m_enableBrooksGelmanConvMonitor == 0 &&
+	  positionId > m_options.m_BrooksGelmanLag+1 ) { //+1 to help ensure there are at least 2 samples to use
+	
+	double conv_est = workingChain.estimateConvBrooksGelman( m_options.m_BrooksGelmanLag,
+								 positionId - m_options.m_BrooksGelmanLag );
+
+	if ( m_env.subDisplayFile() ) {
+	    *m_env.subDisplayFile() << "positionId = " << positionId 
+				    << ", conv_est = " << conv_est << std::endl;
+	    (*m_env.subDisplayFile()).flush();
+	}
+      }
+    }
+      
     //****************************************************
     // Loop: adaptive Metropolis (adaptation of covariance matrix)
     //****************************************************

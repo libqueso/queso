@@ -36,7 +36,7 @@
 #include <uqMiscellaneous.h>
 #include <sys/time.h>
 #include <gsl/gsl_randist.h>
-#include <hpct.h>
+#include <grvy.h>
 
 // Version "0.1"    on "Aug/11/2008"
 // Version "0.11"   on "Aug/15/2008"
@@ -403,11 +403,12 @@ uqBaseEnvironmentClass::syncPrintDebugMsg(const char* msg, unsigned int msgVerbo
                   << ", inter0Rank "     << this->inter0Rank()
                   << std::endl;
       }
+      usleep(numUSecs);
       commObj.Barrier();
     }
-    if (this->fullRank() == 0) std::cout << "Sleeping " << numUSecs << " microseconds..."
-                                         << std::endl;
-    usleep(numUSecs);
+    //if (this->fullRank() == 0) std::cout << "Sleeping " << numUSecs << " microseconds..."
+    //                                     << std::endl;
+    //usleep(numUSecs);
     commObj.Barrier();
   }
 
@@ -461,7 +462,7 @@ uqBaseEnvironmentClass::openOutputFile(
       // specifies a relative path for the desired output file).
       ////////////////////////////////////////////////////////////////
       // std::cout << "checking " << baseFileName+"_sub"+this->subIdString()+"."+fileType << std::endl;
-      int irtrn = hpct_check_file_path((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str());
+      int irtrn = grvy_check_file_path((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str());
       UQ_FATAL_TEST_MACRO(irtrn < 0,
                           m_fullRank,
                           "uqBaseEnvironmentClass::openOutputFile()",
@@ -618,7 +619,7 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
       // specifies a relative path for the desired output file). prudenci 2010/06/26
       ////////////////////////////////////////////////////////////////
       // std::cout << "checking " << baseFileName+"."+fileType << std::endl;
-      int irtrn = hpct_check_file_path((baseFileName+"."+fileType).c_str());
+      int irtrn = grvy_check_file_path((baseFileName+"."+fileType).c_str());
       UQ_FATAL_TEST_MACRO(irtrn < 0,
                           m_fullRank,
                           "uqBaseEnvironmentClass::openUnifiedOutputFile()",
@@ -758,7 +759,7 @@ uqBaseEnvironmentClass::openInputFile(
       // specifies a relative path for the desired output file). prudenci 2010/06/26
       ////////////////////////////////////////////////////////////////
       // std::cout << "checking " << baseFileName+"."+fileType << std::endl;
-      int irtrn = hpct_check_file_path((baseFileName+"."+fileType).c_str());
+      int irtrn = grvy_check_file_path((baseFileName+"."+fileType).c_str());
       UQ_FATAL_TEST_MACRO(irtrn < 0,
                           m_fullRank,
                           "uqBaseEnvironmentClass::openInputFile()",
@@ -828,7 +829,7 @@ uqBaseEnvironmentClass::openUnifiedInputFile(
       // specifies a relative path for the desired output file). prudenci 2010/06/26
       ////////////////////////////////////////////////////////////////
       // std::cout << "checking " << baseFileName+"."+fileType << std::endl;
-      int irtrn = hpct_check_file_path((baseFileName+"."+fileType).c_str());
+      int irtrn = grvy_check_file_path((baseFileName+"."+fileType).c_str());
       UQ_FATAL_TEST_MACRO(irtrn < 0,
                           m_fullRank,
                           "uqBaseEnvironmentClass::openUnifiedInputFile()",
@@ -1081,7 +1082,7 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
     // Verify parent directory exists (for cases when a user
     // specifies a relative path for the desired output file).
     //////////////////////////////////////////////////////////////////
-    int irtrn = hpct_check_file_path((m_options->m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str());
+    int irtrn = grvy_check_file_path((m_options->m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str());
     UQ_FATAL_TEST_MACRO(irtrn < 0,
                         m_fullRank,
                         "uqEnvironment::constructor()",

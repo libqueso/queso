@@ -3,13 +3,16 @@
 exampledir		= @prefix@/examples/basic
 example_DATA            = inverse_problem.c inverse_problemf.f90 queso.inp
 
-EXTRA_DIST             = inverse_problemf.f90 inverse_problem.h queso.inp
+EXTRA_DIST              = inverse_problemf.f90 inverse_problem.h queso.inp
 
+AM_CFLAGS               = $(GRVY_CFLAGS)
 AM_CPPFLAGS             = -I$(top_srcdir)/libs/interface
-AM_LDFLAGS              = $(BOOST_LDFLAGS) ${HPCT_LIBS} -lhpct ${GLPK_LIBS} -lglpk ${HDF5_LIBS} -lhdf5
+AM_LDFLAGS              = $(BOOST_LDFLAGS) ${GRVY_LIBS} -lgrvy ${GLPK_LIBS} -lglpk ${HDF5_LIBS} -lhdf5
 LIBS                    = -L$(top_builddir)/libs/.libs -lqueso $(GSL_LIBS) $(BOOST_PROGRAM_OPTIONS_LIB) $(EPETRA_LIBS)
 
-example_PROGRAMS        = inverse_problem
+example_PROGRAMS        = inverse_problem latency
+
 inverse_problem_SOURCES = inverse_problem.c
+latency_SOURCES         = latency_model.c
 
 @INC_AMINCLUDE@

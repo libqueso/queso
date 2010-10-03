@@ -49,11 +49,15 @@ public:
            uqBaseScalarCdfClass(const uqBaseEnvironmentClass& env, const char* prefix);
   virtual ~uqBaseScalarCdfClass();
 
-          const uqBaseEnvironmentClass& env    () const;
-          const std::string&            prefix () const;
-  virtual       double                  value  (T             paramValue) const = 0;
-  virtual       T                       inverse(double        cdfValue  ) const = 0;
-  virtual       void                    print  (std::ostream& os        ) const = 0;
+          const uqBaseEnvironmentClass& env             () const;
+          const std::string&            prefix          () const;
+  virtual       double                  value           (T             paramValue) const = 0;
+  virtual       T                       inverse         (double        cdfValue  ) const = 0;
+  virtual       void                    print           (std::ostream& os        ) const = 0;
+  virtual       void                    subWriteContents(const std::string&            varNamePrefix,
+                                                         const std::string&            fileName,
+                                                         const std::string&            fileType,
+                                                         const std::set<unsigned int>& allowedSubEnvIds) const;
 
 protected:
   const uqBaseEnvironmentClass& m_env;
@@ -100,6 +104,19 @@ uqBaseScalarCdfClass<T>::prefix() const
   return m_prefix;
 }
 
+template<class T>
+void
+uqBaseScalarCdfClass<T>::subWriteContents(
+  const std::string&            varNamePrefix,
+  const std::string&            fileName,
+  const std::string&            fileType,
+  const std::set<unsigned int>& allowedSubEnvIds) const
+{
+  std::cerr << "WARNING: uqBaseScalarCdfClass<T>::subWriteContents() being used..."
+            << std::endl;
+  return;
+}
+
 template <class T>
 std::ostream& operator<< (std::ostream& os, const uqBaseScalarCdfClass<T>& obj)
 {
@@ -119,9 +136,13 @@ public:
                           const std::vector<double>&    cdfValues);
  ~uqSampledScalarCdfClass();
 
-  double value  (T             paramValue) const;
-  T      inverse(double        cdfValue  ) const;
-  void   print  (std::ostream& os        ) const;
+  double value           (T             paramValue) const;
+  T      inverse         (double        cdfValue  ) const;
+  void   print           (std::ostream& os        ) const;
+  void   subWriteContents(const std::string&            varNamePrefix,
+                          const std::string&            fileName,
+                          const std::string&            fileType,
+                          const std::set<unsigned int>& allowedSubEnvIds) const;
 
 protected:
   using uqBaseScalarCdfClass<T>::m_env;
@@ -145,8 +166,8 @@ uqSampledScalarCdfClass<T>::uqSampledScalarCdfClass(
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqSampledScalarCdfClass<T>::constructor()"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 
   //for (unsigned int i = 0; i < m_cdfValues.size(); ++i) {
@@ -156,8 +177,8 @@ uqSampledScalarCdfClass<T>::uqSampledScalarCdfClass(
  
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqSampledScalarCdfClass<T>::constructor()"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
+                            << ": prefix = " << m_prefix
+                            << std::endl;
   }
 }
 
@@ -287,6 +308,65 @@ uqSampledScalarCdfClass<T>::print(std::ostream& os) const
   return;
 }
 
+template<class T>
+void
+uqSampledScalarCdfClass<T>::subWriteContents(
+  const std::string&            varNamePrefix,
+  const std::string&            fileName,
+  const std::string&            fileType,
+  const std::set<unsigned int>& allowedSubEnvIds) const
+{
+  UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
+                      m_env.fullRank(),
+                      "uqSampledScalarCdfClass<T>::subWriteContents()",
+                      "unexpected subRank");
+
+  uqFilePtrSetStruct filePtrSet;
+  if (m_env.openOutputFile(fileName,
+                           fileType, // "m or hdf"
+                           allowedSubEnvIds,
+                           false,
+                           filePtrSet)) {
+
+    // Grid
+    *filePtrSet.ofsVar << varNamePrefix << "grid_sub" << m_env.subIdString() << " = zeros(" << m_cdfGrid.size()
+                       << ","                                                               << 1
+                       << ");"
+                       << std::endl;
+    *filePtrSet.ofsVar << varNamePrefix << "grid_sub" << m_env.subIdString() << " = [";
+
+    unsigned int savedPrecision = filePtrSet.ofsVar->precision();
+    filePtrSet.ofsVar->precision(16);
+    for (unsigned int j = 0; j < m_cdfGrid.size(); ++j) {
+      *filePtrSet.ofsVar << m_cdfGrid[j] << " ";
+    }
+    filePtrSet.ofsVar->precision(savedPrecision);
+
+    *filePtrSet.ofsVar << "];\n";
+
+    // Values
+    *filePtrSet.ofsVar << varNamePrefix << "values_sub" << m_env.subIdString() << " = zeros(" << m_cdfValues.size()
+                       << ","                                                                 << 1
+                       << ");"
+                       << std::endl;
+    *filePtrSet.ofsVar << varNamePrefix << "values_sub" << m_env.subIdString() << " = [";
+
+    savedPrecision = filePtrSet.ofsVar->precision();
+    filePtrSet.ofsVar->precision(16);
+    for (unsigned int j = 0; j < m_cdfValues.size(); ++j) {
+      *filePtrSet.ofsVar << m_cdfValues[j] << " ";
+    }
+    filePtrSet.ofsVar->precision(savedPrecision);
+
+    *filePtrSet.ofsVar << "];\n";
+
+    // Close file
+    m_env.closeFile(filePtrSet,fileType);
+  }
+
+  return;
+}
+
 template <class T>
 double
 horizontalDistance(const uqBaseScalarCdfClass<T>& cdf1,
@@ -300,12 +380,12 @@ horizontalDistance(const uqBaseScalarCdfClass<T>& cdf1,
   double x2 = cdf1.inverse(1.-epsilon*.5);
   if (cdf1.env().subDisplayFile()) {
     *cdf1.env().subDisplayFile() << "In horizontalDistance()"
-                                << ", cdf1.prefix() = " << cdf1.prefix()
-                                << ", cdf2.prefix() = " << cdf2.prefix()
-                                << ", epsilon = "       << epsilon
-                                << ": x1 = "            << x1
-                                << ", x2 = "            << x2
-                                << std::endl;
+                                 << ", cdf1.prefix() = " << cdf1.prefix()
+                                 << ", cdf2.prefix() = " << cdf2.prefix()
+                                 << ", epsilon = "       << epsilon
+                                 << ": x1 = "            << x1
+                                 << ", x2 = "            << x2
+                                 << std::endl;
   }
 
   //if (cdf1.env().subDisplayFile()) {
@@ -319,27 +399,38 @@ horizontalDistance(const uqBaseScalarCdfClass<T>& cdf1,
     double ratio = i/(numEvaluationPoints-1.); // IMPORTANT: Yes, '-1.'
     double x = (1.-ratio)*x1 + ratio*x2;
     double y = cdf2.inverse(cdf1.value(x));
-    //if (cdf1.env().subDisplayFile()) {
-    //  *cdf1.env().subDisplayFile() << "In horizontalDistance: x = " << x
-    //                              << ", cdf1.value(x) = "          << cdf1.value(x)
-    //                              << ", y = "                      << y
-    //                              << std::endl;
-    //}
     double d = fabs(x-y);
+    if ((cdf1.env().subDisplayFile()) && (cdf1.env().displayVerbosity() >= 3)) {
+      *cdf1.env().subDisplayFile() << "In horizontalDistance"
+                                   << ": i = "                  << i
+                                   << ", x = "                  << x
+                                   << ", cdf1.value(x) = "      << cdf1.value(x)
+                                   << ", y = "                  << y
+                                   << ", d = "                  << d
+                                   << ", currentMaxDistance = " << maxDistance
+                                   << std::endl;
+    }
     if (maxDistance < d) {
       maxDistance     = d;
       xForMaxDistance = x;
+      if ((cdf1.env().subDisplayFile()) && (cdf1.env().displayVerbosity() >= 3)) {
+        *cdf1.env().subDisplayFile() << "In horizontalDistance"
+                                     << ": i = "               << i
+                                     << ", NOW maxDistance = " << maxDistance
+                                     << ", xForMaxDistance = " << xForMaxDistance
+                                     << std::endl;
+      }
     }
   }
 
   if (cdf1.env().subDisplayFile()) {
     *cdf1.env().subDisplayFile() << "In horizontalDistance()"
-                                << ", cdf1.prefix() = "   << cdf1.prefix()
-                                << ", cdf2.prefix() = "   << cdf2.prefix()
-                                << ", epsilon = "         << epsilon
-                                << ": maxDistance = "     << maxDistance
-                                << ", xForMaxDistance = " << xForMaxDistance
-                                << std::endl;
+                                 << ", cdf1.prefix() = "   << cdf1.prefix()
+                                 << ", cdf2.prefix() = "   << cdf2.prefix()
+                                 << ", epsilon = "         << epsilon
+                                 << ": maxDistance = "     << maxDistance
+                                 << ", xForMaxDistance = " << xForMaxDistance
+                                 << std::endl;
   }
 
   return maxDistance;

@@ -103,17 +103,16 @@ AX_PATH_GLPK(4.35,,AC_MSG_ERROR([Could not find required GLPK error]))
 
 # Check for HDF5 library
 
-AX_PATH_HDF5(1.8.5,,AC_MSG_ERROR([Could not find required HDF5 error]))
+#AX_PATH_HDF5(1.8.5,,AC_MSG_ERROR([Could not find required HDF5 error]))
+AX_PATH_HDF5(1.8.4,,AC_MSG_ERROR([Could not find required HDF5 error]))
 
-# HPCT Config
+# libGRVY Config
 
-AX_PATH_HPCT
+AX_PATH_GRVY
 
 AC_CACHE_SAVE
 
-#PKG_CHECK_MODULES(hpct, hpct >= 0.24)
-#AC_SUBST(HPCT_CFLAGS)
-#AC_SUBST(HPCT_LIBS)
+#PKG_CHECK_MODULES(grvy, grvy >= 0.24)
 
 #----------------
 # Doxygen support
