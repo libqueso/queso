@@ -1,3 +1,5 @@
+BUILT_SOURCES = .license.stamp
+
 AM_CPPFLAGS  = -I. \
 	-I$(top_srcdir)/src/core/inc \
 	-I$(top_srcdir)/src/misc/inc \
@@ -12,6 +14,9 @@ EXTRA_DIST                     = TgaValidationCycle_appl.h TgaValidationCycle_li
 noinst_PROGRAMS                = TgaValidationCycle_gsl
 TgaValidationCycle_gsl_SOURCES = TgaValidationCycle_gsl.C 
 
+.license.stamp: $(top_srcdir)/LICENSE
+	$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE *.C *.h
+	echo 'updated source license headers' >$@
 
 # Required for AX_AM_MACROS
 @INC_AMINCLUDE@
