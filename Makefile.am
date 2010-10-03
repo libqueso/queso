@@ -106,7 +106,19 @@ docs:       doxygen-run
 #include doxygen.am
 
 # Additional files to be deleted by 'make distclean'
+
 DISTCLEANFILES = 
+
+# --------------------------------------------------
+# Revision control support for external distribution
+# --------------------------------------------------
+
+if SVN_CHECKOUT
+dist_version: FORCE
+	@SVN_REVISION@ > $(top_srcdir)/dist_version
+
+FORCE:
+endif
 
 
 # Required for AX_AM_MACROS
