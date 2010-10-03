@@ -87,6 +87,9 @@ uqEnvironmentOptionsClass::scanOptionsValues()
 void
 uqEnvironmentOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
 {
+#ifdef QUESO_MEMORY_DEBUGGING
+  std::cout << "In uqEnvOptionsClass::defineMyOptions(), before add_options()" << std::endl;
+#endif
   optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                               "produce help message for uq environment"  )
     (m_option_numSubEnvironments.c_str(),   po::value<unsigned int>()->default_value(UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),    "number of subEnvironments"                )
@@ -98,6 +101,9 @@ uqEnvironmentOptionsClass::defineMyOptions(po::options_description& optionsDesc)
     (m_option_seed.c_str(),                 po::value<int         >()->default_value(UQ_ENV_SEED_ODV),                    "set seed"                                 )
   //(m_option_numDebugParams.c_str(),       po::value<unsigned int>()->default_value(UQ_ENV_NUM_DEBUG_PARAMS_ODV),        "set number of debug parameters"           )
   ;
+#ifdef QUESO_MEMORY_DEBUGGING
+  std::cout << "In uqEnvOptionsClass::defineMyOptions(), after add_options()" << std::endl;
+#endif
 
   return;
 }
@@ -105,6 +111,9 @@ uqEnvironmentOptionsClass::defineMyOptions(po::options_description& optionsDesc)
 void
 uqEnvironmentOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
 {
+#ifdef QUESO_MEMORY_DEBUGGING
+  std::cout << "Entering uqEnvOptionsClass::getMyOptionsValues()" << std::endl;
+#endif
   if (m_env.allOptionsMap().count(m_option_help.c_str())) {
     // 'm_subDisplayOutputFile' is still not available at this moment. Use 'std::cout'
     if (m_env.fullRank() == 0) std::cout << optionsDesc
@@ -173,6 +182,10 @@ uqEnvironmentOptionsClass::getMyOptionValues(po::options_description& optionsDes
   //if (m_env.allOptionsMap().count(m_option_numDebugParams.c_str())) {
   //  m_seed = m_env.allOptionsMap()[m_option_numDebugParams].as<unsigned int>();
   //}
+
+#ifdef QUESO_MEMORY_DEBUGGING
+  std::cout << "Leaving uqEnvOptionsClass::getMyOptionsValues()" << std::endl;
+#endif
 
   return;
 }

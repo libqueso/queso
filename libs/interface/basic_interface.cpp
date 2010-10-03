@@ -34,13 +34,12 @@ using namespace std;
 
 #define _QUESO_Basic_API_DEF
 
+#include <basic_interface.h>
 #include <basic_classes.h>
 #include <basic_int.h>
 #include <hpct.h>
 
 using namespace QUESO_Basic_API;
-
-char *f2c_char(char *,int);
 
 //-------------
 // C Interface 
@@ -75,7 +74,9 @@ extern "C" void QUESO_finalize()
 //-------------------
 // Fortran Interface 
 //-------------------
-    
+
+char *f2c_char(char *,int);
+
 extern "C" void queso_init_(char *inputfile,int _namelen)
 {
   char *name = f2c_char(inputfile,_namelen);

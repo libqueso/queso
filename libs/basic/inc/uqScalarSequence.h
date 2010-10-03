@@ -160,7 +160,7 @@ public:
                                                    std::vector<unsigned int>&      unifiedBins) const;
         void         subCdfStacc                  (unsigned int                    initialPos,
                                                    std::vector<double>&            cdfStaccValues,
-												   std::vector<double>&            cdfStaccValuesup,
+                                                   std::vector<double>&            cdfStaccValuesup,
                                                    std::vector<double>&            cdfStaccValueslow,
                                                    uqScalarSequenceClass<T>&       xdataValues) const;
         void         subCdfStacc                  (unsigned int                    initialPos,
@@ -566,17 +566,41 @@ uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only(
       //int MPI_Gather (void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
       //                void *recvbuf, int recvcount, MPI_Datatype recvtype, 
       //                int root, MPI_Comm comm )
-      std::vector<int> recvcnts(m_env.inter0Comm().NumProc(),0);
+      std::vector<int> recvcnts(m_env.inter0Comm().NumProc(),0); // '0' is NOT the correct value for recvcnts[0]
       int mpiRC = MPI_Gather((void *) &auxSubSize, 1, MPI_INT, (void *) &recvcnts[0], (int) 1, MPI_INT, 0, m_env.inter0Comm().Comm());
       UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                           m_env.fullRank(),
                           "uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only()",
                           "failed MPI_Gather()");
+      if (m_env.inter0Rank() == 0) {
+        //recvcnts[0] = (int) this->subSequenceSize(); // FIX ME: really necessary????
+        UQ_FATAL_TEST_MACRO(recvcnts[0] != (int) this->subSequenceSize(),
+                            m_env.fullRank(),
+                            "uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only()",
+                            "failed MPI_Gather() result at proc 0");
+      }
 
       std::vector<int> displs(m_env.inter0Comm().NumProc(),0);
       for (unsigned int r = 1; r < (unsigned int) m_env.inter0Comm().NumProc(); ++r) { // Yes, from '1' on
         displs[r] = displs[r-1] + recvcnts[r-1];
       }
+
+#if 0 // for debug only
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+        for (unsigned int r = 0; r < (unsigned int) m_env.inter0Comm().NumProc(); ++r) {
+          *m_env.subDisplayFile() << "  auxSubSize = "            << auxSubSize
+                                  << ", recvcnts[" << r << "] = " << recvcnts[r]
+                                  << ", displs["   << r << "] = " << displs[r]
+                                  << ", m_seq.size() = "          << m_seq.size()
+                                  << ", outputVec.size() = "      << outputVec.size()
+                                  << std::endl;
+        }
+        for (unsigned int i = 0; i < m_seq.size(); ++i) {
+          *m_env.subDisplayFile() << "  (before gatherv) m_seq[" << i << "]= " << m_seq[i]
+                                  << std::endl;
+        }
+      }
+#endif
 
       //int MPI_Gatherv(void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
       //                void *recvbuf, int *recvcnts, int *displs, MPI_Datatype recvtype, 
@@ -586,6 +610,45 @@ uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only(
                           m_env.fullRank(),
                           "uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only()",
                           "failed MPI_Gatherv()");
+
+#if 0 // for debug only
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+        for (unsigned int i = 0; i < m_seq.size(); ++i) {
+          *m_env.subDisplayFile() << "  (after gatherv) m_seq[" << i << "]= " << m_seq[i]
+                                  << std::endl;
+        }
+        for (unsigned int i = 0; i < outputVec.size(); ++i) {
+          *m_env.subDisplayFile() << "  (after gatherv) outputVec[" << i << "]= " << outputVec[i]
+                                  << std::endl;
+        }
+      }
+#endif
+
+#if 0 // for debug only
+      if (m_env.inter0Rank() == 0) {
+        for (unsigned int i = 0; i < auxSubSize; ++i) {
+          outputVec[i] = m_seq[i];
+        }
+        mpiRC = MPI_Gatherv(MPI_IN_PLACE, auxSubSize, MPI_DOUBLE, (void *) &outputVec[0], (int *) &recvcnts[0], (int *) &displs[0], MPI_DOUBLE, 0, m_env.inter0Comm().Comm());
+      }
+      else {
+        mpiRC = MPI_Gatherv((void *) &m_seq[0], auxSubSize, MPI_DOUBLE, (void *) &outputVec[0], (int *) &recvcnts[0], (int *) &displs[0], MPI_DOUBLE, 0, m_env.inter0Comm().Comm());
+      }
+      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                          m_env.fullRank(),
+                          "uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only()",
+                          "failed MPI_Gatherv()");
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+        for (unsigned int i = 0; i < m_seq.size(); ++i) {
+          *m_env.subDisplayFile() << "  (after 2nd gatherv) m_seq[" << i << "]= " << m_seq[i]
+                                  << std::endl;
+        }
+        for (unsigned int i = 0; i < outputVec.size(); ++i) {
+          *m_env.subDisplayFile() << "  (after 2nd gatherv) outputVec[" << i << "]= " << outputVec[i]
+                                  << std::endl;
+        }
+      }
+#endif
     }
     else {
       // Node not in the 'inter0' communicator

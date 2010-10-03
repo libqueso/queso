@@ -32,11 +32,9 @@
 
 #include <cmath>
 
-#include <uqEnvironment.h>
+#include <inverse_power_method.h>
 #include <uqGslMatrix.h>
 #include <uqVectorRV.h>
-
-int actualChecking(const uqFullEnvironmentClass* env);
 
 using std::fabs;
 

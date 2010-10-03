@@ -1,7 +1,7 @@
 /*--------------------------------------------------------------------------
  *--------------------------------------------------------------------------
  *
- * Copyright (C) 2008,2009 The PECOS Development Team
+ * Copyright (C) 2008 The PECOS Development Team
  *
  * Please see http://pecos.ices.utexas.edu for more information.
  *
@@ -25,47 +25,18 @@
  *
  * $Id$
  *
- * Simple toy problem to illustrate the use of the Basic QUESO
- * interface to perform a statistical inverse problem.
+ * Brief description of this file: 
  * 
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-#include <inverse_problem.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <queso.h>
-#include <mpi.h> // Added by prudenci on 2009/Sep/06 in order to avoid INTEL warning. Maybe Karl want to add that in queso.h (a hpct file?)
+#ifndef __UQ_MPI_H__
+#define __UQ_MPI_H__
 
-int main(int argc, char *argv[])
-{
+#include <uqDefines.h>
+#include <Epetra_MpiComm.h>
 
-  MPI_Init(&argc,&argv);
+int UQ_MPI_Barrier(MPI_Comm comm);
+int UQ_MPI_Barrier(const Epetra_MpiComm& comm);
 
-  printf("--> Initializing QUESO Environment...\n");
-
-  /* Initialize QUESO environment and define input file */
-
-  QUESO_init("queso.inp");	                   
-
- /* Register an application likelihood function with QUESO and run a
-  * statistical inversion problem using MCMC sampling */
-
-  QUESO_statistical_inversion(my_likelihood);     
-
-  /* Finalize the analysis and output statistics */
-
-  QUESO_finalize();
-  
-  MPI_Finalize();
-  return 0;
-
-}
-
-double my_likelihood(double *params)
-{
-  static double needle   = 42.;   
-  static double variance = 1.*1.;  /* sigma^2 */
-
-  return( (params[0] - needle)*(params[0] - needle)/(variance) );
-}
+#endif // __UQ_MPI_H__

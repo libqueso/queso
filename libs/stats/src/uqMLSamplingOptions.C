@@ -33,33 +33,24 @@
 #include <uqMLSamplingOptions.h>
 #include <uqMiscellaneous.h>
 
-void foo_bar(glp_tree *tree, void *info)
-{
-  const uqBaseEnvironmentClass& env = *(((foo_bar_struct *) info)->env);
-  int reason = glp_ios_reason(tree);
-
-  if ((env.subDisplayFile()) && (env.displayVerbosity() >= 0)) {
-    *env.subDisplayFile() << "In foo_bar()"
-      //<< ", level " << currLevel+LEVEL_REF_ID
-                          << ": glp_ios_reason() = " << reason
-                          << std::endl;
-  }
-  std::cout << "In foo_bar: reason = " << reason << std::endl;
-  sleep(1);  
-
-  return;
-}
-
 uqMLSamplingOptionsClass::uqMLSamplingOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix)
   :
-  m_prefix                     ((std::string)(prefix) + "ml_"),
-  m_dataOutputFileName         (UQ_ML_SAMPLING_DATA_OUTPUT_FILE_NAME_ODV),
-//m_dataOutputAllowedSet       (),
-  m_env                        (env),
-  m_optionsDesc                (new po::options_description("Multilevel sampling options")),
-  m_option_help                (m_prefix + "help"                ),
-  m_option_dataOutputFileName  (m_prefix + "dataOutputFileName"  ),
-  m_option_dataOutputAllowedSet(m_prefix + "dataOutputAllowedSet")
+  m_prefix                         ((std::string)(prefix) + "ml_"                 ),
+  m_checkpointLevel                (UQ_ML_SAMPLING_CHECKPOINT_LEVEL_ODV           ),
+  m_checkpointOutputFileName       (UQ_ML_SAMPLING_CHECKPOINT_OUTPUT_FILE_NAME_ODV),
+  m_restartLevel                   (UQ_ML_SAMPLING_RESTART_LEVEL_ODV              ),
+  m_restartInputFileName           (UQ_ML_SAMPLING_RESTART_INPUT_FILE_NAME_ODV    ),
+  m_dataOutputFileName             (UQ_ML_SAMPLING_DATA_OUTPUT_FILE_NAME_ODV      ),
+//m_dataOutputAllowedSet           (),
+  m_env                            (env),
+  m_optionsDesc                    (new po::options_description("Multilevel sampling options")),
+  m_option_help                    (m_prefix + "help"                    ),
+  m_option_checkpointLevel         (m_prefix + "checkpointLevel"         ),
+  m_option_checkpointOutputFileName(m_prefix + "checkpointOutputFileName"),
+  m_option_restartLevel            (m_prefix + "restartLevel"            ),
+  m_option_restartInputFileName    (m_prefix + "restartInputFileName"    ),
+  m_option_dataOutputFileName      (m_prefix + "dataOutputFileName"      ),
+  m_option_dataOutputAllowedSet    (m_prefix + "dataOutputAllowedSet"    )
 {
 }
 
@@ -84,11 +75,12 @@ uqMLSamplingOptionsClass::scanOptionsValues()
   }
 
   return;
-};
+}
 
 void
 uqMLSamplingOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
 {
+  // ernesto
   optionsDesc.add_options()     
     (m_option_help.c_str(),                                                                                                       "produce help message for multilevel sampling options")
     (m_option_dataOutputFileName.c_str(),   po::value<std::string >()->default_value(UQ_ML_SAMPLING_DATA_OUTPUT_FILE_NAME_ODV  ), "name of generic output file"                         )
@@ -107,6 +99,8 @@ uqMLSamplingOptionsClass::getMyOptionValues(po::options_description& optionsDesc
                               << std::endl;
     }
   }
+
+  // ernesto
 
   if (m_env.allOptionsMap().count(m_option_dataOutputFileName.c_str())) {
     m_dataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName.c_str()]).as<std::string>();
@@ -131,6 +125,7 @@ uqMLSamplingOptionsClass::getMyOptionValues(po::options_description& optionsDesc
 void
 uqMLSamplingOptionsClass::print(std::ostream& os) const
 {
+  // ernesto
   os <<         m_option_dataOutputFileName   << " = " << m_dataOutputFileName
      << "\n" << m_option_dataOutputAllowedSet << " = ";
   for (std::set<unsigned int>::iterator setIt = m_dataOutputAllowedSet.begin(); setIt != m_dataOutputAllowedSet.end(); ++setIt) {

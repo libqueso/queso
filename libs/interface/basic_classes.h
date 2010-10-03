@@ -30,6 +30,9 @@
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
+#ifndef __BASIC_CLASSES_H__
+#define __BASIC_CLASSES_H__
+
 using namespace std;
 
 #include <uqStatisticalInverseProblem.h>
@@ -38,10 +41,13 @@ using namespace std;
 
 namespace QUESO_Basic_API {
 
-  // Note: the Basic QUESO API uses GSL for the base vector/matrix class
-
 #define basicV uqGslVectorClass
 #define basicM uqGslMatrixClass
+
+  void   QUESO_fatal        (const char *message);
+  double Likelihood_Wrapper (const basicV &,const basicV *,const void *,basicV *,basicM *,basicV *);
+
+  // Note: the Basic QUESO API uses GSL for the base vector/matrix class
 
   class QUESO_Basic_Class {
   private:
@@ -90,3 +96,5 @@ namespace QUESO_Basic_API {
   };
   
 }
+
+#endif //  __BASIC_CLASSES_H__

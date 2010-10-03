@@ -184,7 +184,6 @@ public:
           void                    openInputFile              (const std::string&            fileName,
                                                               const std::string&            fileType,
                                                               const std::set<unsigned int>& allowedSubEnvIds,
-                                                                    bool                    writeOver,
                                                                     std::ifstream*&         ifsvar) const;
 
 

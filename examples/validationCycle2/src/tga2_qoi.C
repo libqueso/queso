@@ -45,6 +45,14 @@ void qoiRoutine(const uqGslVectorClass&                        paramValues,
                       EpetraExt::DistArray<uqGslMatrixClass*>* hessianMatrices,
                       EpetraExt::DistArray<uqGslVectorClass*>* hessianEffects)
 {
+  if (paramDirection  &&
+      functionDataPtr && 
+      gradVectors     &&
+      hessianMatrices &&
+      hessianEffects) {
+    // Just to eliminate INTEL compiler warnings
+  }
+
   double A             = paramValues[0];
   double E             = paramValues[1];
   double beta          = ((qoiRoutine_DataClass *) functionDataPtr)->m_beta;

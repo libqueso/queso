@@ -510,20 +510,29 @@ uqGslVectorClass::mpiBcast(int srcRank, const Epetra_MpiComm& bcastComm)
                       m_env.fullRank(),
                       "uqGslVectorClass::mpiBcast()",
                       "failed MPI_Allreduce() for numNodes");
-  UQ_FATAL_TEST_MACRO(totalNumNodes != (double) bcastComm.NumProc(),
+  UQ_FATAL_TEST_MACRO(((int) totalNumNodes) != bcastComm.NumProc(),
                       m_env.fullRank(),
                       "uqGslVectorClass::mpiBcast()",
                       "inconsistent numNodes");
 
   // Check that all participant nodes have the same vector size
-  double localVectorSize = (double) this->sizeLocal();
+  double localVectorSize  = this->sizeLocal();
   double sumOfVectorSizes = 0.; 
   mpiRC = MPI_Allreduce((void *) &localVectorSize, (void *) &sumOfVectorSizes, (int) 1, MPI_DOUBLE, MPI_SUM, bcastComm.Comm());
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_env.fullRank(),
                       "uqGslVectorClass::mpiBcast()",
                       "failed MPI_Allreduce() for vectorSize");
-  UQ_FATAL_TEST_MACRO(sumOfVectorSizes != (totalNumNodes * localVectorSize),
+
+  if ( ((unsigned int) sumOfVectorSizes) != ((unsigned int)(totalNumNodes*localVectorSize)) ) {
+    std::cerr << "rank "                 << bcastComm.MyPID()
+              << ": sumOfVectorSizes = " << sumOfVectorSizes
+              << ", totalNumNodes = "    << totalNumNodes
+              << ", localVectorSize = "  << localVectorSize
+              << std::endl;
+  }
+  bcastComm.Barrier();
+  UQ_FATAL_TEST_MACRO(((unsigned int) sumOfVectorSizes) != ((unsigned int)(totalNumNodes*localVectorSize)),
                       m_env.fullRank(),
                       "uqGslVectorClass::mpiBcast()",
                       "inconsistent vectorSize");
@@ -732,7 +741,6 @@ uqGslVectorClass::subReadContents(
   m_env.openInputFile(fileName,
                       UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
                       allowedSubEnvIds,
-                      false,
                       ifsVar);
 
   if (ifsVar) {
@@ -914,33 +922,25 @@ uqGslVectorClass::atLeastOneComponentBiggerThan (const uqGslVectorClass& rhs) co
 double
 uqGslVectorClass::getMaxValue( ) const
 {
-  double max_value;
-
-  return max_value = gsl_vector_max( m_vec );
+  return gsl_vector_max( m_vec );
 }
 
 double
 uqGslVectorClass::getMinValue( ) const
 {
-  double min_value;
-
-  return min_value = gsl_vector_min( m_vec );
+  return gsl_vector_min( m_vec );
 }
 
 int
 uqGslVectorClass::getMaxValueIndex( ) const
 {
-  int max_value_index;
-
-  return max_value_index = gsl_vector_max_index( m_vec );
+  return gsl_vector_max_index( m_vec );
 }
 
 int
 uqGslVectorClass::getMinValueIndex( ) const
 {
-  int min_value_index;
-
-  return min_value_index = gsl_vector_min_index( m_vec );
+  return gsl_vector_min_index( m_vec );
 }
 
 void

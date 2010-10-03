@@ -30,11 +30,9 @@
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-#include <uqEnvironment.h>
+#include <get_min_max_vec.h>
 #include <uqGslMatrix.h>
 #include <uqVectorRV.h>
-
-int actualChecking(const uqFullEnvironmentClass* env);
 
 int main(int argc, char* argv[]) 
 {

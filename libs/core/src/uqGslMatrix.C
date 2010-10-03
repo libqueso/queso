@@ -658,12 +658,12 @@ uqGslMatrixClass::eigen(uqGslVectorClass& eigenValues, uqGslMatrixClass* eigenVe
   }
 
   if (eigenVectors == NULL) {
-    gsl_eigen_symm_workspace* w = gsl_eigen_symm_alloc((const size_t) n);
+    gsl_eigen_symm_workspace* w = gsl_eigen_symm_alloc((size_t) n);
     gsl_eigen_symm(m_mat,eigenValues.data(),w);
     gsl_eigen_symm_free(w);
   }
   else {
-    gsl_eigen_symmv_workspace* w = gsl_eigen_symmv_alloc((const size_t) n);
+    gsl_eigen_symmv_workspace* w = gsl_eigen_symmv_alloc((size_t) n);
     gsl_eigen_symmv(m_mat,eigenValues.data(),eigenVectors->m_mat,w);
     gsl_eigen_symmv_sort(eigenValues.data(),eigenVectors->m_mat,GSL_EIGEN_SORT_VAL_ASC);
     gsl_eigen_symmv_free(w);
@@ -825,11 +825,10 @@ uqGslMatrixClass::smallestEigen(double& eigenValue, uqGslVectorClass& eigenVecto
 }
 
 void
-uqGslMatrixClass::getColumn( const unsigned int column_num, uqGslVectorClass& column) const
+uqGslMatrixClass::getColumn(unsigned int column_num, uqGslVectorClass& column) const
 {
   // Sanity checks
-  UQ_FATAL_TEST_MACRO(( (column_num >= this->numCols()) ||
-			(column_num < 0) ),
+  UQ_FATAL_TEST_MACRO(column_num >= this->numCols(),
                       UQ_UNAVAILABLE_RANK,
                       "uqGslMatrixClass::getColumn",
                       "Specified row number not within range");
@@ -856,11 +855,10 @@ uqGslMatrixClass::getColumn( const unsigned int column_num, uqGslVectorClass& co
 }
 
 void
-uqGslMatrixClass::getRow( const unsigned int row_num, uqGslVectorClass& row) const
+uqGslMatrixClass::getRow(unsigned int row_num, uqGslVectorClass& row) const
 {
   // Sanity checks
-  UQ_FATAL_TEST_MACRO(( (row_num >= this->numRowsLocal()) ||
-			(row_num < 0) ),
+  UQ_FATAL_TEST_MACRO(row_num >= this->numRowsLocal(),
                       UQ_UNAVAILABLE_RANK,
                       "uqGslMatrixClass::getRow",
                       "Specified row number not within range");
@@ -887,7 +885,7 @@ uqGslMatrixClass::getRow( const unsigned int row_num, uqGslVectorClass& row) con
 }
 
 uqGslVectorClass
-uqGslMatrixClass::getRow( const unsigned int row_num ) const
+uqGslMatrixClass::getRow(unsigned int row_num ) const
 {
   // We rely on the void getRow's to do sanity checks
   // So we don't do them here.
@@ -900,7 +898,7 @@ uqGslMatrixClass::getRow( const unsigned int row_num ) const
 }
 
 uqGslVectorClass
-uqGslMatrixClass::getColumn( const unsigned int column_num ) const
+uqGslMatrixClass::getColumn(unsigned int column_num ) const
 {
   // We rely on the void getRow's to do sanity checks
   // So we don't do them here.
@@ -913,15 +911,14 @@ uqGslMatrixClass::getColumn( const unsigned int column_num ) const
 }
 
 void
-uqGslMatrixClass::setRow( const unsigned int row_num, const uqGslVectorClass& row)
+uqGslMatrixClass::setRow(unsigned int row_num, const uqGslVectorClass& row)
 {
   if (m_LU) {
     gsl_matrix_free(m_LU);
     m_LU = NULL;
   }
   // Sanity checks
-  UQ_FATAL_TEST_MACRO(( (row_num >= this->numRowsLocal()) ||
-			(row_num < 0) ),
+  UQ_FATAL_TEST_MACRO(row_num >= this->numRowsLocal(),
                       UQ_UNAVAILABLE_RANK,
                       "uqGslMatrixClass::setRow",
                       "Specified row number not within range");
@@ -943,15 +940,14 @@ uqGslMatrixClass::setRow( const unsigned int row_num, const uqGslVectorClass& ro
 }
 
 void
-uqGslMatrixClass::setColumn( const unsigned int column_num, const uqGslVectorClass& column)
+uqGslMatrixClass::setColumn(unsigned int column_num, const uqGslVectorClass& column)
 {
   if (m_LU) {
     gsl_matrix_free(m_LU);
     m_LU = NULL;
   }
   // Sanity checks
-  UQ_FATAL_TEST_MACRO(( (column_num >= this->numCols()) ||
-			(column_num < 0) ),
+  UQ_FATAL_TEST_MACRO(column_num >= this->numCols(),
                       UQ_UNAVAILABLE_RANK,
                       "uqGslMatrixClass::setColumn",
                       "Specified column number not within range");

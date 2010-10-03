@@ -25,6 +25,7 @@ libqueso_la_SOURCES = $(top_srcdir)/libs/core/src/uqDefines.C \
 	$(top_srcdir)/libs/core/src/uqEnvironmentOptions.C \
 	$(top_srcdir)/libs/core/src/uqVector.C \
 	$(top_srcdir)/libs/core/src/uqMatrix.C \
+	$(top_srcdir)/libs/core/src/uqMPI.C \
 	$(top_srcdir)/libs/core/src/uqTrilinosVector.C \
 	$(top_srcdir)/libs/core/src/uqTrilinosMatrix.C
 
@@ -58,6 +59,7 @@ endif
 # (4/5) Sources from stats/src
 libqueso_la_SOURCES += $(top_srcdir)/libs/stats/src/uqFiniteDistribution.C \
 	$(top_srcdir)/libs/stats/src/uqMetropolisHastingsSGOptions.C \
+	$(top_srcdir)/libs/stats/src/uqMLSampling.C \
 	$(top_srcdir)/libs/stats/src/uqMLSamplingOptions.C \
 	$(top_srcdir)/libs/stats/src/uqMLSamplingLevelOptions.C \
 	$(top_srcdir)/libs/stats/src/uqMonteCarloSGOptions.C \
@@ -80,6 +82,7 @@ libqueso_include_HEADERS = $(top_srcdir)/libs/core/inc/uqDefines.h \
 	$(top_srcdir)/libs/core/inc/uqGslMatrix.h \
 	$(top_srcdir)/libs/core/inc/uqGslVector.h \
 	$(top_srcdir)/libs/core/inc/uqMatrix.h \
+	$(top_srcdir)/libs/core/inc/uqMPI.h \
 	$(top_srcdir)/libs/core/inc/uqTrilinosMatrix.h \
 	$(top_srcdir)/libs/core/inc/uqTrilinosVector.h \
 	$(top_srcdir)/libs/core/inc/uqVector.h
@@ -118,7 +121,9 @@ libqueso_include_HEADERS += $(top_srcdir)/libs/stats/inc/uqFiniteDistribution.h 
 	$(top_srcdir)/libs/stats/inc/uqMetropolisHastingsSG1.h \
 	$(top_srcdir)/libs/stats/inc/uqMetropolisHastingsSG2.h \
 	$(top_srcdir)/libs/stats/inc/uqMetropolisHastingsSGOptions.h \
-	$(top_srcdir)/libs/stats/inc/uqMLSampling.h \
+	$(top_srcdir)/libs/stats/inc/uqMLSampling1.h \
+	$(top_srcdir)/libs/stats/inc/uqMLSampling2.h \
+	$(top_srcdir)/libs/stats/inc/uqMLSampling3.h \
 	$(top_srcdir)/libs/stats/inc/uqMLSamplingOptions.h \
 	$(top_srcdir)/libs/stats/inc/uqMLSamplingLevelOptions.h \
 	$(top_srcdir)/libs/stats/inc/uqModelValidation.h \
