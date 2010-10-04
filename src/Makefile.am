@@ -35,6 +35,8 @@ libqueso_la_LDFLAGS += $(HDF5_LIBS)
 # have a EPETRA_LIBS or some such variable later.
 
 libqueso_la_LDFLAGS += -lepetra
+#libqueso_la_LDFLAGS += -Wl,-rpath,$(TRILINOS_HOME)/lib -lepetra
+#libqueso_la_LDFLAGS += -Wl,-rpath,=/Users/karl/bin/trilinos-9.0.3/lib/ -lepetra
 
 # Sources from core/src
 
@@ -186,9 +188,10 @@ libqueso_include_HEADERS += \
 
 # Standalone binaries
 
-bin_PROGRAMS    = version
-version_SOURCES = $(top_srcdir)/src/core/src/version.C
-version_LDADD   = -L$(top_builddir)/src -lqueso
+bin_PROGRAMS         = version
+version_SOURCES      = $(top_srcdir)/src/core/src/version.C
+version_LDADD        = -L$(top_builddir)/src -lqueso
+version_DEPENDENCIES = libqueso.la
 
 
 #---------------------------------
