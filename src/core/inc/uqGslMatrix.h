@@ -68,6 +68,7 @@ public:
   void              zeroLower     (bool includeDiagonal = false);
   void              zeroUpper     (bool includeDiagonal = false);
   uqGslMatrixClass  transpose     () const;
+  uqGslMatrixClass  inverse       () const;
   uqGslVectorClass  multiply      (const uqGslVectorClass& x) const;
   uqGslVectorClass  invertMultiply(const uqGslVectorClass& b) const;
   void              invertMultiply(const uqGslVectorClass& b, uqGslVectorClass& x) const;

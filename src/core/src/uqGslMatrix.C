@@ -437,6 +437,41 @@ uqGslMatrixClass::transpose () const
   return mat;
 }
 
+uqGslMatrixClass
+uqGslMatrixClass::inverse() const
+{
+  unsigned int nRows = this->numRowsLocal();
+  unsigned int nCols = this->numCols();
+
+  UQ_FATAL_TEST_MACRO((nRows != nCols),
+                      m_env.worldRank(),
+                      "uqGslMatrixClass::inverse()",
+                      "matrix is not square");
+
+  uqGslMatrixClass mat       (m_env,m_map,nCols);
+  uqGslVectorClass unitVector(m_env,m_map);
+  unitVector.cwSet(0.);
+  uqGslVectorClass multVector(m_env,m_map);
+  for (unsigned int j = 0; j < nCols; ++j) {
+    if (j > 0) unitVector[j-1] = 0.;
+    unitVector[j] = 1.;
+    this->invertMultiply(unitVector, multVector);
+    for (unsigned int i = 0; i < nRows; ++i) {
+      mat(i,j) = multVector[i];
+    }
+  }
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "In uqGslMatrixClass::inverse():"
+                           << "\n M = "        << *this
+                           << "\n M^{-1} = "   << mat
+                           << "\n M*M^{-1} = " << (*this)*mat
+                           << "\n M^{-1}*M = " << mat*(*this)
+                           << std::endl;
+  }
+
+  return mat;
+}
+
 uqGslVectorClass
 uqGslMatrixClass::multiply(
   const uqGslVectorClass& x) const
