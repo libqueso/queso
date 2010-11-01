@@ -69,6 +69,8 @@ public:
   void              zeroUpper     (bool includeDiagonal = false);
   uqGslMatrixClass  transpose     () const;
   uqGslMatrixClass  inverse       () const;
+  double            determinant   () const;
+  double            lnDeterminant () const;
   uqGslVectorClass  multiply      (const uqGslVectorClass& x) const;
   uqGslVectorClass  invertMultiply(const uqGslVectorClass& b) const;
   void              invertMultiply(const uqGslVectorClass& b, uqGslVectorClass& x) const;
@@ -100,11 +102,16 @@ public:
 
 private:
   void              copy                 (const uqGslMatrixClass& src);
+  void              resetLU              ();
   void              multiply             (const uqGslVectorClass& x, uqGslVectorClass& y) const;
 
-          gsl_matrix*      m_mat;
-  mutable gsl_matrix*      m_LU;
-  mutable gsl_permutation* m_permutation;
+          gsl_matrix*       m_mat;
+  mutable gsl_matrix*       m_LU;
+  mutable uqGslMatrixClass* m_inverse;
+  mutable double            m_determinant;
+  mutable double            m_lnDeterminant;
+  mutable gsl_permutation*  m_permutation;
+  mutable int               m_signum;
 };
 
 uqGslMatrixClass operator*       (double a,                    const uqGslMatrixClass& mat);

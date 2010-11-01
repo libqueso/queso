@@ -48,10 +48,14 @@ uqGslMatrixClass::uqGslMatrixClass( // can be a rectangular matrix
   const Epetra_Map&             map,
   unsigned int                  numCols)
   :
-  uqMatrixClass(env,map),
-  m_mat        (gsl_matrix_calloc(map.NumGlobalElements(),numCols)),
-  m_LU         (NULL),
-  m_permutation(NULL)
+  uqMatrixClass  (env,map),
+  m_mat          (gsl_matrix_calloc(map.NumGlobalElements(),numCols)),
+  m_LU           (NULL),
+  m_inverse      (NULL),
+  m_determinant  (-INFINITY),
+  m_lnDeterminant(-INFINITY),
+  m_permutation  (NULL),
+  m_signum       (0)
 {
   UQ_FATAL_TEST_MACRO((m_mat == NULL),
                       m_env.worldRank(),
@@ -64,10 +68,14 @@ uqGslMatrixClass::uqGslMatrixClass( // square matrix
   const Epetra_Map&             map,
   double                        diagValue)
   :
-  uqMatrixClass(env,map),
-  m_mat        (gsl_matrix_calloc(map.NumGlobalElements(),map.NumGlobalElements())),
-  m_LU         (NULL),
-  m_permutation(NULL)
+  uqMatrixClass  (env,map),
+  m_mat          (gsl_matrix_calloc(map.NumGlobalElements(),map.NumGlobalElements())),
+  m_LU           (NULL),
+  m_inverse      (NULL),
+  m_determinant  (-INFINITY),
+  m_lnDeterminant(-INFINITY),
+  m_permutation  (NULL),
+  m_signum       (0)
 {
   UQ_FATAL_TEST_MACRO((m_mat == NULL),
                       m_env.worldRank(),
@@ -83,10 +91,14 @@ uqGslMatrixClass::uqGslMatrixClass( // square matrix
   const uqGslVectorClass& v,
   double                  diagValue)
   :
-  uqMatrixClass(v.env(),v.map()),
-  m_mat        (gsl_matrix_calloc(v.sizeLocal(),v.sizeLocal())),
-  m_LU         (NULL),
-  m_permutation(NULL)
+  uqMatrixClass  (v.env(),v.map()),
+  m_mat          (gsl_matrix_calloc(v.sizeLocal(),v.sizeLocal())),
+  m_LU           (NULL),
+  m_inverse      (NULL),
+  m_determinant  (-INFINITY),
+  m_lnDeterminant(-INFINITY),
+  m_permutation  (NULL),
+  m_signum       (0)
 {
   UQ_FATAL_TEST_MACRO((m_mat == NULL),
                       m_env.worldRank(),
@@ -100,10 +112,14 @@ uqGslMatrixClass::uqGslMatrixClass( // square matrix
 
 uqGslMatrixClass::uqGslMatrixClass(const uqGslVectorClass& v) // square matrix
   :
-  uqMatrixClass(v.env(),v.map()),
-  m_mat        (gsl_matrix_calloc(v.sizeLocal(),v.sizeLocal())),
-  m_LU         (NULL),
-  m_permutation(NULL)
+  uqMatrixClass  (v.env(),v.map()),
+  m_mat          (gsl_matrix_calloc(v.sizeLocal(),v.sizeLocal())),
+  m_LU           (NULL),
+  m_inverse      (NULL),
+  m_determinant  (-INFINITY),
+  m_lnDeterminant(-INFINITY),
+  m_permutation  (NULL),
+  m_signum       (0)
 {
   UQ_FATAL_TEST_MACRO((m_mat == NULL),
                       m_env.worldRank(),
@@ -118,10 +134,14 @@ uqGslMatrixClass::uqGslMatrixClass(const uqGslVectorClass& v) // square matrix
 
 uqGslMatrixClass::uqGslMatrixClass(const uqGslMatrixClass& B) // can be a rectangular matrix
   :
-  uqMatrixClass(B.env(),B.map()),
-  m_mat        (gsl_matrix_calloc(B.numRowsLocal(),B.numCols())),
-  m_LU         (NULL),
-  m_permutation(NULL)
+  uqMatrixClass  (B.env(),B.map()),
+  m_mat          (gsl_matrix_calloc(B.numRowsLocal(),B.numCols())),
+  m_LU           (NULL),
+  m_inverse      (NULL),
+  m_determinant  (-INFINITY),
+  m_lnDeterminant(-INFINITY),
+  m_permutation  (NULL),
+  m_signum       (0)
 {
   UQ_FATAL_TEST_MACRO((m_mat == NULL),
                       m_env.worldRank(),
@@ -133,18 +153,14 @@ uqGslMatrixClass::uqGslMatrixClass(const uqGslMatrixClass& B) // can be a rectan
 
 uqGslMatrixClass::~uqGslMatrixClass()
 {
-  if (m_LU)          gsl_matrix_free     (m_LU);
-  if (m_permutation) gsl_permutation_free(m_permutation);
-  if (m_mat)         gsl_matrix_free     (m_mat);
+  this->resetLU();
+  if (m_mat) gsl_matrix_free(m_mat);
 }
 
 uqGslMatrixClass&
 uqGslMatrixClass::operator=(const uqGslMatrixClass& obj)
 {
-  if (m_LU) {
-    gsl_matrix_free(m_LU);
-    m_LU = NULL;
-  }
+  this->resetLU();
   this->copy(obj);
   return *this;
 }
@@ -152,10 +168,7 @@ uqGslMatrixClass::operator=(const uqGslMatrixClass& obj)
 uqGslMatrixClass&
 uqGslMatrixClass::operator*=(double a)
 {
-  if (m_LU) {
-    gsl_matrix_free(m_LU);
-    m_LU = NULL;
-  }
+  this->resetLU();
   int iRC;
   iRC = gsl_matrix_scale(m_mat,a);
   UQ_FATAL_RC_MACRO(iRC,
@@ -168,10 +181,7 @@ uqGslMatrixClass::operator*=(double a)
 uqGslMatrixClass&
 uqGslMatrixClass::operator/=(double a)
 {
-  if (m_LU) {
-    gsl_matrix_free(m_LU);
-    m_LU = NULL;
-  }
+  this->resetLU();
   *this *= (1./a);
 
   return *this;
@@ -180,10 +190,7 @@ uqGslMatrixClass::operator/=(double a)
 uqGslMatrixClass&
 uqGslMatrixClass::operator+=(const uqGslMatrixClass& rhs)
 {
-  if (m_LU) {
-    gsl_matrix_free(m_LU);
-    m_LU = NULL;
-  }
+  this->resetLU();
   int iRC;
   iRC = gsl_matrix_add(m_mat,rhs.m_mat);
   UQ_FATAL_RC_MACRO(iRC,
@@ -197,10 +204,7 @@ uqGslMatrixClass::operator+=(const uqGslMatrixClass& rhs)
 uqGslMatrixClass&
 uqGslMatrixClass::operator-=(const uqGslMatrixClass& rhs)
 {
-  if (m_LU) {
-    gsl_matrix_free(m_LU);
-    m_LU = NULL;
-  }
+  this->resetLU();
   int iRC;
   iRC = gsl_matrix_sub(m_mat,rhs.m_mat);
   UQ_FATAL_RC_MACRO(iRC,
@@ -214,10 +218,7 @@ uqGslMatrixClass::operator-=(const uqGslMatrixClass& rhs)
 double&
 uqGslMatrixClass::operator()(unsigned int i, unsigned int j)
 {
-  if (m_LU) {
-    gsl_matrix_free(m_LU);
-    m_LU = NULL;
-  }
+  this->resetLU();
   UQ_FATAL_TEST_MACRO(i >= m_mat->size1,
                       m_env.worldRank(),
                       "uqGslMatrixClass::operator(i,j)",
@@ -246,16 +247,35 @@ uqGslMatrixClass::operator()(unsigned int i, unsigned int j) const
 void
 uqGslMatrixClass::copy(const uqGslMatrixClass& src)
 {
-  if (m_LU) {
-    gsl_matrix_free(m_LU);
-    m_LU = NULL;
-  }
+  this->resetLU();
   int iRC;
   iRC = gsl_matrix_memcpy(this->m_mat, src.m_mat);
   UQ_FATAL_RC_MACRO(iRC,
                     m_env.worldRank(),
                     "uqGslMatrixClass::copy()",
                     "failed");
+
+  return;
+}
+
+void
+uqGslMatrixClass::resetLU()
+{
+  if (m_LU) {
+    gsl_matrix_free(m_LU);
+    m_LU = NULL;
+  }
+  if (m_inverse) {
+    delete m_inverse;
+    m_inverse = NULL;
+  }
+  m_determinant   = -INFINITY;
+  m_lnDeterminant = -INFINITY;
+  if (m_permutation) {
+    gsl_permutation_free(m_permutation);
+    m_permutation = NULL;
+  }
+  m_signum = 0;
 
   return;
 }
@@ -368,10 +388,7 @@ uqGslMatrixClass::svd(uqGslMatrixClass& matVt, uqGslVectorClass& vecS)
 void
 uqGslMatrixClass::zeroLower(bool includeDiagonal)
 {
-  if (m_LU) {
-    gsl_matrix_free(m_LU);
-    m_LU = NULL;
-  }
+  this->resetLU();
   if (this->numRowsLocal() != this->numCols()) return;
 
   unsigned int dim = this->numRowsLocal();
@@ -396,10 +413,7 @@ uqGslMatrixClass::zeroLower(bool includeDiagonal)
 void
 uqGslMatrixClass::zeroUpper(bool includeDiagonal)
 {
-  if (m_LU) {
-    gsl_matrix_free(m_LU);
-    m_LU = NULL;
-  }
+  this->resetLU();
   if (this->numRowsLocal() != this->numCols()) return;
 
   unsigned int dim = this->numRowsLocal();
@@ -448,28 +462,52 @@ uqGslMatrixClass::inverse() const
                       "uqGslMatrixClass::inverse()",
                       "matrix is not square");
 
-  uqGslMatrixClass mat       (m_env,m_map,nCols);
-  uqGslVectorClass unitVector(m_env,m_map);
-  unitVector.cwSet(0.);
-  uqGslVectorClass multVector(m_env,m_map);
-  for (unsigned int j = 0; j < nCols; ++j) {
-    if (j > 0) unitVector[j-1] = 0.;
-    unitVector[j] = 1.;
-    this->invertMultiply(unitVector, multVector);
-    for (unsigned int i = 0; i < nRows; ++i) {
-      mat(i,j) = multVector[i];
+  if (m_inverse == NULL) {
+    m_inverse = new uqGslMatrixClass(m_env,m_map,nCols);
+    uqGslVectorClass unitVector(m_env,m_map);
+    unitVector.cwSet(0.);
+    uqGslVectorClass multVector(m_env,m_map);
+    for (unsigned int j = 0; j < nCols; ++j) {
+      if (j > 0) unitVector[j-1] = 0.;
+      unitVector[j] = 1.;
+      this->invertMultiply(unitVector, multVector);
+      for (unsigned int i = 0; i < nRows; ++i) {
+        (*m_inverse)(i,j) = multVector[i];
+      }
     }
   }
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "In uqGslMatrixClass::inverse():"
                            << "\n M = "        << *this
-                           << "\n M^{-1} = "   << mat
-                           << "\n M*M^{-1} = " << (*this)*mat
-                           << "\n M^{-1}*M = " << mat*(*this)
+                           << "\n M^{-1} = "   << *m_inverse
+			   << "\n M*M^{-1} = " << (*this)*(*m_inverse)
+			   << "\n M^{-1}*M = " << (*m_inverse)*(*this)
                            << std::endl;
   }
 
-  return mat;
+  return *m_inverse;
+}
+
+double
+uqGslMatrixClass::determinant() const
+{
+  if (m_determinant == -INFINITY) {
+    m_determinant   = gsl_linalg_LU_det(m_LU,m_signum); 
+    m_lnDeterminant = gsl_linalg_LU_lndet(m_LU);
+  }
+
+  return m_determinant;
+}
+
+double
+uqGslMatrixClass::lnDeterminant() const
+{
+  if (m_lnDeterminant == -INFINITY) {
+    m_determinant   = gsl_linalg_LU_det(m_LU,m_signum); 
+    m_lnDeterminant = gsl_linalg_LU_lndet(m_LU);
+  }
+
+  return m_lnDeterminant;
 }
 
 uqGslVectorClass
@@ -537,16 +575,21 @@ uqGslMatrixClass::invertMultiply(
 {
   UQ_FATAL_TEST_MACRO((this->numCols() != b.sizeLocal()),
                       m_env.worldRank(),
-                      "uqGslMatrixClass::multiply(), return void",
+                      "uqGslMatrixClass::invertMultiply(), return void",
                       "matrix and rhs have incompatible sizes");
 
   UQ_FATAL_TEST_MACRO((x.sizeLocal() != b.sizeLocal()),
                       m_env.worldRank(),
-                      "uqGslMatrixClass::multiply(), return void",
+                      "uqGslMatrixClass::invertMultiply(), return void",
                       "solution and rhs have incompatible sizes");
 
   int iRC;
   if (m_LU == NULL) {
+    UQ_FATAL_TEST_MACRO((m_permutation != NULL),
+                        m_env.worldRank(),
+                        "uqGslMatrixClass::invertMultiply()",
+                        "m_permutation should be NULL");
+
     m_LU = gsl_matrix_calloc(numRowsLocal(),numCols());
     UQ_FATAL_TEST_MACRO((m_LU == NULL),
                         m_env.worldRank(),
@@ -572,8 +615,7 @@ uqGslMatrixClass::invertMultiply(
       std::cout << std::endl;
     }
 
-    int signum;
-    iRC = gsl_linalg_LU_decomp(m_LU,m_permutation,&signum); 
+    iRC = gsl_linalg_LU_decomp(m_LU,m_permutation,&m_signum); 
     UQ_FATAL_RC_MACRO(iRC,
                       m_env.worldRank(),
                       "uqGslMatrixClass::invertMultiply()",
@@ -662,45 +704,50 @@ uqGslMatrixClass::invertMultiplyForceLU(
 {
   UQ_FATAL_TEST_MACRO((this->numCols() != b.sizeLocal()),
                       m_env.worldRank(),
-                      "uqGslMatrixClass::multiply(), return void",
+                      "uqGslMatrixClass::invertMultiplyForceLU(), return void",
                       "matrix and rhs have incompatible sizes");
 
   UQ_FATAL_TEST_MACRO((x.sizeLocal() != b.sizeLocal()),
                       m_env.worldRank(),
-                      "uqGslMatrixClass::multiply(), return void",
+                      "uqGslMatrixClass::invertMultiplyForceLU(), return void",
                       "solution and rhs have incompatible sizes");
 
   int iRC;
 
-  if( m_LU == NULL ) m_LU = gsl_matrix_calloc(numRowsLocal(),numCols());
+  if ( m_LU == NULL ) {
+    UQ_FATAL_TEST_MACRO((m_permutation != NULL),
+                        m_env.worldRank(),
+                        "uqGslMatrixClass::invertMultiplyForceLU()",
+                        "m_permutation should be NULL");
+    m_LU = gsl_matrix_calloc(numRowsLocal(),numCols());
+  }
   UQ_FATAL_TEST_MACRO((m_LU == NULL),
 		      m_env.worldRank(),
-		      "uqGslMatrixClass::invertMultiply()",
+		      "uqGslMatrixClass::invertMultiplyForceLU()",
 		      "gsl_matrix_calloc() failed");
   
   iRC = gsl_matrix_memcpy(m_LU, m_mat);
   UQ_FATAL_RC_MACRO(iRC,
 		    m_env.worldRank(),
-		    "uqGslMatrixClass::invertMultiply()",
+		    "uqGslMatrixClass::invertMultiplyForceLU()",
 		    "gsl_matrix_memcpy() failed");
   
   if( m_permutation == NULL ) m_permutation = gsl_permutation_calloc(numCols());
   UQ_FATAL_TEST_MACRO((m_permutation == NULL),
 		      m_env.worldRank(),
-		      "uqGslMatrixClass::invertMultiply()",
+		      "uqGslMatrixClass::invertMultiplyForceLU()",
 		      "gsl_permutation_calloc() failed");
   
-  int signum;
-  iRC = gsl_linalg_LU_decomp(m_LU,m_permutation,&signum); 
+  iRC = gsl_linalg_LU_decomp(m_LU,m_permutation,&m_signum); 
   UQ_FATAL_RC_MACRO(iRC,
 		    m_env.worldRank(),
-		    "uqGslMatrixClass::invertMultiply()",
+		    "uqGslMatrixClass::invertMultiplyForceLU()",
 		    "gsl_linalg_LU_decomp() failed");
 
   iRC = gsl_linalg_LU_solve(m_LU,m_permutation,b.data(),x.data()); 
   UQ_FATAL_RC_MACRO(iRC,
                     m_env.worldRank(),
-                    "uqGslMatrixClass::invertMultiply()",
+                    "uqGslMatrixClass::invertMultiplyForceLU()",
                     "gsl_linalg_LU_solve() failed");
 
   return;
@@ -979,10 +1026,7 @@ uqGslMatrixClass::getColumn(unsigned int column_num ) const
 void
 uqGslMatrixClass::setRow(unsigned int row_num, const uqGslVectorClass& row)
 {
-  if (m_LU) {
-    gsl_matrix_free(m_LU);
-    m_LU = NULL;
-  }
+  this->resetLU();
   // Sanity checks
   UQ_FATAL_TEST_MACRO(row_num >= this->numRowsLocal(),
                       UQ_UNAVAILABLE_RANK,
@@ -1008,10 +1052,7 @@ uqGslMatrixClass::setRow(unsigned int row_num, const uqGslVectorClass& row)
 void
 uqGslMatrixClass::setColumn(unsigned int column_num, const uqGslVectorClass& column)
 {
-  if (m_LU) {
-    gsl_matrix_free(m_LU);
-    m_LU = NULL;
-  }
+  this->resetLU();
   // Sanity checks
   UQ_FATAL_TEST_MACRO(column_num >= this->numCols(),
                       UQ_UNAVAILABLE_RANK,
