@@ -687,7 +687,7 @@ uqGaussian1dKde1D1DFunctionClass::deriv(double domainValue) const
   double value = 0.;
 
   if ((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)) {
-    std::cerr << "In uqGaussian1D1DFunctionClass::deriv()"
+    std::cerr << "In uqGaussian1dKde1D1DFunctionClass::deriv()"
               << ": requested x ("            << domainValue
               << ") is out of the interval (" << m_minDomainValue
               << ", "                         << m_maxDomainValue
@@ -697,7 +697,7 @@ uqGaussian1dKde1D1DFunctionClass::deriv(double domainValue) const
 
   UQ_FATAL_TEST_MACRO(((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)),
                       UQ_UNAVAILABLE_RANK,
-                      "uqGaussian1D1DFunctionClass::deriv()",
+                      "uqGaussian1dKde1D1DFunctionClass::deriv()",
                       "x out of range");
 
   UQ_FATAL_TEST_MACRO(true,
@@ -1336,3 +1336,82 @@ uqQuadCRecursion1D1DFunctionClass::beta() const
 {
   return m_beta;
 }
+
+//*****************************************************
+// Lagrange Polynomial 1D->1D class
+//*****************************************************
+uqLagrangePolynomial1D1DFunctionClass::uqLagrangePolynomial1D1DFunctionClass(
+  const std::vector<double>& positionValues,
+  const std::vector<double>* functionValues)
+  :
+  uqBase1D1DFunctionClass(-INFINITY,INFINITY),
+  m_positionValues(positionValues)
+{
+}
+
+uqLagrangePolynomial1D1DFunctionClass::~uqLagrangePolynomial1D1DFunctionClass()
+{
+}
+
+double                     
+uqLagrangePolynomial1D1DFunctionClass::value(double domainValue) const
+{
+  double value = 0.;
+
+  for (unsigned int k = 0; k < m_positionValues.size(); ++k) {
+    double scaleFactor = 1.;
+    double posK = m_positionValues[k];
+    for (unsigned int j = 0; j < m_positionValues.size(); ++j) {
+      if (j != k) {
+        double posJ = m_positionValues[j];
+        scaleFactor *= (domainValue-posJ)/(posK-posJ);
+      }
+    }
+
+    //if (m_env.subDisplayFile()) {
+    //  *m_env.subDisplayFile() << "In sddTGClass<K_V,K_M>::lagrange()"
+    //                          << ": k = " << k
+    //                          << ", scaleFactor = " << scaleFactor
+    //                          << std::endl;
+    //}
+
+    value += scaleFactor * m_functionValues[k];
+
+    //if (m_env.subDisplayFile()) {
+    //  *m_env.subDisplayFile() << "In sddTGClass<K_V,K_M>::lagrange()"
+    //                          << ": k = " << k
+    //                          << ", value = " << value
+    //                          << std::endl;
+    //}
+  }
+
+  return value;
+}
+
+double                     
+uqLagrangePolynomial1D1DFunctionClass::deriv(double domainValue) const
+{
+  double value = 0.;
+
+  if ((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)) {
+    std::cerr << "In uqLagrangePolynomial1D1DFunctionClass::deriv()"
+              << ": requested x ("            << domainValue
+              << ") is out of the interval (" << m_minDomainValue
+              << ", "                         << m_maxDomainValue
+              << ")"
+              << std::endl;
+  }
+
+  UQ_FATAL_TEST_MACRO(((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)),
+                      UQ_UNAVAILABLE_RANK,
+                      "uqLagrangePolynomial1D1DFunctionClass::deriv()",
+                      "x out of range");
+
+  UQ_FATAL_TEST_MACRO(true,
+                      UQ_UNAVAILABLE_RANK,
+                      "uqLagrangePolynomial1D1DFunctionClass::deriv()",
+                      "not implemented yet");
+
+  return value;
+}
+
