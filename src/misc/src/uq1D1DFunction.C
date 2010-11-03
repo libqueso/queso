@@ -1345,8 +1345,16 @@ uqLagrangePolynomial1D1DFunctionClass::uqLagrangePolynomial1D1DFunctionClass(
   const std::vector<double>* functionValues)
   :
   uqBase1D1DFunctionClass(-INFINITY,INFINITY),
-  m_positionValues(positionValues)
+  m_positionValues(positionValues),
+  m_functionValues(positionValues.size(),1.)
 {
+  if (functionValues) {
+    UQ_FATAL_TEST_MACRO(m_positionValues.size() != functionValues->size(),
+                        UQ_UNAVAILABLE_RANK,
+                        "uqLagrangePolynomial1D1DFunctionClass::constructor()",
+                        "invalid input");
+    m_functionValues = *functionValues;
+  }
 }
 
 uqLagrangePolynomial1D1DFunctionClass::~uqLagrangePolynomial1D1DFunctionClass()

@@ -30,6 +30,7 @@
 #define __UQ_1D_1D_FUNCTION_H__
 
 #include <uqScalarSequence.h>
+#include <uq1DQuadrature.h>
 #include <uqEnvironment.h>
 #include <uqDefines.h>
 #include <vector>
@@ -624,8 +625,56 @@ protected:
   using uqBase1D1DFunctionClass::m_minDomainValue;
   using uqBase1D1DFunctionClass::m_maxDomainValue;
 
-  const std::vector<double> m_positionValues;
-  const std::vector<double> m_functionValues;
+  std::vector<double> m_positionValues;
+  std::vector<double> m_functionValues;
 };
+
+template <class T>
+double
+uqSubF1F2Gaussian2dKdeIntegral(const uqScalarSequenceClass<T>& scalarSeq1,
+                               const uqScalarSequenceClass<T>& scalarSeq2,
+                               unsigned int                    initialPos,
+                               double                          scaleValue1,
+                               double                          scaleValue2,
+                               const uqBase1D1DFunctionClass&  func1,
+                               const uqBase1D1DFunctionClass&  func2,
+                               unsigned int                    quadratureOrder)
+{
+  double resultValue = 0.;
+
+  UQ_FATAL_TEST_MACRO(initialPos != 0,
+                      scalarSeq1.env().worldRank(),
+                      "uqSubF1F2Gaussian2dKdeIntegral()",
+                      "not implemented yet for initialPos != 0");
+  UQ_FATAL_TEST_MACRO(scalarSeq1.subSequenceSize() != scalarSeq2.subSequenceSize(),
+                      scalarSeq1.env().worldRank(),
+                      "uqSubF1F2Gaussian2dKdeIntegral()",
+                      "different sizes");
+
+  uqGaussianHermite1DQuadratureClass quadObj(0.,1.,quadratureOrder);
+  const std::vector<double>& quadPositions = quadObj.positions();
+  const std::vector<double>& quadWeights   = quadObj.weights  ();
+  UQ_FATAL_TEST_MACRO(quadPositions.size() != quadWeights.size(),
+                      UQ_UNAVAILABLE_RANK,
+                      "uqSubF1F2Gaussian2dKdeIntegral()",
+                      "quadObj has invalid state");
+
+  unsigned int numQuadraturePositions = quadPositions.size();
+  unsigned int dataSize = scalarSeq1.subSequenceSize();
+  for (unsigned int k = 0; k < dataSize; ++k) {
+    double value1 = 0.;
+    double value2 = 0.;
+    double x1k = scalarSeq1[k];
+    double x2k = scalarSeq2[k];
+    for (unsigned int j = 0; j < numQuadraturePositions; ++j) {
+      value1 += func1.value(scaleValue1*quadPositions[j]+x1k)*quadWeights[j];
+      value2 += func2.value(scaleValue2*quadPositions[j]+x2k)*quadWeights[j];
+    }
+    resultValue += value1*value2;
+  }
+  resultValue *= 1./((double) dataSize);
+
+  return resultValue;
+}
 #endif // __UQ_1D_1D_FUNCTION_H__
 

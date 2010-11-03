@@ -3326,7 +3326,7 @@ uqComputeSubGaussian2dKde(const uqScalarSequenceClass<T>& scalarSeq1,
   double scale1Inv = 1./scaleValue1;
   double scale2Inv = 1./scaleValue2;
   //corrValue = 0.;
-  double r = 1 - corrValue*corrValue;
+  double r = 1. - corrValue*corrValue;
   if (r <= 0.) { // prudencio 2010-07-23
     std::cerr << "In uqComputeSubGaussian2dKde()"
               << ": WARNING, r = " << r
