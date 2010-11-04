@@ -1423,3 +1423,68 @@ uqLagrangePolynomial1D1DFunctionClass::deriv(double domainValue) const
   return value;
 }
 
+//*****************************************************
+// Lagrange Basis 1D->1D class
+//*****************************************************
+uqLagrangeBasis1D1DFunctionClass::uqLagrangeBasis1D1DFunctionClass(
+  const std::vector<double>& positionValues,
+  unsigned int               basisIndex)
+  :
+  uqBase1D1DFunctionClass(-INFINITY,INFINITY),
+  m_positionValues(positionValues),
+  m_basisIndex    (basisIndex)
+{
+  UQ_FATAL_TEST_MACRO(m_basisIndex >= m_positionValues.size(),
+                      UQ_UNAVAILABLE_RANK,
+                      "uqLagrangeBasis1D1DFunctionClass::constructor()",
+                      "invalid input");
+}
+
+uqLagrangeBasis1D1DFunctionClass::~uqLagrangeBasis1D1DFunctionClass()
+{
+}
+
+double                     
+uqLagrangeBasis1D1DFunctionClass::value(double domainValue) const
+{
+  double scaleFactor = 1.;
+
+  unsigned int k = m_basisIndex;
+  double posK = m_positionValues[k];
+  for (unsigned int j = 0; j < m_positionValues.size(); ++j) {
+    if (j != k) {
+      double posJ = m_positionValues[j];
+      scaleFactor *= (domainValue-posJ)/(posK-posJ);
+    }
+  }
+
+  return scaleFactor;
+}
+
+double                     
+uqLagrangeBasis1D1DFunctionClass::deriv(double domainValue) const
+{
+  double value = 0.;
+
+  if ((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)) {
+    std::cerr << "In uqLagrangeBasis1D1DFunctionClass::deriv()"
+              << ": requested x ("            << domainValue
+              << ") is out of the interval (" << m_minDomainValue
+              << ", "                         << m_maxDomainValue
+              << ")"
+              << std::endl;
+  }
+
+  UQ_FATAL_TEST_MACRO(((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)),
+                      UQ_UNAVAILABLE_RANK,
+                      "uqLagrangeBasis1D1DFunctionClass::deriv()",
+                      "x out of range");
+
+  UQ_FATAL_TEST_MACRO(true,
+                      UQ_UNAVAILABLE_RANK,
+                      "uqLagrangeBasis1D1DFunctionClass::deriv()",
+                      "not implemented yet");
+
+  return value;
+}
+

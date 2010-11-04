@@ -610,7 +610,7 @@ computeQuadPtsAndWeights(const uqBase1D1DFunctionClass& function1D1D,
 }
 
 //*****************************************************
-// Gaussian 1d Kde 1D->1D class
+// Lagrange Polynomial 1D->1D class
 //*****************************************************
 class uqLagrangePolynomial1D1DFunctionClass : public uqBase1D1DFunctionClass {
 public:
@@ -627,6 +627,26 @@ protected:
 
   std::vector<double> m_positionValues;
   std::vector<double> m_functionValues;
+};
+
+//*****************************************************
+// Lagrange Basis 1D->1D class
+//*****************************************************
+class uqLagrangeBasis1D1DFunctionClass : public uqBase1D1DFunctionClass {
+public:
+  uqLagrangeBasis1D1DFunctionClass(const std::vector<double>& positionValues,
+                                   unsigned int basisIndex);
+ ~uqLagrangeBasis1D1DFunctionClass();
+
+  double value(double domainValue) const;
+  double deriv(double domainValue) const;
+
+protected:
+  using uqBase1D1DFunctionClass::m_minDomainValue;
+  using uqBase1D1DFunctionClass::m_maxDomainValue;
+
+  std::vector<double> m_positionValues;
+  unsigned int        m_basisIndex;
 };
 
 template <class T>
