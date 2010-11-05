@@ -692,7 +692,7 @@ uqSubF1F2Gaussian2dKdeIntegral(const uqScalarSequenceClass<T>& scalarSeq1,
     }
     resultValue += value1*value2;
   }
-  resultValue *= 1./((double) dataSize);
+  resultValue *= 1./(2.*M_PI)/((double) dataSize);
 
   return resultValue;
 }
