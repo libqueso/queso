@@ -32,23 +32,23 @@ fi
 
 rm -f config.cache acconfig.h
 
-echo "- aclocal."             && \
+echo "- aclocal. (local)"     && \
 aclocal -I m4 -I m4/common    && \
-echo "- autoconf."            && \
-autoconf                      && \
 echo "- autoheader."          && \
 autoheader                    && \
 
 if type glibtoolize >/dev/null 2>&1; then
     echo "- glibtool."
-    glibtoolize --automake
+    glibtoolize --automake --copy --force
 else
     echo "- libtool."
-    libtoolize --automake
+    libtoolize --automake --copy --force
 fi
 
 echo "- automake."            && \
 automake --add-missing --copy && \
+echo "- autoconf."            && \
+autoconf                      && \
 exit 0
 
 exit 1
