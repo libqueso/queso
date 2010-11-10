@@ -1,34 +1,31 @@
-/*--------------------------------------------------------------------------
- *--------------------------------------------------------------------------
- *
- * Copyright (C) 2008 The PECOS Development Team
- *
- * Please see http://pecos.ices.utexas.edu for more information.
- *
- * This file is part of the QUESO Library (Quantification of Uncertainty
- * for Estimation, Simulation and Optimization).
- *
- * QUESO is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * QUESO is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with QUESO. If not, see <http://www.gnu.org/licenses/>.
- *
- *--------------------------------------------------------------------------
- *
- * $Id$
- *
- * Brief description of this file: 
- * 
- *--------------------------------------------------------------------------
- *-------------------------------------------------------------------------- */
+// -*-c++-*-
+//-----------------------------------------------------------------------bl-
+//--------------------------------------------------------------------------
+// 
+// QUESO - a library to support the Quantification of Uncertainty
+// for Estimation, Simulation and Optimization
+//
+// Copyright (C) 2008,2009,2010 The PECOS Development Team
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the Version 2.1 GNU Lesser General
+// Public License as published by the Free Software Foundation.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc. 51 Franklin Street, Fifth Floor, 
+// Boston, MA  02110-1301  USA
+//
+//-----------------------------------------------------------------------el-
+//
+// $Id$
+//
+//--------------------------------------------------------------------------
 
 #ifndef __EX_STATISTICAL_INVERSE_PROBLEM_1_LIKELIHOOD_H__
 #define __EX_STATISTICAL_INVERSE_PROBLEM_1_LIKELIHOOD_H__
@@ -36,13 +33,14 @@
 #include<cstdio>
 #include<stdlib.h>
 #include<iostream>
+#include<uqEnvironment.h>
 
 #define FORTRAN_WRAPPER_VERSION
 
 // Prototype C function for passing likelihood function to Fortran
 
 extern "C" double f_likelihood(int num_params, const double *parameter_values, 
-			       const double *parameter_means, const double *matrix);
+			       const double *parameter_means, const double *matrix, int subid, int subcomm);
 
 //-------------------------------------------------------------
 // The likelihood routine: provided by user and called by QUESO
@@ -83,6 +81,10 @@ likelihoodRoutine(
 
   // Initialization to perform on first entry only
 
+  static int num_procs, num_local;
+  static int subId;
+  static MPI_Comm Local_MPI_Comm;
+
   if(first_entry)
     {
       matrix_to_fortran = (double *)calloc(matrix.numRowsGlobal()*matrix.numCols(),sizeof(double));
@@ -93,12 +95,38 @@ likelihoodRoutine(
 	    matrix_to_fortran[col+row*matrix.numCols()] = matrix(row,col);
 	  }
 
+      // determine local MPI environment info
+
+      const uqBaseEnvironmentClass &env = paramMeans.env();
+      subId                             = (int)env.subId();
+      Local_MPI_Comm                    = env.subComm().Comm();
+      int num_global_procs;
+
+      MPI_Comm_size (Local_MPI_Comm, &num_procs);
+      MPI_Comm_rank (Local_MPI_Comm, &num_local);      
+
+      if(paramMeans.env().worldRank() == 0)
+	{
+	  MPI_Comm_size (MPI_COMM_WORLD, &num_global_procs);
+	  printf("\nLikelihood parallel environment (C++): \n");
+	  printf("--> Total # of MPI processors available    = %i\n",  num_global_procs);
+	  printf("--> Total # of SubEnvironments requested   = %i\n",  paramMeans.env().numSubEnvironments());
+	  printf("--> Number of MPI tasks per SubEnvironment = %i\n\n",num_procs);
+	}
+
       first_entry=false;
     }
 
-  // Get likelihood from Fortran function
+  // Transfer program to Fortran likelihood function - note that rank 0
+  // for each subcommunicator is responsible for computing the final
+  // likelihood value. 
 
-  return(f_likelihood(paramValues.sizeGlobal(),params,param_means,matrix_to_fortran));
+  double result = f_likelihood(paramValues.sizeGlobal(),params,param_means,matrix_to_fortran,subId,Local_MPI_Comm);
+
+  //  MPI_Finalize();
+  //  exit(1);
+
+  return(result);
 
 #else
 
