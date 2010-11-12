@@ -506,6 +506,7 @@ uqBaseEnvironmentClass::openOutputFile(
       (allowedSubEnvIds.find(this->subId()) == allowedSubEnvIds.end()            )) {
     if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
       *this->subDisplayFile() << "In uqBaseEnvironmentClass::openOutputFile()"
+                              << ", subId = "     << this->subId()
                               << ": no output file opened with base name '" << baseFileName << "." << fileType
                               << "'"
                               << ", writeOver = " << writeOver
@@ -519,6 +520,7 @@ uqBaseEnvironmentClass::openOutputFile(
     //////////////////////////////////////////////////////////////////
     if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
       *this->subDisplayFile() << "In uqBaseEnvironmentClass::openOutputFile()"
+                              << ", subId = "     << this->subId()
                               << ": opening output file with base name '" << baseFileName << "." << fileType
                               << "'"
                               << ", writeOver = " << writeOver
@@ -539,7 +541,25 @@ uqBaseEnvironmentClass::openOutputFile(
       // specifies a relative path for the desired output file).
       ////////////////////////////////////////////////////////////////
       // std::cout << "checking " << baseFileName+"_sub"+this->subIdString()+"."+fileType << std::endl;
+      if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
+        *this->subDisplayFile() << "In uqBaseEnvironmentClass::openOutputFile()"
+                                << ", subId = "     << this->subId()
+                                << ", trying to open output file with base name '" << baseFileName << "." << fileType
+                                << "'"
+                                << ", writeOver = " << writeOver
+                                << ": calling grvy_check_file_path()..." 
+                                << std::endl;
+      }
       int irtrn = grvy_check_file_path((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str());
+      if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
+        *this->subDisplayFile() << "In uqBaseEnvironmentClass::openOutputFile()"
+                                << ", subId = "     << this->subId()
+                                << ", trying to open output file with base name '" << baseFileName << "." << fileType
+                                << "'"
+                                << ", writeOver = " << writeOver
+                                << ": returned from grvy_check_file_path() with irtrn = " << irtrn
+                                << std::endl;
+      }
       UQ_FATAL_TEST_MACRO(irtrn < 0,
                           m_worldRank,
                           "uqBaseEnvironmentClass::openOutputFile()",
@@ -634,7 +654,17 @@ uqBaseEnvironmentClass::openOutputFile(
           }
         } // only for matlab formats
       }
-      if (filePtrSet.ofsVar == NULL) {
+      if (filePtrSet.ofsVar != NULL) {
+        if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
+          *this->subDisplayFile() << "In uqBaseEnvironmentClass::openOutputFile()"
+                                  << ", subId = "     << this->subId()
+                                  << ": succeeded on opening output file with base name '" << baseFileName << "." << fileType
+                                  << "'"
+                                  << ", writeOver = " << writeOver
+                                  << std::endl;
+        }
+      }
+      else {
         std::cerr << "In uqBaseEnvironmentClass::openOutputFile()"
                   << ": failed to open output file with base name '" << baseFileName << "." << fileType
                   << "'"
@@ -645,6 +675,10 @@ uqBaseEnvironmentClass::openOutputFile(
                           "openOutputFile()",
                           "failed to open output file");
     }
+    else {
+      returnValue = false;
+    }
+    this->subComm().Barrier();
   }
 
   return returnValue;
@@ -868,6 +902,10 @@ uqBaseEnvironmentClass::openInputFile(
                             "invalid file type");
       }
     }
+    else {
+      returnValue = false;
+    }
+    this->subComm().Barrier();
   }
 
   return returnValue;
@@ -900,7 +938,7 @@ uqBaseEnvironmentClass::openUnifiedInputFile(
                               << "'"
                               << std::endl;
     }
-    if (this->subRank() == 0) {
+    if (this->subRank() == 0) { // Needed ???????? prudenci 2010-11-11
       ////////////////////////////////////////////////////////////////
       // Verify parent directory exists (for cases when a user
       // specifies a relative path for the desired output file). prudenci 2010/06/26
@@ -938,6 +976,10 @@ uqBaseEnvironmentClass::openUnifiedInputFile(
                             "invalid file type");
       }
     }
+    //else {
+    //  returnValue = false;
+    //}
+    //this->subComm().Barrier();
   }
 
   return returnValue;

@@ -190,9 +190,9 @@ public:
         void         subWriteContents           (const std::string&                   fileName,
                                                  const std::string&                   fileType,
                                                  const std::set<unsigned int>&        allowedSubEnvIds) const;
-        void         subWriteContents           (std::ofstream&                       ofs,
-                                                 const std::string&                   fileType) const;
         void         subWriteContents           (uqFilePtrSetStruct&                  filePtrSet,
+                                                 const std::string&                   fileType) const;
+        void         subWriteContents           (std::ofstream&                       ofs,
                                                  const std::string&                   fileType) const;
         void         unifiedWriteContents       (const std::string&                   fileName,
                                                  const std::string&                   fileType) const;
@@ -2328,7 +2328,7 @@ uqSequenceOfVectorsClass<V,M>::subWriteContents(
 {
   UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
                       m_env.worldRank(),
-                      "uqSequenceOfVectorsClass<V,M>::subWriteContents()",
+                      "uqSequenceOfVectorsClass<V,M>::subWriteContents(1)",
                       "unexpected subRank");
 
   uqFilePtrSetStruct filePtrSet;
@@ -2340,6 +2340,37 @@ uqSequenceOfVectorsClass<V,M>::subWriteContents(
                            filePtrSet)) {
     this->subWriteContents(filePtrSet,fileType);
     m_env.closeFile(filePtrSet,fileType);
+  }
+  m_env.subComm().Barrier();
+
+  return;
+}
+
+template <class V, class M>
+void
+uqSequenceOfVectorsClass<V,M>::subWriteContents(
+  uqFilePtrSetStruct& filePtrSet,
+  const std::string&  fileType) const // "m or hdf"
+{
+  UQ_FATAL_TEST_MACRO(filePtrSet.ofsVar == NULL,
+                      m_env.worldRank(),
+                      "uqSequenceOfVectorsClass<V,M>::subWriteContents(2)",
+                      "filePtrSet.ofsVar should not be NULL");
+
+  if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+    this->subWriteContents(*filePtrSet.ofsVar,fileType);
+  }
+  else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.worldRank(),
+                        "uqSequenceOfVectorsClass<V,M>::subWriteContents(2)",
+                        "hdf file type not supported yet");
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.worldRank(),
+                        "uqSequenceOfVectorsClass<V,M>::subWriteContents(2)",
+                        "invalid file type");
   }
 
   return;
@@ -2377,36 +2408,13 @@ uqSequenceOfVectorsClass<V,M>::subWriteContents(
 
 template <class V, class M>
 void
-uqSequenceOfVectorsClass<V,M>::subWriteContents(
-  uqFilePtrSetStruct& filePtrSet,
-  const std::string&  fileType) const // "m or hdf"
-{
-  if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
-    this->subWriteContents(*filePtrSet.ofsVar,fileType);
-  }
-  else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.worldRank(),
-                        "uqSequenceOfVectorsClass<V,M>::subWriteContents()",
-                        "hdf file type not supported yet");
-  }
-  else {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.worldRank(),
-                        "uqSequenceOfVectorsClass<V,M>::subWriteContents()",
-                        "invalid file type");
-  }
-
-  return;
-}
-
-template <class V, class M>
-void
 uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
   const std::string& fileName,
   const std::string& fileType) const
 {
-  //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
+  // All processors in 'fullComm' should call this routine...
+
+  m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
     *m_env.subDisplayFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
                             << ": worldRank "      << m_env.worldRank()
@@ -2423,6 +2431,19 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
     for (unsigned int r = 0; r < (unsigned int) m_env.inter0Comm().NumProc(); ++r) {
       if (m_env.inter0Rank() == (int) r) {
         // My turn
+        if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+          *m_env.subDisplayFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
+                                  << ": worldRank "      << m_env.worldRank()
+                                  << ", fullRank "       << m_env.fullRank()
+                                  << ", subEnvironment " << m_env.subId()
+                                  << ", subRank "        << m_env.subRank()
+                                  << ", inter0Rank "     << m_env.inter0Rank()
+                                //<< ", m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc()
+                                  << ", fileName = "     << fileName
+                                  << ", about to open file for r = " << r
+                                  << std::endl;
+        }
+
         // bool writeOver = (r == 0);
         bool writeOver = false; // A 'true' causes problems when the user chooses (via options
                                 // in the input file) to use just one file for all outputs.
@@ -2431,6 +2452,19 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
                                         fileType, // "m or hdf"
                                         writeOver,
                                         unifiedFilePtrSet)) {
+          if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+            *m_env.subDisplayFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
+                                    << ": worldRank "      << m_env.worldRank()
+                                    << ", fullRank "       << m_env.fullRank()
+                                    << ", subEnvironment " << m_env.subId()
+                                    << ", subRank "        << m_env.subRank()
+                                    << ", inter0Rank "     << m_env.inter0Rank()
+                                  //<< ", m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc()
+                                    << ", fileName = "     << fileName
+                                    << ", just opened file for r = " << r
+                                    << std::endl;
+          }
+
           unsigned int chainSize = this->subSequenceSize();
           if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
             if (r == 0) {
@@ -2548,7 +2582,34 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
                                 "uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()",
                                 "invalid file type");
           }
+
+          if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+            *m_env.subDisplayFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
+                                    << ": worldRank "      << m_env.worldRank()
+                                    << ", fullRank "       << m_env.fullRank()
+                                    << ", subEnvironment " << m_env.subId()
+                                    << ", subRank "        << m_env.subRank()
+                                    << ", inter0Rank "     << m_env.inter0Rank()
+                                  //<< ", m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc()
+                                    << ", fileName = "     << fileName
+                                    << ", about to close file for r = " << r
+                                    << std::endl;
+          }
+
           m_env.closeFile(unifiedFilePtrSet,fileType);
+
+          if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+            *m_env.subDisplayFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
+                                    << ": worldRank "      << m_env.worldRank()
+                                    << ", fullRank "       << m_env.fullRank()
+                                    << ", subEnvironment " << m_env.subId()
+                                    << ", subRank "        << m_env.subRank()
+                                    << ", inter0Rank "     << m_env.inter0Rank()
+                                  //<< ", m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc()
+                                    << ", fileName = "     << fileName
+                                    << ", just closed file for r = " << r
+                                    << std::endl;
+          }
         } // if (m_env.openUnifiedOutputFile())
       } // if (m_env.inter0Rank() == (int) r)
       m_env.inter0Comm().Barrier();
@@ -2582,7 +2643,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
                             << ", fileName = " << fileName
                             << std::endl;
   }
-  //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
+  m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
 
   return;
 }

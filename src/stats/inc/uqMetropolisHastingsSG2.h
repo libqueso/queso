@@ -108,14 +108,19 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
   //****************************************************
   // Open generic output file
   //****************************************************
-  if ((m_env.subDisplayFile()          ) &&
+  if ((m_env.subDisplayFile()                   ) &&
       (m_optionsObj->m_ov.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()"
-                            << ", prefix = "                                                         << m_optionsObj->m_prefix
-                            << ": checking necessity of opening generic output file (chain name is " << workingChain.name()
-                            << ") ..."
+                            << ", prefix = "                                         << m_optionsObj->m_prefix
+                            << ", chain name = "                                     << workingChain.name()
+                            << ": about to try to open generic output file '"        << m_optionsObj->m_ov.m_dataOutputFileName
+                            << "."                                                   << UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT // Yes, always ".m"
+                            << "', subId = "                                         << m_env.subId()
+                            << ", subenv is allowed to write (1/true or 0/false) = " << (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end())
+                            << "..."
                             << std::endl;
   }
+
   uqFilePtrSetStruct genericFilePtrSet;
   m_env.openOutputFile(m_optionsObj->m_ov.m_dataOutputFileName,
                        UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT, // Yes, always ".m"
@@ -123,46 +128,79 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
                        false,
                        genericFilePtrSet);
 
+  if ((m_env.subDisplayFile()                   ) &&
+      (m_optionsObj->m_ov.m_totallyMute == false)) {
+    *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()"
+                            << ", prefix = "                                   << m_optionsObj->m_prefix
+                            << ", raw chain name = "                           << workingChain.name()
+                            << ": returned from opening generic output file '" << m_optionsObj->m_ov.m_dataOutputFileName
+                            << "."                                             << UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT // Yes, always ".m"
+                            << "', subId = "                                   << m_env.subId()
+                            << std::endl;
+  }
+
+
   //****************************************************
   // Eventually:
   // --> write raw chain
   // --> compute statistics on it
   //****************************************************
-  if ((m_env.subDisplayFile()          ) &&
-      (m_optionsObj->m_ov.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()"
-                            << ", prefix = "                                                 << m_optionsObj->m_prefix
-                            << ": checking necessity of opening output files for raw chain " << workingChain.name()
-                            << "..."
-                            << std::endl;
-  }
-
-  // Take "sub" care of raw chain
   if ((m_optionsObj->m_ov.m_rawChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) &&
       (m_optionsObj->m_ov.m_totallyMute == false                                       )) {
+
+    // Take "sub" care of raw chain
+    if ((m_env.subDisplayFile()                   ) &&
+        (m_optionsObj->m_ov.m_totallyMute == false)) {
+      *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()"
+                              << ", prefix = "                                         << m_optionsObj->m_prefix
+                              << ", raw chain name = "                                 << workingChain.name()
+                              << ": about to try to write sub raw chain output file '" << m_optionsObj->m_ov.m_rawChainDataOutputFileName
+                              << "."                                                   << m_optionsObj->m_ov.m_rawChainDataOutputFileType
+                              << "', subId = "                                         << m_env.subId()
+                              << ", subenv is allowed to write  1/true or 0/false) = " << (m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet.end())
+                              << "..."
+                              << std::endl;
+    }
+
     workingChain.subWriteContents(m_optionsObj->m_ov.m_rawChainDataOutputFileName,
                                   m_optionsObj->m_ov.m_rawChainDataOutputFileType,
                                   m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
-    if ((m_env.subDisplayFile()          ) &&
+
+    if ((m_env.subDisplayFile()                   ) &&
         (m_optionsObj->m_ov.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()"
-                              << ", prefix = "                << m_optionsObj->m_prefix
-                              << ": closed sub output file '" << m_optionsObj->m_ov.m_rawChainDataOutputFileName
-                              << "' for raw chain "           << workingChain.name()
+                              << ", prefix = "                                         << m_optionsObj->m_prefix
+                              << ", raw chain name = "                                 << workingChain.name()
+                              << ": returned from writing sub raw chain output file '" << m_optionsObj->m_ov.m_rawChainDataOutputFileName
+                              << "."                                                   << m_optionsObj->m_ov.m_rawChainDataOutputFileType
+                              << "', subId = "                                         << m_env.subId()
                               << std::endl;
     }
-  }
 
-  // Take "unified" care of raw chain
-  if ((m_optionsObj->m_ov.m_rawChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) &&
-      (m_optionsObj->m_ov.m_totallyMute == false                                       )) {
-    workingChain.unifiedWriteContents(m_optionsObj->m_ov.m_rawChainDataOutputFileName,m_optionsObj->m_ov.m_rawChainDataOutputFileType);
-    if ((m_env.subDisplayFile()          ) &&
+    // Take "unified" care of raw chain
+    if ((m_env.subDisplayFile()                   ) &&
         (m_optionsObj->m_ov.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()"
-                              << ", prefix = "                    << m_optionsObj->m_prefix
-                              << ": closed unified output file '" << m_optionsObj->m_ov.m_rawChainDataOutputFileName
-                              << "' for raw chain "               << workingChain.name()
+                              << ", prefix = "                                             << m_optionsObj->m_prefix
+                              << ", raw chain name = "                                     << workingChain.name()
+                              << ": about to try to write unified raw chain output file '" << m_optionsObj->m_ov.m_rawChainDataOutputFileName
+                              << "."                                                       << m_optionsObj->m_ov.m_rawChainDataOutputFileType
+                              << "', subId = "                                             << m_env.subId()
+                              << "..."
+                              << std::endl;
+    }
+
+    workingChain.unifiedWriteContents(m_optionsObj->m_ov.m_rawChainDataOutputFileName,
+                                      m_optionsObj->m_ov.m_rawChainDataOutputFileType);
+
+    if ((m_env.subDisplayFile()                   ) &&
+        (m_optionsObj->m_ov.m_totallyMute == false)) {
+      *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()"
+                              << ", prefix = "                                             << m_optionsObj->m_prefix
+                              << ", raw chain name = "                                     << workingChain.name()
+                              << ": returned from writing unified raw chain output file '" << m_optionsObj->m_ov.m_rawChainDataOutputFileName
+                              << "."                                                       << m_optionsObj->m_ov.m_rawChainDataOutputFileType
+                              << "', subId = "                                             << m_env.subId()
                               << std::endl;
     }
   }
