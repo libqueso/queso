@@ -51,9 +51,9 @@ int main(int argc, char* argv[])
                       "main()",
                       "input file must be specified in command line as argv[1], just after executable argv[0]");
   uqFullEnvironmentClass* env = new uqFullEnvironmentClass(MPI_COMM_WORLD,argv[1],"",NULL);
-  std::cout << "proc " << env->fullRank() << ", HERE main 000" << std::endl;
-  env->fullComm().Barrier();
-  std::cout << "proc " << env->fullRank() << ", HERE main 001" << std::endl;
+  //std::cout << "proc " << env->fullRank() << ", HERE main 000" << std::endl;
+  //env->fullComm().Barrier();
+  //std::cout << "proc " << env->fullRank() << ", HERE main 001" << std::endl;
 
   //************************************************
   // Call application
