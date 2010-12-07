@@ -190,7 +190,7 @@ libqueso_include_HEADERS += \
 
 bin_PROGRAMS         = version
 version_SOURCES      = $(top_srcdir)/src/core/src/version.C
-version_LDADD        = -L$(top_builddir)/src -lqueso
+version_LDADD        = -L$(top_builddir)/src -lqueso $(HDF5_LIBS)
 version_DEPENDENCIES = libqueso.la
 
 
