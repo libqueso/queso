@@ -12,7 +12,7 @@ AM_CPPFLAGS = -I$(top_srcdir)/src/core/inc \
 	        $(GLPK_CFLAGS) \
 	        $(HDF5_CFLAGS)
 
-LIBS        = -L$(top_builddir)/src/ -lqueso 
+LIBS        = -L$(top_builddir)/src/ -lqueso $(HDF5_LIBS)
 
 noinst_PROGRAMS = exStatisticalInverseProblem1_gsl
 
