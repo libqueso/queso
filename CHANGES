@@ -3,23 +3,24 @@ QUESO: Quantification of Uncertainty for Estimation,
 Simulation, and Optimization.
 -----------------------------------------------------
 
-Version 0.42.0 (03 October 2010)
+Version 0.42.0 (07 December 2010)
 https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.42
 
+  * fixed output runtime failure when running multiple chains in parallel
+  * fixed race condition in output directory creation
   * inclusion of automatic licensing header support
   * added minimum version requirement for autoconf 
   * added configuration support for the GNU Linear Programming Toolkit (GLPK)
-  * added interface to hdf5 for some input and some output
-  * added some quadrature classes
+  * added interface to HDF5 for some I/O
+  * added quadrature classes
   * added extra cdf computing capabilities on scalar and vector sequences
-  * added capability to set queso options at run time, without the need of input files
+  * added capability to set QUESO options at run time, without the need of input files
   * added multi-level capability for uniprocessor environments
   * added multi-level capability for multiprocessor environments, including load balancing logic
   * added options on Metropolis Hastings for Brooks-Gelman convergence assessment
   * parameters values in the chain output files are now written with better precision (when written in ASCII format)
   * added extra logical checks throughout the code, for robustness (e.g., check of trilinos map in vector space class)
-  * use updated API for libGRVY
-  * switched api calls from hpct to grvy library in place of hpct library
+  * switched to updated API for libGRVY
   * added Wigner pdf
   * added finite distribution capability
   * force LU decomposition on matrix class to run again once a matrix is changed
