@@ -277,7 +277,9 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(
   const P_M*                    initialProposalCovMatrix)
 {
   //grvy_timer_begin("BayesMetropolisHastings"); TODO: revisit timing output
+  std::cout << "proc " << m_env.fullRank() << ", HERE sip 000" << std::endl;
   m_env.fullComm().Barrier();
+  std::cout << "proc " << m_env.fullRank() << ", HERE sip 001" << std::endl;
   m_env.syncPrintDebugMsg("Entering uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings()",1,3000000,m_env.fullComm());
 
   if (m_optionsObj->m_ov.m_computeSolution == false) {
