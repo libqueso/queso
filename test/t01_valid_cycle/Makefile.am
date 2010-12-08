@@ -12,7 +12,7 @@ AM_CPPFLAGS  = -I. \
 
 LIBS   = -L$(top_builddir)/src/ -lqueso
 
-###EXTRA_DIST  = valid_cycle compare.pl rtest01.sh verify.sh
+EXTRA_DIST     = inputData regression
 TESTS          = rtest01.sh 
 check_PROGRAMS = TgaValidationCycle_gsl
 

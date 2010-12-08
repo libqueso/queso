@@ -10,7 +10,6 @@ AUTOMAKE_OPTIONS = foreign
 
 SUBDIRS = src \
 	examples \
-	test/t01_valid_cycle/valid_cycle \
 	test/t02_sip_sfp/sip_sfp \
 	test/t03_sequence/sequence \
 	test/t04_bimodal/bimodal \
