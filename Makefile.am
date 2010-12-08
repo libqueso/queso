@@ -11,7 +11,6 @@ AUTOMAKE_OPTIONS = foreign
 SUBDIRS = src \
 	examples \
 	test/t03_sequence/sequence \
-	test/t04_bimodal/bimodal \
         test/gsl_tests \
         test \
 	doxygen

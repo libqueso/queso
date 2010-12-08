@@ -167,7 +167,6 @@ AC_CONFIG_FILES([
 	test/t03_sequence/Makefile
 	test/t04_bimodal/Makefile
         test/t03_sequence/sequence/Makefile
-        test/t04_bimodal/bimodal/Makefile
         test/gsl_tests/Makefile
 	doxygen/Makefile
 ])
