@@ -166,7 +166,6 @@ AC_CONFIG_FILES([
 	test/t02_sip_sfp/Makefile
 	test/t03_sequence/Makefile
 	test/t04_bimodal/Makefile
-        test/t03_sequence/sequence/Makefile
         test/gsl_tests/Makefile
 	doxygen/Makefile
 ])

@@ -12,6 +12,7 @@
 TOLERANCE="1e-10"	                   # solution diff tolerance (absolute)
 TOPDIR="./"		                   # relative to regression dir
 SAVELOG=0		                   # Log model output?
+COMMONDIR="../common"
 
 #----------------
 # Initialization
@@ -19,12 +20,10 @@ SAVELOG=0		                   # Log model output?
 
 RUNDIR=`pwd`
 
-. ./t03_sip_sfp/verify.sh
+. $COMMONDIR/verify.sh
 
 cd $TOPDIR
 verify_file_exists $EXE
-
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/h2/prudenci/Installations/Boost_1_35_0/lib/
 
 #------------------------------------------------------------------------------
 #------------------------------------------------------------------------------
@@ -32,9 +31,9 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/h2/prudenci/Installations/Boost_1_35_0/
 # Regresion Test #1: Validation cycle with TGA example 
 
 VERIFY_DATE="10-11-2009"
-TEST_DIR="t03_sip_sfp/sip_sfp"
+TEST_DIR="./"
 SOLDIR="outputData"
-EXE="./SipSfpExample_gsl"   # executable name
+EXE="./SequenceExample_gsl"
 SOLREFS="regression/$VERIFY_DATE"
 INFILE="example.inp"
 TESTNAME='Test 3 (Sip + Sfp example)'
