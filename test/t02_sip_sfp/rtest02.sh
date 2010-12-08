@@ -12,6 +12,7 @@
 TOLERANCE="1e-10"	                   # solution diff tolerance (absolute)
 TOPDIR="./"		                   # relative to regression dir
 SAVELOG=0		                   # Log model output?
+COMMONDIR="../common"
 
 #----------------
 # Initialization
@@ -19,12 +20,10 @@ SAVELOG=0		                   # Log model output?
 
 RUNDIR=`pwd`
 
-. ./t02_sip_sfp/verify.sh
+. $COMMONDIR/verify.sh
 
 cd $TOPDIR
 verify_file_exists $EXE
-
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/h2/prudenci/Installations/Boost_1_35_0/lib/
 
 #------------------------------------------------------------------------------
 #------------------------------------------------------------------------------
@@ -33,7 +32,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/h2/prudenci/Installations/Boost_1_35_0/
 
 #VERIFY_DATE="07-12-2009"
 VERIFY_DATE="09-06-2009"
-TEST_DIR="t02_sip_sfp/sip_sfp"
+TEST_DIR="./"
 SOLDIR="outputData"
 EXE="./SipSfpExample_gsl"   # executable name
 SOLREFS="regression/$VERIFY_DATE"

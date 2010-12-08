@@ -24,10 +24,12 @@ if SVN_CHECKOUT
 	echo 'updated source license headers' >$@
 endif
 
-# Required for AX_AM_MACROS
-@INC_AMINCLUDE@
-
 dist-hook:
 	rm -rf `find $(distdir)/ -name .svn`
 	rm -rf `find $(distdir)/ -name .deps`
+
+# Required for AX_AM_MACROS
+@INC_AMINCLUDE@
+
+
 
