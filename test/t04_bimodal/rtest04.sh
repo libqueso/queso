@@ -31,7 +31,8 @@ verify_file_exists $EXE
 # Regresion Test #1: Validation cycle with TGA example 
 
 #VERIFY_DATE="07-12-2009"
-VERIFY_DATE="09-22-2010"
+#VERIFY_DATE="09-22-2010"
+VERIFY_DATE="12-09-2010"
 TEST_DIR="./"
 SOLDIR="outputData"
 EXE="./BimodalExample_gsl"   # executable name
