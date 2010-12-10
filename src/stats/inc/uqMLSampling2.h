@@ -1123,7 +1123,13 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all(
 
         nowCovMatrix *= nowEta;
 
-        unsigned int originalSubNumSamples = 1 + (unsigned int) ( (1.-meanRejectionRate)/meanRejectionRate/currOptions->m_covRejectionRate/currOptions->m_covRejectionRate );
+        // prudenci 2010/12/09: logic 'originalSubNumSamples += 1' added because of the difference of results between GNU and INTEL compiled codes
+        double       doubSubNumSamples     = (1.-meanRejectionRate)/meanRejectionRate/currOptions->m_covRejectionRate/currOptions->m_covRejectionRate; // e.g. 19.99...; or 20.0; or 20.1; or 20.9
+        unsigned int originalSubNumSamples = 1 + (unsigned int) (doubSubNumSamples); // e.g. 20; or 21; or 21; or 21
+        double       auxDouble             = (double) originalSubNumSamples; // e.g. 20.0; or 21.0; or 21.0; or 21.0
+        if ((auxDouble - doubSubNumSamples) < 1.e-8) { // e.g. 0.00...01; or 1.0; or 0.9; or 0.1
+          originalSubNumSamples += 1;
+        }
 
         if (m_env.inter0Rank() >= 0) { // KAUST
           if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
