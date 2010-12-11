@@ -40,7 +40,8 @@
 // Prototype C function for passing likelihood function to Fortran
 
 extern "C" double f_likelihood(int num_params, const double *parameter_values, 
-			       const double *parameter_means, const double *matrix, int subid, int subcomm);
+			       const double *parameter_means, const double *matrix, int subid, 
+			       MPI_Fint subcomm);
 
 //-------------------------------------------------------------
 // The likelihood routine: provided by user and called by QUESO
@@ -121,7 +122,8 @@ likelihoodRoutine(
   // for each subcommunicator is responsible for computing the final
   // likelihood value. 
 
-  double result = f_likelihood(paramValues.sizeGlobal(),params,param_means,matrix_to_fortran,subId,Local_MPI_Comm);
+  double result = f_likelihood(paramValues.sizeGlobal(),params,param_means,matrix_to_fortran,subId,
+			       MPI_Comm_c2f(Local_MPI_Comm));
 
   //  MPI_Finalize();
   //  exit(1);
