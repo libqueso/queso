@@ -298,7 +298,7 @@ uqPiecewiseLinear1D1DFunctionClass::uqPiecewiseLinear1D1DFunctionClass(
     m_referenceImageValues[i] = m_referenceImageValues[i-1] + m_rateValues[i-1]*(m_referenceDomainValues[i] - m_referenceDomainValues[i-1]);
   }
 
-  if (true) { // For debug only
+  if (false) { // For debug only
     std::cout << "In uqPiecewiseLinear1D1DFunctionClass::constructor():"
               << std::endl;
     for (unsigned int i = 0; i < m_numRefValues; ++i) {
@@ -354,7 +354,7 @@ uqPiecewiseLinear1D1DFunctionClass::value(double domainValue) const
     }
   }
   double imageValue = m_referenceImageValues[i] + m_rateValues[i]*(domainValue - m_referenceDomainValues[i]);
-  if (true) { // For debug only
+  if (false) { // For debug only
     std::cout << "In uqPiecewiseLinear1D1DFunctionClass::value()"
               << ": domainValue = "                << domainValue
               << ", i = "                          << i
