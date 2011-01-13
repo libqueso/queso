@@ -260,6 +260,146 @@ uqLinear1D1DFunctionClass::deriv(double domainValue) const
 }
 
 //*****************************************************
+// PiecewiseLinear 1D->1D class
+//*****************************************************
+uqPiecewiseLinear1D1DFunctionClass::uqPiecewiseLinear1D1DFunctionClass(
+  double                     minDomainValue,
+  double                     maxDomainValue,
+  const std::vector<double>& referenceDomainValues,
+  double                     referenceImageValue0,
+  const std::vector<double>& rateValues)
+  :
+  uqBase1D1DFunctionClass(minDomainValue,maxDomainValue),
+  m_numRefValues         (referenceDomainValues.size()),
+  m_referenceDomainValues(referenceDomainValues),
+  m_rateValues           (rateValues)
+{
+  UQ_FATAL_TEST_MACRO(m_numRefValues == 0,
+                      UQ_UNAVAILABLE_RANK,
+                      "uqPiecewiseLinear1D1DFunctionClass::constructor()",
+                      "num ref values = 0");
+
+  UQ_FATAL_TEST_MACRO(m_numRefValues != rateValues.size(),
+                      UQ_UNAVAILABLE_RANK,
+                      "uqPiecewiseLinear1D1DFunctionClass::constructor()",
+                      "num rate values is inconsistent");
+
+  for (unsigned int i = 1; i < m_numRefValues; ++i) { // Yes, from '1'
+    UQ_FATAL_TEST_MACRO(m_referenceDomainValues[i] <= m_referenceDomainValues[i-1],
+                        UQ_UNAVAILABLE_RANK,
+                        "uqPiecewiseLinear1D1DFunctionClass::constructor()",
+                        "reference domain values are inconsistent");
+  }
+
+  m_referenceImageValues.clear();
+  m_referenceImageValues.resize(m_numRefValues,0.);
+  m_referenceImageValues[0] = referenceImageValue0;
+  for (unsigned int i = 1; i < m_numRefValues; ++i) { // Yes, from '1'
+    m_referenceImageValues[i] = m_referenceImageValues[i-1] + m_rateValues[i-1]*(m_referenceDomainValues[i] - m_referenceDomainValues[i-1]);
+  }
+
+  if (true) { // For debug only
+    std::cout << "In uqPiecewiseLinear1D1DFunctionClass::constructor():"
+              << std::endl;
+    for (unsigned int i = 0; i < m_numRefValues; ++i) {
+      std::cout << "i = " << i
+                << ", m_referenceDomainValues[i] = " << m_referenceDomainValues[i]
+                << ", m_referenceImageValues[i] = "  << m_referenceImageValues[i]
+                << ", m_rateValues[i] = "            << m_rateValues[i]
+                << std::endl;
+    }
+  }
+}
+
+uqPiecewiseLinear1D1DFunctionClass::~uqPiecewiseLinear1D1DFunctionClass()
+{
+  m_rateValues.clear();
+  m_referenceImageValues.clear();
+  m_referenceDomainValues.clear();
+}
+
+double
+uqPiecewiseLinear1D1DFunctionClass::value(double domainValue) const
+{
+  if ((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)) {
+    std::cerr << "In uqPiecewiseLinear1D1DFunctionClass::value()"
+              << ": requested x ("            << domainValue
+              << ") is out of the interval (" << m_minDomainValue
+              << ", "                         << m_maxDomainValue
+              << ")"
+              << std::endl;
+  }
+
+  UQ_FATAL_TEST_MACRO(((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)),
+                      UQ_UNAVAILABLE_RANK,
+                      "uqPiecewiseLinear1D1DFunctionClass::value()",
+                      "x out of range");
+
+  unsigned int i = 0;
+  if (m_numRefValues == 1) {
+    // Nothing else to do
+  }
+  else {
+    bool referenceDomainValueFound = false;
+    while (referenceDomainValueFound == false) {
+      if (domainValue < m_referenceDomainValues[i+1]) {
+        referenceDomainValueFound = true;
+      }
+      else {
+        ++i;
+        UQ_FATAL_TEST_MACRO(i > m_numRefValues,
+                            UQ_UNAVAILABLE_RANK,
+                           "uqPiecewiseLinear1D1DFunctionClass::value()",
+                           "too big 'i'");
+      }
+    }
+  }
+  double imageValue = m_referenceImageValues[i] + m_rateValues[i]*(domainValue - m_referenceDomainValues[i]);
+
+  return imageValue;
+}
+
+double
+uqPiecewiseLinear1D1DFunctionClass::deriv(double domainValue) const
+{
+  if ((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)) {
+    std::cerr << "In uqPiecewiseLinear1D1DFunctionClass::deriv()"
+              << ": requested x ("            << domainValue
+              << ") is out of the interval (" << m_minDomainValue
+              << ", "                         << m_maxDomainValue
+              << ")"
+              << std::endl;
+  }
+
+  UQ_FATAL_TEST_MACRO(((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)),
+                      UQ_UNAVAILABLE_RANK,
+                      "uqPiecewiseLinear1D1DFunctionClass::deriv()",
+                      "x out of range");
+
+  unsigned int i = 0;
+  if (m_numRefValues == 1) {
+    // Nothing else to do
+  }
+  else {
+    bool referenceDomainValueFound = false;
+    while (referenceDomainValueFound == false) {
+      if (domainValue < m_referenceDomainValues[i+1]) {
+        referenceDomainValueFound = true;
+      }
+      else {
+        ++i;
+        UQ_FATAL_TEST_MACRO(i > m_numRefValues,
+                            UQ_UNAVAILABLE_RANK,
+                           "uqPiecewiseLinear1D1DFunctionClass::deriv()",
+                           "too big 'i'");
+      }
+    }
+  }
+
+  return m_rateValues[i];
+}
+
+//*****************************************************
 // Quadratic 1D->1D class
 //*****************************************************
 uqQuadratic1D1DFunctionClass::uqQuadratic1D1DFunctionClass(

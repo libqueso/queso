@@ -127,6 +127,31 @@ protected:
 };
 
 //*****************************************************
+// PiecewiseLinear 1D->1D class
+//*****************************************************
+class uqPiecewiseLinear1D1DFunctionClass : public uqBase1D1DFunctionClass {
+public:
+  uqPiecewiseLinear1D1DFunctionClass(double minDomainValue,
+                                     double maxDomainValue,
+                                     const std::vector<double>& referenceDomainValues,
+                                     double referenceImageValue0,
+                                     const std::vector<double>& rateValues);
+ ~uqPiecewiseLinear1D1DFunctionClass();
+
+  double value(double domainValue) const;
+  double deriv(double domainValue) const;
+
+protected:
+  using uqBase1D1DFunctionClass::m_minDomainValue;
+  using uqBase1D1DFunctionClass::m_maxDomainValue;
+
+  unsigned int        m_numRefValues;
+  std::vector<double> m_referenceDomainValues;
+  std::vector<double> m_referenceImageValues;
+  std::vector<double> m_rateValues;
+};
+
+//*****************************************************
 // Quadratic 1D->1D class
 //*****************************************************
 class uqQuadratic1D1DFunctionClass : public uqBase1D1DFunctionClass {
