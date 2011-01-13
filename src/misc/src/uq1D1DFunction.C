@@ -347,14 +347,23 @@ uqPiecewiseLinear1D1DFunctionClass::value(double domainValue) const
       }
       else {
         ++i;
-        UQ_FATAL_TEST_MACRO(i > m_numRefValues,
-                            UQ_UNAVAILABLE_RANK,
-                           "uqPiecewiseLinear1D1DFunctionClass::value()",
-                           "too big 'i'");
+        if (i == (m_numRefValues-1)) {
+          referenceDomainValueFound = true;
+        }
       }
     }
   }
   double imageValue = m_referenceImageValues[i] + m_rateValues[i]*(domainValue - m_referenceDomainValues[i]);
+  if (true) { // For debug only
+    std::cout << "In uqPiecewiseLinear1D1DFunctionClass::value()"
+              << ": domainValue = "                << domainValue
+              << ", i = "                          << i
+              << ", m_referenceDomainValues[i] = " << m_referenceDomainValues[i]
+              << ", m_referenceImageValues[i] = "  << m_referenceImageValues[i]
+              << ", m_rateValues[i] = "            << m_rateValues[i]
+              << ", imageValue = "                 << imageValue
+              << std::endl;
+  }
 
   return imageValue;
 }
