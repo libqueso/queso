@@ -678,7 +678,7 @@ uqBaseEnvironmentClass::openOutputFile(
     else {
       returnValue = false;
     }
-    this->subComm().Barrier();
+    //this->subComm().Barrier(); // prudenci-2011-01-17
   }
 
   return returnValue;
@@ -905,7 +905,7 @@ uqBaseEnvironmentClass::openInputFile(
     else {
       returnValue = false;
     }
-    this->subComm().Barrier();
+    //this->subComm().Barrier(); // prudenci-2011-01-17
   }
 
   return returnValue;

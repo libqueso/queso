@@ -2414,7 +2414,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
 {
   // All processors in 'fullComm' should call this routine...
 
-  m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
+  //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ... // prudenci-2011-01-17
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
     *m_env.subDisplayFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
                             << ": worldRank "      << m_env.worldRank()
@@ -2643,7 +2643,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
                             << ", fileName = " << fileName
                             << std::endl;
   }
-  m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
+  //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ... // prudenci-2011-01-17
 
   return;
 }
