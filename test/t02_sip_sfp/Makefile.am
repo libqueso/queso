@@ -12,11 +12,13 @@ AM_CPPFLAGS  = -I. \
 
 LIBS   = -L$(top_builddir)/src/ -lqueso
 
-EXTRA_DIST     = regression
+EXTRA_DIST     = regression rtest02.sh
 check_PROGRAMS = SipSfpExample_gsl
 TESTS          = rtest02.sh 
 
-SipSfpExample_gsl_SOURCES = example_main.C example_compute.C example_likelihood.C example_qoi.C
+SipSfpExample_gsl_SOURCES = example_main.C example_compute.C example_likelihood.C example_qoi.C \
+			example_compute.h example_likelihood.h example_qoi.h \
+			example.inp
 
 if SVN_CHECKOUT
 .license.stamp: $(top_srcdir)/LICENSE

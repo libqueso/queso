@@ -12,14 +12,14 @@ AM_CPPFLAGS  = -I. \
 
 LIBS  = -L$(top_builddir)/src/ -lqueso
 
-EXTRA_DIST     = regression
+EXTRA_DIST     = regression rtest03.sh
 check_PROGRAMS = SequenceExample_gsl
 
 ### Leaving disabled for now, need to check with Ernesto
 
 ###TESTS          = rtest03.sh 
 
-SequenceExample_gsl_SOURCES = example_main.C example_compute.C
+SequenceExample_gsl_SOURCES = example_main.C example_compute.C example_compute.h example.inp
 
 if SVN_CHECKOUT
 .license.stamp: $(top_srcdir)/LICENSE

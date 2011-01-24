@@ -14,11 +14,13 @@ AM_CPPFLAGS  = -I. \
 
 LIBS  = -L$(top_builddir)/src/ -lqueso
 
-EXTRA_DIST     = regression
+EXTRA_DIST     = regression rtest04.sh
 check_PROGRAMS = BimodalExample_gsl
 TESTS          = rtest04.sh 
 
-BimodalExample_gsl_SOURCES = example_main.C example_compute.C example_likelihood.C
+BimodalExample_gsl_SOURCES = example_main.C example_compute.C example_likelihood.C \
+			example_compute.h example_likelihood.h \
+			example_1chain.inp
 
 if SVN_CHECKOUT
 .license.stamp: $(top_srcdir)/LICENSE

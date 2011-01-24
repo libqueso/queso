@@ -12,11 +12,13 @@ AM_CPPFLAGS  = -I. \
 
 LIBS   = -L$(top_builddir)/src/ -lqueso
 
-EXTRA_DIST     = inputData regression
+EXTRA_DIST     = inputData regression rtest01.sh
 TESTS          = rtest01.sh 
 check_PROGRAMS = TgaValidationCycle_gsl
 
-TgaValidationCycle_gsl_SOURCES = TgaValidationCycle_gsl.C 
+TgaValidationCycle_gsl_SOURCES = TgaValidationCycle_gsl.C TgaValidationCycle_appl.h \
+				TgaValidationCycle_likelihood.h TgaValidationCycle_qoi.h \
+				tgaCycle.inp
 
 if SVN_CHECKOUT
 .license.stamp: $(top_srcdir)/LICENSE
