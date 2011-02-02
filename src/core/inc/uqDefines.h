@@ -29,11 +29,32 @@
 #ifndef __UQ_DEFINES_H__
 #define __UQ_DEFINES_H__
 
+#define QUESO_HAS_TRILINOS
+
 #include <iostream>
 #include <stdlib.h> // For exit()
-#include <Epetra_MpiComm.h>
 #include <set>
 #include <vector>
+
+#ifdef QUESO_HAS_TRILINOS
+
+#include <Epetra_MpiComm.h>
+#include <EpetraExt_DistArray.h>
+typedef Epetra_MpiComm uqMpiComm ;
+typedef Epetra_Map     uqMap ;
+template<typename T>
+struct uqDistArray
+{
+  typedef EpetraExt::DistArray<T> type;
+};
+
+#else
+
+#include <uqMpiComm.h>
+#include <uqMap.h>
+#include <uqDistArray.h>
+
+#endif
 
 int uqMyWorldfullRank();
 

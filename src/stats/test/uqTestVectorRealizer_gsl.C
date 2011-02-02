@@ -12,7 +12,7 @@ BOOST_AUTO_TEST_CASE( test_uqGaussianVectorRealizerClass )
   MPI_Init(NULL, NULL);
   uqFullEnvironmentClass env; // Puts random number generator in known state... will generate same sequence each run
   uqVectorSpaceClass<uqGslVectorClass, uqGslMatrixClass> imageSpace(env, "test_space", 2, NULL);
-  Epetra_Map eMap(2, 0, env.comm());
+  uqMap eMap(2, 0, env.comm());
 
   double tol = 1e-16;
 

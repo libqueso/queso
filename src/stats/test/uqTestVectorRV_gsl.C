@@ -12,7 +12,7 @@ BOOST_AUTO_TEST_CASE( test_uqGaussianVectorRVClass )
   MPI_Init(NULL, NULL);
   uqFullEnvironmentClass env;
   uqVectorSpaceClass<uqGslVectorClass, uqGslMatrixClass> imageSpace(env, "test_space", 2, NULL);
-  Epetra_Map eMap(2, 0, env.comm());
+  uqMap eMap(2, 0, env.comm());
 
   uqGslVectorClass imageMinVal(env, eMap, -INFINITY);
   uqGslVectorClass imageMaxVal(env, eMap,  INFINITY);

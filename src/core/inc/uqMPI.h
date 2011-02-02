@@ -30,9 +30,8 @@
 #define __UQ_MPI_H__
 
 #include <uqDefines.h>
-#include <Epetra_MpiComm.h>
 
 int UQ_MPI_Barrier(MPI_Comm comm);
-int UQ_MPI_Barrier(const Epetra_MpiComm& comm);
+int UQ_MPI_Barrier(const uqMpiComm& comm);
 
 #endif // __UQ_MPI_H__

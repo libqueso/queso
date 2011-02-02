@@ -27,6 +27,8 @@
 //--------------------------------------------------------------------------
 
 #include <uqTrilinosMatrix.h>
+#ifdef QUESO_HAS_TRILINOS
+
 #include <Epetra_MpiComm.h>
 #include <uqDefines.h>
 
@@ -396,3 +398,5 @@ uqTrilinosMatrixClass::sub(const uqTrilinosMatrixClass* B)
   return;
 }
 #endif
+
+#endif // #ifdef QUESO_HAS_TRILINOS

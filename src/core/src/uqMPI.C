@@ -35,7 +35,7 @@ int UQ_MPI_Barrier(MPI_Comm comm)
   return mpiRC;
 }
 
-int UQ_MPI_Barrier(const Epetra_MpiComm& comm)
+int UQ_MPI_Barrier(const uqMpiComm& comm)
 {
   comm.Barrier();
 

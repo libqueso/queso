@@ -29,6 +29,9 @@
 #ifndef __UQ_TRILINOS_MATRIX_H__
 #define __UQ_TRILINOS_MATRIX_H__
 
+#include <uqDefines.h>
+#ifdef QUESO_HAS_TRILINOS
+
 #include <uqMatrix.h>
 #include <Epetra_SerialDenseMatrix.h>
 //#include <Epetra_CrsMatrix.h>
@@ -94,5 +97,7 @@ uqTrilinosMatrixClass operator+    (const uqTrilinosMatrixClass& m1,  const uqTr
 uqTrilinosMatrixClass matrixProduct(const uqTrilinosVectorClass& v1,  const uqTrilinosVectorClass& v2 );
 uqTrilinosMatrixClass diagScaling  (const uqTrilinosVectorClass& vec, const uqTrilinosMatrixClass& mat);
 std::ostream&         operator<<   (std::ostream& os,                 const uqTrilinosMatrixClass& obj);
+
+#endif // #ifdef QUESO_HAS_TRILINOS
 
 #endif // __UQ_TRILINOS_MATRIX_H__

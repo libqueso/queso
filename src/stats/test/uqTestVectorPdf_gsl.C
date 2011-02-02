@@ -14,7 +14,7 @@ BOOST_AUTO_TEST_CASE( test_uqGaussianVectorPdfClass )
   MPI_Init(NULL, NULL);
   uqFullEnvironmentClass env;
   uqVectorSpaceClass<uqGslVectorClass, uqGslMatrixClass> domainSpace(env, "test_space", 2, NULL);
-  Epetra_Map eMap(2, 0, env.comm());
+  uqMap eMap(2, 0, env.comm());
 
   uqGslVectorClass domainMinVal(env, eMap, -1e30);
   uqGslVectorClass domainMaxVal(env, eMap,  1e30);

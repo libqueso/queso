@@ -29,7 +29,7 @@
 #ifndef __UQ_ARRAY_OF_ONE_D_TABLES_H__
 #define __UQ_ARRAY_OF_ONE_D_TABLES_H__
 
-#include <EpetraExt_DistArray.h>
+#include <uqEnvironment.h>
 
 template <class V, class M>
 class uqArrayOfOneDTablesClass
@@ -43,10 +43,10 @@ public:
   void                       print       (std::ostream& os)   const;
 
 private:
-  const uqBaseEnvironmentClass&                  m_env;
-        std::string                          m_prefix;
-  const uqVectorSpaceClass<V,M>&             m_rowSpace;
-  EpetraExt::DistArray<std::vector<double>*> m_oneDTables;
+  const uqBaseEnvironmentClass&           m_env;
+        std::string                       m_prefix;
+  const uqVectorSpaceClass<V,M>&          m_rowSpace;
+  uqDistArray<std::vector<double>*>::type m_oneDTables;
 };
 
 template <class V, class M>

@@ -29,6 +29,9 @@
 #ifndef __UQ_TRILINOS_VECTOR_H__
 #define __UQ_TRILINOS_VECTOR_H__
 
+#include <uqDefines.h>
+#ifdef QUESO_HAS_TRILINOS
+
 #include <uqVector.h>
 //#include <Epetra_Vector.h>
 #include <Epetra_SerialDenseMatrix.h>
@@ -88,5 +91,7 @@ double                scalarProduct(const uqTrilinosVectorClass& x, const uqTril
 uqTrilinosVectorClass operator+    (const uqTrilinosVectorClass& x, const uqTrilinosVectorClass& y  );
 uqTrilinosVectorClass operator-    (const uqTrilinosVectorClass& x, const uqTrilinosVectorClass& y  );
 std::ostream&         operator<<   (std::ostream& os,               const uqTrilinosVectorClass& obj);
+
+#endif // #ifdef QUESO_HAS_TRILINOS
 
 #endif // __UQ_TRILINOS_VECTOR_H__

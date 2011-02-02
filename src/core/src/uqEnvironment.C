@@ -230,7 +230,7 @@ uqBaseEnvironmentClass::fullRank() const
   return m_fullRank;
 }
 
-const Epetra_MpiComm&
+const uqMpiComm&
 uqBaseEnvironmentClass::fullComm() const
 {
   UQ_FATAL_TEST_MACRO(m_fullComm == NULL,
@@ -246,7 +246,7 @@ uqBaseEnvironmentClass::subRank() const
   return m_subRank;
 }
 
-const Epetra_MpiComm&
+const uqMpiComm&
 uqBaseEnvironmentClass::subComm() const
 {
   UQ_FATAL_TEST_MACRO(m_subComm == NULL,
@@ -256,7 +256,7 @@ uqBaseEnvironmentClass::subComm() const
   return *m_subComm;
 }
 
-const Epetra_MpiComm&
+const uqMpiComm&
 uqBaseEnvironmentClass::selfComm() const
 {
   UQ_FATAL_TEST_MACRO(m_selfComm == NULL,
@@ -272,7 +272,7 @@ uqBaseEnvironmentClass::inter0Rank() const
   return m_inter0Rank;
 }
 
-const Epetra_MpiComm&
+const uqMpiComm&
 uqBaseEnvironmentClass::inter0Comm() const
 {
   UQ_FATAL_TEST_MACRO(m_inter0Comm == NULL,
@@ -466,7 +466,7 @@ uqBaseEnvironmentClass::resetIdentifyingString(const std::string& newString) con
 }
 
 void
-uqBaseEnvironmentClass::syncPrintDebugMsg(const char* msg, unsigned int msgVerbosity, unsigned int numUSecs, const Epetra_MpiComm& commObj) const
+uqBaseEnvironmentClass::syncPrintDebugMsg(const char* msg, unsigned int msgVerbosity, unsigned int numUSecs, const uqMpiComm& commObj) const
 {
   if (this->syncVerbosity() >= msgVerbosity) {
     UQ_MPI_Barrier(commObj);
@@ -1070,7 +1070,7 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
                       "uqFullEnvironmentClass::commonConstructor()",
                       "failed to get world fullRank()");
 
-  m_fullComm = new Epetra_MpiComm(m_fullRawComm);
+  m_fullComm = new uqMpiComm(m_fullRawComm);
   m_fullRank     = m_fullComm->MyPID();
   m_fullCommSize = m_fullComm->NumProc();
   mpiRC = MPI_Comm_group(m_fullComm->Comm(), &m_fullGroup);
@@ -1156,14 +1156,14 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
                       m_worldRank,
                       "uqFullEnvironmentClass::commonConstructor()",
                       "failed MPI_Comm_group() for a subEnvironment");
-  m_subComm = new Epetra_MpiComm(m_subRawComm);
+  m_subComm = new uqMpiComm(m_subRawComm);
   m_subRank     = m_subComm->MyPID();
   m_subCommSize = m_subComm->NumProc();
 
   //////////////////////////////////////////////////
   // Deal with multiple subEnvironments: create the self communicator
   //////////////////////////////////////////////////
-  m_selfComm = new Epetra_MpiComm(MPI_COMM_SELF);
+  m_selfComm = new uqMpiComm(MPI_COMM_SELF);
 
   //////////////////////////////////////////////////
   // Deal with multiple subEnvironments: create the inter0 communicator
@@ -1183,7 +1183,7 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
                       "uqFullEnvironmentClass::commonConstructor()",
                       "failed MPI_Comm_group() for inter0");
   if (m_fullRank%numRanksPerSubEnvironment == 0) {
-    m_inter0Comm = new Epetra_MpiComm(m_inter0RawComm);
+    m_inter0Comm = new uqMpiComm(m_inter0RawComm);
     m_inter0Rank     = m_inter0Comm->MyPID();
     m_inter0CommSize = m_inter0Comm->NumProc();
   }

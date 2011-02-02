@@ -30,7 +30,6 @@
 #define __UQ_ARRAY_OF_ONE_D_GRIDS_H__
 
 #include <uqOneDGrid.h>
-#include <EpetraExt_DistArray.h>
 
 template <class V, class M>
 class uqArrayOfOneDGridsClass
@@ -52,10 +51,10 @@ public:
         void                         print          (std::ostream& os) const;
 
 private:
-  const uqBaseEnvironmentClass&                          m_env;
-        std::string                                  m_prefix;
-  const uqVectorSpaceClass<V,M>&                     m_rowSpace;
-  EpetraExt::DistArray<uqBaseOneDGridClass<double>*> m_oneDGrids;
+  const uqBaseEnvironmentClass&                   m_env;
+        std::string                               m_prefix;
+  const uqVectorSpaceClass<V,M>&                  m_rowSpace;
+  uqDistArray<uqBaseOneDGridClass<double>*>::type m_oneDGrids;
 
   V* m_sizes;
   V* m_minPositions;

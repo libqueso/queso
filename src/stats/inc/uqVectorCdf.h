@@ -318,7 +318,7 @@ protected:
   using uqBaseVectorCdfClass<V,M>::m_prefix;
   using uqBaseVectorCdfClass<V,M>::m_pdfSupport;
 
-  EpetraExt::DistArray<uqSampledScalarCdfClass<double>*> m_cdfs;
+  uqDistArray<uqSampledScalarCdfClass<double>*>::type m_cdfs;
 };
 
 template<class V,class M>

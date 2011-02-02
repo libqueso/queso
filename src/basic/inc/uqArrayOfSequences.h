@@ -30,7 +30,6 @@
 #define __UQ_ARRAY_OF_SEQUENCES_H__
 
 #include <uqVectorSequence.h>
-#include <EpetraExt_DistArray.h>
 
 template <class V, class M>
 class uqArrayOfSequencesClass : public uqBaseVectorSequenceClass<V,M>
@@ -160,7 +159,7 @@ private:
                                            unsigned int                   paramId,
                                            std::vector<double>&           rawData) const;
 
-  EpetraExt::DistArray<uqScalarSequenceClass<double>*> m_scalarSequences;
+	uqDistArray<uqScalarSequenceClass<double>*>::type m_scalarSequences;
 
   using uqBaseVectorSequenceClass<V,M>::m_env;
   using uqBaseVectorSequenceClass<V,M>::m_vectorSpace;

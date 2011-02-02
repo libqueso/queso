@@ -37,7 +37,7 @@ class uqMatrixClass
 {
 public:
            uqMatrixClass();
-           uqMatrixClass(const uqBaseEnvironmentClass& env, const Epetra_Map& map);
+           uqMatrixClass(const uqBaseEnvironmentClass& env, const uqMap& map);
            uqMatrixClass(const uqMatrixClass& rhs);
   virtual ~uqMatrixClass();
 
@@ -47,7 +47,7 @@ public:
   uqMatrixClass& operator-=(const uqMatrixClass& rhs);
 
     const uqBaseEnvironmentClass& env                 ()           const;
-    const Epetra_Map&             map                 ()           const;
+    const uqMap&                  map                 ()           const;
           unsigned int            numOfProcsForStorage()           const;
           void                    setPrintHorizontally(bool value) const; // Yes, 'const'
           bool                    getPrintHorizontally()           const;
@@ -66,7 +66,7 @@ protected:
   virtual void                    copy                (const uqMatrixClass& src);
 
   const   uqBaseEnvironmentClass& m_env;
-  const   Epetra_Map&             m_map;
+  const   uqMap&                  m_map;
   mutable bool                    m_printHorizontally;
   mutable bool                    m_inDebugMode;
 };

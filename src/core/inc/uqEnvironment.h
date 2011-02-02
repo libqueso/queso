@@ -35,7 +35,6 @@ class uqEnvironmentOptionsClass;
 #undef UQ_USES_COMMAND_LINE_OPTIONS
 
 #include <hdf5.h>
-#include <Epetra_MpiComm.h>
 #include <gsl/gsl_rng.h>
 #include <boost/program_options.hpp>
 namespace po = boost::program_options;
@@ -160,17 +159,17 @@ public:
           int                     worldRank                  () const;
 
           int                     fullRank                   () const;
-          const Epetra_MpiComm&   fullComm                   () const; 
+          const uqMpiComm&        fullComm                   () const; 
 
           int                     subRank                    () const;
-          const Epetra_MpiComm&   subComm                    () const; 
+          const uqMpiComm&        subComm                    () const; 
 
-          const Epetra_MpiComm&   selfComm                   () const; 
+          const uqMpiComm&        selfComm                   () const; 
 
           int                     inter0Rank                 () const;
-          const Epetra_MpiComm&   inter0Comm                 () const;
+          const uqMpiComm&        inter0Comm                 () const;
 
-                std::ofstream*    subDisplayFile             () const;
+          std::ofstream*          subDisplayFile             () const;
 
           unsigned int            numSubEnvironments         () const;
           unsigned int            subId                      () const;
@@ -191,7 +190,7 @@ public:
 	  std::string             identifyingString          () const;
           void                    resetIdentifyingString     (const std::string& newString) const; // Yes, const
           bool                    isThereInputFile           () const;
-          void                    syncPrintDebugMsg          (const char* msg, unsigned int msgVerbosity, unsigned int numUSecs, const Epetra_MpiComm& commObj) const;
+          void                    syncPrintDebugMsg          (const char* msg, unsigned int msgVerbosity, unsigned int numUSecs, const uqMpiComm& commObj) const;
 
           bool                    openOutputFile             (const std::string&            fileName,
                                                               const std::string&            fileType,
@@ -220,7 +219,7 @@ protected:
   int                        m_worldRank;
 
   MPI_Comm                   m_fullRawComm;
-  Epetra_MpiComm*            m_fullComm;
+  uqMpiComm*                 m_fullComm;
   int                        m_fullRank;
   int                        m_fullCommSize;
   MPI_Group                  m_fullGroup;
@@ -233,15 +232,15 @@ protected:
   std::string                m_subIdString;
   MPI_Group                  m_subGroup;
   MPI_Comm                   m_subRawComm;
-  Epetra_MpiComm*            m_subComm;
+  uqMpiComm*                 m_subComm;
   int                        m_subRank;
   int                        m_subCommSize;
 
-  Epetra_MpiComm*            m_selfComm;
+  uqMpiComm*                 m_selfComm;
 
   MPI_Group                  m_inter0Group;
   MPI_Comm                   m_inter0RawComm;
-  Epetra_MpiComm*            m_inter0Comm;
+  uqMpiComm*                 m_inter0Comm;
   int                        m_inter0Rank;
   int                        m_inter0CommSize;
 

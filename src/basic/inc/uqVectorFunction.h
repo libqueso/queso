@@ -31,8 +31,6 @@
 
 #include <uqVectorSet.h>
 #include <uqEnvironment.h>
-#include <uqDefines.h>
-#include <EpetraExt_DistArray.h>
 
 //*****************************************************
 // Base class
@@ -47,12 +45,12 @@ public:
 
           const uqVectorSetClass<P_V,P_M>& domainSet() const;
           const uqVectorSetClass<Q_V,Q_M>& imageSet () const;
-  virtual       void                       compute  (const P_V&                        domainVector,
-                                                     const P_V*                        domainDirection,
-                                                           Q_V&                        imageVector,
-                                                           EpetraExt::DistArray<P_V*>* gradVectors,     // Yes, 'P_V'
-                                                           EpetraExt::DistArray<P_M*>* hessianMatrices, // Yes, 'P_M'
-                                                           EpetraExt::DistArray<P_V*>* hessianEffects) const = 0;
+  virtual       void                       compute  (const P_V&                              domainVector,
+                                                     const P_V*                              domainDirection,
+                                                           Q_V&                              imageVector,
+                                                           typename uqDistArray<P_V*>::type* gradVectors,     // Yes, 'P_V'
+                                                           typename uqDistArray<P_M*>::type* hessianMatrices, // Yes, 'P_M'
+                                                           typename uqDistArray<P_V*>::type* hessianEffects) const = 0;
 
 protected:
   const uqBaseEnvironmentClass&    m_env;
@@ -102,31 +100,31 @@ public:
   uqGenericVectorFunctionClass(const char*                      prefix,
                                const uqVectorSetClass<P_V,P_M>& domainSet,
                                const uqVectorSetClass<Q_V,Q_M>& imageSet,
-                               void (*routinePtr)(const P_V&                        domainVector,
-                                                  const P_V*                        domainDirection,
-                                                  const void*                       functionDataPtr,
-                                                        Q_V&                        imageVector,
-                                                        EpetraExt::DistArray<P_V*>* gradVectors,
-                                                        EpetraExt::DistArray<P_M*>* hessianMatrices,
-                                                        EpetraExt::DistArray<P_V*>* hessianEffects),
+                               void (*routinePtr)(const P_V&                              domainVector,
+                                                  const P_V*                              domainDirection,
+                                                  const void*                             functionDataPtr,
+                                                        Q_V&                              imageVector,
+                                                        typename uqDistArray<P_V*>::type* gradVectors,
+                                                        typename uqDistArray<P_M*>::type* hessianMatrices,
+                                                        typename uqDistArray<P_V*>::type* hessianEffects),
                                const void* functionDataPtr);
   virtual ~uqGenericVectorFunctionClass();
 
-  void compute  (const P_V&                        domainVector,
-                 const P_V*                        domainDirection,
-                       Q_V&                        imageVector,
-                       EpetraExt::DistArray<P_V*>* gradVectors,     // Yes, 'P_V'
-                       EpetraExt::DistArray<P_M*>* hessianMatrices, // Yes, 'P_M'
-                       EpetraExt::DistArray<P_V*>* hessianEffects) const;
+  void compute  (const P_V&                              domainVector,
+                 const P_V*                              domainDirection,
+                       Q_V&                              imageVector,
+                       typename uqDistArray<P_V*>::type* gradVectors,     // Yes, 'P_V'
+                       typename uqDistArray<P_M*>::type* hessianMatrices, // Yes, 'P_M'
+                       typename uqDistArray<P_V*>::type* hessianEffects) const;
 
 protected:
-  void (*m_routinePtr)(const P_V&                        domainVector,
-                       const P_V*                        domainDirection,
-                       const void*                       functionDataPtr,
-                             Q_V&                        imageVector,
-                             EpetraExt::DistArray<P_V*>* gradVectors,
-                             EpetraExt::DistArray<P_M*>* hessianMatrices,
-                             EpetraExt::DistArray<P_V*>* hessianEffects);
+  void (*m_routinePtr)(const P_V&                              domainVector,
+                       const P_V*                              domainDirection,
+                       const void*                             functionDataPtr,
+                             Q_V&                              imageVector,
+                             typename uqDistArray<P_V*>::type* gradVectors,
+                             typename uqDistArray<P_M*>::type* hessianMatrices,
+                             typename uqDistArray<P_V*>::type* hessianEffects);
   const void* m_routineDataPtr;
 
   using uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_env;
@@ -140,13 +138,13 @@ uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M>::uqGenericVectorFunctionClass(
   const char*                      prefix,
   const uqVectorSetClass<P_V,P_M>& domainSet,
   const uqVectorSetClass<Q_V,Q_M>& imageSet,
-  void (*routinePtr)(const P_V&                        domainVector,
-                     const P_V*                        domainDirection,
-                     const void*                       functionDataPtr,
-                           Q_V&                        imageVector,
-                           EpetraExt::DistArray<P_V*>* gradVectors,
-                           EpetraExt::DistArray<P_M*>* hessianMatrices,
-                           EpetraExt::DistArray<P_V*>* hessianEffects),
+  void (*routinePtr)(const P_V&                              domainVector,
+                     const P_V*                              domainDirection,
+                     const void*                             functionDataPtr,
+                           Q_V&                              imageVector,
+                           typename uqDistArray<P_V*>::type* gradVectors,
+                           typename uqDistArray<P_M*>::type* hessianMatrices,
+                           typename uqDistArray<P_V*>::type* hessianEffects),
   const void* functionDataPtr)
   :
   uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>(((std::string)(prefix)+"gen").c_str(),
@@ -165,12 +163,12 @@ uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M>::~uqGenericVectorFunctionClass()
 template<class P_V,class P_M,class Q_V,class Q_M>
 void
 uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M>::compute(
-  const P_V&                        domainVector,
-  const P_V*                        domainDirection,
-        Q_V&                        imageVector,
-        EpetraExt::DistArray<P_V*>* gradVectors,     // Yes, 'P_V'
-        EpetraExt::DistArray<P_M*>* hessianMatrices, // Yes, 'P_M'
-        EpetraExt::DistArray<P_V*>* hessianEffects) const
+  const P_V&                              domainVector,
+  const P_V*                              domainDirection,
+        Q_V&                              imageVector,
+        typename uqDistArray<P_V*>::type* gradVectors,     // Yes, 'P_V'
+        typename uqDistArray<P_M*>::type* hessianMatrices, // Yes, 'P_M'
+        typename uqDistArray<P_V*>::type* hessianEffects) const
 {
   //UQ_FATAL_TEST_MACRO(false,
   //                    domainVector.env().worldRank(),

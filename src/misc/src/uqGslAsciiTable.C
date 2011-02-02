@@ -29,8 +29,8 @@
 #include <uqAsciiTable.h>
 
 template <>
-Epetra_Map*
+uqMap*
 uqAsciiTableClass<class uqGslVectorClass, class uqGslMatrixClass>::newMap()
 {
-  return new Epetra_Map(m_numRows,0,m_env.selfComm());
+  return new uqMap(m_numRows,0,m_env.selfComm());
 }

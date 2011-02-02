@@ -27,8 +27,10 @@
 //--------------------------------------------------------------------------
 
 #include <uqTrilinosVector.h>
+#ifdef QUESO_HAS_TRILINOS
+
 #include <Epetra_MpiComm.h>
-#include <uqDefines.h>
+#include <Epetra_Map.h>
 
 uqTrilinosVectorClass::uqTrilinosVectorClass()
   :
@@ -422,3 +424,5 @@ uqTrilinosVectorClass::fullRank() const
   return m_vec->Map().Comm().MyPID();
 }
 #endif
+
+#endif // #ifdef QUESO_HAS_TRILINOS

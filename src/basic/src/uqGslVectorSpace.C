@@ -30,10 +30,10 @@
 #include <uqGslMatrix.h>
 
 template <>
-Epetra_Map*
+uqMap*
 uqVectorSpaceClass<uqGslVectorClass, uqGslMatrixClass>::newMap()
 {
-  return new Epetra_Map(m_dimGlobal,0,m_env.selfComm());
+  return new uqMap(m_dimGlobal,0,m_env.selfComm());
 }
 
 template<>

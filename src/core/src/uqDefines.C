@@ -31,9 +31,9 @@
 
 int uqMyWorldfullRank() {
   int result = 0;
-#ifdef __UQ_USES_TRILINOS__
+//#ifdef __UQ_USES_TRILINOS__
   int iRC;
   iRC = MPI_Comm_rank(MPI_COMM_WORLD,&result);
-#endif
+//#endif
   return result;
 }
