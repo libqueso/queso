@@ -51,10 +51,10 @@ public:
         void                         print          (std::ostream& os) const;
 
 private:
-  const uqBaseEnvironmentClass&                   m_env;
-        std::string                               m_prefix;
-  const uqVectorSpaceClass<V,M>&                  m_rowSpace;
-  uqDistArray<uqBaseOneDGridClass<double>*>::type m_oneDGrids;
+  const uqBaseEnvironmentClass&                        m_env;
+        std::string                                    m_prefix;
+  const uqVectorSpaceClass<V,M>&                       m_rowSpace;
+  uqDistArrayClass<uqBaseOneDGridClass<double>*>::type m_oneDGrids;
 
   V* m_sizes;
   V* m_minPositions;

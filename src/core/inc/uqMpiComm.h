@@ -22,44 +22,49 @@
 //
 //-----------------------------------------------------------------------el-
 // 
-// $Id:$
+// $Id$
 //
 //--------------------------------------------------------------------------
 
-#include <uqVectorSpace.h>
-#include <uqGslMatrix.h>
+#ifndef __UQ_MPI_COMM_H__
+#define __UQ_MPI_COMM_H__
 
-template <>
-uqMapClass*
-uqVectorSpaceClass<uqGslVectorClass, uqGslMatrixClass>::newMap()
-{
-  return new uqMapClass(m_dimGlobal,0,m_env.selfComm());
-}
+#include <uqDefines.h>
+#ifdef QUESO_HAS_TRILINOS
 
-template<>
-uqGslVectorClass*
-uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass>::newVector() const
-{
-  return new uqGslVectorClass(m_env,*m_map);
-}
+// 'uqMpiCommClass' is just an alias to the 'Epetra_MpiComm' class of Trilinos
+#include <Epetra_MpiComm.h>
+typedef Epetra_MpiComm uqMpiCommClass ;
 
-template<>
-uqGslVectorClass*
-uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass>::newVector(double value) const
-{
-  return new uqGslVectorClass(m_env,*m_map,value);
-}
+#else // QUESO_HAS_TRILINOS
 
-template<>
-uqGslMatrixClass*
-uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass>::newMatrix() const
+class uqMpiCommClass
 {
-  return new uqGslMatrixClass(m_env,*m_map,this->dimGlobal());
-}
+public:
+  uqMpiCommClass();
+  uqMpiCommClass(unsigned int          numGlobalElements,
+                 unsigned int          numNotUsed,
+                 const uqMpiCommClass& comm);
+  uqMpiCommClass(const uqMpiCommClass& src);
+ ~uqMpiCommClass();
 
-template<>
-uqGslMatrixClass*
-uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass>::newDiagMatrix(double diagValue) const
-{
-  return new uqGslMatrixClass(m_env,*m_map,diagValue);
-}
+  uqMpiCommClass& operator= (const uqMpiCommClass& rhs);
+
+  const uqMpiCommClass& Comm()              const;
+  unsigned int          NumGlobalElements() const;
+  unsigned int          NumMyElements()     const;
+
+private:
+  void copy             (const uqMpiCommClass& src);
+
+  const uqMpiCommClass& m_comm;
+  unsigned int          m_numGlobalElements;
+  unsigned int          m_numMyElements;
+};
+
+#endif // QUESO_HAS_TRILINOS
+
+int UQ_MPI_Barrier(MPI_Comm comm);
+int UQ_MPI_Barrier(const uqMpiCommClass& comm);
+
+#endif // __UQ_MPI_COMM_H__

@@ -60,10 +60,10 @@ double uqMiscGaussianDensity            (double x, double mu, double sigma);
 
 template <class T>
 bool
-uqMiscCheckForSameValueInAllNodes(T&               inputValue, // Yes, 'not' const
-                                  double           acceptableTreshold,
-                                  const uqMpiComm& comm,
-                                  const char*      whereString)
+uqMiscCheckForSameValueInAllNodes(T&                    inputValue, // Yes, 'not' const
+                                  double                acceptableTreshold,
+                                  const uqMpiCommClass& comm,
+                                  const char*           whereString)
 {
   // Filter out those nodes that should not participate
   if (comm.MyPID() < 0) return true;

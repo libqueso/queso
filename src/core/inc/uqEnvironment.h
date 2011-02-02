@@ -159,15 +159,15 @@ public:
           int                     worldRank                  () const;
 
           int                     fullRank                   () const;
-          const uqMpiComm&        fullComm                   () const; 
+          const uqMpiCommClass&   fullComm                   () const; 
 
           int                     subRank                    () const;
-          const uqMpiComm&        subComm                    () const; 
+          const uqMpiCommClass&   subComm                    () const; 
 
-          const uqMpiComm&        selfComm                   () const; 
+          const uqMpiCommClass&   selfComm                   () const; 
 
           int                     inter0Rank                 () const;
-          const uqMpiComm&        inter0Comm                 () const;
+          const uqMpiCommClass&   inter0Comm                 () const;
 
           std::ofstream*          subDisplayFile             () const;
 
@@ -190,7 +190,7 @@ public:
 	  std::string             identifyingString          () const;
           void                    resetIdentifyingString     (const std::string& newString) const; // Yes, const
           bool                    isThereInputFile           () const;
-          void                    syncPrintDebugMsg          (const char* msg, unsigned int msgVerbosity, unsigned int numUSecs, const uqMpiComm& commObj) const;
+          void                    syncPrintDebugMsg          (const char* msg, unsigned int msgVerbosity, unsigned int numUSecs, const uqMpiCommClass& commObj) const;
 
           bool                    openOutputFile             (const std::string&            fileName,
                                                               const std::string&            fileType,
@@ -219,7 +219,7 @@ protected:
   int                        m_worldRank;
 
   MPI_Comm                   m_fullRawComm;
-  uqMpiComm*                 m_fullComm;
+  uqMpiCommClass*            m_fullComm;
   int                        m_fullRank;
   int                        m_fullCommSize;
   MPI_Group                  m_fullGroup;
@@ -232,15 +232,15 @@ protected:
   std::string                m_subIdString;
   MPI_Group                  m_subGroup;
   MPI_Comm                   m_subRawComm;
-  uqMpiComm*                 m_subComm;
+  uqMpiCommClass*            m_subComm;
   int                        m_subRank;
   int                        m_subCommSize;
 
-  uqMpiComm*                 m_selfComm;
+  uqMpiCommClass*            m_selfComm;
 
   MPI_Group                  m_inter0Group;
   MPI_Comm                   m_inter0RawComm;
-  uqMpiComm*                 m_inter0Comm;
+  uqMpiCommClass*            m_inter0Comm;
   int                        m_inter0Rank;
   int                        m_inter0CommSize;
 

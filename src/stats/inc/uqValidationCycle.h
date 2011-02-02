@@ -52,13 +52,13 @@ public:
   //bool routineComputesMinus2LogOfDensity);
 
   void instantiateCalFP(uqSfpOptionsValuesClass* optionsValues,
-                        void (*qoiRoutinePtr)(const P_V&                              domainVector,
-                                              const P_V*                              domainDirection,
-                                              const void*                             functionDataPtr,
-                                                    Q_V&                              imageVector,
-                                                    typename uqDistArray<P_V*>::type* gradVectors,
-                                                    typename uqDistArray<P_M*>::type* hessianMatrices,
-                                                    typename uqDistArray<P_V*>::type* hessianEffects),
+                        void (*qoiRoutinePtr)(const P_V&                                   domainVector,
+                                              const P_V*                                   domainDirection,
+                                              const void*                                  functionDataPtr,
+                                                    Q_V&                                   imageVector,
+                                                    typename uqDistArrayClass<P_V*>::type* gradVectors,
+                                                    typename uqDistArrayClass<P_M*>::type* hessianMatrices,
+                                                    typename uqDistArrayClass<P_V*>::type* hessianEffects),
                         const void* qoiRoutineDataPtr);
 
   const uqStatisticalInverseProblemClass<P_V,P_M>& calIP() const;
@@ -74,13 +74,13 @@ public:
   //bool routineComputesMinus2LogOfDensity);
 
   void instantiateValFP(uqSfpOptionsValuesClass* optionsValues,
-                        void (*qoiRoutinePtr)(const P_V&                              domainVector,
-                                              const P_V*                              domainDirection,
-                                              const void*                             functionDataPtr,
-                                                    Q_V&                              imageVector,
-                                                    typename uqDistArray<P_V*>::type* gradVectors,
-                                                    typename uqDistArray<P_M*>::type* hessianMatrices,
-                                                    typename uqDistArray<P_V*>::type* hessianEffects),
+                        void (*qoiRoutinePtr)(const P_V&                                   domainVector,
+                                              const P_V*                                   domainDirection,
+                                              const void*                                  functionDataPtr,
+                                                    Q_V&                                   imageVector,
+                                                    typename uqDistArrayClass<P_V*>::type* gradVectors,
+                                                    typename uqDistArrayClass<P_M*>::type* hessianMatrices,
+                                                    typename uqDistArrayClass<P_V*>::type* hessianEffects),
                         const void* qoiRoutineDataPtr);
 
   const uqStatisticalInverseProblemClass<P_V,P_M>& valIP() const;
@@ -234,13 +234,13 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateCalFP(
   uqSfpOptionsValuesClass* optionsValues,
-  void (*qoiRoutinePtr)(const P_V&                              domainVector,
-                        const P_V*                              domainDirection,
-                        const void*                             functionDataPtr,
-                              Q_V&                              imageVector,
-                              typename uqDistArray<P_V*>::type* gradVectors,
-                              typename uqDistArray<P_M*>::type* hessianMatrices,
-                              typename uqDistArray<P_V*>::type* hessianEffects),
+  void (*qoiRoutinePtr)(const P_V&                                   domainVector,
+                        const P_V*                                   domainDirection,
+                        const void*                                  functionDataPtr,
+                              Q_V&                                   imageVector,
+                              typename uqDistArrayClass<P_V*>::type* gradVectors,
+                              typename uqDistArrayClass<P_M*>::type* hessianMatrices,
+                              typename uqDistArrayClass<P_V*>::type* hessianEffects),
   const void* qoiRoutineDataPtr)
 {
   // Calibration stage: Input param vector rv for forward = output posterior vector rv of inverse
@@ -326,13 +326,13 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateValFP(
   uqSfpOptionsValuesClass* optionsValues,
-  void (*qoiRoutinePtr)(const P_V&                              domainVector,
-                        const P_V*                              domainDirection,
-                        const void*                             functionDataPtr,
-                              Q_V&                              imageVector,
-                              typename uqDistArray<P_V*>::type* gradVectors,
-                              typename uqDistArray<P_M*>::type* hessianMatrices,
-                              typename uqDistArray<P_V*>::type* hessianEffects),
+  void (*qoiRoutinePtr)(const P_V&                                   domainVector,
+                        const P_V*                                   domainDirection,
+                        const void*                                  functionDataPtr,
+                              Q_V&                                   imageVector,
+                              typename uqDistArrayClass<P_V*>::type* gradVectors,
+                              typename uqDistArrayClass<P_M*>::type* hessianMatrices,
+                              typename uqDistArrayClass<P_V*>::type* hessianEffects),
   const void* qoiRoutineDataPtr)
 {
   // Validation stage: Input param vector rv for forward = output posterior vector rv of inverse

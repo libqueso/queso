@@ -29,8 +29,8 @@
 #include <uqAsciiTable.h>
 
 template <>
-uqMap*
+uqMapClass*
 uqAsciiTableClass<class uqGslVectorClass, class uqGslMatrixClass>::newMap()
 {
-  return new uqMap(m_numRows,0,m_env.selfComm());
+  return new uqMapClass(m_numRows,0,m_env.selfComm());
 }

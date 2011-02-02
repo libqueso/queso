@@ -29,7 +29,7 @@
 #ifndef __UQ_SCALAR_FUNCTION_SYNCHRONIZER_H__
 #define __UQ_SCALAR_FUNCTION_SYNCHRONIZER_H__
 
-#include <uqMPI.h>
+#include <uqEnvironment.h>
 
 template <class V, class M>
 class uqScalarFunctionSynchronizerClass

@@ -32,7 +32,7 @@
 uqVectorClass::uqVectorClass()
   :
   m_env(*(new uqEmptyEnvironmentClass())                     ),
-  m_map(*(new uqMap( 1,0,*(new uqMpiComm(MPI_COMM_WORLD)) ) ))
+  m_map(*(new uqMapClass( 1,0,*(new uqMpiCommClass(MPI_COMM_WORLD)) ) ))
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.worldRank(),
@@ -40,7 +40,7 @@ uqVectorClass::uqVectorClass()
                       "should not be used by user");
 }
 
-uqVectorClass::uqVectorClass(const uqBaseEnvironmentClass& env, const uqMap& map)
+uqVectorClass::uqVectorClass(const uqBaseEnvironmentClass& env, const uqMapClass& map)
   :
   m_env              (env),
   m_map              (map),
@@ -136,7 +136,7 @@ uqVectorClass::env() const
   return m_env;
 }
 
-const uqMap&
+const uqMapClass&
 uqVectorClass::map() const
 {
   return m_map;

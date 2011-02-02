@@ -41,7 +41,7 @@ uqGslVectorClass::uqGslVectorClass()
                       "should not be used by user");
 }
 
-uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, const uqMap& map)
+uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, const uqMapClass& map)
   :
   uqVectorClass(env,map),
   m_vec        (gsl_vector_calloc(map.NumGlobalElements()))
@@ -67,7 +67,7 @@ uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, const uqMa
   //std::cout << "Leaving uqGslVectorClass::constructor(1)" << std::endl;
 }
 
-uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, const uqMap& map, double value)
+uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, const uqMapClass& map, double value)
   :
   uqVectorClass(env,map),
   m_vec(gsl_vector_calloc(map.NumGlobalElements()))
@@ -83,7 +83,7 @@ uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, const uqMa
   //std::cout << "Leaving uqGslVectorClass::constructor(2)" << std::endl;
 }
 
-uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, double d1, double d2, const uqMap& map)
+uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, double d1, double d2, const uqMapClass& map)
   :
   uqVectorClass(env,map),
   m_vec(gsl_vector_calloc(map.NumGlobalElements()))
@@ -507,7 +507,7 @@ uqGslVectorClass::sort()
 }
 
 void
-uqGslVectorClass::mpiBcast(int srcRank, const uqMpiComm& bcastComm)
+uqGslVectorClass::mpiBcast(int srcRank, const uqMpiCommClass& bcastComm)
 {
   // Filter out those nodes that should not participate
   if (bcastComm.MyPID() < 0) return;
@@ -577,7 +577,7 @@ uqGslVectorClass::mpiBcast(int srcRank, const uqMpiComm& bcastComm)
 }
 
 void
-uqGslVectorClass::mpiAllReduce(MPI_Op mpiOperation, const uqMpiComm& opComm, uqGslVectorClass& resultVec) const
+uqGslVectorClass::mpiAllReduce(MPI_Op mpiOperation, const uqMpiCommClass& opComm, uqGslVectorClass& resultVec) const
 {
   // Filter out those nodes that should not participate
   if (opComm.MyPID() < 0) return;
@@ -603,7 +603,7 @@ uqGslVectorClass::mpiAllReduce(MPI_Op mpiOperation, const uqMpiComm& opComm, uqG
 }
 
 void
-uqGslVectorClass::mpiAllQuantile(double probability, const uqMpiComm& opComm, uqGslVectorClass& resultVec) const
+uqGslVectorClass::mpiAllQuantile(double probability, const uqMpiCommClass& opComm, uqGslVectorClass& resultVec) const
 {
   // Filter out those nodes that should not participate
   if (opComm.MyPID() < 0) return;

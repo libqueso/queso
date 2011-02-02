@@ -32,7 +32,7 @@
 uqMatrixClass::uqMatrixClass()
   :
   m_env(*(new uqEmptyEnvironmentClass())                     ),
-  m_map(*(new uqMap( 1,0,*(new uqMpiComm(MPI_COMM_WORLD)) ) ))
+  m_map(*(new uqMapClass( 1,0,*(new uqMpiCommClass(MPI_COMM_WORLD)) ) ))
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.worldRank(),
@@ -40,7 +40,7 @@ uqMatrixClass::uqMatrixClass()
                       "should not be used by user");
 }
 
-uqMatrixClass::uqMatrixClass(const uqBaseEnvironmentClass& env, const uqMap& map)
+uqMatrixClass::uqMatrixClass(const uqBaseEnvironmentClass& env, const uqMapClass& map)
   :
   m_env              (env),
   m_map              (map),
@@ -122,11 +122,11 @@ uqMatrixClass::env() const
   return m_env;
 }
 
-const uqMap&
+const uqMapClass&
 uqMatrixClass::map() const
 {
   return m_map;
-  //return (const uqMap&) (m_mat->Map());
+  //return (const uqMapClass&) (m_mat->Map());
 }
 
 unsigned int

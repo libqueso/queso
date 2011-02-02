@@ -22,22 +22,51 @@
 //
 //-----------------------------------------------------------------------el-
 // 
-// $Id:$
+// $Id$
 //
 //--------------------------------------------------------------------------
 
-#include <uqMPI.h>
+#ifndef __UQ_DIST_ARRAY_H__
+#define __UQ_DIST_ARRAY_H__
 
-int UQ_MPI_Barrier(MPI_Comm comm)
+#include <uqDefines.h>
+#ifdef QUESO_HAS_TRILINOS
+
+// 'uqDistArrayClass<T>::type' is just an alias to the 'EpetraExt::DistArray<T>' class of Trilinos
+#include <EpetraExt_DistArray.h>
+template<typename T>
+struct uqDistArrayClass
 {
-  int mpiRC = MPI_Barrier(comm);
+  typedef EpetraExt::DistArray<T> type;
+};
 
-  return mpiRC;
-}
+#else // QUESO_HAS_TRILINOS
 
-int UQ_MPI_Barrier(const uqMpiComm& comm)
+#include <uqMpiComm.h>
+class uqDistArrayClass
 {
-  comm.Barrier();
+public:
+  uqDistArrayClass();
+  uqDistArrayClass(unsigned int          numGlobalElements,
+                   unsigned int          numNotUsed,
+                   const uqMpiCommClass& comm);
+  uqDistArrayClass(const uqDistArrayClass& src);
+ ~uqDistArrayClass();
 
-  return 0;
-}
+  uqDistArrayClass& operator= (const uqDistArrayClass& rhs);
+
+  const uqMpiCommClass& Comm()              const;
+  unsigned int          NumGlobalElements() const;
+  unsigned int          NumMyElements()     const;
+
+private:
+  void copy             (const uqDistArrayClass& src);
+
+  const uqMpiCommClass& m_comm;
+  unsigned int          m_numGlobalElements;
+  unsigned int          m_numMyElements;
+};
+
+#endif // QUESO_HAS_TRILINOS
+
+#endif // __UQ_DIST_ARRAY_H__

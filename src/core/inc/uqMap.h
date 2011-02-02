@@ -22,16 +22,47 @@
 //
 //-----------------------------------------------------------------------el-
 // 
-// $Id:$
+// $Id$
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_MPI_H__
-#define __UQ_MPI_H__
+#ifndef __UQ_MAP_H__
+#define __UQ_MAP_H__
 
 #include <uqDefines.h>
+#ifdef QUESO_HAS_TRILINOS
 
-int UQ_MPI_Barrier(MPI_Comm comm);
-int UQ_MPI_Barrier(const uqMpiComm& comm);
+// 'uqMapClass' is just an alias to the 'Epetra_Map' class of Trilinos
+#include <Epetra_Map.h>
+typedef Epetra_Map uqMapClass ;
 
-#endif // __UQ_MPI_H__
+#else // QUESO_HAS_TRILINOS
+
+#include <uqMpiComm.h>
+class uqMapClass
+{
+public:
+  uqMapClass();
+  uqMapClass(unsigned int          numGlobalElements,
+             unsigned int          numNotUsed,
+             const uqMpiCommClass& comm);
+  uqMapClass(const uqMapClass& src);
+ ~uqMapClass();
+
+  uqMapClass& operator= (const uqMapClass& rhs);
+
+  const uqMpiCommClass& Comm()              const;
+  unsigned int          NumGlobalElements() const;
+  unsigned int          NumMyElements()     const;
+
+private:
+  void copy             (const uqMapClass& src);
+
+  const uqMpiCommClass& m_comm;
+  unsigned int          m_numGlobalElements;
+  unsigned int          m_numMyElements;
+};
+
+#endif // QUESO_HAS_TRILINOS
+
+#endif // __UQ_MAP_H__

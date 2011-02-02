@@ -46,7 +46,9 @@ libqueso_la_SOURCES = \
 	$(top_srcdir)/src/core/src/uqEnvironmentOptions.C \
 	$(top_srcdir)/src/core/src/uqVector.C \
 	$(top_srcdir)/src/core/src/uqMatrix.C \
-	$(top_srcdir)/src/core/src/uqMPI.C \
+	$(top_srcdir)/src/core/src/uqMpiComm.C \
+	$(top_srcdir)/src/core/src/uqMap.C \
+	$(top_srcdir)/src/core/src/uqDistArray.C \
 	$(top_srcdir)/src/core/src/uqTrilinosVector.C \
 	$(top_srcdir)/src/core/src/uqTrilinosMatrix.C
 
@@ -113,7 +115,9 @@ libqueso_include_HEADERS = \
 	$(top_srcdir)/src/core/inc/uqGslMatrix.h \
 	$(top_srcdir)/src/core/inc/uqGslVector.h \
 	$(top_srcdir)/src/core/inc/uqMatrix.h \
-	$(top_srcdir)/src/core/inc/uqMPI.h \
+	$(top_srcdir)/src/core/inc/uqMpiComm.h \
+	$(top_srcdir)/src/core/inc/uqMap.h \
+	$(top_srcdir)/src/core/inc/uqDistArray.h \
 	$(top_srcdir)/src/core/inc/uqTrilinosMatrix.h \
 	$(top_srcdir)/src/core/inc/uqTrilinosVector.h \
 	$(top_srcdir)/src/core/inc/uqVector.h

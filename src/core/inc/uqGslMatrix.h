@@ -39,10 +39,10 @@ class uqGslMatrixClass : public uqMatrixClass
 public:
   uqGslMatrixClass();
   uqGslMatrixClass(const uqBaseEnvironmentClass& env,
-                   const uqMap&                  map,
+                   const uqMapClass&             map,
                    unsigned int                  numCols);
   uqGslMatrixClass(const uqBaseEnvironmentClass& env,
-                   const uqMap&                  map,
+                   const uqMapClass&             map,
                    double                        diagValue); // MATLAB eye
   uqGslMatrixClass(const uqGslVectorClass&       v,
                    double                        diagValue); // MATLAB eye

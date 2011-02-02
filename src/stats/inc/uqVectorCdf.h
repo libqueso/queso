@@ -318,7 +318,7 @@ protected:
   using uqBaseVectorCdfClass<V,M>::m_prefix;
   using uqBaseVectorCdfClass<V,M>::m_pdfSupport;
 
-  uqDistArray<uqSampledScalarCdfClass<double>*>::type m_cdfs;
+  uqDistArrayClass<uqSampledScalarCdfClass<double>*>::type m_cdfs;
 };
 
 template<class V,class M>

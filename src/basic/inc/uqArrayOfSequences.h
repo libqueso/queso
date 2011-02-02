@@ -159,7 +159,7 @@ private:
                                            unsigned int                   paramId,
                                            std::vector<double>&           rawData) const;
 
-	uqDistArray<uqScalarSequenceClass<double>*>::type m_scalarSequences;
+	uqDistArrayClass<uqScalarSequenceClass<double>*>::type m_scalarSequences;
 
   using uqBaseVectorSequenceClass<V,M>::m_env;
   using uqBaseVectorSequenceClass<V,M>::m_vectorSpace;

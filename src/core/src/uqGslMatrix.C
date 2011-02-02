@@ -45,7 +45,7 @@ uqGslMatrixClass::uqGslMatrixClass()
 
 uqGslMatrixClass::uqGslMatrixClass( // can be a rectangular matrix
   const uqBaseEnvironmentClass& env,
-  const uqMap&                  map,
+  const uqMapClass&             map,
   unsigned int                  numCols)
   :
   uqMatrixClass  (env,map),
@@ -65,7 +65,7 @@ uqGslMatrixClass::uqGslMatrixClass( // can be a rectangular matrix
  
 uqGslMatrixClass::uqGslMatrixClass( // square matrix
   const uqBaseEnvironmentClass& env,
-  const uqMap&                  map,
+  const uqMapClass&             map,
   double                        diagValue)
   :
   uqMatrixClass  (env,map),

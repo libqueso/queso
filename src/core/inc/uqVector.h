@@ -37,7 +37,7 @@ class uqVectorClass
 {
 public:
            uqVectorClass();
-           uqVectorClass(const uqBaseEnvironmentClass& env, const uqMap& map);
+           uqVectorClass(const uqBaseEnvironmentClass& env, const uqMapClass& map);
            uqVectorClass(const uqVectorClass& rhs);
   virtual ~uqVectorClass();
 
@@ -48,7 +48,7 @@ public:
   uqVectorClass& operator-=(const uqVectorClass& rhs);
 
     const uqBaseEnvironmentClass& env                 ()           const;
-    const uqMap&                  map                 ()           const;
+    const uqMapClass&             map                 ()           const;
           unsigned int            numOfProcsForStorage()           const;
           void                    setPrintHorizontally(bool value) const; // Yes, 'const'
           bool                    getPrintHorizontally()           const;
@@ -67,7 +67,7 @@ protected:
   virtual void                    copy                (const uqVectorClass& src);
 
   const uqBaseEnvironmentClass& m_env;
-  const uqMap&                  m_map;
+  const uqMapClass&             m_map;
   mutable bool                  m_printHorizontally;
   mutable bool                  m_printScientific;
 };

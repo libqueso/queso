@@ -36,9 +36,9 @@ class uqGslVectorClass : public uqVectorClass
 {
 public:
   uqGslVectorClass();
-  uqGslVectorClass(const uqBaseEnvironmentClass& env, const uqMap& map);
-  uqGslVectorClass(const uqBaseEnvironmentClass& env, const uqMap& map, double value);
-  uqGslVectorClass(const uqBaseEnvironmentClass& env, double d1, double d2, const uqMap& map); // MATLAB linspace
+  uqGslVectorClass(const uqBaseEnvironmentClass& env, const uqMapClass& map);
+  uqGslVectorClass(const uqBaseEnvironmentClass& env, const uqMapClass& map, double value);
+  uqGslVectorClass(const uqBaseEnvironmentClass& env, double d1, double d2, const uqMapClass& map); // MATLAB linspace
   uqGslVectorClass(const uqGslVectorClass&         v, double d1, double d2);                        // MATLAB linspace
   uqGslVectorClass(const uqGslVectorClass&         y);
  ~uqGslVectorClass();
@@ -71,9 +71,9 @@ public:
   void         cwSqrt           ();
   void         matlabDiff       (unsigned int firstPositionToStoreDiff, double valueForRemainderPosition, uqGslVectorClass& outputVec) const;
   void         sort             ();
-  void         mpiBcast         (int srcRank, const uqMpiComm& bcastComm);
-  void         mpiAllReduce     (MPI_Op mpiOperation, const uqMpiComm& opComm, uqGslVectorClass& resultVec) const;
-  void         mpiAllQuantile   (double probability, const uqMpiComm& opComm, uqGslVectorClass& resultVec) const;
+  void         mpiBcast         (int srcRank, const uqMpiCommClass& bcastComm);
+  void         mpiAllReduce     (MPI_Op mpiOperation, const uqMpiCommClass& opComm, uqGslVectorClass& resultVec) const;
+  void         mpiAllQuantile   (double probability, const uqMpiCommClass& opComm, uqGslVectorClass& resultVec) const;
   void         print            (std::ostream& os) const;
   void         subWriteContents (const std::string&            varNamePrefix,
                                  const std::string&            fileName,

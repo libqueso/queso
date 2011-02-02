@@ -43,24 +43,24 @@ public:
                     const std::string&            fileName);
  ~uqAsciiTableClass();
 
-  unsigned int                          numRows     ()                 const;
-  unsigned int                          numCols     ()                 const;
-  const uqDistArray<std::string>::type& stringColumn(unsigned int j)   const;
-  const V&                              doubleColumn(unsigned int j)   const;
-  void                                  print       (std::ostream& os) const;
+  unsigned int                               numRows     ()                 const;
+  unsigned int                               numCols     ()                 const;
+  const uqDistArrayClass<std::string>::type& stringColumn(unsigned int j)   const;
+  const V&                                   doubleColumn(unsigned int j)   const;
+  void                                       print       (std::ostream& os) const;
 
 private:
-  uqMap* newMap(); // See template specialization
+  uqMapClass* newMap(); // See template specialization
 
-  const uqBaseEnvironmentClass&                m_env;
-  unsigned int                                 m_numRows;
-  unsigned int                                 m_numCols;
-  std::vector<bool>                            m_colIsString;
-  std::string                                  m_fileName;
+  const uqBaseEnvironmentClass&                     m_env;
+  unsigned int                                      m_numRows;
+  unsigned int                                      m_numCols;
+  std::vector<bool>                                 m_colIsString;
+  std::string                                       m_fileName;
 
-  const uqMap*                                 m_map;
-  std::vector<uqDistArray<std::string>::type*> m_stringColumns;
-  std::vector<V*>                              m_doubleColumns;
+  const uqMapClass*                                 m_map;
+  std::vector<uqDistArrayClass<std::string>::type*> m_stringColumns;
+  std::vector<V*>                                   m_doubleColumns;
 
   void readColumnsFromFile();
 };
@@ -185,7 +185,7 @@ uqAsciiTableClass<V,M>::readColumnsFromFile()
                                 << " is a columns of strings"
                                 << std::endl;
       }
-      m_stringColumns[j] = new uqDistArray<std::string>::type(*m_map,1);
+      m_stringColumns[j] = new uqDistArrayClass<std::string>::type(*m_map,1);
     }
     else {
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
@@ -218,7 +218,7 @@ uqAsciiTableClass<V,M>::readColumnsFromFile()
       continue;
     }
 
-    uqDistArray<std::string>::type& firstColumn = *m_stringColumns[0];
+    uqDistArrayClass<std::string>::type& firstColumn = *m_stringColumns[0];
     firstColumn(validLineId,0) = tmpString;
 
     // Check 'validLineId' before setting one more valid line
@@ -244,7 +244,7 @@ uqAsciiTableClass<V,M>::readColumnsFromFile()
                           "uqAsciiTableClass<V,M>::readColumnsFromFile()",
                           "failed reading all columns in a valid line");
       if (m_colIsString[j]) {
-        uqDistArray<std::string>::type& arrayOfStrings = *m_stringColumns[j];
+        uqDistArrayClass<std::string>::type& arrayOfStrings = *m_stringColumns[j];
         iRC = uqMiscReadCharsAndDoubleFromFile(ifs, arrayOfStrings(validLineId,0), NULL, endOfLineAchieved);
         UQ_FATAL_TEST_MACRO(iRC,
                             m_env.worldRank(),
@@ -313,7 +313,7 @@ uqAsciiTableClass<V,M>::numCols() const
 }
 
 template <class V, class M>
-const uqDistArray<std::string>::type&
+const uqDistArrayClass<std::string>::type&
 uqAsciiTableClass<V,M>::stringColumn(unsigned int j) const
 {
   UQ_FATAL_TEST_MACRO(j >= m_numCols,
@@ -366,7 +366,7 @@ uqAsciiTableClass<V,M>::print(std::ostream& os) const
        << std::endl;
     if (m_stringColumns[j] != NULL) {
       os << *m_stringColumns[j];
-      //uqDistArray<std::string>::type& arrayOfStrings = *m_stringColumns[j];
+      //uqDistArrayClass<std::string>::type& arrayOfStrings = *m_stringColumns[j];
       //for (unsigned int i = 0; i < m_numRows; ++i) {
       //  os << arrayOfStrings(i,0)
       //     << std::endl;
