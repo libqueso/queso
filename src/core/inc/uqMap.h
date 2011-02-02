@@ -58,9 +58,9 @@ public:
 private:
   void copy             (const uqMapClass& src);
 
-  const uqMpiCommClass& m_comm;
-  unsigned int          m_numGlobalElements;
-  unsigned int          m_numMyElements;
+  uqMpiCommClass m_uqMpiComm;
+  unsigned int   m_numGlobalElements;
+  unsigned int   m_numMyElements;
 };
 
 #endif // QUESO_HAS_TRILINOS

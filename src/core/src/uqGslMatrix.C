@@ -32,6 +32,7 @@
 #include <gsl/gsl_linalg.h>
 #include <gsl/gsl_eigen.h>
 #include <sys/time.h>
+#include <cmath>
 
 uqGslMatrixClass::uqGslMatrixClass()
   :

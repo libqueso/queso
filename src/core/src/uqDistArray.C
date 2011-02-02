@@ -34,10 +34,12 @@
 #else // QUESO_HAS_TRILINOS
 
 uqDistArrayClass::uqDistArrayClass()
+  :
+  m_comm()
 {
   UQ_FATAL_TEST_MACRO(true,
                       UQ_UNAVAILABLE_RANK,
-                      "uqDistArrayClass::constructor()"
+                      "uqDistArrayClass::constructor()",
                       "should not be called");
 }
 
@@ -56,6 +58,8 @@ uqDistArrayClass::uqDistArrayClass(
 }
 
 uqDistArrayClass::uqDistArrayClass(const uqDistArrayClass& src)
+  :
+  m_comm(src.m_comm)
 {
   this->copy(src);
 }

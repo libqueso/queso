@@ -38,28 +38,30 @@ typedef Epetra_MpiComm uqMpiCommClass ;
 
 #else // QUESO_HAS_TRILINOS
 
+#include <mpi.h>
+
 class uqMpiCommClass
 {
 public:
   uqMpiCommClass();
-  uqMpiCommClass(unsigned int          numGlobalElements,
-                 unsigned int          numNotUsed,
-                 const uqMpiCommClass& comm);
+  uqMpiCommClass(MPI_Comm inputRawComm);
   uqMpiCommClass(const uqMpiCommClass& src);
  ~uqMpiCommClass();
 
   uqMpiCommClass& operator= (const uqMpiCommClass& rhs);
 
-  const uqMpiCommClass& Comm()              const;
-  unsigned int          NumGlobalElements() const;
-  unsigned int          NumMyElements()     const;
+  MPI_Comm Comm   () const;
+  int      MyPID  () const;
+  int      NumProc() const;
+  void     Barrier() const;
 
 private:
-  void copy             (const uqMpiCommClass& src);
+  void     copy   (const uqMpiCommClass& src);
 
-  const uqMpiCommClass& m_comm;
-  unsigned int          m_numGlobalElements;
-  unsigned int          m_numMyElements;
+  MPI_Comm m_rawComm;
+  int      m_myPid;
+  int      m_numProc;
+  int      m_worldRank;
 };
 
 #endif // QUESO_HAS_TRILINOS

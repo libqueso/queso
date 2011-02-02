@@ -36,10 +36,6 @@
 #include <set>
 #include <vector>
 
-#include <uqMpiComm.h>
-#include <uqMap.h>
-#include <uqDistArray.h>
-
 int uqMyWorldfullRank();
 
 #undef QUESO_MEMORY_DEBUGGING

@@ -30,6 +30,8 @@
 #define __UQ_ASCII_TABLE_H__
 
 #include <uqEnvironment.h>
+#include <uqDistArray.h>
+#include <uqMap.h>
 #include <uqMiscellaneous.h>
 
 template <class V, class M>

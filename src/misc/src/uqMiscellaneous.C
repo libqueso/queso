@@ -26,16 +26,16 @@
 //
 //--------------------------------------------------------------------------
 
+#include <uqDefines.h>
 #include <uqMiscellaneous.h>
 #include <gsl/gsl_randist.h>
 #include <sys/time.h>
-#include <math.h>
-#include <uqDefines.h>
+//#include <math.h>
 #include <iostream>
 #include <fstream>
-
 #include <libgen.h>
 #include <sys/stat.h>
+#include <cmath>
 
 void
 uqMiscReadDoublesFromString(

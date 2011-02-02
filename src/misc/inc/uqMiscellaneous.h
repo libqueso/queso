@@ -29,10 +29,11 @@
 #ifndef __UQ_MISCELLANEOUS_H__
 #define __UQ_MISCELLANEOUS_H__
 
+#include <uqEnvironment.h>
 #include <gsl/gsl_rng.h>
 #include <string>
 #include <vector>
-#include <uqEnvironment.h>
+#include <math.h>
 
 void   uqMiscReadDoublesFromString      (const std::string&   inputString,
                                          std::vector<double>& outputDoubles);

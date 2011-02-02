@@ -33,11 +33,14 @@
 
 #else // QUESO_HAS_TRILINOS
 
+#include <uqMpiComm.h>
 uqMapClass::uqMapClass()
+  :
+  m_uqMpiComm() // *(new uqMpiCommClass()) )
 {
   UQ_FATAL_TEST_MACRO(true,
                       UQ_UNAVAILABLE_RANK,
-                      "uqMapClass::constructor()"
+                      "uqMapClass::constructor()",
                       "should not be called");
 }
 
@@ -46,7 +49,7 @@ uqMapClass::uqMapClass(
   unsigned int          numNotUsed,
   const uqMpiCommClass& comm)
   :
-  m_comm             (comm),
+  m_uqMpiComm        (comm),
   m_numGlobalElements(numGlobalElements),
   m_numMyElements    (numGlobalElements)
 {
@@ -56,6 +59,9 @@ uqMapClass::uqMapClass(
 }
 
 uqMapClass::uqMapClass(const uqMapClass& src)
+  :
+  m_uqMpiComm(src.m_uqMpiComm)
+
 {
   this->copy(src);
 }
@@ -75,7 +81,7 @@ uqMapClass::~uqMapClass()
 void
 uqMapClass::copy(const uqMapClass& src)
 {
-  m_comm              = src.m_comm;
+  m_uqMpiComm         = src.m_uqMpiComm;
   m_numGlobalElements = src.m_numGlobalElements;
   m_numMyElements     = src.m_numMyElements;
 
@@ -85,7 +91,7 @@ uqMapClass::copy(const uqMapClass& src)
 const uqMpiCommClass&
 uqMapClass::Comm() const
 {
-  return m_comm;
+  return m_uqMpiComm;
 }
 
 unsigned int

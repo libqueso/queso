@@ -33,6 +33,8 @@
 #ifdef QUESO_HAS_TRILINOS
 
 // 'uqDistArrayClass<T>::type' is just an alias to the 'EpetraExt::DistArray<T>' class of Trilinos
+#include <uqMpiComm.h>
+#include <uqMap.h>
 #include <EpetraExt_DistArray.h>
 template<typename T>
 struct uqDistArrayClass
@@ -62,9 +64,9 @@ public:
 private:
   void copy             (const uqDistArrayClass& src);
 
-  const uqMpiCommClass& m_comm;
-  unsigned int          m_numGlobalElements;
-  unsigned int          m_numMyElements;
+  uqMpiCommClass m_comm;
+  unsigned int   m_numGlobalElements;
+  unsigned int   m_numMyElements;
 };
 
 #endif // QUESO_HAS_TRILINOS

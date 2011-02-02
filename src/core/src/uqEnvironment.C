@@ -1191,8 +1191,8 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   // Open "screen" file
   //////////////////////////////////////////////////
   bool openFile = false;
-  if ((m_subRank                                               == 0                                                         ) &&
-      (m_optionsObj->m_ov.m_subDisplayFileName                 != UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE                        ) &&
+  if ((m_subRank                                               == 0                                              ) &&
+      (m_optionsObj->m_ov.m_subDisplayFileName                 != UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE             ) &&
       (m_optionsObj->m_ov.m_subDisplayAllowedSet.find(m_subId) != m_optionsObj->m_ov.m_subDisplayAllowedSet.end())) {
     openFile = true;
   }

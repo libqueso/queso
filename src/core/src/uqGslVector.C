@@ -29,7 +29,7 @@
 #include <uqGslVector.h>
 #include <uqDefines.h>
 #include <gsl/gsl_sort_vector.h>
-#include <math.h>
+#include <cmath>
 
 uqGslVectorClass::uqGslVectorClass()
   :

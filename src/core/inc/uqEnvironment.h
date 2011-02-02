@@ -34,6 +34,7 @@ class uqEnvironmentOptionsClass;
 
 #undef UQ_USES_COMMAND_LINE_OPTIONS
 
+#include <uqMpiComm.h>
 #include <hdf5.h>
 #include <gsl/gsl_rng.h>
 #include <boost/program_options.hpp>

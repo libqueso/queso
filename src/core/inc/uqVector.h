@@ -30,6 +30,7 @@
 #define __UQ_VECTOR_H__
 
 #include <uqEnvironment.h>
+#include <uqMap.h>
 #include <gsl/gsl_randist.h>
 #include <iostream>
 

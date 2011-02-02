@@ -29,8 +29,9 @@
 #ifndef __UQ_VECTOR_FUNCTION_H__
 #define __UQ_VECTOR_FUNCTION_H__
 
-#include <uqVectorSet.h>
 #include <uqEnvironment.h>
+#include <uqDistArray.h>
+#include <uqVectorSet.h>
 
 //*****************************************************
 // Base class

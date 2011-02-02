@@ -29,7 +29,7 @@
 #include <uqMpiComm.h>
 #ifdef QUESO_HAS_TRILINOS
 
-// 'uqMpiCommClass' is just an alias to the 'Epetra_Map' class of Trilinos
+// 'uqMpiCommClass' is just an alias to the 'Epetra_MpiComm' class of Trilinos
 
 #else // QUESO_HAS_TRILINOS
 
@@ -37,22 +37,34 @@ uqMpiCommClass::uqMpiCommClass()
 {
   UQ_FATAL_TEST_MACRO(true,
                       UQ_UNAVAILABLE_RANK,
-                      "uqMpiCommClass::constructor()"
+                      "uqMpiCommClass::constructor()",
                       "should not be called");
 }
 
-uqMpiCommClass::uqMpiCommClass(
-  unsigned int          numGlobalElements,
-  unsigned int          numNotUsed,
-  const uqMpiCommClass& comm)
+uqMpiCommClass::uqMpiCommClass(MPI_Comm inputRawComm)
   :
-  m_comm             (comm),
-  m_numGlobalElements(numGlobalElements),
-  m_numMyElements    (numGlobalElements)
+  m_rawComm  (inputRawComm),
+  m_myPid    (-1),
+  m_numProc  (-1),
+  m_worldRank(-1)
 {
-  if (numNotUsed > 1) { // just to avoid compiler warning
-    // Do nothing
-  }
+  int mpiRC = MPI_Comm_rank(MPI_COMM_WORLD,&m_worldRank);
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      m_worldRank,
+                      "uqMpiCommClass::constructor()",
+                      "failed MPI_Comm_rank() on MPI_COMM_WORLD");
+
+  mpiRC = MPI_Comm_rank(inputRawComm,&m_myPid);
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      m_worldRank,
+                      "uqMpiCommClass::constructor()",
+                      "failed MPI_Comm_rank() on inputRawComm");
+
+  mpiRC = MPI_Comm_size(inputRawComm,&m_numProc);
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      m_worldRank,
+                      "uqMpiCommClass::constructor()",
+                      "failed MPI_Comm_size() on inputRawComm");
 }
 
 uqMpiCommClass::uqMpiCommClass(const uqMpiCommClass& src)
@@ -75,29 +87,42 @@ uqMpiCommClass::~uqMpiCommClass()
 void
 uqMpiCommClass::copy(const uqMpiCommClass& src)
 {
-  m_comm              = src.m_comm;
-  m_numGlobalElements = src.m_numGlobalElements;
-  m_numMyElements     = src.m_numMyElements;
+  m_rawComm   = src.m_rawComm;
+  m_myPid     = src.m_myPid;
+  m_numProc   = src.m_numProc;
+  m_worldRank = src.m_worldRank;
 
   return;
 }
 
-const uqMpiCommClass&
+MPI_Comm
 uqMpiCommClass::Comm() const
 {
-  return m_comm;
+  return m_rawComm;
 }
 
-unsigned int
-uqMpiCommClass::NumGlobalElements() const
+int
+uqMpiCommClass::MyPID() const
 {
-  return m_numGlobalElements;
+  return m_myPid;
 }
 
-unsigned int
-uqMpiCommClass::NumMyElements() const
+int
+uqMpiCommClass::NumProc() const
 {
-  return m_numMyElements;
+  return m_numProc;
+}
+
+void
+uqMpiCommClass::Barrier() const
+{
+  int mpiRC = MPI_Barrier(m_rawComm);
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      m_worldRank,
+                      "uqMpiCommClass::Barrier()",
+                      "mpiRC indicates no success");
+
+  return;
 }
 
 #endif // QUESO_HAS_TRILINOS
