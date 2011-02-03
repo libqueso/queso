@@ -43,24 +43,25 @@ class uqMapClass
 {
 public:
   uqMapClass();
-  uqMapClass(unsigned int          numGlobalElements,
-             unsigned int          numNotUsed,
+  uqMapClass(int                   numGlobalElements,
+             int                   numNotUsed,
              const uqMpiCommClass& comm);
   uqMapClass(const uqMapClass& src);
  ~uqMapClass();
 
   uqMapClass& operator= (const uqMapClass& rhs);
 
-  const uqMpiCommClass& Comm()              const;
-  unsigned int          NumGlobalElements() const;
-  unsigned int          NumMyElements()     const;
+  const uqMpiCommClass& Comm             () const;
+  int                   NumGlobalElements() const;
+  int                   NumMyElements    () const;
+  int                   MinMyGID         () const;
 
 private:
-  void copy             (const uqMapClass& src);
+  void                  copy             (const uqMapClass& src);
 
   uqMpiCommClass m_uqMpiComm;
-  unsigned int   m_numGlobalElements;
-  unsigned int   m_numMyElements;
+  int            m_numGlobalElements;
+  int            m_numMyElements;
 };
 
 #endif // QUESO_HAS_TRILINOS

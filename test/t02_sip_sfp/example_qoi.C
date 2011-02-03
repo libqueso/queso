@@ -30,21 +30,21 @@
 
 void
 qoiRoutine(
-  const uqGslVectorClass&                        paramValues,
-  const uqGslVectorClass*                        paramDirection,
-  const void*                                    functionDataPtr,
-        uqGslVectorClass&                        qoiValues,
-        EpetraExt::DistArray<uqGslVectorClass*>* gradVectors,
-        EpetraExt::DistArray<uqGslMatrixClass*>* hessianMatrices,
-        EpetraExt::DistArray<uqGslVectorClass*>* hessianEffects)
+  const uqGslVectorClass&                          paramValues,
+  const uqGslVectorClass*                          paramDirection,
+  const void*                                      functionDataPtr,
+        uqGslVectorClass&                          qoiValues,
+        uqDistArrayClass<uqGslVectorClass*>::type* gradVectors,
+        uqDistArrayClass<uqGslMatrixClass*>::type* hessianMatrices,
+        uqDistArrayClass<uqGslVectorClass*>::type* hessianEffects)
 {
   // Logic just to avoid warnings from INTEL compiler
   const uqGslVectorClass* aux1 = paramDirection;
   if (aux1) {};
-  EpetraExt::DistArray<uqGslVectorClass*>* aux2 = gradVectors;
+  uqDistArrayClass<uqGslVectorClass*>::type* aux2 = gradVectors;
   if (aux2) {};
   aux2 = hessianEffects;
-  EpetraExt::DistArray<uqGslMatrixClass*>* aux3 = hessianMatrices;
+  uqDistArrayClass<uqGslMatrixClass*>::type* aux3 = hessianMatrices;
   if (aux3) {};
 
   // Just checking: the user, at the application level, expects

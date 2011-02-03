@@ -32,6 +32,7 @@
 #include <uqDistArray.h>
 #include <uqMap.h>
 #include <uqVectorSet.h>
+#include <cmath>
 
 template <class V, class M>
 class uqVectorSpaceClass : public uqVectorSetClass<V,M>
@@ -77,13 +78,13 @@ protected:
         using uqVectorSetClass<V,M>::m_prefix;
         using uqVectorSetClass<V,M>::m_volume;
 
-        unsigned int                    m_dimGlobal;
-  const uqMapClass*                     m_map;
-        unsigned int                    m_dimLocal;
+        unsigned int                         m_dimGlobal;
+  const uqMapClass*                          m_map;
+        unsigned int                         m_dimLocal;
         uqDistArrayClass<std::string>::type* m_componentsNames;
-        std::string                     m_emptyComponentName;
+        std::string                          m_emptyComponentName;
 
-        V*                              m_zeroVector;
+        V*                                   m_zeroVector;
 };
 
 template <class V, class M>

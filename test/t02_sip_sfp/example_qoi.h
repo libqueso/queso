@@ -29,7 +29,7 @@
 #define __EX_QOI_H__
 
 #include <uqGslMatrix.h>
-#include <EpetraExt_DistArray.h>
+#include <uqDistArray.h>
 
 struct
 qoiRoutine_DataType
@@ -40,12 +40,12 @@ qoiRoutine_DataType
 
 void
 qoiRoutine(
-  const uqGslVectorClass&                        paramValues,
-  const uqGslVectorClass*                        paramDirection,
-  const void*                                    functionDataPtr,
-        uqGslVectorClass&                        qoiValues,
-        EpetraExt::DistArray<uqGslVectorClass*>* gradVectors,
-        EpetraExt::DistArray<uqGslMatrixClass*>* hessianMatrices,
-        EpetraExt::DistArray<uqGslVectorClass*>* hessianEffects);
+  const uqGslVectorClass&                          paramValues,
+  const uqGslVectorClass*                          paramDirection,
+  const void*                                      functionDataPtr,
+        uqGslVectorClass&                          qoiValues,
+        uqDistArrayClass<uqGslVectorClass*>::type* gradVectors,
+        uqDistArrayClass<uqGslMatrixClass*>::type* hessianMatrices,
+        uqDistArrayClass<uqGslVectorClass*>::type* hessianEffects);
 
 #endif

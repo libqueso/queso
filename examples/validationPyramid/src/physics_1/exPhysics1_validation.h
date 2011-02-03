@@ -39,6 +39,7 @@
 #include <uqModelValidation.h>
 #include <uqVectorSubset.h>
 #include <uqAsciiTable.h>
+#include <uqDistArray.h>
 
 //********************************************************
 // Class "exPhysics1Validation", instantiated by main()
@@ -63,7 +64,7 @@ private:
   using uqModelValidationClass<P_V,P_M,Q_V,Q_M>::m_cycle;
 
   uqAsciiTableClass<P_V,P_M>*                            m_paramsTable;
-  const EpetraExt::DistArray<std::string>*               m_paramNames;         // instantiated outside this class!!
+  const uqDistArrayClass<std::string>::type*             m_paramNames;         // instantiated outside this class!!
   P_V*                                                   m_paramMinValues;     // instantiated outside this class!!
   P_V*                                                   m_paramMaxValues;     // instantiated outside this class!!
   P_V*                                                   m_paramInitialValues; // instantiated outside this class!!
@@ -71,7 +72,7 @@ private:
   uqVectorSetClass<P_V,P_M>*                             m_paramDomain;
 
   uqAsciiTableClass<P_V,P_M>*                            m_qoisTable;
-  const EpetraExt::DistArray<std::string>*               m_qoiNames; // instantiated outside this class!!
+  const uqDistArrayClass<std::string>::type*             m_qoiNames; // instantiated outside this class!!
   uqVectorSpaceClass<Q_V,Q_M>*                           m_qoiSpace;
 
   double                                                 m_predBeta;

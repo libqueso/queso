@@ -35,8 +35,8 @@
 
 #include <uqEnvironment.h>
 #include <uqDefines.h>
-#include <EpetraExt_DistArray.h>
 #include <gsl/gsl_odeiv.h>
+#include <cmath>
 
 #define R_CONSTANT 8.314472
 
@@ -50,7 +50,7 @@ int func(double t, const double Mass[], double f[], void *info)
   double E    = params[1];
   double beta = params[2];
 
-  f[0] = -A*Mass[0]*exp(-E/(R_CONSTANT*t))/beta;
+  f[0] = -A*Mass[0]*std::exp(-E/(R_CONSTANT*t))/beta;
 
   return GSL_SUCCESS;
 }

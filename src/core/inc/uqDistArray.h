@@ -33,9 +33,10 @@
 #ifdef QUESO_HAS_TRILINOS
 
 // 'uqDistArrayClass<T>::type' is just an alias to the 'EpetraExt::DistArray<T>' class of Trilinos
-#include <uqMpiComm.h>
+//#include <uqMpiComm.h>
 #include <uqMap.h>
 #include <EpetraExt_DistArray.h>
+
 template<typename T>
 struct uqDistArrayClass
 {
@@ -44,29 +45,135 @@ struct uqDistArrayClass
 
 #else // QUESO_HAS_TRILINOS
 
-#include <uqMpiComm.h>
-class uqDistArrayClass
+//#include <uqMpiComm.h>
+#include <uqMap.h>
+#include <ostream>
+
+template<typename T>
+class uqDistArrayCoreClass
 {
 public:
-  uqDistArrayClass();
-  uqDistArrayClass(unsigned int          numGlobalElements,
-                   unsigned int          numNotUsed,
-                   const uqMpiCommClass& comm);
-  uqDistArrayClass(const uqDistArrayClass& src);
- ~uqDistArrayClass();
+  uqDistArrayCoreClass();
+  uqDistArrayCoreClass(const uqMapClass& inputMap, 
+                       const int         inputRowSize);
+  uqDistArrayCoreClass(const uqDistArrayCoreClass<T>& src);
+ ~uqDistArrayCoreClass();
 
-  uqDistArrayClass& operator= (const uqDistArrayClass& rhs);
+  uqDistArrayCoreClass<T>& operator= (const uqDistArrayCoreClass<T>& rhs);
 
-  const uqMpiCommClass& Comm()              const;
-  unsigned int          NumGlobalElements() const;
-  unsigned int          NumMyElements()     const;
+        T&  operator    ()(int localElementId, int rowId);
+  const T&  operator    ()(int localElementId, int rowId) const;
+        int GlobalLength() const;
+        int MyLength    () const;
+        int RowSize     () const;
 
 private:
-  void copy             (const uqDistArrayClass& src);
+  void copy             (const uqDistArrayCoreClass<T>& src);
 
-  uqMpiCommClass m_comm;
-  unsigned int   m_numGlobalElements;
-  unsigned int   m_numMyElements;
+  uqMapClass                   m_uqMap;
+  unsigned int                 m_rowSize;
+  std::vector<std::vector<T> > m_elements;
+};
+
+template<typename T>
+uqDistArrayCoreClass<T>::uqDistArrayCoreClass()
+  :
+  m_uqMap()
+{
+  UQ_FATAL_TEST_MACRO(true,
+                      UQ_UNAVAILABLE_RANK,
+                      "uqDistArrayCoreClass<T>::constructor()",
+                      "should not be called");
+}
+
+template<typename T>
+uqDistArrayCoreClass<T>::uqDistArrayCoreClass(
+  const uqMapClass& inputMap, 
+  const int         inputRowSize)
+  :
+  m_uqMap  (inputMap),
+  m_rowSize(inputRowSize)
+{
+}
+
+template<typename T>
+uqDistArrayCoreClass<T>::uqDistArrayCoreClass(const uqDistArrayCoreClass<T>& src)
+  :
+  m_uqMap(src.m_uqMap)
+{
+  this->copy(src);
+}
+
+template<typename T>
+uqDistArrayCoreClass<T>&
+uqDistArrayCoreClass<T>::operator=(const uqDistArrayCoreClass<T>& rhs)
+{
+  this->copy(rhs);
+  return *this;
+}
+
+template<typename T>
+uqDistArrayCoreClass<T>::~uqDistArrayCoreClass()
+{
+  // Nothing to do
+}
+
+template<typename T>
+void
+uqDistArrayCoreClass<T>::copy(const uqDistArrayCoreClass<T>& src)
+{
+  m_uqMap   = src.m_uqMap;
+  m_rowSize = src.m_rowSize;
+
+  return;
+}
+
+template<typename T>
+T&
+uqDistArrayCoreClass<T>::operator()(int localElementId, int rowId)
+{
+  return m_elements[localElementId][rowId];
+}
+
+template<typename T>
+const T&
+uqDistArrayCoreClass<T>::operator()(int localElementId, int rowId) const
+{
+  return m_elements[localElementId][rowId];
+}
+
+template<typename T>
+int
+uqDistArrayCoreClass<T>::GlobalLength() const
+{
+  return m_uqMap.NumGlobalElements();
+}
+
+template<typename T>
+int
+uqDistArrayCoreClass<T>::MyLength() const
+{
+  return m_uqMap.NumMyElements();
+}
+
+template<typename T>
+int
+uqDistArrayCoreClass<T>::RowSize() const
+{
+  return m_rowSize;
+}
+
+template<typename T>
+std::ostream& operator<<(std::ostream& os, const uqDistArrayCoreClass<T>& obj)
+{
+  return os;
+}
+
+
+template<typename T>
+struct uqDistArrayClass
+{
+  typedef uqDistArrayCoreClass<T> type;
 };
 
 #endif // QUESO_HAS_TRILINOS

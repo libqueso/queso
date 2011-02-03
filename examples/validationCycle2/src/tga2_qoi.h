@@ -34,7 +34,7 @@
 #define __TGA2_QOI_H__
 
 #include <uqGslMatrix.h>
-#include <EpetraExt_DistArray.h>
+#include <uqDistArray.h>
 
 //********************************************************
 // The (user defined) data class that carries the data
@@ -48,12 +48,12 @@ qoiRoutine_DataClass
   double m_criticalTime;
 };
 
-void qoiRoutine(const uqGslVectorClass&                        paramValues,
-                const uqGslVectorClass*                        paramDirection,
-                const void*                                    functionDataPtr,
-                      uqGslVectorClass&                        qoiValues,
-                      EpetraExt::DistArray<uqGslVectorClass*>* gradVectors,
-                      EpetraExt::DistArray<uqGslMatrixClass*>* hessianMatrices,
-                      EpetraExt::DistArray<uqGslVectorClass*>* hessianEffects);
+void qoiRoutine(const uqGslVectorClass&                          paramValues,
+                const uqGslVectorClass*                          paramDirection,
+                const void*                                      functionDataPtr,
+                      uqGslVectorClass&                          qoiValues,
+                      uqDistArrayClass<uqGslVectorClass*>::type* gradVectors,
+                      uqDistArrayClass<uqGslMatrixClass*>::type* hessianMatrices,
+                      uqDistArrayClass<uqGslVectorClass*>::type* hessianEffects);
 
 #endif // __TGA2_QOI_H__

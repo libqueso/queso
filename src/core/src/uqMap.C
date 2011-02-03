@@ -45,8 +45,8 @@ uqMapClass::uqMapClass()
 }
 
 uqMapClass::uqMapClass(
-  unsigned int          numGlobalElements,
-  unsigned int          numNotUsed,
+  int                   numGlobalElements,
+  int                   numNotUsed,
   const uqMpiCommClass& comm)
   :
   m_uqMpiComm        (comm),
@@ -94,16 +94,22 @@ uqMapClass::Comm() const
   return m_uqMpiComm;
 }
 
-unsigned int
+int
 uqMapClass::NumGlobalElements() const
 {
   return m_numGlobalElements;
 }
 
-unsigned int
+int
 uqMapClass::NumMyElements() const
 {
   return m_numMyElements;
+}
+
+int
+uqMapClass::MinMyGID() const
+{
+  return 0;
 }
 
 #endif // QUESO_HAS_TRILINOS

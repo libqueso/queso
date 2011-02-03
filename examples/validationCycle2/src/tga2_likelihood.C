@@ -33,8 +33,6 @@
 #include <tga2_func.h>
 #include <tga2_likelihood.h>
 #include <uqEnvironment.h>
-#include <uqDefines.h>
-#include <EpetraExt_DistArray.h>
 #include <gsl/gsl_odeiv.h>
 
 likelihoodRoutine_DataClass::likelihoodRoutine_DataClass(

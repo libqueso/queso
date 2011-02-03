@@ -26,6 +26,9 @@
 //
 //--------------------------------------------------------------------------
 
+#include <uqDefines.h>
+#ifdef QUESO_HAS_TRILINOS
+
 #include <uqVectorSpace.h>
 #include <uqTrilinosMatrix.h>
 
@@ -63,3 +66,5 @@ uqVectorSpaceClass<uqTrilinosVectorClass,uqTrilinosMatrixClass>::newDiagMatrix(d
 {
   return new uqTrilinosMatrixClass(m_env,*m_map,diagValue);
 }
+
+#endif // #ifdef QUESO_HAS_TRILINOS

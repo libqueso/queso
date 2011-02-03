@@ -32,18 +32,16 @@
 
 #include <tga2_func.h>
 #include <tga2_qoi.h>
-#include <uqDefines.h>
-#include <EpetraExt_DistArray.h>
 #include <gsl/gsl_odeiv.h>
 
 // The actual (user defined) qoi routine
-void qoiRoutine(const uqGslVectorClass&                        paramValues,
-                const uqGslVectorClass*                        paramDirection,
-                const void*                                    functionDataPtr,
-                      uqGslVectorClass&                        qoiValues,
-                      EpetraExt::DistArray<uqGslVectorClass*>* gradVectors,
-                      EpetraExt::DistArray<uqGslMatrixClass*>* hessianMatrices,
-                      EpetraExt::DistArray<uqGslVectorClass*>* hessianEffects)
+void qoiRoutine(const uqGslVectorClass&                          paramValues,
+                const uqGslVectorClass*                          paramDirection,
+                const void*                                      functionDataPtr,
+                      uqGslVectorClass&                          qoiValues,
+                      uqDistArrayClass<uqGslVectorClass*>::type* gradVectors,
+                      uqDistArrayClass<uqGslMatrixClass*>::type* hessianMatrices,
+                      uqDistArrayClass<uqGslVectorClass*>::type* hessianEffects)
 {
   if (paramDirection  &&
       functionDataPtr && 

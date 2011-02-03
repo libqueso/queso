@@ -34,7 +34,7 @@
 #define __EX_STATISTICAL_FORWARD_PROBLEM_QOI_H__
 
 #include <uqEnvironment.h>
-#include <EpetraExt_DistArray.h>
+#include <uqDistArray.h>
 
 //********************************************************
 // The qoi routine: provided by user and called by QUESO
@@ -52,13 +52,13 @@ qoiRoutine_DataType
 template<class P_V,class P_M, class Q_V, class Q_M>
 void
 qoiRoutine(
-  const P_V&                        paramValues,
-  const P_V*                        paramDirection,
-  const void*                       functionDataPtr,
-        Q_V&                        qoiValues,
-        EpetraExt::DistArray<P_V*>* gradVectors,
-        EpetraExt::DistArray<P_M*>* hessianMatrices,
-        EpetraExt::DistArray<P_V*>* hessianEffects)
+  const P_V&                                   paramValues,
+  const P_V*                                   paramDirection,
+  const void*                                  functionDataPtr,
+        Q_V&                                   qoiValues,
+        typename uqDistArrayClass<P_V*>::type* gradVectors,
+        typename uqDistArrayClass<P_M*>::type* hessianMatrices,
+        typename uqDistArrayClass<P_V*>::type* hessianEffects)
 {
   //double a1 = ((qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->p1MultiplicativeFactor;
   //double e1 = ((qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->p1ExponentFactor;
