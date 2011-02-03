@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script. 
 
 AC_PREREQ(2.61)
-AC_INIT([queso], [0.43.0], [pecos_dev@ices.utexas.edu])
+AC_INIT([queso], [0.42.1], [pecos_dev@ices.utexas.edu])
 AM_CONFIG_HEADER(config.h)
 AC_CONFIG_AUX_DIR([build-aux])
 AM_INIT_AUTOMAKE
@@ -10,8 +10,8 @@ AM_INIT_AUTOMAKE
 # Release versioning
 
 GENERIC_MAJOR_VERSION=0
-GENERIC_MINOR_VERSION=43
-GENERIC_MICRO_VERSION=0
+GENERIC_MINOR_VERSION=42
+GENERIC_MICRO_VERSION=1
 
 # Generating a libtool library
 
