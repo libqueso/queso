@@ -59,9 +59,9 @@ private:
   void     copy   (const uqMpiCommClass& src);
 
   MPI_Comm m_rawComm;
+  int      m_worldRank;
   int      m_myPid;
   int      m_numProc;
-  int      m_worldRank;
 };
 
 #endif // QUESO_HAS_TRILINOS

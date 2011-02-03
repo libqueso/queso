@@ -44,13 +44,13 @@ uqMpiCommClass::uqMpiCommClass()
 uqMpiCommClass::uqMpiCommClass(MPI_Comm inputRawComm)
   :
   m_rawComm  (inputRawComm),
+  m_worldRank(-1),
   m_myPid    (-1),
-  m_numProc  (-1),
-  m_worldRank(-1)
+  m_numProc  (-1)
 {
   int mpiRC = MPI_Comm_rank(MPI_COMM_WORLD,&m_worldRank);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_worldRank,
+                      UQ_UNAVAILABLE_RANK,
                       "uqMpiCommClass::constructor()",
                       "failed MPI_Comm_rank() on MPI_COMM_WORLD");
 
@@ -88,9 +88,9 @@ void
 uqMpiCommClass::copy(const uqMpiCommClass& src)
 {
   m_rawComm   = src.m_rawComm;
+  m_worldRank = src.m_worldRank;
   m_myPid     = src.m_myPid;
   m_numProc   = src.m_numProc;
-  m_worldRank = src.m_worldRank;
 
   return;
 }

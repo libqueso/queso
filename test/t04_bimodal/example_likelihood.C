@@ -27,6 +27,7 @@
 //--------------------------------------------------------------------------
 
 #include <example_likelihood.h>
+#include <cmath>
 
 double likelihoodRoutine(
   const uqGslVectorClass& paramValues,

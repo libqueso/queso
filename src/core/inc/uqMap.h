@@ -44,7 +44,7 @@ class uqMapClass
 public:
   uqMapClass();
   uqMapClass(int                   numGlobalElements,
-             int                   numNotUsed,
+             int                   indexBase,
              const uqMpiCommClass& comm);
   uqMapClass(const uqMapClass& src);
  ~uqMapClass();
@@ -53,6 +53,7 @@ public:
 
   const uqMpiCommClass& Comm             () const;
   int                   NumGlobalElements() const;
+  int                   IndexBase        () const;
   int                   NumMyElements    () const;
   int                   MinMyGID         () const;
 
@@ -61,6 +62,7 @@ private:
 
   uqMpiCommClass m_uqMpiComm;
   int            m_numGlobalElements;
+  int            m_indexBase;
   int            m_numMyElements;
 };
 

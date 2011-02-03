@@ -33,7 +33,6 @@
 #ifdef QUESO_HAS_TRILINOS
 
 // 'uqDistArrayClass<T>::type' is just an alias to the 'EpetraExt::DistArray<T>' class of Trilinos
-//#include <uqMpiComm.h>
 #include <uqMap.h>
 #include <EpetraExt_DistArray.h>
 
@@ -45,7 +44,6 @@ struct uqDistArrayClass
 
 #else // QUESO_HAS_TRILINOS
 
-//#include <uqMpiComm.h>
 #include <uqMap.h>
 #include <ostream>
 
@@ -61,14 +59,15 @@ public:
 
   uqDistArrayCoreClass<T>& operator= (const uqDistArrayCoreClass<T>& rhs);
 
-        T&  operator    ()(int localElementId, int rowId);
-  const T&  operator    ()(int localElementId, int rowId) const;
-        int GlobalLength() const;
-        int MyLength    () const;
-        int RowSize     () const;
+        T&   operator    ()(int localElementId, int colId);
+  const T&   operator    ()(int localElementId, int colId) const;
+        int  GlobalLength() const;
+        int  MyLength    () const;
+        int  RowSize     () const;
+        void print       (std::ostream& os) const;
 
 private:
-  void copy             (const uqDistArrayCoreClass<T>& src);
+        void copy        (const uqDistArrayCoreClass<T>& src);
 
   uqMapClass                   m_uqMap;
   unsigned int                 m_rowSize;
@@ -94,6 +93,10 @@ uqDistArrayCoreClass<T>::uqDistArrayCoreClass(
   m_uqMap  (inputMap),
   m_rowSize(inputRowSize)
 {
+  m_elements.resize(m_uqMap.NumGlobalElements());
+  for (int i = 0; i < m_uqMap.NumGlobalElements(); ++i) {
+    m_elements[i].resize(m_rowSize);
+  }
 }
 
 template<typename T>
@@ -115,31 +118,44 @@ uqDistArrayCoreClass<T>::operator=(const uqDistArrayCoreClass<T>& rhs)
 template<typename T>
 uqDistArrayCoreClass<T>::~uqDistArrayCoreClass()
 {
-  // Nothing to do
+  for (int i = 0; i < m_uqMap.NumGlobalElements(); ++i) {
+    m_elements[i].clear();
+  }
+  m_elements.clear();
 }
 
 template<typename T>
 void
 uqDistArrayCoreClass<T>::copy(const uqDistArrayCoreClass<T>& src)
 {
+  for (unsigned int i = 0; i < m_uqMap.NumGlobalElements(); ++i) {
+    m_elements[i].clear();
+  }
+  m_elements.clear();
+
   m_uqMap   = src.m_uqMap;
   m_rowSize = src.m_rowSize;
+  m_elements.resize(m_uqMap.NumGlobalElements());
+  for (unsigned int i = 0; i < m_uqMap.NumGlobalElements(); ++i) {
+    m_elements[i].resize(m_rowSize);
+    m_elements[i] = src.m_elements[i];
+  }
 
   return;
 }
 
 template<typename T>
 T&
-uqDistArrayCoreClass<T>::operator()(int localElementId, int rowId)
+uqDistArrayCoreClass<T>::operator()(int localElementId, int colId)
 {
-  return m_elements[localElementId][rowId];
+  return m_elements[localElementId][colId];
 }
 
 template<typename T>
 const T&
-uqDistArrayCoreClass<T>::operator()(int localElementId, int rowId) const
+uqDistArrayCoreClass<T>::operator()(int localElementId, int colId) const
 {
-  return m_elements[localElementId][rowId];
+  return m_elements[localElementId][colId];
 }
 
 template<typename T>
@@ -164,11 +180,23 @@ uqDistArrayCoreClass<T>::RowSize() const
 }
 
 template<typename T>
-std::ostream& operator<<(std::ostream& os, const uqDistArrayCoreClass<T>& obj)
+void
+uqDistArrayCoreClass<T>::print(std::ostream& os) const
 {
-  return os;
+  os << "m_rowSize = "           << m_rowSize
+     << ", m_elements.size() = " << m_elements.size()
+     << std::endl;
+
+  return;
 }
 
+template<typename T>
+std::ostream& operator<<(std::ostream& os, const uqDistArrayCoreClass<T>& obj)
+{
+  obj.print(os);
+
+  return os;
+}
 
 template<typename T>
 struct uqDistArrayClass

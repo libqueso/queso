@@ -46,22 +46,19 @@ uqMapClass::uqMapClass()
 
 uqMapClass::uqMapClass(
   int                   numGlobalElements,
-  int                   numNotUsed,
+  int                   indexBase,
   const uqMpiCommClass& comm)
   :
   m_uqMpiComm        (comm),
   m_numGlobalElements(numGlobalElements),
+  m_indexBase        (indexBase),
   m_numMyElements    (numGlobalElements)
 {
-  if (numNotUsed > 1) { // just to avoid compiler warning
-    // Do nothing
-  }
 }
 
 uqMapClass::uqMapClass(const uqMapClass& src)
   :
   m_uqMpiComm(src.m_uqMpiComm)
-
 {
   this->copy(src);
 }
@@ -83,6 +80,7 @@ uqMapClass::copy(const uqMapClass& src)
 {
   m_uqMpiComm         = src.m_uqMpiComm;
   m_numGlobalElements = src.m_numGlobalElements;
+  m_indexBase         = src.m_indexBase;
   m_numMyElements     = src.m_numMyElements;
 
   return;
@@ -98,6 +96,12 @@ int
 uqMapClass::NumGlobalElements() const
 {
   return m_numGlobalElements;
+}
+
+int
+uqMapClass::IndexBase() const
+{
+  return m_indexBase;
 }
 
 int
