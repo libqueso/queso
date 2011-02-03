@@ -30,6 +30,8 @@
 #define __UQ_DEFINES_H__
 
 #define QUESO_HAS_TRILINOS
+#define QUESO_HAS_HDF5
+#define QUESO_HAS_GLPK
 
 #include <iostream>
 #include <stdlib.h> // For exit()

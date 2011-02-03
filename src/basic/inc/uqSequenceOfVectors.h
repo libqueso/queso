@@ -2410,8 +2410,33 @@ template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
   const std::string& fileName,
-  const std::string& fileType) const
-{
+  const std::string& inputFileType) const
+{ 
+  std::string fileType(inputFileType);
+#ifdef QUESO_HAS_HDF5
+  // Do nothing
+#else
+  if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "WARNING in uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
+                              << ": file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                              << "' has been requested, but this QUESO library has not been built with 'hdf5'"
+                              << ". Code will therefore process the file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                              << "' instead..."
+                              << std::endl;
+    }
+    if (m_env.subRank() == 0) {
+      std::cerr << "WARNING in uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
+                << ": file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                << "' has been requested, but this QUESO library has not been built with 'hdf5'"
+                << ". Code will therefore process the file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                << "' instead..."
+                << std::endl;
+    }
+    fileType = UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT;
+  }
+#endif
+
   // All processors in 'fullComm' should call this routine...
 
   //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ... // prudenci-2011-01-17
@@ -2500,6 +2525,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
               m_seq[j]->setPrintScientific  (savedVectorPrintScientific);
             }
           }
+#ifdef QUESO_HAS_HDF5
           else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
             unsigned int numParams = m_vectorSpace.dimLocal();
             if (r == 0) {
@@ -2576,6 +2602,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
                                   "hdf file type not supported for multiple subenvironments yet");
             }
           }
+#endif
           else {
             UQ_FATAL_TEST_MACRO(true,
                                 m_env.worldRank(),
@@ -2652,9 +2679,34 @@ template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
   const std::string& fileName,
-  const std::string& fileType,
+  const std::string& inputFileType,
   const unsigned int subReadSize)
 {
+  std::string fileType(inputFileType);
+#ifdef QUESO_HAS_HDF5
+  // Do nothing
+#else
+  if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "WARNING in uqSequenceOfVectorsClass<V,M>::unifiedReadContents()"
+                              << ": file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                              << "' has been requested, but this QUESO library has not been built with 'hdf5'"
+                              << ". Code will therefore process the file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                              << "' instead..."
+                              << std::endl;
+    }
+    if (m_env.subRank() == 0) {
+      std::cerr << "WARNING in uqSequenceOfVectorsClass<V,M>::unifiedReadContents()"
+                << ": file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                << "' has been requested, but this QUESO library has not been built with 'hdf5'"
+                << ". Code will therefore process the file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                << "' instead..."
+                << std::endl;
+    }
+    fileType = UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT;
+  }
+#endif
+
   //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedReadContents()"
@@ -2800,6 +2852,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
               lineId++;
             };
           }
+#ifdef QUESO_HAS_HDF5
           else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
             if (r == 0) {
               hid_t dataset = H5Dopen2(unifiedFilePtrSet.h5Var,
@@ -2888,6 +2941,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
                                   "hdf file type not supported for multiple subenvironments yet");
             }
           }
+#endif
           else {
             UQ_FATAL_TEST_MACRO(true,
                                 m_env.worldRank(),

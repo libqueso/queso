@@ -35,7 +35,9 @@ class uqEnvironmentOptionsClass;
 #undef UQ_USES_COMMAND_LINE_OPTIONS
 
 #include <uqMpiComm.h>
+#ifdef QUESO_HAS_HDF5
 #include <hdf5.h>
+#endif
 #include <gsl/gsl_rng.h>
 #include <boost/program_options.hpp>
 namespace po = boost::program_options;
@@ -50,7 +52,9 @@ struct uqFilePtrSetStruct {
 
   std::ofstream* ofsVar;
   std::ifstream* ifsVar;
+#ifdef QUESO_HAS_HDF5
   hid_t          h5Var;
+#endif
 };
 
 //------------------------------------------------------------------------

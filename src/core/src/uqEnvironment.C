@@ -494,11 +494,36 @@ uqBaseEnvironmentClass::syncPrintDebugMsg(const char* msg, unsigned int msgVerbo
 bool
 uqBaseEnvironmentClass::openOutputFile(
   const std::string&            baseFileName,
-  const std::string&            fileType,
+  const std::string&            inputFileType,
   const std::set<unsigned int>& allowedSubEnvIds,
         bool                    writeOver,
         uqFilePtrSetStruct&     filePtrSet) const
 {
+  std::string fileType(inputFileType);
+#ifdef QUESO_HAS_HDF5
+  // Do nothing
+#else
+  if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
+    if (m_subDisplayFile) {
+      *this->subDisplayFile() << "WARNING in uqBaseEnvironmentClass::openOutputFile()"
+                              << ": file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                              << "' has been requested, but this QUESO library has not been built with 'hdf5'"
+                              << ". Code will therefore process the file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                              << "' instead..."
+                              << std::endl;
+    }
+    if (this->subRank() == 0) {
+      std::cerr << "WARNING in uqBaseEnvironmentClass::openOutputFile()"
+                << ": file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                << "' has been requested, but this QUESO library has not been built with 'hdf5'"
+                << ". Code will therefore process the file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                << "' instead..."
+                << std::endl;
+    }
+    fileType = UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT;
+  }
+#endif
+
   bool returnValue = true;
   filePtrSet.ofsVar = NULL;
   if ((baseFileName                         == UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE) ||
@@ -686,10 +711,35 @@ uqBaseEnvironmentClass::openOutputFile(
 bool
 uqBaseEnvironmentClass::openUnifiedOutputFile(
   const std::string&        baseFileName,
-  const std::string&        fileType,
+  const std::string&        inputFileType,
         bool                writeOver,
         uqFilePtrSetStruct& filePtrSet) const
 {
+  std::string fileType(inputFileType);
+#ifdef QUESO_HAS_HDF5
+  // Do nothing
+#else
+  if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
+    if (m_subDisplayFile) {
+      *this->subDisplayFile() << "WARNING in uqBaseEnvironmentClass::openUnifiedOutputFile()"
+                              << ": file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                              << "' has been requested, but this QUESO library has not been built with 'hdf5'"
+                              << ". Code will therefore process the file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                              << "' instead..."
+                              << std::endl;
+    }
+    if (this->subRank() == 0) {
+      std::cerr << "WARNING in uqBaseEnvironmentClass::openUnifiedOutputFile()"
+                << ": file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                << "' has been requested, but this QUESO library has not been built with 'hdf5'"
+                << ". Code will therefore process the file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                << "' instead..."
+                << std::endl;
+    }
+    fileType = UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT;
+  }
+#endif
+
   bool returnValue = true;
   filePtrSet.ofsVar = NULL;
   if (baseFileName == ".") {
@@ -743,12 +793,14 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
           filePtrSet.ofsVar = new std::ofstream((baseFileName+"."+fileType).c_str(),
                                                 std::ofstream::out | std::ofstream::trunc);
         }
+#ifdef QUESO_HAS_HDF5
         else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
           filePtrSet.h5Var = H5Fcreate((baseFileName+"."+fileType).c_str(),
                                        H5F_ACC_TRUNC,
                                        H5P_DEFAULT,
                                        H5P_DEFAULT);
         }
+#endif
         else {
           UQ_FATAL_TEST_MACRO(true,
                               m_worldRank,
@@ -774,6 +826,7 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
           filePtrSet.ofsVar = new std::ofstream((baseFileName+"."+fileType).c_str(),
                                                 std::ofstream::out /*| std::ofstream::in*/ | std::ofstream::app);
         }
+#ifdef QUESO_HAS_HDF5
         else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
           filePtrSet.h5Var = H5Fcreate((baseFileName+"."+fileType).c_str(), // TEMPORARY - FIX ME
                                        H5F_ACC_TRUNC,
@@ -784,6 +837,7 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
           //                    "uqBaseEnvironmentClass::openUnifiedOutputFile(), writeOver=false",
           //                    "hdf file type not supported yet");
         }
+#endif
         else {
           UQ_FATAL_TEST_MACRO(true,
                               m_worldRank,
@@ -837,10 +891,35 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
 bool
 uqBaseEnvironmentClass::openInputFile(
   const std::string&            baseFileName,
-  const std::string&            fileType,
+  const std::string&            inputFileType,
   const std::set<unsigned int>& allowedSubEnvIds,
         uqFilePtrSetStruct&     filePtrSet) const
 {
+  std::string fileType(inputFileType);
+#ifdef QUESO_HAS_HDF5
+  // Do nothing
+#else
+  if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
+    if (m_subDisplayFile) {
+      *this->subDisplayFile() << "WARNING in uqBaseEnvironmentClass::openInputFile()"
+                              << ": file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                              << "' has been requested, but this QUESO library has not been built with 'hdf5'"
+                              << ". Code will therefore process the file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                              << "' instead..."
+                              << std::endl;
+    }
+    if (this->subRank() == 0) {
+      std::cerr << "WARNING in uqBaseEnvironmentClass::openInputFile()"
+                << ": file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                << "' has been requested, but this QUESO library has not been built with 'hdf5'"
+                << ". Code will therefore process the file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                << "' instead..."
+                << std::endl;
+    }
+    fileType = UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT;
+  }
+#endif
+
   bool returnValue = true;
   filePtrSet.ifsVar = NULL;
   if ((baseFileName                         == UQ_ENV_FILENAME_FOR_NO_INPUT_FILE) ||
@@ -889,11 +968,13 @@ uqBaseEnvironmentClass::openInputFile(
                             "uqBaseEnvironmentClass::openInputFile()",
                             "file with fileName could not be found");
       }
+#ifdef QUESO_HAS_HDF5
       else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
         filePtrSet.h5Var = H5Fopen((baseFileName+"."+fileType).c_str(),
                                    H5F_ACC_RDONLY,
                                    H5P_DEFAULT);
       }
+#endif
       else {
         UQ_FATAL_TEST_MACRO(true,
                             m_worldRank,
@@ -913,9 +994,34 @@ uqBaseEnvironmentClass::openInputFile(
 bool
 uqBaseEnvironmentClass::openUnifiedInputFile(
   const std::string&        baseFileName,
-  const std::string&        fileType,
+  const std::string&        inputFileType,
         uqFilePtrSetStruct& filePtrSet) const
 {
+  std::string fileType(inputFileType);
+#ifdef QUESO_HAS_HDF5
+  // Do nothing
+#else
+  if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
+    if (m_subDisplayFile) {
+      *this->subDisplayFile() << "WARNING in uqBaseEnvironmentClass::openUnifiedInputFile()"
+                              << ": file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                              << "' has been requested, but this QUESO library has not been built with 'hdf5'"
+                              << ". Code will therefore process the file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                              << "' instead..."
+                              << std::endl;
+    }
+    if (this->subRank() == 0) {
+      std::cerr << "WARNING in uqBaseEnvironmentClass::openUnifiedInputFile()"
+                << ": file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                << "' has been requested, but this QUESO library has not been built with 'hdf5'"
+                << ". Code will therefore process the file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                << "' instead..."
+                << std::endl;
+    }
+    fileType = UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT;
+  }
+#endif
+
   bool returnValue = true;
   filePtrSet.ifsVar = NULL;
   if (baseFileName == UQ_ENV_FILENAME_FOR_NO_INPUT_FILE) {
@@ -963,11 +1069,13 @@ uqBaseEnvironmentClass::openUnifiedInputFile(
                             "uqBaseEnvironmentClass::openUnifiedInputFile()",
                             "file with fileName could not be found");
       }
+#ifdef QUESO_HAS_HDF5
       else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
         filePtrSet.h5Var = H5Fopen((baseFileName+"."+fileType).c_str(),
                                    H5F_ACC_RDONLY,
                                    H5P_DEFAULT);
       }
+#endif
       else {
         UQ_FATAL_TEST_MACRO(true,
                             m_worldRank,
@@ -987,8 +1095,33 @@ uqBaseEnvironmentClass::openUnifiedInputFile(
 void
 uqBaseEnvironmentClass::closeFile(
   uqFilePtrSetStruct& filePtrSet,
-  const std::string&  fileType) const
+  const std::string&  inputFileType) const
 {
+  std::string fileType(inputFileType);
+#ifdef QUESO_HAS_HDF5
+  // Do nothing
+#else
+  if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
+    if (m_subDisplayFile) {
+      *this->subDisplayFile() << "WARNING in uqBaseEnvironmentClass::closeFile()"
+                              << ": file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                              << "' has been requested, but this QUESO library has not been built with 'hdf5'"
+                              << ". Code will therefore process the file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                              << "' instead..."
+                              << std::endl;
+    }
+    if (this->subRank() == 0) {
+      std::cerr << "WARNING in uqBaseEnvironmentClass::closeFile()"
+                << ": file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                << "' has been requested, but this QUESO library has not been built with 'hdf5'"
+                << ". Code will therefore process the file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                << "' instead..."
+                << std::endl;
+    }
+    fileType = UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT;
+  }
+#endif
+
   if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
     //filePtrSet.ofsVar->close(); // close() crashes on Mac; need to use delete(); why? prudenci 2010/June
     delete filePtrSet.ofsVar;
@@ -998,9 +1131,11 @@ uqBaseEnvironmentClass::closeFile(
     delete filePtrSet.ifsVar;
     filePtrSet.ifsVar = NULL;
   }
+#ifdef QUESO_HAS_HDF5
   else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
     H5Fclose(filePtrSet.h5Var);
   }
+#endif
   else {
     UQ_FATAL_TEST_MACRO(true,
                         m_worldRank,
