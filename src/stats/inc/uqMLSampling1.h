@@ -40,19 +40,23 @@
 #include <uqScalarFunctionSynchronizer.h>
 #include <uqSequenceOfVectors.h>
 #include <uqArrayOfSequences.h>
+#ifdef QUESO_HAS_GLPK
 #include <glpk.h>
+#endif
 #include <sys/time.h>
 #include <fstream>
 
 //---------------------------------------------------------
 
 // aqui 1
+#ifdef QUESO_HAS_GLPK
 struct BIP_routine_struct {
   const uqBaseEnvironmentClass* env;
   unsigned int                  currLevel;
 };
 
 void BIP_routine(glp_tree *tree, void *info);
+#endif
 
 //---------------------------------------------------------
 
@@ -312,7 +316,9 @@ private:
                                         uqScalarSequenceClass         <double>*         currLogLikelihoodValues,            // output
                                         uqScalarSequenceClass         <double>*         currLogTargetValues);               // output
 
+#ifdef QUESO_HAS_GLPK
   void   solveBIP_proc0                (std::vector<uqExchangeInfoStruct>&              exchangeStdVec);                    // input/output
+#endif
 
   void   justBalance_proc0             (const uqMLSamplingLevelOptionsClass*            currOptions,                        // input
                                         std::vector<uqExchangeInfoStruct>&              exchangeStdVec);                    // input/output

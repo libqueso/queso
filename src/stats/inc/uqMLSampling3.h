@@ -306,8 +306,11 @@ uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0( // EXTRA FOR LOAD BAL
 
       case 1:
       default:
+#ifdef QUESO_HAS_GLPK
         // Get final node responsible for a linked chain by solving BIP at node zero only
         solveBIP_proc0(exchangeStdVec); // input/output
+#else
+#endif
       break;
     }
   } // if (m_env.inter0Rank() == 0)
@@ -1000,6 +1003,7 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
   return;
 }
 
+#ifdef QUESO_HAS_GLPK
 template <class P_V,class P_M>
 void
 uqMLSamplingClass<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE 
@@ -1392,6 +1396,7 @@ uqMLSamplingClass<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
 
   return;
 }
+#endif // QUESO_HAS_GLPK
 
 template <class P_V,class P_M>
 void

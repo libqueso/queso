@@ -48,7 +48,6 @@ libqueso_la_SOURCES = \
 	$(top_srcdir)/src/core/src/uqMatrix.C \
 	$(top_srcdir)/src/core/src/uqMpiComm.C \
 	$(top_srcdir)/src/core/src/uqMap.C \
-	$(top_srcdir)/src/core/src/uqDistArray.C \
 	$(top_srcdir)/src/core/src/uqTrilinosVector.C \
 	$(top_srcdir)/src/core/src/uqTrilinosMatrix.C
 
