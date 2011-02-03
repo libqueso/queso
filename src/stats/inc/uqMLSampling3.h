@@ -310,6 +310,24 @@ uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0( // EXTRA FOR LOAD BAL
         // Get final node responsible for a linked chain by solving BIP at node zero only
         solveBIP_proc0(exchangeStdVec); // input/output
 #else
+        if (m_env.subDisplayFile()) {
+          *m_env.subDisplayFile() << "WARNING in uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0()"
+                                  << ": algorithm id '" << currOptions->m_loadBalanceAlgorithmId
+                                  << "' has been requested, but this QUESO library has not been built with 'hdf5'"
+                                  << ". Code will therefore process the algorithm id '" << 2
+                                  << "' instead..."
+                                  << std::endl;
+        }
+        if (m_env.subRank() == 0) {
+          std::cerr << "WARNING in uqMLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0()"
+                    << ": algorithm id '" << currOptions->m_loadBalanceAlgorithmId
+                    << "' has been requested, but this QUESO library has not been built with 'hdf5'"
+                    << ". Code will therefore process the algorithm id '" << 2
+                    << "' instead..."
+                    << std::endl;
+        }
+        justBalance_proc0(currOptions,     // input
+                          exchangeStdVec); // input/output
 #endif
       break;
     }
