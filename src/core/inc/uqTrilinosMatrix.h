@@ -32,6 +32,7 @@
 #include <uqDefines.h>
 #ifdef QUESO_HAS_TRILINOS
 
+#include <uqMap.h>
 #include <uqMatrix.h>
 #include <Epetra_SerialDenseMatrix.h>
 //#include <Epetra_CrsMatrix.h>
@@ -43,16 +44,16 @@ class uqTrilinosMatrixClass : public uqMatrixClass
 public:
   uqTrilinosMatrixClass();
   uqTrilinosMatrixClass(const uqBaseEnvironmentClass& env,
-                        const Epetra_Map&         map,
+                        const uqMapClass&         map,
                         unsigned int              numCols);
 
   uqTrilinosMatrixClass(const uqBaseEnvironmentClass& env,
-                        const Epetra_Map&         map,
+                        const uqMapClass&         map,
                         unsigned int              numRowsLocal,
                         unsigned int              numCols);
 
   uqTrilinosMatrixClass(const uqBaseEnvironmentClass& env,
-                        const Epetra_Map&         map,
+                        const uqMapClass&         map,
                         double                    diagValue); // MATLAB eye
   uqTrilinosMatrixClass(const uqTrilinosVectorClass& v,
                         double                       diagValue); // MATLAB eye
@@ -85,7 +86,7 @@ private:
   void                  copy          (const uqTrilinosMatrixClass& src);
   void                  multiply      (const uqTrilinosVectorClass& x, uqTrilinosVectorClass& y) const;
 
-  const Epetra_Map&         m_map;
+  const uqMapClass&         m_map;
   //Epetra_CrsMatrix*       m_mat;
   Epetra_SerialDenseMatrix* m_mat;
 };

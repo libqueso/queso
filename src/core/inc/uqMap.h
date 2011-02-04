@@ -31,12 +31,8 @@
 
 #include <uqDefines.h>
 #ifdef QUESO_HAS_TRILINOS
-
-// 'uqMapClass' is just an alias to the 'Epetra_Map' class of Trilinos
 #include <Epetra_Map.h>
-typedef Epetra_Map uqMapClass ;
-
-#else // QUESO_HAS_TRILINOS
+#endif
 
 #include <uqMpiComm.h>
 class uqMapClass
@@ -56,16 +52,21 @@ public:
   int                   IndexBase        () const;
   int                   NumMyElements    () const;
   int                   MinMyGID         () const;
+#ifdef QUESO_HAS_TRILINOS
+  const Epetra_Map&     epetraMap        () const;
+#endif
 
 private:
   void                  copy             (const uqMapClass& src);
 
   uqMpiCommClass m_uqMpiComm;
+#ifdef QUESO_HAS_TRILINOS
+  Epetra_Map*    m_epetraMap;
+#else
   int            m_numGlobalElements;
   int            m_indexBase;
   int            m_numMyElements;
+#endif
 };
-
-#endif // QUESO_HAS_TRILINOS
 
 #endif // __UQ_MAP_H__

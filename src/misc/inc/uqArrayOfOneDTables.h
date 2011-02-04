@@ -43,10 +43,10 @@ public:
   void                       print       (std::ostream& os)   const;
 
 private:
-  const uqBaseEnvironmentClass&                m_env;
-        std::string                            m_prefix;
-  const uqVectorSpaceClass<V,M>&               m_rowSpace;
-  uqDistArrayClass<std::vector<double>*>::type m_oneDTables;
+  const uqBaseEnvironmentClass&          m_env;
+        std::string                      m_prefix;
+  const uqVectorSpaceClass<V,M>&         m_rowSpace;
+  uqDistArrayClass<std::vector<double>*> m_oneDTables;
 };
 
 template <class V, class M>

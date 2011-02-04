@@ -27,11 +27,6 @@
 //--------------------------------------------------------------------------
 
 #include <uqMpiComm.h>
-#ifdef QUESO_HAS_TRILINOS
-
-// 'uqMpiCommClass' is just an alias to the 'Epetra_MpiComm' class of Trilinos
-
-#else // QUESO_HAS_TRILINOS
 
 uqMpiCommClass::uqMpiCommClass()
 {
@@ -43,11 +38,17 @@ uqMpiCommClass::uqMpiCommClass()
 
 uqMpiCommClass::uqMpiCommClass(MPI_Comm inputRawComm)
   :
+#ifdef QUESO_HAS_TRILINOS
+  m_epetraMpiComm( new Epetra_MpiComm(inputRawComm) )
+#else
   m_rawComm  (inputRawComm),
   m_worldRank(-1),
   m_myPid    (-1),
   m_numProc  (-1)
+#endif
 {
+#ifdef QUESO_HAS_TRILINOS
+#else
   int mpiRC = MPI_Comm_rank(MPI_COMM_WORLD,&m_worldRank);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       UQ_UNAVAILABLE_RANK,
@@ -65,9 +66,14 @@ uqMpiCommClass::uqMpiCommClass(MPI_Comm inputRawComm)
                       m_worldRank,
                       "uqMpiCommClass::constructor()",
                       "failed MPI_Comm_size() on inputRawComm");
+#endif
 }
 
 uqMpiCommClass::uqMpiCommClass(const uqMpiCommClass& src)
+#ifdef QUESO_HAS_TRILINOS
+  :
+  m_epetraMpiComm(NULL)
+#endif
 {
   this->copy(src);
 }
@@ -81,16 +87,26 @@ uqMpiCommClass::operator=(const uqMpiCommClass& rhs)
 
 uqMpiCommClass::~uqMpiCommClass()
 {
+#ifdef QUESO_HAS_TRILINOS
+  delete m_epetraMpiComm;
+  m_epetraMpiComm = NULL;
+#else
   // Nothing to do
+#endif
 }
 
 void
 uqMpiCommClass::copy(const uqMpiCommClass& src)
 {
+#ifdef QUESO_HAS_TRILINOS
+  delete m_epetraMpiComm;
+  m_epetraMpiComm = new Epetra_MpiComm(*src.m_epetraMpiComm);
+#else
   m_rawComm   = src.m_rawComm;
   m_worldRank = src.m_worldRank;
   m_myPid     = src.m_myPid;
   m_numProc   = src.m_numProc;
+#endif
 
   return;
 }
@@ -98,34 +114,55 @@ uqMpiCommClass::copy(const uqMpiCommClass& src)
 MPI_Comm
 uqMpiCommClass::Comm() const
 {
+#ifdef QUESO_HAS_TRILINOS
+  return m_epetraMpiComm->Comm();
+#else
   return m_rawComm;
+#endif
 }
+
+#ifdef QUESO_HAS_TRILINOS
+const Epetra_MpiComm&
+uqMpiCommClass::epetraMpiComm() const
+{
+  return *m_epetraMpiComm;
+}
+#endif
 
 int
 uqMpiCommClass::MyPID() const
 {
+#ifdef QUESO_HAS_TRILINOS
+  return m_epetraMpiComm->MyPID();
+#else
   return m_myPid;
+#endif
 }
 
 int
 uqMpiCommClass::NumProc() const
 {
+#ifdef QUESO_HAS_TRILINOS
+  return m_epetraMpiComm->NumProc();
+#else
   return m_numProc;
+#endif
 }
 
 void
 uqMpiCommClass::Barrier() const
 {
+#ifdef QUESO_HAS_TRILINOS
+  return m_epetraMpiComm->Barrier();
+#else
   int mpiRC = MPI_Barrier(m_rawComm);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
                       "uqMpiCommClass::Barrier()",
                       "mpiRC indicates no success");
-
+#endif
   return;
 }
-
-#endif // QUESO_HAS_TRILINOS
 
 int UQ_MPI_Barrier(MPI_Comm comm)
 {

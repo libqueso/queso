@@ -31,12 +31,8 @@
 
 #include <uqDefines.h>
 #ifdef QUESO_HAS_TRILINOS
-
-// 'uqMpiCommClass' is just an alias to the 'Epetra_MpiComm' class of Trilinos
 #include <Epetra_MpiComm.h>
-typedef Epetra_MpiComm uqMpiCommClass ;
-
-#else // QUESO_HAS_TRILINOS
+#endif
 
 #include <mpi.h>
 
@@ -54,17 +50,22 @@ public:
   int      MyPID  () const;
   int      NumProc() const;
   void     Barrier() const;
+#ifdef QUESO_HAS_TRILINOS
+  const Epetra_MpiComm& epetraMpiComm() const;
+#endif
 
 private:
   void     copy   (const uqMpiCommClass& src);
 
+#ifdef QUESO_HAS_TRILINOS
+  Epetra_MpiComm* m_epetraMpiComm;
+#else
   MPI_Comm m_rawComm;
   int      m_worldRank;
   int      m_myPid;
   int      m_numProc;
+#endif
 };
-
-#endif // QUESO_HAS_TRILINOS
 
 int UQ_MPI_Barrier(MPI_Comm comm);
 int UQ_MPI_Barrier(const uqMpiCommClass& comm);

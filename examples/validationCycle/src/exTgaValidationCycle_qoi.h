@@ -52,13 +52,13 @@ qoiRoutine_DataClass
 
 // The actual (user defined) qoi routine
 template<class P_V,class P_M,class Q_V,class Q_M>
-void qoiRoutine(const P_V&                                   paramValues,
-                const P_V*                                   paramDirection,
-                const void*                                  functionDataPtr,
-                      Q_V&                                   qoiValues,
-                      typename uqDistArrayClass<P_V*>::type* gradVectors,
-                      typename uqDistArrayClass<P_M*>::type* hessianMatrices,
-                      typename uqDistArrayClass<P_V*>::type* hessianEffects)
+void qoiRoutine(const P_V&                    paramValues,
+                const P_V*                    paramDirection,
+                const void*                   functionDataPtr,
+                      Q_V&                    qoiValues,
+                      uqDistArrayClass<P_V*>* gradVectors,
+                      uqDistArrayClass<P_M*>* hessianMatrices,
+                      uqDistArrayClass<P_V*>* hessianEffects)
 {
   double A             = paramValues[0];
   double E             = paramValues[1];

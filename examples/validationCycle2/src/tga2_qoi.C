@@ -35,13 +35,13 @@
 #include <gsl/gsl_odeiv.h>
 
 // The actual (user defined) qoi routine
-void qoiRoutine(const uqGslVectorClass&                          paramValues,
-                const uqGslVectorClass*                          paramDirection,
-                const void*                                      functionDataPtr,
-                      uqGslVectorClass&                          qoiValues,
-                      uqDistArrayClass<uqGslVectorClass*>::type* gradVectors,
-                      uqDistArrayClass<uqGslMatrixClass*>::type* hessianMatrices,
-                      uqDistArrayClass<uqGslVectorClass*>::type* hessianEffects)
+void qoiRoutine(const uqGslVectorClass&                    paramValues,
+                const uqGslVectorClass*                    paramDirection,
+                const void*                                functionDataPtr,
+                      uqGslVectorClass&                    qoiValues,
+                      uqDistArrayClass<uqGslVectorClass*>* gradVectors,
+                      uqDistArrayClass<uqGslMatrixClass*>* hessianMatrices,
+                      uqDistArrayClass<uqGslVectorClass*>* hessianEffects)
 {
   if (paramDirection  &&
       functionDataPtr && 

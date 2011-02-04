@@ -39,12 +39,12 @@ public:
  ~uqVectorFunctionSynchronizerClass();
 
   const uqVectorSetClass<P_V,P_M>& domainSet() const;
-  void callFunction(const P_V*                                   vecValues,
-                    const P_V*                                   vecDirection,
-                          Q_V*                                   imageVector,
-                          typename uqDistArrayClass<P_V*>::type* gradVectors,     // Yes, 'P_V'
-                          typename uqDistArrayClass<P_M*>::type* hessianMatrices, // Yes, 'P_M'
-                          typename uqDistArrayClass<P_V*>::type* hessianEffects) const;
+  void callFunction(const P_V*                    vecValues,
+                    const P_V*                    vecDirection,
+                          Q_V*                    imageVector,
+                          uqDistArrayClass<P_V*>* gradVectors,     // Yes, 'P_V'
+                          uqDistArrayClass<P_M*>* hessianMatrices, // Yes, 'P_M'
+                          uqDistArrayClass<P_V*>* hessianEffects) const;
 private:
   const uqBaseEnvironmentClass&                     m_env;
   const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& m_vectorFunction;
@@ -80,24 +80,24 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::domainSet() const
 template <class P_V, class P_M, class Q_V, class Q_M>
 void
 uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
-  const P_V*                                   vecValues,
-  const P_V*                                   vecDirection,
-        Q_V*                                   imageVector,
-        typename uqDistArrayClass<P_V*>::type* gradVectors,     // Yes, 'P_V'
-        typename uqDistArrayClass<P_M*>::type* hessianMatrices, // Yes, 'P_M'
-        typename uqDistArrayClass<P_V*>::type* hessianEffects) const
+  const P_V*                    vecValues,
+  const P_V*                    vecDirection,
+        Q_V*                    imageVector,
+        uqDistArrayClass<P_V*>* gradVectors,     // Yes, 'P_V'
+        uqDistArrayClass<P_M*>* hessianMatrices, // Yes, 'P_M'
+        uqDistArrayClass<P_V*>* hessianEffects) const
 {
   if ((m_env.numSubEnvironments() < (unsigned int) m_env.fullComm().NumProc()) &&
       (m_auxPVec.numOfProcsForStorage() == 1                                 ) &&
       (m_auxQVec.numOfProcsForStorage() == 1                                 )) {
     bool stayInRoutine = true;
     do {
-      const P_V*                                   internalValues    = NULL;
-      const P_V*                                   internalDirection = NULL;
-            Q_V*                                   internalImageVec  = NULL;
-            typename uqDistArrayClass<P_V*>::type* internalGrads     = NULL; // Yes, 'P_V'
-            typename uqDistArrayClass<P_M*>::type* internalHessians  = NULL; // Yes, 'P_M'
-            typename uqDistArrayClass<P_V*>::type* internalEffects   = NULL;
+      const P_V*                    internalValues    = NULL;
+      const P_V*                    internalDirection = NULL;
+            Q_V*                    internalImageVec  = NULL;
+            uqDistArrayClass<P_V*>* internalGrads     = NULL; // Yes, 'P_V'
+            uqDistArrayClass<P_M*>* internalHessians  = NULL; // Yes, 'P_M'
+            uqDistArrayClass<P_V*>* internalEffects   = NULL;
 
       /////////////////////////////////////////////////
       // Broadcast 1 of 3

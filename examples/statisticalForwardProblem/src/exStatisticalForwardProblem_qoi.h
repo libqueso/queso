@@ -52,13 +52,13 @@ qoiRoutine_DataType
 template<class P_V,class P_M, class Q_V, class Q_M>
 void
 qoiRoutine(
-  const P_V&                                   paramValues,
-  const P_V*                                   paramDirection,
-  const void*                                  functionDataPtr,
-        Q_V&                                   qoiValues,
-        typename uqDistArrayClass<P_V*>::type* gradVectors,
-        typename uqDistArrayClass<P_M*>::type* hessianMatrices,
-        typename uqDistArrayClass<P_V*>::type* hessianEffects)
+  const P_V&                    paramValues,
+  const P_V*                    paramDirection,
+  const void*                   functionDataPtr,
+        Q_V&                    qoiValues,
+        uqDistArrayClass<P_V*>* gradVectors,
+        uqDistArrayClass<P_M*>* hessianMatrices,
+        uqDistArrayClass<P_V*>* hessianEffects)
 {
   //double a1 = ((qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->p1MultiplicativeFactor;
   //double e1 = ((qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->p1ExponentFactor;

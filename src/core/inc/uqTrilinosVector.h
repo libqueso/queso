@@ -32,6 +32,7 @@
 #include <uqDefines.h>
 #ifdef QUESO_HAS_TRILINOS
 
+#include <uqMap.h>
 #include <uqVector.h>
 //#include <Epetra_Vector.h>
 #include <Epetra_SerialDenseMatrix.h>
@@ -40,9 +41,9 @@ class uqTrilinosVectorClass : public uqVectorClass
 {
 public:
   uqTrilinosVectorClass();
-  uqTrilinosVectorClass(const uqBaseEnvironmentClass& env, const Epetra_Map& map);
-  uqTrilinosVectorClass(const uqBaseEnvironmentClass& env, const Epetra_Map& map, double value);
-  uqTrilinosVectorClass(const uqBaseEnvironmentClass& env, const Epetra_Map& map, double d1, double d2, unsigned int size); // MATLAB linspace
+  uqTrilinosVectorClass(const uqBaseEnvironmentClass& env, const uqMapClass& map);
+  uqTrilinosVectorClass(const uqBaseEnvironmentClass& env, const uqMapClass& map, double value);
+  uqTrilinosVectorClass(const uqBaseEnvironmentClass& env, const uqMapClass& map, double d1, double d2, unsigned int size); // MATLAB linspace
   uqTrilinosVectorClass(const uqTrilinosVectorClass&    v,                        double d1, double d2, unsigned int size); // MATLAB linspace
   uqTrilinosVectorClass(const uqTrilinosVectorClass&    y);
  ~uqTrilinosVectorClass();
@@ -72,13 +73,13 @@ public:
   bool           atLeastOneComponentBiggerThan (const uqTrilinosVectorClass& rhs) const;
   //Epetra_Vector* data          () const;
   Epetra_SerialDenseMatrix* data () const;
-  const Epetra_Map& map          () const;
+  const uqMapClass& map          () const;
 
 private:
 
   void           copy            (const uqTrilinosVectorClass& src);
 
-  const Epetra_Map&       m_map;
+  const uqMapClass&         m_map;
   //Epetra_Vector*          m_vec;
   Epetra_SerialDenseMatrix* m_vec;
 };

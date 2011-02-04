@@ -30,34 +30,23 @@
 #define __UQ_DIST_ARRAY_H__
 
 #include <uqDefines.h>
+#include <uqMap.h>
 #ifdef QUESO_HAS_TRILINOS
-
-// 'uqDistArrayClass<T>::type' is just an alias to the 'EpetraExt::DistArray<T>' class of Trilinos
-#include <uqMap.h>
 #include <EpetraExt_DistArray.h>
-
-template<typename T>
-struct uqDistArrayClass
-{
-  typedef EpetraExt::DistArray<T> type;
-};
-
-#else // QUESO_HAS_TRILINOS
-
-#include <uqMap.h>
+#endif
 #include <ostream>
 
 template<typename T>
-class uqDistArrayCoreClass
+class uqDistArrayClass
 {
 public:
-  uqDistArrayCoreClass();
-  uqDistArrayCoreClass(const uqMapClass& inputMap, 
-                       const int         inputRowSize);
-  uqDistArrayCoreClass(const uqDistArrayCoreClass<T>& src);
- ~uqDistArrayCoreClass();
+  uqDistArrayClass();
+  uqDistArrayClass(const uqMapClass& inputMap, 
+                   const int         inputRowSize);
+  uqDistArrayClass(const uqDistArrayClass<T>& src);
+ ~uqDistArrayClass();
 
-  uqDistArrayCoreClass<T>& operator= (const uqDistArrayCoreClass<T>& rhs);
+  uqDistArrayClass<T>& operator= (const uqDistArrayClass<T>& rhs);
 
         T&   operator    ()(int localElementId, int colId);
   const T&   operator    ()(int localElementId, int colId) const;
@@ -67,143 +56,186 @@ public:
         void print       (std::ostream& os) const;
 
 private:
-        void copy        (const uqDistArrayCoreClass<T>& src);
+        void copy        (const uqDistArrayClass<T>& src);
 
   uqMapClass                   m_uqMap;
+#ifdef QUESO_HAS_TRILINOS
+  EpetraExt::DistArray<T>*     m_epetraDistArray;
+#else
   unsigned int                 m_rowSize;
   std::vector<std::vector<T> > m_elements;
+#endif
 };
 
 template<typename T>
-uqDistArrayCoreClass<T>::uqDistArrayCoreClass()
+uqDistArrayClass<T>::uqDistArrayClass()
   :
   m_uqMap()
 {
   UQ_FATAL_TEST_MACRO(true,
                       UQ_UNAVAILABLE_RANK,
-                      "uqDistArrayCoreClass<T>::constructor()",
+                      "uqDistArrayClass<T>::constructor()",
                       "should not be called");
 }
 
 template<typename T>
-uqDistArrayCoreClass<T>::uqDistArrayCoreClass(
+uqDistArrayClass<T>::uqDistArrayClass(
   const uqMapClass& inputMap, 
   const int         inputRowSize)
   :
   m_uqMap  (inputMap),
+#ifdef QUESO_HAS_TRILINOS
+  m_epetraDistArray(new EpetraExt::DistArray<T>(inputMap.epetraMap(),inputRowSize))
+#else
   m_rowSize(inputRowSize)
+#endif
 {
+#ifdef QUESO_HAS_TRILINOS
+#else
   m_elements.resize(m_uqMap.NumGlobalElements());
   for (int i = 0; i < m_uqMap.NumGlobalElements(); ++i) {
     m_elements[i].resize(m_rowSize);
   }
+#endif
 }
 
 template<typename T>
-uqDistArrayCoreClass<T>::uqDistArrayCoreClass(const uqDistArrayCoreClass<T>& src)
+uqDistArrayClass<T>::uqDistArrayClass(const uqDistArrayClass<T>& src)
   :
   m_uqMap(src.m_uqMap)
+#ifdef QUESO_HAS_TRILINOS
+  ,
+  m_epetraDistArray(NULL)
+#endif
 {
   this->copy(src);
 }
 
 template<typename T>
-uqDistArrayCoreClass<T>&
-uqDistArrayCoreClass<T>::operator=(const uqDistArrayCoreClass<T>& rhs)
+uqDistArrayClass<T>&
+uqDistArrayClass<T>::operator=(const uqDistArrayClass<T>& rhs)
 {
   this->copy(rhs);
   return *this;
 }
 
 template<typename T>
-uqDistArrayCoreClass<T>::~uqDistArrayCoreClass()
+uqDistArrayClass<T>::~uqDistArrayClass()
 {
+#ifdef QUESO_HAS_TRILINOS
+  delete m_epetraDistArray;
+  m_epetraDistArray = NULL;
+#else
   for (int i = 0; i < m_uqMap.NumGlobalElements(); ++i) {
     m_elements[i].clear();
   }
   m_elements.clear();
+#endif
 }
 
 template<typename T>
 void
-uqDistArrayCoreClass<T>::copy(const uqDistArrayCoreClass<T>& src)
+uqDistArrayClass<T>::copy(const uqDistArrayClass<T>& src)
 {
+#ifdef QUESO_HAS_TRILINOS
+  delete m_epetraDistArray;
+#else
   for (unsigned int i = 0; i < m_uqMap.NumGlobalElements(); ++i) {
     m_elements[i].clear();
   }
   m_elements.clear();
+#endif
 
   m_uqMap   = src.m_uqMap;
+#ifdef QUESO_HAS_TRILINOS
+  m_epetraDistArray = new EpetraExt::DistArray<T>(*src.m_epetraDistArray);
+#else
   m_rowSize = src.m_rowSize;
   m_elements.resize(m_uqMap.NumGlobalElements());
   for (unsigned int i = 0; i < m_uqMap.NumGlobalElements(); ++i) {
     m_elements[i].resize(m_rowSize);
     m_elements[i] = src.m_elements[i];
   }
+#endif
 
   return;
 }
 
 template<typename T>
 T&
-uqDistArrayCoreClass<T>::operator()(int localElementId, int colId)
+uqDistArrayClass<T>::operator()(int localElementId, int colId)
 {
+#ifdef QUESO_HAS_TRILINOS
+  return (*m_epetraDistArray)(localElementId,colId);
+#else
   return m_elements[localElementId][colId];
+#endif
 }
 
 template<typename T>
 const T&
-uqDistArrayCoreClass<T>::operator()(int localElementId, int colId) const
+uqDistArrayClass<T>::operator()(int localElementId, int colId) const
 {
+#ifdef QUESO_HAS_TRILINOS
+  return (*m_epetraDistArray)(localElementId,colId);
+#else
   return m_elements[localElementId][colId];
+#endif
 }
 
 template<typename T>
 int
-uqDistArrayCoreClass<T>::GlobalLength() const
+uqDistArrayClass<T>::GlobalLength() const
 {
+#ifdef QUESO_HAS_TRILINOS
+  return m_epetraDistArray->GlobalLength();
+#else
   return m_uqMap.NumGlobalElements();
+#endif
 }
 
 template<typename T>
 int
-uqDistArrayCoreClass<T>::MyLength() const
+uqDistArrayClass<T>::MyLength() const
 {
+#ifdef QUESO_HAS_TRILINOS
+  return m_epetraDistArray->MyLength();
+#else
   return m_uqMap.NumMyElements();
+#endif
 }
 
 template<typename T>
 int
-uqDistArrayCoreClass<T>::RowSize() const
+uqDistArrayClass<T>::RowSize() const
 {
+#ifdef QUESO_HAS_TRILINOS
+  return m_epetraDistArray->RowSize();
+#else
   return m_rowSize;
+#endif
 }
 
 template<typename T>
 void
-uqDistArrayCoreClass<T>::print(std::ostream& os) const
+uqDistArrayClass<T>::print(std::ostream& os) const
 {
+#ifdef QUESO_HAS_TRILINOS
+  os << *m_epetraDistArray;
+#else
   os << "m_rowSize = "           << m_rowSize
      << ", m_elements.size() = " << m_elements.size()
      << std::endl;
+#endif
 
   return;
 }
 
 template<typename T>
-std::ostream& operator<<(std::ostream& os, const uqDistArrayCoreClass<T>& obj)
+std::ostream& operator<<(std::ostream& os, const uqDistArrayClass<T>& obj)
 {
   obj.print(os);
 
   return os;
 }
-
-template<typename T>
-struct uqDistArrayClass
-{
-  typedef uqDistArrayCoreClass<T> type;
-};
-
-#endif // QUESO_HAS_TRILINOS
-
 #endif // __UQ_DIST_ARRAY_H__

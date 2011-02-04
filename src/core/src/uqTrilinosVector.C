@@ -35,7 +35,7 @@
 uqTrilinosVectorClass::uqTrilinosVectorClass()
   :
   uqVectorClass(),
-  m_map        (*(new Epetra_Map( 1,0,*(new Epetra_MpiComm(MPI_COMM_WORLD)) ) ))
+  m_map        (*(new uqMapClass( 1,0,*(new uqMpiCommClass(MPI_COMM_WORLD)) ) ))
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.fullRank(),
@@ -43,7 +43,7 @@ uqTrilinosVectorClass::uqTrilinosVectorClass()
                       "should not be used by user");
 }
 
-uqTrilinosVectorClass::uqTrilinosVectorClass(const uqBaseEnvironmentClass& env, const Epetra_Map& map)
+uqTrilinosVectorClass::uqTrilinosVectorClass(const uqBaseEnvironmentClass& env, const uqMapClass& map)
   :
   uqVectorClass(env, map),
   m_map        (map),
@@ -56,7 +56,7 @@ uqTrilinosVectorClass::uqTrilinosVectorClass(const uqBaseEnvironmentClass& env, 
                       "null vector generated");
 }
 
-uqTrilinosVectorClass::uqTrilinosVectorClass(const uqBaseEnvironmentClass& env, const Epetra_Map& map, double value)
+uqTrilinosVectorClass::uqTrilinosVectorClass(const uqBaseEnvironmentClass& env, const uqMapClass& map, double value)
   :
   uqVectorClass(env,map),
   m_map        (map),
@@ -70,7 +70,7 @@ uqTrilinosVectorClass::uqTrilinosVectorClass(const uqBaseEnvironmentClass& env, 
   this->cwSet(value);
 }
 
-uqTrilinosVectorClass::uqTrilinosVectorClass(const uqBaseEnvironmentClass& env, const Epetra_Map& map, double d1, double d2, unsigned int size)
+uqTrilinosVectorClass::uqTrilinosVectorClass(const uqBaseEnvironmentClass& env, const uqMapClass& map, double d1, double d2, unsigned int size)
   :
   uqVectorClass(env, map),
   m_map        (map),
@@ -411,11 +411,11 @@ uqTrilinosVectorClass operator-(const uqTrilinosVectorClass& x, const uqTrilinos
   return answer;
 }
 
-const Epetra_Map&
+const uqMapClass&
 uqTrilinosVectorClass::map() const
 {
   return m_map;
-  //return (const Epetra_Map&) (m_vec->Map());
+  //return (const uqMapClass&) (m_vec->Map());
 }
 #if 0
 int

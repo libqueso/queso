@@ -35,7 +35,7 @@
 uqTrilinosMatrixClass::uqTrilinosMatrixClass()
   :
   uqMatrixClass(),
-  m_map        (*(new Epetra_Map( 1,0,*(new Epetra_MpiComm(MPI_COMM_WORLD)) ) ))
+  m_map        (*(new uqMapClass( 1,0,*(new uqMpiCommClass(MPI_COMM_WORLD)) ) ))
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.fullRank(),
@@ -45,7 +45,7 @@ uqTrilinosMatrixClass::uqTrilinosMatrixClass()
  
 uqTrilinosMatrixClass::uqTrilinosMatrixClass(
   const uqBaseEnvironmentClass& env,
-  const Epetra_Map&         map,
+  const uqMapClass&         map,
   unsigned int              numCols)
   :
   uqMatrixClass(env, map),
@@ -61,7 +61,7 @@ uqTrilinosMatrixClass::uqTrilinosMatrixClass(
  
 uqTrilinosMatrixClass::uqTrilinosMatrixClass(
   const uqBaseEnvironmentClass& env,
-  const Epetra_Map&         map,
+  const uqMapClass&         map,
   unsigned int              numRowsLocal,
   unsigned int              numCols)
   :
@@ -77,7 +77,7 @@ uqTrilinosMatrixClass::uqTrilinosMatrixClass(
  
 uqTrilinosMatrixClass::uqTrilinosMatrixClass(
   const uqBaseEnvironmentClass& env,
-  const Epetra_Map&         map,
+  const uqMapClass&         map,
   double                    diagValue)
   :
   uqMatrixClass(env, map),

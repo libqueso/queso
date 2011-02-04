@@ -40,12 +40,12 @@ qoiRoutine_DataType
 
 void
 qoiRoutine(
-  const uqGslVectorClass&                          paramValues,
-  const uqGslVectorClass*                          paramDirection,
-  const void*                                      functionDataPtr,
-        uqGslVectorClass&                          qoiValues,
-        uqDistArrayClass<uqGslVectorClass*>::type* gradVectors,
-        uqDistArrayClass<uqGslMatrixClass*>::type* hessianMatrices,
-        uqDistArrayClass<uqGslVectorClass*>::type* hessianEffects);
+  const uqGslVectorClass&                    paramValues,
+  const uqGslVectorClass*                    paramDirection,
+  const void*                                functionDataPtr,
+        uqGslVectorClass&                    qoiValues,
+        uqDistArrayClass<uqGslVectorClass*>* gradVectors,
+        uqDistArrayClass<uqGslMatrixClass*>* hessianMatrices,
+        uqDistArrayClass<uqGslVectorClass*>* hessianEffects);
 
 #endif

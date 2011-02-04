@@ -33,10 +33,10 @@
 #include <uqTrilinosMatrix.h>
 
 template <>
-Epetra_Map*
+uqMapClass*
 uqVectorSpaceClass<uqTrilinosVectorClass, uqTrilinosMatrixClass>::newMap()
 {
-  return new Epetra_Map(m_dimGlobal,0,m_env.subComm());
+  return new uqMapClass(m_dimGlobal,0,m_env.subComm());
 }
 
 template<>
