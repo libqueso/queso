@@ -50,9 +50,11 @@ public:
   int      MyPID    () const;
   int      NumProc  () const;
 
-  void     Allreduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype, MPI_Op op) const;
-  void     Barrier  () const;
-  void     Bcast    (void* buffer, int count, MPI_Datatype datatype, int root) const;
+  void     Allreduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype, MPI_Op op,
+                     const char* whereMsg, const char* whatMsg) const;
+  void     Barrier  () const; // const char* whereMsg, const char* whatMsg) const;
+  void     Bcast    (void* buffer, int count, MPI_Datatype datatype, int root,
+                     const char* whereMsg, const char* whatMsg) const;
 
 #ifdef QUESO_HAS_TRILINOS
   const Epetra_MpiComm& epetraMpiComm() const;

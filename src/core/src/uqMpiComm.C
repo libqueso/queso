@@ -140,18 +140,18 @@ uqMpiCommClass::NumProc() const
 }
 
 void
-uqMpiCommClass::Allreduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype, MPI_Op op) const
+uqMpiCommClass::Allreduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype, MPI_Op op, const char* whereMsg, const char* whatMsg) const
 {
   int mpiRC = MPI_Allreduce(sendbuf, recvbuf, count, datatype, op, m_rawComm);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
-                      "uqMpiCommClass::Allreduce()",
-                      "mpiRC indicates no success");
+                      whereMsg,
+                      whatMsg);
   return;
 }
 
 void
-uqMpiCommClass::Barrier() const
+uqMpiCommClass::Barrier() const // const char* whereMsg, const char* whatMsg) const
 {
 #ifdef QUESO_HAS_TRILINOS
   return m_epetraMpiComm->Barrier();
@@ -159,18 +159,18 @@ uqMpiCommClass::Barrier() const
   int mpiRC = MPI_Barrier(m_rawComm);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
-                      "uqMpiCommClass::Barrier()",
-                      "mpiRC indicates no success");
+                      "uqMPICommClass::Barrier()", // whereMsg,
+                      "mpiRC indicates failure");  // whatMsg);
   return;
 }
 
 void
-uqMpiCommClass::Bcast(void* buffer, int count, MPI_Datatype datatype, int root) const
+uqMpiCommClass::Bcast(void* buffer, int count, MPI_Datatype datatype, int root, const char* whereMsg, const char* whatMsg) const
 {
   int mpiRC = MPI_Bcast(buffer, count, datatype, root, m_rawComm);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
-                      "uqMpiCommClass::Bcast()",
-                      "mpiRC indicates no success");
+                      whereMsg,
+                      whatMsg);
   return;
 }
