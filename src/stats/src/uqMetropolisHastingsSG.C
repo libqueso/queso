@@ -108,19 +108,15 @@ uqMHRawChainInfoStruct::copy(const uqMHRawChainInfoStruct& rhs)
 }
 
 void
-uqMHRawChainInfoStruct::mpiSum(const MPI_Comm& comm, uqMHRawChainInfoStruct& sumInfo) const
+uqMHRawChainInfoStruct::mpiSum(const uqMpiCommClass& comm, uqMHRawChainInfoStruct& sumInfo) const
 {
-  int mpiRC = MPI_Allreduce((void *) &runTime, (void *) &sumInfo.runTime, (int) 7, MPI_DOUBLE, MPI_SUM, comm);
-  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      UQ_UNAVAILABLE_RANK,
-                      "uqMHRawChainInfoStruct::mpiSum()",
-                      "failed MPI_Allreduce() for sum of doubles");
+  comm.Allreduce((void *) &runTime, (void *) &sumInfo.runTime, (int) 7, MPI_DOUBLE, MPI_SUM,
+                 "uqMHRawChainInfoStruct::mpiSum()",
+                 "failed MPI.Allreduce() for sum of doubles");
 
-  mpiRC = MPI_Allreduce((void *) &numTargetCalls, (void *) &sumInfo.numTargetCalls, (int) 5, MPI_UNSIGNED, MPI_SUM, comm);
-  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      UQ_UNAVAILABLE_RANK,
-                      "uqMHRawChainInfoStruct::mpiSum()",
-                      "failed MPI_Allreduce() for sum of unsigned ints");
+  comm.Allreduce((void *) &numTargetCalls, (void *) &sumInfo.numTargetCalls, (int) 5, MPI_UNSIGNED, MPI_SUM,
+                 "uqMHRawChainInfoStruct::mpiSum()",
+                 "failed MPI.Allreduce() for sum of unsigned ints");
 
   return;
 }

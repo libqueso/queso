@@ -52,7 +52,7 @@ struct uqMHRawChainInfoStruct
 
   void copy  (const uqMHRawChainInfoStruct& src);
   void reset ();
-  void mpiSum(const MPI_Comm& comm, uqMHRawChainInfoStruct& sumInfo) const;
+  void mpiSum(const uqMpiCommClass& comm, uqMHRawChainInfoStruct& sumInfo) const;
 
   double       runTime;
   double       candidateRunTime;

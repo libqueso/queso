@@ -521,11 +521,9 @@ uqGslVectorClass::mpiBcast(int srcRank, const uqMpiCommClass& bcastComm)
   // Check number of participant nodes
   double localNumNodes = 1.;
   double totalNumNodes = 0.;
-  int mpiRC = MPI_Allreduce((void *) &localNumNodes, (void *) &totalNumNodes, (int) 1, MPI_DOUBLE, MPI_SUM, bcastComm.Comm());
-  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_env.worldRank(),
+  bcastComm.Allreduce((void *) &localNumNodes, (void *) &totalNumNodes, (int) 1, MPI_DOUBLE, MPI_SUM,
                       "uqGslVectorClass::mpiBcast()",
-                      "failed MPI_Allreduce() for numNodes");
+                      "failed MPI.Allreduce() for numNodes");
   UQ_FATAL_TEST_MACRO(((int) totalNumNodes) != bcastComm.NumProc(),
                       m_env.worldRank(),
                       "uqGslVectorClass::mpiBcast()",
@@ -534,11 +532,9 @@ uqGslVectorClass::mpiBcast(int srcRank, const uqMpiCommClass& bcastComm)
   // Check that all participant nodes have the same vector size
   double localVectorSize  = this->sizeLocal();
   double sumOfVectorSizes = 0.; 
-  mpiRC = MPI_Allreduce((void *) &localVectorSize, (void *) &sumOfVectorSizes, (int) 1, MPI_DOUBLE, MPI_SUM, bcastComm.Comm());
-  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_env.worldRank(),
+  bcastComm.Allreduce((void *) &localVectorSize, (void *) &sumOfVectorSizes, (int) 1, MPI_DOUBLE, MPI_SUM,
                       "uqGslVectorClass::mpiBcast()",
-                      "failed MPI_Allreduce() for vectorSize");
+                      "failed MPI.Allreduce() for vectorSize");
 
   if ( ((unsigned int) sumOfVectorSizes) != ((unsigned int)(totalNumNodes*localVectorSize)) ) {
     std::cerr << "rank "                 << bcastComm.MyPID()
@@ -561,11 +557,9 @@ uqGslVectorClass::mpiBcast(int srcRank, const uqMpiCommClass& bcastComm)
     }
   }
 
-  mpiRC = MPI_Bcast((void *) &dataBuffer[0], (int) localVectorSize, MPI_DOUBLE, srcRank, bcastComm.Comm());
-  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_env.worldRank(),
-                      "uqGslVectorClass::mpiBcast()",
-                      "failed MPI_Bcast()");
+  bcastComm.Bcast((void *) &dataBuffer[0], (int) localVectorSize, MPI_DOUBLE, srcRank,
+                  "uqGslVectorClass::mpiBcast()",
+                  "failed MPI.Bcast()");
 
   if (bcastComm.MyPID() != srcRank) {
     for (unsigned int i = 0; i < dataBuffer.size(); ++i) {
@@ -591,11 +585,9 @@ uqGslVectorClass::mpiAllReduce(MPI_Op mpiOperation, const uqMpiCommClass& opComm
   for (unsigned int i = 0; i < size; ++i) {
     double srcValue = (*this)[i];
     double resultValue = 0.;
-    int mpiRC = MPI_Allreduce((void *) &srcValue, (void *) &resultValue, (int) 1, MPI_DOUBLE, mpiOperation, opComm.Comm());
-    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                        m_env.worldRank(),
-                        "uqGslVectorClass::mpiAllReduce()",
-                        "failed MPI_Allreduce()");
+    opComm.Allreduce((void *) &srcValue, (void *) &resultValue, (int) 1, MPI_DOUBLE, mpiOperation,
+                     "uqGslVectorClass::mpiAllReduce()",
+                     "failed MPI.Allreduce()");
     resultVec[i] = resultValue;
   }
 
@@ -620,26 +612,19 @@ uqGslVectorClass::mpiAllQuantile(double probability, const uqMpiCommClass& opCom
                       "different vector sizes");
 
   for (unsigned int i = 0; i < size; ++i) {
-    //int MPI_Gather (void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
-    //                void *recvbuf, int recvcount, MPI_Datatype recvtype, 
-    //                int root, MPI_Comm comm )
     double auxDouble = (int) (*this)[i];
     std::vector<double> vecOfDoubles(opComm.NumProc(),0.);
-    int mpiRC = MPI_Gather((void *) &auxDouble, 1, MPI_DOUBLE, (void *) &vecOfDoubles[0], (int) 1, MPI_DOUBLE, 0, opComm.Comm());
-    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                        m_env.worldRank(),
-                        "uqGslVectorClass::mpiAllQuantile()",
-                        "failed MPI_Gather()");
+    opComm.Gather((void *) &auxDouble, 1, MPI_DOUBLE, (void *) &vecOfDoubles[0], (int) 1, MPI_DOUBLE, 0,
+                  "uqGslVectorClass::mpiAllQuantile()",
+                  "failed MPI.Gather()");
 
     std::sort(vecOfDoubles.begin(), vecOfDoubles.end());
 
     double result = vecOfDoubles[(unsigned int)( probability*((double)(vecOfDoubles.size()-1)) )];
 
-    mpiRC = MPI_Bcast((void *) &result, (int) 1, MPI_DOUBLE, 0, opComm.Comm());
-    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                        m_env.worldRank(),
-                        "uqGslVectorClass::mpiAllQuantile()",
-                        "failed MPI_Bcast()");
+    opComm.Bcast((void *) &result, (int) 1, MPI_DOUBLE, 0,
+                 "uqGslVectorClass::mpiAllQuantile()",
+                 "failed MPI.Bcast()");
 
     resultVec[i] = result;
   }

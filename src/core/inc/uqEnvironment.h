@@ -155,7 +155,7 @@ namespace QUESO {
 */
 class uqBaseEnvironmentClass {
 public:
-  uqBaseEnvironmentClass(MPI_Comm inputComm, const char* passedOptionsInputFileName, const uqEnvOptionsValuesClass* alternativeOptionsValues);
+  uqBaseEnvironmentClass(const char* passedOptionsInputFileName, const uqEnvOptionsValuesClass* alternativeOptionsValues);
   uqBaseEnvironmentClass(const uqBaseEnvironmentClass& obj);
   virtual ~uqBaseEnvironmentClass();
 
@@ -223,7 +223,6 @@ public:
 protected:
   int                        m_worldRank;
 
-  MPI_Comm                   m_fullRawComm;
   uqMpiCommClass*            m_fullComm;
   int                        m_fullRank;
   int                        m_fullCommSize;
@@ -236,7 +235,6 @@ protected:
   unsigned int               m_subId;
   std::string                m_subIdString;
   MPI_Group                  m_subGroup;
-  MPI_Comm                   m_subRawComm;
   uqMpiCommClass*            m_subComm;
   int                        m_subRank;
   int                        m_subCommSize;
@@ -244,7 +242,6 @@ protected:
   uqMpiCommClass*            m_selfComm;
 
   MPI_Group                  m_inter0Group;
-  MPI_Comm                   m_inter0RawComm;
   uqMpiCommClass*            m_inter0Comm;
   int                        m_inter0Rank;
   int                        m_inter0CommSize;

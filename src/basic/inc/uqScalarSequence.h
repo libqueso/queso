@@ -576,10 +576,6 @@ uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only(
       //******************************************************************
       // Use MPI_Gatherv for the case different nodes have different amount of data // KAUST4
       //******************************************************************
-
-      //int MPI_Gather (void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
-      //                void *recvbuf, int recvcount, MPI_Datatype recvtype, 
-      //                int root, MPI_Comm comm )
       std::vector<int> recvcnts(m_env.inter0Comm().NumProc(),0); // '0' is NOT the correct value for recvcnts[0]
       m_env.inter0Comm().Gather((void *) &auxSubSize, 1, MPI_INT, (void *) &recvcnts[0], (int) 1, MPI_INT, 0,
                                 "uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only()",
@@ -589,7 +585,7 @@ uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only(
         UQ_FATAL_TEST_MACRO(recvcnts[0] != (int) this->subSequenceSize(),
                             m_env.worldRank(),
                             "uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only()",
-                            "failed MPI_Gather() result at proc 0");
+                            "failed MPI.Gather() result at proc 0");
       }
 
       std::vector<int> displs(m_env.inter0Comm().NumProc(),0);
@@ -613,10 +609,6 @@ uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only(
         }
       }
 #endif
-
-      //int MPI_Gatherv(void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
-      //                void *recvbuf, int *recvcnts, int *displs, MPI_Datatype recvtype, 
-      //                int root, MPI_Comm comm )
       m_env.inter0Comm().Gatherv((void *) &m_seq[0], auxSubSize, MPI_DOUBLE, (void *) &outputVec[0], (int *) &recvcnts[0], (int *) &displs[0], MPI_DOUBLE, 0,
                                  "uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only()",
                                  "failed MPI.Gatherv()");
@@ -641,12 +633,12 @@ uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only(
         }
         m_env.inter0Comm().Gatherv(MPI_IN_PLACE, auxSubSize, MPI_DOUBLE, (void *) &outputVec[0], (int *) &recvcnts[0], (int *) &displs[0], MPI_DOUBLE, 0,
                                    "uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only(1)",
-                                   "failed MPI_Gatherv()");
+                                   "failed MPI.Gatherv()");
       }
       else {
         m_env.inter0Comm().Gatherv((void *) &m_seq[0], auxSubSize, MPI_DOUBLE, (void *) &outputVec[0], (int *) &recvcnts[0], (int *) &displs[0], MPI_DOUBLE, 0,
                                    "uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only(2)",
-                                   "failed MPI_Gatherv()");
+                                   "failed MPI.Gatherv()");
       }
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         for (unsigned int i = 0; i < m_seq.size(); ++i) {
@@ -2399,7 +2391,7 @@ uqScalarSequenceClass<T>::unifiedSort(
         MPI_Status   status;
         m_env.inter0Comm().Recv((void *) uintBuffer, 1, MPI_UNSIGNED, MPI_ANY_SOURCE, SCALAR_SEQUENCE_INIT_MPI_MSG, &status,
                                 "uqScalarSequenceClass<T>::unifiedSort()",
-                                "failed MPI_Recv() for init");
+                                "failed MPI.Recv() for init");
 
         unsigned int treeLevel = uintBuffer[0];
         this->parallelMerge(unifiedSortedSequence.rawData(),
@@ -2499,7 +2491,7 @@ uqScalarSequenceClass<T>::parallelMerge(
       uintBuffer[0] = nextTreeLevel;
       m_env.inter0Comm().Send((void *) uintBuffer, 1, MPI_UNSIGNED, rightChildNode, SCALAR_SEQUENCE_INIT_MPI_MSG,
                               "uqScalarSequenceClass<T>::parallelMerge()",
-                              "failed MPI_Send() for init");
+                              "failed MPI.Send() for init");
 
       this->parallelMerge(sortedBuffer,
                           leafData,
@@ -2516,13 +2508,13 @@ uqScalarSequenceClass<T>::parallelMerge(
       MPI_Status   status;
       m_env.inter0Comm().Recv((void *) uintBuffer, 1, MPI_UNSIGNED, rightChildNode, SCALAR_SEQUENCE_SIZE_MPI_MSG, &status,
                               "uqScalarSequenceClass<T>::parallelMerge()",
-                              "failed MPI_Recv() for size");
+                              "failed MPI.Recv() for size");
 
       unsigned int rightSize = uintBuffer[0];
       std::vector<T> rightSortedBuffer(rightSize,0.);
       m_env.inter0Comm().Recv((void *) &rightSortedBuffer[0], (int) rightSize, MPI_DOUBLE, rightChildNode, SCALAR_SEQUENCE_DATA_MPI_MSG, &status,
                               "uqScalarSequenceClass<T>::parallelMerge()",
-                              "failed MPI_Recv() for data");
+                              "failed MPI.Recv() for data");
 
       // Merge the two results into 'sortedBuffer'.
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -2562,7 +2554,7 @@ uqScalarSequenceClass<T>::parallelMerge(
     uintBuffer[0] = sortedBuffer.size();
     m_env.inter0Comm().Send((void *) uintBuffer, 1, MPI_UNSIGNED, parentNode, SCALAR_SEQUENCE_SIZE_MPI_MSG,
                             "uqScalarSequenceClass<T>::parallelMerge()",
-                            "failed MPI_Send() for size");
+                            "failed MPI.Send() for size");
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
       *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::parallelMerge()"
@@ -2576,7 +2568,7 @@ uqScalarSequenceClass<T>::parallelMerge(
 
     m_env.inter0Comm().Send((void *) &sortedBuffer[0], (int) sortedBuffer.size(), MPI_DOUBLE, parentNode, SCALAR_SEQUENCE_DATA_MPI_MSG,
                             "uqScalarSequenceClass<T>::parallelMerge()",
-                            "failed MPI_Send() for data");
+                            "failed MPI.Send() for data");
   }
   } // KAUST
 

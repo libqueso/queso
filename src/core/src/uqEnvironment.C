@@ -119,12 +119,10 @@ uqFilePtrSetStruct::~uqFilePtrSetStruct()
 // Base class
 //*****************************************************
 uqBaseEnvironmentClass::uqBaseEnvironmentClass(
-  MPI_Comm                       inputComm,
   const char*                    passedOptionsInputFileName,
   const uqEnvOptionsValuesClass* alternativeOptionsValues)
   :
   m_worldRank               (-1),
-  m_fullRawComm             (inputComm),
   m_fullComm                (NULL),
   m_fullRank                (-1),
   m_fullCommSize            (1),
@@ -1164,7 +1162,7 @@ uqBaseEnvironmentClass::exceptionalCircunstance() const
 //*****************************************************
 uqEmptyEnvironmentClass::uqEmptyEnvironmentClass()
   :
-  uqBaseEnvironmentClass(MPI_COMM_WORLD,"",NULL)
+  uqBaseEnvironmentClass("",NULL)
 {
 }
 
@@ -1188,7 +1186,7 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   const char*                    prefix,
   const uqEnvOptionsValuesClass* alternativeOptionsValues)
   :
-  uqBaseEnvironmentClass(inputComm,passedOptionsInputFileName,alternativeOptionsValues)
+  uqBaseEnvironmentClass(passedOptionsInputFileName,alternativeOptionsValues)
 {
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "Entering uqFullEnvClass" << std::endl;
@@ -1203,7 +1201,7 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
                       "uqFullEnvironmentClass::commonConstructor()",
                       "failed to get world fullRank()");
 
-  m_fullComm = new uqMpiCommClass(m_fullRawComm);
+  m_fullComm = new uqMpiCommClass(inputComm);
   m_fullRank     = m_fullComm->MyPID();
   m_fullCommSize = m_fullComm->NumProc();
   mpiRC = MPI_Comm_group(m_fullComm->Comm(), &m_fullGroup);
@@ -1284,12 +1282,13 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
                       m_worldRank,
                       "uqFullEnvironmentClass::commonConstructor()",
                       "failed MPI_Group_incl() for a subEnvironment");
-  mpiRC = MPI_Comm_create(m_fullComm->Comm(), m_subGroup, &m_subRawComm);
+  MPI_Comm subRawComm;
+  mpiRC = MPI_Comm_create(m_fullComm->Comm(), m_subGroup, &subRawComm);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
                       "uqFullEnvironmentClass::commonConstructor()",
                       "failed MPI_Comm_group() for a subEnvironment");
-  m_subComm = new uqMpiCommClass(m_subRawComm);
+  m_subComm = new uqMpiCommClass(subRawComm);
   m_subRank     = m_subComm->MyPID();
   m_subCommSize = m_subComm->NumProc();
 
@@ -1310,13 +1309,14 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
                       m_worldRank,
                       "uqFullEnvironmentClass::commonConstructor()",
                       "failed MPI_Group_incl() for inter0");
-  mpiRC = MPI_Comm_create(m_fullComm->Comm(), m_inter0Group, &m_inter0RawComm);
+  MPI_Comm inter0RawComm;
+  mpiRC = MPI_Comm_create(m_fullComm->Comm(), m_inter0Group, &inter0RawComm);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
                       "uqFullEnvironmentClass::commonConstructor()",
                       "failed MPI_Comm_group() for inter0");
   if (m_fullRank%numRanksPerSubEnvironment == 0) {
-    m_inter0Comm = new uqMpiCommClass(m_inter0RawComm);
+    m_inter0Comm = new uqMpiCommClass(inter0RawComm);
     m_inter0Rank     = m_inter0Comm->MyPID();
     m_inter0CommSize = m_inter0Comm->NumProc();
   }

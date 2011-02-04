@@ -384,11 +384,9 @@ uqBaseVectorSequenceClass<V,M>::unifiedSequenceSize() const
   if (useOnlyInter0Comm) {
     if (m_env.inter0Rank() >= 0) {
       unsigned int subNumSamples = this->subSequenceSize();
-      int mpiRC = MPI_Allreduce((void *) &subNumSamples, (void *) &unifiedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.worldRank(),
-                          "uqBaseVectorSequenceClass<V,M>::unifiedSequenceSize()",
-                          "failed MPI_Allreduce() for unifiedSequenceSize()");
+      m_env.inter0Comm().Allreduce((void *) &subNumSamples, (void *) &unifiedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM,
+                                   "uqBaseVectorSequenceClass<V,M>::unifiedSequenceSize()",
+                                   "failed MPI.Allreduce() for unifiedSequenceSize()");
     }
     else {
       // Node not in the 'inter0' communicator
@@ -2660,20 +2658,16 @@ uqComputeCovCorrMatricesBetweenVectorSequences(
   if (useOnlyInter0Comm) {
     if (env.inter0Rank() >= 0) {
       unsigned int unifiedNumSamples = 0;
-      int mpiRC = MPI_Allreduce((void *) &subNumSamples, (void *) &unifiedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM, env.inter0Comm().Comm());
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          env.worldRank(),
-                          "uqComputeCovCorrMatricesBetweenVectorSequences()",
-                          "failed MPI_Allreduce() for subNumSamples");
+      env.inter0Comm().Allreduce((void *) &subNumSamples, (void *) &unifiedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM,
+                                 "uqComputeCovCorrMatricesBetweenVectorSequences()",
+                                 "failed MPI.Allreduce() for subNumSamples");
 
       for (unsigned i = 0; i < numRowsLocal; ++i) {
         for (unsigned j = 0; j < numCols; ++j) {
           double aux = 0.;
-          int mpiRC = MPI_Allreduce((void *) &pqCovMatrix(i,j), (void *) &aux, (int) 1, MPI_DOUBLE, MPI_SUM, env.inter0Comm().Comm());
-          UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                              env.worldRank(),
-                              "uqComputeCovCorrMatricesBetweenVectorSequences()",
-                              "failed MPI_Allreduce() for a matrix position");
+          env.inter0Comm().Allreduce((void *) &pqCovMatrix(i,j), (void *) &aux, (int) 1, MPI_DOUBLE, MPI_SUM,
+                                     "uqComputeCovCorrMatricesBetweenVectorSequences()",
+                                     "failed MPI.Allreduce() for a matrix position");
           pqCovMatrix(i,j) = aux/((double) (unifiedNumSamples-1)); // Yes, '-1' in order to compensate for the 'N-1' denominator factor in the calculations of sample variances above (whose square roots will be used below)
         }
       }

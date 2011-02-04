@@ -116,9 +116,6 @@ uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(
       //////////////////////////////////////////////////////////////////////////
       // Gather information at proc 0: number of chains and positions per node
       //////////////////////////////////////////////////////////////////////////
-      //int MPI_Gather (void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
-      //                void *recvbuf, int recvcount, MPI_Datatype recvtype, 
-      //                int root, MPI_Comm comm )
       unsigned int auxUInt = indexOfFirstWeight;
       m_env.inter0Comm().Gather((void *) &auxUInt, 1, MPI_UNSIGNED, (void *) &allFirstIndexes[0], (int) 1, MPI_UNSIGNED, 0, // LOAD BALANCE
                                 "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
@@ -1818,9 +1815,6 @@ uqMLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0( // EXTRA FOR LOAD BALAN
       displs[nodeId] = displs[nodeId-1] + recvcnts[nodeId-1];
     }
 
-    //int MPI_Gatherv(void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
-    //                void *recvbuf, int *recvcnts, int *displs, MPI_Datatype recvtype, 
-    //                int root, MPI_Comm comm )
     int mpiRC = 0;
 #if 0
     if (m_env.inter0Rank() == r) {

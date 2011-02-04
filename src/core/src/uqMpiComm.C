@@ -182,6 +182,9 @@ uqMpiCommClass::Gather(
   int root,
   const char* whereMsg, const char* whatMsg) const
 {
+  //int MPI_Gather (void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
+  //                void *recvbuf, int recvcount, MPI_Datatype recvtype, 
+  //                int root, MPI_Comm comm )
   int mpiRC = MPI_Gather(sendbuf, sendcnt, sendtype,
                          recvbuf, recvcount, recvtype,
                          root, m_rawComm);
@@ -199,6 +202,9 @@ uqMpiCommClass::Gatherv(
   int root,
   const char* whereMsg, const char* whatMsg) const
 {
+  //int MPI_Gatherv(void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
+  //                void *recvbuf, int *recvcnts, int *displs, MPI_Datatype recvtype, 
+  //                int root, MPI_Comm comm )
   int mpiRC = MPI_Gatherv(sendbuf, sendcnt, sendtype,
                           recvbuf, recvcnts, displs, recvtype,
                           root, m_rawComm);
