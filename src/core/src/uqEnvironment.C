@@ -122,6 +122,7 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   const char*                    passedOptionsInputFileName,
   const uqEnvOptionsValuesClass* alternativeOptionsValues)
   :
+  m_fullEnvIsReady          (false),
   m_worldRank               (-1),
   m_fullComm                (NULL),
   m_fullRank                (-1),
@@ -213,6 +214,12 @@ uqBaseEnvironmentClass::operator= (const uqBaseEnvironmentClass& rhs)
                       "uqBaseEnvironmentClass::operator=()",
                       "code should not execute through here");
   return *this;
+}
+
+bool
+uqBaseEnvironmentClass::fullEnvIsReady() const
+{
+  return m_fullEnvIsReady;
 }
 
 int
@@ -1201,7 +1208,7 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
                       "uqFullEnvironmentClass::commonConstructor()",
                       "failed to get world fullRank()");
 
-  m_fullComm = new uqMpiCommClass(inputComm);
+  m_fullComm = new uqMpiCommClass(*this,inputComm);
   m_fullRank     = m_fullComm->MyPID();
   m_fullCommSize = m_fullComm->NumProc();
   mpiRC = MPI_Comm_group(m_fullComm->Comm(), &m_fullGroup);
@@ -1238,26 +1245,23 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   // NOTE: This got moved below the Read Options section
   // because we need the options to be read to know what
   // the verbosity level is.
-  if( this->displayVerbosity() > 0 )
-    {
-
-      //////////////////////////////////////////////////
-      // Display main initial messages
-      // 'std::cout' is for: main trace messages + synchronized trace messages + error messages prior to 'exit()' or 'abort()'
-      //////////////////////////////////////////////////
-      /*int iRC = 0;*/
-      /*iRC = */gettimeofday(&m_timevalBegin, NULL);
+  if (this->displayVerbosity() > 0) {
+    //////////////////////////////////////////////////
+    // Display main initial messages
+    // 'std::cout' is for: main trace messages + synchronized trace messages + error messages prior to 'exit()' or 'abort()'
+    //////////////////////////////////////////////////
+    /*int iRC = 0;*/
+    /*iRC = */gettimeofday(&m_timevalBegin, NULL);
       
-      if (m_fullRank == 0) {
-	QUESO::QUESO_version_print(std::cout);
-      }
-      
-      if (m_fullRank == 0) {
-	std::cout << "Beginning run at " << ctime(&m_timevalBegin.tv_sec)
-		  << std::endl;
-      }
-      
+    if (m_fullRank == 0) {
+      QUESO::QUESO_version_print(std::cout);
     }
+      
+    if (m_fullRank == 0) {
+      std::cout << "Beginning run at " << ctime(&m_timevalBegin.tv_sec)
+                << std::endl;
+    }
+  }
 
   //////////////////////////////////////////////////
   // Deal with multiple subEnvironments: create the sub communicators, one for each subEnvironment
@@ -1288,14 +1292,14 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
                       m_worldRank,
                       "uqFullEnvironmentClass::commonConstructor()",
                       "failed MPI_Comm_group() for a subEnvironment");
-  m_subComm = new uqMpiCommClass(subRawComm);
+  m_subComm = new uqMpiCommClass(*this,subRawComm);
   m_subRank     = m_subComm->MyPID();
   m_subCommSize = m_subComm->NumProc();
 
   //////////////////////////////////////////////////
   // Deal with multiple subEnvironments: create the self communicator
   //////////////////////////////////////////////////
-  m_selfComm = new uqMpiCommClass(MPI_COMM_SELF);
+  m_selfComm = new uqMpiCommClass(*this,MPI_COMM_SELF);
 
   //////////////////////////////////////////////////
   // Deal with multiple subEnvironments: create the inter0 communicator
@@ -1316,7 +1320,7 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
                       "uqFullEnvironmentClass::commonConstructor()",
                       "failed MPI_Comm_group() for inter0");
   if (m_fullRank%numRanksPerSubEnvironment == 0) {
-    m_inter0Comm = new uqMpiCommClass(inter0RawComm);
+    m_inter0Comm = new uqMpiCommClass(*this,inter0RawComm);
     m_inter0Rank     = m_inter0Comm->MyPID();
     m_inter0CommSize = m_inter0Comm->NumProc();
   }
@@ -1438,6 +1442,9 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   //////////////////////////////////////////////////
   // Leave commonConstructor()
   //////////////////////////////////////////////////
+  m_fullComm->Barrier();
+  m_fullEnvIsReady = true;
+
   if ((m_subDisplayFile) && (this->displayVerbosity() >= 5)) {
     *m_subDisplayFile << "Done with initializations at uqFullEnvironmentClass::commonConstructor()"
                       << std::endl;

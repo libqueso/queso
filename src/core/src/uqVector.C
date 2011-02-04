@@ -31,8 +31,8 @@
 
 uqVectorClass::uqVectorClass()
   :
-  m_env(*(new uqEmptyEnvironmentClass())                               ),
-  m_map(*(new uqMapClass( 1,0,*(new uqMpiCommClass(MPI_COMM_WORLD)) ) ))
+  m_env(*(new uqEmptyEnvironmentClass())                                    ),
+  m_map(*(new uqMapClass( 1,0,*(new uqMpiCommClass(m_env,MPI_COMM_SELF)) ) )) // avoid using MPI_COMM_WORLD
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.worldRank(),

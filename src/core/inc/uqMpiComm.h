@@ -33,14 +33,15 @@
 #ifdef QUESO_HAS_TRILINOS
 #include <Epetra_MpiComm.h>
 #endif
-
 #include <mpi.h>
+
+class uqBaseEnvironmentClass;
 
 class uqMpiCommClass
 {
 public:
   uqMpiCommClass();
-  uqMpiCommClass(MPI_Comm inputRawComm);
+  uqMpiCommClass(const uqBaseEnvironmentClass& env, MPI_Comm inputRawComm);
   uqMpiCommClass(const uqMpiCommClass& src);
  ~uqMpiCommClass();
 
@@ -75,13 +76,14 @@ public:
 private:
   void     copy   (const uqMpiCommClass& src);
 
+  const uqBaseEnvironmentClass& m_env;
 #ifdef QUESO_HAS_TRILINOS
-  Epetra_MpiComm* m_epetraMpiComm;
+  Epetra_MpiComm*               m_epetraMpiComm;
 #endif
-  MPI_Comm m_rawComm;
-  int      m_worldRank;
-  int      m_myPid;
-  int      m_numProc;
+  MPI_Comm                      m_rawComm;
+  int                           m_worldRank;
+  int                           m_myPid;
+  int                           m_numProc;
 };
 
 #endif // __UQ_MPI_COMM_H__

@@ -27,8 +27,11 @@
 //--------------------------------------------------------------------------
 
 #include <uqMpiComm.h>
+#include <uqEnvironment.h>
 
 uqMpiCommClass::uqMpiCommClass()
+  :
+  m_env( *(new uqEmptyEnvironmentClass()) )
 {
   UQ_FATAL_TEST_MACRO(true,
                       UQ_UNAVAILABLE_RANK,
@@ -36,15 +39,16 @@ uqMpiCommClass::uqMpiCommClass()
                       "should not be called");
 }
 
-uqMpiCommClass::uqMpiCommClass(MPI_Comm inputRawComm)
+uqMpiCommClass::uqMpiCommClass(const uqBaseEnvironmentClass& env, MPI_Comm inputRawComm)
   :
+  m_env          (env),
 #ifdef QUESO_HAS_TRILINOS
   m_epetraMpiComm( new Epetra_MpiComm(inputRawComm) ),
 #endif
-  m_rawComm  (inputRawComm),
-  m_worldRank(-1),
-  m_myPid    (-1),
-  m_numProc  (-1)
+  m_rawComm      (inputRawComm),
+  m_worldRank    (-1),
+  m_myPid        (-1),
+  m_numProc      (-1)
 {
   int mpiRC = MPI_Comm_rank(MPI_COMM_WORLD,&m_worldRank);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
@@ -66,8 +70,9 @@ uqMpiCommClass::uqMpiCommClass(MPI_Comm inputRawComm)
 }
 
 uqMpiCommClass::uqMpiCommClass(const uqMpiCommClass& src)
-#ifdef QUESO_HAS_TRILINOS
   :
+  m_env          (src.m_env),
+#ifdef QUESO_HAS_TRILINOS
   m_epetraMpiComm(NULL)
 #endif
 {

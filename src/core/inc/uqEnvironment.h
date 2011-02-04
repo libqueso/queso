@@ -161,6 +161,7 @@ public:
 
           uqBaseEnvironmentClass& operator=                  (const uqBaseEnvironmentClass& rhs);
 
+          bool                    fullEnvIsReady             () const;
           int                     worldRank                  () const;
 
           int                     fullRank                   () const;
@@ -221,6 +222,7 @@ public:
   virtual void                    print                      (std::ostream& os) const = 0;
 
 protected:
+  bool                       m_fullEnvIsReady;
   int                        m_worldRank;
 
   uqMpiCommClass*            m_fullComm;
