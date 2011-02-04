@@ -438,11 +438,9 @@ uqScalarSequenceClass<T>::unifiedSequenceSize(bool useOnlyInter0Comm) const
   if (useOnlyInter0Comm) {
     if (m_env.inter0Rank() >= 0) {
       unsigned int subNumSamples = this->subSequenceSize();
-      int mpiRC = MPI_Allreduce((void *) &subNumSamples, (void *) &unifiedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.worldRank(),
-                          "uqScalarSequenceClass<T>::unifiedSequenceSize()",
-                          "failed MPI_Allreduce() for unifiedSequenceSize()");
+      m_env.inter0Comm().Allreduce((void *) &subNumSamples, (void *) &unifiedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM,
+                                   "uqScalarSequenceClass<T>::unifiedSequenceSize()",
+                                   "failed MPI.Allreduce() for unifiedSequenceSize()");
     }
     else {
       // Node not in the 'inter0' communicator
@@ -1050,18 +1048,16 @@ uqScalarSequenceClass<T>::unifiedMean(
         *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedMean()"
                                 << ": initialPos = " << initialPos
                                 << ", numPos = "     << numPos
-                                << ", before MPI_Allreduce"
+                                << ", before MPI.Allreduce"
                                 << std::endl;
       }
       //std::cout << m_env.inter0Comm().MyPID()
       //          << std::endl;
       //sleep(1);
       unsigned int unifiedNumPos = 0;
-      int mpiRC = MPI_Allreduce((void *) &numPos, (void *) &unifiedNumPos, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.worldRank(),
-                          "uqScalarSequenceClass<T>::unifiedMean()",
-                          "failed MPI_Allreduce() for numPos");
+      m_env.inter0Comm().Allreduce((void *) &numPos, (void *) &unifiedNumPos, (int) 1, MPI_UNSIGNED, MPI_SUM,
+                                   "uqScalarSequenceClass<T>::unifiedMean()",
+                                   "failed MPI.Allreduce() for numPos");
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
         *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedMean()"
@@ -1070,11 +1066,9 @@ uqScalarSequenceClass<T>::unifiedMean(
                                 << std::endl;
       }
 
-      mpiRC = MPI_Allreduce((void *) &localSum, (void *) &unifiedMeanValue, (int) 1, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm());
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.worldRank(),
-                          "uqScalarSequenceClass<T>::unifiedMean()",
-                          "failed MPI_Allreduce() for sum");
+      m_env.inter0Comm().Allreduce((void *) &localSum, (void *) &unifiedMeanValue, (int) 1, MPI_DOUBLE, MPI_SUM,
+                                   "uqScalarSequenceClass<T>::unifiedMean()",
+                                   "failed MPI.Allreduce() for sum");
 
       unifiedMeanValue /= ((T) unifiedNumPos);
 
@@ -1169,17 +1163,13 @@ uqScalarSequenceClass<T>::unifiedMeanCltStd(
       }
 
       unsigned int unifiedNumPos = 0;
-      int mpiRC = MPI_Allreduce((void *) &numPos, (void *) &unifiedNumPos, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.worldRank(),
-                          "uqScalarSequenceClass<T>::unifiedMeanCltStd()",
-                          "failed MPI_Allreduce() for numPos");
+      m_env.inter0Comm().Allreduce((void *) &numPos, (void *) &unifiedNumPos, (int) 1, MPI_UNSIGNED, MPI_SUM,
+                                   "uqScalarSequenceClass<T>::unifiedMeanCltStd()",
+                                   "failed MPI.Allreduce() for numPos");
 
-      mpiRC = MPI_Allreduce((void *) &localStdValue, (void *) &unifiedStdValue, (int) 1, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm());
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.worldRank(),
-                          "uqScalarSequenceClass<T>::unifiedMeanCltStd()",
-                          "failed MPI_Allreduce() for stdValue");
+      m_env.inter0Comm().Allreduce((void *) &localStdValue, (void *) &unifiedStdValue, (int) 1, MPI_DOUBLE, MPI_SUM,
+                                   "uqScalarSequenceClass<T>::unifiedMeanCltStd()",
+                                   "failed MPI.Allreduce() for stdValue");
 
       unifiedStdValue /= (((T) unifiedNumPos) - 1.);
       unifiedStdValue /= (((T) unifiedNumPos) - 1.);
@@ -1268,17 +1258,13 @@ uqScalarSequenceClass<T>::unifiedSampleVariance(
       }
 
       unsigned int unifiedNumPos = 0;
-      int mpiRC = MPI_Allreduce((void *) &numPos, (void *) &unifiedNumPos, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.worldRank(),
-                          "uqScalarSequenceClass<T>::unifiedSampleVariance()",
-                          "failed MPI_Allreduce() for numPos");
+      m_env.inter0Comm().Allreduce((void *) &numPos, (void *) &unifiedNumPos, (int) 1, MPI_UNSIGNED, MPI_SUM,
+                                   "uqScalarSequenceClass<T>::unifiedSampleVariance()",
+                                   "failed MPI.Allreduce() for numPos");
 
-      mpiRC = MPI_Allreduce((void *) &localSamValue, (void *) &unifiedSamValue, (int) 1, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm());
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.worldRank(),
-                          "uqScalarSequenceClass<T>::unifiedSampleVariance()",
-                          "failed MPI_Allreduce() for samValue");
+      m_env.inter0Comm().Allreduce((void *) &localSamValue, (void *) &unifiedSamValue, (int) 1, MPI_DOUBLE, MPI_SUM,
+                                   "uqScalarSequenceClass<T>::unifiedSampleVariance()",
+                                   "failed MPI.Allreduce() for samValue");
 
       unifiedSamValue /= (((T) unifiedNumPos) - 1.);
     }
@@ -1365,17 +1351,13 @@ uqScalarSequenceClass<T>::unifiedPopulationVariance(
       }
 
       unsigned int unifiedNumPos = 0;
-      int mpiRC = MPI_Allreduce((void *) &numPos, (void *) &unifiedNumPos, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.worldRank(),
-                          "uqScalarSequenceClass<T>::unifiedPopulationVariance()",
-                          "failed MPI_Allreduce() for numPos");
+      m_env.inter0Comm().Allreduce((void *) &numPos, (void *) &unifiedNumPos, (int) 1, MPI_UNSIGNED, MPI_SUM,
+                                   "uqScalarSequenceClass<T>::unifiedPopulationVariance()",
+                                   "failed MPI.Allreduce() for numPos");
 
-      mpiRC = MPI_Allreduce((void *) &localPopValue, (void *) &unifiedPopValue, (int) 1, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm());
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.worldRank(),
-                          "uqScalarSequenceClass<T>::unifiedPopulationVariance()",
-                          "failed MPI_Allreduce() for popValue");
+      m_env.inter0Comm().Allreduce((void *) &localPopValue, (void *) &unifiedPopValue, (int) 1, MPI_DOUBLE, MPI_SUM,
+                                   "uqScalarSequenceClass<T>::unifiedPopulationVariance()",
+                                   "failed MPI.Allreduce() for popValue");
 
       unifiedPopValue /= ((T) unifiedNumPos);
     }
@@ -1934,21 +1916,17 @@ uqScalarSequenceClass<T>::unifiedMinMax(
       for (unsigned int i = 0; i < sendBuf.size(); ++i) {
         sendBuf[i] = minValue;
       }
-      int mpiRC = MPI_Allreduce((void *) &sendBuf[0], (void *) &unifiedMinValue, (int) sendBuf.size(), MPI_DOUBLE, MPI_MIN, m_env.inter0Comm().Comm());
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.worldRank(),
-                          "uqScalarSequenceClass<T>::unifiedMinMax()",
-                          "failed MPI_Allreduce() for min");
+      m_env.inter0Comm().Allreduce((void *) &sendBuf[0], (void *) &unifiedMinValue, (int) sendBuf.size(), MPI_DOUBLE, MPI_MIN,
+                                   "uqScalarSequenceClass<T>::unifiedMinMax()",
+                                   "failed MPI.Allreduce() for min");
 
       // Get overall max
       for (unsigned int i = 0; i < sendBuf.size(); ++i) {
         sendBuf[i] = maxValue;
       }
-      mpiRC = MPI_Allreduce((void *) &sendBuf[0], (void *) &unifiedMaxValue, (int) sendBuf.size(), MPI_DOUBLE, MPI_MAX, m_env.inter0Comm().Comm());
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.worldRank(),
-                          "uqScalarSequenceClass<T>::unifiedMinMax()",
-                          "failed MPI_Allreduce() for max");
+      m_env.inter0Comm().Allreduce((void *) &sendBuf[0], (void *) &unifiedMaxValue, (int) sendBuf.size(), MPI_DOUBLE, MPI_MAX,
+                                   "uqScalarSequenceClass<T>::unifiedMinMax()",
+                                   "failed MPI.Allreduce() for max");
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
         *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedMinMax()"
@@ -2092,11 +2070,9 @@ uqScalarSequenceClass<T>::unifiedHistogram(
         }
       }
 
-      int mpiRC = MPI_Allreduce((void *) &localBins[0], (void *) &unifiedBins[0], (int) localBins.size(), MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.worldRank(),
-                          "uqScalarSequenceClass<T>::unifiedHistogram()",
-                          "failed MPI_Allreduce() for bins");
+      m_env.inter0Comm().Allreduce((void *) &localBins[0], (void *) &unifiedBins[0], (int) localBins.size(), MPI_UNSIGNED, MPI_SUM,
+                                   "uqScalarSequenceClass<T>::unifiedHistogram()",
+                                   "failed MPI.Allreduce() for bins");
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
         for (unsigned int i = 0; i < unifiedCenters.size(); ++i) {
@@ -2441,18 +2417,14 @@ uqScalarSequenceClass<T>::unifiedSort(
 
       // Broadcast
       unsigned int unifiedDataSize = unifiedSortedSequence.subSequenceSize();
-      int mpiRC = MPI_Bcast((void *) &unifiedDataSize, (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm());
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.worldRank(),
-                          "uqScalarSequenceClass<T>::unifiedSort()",
-                          "failed MPI_Bcast() for unified data size");
+      m_env.inter0Comm().Bcast((void *) &unifiedDataSize, (int) 1, MPI_UNSIGNED, 0,
+                               "uqScalarSequenceClass<T>::unifiedSort()",
+                               "failed MPI.Bcast() for unified data size");
 
       unsigned int sumOfNumPos = 0;
-      mpiRC = MPI_Allreduce((void *) &localNumPos, (void *) &sumOfNumPos, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.worldRank(),
-                          "uqScalarSequenceClass<T>::unifiedSort()",
-                          "failed MPI_Allreduce() for data size");
+      m_env.inter0Comm().Allreduce((void *) &localNumPos, (void *) &sumOfNumPos, (int) 1, MPI_UNSIGNED, MPI_SUM,
+                                   "uqScalarSequenceClass<T>::unifiedSort()",
+                                   "failed MPI.Allreduce() for data size");
 
       UQ_FATAL_TEST_MACRO(sumOfNumPos != unifiedDataSize,
                           m_env.worldRank(),
@@ -2460,11 +2432,9 @@ uqScalarSequenceClass<T>::unifiedSort(
                           "incompatible unified sizes");
 
       unifiedSortedSequence.resizeSequence(unifiedDataSize);
-      mpiRC = MPI_Bcast((void *) &unifiedSortedSequence.rawData()[0], (int) unifiedDataSize, MPI_DOUBLE, 0, m_env.inter0Comm().Comm());
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.worldRank(),
-                          "uqScalarSequenceClass<T>::unifiedSort()",
-                          "failed MPI_Bcast() for unified data");
+      m_env.inter0Comm().Bcast((void *) &unifiedSortedSequence.rawData()[0], (int) unifiedDataSize, MPI_DOUBLE, 0,
+                               "uqScalarSequenceClass<T>::unifiedSort()",
+                               "failed MPI.Bcast() for unified data");
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::parallelMerge()"
@@ -2775,11 +2745,9 @@ uqScalarSequenceClass<T>::unifiedInterQuantileRange(
     
       unsigned int localDataSize = this->subSequenceSize() - initialPos;
       unsigned int sumOfLocalSizes = 0;
-      int mpiRC = MPI_Allreduce((void *) &localDataSize, (void *) &sumOfLocalSizes, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.worldRank(),
-                          "uqScalarSequenceClass<T>::unifiedInterQuantileRange()",
-                          "failed MPI_Allreduce() for data size");
+      m_env.inter0Comm().Allreduce((void *) &localDataSize, (void *) &sumOfLocalSizes, (int) 1, MPI_UNSIGNED, MPI_SUM,
+                                   "uqScalarSequenceClass<T>::unifiedInterQuantileRange()",
+                                   "failed MPI.Allreduce() for data size");
 
       UQ_FATAL_TEST_MACRO(sumOfLocalSizes != unifiedDataSize,
                           m_env.worldRank(),
@@ -2928,11 +2896,9 @@ uqScalarSequenceClass<T>::unifiedScaleForKde(
                                                       unifiedMeanValue);
 
       unsigned int unifiedDataSize = 0;
-      int mpiRC = MPI_Allreduce((void *) &localDataSize, (void *) &unifiedDataSize, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.worldRank(),
-                          "uqScalarSequenceClass<T>::unifiedUniformlySampledCdf()",
-                          "failed MPI_Allreduce() for data size");
+      m_env.inter0Comm().Allreduce((void *) &localDataSize, (void *) &unifiedDataSize, (int) 1, MPI_UNSIGNED, MPI_SUM,
+                                   "uqScalarSequenceClass<T>::unifiedUniformlySampledCdf()",
+                                   "failed MPI.Allreduce() for data size");
 
       if (unifiedIqrValue <= 0.) {
         unifiedScaleValue = 1.06*std::sqrt(unifiedSamValue)/std::pow(unifiedDataSize,1./(4. + ((double) kdeDimension)));
@@ -3033,11 +2999,9 @@ uqScalarSequenceClass<T>::unifiedGaussian1dKde(
 
       unsigned int localDataSize = this->subSequenceSize() - initialPos;
       unsigned int unifiedDataSize = 0;
-      int mpiRC = MPI_Allreduce((void *) &localDataSize, (void *) &unifiedDataSize, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.worldRank(),
-                          "uqScalarSequenceClass<T>::unifiedGaussian1dKde()",
-                          "failed MPI_Allreduce() for data size");
+      m_env.inter0Comm().Allreduce((void *) &localDataSize, (void *) &unifiedDataSize, (int) 1, MPI_UNSIGNED, MPI_SUM,
+                                   "uqScalarSequenceClass<T>::unifiedGaussian1dKde()",
+                                   "failed MPI.Allreduce() for data size");
 
       unsigned int numEvals = unifiedEvaluationPositions.size();
 
@@ -3056,11 +3020,9 @@ uqScalarSequenceClass<T>::unifiedGaussian1dKde(
       for (unsigned int j = 0; j < numEvals; ++j) {
         unifiedDensityValues[j] = 0.;
       }
-      mpiRC = MPI_Allreduce((void *) &densityValues[0], (void *) &unifiedDensityValues[0], (int) numEvals, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm());
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.worldRank(),
-                          "uqScalarSequenceClass<T>::unifiedGaussian1dKde()",
-                          "failed MPI_Allreduce() for density values");
+      m_env.inter0Comm().Allreduce((void *) &densityValues[0], (void *) &unifiedDensityValues[0], (int) numEvals, MPI_DOUBLE, MPI_SUM,
+                                   "uqScalarSequenceClass<T>::unifiedGaussian1dKde()",
+                                   "failed MPI.Allreduce() for density values");
 
       for (unsigned int j = 0; j < numEvals; ++j) {
         unifiedDensityValues[j] *= unifiedScaleInv/((double) unifiedDataSize);
@@ -3455,18 +3417,14 @@ uqComputeCovCorrBetweenScalarSequences(
   // Compute unified covariance
   if (env.inter0Rank() >= 0) {
     unsigned int unifiedNumSamples = 0;
-    int mpiRC = MPI_Allreduce((void *) &subNumSamples, (void *) &unifiedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM, env.inter0Comm().Comm());
-    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                        env.worldRank(),
-                        "uqComputeCovCorrBetweenScalarSequences()",
-                        "failed MPI_Allreduce() for subNumSamples");
+    env.inter0Comm().Allreduce((void *) &subNumSamples, (void *) &unifiedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM,
+                               "uqComputeCovCorrBetweenScalarSequences()",
+                               "failed MPI.Allreduce() for subNumSamples");
 
     double aux = 0.;
-    mpiRC = MPI_Allreduce((void *) &covValue, (void *) &aux, (int) 1, MPI_DOUBLE, MPI_SUM, env.inter0Comm().Comm());
-    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                        env.worldRank(),
-                        "uqComputeCovCorrBetweenScalarSequences()",
-                        "failed MPI_Allreduce() for a matrix position");
+    env.inter0Comm().Allreduce((void *) &covValue, (void *) &aux, (int) 1, MPI_DOUBLE, MPI_SUM,
+                               "uqComputeCovCorrBetweenScalarSequences()",
+                               "failed MPI.Allreduce() for a matrix position");
     covValue = aux/((double) (unifiedNumSamples-1)); // Yes, '-1' in order to compensate for the 'N-1' denominator factor in the calculations of sample variances above (whose square roots will be used below)
 
     corrValue = covValue/std::sqrt(unifiedSampleVarianceP)/std::sqrt(unifiedSampleVarianceQ);
