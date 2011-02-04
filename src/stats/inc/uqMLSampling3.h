@@ -120,32 +120,28 @@ uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(
       //                void *recvbuf, int recvcount, MPI_Datatype recvtype, 
       //                int root, MPI_Comm comm )
       unsigned int auxUInt = indexOfFirstWeight;
-      int mpiRC = MPI_Gather((void *) &auxUInt, 1, MPI_UNSIGNED, (void *) &allFirstIndexes[0], (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm()); // LOAD BALANCE
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.worldRank(),
-                          "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
-                          "failed MPI_Gather() for first indexes");
+      m_env.inter0Comm().Gather((void *) &auxUInt, 1, MPI_UNSIGNED, (void *) &allFirstIndexes[0], (int) 1, MPI_UNSIGNED, 0, // LOAD BALANCE
+                                "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
+                                "failed MPI.Gather() for first indexes");
 
       if (m_env.inter0Rank() == 0) {
         UQ_FATAL_TEST_MACRO(allFirstIndexes[0] != indexOfFirstWeight,
                             m_env.worldRank(),
                             "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
-                            "failed MPI_Gather() result for first indexes, at proc 0");
+                            "failed MPI.Gather() result for first indexes, at proc 0");
       }
 
       auxUInt = indexOfLastWeight;
-      mpiRC = MPI_Gather((void *) &auxUInt, 1, MPI_UNSIGNED, (void *) &allLastIndexes[0], (int) 1, MPI_UNSIGNED, 0, m_env.inter0Comm().Comm()); // LOAD BALANCE
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.worldRank(),
-                          "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
-                          "failed MPI_Gather() for last indexes");
+      m_env.inter0Comm().Gather((void *) &auxUInt, 1, MPI_UNSIGNED, (void *) &allLastIndexes[0], (int) 1, MPI_UNSIGNED, 0, // LOAD BALANCE
+                                "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
+                                "failed MPI.Gather() for last indexes");
 
       if (m_env.inter0Rank() == 0) { // Yes, '== 0'
         //allLastIndexes[0] = indexOfLastWeight; // FIX ME: really necessary????
         UQ_FATAL_TEST_MACRO(allLastIndexes[0] != indexOfLastWeight,
                             m_env.worldRank(),
                             "uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
-                            "failed MPI_Gather() result for last indexes, at proc 0");
+                            "failed MPI.Gather() result for last indexes, at proc 0");
       }
     }
 
@@ -679,7 +675,7 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALAN
                                 << std::endl;
       }
     }
-    auxInitialPosition.mpiBcast(0, m_env.subComm().Comm()); // Yes, 'subComm', important // KAUST
+    auxInitialPosition.mpiBcast(0, m_env.subComm()); // Yes, 'subComm', important // KAUST
 #if 0 // For debug only
     for (int r = 0; r < m_env.subComm().NumProc(); ++r) {
       if (r == m_env.subComm().MyPID()) {
@@ -872,7 +868,7 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
                                 << std::endl;
       }
     }
-    auxInitialPosition.mpiBcast(0, m_env.subComm().Comm()); // Yes, 'subComm', important // KAUST
+    auxInitialPosition.mpiBcast(0, m_env.subComm()); // Yes, 'subComm', important // KAUST
 #if 0 // For debug only
     for (int r = 0; r < m_env.subComm().NumProc(); ++r) {
       if (r == m_env.subComm().MyPID()) {
@@ -1828,18 +1824,20 @@ uqMLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0( // EXTRA FOR LOAD BALAN
     int mpiRC = 0;
 #if 0
     if (m_env.inter0Rank() == r) {
-      mpiRC = MPI_Gatherv(MPI_IN_PLACE, (int) sendcnt, MPI_DOUBLE, (void *) &recvbuf[0], (int *) &recvcnts[0], (int *) &displs[0], MPI_DOUBLE, r, m_env.inter0Comm().Comm()); // LOAD BALANCE
+      m_env.inter0Comm().Gatherv(MPI_IN_PLACE, (int) sendcnt, MPI_DOUBLE, (void *) &recvbuf[0], (int *) &recvcnts[0], (int *) &displs[0], MPI_DOUBLE, r, // LOAD BALANCE
+                                 "uqMLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0(1)",
+                                 "failed MPI.Gatherv()");
     }
     else {
-      mpiRC = MPI_Gatherv((void *) &sendbuf[0], (int) sendcnt, MPI_DOUBLE, (void *) &recvbuf[0], (int *) &recvcnts[0], (int *) &displs[0], MPI_DOUBLE, r, m_env.inter0Comm().Comm()); // LOAD BALANCE
+      m_env.inter0Comm().Gatherv((void *) &sendbuf[0], (int) sendcnt, MPI_DOUBLE, (void *) &recvbuf[0], (int *) &recvcnts[0], (int *) &displs[0], MPI_DOUBLE, r, // LOAD BALANCE
+                                 "uqMLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0(2)",
+                                 "failed MPI.Gatherv()");
     }
 #else
-    mpiRC = MPI_Gatherv((void *) &sendbuf[0], (int) sendcnt, MPI_DOUBLE, (void *) &recvbuf[0], (int *) &recvcnts[0], (int *) &displs[0], MPI_DOUBLE, r, m_env.inter0Comm().Comm()); // LOAD BALANCE
+    m_env.inter0Comm().Gatherv((void *) &sendbuf[0], (int) sendcnt, MPI_DOUBLE, (void *) &recvbuf[0], (int *) &recvcnts[0], (int *) &displs[0], MPI_DOUBLE, r, // LOAD BALANCE
+                               "uqMLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0()",
+                               "failed MPI.Gatherv()");
 #endif
-    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                        m_env.worldRank(),
-                        "uqMLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0()",
-                        "failed MPI_Gatherv()");
 
     //////////////////////////////////////////////////////////////////////////
     // Make sanity checks

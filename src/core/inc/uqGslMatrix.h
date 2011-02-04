@@ -96,7 +96,7 @@ public:
   void              setColumn            (const unsigned int column_num, const uqGslVectorClass& column);
   void              setRow               (const unsigned int row_num, const uqGslVectorClass& row);
 
-  void              mpiSum               (const MPI_Comm& comm, uqGslMatrixClass& M_global) const;
+  void              mpiSum               (const uqMpiCommClass& comm, uqGslMatrixClass& M_global) const;
 
   gsl_matrix*       data                 ();
 

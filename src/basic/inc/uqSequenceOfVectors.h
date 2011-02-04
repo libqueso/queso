@@ -2250,7 +2250,7 @@ uqSequenceOfVectorsClass<V,M>::estimateConvBrooksGelman(
 
       // Now do the sum over the chains
       // W will be available on all inter0 processors
-      W_local->mpiSum( m_env.inter0Comm().Comm(), (*W) );
+      W_local->mpiSum( m_env.inter0Comm(), (*W) );
 
       (*W) = 1.0/(double(m)*(double(n)-1.0)) * (*W);
 
@@ -2273,7 +2273,7 @@ uqSequenceOfVectorsClass<V,M>::estimateConvBrooksGelman(
       work = psi_j_dot - psi_dot_dot;
       (*B_over_n_local) = matrixProduct( work, work );
 
-      B_over_n_local->mpiSum( m_env.inter0Comm().Comm(), (*B_over_n) );
+      B_over_n_local->mpiSum( m_env.inter0Comm(), (*B_over_n) );
 
       // Need to delete pointers to temporary covariance matrices
       delete B_over_n_local;

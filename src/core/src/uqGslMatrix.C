@@ -1077,7 +1077,7 @@ uqGslMatrixClass::setColumn(unsigned int column_num, const uqGslVectorClass& col
 }
 
 void
-uqGslMatrixClass::mpiSum( const MPI_Comm& comm, uqGslMatrixClass& M_global ) const
+uqGslMatrixClass::mpiSum( const uqMpiCommClass& comm, uqGslMatrixClass& M_global ) const
 {
   // Sanity Checks
   UQ_FATAL_RC_MACRO( ( (this->numRowsLocal() != M_global.numRowsLocal()) ||
@@ -1103,7 +1103,7 @@ uqGslMatrixClass::mpiSum( const MPI_Comm& comm, uqGslMatrixClass& M_global ) con
     }
 
   int ierr = MPI_Allreduce( (void*) &local[0], (void*) &global[0],
-			    size, MPI_DOUBLE, MPI_SUM, comm );
+			    size, MPI_DOUBLE, MPI_SUM, comm.Comm() );
   UQ_FATAL_TEST_MACRO(ierr != MPI_SUCCESS,
                       m_env.worldRank(),
                       "uqGslMatrixClass::mpiSum()",

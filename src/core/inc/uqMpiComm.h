@@ -55,6 +55,18 @@ public:
   void     Barrier  () const; // const char* whereMsg, const char* whatMsg) const;
   void     Bcast    (void* buffer, int count, MPI_Datatype datatype, int root,
                      const char* whereMsg, const char* whatMsg) const;
+  void     Gather   (void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
+                     void *recvbuf, int recvcount, MPI_Datatype recvtype, 
+                     int root,
+                     const char* whereMsg, const char* whatMsg) const;
+  void     Gatherv  (void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
+                     void *recvbuf, int *recvcnts, int *displs, MPI_Datatype recvtype, 
+                     int root,
+                     const char* whereMsg, const char* whatMsg) const;
+  void     Recv     (void *buf, int count, MPI_Datatype datatype, int source, int tag, MPI_Status *status,
+                     const char* whereMsg, const char* whatMsg) const;
+  void     Send     (void *buf, int count, MPI_Datatype datatype, int dest, int tag,
+                     const char* whereMsg, const char* whatMsg) const;
 
 #ifdef QUESO_HAS_TRILINOS
   const Epetra_MpiComm& epetraMpiComm() const;

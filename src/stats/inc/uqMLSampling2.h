@@ -132,7 +132,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Level0_all(
     for (unsigned int i = 0; i < currChain.subSequenceSize(); ++i) {
       //std::cout << "In QUESO: before prior realizer with i = " << i << std::endl;
       m_priorRv.realizer().realization(auxVec);
-      auxVec.mpiBcast(0, m_env.subComm().Comm()); // prudencio 2010-08-01
+      auxVec.mpiBcast(0, m_env.subComm()); // prudencio 2010-08-01
       currChain.setPositionValues(i,auxVec);
       // KAUST: all nodes should call likelihood
 #if 1 // prudencio 2010-08-01
@@ -362,24 +362,20 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step02_inter0(
         if (r > 0) {
           MPI_Status status;
 	  //std::cout << "Rank " << r << " is entering MPI_Recv()" << std::endl;
-          int mpiRC = MPI_Recv((void*) &auxUint, 1, MPI_UNSIGNED, r-1, r-1, m_env.inter0Comm().Comm(), &status);
+          m_env.inter0Comm().Recv((void*) &auxUint, 1, MPI_UNSIGNED, r-1, r-1, &status,
+                                  "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                                  "failed MPI.Recv()");
 	  //std::cout << "Rank " << r << " received auxUint = " << auxUint << std::endl;
-          UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                              m_env.worldRank(),
-                              "uqMLSamplingClass<P_V,P_M>::generateSequence()",
-                              "failed MPI_Recv()");
           indexOfFirstWeight = auxUint;
           indexOfLastWeight = indexOfFirstWeight + prevChain.subSequenceSize()-1;
         }
         if (r < (m_env.inter0Comm().NumProc()-1)) {
           auxUint = indexOfLastWeight + 1;
 	  //std::cout << "Rank " << r << " is sending auxUint = " << auxUint << std::endl;
-          int mpiRC = MPI_Send((void*) &auxUint, 1, MPI_UNSIGNED, r+1, r, m_env.inter0Comm().Comm());
+          m_env.inter0Comm().Send((void*) &auxUint, 1, MPI_UNSIGNED, r+1, r,
+                                  "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                                  "failed MPI.Send()");
 	  //std::cout << "Rank " << r << " sent auxUint = " << auxUint << std::endl;
-          UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                              m_env.worldRank(),
-                              "uqMLSamplingClass<P_V,P_M>::generateSequence()",
-                              "failed MPI_Send()");
         }
         m_env.inter0Comm().Barrier();
       }
