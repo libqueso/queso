@@ -1815,7 +1815,6 @@ uqMLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0( // EXTRA FOR LOAD BALAN
       displs[nodeId] = displs[nodeId-1] + recvcnts[nodeId-1];
     }
 
-    int mpiRC = 0;
 #if 0
     if (m_env.inter0Rank() == r) {
       m_env.inter0Comm().Gatherv(MPI_IN_PLACE, (int) sendcnt, MPI_DOUBLE, (void *) &recvbuf[0], (int *) &recvcnts[0], (int *) &displs[0], MPI_DOUBLE, r, // LOAD BALANCE
