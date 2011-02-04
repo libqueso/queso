@@ -229,7 +229,7 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
         }
 
         m_env.syncPrintDebugMsg("In uqScalarFunctionSynchronizerClass<V,M>::callFunction(), just before actual lnValue()",3,3000000,m_env.subComm());
-        UQ_MPI_Barrier(m_env.subComm());//.Barrier();
+        m_env.subComm().Barrier();
         result = m_scalarFunction.lnValue(*internalValues,   // input
                                           internalDirection, // input
                                           internalGrad,    // output
@@ -266,7 +266,7 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
                         "uqScalarFunctionSynchronizerClass<V,M>::callFunction()",
                         "vecValues should not be NULL");
 
-    UQ_MPI_Barrier(m_env.subComm());//.Barrier();
+    m_env.subComm().Barrier();
     result = m_scalarFunction.lnValue(*vecValues,
                                       vecDirection,
                                       gradVector,

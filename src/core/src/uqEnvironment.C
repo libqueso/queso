@@ -468,7 +468,6 @@ void
 uqBaseEnvironmentClass::syncPrintDebugMsg(const char* msg, unsigned int msgVerbosity, unsigned int numUSecs, const uqMpiCommClass& commObj) const
 {
   if (this->syncVerbosity() >= msgVerbosity) {
-    UQ_MPI_Barrier(commObj);
     commObj.Barrier();
     for (int i = 0; i < commObj.NumProc(); ++i) {
       if (i == commObj.MyPID()) {

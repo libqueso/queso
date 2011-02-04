@@ -628,11 +628,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     }
 
     // All nodes in 'subComm' should have the same 'currExponent'
-    int mpiRC = MPI_Bcast((void *) &currExponent, (int) 1, MPI_DOUBLE, 0, m_env.subComm().Comm()); // Yes, 'subComm', important
-    UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                        m_env.worldRank(),
-                        "uqMLSamplingClass<P_V,P_M>::generateSequence()",
-                        "failed MPI_Bcast() for currExponent");
+    m_env.subComm().Bcast((void *) &currExponent, (int) 1, MPI_DOUBLE, 0); // Yes, 'subComm', important
     m_debugExponent = currExponent;
 
     if (currExponent == 1.) {
@@ -659,11 +655,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
         // It is necessary to recompute 'currUnifiedRequestedNumSamples' because
         // 'currOptions' has just been replaced by 'lastLevelOptions'
         unsigned int tmpSize = currOptions->m_rawChainSize;
-        mpiRC = MPI_Allreduce((void *) &tmpSize, (void *) &currUnifiedRequestedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM, m_env.inter0Comm().Comm());
-        UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                            m_env.worldRank(),
-                            "uqMLSamplingClass<P_V,P_M>::generateSequence()",
-                            "failed MPI_Allreduce() for requested num samples in step 3");
+        m_env.inter0Comm().Allreduce((void *) &tmpSize, (void *) &currUnifiedRequestedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM);
       }
     }
 
@@ -858,47 +850,23 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
 
     if (m_env.inter0Rank() >= 0) {
       double minCumulativeRawChainRunTime = 0.;
-      mpiRC = MPI_Allreduce((void *) &cumulativeRawChainRunTime, (void *) &minCumulativeRawChainRunTime, (int) 1, MPI_DOUBLE, MPI_MIN, m_env.inter0Comm().Comm());
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.worldRank(),
-                          "uqMLSamplingClass<P_V,P_M>::generateSequence()",
-                          "failed MPI_Allreduce() for min cumulative raw chain run time");
+      m_env.inter0Comm().Allreduce((void *) &cumulativeRawChainRunTime, (void *) &minCumulativeRawChainRunTime, (int) 1, MPI_DOUBLE, MPI_MIN);
 
       double maxCumulativeRawChainRunTime = 0.;
-      mpiRC = MPI_Allreduce((void *) &cumulativeRawChainRunTime, (void *) &maxCumulativeRawChainRunTime, (int) 1, MPI_DOUBLE, MPI_MAX, m_env.inter0Comm().Comm());
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.worldRank(),
-                          "uqMLSamplingClass<P_V,P_M>::generateSequence()",
-                          "failed MPI_Allreduce() for max cumulative raw chain run time");
+      m_env.inter0Comm().Allreduce((void *) &cumulativeRawChainRunTime, (void *) &maxCumulativeRawChainRunTime, (int) 1, MPI_DOUBLE, MPI_MAX);
 
       double avgCumulativeRawChainRunTime = 0.;
-      mpiRC = MPI_Allreduce((void *) &cumulativeRawChainRunTime, (void *) &avgCumulativeRawChainRunTime, (int) 1, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm());
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.worldRank(),
-                          "uqMLSamplingClass<P_V,P_M>::generateSequence()",
-                          "failed MPI_Allreduce() for sum cumulative raw chain run time");
+      m_env.inter0Comm().Allreduce((void *) &cumulativeRawChainRunTime, (void *) &avgCumulativeRawChainRunTime, (int) 1, MPI_DOUBLE, MPI_SUM);
       avgCumulativeRawChainRunTime /= ((double) m_env.inter0Comm().NumProc());
 
       double minLevelRunTime = 0.;
-      mpiRC = MPI_Allreduce((void *) &levelRunTime, (void *) &minLevelRunTime, (int) 1, MPI_DOUBLE, MPI_MIN, m_env.inter0Comm().Comm());
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.worldRank(),
-                          "uqMLSamplingClass<P_V,P_M>::generateSequence()",
-                          "failed MPI_Allreduce() for min level run time");
+      m_env.inter0Comm().Allreduce((void *) &levelRunTime, (void *) &minLevelRunTime, (int) 1, MPI_DOUBLE, MPI_MIN);
 
       double maxLevelRunTime = 0.;
-      mpiRC = MPI_Allreduce((void *) &levelRunTime, (void *) &maxLevelRunTime, (int) 1, MPI_DOUBLE, MPI_MAX, m_env.inter0Comm().Comm());
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.worldRank(),
-                          "uqMLSamplingClass<P_V,P_M>::generateSequence()",
-                          "failed MPI_Allreduce() for max level run time");
+      m_env.inter0Comm().Allreduce((void *) &levelRunTime, (void *) &maxLevelRunTime, (int) 1, MPI_DOUBLE, MPI_MAX);
 
       double avgLevelRunTime = 0.;
-      mpiRC = MPI_Allreduce((void *) &levelRunTime, (void *) &avgLevelRunTime, (int) 1, MPI_DOUBLE, MPI_SUM, m_env.inter0Comm().Comm());
-      UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                          m_env.worldRank(),
-                          "uqMLSamplingClass<P_V,P_M>::generateSequence()",
-                          "failed MPI_Allreduce() for sum level run time");
+      m_env.inter0Comm().Allreduce((void *) &levelRunTime, (void *) &avgLevelRunTime, (int) 1, MPI_DOUBLE, MPI_SUM);
       avgLevelRunTime /= ((double) m_env.inter0Comm().NumProc());
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {

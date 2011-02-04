@@ -46,10 +46,14 @@ public:
 
   uqMpiCommClass& operator= (const uqMpiCommClass& rhs);
 
-  MPI_Comm Comm   () const;
-  int      MyPID  () const;
-  int      NumProc() const;
-  void     Barrier() const;
+  MPI_Comm Comm     () const;
+  int      MyPID    () const;
+  int      NumProc  () const;
+
+  void     Allreduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype, MPI_Op op) const;
+  void     Barrier  () const;
+  void     Bcast    (void* buffer, int count, MPI_Datatype datatype, int root) const;
+
 #ifdef QUESO_HAS_TRILINOS
   const Epetra_MpiComm& epetraMpiComm() const;
 #endif
@@ -59,15 +63,11 @@ private:
 
 #ifdef QUESO_HAS_TRILINOS
   Epetra_MpiComm* m_epetraMpiComm;
-#else
+#endif
   MPI_Comm m_rawComm;
   int      m_worldRank;
   int      m_myPid;
   int      m_numProc;
-#endif
 };
-
-int UQ_MPI_Barrier(MPI_Comm comm);
-int UQ_MPI_Barrier(const uqMpiCommClass& comm);
 
 #endif // __UQ_MPI_COMM_H__

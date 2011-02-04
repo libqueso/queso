@@ -39,16 +39,13 @@ uqMpiCommClass::uqMpiCommClass()
 uqMpiCommClass::uqMpiCommClass(MPI_Comm inputRawComm)
   :
 #ifdef QUESO_HAS_TRILINOS
-  m_epetraMpiComm( new Epetra_MpiComm(inputRawComm) )
-#else
+  m_epetraMpiComm( new Epetra_MpiComm(inputRawComm) ),
+#endif
   m_rawComm  (inputRawComm),
   m_worldRank(-1),
   m_myPid    (-1),
   m_numProc  (-1)
-#endif
 {
-#ifdef QUESO_HAS_TRILINOS
-#else
   int mpiRC = MPI_Comm_rank(MPI_COMM_WORLD,&m_worldRank);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       UQ_UNAVAILABLE_RANK,
@@ -66,7 +63,6 @@ uqMpiCommClass::uqMpiCommClass(MPI_Comm inputRawComm)
                       m_worldRank,
                       "uqMpiCommClass::constructor()",
                       "failed MPI_Comm_size() on inputRawComm");
-#endif
 }
 
 uqMpiCommClass::uqMpiCommClass(const uqMpiCommClass& src)
@@ -90,8 +86,6 @@ uqMpiCommClass::~uqMpiCommClass()
 #ifdef QUESO_HAS_TRILINOS
   delete m_epetraMpiComm;
   m_epetraMpiComm = NULL;
-#else
-  // Nothing to do
 #endif
 }
 
@@ -101,12 +95,11 @@ uqMpiCommClass::copy(const uqMpiCommClass& src)
 #ifdef QUESO_HAS_TRILINOS
   delete m_epetraMpiComm;
   m_epetraMpiComm = new Epetra_MpiComm(*src.m_epetraMpiComm);
-#else
+#endif
   m_rawComm   = src.m_rawComm;
   m_worldRank = src.m_worldRank;
   m_myPid     = src.m_myPid;
   m_numProc   = src.m_numProc;
-#endif
 
   return;
 }
@@ -116,9 +109,8 @@ uqMpiCommClass::Comm() const
 {
 #ifdef QUESO_HAS_TRILINOS
   return m_epetraMpiComm->Comm();
-#else
-  return m_rawComm;
 #endif
+  return m_rawComm;
 }
 
 #ifdef QUESO_HAS_TRILINOS
@@ -134,9 +126,8 @@ uqMpiCommClass::MyPID() const
 {
 #ifdef QUESO_HAS_TRILINOS
   return m_epetraMpiComm->MyPID();
-#else
-  return m_myPid;
 #endif
+  return m_myPid;
 }
 
 int
@@ -144,9 +135,19 @@ uqMpiCommClass::NumProc() const
 {
 #ifdef QUESO_HAS_TRILINOS
   return m_epetraMpiComm->NumProc();
-#else
-  return m_numProc;
 #endif
+  return m_numProc;
+}
+
+void
+uqMpiCommClass::Allreduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype, MPI_Op op) const
+{
+  int mpiRC = MPI_Allreduce(sendbuf, recvbuf, count, datatype, op, m_rawComm);
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      m_worldRank,
+                      "uqMpiCommClass::Allreduce()",
+                      "mpiRC indicates no success");
+  return;
 }
 
 void
@@ -154,26 +155,22 @@ uqMpiCommClass::Barrier() const
 {
 #ifdef QUESO_HAS_TRILINOS
   return m_epetraMpiComm->Barrier();
-#else
+#endif
   int mpiRC = MPI_Barrier(m_rawComm);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
                       "uqMpiCommClass::Barrier()",
                       "mpiRC indicates no success");
-#endif
   return;
 }
 
-int UQ_MPI_Barrier(MPI_Comm comm)
+void
+uqMpiCommClass::Bcast(void* buffer, int count, MPI_Datatype datatype, int root) const
 {
-  int mpiRC = MPI_Barrier(comm);
-
-  return mpiRC;
-}
-
-int UQ_MPI_Barrier(const uqMpiCommClass& comm)
-{
-  comm.Barrier();
-
-  return 0;
+  int mpiRC = MPI_Bcast(buffer, count, datatype, root, m_rawComm);
+  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
+                      m_worldRank,
+                      "uqMpiCommClass::Bcast()",
+                      "mpiRC indicates no success");
+  return;
 }
