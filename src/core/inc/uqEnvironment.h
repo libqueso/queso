@@ -159,67 +159,69 @@ public:
   uqBaseEnvironmentClass(const uqBaseEnvironmentClass& obj);
   virtual ~uqBaseEnvironmentClass();
 
-          uqBaseEnvironmentClass& operator=                  (const uqBaseEnvironmentClass& rhs);
+          uqBaseEnvironmentClass& operator=                     (const uqBaseEnvironmentClass& rhs);
 
-          bool                    fullEnvIsReady             () const;
-          int                     worldRank                  () const;
+          bool                    fullEnvIsReady                () const;
+          int                     worldRank                     () const;
 
-          int                     fullRank                   () const;
-          const uqMpiCommClass&   fullComm                   () const; 
+          int                     fullRank                      () const;
+          const uqMpiCommClass&   fullComm                      () const; 
 
-          int                     subRank                    () const;
-          const uqMpiCommClass&   subComm                    () const; 
+          int                     subRank                       () const;
+          const uqMpiCommClass&   subComm                       () const; 
 
-          const uqMpiCommClass&   selfComm                   () const; 
+          const uqMpiCommClass&   selfComm                      () const; 
 
-          int                     inter0Rank                 () const;
-          const uqMpiCommClass&   inter0Comm                 () const;
+          int                     inter0Rank                    () const;
+          const uqMpiCommClass&   inter0Comm                    () const;
 
-          std::ofstream*          subDisplayFile             () const;
+          std::ofstream*          subDisplayFile                () const;
 
-          unsigned int            numSubEnvironments         () const;
-          unsigned int            subId                      () const;
-          const std::string&      subIdString                () const;
-          void                    checkTheParallelEnvironment() const;
+          unsigned int            numSubEnvironments            () const;
+          unsigned int            subId                         () const;
+          const std::string&      subIdString                   () const;
+          void                    checkTheParallelEnvironment   () const;
 
-          std::string             optionsInputFileName       () const;
+          std::string             optionsInputFileName          () const;
+          void                    setOptionsInputFileAccessState(bool newState) const; // Yes, 'const'
+	    
+
 #ifdef UQ_USES_COMMAND_LINE_OPTIONS
-          const po::options_description& allOptionsDesc      () const;
+          const po::options_description& allOptionsDesc         () const;
 #endif
-          po::variables_map&      allOptionsMap              () const;
-          void                    scanInputFileForMyOptions  (const po::options_description& optionsDesc) const;
-          unsigned int            displayVerbosity           () const;
-          unsigned int            syncVerbosity              () const;
-          const gsl_rng*          rng                        () const;
-          int                     seed                       () const;
-          void                    resetGslSeed               (int newSeedOption);
-	  std::string             identifyingString          () const;
-          void                    resetIdentifyingString     (const std::string& newString) const; // Yes, const
-          bool                    isThereInputFile           () const;
-          void                    syncPrintDebugMsg          (const char* msg, unsigned int msgVerbosity, unsigned int numUSecs, const uqMpiCommClass& commObj) const;
+          po::variables_map&      allOptionsMap                 () const;
+          void                    scanInputFileForMyOptions     (const po::options_description& optionsDesc) const;
+          unsigned int            displayVerbosity              () const;
+          unsigned int            syncVerbosity                 () const;
+          const gsl_rng*          rng                           () const;
+          int                     seed                          () const;
+          void                    resetGslSeed                  (int newSeedOption);
+	  std::string             identifyingString             () const;
+          void                    resetIdentifyingString        (const std::string& newString) const; // Yes, const
+          bool                    isThereInputFile              () const;
 
-          bool                    openOutputFile             (const std::string&            fileName,
-                                                              const std::string&            fileType,
-                                                              const std::set<unsigned int>& allowedSubEnvIds,
-                                                                    bool                    writeOver,
-                                                                    uqFilePtrSetStruct&     filePtrSet) const;
+          bool                    openOutputFile                (const std::string&            fileName,
+                                                                 const std::string&            fileType,
+                                                                 const std::set<unsigned int>& allowedSubEnvIds,
+                                                                       bool                    writeOver,
+                                                                       uqFilePtrSetStruct&     filePtrSet) const;
 
-          bool                    openUnifiedOutputFile      (const std::string&            fileName,
-                                                              const std::string&            fileType,
-                                                                    bool                    writeOver,
-                                                                    uqFilePtrSetStruct&     filePtrSet) const;
-          bool                    openInputFile              (const std::string&            fileName,
-                                                              const std::string&            fileType,
-                                                              const std::set<unsigned int>& allowedSubEnvIds,
-                                                                    uqFilePtrSetStruct&     filePtrSet) const;
-          bool                    openUnifiedInputFile       (const std::string&            fileName,
-                                                              const std::string&            fileType,
-                                                                    uqFilePtrSetStruct&     filePtrSet) const;
-          void                    closeFile                  (      uqFilePtrSetStruct&     filePtrSet,
-                                                              const std::string&            fileType) const; 
-          void                    setExceptionalCircunstance (bool value) const;
-          bool                    exceptionalCircunstance    () const;
-  virtual void                    print                      (std::ostream& os) const = 0;
+          bool                    openUnifiedOutputFile         (const std::string&            fileName,
+                                                                 const std::string&            fileType,
+                                                                       bool                    writeOver,
+                                                                       uqFilePtrSetStruct&     filePtrSet) const;
+          bool                    openInputFile                 (const std::string&            fileName,
+                                                                 const std::string&            fileType,
+                                                                 const std::set<unsigned int>& allowedSubEnvIds,
+                                                                       uqFilePtrSetStruct&     filePtrSet) const;
+          bool                    openUnifiedInputFile          (const std::string&            fileName,
+                                                                 const std::string&            fileType,
+                                                                       uqFilePtrSetStruct&     filePtrSet) const;
+          void                    closeFile                     (      uqFilePtrSetStruct&     filePtrSet,
+                                                                 const std::string&            fileType) const; 
+          void                    setExceptionalCircunstance    (bool value) const;
+          bool                    exceptionalCircunstance       () const;
+  virtual void                    print                         (std::ostream& os) const = 0;
 
 protected:
   bool                       m_fullEnvIsReady;
@@ -231,6 +233,7 @@ protected:
   MPI_Group                  m_fullGroup;
 
   std::string                m_optionsInputFileName;
+  mutable bool               m_optionsInputFileAccessState; // Yes, 'mutable'
   po::options_description*   m_allOptionsDesc;
   po::variables_map*         m_allOptionsMap;
 

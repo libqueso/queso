@@ -69,6 +69,8 @@ public:
   void     Send     (void *buf, int count, MPI_Datatype datatype, int dest, int tag,
                      const char* whereMsg, const char* whatMsg) const;
 
+  void     syncPrintDebugMsg(const char* msg, unsigned int msgVerbosity, unsigned int numUSecs) const;
+
 #ifdef QUESO_HAS_TRILINOS
   const Epetra_MpiComm& epetraMpiComm() const;
 #endif

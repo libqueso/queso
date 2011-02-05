@@ -300,7 +300,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
   const uqMcOptionsValuesClass* alternativeOptionsValues)
 {
   m_env.fullComm().Barrier();
-  m_env.syncPrintDebugMsg("Entering uqStatisticalForwardProblemClass<P_V,P_M>::solveWithMonteCarlo()",1,3000000,m_env.fullComm());
+  m_env.fullComm().syncPrintDebugMsg("Entering uqStatisticalForwardProblemClass<P_V,P_M>::solveWithMonteCarlo()",1,3000000);
 
   if (m_optionsObj->m_ov.m_computeSolution == false) {
     if ((m_env.subDisplayFile())) {
@@ -507,7 +507,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
   if (pqCovarianceMatrix ) delete pqCovarianceMatrix;
   if (pqCorrelationMatrix) delete pqCorrelationMatrix;
 
-  m_env.syncPrintDebugMsg("Leaving uqStatisticalForwardProblemClass<P_V,P_M>::solveWithMonteCarlo()",1,3000000,m_env.fullComm());
+  m_env.fullComm().syncPrintDebugMsg("Leaving uqStatisticalForwardProblemClass<P_V,P_M>::solveWithMonteCarlo()",1,3000000);
   m_env.fullComm().Barrier();
 
   return;

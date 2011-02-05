@@ -130,7 +130,7 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
         if (internalEffects   != NULL) bufferChar[5] = '1';
       }
 
-      m_env.syncPrintDebugMsg("In uqVectorFunctionSynchronizerClass<V,M>::callFunction(), just before char Bcast()",3,3000000,m_env.subComm());
+      m_env.subComm().syncPrintDebugMsg("In uqVectorFunctionSynchronizerClass<V,M>::callFunction(), just before char Bcast()",3,3000000);
       //if (m_env.subId() != 0) while (true) sleep(1);
 
       int count = (int) bufferChar.size();

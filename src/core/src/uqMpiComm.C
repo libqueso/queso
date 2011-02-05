@@ -245,3 +245,30 @@ uqMpiCommClass::Send(
                       whatMsg);
   return;
 }
+
+void
+uqMpiCommClass::syncPrintDebugMsg(const char* msg, unsigned int msgVerbosity, unsigned int numUSecs) const
+{
+  if (m_env.syncVerbosity() >= msgVerbosity) {
+    this->Barrier();
+    for (int i = 0; i < this->NumProc(); ++i) {
+      if (i == this->MyPID()) {
+        std::cout << msg
+                  << ": fullRank "       << m_env.fullRank()
+                  << ", subEnvironment " << m_env.subId()
+                  << ", subRank "        << m_env.subRank()
+                  << ", inter0Rank "     << m_env.inter0Rank()
+                  << std::endl;
+      }
+      usleep(numUSecs);
+      this->Barrier();
+    }
+    //if (this->fullRank() == 0) std::cout << "Sleeping " << numUSecs << " microseconds..."
+    //                                     << std::endl;
+    //usleep(numUSecs);
+    this->Barrier();
+  }
+
+  return;
+}
+

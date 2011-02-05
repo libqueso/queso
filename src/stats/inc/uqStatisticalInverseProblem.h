@@ -280,7 +280,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(
   //std::cout << "proc " << m_env.fullRank() << ", HERE sip 000" << std::endl;
   m_env.fullComm().Barrier();
   //std::cout << "proc " << m_env.fullRank() << ", HERE sip 001" << std::endl;
-  m_env.syncPrintDebugMsg("Entering uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings()",1,3000000,m_env.fullComm());
+  m_env.fullComm().syncPrintDebugMsg("Entering uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings()",1,3000000);
 
   if (m_optionsObj->m_ov.m_computeSolution == false) {
     if ((m_env.subDisplayFile())) {
@@ -349,7 +349,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(
 
   m_postRv.setRealizer(*m_solutionRealizer);
 
-  m_env.syncPrintDebugMsg("In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(), code place 1",3,3000000,m_env.fullComm());
+  m_env.fullComm().syncPrintDebugMsg("In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(), code place 1",3,3000000);
   //m_env.fullComm().Barrier();
 
   // Compute output mdf: uniform sampling approach
@@ -404,7 +404,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(
     *m_env.subDisplayFile() << std::endl;
   }
 
-  m_env.syncPrintDebugMsg("Leaving uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings()",1,3000000,m_env.fullComm());
+  m_env.fullComm().syncPrintDebugMsg("Leaving uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings()",1,3000000);
   m_env.fullComm().Barrier();
   // grvy_timer_end("BayesMetropolisHastings"); TODO: revist timers
   return;
@@ -415,7 +415,7 @@ void
 uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling()
 {
   m_env.fullComm().Barrier();
-  m_env.syncPrintDebugMsg("Entering uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling()",1,3000000,m_env.fullComm());
+  m_env.fullComm().syncPrintDebugMsg("Entering uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling()",1,3000000);
 
   if (m_optionsObj->m_ov.m_computeSolution == false) {
     if ((m_env.subDisplayFile())) {
@@ -473,7 +473,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling()
     *m_env.subDisplayFile() << std::endl;
   }
 
-  m_env.syncPrintDebugMsg("Leaving uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling()",1,3000000,m_env.fullComm());
+  m_env.fullComm().syncPrintDebugMsg("Leaving uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling()",1,3000000);
   m_env.fullComm().Barrier();
 
   return;

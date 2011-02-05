@@ -122,26 +122,27 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   const char*                    passedOptionsInputFileName,
   const uqEnvOptionsValuesClass* alternativeOptionsValues)
   :
-  m_fullEnvIsReady          (false),
-  m_worldRank               (-1),
-  m_fullComm                (NULL),
-  m_fullRank                (-1),
-  m_fullCommSize            (1),
-  m_optionsInputFileName    (""),
-  m_allOptionsDesc          (NULL),
-  m_allOptionsMap           (NULL),
-  m_subComm                 (NULL),
-  m_subRank                 (-1),
-  m_subCommSize             (1),
-  m_selfComm                (NULL),
-  m_inter0Comm              (NULL),
-  m_inter0Rank              (-1),
-  m_inter0CommSize          (1),
-  m_subDisplayFile          (NULL),
-  m_rng                     (NULL),
-  m_exceptionalCircunstance (false),
-  m_alternativeOptionsValues(),
-  m_optionsObj              (NULL)
+  m_fullEnvIsReady             (false),
+  m_worldRank                  (-1),
+  m_fullComm                   (NULL),
+  m_fullRank                   (-1),
+  m_fullCommSize               (1),
+  m_optionsInputFileName       (""),
+  m_optionsInputFileAccessState(true),
+  m_allOptionsDesc             (NULL),
+  m_allOptionsMap              (NULL),
+  m_subComm                    (NULL),
+  m_subRank                    (-1),
+  m_subCommSize                (1),
+  m_selfComm                   (NULL),
+  m_inter0Comm                 (NULL),
+  m_inter0Rank                 (-1),
+  m_inter0CommSize             (1),
+  m_subDisplayFile             (NULL),
+  m_rng                        (NULL),
+  m_exceptionalCircunstance    (false),
+  m_alternativeOptionsValues   (),
+  m_optionsObj                 (NULL)
 {
   if (passedOptionsInputFileName) m_optionsInputFileName     = passedOptionsInputFileName;
   if (alternativeOptionsValues  ) m_alternativeOptionsValues = *alternativeOptionsValues;
@@ -375,7 +376,20 @@ uqBaseEnvironmentClass::scanInputFileForMyOptions(const po::options_description&
 std::string
 uqBaseEnvironmentClass::optionsInputFileName() const
 {
-  return m_optionsInputFileName;
+  if (m_optionsInputFileAccessState) {
+    return m_optionsInputFileName;
+  }
+  else {
+    return "";
+  }
+}
+
+void
+uqBaseEnvironmentClass::setOptionsInputFileAccessState(bool newState) const
+{
+  m_optionsInputFileAccessState = newState;
+
+  return;
 }
 
 #ifdef UQ_USES_COMMAND_LINE_OPTIONS
@@ -466,32 +480,6 @@ void
 uqBaseEnvironmentClass::resetIdentifyingString(const std::string& newString) const // Yes, const
 {
   m_optionsObj->m_ov.m_identifyingString = newString;
-  return;
-}
-
-void
-uqBaseEnvironmentClass::syncPrintDebugMsg(const char* msg, unsigned int msgVerbosity, unsigned int numUSecs, const uqMpiCommClass& commObj) const
-{
-  if (this->syncVerbosity() >= msgVerbosity) {
-    commObj.Barrier();
-    for (int i = 0; i < commObj.NumProc(); ++i) {
-      if (i == commObj.MyPID()) {
-        std::cout << msg
-                  << ": fullRank "       << this->fullRank()
-                  << ", subEnvironment " << this->subId()
-                  << ", subRank "        << this->subRank()
-                  << ", inter0Rank "     << this->inter0Rank()
-                  << std::endl;
-      }
-      usleep(numUSecs);
-      commObj.Barrier();
-    }
-    //if (this->fullRank() == 0) std::cout << "Sleeping " << numUSecs << " microseconds..."
-    //                                     << std::endl;
-    //usleep(numUSecs);
-    commObj.Barrier();
-  }
-
   return;
 }
 
