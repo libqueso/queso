@@ -3,6 +3,14 @@ QUESO: Quantification of Uncertainty for Estimation,
 Simulation, and Optimization.
 -----------------------------------------------------
 
+Version 0.43.0 (dd mmm 2011)
+https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.43.0
+
+  * added uqMpiCommClass
+  * added uqMapClass
+  * added uqDistArrayClass
+  * queso can now be configured and made withough trilinos, hdf5 and glpk
+
 Version 0.42.1 (02 February 2011)
 https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.42.1
 
