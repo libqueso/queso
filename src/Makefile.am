@@ -12,7 +12,8 @@ AM_CPPFLAGS = -I$(top_srcdir)/src/core/inc \
 	       $(GSL_CFLAGS) \
 	       $(GRVY_CFLAGS) \
 	       $(GLPK_CFLAGS) \
-	       $(HDF5_CFLAGS)
+	       $(HDF5_CFLAGS) \
+	       $(ANN_CFLAGS)
 
 if SVN_CHECKOUT
 BUILT_SOURCES = .license.stamp
@@ -30,6 +31,7 @@ libqueso_la_LDFLAGS += $(GSL_LIBS)
 libqueso_la_LDFLAGS += $(BOOST_PROGRAM_OPTIONS_LDFLAGS) $(BOOST_PROGRAM_OPTIONS_LIBS)
 libqueso_la_LDFLAGS += $(GLPK_LIBS)
 libqueso_la_LDFLAGS += $(HDF5_LIBS)
+libqueso_la_LDFLAGS += $(ANN_LIBS)
 
 # TODO: cleanup way epetra is handled; it looks like it is being put in LDFLAGS directly. Would like to 
 # have a EPETRA_LIBS or some such variable later.
@@ -97,7 +99,8 @@ libqueso_la_SOURCES += \
 	$(top_srcdir)/src/stats/src/uqMLSamplingLevelOptions.C \
 	$(top_srcdir)/src/stats/src/uqMonteCarloSGOptions.C \
 	$(top_srcdir)/src/stats/src/uqStatisticalInverseProblemOptions.C \
-	$(top_srcdir)/src/stats/src/uqStatisticalForwardProblemOptions.C
+	$(top_srcdir)/src/stats/src/uqStatisticalForwardProblemOptions.C \
+	$(top_srcdir)/src/stats/src/uqInfoTheory.C
 
 # Sources from interface 
 
@@ -179,7 +182,8 @@ libqueso_include_HEADERS += \
 	$(top_srcdir)/src/stats/inc/uqVectorCdf.h \
 	$(top_srcdir)/src/stats/inc/uqVectorMdf.h \
 	$(top_srcdir)/src/stats/inc/uqVectorRealizer.h \
-	$(top_srcdir)/src/stats/inc/uqVectorRV.h
+	$(top_srcdir)/src/stats/inc/uqVectorRV.h \
+	$(top_srcdir)/src/stats/inc/uqInfoTheory.h
 
 # Headers to install from interface
 

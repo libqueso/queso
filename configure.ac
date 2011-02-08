@@ -99,6 +99,10 @@ BOOST_REQUIRE([1.35])
 BOOST_PROGRAM_OPTIONS
 AC_CACHE_SAVE
 
+# Check for ANN
+AX_PATH_ANN
+# TODO: Make sure that the ANN uses L-infinity (Max) norm
+
 # Check for GNU Linear Programming kit
 
 AX_PATH_GLPK(4.35,,AC_MSG_ERROR([Could not find required GLPK error]))
@@ -147,6 +151,8 @@ AC_CONFIG_FILES([
 	src/Makefile
 	src/core/inc/queso.h
 	examples/Makefile
+	examples/infoTheoryProblem/Makefile
+	examples/infoTheoryProblem/src/Makefile
 	examples/statisticalInverseProblem1/Makefile
 	examples/statisticalInverseProblem1/src/Makefile	
 	examples/validationPyramid/Makefile

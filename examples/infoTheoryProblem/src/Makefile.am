@@ -14,14 +14,14 @@ AM_CPPFLAGS = \
 	  $(HDF5_CFLAGS)		   \
 	  $(ANN_CFLAGS)
 
-LIBS   = -L$(top_builddir)/src/ -lqueso
+LIBS   = -L$(top_builddir)/src/ -lqueso $(ANN_LIBS)
 
-noinst_PROGRAMS = exStatisticalForwardProblem_gsl
+noinst_PROGRAMS = exInfoTheory_gsl
 
-exStatisticalForwardProblem_gsl_SOURCES = \
-	exStatisticalForwardProblem_gsl.C \
-	exStatisticalForwardProblem_appl.h \
-	exStatisticalForwardProblem_qoi.h
+exInfoTheory_gsl_SOURCES = \
+	exInfoTheory_gsl.C \
+	exInfoTheory_appl.h
+#	exInfoTheory_qoi.h
 
 # Required for AX_AM_MACROS
 @INC_AMINCLUDE@

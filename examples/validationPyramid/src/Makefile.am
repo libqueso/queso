@@ -16,7 +16,8 @@ AM_CPPFLAGS = -I. \
 	        $(GSL_CFLAGS)       \
 	        $(GRVY_CFLAGS)      \
 	        $(GLPK_CFLAGS)      \
-	        $(HDF5_CFLAGS)
+	        $(HDF5_CFLAGS)      \
+		$(ANN_CFLAGS)
 
 LIBS        = -L$(top_builddir)/src/ -lqueso 
 

@@ -35,6 +35,9 @@
 #include <uqVectorCdf.h>
 #include <uqVectorMdf.h>
 #include <uqSequenceOfVectors.h>
+#include <uqInfoTheory.h>
+#include <gsl/gsl_sf_psi.h>
+#include <config.h>
 
 //*****************************************************
 // Base class
@@ -55,6 +58,15 @@ public:
   const   uqBaseVectorMdfClass     <V,M>& mdf       () const;
 
   virtual void                            print     (std::ostream& os) const = 0;
+
+#ifdef HAVE_ANN
+  virtual double                          estimateENT_ANN() const;
+  /*
+  virtual double                          estimateENT_ANN( unsigned int k, double eps ) const;
+  virtual double                          estimateENTSubset_ANN( const unsigned int dimSel[] ) const;
+  virtual double                          estimateENTSubset_ANN( const unsigned int dimSel[], unsigned int k, double eps ) const;
+  */
+#endif // HAVE_ANN
 
 protected:
   const   uqBaseEnvironmentClass&         m_env;
@@ -185,6 +197,69 @@ std::ostream& operator<<(std::ostream& os, const uqBaseVectorRVClass<V,M>& obj)
 
   return os;
 }
+
+#ifdef HAVE_ANN
+template <class V, class M>
+double 
+uqBaseVectorRVClass<V,M>::estimateENT_ANN() const
+{
+  ANNpointArray data;
+  double* dists;
+  double ENT_est;
+
+  // FIXME: these default values should be stored in the
+  // QUESO input file ( create a uqInfoTheoryOptionsClass )
+  unsigned int k = UQ_INFTH_ANN_KNN;
+  double eps = UQ_INFTH_ANN_EPS;
+
+  // here it is assumed that the entropy for the
+  // entire joint RV will be computed 
+  unsigned int dim = this->imageSet().vectorSpace().dimGlobal();
+
+  // FIXME: get the number already stored, otherwise
+  // use the default value
+  unsigned int N = this->realizer().subPeriod();
+  if( N == 0 ) {
+    N = UQ_INFTH_ANN_NO_SMP;
+  }
+
+  // allocate memory
+  data = annAllocPts(N,dim);
+  dists = new double[N];
+  
+  // copy samples in the ANN data structure
+  V smpRV( this->imageSet().vectorSpace().zeroVector() );
+  for( unsigned int i = 0; i < N; i++ ) {
+    // get a sample from the distribution
+    this->realizer().realization( smpRV );
+    // copy the vector values in the ANN data structure
+    for( unsigned int j = 0; j < dim; j++ ) {
+      data[ i ][ j ] = smpRV[ j ];
+    }
+  }
+  
+  // get distance to knn for each point
+  // (k+1) because the 1st nn is itself
+  distANN_XY( data, data, dists, dim, dim, N, N, k+1, eps );
+
+  // compute the entropy estimate using the L-infinity (Max) norm
+  // so no need for the adjustment of the mass of the hyperball
+  // this has to be enforced before compiling the ANN lib
+  double sum_log_dist = 0.0;
+  for( unsigned int i = 0; i < N; i++ ) {
+    if( dists[ i ] > 0 ) {
+      sum_log_dist += log( 2.0*dists[ i ] );
+    }
+  }
+  ENT_est = - gsl_sf_psi_int( k ) + gsl_sf_psi_int( N ) + (double)dim / (double)N * sum_log_dist;
+
+  // deallocate memory
+  delete [] dists;
+  annDeallocPts( data );  
+
+  return ENT_est;
+}
+#endif // HAVE_ANN
 
 //*****************************************************
 // Generic class

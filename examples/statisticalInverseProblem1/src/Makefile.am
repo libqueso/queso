@@ -10,7 +10,8 @@ AM_CPPFLAGS = -I$(top_srcdir)/src/core/inc \
 	        $(GSL_CFLAGS) \
 	        $(GRVY_CFLAGS) \
 	        $(GLPK_CFLAGS) \
-	        $(HDF5_CFLAGS)
+	        $(HDF5_CFLAGS) \
+		$(ANN_CFLAGS)
 
 LIBS        = -L$(top_builddir)/src/ -lqueso $(HDF5_LIBS)
 

@@ -8,7 +8,7 @@ AM_CPPFLAGS  = -I. \
 	-I$(top_srcdir)/src/basic/inc \
 	-I$(top_srcdir)/src/stats/inc \
 	-I$(TRILINOS_INCLUDE) \
-          $(EPETRA_INCLUDES) $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(GRVY_CFLAGS) $(GLPK_CFLAGS) $(HDF5_CFLAGS)
+          $(EPETRA_INCLUDES) $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(GRVY_CFLAGS) $(GLPK_CFLAGS) $(HDF5_CFLAGS) $(ANN_CFLAGS)
 
 LIBS   = -L$(top_builddir)/src/ -lqueso
 

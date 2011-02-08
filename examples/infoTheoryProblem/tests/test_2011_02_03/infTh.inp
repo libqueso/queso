@@ -1,0 +1,16 @@
+###############################################
+# UQ Environment
+###############################################
+#env_help                 = anything
+env_numSubEnvironments   = 1
+env_subDisplayFileName   = outputData/display
+env_subDisplayAllowAll   = 0
+env_subDisplayAllowedSet = 0 1
+env_displayVerbosity     = 2
+env_syncVerbosity        = 0
+env_seed                 = 0
+
+###############################################
+# Settings Information Theoretic Measures
+###############################################
+
